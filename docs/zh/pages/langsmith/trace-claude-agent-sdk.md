@@ -101,7 +101,7 @@
       )
 
       options = ClaudeAgentOptions(
-          model="claude-sonnet-4-6",
+          model="claude-sonnet-5-5",
           system_prompt="You are a friendly travel assistant who helps with weather information.",
           mcp_servers={"weather": weather_server},
           allowed_tools=["mcp__weather__get_weather"],
@@ -155,7 +155,7 @@
   const query = sdk.query({
     prompt: "What's the weather like in San Francisco and Tokyo?",
     options: {
-      model: 'claude-sonnet-4-6',
+      model: 'claude-sonnet-5-5',
       systemPrompt:
         'You are a friendly travel assistant who helps with weather information.',
       mcpServers: { weather: weatherServer },

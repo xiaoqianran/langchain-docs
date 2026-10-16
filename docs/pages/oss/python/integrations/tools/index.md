@@ -8,6 +8,8 @@ Integrate with tools using LangChain Python.
 
 A toolkit is a collection of tools meant to be used together.
 
+<PythonIntegrationComponentMap />
+
 ## Search
 
 The following table shows tools that execute online searches in some shape or form:

@@ -10,7 +10,7 @@ LangSmith 通过捕获 [*traces*](/langsmith/observability-concepts#traces) 为�
 
 在本快速入门中，您将向 AI 助手添加跟踪并在 LangSmith 中查看结果。
 
-每个跟踪都位于一个容器中，具体使用哪个容器取决于您的工作区的组织方式。基于代理的工作区按 [agent and environment](/langsmith/agents) 对跟踪进行分组。基于项目的工作区按 [tracing project](/langsmith/observability-concepts#tracing-projects) 对它们进行分组。左上角的控件告诉您您所在的工作区：在基于代理的工作区中，它为您的工作区命名，在基于项目的工作区中，它显示 LangSmith 徽标。本快速入门配置了一个跟踪项目，下面的步骤说明了两者的不同之处。
+每个跟踪都位于一个容器中，具体使用哪个容器取决于您的工作区的组织方式。基于代理的工作区按 [agent and environment](/langsmith/agents) 对跟踪进行分组。基于项目的工作区按 [tracing project](/langsmith/observability-concepts#tracing-projects) 对它们进行分组。左上角的控件告诉您所在的工作区：在基于代理的工作区中，它为您的工作区命名，在基于项目的工作区中，它显示 LangSmith 徽标。本快速入门配置了一个跟踪项目，下面的步骤说明了两者的不同之处。
 
 <Tip>
   如果您使用 [LangChain](https://docs.langchain.com/oss/python/langchain/overview) 或 [LangGraph](https://docs.langchain.com/oss/python/langgraph/overview) 进行构建，则可以使用单个环境变量启用 LangSmith 跟踪。请参阅[trace with LangChain](/langsmith/trace-with-langchain)或[trace with LangGraph](/langsmith/trace-with-langgraph)。
@@ -94,7 +94,7 @@ LangSmith 通过捕获 [*traces*](/langsmith/observability-concepts#traces) 为�
 以下应用程序使用两个LangSmith工具来添加跟踪：
 
 * **OpenAI 包装器**：包装 OpenAI 客户端，因此每个 LLM 调用都会自动记录为嵌套范围。
-* **可追踪包装器**：包装函数，使其输入、输出和任何嵌套跨度在 LangSmith 中显示为单个跟踪。在 Python 中使用 `@traceable`，在 TypeScript 和 Kotlin 中使用 `traceable`，在 Java 中使用 `Tracing.traceFunction`。
+* **可跟踪包装器**：包装函数，使其输入、输出和任何嵌套跨度在 LangSmith 中显示为单个跟踪。在 Python 中使用 `@traceable`，在 TypeScript 和 Kotlin 中使用 `traceable`，在 Java 中使用 `Tracing.traceFunction`。
 
 `assistant` 函数调用工具 (`get_context`) 来检索相关上下文，然后将该上下文传递给模型。在这两个函数上使用可跟踪包装器可以在一次跟踪中捕获完整的管道，并将工具调用和 LLM 调用作为嵌套跨度。使用以下代码创建名为 `app.py`、`index.ts`、`App.java` 或 `App.kt` 的文件：
 
@@ -115,7 +115,7 @@ LangSmith 通过捕获 [*traces*](/langsmith/observability-concepts#traces) 为�
   def assistant(question: str) -> str:
       context = get_context(question)
       response = client.chat.completions.create(
-          model="gpt-5.4-mini",
+          model="gpt-6-luna",
           messages=[
               {
                   "role": "system",
@@ -148,7 +148,7 @@ LangSmith 通过捕获 [*traces*](/langsmith/observability-concepts#traces) 为�
   const assistant = traceable(async function assistant(question: string) { // capture the full pipeline as a single trace
       const context = await getContext(question);
       const response = await client.chat.completions.create({
-          model: "gpt-5.4-mini",
+          model: "gpt-6-luna",
           messages: [
               {
                   role: "system",
@@ -227,10 +227,6 @@ LangSmith 通过捕获 [*traces*](/langsmith/observability-concepts#traces) 为�
   }
   ```
 
-  <Card title="View example trace" icon="chart-line" href="https://smith.langchain.com/public/e2529a15-5c87-4c29-9c34-9aa9a899bcf1/r">
-    为此示例打开公共 LangSmith 运行。
-  </Card>
-
   ```kotlin Kotlin theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
   import com.langchain.smith.tracing.RunType
   import com.langchain.smith.tracing.TraceConfig
@@ -283,10 +279,6 @@ LangSmith 通过捕获 [*traces*](/langsmith/observability-concepts#traces) 为�
 
   println(assistant("How long are LangSmith traces stored?"))
   ```
-
-  <Card title="View example trace" icon="chart-line" href="https://smith.langchain.com/public/95567c68-5e7b-44f2-9355-7705ac00de5a/r">
-    为此示例打开公共 LangSmith 运行。
-  </Card>
 </CodeGroup>
 
 ## 3. 运行应用程序
@@ -318,7 +310,7 @@ LangSmith 通过捕获 [*traces*](/langsmith/observability-concepts#traces) 为�
 外部跨度捕获 `assistant` 函数的输入和输出。嵌套的 **get\_context** 范围记录工具调用，而 **ChatOpenAI** 范围记录发送到模型的确切提示和返回的响应。
 
 <Tip>
-  您还可以使用 [LangSmith CLI](/langsmith/langsmith-cli) 从终端检查痕迹。
+  您还可以使用[LangSmith CLI](/langsmith/langsmith-cli)从终端检查痕迹。
 </Tip>
 
 ## 后续步骤* [Tracing integrations](/langsmith/integrations)：LangChain、LangGraph、Anthropic 和其他提供商。
@@ -335,7 +327,7 @@ LangSmith 通过捕获 [*traces*](/langsmith/observability-concepts#traces) 为�
 
 <div>
   <Callout icon="terminal-2">
-    [Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
+    [Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时答案。
   </Callout>
 
   <Callout icon="edit">

@@ -42,17 +42,17 @@
   </Tab><Tab title="Java">
     |之前 |之后 |
     | - | - |
-    | `client.runs().query()`（通用，`isRoot(true)`）| `client.traces().query()` |
+    | `client.runs().query()` (generic, `isRoot(true)`) | `client.traces().query()` |
 
-    完整参数列表请参见[reference](https://javadoc.io/doc/com.langchain.smith/langsmith-java/latest/com/langchain/smith/services/blocking/TraceService.html)。
+    See the [reference](https://javadoc.io/doc/com.langchain.smith/langsmith-java/latest/com/langchain/smith/services/blocking/TraceService.html) for the full parameter list.
   </Tab>
 
   <Tab title="Go">
     |之前 |之后 |
     | - | - |
-    | `client.Runs.Query()`（通用，`IsRoot: true`）| `client.Traces.Query()` |
+    | `client.Runs.Query()` (generic, `IsRoot: true`) | `client.Traces.Query()` |
 
-    完整参数列表请参见[reference](https://pkg.go.dev/github.com/langchain-ai/langsmith-go#TraceService.QueryAutoPaging)。
+    See the [reference](https://pkg.go.dev/github.com/langchain-ai/langsmith-go#TraceService.QueryAutoPaging) for the full parameter list.
   </Tab>
 
   <Tab title="cURL">
@@ -68,8 +68,8 @@
   <Tab title="Python">
     * `session`（项目UUID列表）变为`project_id`，单个UUID； `traces.query` 每次调用的范围仅限于一个项目。
     * `is_root` 已删除：`traces.query` 始终隐式限定为根运行。
-    * 通用的`filter`（针对任何运行进行评估）没有直接等效项；请使用 `trace_filter` 或 `tree_filter` 代替。
-    * `trace_filter`和`tree_filter`结转不变；两者都已经存在于`list_runs`上。
+    * 通用的`filter`（针对任何运行进行评估）没有直接等效项； use `trace_filter` or `tree_filter` instead.
+    * `trace_filter` and `tree_filter` carry over unchanged; both already existed on `list_runs`.
     * `trace_ids` 是新功能：对一组已知跟踪 UUID 的快速路径限制，在规模上比等效的 `trace_filter` 更高效。
     * `start_time`（无默认）变为`min_start_time`，省略时默认为 24​​ 小时前。
     * `max_start_time`新增，默认为请求时间； `list_runs` 的 `end_time` 按运行自己的结束时间戳进行过滤，而不是扫描窗口范围。* `select`更名为`selects`；条目路由至`trace_aggregates`（`total_tokens`、`total_cost`、`first_token_time`）或`root_run`（其他所有内容）。
@@ -78,7 +78,7 @@
   <Tab title="TypeScript">
     * `session`（项目UUID列表）变为`project_id`，单个UUID； `traces.query` 每次调用的范围仅限于一个项目。
     * `isRoot` 已删除：`traces.query` 始终隐式限定为根运行。
-    * 通用的`filter`（针对任何运行进行评估）没有直接等价物；请使用 `trace_filter` 或 `tree_filter` 代替。
+    * 通用的`filter`（针对任何运行进行评估）没有直接等效项；请使用 `trace_filter` 或 `tree_filter` 代替。
     * `traceFilter` 和 `treeFilter` 结转为 `trace_filter`/`tree_filter`；两者都已经存在于`listRuns`上。请注意，v1 方法采用驼峰命名法选项 (`traceFilter`)； v2 资源方法直接采用有线格式 `snake_case` 键。
     * `trace_ids` 是新功能：对一组已知跟踪 UUID 的快速路径限制，在规模上比等效的 `trace_filter` 更高效。
     * `startTime`（无默认）变为`min_start_time`，省略时默认为 24​​ 小时前。
@@ -591,10 +591,6 @@
             if (count >= 5) break
         }
         ```
-
-        <Card title="View example trace" icon="chart-line" href="https://smith.langchain.com/public/e97fb036-8386-475c-a992-f63ee6ae660e/r">
-          为此示例打开公共 LangSmith 运行。
-        </Card>
       </Tab>
     </Tabs>
   </Tab>
@@ -805,7 +801,9 @@
         ```
       </Tab>
     </Tabs>
-  </Tab><Tab title="TypeScript">
+  </Tab>
+
+  <Tab title="TypeScript">
     <Tabs>
       <Tab title="Before">
         ```ts Before theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
@@ -825,9 +823,7 @@
           console.log(run.trace_id);
         }
         ```
-      </Tab>
-
-      <Tab title="After">
+      </Tab><Tab title="After">
         ```ts After theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
         import { Client } from "langsmith";
 
@@ -1335,10 +1331,6 @@
             println("${run.name()} ${run.runType()} ${run.status()}")
         }
         ```
-
-        <Card title="View example trace" icon="chart-line" href="https://smith.langchain.com/public/3722fdb8-c690-4a42-95b0-6480092e6a33/r">
-          为此示例打开公共 LangSmith 运行。
-        </Card>
       </Tab>
 
       <Tab title="After">
@@ -1478,7 +1470,9 @@
           -d "$(jq -n --arg pid "$PROJECT_ID" --arg tid "$TRACE_ID" '{"session": [$pid], "trace": $tid}')" \
           | jq '.runs // []'
         ```
-      </Tab><Tab title="After">
+      </Tab>
+
+      <Tab title="After">
         ```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
         PROJECT_ID=$(curl -s "https://api.smith.langchain.com/api/v1/sessions?name=default&limit=1" \
           -H "x-api-key: $LANGSMITH_API_KEY" | jq -r '.[0].id')
@@ -1494,9 +1488,7 @@
       </Tab>
     </Tabs>
   </Tab>
-</Tabs>
-
-#### 仅获取跟踪中的 LLM 调用
+</Tabs>#### 仅获取跟踪中的 LLM 调用
 
 将跟踪的运行范围缩小到特定的运行类型，例如仅 LLM 调用。
 
@@ -1565,10 +1557,6 @@
           llmRuns.push(run);
         }
         ```
-
-        <Card title="View example trace" icon="chart-line" href="https://smith.langchain.com/public/33ef3cbf-dbb6-4148-9f4b-9d2e9e4b614d/r">
-          为此示例打开公共 LangSmith 运行。
-        </Card>
       </Tab>
 
       <Tab title="After">

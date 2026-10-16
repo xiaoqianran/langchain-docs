@@ -963,6 +963,10 @@ Browse the complete collection of integrations available for Python. LangChain P
     Real-time tennis scores, players and fixtures for ATP, WTA, Challenger and ITF.
   </Card>
 
+  <Card title="Lizard" href="https://github.com/lizard-build/langchain-lizard#readme" icon="link">
+    Lizard provides cloud sandboxes for running shell commands and file tools with LangChain Deep Agents.
+  </Card>
+
   <Card title="Log10" href="/oss/python/integrations/providers/log10" icon="link">
     LLM data management and observability.
   </Card>
@@ -1021,6 +1025,10 @@ Browse the complete collection of integrations available for Python. LangChain P
 
   <Card title="Mengram" href="https://mengram.io/docs" icon="link">
     Long-term agent memory with semantic, episodic, and procedural types.
+  </Card>
+
+  <Card title="MeragptDecider" href="https://github.com/Sandeep85Das/langchain-meragpt" icon="link">
+    Typed decisions (yes/no, choice, score) with calibrated probabilities from meraGPT Decider 1, as a Runnable, a tool, and agent middleware.
   </Card>
 
   <Card title="Metal" href="/oss/python/integrations/providers/metal" icon="link">

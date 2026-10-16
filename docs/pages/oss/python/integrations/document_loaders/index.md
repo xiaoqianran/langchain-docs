@@ -9,6 +9,8 @@ This ensures that data can be handled consistently regardless of the source.
 
 All document loaders implement the [`BaseLoader`](https://reference.langchain.com/python/langchain-core/document_loaders/base/BaseLoader) interface.
 
+<PythonIntegrationComponentMap />
+
 <Warning>
   Community document loaders are user-contributed and unverified. LangChain does not review or endorse these integrations; use them at your own risk.
 </Warning>

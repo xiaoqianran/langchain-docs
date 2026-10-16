@@ -16,7 +16,7 @@ Use assertions when:
 </Note>
 
 <Tip>
-  [LangSmith Engine](/langsmith/engine#add-offline-examples) can auto-propose assertions for production traces flagged as recurring issues. Open an issue's offline examples flow to review, edit, or extend the Engine's proposed assertions before saving them to a dataset.
+  [LangSmith Engine](/langsmith/engine-issues#add-offline-examples) can auto-propose assertions for production traces flagged as recurring issues. Open an issue's offline examples flow to review, edit, or extend the Engine's proposed assertions before saving them to a dataset.
 </Tip>
 
 ## Add assertions

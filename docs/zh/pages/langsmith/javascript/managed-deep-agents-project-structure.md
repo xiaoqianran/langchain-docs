@@ -4,12 +4,12 @@
 
 # 托管Deep Agents项目结构
 
-了解托管 Deep Agents 的项目布局。
+了解托管Deep Agents的项目布局。
 
 托管 Deep Agents 项目是一个普通的 TypeScript 包，具有​​一个必需的根代理条目。其他路径要么是您导入的普通模块，要么是 MDA 发现的用于启用托管功能的文件和目录。
 
 <Note>
-  托管Deep Agents于[LangSmith Cloud](/langsmith/cloud)**公开[beta](/langsmith/release-stages)**。
+  托管 Deep Agents 于 [LangSmith Cloud](/langsmith/cloud) **公开 [beta](/langsmith/release-stages)**。
 </Note>
 
 ## 项目布局
@@ -48,15 +48,15 @@ my-agent/
         └── tests/
 ```
 
-唯一需要的文件是项目根目录下的 `agent.ts` 或 `agent.tsx`，其中包含 [agent definition](/langsmith/javascript/managed-deep-agents-agent-definition) 作为命名的 `agent`。它必须导出使用 `defineDeepAgent` 创建的名为 `agent`。一个项目中仅使用一个代理条目。
+唯一需要的文件是项目根目录下的`agent.ts` 或`agent.tsx`，其中包含名为`agent` 的[agent definition](/langsmith/javascript/managed-deep-agents-agent-definition)。它必须导出使用 `defineDeepAgent` 创建的名为 `agent`。一个项目中仅使用一个代理条目。
 
 上面的布局显示了常见的 `.ts` 名称。 TypeScript 托管声明还接受受支持的 `.tsx`、`.mts` 或 `.cts` 变体。
 
 ## MDA 如何处理项目文件
 
-* **托管上下文**：[⟦T10⟧](/langsmith/javascript/managed-deep-agents-instructions)定义系统提示符。 [⟦T11⟧](/langsmith/javascript/managed-deep-agents-skills) 下的每个目录都包含特定于任务的指令，例如 `SKILL.md` 和任何支持文件。 MDA 将 `instructions.md` 和 `skills/` 同步到 [Context Hub](/langsmith/javascript/managed-deep-agents-context-hub)。可选的 [durable memory](/langsmith/javascript/managed-deep-agents-memory) 也由 Context Hub 支持。
+* **托管上下文**：[⟦T14⟧](/langsmith/javascript/managed-deep-agents-instructions)定义系统提示符。 [⟦T15⟧](/langsmith/javascript/managed-deep-agents-skills) 下的每个目录都包含特定于任务的指令，例如 `SKILL.md` 和任何支持文件。 MDA 将 `instructions.md` 和 `skills/` 同步到 [Context Hub](/langsmith/javascript/managed-deep-agents-context-hub)。可选的 [durable memory](/langsmith/javascript/managed-deep-agents-memory) 也由 Context Hub 支持。
 
-* **应用程序代码**：[⟦T15⟧](/langsmith/javascript/managed-deep-agents-tools)和[⟦T16⟧](/langsmith/javascript/managed-deep-agents-middleware)下的文件是普通的项目模块。从代理条目导入它们。* **托管配置**：某些路径在存在时启用功能。对于`channels/`和`schedules/`，只有直接子代是托管声明；嵌套模块不是。
+* **应用程序代码**：[⟦T19⟧](/langsmith/javascript/managed-deep-agents-tools)和[⟦T20⟧](/langsmith/javascript/managed-deep-agents-middleware)下的文件是普通的项目模块。从代理条目导入它们。* **托管配置**：某些路径在存在时启用功能。对于`channels/`和`schedules/`，只有直接子代是托管声明；嵌套模块不是。
 
   |路径|启用|
   | - | - |
@@ -69,9 +69,36 @@ my-agent/
 
   `tools/` 包含普通模块，但有一个例外。 `tools/mcp.ts` 是一个托管声明，并导出名为 `mcp`。 `tools/` 下的所有其他模块都是您导入的应用程序代码。
 
-* **依赖关系和秘密**：在`package.json`中声明依赖关系。 MDA 在本地加载 `.env` 并将非保留值作为部署机密转发。保留的平台变量和`.env`文件不包含在构建存档中。欲了解更多信息，请参阅[Deploy a Managed Deep Agent](/langsmith/javascript/managed-deep-agents-deploy)。
+* **依赖关系和秘密**：在`package.json`中声明依赖关系。 MDA 在本地加载 `.env` 并将非保留值作为部署机密转发。保留的平台变量和`.env`文件不包含在构建存档中。有关更多信息，请参阅[Deploy a Managed Deep Agent](/langsmith/javascript/managed-deep-agents-deploy)。
 
 * **评估**：托管 Deep Agents [evals](/langsmith/javascript/managed-deep-agents-evals) 是 Harbor 评估。运行 `mda evals init -i` 并使用编码代理和 `eval-engineering` 技能开发任务。生成的运行时文件保留在 `.mda/evals/` 下，并且不包含在已部署的代理版本中。
+
+## 共享项目外部的代码
+
+构建仅复制项目目录。要使用同级目录中的包，请将其声明为本地依赖项：
+
+<CodeGroup>
+  ```bash npm theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+  npm install ../shared
+  ```
+
+  ```bash pnpm theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+  pnpm add ../shared
+  ```
+</CodeGroup>
+
+```ts theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+import { helper } from "@acme/shared";
+```将共享代码放在自己的包中。它的`package.json`需要一个`name`和一个`main`或`exports`条目，它可以指向`.ts`文件：
+
+```json ../shared/package.json theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+{
+  "name": "@acme/shared",
+  "main": "./index.ts"
+}
+```
+
+MDA 将包复制到构建中。 `mda dev` 会在您编辑时重新加载，并且 `mda deploy` 会传送它。
 
 ## 后续步骤
 
@@ -85,7 +112,9 @@ my-agent/
   </Card>
 </CardGroup>
 
-***<div>
+***
+
+<div>
   <Callout icon="terminal-2">
     [Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
   </Callout>

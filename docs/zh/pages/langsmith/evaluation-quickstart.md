@@ -26,7 +26,7 @@
 
 <Tabs>
   <Tab title="UI" icon="window">
-    ## 1. 设置工作区机密
+    ## 1. 设置工作区秘密
 
     在 [LangSmith UI](https://smith.langchain.com?utm_source=docs\&utm_medium=cta\&utm_campaign=langsmith-signup\&utm_content=snippets-langsmith-set-workspace-secrets) 中，确保您的 API 密钥设置为 [workspace secret](/langsmith/set-up-hierarchy#configure-workspace-settings)。1. 导航至 <Icon icon="settings" /> **设置**，然后移至 **秘密** 选项卡。
     2. 选择 **添加密钥** 并输入密钥环境变量（例如，`OPENAI_API_KEY` 或 `ANTHROPIC_API_KEY`）以及您的 API 密钥作为 **值**。
@@ -260,7 +260,7 @@
       # The SDK will automatically send the inputs from the dataset to your target function
       def target(inputs: dict) -> dict:
           response = openai_client.chat.completions.create(
-              model="gpt-5.4-mini",
+              model="gpt-6-luna",
               messages=[
                   {"role": "system", "content": "Answer the following question accurately"},
                   {"role": "user", "content": inputs["question"]},
@@ -280,7 +280,7 @@
       async function target(inputs: Record<string, any>): Promise<Record<string, any>> {
         const question = String(inputs.question ?? "");
         const resp = await openaiClient.chat.completions.create({
-          model: "gpt-5.4-mini",
+          model: "gpt-6-luna",
           messages: [
             { role: "system", content: "Answer the following question accurately" },
             { role: "user", content: question },
@@ -321,7 +321,7 @@
       # The SDK will automatically send the inputs from the dataset to your target function
       def target(inputs: dict) -> dict:
           response = openai_client.chat.completions.create(
-              model="gpt-5.4-mini",
+              model="gpt-6-luna",
               messages=[
                   {"role": "system", "content": "Answer the following question accurately"},
                   {"role": "user", "content": inputs["question"]},
@@ -353,7 +353,7 @@
       async function target(inputs: Record<string, any>): Promise<Record<string, any>> {
         const question = String(inputs.question ?? "");
         const resp = await openaiClient.chat.completions.create({
-          model: "gpt-5.4-mini",
+          model: "gpt-6-luna",
           messages: [
             { role: "system", content: "Answer the following question accurately" },
             { role: "user", content: question },
@@ -409,7 +409,7 @@
          # The SDK will automatically send the inputs from the dataset to your target function
          def target(inputs: dict) -> dict:
              response = openai_client.chat.completions.create(
-                 model="gpt-5.4-mini",
+                 model="gpt-6-luna",
                  messages=[
                      {"role": "system", "content": "Answer the following question accurately"},
                      {"role": "user", "content": inputs["question"]},
@@ -459,7 +459,7 @@
          async function target(inputs: Record<string, any>): Promise<Record<string, any>> {
          const question = String(inputs.question ?? "");
          const resp = await openaiClient.chat.completions.create({
-             model: "gpt-5.4-mini",
+             model: "gpt-6-luna",
              messages: [
              { role: "system", content: "Answer the following question accurately" },
              { role: "user", content: question },

@@ -68,7 +68,7 @@ configure(project_name="pydantic-ai-demo")
 Agent.instrument_all()
 
 # Create and run an agent
-agent = Agent('openai:gpt-5.5')
+agent = Agent('openai:gpt-6-luna')
 result = agent.run_sync('What is the capital of France?')
 print(result.output)
 #> Paris
@@ -90,7 +90,7 @@ Agent.instrument_all()
 
 tracer = trace.get_tracer(__name__)
 
-agent = Agent('openai:gpt-5.5')
+agent = Agent('openai:gpt-6-luna')
 
 with tracer.start_as_current_span("pydantic_ai_workflow") as span:
     span.set_attribute("langsmith.metadata.user_id", "user_123")

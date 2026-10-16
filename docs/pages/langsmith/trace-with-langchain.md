@@ -98,7 +98,7 @@ No extra code is needed to log a trace to LangSmith. Just run your LangChain cod
       ("user", "Question: {question}\nContext: {context}")
   ])
 
-  model = ChatOpenAI(model="gpt-5.4-mini")
+  model = ChatOpenAI(model="gpt-6-luna")
   output_parser = StrOutputParser()
   chain = prompt | model | output_parser
 
@@ -118,7 +118,7 @@ No extra code is needed to log a trace to LangSmith. Just run your LangChain cod
     ["user", "Question: {question}\nContext: {context}"],
   ]);
 
-  const model = new ChatOpenAI({ modelName: "gpt-5.4-mini" });
+  const model = new ChatOpenAI({ modelName: "gpt-6-luna" });
   const outputParser = new StringOutputParser();
   const chain = prompt.pipe(model).pipe(outputParser);
 
@@ -291,7 +291,7 @@ You can customize the name of a given run when invoking or streaming your LangCh
 </CodeGroup>
 
 <Note>
-  The `run_name` parameter only changes the name of the runnable you invoke (e.g., a chain, function). It does not rename the nested run automatically created when you invoke an LLM object like [`ChatOpenAI`](https://reference.langchain.com/python/langchain-openai/chat_models/base/ChatOpenAI) (`gpt-5.4-mini`). In the example, the enclosing run will appear in LangSmith as `MyCustomChain`, while the nested LLM run still shows the model’s default name.
+  The `run_name` parameter only changes the name of the runnable you invoke (e.g., a chain, function). It does not rename the nested run automatically created when you invoke an LLM object like [`ChatOpenAI`](https://reference.langchain.com/python/langchain-openai/chat_models/base/ChatOpenAI) (`gpt-6-luna`). In the example, the enclosing run will appear in LangSmith as `MyCustomChain`, while the nested LLM run still shows the model’s default name.
 
   To give the LLM run a more meaningful name, you can either:
 
@@ -419,7 +419,7 @@ In JS/TS, you can use a `RunCollectorCallbackHandler` instance to access the run
       ("system", "You are a helpful assistant. Please respond to the user's request only based on the given context."),
       ("user", "Question: {question}\n\nContext: {context}")
   ])
-  model = ChatOpenAI(model="gpt-5.4-mini")
+  model = ChatOpenAI(model="gpt-6-luna")
   output_parser = StrOutputParser()
 
   chain = prompt | model | output_parser
@@ -441,7 +441,7 @@ In JS/TS, you can use a `RunCollectorCallbackHandler` instance to access the run
     ["system", "You are a helpful assistant. Please respond to the user's request only based on the given context."],
     ["user", "Question: {question}\n\nContext: {context}"],
   ]);
-  const model = new ChatOpenAI({ modelName: "gpt-5.4-mini" });
+  const model = new ChatOpenAI({ modelName: "gpt-6-luna" });
   const outputParser = new StringOutputParser();
 
   const chain = prompt.pipe(model).pipe(outputParser);
@@ -591,7 +591,7 @@ prompt = ChatPromptTemplate.from_messages([
     ("user", "Question: {question}\nContext: {context}")
 ])
 
-model = ChatOpenAI(model="gpt-5.4-mini")
+model = ChatOpenAI(model="gpt-6-luna")
 output_parser = StrOutputParser()
 chain = prompt | model | output_parser
 
@@ -631,7 +631,7 @@ const prompt = ChatPromptTemplate.fromMessages([
   ["user", "Question: {question}\nContext: {context}"],
 ]);
 
-const model = new ChatOpenAI({ modelName: "gpt-5.4-mini" });
+const model = new ChatOpenAI({ modelName: "gpt-6-luna" });
 const outputParser = new StringOutputParser();
 const chain = prompt.pipe(model).pipe(outputParser);
 

@@ -18,7 +18,7 @@
 </Note>
 
 <Tip>
-  [LangSmith Engine](/langsmith/engine#add-offline-examples) 可以针对标记为重复出现问题的生产跟踪自动提出断言。打开问题的离线示例流程，以在将引擎的建议断言保存到数据集之前查看、编辑或扩展它们。
+  [LangSmith Engine](/langsmith/engine-issues#add-offline-examples) 可以针对标记为重复出现问题的生产跟踪自动提出断言。打开问题的离线示例流程，以在将引擎的建议断言保存到数据集之前查看、编辑或扩展它们。
 </Tip>
 
 ## 添加断言1. 在 [LangSmith UI](https://smith.langchain.com?utm_source=docs\&utm_medium=cta\&utm_campaign=langsmith-signup\&utm_content=langsmith-assertions) 中，导航至左侧边栏中的 **注释队列**。打开单次运行队列并选择一次运行。

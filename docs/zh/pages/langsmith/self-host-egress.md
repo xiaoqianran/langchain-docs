@@ -414,7 +414,7 @@ config:
 * **时间戳**：快照的时间范围（从/到 UTC 时间戳）
 
 <Info>
-  所有指标均为**仅聚合计数**。不会收集任何单独的资源数据、标识符或使用模式。我们不会收集任何可以识别您的最终用户或客户身份的信息。
+  所有指标均为**仅聚合计数**。不会收集任何单独的资源数据、标识符或使用模式。我们不会收集任何可以识别您的最终用户或客户的信息。
 </Info>
 
 ### 负载示例
@@ -446,7 +446,7 @@ config:
 }
 ```
 
-### 如何禁用您可以通过在部署配置中设置以下环境变量来禁用使用遥测：
+### 如何禁用您可以通过在部署配置中设置以下环境变量来禁用使用情况遥测：
 
 ```yaml theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 PHONE_HOME_USAGE_REPORTING_ENABLED: false
@@ -460,15 +460,15 @@ PHONE_HOME_USAGE_REPORTING_ENABLED: false
 
 ## 引擎的 GitHub
 
-当您[connect GitHub to Engine](/langsmith/engine-github#self-hosted-configuration)时，允许从LangSmith服务和沙箱主机到您的GitHub实例的出站HTTPS。 GitHub 还必须到达 LangSmith 的 webhook URL，以便在合并后自动 PR 链接和问题完成。
+当您[connect GitHub to Engine](/langsmith/engine-self-hosted-github)时，允许从LangSmith服务和沙箱主机到您的GitHub实例的出站HTTPS。 GitHub 还必须到达 LangSmith 的 webhook URL，以便在合并后自动 PR 链接和问题完成。
 
-这些连接与模型提供者的访问是分开的。所需主机、连接方向和私网配置请参见[Engine's GitHub network requirements](/langsmith/engine-github#allow-network-access)。
+这些连接与模型提供者的访问是分开的。所需主机、连接方向和私网配置请参见[Engine's GitHub network requirements](/langsmith/engine-self-hosted-github#allow-network-access)。
 
 ## LangSmith 发动机智能
 
 [Engine](/langsmith/engine-self-hosted) 向 LangSmith Intelligence (LSI) 报告使用情况，后者也可以运行其模型。如果您使用自己的模型提供程序，LSI 仅接收使用情况元数据。 [Air-gapped installations](/langsmith/engine-self-hosted#air-gapped-installations) 不连接LSI。
 
-允许出站 HTTPS 到在 `engine.intelligenceBaseUrl` 中为您的 [model-provider choice](/langsmith/engine-self-hosted#choose-how-engine-runs-its-models) 配置的端点：* **LangSmith 智能：** `beacon.aws.langchain.com`。为了将此流量保留在专用网络上，[connect with AWS PrivateLink](/langsmith/engine-self-hosted#connect-with-aws-privatelink)。
+允许出站 HTTPS 到在 `engine.intelligenceBaseUrl` 中为您的 [model-provider choice](/langsmith/engine-self-hosted#choose-how-engine-runs-its-models) 配置的端点：* **LangSmith 智能：** `beacon.aws.langchain.com`。为了将此流量保留在专用网络上，[connect with AWS PrivateLink](/langsmith/engine-self-hosted-model-providers#connect-with-aws-privatelink)。
 * **您自己的模型提供商：** `beacon.langchain.com`，此页面已经需要的同一主机，用于使用情况报告。还允许到每个提供商的 API 端点的出站 HTTPS。
 
 <Warning>

@@ -8,6 +8,8 @@ Stores enable [long-term memory](/oss/python/langgraph/stores) in LangGraph, all
 
 To implement your own store for a custom storage backend, see [Build a custom store](/oss/python/langgraph/stores#build-a-custom-store).
 
+<PythonIntegrationComponentMap />
+
 | Backend | Package | Source |
 | - | - | - |
 | [In-memory](https://reference.langchain.com/python/langgraph.store/memory/InMemoryStore) | [`langgraph-checkpoint`](https://pypi.org/project/langgraph-checkpoint/) | [langchain-ai/langgraph](https://github.com/langchain-ai/langgraph/tree/main/libs/checkpoint) |

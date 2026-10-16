@@ -13,6 +13,7 @@
 * [**Fleet**](/langsmith/fleet/index)
 * [**Chat**](/langsmith/chat)
 * [**Insights**](/langsmith/insights)
+* [**LLM Gateway**](/langsmith/llm-gateway-model-configurations)
 
 [Workspace admins](/langsmith/rbac#workspace-admin) 可以创建、编辑和删除配置，并控制每个功能可用的提供程序和模型。非管理员成员可以查看配置，但不能修改它们。
 
@@ -26,7 +27,7 @@
 |评估者|完整的模型控制——查看和调整所有参数。无内置模型；依赖于工作区配置。 |
 |舰队|默认情况下从精选列表中进行选择。您还可以添加自定义工作区配置。 |
 |聊天 |默认情况下从精选列表中进行选择。您还可以添加自定义工作区配置。 |
-|见解（思考）|用于深度分析的模型。默认情况下，从包含提供商推荐的精选列表中进行选择。您还可以添加自定义工作区配置。 |
+|见解（思考）|用于深度分析的模型。默认情况下，从包含提供商建议的精选列表中进行选择。您还可以添加自定义工作区配置。 |
 |见解（总结）|用于轻量级汇总的模型。默认情况下，从包含提供商推荐的精选列表中进行选择。您还可以添加自定义工作区配置。 |
 
 所有功能都支持自定义工作区配置，因此您可以使用任何提供程序或模型，甚至对于默认显示精选列表的功能也是如此。<Note>
@@ -35,7 +36,7 @@
 
 ### 配置功能访问
 
-要在 [UI](https://smith.langchain.com?utm_source=docs\&utm_medium=cta\&utm_campaign=langsmith-signup\&utm_content=langsmith-model-configurations) 中配置功能访问：
+要配置 [UI](https://smith.langchain.com?utm_source=docs\&utm_medium=cta\&utm_campaign=langsmith-signup\&utm_content=langsmith-model-configurations) 中的功能访问：
 
 1. 导航到 **设置** > **模型配置**。
 2. 在 **功能访问** 表中，找到您要配置的功能。
@@ -49,12 +50,12 @@
 
 ## 组织范围内的提供商控制
 
-提供商的可用性在两个层面上进行控制：* **组织**（组织管理员）：为**整个组织**（每个 [workspace](/langsmith/administration-overview#workspaces) 和每个功能）打开或关闭提供程序。在 **设置** > **模型提供商** 中管理。
-* **工作区**（工作区管理员）：上面的[Feature Access](#feature-access)表，它控制单个工作区中**每个功能**的提供者和模型可用性。
+提供商的可用性在两个层面上进行控制：* **组织**（组织管理员）：为**整个组织**打开或关闭提供程序 - 每个 [workspace](/langsmith/administration-overview#workspaces) 和每个功能。在 **设置** > **模型提供商** 中管理。
+* **工作空间**（工作空间管理员）：上面的[Feature Access](#feature-access)表，它控制单个工作空间内**每个功能**的提供者和模型可用性。
 
 组织级别优先。为组织禁用的提供程序在每个工作区和每个功能中都不可用，并且在每个工作区的功能访问表中显示为**锁定** - 工作区管理员可以看到它，但无法重新启用它。工作空间仅在组织允许的提供商中进行选择。
 
-管理组织范围内的提供商需要 [Organization Admin](/langsmith/rbac#organization-admin) 角色（`organization:manage` 权限），并且可在组织（非个人帐户）的 LangSmith [Cloud](/langsmith/cloud) 和 [Self-hosted](/langsmith/self-hosted) 上使用。
+管理组织范围内的提供程序需要 [Organization Admin](/langsmith/rbac#organization-admin) 角色（`organization:manage` 权限），并且可在组织（非个人帐户）的 LangSmith [Cloud](/langsmith/cloud) 和 [Self-hosted](/langsmith/self-hosted) 上使用。
 
 ### 禁用组织的提供程序
 
@@ -127,7 +128,7 @@
   OAuth 客户端凭据可在运行版本 `0.16.0-rc.6` 或更高版本的 LangSmith [Cloud](/langsmith/cloud) 和 [Self-hosted](/langsmith/self-hosted) 部署上使用。
 </Note>
 
-当模型配置位于 OAuth2 网关后面时，您可以将 OAuth `client_credentials` 直接存储在配置上，而不是分发静态 API 密钥。 LangSmith 在请求时将这些凭证交换为短期持有者令牌，将其作为 `Authorization: Bearer <token>` 附加到出站 LLM 调用上，并在令牌过期之前刷新令牌。这是一种按配置的自助服务替代方案，可替代通过 [LLM auth proxy](/langsmith/llm-auth-proxy-self-hosted) 路由工作空间；每个配置两者都是互斥的。OAuth 客户端凭据可在每个支持自定义模型配置的[plan](/langsmith/pricing-plans) 上使用。 **使用自定义 OAuth** 切换适用于不记名令牌提供商（OpenAI、Anthropic、OpenAI 兼容端点等），并且不支持使用本机云身份进行身份验证的 Bedrock、Gemini Enterprise Agent Platform 或 Google GenAI。 **LangServe（已弃用）** 预设的切换也是隐藏的。
+当模型配置位于 OAuth2 网关后面时，您可以将 OAuth `client_credentials` 直接存储在配置上，而不是分发静态 API 密钥。 LangSmith 在请求时将这些凭证交换为短期持有者令牌，将其作为 `Authorization: Bearer <token>` 附加到出站 LLM 调用上，并在令牌过期之前刷新令牌。这是一种按配置的自助服务替代方案，可替代通过 [LLM auth proxy](/langsmith/llm-auth-proxy-self-hosted) 路由工作空间；每个配置两者都是互斥的。OAuth 客户端凭据可在每个支持自定义模型配置的 [plan](/langsmith/pricing-plans) 上使用。 **使用自定义 OAuth** 切换适用于不记名令牌提供商（OpenAI、Anthropic、OpenAI 兼容端点等），并且不支持使用本机云身份进行身份验证的 Bedrock、Gemini Enterprise Agent Platform 或 Google GenAI。 **LangServe（已弃用）** 预设的切换也是隐藏的。
 
 ### 在模型配置上配置 OAuth
 
@@ -190,8 +191,8 @@ sequenceDiagram
 ### 表面覆盖
 
 无论何时使用模型配置，都会遵循启用 OAuth 的配置：* [**Playground**](/langsmith/prompt-engineering-concepts)：聊天运行和实验运行。
-* [**Evaluators**](/langsmith/evaluation)：LLM 作为法官配置、重用、预览测试和评估器详细信息 当每个提示解析为支持 OAuth 的配置时，测试全部跳过工作区秘密提示。
-* [**Insights**](/langsmith/insights)：思考和总结配置独立解析。
+* [**Evaluators**](/langsmith/evaluation)：LLM-as-judge 配置、重用、预览测试和评估器详细信息 当每个提示解析为支持 OAuth 的配置时，测试全部跳过工作区秘密提示。
+* [**Insights**](/langsmith/insights)：思考和总结配置独立解决。
 * [**Chat**](/langsmith/chat)
 * [**Fleet**](/langsmith/fleet/index)
 

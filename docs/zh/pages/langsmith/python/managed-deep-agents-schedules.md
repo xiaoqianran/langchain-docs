@@ -9,7 +9,7 @@
 托管 Deep Agents 可以按 cron 计划运行代理。当您部署项目时，`mda deploy` 在部署上线后将每个计划配置为 LangSmith cron。
 
 <Note>
-  托管 Deep Agents 于 [LangSmith Cloud](/langsmith/cloud) **公开 [beta](/langsmith/release-stages)**。
+  托管Deep Agents于[LangSmith Cloud](/langsmith/cloud)**公开[beta](/langsmith/release-stages)**。
 </Note>
 
 ## 项目结构
@@ -93,7 +93,7 @@ schedule = define_schedule(
 
 ## 将结果发送到 Slack
 
-设置 `deliver_to` 以通过配置的 [Slack channel](/langsmith/python/managed-deep-agents-channels-slack) 发布最终响应。
+设置 `deliver_to` 通过配置的 [Slack channel](/langsmith/python/managed-deep-agents-channels-slack) 发布最终响应。
 
 使用 Slack 通道 ID，因为计划运行没有原始线程。<Note>
   安排交货需要`managed-deepagents>=0.4.0`。
@@ -151,9 +151,9 @@ Slack 机器人必须有权访问目的地。
   运行时计划需要 `managed-deepagents` 0.9.0 或更高版本。
 </Note>
 
-`schedules/` 中的声明在部署时已修复。 `schedules` API 在代理运行时创建计划，因此代理可以设置重复性或一次性工作来响应对话。从工具或[middleware](/langsmith/python/managed-deep-agents-middleware)调用它。每个计划都属于当前用户或代理。代理只能通过您编写的工具来访问此 API。公开代理需要的呼叫，并忽略不应该接通的呼叫。
+`schedules/` 中的声明在部署时已修复。 `runtime.schedules` 在代理运行时创建计划，因此代理可以设置重复性或一次性工作来响应对话。它在工具和[middleware](/langsmith/python/managed-deep-agents-middleware)接收的运行时上可用，并且它充当当前运行的调用者。每个计划都属于当前用户或代理。代理只能通过您编写的工具来访问此 API。公开代理需要的呼叫，并忽略不应该接通的呼叫。
 
-当工具在 [channel](/langsmith/python/managed-deep-agents-channels) 运行期间创建计划（例如 Slack 对话）时，计划会继承该通道。每次运行都会将其最终答案发回给它。新线程发布新的 Slack 消息，当前线程在现有 Slack 线程中回复。
+当工具在 [channel](/langsmith/python/managed-deep-agents-channels) 运行期间创建计划（例如 Slack 对话）时，计划将继承该通道。每次运行都会将其最终答案发回给它。新线程发布新的 Slack 消息，当前线程在现有 Slack 线程中回复。
 
 `new_thread` 决定时间表使用两者中的哪一个。
 
@@ -163,13 +163,15 @@ Slack 机器人必须有权访问目的地。
 
 ```python tools/schedules.py theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 from langchain.tools import tool
-from managed_deepagents import schedules
+from managed_deepagents import ManagedDeepAgentRuntime
 
 
 @tool
-async def remind_me(prompt: str, cron: str, timezone: str = "UTC") -> str:
+async def remind_me(
+    prompt: str, cron: str, runtime: ManagedDeepAgentRuntime, timezone: str = "UTC"
+) -> str:
     """Run a prompt for the current user on a cron schedule."""
-    item = await schedules.create(
+    item = await runtime.schedules.create(
         owner={"type": "user"},
         cron=cron,
         timezone=timezone,
@@ -186,13 +188,13 @@ async def remind_me(prompt: str, cron: str, timezone: str = "UTC") -> str:
 from datetime import datetime, timedelta, timezone
 
 from langchain.tools import tool
-from managed_deepagents import schedules
+from managed_deepagents import ManagedDeepAgentRuntime
 
 
 @tool
-async def follow_up_later(prompt: str, hours: int) -> str:
+async def follow_up_later(prompt: str, hours: int, runtime: ManagedDeepAgentRuntime) -> str:
     """Run a prompt once, a number of hours from now."""
-    item = await schedules.create(
+    item = await runtime.schedules.create(
         owner={"type": "user"},
         at=datetime.now(timezone.utc) + timedelta(hours=hours),
         prompt=prompt,
@@ -227,7 +229,7 @@ async def follow_up_later(prompt: str, hours: int) -> str:
 <ParamField type="object | object[]">
   每次运行的结构化LangGraph输入。
 </ParamField><ParamField type="bool">
-  `True` starts each run on a new thread. `False` continues the current thread. Defaults to `True` with `cron` and `False` with `at`.
+  `True` 在新线程上开始每次运行。 `False` 继续当前线程。默认为 `True` 与 `cron` 以及 `False` 与 `at`。
 </ParamField>
 
 <ParamField type="boolean">
@@ -235,29 +237,29 @@ async def follow_up_later(prompt: str, hours: int) -> str:
 </ParamField>
 
 <ParamField type="object">
-  JSON 元数据供您自己使用。 Keys that start with `mda_` are reserved.
+  JSON 元数据供您自己使用。以 `mda_` 开头的键被保留。
 </ParamField>
 
 ### 管理日程
 
-`list`, `get`, `update`, and `delete` cover the rest of a schedule's life.当代理应该管理它创建的计划时，将它们公开为工具。具有`list`和`delete`的客服人员可以回答“我有什么提醒？”并根据要求取消一项。 Pause a schedule with `update` instead of deleting it when the person wants it back later.
+`runtime.schedules` 上的`list`、`get`、`update` 和`delete` 涵盖了计划生命周期的剩余时间。当代理应该管理它创建的计划时，将它们公开为工具。具有`list`和`delete`的客服人员可以回答“我有什么提醒？”并根据要求取消一项。使用 `update` 暂停日程安排，而不是在用户稍后想要恢复日程安排时将其删除。
 
 ```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 owner = {"type": "user"}
 
-page = await schedules.list(owner=owner, limit=20)
-item = await schedules.get(page["items"][0]["id"], owner=owner)
-await schedules.update(item["id"], {"paused": True}, owner=owner)
-await schedules.delete(item["id"], owner=owner)
+page = await runtime.schedules.list(owner=owner, limit=20)
+item = await runtime.schedules.get(page["items"][0]["id"], owner=owner)
+await runtime.schedules.update(item["id"], {"paused": True}, owner=owner)
+await runtime.schedules.delete(item["id"], owner=owner)
 ```
 
-`update` 接受 `cron`、`at`、`timezone`、`prompt`、`input`、`paused` 和 `metadata`。通道和线程选择在创建时是固定的。 `list` hides expired one-time schedules unless you pass `include_expired=True`.对于代理所有者，`list` 和 `get` 还会返回 `schedules/` 中的计划，您可以在代码中更改该计划。
+`update` 接受 `cron`、`at`、`timezone`、`prompt`、`input`、`paused` 和 `metadata`。通道和线程选择在创建时是固定的。 `list` 隐藏过期的一次性时间表，除非您通过 `include_expired=True`。对于代理所有者，`list` 和 `get` 还会返回 `schedules/` 中的计划，您可以在代码中更改该计划。
 
 ## 日程安排疑难解答
 
-* `must export a named schedule declaration`: Define a top-level `schedule` in each file in `schedules/`.
+* `must export a named schedule declaration`：在`schedules/`中的每个文件中定义一个顶级`schedule`。
 
-* `must define exactly one of prompt or input`: Add either `prompt` or `input`, but not both.
+* `must define exactly one of prompt or input`：添加 `prompt` 或 `input`，但不能同时添加两者。
 
 * `cron must be a standard 5-field expression`：使用五个 cron 字段，而不是基于秒的 cron 语法。* `schedule is not static`：用文字或顶级文字常量替换计算值。
 

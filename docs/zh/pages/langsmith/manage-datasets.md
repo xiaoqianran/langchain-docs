@@ -14,7 +14,7 @@ LangSmith 提供用于管理和使用 [*datasets*](/langsmith/evaluation-concept
 您还将学习如何从 [experiments](/langsmith/evaluation-concepts#experiment) [export filtered traces](#export-filtered-traces-from-experiment-to-dataset) 返回数据集以进行进一步分析和迭代。
 
 <Tip>
-  [LangSmith Engine](/langsmith/engine) 可以根据您的生产轨迹自动生成真实数据集示例。
+  [LangSmith Engine](/langsmith/engine-issues#add-offline-examples) 可以根据您的生产轨迹自动生成真实数据集示例。
 </Tip>
 
 ## 数据集版本

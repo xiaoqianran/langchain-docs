@@ -46,13 +46,13 @@
   </Tab>
 
   <Tab title="Go">
-    |之前 |之后|
+    |之前 |之后 |
     | - | - |
     | `client.Datasets.Runs.Query()` | `client.Datasets.ExperimentRuns.Query()` |完整参数列表请参见[reference](https://pkg.go.dev/github.com/langchain-ai/langsmith-go#DatasetExperimentRunService.Query)。
   </Tab>
 
   <Tab title="cURL">
-    |之前 |之后|
+    |之前 |之后 |
     | - | - |
     | `POST /api/v1/datasets/{dataset_id}/runs` | `POST /api/v2/datasets/{dataset_id}/experiment-runs` |
 
@@ -75,8 +75,8 @@
     | *（不可用）* | `page_size` |每个请求结果计数（默认 20，最大 100）|
     | *（内部处理）* | `cursor` |传递上一页的`next_cursor`来获取下一页 |
     | `preview` | `selects` |省略 `selects` 仅返回运行 ID；使用 `INPUTS_PREVIEW` 和 `OUTPUTS_PREVIEW` 进行预览，或使用 `INPUTS` 和 `OUTPUTS` 进行完整有效负载 |
-    | *（未暴露）* | `sort` |使用`{by, order}`进行反馈分数排序 |
-    | `filters` | `filters` |不变；将实验 UUID 字符串映射到过滤器表达式 |
+    | *（未暴露）* | `sort` |使用`{by, order}`进行反馈分数排序|
+    | `filters` | `filters` |不变；将实验 UUID 字符串映射到过滤表达式 |
     | `comparative_experiment_id` | `comparative_experiment_id` |不变 || *（未暴露）* | `example_ids` |可选示例 UUID 过滤器，最大 1000 |
   </Tab>
 
@@ -85,7 +85,7 @@
       需要 `experiment_ids` 并替换 `session_ids`。值仍然是实验跟踪项目 UUID - 如果您只知道实验名称，请先解析它：`(await client.readProject({ projectName: "my-experiment" })).id`。
     </Warning>
 
-    |之前 |之后(`datasets.experimentRuns.query`)|笔记|
+    |之前 |之后(`datasets.experimentRuns.query`) |笔记|
     | - | - | - |
     | *（没有遗留的公共`Client`方法）* | `experiment_ids` |必填且非空 |
     | *（没有遗留的公共`Client`方法）* | `page_size` |默认为 20，最大 100 |
@@ -144,7 +144,7 @@
     | `offset` | `cursor` |传递上一页的 `next_cursor` 而不是数字偏移量 |
     | `preview` | `selects` |省略 `selects` 仅返回运行 ID；使用 `INPUTS_PREVIEW` 和 `OUTPUTS_PREVIEW` 进行预览，或使用 `INPUTS` 和 `OUTPUTS` 进行完整有效负载 |
     | `sort_params` | `sort` |形状从`{sort_by, sort_order}`更改为`{by, order}` |
-    | `filters` | `filters` |不变；将实验 UUID 字符串映射到过滤器表达式 |
+    | `filters` | `filters` |不变；将实验 UUID 字符串映射到过滤表达式 |
     | `comparative_experiment_id` | `comparative_experiment_id` |不变 |
     | `example_ids` | `example_ids` |不变，最多 1000 |
     | `format=csv` | *（已删除）* |新端点仅返回 JSON |
@@ -152,7 +152,7 @@
   </Tab>
 </Tabs>
 
-#### 响应字段每个页面项目都是一个数据集示例，并与其生成的运行配对——而不是一个裸露的`Run`。它的 `runs` 字段保存与 [Querying runs](#response-fields) 返回的相同的 `Run` 对象；请参阅该部分了解每次运行字段。下表描述了该项目的其余部分：`runs` 旁边的示例字段。
+#### 响应字段每个页面项目都是一个数据集示例，与为其生成的运行配对，而不是一个裸露的`Run`。它的 `runs` 字段保存与 [Querying runs](#response-fields) 返回的相同的 `Run` 对象；请参阅该部分了解每次运行字段。下表描述了该项目的其余部分：`runs` 旁边的示例字段。
 
 <Tabs>
   <Tab title="Python">
@@ -162,7 +162,7 @@
     | - | - |
     | `id` |数据集示例 UUID |
     | `dataset_id` |父数据集 UUID |
-    | `name` |示例名称（如果设置） |
+    | `name` |示例名称（如果设置）|
     | `created_at` / `modified_at` |时间戳示例 |
     | `inputs` / `outputs` |输入和参考输出有效负载示例 |
     | `metadata` |元数据示例 |
@@ -176,7 +176,7 @@
     | - | - |
     | `id` |数据集示例 UUID |
     | `dataset_id` |父数据集 UUID |
-    | `name` |示例名称（如果设置） |
+    | `name` |示例名称（如果设置）|
     | `created_at` / `modified_at` |时间戳示例 |
     | `inputs` / `outputs` |输入和参考输出有效负载示例 |
     | `metadata` |元数据示例 |
@@ -192,7 +192,7 @@
     | - | - |
     | `id()` |数据集示例 UUID |
     | `datasetId()` |父数据集 UUID |
-    | `name()` |示例名称（如果设置） |
+    | `name()` |示例名称（如果设置）|
     | `createdAt()` / `modifiedAt()` |时间戳示例 |
     | `inputs()` / `outputs()` |输入和参考输出有效负载示例 |
     | `metadata()` |元数据示例 |
@@ -206,7 +206,7 @@
     | - | - |
     | `ID` |数据集示例 UUID |
     | `DatasetID` |父数据集 UUID |
-    | `Name` |示例名称（如果设置） |
+    | `Name` |示例名称（如果设置）|
     | `CreatedAt` / `ModifiedAt` |时间戳示例 |
     | `Inputs` / `Outputs` |输入和参考输出有效负载示例 |
     | `Metadata` |元数据示例 |
@@ -222,7 +222,7 @@
     | - | - |
     | `id` |数据集示例 UUID |
     | `dataset_id` |父数据集 UUID |
-    | `name` |示例名称（如果设置） |
+    | `name` |示例名称（如果设置）|
     | `created_at` / `modified_at` |时间戳示例 |
     | `inputs` / `outputs` |输入和参考输出有效负载示例 |
     | `metadata` |元数据示例 |
@@ -291,6 +291,7 @@
 
       <Tab title="After">
         ```ts After theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+        import { uuid7 } from "langsmith";
         import { Client } from "langsmith";
 
         const client = new Client();
@@ -501,6 +502,7 @@
 
       <Tab title="After">
         ```ts After theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+        import { uuid7 } from "langsmith";
         import { Client } from "langsmith";
 
         const client = new Client();
@@ -719,6 +721,7 @@
 
       <Tab title="After">
         ```ts After theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+        import { uuid7 } from "langsmith";
         import { Client } from "langsmith";
 
         const client = new Client();

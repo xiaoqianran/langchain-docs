@@ -266,7 +266,7 @@ Before you begin, make sure you have:
       # The SDK will automatically send the inputs from the dataset to your target function
       def target(inputs: dict) -> dict:
           response = openai_client.chat.completions.create(
-              model="gpt-5.4-mini",
+              model="gpt-6-luna",
               messages=[
                   {"role": "system", "content": "Answer the following question accurately"},
                   {"role": "user", "content": inputs["question"]},
@@ -286,7 +286,7 @@ Before you begin, make sure you have:
       async function target(inputs: Record<string, any>): Promise<Record<string, any>> {
         const question = String(inputs.question ?? "");
         const resp = await openaiClient.chat.completions.create({
-          model: "gpt-5.4-mini",
+          model: "gpt-6-luna",
           messages: [
             { role: "system", content: "Answer the following question accurately" },
             { role: "user", content: question },
@@ -329,7 +329,7 @@ Before you begin, make sure you have:
       # The SDK will automatically send the inputs from the dataset to your target function
       def target(inputs: dict) -> dict:
           response = openai_client.chat.completions.create(
-              model="gpt-5.4-mini",
+              model="gpt-6-luna",
               messages=[
                   {"role": "system", "content": "Answer the following question accurately"},
                   {"role": "user", "content": inputs["question"]},
@@ -361,7 +361,7 @@ Before you begin, make sure you have:
       async function target(inputs: Record<string, any>): Promise<Record<string, any>> {
         const question = String(inputs.question ?? "");
         const resp = await openaiClient.chat.completions.create({
-          model: "gpt-5.4-mini",
+          model: "gpt-6-luna",
           messages: [
             { role: "system", content: "Answer the following question accurately" },
             { role: "user", content: question },
@@ -417,7 +417,7 @@ Before you begin, make sure you have:
          # The SDK will automatically send the inputs from the dataset to your target function
          def target(inputs: dict) -> dict:
              response = openai_client.chat.completions.create(
-                 model="gpt-5.4-mini",
+                 model="gpt-6-luna",
                  messages=[
                      {"role": "system", "content": "Answer the following question accurately"},
                      {"role": "user", "content": inputs["question"]},
@@ -467,7 +467,7 @@ Before you begin, make sure you have:
          async function target(inputs: Record<string, any>): Promise<Record<string, any>> {
          const question = String(inputs.question ?? "");
          const resp = await openaiClient.chat.completions.create({
-             model: "gpt-5.4-mini",
+             model: "gpt-6-luna",
              messages: [
              { role: "system", content: "Answer the following question accurately" },
              { role: "user", content: question },

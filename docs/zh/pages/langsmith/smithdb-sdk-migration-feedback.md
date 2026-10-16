@@ -32,7 +32,7 @@
 
     完整参数列表请参见[reference](https://reference.langchain.com/javascript/langsmith/client/Client/addRunsToAnnotationQueue)。
   </Tab><Tab title="Java">
-    |之前 |之后|
+    |之前 |之后 |
     | - | - |
     | `client.annotationQueues().runs().create()` | `client.annotationQueues().runs().createByKey()` |
 
@@ -40,7 +40,7 @@
   </Tab>
 
   <Tab title="Go">
-    |之前 |之后|
+    |之前 |之后 |
     | - | - |
     | `client.AnnotationQueues.Runs.New()` | `client.AnnotationQueues.Runs.NewByKey()` |
 
@@ -48,7 +48,7 @@
   </Tab>
 
   <Tab title="cURL">
-    |之前 |之后|
+    |之前 |之后 |
     | - | - |
     | `POST /api/v1/annotation-queues/{queue_id}/runs` | `POST /api/v1/annotation-queues/{queue_id}/runs/by-key` |
 
@@ -84,7 +84,7 @@
   </Tab>
 
   <Tab title="Java">
-    |之前 (`RunCreateParams`) |之后(`RunCreateByKeyParams`)|笔记|
+    |之前 (`RunCreateParams`) |之后(`RunCreateByKeyParams`) |笔记|
     | - | - | - |
     | `.bodyOfRunsUuidArray(List<String>)` | *（已删除）* |旧体；仅运行 ID |
     | *（不可用）* | `.addBody(RunCreateByKeyParams.Body)` |每个 `Body` 都有 `runId`、`sessionId` 和 `startTime` |
@@ -181,6 +181,7 @@
     <Tabs>
       <Tab title="Before">
         ```ts Before theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+        import { uuid7 } from "langsmith";
         import { Client } from "langsmith";
 
         const client = new Client();
@@ -198,6 +199,7 @@
 
       <Tab title="After">
         ```ts After theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+        import { uuid7 } from "langsmith";
         import { Client } from "langsmith";
 
         const client = new Client();
@@ -395,7 +397,7 @@
 
 <Tabs>
   <Tab title="Python">
-    |之前 |之后|
+    |之前 |之后 |
     | - | - |
     | `client.share_run()` | `client.runs.share.create()` |
     | `client.unshare_run()` | `client.runs.share.delete()` |
@@ -409,7 +411,7 @@
   </Tab>
 
   <Tab title="TypeScript">
-    |之前 |之后|
+    |之前 |之后 |
     | - | - |
     | `client.shareRun()` | `client.runs.share.create()` |
     | `client.unshareRun()` | `client.runs.share.delete()` |
@@ -427,7 +429,7 @@
   </Tab>
 
   <Tab title="cURL">
-    |运营|之前 |之后|
+    |运营|之前 |之后 |
     | - | - | - |
     |分享 | `PUT /api/v1/runs/{run_id}/share` | `POST /api/v2/runs/{run_id}/share` |
     |取消分享 | `DELETE /api/v1/runs/{run_id}/share` | `DELETE /api/v2/runs/{trace_id}/share` |
@@ -470,7 +472,7 @@
 
 #### 回应
 
-|运营|之前 |之后|
+|运营|之前 |之后 |
 | - | - | - |
 |分享 |运行 ID、共享跟踪 ID 和共享令牌 | `share_token` |
 |取消分享 | `{"message": "Run unshared"}` | `204 No Content` |
@@ -699,7 +701,7 @@
       `create_feedback` 现在需要 `session_id`，即拥有运行的项目（会话）的 UUID。以前它是可选的。
     </Warning>
 
-    |之前 |之后|笔记|
+    |之前 |之后 |笔记|
     | - | - | - |
     | `session_id`（可选）| `session_id`（**必填**）|拥有运行的项目的 UUID；如果您还没有，请使用 `client.read_project()` 解决它 |
   </Tab><Tab title="TypeScript">
@@ -707,7 +709,7 @@
       `client.createFeedback` 现在需要 `sessionId`，即拥有运行的项目（会话）的 UUID。以前它是可选的。
     </Warning>
 
-    |之前 |之后|笔记|
+    |之前 |之后 |笔记|
     | - | - | - |
     | `sessionId`（可选）| `sessionId`（**必填**）|拥有运行的项目的 UUID；如果您还没有，请使用 `client.readProject()` 解决它 |
   </Tab>
@@ -717,7 +719,7 @@
       现在需要`FeedbackCreateSchema.sessionId()`。以前它是可选的。
     </Warning>
 
-    |之前 |之后|笔记|
+    |之前 |之后 |笔记|
     | - | - | - |
     | `sessionId()`（可选）| `sessionId()`（**必填**）|拥有运行的项目的 UUID；如果您还没有，请使用 `client.sessions().list()` 解决它 |
   </Tab>
@@ -727,27 +729,27 @@
       现在需要`FeedbackCreateSchemaParam.SessionID`。以前它是可选的。
     </Warning>
 
-    |之前 |之后|笔记|
+    |之前 |之后 |笔记|
     | - | - | - |
     | `SessionID`（可选）| `SessionID`（**必填**）|拥有运行的项目的 UUID；如果您还没有，请使用 `client.Sessions.List()` 解决它 |
   </Tab>
 
   <Tab title="cURL">
     <Warning>
-      `POST /api/v1/feedback` 现在需要请求正文中包含 `session_id` 字段。以前它是可选的。
-    </Warning>|之前 |之后|笔记|
+      `POST /api/v1/feedback` 现在需要在请求正文中包含 `session_id` 字段。以前它是可选的。
+    </Warning>|之前 |之后 |笔记|
     | - | - | - |
-    | `session_id`（可选）| `session_id`（**必填**）|拥有运行的项目的 UUID；如果您还没有，请使用 `GET /api/v1/sessions` 解决它 |
+    | `session_id`（可选）| `session_id` (**required**) |拥有运行的项目的 UUID；如果您还没有，请使用 `GET /api/v1/sessions` 解决它 |
   </Tab>
 </Tabs>
 
 ### 示例
 
-#### 创建反馈时提供`session_id`
+#### Provide `session_id` when creating feedback
 
 <Tabs>
   <Tab title="Python">
-    除了`run_id`之外，`create_feedback`现在还需要`session_id`。
+    除了 `run_id` 之外，`create_feedback` 现在还需要 `session_id`。
 
     <Tabs>
       <Tab title="Before">

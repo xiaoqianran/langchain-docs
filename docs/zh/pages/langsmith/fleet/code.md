@@ -35,7 +35,7 @@ REST API 允许您从支持 HTTP 请求的任何语言或平台调用代理。
 
 ### 身份验证
 
-要对代理的队列部署进行身份验证，请在实例化 LangGraph SDK 客户端时或通过 `X-API-Key` 标头向 `api_key` 参数提供 LangSmith [Personal Access Token (PAT)](/langsmith/create-account-api-key)。如果使用 `X-API-Key`，还必须将 `X-Auth-Scheme` 标头设置为 `langsmith-api-key`。如果您传递的 PAT 与代理所有者无关，您的请求将被拒绝，并出现 `404 Not Found` 错误。
+要对代理的队列部署进行身份验证，请在实例化 LangGraph SDK 客户端时或通过 `X-API-Key` 标头向 `api_key` 参数提供 LangSmith [Personal Access Token (PAT)](/langsmith/create-account-api-key)。如果使用 `X-API-Key`，您还必须将 `X-Auth-Scheme` 标头设置为 `langsmith-api-key`。如果您传递的 PAT 与代理所有者无关，您的请求将被拒绝，并出现 `404 Not Found` 错误。
 
 如果您尝试调用的代理是<Tooltip href="/langsmith/fleet/manage-agent-settings">工作空间代理</Tooltip>并且您不是所有者，则可以执行与在 UI 中执行的所有相同操作（只读）。
 
@@ -493,6 +493,56 @@ LANGGRAPH_API_KEY=your-personal-access-token
 
 有关完整的 API 规范，请参阅[Agent Server API reference](/langsmith/server-api-ref)。
 
+### 将调用者标头转发到 MCP 服务器
+
+标头转发在每次工具调用时将标头从运行请求传递到代理的自定义 MCP 服务器。使用它为 MCP 服务器提供每次运行的上下文，例如最终用户的 ID 或下游令牌。
+
+<Note>
+  标头转发仅在自托管 LangSmith 上可用。管理员必须首先[enable it](/langsmith/enable-self-hosted-fleet#optional-forward-caller-headers-to-mcp-servers)。
+</Note>标头转发仅通过 Fleet API 进行，而不是通过前面示例中使用的部署 URL 进行。 LangGraph SDK 调用部署 URL，因此直接调用 Fleet API。舰队 API 基本 URL 为 `https://<your-langsmith-host>/api/v1/fleet`。如果设置`config.basePath`，请使用`https://<your-langsmith-host>/<basePath>/api/v1/fleet`。
+
+要转发标头，请为每个标头添加 `X-Fleet-Forward-` 前缀，并在开始运行的请求上发送它：
+
+```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+curl --request POST \
+    --url "https://<your-langsmith-host>/api/v1/fleet/threads/runs" \
+    --header "Content-Type: application/json" \
+    --header "X-Api-Key: $LANGSMITH_API_KEY" \
+    --header "X-Tenant-Id: $LANGSMITH_WORKSPACE_ID" \
+    --header "X-Fleet-Forward-User-Id: user@example.com" \
+    --header "X-Fleet-Forward-Authorization: Bearer $DOWNSTREAM_TOKEN" \
+    --data '{
+        "agent_id": "your-agent-id",
+        "input": {
+            "messages": [
+                { "role": "user", "content": "What can you help me with?" }
+            ]
+        }
+    }'
+```
+
+将 `X-Tenant-Id` 设置为包含代理的工作区的 ID。
+
+您的 MCP 服务器接收带有适当前缀的每个标头。阅读`X-Fleet-Forward-User-Id`，而不是`X-User-Id`。
+
+<Warning>
+  LangSmith 不验证转发的标头值。调用者设置它们，因此不要将它们视为 MCP 服务器中的身份证明。
+</Warning>
+
+以下队列 API 端点转发标头。将 `<FLEET_API_URL>` 替换为您的舰队 API 基本 URL。
+
+|运营|方法|端点 |
+| - | - | - |
+|创建一个线程并运行它 | `POST` | `<FLEET_API_URL>/threads/runs` |
+|在现有线程上运行 | `POST` | `<FLEET_API_URL>/threads/<THREAD_ID>/runs` |
+|在线程上运行（等待结果）| `POST` | `<FLEET_API_URL>/threads/<THREAD_ID>/runs/wait` |
+|在线程上运行（流式传输）| `POST` | `<FLEET_API_URL>/threads/<THREAD_ID>/runs/stream` |
+
+转发的标头遵循以下规则：* **目的地**：队列仅将标头转发到自定义 MCP 服务器，而不会转发到内置工具服务器。
+* **标头名称**：匹配不区分大小写。 Fleet 标准化名称，因此 `x-fleet-forward-user-id` 到达为 `X-Fleet-Forward-User-Id`。
+* **冲突**：当自定义 MCP 服务器已配置具有相同名称的标头时，配置的值获胜。
+* **限制**：具有超过 10 个转发标头的请求将返回 `400`。 `X-Fleet-Forward-` 之后的名称后缀也不是 1 到 40 个字符的 `A-Z`、`a-z`、`0-9` 或 `-`。多次发送的标头或不可打印的 ASCII 值或超过 1,024 字节的值也是如此。
+
 ## 导出到代码
 
 **导出到代码** 功能允许您将 Fleet 代理下载为独立的 Python 项目并在本地运行。当您想要执行以下操作时，这很有用：
@@ -500,17 +550,17 @@ LANGGRAPH_API_KEY=your-personal-access-token
 * 在您自己的基础设施中运行代理，无需调用 Fleet API
 * 扩展或自定义超出 Fleet UI 支持范围的代理（添加自定义工具、中间件或技能）
 * 检查或版本控制完整的代理实现
-* 使用LangGraph Studio进行本地开发和图形检查[⟦T56⟧](https://pypi.org/project/fleet-deepagents-export/) 包 ([GitHub](https://github.com/langchain-ai/fleet-deepagents-export)) 负责读取导出的配置并使用 MCP 工具、子代理和技能连接代理。
+* 使用LangGraph Studio进行本地开发和图形检查[⟦T81⟧](https://pypi.org/project/fleet-deepagents-export/) 包 ([GitHub](https://github.com/langchain-ai/fleet-deepagents-export)) 负责读取导出的配置并使用 MCP 工具、子代理和技能连接代理。
 
 ### 先决条件
 
 * Python 3.11+
-* [⟦T57⟧](https://docs.astral.sh/uv/getting-started/installation/)（推荐）用于依赖管理
-* 代理LangSmith车队出口
+* [⟦T82⟧](https://docs.astral.sh/uv/getting-started/installation/)（推荐）用于依赖管理
+* 一支LangSmith车队代理出口
 
 ### 1.复制起始项目
 
-[⟦T58⟧](https://github.com/langchain-ai/fleet-deepagents-export/tree/main/examples/template-agent) 的入门项目是推荐的起点。克隆存储库并复制启动器：
+[⟦T83⟧](https://github.com/langchain-ai/fleet-deepagents-export/tree/main/examples/template-agent) 的入门项目是推荐的起点。克隆存储库并复制启动器：
 
 ```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 git clone https://github.com/langchain-ai/fleet-deepagents-export.git
@@ -524,7 +574,7 @@ cd my-agent
 
 <img alt="fleet-export-code" />
 
-然后将内容放入启动项目的 `fleet/` 目录中：
+然后将内容放入启动项目的`fleet/`目录中：
 
 ```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 unzip path/to/my-export.zip -d fleet/
@@ -546,7 +596,7 @@ unzip path/to/my-export.zip -d fleet/
 cp .env.example .env
 ```
 
-三个 `LANGSMITH_*_ID` 值位于 `metadata` 下的 `fleet/config.json` 中。打开该文件并将 `tenant_id`、`organization_id` 和 `ls_user_id` 复制到 `.env` 中：
+三个`LANGSMITH_*_ID` 值位于`metadata` 下的`fleet/config.json` 中。打开该文件并将 `tenant_id`、`organization_id` 和 `ls_user_id` 复制到您的 `.env` 中：
 
 ```bash .env theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 # Model provider — set the key for whichever provider your agent uses
@@ -582,7 +632,7 @@ make run    # terminal REPL via cli.py — text-only chat
 | `fleet/` |舰队|将导出内容拖放到此处。重新解压即可更新；没有其他的东西被触及。 |
 | `agent.py` |你|图形接线。通过替换 `model = components.pop("model")` 行来覆盖模型。 |
 | `custom_tools.py` |你|添加代码定义工具；在运行时与 Fleet MCP 工具合并。 |
-| `custom_middleware.py` |你|添加用于日志记录、过滤器、前/后挂钩等的 `AgentMiddleware` 实例。
+| `custom_middleware.py` |你|添加`AgentMiddleware`实例用于日志记录、过滤器、前/后挂钩等。
 | `custom_skills/` |你|删除`<skill-name>/SKILL.md`文件；分层在`fleet/skills/`之上。 |
 | `cli.py` |你|终端 REPL；自由编辑。 |
 
@@ -653,13 +703,13 @@ rm -rf fleet && unzip path/to/my-new-export.zip -d fleet/
 
 ### 支持的模型提供者
 
-入门版附带 `langchain-anthropic`、`langchain-openai` 和 `langchain-google-genai`。对于任何其他提供商（例如 `bedrock`、`fireworks`），请将匹配的 `langchain-<provider>` 包添加到 `pyproject.toml`。
+入门版附带 `langchain-anthropic`、`langchain-openai` 和 `langchain-google-genai`。对于任何其他提供程序（例如 `bedrock`、`fireworks`），请将匹配的 `langchain-<provider>` 包添加到 `pyproject.toml`。
 
 ### MCP 身份验证
 
 启动时，每个工具的 `mcp_server_url` 都会根据 LangSmith 的 MCP 服务器注册表进行解析：* **内置 LangSmith 工具**（Gmail、日历、GitHub）— 通过您的 `LANGSMITH_API_KEY` 进行身份验证。
 * **静态凭证服务器** (`auth_type: "headers"`) — 凭证来自注册表记录。需要`mcp-servers:invoke`许可。
-* **OAuth 服务器** (`auth_type: "oauth"`) — 从 LangSmith 的 OAuth 代理获取的不记名令牌。对于尚未授权的任何每用户服务器，首次运行时会打开一个浏览器窗口。
+* **OAuth 服务器** (`auth_type: "oauth"`) — 从LangSmith 的 OAuth 代理获取的不记名令牌。对于尚未授权的任何每用户服务器，首次运行时会打开一个浏览器窗口。
 
 ***
 
@@ -669,6 +719,6 @@ rm -rf fleet && unzip path/to/my-new-export.zip -d fleet/
   </Callout>
 
   <Callout icon="edit">
-    [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/fleet/code.mdx) 或[file an issue](https://github.com/langchain-ai/docs/issues/new/choose)。
+    [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/fleet/code.mdx) 或 [file an issue](https://github.com/langchain-ai/docs/issues/new/choose)。
   </Callout>
 </div>

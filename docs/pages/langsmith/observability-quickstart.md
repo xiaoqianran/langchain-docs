@@ -119,7 +119,7 @@ Create a file called `app.py`, `index.ts`, `App.java`, or `App.kt` with the foll
   def assistant(question: str) -> str:
       context = get_context(question)
       response = client.chat.completions.create(
-          model="gpt-5.4-mini",
+          model="gpt-6-luna",
           messages=[
               {
                   "role": "system",
@@ -152,7 +152,7 @@ Create a file called `app.py`, `index.ts`, `App.java`, or `App.kt` with the foll
   const assistant = traceable(async function assistant(question: string) { // capture the full pipeline as a single trace
       const context = await getContext(question);
       const response = await client.chat.completions.create({
-          model: "gpt-5.4-mini",
+          model: "gpt-6-luna",
           messages: [
               {
                   role: "system",

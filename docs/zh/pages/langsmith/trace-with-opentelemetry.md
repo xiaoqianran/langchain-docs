@@ -158,7 +158,7 @@ OpenTelemetry SDK 检测您的应用程序代码并发出跨度。 Span 通过 O
    tracer = trace.get_tracer(__name__)
 
    def call_openai():
-       model = "gpt-5.4-mini"
+       model = "gpt-6-luna"
        with tracer.start_as_current_span("call_open_ai") as span:
            span.set_attribute("langsmith.span.kind", "LLM")
            span.set_attribute("langsmith.metadata.user_id", "user_123")
@@ -314,7 +314,7 @@ print(result.content)
 | `gen_ai.completion.{n}.message.content` | `outputs.messages[n].content` |内容的替代格式 |
 | `gen_ai.input.messages` | `inputs.messages` |输入消息数组 |
 | `gen_ai.output.messages` | `outputs.messages` |输出消息数组 |
-| `gen_ai.tool.name` | `invocation_params.tool_name` |工具名称，还将运行类型设置为“工具” |
+| `gen_ai.tool.name` | `invocation_params.tool_name` |工具名称，还将运行类型设置为“工具”|
 
 ### GenAI请求参数| OpenTelemetry 属性 | LangSmith领域|笔记|
 | - | - | - |
@@ -322,7 +322,7 @@ print(result.content)
 | `gen_ai.response.model` | `invocation_params.model` |响应中返回的型号名称 |
 | `gen_ai.request.temperature` | `invocation_params.temperature` |温度设定|
 | `gen_ai.request.top_p` | `invocation_params.top_p` | Top-p 采样设置 |
-| `gen_ai.request.max_tokens` | `invocation_params.max_tokens` |最大令牌设置 |
+| `gen_ai.request.max_tokens` | `invocation_params.max_tokens` |最大令牌设置|
 | `gen_ai.request.frequency_penalty` | `invocation_params.frequency_penalty` |频率惩罚设置 |
 | `gen_ai.request.presence_penalty` | `invocation_params.presence_penalty` |存在惩罚设置 |
 | `gen_ai.request.seed` | `invocation_params.seed` |用于生成的随机种子 |
@@ -457,7 +457,7 @@ configure(project_name="adk-otel-demo")
 async def main():
     agent = LlmAgent(
         name="travel_assistant",
-        model="gemini-2.5-flash-lite",
+        model="gemini-3.8-flash",
         instruction="You are a helpful travel assistant.",
     )
 
@@ -611,7 +611,7 @@ async def main():
     agent = LlmAgent(
         name="travel_assistant",
         tools=[get_flight_info, get_hotel_recommendations],
-        model="gemini-2.0-flash-exp",
+        model="gemini-3.8-flash",
         instruction="You are a helpful travel assistant that can help with flights and hotels.",
     )
 
@@ -748,7 +748,7 @@ if __name__ == "__main__":
 
   OTel 端点是异步的：它接受批处理，返回`200`，并在后台实现运行。当跨度的 `parentSpanId` 引用 LangSmith 尚未接收到的父级时，一旦父级到达，子级就会被缓冲和链接。无论顺序如何，这都有效；子级可以在单独的请求中先于其父级到达，并且仍然可以正确链接。
 
-  但是，如果父跨度**从不**导出到LangSmith，则缓冲的子跨度将过期并且永远不会显示为运行。 LangSmith不会返回错误，因为`200`是在处理之前发送的。当只有部分分布式跟踪达到LangSmith时，通常会发生这种情况：父级由导出到不同后端的服务发出，或者通过采样决策删除。为了避免无声丢失，请确保LangSmith中所需的每个跨度也将其祖先导出到缓冲窗口内的LangSmith。在自托管部署中，此窗口由 `REDIS_RUNS_EXPIRY_SECONDS` 控制（默认 12 小时）。
+  但是，如果父跨度**从不**导出到LangSmith，则缓冲的子跨度将过期并且永远不会显示为运行。 LangSmith不会返回错误，因为`200`是在处理之前发送的。 This commonly happens when only part of a distributed trace reaches LangSmith: the parent is emitted by a service that exports to a different backend, or it's removed by a sampling decision.为了避免无声丢失，请确保LangSmith中所需的每个跨度也将其祖先导出到缓冲窗口内的LangSmith。在自托管部署中，此窗口由 `REDIS_RUNS_EXPIRY_SECONDS` 控制（默认 12 小时）。
 </Warning>
 
 #### 使用 LangChain 设置分布式跟踪

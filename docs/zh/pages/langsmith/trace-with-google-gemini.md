@@ -63,7 +63,7 @@ export GOOGLE_API_KEY=<your_google_api_key>
 
       # Make a traced Gemini call
       response = client.models.generate_content(
-          model="gemini-3.7-flash",
+          model="gemini-3.8-flash",
           contents="Explain quantum computing in simple terms.",
       )
 
@@ -94,7 +94,7 @@ export GOOGLE_API_KEY=<your_google_api_key>
 
   // Make a traced call - tracing happens automatically
   const response = await client.models.generateContent({
-    model: "gemini-3.7-flash",
+    model: "gemini-3.8-flash",
     contents: "Explain quantum computing in simple terms.",
   });
 
@@ -102,7 +102,7 @@ export GOOGLE_API_KEY=<your_google_api_key>
   ```
 </CodeGroup><Tabs>
   <Tab title="Python" icon="brand-python">
-    您可以通过在调用`wrap_gemini()`时传递[⟦T9⟧](https://reference.langchain.com/python/langsmith/wrappers/_gemini/wrap_gemini)来自定义跟踪。此参数适用于您使用该包装的客户端发出的所有后续请求，这允许您附加标签和元数据以过滤和组织 [LangSmith UI](https://smith.langchain.com?utm_source=docs\&utm_medium=cta\&utm_campaign=langsmith-signup\&utm_content=langsmith-trace-with-google-gemini) 中的跟踪。 `tracing_extra` 参数接受：
+    您可以通过在调用`wrap_gemini()`时传递[⟦T9⟧](https://reference.langchain.com/python/langsmith/wrappers/_gemini/wrap_gemini)来自定义跟踪。此参数适用于您使用该包装的客户端发出的所有后续请求，这允许您附加标签和元数据以过滤和组织 [LangSmith UI](https://smith.langchain.com?utm_source=docs\&utm_medium=cta\&utm_campaign=langsmith-signup\&utm_content=langsmith-trace-with-google-gemini) 中的跟踪。 `tracing_extra`参数接受：
 
     * `tags`：用于对跟踪进行分类的字符串列表（例如，`["production", "gemini"]`）。
     * `metadata`：用于附加上下文的键值对字典（例如，`{"team": "ml-research", "integration": "google-genai"}`）。

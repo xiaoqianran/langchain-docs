@@ -29,6 +29,8 @@ flowchart LR
     class A,B,C,D,E,F,G,H,I process
 ```
 
+<PythonIntegrationComponentMap />
+
 ### Interface
 
 LangChain provides a unified interface for vector stores, allowing you to:

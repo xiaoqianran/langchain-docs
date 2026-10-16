@@ -9,7 +9,7 @@
 托管 Deep Agents 项目是一个普通的 Python 包，具有​​一个必需的根代理条目。其他路径要么是您导入的普通模块，要么是 MDA 发现的用于启用托管功能的文件和目录。
 
 <Note>
-  托管 Deep Agents 于 [LangSmith Cloud](/langsmith/cloud) **公开 [beta](/langsmith/release-stages)**。
+  托管Deep Agents于[LangSmith Cloud](/langsmith/cloud)**公开[beta](/langsmith/release-stages)**。
 </Note>
 
 ## 项目布局
@@ -48,13 +48,13 @@ my-agent/
         └── tests/
 ```
 
-唯一需要的文件是项目根目录下的 `agent.py`，其中包含 [agent definition](/langsmith/python/managed-deep-agents-agent-definition) 作为命名的 `agent`。它必须导出使用 `define_deep_agent` 创建的名为 `agent`。一个项目中仅使用一个代理条目。
+唯一需要的文件是项目根目录下的 `agent.py`，其中包含名为 `agent` 的 [agent definition](/langsmith/python/managed-deep-agents-agent-definition)。它必须导出使用 `define_deep_agent` 创建的名为 `agent`。一个项目中仅使用一个代理条目。
 
 ## MDA 如何处理项目文件
 
-* **托管上下文**：[⟦T5⟧](/langsmith/python/managed-deep-agents-instructions)定义系统提示符。 [⟦T6⟧](/langsmith/python/managed-deep-agents-skills)下的每个目录都包含特定于任务的指令，例如`SKILL.md`和任何支持文件。 MDA 将 `instructions.md` 和 `skills/` 同步到 [Context Hub](/langsmith/python/managed-deep-agents-context-hub)。可选的 [durable memory](/langsmith/python/managed-deep-agents-memory) 也由 Context Hub 支持。
+* **托管上下文**：[⟦T8⟧](/langsmith/python/managed-deep-agents-instructions)定义系统提示符。 [⟦T9⟧](/langsmith/python/managed-deep-agents-skills) 下的每个目录都包含特定于任务的指令，例如 `SKILL.md` 和任何支持文件。 MDA 将 `instructions.md` 和 `skills/` 同步到 [Context Hub](/langsmith/python/managed-deep-agents-context-hub)。可选的 [durable memory](/langsmith/python/managed-deep-agents-memory) 也由 Context Hub 支持。
 
-* **应用程序代码**：[⟦T10⟧](/langsmith/python/managed-deep-agents-tools)和[⟦T11⟧](/langsmith/python/managed-deep-agents-middleware)下的文件是普通的项目模块。从代理条目导入它们。其他本地模块的工作方式相同。
+* **应用程序代码**：[⟦T13⟧](/langsmith/python/managed-deep-agents-tools)和[⟦T14⟧](/langsmith/python/managed-deep-agents-middleware)下的文件是普通的项目模块。从代理条目导入它们。其他本地模块的工作方式相同。
 
 * **托管配置**：某些路径在存在时启用功能。对于`channels/`和`schedules/`，只有直接子代是托管声明；嵌套模块不是。|路径|启用|
   | - | - |
@@ -69,11 +69,35 @@ my-agent/
 
 * **依赖关系和秘密**：在`pyproject.toml`中声明依赖关系，这也设置了[deployment Python version](/langsmith/python/managed-deep-agents-deploy#set-the-python-version)。 MDA 在本地加载 `.env` 并将非保留值作为部署机密转发。保留的平台变量和`.env`文件不包含在构建存档中。欲了解更多信息，请参阅[Deploy a Managed Deep Agent](/langsmith/python/managed-deep-agents-deploy)。
 
-* **评估**：托管 Deep Agents [evals](/langsmith/python/managed-deep-agents-evals) 是 Harbor 评估。运行 `mda evals init -i` 并使用编码代理和 `eval-engineering` 技能开发任务。生成的运行时文件保留在 `.mda/evals/` 下，并且不包含在已部署的代理构建中。
+* **评估**：托管 Deep Agents [evals](/langsmith/python/managed-deep-agents-evals) 是 Harbor 评估。运行 `mda evals init -i` 并使用编码代理和 `eval-engineering` 技能开发任务。生成的运行时文件保留在 `.mda/evals/` 下，并且不包含在已部署的代理版本中。
 
-## 后续步骤
+## 共享项目外部的代码
 
-<CardGroup>
+构建仅复制项目目录。要使用同级目录中的包，请将其声明为本地依赖项：
+
+```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+uv add ../shared
+```
+
+```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+from shared import helper
+```
+
+将共享代码放在自己的包中。它的`pyproject.toml`需要`[project]`和`[build-system]`：
+
+```toml ../shared/pyproject.toml theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+[project]
+name = "shared"
+version = "0.1.0"
+
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+```
+
+MDA 将包复制到构建中。 `mda dev` 会在您编辑时重新加载，并且 `mda deploy` 会传送它。
+
+## 后续步骤<CardGroup>
   <Card title="Quickstart" icon="rocket" href="/langsmith/python/managed-deep-agents-quickstart">
     使用 `mda` CLI 创建并部署您的第一个托管深度代理。
   </Card>

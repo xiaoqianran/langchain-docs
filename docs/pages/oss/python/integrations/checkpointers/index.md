@@ -8,6 +8,8 @@ Checkpointers enable [persistence](/oss/python/langgraph/persistence) in LangGra
 
 To implement your own checkpointer for a custom storage backend, see [Build a custom checkpointer](/oss/python/langgraph/checkpointers#build-a-custom-checkpointer).
 
+<PythonIntegrationComponentMap />
+
 | Backend | Package | Source |
 | - | - | - |
 | [In-memory](https://reference.langchain.com/python/langgraph.checkpoint/memory/InMemorySaver) | [`langgraph-checkpoint`](https://pypi.org/project/langgraph-checkpoint/) | [langchain-ai/langgraph](https://github.com/langchain-ai/langgraph/tree/main/libs/checkpoint) |

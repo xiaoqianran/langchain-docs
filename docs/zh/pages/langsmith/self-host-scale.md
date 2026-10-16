@@ -4,11 +4,15 @@
 
 # 配置LangSmith进行缩放
 
+通过针对不同负载模式的示例配置，扩展自托管 LangSmith 实例以进行跟踪摄取、评估工作负载和并发用户。
+
 <Warning>
   本页上的扩展指南和示例配置适用于 **LangSmith 版本 v0.13.0 或更高版本**。
 </Warning>
 
 自托管 LangSmith 实例可以处理大量跟踪和用户。自托管部署的默认配置可以处理大量负载，并且您可以配置您的部署以实现更高的规模。本页面介绍了扩展注意事项并提供了一些示例来帮助配置您的自托管实例。
+
+本页面涵盖 LangSmith 实例，该实例摄取跟踪并运行评估。要扩展运行已部署代理的代理服务器，请参阅 [Configure Agent Server for scale](/langsmith/agent-server-scale)。
 
 配置示例请参考[Example LangSmith configurations for scale](#example-langsmith-configurations-for-scale)。
 
@@ -20,15 +24,15 @@
 
 下表概述了不同负载模式（读/写）的不同 LangSmith 配置的比较：| | **[Low / low](#low-reads-low-writes)** | **[Low / high](#low-reads-high-writes)** | **[High / low](#high-reads-low-writes)** | [Medium / medium](#medium-reads-medium-writes) | [High / high](#high-reads-high-writes) |
 | :- | :- | :- | :- | :- | :- |
-| <Tooltip>并发前端用户</Tooltip> | 5 | 5 | 50 | 50 20 | 50 | 50
+| <Tooltip>并发前端用户</Tooltip> | 5 | 5 | 50 | 50 20 | 20 50 | 50
 | <Tooltip>每秒提交的跟踪数</Tooltip> | 10 | 10 1000 | 1000 10 | 10 100 | 100 1000 | 1000
 | **前端副本**<br />（500m CPU，每个副本请求 1Gi）| 1（默认）| 4 | 2 | 2 | 4 |
-| **平台后端副本**<br />（1 个 CPU，每个副本请求 2Gi）| 3（默认）| 20 | 3（默认）| 3（默认）| 20 |
+| **平台后端副本**<br />（1 个 CPU，每个副本请求 2Gi）| 3（默认）| 20 | 20 3（默认）| 3（默认）| 20 | 20
 | **摄取队列副本**<br />（1 个 CPU，每个副本请求 2Gi）| 3（默认）| 24 | 3（默认）| 6 | 24 |
-| **后端副本**<br />（1 个 CPU，每个副本请求 2Gi）| 2（默认）| 5 | 40 | 40 16 | 16 50 | 50
+| **后端副本**<br />（1 个 CPU，每个副本请求 2Gi）| 2（默认）| 5 | 40| 16 | 16 50 | 50
 | **Redis 资源** | 8 Gi（默认）| 26 Gi 外部 | 8 Gi（默认）| 13Gi 外部 | 26 Gi 外部 |
-| **ClickHouse 资源** | 4 CPU<br />16 Gi（默认）| 10个CPU<br />32Gi内存|每个副本 8 个 CPU<br />16 Gi | 16 CPU<br />24Gi 内存 |每个副本 14 个 CPU<br />24 Gi |
-| **ClickHouse 设置** |单实例 |单实例 | 3 节点<Tooltip>复制集群</Tooltip> |单实例 | 3 节点<Tooltip>复制集群</Tooltip> || <Tooltip>Postgres 资源</Tooltip> | 2 CPU<br />8 GB 内存<br />10 GB 存储（外部）| 2 CPU<br />8 GB 内存<br />10 GB 存储（外部）| 2 CPU<br />8 GB 内存<br />10 GB 存储（外部）| 2 CPU<br />8 GB 内存<br />10 GB 存储（外部）| 2 CPU<br />8 GB 内存<br />10 GB 存储（外部）|
+| **ClickHouse 资源** | 4 CPU<br />16 Gi（默认）| 10个CPU<br />32Gi内存 |每个副本 8 个 CPU<br />16 Gi | 16 CPU<br />24Gi 内存 |每个副本 14 个 CPU<br />24 Gi |
+| **ClickHouse 设置** |单实例|单实例| 3 节点<Tooltip>复制集群</Tooltip> |单实例 | 3 节点<Tooltip>复制集群</Tooltip> || <Tooltip>Postgres 资源</Tooltip> | 2 CPU<br />8 GB 内存<br />10 GB 存储（外部）| 2 CPU<br />8 GB 内存<br />10 GB 存储（外部）| 2 CPU<br />8 GB 内存<br />10 GB 存储（外部）| 2 CPU<br />8 GB 内存<br />10 GB 存储（外部）| 2 CPU<br />8 GB 内存<br />10 GB 存储（外部）|
 | **Blob 存储** |已禁用 |已启用 |已启用 |已启用 |已启用 |
 
 <Note>
@@ -40,7 +44,7 @@
   节流。在不对结果进行负载测试的情况下，请勿将其降低到低于出厂默认值。
 </Note>
 
-下面我们将详细介绍读取和写入路径，并提供一个 `values.yaml` 代码片段，供您开始构建自托管 LangSmith 实例。
+下面我们将详细介绍读写路径，并提供一个 `values.yaml` 代码片段，供您开始构建自托管 LangSmith 实例。
 
 ## 默认资源请求和限制
 
@@ -139,7 +143,7 @@ HPA 密钥为 `minReplicas` 和 `maxReplicas`； KEDA 等效项是 `minReplicaCo
 
 当扩展读取路径（跟踪查询）时，监视上面列出的两个服务/资源会很有帮助。以下是一些有助于提高跟踪查询性能的典型更改：* 增加后端服务pod的数量。如果后端服务 Pod 达到 1 核 CPU 使用率，这将是最有影响的。
 * 给ClickHouse更多的资源（CPU或内存）。 ClickHouse 可能会占用大量资源，但它应该会带来更好的性能。
-* 移动到[replicated ClickHouse cluster](/langsmith/self-host-external-clickhouse#ha-replicated-clickhouse-cluster)。添加 ClickHouse 副本有助于提高读取性能，但我们建议副本数量保持在 5 个以下（从 3 个开始）。
+* 移至[replicated ClickHouse cluster](/langsmith/self-host-external-clickhouse#ha-replicated-clickhouse-cluster)。添加 ClickHouse 副本有助于提高读取性能，但我们建议副本数量保持在 5 个以下（从 3 个开始）。
 
 有关如何将其转换为舵图值的更精确指导，请参阅以下示例[section](#example-langsmith-configurations-for-scale)。如果您不确定为什么您的 LangSmith 实例无法处理特定负载模式，请联系 LangChain 团队。
 
@@ -172,7 +176,7 @@ ingestQueue:
   autoscaling:
     keda:
       enabled: true
-```启用 KEDA 后，队列服务将在积压增加时自动扩展，并在处理积压时自动缩小。这对于在不过度配置资源的情况下处理可变跟踪摄取负载特别有用。
+```启用 KEDA 后，队列服务将在积压增加时自动扩展，并在处理积压时自动缩小。这对于处理可变跟踪摄取负载而无需过度配置资源特别有用。
 
 <Note>
   您还可以为其他服务（`backend`、`platformBackend` 等）启用 KEDA，但它们仍然只能根据 CPU 和内存进行扩展。
@@ -193,7 +197,7 @@ ingestQueue:
 * 低意味着每秒最多提交 10 条跟踪
 * 中表示每秒最多提交 100 条跟踪
 * 高表示每秒最多提交 1000 条跟踪<Note>
-  确切的最佳配置取决于您的使用情况和跟踪负载。使用以下示例并结合上述信息和您的具体用法来更新您认为合适的 LangSmith 配置。如果您有任何疑问，请联系LangChain团队。
+  确切的最佳配置取决于您的使用情况和跟踪负载。使用以下示例并结合上述信息和您的具体用途来更新您认为合适的 LangSmith 配置。如果您有任何疑问，请联系LangChain团队。
 </Note>
 
 ### 低读取，低写入<a name="low-reads-low-writes" />

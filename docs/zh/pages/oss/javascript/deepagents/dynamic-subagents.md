@@ -8,7 +8,7 @@
 
 动态子代理让代理从解释器代码中分派 [subagents](/oss/javascript/deepagents/subagents)。代理可以使用 JavaScript 循环、分支和并行批处理来跨配置的子代理路由工作并综合结果，而不是要求模型一次选择一个子代理调用。
 
-当工作跨越许多独立单元、需要多个视角或受益于递归分析时，请使用此模式。对于一般解释器设置，请参阅[Interpreters](/oss/javascript/deepagents/interpreters)。
+当工作跨越许多独立单元、需要多个视角或从递归分析中受益时，请使用此模式。对于一般解释器设置，请参阅[Interpreters](/oss/javascript/deepagents/interpreters)。
 
 <Warning>
   动态子代理使用解释器运行时，它位于 [**beta**](/oss/javascript/versioning) 中。 API 和生命周期行为可能会在版本之间发生变化。
@@ -541,10 +541,6 @@ graph LR
     ```
   </CodeGroup>
 
-  <Card title="View example trace" icon="chart-line" href="https://smith.langchain.com/public/521542f0-6b09-467c-ba36-838f76424c44/r">
-    为此示例打开公共 LangSmith 运行。
-  </Card>
-
   **代理人写的内容**
 
   ```ts theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
@@ -745,7 +741,9 @@ graph LR
       middleware: [createCodeInterpreterMiddleware()],
     });
     ```
-  </CodeGroup>**代理人写的内容**
+  </CodeGroup>
+
+  **代理人写的内容**
 
   ```ts theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
   // Pass 1: audit. Pass 2: verify each finding independently; keep only confirmed.
@@ -771,9 +769,7 @@ graph LR
   ```
 </Accordion>
 
-### 生成并过滤
-
-多个子代理针对同一问题生成独立的解决方案。代理在代码中对结果进行比较、评分和过滤，只保留最好的结果。
+### 生成并过滤多个子代理针对同一问题生成独立的解决方案。代理在代码中对结果进行比较、评分和过滤，只保留最好的结果。
 
 ```mermaid theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 graph LR
@@ -897,10 +893,6 @@ graph LR
     });
     ```
   </CodeGroup>
-
-  <Card title="View example trace" icon="chart-line" href="https://smith.langchain.com/public/2668c0c8-ccfc-4325-bcac-dfb767b8bb59/r">
-    为此示例打开公共 LangSmith 运行。
-  </Card>
 
   **代理人写的内容**
 
@@ -1125,16 +1117,16 @@ graph LR
   ```
 </Accordion>
 
-### 循环直到完成该代理运行一个发现循环，对已发现的内容进行重复数据删除，直到没有新结果出现。当预先不知道工作范围时很有用。
+### 循环直到完成
+
+该代理运行一个发现循环，对已发现的内容进行重复数据删除，直到没有新结果出现。当预先不知道工作范围时很有用。
 
 ```mermaid theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 graph LR
     Agent[Agent] --> Check{New findings?}
     Check --> |yes| Agent
     Check --> |no| Done[Done]
-```
-
-**用例：** 详尽的搜索、死代码检测、依赖性审计、任何您想要完整性而不是固定数量结果的扫描。
+```**用例：** 详尽的搜索、死代码检测、依赖性审计、任何您想要完整性而不是固定数量结果的扫描。
 
 <Accordion title="Example: loop until done">
   **您配置的内容**

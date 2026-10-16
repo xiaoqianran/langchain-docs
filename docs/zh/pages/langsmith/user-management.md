@@ -18,7 +18,7 @@
 
 <Check>
   您可能会发现在设置访问控制之前阅读[Administration overview](/langsmith/administration-overview)页面很有帮助。
-</Check>LangSmith 依赖 RBAC 来管理 [workspace](/langsmith/administration-overview#workspaces) 中的用户权限。这使您可以控制谁可以访问您的 LangSmith 工作区以及他们可以在其中执行哪些操作。拥有`workspaces:manage`权限的用户可以管理工作区设置，拥有`workspaces:manage-members`权限的用户可以添加、删除和更新工作区成员。内置的工作区管理员角色包括这两种权限。
+</Check>LangSmith 依赖 RBAC 来管理 [workspace](/langsmith/administration-overview#workspaces) 中的用户权限。这使您可以控制谁可以访问您的 LangSmith 工作区以及他们可以在其中执行哪些操作。 Users with the `workspaces:manage` permission can manage workspace settings, and users with the `workspaces:manage-members` permission can add, remove, and update workspace members.内置的工作区管理员角色包含这两种权限。
 
 有关工作区角色及其权限的完整参考，请参阅 [Role-based access control](/langsmith/rbac#workspace-roles) 指南。各个角色可以执行的具体操作请参考[Organization and workspace operations reference](/langsmith/organization-workspace-operations)。
 
@@ -325,7 +325,7 @@ LangSmith 在使用 SAML SSO 时支持即时配置。这允许通过 SAML SSO �
 
 1. 确保您已登录具有适当权限的管理员帐户。
 
-2. 在管理控制台中，转至 **菜单** -> **应用程序** -> **网络和移动应用程序**。
+2. 在管理控制台中，转到 **菜单** -> **应用程序** -> **网络和移动应用程序**。
 
 3. 单击“**添加应用程序**”，然后单击“**添加自定义 SAML 应用程序**”。
 
@@ -416,7 +416,7 @@ LangSmith 在使用 SAML SSO 时支持即时配置。这允许通过 SAML SSO �
       2. 如果服务状态设置为`Inherited`，并且您想要保留更新的设置，即使父设置发生更改，请单击`Override`。
       3. 如果服务状态设置为 `Overridden`，请单击 `Inherit` 恢复为其父级相同的设置，或者单击 `Save` 保留新设置，即使父级设置发生更改也是如此。
 
-   3. 要为跨组织部门或组织部门内的一组用户启用服务，请选择访问组。详情请参阅[Use groups to customize service access](https://support.google.com/a/answer/9050643)。
+   3. 要为组织部门内或跨组织部门的一组用户启用服务，请选择一个访问组。详情请参阅[Use groups to customize service access](https://support.google.com/a/answer/9050643)。
 
 4. 确保您的用户用于登录 LangSmith 的电子邮件地址与他们用于登录您的 Google 域的电子邮件地址匹配。
 
@@ -694,7 +694,7 @@ https://smith.langchain.com/sso/login/<slug>?redirect_to=%2Fo%2F<organization-id
   SCIM **不**支持重命名组。组名称是持久的，因为它们必须与 LangSmith 中的角色名称和/或工作区名称匹配。
 </Warning>
 
-组成员资格通过特定的命名约定映射到 LangSmith 工作区成员资格和工作区角色。默认情况下，组件之间的分隔符是冒号 (`:`)，但您可以为您的组织使用 [configure a custom separator](#configure-custom-separator)。<Note>
+组成员身份映射到具有特定命名约定的LangSmith工作区成员身份和工作区角色。默认情况下，组件之间的分隔符是冒号 (`:`)，但您可以为您的组织使用 [configure a custom separator](#configure-custom-separator)。<Note>
   您可以省略组名称的 **组织角色名称** 部分中的空格。这有助于不允许组名称中存在空格的身份提供商。例如，LangSmith 接受 `OrganizationAdmins` 和 `OrganizationUser` 作为 `Organization Admins` 和 `Organization User` 的等效项。这种灵活性仅适用于组织角色名称令牌。工作空间名称和工作空间角色名称将空格视为文字字符，因此省略空格的变体与其空格对应的变体不匹配。
 </Note>
 
@@ -981,7 +981,7 @@ curl -X POST $LANGCHAIN_ENDPOINT/v1/platform/orgs/current/scim/tokens \
 7. 选择保存。
 8. 保存 API 集成详细信息后，左侧会出现新的设置选项卡。选择`To App`。
 9. 选择编辑。
-10. 选中“创建用户”、“更新用户”和“停用用户”的“启用”复选框。
+10. 选中创建用户、更新用户和停用用户的启用复选框。
 11. 选择保存。
 12. 在“分配”选项卡中分配用户和/或组。分配的用户在您的 LangSmith 组中创建和管理。
 
@@ -1063,17 +1063,17 @@ SSO 组同步和 SCIM 在技术上可以共存（每个仅管理用自己的配�
 | **IdP 管理员参与** |最少，只需在 SSO 令牌中包含组 |必需，配置 SCIM 配置应用程序 |
 | **取消配置** |延迟到下次登录|通过 IdP 推送实现近乎实时 |
 | **命名约定** |重复使用[SCIM convention](#group-naming-convention) | [SCIM convention](#group-naming-convention) |
-| **自定义分隔符** |重用组织级别 [⟦T237⟧](#configure-custom-separator) | [⟦T238⟧](#configure-custom-separator) |当 IdP 管理员参与最少且反应性（登录时）同步可接受时，选择 **SSO 组同步**。当需要主动配置/取消配置以及近乎实时的组成员身份更新时，选择 **SCIM**。
+| **自定义分隔符** |重用组织级别 [⟦T237⟧](#configure-custom-separator) | [⟦T238⟧](#configure-custom-separator) |当 IdP 管理员参与最少且反应性（登录时）同步可接受时，选择 **SSO 组同步**。当需要主动配置/取消配置以及近乎实时的组成员资格更新时，选择 **SCIM**。
 
 #### 配置
 
 1. 在您的 IdP 中：将用户的组成员身份添加到 SSO 令牌声明（默认声明名称：`groups`）。组名称必须遵循[SCIM naming convention](#group-naming-convention)。
-2. 在 LangSmith 中：转至 **设置** > **SSO 配置**，滚动到 **SSO 组同步**部分，然后配置以下内容：
+2. 在 LangSmith 中：转到 **设置** > **SSO 配置** > **SSO 组同步** 并配置以下内容：
 
-   |设置|描述 |
+   |设置 |描述 |
    | - | - |
    | **启用 SSO 组同步** |根据 SSO 令牌中的组成员身份自动分配工作区角色。 |
-   | **群组声明字段**（默认`groups`）|包含组成员身份的 SSO 令牌中的声明名称。 |
+   | **群组声明字段**（默认`groups`）|包含组成员资格的 SSO 令牌中的声明名称。 |
    | **同步工作区/角色分配** |在每次 SSO 登录时根据组名称更新工作区成员资格和角色。 |
    | **需要匹配的组才能登录** |如果 SSO 令牌不包含与命名约定匹配的组，则阻止登录。 |
 
@@ -1148,10 +1148,10 @@ curl -X PATCH $LANGCHAIN_ENDPOINT/api/v1/orgs/current/sso-settings/$SSO_PROVIDER
 | `Marketing` 中的工作区查看器 | `LS:Organization User:Marketing:Viewer` |
 | `Production` 中的自定义角色`Annotators` | `LS:Organization User:Production:Annotators` |
 
-＃＃＃＃ 行为* **Naming convention**: Group names follow the same format as SCIM (e.g., `LS:Organization Admins` for org admins, `LS:Organization User:Production:Editor` for workspace-scoped).完整格式请参见[Group naming convention](#group-naming-convention)。 The separator is configured per-org via [⟦T267⟧](#configure-custom-separator) and is shared with SCIM.
+＃＃＃＃ 行为* **命名约定**：组名称遵循与 SCIM 相同的格式（例如，`LS:Organization Admins` 表示组织管理员，`LS:Organization User:Production:Editor` 表示工作区范围）。完整格式请参见[Group naming convention](#group-naming-convention)。分隔符通过 [⟦T267⟧](#configure-custom-separator) 按组织进行配置，并与 SCIM 共享。
 * **格式错误的组名称**：不符合约定的组名称将被静默跳过（记录），并且不会阻止有效组的登录。
-* **Login gate**: When **Require matching group to sign in** is enabled and the SSO token contains zero matching groups, login is blocked.
-* **优先**：SSO 组同步不会修改 SCIM 来源、手动分配或 JIT 配置的成员资格。 It is fully authoritative for its own assignments and replaces them on each login based on the token's group membership.
+* **登录门**：当启用**需要匹配组才能登录**且 SSO 令牌包含零个匹配组时，登录将被阻止。
+* **优先**：SSO 组同步不会修改 SCIM 来源、手动分配或 JIT 配置的成员资格。它对自己的分配具有完全的权威性，并在每次登录时根据令牌的组成员身份替换它们。
 * **组织管理员传播**：如果用户从其组收到组织管理员角色，他们将被授予所有工作区中的工作区管理员权限（与 SCIM 行为相同）。
 
 #### 注意事项* **取消配置滞后**：与 SCIM（主动推送）不同，SSO 组同步仅在登录时更新。从 IdP 中的组中删除的用户将保留其现有工作区访问权限，直到下次 LangSmith 登录。 **需要匹配组才能登录** 门通过在下次登录时完全阻止用户来缓解这种情况。

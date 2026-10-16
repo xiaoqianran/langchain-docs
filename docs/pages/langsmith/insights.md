@@ -73,6 +73,16 @@ Insights uses hierarchical categorization to make sense of your data and highlig
       ```
     </CodeGroup>
   </Tab>
+
+  <Tab title="CLI" icon="terminal-2">
+    The [LangSmith CLI](/langsmith/langsmith-cli) creates a report from a JSON file that uses the fields of a [manual configuration](#manual-configuration):
+
+    ```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+    langsmith insights create --project my-app --config insights.json --wait
+    ```
+
+    For the file format and the commands that run, list, and update saved configurations, see [Manage insights](/langsmith/langsmith-cli#manage-insights).
+  </Tab>
 </Tabs>
 
 <Note>

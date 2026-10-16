@@ -2,7 +2,7 @@
 
 # Coding-agent integrations
 
-Run OpenWiki inside Codex, Claude Code, OpenCode, or Cursor using the host model and tools
+Run OpenWiki inside Codex, Claude Code, GitHub Copilot, OpenCode, or Cursor using the host model and tools
 
 OpenWiki can run inside an existing coding agent instead of launching its own model. The coding agent investigates the repository, plans the wiki, and writes each assigned page with its native repository tools. OpenWiki owns the durable page-job lifecycle, Claims validation and persistence, source-drift handling, and deterministic finalization.
 
@@ -10,11 +10,12 @@ Host-driven runs support only repository [code mode](/oss/openwiki/code-mode) wi
 
 ## Install an integration
 
-Supported hosts are **Codex**, **Claude Code**, **OpenCode**, and **Cursor**. Installations default to user level, so one install works from any Git repository:
+Supported hosts are **Codex**, **Claude Code**, **GitHub Copilot**, **OpenCode**, and **Cursor**. Installations default to user level, so one install works from any Git repository:
 
 ```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 openwiki integrations install codex
 openwiki integrations install claude
+openwiki integrations install copilot
 openwiki integrations install opencode
 openwiki integrations install cursor
 ```
@@ -35,7 +36,7 @@ Update this repository's OpenWiki for changes since its last successful run.
 
 ```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 openwiki integrations list
-openwiki integrations uninstall <codex|claude|opencode|cursor>
+openwiki integrations uninstall <codex|claude|copilot|opencode|cursor>
 ```
 
 Add `--project [path]` to `list`, `install`, or `uninstall` for repository-scoped state. Project paths resolve to the Git repository root. User-level OpenCode integrations live under `~/.config/opencode`.

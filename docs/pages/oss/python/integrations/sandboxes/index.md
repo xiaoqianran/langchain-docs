@@ -6,6 +6,8 @@ Integrate with sandbox providers using LangChain Python.
 
 Sandboxes provide isolated execution environments for running agent-generated code safely. Learn more about [sandboxes](/oss/python/deepagents/sandboxes).
 
+<PythonIntegrationComponentMap />
+
 <div>
   | Integration | Downloads |
   | :- | :- |
@@ -28,6 +30,7 @@ Sandboxes provide isolated execution environments for running agent-generated co
   | [`NovitaSandbox`](https://github.com/novitalabs/langchain-novita) | <span><a href="https://pypi.org/project/langchain-novita/">  <img alt="Downloads per month" /></a></span> |
   | [`SuperserveSandbox`](https://docs.superserve.ai/introduction) | <span><a href="https://pypi.org/project/langchain-superserve/">  <img alt="Downloads per month" /></a></span> |
   | [`LangSmith sandbox`](/oss/python/integrations/sandboxes/langsmith) | <span>N/A</span> |
+  | [`LizardSandbox`](https://github.com/lizard-build/langchain-lizard#readme) | <span>N/A</span> |
 </div>
 
 If you'd like to contribute a sandbox, see [Implement a sandbox integration](/oss/python/contributing/implement-langchain).

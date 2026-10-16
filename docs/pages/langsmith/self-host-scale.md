@@ -2,11 +2,15 @@
 
 # Configure LangSmith for scale
 
+Scale a self-hosted LangSmith instance for trace ingestion, evaluation workloads, and concurrent users, with example configurations for different load patterns.
+
 <Warning>
   The scaling guidance and example configurations on this page apply to **LangSmith version v0.13.0 or higher**.
 </Warning>
 
 A self-hosted LangSmith instance can handle a large number of traces and users. The default configuration for the self-hosted deployment can handle substantial load, and you can configure your deployment to be able to achieve higher scale. This page describes scaling considerations and provides some examples to help configure your self-hosted instance.
+
+This page covers the LangSmith instance, which ingests traces and runs evaluations. To scale the Agent Server that runs your deployed agents, see [Configure Agent Server for scale](/langsmith/agent-server-scale).
 
 For example configurations, refer to [Example LangSmith configurations for scale](#example-langsmith-configurations-for-scale).
 

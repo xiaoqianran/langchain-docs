@@ -38,7 +38,7 @@ LangSmith 远程 MCP 是由 LangSmith 托管的 [Model Context Protocol](https:/
       <td>AWS 美国</td>
     </tr>
   </tbody>
-</table>服务器通过同一主机上的 [RFC 8414](https://datatracker.ietf.org/doc/html/rfc8414) 处的 `/.well-known/oauth-authorization-server` 发现其 OAuth 元数据的其余部分，因此兼容的 MCP 客户端只需要上面的 URL。
+</table>服务器通过同一主机上的 `/.well-known/oauth-authorization-server` 处的 [RFC 8414](https://datatracker.ietf.org/doc/html/rfc8414) 发现其 OAuth 元数据的其余部分，因此兼容的 MCP 客户端只需要上面的 URL。
 
 **自托管LangSmith：**
 
@@ -119,7 +119,7 @@ LangSmith 远程 MCP 是由 LangSmith 托管的 [Model Context Protocol](https:/
   dcode mcp login langsmith
   ```
 
-启动 `dcode`，或重新启动活动会话，以加载 LangSmith MCP 工具。在交互式会话中，运行`/mcp`来检查服务器状态和加载的工具。
+启动 `dcode`，或重新启动活动会话，以加载 LangSmith MCP 工具。 In an interactive session, run `/mcp` to inspect server status and loaded tools.
 
 ### 光标
 
@@ -139,7 +139,7 @@ LangSmith 远程 MCP 是由 LangSmith 托管的 [Model Context Protocol](https:/
 
 ### LangSmith CLI
 
-[LangSmith CLI](/langsmith/langsmith-cli) 针对同一个 OAuth 服务器进行身份验证，因此 `langsmith auth login` 通过 OAuth 设备流让您登录 — 无需 API 密钥：
+The [LangSmith CLI](/langsmith/langsmith-cli) authenticates against this same OAuth server, so `langsmith auth login` logs you in via the OAuth device flow—no API key required:
 
 ```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 # LangSmith Cloud
@@ -149,7 +149,7 @@ langsmith auth login
 langsmith auth login --api-url https://<your-langsmith-host>/api
 ```
 
-CLI 打印激活 URL；打开它，批准，CLI 完成登录并将每个配置文件的令牌存储在 `~/.langsmith/config.json` 中。然后，它针对与远程 MCP 服务器相同的项目、跟踪、运行、数据集、实验和线程进行工作。
+CLI 打印激活 URL；打开它，批准，CLI 完成登录并将每个配置文件的令牌存储在 `~/.langsmith/config.json` 中。 It then works against the same projects, traces, runs, datasets, experiments, and threads as the Remote MCP server.
 
 ### 人工智能 SDK
 
@@ -171,7 +171,7 @@ const tools = await client.tools();
 
 通过`tools`直接到达`streamText`或`generateText`。远程 MCP 是无状态的，并通过标准可流式 HTTP 传输以 JSON 进行响应，因此内置传输按原样工作 — 您不需要自定义传输。
 
-### 其他客户任何支持 [Streamable HTTP transport](https://spec.modelcontextprotocol.io/specification/2025-03-26/basic/transports/#streamable-http) 的 MCP 客户端都可以仅使用上面的 URL 进行连接 - 使用具有动态客户端注册的 OAuth 2.1，或 `X-Api-Key` 标头中的 LangSmith API 密钥。
+### 其他客户任何支持 [Streamable HTTP transport](https://spec.modelcontextprotocol.io/specification/2025-03-26/basic/transports/#streamable-http) 的 MCP 客户端都可以仅使用上述 URL 进行连接 - 使用具有动态客户端注册的 OAuth 2.1，或`X-Api-Key` 标头中的 LangSmith API 密钥。
 
 ## 已知的客户端不兼容性
 
@@ -204,25 +204,12 @@ v0.16 或更高版本上的[Self-hosted LangSmith](/langsmith/self-hosted) 部�
 
 ### 启用远程 MCP
 
-设置 `config.hostname` 时，远程 MCP 及其 OAuth 授权服务器会自动连接，但它们保持**惰性 (404)** 直到您提供签名 JWKS。这是LangSmith云为您处理的一件配置。要启用它：
+设置 `config.hostname` 时，远程 MCP 及其 OAuth 授权服务器会自动连接，但它们保持**惰性 (404)** 直到您提供签名 JWKS。按照[Configure a signing JWKS](/langsmith/kubernetes#configure-a-signing-jwks)，然后在你的LangSmith`values.yaml`中设置安装主机名：
 
-1. **生成 Ed25519 (OKP) JWKS。** RSA 密钥被拒绝。例如，对于 [⟦T58⟧](https://smallstep.com/docs/step-cli/)：
-
-   ```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-   step crypto jwk create /dev/null /tmp/jwk.json --kty OKP --crv Ed25519 --no-password --insecure -f
-   jq -c '{keys:[.]}' /tmp/jwk.json   # wrap the single key in a JWKS
-   ```
-
-2. **将其作为 `config.signingJwks`（存储在图表秘密中）提供给图表**，或作为 [existing secret](/langsmith/self-host-using-an-existing-secret) 中的密钥 `langsmith_signing_jwks`：
-
-   ```yaml theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-   config:
-     hostname: "your-langsmith-host"
-     signingJwks: |
-       {"keys":[ ... ]}
-   ```<Warning>
-     不要直接通过 `commonEnv` 或 `extraEnv` 设置 `LANGSMITH_SIGNING_JWKS` — 图表已从机密中连接它，并且手动副本会导致安装失败并出现重复的环境变量错误。请使用 `config.signingJwks` 或 `config.existingSecretName` 代替。
-   </Warning>
+```yaml theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+config:
+  hostname: "your-langsmith-host"
+```
 
 升级后，OAuth 发现端点和`/api/mcp` 上线。验证：
 
@@ -232,9 +219,7 @@ curl https://<your-langsmith-host>/api/.well-known/oauth-protected-resource/mcp
 
 对于早期版本的部署，请在您自己的环境中运行 [standalone LangSmith MCP Server](/langsmith/langsmith-mcp-server) 并将其 `LANGSMITH_ENDPOINT` 指向您的自托管实例。
 
-***
-
-<div>
+***<div>
   <Callout icon="terminal-2">
     [Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
   </Callout>

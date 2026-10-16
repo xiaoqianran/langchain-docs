@@ -14,6 +14,8 @@ Retrievers accept a string query as input and return a list of [`Document`](http
 Note that all [vector stores](/oss/python/integrations/vectorstores) can be cast to retrievers. Refer to the vector store [integration docs](/oss/python/integrations/vectorstores/) for available vector stores.
 This page lists custom retrievers, implemented via subclassing BaseRetriever.
 
+<PythonIntegrationComponentMap />
+
 ## Bring-your-own documents
 
 The below retrievers allow you to index and search a custom corpus of documents.

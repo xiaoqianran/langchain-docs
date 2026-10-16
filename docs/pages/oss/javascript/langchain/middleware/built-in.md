@@ -600,6 +600,8 @@ Pause agent execution for human approval, editing, or rejection of tool calls be
 * Compliance workflows where human oversight is mandatory.
 * Long-running conversations where human feedback guides the agent.
 
+The middleware pauses once per model turn by default. Set `interruptMode: "per_call"` to pause once per tool call, with each interrupt answered by its ID. See [Set the interrupt mode](/oss/javascript/langchain/human-in-the-loop#set-the-interrupt-mode).
+
 <Warning>
   Human-in-the-loop middleware requires a [checkpointer](/oss/javascript/langgraph/checkpointers#checkpoints) to maintain state across interruptions.
 </Warning>

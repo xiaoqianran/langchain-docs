@@ -6,7 +6,7 @@
 
 使用 LangSmith 自动跟踪 Claude Managed Agent 会话和事件。
 
-[Claude Managed Agents](https://docs.anthropic.com/en/docs/claude-code/managed-agents) 是Anthropic 的托管、基于云的代理，在托管环境中运行。 LangSmith 支持通过 `wrapAnthropic` 包装器跟踪 Claude Managed Agent 会话，让您可以了解代理创建、会话事件和消息流。
+[Claude Managed Agents](https://platform.claude.com/docs/en/managed-agents/overview) 是Anthropic 的托管、基于云的代理，在托管环境中运行。 LangSmith 支持通过 `wrapAnthropic` 包装器跟踪 Claude Managed Agent 会话，让您可以了解会话事件和消息流。
 
 <Note>
   目前，**仅 TypeScript** 支持 Claude Managed Agents 跟踪。
@@ -32,7 +32,7 @@ export ANTHROPIC_API_KEY=<your-anthropic-api-key>
 
 ## 追踪克劳德管理的代理
 
-用 `wrapAnthropic` 包装 Anthropic 客户端。包装器将自动跟踪代理创建、会话创建以及流经会话的所有事件。
+用 `wrapAnthropic` 包装 Anthropic 客户端。包装器跟踪流经会话的所有事件。
 
 ```typescript TypeScript theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 import Anthropic from "@anthropic-ai/sdk";
@@ -108,7 +108,7 @@ for await (const event of stream) {
 
 <div>
   <Callout icon="terminal-2">
-    [Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
+    [Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时答案。
   </Callout>
 
   <Callout icon="edit">

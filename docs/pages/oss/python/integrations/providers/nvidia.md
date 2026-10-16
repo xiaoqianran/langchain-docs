@@ -73,6 +73,8 @@ print(result.content)
 
 See the [`ChatNVIDIA` integration page](/oss/python/integrations/chat/nvidia_ai_endpoints) for full documentation including tool calling, multimodal inputs, and Nemotron-specific examples.
 
+For Nemotron 3.5 Super VL, see the [`ChatNVIDIA` Super VL examples](/oss/python/integrations/chat/nvidia_ai_endpoints#use-nemotron-3-5-super-vl).
+
 ### Chat: ChatNVIDIADynamo
 
 `ChatNVIDIADynamo` is a drop-in replacement for `ChatNVIDIA` for use with [NVIDIA Dynamo](https://developer.nvidia.com/dynamo) deployments. It automatically injects KV cache routing hints into every request, allowing the Dynamo scheduler to optimize memory allocation, load routing, and request priority.

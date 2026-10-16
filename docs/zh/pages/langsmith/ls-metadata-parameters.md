@@ -199,7 +199,7 @@
 
 ### 用户可配置的参数
 
-|参数|类型 |必填|描述 |
+|参数|类型 |必填 |描述 |
 | - | - | - | - |
 | [⟦T29⟧](#ls_provider) | `string` |是\* |用于成本跟踪的 LLM 提供商名称 |
 | [⟦T31⟧](#ls_model_name) | `string` |是\* |用于成本跟踪的型号标识符 |
@@ -215,7 +215,7 @@
 
 |参数|类型 |描述 |
 | - | - | - |
-| [⟦T53⟧](#ls_run_depth) | `integer` |跟踪树的深度（0=根，1=子，等等）- 自动计算 |
+| [⟦T53⟧](#ls_run_depth) | `integer` |跟踪树中的深度（0=根，1=子等）- 自动计算 |
 | [⟦T55⟧](#ls_method) | `string` |使用的跟踪方法（例如“可跟踪”）- 由 SDK 设置 |
 
 ### 实验参数
@@ -279,7 +279,7 @@ def my_llm_call(prompt: str):
 **共同价值观：**
 
 * OpenAI: `"gpt-5.5"`, `"gpt-5.4-mini"`
-* Anthropic: `"claude-sonnet-4-6"`, `"claude-opus-4-8"`
+* Anthropic: `"claude-sonnet-5-5"`, `"claude-opus-4-8"`
 * 自定义：任何型号标识符
 
 **何时使用：**
@@ -292,7 +292,7 @@ def my_llm_call(prompt: str):
     run_type="llm",
     metadata={
         "ls_provider": "anthropic",
-        "ls_model_name": "claude-sonnet-4-6"
+        "ls_model_name": "claude-sonnet-5-5"
     }
 )
 def my_claude_call(messages: list):

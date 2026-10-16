@@ -76,7 +76,7 @@ LangSmith平台运行位置请参见[Platform setup](/langsmith/platform-setup)�
 </CardGroup>
 
 <CardGroup>
-  <Card title="Find and fix failures with Engine" icon="https://mintcdn.com/langchain-5e9cc07a/DcM1RJP509SEqR6s/images/brand/engine-icon-dark.png?fit=max&auto=format&n=DcM1RJP509SEqR6s&q=85&s=a49c49604f90440bfb95fbdc44a2b927" href="/langsmith/engine-overview">
+  <Card title="Find and fix failures with Engine" icon="https://mintcdn.com/langchain-5e9cc07a/DcM1RJP509SEqR6s/images/brand/engine-icon-dark.png?fit=max&auto=format&n=DcM1RJP509SEqR6s&q=85&s=a49c49604f90440bfb95fbdc44a2b927" href="/langsmith/engine">
     一旦代理投入生产，使用LangSmith引擎来检测其跟踪中反复出现的故障，诊断根本原因并解决它们。
   </Card>
 </CardGroup>

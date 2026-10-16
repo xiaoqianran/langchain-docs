@@ -19,9 +19,7 @@
 * **所有型号**：允许提供商提供的每种型号。
 * **选定的型号**：仅允许您指定的型号。至少需要一种型号。
 
-<Note>
-  模型访问策略尚不支持自定义模型提供程序。当模型访问策略应用于请求时，网关会阻止 `/providers/{configName}` 和 `/models/{configName}` 路由。
-</Note>
+### 允许保存模型配置除非策略列出 **模型配置** 提供程序，否则通过 `custom/<name>` 模型 ID 或后备链调用已保存 [model configuration](/langsmith/llm-gateway-model-configurations) 的请求将被阻止。该提供程序使用相同的两种访问模式，但 **Selected** 采用完全匹配的配置名称，而不是模型 ID。名称在调用 API 密钥的工作区中解析，因此组织级策略上的一个条目适用于每个工作区自己的配置。
 
 ## 范围和覆盖
 
@@ -32,11 +30,11 @@
 |组织|组织中的所有用户和工作区 |
 |工作空间 |工作区中的所有用户 |
 |用户 |单个用户|
-| API 密钥 |单个 API 密钥 |### 策略覆盖
+| API 密钥 |单个 API 密钥 |
 
-策略覆盖允许您向更具体的主题授予与更广泛的默认权限不同的访问权限。一种常见的情况是向组织其他部门无法使用的高级模型提供一个 API 密钥访问权限。
+### 策略覆盖
 
-当请求与多个层的策略匹配时，只有最具体的层适用，按照 API 密钥、用户、工作区、组织的顺序。更具体的政策完全取代了更广泛的政策。例如，如果组织策略允许 OpenAI 和 Anthropic，并且 API 密钥策略仅允许 OpenAI 和 Gemini，则使用该密钥的请求只能访问 OpenAI 和 Gemini。如果多个策略在同一层匹配，则模型必须获得所有策略的允许才能访问。
+策略覆盖允许您向更具体的主题授予与更广泛的默认权限不同的访问权限。一种常见的情况是向组织其他部门无法使用的高级模型提供一个 API 密钥访问权限。当请求与多个层的策略匹配时，只有最具体的层适用，按照 API 密钥、用户、工作区、组织的顺序。更具体的政策完全取代了更广泛的政策。例如，如果组织策略允许 OpenAI 和 Anthropic，并且 API 密钥策略仅允许 OpenAI 和 Gemini，则使用该密钥的请求只能访问 OpenAI 和 Gemini。如果多个策略在同一层匹配，则模型必须获得所有策略的允许才能访问。
 
 ## 创建模型访问策略
 
@@ -53,14 +51,14 @@
 
 政策立即生效。
 
-## 后续步骤* [Spend policies](/langsmith/llm-gateway-spend-policies)：设置 LLM 使用的成本上限。
+## 后续步骤
+
+* [Spend policies](/langsmith/llm-gateway-spend-policies)：设置 LLM 使用的成本上限。
 * [Rate limit policies](/langsmith/llm-gateway-rate-limit-policies)：限制请求或令牌吞吐量。
 * [Per-customer policies](/langsmith/llm-gateway-header-policies)：通过自定义请求标头拆分策略，以便每个最终客户获得自己的限额。
 * [Data protection](/langsmith/llm-gateway-data-protection)：添加数据保护策略。
 
-***
-
-<div>
+***<div>
   <Callout icon="terminal-2">
     [Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
   </Callout>

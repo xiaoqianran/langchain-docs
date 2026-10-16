@@ -10,7 +10,7 @@
   自托管 LangSmith 是企业计划的附加组件，专为 LangChain 最大、最具安全意识的客户而设计。更多详情请参阅[Pricing](https://www.langchain.com/pricing)。 [Contact our sales team](https://www.langchain.com/contact-sales) 如果您想要许可证密钥在您的环境中试用LangSmith。
 </Info>
 
-本指南介绍如何在 Kubernetes 集群中设置LangSmith。您使用 Helm 安装 LangSmith 及其依赖项。
+本指南介绍如何在 Kubernetes 集群中设置 LangSmith。您使用 Helm 安装 LangSmith 及其依赖项。
 
 完成本指南后，您将拥有：
 
@@ -47,7 +47,7 @@ LangSmith 可在任何符合要求的 Kubernetes 集群上运行。它已经在�
 
   ```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
   openssl rand -base64 32
-  ```* **Insights 和 Chat 加密密钥**：Insights 和 Chat（以前称为 Polly）在 Helm 图表版本 0.15.1 或更高版本中默认启用。每个在安装时都需要 Fernet 加密密钥。为每个功能生成单独的密钥：
+  ```* **Insights 和 Chat 加密密钥**：Insights 和 Chat（以前称为 Polly）在 Helm Chart 0.15.1 或更高版本中默认启用。每个在安装时都需要 Fernet 加密密钥。为每个功能生成单独的密钥：
 
   ```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
   python -c "from cryptography.fernet import Fernet; print(Fernet.generate_key().decode())"
@@ -67,7 +67,7 @@ LangSmith 可在任何符合要求的 Kubernetes 集群上运行。它已经在�
 2. 集群上可用的有效动态 PV 配置程序或 PV（仅当您在集群内运行数据存储时才需要）。* 为了实现持久性，LangSmith 尝试为集群中运行的任何数据存储配置卷。
    * 如果您在集群中使用 PV，请在生产环境中设置备份。
    * **使用 SSD 支持的存储类别以获得更好的性能。 LangChain 建议 7000 IOPS 和 1000 MiB/s 吞吐量。**
-   * 在 EKS 上，您可能需要安装和配置 `ebs-csi-driver` 进行动态配置。更多信息请参阅[EBS CSI Driver documentation](https://docs.aws.amazon.com/eks/latest/userguide/ebs-csi.html)。
+   * 在 EKS 上，您可能需要安装和配置 `ebs-csi-driver` 进行动态配置。请参阅[EBS CSI Driver documentation](https://docs.aws.amazon.com/eks/latest/userguide/ebs-csi.html)了解更多信息。
 
    要验证，请运行：
 
@@ -94,7 +94,7 @@ LangSmith 可在任何符合要求的 Kubernetes 集群上运行。它已经在�
 
 ### 网络访问* **许可证验证**：除非您在离线（气隙）模式下运行，否则 LangSmith 需要出口到 `https://beacon.langchain.com` 进行许可证验证和使用情况报告。详情请参阅[Egress](/langsmith/self-host-egress)。
 * **模型提供商访问**：见解和聊天需要 [provider credentials and model configurations](/langsmith/model-configurations)。如果您的集群无法访问 Internet，请在安装之前确认它可以访问哪些模型提供程序端点。
-* **容器映像和图表**：如果您的集群无法访问公共注册表，请[mirror the LangSmith images](/langsmith/self-host-mirroring-images) 访问您自己的注册表并从本地图表安装。
+* **容器镜像和图表**：如果您的集群无法访问公共注册表，请[mirror the LangSmith images](/langsmith/self-host-mirroring-images) 访问您自己的注册表并从本地图表安装。
 
 ### 数据存储
 
@@ -111,7 +111,7 @@ LangSmith 使用 PostgreSQL 数据库、Redis 缓存和 ClickHouse 数据库来�
 ## 配置您的 Helm 图表1. 创建一个名为 `langsmith_config.yaml` 的新文件。仅设置您的安装需要的选项：
 
    * 如果您是 Kubernetes 或 Helm 新手，请从 [LangSmith Helm chart examples](https://github.com/langchain-ai/helm/tree/main/charts/langsmith/examples) 之一开始。
-   * 有关配置选项的完整列表，请参阅[LangSmith Helm chart ⟦T18⟧](https://github.com/langchain-ai/helm/tree/main/charts/langsmith/values.yaml)。
+   * 有关配置选项的完整列表，请参阅[LangSmith Helm chart ⟦T23⟧](https://github.com/langchain-ai/helm/tree/main/charts/langsmith/values.yaml)。
 
    <Warning>
      仅覆盖 `langsmith_config.yaml` 中所需的设置。不要复制整个`values.yaml`。保持最小配置可确保您继续从 Helm 图表继承新的默认值和升级。
@@ -149,6 +149,63 @@ LangSmith 使用 PostgreSQL 数据库、Redis 缓存和 ClickHouse 数据库来�
 
 3. 如果您使用外部数据存储，请添加其连接详细信息。
 
+### 配置签名 JWKS
+
+自托管 LangSmith 使用 Ed25519 JSON Web 密钥集 (JWKS) 为其 OAuth 授权服务器和 LLM 身份验证代理签署令牌。配置此密钥可启用自托管 OAuth 登录，包括 `langsmith auth login` 和远程 MCP 身份验证，并允许 LangSmith 签署通过 LLM 身份验证代理发送的请求。
+
+JWKS 包含私钥。将其存储在 Kubernetes Secret 中并在升级过程中保持稳定。 LangSmith 派生公钥并从 `/.well-known/jwks.json` 提供公钥，因此 LLM 身份验证代理等客户端可以在不接收私钥的情况下验证令牌。
+
+<Note>
+  本节中的 Helm 配置需要 LangSmith 图表版本 0.16.0 或更高版本。
+</Note>
+
+使用 [step CLI](https://smallstep.com/docs/step-cli/installation/) 或您的内部密钥管理流程生成 Ed25519 密钥。 RSA 密钥被拒绝。
+
+```shell theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+TMPDIR_KEYS="$(mktemp -d)"
+step crypto jwk create "$TMPDIR_KEYS/pub.json" "$TMPDIR_KEYS/priv.json" \
+  --kty OKP --crv Ed25519 --no-password --insecure
+SIGNING_JWKS=$(jq -c '{keys: [.]}' "$TMPDIR_KEYS/priv.json")
+```
+
+`step crypto jwk create` 将 `use` 设置为 `sig`，将 `alg` 设置为 `EdDSA`，并将 `kid` 设置为密钥的指纹。如果您以其他方式生成密钥，请将第一个密钥指定为非空 `kid`。 [Sandbox service URLs](/langsmith/enable-self-hosted-sandboxes#optional-enable-service-urls)需要它。
+
+选择以下存储选项之一：* **图表管理的秘密**：在您的 LangSmith `langsmith_config.yaml` 中设置 `config.signingJwks`。该图表将值存储在其托管的 Kubernetes Secret 中。
+
+  ```yaml theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+  config:
+    signingJwks: |
+      {"keys":[...]}
+  ```
+
+* **现有 Secret**：如果您的安装已使用 `config.existingSecretName`，请将生成的 JWKS 添加到该 Secret 的确切密钥 `langsmith_signing_jwks` 下：
+
+  ```yaml theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+  # Add this key to the existing chart-wide Kubernetes Secret.
+  stringData:
+    langsmith_signing_jwks: |
+      {"keys":[...]}
+  ```
+
+  ```yaml theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+  config:
+    existingSecretName: "langsmith-secrets"
+  ```
+
+  `config.existingSecretName` 替换了整个 LangSmith 安装的图表管理 Secret。不要将其指向仅限 JWKS 的 Secret。保留所有现有密钥，包括 `langsmith_license_key` 和 `api_key_salt`。完整的 Secret 结构请参见[Use an existing Secret for your installation](/langsmith/self-host-using-an-existing-secret)。
+
+<Warning>
+  从图表版本 0.16.0 开始，图表拥有 `LANGSMITH_SIGNING_JWKS`。从早期图表版本升级时，请从 `commonEnv` 和 `platformBackend.deployment.extraEnv` 中删除此环境变量。将其设置在那里会导致重复的环境变量错误。如果您之前从单独的 Secret（例如 `langsmith-signing-jwks`）加载它，请将值移动到图表配置中并删除该引用。通过`config.signingJwks`或`config.existingSecretName`中的`langsmith_signing_jwks`键进行配置。
+</Warning>
+
+配置 JWKS 后应用 Helm 版本。如果您更新外部管理的 Secret 而不更改 Helm 值，请重新启动平台后端 pod，以便它们加载新的环境变量。从您的 LangSmith 安装请求公共 JWKS 以验证配置：
+
+```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+curl https://<your-langsmith-host>/.well-known/jwks.json
+```
+
+响应包含公共验证密钥，不包含私有 `d` 字段。
+
 ## 部署到 Kubernetes
 
 1. 验证您是否可以连接到 Kubernetes 集群。安装到空命名空间中。
@@ -171,7 +228,7 @@ LangSmith 使用 PostgreSQL 数据库、Redis 缓存和 ClickHouse 数据库来�
    helm repo add langchain https://langchain-ai.github.io/helm
    ```
 
-3. 找到最新版本的图表。您可以在[Helm Chart repository](https://github.com/langchain-ai/helm/releases)中找到可用版本。
+3. 找到最新版本的图表。您可以在[Helm Chart repository](https://github.com/langchain-ai/helm/releases)中找到可用的版本。
 
    * LangChain建议使用最新版本。
    * 您还可以运行`helm search repo langchain/langsmith --versions`来查看可用的版本。输出看起来像这样：
@@ -280,7 +337,7 @@ LangSmith 使用 PostgreSQL 数据库、Redis 缓存和 ClickHouse 数据库来�
 
 <div>
   <Callout icon="terminal-2">
-    [Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
+    [Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时答案。
   </Callout>
 
   <Callout icon="edit">

@@ -4,27 +4,27 @@
 
 # API 格式
 
-使用OpenAI聊天完成、Anthropic消息或OpenAI响应请求通过LLM网关跨提供商调用模型。
+使用 OpenAI 聊天完成、Anthropic 消息或 OpenAI 响应请求通过 LLM 网关跨提供商调用模型。
 
 <Note>
   LLM 网关位于[beta](/langsmith/release-stages)。
 </Note>
 
-标准LLM网关API支持三种请求和响应格式。选择您的应用程序已使用的格式，然后通过同一端点调用自带密钥或网关积分模型。
+标准LLM网关API支持三种请求和响应格式。选择您的应用程序已使用的格式，然后通过同一端点调用自带密钥 (BYOK) 或 Gateway Credits 模型。
 
 ## 比较API格式
 
-| API格式 |基本网址 |提示端点 |兼容客户端|
+| API格式|基本网址 |提示端点|兼容客户端|
 | - | - | - | - |
 | OpenAI 聊天完成 | `https://gateway.smith.langchain.com/v1` | `POST /chat/completions` | OpenAI 兼容聊天完成客户端 |
 | Anthropic 留言 | `https://gateway.smith.langchain.com` | `POST /v1/messages` | Anthropic 给客户发消息 |
-| OpenAI 回应 | `https://gateway.smith.langchain.com/v1` | `POST /responses` | OpenAI兼容响应客户端 |
+| OpenAI 回应 | `https://gateway.smith.langchain.com/v1` | `POST /responses` | OpenAI 兼容响应客户端 |
 
 所有格式均使用工作区范围的 LangSmith API 密钥进行身份验证。将其作为提供商 API 密钥或`Authorization: Bearer` 令牌传递。
 
 这些基本 URL 适用于 LangSmith 云上的美国网关。对于其他区域、BYOC 数据平面和自托管安装，请参阅[Check availability](/langsmith/llm-gateway-how-it-works#check-availability)。
 
-对于自带钥匙型号，请将`model`设置为`<provider>/<model>`，例如`openai/gpt-5.4-mini`、`anthropic/claude-opus-5`或`azure/<deployment-name>`。对于 Gateway Credits 模型，请传递支持的模型名称，例如 `moonshotai/kimi-k3`。
+对于BYOK型号，将`model`设置为`<provider>/<model>`，例如`openai/gpt-5.4-mini`、`anthropic/claude-opus-5`或`azure/<deployment-name>`。对于 Gateway Credits 模型，请传递支持的模型名称，例如 `moonshotai/kimi-k3`。对于已保存的[model configuration](/langsmith/llm-gateway-model-configurations)，请使用`custom/<name>`。
 
 ## 使用聊天完成将OpenAI兼容客户端指向`https://gateway.smith.langchain.com/v1`。有关完整的请求和响应架构，请参阅[OpenAI Chat Completions API](https://platform.openai.com/docs/api-reference/chat)。
 
@@ -220,7 +220,7 @@ curl https://gateway.smith.langchain.com/v1/chat/completions \
     }'
 ```
 
-### 老款OpenAI型号一些较旧的 OpenAI 型号支持通过 `prompt_cache_retention` 显式缓存控制。对于大多数型号，将其设置为`"in_memory"`。特别对于`gpt-5.5`，请使用`"24h"`：
+### 较旧的OpenAI型号一些较旧的 OpenAI 型号支持通过 `prompt_cache_retention` 显式缓存控制。对于大多数型号，将其设置为`"in_memory"`。特别对于 `gpt-5.5`，请使用 `"24h"`：
 
 ```bash cURL (most older models) theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 curl https://gateway.smith.langchain.com/v1/responses \
@@ -252,7 +252,7 @@ curl https://gateway.smith.langchain.com/v1/responses \
 
 * 当提供商本身支持所选格式时，网关将保留该格式。
 * 否则，网关将请求转换为提供商支持的格式，并将响应转换回来，包括流式响应。
-* 翻译可以拒绝无法以目标提供者格式表示的字段。当需要提供者本机行为时，使用[Direct model access](/langsmith/llm-gateway-direct-model-access)。
+* 翻译可以拒绝无法以目标提供者格式表示的字段。当需要提供者本机行为时使用[Direct model access](/langsmith/llm-gateway-direct-model-access)。
 
 无论格式如何，每个请求都会解析相同的提供者机密、策略和跟踪配置。
 
@@ -275,7 +275,9 @@ curl https://gateway.smith.langchain.com/v1/models \
     {"id": "moonshotai/kimi-k3", "object": "model"}
   ]
 }
-```自带密钥模型 ID 使用 `<provider>/<model>` 形式。托管模型使用响应中显示的 slug。拨打电话时完全按照显示的方式传递任一 ID。省略未配置密钥的自带密钥提供程序；托管模型不需要提供商机密。
+```BYOK 模型 ID 使用 `<provider>/<model>` 形式。托管模型使用响应中显示的 slug。拨打电话时完全按照显示的方式传递任一 ID。省略未配置密钥的 BYOK 提供程序；托管模型不需要提供商机密。
+
+保存的模型配置不会出现在此列表中。
 
 ## 处理错误
 

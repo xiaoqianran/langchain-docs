@@ -96,11 +96,11 @@ import { Agent } from "@mastra/core/agent";
 export const echoAgent = new Agent({
   name: "echoAgent",
   instructions: "You are a helpful assistant.",
-  model: "openai/gpt-5.4-mini",
+  model: "openai/gpt-6-luna",
 });
 ```
 
-Mastra 将使用您配置的 API 密钥自动路由模型调用，并捕获每次调用的跟踪。
+Mastra 将使用您配置的 API 密钥自动路由模型调用并捕获每次调用的跟踪。
 
 ### 运行代理
 

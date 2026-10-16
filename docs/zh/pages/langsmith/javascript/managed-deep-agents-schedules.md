@@ -9,7 +9,7 @@
 托管 Deep Agents 可以按 cron 计划运行代理。当您部署项目时，`mda deploy` 在部署上线后将每个计划配置为 LangSmith cron。
 
 <Note>
-  托管 Deep Agents 于 [LangSmith Cloud](/langsmith/cloud) **公开 [beta](/langsmith/release-stages)**。
+  托管Deep Agents于[LangSmith Cloud](/langsmith/cloud)**公开[beta](/langsmith/release-stages)**。
 </Note>
 
 ## 项目结构
@@ -93,7 +93,7 @@ export const schedule = defineSchedule({
 
 ## 将结果发送到 Slack
 
-设置 `deliverTo` 以通过配置的 [Slack channel](/langsmith/javascript/managed-deep-agents-channels-slack) 发布最终响应。
+设置 `deliverTo` 通过配置的 [Slack channel](/langsmith/javascript/managed-deep-agents-channels-slack) 发布最终响应。
 
 使用 Slack 通道 ID，因为计划运行没有原始线程。<Note>
   计划交付需要 `managed-deepagents` 0.4.0 或更高版本。
@@ -151,11 +151,13 @@ Slack 机器人必须有权访问目的地。
   运行时计划需要 `managed-deepagents` 0.9.0 或更高版本。
 </Note>
 
-`schedules/` 中的声明在部署时已修复。 `schedules` API 在代理运行时创建计划，因此代理可以设置重复性或一次性工作来响应对话。从工具或[middleware](/langsmith/javascript/managed-deep-agents-middleware)调用它。每个计划都属于当前用户或代理。代理只能通过您编写的工具来访问此 API。公开代理需要的呼叫，并忽略不应该接通的呼叫。
+`schedules/` 中的声明在部署时已修复。 `runtime.schedules` 在代理运行时创建计划，因此代理可以设置重复性或一次性工作来响应对话。它在工具和[middleware](/langsmith/javascript/managed-deep-agents-middleware)接收的运行时上可用，并且它充当当前运行的调用者。每个计划都属于当前用户或代理。代理只能通过您编写的工具来访问此 API。公开代理需要的呼叫，并忽略不应该接通的呼叫。
 
-当工具在 [channel](/langsmith/javascript/managed-deep-agents-channels) 运行期间创建计划（例如 Slack 对话）时，计划会继承该通道。每次运行都会将其最终答案发回给它。新线程发布新的 Slack 消息，当前线程在现有 Slack 线程中回复。
+当工具在 [channel](/langsmith/javascript/managed-deep-agents-channels) 运行期间创建计划（例如 Slack 对话）时，该计划将继承该通道。每次运行都会将其最终答案发回给它。新线程发布新的 Slack 消息，当前线程在现有 Slack 线程中回复。
 
 `newThread` 决定时间表使用两者中的哪一个。
+
+托管 Deep Agents 在每个工具和中间件运行时设置 `runtime.schedules`。它的 TypeScript 类型是可选的，只是因为带注释的工具仍然必须匹配 LangChain 的本机运行时类型，因此示例使用 `runtime.schedules!`。
 
 ### 创建定期计划
 
@@ -164,11 +166,11 @@ Slack 机器人必须有权访问目的地。
 ```ts tools/schedules.ts theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 import { tool } from "langchain";
 import { z } from "zod";
-import { schedules } from "managed-deepagents";
+import type { ManagedDeepAgentRuntime } from "managed-deepagents";
 
 export const remindMe = tool(
-  async ({ prompt, cron, timezone }) => {
-    const item = await schedules.create({
+  async ({ prompt, cron, timezone }, runtime: ManagedDeepAgentRuntime) => {
+    const item = await runtime.schedules!.create({
       owner: { type: "user" },
       cron,
       timezone,
@@ -186,20 +188,20 @@ export const remindMe = tool(
     }),
   },
 );
-```
+```当要求 Slack 每个工作日发送站立提醒时，客服人员会致电 `remind_me`。它传递了自己的措辞和 cron `0 9 * * 1-5` 的提示。每个工作日运行都会将其对 Slack 对话的答案作为新消息发布，因为 `cron` 会默认安排到新线程。
 
-当要求 Slack 每个工作日发送站立提醒时，客服人员会致电 `remind_me`。它传递了自己的措辞和 cron `0 9 * * 1-5` 的提示。每个工作日运行都会将其对 Slack 对话的答案作为新消息发布，因为 `cron` 会默认安排到新线程。
+### 创建一次性计划
 
-### 创建一次性计划对于运行一次的工作，传递 `at` 代替 `cron`。 `follow_up_later` 为代理提供了一种设置单个后续操作的方法，例如在部署完成后检查部署。
+对于运行一次的工作，传递 `at` 代替 `cron`。 `follow_up_later` 为代理提供了一种设置单个后续操作的方法，例如在部署完成后检查部署。
 
 ```ts tools/follow-up.ts theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 import { tool } from "langchain";
 import { z } from "zod";
-import { schedules } from "managed-deepagents";
+import type { ManagedDeepAgentRuntime } from "managed-deepagents";
 
 export const followUpLater = tool(
-  async ({ prompt, hours }) => {
-    const item = await schedules.create({
+  async ({ prompt, hours }, runtime: ManagedDeepAgentRuntime) => {
+    const item = await runtime.schedules!.create({
       owner: { type: "user" },
       at: new Date(Date.now() + hours * 60 * 60_000),
       prompt,
@@ -227,9 +229,7 @@ export const followUpLater = tool(
 
 <ParamField type="string">
   用于循环计划的五字段 cron 表达式。请准确给出 `cron` 和 `at` 之一。
-</ParamField>
-
-<ParamField type="Date | string">
+</ParamField><ParamField type="Date | string">
   `Date`，或以 `Z` 或 UTC 偏移量结尾的 ISO 8601 时间戳。该计划运行一次。运行时将其四舍五入到下一整分钟。必须是至少一分钟、最多 365 天的未来。
 </ParamField>
 
@@ -243,7 +243,9 @@ export const followUpLater = tool(
 
 <ParamField type="object | object[]">
   每次运行的结构化LangGraph输入。
-</ParamField><ParamField type="boolean">
+</ParamField>
+
+<ParamField type="boolean">
   `true` 在新线程上开始每次运行。 `false` 继续当前线程。默认为 `true` 与 `cron` 以及 `false` 与 `at`。
 </ParamField>
 
@@ -252,23 +254,21 @@ export const followUpLater = tool(
 </ParamField>
 
 <ParamField type="object">
-  JSON 元数据供您自己使用。以`mda_`开头的键被保留。
+  JSON 元数据供您自己使用。以 `mda_` 开头的键被保留。
 </ParamField>
 
 ### 管理日程
 
-`list`、`get`、`update` 和 `delete` 涵盖时间表生命周期的剩余时间。当代理应该管理它创建的计划时，将它们公开为工具。具有`list`和`delete`的客服人员可以回答“我有什么提醒？”并根据要求取消一项。使用 `update` 暂停日程安排，而不是在用户稍后想要恢复日程安排时将其删除。
+`runtime.schedules` 上的`list`、`get`、`update` 和`delete` 涵盖了计划生命周期的剩余时间。当代理应该管理它创建的计划时，将它们公开为工具。具有`list`和`delete`的客服人员可以回答“我有什么提醒？”并根据要求取消一项。使用 `update` 暂停日程安排，而不是在用户稍后想要恢复日程安排时将其删除。
 
 ```ts theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 const owner = { type: "user" } as const;
 
-const page = await schedules.list({ owner, limit: 20 });
-const item = await schedules.get(page.items[0].id, { owner });
-await schedules.update(item.id, { paused: true }, { owner });
-await schedules.delete(item.id, { owner });
-```
-
-`update` 接受 `cron`、`at`、`timezone`、`prompt`、`input`、`paused` 和 `metadata`。通道和线程选择在创建时是固定的。 `list` 隐藏过期的一次性时间表，除非您通过 `includeExpired: true`。对于代理所有者，`list` 和 `get` 还会返回 `schedules/` 中的计划，您可以在代码中更改这些计划。
+const page = await runtime.schedules!.list({ owner, limit: 20 });
+const item = await runtime.schedules!.get(page.items[0].id, { owner });
+await runtime.schedules!.update(item.id, { paused: true }, { owner });
+await runtime.schedules!.delete(item.id, { owner });
+````update` 接受 `cron`、`at`、`timezone`、`prompt`、`input`、`paused` 和 `metadata`。通道和线程选择在创建时是固定的。 `list` 隐藏过期的一次性时间表，除非您通过 `includeExpired: true`。对于代理所有者，`list` 和 `get` 还会返回 `schedules/` 中的计划，您可以在代码中更改该计划。
 
 ## 日程安排疑难解答
 
@@ -276,7 +276,9 @@ await schedules.delete(item.id, { owner });
 
 * `must define exactly one of prompt or input`：添加 `prompt` 或 `input`，但不能同时添加两者。
 
-* `cron must be a standard 5-field expression`：使用五个 cron 字段，而不是基于秒的 cron 语法。* `schedule is not static`：用文字或顶级文字常量替换计算值。
+* `cron must be a standard 5-field expression`：使用五个 cron 字段，而不是基于秒的 cron 语法。
+
+* `schedule is not static`：用文字或顶级文字常量替换计算值。
 
 * `failed to create cron for schedule`：打开LangSmith中的部署URL并确认部署的Agent Server是健康的。
 

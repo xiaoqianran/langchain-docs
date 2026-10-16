@@ -81,7 +81,7 @@ export LANGSMITH_WORKSPACE_ID=<your-workspace-id>
     registerTelemetry(LangSmithTelemetry());
 
     await generateText({
-        model: openai("gpt-5.5"),
+        model: openai("gpt-6-luna"),
         prompt: "Write a vegetarian lasagna recipe for 4 people.",
     });
     ```
@@ -99,7 +99,7 @@ export LANGSMITH_WORKSPACE_ID=<your-workspace-id>
     registerTelemetry(LangSmithTelemetry());
 
     await generateText({
-        model: openai("gpt-5.5"),
+        model: openai("gpt-6-luna"),
         messages: [
             {
                 role: "user",
@@ -134,7 +134,7 @@ export LANGSMITH_WORKSPACE_ID=<your-workspace-id>
     const { generateText } = wrapAISDK(ai);
 
     await generateText({
-        model: openai("gpt-5.5"),
+        model: openai("gpt-6-luna"),
         prompt: "Write a vegetarian lasagna recipe for 4 people.",
     });
     ```
@@ -150,7 +150,7 @@ export LANGSMITH_WORKSPACE_ID=<your-workspace-id>
     const { generateText, tool } = wrapAISDK(ai);
 
     await generateText({
-        model: openai("gpt-5.5"),
+        model: openai("gpt-6-luna"),
         messages: [
             {
                 role: "user",
@@ -195,7 +195,7 @@ export LANGSMITH_WORKSPACE_ID=<your-workspace-id>
     const wrapper = traceable(
         async (input: string) => {
             const { text } = await generateText({
-                model: openai("gpt-5.5"),
+                model: openai("gpt-6-luna"),
                 messages: [
                     {
                         role: "user",
@@ -240,7 +240,7 @@ export LANGSMITH_WORKSPACE_ID=<your-workspace-id>
     const wrapper = traceable(
         async (input: string) => {
             const { text } = await generateText({
-                model: openai("gpt-5.5"),
+                model: openai("gpt-6-luna"),
                 messages: [
                     {
                         role: "user",
@@ -293,7 +293,7 @@ export LANGSMITH_WORKSPACE_ID=<your-workspace-id>
     const wrapper = traceable(
         async (input: string) => {
             const { text } = await generateText({
-                model: openai("gpt-5.5"),
+                model: openai("gpt-6-luna"),
                 messages: [
                     {
                         role: "user",
@@ -348,7 +348,7 @@ export LANGSMITH_WORKSPACE_ID=<your-workspace-id>
     const wrapper = traceable(
         async (input: string) => {
             const { text } = await generateText({
-                model: openai("gpt-5.5"),
+                model: openai("gpt-6-luna"),
                 messages: [
                     {
                         role: "user",
@@ -425,7 +425,7 @@ export async function POST(request: Request) {
     );
 
     await generateText({
-        model: openai("gpt-5.5"),
+        model: openai("gpt-6-luna"),
         prompt: "Write a vegetarian lasagna recipe for 4 people.",
     });
     ```
@@ -438,7 +438,7 @@ export async function POST(request: Request) {
     import { LangSmithTelemetry } from "langsmith/experimental/vercel";
 
     await generateText({
-        model: openai("gpt-5.5"),
+        model: openai("gpt-6-luna"),
         prompt: "Write a vegetarian lasagna recipe for 4 people.",
         telemetry: {
             integrations: [
@@ -466,7 +466,7 @@ export async function POST(request: Request) {
     });
 
     await generateText({
-        model: openai("gpt-5.5"),
+        model: openai("gpt-6-luna"),
         prompt: "Write a vegetarian lasagna recipe for 4 people.",
     });
     ```
@@ -484,7 +484,7 @@ export async function POST(request: Request) {
     const { generateText } = wrapAISDK(ai);
 
     await generateText({
-        model: openai("gpt-5.5"),
+        model: openai("gpt-6-luna"),
         prompt: "Write a vegetarian lasagna recipe for 4 people.",
         providerOptions: {
             langsmith: createLangSmithProviderOptions<typeof ai.generateText>({
@@ -550,7 +550,7 @@ export async function POST(request: Request) {
     });
 
     const { text } = await generateText({
-        model: openai("gpt-5.5"),
+        model: openai("gpt-6-luna"),
         prompt: "What is the capital of France?",
         telemetry: { integrations: [telemetry] },
     });
@@ -602,7 +602,7 @@ export async function POST(request: Request) {
     });
 
     const { text } = await generateText({
-        model: openai("gpt-5.5"),
+        model: openai("gpt-6-luna"),
         prompt: "What is the capital of France?",
         providerOptions: { langsmith },
     });
@@ -630,7 +630,7 @@ export async function POST(request: Request) {
     const telemetry = LangSmithTelemetry({ client });
 
     await generateText({
-        model: openai("gpt-5.5"),
+        model: openai("gpt-6-luna"),
         messages: [
             {
                 role: "user",
@@ -675,7 +675,7 @@ export async function POST(request: Request) {
     const { generateText, tool } = wrapAISDK(ai, { client });
 
     await generateText({
-        model: openai("gpt-5.5"),
+        model: openai("gpt-6-luna"),
         messages: [
             {
                 role: "user",

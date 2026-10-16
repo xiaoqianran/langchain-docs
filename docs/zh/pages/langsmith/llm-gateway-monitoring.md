@@ -14,10 +14,6 @@ LLM 网关 **支出监控** 仪表板显示 [workspace](/langsmith/administratio
 
 查看仪表板需要 [Organization Admin](/langsmith/rbac#organization-admin) 角色和 Plus 或 Enterprise [plan](/langsmith/pricing-plans)。如果没有两者，**使用**选项卡就不会出现。
 
-<Warning>
-  该控制面板目前在欧盟、亚太地区或 AWS 环境中不可用。
-</Warning>
-
 ## 打开仪表板
 
 查看网关支出：
@@ -31,7 +27,7 @@ LLM 网关 **支出监控** 仪表板显示 [workspace](/langsmith/administratio
 ## 设置时间范围和粒度
 
 使用时间控件定义页面上每个摘要、图表和表格涵盖的时间段：* **时间范围**：选择从一天到一年的预设范围，或选择自定义日期。日期和时间段使用 UTC。
-* **粒度**：将支出分组为每小时、每天或每周的存储桶。可用选项取决于所选时间范围的长度。
+* **粒度**：将支出分组为每小时、每天或每周。可用选项取决于所选时间范围的长度。
 * **上一个或下一个周期**：向后或向前移动一个相同长度的周期以比较相邻的时间范围。
 
 ## 分解和过滤支出

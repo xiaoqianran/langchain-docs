@@ -47,7 +47,7 @@ BYOC 在 AWS 上全面可用 (GA)。计划于 2026 年下半年支持更多云�
 * **[LLM Gateway](/langsmith/llm-gateway)**：使用一个 LangSmith API 密钥跨提供商调用模型，并集中实施支出、速率限制和数据保护策略。
 * **[LangSmith MCP](/langsmith/langsmith-remote-mcp)**：将MCP兼容的客户端连接到LangSmith查询数据。
 * **[Fleet](/langsmith/fleet/index)**：从模板、连接器和通道构建并运行无代码代理。
-* **[SmithDB](/langsmith/smithdb-sdk-migration)**：专门构建的跟踪数据可观察性后端，持久保存到您帐户中的 S3。* **[Engine](/langsmith/engine-overview)**：自动检测、诊断和解决生产跟踪中发现的重复出现的问题。引擎在LangSmith情报服务或您自己的模型提供商上运行其模型。详情请参阅[Choose how Engine runs its models](/langsmith/engine-self-hosted#choose-how-engine-runs-its-models)。
+* **[SmithDB](/langsmith/smithdb-sdk-migration)**：专门构建的跟踪数据可观察性后端，持久保存到您帐户中的 S3。* **[Engine](/langsmith/engine)**：自动检测、诊断和解决生产跟踪中发现的重复出现的问题。引擎在LangSmith情报服务或您自己的模型提供商上运行其模型。详情请参阅[Choose how Engine runs its models](/langsmith/engine-self-hosted#choose-how-engine-runs-its-models)。
 
 以下功能已计划但尚未支持：
 
@@ -61,7 +61,7 @@ BYOC 在 AWS 上全面可用 (GA)。计划于 2026 年下半年支持更多云�
 * **AWS 上的 LangSmith 组织**：在 [aws.smith.langchain.com](https://aws.smith.langchain.com) 创建一个组织，然后将您的组织 ID 发送到 LangChain 团队以启用 BYOC。
 * **AWS 账户**：LangChain 建议使用专用于 LangSmith BYOC 的新账户，但这不是必需的。
 * **受支持的区域**：选择上面列出的 AWS 区域之一。
-* **IAM 角色和外部 ID**：LangChain 提供外部 ID。使用 **设置 > 数据平面** 中 **数据平面** 标题旁边的按钮复制它，然后将 [⟦T17⟧ Terraform module](https://github.com/langchain-ai/terraform/tree/main/modules/byoc/aws/langsmith-byoc-role) 与此值一起应用以创建角色 LangChain 假定配置和管理您的数据平面。您必须使用此模块。
+* **IAM 角色和外部 ID**：LangChain 提供外部 ID。 Copy it using the button next to the **Data Planes** header in **Settings > Data Planes**, then apply the [⟦T17⟧ Terraform module](https://github.com/langchain-ai/terraform/tree/main/modules/byoc/aws/langsmith-byoc-role) with this value to create the role LangChain assumes to provision and manage your data plane.您必须使用此模块。
 
 ***<div>
   <Callout icon="terminal-2">

@@ -15,7 +15,7 @@
 ## 网关提供什么
 
 * **一键，多个提供程序：** 开发人员使用 LangSmith API 密钥进行身份验证，而不是在本地存储提供程序密钥。
-* **一种请求格式，多种模型：** 将聊天完成、消息或响应与跨配置的提供程序的模型一起使用。
+* **一种请求格式，多种模型：** 将聊天完成、消息或响应与跨配置的提供者的模型一起使用。
 * **内置可观察性：** 每个网关调用都显示为 [LangSmith trace](/langsmith/llm-gateway-access)。
 * **中央治理：** 应用 [spend limits](/langsmith/llm-gateway-spend-policies)、[rate limits](/langsmith/llm-gateway-rate-limit-policies) 和 [data policies](/langsmith/llm-gateway-data-policy)。
 
@@ -36,19 +36,21 @@ curl https://gateway.smith.langchain.com/v1/chat/completions \
 
 选择您的应用程序已使用的请求格式。该格式不限制您可以调用哪个已配置的提供商。
 
-| API格式 |端点 |
+| API格式|端点 |
 | - | - |
 | OpenAI 聊天完成 | `POST /v1/chat/completions` |
 | Anthropic 留言 | `POST /v1/messages` |
 | OpenAI 回应 | `POST /v1/responses` |
 
-将 `model` 设置为提供者前缀的自带密钥 ID，例如 `openai/gpt-5.4-mini`、`anthropic/claude-opus-5` 或 `azure/<deployment-name>`，或使用 [Gateway Credits](/langsmith/llm-gateway-credits) 模型段，例如 `moonshotai/kimi-k3`。型号ID决定上游路由。当所选提供商使用不同的本机格式时，网关会转换请求和响应。
+将 `model` 设置为提供者前缀的自带密钥 ID，例如 `openai/gpt-5.4-mini`、`anthropic/claude-opus-5` 或 `azure/<deployment-name>`，或使用 [Gateway Credits](/langsmith/llm-gateway-credits) 模型段，例如 `moonshotai/kimi-k3`。
 
-网关运行在各区域的LangSmith云、[BYOC](/langsmith/byoc)、[self-hosted](/langsmith/self-hosted)LangSmith上。在 BYOC 和自托管上，相同的路径位于 `/gateway` 前缀后面，例如 `POST /gateway/v1/chat/completions`。有关每种情况下使用的主机名，请参阅 [Check availability](/langsmith/llm-gateway-how-it-works#check-availability)。自托管安装还需要管理员[enable the gateway in the Helm chart](/langsmith/llm-gateway-self-hosted)。
+要调用已保存的 [model configuration](/langsmith/llm-gateway-model-configurations)，例如指向自定义 OpenAI 兼容端点的端点，请使用 `custom/<name>`。型号ID决定上游路由。当所选提供商使用不同的本机格式时，网关会转换请求和响应。
 
-有关基本 URL、示例和翻译行为，请参阅 [API formats](/langsmith/llm-gateway-api-formats)。
+网关运行在各区域的LangSmith云、[BYOC](/langsmith/byoc)、[self-hosted](/langsmith/self-hosted)LangSmith上。在 BYOC 和自托管上，相同的路径位于 `/gateway` 前缀后面，例如 `POST /gateway/v1/chat/completions`。有关每种情况下使用的主机名，请参阅 [Check availability](/langsmith/llm-gateway-how-it-works#check-availability)。自托管安装还需要管理员[enable the gateway in the Helm chart](/langsmith/llm-gateway-self-hosted)。有关基本 URL、示例和翻译行为，请参阅 [API formats](/langsmith/llm-gateway-api-formats)。
 
-## 选择凭证的管理方式|选项 |上游凭证|设置和计费|
+## 选择凭证的管理方式
+
+|选项 |上游凭证|设置和计费|
 | - | - | - |
 |带上您自己的提供商帐户 |管理员将提供者密钥存储在工作区[Provider Secrets](/langsmith/llm-gateway-admin-setup#1-add-provider-secrets)中。 |提供商将使用费用记入您的提供商帐户。 |
 | [Gateway Credits](/langsmith/llm-gateway-credits) | LangChain 拥有上游凭证。 |不需要提供商秘密。调用费用将计入您的 LangSmith 帐户。 |

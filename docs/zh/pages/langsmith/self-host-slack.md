@@ -8,7 +8,7 @@
 
 自托管 LangSmith 使用您的操作员创建和配置的 Slack 应用程序。操作员是管理您的 LangSmith 部署的人。部署交换 OAuth 代码并将 [Engine notifications](/langsmith/engine-notifications) 和 [alert notifications](/langsmith/alerts) 直接发送到 Slack。 LangSmith 在您的部署中存储应用程序凭据和加密的工作区机器人令牌。
 
-如果您的实例上未配置 Slack，请联系您的运营商。此通知显示在组织设置中以及每个引擎项目的 **通知** 设置下的 **Slack** 选项卡中。操作员遵循以下设置说明。设置后，用户通过 Slack 授权连接工作区，而无需自行提供应用程序凭据。
+如果您的实例上未配置 Slack，请联系您的运营商。此通知显示在组织设置中以及每个引擎项目的 **通知** 设置下的 **Slack** 选项卡中。操作员遵循以下设置说明。设置后，用户可以通过 Slack 授权连接工作区，而无需自行提供应用程序凭据。
 
 <Note>
   此连接需要 LangSmith 自托管 v0.17 或更高版本。
@@ -164,8 +164,8 @@ Slack 工作区连接属于您的 LangSmith 组织，因此您可以跨项目重
 保存目的地不会发送测试消息。引擎目标发送与其事件类型和最低问题严重性相匹配的新事件的通知。当您保存目的地时，现有问题不会发出新通知。
 
 要验证引擎目的地：1. 在测试项目上保存 `issue.created` 的 Slack 目标。在**通知时间**下，选择**创建问题**。在测试期间将**最低问题严重性**设置为**所有严重性**。
-2. 启用[Engine for the test project](/langsmith/engine#turn-on-engine-for-a-tracing-project)并让它分析新的痕迹。等待引擎创建新问题。如果引擎没有发现新问题，则不会发送`issue.created`通知。
-3. 检查消息是否到达所选通道以及**查看问题**是否打开您的自托管实例。
+2. 启用[Engine for the test project](/langsmith/engine-setup#turn-on-engine-for-a-tracing-project)并让它分析新的痕迹。等待引擎创建新问题。如果引擎没有发现新问题，则不会发送`issue.created`通知。
+3. 检查消息是否到达所选通道，并且 **查看问题** 打开您的自托管实例。
 
 要验证 Slack 交付而不等待新的 Engine 问题，请在测试项目的警报设置中配置 Slack 目标。单击“**发送测试通知**”并检查所选通道。参见[Test the alert integration](/langsmith/alerts#2-test-the-integration)。这会检查 Slack 连接，而不是引擎的事件生成。
 

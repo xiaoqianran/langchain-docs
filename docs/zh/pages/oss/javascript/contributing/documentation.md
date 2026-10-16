@@ -98,7 +98,7 @@ make dev
 ## 编辑文档
 
 <Accordion title="Quick edits on GitHub">
-  对于拼写错误或小的更改，请直接在 GitHub 上编辑，无需本地设置：1. 单击任意页面底部的 **在 GitHub 上编辑此页面**。
+  对于拼写错误或小的更改，直接在 GitHub 上编辑，无需本地设置：1. 单击任意页面底部的 **在 GitHub 上编辑此页面**。
   2. 分叉到您的个人帐户。
   3. 在 GitHub 的 Web 编辑器中进行更改。
   4. 创建拉取请求。
@@ -132,8 +132,8 @@ make dev
 在提交更改之前，请确保您的代码通过格式和 linting 检查：
 
 ```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-# Check broken links
-make broken-links
+# Check broken links and anchors
+make broken-links-with-anchors
 
 # Format code automatically
 make format
@@ -326,7 +326,7 @@ make test
 |触发| `#F6FFDB` | `#6E8900` | `#2E3900` |
 |决定| `#FDF3FF` | `#7E65AE` | `#504B5F` |
 |输出| `#EBD0F0` | `#885270` | `#441E33` |
-|警报 | `#F8E8E6` | `#B27D75` | `#634643` |
+|警报| `#F8E8E6` | `#B27D75` | `#634643` |
 |中立 | `#F2FAFF` | `#40668D` | `#2F4B68` |
 
 请勿使用 Tailwind 默认值、Material Design 颜色或其他非品牌调色板。

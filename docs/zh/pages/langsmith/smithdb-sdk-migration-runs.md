@@ -18,7 +18,7 @@
 
 <Tabs>
   <Tab title="Python">
-    |之前 |之后|
+    |之前 |之后 |
     | - | - |
     | `client.read_run()` | `client.runs.retrieve()` |
 
@@ -30,7 +30,7 @@
   </Tab>
 
   <Tab title="TypeScript">
-    |之前 |之后|
+    |之前 |之后 |
     | - | - |
     | `client.readRun()` | `client.runs.retrieve()` |
 
@@ -38,7 +38,7 @@
   </Tab>
 
   <Tab title="Java">
-    |之前 |之后|
+    |之前 |之后 |
     | - | - |
     | `client.runs().retrieve()` | `client.runs().retrieveV2()` |
 
@@ -46,7 +46,7 @@
   </Tab>
 
   <Tab title="Go">
-    |之前 |之后|
+    |之前 |之后 |
     | - | - |
     | `client.Runs.Get()` | `client.Runs.GetV2()` |
 
@@ -54,7 +54,7 @@
   </Tab>
 
   <Tab title="cURL">
-    |之前 |之后|
+    |之前 |之后 |
     | - | - |
     | `GET /api/v1/runs/{run_id}` | `GET /api/v2/runs/{run_id}` |
 
@@ -80,7 +80,7 @@
   <Tab title="TypeScript">
     <Warning>
       `client.runs.retrieve` 需要一个新的 `project_id` 字段，而 `readRun` 不需要。它还接受可选的 `start_time` — 前提是它可以加快检索速度，但这不是必需的。
-    </Warning>|之前 (`readRun`) |之后(`client.runs.retrieve`)|笔记|
+    </Warning>|之前 (`readRun`) |之后(`client.runs.retrieve`) |笔记|
     | - | - | - |
     | `runId` | `runId` |不变（位置参数）|
     | `options.loadChildRuns` | *（已删除）* |使用 `client.traces.listRuns` 获取跟踪的运行并按 `parent_run_ids` 进行过滤。参见[Load a run's child runs](#load-a-runs-child-runs)|
@@ -91,15 +91,15 @@
 
   <Tab title="Java">
     <Warning>
-      `retrieveV2()` 需要 `projectId()`，它取代了已删除的 `sessionId()`。 `startTime()` 仍然是可选的——只要它可以加快检索速度，但不是必需的。
+      `retrieveV2()`需要`projectId()`，它取代了删除的`sessionId()`。 `startTime()` 仍然是可选的——只要它可以加快检索速度，但不是必需的。
     </Warning>|之前 (`RunRetrieveParams`) |之后（`RunRetrieveV2Params`）|笔记|
     | - | - | - |
     | `runId()` | `runId()` |不变 |
     | `sessionId()` | *（已删除）* |替换为`projectId()` |
     | `startTime()` | `startTime()` |仍然是可选的；提供它可以加快检索速度|
-    | `excludeS3StoredAttributes()` | *（已删除）* |没有同等的 |
-    | `excludeSerialized()` | *（已删除）* |没有同等的 |
-    | `includeMessages()` | *（已删除）* |没有同等的 |
+    | `excludeS3StoredAttributes()` | *（已删除）* |没有同等的|
+    | `excludeSerialized()` | *（已删除）* |没有同等的|
+    | `includeMessages()` | *（已删除）* |没有同等的|
     | *（不可用）* | `projectId()` | **必需** - 拥有运行的项目的 UUID |
     | *（默认返回所有字段）* | `selects()` |现场投影；仅默认为`["ID"]`；字段名称均为大写 |
   </Tab>
@@ -110,9 +110,9 @@
     </Warning>|之前 (`RunGetParams`) |之后(`RunGetV2Params`) |笔记|
     | - | - | - |
     | `runID`（位置）| `runID`（位置）|不变 |
-    | `ExcludeS3StoredAttributes` | *（已删除）* |没有同等的 |
-    | `ExcludeSerialized` | *（已删除）* |没有同等的 |
-    | `IncludeMessages` | *（已删除）* |没有同等的 |
+    | `ExcludeS3StoredAttributes` | *（已删除）* |没有同等的|
+    | `ExcludeSerialized` | *（已删除）* |没有同等的|
+    | `IncludeMessages` | *（已删除）* |没有同等的|
     | `SessionID` | *（已删除）* |替换为`ProjectID` |
     | `StartTime` | `StartTime` |仍然是可选的；提供它可以加快检索速度|
     | *（不可用）* | `ProjectID` | **必需** - 拥有运行的项目的 UUID |
@@ -181,7 +181,7 @@
     | *（不可用）* | `run.thread_id` |新：对话线程 UUID |
     | *（不可用）* | `run.reference_dataset_id` |新：参考示例的数据集 UUID |
     | *（不可用）* | `run.share_url` |新功能：公共共享 URL（仅在共享运行时设置）|| `run.prompt_token_details` | `run.prompt_token_details.raw` |字段现在包裹了字典；访问`.raw`得到`dict[str, int]`（元素类型不变）|
-    | `run.completion_token_details` | `run.completion_token_details.raw` |字段现在包裹了字典；访问`.raw`得到`dict[str, int]`（元素类型不变） |
+    | `run.completion_token_details` | `run.completion_token_details.raw` |字段现在包裹了字典；访问`.raw`得到`dict[str, int]`（元素类型不变）|
     | `run.prompt_cost_details` | `run.prompt_cost_details.raw` |字段现在包裹了字典；访问`.raw`以获得`dict[str, float]`（原为`dict[str, Decimal]`）|
     | `run.completion_cost_details` | `run.completion_cost_details.raw` |字段现在包裹了字典；访问`.raw`以获得`dict[str, float]`（原为`dict[str, Decimal]`）|
   </Tab>
@@ -210,16 +210,16 @@
     | `run.sessionId` | `run.project_id` |更名； `sessionId` 是项目 UUID |
     | `run.feedbackStats` | `run.feedback_stats` |更名为`snake_case` |
     | `run.appPath` | `run.app_path` |更名为`snake_case` |
-    | `run.attachments` | `run.attachments` | v2 返回预签名的下载 URL，而不是原始字节 || `run.totalTokens` | `run.total_tokens` |更名为`snake_case` |
-    | `run.promptTokens` | `run.prompt_tokens` |更名为`snake_case` |
+    | `run.attachments` | `run.attachments` | v2 返回预签名的下载 URL，而不是原始字节 || `run.totalTokens` | `run.total_tokens` | Renamed to `snake_case` |
+    | `run.promptTokens` | `run.prompt_tokens` | Renamed to `snake_case` |
     | `run.completionTokens` | `run.completion_tokens` |更名为`snake_case` |
     | `run.totalCost` | `run.total_cost` |更名为`snake_case` |
-    | `run.promptCost` | `run.prompt_cost` |更名为`snake_case` |
+    | `run.promptCost` | `run.prompt_cost` | Renamed to `snake_case` |
     | `run.completionCost` | `run.completion_cost` |更名为`snake_case` |
-    | `run.firstTokenTime` | `run.first_token_time` |更名为`snake_case` |
-    | `run.latency` | `run.latency_seconds` |更名；是一个计算属性，现在是一个本机 `number` 字段（秒） |
+    | `run.firstTokenTime` | `run.first_token_time` | Renamed to `snake_case` |
+    | `run.latency` | `run.latency_seconds` |更名；是一个计算属性，现在是一个本机 `number` 字段（秒）|
     | `run.inDataset` | `run.is_in_dataset` |更名|
-    | `run.child_run_ids` | *（已删除）* |过滤 `parent_run_ids` 上的跟踪运行。请参阅[Load a run's child runs](#load-a-runs-child-runs) |
+    | `run.child_run_ids` | *（已删除）* |过滤 `parent_run_ids` 上的跟踪运行。 See [Load a run's child runs](#load-a-runs-child-runs) |
     | `run.child_runs` | *（已删除）* |按 `parent_run_ids` 中的最后一个条目对跟踪运行进行分组。参见[Load a run's child runs](#load-a-runs-child-runs)|
     | `run.serialized` | *（已删除）* |使用`run.manifest` |
     | `run.manifestId` | *（已删除）* |使用`run.manifest`|
@@ -231,10 +231,10 @@
     | *（不可用）* | `run.outputs_preview` |新：截断的输出预览 |
     | *（不可用）* | `run.thread_id` |新：对话线程 UUID || *（不可用）* | `run.reference_dataset_id` |新：参考示例的数据集 UUID |
     | *（不可用）* | `run.share_url` |新功能：公共共享 URL（仅在共享运行时设置）|
-    | *（不可用）* | `run.prompt_token_details` |新：按类别提示令牌细分 |
-    | *（不可用）* | `run.completion_token_details` |新：按类别完成标记细分 |
+    | *（不可用）* | `run.prompt_token_details` | New: per-category prompt token breakdown |
+    | *（不可用）* | `run.completion_token_details` | New: per-category completion token breakdown |
     | *（不可用）* | `run.prompt_cost_details` |新：按类别提示成本明细 |
-    | *（不可用）* | `run.completion_cost_details` |新：按类别完成成本明细 |
+    | *（不可用）* | `run.completion_cost_details` | New: per-category completion cost breakdown |
   </Tab>
 
   <Tab title="Java">
@@ -247,7 +247,7 @@
     | `run.startTime()` | `run.startTime()` |不变 |
     | `run.endTime()` | `run.endTime()` |不变 |
     | `run.error()` | `run.error()` |不变 |
-    | `run.inputs()` | `run.inputs()`​​ |不变 |
+    | `run.inputs()` | `run.inputs()` |不变 |
     | `run.outputs()` | `run.outputs()` |不变 |
     | `run.tags()` | `run.tags()` |不变 |
     | `run.extra()` | `run.extra()` |不变 |
@@ -277,19 +277,19 @@
     | `run.referenceDatasetId()` | `run.referenceDatasetId()` |不变 |
     | `run.threadId()` | `run.threadId()` |不变 |
     | `run.shareToken()` | *（已删除）* |使用`run.shareUrl()`（完整 URL，仅在共享运行时设置）|
-    | `run.childRunIds()` | *（已删除）* |没有同等的 |
-    | `run.directChildRunIds()` | *（已删除）* |没有同等的 |
+    | `run.childRunIds()` | *（已删除）* |没有同等的|
+    | `run.directChildRunIds()` | *（已删除）* |没有同等的|
     | `run.serialized()` | *（已删除）* |使用`run.manifest()`|
     | `run.manifestId()` | *（已删除）* |使用`run.manifest()` |
-    | `run.messages()` | *（已删除）* |没有同等的 |
-    | `run.executionOrder()` | *（已删除）* |没有同等的 |
-    | `run.lastQueuedAt()` | *（已删除）* |没有同等的 |
-    | `run.traceFirstReceivedAt()` | *（已删除）* |没有同等的 |
-    | `run.traceMaxStartTime()` | *（已删除）* |没有同等的 |
-    | `run.traceMinStartTime()` | *（已删除）* |没有同等的 |
-    | `run.traceTier()` | *（已删除）* |没有同等的 |
-    | `run.traceUpgrade()` | *（已删除）* |没有同等的 |
-    | `run.ttlSeconds()` | *（已删除）* |没有同等的 || *（不可用）* | `run.attachments()` |新功能：附件的预签名下载 URL（替换 S3 URL 字段）|
+    | `run.messages()` | *（已删除）* |没有同等的|
+    | `run.executionOrder()` | *（已删除）* |没有同等的|
+    | `run.lastQueuedAt()` | *（已删除）* |没有同等的|
+    | `run.traceFirstReceivedAt()` | *（已删除）* |没有同等的|
+    | `run.traceMaxStartTime()` | *（已删除）* |没有同等的|
+    | `run.traceMinStartTime()` | *（已删除）* |没有同等的|
+    | `run.traceTier()` | *（已删除）* |没有同等的|
+    | `run.traceUpgrade()` | *（已删除）* |没有同等的|
+    | `run.ttlSeconds()` | *（已删除）* |没有同等的|| *（不可用）* | `run.attachments()` |新功能：附件的预签名下载 URL（替换 S3 URL 字段）|
     | *（不可用）* | `run.latencySeconds()` |新：挂钟持续时间（以秒为单位）|
     | *（不可用）* | `run.isRoot()` |新 |
     | *（不可用）* | `run.errorPreview()` |新：截断的错误片段 |
@@ -323,7 +323,7 @@
     | `run.ParentRunIDs` | `run.ParentRunIDs` |不变 |
     | `run.PriceModelID` | `run.PriceModelID` |不变 |
     | `run.PromptCost` | `run.PromptCost` |不变 |
-    | `run.PromptCostDetails` | `run.PromptCostDetails.Raw` |字段现在包裹了地图；访问`.Raw`以获得`map[string]float64`（原为`map[string]string`）|| `run.PromptTokenDetails` | `run.PromptTokenDetails.Raw` |字段现在包裹了地图；访问`.Raw`得到`map[string]int64`（元素类型不变） |
+    | `run.PromptCostDetails` | `run.PromptCostDetails.Raw` |字段现在包裹了地图；访问`.Raw`以获得`map[string]float64`（原为`map[string]string`）|| `run.PromptTokenDetails` | `run.PromptTokenDetails.Raw` |字段现在包裹了地图；访问`.Raw`得到`map[string]int64`（元素类型不变）|
     | `run.PromptTokens` | `run.PromptTokens` |不变 |
     | `run.CompletionCost` | `run.CompletionCost` |不变 |
     | `run.CompletionCostDetails` | `run.CompletionCostDetails.Raw` |字段现在包裹了地图；访问`.Raw`以获得`map[string]float64`（原为`map[string]string`）|
@@ -337,24 +337,24 @@
     | `run.ThreadID` | `run.ThreadID` |不变 |
     | `run.SessionID` | `run.ProjectID` |更名|
     | `run.InDataset` | `run.IsInDataset` |更名|
-    | `run.ChildRunIDs` | *（已删除）* |没有同等的 |
-    | `run.DirectChildRunIDs` | *（已删除）* |没有同等的 |
-    | `run.ExecutionOrder` | *（已删除）* |没有同等的 |
+    | `run.ChildRunIDs` | *（已删除）* |没有同等的|
+    | `run.DirectChildRunIDs` | *（已删除）* |没有同等的|
+    | `run.ExecutionOrder` | *（已删除）* |没有同等的|
     | `run.InputsS3URLs` | *（已删除）* |内部存储URL； v2 中未公开 |
-    | `run.LastQueuedAt` | *（已删除）* |没有同等的 |
+    | `run.LastQueuedAt` | *（已删除）* |没有同等的|
     | `run.ManifestID` | *（已删除）* |使用`run.Manifest` |
     | `run.ManifestS3ID` | *（已删除）* |内部存储URL； v2 中未公开 |
-    | `run.Messages` | *（已删除）* |没有同等的 |
+    | `run.Messages` | *（已删除）* |没有同等的|
     | `run.OutputsS3URLs` | *（已删除）* |内部存储URL； v2 中未公开 || `run.ParentRunID` | *（已删除）* |使用`run.ParentRunIDs` |
     | `run.S3URLs` | *（已删除）* |内部存储URL； v2 中未公开 |
     | `run.Serialized` | *（已删除）* |使用`run.Manifest` |
     | `run.ShareToken` | *（已删除）* |使用`run.ShareURL` |
-    | `run.TraceFirstReceivedAt` | *（已删除）* |没有同等的 |
-    | `run.TraceMaxStartTime` | *（已删除）* |没有同等的 |
-    | `run.TraceMinStartTime` | *（已删除）* |没有同等的 |
-    | `run.TraceTier` | *（已删除）* |没有同等的 |
-    | `run.TraceUpgrade` | *（已删除）* |没有同等的 |
-    | `run.TtlSeconds` | *（已删除）* |没有同等的 |
+    | `run.TraceFirstReceivedAt` | *（已删除）* |没有同等的|
+    | `run.TraceMaxStartTime` | *（已删除）* |没有同等的|
+    | `run.TraceMinStartTime` | *（已删除）* |没有同等的|
+    | `run.TraceTier` | *（已删除）* |没有同等的|
+    | `run.TraceUpgrade` | *（已删除）* |没有同等的|
+    | `run.TtlSeconds` | *（已删除）* |没有同等的|
     | *（不可用）* | `run.Attachments` |新功能：将附件文件名映射到预签名的下载 URL |
     | *（不可用）* | `run.ErrorPreview` |新：截断的错误片段 |
     | *（不可用）* | `run.IsRoot` |新 |
@@ -364,14 +364,14 @@
     | *（不可用）* | `run.ShareURL` |新功能：公共共享 URL（仅在共享运行时设置）|
     | *（不可用）* | `run.ThreadEvaluationTime` |新 |
   </Tab><Tab title="cURL">
-    将 SCREAMING\_SNAKE\_CASE 字符串作为重复的 `selects` 查询参数（例如 `selects=NAME&selects=STATUS`）传递以控制填充哪些字段。 Default `selects` contains only `"ID"`.
+    将 SCREAMING\_SNAKE\_CASE 字符串作为重复的 `selects` 查询参数（例如 `selects=NAME&selects=STATUS`）传递以控制填充哪些字段。默认 `selects` 仅包含 `"ID"`。
 
     |之前（v1 响应字段）|之后（v2 响应字段）|笔记|
     | - | - | - |
     | `id` | `id` |不变 |
     | `name` | `name` |不变 |
     | `run_type` | `run_type` |值更改为大写：`"LLM"`、`"CHAIN"` 等 |
-    | `status` | `status` | Values: `"SUCCESS"`, `"ERROR"`, `"PENDING"` |
+    | `status` | `status` |值：`"SUCCESS"`、`"ERROR"`、`"PENDING"` |
     | `trace_id` | `trace_id` |不变 |
     | `dotted_order` | `dotted_order` |不变 |
     | `app_path` | `app_path` |不变 |
@@ -388,11 +388,11 @@
     | `outputs_preview` | `outputs_preview` |不变 |
     | `parent_run_ids` | `parent_run_ids` |不变 |
     | `price_model_id` | `price_model_id` |不变 |
-    | `prompt_cost` | `prompt_cost` |不变 || `prompt_cost_details` | `prompt_cost_details.raw` | Field 现在包裹了对象；读取 `.raw` 以获得相同的 `{category: cost}` 映射，现在带有数字值（是字符串）|
+    | `prompt_cost` | `prompt_cost` |不变 || `prompt_cost_details` | `prompt_cost_details.raw` | Field 现在包裹了对象；读取 `.raw` 以获得相同的 `{category: cost}` 映射，现在带有数字值（是字符串） |
     | `prompt_token_details` | `prompt_token_details.raw` | Field 现在包裹了对象；读取 `.raw` 以获得相同的 `{category: count}` 映射（值不变）|
     | `prompt_tokens` | `prompt_tokens` |不变 |
     | `completion_cost` | `completion_cost` |不变 |
-    | `completion_cost_details` | `completion_cost_details.raw` | Field 现在包裹了对象；读取 `.raw` 以获得相同的 `{category: cost}` 映射，现在带有数字值（是字符串）|
+    | `completion_cost_details` | `completion_cost_details.raw` | Field 现在包裹了对象；读取 `.raw` 以获得相同的 `{category: cost}` 映射，现在带有数字值（是字符串） |
     | `completion_token_details` | `completion_token_details.raw` | Field 现在包裹了对象；读取 `.raw` 以获得相同的 `{category: count}` 映射（值不变）|
     | `completion_tokens` | `completion_tokens` |不变 |
     | `total_cost` | `total_cost` |不变 |
@@ -403,24 +403,24 @@
     | `thread_id` | `thread_id` |不变 |
     | `session_id` | `project_id` |更名|
     | `in_dataset` | `is_in_dataset` |更名|
-    | `child_run_ids` | *（已删除）* |没有同等的 |
-    | `direct_child_run_ids` | *（已删除）* |没有同等的 |
-    | `execution_order` | *（已删除）* |没有同等的 |
+    | `child_run_ids` | *（已删除）* |没有同等的|
+    | `direct_child_run_ids` | *（已删除）* |没有同等的|
+    | `execution_order` | *（已删除）* |没有同等的|
     | `inputs_s3_urls` | *（已删除）* |内部存储URL； v2 中未公开 |
-    | `last_queued_at` | *（已删除）* |没有同等的 |
+    | `last_queued_at` | *（已删除）* |没有同等的|
     | `manifest_id` | *（已删除）* |使用`manifest` || `manifest_s3_id` | *（已删除）* |内部存储URL； v2 中未公开 |
-    | `messages` | *（已删除）* |没有同等的 |
+    | `messages` | *（已删除）* |没有同等的|
     | `outputs_s3_urls` | *（已删除）* |内部存储URL； v2 中未公开 |
     | `parent_run_id` | *（已删除）* |使用`parent_run_ids` |
     | `s3_urls` | *（已删除）* |内部存储URL； v2 中未公开 |
     | `serialized` | *（已删除）* |使用`manifest` |
     | `share_token` | *（已删除）* |使用`share_url` |
-    | `trace_first_received_at` | *（已删除）* |没有同等的 |
-    | `trace_max_start_time` | *（已删除）* |没有同等的 |
-    | `trace_min_start_time` | *（已删除）* |没有同等的 |
-    | `trace_tier` | *（已删除）* |没有同等的 |
-    | `trace_upgrade` | *（已删除）* |没有同等的 |
-    | `ttl_seconds` | *（已删除）* |没有同等的 |
+    | `trace_first_received_at` | *（已删除）* |没有同等的|
+    | `trace_max_start_time` | *（已删除）* |没有同等的|
+    | `trace_min_start_time` | *（已删除）* |没有同等的|
+    | `trace_tier` | *（已删除）* |没有同等的|
+    | `trace_upgrade` | *（已删除）* |没有同等的|
+    | `ttl_seconds` | *（已删除）* |没有同等的|
     | *（不可用）* | `attachments` |新功能：将附件文件名映射到预签名的下载 URL |
     | *（不可用）* | `error_preview` |新：截断的错误片段 |
     | *（不可用）* | `is_root` |新 |
@@ -437,15 +437,15 @@ SmithDB 支持的方法具有比它所替代的方法更高的专用速率限制
 
 <Tabs>
   <Tab title="Python">
-    | |之前 (`client.read_run()`) |之后(`client.runs.retrieve()`)|
+    | |之前 (`client.read_run()`) |之后(`client.runs.retrieve()`) |
     | - | - | - |
-    |限制| 30 requests per 60 seconds | 300 requests per 10 seconds |
+    |限制|每 60 秒 30 个请求 |每 10 秒 300 个请求 |
   </Tab>
 
   <Tab title="TypeScript">
     | |之前 (`client.readRun()`) |之后(`client.runs.retrieve()`)|
     | - | - | - |
-    |限制| 30 requests per 60 seconds |每 10 秒 300 个请求 |
+    |限制|每 60 秒 30 个请求 |每 10 秒 300 个请求 |
   </Tab>
 
   <Tab title="Java">
@@ -457,7 +457,7 @@ SmithDB 支持的方法具有比它所替代的方法更高的专用速率限制
   <Tab title="Go">
     | |之前 (`client.Runs.Get()`) |之后(`client.Runs.GetV2()`)|
     | - | - | - |
-    |限制| 30 requests per 60 seconds |每 10 秒 300 个请求 |
+    |限制|每 60 秒 30 个请求 |每 10 秒 300 个请求 |
   </Tab>
 
   <Tab title="cURL">
@@ -931,6 +931,7 @@ SmithDB 支持的方法具有比它所替代的方法更高的专用速率限制
     <Tabs>
       <Tab title="Before">
         ```ts Before theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+        import { uuid7 } from "langsmith";
         import { Client } from "langsmith";
 
         const client = new Client();
@@ -948,6 +949,7 @@ SmithDB 支持的方法具有比它所替代的方法更高的专用速率限制
 
       <Tab title="After">
         ```ts After theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+        import { uuid7 } from "langsmith";
         import { Client, NotFoundError } from "langsmith";
 
         const client = new Client();
@@ -1299,7 +1301,7 @@ SmithDB 支持的方法具有比它所替代的方法更高的专用速率限制
 
 <Tabs>
   <Tab title="Python">
-    |之前 |之后|
+    |之前 |之后 |
     | - | - |
     | `client.get_run_url()` | `client.runs.get_url()` |
 
@@ -1309,7 +1311,7 @@ SmithDB 支持的方法具有比它所替代的方法更高的专用速率限制
   </Tab>
 
   <Tab title="TypeScript">
-    |之前 |之后|
+    |之前 |之后 |
     | - | - |
     | `client.getRunUrl()` | `client.runs.getURL()` |
 
@@ -1319,7 +1321,7 @@ SmithDB 支持的方法具有比它所替代的方法更高的专用速率限制
   <Tab title="Java">
     <Note>Java SDK 没有用于检索运行的 UI URL 的旧版等效项。</Note>
 
-    |之前 |之后|
+    |之前 |之后 |
     | - | - |
     | *（无遗留方法）* | `client.runs().getUrl()` |
 
@@ -1329,7 +1331,7 @@ SmithDB 支持的方法具有比它所替代的方法更高的专用速率限制
   <Tab title="Go">
     <Note>Go SDK 没有用于检索运行的 UI URL 的旧版等效项。</Note>
 
-    |之前 |之后|
+    |之前 |之后 |
     | - | - |
     | *（无遗留方法）* | `client.Runs.GetURL()` |
 
@@ -1339,7 +1341,7 @@ SmithDB 支持的方法具有比它所替代的方法更高的专用速率限制
   <Tab title="cURL">
     <Note>REST API 没有用于检索运行的 UI URL 的旧版等效项。</Note>
 
-    |之前 |之后|
+    |之前 |之后 |
     | - | - |
     | *（无旧端点）* | `GET /api/v2/runs/{run_id}/url` |
   </Tab>
@@ -1351,7 +1353,7 @@ SmithDB 支持的方法具有比它所替代的方法更高的专用速率限制
   <Tab title="Python">
     <Warning>
       `runs.get_url` 需要直接传递运行的 `project_id` 和 `trace_id`，而不是从 `run` 对象或 `project_name`/`project_id` 后备解析它们。
-    </Warning>|之前 (`get_run_url`) |之后(`runs.get_url`) |笔记|
+    </Warning>|之前 (`get_run_url`) |之后(`runs.get_url`)|笔记|
     | - | - | - |
     | `run` (`RunBase`) | *（已删除）* |不需要完整的运行对象；单独传递其识别字段 |
     | `project_name` | *（已删除）* |没有同等的；如果您只有项目名称，请自行解析项目 UUID |
@@ -1375,14 +1377,14 @@ SmithDB 支持的方法具有比它所替代的方法更高的专用速率限制
   </Tab>
 
   <Tab title="Java">
-    |之前 |之后(`RunGetUrlParams`) |笔记|
+    |之前 |之后(`RunGetUrlParams`)|笔记|
     | - | - | - |
     | *（无遗留方法）* | `runId` | **必填**（位置）；运行的 ID |
     | *（无遗留方法）* | `projectId()` | **必需的**;项目（会话）UUID |
     | *（无遗留方法）* | `traceId()` | **必需的**;运行的跟踪 UUID |
     | *（无遗留方法）* | `startTime()` |选修的;运行的开始时间（RFC3339）；如果未知则省略 |
   </Tab><Tab title="Go">
-    |之前 |之后(`RunGetURLParams`) |笔记|
+    |之前 |之后(`RunGetURLParams`)|笔记|
     | - | - | - |
     | *（无遗留方法）* | `runID`（位置）| **必需的**;运行的 ID |
     | *（无遗留方法）* | `ProjectID` | **必需的**;项目（会话）UUID |
@@ -1404,29 +1406,29 @@ SmithDB 支持的方法具有比它所替代的方法更高的专用速率限制
 
 <Tabs>
   <Tab title="Python">
-    |之前 |之后|笔记|
+    |之前 |之后 |笔记|
     | - | - | - |
-    | `str`（网址）| `RunGetURLResponse.url` |响应现在被包装在一个对象中；读取`.url`属性 |
+    | `str`（网址）| `RunGetURLResponse.url` |响应现在被包装在一个对象中；读取`.url`属性|
   </Tab>
 
   <Tab title="TypeScript">
-    |之前 |之后|笔记|
+    |之前 |之后 |笔记|
     | - | - | - |
     | `string`（网址）| `RunGetURLResponse.url` |响应现在被包装在一个对象中；阅读`.url`属性|
   </Tab><Tab title="Java">
-    |之前 |之后|笔记|
+    |之前 |之后 |笔记|
     | - | - | - |
     | *（无遗留方法）* | `RunGetUrlResponse.url`() |返回 `Optional<String>` |
   </Tab>
 
   <Tab title="Go">
-    |之前 |之后|笔记|
+    |之前 |之后 |笔记|
     | - | - | - |
     | *（无遗留方法）* | `RunGetURLResponse.URL` |返回`string` |
   </Tab>
 
   <Tab title="cURL">
-    |之前 |之后|笔记|
+    |之前 |之后 |笔记|
     | - | - | - |
     | *（无旧端点）* | `{"url": "..."}` |具有单个 `url` 字段的 JSON 对象 |
   </Tab>

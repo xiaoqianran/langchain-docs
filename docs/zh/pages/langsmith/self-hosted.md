@@ -10,7 +10,7 @@
   自托管 LangSmith 是企业计划的附加组件，专为 LangChain 最大、最具安全意识的客户而设计。更多详情请参考[Pricing](https://www.langchain.com/pricing)。 [Contact our sales team](https://www.langchain.com/contact-sales) 如果您想要许可证密钥在您的环境中试用LangSmith。
 </Note>
 
-自托管 LangSmith 在您自己的基础设施中运行 LangSmith 平台，以便跟踪和操作数据保留在您的环境中。基本安装包括 [observability](/langsmith/observability)、[evaluation](/langsmith/evaluation)、[prompt engineering](/langsmith/prompt-context-hub#prompts)、[Insights](/langsmith/insights) 和 [Chat](/langsmith/chat)。当您的用例需要时，您可以添加 [Sandboxes](/langsmith/sandboxes)、[Engine](/langsmith/engine-overview)、[Fleet](/langsmith/fleet/index)、[LLM Gateway](/langsmith/llm-gateway) 和 [LangSmith Deployment](/langsmith/deployment)。
+自托管 LangSmith 在您自己的基础设施中运行 LangSmith 平台，以便跟踪和操作数据保留在您的环境中。基本安装包括 [observability](/langsmith/observability)、[evaluation](/langsmith/evaluation)、[prompt engineering](/langsmith/prompt-context-hub#prompts)、[Insights](/langsmith/insights) 和 [Chat](/langsmith/chat)。当您的用例需要时，您可以添加 [Sandboxes](/langsmith/sandboxes)、[Engine](/langsmith/engine)、[Fleet](/langsmith/fleet/index)、[LLM Gateway](/langsmith/llm-gateway) 和 [LangSmith Deployment](/langsmith/deployment)。
 
 ＃＃ 特征|特色 |可用性 |需要什么设置 |
 | - | - | - |

@@ -6,6 +6,8 @@ Integrate with middleware using LangChain Python.
 
 Browse available middleware for different providers or contribute your own to the ecosystem. Learn more about how middleware works in the [middleware overview](/oss/python/langchain/middleware/overview) and how to use middleware with Deep Agents in the [Deep Agents docs](/oss/python/deepagents/customization#middleware).
 
+<PythonIntegrationComponentMap />
+
 ## Share your middleware
 
 Middleware enables context engineering, harness customization, and runtime safety controls. It is a useful extension point in LangChain and we love highlighting what the community builds with it:
@@ -84,6 +86,7 @@ Middleware enables context engineering, harness customization, and runtime safet
   | [`ATR Guardrail`](https://github.com/Agent-Threat-Rule/agent-threat-rules/tree/main/integrations/langchain) | Runtime detection of prompt injection, tool poisoning, and unsafe tool calls using Agent Threat Rules. Halts the agent or blocks the tool call on a critical finding and keeps an audit trail. | [`Agent-Threat-Rule/agent-threat-rules`](https://github.com/Agent-Threat-Rule/agent-threat-rules/tree/main/integrations/langchain) | <span>N/A</span> |
   | [`eager-tools`](https://github.com/cloudthinker-ai/eager-tools) | Reduces agent wall-clock latency by dispatching each tool call the moment its streaming block closes, overlapping tool execution with LLM generation. | [`cloudthinker-ai/eager-tools`](https://github.com/cloudthinker-ai/eager-tools) | <span>N/A</span> |
   | [`Haldir`](https://github.com/ExposureGuard/haldir/tree/main/integrations/langchain-haldir) | Governance layer for LangChain agents with scoped sessions, encrypted secrets, hash-chained audit, and policy enforcement. | [`ExposureGuard/haldir`](https://github.com/ExposureGuard/haldir/tree/main/integrations/langchain-haldir) | <span>N/A</span> |
+  | [`MeragptDecider`](https://github.com/Sandeep85Das/langchain-meragpt) | Typed decisions (yes/no, choice, score) with calibrated probabilities from meraGPT Decider 1, as a Runnable, a tool, and agent middleware. | [`Sandeep85Das/langchain-meragpt`](https://github.com/Sandeep85Das/langchain-meragpt) | <span>N/A</span> |
   | [`NVIDIA middleware`](/oss/python/integrations/middleware/nvidia) | Model routing and Nemotron 3 Ultra harness optimization | [`langchain-ai/langchain-nvidia`](https://github.com/langchain-ai/langchain-nvidia), [`langchain-ai/deepagents`](https://github.com/langchain-ai/deepagents) | <span>N/A</span> |
 </div>
 

@@ -4,7 +4,7 @@
 
 # 在自托管 LangSmith 上启用沙箱
 
-为自托管 LangSmith 沙箱配置 Kubernetes 节点、存储和 Helm 值。
+为自托管 LangSmith 沙盒配置 Kubernetes 节点、存储和 Helm 值。
 
 [Sandboxes](/langsmith/sandboxes) 为运行代码和公开服务提供隔离环境。当您需要沙箱工作负载或需要它们的功能时安装它们，例如[Engine](/langsmith/engine-self-hosted)。
 
@@ -76,7 +76,7 @@
 
     * 与 Redis 兼容的元数据存储。
     * 对象存储桶或桶根。
-    * JuiceFS 配置 Secret，或足够的 Helm 值供图表创建一个。
+    * JuiceFS 配置 Secret，或足够的 Helm 值供图表创建。
 
     将这些对象存储后端用于 `sandboxes.juicefs.storage` 和 `sandboxes.juicefs.bucket`：
 
@@ -135,7 +135,7 @@
 
 ## 配置 OpenShift
 
-在 Red Hat OpenShift 上，沙箱运行时需要允许特权容器的安全上下文约束 (SCC)。沙盒运行时 Pod 具有主机网络的特权运行，因为它们管理微虚拟机、网络命名空间并在其节点上挂载。其他 LangSmith 组件，包括捆绑的 PostgreSQL、Redis 和 ClickHouse，在默认的 `restricted-v2` SCC 下运行。
+在 Red Hat OpenShift 上，沙箱运行时需要允许特权容器的安全上下文约束 (SCC)。沙箱运行时 Pod 具有主机网络的特权运行，因为它们管理微虚拟机、网络命名空间并在其节点上挂载。其他 LangSmith 组件，包括捆绑的 PostgreSQL、Redis 和 ClickHouse，在默认的 `restricted-v2` SCC 下运行。
 
 要准备 OpenShift 集群，请在 [enable Sandboxes with Helm](#enable-with-helm) 之前完成以下步骤：<Steps>
   <Step title="Add KVM-capable worker nodes">
@@ -156,7 +156,7 @@
   </Step>
 
   <Step title="Grant the privileged SCC to the sandbox runtime">
-    仅将内置 `privileged` SCC 授予沙箱运行时服务帐户。该图表将此服务帐户命名为 `<release-fullname>-sandbox-host`，对于名为 `langsmith` 的发行版来说，它是 `langsmith-sandbox-host`：
+    仅将内置 `privileged` SCC 授予沙盒运行时服务帐户。该图表将此服务帐户命名为 `<release-fullname>-sandbox-host`，对于名为 `langsmith` 的发行版来说，它是 `langsmith-sandbox-host`：
 
     ```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
     oc adm policy add-scc-to-user privileged -z langsmith-sandbox-host -n <namespace>
@@ -371,7 +371,7 @@ helm upgrade -i langsmith langchain/langsmith \
     </Tab>
 
     <Tab title="GCP">
-      在 `modules/gcp/infra/terraform.tfvars` 中，启用沙盒并配置标准 GKE 节点池：
+      在 `modules/gcp/infra/terraform.tfvars` 中，启用沙箱并配置标准 GKE 节点池：
 
       ```hcl theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
       enable_sandboxes = true
@@ -429,7 +429,7 @@ sandboxes:
   serviceUrlBaseUrl: "https://sandbox-services.example.com"
 ```
 
-这需要 `*.sandbox-services.example.com` 的通配符 DNS 和 TLS。当 `ingress.enabled` 为 `true` 时，图表还添加通配符入口规则，将这些服务 URL 路由到 LangSmith 平台后端。服务 URL 还需要 Ed25519 私有 JWKS，其第一个密钥上具有非空 `kid`。设置`config.signingJwks`，或将`langsmith_signing_jwks`添加到您的[existing LangSmith app Secret](/langsmith/self-host-using-an-existing-secret)。这与 `sandboxes.callbackSigningJwk` 是分开的。密钥生成说明请参见[Configure a signing JWKS](/langsmith/langsmith-remote-mcp#enabling-remote-mcp)。
+这需要 `*.sandbox-services.example.com` 的通配符 DNS 和 TLS。当 `ingress.enabled` 为 `true` 时，图表还添加通配符入口规则，将这些服务 URL 路由到 LangSmith 平台后端。服务 URL 还需要 Ed25519 私有 JWKS，其第一个密钥上具有非空 `kid`。设置`config.signingJwks`，或将`langsmith_signing_jwks`添加到您的[existing LangSmith app Secret](/langsmith/self-host-using-an-existing-secret)。这与 `sandboxes.callbackSigningJwk` 是分开的。密钥生成说明请参见[Configure a signing JWKS](/langsmith/kubernetes#configure-a-signing-jwks)。
 
 服务 URL 是 [build and edit custom apps with chat](/langsmith/custom-apps#configure-self-hosted-chat) 所必需的，尽管它们对于其他沙箱工作流程是可选的。
 

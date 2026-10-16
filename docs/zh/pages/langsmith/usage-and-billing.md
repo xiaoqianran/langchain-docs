@@ -34,7 +34,7 @@ LangSmith 有两层基于数据保留的跟踪，具有以下特征：
 
 在指定的保留期之后，将无法再在跟踪项目 UI 中或通过 API 访问跟踪。与跟踪相关的所有用户数据（例如输入和输出）很快就会从我们的内部系统中删除。与每个跟踪关联的一些元数据可能会无限期保留以用于分析和计费目的。
 
-**等级设置的地方**
+**等级设置的位置**
 
 默认保留层属于跟踪项目。在 [agent-based workspace](/langsmith/agents) 中，每个代理的 [environments](/langsmith/agent-environments) 都是其自己的跟踪项目，因此按环境设置层：一个代理可以在扩展保留中保存生产跟踪，在基础上保存开发跟踪。要更改整个代理的层，请在每个环境上进行设置。参见[Change project-level default retention](/langsmith/billing#change-project-level-default-retention)。
 
@@ -48,7 +48,7 @@ LangSmith 有两层基于数据保留的跟踪，具有以下特征：
 
 按操作保留行为：* **通过 API 或 SDK 反馈**：反馈通过显式传递 `extend_trace_retention=true`（TypeScript 中的`extendTraceRetention: true`）的 API 或 SDK 调用添加到跟踪（或线程中的任何跟踪）上的任何运行。有关更多信息，请参阅[Attach user feedback](/langsmith/attach-user-feedback)。 LangSmith UI 发送反馈和注释，但不会延长保留时间。
 * **在线评估器**：在线评估器对跟踪进行评分并启用其保留设置。跟踪级和线程级评估器都可以选择退出此升级。
-* **自动化规则**：启用保留扩展的[automation rule](/langsmith/rules#create-a-rule)与跟踪中的任何运行相匹配。匹配单个运行会升级整个跟踪，而不仅仅是该运行。 [item type](/langsmith/rules#set-the-item-type-to-runs-or-threads) 为 **Threads** 的规则会升级匹配线程中的每个跟踪，而不仅仅是最近的跟踪。
+* **自动化规则**：启用保留扩展的[automation rule](/langsmith/rules#create-a-rule)匹配跟踪中的任何运行。匹配单个运行会升级整个跟踪，而不仅仅是该运行。 [item type](/langsmith/rules#set-the-item-type-to-runs-or-threads) 为 **Threads** 的规则会升级匹配线程中的每个跟踪，而不仅仅是最近的跟踪。
 * **手动注释队列添加**（不升级）：默认情况下，手动将运行或线程添加到 [annotation queue](/langsmith/annotation-queues#assign-runs-and-threads-to-a-single-run-queue) 不会升级保留。
 
 此更改仅适用于新操作。已通过先前操作升级的跟踪将保持其长期保留。<Note>
@@ -64,7 +64,7 @@ LangSmith 有两层基于数据保留的跟踪，具有以下特征：
 我们采用自动升级跟踪模型有两个原因：
 
 1. 我们认为，符合任何这些条件的痕迹从根本上来说比其他痕迹更有趣，因此用户能够将它们保留更长时间是有好处的。
-2. 从理念上讲，我们希望对可能无法进行有意义交互的痕迹向客户收取较低的费用。我们认为自动升级使我们的定价模型与 LangSmith 带来的价值保持一致，只有具有有意义交互的痕迹才会以更高的费率收费。
+2. 从理念上讲，我们希望对可能无法进行有意义交互的痕迹向客户收取较低的费用。我们认为自动升级使我们的定价模型与 LangSmith 带来的价值保持一致，只有具有有意义交互的痕迹才会收取更高的费用。
 
 如果您对我们的定价模型有疑问或疑虑，请随时通过[support.langchain.com](https://support.langchain.com)联系支持人员，让我们知道您的想法！**数据保留如何影响下游功能？**
 
@@ -76,7 +76,7 @@ LangSmith 有两层基于数据保留的跟踪，具有以下特征：
 
 其他功能的行为独立于跟踪的保留层：
 
-* **监控**：即使基础层跟踪的数据保留期结束，监控选项卡也将继续工作。它由存在超过 30 天的跟踪元数据提供支持，这意味着即使在 `base` 层跟踪上，您的监控图表也将继续保持准确。
+* **监控**：即使基础层跟踪的数据保留期结束，监控选项卡也将继续工作。 It is powered by trace metadata that exists for >30 days, meaning that your monitoring graphs will continue to stay accurate even on `base` tier traces.
 * **数据集**：数据集具有无限的数据保留期。换句话说，如果将跟踪的输入和输出添加到数据集，它们将永远不会被删除。我们建议，如果您使用LangSmith进行数据收集，请利用数据集功能。
 
 ### 计费模型
@@ -98,7 +98,7 @@ LangSmith 有两层基于数据保留的跟踪，具有以下特征：
 
 ## 速率限制
 
-LangSmith 有速率限制，旨在确保所有用户的服务稳定性。为了保证访问和稳定性，在以下情况下，LangSmith将响应 HTTP 状态码 429，表示超出速率或使用限制：
+LangSmith具有速率限制，旨在确保所有用户的服务稳定性。为了保证访问和稳定性，在以下情况下，LangSmith将响应 HTTP 状态码 429，表示超出速率或使用限制：
 
 ### 我们的应用程序负载均衡器 1 分钟内的临时吞吐量限制
 
@@ -172,7 +172,9 @@ LangSmith 有速率限制，旨在确保所有用户的服务稳定性。为了�
 
 每个工作区的工作区邀请批量请求受到速率限制，以减少批量邀请滥用。
 
-### 在您的应用程序中处理 429 响应由于某些 429 响应是临时的，并且可能会在连续调用时成功，因此如果您在应用程序中直接调用 LangSmith API，我们建议实现具有指数退避和抖动的重试逻辑。
+`POST /workspaces/current/members/batch` 端点允许每个工作区每秒 2 个请求。此限制仅适用于 LangSmith 云。
+
+### 在您的应用程序中处理 429 响应由于某些 429 响应是临时的，并且可能会在连续调用时成功，因此如果您在应用程序中直接调用 LangSmith API，我们建议使用指数退避和抖动实现重试逻辑。
 
 为了方便起见，使用 LangSmith SDK 构建的 LangChain 应用程序内置了此功能。
 
@@ -204,7 +206,7 @@ LangSmith 允许您配置跟踪的使用限制。请注意，这些是“使用�
 
 ### 更新使用限制
 
-使用限制可以从`Settings`页面的`Usage and Billing`下更新。限制值会被缓存，因此可能需要一两分钟才能应用新限制。
+使用限制可以从`Usage and Billing`下的`Settings`页面更新。限制值会被缓存，因此可能需要一两分钟才能应用新限制。
 
 ## 相关内容
 

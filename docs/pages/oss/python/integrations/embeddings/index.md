@@ -16,6 +16,8 @@ Embedding models transform raw text—such as a sentence, paragraph, or tweet—
 
 In practice, this means that texts with similar ideas are placed close together in the vector space. For example, instead of matching only the phrase *"machine learning"*, embeddings can surface documents that discuss related concepts even when different wording is used.
 
+<PythonIntegrationComponentMap />
+
 ### How it works
 
 1. **Vectorization**: The model encodes each input string as a high-dimensional vector.

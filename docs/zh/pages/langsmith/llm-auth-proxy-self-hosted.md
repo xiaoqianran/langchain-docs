@@ -25,8 +25,8 @@ LLM 身份验证代理是一个基于 [Envoy](https://www.envoyproxy.io/) 的组
 来自LangSmith的每个请求都会在代理中经过以下步骤：
 
 1. 验证 JWT（签名、发行者、受众）
-2. 调用您的 [⟦T18⟧](https://www.envoyproxy.io/docs/envoy/latest/intro/arch_overview/security/ext_authz_filter) 服务，该服务接收经过验证的 JWT 并返回提供者凭据以作为标头注入
-3. 可以选择调用[⟦T19⟧](https://www.envoyproxy.io/docs/envoy/latest/configuration/http/http_filters/ext_proc_filter)转换器，它可以重写请求和响应正文（例如，在OpenAI格式和自定义网关格式之间进行转换）
+2. 调用您的 [⟦T16⟧](https://www.envoyproxy.io/docs/envoy/latest/intro/arch_overview/security/ext_authz_filter) 服务，该服务接收经过验证的 JWT 并返回提供者凭据以作为标头注入
+3. 可以选择调用[⟦T17⟧](https://www.envoyproxy.io/docs/envoy/latest/configuration/http/http_filters/ext_proc_filter)转换器，它可以重写请求和响应正文（例如，在OpenAI格式和自定义网关格式之间进行转换）
 4. 将带有自定义标头（静态或动态）的请求转发给上游提供商`ext_authz` 服务和转换器都是客户部署的组件，在您的环境中与代理一起运行。可以启用其中一个或两者 [depending on your use case](#when-to-use-ext_proc-vs-ext_authz)。
 
 <img alt="Architecture diagram showing LangSmith issuing a signed JWT to the self-hosted auth proxy, which validates the JWT, applies customer-defined auth, and forwards the request to the upstream model provider." />
@@ -35,7 +35,7 @@ LLM 身份验证代理是一个基于 [Envoy](https://www.envoyproxy.io/) 的组
 
 ## 先决条件
 
-* LangSmith 企业计划（SaaS 或自托管版本 0.13.33+）
+* LangSmith 企业计划（SaaS 或版本 0.13.33+ 上的自托管）
 * 带有 Helm 3 的 Kubernetes 集群
 * Envoy v1.37 或更高版本（Helm 图表默认为`envoyproxy/envoy:v1.37-latest`）
 * 您的上游 LLM 提供商或网关的 URL（代理将请求转发到的目的地）
@@ -49,38 +49,14 @@ LLM 身份验证代理是一个基于 [Envoy](https://www.envoyproxy.io/) 的组
 
 对于 LangSmith SaaS，请跳过此步骤。 JWT 签名已配置。
 
-**使用 [step CLI](https://smallstep.com/docs/step-cli/installation/)（如果您愿意，也可以使用内部流程）生成 Ed25519 密钥对**。 Ed25519 是 LangSmith 用于签署 JWT 的签名算法。私钥对每个请求进行签名；身份验证代理仅使用公钥验证签名。
+按照[Configure a signing JWKS](/langsmith/kubernetes#configure-a-signing-jwks)生成共享Ed25519密钥并将其提供给LangSmithHelm图表。私钥对每个请求进行签名，而身份验证代理仅从 LangSmith 获取公钥。
 
-```shell theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-TMPDIR_KEYS="$(mktemp -d)"
-step crypto keypair "$TMPDIR_KEYS/pub.pem" "$TMPDIR_KEYS/priv.pem" \
-  --kty OKP --crv Ed25519 --no-password --insecure
-PRIV_JWK=$(step crypto key format --jwk --no-password --insecure < "$TMPDIR_KEYS/priv.pem")
-SIGNING_JWKS=$(echo "$PRIV_JWK" | jq -c '{keys: [. + {use: "sig", alg: "EdDSA"}]}')
-echo "$SIGNING_JWKS"
-```
-
-**将 JWKS 存储在 Kubernetes 密钥中：**
-
-```shell theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-kubectl create secret generic langsmith-signing-jwks \
-  --namespace <namespace> \
-  --from-literal=LANGSMITH_SIGNING_JWKS="$SIGNING_JWKS"
-```JWKS（JSON Web 密钥集）是用于发布加密密钥的标准 JSON 格式。 `LANGSMITH_SIGNING_JWKS` 包含 Ed25519 私钥并存储为 Kubernetes 机密。它永远不会暴露。 LangSmith自动提取相应的公钥并将其提供给`/.well-known/jwks.json`。身份验证代理获取此公共端点来验证 JWT 签名，而无需私钥。
-
-**参考你的[LangSmith ⟦T24⟧](https://github.com/langchain-ai/helm/blob/main/charts/langsmith/values.yaml)中的秘密：**
+在 LangSmith `values.yaml` 中设置 LLM 身份验证代理令牌的颁发者：
 
 ```yaml theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-platformBackend:
-  deployment:
-    extraEnv:
-      - name: LLM_AUTH_PROXY_ISSUER
-        value: "langsmith"        # must match jwtIssuer in the auth proxy chart
-      - secretRef:
-          name: langsmith-signing-jwks
-```
-
-`LLM_AUTH_PROXY_ISSUER` 在签名的 JWT 中设置 `iss` 声明。使用 `langsmith` 匹配 SaaS 默认值，或使用 `langsmith:self-hosted:<short_identifier>` 等自定义标识符来区分您的安装。该值必须与 [Step 4](#4-install-the-auth-proxy-helm-chart) 中的身份验证代理图表中的 `jwtIssuer` 匹配。
+config:
+  llmAuthProxyIssuer: "langsmith"
+````config.llmAuthProxyIssuer` 在签名的 JWT 中设置 `iss` 声明。使用 `langsmith` 匹配 SaaS 默认值，或使用 `langsmith:self-hosted:<short_identifier>` 等自定义标识符来区分您的安装。该值必须与 [Step 4](#4-install-the-auth-proxy-helm-chart) 中的身份验证代理图表中的 `jwtIssuer` 匹配。
 
 ## 2. 为您的组织启用 LLM Auth 代理
 
@@ -88,7 +64,7 @@ platformBackend:
   <Tab title="Self-hosted">
     **选项 A：** 为特定组织启用：
 
-    在 LangSmith UI 中，导航至 **设置** 页面，复制左上角 **组织** 旁边的组织 ID。
+    在 LangSmith UI 中，导航到 **设置** 页面，复制左上角 **组织** 旁边的组织 ID。
 
     针对您的 LangSmith PostgreSQL 数据库运行以下命令：
 
@@ -100,7 +76,7 @@ platformBackend:
 
     **选项 B：** 为安装中的所有组织启用：
 
-    将以下内容添加到 [LangSmith ⟦T31⟧](https://github.com/langchain-ai/helm/blob/main/charts/langsmith/values.yaml) 中的 `commonEnv`：
+    将以下内容添加到 [LangSmith ⟦T27⟧](https://github.com/langchain-ai/helm/blob/main/charts/langsmith/values.yaml) 中的 `commonEnv`：
 
     ```yaml theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
     commonEnv:
@@ -111,22 +87,22 @@ platformBackend:
     <Note>
       此设置对个人组织没有影响。
     </Note>
-  </Tab><Tab title="SaaS">
+  </Tab>
+
+  <Tab title="SaaS">
     通过 [Support Portal](https://support.langchain.com) 联系技术支持，为您的组织启用 LLM Auth 代理。
   </Tab>
 </Tabs>
 
 ## 3. 在LangSmith中配置组织设置
 
-在 LangSmith UI 中，导航至 **设置** > **常规**，配置以下内容：
+在 LangSmith UI 中，导航至 **设置** > **常规**，配置以下内容：1. **JWT 受众：** 代理将验证的 `aud` 声明值（例如，`example-audience`）。这必须与 [Step 4](#4-install-the-auth-proxy-helm-chart) 中的身份验证代理图表中的 `jwtAudiences` 匹配。
+2. **Enable LLM auth proxy:** toggle on for your organization.
+3. **Allowed URLs:** control which destination URLs the proxy is permitted to forward JWTs to.这可以防止将凭证转发到非预期主机。选择以下三个选项之一：
 
-1. **JWT 受众：** 代理将验证的 `aud` 声明值（例如，`example-audience`）。这必须与 [Step 4](#4-install-the-auth-proxy-helm-chart) 中的身份验证代理图表中的 `jwtAudiences` 匹配。
-2. **启用 LLM 身份验证代理：** 为您的组织打开。
-3. **允许的 URL：** 控制允许代理将 JWT 转发到哪些目标 URL。这可以防止将凭证转发到非预期主机。选择以下三个选项之一：
-
-   * **全部允许**（默认）：允许 JWT 转发到任何上游 URL。相当于没有限制。
+   * **Allow all** (default): permits JWT forwarding to any upstream URL.相当于没有限制。
    * **全部阻止：** 阻止 JWT 转发到所有 URL。
-   * **自定义：** 指定允许的 URL 模式的明确列表。不接受空字符串和裸露的`*`。当 LLM 身份验证代理开关关闭时，该控件将被禁用。
+   * **Custom:** specify an explicit list of allowed URL patterns. Empty strings and bare `*` are not accepted. The control is disabled when the LLM auth proxy toggle is off.
 
    <img alt="LLM Auth Proxy settings in LangSmith showing the Enable LLM auth proxy checkbox, JWT audience field, and Allowed URLs radio buttons with Allow all selected." />
 
@@ -141,15 +117,15 @@ helm repo add langchain https://langchain-ai.github.io/helm/
 helm repo update
 ```
 
-使用上游 URL 和 JWT 验证设置创建 `values.yaml`。 JWKS 配置有两个选项：* **`jwksUri`（推荐）：** 指向您的 LangSmith 实例的 `/.well-known/jwks.json` 端点。 Envoy 自动获取并缓存公钥，支持无缝密钥轮换。
+Create a `values.yaml` with the upstream URL and JWT validation settings. JWKS 配置有两个选项：* **`jwksUri`（推荐）：** 指向您的 LangSmith 实例的 `/.well-known/jwks.json` 端点。 Envoy 自动获取并缓存公钥，支持无缝密钥轮换。
 * **`jwksJson`（内联）：** 将 JWKS JSON 直接粘贴到 `values.yaml` 中。将此用于测试或气隙环境，其中身份验证代理无法访问 LangSmith 的出站网络。需要更新图表才能轮换密钥。仅包含公钥组件；省略 `d` 字段（私钥）。
 
-如果两者都设置了，则`jwksUri`优先。
+如果两者都设置了，`jwksUri`优先。
 
 ```yaml theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 authProxy:
   upstream: "https://gateway.example.com"
-  jwtIssuer: "langsmith" # must match LLM_AUTH_PROXY_ISSUER in LangSmith values.yaml
+  jwtIssuer: "langsmith" # must match config.llmAuthProxyIssuer in LangSmith values.yaml
   jwtAudiences:
     - "example-audience" # must match the org setting in LangSmith
 
@@ -174,7 +150,7 @@ helm install langsmith-auth-proxy langchain/langsmith-auth-proxy \
 
 ## 编写一个`ext_authz`服务
 
-当您需要添加、删除或编辑授权标头时，请使用`ext_authz`，例如，根据 JWT 中的身份注入提供程序 API 密钥。您的服务接收经过验证的 JWT 和可选的请求正文，并返回标头以注入上游。这使用 Envoy 的 [HTTP ⟦T45⟧ filter](https://www.envoyproxy.io/docs/envoy/latest/configuration/http/http_filters/ext_authz_filter) （不是 gRPC）。
+当您需要添加、删除或编辑授权标头时，请使用`ext_authz`，例如，根据 JWT 中的身份注入提供程序 API 密钥。您的服务接收经过验证的 JWT 和可选的请求正文，并返回标头以注入上游。这使用 Envoy 的 [HTTP ⟦T41⟧ filter](https://www.envoyproxy.io/docs/envoy/latest/configuration/http/http_filters/ext_authz_filter) （不是 gRPC）。
 
 在`values.yaml`中启用它：
 
@@ -197,7 +173,7 @@ authProxy:
 
 您的 `ext_authz` 服务可以通过两种方式运行：
 
-* **Sidecar：** 在与代理相同的 pod 中运行服务。在`authProxy.deployment.sidecars`下添加容器，并在`values.yaml`中的`authProxy.deployment.volumes`下添加任何所需的卷。使用 `localhost` URL，例如 `http://localhost:10002`。
+* **Sidecar：** 在与代理相同的 pod 中运行服务。在 `authProxy.deployment.sidecars` 下添加容器，并在 `values.yaml` 中的 `authProxy.deployment.volumes` 下添加任何所需卷。使用 `localhost` URL，例如 `http://localhost:10002`。
 * **单独部署：**独立部署服务并指向`extAuthz.serviceUrl`。使用集群内 DNS 名称，例如 `http://my-auth-service.my-namespace.svc.cluster.local:8080`，或者如果服务有自己的入口，则使用外部 HTTPS URL。
 
 ### 示例部署
@@ -326,18 +302,18 @@ authProxy:
 
 有关`extAuthz`参数的完整列表，请参阅[Helm chart README](https://github.com/langchain-ai/helm/tree/main/charts/langsmith-auth-proxy#readme)。## 编写一个`ext_proc`变压器
 
-当您需要重写请求或响应正文时，请使用`ext_proc`，例如，在OpenAI格式和自定义网关格式之间进行转换，或者将其他字段注入请求负载中。这使用 Envoy 的 [⟦T71⟧ filter](https://www.envoyproxy.io/docs/envoy/latest/configuration/http/http_filters/ext_proc_filter)。
+当您需要重写请求或响应正文时，请使用`ext_proc`，例如，在OpenAI格式和自定义网关格式之间进行转换，或者将其他字段注入请求负载中。这使用 Envoy 的 [⟦T67⟧ filter](https://www.envoyproxy.io/docs/envoy/latest/configuration/http/http_filters/ext_proc_filter)。
 
 与 `ext_authz` (HTTP) 不同，`ext_proc` 使用双向 gRPC 流。 Envoy 在每个处理阶段（请求标头、请求正文、响应标头、响应正文）向您的变压器服务发送一条消息，并且您的服务会针对每个阶段回复突变。您的变压器必须实现 `envoy.service.ext_proc.v3.ExternalProcessor` gRPC 服务。请参阅图表存储库中的 [e2e/transformer/](https://github.com/langchain-ai/helm/tree/main/charts/langsmith-auth-proxy/e2e/transformer) 以获取示例 Go 实现。
 
 ### 何时使用`ext_proc` vs `ext_authz`
 
-|能力| `ext_authz` | `ext_proc` |
+| Capability | `ext_authz` | `ext_proc` |
 | - | - | - |
 |修改请求头 |是的 |是的 |
 |修改响应头 |没有 |是的 |
 |修改请求正文 |没有 |是的 |
-|修改响应正文 |没有 |是的 |
+| Modify response body |没有 |是的 |
 |协议| HTTP | gRPC |
 
 如果您只需要注入身份验证标头（例如 API 密钥），请使用 `ext_authz`。如果需要重写主体，请使用`ext_proc`。两者可以同时启用。
@@ -372,16 +348,16 @@ authProxy:
 | `responseTrailerMode` | `SEND`、`SKIP` |是否转发响应预告片。 |
 
 * 使用`BUFFERED`进行请求正文重写：在发送之前缓冲完整的正文，最简单的 JSON 重写。
-* 使用`STREAMED`进行流式LLM响应正文重写：在块到达时发送块，延迟较低，但实现起来更复杂。
+* 使用 `STREAMED` 进行流式 LLM 响应正文重写：在块到达时发送块，延迟较低，但实现起来更复杂。
 * 使用`NONE`完全跳过一个阶段。
 
 <Warning>
   改变主体时，您的 `ext_proc` 服务还必须更新 `content-length` 标头，以通过 `HeaderMutation` 匹配新的主体大小。 Envoy 拒绝 `content-length` 与突变体不匹配的响应。
 </Warning>
 
-### 请求流程启用 `ext_proc` 进行标头注入和正文重写的示例：
+### 请求流程
 
-```
+启用 `ext_proc` 进行标头注入和正文重写的示例：```
 curl -H "X-LangSmith-LLM-Auth: <JWT>" -d '{"model":"gpt-5.5",...}'
   -> Envoy(:10000)
   -> built-in Envoy JWT filter (validate sig, iss, aud)
@@ -655,7 +631,7 @@ authProxy:
 
 当身份验证代理没有公共入口并且只能通过内部 Kubernetes 网络访问时，必须将 LangSmith 服务配置为允许对私有 IP 地址的出站请求。如果没有这些设置，内置 SSRF 保护将阻止对私有 IP 的请求。
 
-将以下环境变量添加到您的[LangSmith ⟦T123⟧](https://github.com/langchain-ai/helm/blob/main/charts/langsmith/values.yaml)：* **`SSRF_ALLOW_K8S_INTERNAL`** — 所有进行 LLM 调用的服务都需要。对于支持它的服务，将此添加到 `commonEnv`；对于不支持 `commonEnv` 的服务，将其添加到每个服务的 `extraEnv`。
+将以下环境变量添加到您的[LangSmith ⟦T119⟧](https://github.com/langchain-ai/helm/blob/main/charts/langsmith/values.yaml)：* **`SSRF_ALLOW_K8S_INTERNAL`** — 所有进行 LLM 调用的服务都需要。对于支持它的服务，将此添加到 `commonEnv`；对于不支持 `commonEnv` 的服务，将其添加到每个服务的 `extraEnv`。
 * **`SSRF_ALLOW_PRIVATE_IPS_PLAYGROUND`** — 仅在 `playground` 服务上需要。将其添加到`playground.deployment.extraEnv`。
 
 ```yaml theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
@@ -689,7 +665,7 @@ playground:
 ```yaml theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 authProxy:
   upstream: "https://gateway.example.com"   # your LLM gateway or provider
-  jwtIssuer: "langsmith"                    # must match LLM_AUTH_PROXY_ISSUER on LangSmith
+  jwtIssuer: "langsmith"                    # must match config.llmAuthProxyIssuer on LangSmith
   jwtAudiences:
     - "example-audience"                    # must match org setting in LangSmith
 
@@ -734,7 +710,7 @@ authProxy:
 LangSmith 使用 **Ed25519 (EdDSA)** 签署 JWT。公钥由 `/.well-known/jwks.json` 提供并由代理自动获取。身份验证代理使用这些公钥验证签名。|索赔 |描述 |
 | - | - |
 | `iat`、`exp`、`jti`、`nbf` |标准 JWT 声明（发布时间、到期时间、JWT ID、不早于）|
-| `iss` |发行人。 `langsmith` 用于 SaaS；通过 `LLM_AUTH_PROXY_ISSUER` 设置自托管 |
+| `iss` |发行人。 `langsmith` 用于 SaaS；通过 `config.llmAuthProxyIssuer` 设置自托管 |
 | `aud` |观众。匹配 LangSmith 组织设置中的 JWT 受众 |
 | `sub` |参与者标识符（用户 ID、评估者 ID、助理 ID 或 API 密钥 ID）|
 | `actor_type` |以下之一：`user`、`evaluator`、`agent-builder`、`insights`、`polly`、`api_key:pat`（个人访问令牌）或`api_key:service`（服务帐户密钥）|
@@ -758,7 +734,7 @@ JWT 将传递到 `x-langsmith-llm-auth` 请求标头中的 `ext_authz` 或转换
 </Accordion>
 
 <Accordion title="Does the auth proxy support custom certificates?">
-  是的，通过 `customCa` 获取自定义 CA 证书，通过 `mtls` 获取相互 TLS。
+  是的，通过 `customCa` 实现自定义 CA 证书，通过 `mtls` 实现相互 TLS。
 </Accordion><Accordion title="Can a single auth proxy route to multiple upstream LLM gateways?">
   不会。身份验证代理有一个 `upstream` 字段。
 </Accordion>
@@ -768,7 +744,7 @@ JWT 将传递到 `x-langsmith-llm-auth` 请求标头中的 `ext_authz` 或转换
 </Accordion>
 
 <Accordion title="Can the LangSmith to auth proxy connection use HTTP instead of HTTPS?">
-  是的，但仅限于自托管，我们通常建议将身份验证代理放置在专用入口后面，以便通信使用 HTTPS。要允许 HTTP，请将 `LLM_AUTH_PROXY_ACCEPT_HTTP` 添加到 `commonEnv` 并在 [LangSmith ⟦T174⟧](https://github.com/langchain-ai/helm/blob/main/charts/langsmith/values.yaml) 中添加 `playground.deployment.extraEnv`。
+  是的，但仅限于自托管，我们通常建议将身份验证代理放置在专用入口后面，以便通信使用 HTTPS。要允许 HTTP，请将 `LLM_AUTH_PROXY_ACCEPT_HTTP` 添加到 `commonEnv` 并在 [LangSmith ⟦T170⟧](https://github.com/langchain-ai/helm/blob/main/charts/langsmith/values.yaml) 中添加 `playground.deployment.extraEnv`。
   要启用到 [Chat and Insights](/langsmith/self-host-insights-chat) 身份验证代理的 HTTP 流量，请在相应的 `extraEnv` 部分中设置此环境变量：`config.polly.agent.extraEnv`（用于 Chat，以前称为 Polly）和 `config.insights.agent.extraEnv`。
 </Accordion>
 

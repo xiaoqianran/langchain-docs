@@ -6,6 +6,8 @@ Integrate with chat models using LangChain Python.
 
 [Chat models](/oss/python/langchain/models) are language models that use a sequence of [messages](/oss/python/langchain/messages) as inputs and return messages as outputs <Tooltip>(as opposed to traditional, plaintext LLMs)</Tooltip>.
 
+<PythonIntegrationComponentMap />
+
 ## Featured models
 
 <Info>

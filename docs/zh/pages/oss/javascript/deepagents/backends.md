@@ -43,7 +43,7 @@ Deep Agents 通过`ls`、`read_file`、`write_file`、`edit_file`、`glob` 和 `
 | - | - |
 | [Default](#statebackend) | `agent = create_deep_agent(model="google_genai:gemini-3.6-flash")` <br /> 线程范围。代理的默认文件系统后端存储在`langgraph`状态。文件在线程内持续存在（通过检查点），并且不会跨线程共享。 |
 | [Local filesystem persistence](#filesystembackend-local-disk) | `agent = create_deep_agent(model="google_genai:gemini-3.6-flash", backend=FilesystemBackend(root_dir="/Users/nh/Desktop/"))` <br />这使深度代理可以访问本地计算机的文件系统。您可以指定代理有权访问的根目录。请注意，任何提供的 `root_dir` 必须是绝对路径。通常，包装在[CompositeBackend](#compositebackend-router)中，以将内部代理数据（卸载的工具结果、对话历史记录）与项目文件分开。 |
-| [Durable store (LangGraph store)](#storebackend-langgraph-store) | `agent = create_deep_agent(model="google_genai:gemini-3.6-flash", backend=StoreBackend())` <br />这使代理能够访问*跨线程持久化*的长期存储。这对于存储适用于代理多次执行的长期记忆或指令非常有用。 |
+| [Durable store (LangGraph store)](#storebackend-langgraph-store) | `agent = create_deep_agent(model="google_genai:gemini-3.6-flash", backend=StoreBackend())`<br />这使代理可以访问*跨线程持久化*的长期存储。这对于存储适用于代理多次执行的长期记忆或指令非常有用。 |
 | [Context Hub](#contexthubbackend) | `agent = create_deep_agent(model="google_genai:gemini-3.6-flash", backend=ContextHubBackend("my-agent"))` <br />将文件持久存储在 LangSmith Hub 存储库中，无需配置单独的 LangGraph 存储。 |
 | [Sandbox](/oss/javascript/deepagents/sandboxes) | `agent = create_deep_agent(model="google_genai:gemini-3.6-flash", backend=sandbox)` <br />在隔离环境中执行代码。沙箱提供文件系统工具以及用于运行 shell 命令的`execute`工具。从 LangSmith、AgentCore、Daytona 或其他 [sandbox integrations](/oss/javascript/integrations/sandboxes) 中进行选择。 || [Local shell](#localshellbackend-local-shell) | `agent = create_deep_agent(model="google_genai:gemini-3.6-flash", backend=LocalShellBackend(root_dir=".", env={"PATH": "/usr/bin:/bin"}))` <br />文件系统和 shell 直接在主机上执行。无隔离——仅在受控开发环境中使用。请参阅下面的[security considerations](#localshellbackend-local-shell)。 |
 | [Composite](#compositebackend-router) |默认情况下是线程范围的，`/memories/`跨线程持久化。复合后端具有最大程度的灵活性。您可以在文件系统中指定不同的路由以指向不同的后端。有关准备粘贴的示例，请参阅下面的复合路由。 |
@@ -207,10 +207,6 @@ const agent2 = createDeepAgent({
   });
   ```
 </CodeGroup>
-
-<Card title="View example trace" icon="chart-line" href="https://smith.langchain.com/public/dfa88f08-b4d7-4406-830f-603c35d8ba7a/r">
-  为此示例打开公共 LangSmith 运行。
-</Card>
 
 **它是如何工作的：**
 
@@ -493,7 +489,7 @@ const agent2 = createDeepAgent({
 
 #### 命名空间工厂
 
-命名空间工厂控制 `StoreBackend` 读取和写入数据的位置。它接收一个 LangGraph [⟦T107⟧](https://reference.langchain.com/javascript/langchain/index/Runtime) 并返回用作存储命名空间的字符串元组。使用命名空间工厂来隔离用户、租户或助理之间的数据。
+命名空间工厂控制 `StoreBackend` 读取和写入数据的位置。它接收 LangGraph [⟦T107⟧](https://reference.langchain.com/javascript/langchain/index/Runtime) 并返回用作存储命名空间的字符串元组。使用命名空间工厂来隔离用户、租户或助理之间的数据。
 
 构造 `StoreBackend` 时将命名空间工厂传递给 `namespace` 参数：
 
@@ -781,7 +777,7 @@ const agent = createDeepAgent({
 
 ## 卸载二进制内容
 
-二进制内容卸载将内联媒体存储在后端，而不是将 Base64 有效负载保留在消息历史记录中。这可以减少读取二进制文件或接收用户消息中的内联媒体的代理的检查点大小。默认情况下，卸载是选择加入并禁用的。
+二进制内容卸载将内联媒体存储在后端，而不是将 Base64 有效负载保留在消息历史记录中。这可以减少读取二进制文件或接收用户消息中内联媒体的代理的检查点大小。默认情况下，卸载是选择加入并禁用的。
 
 在`createFilesystemMiddleware`中设置`offloadBinaryContent: true`，并将`middleware`数组中的中间件传递给`createDeepAgent`。代理和中间件使用相同的后端。
 

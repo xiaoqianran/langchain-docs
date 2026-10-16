@@ -37,13 +37,13 @@ export DEEPAGENTS_CODE_FORKED_SUBAGENTS=false
 
 ## 文件格式
 
-子代理 `AGENTS.md` 文件使用 YAML frontmatter 后跟 markdown body：
+子代理 `AGENTS.md` 文件使用 YAML frontmatter 后跟 markdown 正文：
 
 ```markdown theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 ---
 name: researcher
 description: Research topics on the web before writing content
-model: anthropic:claude-haiku-4-5-20251001
+model: anthropic:claude-haiku-5-5
 ---
 
 You are a research assistant with access to web search.
@@ -67,13 +67,13 @@ You are a research assistant with access to web search.
 
 ## 示例：具有成本效益的子代理
 
-使用更便宜、更快的模型来执行简单的委托任务，同时将主代理保持在更强大的模型上：
+使用更便宜、更快的模型来执行简单的委托任务，同时使主代理保持在更强大的模型上：
 
 ```markdown theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 ---
 name: general-purpose
 description: General-purpose agent for research and multi-step tasks
-model: anthropic:claude-haiku-4-5-20251001
+model: anthropic:claude-haiku-5-5
 ---
 
 You are a general-purpose assistant. Complete the task efficiently and return a concise summary.

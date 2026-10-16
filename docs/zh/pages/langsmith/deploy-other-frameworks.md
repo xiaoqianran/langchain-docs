@@ -128,7 +128,7 @@ LangSmith 部署运行任何框架。对于不是基于 Deep Agents、LangChain 
         from claude_agent_sdk import ClaudeAgentOptions
 
         options = ClaudeAgentOptions(
-            model="claude-sonnet-4-6",
+            model="claude-sonnet-5-5",
             system_prompt="You are a helpful assistant.",
         )
         ```
@@ -359,7 +359,7 @@ LangSmith 部署运行任何框架。对于不是基于 Deep Agents、LangChain 
     configure_claude_agent_sdk()
 
     options = ClaudeAgentOptions(
-        model="claude-sonnet-4-6",
+        model="claude-sonnet-5-5",
         system_prompt="You are a helpful assistant.",
     )
 
@@ -671,7 +671,7 @@ langgraph dev
   如果`langgraph dev`报告缺少`langgraph-api`，请在同一环境中安装`langgraph-cli[inmem]`。
 </Note>
 
-该服务位于 `http://127.0.0.1:2024` 处，并在 [LangSmith Studio](/langsmith/studio) 处开放。使用`curl`发送请求：
+该服务位于 `http://127.0.0.1:2024` 并在 [LangSmith Studio](/langsmith/studio) 开放。使用`curl`发送请求：
 
 <Note>
   `langgraph dev` 可能在不同的端口上提供服务。检查终端输出中的 URL，并根据需要更新下面的 `curl` 命令。

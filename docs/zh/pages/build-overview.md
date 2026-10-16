@@ -66,7 +66,7 @@
 
     <CardGroup>
       <Card title="Deep Agents Code" href="/oss/deepagents/code/overview" icon="code">
-        基于Deep Agents SDK 构建的开源终端编码代理 (`dcode`)。在会话中切换模型、自定义技能和内存，并从 CLI 批准 shell 执行。
+        基于Deep Agents SDK 构建的开源终端编码代理 (`dcode`)。在会话中切换模型、自定义技能和内存，并批准从 CLI 执行 shell。
       </Card>
     </CardGroup>
 
@@ -167,7 +167,7 @@
         使用 LangSmith Fleet 构建并运行代理，无需代码。
       </Card>
 
-      <Card title="Engine" icon="https://mintcdn.com/langchain-5e9cc07a/DcM1RJP509SEqR6s/images/brand/engine-icon-no-bg-dark.svg?fit=max&auto=format&n=DcM1RJP509SEqR6s&q=85&s=17cb861b0ae9666e1eb0876aa6aca68a" href="/langsmith/engine-overview">
+      <Card title="Engine" icon="https://mintcdn.com/langchain-5e9cc07a/DcM1RJP509SEqR6s/images/brand/engine-icon-no-bg-dark.svg?fit=max&auto=format&n=DcM1RJP509SEqR6s&q=85&s=17cb861b0ae9666e1eb0876aa6aca68a" href="/langsmith/engine">
         使用 LangSmith 引擎自动查找并修复重复出现的代理问题。
       </Card>
 
@@ -180,7 +180,7 @@
 
     <CardGroup>
       <Card title="LangSmith setup" icon="server" href="/langsmith/langsmith-setup-overview">
-        在云上托管、BYOC 或自托管、帐户设置和管理。
+        在云、BYOC 或自托管、帐户设置和管理上托管。
       </Card>
 
       <Card title="Govern" icon="shield-check" href="/langsmith/govern-overview">

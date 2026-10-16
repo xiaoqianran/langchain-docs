@@ -53,7 +53,7 @@ OpenAIInstrumentor().instrument()
 
 ### 3. 创建并运行您的 AutoGen 应用程序
 
-配置完成后，您的 AutoGen 应用程序将自动将跟踪发送到 LangSmith。将跟踪器提供程序传递给运行时以实现完整的跟踪覆盖：
+配置完成后，您的 AutoGen 应用程序将自动将跟踪发送到LangSmith。将跟踪器提供程序传递给运行时以实现完整的跟踪覆盖：
 
 ```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 import asyncio
@@ -82,7 +82,7 @@ def percentage_change(start: float, end: float) -> float:
     return ((end - start) / start) * 100
 
 async def main():
-    model_client = OpenAIChatCompletionClient(model="gpt-5.5")
+    model_client = OpenAIChatCompletionClient(model="gpt-6-luna")
     tracer = trace.get_tracer("autogen-demo")
 
     with tracer.start_as_current_span("run_team"):

@@ -66,7 +66,7 @@ Error: creating temporary Agent Pool ... "code": "ErrCode_InsufficientVCPUQuota"
 
 **原因：** 每个 VM 系列的每个区域 vCPU 配额。 `eastus` 中的`standardDSv5Family` 默认通常为 10 个核心。 1个`Standard_D8s_v5`节点，模块默认使用8个；只剩下2个了。
 
-**为什么 `max_pods = 30` 触发它：** AKS 默认为每个节点 30 个 pod。基本安装在节点上运行 \~37 个 pod：\~17 LangSmith pod 加上 \~20 系统 pod。自动缩放程序尝试添加第二个节点，达到配额，进入退避。该模块默认设置`default_node_pool_max_pods = 60`，以便所有 Pod 都适合一个节点。检查`terraform.tfvars` 是否不会降低它。
+**为什么 `max_pods = 30` 触发它：** 基本安装运行 \~37 个 pod（\~17 LangSmith 加上 \~20 个系统），超过 AKS 默认值每个节点 30 个，因此自动缩放程序添加第二个节点，达到配额，然后退出。模块默认`default_node_pool_max_pods = 60`适合一个节点上的所有 Pod。检查`terraform.tfvars` 是否不会降低它。
 
 **多数据平面（3 个数据平面）的建议配额**：32 个核心。
 
@@ -86,20 +86,20 @@ az quota update \
 az vm list-usage --location eastus --query "[?contains(name.value,'DSv5')]" -o table
 ```
 
-**或者，如果 DSv5 配额耗尽，则切换虚拟机系列：** 设置 `default_node_pool_vm_size = "Standard_D8s_v3"` 并将 `Standard_D16s_v3` 用于 `additional_node_pools` 中的 `large` 池。相同的 vCPU 和 RAM，不同的配额池。该模块在迁移到 v5 之前默认为 DSv3 大小。一旦配额到达，就返回到 v5。不要回退到 Azure 已停用的 DSv2（`Standard_DS4_v2`、`Standard_DS5_v2`）。
+**或者，如果 DSv5 配额耗尽，则切换虚拟机系列：** 设置 `default_node_pool_vm_size = "Standard_D8s_v3"` 并将 `Standard_D16s_v3` 用于 `additional_node_pools` 中的 `large` 池。相同的 vCPU 和 RAM，不同的配额池。一旦配额到达，就返回到 v5。不要回退到 Azure 已停用的 DSv2（`Standard_DS4_v2`、`Standard_DS5_v2`）。
 
 <Note>
   `max_pods` 在现有节点池上是不可变的。将其设置在第一个`terraform apply`之前。
 </Note>
 
-### `LocationIsOfferRestricted`：Postgres 灵活服务器在该区域被阻止**症状：** AKS 创建成功，然后 Postgres 失败并显示 `Status: "LocationIsOfferRestricted"` 或 `ParameterOutOfRange: The value of the 'Version' should be in: []`。
+### `LocationIsOfferRestricted`：Postgres 灵活服务器在该区域被阻止
 
-**原因：** Azure 阻止某些订阅优惠类型（免费试用、Visual Studio 和 MSDN 积分、Azure Pass、一些赞助订阅）在高需求区域预配 PostgreSQL 灵活服务器。决定结果的是订阅类型，而不是区域。 `make preflight` 在申请开始之前报告此情况。
+**症状：** AKS 创建成功，然后 Postgres 失败并显示 `Status: "LocationIsOfferRestricted"` 或 `ParameterOutOfRange: The value of the 'Version' should be in: []`。**原因：** Azure 阻止某些订阅优惠类型（免费试用、Visual Studio 和 MSDN 积分、Azure Pass、一些赞助订阅）在高需求区域预配 PostgreSQL 灵活服务器。决定结果的是订阅类型，而不是地区。 `make preflight` 在申请开始之前报告此情况。
 
 **修复：** 按优先顺序使用以下选项之一：
 
 1. 将订阅转换为按量付费。
-2. 通过[aka.ms/postgres-request-quota-increase](https://aka.ms/postgres-request-quota-increase)申请豁免。
+2. 在[aka.ms/postgres-request-quota-increase](https://aka.ms/postgres-request-quota-increase)申请豁免。
 3. 对于开发或演示部署，设置 `postgres_source = "in-cluster"`。不适合生产。
 4. 将`terraform.tfvars`更改为`location`。 Postgres 必须与 VNet 位于同一区域，因此整个部署会移动。
 
@@ -107,13 +107,13 @@ az vm list-usage --location eastus --query "[?contains(name.value,'DSv5')]" -o t
 
 **症状：** 应用构建资源组、VNet 和 AKS，然后在灵活服务器上失败，并出现命名 vCPU 系列和区域的配额错误，例如 `eastus` 中的 `standardDDSv5Family`。
 
-**原因：** Postgres 灵活服务器利用 `Microsoft.Compute` 每个系列 vCPU 配额。新订阅通常会以 0 的限制运送某些系列。`make preflight` 将 `postgres_sku_name` 映射到其系列，并在应用开始之前因零限制而失败。**修复：** 请求增加 [aka.ms/postgres-request-quota-increase](https://aka.ms/postgres-request-quota-increase)，或将 `postgres_sku_name` 设置为具有配额的系列中的 SKU：
+**原因：** Postgres 灵活服务器利用 `Microsoft.Compute` 每个系列 vCPU 配额。新订阅通常会以 0 的限制运送某些系列。`make preflight` 将 `postgres_sku_name` 映射到其系列，并在应用开始之前因零限制而失败。
+
+**修复：** 请求增加 [aka.ms/postgres-request-quota-increase](https://aka.ms/postgres-request-quota-increase)，或将 `postgres_sku_name` 设置为具有配额的系列中的 SKU：
 
 ```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 az vm list-usage -l eastus --only-show-errors --query "[?limit=='0'].name.value" -o tsv
-```
-
-### `AuthorizationFailed` 于 `roleAssignments/write`
+```### `AuthorizationFailed` 于 `roleAssignments/write`
 
 **症状：** 资源创建正常，然后角色分配失败并显示`does not have authorization to perform action 'Microsoft.Authorization/roleAssignments/write'`。
 
@@ -229,7 +229,7 @@ az keyvault secret list --vault-name <vault> --query "length(@)"
 **原因：** `ingress_controller` 默认值从 `nginx` 更改为 `envoy-gateway`。从未设置变量的部署仍然运行 ingress-nginx，并且应用新的默认值将删除 ingress-nginx 及其负载均衡器，从而更改公共 IP。保护脚本会停止运行，直到您选择为止。
 
 **修复：** 将 `ingress_controller` 设置为 `terraform.tfvars`：* 保留NGINX：`ingress_controller = "nginx"`。
-* 要移动到 Envoy Gateway：`ingress_controller = "envoy-gateway"`，然后连续运行 `make apply`、`make init-values` 和 `make deploy`。在部署完成之前，无法从应用程序访问LangSmith。更新指向旧 IP 的任何 DNS A 记录。
+* 要移动到 Envoy Gateway：`ingress_controller = "envoy-gateway"`，然后连续运行 `make apply`、`make init-values` 和 `make deploy`。在部署完成之前，无法从应用程序访问LangSmith。更新指向旧 IP 的所有 DNS A 记录。
 
 ## 申请阶段
 
@@ -245,7 +245,7 @@ az keyvault secret list --vault-name <vault> --query "length(@)"
 
 **症状：** `nslookup langsmith-demo.eastus.cloudapp.azure.com` 返回 NXDOMAIN。证书管理器 ACME 挑战无法完成； TLS 证书仍为 `READY: False`。
 
-**原因：** 必须在入口控制器的 LoadBalancer 服务上设置 `service.beta.kubernetes.io/azure-dns-label-name` 注释，以便 Azure 将 DNS 标签分配给公共 IP。 `make deploy` 通过`deploy.sh` 自动设置。如果您直接运行 `helm upgrade`，则永远不会设置注释。
+**原因：** 仅当入口控制器的 LoadBalancer 服务带有 `service.beta.kubernetes.io/azure-dns-label-name` 注释时，Azure 才会将 DNS 标签分配给公共 IP。 `make deploy` 设置它；直接的`helm upgrade`则不然。
 
 **使用 `ingress_controller = "envoy-gateway"`（默认）修复：** EnvoyProxy `langsmith-proxy` 携带注释，Envoy Gateway 将其复制到代理服务上。检查两者：
 
@@ -282,7 +282,7 @@ kubectl delete certificate langsmith-tls -n langsmith
 1. **网关标签错误。** 具有 `ingressClassName: istio` 的 Kubernetes Ingress 目标是具有标签 `istio: ingressgateway` 的 pod。 AKS 托管外部网关使用 `istio: aks-istio-ingressgateway-external`。
 2. **TLS 密钥位于错误的命名空间中。** Istio SDS 从网关 pod 命名空间 (`aks-istio-ingress`) 读取，而不是应用程序命名空间 (`langsmith`)。
 
-**修复：** `make deploy` 在当前脚本中自动处理两者。如果手动部署，请创建一个针对 `istio: aks-istio-ingressgateway-external` 的 Istio `Gateway`，将 `langsmith-tls` 同步到 `aks-istio-ingress` 命名空间，并创建到 LangSmith 前端的 `VirtualService` 路由。有关完整的 YAML，请参阅 [TROUBLESHOOTING.md source](https://github.com/langchain-ai/terraform/blob/main/modules/azure/TROUBLESHOOTING.md)。
+**修复：** `make deploy` 在当前脚本中自动处理两者。如果手动部署，请创建一个以 `istio: aks-istio-ingressgateway-external` 为目标的 Istio `Gateway`，将 `langsmith-tls` 同步到 `aks-istio-ingress` 命名空间，并创建到 LangSmith 前端的 `VirtualService` 路由。有关完整的 YAML，请参阅 [TROUBLESHOOTING.md source](https://github.com/langchain-ai/terraform/blob/main/modules/azure/TROUBLESHOOTING.md)。
 
 ### `letsencrypt-prod` ClusterIssuer 缺失**症状：** `kubectl describe certificate langsmith-tls -n langsmith` 显示`clusterissuers.cert-manager.io "letsencrypt-prod" not found`。
 
@@ -341,7 +341,7 @@ make deploy
 
 ### `make deploy` 失败：`does not resolve to the chart 0.17 line`
 
-**原因：** `CHART_VERSION` 环境变量或 `langsmith_helm_chart_version` 命名 0.17 线之外的图表，例如早期部署留下的 0.16 版本。 `v0.17.*`模块标签仅部署图表0.17。
+**原因：** `CHART_VERSION` 环境变量或 `langsmith_helm_chart_version` 命名 0.17 线之外的图表，例如早期部署留下的 0.16 版本。 `v0.17.*` 模块标签仅部署图表 0.17。
 
 **修复：** 清除两者以获取最新的 0.17 补丁 (`unset CHART_VERSION`)，或命名 0.17 补丁，例如 `0.17.0`。要停留在图表 0.16 上，请查看 `v0.16.*` 模块标签。
 
@@ -418,7 +418,7 @@ kubectl exec -n langsmith deploy/langsmith-frontend -- env | grep POLLY
 
 ### 启用 LangSmith 部署后，`listener` 和 `operator` Pod 永远不会出现
 
-**原因：** 设置了`config.deployment.url`，但省略了`config.deployment.enabled: true`。当 `enabled` 为 false（默认值）时，图表会自动跳过创建 `listener` 和 `operator`。
+**原因：** 设置了`config.deployment.url`，但省略了`config.deployment.enabled: true`。当 `enabled` 为 false（默认值）时，图表会默默地跳过创建 `listener` 和 `operator`。
 
 **修复：** 在 `deployment` 块内添加 `enabled: true`：
 
@@ -429,7 +429,7 @@ config:
     url: "https://<your-hostname>"
 ```
 
-### 重复的顶级`config:`键会默默地删除值**原因：** YAML 不允许重复的顶级键。第二个`config:`块默默地掉落其中一个。
+### 重复顶级`config:`键会默默地删除值**原因：** YAML 不允许重复的顶级键。第二个`config:`块默默地掉落其中一个。
 
 **修复：** 始终在现有 `config:` 键内添加新的配置块。使用`helm get values langsmith -n langsmith`进行验证。
 
@@ -438,15 +438,17 @@ config:
 首次使用后更改 `deployments_encryption_key`、`agent_builder_encryption_key`、`insights_encryption_key` 或 `polly_encryption_key` 会永久损坏其保护的数据。没有恢复。
 
 * 请勿旋转这些钥匙。
-* 不要在`values-overrides.yaml`中内联设置`config.agentBuilder.encryptionKey`、`fleet.encryptionKey`、`insights.encryptionKey`或`polly.encryptionKey`。该图表从 `langsmith-config-secret` 到 `existingSecretName` 读取它们。设置内联会覆盖秘密引用。
+* 不要在 `values-overrides.yaml` 中内联设置 `config.agentBuilder.encryptionKey`、`fleet.encryptionKey`、`insights.encryptionKey` 或 `polly.encryptionKey`。该图表从 `langsmith-config-secret` 到 `existingSecretName` 读取它们。设置内联会覆盖秘密引用。
 
 CrashLoopBackOff 中的 ### `fleet-tool-server` 或 `polly`
 
 **症状：** Pod 无限期地重新启动。没有回溯。日志反复显示“子进程死亡”。
 
-**原因：** `lc_config.settings.SharedSettings` 在 uvicorn Worker 内的模块导入时实例化。在那里升起的 pydantic `ValidationError` 退出了工人，代码为 0； uvicorn 的父进程打印“子进程死亡”，但吞掉了回溯。常见触发器：`BASIC_AUTH_ENABLED = true`但`BASIC_AUTH_JWT_SECRET`为空，或者`langsmith-config`中缺少所需的功能标记键。
+**原因：** 导入时的设置验证错误会以代码 0 退出 uvicorn 工作线程，并且父进程吞掉回溯。常见触发器：`BASIC_AUTH_ENABLED = true`但`BASIC_AUTH_JWT_SECRET`为空，或者`langsmith-config`中缺少所需的功能标记键。
 
-通过在调试 Pod 中运行服务器并使用 `envFrom` 指向 `langsmith-config` 和 `PYTHONUNBUFFERED=1` 来进行**诊断**。 **修复：** 将丢失的密钥添加到 Key Vault，重新运行 `make k8s-secrets`，重新启动部署。## 工作负载身份
+通过在调试 Pod 中运行服务器并使用 `envFrom` 指向 `langsmith-config` 和 `PYTHONUNBUFFERED=1` 来进行**诊断**。 **修复：** 将丢失的密钥添加到 Key Vault，重新运行 `make k8s-secrets`，重新启动部署。
+
+## 工作负载身份
 
 ### Pod 恐慌：`AADSTS700213: No matching federated identity record found`
 
@@ -458,11 +460,9 @@ DefaultAzureCredential: failed to acquire a token.
 WorkloadIdentityCredential authentication failed.
   AADSTS700213: No matching federated identity record found for presented assertion subject
   'system:serviceaccount:langsmith:langsmith-<service>'
-```
+```**原因：** Pod 的 Kubernetes ServiceAccount 在 Azure 托管标识上没有联合凭据。每个访问 Blob 存储的 pod 都需要一个。
 
-**原因：** Pod 的 Kubernetes ServiceAccount 在 Azure 托管标识上没有联合凭据。每个访问 Blob 存储的 pod 都需要一个。
-
-**修复：** 将缺少的ServiceAccount添加到`infra/modules/k8s-cluster/main.tf`中的`service_accounts_for_workload_identity`。该模块将图表全名传递为 `var.langsmith_release_name`：当包含 `langsmith` 时为发布名称，否则为 `<release>-langsmith`。 `v0.17.*`模块标签列表：
+**修复：** 将缺少的ServiceAccount添加到`infra/modules/k8s-cluster/main.tf`中的`service_accounts_for_workload_identity`。该模块将图表全名传递为`var.langsmith_release_name`：当包含`langsmith`时为发布名称，否则为`<release>-langsmith`。 `v0.17.*`模块标签列表：
 
 ```hcl theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 service_accounts_for_workload_identity = [
@@ -504,7 +504,7 @@ kubectl rollout restart deployment/langsmith-<service> -n langsmith
 3. make clean       ← local secrets and generated files (LAST)
 ```
 
-`make uninstall` 在删除命名空间之前询问，默认答案为“否”。回答`y` 删除命名空间及其中剩余的所有内容。
+`make uninstall` 在删除命名空间之前会询问，默认答案是“否”。回答 `y` 将删除命名空间及其中剩余的所有内容。
 
 **tfstate消失后恢复**
 
@@ -519,7 +519,7 @@ az group show --name langsmith-rg-<name_prefix> 2>&1 | grep -E "provisioningStat
 
 **原因：** Terraform 不跟踪入口控制器的 LoadBalancer 服务的 Azure 负载均衡器（`envoy-gateway` 的 Envoy 代理服务、`nginx` 的 `ingress-nginx-controller`）。当 LB 保留子网引用时，Azure 会阻止 VNet 删除。
 
-**修复：** 首先运行 `make uninstall`。使用`envoy-gateway`，它会删除网关，从而删除代理服务及其负载均衡器。使用`nginx`，还要卸载 ingress-nginx。
+**修复：** 首先运行`make uninstall`。使用`envoy-gateway`，它会删除网关，从而删除代理服务及其负载均衡器。使用`nginx`，还要卸载 ingress-nginx。
 
 ```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 make uninstall
@@ -540,12 +540,12 @@ make destroy
 kubectl delete job langsmith-agent-bootstrap -n langsmith --ignore-not-found
 ```
 
-### `listener` pod OOMKilled**原因：** `make deploy` 在附加叠加层之后加载大小调整文件，因此其侦听器限制胜过 `langsmith-values-agent-deploys.yaml` 叠加层。 `dev` 和 `production` 配置文件将侦听器限制在 `2Gi`，而 `minimum` 将其限制在 `1536Mi`。持续部署负载可能会超过该限制。
+### `listener` pod OOMKilled**原因：** `make deploy` 在附加叠加层之后加载大小调整文件，因此其侦听器限制胜过 `langsmith-values-agent-deploys.yaml` 叠加层。 `dev` 和 `production` 配置文件将侦听器上限设置为 `2Gi`，而 `minimum` 将其上限设置为 `1536Mi`。持续部署负载可能会超过该限制。
 
-**修复：** 在`terraform.tfvars`中设置`sizing_profile = "production-large"`，这会为侦听器提供`4Gi`，然后运行`make init-values`和`make deploy`。要保留您的个人资料，请在 `helm/values/langsmith-values-sizing-<profile>.yaml`​​ 中加注 `listener.deployment.resources.limits.memory` 并运行 `make deploy`。 `make init-values` 再次复制尺寸文件，因此每次运行后重复编辑。
+**修复：** 在`terraform.tfvars`中设置`sizing_profile = "production-large"`，这会为侦听器提供`4Gi`，然后运行`make init-values`和`make deploy`。要保留您的个人资料，请在 `helm/values/langsmith-values-sizing-<profile>.yaml` 中加注 `listener.deployment.resources.limits.memory` 并运行 `make deploy`。 `make init-values` 再次复制大小文件，因此每次运行后重复编辑。
 
 <Note>
-  该图表显示集装箱限制为`listener.deployment.resources`，而不是扁平的`listener.resources`。任何覆盖文件中的 `listener.resources` 值都会被静默忽略。
+  该图表显示集装箱限制为`listener.deployment.resources`，而不是统一的`listener.resources`。任何覆盖文件中的 `listener.resources` 值都会被静默忽略。
 </Note>
 
 ### 过时的 HPA 将 `listener` 或 `host-backend` 扩展到最大副本数
@@ -565,9 +565,9 @@ make deploy
 
 ### AGIC pod CrashLoopBackOff：AGW GET 上的 403
 
-**症状：** `ingress-appgw-deployment` 为 CrashLoopBackOff。日志：`ErrorApplicationGatewayForbidden: does not have authorization to perform action Microsoft.Network/applicationGateways/read`。**原因：** AKS 为 AGIC 加载项（`MC_` 资源组中的`ingressapplicationgateway-<cluster>`）创建托管标识。该身份是在群集配置期间创建的，但需要大约 5 分钟才能在 Microsoft Entra ID 中注册，然后角色分配才会生效。
+**症状：** `ingress-appgw-deployment` 是 CrashLoopBackOff。日志：`ErrorApplicationGatewayForbidden: does not have authorization to perform action Microsoft.Network/applicationGateways/read`。
 
-**修复：** `k8s-cluster` 模块在集群创建 (`time_sleep.agic_identity_propagation`) 后等待 300 秒，并自动创建三个所需的角色分配。如果`make apply`之后AGIC仍然是403：
+**原因：** AGIC 加载项的托管标识（`MC_` 资源组中的`ingressapplicationgateway-<cluster>`）需要大约 5 分钟的时间在 Microsoft Entra ID 中注册，然后其角色分配才会生效。**修复：** `k8s-cluster` 模块在集群创建 (`time_sleep.agic_identity_propagation`) 后等待 300 秒，并自动创建三个所需的角色分配。如果`make apply`之后AGIC仍然是403：
 
 ```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 az aks update --name <CLUSTER> --resource-group <RG> --yes
@@ -608,7 +608,7 @@ kubectl annotate ingress langsmith-ingress -n langsmith touch="$(date +%s)" --ov
 
 **原因：** 旧注释 `kubernetes.io/ingress.class: azure/application-gateway`（带斜杠）不是有效的 `ingressClassName`。 AKS 将 `IngressClass` 创建为 `azure-application-gateway`（连字符）。
 
-**修复：** 使用`ingressClassName: azure-application-gateway`。 `make init-values` 自动设置此项。
+**修复：** 使用`ingressClassName: azure-application-gateway`。 `make init-values` 自动设置。
 
 ## Istio（自我管理的 Helm）
 
@@ -616,11 +616,11 @@ kubectl annotate ingress langsmith-ingress -n langsmith touch="$(date +%s)" --ov
 
 **症状：** 连接被拒绝。 `pilot-agent request GET config_dump` 显示`LDS: PUSH resources:0`。
 
-**根本原因（必须解决所有三个问题）：**1. `meshConfig.ingressControllerMode`未设置。默认为 `DEFAULT`，它会忽略 `ingressClassName`。必须是`STRICT`。
-2. `istio` IngressClass 资源丢失。
-3. `meshConfig.ingressClass` 未设置为`istio`。
+**根本原因（必须解决所有三个问题）：**
 
-**修复：** 所有三个都是自动化的。 `meshConfig` 在 istiod Helm 版本 (Terraform) 中设置，`deploy.sh` 创建 IngressClass。手动修复：创建 IngressClass 并重新启动 istiod。
+1. `meshConfig.ingressControllerMode`未设置。默认为 `DEFAULT`，它会忽略 `ingressClassName`。必须是`STRICT`。
+2. `istio` IngressClass 资源丢失。
+3. `meshConfig.ingressClass` 未设置为`istio`。**修复：** 所有三个都是自动化的。 `meshConfig` 在 istiod Helm 版本 (Terraform) 中设置，`deploy.sh` 创建 IngressClass。手动修复：创建 IngressClass 并重新启动 istiod。
 
 ### Istio HTTPS 返回“没有可用的对等证书”
 
@@ -724,6 +724,6 @@ make status-quick   # skip the Key Vault, kubeconfig, Kubernetes, and Helm check
   </Callout>
 
   <Callout icon="edit">
-    [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/self-host-terraform-azure-troubleshooting.mdx) 或 [file an issue](https://github.com/langchain-ai/docs/issues/new/choose)。
+    [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/self-host-terraform-azure-troubleshooting.mdx) 或[file an issue](https://github.com/langchain-ai/docs/issues/new/choose)。
   </Callout>
 </div>

@@ -18,6 +18,8 @@ Integrate with text splitters using LangChain.
 
 There are several strategies for splitting documents, each with its own advantages.
 
+<PythonIntegrationComponentMap />
+
 <Tip>
   For most use cases, start with the [`RecursiveCharacterTextSplitter`](/oss/python/integrations/splitters/recursive_text_splitter). It provides a solid balance between keeping context intact and managing chunk size. This default strategy works well out of the box, and you should only consider adjusting it if you need to fine-tune performance for your specific application.
 </Tip>

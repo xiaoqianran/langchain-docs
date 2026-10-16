@@ -8,13 +8,6 @@
 
 了解 [Azure Terraform modules](https://github.com/langchain-ai/terraform/tree/main/modules/azure) 的配置以及各部分如何组合在一起，以便您可以在运行 `make apply` 之前调整、保护和自定义您的 LangSmith 部署。
 
-在规划部署或对现有部署进行故障排除时，请使用此页面作为参考。它涵盖：
-
-* 平台层和部署层（最低层、开发层和生产层）。
-* 网络、工作负载身份和秘密流。
-* 附加组件：LangSmith 部署、舰队、Insights、Polly 和 LLM 网关。
-* 入口控制器、资源大小和可选模块。
-
 如果您准备好安装，请从[deployment walkthrough](/langsmith/self-host-terraform-azure-deploy)开始。
 
 ## 平台层
@@ -290,7 +283,7 @@ graph TB
 |控制器|变量| DNS 标签支持 |笔记|
 | - | - | - | - |
 | `nginx` | `ingress_controller = "nginx"` |是的 | NGINX 通过 Helm，标准 Kubernetes Ingress。 |
-| `istio-addon` | `ingress_controller = "istio-addon"` |是的 | AKS 管理的 Istio 服务网格。使用 `istio_addon_revision` 固定修订版本。 |
+| `istio-addon` | `ingress_controller = "istio-addon"` |是的 | AKS 管理的 Istio 服务网格。使用 `istio_addon_revision` 固定修订版。 |
 | `istio` | `ingress_controller = "istio"` |是的 |通过 Helm 自我管理 Istio。完全控制修订和配置。 |
 | `agic` | `ingress_controller = "agic"` |是的 | Azure 应用程序网关 v2 + AKS 管理的 `ingress_application_gateway` 附加组件。网关运行`Standard_v2`； `create_waf = true` 将其移至 `WAF_v2` 并附加 WAF 策略。仅 HTTP、带有自定义域的 `dns01` 或带有您自己的证书的 `existing`。 |
 | `envoy-gateway` *（默认）* | `ingress_controller = "envoy-gateway"` |是的 |本机网关 API。使用`envoyproxy/gateway-helm`。 |
@@ -311,9 +304,9 @@ graph TB
 
 ### AKS 节点池
 
-|泳池|虚拟机大小 | vCPU |内存|最小|最大|目的|
+|泳池|虚拟机大小 | vCPU |内存 |最小 |最大|目的|
 | - | - | - | - | - | - | - |
-|默认| `Standard_D8s_v5` | 8 | 32GB| 1 | 10 | 10核心LangSmith，系统 Pod（生产时至少设置 3 个）|
+|默认 | `Standard_D8s_v5` | 8 | 32GB| 1 | 10 | 10核心 LangSmith，系统 Pod（生产时至少设置 3 个）|
 |大| `Standard_D16s_v5` | 16 | 16 64GB| 0 | 2 | ClickHouse（集群内），LangSmith 部署代理 Pod |<Note>
   ClickHouse（在集群中时）根据配置文件请求 1 到 4 个 CPU 和 2 到 16 GB RAM。对于 [LangChain Managed ClickHouse](/langsmith/langsmith-managed-clickhouse)，仅 LangSmith 部署操作员生成的代理 Pod 才需要 `large` 池。
 </Note>
@@ -333,7 +326,7 @@ graph TB
 
 <div>
   <Callout icon="terminal-2">
-    [Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
+    [Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时答复。
   </Callout>
 
   <Callout icon="edit">

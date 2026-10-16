@@ -6,6 +6,8 @@ Filesystem backends for Deep Agents.
 
 Browse available filesystem backends for Deep Agents or contribute your own to the ecosystem. Learn more about how backends work in the [backends docs](/oss/python/deepagents/backends).
 
+<PythonIntegrationComponentMap />
+
 ## Share your backend
 
 Custom backends connect Deep Agents to storage systems such as databases, object stores, and virtual filesystems. Share yours with the community:

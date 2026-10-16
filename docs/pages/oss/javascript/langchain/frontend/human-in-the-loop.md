@@ -15,6 +15,10 @@ durable. A user can refresh the page, a reviewer can answer from a different
 component, and the agent still resumes from the exact point where execution
 stopped instead of replaying the whole run.
 
+<Note>
+  This page uses the default batched interrupt mode. For per-call interrupts (`interruptMode: "per_call"`), see [Pause once per tool call](/oss/javascript/langchain/human-in-the-loop#pause-once-per-tool-call).
+</Note>
+
 <PatternEmbed />
 
 ## How interrupts work

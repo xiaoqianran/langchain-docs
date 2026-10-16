@@ -8,7 +8,7 @@
 
 ## 服务器基础设施
 
-除了[Agent Server](/langsmith/agent-server)本身之外，每个服务器的以下基础设施组件也包含在“数据平面”的广泛定义中：
+除了[Agent Server](/langsmith/agent-server)本身之外，每个服务器的以下基础设施组件也包含在“数据平面”的广义定义中：
 
 * **PostgreSQL**：用户、运行和内存数据的持久层。
 * **Redis**：工作人员的通信和临时元数据。
@@ -51,13 +51,15 @@
 2. 内存利用率
 3.待处理（进行中）数量[runs](/langsmith/runs)
 
-对于 CPU 利用率，自动缩放器的目标是 75% 利用率。这意味着自动缩放器将增加或减少容器数量，以确保 CPU 利用率达到或接近 75%。对于内存利用率，自动缩放器的目标也是 75% 的利用率。
+对于 CPU 利用率，自动缩放程序的目标是 75% 利用率。这意味着自动缩放器将增加或减少容器数量，以确保 CPU 利用率达到或接近 75%。对于内存利用率，自动缩放器的目标也是 75% 的利用率。
 
 对于挂起运行的数量，自动缩放器的目标是 10 个挂起运行。例如，如果当前容器数量为 1，但挂起运行的数量为 20，则自动缩放程序会将部署扩展到 2 个容器（20 个挂起运行 / 2 个容器 = 每个容器 10 个挂起运行）。
 
-每个指标都是独立计算的，自动缩放器将根据导致容器数量最多的指标来确定缩放操作。这些指标并不都适用于每种容器类型。 [Queue workers](/langsmith/agent-server#runtime-architecture) 根据待处理的运行计数进行扩展 - 当积压的工作量增加时，更多的工作人员会启动以耗尽它。 [API servers](/langsmith/agent-server#runtime-architecture) 可扩展 CPU 和内存，响应客户端请求量。这意味着运行提交的激增不会减慢读取操作（例如获取线程状态）。有关自托管配置的详细信息，请参阅[Configure Agent Server for scale](/langsmith/agent-server-scale)。
+每个指标都是独立计算的，自动缩放器将根据导致容器数量最多的指标来确定缩放操作。这些指标并不都适用于每种容器类型。 [Queue workers](/langsmith/agent-server#runtime-architecture) 根据待处理的运行计数进行扩展 - 当积压的工作量增加时，更多的工作人员会启动以耗尽它。 [API servers](/langsmith/agent-server#runtime-architecture) CPU 和内存扩展，响应客户端请求量。这意味着运行提交的激增不会减慢读取操作（例如获取线程状态）。有关自托管配置的详细信息，请参阅[Configure Agent Server for scale](/langsmith/agent-server-scale)。
 
-缩减规模行动会延迟 30 分钟，然后再采取任何行动。换句话说，如果自动缩放程序决定缩小部署规模，它将首先等待 30 分钟，然后再缩小规模。 30 分钟后，将重新计算指标，如果重新计算的指标导致容器数量少于当前数量，则部署将缩小。否则，部署仍会扩大。此“冷却”期可确保部署不会过于频繁地扩展和缩减。
+在自承载数据平面上，CPU 触发器与上述利用率目标不同。该运算符将绝对 CPU 目标设置为 CPU 限制的 50%：对于队列工作线程为`queue_cpu_limit`，对于 API 服务器为`cpu_limit`。 CPU 请求不会影响目标。例如，`queue_cpu: 0.3` 和 `queue_cpu_limit: 1.8` 为队列工作人员提供了每个 pod 900m 的目标。
+
+要降低 CPU 请求而不更改部署扩展时间，请在 `resource_spec` 中发送请求和限制。如果忽略限制，则默认为请求的 2 倍，因此降低请求也会降低扩展目标。参见[Resource spec](/langsmith/api-ref-control-plane#resource-spec)。缩减规模行动会延迟 30 分钟，然后再采取任何行动。换句话说，如果自动缩放程序决定缩小部署规模，它将首先等待 30 分钟，然后再缩小规模。 30 分钟后，将重新计算指标，如果重新计算的指标导致容器数量少于当前数量，则部署将缩小。否则，部署仍会扩大。此“冷却”期可确保部署不会过于频繁地扩展和缩减。
 
 ### MongoDB 检查点
 
@@ -65,13 +67,13 @@
   适用于 [Cloud](/langsmith/cloud)（具有外部管理的 MongoDB 实例）和 [Standalone](/langsmith/deploy-standalone-server) 部署。
 </Info>
 
-您可以使用 MongoDB 作为检查点存储的替代后端。配置后，MongoDB 仅处理检查点数据 - 所有其他服务器资源仍然需要 PostgreSQL。请参阅[Configure checkpointer backend](/langsmith/configure-checkpointer) 了解设置说明。
+您可以使用 MongoDB 作为检查点存储的替代后端。配置后，MongoDB 仅处理检查点数据 - 所有其他服务器资源仍然需要 PostgreSQL。
+
+请参阅 [Configure checkpointer backend](/langsmith/configure-checkpointer) 了解设置说明。
 
 ### LangSmith 追踪
 
-代理服务器自动配置为将跟踪发送到LangSmith。有关每个部署选项的详细信息，请参阅下表。
-
-|云|混合动力|自托管 |
+代理服务器自动配置为将跟踪发送到LangSmith。有关每个部署选项的详细信息，请参阅下表。|云|混合动力|自托管 |
 | - | - | - |
 |需要<br />追踪到LangSmith SaaS。 |可选<br />禁用跟踪或跟踪到LangSmith SaaS。 |可选<br />禁用跟踪，跟踪到LangSmith SaaS，或跟踪到自托管LangSmith。 |
 
@@ -85,7 +87,9 @@
 
 ### 许可
 
-代理服务器自动配置为执行许可证密钥验证。有关每个部署选项的详细信息，请参阅下表。|云|混合动力|自托管 |
+代理服务器自动配置为执行许可证密钥验证。有关每个部署选项的详细信息，请参阅下表。
+
+|云|混合动力|自托管 |
 | - | - | - |
 | LangSmith API 密钥已根据 LangSmith SaaS 进行验证。 | LangSmith API 密钥已根据 LangSmith SaaS 进行验证。 |气隙许可证密钥或针对LangSmith SaaS 进行验证的平台许可证密钥。 |
 

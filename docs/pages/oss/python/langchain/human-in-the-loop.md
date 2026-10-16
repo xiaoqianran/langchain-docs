@@ -21,6 +21,7 @@ The [middleware](/oss/python/langchain/middleware/built-in#human-in-the-loop) de
 | 💬 `respond` | Return the human's message directly as a synthetic tool result, skipping execution, for "ask user" style tools. | Answer an `"ask_user"` prompt with a direct reply |
 
 The available decision types for each tool depend on the policy you configure in `interrupt_on`.
+
 When multiple tool calls are paused at the same time, each action requires a separate decision.
 
 In the default batched mode, provide decisions in the same order as the actions appear in the interrupt request. In [per-call mode](#pause-once-per-tool-call), each tool call has its own interrupt and takes one decision.

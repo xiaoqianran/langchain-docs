@@ -17,7 +17,7 @@
 后备链具有：
 
 * **主模型**：请求失败时触发链的提供者和模型。
-* **一到五个后备**：直接提供者模型的有序列表或已保存的[model configurations](/langsmith/model-configurations)。
+* **一到五个后备**：直接提供者模型的有序列表或保存的[model configurations](/langsmith/model-configurations)。
 * **触发器**：将请求移至下一个模型的上游 HTTP 状态代码。例如，使用 `429` 进行速率限制，或使用 `500`、`502`、`503` 和 `504` 进行提供商错误。
 
 对于每个请求，网关：1. 调用由请求的提供者前缀模型 ID 选择的主模型。
@@ -27,7 +27,7 @@
 
 后备模型可以使用与主要模型不同的提供程序和 API 格式。网关在 [supported API formats](/langsmith/llm-gateway-api-formats) 之间转换请求和响应，因此 Anthropic 主节点可以回退到 OpenAI 模型，而无需客户端更改。
 
-每次尝试都会被跟踪并分别针对 [spend policies](/langsmith/llm-gateway-spend-policies) 进行计数。使用两个回退的请求会记录三个模型调用：主要尝试和两次回退尝试。
+每次尝试都会根据 [spend policies](/langsmith/llm-gateway-spend-policies) 单独进行跟踪和计数。使用两个回退的请求会记录三个模型调用：主要尝试和两次回退尝试。
 
 ## 创建后备链
 
@@ -90,7 +90,7 @@
 您可以添加两种类型的后备候选项：
 
 * **直接提供商模型**：选择支持的网关提供商和模型。此选项使用该提供程序的工作区密钥，或使用符合条件的托管模型的网关积分。
-* **模型配置**：选择已保存的[model configuration](/langsmith/model-configurations)。将此选项用于自定义 OpenAI 兼容或 Anthropic 端点、自定义模型名称或特定于配置的参数。
+* **模型配置**：选择已保存的[model configuration](/langsmith/llm-gateway-model-configurations)。将此选项用于自定义 OpenAI 兼容或 Anthropic 端点、自定义模型名称或特定于配置的参数。
 
 后备链可以使用其所选工作区或组织中的模型配置。如果两个范围都包含同名的配置，LLM Gateway 将使用工作区范围的配置，包括主模型的配置。例如，将 `anthropic/claude-opus-5` 配置为主要模型，将 `openai/gpt-5.4-mini` 配置为第一个后备模型，并将保存的 OpenAI 兼容模型配置配置为第二个后备模型。应用程序继续请求`anthropic/claude-opus-5`；网关在需要时选择并转换后备调用。
 
@@ -98,6 +98,7 @@
 
 * [API formats](/langsmith/llm-gateway-api-formats)：查看支持的请求格式和翻译行为。
 * [Spend policies](/langsmith/llm-gateway-spend-policies)：在后备路由的同时应用成本限制。
+* [Custom model configurations](/langsmith/llm-gateway-model-configurations)：通过`custom/<name>`通过网关调用已保存的配置。
 
 ***
 

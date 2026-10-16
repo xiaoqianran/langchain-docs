@@ -55,7 +55,7 @@ class UserDetail(BaseModel):
 
 
 user = client.chat.completions.create(
-    model="gpt-5.4-mini",
+    model="gpt-6-luna",
     response_model=UserDetail,
     messages=[
         {"role": "user", "content": "Extract Jason is 25 years old"},
@@ -72,7 +72,7 @@ user = client.chat.completions.create(
 @traceable(name="Extract User Details")
 def my_function(text: str) -> UserDetail:
     return client.chat.completions.create(
-        model="gpt-5.4-mini",
+        model="gpt-6-luna",
         response_model=UserDetail,
         messages=[
             {"role": "user", "content": f"Extract {text}"},

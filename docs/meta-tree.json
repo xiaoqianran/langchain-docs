@@ -1199,14 +1199,20 @@
       ],
       "engine": [
         {
-          "title": "Find and fix your agent's issues with LangSmith Engine",
+          "title": "LangSmith Engine",
           "rel": "langsmith/engine.md"
         }
       ],
-      "engine-github": [
+      "engine-fix-validation": [
         {
-          "title": "Connect LangSmith Engine to GitHub",
-          "rel": "langsmith/engine-github.md"
+          "title": "Validate fixes automatically",
+          "rel": "langsmith/engine-fix-validation.md"
+        }
+      ],
+      "engine-issues": [
+        {
+          "title": "Find and fix your agent's issues with LangSmith Engine",
+          "rel": "langsmith/engine-issues.md"
         }
       ],
       "engine-notifications": [
@@ -1215,10 +1221,16 @@
           "rel": "langsmith/engine-notifications.md"
         }
       ],
-      "engine-overview": [
+      "engine-red-teaming": [
         {
-          "title": "LangSmith Engine",
-          "rel": "langsmith/engine-overview.md"
+          "title": "Proactively identify issues with Red Teaming",
+          "rel": "langsmith/engine-red-teaming.md"
+        }
+      ],
+      "engine-repositories": [
+        {
+          "title": "Connect Engine to your repository",
+          "rel": "langsmith/engine-repositories.md"
         }
       ],
       "engine-security": [
@@ -1231,6 +1243,24 @@
         {
           "title": "LangSmith Engine on Self-hosted",
           "rel": "langsmith/engine-self-hosted.md"
+        }
+      ],
+      "engine-self-hosted-github": [
+        {
+          "title": "Configure GitHub for Engine on self-hosted",
+          "rel": "langsmith/engine-self-hosted-github.md"
+        }
+      ],
+      "engine-self-hosted-model-providers": [
+        {
+          "title": "Configure model providers for Engine on self-hosted",
+          "rel": "langsmith/engine-self-hosted-model-providers.md"
+        }
+      ],
+      "engine-setup": [
+        {
+          "title": "Set up LangSmith Engine",
+          "rel": "langsmith/engine-setup.md"
         }
       ],
       "enqueue-concurrent": [
@@ -6475,6 +6505,10 @@
         {
           "title": "Context overview",
           "rel": "oss/javascript/concepts/context.md"
+        },
+        {
+          "title": "Human-in-the-loop overview",
+          "rel": "oss/javascript/concepts/human-in-the-loop.md"
         },
         {
           "title": "Memory overview",

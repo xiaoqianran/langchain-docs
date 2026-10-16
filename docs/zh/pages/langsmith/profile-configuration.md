@@ -11,7 +11,7 @@ LangSmith SDK 配置文件允许您将 [API keys](/langsmith/create-account-api-
 当您经常在 [LangSmith Cloud regions](/langsmith/cloud#regional-storage)、自托管实例或 [workspaces](/langsmith/administration-overview#workspaces) 之间切换时，或者当您希望远程运行时从已安装的文件加载相同的 SDK 配置时，请使用配置文件。
 
 <Warning>
-  配置文件可以包含 API 密钥和 OAuth 刷新令牌。不要将它们提交到源代码控制、将它们烘焙到容器映像中或在日志中打印它们。像其他凭证一样小心地存储和安装它们。
+  配置文件可以包含 API 密钥和 OAuth 刷新令牌。不要将它们提交到源代码管理、将它们烘焙到容器映像中或在日志中打印它们。像其他凭证一样小心地存储和安装它们。
 </Warning>
 
 ## 最低版本
@@ -159,7 +159,7 @@ langsmith auth login --profile dev
 langsmith auth login --api-url https://langsmith.example.com --profile self-hosted
 ```
 
-自托管 OAuth 登录需要 Helm 图表 `0.16.0` 或更高版本以及签名 JWKS。配置请参见[Enabling Remote MCP](/langsmith/langsmith-remote-mcp#enabling-remote-mcp)。否则创建 API 密钥配置文件。
+自托管 OAuth 登录需要 Helm 图表 `0.16.0` 或更高版本以及签名 JWKS。有关设置步骤，请参阅[Configure a signing JWKS](/langsmith/kubernetes#configure-a-signing-jwks)。否则创建 API 密钥配置文件。
 
 对于无头环境，禁止自动打开浏览器并传递工作区 ID：
 
@@ -188,7 +188,7 @@ langsmith auth login \
 
 显式客户端构造函数参数和环境变量优先于配置文件值。
 
-|设置|优先级 |
+|设置 |优先级 |
 | - | - |
 |端点 |构造函数 `api_url` 或 `apiUrl`，然后是 `LANGSMITH_ENDPOINT`，然后是配置文件 `api_url`，然后是默认的 LangSmith 云端点。 |
 |认证|构造函数 API 密钥，然后是 `LANGSMITH_API_KEY`，然后是配置文件 OAuth 访问令牌，然后是配置文件 `api_key`。 |

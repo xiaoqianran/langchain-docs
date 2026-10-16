@@ -8,6 +8,46 @@
 
 [Self-hosted LangSmith](/langsmith/self-hosted) is an add-on to the Enterprise plan designed for our largest, most security-conscious customers. For more details, refer to [Pricing](https://www.langchain.com/pricing). [Contact our sales team](https://www.langchain.com/contact-sales) if you want a license key to trial LangSmith in your environment.
 
+<Update label="2026-10-15">
+  ## langsmith-0.18.0-rc.30
+
+  **LangSmith version:** `0.18.11rc1`
+
+  * This release packages the same LangSmith application version as langsmith-0.18.0-rc.24. Refer to the [langsmith-0.18.0-rc.24](#langsmith-0-18-0-rc-24) release notes below.
+
+  **Download the Helm chart:** [`langsmith-0.18.0-rc.30.tgz`](https://github.com/langchain-ai/helm/releases/download/langsmith-0.18.0-rc.30/langsmith-0.18.0-rc.30.tgz)
+</Update>
+
+<Update label="2026-10-15">
+  ## langsmith-0.18.0-rc.29
+
+  **LangSmith version:** `0.18.11rc1`
+
+  * This release packages the same LangSmith application version as langsmith-0.18.0-rc.24. Refer to the [langsmith-0.18.0-rc.24](#langsmith-0-18-0-rc-24) release notes below.
+
+  **Download the Helm chart:** [`langsmith-0.18.0-rc.29.tgz`](https://github.com/langchain-ai/helm/releases/download/langsmith-0.18.0-rc.29/langsmith-0.18.0-rc.29.tgz)
+</Update>
+
+<Update label="2026-10-15">
+  ## langsmith-0.18.0-rc.28
+
+  **LangSmith version:** `0.18.11rc1`
+
+  * This release packages the same LangSmith application version as langsmith-0.18.0-rc.24. Refer to the [langsmith-0.18.0-rc.24](#langsmith-0-18-0-rc-24) release notes below.
+
+  **Download the Helm chart:** [`langsmith-0.18.0-rc.28.tgz`](https://github.com/langchain-ai/helm/releases/download/langsmith-0.18.0-rc.28/langsmith-0.18.0-rc.28.tgz)
+</Update>
+
+<Update label="2026-10-14">
+  ## langsmith-0.18.0-rc.27
+
+  **LangSmith version:** `0.18.11rc1`
+
+  * This release packages the same LangSmith application version as langsmith-0.18.0-rc.24. Refer to the [langsmith-0.18.0-rc.24](#langsmith-0-18-0-rc-24) release notes below.
+
+  **Download the Helm chart:** [`langsmith-0.18.0-rc.27.tgz`](https://github.com/langchain-ai/helm/releases/download/langsmith-0.18.0-rc.27/langsmith-0.18.0-rc.27.tgz)
+</Update>
+
 <Update label="2026-10-14">
   ## langsmith-0.18.0-rc.26
 
@@ -577,7 +617,7 @@
 
   ### LangSmith Engine
 
-  * [Engine](/langsmith/engine-overview) supports bring-your-own-key (BYOK). Find and fix agent issues while keeping data in your environment and making model calls with your own provider key.
+  * [Engine](/langsmith/engine) supports bring-your-own-key (BYOK). Find and fix agent issues while keeping data in your environment and making model calls with your own provider key.
   * Engine detects inefficient agent work to help reduce latency and LLM costs.
 
   ### LLM Gateway
