@@ -473,6 +473,7 @@ The following table shows tools that generate video, image, or audio assets:
   | [`FlashDataToolkit`](https://github.com/flashdata-dev/langchain-flashdata#readme) | <span>N/A</span> |
   | [`HuangtingFlux`](https://huangtingflux.com/integrations/langchain) | <span>N/A</span> |
   | [`KavelImageGenerator`](https://github.com/hanshs474/langchain-kavel#readme) | <span>N/A</span> |
+  | [`OpenAlexSearch`](https://github.com/ourresearch/langchain-openalex#readme) | <span>N/A</span> |
   | [`Stagehand`](/oss/python/integrations/tools/stagehand) | <span>N/A</span> |
 </div>
 

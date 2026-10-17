@@ -28,9 +28,9 @@ LangGraph 存储提供跨线程长期内存，补充了每线程检查指针持�
 以下代码片段单独显示了[InMemoryStore](https://reference.langchain.com/javascript/langchain-core/stores/InMemoryStore)，而不使用LangGraph：
 
 ```typescript theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-import { MemoryStore } from "@langchain/langgraph";
+import { InMemoryStore } from "@langchain/langgraph";
 
-const memoryStore = new MemoryStore();
+const memoryStore = new InMemoryStore();
 ```内存由 `tuple` 命名，在以下示例中为 `(<user_id>, "memories")`。命名空间可以是任意长度并代表任何内容，不必是特定于用户的。
 
 ```typescript theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}

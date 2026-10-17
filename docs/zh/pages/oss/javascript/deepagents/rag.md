@@ -4,7 +4,7 @@
 
 # 使用 Deep Agents 检索增强生成 (RAG)
 
-Deep Agents 的 RAG 模式，包括技能引导检索、评分标准以及索引 LangChain 文档、将块卸载到文件系统以及将分析委托给子代理的教程
+Deep Agents 的 RAG 模式，包括技能引导检索、标题分级以及索引 LangChain 文档、将块卸载到文件系统以及将分析委托给子代理的教程
 
 最强大的基于 LLM 的应用程序之一是复杂的问答 (Q\&A) 聊天机器人，它通过为 LLM 提供对一组数据的推理时访问来增强 LLM。
 这可能是私有数据、最新数据或不属于 LLM 训练数据的数据。
@@ -195,7 +195,7 @@ Deep Agents 的 RAG 模式，包括技能引导检索、评分标准以及索引
   ```
 </CodeGroup>
 
-<Card title="View example trace" icon="chart-line" href="https://smith.langchain.com/public/16b9c27f-3b1f-4eb2-99b1-a59eb58167c1/r">
+<Card title="View example trace" icon="chart-line" href="https://smith.langchain.com/public/df7664f6-253f-4eba-b8aa-f55b59889b5a/r">
   为此示例打开公共 LangSmith 运行。
 </Card>
 
@@ -755,7 +755,6 @@ Indexed 722 chunks.
     import { StateBackend } from "deepagents";
     import { tool } from "langchain";
     import * as z from "zod";
-    import { uuid7 } from "langsmith";
 
     const backend = new StateBackend();
 
@@ -1119,8 +1118,8 @@ if (import.meta.main) {
 
 <CodeGroup>
   ```ts Google theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  import { uuid7 } from "langsmith";
   import "dotenv/config";
+  import { uuid7 } from "langsmith";
 
   import { Document } from "@langchain/core/documents";
   import { HumanMessage } from "@langchain/core/messages";
@@ -1304,8 +1303,8 @@ if (import.meta.main) {
   ```
 
   ```ts OpenAI theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  import { uuid7 } from "langsmith";
   import "dotenv/config";
+  import { uuid7 } from "langsmith";
 
   import { Document } from "@langchain/core/documents";
   import { HumanMessage } from "@langchain/core/messages";
@@ -1489,8 +1488,8 @@ if (import.meta.main) {
   ```
 
   ```ts Anthropic theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  import { uuid7 } from "langsmith";
   import "dotenv/config";
+  import { uuid7 } from "langsmith";
 
   import { Document } from "@langchain/core/documents";
   import { HumanMessage } from "@langchain/core/messages";
@@ -1674,8 +1673,8 @@ if (import.meta.main) {
   ```
 
   ```ts OpenRouter theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  import { uuid7 } from "langsmith";
   import "dotenv/config";
+  import { uuid7 } from "langsmith";
 
   import { Document } from "@langchain/core/documents";
   import { HumanMessage } from "@langchain/core/messages";
@@ -1859,8 +1858,8 @@ if (import.meta.main) {
   ```
 
   ```ts Fireworks theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  import { uuid7 } from "langsmith";
   import "dotenv/config";
+  import { uuid7 } from "langsmith";
 
   import { Document } from "@langchain/core/documents";
   import { HumanMessage } from "@langchain/core/messages";
@@ -2044,8 +2043,8 @@ if (import.meta.main) {
   ```
 
   ```ts Baseten theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  import { uuid7 } from "langsmith";
   import "dotenv/config";
+  import { uuid7 } from "langsmith";
 
   import { Document } from "@langchain/core/documents";
   import { HumanMessage } from "@langchain/core/messages";
@@ -2229,8 +2228,8 @@ if (import.meta.main) {
   ```
 
   ```ts Ollama theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  import { uuid7 } from "langsmith";
   import "dotenv/config";
+  import { uuid7 } from "langsmith";
 
   import { Document } from "@langchain/core/documents";
   import { HumanMessage } from "@langchain/core/messages";
@@ -2413,10 +2412,6 @@ if (import.meta.main) {
   }
   ```
 </CodeGroup>
-
-<Card title="View example trace" icon="chart-line" href="https://smith.langchain.com/public/9bcce461-cc36-4d39-a790-b5e02ac3da26/r">
-  为此示例打开公共 LangSmith 运行。
-</Card>
 
 ## 后续步骤
 

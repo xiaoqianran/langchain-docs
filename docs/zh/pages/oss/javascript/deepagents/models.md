@@ -52,7 +52,7 @@ Deep Agents 可与任何支持 [tool calling](/oss/javascript/langchain/models#t
 
 以 `provider:model` 格式将模型字符串传递给 [⟦T21⟧](https://reference.langchain.com/javascript/deepagents/agent/createDeepAgent)，或传递已配置的模型实例以实现完全控制。在底层，模型字符串通过 [⟦T23⟧](https://reference.langchain.com/javascript/langchain/chat_models/universal/initChatModel) 解析。
 
-要配置特定于模型的参数，请使用[⟦T24⟧](https://reference.langchain.com/javascript/langchain/chat_models/universal/initChatModel)或直接实例化提供程序模型类：
+要配置特定于模型的参数，请使用[⟦T24⟧](https://reference.langchain.com/javascript/langchain/chat_models/universal/initChatModel)或直接实例化提供者模型类：
 
 <CodeGroup>
   ```ts initChatModel theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
@@ -65,10 +65,6 @@ Deep Agents 可与任何支持 [tool calling](/oss/javascript/langchain/models#t
   const agent = createDeepAgent({ model });
   ```
 
-  <Card title="View example trace" icon="chart-line" href="https://smith.langchain.com/public/c4aae0a6-9a08-44a5-acbe-e1dcaea34f44/r">
-    为此示例打开公共 LangSmith 运行。
-  </Card>
-
   ```ts Provider package theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
   import { ChatGoogle } from "@langchain/google";
   import { createDeepAgent } from "deepagents";
@@ -79,10 +75,6 @@ Deep Agents 可与任何支持 [tool calling](/oss/javascript/langchain/models#t
   });
   const agent = createDeepAgent({ model });
   ```
-
-  <Card title="View example trace" icon="chart-line" href="https://smith.langchain.com/public/1b3ed9c3-23f0-41d3-b162-d8f32ded339b/r">
-    为此示例打开公共 LangSmith 运行。
-  </Card>
 </CodeGroup>
 
 <Note>
@@ -145,7 +137,7 @@ const result = await agent.invoke(
 );
 ```
 
-<Card title="View example trace" icon="chart-line" href="https://smith.langchain.com/public/89e1089d-632c-4338-b4bb-c019f4c18e14/r">
+<Card title="View example trace" icon="chart-line" href="https://smith.langchain.com/public/45e09f7e-1d7b-4419-856a-202e800bcb8d/r">
   为此示例打开公共 LangSmith 运行。
 </Card>
 

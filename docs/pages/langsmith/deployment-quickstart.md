@@ -11,7 +11,7 @@ This quickstart shows you how to deploy an application to LangSmith Cloud in GCP
 </Tip>
 
 <Note>
-  The `langgraph deploy` command is in **[beta](/langsmith/release-stages)**. `langgraph deploy` is not yet supported on LangSmith Cloud (SaaS) in AWS.
+  The `langgraph deploy` command is in **[beta](/langsmith/release-stages)**. On LangSmith Cloud (SaaS) in AWS, local builds require `langgraph-cli` 0.4.35 or later.
 </Note>
 
 ## Prerequisites

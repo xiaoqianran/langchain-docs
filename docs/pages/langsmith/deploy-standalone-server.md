@@ -76,7 +76,7 @@ This option gives you full control over scaling, deployment, and CI/CD pipelines
    </Tip>
 6. `LANGSMITH_API_KEY`: LangSmith API key.
 7. `LANGGRAPH_CLOUD_LICENSE_KEY`: LangSmith license key. This will be used to authenticate ONCE at server start up.
-8. `LANGSMITH_ENDPOINT`: To send traces to a [self-hosted LangSmith](/langsmith/self-hosted) instance, set `LANGSMITH_ENDPOINT` to the hostname of the self-hosted LangSmith instance. Do not add a trailing slash to the URL, as this can cause authentication errors.
+8. `LANGSMITH_ENDPOINT`: To send traces to a [self-hosted LangSmith](/langsmith/self-hosted) instance, set `LANGSMITH_ENDPOINT` to the hostname of the self-hosted LangSmith instance.
 9. Egress to `https://beacon.langchain.com` from your network. This is required for license verification and usage reporting if not running in air-gapped mode. See the [Egress documentation](/langsmith/self-host-egress) for more details.
 
 <Note>

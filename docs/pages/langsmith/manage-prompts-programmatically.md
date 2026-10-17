@@ -894,7 +894,7 @@ These conversion methods rely on logic from within LangChain integration package
 
 ## List, delete, and like prompts
 
-You can also list, delete, and like/unlike prompts using the `list prompts`, `delete prompt`, `like prompt` and `unlike prompt` methods. See the [LangSmith SDK client](https://github.com/langchain-ai/langsmith-sdk) for extensive documentation on these methods.
+You can also list, delete, and like/unlike prompts using the `list prompts`, `delete prompt`, `like prompt` and `unlike prompt` methods. See the [Python SDK](https://github.com/langchain-ai/langsmith-python) and [JavaScript SDK](https://github.com/langchain-ai/langsmith-javascript) for extensive documentation on these methods.
 
 <CodeGroup>
   ```python Python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}

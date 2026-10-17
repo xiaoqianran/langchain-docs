@@ -1,4 +1,4 @@
-<!-- langchain-docs: Enable LangSmith Deployment | https://docs.langchain.com/langsmith/deploy-self-hosted-full-platform -->
+<!-- langchain-docs: Enable LangSmith Deployment | https://docs.langchain.com/langsmith/enable-self-hosted-deployment -->
 
 # Enable LangSmith Deployment
 
@@ -352,6 +352,6 @@ Once LangSmith Deployment is enabled, see [Deploy with control plane](/langsmith
   </Callout>
 
   <Callout icon="edit">
-    [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/deploy-self-hosted-full-platform.mdx) or [file an issue](https://github.com/langchain-ai/docs/issues/new/choose).
+    [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/enable-self-hosted-deployment.mdx) or [file an issue](https://github.com/langchain-ai/docs/issues/new/choose).
   </Callout>
 </div>

@@ -30,7 +30,7 @@
 * 调用特定工具的运行。请参阅[filtering for tool calls](/langsmith/filter-traces-in-application#example-filtering-for-tool-calls)了解更多信息。
 * 与特定元数据片段匹配的运行（例如，如果您使用 `plan_type` 记录跟踪并且只想对来自企业客户的跟踪运行评估）。请参阅[adding metadata to your traces](/langsmith/add-metadata-tags)了解更多信息。
 
-评估器使用过滤器构建器，其字段和运算符与[Filter traces (ClickHouse)](/langsmith/filter-traces-in-application)中描述的相同。要处理来自早期评估器的反馈，请过滤该评估器以获取反馈键，然后过滤[include extended stats](/langsmith/evaluators#include-extended-stats)。例如，当`answer_usefulness`反馈存在时，使用`has(feedback_key, "answer_usefulness")`运行。过滤器基于反馈键，而不是生成它的评估器，因此来自具有该键的任何源的反馈都会触发代码评估器。
+评估器使用过滤器构建器，其字段和运算符与[Filter traces (ClickHouse)](/langsmith/filter-traces-in-application)中描述的相同。要处理来自早期评估器的反馈，请过滤此评估器的反馈键，然后从 `run["feedback"]` 读取分数，或从 [include extended stats](/langsmith/evaluators#include-extended-stats) 读取`run["feedback_stats"]` 分数。例如，当`answer_usefulness`反馈存在时，使用`eq(feedback_key, "answer_usefulness")`运行。过滤器基于反馈键，而不是生成它的评估器，因此来自具有该键的任何源的反馈都会触发代码评估器。欲了解更多信息，请参阅[Chain evaluators](/langsmith/evaluators#chain-evaluators)。
 
 <Tip>
   当您为评估器创建过滤器时，检查运行通常很有帮助。打开评估器配置面板后，您可以检查运行并向其应用过滤器。您应用于运行表的任何过滤器都将自动反映在评估器的过滤器中。

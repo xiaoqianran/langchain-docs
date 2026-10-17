@@ -39,16 +39,16 @@ LangSmith 有两层基于数据保留的跟踪，具有以下特征：
 默认保留层属于跟踪项目。在 [agent-based workspace](/langsmith/agents) 中，每个代理的 [environments](/langsmith/agent-environments) 都是其自己的跟踪项目，因此按环境设置层：一个代理可以在扩展保留中保存生产跟踪，在基础上保存开发跟踪。要更改整个代理的层，请在每个环境上进行设置。参见[Change project-level default retention](/langsmith/billing#change-project-level-default-retention)。
 
 ### 数据保留自动升级<Warning>
-  自动升级可能会对您的账单产生影响。请仔细阅读本节，以充分了解您预计的 LangSmith 追踪费用。
+  自动升级可能会对您的账单产生影响。请仔细阅读本节，以充分了解您预计的LangSmith追踪费用。
 </Warning>
 
 大多数迹线都使用碱基保留。某些操作（例如在线评估器和自动化规则）可以以更高的成本将跟踪延长到更长的保留期。您可以控制哪些操作可以延长保留时间。
 
 当您将某些功能与`base`层跟踪一起使用时，其数据保留可能会自动升级到`extended`层。这会增加跟踪的保留期限和成本。
 
-按操作保留行为：* **通过 API 或 SDK 反馈**：反馈通过显式传递 `extend_trace_retention=true`（TypeScript 中的`extendTraceRetention: true`）的 API 或 SDK 调用添加到跟踪（或线程中的任何跟踪）上的任何运行。有关更多信息，请参阅[Attach user feedback](/langsmith/attach-user-feedback)。 LangSmith UI 发送反馈和注释，但不会延长保留时间。
+按操作保留行为：* **通过 API 或 SDK 反馈**：反馈通过显式传递 `extend_trace_retention=true`（TypeScript 中的`extendTraceRetention: true`）的 API 或 SDK 调用添加到跟踪（或线程中的任何跟踪）上的任何运行。欲了解更多信息，请参阅[Attach user feedback](/langsmith/attach-user-feedback)。 LangSmith UI 发送反馈和注释，但不会延长保留时间。
 * **在线评估器**：在线评估器对跟踪进行评分并启用其保留设置。跟踪级和线程级评估器都可以选择退出此升级。
-* **自动化规则**：启用保留扩展的[automation rule](/langsmith/rules#create-a-rule)匹配跟踪中的任何运行。匹配单个运行会升级整个跟踪，而不仅仅是该运行。 [item type](/langsmith/rules#set-the-item-type-to-runs-or-threads) 为 **Threads** 的规则会升级匹配线程中的每个跟踪，而不仅仅是最近的跟踪。
+* **自动化规则**：启用保留扩展的 [automation rule](/langsmith/rules#create-a-rule) 与跟踪中的任何运行相匹配。匹配单个运行会升级整个跟踪，而不仅仅是该运行。 [item type](/langsmith/rules#set-the-item-type-to-runs-or-threads) 为 **Threads** 的规则会升级匹配线程中的每个跟踪，而不仅仅是最近的跟踪。
 * **手动注释队列添加**（不升级）：默认情况下，手动将运行或线程添加到 [annotation queue](/langsmith/annotation-queues#assign-runs-and-threads-to-a-single-run-queue) 不会升级保留。
 
 此更改仅适用于新操作。已通过先前操作升级的跟踪将保持其长期保留。<Note>
@@ -66,7 +66,7 @@ LangSmith 有两层基于数据保留的跟踪，具有以下特征：
 1. 我们认为，符合任何这些条件的痕迹从根本上来说比其他痕迹更有趣，因此用户能够将它们保留更长时间是有好处的。
 2. 从理念上讲，我们希望对可能无法进行有意义交互的痕迹向客户收取较低的费用。我们认为自动升级使我们的定价模型与 LangSmith 带来的价值保持一致，只有具有有意义交互的痕迹才会收取更高的费用。
 
-如果您对我们的定价模型有疑问或疑虑，请随时通过[support.langchain.com](https://support.langchain.com)联系支持人员，让我们知道您的想法！**数据保留如何影响下游功能？**
+如果您对我们的定价模型有疑问或疑虑，请随时通过[support.langchain.com](https://support.langchain.com)联系支持人员并告诉我们您的想法！**数据保留如何影响下游功能？**
 
 以下功能与保留的交互作用不同：
 
@@ -76,7 +76,7 @@ LangSmith 有两层基于数据保留的跟踪，具有以下特征：
 
 其他功能的行为独立于跟踪的保留层：
 
-* **监控**：即使基础层跟踪的数据保留期结束，监控选项卡也将继续工作。 It is powered by trace metadata that exists for >30 days, meaning that your monitoring graphs will continue to stay accurate even on `base` tier traces.
+* **监控**：即使基础层跟踪的数据保留期结束，监控选项卡也将继续工作。它由存在超过 30 天的跟踪元数据提供支持，这意味着即使在 `base` 层跟踪上，您的监控图表也将继续保持准确。
 * **数据集**：数据集具有无限的数据保留期。换句话说，如果将跟踪的输入和输出添加到数据集，它们将永远不会被删除。我们建议，如果您使用LangSmith进行数据收集，请利用数据集功能。
 
 ### 计费模型
@@ -98,7 +98,7 @@ LangSmith 有两层基于数据保留的跟踪，具有以下特征：
 
 ## 速率限制
 
-LangSmith具有速率限制，旨在确保所有用户的服务稳定性。为了保证访问和稳定性，在以下情况下，LangSmith将响应 HTTP 状态码 429，表示超出速率或使用限制：
+LangSmith具有速率限制，旨在确保所有用户的服务稳定性。为了保证访问和稳定性，在以下情况下，LangSmith将响应 HTTP 状态代码 429，表明已超出速率或使用限制：
 
 ### 我们的应用程序负载均衡器 1 分钟内的临时吞吐量限制
 
@@ -135,7 +135,7 @@ LangSmith具有速率限制，旨在确保所有用户的服务稳定性。为�
 
 ### 计划级每小时跟踪数据摄取限制此 429 是在跟踪输入、输出和元数据中获取的最大数据量达到的结果，并在 UTC 每个时钟小时开始时的固定窗口中进行评估，并在每个新小时的顶部重置。
 
-通常，输入、输出和元数据都会在运行创建和更新事件上发送。如果以 2.0MB 创建运行并在同一小时窗口内更新为 3.0MB，则相对于此限制计为 5.0MB 存储。
+通常，输入、输出和元数据都会在运行创建和更新事件上发送。如果以 2.0MB 创建运行并在同一小时窗口内更新为 3.0MB，则相对于此限制，该存储将计为 5.0MB。
 
 这是由我们的应用程序引发的，并因计划级别而异，我们的 Startup/Plus 和 Enterprise 计划级别的组织的每小时限制高于专为个人使用而设计的免费和开发人员计划级别。
 
@@ -166,27 +166,73 @@ LangSmith具有速率限制，旨在确保所有用户的服务稳定性。为�
 
 ### 运行查询端点
 
-[⟦T23⟧](/langsmith/smith-api/run/query-runs) 端点具有基于查询参数的额外每租户速率限制。详情请参阅[Query traces using the SDK](/langsmith/export-traces#rate-limits)。
+LangSmith 公开了具有不同速率限制配置文件的两个版本的运行查询端点。
 
-### 工作区邀请批量端点
+**v2（推荐）：** `POST /v2/runs/query`（Python 中的[⟦T24⟧](https://reference.langchain.com/python/langsmith/client/Client/list_runs)，JavaScript 中的[⟦T25⟧](https://reference.langchain.com/javascript/langsmith/client/Client/listRuns)）由 SmithDB 支持，并且每个 API 密钥都有统一的限制，没有时间窗口层：
 
-每个工作区的工作区邀请批量请求受到速率限制，以减少批量邀请滥用。
+| **限制** | **窗口** |
+| - | - |
+| 300 个请求 | 10 秒 |设置 `sem_filter`（语义搜索）的 API 密钥请求也限制为每个工作区每分钟 10 个请求。
 
-`POST /workspaces/current/members/batch` 端点允许每个工作区每秒 2 个请求。此限制仅适用于 LangSmith 云。
+**v1:** `POST /runs/query` 具有根据查询参数而变化的每租户速率限制：
 
-### 在您的应用程序中处理 429 响应由于某些 429 响应是临时的，并且可能会在连续调用时成功，因此如果您在应用程序中直接调用 LangSmith API，我们建议使用指数退避和抖动实现重试逻辑。
+| **查询类型** | **限制** | **窗口** |
+| - | - | - |
+|短时间窗口（≤ 7 天）| 10 个请求 | 10 秒 |
+|大时间窗口（> 7 天）| 3 个请求 | 10 秒 |
+|全文检索，时间窗口短（≤7天）| 3 个请求 | 10 秒 |
+|全文检索，大时间窗口（>7天）| 1 请求 | 10 秒 |
+|选择`child_run_ids`，短时间窗口（≤7天）| 3 个请求 | 10 秒 |
+|选择`child_run_ids`，大时间窗口（> 7天）| 1 请求 | 10 秒 |
 
-为了方便起见，使用 LangSmith SDK 构建的 LangChain 应用程序内置了此功能。
+时间窗口由`end_time - start_time`决定。如果未提供 `end_time`，LangSmith 将使用当前时间。没有 `start_time` 的查询将被视为大时间窗口查询。
+
+为了避免达到 v1 速率限制并减少查询时间：* **设置`start_time`**：省略它会触发大时间窗口层（每 10 秒 3 个请求，而不是 10 个）。尽可能使用 7 天或更短的时间窗口。
+* **使用`select`**：默认返回所有字段。仅指定您需要的字段（例如，`select=["inputs", "outputs"]`）可大大减少响应大小和查询时间。
+* **设置`limit`**：如果您不需要对所有内容进行分页，则限制结果数量。
+* **避免全文搜索**：`filter='search("...")'`具有最严格的速率限制；尽可能使用结构化过滤器（例如，`eq()`、`has()`）。
+* **避免选择`child_run_ids`**：这也会触发更严格的速率限制等级。
+
+### 运行统计端点
+
+[⟦T41⟧](/langsmith/smith-api/run/stats-runs) 端点具有每个租户的速率限制，该限制根据查询时间窗口而变化：
+
+| **查询类型** | **限制** | **窗口** |
+| - | - | - |
+|短时间窗口（≤ 14 天）| 10 个请求 | 10 秒 |
+|大时间窗口（> 14 天且 \< 90 days) | 3 requests | 10 seconds |
+| Extra-large time window (≥ 90 days) or no ⟦T42⟧ | 1 request | 10 seconds |
+
+The time window is determined by ⟦T43⟧. If ⟦T44⟧ is not provided, LangSmith uses the current time. Queries without a ⟦T45⟧ are subject to the strictest limit.
+
+In the GCP-hosted US region, API key requests to this endpoint are also limited to 1 request per 10 seconds per API key.
+
+To avoid hitting rate limits:
+
+* **Set ⟦T46⟧**: use a window of 14 days or less when possible.
+* **Avoid open-ended queries**: always provide a ⟦T47⟧ to stay in the less-restrictive tier.
+
+### Workspace invite batch endpoint
+
+Workspace invite batch requests are rate limited per workspace to reduce bulk invitation abuse.
+
+The ⟦T48⟧ endpoint allows 2 requests per second per workspace. This limit applies to LangSmith Cloud only.
+
+### Handling 429s responses in your application
+
+Since some 429 responses are temporary and may succeed on a successive call, if you are directly calling the LangSmith API in your application we recommend implementing retry logic with exponential backoff and jitter.
+
+For convenience, LangChain applications built with the LangSmith SDK has this capability built-in.
 
 <Note>
-  需要注意的是，如果端点长时间处于饱和状态，重试可能不会有效，因为您的应用程序最终将运行足够大的积压，耗尽所有重试。
-
-  如果是这样，我们愿意更具体地讨论您的需求。请通过 [LangSmith Support](https://support.langchain.com) 联系支持人员，提供有关您的应用程序吞吐量需求和示例代码的详细信息，我们可以与您合作，更好地了解最佳方法是否是修复错误、更改应用程序代码或不同的 LangSmith 计划。
+  需要注意的是，如果端点长时间处于饱和状态，重试可能不会有效，因为您的应用程序最终将运行足够大的积压，耗尽所有重试。如果是这样，我们愿意更具体地讨论您的需求。请通过 [LangSmith Support](https://support.langchain.com) 联系支持人员，提供有关您的应用程序吞吐量需求和示例代码的详细信息，我们可以与您合作，更好地了解最佳方法是否是修复错误、更改应用程序代码或不同的 LangSmith 计划。
 </Note>
 
 ## 使用限制
 
-LangSmith 允许您配置跟踪的使用限制。请注意，这些是“使用”限制，而不是“支出”限制，这意味着它们可以让您限制某些事件发生的数量，而不是您将花费的总金额。LangSmith 允许您设置两个不同的每月限额，反映了上述数据保留指南中讨论的计费指标：
+LangSmith 允许您配置跟踪的使用限制。请注意，这些是“使用”限制，而不是“支出”限制，这意味着它们可以让您限制某些事件发生的数量，而不是您将花费的总金额。
+
+LangSmith 允许您设置两个不同的每月限额，反映了上述数据保留指南中讨论的计费指标：
 
 * 所有痕迹限制
 * 扩展数据保留痕迹限制
@@ -195,14 +241,14 @@ LangSmith 允许您配置跟踪的使用限制。请注意，这些是“使用�
 
 ### 使用限制的属性
 
-使用限制是近似的，这意味着我们不保证限制的准确性。在极少数情况下，在开始应用使用限制之前，可能会在一小段时间内处理超出限制阈值的额外跟踪。
-
-### 延长数据保留痕迹限制的副作用
+使用限制是近似的，这意味着我们不保证限制的准确性。在极少数情况下，在开始应用使用限制之前，可能会在一小段时间内处理超出限制阈值的额外跟踪。### 延长数据保留痕迹限制的副作用
 
 延长数据保留跟踪限制有副作用。如果已达到限制，LangSmith 会阻止创建另一个扩展保留跟踪的操作。例如，您不能再：
 
 1. 运行延长跟踪保留时间的自动化规则
-2. 运行延长跟踪保留时间的评估器不更改跟踪保留的操作不计入延长保留跟踪限制。您仍然可以在 LangSmith UI 中提交反馈，将运行或线程添加到注释队列，并在达到限制时运行自动化规则或禁用保留扩展的评估器。
+2. 运行延长跟踪保留时间的评估器
+
+不更改跟踪保留的操作不计入延长保留跟踪限制。您仍然可以在 LangSmith UI 中提交反馈，将运行或线程添加到注释队列，并在达到限制时运行自动化规则或禁用保留扩展的评估器。
 
 ### 更新使用限制
 

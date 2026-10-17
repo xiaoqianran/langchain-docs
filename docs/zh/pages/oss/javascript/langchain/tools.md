@@ -59,10 +59,10 @@ const searchDatabase = tool(
 
 ```ts theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 import * as z from "zod";
+import { uuid7 } from "langsmith";
 import { ChatOpenAI } from "@langchain/openai";
 import { MemorySaver } from "@langchain/langgraph";
 import { createAgent, tool } from "langchain";
-import { uuid7 } from "langsmith";
 
 const getUserName = tool(
   (_, config) => {
@@ -109,7 +109,7 @@ result = await agent.invoke(
 console.log(result.messages.at(-1)?.content);
 ```
 
-<Card title="View example trace" icon="chart-line" href="https://smith.langchain.com/public/ab55241e-3982-457e-9357-a41564c847a3/r">
+<Card title="View example trace" icon="chart-line" href="https://smith.langchain.com/public/f61429d4-8472-4971-b2c3-ed4e41d859ed/r">
   为此示例打开公共 LangSmith 运行。
 </Card>
 
@@ -290,7 +290,7 @@ const getAssistantScopedData = tool(
 
 在LangChain中，工具由代理使用（例如通过[⟦T50⟧](https://reference.langchain.com/javascript/langchain/index/createAgent)），工具错误处理通过[middleware](/oss/javascript/langchain/middleware)配置。
 
-对于 LangGraph 工作流程，工具执行由 [⟦T51⟧](https://reference.langchain.com/javascript/langchain-langgraph/prebuilt/ToolNode) 处理。请参阅[ToolNode](/oss/javascript/langgraph/workflows-agents#toolnode)了解图形 API 的使用，包括工具如何访问当前图形状态和运行范围的上下文。
+对于 LangGraph 工作流程，工具执行由 [⟦T51⟧](https://reference.langchain.com/javascript/langchain-langgraph/prebuilt/ToolNode) 处理。 See [ToolNode](/oss/javascript/langgraph/workflows-agents#toolnode) for Graph API usage, including how tools can access the current graph state and run-scoped context.
 
 ### 工具返回值
 
@@ -315,7 +315,7 @@ const getWeather = tool(({ city }) => `It is currently sunny in ${city}.`, {
 });
 ```
 
-<Card title="View example trace" icon="chart-line" href="https://smith.langchain.com/public/ce2632f4-09ef-4d71-96fb-d8e61662f9ae/r">
+<Card title="View example trace" icon="chart-line" href="https://smith.langchain.com/public/04567cb5-57fc-49b6-8737-ec6828fcf20d/r">
   为此示例打开公共 LangSmith 运行。
 </Card>
 
@@ -327,7 +327,7 @@ const getWeather = tool(({ city }) => `It is currently sunny in ${city}.`, {
 
 当结果是自然可读的文本时使用此选项。
 
-#### 返回一个对象当您的工具生成模型应检查的结构化数据时，返回一个对象（例如，`dict`）。
+#### 返回一个对象Return an object (for example, a `dict`) when your tool produces structured data that the model should inspect.
 
 ```ts theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 import { tool } from "langchain";
@@ -347,7 +347,7 @@ const getWeatherData = tool(
 );
 ```
 
-<Card title="View example trace" icon="chart-line" href="https://smith.langchain.com/public/e798b200-7e02-420a-9b50-1808b2d25b7c/r">
+<Card title="View example trace" icon="chart-line" href="https://smith.langchain.com/public/7ed64816-9681-4c3b-8c1a-803dff7b5d0e/r">
   为此示例打开公共 LangSmith 运行。
 </Card>
 
@@ -355,13 +355,13 @@ const getWeatherData = tool(
 
 * 对象被序列化并作为工具输出发回。
 * 模型可以读取特定字段并对其进行推理。
-* 与字符串返回一样，这不会直接更新图状态。
+* Like string returns, this does not directly update graph state.
 
 当下游推理受益于显式字段而不是自由格式文本时，请使用此选项。
 
 #### 返回多模式内容
 
-工具不限于纯文本。当模型支持多模式工具结果时，该工具可以返回[standard content blocks](/oss/javascript/langchain/messages#standard-content-blocks)，以便模型在一个工具结果中接收文本、图像和其他媒体。
+工具不限于纯文本。 When the model supports multimodal tool results, the tool can return [standard content blocks](/oss/javascript/langchain/messages#standard-content-blocks) so the model receives text, images, and other media in one tool result.
 
 ```typescript theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 import { tool } from "langchain";
@@ -383,13 +383,13 @@ const captureScreenshot = tool(
 行为：
 
 * 返回值转换为具有多模式`content`的`ToolMessage`。
-* 工具运行后使用`message.content_blocks`读取标准化块列表。
-* 该模型必须支持您返回的模式。在返回图像、音频或视频之前检查您的[model's capabilities](/oss/javascript/integrations/chat)。
+* Use `message.content_blocks` to read the normalized block list after the tool runs.
+* The model must support the modalities you return.在返回图像、音频或视频之前检查您的[model's capabilities](/oss/javascript/integrations/chat)。
 
 有关块类型和提供商特定要求，请参阅[Multimodal messages](/oss/javascript/langchain/messages#multimodal)。
 
 #### 返回命令当工具需要更新图形状态（例如，设置用户首选项或应用程序状态）时，返回[⟦T60⟧](https://reference.langchain.com/javascript/langchain-langgraph/index/Command)。
-当`Command`以当前图为目标时，请在更新中包含工具调用ID与当前工具调用匹配的`ToolMessage`。
+当 `Command` 定位当前图形时，请在更新中包含工具调用 ID 与当前工具调用匹配的 `ToolMessage`。
 消息历史记录中的每个工具调用都必须有对应的`ToolMessage`。
 
 使用 `runtime.toolCallId` 作为 `tool_call_id` 参数。
@@ -421,7 +421,7 @@ const setLanguage = tool(
 );
 ```
 
-<Card title="View example trace" icon="chart-line" href="https://smith.langchain.com/public/57a6ece9-3cd4-436c-a15e-da77946c0e2f/r">
+<Card title="View example trace" icon="chart-line" href="https://smith.langchain.com/public/44d6ee7a-f6cf-4c15-9d19-248e28359eeb/r">
   为此示例打开公共 LangSmith 运行。
 </Card>
 
@@ -435,7 +435,7 @@ const setLanguage = tool(
 
 #### 直接从工具返回
 
-在工具上设置 return direct 以短路代理循环：代理立即将工具的输出返回给调用者，而不通过模型将其发送回以进行进一步处理。
+Set return direct on a tool to short-circuit the agent loop: the agent returns the tool's output to the caller immediately, without sending it back through the model for further processing.
 
 ```ts theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 import { ChatOpenAI } from "@langchain/openai";
@@ -468,15 +468,15 @@ const result = await agent.invoke({
 // "Order 12345 is shipped and will arrive in 2 days."
 ```
 
-<Card title="View example trace" icon="chart-line" href="https://smith.langchain.com/public/40a81784-60df-4455-861e-ddf7f4a51b2e/r">
+<Card title="View example trace" icon="chart-line" href="https://smith.langchain.com/public/648dc7a3-0190-4546-946b-14fb56a18496/r">
   为此示例打开公共 LangSmith 运行。
 </Card>
 
-行为：* 该工具正常执行，其输出包装在 `ToolMessage` 中。
+行为：* 该工具正常执行，其输出封装在 `ToolMessage` 中。
 * 代理停止循环并返回工具的输出作为最终响应，绕过任何其他模型调用。
 * **多个并行工具调用：** 当模型一步调用多个工具时，所有工具都会首先执行。所有工具完成后，仅当该批次中的**每个**工具都有 `return_direct=True` 时，代理才会路由到 `END`。最终响应包括该步骤中调用的每个工具的 `ToolMessage` 输出。
 
-在以下情况下使用此功能：
+Use this when:
 
 * 该工具的输出是完整的、可供用户使用的答案（例如，返回可立即显示的结果的查找）。
 * 当不需要额外的推理时，您希望避免额外的模型调用。
@@ -662,19 +662,15 @@ const result = await agent.invoke({
   ```
 </CodeGroup>
 
-<Card title="View example trace" icon="chart-line" href="https://smith.langchain.com/public/71c1f8da-7a0d-49eb-a57c-a83dc0eb188c/r">
-  为此示例打开公共 LangSmith 运行。
-</Card>
-
 ### 状态注入
 
 工具通过[⟦T77⟧](https://reference.langchain.com/javascript/langchain/index/Runtime)访问图状态。有关状态、上下文、存储和流 API，请参阅 [Access context](#access-context)。
 
 有关从工具访问状态、上下文和长期记忆的更多详细信息，请参阅[Access context](#access-context)。
 
-## 动态工具选择使用动态工具，代理可用的工具集在运行时修改，而不是预先定义。并非每种工具都适合每种情况。太多的工具可能会压垮模型（超载上下文）并增加错误；太少限制了能力。动态工具选择可以根据身份验证状态、用户权限、功能标志或对话阶段来调整可用的工具集。
+## 动态工具选择With dynamic tools, the set of tools available to the agent is modified at runtime rather than defined all upfront. Not every tool is appropriate for every situation. Too many tools may overwhelm the model (overload context) and increase errors; too few limit capabilities.动态工具选择可以根据身份验证状态、用户权限、功能标志或对话阶段来调整可用的工具集。
 
-根据工具是否提前已知，有两种方法：
+There are two approaches depending on whether tools are known ahead of time:
 
 <Tabs>
   <Tab title="Filtering pre-registered tools">
@@ -682,7 +678,7 @@ const result = await agent.invoke({
 
     <Tabs>
       <Tab title="State">
-        仅在某些对话里程碑后启用高级工具：
+        Enable advanced tools only after certain conversation milestones:
 
         ```typescript theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
         import { createMiddleware, tool } from "langchain";
@@ -724,7 +720,7 @@ const result = await agent.invoke({
       </Tab>
 
       <Tab title="Store">
-        根据用户偏好或商店中的功能标志过滤工具：
+        Filter tools based on user preferences or feature flags in Store:
 
         ```typescript theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
         import { createMiddleware } from "langchain";
@@ -777,7 +773,7 @@ const result = await agent.invoke({
       </Tab>
 
       <Tab title="Runtime Context">
-        根据运行时上下文中的用户权限过滤工具：
+        Filter tools based on user permissions from Runtime Context:
 
         ```typescript theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
         import * as z from "zod";
@@ -822,7 +818,7 @@ const result = await agent.invoke({
       </Tab>
     </Tabs>
 
-    这种方法在以下情况下效果最佳：* 所有可能的工具在编译/启动时都是已知的
+    This approach is best when:* 所有可能的工具在编译/启动时都是已知的
     * 您想要根据权限、功能标志或对话状态进行过滤
     * 工具是静态的，但其可用性是动态的
 

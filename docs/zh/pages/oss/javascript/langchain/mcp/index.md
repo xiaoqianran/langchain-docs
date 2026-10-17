@@ -71,7 +71,7 @@ async function main() {
 await main();
 ```
 
-<Card title="View example trace" icon="chart-line" href="https://smith.langchain.com/public/00d2cbd2-4f4b-4f31-8346-041c7412c083/r">
+<Card title="View example trace" icon="chart-line" href="https://smith.langchain.com/public/871aa85b-f22e-430a-ab74-5c9669203282/r">
   为此示例打开公共 LangSmith 运行。
 </Card>
 
@@ -106,7 +106,7 @@ await main();
   }
   ```
 
-  <Card title="View example trace" icon="chart-line" href="https://smith.langchain.com/public/38191417-0728-47c9-bede-d0544de2af17/r">
+  <Card title="View example trace" icon="chart-line" href="https://smith.langchain.com/public/e5a365b0-d712-46ca-ab53-61cb0e4e1acd/r">
     为此示例打开公共 LangSmith 运行。
   </Card><Note>
     文档 MCP 服务器是公共的，不需要 API 密钥。有关 IDE 和编码代理设置（Claude Code、Cursor 等），请参阅 [Use docs programmatically](/use-these-docs)。
@@ -160,7 +160,7 @@ try {
 }
 ```
 
-<Card title="View example trace" icon="chart-line" href="https://smith.langchain.com/public/c2129d38-77f6-42d0-ab37-d414fc067ee6/r">
+<Card title="View example trace" icon="chart-line" href="https://smith.langchain.com/public/d9a802f7-75cf-45b4-b0f6-f4a62fa06e27/r">
   为此示例打开公共 LangSmith 运行。
 </Card>
 

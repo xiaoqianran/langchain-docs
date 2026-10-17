@@ -37,7 +37,7 @@
 | GCP 美国 (`smith.langchain.com`) | `https://api.smith.langchain.com` |支持 |
 | GCP 欧盟 (`eu.smith.langchain.com`) | `https://eu.api.smith.langchain.com` |支持 |
 | GCP 亚太地区 (`apac.smith.langchain.com`) | `https://apac.api.smith.langchain.com` |支持 |
-| AWS 美国 (`aws.smith.langchain.com`) | `https://aws.api.smith.langchain.com` |尚不支持 |
+| AWS 美国 (`aws.smith.langchain.com`) | `https://aws.api.smith.langchain.com` |支持 |
 
 例如，要部署到 GCP EU：
 

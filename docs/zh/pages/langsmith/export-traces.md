@@ -4,14 +4,14 @@
 
 # 使用SDK查询轨迹
 
-查询[runs](/langsmith/observability-concepts#runs)（LangSmith迹线中的跨度数据）的推荐方法是在[SDK](https://reference.langchain.com/python/langsmith/)或[API](/langsmith/smith-api-ref)中的`/runs/query`端点中使用`list_runs`方法。 LangSmith 以[Run (span) data format](/langsmith/run-data-format) 中指定的简单格式存储跟踪。
+查询[runs](/langsmith/observability-concepts#runs)（LangSmith迹线中的跨度数据）的推荐方法是在[API](/langsmith/smith-api-ref)中的[SDK](https://reference.langchain.com/python/langsmith/)或`/runs/query`端点中使用`list_runs`方法。 LangSmith 以[Run (span) data format](/langsmith/run-data-format) 中指定的简单格式存储跟踪。
 
 此页面涵盖：
 
 * [Use filter arguments](#use-filter-arguments)：使用SDK参数进行基于关键字的过滤。
 * [Use filter query language](#use-filter-query-language)：使用LangSmith的过滤语法进行复杂查询。
 * [Query trace trees with child-run predicates](#query-trace-trees-with-child-run-predicates)：将服务器端缩小与本地子运行遍历相结合。
-* [Rate limits](#rate-limits)：每个租户的限制以及遵守其中的最佳实践。
+* [Rate limits](#rate-limits)：每个租户的限制以及遵守这些限制的最佳实践。
 
 <Note>
   如果您希望导出大量跟踪，我们建议您使用[Bulk Data Export](/langsmith/data-export)功能，因为它可以更好地处理大数据量，并支持自动重试和跨分区并行化。
@@ -857,7 +857,7 @@
 
 为了优化查询，示例：
 
-1. 查询工具运行时只选择必要的字段，以减少查询时间。
+1、查询工具运行时只选择必要的字段，以减少查询时间。
 2. 批量获取根运行，同时处理工具同时运行。
 
 <CodeGroup>
@@ -1051,26 +1051,7 @@
 
 ## 速率限制
 
-[⟦T107⟧](/langsmith/smith-api/run/query-runs) 端点（Python 中的[⟦T108⟧](https://reference.langchain.com/python/langsmith/client/Client/list_runs)，JavaScript 中的[⟦T109⟧](https://reference.langchain.com/javascript/langsmith/client/Client/listRuns)）具有根据查询参数而变化的每租户速率限制：| **查询类型** | **限制** | **窗口** |
-| - | - | - |
-|短时间窗口（≤ 7 天）| 10 个请求 | 10 秒 |
-|大时间窗口（> 7 天）| 3 个请求 | 10 秒 |
-|全文检索，时间窗口短（≤7天）| 3 个请求 | 10 秒 |
-|全文检索，大时间窗口（>7天）| 1 请求 | 10 秒 |
-|选择`child_run_ids`，短时间窗口（≤7天）| 3 个请求 | 10 秒 |
-|选择`child_run_ids`，大时间窗口（> 7天） | 1 请求 | 10 秒 |
-
-时间窗口由`end_time - start_time`决定。如果未提供 `end_time`，LangSmith 将使用当前时间。没有 `start_time` 的查询将被视为大时间窗口查询。
-
-### 最佳实践
-
-为了避免达到速率限制并减少查询时间，特别是对于具有大量输入/输出的运行：* **设置`start_time`**：省略它会触发大时间窗口速率限制层（每10秒3个请求而不是10个）。尽可能使用 7 天或更短的时间窗口。
-* **使用`select`**：默认返回所有字段。仅指定您需要的字段（例如，`select=["inputs", "outputs"]`）可以大大减少响应大小和查询时间，特别是对于具有大量输入/输出的运行。
-* **设置`limit`**：如果您不需要对所有内容进行分页，则限制结果数量。
-* **避免全文搜索**：`filter='search("...")'`具有最严格的速率限制；尽可能使用结构化过滤器（例如，`eq()`、`has()`）。
-* **避免选择`child_run_ids`**：这也会触发更严格的速率限制等级。
-
-当您超过这些限制时，API 将返回 `429 Too Many Requests` 响应。有关一般速率限制信息，请参阅[Administration overview](/langsmith/usage-and-billing#rate-limits)。
+[⟦T107⟧](/langsmith/smith-api/run/query-runs) 端点具有基于查询参数的每租户速率限制。有关完整表格和最佳实践，请参阅[Run query endpoint rate limits](/langsmith/usage-and-billing#run-query-endpoint)。
 
 ***
 

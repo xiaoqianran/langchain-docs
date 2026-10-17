@@ -302,7 +302,7 @@ cert-manager、KEDA 和 LangSmith 命名空间机密都应该就位。
 
 使用两个受支持的部署路径之一：
 
-|路径|命令|何时使用 |
+|路径|命令 |何时使用 |
 | - | - | - |
 | [Script-driven Helm deploy *(recommended)*](#script-driven-helm-deploy-recommended) | `make init-values && make deploy` |交互式输出、kubeconfig 刷新、预检检查。最适合首次部署和第二天重新部署。 |
 | [Manual Helm install](#manual-helm-install) | `helm upgrade --install langsmith langchain/langsmith ...` |直接使用`helm`，无需包装脚本。最适合拥有现有 Helm 工具的团队。 |
@@ -656,7 +656,7 @@ make deploy
 
 6. 运行 `make init-values` 重新生成没有图表 0.16 `sandboxes.juicefs.csi` 块的沙箱值。7. 运行`make deploy`。启用沙箱后，部署会停止，而沙箱卷仍通过 JuiceFS CSI 驱动程序挂载，并打印沙箱主机工作负载和 JuiceFS 声明的 `kubectl delete` 命令。运行它们，等到只剩下 `juicefs-csi-*` Pod，然后再次运行 `make deploy`。运行沙箱停止，但它们的数据保留在对象存储和 Redis 中，图 0.17 挂载相同的 JuiceFS 卷。
 
-8. 如果您在步骤 2 中固定了 `sandbox_host_machine_type`，请移除该引脚并再次运行 `make apply`。 GKE 为新机器类型重新创建每个沙箱主机节点，并且正在运行的沙箱停止。
+8. 如果您在步骤 2 中固定了 `sandbox_host_machine_type`，请移除该引脚并再次运行 `make apply`。 GKE 会为新机器类型重新创建每个沙箱主机节点，并且正在运行的沙箱会停止。
 
 如果您在自己的值中启用了 Engine，图表 0.17 还需要 `engine.usageSigningSecret`（至少 32 个字符），或者 `config.existingSecretName` 命名的 Secret 中的 `engine_usage_signing_secret` 键。
 
@@ -675,7 +675,7 @@ make deploy
 * 参考[GCP variables](/langsmith/self-host-terraform-gcp-variables)和[quick reference](/langsmith/self-host-terraform-gcp-quick-reference)。
 * 查看 [GCP architecture](/langsmith/self-host-terraform-gcp-architecture) 的模块结构、流量和工作负载身份。
 * 当出现故障时，请检查[GCP troubleshooting guide](/langsmith/self-host-terraform-gcp-troubleshooting)。
-* 使用 [LangSmith Deployment](/langsmith/deploy-self-hosted-full-platform) 在 UI 中启用代理部署。
+* 使用 [LangSmith Deployment](/langsmith/enable-self-hosted-deployment) 在 UI 中启用代理部署。
 
 ***
 

@@ -70,7 +70,7 @@
    </Tip>
 6. `LANGSMITH_API_KEY`：LangSmith API 密钥。
 7. `LANGGRAPH_CLOUD_LICENSE_KEY`：LangSmith 许可证密钥。这将用于在服务器启动时进行一次身份验证。
-8. `LANGSMITH_ENDPOINT`：要将跟踪发送到 [self-hosted LangSmith](/langsmith/self-hosted) 实例，请将 `LANGSMITH_ENDPOINT` 设置为自托管 LangSmith 实例的主机名。不要在 URL 中添加尾部斜杠，因为这可能会导致身份验证错误。
+8. `LANGSMITH_ENDPOINT`：要将跟踪发送到 [self-hosted LangSmith](/langsmith/self-hosted) 实例，请将 `LANGSMITH_ENDPOINT` 设置为自托管 LangSmith 实例的主机名。
 9. 从您的网络出口到`https://beacon.langchain.com`。如果不在气隙模式下运行，则这是许可证验证和使用报告所必需的。更多详情请参阅[Egress documentation](/langsmith/self-host-egress)。
 
 <Note>
@@ -79,9 +79,9 @@
 
 ## 库伯内特斯
 
-使用此[Helm chart](https://github.com/langchain-ai/helm/blob/main/charts/langgraph-cloud/README.md)将代理服务器部署到 Kubernetes 集群。这是生产独立服务器部署的推荐设置。Helm 图表 (v0.2.6+) 支持使用捆绑实例（开发/测试）或外部部署（生产）进行 MongoDB 检查点。在您的值文件中设置 `mongo.enabled: true`。有关完整配置详细信息，请参阅[Configure checkpointer backend](/langsmith/configure-checkpointer#deploy-by-environment)。
+使用此[Helm chart](https://github.com/langchain-ai/helm/blob/main/charts/langgraph-cloud/README.md)将代理服务器部署到 Kubernetes 集群。这是生产独立服务器部署的推荐设置。
 
-## 码头工人
+Helm 图表 (v0.2.6+) 支持使用捆绑实例（开发/测试）或外部部署（生产）进行 MongoDB 检查点。在您的值文件中设置 `mongo.enabled: true`。有关完整配置详细信息，请参阅[Configure checkpointer backend](/langsmith/configure-checkpointer#deploy-by-environment)。## 码头工人
 
 <Warning>
   此 Docker 示例旨在用于本地开发和测试。对于生产，请使用 Kubernetes 部署。
@@ -104,7 +104,7 @@ docker run \
 
   并且您应该为 `REDIS_URI`、`DATABASE_URI` 和 `LANGSMITH_API_KEY` 提供适当的值。
 
-  * 如果您的应用程序需要额外的环境变量，您可以通过类似的方式传递它们。
+  * 如果您的应用程序需要额外的环境变量，您可以以类似的方式传递它们。
 </Note>
 
 ## Docker 组合
@@ -163,7 +163,9 @@ services:
 将此文件放在同一文件夹中运行 `docker compose up`。
 
 <Accordion title="With MongoDB checkpointing">
-  要在 MongoDB 而不是 PostgreSQL 中存储检查点，请添加 MongoDB 服务并配置检查点后端。将 `langgraph.json` 中的后端设置为 `"mongo"` 或使用 `LS_DEFAULT_CHECKPOINTER_BACKEND` 环境变量。所有其他服务器数据仍然需要 PostgreSQL。```yml theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+  要在 MongoDB 而不是 PostgreSQL 中存储检查点，请添加 MongoDB 服务并配置检查点后端。将 `langgraph.json` 中的后端设置为 `"mongo"` 或使用 `LS_DEFAULT_CHECKPOINTER_BACKEND` 环境变量。所有其他服务器数据仍然需要 PostgreSQL。
+
+  ```yml theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
   volumes:
       langgraph-data:
           driver: local
@@ -228,9 +230,7 @@ services:
   ```
 
   有关 MongoDB 配置选项的更多详细信息，请参阅[Configure checkpointer backend](/langsmith/configure-checkpointer)。
-</Accordion>
-
-这将在端口`8123`上启动代理服务器（如果需要，请更改`langgraph-api`中的端口映射）。测试应用程序是否健康：
+</Accordion>这将在端口`8123`上启动代理服务器（如果需要，请更改`langgraph-api`中的端口映射）。测试应用程序是否健康：
 
 ```shell theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 curl --request GET --url 0.0.0.0:8123/ok

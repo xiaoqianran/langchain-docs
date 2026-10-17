@@ -57,7 +57,7 @@ sequenceDiagram
 
   <Step title="Add the MCP server">
     1. 单击“**添加连接**”，然后单击“**+ 添加自定义 MCP**”。
-    2. 输入服务器名称和 URL，然后配置身份验证（参见[authentication types](#authentication-types)）。
+    2. 输入服务器名称和 URL，然后配置身份验证（请参阅[authentication types](#authentication-types)）。
   </Step>
 
   <Step title="Discover tools">
@@ -106,7 +106,7 @@ sequenceDiagram
 
 ### 身份验证类型
 
-根据服务器的要求选择身份验证类型：* **标头**：添加随每个请求发送的键值对。最常见的模式是使用授权不记名令牌：
+根据服务器的要求选择身份验证类型：* **静态标头**：添加随每个请求发送的键值对。最常见的模式是使用授权不记名令牌：
 
   * **密钥**：`Authorization`
   * **值**：`Bearer API_KEY`
@@ -115,19 +115,69 @@ sequenceDiagram
     如果您的 MCP 服务器需要其他身份验证或配置参数，您可以添加多个标头。每个标头键值对随每个请求一起发送到服务器。
   </Info>
 
-* **OAuth 2.1（自动）**：为通过动态客户端注册支持 OAuth 的服务器选择此选项。系统将提示您使用该服务的帐户登录。
+* **OAuth 2.1（自动）**：为通过动态客户端注册 (DCR) 支持 OAuth 的服务器选择此选项。 Fleet 会为您注册一个客户端，并提示您使用该服务的帐户登录。无需设置，因此当服务器支持时首选此选项。* **OAuth 2.1（手动）**：为支持 OAuth 但不支持动态客户端注册的服务器选择此选项。选择您事先[registered](#register-an-oauth-provider) 使用您的客户端 ID 和密码的 OAuth 提供商。提供者使用两种资助类型之一：
+  * **授权代码**：每个用户使用自己的帐户登录该服务。提供商必须启用 **PKCE**。
+  * **客户端凭据**：代理将机器对机器验证为您的应用程序，因此没有用户登录。Fleet 在调用服务器时从提供商的令牌 URL 请求新的访问令牌。
 
-* **OAuth 2.1（手动）**：为支持 OAuth 但需要事先指定客户端 ID/密码的服务器选择此选项。此流程中使用的 OAuth 提供程序必须启用 **PKCE**。
+### 注册 OAuth 提供商
+
+OAuth 提供程序在组织级别存储 OAuth 应用程序的客户端 ID、机密和端点。注册提供程序一次，然后每当您使用 **OAuth 2.1（手动）** 添加 MCP 服务器时选择它。
+
+<Note>
+  管理 OAuth 提供程序需要 `workspaces:manage` 权限，包含在 [Workspace Admin](/langsmith/rbac#workspace-admin) 角色中。
+</Note>
+
+<Note>
+  在自托管 LangSmith v0.17 上，客户端凭证授予需要 v0.17.32 或更高版本（Helm Chart 0.17.5 或更高版本）。还要在 `hostBackend` 和 `platformBackend` 上设置 `FF_FLEET_OAUTH_CLIENT_CREDENTIALS_ENABLED=true`，例如通过 `hostBackend.deployment.extraEnv` 和 `platformBackend.deployment.extraEnv`。
+</Note>
+
+要注册 OAuth 提供程序：<Steps>
+  <Step title="Create the OAuth application with your identity provider">
+    在您的身份提供商（例如 GitHub 或 Google）中，创建 OAuth 应用程序。记下其客户端 ID 和客户端密钥。
+
+    对于授权代码授予，将应用程序的重定向（回调）URL 设置为：
+
+    ```txt theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+    https://<your-langsmith-host>/host-oauth-callback/<provider-id>
+    ```
+
+    将 `<provider-id>` 替换为您在下一步中选择的提供商 ID。客户端凭据授予不使用重定向 URL。
+  </Step>
+
+  <Step title="Register the provider in LangSmith">
+    转至 **设置** > **OAuth 提供商**，然后单击 **OAuth 提供商**。填写每个提供商的字段：
+
+    * **提供商 ID**：使用字母、数字、连字符和下划线的简短标识符（例如，`github`）。该值出现在重定向 URL 中。
+    * **显示名称**：人类可读的名称（例如，`GitHub OAuth`）。
+    * **客户端 ID** 和 **客户端密钥**：来自您创建的 OAuth 应用程序。
+    * **授权类型**：**授权代码** 或 **客户凭证**。
+    * **令牌 URL**：提供商的令牌端点（例如，`https://example.com/oauth/token`）。
+
+    对于**授权码**，还设置：* **授权 URL**：提供商的授权端点（例如，`https://example.com/oauth/authorize`）。
+    * **启用 PKCE**：打开此功能。添加手动 OAuth MCP 服务器时，仅显示启用了 PKCE 的提供程序。
+    * **范围**（在**高级**下）：可选。覆盖发送到授权 URL 的 `scope` 参数。
+
+    对于**客户端凭据**，还设置：
+
+    * **令牌身份验证**：Fleet 如何将客户端 ID 和密钥发送到令牌 URL，**HTTP 基本**（默认）或 **请求正文**。
+    * **范围**（在**高级**下）：可选。与令牌请求一起发送的以空格分隔的范围。
+    * **观众**（在**高级**下）：可选。某些提供商（例如 Auth0）需要它。
+  </Step>
+
+  <Step title="Select the provider when adding the server">
+    当您[add the MCP server](#add-a-remote-mcp-server)时，选择**OAuth 2.1（手动）**并选择您注册的提供商。对于授权代码提供商，每个用户都连接他们的帐户。对于客户端凭据提供程序，Fleet 授权为代理，因此不会提示用户连接。
+  </Step>
+</Steps>
 
 ## 更新您的 MCP 服务器 URL
 
 <Warning>
   更改自定义 MCP 服务器的 URL 将破坏使用该服务器中的工具的任何代理。
-</Warning>
+</Warning>Fleet 通过 MCP 服务器 URL 存储工具引用。如果您更新自定义 MCP 服务器的 URL，现有代理在尝试调用这些工具时将会失败，因为存储的 URL 不再匹配。
 
-Fleet 通过 MCP 服务器 URL 存储工具引用。如果您更新自定义 MCP 服务器的 URL，现有代理在尝试调用这些工具时将会失败，因为存储的 URL 不再匹配。
+要更新 MCP 服务器 URL：
 
-要更新 MCP 服务器 URL：1. 在工作区设置中更新您的 MCP 服务器 URL。
+1. 在工作区设置中更新您的 MCP 服务器 URL。
 2. 对于使用该服务器中的工具的每个代理：
    * 从代理配置中删除受影响的工具。
    * 重新添加工具（它们现在将引用新的 URL）。

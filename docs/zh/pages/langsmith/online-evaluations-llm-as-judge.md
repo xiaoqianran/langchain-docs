@@ -30,13 +30,14 @@
 * 运行时，[user left feedback](/langsmith/attach-user-feedback) 指示响应不令人满意。
 * 调用特定工具的运行。请参阅[filtering for tool calls](/langsmith/filter-traces-in-application#example-filtering-for-tool-calls)了解更多信息。
 * 与特定元数据片段匹配的运行（例如，如果您使用 `plan_type` 记录跟踪并且只想对来自企业客户的跟踪运行评估）。请参阅[adding metadata to your traces](/langsmith/add-metadata-tags)了解更多信息。
+* 在其他评估者的分数满足条件（例如 `correctness` 分数低于 `0.5`）时运行。请参阅[Chain evaluators](/langsmith/evaluators#chain-evaluators)了解更多信息。
 
 评估器使用过滤器构建器，其字段和运算符与[Filter traces (ClickHouse)](/langsmith/filter-traces-in-application)中描述的相同。<Tip>
   当您为评估器创建过滤器时，检查运行通常很有帮助。打开评估器配置面板后，您可以检查运行并向其应用过滤器。您应用于运行表的任何过滤器都将自动反映在评估器的过滤器中。
 </Tip>
 
 <Tip>
-  如果您在此项目上还有一个 Webhook 自动化规则，并且希望 Webhook 负载包含此评估程序的分数，请向 Webhook 规则添加反馈过滤器，而不是依赖规则排序。例如，对 `has(feedback_key, "answer_usefulness")` 进行过滤，以便仅在分数存在后才触发 Webhook。详情请参阅[Ensuring evaluations complete before the webhook fires](/langsmith/webhooks#ensuring-evaluations-complete-before-the-webhook-fires)。
+  如果您在此项目上还有一个 Webhook 自动化规则，并且希望 Webhook 负载包含此评估程序的分数，请向 Webhook 规则添加反馈过滤器，而不是依赖规则排序。例如，对 `eq(feedback_key, "answer_usefulness")` 进行过滤，以便仅在分数存在后才触发 Webhook。详情请参阅[Ensuring evaluations complete before the webhook fires](/langsmith/webhooks#ensuring-evaluations-complete-before-the-webhook-fires)。
 </Tip>
 
 ## 配置采样率
@@ -51,7 +52,7 @@
 
 您只能在创建规则时回填。
 
-当您回填 [thread-level evaluation rule](/langsmith/online-evaluations-multi-turn) 时，LangSmith 会查找在您选择的开始日期和创建规则的时间之间具有匹配跟踪活动的线程，然后应用规则的过滤器。一旦每个选定的线程空闲，LangSmith 就会评估其根运行历史记录并将反馈附加到线程中的代表性跟踪。回填完成后，规则保持活动状态，并通过正常的实时流程继续评估新的匹配线程。
+当您回填 [thread-level evaluation rule](/langsmith/online-evaluations-multi-turn) 时，LangSmith 会查找在您选择的开始日期和创建规则的时间之间具有匹配跟踪活动的线程，然后应用规则的过滤器。一旦每个选定的线程空闲，LangSmith 评估其根运行历史并将反馈附加到线程中的代表性跟踪。回填完成后，规则保持活动状态，并通过正常的实时流程继续评估新的匹配线程。
 
 <Note>
   回填作为后台作业进行处理，因此您不会立即看到结果。
@@ -82,7 +83,7 @@
 
   1. 从数据集页面选择 **+ Evaluator**。
   2. 在 **模板变量** 编辑器中，为附件添加一个变量以包括：
-     * 如果要包含特定附件，可以使用建议的变量名称，例如`{{attachment.file_name}}`，这将在附件列表中映射带有`file_name`的文件以将其传递给评估器。
+     * 如果要包含特定附件，可以使用建议的变量名称，例如`{{attachment.file_name}}`，这会将附件列表中带有`file_name`的文件映射到将其传递给评估器。
      * 如果要包含所有附件，请使用 `{{attachments}`}\` 变量。
 
   <img alt="Edit evaluator modal with an image attachment selected for the input." />

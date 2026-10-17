@@ -38,12 +38,17 @@ openwiki visualize
 openwiki visualize openwiki --port 4400 --no-open
 openwiki visualize openwiki --export docs/openwiki-visualizer
 
+# Link repository wikis into a workspace
+openwiki link
+openwiki workspace use payments
+openwiki workspace current
+openwiki workspace clear
+
 # Coding-agent integrations
 openwiki integrations list
 openwiki integrations install codex
-openwiki integrations install claude
-openwiki integrations install opencode
-openwiki integrations install cursor
+openwiki integrations install omp
+openwiki integrations install antigravity
 openwiki integrations uninstall codex
 
 # Help
@@ -59,7 +64,8 @@ openwiki --help
 | `-l`、`--language <locale>` |在给定的 BCP-47 语言环境中生成 wiki 文档，例如 `ko`、`zh-CN` 或 `pt-BR`。无法识别的值将被拒绝。 |
 | `--mode <personal\|code>` |选择个人大脑或存储库文档。 |
 | `-p`、`--print` |运行一次，打印最终的助手输出，然后退出。提供消息或命令。没有 `--print` 的互动聊天将保持开放以供后续跟进。 |
-| `--modelId` / `--model-id` |选择运行的模型 ID。 || `--telemetry-file=<path>` |还将运行的遥测有效负载写入本地 JSON 文件。 |
+| `--modelId` / `--model-id` |选择运行的模型 ID。 || `--debug` |打印更完整的故障详细信息，包括包装错误（例如“连接错误”）背后的最内在原因。 |
+| `--telemetry-file=<path>` |还将运行的遥测有效负载写入本地 JSON 文件。 |
 | `-h`、`--help` |打印使用情况。 |
 
 ## 可视化
@@ -75,17 +81,32 @@ openwiki visualize ~/.openwiki/wiki
 
 详情请参见[Visualize your wiki](/oss/openwiki/visualize)。
 
+## 搜索和链接
+
+对相关存储库 wiki 进行分组并管理活动搜索工作区：
+
+```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+openwiki link [directory]
+openwiki workspace use <name>
+openwiki workspace current
+openwiki workspace clear
+```
+
+有关 MCP 搜索和读取工具、工作区范围规则和示例，请参阅 [Search and link wikis](/oss/openwiki/search-and-link)。
+
 ## 编码代理集成
 
 将 OpenWiki 安装到主机编码代理中，以便主机的模型和存储库工具驱动生成，同时 OpenWiki 拥有持久的页面作业生命周期：
 
 ```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 openwiki integrations list [--project [path]]
-openwiki integrations install <codex|claude|opencode|cursor> [--force] [--project [path]]
-openwiki integrations uninstall <codex|claude|opencode|cursor> [--project [path]]
+openwiki integrations install <codex|claude|opencode|cursor|bob|kiro|omp|antigravity> [--force] [--project [path]]
+openwiki integrations uninstall <codex|claude|opencode|cursor|bob|kiro|omp|antigravity> [--project [path]]
 ```
 
 详情请参见[Coding-agent integrations](/oss/openwiki/integrations)。
+
+本机 CLI 运行可以通过 `OPENWIKI_PAGE_CONCURRENCY`（`1` 到 `8`，默认为 `1`）提高页面工作线程并发度。参见[Parallel page workers](/oss/openwiki/code-mode#parallel-page-workers)。
 
 ## 身份验证和连接器
 
@@ -114,9 +135,7 @@ openwiki ngrok start [url] [--port <port>]
 
 ## 计划任务 (macOS)
 
-管理 [personal mode](/oss/openwiki/personal-mode) 源的可选连接器计划。在 macOS 上，OpenWiki 可以将计划安装为定期刷新源（例如 Gmail 或网络搜索）的用户 LaunchAgent。使用以下命令列出、暂停、恢复或删除它们：
-
-```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+管理 [personal mode](/oss/openwiki/personal-mode) 源的可选连接器计划。在 macOS 上，OpenWiki 可以将计划安装为定期刷新源（例如 Gmail 或网络搜索）的用户 LaunchAgent。使用以下命令列出、暂停、恢复或删除它们：```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 openwiki cron list
 openwiki cron pause <source|all>
 openwiki cron resume <source|all>
@@ -127,16 +146,19 @@ openwiki cron delete <source|all>
 
 ## 斜线命令（交互式）
 
-在交互聊天模式下，您可以使用以下命令：* `/api-key`：更新当前提供商API密钥（屏蔽提示）
+在交互聊天模式下，您可以使用以下命令：
+
+* `/api-key`：更新当前提供商API密钥（屏蔽提示）
 * `/langsmith-key`：更新或清除LangSmith跟踪凭证（屏蔽提示）
 * `/provider` 和 `/model`：更改会话的提供程序或模型（保留到 `~/.openwiki/.env`）
-* `/effort`：为受支持的 OpenAI GPT-5.6 和 NVIDIA NIM 模型设置推理工作，或 `/effort default` 恢复提供程序默认值
+* `/effort`：为受支持的OpenAI GPT-5.6、NVIDIA NIM、Gemini 和选择的 openai 兼容模型设置推理工作，或`/effort default` 恢复提供程序默认值
 * `/init` 和 `/update`：从会话启动 init 或 update
 * `/exit`：退出应用程序
 
 ## 另请参阅
 
 * [Coding-agent integrations](/oss/openwiki/integrations)
+* [Search and link wikis](/oss/openwiki/search-and-link)
 * [Personal mode](/oss/openwiki/personal-mode)
 * [Model providers](/oss/openwiki/providers)
 * [Automate updates](/oss/openwiki/automate-updates)

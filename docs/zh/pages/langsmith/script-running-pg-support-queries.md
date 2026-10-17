@@ -56,7 +56,15 @@ sh run_support_query_pg.sh "postgres://postgres:postgres@localhost:5432/postgres
 
 ## 导出使用数据
 
-所有导出方法都会生成相同的数据：LangSmith 跟踪计数、LangSmith 部署节点使用情况以及所有工作区和组织中的队列运行计数。
+UI 和 API 导出涵盖所有工作区和组织，用于：
+
+* LangSmith痕迹
+* LangSmith 部署
+* 舰队（代理生成器）
+* 使用情况快照（每日实体计数）
+* 沙箱
+* LangSmith发动机
+* LangSmith LLM 网关
 
 <Note>
   UI 和 API 导出需要以下两项：
@@ -86,7 +94,7 @@ curl -OJ \
   https://<langsmith_url>/api/v1/orgs/current/usage/backfill-export
 ```
 
-### 通过 SQL 脚本导出您还可以直接针对 PostgreSQL 数据库运行 SQL 脚本以导出使用数据。这需要数据库访问凭据 - 不适用应用程序级权限。
+### 通过 SQL 脚本导出您还可以直接针对 PostgreSQL 数据库运行 SQL 脚本来导出跟踪、节点、队列和使用情况快照数据。这需要数据库访问凭据。不适用应用程序级别的权限。
 
 导出跟踪使用情况（需要 Helm 图表版本 0.11.4 或更高版本）：
 

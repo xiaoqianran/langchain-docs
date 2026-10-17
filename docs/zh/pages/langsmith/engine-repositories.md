@@ -4,7 +4,7 @@
 
 # 将引擎连接到您的存储库
 
-将代理的代码存储库连接到LangSmith引擎，以便它可以在调查问题时读取您的源代码并以拉取请求的形式提出修复。
+将代理的代码存储库连接到LangSmith引擎，以便它可以在调查问题时读取您的源代码并以拉取请求的形式提出修复建议。
 
 连接代理的代码存储库让 [LangSmith Engine](/langsmith/engine) 在调查跟踪时读取您的源代码，并以拉取请求的形式提出修复。对于痕量分析，连接是可选的。有关引擎从源访问中获得的内容及其使用的权限，请参阅[Why connect GitHub](/langsmith/engine#why-connect-github)。
 
@@ -12,23 +12,24 @@
 
 * **LangSmith 云**：使用 GitHub.com 上的 LangChain 管理的 GitHub 应用程序。从[Connect GitHub repositories](#connect-repositories)开始。
 * **自托管 LangSmith**：操作员首先为您的 GitHub 实例完成 [GitHub configuration for self-hosted](/langsmith/engine-self-hosted-github)。然后，工作区用户遵循以下相同的存储库连接步骤。
+* **BYOC**：组织管理员首先注册 GitHub 应用程序并将其保存在 LangSmith UI 中。参见[Configure the App on BYOC](/langsmith/engine-self-hosted-github#configure-the-app-on-byoc)。然后，工作区用户遵循以下相同的存储库连接步骤。
 
 ## GitHub
 
 ### 连接存储库
 
-这些步骤适用于 LangSmith 云以及使用已配置的 GitHub 应用程序的自托管部署。
+这些步骤适用于 LangSmith 云，以及使用已配置的 GitHub 应用程序的自托管和 BYOC 部署。为您的跟踪项目或代理环境启用 [Engine](/langsmith/engine)。您需要获得在该项目中配置 Engine 以及在 LangSmith 工作区中连接 GitHub 集成的权限。如果这些操作不可用，请询问工作区管理员。
 
-为您的跟踪项目或代理环境启用 [Engine](/langsmith/engine)。您需要获得在该项目中配置 Engine 以及在 LangSmith 工作区中连接 GitHub 集成的权限。如果这些操作不可用，请询问工作区管理员。在 GitHub 上，您需要获得在要连接的存储库上安装应用程序或访问现有安装的权限。您的 GitHub 组织或企业可能需要管理员批准安装。当出现提示时，完成组织的 SSO 登录。
+在 GitHub 上，您需要获得在要连接的存储库上安装应用程序或访问现有安装的权限。您的 GitHub 组织或企业可能需要管理员批准安装。当出现提示时，完成组织的 SSO 登录。
 
 <Note>
-  对于企业托管用户，连接组织拥有的存储库。 GitHub 不允许将此应用程序安装在托管用户的个人帐户上。有关 GitHub.com 和 `ghe.com` 上的要求，请参阅[Enterprise Managed Users](/langsmith/engine-self-hosted-github#enterprise-managed-users)。
+  对于企业托管用户，连接组织拥有的存储库。 GitHub 不允许将此应用程序安装在托管用户的个人帐户上。请参阅 [Enterprise Managed Users](/langsmith/engine-self-hosted-github#enterprise-managed-users) 了解 GitHub.com 和 `ghe.com` 的要求。
 </Note>
 
 对于修复，存储库必须允许引擎的分支和草案 PR。在测试修复之前查看[Repository policies](#repository-policies)。
 
 要将存储库连接到现有的 Engine 项目：1. 打开跟踪项目或代理环境。在其**引擎**选项卡中，选择**配置引擎**。
-2. 在**代码存储库**下，选择**连接 GitHub**。如果您的工作区已经有连接，则会出现存储库选取器。
+2. 在**代码存储库**下，选择**连接 GitHub**。如果您的工作区已经有连接，则会出现存储库选择器。
 3. 在 GitHub 中，授权为您的 LangSmith 部署配置的应用程序。将其安装在拥有您的代码的组织或帐户上，并选择它可以访问的存储库。如果该应用程序已安装，LangSmith可能会要求您选择现有安装。
 4. 完成所有 GitHub 批准提示并返回LangSmith。授权应用程序和安装应用程序是分开的步骤：授权识别您的 GitHub 帐户；安装授予应用程序对存储库的访问权限。
 5. 在存储库选择器中，按帐户或存储库名称搜索，选择存储库，然后单击 **连接存储库**。
@@ -73,26 +74,30 @@
 
 查看适用于这些分支机构和应用程序身份的策略。在目标分支上保留正常的审查和合并需求。当一个人合并时，可能仍然需要满足目标分支的要求；配置应用程序不会绕过存储库策略。引擎不会获取 Git LFS 文件内容或初始化 Git 子模块。
 
-#### 存储库选择故障排除
+#### 存储库选择疑难解答
 
 |症状|检查什么 |
 | - | - |
 | GitHub 未配置，或 GitHub 打开前连接失败 |在自托管 LangSmith 上，请让您的运营商检查 [deployment configuration](/langsmith/engine-self-hosted-github#configure-langsmith)。 |
 |您的组织不是安装目标 |确认您的 GitHub 角色、组织审批政策和应用程序的可见性。私人应用程序只能安装在其所属的帐户上。 |
 |您的管理用户帐户不是安装目标 |使用组织拥有的存储库。个人托管用户存储库无法使用此集成。 |
-| App已安装，但LangSmith无连接 |在 LangSmith 中启动 **连接 GitHub**，包括在管理员批准安装之后或您直接从 GitHub 安装之后。在自托管 LangSmith 上，如果授权未完成，请让您的运营商[check setup](/langsmith/engine-self-hosted-github#troubleshoot-setup)。 |
+| App已安装，但LangSmith无连接 |在 LangSmith 中启动 **连接 GitHub**，包括在管理员批准安装之后或您直接从 GitHub 安装之后。在自托管 LangSmith 上，如果授权未完成，请要求您的运营商[check setup](/langsmith/engine-self-hosted-github#troubleshoot-setup)。 |
 |缺少安装或存储库 |检查您授权的 GitHub 帐户、应用程序选择的存储库以及安装是否连接到此 LangSmith 工作区。出现提示时完成组织的 SSO 授权。 ||授权成功，但无法读取仓库 |检查应用程序的存储库访问权限。在自托管 LangSmith 上，还请您的运营商检查 [GitHub API and sandbox network access](/langsmith/engine-self-hosted-github#allow-network-access)。浏览器登录不会测试这些连接。 |
-|无法推送修复 |检查适用于新修复分支的规则，包括签名提交要求、分支限制和预接收挂钩。参见[Repository policies](#repository-policies)。 |
+|无法推送修复|检查适用于新修复分支的规则，包括签名提交要求、分支限制和预接收挂钩。参见[Repository policies](#repository-policies)。 |
 
 ## 自托管LangSmith
 
 在自托管 LangSmith 上，操作员注册 GitHub 应用程序并配置 LangSmith，然后任何人都可以连接存储库。参见[Configure GitHub for Engine on self-hosted](/langsmith/engine-self-hosted-github)。
 
+## 自带设备
+
+在 BYOC 数据平面上，组织管理员注册 GitHub 应用程序，并在 LangSmith UI 中的引擎项目中保存其凭据，然后任何人都可以连接存储库。参见[Configure the App on BYOC](/langsmith/engine-self-hosted-github#configure-the-app-on-byoc)。
+
 ## 另请参阅
 
 * [Set up Engine](/langsmith/engine-setup)：为跟踪项目打开引擎并选择其存储库。
 * [Why connect GitHub](/langsmith/engine#why-connect-github)：引擎从源访问中获得什么，以及它使用的权限。
-* [Configure GitHub for Engine on self-hosted](/langsmith/engine-self-hosted-github)：在自托管LangSmith上注册并配置GitHub应用程序。
+* [Configure GitHub for Engine on self-hosted and BYOC](/langsmith/engine-self-hosted-github)：在自托管 LangSmith 或 BYOC 数据平面上注册并配置 GitHub 应用程序。
 * [Engine security](/langsmith/engine-security)：引擎如何处理您的数据和存储库访问。
 
 ***

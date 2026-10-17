@@ -6,7 +6,7 @@
 
 mda 命令、项目文件和部署行为的参考。
 
-`mda` CLI 以代码优先方式编译和部署 [Managed Deep Agents](/langsmith/python/managed-deep-agents-overview)。
+`mda` CLI 首先编译和部署代码[Managed Deep Agents](/langsmith/python/managed-deep-agents-overview)。
 
 它包含在 `managed-deepagents` Python 包中。
 
@@ -48,7 +48,7 @@ OPENAI_API_KEY=<OPENAI_API_KEY>
 
 `mda deploy` 将非保留的 `.env` 条目（例如 `OPENAI_API_KEY`、MCP 令牌和自定义工具凭证）作为托管部署机密转发。保留的平台变量（包括 `LANGSMITH_API_KEY`、`LANGGRAPH_HOST_API_KEY`、`LANGCHAIN_API_KEY` 和 `LANGSMITH_WORKSPACE_ID`）用于 CLI 身份验证和部署路由，但不会作为用户管理的部署机密上传。
 
-## 命令概述|命令|使用|
+## 命令概述|命令 |使用|
 | - | - |
 | `mda --help` |显示 CLI 帮助。 |
 | `mda --version` |显示已安装的 CLI 版本。 |
@@ -87,7 +87,7 @@ uvx --from managed-deepagents mda init my-agent --channel slack
 
 脚手架语言来自您运行的包，而不是来自当前目录：PyPI 包总是编写一个 Python 项目。从 PyPI 安装的 CLI 拒绝 TypeScript 项目。
 
-脚手架创建：|文件 |描述 |
+脚手架创建：|文件|描述 |
 | - | - |
 | `agent.py` |命名为`agent`从`define_deep_agent(...)`导出。 |
 | `instructions.md` |托管系统提示。 |
@@ -100,7 +100,7 @@ uvx --from managed-deepagents mda init my-agent --channel slack
 
 ## 初始化 Slack 通道
 
-从现有托管深度代理项目的根运行以下命令：
+从现有托管深度代理项目的根目录运行以下命令：
 
 ```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 uv run mda channels init slack
@@ -151,14 +151,15 @@ uv run mda dev
 | `--hostname HOSTNAME` |将主机转发到LangGraph开发服务器。 |
 | `--no-browser` |防止开发服务器启动时在浏览器中打开 Studio。 |
 | `--no-reload` |禁用开发服务器的热重载。 |
+| `--no-schedules` |不要在本地服务器上创建项目的计划。 |
 
 `mda dev` 编译为 `.mda/build`，然后从该目录启动特定于语言的 LangGraph 开发服务器：
 
 |项目语言|开发服务器命令 |
 | - | - |
-|蟒蛇 | `uv run --with langgraph-cli[inmem]>=0.4.30 langgraph dev` |
+|蟒蛇 | `uv run --with langgraph-cli[inmem]>=0.4.36 langgraph dev` |
 
-在运行`mda dev`之前安装`uv`。 CLI 会自动解析本地LangGraph 开发服务器，因此您无需自行安装`langgraph-cli[inmem]`。
+在运行`mda dev`之前安装`uv`。 CLI 会自动解析本地 LangGraph 开发服务器，因此您无需自行安装 `langgraph-cli[inmem]`。
 
 配置沙箱后，`mda dev` 会尝试配置的提供程序。如果提供程序凭据不可用或提供程序创建失败，它将回退到本地临时目录沙箱并打印所选路径。
 
@@ -168,7 +169,7 @@ uv run mda dev
 
 以三种模式之一创建连接：不透明机密（固定 API 密钥）、常规 OAuth（来自目录或自定义端点的 BYOT 应用程序）或 MCP OAuth（从 MCP 服务器 URL 发现并注册）。使用 `mda connections` 管理当前工作区中的这些凭据。
 
-|命令|使用|
+|命令 |使用|
 | - | - |
 | `mda connections catalog` |列出具有预配置 OAuth 设置的服务。 |
 | `mda connections create <slug>` |创建不透明机密、常规 OAuth 或 MCP OAuth 连接。 |
@@ -195,7 +196,7 @@ uv run mda connections create organization-tavily --secret-from-env TAVILY_API_K
 | `--secret-from-env VAR` |从 shell 或项目 `.env` 读取固定值或 OAuth 客户端密钥。 |
 | `--secret-from-file PATH` |从文件中读取固定值或 OAuth 客户端密钥。 |
 | `--oauth SERVICE` |使用 `mda connections catalog` 中服务的预配置设置。 |
-| `--grant-type GRANT` |将 OAuth 授予设置为 `authorization_code` 或 `client_credentials`。默认为`authorization_code`。 |
+| `--grant-type GRANT` |将 OAuth 授权设置为 `authorization_code` 或 `client_credentials`。默认为`authorization_code`。 |
 | `--client-id CLIENT_ID` |设置 OAuth 客户端 ID。 |
 | `--auth-method METHOD` |将令牌端点方法设置为`client_secret_basic`、`client_secret_post`或`none`。 |
 | `--scope SCOPE` |替换提供者的默认范围。对每个范围重复此操作。 |
@@ -214,7 +215,7 @@ uv run mda connections create organization-tavily --secret-from-env TAVILY_API_K
 
 ## 部署项目
 
-使用`mda deploy`编译项目并部署到LangSmith：
+使用`mda deploy`编译并部署项目到LangSmith：
 
 ```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 uv run mda deploy
@@ -223,7 +224,7 @@ uv run mda deploy
 |参数或标志 |使用|
 | - | - |
 | `path` |项目目录。默认为当前目录。 |
-| `--name NAME` |部署名称。默认为`define_deep_agent` 的代理`name`。 |
+| `--name NAME` |部署名称。默认为`define_deep_agent`的代理`name`。 |
 | `--deployment-type dev\|prod` |创建部署时的部署类型。默认为`dev`。 |
 | `--workspace-id WORKSPACE_ID` |要部署到的工作区 ID。覆盖`LANGSMITH_WORKSPACE_ID`。 |
 | `--context-strategy overwrite\|keep-hub` |解决自上次同步以来 Hub 中的 `instructions.md` 或 `skills/` 发生更改时的 Context Hub 冲突。在非交互式 shell 中需要。参见[Context Hub](/langsmith/python/managed-deep-agents-context-hub#source-of-truth)。 |
@@ -272,7 +273,7 @@ uv run mda delete
 |参数或标志 |使用|
 | - | - |
 | `path` |项目目录。默认为当前目录。 |
-| `--name NAME` |部署名称。默认为`define_deep_agent`的代理`name`。 |
+| `--name NAME` |部署名称。默认为`define_deep_agent` 的代理`name`。 |
 | `--workspace-id WORKSPACE_ID` |部署所在的工作区 ID。覆盖 `LANGSMITH_WORKSPACE_ID`。 |
 | `--yes` |删除时无需询问确认。 |
 

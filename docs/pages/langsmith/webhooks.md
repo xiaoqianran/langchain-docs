@@ -198,8 +198,8 @@ For example, you have an online evaluator that produces an `answer_usefulness` s
 
 2. Edit the rule's filter to require the feedback key. In the filter builder, add a condition:
 
-   ```
-   has(feedback_key, "answer_usefulness")
+   ```text theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+   eq(feedback_key, "answer_usefulness")
    ```
 
 3. Save the rule.
@@ -209,8 +209,8 @@ Now the webhook rule will skip any run that does not yet have an `answer_usefuln
 <Tip>
   You can also filter on the score value itself, not just its presence. For example, to only send runs with a low usefulness score to your endpoint:
 
-  ```
-  has(feedback_key, "answer_usefulness") and feedback_score < 0.5
+  ```text theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+  and(eq(feedback_key, "answer_usefulness"), lt(feedback_score, 0.5))
   ```
 
   For the full filter syntax, refer to [Filter traces (ClickHouse)](/langsmith/filter-traces-in-application).

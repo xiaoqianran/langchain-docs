@@ -384,7 +384,7 @@ make deploy
 
 `enable_agent_builder` 在图表 v16 中被删除。将其设置为 `true` 无法在 `terraform plan` 进行验证，因此从现有 `tfvars` 文件中删除它并使用 `enable_fleet`。 `enable_standalone_polly` 和 `enable_standalone_insights` 保留为传统速记形式，支持使用外部存储进行附加（`enable_polly = true` 与 `polly_storage = "external"`，对于 Insights 也是如此）。
 
-Agent部署详情请参见[LangSmith Deployment](/langsmith/deploy-self-hosted-full-platform)。
+Agent部署详情请参见[LangSmith Deployment](/langsmith/enable-self-hosted-deployment)。
 
 ### 舰队
 
@@ -501,7 +501,7 @@ kubectl apply -f helm/values/examples/dataplane-rbac.yaml
 * 参考[AWS variables](/langsmith/self-host-terraform-aws-variables)和[quick reference](/langsmith/self-host-terraform-aws-quick-reference)。
 * 查看 [AWS architecture](/langsmith/self-host-terraform-aws-architecture) 的平台层、IRSA 和模块依赖性。
 * 当出现故障时，请检查[AWS troubleshooting guide](/langsmith/self-host-terraform-aws-troubleshooting)。
-* 使用 [LangSmith Deployment](/langsmith/deploy-self-hosted-full-platform) 在 UI 中启用代理部署。***
+* 使用 [LangSmith Deployment](/langsmith/enable-self-hosted-deployment) 在 UI 中启用代理部署。***
 
 <div>
   <Callout icon="terminal-2">

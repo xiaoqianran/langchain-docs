@@ -88,6 +88,7 @@ The following table shows tools that generate video, image, or audio assets:
   | [`SnapRender`](https://snap-render.com) | <span><a href="https://www.npmjs.com/package/langchain-snaprender">  <img alt="Downloads per month" /></a></span> |
   | [`SIGNA`](https://github.com/codexvritra/signa/tree/main/sdk/langchain) | <span><a href="https://www.npmjs.com/package/signa-langchain">  <img alt="Downloads per month" /></a></span> |
   | [`NiaToolkit`](/oss/javascript/integrations/tools/nia) | <span><a href="https://www.npmjs.com/package/@nozomioai/langchain-nia">  <img alt="Downloads per month" /></a></span> |
+  | [`AgentSearchTool`](https://agentsearchhq.com/#integrations?utm_source=langchain-docs-js\&utm_medium=integration-listing\&utm_campaign=promo-oct26) | <span>N/A</span> |
   | [`Agent with AWS lambda`](/oss/javascript/integrations/tools/lambda_agent) | <span>N/A</span> |
   | [`Browserless`](https://browserless.io) | <span>N/A</span> |
   | [`JSON agent toolkit`](/oss/javascript/integrations/tools/json) | <span>N/A</span> |

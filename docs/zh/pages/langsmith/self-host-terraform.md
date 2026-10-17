@@ -71,7 +71,7 @@ LangChain 在 [github.com/langchain-ai/terraform](https://github.com/langchain-a
 
 ## 企业功能切换
 
-每个模块都公开可选的 LangSmith 附加组件的标志。在 `terraform.tfvars` 中切换每个。每个模块的部署脚本都会读取标志并生成匹配的 Helm 值。* **[LangSmith Deployment](/langsmith/deploy-self-hosted-full-platform)** (`enable_deployments`)：代理服务器加上运行和管理已部署代理的主机后端、侦听器和操作员。
+每个模块都公开可选的 LangSmith 附加组件的标志。在 `terraform.tfvars` 中切换每个。每个模块的部署脚本都会读取标志并生成匹配的 Helm 值。* **[LangSmith Deployment](/langsmith/enable-self-hosted-deployment)** (`enable_deployments`)：代理服务器加上运行和管理已部署代理的主机后端、侦听器和操作员。
 * **[Fleet](/langsmith/fleet)** (`enable_fleet`)：代理构建产品，以前称为 Agent Builder，作为独立服务部署。
 * **Insights** (`enable_insights`)：ClickHouse 支持的分析。
 * **Polly** (`enable_polly`)：AI 评估和监控。
@@ -87,7 +87,7 @@ LangChain 在 [github.com/langchain-ai/terraform](https://github.com/langchain-a
 ## 后续步骤* 选择上面的提供商并遵循部署指南。
 * 查看 PostgreSQL、ClickHouse、Redis 和 Kubernetes 的 [required dependency versions](/langsmith/self-host-dependency-versions)。
 * 使用 [scaling guide](/langsmith/self-host-scale) 规划容量。
-* 应用程序运行后，启用[LangSmith Deployment](/langsmith/deploy-self-hosted-full-platform)即可在UI上添加代理部署和管理。
+* 应用程序运行后，启用[LangSmith Deployment](/langsmith/enable-self-hosted-deployment)即可在UI上添加代理部署和管理。
 
 ***
 

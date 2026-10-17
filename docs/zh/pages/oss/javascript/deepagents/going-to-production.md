@@ -127,8 +127,8 @@
 
 <CodeGroup>
   ```ts Google theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  import { uuid7 } from "langsmith";
   import { createDeepAgent } from "deepagents";
+  import { uuid7 } from "langsmith";
   import { z } from "zod";
 
   const contextSchema = z.object({ userId: z.string() });
@@ -153,8 +153,8 @@
   ```
 
   ```ts OpenAI theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  import { uuid7 } from "langsmith";
   import { createDeepAgent } from "deepagents";
+  import { uuid7 } from "langsmith";
   import { z } from "zod";
 
   const contextSchema = z.object({ userId: z.string() });
@@ -179,8 +179,8 @@
   ```
 
   ```ts Anthropic theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  import { uuid7 } from "langsmith";
   import { createDeepAgent } from "deepagents";
+  import { uuid7 } from "langsmith";
   import { z } from "zod";
 
   const contextSchema = z.object({ userId: z.string() });
@@ -205,8 +205,8 @@
   ```
 
   ```ts OpenRouter theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  import { uuid7 } from "langsmith";
   import { createDeepAgent } from "deepagents";
+  import { uuid7 } from "langsmith";
   import { z } from "zod";
 
   const contextSchema = z.object({ userId: z.string() });
@@ -231,8 +231,8 @@
   ```
 
   ```ts Fireworks theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  import { uuid7 } from "langsmith";
   import { createDeepAgent } from "deepagents";
+  import { uuid7 } from "langsmith";
   import { z } from "zod";
 
   const contextSchema = z.object({ userId: z.string() });
@@ -257,8 +257,8 @@
   ```
 
   ```ts Baseten theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  import { uuid7 } from "langsmith";
   import { createDeepAgent } from "deepagents";
+  import { uuid7 } from "langsmith";
   import { z } from "zod";
 
   const contextSchema = z.object({ userId: z.string() });
@@ -283,8 +283,8 @@
   ```
 
   ```ts Ollama theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  import { uuid7 } from "langsmith";
   import { createDeepAgent } from "deepagents";
+  import { uuid7 } from "langsmith";
   import { z } from "zod";
 
   const contextSchema = z.object({ userId: z.string() });
@@ -309,7 +309,7 @@
   ```
 </CodeGroup>
 
-<Card title="View example trace" icon="chart-line" href="https://smith.langchain.com/public/904f34ad-d2d6-4100-b375-8fda985b1b0e/r">
+<Card title="View example trace" icon="chart-line" href="https://smith.langchain.com/public/f7c0af9a-f4e0-4dd6-b606-38c5790cf9cc/r">
   为此示例打开公共 LangSmith 运行。
 </Card>
 
@@ -368,7 +368,7 @@ LangSmith 的 [role-based access control](/langsmith/rbac) 控制团队中的哪
 
 当您的代理需要代表用户调用外部 API（例如，读取其 GitHub 存储库、发送 Slack 消息、查询其数据仓库）时，您需要一种方法将用户的凭据传递给代理而不对其进行硬编码。
 
-**通过代理身份验证进行 OAuth。** [Agent Auth](/langsmith/agent-auth) 提供托管 OAuth 2.0 流程。配置 OAuth 提供程序，代理可以请求范围为每个用户的令牌。首次使用时，代理[interrupts](/oss/javascript/langgraph/interrupts)执行并呈现 OAuth 同意 URL。用户进行身份验证后，代理将使用有效令牌恢复。令牌会自动存储和刷新。
+**通过代理身份验证进行 OAuth。** [Agent Auth](/langsmith/agent-auth) 提供托管 OAuth 2.0 流程。配置 OAuth 提供程序，代理可以请求范围为每个用户的令牌。首次使用时，代理[interrupts](/oss/javascript/langgraph/interrupts)执行并显示 OAuth 同意 URL。用户进行身份验证后，代理将使用有效令牌恢复。令牌会自动存储和刷新。
 
 ```typescript theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 import { Client } from "@langchain/auth";
@@ -423,8 +423,8 @@ Deep Agents 在 LangGraph 上运行，提供开箱即用的持久执行。 [pers
 
 记忆在对话中总是持久的。主要问题是它如何跨越用户和助手的界限。正确的范围取决于谁应该查看和修改数据：|范围 |命名空间 |使用案例 |示例|
 | - | - | - | - |
-| **用户**（推荐默认）| `(user_id)` |每个用户的偏好和上下文| “我更喜欢简洁的回答” |
-| **助理** | `(assistant_id)` |一名助理的共享说明 | “帖子上限为 280 个字符” |
+| **用户**（推荐默认）| `(user_id)` |每个用户的偏好和上下文| “我更喜欢简洁的回答”|
+| **助理** | `(assistant_id)` |一名助理的共享说明 | “帖子上限为 280 个字符”|
 | **全球** | `(org_id)` |所有用户和助理的只读策略 | “永远不要透露内部定价”|
 
 <Warning>
@@ -551,7 +551,7 @@ Deep Agents 在 LangGraph 上运行，提供开箱即用的持久执行。 [pers
 
 关键的决定是沙箱的寿命有多长。每次对话都是新的，还是对话共享一个持久的环境？
 
-|范围 |沙箱 ID 存储于 |生命周期|示例用例 |
+|范围 |沙箱 ID 存储于 |生命周期 |示例用例 |
 | - | - | - | - |
 | **线程范围** | [Thread](/langsmith/use-threads) 元数据 |每次对话都是新鲜的，在 TTL 上进行了清理 |每个对话都以干净的方式开始的数据分析机器人 |
 | **助理范围** | [Assistant](/langsmith/assistants)配置|在所有对话中共享 |跨对话维护克隆存储库的编码助手 |<Note>
@@ -818,10 +818,10 @@ Deep Agents 在 LangGraph 上运行，提供开箱即用的持久执行。 [pers
 }
 ```
 
-`${SECRET_KEY}` 引用解析存储在 LangSmith [workspace settings](/langsmith/set-up-hierarchy#configure-workspace-settings) 中的机密。在创建引用它们的模板之前，先在那里配置机密。**工作空间秘密。** 对于不需要基于代理的注入的 API 密钥（例如，代理服务器本身使用的密钥，而不是沙箱代码），将它们存储为 [workspace secrets](/langsmith/set-up-hierarchy#configure-workspace-settings) 中的 LangSmith。这些在运行时可用作工作区中所有代理的环境变量。
+`${SECRET_KEY}` 引用解析存储在 LangSmith [workspace settings](/langsmith/set-up-hierarchy#configure-workspace-settings) 中的机密。在创建引用它们的模板之前，先在那里配置机密。**工作区机密。** 对于不需要基于代理的注入的 API 密钥（例如，代理服务器本身使用的密钥，而不是沙箱代码），将它们存储为 [workspace secrets](/langsmith/set-up-hierarchy#configure-workspace-settings) 中的 LangSmith。这些在运行时可用作工作区中所有代理的环境变量。
 
 <Warning>
-  避免通过环境变量或文件上传将机密传递到沙箱中。代理可以读取沙箱内的任何可访问文件或环境变量，包括凭据。身份验证代理将秘密完全排除在沙箱之外。
+  避免通过环境变量或文件上传将机密传递到沙箱中。代理可以读取沙箱内任何可访问的文件或环境变量，包括凭据。身份验证代理将秘密完全排除在沙箱之外。
 </Warning>
 
 ## 护栏
@@ -832,7 +832,7 @@ Deep Agents 在 LangGraph 上运行，提供开箱即用的持久执行。 [pers
 * **[Fault tolerance](#fault-tolerance)**：速率限制、重试、回退和错误处理。
 * **[Data privacy](#data-privacy)**：在 PII 到达模型或存储在日志中之前检测和处理 PII 的中间件。
 
-### 权限[Permissions](/oss/javascript/deepagents/permissions) 是声明性允许/拒绝规则，用于控制代理可以读取或写入哪些文件和目录。使用权限将代理隔离到工作目录、保护敏感文件或强制使用只读内存。规则按声明顺序进行评估，第一个匹配的规则获胜。
+### 权限[Permissions](/oss/javascript/deepagents/permissions) 是声明性允许/拒绝规则，用于控制代理可以读取或写入哪些文件和目录。使用权限将代理隔离到工作目录、保护敏感文件或强制执行只读内存。规则按声明顺序进行评估，第一个匹配的规则获胜。
 
 ### 容错
 

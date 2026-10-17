@@ -88,7 +88,7 @@ try {
 }
 ```
 
-<Card title="View example trace" icon="chart-line" href="https://smith.langchain.com/public/3ec47344-9aad-47cb-aa43-3d98ad5da94d/r">
+<Card title="View example trace" icon="chart-line" href="https://smith.langchain.com/public/9359e1b7-644d-40b7-9da6-2c5332c52039/r">
   为此示例打开公共 LangSmith 运行。
 </Card><Tip>
   [LangSmith](https://smith.langchain.com?utm_source=docs\&utm_medium=cta\&utm_campaign=langsmith-signup\&utm_content=oss-deepagents-sandboxes) 跟踪显示哪些 shell 命令在沙箱内运行以及代理如何使用文件系统工具。按照[observability quickstart](/langsmith/observability-quickstart)进行设置。对于托管沙箱托管，请参阅[LangSmith Sandboxes](/langsmith/sandboxes)。
@@ -562,7 +562,7 @@ try {
 } finally {
   await client.deleteSandbox(lsSandbox.name);
 }
-```<Card title="View example trace" icon="chart-line" href="https://smith.langchain.com/public/8542aece-b18a-4f24-8ff1-3bc1a0737104/r">
+```<Card title="View example trace" icon="chart-line" href="https://smith.langchain.com/public/387db13b-d643-49ae-a60b-0bbdd0963eda/r">
   为此示例打开公共 LangSmith 运行。
 </Card>
 
@@ -701,10 +701,6 @@ for (const result of results) {
 }
 ```
 
-<Card title="View example trace" icon="chart-line" href="https://smith.langchain.com/public/01ee861b-8f70-459d-bd79-116bc21c99c3/r">
-  为此示例打开公共 LangSmith 运行。
-</Card>
-
 <Note>
   在沙箱内，代理使用自己的文件系统工具（`read_file`、`write_file`）：而不是`uploadFiles`或`downloadFiles`。这些方法供您的应用程序代码跨主机和沙箱之间的边界移动文件。
 </Note>
@@ -715,9 +711,9 @@ for (const result of results) {
 
 <Warning>
   **永远不要将机密放入沙箱中。** API 密钥、令牌、数据库凭证和其他注入沙箱的机密（通过环境变量、挂载文件或 `secrets` 选项）可以被上下文注入代理读取和窃取。这甚至适用于短期或有范围的凭证——如果代理可以访问它们，那么攻击者也可以。
-</Warning>### 安全处理秘密
+</Warning>
 
-如果您的代理需要调用经过身份验证的 API 或访问受保护的资源，您有两种选择：
+### 安全处理秘密如果您的代理需要调用经过身份验证的 API 或访问受保护的资源，您有两种选择：
 
 1. **在沙箱外部的工具中保守秘密。** 定义在主机环境（而不是沙箱内部）中运行的工具并在那里处理身份验证。代理通过名称调用这些工具，但从未看到凭据。这是推荐的方法。
 
@@ -726,10 +722,10 @@ for (const result of results) {
 <Warning>
   如果必须将机密注入沙箱（不推荐），请采取以下预防措施：
 
-  * 对**所有**工具调用启用[human-in-the-loop](/oss/javascript/deepagents/human-in-the-loop)批准，而不仅仅是敏感的工具调用
+  * 为**所有**工具调用启用[human-in-the-loop](/oss/javascript/deepagents/human-in-the-loop)批准，而不仅仅是敏感的工具调用
   * 阻止或限制沙箱的网络访问以限制渗透路径
   * 使用尽可能窄的凭证范围和尽可能短的生命周期
-  * 监控沙盒网络流量以发现意外的出站请求即使有这些保护措施，这仍然是一个不安全的解决方法。足够有创意的上下文注入攻击可以绕过输出过滤和 HITL 审查。
+  * 监控沙箱网络流量以发现意外的出站请求即使有这些保护措施，这仍然是一个不安全的解决方法。足够有创意的上下文注入攻击可以绕过输出过滤和 HITL 审查。
 </Warning>
 
 ### 一般最佳实践

@@ -38,7 +38,7 @@ async function main(server: string) {
 }
 ```
 
-<Card title="View example trace" icon="chart-line" href="https://smith.langchain.com/public/3f60de8e-697e-40e1-87de-d2419e426b61/r">
+<Card title="View example trace" icon="chart-line" href="https://smith.langchain.com/public/595d3842-7630-449c-978b-27f0653155e2/r">
   为此示例打开公共 LangSmith 运行。
 </Card>
 
@@ -92,6 +92,10 @@ async function accessMultimodalToolContent(serverUrl: string) {
 }
 ```
 
+<Card title="View example trace" icon="chart-line" href="https://smith.langchain.com/public/c5bd522f-7c6d-4046-896f-9f7d1fca6590/r">
+  为此示例打开公共 LangSmith 运行。
+</Card>
+
 ### 结构化内容
 
 当工具返回结构化内容时，适配器将其作为工件附加到[⟦T18⟧](https://reference.langchain.com/javascript/langchain-core/messages/ToolMessage)，而不是将其折叠到模型可见文本中。运行代理，然后从结果中的 [⟦T20⟧](https://reference.langchain.com/javascript/langchain-core/messages/ToolMessage) 实例中读取 `artifact`：
@@ -130,7 +134,7 @@ async function readStructuredContent(serverUrl: string) {
 }
 ```
 
-<Card title="View example trace" icon="chart-line" href="https://smith.langchain.com/public/77a2988b-909c-475d-a811-86cbb843f5c1/r">
+<Card title="View example trace" icon="chart-line" href="https://smith.langchain.com/public/b5c7e711-6ef7-4483-a700-73465df2f4ca/r">
   为此示例打开公共 LangSmith 运行。
 </Card>
 
@@ -171,7 +175,7 @@ async function divideByZero(serverUrl: string) {
 }
 ```
 
-<Card title="View example trace" icon="chart-line" href="https://smith.langchain.com/public/f47c3c87-87f8-4b3e-9b51-6116e9bdd313/r">
+<Card title="View example trace" icon="chart-line" href="https://smith.langchain.com/public/8301dd9e-da25-4d9a-ad13-11330f638f36/r">
   为此示例打开公共 LangSmith 运行。
 </Card>
 
@@ -209,10 +213,6 @@ function isDestructive(tool: DynamicStructuredTool): boolean {
   return annotations?.destructiveHint ?? false;
 }
 ```
-
-<Card title="View example trace" icon="chart-line" href="https://smith.langchain.com/public/aca946a6-8b00-425e-9ebd-c9166dfe5958/r">
-  为此示例打开公共 LangSmith 运行。
-</Card>
 
 ## 人机交互
 
@@ -266,10 +266,6 @@ async function gateDestructiveTools(serverUrl: string) {
   return { agent, adapter };
 }
 ```
-
-<Card title="View example trace" icon="chart-line" href="https://smith.langchain.com/public/5c0bfda7-ce16-43ee-a5ad-0c827409668a/r">
-  为此示例打开公共 LangSmith 运行。
-</Card>
 
 <Warning>
   `interruptOn` 键必须是适配器的工具名称，其中包括服务器前缀 (`crm_delete_file`)。无前缀的密钥永远不会匹配，因此该工具无需批准即可运行。
@@ -354,7 +350,7 @@ async function bookWithElicitation(serverUrl: string) {
 }
 ```
 
-<Card title="View example trace" icon="chart-line" href="https://smith.langchain.com/public/cc8ee095-52ca-403e-800f-e75479cdff90/r">
+<Card title="View example trace" icon="chart-line" href="https://smith.langchain.com/public/f8769a01-6ca6-45c7-afae-2376a5843c0d/r">
   为此示例打开公共 LangSmith 运行。
 </Card>
 
@@ -375,7 +371,7 @@ async function bookWithElicitation(serverUrl: string) {
 适配器将答案转发给服务器，服务器决定工具调用如何完成。只有启发式才是这样回答的。适配器仅在每次调用时声明启发功能，因此需要 [sampling](https://modelcontextprotocol.io/specification/2025-06-18/client/sampling) 或 [roots](https://modelcontextprotocol.io/specification/2025-06-18/client/roots) 的工具会失败并返回 `ToolException`，其中 `createAgent` 将作为错误 `ToolMessage` 返回到模型。参见[Sampling and roots](/oss/javascript/migrate/langchain-mcp-adapters#sampling-and-roots)。
 
 <Note>
-  中断驱动的诱导应答服务器，以 `InputRequiredResult` 的形式返回其请求。仅通过传统握手会话推送启发的服务器无法以这种方式应答。
+  中断驱动的启发应答服务器，以 `InputRequiredResult` 的形式返回其请求。仅通过传统握手会话推送启发的服务器无法以这种方式应答。
 </Note>
 
 ## 另请参阅

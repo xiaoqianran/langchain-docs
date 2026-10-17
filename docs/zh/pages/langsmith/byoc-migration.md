@@ -22,18 +22,19 @@
 |提示|提示完整的提交历史记录。 |
 |图表|监控图表和仪表板。 |
 |定制型号定价|工作区-自定义模型价格条目。 |
+|发动机问题 |每个项目的引擎配置和检测到的问题。问题作为元数据迁移，包括建议的修复，没有链接的跟踪或拉取请求。 |
 |舰队|代理、共享技能、MCP 服务器、集成、身份验证提供程序、计划、触发器、Webhooks、使用限制、沙箱策略和工作区机密。 |
 |上下文中心 | Context Hub 代理和技能，包括文件、存储库元数据、提交历史记录和提交标签。 |
 
-每种资源类型都有自己的命令、标志和警告。命令参考请参见[tool README](https://github.com/langchain-ai/langsmith-data-migration-tool/blob/main/README.md)。
-
-<Note>
-  属于 BYOC 尚不支持的功能的资源（例如[Engine](/langsmith/engine)）无法迁移。参见[Available features](/langsmith/byoc#available-features)。
+每种资源类型都有自己的命令、标志和警告。命令参考参见[tool README](https://github.com/langchain-ai/langsmith-data-migration-tool/blob/main/README.md)。<Note>
+  属于 BYOC 尚不支持的功能的资源（例如[Managed Deep Agents](/langsmith/python/managed-deep-agents-overview)）无法迁移。参见[Available features](/langsmith/byoc#available-features)。
 </Note>
 
-## 使用工具迁移<Steps>
+## 使用工具迁移
+
+<Steps>
   <Step title="Install the tool">
-    使用 `uv`、`uvx` 或 `pip` 安装最新版本。对于当前的安装命令，请参阅[Installation](https://github.com/langchain-ai/langsmith-data-migration-tool#installation)。
+    使用 `uv`、`uvx` 或 `pip` 安装最新版本。有关当前安装命令，请参阅[Installation](https://github.com/langchain-ai/langsmith-data-migration-tool#installation)。
 
     验证安装：
 
@@ -64,16 +65,16 @@
     ```
 
     <Note>
-      `OLD` 指您当前的 LangSmith 部署，`NEW` 指目标 BYOC 数据平面：* **`LANGSMITH_OLD_API_KEY`**: An API key from your current deployment with permission to read all resources you want to migrate.对于位于 [smith.langchain.com](https://smith.langchain.com?utm_source=docs\&utm_medium=cta\&utm_campaign=langsmith-signup\&utm_content=langsmith-byoc-migration) 的 LangSmith 云，请在 **设置 > API 密钥** 下创建它。 For another Cloud region or a self-hosted instance, use that deployment's UI.
+      `OLD` 指您当前的 LangSmith 部署，`NEW` 指目标 BYOC 数据平面：* **`LANGSMITH_OLD_API_KEY`**：当前部署中的 API 密钥，有权读取要迁移的所有资源。对于位于 [smith.langchain.com](https://smith.langchain.com?utm_source=docs\&utm_medium=cta\&utm_campaign=langsmith-signup\&utm_content=langsmith-byoc-migration) 的 LangSmith 云，请在 **设置 > API 密钥** 下创建它。对于另一个云区域或自托管实例，请使用该部署的 UI。
       * **`LANGSMITH_NEW_API_KEY`**：在 **设置 > API 密钥** 下于 [aws.smith.langchain.com](https://aws.smith.langchain.com) 创建的 API 密钥。将其范围限定为目标 BYOC 数据平面中的工作区。参见[Create an API key](/langsmith/create-account-api-key#api-keys)。
-      * **`LANGSMITH_OLD_BASE_URL`**: Your current deployment's API URL.对于 GCP US 中的 LangSmith 云，请使用 `https://api.smith.langchain.com`。对于另一个云区域，使用其 [regional API URL](/langsmith/create-account-api-key#configure-the-sdk)。 For self-hosted LangSmith, use your instance's API URL.
+      * **`LANGSMITH_OLD_BASE_URL`**：您当前部署的 API URL。对于 GCP US 中的 LangSmith 云，请使用 `https://api.smith.langchain.com`。对于另一个云区域，请使用其 [regional API URL](/langsmith/create-account-api-key#configure-the-sdk)。对于自托管 LangSmith，请使用您实例的 API URL。
       * **`LANGSMITH_NEW_BASE_URL`**：您的目标 BYOC 数据平面的 API URL，包括 `https://`。在 **设置 > 数据平面** 下找到它。参见[BYOC onboarding](/langsmith/byoc-onboarding)。
     </Note>
 
     <Warning>
-      The destination key must be scoped to a workspace in the target data plane.组织范围的密钥不起作用。
+      目标键的范围必须限于目标数据平面中的工作区。组织范围的密钥不起作用。
 
-      To migrate Fleet agents with an owner, use a personal access token (`lsv2_pt_*`) as the destination key. Workspace API 密钥不携带用户身份，因此使用它们创建的代理没有所有者。
+      要迁移具有所有者的舰队代理，请使用个人访问令牌 (`lsv2_pt_*`) 作为目标密钥。 Workspace API 密钥不携带用户身份，因此使用它们创建的代理没有所有者。
     </Warning>
   </Step>
 
@@ -84,7 +85,7 @@
   </Step>
 
   <Step title="Run the migration">
-    Use the interactive wizard to walk through every resource type:
+    使用交互式向导浏览每种资源类型：
 
     ```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
     langsmith-migrator migrate-all
@@ -94,7 +95,7 @@
   </Step>
 </Steps>
 
-## Complete the Fleet manual steps
+## 完成舰队手动步骤
 
 [Fleet](/langsmith/fleet/index)资源使用`fleet`命令迁移，但某些值不能跨实例。迁移后在目标工作区中完成以下操作：* **重新输入秘密值**：Fleet API 不返回秘密值。该工具将工作区机密和身份验证提供程序客户端机密创建为空占位符。
 * **重新验证 OAuth 连接**：每用户代理连接（例如 Gmail、Slack 和 GitHub）与各个用户令牌绑定。每个用户都必须重新连接。
@@ -104,13 +105,24 @@
 
 队列迁移器绝不会覆盖目的地上已存在的资源，因此重新运行 `fleet` 是安全的。
 
+## 完成引擎手动步骤
+
+使用 `issues` 命令迁移[Engine](/langsmith/engine) 问题。该命令创建任何具有引擎数据但在目标上丢失的跟踪项目。问题仅作为元数据迁移，并且该命令会跳过目标上已存在的问题和项目配置。要在数据平面中运行引擎，请按顺序完成以下步骤：
+
+1. **为数据平面启用引擎**：LangChain 运算符为您的数据平面启用引擎。请联系您的 LangChain 客户团队索取。
+2. **打开引擎**：组织管理员转到 **设置** > **引擎**，选择数据平面，然后打开引擎。
+3. **添加模型提供程序凭据**：组织管理员为您自己的模型提供程序添加凭据。凭证不会迁移。参见[Engine on BYOC](/langsmith/engine-self-hosted#engine-on-byoc)。
+4. **重新连接 GitHub**：在目标中配置 GitHub 应用程序，然后重新连接每个引擎项目中的存储库。存储库设置会迁移，但它们仅在目标具有 GitHub 连接后才起作用。参见[Configure GitHub for Engine on BYOC](/langsmith/engine-self-hosted-github#configure-the-app-on-byoc)。
+5. **重新创建通知目标**：连接您的 Slack 应用程序并再次添加 Slack、Jira 或 Webhook 目标。参见[Engine notifications](/langsmith/engine-notifications)。
+6. **让引擎重新检测跟踪**：迁移的问题没有链接的跟踪、拉取请求或建议的操作。引擎在分析数据平面中的跟踪时将新跟踪链接到问题。
+
 ## 移动工具不迁移的数据
 
-### 痕迹
+### 痕迹该工具不会迁移痕迹。为了在旧实例的生命周期之外保留历史跟踪，[bulk export](/langsmith/data-export) 将它们保存到与 S3 兼容的存储桶。
 
-该工具不会迁移痕迹。为了将历史跟踪保留在旧实例的生命周期之外，[bulk export](/langsmith/data-export) 将它们保存到与 S3 兼容的存储桶中。
+要移动跟踪应用程序，请创建作用域为数据平面中的工作区的 API 密钥，然后重新指向应用程序：
 
-要移动跟踪应用程序，请创建作用域为数据平面中的工作区的 API 密钥，然后重新指向应用程序：* **切换**：将 `LANGSMITH_ENDPOINT` 设置为数据平面端点，并将 `LANGSMITH_API_KEY` 设置为新密钥。参见[Trace to a data plane](/langsmith/byoc-usage#trace-to-a-data-plane)。
+* **切换**：将 `LANGSMITH_ENDPOINT` 设置为数据平面端点，将 `LANGSMITH_API_KEY` 设置为新密钥。参见[Trace to a data plane](/langsmith/byoc-usage#trace-to-a-data-plane)。
 * **双跟踪**：在转换期间写入旧实例和数据平面。参见[Trace to multiple endpoints](/langsmith/byoc-usage#trace-to-multiple-endpoints)。
 
 ### 已部署代理
@@ -124,9 +136,7 @@
 
 欲了解更多信息，请参阅[LangSmith Deployment](/langsmith/deployment)。
 
-### 见解报告
-
-[Insights](/langsmith/insights) 报告不会跨实例迁移。要保留报告，请在 LangSmith UI 中打开其详细信息，然后选择 **下载**。
+### 见解报告[Insights](/langsmith/insights) 报告不会跨实例迁移。要保留报告，请在 LangSmith UI 中打开其详细信息，然后选择 **下载**。
 
 ## 另请参阅
 

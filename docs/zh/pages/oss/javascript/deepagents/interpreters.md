@@ -8,7 +8,7 @@
 
 解释器在代理循环内为代理提供了一个可编程的**内存中**工作空间。代理编写代码来完成任务，运行时执行它并仅返回相关结果。中间结果不会成为模型上下文的一部分。
 
-其中，[sandboxes](/oss/javascript/deepagents/sandboxes)是一种对环境进行操作的代码优先方式（例如运行命令、安装依赖项和编辑文件），而解释器是一种代码优先方式，用于编写工具、保留状态以及决定应返回模型的信息。
+其中 [sandboxes](/oss/javascript/deepagents/sandboxes) 是对环境进行操作的代码优先方式（例如运行命令、安装依赖项和编辑文件），而解释器是用于编写工具、保留状态以及决定应返回模型的信息的代码优先方式。
 
 <Warning>
   口译员位于[**beta**](/oss/javascript/versioning)。 API 和生命周期行为可能会在版本之间发生变化。
@@ -28,7 +28,7 @@
   </Card>
 
   <Card title="Dynamic subagents" icon="arrows-split" href="#dynamic-subagents">
-    从代码中分派子代理，以针对大量输入进行扇出、验证和递归工作流程。
+    从代码中调度子代理，以针对大量输入进行扇出、验证和递归工作流程。
   </Card>
 
   <Card title="Stateful work" icon="database" href="#how-interpreters-work">
@@ -46,7 +46,7 @@
 
 |需要|使用|
 | - | - |
-|一两个简单的外部通话 |正常工具调用 |
+|一两个简单的外部通话|正常工具调用 |
 |纯内存 JavaScript：循环、分支、重试或数据转换（无外部工具）|口译 |
 |许多从代码编排的外部工具调用（需要[PTC](#programmatic-tool-calling-ptc)）| [programmatic tool calling (PTC)](#programmatic-tool-calling-ptc) 口译员 |
 |许多独立的工作单元、多个视角或对大量输入的递归分析 | [dynamic subagents](/oss/javascript/deepagents/dynamic-subagents) 口译员 |
@@ -141,10 +141,6 @@
   });
   ```
 </CodeGroup>
-
-<Card title="View example trace" icon="chart-line" href="https://smith.langchain.com/public/7594f2f3-5572-420e-be08-7272d2c9cdd2/r">
-  为此示例打开公共 LangSmith 运行。
-</Card>
 
 ## 口译员如何工作中间件向代理添加了一个`eval`工具。当有用时，代理编写 JavaScript 并调用 `eval`；您不直接致电口译员。该工具在 QuickJS 上下文中运行代码，其变量可以在 `eval` 调用之间持续存在，具体取决于持久性 `mode`。它捕获 `console.log`、`console.warn` 和 `console.error`，并返回最后一个表达式的结果。
 
@@ -327,7 +323,7 @@ reviews.join("\n\n");
 
 ## 配置
 
-`createCodeInterpreterMiddleware`接受以下选项：|选项 |默认|目的|
+`createCodeInterpreterMiddleware`接受以下选项：|选项|默认|目的|
 | - | - | - |
 | `memoryLimitBytes` | `64 * 1024 * 1024` <br />(64 MB) |每个会话的 QuickJS 堆内存上限。 |
 | `maxStackSizeBytes` | `320 * 1024` |每个会话的 QuickJS 堆栈大小上限。 |
@@ -342,7 +338,7 @@ reviews.join("\n\n");
 
 ***<div>
   <Callout icon="terminal-2">
-    [Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
+    [Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时答案。
   </Callout>
 
   <Callout icon="edit">

@@ -18,7 +18,7 @@ git clone https://github.com/langchain-ai/docs.git
 cd docs
 ```
 
-使用 [mise](https://mise.jdx.dev/getting-started.html) 安装固定工具链，它会从 `.mise.toml` 读取 Python、Node.js、uv、Vale 和 Mintlify CLI 的版本，并安装存储库的 git hook：
+Install the pinned toolchain with [mise](https://mise.jdx.dev/getting-started.html), which reads the versions of Python, Node.js, uv, Vale, and the Mintlify CLI from `.mise.toml` and installs the repository's git hooks:
 
 ```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 mise trust && mise install
@@ -40,14 +40,14 @@ make dev
   * 安装 [LangChain Docs MCP servers](/use-these-docs) 以使您的代理能够访问最新的 LangChain 文档和示例。
 
     <Prompt description="Connect LangChain docs MCP servers" icon="plug">
-      将两个 LangChain 文档 MCP 服务器连接到我的编码代理，以便它可以查找当前的 LangChain、LangGraph 和 LangSmith 文档和 API 参考。
+      Connect both LangChain documentation MCP servers to my coding agent so it can look up current LangChain, LangGraph, and LangSmith docs and API reference.
 
       要添加的服务器：
 
       * `docs-langchain`: [https://docs.langchain.com/mcp](https://docs.langchain.com/mcp)
       * `reference-langchain`: [https://reference.langchain.com/mcp](https://reference.langchain.com/mcp)
 
-      检测我正在使用的代理或编辑器（Claude Code、Cursor、Codex CLI、Claude Desktop、Deep Agents Code、VS Code、Antigravity 或其他 MCP 兼容客户端）。使用 [https://docs.langchain.com/use-these-docs.md](https://docs.langchain.com/use-these-docs.md) 中的匹配设置：* Claude 代码：`claude mcp add --transport http` 适用于每个服务器（默认情况下为项目范围；仅当我要求全局访问时才使用`--scope user`）。
+      Detect which agent or editor I am using (Claude Code, Cursor, Codex CLI, Claude Desktop, Deep Agents Code, VS Code, Antigravity, or another MCP-compatible client).使用 [https://docs.langchain.com/use-these-docs.md](https://docs.langchain.com/use-these-docs.md) 中的匹配设置：* Claude 代码：`claude mcp add --transport http` 适用于每个服务器（默认情况下为项目范围；仅当我要求全局访问时才使用`--scope user`）。
       * Codex CLI：`codex mcp add` 以及每个服务器 URL。
       * 光标、Deep Agents 代码、VS 代码或反重力：使用我的客户页面上显示的字段名称将两个条目合并到 MCP 设置 JSON 中。
       * Claude Desktop：在“设置”>“连接器”下添加两个 URL。
@@ -75,7 +75,7 @@ make dev
 </Tip>
 
 <Tip>
-  如果您的本地预览出现问题，请尝试运行 `mint update` 以确保您使用的是最新的 Mintlify 版本。
+  如果您在本地预览时遇到问题，请尝试运行 `mint update` 以确保您使用的是最新的 Mintlify 版本。
 </Tip>
 
 <Accordion title="Prerequisites">
@@ -98,7 +98,7 @@ make dev
 ## 编辑文档
 
 <Accordion title="Quick edits on GitHub">
-  对于拼写错误或小的更改，请直接在 GitHub 上编辑，无需本地设置：1. 单击任意页面底部的 **在 GitHub 上编辑此页面**。
+  对于拼写错误或小的更改，直接在 GitHub 上编辑，无需本地设置：1. 单击任意页面底部的 **在 GitHub 上编辑此页面**。
   2. 分叉到您的个人帐户。
   3. 在 GitHub 的 Web 编辑器中进行更改。
   4. 创建拉取请求。
@@ -132,8 +132,8 @@ make dev
 在提交更改之前，请确保您的代码通过格式和 linting 检查：
 
 ```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-# Check broken links
-make broken-links
+# Check broken links and anchors
+make broken-links-with-anchors
 
 # Format code automatically
 make format
@@ -149,12 +149,12 @@ make test
 ```
 
 有关更多详细信息，请参阅`README`中的[available commands](https://github.com/langchain-ai/docs?tab=readme-ov-file#available-commands)部分。<Important>
-  所有拉取请求都会由 CI/CD 自动检查。将强制执行相同的 linting 和格式化标准，如果这些检查失败，则无法合并 PR。
+  所有拉取请求都会由 CI/CD 自动检查。 The same linting and formatting standards will be enforced, and PRs cannot be merged if these checks fail.
 </Important>
 
-## 文档类型
+## Documentation types
 
-所有文档均属于以下四个类别之一：
+All documentation falls under one of four categories:
 
 <CardGroup>
   <Card title="How-to guides" icon="tool" href="#how-to-guides">
@@ -162,7 +162,7 @@ make test
   </Card>
 
   <Card title="Conceptual guides" icon="bulb" href="#conceptual-guides">
-    提供更深入理解和见解的解释。
+    Explanations that provide deeper understanding and insights.
   </Card>
 
   <Card title="Reference" icon="book" href="#reference">
@@ -185,7 +185,7 @@ make test
 <AccordionGroup>
   <Accordion title="Characteristics">
     * **以任务为中心**：专注于特定任务或问题
-    * **逐步**：将任务分解为更小的步骤
+    * **Step-by-step**: Break down the task into smaller steps
     * **动手**：提供具体示例和代码片段
   </Accordion><Accordion title="Tips">
     * 关注**如何**而不是**为什么**
@@ -265,7 +265,7 @@ make test
 ### 教程
 
 教程是较长的分步指南，以自身为基础，引导用户通过特定的实践活动来建立理解。教程通常可以在 [Learn](/oss/python/learn) 选项卡上找到。<Note>
-  如果没有迫切需要，我们通常不会合并来自外部贡献者的新教程。如果您觉得文档中缺少某个主题或未充分涵盖某个主题，请[open a new issue](https://github.com/langchain-ai/docs/issues)。
+  如果没有迫切需要，我们通常不会合并来自外部贡献者的新教程。如果您觉得文档中缺少某个主题或没有充分涵盖，请[open a new issue](https://github.com/langchain-ai/docs/issues)。
 </Note>
 
 <AccordionGroup>
@@ -297,8 +297,8 @@ make test
 
 使用 [Mintlify components](https://mintlify.com/docs/text) 增强可读性：<Tabs>
   <Tab title="Callouts">
-    * `<Note>` 获取有用的补充信息
-    * `<Warning>` 重要注意事项和重大变更
+    * `<Note>` for helpful supplementary information
+    * `<Warning>` for important cautions and breaking changes
     * `<Tip>` 最佳实践和建议
     * `<Info>` 用于中性上下文信息
     * `<Check>` 用于成功确认
@@ -307,26 +307,26 @@ make test
   <Tab title="Structure">
     * `<Steps>` 了解顺序过程的概述。 **不适用于**长的步骤或教程列表。
     * `<Tabs>` 适用于特定于平台的内容。
-    * `<AccordionGroup>` 和 `<Accordion>` 用于默认可折叠的必备信息（例如完整的代码示例）。
+    * `<AccordionGroup>` and `<Accordion>` for nice-to-have information that can be collapsed by default (e.g., full code examples).
     * `<CardGroup>` 和 `<Card>` 用于突出显示内容。
   </Tab>
 
   <Tab title="Code">
     * `<CodeGroup>` 适用于多种语言示例。
-    * 始终在代码块上指定语言标签（例如，` ⟦T8⟧javascript`）。
+    * Always specify language tags on code blocks (e.g., ` ⟦T8⟧javascript`).
     * 代码块的标题（例如`Success`、`Error Response`）
   </Tab>
 </Tabs>
 
 ### 美人鱼图
 
-添加美人鱼图时，请使用 LangChain 品牌调色板进行节点样式设置。从任何现有图表复制`classDef`行，或使用[⟦T48⟧](https://github.com/langchain-ai/docs/blob/main/AGENTS.md#mermaid-diagram-styling)中的参考表。|角色 |填写|行程|文字|
+添加美人鱼图时，请使用 LangChain 品牌调色板进行节点样式设置。 Copy `classDef` lines from any existing diagram, or use the reference table in [⟦T48⟧](https://github.com/langchain-ai/docs/blob/main/AGENTS.md#mermaid-diagram-styling).|角色 |填写 |行程|文字|
 | - | - | - | - |
 |流程| `#E5F4FF` | `#006DDD` | `#030710` |
 |触发| `#F6FFDB` | `#6E8900` | `#2E3900` |
 |决定| `#FDF3FF` | `#7E65AE` | `#504B5F` |
 |输出| `#EBD0F0` | `#885270` | `#441E33` |
-|警报| `#F8E8E6` | `#B27D75` | `#634643` |
+|警报 | `#F8E8E6` | `#B27D75` | `#634643` |
 |中立 | `#F2FAFF` | `#40668D` | `#2F4B68` |
 
 请勿使用 Tailwind 默认值、Material Design 颜色或其他非品牌调色板。
@@ -364,9 +364,9 @@ Content for both languages (not wrapped)
   我们不希望由于缺乏平等而阻碍捐款。如果某个功能仅以一种语言提供，则可以只提供该语言的文档，直到另一种语言赶上。在这种情况下，请添加注释，表明该功能尚不支持其他语言。如果您需要在 Python 和 JavaScript/TypeScript 之间翻译内容的帮助，请在 [community slack](https://www.langchain.com/join-community) 中询问或在 PR 中标记维护者。
 </Note>
 
-## 质量标准
+## Quality standards
 
-### 一般准则
+### General guidelines
 
 <AccordionGroup>
   <Accordion title="Avoid duplication">
@@ -390,9 +390,9 @@ Content for both languages (not wrapped)
 * 使用具体的、可操作的链接文本而不是“单击此处”
 * 包括所有图像和图表的描述性替代文本
 
-### 交叉引用使用一致的交叉引用将文档与 API 参考文档连接起来。
+### Cross-referencing使用一致的交叉引用将文档与 API 参考文档连接起来。
 
-**从文档到 API 参考：**
+**From docs to API reference:**
 
 使用 `@[]` 语法链接到 API 参考页面：
 
@@ -405,7 +405,7 @@ The @[`bind_tools`][ChatAnthropic.bind_tools] method accepts...
 构建管道根据当前语言范围（Python 或 JavaScript）将它们转换为正确的 Markdown 链接。例如，`@[ChatAnthropic]` 成为 Python 或 JS API 参考页面的链接，具体取决于正在构建的文档版本，**但前提是 `link_map.py` 文件中存在条目！** 有关详细信息，请参阅下文。
 
 <Accordion title="How autolinks work">
-  `@[]`语法由[⟦T74⟧](https://github.com/langchain-ai/docs/blob/main/pipeline/preprocessors/handle_auto_links.py)处理。它在 [⟦T75⟧](https://github.com/langchain-ai/docs/blob/main/pipeline/preprocessors/link_map.py) 中查找链接键，其中包含 Python 和 JavaScript 范围的字典映射。
+  The `@[]` syntax is processed by [⟦T74⟧](https://github.com/langchain-ai/docs/blob/main/pipeline/preprocessors/handle_auto_links.py).它在 [⟦T75⟧](https://github.com/langchain-ai/docs/blob/main/pipeline/preprocessors/link_map.py) 中查找链接键，其中包含 Python 和 JavaScript 范围的字典映射。
 
   **支持的格式：**
 

@@ -1083,12 +1083,6 @@
           "rel": "langsmith/deploy-reference-overview.md"
         }
       ],
-      "deploy-self-hosted-full-platform": [
-        {
-          "title": "Enable LangSmith Deployment",
-          "rel": "langsmith/deploy-self-hosted-full-platform.md"
-        }
-      ],
       "deploy-standalone-server": [
         {
           "title": "Self-host standalone servers",
@@ -1173,6 +1167,12 @@
           "rel": "langsmith/double-texting.md"
         }
       ],
+      "enable-self-hosted-deployment": [
+        {
+          "title": "Enable LangSmith Deployment",
+          "rel": "langsmith/enable-self-hosted-deployment.md"
+        }
+      ],
       "enable-self-hosted-fleet": [
         {
           "title": "Enable Fleet on self-hosted LangSmith",
@@ -1241,19 +1241,19 @@
       ],
       "engine-self-hosted": [
         {
-          "title": "LangSmith Engine on Self-hosted",
+          "title": "LangSmith Engine on Self-hosted and BYOC",
           "rel": "langsmith/engine-self-hosted.md"
         }
       ],
       "engine-self-hosted-github": [
         {
-          "title": "Configure GitHub for Engine on self-hosted",
+          "title": "Configure GitHub for Engine on self-hosted and BYOC",
           "rel": "langsmith/engine-self-hosted-github.md"
         }
       ],
       "engine-self-hosted-model-providers": [
         {
-          "title": "Configure model providers for Engine on self-hosted",
+          "title": "Configure model providers for Engine on self-hosted and BYOC",
           "rel": "langsmith/engine-self-hosted-model-providers.md"
         }
       ],
@@ -1705,6 +1705,12 @@
         {
           "title": "Monitor LLM Gateway spend",
           "rel": "langsmith/llm-gateway-monitoring.md"
+        }
+      ],
+      "llm-gateway-provider-authentication": [
+        {
+          "title": "Provider authentication",
+          "rel": "langsmith/llm-gateway-provider-authentication.md"
         }
       ],
       "llm-gateway-quickstart": [
@@ -2459,7 +2465,7 @@
       ],
       "self-host-slack": [
         {
-          "title": "Connect self-hosted LangSmith to Slack",
+          "title": "Connect self-hosted and BYOC LangSmith to Slack",
           "rel": "langsmith/self-host-slack.md"
         }
       ],
@@ -7357,6 +7363,12 @@
         {
           "title": "Quickstart",
           "rel": "oss/openwiki/quickstart.md"
+        }
+      ],
+      "search-and-link": [
+        {
+          "title": "Search and link wikis",
+          "rel": "oss/openwiki/search-and-link.md"
         }
       ],
       "visualize": [

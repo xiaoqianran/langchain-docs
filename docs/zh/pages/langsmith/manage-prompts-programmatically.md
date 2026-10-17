@@ -36,7 +36,7 @@
 
 ## 配置环境变量
 
-如果您已将 `LANGSMITH_API_KEY` 设置为 LangSmith 中当前工作区的 api 密钥，则可以跳过此步骤。
+如果您已将 `LANGSMITH_API_KEY` 从 LangSmith 设置为当前工作区的 api 密钥，则可以跳过此步骤。
 
 否则，请导航至 LangSmith 中的 `Settings > API Keys > Create API Key` 获取工作区的 API 密钥。
 
@@ -381,7 +381,7 @@ export LANGSMITH_API_KEY="lsv2_..."
 </CodeGroup>
 
 <Note>
-  对于拉取提示，如果您使用 Node.js 或支持动态导入的环境，我们建议使用 `langchain/hub/node` 入口点，因为它会自动处理与提示配置关联的模型的反序列化。如果您处于非 Node 环境中，非OpenAI 模型不支持“includeModel”，您应该使用基本 `langchain/hub` 入口点。
+  对于拉取提示，如果您使用 Node.js 或支持动态导入的环境，我们建议使用 `langchain/hub/node` 入口点，因为它会自动处理与提示配置关联的模型的反序列化。如果您处于非 Node 环境中，则非 OpenAI 模型不支持“includeModel”，您应该使用基本 `langchain/hub` 入口点。
 </Note>
 
 ## 与LangSmith网关配合使用
@@ -417,7 +417,7 @@ result = prompt_with_model.invoke({"topic": "cats"})
 ```
 
 <Note>
-  LangChain 聊天模型的网关路由需要 Python 和受支持的 `langchain-*` 集成包（最低版本在[gateway quickstart](/langsmith/llm-gateway-quickstart) 中列出）。如果集成包低于最低版本，调用将绕过网关，直接转到提供商。
+  LangChain 聊天模型的网关路由需要 Python 和受支持的 `langchain-*` 集成包（最低版本在[gateway quickstart](/langsmith/llm-gateway-quickstart) 中列出）。如果集成包低于最低版本，调用将绕过网关，直接转至提供商。
 </Note>
 
 有关完整的配置选项、提供商支持和区域端点，请参阅 [LLM Gateway quickstart](/langsmith/llm-gateway-quickstart)。## 提示缓存
@@ -433,7 +433,7 @@ LangSmith SDK 包含内置的内存中提示缓存。启用后，LangSmith 将�
 
 缓存**默认启用**。启用后，默认设置为：
 
-|设置 |默认 |描述 |
+|设置|默认|描述 |
 | - | - | - |
 | `max_size` | 100 | 100缓存的最大提示数|
 | `ttl_seconds` | 300（5 分钟）|缓存的提示被视为过时之前的时间 |
@@ -724,7 +724,7 @@ LangSmith SDK 包含内置的内存中提示缓存。启用后，LangSmith 将�
 
 ## 使用不带 LangChain 的提示
 
-如果您想将提示存储在 LangSmith 中，但直接通过模型提供商的 API 使用它们，则可以使用我们的转换方法。这些会将您的提示转换为 OpenAI 或 Anthropic API 所需的负载。
+如果您想将提示存储在 LangSmith 中，但直接通过模型提供商的 API 使用它们，您可以使用我们的转换方法。这些会将您的提示转换为 OpenAI 或 Anthropic API 所需的负载。
 
 这些转换方法依赖于LangChain集成包中的逻辑，除了您选择的官方 SDK 之外，您还需要安装适当的包作为依赖项。以下是一些示例：
 
@@ -884,7 +884,7 @@ LangSmith SDK 包含内置的内存中提示缓存。启用后，LangSmith 将�
 
 ## 列出、删除和点赞提示
 
-您还可以使用 `list prompts`、`delete prompt`、`like prompt` 和 `unlike prompt` 方法列出、删除以及喜欢/不喜欢提示。有关这些方法的详细文档，请参阅[LangSmith SDK client](https://github.com/langchain-ai/langsmith-sdk)。
+您还可以使用 `list prompts`、`delete prompt`、`like prompt` 和 `unlike prompt` 方法列出、删除以及喜欢/不喜欢提示。有关这些方法的详细文档，请参阅 [Python SDK](https://github.com/langchain-ai/langsmith-python) 和 [JavaScript SDK](https://github.com/langchain-ai/langsmith-javascript)。
 
 <CodeGroup>
   ```python Python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
@@ -902,9 +902,7 @@ LangSmith SDK 包含内置的内存中提示缓存。启用后，LangSmith 将�
 
   # Unlike a prompt
   client.unlike_prompt("efriis/my-first-prompt")
-  ```
-
-  ```typescript TypeScript theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+  ``````typescript TypeScript theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
   // List all prompts in my workspace
   import Client from "langsmith";
 
@@ -926,7 +924,9 @@ LangSmith SDK 包含内置的内存中提示缓存。启用后，LangSmith 将�
 
   // Unlike a prompt
   client.unlikePrompt("efriis/my-first-prompt");
-  ``````java Java theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+  ```
+
+  ```java Java theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
   import com.langchain.smith.client.LangsmithClient;
   import com.langchain.smith.client.okhttp.LangsmithOkHttpClient;
   import com.langchain.smith.models.repos.RepoDeleteParams;

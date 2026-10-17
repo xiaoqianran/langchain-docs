@@ -249,7 +249,7 @@ console.log(msg.tool_calls);
 通过并行化，法学硕士可以同时处理一项任务。这可以通过同时运行多个独立的子任务来完成，或者多次运行同一任务以检查不同的输出。并行化通常用于：
 
 * 拆分子任务并并行运行它们，从而提高速度
-* 多次运行任务以检查不同的输出，从而增加信心
+* 多次运行任务以检查不同的输出，这增加了信心
 
 一些例子包括：
 
@@ -686,7 +686,7 @@ Orchestrator-worker 工作流程提供了更大的灵活性，并且通常在无
   ```
 </CodeGroup>
 
-### 在LangGraph创建工人Orchestrator-worker 工作流程很常见，LangGraph 内置了对它们的支持。 `Send` API 允许您动态创建工作节点并向它们发送特定输入。每个工作人员都有自己的状态，所有工作人员输出都写入编排器图可访问的共享状态键。这使协调器可以访问所有工作输出，并允许将它们合成为最终输出。下面的示例迭代部分列表，并使用 `Send` API 将部分发送给每个工作人员。
+### 在LangGraph创建工人Orchestrator-worker 工作流程很常见，LangGraph 内置了对它们的支持。 `Send` API 允许您动态创建工作节点并向它们发送特定输入。每个工作人员都有自己的状态，所有工作人员输出都写入编排器图可访问的共享状态键。这使协调器可以访问所有工作人员输出，并允许将它们合成为最终输出。下面的示例迭代部分列表，并使用 `Send` API 将部分发送给每个工作人员。
 
 ```typescript theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 import { StateGraph, StateSchema, ReducedValue, GraphNode, Send } from "@langchain/langgraph";
@@ -1152,7 +1152,7 @@ const toolNode = new ToolNode([search, calculator]);
 
 #### 从工具访问图形状态和上下文
 
-由`ToolNode`执行的工具接收模型生成的参数，如下所示
+由`ToolNode`执行的工具接收模型生成的参数：
 他们的第一个论点。读取不是由生成的图端数据
 模型，使用以下选项之一：* 在Python中，从注入的状态和运行范围的上下文中读取
   [⟦T27⟧](https://reference.langchain.com/javascript/langchain/index/Runtime) 论证。
@@ -1239,7 +1239,7 @@ const result = await graph.invoke(
 );
 ```
 
-<Card title="View example trace" icon="chart-line" href="https://smith.langchain.com/public/bb52f523-7662-4984-9b46-d3b0132b962a/r">
+<Card title="View example trace" icon="chart-line" href="https://smith.langchain.com/public/f9a855a9-4897-4c50-ab4f-8c7db93b1894/r">
   为此示例打开公共 LangSmith 运行。
 </Card>
 

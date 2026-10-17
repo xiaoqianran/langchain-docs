@@ -19,7 +19,7 @@ npm install -g openwiki
 openwiki --init
 ```
 
-See the [Quickstart](/oss/openwiki/quickstart) to choose a model provider, generate docs, and keep them up to date. To run OpenWiki inside Codex, Claude Code, OpenCode, or Cursor instead of a standalone model session, see [Coding-agent integrations](/oss/openwiki/integrations).
+See the [Quickstart](/oss/openwiki/quickstart) to choose a model provider, generate docs, and keep them up to date. To run OpenWiki inside a coding agent instead of a standalone model session, see [Coding-agent integrations](/oss/openwiki/integrations). To search an existing wiki or group related repositories, see [Search and link wikis](/oss/openwiki/search-and-link).
 
 ## Modes
 
@@ -36,11 +36,15 @@ Bare `openwiki --init` and `openwiki --update` run in code mode. Use `openwiki p
 
 <CardGroup>
   <Card title="Repository wikis" icon="folder-code" href="/oss/openwiki/code-mode">
-    Generate Markdown docs under `openwiki/`, then wire them into `AGENTS.md` and `CLAUDE.md` so coding agents can find them.
+    Generate Markdown docs under `openwiki/`, then wire them into `AGENTS.md` (and `CLAUDE.md` when present) so coding agents can find them.
   </Card>
 
   <Card title="Coding-agent integrations" icon="robot" href="/oss/openwiki/integrations">
-    Run OpenWiki inside Codex, Claude Code, OpenCode, or Cursor using the host model and repository tools.
+    Run OpenWiki inside Codex, Claude Code, OpenCode, Cursor, IBM Bob, Kiro, Oh My Pi, Antigravity, or Pi.
+  </Card>
+
+  <Card title="Search and link" icon="search" href="/oss/openwiki/search-and-link">
+    Query wiki pages over MCP and group related repository wikis into workspaces.
   </Card>
 
   <Card title="Personal brain" icon="brain" href="/oss/openwiki/personal-mode">
@@ -56,7 +60,7 @@ Bare `openwiki --init` and `openwiki --update` run in code mode. Use `openwiki p
   </Card>
 
   <Card title="Model providers" icon="cpu" href="/oss/openwiki/providers">
-    Use OpenAI, Anthropic, Gemini, Bedrock, OpenRouter, GitHub Copilot, and other providers out of the box.
+    Use OpenAI, Anthropic, Gemini, Bedrock, OpenRouter, GitHub Copilot, IBM Bob, and other providers out of the box.
   </Card>
 
   <Card title="Open Knowledge Format" icon="file-text" href="/oss/openwiki/code-mode#open-knowledge-format">

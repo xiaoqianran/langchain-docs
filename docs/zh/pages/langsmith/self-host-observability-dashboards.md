@@ -6,7 +6,7 @@
 
 将选项卡式 SmithDB 和 Sandbox 仪表板导入您自己的监控实例并配置组件遥测收集。
 
-LangSmith 自托管仪表板将运营指标分组到 SmithDB 和 Sandboxes 选项卡中。使用它们从每个监控平台的一个仪表板监控基础设施中运行的组件。
+LangSmith 自托管仪表板将运营指标分组到 SmithDB 和 Sandboxes 选项卡中。使用它们从每个监控平台的一个仪表板监控基础架构中运行的组件。
 
 从[LangSmith observability bundle](https://github.com/langchain-ai/helm/tree/main/charts/langsmith/examples/langsmith-observability)下载定义和集合示例。将它们导入您自己的 Datadog 组织或 Grafana 实例中。从存储库下载这些文件，而不是 Helm 图表存档。下载内容包含查询，而不是遥测或对 LangChain 托管监控的访问。
 
@@ -15,7 +15,7 @@ LangSmith 自托管仪表板将运营指标分组到 SmithDB 和 Sandboxes 选�
 这两个仪表板共享组件组织，但它们的数据源和覆盖范围不同。|覆盖范围|数据狗 | Grafana 与 Prometheus |
 | - | - | - |
 | SmithDB 指标和 LangSmith 摄取路径 |包含 |包含 |
-|沙盒主机容量、生命周期、执行、资源、网络和运行状况 |包含 |包含 |
+|沙箱主机容量、生命周期、执行、资源、网络和运行状况 |包含 |包含 |
 | JuiceFS 挂载指标 |可选单独刮|可选单独刮|
 |沙箱 API/APM 视图 |可选的 Datadog APM |不包括在内|
 | AWS/GCP 存储桶指标 |可选的云集成 |不包括在内|
@@ -24,7 +24,7 @@ Grafana 的 Sandbox 选项卡不假设 Prometheus 中存在 Datadog 派生的指
 
 ## 检查先决条件
 
-使用现有的[self-hosted LangSmith deployment](/langsmith/deploy-self-hosted-full-platform)和监控装置。仅对您操作的组件启用收集。这些示例不安装监控软件或启用 SmithDB 或沙箱。* **Datadog**：使用具有 Kubernetes 自动发现和 [OpenMetrics integration](https://docs.datadoghq.com/integrations/openmetrics/) 的代理。沙箱注释需要 Agent 7.36 或更高版本。
+使用现有的[self-hosted LangSmith deployment](/langsmith/self-hosted)和监控装置。仅对您操作的组件启用收集。这些示例不安装监控软件或启用 SmithDB 或沙箱。* **Datadog**：使用具有 Kubernetes 自动发现和 [OpenMetrics integration](https://docs.datadoghq.com/integrations/openmetrics/) 的代理。沙箱注释需要 Agent 7.36 或更高版本。
 * **Grafana**：将 Grafana 13 或更高版本用于本机选项卡和 V2 仪表板资源格式。配置现有的 Prometheus 数据源。
 * **专用连接**：收集器需要访问组件指标端点。不要通过公众进入暴露它们。沙箱主机使用节点网络，因此通过节点防火墙配置来限制访问。
 * **权限**：您需要导入仪表板和更新集合配置的权限。 Prometheus Pod 发现需要访问所选的 Kubernetes 命名空间。
@@ -56,23 +56,23 @@ python3 charts/langsmith/examples/langsmith-observability/generate_dashboards.py
 
 沙盒主机在端口 `19190` 上导出指标。收集并导入它们：1. 下载根`datadog-dashboard.json`和`components/sandboxes/datadog-values.yaml`中的值。
 2. 将 OpenMetrics 注释合并到现有的版本值中。 Helm 字符串替换整个注释，而不是单个 JSON 实例。协调现有检查以避免重复抓取。
-3. 使用您当前运行的相同图表版本通过发布管理器应用这些值。 Pod 注释更改会滚动沙箱主机 Pod 并暂停其正在运行的沙箱。在维护时段安排此更新。
+3. 使用您当前运行的相同图表版本通过发布管理器应用这些值。 Pod 注释更改会滚动沙箱主机 Pod 并暂停其正在运行的沙箱。 Schedule this update in a maintenance window.
 4. 检查Agent的抓取状态，确认`langsmith_sandbox_host_live_sandboxes`和`langsmith_sandbox_host_juicefs_mount_ready`到达Datadog。
 5. 导入仪表板 JSON 并打开 Sandboxes 选项卡。
 
 主机示例未添加指标命名空间前缀。 Datadog 计数器使用 `.count` 而不是 `_total`。该集合保留了直方图`.sum`和`.count`系列以及分布；主机持续时间图表使用这些来计算平均值。查看 Datadog 计划中的自定义指标使用情况和标签基数。
 
-### Grafana 沙盒
+### Sandboxes with Grafana
 
-Grafana 选项卡使用来自主机和可选 JuiceFS 安装的 Prometheus 指标。配置集合：1. 将 `components/sandboxes/prometheus/host-scrape.yaml` 中的 `scrape_configs` 条目合并到现有的 Prometheus 配置中。该文件不是 Helm 值。
-2. 替换命名空间和集群占位符。每个主机侦听器保留一项抓取作业。该示例选择 `sandbox-host` 容器及其声明的 `19190` 端口，并附加命名空间、集群、pod 和实例标签。
+Grafana 选项卡使用来自主机和可选 JuiceFS 安装的 Prometheus 指标。配置集合：1. Merge the `scrape_configs` entries from `components/sandboxes/prometheus/host-scrape.yaml` into your existing Prometheus configuration.该文件不是 Helm 值。
+2. Replace the namespace and cluster placeholders.每个主机侦听器保留一项抓取作业。该示例选择 `sandbox-host` 容器及其声明的 `19190` 端口，并附加命名空间、集群、pod 和实例标签。
 3. 在验证对端口 `9567` 上挂载指标侦听器的私有访问后，可以选择合并 `juicefs-scrape.yaml`。
 4. 检查目标运行状况并确认主机指标到达 Prometheus。
-5. 导入根`grafana-dashboard.json`。选择共享数据源和命名空间，然后选择沙盒集群。如果组件占用不同的命名空间，请选择两个命名空间。
+5. 导入根`grafana-dashboard.json`。 Select the shared Data source and Namespace(s), then select Sandbox cluster. If the components occupy different namespaces, select both namespaces.
 
-这些示例使用 `scrape_protocols` 请求 Prometheus 文本格式，保留 JuiceFS 计数器命名。它们经过 Prometheus 3.5.0 验证；如果您运行旧版本，请检查配置兼容性。这些文件不会创建额外的 Kubernetes 权限或公共网络资源。
+这些示例使用 `scrape_protocols` 请求 Prometheus 文本格式，保留 JuiceFS 计数器命名。它们经过 Prometheus 3.5.0 验证； check configuration compatibility if you run an older version. No additional Kubernetes permissions or public network resources are created by these files.
 
-## 选择您的部署共享选择器适用于遥测具有相同含义的组件选项卡。在解释就绪主机或所需副本计数之前，仅选择一个沙盒池。您可以包含单独的 SmithDB 命名空间，而无需选择其他沙盒池。
+## 选择您的部署共享选择器适用于遥测具有相同含义的组件选项卡。在解释就绪主机或所需副本计数之前，仅选择一个沙箱池。您可以包含单独的 SmithDB 命名空间，而无需选择其他沙盒池。
 
 |数据狗过滤器|标签 |范围 |
 | - | - | - |
@@ -83,15 +83,15 @@ Grafana 选项卡使用来自主机和可选 JuiceFS 安装的 Prometheus 指标
 | `gcs_bucket` | `bucket_name` |仅限 GCS 存储 |
 | `s3_bucket` | `bucketname` |仅限 S3 存储 |
 
-默认情况下，Datadog 集群选择器会发现`cluster_name` 中的值。如果您的帐户仅公开 `kube_cluster_name`，请将其用作选择器的标签键。查询将 `$cluster.value` 与每个组件的显式标记键一起使用，因此更改选择器不会重新标记指标。标签键必须使用匹配的集群名称值。如果您的指标使用其他标签键，还需更新相关的查询过滤器和 group-by 子句。APM仅使用`env`和`api_service`；云指标使用其存储桶选择器。 API 服务和存储桶选择器遵循共享过滤器。 Datadog 将溢出控件放置在其附加变量菜单中。
+默认情况下，Datadog 集群选择器会发现`cluster_name` 中的值。如果您的帐户仅公开 `kube_cluster_name`，请将其用作选择器的标签键。查询将 `$cluster.value` 与每个组件的显式标记键一起使用，因此更改选择器不会重新标记指标。标签键必须使用匹配的集群名称值。如果您的指标使用其他标签键，还需更新相关的查询过滤器和 group-by 子句。APM uses only `env` and `api_service`;云指标使用其存储桶选择器。 API 服务和存储桶选择器遵循共享过滤器。 Datadog 将溢出控件放置在其附加变量菜单中。
 
-Grafana 显示了三个控件：数据源、命名空间和沙盒集群。数据源和命名空间适用于这两个选项卡。命名空间列表包括SmithDB和Sandbox指标命名空间，并支持多种选择。沙箱集群仅适用于沙箱，因为 SmithDB 集合示例不保证 `cluster` 标签。
+Grafana 显示了三个控件：数据源、命名空间和沙箱集群。 Data source and Namespace(s) apply to both tabs.命名空间列表包括SmithDB和Sandbox指标命名空间，并支持多种选择。沙箱集群仅适用于沙箱，因为 SmithDB 集合示例不保证 `cluster` 标签。
 
-Grafana `sandbox_job` 和 `juicefs_job` 变量默认为 All，并且在普通标头中隐藏。编辑其保存的值或在变量设置中取消隐藏它们以区分收集作业。即使这些过滤器选择“全部”，也可以避免重复抓取。具有单独 Prometheus 后端的安装必须自定义组件面板和可变数据源引用；默认捆绑包使用一个后端。
+Grafana `sandbox_job` 和 `juicefs_job` 变量默认为 All，并且在普通标头中隐藏。编辑其保存的值或在变量设置中取消隐藏它们以区分收集作业。即使这些过滤器选择“全部”，也可以避免重复抓取。具有单独 Prometheus 后端的安装必须自定义组件面板和可变数据源引用； the default bundle uses one backend.
 
-仪表板过滤器不是访问控制；使用监控实例的权限来控制对遥测的访问。
+Dashboard filters are not access controls;使用监控实例的权限来控制对遥测的访问。
 
-## 阅读沙盒面板仪表板将最近的车队快照与历史趋势区分开来。他们精心设计的网格混合了面板宽度，而不是强制使用两列。紧凑趋势共享三面板行。密集图表和存储比较使用半宽面板，长标签排名有更多空间。标题卡在一个部分有两张时保持配对。
+## Read the Sandbox panels仪表板将最近的车队快照与历史趋势区分开来。他们精心设计的网格混合了面板宽度，而不是强制使用两列。紧凑趋势共享三面板行。密集图表和存储比较使用半宽面板，长标签排名有更多空间。标题卡在一个部分有两张时保持配对。
 
 * **舰队快照**：计数和主机排名使用五分钟面板窗口。 Datadog 每个主机样本最多对齐 60 秒。 Grafana 在范围末端评估快照仪表，并要求在 60 秒内提供样本。
 * **池计数**：就绪和所需计数使用`max`，而不是添加连续的领导者报告。它们描述的是一个选定的池，而不是跨池的总数。所需副本目标仅在自动缩放处于活动状态时更新。
@@ -102,13 +102,13 @@ Grafana `sandbox_job` 和 `juicefs_job` 变量默认为 All，并且在普通标
 
 JuiceFS 与主机分开导出`juicefs_*` 指标。对于 Datadog，`datadog-juicefs-values.yaml` 替换仅主机值文件并收集两个侦听器。对于 Prometheus，添加单独的 JuiceFS 作业。
 
-JuiceFS 默认为环回。这些示例不会更改其侦听器。如果更改绑定地址，请将其限制为预期的专用网络并保留现有的挂载选项。挂载配置更改还需要主机转出。单独配置外部管理的安装并避免重复抓取。由于稀疏图像和写时复制克隆，逻辑文件系统大小与物理存储桶使用情况不同。Datadog 的可选 API 小部件使用 `trace.http.request`、`trace.http.request.hits` 和 `trace.http.request.errors`。按照[Export LangSmith telemetry](/langsmith/export-backend#traces)并选择一个`api_service`以避免重复计算。验证您帐户中的名称，因为 OpenTelemetry 检测可能有所不同。公共 API 面板不包括内部报告，内部报告有自己的部分。 HTTP 延迟不包括流媒体和服务代理流量；单独的面板显示连接持续时间。 APM 错误标志和 HTTP 5xx 响应是单独的信号。
+JuiceFS 默认为环回。这些示例不会更改其侦听器。如果更改绑定地址，请将其限制到预期的专用网络并保留现有的挂载选项。挂载配置更改还需要主机转出。单独配置外部管理的安装并避免重复抓取。由于稀疏映像和写时复制克隆，逻辑文件系统大小与物理存储桶使用情况不同。Datadog 的可选 API 小部件使用 `trace.http.request`、`trace.http.request.hits` 和 `trace.http.request.errors`。按照[Export LangSmith telemetry](/langsmith/export-backend#traces)并选择一个`api_service`以避免重复计算。验证您帐户中的名称，因为 OpenTelemetry 检测可能有所不同。公共 API 面板不包括内部报告，内部报告有自己的部分。 HTTP 延迟不包括流媒体和服务代理流量；单独的面板显示连接持续时间。 APM 错误标志和 HTTP 5xx 响应是单独的信号。
 
-对于 Datadog 存储桶面板，启用适当的 AWS 或 GCP 集成并选择确切的 JuiceFS 存储桶。占位符默认选择不存储桶。 Grafana 提供的 Sandbox 选项卡不包括这些 API/APM 或提供程序存储集成。
+对于 Datadog 存储桶面板，启用适当的 AWS 或 GCP 集成并选择准确的 JuiceFS 存储桶。占位符默认选择不存储桶。 Grafana 提供的 Sandbox 选项卡不包括这些 API/APM 或提供程序存储集成。
 
 ## 预览 Datadog Sandbox 选项卡
 
-Datadog 预览显示共享过滤器、组件选项卡和彩色沙盒部分。其图表显示匿名开发遥测，而不是性能基准。
+Datadog 预览显示共享过滤器、组件选项卡和彩色沙箱部分。其图表显示匿名开发遥测，而不是性能基准。
 
 <img alt="Datadog dashboard with shared deployment filters, SmithDB and Sandboxes tabs, colored sections, and boot-path charts" />
 
@@ -122,7 +122,7 @@ Datadog 预览显示共享过滤器、组件选项卡和彩色沙盒部分。其
 
 ## 预览 Grafana Sandbox 选项卡
 
-Grafana 预览显示共享过滤器和混合宽度沙盒面板。它的图表使用合成示例数据，而不是实时遥测或性能基准。
+Grafana 预览显示共享过滤器和混合宽度沙箱面板。它的图表使用合成示例数据，而不是实时遥测或性能基准。
 
 <img alt="Grafana dashboard with shared data source and namespace selectors, component tabs, and mixed-width Sandbox charts" />
 

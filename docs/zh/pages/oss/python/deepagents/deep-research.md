@@ -2,7 +2,7 @@
 
 <!-- langchain-docs: Build a deep research agent | https://docs.langchain.com/oss/python/deepagents/deep-research -->
 
-# 构建深度研究代理
+# Build a deep research agent
 
 使用子代理委托构建多步骤网络研究代理
 
@@ -10,7 +10,7 @@
 
 本指南演示了如何使用 [Deep Agents](/oss/python/deepagents) 从头开始构建多步骤网络研究代理。该代理将研究问题分解为重点任务，将其委托给专门的子代理，并将研究结果综合成一份综合报告。
 
-您构建的代理将：
+The agent you build will:
 
 1. 使用选择加入待办事项列表中间件来计划研究
 2. 将重点研究任务委托给具有孤立上下文的子代理
@@ -24,16 +24,16 @@
 本教程涵盖：
 
 * [Subagents](/oss/python/deepagents/subagents) 用于并行、上下文隔离的研究
-* 自定义[tools](/oss/python/langchain/tools)用于网络搜索
-* 可选择加入的多步骤规划[planning tool](/oss/python/deepagents/overview#task-planning)
+* Custom [tools](/oss/python/langchain/tools) for web search
+* Multi-step planning with the opt-in [planning tool](/oss/python/deepagents/overview#task-planning)
 
 ## 先决条件
 
 API 密钥用于：
 
-* Anthropic (克劳德) 或谷歌 (双子座)
+* Anthropic (Claude) or Google (Gemini)
 * [Tavily](https://www.tavily.com/) 用于网络搜索（可选 - 免费套餐足够）
-* [LangSmith](https://smith.langchain.com?utm_source=docs\&utm_medium=cta\&utm_campaign=langsmith-signup\&utm_content=oss-deepagents-deep-research) 用于追踪（可选）
+* [LangSmith](https://smith.langchain.com?utm_source=docs\&utm_medium=cta\&utm_campaign=langsmith-signup\&utm_content=oss-deepagents-deep-research) for tracing (optional)
 
 ## 设置
 
@@ -98,11 +98,11 @@ API 密钥用于：
 
 ## 构建代理
 
-在项目目录中创建`agent.py`：
+Create `agent.py` in your project directory:
 
 <Steps>
   <Step title="Add tools">
-    添加自定义搜索工具。 `tavily_search` 工具使用 Tavily 进行 URL 发现，然后获取完整的网页内容，以便代理可以分析完整的源而不是摘要。
+    Add the custom search tool. `tavily_search` 工具使用 Tavily 进行 URL 发现，然后获取完整的网页内容，以便代理可以分析完整的源而不是摘要。
 
     ```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
     import os
@@ -420,17 +420,13 @@ API 密钥用于：
             subagents=[research_sub_agent],
             middleware=[TodoListMiddleware()],
         )
-        ```<Card title="View example trace" icon="chart-line" href="https://smith.langchain.com/public/4a74e627-23f2-4b23-b930-1199b640cc71/r">
-          为此示例打开公共 LangSmith 运行。
-        </Card>
+        ```
       </Tab>
     </Tabs>
   </Step>
 </Steps>
 
-## 运行代理
-
-您可以同步运行代理，这意味着它将等待完整结果然后打印它，或者您可以在更新到来时流式传输它们。
+## 运行代理您可以同步运行代理，这意味着它将等待完整结果然后打印它，或者您可以在更新到来时流式传输它们。
 
 从 `agent.py` 底部的相应选项卡添加代码：
 
@@ -493,14 +489,14 @@ python agent.py
 现在您已经构建了代理，可以通过更改代理文件中的提示常量来自定义它，以调整工作流程、委派策略或研究人员行为。
 您还可以调整委派限制以允许更多并行子代理或委派轮次。
 
-有关本教程中概念的更多信息，请查看以下资源：* [Subagents](/oss/python/deepagents/subagents)：了解如何使用不同的工具和提示配置子代理
+有关本教程中的概念的更多信息，请查看以下资源：
+
+* [Subagents](/oss/python/deepagents/subagents)：了解如何使用不同的工具和提示配置子代理
 * [Customization](/oss/python/deepagents/customization)：自定义模型、工具、系统提示，可选[task planning](/oss/python/deepagents/overview#task-planning)
 * [LangSmith](/langsmith/observability)：跟踪研究运行并调试多步骤行为
-* [Deep Research Course](https://academy.langchain.com/courses/deep-research-with-langgraph)：LangGraph深度研究完整课程
+* [Deep Research Course](https://academy.langchain.com/courses/deep-research-with-langgraph)：与LangGraph深度研究的完整课程
 
-***
-
-<div>
+***<div>
   <Callout icon="terminal-2">
     [Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
   </Callout>

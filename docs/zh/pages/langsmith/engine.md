@@ -18,7 +18,7 @@ LangSmith引擎是代理工程的LangSmith代理。根据您的生产跟踪，�
   </Card>
 
   <Card title="Test: Generate datasets" icon="database" href="/langsmith/engine-issues#add-offline-examples">
-    从生产跟踪中创建地面实况数据集示例以进行离线评估，以便您可以在发布之前验证修复。
+    从生产跟踪中创建地面实况数据集示例以进行离线评估，以便您可以在修复发布之前对其进行验证。
   </Card><Card title="Monitor: Track recurring issues" icon="chart-line" href="/langsmith/engine-issues#filter-and-sort-issues">
     按计划扫描您的跟踪项目，以显示、确定优先级并诊断重复出现的问题，并在每个问题出现时向其添加新的匹配跟踪。
   </Card>
@@ -77,7 +77,7 @@ flowchart LR
 
 * **关闭问题**或标记它 **错误标记**：引擎将此类问题视为较低优先级。
 * **更改问题的优先级**：引擎记录该类别问题对您的客服人员的严重程度。
-* **打开拉取请求**：引擎记录该类别是真实的并且值得建议修复。例如，假设您的代理处理付款，并且引擎将包含完整信用卡号的跟踪标记为未经编辑的个人身份信息 (PII)。您的代理按照设计处理卡号，因此您将问题标记为**错误标记**，原因是“此代理将卡号作为结帐的一部分进行处理”。引擎记录支付流程中预期的卡号。如果您不断忽略同一类别中的问题，引擎会一次将该类别的严重性降低一级。它不会跌破低点，因此该模式保持可见，而不会排除紧急问题。
+* **打开拉取请求**：引擎记录该类别是真实的并且值得建议修复。例如，假设您的代理处理付款，并且引擎将包含完整信用卡号的跟踪标记为未经编辑的个人身份信息 (PII)。您的代理按照设计处理卡号，因此您将问题标记为**错误标记**，原因是“此代理将卡号作为结账的一部分进行处理”。引擎记录支付流程中预期的卡号。如果您不断忽略同一类别中的问题，引擎会一次将该类别的严重性降低一级。它不会跌破低点，因此该模式保持可见，而不会排除紧急问题。
 
 来自自动化的更改（例如拉取请求合并）以及通过 [LangSmith Chat](/langsmith/chat#engine) 采取的操作不算作反馈。要查看或更正引擎所了解的内容，请编辑代理概述的 **用户首选项** 部分。
 
@@ -92,17 +92,17 @@ flowchart LR
 
 ## 管理引擎成本
 
-### 了解路易斯安那州立大学的费用
+### 了解路易斯安那州立大学的费用<Note>
+  LangSmith 云使用 LangChain 托管推理。自托管部署还可以使用 [their own model providers](/langsmith/engine-self-hosted-model-providers)，以及 API 密钥或云身份。 [BYOC](/langsmith/engine-self-hosted#engine-on-byoc) 部署仅使用自己的模型提供程序。对于您自己的提供商，您可以向他们支付模型调用费用，并且 LangChain 对引擎使用收取较低的 LSU 费率。
+</Note>
 
-<Note>
-  LangSmith 云使用 LangChain 托管推理。自托管部署还可以使用 [their own model providers](/langsmith/engine-self-hosted-model-providers)，以及 API 密钥或云身份。对于您自己的提供商，您可以向他们支付模型调用费用，并且 LangChain 对引擎使用收取较低的 LSU 费率。
-</Note>引擎以 **LangChain 标准单位 (LSU)** 收费，这是一种标准化工作单位，涵盖计算、存储和内存，以及 LangChain 提供的模型推理。 LSU 消耗随着分析的跟踪数量、引擎为诊断和修复问题而进行的 LLM 调用的数量和复杂性以及任何连接的存储库的大小而变化。 LSU 的成本**\每台 1 美元**。有关预期 LSU 使用量的估计，请参阅 [LangSmith Usage Calculator](https://www.langchain.com/pricing#pricing-calc)。
+引擎以 **LangChain 标准单位 (LSU)** 收费，这是一种标准化工作单位，涵盖计算、存储和内存，以及 LangChain 提供的模型推理。 LSU 消耗随着分析的跟踪数量、引擎为诊断和修复问题而进行的 LLM 调用的数量和复杂性以及任何连接的存储库的大小而变化。 LSU 的成本**\每台 1 美元**。有关预期 LSU 使用量的估计，请参阅 [LangSmith Usage Calculator](https://www.langchain.com/pricing#pricing-calc)。
 
 在初始化时，引擎会审核过去的跟踪、集群并按严重性对问题进行优先级排序，并对提示或代码提出修复建议（如果连接了存储库）。定期扫描按照动态计划运行，以平衡成本和性能，无论是否发现新问题，并发现以前未检测到的新问题。
 
-### 设置分析级别
+### 设置分析级别分析级别控制引擎分析的项目跟踪数量，以及它使用的 LSU 数量。 [turn on Engine for a project](/langsmith/engine-setup#turn-on-engine-for-a-tracing-project)时选择它，稍后在[**Engine settings**](/langsmith/engine-setup#configure-engine)面板中的**分析级别**下更改：
 
-分析级别控制引擎分析的项目跟踪数量，以及它使用的 LSU 数量。 [turn on Engine for a project](/langsmith/engine-setup#turn-on-engine-for-a-tracing-project)时选择它，稍后在[**Engine settings**](/langsmith/engine-setup#configure-engine)面板中的**分析级别**下更改：* **减少**：以更低的成本监控更少的跟踪。
+* **减少**：以更低的成本监控更少的跟踪。
 * **标准**（默认）：分析更多符合条件的轨迹以获得更全面的覆盖范围。
 * **扩展**：最大程度地覆盖大容量项目。仅适用于具有足够跟踪量的项目。
 
@@ -113,11 +113,11 @@ flowchart LR
 组织管理员可以在两个级别设置支出限制：
 
 * **组织范围限制**：打开**设置**并选择**引擎**下的**引擎**。在本月至今的支出卡上，单击限制芯片并在弹出窗口中设置限制。
-* **项目或环境限制**：在跟踪项目或代理环境中打开 **引擎** 选项卡，然后单击 **配置引擎** <Icon icon="settings" /> 图标。在“**支出限制**”下，单击限制筹码（未设置限制时，筹码显示“**无**”）并在弹出窗口中设置限制。
+* **项目或环境限制**：在跟踪项目或代理环境中打开 **引擎** 选项卡，然后单击 **配置引擎** <Icon icon="settings" /> 图标。在“**支出限制**”下，单击限制筹码（未设置限制时，筹码显示“**无**”）并在弹出窗口中设置限制。您可以输入 LSU 或 USD 的限额 (1 LSU = \$1)。当达到限制时，LangSmith 暂停新的引擎运行，直到限制提高或下一个每月计费周期开始。
 
-您可以输入 LSU 或 USD 的限额 (1 LSU = \$1)。当达到限制时，LangSmith 暂停新的引擎运行，直到限制提高或下一个每月计费周期开始。
+这两个级别的默认值不同：
 
-这两个级别的默认值不同：* **组织范围限制**：选择**默认**、**无限制**或自定义上限。在管理员选择之前，默认情况下适用（每月 750 LSU，750 美元），因此即使没有人设置限制，引擎支出也是有上限的。 **引擎**设置页面命名强制限制及其来源。
+* **组织范围限制**：选择**默认**、**无限制**或自定义上限。在管理员选择之前，默认情况下适用（每月 750 LSU，750 美元），因此即使没有人设置限制，引擎支出也是有上限的。 **引擎**设置页面命名强制限制及其来源。
 * **项目或环境限制**：将弹出框的字段留空表示没有限制。使用 **删除限制** 清除您之前设置的上限。
 
 要停止项目或整个组织的 Engine，请参阅[Pause Engine or delete its issues](/langsmith/engine-setup#pause-engine-or-delete-its-issues)。
@@ -131,25 +131,25 @@ flowchart LR
 <CardGroup>
   <Card title="Set up Engine" icon="settings" href="/langsmith/engine-setup">
     为您的组织启用引擎并为跟踪项目或代理环境打开它。
-  </Card>
-
-  <Card title="Find and fix issues" icon="bug" href="/langsmith/engine-issues">
+  </Card><Card title="Find and fix issues" icon="bug" href="/langsmith/engine-issues">
     查看引擎检测到的问题、打开拉取请求并创建数据集示例。
   </Card>
 
   <Card title="Connect Engine to your repository" icon="brand-github" href="/langsmith/engine-repositories">
     让引擎读取您的源代码并使用建议的修复打开拉取请求。
-  </Card><Card title="Engine notifications" icon="bell" href="/langsmith/engine-notifications">
+  </Card>
+
+  <Card title="Engine notifications" icon="bell" href="/langsmith/engine-notifications">
     将检测到的问题发送到 Slack、Jira 或您的事件管理和分页工具。
   </Card>
 </CardGroup>
 
 ## 另请参阅
 
-* [Validate fixes automatically](/langsmith/engine-fix-validation)：重播问题的痕迹以确认问题重现并且引擎的修复解决了问题（测试版，仅限LangSmith 云）。
+* [Validate fixes automatically](/langsmith/engine-fix-validation)：重放问题的痕迹以确认问题重现并且引擎的修复解决了问题（测试版，仅限LangSmith 云）。
 * [Proactively identify issues with Red Teaming](/langsmith/engine-red-teaming)：在故障到达生产环境之前使用合成请求探测已部署的代理（测试版，仅限LangSmith 云）。
 * [Engine security](/langsmith/engine-security)：引擎如何处理您的数据，及其 GitHub 和模型子处理器控件。
-* [Engine on self-hosted](/langsmith/engine-self-hosted)：在自托管的LangSmith实例上安装并运行引擎。
+* [Engine on self-hosted and BYOC](/langsmith/engine-self-hosted)：在自托管 LangSmith 实例或 BYOC 数据平面上安装并运行 Engine。
 
 ***
 

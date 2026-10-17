@@ -14,7 +14,7 @@
 * **[Engine](/langsmith/engine-self-hosted)**：诊断重复出现的问题并提出修复建议。引擎需要沙箱、具有引擎权利的许可证、模型配置以及 Helm 图表版本 0.16.0 或更高版本。 [Air-gapped installations](/langsmith/engine-self-hosted#air-gapped-installations) 和您自己的模型提供程序需要 Helm 图表版本 0.17.0 或更高版本。
 * **[Fleet](/langsmith/enable-self-hosted-fleet)**：创建和管理无代码代理。其指南涵盖车队服务以及可选工具和触发器。
 * **[LLM Gateway](/langsmith/llm-gateway-self-hosted)**：路由模型调用并应用策略。它需要 Helm Chart 0.17.1 或更高版本。它的指南涵盖服务连接、提供商配置和您的第一次网关调用。
-* **[LangSmith Deployment](/langsmith/deploy-self-hosted-full-platform)**：通过LangSmith UI 部署和管理代理服务器。它的指南涵盖了 KEDA、入口、控制平面和数据平面。
+* **[LangSmith Deployment](/langsmith/enable-self-hosted-deployment)**：通过LangSmith UI 部署和管理代理服务器。它的指南涵盖了 KEDA、入口、控制平面和数据平面。
 
 ***
 

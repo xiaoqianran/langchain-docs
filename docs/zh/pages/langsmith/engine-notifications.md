@@ -43,7 +43,7 @@ Webhook 负载通过事件类型来识别每个事件，如最后一列所示。
 
 ## 通知 Slack 通道
 
-如果您的自托管实例上未配置 Slack，则 **Slack** 选项卡会显示 **联系您的操作员以启用 Slack 通知**。运营商[creates a Slack app and configures its credentials](/langsmith/self-host-slack)。然后，您可以通过 Slack 授权连接工作区。
+如果您的自托管实例上未配置 Slack，则 **Slack** 选项卡会显示 **联系您的操作员以启用 Slack 通知**。运营商[creates a Slack app and configures its credentials](/langsmith/self-host-slack)。在 [BYOC](/langsmith/byoc) 数据平面上，**设置** > **常规设置** > **Slack** 下的组织管理员 [configures the Slack app](/langsmith/self-host-slack#create-your-slack-app-on-byoc)。然后，您可以通过 Slack 授权连接工作区。
 
 添加 Slack 目标：<Steps>
   <Step title="Connect a Slack workspace">
@@ -51,7 +51,7 @@ Webhook 负载通过事件类型来识别每个事件，如最后一列所示。
   </Step>
 
   <Step title="Add a Slack destination">
-    在**引擎**页面上，单击**配置引擎**。在“通知”下，如果编辑器尚未打开，请单击“添加”。选择 **Slack** 选项卡，然后使用通道选择器选择工作区和通道。如果未连接工作区，请在通道选择器中单击“连接 Slack”并完成授权。
+    在**引擎**页面上，单击**配置引擎**。在“通知”下，如果编辑器尚未打开，请单击“添加”。选择 **Slack** 选项卡，然后使用通道选择器选择工作区和通道。如果没有连接工作区，请在通道选择器中单击“连接 Slack”并完成授权。
   </Step>
 
   <Step title="Choose events and severity">
@@ -59,7 +59,7 @@ Webhook 负载通过事件类型来识别每个事件，如最后一列所示。
   </Step>
 </Steps>如果需要，LangSmith 在首次传递消息时加入选定的公共频道。要发布到私人频道，请先邀请已配置的 Slack 应用程序加入 Slack 中的该频道，然后刷新频道选择器。
 
-每条 Slack 消息都包含问题标题、描述和严重性、返回LangSmith的 **查看问题** 链接，以及（对于问题事件）问题随时间重复发生的图表。如果工作区的连接变得无效（例如，应用程序从 Slack 中删除），其目标将停止传送，直到您从组织的 **常规** 设置重新连接它。
+每条 Slack 消息都包含问题标题、描述和严重性、返回到 LangSmith 的 **查看问题** 链接，以及（对于问题事件）问题随时间重复发生的图表。如果工作区的连接变得无效（例如，应用程序从 Slack 中删除），其目标将停止传送，直到您从组织的 **常规** 设置重新连接它。
 
 Slack 目标使用配置的 Slack 应用程序来发布消息。他们不发送 [webhook payload](#webhook-payload-reference)，因此 Webhook 签名机密和自定义标头不适用。
 
@@ -79,7 +79,7 @@ Slack 目标使用配置的 Slack 应用程序来发布消息。他们不发送 
 
     生成触发器的秘密/令牌。保存前复制 Webhook URL 和令牌。将令牌保留在 URL 之外； LangSmith 在身份验证标头中发送它。
   </Step><Step title="Add the Jira creation action">
-    将规则限制为预期项目。添加“创建工作项”操作，在旧界面中称为“创建问题”。选择现有项目和问题类型，并配置 Jira 所需的任何字段。
+    将规则限制为预期项目。添加“创建工作项”操作，在旧界面中称为“创建问题”。选择现有项目和问题类型，然后配置 Jira 所需的任何字段。
 
     对于 Jira Cloud，将 **摘要** 设置为 `{{webhookData.object.name}}`。将**描述**设置为：
 
@@ -100,7 +100,7 @@ Slack 目标使用配置的 Slack 应用程序来发布消息。他们不发送 
   </Step>
 
   <Step title="Verify Jira created the work item">
-    在引擎创建与您的严重性过滤器匹配的问题后，检查 Jira 的自动化审核日志。确认规则成功并创建一个具有预期摘要、描述、严重性和 LangSmith 问题链接的工作项。HTTP 成功意味着 Jira 接受了 Webhook，而不是它创建了工作项。规则条件、必填字段、参与者权限和自动化使用限制可能会阻止创建。
+    在引擎创建与您的严重性过滤器匹配的问题后，检查 Jira 的自动化审核日志。确认规则成功并创建一个包含预期摘要、描述、严重性和 LangSmith 问题链接的工作项。HTTP 成功意味着 Jira 接受了 Webhook，而不是它创建了工作项。规则条件、必填字段、参与者权限和自动化使用限制可能会阻止创建。
   </Step>
 </Steps>
 
@@ -108,13 +108,13 @@ LangSmith 存储 Jira 令牌而不再次显示。要替换它，请输入新令�
 
 ### 到达私有 Jira 端点
 
-私有 Jira 端点需要从您的 LangSmith 部署进行网络访问。在自托管和混合部署中，Webhook 交付在客户数据平面中运行。添加目标之前配置以下内容：* **网络访问**：允许从 LangSmith API 和 Webhook 交付流程进行 DNS 解析和出站连接到 Jira。允许他们的源地址通过 Jira 的防火墙。
+私有 Jira 端点需要从您的 LangSmith 部署进行网络访问。在自托管和混合部署中，Webhook 交付在客户数据平面中运行。添加目标之前配置以下内容：* **网络访问**：允许从 LangSmith API 和 Webhook 交付流程进行 DNS 解析和到 Jira 的出站连接。允许他们的源地址通过 Jira 的防火墙。
 * **私有地址**：如果端点解析为私有IP，请为两个进程设置`SSRF_ALLOW_PRIVATE_IPS_WEBHOOKS=true`。 Kubernetes 内部主机名也需要 `SSRF_ALLOW_K8S_INTERNAL=true`。其他 Webhook URL 保护保持活动状态。配置请参见[Set self-hosted environment variables](/langsmith/self-host-environment-variables)。
 * **TLS 信任**：如果 Jira 使用私有证书颁发机构，请将其 CA 添加到 Webhook 交付进程的可信根。使用系统根目录或`SSL_CERT_FILE`，保留其他所需的根目录，并保持启用 TLS 验证。
 
 ## 发送到网络钩子
 
-将引擎事件转发到您自己的事件管理、寻呼或聊天工具。添加目标并选择 **Webhook** 选项卡。输入 URL 和（可选）[custom headers](#custom-headers)。每份交货都是[signed](#signing-secret)，因此您可以验证其真实性。
+将引擎事件转发到您自己的事件管理、寻呼或聊天工具。添加目标并选择 **Webhook** 选项卡。输入 URL 和（可选）[custom headers](#custom-headers)。每次交货都是[signed](#signing-secret)，因此您可以验证其真实性。
 
 ### 送货
 
@@ -124,17 +124,17 @@ LangSmith 将带有 JSON 正文的 `POST` 请求发送到您的 Webhook URL。�
 |身体| JSON，下面[common envelope](#event-envelope) |
 |方案|接受`http://`和`https://`。 `https://`强烈推荐|
 |签名| `X-LangSmith-Signature` 标头，使用目的地的签名密钥进行签名 |
-|超时|每次尝试 20 秒 |
+|超时 |每次尝试 20 秒 |
 |尝试|对于传输错误、HTTP `408`、`425`、`429` 和任何 HTTP `5xx`，最多进行 4 次尝试（1 次初始加 3 次指数退避重试）。其他 `4xx` 响应被视为永久响应，不会重试 |
 |回应 |成功仅根据状态代码确定。响应主体被忽略。 |
 
 <Note>
-  重试会传递字节相同的有效负载，包括相同的`id`。在 `id` 上进行重复数据删除，因此重试传送不会产生重复的下游效果。
+  重试会传递字节相同的有效负载，包括相同的`id`。在 `id` 上进行重复数据删除，因此重试传送不会产生重复的下游影响。
 </Note>
 
 ### 自定义标头
 
-您可以将任意标头附加到每个目标（例如，`Authorization: Bearer …`）以对端点上的调用者进行身份验证。 `Content-Type` 始终由 LangSmith 设置且不能被覆盖。
+您可以将任意标头附加到每个目标（例如，`Authorization: Bearer …`）以对端点上的调用者进行身份验证。 `Content-Type` 始终由 LangSmith 设置且无法覆盖。
 
 ### 签名秘密
 
@@ -144,7 +144,7 @@ LangSmith 将带有 JSON 正文的 `POST` 请求发送到您的 Webhook URL。�
 sha256=<hex-encoded HMAC-SHA256 digest>
 ```
 
-在解析或作用于有效负载之前验证签名。 HMAC 输入是确切的原始请求正文字节，HMAC 密钥是目标的签名秘密。在验证之前不要解析和重新序列化 JSON 主体。
+在解析或作用于有效负载之前验证签名。 HMAC 输入是确切的原始请求正文字节，HMAC 密钥是目标的签名秘密。在验证之前不要解析和重新序列化 JSON 正文。
 
 <CodeGroup>
   ```python Python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}

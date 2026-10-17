@@ -433,7 +433,7 @@ make k8s-secrets    # re-create langsmith-config-secret from Key Vault
 
 7. 运行`make deploy`。如果您在自己的值中启用了 Engine，图表 0.17 还需要 `engine.usageSigningSecret`（至少 32 个字符），或者 `config.existingSecretName` 命名的 Secret 中的 `engine_usage_signing_secret` 键。
 
-除了两个联合凭据之外，Azure 上的升级仅移动图表图钉。仍在图 0.15 上的安装必须首先遵循 [⟦T242⟧](https://github.com/langchain-ai/terraform/blob/main/MIGRATION-0.15-to-0.16.md)。有关图表更改的完整列表，请参阅[⟦T243⟧](https://github.com/langchain-ai/terraform/blob/main/MIGRATION-0.16-to-0.17.md)。
+除了两个联合凭据之外，Azure 上的升级仅移动图表图钉。仍在图表 0.15 上的安装必须首先遵循 [⟦T242⟧](https://github.com/langchain-ai/terraform/blob/main/MIGRATION-0.15-to-0.16.md)。有关图表更改的完整列表，请参阅[⟦T243⟧](https://github.com/langchain-ai/terraform/blob/main/MIGRATION-0.16-to-0.17.md)。
 
 ## 启用附加组件
 
@@ -441,7 +441,7 @@ make k8s-secrets    # re-create langsmith-config-secret from Key Vault
 
 ### LangSmith 部署
 
-启用 [LangSmith Deployment](/langsmith/deploy-self-hosted-full-platform)，它允许您直接从 [LangSmith UI](https://smith.langchain.com?utm_source=docs\&utm_medium=cta\&utm_campaign=langsmith-signup\&utm_content=langsmith-self-host-terraform-azure-deploy) 将代理部署和管理为 API 服务器。这添加了三个新的 Pod。
+启用 [LangSmith Deployment](/langsmith/enable-self-hosted-deployment)，它允许您直接从 [LangSmith UI](https://smith.langchain.com?utm_source=docs\&utm_medium=cta\&utm_campaign=langsmith-signup\&utm_content=langsmith-self-host-terraform-azure-deploy) 将代理部署和管理为 API 服务器。这添加了三个新的 Pod。
 
 |吊舱 |角色 |工作负载身份 |
 | - | - | - |
@@ -747,7 +747,7 @@ kubectl -n langsmith create secret generic <secret-name> --from-file=ca.crt=ca-b
 * 参考[Azure variables](/langsmith/self-host-terraform-azure-variables)和[quick reference](/langsmith/self-host-terraform-azure-quick-reference)。
 * 查看 [Azure architecture](/langsmith/self-host-terraform-azure-architecture) 的模块结构、流量和工作负载身份。
 * 当出现故障时，请检查[Azure troubleshooting guide](/langsmith/self-host-terraform-azure-troubleshooting)。
-* 使用 [LangSmith Deployment](/langsmith/deploy-self-hosted-full-platform) 在 UI 中启用代理部署。
+* 使用 [LangSmith Deployment](/langsmith/enable-self-hosted-deployment) 在 UI 中启用代理部署。
 
 ***
 

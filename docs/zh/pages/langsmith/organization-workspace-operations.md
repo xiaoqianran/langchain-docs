@@ -19,8 +19,8 @@
 ## 内容|组织层面的运营 |工作区级操作 |
 | - | - |
 | **核心管理：**<br />• [Organization settings](#organization-settings)：组织信息和配置<br />• [Workspaces](#workspaces)：工作空间管理<br />• [Organization members](#organization-members)：成员管理<br />• [Roles and permissions](#roles-and-permissions)：自定义角色 | **核心资源：**<br />• [Projects](#projects)：组织跟踪和运行<br />• [Runs](#runs)：单独的执行跟踪<br />• [Datasets](#datasets)：用于评估的测试数据集<br />• [Examples](#examples)：单独的数据集示例<br />• [Experiments](#experiments)：比较实验|
-| **安全和身份验证：**<br />• [SSO and authentication](#sso-and-authentication)：单点登录设置<br />• [SCIM](#scim)：身份配置<br />• [Access policies](#access-policies)：基于属性的访问控制 | **监控和分析：**<br />• [Rules](#rules)：自动运行规则<br />• [Alerts](#alerts)：监控警报规则<br />• [Feedback](#feedback)：输出的分数和标签<br />• [Annotation Queues](#annotation-queues)：人工审核队列<br />• [Charts](#charts)：自定义可视化|
-| **计费和帐户：**<br />• [Billing and payments](#billing-and-payments)：订阅管理<br />• [API keys](#api-keys)：组织级别密钥 | **开发与配置：**<br />• [Prompts](#prompts)：提示模板（LangChain Hub）<br />• [Custom apps](#custom-apps)：用户编写的迷你Web应用<br />• [Deployments](#deployments)：部署配置<br />• [MCP Servers](#mcp-servers)：模型上下文协议服务器<br />• [Fleet](#fleet)：队列管理操作|| **分析：**<br />• [Charts and dashboards](#organization-charts-and-dashboards)：组织级别可视化<br />• [Usage and analytics](#usage-and-analytics)：使用情况跟踪和 TTL 设置 | **工作区管理：**<br />• [Model price map](#model-price-map)：每个代币模型价格<br />• [Workspace settings](#workspace-settings-and-management)：成员、设置<br />• [Tags](#tags)：元数据标记系统<br />• [Bulk Exports](#bulk-exports)：数据导出操作|
+| **安全和身份验证：**<br />• [SSO and authentication](#sso-and-authentication)：单点登录设置<br />• [SCIM](#scim)：身份配置<br />• [Access policies](#access-policies)：基于属性的访问控制| **监控和分析：**<br />• [Rules](#rules)：自动运行规则<br />• [Alerts](#alerts)：监控警报规则<br />• [Feedback](#feedback)：输出的分数和标签<br />• [Annotation Queues](#annotation-queues)：人工审核队列<br />• [Charts](#charts)：自定义可视化|
+| **计费和帐户：**<br />• [Billing and payments](#billing-and-payments)：订阅管理<br />• [API keys](#api-keys)：组织级别密钥 | **开发与配置：**<br />• [Prompts](#prompts)：提示模板（LangChain Hub）<br />• [Custom apps](#custom-apps)：用户编写的迷你Web应用<br />• [Deployments](#deployments)：部署配置<br />• [MCP Servers](#mcp-servers)：模型上下文协议服务器<br />• [Fleet](#fleet)：队列管理操作|| **分析：**<br />• [Charts and dashboards](#organization-charts-and-dashboards)：组织级别可视化<br />• [Usage and analytics](#usage-and-analytics)：使用情况跟踪和 TTL 设置 | **工作区管理：**<br />• [Model price map](#model-price-map)：每个代币模型价格<br />• [Workspace settings](#workspace-settings-and-management)：成员、设置<br />• [Tags](#tags)​​：元数据标记系统<br />• [Bulk Exports](#bulk-exports)：数据导出操作|
 
 **附加信息：**
 
@@ -91,7 +91,7 @@
 
 ### SCIM
 
-用于用户配置的跨域身份管理系统。有关设置说明，请参阅[SCIM setup guide](/langsmith/user-management#set-up-scim-for-your-organization)​​。|运营|组织管理员 |组织运营商|组织用户 |组织查看器 |所需权限 |
+用于用户配置的跨域身份管理系统。有关设置说明，请参阅[SCIM setup guide](/langsmith/user-management#set-up-scim-for-your-organization)。|运营|组织管理员 |组织运营商|组织用户 |组织查看器 |所需权限 |
 | - | :-: | :-: | :-: | :-: | - |
 |列出 SCIM 代币 | ✓ | ✓ | ✓ | ✓ | `organization:read` |
 |获取 SCIM 代币 | ✓ | ✓ | ✓ | ✓ | `organization:read` |
@@ -160,7 +160,7 @@
 | [View granular billable usage](/langsmith/granular-usage) | ✓ | ✓ | ✓ | `organization:read` | |
 | [Export granular usage as CSV](/langsmith/granular-usage#csv-export) | ✓ | ✓ | ✓ | `organization:read` | |
 |查看工作区跟踪保留设置 | ✓ | ✓ | ✓ | ✓ | `organization:read` |
-|设置工作区默认跟踪层（基本/扩展） | ✓ | ✓ | ✗ | ✗ | `organization:manage` |
+|设置工作区默认跟踪层（基本/扩展）| ✓ | ✓ | ✗ | ✗ | `organization:manage` |
 |设置工作区延长保留期限（企业） | ✓ | ✓ | ✗ | ✗ | `organization:manage` |
 
 ## 工作区级别的操作
@@ -171,9 +171,19 @@
   要了解每个角色的含义及其总体能力，请参阅[Role-based access control](/langsmith/rbac)指南。
 </Tip>
 
-### 项目
+### 追踪键
 
-项目从您的 LLM 申请中组织跟踪和运行。|运营|工作区管理员 |工作区编辑器 |工作区查看器 |所需权限 |
+[Tracing keys](/langsmith/create-account-api-key#tracing-keys) 在选定的工作空间中授予固定的跟踪写入权限。
+
+|运营|工作区管理员 |工作区编辑器 |工作区查看器 |所需许可 |
+| - | :-: | :-: | :-: | - |
+|创建跟踪键 | ✓ | ✓ | ✗ | `workspaces:tracing-keys:create` 在每个选定的工作区 |
+
+自定义角色需要明确的创建授权。活跃创建者或组织密钥管理员可以删除跟踪密钥。工作区密钥管理器在每个剩余的选定工作区中都需要`workspaces:manage-keys`。
+
+### 项目项目从您的 LLM 申请中组织跟踪和运行。
+
+|运营|工作区管理员 |工作区编辑器 |工作区查看器 |所需权限 |
 | - | :-: | :-: | :-: | - |
 |创建一个新项目 | ✓ | ✗ | ✗ | `projects:create` |
 |在项目创建中应用资源标签 | ✓ | ✗ | ✗ | `projects:tag_on_create` |
@@ -184,7 +194,7 @@
 |更新项目元数据（名称、描述、标签）| ✓ | ✓ | ✗ | `projects:update` |
 |增加项目跟踪保留（基础→扩展）| ✓ | ✓ | ✗ | `projects:increase-trace-tier`\* |
 |减少项目痕迹保留（扩展 → 基础）| ✓ | ✓ | ✗ | `projects:decrease-trace-tier`\* |
-|创建过滤视图 | ✓ | ✗ | ✗ | `projects:create` |
+|创建过滤视图 | ✓ | ✓ | ✗ | `projects:update` |
 |查看筛选视图 | ✓ | ✓ | ✓ | `projects:read` |
 |查看特定过滤器视图 | ✓ | ✓ | ✓ | `projects:read` |
 |更新过滤器视图 | ✓ | ✓ | ✗ | `projects:update` |
@@ -193,9 +203,9 @@
 |删除多个项目| ✓ | ✗ | ✗ | `projects:delete` |
 |获取洞察职位 | ✓ | ✓ | ✓ | `projects:read` |
 |获得具体的工作见解 | ✓ | ✓ | ✓ | `projects:read` |
-|创建洞察工作 | ✓ | ✓ | ✓ | `projects:read` + `rules:create` |
-|更新洞察工作 | ✓ | ✓ | ✗ | `projects:update` |
-|删除见解作业 | ✓ | ✗ | ✗ | `projects:delete` ||获取作业配置见解 | ✓ | ✓ | ✓ | `rules:read` |
+|创建洞察工作 | ✓ | ✓ | ✓ | `projects:read` + `rules:create` ||更新洞察工作 | ✓ | ✓ | ✗ | `projects:update` |
+|删除见解作业 | ✓ | ✗ | ✗ | `projects:delete` |
+|获取作业配置见解 | ✓ | ✓ | ✓ | `rules:read` |
 |创建见解作业配置 | ✓ | ✓ | ✗ | `rules:create` |
 |自动生成见解作业配置 | ✓ | ✓ | ✗ | `rules:create` |
 |更新见解作业配置 | ✓ | ✓ | ✗ | `rules:update` |
@@ -205,6 +215,10 @@
 
 <Note>
   \* `projects:increase-trace-tier` 和 `projects:decrease-trace-tier` 是独立的，可以在自定义角色中单独授予。例如，您可以允许角色减少保留率，但不允许其增加保留率。如果用户缺乏这两种权限，则保留设置 UI 将完全隐藏。如果只有一个，则 UI 将部分启用（禁用不允许的方向）。
+</Note>
+
+<Note>
+  创建保存的过滤器视图会修改现有项目并需要`projects:update`。比较实验创建需要`experiments:run`。仅授予`projects:create`的自定义角色需要相应的权限才能执行这些操作。跟踪键不支持这两种操作。
 </Note>
 
 ### 运行
@@ -241,7 +255,7 @@
 |查看规则日志 | ✓ | ✓ | ✓ | `rules:read` |
 |获取最后应用的规则 | ✓ | ✓ | ✓ | `rules:read` |
 |手动触发规则 | ✓ | ✓ | ✗ | `rules:update` |
-|触发多个规则 | ✓ | ✓ | ✗ | `rules:update` |
+|触发多个规则| ✓ | ✓ | ✗ | `rules:update` |
 |配置每个操作的数据保留 | ✓ | ✗ | ✗ | `rules:configure-retention` |
 
 ### 警报
@@ -281,7 +295,7 @@
 |公开分享数据集 | ✓ | ✗ | ✗ | `datasets:share` |
 |取消共享数据集 | ✓ | ✗ | ✗ | `datasets:share` |
 |获取索引信息 | ✓ | ✓ | ✓ | `datasets:read` |
-|索引数据集| ✓ | ✓ | ✗ | `datasets:update` |
+|索引数据集 | ✓ | ✓ | ✗ | `datasets:update` |
 |同步数据集索引 | ✓ | ✓ | ✗ | `datasets:update` ||删除数据集索引 | ✓ | ✓ | ✗ | `datasets:update` |
 |搜索数据集 | ✓ | ✓ | ✓ | `datasets:read` |
 |生成综合示例 | ✓ | ✓ | ✗ | `datasets:update` |
@@ -300,7 +314,7 @@
 数据集中的单个示例。|运营|工作区管理员 |工作区编辑器 |工作区查看器 |所需权限 |
 | - | :-: | :-: | :-: | - |
 |数个例子 | ✓ | ✓ | ✓ | `datasets:read` |
-|查看具体示例 | ✓ | ✓ | ✓ | `datasets:read` |
+|查看具体示例| ✓ | ✓ | ✓ | `datasets:read` |
 |列出示例 | ✓ | ✓ | ✓ | `datasets:read` |
 |创建一个新示例 | ✓ | ✓ | ✗ | `datasets:update` |
 |创建示例（批量）| ✓ | ✓ | ✗ | `datasets:update` |
@@ -325,7 +339,7 @@
 评估法学硕士输出的比较实验。|运营|工作区管理员 |工作区编辑器 |工作区查看器 |所需权限 |
 | - | :-: | :-: | :-: | - |
 |查看对比实验| ✓ | ✓ | ✓ | `projects:read` |
-|创建对比实验 | ✓ | ⚠ | ✗ | `projects:create` |
+|创建比较实验 | ✓ | ✓ | ✗ | `experiments:run` |
 |删除对比实验| ✓ | ✗ | ✗ | `projects:delete` |
 |查看运行示例 | ✓ | ✓ | ✓ | `datasets:read` |
 |查看带有运行的分组示例 | ✓ | ✓ | ✓ | `datasets:read` |
@@ -385,7 +399,7 @@ LLM 输出的人工审核队列。|运营|工作区管理员 |工作区编辑器
 |将运行添加到队列 | ✓ | ✓ | ✗ | `annotation-queues:update` |
 |更新在队列中运行 | ✓ | ✓ | ✗ | `annotation-queues:update` |
 |从队列中删除运行 | ✓ | ✓ | ✗ | `annotation-queues:update` |
-|从队列中删除运行（批量）| ✓ | ✓ | ✗ | `annotation-queues:update` |
+|从队列中删除运行（批量） | ✓ | ✓ | ✗ | `annotation-queues:update` |
 |创建身份标注队列运行状态| ✓ | ✓ | ✗ | `annotation-queues:update` |
 |导出存档的运行 | ✓ | ✓ | ✓ | `annotation-queues:read` |
 
@@ -427,14 +441,14 @@ LangChain Hub 中的提示模板和链。|运营|工作区管理员 |工作区�
 |列出评论 | ✓ | ✓ | ✓ | `prompts:read` |
 |创建评论 | ✓ | ✓ | ✗ | `prompts:read` |
 |删除评论 | ✓ | ✓ | ✗ | `prompts:read` |
-|切换类似| ✓ | ✓ | ✗ | `prompts:read` |
+|切换类似 | ✓ | ✓ | ✗ | `prompts:read` |
 |优化提示 | ✓ | ✓ | ✗ | `prompts:update` |
 |列出优化工作 | ✓ | ✓ | ✓ | `prompts:read` |
 |创建优化作业 | ✓ | ✓ | ✗ | `prompts:create` |
 |更新优化作业 | ✓ | ✓ | ✗ | `prompts:update` |
 |删除优化作业 | ✓ | ✓ | ✗ | `prompts:delete` ||调用提示画布 | ✓ | ✓ | ✗ | `prompts:update` |
-|列出快速行动 | ✓ | ✓ | ✓ | `prompts:read` |
-|创建快速行动| ✓ | ✓ | ✓ | `prompts:read` |
+|列出快速行动| ✓ | ✓ | ✓ | `prompts:read` |
+|创建快速行动 | ✓ | ✓ | ✓ | `prompts:read` |
 |删除快速行动 | ✓ | ✓ | ✓ | `prompts:read` |
 |更新快动作| ✓ | ✓ | ✓ | `prompts:read` |
 
@@ -482,7 +496,7 @@ LangChain Hub 中的提示模板和链。|运营|工作区管理员 |工作区�
 |删除型号价格条目 | ✓ | ✓ | ✗ | `model-price-map:delete` |
 
 <Note>
-  这些权限取代了 `runs:read` 和 `runs:create` 检查之前限制的型号价格。内置角色保留他们拥有的访问权限。此更改后创建的自定义角色需要显式授予 `model-price-map` 权限；它们在自定义角色编辑器中显示为自己的复选框。
+  这些权限取代了 `runs:read` 和 `runs:create` 检查之前限制的模型价格。内置角色保留他们拥有的访问权限。此更改后创建的自定义角色需要显式授予 `model-price-map` 权限；它们在自定义角色编辑器中显示为自己的复选框。
 </Note>
 
 ### 工作区设置和管理|运营|工作区管理员 |工作区编辑器 |工作区查看器 |所需权限 |
@@ -530,7 +544,7 @@ LangChain Hub 中的提示模板和链。|运营|工作区管理员 |工作区�
 |获取批量导出 | ✓ | ✓ | ✓ | `bulk-exports:read` |
 |获取批量导出运行 | ✓ | ✓ | ✓ | `bulk-exports:read` |
 |获取批量导出运行 | ✓ | ✓ | ✓ | `bulk-exports:read` |
-|创建批量导出 | ✓ | ✗ | ✗ | `bulk-exports:manage` |
+|创建批量导出| ✓ | ✗ | ✗ | `bulk-exports:manage` |
 |取消批量导出 | ✓ | ✗ | ✗ | `bulk-exports:manage` |
 |获取批量出口目的地 | ✓ | ✓ | ✓ | `bulk-exports:read` |
 |获取批量出口目的地 | ✓ | ✓ | ✓ | `bulk-exports:read` |
@@ -548,7 +562,7 @@ LangChain Hub 中的提示模板和链。|运营|工作区管理员 |工作区�
 | - | :-: | :-: | :-: | - |
 |列出 MCP 服务器 | ✓ | ✓ | ✓ | `workspaces:read` |
 |获取 MCP 服务器 | ✓ | ✓ | ✓ | `workspaces:read` |
-|创建MCP服务器 | ✓ | ✓ | ✓ | `workspaces:read` |
+|创建MCP服务器| ✓ | ✓ | ✓ | `workspaces:read` |
 |更新MCP服务器| ✓ | ✓ | ✓ | `workspaces:read` |
 |删除 MCP 服务器 | ✓ | ✓ | ✓ | `workspaces:read` |
 
@@ -558,27 +572,27 @@ LangChain Hub 中的提示模板和链。|运营|工作区管理员 |工作区�
 
 |运营|工作区管理员 |工作区编辑器 |工作区查看器 |所需权限 |
 | - | :-: | :-: | :-: | - |
-|查看车队管理部分（使用情况、支出）| ✓ | ✗ | ✗ | `fleet:read-admin-config` |
-|管理车队支出限额 | ✓ | ✗ | ✗ | `fleet:write-admin-config` |
+| View Fleet admin section (usage, spend) | ✓ | ✗ | ✗ | `fleet:read-admin-config` |
+| Manage Fleet spend limits | ✓ | ✗ | ✗ | `fleet:write-admin-config` |
 
 ## 用户级操作
 
 这些操作可供所有经过身份验证的用户使用，不需要特定的工作区或组织权限：
 
 * 查看自己的用户资料
-* 更新自己的用户资料
-* 列出用户的组织
-* 创建新组织
+* Update own user profile
+* List organizations for user
+* Create new organization
 * 列出待处理的工作区邀请
 * 删除待处理的工作区邀请
 * 领取待处理的工作区邀请
-* 列出待处理的组织邀请
-* 删除待处理的组织邀请
+* List pending organization invites
+* Delete pending organization invite
 * 领取待定组织邀请
 
-## 权限继承
+## Permission inheritance
 
-### 组织到工作区* [Organization Admin](/langsmith/rbac#organization-admin) 自动拥有所有工作区的完全权限。
+### Organization to workspace* [Organization Admin](/langsmith/rbac#organization-admin) 自动拥有所有工作区的完全权限。
 * [Organization Operator](/langsmith/rbac#organization-operator) 仅在显式添加到具有工作区级别角色的工作区（或他们创建的工作区）时才获得工作区访问权限。
 * [Organization User](/langsmith/rbac#organization-user) 和 [Organization Viewer](/langsmith/rbac#organization-viewer) 仅在显式添加到具有工作区级别角色的工作区时才获得工作区访问权限。
 
@@ -587,7 +601,7 @@ LangChain Hub 中的提示模板和链。|运营|工作区管理员 |工作区�
 ### 工作区角色独立性
 
 * 用户在不同的工作空间中可以拥有不同的工作空间角色。
-* 用户可能在一个工作空间中是 [Workspace Admin](/langsmith/rbac#workspace-admin)，在另一个工作空间中是 [Workspace Viewer](/langsmith/rbac#workspace-viewer)。
+* 用户可能是一个工作区中的 [Workspace Admin](/langsmith/rbac#workspace-admin)，而另一个工作区中的 [Workspace Viewer](/langsmith/rbac#workspace-viewer)。
 
 ***
 

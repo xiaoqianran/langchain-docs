@@ -22,7 +22,7 @@
 | - | - | - |
 | Anthropic | `/anthropic` | `ANTHROPIC_API_KEY` |
 | AWS 基岩 | `/bedrock` | `AWS_BEARER_TOKEN_BEDROCK` |
-| Azure 铸造厂 | `/azure` | `AZURE_FOUNDRY_API_KEY`、`AZURE_FOUNDRY_RESOURCE_NAME` |
+| Azure 铸造厂 | `/azure` | `AZURE_FOUNDRY_API_KEY`，`AZURE_FOUNDRY_RESOURCE_NAME`。对于 Entra ID，请参阅[Provider authentication](/langsmith/llm-gateway-provider-authentication#configure-azure-foundry)。 |
 |巴斯坦| `/baseten` | `BASETEN_API_KEY` |
 |烟花| `/fireworks` | `FIREWORKS_API_KEY` |
 |谷歌双子座 | `/gemini` | `GOOGLE_API_KEY` |
@@ -98,7 +98,7 @@ export LANGSMITH_API_KEY="lsv2_..."
 export LANGSMITH_GATEWAY="true"
 ```
 
-每个受支持的集成都会附加其自己的提供程序路径，因此 `ChatAnthropic` 调用 `https://gateway.smith.langchain.com/anthropic`，`ChatOpenAI` 调用 `https://gateway.smith.langchain.com/openai/v1`。要通过标准端点路由请求，请参阅 [LLM Gateway quickstart](/langsmith/llm-gateway-quickstart#send-a-request)。
+每个受支持的集成都会附加其自己的提供程序路径，因此 `ChatAnthropic` 调用 `https://gateway.smith.langchain.com/anthropic`，`ChatOpenAI` 调用 `https://gateway.smith.langchain.com/openai/v1`。要通过标准端点路由请求，请参阅[LLM Gateway quickstart](/langsmith/llm-gateway-quickstart#send-a-request)。
 
 ## 使用区域网关
 
@@ -106,7 +106,7 @@ export LANGSMITH_GATEWAY="true"
 
 ## 另请参阅* [Quickstart](/langsmith/llm-gateway-quickstart)：使用标准API跨提供商调用模型。
 * [Admin setup](/langsmith/llm-gateway-admin-setup)：配置提供者机密和访问。
-* [Traces, Engine, and access control](/langsmith/llm-gateway-access)：查看网关痕迹出现的位置以及谁可以查看它们。
+* [Traces, Engine, and access control](/langsmith/llm-gateway-access)：查看网关跟踪出现的位置以及谁可以查看它们。
 
 ***
 

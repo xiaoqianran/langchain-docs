@@ -84,7 +84,7 @@ LangSmith 通过捕获 [*traces*](/langsmith/observability-concepts#traces) 为�
        </tbody>
      </table>
 
-     例如，欧盟账户：`export LANGSMITH_ENDPOINT="https://eu.api.smith.langchain.com"`。不要在 URL 中添加尾部斜杠，因为这可能会导致身份验证错误。
+     例如，欧盟账户：`export LANGSMITH_ENDPOINT="https://eu.api.smith.langchain.com"`。
    </Note>
 
    如果您使用Anthropic，请使用[Anthropic wrapper](/langsmith/trace-anthropic)。如果您使用的是 Google Gemini，请使用 [Gemini wrapper](/langsmith/trace-with-google-gemini)。对于其他提供商，请使用 [⟦T14⟧ decorator](/langsmith/annotate-code#use-%40traceable-%2F-traceable) 手动跟踪呼叫。
@@ -94,9 +94,11 @@ LangSmith 通过捕获 [*traces*](/langsmith/observability-concepts#traces) 为�
 以下应用程序使用两个LangSmith工具来添加跟踪：
 
 * **OpenAI 包装器**：包装 OpenAI 客户端，因此每个 LLM 调用都会自动记录为嵌套范围。
-* **可跟踪包装器**：包装函数，使其输入、输出和任何嵌套跨度在 LangSmith 中显示为单个跟踪。在 Python 中使用 `@traceable`，在 TypeScript 和 Kotlin 中使用 `traceable`，在 Java 中使用 `Tracing.traceFunction`。
+* **可追踪包装器**：包装函数，使其输入、输出和任何嵌套跨度在 LangSmith 中显示为单个跟踪。在 Python 中使用 `@traceable`，在 TypeScript 和 Kotlin 中使用 `traceable`，在 Java 中使用 `Tracing.traceFunction`。
 
-`assistant` 函数调用工具 (`get_context`) 来检索相关上下文，然后将该上下文传递给模型。在这两个函数上使用可跟踪包装器可以在一次跟踪中捕获完整的管道，并将工具调用和 LLM 调用作为嵌套跨度。使用以下代码创建名为 `app.py`、`index.ts`、`App.java` 或 `App.kt` 的文件：
+`assistant` 函数调用工具 (`get_context`) 来检索相关上下文，然后将该上下文传递给模型。在这两个函数上使用可跟踪包装器可以在一次跟踪中捕获完整的管道，并将工具调用和 LLM 调用作为嵌套跨度。
+
+使用以下代码创建名为 `app.py`、`index.ts`、`App.java` 或 `App.kt` 的文件：
 
 <CodeGroup>
   ```python Python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
@@ -163,9 +165,7 @@ LangSmith 通过捕获 [*traces*](/langsmith/observability-concepts#traces) 为�
   (async () => {
       console.log(await assistant("How long are LangSmith traces stored?"));
   })();
-  ```
-
-  ```java Java theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+  ``````java Java theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
   import com.langchain.smith.tracing.RunType;
   import com.langchain.smith.tracing.TraceConfig;
   import com.langchain.smith.tracing.Tracing;
@@ -327,7 +327,7 @@ LangSmith 通过捕获 [*traces*](/langsmith/observability-concepts#traces) 为�
 
 <div>
   <Callout icon="terminal-2">
-    [Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时答案。
+    [Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
   </Callout>
 
   <Callout icon="edit">

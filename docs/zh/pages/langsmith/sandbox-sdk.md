@@ -335,7 +335,7 @@ export LANGSMITH_ENDPOINT="<LANGSMITH_ENDPOINT>"
 
 ## 安装 Context Hub 存储库
 
-安装 [Context Hub](/langsmith/use-the-context-hub) 存储库，为沙箱代码文件系统提供对您的代理和技能的访问权限。存储库的最新提交树被镜像到挂载路径中，并在沙箱的生命周期内保持同步，因此新的提交会显示在正在运行的沙箱中，而无需重新启动。<Warning>
+安装 [Context Hub](/langsmith/use-the-context-hub) 存储库，为沙盒代码文件系统提供对您的代理和技能的访问权限。存储库的最新提交树被镜像到挂载路径中，并在沙箱的生命周期内保持同步，因此新的提交会显示在正在运行的沙箱中，而无需重新启动。<Warning>
   Context Hub 安装是**只读**。同步是单向的，从存储库到沙箱：代理在挂载路径下写入的文件永远不会被推回到存储库，并且下一次同步会覆盖它们。将沙箱输出写入挂载外部的路径，以及 [push it with the SDK](/langsmith/manage-contexts-sdk)（如果它属于存储库）。
 </Warning>
 
@@ -421,22 +421,22 @@ export LANGSMITH_ENDPOINT="<LANGSMITH_ENDPOINT>"
     fsCapacityBytes: 34_359_738_368, // 32 GiB
   });
   ```
-</CodeGroup>|资源 |默认 |范围 |
+</CodeGroup>|资源 |默认|范围 |
 | - | - | - |
-|中央处理器 | 0.5 个 vCPU | 0.05 至 16 个 vCPU。使用`cpu_millicores`进行子核请求（`500`为0.5 vCPU）；它优先于`vcpus`。 |
+|中央处理器| 0.5 个 vCPU | 0.05 至 16 个 vCPU。使用`cpu_millicores`进行子核请求（`500`为0.5 vCPU）；它优先于`vcpus`。 |
 |内存|每个 vCPU 4 GiB |高达 64 GiB。必须保持在每个 vCPU 目标的 50% 以内，因此 1 个 vCPU 沙箱可接受 2 到 6 GiB。设定内存不带CPU与CPU是相同比例得出的。 |
 |文件系统 |快照容量|高达 64 GiB，并且永远不会小于其启动的快照。 |
 
 当主机有空闲容量时，沙箱会爆发到其请求的 CPU 的两倍。使用 `update_sandbox` / `updateSandbox` 调整现有沙箱的大小会在下次启动时生效，并且调整大小仅强制执行 64 GiB 上限，而不是每个 vCPU 的比率。
 
 <Note>
-  可以在创建时通过 REST API 设置自由格式 `labels`（每个沙箱最多 128 个，每个键 256 字节，每个值 4096 字节）。沙箱继承其快照的标签，除非被覆盖。 `langsmith.sandbox` 客户端尚未公开此字段。
+  可以在创建时通过 REST API 设置自由格式 `labels`（每个沙箱最多 128 个，每个键 256 字节，每个值 4096 字节）。除非被覆盖，否则沙箱会继承其快照的标签。 `langsmith.sandbox` 客户端尚未公开此字段。
 </Note>
 
 ## 沙盒寿命和保留
 
 沙箱由固定于**空闲的两阶段保留模型控制
-活动**和**`stopped`**状态。|领域 |它控制什么 |当它发生时|
+活动**和**`stopped`**状态。|领域 |它控制什么 |当它发生时 |
 | - | - | - |
 | `idle_ttl_seconds` |在闲置这么多秒后，启动器会停止沙箱。任何命令执行或文件 I/O 都会重置计时器。 `0` 禁用怠速停止。 |省略时默认为 `600`（10 分钟）。 |
 | `delete_after_stop_seconds` |一旦沙箱进入`stopped`状态，该计时器就会启动。过了一段时间后，沙箱行+文件系统克隆将被服务器端扫描永久删除。 `0` 禁用停止锚定删除（需要手动清理）。 |如果省略，服务器将应用其配置的默认值（通常为 14 天）。 |
@@ -747,7 +747,7 @@ async def main():
   }
   ```
 </CodeGroup><Note>
-  有关更多详细信息，请参阅 GitHub 上的 [Python](https://github.com/langchain-ai/langsmith-sdk/tree/main/python/langsmith/sandbox) 或 [TypeScript](https://github.com/langchain-ai/langsmith-sdk/tree/main/js/src/sandbox) 沙箱 SDK 参考。
+  有关更多详细信息，请参阅 GitHub 上的 [Python](https://github.com/langchain-ai/langsmith-python/tree/main/src/langsmith/sandbox) 或 [TypeScript](https://github.com/langchain-ai/langsmith-javascript/tree/main/src/lib/sandbox) 沙箱 SDK 参考。
 </Note>
 
 ***

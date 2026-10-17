@@ -185,6 +185,16 @@ These operations are controlled by [workspace-level roles and permissions](/lang
   To understand what each role means and their overall capabilities, refer to the [Role-based access control](/langsmith/rbac) guide.
 </Tip>
 
+### Tracing keys
+
+[Tracing keys](/langsmith/create-account-api-key#tracing-keys) grant fixed trace-writing permissions in selected workspaces.
+
+| Operation | Workspace Admin | Workspace Editor | Workspace Viewer | Required permission |
+| - | :-: | :-: | :-: | - |
+| Create a tracing key | ✓ | ✓ | ✗ | `workspaces:tracing-keys:create` in every selected workspace |
+
+Custom roles require an explicit creation grant. An active creator or organization key manager can delete a tracing key. A workspace key manager needs `workspaces:manage-keys` in every remaining selected workspace.
+
 ### Projects
 
 Projects organize traces and runs from your LLM applications.
@@ -200,7 +210,7 @@ Projects organize traces and runs from your LLM applications.
 | Update project metadata (name, description, tags) | ✓ | ✓ | ✗ | `projects:update` |
 | Increase project trace retention (base → extended) | ✓ | ✓ | ✗ | `projects:increase-trace-tier`\* |
 | Decrease project trace retention (extended → base) | ✓ | ✓ | ✗ | `projects:decrease-trace-tier`\* |
-| Create filter view | ✓ | ✗ | ✗ | `projects:create` |
+| Create filter view | ✓ | ✓ | ✗ | `projects:update` |
 | View filter views | ✓ | ✓ | ✓ | `projects:read` |
 | View specific filter view | ✓ | ✓ | ✓ | `projects:read` |
 | Update filter view | ✓ | ✓ | ✗ | `projects:update` |
@@ -222,6 +232,10 @@ Projects organize traces and runs from your LLM applications.
 
 <Note>
   \* `projects:increase-trace-tier` and `projects:decrease-trace-tier` are independent and can be granted separately in custom roles. For example, you can allow a role to decrease retention without allowing it to increase retention. If a user lacks both permissions, the retention settings UI is hidden entirely. If they have only one, the UI is partially enabled (the disallowed direction is disabled).
+</Note>
+
+<Note>
+  Creating a saved filter view modifies an existing project and requires `projects:update`. Comparative-experiment creation requires `experiments:run`. Custom roles that only grant `projects:create` need the corresponding permission for these operations. Tracing keys do not support either operation.
 </Note>
 
 ### Runs
@@ -353,7 +367,7 @@ Comparative experiments for evaluating LLM outputs.
 | Operation | Workspace Admin | Workspace Editor | Workspace Viewer | Required Permission |
 | - | :-: | :-: | :-: | - |
 | View comparative experiments | ✓ | ✓ | ✓ | `projects:read` |
-| Create comparative experiment | ✓ | ⚠ | ✗ | `projects:create` |
+| Create comparative experiment | ✓ | ✓ | ✗ | `experiments:run` |
 | Delete comparative experiment | ✓ | ✗ | ✗ | `projects:delete` |
 | View examples with runs | ✓ | ✓ | ✓ | `datasets:read` |
 | View grouped examples with runs | ✓ | ✓ | ✓ | `datasets:read` |

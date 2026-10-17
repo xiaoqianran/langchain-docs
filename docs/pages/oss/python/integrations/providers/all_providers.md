@@ -671,6 +671,10 @@ Browse the complete collection of integrations available for Python. LangChain P
     Google's AI services and cloud platform.
   </Card>
 
+  <Card title="GoAT" href="https://pypi.org/project/langgraph-goat/" icon="link">
+    langgraph-goat records candidate plans, scores, and why each was chosen or rejected as a LangGraph agent plans, then renders a natural-language explanation for debugging and end-user transparency.
+  </Card>
+
   <Card title="GPTZZZ" href="https://gptzzz.ai/docs/" icon="link">
     OpenAI-compatible API gateway for models from multiple providers, with Chinese-language docs.
   </Card>
@@ -1205,6 +1209,10 @@ Browse the complete collection of integrations available for Python. LangChain P
 
   <Card title="OpenAI" href="/oss/python/integrations/providers/openai" icon="brand-openai">
     GPT models and comprehensive AI platform.
+  </Card>
+
+  <Card title="OpenAlexSearch" href="https://github.com/ourresearch/langchain-openalex#readme" icon="link">
+    OpenAlex is a free, open index of scholarly works (papers, books, datasets, preprints) with their authors, sources and citations; the package provides a search tool, a lookup-by-DOI tool and a retriever.
   </Card>
 
   <Card title="OpenBox" href="https://docs.openbox.ai/getting-started/langgraph" icon="link">

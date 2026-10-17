@@ -1,20 +1,24 @@
 <!-- langchain-docs: machine-translated zh-CN from English source -->
 
-<!-- langchain-docs: Configure model providers for Engine on self-hosted | https://docs.langchain.com/langsmith/engine-self-hosted-model-providers -->
+<!-- langchain-docs: Configure model providers for Engine on self-hosted and BYOC | https://docs.langchain.com/langsmith/engine-self-hosted-model-providers -->
 
-# 在自托管上为 Engine 配置模型提供程序
+# 在自托管和 BYOC 上为 Engine 配置模型提供程序
 
 选择模型提供商 LangSmith 引擎在自托管 LangSmith 实例上使用，使用凭据或云身份进行身份验证，并将模型流量保留在专用网络上。
 
 <Info>
-  在您自己的模型提供程序上运行引擎需要 LangSmith Helm Chart `0.17.0` 或更高版本。早期的图表版本仅在 [LangSmith Intelligence](/langsmith/engine-self-hosted#langsmith-intelligence) 上运行引擎。
+  在您自己的模型提供程序上运行引擎需要 LangSmith Helm 图表 `0.17.0` 或更高版本。早期的图表版本仅在 [LangSmith Intelligence](/langsmith/engine-self-hosted#langsmith-intelligence) 上运行引擎。
 </Info>
 
-在自托管 LangSmith 上，组织管理员选择 [LangSmith Engine](/langsmith/engine) 运行其模型调用的位置：在 LangSmith Intelligence (LSI) 上、在您自己的模型提供商上或两者上。在您自己的提供商上运行引擎会根据您与这些提供商的协议保留提示和响应。本页介绍如何选择提供商、向他们进行身份验证以及通过专用网络连接到他们或 LSI。有关两个选项的比较，请参阅[Choose how Engine runs its models](/langsmith/engine-self-hosted#choose-how-engine-runs-its-models)。首先完成[Install Engine](/langsmith/engine-self-hosted#install-engine)。
+在自托管 LangSmith 上，组织管理员选择 [LangSmith Engine](/langsmith/engine) 运行其模型调用的位置：在 LangSmith Intelligence (LSI) 上、在您自己的模型提供程序上或两者上。在您自己的提供商上运行引擎会根据您与这些提供商的协议保留提示和响应。本页介绍如何选择提供商、向他们进行身份验证以及通过专用网络连接到他们或 LSI。有关两个选项的比较，请参阅[Choose how Engine runs its models](/langsmith/engine-self-hosted#choose-how-engine-runs-its-models)。首先完成[Install Engine](/langsmith/engine-self-hosted#install-engine)。
 
-## 使用您自己的模型提供者
+<Info>
+  在 [BYOC](/langsmith/engine-self-hosted#engine-on-byoc)、LangSmith 上，智能不可用，引擎仅在您自己的模型提供程序上运行。 Amazon Bedrock 可以使用 LangChain 配置的数据平面的云身份。 [cloud identity](#use-cloud-identity-for-your-model-providers) 和 [private connection](#connect-privately) 部分仅适用于自托管 LangSmith。
+</Info>
 
-引擎直接从您的集群调用您的提供程序。根据您与提供商的协议，提示和响应仅发送给您的提供商。 LangChain 没有收到。Engine 的沙盒使用情况包含在 Engine 的 LSU 计费中。沙箱引擎用于诊断问题、生成修复程序和编写评估程序不会产生额外的沙箱产品费用。
+## 使用您自己的模型提供者引擎直接从您的集群调用您的提供程序。根据您与提供商的协议，提示和响应仅发送给您的提供商。 LangChain 没有收到。
+
+Engine 的沙盒使用情况包含在 Engine 的 LSU 计费中。沙箱引擎用于诊断问题、生成修复程序和编写评估程序不会产生额外的沙箱产品费用。
 
 引擎支持Anthropic、OpenAI、Amazon Bedrock、Google Vertex AI 和 Azure AI Foundry。它使用您选择的提供商的混合模型，因此为了获得最佳结果，请为您有权访问的每个提供商添加凭据。
 
@@ -24,9 +28,9 @@
 
 在 **设置 > 引擎 > 模型提供程序**下，组织管理员选择 LangSmith Intelligence、一个或多个您自己的提供程序，或两者都选择。凭据将保存为组织机密并适用于组织中的每个工作区。
 
-仅当您安装的 `engine.intelligenceBaseUrl` 服务于引擎模型时，LangSmith 智能才会出现。
+仅当您安装的 `engine.intelligenceBaseUrl` 服务于引擎模型时，LangSmith 智能才会出现。当 LangSmith 情报可用并被选择时，它的优先级高于您选择的提供商。不选择它以保留对您自己的提供商的推断。
 
-当 LangSmith 情报可用并被选择时，它的优先级高于您选择的提供商。不选择它以保留对您自己的提供商的推断。引擎从您启用的提供商中选择模型。在您的提供商帐户中启用对 Claude 5.5 级模型或 GPT 5.6 级模型的访问，具体取决于每个提供商提供的模型。模型要求遵循 `images.engineInsightsAgentImage.tag` 中的 Engine 镜像标签，而不是 Helm 图表版本。运行 [**Test connection**](#test-a-provider) 来识别所需的型号并确认对已安装的引擎映像的访问。
+引擎从您启用的提供商中选择模型。在您的提供商帐户中启用对 Claude 5.5 级模型或 GPT 5.6 级模型的访问，具体取决于每个提供商提供的模型。模型要求遵循 `images.engineInsightsAgentImage.tag` 中的 Engine 镜像标签，而不是 Helm 图表版本。运行 [**Test connection**](#test-a-provider) 来识别所需的型号并确认对已安装的引擎映像的访问。
 
 要使用您自己的提供商：
 
@@ -42,12 +46,12 @@
       <Tab title="Amazon Bedrock">
         AWS 访问密钥 ID 和秘密访问密钥，以及可选的会话令牌或 Bedrock API 密钥（不记名令牌）。 （可选）AWS 区域。
 
-        引擎使用基岩地幔 API。允许访问所选 AWS 账户和区域中所需的模型。授予调用身份 Mantle 推理和模型订阅权限。请参阅[AmazonBedrockMantleInferenceAccess](https://docs.aws.amazon.com/aws-managed-policy/latest/reference/AmazonBedrockMantleInferenceAccess.html)了解所需的操作。
+        引擎使用基岩地幔 API。允许访问所选 AWS 账户和区域中所需的模型。授予调用身份 Mantle 推理和模型订阅权限。请参阅[AmazonBedrockMantleInferenceAccess](https://docs.aws.amazon.com/aws-managed-policy/latest/reference/AmazonBedrockMantleInferenceAccess.html)了解所需的操作。如果没有保存区域，引擎将使用`us-east-1`，包括工作负载标识。它不继承 EKS 集群的区域。
 
-        如果没有保存区域，引擎将使用`us-east-1`，包括工作负载标识。它不继承 EKS 集群的区域。
+        要改用 Engine pod 的云身份，请参阅 [Use cloud identity for your model providers](#use-cloud-identity-for-your-model-providers)。
+      </Tab>
 
-        要改用 Engine 的 pod 的云身份，请参阅 [Use cloud identity for your model providers](#use-cloud-identity-for-your-model-providers)。
-      </Tab><Tab title="Google Vertex AI">
+      <Tab title="Google Vertex AI">
         JSON 格式的服务帐户密钥。引擎使用JSON的`project_id`作为推理项目并调用`global`位置。
 
         通过该项目中的[Model Garden](https://docs.cloud.google.com/gemini-enterprise-agent-platform/models/partner-models/use-partner-models)启用所需的模型。在同一项目中授予服务帐户`roles/aiplatform.user`。
@@ -80,7 +84,7 @@
   </Step>
 </Steps>
 
-如果保存后引擎运行失败：* **未选择任何提供程序：** 在选择并保存至少一个提供程序之前，引擎不会开始运行。
+如果保存后引擎运行失败：* **未选择提供程序：** 在选择并保存至少一个提供程序之前，引擎不会开始运行。
 * **拒绝的凭据：** **测试连接** 报告哪个提供商拒绝了它们。更新凭据并再次测试。
 * **模型不可用：** 在您的提供商帐户中启用模型，然后再次测试。
 
@@ -90,7 +94,7 @@ Amazon Bedrock、Google Vertex AI 和 Azure AI Foundry 可以使用 Engine pod �
 
 <Tabs>
   <Tab title="Amazon EKS">
-    为服务账户 (IRSA) 配置 IAM 角色。信任两个引擎工作负载的命名空间和服务帐户，并授予角色访问引擎使用的 Bedrock 模型的权限。
+    为服务账户 (IRSA) 配置 IAM 角色。信任两个引擎工作负载的命名空间和服务帐户，并授予角色对引擎使用的 Bedrock 模型的访问权限。
 
     ```yaml theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
     engine:
@@ -212,7 +216,7 @@ LangSmith 智能网关 `beacon.aws.langchain.com` 将请求路由到 LangChain �
     }
     ```
   </Step><Step title="Wait for LangChain to accept the connection">
-    LangChain接受连接后，端点状态从`pendingAcceptance`更改为`available`。在测试连接之前，请等待几分钟让更改传播。
+    LangChain接受连接后，端点状态从`pendingAcceptance`变为`available`。在测试连接之前，请等待几分钟让更改传播。
   </Step>
 
   <Step title="Route the LSI hostname to the endpoint">
@@ -267,7 +271,7 @@ LangSmith 智能网关 `beacon.aws.langchain.com` 将请求路由到 LangChain �
 
 如果 Engine 使用 [cloud identity](#use-cloud-identity-for-your-model-providers) 进行身份验证，Pod 还需要访问云的令牌服务，例如 AWS 上 AWS STS 的接口 VPC 终端节点。通过保存的 Vertex AI 服务帐户 JSON，还允许使用 HTTPS `oauth2.googleapis.com` 进行令牌交换，以及 `aiplatform.googleapis.com` 进行推理。
 
-向LangSmith Intelligence 报告使用情况是一个单独的连接。在 AWS 上，`https://beacon.aws.langchain.com/intelligence` 记录使用情况并支持 [AWS PrivateLink](#connect-with-aws-privatelink)，因此安装可以在 Bedrock 上运行引擎并报告使用情况，而无需公共出口。默认`https://beacon.langchain.com/intelligence`需要公共出口。
+向 LangSmith Intelligence 报告使用情况是一个单独的连接。在 AWS 上，`https://beacon.aws.langchain.com/intelligence` 记录使用情况并支持 [AWS PrivateLink](#connect-with-aws-privatelink)，因此安装可以在 Bedrock 上运行 Engine 并报告使用情况，而无需公共出口。默认`https://beacon.langchain.com/intelligence`需要公共出口。
 
 ## 另请参阅
 

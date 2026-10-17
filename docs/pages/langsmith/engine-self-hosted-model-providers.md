@@ -1,6 +1,6 @@
-<!-- langchain-docs: Configure model providers for Engine on self-hosted | https://docs.langchain.com/langsmith/engine-self-hosted-model-providers -->
+<!-- langchain-docs: Configure model providers for Engine on self-hosted and BYOC | https://docs.langchain.com/langsmith/engine-self-hosted-model-providers -->
 
-# Configure model providers for Engine on self-hosted
+# Configure model providers for Engine on self-hosted and BYOC
 
 Choose the model providers LangSmith Engine uses on a self-hosted LangSmith instance, authenticate with credentials or cloud identity, and keep model traffic on private networking.
 
@@ -9,6 +9,10 @@ Choose the model providers LangSmith Engine uses on a self-hosted LangSmith inst
 </Info>
 
 On self-hosted LangSmith, an Organization Admin chooses where [LangSmith Engine](/langsmith/engine) runs its model calls: on LangSmith Intelligence (LSI), on your own model providers, or both. Running Engine on your own providers keeps prompts and responses under your agreements with those providers. This page covers how to select providers, authenticate to them, and connect to them or to LSI over private networking. For a comparison of the two options, see [Choose how Engine runs its models](/langsmith/engine-self-hosted#choose-how-engine-runs-its-models). Complete [Install Engine](/langsmith/engine-self-hosted#install-engine) first.
+
+<Info>
+  On [BYOC](/langsmith/engine-self-hosted#engine-on-byoc), LangSmith Intelligence is not available, and Engine runs only on your own model providers. Amazon Bedrock can use your data plane's cloud identity, which LangChain configures. The [cloud identity](#use-cloud-identity-for-your-model-providers) and [private connection](#connect-privately) sections apply to self-hosted LangSmith only.
+</Info>
 
 ## Use your own model providers
 

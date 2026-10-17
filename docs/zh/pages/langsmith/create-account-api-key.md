@@ -8,27 +8,30 @@
 
 ## API 密钥
 
-LangSmith 支持两种类型的 API 密钥。您可以使用这两种类型的令牌来验证对 LangSmith API 的请求，但它们有不同的用例：
+LangSmith支持三种不同权限和生命周期的API密钥：
 
 * [**Personal Access Tokens (PATs)**](/langsmith/administration-overview#personal-access-tokens-pats)继承创建它们的用户的权限。将 PAT 用于个人脚本或工具。
+* [**Tracing keys**](#tracing-keys) 在选定的工作区中提交跟踪，而无需访问存储的跟踪或管理操作。
 * [**Service keys**](/langsmith/administration-overview#service-keys) 范围为特定[workspaces](/langsmith/administration-overview#workspaces) 或整个[organization](/langsmith/administration-overview#organizations)。将服务密钥用于应用程序和生产服务。
 
-要记录 [traces](/langsmith/observability-concepts#traces) 并使用 LangSmith 运行 [evaluations](/langsmith/evaluation)，请创建一个 API 密钥来验证您的请求。
+使用跟踪密钥记录[traces](/langsmith/observability-concepts#traces)。使用具有 [evaluations](/langsmith/evaluation) 和其他 API 操作所需权限的 PAT 或服务密钥。
+
+要在 UI 中创建 PAT 或服务密钥：
 
 <Steps>
   <Step title="Open API Keys settings" icon="settings">
-    导航至 [**Settings** page](https://smith.langchain.com/settings) 并选择 **API 密钥** 部分。
+    导航至 [**Settings** page](https://smith.langchain.com/settings) 并选择 **API Keys** 部分。
   </Step>
 
   <Step title="Configure the key type" icon="key">
     对于服务密钥，请在组织范围的密钥和工作区范围的密钥之间进行选择。如果密钥是工作区范围的，则必须指定工作区。
 
     [Enterprise](/langsmith/pricing-plans) 用户还可以 [assign specific workspace roles](/langsmith/administration-overview#workspace-roles-rbac) 服务密钥，这可以独立于任何用户调整其权限。
+  </Step><Step title="Set expiration" icon="calendar">
+    设置密钥的过期时间。密钥在选择的天数后将变得不可用，或者永远不可用（如果选择了）。
   </Step>
 
-  <Step title="Set expiration" icon="calendar">
-    设置密钥的过期时间。密钥在选择的天数后将变得不可用，或者永远不可用（如果选择了该天数）。
-  </Step><Step title="Create the key" icon="circle-check">
+  <Step title="Create the key" icon="circle-check">
     单击 **创建 API 密钥。** LangSmith 只会显示 API 密钥一次，因此请务必复制它并将其存储在安全的地方。
   </Step>
 </Steps>
@@ -63,7 +66,52 @@ LangSmith 支持两种类型的 API 密钥。您可以使用这两种类型的�
 
 服务密钥只能删除，不能停用。打开 **服务** 选项卡并在 **操作** 列中选择 **删除密钥**，然后确认删除 PAT 所需的键入说明。
 
-## 配置SDK
+## 追踪按键
+
+跟踪密钥是组织拥有的凭据，用于在选定的工作区中提交跟踪。它们限制应用程序对`runs:create`和`projects:create`的访问。
+
+跟踪密钥可以创建项目并通过跟踪摄取 API 提交运行更新。它无法读取存储的跟踪、更新项目配置、创建保存的视图、运行实验或管理密钥。项目更新插入请求也被拒绝。对需要这些权限的操作使用单独的凭据。
+
+### 创建跟踪密钥跟踪密钥创建需要活跃的组织成员身份以及每个选定工作区中的活跃成员身份。每个工作区都需要`workspaces:tracing-keys:create`，包括通过团队授予的权限。内置工作区管理员和工作区编辑者角色接收此权限；工作区查看器则不然。管理员必须将其明确授予自定义角色。您自己不需要`runs:create`。
+
+要在 LangSmith 中创建密钥：
+
+1. 转至 **设置** > **API 密钥**，然后选择 **API 密钥**。
+2. 选择**仅跟踪**并输入描述。
+3. 选择工作区和到期日期，然后选择“**创建 API 密钥**”。
+4. 在关闭对话框之前复制密钥。
+
+跟踪选项需要受支持的部署。对于 BYOC 工作区，数据平面还必须支持跟踪密钥。仅具有创建权限且部署支持跟踪密钥的工作区可供选择。
+
+您还可以使用 `POST /api/v1/orgs/current/tracing-keys` 创建密钥。作为用户进行身份验证，包括通过 PAT（如果组织策略允许 API 密钥创建密钥）。服务帐户密钥无法创建跟踪密钥。
+
+该请求接受：* **`workspaces`**：一个或多个工作区 ID 的必需列表。该密钥没有组织范围内的范围。
+* **`description`**：密钥的可选标签。
+* **`expires_at`**：可选的过期时间戳，受服务密钥过期限制的约束。
+
+响应返回`201 Created`、`Location`标头以及`key`中的秘密。创建秘密时复制它；列表响应不会返回它。跟踪键具有 `lsv2_tr_` 前缀。
+
+使用密钥作为 `LANGSMITH_API_KEY` 和下面的 [SDK configuration](#configure-the-sdk)。对于作用域为多个工作区的键，请将 `LANGSMITH_WORKSPACE_ID` 设置为选定的工作区。直接 API 请求使用`X-Tenant-Id`。
+
+### 范围和生命周期
+
+跟踪密钥在其选定的工作区中具有固定的权限。它不会继承创建者的角色或项目标签访问策略。其工作区范围和权限无法编辑。创建替换密钥以更改范围。
+
+删除或禁用创建者不会禁用密钥跟踪。删除选定的工作空间将删除对该工作空间的访问权限；它不会添加对其他工作区的访问。过期和密钥删除会停止身份验证，具体取决于身份验证缓存。
+
+### 列出并删除跟踪键在 **设置** > **API 密钥**中，选择 **跟踪** 以查看密钥。要删除密钥，请选择其删除操作并输入其描述进行确认。仅当您有权删除该密钥时，才会出现删除操作。
+
+`GET /api/v1/orgs/current/tracing-keys` 列出经过身份验证的用户可见的密钥。它返回`items`和`next_cursor`。使用`page_size`每页请求1-100个密钥；默认值为 50。将 `next_cursor` 作为 `cursor` 传递以请求下一页。可选的 `workspace_ids` 过滤器将结果限制为匹配可见工作区。
+
+列出密钥并不一定授予删除它的权限。对于无法访问完整范围的调用者，隐藏的工作区 ID 和名称将被省略。检查`can_delete`删除权限。
+
+`DELETE /api/v1/orgs/current/tracing-keys/{api_key_id}` 删除跟踪键。重复删除返回`204 No Content`。允许删除：
+
+* **创建者**：创建者必须仍然是活跃的组织成员。
+* **组织关键管理者**：使用 `organization:service-key:manage` 的调用者，包括服务帐户自动化。
+* **工作区密钥管理器**：在每个剩余的选定工作区中具有 `workspaces:manage-keys` 的活跃成员。
+
+创建、列出和删除端点可通过 HTTP 实现。生成的 SDK 密钥管理方法不会公开它们。已发布的跟踪密钥可与 SDK 的跟踪 API 配合使用。## 配置SDK
 
 安装适合您的语言的 SDK：
 
@@ -98,7 +146,9 @@ export LANGSMITH_TRACING=true
 
 您可能还需要以下附加环境变量：
 
-* `LANGSMITH_ENDPOINT`控制SDK将数据发送到哪个LangSmith服务器。默认为 `https://api.smith.langchain.com` (GCP US)。仅当您处于不同的部署时才设置它。对于区域 SaaS，将其设置为您所在区域的 API URL：<table>
+* `LANGSMITH_ENDPOINT`控制SDK将数据发送到哪个LangSmith服务器。默认为 `https://api.smith.langchain.com` (GCP US)。仅当您处于不同的部署时才设置它。对于区域 SaaS，将其设置为您所在区域的 API URL：
+
+  <table>
     <thead>
       <tr>
         <th>地区</th>
@@ -134,9 +184,7 @@ export LANGSMITH_TRACING=true
 
 参见[instructions for managing your organization via API](/langsmith/manage-organization-by-api)。
 
-***
-
-<div>
+***<div>
   <Callout icon="terminal-2">
     [Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
   </Callout>

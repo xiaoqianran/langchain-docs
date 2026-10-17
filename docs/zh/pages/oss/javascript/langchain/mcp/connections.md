@@ -2,7 +2,7 @@
 
 <!-- langchain-docs: Connections | https://docs.langchain.com/oss/javascript/langchain/mcp/connections -->
 
-# Connections
+# 连接数
 
 LangChain 中的连接生命周期、多服务器、部署扩展、协议时代和 MCP 缓存。
 
@@ -10,7 +10,7 @@ LangChain 中的连接生命周期、多服务器、部署扩展、协议时代�
 
 选择适配器保持打开状态的时间：
 
-|情况|图案|前往 |
+|情况|图案|前往|
 | - | - | - |
 |脚本或代理调用 |创建适配器，运行代理，然后在 `finally` | 中关闭[Connection lifecycle](#connection-lifecycle) |
 |长寿工人|重复使用一个适配器并在关机期间将其关闭 | [Scale a deployment](#scale-a-deployment) |
@@ -48,7 +48,7 @@ async function runAgent(serverUrl: string) {
 }
 ```
 
-<Card title="View example trace" icon="chart-line" href="https://smith.langchain.com/public/54f2fa78-9b4c-445a-94a2-27f4cdaa4e67/r">
+<Card title="View example trace" icon="chart-line" href="https://smith.langchain.com/public/6d4a6e1b-2d3f-429a-a9f7-d212429ac6b4/r">
   为此示例打开公共 LangSmith 运行。
 </Card>`close()` 中止正在进行的适配器工作、关闭其连接并清除其缓存。您可以再次调用`listTools()`打开新的连接，但使用新返回的工具。先前退回的工具保留其已关闭的客户。
 
@@ -81,7 +81,7 @@ async function listServerTools(calendarUrl: string, filesServerPath: string) {
 }
 ```
 
-<Card title="View example trace" icon="chart-line" href="https://smith.langchain.com/public/637a53d2-a23e-4691-b70c-7bf3d8de9755/r">
+<Card title="View example trace" icon="chart-line" href="https://smith.langchain.com/public/493622a5-b24a-4d48-93df-f5b6263beb9f/r">
   为此示例打开公共 LangSmith 运行。
 </Card>
 
@@ -113,7 +113,7 @@ export async function makeGraph() {
 }
 ```
 
-<Card title="View example trace" icon="chart-line" href="https://smith.langchain.com/public/d5c9bc74-bbab-4f0f-97bd-e9982ee4b050/r">
+<Card title="View example trace" icon="chart-line" href="https://smith.langchain.com/public/d70d86cb-8960-4b0a-a087-18a23d649f71/r">
   为此示例打开公共 LangSmith 运行。
 </Card>
 
@@ -164,6 +164,10 @@ async function listToolsAcrossEras(modernUrl: string, legacyUrl: string) {
   }
 }
 ```
+
+<Card title="View example trace" icon="chart-line" href="https://smith.langchain.com/public/0263dee8-0ce0-48a5-ba30-62bea305de1b/r">
+  为此示例打开公共 LangSmith 运行。
+</Card>
 
 每个服务器的`mode`独立控制其协商：
 

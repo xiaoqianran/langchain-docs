@@ -72,13 +72,13 @@ export LANGSMITH_WORKSPACE_ID=<your-workspace-id>
     </tbody>
   </table>
 
-  例如，欧盟账户：`export LANGSMITH_ENDPOINT="https://eu.api.smith.langchain.com"`。不要在 URL 中添加尾部斜杠，因为这可能会导致身份验证错误。
-</Note><Info>
+  例如，欧盟账户：`export LANGSMITH_ENDPOINT="https://eu.api.smith.langchain.com"`。
+</Note>
+
+<Info>
   如果您将 LangChain.js 与 LangSmith 一起使用并且不在无服务器环境中，我们还建议显式设置以下内容以减少延迟：
 
-  `export LANGCHAIN_CALLBACKS_BACKGROUND=true`
-
-  如果您处于无服务器环境中，我们建议相反设置，以允许跟踪在函数结束之前完成：
+  `export LANGCHAIN_CALLBACKS_BACKGROUND=true`如果您处于无服务器环境中，我们建议相反设置以允许跟踪在函数结束之前完成：
 
   `export LANGCHAIN_CALLBACKS_BACKGROUND=false`
 </Info>

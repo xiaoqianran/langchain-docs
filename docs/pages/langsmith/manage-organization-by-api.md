@@ -70,6 +70,8 @@ Workspace level:
 
 ## API keys
 
+For tracing-only credentials, refer to [Create, list, and delete tracing keys](/langsmith/create-account-api-key#tracing-keys). Creation requires the dedicated workspace permission; organization key managers can use service-account credentials for deletion.
+
 * [Create a service key](/langsmith/smith-api/api-key/generate-api-key)
 * [Update a service key role](/langsmith/smith-api/orgs/update-org-service-key)
 * [Delete a service key](/langsmith/smith-api/api-key/delete-api-key)

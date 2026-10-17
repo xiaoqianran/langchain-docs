@@ -10,14 +10,33 @@
   **订阅**：我们的变更日志包括一个 [RSS feed](https://docs.langchain.com/oss/javascript/releases/changelog/rss.xml)，可以与 [Slack](https://slack.com/help/articles/218688467-Add-RSS-feeds-to-Slack)、[email](https://zapier.com/apps/email/integrations/rss/1441/send-new-rss-feed-entries-via-email)、Discord 机器人（如 [Readybot](https://readybot.io/) 或 [RSS Feeds to Discord Bot](https://rss.app/en/bots/rssfeeds-discord-bot)）以及其他订阅工具集成。
 </Callout>
 
+<Update label="Oct 15, 2026">
+  ## `langchain` v1.5.18
+
+  `humanInTheLoopMiddleware` 现在可以在每次工具调用时暂停一次。设置`interruptMode: "per_call"`，每个门控调用都会引发自己的中断，您可以通过中断 ID 应答该中断。批处理模式仍然是默认的。
+
+  ```typescript theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+  humanInTheLoopMiddleware({ interruptOn: {...}, interruptMode: "per_call" });
+  ```
+
+  ### 特点
+
+  * **键入答案**：每个中断都带有一个`response_schema`，列出调用允许的决策，因此客户端可以从模式构建其形式。参见[Read the response schema](/oss/javascript/langchain/human-in-the-loop#read-the-response-schema)。
+  * **保存前检查**：LangGraph在保存之前拒绝无效答案，因此您可以更正它并再次回答相同的中断。参见[Correct an invalid answer](/oss/javascript/langchain/human-in-the-loop#correct-an-invalid-answer)。
+  * **编辑保留在被调用的工具上**：`edit`无法切换工具，并且其参数将根据工具自己的架构进行检查。
+  * **`respond` 无处不在**：`interruptOn: { tool: true }` 现在允许在两种模式下做出每个决定，包括 `respond`，就像在 Python 中一样。
+
+  对新代理使用每次呼叫模式。 LangChain 计划在下一个主要版本中将其设为默认值。请参阅 [Pause once per tool call](/oss/javascript/langchain/human-in-the-loop#pause-once-per-tool-call) 和 [human-in-the-loop overview](/oss/javascript/concepts/human-in-the-loop)。
+</Update>
+
 <Update label="Mar 24, 2026">
-  ## `deepagents` v1.9.0-alpha.0
+  ## `deepagents` v1.9.0-alpha.0`deepagents` v1.9.0 的 Alpha 版本。
 
-  `deepagents` v1.9.0 的 Alpha 版本。
+  * **[Async subagents](/oss/javascript/deepagents/async-subagents)**：Deep Agents可以启动非阻塞后台任务，因此用户可以在子代理同时工作的同时继续与代理交互。子代理需要[LangSmith Deployment](/langsmith/deployment)。
 
-  * **[Async subagents](/oss/javascript/deepagents/async-subagents)**：Deep Agents可以启动非阻塞后台任务，因此用户可以在子代理同时工作的同时继续与代理交互。子代理需要[LangSmith Deployment](/langsmith/deployment)。* **[Backend](/oss/javascript/deepagents/backends) 协议 v2**：我们引入了新的 v2 后端协议 (`BackendProtocolV2`)，并对 Deep Agents 后端接口进行了向后兼容的更改。主要变化：
-    * **结构化结果类型**：所有方法现在都返回结构化 `Result` 对象（例如 `ReadResult`、`LsResult`、`GrepResult`、`GlobResult`），并通过 `error` 字段进行一致的错误处理，而不是返回原始值或引发异常。
-    * **多模式文件支持**：`read()`返回带有`.content`字段的`ReadResult`而不是纯字符串。对于二进制文件（图像、PDF、音频、视频），完整的原始 `Uint8Array` 内容通过 `readRaw()` 返回，使代理能够在本地处理多模式文件。
+  * **[Backend](/oss/javascript/deepagents/backends) 协议 v2**：我们引入了新的 v2 后端协议 (`BackendProtocolV2`)，并对 Deep Agents 后端接口进行了向后兼容的更改。主要变化：
+    * **结构化结果类型**：所有方法现在都返回结构化 `Result` 对象（例如，`ReadResult`、`LsResult`、`GrepResult`、`GlobResult`），并通过 `error` 字段进行一致的错误处理，而不是返回原始值或引发异常。
+    * **多模式文件支持**：`read()`返回带有`.content`字段的`ReadResult`而不是纯字符串。对于二进制文件（图像、PDF、音频、视频），完整的原始 `Uint8Array` 内容通过 `readRaw()` 返回，使代理能够本地处理多模式文件。
     * **简化方法名称**：`lsInfo` -> `ls`、`grepRaw` -> `grep`、`globInfo` -> `glob`。
     * **向后兼容**：现有的 v1 后端可以使用 `adaptBackendProtocol` 适应 v2 接口。 v1 接口（`BackendProtocolV1`、`SandboxBackendProtocolV1`）已弃用，但为了兼容性而保留。
 </Update>
@@ -25,11 +44,11 @@
 <Update label="Jan 14, 2026">
   ## v1.1.0
 
-  ### `@langchain/langgraph`
+  ### `@langchain/langgraph`引入 **StateSchema** - 一种更干净、与库无关的方式来定义图形状态，可与任何 [Standard Schema](https://github.com/standard-schema/standard-schema) 兼容的验证库一起使用。
 
-  引入 **StateSchema** - 一种更干净、与库无关的方式来定义图形状态，可与任何 [Standard Schema](https://github.com/standard-schema/standard-schema) 兼容的验证库一起使用。
+  ### 标准 JSON 模式支持
 
-  ### 标准 JSON 模式支持LangGraph 现在支持[Standard JSON Schema](https://standardschema.dev/json-schema)，这是由 Zod 4、Valibot、ArkType 和其他模式库实现的开放规范。这意味着您可以使用您喜欢的验证库而无需锁定：
+  LangGraph 现在支持[Standard JSON Schema](https://standardschema.dev/json-schema)，这是由 Zod 4、Valibot、ArkType 和其他模式库实现的开放规范。这意味着您可以使用您喜欢的验证库而无需锁定：
 
   ```typescript theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
   import { z } from "zod"; // or valibot, arktype, etc.
@@ -84,11 +103,11 @@
   };
   ```
 
-  现有的 `Annotation` 和基于 zod 的 API 继续保持不变 - `StateSchema` 对于那些喜欢模式优先定义的人来说是一个额外的选项。
+  现有的 `Annotation` 和基于 zod 的 API 继续保持不变 - `StateSchema` 对于那些喜欢模式优先定义的人来说是一个额外的选项。<Card title="Learn more about StateSchema" icon="book" href="/oss/javascript/langgraph/graph-api#schema">
+    请参阅使用 StateSchema、ReducedValue 和 UntrackedValue 定义图形状态的完整文档。
+  </Card>
 
-  <Card title="Learn more about StateSchema" icon="book" href="/oss/javascript/langgraph/graph-api#schema">
-    请参阅使用 StateSchema、ReducedValue 和 UntrackedValue 定义图状态的完整文档。
-  </Card><Card title="Learn about type utilities" icon="code" href="/oss/javascript/langgraph/graph-api#type-utilities">
+  <Card title="Learn about type utilities" icon="code" href="/oss/javascript/langgraph/graph-api#type-utilities">
     使用 GraphNode 和 ConditionalEdgeRouter 在图形生成器外部键入函数。
   </Card>
 </Update>
@@ -111,18 +130,18 @@
   ### `@langchain/anthropic`
 
   * **新的提供商内置工具：** 支持提供商在服务器端执行的文本编辑器、Web 获取、计算机使用、工具搜索和 MCP 工具集工具。请参阅 [Server-side tool use](/oss/javascript/langchain/tools#server-side-tool-use) 和 [Anthropic](/oss/javascript/integrations/chat/anthropic) 聊天集成。
-  * 外露式 `ChatAnthropicInput` 型，提高型式安全性。
+  * 外露式 `ChatAnthropicInput` 型可提高类型安全性。
 
   ## v1.1.0
 
   ### `@langchain/ollama`
 
   * **本机结构化输出：** 通过 `withStructuredOutput` 添加了对本机结构化输出的支持。
-  * 支持自定义`baseUrl`配置。
+  * 支持自定义`baseUrl`配置。## v1.0.0
 
-  ## v1.0.0
+  ### `@langchain/community`
 
-  ### `@langchain/community`* Jira 文档加载器更新为使用 v3 API。
+  * Jira 文档加载器更新为使用 v3 API。
   * LanceDB：添加了`similaritySearch()`和`similaritySearchWithScore()`支持。
   * Elasticsearch 混合搜索支持。
   * 新`GoogleCalendarDeleteTool`。
@@ -144,8 +163,8 @@
   * [Content moderation middleware](/oss/javascript/langchain/middleware/built-in#provider-specific-middleware)：OpenAI 内容审核中间件，用于检测和处理代理交互中的不安全内容。支持检查用户输入、模型输出和工具结果。
   * [Summarization middleware](/oss/javascript/langchain/middleware/built-in#summarization)：更新为支持使用模型配置文件进行上下文感知摘要的灵活触发点。
   * [Structured output](/oss/javascript/langchain/structured-output)：现在可以从模型配置文件推断`ProviderStrategy` 支持（本机结构化输出）。
-  * [⟦T51⟧ for ⟦T52⟧](/oss/javascript/langchain/middleware/custom#dynamic-prompt)：支持将`SystemMessage`实例直接传递给`createAgent`的`systemPrompt`参数，以及用于扩展系统消息的新`concat`方法。启用缓存控制和结构化内容块等高级功能。
-  * [Dynamic system prompt middleware](/oss/javascript/langchain/short-term-memory)：`dynamicSystemPromptMiddleware` 的返回值现在纯粹是累加的。当返回[⟦T58⟧](https://reference.langchain.com/javascript/langchain-core/messages/SystemMessage)或`string`时，它们会与现有的系统消息合并而不是替换它们，从而更容易组合多个修改提示的中间件。* **兼容性改进：** 修复了结构化输出和工具模式中 Zod v4 验证错误的错误处理，确保正确显示详细的错误消息。
+  * [⟦T60⟧ for ⟦T61⟧](/oss/javascript/langchain/middleware/custom#dynamic-prompt)：支持将`SystemMessage`实例直接传递给`createAgent`的`systemPrompt`参数，以及用于扩展系统消息的新`concat`方法。启用缓存控制和结构化内容块等高级功能。
+  * [Dynamic system prompt middleware](/oss/javascript/langchain/short-term-memory)：`dynamicSystemPromptMiddleware` 的返回值现在纯粹是累加的。当返回 [⟦T67⟧](https://reference.langchain.com/javascript/langchain-core/messages/SystemMessage) 或 `string` 时，它们会与现有系统消息合并而不是替换它们，从而更容易组合多个修改提示的中间件。* **兼容性改进：** 修复了结构化输出和工具模式中 Zod v4 验证错误的错误处理，确保正确显示详细的错误消息。
 </Update>
 
 <Update label="Oct 20, 2025">

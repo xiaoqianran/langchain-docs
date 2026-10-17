@@ -192,8 +192,8 @@ https://api.example.com/langsmith_webhook?secret=38ee77617c3a489ab6e871fbeb2ec87
 
 2. 编辑规则的过滤器以需要反馈密钥。在过滤器构建器中，添加条件：
 
-   ```
-   has(feedback_key, "answer_usefulness")
+   ```text theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+   eq(feedback_key, "answer_usefulness")
    ```
 
 3. 保存规则。
@@ -201,8 +201,8 @@ https://api.example.com/langsmith_webhook?secret=38ee77617c3a489ab6e871fbeb2ec87
 现在，webhook 规则将跳过任何尚未获得 `answer_usefulness` 分数的运行。当评估器规则运行并附加分数时，Webhook 规则的下一个轮询周期将获取这些运行并将它们发送到您的端点。<Tip>
   您还可以过滤分数值本身，而不仅仅是它的存在。例如，仅将有用性分数较低的运行发送到您的端点：
 
-  ```
-  has(feedback_key, "answer_usefulness") and feedback_score < 0.5
+  ```text theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+  and(eq(feedback_key, "answer_usefulness"), lt(feedback_score, 0.5))
   ```
 
   有关完整的过滤器语法，请参阅[Filter traces (ClickHouse)](/langsmith/filter-traces-in-application)。

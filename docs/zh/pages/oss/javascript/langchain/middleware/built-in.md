@@ -67,8 +67,8 @@ const agent = createAgent({
   </ParamField>
 
   <ParamField type="(ClientTool | ServerTool | string)[]">
-    要应用重试逻辑的可选工具或工具名称数组。可以是 `BaseTool` 实例或工具名称字符串的列表。如果`undefined`，适用于所有工具。
-  </ParamField><ParamField type="((error: Error) => 布尔值) | （新（...args：任何[]）=>错误）[]">
+    要应用重试逻辑的可选工具或工具名称数组。可以是 `BaseTool` 实例列表或工具名称字符串。如果`undefined`，适用于所有工具。
+  </ParamField><ParamField type="((error: Error) =>布尔值）| （新（...args：任何[]）=>错误）[]">
     要重试的错误构造函数数组，或者是接受错误并在应该重试时返回 `true` 的函数。使用`langchain>=1.5.9`，默认情况下不再重试标记为不可重试的错误。重试所有其他错误。
   </ParamField>
 
@@ -272,14 +272,14 @@ const agent = createAgent({
     首次调用后的最大重试次数（默认为 3 次）。必须 >= 0。
   </ParamField>
 
-  <ParamField type="((error: Error) => 布尔值) | （新（...args：任何[]）=>错误）[]">
+  <ParamField type="((error: Error) =>布尔值）| （新（...args：任何[]）=>错误）[]">
     要重试的错误构造函数数组，或者是接受错误并在应该重试时返回 `true` 的函数。对于 `langchain>=1.5.9`，默认情况下不再重试标记为不可重试的错误。重试所有其他错误。
   </ParamField>
 
   <ParamField type="'error' | 'continue' | ((error: Error) => 字符串)">
     所有重试都用尽时的行为。选项：* `'continue'`（默认）- 返回包含错误详细信息的 `AIMessage`，允许代理优雅地处理故障
     * `'error'` - 重新引发异常，停止代理执行
-    * 自定义函数 - 接受异常并返回 `AIMessage` 内容的字符串的函数，允许自定义错误格式
+    * 自定义函数 - 接受异常并返回`AIMessage`内容字符串的函数，允许自定义错误格式
   </ParamField>
 
   <ParamField type="number">
@@ -392,7 +392,7 @@ const agent = createAgent({
   middleware: [
     modelFallbackMiddleware(
       "gpt-5.4-mini",
-      "claude-3-5-sonnet-20241022"
+      "claude-sonnet-4-6"
     ),
   ],
 });
@@ -583,7 +583,7 @@ const agent = createAgent({
 * 强制进行人工监督的合规工作流程。
 * 长时间运行的对话，人工反馈指导代理。
 
-<Warning>
+默认情况下，中间件每个模型轮暂停一次。将 `interruptMode: "per_call"` 设置为每次工具调用暂停一次，每个中断均由其 ID 应答。参见[Set the interrupt mode](/oss/javascript/langchain/human-in-the-loop#set-the-interrupt-mode)。<Warning>
   人机循环中间件需要 [checkpointer](/oss/javascript/langgraph/checkpointers#checkpoints) 来维持中断状态。
 </Warning>
 
@@ -618,7 +618,9 @@ const agent = createAgent({
 
 <Tip>
   有关完整示例、配置选项和集成模式，请参阅 [Human-in-the-loop documentation](/oss/javascript/langchain/human-in-the-loop)。
-</Tip><Callout icon="player-play">
+</Tip>
+
+<Callout icon="player-play">
   观看这个 [video guide](https://www.youtube.com/watch?v=tdOeUVERukA) 演示人机循环中间件行为。
 </Callout>
 
@@ -666,14 +668,14 @@ const agent = createAgent({
   </ParamField>
 </Accordion>
 
-### 工具调用限制
-
-通过限制工具调用的数量来控制代理执行，无论是在所有工具中全局还是针对特定工具。工具调用限制对于以下用途很有用：
+### 工具调用限制通过限制工具调用的数量来控制代理执行，无论是在所有工具中全局还是针对特定工具。工具调用限制对于以下用途很有用：
 
 * 防止过度调用昂贵的外部 API。
 * 限制网络搜索或数据库查询。
 * 对特定工具的使用实施速率限制。
-* 防止代理失控循环。```typescript theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+* 防止代理失控循环。
+
+```typescript theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 import { createAgent, toolCallLimitMiddleware } from "langchain";
 
 const agent = createAgent({
@@ -704,27 +706,27 @@ const agent = createAgent({
   </ParamField>
 
   <ParamField type="number">
-    每次调用的最大工具调用数（一条用户消息 → 响应周期）。每条新用户消息都会重置。 `undefined` 表示无运行限制。
+    每次调用的最大工具调用数（一条用户消息 → 响应周期）。每条新用户消息都会重置。 `undefined`表示无运行限制。
 
     **注意：** 必须至少指定`threadLimit`或`runLimit`之一。
   </ParamField>
 
   <ParamField type="string">
-    达到限制时的行为：
-
-    * `'continue'`（默认）- 使用错误消息阻止超出的工具调用，让其他工具和模型继续。模型根据错误消息决定何时结束。
+    达到限制时的行为：* `'continue'`（默认）- 使用错误消息阻止超出的工具调用，让其他工具和模型继续。模型根据错误消息决定何时结束。
     * `'error'` - 抛出`ToolCallLimitExceededError`异常，立即停止执行
     * `'end'` - 对于超出的工具调用，使用 ToolMessage 和 AI 消息立即停止执行。仅在限制单个工具时有效；如果其他工具有待处理的调用，则会抛出错误。
   </ParamField>
 </Accordion>
 
 <Accordion title="Full example">
-  指定限制：* **线程限制** - 对话中所有运行的最大调用数（需要检查指针）
+  指定限制：
+
+  * **线程限制** - 对话中所有运行的最大调用数（需要检查指针）
   * **运行限制** - 每次调用的最大调用次数（每轮重置）
 
   退出行为：
 
-  * `'continue'`（默认）- 使用错误消息阻止超出的呼叫，代理继续
+  * `'continue'`（默认）- 阻止超出的呼叫并显示错误消息，代理继续
   * `'error'` - 立即引发异常
   * `'end'` - 使用 ToolMessage + AI 消息停止（仅限单工具场景）
 
@@ -746,9 +748,7 @@ const agent = createAgent({
 
 ### PII 检测
 
-使用可配置策略检测和处理对话中的个人身份信息 (PII)。 PII 检测有以下用途：
-
-* 具有合规性要求的医疗保健和金融应用。
+使用可配置策略检测和处理对话中的个人身份信息 (PII)。 PII 检测有以下用途：* 具有合规性要求的医疗保健和金融应用。
 * 需要清理日志的客户服务代理。
 * 任何处理敏感用户数据的应用程序。
 
@@ -837,7 +837,9 @@ const agent3 = createAgent({
 });
 ```
 
-**自定义检测器函数签名：**检测器函数必须接受字符串（内容）并返回匹配项：
+**自定义检测器函数签名：**
+
+检测器函数必须接受字符串（内容）并返回匹配项：
 
 返回 `PIIMatch` 对象的数组：
 
@@ -863,9 +865,7 @@ function detector(content: string): PIIMatch[] {
   * 当需要标志时使用 RegExp 对象（例如，不区分大小写的匹配）
   * 当您需要模式匹配之外的验证逻辑时，请使用自定义函数
   * 自定义函数让您完全控制检测逻辑并可以实现复杂的验证规则
-</Tip>
-
-<Accordion title="Configuration options">
+</Tip><Accordion title="Configuration options">
   <ParamField type="string">
     要检测的 PII 类型。可以是内置类型（`email`、`credit_card`、`ip`、`mac_address`、`url`）或自定义类型名称。
   </ParamField>
@@ -891,7 +891,9 @@ function detector(content: string): PIIMatch[] {
 
   <ParamField type="boolean">
     模型调用前检查用户消息
-  </ParamField><ParamField type="boolean">
+  </ParamField>
+
+  <ParamField type="boolean">
     模型调用后查看AI消息
   </ParamField>
 
@@ -905,9 +907,7 @@ function detector(content: string): PIIMatch[] {
 为代理配备任务规划和跟踪功能，以执行复杂的多步骤任务。待办事项列表对于以下用途很有用：
 
 * 复杂的多步骤任务需要跨多个工具进行协调。
-* 长期运行的操作，其中进度可见性非常重要。
-
-<Note>
+* 长期运行的操作，其中进度可见性很重要。<Note>
   该中间件自动为代理提供`write_todos`工具和系统提示来指导有效的任务规划。
 </Note>
 
@@ -935,7 +935,9 @@ const agent = createAgent({
 
 * 具有许多工具（10+）的代理，其中大多数工具与每个查询都不相关。
 * 通过过滤不相关的工具来减少代币使用。
-* 提高模型焦点和准确性。该中间件使用结构化输出来询问法学硕士哪些工具与当前查询最相关。结构化输出模式定义了可用的工具名称和描述。模型提供者通常会将此结构化输出信息添加到幕后的系统提示中。
+* 提高模型焦点和准确性。
+
+该中间件使用结构化输出来询问法学硕士哪些工具与当前查询最相关。结构化输出模式定义了可用的工具名称和描述。模型提供者通常会将此结构化输出信息添加到幕后的系统提示中。
 
 ```typescript theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 import { createAgent, llmToolSelectorMiddleware } from "langchain";
@@ -960,9 +962,7 @@ const agent = createAgent({
 
   <ParamField type="string">
     型号选择说明。如果未指定，则使用内置提示。
-  </ParamField>
-
-  <ParamField type="number">
+  </ParamField><ParamField type="number">
     选择的工具的最大数量。如果模型选择更多，则仅使用第一个 maxTools。如果没有指定则没有限制。
   </ParamField>
 
@@ -976,11 +976,13 @@ const agent = createAgent({
 将选定的工具推迟到模型提供者的服务器端工具搜索之后，以便模型按需发现它们，而不是预先接收每个工具模式。提供商工具搜索可用于：
 
 * 减少使用许多工具时的上下文膨胀。
-* 通过仅显示相关工具来提高工具选择的准确性。<Note>
+* 通过仅显示相关工具来提高工具选择的准确性。
+
+<Note>
   需要具有服务器端工具搜索支持的模型：Anthropic（Claude Sonnet 4+/Opus 4+/Haiku 4.5+）或OpenAI（gpt-5.5+）。其他提供者会抛出错误。
 </Note>
 
-**API参考：** [⟦T134⟧](https://reference.langchain.com/javascript/langchain/index/providerToolSearchMiddleware)
+**API参考：** [⟦T135⟧](https://reference.langchain.com/javascript/langchain/index/providerToolSearchMiddleware)
 
 ```typescript theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 import { createAgent, providerToolSearchMiddleware } from "langchain";
@@ -1014,9 +1016,7 @@ const agent = createAgent({
   <ParamField type="(string | StructuredToolInterface)[]">
     推迟提供者工具搜索的工具，按名称或实例给出。延迟工具将从模型中保留，直到搜索显示它们为止。无论此选项如何，使用 `extras.defer_loading: true` 构建的工具都会被推迟；如果省略`searchableTools`，则仅推迟那些预先标记的工具。
   </ParamField>
-</Accordion>
-
-<Accordion title="Full example">
+</Accordion><Accordion title="Full example">
   中间件选择使用 `searchableTools` 中包含的所有工具来进行延迟和搜索。工具还可以通过设置 `extras.defer_loading: true` 在构建时选择推迟
 
   ```typescript theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
@@ -1045,7 +1045,9 @@ const agent = createAgent({
 
 上下文工程是构建有效代理的主要挑战。当使用返回可变长度结果的工具（例如，`web_search`和RAG）时，这尤其困难，因为长工具结果可以快速填充您的上下文窗口。
 
-[Deep Agents](/oss/javascript/deepagents/overview) 中的`FilesystemMiddleware` 提供了四种与短期和长期记忆交互的工具：* `ls`：列出文件系统中的文件
+[Deep Agents](/oss/javascript/deepagents/overview) 中的`FilesystemMiddleware` 提供了四种与短期和长期记忆交互的工具：
+
+* `ls`：列出文件系统中的文件
 * `read_file`：读取整个文件或文件中的特定行数
 * `write_file`：将新文件写入文件系统
 * `edit_file`：编辑文件系统中的现有文件
@@ -1099,9 +1101,7 @@ const agent = createAgent({
     }),
   ],
 });
-```
-
-当您为 `/memories/` 配置 `CompositeBackend` 和 `StoreBackend` 时，任何以 **/memories/** 为前缀的文件都会保存到持久存储中，并在不同线程中保存。没有此前缀的文件保留在临时状态存储中。
+```当您为 `/memories/` 配置 `CompositeBackend` 和 `StoreBackend` 时，任​​何以 **/memories/** 为前缀的文件都会保存到持久存储中，并在不同线程中保存。没有此前缀的文件保留在临时状态存储中。
 
 ### 子代理
 
@@ -1147,7 +1147,9 @@ const agent = createAgent({
     }),
   ],
 });
-```子代理使用**名称**、**描述**、**系统提示**和**工具**进行定义。您还可以为子代理提供自定义**模型**或附加**中间件**。当您想要为子代理提供额外的状态密钥以与主代理共享时，这尤其有用。
+```
+
+子代理使用**名称**、**描述**、**系统提示**和**工具**进行定义。您还可以为子代理提供自定义**模型**或附加**中间件**。当您想要为子代理提供额外的状态密钥以与主代理共享时，这尤其有用。
 
 对于更复杂的用例，您还可以提供自己的预构建 LangGraph 图作为子代理。
 
@@ -1188,13 +1190,13 @@ const agent = createAgent({
     }),
   ],
 });
-```
-
-除了任何用户定义的子代理之外，主代理还可以随时访问`general-purpose`子代理。该子代理具有与主代理相同的指令以及它有权访问的所有工具。 `general-purpose` 子代理的主要目的是上下文隔离——主代理可以将复杂的任务委托给该子代理，并获得简洁的答案，而不会因中间工具调用而造成臃肿。
+```除了任何用户定义的子代理之外，主代理还可以随时访问`general-purpose`子代理。该子代理具有与主代理相同的指令以及它有权访问的所有工具。 `general-purpose` 子代理的主要目的是上下文隔离——主代理可以将复杂的任务委托给该子代理，并获得简洁的答案，而不会因中间工具调用而造成臃肿。
 
 ### 上下文编辑
 
-通过在达到令牌限制时清除旧工具调用输出来管理对话上下文，同时保留最近的结果。这有助于在与许多工具调用的长时间对话中保持上下文窗口的可管理性。上下文编辑对于以下用途很有用：* 与许多超出令牌限制的工具调用进行长时间对话
+通过在达到令牌限制时清除旧工具调用输出来管理对话上下文，同时保留最近的结果。这有助于在与许多工具调用的长时间对话中保持上下文窗口的可管理性。上下文编辑对于以下用途很有用：
+
+* 与许多超出令牌限制的工具调用进行长时间对话
 * 通过删除不再相关的旧工具输出来降低代币成本
 * 仅维护上下文中最新的 N 个工具结果
 
@@ -1219,16 +1221,14 @@ const agent = createAgent({
 
 <Accordion title="Configuration options">
   <ParamField type="ContextEdit[]">
-    要应用的一系列[⟦T154⟧](https://reference.langchain.com/javascript/langchain/index/ContextEdit)策略
+    要应用的一系列[⟦T155⟧](https://reference.langchain.com/javascript/langchain/index/ContextEdit)策略
   </ParamField>
 
-  **[⟦T155⟧](https://reference.langchain.com/javascript/langchain/index/ClearToolUsesEdit)选项：**
+  **[⟦T156⟧](https://reference.langchain.com/javascript/langchain/index/ClearToolUsesEdit)选项：**
 
   <ParamField type="number">
     触发编辑的令牌计数。当对话超过此令牌计数时，旧工具输出将被清除。
-  </ParamField>
-
-  <ParamField type="number">
+  </ParamField><ParamField type="number">
     编辑运行时要回收的最小令牌数。如果设置为 0，则根据需要清除。
   </ParamField>
 
@@ -1247,7 +1247,9 @@ const agent = createAgent({
   <ParamField type="string">
     为清除的工具输出插入占位符文本。这替换了原始工具消息内容。
   </ParamField>
-</Accordion><Accordion title="Full example">
+</Accordion>
+
+<Accordion title="Full example">
   当达到令牌限制时，中间件应用上下文编辑策略。最常见的策略是`ClearToolUsesEdit`，它清除旧的工具结果，同时保留最新的结果。
 
   **它是如何工作的：**
@@ -1280,9 +1282,7 @@ const agent = createAgent({
   ```
 </Accordion>
 
-### LLM工具模拟器
-
-使用 LLM 模拟工具执行以进行测试，用 AI 生成的响应替换实际的工具调用。 LLM 工具模拟器可用于以下用途：
+### LLM工具模拟器使用 LLM 模拟工具执行以进行测试，用 AI 生成的响应替换实际的工具调用。 LLM 工具模拟器可用于以下用途：
 
 * 无需执行真实工具即可测试代理行为。
 * 当外部工具不可用或昂贵时开发代理。
@@ -1303,7 +1303,9 @@ const agent = createAgent({
 <Accordion title="Configuration options">
   <ParamField type="(string | ClientTool | ServerTool)[]">
     要模拟的工具名称（字符串）或工具实例的列表。如果`undefined`（默认），将模拟所有工具。如果空数组`[]`，则不会模拟任何工具。如果数组包含工具名称/实例，则仅模拟这些工具。
-  </ParamField><ParamField type="string | BaseChatModel">
+  </ParamField>
+
+  <ParamField type="string | BaseChatModel">
     用于生成模拟工具响应的模型。可以是模型标识符字符串（例如，`'google:gemini-3.6-flash'`）或`BaseChatModel`实例。如果未指定，则默认为代理的型号。
   </ParamField>
 </Accordion>
@@ -1381,9 +1383,7 @@ const agent = createAgent({
 
 ## 特定于提供商的中间件
 
-这些中间件针对特定的 LLM 提供商进行了优化。有关完整的详细信息和示例，请参阅每个提供商的文档。
-
-<Columns>
+这些中间件针对特定的 LLM 提供商进行了优化。有关完整的详细信息和示例，请参阅每个提供商的文档。<Columns>
   <Card title="Anthropic" href="/oss/javascript/integrations/middleware/anthropic" icon="https://mintcdn.com/langchain-5e9cc07a/y4fKEo7ANyWBQMjp/images/providers/anthropic-icon.svg?fit=max&auto=format&n=y4fKEo7ANyWBQMjp&q=85&s=9212db764598a2d3f02f471b5436ae9e">
     Claude 模型的提示缓存、bash 工具、文本编辑器、内存和文件搜索中间件。
   </Card>

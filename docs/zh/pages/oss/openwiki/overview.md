@@ -8,7 +8,7 @@
 
 OpenWiki 是一个开源 CLI，用于编写和维护有关您的代码库或个人知识的 Markdown wiki。该 wiki 捕获了架构、集成、评估和工作流程等详细信息，因此 [coding agents](/oss/python/deepagents/overview) 可以将其用作持久上下文，而不是在每个任务上重新发现存储库。
 
-这使得代理的工作速度更快，代币成本更低：代理首先阅读精选的 wiki，然后仅在需要更多详细信息的地方检查源。人类可以浏览相同的 Markdown（以及本地的[visualizer](/oss/openwiki/visualize)），但主要受众是代理。
+这使得代理的工作速度更快，代币成本更低：代理首先阅读精选的 wiki，然后仅在需要更多详细信息的地方检查源。人类可以浏览相同的 Markdown（以及本地[visualizer](/oss/openwiki/visualize)），但主要受众是代理。
 
 OpenWiki 构建于 [Deep Agents](/oss/python/deepagents/overview) 之上，并支持使用 [LangSmith](/langsmith/observability-quickstart) 进行跟踪。
 
@@ -21,7 +21,7 @@ npm install -g openwiki
 openwiki --init
 ```
 
-请参阅 [Quickstart](/oss/openwiki/quickstart) 选择模型提供者、生成文档并使其保持最新。要在 Codex、Claude Code、OpenCode 或 Cursor 中运行 OpenWiki，而不是在独立模型会话中运行，请参阅 [Coding-agent integrations](/oss/openwiki/integrations)。
+请参阅 [Quickstart](/oss/openwiki/quickstart) 选择模型提供者、生成文档并使其保持最新。要在编码代理而不是独立模型会话中运行 OpenWiki，请参阅[Coding-agent integrations](/oss/openwiki/integrations)。要搜索现有的 wiki 或组相关存储库，请参阅 [Search and link wikis](/oss/openwiki/search-and-link)。
 
 ## 模式
 
@@ -36,11 +36,15 @@ OpenWiki 有两种模式：|模式|命令 |输出|使用时 |
 
 <CardGroup>
   <Card title="Repository wikis" icon="folder-code" href="/oss/openwiki/code-mode">
-    在`openwiki/`下生成Markdown文档，然后将它们连接到`AGENTS.md`和`CLAUDE.md`，以便编码代理可以找到它们。
+    在`openwiki/`下生成Markdown文档，然后将它们连接到`AGENTS.md`（和`CLAUDE.md`，如果存在），以便编码代理可以找到它们。
   </Card>
 
   <Card title="Coding-agent integrations" icon="robot" href="/oss/openwiki/integrations">
-    使用主机模型和存储库工具在 Codex、Claude Code、OpenCode 或 Cursor 中运行 OpenWiki。
+    在 Codex、Claude Code、OpenCode、Cursor、IBM Bob、Kiro、Oh My Pi、Antigravity 或 Pi 中运行 OpenWiki。
+  </Card>
+
+  <Card title="Search and link" icon="search" href="/oss/openwiki/search-and-link">
+    通过 MCP 查询 wiki 页面，并将相关存储库 wiki 分组到工作区中。
   </Card>
 
   <Card title="Personal brain" icon="brain" href="/oss/openwiki/personal-mode">
@@ -53,16 +57,16 @@ OpenWiki 有两种模式：|模式|命令 |输出|使用时 |
 
   <Card title="Automatic updates" icon="clock" href="/oss/openwiki/automate-updates">
     从 GitHub Actions、GitLab CI 或 Bitbucket Pipelines 刷新文档，并在内容更改时打开 PR。
+  </Card><Card title="Model providers" icon="cpu" href="/oss/openwiki/providers">
+    使用 OpenAI、Anthropic、Gemini、Bedrock、OpenRouter、GitHub Copilot、IBM Bob 和其他开箱即用的提供商。
   </Card>
 
-  <Card title="Model providers" icon="cpu" href="/oss/openwiki/providers">
-    使用 OpenAI、Anthropic、Gemini、Bedrock、OpenRouter、GitHub Copilot 和其他开箱即用的提供程序。
-  </Card><Card title="Open Knowledge Format" icon="file-text" href="/oss/openwiki/code-mode#open-knowledge-format">
+  <Card title="Open Knowledge Format" icon="file-text" href="/oss/openwiki/code-mode#open-knowledge-format">
     发出 OKF v0.2 Markdown 捆绑包，其中包含前言、索引和链接概念。
   </Card>
 
   <Card title="LangSmith tracing" icon="chart-dots" href="/oss/openwiki/quickstart#trace-with-langsmith">
-    跟踪文档使用 LangSmith 运行。
+    Trace documentation runs with LangSmith.
   </Card>
 </CardGroup>
 

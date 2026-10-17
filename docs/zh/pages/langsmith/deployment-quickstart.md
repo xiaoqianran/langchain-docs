@@ -13,7 +13,7 @@
 </Tip>
 
 <Note>
-  `langgraph deploy` 命令位于 **[beta](/langsmith/release-stages)** 中。 AWS 中的 LangSmith 云 (SaaS) 尚不支持 `langgraph deploy`。
+  `langgraph deploy` 命令位于 **[beta](/langsmith/release-stages)** 中。在 AWS 中的 LangSmith 云 (SaaS) 上，本地构建需要 `langgraph-cli` 0.4.35 或更高版本。
 </Note>
 
 ## 先决条件
@@ -31,11 +31,11 @@
 
 ## 1. 创建一个可部署的应用程序
 
-`langgraph deploy` 部署其 `langgraph.json` 导出图表的任何项目。选择与您创作代理的方式相匹配的路径：
-
-<Tabs>
+`langgraph deploy` 部署其 `langgraph.json` 导出图表的任何项目。选择与您创作代理的方式相匹配的路径：<Tabs>
   <Tab title="LangGraph template">
-    从 [⟦T21⟧ template](https://github.com/langchain-ai/new-langgraph-project) 创建一个新应用程序：```shell theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+    从 [⟦T21⟧ template](https://github.com/langchain-ai/new-langgraph-project) 创建一个新应用程序：
+
+    ```shell theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
     langgraph new path/to/your/app --template new-langgraph-project-python
     cd path/to/your/app
     ```
@@ -80,11 +80,11 @@ LANGSMITH_API_KEY=lsv2_... langgraph deploy
 
     <Note>
       在 2026 年 10 月 1 日之前仍采用之前定价的组织可使用 `--deployment-type prod` 或 `--deployment-type dev`。详情请参见[⟦T31⟧](/langsmith/cli#deploy)和[Manage billing](/langsmith/billing#langsmith-deployment-billing)。
-    </Note>
-
-    <Tip>
+    </Note><Tip>
       要在更改代码后更新现有部署，请重新运行 `langgraph deploy`。它按名称查找现有部署并就地更新它。
-    </Tip>您还可以使用 `langgraph deploy list` 查看所有部署，使用 `langgraph deploy logs` 跟踪运行时日志，使用 `langgraph deploy delete <ID>` 删除部署。详情请参阅[CLI reference](/langsmith/cli#deploy)。
+    </Tip>
+
+    您还可以使用 `langgraph deploy list` 查看所有部署，使用 `langgraph deploy logs` 跟踪运行时日志，使用 `langgraph deploy delete <ID>` 删除部署。详情请参阅[CLI reference](/langsmith/cli#deploy)。
   </Tab>
 
   <Tab title="Deploy from Studio">
@@ -113,9 +113,7 @@ LANGSMITH_API_KEY=lsv2_... langgraph deploy
 
 ## 5. 测试 API
 
-从部署详细信息视图中复制 **API URL**，然后使用它来调用您的应用程序：
-
-<Tabs>
+从部署详细信息视图中复制 **API URL**，然后使用它来调用您的应用程序：<Tabs>
   <Tab title="Python SDK (Async)">
     1.安装LangGraphPython SDK：
        ```shell theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
@@ -170,7 +168,9 @@ LANGSMITH_API_KEY=lsv2_... langgraph deploy
            print(chunk.data)
            print("\n\n")
        ```
-  </Tab><Tab title="JavaScript SDK">
+  </Tab>
+
+  <Tab title="JavaScript SDK">
     1.安装LangGraphJS SDK：
        ```shell theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
        npm install @langchain/langgraph-sdk

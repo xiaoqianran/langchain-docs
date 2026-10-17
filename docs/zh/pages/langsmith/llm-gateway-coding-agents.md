@@ -92,7 +92,7 @@ Claude Code 支持两种独立的身份验证方法。配置前选择一项：* 
   </Tab>
 </Tabs>
 
-型号 ID 是示例。将每个层映射到工作区机密中配置的或通过 [Gateway Credits](/langsmith/llm-gateway-credits) 提供的任何模型；网关处理跨提供商的请求转换。详情请参阅[API formats](/langsmith/llm-gateway-api-formats#understand-translation-behavior)。
+型号 ID 是示例。将每个层映射到工作区机密中配置的或通过 [Gateway Credits](/langsmith/llm-gateway-credits) 提供的任何模型；网关处理跨提供商的请求转换。详情请参见[API formats](/langsmith/llm-gateway-api-formats#understand-translation-behavior)。
 
 ### 使用 Claude 订阅 OAuth<Note>
   Claude 订阅 OAuth 需要有效的 Claude Code Plus 或 Max 订阅。如果您使用工作区 Anthropic API 密钥，请改用 [workspace provider secret](#use-a-workspace-provider-secret) 方法。
@@ -195,10 +195,29 @@ dcode --model openai:moonshotai/kimi-k3
 
 提供商 API 密钥集中在 LangSmith 工作区机密中。 Gateway Credits 模型不需要提供商 API 密钥。
 
-## 验证设置
+## 将呼叫分组到对话线程中网关将识别的编码代理会话标头映射到LangSmith`thread_id`元数据。具有相同 ID 的呼叫属于跟踪项目中的同一对话线程。
 
-配置编码代理后，进行测试呼叫并确认：1. 呼叫成功，座席收到响应。
-2. LangSmith 工作区的`gateway` 跟踪项目中会出现一条跟踪。
+标头检测适用于所有提供程序、请求路径和 API 格式。网关按顺序检查这些标头：
+
+1.`X-Claude-Code-Session-Id`
+2.`X-Deepseek-Harness-Session-Id`
+3.`thread-id`
+4.`thread_id`
+5.`session-id`
+6. `session_id`
+
+网关修剪空白、跳过空白值并使用第一个非空白标头值。
+
+如果没有标头提供 ID，则网关可以从聊天完成或响应请求的正文中读取 ID。它使用 `conversation` 字段（字符串或对象的 `id`），并回退到 `prompt_cache_key`。仅当网关已出于其他原因（例如保护策略）加载请求正文时，网关才会读取这些字段。发送标头以实现一致的线程。
+
+要显式设置线程 ID，请发送 `X-Gateway-Thread-Id` 或在 `X-Gateway-Metadata` 的 JSON 对象中设置 `thread_id`。非空显式值会覆盖自动检测。如果两个元数据标头都指定了线程 ID，则`X-Gateway-Metadata` 优先。
+
+如果网关没有找到显式 ID、可识别的会话标头或正文字段，则不会添加 `thread_id` 元数据。
+
+## 验证设置配置编码代理后，进行测试呼叫并确认：
+
+1. 呼叫成功，座席收到响应。
+2. LangSmith 工作区中的`gateway` 跟踪项目中会出现一条跟踪。
 
 如果调用失败并显示 `403`，请检查您的 API 密钥的角色是否包含 `gateway:invoke` 和 `workspaces:read`。如果自带密钥调用失败并出现 `400` 提及缺少提供程序密钥，请要求组织管理员将提供程序的密钥添加到工作区机密中。
 

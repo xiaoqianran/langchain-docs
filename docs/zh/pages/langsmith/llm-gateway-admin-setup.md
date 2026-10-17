@@ -14,7 +14,7 @@
 
 ## 先决条件
 
-您需要LangSmith中的[⟦T0⟧ permission](/langsmith/organization-workspace-operations)。 [Step 2 Option A](/langsmith/llm-gateway-admin-setup#option-a-create-a-custom-workspace-role-recommended) 还需要一个包含 [RBAC](/langsmith/rbac)（自定义角色）的计划。
+您需要 LangSmith 中的 [⟦T0⟧ permission](/langsmith/organization-workspace-operations)。 [Step 2 Option A](/langsmith/llm-gateway-admin-setup#option-a-create-a-custom-workspace-role-recommended) 还需要一个包含 [RBAC](/langsmith/rbac)（自定义角色）的计划。
 
 在完成这些步骤之前，请在自托管 LangSmith、[enable the gateway in the Helm chart](/langsmith/llm-gateway-self-hosted) 上。
 
@@ -22,7 +22,7 @@
 
 对于 LangChain 托管模型，请跳过此步骤：它们使用您的 LangSmith API 密钥，而不是提供商机密。有关付费聊天模型，请参阅[Gateway Credits](/langsmith/llm-gateway-credits)。继续步骤 2 以授予网关访问权限。
 
-网关从工作区的提供者密钥中解析提供者 API 密钥 - 这就是它代理对上游提供者的调用的方式，而无需单个用户需要提供者密钥的本地副本。
+网关从您的工作区的提供商机密中解析提供商凭据。这使得它可以代理对上游提供商的调用，而无需个别用户需要提供商凭据的本地副本。
 
 转到 **设置 > 集成 > 提供商机密** 并添加要通过网关代理的提供商的密钥：|秘密名字|供应商|
 | - | - |
@@ -37,7 +37,11 @@
 | `SCALEDOWN_API_KEY` |缩小|
 | `VERTEX_SERVICE_ACCOUNT_JSON` | Gemini企业代理平台 |
 
-仅添加您的组织使用的提供商。如果用户尝试调用尚未添加密钥的提供商，网关将返回错误。
+仅添加您的组织使用的提供商。如果用户调用尚未添加凭据的提供商，网关将返回错误。
+
+<Tip>
+  Azure Foundry 还支持 Microsoft Entra ID 服务主体身份验证，适用于禁用 API 密钥的资源。设置步骤请参见[Provider authentication](/langsmith/llm-gateway-provider-authentication#configure-azure-foundry)。
+</Tip>
 
 ## 2.配置用户的网关访问
 
@@ -50,13 +54,13 @@
 1. 转至 **设置 > 成员/角色**。
 2. 创建新的工作区角色。
 3. 至少授予`gateway:invoke`和`workspaces:read`。
-4. 将需要网关访问权限的用户分配给该角色。
-
-当您想要向特定用户授予网关访问权限而不授予他们完整的工作区管理员权限时，请使用此选项。这使您可以最大程度地控制谁可以使用网关。
+4. 将需要网关访问权限的用户分配给该角色。当您想要向特定用户授予网关访问权限而不授予他们完整的工作区管理员权限时，请使用此选项。这使您可以最大程度地控制谁可以使用网关。
 
 ### 选项 B：使用工作区管理员角色
 
-无计划要求。默认情况下，`WORKSPACE_ADMIN`角色已包含`gateway:invoke`和`workspaces:read`。将需要网关访问权限的用户分配给此角色。
+无计划要求。
+
+默认情况下，`WORKSPACE_ADMIN`角色已包含`gateway:invoke`和`workspaces:read`。将需要网关访问权限的用户分配给此角色。
 
 如果您不需要细粒度的访问控制，或者没有启用 RBAC，请使用此选项。
 
@@ -66,16 +70,16 @@
 
 转至 **LLM Gateway** 创建治理策略。您可以配置：
 
-* **支出限制：** 组织、工作区、API 密钥或用户级别的硬上限。参见[Spend policies](/langsmith/llm-gateway-spend-policies)。
-* **数据策略：** 在 PII 和机密到达模型之前检测并编辑它们，并控制是否跟踪请求和响应主体。请参阅[Data policy](/langsmith/llm-gateway-data-policy)。
+* **支出限制：** 组织、工作区、API 密钥或用户级别的硬上限。请参阅[Spend policies](/langsmith/llm-gateway-spend-policies)。
+* **数据策略：** 在 PII 和机密到达模型之前对其进行检测和编辑，并控制是否跟踪请求和响应正文。参见[Data policy](/langsmith/llm-gateway-data-policy)。
 
 在初始设置期间，策略是可选的。在您配置策略之前，网关将自由允许调用。
 
 ## 4. 向用户分发 API 密钥
 
-为需要网关访问的用户创建工作区范围的[Service Keys](/langsmith/administration-overview#service-keys)。每个密钥应附加到一个包含 `gateway:invoke` 和 `workspaces:read` 的角色。
+为需要网关访问的用户创建工作区范围的[Service Keys](/langsmith/administration-overview#service-keys)。每个密钥应附加到一个包含 `gateway:invoke` 和 `workspaces:read` 的角色。使用工作区范围的键，而不是组织范围的键。详情请参阅[API key scoping](/langsmith/llm-gateway-access#api-key-scoping)。
 
-使用工作区范围的键，而不是组织范围的键。详情请参阅[API key scoping](/langsmith/llm-gateway-access#api-key-scoping)。与每个用户共享密钥和网关端点，或通过 MDM（移动设备管理）分发它们以在公司范围内部署编码代理。有关每个代理的配置说明，请参阅[Set up coding agents](/langsmith/llm-gateway-coding-agents)。
+与每个用户共享密钥和网关端点，或通过 MDM（移动设备管理）分发它们以在公司范围内部署编码代理。有关每个代理的配置说明，请参阅[Set up coding agents](/langsmith/llm-gateway-coding-agents)。
 
 ## 验证
 

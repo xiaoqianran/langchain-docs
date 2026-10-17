@@ -52,7 +52,7 @@ LangSmith 支持三种自托管拓扑，可在设置复杂性与控制平面功�
 |适用于您的应用程序的 CI/CD |你|您的 CI 环境 |
 |升级、扩展和备份 |你|您的基础设施|
 
-作为回报，您可以与您自己的[Postgres](/langsmith/self-hosted-platform-features#custom-postgresql)和[Redis](/langsmith/self-hosted-platform-features#custom-redis)、大小[CPU and memory](/langsmith/self-hosted-platform-features#resource-customization)集成以适应您的工作负载，并在现有网络和可观测性堆栈中进行操作。对应的云托管模型请参见[Deploy to Cloud](/langsmith/deploy-to-cloud-overview)。
+作为回报，您可以与您自己的[Postgres](/langsmith/self-hosted-platform-features#custom-postgresql)和[Redis](/langsmith/self-hosted-platform-features#custom-redis)、大小[CPU and memory](/langsmith/self-hosted-platform-features#resource-customization)集成以适应您的工作负载，并在现有网络和可观察性堆栈中进行操作。对应的云托管模型请参见[Deploy to Cloud](/langsmith/deploy-to-cloud-overview)。
 
 ## 后续步骤
 
@@ -61,8 +61,8 @@ LangSmith 支持三种自托管拓扑，可在设置复杂性与控制平面功�
     比较独立服务器、完整平台和混合服务器以找到合适的选择。
   </Card>
 
-  <Card title="Install the full platform" icon="book" href="/langsmith/deploy-self-hosted-full-platform">
-    使用控制平面和数据平面在 Kubernetes 上部署LangSmith。
+  <Card title="Enable LangSmith Deployment" icon="book" href="/langsmith/enable-self-hosted-deployment">
+    添加控制平面和数据平面以在自托管LangSmith上部署和管理代理。
   </Card>
 </CardGroup>
 

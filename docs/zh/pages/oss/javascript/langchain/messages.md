@@ -395,7 +395,7 @@ const humanMessage = new HumanMessage({
 });
 ```### 标准内容块
 
-LangChain 为跨提供商的消息内容提供标准表示。
+LangChain 提供跨提供商工作的消息内容的标准表示形式。
 
 消息对象实现一个 `contentBlocks` 属性，它将延迟地将 `content` 属性解析为标准的、类型安全的表示形式。例如，从[⟦T53⟧](/oss/javascript/integrations/chat/anthropic)或[⟦T54⟧](/oss/javascript/integrations/chat/openai)生成的消息将包含相应提供者格式的`thinking`或`reasoning`块，但可以延迟解析为一致的[⟦T57⟧](#content-block-reference)表示：
 
@@ -673,7 +673,7 @@ LangChain 为跨提供商的消息内容提供标准表示。
         </ParamField>
 
         <ParamField type="string">
-          引用外部文件存储系统中的图像（例如，OpenAI或Anthropic的文件API）。
+          引用外部文件存储系统中的图像（例如OpenAI或Anthropic的文件API）。
         </ParamField>
 
         <ParamField type="string">
@@ -982,10 +982,6 @@ const serialized = message.toJSON();
 // Deserialize back to a message object
 const restored = await load<HumanMessage>(JSON.stringify(serialized));
 ```
-
-<Card title="View example trace" icon="chart-line" href="https://smith.langchain.com/public/5be0f5b8-9c08-4287-bcf9-adacc4b19e95/r">
-  为此示例打开公共 LangSmith 运行。
-</Card>
 
 <Warning>
   **`load()` 通过实例化类并调用构造函数来反序列化数据。切勿对不受信任或用户提供的输入调用 `load()`。** 仅反序列化源自您控制的源（例如您自己的数据库）的数据。

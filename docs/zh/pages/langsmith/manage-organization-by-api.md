@@ -70,6 +70,8 @@ LangSmith 的 API 支持通过 API 密钥以编程方式访问 UI 中可用的�
 
 ## API 密钥
 
+对于仅跟踪凭证，请参阅[Create, list, and delete tracing keys](/langsmith/create-account-api-key#tracing-keys)。创建需要专用的工作空间权限；组织密钥管理员可以使用服务帐户凭据进行删除。
+
 * [Create a service key](/langsmith/smith-api/api-key/generate-api-key)
 * [Update a service key role](/langsmith/smith-api/orgs/update-org-service-key)
 * [Delete a service key](/langsmith/smith-api/api-key/delete-api-key)
@@ -78,15 +80,15 @@ LangSmith 的 API 支持通过 API 密钥以编程方式访问 UI 中可用的�
 
 <Note>
   需要组织管理员权限才能进行这些更改。
-</Note>
-
-<Note>
+</Note><Note>
   本文中的“共享资源”指的是 [public prompts](/langsmith/create-a-prompt#save-your-prompt)、[shared runs](/langsmith/manage-trace#share-a-trace) 和 [shared datasets](/langsmith/manage-datasets#share-a-dataset)。
 </Note>
 
 <Warning>
   更新这些设置会影响**组织中的所有资源**。
-</Warning>您可以在工作区的 **设置 > 共享** 选项卡下或通过 API 更新这些设置：
+</Warning>
+
+您可以在工作区的 **设置 > 共享** 选项卡下或通过 API 更新这些设置：
 
 * [Update organization sharing settings](/langsmith/smith-api/orgs/update-current-organization-info)
   * 使用 `unshare_all` 取消共享所选工作区的 **所有** 共享资源 - 使用 `disable_public_sharing` 防止将来共享资源
@@ -105,9 +107,7 @@ LangSmith 的 API 支持通过 API 密钥以编程方式访问 UI 中可用的�
 * `/api-key/current`端点：这些与用户的PAT相关
 * `/sso/email-verification/send`（仅限云）：此端点与[SAML SSO](/langsmith/user-management)相关
 
-## 示例代码
-
-下面的示例代码介绍了与组织管理相关的一些常见工作流程。确保在代码中的任何`<replace_me>`处进行必要的替换。
+## 示例代码下面的示例代码介绍了与组织管理相关的一些常见工作流程。确保在代码中的任何`<replace_me>`处进行必要的替换。
 
 ```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 import os

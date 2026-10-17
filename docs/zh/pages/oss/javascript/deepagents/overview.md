@@ -13,7 +13,7 @@ Deep Agents 是开始构建由 LLM 支持的代理和应用程序的最简单方
 Deep Agents具有以下功能：
 
 * **在环境中采取行动**：通过工具采取行动，读写文件，执行代码
-* **连接到您的数据**：在正确的时刻加载记忆、技能和领域知识
+* **连接到您的数据**：在适当的时刻加载记忆、技能和领域知识
 * **管理不断增长的环境**：总结历史并在长期运行中卸载大量结果
 * **并行化任务**：委托给在隔离上下文窗口中运行的通用或专用子代理
 * **留在循环中**：在关键决策点暂停以供人工批准
@@ -51,7 +51,7 @@ console.log(
     messages: [{ role: "user", content: "What's the weather in Tokyo?" }],
   }),
 );
-```<Card title="View example trace" icon="chart-line" href="https://smith.langchain.com/public/b715dead-e44d-4049-b945-0c34888747fe/r">
+```<Card title="View example trace" icon="chart-line" href="https://smith.langchain.com/public/8e31d898-1083-4a78-a6d8-29f16e24760f/r">
   为此示例打开公共 LangSmith 运行。
 </Card>
 
@@ -333,7 +333,7 @@ Deep Agents 以渐进式披露的方式加载技能：代理在启动时读取`S
 * **自主执行**：子代理独立运行直到完成。
 * **单次切换**：它将一份最终报告返回给主代理。
 * **可配置策略**：使用[default ⟦T85⟧ subagent](/oss/javascript/deepagents/subagents#default-subagent)（默认启用）或定义[custom subagents](/oss/javascript/deepagents/subagents#custom-subagents)。
-* **无状态消息传送**：子代理是无状态的，不能发回多条消息。
+* **无状态消息传递**：子代理是无状态的，不能发回多条消息。
 * **上下文和令牌效率**：繁重的子任务工作保持隔离并被压缩为紧凑的结果。有关更多信息，请参阅[Subagents](/oss/javascript/deepagents/subagents)。要删除 `task` 工具，请参阅[Running without subagents](/oss/javascript/deepagents/subagents#running-without-subagents)。
 
 ## 转向

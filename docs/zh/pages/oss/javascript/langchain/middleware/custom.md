@@ -32,7 +32,7 @@
 | - | - |
 | `beforeAgent` |代理启动之前（每次调用一次）|
 | `beforeModel` |每次模型调用之前 |
-| `afterModel` |每次模型响应后 |
+| `afterModel` |每次模型响应后|
 | `afterAgent` |代理完成后（每次调用一次）|
 
 **环绕式钩子**围绕每个调用运行，让您可以控制执行：
@@ -40,7 +40,7 @@
 |钩|当它运行时 |
 | - | - |
 | `wrapModelCall` |各地型号调用 |
-| `wrapToolCall` |围绕每个工具调用 |
+| `wrapToolCall` |围绕每个工具调用|
 
 **示例：**
 
@@ -489,7 +489,7 @@ const agent = createAgent({
   2.`middleware2.before_agent()`
   3.`middleware3.before_agent()`
 
-  **代理循环开始**
+  **代理循环启动**
 
   4.`middleware1.before_model()`
   5.`middleware2.before_model()`
@@ -721,11 +721,7 @@ console.log(result.messages.at(-1)?.content);
   ```
 </CodeGroup>
 
-<Card title="View example trace" icon="chart-line" href="https://smith.langchain.com/public/4eaefcd5-90ad-4349-bb51-2cfc660e8af3/r">
-  为此示例打开公共 LangSmith 运行。
-</Card>
-
-使用 [⟦T106⟧](https://reference.langchain.com/javascript/langchain-core/utils/stream/concat) 保存由其他中间件创建的缓存控制元数据或结构化内容块。
+使用 [⟦T106⟧](https://reference.langchain.com/javascript/langchain-core/utils/stream/concat) 保留由其他中间件创建的缓存控制元数据或结构化内容块。
 
 ### 动态模型选择
 
@@ -750,10 +746,6 @@ const dynamicModelMiddleware = createMiddleware({
   },
 });
 ```
-
-<Card title="View example trace" icon="chart-line" href="https://smith.langchain.com/public/97b0c168-3017-4ad9-8278-49e135c43f3d/r">
-  为此示例打开公共 LangSmith 运行。
-</Card>
 
 ### 动态选择工具
 
@@ -785,7 +777,9 @@ const agent = createAgent({
 });
 ```
 
-### 工具调用监控```ts theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+### 工具调用监控
+
+```ts theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 import { createMiddleware } from "langchain";
 
 const toolMonitoringMiddleware = createMiddleware({
@@ -805,9 +799,7 @@ const toolMonitoringMiddleware = createMiddleware({
 });
 ```
 
-### 提示缓存 (Anthropic)
-
-使用 Anthropic 模型时，使用带有缓存控制指令的结构化内容块来缓存大型系统提示：
+### 提示缓存 (Anthropic)使用 Anthropic 模型时，使用带有缓存控制指令的结构化内容块来缓存大型系统提示：
 
 <Tabs>
   <Tab title="Decorator">
@@ -944,12 +936,12 @@ new SystemMessage({
 * [Built-in middleware](/oss/javascript/langchain/middleware/built-in)
 * [Testing agents](/oss/javascript/langchain/test/)
 
-***<div>
-  <Callout icon="terminal-2">
-    [Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
-  </Callout>
+***
 
-  <Callout icon="edit">
+<div>
+  <Callout icon="terminal-2">
+    [Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时答案。
+  </Callout><Callout icon="edit">
     [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/oss/langchain/middleware/custom.mdx) 或 [file an issue](https://github.com/langchain-ai/docs/issues/new/choose)。
   </Callout>
 </div>

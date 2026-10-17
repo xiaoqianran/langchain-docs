@@ -257,7 +257,7 @@ langgraph dev
 3. 单击右上角的 **+ 新建部署** 按钮。
 4. 从下拉菜单中选择包含 LangGraph 代理的 GitHub 存储库。
 
-**支持的部署：*** <Icon icon="cloud" /> **Cloud LangSmith**：与下拉菜单直接 GitHub 集成
+**支持的部署：*** <Icon icon="cloud" /> **Cloud LangSmith**：通过下拉菜单直接与 GitHub 集成
 * <Icon icon="server" /> **自托管/混合 LangSmith**：在图像路径字段中指定您的图像 URI（例如，`docker.io/username/my-agent:latest`）
 
 <Info>
@@ -287,7 +287,7 @@ langgraph build -t my-agent:latest
 docker push my-agent:latest
 ```
 
-您可以推送到您的部署环境有权访问的任何容器注册表（Docker Hub、AWS ECR、Azure ACR、Google GCR 等）。
+您可以推送到部署环境有权访问的任何容器注册表（Docker Hub、AWS ECR、Azure ACR、Google GCR 等）。
 
 **支持的部署：**
 
@@ -299,7 +299,7 @@ docker push my-agent:latest
 ### 连接到您部署的代理* <Icon icon="code" /> **[LangGraph SDK](https://langchain-ai.github.io/langgraph/cloud/reference/sdk/python_sdk_ref/#langgraph-sdk-python)**：使用LangGraph SDK 进行编程集成。
 * <Icon icon="sitemap" /> **[RemoteGraph](/langsmith/use-remote-graph)**：使用 RemoteGraph 进行远程图连接（以在其他图中使用您的图）。
 * <Icon icon="globe" /> **[REST API](/langsmith/server-api-ref)**：与部署的代理使用基于 HTTP 的交互。
-* <Icon icon="device-desktop" /> **[Studio](/langsmith/studio)**：进入可视化界面进行测试和调试。
+* <Icon icon="device-desktop" /> **[Studio](/langsmith/studio)**：访问可视化界面进行测试和调试。
 
 ### 环境配置
 
@@ -352,7 +352,7 @@ export REDIS_URI_CUSTOM="redis://host:6379/0"
 对于自托管 LangSmith 实例，请使用 `http(s)://<langsmith-url>/api`，其中 `<langsmith-url>` 是您的自托管实例 URL。
 
 <Note>
-  如果您在 `LANGSMITH_ENDPOINT` 环境变量中设置端点，请使用完整的 API URL，不带尾部斜杠（例如，`https://api.smith.langchain.com` 或 `http(s)://<langsmith-url>/api`，如果是自托管）。尾部斜杠可能会导致某些端点出现身份验证错误。
+  如果您在 `LANGSMITH_ENDPOINT` 环境变量中设置端点，请使用 API URL，例如 `https://api.smith.langchain.com` 或 `http(s)://<langsmith-url>/api`（如果是自托管）。
 </Note>
 
 #### LangSmith 部署 API（部署）

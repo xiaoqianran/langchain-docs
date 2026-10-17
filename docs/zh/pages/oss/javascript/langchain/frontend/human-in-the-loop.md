@@ -9,13 +9,17 @@
 并非每个代理操作都应该在无人监督的情况下运行。当代理要发送时
 电子邮件、删除记录、执行金融交易或执行任何操作
 不可逆转的操作，需要有人先审核并批准该操作。
-人在环 (HITL) 模式可让您的代理暂停执行、呈现
+人在环 (HITL) 模式让您的代理暂停执行、呈现
 用户的待处理操作，只有在明确批准后才能恢复。
 
 因为 HITL 是建立在LangGraph中断和检查点之上的，所以暂停是
 耐用。用户可以刷新页面，审阅者可以从不同的位置回答
-组件，代理仍然从执行的确切位置恢复
+组件，并且代理仍然从执行的确切位置恢复
 停止而不是重播整个运行。
+
+<Note>
+  该页面使用默认的批处理中断模式。对于每次调用中断 (`interruptMode: "per_call"`)，请参阅[Pause once per tool call](/oss/javascript/langchain/human-in-the-loop#pause-once-per-tool-call)。
+</Note>
 
 <PatternEmbed />
 
@@ -23,7 +27,7 @@
 
 LangGraph 代理支持**中断**，代理在其中明确的暂停点
 将控制权交还给客户端。当代理遇到中断时：1. 代理停止执行并发出中断负载
-2. [⟦T15⟧](https://reference.langchain.com/javascript/langchain-react/index/useStream)钩子通过`stream.interrupt`表面中断
+2. [⟦T16⟧](https://reference.langchain.com/javascript/langchain-react/index/useStream)钩子通过`stream.interrupt`表面中断
 3. 您的 UI 呈现带有批准/拒绝/编辑选项的审核卡
 4. 用户做出决定
 5. 您的代码使用恢复命令调用 `stream.submit()`
@@ -36,7 +40,7 @@ LangGraph 代理支持**中断**，代理在其中明确的暂停点
 
 ## 设置`useStream`
 
-将 [⟦T19⟧](https://reference.langchain.com/javascript/langchain-react/index/useStream) 连接到您的人机交互代理。当图表达到
+将 [⟦T20⟧](https://reference.langchain.com/javascript/langchain-react/index/useStream) 连接到您的人机交互代理。当图表达到
 中断，钩子公开`stream.interrupt`上的待处理负载。渲染一个
 设置该值后批准卡，然后恢复运行
 `stream.submit(null, { command: { resume: response } })` 用户之后
@@ -236,9 +240,9 @@ stream.submit(null, { command: { resume: response } });
 <Note>
   当操作被拒绝时，代理会收到拒绝原因并可以
   决定如何进行。如果省略 `message`，则后端使用默认值
-  消息告诉模型该工具尚未执行并且不要重试
+  告诉模型该工具未执行并且不要重试的消息
   除非用户要求，否则调用相同的工具。对于副作用工具，传递一个明确的
-  告诉客服人员是否放弃操作、询问后续操作的消息
+  告诉代理是否放弃操作的消息，询问后续操作
   问题，或者尝试更安全的替代方案。
 </Note>
 
@@ -324,7 +328,7 @@ async function editOne(index: number, editedArgs: Record<string, unknown>) {
 ## 恢复流程
 
 用户做出决定后，完整的周期如下所示：1.拨打`stream.submit(null, { command: { resume: hitlResponse } })`
-2. [⟦T43⟧](https://reference.langchain.com/javascript/langchain-react/index/useStream)钩子向LangGraph后端发送resume命令
+2. [⟦T44⟧](https://reference.langchain.com/javascript/langchain-react/index/useStream)钩子向LangGraph后端发送resume命令
 3. Agent收到`HITLResponse`并继续执行。每个条目在
    `decisions` 可能是以下之一：
    * `{ type: "approve" }`：代理继续执行动作
@@ -388,7 +392,7 @@ function MultiActionReview({
 }
 ```
 
-## 自定义中断形式[resume flow](#the-resume-flow) 使用`humanInTheLoopMiddleware`，它用一个
+## 自定义中断形式[resume flow](#the-resume-flow) 使用 `humanInTheLoopMiddleware`，它用一个
 通用批准/拒绝/编辑/响应卡。有时单组
 按钮是不够的：预订航班、批准退款和查看订单
 每个社交帖子都需要一个*不同的*表单，有自己的字段、验证和
@@ -524,7 +528,7 @@ function Chat() {
 中断清除，仅返回工具结果。这意味着一张丰富的评论卡
 会在运行中消失。要将其保留在屏幕上，请解决中断**并**提交
 携带卡在*相同*超级步骤中声明的消息，使用
-[⟦T69⟧](https://reference.langchain.com/javascript/langchain-react/index/useStream)的`respond`：
+[⟦T70⟧](https://reference.langchain.com/javascript/langchain-react/index/useStream)的`respond`：
 
 ```tsx theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 import { AIMessage } from "langchain";
@@ -572,7 +576,7 @@ function handleResolve(decision: ReviewDecision) {
 * **验证编辑的参数**。当用户编辑操作参数时，验证
   发送前的 JSON 结构。显示格式错误的输入的内联错误。
 * **保持中断状态**。如果用户刷新页面，
-  中断应该仍然可见。 [⟦T73⟧](https://reference.langchain.com/javascript/langchain-react/index/useStream) 通过线程的处理这个
+  中断应该仍然可见。 [⟦T74⟧](https://reference.langchain.com/javascript/langchain-react/index/useStream) 通过线程处理这个
   检查站。
 * **记录所有决定**。对于审核跟踪，记录每个批准/拒绝/编辑
   带有时间戳的决策以及做出决策的用户。

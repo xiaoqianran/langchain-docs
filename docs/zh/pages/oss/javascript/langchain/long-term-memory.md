@@ -116,10 +116,6 @@
       });
       ```
     </CodeGroup>
-
-    <Card title="View example trace" icon="chart-line" href="https://smith.langchain.com/public/a6be2083-3efd-4571-86bc-af3ac3d29ca3/r">
-      为此示例打开公共 LangSmith 运行。
-    </Card>
   </Tab>
 
   <Tab title="PostgreSQL">
@@ -247,10 +243,6 @@
       });
       ```
     </CodeGroup>
-
-    <Card title="View example trace" icon="chart-line" href="https://smith.langchain.com/public/d88f3dfa-62b7-4860-a17d-96372551753e/r">
-      为此示例打开公共 LangSmith 运行。
-    </Card>
   </Tab>
 </Tabs>
 
@@ -258,11 +250,11 @@
   对于其他存储后端，包括 Redis 和 MongoDB，请参阅 [store integrations](/oss/javascript/integrations/long-term-memory) 列表。有关 MongoDB 演练，请参阅 [long-term memory with MongoDB](/oss/javascript/integrations/memory/mongodb-long-term-memory)。
 </Note>
 
-然后，工具可以使用 `runtime.store` 参数读取和写入存储。有关示例，请参阅 [Read long-term memory in tools](#read-long-term-memory-in-tools) 和 [Write long-term memory from tools](#write-long-term-memory-from-tools)。<Tip>
-  要更深入地了解记忆类型（语义、情景、程序）和写入记忆的策略，请参阅 [Memory conceptual guide](/oss/javascript/concepts/memory#long-term-memory)。
-</Tip>
+然后，工具可以使用 `runtime.store` 参数读取和写入存储。有关示例，请参阅 [Read long-term memory in tools](#read-long-term-memory-in-tools) 和 [Write long-term memory from tools](#write-long-term-memory-from-tools)。
 
-## Memory storage
+<Tip>
+  要更深入地了解记忆类型（语义、情景、程序）和写入记忆的策略，请参阅 [Memory conceptual guide](/oss/javascript/concepts/memory#long-term-memory)。
+</Tip>## 内存存储
 
 LangGraph 将长期记忆作为 JSON 文档存储在 [store](/oss/javascript/langgraph/stores) 中。
 
@@ -798,7 +790,7 @@ LangGraph 将长期记忆作为 JSON 文档存储在 [store](/oss/javascript/lan
       ```
     </CodeGroup>
 
-    <Card title="View example trace" icon="chart-line" href="https://smith.langchain.com/public/762275c3-4815-418e-a314-5ad241f959b0/r">
+    <Card title="View example trace" icon="chart-line" href="https://smith.langchain.com/public/402f8832-35d4-4c95-9ebd-cb371af7366f/r">
       为此示例打开公共 LangSmith 运行。
     </Card>
   </Tab>
@@ -1121,13 +1113,15 @@ LangGraph 将长期记忆作为 JSON 文档存储在 [store](/oss/javascript/lan
       ```
     </CodeGroup>
 
-    <Card title="View example trace" icon="chart-line" href="https://smith.langchain.com/public/244238a0-dc8a-4023-b85b-b8145b79cfab/r">
+    <Card title="View example trace" icon="chart-line" href="https://smith.langchain.com/public/3cac0150-fe8c-4346-904f-a67a8d6fb156/r">
       为此示例打开公共 LangSmith 运行。
     </Card>
   </Tab>
 </Tabs>
 
-## 通过工具写入长期记忆<Tabs>
+## 通过工具写入长期记忆
+
+<Tabs>
   <Tab title="InMemoryStore">
     <CodeGroup>
       ```ts Google theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
@@ -1528,9 +1522,7 @@ LangGraph 将长期记忆作为 JSON 文档存储在 [store](/oss/javascript/lan
       const result = await store.get(["users"], "user_123");
       console.log(result?.value); // Output: { name: "John Smith" }
       ```
-    </CodeGroup>
-
-    <Card title="View example trace" icon="chart-line" href="https://smith.langchain.com/public/9cfc3587-f9a0-4926-8e0f-0659ed631e5a/r">
+    </CodeGroup><Card title="View example trace" icon="chart-line" href="https://smith.langchain.com/public/1329ec1b-63c9-4cea-99be-74a763a4cc16/r">
       为此示例打开公共 LangSmith 运行。
     </Card>
   </Tab>
@@ -1846,7 +1838,7 @@ LangGraph 将长期记忆作为 JSON 文档存储在 [store](/oss/javascript/lan
       ```
     </CodeGroup>
 
-    <Card title="View example trace" icon="chart-line" href="https://smith.langchain.com/public/7e0e4b08-7234-49bc-adcc-8d5cf48455ad/r">
+    <Card title="View example trace" icon="chart-line" href="https://smith.langchain.com/public/85c902fd-dbd7-4d73-9d11-a09f01dace8f/r">
       为此示例打开公共 LangSmith 运行。
     </Card>
   </Tab>

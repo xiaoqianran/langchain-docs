@@ -20,7 +20,7 @@
 | [Engine](/langsmith/engine-self-hosted) |可选|沙盒、具有引擎权利的许可证以及 Helm 图表版本 0.16.0 或更高版本。气隙安装需要 Helm Chart 0.17.0 或更高版本。 |
 | [Fleet](/langsmith/enable-self-hosted-fleet) |可选|集群中的队列服务。不需要LangSmith部署。 |
 | [LLM Gateway](/langsmith/llm-gateway-self-hosted) |可选（测试版）| Helm 图表版本 0.17.1 或更高版本。 `agent-gateway` 服务需要访问 PostgreSQL、Redis 和其他 LangSmith Pod。 |
-| [LangSmith Deployment](/langsmith/deploy-self-hosted-full-platform) |可选| KEDA、入口、控制平面和数据平面。要在没有控制平面的情况下运行代理服务器，请参阅[standalone servers](/langsmith/deploy-standalone-server)。 |
+| [LangSmith Deployment](/langsmith/enable-self-hosted-deployment) |可选| KEDA、入口、控制平面和数据平面。要在没有控制平面的情况下运行代理服务器，请参阅[standalone servers](/langsmith/deploy-standalone-server)。 |
 
 ## 架构
 
@@ -28,7 +28,7 @@
 
 <img alt="LangSmith architecture showing services and datastores" />
 
-<img alt="LangSmith architecture showing services and datastores" />要访问 LangSmith UI 并发送 API 请求，请公开 [LangSmith frontend](#services) 服务。根据您的安装方法，这可以是负载平衡器或主机上公开的端口。
+<img alt="LangSmith architecture showing services and datastores" />要访问 LangSmith UI 并发送 API 请求，请公开 [LangSmith frontend](#services) 服务。根据您的安装方法，这可以是负载均衡器或主机上公开的端口。
 
 有关每个云提供商的架构模式和最佳实践，请参阅 [AWS](/langsmith/aws-self-hosted)、[GCP](/langsmith/gcp-self-hosted) 和 [Azure](/langsmith/azure-self-hosted) 指南。
 
