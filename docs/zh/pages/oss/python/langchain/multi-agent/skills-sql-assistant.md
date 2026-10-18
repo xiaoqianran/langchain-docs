@@ -52,7 +52,7 @@ flowchart TD
 * **有效扩展** - 添加数十或数百项技能，而无需压倒上下文
 * **简化对话历史记录** - 单个代理具有一个对话线程
 
-**什么是技能：** 正如克劳德·代码 (Claude Code) 所推广的那样，技能主要是基于提示的：针对特定业务任务的专门指令的独立单元。在 Claude Code 中，技能被公开为文件系统上包含文件的目录，通过文件操作发现。技能通过提示指导行为，并可以提供有关工具使用情况的信息或包括供编码代理执行的示例代码。
+**什么是技能：** 正如克劳德·代码 (Claude Code) 所推广的那样，技能主要是基于提示的：针对特定业务任务的专门指令的独立单元。在 Claude Code 中，技能被公开为文件系统上包含文件的目录，通过文件操作发现。技能通过提示指导行为，并可以提供有关工具使用的信息或包括供编码代理执行的示例代码。
 
 <Tip>
   渐进式披露的技能可以被视为[RAG (Retrieval-Augmented Generation)](/oss/python/deepagents/rag)的一种形式，其中每个技能都是一个检索单元——尽管不一定由嵌入或关键字搜索支持，但由浏览内容的工具（如文件操作或本教程中的直接查找）支持。
@@ -1084,7 +1084,7 @@ This query:
 
   # Initialize your chat model (replace with your model)
   # Example: from langchain_anthropic import ChatAnthropic
-  # model = ChatAnthropic(model="claude-3-5-sonnet-20241022")
+  # model = ChatAnthropic(model="claude-sonnet-4-6")
   from langchain_openai import ChatOpenAI
   model = ChatOpenAI(model="gpt-5.5")
 

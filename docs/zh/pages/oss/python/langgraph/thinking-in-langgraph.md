@@ -6,7 +6,7 @@
 
 通过 LangGraph 了解如何思考构建代理
 
-当您使用LangGraph构建代理时，您将首先将其分解为称为**节点**的离散步骤。然后，您将描述每个节点的不同决策和转换。最后，通过每个节点都可以读取和写入的共享**状态**将节点连接在一起。
+当您使用 LangGraph 构建代理时，您首先将其分解为称为 **节点** 的离散步骤。然后，您将描述每个节点的不同决策和转换。最后，通过每个节点都可以读取和写入的共享**状态**将节点连接在一起。
 
 在本演练中，我们将引导您完成使用 LangGraph 构建客户支持电子邮件代理的思维过程。
 
@@ -235,7 +235,7 @@ class EmailAgentState(TypedDict):
 
 不同的错误需要不同的处理策略：
 
-|错误类型 |谁来解决这个问题？策略|何时使用 |
+|错误类型 |谁来解决这个问题？战略|何时使用 |
 | - | - | - | - |
 |瞬时错误（网络问题、速率限制）|系统（自动）|重试政策 |通常重试即可解决的临时故障 |
 | LLM 可恢复错误（工具故障、解析问题）|法学硕士 |将错误存储在状态中并循环返回 | LLM可以看到错误并调整其方法|
@@ -633,7 +633,7 @@ class EmailAgentState(TypedDict):
   print("Email sent successfully!")
   ```
 
-  <Card title="View example trace" icon="chart-line" href="https://smith.langchain.com/public/2636e51a-5dcd-4a33-8b4d-23678e364ef2/r">
+  <Card title="View example trace" icon="chart-line" href="https://smith.langchain.com/public/c11c3fe2-7ea3-44bf-aa5d-85e4ac995b88/r">
     为此示例打开公共 LangSmith 运行。
   </Card>
 </Accordion>
@@ -710,7 +710,7 @@ class EmailAgentState(TypedDict):
   </Card>
 
   <Card title="Streaming" icon="broadcast" href="/oss/python/langgraph/streaming">
-    添加流式传输以向用户显示实时进度
+    添加流媒体以向用户显示实时进度
   </Card>
 
   <Card title="Observability" icon="chart-line" href="/oss/python/langgraph/observability">
@@ -722,7 +722,7 @@ class EmailAgentState(TypedDict):
   </Card>
 
   <Card title="Retry Logic" icon="rotate" href="/oss/python/langgraph/use-graph-api#add-retry-policies">
-    对失败的操作实施指数退避的重试逻辑
+    针对失败的操作实施具有指数退避的重试逻辑
   </Card>
 </CardGroup>
 

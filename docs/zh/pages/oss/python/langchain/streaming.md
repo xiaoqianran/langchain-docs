@@ -279,7 +279,7 @@ LangChain 流媒体可以实现什么：
   ```
 </CodeGroup>
 
-<Card title="View example trace" icon="chart-line" href="https://smith.langchain.com/public/9cd9423e-4fda-4987-bfc0-a5c4246a19eb/r">
+<Card title="View example trace" icon="chart-line" href="https://smith.langchain.com/public/a6ac596b-db43-4172-bd17-edd3c833064f/r">
   为此示例打开公共 LangSmith 运行。
 </Card>
 
@@ -293,7 +293,7 @@ content: [{'type': 'text', 'text': "San Francisco weather: It's always sunny in 
 ```
 
 <Note>
-  保留与 `thread_id` 的对话历史记录需要使用 [checkpointer](/oss/python/langchain/long-term-memory) 配置代理。在 [LangSmith deployments](/langsmith/deployment) 上会自动配置检查点。在本地，显式传递一个，例如 `create_agent(..., checkpointer=InMemorySaver())`。为了简洁起见，此页面上的其余片段省略了 `thread_id`，但您应该在生产中传递它。
+  保留与 `thread_id` 的对话历史记录需要使用 [checkpointer](/oss/python/langchain/long-term-memory) 配置代理。在 [LangSmith deployments](/langsmith/deployment) 上，会自动配置检查点。在本地，显式传递一个，例如 `create_agent(..., checkpointer=InMemorySaver())`。为了简洁起见，此页面上的其余片段省略了 `thread_id`，但您应该在生产中传递它。
 </Note>
 
 ## LLM 代币
@@ -569,7 +569,7 @@ for message in stream.messages:
         print(token, end="", flush=True)
 ```
 
-<Card title="View example trace" icon="chart-line" href="https://smith.langchain.com/public/cce5483a-c5fd-4e08-94dc-12b510c6ccf1/r">
+<Card title="View example trace" icon="chart-line" href="https://smith.langchain.com/public/eba47840-3f3c-4528-b786-c962c59912ba/r">
   为此示例打开公共 LangSmith 运行。
 </Card>
 

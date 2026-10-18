@@ -4,13 +4,15 @@
 
 # 商店集成
 
-与商店后端集成以实现 LangGraph 长期记忆。
+与存储后端集成以实现 LangGraph 长期记忆。
 
 存储在LangGraph中启用[long-term memory](/oss/python/langgraph/stores)，允许代理跨线程持久保存和检索信息。
 
 要为自定义存储后端实现您自己的存储，请参阅[Build a custom store](/oss/python/langgraph/stores#build-a-custom-store)。
 
-|后端 |套餐 |来源 |
+<PythonIntegrationComponentMap />
+
+|后端|套餐 |来源 |
 | - | - | - |
 | [In-memory](https://reference.langchain.com/python/langgraph.store/memory/InMemoryStore) | [⟦T0⟧](https://pypi.org/project/langgraph-checkpoint/) | [langchain-ai/langgraph](https://github.com/langchain-ai/langgraph/tree/main/libs/checkpoint) |
 | [PostgreSQL](https://reference.langchain.com/python/langgraph.store.postgres/PostgresStore) | [⟦T1⟧](https://pypi.org/project/langgraph-checkpoint-postgres/) | [langchain-ai/langgraph](https://github.com/langchain-ai/langgraph/tree/main/libs/checkpoint-postgres) |

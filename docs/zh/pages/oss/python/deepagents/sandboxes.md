@@ -39,7 +39,7 @@ graph LR
 ```
 
 ## 为什么要使用沙箱？沙箱用于安全性。
-它们允许代理执行任意代码、访问文件并使用网络，而不会损害您的凭据、本地文件或主机系统。
+它们允许代理执行任意代码、访问文件和使用网络，而不会损害您的凭据、本地文件或主机系统。
 当代理自主运行时，这种隔离至关重要。
 
 沙箱特别适用于：
@@ -55,7 +55,7 @@ graph LR
   **如果您正在寻找 LangSmith 沙箱：** LangSmith 提供第一方托管沙箱，您可以直接从 LangSmith UI 或 SDK 使用，无需第三方帐户。有关托管沙箱资源、快照、服务 URL 和身份验证代理，请参阅[LangSmith Sandboxes](/langsmith/sandboxes)。
 </Note>
 
-## 基本用法这些示例假设您已经使用提供商的 SDK 创建了沙箱/开发箱并设置了凭据。有关注册、身份验证和特定于提供商的生命周期详细信息，请参阅 [Available providers](#available-providers)。
+## 基本用法这些示例假设您已经使用提供商的 SDK 创建了沙箱/开发箱并设置了凭据。有关注册、身份验证和特定于提供商的生命周期详细信息，请参阅[Available providers](#available-providers)。
 
 <Tabs>
   <Tab title="LangSmith">
@@ -99,7 +99,7 @@ graph LR
         client.delete_sandbox(ls_sandbox.name)
     ```
 
-    <Card title="View example trace" icon="chart-line" href="https://smith.langchain.com/public/9c6756d1-2bb1-4ba5-a54a-9891abd057db/r">
+    <Card title="View example trace" icon="chart-line" href="https://smith.langchain.com/public/5c79cd36-6974-4010-8f93-9e81a6ff8c94/r">
       为此示例打开公共 LangSmith 运行。
     </Card>
   </Tab>
@@ -145,7 +145,7 @@ graph LR
         sandbox.stop()
     ```
 
-    <Card title="View example trace" icon="chart-line" href="https://smith.langchain.com/public/bdbb9f73-7bff-4e32-891b-fc05ed487f01/r">
+    <Card title="View example trace" icon="chart-line" href="https://smith.langchain.com/public/571f1de5-c211-47b2-81d3-ea330cb6bc31/r">
       为此示例打开公共 LangSmith 运行。
     </Card>
   </Tab>
@@ -329,7 +329,7 @@ graph LR
   我们建议您还设置 [LangSmith Engine](/langsmith/engine)，它可以监视您的痕迹、检测问题并提出修复建议。
 </Tip>
 
-## 可用的提供商有关提供商特定的设置、身份验证和生命周期详细信息，请参阅[sandbox integrations](/oss/python/integrations/sandboxes)。
+## 可用的提供商有关提供商特定的设置、身份验证和生命周期详细信息，请参阅 [sandbox integrations](/oss/python/integrations/sandboxes)。
 
 ## 生命周期和范围
 
@@ -756,10 +756,6 @@ graph LR
   ```
 </CodeGroup>
 
-<Card title="View example trace" icon="chart-line" href="https://smith.langchain.com/public/658fb215-7b1c-4914-96d2-834acdd6110f/r">
-  为此示例打开公共 LangSmith 运行。
-</Card>
-
 对于图工厂外部的手动创建、执行和拆卸，请参阅 [Basic usage](#basic-usage) 和 [sandbox integrations](/oss/python/integrations/sandboxes) 了解特定于提供者的 API。
 
 ## 集成模式
@@ -1025,7 +1021,7 @@ RUN pip install deepagents-code
   ```
 </CodeGroup>
 
-<Card title="View example trace" icon="chart-line" href="https://smith.langchain.com/public/a9453638-8ae8-496c-9dbe-1f9f56391cd6/r">
+<Card title="View example trace" icon="chart-line" href="https://smith.langchain.com/public/2b9e8bc1-f9de-41fd-824b-cf6f397eb2f2/r">
   为此示例打开公共 LangSmith 运行。
 </Card>本文档中的示例使用沙箱作为工具模式。
 当您的提供商的 SDK 处理通信层并且您希望生产能够反映本地开发时，请选择沙箱模式中的代理。
@@ -1531,11 +1527,9 @@ deepagents 沙箱后端支持文件传输 API，用于在应用程序和沙箱�
         else:
             print(f"Failed to download {result.path}: {result.error}")
     ```
+  </Tab>
 
-    <Card title="View example trace" icon="chart-line" href="https://smith.langchain.com/public/7cff6290-eb4f-4fc8-8982-39b78675cbfc/r">
-      为此示例打开公共 LangSmith 运行。
-    </Card>
-  </Tab><Tab title="AgentCore">
+  <Tab title="AgentCore">
     <CodeGroup>
       ```bash pip theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
       pip install langchain-agentcore-codeinterpreter
@@ -1565,9 +1559,7 @@ deepagents 沙箱后端支持文件传输 API，用于在应用程序和沙箱�
 
     interpreter.stop()
     ```
-  </Tab>
-
-  <Tab title="Daytona">
+  </Tab><Tab title="Daytona">
     <CodeGroup>
       ```bash pip theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
       pip install langchain-daytona
@@ -1734,7 +1726,7 @@ deepagents 沙箱后端支持文件传输 API，用于在应用程序和沙箱�
 ### 一般最佳实践
 
 * 在应用程序中对沙箱输出进行操作之前先检查它们
-* 在不需要时阻止沙盒网络访问
+* 在不需要时阻止沙箱网络访问
 * 使用[middleware](/oss/python/langchain/middleware)过滤或编辑工具输出中的敏感模式
 * 将沙箱内产生的所有内容视为不可信输入
 

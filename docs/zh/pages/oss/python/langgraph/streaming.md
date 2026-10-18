@@ -140,7 +140,7 @@ for part in graph.stream(
 ## 流模式
 
 将以下一种或多种流模式作为列表传递给 [⟦T72⟧](https://reference.langchain.com/python/langgraph/graphs/#langgraph.graph.state.CompiledStateGraph.stream) 或 [⟦T73⟧](https://reference.langchain.com/python/langgraph/graphs/#langgraph.graph.state.CompiledStateGraph.astream) 方法：|模式|类型 |描述 |
-| :-| :-| :-|
+| :- | :- | :- |
 | [values](#graph-state) | [⟦T74⟧](https://reference.langchain.com/python/langgraph/types/ValuesStreamPart) |每一步后的完整状态。 |
 | [updates](#graph-state) | [⟦T75⟧](https://reference.langchain.com/python/langgraph/types/UpdatesStreamPart) |每个步骤后状态都会更新。同一步骤中的多个更新分别进行流式传输。 |
 | [messages](#llm-tokens) | [⟦T76⟧](https://reference.langchain.com/python/langgraph/types/MessagesStreamPart) |来自 LLM 调用的 2 元组（LLM 令牌、元数据）。 |
@@ -426,7 +426,7 @@ initial_state: State = {"topic": "AI", "answer": "", "notes": ""}
 stream = graph.stream_events(initial_state, version="v3")
 ```
 
-<Card title="View example trace" icon="chart-line" href="https://smith.langchain.com/public/e17f4132-e295-47d7-a61d-eb85ca98fbfa/r">
+<Card title="View example trace" icon="chart-line" href="https://smith.langchain.com/public/e5687375-a6ad-4b8d-b553-8672cc6da1b3/r">
   为此示例打开公共 LangSmith 运行。
 </Card>
 

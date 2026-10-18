@@ -664,7 +664,7 @@ Orchestrator-worker 工作流程提供了更大的灵活性，并且通常在无
   ```
 </CodeGroup>
 
-### 在LangGraph中创建工人Orchestrator-worker 工作流程很常见，LangGraph 内置了对它们的支持。 `Send` API 允许您动态创建工作节点并向它们发送特定输入。每个工作人员都有自己的状态，所有工作人员输出都写入编排器图可访问的共享状态键。这使协调器可以访问所有工作人员输出，并允许将它们合成为最终输出。下面的示例迭代部分列表，并使用 `Send` API 将部分发送给每个工作人员。
+### 在LangGraph中创建工人Orchestrator-worker 工作流程很常见，LangGraph 内置了对它们的支持。 `Send` API 允许您动态创建工作节点并向它们发送特定输入。每个工作人员都有自己的状态，所有工作人员输出都写入编排器图可访问的共享状态键。这使协调器可以访问所有工作输出，并允许将它们合成为最终输出。下面的示例迭代部分列表，并使用 `Send` API 将部分发送给每个工作人员。
 
 ```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 from langgraph.types import Send
@@ -1205,7 +1205,7 @@ result = graph.invoke(
 )
 ```
 
-<Card title="View example trace" icon="chart-line" href="https://smith.langchain.com/public/afaeb6f7-9e5a-4417-9ea0-22352736f755/r">
+<Card title="View example trace" icon="chart-line" href="https://smith.langchain.com/public/9ab71e9c-3d7c-49aa-aa11-70fa6fc848aa/r">
   为此示例打开公共 LangSmith 运行。
 </Card>
 
@@ -1213,7 +1213,7 @@ result = graph.invoke(
 
 <div>
   <Callout icon="terminal-2">
-    [Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
+    [Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时答案。
   </Callout>
 
   <Callout icon="edit">

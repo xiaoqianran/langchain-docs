@@ -10,7 +10,9 @@
 
 要为自定义存储后端实现您自己的检查点，请参阅[Build a custom checkpointer](/oss/python/langgraph/checkpointers#build-a-custom-checkpointer)。
 
-|后端 |套餐 |来源 |
+<PythonIntegrationComponentMap />
+
+|后端|套餐 |来源 |
 | - | - | - |
 | [In-memory](https://reference.langchain.com/python/langgraph.checkpoint/memory/InMemorySaver) | [⟦T0⟧](https://pypi.org/project/langgraph-checkpoint/) | [langchain-ai/langgraph](https://github.com/langchain-ai/langgraph/tree/main/libs/checkpoint) |
 | [SQLite](https://reference.langchain.com/python/langgraph.checkpoint.sqlite/SqliteSaver) | [⟦T1⟧](https://pypi.org/project/langgraph-checkpoint-sqlite/) | [langchain-ai/langgraph](https://github.com/langchain-ai/langgraph/tree/main/libs/checkpoint-sqlite) |

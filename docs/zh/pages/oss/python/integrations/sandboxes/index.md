@@ -8,9 +8,11 @@
 
 沙箱提供隔离的执行环境，用于安全运行代理生成的代码。了解更多关于[sandboxes](/oss/python/deepagents/sandboxes)的信息。
 
+<PythonIntegrationComponentMap />
+
 <div>
   |整合 |下载 |
-  | :-| :-|
+  | :- | :- |
   | [⟦T0⟧](/oss/python/integrations/sandboxes/daytona) | <span><a href="https://pypi.org/project/langchain-daytona/"><img alt="Downloads per month" /></a></span> |
   | [⟦T1⟧](/oss/python/integrations/sandboxes/modal) | <span><a href="https://pypi.org/project/langchain-modal/"><img alt="Downloads per month" /></a></span> |
   | [⟦T2⟧](/oss/python/integrations/sandboxes/aws) | <span><a href="https://pypi.org/project/langchain-agentcore-codeinterpreter/"><img alt="Downloads per month" /></a></span> |
@@ -23,13 +25,14 @@
   | [⟦T9⟧](https://gitlab.com/bitkaio/langchain/kubernetes-sandbox) | <span><a href="https://pypi.org/project/langchain-kubernetes/"><img alt="Downloads per month" /></a></span> |
   | [⟦T10⟧](https://github.com/always-further/langchain-nono) | <span><a href="https://pypi.org/project/langchain-nono/"><img alt="Downloads per month" /></a></span> |
   | [⟦T11⟧](https://github.com/langchain-ai/langchain-nvidia/tree/main/libs/openshell) | <span><a href="https://pypi.org/project/langchain-nvidia-openshell/"><img alt="Downloads per month" /></a></span>|
-  | [⟦T12⟧](https://docs.islo.dev) | <span><a href="https://pypi.org/project/langchain-islo/"><img alt="Downloads per month" /></a></span>|
+  | [⟦T12⟧](https://docs.islo.dev) | <span><a href="https://pypi.org/project/langchain-islo/"> <img alt="Downloads per month" /></a></span> |
   | [⟦T13⟧](https://baponi.ai/docs/guides/deep-agents) | <span><a href="https://pypi.org/project/langchain-baponi/"><img alt="Downloads per month" /></a></span>|
-  | [⟦T14⟧](https://upstash.com/docs/box/overall/quickstart) | <span><a href="https://pypi.org/project/langchain-upstash-box/"><img alt="Downloads per month" /></a></span>|
+  | [⟦T14⟧](https://upstash.com/docs/box/overall/quickstart) | <span><a href="https://pypi.org/project/langchain-upstash-box/"> <img alt="Downloads per month" /></a></span> |
   | [⟦T15⟧](https://leap0.dev/docs) | <span><a href="https://pypi.org/project/langchain-leap0/"> <img alt="Downloads per month" /></a></span> |
   | [⟦T16⟧](https://github.com/novitalabs/langchain-novita) | <span><a href="https://pypi.org/project/langchain-novita/"> <img alt="Downloads per month" /></a></span> |
-  | [⟦T17⟧](https://docs.superserve.ai/introduction) | <span><a href="https://pypi.org/project/langchain-superserve/"> <img alt="Downloads per month" /></a></span> |
+  | [⟦T17⟧](https://docs.superserve.ai/introduction) | <span><a href="https://pypi.org/project/langchain-superserve/"><img alt="Downloads per month" /></a></span>|
   | [⟦T18⟧](/oss/python/integrations/sandboxes/langsmith) | <span>不适用</span> |
+  | [⟦T19⟧](https://github.com/lizard-build/langchain-lizard#readme) | <span>不适用</span> |
 </div>
 
 如果您想贡献一个沙箱，请参阅[Implement a sandbox integration](/oss/python/contributing/implement-langchain)。

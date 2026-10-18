@@ -531,7 +531,7 @@
   跟踪此循环的每个步骤，调试工具调用，并使用 [LangSmith](https://smith.langchain.com?utm_source=docs\&utm_medium=cta\&utm_campaign=langsmith-signup\&utm_content=oss-langchain-agents) 评估代理输出。按照[tracing quickstart](/langsmith/trace-with-langchain)进行设置。我们建议您还设置 [LangSmith Engine](/langsmith/engine) 来监视您的痕迹、检测问题并提出修复建议。
 </Tip>
 
-您可以使用消息调用代理。在幕后将更新传递给代理的[⟦T131⟧](/oss/python/langgraph/graph-api#state)。所有代理在其所在州都包含[sequence of messages](/oss/python/langgraph/use-graph-api#messagesstate)；要调用代理，请传递一条新消息以及 `thread_id`，以便代理可以保留并恢复对话历史记录：
+您可以使用消息调用代理。在幕后将更新传递给代理的[⟦T131⟧](/oss/python/langgraph/graph-api#state)。所有代理在其所在州都包含[sequence of messages](/oss/python/langgraph/use-graph-api#messagesstate)；要调用代理，请传递新消息以及`thread_id`，以便代理可以保留并恢复对话历史记录：
 
 <CodeGroup>
   ```python Google theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
@@ -708,7 +708,7 @@
   ```
 </CodeGroup>
 
-<Card title="View example trace" icon="chart-line" href="https://smith.langchain.com/public/5ddee370-d49e-4c80-ae12-691aa17c1aa8/r">
+<Card title="View example trace" icon="chart-line" href="https://smith.langchain.com/public/455ace73-fce4-413b-b47e-613b605ae01d/r">
   为此示例打开公共 LangSmith 运行。
 </Card>
 
@@ -909,7 +909,7 @@
   ```
 </CodeGroup>
 
-<Card title="View example trace" icon="chart-line" href="https://smith.langchain.com/public/5a94648f-0a0b-46f3-a80c-bd1670e35930/r">
+<Card title="View example trace" icon="chart-line" href="https://smith.langchain.com/public/2ccaff61-e004-4356-81f3-4c061ef7a93a/r">
   为此示例打开公共 LangSmith 运行。
 </Card>
 
@@ -937,7 +937,7 @@ for snapshot in stream.values:
             print(f"Agent: {latest_message.content}")
     elif latest_message.tool_calls:
         print(f"Calling tools: {[tc['name'] for tc in latest_message.tool_calls]}")
-```<Card title="View example trace" icon="chart-line" href="https://smith.langchain.com/public/7331dcc8-fbc7-4d2e-91fa-f32b4a6f410d/r">
+```<Card title="View example trace" icon="chart-line" href="https://smith.langchain.com/public/eb78aa8e-9575-4c73-8e79-bad82b30ef1d/r">
   为此示例打开公共 LangSmith 运行。
 </Card>
 

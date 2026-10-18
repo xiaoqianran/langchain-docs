@@ -192,7 +192,7 @@ Deep Agents 的 RAG 模式，包括技能引导检索、标题分级以及索引
   ```
 </CodeGroup>
 
-<Card title="View example trace" icon="chart-line" href="https://smith.langchain.com/public/691c063c-0d9d-4235-9a34-a74e3655a7f5/r">
+<Card title="View example trace" icon="chart-line" href="https://smith.langchain.com/public/9e5d5ccc-eb86-4a0d-896b-6104d648e7ce/r">
   为此示例打开公共 LangSmith 运行。
 </Card>
 
@@ -316,7 +316,7 @@ DOC_PATHS = [
 ```
 
 <Note>
-  有关索引、向量存储和检索的更详细教程，请参阅[Semantic search](/oss/python/langchain/knowledge-base)。
+  有关索引、向量存储和检索的更详细教程，请参阅 [Semantic search](/oss/python/langchain/knowledge-base)。
 </Note>
 
 ### 加载文档
@@ -1454,7 +1454,7 @@ if __name__ == "__main__":
             print(msg.text)
 ```
 
-<Card title="View example trace" icon="chart-line" href="https://smith.langchain.com/public/acdc9abe-384b-4988-a0a8-aaa78b7d8ffb/r">
+<Card title="View example trace" icon="chart-line" href="https://smith.langchain.com/public/6028e45a-23d0-4073-968c-19d161910ef8/r">
   为此示例打开公共 LangSmith 运行。
 </Card>
 

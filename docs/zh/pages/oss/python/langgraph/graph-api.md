@@ -116,7 +116,7 @@ graph.invoke({"user_input": "My"})
 # {'graph_output': 'My name is Lance'}
 ```
 
-<Card title="View example trace" icon="chart-line" href="https://smith.langchain.com/public/a72a6e66-883f-4551-b4e2-3ca3129be6a2/r">
+<Card title="View example trace" icon="chart-line" href="https://smith.langchain.com/public/62539b5c-8df4-4dff-8de2-f365fc05983d/r">
   为此示例打开公共 LangSmith 运行。
 </Card>
 
@@ -124,7 +124,7 @@ graph.invoke({"user_input": "My"})
 
 1. 我们将`state: InputState`作为输入模式传递给`node_1`。但是，我们写入`foo`，`OverallState` 中的一个通道。我们如何写入不包含在输入模式中的状态通道？这是因为节点*可以写入图状态中的任何状态通道。*图状态是初始化时定义的状态通道的并集，其中包括`OverallState`以及过滤器`InputState`和`OutputState`。
 
-2. 我们用以下方法初始化图表：
+2. 我们用以下方法初始化图：
 
    ```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
    StateGraph(
@@ -153,7 +153,7 @@ graph.invoke({"user_input": "My"})
   # {'foo': 'My name', 'user_input': 'My', 'graph_output': 'My name is Lance', 'bar': 'My name is'}
   ```
 
-  <Card title="View example trace" icon="chart-line" href="https://smith.langchain.com/public/00c6ab6e-18ce-48ee-893e-4c97cec6ee6c/r">
+  <Card title="View example trace" icon="chart-line" href="https://smith.langchain.com/public/086201cf-5ed2-4a4b-aade-02848b380fad/r">
     为此示例打开公共 LangSmith 运行。
   </Card>
 
@@ -171,7 +171,7 @@ graph.invoke({"user_input": "My"})
   ```如果您只需要节点实际每一步产生的通道（而不是完整的累积状态），请改用`stream_mode="updates"`。
 </Warning>
 
-### 减速机
+### 减速器
 
 减速器是理解节点更新如何应用于`State`的关键。 `State`中的每个按键都有自己独立的减速器功能。如果没有显式指定减速器函数，则假定对该键的所有更新都应覆盖它。有几种不同类型的减速器，从默认类型的减速器开始：
 
@@ -180,7 +180,7 @@ graph.invoke({"user_input": "My"})
 每个减速器都是一个具有两个位置参数的二元函数：
 
 * **左参数**：当前值已存储在该键的状态中。
-* **右参数**：节点返回的键的更新。
+* **右参数**：节点返回的该键的更新。
 
 当节点返回部分更新时，LangGraph为每个更新的键调用reducer并将返回值保存为新的状态值：
 
@@ -377,7 +377,7 @@ const routerNode: GraphNode<{ InputSchema: typeof State; Nodes: "process" | "don
 
 #### `State.Node` 简写
 
-每个 `StateSchema` 实例都有一个 `Node` 属性，它提供了键入节点的简写：
+每个 `StateSchema` 实例都有一个 `Node` 属性，它提供了输入节点的简写：
 
 ```typescript theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 const State = new StateSchema({
@@ -392,7 +392,7 @@ const myNode2: typeof State.Node = (state) => ({ step: "done" });
 
 #### `ConditionalEdgeRouter`
 
-使用`ConditionalEdgeRouter`作为条件边中的路由函数（没有状态更新，只是路由）：
+使用 `ConditionalEdgeRouter` 进行条件边中的路由函数（无状态更新，仅路由）：
 
 ```typescript theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 import { ConditionalEdgeRouter, END } from "@langchain/langgraph";
@@ -443,7 +443,7 @@ type MyUpdate = typeof MyStateSchema.Update;
 
 大多数现代法学硕士提供商都有一个聊天模型界面，接受消息列表作为输入。 LangChain 的 [chat model interface](/oss/python/langchain/models) 特别接受消息对象列表作为输入。这些消息有多种形式，例如[⟦T152⟧](https://reference.langchain.com/python/langchain-core/messages/human/HumanMessage)（用户输入）或[⟦T153⟧](https://reference.langchain.com/python/langchain-core/messages/ai/AIMessage)（LLM 响应）。
 
-要了解有关消息对象的更多信息，请参阅[Messages conceptual guide](/oss/python/langchain/messages)。
+要了解有关消息对象是什么的更多信息，请参阅[Messages conceptual guide](/oss/python/langchain/messages)。
 
 #### 在图表中使用消息在许多情况下，将先前的对话历史记录存储为图形状态中的消息列表会很有帮助。为此，我们可以向存储`Message`对象列表的图状态添加一个键（通道），并使用reducer函数对其进行注释（请参阅下面示例中的`messages`键）。减速器函数对于告诉图如何在每次状态更新时（例如，当节点发送更新时）更新状态中的 `Message` 对象列表至关重要。如果您不指定减速器，则每次状态更新都会用最近提供的值覆盖消息列表。如果您想简单地将消息附加到现有列表，您可以使用 `operator.add` 作为减速器。但是，您可能还想手动更新图形状态中的消息（例如人机交互）。如果您要使用`operator.add`，您发送到图表的手动状态更新将被附加到现有的消息列表中，而不是更新现有的消息。为了避免这种情况，您需要一个可以跟踪消息 ID 并覆盖现有消息（如果更新）的缩减程序。为此，您可以使用预构建的 [⟦T159⟧](https://reference.langchain.com/python/langgraph/graph/message/add_messages) 函数。对于全新的消息，它只会附加到现有列表，但它也会正确处理现有消息的更新。
 
@@ -585,7 +585,7 @@ builder.add_node(my_node)
     graph.invoke({"url": "https://www.example.com"}, config)
     ```
 
-    <Card title="View example trace" icon="chart-line" href="https://smith.langchain.com/public/b9aac911-dc73-43de-b535-e52dfd6d7125/r">
+    <Card title="View example trace" icon="chart-line" href="https://smith.langchain.com/public/3bce38d1-45db-477d-87a2-f58b0d2473d9/r">
       为此示例打开公共 LangSmith 运行。
     </Card>
   </Tab>
@@ -634,7 +634,7 @@ builder.add_node(my_node)
     graph.invoke({"urls": ["https://www.example.com"]}, config)
     ```
 
-    <Card title="View example trace" icon="chart-line" href="https://smith.langchain.com/public/aff19bbc-eb5c-464c-838c-67f1257290e9/r">
+    <Card title="View example trace" icon="chart-line" href="https://smith.langchain.com/public/906c25d1-3431-4e07-a0a5-c8f6b51bfa66/r">
       为此示例打开公共 LangSmith 运行。
     </Card>
   </Tab>
@@ -650,7 +650,7 @@ from langgraph.graph import START
 graph.add_edge(START, "node_a")
 ```
 
-### `END` 节点`END`节点是一个特殊的节点，代表终端节点。当您想要指示哪些边完成后没有任何操作时，将引用此节点。
+### `END` 节点`END`节点是一个特殊的节点，代表终端节点。当您想要指示哪些边完成后没有任何操作时，将引用该节点。
 
 ```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 from langgraph.graph import END
@@ -924,7 +924,7 @@ resumed = graph.stream_events(Command(resume="yes"), config, version="v3")
 final = resumed.output
 ```
 
-<Card title="View example trace" icon="chart-line" href="https://smith.langchain.com/public/d043193b-5547-48ea-9796-f1bf5e3d32fb/r">
+<Card title="View example trace" icon="chart-line" href="https://smith.langchain.com/public/b9e32d60-4cf6-44e6-b85c-60f763578a10/r">
   为此示例打开公共 LangSmith 运行。
 </Card>
 

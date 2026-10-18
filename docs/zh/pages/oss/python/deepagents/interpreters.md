@@ -8,14 +8,14 @@
 
 解释器在代理循环内为代理提供了一个可编程的**内存中**工作空间。代理编写代码来完成任务，运行时执行它并仅返回相关结果。中间结果不会成为模型上下文的一部分。
 
-其中 [sandboxes](/oss/python/deepagents/sandboxes) 是一种对环境进行操作的代码优先方式（例如运行命令、安装依赖项和编辑文件），而解释器是一种代码优先方式，用于编写工具、保留状态以及决定应返回模型的信息。
+其中 [sandboxes](/oss/python/deepagents/sandboxes) 是对环境进行操作的代码优先方式（例如运行命令、安装依赖项和编辑文件），而解释器是用于编写工具、保留状态以及决定应返回模型的信息的代码优先方式。
 
 <Warning>
   口译员位于[**beta**](/oss/python/versioning)。 API 和生命周期行为可能会在版本之间发生变化。
 </Warning>
 
 <Note>
-  解释器需要 `langchain-quickjs>=0.2.0` 和 Python 3.11 或更高版本。
+  解释器需要 `langchain-quickjs>=0.3.0` 和 Python 3.11 或更高版本。
 </Note>
 
 ## 为什么要使用口译员？大多数代理工作在模型推理和工具调用之间交替进行。一个模型可以一次触发多个工具调用，但是该批次在发出时就被固定了。没有任何东西可以循环、在结果上分支、重试失败或将一个调用的输出提供给下一个调用而无需另一个模型轮转，并且每个结果都返回到模型的上下文。该模型还决定发出多少次调用，因此要求它在数百个项目上分派工作是不可靠的，而且它往往覆盖一个样本而不是每个项目。
@@ -44,11 +44,11 @@
 
 使用 [sandboxes](/oss/python/deepagents/sandboxes) 针对环境编写代码：shell 命令、包安装、测试、文件系统编辑和操作系统级执行。
 
-|需要|使用|
+|需要|使用 |
 | - | - |
-|一两个简单的外部通话|正常工具调用 |
+|一两个简单的外部通话 |正常工具调用 |
 |纯内存 JavaScript：循环、分支、重试或数据转换（无外部工具）|口译 |
-|许多外部工具调用由代码编排（需要[PTC](#programmatic-tool-calling-ptc)）| [programmatic tool calling (PTC)](#programmatic-tool-calling-ptc) 口译员 |
+|许多从代码编排的外部工具调用（需要[PTC](#programmatic-tool-calling-ptc)）| [programmatic tool calling (PTC)](#programmatic-tool-calling-ptc) 口译员 |
 |许多独立的工作单元、多个视角或对大量输入的递归分析 | [dynamic subagents](/oss/python/deepagents/dynamic-subagents) 口译员 |
 | Shell 命令、软件包安装、测试或完整操作系统文件系统访问[Sandboxes](/oss/python/deepagents/sandboxes) |
 
@@ -138,7 +138,7 @@
   ```
 </CodeGroup>
 
-## 口译员如何工作中间件向代理添加了`eval`工具。有用时，代理编写 JavaScript 并调用 `eval`；您不直接致电口译员。该工具在 QuickJS 上下文中运行代码，其变量可以在 `eval` 调用之间持续存在，具体取决于持久性 `mode`。它捕获 `console.log`、`console.warn` 和 `console.error`，并返回最后一个表达式的结果。
+## 口译员如何工作中间件向代理添加了`eval`工具。当有用时，代理编写 JavaScript 并调用 `eval`；您不直接致电口译员。该工具在 QuickJS 上下文中运行代码，其变量可以在 `eval` 调用之间持续存在，具体取决于持久性 `mode`。它捕获 `console.log`、`console.warn` 和 `console.error`，并返回最后一个表达式的结果。
 
 代理可以编写如下代码：
 
@@ -158,16 +158,16 @@ const totals = rows.reduce((acc, row) => {
 totals;
 ```
 
-By default (`mode="thread"`), interpreter state persists across turns in the same thread. See [Persistence](#persistence) for `mode` options and the snapshot lifecycle.
+默认情况下（`mode="thread"`），解释器状态在同一线程中跨轮次持续存在。请参阅 [Persistence](#persistence) 了解 `mode` 选项和快照生命周期。
 
-Code runs against [**QuickJS**](https://github.com/quickjs-ng/quickjs), a lightweight JavaScript runtime.默认情况下，解释器代码无法访问主机文件系统、网络、shell、包管理器或时钟。 It can compute, hold state, and write to `console.log`, `console.warn`, or `console.error`, and nothing more.
+代码运行于[**QuickJS**](https://github.com/quickjs-ng/quickjs)，一个轻量级的 JavaScript 运行时。默认情况下，解释器代码无法访问主机文件系统、网络、shell、包管理器或时钟。它可以计算、保存状态以及写入 `console.log`、`console.warn` 或 `console.error`，仅此而已。
 
 两个明确的桥梁扩展了这一范围：
 
-* **工具**，通过[programmatic tool calling (PTC)](#programmatic-tool-calling-ptc)。 Provide an allowlist of tools as async functions under the `tools` namespace. These can be the agent's own tools or standalone tools you define and pass in.
-* **子代理**，通过 [dynamic subagents](/oss/python/deepagents/dynamic-subagents)。 When the agent has subagents configured, the interpreter exposes a `task()` global for dispatching them from code.编程工具调用将关闭，直到您[enable it](#enable-ptc)。当代理有子代理时，通过 `task()` 进行子代理调度默认处于打开状态，您可以将其关闭。 Nothing else crosses the QuickJS boundary.
+* **工具**，通过 [programmatic tool calling (PTC)](#programmatic-tool-calling-ptc)。在 `tools` 命名空间下提供一个工具允许列表作为异步函数。这些可以是代理自己的工具或您定义并传入的独立工具。
+* **子代理**，通过 [dynamic subagents](/oss/python/deepagents/dynamic-subagents)。当代理配置了子代理时，解释器会公开一个 `task()` 全局变量，用于从代码中分派它们。编程工具调用将关闭，直到您[enable it](#enable-ptc)。当代理有子代理时，通过 `task()` 进行子代理调度默认处于打开状态，您可以将其关闭。没有其他东西跨越 QuickJS 的边界。
 
-## Programmatic tool calling (PTC)
+## 编程工具调用 (PTC)
 
 编程工具调用 (PTC) 在全局 `tools` 命名空间下公开解释器内选定的代理工具。代理可以编写在循环、分支、重试或并行批次中调用工具的代码，而不是要求模型发出一个工具调用、等待结果，然后决定下一次调用。
 
@@ -525,9 +525,9 @@ reviews.join("\n\n");
 <Note>
   **代码执行如何工作**
 
-  解释器代码在嵌入式 QuickJS 上下文中运行，而不是在单独的 VM 或进程中运行。在Python中，这个运行时由[⟦T79⟧](https://github.com/langchain-ai/quickjs-rs)提供，它在其[Security guide](https://github.com/langchain-ai/quickjs-rs#security)中记录了同进程执行边界。
+  解释器代码在编译为 WebAssembly 的 QuickJS 中运行，由 [⟦T79⟧](https://github.com/langchain-ai/quickjs-rs) 提供。 WebAssembly 沙箱是隔离边界：JavaScript 在来宾的线性内存中执行，无法读取或写入主机进程的内存。每个 LangGraph 线程都有自己的 WebAssembly 实例，因此一个线程上的解释器状态无法到达另一个线程。沙箱在 [wasmtime](https://wasmtime.dev/) 上的主机进程内运行，因此 wasmtime 漏洞是沙箱之外的剩余路径。保持`wasmtime`更新。对于敌对的多租户工作负载，还可以在隔离的工作进程或容器中运行代理。详情请参阅`quickjs-rs`[Security guide](https://github.com/langchain-ai/quickjs-rs#security)。
 
-  将解释器视为功能范围的执行层，而不是主机内存隔离边界。对于不受信任或半受信任的代码，请在隔离的工作进程或容器中运行代理，并缩小 PTC 许可名单的范围。
+  沙箱包含引擎，而不是您赋予它的功能。解释器代码可以调用桥接到其中的每个工具，因此请缩小 PTC 许可名单的范围。
 </Note>
 
 ## 配置
@@ -543,7 +543,7 @@ reviews.join("\n\n");
 | `max_ptc_calls` | `256` |每个 `eval` 允许最多 `tools.*` 调用。仅在受信任的环境中设置为 `None`。参见[Programmatic tool calling (PTC)](#programmatic-tool-calling-ptc)和[Security](#security)。 |
 | `subagents` | `True` |当代理有子代理时，公开内置的`task()`全局。设置为 `False` 要求通过普通 `task` 工具调度。参见[Dynamic subagents](#dynamic-subagents)。 |
 | `mode` | `"thread"` |控制解释器持久性：`"thread"`（跨回合）、`"turn"`（一回合内）或`"call"`（每个`eval`的新鲜REPL）。参见[Persistence](#persistence)。 |
-| `max_snapshot_bytes` | `None` |删除大于此字节限制的快照。默认为`memory_limit`。参见[Persistence](#persistence)。 |
+| `max_snapshot_bytes` | `None` |删除大于此字节限制的快照。默认为 `memory_limit`。参见[Persistence](#persistence)。 |
 
 ***<div>
   <Callout icon="terminal-2">

@@ -298,7 +298,7 @@
   ```
 </CodeGroup>
 
-<Card title="View example trace" icon="chart-line" href="https://smith.langchain.com/public/2cd41e2d-4f69-4620-ba18-670336d3915d/r">
+<Card title="View example trace" icon="chart-line" href="https://smith.langchain.com/public/2dea64cd-d02d-449c-b44c-4e6604fb5719/r">
   为此示例打开公共 LangSmith 运行。
 </Card>
 
@@ -319,7 +319,7 @@ async for chunk in client.runs.stream(
 ):
     print(chunk.data)
 ```<Tip>
-  `thread_id` 范围*对话*（消息历史记录、检查点）。 `context` 携带您的工具和中间件读取的*每次运行*数据。它们是独立的：更改一个不会影响另一个，您可以通过其中一个或两个。
+  `thread_id` 界定*对话*（消息历史记录、检查点）。 `context` 携带您的工具和中间件读取的*每次运行*数据。它们是独立的：更改一个不会影响另一个，您可以通过其中一个或两个。
 </Tip>
 
 ### 多租户
@@ -413,7 +413,7 @@ Deep Agents 在 LangGraph 上运行，提供开箱即用的持久执行。 [pers
 记忆在对话中总是持久的。主要问题是它如何跨越用户和助手的界限。正确的范围取决于谁应该查看和修改数据：|范围 |命名空间 |使用案例 |示例|
 | - | - | - | - |
 | **用户**（推荐默认）| `(user_id)` |每个用户的偏好和上下文| “我更喜欢简洁的回答” |
-| **助理** | `(assistant_id)` |一名助理的共享说明 | “帖子上限为 280 个字符” |
+| **助理** | `(assistant_id)` |一名助理的共享说明 | “帖子上限为 280 个字符”|
 | **全球** | `(org_id)` |所有用户和助理的只读策略 | “永远不要透露内部定价”|
 
 <Warning>
@@ -554,7 +554,7 @@ Deep Agents 在 LangGraph 上运行，提供开箱即用的持久执行。 [pers
 
 关键的决定是沙箱的寿命有多长。每次对话都是新的，还是对话共享一个持久的环境？
 
-|范围 |沙箱 ID 存储于 |生命周期|示例用例 |
+|范围 |沙箱 ID 存储于 |生命周期 |示例用例 |
 | - | - | - | - |
 | **线程范围** | [Thread](/langsmith/use-threads) 元数据 |每次对话都是新鲜的，在 TTL 上进行了清理 |每个对话都以干净的方式开始的数据分析机器人 |
 | **助理范围** | [Assistant](/langsmith/assistants)配置|在所有对话中共享 |跨对话维护克隆存储库的编码助手 |<Note>
@@ -828,7 +828,7 @@ Deep Agents 在 LangGraph 上运行，提供开箱即用的持久执行。 [pers
 `${SECRET_KEY}` 引用解析存储在 LangSmith [workspace settings](/langsmith/set-up-hierarchy#configure-workspace-settings) 中的机密。在创建引用它们的模板之前，先在那里配置机密。**工作空间秘密。** 对于不需要基于代理的注入的 API 密钥（例如，代理服务器本身使用的密钥，而不是沙箱代码），将它们存储为 [workspace secrets](/langsmith/set-up-hierarchy#configure-workspace-settings) 中的 LangSmith。这些在运行时可用作工作区中所有代理的环境变量。
 
 <Warning>
-  避免通过环境变量或文件上传将机密传递到沙箱中。代理可以读取沙箱内的任何可访问文件或环境变量，包括凭据。身份验证代理将秘密完全排除在沙箱之外。
+  避免通过环境变量或文件上传将机密传递到沙箱中。代理可以读取沙箱内任何可访问的文件或环境变量，包括凭据。身份验证代理将秘密完全排除在沙箱之外。
 </Warning>
 
 ## 护栏

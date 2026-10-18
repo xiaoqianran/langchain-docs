@@ -8,7 +8,7 @@
 
 本页面涵盖了所有 LangChain 与 [Ollama](https://ollama.com/) 的集成。
 
-Ollama 允许您在本地运行开源模型（如[⟦T0⟧](https://ollama.com/library/gpt-oss)）。
+Ollama 允许您在本地或云端运行开源模型（如[⟦T0⟧](https://ollama.com/library/gpt-oss)）。
 
 有关支持的型号和变体的完整列表，请参阅[Ollama model library](https://ollama.ai/library)。
 

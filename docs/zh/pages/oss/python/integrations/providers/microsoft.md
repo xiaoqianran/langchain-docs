@@ -527,7 +527,7 @@ set_llm_cache(cache)
 
 ## 向量存储
 
-### Azure Cosmos DBAI 代理可以依赖 Azure Cosmos DB 作为统一的[memory system](https://learn.microsoft.com/en-us/azure/cosmos-db/ai-agents#memory-can-make-or-break-agents) 解决方案，享受速度、规模和简单性。该服务成功地[enabled OpenAI's ChatGPT service](https://www.youtube.com/watch?v=6IIUtEFKJec\&t)以高可靠性和低维护量动态扩展。它由原子记录序列引擎提供支持，是世界上第一个提供无服务器模式的全球分布式[NoSQL](https://learn.microsoft.com/en-us/azure/cosmos-db/distributed-nosql)、[relational](https://learn.microsoft.com/en-us/azure/cosmos-db/distributed-relational)和[vector database](https://learn.microsoft.com/en-us/azure/cosmos-db/vector-database)服务。
+### Azure Cosmos DBAI 代理可以依赖 Azure Cosmos DB 作为统一的[memory system](https://learn.microsoft.com/en-us/azure/cosmos-db/ai-agents#ai-agent-memory-system) 解决方案，享受速度、规模和简单性。该服务成功地[enabled OpenAI's ChatGPT service](https://www.youtube.com/watch?v=6IIUtEFKJec\&t)以高可靠性和低维护量动态扩展。它由原子记录序列引擎提供支持，是世界上第一个提供无服务器模式的全球分布式[NoSQL](https://learn.microsoft.com/en-us/azure/cosmos-db/distributed-nosql)、[relational](https://learn.microsoft.com/en-us/azure/cosmos-db/distributed-relational)和[vector database](https://learn.microsoft.com/en-us/azure/cosmos-db/vector-database)服务。
 
 以下是两个可用的 Azure Cosmos DB API，它们可以提供矢量存储功能。
 
@@ -619,7 +619,7 @@ from langchain_azure_cosmosdb import AzureCosmosDBNoSqlVectorSearch
 
 参见[detail configuration instructions](https://learn.microsoft.com/azure/azure-sql/database/ai-artificial-intelligence-intelligent-applications?view=azuresql)。
 
-我们需要安装 `langchain-sqlserver` python 包。
+我们需要安装`langchain-sqlserver` python 包。
 
 ```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 !pip install langchain-sqlserver==0.1.1
@@ -846,7 +846,7 @@ from langchain_azure_ai.tools import AzureAIServicesToolkit
 
 根据客户端与代理交互的方式选择托管协议：
 
-|协议|运行参数| SDK主机类|端点|使用时 |
+|协议|运行参数 | SDK主机类|端点|使用时 |
 | - | - | - | - | - |
 |回应 | `--protocol responses` | `ResponsesHostServer` | `/responses` |您需要与OpenAI兼容的聊天、流媒体、响应历史记录或对话线程。对于大多数对话代理来说，从这里开始。 |
 |祈求| `--protocol invocations` | `InvocationsHostServer` | `/invocations` |您需要自定义 JSON 形状、Webhook 样式端点或非会话处理。 |<Note>

@@ -6,7 +6,9 @@
 
 Deep Agents 的文件系统后端。
 
-浏览 Deep Agents 的可用文件系统后端或为生态系统贡献自己的后端。了解有关 [backends docs](/oss/python/deepagents/backends) 中后端如何工作的更多信息。
+浏览 Deep Agents 的可用文件系统后端或为生态系统贡献您自己的后端。了解有关 [backends docs](/oss/python/deepagents/backends) 中后端如何工作的更多信息。
+
+<PythonIntegrationComponentMap />
 
 ## 分享你的后端
 
@@ -24,7 +26,7 @@ Deep Agents 的文件系统后端。
 
 ## 所有后端
 
-|后端 |描述 |套餐 |来源 |
+|后端|描述 |套餐 |来源 |
 | - | - | - | - |
 | [Azure Blob Backend](https://github.com/langchain-ai/langchain-azure/tree/main/libs/azure-storage) | Deep Agents `BackendProtocol` 的 Azure Blob 存储实现。将代理工作区文件、内存和工件保留在 Blob 容器中。 | `langchain-azure-storage` | [⟦T2⟧](https://github.com/langchain-ai/langchain-azure/tree/main/libs/azure-storage) |
 | [MongoDB VFS Adapter](https://github.com/langchain-ai/langchain-mongodb/tree/main/libs/langchain-mongodb-deepagents-vfs) |由 MongoDB Atlas 支持的虚拟文件系统后端。将代理文件（包括内存、工件和对话历史记录）保留在 MongoDB 集合中。 | `langchain-mongodb-deepagents-vfs` | [⟦T4⟧](https://github.com/langchain-ai/langchain-mongodb/tree/main/libs/langchain-mongodb-deepagents-vfs) |
