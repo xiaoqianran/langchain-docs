@@ -8,7 +8,7 @@
 
 [Google AI](https://ai.google.dev/)提供多种不同的聊天模式，包括功能强大的Gemini系列。有关最新型号、其功能、上下文窗口等的信息，请前往[Google AI docs](https://ai.google.dev/gemini-api/docs/models/gemini)。
 
-这将帮助您开始使用 `ChatGoogleGenerativeAI` [chat models](/oss/javascript/langchain/models)。有关所有 `ChatGoogleGenerativeAI` 功能和配置的详细文档，请前往 [API reference](https://reference.langchain.com/javascript/langchain-google-genai/ChatGoogleGenerativeAI)。
+这将帮助您开始使用 `ChatGoogleGenerativeAI` [chat models](/oss/javascript/langchain/models)。有关所有`ChatGoogleGenerativeAI`功能和配置的详细文档，请前往[API reference](https://reference.langchain.com/javascript/langchain-google-genai/ChatGoogleGenerativeAI)。
 
 <Note>
   **该库将被弃用**
@@ -222,7 +222,7 @@ const fakeBrowserTool = tool((_) => {
 })
 
 const llmWithTool = new ChatGoogleGenerativeAI({
-  model: "gemini-pro",
+  model: "gemini-3.6-flash",
 }).bindTools([fakeBrowserTool]) // Bind your tools to the model
 
 const toolRes = await llmWithTool.invoke([

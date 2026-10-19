@@ -62,10 +62,10 @@ Deep Agents 代码采用分层配置。优先顺序取决于设置类型。
 | - | - |
 | `dcode config` |显示每个设置、其当前值以及该值的来源 |
 | `dcode config get <key>` |显示一项设置的当前值和来源，例如 `dcode config get interpreter.memory_limit_mb` |
-| `dcode config path` |显示 `managed_config.toml`、`config.toml`、项目和全局 `.env` 文件、`hooks.json` 和托管状态的文件位置，包括每个文件是否存在 |将 `--verbose` 添加到 `dcode config` 或 `dcode config get` 以显示说明、默认值以及可以定义每个设置的位置。将 `--verbose` 与 `--json` 组合以包含接受的类型和其他参考详细信息。所有三个命令都接受 `--json` 以获得机器可读的输出。有关命令的完整列表，请参阅[CLI reference](/oss/deepagents/code/cli-reference)。
+| `dcode config path` |显示 `managed_config.toml`、`config.toml`、项目和全局 `.env` 文件、`hooks.json` 和托管状态的文件位置，包括每个文件是否存在 |Add `--verbose` to `dcode config` or `dcode config get` to show descriptions, defaults, and where each setting can be defined. Combine `--verbose` with `--json` to include accepted types and other reference details. All three commands accept `--json` for machine-readable output.有关命令的完整列表，请参阅[CLI reference](/oss/deepagents/code/cli-reference)。
 
 <Warning>
-  提供者凭据和其他机密仅报告为已配置/未配置。它们的值永远不会被 `config` 或 `config get` 打印。
+  Provider credentials and other secrets are reported as configured / not configured only. Their values are never printed by `config` or `config get`.
 </Warning>
 
 ## 环境变量
@@ -81,9 +81,9 @@ OPENAI_API_KEY=sk-...
 
 ### 加载顺序和优先级
 
-启动时，Deep Agents代码读取最近的项目`.env`，通过搜索您启动的目录并向上遍历其父项找到（第一个找到的`.env`获胜），然后读取`~/.deepagents/.env`作为所有项目的全局后备。项目 `.env` 胜过全局项目，并且两者都不会覆盖 shell 中已设置的值。
+启动时，Deep Agents代码读取最近的项目`.env`，通过搜索您启动的目录并向上遍历其父项找到（第一个找到的`.env`获胜），然后读取`~/.deepagents/.env`作为所有项目的全局后备。 A project `.env` wins over the global one, and neither overrides a value already set in your shell.
 
-要完全跳过项目`.env`（全局`~/.deepagents/.env`仍然加载），请设置`startup.read_project_dotenv`。
+To skip the project `.env` entirely (the global `~/.deepagents/.env` still loads), set `startup.read_project_dotenv`.
 
 <Tabs>
   <Tab title="Config file">
@@ -134,7 +134,7 @@ DEEPAGENTS_CODE_ANTHROPIC_API_KEY=
 
 ## 技能目录白名单
 
-默认情况下，当Deep Agents代码加载技能时，它会验证解析的技能文件路径是否保留在标准[skill directories](/oss/deepagents/code/configuration#skills)之一内。这可以防止技能目录内的符号链接读取这些根目录之外的任意文件。如果您将共享技能资产存储在非标准位置并使用标准技能目录中的符号链接来引用它们，则可以将该位置添加到遏制允许列表中。这不会**添加新的技能发现位置：技能仍然只能从标准目录中发现。
+默认情况下，当Deep Agents代码加载技能时，它会验证已解析的技能文件路径是否保留在标准[skill directories](/oss/deepagents/code/configuration#skills)之一内。这可以防止技能目录内的符号链接读取这些根目录之外的任意文件。如果您将共享技能资产存储在非标准位置并使用标准技能目录中的符号链接来引用它们，则可以将该位置添加到遏制允许列表中。这不会**添加新的技能发现位置：技能仍然只能从标准目录中发现。
 
 <ResponseField name="extra_allowed_dirs" type="string[]">
   添加到技能限制允许列表的路径。支持`~`扩展。
@@ -288,7 +288,7 @@ Deep Agents 代码默认自动检查并安装更新。
 
 ### 自定义定价覆盖
 
-对于目录中未涵盖的型号，请将费率添加到`~/.deepagents/prices.json`。该文件使用 [genai-prices](https://github.com/pydantic/genai-prices) 提供者数组架构。例如：
+对于目录未涵盖的型号，请将费率添加到`~/.deepagents/prices.json`。该文件使用 [genai-prices](https://github.com/pydantic/genai-prices) 提供者数组架构。例如：
 
 ```json theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 [
@@ -399,7 +399,7 @@ Deep Agents 代码自动将学习内容保存到内存中。要在停止自动�
 
 ## 对话历史记录保留
 
-使用 `/offload` 卸载线程会在 `~/.deepagents/conversation_history/` 下写入 Markdown 存档。启动扫描会删除超过 30 天的存档。扫描仅直接触及存档目录内的常规 `.md` 文件，从不阻止启动，并记录和吞掉文件系统错误。更改保留窗口，或使用 `0` 禁用清理：
+使用 `/offload` 卸载线程会在 `~/.deepagents/conversation_history/` 下写入 markdown 存档。启动扫描会删除超过 30 天的存档。扫描仅直接触及存档目录内的常规 `.md` 文件，从不阻止启动，并记录和吞掉文件系统错误。更改保留窗口，或使用 `0` 禁用清理：
 
 <Tabs>
   <Tab title="Config file">
@@ -451,7 +451,7 @@ Deep Agents 代码在每个操作系统上的固定位置查找 `managed_config.
 | - | - |
 | macOS | `/Library/Application Support/dcode/managed_config.toml` |
 | Linux | `/etc/dcode/managed_config.toml` |
-|窗户 | `<ProgramData>\dcode\managed_config.toml` |
+|窗户| `<ProgramData>\dcode\managed_config.toml` |
 
 在 Windows 上，Deep Agents 代码通过系统注册表查找 ProgramData，而不是 `%ProgramData%` 环境变量。环境变量无法更改托管配置位置。如果注册表不可用，则Deep Agents代码检查`C:\ProgramData\dcode\managed_config.toml`。如果该文件也丢失，Deep Agents 代码无法确定管理员是否配置了策略，因此使用配置的命令会停止而不是在没有配置的情况下运行。
 
@@ -491,7 +491,7 @@ allowed = [
 ]
 default = "acme:production"
 auto_classifier = "openai:gpt-5.5"
-```如果省略`allowed`，用户可以选择任意型号。空列表会阻止所有模型。如果用户列表无效，Deep Agents 代码会阻止所有模型。如果管理员列表无效，Deep Agents 代码会阻止启动、重新加载和其他使用配置的命令。管理员列表会替换用户列表，而不是与其合并。托管的 `default`、`recent` 和 `auto_classifier` 值也必须出现在管理员的允许列表中。
+```如果省略`allowed`，用户可以选择任意型号。空列表会阻止所有模型。如果用户的列表无效，Deep Agents 代码会阻止所有模型。如果管理员列表无效，Deep Agents 代码会阻止启动、重新加载和其他使用配置的命令。管理员列表会替换用户列表，而不是与其合并。托管的 `default`、`recent` 和 `auto_classifier` 值也必须出现在管理员的允许列表中。
 
 在`[models.providers.<name>].models`下添加模型使其可供选择，但不会自动允许。将确切的型号或提供商通配符添加到允许列表中。通配符仅涵盖该提供商可用的模型。如果没有可用型号，Deep Agents代码无法选择默认值。当Deep Agents代码可以识别在界面中输入的裸模型名称的提供者时，它会在检查白名单之前将该名称转换为`provider:model`。
 
@@ -506,7 +506,7 @@ auto_classifier = "openai:gpt-5.5"
 source = "https://config.example.com/dcode-policy.toml"
 ```
 
-配置远程策略时，本地文件只能包含 `[managed_config].source` 设置。将完整的策略放入远程 TOML 文件中。 Deep Agents 代码未结合远程和本地策略设置，远程文件无法指向其他源。
+配置远程策略时，本地文件只能包含 `[managed_config].source` 设置。将完整的策略放入远程 TOML 文件中。 Deep Agents 代码未结合远程和本地策略设置，并且远程文件无法指向另一个源。
 
 <Accordion title="View remote policy requirements">
   URL 必须使用 HTTPS，不包含凭据或查询参数，并且不超过 2,048 个 ASCII 字符。 Deep Agents 代码不遵循重定向、使用代理环境变量或将远程策略保存到磁盘。
@@ -533,7 +533,7 @@ dcode doctor
 
 Deep Agents 当代码无法读取或解析托管文件、无法下载完整的远程策略或无法安全地应用策略时，如果没有所需的管理员设置，代码将停止而不是运行。使用配置退出的命令带有代码`78`。您仍然可以运行`dcode config`、`dcode doctor`、`dcode auth path`和帮助命令来解决问题。
 
-如果在运行会话期间更新失败，Deep Agents代码将继续使用以前的有效策略并报告失败。新进程在加载有效策略之前无法启动。
+如果在运行会话期间更新失败，Deep Agents 代码将继续使用之前的有效策略并报告失败。新进程在加载有效策略之前无法启动。
 
 <Accordion title="View settings that fail closed">
   以下任何设置的无效值都会停止启动，因为回退到用户值可能会删除所需的限制：* `interpreter.enable_interpreter`
@@ -815,13 +815,13 @@ Deep Agents 代码将数据存储在两个目录层次结构中：* **`~/.deepag
 
 |数据|地点 |读/写 |笔记|
 | - | - | - | - |
-| **会议** | `~/.deepagents/.state/sessions.db` |读/写| SQLite 检查点数据库 |
+| **会议** | `~/.deepagents/.state/sessions.db` |读/写 | SQLite 检查点数据库 |
 | **输入历史记录** | `~/.deepagents/.state/history.jsonl` |读/写 | JSON 行，向上/向下箭头调用 |
 | **ChatGPT OAuth 令牌** | `~/.deepagents/.state/chatgpt-auth.json` |读/写 |支持[⟦T408⟧](/oss/deepagents/code/providers)提供商；当您使用 ChatGPT 登录时创建并自动刷新。只能由您的用户帐户读取。 |
 | **基本说明** |套餐`default_agent_prompt.md` |右 |不可变，通过 Deep Agents 代码升级进行更新 |
 | **用户定制** | `~/.deepagents/{agent}/AGENTS.md` |读/写 |附加到基本说明 |
 | **项目说明** | `.deepagents/AGENTS.md` 或 `AGENTS.md` |右 |两者均已加载（如果存在）|
-| **用户技能** | `~/.deepagents/{agent}/skills/` |读/写|代理特定技能 |
+| **用户技能** | `~/.deepagents/{agent}/skills/` |读/写 |代理特定技能 |
 | **共享技能** | `~/.agents/skills/` |右 |与工具无关、跨 CLI |
 | **项目技能** | `.deepagents/skills/` 或 `.agents/skills/` |右 |项目范围 |
 | **用户Python扩展** | `~/.deepagents/extensions/` |读/写 |实验性；参见[Python extensions](/oss/deepagents/code/extensions)|| **项目 Python 扩展** | `.deepagents/extensions/` |右 |实验性；需要项目信任 |
@@ -841,7 +841,7 @@ Deep Agents 代码将数据存储在两个目录层次结构中：* **`~/.deepag
 3. `.deepagents/skills/` — 项目Deep Agents代码
 4. `.agents/skills/` — 项目工具无关*（最高）*
 
-加载技能时，Deep Agents代码会验证解析的文件路径是否位于这些目录之一中。在所有技能根之外解析的符号链接将被拒绝。要允许其他目录中的符号链接目标，请参阅[⟦T425⟧](/oss/deepagents/code/configuration#skill-directory-allowlist)。
+加载技能时，Deep Agents 代码会验证解析的文件路径是否保留在这些目录之一或之前批准的信任条目中。在所有可信根之外解析的符号链接将被拒绝，直到您批准目标目录（交互式）或将其添加到[⟦T425⟧](/oss/deepagents/code/configuration#skill-directory-allowlist)（无头运行所需）。参见[Invoke a skill mid-session](/oss/deepagents/code/memory-and-skills#invoke-a-skill-mid-session)。
 
 #### 子代理
 
@@ -852,9 +852,9 @@ Deep Agents 代码将数据存储在两个目录层次结构中：* **`~/.deepag
 
 每个子代理都是一个 `AGENTS.md` 文件，其中包含 YAML frontmatter（`name`、`description`、可选 `model`）和系统提示符的 Markdown 正文。有关完整格式参考，请参阅[Use subagents in Deep Agents Code](/oss/deepagents/code/subagents)。
 
-#### 说明
+＃＃＃＃ 指示所有指令源都是**组合**（不覆盖）：
 
-所有指令源都是**组合**（不覆盖）：1. 包基本提示*（始终加载）*
+1. 包基本提示*（始终加载）*
 2. `~/.deepagents/{agent}/AGENTS.md` *（已附加）*
 3. `.deepagents/AGENTS.md` *（已附加）*
 4. `AGENTS.md` 位于项目根目录*（已附加）*
@@ -864,10 +864,10 @@ Deep Agents 代码将数据存储在两个目录层次结构中：* **`~/.deepag
 |目录 |目的|何时使用 |
 | - | - | - |
 | `.deepagents/` | Deep Agents 代码特定 |使用 Deep Agents 代码特定功能的技能和配置 |
-| `.agents/` |与工具无关 |您希望在不同的 AI CLI 工具之间分享的技能 |
+| `.agents/` |与工具无关 |您想要在不同的 AI CLI 工具之间分享的技能 |
 
 <Tip>
-  使用 `.agents/skills/` 获得可与任何 AI 编码助手配合使用的技能。
+  使用 `.agents/skills/` 获取与任何 AI 编码助手配合使用的技能。
   对于依赖于 Deep Agents 特定工具或约定的技能，请使用 `.deepagents/skills/`。
 </Tip>
 
@@ -880,7 +880,7 @@ Deep Agents 代码将数据存储在两个目录层次结构中：* **`~/.deepag
 |清除输入历史记录 | `rm ~/.deepagents/.state/history.jsonl` |
 |清除存储的 API 密钥 | `rm ~/.deepagents/.state/auth.json` |
 |清除 MCP OAuth 令牌 | `rm -rf ~/.deepagents/.state/mcp-tokens` |
-|清除已保存的 MCP 项目审批 |从 `~/.deepagents/config.toml` 中的 `[mcp]` 表中删除 `enabled_project_server_approvals` |
+|清除已保存的 MCP 项目审批 |从 `~/.deepagents/config.toml` 的 `[mcp]` 表中删除 `enabled_project_server_approvals` |
 |重新运行首次运行入职 | `rm ~/.deepagents/.state/onboarding_complete` |
 |重置代理说明 | `dcode agents reset --agent {name}` |
 |删除技能 | `rm -rf ~/.deepagents/{agent}/skills/{skill-name}` |
@@ -891,9 +891,7 @@ Deep Agents 代码将数据存储在两个目录层次结构中：* **`~/.deepag
   除非您有 `sessions.db` 文件的备份，否则此操作无法撤消。
 </Warning>
 
-## 另请参阅
-
-* [Provider credentials](/oss/deepagents/code/credentials)
+## 另请参阅* [Provider credentials](/oss/deepagents/code/credentials)
 * [Config file](/oss/deepagents/code/config-file)
 * [CLI reference](/oss/deepagents/code/cli-reference)
 * [Hooks](/oss/deepagents/code/hooks)
@@ -901,7 +899,9 @@ Deep Agents 代码将数据存储在两个目录层次结构中：* **`~/.deepag
 * [MCP tools](/oss/deepagents/code/mcp-tools)
 * [Python extensions](/oss/deepagents/code/extensions)
 
-***<div>
+***
+
+<div>
   <Callout icon="terminal-2">
     [Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
   </Callout>

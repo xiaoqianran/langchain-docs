@@ -136,7 +136,7 @@
   </Card>
 
   <Card title="Tuning Engines" href="https://www.tuningengines.com/" icon="link">
-    受控OpenAI兼容端点，用于模型访问、策略检查和使用情况统计。
+    受控的OpenAI兼容端点，用于模型访问、策略检查和使用情况统计。
   </Card>
 
   <Card title="xAI" href="/oss/javascript/integrations/chat/xai">
@@ -390,16 +390,20 @@
 
 <Columns>
   <Card title="AgentSearch" href="https://agentsearchhq.com/#integrations?utm_source=langchain-docs-js&utm_medium=integration-listing&utm_campaign=promo-oct26" icon="link">
-    LangChain.js 代理的网页搜索工具，默认免费，无密钥。针对完整页面和 JS 渲染网站按调用付费提取和渲染（\$0.005，x402）。
+    LangChain.js代理的网络搜索工具，默认免费，无密钥。针对完整页面和 JS 渲染网站按调用付费提取和渲染（\$0.005，x402）。
   </Card>
 
-  <Card title="aiworker" href="https://github.com/ai-worker227/aiworker-examples/tree/main/langchain" icon="link">
+  <Card title="agentsvc" href="https://agentsvc.io/docs/langchain" icon="link">
+    为客服人员提供按次付费的网络、数据、加密、内存和收件箱工具，通过 x402 使用信用代币或 USDC 进行支付。
+  </Card><Card title="aiworker" href="https://github.com/ai-worker227/aiworker-examples/tree/main/langchain" icon="link">
     根据 aiworker 的实时 OpenAPI 目录构建的付费数据工具（DeFi 收益率、页面到 Markdown、基础代币和钱包检查、Polymarket 赔率、历史和回溯测试、事实检查、标题搜索）；每次调用都通过代理钱包中的 x402 协议以 USDC 进行支付，无需 API 密钥。
   </Card>
 
   <Card title="Atomic Mail" href="https://docs.atomicmail.ai/langchain" icon="link">
     电子邮件工具包，通过工作证明提供代理拥有的收件箱，并通过 JMAP 发送和接收。
-  </Card><Card title="Azure Dynamic Sessions" href="/oss/javascript/integrations/tools/azure_dynamic_sessions" icon="brand-windows">
+  </Card>
+
+  <Card title="Azure Dynamic Sessions" href="/oss/javascript/integrations/tools/azure_dynamic_sessions" icon="brand-windows">
     在 Azure 动态会话中安全执行代码。
   </Card>
 
@@ -421,9 +425,7 @@
 
   <Card title="Exa Search" href="/oss/javascript/integrations/tools/exa_search">
     人工智能驱动的搜索引擎可提供更好的结果。
-  </Card>
-
-  <Card title="GetYouTubeTranscript" href="https://github.com/tubeagentkit/langchain-getyoutubetranscript#readme" icon="link">
+  </Card><Card title="GetYouTubeTranscript" href="https://github.com/tubeagentkit/langchain-getyoutubetranscript#readme" icon="link">
     GetYouTubeTranscript 是一个用于 YouTube 视频转录（可选地带有每行时间戳）和 YouTube 搜索的 API
   </Card>
 
@@ -445,7 +447,9 @@
 
   <Card title="MCP Toolbox" href="/oss/javascript/integrations/tools/mcp_toolbox">
     模型上下文协议工具和实用程序。
-  </Card><Card title="OpenAPI" href="/oss/javascript/integrations/tools/openapi">
+  </Card>
+
+  <Card title="OpenAPI" href="/oss/javascript/integrations/tools/openapi">
     根据 OpenAPI 规范生成工具。
   </Card>
 
@@ -467,9 +471,7 @@
 
   <Card title="pipe0" href="https://www.pipe0.com/docs/sdks/integrations/langchain" icon="link">
     跨多个数据提供商进行人员搜索和联系人丰富（工作电子邮件、电话号码、个人资料和企业结构）
-  </Card>
-
-  <Card title="Pushary" href="https://pushary.com/docs/agents/build/langgraph?utm_source=langchain&utm_medium=integration-directory&utm_campaign=pushary-langgraph-js" icon="link">
+  </Card><Card title="Pushary" href="https://pushary.com/docs/agents/build/langgraph?utm_source=langchain&utm_medium=integration-directory&utm_campaign=pushary-langgraph-js" icon="link">
     LangGraph.js 代理的电话批准。基于 PusharyInterrupt() 构建的批准节点会在手机上询问您的用户，并且图表仅在批准时路由到受保护的节点；如果没有答案，它将返回 null，因此该操作不会运行。 createAskHumanTool() 添加了一个可选的ask\_ human 工具。
   </Card>
 
@@ -479,7 +481,9 @@
 
   <Card title="SIGNA" href="https://github.com/codexvritra/signa/tree/main/sdk/langchain" icon="link">
     将钱包签名的消息传递工具添加到LangChain代理。
-  </Card><Card title="Sato Hub" href="https://github.com/satohubai/sato-hub-integrations/tree/main/packages/satohub-langchain-tools#readme" icon="link">
+  </Card>
+
+  <Card title="Sato Hub" href="https://github.com/satohubai/sato-hub-integrations/tree/main/packages/satohub-langchain-tools#readme" icon="link">
     Sato Hub 每日重建的链上代理构建块索引上的四个无密钥工具：搜索列表，对存储库、程序包、MCP 端点或代币运行预检查找，获取带有规定费用的交换地点建议，并将目标转变为列出项目的构建计划。
   </Card>
 
@@ -501,9 +505,7 @@
 
   <Card title="Tavily Search" href="/oss/javascript/integrations/tools/tavily_search">
     针对检索应用程序的人工智能优化搜索。
-  </Card>
-
-  <Card title="Tavily Research" href="/oss/javascript/integrations/tools/tavily_research">
+  </Card><Card title="Tavily Research" href="/oss/javascript/integrations/tools/tavily_research">
     与 Tavily 一起对给定主题进行综合研究。
   </Card>
 
@@ -529,7 +531,9 @@
 
   <Card title="Exa" href="/oss/javascript/integrations/retrievers/exa">
     人工智能驱动的网络搜索和检索。
-  </Card><Card title="FoxNose" href="https://github.com/FoxNoseTech/langchain-foxnose-js#readme" icon="link">
+  </Card>
+
+  <Card title="FoxNose" href="https://github.com/FoxNoseTech/langchain-foxnose-js#readme" icon="link">
     用于 FoxNose 集合的检索器、文档加载器和代理工具，通过 Flux 交付 API 提供文本、矢量、混合和矢量增强搜索。
   </Card>
 
@@ -554,9 +558,7 @@
   </Card>
 </Columns>
 
-## 商店
-
-<Columns>
+## 商店<Columns>
   <Card title="AlBuddyMemoryStore" href="https://github.com/flytomoon/al-buddy-memory/blob/main/docs/integrations/langchain.md" icon="link">
     用于本地 SQLite 文件上的长期内存的 LangGraph `BaseStore`，无 API 密钥。每个 put 都会记录哪个代理写了它；再次输入密钥会废弃旧值而不是覆盖它，删除会关闭一个事实而不是删除它，因此保留了所相信的历史。
   </Card>
@@ -582,7 +584,9 @@
   </Card>
 </Columns>
 
-## 中间件<Columns>
+## 中间件
+
+<Columns>
   <Card title="BRYDGE" href="https://github.com/contactkontey-dotcom/langchain-brydge#readme" icon="link">
     监督代理工具与 BRYDGE 的调用，并检查目标系统自己的记录，以报告每个操作是否在允许的情况下发生。
   </Card>
@@ -604,9 +608,7 @@
   </Card>
 </Columns>
 
-***
-
-<div>
+***<div>
   <Callout icon="terminal-2">
     [Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
   </Callout>

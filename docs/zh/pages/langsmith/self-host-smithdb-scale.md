@@ -1,40 +1,69 @@
-<!-- langchain-docs: translation failed; English fallback -->
+<!-- langchain-docs: machine-translated zh-CN from English source -->
 
 <!-- langchain-docs: Configure SmithDB for scale | https://docs.langchain.com/langsmith/self-host-smithdb-scale -->
 
-# Configure SmithDB for scale
+# 配置 SmithDB 规模
 
-Choose tested SmithDB resource tiers and size Kubernetes workloads and the PostgreSQL metastore.
-
-<Note>
-  For non-SmithDB LangSmith services, see [Configure LangSmith for scale](/langsmith/self-host-scale).
-</Note>
-
-Use these tested tiers as starting configurations for SmithDB. Connect SmithDB to your monitoring stack before you tune capacity, so you can observe the effect of each change. See [Configure SmithDB observability](/langsmith/self-host-smithdb-observability).
-
-## Choose and scale a tier
-
-The tiers are not throughput limits or prescribed configurations. CPU, memory, and cache size are per replica. Cache size is the volume each replica gets: the claim size on a network-attached disk, or the `emptyDir` limit on local SSD.
-
-Choose the tier whose tested ingestion and query rates most closely match or exceed your expected steady-state load. To estimate your current trace volume, open **Settings > Usage** in LangSmith. See [Granular billable usage](/langsmith/granular-usage).
-
-If you cannot measure your load, start at `small` and scale up. Under-sizing shows up as slower ingestion and queries rather than data loss.
-
-Apply the per-replica resources and starting replica counts from the selected tier. If the workload later outgrows that starting point, you can scale SmithDB compute horizontally.
+选择经过测试的 SmithDB 资源层以及 Kubernetes 工作负载和 PostgreSQL 元存储的大小。
 
 <Note>
-  SmithDB query, ingestion, and compaction-worker HPAs are enabled by default. They require Kubernetes Metrics Server or another `metrics.k8s.io` provider. Verify availability with `kubectl get --raw /apis/metrics.k8s.io/v1beta1`.
+  对于非 SmithDB LangSmith 服务，请参阅 [Configure LangSmith for scale](/langsmith/self-host-scale)。
 </Note>
 
-### Scale with KEDA instead
+使用这些经过测试的层作为 SmithDB 的起始配置。在调整容量之前将 SmithDB 连接到监控堆栈，以便您可以观察每次更改的效果。参见[Configure SmithDB observability](/langsmith/self-host-smithdb-observability)。
+
+## 选择部署模式
 
 <Note>
-  KEDA scaling for SmithDB compaction workers requires Helm chart `0.17.0` or later.
+  `smithdb.topology` 需要 Helm 图表 `0.18.0` 或更高版本。
 </Note>
 
-SmithDB compaction workers can scale on queue depth through [KEDA](https://keda.sh/) rather than the CPU-based HPA. This suits bursty compaction backlogs, where queue depth rises before CPU does. LangSmith uses the same KEDA installation for its own queues; see [KEDA autoscaling for LangSmith queues](/langsmith/self-host-scale#keda-autoscaling-for-langsmith-queues) to install and configure it.
+将`smithdb.topology`设置为`single`或`cluster`，并在需要时在`cluster`之上启用专用查询服务：
 
-Enable the KEDA scaler for compaction workers:
+|模式|运行什么 |用它来 |
+| - | - | - |
+| `single` |一个运行摄取、查询和压缩的`smithdb all` Pod |测试环境和小批量安装 |
+| `cluster`（默认）|单独的摄取、查询和压缩工作负载，由集群管理器协调 |生产装置|
+| `cluster` 与 [dedicated query services](#dedicated-query-services) |集群模式加上用于运行统计、运行规则或突变的单独服务 |生产安装中一种查询负载会减慢其他查询负载 |
+
+```yaml theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+smithdb:
+  topology: single
+```单模式 Pod 运行一个副本，其大小由 [single tiers](#single-tiers) 决定。当 Pod 重新启动或从节点故障中恢复时，查询会失败。 LangSmith 在 Redis 中对传入跟踪进行排队，并在 Pod 再次运行时写入它们，因此摄取会被延迟而不是被丢弃。 PodDisruptionBudget 可防止节点耗尽驱逐 pod。
+
+### 专用查询服务
+
+在集群模式下，查询服务为所有 SmithDB 读取提供服务。要隔离工作负载，请启用专用服务：
+
+|服务 |服务 |启用 |
+| - | - | - |
+|统计查询 |运行统计信息，例如运行计数、延迟和错误率 | `smithdb.statsQuery.enabled` |
+|运行规则|自动化规则和在线评估| `smithdb.runRules.enabled` |
+|突变|反馈更新并运行删除| `smithdb.mutations.enabled` |
+
+每个服务都有自己的副本和自动缩放，并使用查询层的资源。
+
+## 选择并扩展层级
+
+这些层不是吞吐量限制或规定的配置。 CPU、内存和缓存大小是每个副本的。缓存大小是每个副本获取的卷：网络连接磁盘上的声明大小，或本地 SSD 上的 `emptyDir` 限制。选择测试的摄取率和查询率最接近或超过您预期的稳态负载的层。要估计当前的跟踪量，请打开 LangSmith 中的 **设置 > 使用**。参见[Granular billable usage](/langsmith/granular-usage)。
+
+如果您无法测量负载，请从 `small` 开始并按比例增加。
+
+应用每个副本资源和所选层的起始副本计数。如果工作负载后来超出了该起点，您可以水平扩展 SmithDB 计算。
+
+<Note>
+  默认情况下启用 SmithDB 查询、摄取和压缩工作器 HPA。它们需要 Kubernetes Metrics Server 或其他 `metrics.k8s.io` 提供商。使用 `kubectl get --raw /apis/metrics.k8s.io/v1beta1` 验证可用性。
+</Note>
+
+### 使用 KEDA 进行扩展
+
+<Note>
+  SmithDB 压缩工作器的 KEDA 扩展需要 Helm 图表 `0.17.0` 或更高版本。
+</Note>
+
+SmithDB 压缩工作线程可以通过[KEDA](https://keda.sh/)而不是基于 CPU 的 HPA 来扩展队列深度。这适合突发压缩积压，即队列深度先于 CPU 增加的情况。 LangSmith 对自己的队列使用相同的 KEDA 安装；请参阅[KEDA autoscaling for LangSmith queues](/langsmith/self-host-scale#keda-autoscaling-for-langsmith-queues)来安装和配置它。
+
+为压实工人启用 KEDA 缩放器：
 
 ```yaml theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 smithdb:
@@ -46,39 +75,47 @@ smithdb:
         enabled: true
 ```
 
-Use either the HPA or KEDA for a component, not both.
+对组件使用 HPA 或 KEDA，而不是同时使用两者。
 
-## Baseline tiers
+## 基线层在集群模式下，每一层为每个组件设置每个副本的资源：
 
-| Component | Small<br />10 ingest / 10 query QPS | Medium<br />100 ingest / 40 query QPS | Large<br />1000 ingest / 100 query QPS |
+|组件|小<br />10 摄取/10 查询 QPS |中<br />100 摄取/40 查询 QPS |大<br />1000次摄取/100次查询QPS |
 | - | - | - | - |
-| Ingestion | 1 replica<br />4 CPU<br />8 Gi memory<br />100 Gi cache | 1 replica<br />16 CPU<br />32 Gi memory<br />100 Gi cache | 2 replicas<br />56 CPU<br />150 Gi memory<br />1000 Gi cache |
-| Query | 1 replica<br />4 CPU<br />8 Gi memory<br />200 Gi cache | 1 replica<br />28 CPU<br />48 Gi memory<br />200 Gi cache | 4 replicas<br />28 CPU<br />50 Gi memory<br />1000 Gi cache |
-| Compaction | 1 replica<br />2 CPU<br />4 Gi memory | 1 replica<br />4 CPU<br />8 Gi memory | 1 replica<br />8 CPU<br />16 Gi memory |
-| Compaction worker | 1 replica<br />8 CPU<br />16 Gi memory<br />100 Gi cache | 1 replica<br />16 CPU<br />32 Gi memory<br />100 Gi cache | 4 replicas<br />28 CPU<br />50 Gi memory<br />300 Gi cache |
-| Cluster manager | 1 replica<br />250m CPU<br />256 Mi memory | 1 replica<br />250m CPU<br />256 Mi memory | 1 replica<br />2 CPU<br />2 Gi memory |
+|食入| 1 个副本<br />4 CPU<br />8 Gi 内存<br />100 Gi 缓存 | 1 个副本<br />16 CPU<br />32 Gi 内存<br />100 Gi 缓存 | 2 个副本<br />56 CPU<br />150 Gi 内存<br />1000 Gi 缓存 |
+|查询 | 1 个副本<br />4 CPU<br />8 Gi 内存<br />200 Gi 缓存 | 1 个副本<br />28 CPU<br />48 Gi 内存<br />200 Gi 缓存 | 4个副本<br />28 CPU<br />50 Gi内存<br />1000 Gi缓存 |
+|压实| 1 个副本<br />2 CPU<br />4 Gi 内存 | 1 个副本<br />4 CPU<br />8 Gi 内存 | 1 个副本<br />8 CPU<br />16 Gi 内存 |
+|压实工| 1 个副本<br />8 CPU<br />16 Gi 内存<br />100 Gi 缓存 | 1 个副本<br />16 CPU<br />32 Gi 内存<br />100 Gi 缓存 | 4个副本<br />28 CPU<br />50 Gi内存<br />300 Gi缓存 |
+|集群管理器| 1个副本<br />250m CPU<br />256 Mi内存 | 1个副本<br />250m CPU<br />256 Mi内存 | 1 个副本<br />2 CPU<br />2 Gi 内存 |
 
-## Configure resources with Helm
+### 单层
 
-The chart defaults to `small`. Select `small`, `medium`, or `large`:
+在单一模式下，`smithdb.resourceTier` 调整一个 SmithDB pod 的大小：|组件|小|中等|大|
+| - | - | - | - |
+|单| 1 个副本<br />4 CPU<br />16 Gi 内存<br />100 Gi 缓存 | 1 个副本<br />16 CPU<br />64 Gi 内存<br />300 Gi 缓存 | 1 个副本<br />32 CPU<br />128 Gi 内存<br />1000 Gi 缓存 |
+
+要覆盖层的 CPU 和内存，请设置 `smithdb.single.deployment.resources`。当工作负载超过大型层时，切换到集群模式。
+
+## 使用 Helm 配置资源
+
+图表默认为`small`。选择`small`、`medium`或`large`：
 
 ```yaml theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 smithdb:
   resourceTier: medium
 ```
 
-On LangSmith 0.17 the tier's cache size becomes the generated claim's capacity. On 0.16 it is the `ephemeral-storage` request and limit, which also sizes the generated `emptyDir`. Replica counts and autoscaling are configured separately.
+在 LangSmith 0.17 上，层的缓存大小成为生成的声明的容量。在 0.16 上，它是 `ephemeral-storage` 请求和限制，它也调整了生成的 `emptyDir` 的大小。副本计数和自动缩放是单独配置的。
 
-An explicit component `resources` block replaces the tier's CPU and memory. On 0.17 it does not change the cache size; pick a different tier or override `deployment.volumes` for that. For local SSD values, see [Cache storage](/langsmith/self-host-smithdb-infrastructure#cache-storage).
+显式组件`resources`块取代了层的CPU和内存。在 0.17 上它不会改变缓存大小；为此选择不同的层或覆盖`deployment.volumes`。有关本地 SSD 值，请参阅[Cache storage](/langsmith/self-host-smithdb-infrastructure#cache-storage)。
 
-See [SmithDB resource tiers](https://github.com/langchain-ai/helm/tree/main/charts/langsmith#smithdb-resource-tiers) for current values and chart details.
+有关当前值和图表详细信息，请参阅[SmithDB resource tiers](https://github.com/langchain-ai/helm/tree/main/charts/langsmith#smithdb-resource-tiers)。
 
 <Accordion title="Example explicit resource configuration">
-  This example overrides the query component at medium-tier sizes.
+  此示例覆盖中等层大小的查询组件。
 
   <Tabs>
     <Tab title="LangSmith 0.17">
-      The cache claim stays at the tier size. These values request no node storage.
+      缓存声明保持在层大小。这些值不需要节点存储。
 
       ```yaml theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
       smithdb:
@@ -96,9 +133,7 @@ See [SmithDB resource tiers](https://github.com/langchain-ai/helm/tree/main/char
     </Tab>
 
     <Tab title="LangSmith 0.16">
-      The storage limit also sizes the default `emptyDir`.
-
-      ```yaml theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+      存储限制还调整了默认 `emptyDir` 的大小。```yaml theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
       smithdb:
         resourceTier: medium
         query:
@@ -117,26 +152,26 @@ See [SmithDB resource tiers](https://github.com/langchain-ai/helm/tree/main/char
   </Tabs>
 </Accordion>
 
-## Metastore capacity
+## 元存储容量
 
-The baseline tiers cover SmithDB Kubernetes workloads only. They do not include the PostgreSQL metastore. Use these starting points for a dedicated metastore:
+基准层仅涵盖 SmithDB Kubernetes 工作负载。它们不包括 PostgreSQL 元存储。使用专用元存储的以下起点：
 
-| Tier | vCPU | Memory |
+|等级 | vCPU |内存|
 | - | - | - |
-| Small | 2 | 16 GiB |
-| Medium | 4 | 32 GiB |
-| Large | 8 | 64 GiB |
+|小| 2 | 16 GiB |
+|中等| 4 | 32 GiB |
+|大| 8 | 64 GiB |
 
-Choose the nearest supported PostgreSQL instance shape from your provider and monitor database resource use and transaction latency during rollout.
+从您的提供商处选择最近支持的 PostgreSQL 实例配置，并在部署期间监控数据库资源使用情况和事务延迟。
 
 ***
 
 <div>
   <Callout icon="terminal-2">
-    [Connect these docs](/use-these-docs) to your agent of choice via MCP for real-time answers.
+    [Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
   </Callout>
 
   <Callout icon="edit">
-    [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/self-host-smithdb-scale.mdx) or [file an issue](https://github.com/langchain-ai/docs/issues/new/choose).
+    [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/self-host-smithdb-scale.mdx) 或 [file an issue](https://github.com/langchain-ai/docs/issues/new/choose)。
   </Callout>
 </div>

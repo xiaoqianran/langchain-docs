@@ -4,7 +4,7 @@
 
 # 记忆力和技能
 
-持久内存、AGENTS.md 文件以及 Deep Agents 代码的可重用技能，包括创建、发现和调用。
+持久内存、AGENTS.md 文件以及Deep Agents代码的可重用技能，包括创建、发现和调用。
 
 在Deep Agents代码中自定义代理有两种主要方法：
 
@@ -87,14 +87,14 @@ dcode --agent backend-dev
 
 使用项目 `AGENTS.md`（项目根目录中的`.deepagents/AGENTS.md`）用于：
 
-* 项目特定的背景和约定
+* 项目特定的背景和惯例
 * 项目架构和设计模式
 * 特定于此代码库的编码约定
 * 测试策略和部署流程
 * 团队指南和项目结构
 
 ## 技能技能将工作流程、最佳实践、脚本和参考文档等领域专业知识打包到可重用目录中，代理仅在相关时发现和读取这些目录。
-深厚的特工技能遵循[Agent Skills specification](https://agentskills.io/)。有关技能如何发挥作用以及如何编写有效技能的更多信息，请参阅[Skills](/oss/python/deepagents/skills)。
+深厚的代理技能遵循[Agent Skills specification](https://agentskills.io/)。有关技能如何发挥作用以及如何编写有效技能的更多信息，请参阅[Skills](/oss/python/deepagents/skills)。
 
 启动时，Deep Agents代码从每个`SKILL.md`文件的frontmatter中读取名称和描述。当任务与技能的描述相匹配时，代理会读取技能文件并遵循其说明。 Discovery 再次在 `/reload` 上运行。
 
@@ -170,7 +170,7 @@ npx skills ls -a deepagents -g
 
 ### 在会话中调用技能
 
-在交互式会话中，直接使用 `/skill:<name>` 斜杠命令运行技能：
+在交互式会话中，直接使用 `/skill:<name>` 斜线命令运行技能：
 
 ```text theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 /skill:code-review
@@ -201,7 +201,9 @@ dcode --skill code-review -n 'review this patch'
 
 # Quiet mode (only agent output on stdout)
 dcode --skill code-review -n 'review this patch' -q
-```<Note>
+```无头运行无法显示信任提示。如果技能在可信根之外解析，Deep Agents代码会拒绝该回合并建议将目录添加到`[skills].extra_allowed_dirs`。
+
+<Note>
   `--skill` 与 `--quiet` 或 `--no-stream` 需要 `-n`（非交互模式）。
 </Note>
 

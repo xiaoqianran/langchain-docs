@@ -1,0 +1,6 @@
+<!-- langchain-docs: Attach a sandbox to a browser (Beta) | https://docs.langchain.com/langsmith/smith-api/sandboxes/attach-a-sandbox-to-a-browser-beta -->
+
+# Attach a sandbox to a browser (Beta)
+
+/langsmith/langsmith-platform-openapi.json post /api/v2/sandboxes/browsers/{name}/attachments
+Beta: give a sandbox its own window of the browser, or, with no sandbox, open a window for the person calling (or, with controller "agent", for a client to drive over api_cdp_url). The response's cdp_url is the Chrome DevTools endpoint the sandbox connects to, and api_cdp_url the same endpoint through the API; a client can open more tabs, which stay in its window. Windows share the browser's cookies and logins. Keeping each sandbox to its own window is best effort, not a security boundary: attach only sandboxes you would trust with every login in the browser. With share_localhost, the browser can also reach the servers the sandbox runs, at the response's localhost_alias. Attaching takes, for the browser and for the attached sandbox each, being its creator or a role with sandboxes:exec. With unrestricted, nothing is filtered: the window's CDP clients (its sandbox, or anyone using its api_cdp_url) get the whole browser, including people's windows, every site's cookies, and commands that close it. It needs nothing beyond what any attach needs.

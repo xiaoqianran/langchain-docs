@@ -141,6 +141,7 @@ The below document loaders allow you to load data from common data formats.
   | [`Docugami`](/oss/python/integrations/document_loaders/docugami) | <span><a href="https://pypi.org/project/docugami-langchain/">  <img alt="Downloads per month" /></a></span> |
   | [`YoutubeLoaderDL`](https://github.com/aqib0770/langchain-yt-dlp) | <span><a href="https://pypi.org/project/langchain-yt-dlp/">  <img alt="Downloads per month" /></a></span> |
   | [`Azure blob storage loader`](/oss/python/integrations/document_loaders/azure_blob_storage) | <span><a href="https://pypi.org/project/langchain-azure-storage/">  <img alt="Downloads per month" /></a></span> |
+  | [`DoclingLoader`](https://github.com/docling-project/docling.rs/blob/master/crates/docling-py/README.md#langchain) | <span><a href="https://pypi.org/project/langchain-docling-rs/">  <img alt="Downloads per month" /></a></span> |
   | [`PDFParser`](https://dev.writer.com/api-reference/tool-api/pdf-parser#parse-pdf) | <span><a href="https://pypi.org/project/langchain-writer/">  <img alt="Downloads per month" /></a></span> |
   | [`SingleStoreLoader`](https://github.com/singlestore-labs/langchain-singlestore/) | <span><a href="https://pypi.org/project/langchain-singlestore/">  <img alt="Downloads per month" /></a></span> |
   | [`FlatmarkLoader`](https://github.com/flatmark-dev/flatmark-integrations/blob/main/langchain/README.md) | <span><a href="https://pypi.org/project/langchain-flatmark/">  <img alt="Downloads per month" /></a></span> |
@@ -167,6 +168,7 @@ The below document loaders allow you to load data from common data formats.
   | [`PolarisAIDataInsightLoader`](https://datainsight.polarisoffice.com/playground) | <span><a href="https://pypi.org/project/langchain-polaris-ai-datainsight/">  <img alt="Downloads per month" /></a></span> |
   | [`Outline`](https://github.com/10Pines/langchain-outline) | <span><a href="https://pypi.org/project/langchain-outline/">  <img alt="Downloads per month" /></a></span> |
   | [`ReplyLayerLoader`](https://replylayer.ai/docs/guides/langchain) | <span><a href="https://pypi.org/project/langchain-replylayer/">  <img alt="Downloads per month" /></a></span> |
+  | [`Web2MDLoader`](https://github.com/kanavsingla28/web2md-clients/tree/main/python#readme) | <span><a href="https://pypi.org/project/web2md-client/">  <img alt="Downloads per month" /></a></span> |
   | [`OpeddFeedLoader`](https://opedd.com/for-ai-agents) | <span><a href="https://pypi.org/project/langchain-opedd/">  <img alt="Downloads per month" /></a></span> |
   | [`Google Classroom`](/oss/python/integrations/document_loaders/google_classroom) | <span><a href="https://pypi.org/project/langchain-google-classroom/">  <img alt="Downloads per month" /></a></span> |
   | [`Google cloud SQL for mysql`](/oss/python/integrations/document_loaders/google_cloud_sql_mysql) | <span><a href="https://pypi.org/project/langchain-google-cloud-sql-mysql/">  <img alt="Downloads per month" /></a></span> |

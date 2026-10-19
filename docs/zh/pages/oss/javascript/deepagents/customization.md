@@ -2,7 +2,7 @@
 
 <!-- langchain-docs: Customize Deep Agents | https://docs.langchain.com/oss/javascript/deepagents/customization -->
 
-# 自定义Deep Agents
+# 定制Deep Agents
 
 了解如何使用系统提示、工具、子代理等自定义 Deep Agents
 
@@ -109,12 +109,12 @@
 | `responseFormat` |结构化输出模式|
 | [⟦T158⟧](/oss/javascript/deepagents/context-engineering#runtime-context) |每次运行的运行时上下文架构（用户 ID、API 密钥、功能标志）|
 
-有关完整参数列表，请参阅 [⟦T159⟧](https://reference.langchain.com/javascript/deepagents/types/CreateDeepAgentParams) API 参考。要从头开始构建完全自定义的线束，请参阅[Configure the harness](/oss/javascript/langchain/agents#configure-the-harness)。
+有关完整参数列表，请参阅 [⟦T159⟧](https://reference.langchain.com/javascript/deepagents/types/CreateDeepAgentParams) API 参考。 To compose a fully custom harness from scratch, see [Configure the harness](/oss/javascript/langchain/agents#configure-the-harness).
 
 <Tip>
-  当您添加工具、子代理和后端时，使用 [LangSmith](https://smith.langchain.com?utm_source=docs\&utm_medium=cta\&utm_campaign=langsmith-signup\&utm_content=oss-deepagents-customization) 来跟踪每个部分的行为方式。按照[observability quickstart](/langsmith/observability-quickstart)进行设置，并参阅[Going to production](/oss/javascript/deepagents/going-to-production)在LangSmith上进行部署。
+  当您添加工具、子代理和后端时，使用 [LangSmith](https://smith.langchain.com?utm_source=docs\&utm_medium=cta\&utm_campaign=langsmith-signup\&utm_content=oss-deepagents-customization) 来跟踪每个部分的行为方式。 Follow the [observability quickstart](/langsmith/observability-quickstart) to get set up, and see [Going to production](/oss/javascript/deepagents/going-to-production) for deployment on LangSmith.
 
-  我们建议您还设置[LangSmith Engine](/langsmith/engine)，它可以监视您的痕迹、检测问题并提出修复建议。
+  We recommend you also set up [LangSmith Engine](/langsmith/engine), which monitors your traces, detects issues, and proposes fixes.
 </Tip>
 
 ## 型号传递 `provider:model` 格式的 `model` 字符串，或初始化的模型实例。请参阅[supported models](/oss/javascript/deepagents/models#supported-models)了解所有提供商，并参阅[suggested models](/oss/javascript/deepagents/models#suggested-models)了解经过测试的建议。
@@ -125,7 +125,7 @@
 
 <Tabs>
   <Tab title="OpenAI">
-    👉 阅读[OpenAI chat model integration docs](/oss/javascript/integrations/chat/openai/)
+    👉 Read the [OpenAI chat model integration docs](/oss/javascript/integrations/chat/openai/)
 
     <CodeGroup>
       ```bash npm theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
@@ -185,7 +185,7 @@
   </Tab>
 
   <Tab title="Anthropic">
-    👉 阅读[Anthropic chat model integration docs](/oss/javascript/integrations/chat/anthropic/)
+    👉 Read the [Anthropic chat model integration docs](/oss/javascript/integrations/chat/anthropic/)
 
     <CodeGroup>
       ```bash npm theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
@@ -311,7 +311,7 @@
   </Tab>
 
   <Tab title="Google Gemini">
-    👉 阅读[ChatGoogle chat model integration docs](/oss/javascript/integrations/chat/google)
+    👉 Read the [ChatGoogle chat model integration docs](/oss/javascript/integrations/chat/google)
 
     <CodeGroup>
       ```bash npm theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
@@ -371,7 +371,7 @@
   </Tab>
 
   <Tab title="Bedrock Converse">
-    👉 阅读[AWS Bedrock chat model integration docs](/oss/javascript/integrations/chat/bedrock_converse/)
+    👉 Read the [AWS Bedrock chat model integration docs](/oss/javascript/integrations/chat/bedrock_converse/)
 
     <CodeGroup>
       ```bash npm theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
@@ -967,7 +967,7 @@ npm install @langchain/mcp-adapters
   ```
 </CodeGroup>
 
-有关详细配置选项，包括 stdio 服务器、OAuth 身份验证、工具过滤和有状态会话，请参阅完整的 [MCP guide](/oss/javascript/langchain/mcp)。
+有关详细的配置选项，包括 stdio 服务器、OAuth 身份验证、工具过滤和有状态会话，请参阅完整的 [MCP guide](/oss/javascript/langchain/mcp)。
 
 ## 系统提示
 
@@ -1113,9 +1113,9 @@ npm install @langchain/mcp-adapters
 
 Deep Agents 支持任何 [middleware](/oss/javascript/langchain/middleware/overview)，包括下面列出的内置中间件、来自 LangChain 的预构建中间件、特定于提供商的中间件以及您自己编写的自定义中间件。将中间件传递给 `createDeepAgent` 的 `middleware` 参数。每个实例都通过其 `.name` 合并到 [Deep Agents stack](#deep-agents-stack) 中。名称与内置条目匹配的实例会就地替换该条目。其他任何内容都插入在[⟦T182⟧](https://reference.langchain.com/javascript/deepagents/middleware/createPatchToolCallsMiddleware)之后。
 
-### Deep Agents 堆栈
+### Deep Agents堆栈
 
-`createDeepAgent` 以固定的顺序构建中间件。 [bare stack](#bare-stack) 只需一个模型即可获得。 [full stack](#full-stack) 是完整的汇编顺序，包括仅当您传递可选参数或解析的 [harness profile](/oss/javascript/deepagents/profiles) 提供它们时才出现的槽。
+`createDeepAgent` 以固定的顺序构建中间件。只需一个模型即可获得 [bare stack](#bare-stack)。 [full stack](#full-stack) 是完整的汇编顺序，包括仅当您传递可选参数或解析的 [harness profile](/oss/javascript/deepagents/profiles) 提供它们时才出现的槽。
 
 #### 裸栈
 
@@ -1127,36 +1127,39 @@ Deep Agents 支持任何 [middleware](/oss/javascript/langchain/middleware/overv
 4.[⟦T188⟧](https://reference.langchain.com/javascript/deepagents/middleware/createPatchToolCallsMiddleware)
 5. **提示缓存**中间件（为受支持的提供程序添加；其他地方无操作）
 6. **利用配置文件额外**和**排除工具过滤**，如果解析的模型配置文件定义了它们
+7. [⟦T189⟧](https://reference.langchain.com/javascript/deepagents/middleware/createUnsupportedContentMiddleware)
 
 #### 全栈
 
 从第一个到最后一个：
 
-1. [⟦T189⟧](https://reference.langchain.com/javascript/deepagents/middleware/createFilesystemMiddleware)：处理文件系统操作，例如读取、写入和导航目录。当您通过`permissions`时，文件系统权限强制执行包含在此处，因此它可以评估代理可能调用的每个工具。2. [⟦T191⟧](https://reference.langchain.com/javascript/deepagents/middleware/createSubAgentMiddleware)：仅当至少有一个同步子代理可用时。生成并协调子代理来委派任务。包含在[bare stack](#bare-stack)中，因为默认情况下会自动添加通用子代理；通过禁用该子代理并不传递同步`subagents`来省略它。参见[Running without subagents](/oss/javascript/deepagents/subagents#running-without-subagents)。
+1. [⟦T190⟧](https://reference.langchain.com/javascript/deepagents/middleware/createFilesystemMiddleware)：处理文件系统操作，例如读取、写入和导航目录。当您通过`permissions`时，文件系统权限强制执行包含在此处，因此它可以评估代理可能调用的每个工具。2. [⟦T192⟧](https://reference.langchain.com/javascript/deepagents/middleware/createSubAgentMiddleware)：仅当至少有一个同步子代理可用时。生成并协调子代理来委派任务。包含在[bare stack](#bare-stack)中，因为默认情况下会自动添加通用子代理；通过禁用该子代理并不传递同步`subagents`来省略它。参见[Running without subagents](/oss/javascript/deepagents/subagents#running-without-subagents)。
 
-3. [⟦T193⟧](https://reference.langchain.com/javascript/langchain/index/summarizationMiddleware)：当对话变长时，压缩消息历史记录以保持在上下文限制内（通过[createSummarizationMiddleware](https://reference.langchain.com/javascript/deepagents/middleware/createSummarizationMiddleware)）。
+3. [⟦T194⟧](https://reference.langchain.com/javascript/langchain/index/summarizationMiddleware)：当对话变长时，压缩消息历史记录以保持在上下文限制内（通过[createSummarizationMiddleware](https://reference.langchain.com/javascript/deepagents/middleware/createSummarizationMiddleware)）。
 
-4. [⟦T194⟧](https://reference.langchain.com/javascript/deepagents/middleware/createPatchToolCallsMiddleware)：当运行在中断后恢复或收到格式错误的工具调用参数时，修复消息历史记录中悬空的工具调用。 **在** Anthropic 提示符缓存和下面的尾堆栈之前运行。
+4. [⟦T195⟧](https://reference.langchain.com/javascript/deepagents/middleware/createPatchToolCallsMiddleware)：当运行在中断后恢复或收到格式错误的工具调用参数时，修复消息历史记录中悬空的工具调用。 **在** Anthropic 提示符缓存和下面的尾堆栈之前运行。
 
-5. [⟦T195⟧](https://reference.langchain.com/javascript/deepagents/agent/createDeepAgent)：仅当您配置异步子代理时。
+5. [⟦T196⟧](https://reference.langchain.com/javascript/deepagents/agent/createDeepAgent)：仅当您配置异步子代理时。
 
-6. **您的中间件参数**：作为 `middleware` 参数传递的可选中间件在 Patch 之后、堆栈的其余部分之前合并。 `.name` 与内置条目匹配的实例会就地替换该条目，而不是复制它。其他任何东西都会落到这里。
+6. **您的中间件参数**：作为 `middleware` 参数传递的可选中间件在 Patch 之后但在堆栈的其余部分之前合并。 `.name` 与内置条目匹配的实例会就地替换该条目，而不是复制它。其他任何东西都会落到这里。
 
-7. **利用配置文件附加**：来自解析的模型配置文件的特定于提供商的中间件（如果有）。8. [⟦T198⟧](https://reference.langchain.com/javascript/deepagents/middleware/createSkillsMiddleware)：仅当您传递`skills`，或在`middleware`中传递`createSkillsMiddleware`实例时。无论哪种方式，它都在中间件之后、提示缓存之前运行，因此它可以看到汇总的对话和实际调用的模型。
+7. **利用配置文件附加**：来自解析的模型配置文件的特定于提供商的中间件（如果有）。8. [⟦T199⟧](https://reference.langchain.com/javascript/deepagents/middleware/createSkillsMiddleware)：仅当您传递`skills`，或者在`middleware`中传递`createSkillsMiddleware`实例时。无论哪种方式，它都在中间件之后、提示缓存之前运行，因此它可以看到汇总的对话和实际调用的模型。
 
-9. **提示缓存**（[⟦T202⟧](https://reference.langchain.com/javascript/langchain/index/anthropicPromptCachingMiddleware) 和 [⟦T203⟧](https://reference.langchain.com/javascript/langchain/index/bedrockPromptCachingMiddleware)）：分别为 Anthropic 型号和 Amazon Bedrock Converse 型号自动添加。两者都在** Patch 之后和中间件之后运行，因此缓存的前缀与实际发送到模型的内容相匹配。
+9. **提示缓存**（[⟦T203⟧](https://reference.langchain.com/javascript/langchain/index/anthropicPromptCachingMiddleware) 和 [⟦T204⟧](https://reference.langchain.com/javascript/langchain/index/bedrockPromptCachingMiddleware)）：分别为 Anthropic 型号和 Amazon Bedrock Converse 型号自动添加。两者都在** Patch 之后和中间件之后运行，因此缓存的前缀与实际发送到模型的内容相匹配。
 
-10. [⟦T204⟧](https://reference.langchain.com/javascript/deepagents/middleware/createMemoryMiddleware)：仅当您通过`memory`时。
+10. [⟦T205⟧](https://reference.langchain.com/javascript/deepagents/middleware/createMemoryMiddleware)：仅当您通过`memory`时。
 
     <Note>
-      `MemoryMiddleware` 放置在配置文件附加功能和提示缓存中间件的**之后，因此对注入内存的更新不太可能使缓存前缀无效。 `createDeepAgent` 实现注释中也提出了相同的排序问题。
+      `MemoryMiddleware` 位于配置文件附加功能和提示缓存中间件的**之后，因此对注入内存的更新不太可能使缓存前缀无效。 `createDeepAgent` 实现注释中也提出了相同的排序问题。
     </Note>
 
 11. `HumanInTheLoopMiddleware`：仅当您通过`interruptOn`时。在配置的工具调用时暂停以供人工批准或输入。
 
 12. **排除工具过滤**：当线束配置文件列出排除工具时，中间件将从代理中删除这些工具。
 
-### 同步子代理堆栈内置的**通用**子代理和每个声明性同步`SubAgent`图使用`createDeepAgent`在代码中构建的堆栈。它与大体上的主代理匹配（文件系统、摘要、补丁、配置文件附加、技能、Anthropic和基岩缓存、可选权限），除了子代理图中**没有**[⟦T212⟧](https://reference.langchain.com/javascript/deepagents/middleware/createSubAgentMiddleware)（只有父代理公开`task`工具）。
+13. [⟦T211⟧](https://reference.langchain.com/javascript/deepagents/middleware/createUnsupportedContentMiddleware)：使用文本占位符重写请求中不支持的多模式内容。
+
+### 同步子代理堆栈内置的**通用**子代理和每个声明性同步`SubAgent`图使用`createDeepAgent`在代码中构建的堆栈。它与主要代理在广义上匹配（文件系统、摘要、补丁、配置文件附加、技能、Anthropic和基岩缓存、可选权限），除了子代理图中**没有**[⟦T214⟧](https://reference.langchain.com/javascript/deepagents/middleware/createSubAgentMiddleware)（只有父代理公开`task`工具）。
 
 当声明性子代理设置 `interruptOn` 时，该值将转发到子代理的 `createAgent`，从而为已配置的工具调用连接人机交互处理。
 
@@ -1164,7 +1167,7 @@ Deep Agents 支持任何 [middleware](/oss/javascript/langchain/middleware/overv
 
 LangChain 公开了额外的预构建中间件，让您可以添加各种功能，例如重试、回退或 PII 检测。更多信息请参见[Prebuilt middleware](/oss/javascript/langchain/middleware/built-in)。
 
-`deepagents` 包还为相同的工作流程公开了 [⟦T217⟧](https://reference.langchain.com/javascript/deepagents/middleware/createSummarizationMiddleware)。欲了解更多详情，请参阅[Summarization](/oss/javascript/deepagents/context-engineering#summarization)。
+`deepagents` 包还为相同的工作流程公开了 [⟦T219⟧](https://reference.langchain.com/javascript/deepagents/middleware/createSummarizationMiddleware)。欲了解更多详情，请参阅[Summarization](/oss/javascript/deepagents/context-engineering#summarization)。
 
 ### 特定于提供商的中间件
 
@@ -1547,7 +1550,7 @@ LangChain 公开了额外的预构建中间件，让您可以添加各种功能�
   });
   ```
 
-  适当的修改，例如修改 `beforeAgent` 中的 `state.x`、修改 `beforeAgent` 中的共享变量，或更改钩子中的其他共享值，可能会导致微妙的错误和竞争条件，因为许多操作是并发运行的（子代理、并行工具和不同线程上的并行调用）。
+  适当的修改，例如修改 `beforeAgent` 中的 `state.x`、修改 `beforeAgent` 中的共享变量或更改钩子中的其他共享值，可能会导致微妙的错误和竞争条件，因为许多操作是并发运行的（子代理、并行工具和不同线程上的并行调用）。
 
   如果必须在自定义中间件中使用突变，请考虑当子代理、并行工具或并发代理调用同时运行时会发生什么情况。
 </Warning>
@@ -2028,11 +2031,11 @@ LangChain 公开了额外的预构建中间件，让您可以添加各种功能�
   ```
 </CodeGroup>
 
-欲了解更多信息，请参阅[Subagents](/oss/javascript/deepagents/subagents)。
+有关更多信息，请参阅[Subagents](/oss/javascript/deepagents/subagents)。
 
 ## 后端
 
-深度代理工具可以利用虚拟文件系统来存储、访问和编辑文件。默认情况下，深度代理使用[⟦T222⟧](https://reference.langchain.com/javascript/deepagents/backends/StateBackend)。
+深度代理工具可以利用虚拟文件系统来存储、访问和编辑文件。默认情况下，深度代理使用[⟦T224⟧](https://reference.langchain.com/javascript/deepagents/backends/StateBackend)。
 
 如果您使用[skills](#skills)或[memory](#memory)，则必须在创建代理之前将所需的技能或内存文件添加到后端。
 
@@ -2061,7 +2064,7 @@ LangChain 公开了额外的预构建中间件，让您可以添加各种功能�
     <Warning>
       该后端授予代理直接文件系统读/写访问权限。
       请谨慎使用，并且仅在适当的环境中使用。
-      有关更多信息，请参阅[⟦T224⟧](/oss/javascript/deepagents/backends#filesystembackend-local-disk)。
+      欲了解更多信息，请参阅[⟦T226⟧](/oss/javascript/deepagents/backends#filesystembackend-local-disk)。
     </Warning>
 
     <CodeGroup>
@@ -2138,7 +2141,7 @@ LangChain 公开了额外的预构建中间件，让您可以添加各种功能�
     <Warning>
       该后端向代理授予直接文件系统读/写访问权限**和**在主机上不受限制的 shell 执行。
       请务必谨慎使用，并且仅在适当的环境中使用。
-      有关更多信息，请参阅[⟦T228⟧](/oss/javascript/deepagents/backends#localshellbackend-local-shell)。
+      欲了解更多信息，请参阅[⟦T230⟧](/oss/javascript/deepagents/backends#localshellbackend-local-shell)。
     </Warning>
 
     <CodeGroup>
@@ -2341,7 +2344,7 @@ LangChain 公开了额外的预构建中间件，让您可以添加各种功能�
   <Tab title="ContextHubBackend">
     LangSmith Hub 存储库中的持久文件系统存储。
 
-    欲了解更多详情，请参阅[⟦T231⟧](/oss/javascript/deepagents/backends#contexthubbackend)。
+    欲了解更多详情，请参阅[⟦T233⟧](/oss/javascript/deepagents/backends#contexthubbackend)。
   </Tab>
 
   <Tab title="CompositeBackend">
@@ -2505,7 +2508,7 @@ LangChain 公开了额外的预构建中间件，让您可以添加各种功能�
   </Tab>
 </Tabs>
 
-欲了解更多信息，请参阅[Backends](/oss/javascript/deepagents/backends)。
+有关更多信息，请参阅[Backends](/oss/javascript/deepagents/backends)。
 
 ### 沙箱
 
@@ -2542,7 +2545,7 @@ try {
 }
 ```
 
-欲了解更多信息，请参阅[Sandboxes](/oss/javascript/deepagents/sandboxes)。
+有关更多信息，请参阅[Sandboxes](/oss/javascript/deepagents/sandboxes)。
 
 ## 人机交互
 
@@ -2774,7 +2777,7 @@ const agent = createDeepAgent({
 
 ## 内存
 
-使用 [⟦T235⟧ files](https://agents.md/) 为您的深度代理提供额外的上下文。<Tip>
+使用 [⟦T237⟧ files](https://agents.md/) 为您的深度代理提供额外的上下文。<Tip>
   要生成编码代理通过`AGENTS.md`发现的存储库wiki，请参阅[OpenWiki](/oss/openwiki/overview)。
 </Tip>
 
@@ -3682,7 +3685,7 @@ const agent = createDeepAgent({
 Deep Agents 支持[structured output](/oss/javascript/langchain/structured-output)。
 
 您可以通过将其作为`responseFormat`参数传递给`createDeepAgent()`调用来设置所需的结构化输出模式。
-当模型生成结构化数据时，它会被捕获、验证并在代理状态的“structuralResponse”键中返回。
+当模型生成结构化数据时，它会被捕获、验证并在代理状态的“structedResponse”键中返回。
 
 ```ts theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 import { tool } from "langchain";

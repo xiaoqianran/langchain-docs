@@ -58,21 +58,21 @@ SmithDB 是为代理跟踪数据构建的列式数据存储：深度嵌套的跨
 | GCP (GKE) | LangSmith 0.16，Helm 图表 `0.16.14` 或更高版本 |
 |天蓝色 (AKS) | LangSmith 0.17 |
 
-＃＃ 成分启用 SmithDB 会将以下工作负载添加到您的集群中。三个服务将跟踪数据缓存在磁盘、网络连接卷或本地 SSD 上；另外两个服务规模较小，并且在通用计算上运行。这两个作业运行到完成而不是作为服务。参见[Cache storage](/langsmith/self-host-smithdb-infrastructure#cache-storage)。
+＃＃ 成分在默认集群模式下启用 SmithDB 会将以下工作负载添加到您的集群中。三个服务将跟踪数据缓存在磁盘、网络连接卷或本地 SSD 上；另外两个服务规模较小，并且在通用计算上运行。参见[Cache storage](/langsmith/self-host-smithdb-infrastructure#cache-storage)。要将 SmithDB 作为一个 pod 运行，请参阅 [Choose a deployment mode](/langsmith/self-host-smithdb-scale#choose-a-deployment-mode)。
 
-|组件|类型 |它有什么作用 |磁盘缓存|缩放 |
+|组件|类型 |它有什么作用 |磁盘缓存|缩放|
 | - | - | - | - | - |
 |食入|服务 |将传入跟踪写入对象存储 |是的 |卧式|
 |查询 |服务 |为 LangSmith UI 和 API 提供跟踪读取服务 |是的 |卧式|
 |压实工|服务 |在后台重新组织存储的跟踪，以便查询保持快速 |是的 |卧式|
-|压实|服务 |安排压实工人进行的后台工作 |没有 |单实例 |
+|压实|服务 |安排压实工人进行的后台工作 |没有 |单实例|
 |集群管理器|服务 |协调其他 SmithDB 服务 |没有 |单实例 |
 |元存储迁移 |工作 |在安装过程中准备 SmithDB 元存储 |没有 |运行一次 |
 |移民|工作 |回填ClickHouse历史记录；仅当您 [migrate historical data](/langsmith/self-host-smithdb-migrate) | 时才运行没有 |并行度|
 
-## 存储要求自托管 LangSmith 安装使用 PostgreSQL 存储操作数据，使用 Redis 或 Valkey 进行排队和缓存，以及可选的 blob 存储。当安装运行双重摄取时，跟踪和反馈存在于 ClickHouse、SmithDB 或两者中。 SmithDB 添加了自己的元存储、对象存储和缓存存储。
+## 存储要求自托管 LangSmith 安装使用 PostgreSQL 来存储操作数据，使用 Redis 或 Valkey 来进行排队和缓存，以及可选的 blob 存储。当安装运行双重摄取时，跟踪和反馈存在于 ClickHouse、SmithDB 或两者中。 SmithDB 添加了自己的元存储、对象存储和缓存存储。
 
-在 0.17 上，新安装可以运行 SmithDB，无需 ClickHouse；参见[Install without ClickHouse](/langsmith/self-host-smithdb-install#install-without-clickhouse)。从现有安装中停用 ClickHouse 是一个单独的过程；考虑之前请通过[Support Portal](https://support.langchain.com/)联系LangChain。
+在 0.17 上，新安装可以运行 SmithDB，无需 ClickHouse；参见[Install without ClickHouse](/langsmith/self-host-smithdb-install#install-without-clickhouse)。从现有安装中停用 ClickHouse 是一个单独的过程；考虑之前先通过[Support Portal](https://support.langchain.com/)联系LangChain。
 
 有关适用于 ClickHouse 和 SmithDB 的 SDK 方法更改，请参阅 [Migrate to SmithDB-backed SDK methods](/langsmith/smithdb-sdk-migration)。
 

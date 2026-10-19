@@ -174,7 +174,7 @@ LangChain通过[Embeddings](https://reference.langchain.com/javascript/langchain
     import { GoogleGenerativeAIEmbeddings } from "@langchain/google-genai";
 
     const embeddings = new GoogleGenerativeAIEmbeddings({
-      model: "text-embedding-004"
+      model: "gemini-embedding-001"
     });
     ```
   </Accordion>
@@ -390,7 +390,7 @@ console.log(`Cached creation time: ${Date.now() - tic}ms`);
 在生产中，您通常会使用更强大的持久存储，例如数据库或云存储。请参阅[stores integrations](/oss/javascript/integrations/stores/)了解选项。
 
 ## 所有集成<div>
-  |整合 |下载 |
+  |整合|下载 |
   | :- | :- |
   | [⟦T55⟧](/oss/javascript/integrations/embeddings/azure_openai) | <span><a href="https://www.npmjs.com/package/@langchain/openai"> <img alt="Downloads per month" /></a></span> |
   | [⟦T56⟧](/oss/javascript/integrations/embeddings/openai) | <span><a href="https://www.npmjs.com/package/@langchain/openai"><img alt="Downloads per month" /></a></span>|

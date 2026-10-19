@@ -5263,6 +5263,10 @@
           "rel": "langsmith/smith-api/orgs/create-org-service-key.md"
         },
         {
+          "title": "Create org tracing key",
+          "rel": "langsmith/smith-api/orgs/create-org-tracing-key.md"
+        },
+        {
           "title": "Create organization",
           "rel": "langsmith/smith-api/orgs/create-organization.md"
         },
@@ -5273,10 +5277,6 @@
         {
           "title": "Create SSO settings",
           "rel": "langsmith/smith-api/orgs/create-sso-settings.md"
-        },
-        {
-          "title": "Create stripe account links endpoint",
-          "rel": "langsmith/smith-api/orgs/create-stripe-account-links-endpoint.md"
         },
         {
           "title": "Create stripe checkout sessions endpoint",
@@ -5293,6 +5293,10 @@
         {
           "title": "Delete org service key",
           "rel": "langsmith/smith-api/orgs/delete-org-service-key.md"
+        },
+        {
+          "title": "Delete org tracing key",
+          "rel": "langsmith/smith-api/orgs/delete-org-tracing-key.md"
         },
         {
           "title": "Delete organization roles",
@@ -5373,6 +5377,10 @@
         {
           "title": "List org service keys",
           "rel": "langsmith/smith-api/orgs/list-org-service-keys.md"
+        },
+        {
+          "title": "List org tracing keys",
+          "rel": "langsmith/smith-api/orgs/list-org-tracing-keys.md"
         },
         {
           "title": "List organization roles",
@@ -5785,12 +5793,24 @@
       ],
       "sandboxes": [
         {
+          "title": "Attach a sandbox to a browser (Beta)",
+          "rel": "langsmith/smith-api/sandboxes/attach-a-sandbox-to-a-browser-beta.md"
+        },
+        {
           "title": "Batch delete sandboxes",
           "rel": "langsmith/smith-api/sandboxes/batch-delete-sandboxes.md"
         },
         {
           "title": "Capture a snapshot from a sandbox",
           "rel": "langsmith/smith-api/sandboxes/capture-a-snapshot-from-a-sandbox.md"
+        },
+        {
+          "title": "Close a tab in a browser window (Beta)",
+          "rel": "langsmith/smith-api/sandboxes/close-a-tab-in-a-browser-window-beta.md"
+        },
+        {
+          "title": "Create a browser (Beta)",
+          "rel": "langsmith/smith-api/sandboxes/create-a-browser-beta.md"
         },
         {
           "title": "Create a registry",
@@ -5805,6 +5825,10 @@
           "rel": "langsmith/smith-api/sandboxes/create-a-snapshot.md"
         },
         {
+          "title": "Create links to a browser window (Beta)",
+          "rel": "langsmith/smith-api/sandboxes/create-links-to-a-browser-window-beta.md"
+        },
+        {
           "title": "Delete a registry",
           "rel": "langsmith/smith-api/sandboxes/delete-a-registry.md"
         },
@@ -5815,6 +5839,10 @@
         {
           "title": "Delete a snapshot",
           "rel": "langsmith/smith-api/sandboxes/delete-a-snapshot.md"
+        },
+        {
+          "title": "Detach a sandbox from a browser (Beta)",
+          "rel": "langsmith/smith-api/sandboxes/detach-a-sandbox-from-a-browser-beta.md"
         },
         {
           "title": "Download a sandbox file",
@@ -5839,6 +5867,10 @@
         {
           "title": "Generate a service access token",
           "rel": "langsmith/smith-api/sandboxes/generate-a-service-access-token.md"
+        },
+        {
+          "title": "Get a browser (Beta)",
+          "rel": "langsmith/smith-api/sandboxes/get-a-browser-beta.md"
         },
         {
           "title": "Get a registry",
@@ -5893,12 +5925,28 @@
           "rel": "langsmith/smith-api/sandboxes/list-snapshots.md"
         },
         {
+          "title": "Load a browser's extensions (Beta)",
+          "rel": "langsmith/smith-api/sandboxes/load-a-browsers-extensions-beta.md"
+        },
+        {
           "title": "Open a sandbox TCP tunnel",
           "rel": "langsmith/smith-api/sandboxes/open-a-sandbox-tcp-tunnel.md"
         },
         {
+          "title": "Open a tab in a browser window (Beta)",
+          "rel": "langsmith/smith-api/sandboxes/open-a-tab-in-a-browser-window-beta.md"
+        },
+        {
+          "title": "Resize a browser window (Beta)",
+          "rel": "langsmith/smith-api/sandboxes/resize-a-browser-window-beta.md"
+        },
+        {
           "title": "Resume a streamed sandbox command",
           "rel": "langsmith/smith-api/sandboxes/resume-a-streamed-sandbox-command.md"
+        },
+        {
+          "title": "Set who controls a browser window (Beta)",
+          "rel": "langsmith/smith-api/sandboxes/set-who-controls-a-browser-window-beta.md"
         },
         {
           "title": "Start a sandbox",

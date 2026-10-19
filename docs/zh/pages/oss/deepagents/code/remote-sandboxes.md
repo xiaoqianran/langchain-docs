@@ -78,7 +78,7 @@ Deep Agents 代码使用 [sandbox as tool](/oss/python/deepagents/sandboxes#sand
       </Tab>
 
       <Tab title="E2B">
-        E2B 是由 `langchain-e2b` 包发布的 [third-party provider](#third-party-providers)。将其作为包安装，而不是`deepagents-code`额外的：
+        E2B is a [third-party provider](#third-party-providers) published by the `langchain-e2b` package.将其作为包安装，而不是`deepagents-code`额外的：
 
         <CodeGroup>
           ```txt In session theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
@@ -92,7 +92,7 @@ Deep Agents 代码使用 [sandbox as tool](/oss/python/deepagents/sandboxes#sand
       </Tab>
     </Tabs>
 
-    要立即安装对每个内置提供程序的支持，请在会话中使用 `all-sandboxes` 额外功能：`/install all-sandboxes`，或从 shell 中使用 `dcode --install all-sandboxes`。 `all-sandboxes` extra 不包括 E2B 等第三方提供商。
+    To install support for every built-in provider at once, use the `all-sandboxes` extra: `/install all-sandboxes` in a session, or `dcode --install all-sandboxes` from the shell. The `all-sandboxes` extra does not include third-party providers such as E2B.
   </Step>
 
   <Step title="Set provider credentials" icon="key">
@@ -139,7 +139,7 @@ Deep Agents 代码使用 [sandbox as tool](/oss/python/deepagents/sandboxes#sand
         export VERCEL_TEAM_ID="your-team-id"
         ```
 
-        在 Vercel 上运行时，会自动使用 [OIDC](https://vercel.com/docs/oidc) 凭据。
+        When running on Vercel, [OIDC](https://vercel.com/docs/oidc) credentials are used automatically instead.
       </Tab>
 
       <Tab title="E2B">
@@ -201,15 +201,15 @@ Deep Agents 代码使用 [sandbox as tool](/oss/python/deepagents/sandboxes#sand
 | - | - |
 | `--sandbox TYPE` |要使用的沙箱提供程序。内置：`langsmith`、`agentcore`、`daytona`、`modal`、`runloop`、`vercel`（默认：`none`）。也接受[Third-party](#third-party-providers) 和[config-declared](#config-declared-providers) 提供商。从您的配置中传递 `--sandbox` ，但没有使用 `[sandboxes].default` 的价值 |
 | `--sandbox-id ID` |按 ID 重用现有沙箱，而不是创建新沙箱。跳过创建和清理。仅适用于支持通过 ID 重新连接的提供商。有关更多信息，请参阅您的沙箱文档 |
-| `--sandbox-snapshot-name NAME` |使用或创建沙箱快照。由 `langsmith` 和 `runloop`（以及宣传快照支持的任何第三方提供商）支持。不能与`--sandbox-id`组合使用 |
+| `--sandbox-snapshot-name NAME` |使用或创建沙箱快照。由 `langsmith`、`daytona` 和 `runloop`（以及宣传快照支持的任何第三方提供商）支持。不能与`--sandbox-id`组合使用 |
 | `--sandbox-setup PATH` |创建后在沙箱内运行的安装脚本的路径 |
 
-每个提供程序都会在沙箱内公开一个默认工作目录。安装脚本和`execute`命令从此目录运行，除非被覆盖：|供应商|工作目录|
+每个提供程序都会在沙箱内公开一个默认工作目录。安装脚本和`execute`命令从此目录运行，除非被覆盖：|供应商|工作目录 |
 | - | - |
 | LangSmith | `/root` |
 |代理核心 | `/tmp` |
 |代托纳 | `/home/daytona` |
-|莫代尔| `/workspace` |
+|莫代尔 | `/workspace` |
 |运行循环| `/home/user` |
 |韦尔塞尔 | `/vercel/sandbox` |
 |电子商务 | `/home/user` |
@@ -219,6 +219,9 @@ Deep Agents 代码使用 [sandbox as tool](/oss/python/deepagents/sandboxes#sand
 ```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 # Create a new LangSmith sandbox
 dcode --sandbox langsmith
+
+# Boot from a named snapshot (langsmith, daytona, or runloop)
+dcode --sandbox daytona --sandbox-snapshot-name my-env
 
 # Reuse an existing sandbox (skips creation and cleanup)
 dcode --sandbox runloop --sandbox-id dbx_abc123
@@ -292,7 +295,7 @@ dcode --sandbox e2b
           ...
   ```
 
-  实施`get_or_create`和`delete`；异步调用者由基类处理。然后在你的包的`pyproject.toml`中注册入口点：
+  实施`get_or_create`和`delete`；异步调用者由基类处理。然后在包的`pyproject.toml`中注册入口点：
 
   ```toml theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
   [project.entry-points."deepagents_code.sandbox_providers"]
@@ -338,7 +341,7 @@ region = "us-east-1"
 </ResponseField>
 
 <ResponseField name="supports_sandbox_id" type="boolean">
-  该提供程序是否允许`--sandbox-id`重新附加。默认为 `true`。
+  该提供者是否允许`--sandbox-id`重新附加。默认为`true`。
 </ResponseField>
 
 <ResponseField name="supports_snapshot_name" type="boolean">
@@ -346,13 +349,13 @@ region = "us-east-1"
 </ResponseField>
 
 <ResponseField name="params" type="object">
-  额外的关键字参数转发到提供商的`get_or_create()`。
+  额外的关键字参数转发到提供者的`get_or_create()`。
 </ResponseField>
 
 重用内置提供程序名称的配置条目**覆盖**内置提供程序，同时保持其依赖项运行前检查。格式错误的条目会被跳过并发出警告，而不是导致启动崩溃。
 
 <Warning>
-  设置 `class_path` 会导致 Deep Agents 代码从指定模块导入并运行任意 Python — 模块级代码在导入时执行。这与模型[⟦T100⟧](/oss/deepagents/code/config-file#arbitrary-providers)相同的信任模型：您控制自己的机器和自己的配置文件。
+  设置 `class_path` 会导致 Deep Agents 代码从指定模块导入并运行任意 Python — 模块级代码在导入时执行。这与模型[⟦T101⟧](/oss/deepagents/code/config-file#arbitrary-providers)相同的信任模型：您控制自己的机器和自己的配置文件。
 </Warning>
 
 ## 设置脚本创建后，使用 `--sandbox-setup` 在沙箱内运行 shell 脚本。这对于克隆存储库、安装依赖项和配置环境变量非常有用。
@@ -388,6 +391,6 @@ Deep Agents 代码使用本地环境变量扩展设置脚本中的 `${VAR}` 引�
   </Callout>
 
   <Callout icon="edit">
-    [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/oss/deepagents/code/remote-sandboxes.mdx) 或 [file an issue](https://github.com/langchain-ai/docs/issues/new/choose)。
+    [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/oss/deepagents/code/remote-sandboxes.mdx) 或[file an issue](https://github.com/langchain-ai/docs/issues/new/choose)。
   </Callout>
 </div>

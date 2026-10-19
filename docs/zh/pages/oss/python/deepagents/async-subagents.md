@@ -10,6 +10,8 @@
 
 它建立在 [subagents](/oss/python/deepagents/subagents) 的基础上，它同步运行并阻止主管直到完成。当任务长时间运行、可并行或需要中途引导时，请使用异步子代理。
 
+在代理服务器上，主管还会了解任务何时完成、失败或需要输入，因此无需进行检查。
+
 ```mermaid theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 graph TB
     User([User]) --> Supervisor[Supervisor Agent]
@@ -22,7 +24,7 @@ graph TB
 ```
 
 <Note>
-  异步子代理与任何实现[Agent Protocol](https://github.com/langchain-ai/agent-protocol)的服务器进行通信。您可以使用[LangSmith Deployments](/langsmith/deployment)，或自行托管任何与代理协议兼容的服务器。每个子代理独立于主管运行，主管通过 SDK 控制子代理的启动、检查、更新和取消。
+  异步子代理与任何实现[Agent Protocol](https://github.com/langchain-ai/agent-protocol)的服务器进行通信。您可以使用[LangSmith Deployments](/langsmith/deployment)，或自行托管任何代理协议兼容的服务器。每个子代理独立于主管运行，主管通过 SDK 控制子代理的启动、检查、更新和取消。
 </Note>
 
 ## 何时使用异步子代理|尺寸|同步子代理 |异步子代理 |
@@ -36,7 +38,7 @@ graph TB
 
 ## 配置异步子代理
 
-将异步子代理定义为 [⟦T13⟧](https://reference.langchain.com/python/deepagents/middleware/async_subagents/AsyncSubAgent) 规范列表，每个都指向一个代理协议服务器：
+将异步子代理定义为[⟦T16⟧](https://reference.langchain.com/python/deepagents/middleware/async_subagents/AsyncSubAgent)规范列表，每个都指向一个代理协议服务器：
 
 ```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 from deepagents import AsyncSubAgent, create_deep_agent
@@ -65,11 +67,11 @@ agent = create_deep_agent(
 | `name` | `str` |必需的。唯一标识符。主管在启动任务时使用它。 |
 | `description` | `str` |必需的。该子代理的作用。主管用它来决定委托给哪个代理。 |
 | `graph_id` | `str` |必需的。代理协议服务器上的图形 ID（或助理 ID）。对于基于 LangGraph 的部署，这必须与在 `langgraph.json` 中注册的图表匹配。 |
-| `url` | `str` |选修的。省略时，使用 ASGI 传输（进程内）。设置后，使用 HTTP 传输到远程代理协议服务器。 |
+| `url` | `str` |选修的。省略时，使用 ASGI 传输（进程中）。设置后，使用 HTTP 传输到远程代理协议服务器。 |
 | `headers` | `dict[str, str]` |选修的。用于向远程服务器发出请求的附加标头。用于使用自托管代理协议服务器进行自定义身份验证。 |
-| `mode` | `"isolated" \| "fork"` |选修的。控制子代理在启动时接收的对话上下文。默认为`"isolated"`。参见[Choose a launch mode](#choose-a-launch-mode)。 |
+| `mode` | `"isolated" \| "fork"` |选修的。控制子代理在启动时接收的对话上下文。默认为 `"isolated"`。参见[Choose a launch mode](#choose-a-launch-mode)。 |
 
-对于基于 LangGraph 的部署，请在同一 `langgraph.json` 中注册所有图以进行共同部署设置：
+对于基于 LangGraph 的部署，请在同一 `langgraph.json` 中注册所有图形以进行共同部署设置：
 
 ```json theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 {
@@ -83,13 +85,13 @@ agent = create_deep_agent(
 
 ## 使用异步子代理工具
 
-当配置异步子代理时，[⟦T29⟧](https://reference.langchain.com/python/deepagents/middleware/async_subagents/AsyncSubAgentMiddleware)包含在[Deep Agents stack](/oss/python/deepagents/customization#deep-agents-stack)中，为主管提供了五个工具：|工具|目的|返回|
+当配置异步子代理时，[⟦T32⟧](https://reference.langchain.com/python/deepagents/middleware/async_subagents/AsyncSubAgentMiddleware)包含在[Deep Agents stack](/oss/python/deepagents/customization#deep-agents-stack)中，为主管提供了五种工具：|工具|目的|返回|
 | - | - | - |
 | `start_async_task` |启动新的后台任务 |任务 ID（立即）|
 | `check_async_task` |获取任务的当前状态和结果 |状态+结果（如果完成）|
 | `update_async_task` |向正在运行的任务发送新指令 |确认+更新状态|
 | `cancel_async_task` |停止正在运行的任务 |确认|
-| `list_async_tasks` |列出所有跟踪任务的实时状态 |所有任务摘要|
+| `list_async_tasks` |列出所有跟踪任务的实时状态 |所有任务摘要 |
 
 主管的法学硕士将这些工具称为任何其他工具。中间件自动处理线程创建、运行管理和状态持久性。
 
@@ -123,9 +125,79 @@ sequenceDiagram
 * **取消** 在服务器上调用`runs.cancel()`，并将任务标记为`"cancelled"`。
 * **List** 迭代所有跟踪的任务。对于非终端任务，它并行从服务器获取实时状态。终端状态（`success`、`error`、`cancelled`）从缓存中返回。
 
-## 了解状态管理任务元数据存储在主管图上的专用状态通道 (`async_tasks`) 中，与消息历史记录分开。这很重要，因为当上下文窗口填满时，深度代理[compact their message history](/oss/python/deepagents/context-engineering#summarization)。如果任务 ID 仅存在于工具消息中，则它们会在压缩过程中丢失。专用通道确保主管可以随时通过`list_async_tasks`回忆其任务，即使经过多轮总结。
+如果子代理因输入或批准而暂停，**检查**和**列表**将其报告为 `waiting`。更新 `waiting` 任务会删除其挂起的请求，而取消一个任务只会将其标记为 `"cancelled"`，因为它没有活动的运行。参见[Handle subagents waiting for input](#handle-subagents-waiting-for-input)。当在 [Agent Protocol](https://github.com/langchain-ai/agent-protocol) 服务器上运行时，子代理会在完成时自动更新 Supervisor。如果为主管和子代理使用[single deployment](#single-deployment)，子代理将在主管空闲时唤醒主管；否则它会在下次运行开始时收到更新。
+
+<Note>
+  任务通知需要`deepagents>=0.7.26`。他们在[**beta**](/oss/python/versioning)； API 和行为可能会在版本之间发生变化。
+</Note>
+
+通知以 `HumanMessage` 返回给主管。它们可以包括图像和其他多模式媒体。该消息在`additional_kwargs["deepagents_notification"]`中携带[⟦T48⟧](https://reference.langchain.com/python/deepagents/middleware/async_subagents/TaskEvent)（`task_id`、`agent_name`、`status`、`run_id`），因此您的应用可以以不同于用户消息的方式显示通知：
+
+```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+for message in state["messages"]:
+    if event := message.additional_kwargs.get("deepagents_notification"):
+        print(event["agent_name"], event["status"])  # success, error, timeout, or waiting
+```
+
+## 处理等待输入的子代理
+
+<Note>
+  `waiting` 状态需要 `deepagents>=0.7.26`。位于[**beta**](/oss/python/versioning)； API 和行为可能会在版本之间发生变化。
+</Note>
+
+当子代理暂停输入或批准`interrupt()`或[human-in-the-loop](/oss/python/deepagents/human-in-the-loop)时，**检查**和**列表**工具将其报告为`waiting`及其挂起的中断。主管不能代表用户答复或批准。该请求是针对用户的。
+
+您的应用程序在子代理自己的线程上回答它。任务 ID 是子代理的线程 ID：
+
+```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+from langgraph_sdk import get_client
+
+
+async def answer_waiting_subagent(task_id: str, graph_id: str, answer: object) -> None:
+    client = get_client()  # Pass url=... for a subagent on another deployment
+    thread = await client.threads.get(task_id)  # The task ID is the subagent's thread ID
+    interrupt = next(iter(thread["interrupts"].values()))[0]
+    await client.runs.create(
+        task_id,
+        graph_id,
+        command={"resume": {interrupt["id"]: answer}},
+    )
+```当子代理完成回答后，主管会像往常一样收到通知。如果子代理需要来自主管而不是用户的信息，请让它在结果中询问。主管回复`update_async_task`。
+
+## 了解状态管理
+
+任务元数据存储在主管图上的专用状态通道 (`async_tasks`) 中，与消息历史记录分开。这很重要，因为当上下文窗口填满时，深度代理[compact their message history](/oss/python/deepagents/context-engineering#summarization)。如果任务 ID 仅存在于工具消息中，则它们会在压缩过程中丢失。专用通道确保主管可以随时通过`list_async_tasks`回忆自己的任务，即使经过多轮总结。
 
 每个跟踪的任务都会记录任务 ID、代理名称、线程 ID、运行 ID、状态和时间戳（`created_at`、`last_checked_at`、`last_updated_at`）。
+
+### 查找主管的子代理线程
+
+<Note>
+  线程标记需要`deepagents>=0.7.26`。位于[**beta**](/oss/python/versioning)； API 和行为可能会在版本之间发生变化。
+</Note>
+
+`start_async_task` 使用`metadata={"parent_thread_id": ...}`（主管的线程 ID）创建每个子代理线程。使用它来查找主管的子代理线程，或在子代理的图工厂中读取主管的线程：
+
+```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+from langchain_core.runnables import RunnableConfig
+from langgraph_sdk import get_client
+
+from deepagents import create_deep_agent
+
+
+async def find_subagent_threads(parent_thread_id: str) -> list[dict]:
+    client = get_client()
+    return await client.threads.search(metadata={"parent_thread_id": parent_thread_id})
+
+
+def researcher(config: RunnableConfig):
+    # Set when a supervisor launched this run with `start_async_task`
+    parent_thread_id = (config.get("metadata") or {}).get("parent_thread_id")
+    return create_deep_agent(
+        model="google_genai:gemini-3.8-flash",
+        system_prompt="You research topics thoroughly.",
+    )
+```例如，子代理可以通过使用 `parent_thread_id` 查找来重用主管的 [thread-scoped sandbox](/oss/python/deepagents/sandboxes#thread-scoped-default)。检查调用者是否可以首先访问该线程，因为有权访问该线程的任何人都可以编辑其元数据。
 
 ## 选择交通工具
 
@@ -137,7 +209,7 @@ ASGI 传输消除了网络延迟，并且不需要额外的身份验证配置。
 
 ### HTTP 传输（远程）
 
-添加一个 `url` 字段以切换到 HTTP 传输，其中 SDK 调用通过网络传输到远程代理协议服务器：
+添加 `url` 字段以切换到 HTTP 传输，其中 SDK 调用通过网络传输到远程代理协议服务器：
 
 ```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 from deepagents import AsyncSubAgent
@@ -148,13 +220,13 @@ AsyncSubAgent(
     graph_id="researcher",
     url="https://my-research-deployment.langsmith.dev",
 )
-```对于 LangGraph 部署，身份验证由 LangGraph SDK 使用环境变量中的 `LANGSMITH_API_KEY`（或 `LANGGRAPH_API_KEY`）进行处理。自承载代理协议服务器可能使用不同的身份验证机制。
+```
 
-当子代理需要独立扩展、不同的资源配置文件或由不同的团队维护时，请使用 HTTP 传输。
+对于 LangGraph 部署，身份验证由 LangGraph SDK 使用环境变量中的 `LANGSMITH_API_KEY`（或 `LANGGRAPH_API_KEY`）进行处理。自承载代理协议服务器可能使用不同的身份验证机制。
 
-## 选择启动模式
+当子代理需要独立扩展、不同的资源配置文件或由不同的团队维护时，请使用 HTTP 传输。## 选择启动模式
 
-每个 [⟦T51⟧](https://reference.langchain.com/python/deepagents/middleware/async_subagents/AsyncSubAgent) 规范上的 `mode` 字段控制任务启动时子代理接收的对话上下文。
+每个 [⟦T74⟧](https://reference.langchain.com/python/deepagents/middleware/async_subagents/AsyncSubAgent) 规范上的 `mode` 字段控制任务启动时子代理接收的对话上下文。
 
 |模式|行为 |
 | - | - |
@@ -166,7 +238,7 @@ AsyncSubAgent(
 ### 分叉模式
 
 <Warning>
-  `mode="fork"` 仅在 Python 中可用。它是实验性的，可能会在未来的版本中发生变化。
+  `mode="fork"` 仅适用于 Python。它是实验性的，可能会在未来的版本中发生变化。
 </Warning>
 
 在任何 `AsyncSubAgent` 规格上设置 `mode="fork"`：
@@ -180,21 +252,21 @@ async_subagents=[
         "mode": "fork",
     }
 ]
-```启动时，`start_async_task` 会发送家长的完整对话历史记录（重播到该点），然后是任务描述。来自父级的后续消息不会转发给子级。
+```
 
-**提示缓存重用。** 要获得对分叉对话前缀的缓存命中，请使用与父代理相同的模型、系统提示、工具和提示处理中间件来配置远程代理。 Fork模式复制对话历史记录；它不会同步这些设置。匹配配置是必要的，但还不够：呈现的前缀必须匹配，缓存命中取决于提供者。
+启动时，`start_async_task` 会发送家长的完整对话历史记录（重播到该点），然后是任务描述。来自父级的后续消息不会转发给子级。**提示缓存重用。** 要获得对分叉对话前缀的缓存命中，请使用与父代理相同的模型、系统提示、工具和提示处理中间件来配置远程代理。 Fork模式复制对话历史记录；它不会同步这些设置。匹配配置是必要的，但还不够：呈现的前缀必须匹配，缓存命中取决于提供者。
 
 ## 选择部署拓扑
 
-### Single deployment
+### 单一部署
 
 单一部署意味着所有代理都使用 ASGI 传输共同部署在同一台服务器上。对于基于LangGraph的部署，将所有图表注册在一个`langgraph.json`中。这是推荐的起点——管理一台服务器，代理之间的网络延迟为零。
 
-### Split deployment
+### 拆分部署
 
 一台服务器上的主管，另一台服务器上的子代理通过 HTTP 传输。当子代理需要不同的计算配置文件或独立扩展时使用。
 
-### Hybrid
+### 混合动力
 
 在混合部署中，一些子代理通过 ASGI 共同部署，其他子代理通过 HTTP 远程部署：
 
@@ -218,9 +290,9 @@ async_subagents = [
 ]
 ```
 
-## 最佳实践### 调整工人池规模以适应本地发展
+## 最佳实践
 
-当使用 `langgraph dev` 在本地运行时，增加工作池以适应并发子代理运行。每个活动运行都会占用一个工作槽。具有 3 个并发子代理任务的主管需要 4 个插槽（1 个主管 + 3 个子代理）。配置不足会导致启动排队。
+### 调整工人池规模以适应当地发展当使用 `langgraph dev` 在本地运行时，增加工作池以适应并发子代理运行。每个活动运行都会占用一个工作槽。具有 3 个并发子代理任务的主管需要 4 个插槽（1 个主管 + 3 个子代理）。配置不足会导致启动排队。
 
 ```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 langgraph dev --n-jobs-per-worker 10
@@ -260,7 +332,9 @@ langgraph dev --n-jobs-per-worker 10
 
 ### 启动后立即进行主管民意调查
 
-**问题**：主管在启动后立即循环调用`check`，将异步执行变成阻塞。**解决方案**：中间件注入系统提示规则来防止这种情况。如果轮询持续存在，请强化主管系统提示中的行为：
+**问题**：主管在启动后立即循环调用`check`，将异步执行变成阻塞。
+
+**解决方案**：中间件注入系统提示规则来防止这种情况。如果轮询持续存在，请强化主管系统提示中的行为：
 
 ```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 from deepagents import create_deep_agent
@@ -273,9 +347,7 @@ agent = create_deep_agent(
     Never call check_async_task immediately after launch.""",
     subagents=async_subagents,
 )
-```
-
-### 主管报告过时状态
+```### 主管报告过时状态
 
 **问题**：主管引用对话历史记录中较早的任务状态，而不是进行新的 `check` 呼叫。
 

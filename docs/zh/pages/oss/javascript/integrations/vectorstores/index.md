@@ -249,7 +249,7 @@ vectorStore.similaritySearch("query", 2, { source: "tweets" });
     import { GoogleGenerativeAIEmbeddings } from "@langchain/google-genai";
 
     const embeddings = new GoogleGenerativeAIEmbeddings({
-      model: "text-embedding-004"
+      model: "gemini-embedding-001"
     });
     ```
   </Accordion>
@@ -676,7 +676,7 @@ LangChain.js 与各种矢量商店集成。您可以查看下面的完整列表�
   | [⟦T105⟧](https://docs.lambdadb.ai/guides/get-started/quickstart) | <span><a href="https://www.npmjs.com/package/@functional-systems/langchain-lambdadb"><img alt="Downloads per month" /></a></span>|
   | [⟦T106⟧](/oss/javascript/integrations/vectorstores/ydb) | <span><a href="https://www.npmjs.com/package/@ydbjs/langchain"> <img alt="Downloads per month" /></a></span> |
   | [⟦T107⟧](https://infino.ai/docs) | <span><a href="https://www.npmjs.com/package/@infino-ai/langchain-infino"><img alt="Downloads per month" /></a></span>|
-  | [⟦T108⟧](/oss/javascript/integrations/vectorstores/memory) | <span>N/A</span> |
+  | [⟦T108⟧](/oss/javascript/integrations/vectorstores/memory) | <span>不适用</span> |
 </div>
 
 ***

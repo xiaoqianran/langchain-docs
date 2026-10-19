@@ -52,6 +52,18 @@ Each SmithDB component exposes application metrics at the fixed `/metrics` path 
   ```
 
   On LangSmith 0.16, set the migration annotations under `smithdb.migration.deployment.annotations`.
+
+  With `smithdb.topology: single`, annotate the single pod and scrape port `8060` only:
+
+  ```yaml theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+  smithdb:
+    single:
+      deployment:
+        annotations:
+          prometheus.io/scrape: "true"
+          prometheus.io/path: "/metrics"
+          prometheus.io/port: "8060"
+  ```
 </Accordion>
 
 These are Prometheus-style annotations. Providers with their own discovery format, such as Datadog, need that format applied to the same ports and path. Monitor the PostgreSQL metastore, Kubernetes nodes, and cloud services with your existing infrastructure monitoring.

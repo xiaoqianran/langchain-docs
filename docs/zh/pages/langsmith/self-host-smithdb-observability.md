@@ -2,7 +2,7 @@
 
 <!-- langchain-docs: Configure SmithDB observability | https://docs.langchain.com/langsmith/self-host-smithdb-observability -->
 
-# 配置SmithDB可观察性
+# 配置SmithDB可观测性
 
 抓取 SmithDB 应用程序指标并将日志和跟踪导出到现有的可观察性堆栈。
 
@@ -54,13 +54,25 @@ SmithDB 组件公开应用程序指标，并可以将日志和跟踪导出到现
   ```
 
   在LangSmith 0.16 上，在`smithdb.migration.deployment.annotations`下设置迁移注释。
+
+  使用`smithdb.topology: single`，仅注释单个 Pod 和抓取端口`8060`：
+
+  ```yaml theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+  smithdb:
+    single:
+      deployment:
+        annotations:
+          prometheus.io/scrape: "true"
+          prometheus.io/path: "/metrics"
+          prometheus.io/port: "8060"
+  ```
 </Accordion>
 
 这些是普罗米修斯风格的注释。拥有自己的发现格式的提供商（例如 Datadog）需要将该格式应用于相同的端口和路径。使用现有基础设施监控来监控 PostgreSQL 元存储、Kubernetes 节点和云服务。
 
-要了解哪些指标以及如何读取它们，请参阅[SmithDB metrics reference](/langsmith/self-host-smithdb-metrics)。
+有关要观察哪些指标以及如何读取它们，请参阅[SmithDB metrics reference](/langsmith/self-host-smithdb-metrics)。
 
-## 日志和痕迹SmithDB 使用[Export LangSmith telemetry to your observability backend](/langsmith/export-backend) 中描述的图表级 OpenTelemetry 跟踪配置，但有一个区别：SmithDB 仅通过 OTLP gRPC 导出。将 `config.observability.tracing.exporter` 设置为 `grpc`。使用 `http`，SmithDB 导出保持禁用状态，SmithDB 日志保持仅限控制台。该图表自动将 SmithDB pod 和容器名称添加为 OpenTelemetry 资源属性。
+## 日志和痕迹SmithDB 使用[Export LangSmith telemetry to your observability backend](/langsmith/export-backend) 中描述的图表级 OpenTelemetry 跟踪配置，但有一个区别：SmithDB 仅通过 OTLP gRPC 导出。将 `config.observability.tracing.exporter` 设置为 `grpc`。对于 `http`，SmithDB 导出保持禁用状态，SmithDB 日志保持仅限控制台。该图表自动将 SmithDB pod 和容器名称添加为 OpenTelemetry 资源属性。
 
 要自定义 SmithDB 日志过滤，请通过 `smithdb.commonEnv` 为所有 SmithDB 工作负载设置 `RUST_LOG`：
 

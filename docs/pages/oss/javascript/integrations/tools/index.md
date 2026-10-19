@@ -62,6 +62,7 @@ The following table shows tools that generate video, image, or audio assets:
   | [`Bilig WorkPaper`](https://proompteng.github.io/bilig/) | <span><a href="https://www.npmjs.com/package/@bilig/workpaper">  <img alt="Downloads per month" /></a></span> |
   | [`PerplexitySearchResults`](/oss/javascript/integrations/tools/perplexity_search) | <span><a href="https://www.npmjs.com/package/@langchain/perplexity">  <img alt="Downloads per month" /></a></span> |
   | [`Continuity tools`](https://github.com/zerohourzulu/continuity/blob/main/packages/remote-tools/README.md#langchain-tools) | <span><a href="https://www.npmjs.com/package/@ramex-labs/continuity-remote">  <img alt="Downloads per month" /></a></span> |
+  | [`agentsvc`](https://agentsvc.io/docs/langchain) | <span><a href="https://www.npmjs.com/package/agentsvc">  <img alt="Downloads per month" /></a></span> |
   | [`Fidacy Action Firewall`](https://github.com/fidacy/fidacy-open) | <span><a href="https://www.npmjs.com/package/@fidacy/langchain">  <img alt="Downloads per month" /></a></span> |
   | [`Serpex`](https://serpex.dev/docs) | <span><a href="https://www.npmjs.com/package/langchain-serpex-js">  <img alt="Downloads per month" /></a></span> |
   | [`Pushary`](https://pushary.com/docs/agents/build/langgraph?utm_source=langchain\&utm_medium=integration-directory\&utm_campaign=pushary-langgraph-js) | <span><a href="https://www.npmjs.com/package/@pushary/langgraph">  <img alt="Downloads per month" /></a></span> |

@@ -172,6 +172,7 @@ The following table shows tools that can be used for security-related tasks:
 | [SidClaw](https://docs.sidclaw.com/docs/integrations/langchain) | Free hosted tier available | Policy evaluation, human approval workflows, and tamper-evident audit trails for LangChain tool calls. |
 | [Tonic Textual](https://textual.tonic.ai) | Requires account | Detect, extract, synthesize, or tokenize PII in text, JSON, HTML, and files. |
 | [ERC-8004](https://github.com/Conrad-sudo/langchain-erc8004) | Free | Vet an ERC-8004 agent before delegating work to it: verify its on-chain identity against the registration file it publishes, read reputation feedback attributed to named reviewers, and prepare registry writes as execution plans. |
+| [Fizzl](https://fizzl.eu/agents/python/) | Free quick checks; full checks $0.01–$0.02 per call (x402) | Check a transaction, token approval or signature before an agent signs it (green/orange/red with reasons, plus transaction simulation), a token before buying it, a wallet's open approvals, and a paid x402 endpoint before paying it. |
 
 ## Media generation
 
@@ -270,6 +271,7 @@ The following table shows tools that generate video, image, or audio assets:
   | [`FoliantPaymentTool`](https://github.com/gazoy/langchain-foliant#readme) | <span><a href="https://pypi.org/project/langchain-foliant/">  <img alt="Downloads per month" /></a></span> |
   | [`HindsightTools`](https://docs.hindsight.vectorize.io/sdks/integrations/langgraph) | <span><a href="https://pypi.org/project/hindsight-langgraph/">  <img alt="Downloads per month" /></a></span> |
   | [`WebzNewsSearch`](https://docs.webz.io/docs/webz/news-search-api-mcp) | <span><a href="https://pypi.org/project/langchain-webz/">  <img alt="Downloads per month" /></a></span> |
+  | [`HirePulse company data tools`](https://github.com/edtool79-collab/hirepulse-open-source#langchain-and-crewai-gateway-tools-030) | <span><a href="https://pypi.org/project/hirepulse-tools/">  <img alt="Downloads per month" /></a></span> |
   | [`ERC8004Toolkit`](https://github.com/Conrad-sudo/langchain-erc8004) | <span><a href="https://pypi.org/project/langchain-erc8004/">  <img alt="Downloads per month" /></a></span> |
   | [`Prolog`](https://langchain-prolog.readthedocs.io/en/stable/) | <span><a href="https://pypi.org/project/langchain-prolog/">  <img alt="Downloads per month" /></a></span> |
   | [`AidressToolkit`](https://aidress.ai) | <span><a href="https://pypi.org/project/langchain-aidress/">  <img alt="Downloads per month" /></a></span> |
@@ -288,6 +290,8 @@ The following table shows tools that generate video, image, or audio assets:
   | [`AnyAPIToolkit`](https://github.com/getanyapi-com/integrations/tree/main/langchain-anyapi) | <span><a href="https://pypi.org/project/langchain-anyapi/">  <img alt="Downloads per month" /></a></span> |
   | [`Synmerco`](https://synmerco.com/docs) | <span><a href="https://pypi.org/project/synmerco-langchain/">  <img alt="Downloads per month" /></a></span> |
   | [`RelayShield`](https://api.relayshield.net/developers) | <span><a href="https://pypi.org/project/langchain-relayshield/">  <img alt="Downloads per month" /></a></span> |
+  | [`DecodoSearchTool`](https://github.com/Decodo/langchain/tree/master/libs/partners/decodo) | <span><a href="https://pypi.org/project/langchain-decodo/">  <img alt="Downloads per month" /></a></span> |
+  | [`DecodoWebScrapeTool`](https://github.com/Decodo/langchain/tree/master/libs/partners/decodo) | <span><a href="https://pypi.org/project/langchain-decodo/">  <img alt="Downloads per month" /></a></span> |
   | [`AmazonProductTool`](https://www.scrapingbee.com/documentation/langchain/) | <span><a href="https://pypi.org/project/langchain-scrapingbee/">  <img alt="Downloads per month" /></a></span> |
   | [`AmazonSearchTool`](https://www.scrapingbee.com/documentation/langchain/) | <span><a href="https://pypi.org/project/langchain-scrapingbee/">  <img alt="Downloads per month" /></a></span> |
   | [`ChatGPTTool`](https://www.scrapingbee.com/documentation/langchain/) | <span><a href="https://pypi.org/project/langchain-scrapingbee/">  <img alt="Downloads per month" /></a></span> |
@@ -412,6 +416,8 @@ The following table shows tools that generate video, image, or audio assets:
   | [`DeweyResearchTool`](https://github.com/meetdewey/langchain-dewey) | <span><a href="https://pypi.org/project/langchain-dewey/">  <img alt="Downloads per month" /></a></span> |
   | [`ModexiaToolkit`](https://modexia.software/docs) | <span><a href="https://pypi.org/project/langchain-modexia/">  <img alt="Downloads per month" /></a></span> |
   | [`OctenSearchResults`](https://docs.octen.ai) | <span><a href="https://pypi.org/project/langchain-octen/">  <img alt="Downloads per month" /></a></span> |
+  | [`NanoBananaToolkit`](https://github.com/AceDataCloud/LangChain/tree/main/packages/nano-banana) | <span><a href="https://pypi.org/project/langchain-nano-banana-acedatacloud/">  <img alt="Downloads per month" /></a></span> |
+  | [`GPTImageToolkit`](https://github.com/AceDataCloud/LangChain/tree/main/packages/gpt-image) | <span><a href="https://pypi.org/project/langchain-gpt-image-acedatacloud/">  <img alt="Downloads per month" /></a></span> |
   | [`FlowSpeechTextToSpeechTool`](https://flowspeech.io/docs) | <span><a href="https://pypi.org/project/langchain-flowspeech/">  <img alt="Downloads per month" /></a></span> |
   | [`SidClawToolkit`](https://docs.sidclaw.com/docs/integrations/langchain) | <span><a href="https://pypi.org/project/langchain-sidclaw/">  <img alt="Downloads per month" /></a></span> |
   | [`pr402`](https://docs.ipay.sh) | <span><a href="https://pypi.org/project/langchain-pr402/">  <img alt="Downloads per month" /></a></span> |
@@ -433,9 +439,11 @@ The following table shows tools that generate video, image, or audio assets:
   | [`IgptAsk`](https://docs.igpt.ai/docs/sdks/langchain#igpt-ask) | <span><a href="https://pypi.org/project/langchain-igpt/">  <img alt="Downloads per month" /></a></span> |
   | [`IgptSearch`](https://docs.igpt.ai/docs/sdks/langchain#igpt-search) | <span><a href="https://pypi.org/project/langchain-igpt/">  <img alt="Downloads per month" /></a></span> |
   | [`AgentLineToolkit`](https://docs.agentline.cloud/introduction) | <span><a href="https://pypi.org/project/langchain-agentline/">  <img alt="Downloads per month" /></a></span> |
+  | [`DDG Agent Services`](https://pypi.org/project/ddg-langchain/) | <span><a href="https://pypi.org/project/ddg-langchain/">  <img alt="Downloads per month" /></a></span> |
   | [`Toolstem`](https://toolstem.com) | <span><a href="https://pypi.org/project/langchain-toolstem/">  <img alt="Downloads per month" /></a></span> |
   | [`CekiToolkit`](https://ceki.me) | <span><a href="https://pypi.org/project/langchain-ceki/">  <img alt="Downloads per month" /></a></span> |
   | [`VeriflyEmailVerifier`](https://verifly.email/docs) | <span><a href="https://pypi.org/project/langchain-verifly/">  <img alt="Downloads per month" /></a></span> |
+  | [`agentsvc`](https://agentsvc.io/docs/langchain) | <span><a href="https://pypi.org/project/agentsvc/">  <img alt="Downloads per month" /></a></span> |
   | [`Synap DocuAnalyzer`](https://github.com/synapsoft-DA/langchain-synapsoft) | <span><a href="https://pypi.org/project/langchain-synapsoft/">  <img alt="Downloads per month" /></a></span> |
   | [`FlipCoinToolkit`](https://github.com/flipcoin-fun/flipcoin-langchain) | <span><a href="https://pypi.org/project/langchain-flipcoin/">  <img alt="Downloads per month" /></a></span> |
   | [`ProxyClaw`](https://proxyclaw.ai/docs) | <span><a href="https://pypi.org/project/langchain-proxyclaw/">  <img alt="Downloads per month" /></a></span> |
@@ -467,6 +475,7 @@ The following table shows tools that generate video, image, or audio assets:
   | [`GreenCalculusToolkit`](https://greencalculus.com/guides/emission-factors-langchain/) | <span><a href="https://pypi.org/project/langchain-greencalculus/">  <img alt="Downloads per month" /></a></span> |
   | [`UploadPostToolkit`](https://docs.upload-post.com/guides/langchain) | <span><a href="https://pypi.org/project/langchain-upload-post/">  <img alt="Downloads per month" /></a></span> |
   | [`GAIP`](https://pypi.org/project/langchain-gaip/) | <span><a href="https://pypi.org/project/langchain-gaip/">  <img alt="Downloads per month" /></a></span> |
+  | [`AgentSearchTool`](https://agentsearchhq.com/blog/add-web-search-to-langchain-agent?utm_source=langchain-docs\&utm_medium=integration-listing\&utm_campaign=promo-oct26) | <span><a href="https://pypi.org/project/langchain-agentsearch/">  <img alt="Downloads per month" /></a></span> |
   | [`MartToolkit`](https://github.com/Mart-API/langchain-mart#readme) | <span><a href="https://pypi.org/project/langchain-mart/">  <img alt="Downloads per month" /></a></span> |
   | [`AgentLair`](https://agentlair.dev/docs) | <span>N/A</span> |
   | [`Browserless`](https://browserless.io) | <span>N/A</span> |

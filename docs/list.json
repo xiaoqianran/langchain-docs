@@ -1,12 +1,12 @@
 {
-  "fetchedAt": "2026-10-18T12:51:17.377Z",
+  "fetchedAt": "2026-10-19T15:58:56.159Z",
   "method": "llms-full-split",
   "sources": {
     "llmsTxt": "https://docs.langchain.com/llms.txt",
     "llmsFull": "https://docs.langchain.com/llms-full.txt"
   },
   "tocLinks": 14,
-  "ok": 1657,
+  "ok": 1669,
   "failed": 0,
   "tracks": {
     "api-reference": {
@@ -39,7 +39,7 @@
     },
     "langsmith-api": {
       "name": "LangSmith API",
-      "count": 559
+      "count": 571
     },
     "oss-deepagents": {
       "name": "OSS · DeepAgents",
@@ -5047,7 +5047,7 @@
       "track": "langsmith",
       "trackName": "LangSmith",
       "group": "self-host-smithdb",
-      "bytes": 5464
+      "bytes": 5564
     },
     {
       "rel": "langsmith/self-host-smithdb-features.md",
@@ -5074,7 +5074,7 @@
       "track": "langsmith",
       "trackName": "LangSmith",
       "group": "self-host-smithdb-install",
-      "bytes": 10950
+      "bytes": 11035
     },
     {
       "rel": "langsmith/self-host-smithdb-metrics.md",
@@ -5101,7 +5101,7 @@
       "track": "langsmith",
       "trackName": "LangSmith",
       "group": "self-host-smithdb-observability",
-      "bytes": 3728
+      "bytes": 4084
     },
     {
       "rel": "langsmith/self-host-smithdb-scale.md",
@@ -5110,7 +5110,7 @@
       "track": "langsmith",
       "trackName": "LangSmith",
       "group": "self-host-smithdb-scale",
-      "bytes": 6406
+      "bytes": 8675
     },
     {
       "rel": "langsmith/self-host-smithdb-troubleshooting.md",
@@ -6838,7 +6838,7 @@
       "track": "langsmith-api",
       "trackName": "LangSmith API",
       "group": "evaluators",
-      "bytes": 406
+      "bytes": 416
     },
     {
       "rel": "langsmith/smith-api/evaluators/list-evaluators.md",
@@ -8029,6 +8029,15 @@
       "bytes": 178
     },
     {
+      "rel": "langsmith/smith-api/orgs/create-org-tracing-key.md",
+      "title": "Create org tracing key",
+      "url": "https://docs.langchain.com/langsmith/smith-api/orgs/create-org-tracing-key",
+      "track": "langsmith-api",
+      "trackName": "LangSmith API",
+      "group": "orgs",
+      "bytes": 107
+    },
+    {
       "rel": "langsmith/smith-api/orgs/create-organization.md",
       "title": "Create organization",
       "url": "https://docs.langchain.com/langsmith/smith-api/orgs/create-organization",
@@ -8054,15 +8063,6 @@
       "trackName": "LangSmith API",
       "group": "orgs",
       "bytes": 163
-    },
-    {
-      "rel": "langsmith/smith-api/orgs/create-stripe-account-links-endpoint.md",
-      "title": "Create stripe account links endpoint",
-      "url": "https://docs.langchain.com/langsmith/smith-api/orgs/create-stripe-account-links-endpoint",
-      "track": "langsmith-api",
-      "trackName": "LangSmith API",
-      "group": "orgs",
-      "bytes": 166
     },
     {
       "rel": "langsmith/smith-api/orgs/create-stripe-checkout-sessions-endpoint.md",
@@ -8099,6 +8099,15 @@
       "trackName": "LangSmith API",
       "group": "orgs",
       "bytes": 122
+    },
+    {
+      "rel": "langsmith/smith-api/orgs/delete-org-tracing-key.md",
+      "title": "Delete org tracing key",
+      "url": "https://docs.langchain.com/langsmith/smith-api/orgs/delete-org-tracing-key",
+      "track": "langsmith-api",
+      "trackName": "LangSmith API",
+      "group": "orgs",
+      "bytes": 185
     },
     {
       "rel": "langsmith/smith-api/orgs/delete-organization-roles.md",
@@ -8279,6 +8288,15 @@
       "trackName": "LangSmith API",
       "group": "orgs",
       "bytes": 105
+    },
+    {
+      "rel": "langsmith/smith-api/orgs/list-org-tracing-keys.md",
+      "title": "List org tracing keys",
+      "url": "https://docs.langchain.com/langsmith/smith-api/orgs/list-org-tracing-keys",
+      "track": "langsmith-api",
+      "trackName": "LangSmith API",
+      "group": "orgs",
+      "bytes": 184
     },
     {
       "rel": "langsmith/smith-api/orgs/list-organization-roles.md",
@@ -8548,7 +8566,7 @@
       "track": "langsmith-api",
       "trackName": "LangSmith API",
       "group": "prompt-webhooks",
-      "bytes": 125
+      "bytes": 347
     },
     {
       "rel": "langsmith/smith-api/prompt-webhooks/delete-prompt-webhook.md",
@@ -8584,7 +8602,7 @@
       "track": "langsmith-api",
       "trackName": "LangSmith API",
       "group": "prompt-webhooks",
-      "bytes": 131
+      "bytes": 420
     },
     {
       "rel": "langsmith/smith-api/prompt-webhooks/update-prompt-webhook.md",
@@ -8593,7 +8611,7 @@
       "track": "langsmith-api",
       "trackName": "LangSmith API",
       "group": "prompt-webhooks",
-      "bytes": 144
+      "bytes": 251
     },
     {
       "rel": "langsmith/smith-api/prompts/invoke-prompt.md",
@@ -9163,6 +9181,15 @@
       "bytes": 205
     },
     {
+      "rel": "langsmith/smith-api/sandboxes/attach-a-sandbox-to-a-browser-beta.md",
+      "title": "Attach a sandbox to a browser (Beta)",
+      "url": "https://docs.langchain.com/langsmith/smith-api/sandboxes/attach-a-sandbox-to-a-browser-beta",
+      "track": "langsmith-api",
+      "trackName": "LangSmith API",
+      "group": "sandboxes",
+      "bytes": 1190
+    },
+    {
       "rel": "langsmith/smith-api/sandboxes/batch-delete-sandboxes.md",
       "title": "Batch delete sandboxes",
       "url": "https://docs.langchain.com/langsmith/smith-api/sandboxes/batch-delete-sandboxes",
@@ -9179,6 +9206,24 @@
       "trackName": "LangSmith API",
       "group": "sandboxes",
       "bytes": 223
+    },
+    {
+      "rel": "langsmith/smith-api/sandboxes/close-a-tab-in-a-browser-window-beta.md",
+      "title": "Close a tab in a browser window (Beta)",
+      "url": "https://docs.langchain.com/langsmith/smith-api/sandboxes/close-a-tab-in-a-browser-window-beta",
+      "track": "langsmith-api",
+      "trackName": "LangSmith API",
+      "group": "sandboxes",
+      "bytes": 200
+    },
+    {
+      "rel": "langsmith/smith-api/sandboxes/create-a-browser-beta.md",
+      "title": "Create a browser (Beta)",
+      "url": "https://docs.langchain.com/langsmith/smith-api/sandboxes/create-a-browser-beta",
+      "track": "langsmith-api",
+      "trackName": "LangSmith API",
+      "group": "sandboxes",
+      "bytes": 311
     },
     {
       "rel": "langsmith/smith-api/sandboxes/create-a-registry.md",
@@ -9208,6 +9253,15 @@
       "bytes": 275
     },
     {
+      "rel": "langsmith/smith-api/sandboxes/create-links-to-a-browser-window-beta.md",
+      "title": "Create links to a browser window (Beta)",
+      "url": "https://docs.langchain.com/langsmith/smith-api/sandboxes/create-links-to-a-browser-window-beta",
+      "track": "langsmith-api",
+      "trackName": "LangSmith API",
+      "group": "sandboxes",
+      "bytes": 694
+    },
+    {
       "rel": "langsmith/smith-api/sandboxes/delete-a-registry.md",
       "title": "Delete a registry",
       "url": "https://docs.langchain.com/langsmith/smith-api/sandboxes/delete-a-registry",
@@ -9233,6 +9287,15 @@
       "trackName": "LangSmith API",
       "group": "sandboxes",
       "bytes": 231
+    },
+    {
+      "rel": "langsmith/smith-api/sandboxes/detach-a-sandbox-from-a-browser-beta.md",
+      "title": "Detach a sandbox from a browser (Beta)",
+      "url": "https://docs.langchain.com/langsmith/smith-api/sandboxes/detach-a-sandbox-from-a-browser-beta",
+      "track": "langsmith-api",
+      "trackName": "LangSmith API",
+      "group": "sandboxes",
+      "bytes": 241
     },
     {
       "rel": "langsmith/smith-api/sandboxes/download-a-sandbox-file.md",
@@ -9287,6 +9350,15 @@
       "trackName": "LangSmith API",
       "group": "sandboxes",
       "bytes": 630
+    },
+    {
+      "rel": "langsmith/smith-api/sandboxes/get-a-browser-beta.md",
+      "title": "Get a browser (Beta)",
+      "url": "https://docs.langchain.com/langsmith/smith-api/sandboxes/get-a-browser-beta",
+      "track": "langsmith-api",
+      "trackName": "LangSmith API",
+      "group": "sandboxes",
+      "bytes": 156
     },
     {
       "rel": "langsmith/smith-api/sandboxes/get-a-registry.md",
@@ -9406,6 +9478,15 @@
       "bytes": 411
     },
     {
+      "rel": "langsmith/smith-api/sandboxes/load-a-browsers-extensions-beta.md",
+      "title": "Load a browser's extensions (Beta)",
+      "url": "https://docs.langchain.com/langsmith/smith-api/sandboxes/load-a-browsers-extensions-beta",
+      "track": "langsmith-api",
+      "trackName": "LangSmith API",
+      "group": "sandboxes",
+      "bytes": 469
+    },
+    {
       "rel": "langsmith/smith-api/sandboxes/open-a-sandbox-tcp-tunnel.md",
       "title": "Open a sandbox TCP tunnel",
       "url": "https://docs.langchain.com/langsmith/smith-api/sandboxes/open-a-sandbox-tcp-tunnel",
@@ -9415,6 +9496,24 @@
       "bytes": 174
     },
     {
+      "rel": "langsmith/smith-api/sandboxes/open-a-tab-in-a-browser-window-beta.md",
+      "title": "Open a tab in a browser window (Beta)",
+      "url": "https://docs.langchain.com/langsmith/smith-api/sandboxes/open-a-tab-in-a-browser-window-beta",
+      "track": "langsmith-api",
+      "trackName": "LangSmith API",
+      "group": "sandboxes",
+      "bytes": 224
+    },
+    {
+      "rel": "langsmith/smith-api/sandboxes/resize-a-browser-window-beta.md",
+      "title": "Resize a browser window (Beta)",
+      "url": "https://docs.langchain.com/langsmith/smith-api/sandboxes/resize-a-browser-window-beta",
+      "track": "langsmith-api",
+      "trackName": "LangSmith API",
+      "group": "sandboxes",
+      "bytes": 420
+    },
+    {
       "rel": "langsmith/smith-api/sandboxes/resume-a-streamed-sandbox-command.md",
       "title": "Resume a streamed sandbox command",
       "url": "https://docs.langchain.com/langsmith/smith-api/sandboxes/resume-a-streamed-sandbox-command",
@@ -9422,6 +9521,15 @@
       "trackName": "LangSmith API",
       "group": "sandboxes",
       "bytes": 431
+    },
+    {
+      "rel": "langsmith/smith-api/sandboxes/set-who-controls-a-browser-window-beta.md",
+      "title": "Set who controls a browser window (Beta)",
+      "url": "https://docs.langchain.com/langsmith/smith-api/sandboxes/set-who-controls-a-browser-window-beta",
+      "track": "langsmith-api",
+      "trackName": "LangSmith API",
+      "group": "sandboxes",
+      "bytes": 530
     },
     {
       "rel": "langsmith/smith-api/sandboxes/start-a-sandbox.md",
@@ -11302,7 +11410,7 @@
       "track": "oss-deepagents",
       "trackName": "OSS · DeepAgents",
       "group": "code",
-      "bytes": 36758
+      "bytes": 37433
     },
     {
       "rel": "oss/deepagents/code/config-file.md",
@@ -11311,7 +11419,7 @@
       "track": "oss-deepagents",
       "trackName": "OSS · DeepAgents",
       "group": "code",
-      "bytes": 47171
+      "bytes": 48373
     },
     {
       "rel": "oss/deepagents/code/configuration.md",
@@ -11320,7 +11428,7 @@
       "track": "oss-deepagents",
       "trackName": "OSS · DeepAgents",
       "group": "code",
-      "bytes": 52400
+      "bytes": 52578
     },
     {
       "rel": "oss/deepagents/code/credentials.md",
@@ -11374,7 +11482,7 @@
       "track": "oss-deepagents",
       "trackName": "OSS · DeepAgents",
       "group": "code",
-      "bytes": 9445
+      "bytes": 9636
     },
     {
       "rel": "oss/deepagents/code/overview.md",
@@ -11410,7 +11518,7 @@
       "track": "oss-deepagents",
       "trackName": "OSS · DeepAgents",
       "group": "code",
-      "bytes": 22139
+      "bytes": 22419
     },
     {
       "rel": "oss/deepagents/code/remote-sandboxes.md",
@@ -11419,7 +11527,7 @@
       "track": "oss-deepagents",
       "trackName": "OSS · DeepAgents",
       "group": "code",
-      "bytes": 16685
+      "bytes": 16815
     },
     {
       "rel": "oss/deepagents/code/subagents.md",
@@ -11626,7 +11734,7 @@
       "track": "oss-js",
       "trackName": "OSS · JavaScript",
       "group": "deepagents",
-      "bytes": 127748
+      "bytes": 128102
     },
     {
       "rel": "oss/javascript/deepagents/deep-research.md",
@@ -11905,7 +12013,7 @@
       "track": "oss-js",
       "trackName": "OSS · JavaScript",
       "group": "integrations",
-      "bytes": 25906
+      "bytes": 25912
     },
     {
       "rel": "oss/javascript/integrations/chat/google_vertex_ai.md",
@@ -11977,7 +12085,7 @@
       "track": "oss-js",
       "trackName": "OSS · JavaScript",
       "group": "integrations",
-      "bytes": 17223
+      "bytes": 17225
     },
     {
       "rel": "oss/javascript/integrations/embeddings/openai.md",
@@ -12031,7 +12139,7 @@
       "track": "oss-js",
       "trackName": "OSS · JavaScript",
       "group": "integrations",
-      "bytes": 26956
+      "bytes": 27162
     },
     {
       "rel": "oss/javascript/integrations/providers/anthropic.md",
@@ -12148,7 +12256,7 @@
       "track": "oss-js",
       "trackName": "OSS · JavaScript",
       "group": "integrations",
-      "bytes": 12641
+      "bytes": 12800
     },
     {
       "rel": "oss/javascript/integrations/tools/openai.md",
@@ -12166,7 +12274,7 @@
       "track": "oss-js",
       "trackName": "OSS · JavaScript",
       "group": "integrations",
-      "bytes": 24905
+      "bytes": 24907
     },
     {
       "rel": "oss/javascript/langchain/agents.md",
@@ -13426,7 +13534,7 @@
       "track": "oss-python",
       "trackName": "OSS · Python",
       "group": "deepagents",
-      "bytes": 16191
+      "bytes": 20693
     },
     {
       "rel": "oss/python/deepagents/backends.md",
@@ -13732,7 +13840,7 @@
       "track": "oss-python",
       "trackName": "OSS · Python",
       "group": "integrations",
-      "bytes": 28345
+      "bytes": 28589
     },
     {
       "rel": "oss/python/integrations/checkpointers/index.md",
@@ -13750,7 +13858,7 @@
       "track": "oss-python",
       "trackName": "OSS · Python",
       "group": "integrations",
-      "bytes": 22883
+      "bytes": 23317
     },
     {
       "rel": "oss/python/integrations/embeddings/index.md",
@@ -13777,7 +13885,7 @@
       "track": "oss-python",
       "trackName": "OSS · Python",
       "group": "integrations",
-      "bytes": 25140
+      "bytes": 26563
     },
     {
       "rel": "oss/python/integrations/providers/all_providers.md",
@@ -13786,7 +13894,7 @@
       "track": "oss-python",
       "trackName": "OSS · Python",
       "group": "integrations",
-      "bytes": 92898
+      "bytes": 96221
     },
     {
       "rel": "oss/python/integrations/providers/anthropic.md",
@@ -13921,7 +14029,7 @@
       "track": "oss-python",
       "trackName": "OSS · Python",
       "group": "integrations",
-      "bytes": 68996
+      "bytes": 71063
     },
     {
       "rel": "oss/python/integrations/vectorstores/index.md",

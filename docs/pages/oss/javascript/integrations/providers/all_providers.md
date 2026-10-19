@@ -403,6 +403,10 @@ Connect LangGraph agents to front ends and observability platforms.
     Web search tool for LangChain.js agents, free by default with no key. Pay-per-call Extract and Render (\$0.005, x402) for full pages and JS-rendered sites.
   </Card>
 
+  <Card title="agentsvc" href="https://agentsvc.io/docs/langchain" icon="link">
+    Pay-per-call web, data, crypto, memory, and inbox tools for agents, paid with a credit token or USDC via x402.
+  </Card>
+
   <Card title="aiworker" href="https://github.com/ai-worker227/aiworker-examples/tree/main/langchain" icon="link">
     Paid data tools (DeFi yields, page-to-Markdown, Base token and wallet checks, Polymarket odds, history and backtests, fact checks, headline search) built from aiworker's live OpenAPI catalogue; each call pays itself in USDC over the x402 protocol from the agent's wallet, no API key.
   </Card>

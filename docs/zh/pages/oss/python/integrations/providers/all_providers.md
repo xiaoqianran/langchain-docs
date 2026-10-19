@@ -21,6 +21,10 @@
     适用于企业工作流程的定制人工智能集成平台。
   </Card>
 
+  <Card title="Ace Data Cloud" href="https://github.com/AceDataCloud/LangChain" icon="link">
+    使用 Ace Data Cloud 应用程序凭据和端点默认值进行聊天完成模型集成。
+  </Card>
+
   <Card title="Adeu" href="https://adeu.ai" icon="link">
     适用于 LLM 代理的本地、可离线使用的 Microsoft Word (.docx) 修订和解析工具。
   </Card>
@@ -60,9 +64,13 @@
   </Card>
 
   <Card title="Agent Action Capsule" href="https://github.com/action-state-group/capsule-emit/blob/main/docs/adapters/langchain.md" icon="link">
-    代理工具调用的签名、可独立验证的操作记录，链接计划以进行确认。
+    代理工具调用的签名、可独立验证的操作记录，链接计划以确认。
   </Card><Card title="agentstate" href="https://skamalj.github.io/agentstate-reducer/" icon="link">
     DynamoDB、Cosmos DB 和 Firestore 检查指针，具有有限历史记录和长期内存挂钩，以及语义搜索存储。
+  </Card>
+
+  <Card title="agentsvc" href="https://agentsvc.io/docs/langchain" icon="link">
+    为客服人员提供按次付费的网络、数据、加密、内存和收件箱工具，通过 x402 使用信用代币或 USDC 进行支付。
   </Card>
 
   <Card title="Agentic SpendGuard" href="https://agenticspendguard.dev" icon="link">
@@ -94,16 +102,20 @@
   </Card>
 
   <Card title="AgentPhone" href="https://docs.agentphone.to" icon="link">
-    面向 AI 代理的电话平台，具有消息传递、语音通话和电话号码管理功能。
+    适用于 AI 代理的电话平台，具有消息传递、语音通话和电话号码管理功能。
   </Card>
 
   <Card title="AgentQL" href="https://docs.agentql.com/" icon="link">
     使用自然语言查询进行网络抓取。
+  </Card><Card title="AgentRAM" href="https://agentram.dev/langchain-agent-memory-tutorial.html" icon="link">
+    为 LangChain 和 LangGraph 代理托管长期记忆工具和 BaseStore。
   </Card>
 
-  <Card title="AgentRAM" href="https://agentram.dev/langchain-agent-memory-tutorial.html" icon="link">
-    为 LangChain 和 LangGraph 代理托管长期记忆工具和 BaseStore。
-  </Card><Card title="Agent Evidence" href="https://github.com/joy7758/agent-evidence" icon="link">
+  <Card title="AgentSearch" href="https://agentsearchhq.com/blog/add-web-search-to-langchain-agent?utm_source=langchain-docs&utm_medium=integration-listing&utm_campaign=promo-oct26" icon="link">
+    实时网络搜索代理，默认免费，没有 API 密钥（每日津贴），加上按次付费 Extract（Markdown 的 URL）和 Render（JS 页面的无头浏览器）。
+  </Card>
+
+  <Card title="Agent Evidence" href="https://github.com/joy7758/agent-evidence" icon="link">
     用于代理执行、导出和可审计性的可验证证据包。
   </Card>
 
@@ -141,9 +153,7 @@
 
   <Card title="Alibaba Cloud" href="/oss/python/integrations/providers/alibaba_cloud" icon="link">
     阿里巴巴的云计算和人工智能服务。
-  </Card>
-
-  <Card title="AMUVectorStore" href="https://github.com/sangaraju1988/amu-pgvector#readme" icon="link">
+  </Card><Card title="AMUVectorStore" href="https://github.com/sangaraju1988/amu-pgvector#readme" icon="link">
     由 PostgreSQL + pgvector 支持的向量存储，其中 Postgres 行级安全门对缓存结果的派生谱系进行检索，而不仅仅是其内容或访问标记。
   </Card>
 
@@ -153,7 +163,9 @@
 
   <Card title="Anchor Browser" href="https://docs.anchorbrowser.io/" icon="link">
     浏览器自动化和网络抓取工具。
-  </Card><Card title="Anakin" href="https://anakin.io/docs/documentation" icon="link">
+  </Card>
+
+  <Card title="Anakin" href="https://anakin.io/docs/documentation" icon="link">
     通过人工智能驱动的搜索和研究，将网站大规模转化为干净的结构化数据。
   </Card>
 
@@ -183,9 +195,7 @@
 
   <Card title="API-Route" href="https://www.api-route.com/docs/overview" icon="link">
     OpenAI 兼容 API 网关，适用于来自多个提供商的模型。
-  </Card>
-
-  <Card title="Apify" href="https://docs.apify.com/integrations/langchain" icon="https://mintcdn.com/langchain-5e9cc07a/73YwmKRoBU5I7vFN/images/providers/apify-icon.svg?fit=max&auto=format&n=73YwmKRoBU5I7vFN&q=85&s=0612593ec7e58dbef3d23a040d374dd0">
+  </Card><Card title="Apify" href="https://docs.apify.com/integrations/langchain" icon="https://mintcdn.com/langchain-5e9cc07a/73YwmKRoBU5I7vFN/images/providers/apify-icon.svg?fit=max&auto=format&n=73YwmKRoBU5I7vFN&q=85&s=0612593ec7e58dbef3d23a040d374dd0">
     网络抓取和自动化平台。
   </Card>
 
@@ -199,7 +209,9 @@
 
   <Card title="ArcadeDB" href="https://docs.arcadedb.com" icon="link">
     支持 Cypher、SQL 和 Gremlin 的多模型数据库（图形、文档、键值、时间序列、向量）。
-  </Card><Card title="Arcmira" href="https://github.com/arcmira/integrations/tree/master/packages/langchain-python" icon="link">
+  </Card>
+
+  <Card title="Arcmira" href="https://github.com/arcmira/integrations/tree/master/packages/langchain-python" icon="link">
     YouTube 文字记录搜索和实体解析工具，具有带时间戳的证据、演讲者过滤器以及赞助或有机段落分类。
   </Card>
 
@@ -225,15 +237,15 @@
 
   <Card title="Asqav" href="https://asqav.com/docs" icon="link">
     具有审计跟踪、策略执行和合规性的 AI 代理治理。
-  </Card>
-
-  <Card title="Asyntai" href="https://asyntai.com/documentation/integrations/langchain/" icon="link">
+  </Card><Card title="Asyntai" href="https://asyntai.com/documentation/integrations/langchain/" icon="link">
     Asyntai 是一个托管 AI 聊天代理网站； langchain-asyntai 提供了一些工具来查询站点的索引页面和产品提要、向其知识库添加页面和注释以及阅读其线索和聊天记录。
   </Card>
 
   <Card title="Atomic Mail" href="https://docs.atomicmail.ai/langchain" icon="link">
     电子邮件工具包，通过工作证明提供代理拥有的收件箱，并通过 JMAP 发送和接收。
-  </Card><Card title="Attenu Guard" href="https://attenu.io/docs/example-langgraph/" icon="link">
+  </Card>
+
+  <Card title="Attenu Guard" href="https://attenu.io/docs/example-langgraph/" icon="link">
     使用哈希链审计日志执行每个代理工具调用和子代理权限实施。
   </Card>
 
@@ -242,7 +254,7 @@
   </Card>
 
   <Card title="Auxen" href="https://auxen.ai" icon="link">
-    具有OpenAI兼容 API 的专用每客户 LLM 端点。
+    专用于每个客户的 LLM 端点，具有 OpenAI 兼容 API。
   </Card>
 
   <Card title="AWS" href="/oss/python/integrations/providers/aws" icon="brand-aws">
@@ -263,9 +275,7 @@
 
   <Card title="Baidu" href="https://www.paddleocr.com" icon="link">
     百度的人工智能服务和语言模型。
-  </Card>
-
-  <Card title="Baponi" href="https://baponi.ai/docs/guides/deep-agents" icon="link">
+  </Card><Card title="Baponi" href="https://baponi.ai/docs/guides/deep-agents" icon="link">
     用于运行人工智能生成的代码的自托管或托管沙箱。
   </Card>
 
@@ -283,7 +293,9 @@
 
   <Card title="Blopus" href="https://blopus.ai/docs/" icon="link">
     由自己的爬虫和索引支持的 Web 搜索和获取 API。
-  </Card><Card title="Blindfold" href="https://docs.blindfold.dev" icon="link">
+  </Card>
+
+  <Card title="Blindfold" href="https://docs.blindfold.dev" icon="link">
     适用于 AI 应用的 PII 检测和保护，包括链和 RAG 管道。
   </Card>
 
@@ -313,9 +325,7 @@
 
   <Card title="CAMB AI" href="https://docs.camb.ai" icon="link">
     支持 140 多种语言的多语言音频和本地化服务。
-  </Card>
-
-  <Card title="Capsule" href="https://github.com/mavdol/langchain-capsule" icon="link">
+  </Card><Card title="Capsule" href="https://github.com/mavdol/langchain-capsule" icon="link">
     在隔离的 WebAssembly 沙箱中运行 Python 和 JavaScript 代码。
   </Card>
 
@@ -329,7 +339,9 @@
 
   <Card title="Ceki" href="https://ceki.me" icon="link">
     为 AI 代理提供真实住宅 Chrome 会话的市场。
-  </Card><Card title="Cheaper Inference" href="https://cheaperinference.com/docs" icon="link">
+  </Card>
+
+  <Card title="Cheaper Inference" href="https://cheaperinference.com/docs" icon="link">
     OpenAI 兼容的 LLM 网关，为许多实验室的模型提供低于标价的服务。
   </Card>
 
@@ -351,9 +363,7 @@
 
   <Card title="CopilotKit" href="/oss/python/langchain/frontend/integrations/copilotkit" icon="link">
     React 框架为 AI 副驾驶提供预构建的 UI 组件。
-  </Card>
-
-  <Card title="CTRLRun" href="https://docs.ctrlrun.dev/guides/langchain-middleware" icon="link">
+  </Card><Card title="CTRLRun" href="https://docs.ctrlrun.dev/guides/langchain-middleware" icon="link">
     AI 代理的执行安全。中间件在运行之前根据策略检查每个工具调用，为人类保留相应的结果，并留下收据。
   </Card>
 
@@ -367,7 +377,9 @@
 
   <Card title="Coalent" href="https://coalent.ai/docs" icon="link">
     来源无效的语义缓存位于任何向量存储之上，为属性声明有效负载提供服务。
-  </Card><Card title="CockroachDB" href="/oss/python/integrations/providers/cockroachdb" icon="https://mintcdn.com/langchain-5e9cc07a/y4fKEo7ANyWBQMjp/images/providers/cockroachdb-icon.svg?fit=max&auto=format&n=y4fKEo7ANyWBQMjp&q=85&s=8673dcc3f2e8a212f716c2d33f3e809b">
+  </Card>
+
+  <Card title="CockroachDB" href="/oss/python/integrations/providers/cockroachdb" icon="https://mintcdn.com/langchain-5e9cc07a/y4fKEo7ANyWBQMjp/images/providers/cockroachdb-icon.svg?fit=max&auto=format&n=y4fKEo7ANyWBQMjp&q=85&s=8673dcc3f2e8a212f716c2d33f3e809b">
     具有本机向量支持和 C-SPANN 索引的分布式 SQL 数据库。
   </Card>
 
@@ -393,9 +405,7 @@
 
   <Card title="Context" href="/oss/python/integrations/providers/context" icon="link">
     人工智能应用程序的上下文管理。
-  </Card>
-
-  <Card title="Contextual" href="https://docs.contextual.ai/" icon="link">
+  </Card><Card title="Contextual" href="https://docs.contextual.ai/" icon="link">
     情境人工智能和语言理解。
   </Card>
 
@@ -413,7 +423,9 @@
 
   <Card title="Couchbase" href="https://docs.couchbase.com/server/current/vector-search/vector-search.html" icon="link">
     NoSQL云数据库平台。
-  </Card><Card title="CrateDB" href="/oss/python/integrations/providers/cratedb" icon="link">
+  </Card>
+
+  <Card title="CrateDB" href="/oss/python/integrations/providers/cratedb" icon="link">
     机器数据的分布式 SQL 数据库。
   </Card>
 
@@ -439,6 +451,12 @@
 
   <Card title="Dappier" href="https://docs.dappier.com/" icon="link">
     实时AI数据平台和API。
+  </Card>
+
+  <Card title="Decodo" href="https://github.com/Decodo/langchain/tree/master/libs/partners/decodo" icon="link">
+    网页抓取和 Google 搜索工具以及文档加载器，由 Decodo Web Data API 支持。
+  </Card><Card title="DDG Agent Services" href="https://pypi.org/project/ddg-langchain/" icon="link">
+    用于 AI 代理的按次付费 x402 API（网络搜索、价格反馈和网站审核）在 USDC on Base 上结算，无需帐户或 API 密钥； ddg-langchain 包将它们包装为 LangChain 工具。
   </Card>
 
   <Card title="Databricks" href="/oss/python/integrations/providers/databricks" icon="link">
@@ -467,7 +485,9 @@
 
   <Card title="Delegare" href="https://docs.delegare.dev" icon="link">
     具有 AP2 授权和 x402 处理的代理支付授权基础设施。
-  </Card><Card title="Dewey" href="https://github.com/meetdewey/langchain-dewey" icon="link">
+  </Card>
+
+  <Card title="Dewey" href="https://github.com/meetdewey/langchain-dewey" icon="link">
     带有检索器、矢量存储和研究工具的实时文档后端。
   </Card>
 
@@ -481,9 +501,7 @@
 
   <Card title="Diffbot" href="https://github.com/diffbot/langchain-diffbot" icon="https://mintcdn.com/langchain-5e9cc07a/e3HuwuC4PqeLEogi/images/providers/diffbot-icon.svg?fit=max&auto=format&n=e3HuwuC4PqeLEogi&q=85&s=3141dbdc7cc2cc4f292c26e87127a74a">
     为开发人员和法学硕士应用程序提供结构化网络知识。
-  </Card>
-
-  <Card title="DNS Doctor" href="https://github.com/dnsdoctor/langchain-dnsdoctor" icon="link">
+  </Card><Card title="DNS Doctor" href="https://github.com/dnsdoctor/langchain-dnsdoctor" icon="link">
     确定性 DNS 和电子邮件身份验证检查：SPF、DMARC、DKIM、传播和黑名单。
   </Card>
 
@@ -493,6 +511,10 @@
 
   <Card title="Docling" href="/oss/python/integrations/providers/docling" icon="link">
     文档处理和人工智能集成。
+  </Card>
+
+  <Card title="DoclingLoader" href="https://github.com/docling-project/docling.rs/blob/master/crates/docling-py/README.md#langchain" icon="link">
+    由 docling.rs 支持的文档加载器，可将 PDF、Office 文件、HTML、EPUB、电子邮件、扫描件等转换为 LangChain 文档。
   </Card>
 
   <Card title="Docugami" href="/oss/python/integrations/providers/docugami" icon="link">
@@ -513,12 +535,12 @@
 
   <Card title="DProvenanceKit" href="https://dprovenance.dev/langchain/" icon="link">
     代理运行的推理可观察性和回归测试。
-  </Card><Card title="Duel Agents" href="https://duelagents.com" icon="link">
-    多模型路由，在OpenAI兼容代理背后计费最便宜的获胜答案。
   </Card>
 
-  <Card title="DynamicToolSelectorMiddleware" href="https://github.com/RauhanAhmed/langchain-dynamic-tools-middleware" icon="link">
-    嵌入式代理中间件通过 zvec 提供 100 毫秒以下的混合密集和稀疏矢量工具检索。消除了超过 80% 的提示令牌开销，并且在伯克利函数调用排行榜 (BFCL) 基准测试中优于基于 LLM 的工具选择。
+  <Card title="Duel Agents" href="https://duelagents.com" icon="link">
+    多模型路由，在OpenAI兼容代理后面计费最便宜的获胜答案。
+  </Card><Card title="DynamicToolSelectorMiddleware" href="https://github.com/RauhanAhmed/langchain-dynamic-tools-middleware" icon="link">
+    嵌入式代理中间件通过 zvec 提供 100 毫秒以下的混合密集和稀疏向量工具检索。消除了超过 80% 的提示令牌开销，并且在伯克利函数调用排行榜 (BFCL) 基准测试中优于基于 LLM 的工具选择。
   </Card>
 
   <Card title="E2B" href="https://e2b.dev/docs" icon="link">
@@ -645,8 +667,12 @@
 
   <Card title="GoAT" href="https://pypi.org/project/langgraph-goat/" icon="link">
     langgraph-goat 记录候选计划、分数以及每个计划被选择或拒绝作为 LangGraph 代理计划的原因，然后为调试和最终用户透明度提供自然语言解释。
-  </Card><Card title="GPTZZZ" href="https://gptzzz.ai/docs/" icon="link">
-    OpenAI兼容API网关，适用于来自多个提供商的模型，并带有中文文档。
+  </Card><Card title="GPT Image by Ace Data Cloud" href="https://github.com/AceDataCloud/LangChain/tree/main/packages/gpt-image" icon="link">
+    Ace Data Cloud 为 GPT Image 提供的图像生成提交和同 ID 任务检索工具。
+  </Card>
+
+  <Card title="GPTZZZ" href="https://gptzzz.ai/docs/" icon="link">
+    OpenAI兼容多个提供商模型的API网关，带有中文文档。
   </Card>
 
   <Card title="DigitalOcean Gradient AI Platform" href="https://docs.digitalocean.com/products/gradientai-platform/" icon="link">
@@ -682,12 +708,12 @@
   </Card>
 
   <Card title="FlipCoin" href="https://github.com/flipcoin-fun/flipcoin-langchain" icon="link">
-    Base 上的预测市场平台：交易“是/否”结果股票。
+    Base 上的预测市场平台：交易是/否结果股票。
+  </Card><Card title="FoundryNet" href="https://mint.foundrynet.io" icon="link">
+    通过 MINT 协议对 AI 代理进行链上工作证明。
   </Card>
 
-  <Card title="FoundryNet" href="https://mint.foundrynet.io" icon="link">
-    通过 MINT 协议对 AI 代理进行链上工作证明。
-  </Card><Card title="FuturMix" href="https://futurmix.ai/" icon="link">
+  <Card title="FuturMix" href="https://futurmix.ai/" icon="link">
     适用于 22 种以上型号的统一 AI 网关，具有OpenAI 兼容 API。
   </Card>
 
@@ -729,11 +755,15 @@
 
   <Card title="Hindsight" href="https://docs.hindsight.vectorize.io/sdks/integrations/langgraph" icon="link">
     用于人工智能代理的开源长期记忆引擎。
+  </Card><Card title="HippoDid" href="https://docs.hippodid.com/guides/langchain" icon="link">
+    人工智能代理的持久、结构化字符记忆。
   </Card>
 
-  <Card title="HippoDid" href="https://docs.hippodid.com/guides/langchain" icon="link">
-    人工智能代理的持久、结构化字符记忆。
-  </Card><Card title="Hubris" href="https://hubris.pw/docs/integrations/langchain" icon="link">
+  <Card title="HirePulse" href="https://github.com/edtool79-collab/hirepulse-open-source#langchain-and-crewai-gateway-tools-030" icon="link">
+    用于上市公司招聘信号、网站技术、公司职位、Google Ads 透明度、公司简介和来自 HirePulse 网关的批量查找报价的 StructuredTools。
+  </Card>
+
+  <Card title="Hubris" href="https://hubris.pw/docs/integrations/langchain" icon="link">
     卢布计费的OpenAI兼容LLM网关，具有400多种型号。
   </Card>
 
@@ -767,9 +797,7 @@
 
   <Card title="ICTFax" href="https://www.ictinnovations.com/" icon="link">
     LangChain 通过 ICTFax 或 ICTCore 服务器发送和跟踪传真的工具。
-  </Card>
-
-  <Card title="ICTPBX" href="https://ictpbx.com" icon="link">
+  </Card><Card title="ICTPBX" href="https://ictpbx.com" icon="link">
     查询ICTPBX分机、DID、SIP中继、租户、PBX统计信息。
   </Card>
 
@@ -779,7 +807,9 @@
 
   <Card title="iGPT" href="https://docs.igpt.ai" icon="link">
     电子邮件、消息和文件的个人数据检索工具和检索器。
-  </Card><Card title="Inferrail" href="https://github.com/domondi1/inferrail/blob/main/docs/recipes/agent-run-budget.md?ref=langchain-docs#langchain" icon="link">
+  </Card>
+
+  <Card title="Inferrail" href="https://github.com/domondi1/inferrail/blob/main/docs/recipes/agent-run-budget.md?ref=langchain-docs#langchain" icon="link">
     自托管 OpenAI 兼容网关，通过 `ChatOpenAI` 上的请求标头强制运行每个代理的美元预算，在提供商之前使用 HTTP 402 拒绝超出预算的调用。
   </Card>
 
@@ -805,9 +835,7 @@
 
   <Card title="Interven" href="https://docs.intervensecurity.com" icon="link">
     AI 代理防火墙 — 策略执行、PII 编辑、人工批准以及工具调用的审核日志。
-  </Card>
-
-  <Card title="Isaacus" href="https://docs.isaacus.com/" icon="link">
+  </Card><Card title="Isaacus" href="https://docs.isaacus.com/" icon="link">
     合法的人工智能模型、应用程序和数据。
   </Card>
 
@@ -821,7 +849,9 @@
 
   <Card title="Jenkins" href="https://github.com/Amitgb14/langchain_jenkins" icon="link">
     自动化服务器和 CI/CD 平台。
-  </Card><Card title="John Snow Labs" href="/oss/python/integrations/providers/johnsnowlabs" icon="link">
+  </Card>
+
+  <Card title="John Snow Labs" href="/oss/python/integrations/providers/johnsnowlabs" icon="link">
     企业 NLP 和医疗保健 AI 平台。
   </Card>
 
@@ -855,9 +885,7 @@
 
   <Card title="KServe" href="https://gitlab.com/bitkaio/langchain/kserve-provider" icon="link">
     将 LangChain 聊天模型连接到 Kubernetes 上的 KServe 推理服务。
-  </Card>
-
-  <Card title="Kubernetes" href="https://gitlab.com/bitkaio/langchain/kubernetes-sandbox" icon="link">
+  </Card><Card title="Kubernetes" href="https://gitlab.com/bitkaio/langchain/kubernetes-sandbox" icon="link">
     用于 Deepagent 的 Kubernetes 沙箱提供程序。
   </Card>
 
@@ -871,7 +899,9 @@
 
   <Card title="LambdaDB" href="https://docs.lambdadb.ai/guides/get-started/quickstart" icon="link">
     RAG 和代理的无服务器数据库
-  </Card><Card title="LangChain Decorators" href="/oss/python/integrations/providers/langchain_decorators" icon="link">
+  </Card>
+
+  <Card title="LangChain Decorators" href="/oss/python/integrations/providers/langchain_decorators" icon="link">
     LangChain 的语法糖和实用程序。
   </Card>
 
@@ -892,7 +922,7 @@
   </Card>
 
   <Card title="LatAm Synth" href="https://github.com/jmendozapuche/langchain-latam-synth" icon="link">
-    适用于拉丁美洲金融科技应用的隐私安全综合金融数据生成。
+    用于拉丁美洲金融科技应用的隐私安全综合金融数据生成。
   </Card>
 
   <Card title="Leap0" href="https://leap0.dev/docs" icon="link">
@@ -909,9 +939,7 @@
 
   <Card title="LinkUp" href="https://github.com/LinkupPlatform/langchain-linkup" icon="link">
     实时就业市场数据和搜索。
-  </Card>
-
-  <Card title="Lians" href="https://www.lians.ai" icon="link">
+  </Card><Card title="Lians" href="https://www.lians.ai" icon="link">
     双时态代理记忆，具有 LangChain 和 LangGraph 的时间点回忆。
   </Card>
 
@@ -921,7 +949,9 @@
 
   <Card title="Lithtrix" href="https://docs.lithtrix.ai/integrations/langgraph" icon="link">
     用于 AI 代理的身份和便携式内存 API：用于 LangGraph 长期内存的 BaseStore 适配器。
-  </Card><Card title="Live Tennis API" href="https://docs.livetennisapi.com" icon="link">
+  </Card>
+
+  <Card title="Live Tennis API" href="https://docs.livetennisapi.com" icon="link">
     ATP、WTA、挑战者队和 ITF 的实时网球比分、球员和赛程。
   </Card>
 
@@ -937,6 +967,10 @@
     亚秒级 RAG 检索回归测试和稳定性监控。
   </Card>
 
+  <Card title="LoopGrid" href="https://loopgrid.io/integrations/langchain/" icon="link">
+    本机 LangChain AgentMiddleware，用于通过 LoopGrid Core 签署决策证据、策略执行、人工批准和受保护的工具执行。
+  </Card>
+
   <Card title="LocalAI" href="/oss/python/integrations/providers/localai" icon="link">
     自托管 OpenAI 兼容 API 服务器。
   </Card>
@@ -947,9 +981,7 @@
 
   <Card title="m3-memory" href="https://github.com/skynetcmd/m3-memory/blob/main/docs/integrations/LANGCHAIN.md" icon="link">
     LangChain 和 LangGraph 的本地优先、MCP 本机内存层。
-  </Card>
-
-  <Card title="Machine Library" href="https://github.com/SpaceFrontiers/machinelibrary-integrations/tree/main/python/langchain-machinelibrary" icon="link">
+  </Card><Card title="Machine Library" href="https://github.com/SpaceFrontiers/machinelibrary-integrations/tree/main/python/langchain-machinelibrary" icon="link">
     用于跨学术论文、书籍、专利、标准和维基百科（以及 Reddit、Telegram 和 Discord）进行可引用搜索的检索器和代理工具。
   </Card>
 
@@ -963,8 +995,10 @@
 
   <Card title="MariaDB" href="https://mariadb.com/docs/connectors/other/langchain-mariadb/api-reference" icon="link">
     开源关系数据库管理。
-  </Card><Card title="MaskFlow" href="https://github.com/maskflow/maskflow/tree/main/packages/maskflow-langchain" icon="link">
-    适用于 LangChain 的可逆 PII 匿名器/去匿名器，是 Presidio 匿名器的插件。包括印度标识符。
+  </Card>
+
+  <Card title="MaskFlow" href="https://github.com/maskflow/maskflow/tree/main/packages/maskflow-langchain" icon="link">
+    LangChain 的可逆 PII 匿名器/去匿名器，是 Presidio 匿名器的插件。包括印度标识符。
   </Card>
 
   <Card title="MartToolkit" href="https://github.com/Mart-API/langchain-mart#readme" icon="link">
@@ -976,7 +1010,7 @@
   </Card>
 
   <Card title="MemoryRouter" href="https://docs.memoryrouter.ai/langchain" icon="link">
-    适用于 LangChain 和 LangGraph 代理的持久性用户范围内存：保留和调用工具、调用/保留图节点以及由 MemoryRouter 库支持的 BaseStore。
+    适用于LangChain和LangGraph代理的持久性用户范围内存：保留和调用工具、调用/保留图节点以及由MemoryRouter库支持的BaseStore。
   </Card>
 
   <Card title="Memstate AI" href="https://memstate.ai/docs/integrations/langchain" icon="link">
@@ -985,9 +1019,7 @@
 
   <Card title="Mengram" href="https://mengram.io/docs" icon="link">
     具有语义、情景和程序类型的长期主体记忆。
-  </Card>
-
-  <Card title="MeragptDecider" href="https://github.com/Sandeep85Das/langchain-meragpt" icon="link">
+  </Card><Card title="MeragptDecider" href="https://github.com/Sandeep85Das/langchain-meragpt" icon="link">
     使用来自 meraGPT Decider 1 的校准概率的类型化决策（是/否、选择、分数），作为 Runnable、工具和代理中间件。
   </Card>
 
@@ -1005,7 +1037,9 @@
 
   <Card title="MindsDB" href="/oss/python/integrations/providers/mindsdb" icon="link">
     数据库和数据平台的人工智能层。
-  </Card><Card title="MinerU" href="https://mineru.net" icon="link">
+  </Card>
+
+  <Card title="MinerU" href="https://mineru.net" icon="link">
     将 PDF 和 Office 文件的开源文档解析为 Markdown。
   </Card>
 
@@ -1031,9 +1065,7 @@
 
   <Card title="Modal" href="/oss/python/integrations/providers/modal" icon="link">
     用于数据科学的无服务器云计算。
-  </Card>
-
-  <Card title="ModelScope" href="/oss/python/integrations/providers/modelscope" icon="link">
+  </Card><Card title="ModelScope" href="/oss/python/integrations/providers/modelscope" icon="link">
     阿里巴巴的开源模型中心。
   </Card>
 
@@ -1055,8 +1087,14 @@
 
   <Card title="Motorhead" href="/oss/python/integrations/providers/motorhead" icon="link">
     人工智能对话的长期记忆。
-  </Card><Card title="MrScraper" href="https://docs.mrscraper.com" icon="link">
+  </Card>
+
+  <Card title="MrScraper" href="https://docs.mrscraper.com" icon="link">
     用于渲染 HTML、AI 提取、抓取器重新运行和结果管理的 Web 抓取 API。
+  </Card>
+
+  <Card title="Nano Banana by Ace Data Cloud" href="https://github.com/AceDataCloud/LangChain/tree/main/packages/nano-banana" icon="link">
+    Ace Data Cloud 为 Nano Banana 提供的图像生成提交和同 ID 任务检索工具。
   </Card>
 
   <Card title="Naver" href="https://guide.ncloud-docs.com/docs/clovastudio-dev-langchain" icon="link">
@@ -1077,9 +1115,7 @@
 
   <Card title="NewsCatcher" href="https://www.newscatcherapi.com/docs/web-search-api/integrations/langchain" icon="link">
     作为 LangChain 工具，CatchAll 网络搜索现实世界的商业事件。
-  </Card>
-
-  <Card title="Nexus Shield" href="https://api.nexusshield.ai" icon="link">
+  </Card><Card title="Nexus Shield" href="https://api.nexusshield.ai" icon="link">
     LLM API 的 RAM 内 PII 清理和安全防护代理不到 10 毫秒。
   </Card>
 
@@ -1101,7 +1137,9 @@
 
   <Card title="Nimble" href="https://docs.nimbleway.com/" icon="link">
     网络智能和数据提取。
-  </Card><Card title="NodeProxy" href="https://github.com/pgalyen1987/NodeProxy/tree/main/integrations" icon="link">
+  </Card>
+
+  <Card title="NodeProxy" href="https://github.com/pgalyen1987/NodeProxy/tree/main/integrations" icon="link">
     x402 门控的 Web 表面 Markdown 解析器，用于令牌高效的 LLM 摄取。
   </Card>
 
@@ -1127,9 +1165,7 @@
 
   <Card title="NVIDIA" href="/oss/python/integrations/providers/nvidia" icon="link">
     NVIDIA 的 AI 计算平台和模型。
-  </Card>
-
-  <Card title="Novita" href="https://github.com/novitalabs/langchain-novita" icon="https://mintcdn.com/langchain-5e9cc07a/m9f_JCEk9R67nLhA/images/providers/novita-icon.svg?fit=max&auto=format&n=m9f_JCEk9R67nLhA&q=85&s=369e1a79543532e52cc3bd4935e22139">
+  </Card><Card title="Novita" href="https://github.com/novitalabs/langchain-novita" icon="https://mintcdn.com/langchain-5e9cc07a/m9f_JCEk9R67nLhA/images/providers/novita-icon.svg?fit=max&auto=format&n=m9f_JCEk9R67nLhA&q=85&s=369e1a79543532e52cc3bd4935e22139">
     用于运行代理生成的代码的代码解释器沙箱。
   </Card>
 
@@ -1154,8 +1190,10 @@
   </Card>
 
   <Card title="OpenMemory" href="https://github.com/nullure/langchain-openmemory" icon="link">
-    用于 LangChain 代理的本地优先持久时间记忆检索器。
-  </Card><Card title="OpenAI" href="/oss/python/integrations/providers/openai" icon="brand-openai">
+    LangChain 代理的本地优先持久时间记忆检索器。
+  </Card>
+
+  <Card title="OpenAI" href="/oss/python/integrations/providers/openai" icon="brand-openai">
     GPT模型和综合人工智能平台。
   </Card>
 
@@ -1173,9 +1211,7 @@
 
   <Card title="OpenDMA" href="https://github.com/OpenDMA/langchain-opendma/tree/main/docs" icon="link">
     适用于 Alfresco、Documentum、FileNet 和 OnBase 的 ECM 工具包、加载器和检索器。
-  </Card>
-
-  <Card title="OpenGradient" href="https://docs.opengradient.ai/" icon="link">
+  </Card><Card title="OpenGradient" href="https://docs.opengradient.ai/" icon="link">
     AI模型训练和微调平台。
   </Card>
 
@@ -1197,7 +1233,9 @@
 
   <Card title="Open Agent Spec" href="/oss/python/integrations/providers/open_agent_spec" icon="link">
     用于可移植代理定义的与框架无关的语言。
-  </Card><Card title="OpenTTT" href="https://github.com/Helm-Protocol/OpenTTT/tree/main/integrations/langchain" icon="link">
+  </Card>
+
+  <Card title="OpenTTT" href="https://github.com/Helm-Protocol/OpenTTT/tree/main/integrations/langchain" icon="link">
     LangChain LLM 调用的加密时间证明时间戳。
   </Card>
 
@@ -1214,10 +1252,8 @@
   </Card>
 
   <Card title="OrcaCallbackHandler" href="https://github.com/Continuum-AI-Corp/OrcaReplay/blob/main/python-langgraph/README.md" icon="link">
-    记录哪个 LangGraph 节点运行、在哪个超级步中以及它如何结束，并记录到在无法访问提供者的情况下离线重放的跟踪中。
-  </Card>
-
-  <Card title="Opedd" href="https://opedd.com/for-ai-agents" icon="link">
+    记录哪个 LangGraph 节点运行、在哪个超级步中以及它如何结束，并记录到在提供者无法访问的情况下离线重放的跟踪中。
+  </Card><Card title="Opedd" href="https://opedd.com/for-ai-agents" icon="link">
     为 RAG 和代理提供经过许可、权限明确的内容，并具有可验证的许可证密钥。
   </Card>
 
@@ -1243,7 +1279,9 @@
 
   <Card title="Perseus Vault" href="https://github.com/Perseus-Computing-LLC/langchain-perseus-vault" icon="link">
     本地优先 MCP 内存引擎，具有混合搜索和可选的代理加密功能。
-  </Card><Card title="Perigon" href="https://dev.perigon.io/docs" icon="link">
+  </Card>
+
+  <Card title="Perigon" href="https://dev.perigon.io/docs" icon="link">
     实时新闻和媒体监控。
   </Card>
 
@@ -1265,9 +1303,7 @@
 
   <Card title="PQS" href="https://pqs.onchainintel.net" icon="link">
     通过 LangChain 回调处理程序进行预推理提示质量评分。
-  </Card>
-
-  <Card title="PlainId" href="/oss/python/integrations/providers/plainid" icon="link">
+  </Card><Card title="PlainId" href="/oss/python/integrations/providers/plainid" icon="link">
     授权和访问控制平台。
   </Card>
 
@@ -1288,17 +1324,19 @@
   </Card>
 
   <Card title="Plivo" href="https://github.com/plivo-dev/langchain-plivo-tools" icon="link">
-    LangChain 用于通过 Plivo 通信 API 发送 SMS 消息和拨打语音电话的工具。
+    LangChain 用于通过 Plivo 通信 API 发送 SMS 消息和拨打语音呼叫的工具。
   </Card>
 
   <Card title="Play Store" href="https://github.com/urraf/langchain-playstore#readme" icon="link">
     Google Play 商店应用程序详细信息和用户评论检索器 LangChain。
-  </Card><Card title="PolarDB PG" href="https://github.com/polardb/langchain-polardb-pg" icon="link">
+  </Card>
+
+  <Card title="PolarDB PG" href="https://github.com/polardb/langchain-polardb-pg" icon="link">
     PolarDB for PostgreSQL 提供数据库内嵌入、LangChain向量存储以及基于 SQL 的外部 AI 模型注册和调用。
   </Card>
 
   <Card title="Polaris" href="https://github.com/Veroq-ai/polaris-sdks/tree/main/python/langchain_polaris" icon="link">
-    经过验证的LangChain特工新闻情报工具和检索器。
+    经过验证的 LangChain 特工新闻情报工具和检索器。
   </Card>
 
   <Card title="PolarisAIDataInsight" href="https://datainsight.polarisoffice.com/playground" icon="link">
@@ -1307,9 +1345,7 @@
 
   <Card title="Polign" href="https://github.com/Polign/polign/tree/main/python/langchain-polign" icon="link">
     Polign 的矢量存储，对象存储本机矢量数据库，具有元数据过滤、MMR 和 BM25 混合搜索。
-  </Card>
-
-  <Card title="POP" href="https://github.com/joy7758/persona-object-protocol/tree/main/integrations/langchain-pop" icon="link">
+  </Card><Card title="POP" href="https://github.com/joy7758/persona-object-protocol/tree/main/integrations/langchain-pop" icon="link">
     适用于 LangChain 代理的便携式角色加载、遗留迁移和边界感知工具过滤。
   </Card>
 
@@ -1339,7 +1375,9 @@
 
   <Card title="PromptfirewallGuard" href="https://github.com/TimurRakhmatullin86/langchain-promptfirewall#readme" icon="link">
     LangChain 亚毫秒级 PII 检测和提示注入防火墙。零网络、零 GPU、通过 PyO3 的纯 Rust 核心。
-  </Card><Card title="prompt-shield" href="https://github.com/mthamil107/prompt-shield" icon="link">
+  </Card>
+
+  <Card title="prompt-shield" href="https://github.com/mthamil107/prompt-shield" icon="link">
     用于输入、工具结果和模型输出的运行时提示注入防火墙。
   </Card>
 
@@ -1349,9 +1387,7 @@
 
   <Card title="ProxyHat" href="https://docs.proxyhat.com" icon="link">
     用于可靠网络获取的住宅代理工具和文档加载器。
-  </Card>
-
-  <Card title="Pushary" href="https://pushary.com/docs/agents/build/langgraph?utm_source=langchain&utm_medium=integration-directory&utm_campaign=pushary-langgraph-py" icon="link">
+  </Card><Card title="Pushary" href="https://pushary.com/docs/agents/build/langgraph?utm_source=langchain&utm_medium=integration-directory&utm_campaign=pushary-langgraph-py" icon="link">
     LangGraph 和 LangChain 代理的电话批准。 ask\_ human 工具或 Pushary\_interrupt() 在手机上询问用户，图表将继续显示他们的批准或拒绝。如果没有人回答，则该操作不会运行。
   </Card>
 
@@ -1389,7 +1425,9 @@
 
   <Card title="Remembrall" href="/oss/python/integrations/providers/remembrall" icon="link">
     人工智能内存和上下文管理。
-  </Card><Card title="RE-call" href="https://giulioder.github.io/RE-call/integrations.html" icon="link">
+  </Card>
+
+  <Card title="RE-call" href="https://giulioder.github.io/RE-call/integrations.html" icon="link">
     使用 pgvector、判决元数据和显式弃权从 PostgreSQL 进行信任评估检索。
   </Card>
 
@@ -1399,9 +1437,7 @@
 
   <Card title="ReplyLayer" href="https://replylayer.ai/docs/guides/langchain" icon="link">
     面向 AI 代理的受管电子邮件平台。
-  </Card>
-
-  <Card title="Reserp" href="https://reserp.ai/docs" icon="link">
+  </Card><Card title="Reserp" href="https://reserp.ai/docs" icon="link">
     通过单个 API 请求将 Google 搜索结果作为 LangChain 工具。
   </Card>
 
@@ -1439,7 +1475,9 @@
 
   <Card title="Sail" href="https://docs.lakesail.com/sail/main/guide/integrations/langchain/" icon="link">
     基于 Rust 的直接 Spark 替换为 Spark Connect 和用于 LangChain 代理的 Sail SQL 工具包。
-  </Card><Card title="SafePrompt" href="https://docs.safeprompt.dev/langchain" icon="link">
+  </Card>
+
+  <Card title="SafePrompt" href="https://docs.safeprompt.dev/langchain" icon="link">
     作为 LangChain 回调处理程序的提示注入检测。
   </Card>
 
@@ -1453,22 +1491,20 @@
 
   <Card title="SambaNova" href="/oss/python/integrations/providers/sambanova" icon="link">
     具有专用硬件的人工智能平台。
-  </Card>
-
-  <Card title="SAP" href="/oss/python/integrations/providers/sap" icon="link">
+  </Card><Card title="SAP" href="/oss/python/integrations/providers/sap" icon="link">
     企业软件和人工智能解决方案。
   </Card>
 
   <Card title="Sarvam AI" href="https://docs.sarvam.ai/api/integration/langchain" icon="link">
-    针对印度语言的主权 AI 平台，提供聊天、语音和翻译功能。
+    Sovereign AI platform for Indian languages with chat, speech, and translation.
   </Card>
 
   <Card title="Scavio" href="https://scavio.dev/docs/langchain" icon="link">
-    适用于跨网络、商业、视频、社交、工作、房地产、旅游、应用商店、广告库和公共文件的 AI 代理的实时搜索 API，以及从任何 URL 中提取干净的文本。
+    Real-time search API for AI agents across the web, commerce, video, social, jobs, real estate, travel, app stores, ad libraries, and public filings, plus clean text extraction from any URL.
   </Card>
 
   <Card title="SchemagateRetriever" href="https://ashishsinha1602.github.io/schemagate/langchain/" icon="link">
-    为 SQL 代理选择架构对象并仅返回允许调用主体读取的表的检索器，适用于 Postgres、Oracle、MySQL 和 SQL Server
+    Retriever that selects schema objects for a SQL agent and returns only the tables the calling principal is permitted to read, for Postgres, Oracle, MySQL and SQL Server
   </Card>
 
   <Card title="ScrapeGraph" href="https://github.com/ScrapeGraphAI/langchain-scrapegraph" icon="link">
@@ -1480,20 +1516,20 @@
   </Card>
 
   <Card title="ScrapingBee" href="https://www.scrapingbee.com/documentation/langchain/" icon="link">
-    具有无头浏览器、代理和 AI 提取的 Web 抓取和搜索 API。
-  </Card><Card title="ScoutWyze Compute" href="https://github.com/scoutwyze-max/scoutwyze-compute/blob/main/examples/README.md" icon="link">
-    按价格和新鲜度对实时 GPU 放置优惠（8x H100 80GB、RunPod）进行排名；通过预付费密钥按成功匹配计费，或通过 Base 上的 x402/USDC 按每次通话计费。
+    Web scraping and search API with headless browsers, proxies, and AI extraction.
+  </Card>
+
+  <Card title="ScoutWyze Compute" href="https://github.com/scoutwyze-max/scoutwyze-compute/blob/main/examples/README.md" icon="link">
+    Ranks live GPU placement offers (8x H100 80GB, RunPod) by price and freshness; billed per successful match via a prepaid key or per-call via x402/USDC on Base.
   </Card>
 
   <Card title="SearchApi" href="https://www.searchapi.io/docs/google" icon="link">
-    跨 Google、Bing、百度、YouTube 等的统一搜索 API。
+    Unified search API across Google, Bing, Baidu, YouTube, and more.
   </Card>
 
   <Card title="seekrit" href="https://seekrit.dev/docs" icon="link">
-    零知识秘密管理器。模型调用或给定工具调用可以使用的凭证范围。
-  </Card>
-
-  <Card title="Semantica" href="https://docs.getsemantica.ai/integrations/langchain" icon="link">
+    零知识秘密管理器。 Scopes which credentials a model call or a given tool call may use.
+  </Card><Card title="Semantica" href="https://docs.getsemantica.ai/integrations/langchain" icon="link">
     三个插入式适配器，将 Semantica 的上下文图和混合搜索引入LangChain链和LangGraph代理中。
   </Card>
 
@@ -1523,7 +1559,9 @@
 
   <Card title="ScyllaDB" href="https://docs.scylladb.com" icon="link">
     用于实时人工智能的高性能分布式NoSQL数据库。
-  </Card><Card title="ShannonBase" href="https://github.com/apoorva-01/langchain-shannonbase" icon="link">
+  </Card>
+
+  <Card title="ShannonBase" href="https://github.com/apoorva-01/langchain-shannonbase" icon="link">
     用于 ShannonBase、自托管 MySQL 和 MySQL HeatWave 的 MySQL 9 VECTOR 存储。
   </Card>
 
@@ -1537,9 +1575,7 @@
 
   <Card title="Signatrust" href="https://signatrust.net/docs/api" icon="link">
     代理操作的加密签名人工智能决策收据。
-  </Card>
-
-  <Card title="Signet" href="https://github.com/Prismer-AI/signet/tree/main/examples/langchain-compliance" icon="link">
+  </Card><Card title="Signet" href="https://github.com/Prismer-AI/signet/tree/main/examples/langchain-compliance" icon="link">
     Ed25519 签名的LangChain工具生命周期事件收据，带有本地哈希链审计日志。
   </Card>
 
@@ -1573,7 +1609,9 @@
 
   <Card title="Soul" href="https://github.com/menonpg/langchain-soul" icon="link">
     Markdown 原生聊天消息历史记录，具有混合 RAG 和 RLM 检索功能。
-  </Card><Card title="Sourcey" href="https://sourcey.com/docs/guides/guide-langchain-retriever" icon="link">
+  </Card>
+
+  <Card title="Sourcey" href="https://sourcey.com/docs/guides/guide-langchain-retriever" icon="link">
     静态文档生成器，可为法学硕士应用程序提供可检索的工件。
   </Card>
 
@@ -1587,9 +1625,7 @@
 
   <Card title="Spidra" href="https://docs.spidra.io" icon="link">
     由人工智能驱动的网络抓取平台，具有真实的浏览器、验证码解决和结构化数据提取。
-  </Card>
-
-  <Card title="Stack Overflow" href="https://github.com/urraf/langchain-stackoverflow#readme" icon="link">
+  </Card><Card title="Stack Overflow" href="https://github.com/urraf/langchain-stackoverflow#readme" icon="link">
     从 Stack Exchange 网络搜索问题并检索答案。
   </Card>
 
@@ -1619,7 +1655,9 @@
 
   <Card title="SuperLocalMemory" href="https://www.superlocalmemory.com/docs" icon="link">
     本地优先的聊天消息历史记录存储在 SQLite 中，不依赖于云。
-  </Card><Card title="Superserve" href="https://docs.superserve.ai" icon="link">
+  </Card>
+
+  <Card title="Superserve" href="https://docs.superserve.ai" icon="link">
     适用于 Deep Agents 的持久 Firecracker microVM 沙箱。
   </Card>
 
@@ -1636,14 +1674,12 @@
   </Card>
 
   <Card title="Synthorai" href="https://synthorai.io/docs/" icon="link">
-    与OpenAI兼容的LLM网关路由到多个模型提供商。
+    OpenAI兼容LLM网关路由到多个模型提供商。
   </Card>
 
   <Card title="Tableau" href="/oss/python/integrations/providers/tableau" icon="link">
     数据可视化和商业智能。
-  </Card>
-
-  <Card title="Taiga" href="https://github.com/Shikenso-Analytics/langchain-taiga" icon="link">
+  </Card><Card title="Taiga" href="https://github.com/Shikenso-Analytics/langchain-taiga" icon="link">
     敏捷团队的项目管理平台。
   </Card>
 
@@ -1664,13 +1700,15 @@
   </Card>
 
   <Card title="TempGuru" href="https://tempguru.co/ai-agents" icon="link">
-    美国和加拿大的 W-2 活动人员配置：覆盖范围、费率、交付时间和合规性查询。
-  </Card><Card title="Tendem" href="https://github.com/Toloka/tendem-mcp/tree/main/integrations/langchain-tendem#readme" icon="link">
-    将代理工作委托给经过审查的专家的价格上限的人机交互工具。
+    W-2 event staffing for the US and Canada: coverage, rates, lead times, and compliance lookups.
   </Card>
 
-  <Card title="Tenuo" href="https://tenuo.ai/langgraph#tenuomiddleware-langchain-1x-create_agent" icon="link">
-    LangChain代理的任务范围授权：每个工具调用都会根据签署的授权进行检查，该授权限制了哪些工具运行、使用哪些参数、运行多长时间，并且只有在委派工作时才能缩小范围。
+  <Card title="Tendem" href="https://github.com/Toloka/tendem-mcp/tree/main/integrations/langchain-tendem#readme" icon="link">
+    Price-capped human-in-the-loop tools that delegate agent work to vetted experts.
+  </Card>
+
+  <Card title="Tenuo" href="https://tenuo.ai/langchain" icon="link">
+    LangChain 代理的任务范围授权，将每个任务限制为其所需的工具、参数值和时间，在执行前强制执行，委托代理接收父级权限的子集。
   </Card>
 
   <Card title="TensorLake" href="/oss/python/integrations/providers/tensorlake" icon="link">
@@ -1678,15 +1716,13 @@
   </Card>
 
   <Card title="Teradata" href="https://github.com/Teradata/langchain-teradata" icon="link">
-    具有集成矢量搜索功能的自主人工智能平台。
-  </Card>
-
-  <Card title="Tessera" href="https://github.com/kenithphilip/Tessera" icon="link">
+    Autonomous AI platform with integrated vector search.
+  </Card><Card title="Tessera" href="https://github.com/kenithphilip/Tessera" icon="link">
     门工具调用不受信任上下文的签名信任标签和污点跟踪。
   </Card>
 
   <Card title="Telnyx" href="https://telnyx.com" icon="link">
-    用于聊天模型和嵌入的OpenAI兼容 AI 推理 API。
+    用于聊天模型和嵌入的OpenAI兼容AI推理API。
   </Card>
 
   <Card title="Thalam" href="https://thalam.ai/docs" icon="link">
@@ -1702,12 +1738,14 @@
   </Card>
 
   <Card title="Tigris" href="https://www.tigrisdata.com/docs/" icon="link">
-    具有可分叉 LangGraph 检查指针的全球分布式 S3 兼容对象存储。
+    具有可分叉 LangGraph 检查指针的全局分布式 S3 兼容对象存储。
   </Card>
 
   <Card title="Tilores" href="https://github.com/tilotech/tilores-langchain" icon="link">
     实体解析和数据匹配。
-  </Card><Card title="Toolstem" href="https://toolstem.com" icon="link">
+  </Card>
+
+  <Card title="Toolstem" href="https://toolstem.com" icon="link">
     金融和 SEC EDGAR 工具，为 LangChain 代理提供 x402 小额支付。
   </Card>
 
@@ -1725,9 +1763,7 @@
 
   <Card title="TokenMix" href="https://tokenmix.ai/docs" icon="link">
     与 OpenAI 兼容的 API 网关，适用于 DeepSeek、Qwen、Kimi、GLM、MiniMax 等。
-  </Card>
-
-  <Card title="TokPortal" href="https://github.com/tokportal/langchain-tokportal" icon="link">
+  </Card><Card title="TokPortal" href="https://github.com/tokportal/langchain-tokportal" icon="link">
     作为 LangChain 工具和 MCP 管理 TikTok、Instagram 和 YouTube 帐户。
   </Card>
 
@@ -1741,6 +1777,10 @@
 
   <Card title="Traccia" href="https://traccia.ai/docs/integrations/langchain/" icon="link">
     人工智能代理控制平面。
+  </Card>
+
+  <Card title="TracekitMiddleware" href="https://github.com/Cygnux-Labs/Tracekit/blob/main/docs/integrations/langchain.md" icon="link">
+    Tracekit 要求单独的签名者在运行之前允许、拒绝或保留某个人的每个代理工具调用，并将每个调用和结果记录在一个可离线验证的已签名的哈希链日志中。
   </Card>
 
   <Card title="TrueFoundry" href="/oss/python/integrations/providers/truefoundry" icon="link">
@@ -1761,15 +1801,15 @@
 
   <Card title="Tuning Engines" href="https://www.tuningengines.com/" icon="link">
     用于模型访问、策略检查和使用情况统计的受控OpenAI兼容端点。
-  </Card><Card title="TypeDB" href="https://typedb.com/docs" icon="link">
+  </Card>
+
+  <Card title="TypeDB" href="https://typedb.com/docs" icon="link">
     适用于复杂的关系数据和知识图应用程序的强类型数据库。
   </Card>
 
   <Card title="TypeSafe" href="/oss/python/integrations/providers/typesafe" icon="link">
     用于代理决策的 Jev 分类器：模型路由和工具风险门控。
-  </Card>
-
-  <Card title="TypesenseVectorStore" href="https://github.com/typesense/langchain-typesense#readme" icon="link">
+  </Card><Card title="TypesenseVectorStore" href="https://github.com/typesense/langchain-typesense#readme" icon="link">
     Typesense 的矢量存储集成与矢量和混合搜索、元数据过滤、评分、MMR 以及同步和异步 API。
   </Card>
 
@@ -1799,7 +1839,9 @@
 
   <Card title="Upstash Box" href="https://upstash.com/docs/box" icon="link">
     使用用于代理代码执行的完整 Linux shell 来保护云沙箱。
-  </Card><Card title="URLpipe" href="https://urlpipe.dev/integrations/langchain" icon="link">
+  </Card>
+
+  <Card title="URLpipe" href="https://urlpipe.dev/integrations/langchain" icon="link">
     在 JavaScript 运行后读取网页的工具，例如 Markdown，以及页面元数据、控制台错误和 Lighthouse 审核；和一个文档加载器。
   </Card>
 
@@ -1809,9 +1851,7 @@
 
   <Card title="Valyu" href="https://docs.valyu.ai/" icon="link">
     人工智能驱动的数据分析平台。
-  </Card>
-
-  <Card title="VAST Data" href="https://github.com/vast-data/vast-vector-store" icon="link">
+  </Card><Card title="VAST Data" href="https://github.com/vast-data/vast-vector-store" icon="link">
     具有本机矢量索引的高性能、EB 级数据平台。
   </Card>
 
@@ -1845,7 +1885,9 @@
 
   <Card title="Verifly" href="https://verifly.email/docs" icon="link">
     代理本机电子邮件验证以及潜在客户和注册的送达率判断。
-  </Card><Card title="Veritensor" href="https://github.com/arsbr/Veritensor" icon="link">
+  </Card>
+
+  <Card title="Veritensor" href="https://github.com/arsbr/Veritensor" icon="link">
     RAG 文档加载器的安全扫描器可阻止数据中毒和提示注入。
   </Card>
 
@@ -1857,11 +1899,9 @@
     具有 Turbo、Pro 和 Ultra 模型层的文本嵌入 API (Forge)。
   </Card>
 
-  <Card title="VoyageAI" href="/oss/python/integrations/providers/voyageai" icon="link">
+  <Card title="VoyageAI by MongoDB" href="/oss/python/integrations/providers/voyageai" icon="link">
     嵌入模型和语义搜索。
-  </Card>
-
-  <Card title="WaveSpeed" href="https://github.com/WaveSpeedAI/langchain-wavespeed" icon="link">
+  </Card><Card title="WaveSpeed" href="https://github.com/WaveSpeedAI/langchain-wavespeed" icon="link">
     适用于 WaveSpeed AI 市场的图像、视频和目录模型生成工具。
   </Card>
 
@@ -1871,6 +1911,10 @@
 
   <Card title="Web Metadata Extractor" href="https://github.com/JosejuX/rapidapi-metadata-extractor/tree/main/langchain-webmetadata-extractor" icon="link">
     适用于 LangChain 代理的 URL 元数据、Markdown、联系人发现和 SEO 审核工具。
+  </Card>
+
+  <Card title="Web2MDLoader" href="https://github.com/kanavsingla28/web2md-clients/tree/main/python#readme" icon="link">
+    托管 API，将网页转换为干净的 Markdown 和标题感知、令牌限制的块； `Web2MDLoader` 每块或每页生成一个文档。
   </Card>
 
   <Card title="Webz" href="https://docs.webz.io/docs/webz/news-search-api-mcp" icon="link">
@@ -1891,15 +1935,15 @@
 
   <Card title="XAI" href="/oss/python/integrations/providers/xai" icon="link">
     xAI 的 Grok 对话式 AI 模型。
-  </Card><Card title="x402" href="https://www.agentrails.io/docs" icon="link">
+  </Card>
+
+  <Card title="x402" href="https://www.agentrails.io/docs" icon="link">
     HTTP 原生 USDC 付款，因此代理可以为每个请求的 API 付费。
   </Card>
 
   <Card title="xaidr" href="https://github.com/delphisecurity/xaidr#langchain-middleware" icon="link">
     进程内运行时安全传感器，带有用于输入、工具调用和输出边界的LangChain中间件。
-  </Card>
-
-  <Card title="Xpoz" href="https://www.xpoz.ai/docs" icon="link">
+  </Card><Card title="Xpoz" href="https://www.xpoz.ai/docs" icon="link">
     拥有数十亿索引帖子和用户的社交媒体数据平台。
   </Card>
 
@@ -1933,7 +1977,9 @@
 
   <Card title="ZeroGPU" href="https://docs.zerogpu.ai" icon="link">
     适用于应用程序和代理的超快速、计算效率高的推理提供商：在边缘网络上专门构建的小型和纳米模型，具有零 GPU 基础设施、无服务器和内置自动扩展功能。
-  </Card><Card title="ZeusDB" href="https://docs.zeusdb.com" icon="link">
+  </Card>
+
+  <Card title="ZeusDB" href="https://docs.zeusdb.com" icon="link">
     高性能矢量数据库。
   </Card>
 
@@ -1942,11 +1988,9 @@
   </Card>
 </Columns>
 
-***
-
-<div>
+***<div>
   <Callout icon="terminal-2">
-    [Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时答案。
+    [Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
   </Callout>
 
   <Callout icon="edit">

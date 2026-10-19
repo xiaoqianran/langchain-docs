@@ -1,43 +1,39 @@
-<!-- langchain-docs: translation failed; English fallback -->
+<!-- langchain-docs: machine-translated zh-CN from English source -->
 
 <!-- langchain-docs: Install LangSmith with SmithDB | https://docs.langchain.com/langsmith/self-host-smithdb-install -->
 
-# Install LangSmith with SmithDB
+# 使用 SmithDB 安装 LangSmith
 
-Enable SmithDB on a self-hosted LangSmith Kubernetes installation through staged Helm updates.
+通过分阶段 Helm 更新在自托管 LangSmith Kubernetes 安装上启用 SmithDB。
 
-This guide enables SmithDB on a LangSmith Kubernetes installation in stages so you can validate each change. Each stage is one Helm update that rolls the affected pods. ClickHouse stays in place throughout.
+本指南分阶段在 LangSmith Kubernetes 安装上启用 SmithDB，以便您可以验证每个更改。每个阶段都是一个 Helm 更新，会滚动受影响的 pod。 ClickHouse 始终保持原位。
 
-Migrating historical ClickHouse data is optional. History left in ClickHouse is not reachable through SmithDB-backed queries unless you migrate it.
+迁移历史 ClickHouse 数据是可选的。除非迁移，否则无法通过 SmithDB 支持的查询访问 ClickHouse 中留下的历史记录。
 
-## Before you begin
+## 开始之前* 在开始之前通过 [Support Portal](https://support.langchain.com/) 联系 LangChain，以便团队可以审查您的基础设施计划。
+* 在开始之前设置[SmithDB observability](/langsmith/self-host-smithdb-observability)。以下步骤使用指标来验证每个阶段。
+* 从 Kubernetes 上正在运行的 LangSmith 安装开始。对于LangSmith 0.17 上的新安装，请参阅[Install without ClickHouse](#install-without-clickhouse)。
+* 一次升级一个主要版本，直到安装满足 [cloud support](/langsmith/self-host-smithdb#cloud-support) 最低要求：AWS (EKS) 和 GCP (GKE) 上使用 Helm 图表 `0.16.14` 或更高版本的 LangSmith 0.16，或 Azure (AKS) 上的 LangSmith 0.17。沿[upgrade guide](/langsmith/self-host-upgrades)行驶。
+* 保留当前安装的 Helm 值。本指南向其中添加 SmithDB 配置。
+* 确认您可以直接或通过 GitOps 工作流程将 LangSmith Helm 版本应用到集群。
+* 查看 [SDK migration guide](/langsmith/smithdb-sdk-migration) 并规划您的 SDK 升级以及此安装。
 
-* Contact LangChain through the [Support Portal](https://support.langchain.com/) before you begin so the team can review your infrastructure plan.
-* Set up [SmithDB observability](/langsmith/self-host-smithdb-observability) before you begin. The steps below use metrics to verify each stage.
-* Start from a running LangSmith installation on Kubernetes. For a new installation on LangSmith 0.17, see [Install without ClickHouse](#install-without-clickhouse).
-* Upgrade one major version at a time until the installation meets the [cloud support](/langsmith/self-host-smithdb#cloud-support) minimum: LangSmith 0.16 with Helm chart `0.16.14` or later on AWS (EKS) and GCP (GKE), or LangSmith 0.17 on Azure (AKS). Follow the [upgrade guide](/langsmith/self-host-upgrades).
-* Keep the Helm values from your current installation. This guide adds SmithDB configuration to them.
-* Confirm you can apply the LangSmith Helm release to the cluster, directly or through your GitOps workflow.
-* Review the [SDK migration guide](/langsmith/smithdb-sdk-migration) and plan your SDK upgrade alongside this installation.
+您可以稍后禁用 SmithDB。要将查询和摄取流量返回到 ClickHouse 并禁用 SmithDB 服务，请参阅[Troubleshoot SmithDB](/langsmith/self-host-smithdb-troubleshooting#disable-or-reset-smithdb)。
 
-You can disable SmithDB later. To return query and ingestion traffic to ClickHouse and disable SmithDB services, see [Troubleshoot SmithDB](/langsmith/self-host-smithdb-troubleshooting#disable-or-reset-smithdb).
+## 安装顺序
 
-## Installation sequence
+### 步骤 1. 准备支持基础设施
 
-### Step 1. Prepare supporting infrastructure
+按照[Prepare SmithDB supporting infrastructure](/langsmith/self-host-smithdb-infrastructure)提供：* 专用的 PostgreSQL 18 或更高版本元存储
+* 具有工作负载身份或等效凭证的专用对象存储
+* SmithDB 的缓存存储：网络连接磁盘或本地 SSD，以获得最佳缓存性能
+* 网络连接和包含元存储连接详细信息的 Kubernetes Secret
 
-Follow [Prepare SmithDB supporting infrastructure](/langsmith/self-host-smithdb-infrastructure) to provide:
+记录 Helm 图表所需的对象存储配置、元存储 Secret 和键映射、服务帐户身份以及缓存设置。
 
-* A dedicated PostgreSQL 18 or later metastore
-* Dedicated object storage with workload identity or equivalent credentials
-* Cache storage for SmithDB: network-attached disks, or local SSD for the best cache performance
-* Network connectivity and a Kubernetes Secret containing the metastore connection details
+在此步骤结束时，SmithDB Helm 值的共享基础设施部分可能如下所示。保持 SmithDB 禁用直到第 3 步。
 
-Record the object-store configuration, metastore Secret and key mappings, service-account identity, and cache settings needed by the Helm chart.
-
-At the end of this step, the shared infrastructure portion of your SmithDB Helm values might look like the following. Keep SmithDB disabled until Step 3.
-
-Add the cache values for your version from [Cache storage](/langsmith/self-host-smithdb-infrastructure#cache-storage). On LangSmith 0.17 that is usually one line, `smithdb.cache.storageClassName`. Local SSD on either version also needs the node selectors and tolerations shown there.
+从 [Cache storage](/langsmith/self-host-smithdb-infrastructure#cache-storage) 添加适合您的版本的缓存值。在 LangSmith 0.17 通常是一行，`smithdb.cache.storageClassName`。任一版本上的本地 SSD 还需要此处显示的节点选择器和容忍度。
 
 <Accordion title="SmithDB infrastructure Helm values">
   ```yaml theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
@@ -60,7 +56,7 @@ Add the cache values for your version from [Cache storage](/langsmith/self-host-
         bucket: BUCKET_NAME
   ```
 
-  Replace the identity and object-store placeholders with the values for your provider. For Azure, also add the `azure.workload.identity/use: "true"` label to every SmithDB workload. See [Configure Blob Storage access](/langsmith/self-host-smithdb-infrastructure#configure-blob-storage-access).
+  将身份和对象存储占位符替换为您的提供商的值。对于 Azure，还要向每个 SmithDB 工作负载添加 `azure.workload.identity/use: "true"` 标签。参见[Configure Blob Storage access](/langsmith/self-host-smithdb-infrastructure#configure-blob-storage-access)。
 
   <CodeGroup>
     ```yaml AWS theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
@@ -106,22 +102,20 @@ Add the cache values for your version from [Cache storage](/langsmith/self-host-
   </CodeGroup>
 </Accordion>
 
-### Step 2. Upgrade to the required LangSmith version
-
-SmithDB requires the LangSmith version listed in [Cloud support](/langsmith/self-host-smithdb#cloud-support). Upgrade to it before enabling SmithDB. Preserve the existing ClickHouse configuration and keep SmithDB disabled:
+### 步骤2.升级到所需的LangSmith版本SmithDB 需要 [Cloud support](/langsmith/self-host-smithdb#cloud-support) 中列出的 LangSmith 版本。在启用 SmithDB 之前升级到它。保留现有的 ClickHouse 配置并禁用 SmithDB：
 
 ```yaml theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 smithdb:
   enabled: false
 ```
 
-Apply the upgrade and verify that the existing LangSmith pods are running and migration Jobs complete. Resolve upgrade failures before continuing.
+应用升级并验证现有 LangSmith Pod 是否正在运行并且迁移作业是否已完成。在继续之前解决升级失败的问题。
 
-### Step 3. Configure and deploy SmithDB services
+### 步骤 3. 配置和部署 SmithDB 服务
 
-Before enabling SmithDB, choose a tested baseline from [Configure SmithDB for scale](/langsmith/self-host-smithdb-scale). Configure its replica counts and per-replica CPU, memory, and cache size, and confirm the cluster can provision the total.
+在启用 SmithDB 之前，请选择 [deployment mode](/langsmith/self-host-smithdb-scale#choose-a-deployment-mode) 和从 [Configure SmithDB for scale](/langsmith/self-host-smithdb-scale) 中经过测试的基线。配置其副本计数以及每个副本的 CPU、内存和缓存大小，并确认集群可以配置总数。
 
-Merge the infrastructure values prepared in Step 1 and your selected sizing baseline into the existing LangSmith values. Leave the existing ClickHouse configuration unchanged, then enable the SmithDB services without changing LangSmith ingestion or queries:
+将步骤 1 中准备的基础设施值和您选择的规模基准合并到现有 LangSmith 值中。保持现有 ClickHouse 配置不变，然后启用 SmithDB 服务而不更改 LangSmith 摄取或查询：
 
 ```yaml theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 smithdb:
@@ -135,20 +129,18 @@ smithdb:
       enabled: false
 ```
 
-Apply the chart, then confirm every SmithDB pod is running and the metastore migration Job has completed:
+应用图表，然后确认每个 SmithDB pod 正在运行并且元存储迁移作业已完成：
 
 ```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 kubectl get pods -n NAMESPACE | grep smithdb
 kubectl get job -n NAMESPACE HELM_RELEASE-smithdb-metastore-migration
 ```
 
-SmithDB components verify metastore and object-store connectivity at startup, so a running pod has already confirmed both. A pod stuck in `Pending` or `CrashLoopBackOff` has not. See [Troubleshoot SmithDB](/langsmith/self-host-smithdb-troubleshooting#supporting-infrastructure).
+SmithDB 组件在启动时验证元存储和对象存储连接，因此正在运行的 pod 已经确认了两者。卡在 `Pending` 或 `CrashLoopBackOff` 的 Pod 则不会。参见[Troubleshoot SmithDB](/langsmith/self-host-smithdb-troubleshooting#supporting-infrastructure)。
 
-Do not enable LangSmith integration flags until these checks pass.
+在这些检查通过之前，请勿启用 LangSmith 集成标志。### 步骤 4. 启用双重摄取
 
-### Step 4. Enable dual ingestion
-
-Begin writing to SmithDB while continuing to write to ClickHouse:
+开始写入 SmithDB，同时继续写入 ClickHouse：
 
 ```yaml theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 smithdb:
@@ -161,30 +153,28 @@ smithdb:
       enabled: false
 ```
 
-Verify the dual-ingestion path, in this order:
+按以下顺序验证双摄取路径：
 
-1. **Routing**: `sdb_ingestion_enabled` is `true` and `sdb_query_enabled` is `false`.
-2. **Flow**: `ingest_flush_count` increases while traffic arrives. A flat counter means writes are not reaching object storage.
-3. **Capacity**: `langsmith_asynq_ingestion_queue_pending` stays low and stable through a period that includes your peak traffic. Sustained growth means ingestion is undersized. Resolve it with [Configure SmithDB for scale](/langsmith/self-host-smithdb-scale) before Step 5 or Step 6.
+1. **路由**：`sdb_ingestion_enabled`为`true`，`sdb_query_enabled`为`false`。
+2. **流量**：当流量到达时，`ingest_flush_count` 增加。平坦计数器意味着写入未到达对象存储。
+3. **容量**：`langsmith_asynq_ingestion_queue_pending`在包括流量高峰的时期保持较低且稳定。持续增长意味着摄入量不足。在步骤5或步骤6之前用[Configure SmithDB for scale](/langsmith/self-host-smithdb-scale)解决。
 
-Check routing with:
+检查路由：
 
 ```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 curl -s https://LANGSMITH_HOST/api/v1/info | jq '.instance_flags | {sdb_ingestion_enabled, sdb_query_enabled}'
 ```
 
-Writes must continue to reach ClickHouse throughout. The [SmithDB metrics reference](/langsmith/self-host-smithdb-metrics) covers the remaining ingestion metrics.
+写入必须始终持续到达 ClickHouse。 [SmithDB metrics reference](/langsmith/self-host-smithdb-metrics) 涵盖了其余的摄取指标。
 
-### Step 5. Choose how to handle historical data
+### 步骤 5. 选择如何处理历史数据
 
-Once dual ingestion is stable, decide whether ClickHouse history needs to be reachable through SmithDB-backed queries:
+一旦双重摄取稳定，请决定是否需要通过 SmithDB 支持的查询访问 ClickHouse 历史记录：
 
-* **Migrate it**: Follow [Migrate ClickHouse history to SmithDB](/langsmith/self-host-smithdb-migrate), then return here for query cutover.
-* **Leave it in ClickHouse**: Skip migration. Existing data stays in ClickHouse but is not queryable through LangSmith after cutover unless queries are directed back to ClickHouse.
+* **迁移**：按照[Migrate ClickHouse history to SmithDB](/langsmith/self-host-smithdb-migrate)，然后返回此处进行查询割接。
+* **将其留在 ClickHouse**：跳过迁移。现有数据保留在 ClickHouse 中，但在割接后无法通过LangSmith 查询，除非查询被引导回 ClickHouse。
 
-### Step 6. Switch queries to SmithDB
-
-After dual ingestion is healthy and any ClickHouse migration has completed, enable SmithDB-backed queries:
+### 步骤 6. 将查询切换到 SmithDB在双摄取正常且任何 ClickHouse 迁移完成后，启用 SmithDB 支持的查询：
 
 ```yaml theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 smithdb:
@@ -197,21 +187,21 @@ smithdb:
       enabled: true
 ```
 
-Confirm both flags now report `true`:
+现在确认两个标志报告`true`：
 
 ```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 curl -s https://LANGSMITH_HOST/api/v1/info | jq '.instance_flags | {sdb_ingestion_enabled, sdb_query_enabled}'
 ```
 
-Then validate traces, projects, filters, and time ranges in the LangSmith UI and API, and continue monitoring ingestion and query errors.
+然后在 LangSmith UI 和 API 中验证跟踪、项目、过滤器和时间范围，并继续监控摄取和查询错误。
 
 <Warning>
-  Do not disable or remove ClickHouse on LangSmith 0.16. On 0.17, retiring ClickHouse from an existing installation is a separate procedure; contact LangChain through the [Support Portal](https://support.langchain.com/) before considering it.
+  不要在 LangSmith 0.16 上禁用或删除 ClickHouse。在 0.17 上，从现有安装中停用 ClickHouse 是一个单独的过程；考虑之前请通过[Support Portal](https://support.langchain.com/)联系LangChain。
 </Warning>
 
-## Install without ClickHouse
+## 不使用 ClickHouse 安装
 
-On LangSmith 0.17, a new installation can run SmithDB as its only trace store. Complete Step 1, then install LangSmith 0.17 with ClickHouse disabled and both SmithDB paths enabled, in place of Steps 2 through 6:
+在 LangSmith 0.17 上，新安装可以运行 SmithDB 作为其唯一的跟踪存储。完成步骤 1，然后安装 LangSmith 0.17，禁用 ClickHouse 并启用两个 SmithDB 路径，代替步骤 2 到 6：
 
 ```yaml theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 clickhouse:
@@ -227,20 +217,20 @@ smithdb:
       enabled: true
 ```
 
-The chart requires at least one ingestion backend and one query backend, so both SmithDB flags must be on. This applies to new installations only.
+该图表至少需要一个摄取后端和一个查询后端，因此两个 SmithDB 标志都必须打开。这仅适用于新安装。
 
-## Troubleshooting
+## 故障排除
 
-If something fails during or after installation, see [Troubleshoot SmithDB](/langsmith/self-host-smithdb-troubleshooting) or contact LangChain through the [Support Portal](https://support.langchain.com/).
+如果安装过程中或安装后出现故障，请参阅[Troubleshoot SmithDB](/langsmith/self-host-smithdb-troubleshooting)或通过[Support Portal](https://support.langchain.com/)联系LangChain。
 
 ***
 
 <div>
   <Callout icon="terminal-2">
-    [Connect these docs](/use-these-docs) to your agent of choice via MCP for real-time answers.
+    [Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
   </Callout>
 
   <Callout icon="edit">
-    [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/self-host-smithdb-install.mdx) or [file an issue](https://github.com/langchain-ai/docs/issues/new/choose).
+    [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/self-host-smithdb-install.mdx) 或 [file an issue](https://github.com/langchain-ai/docs/issues/new/choose)。
   </Callout>
 </div>
