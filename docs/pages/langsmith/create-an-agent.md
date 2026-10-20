@@ -9,7 +9,7 @@ You can create an [agent](/langsmith/agents) through four routes. The route you 
 Pick a route based on where the agent runs. If you build the agent in LangSmith, LangSmith creates the agent as you build it. If the agent runs on your own machines, LangSmith can create the agent when the agent sends its first trace.
 
 <Note>
-  **Beta.** Agent-based workspaces are in [beta](/langsmith/release-stages). LangChain enables agent-based workspaces for an organization, and the change applies to workspaces created after that. An existing [project-based](/langsmith/observability-concepts#tracing-projects) workspace does not convert automatically, but LangChain can convert it. To ask about access, [contact our sales team](https://www.langchain.com/contact-sales).
+  Agent-based workspaces are available on [LangSmith Cloud](/langsmith/cloud). They are not available on [self-hosted](/langsmith/self-hosted) LangSmith. To check whether your workspace is agent-based, look at the control at the top left. In an agent-based workspace, it is a workspace switcher that names your workspace. In a [project-based](/langsmith/observability-concepts#tracing-projects) workspace, it shows the LangSmith logo.
 </Note>
 
 ## Compare the four routes
@@ -55,7 +55,7 @@ To create the agent before any trace arrives, name it in either of two places:
 
 Both take an **Agent name** and, in its own field, an **Agent ID**, with a note that the ID is used in URLs and API calls and cannot be changed later. Both require permission to create projects. The agent switcher has the same **+** button, beside its search box, for users with the same permission, wherever the switcher appears, and it opens the **New Agent** panel rather than the dialog.
 
-Creating the agent first is optional. [Tracing to an identifier that does not exist](/langsmith/log-traces-to-agent#addressing-an-agent-that-does-not-exist) creates the agent under the value you sent, so the dialog is for naming an agent ahead of its first run.
+Creating the agent first is optional. [Tracing to an identifier that does not exist](/langsmith/log-traces-to-agent#send-traces-to-an-agent) creates the agent under the value you sent, so the dialog is for naming an agent ahead of its first run.
 
 ## See also
 

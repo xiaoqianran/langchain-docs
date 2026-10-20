@@ -14,3 +14,5 @@
 - 评估完成时间
 - 成功浏览次数
 -agent_platform_welcome_viewed_at
+- get_started_checklist_dismissed_at
+-agent_trace_viewed_at

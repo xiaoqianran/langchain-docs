@@ -271,7 +271,7 @@ API 密钥用于：
 
 ## 索引 LangChain 文档
 
-在索引步骤中，您将获取源内容并将其“块”转换为数字表示形式。这种数字表示捕获了块的语义。将这些数字表示和文档块的映射存储在 `VectorStore` 中，可以让您在用户根据自己的数字表示发送查询时有效地检索相关内容。
+在索引步骤中，您将获取源内容并将其“块”转换为数字表示形式。这种数字表示捕获了该块的语义。将这些数字表示和文档块的映射存储在 `VectorStore` 中，可以让您在用户根据自己的数字表示发送查询时有效地检索相关内容。
 
 索引通常分四个步骤进行：1. **[Load](#load-documents)**：将数据源加载到[⟦T88⟧](https://reference.langchain.com/python/langchain-core/documents/base/Document)对象中。
 2. **[Split](#split-documents)**：使用[text splitters](/oss/python/integrations/splitters)将大的`Document`分解成更小的块。这对于索引数据并将其传递给模型都很有用，因为大块更难搜索，并且要么不适合模型的有限上下文窗口，要么使用比必要的更多的标记。
@@ -316,7 +316,7 @@ DOC_PATHS = [
 ```
 
 <Note>
-  有关索引、向量存储和检索的更详细教程，请参阅 [Semantic search](/oss/python/langchain/knowledge-base)。
+  有关索引、向量存储和检索的更详细教程，请参阅[Semantic search](/oss/python/langchain/knowledge-base)。
 </Note>
 
 ### 加载文档
@@ -374,7 +374,7 @@ Total characters: 589579
 加载的文档很长，总共超过 100k 个标记，这使得它太大而无法适应许多模型的上下文窗口。
 即使对于那些可以在其上下文窗口中容纳完整语料库的模型，模型也可能很难在很长的输入中找到信息。对大量内容使用上下文窗口也不是令牌有效的。
 
-为了便于使用，将 [⟦T97⟧](https://reference.langchain.com/python/langchain-core/documents/base/Document) 对象分割成块。这些块将在接下来的步骤中用于嵌入和向量存储。
+为了便于使用，将 [⟦T97⟧](https://reference.langchain.com/python/langchain-core/documents/base/Document) 对象分成块。这些块将在接下来的步骤中用于嵌入和向量存储。
 
 使用 `RecursiveCharacterTextSplitter` 使用常见分隔符（例如换行符）递归拆分文档，直到每个块的大小合适。
 对于通用文本用例，推荐使用 `RecursiveCharacterTextSplitter` `TextSplitter`。
@@ -589,7 +589,7 @@ Split documentation into 782 chunks.
     if not os.environ.get("VOYAGE_API_KEY"):
         os.environ["VOYAGE_API_KEY"] = getpass.getpass("Enter API key for Voyage AI: ")
 
-    from langchain-voyageai import VoyageAIEmbeddings
+    from langchain_voyageai import VoyageAIEmbeddings
 
     embeddings = VoyageAIEmbeddings(model="voyage-3")
     ```
@@ -639,7 +639,7 @@ Split documentation into 782 chunks.
     import os
 
     if not os.environ.get("ISAACUS_API_KEY"):
-    os.environ["ISAACUS_API_KEY"] = getpass.getpass("Enter API key for Isaacus: ")
+        os.environ["ISAACUS_API_KEY"] = getpass.getpass("Enter API key for Isaacus: ")
 
     from langchain_isaacus import IsaacusEmbeddings
 
@@ -648,7 +648,7 @@ Split documentation into 782 chunks.
   </Tab>
 </Tabs>
 
-### 在 VectorStore 中存储块和嵌入[⟦T102⟧](/oss/python/integrations/vectorstores) 保留文档块及其嵌入，使相似性搜索能够在用户提出问题时检索相关部分。
+### 在 VectorStore 中存储块和嵌入[⟦T102⟧](/oss/python/integrations/vectorstores) 保留文档块及其嵌入，使得相似性搜索能够在用户提出问题时检索相关部分。
 您可以从许多不同的[vector store integrations](/oss/python/integrations/vectorstores/)中进行选择，它们都使用相同的[Interface](https://reference.langchain.com/python/langchain-core/vectorstores/base/VectorStore)。
 使用您在上一步中选择的嵌入模型来配置您的 `VectorStore`：
 
@@ -1224,7 +1224,7 @@ Indexed 782 chunks.
       ```
     </CodeGroup>
 
-    主代理保留`search_documentation`工具。 `chunk-analyst`子代理使用内置文件系统工具来读取块文件，但不直接搜索向量存储。
+    主代理保留`search_documentation`工具。 `chunk-analyst`子代理使用内置文件系统工具来读取块文件，但不直接搜索矢量存储。
   </Step>
 </Steps>
 

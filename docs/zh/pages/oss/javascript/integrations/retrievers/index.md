@@ -25,11 +25,12 @@
   | [⟦T5⟧](/oss/javascript/integrations/retrievers/exa) | <span /> | <span /> | [⟦T6⟧](https://www.npmjs.com/package/@langchain/exa) | <span><a href="https://www.npmjs.com/package/@langchain/exa"><img alt="Downloads per month" /></a></span> |
   | [⟦T7⟧](/oss/javascript/integrations/retrievers/perplexity_search) | <span /> | <span /> | [⟦T8⟧](https://www.npmjs.com/package/@langchain/perplexity) | <span><a href="https://www.npmjs.com/package/@langchain/perplexity"><img alt="Downloads per month" /></a></span> |
   | [⟦T9⟧](https://getalchemystai.com/docs) | <span /> | <span /> | [⟦T10⟧](https://www.npmjs.com/package/@alchemystai/langchain-js) | <span><a href="https://www.npmjs.com/package/@alchemystai/langchain-js"><img alt="Downloads per month" /></a></span> |
-  | [⟦T11⟧](https://github.com/FoxNoseTech/langchain-foxnose-js#readme) | <span>❌</span> | <span>✅</span> | [⟦T12⟧](https://www.npmjs.com/package/@foxnose/langchain) | <span><a href="https://www.npmjs.com/package/@foxnose/langchain"><img alt="Downloads per month" /></a></span> |
-  | [⟦T13⟧](/oss/javascript/integrations/retrievers/sourcey) | <span /> | <span /> | [⟦T14⟧](https://www.npmjs.com/package/langchain-sourcey) | <span><a href="https://www.npmjs.com/package/langchain-sourcey"><img alt="Downloads per month" /></a></span> |
-  | [⟦T15⟧](/oss/javascript/integrations/retrievers/hyde) | <span /> | <span /> | | <span>N/A</span> |
-  | [⟦T16⟧](/oss/javascript/integrations/retrievers/self_query/hanavector_self_query) | <span /> | <span /> | | <span>不适用</span> |
-  | [⟦T17⟧](/oss/javascript/integrations/retrievers/time-weighted-retriever) | <span /> | <span /> | | <span>不适用</span> |
+  | [⟦T11⟧](https://recallmem.dev/guides/langchain) | <span>✅</span> | <span>✅</span> | [⟦T12⟧](https://www.npmjs.com/package/@recall-memory/langchain) | <span><a href="https://www.npmjs.com/package/@recall-memory/langchain"><img alt="Downloads per month" /></a></span> |
+  | [⟦T13⟧](https://github.com/FoxNoseTech/langchain-foxnose-js#readme) | <span>❌</span> | <span>✅</span> | [⟦T14⟧](https://www.npmjs.com/package/@foxnose/langchain) | <span><a href="https://www.npmjs.com/package/@foxnose/langchain"><img alt="Downloads per month" /></a></span> |
+  | [⟦T15⟧](/oss/javascript/integrations/retrievers/sourcey) | <span /> | <span /> | [⟦T16⟧](https://www.npmjs.com/package/langchain-sourcey) | <span><a href="https://www.npmjs.com/package/langchain-sourcey"><img alt="Downloads per month" /></a></span>|
+  | [⟦T17⟧](/oss/javascript/integrations/retrievers/hyde) | <span /> | <span /> | | <span>不适用</span> |
+  | [⟦T18⟧](/oss/javascript/integrations/retrievers/self_query/hanavector_self_query) | <span /> | <span /> | | <span>不适用</span> |
+  | [⟦T19⟧](/oss/javascript/integrations/retrievers/time-weighted-retriever) | <span /> | <span /> | | <span>不适用</span> |
 </div>
 
 <Info>

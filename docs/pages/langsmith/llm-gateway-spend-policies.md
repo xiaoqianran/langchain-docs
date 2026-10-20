@@ -58,7 +58,7 @@ You can apply multiple time windows to the same scope. For example, a workspace 
 1. Go to **LLM Gateway** and select **Cost Controls**.
 2. Click **Create spend limit**.
 3. Select the scope (organization, workspace, API key, or user).
-4. (Optional) To apply the same default limit independently to every custom header value, apply the limit to every subject of the selected type by default, select **Separate limits by custom header**, and enter the header name.
+4. (Optional) To separate a default limit by header, select **Workspace**, **User**, or **API Key** and apply the limit to every subject of that type by default. Select **Separate limits by custom header** and enter the header name without `X-Gateway-`, such as `Customer-Id`. Send the full `X-Gateway-Customer-Id` header on requests. Each subject and header-value pair receives an independent limit.
 5. Set the time window (monthly, weekly, daily, or hourly).
 6. Set the spend cap in USD.
 7. Click **Create spend limit**.
@@ -72,6 +72,8 @@ A spend policy can also use a custom request header to give each of your own end
 The spend visibility dashboard shows real-time cost rollups so you can understand where your LLM budget is going before you reach the limit.
 
 From the gateway settings page, you can view how much each policy has spent against its cap.
+
+To [group spend by custom header in Usage](/langsmith/llm-gateway-monitoring#group-spend-by-custom-header), configure an enabled default **API Key** spend policy with **Separate limits by custom header**. An organization-level header condition alone does not enable grouping. The default policy also enforces its cap independently for each API-key and header-value pair; it is not an analytics-only setting.
 
 ## Integration with LangSmith Engine
 

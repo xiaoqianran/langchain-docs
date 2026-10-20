@@ -4,7 +4,7 @@
 
 # 管理您帐户中的账单
 
-本页介绍如何管理 LangSmith 组织的账单：
+本页介绍如何管理您的 LangSmith 组织的账单：
 
 * [Set up billing for your account](#set-up-billing-for-your-account)：完成 Developer 和 Plus 计划的计费设置流程，包括旧帐户的特殊说明。
 * [Track contract usage (Enterprise)](#track-contract-usage-enterprise)：查看预付费合约消费。
@@ -32,7 +32,7 @@
 
 ### Plus 计划：在共享组织上设置结算
 
-团队组织每月初始获得 10,000 条跟踪。任何多余的痕迹将按照[pricing](https://www.langchain.com/pricing-langsmith)页面上指定的费率收费。
+团队组织每月初始获得 10,000 条跟踪。任何多余的痕迹将按[pricing](https://www.langchain.com/pricing-langsmith)页面上指定的费率收费。
 
 <Note>
   您手动创建的新组织必须包含在 Plus 计划中。如果您看到有关需要升级到 Plus 才能使用此组织的消息，请按照以下步骤操作。
@@ -44,7 +44,7 @@
 
 ## 跟踪合约使用情况（企业）
 
-合同使用情况跟踪适用于具有预付费承诺的[**Enterprise plan**](/langsmith/pricing-plans) 客户。您必须拥有 [⟦T0⟧ permission](/langsmith/organization-workspace-operations) 才能访问此功能。查看预付费合约消费详情请参见[Contract usage](/langsmith/view-usage#contract-usage)。
+合同使用情况跟踪适用于具有预付费承诺的[**Enterprise plan**](/langsmith/pricing-plans) 客户。您必须拥有 [⟦T1⟧ permission](/langsmith/organization-workspace-operations) 才能访问此功能。查看预付费合约消费详情请参见[Contract usage](/langsmith/view-usage#contract-usage)。
 
 <Note>
   有关企业计划的更多详细信息，[contact our sales team](https://www.langchain.com/contact-sales)。
@@ -72,7 +72,7 @@
 </Note>
 
 要更新您组织的业务信息，请执行以下步骤：1. 导航到 **计划和账单** 选项卡。
-2. 在发票电子邮件部分下方，您将找到一个标记为 **Business** 的复选框。
+2. 在发票电子邮件部分下方，您将看到一个标有 **Business** 的复选框。
 3. 如果您的组织属于企业，请选中 **企业** 复选框。
 4. 将出现一个业务信息部分，允许您输入或更新以下详细信息：
    * 公司名称
@@ -107,7 +107,7 @@ LangSmith 衡量每个工作空间的使用情况，因为工作空间通常代�
 #### 设置工作空间的支出限制
 
 1. 要设置限制，请导航至 **设置** -> **计费和使用情况** -> **使用限制**。
-2. 输入所选工作空间的支出限额。 LangSmith 将确定适当数量的基本和扩展跟踪限制以匹配该支出。跟踪限制包括您的计划附带的免费跟踪分配（请参阅[pricing page](https://smith.langchain.com/settings/payments) 的详细信息）。
+2. 输入所选工作空间的支出限额。 LangSmith 将确定适当数量的基本和扩展跟踪限制以匹配该支出。跟踪限制包括您的计划附带的免费跟踪分配（请参阅[pricing page](https://smith.langchain.com/settings/payments)的详细信息）。
 
 <Note>
   对于具有**仅多个工作区**的组织：为简单起见，LangSmith将免费跟踪纳入**仅第一个工作区**的成本计算中。实际上，任何工作空间都可以“消耗”免费跟踪。因此，虽然多工作空间组织的工作区级别支出限制是近似值，但组织级别支出限制是绝对的。
@@ -154,7 +154,7 @@ LangSmith 衡量每个工作空间的使用情况，因为工作空间通常代�
   当自动化规则与 [trace](/langsmith/observability-concepts#traces) 中的任何 [run](/langsmith/observability-concepts#runs) 匹配时，跟踪中的所有运行都会升级为延长数据保留（默认情况下为 180 天，[customizable for Enterprise customers](/langsmith/data-purging-compliance#customize-extended-retention-policy)）。
 </Note>
 
-例如，这是保留所有跟踪的 10% 以延长数据保留的预期配置：
+例如，这是保留所有跟踪的 10% 以延长数据保留时间的预期配置：
 
 <img alt="P2sampletraces" />
 
@@ -162,13 +162,32 @@ LangSmith 衡量每个工作空间的使用情况，因为工作空间通常代�
 
 ### LangSmith 部署计费
 
-除了跟踪之外，LangSmith 通过LangSmith 部署对部署的代理进行收费。部署根据其消耗的资源进行计费：* **计算**：配置资源时部署使用的 vCPU 和内存，以 LangChain 标准单位 (LSU) 计量。 [Serverless](/langsmith/cloud-platform-features#serverless) 部署在一段时间不活动后可以 [scale to zero (beta)](/langsmith/cloud-platform-features#serverless)，因此计算费用仅在缩减后停止。 [Dedicated](/langsmith/cloud-platform-features#dedicated) 部署始终在线并持续消耗计算。
-* **存储**：部署用于持久状态的数据库存储，以 LangChain 标准单位 (LSU) 衡量。
+除了跟踪之外，LangSmith 通过LangSmith 部署对部署的代理进行收费。部署根据其消耗的资源进行计费：* **计算**：每个正在运行的副本请求的 vCPU 和内存，以 LangChain 标准单位 (LSU) 衡量。 [Autoscaling](/langsmith/cloud-platform-features#scaling) 添加了可计费副本。 [Serverless](/langsmith/cloud-platform-features#serverless) 计算费用在规模缩小时停止，而不是在流量停止时停止。 [Dedicated](/langsmith/cloud-platform-features#dedicated) 连续运行。
+* **数据库**：专用数据库 vCPU 和内存在 LSU 中单独计量。数据库存储和Serverless的共享数据库不计费。
 
-有关当前 LSU 费率以及估计部署成本的信息，请参阅[pricing page](https://www.langchain.com/pricing)，其中包括部署成本计算器。
+托管 Redis 不按任何部署类型或规模计费。
+
+使用量按以下比率转换为 LSU。一个 LSU 的成本为 1.00 美元：
+
+|资源 |评分 |
+| - | - |
+|运行时 vCPU |每 vCPU 小时 0.0675 LSU |
+|运行时内存|每 GiB 小时 0.009 LSU |
+|数据库 vCPU |每 vCPU 小时 0.177 LSU |
+|数据库内存|每 GiB 小时 0.025 LSU |
+
+例如，GCP 中的 LangSmith 云上的空闲 [Dedicated Small](/langsmith/cloud-platform-features#sizes) 部署有 2 个 API 副本和 1 个队列工作线程：3 个 vCPU 和 6 GiB 的计费运行时（不包括 Redis）。其数据库增加了 1 个 vCPU 和 4 GiB。每小时的费用为：
+
+```txt theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+3 × 0.0675 + 6 × 0.009 + 1 × 0.177 + 4 × 0.025 = 0.5335 LSU
+```
+
+每 5 分钟对使用情况进行一次采样，并每小时汇总一次。每个正在运行的可计费容器根据请求的资源而不是实际利用率在该时间间隔内收费。[Free Serverless deployments](https://www.langchain.com/pricing) 不对任何容器、任何尺寸或**设置后缩小规模进行计费。专用部署从来都不是免费的。
+
+要估算部署成本，您还可以使用[pricing page](https://www.langchain.com/pricing)上的部署成本计算器。
 
 <Note>
-  这种基于使用情况的模型取代了之前的按运行和正常运行时间定价。现有客户在 2026 年 10 月 1 日之前仍保持当前定价，然后转向新型号。缩放至零仅适用于按新定价进行的部署。随着功能的推出，无服务器部署扩展到零之前的不活动窗口可能会发生变化。有关转换的问题，请通过 [support.langchain.com](https://support.langchain.com) 联系支持人员。
+  基于使用情况的定价于 2026 年 10 月 1 日取代了每次运行和正常运行时间定价。扩展到零需要新的定价。对于过渡问题，请联系[support](https://support.langchain.com)。
 </Note>
 
 对于大批量部署使用，[contact our sales team](https://www.langchain.com/contact-sales) 讨论自定义定价选项。
@@ -177,7 +196,9 @@ LangSmith 衡量每个工作空间的使用情况，因为工作空间通常代�
 
 如果您对进一步管理支出有疑问，请通过[support.langchain.com](https://support.langchain.com)联系支持人员。
 
-***<div>
+***
+
+<div>
   <Callout icon="terminal-2">
     [Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
   </Callout>

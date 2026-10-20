@@ -2157,6 +2157,12 @@
           "rel": "langsmith/repetition.md"
         }
       ],
+      "resolve-an-agent": [
+        {
+          "title": "Find an agent's project",
+          "rel": "langsmith/resolve-an-agent.md"
+        }
+      ],
       "resource-auth": [
         {
           "title": "Make conversations private",

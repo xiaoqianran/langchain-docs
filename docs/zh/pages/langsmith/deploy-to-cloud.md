@@ -31,13 +31,10 @@
     6. 选择要部署的 **Git 分支**。
     7. 输入[LangGraph API configuration file](/langsmith/cli#configuration-file)的完整路径，包括文件名。例如，如果文件位于存储库根目录中，请输入 `langgraph.json`。
     8. 选择是否启用**推送到分支时自动更新部署**。您可以稍后在 [Deployment Settings](/langsmith/manage-deployment#configure-deployment-settings) 中更改此选项。
-    9. 选择部署类型：
-       * **无服务器**：非常适合后台、开发、测试和预览工作负载。请参阅 [Serverless deployments](/langsmith/cloud-platform-features#serverless) 了解缩放至零的可用性。
-       * **专用**：为生产工作负载提供始终在线的基础架构、高可用性和自动数据库备份。
-    10. 选择是否通过[Studio](/langsmith/studio)共享部署。
-    11. 添加环境变量和机密。欲了解更多信息，请参阅[Environment variables](/langsmith/env-var-cloud)。12. 选择**提交**。 LangSmith 将部署排队以进行配置。在基于项目的工作区中，LangSmith 还会创建一个与部署同名的跟踪项目。在基于代理的工作区中，LangSmith 将部署绑定到 [agent](/langsmith/agents)，并且部署报告到代理的 [environments](/langsmith/agent-environments) 之一。
-
-    <Note>
+    9. 对于 [deployment type](/langsmith/cloud-platform-features#deployment-types)，选择 **Serverless** 或 **Dedicated**，具体取决于工作负载是否可以容忍冷启动或需要始终开启的容量。
+    10. 选择是否通过[Studio](/langsmith/studio)使部署可共享。
+    11. 添加环境变量和机密。有关更多信息，请参阅[Environment variables](/langsmith/env-var-cloud)。
+    12. 选择**提交**。 LangSmith 将部署排队以进行配置。在基于项目的工作区中，LangSmith 还会创建一个与部署同名的跟踪项目。在基于代理的工作区中，LangSmith 将部署绑定到 [agent](/langsmith/agents)，并且部署向代理的 [environments](/langsmith/agent-environments) 之一报告。<Note>
       授权`hosted-langserve`应用程序的GitHub用户必须拥有GitHub组织或帐户。其他具有部署权限的用户初次授权后不需要GitHub管理员访问权限。
     </Note>
   </Tab>
@@ -67,23 +64,19 @@
        langgraph deploy
        ```
 
-       该命令创建一个以项目目录命名的无服务器部署。要设置其他名称或部署类型，请传递相应的选项：
+       该命令创建一个以项目目录命名的无服务器部署。要设置其他名称，或创建专用 [deployment](/langsmith/cloud-platform-features#deployment-types)：
 
        ```shell theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
        langgraph deploy --name my-agent --deployment-type dedicated
-       ```<Note>
-         之前定价的组织在 2026 年 10 月 1 日之前使用`--deployment-type prod` 或 `--deployment-type dev`。有关详细信息，请参阅[⟦T14⟧](/langsmith/cli#deploy) 和 [Manage billing](/langsmith/billing#langsmith-deployment-billing)。
-       </Note>
+       ```
 
-    LangSmith 将部署排队以进行配置。通过 LangSmith UI 或 [⟦T15⟧ field in ⟦T16⟧](/langsmith/cli#configuration-file) 管理环境变量。
+    LangSmith 将部署排队以进行配置。通过LangSmith UI 或[⟦T12⟧ field in ⟦T13⟧](/langsmith/cli#configuration-file) 管理环境变量。
   </Tab>
 </Tabs>
 
 ## 管理 GitHub 存储库访问
 
-授权`hosted-langserve` GitHub 应用程序后，配置它可以访问哪些存储库：
-
-1. 在 GitHub 中，转到 **设置** > **应用程序**。
+授权`hosted-langserve` GitHub应用程序后，配置它可以访问哪些存储库：1. 在 GitHub 中，转到 **设置** > **应用程序**。
 2. 找到`hosted-langserve`，然后选择**配置**。
 3. 在**存储库访问**下，选择**所有存储库**或**仅选择存储库**。
 4. 如果您选择 **仅选择存储库**，请根据需要添加或删除存储库。

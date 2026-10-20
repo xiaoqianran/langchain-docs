@@ -12,3 +12,5 @@ Valid fields:
 - evaluation_completed_at
 - success_viewed_at
 - agent_platform_welcome_viewed_at
+- get_started_checklist_dismissed_at
+- agent_trace_viewed_at

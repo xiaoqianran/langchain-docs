@@ -7,7 +7,7 @@ Route LangSmith traces to a named project instead of the default project using e
 This page covers project addressing, which routes a trace by naming the tracing project it lands in. [Agent addressing](/langsmith/log-traces-to-agent) is the alternative, and a trace uses one or the other rather than both.
 
 <Note>
-  **Project-based workspaces.** This section applies if your workspace organizes traces by [tracing project](/langsmith/observability-concepts#tracing-projects). To check, look at the control at the top left. In a project-based workspace, it shows the LangSmith logo, and the sidebar has an **Application** section with an application picker. If the control shows your workspace name instead, your workspace is agent-based, which is in [beta](/langsmith/release-stages). Skip this section and read [Agents](/langsmith/agents).
+  **Project-based workspaces.** This section applies if your workspace organizes traces by [tracing project](/langsmith/observability-concepts#tracing-projects). To check, look at the control at the top left. In a project-based workspace, it shows the LangSmith logo, and the sidebar has an **Application** section with an application picker. If the control shows your workspace name instead, your workspace is agent-based. Skip this section and read [Agents](/langsmith/agents).
 </Note>
 
 This page covers how to control where LangSmith sends your traces:

@@ -31,9 +31,7 @@ Create a Cloud deployment from a connected GitHub repository or directly from yo
     6. Select the **Git Branch** to deploy.
     7. Enter the full path to the [LangGraph API configuration file](/langsmith/cli#configuration-file), including the file name. For example, enter `langgraph.json` if the file is in the repository root.
     8. Choose whether to enable **Automatically update deployment on push to branch**. You can change this option later in [Deployment Settings](/langsmith/manage-deployment#configure-deployment-settings).
-    9. Select a deployment type:
-       * **Serverless**: Works well for background, development, testing, and preview workloads. See [Serverless deployments](/langsmith/cloud-platform-features#serverless) for scale-to-zero availability.
-       * **Dedicated**: Provides always-on infrastructure, high availability, and automatic database backups for production workloads.
+    9. For [deployment type](/langsmith/cloud-platform-features#deployment-types), select **Serverless** or **Dedicated**, depending on whether the workload can tolerate cold starts or needs always-on capacity.
     10. Choose whether to make the deployment shareable through [Studio](/langsmith/studio).
     11. Add environment variables and secrets. For more information, see [Environment variables](/langsmith/env-var-cloud).
     12. Select **Submit**. LangSmith queues the deployment for provisioning. In a project-based workspace, LangSmith also creates a tracing project with the same name as the deployment. In an agent-based workspace, LangSmith instead binds the deployment to an [agent](/langsmith/agents), and the deployment reports into one of the agent's [environments](/langsmith/agent-environments).
@@ -68,15 +66,11 @@ Create a Cloud deployment from a connected GitHub repository or directly from yo
        langgraph deploy
        ```
 
-       The command creates a Serverless deployment named after the project directory. To set another name or deployment type, pass the corresponding options:
+       The command creates a Serverless deployment named after the project directory. To set another name, or to create a Dedicated [deployment](/langsmith/cloud-platform-features#deployment-types) instead:
 
        ```shell theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
        langgraph deploy --name my-agent --deployment-type dedicated
        ```
-
-       <Note>
-         Organizations on previous pricing use `--deployment-type prod` or `--deployment-type dev` until October 1, 2026. For details, see [`langgraph deploy`](/langsmith/cli#deploy) and [Manage billing](/langsmith/billing#langsmith-deployment-billing).
-       </Note>
 
     LangSmith queues the deployment for provisioning. Manage environment variables through the LangSmith UI or the [`env` field in `langgraph.json`](/langsmith/cli#configuration-file).
   </Tab>

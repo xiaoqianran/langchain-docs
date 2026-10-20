@@ -125,72 +125,75 @@ The below document loaders allow you to load data from common data formats.
   | [`Google speech-to-text audio transcripts`](/oss/python/integrations/document_loaders/google_speech_to_text) | <span><a href="https://pypi.org/project/langchain-google-community/">  <img alt="Downloads per month" /></a></span> |
   | [`Oracle AI vector search document processing`](/oss/python/integrations/document_loaders/oracleai) | <span><a href="https://pypi.org/project/langchain-oracledb/">  <img alt="Downloads per month" /></a></span> |
   | [`Oracle autonomous database`](/oss/python/integrations/document_loaders/oracleadb_loader) | <span><a href="https://pypi.org/project/langchain-oracledb/">  <img alt="Downloads per month" /></a></span> |
-  | [`AstraDB`](/oss/python/integrations/document_loaders/astradb) | <span><a href="https://pypi.org/project/langchain-astradb/">  <img alt="Downloads per month" /></a></span> |
   | [`UnstructuredLoader`](/oss/python/integrations/document_loaders/unstructured_file) | <span><a href="https://pypi.org/project/langchain-unstructured/">  <img alt="Downloads per month" /></a></span> |
+  | [`AstraDB`](/oss/python/integrations/document_loaders/astradb) | <span><a href="https://pypi.org/project/langchain-astradb/">  <img alt="Downloads per month" /></a></span> |
   | [`Docling`](/oss/python/integrations/document_loaders/docling) | <span><a href="https://pypi.org/project/langchain-docling/">  <img alt="Downloads per month" /></a></span> |
   | [`PyMuPDF4LLMLoader`](https://github.com/pymupdf/langchain-pymupdf4llm) | <span><a href="https://pypi.org/project/langchain-pymupdf4llm/">  <img alt="Downloads per month" /></a></span> |
-  | [`Upstage`](/oss/python/integrations/document_loaders/upstage) | <span><a href="https://pypi.org/project/langchain-upstage/">  <img alt="Downloads per month" /></a></span> |
   | [`Google alloydb for postgresql`](/oss/python/integrations/document_loaders/google_alloydb) | <span><a href="https://pypi.org/project/langchain-google-alloydb-pg/">  <img alt="Downloads per month" /></a></span> |
-  | [`Google firestore (native mode)`](/oss/python/integrations/document_loaders/google_firestore) | <span><a href="https://pypi.org/project/langchain-google-firestore/">  <img alt="Downloads per month" /></a></span> |
+  | [`Upstage`](/oss/python/integrations/document_loaders/upstage) | <span><a href="https://pypi.org/project/langchain-upstage/">  <img alt="Downloads per month" /></a></span> |
   | [`ApifyCrawlLoader`](https://docs.apify.com/integrations/langchain) | <span><a href="https://pypi.org/project/langchain-apify/">  <img alt="Downloads per month" /></a></span> |
   | [`ApifyDatasetLoader`](https://docs.apify.com/integrations/langchain) | <span><a href="https://pypi.org/project/langchain-apify/">  <img alt="Downloads per month" /></a></span> |
+  | [`Google firestore (native mode)`](/oss/python/integrations/document_loaders/google_firestore) | <span><a href="https://pypi.org/project/langchain-google-firestore/">  <img alt="Downloads per month" /></a></span> |
   | [`Google cloud SQL for postgresql`](https://docs.cloud.google.com/sql/docs/postgres) | <span><a href="https://pypi.org/project/langchain-google-cloud-sql-pg/">  <img alt="Downloads per month" /></a></span> |
   | [`Google spanner`](/oss/python/integrations/document_loaders/google_spanner) | <span><a href="https://pypi.org/project/langchain-google-spanner/">  <img alt="Downloads per month" /></a></span> |
-  | [`DomPrunerLoader`](https://github.com/dong7812/dompruner-py) | <span><a href="https://pypi.org/project/dompruner/">  <img alt="Downloads per month" /></a></span> |
-  | [`OpenDataLoader PDF`](https://github.com/opendataloader-project/langchain-opendataloader-pdf) | <span><a href="https://pypi.org/project/langchain-opendataloader-pdf/">  <img alt="Downloads per month" /></a></span> |
-  | [`Docugami`](/oss/python/integrations/document_loaders/docugami) | <span><a href="https://pypi.org/project/docugami-langchain/">  <img alt="Downloads per month" /></a></span> |
-  | [`YoutubeLoaderDL`](https://github.com/aqib0770/langchain-yt-dlp) | <span><a href="https://pypi.org/project/langchain-yt-dlp/">  <img alt="Downloads per month" /></a></span> |
   | [`Azure blob storage loader`](/oss/python/integrations/document_loaders/azure_blob_storage) | <span><a href="https://pypi.org/project/langchain-azure-storage/">  <img alt="Downloads per month" /></a></span> |
-  | [`DoclingLoader`](https://github.com/docling-project/docling.rs/blob/master/crates/docling-py/README.md#langchain) | <span><a href="https://pypi.org/project/langchain-docling-rs/">  <img alt="Downloads per month" /></a></span> |
-  | [`PDFParser`](https://dev.writer.com/api-reference/tool-api/pdf-parser#parse-pdf) | <span><a href="https://pypi.org/project/langchain-writer/">  <img alt="Downloads per month" /></a></span> |
-  | [`SingleStoreLoader`](https://github.com/singlestore-labs/langchain-singlestore/) | <span><a href="https://pypi.org/project/langchain-singlestore/">  <img alt="Downloads per month" /></a></span> |
   | [`FlatmarkLoader`](https://github.com/flatmark-dev/flatmark-integrations/blob/main/langchain/README.md) | <span><a href="https://pypi.org/project/langchain-flatmark/">  <img alt="Downloads per month" /></a></span> |
-  | [`CapslaneLoader`](https://capslane.com/integrations/langchain) | <span><a href="https://pypi.org/project/capslane/">  <img alt="Downloads per month" /></a></span> |
-  | [`SecureLangChainLoader`](https://github.com/arsbr/Veritensor) | <span><a href="https://pypi.org/project/veritensor/">  <img alt="Downloads per month" /></a></span> |
-  | [`SpidraLoader`](https://docs.spidra.io) | <span><a href="https://pypi.org/project/langchain-spidra/">  <img alt="Downloads per month" /></a></span> |
-  | [`AlfrescoLoader`](https://github.com/OpenDMA/langchain-opendma/blob/main/docs/Loader.md#alfrescoloader) | <span><a href="https://pypi.org/project/langchain-opendma/">  <img alt="Downloads per month" /></a></span> |
-  | [`OpenDMALoader`](https://github.com/OpenDMA/langchain-opendma/blob/main/docs/Loader.md) | <span><a href="https://pypi.org/project/langchain-opendma/">  <img alt="Downloads per month" /></a></span> |
-  | [`MinerULoader`](https://mineru.net) | <span><a href="https://pypi.org/project/langchain-mineru/">  <img alt="Downloads per month" /></a></span> |
-  | [`HydrafetchLoader`](https://docs.hydrafetch.com) | <span><a href="https://pypi.org/project/langchain-hydrafetch/">  <img alt="Downloads per month" /></a></span> |
-  | [`LyrenthLoader`](https://lyrenth.com/docs/integrations) | <span><a href="https://pypi.org/project/langchain-lyrenth/">  <img alt="Downloads per month" /></a></span> |
-  | [`CrwLoader`](https://fastcrw.com) | <span><a href="https://pypi.org/project/langchain-crw/">  <img alt="Downloads per month" /></a></span> |
-  | [`Google memorystore for Redis`](/oss/python/integrations/document_loaders/google_memorystore_redis) | <span><a href="https://pypi.org/project/langchain-google-memorystore-redis/">  <img alt="Downloads per month" /></a></span> |
-  | [`XNSBlobLoader`](https://docs.xns.tech) | <span><a href="https://pypi.org/project/langchain-xns/">  <img alt="Downloads per month" /></a></span> |
-  | [`XNSLoader`](https://docs.xns.tech) | <span><a href="https://pypi.org/project/langchain-xns/">  <img alt="Downloads per month" /></a></span> |
-  | [`QuanticDataLoader`](https://quanticdata.io/docs/) | <span><a href="https://pypi.org/project/langchain-quanticdata/">  <img alt="Downloads per month" /></a></span> |
-  | [`Google bigtable`](/oss/python/integrations/document_loaders/google_bigtable) | <span><a href="https://pypi.org/project/langchain-google-bigtable/">  <img alt="Downloads per month" /></a></span> |
-  | [`HyperbrowserLoader`](https://www.hyperbrowser.ai/docs/home) | <span><a href="https://pypi.org/project/langchain-hyperbrowser/">  <img alt="Downloads per month" /></a></span> |
-  | [`PowerScaleDocumentLoader`](/oss/python/integrations/document_loaders/powerscale) | <span><a href="https://pypi.org/project/powerscale-rag-connector/">  <img alt="Downloads per month" /></a></span> |
-  | [`FirecrawlLoader`](https://docs.firecrawl.dev) | <span><a href="https://pypi.org/project/langchain-firecrawl/">  <img alt="Downloads per month" /></a></span> |
-  | [`PaddleOCR-VL`](https://www.paddleocr.com) | <span><a href="https://pypi.org/project/langchain-paddleocr/">  <img alt="Downloads per month" /></a></span> |
-  | [`PdfInspectorLoader`](https://github.com/undacmic/langchain-pdf-inspector) | <span><a href="https://pypi.org/project/langchain-pdf-inspector/">  <img alt="Downloads per month" /></a></span> |
-  | [`langchain_box`](https://developer.box.com/) | <span><a href="https://pypi.org/project/langchain-box/">  <img alt="Downloads per month" /></a></span> |
-  | [`PolarisAIDataInsightLoader`](https://datainsight.polarisoffice.com/playground) | <span><a href="https://pypi.org/project/langchain-polaris-ai-datainsight/">  <img alt="Downloads per month" /></a></span> |
-  | [`Outline`](https://github.com/10Pines/langchain-outline) | <span><a href="https://pypi.org/project/langchain-outline/">  <img alt="Downloads per month" /></a></span> |
+  | [`OpenDataLoader PDF`](https://github.com/opendataloader-project/langchain-opendataloader-pdf) | <span><a href="https://pypi.org/project/langchain-opendataloader-pdf/">  <img alt="Downloads per month" /></a></span> |
   | [`ReplyLayerLoader`](https://replylayer.ai/docs/guides/langchain) | <span><a href="https://pypi.org/project/langchain-replylayer/">  <img alt="Downloads per month" /></a></span> |
-  | [`Web2MDLoader`](https://github.com/kanavsingla28/web2md-clients/tree/main/python#readme) | <span><a href="https://pypi.org/project/web2md-client/">  <img alt="Downloads per month" /></a></span> |
-  | [`OpeddFeedLoader`](https://opedd.com/for-ai-agents) | <span><a href="https://pypi.org/project/langchain-opedd/">  <img alt="Downloads per month" /></a></span> |
-  | [`Google Classroom`](/oss/python/integrations/document_loaders/google_classroom) | <span><a href="https://pypi.org/project/langchain-google-classroom/">  <img alt="Downloads per month" /></a></span> |
-  | [`Google cloud SQL for mysql`](/oss/python/integrations/document_loaders/google_cloud_sql_mysql) | <span><a href="https://pypi.org/project/langchain-google-cloud-sql-mysql/">  <img alt="Downloads per month" /></a></span> |
-  | [`Kinetica document loader`](https://github.com/kineticadb/langchain-kinetica) | <span><a href="https://pypi.org/project/langchain-kinetica/">  <img alt="Downloads per month" /></a></span> |
-  | [`AnakinLoader`](https://anakin.io/docs/documentation) | <span><a href="https://pypi.org/project/langchain-anakin/">  <img alt="Downloads per month" /></a></span> |
-  | [`Google firestore in datastore mode`](/oss/python/integrations/document_loaders/google_datastore) | <span><a href="https://pypi.org/project/langchain-google-datastore/">  <img alt="Downloads per month" /></a></span> |
-  | [`PdfmuseLoader`](https://github.com/casperkwok/pdfmuse) | <span><a href="https://pypi.org/project/langchain-pdfmuse/">  <img alt="Downloads per month" /></a></span> |
+  | [`SingleStoreLoader`](https://github.com/singlestore-labs/langchain-singlestore/) | <span><a href="https://pypi.org/project/langchain-singlestore/">  <img alt="Downloads per month" /></a></span> |
+  | [`DoclingLoader`](https://github.com/docling-project/docling.rs/blob/master/crates/docling-py/README.md#langchain) | <span><a href="https://pypi.org/project/langchain-docling-rs/">  <img alt="Downloads per month" /></a></span> |
+  | [`Docugami`](/oss/python/integrations/document_loaders/docugami) | <span><a href="https://pypi.org/project/docugami-langchain/">  <img alt="Downloads per month" /></a></span> |
+  | [`FirecrawlLoader`](https://docs.firecrawl.dev) | <span><a href="https://pypi.org/project/langchain-firecrawl/">  <img alt="Downloads per month" /></a></span> |
   | [`HwpHwpxLoader`](https://github.com/jaypakdevkr/HWP-Loader) | <span><a href="https://pypi.org/project/langchain-hwp-hwpx-loader/">  <img alt="Downloads per month" /></a></span> |
-  | [`CVFileLoader`](https://cvfile.org) | <span><a href="https://pypi.org/project/langchain-cvfile/">  <img alt="Downloads per month" /></a></span> |
-  | [`ProxyHatLoader`](https://docs.proxyhat.com) | <span><a href="https://pypi.org/project/langchain-proxyhat/">  <img alt="Downloads per month" /></a></span> |
-  | [`AirbyteLoader`](https://docs.airbyte.com/integrations/) | <span><a href="https://pypi.org/project/langchain-airbyte/">  <img alt="Downloads per month" /></a></span> |
+  | [`PDFParser`](https://dev.writer.com/api-reference/tool-api/pdf-parser#parse-pdf) | <span><a href="https://pypi.org/project/langchain-writer/">  <img alt="Downloads per month" /></a></span> |
+  | [`YoutubeLoaderDL`](https://github.com/aqib0770/langchain-yt-dlp) | <span><a href="https://pypi.org/project/langchain-yt-dlp/">  <img alt="Downloads per month" /></a></span> |
+  | [`AnakinLoader`](https://anakin.io/docs/documentation) | <span><a href="https://pypi.org/project/langchain-anakin/">  <img alt="Downloads per month" /></a></span> |
+  | [`OpeddFeedLoader`](https://opedd.com/for-ai-agents) | <span><a href="https://pypi.org/project/langchain-opedd/">  <img alt="Downloads per month" /></a></span> |
   | [`DiffbotCrawlLoader`](https://github.com/diffbot/langchain-diffbot) | <span><a href="https://pypi.org/project/langchain-diffbot/">  <img alt="Downloads per month" /></a></span> |
   | [`DiffbotExtractLoader`](https://github.com/diffbot/langchain-diffbot) | <span><a href="https://pypi.org/project/langchain-diffbot/">  <img alt="Downloads per month" /></a></span> |
-  | [`Google cloud SQL for SQL server`](/oss/python/integrations/document_loaders/google_cloud_sql_mssql) | <span><a href="https://pypi.org/project/langchain-google-cloud-sql-mssql/">  <img alt="Downloads per month" /></a></span> |
+  | [`SuperPDFLoader`](https://superpdf.ai/docs/python/langchain-llamaindex#langchain) | <span><a href="https://pypi.org/project/langchain-superpdf/">  <img alt="Downloads per month" /></a></span> |
+  | [`HydrafetchLoader`](https://docs.hydrafetch.com) | <span><a href="https://pypi.org/project/langchain-hydrafetch/">  <img alt="Downloads per month" /></a></span> |
+  | [`CrwLoader`](https://fastcrw.com) | <span><a href="https://pypi.org/project/langchain-crw/">  <img alt="Downloads per month" /></a></span> |
+  | [`HyperbrowserLoader`](https://www.hyperbrowser.ai/docs/home) | <span><a href="https://pypi.org/project/langchain-hyperbrowser/">  <img alt="Downloads per month" /></a></span> |
+  | [`MinerULoader`](https://mineru.net) | <span><a href="https://pypi.org/project/langchain-mineru/">  <img alt="Downloads per month" /></a></span> |
+  | [`DomPrunerLoader`](https://github.com/dong7812/dompruner-py) | <span><a href="https://pypi.org/project/dompruner/">  <img alt="Downloads per month" /></a></span> |
+  | [`SecureLangChainLoader`](https://github.com/arsbr/Veritensor) | <span><a href="https://pypi.org/project/veritensor/">  <img alt="Downloads per month" /></a></span> |
+  | [`Outline`](https://github.com/10Pines/langchain-outline) | <span><a href="https://pypi.org/project/langchain-outline/">  <img alt="Downloads per month" /></a></span> |
+  | [`Google bigtable`](/oss/python/integrations/document_loaders/google_bigtable) | <span><a href="https://pypi.org/project/langchain-google-bigtable/">  <img alt="Downloads per month" /></a></span> |
+  | [`PolarisAIDataInsightLoader`](https://datainsight.polarisoffice.com/playground) | <span><a href="https://pypi.org/project/langchain-polaris-ai-datainsight/">  <img alt="Downloads per month" /></a></span> |
+  | [`langchain_box`](https://developer.box.com/) | <span><a href="https://pypi.org/project/langchain-box/">  <img alt="Downloads per month" /></a></span> |
+  | [`Google memorystore for Redis`](/oss/python/integrations/document_loaders/google_memorystore_redis) | <span><a href="https://pypi.org/project/langchain-google-memorystore-redis/">  <img alt="Downloads per month" /></a></span> |
+  | [`AlfrescoLoader`](https://github.com/OpenDMA/langchain-opendma/blob/main/docs/Loader.md#alfrescoloader) | <span><a href="https://pypi.org/project/langchain-opendma/">  <img alt="Downloads per month" /></a></span> |
+  | [`OpenDMALoader`](https://github.com/OpenDMA/langchain-opendma/blob/main/docs/Loader.md) | <span><a href="https://pypi.org/project/langchain-opendma/">  <img alt="Downloads per month" /></a></span> |
+  | [`PaddleOCR-VL`](https://www.paddleocr.com) | <span><a href="https://pypi.org/project/langchain-paddleocr/">  <img alt="Downloads per month" /></a></span> |
+  | [`EnconvertLoader`](https://github.com/enconvert/langchain-enconvert) | <span><a href="https://pypi.org/project/langchain-enconvert/">  <img alt="Downloads per month" /></a></span> |
+  | [`SpidraLoader`](https://docs.spidra.io) | <span><a href="https://pypi.org/project/langchain-spidra/">  <img alt="Downloads per month" /></a></span> |
+  | [`Google Classroom`](/oss/python/integrations/document_loaders/google_classroom) | <span><a href="https://pypi.org/project/langchain-google-classroom/">  <img alt="Downloads per month" /></a></span> |
+  | [`MeshArcLoader`](https://github.com/mesharc-org/langchain-mesharc#readme) | <span><a href="https://pypi.org/project/langchain-mesharc/">  <img alt="Downloads per month" /></a></span> |
+  | [`CapslaneLoader`](https://capslane.com/integrations/langchain) | <span><a href="https://pypi.org/project/capslane/">  <img alt="Downloads per month" /></a></span> |
+  | [`CVFileLoader`](https://cvfile.org) | <span><a href="https://pypi.org/project/langchain-cvfile/">  <img alt="Downloads per month" /></a></span> |
+  | [`Kinetica document loader`](https://github.com/kineticadb/langchain-kinetica) | <span><a href="https://pypi.org/project/langchain-kinetica/">  <img alt="Downloads per month" /></a></span> |
+  | [`Google cloud SQL for mysql`](/oss/python/integrations/document_loaders/google_cloud_sql_mysql) | <span><a href="https://pypi.org/project/langchain-google-cloud-sql-mysql/">  <img alt="Downloads per month" /></a></span> |
+  | [`ProxmintLoader`](https://proxmint.com/docs/langchain) | <span><a href="https://pypi.org/project/langchain-proxmint/">  <img alt="Downloads per month" /></a></span> |
+  | [`Web2MDLoader`](https://github.com/kanavsingla28/web2md-clients/tree/main/python#readme) | <span><a href="https://pypi.org/project/web2md-client/">  <img alt="Downloads per month" /></a></span> |
+  | [`LyrenthLoader`](https://lyrenth.com/docs/integrations) | <span><a href="https://pypi.org/project/langchain-lyrenth/">  <img alt="Downloads per month" /></a></span> |
+  | [`PdfInspectorLoader`](https://github.com/undacmic/langchain-pdf-inspector) | <span><a href="https://pypi.org/project/langchain-pdf-inspector/">  <img alt="Downloads per month" /></a></span> |
+  | [`Google firestore in datastore mode`](/oss/python/integrations/document_loaders/google_datastore) | <span><a href="https://pypi.org/project/langchain-google-datastore/">  <img alt="Downloads per month" /></a></span> |
   | [`AgentQLLoader`](https://docs.agentql.com/home) | <span><a href="https://pypi.org/project/langchain-agentql/">  <img alt="Downloads per month" /></a></span> |
-  | [`Google el carro for Oracle workloads`](https://github.com/googleapis/langchain-google-el-carro-python/) | <span><a href="https://pypi.org/project/langchain-google-el-carro/">  <img alt="Downloads per month" /></a></span> |
-  | [`PlasmateSOMLLoader`](https://docs.plasmate.app/integration-langchain) | <span><a href="https://pypi.org/project/langchain-plasmate/">  <img alt="Downloads per month" /></a></span> |
-  | [`Undatasio`](https://undatas.io) | <span><a href="https://pypi.org/project/langchain-undatasio/">  <img alt="Downloads per month" /></a></span> |
+  | [`ProxyHatLoader`](https://docs.proxyhat.com) | <span><a href="https://pypi.org/project/langchain-proxyhat/">  <img alt="Downloads per month" /></a></span> |
+  | [`AirbyteLoader`](https://docs.airbyte.com/integrations/) | <span><a href="https://pypi.org/project/langchain-airbyte/">  <img alt="Downloads per month" /></a></span> |
+  | [`PdfmuseLoader`](https://github.com/casperkwok/pdfmuse) | <span><a href="https://pypi.org/project/langchain-pdfmuse/">  <img alt="Downloads per month" /></a></span> |
   | [`Soniox`](https://soniox.com/docs/stt/concepts/supported-languages) | <span><a href="https://pypi.org/project/langchain-soniox/">  <img alt="Downloads per month" /></a></span> |
+  | [`Undatasio`](https://undatas.io) | <span><a href="https://pypi.org/project/langchain-undatasio/">  <img alt="Downloads per month" /></a></span> |
+  | [`Google cloud SQL for SQL server`](/oss/python/integrations/document_loaders/google_cloud_sql_mssql) | <span><a href="https://pypi.org/project/langchain-google-cloud-sql-mssql/">  <img alt="Downloads per month" /></a></span> |
+  | [`PlasmateSOMLLoader`](https://docs.plasmate.app/integration-langchain) | <span><a href="https://pypi.org/project/langchain-plasmate/">  <img alt="Downloads per month" /></a></span> |
+  | [`QuanticDataLoader`](https://quanticdata.io/docs/) | <span><a href="https://pypi.org/project/langchain-quanticdata/">  <img alt="Downloads per month" /></a></span> |
+  | [`XNSBlobLoader`](https://docs.xns.tech) | <span><a href="https://pypi.org/project/langchain-xns/">  <img alt="Downloads per month" /></a></span> |
+  | [`XNSLoader`](https://docs.xns.tech) | <span><a href="https://pypi.org/project/langchain-xns/">  <img alt="Downloads per month" /></a></span> |
   | [`AgentMail`](https://github.com/agentmail-to/langchain-agentmail) | <span><a href="https://pypi.org/project/langchain-agentmail/">  <img alt="Downloads per month" /></a></span> |
   | [`OxidizePdfLoader`](https://github.com/bzsanti/oxidize-pdf-integrations/tree/main/langchain) | <span><a href="https://pypi.org/project/langchain-oxidize-pdf/">  <img alt="Downloads per month" /></a></span> |
-  | [`EnconvertLoader`](https://github.com/enconvert/langchain-enconvert) | <span><a href="https://pypi.org/project/langchain-enconvert/">  <img alt="Downloads per month" /></a></span> |
+  | [`Google el carro for Oracle workloads`](https://github.com/googleapis/langchain-google-el-carro-python/) | <span><a href="https://pypi.org/project/langchain-google-el-carro/">  <img alt="Downloads per month" /></a></span> |
+  | [`PowerScaleDocumentLoader`](/oss/python/integrations/document_loaders/powerscale) | <span><a href="https://pypi.org/project/powerscale-rag-connector/">  <img alt="Downloads per month" /></a></span> |
   | [`LangSmithLoader`](/oss/python/integrations/document_loaders/langsmith) | <span>N/A</span> |
 </div>
 

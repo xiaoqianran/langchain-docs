@@ -9,7 +9,7 @@ An *environment* records where an agent was running when it produced a trace. Ev
 Because the environment travels with the trace, where the agent was running is a property of the trace itself.
 
 <Note>
-  **Beta.** Agent-based workspaces are in [beta](/langsmith/release-stages). LangChain enables agent-based workspaces for an organization, and the change applies to workspaces created after that. An existing [project-based](/langsmith/observability-concepts#tracing-projects) workspace does not convert automatically, but LangChain can convert it. To ask about access, [contact our sales team](https://www.langchain.com/contact-sales).
+  Agent-based workspaces are available on [LangSmith Cloud](/langsmith/cloud). They are not available on [self-hosted](/langsmith/self-hosted) LangSmith. To check whether your workspace is agent-based, look at the control at the top left. In an agent-based workspace, it is a workspace switcher that names your workspace. In a [project-based](/langsmith/observability-concepts#tracing-projects) workspace, it shows the LangSmith logo.
 </Note>
 
 ## Environment names

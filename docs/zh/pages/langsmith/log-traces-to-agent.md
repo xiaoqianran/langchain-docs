@@ -4,141 +4,209 @@
 
 # 将跟踪记录记录到代理
 
-代理寻址如何将跟踪发送到代理和环境、哪些变量携带它，以及为什么它不能与项目寻址结合使用。
+使用环境变量或代码将跟踪发送到代理和环境，以及为什么不能将其与将跟踪发送到项目相结合。
 
-*代理寻址* 命名跟踪所属的 [agent](/langsmith/agents) 和 [environment](/langsmith/agent-environments)。您的应用程序在每次运行时都会发送这两者，并且LangSmith会在跟踪到达时记录它们。跟踪使用代理寻址或[project addressing](/langsmith/log-traces-to-project)，不能同时使用两者。
+将跟踪记录到代理名称为跟踪所属的 [agent](/langsmith/agents) 和 [environment](/langsmith/agent-environments)。您的应用程序在每次运行时都会发送这两者，并且LangSmith会在跟踪到达时记录它们。跟踪要么发送至代理，要么发送至 [project](/langsmith/log-traces-to-project)，而绝不会同时发送至两者。有关代理和项目的关系，请参阅[Trace containers](/langsmith/observability-concepts#trace-containers)。
 
 <Note>
-  代理寻址适用于基于代理的工作区，位于[beta](/langsmith/release-stages)。 [⟦T7⟧ argument](#addressing-arguments) 可能会更改，恕不另行通知。支持代理寻址：
+  将跟踪发送到代理位于 [beta](/langsmith/release-stages) 中，并且仅适用于基于代理的工作区。 [arguments that take an agent](#using-code) 可能会更改，恕不另行通知。它支持：
 
-  * 来自`langsmith>=0.14.4`的Python SDK
-  *来自`langsmith>=0.10.8`的TypeScript SDK
+  * 来自`langsmith>=0.14.9`的Python SDK
+  *来自`langsmith>=0.10.9`的TypeScript SDK
+  * 来自`github.com/langchain-ai/langsmith-go@v0.28.0`的Go SDK
+  *来自`com.langchain.smith:langsmith-java:0.1.0-beta.26`的Java SDK
 
-  对于不依赖于 beta 的跟踪设置，请参阅 [Log traces to a specific project](/langsmith/log-traces-to-project)。
+  对于不向代理发送跟踪的跟踪设置，请参阅 [Log traces to a specific project](/langsmith/log-traces-to-project)。
 </Note>
 
-## 变量寻址
+## 先决条件* **基于代理的工作区。** [Agent-based workspaces](/langsmith/migrate-to-agent-based-workspaces) 在 [LangSmith Cloud](/langsmith/cloud) 上可用。它们在 [self-hosted](/langsmith/self-hosted) LangSmith 上不可用。在基于代理的工作区中，向代理发送跟踪已开启，您无需更改设置。要检查您拥有哪种工作区，请查看左上角的控件。在基于代理的工作区中，它会命名您的工作区。在基于项目的工作区中，它显示 LangSmith 徽标，并且向代理发送跟踪已关闭。
+* **来自该工作区的 API 密钥**。参见[create an API key](/langsmith/create-account-api-key)。
+* **SDK.** 将跟踪发送到代理需要 Python 中的 `langsmith>=0.14.9`、TypeScript 中的 `langsmith@>=0.10.9`、Go 中的 `github.com/langchain-ai/langsmith-go` v0.28.0 或更高版本，或者 Java 中的 `com.langchain.smith:langsmith-java` 0.1.0-beta.26 或更高版本：
 
-两个环境变量携带代理寻址：* **`LANGSMITH_AGENT_ID`**：要寻址的代理。该值是代理的标识符，浏览器地址栏携带该标识符，代理概述副本上的 **ID** 字段也包含该标识符。每次运行时都会发送它。
-* **`LANGSMITH_AGENT_ENVIRONMENT`**：运行所属的环境。需要与代理一起使用，以及 `local`、`development`、`staging` 或 `production` 之一。使用小写形式，它映射到 UI 中的 Local、Development、Staging 和 Production 标签。没有默认值，因为代理和环境都没有单独指定目的地。如果仅设置了两个变量之一，SDK 会记录一条警告并保留调用不被跟踪，而不是为您选择一个环境，因此不会达到 LangSmith。
-
-`LANGSMITH_AGENT_ID` 采用标识符，而不是显示名称。 [display name is a separate, editable value](/langsmith/agents#identifiers-and-display-names) 不必与标识符匹配，因此从代理中读取标识符，而不是从代理的名称中派生它。
-
-## 处理参数
-
-将代理和环境一起提供，作为代码中的一个地址或同时作为两个地址[environment variables](#addressing-variables)。地址是单个字符串，`lrn:agents/{id}/environments/{environment}`。使用 Python 中的 `ls.address.agent("checkout", "production")` 或 TypeScript 中的 `address.agent("checkout", "production")` 构建它，它会检查值并小写环境，或者直接写入字符串。在Python中，[⟦T20⟧](https://reference.langchain.com/python/langsmith/run_helpers/traceable)和[⟦T21⟧](https://reference.langchain.com/python/langsmith/run_helpers/tracing_context)各自接受`address`。在 TypeScript 中，[⟦T23⟧](https://reference.langchain.com/javascript/langsmith/traceable) 在其配置中接受 `address`。代码中的地址优先于变量。仅当代码中没有指定目标时，SDK 才会读取变量，然后它就需要两者。
-
-## 示例
-
-使用装饰器处理一个函数：
-
-```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-import langsmith as ls
-from langsmith import traceable
-
-@traceable(address=ls.address.agent("checkout", "production"))
-def handle_order(order_id: str) -> dict:
-    return {"order_id": order_id, "status": "charged"}
-```
-
-使用上下文管理器处理块内跟踪的所有内容：
-
-```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-from langsmith import traceable, tracing_context
-
-@traceable
-def handle_order(order_id: str) -> dict:
-    return {"order_id": order_id, "status": "charged"}
-
-with tracing_context(address="lrn:agents/checkout/environments/production"):
-    handle_order("A-1")
-```
-
-在 TypeScript 中寻址函数：
-
-```typescript theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-import { address } from "langsmith";
-import { traceable } from "langsmith/traceable";
-
-const handleOrder = traceable(
-  async (orderId: string) => ({ orderId, status: "charged" }),
-  { name: "handle_order", address: address.agent("checkout", "production") },
-);
-```
-
-## 发送您的第一个代理寻址跟踪
-
-<Steps>
-  <Step title="Confirm your workspace is enabled">
-    如果您的工作区是基于代理的，则代理寻址已启用。 LangChain 打开它，您无需更改任何设置。在LangChain[converted](/langsmith/migrate-to-agent-based-workspaces#how-a-workspace-moves)的工作区中，管理员可以在新体验和经典体验之间切换UI。该开关仅更改 UI 显示的内容。它不会打开代理寻址。
-
-    要了解您拥有哪种类型的工作区，请查看左上角的控件。在基于代理的工作区中，它会命名您的工作区。在基于项目的工作区中，它显示 LangSmith 徽标，并且代理寻址已关闭。要询问访问权限，[contact our sales team](https://www.langchain.com/contact-sales)。
-
-    如果您的工作区未启用，LangSmith 摄取会拒绝代理寻址的运行并且不会记录任何内容。
-  </Step><Step title="Install the SDK">
-    代理解决 Python 中的 `langsmith>=0.14.4` 或 TypeScript 中的 `langsmith@>=0.10.8`：
-
-    <CodeGroup>
-      ```bash uv theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-      uv add "langsmith>=0.14.4"
-      ```
-
-      ```bash pip theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-      pip install -U "langsmith>=0.14.4"
-      ```
-
-      ```bash npm theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-      npm install "langsmith@>=0.10.8"
-      ```
-    </CodeGroup>
-  </Step>
-
-  <Step title="Choose an identifier">
-    从现有代理概览上的 **ID** 字段复制标识符，或选择一个新标识符。如果工作区中没有代理使用您选择的标识符，则LangSmith会在您第一次向其发送跟踪时创建该代理。您不必提前创建代理。有关标识符必须遵循的规则，请参阅[Identifier rules](/langsmith/create-an-agent#identifier-rules)。
-  </Step>
-
-  <Step title="Configure the addressing">
-    设置两个寻址[variables](#addressing-variables)，或在代码中传递[address](#addressing-arguments)。如果仅设置一个变量，SDK 会记录一条警告并且不发送任何内容。
-
-    ```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-    export LANGSMITH_TRACING=true
-    export LANGSMITH_API_KEY=<your-api-key>
-    export LANGSMITH_AGENT_ID=checkout
-    export LANGSMITH_AGENT_ENVIRONMENT=production
+  <CodeGroup>
+    ```bash uv theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+    uv add "langsmith>=0.14.9"
     ```
 
-    前两个是通常的跟踪先决条件，而不是代理寻址的一部分。使用您在步骤 1 中确认的工作区中的 [API key](/langsmith/create-account-api-key)。
-  </Step>
+    ```bash pip theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+    pip install -U "langsmith>=0.14.9"
+    ```
 
-  <Step title="Run your application">
-    运行您的应用程序，以便它至少发送一条跟踪。生成跟踪在 Python 中需要 `@traceable` 或 `tracing_context`，或者在 TypeScript 中需要 `traceable`，如 [Examples](#examples)。
-  </Step>
+    ```bash npm theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+    npm install "langsmith@>=0.10.9"
+    ```
 
-  <Step title="Find the trace">
-    在LangSmith中，选择顶部栏中的代理，转到**跟踪**，并将环境控制设置为您指定的环境控制。痕迹出现在那里。
-  </Step>
-</Steps>
+    ```bash go theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+    go get github.com/langchain-ai/langsmith-go@v0.28.0
+    ```
 
-## 寻址模式是互斥的代理寻址和项目寻址不结合。发生的情况取决于每个设置的位置：
+    ```kotlin Java/Kotlin (Gradle) theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+    implementation("com.langchain.smith:langsmith-java:0.1.0-beta.26")
+    ```
+  </CodeGroup>
 
-* **代理和项目在一起**：不允许。如果您设置代理变量以及 `LANGSMITH_PROJECT`、`LANGCHAIN_PROJECT` 或 `LANGCHAIN_SESSION`，则跟踪有两个目的地，并且 SDK 不会选择其中之一。它会在客户端启动时记录警告，并且不会跟踪调用，除非代码指定了目的地。如果您在一次调用中同时将 `address` 和 `project_name` 传递给 `@traceable` 或 `tracing_context()`，则 SDK 会引发 `LangSmithUserError` 并且不发送任何内容。如果同时包含地址和项目的运行达到 LangSmith，LangSmith 会拒绝它。
-* **以代码命名的项目**：覆盖代理变量。将 `project_name` 传递给 `@traceable` 或 `tracing_context()` 会跟踪该项目的运行并忽略代理变量，不会出现错误。这就是让 [evaluation](/langsmith/evaluation) 设置自己的项目，同时代理变量在流程的其余部分保持设置状态。
+## 将跟踪发送给代理
 
-## 寻址不存在的代理
+以代码或环境变量的形式将代理和环境一起命名。代码中的代理优先于变量。仅当代码中没有指定目标时，SDK 才会读取变量，然后它就需要两者。* **代理 ID**：代理的标识符，浏览器地址栏带有该标识符，代理概览副本上的 **ID** 字段也包含该标识符。它不是显示名称。 [display name is a separate, editable value](/langsmith/agents#identifiers-and-display-names) 不必与标识符匹配，因此从代理中读取标识符，而不是从代理的名称中派生它。有关标识符必须遵循的规则，请参阅[Identifier rules](/langsmith/create-an-agent#identifier-rules)。如果工作区中没有代理使用您发送的标识符，则LangSmith会在您第一次向其发送跟踪时创建该代理，因此您不必提前创建它。以这种方式创建代理需要[⟦T19⟧ permission](/langsmith/organization-workspace-operations#projects)。如果没有它，LangSmith 会拒绝运行 `403`。已存档的代理仍保留其标识符，因此 LangSmith 拒绝使用 `409` 发送给它的运行，而不是创建新代理。将该代理的踪迹发送到不同的标识符。以这种方式创建的代理的[Overview](/langsmith/navigate-agents#read-the-agent-overview)不显示部署详细信息。
+* **环境**：运行所属的环境，以及`local`、`development`、`staging`或`production`之一。环境名称不区分大小写，它们映射到 UI 中的 Local、Development、Staging 和 Production 标签。没有默认值，因为代理和环境都没有单独指定目的地。### 使用环境变量
 
-如果标识符与工作区中的代理不匹配，LangSmith 将创建该代理。
+设置两个变量：
 
-有关该值必须遵循的规则，请参阅[Identifier rules](/langsmith/create-an-agent#identifier-rules)。
+```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+export LANGSMITH_TRACING=true
+export LANGSMITH_API_KEY=<your-api-key>
+export LANGSMITH_AGENT_ID=checkout
+export LANGSMITH_AGENT_ENVIRONMENT=production
+```
 
-以这种方式创建的代理在其[Overview](/langsmith/navigate-agents#read-the-agent-overview)上不显示部署部分。
+前两个是通常的跟踪先决条件，而不是命名代理的一部分。如果仅设置两个代理变量之一，SDK 会记录一条警告。它不会为您选择环境，而是不会跟踪代码中未指定目的地的每个调用，因此这些调用中的任何内容都不会到达LangSmith。
 
-## 当运行停止被接受时接受代理寻址运行的工作区可以停止接受它们。首先检查您的 API 密钥是否仍然属于基于代理的工作区，因为 LangSmith 拒绝使用来自基于项目的工作区的密钥发送的代理寻址运行。如果密钥不是问题，请通过[support.langchain.com](https://support.langchain.com)联系支持人员。
+### 使用代码
+
+传递代理地址。
+
+<Tabs>
+  <Tab title="Python">
+    对于块内跟踪的所有内容，将 `ls.agent_address("checkout", "production")` 作为 [⟦T28⟧](https://reference.langchain.com/python/langsmith/run_helpers/traceable) 或 [⟦T29⟧](https://reference.langchain.com/python/langsmith/run_helpers/tracing_context) 的 `address` 参数传递：
+
+    ```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+    import langsmith as ls
+    from langsmith import traceable
+
+
+    @traceable(address=ls.agent_address("checkout", "production"))
+    def handle_order(order_id: str) -> dict:
+        return {"order_id": order_id, "status": "charged"}
+    ```
+
+    ```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+    import langsmith as ls
+    from langsmith import traceable, tracing_context
+
+
+    @traceable
+    def handle_order(order_id: str) -> dict:
+        return {"order_id": order_id, "status": "charged"}
+
+
+    with tracing_context(address=ls.agent_address("checkout", "production")):
+        handle_order("A-1")
+    ```
+  </Tab>
+
+  <Tab title="TypeScript">
+    在[⟦T32⟧](https://reference.langchain.com/javascript/langsmith/traceable)的配置中将`new AgentAddress("checkout", "production")`作为`address`传递：
+
+    ```ts theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+    import { AgentAddress } from "langsmith";
+    import { traceable } from "langsmith/traceable";
+
+    const handleOrder = traceable(
+      async (orderId: string) => ({ orderId, status: "charged" }),
+      { name: "handle_order", address: new AgentAddress("checkout", "production") },
+    );
+    ```
+  </Tab>
+
+  <Tab title="Java">
+    在 `TraceConfig` 或 `RunTree` 构建器中将 `new AgentAddress("checkout", "production")` 作为 `address` 传递：
+
+    ```java Java theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+    import com.langchain.smith.address.AgentAddress;
+    import com.langchain.smith.tracing.TraceConfig;
+    import com.langchain.smith.tracing.Tracing;
+    import java.util.Map;
+    import java.util.function.Function;
+
+    public class TraceAgentExample {
+      public static void main(String[] args) {
+        Function<String, Map<String, String>> handleOrder =
+            Tracing.traceFunction(
+                orderId -> Map.of("order_id", orderId, "status", "charged"),
+                TraceConfig.builder()
+                    .name("handle_order")
+                    .address(new AgentAddress("checkout", "production"))
+                    .build());
+
+        handleOrder.apply("A-1");
+      }
+    }
+    ```
+  </Tab>
+
+  <Tab title="Go">
+    使用 `langsmith.NewAgentAddress("checkout", "production")` 创建地址，该地址将返回无效值的错误，并将其设置为 `RunCreate` 上的 `Address`。 `WithTracingAddress` 为独立跟踪客户端的每次运行设置它：
+
+    ```go theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+    package main
+
+    import (
+    	"fmt"
+    	"time"
+
+    	"github.com/google/uuid"
+    	"github.com/langchain-ai/langsmith-go"
+    )
+
+    func main() {
+    	agent, err := langsmith.NewAgentAddress("checkout", "production")
+    	if err != nil {
+    		panic(err.Error())
+    	}
+    	client := langsmith.NewClient()
+
+    	id := uuid.New()
+    	start := time.Now().UTC()
+    	order := fmt.Sprintf("%s%06dZ%s", start.Format("20060102T150405"), start.Nanosecond()/1000, id)
+
+    	if err := client.CreateRun(&langsmith.RunCreate{
+    		ID:          id,
+    		TraceID:     id,
+    		Name:        "handle_order",
+    		RunType:     "chain",
+    		StartTime:   start,
+    		DottedOrder: order,
+    		Address:     agent,
+    		Inputs:      map[string]any{"order_id": "A-1"},
+    	}); err != nil {
+    		panic(err.Error())
+    	}
+    	if err := client.UpdateRun(&langsmith.RunUpdate{
+    		ID:          id,
+    		TraceID:     id,
+    		DottedOrder: order,
+    		EndTime:     time.Now().UTC(),
+    		Outputs:     map[string]any{"status": "charged"},
+    	}); err != nil {
+    		panic(err.Error())
+    	}
+    	client.Close()
+    }
+    ```
+  </Tab>
+</Tabs>
+
+## 发送你的第一条轨迹
+
+运行您的应用程序，以便它至少发送一条跟踪。在LangSmith中，选择顶部栏中的代理，转到**跟踪**，并将环境控制设置为您将跟踪发送到的环境控制。痕迹出现在那里。
+
+## 查找代理项目要查询代理的踪迹，首先[resolve the agent to its project ID](/langsmith/resolve-an-agent)，然后像以前一样使用端点，传递该 ID。
+
+## 发送给代理或项目，而不是同时发送给两者
+
+向代理发送跟踪和向项目发送跟踪不会合并。发生的情况取决于每个设置的位置：
+
+* **代理和项目在一起**：不允许。如果您设置代理变量以及 `LANGSMITH_PROJECT`、`LANGCHAIN_PROJECT` 或 `LANGCHAIN_SESSION`，则跟踪有两个目的地，并且 SDK 不会选择其中之一。它会在客户端启动时记录警告，并且不会跟踪调用，除非代码指定了目的地。如果您在一次调用中同时传递 `address` 和 `project_name`，SDK 会引发错误并且不发送任何内容：Python 中来自 `@traceable` 或 `tracing_context()` 的 `LangSmithUserError`，或者 TypeScript 中来自 `traceable` 的 `Error`。如果同时命名代理和项目的运行达到 LangSmith，LangSmith 会拒绝它。
+* **以代码命名的项目**：覆盖代理变量。在 Python 中将 `project_name` 传递给 `@traceable` 或 `tracing_context()`，或者在 TypeScript 中的 `traceable` 配置中传递，会跟踪到该项目的运行并忽略代理变量，不会出现错误。这就是让 [evaluation](/langsmith/evaluation) 设置自己的项目，同时代理变量在流程的其余部分保持设置状态。
+
+## 故障排除如果您的工作区不接受发送给代理的运行，LangSmith 将使用 `403` 和消息 `agent addressing is not enabled for this workspace` 拒绝它们。它拒绝携带它们的整个请求，因此它不会记录该请求中的任何运行。接受此类运行的工作区也可以停止接受它们。首先检查您的 API 密钥是否仍然属于基于代理的工作区，因为 LangSmith 拒绝使用基于项目的工作区中的密钥发送到代理的运行。如果不是密钥问题，请通过[support.langchain.com](https://support.langchain.com)联系支持人员。
 
 ## 另请参阅
 
 * [Agents](/langsmith/agents)
 * [Agent environments](/langsmith/agent-environments)
 * [Log traces to a specific project](/langsmith/log-traces-to-project)
+* [Find an agent's project](/langsmith/resolve-an-agent)
 * [Observability concepts](/langsmith/observability-concepts)
 
 ***

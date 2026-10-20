@@ -295,7 +295,7 @@ LangChain supports embeddings from [many providers](/oss/python/integrations/emb
     if not os.environ.get("VOYAGE_API_KEY"):
         os.environ["VOYAGE_API_KEY"] = getpass.getpass("Enter API key for Voyage AI: ")
 
-    from langchain-voyageai import VoyageAIEmbeddings
+    from langchain_voyageai import VoyageAIEmbeddings
 
     embeddings = VoyageAIEmbeddings(model="voyage-3")
     ```
@@ -345,7 +345,7 @@ LangChain supports embeddings from [many providers](/oss/python/integrations/emb
     import os
 
     if not os.environ.get("ISAACUS_API_KEY"):
-    os.environ["ISAACUS_API_KEY"] = getpass.getpass("Enter API key for Isaacus: ")
+        os.environ["ISAACUS_API_KEY"] = getpass.getpass("Enter API key for Isaacus: ")
 
     from langchain_isaacus import IsaacusEmbeddings
 

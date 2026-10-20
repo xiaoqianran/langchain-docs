@@ -77,7 +77,7 @@
     | `run_type` | `run_type` |值现在必须为大写：`"LLM"`、`"CHAIN"`、`"TOOL"`、`"RETRIEVER"`、`"EMBEDDING"`、`"PROMPT"`、`"PARSER"` |
     | `trace_id` | `trace_id` |不变 |
     | `reference_example_id` | `reference_examples` |现在获取 UUID 列表 |
-    | `query` | *（已删除）* |没有同等的|
+    | `query` | *（已删除）* |没有同等的 |
     | `filter` | `filter` |语法不变 |
     | `trace_filter` | `trace_filter` |不变 |
     | `tree_filter` | `tree_filter` |不变 |
@@ -100,7 +100,7 @@
 
     <Warning>
       省略时，`min_start_time` 默认为 **1 天前**。没有 `startTime` 的 `listRuns` 返回所有历史运行；没有 `min_start_time` 的 `client.runs.query` 会静默地将查询范围限定为过去 24 小时。如果您需要更宽的窗口，请传递显式的`min_start_time`。
-    </Warning>|之前 (`listRuns`) |之后(`client.runs.query`)|笔记|
+    </Warning>|之前 (`listRuns`) |之后(`client.runs.query`) |笔记|
     | - | - | - |
     | `projectName` | *（已删除）* |将 `project_ids` 与 UUID 一起使用 - 请参阅上面的警告 |
     | `projectId` | `project_ids` |更名为`snake_case`；现在需要一个列表；与 `reference_dataset_id` 互斥 |
@@ -255,7 +255,7 @@
     | *（不可用）* | `run.thread_id` |新：对话线程 UUID |
     | *（不可用）* | `run.reference_dataset_id` |新：参考示例的数据集 UUID |
     | *（不可用）* | `run.share_url` |新功能：公共共享 URL（仅在共享运行时设置）|
-    | `run.prompt_token_details` | `run.prompt_token_details.raw` |字段现在包裹了字典；访问`.raw`得到`dict[str, int]`（元素类型不变） |
+    | `run.prompt_token_details` | `run.prompt_token_details.raw` |字段现在包裹了字典；访问`.raw`得到`dict[str, int]`（元素类型不变）|
     | `run.completion_token_details` | `run.completion_token_details.raw` |字段现在包裹了字典；访问`.raw`得到`dict[str, int]`（元素类型不变） |
     | `run.prompt_cost_details` | `run.prompt_cost_details.raw` |字段现在包裹了字典；访问`.raw`以获得`dict[str, float]`（原为`dict[str, Decimal]`）|
     | `run.completion_cost_details` | `run.completion_cost_details.raw` |字段现在包裹了字典；访问`.raw`以获得`dict[str, float]`（原为`dict[str, Decimal]`）|
@@ -292,7 +292,7 @@
     | `run.promptCost` | `run.prompt_cost` |更名为`snake_case` |
     | `run.completionCost` | `run.completion_cost` |更名为`snake_case` |
     | `run.firstTokenTime` | `run.first_token_time` |更名为`snake_case` |
-    | `run.latency` | `run.latency_seconds` |更名；是一个计算属性，现在是一个本机 `number` 字段（秒）|
+    | `run.latency` | `run.latency_seconds` |更名；是一个计算属性，现在是一个本机 `number` 字段（秒） |
     | `run.inDataset` | `run.is_in_dataset` |更名|
     | `run.childRunIds` | *（已删除）* |没有同等的 |
     | `run.childRuns` | *（已删除）* |没有同等的 |
@@ -402,7 +402,7 @@
     | `run.PromptTokens` | `run.PromptTokens` |不变 |
     | `run.CompletionCost` | `run.CompletionCost` |不变 |
     | `run.CompletionCostDetails` | `run.CompletionCostDetails.Raw` |字段现在包裹了地图；访问`.Raw`以获得`map[string]float64`（原为`map[string]string`）|
-    | `run.CompletionTokenDetails` | `run.CompletionTokenDetails.Raw` |字段现在包裹了地图；访问`.Raw`得到`map[string]int64`（元素类型不变）|
+    | `run.CompletionTokenDetails` | `run.CompletionTokenDetails.Raw` |字段现在包裹了地图；访问`.Raw`得到`map[string]int64`（元素类型不变） |
     | `run.CompletionTokens` | `run.CompletionTokens` |不变 |
     | `run.TotalCost` | `run.TotalCost` |不变 |
     | `run.TotalTokens` | `run.TotalTokens` |不变 |
@@ -469,8 +469,8 @@
     | `prompt_token_details` | `prompt_token_details.raw` | Field 现在包裹了对象；读取 `.raw` 以获得相同的 `{category: count}` 映射（值不变）|
     | `prompt_tokens` | `prompt_tokens` |不变 |
     | `completion_cost` | `completion_cost` |不变 |
-    | `completion_cost_details` | `completion_cost_details.raw` | Field 现在包裹了对象；阅读 `.raw` 以获得相同的 `{category: cost}` 映射，现在带有数字值（是字符串）|
-    | `completion_token_details` | `completion_token_details.raw` | Field 现在包裹了对象；读取 `.raw` 以获得相同的 `{category: count}` 映射（值不变）|
+    | `completion_cost_details` | `completion_cost_details.raw` | Field 现在包裹了对象；阅读 `.raw` 以获得相同的 `{category: cost}` 映射，现在带有数字值（是字符串） |
+    | `completion_token_details` | `completion_token_details.raw` | Field 现在包裹了对象；读取 `.raw` 以获得相同的 `{category: count}` 映射（值不变） |
     | `completion_tokens` | `completion_tokens` |不变 |
     | `total_cost` | `total_cost` |不变 |
     | `total_tokens` | `total_tokens` |不变 |
@@ -705,7 +705,7 @@ SmithDB 支持的方法具有比它所替代的方法更高的专用速率限制
   </Tab>
 
   <Tab title="cURL">
-    `POST /api/v2/runs/query` 不直接接受项目名称。首先使用 `GET /api/v1/sessions` 请求解析项目 UUID，然后将其作为字符串传递到 `project_ids` 中。
+    `POST /api/v2/runs/query` 不直接接受项目名称。首先使用 `GET /api/v1/sessions` 请求解析项目 UUID，然后将其作为字符串传递到 `project_ids` 中。对于代理环境、实验或评估者，[resolve it](/langsmith/resolve-an-agent)（处于测试阶段）可获取项目 UUID。
 
     <Tabs>
       <Tab title="Before">
@@ -779,7 +779,7 @@ SmithDB 支持的方法具有比它所替代的方法更高的专用速率限制
   </Tab>
 
   <Tab title="TypeScript">
-    `listRuns` 返回一组默认字段，无需选择。默认情况下，`client.runs.query` 仅返回 `id` — 通过 `selects: [...]` ​​请求更多。字段名称现在为大写 (`"name"` → `"NAME"`)。
+    `listRuns` 返回一组默认字段，无需选择。默认情况下，`client.runs.query` 仅返回 `id`，请通过 `selects: [...]` ​​请求更多。字段名称现在为大写 (`"name"` → `"NAME"`)。
 
     <Tabs>
       <Tab title="Before">
@@ -811,10 +811,10 @@ SmithDB 支持的方法具有比它所替代的方法更高的专用速率限制
         ```
       </Tab>
     </Tabs>
-  </Tab>
+  </Tab><Tab title="Java">
+    `query()` 返回一组默认字段，无需选择。默认情况下，`queryV2()` 仅返回 `id`，为您需要的每个字段调用 `.addSelect(RunQueryV2Params.Select.X)`。
 
-  <Tab title="Java">
-    `query()` 返回一组默认字段，无需选择。默认情况下，`queryV2()` 仅返回 `id`，为您需要的每个字段调用 `.addSelect(RunQueryV2Params.Select.X)`。<Tabs>
+    <Tabs>
       <Tab title="Before">
         ```kotlin Before theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
         import com.langchain.smith.client.LangsmithClient
@@ -1021,10 +1021,10 @@ SmithDB 支持的方法具有比它所替代的方法更高的专用速率限制
         ```
       </Tab>
     </Tabs>
-  </Tab>
+  </Tab><Tab title="TypeScript">
+    `startTime` (camelCase) 变为 `min_start_time`（snake\_case，匹配 v2 请求正文），`runType` 值现在为大写 (`"llm"` → `"LLM"`)。
 
-  <Tab title="TypeScript">
-    `startTime` (camelCase) 变为 `min_start_time`（snake\_case，匹配 v2 请求正文），`runType` 值现在为大写 (`"llm"` → `"LLM"`)。<Tabs>
+    <Tabs>
       <Tab title="Before">
         ```ts Before theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
         import { Client } from "langsmith";
@@ -1237,9 +1237,7 @@ SmithDB 支持的方法具有比它所替代的方法更高的专用速率限制
         ```
       </Tab>
     </Tabs>
-  </Tab>
-
-  <Tab title="TypeScript">
+  </Tab><Tab title="TypeScript">
     `isRoot` (camelCase) 变为 `is_root` (snake\_case，匹配 v2 请求正文)。
 
     <Tabs>
@@ -1250,7 +1248,9 @@ SmithDB 支持的方法具有比它所替代的方法更高的专用速率限制
         const client = new Client();
         const runs = client.listRuns({ projectName: "default", isRoot: true });
         ```
-      </Tab><Tab title="After">
+      </Tab>
+
+      <Tab title="After">
         ```ts After theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
         import { Client } from "langsmith";
 
@@ -1434,9 +1434,7 @@ SmithDB 支持的方法具有比它所替代的方法更高的专用速率限制
         ```
       </Tab>
     </Tabs>
-  </Tab>
-
-  <Tab title="TypeScript">
+  </Tab><Tab title="TypeScript">
     `id: [...]` 更名为`ids: [...]`。即使按运行 ID 进行过滤，现在也需要 `project_ids` — v1 允许省略项目上下文。
 
     <Tabs>
@@ -1447,7 +1445,9 @@ SmithDB 支持的方法具有比它所替代的方法更高的专用速率限制
         const client = new Client();
         const runs = client.listRuns({ id: ["<run-id-1>", "<run-id-2>"] });
         ```
-      </Tab><Tab title="After">
+      </Tab>
+
+      <Tab title="After">
         ```ts After theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
         import { Client } from "langsmith";
 

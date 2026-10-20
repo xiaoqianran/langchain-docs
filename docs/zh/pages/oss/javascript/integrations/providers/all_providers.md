@@ -32,7 +32,7 @@
 
 ## LangGraph 集成
 
-将 LangGraph 代理连接到前端和可观察平台。
+将LangGraph代理连接到前端和可观察平台。
 
 <Columns>
   <Card title="AG-UI Protocol" href="https://docs.ag-ui.com/" icon="link">
@@ -131,12 +131,16 @@
     GPT模型和OpenAI全面的聊天功能。
   </Card>
 
+  <Card title="RecallToolkit" href="https://recallmem.dev/guides/langchain" icon="link">
+    代理用于搜索回忆、询问有关用户的问题并保存事实的工具。
+  </Card>
+
   <Card title="SCX" href="https://scx.ai/">
     开放式聊天和多模式模型，通过 SCX 的 OpenAI 兼容 API 输入图像和视频。
   </Card>
 
   <Card title="Tuning Engines" href="https://www.tuningengines.com/" icon="link">
-    受控的OpenAI兼容端点，用于模型访问、策略检查和使用情况统计。
+    用于模型访问、策略检查和使用情况统计的受控OpenAI兼容端点。
   </Card>
 
   <Card title="xAI" href="/oss/javascript/integrations/chat/xai">
@@ -153,11 +157,11 @@
 <Columns>
   <Card title="Azure OpenAI" href="/oss/javascript/integrations/llms/azure" icon="brand-windows">
     OpenAI 通过 Microsoft Azure 的企业平台进行建模。
+  </Card><Card title="Cloudflare Workers AI" href="/oss/javascript/integrations/llms/cloudflare_workersai">
+    Cloudflare 边缘计算平台上的 AI 模型。
   </Card>
 
-  <Card title="Cloudflare Workers AI" href="/oss/javascript/integrations/llms/cloudflare_workersai">
-    Cloudflare 边缘计算平台上的 AI 模型。
-  </Card><Card title="Cohere" href="/oss/javascript/integrations/llms/cohere">
+  <Card title="Cohere" href="/oss/javascript/integrations/llms/cohere">
     Cohere 用于各种 NLP 任务的语言模型。
   </Card>
 
@@ -219,11 +223,11 @@
 
   <Card title="Minimax" href="/oss/javascript/integrations/embeddings/minimax">
     Minimax 的文本嵌入和表示模型。
+  </Card><Card title="Mistral" href="/oss/javascript/integrations/embeddings/mistralai" icon="https://mintcdn.com/langchain-5e9cc07a/z7oQGiHwXv52HwOy/images/providers/mistral-icon.svg?fit=max&auto=format&n=z7oQGiHwXv52HwOy&q=85&s=d8a5f193f697b47117d412b035adbe25">
+    Mistral 的高效嵌入模型。
   </Card>
 
-  <Card title="Mistral" href="/oss/javascript/integrations/embeddings/mistralai" icon="https://mintcdn.com/langchain-5e9cc07a/z7oQGiHwXv52HwOy/images/providers/mistral-icon.svg?fit=max&auto=format&n=z7oQGiHwXv52HwOy&q=85&s=d8a5f193f697b47117d412b035adbe25">
-    Mistral 的高效嵌入模型。
-  </Card><Card title="MixedBread AI" href="/oss/javascript/integrations/embeddings/mixedbread_ai">
+  <Card title="MixedBread AI" href="/oss/javascript/integrations/embeddings/mixedbread_ai">
     高质量的多语言嵌入模型。
   </Card>
 
@@ -281,11 +285,11 @@
 
   <Card title="LambdaDB" href="https://docs.lambdadb.ai/guides/get-started/quickstart" icon="link">
     RAG 和代理的无服务器数据库。
+  </Card><Card title="Memory Vector Store" href="/oss/javascript/integrations/vectorstores/memory">
+    用于开发和测试的内存向量存储。
   </Card>
 
-  <Card title="Memory Vector Store" href="/oss/javascript/integrations/vectorstores/memory">
-    用于开发和测试的内存向量存储。
-  </Card><Card title="MongoDB Atlas" href="/oss/javascript/integrations/vectorstores/mongodb_atlas">
+  <Card title="MongoDB Atlas" href="/oss/javascript/integrations/vectorstores/mongodb_atlas">
     MongoDB Atlas 云数据库中的矢量搜索。
   </Card>
 
@@ -349,11 +353,11 @@
 
   <Card title="LangSmith" href="/oss/javascript/integrations/document_loaders/web_loaders/langsmith">
     从LangSmith加载运行和数据集。
+  </Card><Card title="Leap0" href="https://leap0.dev/docs" icon="link">
+    用于具有快速冷启动功能的 AI 代理的云沙箱。
   </Card>
 
-  <Card title="Leap0" href="https://leap0.dev/docs" icon="link">
-    用于具有快速冷启动功能的 AI 代理的云沙箱。
-  </Card><Card title="Soniox" href="/oss/javascript/integrations/document_loaders/web_loaders/soniox">
+  <Card title="Soniox" href="/oss/javascript/integrations/document_loaders/web_loaders/soniox">
     高精度多语言语音转文本 API。
   </Card>
 
@@ -449,6 +453,10 @@
     模型上下文协议工具和实用程序。
   </Card>
 
+  <Card title="Mercedes-Benz Service Reminder" href="https://github.com/gentlegiant96202/mercedes-benz-service-reminder-mcp#readme" icon="link">
+    SilberArrows 的 MCP 工具用于梅赛德斯-奔驰服务 A/B 提醒、服务说明和警告灯指导。
+  </Card>
+
   <Card title="OpenAPI" href="/oss/javascript/integrations/tools/openapi">
     根据 OpenAPI 规范生成工具。
   </Card>
@@ -467,11 +475,11 @@
 
   <Card title="Pexafy" href="https://docs.pexafy.com/langchain" icon="link">
     Pexafy 是一个语义搜索 API，对来自 Unsplash、Pexels、Pixabay 和另外六个库的免费库存照片进行语义搜索，返回每张照片及其许可和信用额度。
+  </Card><Card title="pipe0" href="https://www.pipe0.com/docs/sdks/integrations/langchain" icon="link">
+    跨多个数据提供商进行人员搜索和联系人丰富（工作电子邮件、电话号码、个人资料和企业结构）
   </Card>
 
-  <Card title="pipe0" href="https://www.pipe0.com/docs/sdks/integrations/langchain" icon="link">
-    跨多个数据提供商进行人员搜索和联系人丰富（工作电子邮件、电话号码、个人资料和企业结构）
-  </Card><Card title="Pushary" href="https://pushary.com/docs/agents/build/langgraph?utm_source=langchain&utm_medium=integration-directory&utm_campaign=pushary-langgraph-js" icon="link">
+  <Card title="Pushary" href="https://pushary.com/docs/agents/build/langgraph?utm_source=langchain&utm_medium=integration-directory&utm_campaign=pushary-langgraph-js" icon="link">
     LangGraph.js 代理的电话批准。基于 PusharyInterrupt() 构建的批准节点会在手机上询问您的用户，并且图表仅在批准时路由到受保护的节点；如果没有答案，它将返回 null，因此该操作不会运行。 createAskHumanTool() 添加了一个可选的ask\_ human 工具。
   </Card>
 
@@ -497,15 +505,15 @@
 
   <Card title="Tavily Extract" href="/oss/javascript/integrations/tools/tavily_extract">
     从网页中提取结构化数据。
-  </Card>
-
-  <Card title="Tavily Map" href="/oss/javascript/integrations/tools/tavily_map">
+  </Card><Card title="Tavily Map" href="/oss/javascript/integrations/tools/tavily_map">
     映射并可视化网络爬行结果。
   </Card>
 
   <Card title="Tavily Search" href="/oss/javascript/integrations/tools/tavily_search">
     针对检索应用程序的人工智能优化搜索。
-  </Card><Card title="Tavily Research" href="/oss/javascript/integrations/tools/tavily_research">
+  </Card>
+
+  <Card title="Tavily Research" href="/oss/javascript/integrations/tools/tavily_research">
     与 Tavily 一起对给定主题进行综合研究。
   </Card>
 
@@ -549,16 +557,20 @@
     从 Perplexity Search API 返回文档的检索器。
   </Card>
 
-  <Card title="SAP HANA Self Query" href="/oss/javascript/integrations/retrievers/self_query/hanavector_self_query">
-    通过 SAP HANA Cloud Vector Engine 的自查询检索器。
+  <Card title="RecallRetriever" href="https://recallmem.dev/guides/langchain" icon="link">
+    以文档形式检索 Recall 了解的有关用户的事实以及用户的匹配消息。
   </Card>
 
-  <Card title="Time-Weighted" href="/oss/javascript/integrations/retrievers/time-weighted-retriever">
+  <Card title="SAP HANA Self Query" href="/oss/javascript/integrations/retrievers/self_query/hanavector_self_query">
+    通过 SAP HANA Cloud Vector Engine 的自查询检索器。
+  </Card><Card title="Time-Weighted" href="/oss/javascript/integrations/retrievers/time-weighted-retriever">
     时间感知文档检索和排名。
   </Card>
 </Columns>
 
-## 商店<Columns>
+## 商店
+
+<Columns>
   <Card title="AlBuddyMemoryStore" href="https://github.com/flytomoon/al-buddy-memory/blob/main/docs/integrations/langchain.md" icon="link">
     用于本地 SQLite 文件上的长期内存的 LangGraph `BaseStore`，无 API 密钥。每个 put 都会记录哪个代理写了它；再次输入密钥会废弃旧值而不是覆盖它，删除会关闭一个事实而不是删除它，因此保留了所相信的历史。
   </Card>
@@ -590,11 +602,17 @@
   <Card title="BRYDGE" href="https://github.com/contactkontey-dotcom/langchain-brydge#readme" icon="link">
     监督代理工具与 BRYDGE 的调用，并检查目标系统自己的记录，以报告每个操作是否在允许的情况下发生。
   </Card>
+
+  <Card title="RecallChatMessageHistory" href="https://recallmem.dev/guides/langchain" icon="link">
+    聊天消息历史记录存储在 Recall 会话中，因此 Recall 还可以从中了解用户。
+  </Card>
+
+  <Card title="RecallMiddleware" href="https://recallmem.dev/guides/langchain" icon="link">
+    create\_agent 代理的长期记忆：将 Recall 了解到的有关用户的信息添加到系统提示中并记录每次交换。
+  </Card>
 </Columns>
 
-## 回调
-
-<Columns>
+## 回调<Columns>
   <Card title="OpenInference" href="https://arize.com/docs/ax/integrations/python-agent-frameworks/langchain/langchain-tracing" icon="link">
     使用 OpenInference 语义约定记录 LangChain 和 LangGraph 操作的 OpenTelemetry 工具。
   </Card>
@@ -608,7 +626,9 @@
   </Card>
 </Columns>
 
-***<div>
+***
+
+<div>
   <Callout icon="terminal-2">
     [Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
   </Callout>

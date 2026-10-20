@@ -15,7 +15,7 @@ Start with [hosting options](/langsmith/platform-setup) if you are deciding wher
     Cloud, Bring Your Own Cloud (BYOC), and Self-hosted, and how to pick the one that matches where your data has to live.
   </Card>
 
-  <Card title="Agent-based workspaces (beta)" href="/langsmith/agents" icon="hierarchy">
+  <Card title="Agent-based workspaces" href="/langsmith/agents" icon="hierarchy">
     Agents, the environments that hold each agent's traces, how to switch between agents, and how to build an agent in the UI.
   </Card>
 

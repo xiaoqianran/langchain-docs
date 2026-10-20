@@ -11,7 +11,7 @@
 根据代理运行的位置选择路线。如果您在 LangSmith 中构建代理，LangSmith 将在您构建代理时创建该代理。如果代理在您自己的计算机上运行，​​LangSmith 可以在代理发送第一个跟踪时创建代理。
 
 <Note>
-  **测试版。** 基于代理的工作区位于 [beta](/langsmith/release-stages) 中。 LangChain 为组织启用基于代理的工作区，并且更改适用于之后创建的工作区。现有的 [project-based](/langsmith/observability-concepts#tracing-projects) 工作区不会自动转换，但 LangChain 可以对其进行转换。要询问访问权限，[contact our sales team](https://www.langchain.com/contact-sales)。
+  [LangSmith Cloud](/langsmith/cloud) 上提供基于代理的工作区。它们在 [self-hosted](/langsmith/self-hosted) LangSmith 上不可用。要检查您的工作区是否基于代理，请查看左上角的控件。在基于代理的工作区中，它是一个为您的工作区命名的工作区切换器。在[project-based](/langsmith/observability-concepts#tracing-projects)工作区中，它显示LangSmith徽标。
 </Note>
 
 ## 比较四种路线
@@ -49,7 +49,7 @@
 
 两者都采用 **代理名称** 以及在其自己的字段中的 **代理 ID**，并注意该 ID 用于 URL 和 API 调用，并且以后无法更改。两者都需要创建项目的权限。代理切换器在其搜索框旁边具有相同的 **+** 按钮，对于具有相同权限的用户，无论切换器出现在何处，它都会打开 **新代理** 面板而不是对话框。
 
-首先创建代理是可选的。 [Tracing to an identifier that does not exist](/langsmith/log-traces-to-agent#addressing-an-agent-that-does-not-exist) 根据您发送的值创建代理，因此该对话框用于在首次运行之前命名代理。
+首先创建代理是可选的。 [Tracing to an identifier that does not exist](/langsmith/log-traces-to-agent#send-traces-to-an-agent) 根据您发送的值创建代理，因此该对话框用于在首次运行之前命名代理。
 
 ## 另请参阅
 

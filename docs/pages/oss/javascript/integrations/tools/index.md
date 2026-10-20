@@ -62,39 +62,40 @@ The following table shows tools that generate video, image, or audio assets:
   | [`Bilig WorkPaper`](https://proompteng.github.io/bilig/) | <span><a href="https://www.npmjs.com/package/@bilig/workpaper">  <img alt="Downloads per month" /></a></span> |
   | [`PerplexitySearchResults`](/oss/javascript/integrations/tools/perplexity_search) | <span><a href="https://www.npmjs.com/package/@langchain/perplexity">  <img alt="Downloads per month" /></a></span> |
   | [`Continuity tools`](https://github.com/zerohourzulu/continuity/blob/main/packages/remote-tools/README.md#langchain-tools) | <span><a href="https://www.npmjs.com/package/@ramex-labs/continuity-remote">  <img alt="Downloads per month" /></a></span> |
-  | [`agentsvc`](https://agentsvc.io/docs/langchain) | <span><a href="https://www.npmjs.com/package/agentsvc">  <img alt="Downloads per month" /></a></span> |
-  | [`Fidacy Action Firewall`](https://github.com/fidacy/fidacy-open) | <span><a href="https://www.npmjs.com/package/@fidacy/langchain">  <img alt="Downloads per month" /></a></span> |
-  | [`Serpex`](https://serpex.dev/docs) | <span><a href="https://www.npmjs.com/package/langchain-serpex-js">  <img alt="Downloads per month" /></a></span> |
-  | [`Pushary`](https://pushary.com/docs/agents/build/langgraph?utm_source=langchain\&utm_medium=integration-directory\&utm_campaign=pushary-langgraph-js) | <span><a href="https://www.npmjs.com/package/@pushary/langgraph">  <img alt="Downloads per month" /></a></span> |
   | [`Decodo`](/oss/javascript/integrations/tools/decodo) | <span><a href="https://www.npmjs.com/package/@decodo/langchain-ts">  <img alt="Downloads per month" /></a></span> |
-  | [`SatoHubTools`](https://github.com/satohubai/sato-hub-integrations/tree/main/packages/satohub-langchain-tools#readme) | <span><a href="https://www.npmjs.com/package/satohub-langchain-tools">  <img alt="Downloads per month" /></a></span> |
-  | [`aiworker`](https://github.com/ai-worker227/aiworker-examples/tree/main/langchain) | <span><a href="https://www.npmjs.com/package/aiworker-langchain-tools">  <img alt="Downloads per month" /></a></span> |
+  | [`Serpex`](https://serpex.dev/docs) | <span><a href="https://www.npmjs.com/package/langchain-serpex-js">  <img alt="Downloads per month" /></a></span> |
+  | [`agentsvc`](https://agentsvc.io/docs/langchain) | <span><a href="https://www.npmjs.com/package/agentsvc">  <img alt="Downloads per month" /></a></span> |
+  | [`PexafyToolkit`](https://docs.pexafy.com/langchain) | <span><a href="https://www.npmjs.com/package/langchain-pexafy">  <img alt="Downloads per month" /></a></span> |
   | [`pipe0Tools`](https://www.pipe0.com/docs/sdks/integrations/langchain) | <span><a href="https://www.npmjs.com/package/@pipe0/langchain">  <img alt="Downloads per month" /></a></span> |
-  | [`TalorDataSerpTool`](https://docs.talordata.com/serp-api/integration/sdk-integration/how-to-set-up-talordata-with-langchain) | <span><a href="https://www.npmjs.com/package/langchain-talordata">  <img alt="Downloads per month" /></a></span> |
+  | [`AgentSearchTool`](https://agentsearchhq.com/#integrations?utm_source=langchain-docs-js\&utm_medium=integration-listing\&utm_campaign=promo-oct26) | <span><a href="https://www.npmjs.com/package/@agentsearchhq/langchain">  <img alt="Downloads per month" /></a></span> |
+  | [`Pushary`](https://pushary.com/docs/agents/build/langgraph?utm_source=langchain\&utm_medium=integration-directory\&utm_campaign=pushary-langgraph-js) | <span><a href="https://www.npmjs.com/package/@pushary/langgraph">  <img alt="Downloads per month" /></a></span> |
+  | [`SatoHubTools`](https://github.com/satohubai/sato-hub-integrations/tree/main/packages/satohub-langchain-tools#readme) | <span><a href="https://www.npmjs.com/package/satohub-langchain-tools">  <img alt="Downloads per month" /></a></span> |
+  | [`Fidacy Action Firewall`](https://github.com/fidacy/fidacy-open) | <span><a href="https://www.npmjs.com/package/@fidacy/langchain">  <img alt="Downloads per month" /></a></span> |
   | [`GetYouTubeTranscriptTool`](https://github.com/tubeagentkit/langchain-getyoutubetranscript#readme) | <span><a href="https://www.npmjs.com/package/@tubeagentkit/langchain-getyoutubetranscript">  <img alt="Downloads per month" /></a></span> |
-  | [`You.com search tools`](https://you.com/docs/integrations/langchain) | <span><a href="https://www.npmjs.com/package/@youdotcom-oss/langchain">  <img alt="Downloads per month" /></a></span> |
-  | [`Azure container apps dynamic sessions`](/oss/javascript/integrations/tools/azure_dynamic_sessions) | <span><a href="https://www.npmjs.com/package/@langchain/azure-dynamic-sessions">  <img alt="Downloads per month" /></a></span> |
-  | [`Corsair`](https://docs.corsair.dev/mcp-adapters/langchain) | <span><a href="https://www.npmjs.com/package/@corsair-dev/langchain">  <img alt="Downloads per month" /></a></span> |
   | [`Falkordb`](/oss/javascript/integrations/tools/falkordb) | <span><a href="https://www.npmjs.com/package/@falkordb/langchain-ts">  <img alt="Downloads per month" /></a></span> |
-  | [`ClickSend`](/oss/javascript/integrations/tools/clicksend) | <span><a href="https://www.npmjs.com/package/@clicksend/langchain-clicksend-mcp">  <img alt="Downloads per month" /></a></span> |
-  | [`SafePromptCallbackHandler`](https://docs.safeprompt.dev/langchain) | <span><a href="https://www.npmjs.com/package/@safeprompt.dev/langchain">  <img alt="Downloads per month" /></a></span> |
   | [`Respan`](https://www.respan.ai/docs/documentation/overview) | <span><a href="https://www.npmjs.com/package/@respan/instrumentation-langchain">  <img alt="Downloads per month" /></a></span> |
-  | [`CekiToolkit`](https://ceki.me) | <span><a href="https://www.npmjs.com/package/@ceki/langchain-ceki">  <img alt="Downloads per month" /></a></span> |
-  | [`The Context Company`](https://docs.thecontextcompany.com/frameworks/langchain-langgraph) | <span><a href="https://www.npmjs.com/package/@contextcompany/langchain">  <img alt="Downloads per month" /></a></span> |
-  | [`MagicHourTools`](https://docs.magichour.ai) | <span><a href="https://www.npmjs.com/package/langchain-magic-hour">  <img alt="Downloads per month" /></a></span> |
-  | [`Toolstem`](https://toolstem.com) | <span><a href="https://www.npmjs.com/package/langchain-toolstem">  <img alt="Downloads per month" /></a></span> |
-  | [`Jigsawstack`](/oss/javascript/integrations/tools/jigsawstack) | <span><a href="https://www.npmjs.com/package/@langchain/jigsawstack">  <img alt="Downloads per month" /></a></span> |
-  | [`AproxPay`](https://github.com/aproxpay/langchain-aproxpay) | <span><a href="https://www.npmjs.com/package/langchain-aproxpay">  <img alt="Downloads per month" /></a></span> |
-  | [`iFlow Search`](https://platform.iflow.cn) | <span><a href="https://www.npmjs.com/package/@iflow-ai/search-langchain">  <img alt="Downloads per month" /></a></span> |
   | [`SnapRender`](https://snap-render.com) | <span><a href="https://www.npmjs.com/package/langchain-snaprender">  <img alt="Downloads per month" /></a></span> |
+  | [`TalorDataSerpTool`](https://docs.talordata.com/serp-api/integration/sdk-integration/how-to-set-up-talordata-with-langchain) | <span><a href="https://www.npmjs.com/package/langchain-talordata">  <img alt="Downloads per month" /></a></span> |
+  | [`Azure container apps dynamic sessions`](/oss/javascript/integrations/tools/azure_dynamic_sessions) | <span><a href="https://www.npmjs.com/package/@langchain/azure-dynamic-sessions">  <img alt="Downloads per month" /></a></span> |
+  | [`aiworker`](https://github.com/ai-worker227/aiworker-examples/tree/main/langchain) | <span><a href="https://www.npmjs.com/package/aiworker-langchain-tools">  <img alt="Downloads per month" /></a></span> |
+  | [`You.com search tools`](https://you.com/docs/integrations/langchain) | <span><a href="https://www.npmjs.com/package/@youdotcom-oss/langchain">  <img alt="Downloads per month" /></a></span> |
+  | [`Corsair`](https://docs.corsair.dev/mcp-adapters/langchain) | <span><a href="https://www.npmjs.com/package/@corsair-dev/langchain">  <img alt="Downloads per month" /></a></span> |
+  | [`SafePromptCallbackHandler`](https://docs.safeprompt.dev/langchain) | <span><a href="https://www.npmjs.com/package/@safeprompt.dev/langchain">  <img alt="Downloads per month" /></a></span> |
+  | [`Mercedes-Benz Service Reminder (SilberArrows)`](https://github.com/gentlegiant96202/mercedes-benz-service-reminder-mcp#readme) | <span><a href="https://www.npmjs.com/package/mercedes-benz-service-reminder-mcp">  <img alt="Downloads per month" /></a></span> |
+  | [`The Context Company`](https://docs.thecontextcompany.com/frameworks/langchain-langgraph) | <span><a href="https://www.npmjs.com/package/@contextcompany/langchain">  <img alt="Downloads per month" /></a></span> |
+  | [`ClickSend`](/oss/javascript/integrations/tools/clicksend) | <span><a href="https://www.npmjs.com/package/@clicksend/langchain-clicksend-mcp">  <img alt="Downloads per month" /></a></span> |
+  | [`Toolstem`](https://toolstem.com) | <span><a href="https://www.npmjs.com/package/langchain-toolstem">  <img alt="Downloads per month" /></a></span> |
+  | [`iFlow Search`](https://platform.iflow.cn) | <span><a href="https://www.npmjs.com/package/@iflow-ai/search-langchain">  <img alt="Downloads per month" /></a></span> |
+  | [`MagicHourTools`](https://docs.magichour.ai) | <span><a href="https://www.npmjs.com/package/langchain-magic-hour">  <img alt="Downloads per month" /></a></span> |
+  | [`AproxPay`](https://github.com/aproxpay/langchain-aproxpay) | <span><a href="https://www.npmjs.com/package/langchain-aproxpay">  <img alt="Downloads per month" /></a></span> |
+  | [`Jigsawstack`](/oss/javascript/integrations/tools/jigsawstack) | <span><a href="https://www.npmjs.com/package/@langchain/jigsawstack">  <img alt="Downloads per month" /></a></span> |
+  | [`CekiToolkit`](https://ceki.me) | <span><a href="https://www.npmjs.com/package/@ceki/langchain-ceki">  <img alt="Downloads per month" /></a></span> |
   | [`SIGNA`](https://github.com/codexvritra/signa/tree/main/sdk/langchain) | <span><a href="https://www.npmjs.com/package/signa-langchain">  <img alt="Downloads per month" /></a></span> |
   | [`NiaToolkit`](/oss/javascript/integrations/tools/nia) | <span><a href="https://www.npmjs.com/package/@nozomioai/langchain-nia">  <img alt="Downloads per month" /></a></span> |
-  | [`AgentSearchTool`](https://agentsearchhq.com/#integrations?utm_source=langchain-docs-js\&utm_medium=integration-listing\&utm_campaign=promo-oct26) | <span>N/A</span> |
   | [`Agent with AWS lambda`](/oss/javascript/integrations/tools/lambda_agent) | <span>N/A</span> |
   | [`Browserless`](https://browserless.io) | <span>N/A</span> |
   | [`JSON agent toolkit`](/oss/javascript/integrations/tools/json) | <span>N/A</span> |
   | [`NotteBrowserToolkit`](https://docs.notte.cc/integrations/langchain) | <span>N/A</span> |
-  | [`PexafyToolkit`](https://docs.pexafy.com/langchain) | <span>N/A</span> |
   | [`SQLToolkit`](/oss/javascript/integrations/tools/sql) | <span>N/A</span> |
   | [`VectorStoreToolkit`](/oss/javascript/integrations/tools/vectorstore) | <span>N/A</span> |
   | [`Web browser`](/oss/javascript/integrations/tools/webbrowser) | <span>N/A</span> |

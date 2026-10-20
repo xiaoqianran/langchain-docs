@@ -4,7 +4,7 @@
 
 # 使用SDK查询轨迹
 
-查询[runs](/langsmith/observability-concepts#runs)（LangSmith迹线中的跨度数据）的推荐方法是在[API](/langsmith/smith-api-ref)中的[SDK](https://reference.langchain.com/python/langsmith/)或`/runs/query`端点中使用`list_runs`方法。 LangSmith 以[Run (span) data format](/langsmith/run-data-format) 中指定的简单格式存储跟踪。
+查询[runs](/langsmith/observability-concepts#runs)（LangSmith迹线中的跨度数据）的推荐方法是在[API](/langsmith/smith-api-ref)中的[SDK](https://reference.langchain.com/python/langsmith/)或`/runs/query`端点中使用`list_runs`方法。 LangSmith 以[Run (span) data format](/langsmith/run-data-format) 中指定的简单格式存储轨迹。
 
 此页面涵盖：
 
@@ -15,6 +15,10 @@
 
 <Note>
   如果您希望导出大量跟踪，我们建议您使用[Bulk Data Export](/langsmith/data-export)功能，因为它可以更好地处理大数据量，并支持自动重试和跨分区并行化。
+</Note>
+
+<Note>
+  要查询代理、实验或评估者的踪迹，[find its project ID](/langsmith/resolve-an-agent) 并将其作为项目 ID 传递。
 </Note>
 
 ## 使用过滤器参数
@@ -46,9 +50,7 @@
 
   LangsmithClient client = LangsmithOkHttpClient.fromEnv();
   ```
-</CodeGroup>
-
-以下是使用关键字参数列出运行的一些方法示例：
+</CodeGroup>以下是使用关键字参数列出运行的一些方法示例：
 
 ### 列出项目中的所有运行
 
@@ -74,7 +76,9 @@
       .addSession("<your_project>")
       .build();
   ```
-</CodeGroup>### 列出过去 24 小时内的 LLM 和聊天运行情况
+</CodeGroup>
+
+### 列出过去 24 小时内的 LLM 和聊天运行情况
 
 <CodeGroup>
   ```python Python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
@@ -250,7 +254,7 @@
 
 对于更复杂的查询，您可以使用过滤查询语言。以下示例涵盖了最常见的模式。有关完整的运算符和字段参考，包括所有比较器、可过滤字段、值格式化规则和快速参考示例表，请参阅[Trace query syntax: filter query language](/langsmith/trace-query-syntax#filter-query-language)。
 
-### 列出对话线程中的所有 root 运行
+### 列出对话线程中的所有根运行
 
 这是在会话线程中获取运行的方法。有关设置线程的更多信息，请参阅我们的[how-to guide on setting up threads](/langsmith/threads)。
 通过设置共享线程 ID 对线程进行分组。 LangSmith UI 允许您使用以下元数据键之一：`session_id` 或 `thread_id`。会话 ID 也称为跟踪项目 ID。以下查询与其中任何一个匹配。

@@ -9,7 +9,7 @@
 要在工作区中的 [agents](/langsmith/agents) 之间移动，请使用顶部栏中的代理切换器。选择一个代理以仅查看该代理的计数、图表和跟踪列表。
 
 <Note>
-  **测试版。** 基于代理的工作区位于 [beta](/langsmith/release-stages) 中。 LangChain 为组织启用基于代理的工作区，并且更改适用于之后创建的工作区。现有的 [project-based](/langsmith/observability-concepts#tracing-projects) 工作区不会自动转换，但 LangChain 可以对其进行转换。要询问访问权限，[contact our sales team](https://www.langchain.com/contact-sales)。
+  [LangSmith Cloud](/langsmith/cloud) 上提供基于代理的工作区。它们在 [self-hosted](/langsmith/self-hosted) LangSmith 上不可用。要检查您的工作区是否基于代理，请查看左上角的控件。在基于代理的工作区中，它是一个为您的工作区命名的工作区切换器。在[project-based](/langsmith/observability-concepts#tracing-projects)工作区中，它显示LangSmith徽标。
 </Note>
 
 <img alt="An agent's Overview, with the agent switcher in the top bar naming the agent, the ID field below it, and the metrics row for the last 7 days across all environments." />
@@ -38,7 +38,7 @@
 
 ## 需要代理的部分大多数部分都适用于所选的**所有代理**，包括代理列表（列出工作区中的每个代理）和部署（列出工作区中的每个部署）。 Engine、Studio、Build、Tracing 和 Monitoring 需要您选择代理。如果您在选择 **所有代理** 的情况下打开这些部分，您所看到的内容取决于您的工作区是否还有任何代理。
 
-如果您的工作区有代理，该部分会显示可供选择的可搜索代理列表，标题为**选择要查看的代理**。在构建中，该列表位于“配置现有代理或构建新代理”下。反而。顶部栏保持在原位，因此您也可以从切换器中进行选择。在列表下方，Studio 显示**连接代理服务器**，构建显示**+ 新代理**。跟踪还向可以创建项目的用户显示 **+ 新代理**。构建仅列出代理[built in the UI](/langsmith/build-an-agent)。其他部分列出了工作区中的每个代理。由于工作区中没有代理，引擎、Studio、跟踪和监控显示列表为空，显示**没有可用的代理**。只要工作区在 UI 中没有内置代理，即使它有其他代理，构建也会显示相同的空列表，并且其 **+ 新代理** 按钮仍会启动新代理。部署显示其自己的页面，该页面提供了在工作区没有部署时创建第一个部署的方法。
+如果您的工作区有代理，该部分会显示可供选择的可搜索代理列表，标题为**选择要查看的代理**。在构建中，该列表位于“配置现有代理或构建新代理”下方。反而。顶部栏保持在原位，因此您也可以从切换器中进行选择。在列表下方，Studio 显示**连接代理服务器**，构建显示**+ 新代理**。跟踪还向可以创建项目的用户显示 **+ 新代理**。构建仅列出代理[built in the UI](/langsmith/build-an-agent)。其他部分列出了工作区中的每个代理。由于工作区中没有代理，引擎、Studio、跟踪和监控显示列表为空，显示**没有可用的代理**。只要工作区在 UI 中没有内置代理，即使它有其他代理，构建也会显示相同的空列表，并且其 **+ 新代理** 按钮仍会启动新代理。部署显示其自己的页面，该页面提供了在工作区没有部署时创建第一个部署的方法。
 
 选择代理后，当您在这些部分之间移动时，LangSmith 会使其保持选中状态。要查看 **所有代理** 的代理列表，请将鼠标悬停在切换器中所选代理的名称上，然后选择其旁边显示的 **X**。
 
@@ -48,7 +48,7 @@
 
 ## 阅读代理概述
 
-当您选择代理时，LangSmith 打开其概述。
+当您选择代理时，LangSmith 打开其概览。
 
 切换器显示客服人员的显示名称。标有 **ID** 的字段（旁边有一个复制按钮）保存标识符，这也是地址栏携带的值。 **ID**字段缩短了中间的一个长标识符。当您需要该值进行跟踪时，请使用 **ID** 旁边的复制按钮。 [Agent addressing](/langsmith/log-traces-to-agent) 采用标识符，而不是显示名称。对于哪个值是哪个，请参阅[Identifiers and display names](/langsmith/agents#identifiers-and-display-names)。
 

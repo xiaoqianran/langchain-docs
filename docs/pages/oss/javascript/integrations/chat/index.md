@@ -272,6 +272,7 @@ Certain model providers offer endpoints that are compatible with OpenAI's (legac
   | [`ChatKServe`](https://gitlab.com/bitkaio/langchain/kserve-provider) | <span>✅</span> | <span>✅</span> | <span>✅</span> | <span>✅</span> | <span><a href="https://www.npmjs.com/package/@bitkaio/langchain-kserve">  <img alt="Downloads per month" /></a></span> |
   | [`ChatInterfaze`](https://interfaze.ai/docs) | <span>✅</span> | <span>✅</span> | <span>✅</span> | <span>✅</span> | <span><a href="https://www.npmjs.com/package/@interfaze-ai/langchain">  <img alt="Downloads per month" /></a></span> |
   | [`ChatSCX`](https://scx.ai/) | <span>✅</span> | <span>✅</span> | <span>✅</span> | <span>✅</span> | <span><a href="https://www.npmjs.com/package/@scx-ai/langchain">  <img alt="Downloads per month" /></a></span> |
+  | [`RecallToolkit`](https://recallmem.dev/guides/langchain) | <span /> | <span /> | <span /> | <span /> | <span><a href="https://www.npmjs.com/package/@recall-memory/langchain">  <img alt="Downloads per month" /></a></span> |
   | [`Auxen`](https://auxen.ai) | <span>✅</span> | <span>✅</span> | <span>✅</span> | <span>❌</span> | <span>N/A</span> |
   | [`FakeListChatModel`](/oss/javascript/integrations/chat/fake) | <span /> | <span /> | <span /> | <span /> | <span>N/A</span> |
   | [`FuturMix`](https://futurmix.ai/) | <span>✅</span> | <span>✅</span> | <span>✅</span> | <span>✅</span> | <span>N/A</span> |

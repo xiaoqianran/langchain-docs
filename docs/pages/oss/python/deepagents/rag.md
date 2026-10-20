@@ -602,7 +602,7 @@ You can choose from many different [embedding integrations](/oss/python/integrat
     if not os.environ.get("VOYAGE_API_KEY"):
         os.environ["VOYAGE_API_KEY"] = getpass.getpass("Enter API key for Voyage AI: ")
 
-    from langchain-voyageai import VoyageAIEmbeddings
+    from langchain_voyageai import VoyageAIEmbeddings
 
     embeddings = VoyageAIEmbeddings(model="voyage-3")
     ```
@@ -652,7 +652,7 @@ You can choose from many different [embedding integrations](/oss/python/integrat
     import os
 
     if not os.environ.get("ISAACUS_API_KEY"):
-    os.environ["ISAACUS_API_KEY"] = getpass.getpass("Enter API key for Isaacus: ")
+        os.environ["ISAACUS_API_KEY"] = getpass.getpass("Enter API key for Isaacus: ")
 
     from langchain_isaacus import IsaacusEmbeddings
 

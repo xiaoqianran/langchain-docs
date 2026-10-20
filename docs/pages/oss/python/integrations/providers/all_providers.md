@@ -347,6 +347,10 @@ Browse the complete collection of integrations available for Python. LangChain P
     Loads timestamped video transcript passages into LangChain Documents with playback citations and optional asynchronous transcription.
   </Card>
 
+  <Card title="CareJobsToolkit" href="https://github.com/yumaheymans/langchain-carejobs#readme" icon="link">
+    Open US healthcare jobs, posted pay and employers from CareJobs.Now, a free job board, with no API key.
+  </Card>
+
   <Card title="Cerebras" href="/oss/python/integrations/providers/cerebras" icon="link">
     AI compute platform with specialized processors.
   </Card>
@@ -431,6 +435,10 @@ Browse the complete collection of integrations available for Python. LangChain P
     Live web search, scraping, extraction, document parsing, and brand intelligence tools for agents.
   </Card>
 
+  <Card title="ContextFetchSearch" href="https://github.com/lachy3433/langchain-contextfetch#readme" icon="link">
+    Web search API that returns result pages as Markdown; the package provides a search tool (ContextFetchSearch) and a retriever (ContextFetchRetriever).
+  </Card>
+
   <Card title="CopilotKit" href="/oss/python/langchain/frontend/integrations/copilotkit" icon="link">
     React stack and Python middleware for Deep Agents, LangGraph agents, FastAPI, and generative UI.
   </Card>
@@ -463,6 +471,10 @@ Browse the complete collection of integrations available for Python. LangChain P
     Google and public LinkedIn data as structured JSON for search and agents.
   </Card>
 
+  <Card title="CyborgVectorStore" href="https://docs.cyborg.co/versions/latest/integrations/langchain/introduction" icon="link">
+    Vector store for CyborgDB, an encrypted vector database with metadata filtering and hybrid (BM25) search.
+  </Card>
+
   <Card title="DaoXE" href="https://daoxe.com" icon="link">
     Multi-model multi-protocol API gateway with OpenAI-compatible base URL support.
   </Card>
@@ -489,6 +501,10 @@ Browse the complete collection of integrations available for Python. LangChain P
 
   <Card title="Daytona" href="/oss/python/integrations/providers/daytona" icon="link">
     Secure and elastic infrastructure for running your AI-generated code.
+  </Card>
+
+  <Card title="Deep Agents Graph Memory" href="https://github.com/TahaK29/deepagents-graph-memory" icon="link">
+    Graph context middleware and tools for Deep Agents that record and recall workflow findings using embedded LadybugDB.
   </Card>
 
   <Card title="DeepKeep" href="https://docs.deepkeep.ai" icon="link">
@@ -571,6 +587,10 @@ Browse the complete collection of integrations available for Python. LangChain P
     Cloud sandboxes for running AI-generated code.
   </Card>
 
+  <Card title="Emaki" href="https://emaki.readthedocs.io/en/latest/integrations/langchain/" icon="link">
+    Text-to-video, image-to-video and image generation tools for the emaki API (Seedance 2.5 and Seedance 2.0); requires an emaki API key.
+  </Card>
+
   <Card title="Egnyte" href="/oss/python/integrations/providers/egnyte" icon="link">
     Cloud content collaboration and AI-powered search platform.
   </Card>
@@ -631,7 +651,7 @@ Browse the complete collection of integrations available for Python. LangChain P
     Safety checks for agents that pay: a transaction or signature before signing, a token before buying, a wallet's open approvals, and an x402 or MPP paid API before paying, as LangChain StructuredTools.
   </Card>
 
-  <Card title="FlashDataToolkit" href="https://github.com/flashdata-dev/langchain-flashdata#readme" icon="link">
+  <Card title="FlashDataToolkit" href="https://github.com/rocosen/langchain-flashdata#readme" icon="link">
     Google Search and YouTube search, video metadata, and transcript tools backed by the FlashData API.
   </Card>
 
@@ -645,6 +665,10 @@ Browse the complete collection of integrations available for Python. LangChain P
 
   <Card title="FMP Data" href="https://github.com/MehdiZare/langchain-fmp-data" icon="link">
     Financial market data and analytics API.
+  </Card>
+
+  <Card title="FoddaContextRetriever" href="https://github.com/fodda-ai/langchain-fodda#readme" icon="link">
+    Custom tool integration to retrieve verified knowledge graphs, market intelligence, and expert dossiers from the Fodda Context Layer.
   </Card>
 
   <Card title="Foliant" href="https://github.com/gazoy/langchain-foliant#readme" icon="link">
@@ -681,6 +705,10 @@ Browse the complete collection of integrations available for Python. LangChain P
 
   <Card title="GetYouTubeTranscript" href="https://github.com/tubeagentkit/langchain-getyoutubetranscript#readme" icon="link">
     GetYouTubeTranscript is an API for YouTube video transcripts (optionally with per-line timestamps) and YouTube search
+  </Card>
+
+  <Card title="GNewsSearch" href="https://github.com/gnews-io/langchain-gnews" icon="link">
+    GNews returns news articles from 80,000+ sources in 41 languages, with keyword search and top headlines.
   </Card>
 
   <Card title="GoodMem" href="https://docs.goodmem.ai" icon="link">
@@ -761,6 +789,10 @@ Browse the complete collection of integrations available for Python. LangChain P
 
   <Card title="Haldir" href="https://haldir.xyz/docs" icon="link">
     Governance layer for AI agents with scoped sessions, encrypted secrets, hash-chained audit, and policy enforcement.
+  </Card>
+
+  <Card title="HappyHorse by Ace Data Cloud" href="https://github.com/AceDataCloud/LangChain/tree/main/packages/happyhorse" icon="link">
+    Video generation submission and same-ID task retrieval tools provided by Ace Data Cloud for HappyHorse.
   </Card>
 
   <Card title="Hashlock" href="https://hashlock.markets/docs" icon="link">
@@ -899,8 +931,12 @@ Browse the complete collection of integrations available for Python. LangChain P
     Outcome-aware execution routing for AI agents across models, tools, and parameters.
   </Card>
 
-  <Card title="Kavel" href="https://github.com/hanshs474/langchain-kavel#readme" icon="link">
-    AI image generation and editing. The `KavelImageGenerator` tool returns a URL to the finished image and runs on Kavel's free tier with no API key, or on a kavel.ai account with one.
+  <Card title="Kapa" href="https://docs.kapa.ai/retrieval/frameworks/langchain" icon="link">
+    LangChain tools for Kapa, a knowledge base that stays in sync and finds the right context for your agents.
+  </Card>
+
+  <Card title="Kavel" href="https://kavel.readthedocs.io/en/latest/integrations/langchain/" icon="link">
+    Text-to-image and image-editing tool for the Kavel image API; text-to-image runs on a free tier without an API key.
   </Card>
 
   <Card title="Keenable" href="https://docs.keenable.ai" icon="link">
@@ -999,6 +1035,10 @@ Browse the complete collection of integrations available for Python. LangChain P
     Real-time tennis scores, players and fixtures for ATP, WTA, Challenger and ITF.
   </Card>
 
+  <Card title="LLMSlimCompressor" href="https://github.com/Thanatos9404/llmslim/blob/main/docs/integrations/LANGCHAIN.md" icon="link">
+    MIT-licensed local document compressor for ContextualCompressionRetriever that keeps query-relevant content within a token budget.
+  </Card>
+
   <Card title="Lizard" href="https://github.com/lizard-build/langchain-lizard#readme" icon="link">
     Lizard provides cloud sandboxes for running shell commands and file tools with LangChain Deep Agents.
   </Card>
@@ -1069,6 +1109,10 @@ Browse the complete collection of integrations available for Python. LangChain P
 
   <Card title="MeragptDecider" href="https://github.com/Sandeep85Das/langchain-meragpt" icon="link">
     Typed decisions (yes/no, choice, score) with calibrated probabilities from meraGPT Decider 1, as a Runnable, a tool, and agent middleware.
+  </Card>
+
+  <Card title="MeshArc" href="https://github.com/mesharc-org/langchain-mesharc#readme" icon="link">
+    MeshArc is a web crawling API that returns pages as clean markdown, maps sites, searches the web, and reports page changes between crawls.
   </Card>
 
   <Card title="Metal" href="/oss/python/integrations/providers/metal" icon="link">
@@ -1275,6 +1319,10 @@ Browse the complete collection of integrations available for Python. LangChain P
     OpenTelemetry instrumentation that records LangChain and LangGraph operations using OpenInference semantic conventions.
   </Card>
 
+  <Card title="OpenpathSearch" href="https://openpath.sh/docs/langchain" icon="link">
+    Tool for Openpath, an open directory of job openings and Austin local businesses returned as Markdown with no API key.
+  </Card>
+
   <Card title="OpenRouter" href="/oss/python/integrations/providers/openrouter" icon="link">
     Unified API for models from multiple providers.
   </Card>
@@ -1375,6 +1423,10 @@ Browse the complete collection of integrations available for Python. LangChain P
     Managed vector database for ML applications.
   </Card>
 
+  <Card title="PinkToolkit" href="https://pinkwallet.com/agentic/connect/langchain/" icon="link">
+    PinkToolkit provides LangChain tools for Pink Agentic AI Payments so agents can request and track sandbox payments within spending rules.
+  </Card>
+
   <Card title="Pipeshift" href="/oss/python/integrations/providers/pipeshift" icon="link">
     AI-powered content moderation platform.
   </Card>
@@ -1423,6 +1475,10 @@ Browse the complete collection of integrations available for Python. LangChain P
     AI model security and compliance platform.
   </Card>
 
+  <Card title="PrintFriendly" href="https://github.com/printfriendly/langchain-printfriendly#readme" icon="link">
+    PrintFriendly reads web pages through its API and returns clean Markdown, text, or HTML without ads or page clutter.
+  </Card>
+
   <Card title="Pramagent" href="https://github.com/sriram7737/pramagent" icon="link">
     Deterministic tool policy and HITL gates for LangGraph tool calls.
   </Card>
@@ -1441,6 +1497,10 @@ Browse the complete collection of integrations available for Python. LangChain P
 
   <Card title="prompt-shield" href="https://github.com/mthamil107/prompt-shield" icon="link">
     Runtime prompt-injection firewall for inputs, tool results, and model outputs.
+  </Card>
+
+  <Card title="Proxmint" href="https://proxmint.com/docs/langchain" icon="link">
+    Proxmint residential, datacenter and mobile proxies: a page-fetch tool and a document loader with country, city and ASN targeting and sticky sessions.
   </Card>
 
   <Card title="ProxyClaw" href="https://docs.proxyclaw.ai" icon="link">
@@ -1473,6 +1533,22 @@ Browse the complete collection of integrations available for Python. LangChain P
 
   <Card title="Ray Serve" href="/oss/python/integrations/providers/ray_serve" icon="link">
     Scalable model serving framework.
+  </Card>
+
+  <Card title="RecallChatMessageHistory" href="https://recallmem.dev/guides/langchain" icon="link">
+    Chat message history stored in a Recall session, so Recall also learns about the user from it.
+  </Card>
+
+  <Card title="RecallMiddleware" href="https://recallmem.dev/guides/langchain" icon="link">
+    Long-term memory for create\_agent agents: adds what Recall learned about the user to the system prompt and records each exchange.
+  </Card>
+
+  <Card title="RecallRetriever" href="https://recallmem.dev/guides/langchain" icon="link">
+    Retrieves the facts Recall learned about a user, and the user's matching messages, as documents.
+  </Card>
+
+  <Card title="RecallToolkit" href="https://recallmem.dev/guides/langchain" icon="link">
+    Tools for agents to search Recall memory, ask it a question about the user, and save a fact.
   </Card>
 
   <Card title="Reddit" href="https://github.com/urraf/langchain-reddit#readme" icon="link">
@@ -1571,6 +1647,10 @@ Browse the complete collection of integrations available for Python. LangChain P
     Real-time search API for AI agents across the web, commerce, video, social, jobs, real estate, travel, app stores, ad libraries, and public filings, plus clean text extraction from any URL.
   </Card>
 
+  <Card title="ScaleDown" href="https://github.com/scaledown-team/langchain-scaledown/blob/main/README.md" icon="link">
+    ScaleDown adds Constrained Decoding Models to LangChain agents as middleware for summarization, classification, compression, and structured records.
+  </Card>
+
   <Card title="SchemagateRetriever" href="https://ashishsinha1602.github.io/schemagate/langchain/" icon="link">
     Retriever that selects schema objects for a SQL agent and returns only the tables the calling principal is permitted to read, for Postgres, Oracle, MySQL and SQL Server
   </Card>
@@ -1595,12 +1675,20 @@ Browse the complete collection of integrations available for Python. LangChain P
     Unified search API across Google, Bing, Baidu, YouTube, and more.
   </Card>
 
+  <Card title="SeedanceToolkit" href="https://github.com/AceDataCloud/LangChain/tree/main/packages/seedance" icon="link">
+    Seedance video generation submission and same-ID task retrieval tools provided by Ace Data Cloud.
+  </Card>
+
   <Card title="seekrit" href="https://seekrit.dev/docs" icon="link">
     Zero-knowledge secrets manager. Scopes which credentials a model call or a given tool call may use.
   </Card>
 
   <Card title="Semantica" href="https://docs.getsemantica.ai/integrations/langchain" icon="link">
     Three drop-in adapters that bring Semantica’s context graph and hybrid search into LangChain chains and LangGraph agents.
+  </Card>
+
+  <Card title="Send21Toolkit" href="https://pypi.org/project/langchain-send21/" icon="link">
+    send21 prepares non-custodial pay links priced in 161 fiat currencies; payers sign in their own wallets and API keys cannot move funds.
   </Card>
 
   <Card title="SereneDB" href="https://serenedb.com/docs/clients/langchain-serenedb" icon="link">
@@ -1731,6 +1819,10 @@ Browse the complete collection of integrations available for Python. LangChain P
     Local-first chat message history stored in SQLite with no cloud dependencies.
   </Card>
 
+  <Card title="SuperPDFLoader" href="https://superpdf.ai/docs/python/langchain-llamaindex#langchain" icon="link">
+    Loads local PDFs as Markdown, one Document per page, with table, chart, and OCR support.
+  </Card>
+
   <Card title="Superserve" href="https://docs.superserve.ai" icon="link">
     Persistent Firecracker microVM sandboxes for Deep Agents.
   </Card>
@@ -1855,6 +1947,10 @@ Browse the complete collection of integrations available for Python. LangChain P
     Extended toolkit for LangChain applications.
   </Card>
 
+  <Card title="TopxAI" href="https://ai.topxea.com/docs/use-topxai-with-langchain" icon="link">
+    TopxAI is an API gateway that serves Claude, GPT, Grok, GLM, Kimi, and DeepSeek models through one OpenAI-compatible API.
+  </Card>
+
   <Card title="Traccia" href="https://traccia.ai/docs/integrations/langchain/" icon="link">
     AI Agent Control Plane.
   </Card>
@@ -1881,6 +1977,14 @@ Browse the complete collection of integrations available for Python. LangChain P
 
   <Card title="Tuning Engines" href="https://www.tuningengines.com/" icon="link">
     Governed OpenAI-compatible endpoint for model access, policy checks, and usage accounting.
+  </Card>
+
+  <Card title="TurnWindowMiddleware" href="https://github.com/bharatkhanna-dev/langchain-turn-window#readme" icon="link">
+    LangChain agent middleware that keeps recent human-anchored conversation turns together with matching tool-call and tool-result messages.
+  </Card>
+
+  <Card title="TwittrAPI" href="https://github.com/twittrapi/langchain-twittrapi#readme" icon="link">
+    TwittrAPI provides REST APIs and LangChain tools for read-only access to public X (Twitter) tweets, profiles, timelines, lists, communities, and trends.
   </Card>
 
   <Card title="TypeDB" href="https://typedb.com/docs" icon="link">
@@ -1951,6 +2055,10 @@ Browse the complete collection of integrations available for Python. LangChain P
     Deterministic LLM context compression with a regex retention whitelist for structured tokens.
   </Card>
 
+  <Card title="VeidaImageGenerator" href="https://veida.readthedocs.io/en/latest/integrations/langchain/" icon="link">
+    Text-to-image tool for the Veida AI API that runs on its anonymous free tier, so it needs no API key or account.
+  </Card>
+
   <Card title="Vectara" href="https://docs.vectara.com/" icon="link">
     Neural search platform with built-in understanding.
   </Card>
@@ -1987,6 +2095,10 @@ Browse the complete collection of integrations available for Python. LangChain P
     Embedding models and semantic search.
   </Card>
 
+  <Card title="Vulnify" href="https://docs.vulnify.io/sdks/adapters/?utm_source=github&utm_medium=directory&utm_campaign=langchain-docs#langchain-create_agent-middleware" icon="link">
+    Runtime authorization for tool calls with ALLOW, REVIEW, or BLOCK decisions, risk scores, and optional human approval.
+  </Card>
+
   <Card title="WaveSpeed" href="https://github.com/WaveSpeedAI/langchain-wavespeed" icon="link">
     Image, video, and catalog model generation tools for the WaveSpeed AI marketplace.
   </Card>
@@ -2009,6 +2121,10 @@ Browse the complete collection of integrations available for Python. LangChain P
 
   <Card title="Whoosh" href="https://github.com/priya-sundaram-dev/whoosh/tree/main/integrations/langchain-whoosh#readme" icon="link">
     Retriever backed by Whoosh, a pure-Python full-text search library with BM25F ranking and on-disk indexes.
+  </Card>
+
+  <Card title="Wity" href="https://github.com/info-alphanimble/langchain-wity#readme" icon="link">
+    Wity answers fixed-option questions about text in one pass, with a probability per option, for model routing, tool-risk checks and classification.
   </Card>
 
   <Card title="Work Ledger" href="https://github.com/metawake/work-ledger/blob/main/docs/integrations.md" icon="link">

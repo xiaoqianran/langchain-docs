@@ -6,7 +6,7 @@
 
 以编程方式从您的 LangSmith 项目中获取和检查多轮对话线程。
 
-如果您正在构建会话代理或任何多回合应用程序，LangSmith 会自动将您的 [runs](/langsmith/run-data-format) 分组为 [*threads*](/langsmith/observability-concepts#threads)。通过查询线程，您可以重播完整对话、审核代理跨会话的行为、构建对话长度和延迟分析，并为下游工作流程（例如 [fine-tuning](/langsmith/smithtune) 和评估）提供数据。
+如果您正在构建会话代理或任何多轮应用程序，LangSmith会自动将您的[runs](/langsmith/run-data-format)分组为[*threads*](/langsmith/observability-concepts#threads)。通过查询线程，您可以重播完整对话、审核代理跨会话的行为、构建对话长度和延迟分析，并为下游工作流程（例如 [fine-tuning](/langsmith/smithtune) 和评估）提供数据。
 
 SDK 公开了两种处理线程的方法：
 
@@ -15,18 +15,20 @@ SDK 公开了两种处理线程的方法：
 | [⟦T14⟧](https://reference.langchain.com/python/langsmith/client/Client/list_threads) / [⟦T15⟧](https://reference.langchain.com/javascript/langsmith/client/Client/listThreads) |您想要浏览项目中的所有线程 |
 | [⟦T16⟧](https://reference.langchain.com/python/langsmith/client/Client/read_thread) / [⟦T17⟧](https://reference.langchain.com/javascript/langsmith/client/Client/readThread) |您已经知道线程 ID 并且需要它的运行 |
 
+<Note>
+  要查询代理、实验或评估者的踪迹，[find its project ID](/langsmith/resolve-an-agent) 并将其作为项目 ID 传递。
+</Note>
+
 ## 线程如何工作
 
-您创建的每个运行都可以在其元数据中携带`thread_id`。 LangSmith 使用它来将运行分组为线程。后端在`metadata`中查找`thread_id`（回落到`session_id`）。
+您创建的每次运行都可以在其元数据中携带`thread_id`。 LangSmith 使用它来将运行分组为线程。后端在`metadata`中查找`thread_id`（回落到`session_id`）。
 
 <Note>
-  我们建议使用 **UUID v7** 线程 ID。 UUIDv7 嵌入了一个时间戳，它可以保留线程的正确时间顺序。 LangSmith SDK 导出 uuid7 帮助程序（Python v0.4.43+、JS v0.3.80+）：
-
-  * **Python**：`from langsmith import uuid7`
+  我们建议使用 **UUID v7** 线程 ID。 UUIDv7 嵌入了一个时间戳，它可以保留线程的正确时间顺序。 LangSmith SDK 导出 uuid7 帮助程序（Python v0.4.43+、JS v0.3.80+）：* **Python**：`from langsmith import uuid7`
   * **JS/TS**: `import { uuid7 } from 'langsmith'`
 </Note>
 
-如果您使用 [tracing integration](/langsmith/integrations)，请在运行元数据中传递 `thread_id`：
+如果您使用的是 [tracing integration](/langsmith/integrations)，请在运行元数据中传递 `thread_id`：
 
 <CodeGroup>
   ```python Python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
@@ -37,7 +39,9 @@ SDK 公开了两种处理线程的方法：
   @traceable(metadata={"thread_id": THREAD_ID})
   def my_agent(user_message: str) -> str:
       ...
-  ``````typescript TypeScript theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+  ```
+
+  ```typescript TypeScript theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
   import { traceable } from "langsmith/traceable";
   import { uuid7 } from "langsmith";
 

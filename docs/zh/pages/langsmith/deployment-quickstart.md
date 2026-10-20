@@ -6,7 +6,7 @@
 
 使用 LangGraph CLI 将您的第一个应用程序部署到 GCP 中的 LangSmith 云。
 
-本快速入门向您展示如何使用 [⟦T13⟧](/langsmith/cli#deploy) 命令将应用程序部署到 GCP 中的 LangSmith 云。任何从 [⟦T14⟧](/langsmith/application-structure#configuration-file-concepts) 配置导出图表的应用程序都会以相同的方式部署，无论您使用哪个框架来编写代理。
+本快速入门向您展示如何使用 [⟦T13⟧](/langsmith/cli#deploy) 命令将应用程序部署到 GCP 中的 LangSmith 云。任何从 [⟦T14⟧](/langsmith/application-structure#configuration-file-concepts) 配置导出图表的应用程序都以相同的方式部署，无论您使用哪个框架来编写代理。
 
 <Tip>
   有关全面的云部署指南（包括基于 GitHub 的部署和所有配置选项），请参阅[Cloud deployment setup guide](/langsmith/deploy-to-cloud)。
@@ -20,7 +20,7 @@
 
 在开始之前，请确保您拥有：
 
-* [Plus plan or above](https://www.langchain.com/pricing) 上有一个 [LangSmith account](https://smith.langchain.com?utm_source=docs\&utm_medium=cta\&utm_campaign=langsmith-signup\&utm_content=langsmith-deployment-quickstart) 和一个 [API key](/langsmith/create-account-api-key)。
+* [Plus plan or above](https://www.langchain.com/pricing) 上有一个[LangSmith account](https://smith.langchain.com?utm_source=docs\&utm_medium=cta\&utm_campaign=langsmith-signup\&utm_content=langsmith-deployment-quickstart) 和一个[API key](/langsmith/create-account-api-key)。
 *（可选）已安装 **Docker** 并为本地构建运行 Docker 守护进程。远程构建不需要。 [Install Docker Desktop](https://docs.docker.com/get-docker/)。如果 Docker 不可用，`langgraph deploy` 会自动触发远程构建。
 *（可选）在 Apple Silicon (M1/M2/M3) 上：[Docker Buildx](https://docs.docker.com/build/install-buildx/)，用于在本地构建期间交叉编译为 `linux/amd64`。
 * [LangGraph CLI](/langsmith/cli)：
@@ -76,21 +76,17 @@ LANGSMITH_API_KEY=lsv2_... langgraph deploy
     langgraph deploy
     ```
 
-    默认情况下，这将创建一个以您的项目目录命名的无服务器部署。使用 `--name` 或 `--deployment-type dedicated` 覆盖。
+    这将创建一个以您的项目目录命名的无服务器部署。使用 `--name` 更改名称，或使用 `--deployment-type dedicated` 更改 [Dedicated deployment](/langsmith/cloud-platform-features#deployment-types)。
 
-    <Note>
-      在 2026 年 10 月 1 日之前仍采用之前定价的组织可使用 `--deployment-type prod` 或 `--deployment-type dev`。详情请参见[⟦T31⟧](/langsmith/cli#deploy)和[Manage billing](/langsmith/billing#langsmith-deployment-billing)。
-    </Note><Tip>
+    <Tip>
       要在更改代码后更新现有部署，请重新运行 `langgraph deploy`。它按名称查找现有部署并就地更新它。
-    </Tip>
-
-    您还可以使用 `langgraph deploy list` 查看所有部署，使用 `langgraph deploy logs` 跟踪运行时日志，使用 `langgraph deploy delete <ID>` 删除部署。详情请参阅[CLI reference](/langsmith/cli#deploy)。
+    </Tip>您还可以使用 `langgraph deploy list` 查看所有部署，使用 `langgraph deploy logs` 跟踪运行时日志，使用 `langgraph deploy delete <ID>` 删除部署。详情请参阅[CLI reference](/langsmith/cli#deploy)。
   </Tab>
 
   <Tab title="Deploy from Studio">
     从工作室部署：
 
-    1. 启动[local development server](/langsmith/local-dev-testing#langgraph-dev)。这将自动打开[Studio](/langsmith/studio)，一个交互式代理IDE。
+    1. 启动[local development server](/langsmith/local-dev-testing#langgraph-dev)。这将自动打开[Studio](/langsmith/studio)，一个交互式代理 IDE。
 
     ```shell theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
     langgraph dev
@@ -113,7 +109,9 @@ LANGSMITH_API_KEY=lsv2_... langgraph deploy
 
 ## 5. 测试 API
 
-从部署详细信息视图中复制 **API URL**，然后使用它来调用您的应用程序：<Tabs>
+从部署详细信息视图中复制 **API URL**，然后使用它来调用您的应用程序：
+
+<Tabs>
   <Tab title="Python SDK (Async)">
     1.安装LangGraphPython SDK：
        ```shell theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
@@ -168,9 +166,7 @@ LANGSMITH_API_KEY=lsv2_... langgraph deploy
            print(chunk.data)
            print("\n\n")
        ```
-  </Tab>
-
-  <Tab title="JavaScript SDK">
+  </Tab><Tab title="JavaScript SDK">
     1.安装LangGraphJS SDK：
        ```shell theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
        npm install @langchain/langgraph-sdk

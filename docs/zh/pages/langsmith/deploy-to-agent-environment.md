@@ -11,7 +11,7 @@ LangGraph 和托管 Deep Agents CLI 如何将部署绑定到代理和环境、�
 使用它可以将同一代理的暂存构建和生产构建分开，以便每个代理都报告到自己的环境中。
 
 <Note>
-  **测试版。** 基于代理的工作区位于 [beta](/langsmith/release-stages) 中。 LangChain 为组织启用基于代理的工作区，并且更改适用于之后创建的工作区。现有的 [project-based](/langsmith/observability-concepts#tracing-projects) 工作区不会自动转换，但 LangChain 可以对其进行转换。要询问访问权限，[contact our sales team](https://www.langchain.com/contact-sales)。
+  [LangSmith Cloud](/langsmith/cloud) 上提供基于代理的工作区。它们在 [self-hosted](/langsmith/self-hosted) LangSmith 上不可用。要检查您的工作区是否基于代理，请查看左上角的控件。在基于代理的工作区中，它是一个为您的工作区命名的工作区切换器。在[project-based](/langsmith/observability-concepts#tracing-projects)工作区中，它显示LangSmith徽标。
 </Note>
 
 ## 先决条件
@@ -27,7 +27,7 @@ LangGraph 和托管 Deep Agents CLI 如何将部署绑定到代理和环境、�
 两个 CLI 都采用相同的两个标志：
 
 * **`--agent-id`**：要部署到的代理。该值是代理的标识符，而不是其显示名称。对于哪个值是哪个，请参阅[Identifiers and display names](/langsmith/agents#identifiers-and-display-names)。
-* **`--agent-environment`**：部署报告到的环境，以及`development`、`staging` 或`production` 之一。部署不能占用`local`。那个环境[does not display on deployments](/langsmith/agent-environments#select-an-environment)根本就是这个集合与[agent addressing](/langsmith/log-traces-to-agent#addressing-variables)接受的四个值不同的一种方式。
+* **`--agent-environment`**：部署报告到的环境，以及`development`、`staging` 或`production` 之一。部署不能占用`local`。该环境根本就是[does not display on deployments](/langsmith/agent-environments#select-an-environment)，这是该集合与[agent variables](/langsmith/log-traces-to-agent#using-environment-variables)接受的四个值不同的一种方式。
 
 这些标志与跟踪端的代理寻址名称相同。 LangGraph CLI 还从相同的两个变量`LANGSMITH_AGENT_ID` 和 `LANGSMITH_AGENT_ENVIRONMENT` 读取标志。 `mda` CLI 不会读取这些变量，因此直接将标志传递给它。
 

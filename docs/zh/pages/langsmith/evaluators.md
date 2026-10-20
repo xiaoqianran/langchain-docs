@@ -11,11 +11,11 @@ LangSmith中的[Evaluators](/langsmith/evaluation-concepts#evaluators)是[worksp
 评估者所关注的内容取决于您的工作空间的组织方式。
 
 <Note>
-  **基于代理的工作区 ([beta](/langsmith/release-stages))。** 如果您的工作区按 [agent and environment](/langsmith/agents) 组织跟踪，则本部分适用。要进行检查，请查看左上角的控件：它为您的工作区命名。如果它显示 LangSmith 徽标，并且侧边栏具有带有应用程序选择器的 **应用程序** 部分，则您的工作区是基于项目的。跳过本节并阅读[Tracing projects](/langsmith/observability-concepts#tracing-projects)。
+  **基于代理的工作区。** 如果您的工作区按 [agent and environment](/langsmith/agents) 组织跟踪，则本部分适用。要进行检查，请查看左上角的控件：它为您的工作区命名。如果它显示 LangSmith 徽标，并且侧边栏具有带有应用程序选择器的 **应用程序** 部分，则您的工作区是基于项目的。跳过本节并阅读[Tracing projects](/langsmith/observability-concepts#tracing-projects)。
 </Note>
 
 评估器附加到 [agent](/langsmith/agents) 的 [environment](/langsmith/agent-environments#environment-names)。将其单独附加到 **生产** 以对生产流量进行评分，而无需对本地运行进行评分。<Note>
-  **基于项目的工作区。** 如果您的工作区按 [tracing project](/langsmith/observability-concepts#tracing-projects) 组织跟踪，则本部分适用。要进行检查，请查看左上角的控件。在基于项目的工作区中，它显示 LangSmith 徽标，侧边栏有一个带有应用程序选择器的 **Application** 部分。如果控件显示您的工作区名称，则您的工作区是基于代理的，位于 [beta](/langsmith/release-stages) 中。跳过本节并阅读[Agents](/langsmith/agents)。
+  **基于项目的工作区。** 如果您的工作区按 [tracing project](/langsmith/observability-concepts#tracing-projects) 组织跟踪，则本部分适用。要进行检查，请查看左上角的控件。在基于项目的工作区中，它显示 LangSmith 徽标，侧边栏有一个带有应用程序选择器的 **Application** 部分。如果控件显示您的工作区名称，则您的工作区是基于代理的。跳过本节并阅读[Agents](/langsmith/agents)。
 </Note>
 
 评估器附加到[tracing project](/langsmith/observability-concepts#tracing-projects)。
@@ -57,7 +57,7 @@ LangSmith中的[Evaluators](/langsmith/evaluation-concepts#evaluators)是[worksp
      |安全|评估内容的安全性和适度性。 |
      |品质 |测量输出质量和准确性。 |
      |对话 |评估对话质量和用户体验。 |
-     |轨迹 |评估代理工具的使用和决策路径。 |
+     |轨迹|评估代理工具的使用和决策路径。 |
      |图像评估|评估图像内容质量和安全性。 |
      |语音评估|评估语音和音频交互质量。 |
 
@@ -139,7 +139,7 @@ SDK尚不支持[decision model evaluators](/langsmith/decision-model-evaluator)�
 2. 展开评估器配置面板中的**高级**部分。
 3. 清除**延长迹线保留**。
 
-该更改适用于保存评估器后评分的轨迹。现有评分跟踪保留其当前保留级别。
+该更改适用于保存评估器后评分的轨迹。现有的评分跟踪保留其当前的保留级别。
 
 上面描述的 **扩展跟踪保留** 切换适用于跟踪级别和线程级别（多轮）在线评估器。有关多轮评估器的更多信息，请参阅[Set up multi-turn online evaluators](/langsmith/online-evaluations-multi-turn)。## 包括扩展统计数据
 
@@ -175,7 +175,7 @@ LangSmith 为启用此选项的评估者获取附加数据。仅当您的评估�
      and(eq(feedback_key, "correctness"), lt(feedback_score, 0.5))
      ```
 
-3. 如果第二个评估者读出第一个分数，[include extended stats](#include-extended-stats)。 LLM 作为法官评估者需要它，代码评估者使用它来可靠地读取分数。欲了解更多信息，请参阅[Read the first score](#read-the-first-score)。
+3. 如果第二个评估者读取第一个分数，[include extended stats](#include-extended-stats)。 LLM 法官评估者需要它，代码评估者使用它来可靠地读取分数。有关更多信息，请参阅[Read the first score](#read-the-first-score)。
 
 4. 保存评估器。
 

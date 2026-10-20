@@ -25,7 +25,7 @@
 
 换句话说，数据平面侦听器读取控制平面的最新状态（所需状态），并采取措施协调未完成的部署（当前状态）以匹配最新状态。
 
-## PostgreSQLPostgreSQL 存储服务器资源（线程、运行、助手、cron）和保存在 [long-term memory store](/oss/python/langgraph/persistence#memory-store) 中的项目。它也是[checkpoints](/oss/python/langgraph/persistence)（图执行状态）的默认后端。您可以选择将检查点存储在 MongoDB 中 - 请参阅[Configure checkpointer backend](/langsmith/configure-checkpointer)。无论检查点后端如何，PostgreSQL 始终是必需的。
+## PostgreSQLPostgreSQL 将服务器资源（线程、运行、助手、cron）和保存在[long-term memory store](/oss/python/langgraph/persistence#memory-store)中的项目存储起来。它也是[checkpoints](/oss/python/langgraph/persistence)（图执行状态）的默认后端。您可以选择将检查点存储在 MongoDB 中 - 请参阅[Configure checkpointer backend](/langsmith/configure-checkpointer)。无论检查点后端如何，PostgreSQL 始终是必需的。
 
 ## Redis
 
@@ -35,7 +35,7 @@
 
 代理服务器中的所有运行均由属于每个部署一部分的后台工作人员池执行。为了启用这些运行的某些功能（例如取消和输出流），我们需要一个用于服务器和处理特定运行的工作人员之间双向通信的通道。我们使用 Redis 来组织这种通信。1. Redis 列表用作在创建新运行时立即唤醒工作线程的机制。此列表中仅存储哨兵值，没有实际运行信息。然后工作程序从 PostgreSQL 检索运行信息。
 2. Redis 字符串和 Redis PubSub 通道的组合用于服务器将运行取消请求传达给适当的工作线程。
-3. 在处理运行时，工作线程使用 Redis PubSub 通道广播来自代理的流输出。服务器中任何打开的 `/stream` 请求都将订阅该通道，并在事件到达时将其转发到响应。 Redis 中任何时候都不会存储任何事件。
+3. 在处理运行时，工作线程使用 Redis PubSub 通道广播来自代理的流输出。服务器中任何打开的 `/stream` 请求都将订阅该通道，并在任何事件到达时将其转发到响应。 Redis 中任何时候都不会存储任何事件。
 
 ### 临时元数据
 
@@ -45,21 +45,13 @@
 
 ### 自动缩放
 
-[Dedicated type](/langsmith/cloud-platform-features#deployment-types) 部署自动跨容器扩展。扩展基于 3 个指标：
+在 LangSmith 云上，[Dedicated deployments](/langsmith/cloud-platform-features#scaling) 自动缩放单独的 API 服务器和队列工作池。无服务器部署可在零到一个副本之间扩展。
 
-1.CPU利用率
-2. 内存利用率
-3.待处理（进行中）数量[runs](/langsmith/runs)
+在自托管数据平面上，自动缩放取决于安装的操作员版本和配置。当前算子使用CPU进行HPA缩放。启用 KEDA 后，单独的队列工作线程还可以根据需要更多副本的指标在挂起和运行的[runs](/langsmith/runs)上进行扩展。两条路径均不使用内存作为缩放触发器。
 
-对于 CPU 利用率，自动缩放程序的目标是 75% 利用率。这意味着自动缩放器将增加或减少容器数量，以确保 CPU 利用率达到或接近 75%。对于内存利用率，自动缩放器的目标也是 75% 的利用率。
+CPU 目标是 CPU 限制的 50%：`queue_cpu_limit` 对于队列工作线程，`cpu_limit` 对于 API 服务器。 CPU 请求不会影响目标。例如，`queue_cpu: 0.3` 和 `queue_cpu_limit: 1.8` 为队列工作人员提供了每个 pod 900m 的目标。 KEDA 积压目标是每个工作人员已配置作业的 75%，向下舍入至少为 1。
 
-对于挂起运行的数量，自动缩放器的目标是 10 个挂起运行。例如，如果当前容器数量为 1，但挂起运行的数量为 20，则自动缩放程序会将部署扩展到 2 个容器（20 个挂起运行 / 2 个容器 = 每个容器 10 个挂起运行）。
-
-每个指标都是独立计算的，自动缩放器将根据导致容器数量最多的指标来确定缩放操作。这些指标并不都适用于每种容器类型。 [Queue workers](/langsmith/agent-server#runtime-architecture) 根据待处理的运行计数进行扩展 - 当积压的工作量增加时，更多的工作人员会启动以耗尽它。 [API servers](/langsmith/agent-server#runtime-architecture) CPU 和内存扩展，响应客户端请求量。这意味着运行提交的激增不会减慢读取操作（例如获取线程状态）。有关自托管配置的详细信息，请参阅[Configure Agent Server for scale](/langsmith/agent-server-scale)。
-
-在自承载数据平面上，CPU 触发器与上述利用率目标不同。该运算符将绝对 CPU 目标设置为 CPU 限制的 50%：对于队列工作线程为`queue_cpu_limit`，对于 API 服务器为`cpu_limit`。 CPU 请求不会影响目标。例如，`queue_cpu: 0.3` 和 `queue_cpu_limit: 1.8` 为队列工作人员提供了每个 pod 900m 的目标。
-
-要降低 CPU 请求而不更改部署扩展时间，请在 `resource_spec` 中发送请求和限制。如果忽略限制，则默认为请求的 2 倍，因此降低请求也会降低扩展目标。参见[Resource spec](/langsmith/api-ref-control-plane#resource-spec)。缩减规模行动会延迟 30 分钟，然后再采取任何行动。换句话说，如果自动缩放程序决定缩小部署规模，它将首先等待 30 分钟，然后再缩小规模。 30 分钟后，将重新计算指标，如果重新计算的指标导致容器数量少于当前数量，则部署将缩小。否则，部署仍会扩大。此“冷却”期可确保部署不会过于频繁地扩展和缩减。
+要降低 CPU 请求而不更改部署扩展时间，请在 `resource_spec` 中发送请求和限制。如果忽略限制，则默认为请求的 2 倍，因此降低请求也会降低扩展目标。参见[Resource spec](/langsmith/api-ref-control-plane#resource-spec)。缩小行为取决于自动缩放器和运算符版本。有关自托管配置的详细信息，请参阅[Configure Agent Server for scale](/langsmith/agent-server-scale)。
 
 ### MongoDB 检查点
 
@@ -69,19 +61,19 @@
 
 您可以使用 MongoDB 作为检查点存储的替代后端。配置后，MongoDB 仅处理检查点数据 - 所有其他服务器资源仍然需要 PostgreSQL。
 
-请参阅 [Configure checkpointer backend](/langsmith/configure-checkpointer) 了解设置说明。
+请参阅[Configure checkpointer backend](/langsmith/configure-checkpointer) 了解设置说明。
 
 ### LangSmith 追踪
 
-代理服务器自动配置为将跟踪发送到LangSmith。有关每个部署选项的详细信息，请参阅下表。|云|混合动力|自托管 |
+代理服务器自动配置为将跟踪发送到LangSmith。有关每个部署选项的详细信息，请参阅下表。
+
+|云|混合动力|自托管 |
 | - | - | - |
 |需要<br />追踪到LangSmith SaaS。 |可选<br />禁用跟踪或跟踪到LangSmith SaaS。 |可选<br />禁用跟踪，跟踪到LangSmith SaaS，或跟踪到自托管LangSmith。 |
 
 ### 遥测
 
-代理服务器会自动配置为报告遥测元数据以用于计费目的。有关每个部署选项的详细信息，请参阅下表。
-
-|云|混合动力|自托管 |
+代理服务器会自动配置为报告遥测元数据以用于计费目的。有关每个部署选项的详细信息，请参阅下表。|云|混合动力|自托管 |
 | - | - | - |
 |遥测数据发送至LangSmith SaaS。 |遥测数据发送至LangSmith SaaS。 |自我报告气隙许可证密钥的使用情况（审核）。<br />将遥测发送至 LangSmith SaaS 以获取 LangSmith 许可证密钥。 |
 

@@ -47,27 +47,29 @@
 
 当不同的标头值需要不同的限制时，请使用显式策略。
 
+要同时启用 [custom-header grouping in Usage](/langsmith/llm-gateway-monitoring#group-spend-by-custom-header)，请选择 **API 密钥** 并默认将限制应用于每个 API 密钥。通过配置**自定义标头的单独限制**来保持该策略处于启用状态。默认工作区和用户策略不启用此使用选项。此 API 密钥策略对每个 API 密钥和标头值对强制实施单独的上限；它不仅仅是分析设置。
+
 ## 添加显式标头条件
 
 明确的支出或速率限制策略可以匹配一个精确的标头值。使用显式策略为不同的标头值分配不同的限制。
 
-显式标头条件遵循以下规则：
-
-* **每个策略一个条件**：策略接受一个标头名称和一个值。
+显式标头条件遵循以下规则：* **每个策略一个条件**：策略接受一个标头名称和一个值。
 * **一个主题范围**：将条件与组织、工作区、用户或 API 密钥范围相结合。主题方接受多个值并匹配其中的任何一个。
 * **缺少标头不匹配**：没有配置标头的请求与策略不匹配。
 * **强制执行每个匹配策略**：同时匹配普通主题策略和具有标头条件的策略的请求对两者都计数，并且任何一个都可以阻止它。
-* **最多 10 个条件**：一份保单包含的主题条件总数不超过 10 个。1. 转至 **LLM 网关**。
+* **最多 10 个条件**：一份保单包含的主题条件总数不超过 10 个。
+
+1. 转至 **LLM 网关**。
 2. 单击**创建策略**。
 3. 选择策略类型和主题范围，然后设置限制。
 4. 在 **自定义标头条件（可选）** 下，输入不带 `X-Gateway-` 前缀的 **标头名称**（例如，`Customer-Id`）和要匹配的 **标头值**（例如，`acme`）。
 5. 保存。
 
-创建策略后，您无法在 UI 中编辑标头条件。要更改它，请删除策略并创建新策略，或通过 API 更新 `subject_matchers`。
+创建策略后，您无法在 UI 中编辑标头条件。要更改它，请删除策略并创建新策略，或通过 API 更新 `subject_matchers`。显式标头条件（包括组织级策略中的标头条件）不会在 **Usage** 中启用自定义标头分组。该选项需要启用 [Separate a default spend limit by header](#separate-a-default-spend-limit-by-header) 中描述的默认 API 密钥支出策略。
 
 ## 每个最终客户的支出上限
 
-经销商或多租户应用程序通常从其自己的后端调用网关，并代表许多最终客户使用一个工作区范围的 API 密钥。当每个客户需要不同的上限时，请使用显式标头条件。如果每个客户都使用相同的盖子，则改为[separate one default spend limit by header](#separate-a-default-spend-limit-by-header)。
+经销商或多租户应用程序通常从其自己的后端调用网关，并代表许多最终客户使用一个工作区范围的 API 密钥。当每个客户需要不同的上限时，请使用显式标头条件。如果每个顾客都使用相同的盖子，则改为[separate one default spend limit by header](#separate-a-default-spend-limit-by-header)。
 
 ### 步骤 1. 在每次通话时发送客户标头
 
@@ -148,11 +150,11 @@
   )
   response.raise_for_status()
   ```
-</CodeGroup>匹配器键是规范化名称`customer_id`，而不是标头名称`X-Gateway-Customer-Id`。该策略属于拥有 API 密钥的组织。
+</CodeGroup>
 
-发布 `subject_matchers` 已存在的策略会更新该策略，而不是添加重复项，因此可以安全地重复此调用。
+匹配器键是规范化名称`customer_id`，而不是标头名称`X-Gateway-Customer-Id`。该策略属于拥有 API 密钥的组织。
 
-### 步骤 3. 将政策与您的客户列表同步
+发布 `subject_matchers` 已存在的策略会更新该策略，而不是添加重复项，因此可以安全地重复此调用。### 步骤 3. 将政策与您的客户列表同步
 
 由于每个最终客户都需要自己的策略，因此请使策略设置与您的客户列表保持一致。以下脚本为每个当前客户创建或更新上限，然后删除已消失客户的上限：
 
@@ -249,7 +251,9 @@ for policy in response.json():
     print(customer, policy.get("current_spend_usd"), policy["config"]["limit_usd"])
 ```
 
-## 限制每个最终客户的吞吐量速率限制使用相同的主题匹配器。交换 `policy_type` 和 `config` 为最终客户提供自己的请求和代币限额：
+## 限制每个最终客户的吞吐量
+
+速率限制使用相同的主题匹配器。交换 `policy_type` 和 `config` 为最终客户提供自己的请求和代币限额：
 
 ```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 curl -X POST "https://api.smith.langchain.com/v1/platform/gateway-policies" \
@@ -271,9 +275,7 @@ curl -X POST "https://api.smith.langchain.com/v1/platform/gateway-policies" \
             ]
           }
         }'
-```
-
-[step 3](#step-3-sync-policies-with-your-customer-list) 中的同步脚本适用于具有相同两个替换的速率限制。支出上限和费率限制是不同的系列，因此最终客户可以在同一标头值上分别持有其中一项。
+```[step 3](#step-3-sync-policies-with-your-customer-list) 中的同步脚本适用于具有相同两个替换的速率限制。支出上限和费率限制是不同的系列，因此最终客户可以在同一标头值上分别持有其中一项。
 
 ## 后续步骤
 

@@ -9,7 +9,7 @@ The **Build** tab creates an agent inside LangSmith instead of in code. You fill
 Use it when you want a working agent without a local project or a deployment. Everything it produces is an [agent](/langsmith/agents) like any other, so its traces, dashboards, and evaluators behave the same as one you instrumented yourself.
 
 <Note>
-  **Beta.** Agent-based workspaces are in [beta](/langsmith/release-stages). LangChain enables agent-based workspaces for an organization, and the change applies to workspaces created after that. An existing [project-based](/langsmith/observability-concepts#tracing-projects) workspace does not convert automatically, but LangChain can convert it. To ask about access, [contact our sales team](https://www.langchain.com/contact-sales).
+  Agent-based workspaces are available on [LangSmith Cloud](/langsmith/cloud). They are not available on [self-hosted](/langsmith/self-hosted) LangSmith. To check whether your workspace is agent-based, look at the control at the top left. In an agent-based workspace, it is a workspace switcher that names your workspace. In a [project-based](/langsmith/observability-concepts#tracing-projects) workspace, it shows the LangSmith logo.
 </Note>
 
 <Note>

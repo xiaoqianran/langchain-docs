@@ -4,7 +4,7 @@
 
 ## 概述
 
-使用 LangChain [embeddings](/oss/python/integrations/embeddings) 和 [vector stores](/oss/python/integrations/vectorstores) 在 PDF 上构建语义搜索引擎。使用它检索类似于查询的段落，然后将检索器插入[retrieval-augmented generation (RAG)](/oss/python/deepagents/retrieval)或其他LLM工作流程。
+使用 LangChain [embeddings](/oss/python/integrations/embeddings) 和 [vector stores](/oss/python/integrations/vectorstores) 在 PDF 上构建语义搜索引擎。使用它来检索类似于查询的段落，然后将检索器插入[retrieval-augmented generation (RAG)](/oss/python/deepagents/retrieval)或其他LLM工作流程。
 
 本教程涵盖：
 
@@ -14,11 +14,11 @@
 4. 对向量存储中的块进行索引并通过相似性进行查询。
 5. 将商店包裹成猎犬。
 
-该指南还包括搜索引擎之上的最小 RAG 实现。
+该指南还包括在搜索引擎之上的最小 RAG 实现。
 
 ### 概念
 
-本教程重点关注文本检索并涵盖以下概念：
+本教程重点介绍文本检索并涵盖以下概念：
 
 * [⟦T76⟧](https://reference.langchain.com/python/langchain-core/documents/base/Document)
 * [Text splitters](/oss/python/integrations/splitters)
@@ -49,7 +49,7 @@
 
 ### 配置LangSmith
 
-您使用 LangChain 构建的许多应用程序将包含多个步骤，并多次调用 LLM 调用。
+您使用LangChain构建的许多应用程序将包含多个步骤以及多次调用LLM调用。
 随着这些应用程序变得越来越复杂，能够检查链或代理内部到底发生了什么变得至关重要。
 最好的方法是使用[LangSmith](https://smith.langchain.com?utm_source=docs\&utm_medium=cta\&utm_campaign=langsmith-signup\&utm_content=oss-langchain-knowledge-base)。在上面的链接注册后，请确保设置环境变量以开始记录跟踪：
 
@@ -293,7 +293,7 @@ LangChain 支持[many providers](/oss/python/integrations/embeddings/) 的嵌入
     if not os.environ.get("VOYAGE_API_KEY"):
         os.environ["VOYAGE_API_KEY"] = getpass.getpass("Enter API key for Voyage AI: ")
 
-    from langchain-voyageai import VoyageAIEmbeddings
+    from langchain_voyageai import VoyageAIEmbeddings
 
     embeddings = VoyageAIEmbeddings(model="voyage-3")
     ```
@@ -343,7 +343,7 @@ LangChain 支持[many providers](/oss/python/integrations/embeddings/) 的嵌入
     import os
 
     if not os.environ.get("ISAACUS_API_KEY"):
-    os.environ["ISAACUS_API_KEY"] = getpass.getpass("Enter API key for Isaacus: ")
+        os.environ["ISAACUS_API_KEY"] = getpass.getpass("Enter API key for Isaacus: ")
 
     from langchain_isaacus import IsaacusEmbeddings
 

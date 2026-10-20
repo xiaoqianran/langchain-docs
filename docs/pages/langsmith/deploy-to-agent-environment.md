@@ -9,7 +9,7 @@ Deploying to an agent environment binds a [deployment](/langsmith/deployment) to
 Use it to keep a staging build and a production build of the same agent apart, so each one reports into its own environment.
 
 <Note>
-  **Beta.** Agent-based workspaces are in [beta](/langsmith/release-stages). LangChain enables agent-based workspaces for an organization, and the change applies to workspaces created after that. An existing [project-based](/langsmith/observability-concepts#tracing-projects) workspace does not convert automatically, but LangChain can convert it. To ask about access, [contact our sales team](https://www.langchain.com/contact-sales).
+  Agent-based workspaces are available on [LangSmith Cloud](/langsmith/cloud). They are not available on [self-hosted](/langsmith/self-hosted) LangSmith. To check whether your workspace is agent-based, look at the control at the top left. In an agent-based workspace, it is a workspace switcher that names your workspace. In a [project-based](/langsmith/observability-concepts#tracing-projects) workspace, it shows the LangSmith logo.
 </Note>
 
 ## Prerequisites
@@ -27,7 +27,7 @@ An org-scoped API key also needs the workspace, and each CLI reads it from a dif
 Both CLIs take the same two flags:
 
 * **`--agent-id`**: The agent to deploy to. The value is the agent's identifier, not its display name. For which value is which, see [Identifiers and display names](/langsmith/agents#identifiers-and-display-names).
-* **`--agent-environment`**: The environment the deployment reports into, and one of `development`, `staging`, or `production`. A deployment cannot take `local`. That environment [does not display on deployments](/langsmith/agent-environments#select-an-environment) at all, which is the one way this set differs from the four values [agent addressing](/langsmith/log-traces-to-agent#addressing-variables) accepts.
+* **`--agent-environment`**: The environment the deployment reports into, and one of `development`, `staging`, or `production`. A deployment cannot take `local`. That environment [does not display on deployments](/langsmith/agent-environments#select-an-environment) at all, which is the one way this set differs from the four values the [agent variables](/langsmith/log-traces-to-agent#using-environment-variables) accept.
 
 The flags name the same pair that agent addressing names on the tracing side. The LangGraph CLI also reads the flags from the same two variables, `LANGSMITH_AGENT_ID` and `LANGSMITH_AGENT_ENVIRONMENT`. The `mda` CLI does not read those variables, so pass the flags to it directly.
 

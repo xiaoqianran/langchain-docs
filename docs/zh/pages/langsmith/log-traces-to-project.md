@@ -9,7 +9,7 @@
 本页介绍项目寻址，它通过命名跟踪项目所在的跟踪来路由跟踪。[Agent addressing](/langsmith/log-traces-to-agent) 是替代方案，跟踪使用其中之一而不是两者。
 
 <Note>
-  **基于项目的工作区。** 如果您的工作区按 [tracing project](/langsmith/observability-concepts#tracing-projects) 组织跟踪，则本部分适用。要进行检查，请查看左上角的控件。在基于项目的工作区中，它显示 LangSmith 徽标，并且侧边栏具有带有应用程序选择器的 **应用程序** 部分。如果控件显示您的工作区名称，则您的工作区是基于代理的，位于 [beta](/langsmith/release-stages) 中。跳过本节并阅读[Agents](/langsmith/agents)。
+  **基于项目的工作区。** 如果您的工作区按 [tracing project](/langsmith/observability-concepts#tracing-projects) 组织跟踪，则本部分适用。要进行检查，请查看左上角的控件。在基于项目的工作区中，它显示 LangSmith 徽标，并且侧边栏具有带有应用程序选择器的 **应用程序** 部分。如果控件显示您的工作区名称，则您的工作区是基于代理的。跳过本节并阅读[Agents](/langsmith/agents)。
 </Note>
 
 本页介绍如何控制 LangSmith 发送痕迹的位置：
@@ -22,13 +22,13 @@
 
 ## 静态设置目标项目
 
-LangSmith 使用 [*project*](/langsmith/observability-concepts#tracing-projects) 的概念对迹线进行分组。如果未指定，项目将设置为 `default`。您可以设置 `LANGSMITH_PROJECT` 环境变量来为整个应用程序运行配置自定义项目名称。在运行应用程序之前进行设置：
+LangSmith 使用 [*project*](/langsmith/observability-concepts#tracing-projects) 的概念对迹线进行分组。如果未指定，项目将设置为 `default`。
+
+您可以设置 `LANGSMITH_PROJECT` 环境变量来为整个应用程序运行配置自定义项目名称。在运行应用程序之前进行设置：
 
 ```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 export LANGSMITH_PROJECT=my-custom-project
-```
-
-<Warning>
+```<Warning>
   仅 JS SDK 0.2.16 或更高版本支持 `LANGSMITH_PROJECT` 标志，如果您使用的是旧版本，请使用 `LANGCHAIN_PROJECT` 代替。
 </Warning>
 
@@ -224,12 +224,12 @@ export LANGSMITH_PROJECT=my-custom-project
   ```
 </CodeGroup>
 
-## 动态设置目标工作空间如果您需要根据运行时配置将跟踪动态路由到不同的LangSmith[workspaces](/langsmith/administration-overview#workspaces)（例如，将不同的用户或租户路由到单独的工作区），则方法因语言而异：
+## 动态设置目标工作空间
+
+如果您需要根据运行时配置将跟踪动态路由到不同的LangSmith[workspaces](/langsmith/administration-overview#workspaces)（例如，将不同的用户或租户路由到单独的工作区），则方法因语言而异：
 
 * **Python**：将工作区特定的 LangSmith 客户端与 [⟦T13⟧](/langsmith/annotate-code#use-the-trace-context-manager-python-only) 结合使用。
-* **TypeScript**：将自定义客户端传递给[⟦T14⟧](/langsmith/annotate-code#use-%40traceable-%2F-traceable)，或使用带有回调的`LangChainTracer`。
-
-此方法对于您希望在工作区级别按客户、环境或团队隔离跟踪的多租户应用程序非常有用。它适用于任何与LangSmith兼容的跟踪，包括LangChain、OpenAI以及用`@traceable`修饰的自定义函数。
+* **TypeScript**：将自定义客户端传递给[⟦T14⟧](/langsmith/annotate-code#use-%40traceable-%2F-traceable)，或将`LangChainTracer`与回调一起使用。此方法对于您希望在工作区级别按客户、环境或团队隔离跟踪的多租户应用程序非常有用。它适用于任何LangSmith兼容的跟踪，包括LangChain、OpenAI以及用`@traceable`修饰的自定义函数。
 
 ### 先决条件
 
@@ -240,7 +240,9 @@ export LANGSMITH_PROJECT=my-custom-project
 
 对于想要根据运行时逻辑（例如客户 ID、租户或环境）将跟踪动态路由到不同工作区的一般应用程序，请使用此方法。
 
-**关键部件：**1. 使用各自的 `workspace_id` 为每个工作区初始化单独的 `Client` 实例。
+**关键部件：**
+
+1. 使用各自的 `workspace_id` 为每个工作区初始化单独的 `Client` 实例。
 2. 使用 `tracing_context` (Python) 或将工作区特定的 `client` 传递给 `traceable` (TypeScript) 来路由跟踪。
 3. 通过应用程序的运行时配置传递工作区配置。
 4. 覆盖每条路径的工作区和项目名称，以在每个工作区中进一步组织跟踪。
@@ -363,9 +365,7 @@ export LANGSMITH_PROJECT=my-custom-project
   ```
 </CodeGroup>
 
-### 覆盖 LangSmith 部署的默认工作区
-
-当 [deploying agents](/langsmith/deployment) 到 LangSmith 时，您可以使用图形生命周期上下文管理器覆盖跟踪发送到的默认工作区。当您想要根据通过 `config` 参数传递的运行时配置将跟踪从已部署的代理路由到不同的工作区时，这非常有用。
+### 覆盖 LangSmith 部署的默认工作区当 [deploying agents](/langsmith/deployment) 到 LangSmith 时，您可以使用图形生命周期上下文管理器覆盖跟踪发送到的默认工作区。当您想要根据通过 `config` 参数传递的运行时配置将跟踪从已部署的代理路由到不同的工作区时，这非常有用。
 
 <CodeGroup>
   ```python Python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
@@ -540,7 +540,9 @@ export LANGSMITH_PROJECT=my-custom-project
   使用跨工作区跟踪进行部署时，请确保您的服务密钥或 PAT 具有所有目标工作区的必要权限。我们建议使用多工作区服务密钥进行生产部署。对于 LangSmith 部署，您必须添加可跨工作空间访问环境变量的服务密钥（例如，`LS_CROSS_WORKSPACE_KEY`），以覆盖部署生成的默认服务密钥。
 </Note>
 
-***<div>
+***
+
+<div>
   <Callout icon="terminal-2">
     [Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
   </Callout>
