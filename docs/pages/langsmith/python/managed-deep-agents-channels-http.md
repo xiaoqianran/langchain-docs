@@ -8,19 +8,17 @@ An HTTP channel turns a managed deep agent into an HTTP endpoint that any extern
 
 You supply two callbacks: one that authenticates the request, and one that converts it into a message, naming the caller and the conversation it belongs to. Managed Deep Agents owns the trusted handoff, the agent run, and the reply. For the provider-managed alternative, see [Slack](/langsmith/python/managed-deep-agents-channels-slack).
 
-<Note>
-  Managed Deep Agents is in **public [beta](/langsmith/release-stages)** on [LangSmith Cloud](/langsmith/cloud).
-</Note>
+> [!NOTE]
+>
+> Managed Deep Agents is in **public [beta](/langsmith/release-stages)** on [LangSmith Cloud](/langsmith/cloud).
 
-<Note>
-  HTTP channels require `managed-deepagents>=0.8.0`.
-</Note>
+> [!NOTE]
+>
+> HTTP channels require `managed-deepagents>=0.8.0`.
 
 `verify`, `parse`, and the optional `post` sit between the external service and the agent run:
 
-<img alt="Three-row flow diagram. In the external service row, an inbound event arrives as a provider webhook, and a reply is delivered to the user by the provider. In your code row, verify checks the signature, parse extracts content and a thread ID and returns a message, and post sends the reply to the target. In the Managed Deep Agents row, the agent run executes on the thread and hands its response to post." />
-
-<img alt="Three-row flow diagram. In the external service row, an inbound event arrives as a provider webhook, and a reply is delivered to the user by the provider. In your code row, verify checks the signature, parse extracts content and a thread ID and returns a message, and post sends the reply to the target. In the Managed Deep Agents row, the agent run executes on the thread and hands its response to post." />
+![Three-row flow diagram. In the external service row, an inbound event arrives as a provider webhook, and a reply is delivered to the user by the provider. In your code row, verify checks the signature, parse extracts content and a thread ID and returns a message, and post sends the reply to the target. In the Managed Deep Agents row, the agent run executes on the thread and hands its response to post.](https://mintcdn.com/langchain-5e9cc07a/wGNSNd-dDeMyJxte/langsmith/images/http-channel-flow-light.png?fit=max\&auto=format\&n=wGNSNd-dDeMyJxte\&q=85\&s=fe9d50b87d5630b839dd1513ab508017)
 
 ## Project structure
 
@@ -37,161 +35,159 @@ The file name becomes the channel name and the endpoint path. A project can decl
 
 ## Add an HTTP channel
 
-<Steps>
-  <Step title="Declare the channel">
-    ```python channels/orders.py theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-    from managed_deepagents import channels
+**1. Declare the channel**
 
-    from lib.orders import parse, verify
+```python channels/orders.py theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+from managed_deepagents import channels
 
-    channel = channels.http(
-        provider="orders",
-        verify=verify,
-        parse=parse,
-    )
-    ```
+from lib.orders import parse, verify
 
-    `provider` names the external service, and it is separate from the channel name. Managed Deep Agents sends it to Agent Auth with the caller's ID, resolving the [principal](/langsmith/python/managed-deep-agents-identity) whose credentials the run may use. The provider therefore namespaces caller IDs.
+channel = channels.http(
+    provider="orders",
+    verify=verify,
+    parse=parse,
+)
+```
 
-    Share one provider across channels that serve the same service. Two Shopify channels, `channels/orders` and `channels/refunds`, both declaring `provider: "shopify"`, resolve the same Shopify user to one principal. A channel declaring `provider: "slack"` resolves to a different principal, even when the caller ID is identical.
+`provider` names the external service, and it is separate from the channel name. Managed Deep Agents sends it to Agent Auth with the caller's ID, resolving the [principal](/langsmith/python/managed-deep-agents-identity) whose credentials the run may use. The provider therefore namespaces caller IDs.
 
-    Declaring the channel registers the provider, so any non-empty name works.
-  </Step>
+Share one provider across channels that serve the same service. Two Shopify channels, `channels/orders` and `channels/refunds`, both declaring `provider: "shopify"`, resolve the same Shopify user to one principal. A channel declaring `provider: "slack"` resolves to a different principal, even when the caller ID is identical.
 
-  <Step title="Verify the request">
-    Managed Deep Agents calls `verify` first. Return `True` to continue to `parse`, or `False` to reject the request with `401`. `verify` may be `async def`.
+Declaring the channel registers the provider, so any non-empty name works.
 
-    `verify` receives an `HttpChannelRequest` with a Starlette `request` and the original `raw_body` bytes. Check a signature against the bytes, not against a re-serialized body:
+**2. Verify the request**
 
-    ```python lib/orders.py theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-    import hashlib
-    import hmac
-    import os
+Managed Deep Agents calls `verify` first. Return `True` to continue to `parse`, or `False` to reject the request with `401`. `verify` may be `async def`.
 
-    from managed_deepagents import HttpChannelRequest
+`verify` receives an `HttpChannelRequest` with a Starlette `request` and the original `raw_body` bytes. Check a signature against the bytes, not against a re-serialized body:
 
+```python lib/orders.py theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+import hashlib
+import hmac
+import os
 
-    def verify(context: HttpChannelRequest) -> bool:
-        secret = os.environ["ORDERS_WEBHOOK_SECRET"]
-        digest = hmac.new(secret.encode(), context.raw_body, hashlib.sha256).hexdigest()
-        received = context.request.headers.get("x-orders-signature", "")
-        return hmac.compare_digest(f"sha256={digest}", received)
-    ```
-
-    <Warning>
-      The endpoint has no platform authentication. Channel event routes authenticate inside the adapter, not through Managed Deep Agents ingress. That makes `verify` the only thing standing between the public internet and an agent run. Always check a signature or a shared secret, and never accept a request unconditionally.
-    </Warning>
-
-    Use a [deployment secret](/langsmith/python/managed-deep-agents-deploy) for the signing key. A `verify` callback that raises rejects the request with `500`.
-
-    Resolve channel credentials from the environment, not with `connections.get`, which requires a run. For credentials the agent's tools use during a run, see [Manage connections](/langsmith/python/managed-deep-agents-connections).
-  </Step>
-
-  <Step title="Parse the request into a message">
-    `parse` converts a verified request into a message that starts a run, or ignores the event. It receives the same `HttpChannelRequest` as `verify`, so request headers are available here too, and it may be asynchronous. Return one of two shapes:
-
-    * `{"type": "message", "message": {...}}` starts a run.
-    * `{"type": "ignore"}` skips the event.
-
-    Both accept an optional `response`, a Starlette `Response`.
-
-    The message carries four required fields:
-
-    * **`user_id`**: The caller's ID in the external service, as a string, resolved from the verified event. Agent Auth maps it to the principal whose credentials the run may use, so derive it from verified data rather than from an unauthenticated field. Convert a numeric provider ID with `str()`.
-    * **`thread_id`**: The conversation to run in, as a UUID. Managed Deep Agents lowercases it and maps it to a durable agent thread, so the same value continues the same conversation.
-    * **`target`**: A JSON value that identifies the reply destination in the provider. This is separate from the agent thread UUID. Include it even when the channel only starts runs.
-    * **`content`**: The message text, or a list of LangChain content blocks.
-
-    <Warning>
-      `thread_id` must be a UUID. Managed Deep Agents rejects any other value with `400`, so map an external conversation ID to a UUID before returning it, for example with `uuid.uuid5`.
-    </Warning>
-
-    Add `parse` to the `lib/orders` file that contains `verify`. Combine the imports from both examples at the top of the file, keeping only one import of `HttpChannelRequest`:
-
-    ```python lib/orders.py theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-    import json
-    from langsmith import uuid7
-    from managed_deepagents import HttpChannelParseResult, HttpChannelRequest
-
-    ORDERS_NAMESPACE = uuid.UUID("6f0c9a3e-8f1a-4f5e-9c2b-7d4e1a2b3c4d")
+from managed_deepagents import HttpChannelRequest
 
 
-    def parse(context: HttpChannelRequest) -> HttpChannelParseResult:
-        event = json.loads(context.raw_body)
-        if event.get("type") != "order.comment":
-            return {"type": "ignore"}
-        return {
-            "type": "message",
-            "message": {
-                "user_id": str(event["actor"]["id"]),
-                "thread_id": str(uuid.uuid5(ORDERS_NAMESPACE, str(event["order"]["id"]))),
-                "content": event["comment"]["body"],
-                "target": str(event["order"]["id"]),
-            },
-            "raw_event": event,
-        }
-    ```
+def verify(context: HttpChannelRequest) -> bool:
+    secret = os.environ["ORDERS_WEBHOOK_SECRET"]
+    digest = hmac.new(secret.encode(), context.raw_body, hashlib.sha256).hexdigest()
+    received = context.request.headers.get("x-orders-signature", "")
+    return hmac.compare_digest(f"sha256={digest}", received)
+```
 
-    Return a `response` to control what the provider receives. Managed Deep Agents sends it after the run is accepted for a message, and immediately for an ignored event. Use it to answer a provider's verification challenge without starting a run:
+> [!WARNING]
+>
+> The endpoint has no platform authentication. Channel event routes authenticate inside the adapter, not through Managed Deep Agents ingress. That makes `verify` the only thing standing between the public internet and an agent run. Always check a signature or a shared secret, and never accept a request unconditionally.
 
-    This example uses Starlette's `JSONResponse`. Add Starlette to your project dependencies before using it:
+Use a [deployment secret](/langsmith/python/managed-deep-agents-deploy) for the signing key. A `verify` callback that raises rejects the request with `500`.
 
-    ```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-    uv add "starlette>=1.6.0"
-    ```
+Resolve channel credentials from the environment, not with `connections.get`, which requires a run. For credentials the agent's tools use during a run, see [Manage connections](/langsmith/python/managed-deep-agents-connections).
 
-    ```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-    from starlette.responses import JSONResponse
+**3. Parse the request into a message**
 
+`parse` converts a verified request into a message that starts a run, or ignores the event. It receives the same `HttpChannelRequest` as `verify`, so request headers are available here too, and it may be asynchronous. Return one of two shapes:
+
+* `{"type": "message", "message": {...}}` starts a run.
+* `{"type": "ignore"}` skips the event.
+
+Both accept an optional `response`, a Starlette `Response`.
+
+The message carries four required fields:
+
+* **`user_id`**: The caller's ID in the external service, as a string, resolved from the verified event. Agent Auth maps it to the principal whose credentials the run may use, so derive it from verified data rather than from an unauthenticated field. Convert a numeric provider ID with `str()`.
+* **`thread_id`**: The conversation to run in, as a UUID. Managed Deep Agents lowercases it and maps it to a durable agent thread, so the same value continues the same conversation.
+* **`target`**: A JSON value that identifies the reply destination in the provider. This is separate from the agent thread UUID. Include it even when the channel only starts runs.
+* **`content`**: The message text, or a list of LangChain content blocks.
+
+> [!WARNING]
+>
+> `thread_id` must be a UUID. Managed Deep Agents rejects any other value with `400`, so map an external conversation ID to a UUID before returning it, for example with `uuid.uuid5`.
+
+Add `parse` to the `lib/orders` file that contains `verify`. Combine the imports from both examples at the top of the file, keeping only one import of `HttpChannelRequest`:
+
+```python lib/orders.py theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+import json
+from langsmith import uuid7
+from managed_deepagents import HttpChannelParseResult, HttpChannelRequest
+
+ORDERS_NAMESPACE = uuid.UUID("6f0c9a3e-8f1a-4f5e-9c2b-7d4e1a2b3c4d")
+
+
+def parse(context: HttpChannelRequest) -> HttpChannelParseResult:
+    event = json.loads(context.raw_body)
+    if event.get("type") != "order.comment":
+        return {"type": "ignore"}
     return {
-        "type": "ignore",
-        "response": JSONResponse({"challenge": event["challenge"]}),
+        "type": "message",
+        "message": {
+            "user_id": str(event["actor"]["id"]),
+            "thread_id": str(uuid.uuid5(ORDERS_NAMESPACE, str(event["order"]["id"]))),
+            "content": event["comment"]["body"],
+            "target": str(event["order"]["id"]),
+        },
+        "raw_event": event,
     }
-    ```
-  </Step>
+```
 
-  <Step title="Send replies with post">
-    Add an async `post` callback to deliver the agent's final response to the external service. Omit it for a channel that only starts runs.
+Return a `response` to control what the provider receives. Managed Deep Agents sends it after the run is accepted for a message, and immediately for an ignored event. Use it to answer a provider's verification challenge without starting a run:
 
-    `post` receives one input with the verified `target` and a message. Automatic replies use `type: "content"` with a `content` field. Explicit native messages use `type: "native"` with a `native` field. Return the posted message `id` and an optional `url`.
+This example uses Starlette's `JSONResponse`. Add Starlette to your project dependencies before using it:
 
-    These examples support content messages and reject native messages. The `target` is the order ID returned by `parse`.
+```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+uv add "starlette>=1.6.0"
+```
 
-    ```python channels/orders.py theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-    import os
+```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+from starlette.responses import JSONResponse
 
-    import httpx
-    from managed_deepagents import HttpChannelPostInput, HttpPostedMessage, channels
+return {
+    "type": "ignore",
+    "response": JSONResponse({"challenge": event["challenge"]}),
+}
+```
 
-    from lib.orders import parse, verify
+**4. Send replies with post**
+
+Add an async `post` callback to deliver the agent's final response to the external service. Omit it for a channel that only starts runs.
+
+`post` receives one input with the verified `target` and a message. Automatic replies use `type: "content"` with a `content` field. Explicit native messages use `type: "native"` with a `native` field. Return the posted message `id` and an optional `url`.
+
+These examples support content messages and reject native messages. The `target` is the order ID returned by `parse`.
+
+```python channels/orders.py theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+import os
+
+import httpx
+from managed_deepagents import HttpChannelPostInput, HttpPostedMessage, channels
+
+from lib.orders import parse, verify
 
 
-    async def post(input: HttpChannelPostInput) -> HttpPostedMessage:
-        if input["type"] != "content":
-            raise ValueError("This adapter supports content messages only")
-        async with httpx.AsyncClient() as client:
-            response = await client.post(
-                "https://orders.example.com/api/comments",
-                headers={"authorization": f"Bearer {os.environ['ORDERS_API_TOKEN']}"},
-                json={"order_id": input["target"], "body": input["content"]},
-            )
-            response.raise_for_status()
-        return {"id": str(response.json()["id"])}
+async def post(input: HttpChannelPostInput) -> HttpPostedMessage:
+    if input["type"] != "content":
+        raise ValueError("This adapter supports content messages only")
+    async with httpx.AsyncClient() as client:
+        response = await client.post(
+            "https://orders.example.com/api/comments",
+            headers={"authorization": f"Bearer {os.environ['ORDERS_API_TOKEN']}"},
+            json={"order_id": input["target"], "body": input["content"]},
+        )
+        response.raise_for_status()
+    return {"id": str(response.json()["id"])}
 
 
-    channel = channels.http(
-        provider="orders",
-        verify=verify,
-        parse=parse,
-        post=post,
-    )
-    ```
+channel = channels.http(
+    provider="orders",
+    verify=verify,
+    parse=parse,
+    post=post,
+)
+```
 
-    Managed Deep Agents posts the reply after the run finishes, separately from the response the provider already received. Two cases produce no reply: a run that pauses on an [interrupt](/langsmith/python/managed-deep-agents-tools#respond-to-an-interrupt), and a run whose agent already delivered a final message itself. A failed `post` is logged as a delivery failure.
+Managed Deep Agents posts the reply after the run finishes, separately from the response the provider already received. Two cases produce no reply: a run that pauses on an [interrupt](/langsmith/python/managed-deep-agents-tools#respond-to-an-interrupt), and a run whose agent already delivered a final message itself. A failed `post` is logged as a delivery failure.
 
-    Add an optional async `on_error(error, target)` callback to handle run or delivery failures. It replaces the default error reply. It receives the verified reply target.
-  </Step>
-</Steps>
+Add an optional async `on_error(error, target)` callback to handle run or delivery failures. It replaces the default error reply. It receives the verified reply target.
 
 ## Call the endpoint
 
@@ -250,12 +246,6 @@ Put the signing key and any reply credentials in the project `.env` so `mda depl
 
 ***
 
-<div>
-  <Callout icon="terminal-2">
-    [Connect these docs](/use-these-docs) to your agent of choice via MCP for real-time answers.
-  </Callout>
+[Connect these docs](/use-these-docs) to your agent of choice via MCP for real-time answers.
 
-  <Callout icon="edit">
-    [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/managed-deep-agents-channels-http.mdx) or [file an issue](https://github.com/langchain-ai/docs/issues/new/choose).
-  </Callout>
-</div>
+[Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/managed-deep-agents-channels-http.mdx) or [file an issue](https://github.com/langchain-ai/docs/issues/new/choose).

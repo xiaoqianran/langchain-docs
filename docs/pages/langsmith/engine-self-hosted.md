@@ -4,11 +4,11 @@
 
 Set up LangSmith Engine on a self-hosted LangSmith instance or a BYOC data plane, including model provider options and external network requirements.
 
-<Info>
-  Self-hosted Engine requires LangSmith Helm chart `0.16.0` or later and a license that includes the Engine entitlement. It is not available on earlier chart versions. [Contact our sales team](https://www.langchain.com/contact-sales) to have the entitlement added to your order.
-
-  Running Engine on [your own model providers](/langsmith/engine-self-hosted-model-providers) and [air-gapped installations](#air-gapped-installations) require LangSmith Helm chart `0.17.0` or later. Earlier chart versions run Engine only on [LangSmith Intelligence](#langsmith-intelligence).
-</Info>
+> [!NOTE]
+>
+> Self-hosted Engine requires LangSmith Helm chart `0.16.0` or later and a license that includes the Engine entitlement. It is not available on earlier chart versions. [Contact our sales team](https://www.langchain.com/contact-sales) to have the entitlement added to your order.
+>
+> Running Engine on [your own model providers](/langsmith/engine-self-hosted-model-providers) and [air-gapped installations](#air-gapped-installations) require LangSmith Helm chart `0.17.0` or later. Earlier chart versions run Engine only on [LangSmith Intelligence](#langsmith-intelligence).
 
 In self-hosted LangSmith, [LangSmith Engine](/langsmith/engine)'s analysis and fix workflow runs in your environment. Engine sends the trace content and code it needs to its models, which run either on LangSmith Intelligence (LSI) or on your own model providers. It reports usage metadata to LSI for billing, unless your installation is [air-gapped](#air-gapped-installations).
 
@@ -16,9 +16,9 @@ This page covers how to [choose how Engine runs its models](#choose-how-engine-r
 
 Engine also runs on [BYOC](/langsmith/byoc) data planes, where LangChain installs and operates it for you. See [Engine on BYOC](#engine-on-byoc) for what differs.
 
-<Note>
-  Red teaming and automatic issue validation are unavailable on self-hosted LangSmith and BYOC. You can investigate issues, generate fixes, and open PRs without those features.
-</Note>
+> [!NOTE]
+>
+> Red teaming and automatic issue validation are unavailable on self-hosted LangSmith and BYOC. You can investigate issues, generate fixes, and open PRs without those features.
 
 ## Engine on BYOC
 
@@ -55,15 +55,9 @@ Each organization chooses how Engine runs its models under **Settings > Engine >
 
 For LangSmith Intelligence in other clouds or regions, [contact our sales team](https://www.langchain.com/contact-sales).
 
-<Columns>
-  <Frame>
-    <img alt="Architecture diagram of self-hosted LangSmith in your VPC connected to LangSmith Intelligence and Bedrock in LangChain's AWS environment." />
-  </Frame>
+![Architecture diagram of self-hosted LangSmith in your VPC connected to LangSmith Intelligence and Bedrock in LangChain's AWS environment.](https://mintcdn.com/langchain-5e9cc07a/ry58UzmmALISsnzO/langsmith/images/engine-self-hosted-aws.png?fit=max\&auto=format\&n=ry58UzmmALISsnzO\&q=85\&s=ae209b16e4cf2ad7199e7ea6bb333f84)
 
-  <Frame>
-    <img alt="Architecture diagram of self-hosted LangSmith in your VPC sending model inference to your model providers and usage metadata to LangChain's cloud." />
-  </Frame>
-</Columns>
+![Architecture diagram of self-hosted LangSmith in your VPC sending model inference to your model providers and usage metadata to LangChain's cloud.](https://mintcdn.com/langchain-5e9cc07a/YV2_h1H0dQOJtIWY/langsmith/images/engine-self-hosted-byok.png?fit=max\&auto=format\&n=YV2_h1H0dQOJtIWY\&q=85\&s=772a34376f553f8a07ce36f96a4b0f81)
 
 ### LangSmith Intelligence
 
@@ -121,129 +115,125 @@ Engine also adds configuration to `platform-backend` and `ingest-queue`, which d
 
 ### Prerequisites
 
-<Steps>
-  <Step title="Enable Sandboxes">
-    Complete [Enable Sandboxes](/langsmith/enable-self-hosted-sandboxes) first, including the KVM-capable node pool and JuiceFS storage.
+**1. Enable Sandboxes**
 
-    Engine's sandboxes are associated with one workspace. An install with Engine must have a [shared organization](/langsmith/administration-overview#organizations). When the install has one shared organization, LangSmith uses its oldest active workspace by default, even if the organization has multiple workspaces. To use a dedicated workspace instead, create the workspace and set `engine.sandboxTenantId` to its ID. If the install has multiple shared organizations, you must set `engine.sandboxTenantId` because LangSmith does not choose between organizations automatically.
+Complete [Enable Sandboxes](/langsmith/enable-self-hosted-sandboxes) first, including the KVM-capable node pool and JuiceFS storage.
 
-    <Warning>
-      Use a workspace reserved for Engine:
+Engine's sandboxes are associated with one workspace. An install with Engine must have a [shared organization](/langsmith/administration-overview#organizations). When the install has one shared organization, LangSmith uses its oldest active workspace by default, even if the organization has multiple workspaces. To use a dedicated workspace instead, create the workspace and set `engine.sandboxTenantId` to its ID. If the install has multiple shared organizations, you must set `engine.sandboxTenantId` because LangSmith does not choose between organizations automatically.
 
-      * Engine's sandboxes are not billed on the Sandboxes product because Engine meters its own usage in LSUs.
-      * Engine's sandboxes use the same concurrent sandbox, CPU, and memory quotas as other sandboxes in the workspace. If the workspace is near its limits, Engine runs can fail or leave less capacity for interactive sandboxes.
-      * Engine's sandboxes are listed in that workspace and can be stopped by anyone with access to it.
-      * Each sandbox runs agent-generated code.
-      * Repository credentials remain in the sandbox auth proxy and are not available to code running inside the sandbox.
-    </Warning>
-  </Step>
+> [!WARNING]
+>
+> Use a workspace reserved for Engine:
+>
+> * Engine's sandboxes are not billed on the Sandboxes product because Engine meters its own usage in LSUs.
+> * Engine's sandboxes use the same concurrent sandbox, CPU, and memory quotas as other sandboxes in the workspace. If the workspace is near its limits, Engine runs can fail or leave less capacity for interactive sandboxes.
+> * Engine's sandboxes are listed in that workspace and can be stopped by anyone with access to it.
+> * Each sandbox runs agent-generated code.
+> * Repository credentials remain in the sandbox auth proxy and are not available to code running inside the sandbox.
 
-  <Step title="Confirm the license entitlement">
-    Engine is licensed separately, in the same way as Sandboxes. Your license must carry the Engine entitlement. LangSmith validates your license key against `https://beacon.langchain.com` at startup and periodically thereafter, so the entitlement takes effect without you changing any configuration once it is added to your order.
-  </Step>
+**2. Confirm the license entitlement**
 
-  <Step title="Allow egress to LangSmith Intelligence and your model providers">
-    Set `engine.intelligenceBaseUrl` for how Engine runs its models, and allow outbound HTTPS from the cluster to that URL:
+Engine is licensed separately, in the same way as Sandboxes. Your license must carry the Engine entitlement. LangSmith validates your license key against `https://beacon.langchain.com` at startup and periodically thereafter, so the entitlement takes effect without you changing any configuration once it is added to your order.
 
-    | **Engine runs its models on** | **`engine.intelligenceBaseUrl`** |
-    | - | - |
-    | LangSmith Intelligence | `https://beacon.aws.langchain.com/intelligence` |
-    | Your own model providers | `https://beacon.langchain.com/intelligence` (the default) |
-    | Your own model providers, air-gapped | `""` (see [Air-gapped installations](#air-gapped-installations)) |
+**3. Allow egress to LangSmith Intelligence and your model providers**
 
-    The AWS URL also records usage, so it works for organizations on either option. The default URL only records usage, on the same host self-hosted LangSmith already uses for license verification and billing telemetry, so it adds a path rather than a new egress destination.
+Set `engine.intelligenceBaseUrl` for how Engine runs its models, and allow outbound HTTPS from the cluster to that URL:
 
-    On chart 0.16, `engine.intelligenceBaseUrl` has no default and Engine runs only on LangSmith Intelligence, so set it to `https://beacon.aws.langchain.com/intelligence`.
+| **Engine runs its models on** | **`engine.intelligenceBaseUrl`** |
+| - | - |
+| LangSmith Intelligence | `https://beacon.aws.langchain.com/intelligence` |
+| Your own model providers | `https://beacon.langchain.com/intelligence` (the default) |
+| Your own model providers, air-gapped | `""` (see [Air-gapped installations](#air-gapped-installations)) |
 
-    If Engine runs on your own model providers, also allow outbound HTTPS from the `standalone-insights` pods to each provider's API endpoint. To keep that traffic on private networking, see [Connect to your providers privately](/langsmith/engine-self-hosted-model-providers#connect-to-your-providers-privately).
+The AWS URL also records usage, so it works for organizations on either option. The default URL only records usage, on the same host self-hosted LangSmith already uses for license verification and billing telemetry, so it adds a path rather than a new egress destination.
 
-    Add each destination as a specific allowlist entry rather than opening general egress. To keep traffic to LangSmith Intelligence on private networking, [connect with AWS PrivateLink](/langsmith/engine-self-hosted-model-providers#connect-with-aws-privatelink). Requests to LangSmith Intelligence use a short-lived license JWT obtained during LangSmith license verification. Engine's traffic is separate from the billing and operational telemetry described in [Configure egress](/langsmith/self-host-egress), even where it shares a host.
-  </Step>
+On chart 0.16, `engine.intelligenceBaseUrl` has no default and Engine runs only on LangSmith Intelligence, so set it to `https://beacon.aws.langchain.com/intelligence`.
 
-  <Step title="Verify your hostname is externally reachable">
-    Engine's sandboxes call your LangSmith install using the `langsmith` CLI, so `config.hostname` must be reachable from the sandbox network. Helm validation rejects `localhost` and in-cluster `*.svc` addresses.
+If Engine runs on your own model providers, also allow outbound HTTPS from the `standalone-insights` pods to each provider's API endpoint. To keep that traffic on private networking, see [Connect to your providers privately](/langsmith/engine-self-hosted-model-providers#connect-to-your-providers-privately).
 
-    Serve that hostname through your ingress with TLS, as described in [Set up an ingress](/langsmith/self-host-ingress). Engine's sandbox network policy permits access to your LangSmith hostname, the configured GitHub hosts, and the public PyPI and npm registries. A proxy outside the sandbox injects per-run credentials, so they are not readable inside it.
+Add each destination as a specific allowlist entry rather than opening general egress. To keep traffic to LangSmith Intelligence on private networking, [connect with AWS PrivateLink](/langsmith/engine-self-hosted-model-providers#connect-with-aws-privatelink). Requests to LangSmith Intelligence use a short-lived license JWT obtained during LangSmith license verification. Engine's traffic is separate from the billing and operational telemetry described in [Configure egress](/langsmith/self-host-egress), even where it shares a host.
 
-    When Engine generates a code fix, it installs dependencies from `pypi.org`, `files.pythonhosted.org`, and `registry.npmjs.org`. The registry hosts are not configurable, so Engine cannot use an internal PyPI or npm mirror, and dependency installs fail if your network blocks the public registries. Sandboxes cannot reach Go module proxies such as `proxy.golang.org`, so Engine uses your connected code repository's `vendor/` directory when it is present.
+**4. Verify your hostname is externally reachable**
 
-    For GitHub connections, also allow the [outbound requests and inbound webhooks](/langsmith/engine-self-hosted-github#allow-network-access) required by your GitHub environment. Browser access to LangSmith alone does not establish webhook connectivity from GitHub.
-  </Step>
+Engine's sandboxes call your LangSmith install using the `langsmith` CLI, so `config.hostname` must be reachable from the sandbox network. Helm validation rejects `localhost` and in-cluster `*.svc` addresses.
 
-  <Step title="Generate Engine's keys">
-    Engine needs two keys of its own:
+Serve that hostname through your ingress with TLS, as described in [Set up an ingress](/langsmith/self-host-ingress). Engine's sandbox network policy permits access to your LangSmith hostname, the configured GitHub hosts, and the public PyPI and npm registries. A proxy outside the sandbox injects per-run credentials, so they are not readable inside it.
 
-    * **Encryption key** (`engine_encryption_key`): a Fernet key that encrypts the run payloads LangSmith passes to Engine, which carry short-lived credentials.
+When Engine generates a code fix, it installs dependencies from `pypi.org`, `files.pythonhosted.org`, and `registry.npmjs.org`. The registry hosts are not configurable, so Engine cannot use an internal PyPI or npm mirror, and dependency installs fail if your network blocks the public registries. Sandboxes cannot reach Go module proxies such as `proxy.golang.org`, so Engine uses your connected code repository's `vendor/` directory when it is present.
 
-      ```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-      python -c "from cryptography.fernet import Fernet; print(Fernet.generate_key().decode())"
-      ```
+For GitHub connections, also allow the [outbound requests and inbound webhooks](/langsmith/engine-self-hosted-github#allow-network-access) required by your GitHub environment. Browser access to LangSmith alone does not establish webhook connectivity from GitHub.
 
-    * **Usage signing secret** (`engine_usage_signing_secret`): signs the usage reports Engine sends to LangSmith. Use at least 32 random characters.
+**5. Generate Engine's keys**
 
-      ```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-      openssl rand -hex 32
-      ```
+Engine needs two keys of its own:
 
-    On chart 0.16, Engine uses only the encryption key. The usage signing secret is new in chart 0.17, and the 0.17 chart rejects an Engine install without it.
+* **Encryption key** (`engine_encryption_key`): a Fernet key that encrypts the run payloads LangSmith passes to Engine, which carry short-lived credentials.
 
-    Store both in your predefined Kubernetes Secret before installing or upgrading the chart. See [Use an existing secret](/langsmith/self-host-using-an-existing-secret#parameters). When Helm can read the existing Secret from the cluster, the chart checks for both keys and names any that are missing. `helm template` and GitOps renders skip that lookup, so verify the keys are present separately.
+  ```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+  python -c "from cryptography.fernet import Fernet; print(Fernet.generate_key().decode())"
+  ```
 
-    To rotate the encryption key, copy the current value to `engine_encryption_key_previous` and set the new key as `engine_encryption_key`. The previous key is accepted for decryption only, so runs encrypted just before the swap still complete.
+* **Usage signing secret** (`engine_usage_signing_secret`): signs the usage reports Engine sends to LangSmith. Use at least 32 random characters.
 
-    When introducing or rotating the usage signing secret, pause new Engine work and wait for running scans to finish. Update `platform-backend`, `ingest-queue`, and the shared Engine and Insights API server and queue to use the same signing secret. After all four components are healthy, resume Engine and [verify an analysis and Engine usage](#verify-the-installation). The previous encryption key does not provide a fallback for usage signatures.
-  </Step>
-</Steps>
+  ```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+  openssl rand -hex 32
+  ```
+
+On chart 0.16, Engine uses only the encryption key. The usage signing secret is new in chart 0.17, and the 0.17 chart rejects an Engine install without it.
+
+Store both in your predefined Kubernetes Secret before installing or upgrading the chart. See [Use an existing secret](/langsmith/self-host-using-an-existing-secret#parameters). When Helm can read the existing Secret from the cluster, the chart checks for both keys and names any that are missing. `helm template` and GitOps renders skip that lookup, so verify the keys are present separately.
+
+To rotate the encryption key, copy the current value to `engine_encryption_key_previous` and set the new key as `engine_encryption_key`. The previous key is accepted for decryption only, so runs encrypted just before the swap still complete.
+
+When introducing or rotating the usage signing secret, pause new Engine work and wait for running scans to finish. Update `platform-backend`, `ingest-queue`, and the shared Engine and Insights API server and queue to use the same signing secret. After all four components are healthy, resume Engine and [verify an analysis and Engine usage](#verify-the-installation). The previous encryption key does not provide a fallback for usage signatures.
 
 ### Enable with Helm
 
 Add the following to your [`langsmith_config.yaml`](/langsmith/kubernetes#configure-your-helm-charts), alongside the complete Sandboxes values from [Enable Sandboxes](/langsmith/enable-self-hosted-sandboxes). These examples show only the Engine-specific values and the `sandboxes.enabled` flag.
 
-<Tabs>
-  <Tab title="Using Kubernetes secrets (recommended)">
-    Reference your existing Secret by name. The chart reads `engine_encryption_key` and `engine_usage_signing_secret` from it.
+**Using Kubernetes secrets (recommended)**
 
-    ```yaml theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-    config:
-      existingSecretName: "<your-secret-name>"
-      # Must be reachable from the sandbox network.
-      hostname: "https://langsmith.example.com"
+Reference your existing Secret by name. The chart reads `engine_encryption_key` and `engine_usage_signing_secret` from it.
 
-    engine:
-      enabled: true
-      intelligenceBaseUrl: "https://beacon.aws.langchain.com/intelligence"
+```yaml theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+config:
+  existingSecretName: "<your-secret-name>"
+  # Must be reachable from the sandbox network.
+  hostname: "https://langsmith.example.com"
 
-    sandboxes:
-      enabled: true
-    ```
-  </Tab>
+engine:
+  enabled: true
+  intelligenceBaseUrl: "https://beacon.aws.langchain.com/intelligence"
 
-  <Tab title="Using inline values">
-    Set Engine's keys directly in your config file.
+sandboxes:
+  enabled: true
+```
 
-    <Warning>
-      This puts live credentials in your config file. Do not commit it to version control. Prefer the Kubernetes Secret.
-    </Warning>
+**Using inline values**
 
-    ```yaml theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-    config:
-      hostname: "https://langsmith.example.com"
+Set Engine's keys directly in your config file.
 
-    engine:
-      enabled: true
-      intelligenceBaseUrl: "https://beacon.aws.langchain.com/intelligence"
-      encryptionKey: "<engine-encryption-key>"
-      usageSigningSecret: "<engine-usage-signing-secret>"
+> [!WARNING]
+>
+> This puts live credentials in your config file. Do not commit it to version control. Prefer the Kubernetes Secret.
 
-    sandboxes:
-      enabled: true
-    ```
-  </Tab>
-</Tabs>
+```yaml theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+config:
+  hostname: "https://langsmith.example.com"
 
-<Note>
-  To use a workspace other than the oldest active workspace, or if your install has multiple shared organizations, set the workspace that owns Engine's sandboxes:
-</Note>
+engine:
+  enabled: true
+  intelligenceBaseUrl: "https://beacon.aws.langchain.com/intelligence"
+  encryptionKey: "<engine-encryption-key>"
+  usageSigningSecret: "<engine-usage-signing-secret>"
+
+sandboxes:
+  enabled: true
+```
+
+> [!NOTE]
+>
+> To use a workspace other than the oldest active workspace, or if your install has multiple shared organizations, set the workspace that owns Engine's sandboxes:
 
 ```yaml theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 engine:
@@ -252,9 +242,9 @@ engine:
 
 To authenticate Amazon Bedrock, Google Vertex AI, or Azure AI Foundry with the cloud identity of Engine's pods, add the values in [Use cloud identity for your model providers](/langsmith/engine-self-hosted-model-providers#use-cloud-identity-for-your-model-providers).
 
-<Warning>
-  Upgrades from older Insights image pins require one extra check: if your values pin `images.engineInsightsAgentImage.repository` to the retired `langsmith-clio` image, remove or update that pin. Engine and Insights now run on `langsmith-insights-engine`, and the chart rejects `langsmith-clio`. For more information, see [Mirror images for your LangSmith installation](/langsmith/self-host-mirroring-images#additional-images-for-engine).
-</Warning>
+> [!WARNING]
+>
+> Upgrades from older Insights image pins require one extra check: if your values pin `images.engineInsightsAgentImage.repository` to the retired `langsmith-clio` image, remove or update that pin. Engine and Insights now run on `langsmith-insights-engine`, and the chart rejects `langsmith-clio`. For more information, see [Mirror images for your LangSmith installation](/langsmith/self-host-mirroring-images#additional-images-for-engine).
 
 Validate the updated chart before applying it:
 
@@ -347,12 +337,6 @@ Air-gapped installations do not show Engine spend, and spend limits other than `
 
 ***
 
-<div>
-  <Callout icon="terminal-2">
-    [Connect these docs](/use-these-docs) to your agent of choice via MCP for real-time answers.
-  </Callout>
+[Connect these docs](/use-these-docs) to your agent of choice via MCP for real-time answers.
 
-  <Callout icon="edit">
-    [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/engine-self-hosted.mdx) or [file an issue](https://github.com/langchain-ai/docs/issues/new/choose).
-  </Callout>
-</div>
+[Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/engine-self-hosted.mdx) or [file an issue](https://github.com/langchain-ai/docs/issues/new/choose).

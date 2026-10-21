@@ -8,7 +8,7 @@
 
 ## 控制平面和数据平面模型
 
-BYOC 部署分为两个平面。本页描述了每个平面的组件、它们如何通信以及您帐户中的 LangChain 规定。
+BYOC 部署分为两个平面。本页介绍了每个平面的组件、它们如何通信以及您帐户中的 LangChain 规定。
 
 **控制平面**在LangChain的云中运行，并处理身份验证、组织配置和计费。它配置、监控和编排您的部署，但不保存任何敏感的应用程序数据。
 
@@ -19,7 +19,7 @@ BYOC 部署分为两个平面。本页描述了每个平面的组件、它们如
 | **控制平面** | LangChain的云，`us-east-2` |身份验证、组织和工作区配置、计费和使用元数据、LangSmith API 密钥以及静态前端资产 |
 | **数据平面** |您选择的区域中的 AWS 账户 |跟踪、提示、数据集、评估器、实验、见解运行、注释队列、代理部署、工作区机密和其他应用程序数据 |
 
-<img alt="BYOC architecture diagram. The LangSmith UI and the client apps in your application VPC both reach the data plane over one private connection, using PrivateLink, VPC peering, or Tailscale, which terminates at a network load balancer. The load balancer feeds an Istio ingress in an EKS cluster in your AWS account, which routes to the LangSmith services that run the backend, SmithDB, and sandboxes, and those services read and write S3, RDS, and ElastiCache. The LangChain cloud control plane holds Crossplane, on-call engineers, alerting, and the LangSmith control plane services. It reaches the cluster over PrivateLink for scaling and upgrades, receives auth and telemetry back over a second PrivateLink, and assumes an IAM role in your account to provision resources." />
+![BYOC architecture diagram. The LangSmith UI and the client apps in your application VPC both reach the data plane over one private connection, using PrivateLink, VPC peering, or Tailscale, which terminates at a network load balancer. The load balancer feeds an Istio ingress in an EKS cluster in your AWS account, which routes to the LangSmith services that run the backend, SmithDB, and sandboxes, and those services read and write S3, RDS, and ElastiCache. The LangChain cloud control plane holds Crossplane, on-call engineers, alerting, and the LangSmith control plane services. It reaches the cluster over PrivateLink for scaling and upgrades, receives auth and telemetry back over a second PrivateLink, and assumes an IAM role in your account to provision resources.](https://mintcdn.com/langchain-5e9cc07a/sRMLsyZ-6iriBvN5/langsmith/images/byoc-architecture.png?fit=max\&auto=format\&n=sRMLsyZ-6iriBvN5\&q=85\&s=8e65825805f6f2449a623213239c26ee)
 
 ## 配置资源
 
@@ -47,7 +47,7 @@ LangChain 提供角色信任策略中使用的外部 ID。使用 **设置 > 数�
 
 该角色的范围仅限于 BYOC 操作所需的范围：
 
-* **作用域为 LangSmith 拥有的资源**：只要 AWS 支持资源级作用域，权限就仅限于带有特定标签和名称前缀的资源，因此角色无法对账户中不相关的资源执行操作。
+* **作用域为 LangSmith 拥有的资源**：只要 AWS 支持资源级作用域，权限就仅限于带有特定标签和名称前缀的资源，因此该角色无法对账户中不相关的资源执行操作。
 * **基础设施范围，而非数据范围**：该角色可以管理保存数据的资源，但无法通过 AWS 数据 API 读取数据本身。它在跟踪存储桶上不保存 `s3:GetObject`，不保存 PostgreSQL 的 `rds-db:connect`，也不保存 Redis 的 `elasticache:Connect`。
 
 ## 网络
@@ -61,7 +61,7 @@ LangChain 提供角色信任策略中使用的外部 ID。使用 **设置 > 数�
 
 要以编程方式摄取或查询数据，请将您的客户端直接指向您的数据平面。数据流始终为`browser or client → data plane → back to client`。
 
-<img alt="Data traffic diagram. A user on their own machine, VPC, or network opens aws.smith.langchain.com in a browser. The browser makes two requests: first it fetches the UI bundle of HTML, CSS, and JavaScript from the static assets in LangChain's cloud, which hold no customer data; second it sends data plane API requests to the network load balancer in your BYOC VPC, which routes to the EKS cluster running LangSmith and on to S3, RDS, and the cache." />
+![Data traffic diagram. A user on their own machine, VPC, or network opens aws.smith.langchain.com in a browser. The browser makes two requests: first it fetches the UI bundle of HTML, CSS, and JavaScript from the static assets in LangChain's cloud, which hold no customer data; second it sends data plane API requests to the network load balancer in your BYOC VPC, which routes to the EKS cluster running LangSmith and on to S3, RDS, and the cache.](https://mintcdn.com/langchain-5e9cc07a/sRMLsyZ-6iriBvN5/langsmith/images/byoc-data-flow.png?fit=max\&auto=format\&n=sRMLsyZ-6iriBvN5\&q=85\&s=3f85cc69ca981f5ba14ad68a7bae5e7b)
 
 ### 连接性控制平面和数据平面之间的所有通信都通过 AWS PrivateLink 双向传输。 LangChain 无法通过公共互联网到达您的环境。 BYOC 建立两个 PrivateLink 连接：
 
@@ -82,12 +82,6 @@ LangChain 提供角色信任策略中使用的外部 ID。使用 **设置 > 数�
 
 ***
 
-<div>
-  <Callout icon="terminal-2">
-    [Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
-  </Callout>
+[Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
 
-  <Callout icon="edit">
-    [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/byoc-architecture.mdx) 或 [file an issue](https://github.com/langchain-ai/docs/issues/new/choose)。
-  </Callout>
-</div>
+[Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/byoc-architecture.mdx) 或 [file an issue](https://github.com/langchain-ai/docs/issues/new/choose)。

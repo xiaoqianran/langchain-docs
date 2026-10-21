@@ -13,9 +13,9 @@ showing a single opaque assistant bubble, the LangChain SDKs expose the
 coordinator, subagent discovery, custom state, and sandbox-backed artifacts so
 users can inspect how a long-running task is being decomposed and completed.
 
-<Note>
-  These patterns use the v1 frontend SDK packages. If you are using earlier versions, see the migration guides for [React](https://github.com/langchain-ai/langgraphjs/blob/main/libs/sdk-react/docs/v1-migration.md), [Vue](https://github.com/langchain-ai/langgraphjs/blob/main/libs/sdk-vue/docs/v1-migration.md), [Svelte](https://github.com/langchain-ai/langgraphjs/blob/main/libs/sdk-svelte/docs/v1-migration.md), and [Angular](https://github.com/langchain-ai/langgraphjs/blob/main/libs/sdk-angular/docs/v1-migration.md).
-</Note>
+> [!NOTE]
+>
+> These patterns use the v1 frontend SDK packages. If you are using earlier versions, see the migration guides for [React](https://github.com/langchain-ai/langgraphjs/blob/main/libs/sdk-react/docs/v1-migration.md), [Vue](https://github.com/langchain-ai/langgraphjs/blob/main/libs/sdk-vue/docs/v1-migration.md), [Svelte](https://github.com/langchain-ai/langgraphjs/blob/main/libs/sdk-svelte/docs/v1-migration.md), and [Angular](https://github.com/langchain-ai/langgraphjs/blob/main/libs/sdk-angular/docs/v1-migration.md).
 
 ## Architecture
 
@@ -107,19 +107,17 @@ workflow monitor than a plain chat transcript.
 
 ## Patterns
 
-<CardGroup>
-  <Card title="Subagent streaming" icon="arrows-split" href="/oss/python/deepagents/frontend/subagent-streaming">
-    Display specialist subagents with streaming content, progress tracking, and collapsible cards.
-  </Card>
+> **[Subagent streaming](/oss/python/deepagents/frontend/subagent-streaming)**
+>
+> Display specialist subagents with streaming content, progress tracking, and collapsible cards.
 
-  <Card title="Todo list" icon="list-check" href="/oss/python/deepagents/frontend/todo-list">
-    Track progress with a real-time todo list when the agent opts into task planning.
-  </Card>
+> **[Todo list](/oss/python/deepagents/frontend/todo-list)**
+>
+> Track progress with a real-time todo list when the agent opts into task planning.
 
-  <Card title="Sandbox" icon="code" href="/oss/python/deepagents/frontend/sandbox">
-    Build an IDE-like UI with a file browser, code viewer, and diff panel backed by a sandbox.
-  </Card>
-</CardGroup>
+> **[Sandbox](/oss/python/deepagents/frontend/sandbox)**
+>
+> Build an IDE-like UI with a file browser, code viewer, and diff panel backed by a sandbox.
 
 ## Related patterns
 
@@ -134,12 +132,6 @@ to map graph nodes and state keys directly to UI components.
 
 ***
 
-<div>
-  <Callout icon="terminal-2">
-    [Connect these docs](/use-these-docs) to your agent of choice via MCP for real-time answers.
-  </Callout>
+[Connect these docs](/use-these-docs) to your agent of choice via MCP for real-time answers.
 
-  <Callout icon="edit">
-    [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/oss/deepagents/frontend/overview.mdx) or [file an issue](https://github.com/langchain-ai/docs/issues/new/choose).
-  </Callout>
-</div>
+[Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/oss/deepagents/frontend/overview.mdx) or [file an issue](https://github.com/langchain-ai/docs/issues/new/choose).

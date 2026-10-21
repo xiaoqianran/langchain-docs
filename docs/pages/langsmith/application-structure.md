@@ -15,70 +15,68 @@ To deploy using LangSmith, provide the following information:
 3. A file that specifies [dependencies](#dependencies) required to run the application.
 4. [Environment variables](#environment-variables) that are required for the application to run.
 
-<Tip>
-  **Framework agnostic**
-
-  LangSmith Deployment supports deploying a [LangGraph](/oss/python/langgraph/overview) *graph*. However, the implementation of a *node* of a graph can contain arbitrary code. This means any framework can be implemented within a node and deployed on LangSmith Deployment. This lets you implement your core application logic without using additional LangGraph OSS APIs while still using LangSmith for [deployment](/langsmith/deployment), scaling, and [observability](/langsmith/observability). For more details, refer to [Use any framework with LangSmith Deployment](/langsmith/application-structure#use-any-framework-with-langsmith-deployment).
-</Tip>
+> [!TIP]
+>
+> **Framework agnostic**
+>
+> LangSmith Deployment supports deploying a [LangGraph](/oss/python/langgraph/overview) *graph*. However, the implementation of a *node* of a graph can contain arbitrary code. This means any framework can be implemented within a node and deployed on LangSmith Deployment. This lets you implement your core application logic without using additional LangGraph OSS APIs while still using LangSmith for [deployment](/langsmith/deployment), scaling, and [observability](/langsmith/observability). For more details, refer to [Use any framework with LangSmith Deployment](/langsmith/application-structure#use-any-framework-with-langsmith-deployment).
 
 ## File structure
 
 The following are examples of directory structures for Python and JavaScript applications:
 
-<Tabs>
-  <Tab title="Python (requirements.txt)">
-    ```plaintext theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-    my-app/
-    ├── my_agent # all project code lies within here
-    │   ├── utils # utilities for your graph
-    │   │   ├── __init__.py
-    │   │   ├── tools.py # tools for your graph
-    │   │   ├── nodes.py # node functions for your graph
-    │   │   └── state.py # state definition of your graph
-    │   ├── __init__.py
-    │   └── agent.py # code for constructing your graph
-    ├── .env # environment variables
-    ├── requirements.txt # package dependencies
-    └── langgraph.json # configuration file for LangGraph
-    ```
-  </Tab>
+**Python (requirements.txt)**
 
-  <Tab title="Python (pyproject.toml)">
-    ```plaintext theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-    my-app/
-    ├── my_agent # all project code lies within here
-    │   ├── utils # utilities for your graph
-    │   │   ├── __init__.py
-    │   │   ├── tools.py # tools for your graph
-    │   │   ├── nodes.py # node functions for your graph
-    │   │   └── state.py # state definition of your graph
-    │   ├── __init__.py
-    │   └── agent.py # code for constructing your graph
-    ├── .env # environment variables
-    ├── langgraph.json  # configuration file for LangGraph
-    └── pyproject.toml # dependencies for your project
-    ```
-  </Tab>
+```plaintext theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+my-app/
+├── my_agent # all project code lies within here
+│   ├── utils # utilities for your graph
+│   │   ├── __init__.py
+│   │   ├── tools.py # tools for your graph
+│   │   ├── nodes.py # node functions for your graph
+│   │   └── state.py # state definition of your graph
+│   ├── __init__.py
+│   └── agent.py # code for constructing your graph
+├── .env # environment variables
+├── requirements.txt # package dependencies
+└── langgraph.json # configuration file for LangGraph
+```
 
-  <Tab title="JS (package.json)">
-    ```plaintext theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-    my-app/
-    ├── src # all project code lies within here
-    │   ├── utils # optional utilities for your graph
-    │   │   ├── tools.ts # tools for your graph
-    │   │   ├── nodes.ts # node functions for your graph
-    │   │   └── state.ts # state definition of your graph
-    │   └── agent.ts # code for constructing your graph
-    ├── package.json # package dependencies
-    ├── .env # environment variables
-    └── langgraph.json # configuration file for LangGraph
-    ```
-  </Tab>
-</Tabs>
+**Python (pyproject.toml)**
 
-<Note>
-  The directory structure of an application can vary depending on the programming language and the package manager used.
-</Note>
+```plaintext theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+my-app/
+├── my_agent # all project code lies within here
+│   ├── utils # utilities for your graph
+│   │   ├── __init__.py
+│   │   ├── tools.py # tools for your graph
+│   │   ├── nodes.py # node functions for your graph
+│   │   └── state.py # state definition of your graph
+│   ├── __init__.py
+│   └── agent.py # code for constructing your graph
+├── .env # environment variables
+├── langgraph.json  # configuration file for LangGraph
+└── pyproject.toml # dependencies for your project
+```
+
+**JS (package.json)**
+
+```plaintext theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+my-app/
+├── src # all project code lies within here
+│   ├── utils # optional utilities for your graph
+│   │   ├── tools.ts # tools for your graph
+│   │   ├── nodes.ts # node functions for your graph
+│   │   └── state.ts # state definition of your graph
+│   └── agent.ts # code for constructing your graph
+├── package.json # package dependencies
+├── .env # environment variables
+└── langgraph.json # configuration file for LangGraph
+```
+
+> [!NOTE]
+>
+> The directory structure of an application can vary depending on the programming language and the package manager used.
 
 ## Configuration file
 
@@ -86,52 +84,50 @@ The `langgraph.json` file is a JSON file that specifies the dependencies, graphs
 
 For details on all supported keys in the JSON file, refer to the [LangGraph configuration file reference](/langsmith/cli#configuration-file).
 
-<Tip>
-  The [LangGraph CLI](/langsmith/cli) defaults to using the configuration file `langgraph.json` in the current directory.
-</Tip>
+> [!TIP]
+>
+> The [LangGraph CLI](/langsmith/cli) defaults to using the configuration file `langgraph.json` in the current directory.
 
 ### Examples
 
-<Tabs>
-  <Tab title="Python">
-    * The dependencies involve a custom local package and the `langchain_openai` package.
-    * A single graph will be loaded from the file `./your_package/your_file.py` with the variable `agent`.
-    * The environment variables are loaded from the `.env` file.
+**Python**
 
-    ```json theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-    {
-        "dependencies": [
-            "langchain_openai",
-            "./your_package"
-        ],
-        "graphs": {
-            "my_agent": "./your_package/your_file.py:agent"
-        },
-        "env": "./.env"
+* The dependencies involve a custom local package and the `langchain_openai` package.
+* A single graph will be loaded from the file `./your_package/your_file.py` with the variable `agent`.
+* The environment variables are loaded from the `.env` file.
+
+```json theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+{
+    "dependencies": [
+        "langchain_openai",
+        "./your_package"
+    ],
+    "graphs": {
+        "my_agent": "./your_package/your_file.py:agent"
+    },
+    "env": "./.env"
+}
+```
+
+**JavaScript**
+
+* The dependencies will be loaded from a dependency file in the local directory (e.g., `package.json`).
+* A single graph will be loaded from the file `./your_package/your_file.js` with the function `agent`.
+* The environment variable `OPENAI_API_KEY` is set inline.
+
+```json theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+{
+    "dependencies": [
+        "."
+    ],
+    "graphs": {
+        "my_agent": "./your_package/your_file.js:agent"
+    },
+    "env": {
+        "OPENAI_API_KEY": "secret-key"
     }
-    ```
-  </Tab>
-
-  <Tab title="JavaScript">
-    * The dependencies will be loaded from a dependency file in the local directory (e.g., `package.json`).
-    * A single graph will be loaded from the file `./your_package/your_file.js` with the function `agent`.
-    * The environment variable `OPENAI_API_KEY` is set inline.
-
-    ```json theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-    {
-        "dependencies": [
-            "."
-        ],
-        "graphs": {
-            "my_agent": "./your_package/your_file.js:agent"
-        },
-        "env": {
-            "OPENAI_API_KEY": "secret-key"
-        }
-    }
-    ```
-  </Tab>
-</Tabs>
+}
+```
 
 ## Dependencies
 
@@ -178,82 +174,80 @@ The graph structure serves as a deployment interface, but your core application 
 
 To deploy with LangSmith, you need:
 
-<Tabs>
-  <Tab title="Python">
-    1. **A LangGraph graph structure**: Define a graph using [`StateGraph`](https://reference.langchain.com/python/langgraph/graph/state/StateGraph) with [`add_node`](https://reference.langchain.com/python/langgraph/graph/state/StateGraph/add_node) and [`add_edge`](https://reference.langchain.com/python/langgraph/pregel/_draw/add_edge).
-    2. **Node functions with arbitrary logic**: Your node functions can call any framework or library.
-    3. **A compiled graph**: [Compile](https://reference.langchain.com/python/langgraph/graph/state/StateGraph/compile) the graph to create a deployable application.
+**Python**
 
-    The following example shows how to wrap your existing application logic within a minimal LangGraph structure:
+1. **A LangGraph graph structure**: Define a graph using [`StateGraph`](https://reference.langchain.com/python/langgraph/graph/state/StateGraph) with [`add_node`](https://reference.langchain.com/python/langgraph/graph/state/StateGraph/add_node) and [`add_edge`](https://reference.langchain.com/python/langgraph/pregel/_draw/add_edge).
+2. **Node functions with arbitrary logic**: Your node functions can call any framework or library.
+3. **A compiled graph**: [Compile](https://reference.langchain.com/python/langgraph/graph/state/StateGraph/compile) the graph to create a deployable application.
 
-    ```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-    from langgraph.graph import StateGraph, START, END
-    from typing import TypedDict
+The following example shows how to wrap your existing application logic within a minimal LangGraph structure:
 
-    # Your existing application logic using any framework
-    from app_logic import process_data
-    from app_logic import fetch_data
+```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+from langgraph.graph import StateGraph, START, END
+from typing import TypedDict
 
-    class State(TypedDict):
-        input: str
-        result: str
+# Your existing application logic using any framework
+from app_logic import process_data
+from app_logic import fetch_data
 
-    def my_app_node(state: State) -> State:
-        """Node containing arbitrary framework code."""
-        # Use any framework or library here
-        raw_data = fetch_data(state["input"])
-        processed = process_data(raw_data)
-        return {"result": processed}
+class State(TypedDict):
+    input: str
+    result: str
 
-    # Define the graph structure
-    graph = StateGraph(State)
-    graph.add_node("process", my_app_node)  # Add node with your logic
-    graph.add_edge(START, "process")  # Connect start to your node
-    graph.add_edge("process", END)  # Connect your node to end
+def my_app_node(state: State) -> State:
+    """Node containing arbitrary framework code."""
+    # Use any framework or library here
+    raw_data = fetch_data(state["input"])
+    processed = process_data(raw_data)
+    return {"result": processed}
 
-    # Compile for deployment
-    app = graph.compile()
-    ```
-  </Tab>
+# Define the graph structure
+graph = StateGraph(State)
+graph.add_node("process", my_app_node)  # Add node with your logic
+graph.add_edge(START, "process")  # Connect start to your node
+graph.add_edge("process", END)  # Connect your node to end
 
-  <Tab title="JavaScript">
-    1. **A LangGraph graph structure**: Define a graph using [`StateGraph`](https://reference.langchain.com/javascript/classes/_langchain_langgraph.index.StateGraph.html) with [`addNode`](https://reference.langchain.com/javascript/classes/_langchain_langgraph.index.StateGraph.html#addnode) and [`addEdge`](https://reference.langchain.com/javascript/classes/_langchain_langgraph.index.StateGraph.html#addedge).
-    2. **Node functions with arbitrary logic**: Your node functions can call any framework or library.
-    3. **A compiled graph**: [Compile](https://reference.langchain.com/javascript/classes/_langchain_langgraph.index.StateGraph.html#compile) the graph to create a deployable application.
+# Compile for deployment
+app = graph.compile()
+```
 
-    The following example shows how to wrap your existing application logic within a minimal LangGraph structure:
+**JavaScript**
 
-    ```typescript theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-    import { StateGraph, START, END } from "@langchain/langgraph";
-    import { Annotation } from "@langchain/langgraph";
+1. **A LangGraph graph structure**: Define a graph using [`StateGraph`](https://reference.langchain.com/javascript/classes/_langchain_langgraph.index.StateGraph.html) with [`addNode`](https://reference.langchain.com/javascript/classes/_langchain_langgraph.index.StateGraph.html#addnode) and [`addEdge`](https://reference.langchain.com/javascript/classes/_langchain_langgraph.index.StateGraph.html#addedge).
+2. **Node functions with arbitrary logic**: Your node functions can call any framework or library.
+3. **A compiled graph**: [Compile](https://reference.langchain.com/javascript/classes/_langchain_langgraph.index.StateGraph.html#compile) the graph to create a deployable application.
 
-    // Your existing application logic using any framework
-    import { processData } from "./app-logic";
-    import { fetchData } from "./app-logic";
+The following example shows how to wrap your existing application logic within a minimal LangGraph structure:
 
-    const State = Annotation.Root({
-      input: Annotation<string>,
-      result: Annotation<string>
-    });
+```typescript theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+import { StateGraph, START, END } from "@langchain/langgraph";
+import { Annotation } from "@langchain/langgraph";
 
-    async function myAppNode(state: typeof State.State) {
-      // Use any framework or library here
-      const rawData = await fetchData(state.input);
-      const processed = await processData(rawData);
-      return { result: processed };
-    }
+// Your existing application logic using any framework
+import { processData } from "./app-logic";
+import { fetchData } from "./app-logic";
 
-    // Define the graph structure
-    const graph = new StateGraph(State)
-      .addNode("process", myAppNode)  // Add node with your logic
-      .addEdge(START, "process")  // Connect start to your node
-      .addEdge("process", END);  // Connect your node to end
+const State = Annotation.Root({
+  input: Annotation<string>,
+  result: Annotation<string>
+});
 
-    // Compile for deployment
-    export const app = graph.compile();
-    ```
-  </Tab>
-</Tabs>
+async function myAppNode(state: typeof State.State) {
+  // Use any framework or library here
+  const rawData = await fetchData(state.input);
+  const processed = await processData(rawData);
+  return { result: processed };
+}
+
+// Define the graph structure
+const graph = new StateGraph(State)
+  .addNode("process", myAppNode)  // Add node with your logic
+  .addEdge(START, "process")  // Connect start to your node
+  .addEdge("process", END);  // Connect your node to end
+
+// Compile for deployment
+export const app = graph.compile();
+```
 
 In this example, the node functions (`my_app_node` for Python and `myAppNode` for JavaScript) can contain calls to any framework or library. The LangGraph structure simply provides the deployment interface and orchestration layer.
 
@@ -267,12 +261,6 @@ For a production deployment, you will typically want to configure the environmen
 
 ***
 
-<div>
-  <Callout icon="terminal-2">
-    [Connect these docs](/use-these-docs) to your agent of choice via MCP for real-time answers.
-  </Callout>
+[Connect these docs](/use-these-docs) to your agent of choice via MCP for real-time answers.
 
-  <Callout icon="edit">
-    [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/application-structure.mdx) or [file an issue](https://github.com/langchain-ai/docs/issues/new/choose).
-  </Callout>
-</div>
+[Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/application-structure.mdx) or [file an issue](https://github.com/langchain-ai/docs/issues/new/choose).

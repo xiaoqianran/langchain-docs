@@ -4,25 +4,25 @@
 
 Use Gateway Credits to access models without a provider key, just authenticate with LangSmith.
 
-<Note>
-  The LLM Gateway is in [beta](/langsmith/release-stages).
-</Note>
+> [!NOTE]
+>
+> The LLM Gateway is in [beta](/langsmith/release-stages).
 
 **Gateway Credits** let you call LangChain-hosted models through the standard LLM Gateway API without setting up a provider account or key. Authenticate with only your [LangSmith API key](/langsmith/create-account-api-key). No [provider secret](/langsmith/llm-gateway-admin-setup#1-add-provider-secrets) is required.
 
 The gateway routes each request based on its model ID. A hosted model slug such as `moonshotai/kimi-k3` uses Gateway Credits. A model ID that starts with a configured bring-your-own-key provider, such as `anthropic/claude-opus-5`, uses that provider's secret instead.
 
-<Card title="Base URL" icon="link">
-  Point any supported client at the standard gateway API:
-
-  ```text theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  https://gateway.smith.langchain.com/v1
-  ```
-
-  Authenticate with your LangSmith API key as a bearer token.
-
-  For regional base URLs, see [Regional gateways](/langsmith/llm-gateway-how-it-works#use-a-regional-gateway).
-</Card>
+> **Base URL**
+>
+> Point any supported client at the standard gateway API:
+>
+> ```text theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> https://gateway.smith.langchain.com/v1
+> ```
+>
+> Authenticate with your LangSmith API key as a bearer token.
+>
+> For regional base URLs, see [Regional gateways](/langsmith/llm-gateway-how-it-works#use-a-regional-gateway).
 
 ## Available models
 
@@ -53,44 +53,42 @@ Before using Gateway Credits:
 
 Point an OpenAI-compatible client at `https://gateway.smith.langchain.com/v1`, authenticate with your LangSmith API key, and set `model` to a hosted model ID.
 
-<CodeGroup>
-  ```bash cURL theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  curl https://gateway.smith.langchain.com/v1/chat/completions \
-      -H "Authorization: Bearer $LANGSMITH_API_KEY" \
-      -H "Content-Type: application/json" \
-      -d '{"model":"moonshotai/kimi-k3","messages":[{"role":"user","content":"ping"}]}'
-  ```
+```bash cURL theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+curl https://gateway.smith.langchain.com/v1/chat/completions \
+    -H "Authorization: Bearer $LANGSMITH_API_KEY" \
+    -H "Content-Type: application/json" \
+    -d '{"model":"moonshotai/kimi-k3","messages":[{"role":"user","content":"ping"}]}'
+```
 
-  ```python OpenAI SDK theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  import os
+```python OpenAI SDK theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+import os
 
-  from openai import OpenAI
+from openai import OpenAI
 
-  client = OpenAI(
-      base_url="https://gateway.smith.langchain.com/v1",
-      api_key=os.environ["LANGSMITH_API_KEY"],
-  )
-  response = client.chat.completions.create(
-      model="moonshotai/kimi-k3",
-      messages=[{"role": "user", "content": "ping"}],
-  )
-  print(response.choices[0].message.content)
-  ```
+client = OpenAI(
+    base_url="https://gateway.smith.langchain.com/v1",
+    api_key=os.environ["LANGSMITH_API_KEY"],
+)
+response = client.chat.completions.create(
+    model="moonshotai/kimi-k3",
+    messages=[{"role": "user", "content": "ping"}],
+)
+print(response.choices[0].message.content)
+```
 
-  ```python LangChain theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  import os
+```python LangChain theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+import os
 
-  from langchain.chat_models import init_chat_model
+from langchain.chat_models import init_chat_model
 
-  model = init_chat_model(
-      model="moonshotai/kimi-k3",
-      model_provider="openai",
-      base_url="https://gateway.smith.langchain.com/v1",
-      api_key=os.environ["LANGSMITH_API_KEY"],
-  )
-  print(model.invoke("ping").content)
-  ```
-</CodeGroup>
+model = init_chat_model(
+    model="moonshotai/kimi-k3",
+    model_provider="openai",
+    base_url="https://gateway.smith.langchain.com/v1",
+    api_key=os.environ["LANGSMITH_API_KEY"],
+)
+print(model.invoke("ping").content)
+```
 
 ## Supported endpoints
 
@@ -124,12 +122,6 @@ Like all gateway traffic, hosted-model calls are traced to LangSmith. For where 
 
 ***
 
-<div>
-  <Callout icon="terminal-2">
-    [Connect these docs](/use-these-docs) to your agent of choice via MCP for real-time answers.
-  </Callout>
+[Connect these docs](/use-these-docs) to your agent of choice via MCP for real-time answers.
 
-  <Callout icon="edit">
-    [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/llm-gateway-credits.mdx) or [file an issue](https://github.com/langchain-ai/docs/issues/new/choose).
-  </Callout>
-</div>
+[Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/llm-gateway-credits.mdx) or [file an issue](https://github.com/langchain-ai/docs/issues/new/choose).

@@ -6,14 +6,12 @@ Integrate agent publishing with external systems, CI/CD pipelines, or custom dep
 
 When triggered, a webhook sends a complete package of your agent's configuration and files to the specified endpoint.
 
-<Callout icon="lock">
-  **Security notes:**
+**Security notes:**
 
-  * Webhook URLs must use HTTPS.
-  * Custom headers (e.g., API keys) are stored encrypted.
-  * Publisher identity is included for audit trails.
-  * Webhooks are only visible to agent owners.
-</Callout>
+* Webhook URLs must use HTTPS.
+* Custom headers (e.g., API keys) are stored encrypted.
+* Publisher identity is included for audit trails.
+* Webhooks are only visible to agent owners.
 
 ## Add a webhook
 
@@ -138,36 +136,34 @@ The `files.content_base64` field contains a ZIP archive with the following struc
 
 The `config.json` file and `tools.json` files are structured as follows:
 
-<Tabs>
-  <Tab title="`config.json`">
-    ```json theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-    {
-      "name": "My Agent",
-      "description": "Agent description",
-      "visibility_scope": "tenant",
-      "triggers_paused": false
-    }
-    ```
-  </Tab>
+**`config.json`**
 
-  <Tab title="`tools.json`">
-    ```json theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```json theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+{
+  "name": "My Agent",
+  "description": "Agent description",
+  "visibility_scope": "tenant",
+  "triggers_paused": false
+}
+```
+
+**`tools.json`**
+
+```json theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+{
+  "tools": [
     {
-      "tools": [
-        {
-          "name": "tavily_web_search",
-          "mcp_server_url": "http://localhost:8084",
-          "mcp_server_name": "Fleet",
-          "display_name": "tavily_web_search"
-        }
-      ],
-      "interrupt_config": {
-        "http://localhost:8084::tavily_web_search::Fleet": false
-      }
+      "name": "tavily_web_search",
+      "mcp_server_url": "http://localhost:8084",
+      "mcp_server_name": "Fleet",
+      "display_name": "tavily_web_search"
     }
-    ```
-  </Tab>
-</Tabs>
+  ],
+  "interrupt_config": {
+    "http://localhost:8084::tavily_web_search::Fleet": false
+  }
+}
+```
 
 ### Custom input fields
 
@@ -256,12 +252,6 @@ HTTPServer(("", 8000), WebhookHandler).serve_forever()
 
 ***
 
-<div>
-  <Callout icon="terminal-2">
-    [Connect these docs](/use-these-docs) to your agent of choice via MCP for real-time answers.
-  </Callout>
+[Connect these docs](/use-these-docs) to your agent of choice via MCP for real-time answers.
 
-  <Callout icon="edit">
-    [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/fleet/webhooks.mdx) or [file an issue](https://github.com/langchain-ai/docs/issues/new/choose).
-  </Callout>
-</div>
+[Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/fleet/webhooks.mdx) or [file an issue](https://github.com/langchain-ai/docs/issues/new/choose).

@@ -10,36 +10,34 @@ This guide covers how to cancel runs for your agent via the [LangSmith Deploymen
 
 Create a client and thread:
 
-<Tabs>
-  <Tab title="Python">
-    ```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-    from langgraph_sdk import get_client
+**Python**
 
-    client = get_client(url=<DEPLOYMENT_URL>)
-    assistant_id = "agent"
-    thread = await client.threads.create()
-    ```
-  </Tab>
+```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+from langgraph_sdk import get_client
 
-  <Tab title="Javascript">
-    ```js theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-    import { Client } from "@langchain/langgraph-sdk";
+client = get_client(url=<DEPLOYMENT_URL>)
+assistant_id = "agent"
+thread = await client.threads.create()
+```
 
-    const client = new Client({ apiUrl: <DEPLOYMENT_URL> });
-    const assistantID = "agent";
-    const thread = await client.threads.create();
-    ```
-  </Tab>
+**Javascript**
 
-  <Tab title="cURL">
-    ```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-    curl --request POST \
-      --url <DEPLOYMENT_URL>/threads \
-      --header 'Content-Type: application/json' \
-      --data '{}'
-    ```
-  </Tab>
-</Tabs>
+```js theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+import { Client } from "@langchain/langgraph-sdk";
+
+const client = new Client({ apiUrl: <DEPLOYMENT_URL> });
+const assistantID = "agent";
+const thread = await client.threads.create();
+```
+
+**cURL**
+
+```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+curl --request POST \
+  --url <DEPLOYMENT_URL>/threads \
+  --header 'Content-Type: application/json' \
+  --data '{}'
+```
 
 ## Cancel a single run
 
@@ -55,53 +53,51 @@ The following examples create a run, cancel it with different options, and print
 
 Use **interrupt** when you want to stop a run but keep it for debugging, auditing, or resuming from a checkpoint.
 
-<Tabs>
-  <Tab title="Python">
-    ```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-    run = await client.runs.create(
-        thread["thread_id"],
-        assistant_id,
-        input={"messages": [{"role": "user", "content": "Long task"}]},
-    )
-    await client.runs.cancel(thread["thread_id"], run["run_id"])
+**Python**
 
-    run_after = await client.runs.get(thread["thread_id"], run["run_id"], wait=True)
-    print(run_after["status"])   # "interrupted"
-    ```
-  </Tab>
+```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+run = await client.runs.create(
+    thread["thread_id"],
+    assistant_id,
+    input={"messages": [{"role": "user", "content": "Long task"}]},
+)
+await client.runs.cancel(thread["thread_id"], run["run_id"])
 
-  <Tab title="Javascript">
-    ```js theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-    const run = await client.runs.create(
-        thread["thread_id"],
-        assistantID,
-        { input: { messages: [{ role: "user", content: "Long task" }] } }
-    );
-    await client.runs.cancel(thread["thread_id"], run["run_id"], wait=true);
+run_after = await client.runs.get(thread["thread_id"], run["run_id"], wait=True)
+print(run_after["status"])   # "interrupted"
+```
 
-    const runAfter = await client.runs.get(thread["thread_id"], run["run_id"]);
-    console.log(runAfter["status"]);   // "interrupted"
-    ```
-  </Tab>
+**Javascript**
 
-  <Tab title="cURL">
-    ```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-    # Create a run (use the run_id and thread_id from the response)
-    curl --request POST \
-      --url <DEPLOYMENT_URL>/threads/<THREAD_ID>/runs \
-      --header 'Content-Type: application/json' \
-      --data '{"assistant_id": "agent", "input": {"messages": [{"role": "user", "content": "Summarize the docs"}]}}'
+```js theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+const run = await client.runs.create(
+    thread["thread_id"],
+    assistantID,
+    { input: { messages: [{ role: "user", content: "Long task" }] } }
+);
+await client.runs.cancel(thread["thread_id"], run["run_id"], wait=true);
 
-    # Cancel with default action (interrupt)
-    curl --request POST \
-      --url <DEPLOYMENT_URL>/threads/<THREAD_ID>/runs/<RUN_ID>/cancel?wait=true
+const runAfter = await client.runs.get(thread["thread_id"], run["run_id"]);
+console.log(runAfter["status"]);   // "interrupted"
+```
 
-    # Get the run to see status "interrupted" and that the run still exists
-    curl --request GET \
-      --url <DEPLOYMENT_URL>/threads/<THREAD_ID>/runs/<RUN_ID>
-    ```
-  </Tab>
-</Tabs>
+**cURL**
+
+```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+# Create a run (use the run_id and thread_id from the response)
+curl --request POST \
+  --url <DEPLOYMENT_URL>/threads/<THREAD_ID>/runs \
+  --header 'Content-Type: application/json' \
+  --data '{"assistant_id": "agent", "input": {"messages": [{"role": "user", "content": "Summarize the docs"}]}}'
+
+# Cancel with default action (interrupt)
+curl --request POST \
+  --url <DEPLOYMENT_URL>/threads/<THREAD_ID>/runs/<RUN_ID>/cancel?wait=true
+
+# Get the run to see status "interrupted" and that the run still exists
+curl --request GET \
+  --url <DEPLOYMENT_URL>/threads/<THREAD_ID>/runs/<RUN_ID>
+```
 
 ### Cancel with rollback
 
@@ -113,123 +109,119 @@ Use **interrupt** when you want to stop a run but keep it for debugging, auditin
 
 Use **rollback** when you want to fully discard a run and its effects (for example, after a user abandons a request and you do not need to keep partial work).
 
-<Tabs>
-  <Tab title="Python">
-    ```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-    run = await client.runs.create(
-        thread["thread_id"],
-        assistant_id,
-        input={"messages": [{"role": "user", "content": "Long task"}]},
-    )
-    await client.runs.cancel(thread["thread_id"], run["run_id"], action="rollback", wait=True)
+**Python**
 
-    # Throws an error because the run is deleted
-    try:
-        await client.runs.get(thread["thread_id"], run["run_id"])
-    except Exception:
-        print("Run was correctly deleted")
-    ```
-  </Tab>
+```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+run = await client.runs.create(
+    thread["thread_id"],
+    assistant_id,
+    input={"messages": [{"role": "user", "content": "Long task"}]},
+)
+await client.runs.cancel(thread["thread_id"], run["run_id"], action="rollback", wait=True)
 
-  <Tab title="Javascript">
-    ```js theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-    const run = await client.runs.create(
-        thread["thread_id"],
-        assistantID,
-        { input: { messages: [{ role: "user", content: "Long task" }] } }
-    );
-    await client.runs.cancel(thread["thread_id"], run["run_id"], wait=true, action="rollback");
+# Throws an error because the run is deleted
+try:
+    await client.runs.get(thread["thread_id"], run["run_id"])
+except Exception:
+    print("Run was correctly deleted")
+```
 
-    // Throws an error because the run is deleted
-    try {
-        await client.runs.get(thread["thread_id"], run["run_id"]);
-    } catch (e) {
-        console.log("Run was correctly deleted");
-    }
-    ```
-  </Tab>
+**Javascript**
 
-  <Tab title="cURL">
-    ```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-    # Create a run, then cancel with rollback
-    curl --request POST \
-      --url <DEPLOYMENT_URL>/threads/<THREAD_ID>/runs \
-      --header 'Content-Type: application/json' \
-      --data '{"assistant_id": "agent", "input": {"messages": [{"role": "user", "content": "Summarize the docs"}]}}'
+```js theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+const run = await client.runs.create(
+    thread["thread_id"],
+    assistantID,
+    { input: { messages: [{ role: "user", content: "Long task" }] } }
+);
+await client.runs.cancel(thread["thread_id"], run["run_id"], wait=true, action="rollback");
 
-    curl --request POST \
-      --url "<DEPLOYMENT_URL>/threads/<THREAD_ID>/runs/<RUN_ID>/cancel?action=rollback"
+// Throws an error because the run is deleted
+try {
+    await client.runs.get(thread["thread_id"], run["run_id"]);
+} catch (e) {
+    console.log("Run was correctly deleted");
+}
+```
 
-    # Throws an error because the run is deleted
-    curl --request GET \
-      --url <DEPLOYMENT_URL>/threads/<THREAD_ID>/runs/<RUN_ID>
-    ```
-  </Tab>
-</Tabs>
+**cURL**
+
+```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+# Create a run, then cancel with rollback
+curl --request POST \
+  --url <DEPLOYMENT_URL>/threads/<THREAD_ID>/runs \
+  --header 'Content-Type: application/json' \
+  --data '{"assistant_id": "agent", "input": {"messages": [{"role": "user", "content": "Summarize the docs"}]}}'
+
+curl --request POST \
+  --url "<DEPLOYMENT_URL>/threads/<THREAD_ID>/runs/<RUN_ID>/cancel?action=rollback"
+
+# Throws an error because the run is deleted
+curl --request GET \
+  --url <DEPLOYMENT_URL>/threads/<THREAD_ID>/runs/<RUN_ID>
+```
 
 ### Cancel with wait
 
 By default, the cancel request returns after the cancellation is requested and the run is cancelled asynchronously. `wait=True` makes the cancel request block until the run has been fully cancelled. This is useful when you want to know the final state of the run after it has been cancelled (e.g., what checkpoints were created, what the final output was).
 
-<Tabs>
-  <Tab title="Python">
-    ```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-    run = await client.runs.create(
-        thread["thread_id"],
-        assistant_id,
-        input={"messages": [{"role": "user", "content": "Long task"}]},
-    )
-    # Cancel the run asynchronously
-    await client.runs.cancel(thread["thread_id"], run["run_id"])
-    # Get the status of the run
-    run_after = await client.runs.get(thread["thread_id"], run["run_id"])
-    print(run_after["status"])  # "pending" or "running"
+**Python**
 
-    # Wait for the run to be properly cancelled
-    await client.runs.join(thread["thread_id"], run["run_id"])
-    run_after = await client.runs.get(thread["thread_id"], run["run_id"])
-    print(run_after["status"])  # "interrupted"
-    ```
-  </Tab>
+```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+run = await client.runs.create(
+    thread["thread_id"],
+    assistant_id,
+    input={"messages": [{"role": "user", "content": "Long task"}]},
+)
+# Cancel the run asynchronously
+await client.runs.cancel(thread["thread_id"], run["run_id"])
+# Get the status of the run
+run_after = await client.runs.get(thread["thread_id"], run["run_id"])
+print(run_after["status"])  # "pending" or "running"
 
-  <Tab title="Javascript">
-    ```js theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-    const run = await client.runs.create(
-        thread["thread_id"],
-        assistantID,
-        { input: { messages: [{ role: "user", content: "Long task" }] } }
-    );
-    // Cancel the run asynchronously
-    await client.runs.cancel(thread["thread_id"], run["run_id"]);
-    // Get the status of the run
-    const runRunning = await client.runs.get(thread["thread_id"], run["run_id"])
-    console.log(runRunning["status"])  // "pending" or "running"
+# Wait for the run to be properly cancelled
+await client.runs.join(thread["thread_id"], run["run_id"])
+run_after = await client.runs.get(thread["thread_id"], run["run_id"])
+print(run_after["status"])  # "interrupted"
+```
 
-    // Wait for the run to be properly cancelled
-    await client.runs.join(thread["thread_id"], run["run_id"])
-    const runInterrupted = await client.runs.get(thread["thread_id"], run["run_id"])
-    console.log(runInterrupted["status"])  // "interrupted"
-    ```
-  </Tab>
+**Javascript**
 
-  <Tab title="cURL">
-    ```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-    # Create a run
-    curl --request POST \
-      --url <DEPLOYMENT_URL>/threads/<THREAD_ID>/runs \
-      --header 'Content-Type: application/json' \
-      --data '{"assistant_id": "agent", "input": {"messages": [{"role": "user", "content": "Summarize the docs"}]}}'
+```js theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+const run = await client.runs.create(
+    thread["thread_id"],
+    assistantID,
+    { input: { messages: [{ role: "user", content: "Long task" }] } }
+);
+// Cancel the run asynchronously
+await client.runs.cancel(thread["thread_id"], run["run_id"]);
+// Get the status of the run
+const runRunning = await client.runs.get(thread["thread_id"], run["run_id"])
+console.log(runRunning["status"])  // "pending" or "running"
 
-    # Cancel the run asynchronously
-    curl --request POST \
-      --url "<DEPLOYMENT_URL>/threads/<THREAD_ID>/runs/<RUN_ID>/cancel"
+// Wait for the run to be properly cancelled
+await client.runs.join(thread["thread_id"], run["run_id"])
+const runInterrupted = await client.runs.get(thread["thread_id"], run["run_id"])
+console.log(runInterrupted["status"])  // "interrupted"
+```
 
-    # Get the status of the run, should be "pending" or "running" until cancellation completes, then "interrupted"
-    curl --request GET \
-      --url <DEPLOYMENT_URL>/threads/<THREAD_ID>/runs/<RUN_ID>
-    ```
-  </Tab>
-</Tabs>
+**cURL**
+
+```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+# Create a run
+curl --request POST \
+  --url <DEPLOYMENT_URL>/threads/<THREAD_ID>/runs \
+  --header 'Content-Type: application/json' \
+  --data '{"assistant_id": "agent", "input": {"messages": [{"role": "user", "content": "Summarize the docs"}]}}'
+
+# Cancel the run asynchronously
+curl --request POST \
+  --url "<DEPLOYMENT_URL>/threads/<THREAD_ID>/runs/<RUN_ID>/cancel"
+
+# Get the status of the run, should be "pending" or "running" until cancellation completes, then "interrupted"
+curl --request GET \
+  --url <DEPLOYMENT_URL>/threads/<THREAD_ID>/runs/<RUN_ID>
+```
 
 ## Cancel multiple runs
 
@@ -239,243 +231,237 @@ Use the bulk cancel endpoint to cancel multiple runs in one request. Both the in
 
 Cancel specific runs by passing their IDs.
 
-<Tabs>
-  <Tab title="Python">
-    ```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-    run1 = await client.runs.create(
-        thread["thread_id"],
-        assistant_id,
-        input={"messages": [{"role": "user", "content": "First request"}]},
-    )
-    run2 = await client.runs.create(
-        thread["thread_id"],
-        assistant_id,
-        input={"messages": [{"role": "user", "content": "Second request"}]},
-        multitask_strategy="enqueue",
-    )
+**Python**
 
-    await client.runs.cancel_many(
-        thread_id=thread["thread_id"],
-        run_ids=[run1["run_id"], run2["run_id"]]
-    )
+```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+run1 = await client.runs.create(
+    thread["thread_id"],
+    assistant_id,
+    input={"messages": [{"role": "user", "content": "First request"}]},
+)
+run2 = await client.runs.create(
+    thread["thread_id"],
+    assistant_id,
+    input={"messages": [{"role": "user", "content": "Second request"}]},
+    multitask_strategy="enqueue",
+)
 
-    # Wait for the runs to be cancelled
-    await client.runs.join(thread["thread_id"], run2["run_id"])
-    runs_after = await client.runs.list(thread["thread_id"])
-    for run in runs_after:
-        if run["run_id"] in (run1["run_id"], run2["run_id"]):
-            print(run["run_id"], run["status"])  # "interrupted"
-    ```
-  </Tab>
+await client.runs.cancel_many(
+    thread_id=thread["thread_id"],
+    run_ids=[run1["run_id"], run2["run_id"]]
+)
 
-  <Tab title="Javascript">
-    ```js theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-    // Bulk delete by run IDs is not supported in the Javascript SDK
-    ```
-  </Tab>
+# Wait for the runs to be cancelled
+await client.runs.join(thread["thread_id"], run2["run_id"])
+runs_after = await client.runs.list(thread["thread_id"])
+for run in runs_after:
+    if run["run_id"] in (run1["run_id"], run2["run_id"]):
+        print(run["run_id"], run["status"])  # "interrupted"
+```
 
-  <Tab title="cURL">
-    ```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-    # Create two runs (capture run_id from each response)
-    curl --request POST \
-      --url <DEPLOYMENT_URL>/threads/<THREAD_ID>/runs \
-      --header 'Content-Type: application/json' \
-      --data '{"assistant_id": "agent", "input": {"messages": [{"role": "user", "content": "First request"}]}}'
+**Javascript**
 
-    curl --request POST \
-      --url <DEPLOYMENT_URL>/threads/<THREAD_ID>/runs \
-      --header 'Content-Type: application/json' \
-      --data '{"assistant_id": "agent", "input": {"messages": [{"role": "user", "content": "Second request"}]}}'
+```js theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+// Bulk delete by run IDs is not supported in the Javascript SDK
+```
 
-    # Cancel both by run IDs
-    curl --request POST \
-      --url "<DEPLOYMENT_URL>/runs/cancel?action=interrupt" \
-      --header 'Content-Type: application/json' \
-      --data '{"thread_id": "<THREAD_ID>", "run_ids": ["<RUN_ID_1>", "<RUN_ID_2>"]}'
+**cURL**
 
-    # List runs to confirm
-    curl --request GET \
-      --url <DEPLOYMENT_URL>/threads/<THREAD_ID>/runs
-    ```
-  </Tab>
-</Tabs>
+```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+# Create two runs (capture run_id from each response)
+curl --request POST \
+  --url <DEPLOYMENT_URL>/threads/<THREAD_ID>/runs \
+  --header 'Content-Type: application/json' \
+  --data '{"assistant_id": "agent", "input": {"messages": [{"role": "user", "content": "First request"}]}}'
+
+curl --request POST \
+  --url <DEPLOYMENT_URL>/threads/<THREAD_ID>/runs \
+  --header 'Content-Type: application/json' \
+  --data '{"assistant_id": "agent", "input": {"messages": [{"role": "user", "content": "Second request"}]}}'
+
+# Cancel both by run IDs
+curl --request POST \
+  --url "<DEPLOYMENT_URL>/runs/cancel?action=interrupt" \
+  --header 'Content-Type: application/json' \
+  --data '{"thread_id": "<THREAD_ID>", "run_ids": ["<RUN_ID_1>", "<RUN_ID_2>"]}'
+
+# List runs to confirm
+curl --request GET \
+  --url <DEPLOYMENT_URL>/threads/<THREAD_ID>/runs
+```
 
 ### Cancel by status
 
 Cancel all runs that match a status across all threads in a deployment. Valid status options are `pending`, `running`, or `all`.
 
-<Tabs>
-  <Tab title="Python">
-    ```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-    run1 = await client.runs.create(
-        thread["thread_id"],
-        assistant_id,
-        input={"messages": [{"role": "user", "content": "First request"}]},
-    )
-    thread2 = await client.threads.create()
-    run2 = await client.runs.create(
-        thread2["thread_id"],
-        assistant_id,
-        input={"messages": [{"role": "user", "content": "Second request"}]},
-    )
+**Python**
 
-    await client.runs.cancel_many(
-        status="running",
-    )
+```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+run1 = await client.runs.create(
+    thread["thread_id"],
+    assistant_id,
+    input={"messages": [{"role": "user", "content": "First request"}]},
+)
+thread2 = await client.threads.create()
+run2 = await client.runs.create(
+    thread2["thread_id"],
+    assistant_id,
+    input={"messages": [{"role": "user", "content": "Second request"}]},
+)
 
-    # Wait for the runs to be cancelled
-    await client.runs.join(thread2["thread_id"], run2["run_id"])
-    run_after = await client.runs.get(thread["thread_id"], run1["run_id"])
-    print(run_after["status"])  # running run is now "interrupted"
-    run_after2 = await client.runs.get(thread2["thread_id"], run2["run_id"])
-    print(run_after2["status"])  # runs are cancelled across all threads
-    ```
-  </Tab>
+await client.runs.cancel_many(
+    status="running",
+)
 
-  <Tab title="Javascript">
-    ```js theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-    // Bulk delete by status is not supported in the Javascript SDK
-    ```
-  </Tab>
+# Wait for the runs to be cancelled
+await client.runs.join(thread2["thread_id"], run2["run_id"])
+run_after = await client.runs.get(thread["thread_id"], run1["run_id"])
+print(run_after["status"])  # running run is now "interrupted"
+run_after2 = await client.runs.get(thread2["thread_id"], run2["run_id"])
+print(run_after2["status"])  # runs are cancelled across all threads
+```
 
-  <Tab title="cURL">
-    ```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-    # Create a run
-    curl --request POST \
-      --url <DEPLOYMENT_URL>/threads/<THREAD_ID>/runs \
-      --header 'Content-Type: application/json' \
-      --data '{"assistant_id": "agent", "input": {"messages": [{"role": "user", "content": "First request"}]}}'
+**Javascript**
 
-    # Create a second thread
-    curl --request POST \
-      --url <DEPLOYMENT_URL>/threads \
-      --header 'Content-Type: application/json' \
-      --data '{}'
+```js theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+// Bulk delete by status is not supported in the Javascript SDK
+```
 
-    # Create a run in the second thread
-    curl --request POST \
-      --url <DEPLOYMENT_URL>/threads/<THREAD_ID_2>/runs \
-      --header 'Content-Type: application/json' \
-      --data '{"assistant_id": "agent", "input": {"messages": [{"role": "user", "content": "Second request"}]}}'
+**cURL**
 
-    # Cancel all running runs
-    curl --request POST \
-      --url "<DEPLOYMENT_URL>/runs/cancel?action=interrupt" \
-      --header 'Content-Type: application/json' \
-      --data '{"status": "running"}'
+```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+# Create a run
+curl --request POST \
+  --url <DEPLOYMENT_URL>/threads/<THREAD_ID>/runs \
+  --header 'Content-Type: application/json' \
+  --data '{"assistant_id": "agent", "input": {"messages": [{"role": "user", "content": "First request"}]}}'
 
-    # Get the status of the runs to confirm
-    curl --request GET \
-      --url <DEPLOYMENT_URL>/threads/<THREAD_ID>/runs/<RUN_ID_1>
-    curl --request GET \
-      --url <DEPLOYMENT_URL>/threads/<THREAD_ID_2>/runs/<RUN_ID_2>
-    ```
-  </Tab>
-</Tabs>
+# Create a second thread
+curl --request POST \
+  --url <DEPLOYMENT_URL>/threads \
+  --header 'Content-Type: application/json' \
+  --data '{}'
+
+# Create a run in the second thread
+curl --request POST \
+  --url <DEPLOYMENT_URL>/threads/<THREAD_ID_2>/runs \
+  --header 'Content-Type: application/json' \
+  --data '{"assistant_id": "agent", "input": {"messages": [{"role": "user", "content": "Second request"}]}}'
+
+# Cancel all running runs
+curl --request POST \
+  --url "<DEPLOYMENT_URL>/runs/cancel?action=interrupt" \
+  --header 'Content-Type: application/json' \
+  --data '{"status": "running"}'
+
+# Get the status of the runs to confirm
+curl --request GET \
+  --url <DEPLOYMENT_URL>/threads/<THREAD_ID>/runs/<RUN_ID_1>
+curl --request GET \
+  --url <DEPLOYMENT_URL>/threads/<THREAD_ID_2>/runs/<RUN_ID_2>
+```
 
 ## Cancel on disconnect
 
 When starting a run with streaming or when waiting on a run, you can set `on_disconnect="cancel"` so that the run is cancelled if the client disconnects. This avoids leaving runs in progress when a user closes the app or loses connection.
 
-<Tabs>
-  <Tab title="Python">
-    ```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-    # With runs.wait: run is cancelled if the client disconnects
-    result = await client.runs.wait(
-        thread["thread_id"],
-        assistant_id,
-        input={"messages": [{"role": "user", "content": "Long task"}]},
-        on_disconnect="cancel",
-    )
+**Python**
 
-    # With runs.stream: run is cancelled if the client disconnects
-    async for chunk in client.runs.stream(
-        thread["thread_id"],
-        assistant_id,
-        input={"messages": [{"role": "user", "content": "Long task"}]},
-        on_disconnect="cancel",
-    ):
-        print(chunk)
+```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+# With runs.wait: run is cancelled if the client disconnects
+result = await client.runs.wait(
+    thread["thread_id"],
+    assistant_id,
+    input={"messages": [{"role": "user", "content": "Long task"}]},
+    on_disconnect="cancel",
+)
 
-    # With runs.join: wait for an existing run; cancel if client disconnects
-    run = await client.runs.create(
-        thread["thread_id"],
-        assistant_id,
-        input={"messages": [{"role": "user", "content": "Long task"}]},
-    )
-    await client.runs.join(
-        thread["thread_id"],
-        run["run_id"],
-        on_disconnect="cancel",
-    )
+# With runs.stream: run is cancelled if the client disconnects
+async for chunk in client.runs.stream(
+    thread["thread_id"],
+    assistant_id,
+    input={"messages": [{"role": "user", "content": "Long task"}]},
+    on_disconnect="cancel",
+):
+    print(chunk)
 
-    # With runs.join_stream: join an existing run and stream; cancel if client disconnects
-    async for chunk in client.runs.join_stream(
-        thread["thread_id"],
-        run["run_id"],
-        on_disconnect="cancel",
-    ):
-        print(chunk)
-    ```
-  </Tab>
+# With runs.join: wait for an existing run; cancel if client disconnects
+run = await client.runs.create(
+    thread["thread_id"],
+    assistant_id,
+    input={"messages": [{"role": "user", "content": "Long task"}]},
+)
+await client.runs.join(
+    thread["thread_id"],
+    run["run_id"],
+    on_disconnect="cancel",
+)
 
-  <Tab title="Javascript">
-    ```js theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-    // With runs.wait: run is cancelled if the client disconnects
-    const result = await client.runs.wait(
-        thread["thread_id"],
-        assistantID,
-        { input: { messages: [{ role: "user", content: "Long task" }] }, onDisconnect: "cancel" }
-    );
+# With runs.join_stream: join an existing run and stream; cancel if client disconnects
+async for chunk in client.runs.join_stream(
+    thread["thread_id"],
+    run["run_id"],
+    on_disconnect="cancel",
+):
+    print(chunk)
+```
 
-    // With runs.stream: run is cancelled if the client disconnects
-    const streamResponse = client.runs.stream(
-        thread["thread_id"],
-        assistantID,
-        { input: { messages: [{ role: "user", content: "Long task" }] }, onDisconnect: "cancel" }
-    );
-    for await (const chunk of streamResponse) {
-        console.log(chunk);
-    }
+**Javascript**
 
-    // With runs.join does not support cancel on disconnect in the Javascript SDK
+```js theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+// With runs.wait: run is cancelled if the client disconnects
+const result = await client.runs.wait(
+    thread["thread_id"],
+    assistantID,
+    { input: { messages: [{ role: "user", content: "Long task" }] }, onDisconnect: "cancel" }
+);
 
-    // With runs.joinStream: join an existing run and stream; cancel if client disconnects
-    const joinStreamResponse = client.runs.joinStream(
-        thread["thread_id"],
-        run["run_id"],
-        { cancelOnDisconnect: true }
-    );
-    for await (const chunk of joinStreamResponse) {
-        console.log(chunk);
-    }
-    ```
-  </Tab>
+// With runs.stream: run is cancelled if the client disconnects
+const streamResponse = client.runs.stream(
+    thread["thread_id"],
+    assistantID,
+    { input: { messages: [{ role: "user", content: "Long task" }] }, onDisconnect: "cancel" }
+);
+for await (const chunk of streamResponse) {
+    console.log(chunk);
+}
 
-  <Tab title="cURL">
-    ```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-    # runs.wait: create run and wait for output; cancel if client disconnects
-    curl --request POST \
-      --url <DEPLOYMENT_URL>/threads/<THREAD_ID>/runs/wait \
-      --header 'Content-Type: application/json' \
-      --data '{"assistant_id": "agent", "input": {"messages": [{"role": "user", "content": "Long task"}]}, "on_disconnect": "cancel"}'
+// With runs.join does not support cancel on disconnect in the Javascript SDK
 
-    # Create and stream a run; cancel if client disconnects
-    curl --request POST \
-      --url "<DEPLOYMENT_URL>/threads/<THREAD_ID>/runs/stream?on_disconnect=cancel" \
-      --header 'Content-Type: application/json' \
-      --data '{"assistant_id": "agent", "input": {"messages": [{"role": "user", "content": "Long task"}]}}'
+// With runs.joinStream: join an existing run and stream; cancel if client disconnects
+const joinStreamResponse = client.runs.joinStream(
+    thread["thread_id"],
+    run["run_id"],
+    { cancelOnDisconnect: true }
+);
+for await (const chunk of joinStreamResponse) {
+    console.log(chunk);
+}
+```
 
-    # runs.join: wait on an existing run; cancel if client disconnects
-    curl --request GET \
-      --url "<DEPLOYMENT_URL>/threads/<THREAD_ID>/runs/<RUN_ID>/join?cancel_on_disconnect=cancel"
+**cURL**
 
-    # runs.join_stream: join an existing run and stream; cancel if client disconnects
-    curl --request GET \
-      --url "<DEPLOYMENT_URL>/threads/<THREAD_ID>/runs/<RUN_ID>/stream?cancel_on_disconnect=cancel"
-    ```
-  </Tab>
-</Tabs>
+```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+# runs.wait: create run and wait for output; cancel if client disconnects
+curl --request POST \
+  --url <DEPLOYMENT_URL>/threads/<THREAD_ID>/runs/wait \
+  --header 'Content-Type: application/json' \
+  --data '{"assistant_id": "agent", "input": {"messages": [{"role": "user", "content": "Long task"}]}, "on_disconnect": "cancel"}'
+
+# Create and stream a run; cancel if client disconnects
+curl --request POST \
+  --url "<DEPLOYMENT_URL>/threads/<THREAD_ID>/runs/stream?on_disconnect=cancel" \
+  --header 'Content-Type: application/json' \
+  --data '{"assistant_id": "agent", "input": {"messages": [{"role": "user", "content": "Long task"}]}}'
+
+# runs.join: wait on an existing run; cancel if client disconnects
+curl --request GET \
+  --url "<DEPLOYMENT_URL>/threads/<THREAD_ID>/runs/<RUN_ID>/join?cancel_on_disconnect=cancel"
+
+# runs.join_stream: join an existing run and stream; cancel if client disconnects
+curl --request GET \
+  --url "<DEPLOYMENT_URL>/threads/<THREAD_ID>/runs/<RUN_ID>/stream?cancel_on_disconnect=cancel"
+```
 
 ## Common scenarios
 
@@ -486,12 +472,6 @@ When starting a run with streaming or when waiting on a run, you can set `on_dis
 
 ***
 
-<div>
-  <Callout icon="terminal-2">
-    [Connect these docs](/use-these-docs) to your agent of choice via MCP for real-time answers.
-  </Callout>
+[Connect these docs](/use-these-docs) to your agent of choice via MCP for real-time answers.
 
-  <Callout icon="edit">
-    [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/cancel-run.mdx) or [file an issue](https://github.com/langchain-ai/docs/issues/new/choose).
-  </Callout>
-</div>
+[Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/cancel-run.mdx) or [file an issue](https://github.com/langchain-ai/docs/issues/new/choose).

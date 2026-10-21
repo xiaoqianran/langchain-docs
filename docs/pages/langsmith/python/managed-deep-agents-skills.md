@@ -6,9 +6,9 @@ Add reusable task-specific instructions to a managed deep agent.
 
 Skills package task-specific procedures and supporting files into reusable directories. MDA discovers them automatically. The agent loads a skill's full contents only when the task matches the description in the frontmatter.
 
-<Note>
-  Managed Deep Agents is in **public [beta](/langsmith/release-stages)** on [LangSmith Cloud](/langsmith/cloud).
-</Note>
+> [!NOTE]
+>
+> Managed Deep Agents is in **public [beta](/langsmith/release-stages)** on [LangSmith Cloud](/langsmith/cloud).
 
 Put each skill under `skills/` at the project root:
 
@@ -26,44 +26,42 @@ For the full project layout, see [Project structure](/langsmith/python/managed-d
 
 Use skills for procedures the agent should follow only when a task matches the description in the frontmatter:
 
-<Steps>
-  <Step title="Create a skill directory">
-    Each skill directory needs a `SKILL.md` file with `name` and `description` frontmatter:
+**1. Create a skill directory**
 
-    ```markdown skills/research/SKILL.md theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-    ---
-    name: research
-    description: Gather and synthesize context before answering complex questions.
-    ---
+Each skill directory needs a `SKILL.md` file with `name` and `description` frontmatter:
 
-    # Research
+```markdown skills/research/SKILL.md theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+---
+name: research
+description: Gather and synthesize context before answering complex questions.
+---
 
-    Use this skill when a task needs more than a direct answer.
+# Research
 
-    1. Identify what information is missing.
-    2. Use `query_db` to look up relevant records.
-    3. Summarize findings before responding to the user.
-    ```
+Use this skill when a task needs more than a direct answer.
 
-    For skill authoring patterns and the complete format, see [Skills](/oss/python/deepagents/skills).
+1. Identify what information is missing.
+2. Use `query_db` to look up relevant records.
+3. Summarize findings before responding to the user.
+```
 
-    To understand progressive disclosure, see [How the agent uses skills](#how-the-agent-uses-skills).
-  </Step>
+For skill authoring patterns and the complete format, see [Skills](/oss/python/deepagents/skills).
 
-  <Step title="Add supporting files (Optional)">
-    A skill directory can also contain supporting scripts, reference files, and templates. Reference these files from `SKILL.md` so the agent knows when to use them:
+To understand progressive disclosure, see [How the agent uses skills](#how-the-agent-uses-skills).
 
-    ```text theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-    skills/
-      research/
-        SKILL.md
-        templates/
-          report.md
-        scripts/
-          fetch_sources.py
-    ```
-  </Step>
-</Steps>
+**2. Add supporting files (Optional)**
+
+A skill directory can also contain supporting scripts, reference files, and templates. Reference these files from `SKILL.md` so the agent knows when to use them:
+
+```text theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+skills/
+  research/
+    SKILL.md
+    templates/
+      report.md
+    scripts/
+      fetch_sources.py
+```
 
 ## How the agent uses skills
 
@@ -93,12 +91,6 @@ For more information, see [Project structure](/langsmith/python/managed-deep-age
 
 ***
 
-<div>
-  <Callout icon="terminal-2">
-    [Connect these docs](/use-these-docs) to your agent of choice via MCP for real-time answers.
-  </Callout>
+[Connect these docs](/use-these-docs) to your agent of choice via MCP for real-time answers.
 
-  <Callout icon="edit">
-    [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/managed-deep-agents-skills.mdx) or [file an issue](https://github.com/langchain-ai/docs/issues/new/choose).
-  </Callout>
-</div>
+[Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/managed-deep-agents-skills.mdx) or [file an issue](https://github.com/langchain-ai/docs/issues/new/choose).

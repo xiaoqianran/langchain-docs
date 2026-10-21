@@ -6,7 +6,7 @@
 
 元数据模式标准化了跟踪元数据编码代理在发送运行到LangSmith时必须发出的内容。
 
-该模式是编码代理附加到LangSmith运行的元数据的权威契约。它定义了每次运行时需要哪些字段、运行时可以提供哪些字段时需要哪些字段以及哪些字段仅适用于特定的运行类型。
+该模式是编码代理附加到LangSmith运行的元数据的权威合同。它定义了每次运行时需要哪些字段、运行时可以提供哪些字段时需要哪些字段以及哪些字段仅适用于特定的运行类型。
 
 编码代理集成使用此模式来确保其跟踪结构一致、可查询，并与 LangSmith 的可观察性和过滤功能兼容。
 
@@ -14,7 +14,7 @@
 
 以下集成实现了此架构：
 
-|整合 | `ls_integration`值|
+|整合 | `ls_integration`值 |
 | - | - |
 | [Claude Code](/langsmith/trace-claude-code) | `claude-code` |
 | [OpenAI Codex](/langsmith/trace-with-codex) | `openai-codex` |
@@ -26,7 +26,7 @@
 
 ## 全局身份块
 
-每个运行类型必须在其元数据中包含以下标识字段：|领域 |描述 |
+每个运行类型必须在其元数据中包含以下标识字段：|领域|描述 |
 | - | - |
 | `ls_agent_type` |代理内的运行类型。应为 `"root"`、`"subagent"`、`"middleware"` 或 `"compaction"` 之一。 |
 | `ls_agent_purpose` |代理的高级用途，例如`"coding"`。 |
@@ -47,7 +47,7 @@
 
 ## 运行类型
 
-该架构区分了五种运行类型。某些字段仅适用于运行类型的子集。|运行类型 |描述 |
+该架构区分了五种运行类型。某些字段仅适用于运行类型的子集。|运行类型|描述 |
 | - | - |
 | `root` |代表完整座席轮次或会话的顶级运行。 |
 | `llm` |一个回合内调用一个语言模型。 |
@@ -63,7 +63,7 @@
 
 所有运行类型都需要附加字段：
 
-|领域 |等级 |描述 |
+|领域|等级 |描述 |
 | - | - | - |
 | `ls_agent_version` | `where_known` |代理运行时的版本字符串，例如 `"1.0.28"`。 |
 | `git_branch` | `where_known` |正在编辑的存储库中的活动 Git 分支。 |
@@ -73,39 +73,33 @@
 
 ### `llm` 运行
 
-|领域 |等级 |描述 |
+|领域|等级 |描述 |
 | - | - | - |
 | `ls_model_name` | `where_known` |型号标识符，例如`"claude-opus-4-5"`。 |
 | `ls_provider` | `where_known` |模型提供者，例如`"anthropic"`。 |
 
 ### `tool` 运行
 
-|领域 |等级 |描述 |
+|领域|等级 |描述 |
 | - | - | - |
 | `ls_tool_name` | `always` |调用的工具的名称，例如 `"bash"` 或 `"computer"`。 |
 
-### `subagent` 运行|领域 |等级 |描述 |
+### `subagent` 运行|领域|等级 |描述 |
 | - | - | - |
 | `ls_subagent_id` | `always` |子代理的稳定标识符。 |
-| `ls_subagent_type` | `always` |子代理的类型或角色，例如`"researcher"`。 |
+| `ls_subagent_type` | `always` | Type or role of the subagent, for example `"researcher"`. |
 
 ### `interrupted` 运行
 
-中断的运行具有与 `root` 运行相同的字段。运行类型本身发出异常终止状态的信号；没有添加额外的必填字段。
+Interrupted runs carry the same fields as `root` runs. The run type itself signals the abnormal termination state;没有添加额外的必填字段。
 
 ## 相关
 
-* [Metadata parameters reference](/langsmith/ls-metadata-parameters)：LangSmith中使用的`ls_`前缀字段通常运行。
-* [Add metadata and tags](/langsmith/add-metadata-tags)：如何使用LangSmith SDK 将元数据附加到跟踪。
+* [Metadata parameters reference](/langsmith/ls-metadata-parameters): `ls_` prefixed fields used in LangSmith runs generally.
+* [Add metadata and tags](/langsmith/add-metadata-tags): how to attach metadata to traces using the LangSmith SDK.
 
 ***
 
-<div>
-  <Callout icon="terminal-2">
-    [Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
-  </Callout>
+[Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
 
-  <Callout icon="edit">
-    [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/coding-agent-metadata-contract.mdx) 或 [file an issue](https://github.com/langchain-ai/docs/issues/new/choose)。
-  </Callout>
-</div>
+[Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/coding-agent-metadata-contract.mdx) 或 [file an issue](https://github.com/langchain-ai/docs/issues/new/choose)。

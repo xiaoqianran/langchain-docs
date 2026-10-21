@@ -19,9 +19,9 @@ graph TB
     Coder --> |check| Supervisor
 ```
 
-<Note>
-  Async subagents communicate with any server that implements the [Agent Protocol](https://github.com/langchain-ai/agent-protocol). You can use [LangSmith Deployments](/langsmith/deployment), or self-host any Agent Protocol-compatible server. Each subagent runs independently of the supervisor, which controls them through the SDK to launch, check, update, and cancel.
-</Note>
+> [!NOTE]
+>
+> Async subagents communicate with any server that implements the [Agent Protocol](https://github.com/langchain-ai/agent-protocol). You can use [LangSmith Deployments](/langsmith/deployment), or self-host any Agent Protocol-compatible server. Each subagent runs independently of the supervisor, which controls them through the SDK to launch, check, update, and cancel.
 
 ## When to use async subagents
 
@@ -38,175 +38,173 @@ graph TB
 
 Define async subagents as a list of [`AsyncSubAgent`](https://reference.langchain.com/javascript/deepagents/agent/createDeepAgent) specs, each pointing to an Agent Protocol server:
 
-<CodeGroup>
-  ```ts Google theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  import { createDeepAgent, type AsyncSubAgent } from "deepagents";
+```ts Google theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+import { createDeepAgent, type AsyncSubAgent } from "deepagents";
 
-  const asyncSubagents: AsyncSubAgent[] = [
-    {
-      name: "researcher",
-      description: "Research agent for information gathering and synthesis",
-      graphId: "researcher",
-      // No url → ASGI transport (co-deployed in the same deployment)
-    },
-    {
-      name: "coder",
-      description: "Coding agent for code generation and review",
-      graphId: "coder",
-      // url: "https://coder-deployment.langsmith.dev"  // Optional: HTTP transport for remote
-    },
-  ];
+const asyncSubagents: AsyncSubAgent[] = [
+  {
+    name: "researcher",
+    description: "Research agent for information gathering and synthesis",
+    graphId: "researcher",
+    // No url → ASGI transport (co-deployed in the same deployment)
+  },
+  {
+    name: "coder",
+    description: "Coding agent for code generation and review",
+    graphId: "coder",
+    // url: "https://coder-deployment.langsmith.dev"  // Optional: HTTP transport for remote
+  },
+];
 
-  const agent = createDeepAgent({
-    model: "google:gemini-3.6-flash",
-    subagents: [...asyncSubagents],
-  });
-  ```
+const agent = createDeepAgent({
+  model: "google:gemini-3.6-flash",
+  subagents: [...asyncSubagents],
+});
+```
 
-  ```ts OpenAI theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  import { createDeepAgent, type AsyncSubAgent } from "deepagents";
+```ts OpenAI theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+import { createDeepAgent, type AsyncSubAgent } from "deepagents";
 
-  const asyncSubagents: AsyncSubAgent[] = [
-    {
-      name: "researcher",
-      description: "Research agent for information gathering and synthesis",
-      graphId: "researcher",
-      // No url → ASGI transport (co-deployed in the same deployment)
-    },
-    {
-      name: "coder",
-      description: "Coding agent for code generation and review",
-      graphId: "coder",
-      // url: "https://coder-deployment.langsmith.dev"  // Optional: HTTP transport for remote
-    },
-  ];
+const asyncSubagents: AsyncSubAgent[] = [
+  {
+    name: "researcher",
+    description: "Research agent for information gathering and synthesis",
+    graphId: "researcher",
+    // No url → ASGI transport (co-deployed in the same deployment)
+  },
+  {
+    name: "coder",
+    description: "Coding agent for code generation and review",
+    graphId: "coder",
+    // url: "https://coder-deployment.langsmith.dev"  // Optional: HTTP transport for remote
+  },
+];
 
-  const agent = createDeepAgent({
-    model: "openai:gpt-5.5",
-    subagents: [...asyncSubagents],
-  });
-  ```
+const agent = createDeepAgent({
+  model: "openai:gpt-5.5",
+  subagents: [...asyncSubagents],
+});
+```
 
-  ```ts Anthropic theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  import { createDeepAgent, type AsyncSubAgent } from "deepagents";
+```ts Anthropic theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+import { createDeepAgent, type AsyncSubAgent } from "deepagents";
 
-  const asyncSubagents: AsyncSubAgent[] = [
-    {
-      name: "researcher",
-      description: "Research agent for information gathering and synthesis",
-      graphId: "researcher",
-      // No url → ASGI transport (co-deployed in the same deployment)
-    },
-    {
-      name: "coder",
-      description: "Coding agent for code generation and review",
-      graphId: "coder",
-      // url: "https://coder-deployment.langsmith.dev"  // Optional: HTTP transport for remote
-    },
-  ];
+const asyncSubagents: AsyncSubAgent[] = [
+  {
+    name: "researcher",
+    description: "Research agent for information gathering and synthesis",
+    graphId: "researcher",
+    // No url → ASGI transport (co-deployed in the same deployment)
+  },
+  {
+    name: "coder",
+    description: "Coding agent for code generation and review",
+    graphId: "coder",
+    // url: "https://coder-deployment.langsmith.dev"  // Optional: HTTP transport for remote
+  },
+];
 
-  const agent = createDeepAgent({
-    model: "anthropic:claude-sonnet-5",
-    subagents: [...asyncSubagents],
-  });
-  ```
+const agent = createDeepAgent({
+  model: "anthropic:claude-sonnet-5",
+  subagents: [...asyncSubagents],
+});
+```
 
-  ```ts OpenRouter theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  import { createDeepAgent, type AsyncSubAgent } from "deepagents";
+```ts OpenRouter theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+import { createDeepAgent, type AsyncSubAgent } from "deepagents";
 
-  const asyncSubagents: AsyncSubAgent[] = [
-    {
-      name: "researcher",
-      description: "Research agent for information gathering and synthesis",
-      graphId: "researcher",
-      // No url → ASGI transport (co-deployed in the same deployment)
-    },
-    {
-      name: "coder",
-      description: "Coding agent for code generation and review",
-      graphId: "coder",
-      // url: "https://coder-deployment.langsmith.dev"  // Optional: HTTP transport for remote
-    },
-  ];
+const asyncSubagents: AsyncSubAgent[] = [
+  {
+    name: "researcher",
+    description: "Research agent for information gathering and synthesis",
+    graphId: "researcher",
+    // No url → ASGI transport (co-deployed in the same deployment)
+  },
+  {
+    name: "coder",
+    description: "Coding agent for code generation and review",
+    graphId: "coder",
+    // url: "https://coder-deployment.langsmith.dev"  // Optional: HTTP transport for remote
+  },
+];
 
-  const agent = createDeepAgent({
-    model: "openrouter:z-ai/glm-5.2",
-    subagents: [...asyncSubagents],
-  });
-  ```
+const agent = createDeepAgent({
+  model: "openrouter:z-ai/glm-5.2",
+  subagents: [...asyncSubagents],
+});
+```
 
-  ```ts Fireworks theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  import { createDeepAgent, type AsyncSubAgent } from "deepagents";
+```ts Fireworks theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+import { createDeepAgent, type AsyncSubAgent } from "deepagents";
 
-  const asyncSubagents: AsyncSubAgent[] = [
-    {
-      name: "researcher",
-      description: "Research agent for information gathering and synthesis",
-      graphId: "researcher",
-      // No url → ASGI transport (co-deployed in the same deployment)
-    },
-    {
-      name: "coder",
-      description: "Coding agent for code generation and review",
-      graphId: "coder",
-      // url: "https://coder-deployment.langsmith.dev"  // Optional: HTTP transport for remote
-    },
-  ];
+const asyncSubagents: AsyncSubAgent[] = [
+  {
+    name: "researcher",
+    description: "Research agent for information gathering and synthesis",
+    graphId: "researcher",
+    // No url → ASGI transport (co-deployed in the same deployment)
+  },
+  {
+    name: "coder",
+    description: "Coding agent for code generation and review",
+    graphId: "coder",
+    // url: "https://coder-deployment.langsmith.dev"  // Optional: HTTP transport for remote
+  },
+];
 
-  const agent = createDeepAgent({
-    model: "fireworks:accounts/fireworks/models/glm-5p2",
-    subagents: [...asyncSubagents],
-  });
-  ```
+const agent = createDeepAgent({
+  model: "fireworks:accounts/fireworks/models/glm-5p2",
+  subagents: [...asyncSubagents],
+});
+```
 
-  ```ts Baseten theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  import { createDeepAgent, type AsyncSubAgent } from "deepagents";
+```ts Baseten theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+import { createDeepAgent, type AsyncSubAgent } from "deepagents";
 
-  const asyncSubagents: AsyncSubAgent[] = [
-    {
-      name: "researcher",
-      description: "Research agent for information gathering and synthesis",
-      graphId: "researcher",
-      // No url → ASGI transport (co-deployed in the same deployment)
-    },
-    {
-      name: "coder",
-      description: "Coding agent for code generation and review",
-      graphId: "coder",
-      // url: "https://coder-deployment.langsmith.dev"  // Optional: HTTP transport for remote
-    },
-  ];
+const asyncSubagents: AsyncSubAgent[] = [
+  {
+    name: "researcher",
+    description: "Research agent for information gathering and synthesis",
+    graphId: "researcher",
+    // No url → ASGI transport (co-deployed in the same deployment)
+  },
+  {
+    name: "coder",
+    description: "Coding agent for code generation and review",
+    graphId: "coder",
+    // url: "https://coder-deployment.langsmith.dev"  // Optional: HTTP transport for remote
+  },
+];
 
-  const agent = createDeepAgent({
-    model: "baseten:zai-org/GLM-5.2",
-    subagents: [...asyncSubagents],
-  });
-  ```
+const agent = createDeepAgent({
+  model: "baseten:zai-org/GLM-5.2",
+  subagents: [...asyncSubagents],
+});
+```
 
-  ```ts Ollama theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  import { createDeepAgent, type AsyncSubAgent } from "deepagents";
+```ts Ollama theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+import { createDeepAgent, type AsyncSubAgent } from "deepagents";
 
-  const asyncSubagents: AsyncSubAgent[] = [
-    {
-      name: "researcher",
-      description: "Research agent for information gathering and synthesis",
-      graphId: "researcher",
-      // No url → ASGI transport (co-deployed in the same deployment)
-    },
-    {
-      name: "coder",
-      description: "Coding agent for code generation and review",
-      graphId: "coder",
-      // url: "https://coder-deployment.langsmith.dev"  // Optional: HTTP transport for remote
-    },
-  ];
+const asyncSubagents: AsyncSubAgent[] = [
+  {
+    name: "researcher",
+    description: "Research agent for information gathering and synthesis",
+    graphId: "researcher",
+    // No url → ASGI transport (co-deployed in the same deployment)
+  },
+  {
+    name: "coder",
+    description: "Coding agent for code generation and review",
+    graphId: "coder",
+    // url: "https://coder-deployment.langsmith.dev"  // Optional: HTTP transport for remote
+  },
+];
 
-  const agent = createDeepAgent({
-    model: "ollama:north-mini-code-1.0",
-    subagents: [...asyncSubagents],
-  });
-  ```
-</CodeGroup>
+const agent = createDeepAgent({
+  model: "ollama:north-mini-code-1.0",
+  subagents: [...asyncSubagents],
+});
+```
 
 | Field | Type | Description |
 | - | - | - |
@@ -318,9 +316,9 @@ The `mode` field on each [`AsyncSubAgent`](https://reference.langchain.com/javas
 
 ### Fork mode
 
-<Warning>
-  `mode="fork"` is available in Python only. It is experimental and may change in a future release.
-</Warning>
+> [!WARNING]
+>
+> `mode="fork"` is available in Python only. It is experimental and may change in a future release.
 
 At launch, `start_async_task` sends the parent's full conversation history — replayed up to that point — followed by the task description. Later messages from the parent are not forwarded to the child.
 
@@ -374,25 +372,23 @@ langgraph dev --n-jobs-per-worker 10
 
 The supervisor uses descriptions to decide which subagent to launch. Be specific and action-oriented:
 
-<CodeGroup>
-  ```typescript Good theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  // Good
-  {
-    name: "researcher",
-    description: "Conducts in-depth research using web search. Use for questions requiring multiple searches and synthesis.",
-    graphId: "researcher",
-  }
-  ```
+```typescript Good theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+// Good
+{
+  name: "researcher",
+  description: "Conducts in-depth research using web search. Use for questions requiring multiple searches and synthesis.",
+  graphId: "researcher",
+}
+```
 
-  ```typescript Bad theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  // Bad
-  {
-    name: "helper",
-    description: "helps with stuff",
-    graphId: "helper",
-  }
-  ```
-</CodeGroup>
+```typescript Bad theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+// Bad
+{
+  name: "helper",
+  description: "helps with stuff",
+  graphId: "helper",
+}
+```
 
 ### Trace with thread IDs
 
@@ -443,12 +439,6 @@ The [async-deep-agents](https://github.com/langchain-ai/async-deep-agents) repos
 
 ***
 
-<div>
-  <Callout icon="terminal-2">
-    [Connect these docs](/use-these-docs) to your agent of choice via MCP for real-time answers.
-  </Callout>
+[Connect these docs](/use-these-docs) to your agent of choice via MCP for real-time answers.
 
-  <Callout icon="edit">
-    [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/oss/deepagents/async-subagents.mdx) or [file an issue](https://github.com/langchain-ai/docs/issues/new/choose).
-  </Callout>
-</div>
+[Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/oss/deepagents/async-subagents.mdx) or [file an issue](https://github.com/langchain-ai/docs/issues/new/choose).

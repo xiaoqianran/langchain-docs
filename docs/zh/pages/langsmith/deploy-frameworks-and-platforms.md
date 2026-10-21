@@ -16,49 +16,45 @@
 
 该代理作为 LangSmith 部署运行，并且是来自代理服务器 API 的单独 Web 应用程序流。
 
-<CardGroup>
-  <Card title="LangSmith + Vite" icon="https://mintcdn.com/langchain-5e9cc07a/ZPKed1feKJ8F6LVo/images/providers/light/langchain.svg?fit=max&auto=format&n=ZPKed1feKJ8F6LVo&q=85&s=b910ed9cd0b6b8adb4b6da400882e92c" href="/langsmith/deploy-vite-langsmith">
-    LangSmith部署的代理图；来自 Agent Server API 的 Vite + React UI 流。
-  </Card>
-</CardGroup>
+> **[LangSmith + Vite](/langsmith/deploy-vite-langsmith)**
+>
+> LangSmith 部署的代理图；来自 Agent Server API 的 Vite + React UI 流。
 
 ### 嵌入您的网络框架
 
-该代理在框架的路由处理程序内运行，并作为一个可部署应用程序发送到主机平台。<CardGroup>
-  <Card title="Next.js" icon="https://mintcdn.com/langchain-5e9cc07a/h9vvRKKSgCSjvd_Y/images/providers/light/nextjs.svg?fit=max&auto=format&n=h9vvRKKSgCSjvd_Y&q=85&s=4f3336e9534db50f25f87173a41322d5" href="/langsmith/deploy-nextjs">
-    App Router 路由处理程序实现 `/api/threads/...` 下的协议。一键部署到 Vercel。
-  </Card>
+该代理在框架的路由处理程序内运行，并作为一个可部署应用程序发送到主机平台。
 
-  <Card title="SvelteKit" icon="https://mintcdn.com/langchain-5e9cc07a/h9vvRKKSgCSjvd_Y/images/providers/light/svelte.svg?fit=max&auto=format&n=h9vvRKKSgCSjvd_Y&q=85&s=07e7e35c40e4522f739feea9ef3e33b7" href="/langsmith/deploy-sveltekit">
-    SvelteKit 服务器在 Cloudflare Workers 上路由，具有 `@langchain/svelte` 和用于 SSE 重放的每线程持久对象。
-  </Card>
+> **[Next.js](/langsmith/deploy-nextjs)**
+>
+> App Router 路由处理程序实现`/api/threads/...` 下的协议。一键部署到 Vercel。> **[SvelteKit](/langsmith/deploy-sveltekit)**
+>
+> SvelteKit 服务器在 Cloudflare Workers 上路由，具有 `@langchain/svelte` 和用于 SSE 重播的每线程持久对象。
 
-  <Card title="Nuxt" icon="https://mintcdn.com/langchain-5e9cc07a/h9vvRKKSgCSjvd_Y/images/providers/light/nuxt.svg?fit=max&auto=format&n=h9vvRKKSgCSjvd_Y&q=85&s=5d965ed1f93f51ac604e66b935a65368" href="/langsmith/deploy-nuxt">
-    Nitro 路由处理程序和 `@langchain/vue` 可组合项位于单个可部署的 Nuxt 4 应用程序中。
-  </Card>
+> **[Nuxt](/langsmith/deploy-nuxt)**
+>
+> Nitro 路由处理程序和 `@langchain/vue` 可组合项位于单个可部署的 Nuxt 4 应用程序中。
 
-  <Card title="Cloudflare Workers" icon="https://mintcdn.com/langchain-5e9cc07a/h9vvRKKSgCSjvd_Y/images/providers/light/cloudflare.svg?fit=max&auto=format&n=h9vvRKKSgCSjvd_Y&q=85&s=ae129fcbfc78ccaece42b1c4d3699311" href="/langsmith/deploy-cloudflare-workers">
-    一名 Worker 上的 Vite + React SPA 和 Hono API，具有 Workers 资产和持久对象。
-  </Card>
+> **[Cloudflare Workers](/langsmith/deploy-cloudflare-workers)**
+>
+> 一名 Worker 上的 Vite + React SPA 和 Hono API，具有 Workers 资产和持久对象。
 
-  <Card title="Deno Deploy" icon="https://mintcdn.com/langchain-5e9cc07a/Tz8fh3A43FeUPf69/images/providers/light/deno.svg?fit=max&auto=format&n=Tz8fh3A43FeUPf69&q=85&s=8d213b0000104542fcaa7ab160595224" href="/langsmith/deploy-deno">
-    Deno.serve + Hono 从一个入口点提供协议 API 和 Vite 构建的 React SPA。
-  </Card>
-</CardGroup>
+> **[Deno Deploy](/langsmith/deploy-deno)**
+>
+> Deno.serve + Hono 从一个入口点提供协议 API 和 Vite 构建的 React SPA。
 
-<Tip>
-  每个说明书示例共享相同的演示代理：一个协调器，使用模拟工具委托给 `researcher` 和 `math-whiz` 子代理，因此您可以在不更改应用程序行为的情况下比较托管选择。
-</Tip>
+> [!提示]
+>
+> 每个说明书示例共享相同的演示代理：一个使用模拟工具委托给 `researcher` 和 `math-whiz` 子代理的协调器，因此您可以在不更改应用程序行为的情况下比较托管选择。
 
 ## 代理部署的内容
 
 每个示例都遵循相同的形状。框架和托管发生变化；责任则不然。
 
-### 代理运行时代理本身，通常是LangGraph图或[⟦T5⟧](https://www.npmjs.com/package/deepagents)协调器，带有工具、可选的子代理和中间件。它是用 **检查指针** 编译的，因此对话状态可以跨轮保存。为了简单起见，示例从内存中的`MemorySaver`开始；生产部署交换 Redis ([⟦T7⟧](https://www.npmjs.com/package/@langchain/langgraph-checkpoint-redis))、Postgres ([⟦T8⟧](https://www.npmjs.com/package/@langchain/langgraph-checkpoint-postgres))、SQLite ([⟦T9⟧](https://www.npmjs.com/package/@langchain/langgraph-checkpoint-sqlite)) 或特定于平台的存储。
+### 代理运行时
 
-### 协议服务器
+代理本身，通常是LangGraph图或[⟦T5⟧](https://www.npmjs.com/package/deepagents)协调器，带有工具、可选的子代理和中间件。它是用 **检查指针** 编译的，因此对话状态可以跨轮保存。为了简单起见，示例从内存中的`MemorySaver`开始；生产部署交换 Redis ([⟦T7⟧](https://www.npmjs.com/package/@langchain/langgraph-checkpoint-redis))、Postgres ([⟦T8⟧](https://www.npmjs.com/package/@langchain/langgraph-checkpoint-postgres))、SQLite ([⟦T9⟧](https://www.npmjs.com/package/@langchain/langgraph-checkpoint-sqlite)) 或特定于平台的存储。
 
-HTTP 路由处理程序在 `/api/threads/...` 下实现 [Agent Streaming Protocol](https://github.com/langchain-ai/agent-protocol/tree/main/streaming)。
+### 协议服务器HTTP 路由处理程序在 `/api/threads/...` 下实现 [Agent Streaming Protocol](https://github.com/langchain-ai/agent-protocol/tree/main/streaming)。
 
 #### 最低（流媒体聊天）
 
@@ -80,11 +76,11 @@ HTTP 路由处理程序在 `/api/threads/...` 下实现 [Agent Streaming Protoco
 | `DELETE` | `/api/threads/:threadId` |删除线程的会话和检查点 |
 | `POST` | `/api/threads/:threadId/history` |分页检查点历史记录 |
 
-### 会话和运行管理服务器端逻辑跟踪活动运行、将命令桥接到代理并通过 SSE 扇出实时事件。注册表或会话存储允许客户端重新连接到正在进行的流。在无服务器或多实例主机上，该层必须与检查点共享或位于同一位置。
+### 会话和运行管理
 
-### 聊天前端
+服务器端逻辑跟踪活动运行、将命令桥接到代理并通过 SSE 扇出实时事件。注册表或会话存储允许客户端重新连接到正在进行的流。在无服务器或多实例主机上，该层必须与检查点共享或位于同一位置。
 
-浏览器 UI 通过 `HttpAgentServerAdapter`、[⟦T27⟧](https://www.npmjs.com/package/@langchain/react)、[⟦T28⟧](https://www.npmjs.com/package/@langchain/vue)、[⟦T29⟧](https://www.npmjs.com/package/@langchain/svelte) 或 [⟦T30⟧](https://www.npmjs.com/package/@langchain/angular) 连接到协议。客户端引导线程状态、提交消息、使用 SSE 流并呈现令牌、工具调用、推理和子代理活动。
+### 聊天前端浏览器 UI 通过 `HttpAgentServerAdapter`、[⟦T27⟧](https://www.npmjs.com/package/@langchain/react)、[⟦T28⟧](https://www.npmjs.com/package/@langchain/vue)、[⟦T29⟧](https://www.npmjs.com/package/@langchain/svelte) 或 [⟦T30⟧](https://www.npmjs.com/package/@langchain/angular) 连接到协议。客户端引导线程状态、提交消息、使用 SSE 流并呈现令牌、工具调用、推理和子代理活动。
 
 这些绑定不提供自己的组件。像 `useStream` 这样的钩子返回简单的反应状态（消息、工具调用、加载标志、线程元数据），您可以将其连接到您喜欢的任何可视层。有关适配器模式和权衡，请参阅 [frontend integrations overview](/oss/python/langchain/frontend/integrations/overview)。
 
@@ -97,12 +93,6 @@ HTTP 路由处理程序在 `/api/threads/...` 下实现 [Agent Streaming Protoco
 
 ***
 
-<div>
-  <Callout icon="terminal-2">
-    [Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
-  </Callout>
+[Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
 
-  <Callout icon="edit">
-    [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/deploy-frameworks-and-platforms.mdx) 或 [file an issue](https://github.com/langchain-ai/docs/issues/new/choose)。
-  </Callout>
-</div>
+[Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/deploy-frameworks-and-platforms.mdx) 或 [file an issue](https://github.com/langchain-ai/docs/issues/new/choose)。

@@ -8,9 +8,9 @@ Managed Deep Agents evals are [Harbor](https://www.harborframework.com/docs/task
 
 Managed Deep Agents initializes the Harbor workspace. Harbor runs the managed agent against each task in an isolated environment and records the result.
 
-<Note>
-  Managed Deep Agents is in **public [beta](/langsmith/release-stages)** on [LangSmith Cloud](/langsmith/cloud).
-</Note>
+> [!NOTE]
+>
+> Managed Deep Agents is in **public [beta](/langsmith/release-stages)** on [LangSmith Cloud](/langsmith/cloud).
 
 ## Prerequisites
 
@@ -31,110 +31,106 @@ uvx --from npx-skills skills add langchain-ai/langchain-skills --skill eval-engi
 
 You can use any coding agent.
 
-<Tip>
-  To use [Deep Agents Code](/oss/deepagents/code/overview) (`dcode`), install it with:
-
-  ```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  curl -LsSf https://langch.in/dcode | bash
-  ```
-
-  See the [Deep Agents Code quickstart](/oss/deepagents/code/quickstart) for provider setup and interactive use.
-</Tip>
+> [!TIP]
+>
+> To use [Deep Agents Code](/oss/deepagents/code/overview) (`dcode`), install it with:
+>
+> ```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> curl -LsSf https://langch.in/dcode | bash
+> ```
+>
+> See the [Deep Agents Code quickstart](/oss/deepagents/code/quickstart) for provider setup and interactive use.
 
 ## Develop evals with a coding agent
 
-<Steps>
-  <Step title="Initialize the eval workspace">
-    From the project root, run:
+**1. Initialize the eval workspace**
 
-    ```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-    uv run mda evals init -i
-    ```
+From the project root, run:
 
-    The interactive handoff lists detected coding agents, including Deep Agents Code, Claude Code, Codex, and Cursor. Selecting an agent starts that agent in the project directory and runs the eval-engineering prompt. You can also copy the prompt for another agent, or exit and return later.
+```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+uv run mda evals init -i
+```
 
-    Initialization creates:
+The interactive handoff lists detected coding agents, including Deep Agents Code, Claude Code, Codex, and Cursor. Selecting an agent starts that agent in the project directory and runs the eval-engineering prompt. You can also copy the prompt for another agent, or exit and return later.
 
-    ```text theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-    my-agent/
-    ├── evals/
-    │   └── harbor-job.json
-    └── .mda/
-        └── evals/
-            ├── runtime.json
-            └── harbor-adapter/
-    ```
+Initialization creates:
 
-    `evals/harbor-job.json` is user-owned. Managed Deep Agents writes it only when it is missing, so later edits are preserved. Files under `.mda/evals/` are generated.
-  </Step>
+```text theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+my-agent/
+├── evals/
+│   └── harbor-job.json
+└── .mda/
+    └── evals/
+        ├── runtime.json
+        └── harbor-adapter/
+```
 
-  <Step title="Start the coding-agent session">
-    The handoff asks the selected coding agent to install the `eval-engineering` skill and use it for the project. If you already added the skill, continue in that session.
+`evals/harbor-job.json` is user-owned. Managed Deep Agents writes it only when it is missing, so later edits are preserved. Files under `.mda/evals/` are generated.
 
-    Ask the coding agent to follow the skill's review flow and use the Managed Deep Agents task layout:
+**2. Start the coding-agent session**
 
-    <Prompt description="Develop Harbor evals with the eval-engineering skill" icon="flask">
-      Use the eval-engineering skill to develop Harbor evals for this Managed
-      Deep Agent. Inspect the project and existing evals first. Draft the Task
-      Spec and wait for my review before implementing the approved task directly
-      under .
-    </Prompt>
+The handoff asks the selected coding agent to install the `eval-engineering` skill and use it for the project. If you already added the skill, continue in that session.
 
-    Work with the coding agent to review the Task Spec, task instruction, environment, verifier, and reusable project knowledge. The coding agent writes the runnable task after you approve the design.
-  </Step>
+Ask the coding agent to follow the skill's review flow and use the Managed Deep Agents task layout:
 
-  <Step title="Review the Harbor task">
-    Each direct child of `evals/` that contains an instruction and tests is a Harbor task:
+Use the eval-engineering skill to develop Harbor evals for this Managed
+Deep Agent. Inspect the project and existing evals first. Draft the Task
+Spec and wait for my review before implementing the approved task directly
+under evals/\<task>/.
 
-    ```text theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-    evals/
-    ├── harbor-job.json
-    └── <task>/
-        ├── Task.md
-        ├── instruction.md
-        ├── task.toml
-        ├── environment/
-        │   └── Dockerfile
-        └── tests/
-            ├── test.sh
-            └── <verifier>
-    ```
+Work with the coding agent to review the Task Spec, task instruction, environment, verifier, and reusable project knowledge. The coding agent writes the runnable task after you approve the design.
 
-    `Task.md` is the human-reviewed spec. `instruction.md` tells the agent what to do. Harbor builds the task environment, runs the managed agent, and then runs `tests/test.sh`. The verifier writes a numeric reward to `/logs/verifier/reward.txt` or numeric metrics to `/logs/verifier/reward.json`.
+**3. Review the Harbor task**
 
-    For the full task format, see the [Harbor task documentation](https://www.harborframework.com/docs/tasks).
-  </Step>
+Each direct child of `evals/` that contains an instruction and tests is a Harbor task:
 
-  <Step title="Run the evals">
-    The coding-agent handoff includes a command configured for the project and current shell. Run that command from the project root.
+```text theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+evals/
+├── harbor-job.json
+└── <task>/
+    ├── Task.md
+    ├── instruction.md
+    ├── task.toml
+    ├── environment/
+    │   └── Dockerfile
+    └── tests/
+        ├── test.sh
+        └── <verifier>
+```
 
-    On macOS or Linux, it has the following form:
+`Task.md` is the human-reviewed spec. `instruction.md` tells the agent what to do. Harbor builds the task environment, runs the managed agent, and then runs `tests/test.sh`. The verifier writes a numeric reward to `/logs/verifier/reward.txt` or numeric metrics to `/logs/verifier/reward.json`.
 
-    ```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-    HARBOR_LANGSMITH_DATASET=mda-my-agent-evals \
-    PYTHONPATH=.mda/evals/harbor-adapter \
-    uv run --env-file .env --python 3.12 --with 'harbor[langsmith]==0.21.0' harbor run \
-      --config evals/harbor-job.json --yes \
-      --plugin mda_harbor.job_plugin:MDAJobPlugin \
-      --plugin mda_harbor.langsmith_plugin:LangSmithPlugin
-    ```
+For the full task format, see the [Harbor task documentation](https://www.harborframework.com/docs/tasks).
 
-    Replace `my-agent` with the project directory name. The generated command fills in the name and uses PowerShell syntax on Windows.
+**4. Run the evals**
 
-    Re-running the command after editing the agent picks up the project changes.
-  </Step>
+The coding-agent handoff includes a command configured for the project and current shell. Run that command from the project root.
 
-  <Step title="Inspect the results">
-    Open the Harbor results:
+On macOS or Linux, it has the following form:
 
-    ```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-    uv run --python 3.12 --with 'harbor[langsmith]==0.21.0' \
-      harbor view .mda/evals/jobs
-    ```
+```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+HARBOR_LANGSMITH_DATASET=mda-my-agent-evals \
+PYTHONPATH=.mda/evals/harbor-adapter \
+uv run --env-file .env --python 3.12 --with 'harbor[langsmith]==0.21.0' harbor run \
+  --config evals/harbor-job.json --yes \
+  --plugin mda_harbor.job_plugin:MDAJobPlugin \
+  --plugin mda_harbor.langsmith_plugin:LangSmithPlugin
+```
 
-    Review failed trials with your coding agent. Update the task or verifier when the eval does not measure the intended behavior. Update the managed agent when the eval exposes a product failure, then run the same Harbor command again.
-  </Step>
-</Steps>
+Replace `my-agent` with the project directory name. The generated command fills in the name and uses PowerShell syntax on Windows.
+
+Re-running the command after editing the agent picks up the project changes.
+
+**5. Inspect the results**
+
+Open the Harbor results:
+
+```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+uv run --python 3.12 --with 'harbor[langsmith]==0.21.0' \
+  harbor view .mda/evals/jobs
+```
+
+Review failed trials with your coding agent. Update the task or verifier when the eval does not measure the intended behavior. Update the managed agent when the eval exposes a product failure, then run the same Harbor command again.
 
 ## Edit the Harbor job
 
@@ -154,12 +150,6 @@ When `LANGSMITH_API_KEY` is available, the LangSmith plugin records the Harbor r
 
 ***
 
-<div>
-  <Callout icon="terminal-2">
-    [Connect these docs](/use-these-docs) to your agent of choice via MCP for real-time answers.
-  </Callout>
+[Connect these docs](/use-these-docs) to your agent of choice via MCP for real-time answers.
 
-  <Callout icon="edit">
-    [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/managed-deep-agents-evals.mdx) or [file an issue](https://github.com/langchain-ai/docs/issues/new/choose).
-  </Callout>
-</div>
+[Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/managed-deep-agents-evals.mdx) or [file an issue](https://github.com/langchain-ai/docs/issues/new/choose).

@@ -4,9 +4,9 @@
 
 Deploy LangSmith services and store data in your own cloud environment while LangChain operates, scales, and upgrades the infrastructure.
 
-<Note>
-  BYOC is only available for customers on the [Enterprise plan](https://www.langchain.com/pricing).
-</Note>
+> [!NOTE]
+>
+> BYOC is only available for customers on the [Enterprise plan](https://www.langchain.com/pricing).
 
 Bring Your Own Cloud (BYOC) lets you deploy LangSmith services and store data in your own cloud environment, while LangChain operates, scales, and upgrades the infrastructure. BYOC suits organizations that require complete sovereignty over their data, but do not want the overhead of provisioning and managing infrastructure.
 
@@ -68,12 +68,6 @@ Before LangChain can provision a data plane, you need the following:
 
 ***
 
-<div>
-  <Callout icon="terminal-2">
-    [Connect these docs](/use-these-docs) to your agent of choice via MCP for real-time answers.
-  </Callout>
+[Connect these docs](/use-these-docs) to your agent of choice via MCP for real-time answers.
 
-  <Callout icon="edit">
-    [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/byoc.mdx) or [file an issue](https://github.com/langchain-ai/docs/issues/new/choose).
-  </Callout>
-</div>
+[Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/byoc.mdx) or [file an issue](https://github.com/langchain-ai/docs/issues/new/choose).

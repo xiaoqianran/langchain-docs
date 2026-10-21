@@ -18,7 +18,7 @@ This is particularly useful when:
 
 1. Navigate to a trace in your project.
 2. Select the **Runs** tab.
-3. Locate the format icon <Icon icon="adjustments-horizontal" /> at the top right of the runs table.
+3. Locate the format icon  at the top right of the runs table.
 4. In the **Configure Input and Output previews** side window, select a trace name from the dropdown.
 
 When you select a trace name, LangSmith loads a successful trace example and renders its structure as an expandable tree. Each node in the tree represents a field in your data, showing:
@@ -28,9 +28,7 @@ When you select a trace name, LangSmith loads a successful trace example and ren
 * Item counts for arrays (e.g., (3) indicating 3 items).
 * Preview values for strings and numbers displayed inline.
 
-<img alt="Configure Input and Output previews side panel showing the tree view of trace data structure" />
-
-<img alt="Configure Input and Output previews side panel showing the tree view of trace data structure" />
+![Configure Input and Output previews side panel showing the tree view of trace data structure](https://mintcdn.com/langchain-5e9cc07a/PK5r912I08t0EBD8/langsmith/images/configure-preview.png?fit=max\&auto=format\&n=PK5r912I08t0EBD8\&q=85\&s=0fbc9a7b69a70c39daaf477d93b7623a)
 
 ### Set the path
 
@@ -95,13 +93,13 @@ Or, use negative indexing for the last message:
 3. Click **content**.
 4. Result: `messages[-1].content` (always shows the last message).
 
-<Note>
-  If you see `"No paths available"` in the tree:
-
-  * Ensure you have at least one successful trace with the selected trace name in the last 7 days.
-  * The trace must have data in the input/output field you're configuring.
-  * Try sending a test trace if needed.
-</Note>
+> [!NOTE]
+>
+> If you see `"No paths available"` in the tree:
+>
+> * Ensure you have at least one successful trace with the selected trace name in the last 7 days.
+> * The trace must have data in the input/output field you're configuring.
+> * Try sending a test trace if needed.
 
 ## Next steps
 
@@ -111,12 +109,6 @@ Or, use negative indexing for the last message:
 
 ***
 
-<div>
-  <Callout icon="terminal-2">
-    [Connect these docs](/use-these-docs) to your agent of choice via MCP for real-time answers.
-  </Callout>
+[Connect these docs](/use-these-docs) to your agent of choice via MCP for real-time answers.
 
-  <Callout icon="edit">
-    [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/configure-input-output-preview.mdx) or [file an issue](https://github.com/langchain-ai/docs/issues/new/choose).
-  </Callout>
-</div>
+[Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/configure-input-output-preview.mdx) or [file an issue](https://github.com/langchain-ai/docs/issues/new/choose).

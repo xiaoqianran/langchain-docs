@@ -6,21 +6,26 @@ Filesystem backends for Deep Agents.
 
 Browse available filesystem backends for Deep Agents or contribute your own to the ecosystem. Learn more about how backends work in the [backends docs](/oss/python/deepagents/backends).
 
-<PythonIntegrationComponentMap />
+Integration components
+Arrows show a typical retrieval flow. The highlighted component is the one this page covers.
+
+### Typical retrieval flow
+
+### Agent capabilities
+
+### Execution and state
 
 ## Share your backend
 
 Custom backends connect Deep Agents to storage systems such as databases, object stores, and virtual filesystems. Share yours with the community:
 
-<CardGroup>
-  <Card title="Implement a custom backend" icon="database" href="/oss/python/deepagents/backends#custom-backends">
-    Follow the custom backends guide to build your own backend.
-  </Card>
+> **[Implement a custom backend](/oss/python/deepagents/backends#custom-backends)**
+>
+> Follow the custom backends guide to build your own backend.
 
-  <Card title="Share a community backend" icon="users" href="https://github.com/langchain-ai/docs">
-    Open a PR to the docs repo to add your backend to the table below.
-  </Card>
-</CardGroup>
+> **[Share a community backend](https://github.com/langchain-ai/docs)**
+>
+> Open a PR to the docs repo to add your backend to the table below.
 
 ## All backends
 
@@ -31,18 +36,12 @@ Custom backends connect Deep Agents to storage systems such as databases, object
 
 Have a backend to share? [Open a PR](https://github.com/langchain-ai/docs) to add it here.
 
-<Info>
-  If you'd like to contribute an integration, see [Contributing integrations](/oss/python/contributing#add-a-new-integration).
-</Info>
+> [!NOTE]
+>
+> If you'd like to contribute an integration, see [Contributing integrations](/oss/python/contributing#add-a-new-integration).
 
 ***
 
-<div>
-  <Callout icon="terminal-2">
-    [Connect these docs](/use-these-docs) to your agent of choice via MCP for real-time answers.
-  </Callout>
+[Connect these docs](/use-these-docs) to your agent of choice via MCP for real-time answers.
 
-  <Callout icon="edit">
-    [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/oss/integrations/backends/index.mdx) or [file an issue](https://github.com/langchain-ai/docs/issues/new/choose).
-  </Callout>
-</div>
+[Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/oss/integrations/backends/index.mdx) or [file an issue](https://github.com/langchain-ai/docs/issues/new/choose).

@@ -13,8 +13,6 @@ This pattern is especially useful when data should stay local to the device.
 The playground example on this page uses a small browser-memory toolkit backed
 by IndexedDB plus a geolocation tool that runs entirely on the client.
 
-<PatternEmbed />
-
 ## How headless tools work
 
 At a high level, headless tools split the tool schema from the browser-only implementation.
@@ -218,96 +216,94 @@ export interface AgentState {
 }
 ```
 
-<CodeGroup>
-  ```tsx React theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  import { useStream } from "@langchain/react";
+```tsx React theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+import { useStream } from "@langchain/react";
 
-  import { geolocationGet, memoryGet, memoryPut } from "./impl";
-  import type { AgentState } from "./types";
+import { geolocationGet, memoryGet, memoryPut } from "./impl";
+import type { AgentState } from "./types";
 
-  const AGENT_URL = "http://localhost:2024";
+const AGENT_URL = "http://localhost:2024";
 
-  export function Chat() {
-    const stream = useStream<AgentState>({
-      apiUrl: AGENT_URL,
-      assistantId: "headless_tools",
-      tools: [memoryPut, memoryGet, geolocationGet],
-    });
-
-    return <ChatView messages={stream.messages} toolCalls={stream.toolCalls} />;
-  }
-  ```
-
-  ```vue Vue theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  <script setup lang="ts">
-  import { useStream } from "@langchain/vue";
-
-  import { geolocationGet, memoryGet, memoryPut } from "./impl";
-  import type { AgentState } from "./types";
-
-  const AGENT_URL = "http://localhost:2024";
-
+export function Chat() {
   const stream = useStream<AgentState>({
     apiUrl: AGENT_URL,
     assistantId: "headless_tools",
     tools: [memoryPut, memoryGet, geolocationGet],
   });
-  </script>
 
-  <template>
-    <ChatView
-      :messages="stream.messages.value"
-      :tool-calls="stream.toolCalls.value"
-    />
-  </template>
-  ```
+  return <ChatView messages={stream.messages} toolCalls={stream.toolCalls} />;
+}
+```
 
-  ```svelte Svelte theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  <script lang="ts">
-    import { useStream } from "@langchain/svelte";
+```vue Vue theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+<script setup lang="ts">
+import { useStream } from "@langchain/vue";
 
-    import { geolocationGet, memoryGet, memoryPut } from "./impl";
-    import type { AgentState } from "./types";
+import { geolocationGet, memoryGet, memoryPut } from "./impl";
+import type { AgentState } from "./types";
 
-    const AGENT_URL = "http://localhost:2024";
+const AGENT_URL = "http://localhost:2024";
 
-    const { messages, toolCalls } = useStream<AgentState>({
-      apiUrl: AGENT_URL,
-      assistantId: "headless_tools",
-      tools: [memoryPut, memoryGet, geolocationGet],
-    });
-  </script>
+const stream = useStream<AgentState>({
+  apiUrl: AGENT_URL,
+  assistantId: "headless_tools",
+  tools: [memoryPut, memoryGet, geolocationGet],
+});
+</script>
 
-  <ChatView messages={$messages} toolCalls={$toolCalls} />
-  ```
+<template>
+  <ChatView
+    :messages="stream.messages.value"
+    :tool-calls="stream.toolCalls.value"
+  />
+</template>
+```
 
-  ```ts Angular theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  import { Component } from "@angular/core";
-  import { useStream } from "@langchain/angular";
+```svelte Svelte theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+<script lang="ts">
+  import { useStream } from "@langchain/svelte";
 
   import { geolocationGet, memoryGet, memoryPut } from "./impl";
   import type { AgentState } from "./types";
 
   const AGENT_URL = "http://localhost:2024";
 
-  @Component({
-    selector: "app-chat",
-    template: `
-      <app-chat-view
-        [messages]="stream.messages()"
-        [toolCalls]="stream.toolCalls()"
-      />
-    `,
-  })
-  export class ChatComponent {
-    stream = useStream<AgentState>({
-      apiUrl: AGENT_URL,
-      assistantId: "headless_tools",
-      tools: [memoryPut, memoryGet, geolocationGet],
-    });
-  }
-  ```
-</CodeGroup>
+  const { messages, toolCalls } = useStream<AgentState>({
+    apiUrl: AGENT_URL,
+    assistantId: "headless_tools",
+    tools: [memoryPut, memoryGet, geolocationGet],
+  });
+</script>
+
+<ChatView messages={$messages} toolCalls={$toolCalls} />
+```
+
+```ts Angular theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+import { Component } from "@angular/core";
+import { useStream } from "@langchain/angular";
+
+import { geolocationGet, memoryGet, memoryPut } from "./impl";
+import type { AgentState } from "./types";
+
+const AGENT_URL = "http://localhost:2024";
+
+@Component({
+  selector: "app-chat",
+  template: `
+    <app-chat-view
+      [messages]="stream.messages()"
+      [toolCalls]="stream.toolCalls()"
+    />
+  `,
+})
+export class ChatComponent {
+  stream = useStream<AgentState>({
+    apiUrl: AGENT_URL,
+    assistantId: "headless_tools",
+    tools: [memoryPut, memoryGet, geolocationGet],
+  });
+}
+```
 
 ## Render tool activity inline
 
@@ -367,12 +363,6 @@ client:
 
 ***
 
-<div>
-  <Callout icon="terminal-2">
-    [Connect these docs](/use-these-docs) to your agent of choice via MCP for real-time answers.
-  </Callout>
+[Connect these docs](/use-these-docs) to your agent of choice via MCP for real-time answers.
 
-  <Callout icon="edit">
-    [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/oss/langchain/frontend/headless-tools.mdx) or [file an issue](https://github.com/langchain-ai/docs/issues/new/choose).
-  </Callout>
-</div>
+[Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/oss/langchain/frontend/headless-tools.mdx) or [file an issue](https://github.com/langchain-ai/docs/issues/new/choose).

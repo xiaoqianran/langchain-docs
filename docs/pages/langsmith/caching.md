@@ -8,10 +8,10 @@ Cache values server-side in your agent deployment using stale-while-revalidate a
 
 All cache APIs are **server-side only** and require the LangGraph Agent Server runtime. Values must be JSON-serializable.
 
-<Note>
-  `swr` requires Agent Server runtime **v0.7.79** or later and is currently in **[beta](/langsmith/release-stages)**.
-  `cache_get` and `cache_set` require **v0.7.29** or later.
-</Note>
+> [!NOTE]
+>
+> `swr` requires Agent Server runtime **v0.7.79** or later and is currently in **[beta](/langsmith/release-stages)**.
+> `cache_get` and `cache_set` require **v0.7.29** or later.
 
 ## Quick start
 
@@ -168,12 +168,6 @@ async def cache_set(key: str, value: Any, *, ttl: timedelta | None = None) -> No
 
 ***
 
-<div>
-  <Callout icon="terminal-2">
-    [Connect these docs](/use-these-docs) to your agent of choice via MCP for real-time answers.
-  </Callout>
+[Connect these docs](/use-these-docs) to your agent of choice via MCP for real-time answers.
 
-  <Callout icon="edit">
-    [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/caching.mdx) or [file an issue](https://github.com/langchain-ai/docs/issues/new/choose).
-  </Callout>
-</div>
+[Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/caching.mdx) or [file an issue](https://github.com/langchain-ai/docs/issues/new/choose).

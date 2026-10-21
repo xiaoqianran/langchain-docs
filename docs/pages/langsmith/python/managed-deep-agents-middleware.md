@@ -6,9 +6,9 @@ Add built-in or custom middleware to a managed deep agent.
 
 Middleware adds behavior around model calls, tool calls, and the agent lifecycle. Like [custom tools](/langsmith/python/managed-deep-agents-tools), MDA does not discover middleware automatically. Import it and pass it to the agent definition.
 
-<Note>
-  Managed Deep Agents is in **public [beta](/langsmith/release-stages)** on [LangSmith Cloud](/langsmith/cloud).
-</Note>
+> [!NOTE]
+>
+> Managed Deep Agents is in **public [beta](/langsmith/release-stages)** on [LangSmith Cloud](/langsmith/cloud).
 
 Put custom middleware under `middleware/`, import it into the agent entry, and pass it to the agent definition:
 
@@ -27,69 +27,67 @@ The managed runtime still owns `backend`, `store`, `checkpointer`, `memory`, `sk
 
 Use middleware to redact PII, enforce call limits, retry failures, fall back between models, select models dynamically, or log and inspect tool calls.
 
-<Steps>
-  <Step title="Use prebuilt middleware">
-    You can use LangChain [prebuilt middleware](/oss/python/langchain/middleware/built-in) directly in the agent definition:
+**1. Use prebuilt middleware**
 
-    ```python agent.py theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-    from langchain.agents.middleware import ModelCallLimitMiddleware, PIIMiddleware
-    from managed_deepagents import define_deep_agent
+You can use LangChain [prebuilt middleware](/oss/python/langchain/middleware/built-in) directly in the agent definition:
 
-    agent = define_deep_agent(
-        name="support-agent",
-        model="openai:gpt-5.5",
-        middleware=[
-            PIIMiddleware("email", strategy="redact", apply_to_input=True),
-            ModelCallLimitMiddleware(run_limit=50),
-        ],
-    )
-    ```
-  </Step>
+```python agent.py theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+from langchain.agents.middleware import ModelCallLimitMiddleware, PIIMiddleware
+from managed_deepagents import define_deep_agent
 
-  <Step title="Define custom middleware (Optional)">
-    For a more advanced option, define [custom middleware](/oss/python/langchain/middleware/custom) in a local module.
+agent = define_deep_agent(
+    name="support-agent",
+    model="openai:gpt-5.5",
+    middleware=[
+        PIIMiddleware("email", strategy="redact", apply_to_input=True),
+        ModelCallLimitMiddleware(run_limit=50),
+    ],
+)
+```
 
-    <Note>
-      Middleware is a shared LangChain primitive. Managed Deep Agents always invoke the agent with `ainvoke` and `astream`, so custom middleware must use async hooks. Synchronous hooks remain available when you call [Deep Agents](/oss/python/deepagents/overview) with `invoke` or `stream`.
-    </Note>
+**2. Define custom middleware (Optional)**
 
-    ```python middleware/audit.py theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-    from collections.abc import Awaitable, Callable
+For a more advanced option, define [custom middleware](/oss/python/langchain/middleware/custom) in a local module.
 
-    from langchain.agents.middleware import wrap_tool_call
-    from langchain.messages import ToolMessage
-    from langchain.tools.tool_node import ToolCallRequest
-    from langgraph.types import Command
+> [!NOTE]
+>
+> Middleware is a shared LangChain primitive. Managed Deep Agents always invoke the agent with `ainvoke` and `astream`, so custom middleware must use async hooks. Synchronous hooks remain available when you call [Deep Agents](/oss/python/deepagents/overview) with `invoke` or `stream`.
+
+```python middleware/audit.py theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+from collections.abc import Awaitable, Callable
+
+from langchain.agents.middleware import wrap_tool_call
+from langchain.messages import ToolMessage
+from langchain.tools.tool_node import ToolCallRequest
+from langgraph.types import Command
 
 
-    @wrap_tool_call
-    async def log_tool_calls(
-        request: ToolCallRequest,
-        handler: Callable[[ToolCallRequest], Awaitable[ToolMessage | Command]],
-    ) -> ToolMessage | Command:
-        print(f"Calling tool: {request.tool_call['name']}")
-        result = await handler(request)
-        print(f"Finished tool: {request.tool_call['name']}")
-        return result
-    ```
+@wrap_tool_call
+async def log_tool_calls(
+    request: ToolCallRequest,
+    handler: Callable[[ToolCallRequest], Awaitable[ToolMessage | Command]],
+) -> ToolMessage | Command:
+    print(f"Calling tool: {request.tool_call['name']}")
+    result = await handler(request)
+    print(f"Finished tool: {request.tool_call['name']}")
+    return result
+```
 
-    Import the middleware into the project-root agent entry and pass it in the `middleware` list:
+Import the middleware into the project-root agent entry and pass it in the `middleware` list:
 
-    ```python agent.py theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-    from managed_deepagents import define_deep_agent
+```python agent.py theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+from managed_deepagents import define_deep_agent
 
-    from middleware.audit import log_tool_calls
+from middleware.audit import log_tool_calls
 
-    agent = define_deep_agent(
-        name="support-agent",
-        model="openai:gpt-5.5",
-        middleware=[log_tool_calls],
-    )
-    ```
+agent = define_deep_agent(
+    name="support-agent",
+    model="openai:gpt-5.5",
+    middleware=[log_tool_calls],
+)
+```
 
-    Your middleware imports should work the same way they do in a normal local Python project.
-  </Step>
-</Steps>
+Your middleware imports should work the same way they do in a normal local Python project.
 
 ## Use runtime context
 
@@ -117,12 +115,6 @@ For more information, see [Project structure](/langsmith/python/managed-deep-age
 
 ***
 
-<div>
-  <Callout icon="terminal-2">
-    [Connect these docs](/use-these-docs) to your agent of choice via MCP for real-time answers.
-  </Callout>
+[Connect these docs](/use-these-docs) to your agent of choice via MCP for real-time answers.
 
-  <Callout icon="edit">
-    [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/managed-deep-agents-middleware.mdx) or [file an issue](https://github.com/langchain-ai/docs/issues/new/choose).
-  </Callout>
-</div>
+[Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/managed-deep-agents-middleware.mdx) or [file an issue](https://github.com/langchain-ai/docs/issues/new/choose).

@@ -10,17 +10,17 @@ The Agent Server supports the following environment variables when deployed on [
 
 Set `BG_JOB_ISOLATED_LOOPS` to `True` to execute background runs in an isolated event loop separate from the serving API event loop.
 
-<Warning>
-  Enabling this flag does not remove the underlying problem. It moves synchronous blocking work off the serving API's event loop so health checks stop failing, but the blocking code continues to run on the background loop and **will** continue to cause issues in production, like degraded throughput, tail-latency spikes, starved workers, or connection pool exhaustion (see the pool-size caveat below), and poor scaling under load.
-
-  To properly resolve those issues, use native async drivers and async code throughout your agent. That means async HTTP clients like `httpx` or `aiohttp` (though we recommend caching the clients to avoid CPU overhead loading the SSL context), async database drivers like `asyncpg` or `psycopg[async]`, and async model SDK's. For unavoidable synchronous libraries, wrap the specific call in `asyncio.to_thread(...)` or `loop.run_in_executor(...)` instead of enabling this flag for the whole deployment.
-</Warning>
+> [!WARNING]
+>
+> Enabling this flag does not remove the underlying problem. It moves synchronous blocking work off the serving API's event loop so health checks stop failing, but the blocking code continues to run on the background loop and **will** continue to cause issues in production, like degraded throughput, tail-latency spikes, starved workers, or connection pool exhaustion (see the pool-size caveat below), and poor scaling under load.
+>
+> To properly resolve those issues, use native async drivers and async code throughout your agent. That means async HTTP clients like `httpx` or `aiohttp` (though we recommend caching the clients to avoid CPU overhead loading the SSL context), async database drivers like `asyncpg` or `psycopg[async]`, and async model SDK's. For unavoidable synchronous libraries, wrap the specific call in `asyncio.to_thread(...)` or `loop.run_in_executor(...)` instead of enabling this flag for the whole deployment.
 
 This environment variable should be set to `True` if the implementation of a graph/node contains synchronous code. In this situation, the synchronous code will block the serving API event loop, which may cause the API to be unavailable. A symptom of an unavailable API is continuous application restarts due to failing health checks.
 
-<Warning>
-  When `BG_JOB_ISOLATED_LOOPS` is enabled, each background worker runs in its own thread with a **separate Postgres connection pool**. The per-worker pool size is `LANGGRAPH_POSTGRES_POOL_MAX_SIZE // N_JOBS_PER_WORKER`. For example, with `LANGGRAPH_POSTGRES_POOL_MAX_SIZE=20` and `N_JOBS_PER_WORKER=15`, each worker gets a pool of only 1 connection. Small per-worker pools are more susceptible to connection failures because a single stale connection represents a large fraction of the pool. If you enable isolated loops, ensure `LANGGRAPH_POSTGRES_POOL_MAX_SIZE` is large enough to provide at least a few connections per worker.
-</Warning>
+> [!WARNING]
+>
+> When `BG_JOB_ISOLATED_LOOPS` is enabled, each background worker runs in its own thread with a **separate Postgres connection pool**. The per-worker pool size is `LANGGRAPH_POSTGRES_POOL_MAX_SIZE // N_JOBS_PER_WORKER`. For example, with `LANGGRAPH_POSTGRES_POOL_MAX_SIZE=20` and `N_JOBS_PER_WORKER=15`, each worker gets a pool of only 1 connection. Small per-worker pools are more susceptible to connection failures because a single stale connection represents a large fraction of the pool. If you enable isolated loops, ensure `LANGGRAPH_POSTGRES_POOL_MAX_SIZE` is large enough to provide at least a few connections per worker.
 
 Defaults to `False`.
 
@@ -75,9 +75,9 @@ Set these environment variables or secrets on the deployment to send Agent Serve
 
 For the full set of tracing options, see the [`DD_*` environment variables](https://ddtrace.readthedocs.io/en/stable/configuration.html) reference.
 
-<Note>
-  Enabling `DD_API_KEY` (and thus `ddtrace-run`) can override or interfere with other auto-instrumentation solutions (such as OpenTelemetry) that you may have instrumented into your application code.
-</Note>
+> [!NOTE]
+>
+> Enabling `DD_API_KEY` (and thus `ddtrace-run`) can override or interfere with other auto-instrumentation solutions (such as OpenTelemetry) that you may have instrumented into your application code.
 
 ## `LANGGRAPH_AES_KEY` and `LANGGRAPH_AES_JSON_KEYS`
 
@@ -115,9 +115,9 @@ Defaults to `150` connections.
 
 JSON-valued configuration for deferred checkpoint deletion. When enabled, thread delete and prune operations enqueue checkpoints for background deletion instead of deleting synchronously, moving the I/O off the request hot path. Available in `langgraph-api>=0.8.1`.
 
-<Note>
-  Only supported with the default PostgreSQL checkpointer backend. Deferred deletes will become the default in a future release.
-</Note>
+> [!NOTE]
+>
+> Only supported with the default PostgreSQL checkpointer backend. Deferred deletes will become the default in a future release.
 
 Accepted fields:
 
@@ -143,9 +143,9 @@ When set to `"mongo"`, you must also provide the MongoDB connection URI via [`LS
 
 Set `LANGSMITH_TRACING` to `false` to disable tracing to LangSmith.
 
-<Note>
-  For selective tracing control based on runtime conditions (such as per-client requirements or data sensitivity), see [Conditional tracing](/langsmith/conditional-tracing).
-</Note>
+> [!NOTE]
+>
+> For selective tracing control based on runtime conditions (such as per-client requirements or data sensitivity), see [Conditional tracing](/langsmith/conditional-tracing).
 
 Defaults to `true`.
 
@@ -200,9 +200,9 @@ OTEL_EXPORTER_OTLP_ENDPOINT=https://otlp.nr-data.net
 OTEL_EXPORTER_OTLP_HEADERS=api-key=<YOUR_INGEST_LICENSE_KEY>
 ```
 
-<Note>
-  OTel APM tracing was added in Agent Server version `0.5.32` and is currently in Alpha.
-</Note>
+> [!NOTE]
+>
+> OTel APM tracing was added in Agent Server version `0.5.32` and is currently in Alpha.
 
 ## `LS_MONGODB_URI`
 
@@ -220,10 +220,10 @@ Defaults to `true`.
 
 ## `REDIS_KEY_PREFIX`
 
-<Info>
-  **Available in API Server version 0.1.9+**
-  This environment variable is supported in API Server version 0.1.9 and above.
-</Info>
+> [!NOTE]
+>
+> **Available in API Server version 0.1.9+**
+> This environment variable is supported in API Server version 0.1.9 and above.
 
 Specify a prefix for Redis keys. This allows multiple Agent Server instances to share the same Redis instance by using different key prefixes.
 
@@ -231,10 +231,10 @@ Defaults to `''`.
 
 ## `REDIS_URI_CUSTOM`
 
-<Info>
-  **Only for Hybrid and Self-Hosted**
-  Custom Redis instances are only available for [Hybrid](/langsmith/hybrid) and [Self-Hosted](/langsmith/self-hosted) deployments.
-</Info>
+> [!NOTE]
+>
+> **Only for Hybrid and Self-Hosted**
+> Custom Redis instances are only available for [Hybrid](/langsmith/hybrid) and [Self-Hosted](/langsmith/self-hosted) deployments.
 
 Specify `REDIS_URI_CUSTOM` to use a custom Redis instance. The value of `REDIS_URI_CUSTOM` must be a valid [Redis connection URI](https://redis.readthedocs.io/en/stable/connections.html#redis.Redis.from_url).
 
@@ -256,9 +256,9 @@ See the [Python](https://reference.langchain.com/python/langsmith/deployment/sdk
 
 Defaults to `120` seconds.
 
-<Note>
-  Setting a very high value for `RESUMABLE_STREAM_TTL_SECONDS` can result in substantial Redis memory usage when there are many concurrent runs with large or frequent streaming output. Set this value to the minimum value to enable recovery during network interruptions and prefer checkpointing for long term durability and execution snapshotting.
-</Note>
+> [!NOTE]
+>
+> Setting a very high value for `RESUMABLE_STREAM_TTL_SECONDS` can result in substantial Redis memory usage when there are many concurrent runs with large or frequent streaming output. Set this value to the minimum value to enable recovery during network interruptions and prefer checkpointing for long term durability and execution snapshotting.
 
 ## `AGENT_POSTGRES_IAM_AUTH_PROVIDER`
 
@@ -319,9 +319,9 @@ Database Connectivity:
 
 ## `REDIS_CLUSTER`
 
-<Warning>
-  This feature is in Alpha.
-</Warning>
+> [!WARNING]
+>
+> This feature is in Alpha.
 
 Set `REDIS_CLUSTER` to `True` to enable Redis Cluster mode. When enabled, the system will connect to Redis using cluster mode. This is useful when connecting to a Redis Cluster deployment.
 
@@ -333,12 +333,6 @@ Specify `REDIS_URI_CUSTOM` to use a custom Redis instance. The value of `REDIS_U
 
 ***
 
-<div>
-  <Callout icon="terminal-2">
-    [Connect these docs](/use-these-docs) to your agent of choice via MCP for real-time answers.
-  </Callout>
+[Connect these docs](/use-these-docs) to your agent of choice via MCP for real-time answers.
 
-  <Callout icon="edit">
-    [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/env-var-self-hosted.mdx) or [file an issue](https://github.com/langchain-ai/docs/issues/new/choose).
-  </Callout>
-</div>
+[Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/env-var-self-hosted.mdx) or [file an issue](https://github.com/langchain-ai/docs/issues/new/choose).

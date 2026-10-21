@@ -66,9 +66,9 @@ To be alerted when a watched issue recurs, click **Alert me via Slack**, which o
 
 When new traces link to a watched issue, Engine moves it to the top of your list and shows how many new traces arrived, so you can pick up the fix or keep watching.
 
-<Note>
-  Watching is only available for open issues without a pull request in flight: discard the fix to watch an issue again. Resolving a watched issue, or marking it as incorrectly flagged, automatically stops watching it.
-</Note>
+> [!NOTE]
+>
+> Watching is only available for open issues without a pull request in flight: discard the fix to watch an issue again. Resolving a watched issue, or marking it as incorrectly flagged, automatically stops watching it.
 
 ## Filter and sort issues
 
@@ -80,7 +80,7 @@ At the top of the list, you can click:
 
 * **Filter issues** icon to filter by **Priority**, **Status** and **Tags**.
 * **Sort issues** icon to sort by **Severity**, **Last Updated**, and **Created**.
-* **Configure Engine** <Icon icon="settings" /> (gear) icon to [configure Engine](/langsmith/engine-setup#configure-engine).
+* **Configure Engine**  (gear) icon to [configure Engine](/langsmith/engine-setup#configure-engine).
 
 Open [LangSmith Chat](/langsmith/chat#engine) to ask questions across your issues, for example, which issues need the most attention or how many new issues are open.
 
@@ -106,12 +106,6 @@ langsmith project issues list --project <project-name> --status open --priority 
 
 ***
 
-<div>
-  <Callout icon="terminal-2">
-    [Connect these docs](/use-these-docs) to your agent of choice via MCP for real-time answers.
-  </Callout>
+[Connect these docs](/use-these-docs) to your agent of choice via MCP for real-time answers.
 
-  <Callout icon="edit">
-    [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/engine-issues.mdx) or [file an issue](https://github.com/langchain-ai/docs/issues/new/choose).
-  </Callout>
-</div>
+[Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/engine-issues.mdx) or [file an issue](https://github.com/langchain-ai/docs/issues/new/choose).

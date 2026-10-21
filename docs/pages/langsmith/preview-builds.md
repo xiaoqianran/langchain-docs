@@ -8,9 +8,9 @@ Preview builds create temporary **preview deployments** for pull requests. Use a
 
 When a pull request triggers a preview build, LangSmith builds the latest commit from the source branch as the preview deployment's first revision. Each subsequent commit to that branch triggers a new revision.
 
-<Note>
-  Preview builds are in public beta and are available only on LangSmith Cloud for deployments created through the GitHub integration.
-</Note>
+> [!NOTE]
+>
+> Preview builds are in public beta and are available only on LangSmith Cloud for deployments created through the GitHub integration.
 
 ## Enable preview builds
 
@@ -47,12 +47,6 @@ Deleting the parent deployment deletes all of its preview deployments.
 
 ***
 
-<div>
-  <Callout icon="terminal-2">
-    [Connect these docs](/use-these-docs) to your agent of choice via MCP for real-time answers.
-  </Callout>
+[Connect these docs](/use-these-docs) to your agent of choice via MCP for real-time answers.
 
-  <Callout icon="edit">
-    [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/preview-builds.mdx) or [file an issue](https://github.com/langchain-ai/docs/issues/new/choose).
-  </Callout>
-</div>
+[Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/preview-builds.mdx) or [file an issue](https://github.com/langchain-ai/docs/issues/new/choose).

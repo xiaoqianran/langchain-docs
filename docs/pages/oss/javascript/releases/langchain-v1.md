@@ -4,39 +4,35 @@
 
 **LangChain v1 is a focused, production-ready foundation for building agents.** We've streamlined the framework around three core improvements:
 
-<CardGroup>
-  <Card title="createAgent" icon="robot" href="#createagent">
-    A new standard way to build agents in LangChain, replacing `createReactAgent` from LangGraph with a cleaner, more powerful API.
-  </Card>
+> **[createAgent](#createagent)**
+>
+> A new standard way to build agents in LangChain, replacing `createReactAgent` from LangGraph with a cleaner, more powerful API.
 
-  <Card title="Standard content blocks" icon="cube" href="#standard-content-blocks">
-    A new `contentBlocks` property that provides unified access to modern LLM features across all providers.
-  </Card>
+> **[Standard content blocks](#standard-content-blocks)**
+>
+> A new `contentBlocks` property that provides unified access to modern LLM features across all providers.
 
-  <Card title="Simplified package" icon="sitemap" href="#simplified-package">
-    The `langchain` package has been streamlined to focus on essential building blocks for agents, with legacy functionality moved to `@langchain/classic`.
-  </Card>
-</CardGroup>
+> **[Simplified package](#simplified-package)**
+>
+> The `langchain` package has been streamlined to focus on essential building blocks for agents, with legacy functionality moved to `@langchain/classic`.
 
 To upgrade,
 
-<CodeGroup>
-  ```bash npm theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  npm install langchain @langchain/core
-  ```
+```bash npm theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+npm install langchain @langchain/core
+```
 
-  ```bash pnpm theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  pnpm install langchain @langchain/core
-  ```
+```bash pnpm theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+pnpm install langchain @langchain/core
+```
 
-  ```bash yarn theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  yarn add langchain @langchain/core
-  ```
+```bash yarn theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+yarn add langchain @langchain/core
+```
 
-  ```bash bun theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  bun add langchain @langchain/core
-  ```
-</CodeGroup>
+```bash bun theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+bun add langchain @langchain/core
+```
 
 For a complete list of changes, see the [migration guide](/oss/javascript/migrate/langchain-v1).
 
@@ -64,9 +60,7 @@ console.log(result.content);
 
 Under the hood, `createAgent` is built on the basic agent loop -- calling a model, letting it choose tools to execute, and then finishing when it calls no more tools:
 
-<div>
-  <img alt="Core agent loop diagram" />
-</div>
+![Core agent loop diagram](https://mintcdn.com/langchain-5e9cc07a/Tazq8zGc0yYUYrDl/oss/images/core_agent_loop.png?fit=max\&auto=format\&n=Tazq8zGc0yYUYrDl\&q=85\&s=ac72e48317a9ced68fd1be64e89ec063)
 
 For more information, see [Agents](/oss/javascript/langchain/agents).
 
@@ -127,9 +121,7 @@ Build custom middleware by implementing any of these hooks using the `createMidd
 | `afterModel` | After each LLM response | Validate output, apply guardrails |
 | `afterAgent` | After agent completes | Save results, cleanup |
 
-<div>
-  <img alt="Middleware flow diagram" />
-</div>
+![Middleware flow diagram](https://mintcdn.com/langchain-5e9cc07a/RAP6mjwE5G00xYsA/oss/images/middleware_final.png?fit=max\&auto=format\&n=RAP6mjwE5G00xYsA\&q=85\&s=eb4404b137edec6f6f0c8ccb8323eaf1)
 
 Example custom middleware:
 
@@ -170,23 +162,21 @@ For more information, see [the complete middleware guide](/oss/javascript/langch
 
 Because `createAgent` is built on LangGraph, you automatically get built in support for long running and reliable agents via:
 
-<CardGroup>
-  <Card title="Persistence" icon="database">
-    Conversations automatically persist across sessions with built-in checkpointing
-  </Card>
+> **Persistence**
+>
+> Conversations automatically persist across sessions with built-in checkpointing
 
-  <Card title="Streaming" icon="droplet">
-    Stream tokens, tool calls, and reasoning traces in real-time
-  </Card>
+> **Streaming**
+>
+> Stream tokens, tool calls, and reasoning traces in real-time
 
-  <Card title="Human-in-the-loop" icon="hand-stop">
-    Pause agent execution for human approval before sensitive actions
-  </Card>
+> **Human-in-the-loop**
+>
+> Pause agent execution for human approval before sensitive actions
 
-  <Card title="Time travel" icon="history">
-    Rewind conversations to any point and explore alternate paths and prompts
-  </Card>
-</CardGroup>
+> **Time travel**
+>
+> Rewind conversations to any point and explore alternate paths and prompts
 
 You don't need to learn LangGraph to use these features—they work out of the box.
 
@@ -231,16 +221,16 @@ console.log(result.structuredResponse);
 
 ## Standard content blocks
 
-<Note>
-  1.0 releases are available for most packages. Only the following currently support new content blocks:
-
-  * `langchain`
-  * `@langchain/core`
-  * `@langchain/anthropic`
-  * `@langchain/openai`
-
-  Broader support for content blocks is planned.
-</Note>
+> [!NOTE]
+>
+> 1.0 releases are available for most packages. Only the following currently support new content blocks:
+>
+> * `langchain`
+> * `@langchain/core`
+> * `@langchain/anthropic`
+> * `@langchain/openai`
+>
+> Broader support for content blocks is planned.
 
 ### Benefits
 
@@ -272,23 +262,21 @@ Legacy functionality has moved to [`@langchain/classic`](https://www.npmjs.com/p
 
 If you use any of this functionality, install [`@langchain/classic`](https://www.npmjs.com/package/@langchain/classic):
 
-<CodeGroup>
-  ```bash npm theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  npm install @langchain/classic
-  ```
+```bash npm theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+npm install @langchain/classic
+```
 
-  ```bash pnpm theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  pnpm install @langchain/classic
-  ```
+```bash pnpm theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+pnpm install @langchain/classic
+```
 
-  ```bash yarn theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  yarn add @langchain/classic
-  ```
+```bash yarn theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+yarn add @langchain/classic
+```
 
-  ```bash bun theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  bun add @langchain/classic
-  ```
-</CodeGroup>
+```bash bun theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+bun add @langchain/classic
+```
 
 Then update your imports:
 
@@ -306,31 +294,29 @@ Please report any issues discovered with 1.0 on [GitHub](https://github.com/lang
 
 ## Additional resources
 
-<CardGroup>
-  <Card title="LangChain 1.0" icon="rocket" href="https://blog.langchain.com/langchain-langchain-1-0-alpha-releases/">
-    Read the announcement
-  </Card>
+> **[LangChain 1.0](https://blog.langchain.com/langchain-langchain-1-0-alpha-releases/)**
+>
+> Read the announcement
 
-  <Card title="Middleware guide" icon="puzzle" href="https://blog.langchain.com/agent-middleware/">
-    Deep dive into middleware
-  </Card>
+> **[Middleware guide](https://blog.langchain.com/agent-middleware/)**
+>
+> Deep dive into middleware
 
-  <Card title="Agents Documentation" icon="book" href="/oss/javascript/langchain/agents">
-    Full agent documentation
-  </Card>
+> **[Agents Documentation](/oss/javascript/langchain/agents)**
+>
+> Full agent documentation
 
-  <Card title="Message Content" icon="message" href="/oss/javascript/langchain/messages#message-content">
-    New content blocks API
-  </Card>
+> **[Message Content](/oss/javascript/langchain/messages#message-content)**
+>
+> New content blocks API
 
-  <Card title="Migration guide" icon="arrows-exchange" href="/oss/javascript/migrate/langchain-v1">
-    How to migrate to LangChain v1
-  </Card>
+> **[Migration guide](/oss/javascript/migrate/langchain-v1)**
+>
+> How to migrate to LangChain v1
 
-  <Card title="GitHub" icon="brand-github" href="https://github.com/langchain-ai/langchainjs">
-    Report issues or contribute
-  </Card>
-</CardGroup>
+> **[GitHub](https://github.com/langchain-ai/langchainjs)**
+>
+> Report issues or contribute
 
 ## See also
 
@@ -339,12 +325,6 @@ Please report any issues discovered with 1.0 on [GitHub](https://github.com/lang
 
 ***
 
-<div>
-  <Callout icon="terminal-2">
-    [Connect these docs](/use-these-docs) to your agent of choice via MCP for real-time answers.
-  </Callout>
+[Connect these docs](/use-these-docs) to your agent of choice via MCP for real-time answers.
 
-  <Callout icon="edit">
-    [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/oss/javascript/releases/langchain-v1.mdx) or [file an issue](https://github.com/langchain-ai/docs/issues/new/choose).
-  </Callout>
-</div>
+[Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/oss/javascript/releases/langchain-v1.mdx) or [file an issue](https://github.com/langchain-ai/docs/issues/new/choose).

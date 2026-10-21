@@ -8,202 +8,192 @@ LangChain components are subclasses of base classes in [`langchain-core`](https:
 
 Your integration package will typically implement a subclass of at least one of these components. Expand the tabs below to see details on each.
 
-<Tabs>
-  <Tab title="Chat Models">
-    Chat models are subclasses of the [`BaseChatModel`](https://reference.langchain.com/python/langchain-core/language_models/chat_models/BaseChatModel) class. They implement methods for generating chat completions, handling message formatting, and managing model parameters.
+**Chat Models**
 
-    <Warning>
-      The chat model integration guide is currently WIP. In the meantime, read the [chat model conceptual guide](/oss/python/langchain/models) for details on how LangChain chat models function. You may also refer to existing integrations in the [LangChain repo](https://github.com/langchain-ai/langchain/tree/master/libs/partners)
-    </Warning>
-  </Tab>
+Chat models are subclasses of the [`BaseChatModel`](https://reference.langchain.com/python/langchain-core/language_models/chat_models/BaseChatModel) class. They implement methods for generating chat completions, handling message formatting, and managing model parameters.
 
-  <Tab title="Embeddings">
-    Embedding models are subclasses of the [`Embeddings`](https://reference.langchain.com/python/langchain-core/embeddings/embeddings/Embeddings) class.
+> [!WARNING]
+>
+> The chat model integration guide is currently WIP. In the meantime, read the [chat model conceptual guide](/oss/python/langchain/models) for details on how LangChain chat models function. You may also refer to existing integrations in the [LangChain repo](https://github.com/langchain-ai/langchain/tree/master/libs/partners)
 
-    <Warning>
-      The embedding model integration guide is currently WIP. In the meantime, read the [embedding model conceptual guide](/oss/python/integrations/embeddings) for details on how LangChain embedding models function.
-    </Warning>
-  </Tab>
+**Embeddings**
 
-  <Tab title="Tools">
-    Tools are used in 2 main ways:
+Embedding models are subclasses of the [`Embeddings`](https://reference.langchain.com/python/langchain-core/embeddings/embeddings/Embeddings) class.
 
-    1. To define an "input schema" or "args schema" to pass to a chat model's tool calling feature along with a text request, such that the chat model can generate a "tool call", or parameters to call the tool with.
-    2. To take a "tool call" as generated above, and take some action and return a response that can be passed back to the chat model as a ToolMessage.
+> [!WARNING]
+>
+> The embedding model integration guide is currently WIP. In the meantime, read the [embedding model conceptual guide](/oss/python/integrations/embeddings) for details on how LangChain embedding models function.
 
-    The Tools class must inherit from the [`BaseTool`](https://reference.langchain.com/python/langchain-core/tools/base/BaseTool) base class. This interface has 3 properties and 2 methods that should be implemented in a subclass.
+**Tools**
 
-    <Warning>
-      The tools integration guide is currently WIP. In the meantime, read the [tools conceptual guide](/oss/python/langchain/tools) for details on how LangChain tools function.
-    </Warning>
-  </Tab>
+Tools are used in 2 main ways:
 
-  <Tab title="Middleware">
-    [Middleware](/oss/python/langchain/middleware/overview) lets you customize agent behavior by hooking into model calls, tool calls, and agent lifecycle events. Middleware classes subclass the [`AgentMiddleware`](https://reference.langchain.com/python/langchain/agents/middleware/types/AgentMiddleware) base class.
+1. To define an "input schema" or "args schema" to pass to a chat model's tool calling feature along with a text request, such that the chat model can generate a "tool call", or parameters to call the tool with.
+2. To take a "tool call" as generated above, and take some action and return a response that can be passed back to the chat model as a ToolMessage.
 
-    Read the [custom middleware guide](/oss/python/langchain/middleware/custom) to understand hooks, state updates, and middleware patterns before building an integration.
+The Tools class must inherit from the [`BaseTool`](https://reference.langchain.com/python/langchain-core/tools/base/BaseTool) base class. This interface has 3 properties and 2 methods that should be implemented in a subclass.
 
-    Middleware integrations typically fall into two categories:
+> [!WARNING]
+>
+> The tools integration guide is currently WIP. In the meantime, read the [tools conceptual guide](/oss/python/langchain/tools) for details on how LangChain tools function.
 
-    | Type | Description | Examples |
-    | - | - | - |
-    | **Provider-specific** | Leverages a provider's unique capabilities | Prompt caching, native tool execution, content moderation |
-    | **Cross-provider** | Works with any model or tool | Rate limiting, PII detection, logging, guardrails |
+**Middleware**
 
-    Provider-specific middleware lives in the provider's integration package (for example `langchain-anthropic`). Cross-provider middleware can be published as a standalone package.
+[Middleware](/oss/python/langchain/middleware/overview) lets you customize agent behavior by hooking into model calls, tool calls, and agent lifecycle events. Middleware classes subclass the [`AgentMiddleware`](https://reference.langchain.com/python/langchain/agents/middleware/types/AgentMiddleware) base class.
 
-    You can also use these existing middleware integrations as reference:
+Read the [custom middleware guide](/oss/python/langchain/middleware/custom) to understand hooks, state updates, and middleware patterns before building an integration.
 
-    <CardGroup>
-      <Card title="OpenAI content moderation" icon="shield" href="/oss/python/integrations/middleware/openai">
-        Single middleware with configuration options and exit behaviors.
-      </Card>
+Middleware integrations typically fall into two categories:
 
-      <Card title="Anthropic middleware" icon="robot" href="/oss/python/integrations/middleware/anthropic">
-        Multiple middleware classes for prompt caching, tools, memory, and file search.
-      </Card>
+| Type | Description | Examples |
+| - | - | - |
+| **Provider-specific** | Leverages a provider's unique capabilities | Prompt caching, native tool execution, content moderation |
+| **Cross-provider** | Works with any model or tool | Rate limiting, PII detection, logging, guardrails |
 
-      <Card title="AWS prompt caching" icon="cloud" href="/oss/python/integrations/middleware/aws">
-        Provider-specific prompt caching with model behavior tables.
-      </Card>
+Provider-specific middleware lives in the provider's integration package (for example `langchain-anthropic`). Cross-provider middleware can be published as a standalone package.
 
-      <Card title="Custom middleware guide" icon="code" href="/oss/python/langchain/middleware/custom">
-        Full reference for hooks, state updates, and patterns.
-      </Card>
-    </CardGroup>
-  </Tab>
+You can also use these existing middleware integrations as reference:
 
-  <Tab title="Checkpointers">
-    Checkpointers enable [persistence](/oss/python/langgraph/persistence) in LangGraph, allowing agents to save and resume state across interactions.
+> **[OpenAI content moderation](/oss/python/integrations/middleware/openai)**
+>
+> Single middleware with configuration options and exit behaviors.
 
-    See existing checkpointer integrations in the [LangGraph repo](https://github.com/langchain-ai/langgraph/tree/main/libs) for implementation examples.
-  </Tab>
+> **[Anthropic middleware](/oss/python/integrations/middleware/anthropic)**
+>
+> Multiple middleware classes for prompt caching, tools, memory, and file search.
 
-  <Tab title="Sandboxes">
-    Sandbox integrations enable [Deep Agents](/oss/python/deepagents/overview) to run code in isolated environments.
+> **[AWS prompt caching](/oss/python/integrations/middleware/aws)**
+>
+> Provider-specific prompt caching with model behavior tables.
 
-    Implement the [`SandboxBackendProtocol`](https://reference.langchain.com/python/deepagents/backends/protocol/SandboxBackendProtocol) from Deep Agents. This protocol includes `execute()`, async variants, and the filesystem tool methods such as `ls`, `read`, `write`, `edit`, `glob`, and `grep`.
+> **[Custom middleware guide](/oss/python/langchain/middleware/custom)**
+>
+> Full reference for hooks, state updates, and patterns.
 
-    In practice, if your sandbox environment can run shell commands and has `python3` available, you should usually subclass [`BaseSandbox`](https://reference.langchain.com/python/deepagents/backends/sandbox/BaseSandbox). `BaseSandbox` provides the filesystem operations through `python3`, so you mainly need to implement `execute()`, `upload_files()`, `download_files()`, and `id`.
+**Checkpointers**
 
-    ```python Example BaseSandbox scaffold expandable theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-    from __future__ import annotations
+Checkpointers enable [persistence](/oss/python/langgraph/persistence) in LangGraph, allowing agents to save and resume state across interactions.
 
-    from deepagents.backends.protocol import (
-        ExecuteResponse,
-        FileDownloadResponse,
-        FileUploadResponse,
-    )
-    from deepagents.backends.sandbox import BaseSandbox  # [!code highlight]
+See existing checkpointer integrations in the [LangGraph repo](https://github.com/langchain-ai/langgraph/tree/main/libs) for implementation examples.
+
+**Sandboxes**
+
+Sandbox integrations enable [Deep Agents](/oss/python/deepagents/overview) to run code in isolated environments.
+
+Implement the [`SandboxBackendProtocol`](https://reference.langchain.com/python/deepagents/backends/protocol/SandboxBackendProtocol) from Deep Agents. This protocol includes `execute()`, async variants, and the filesystem tool methods such as `ls`, `read`, `write`, `edit`, `glob`, and `grep`.
+
+In practice, if your sandbox environment can run shell commands and has `python3` available, you should usually subclass [`BaseSandbox`](https://reference.langchain.com/python/deepagents/backends/sandbox/BaseSandbox). `BaseSandbox` provides the filesystem operations through `python3`, so you mainly need to implement `execute()`, `upload_files()`, `download_files()`, and `id`.
+
+```python Example BaseSandbox scaffold expandable theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+from __future__ import annotations
+
+from deepagents.backends.protocol import (
+    ExecuteResponse,
+    FileDownloadResponse,
+    FileUploadResponse,
+)
+from deepagents.backends.sandbox import BaseSandbox  # [!code highlight]
 
 
-    class MySandbox(BaseSandbox):
-        def __init__(self, client: MySandboxSdkClient) -> None:
-            self._client = client
+class MySandbox(BaseSandbox):
+    def __init__(self, client: MySandboxSdkClient) -> None:
+        self._client = client
 
-        @property
-        def id(self) -> str:
-            return self._client.sandbox_id
+    @property
+    def id(self) -> str:
+        return self._client.sandbox_id
 
-        def execute(
-            self,
-            command: str,
-            *,
-            timeout: int | None = None,
-        ) -> ExecuteResponse:
-            # Execute `command` in your sandbox and map the provider response
-            # into ExecuteResponse.
-            result = self._client.run(command=command, timeout=timeout)
-            output = result.stdout or ""
-            if result.stderr:
-                output += f"\n<stderr>{result.stderr}</stderr>"
-            return ExecuteResponse(
-                output=output,
-                exit_code=result.exit_code,
-                truncated=False,
-            )
+    def execute(
+        self,
+        command: str,
+        *,
+        timeout: int | None = None,
+    ) -> ExecuteResponse:
+        # Execute `command` in your sandbox and map the provider response
+        # into ExecuteResponse.
+        result = self._client.run(command=command, timeout=timeout)
+        output = result.stdout or ""
+        if result.stderr:
+            output += f"\n<stderr>{result.stderr}</stderr>"
+        return ExecuteResponse(
+            output=output,
+            exit_code=result.exit_code,
+            truncated=False,
+        )
 
-        def upload_files(
-            self,
-            files: list[tuple[str, bytes]],
-        ) -> list[FileUploadResponse]:
-            # Validate paths, batch requests where possible, and map provider
-            # results back into FileUploadResponse objects in input order.
-            # Only catch and normalize errors that an LLM can plausibly retry
-            # or fix, such as invalid_path or file_not_found.
-            return self._client.upload_files(files)
+    def upload_files(
+        self,
+        files: list[tuple[str, bytes]],
+    ) -> list[FileUploadResponse]:
+        # Validate paths, batch requests where possible, and map provider
+        # results back into FileUploadResponse objects in input order.
+        # Only catch and normalize errors that an LLM can plausibly retry
+        # or fix, such as invalid_path or file_not_found.
+        return self._client.upload_files(files)
 
-        def download_files(self, paths: list[str]) -> list[FileDownloadResponse]:
-            # Validate paths, batch requests where possible, and map provider
-            # results back into FileDownloadResponse objects in input order.
-            # Only catch and normalize errors that an LLM can plausibly retry
-            # or fix, such as invalid_path or file_not_found.
-            return self._client.download_files(paths)
+    def download_files(self, paths: list[str]) -> list[FileDownloadResponse]:
+        # Validate paths, batch requests where possible, and map provider
+        # results back into FileDownloadResponse objects in input order.
+        # Only catch and normalize errors that an LLM can plausibly retry
+        # or fix, such as invalid_path or file_not_found.
+        return self._client.download_files(paths)
 
-        async def aexecute(
-            self,
-            command: str,
-            *,
-            timeout: int | None = None,
-        ) -> ExecuteResponse:
-            ...
+    async def aexecute(
+        self,
+        command: str,
+        *,
+        timeout: int | None = None,
+    ) -> ExecuteResponse:
+        ...
 
-        async def aupload_files(
-            self,
-            files: list[tuple[str, bytes]],
-        ) -> list[FileUploadResponse]:
-            ...
+    async def aupload_files(
+        self,
+        files: list[tuple[str, bytes]],
+    ) -> list[FileUploadResponse]:
+        ...
 
-        async def adownload_files(
-            self,
-            paths: list[str],
-        ) -> list[FileDownloadResponse]:
-            ...
-    ```
+    async def adownload_files(
+        self,
+        paths: list[str],
+    ) -> list[FileDownloadResponse]:
+        ...
+```
 
-    ## Test your integration
+## Test your integration
 
-    Validate your integration with the [sandbox standard test suite](/oss/python/contributing/standard-tests-langchain#sandbox-integrations). The Python suite uses `SandboxIntegrationTests` from `langchain_tests.integration_tests`; subclass it and provide a `sandbox` fixture that yields a clean `SandboxBackendProtocol` instance.
+Validate your integration with the [sandbox standard test suite](/oss/python/contributing/standard-tests-langchain#sandbox-integrations). The Python suite uses `SandboxIntegrationTests` from `langchain_tests.integration_tests`; subclass it and provide a `sandbox` fixture that yields a clean `SandboxBackendProtocol` instance.
 
-    ```python Example sandbox standard test setup expandable theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-    from __future__ import annotations
+```python Example sandbox standard test setup expandable theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+from __future__ import annotations
 
-    from collections.abc import Iterator
+from collections.abc import Iterator
 
-    import pytest
-    from deepagents.backends.protocol import SandboxBackendProtocol
-    from langchain_tests.integration_tests import SandboxIntegrationTests
+import pytest
+from deepagents.backends.protocol import SandboxBackendProtocol
+from langchain_tests.integration_tests import SandboxIntegrationTests
 
-    from langchain_myprovider import MySandbox
-    from myprovider_sdk import MySandboxSdkClient
+from langchain_myprovider import MySandbox
+from myprovider_sdk import MySandboxSdkClient
 
 
-    class TestMySandboxStandard(SandboxIntegrationTests):
-        @pytest.fixture(scope="class")
-        def sandbox(self) -> Iterator[SandboxBackendProtocol]:
-            client = MySandboxSdkClient()
-            backend = MySandbox(client=client)
-            try:
-                yield backend
-            finally:
-                # Replace this with your provider's cleanup logic.
-                client.delete_sandbox(backend.id)
-    ```
+class TestMySandboxStandard(SandboxIntegrationTests):
+    @pytest.fixture(scope="class")
+    def sandbox(self) -> Iterator[SandboxBackendProtocol]:
+        client = MySandboxSdkClient()
+        backend = MySandbox(client=client)
+        try:
+            yield backend
+        finally:
+            # Replace this with your provider's cleanup logic.
+            client.delete_sandbox(backend.id)
+```
 
-    Put this in a file such as `tests/integration_tests/test_sandbox.py`. The standard suite will handle the actual filesystem and command-execution assertions for you.
+Put this in a file such as `tests/integration_tests/test_sandbox.py`. The standard suite will handle the actual filesystem and command-execution assertions for you.
 
-    **Reference implementation:** See the [Daytona partner integration](https://github.com/langchain-ai/deepagents/tree/main/libs/partners/daytona), which subclasses `BaseSandbox` and implements `execute()`, `upload_files()`, `download_files()`, and `id`.
-  </Tab>
-</Tabs>
+**Reference implementation:** See the [Daytona partner integration](https://github.com/langchain-ai/deepagents/tree/main/libs/partners/daytona), which subclasses `BaseSandbox` and implements `execute()`, `upload_files()`, `download_files()`, and `id`.
 
 ***
 
-<div>
-  <Callout icon="terminal-2">
-    [Connect these docs](/use-these-docs) to your agent of choice via MCP for real-time answers.
-  </Callout>
+[Connect these docs](/use-these-docs) to your agent of choice via MCP for real-time answers.
 
-  <Callout icon="edit">
-    [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/oss/contributing/implement-langchain.mdx) or [file an issue](https://github.com/langchain-ai/docs/issues/new/choose).
-  </Callout>
-</div>
+[Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/oss/contributing/implement-langchain.mdx) or [file an issue](https://github.com/langchain-ai/docs/issues/new/choose).

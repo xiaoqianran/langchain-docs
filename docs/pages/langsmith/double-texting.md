@@ -2,11 +2,11 @@
 
 # Double texting
 
-<Info>
-  **Prerequisites**
-
-  * [Agent Server](/langsmith/agent-server)
-</Info>
+> [!NOTE]
+>
+> **Prerequisites**
+>
+> * [Agent Server](/langsmith/agent-server)
 
 Many times users might interact with your graph in unintended ways.
 For instance, a user may send one message and before the graph has finished running send a second message.
@@ -15,11 +15,11 @@ We call this "double texting".
 
 [Enqueue](#enqueue-default) is the default double texting (multi-tasking) strategy when creating runs in the [Agent Server](/langsmith/agent-server).
 
-<Note>
-  Double texting is a feature of LangSmith Deployment. It is not available in the [LangGraph open source framework](/oss/python/langgraph/overview).
-</Note>
+> [!NOTE]
+>
+> Double texting is a feature of LangSmith Deployment. It is not available in the [LangGraph open source framework](/oss/python/langgraph/overview).
 
-<img alt="Double-text strategies across first vs. second run: Reject keeps only the first; Enqueue runs the second afterward; Interrupt halts the first to run the second; Rollback reverts the first and reruns with the second." />
+![Double-text strategies across first vs. second run: Reject keeps only the first; Enqueue runs the second afterward; Interrupt halts the first to run the second; Rollback reverts the first and reruns with the second.](https://mintcdn.com/langchain-5e9cc07a/Hucw5hmCzWXDanL-/langsmith/images/double-texting.png?fit=max\&auto=format\&n=Hucw5hmCzWXDanL-\&q=85\&s=1cae1e8cd4920872e7992460b081f76d)
 
 ## Enqueue (default)
 
@@ -49,12 +49,6 @@ For configuring the rollback double text option, refer to the [how-to guide](/la
 
 ***
 
-<div>
-  <Callout icon="terminal-2">
-    [Connect these docs](/use-these-docs) to your agent of choice via MCP for real-time answers.
-  </Callout>
+[Connect these docs](/use-these-docs) to your agent of choice via MCP for real-time answers.
 
-  <Callout icon="edit">
-    [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/double-texting.mdx) or [file an issue](https://github.com/langchain-ai/docs/issues/new/choose).
-  </Callout>
-</div>
+[Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/double-texting.mdx) or [file an issue](https://github.com/langchain-ai/docs/issues/new/choose).

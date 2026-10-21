@@ -64,28 +64,22 @@ for model_type, model in models.items():
 
 In the UI, we see all experiments that have been run by default.
 
-<img alt="Filter all experiments" />
+![Filter all experiments](https://mintcdn.com/langchain-5e9cc07a/0B2PFrFBMRWNccee/langsmith/images/filter-all-experiments.png?fit=max\&auto=format\&n=0B2PFrFBMRWNccee\&q=85\&s=0cb5b29f405286dadb8b6491709eb789)
 
 If we, say, have a preference for openai models, we can easily filter down and see scores within just openai models first:
 
-<img alt="Filter openai" />
+![Filter openai](https://mintcdn.com/langchain-5e9cc07a/0B2PFrFBMRWNccee/langsmith/images/filter-openai.png?fit=max\&auto=format\&n=0B2PFrFBMRWNccee\&q=85\&s=e3a0c42e4eb37cae68d367dec75d0df1)
 
 We can stack filters, allowing us to filter out low scores on correctness to make sure we only compare relevant experiments:
 
-<img alt="Filter feedback" />
+![Filter feedback](https://mintcdn.com/langchain-5e9cc07a/0B2PFrFBMRWNccee/langsmith/images/filter-feedback.png?fit=max\&auto=format\&n=0B2PFrFBMRWNccee\&q=85\&s=c0e223bbe637a03a4c251896a5662f52)
 
 Finally, we can clear and reset filters. For example, if we see there is clear there's a winner with the `singleminded` prompt, we can change filtering settings to see if any other model providers' models work as well with it:
 
-<img alt="Filter singleminded" />
+![Filter singleminded](https://mintcdn.com/langchain-5e9cc07a/0B2PFrFBMRWNccee/langsmith/images/filter-singleminded.png?fit=max\&auto=format\&n=0B2PFrFBMRWNccee\&q=85\&s=7a30d214745fcddc022e3c715267dfd2)
 
 ***
 
-<div>
-  <Callout icon="terminal-2">
-    [Connect these docs](/use-these-docs) to your agent of choice via MCP for real-time answers.
-  </Callout>
+[Connect these docs](/use-these-docs) to your agent of choice via MCP for real-time answers.
 
-  <Callout icon="edit">
-    [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/filter-experiments-ui.mdx) or [file an issue](https://github.com/langchain-ai/docs/issues/new/choose).
-  </Callout>
-</div>
+[Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/filter-experiments-ui.mdx) or [file an issue](https://github.com/langchain-ai/docs/issues/new/choose).

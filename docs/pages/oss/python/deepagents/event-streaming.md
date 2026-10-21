@@ -30,9 +30,9 @@ for subagent in stream.subagents:
     subagent_names.append(subagent.name)
 ```
 
-<Card title="View example trace" icon="chart-line" href="https://smith.langchain.com/public/1884fc76-062c-464d-85a9-9cf20d5286ab/r">
-  Open a public LangSmith run for this example.
-</Card>
+> **[View example trace](https://smith.langchain.com/public/1884fc76-062c-464d-85a9-9cf20d5286ab/r)**
+>
+> Open a public LangSmith run for this example.
 
 ## Subagent stream fields
 
@@ -76,9 +76,9 @@ for subagent in stream.subagents:
         print(f"{subagent.name}: failed")
 ```
 
-<Card title="View example trace" icon="chart-line" href="https://smith.langchain.com/public/7c517c49-b795-4a33-b782-6695349c9deb/r">
-  Open a public LangSmith run for this example.
-</Card>
+> **[View example trace](https://smith.langchain.com/public/7c517c49-b795-4a33-b782-6695349c9deb/r)**
+>
+> Open a public LangSmith run for this example.
 
 ## Stream messages
 
@@ -97,9 +97,9 @@ for subagent in stream.subagents:
         print(f"[{subagent.name}]", message.text)
 ```
 
-<Card title="View example trace" icon="chart-line" href="https://smith.langchain.com/public/8cdd93c9-0dff-4f08-8057-053753c68c6e/r">
-  Open a public LangSmith run for this example.
-</Card>
+> **[View example trace](https://smith.langchain.com/public/8cdd93c9-0dff-4f08-8057-053753c68c6e/r)**
+>
+> Open a public LangSmith run for this example.
 
 ## Stream tool calls
 
@@ -126,9 +126,9 @@ for subagent in stream.subagents:
             print(call.error)
 ```
 
-<Card title="View example trace" icon="chart-line" href="https://smith.langchain.com/public/55cbc704-a514-46e1-8559-b2cfee01298d/r">
-  Open a public LangSmith run for this example.
-</Card>
+> **[View example trace](https://smith.langchain.com/public/55cbc704-a514-46e1-8559-b2cfee01298d/r)**
+>
+> Open a public LangSmith run for this example.
 
 ## Stream nested work
 
@@ -152,9 +152,9 @@ for subagent in stream.subagents:
     subagent_names.append(subagent.name)
 ```
 
-<Card title="View example trace" icon="chart-line" href="https://smith.langchain.com/public/51f7e14f-0d79-4f59-a817-e05db11cec22/r">
-  Open a public LangSmith run for this example.
-</Card>
+> **[View example trace](https://smith.langchain.com/public/51f7e14f-0d79-4f59-a817-e05db11cec22/r)**
+>
+> Open a public LangSmith run for this example.
 
 ## Consume concurrently
 
@@ -192,9 +192,9 @@ for name, item in stream.interleave("messages", "subagents"):
             print(f"[{item.name}]", message.text)
 ```
 
-<Card title="View example trace" icon="chart-line" href="https://smith.langchain.com/public/74ef37d9-f1b4-408f-babd-af300a033e9b/r">
-  Open a public LangSmith run for this example.
-</Card>
+> **[View example trace](https://smith.langchain.com/public/74ef37d9-f1b4-408f-babd-af300a033e9b/r)**
+>
+> Open a public LangSmith run for this example.
 
 When you need exact arrival order across the coordinator and all subagents, iterate raw protocol events and use `namespace` to identify the source:
 
@@ -219,9 +219,9 @@ for event in stream:
         text_deltas.append(block["text"])
 ```
 
-<Card title="View example trace" icon="chart-line" href="https://smith.langchain.com/public/71b391fa-fa9d-40c0-838a-6a21874785c9/r">
-  Open a public LangSmith run for this example.
-</Card>
+> **[View example trace](https://smith.langchain.com/public/71b391fa-fa9d-40c0-838a-6a21874785c9/r)**
+>
+> Open a public LangSmith run for this example.
 
 ## Subagents versus subgraphs
 
@@ -235,12 +235,6 @@ for event in stream:
 
 ***
 
-<div>
-  <Callout icon="terminal-2">
-    [Connect these docs](/use-these-docs) to your agent of choice via MCP for real-time answers.
-  </Callout>
+[Connect these docs](/use-these-docs) to your agent of choice via MCP for real-time answers.
 
-  <Callout icon="edit">
-    [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/oss/deepagents/event-streaming.mdx) or [file an issue](https://github.com/langchain-ai/docs/issues/new/choose).
-  </Callout>
-</div>
+[Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/oss/deepagents/event-streaming.mdx) or [file an issue](https://github.com/langchain-ai/docs/issues/new/choose).

@@ -6,9 +6,9 @@ LangSmith features that are unavailable on self-hosted installations that query 
 
 Some LangSmith features read trace data only from [SmithDB](/langsmith/self-host-smithdb). On a self-hosted installation that still queries ClickHouse, these features are hidden, disabled, or fall back to an older experience. Use this page to see what you gain by moving queries to SmithDB, and what keeps working if you have not.
 
-<Note>
-  ClickHouse support ends in LangSmith v0.19. For upgrade timing, see the [self-hosted changelog](/langsmith/self-hosted-changelog).
-</Note>
+> [!NOTE]
+>
+> ClickHouse support ends in LangSmith v0.19. For upgrade timing, see the [self-hosted changelog](/langsmith/self-hosted-changelog).
 
 ## Check whether queries use SmithDB
 
@@ -50,12 +50,6 @@ Tracing, thread listing, datasets, and experiments work on either datastore.
 
 ***
 
-<div>
-  <Callout icon="terminal-2">
-    [Connect these docs](/use-these-docs) to your agent of choice via MCP for real-time answers.
-  </Callout>
+[Connect these docs](/use-these-docs) to your agent of choice via MCP for real-time answers.
 
-  <Callout icon="edit">
-    [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/self-host-smithdb-features.mdx) or [file an issue](https://github.com/langchain-ai/docs/issues/new/choose).
-  </Callout>
-</div>
+[Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/self-host-smithdb-features.mdx) or [file an issue](https://github.com/langchain-ai/docs/issues/new/choose).

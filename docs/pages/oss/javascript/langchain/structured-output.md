@@ -4,9 +4,9 @@
 
 Structured output allows agents to return data in a specific, predictable format. Instead of parsing natural language responses, you get typed structured data.
 
-<Tip>
-  This page covers structured output with agents using `createAgent`. To use structured output directly on a model (outside of agents), see [Models - Structured output](/oss/javascript/langchain/models#structured-output).
-</Tip>
+> [!TIP]
+>
+> This page covers structured output with agents using `createAgent`. To use structured output directly on a model (outside of agents), see [Models - Structured output](/oss/javascript/langchain/models#structured-output).
 
 LangChain's prebuilt ReAct agent `createAgent` handles structured output automatically. The user sets their desired structured output schema, and when the model generates the structured data, it's captured, validated, and returned in the `structuredResponse` key of the agent's state.
 
@@ -42,19 +42,19 @@ const agent = createAgent({
 
 The structured response is returned in the `structuredResponse` key of the agent's final state.
 
-<Tip>
-  Support for native structured output features is read dynamically from the model's [profile data](/oss/javascript/langchain/models#model-profiles) if using `langchain>=1.1`. If data are not available, use another condition or specify manually:
-
-  ```typescript theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  const customProfile: ModelProfile = {
-      structuredOutput: true,
-      // ...
-  }
-  const model = await initChatModel("...", { profile: customProfile });
-  ```
-
-  If tools are specified, the model must support simultaneous use of tools and structured output.
-</Tip>
+> [!TIP]
+>
+> Support for native structured output features is read dynamically from the model's [profile data](/oss/javascript/langchain/models#model-profiles) if using `langchain>=1.1`. If data are not available, use another condition or specify manually:
+>
+> ```typescript theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> const customProfile: ModelProfile = {
+>     structuredOutput: true,
+>     // ...
+> }
+> const model = await initChatModel("...", { profile: customProfile });
+> ```
+>
+> If tools are specified, the model must support simultaneous use of tools and structured output.
 
 ## Provider strategy
 
@@ -68,104 +68,102 @@ function providerStrategy<StructuredResponseT>(
 ): ProviderStrategy<StructuredResponseT>
 ```
 
-<ParamField>
-  The schema defining the structured output format. Supports:
+**schema** *required*
 
-  * **Zod Schema**: A zod schema
-  * **Standard Schema**: Any schema implementing the [Standard Schema](https://standardschema.dev/) spec
-  * **JSON Schema**: A JSON schema object
-</ParamField>
+The schema defining the structured output format. Supports:
+
+* **Zod Schema**: A zod schema
+* **Standard Schema**: Any schema implementing the [Standard Schema](https://standardschema.dev/) spec
+* **JSON Schema**: A JSON schema object
 
 LangChain automatically uses `ProviderStrategy` when you pass a schema type directly to `createAgent.responseFormat` and the model supports native structured output:
 
-<CodeGroup>
-  ```ts Zod Schema theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  import * as z from "zod";
-  import { createAgent, providerStrategy } from "langchain";
+```ts Zod Schema theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+import * as z from "zod";
+import { createAgent, providerStrategy } from "langchain";
 
-  const ContactInfo = z.object({
-      name: z.string().describe("The name of the person"),
-      email: z.string().describe("The email address of the person"),
-      phone: z.string().describe("The phone number of the person"),
-  });
+const ContactInfo = z.object({
+    name: z.string().describe("The name of the person"),
+    email: z.string().describe("The email address of the person"),
+    phone: z.string().describe("The phone number of the person"),
+});
 
-  const agent = createAgent({
-      model: "gpt-5.5",
-      tools: [],
-      responseFormat: providerStrategy(ContactInfo)
-  });
+const agent = createAgent({
+    model: "gpt-5.5",
+    tools: [],
+    responseFormat: providerStrategy(ContactInfo)
+});
 
-  const result = await agent.invoke({
-      messages: [{"role": "user", "content": "Extract contact info from: John Doe, john@example.com, (555) 123-4567"}]
-  });
+const result = await agent.invoke({
+    messages: [{"role": "user", "content": "Extract contact info from: John Doe, john@example.com, (555) 123-4567"}]
+});
 
-  console.log(result.structuredResponse);
-  // { name: "John Doe", email: "john@example.com", phone: "(555) 123-4567" }
-  ```
+console.log(result.structuredResponse);
+// { name: "John Doe", email: "john@example.com", phone: "(555) 123-4567" }
+```
 
-  ```ts Standard Schema theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  import * as v from "valibot";
-  import { toStandardJsonSchema } from "@valibot/to-json-schema";
-  import { createAgent, providerStrategy } from "langchain";
+```ts Standard Schema theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+import * as v from "valibot";
+import { toStandardJsonSchema } from "@valibot/to-json-schema";
+import { createAgent, providerStrategy } from "langchain";
 
-  const ContactInfo = toStandardJsonSchema(
-      v.object({
-          name: v.pipe(v.string(), v.description("The name of the person")),
-          email: v.pipe(v.string(), v.description("The email address of the person")),
-          phone: v.pipe(v.string(), v.description("The phone number of the person")),
-      })
-  );
+const ContactInfo = toStandardJsonSchema(
+    v.object({
+        name: v.pipe(v.string(), v.description("The name of the person")),
+        email: v.pipe(v.string(), v.description("The email address of the person")),
+        phone: v.pipe(v.string(), v.description("The phone number of the person")),
+    })
+);
 
-  const agent = createAgent({
-      model: "gpt-5.5",
-      tools: [],
-      responseFormat: providerStrategy(ContactInfo)
-  });
+const agent = createAgent({
+    model: "gpt-5.5",
+    tools: [],
+    responseFormat: providerStrategy(ContactInfo)
+});
 
-  const result = await agent.invoke({
-      messages: [{"role": "user", "content": "Extract contact info from: John Doe, john@example.com, (555) 123-4567"}]
-  });
+const result = await agent.invoke({
+    messages: [{"role": "user", "content": "Extract contact info from: John Doe, john@example.com, (555) 123-4567"}]
+});
 
-  console.log(result.structuredResponse);
-  // { name: "John Doe", email: "john@example.com", phone: "(555) 123-4567" }
-  ```
+console.log(result.structuredResponse);
+// { name: "John Doe", email: "john@example.com", phone: "(555) 123-4567" }
+```
 
-  ```ts JSON Schema theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  import { createAgent, providerStrategy } from "langchain";
+```ts JSON Schema theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+import { createAgent, providerStrategy } from "langchain";
 
-  const contactInfoSchema = {
-      "type": "object",
-      "description": "Contact information for a person.",
-      "properties": {
-          "name": {"type": "string", "description": "The name of the person"},
-          "email": {"type": "string", "description": "The email address of the person"},
-          "phone": {"type": "string", "description": "The phone number of the person"}
-      },
-      "required": ["name", "email", "phone"]
-  }
+const contactInfoSchema = {
+    "type": "object",
+    "description": "Contact information for a person.",
+    "properties": {
+        "name": {"type": "string", "description": "The name of the person"},
+        "email": {"type": "string", "description": "The email address of the person"},
+        "phone": {"type": "string", "description": "The phone number of the person"}
+    },
+    "required": ["name", "email", "phone"]
+}
 
-  const agent = createAgent({
-      model: "gpt-5.5",
-      tools: [],
-      responseFormat: providerStrategy(contactInfoSchema)
-  });
+const agent = createAgent({
+    model: "gpt-5.5",
+    tools: [],
+    responseFormat: providerStrategy(contactInfoSchema)
+});
 
-  const result = await agent.invoke({
-      messages: [{"role": "user", "content": "Extract contact info from: John Doe, john@example.com, (555) 123-4567"}]
-  });
+const result = await agent.invoke({
+    messages: [{"role": "user", "content": "Extract contact info from: John Doe, john@example.com, (555) 123-4567"}]
+});
 
-  console.log(result.structuredResponse);
-  // { name: "John Doe", email: "john@example.com", phone: "(555) 123-4567" }
-  ```
-</CodeGroup>
+console.log(result.structuredResponse);
+// { name: "John Doe", email: "john@example.com", phone: "(555) 123-4567" }
+```
 
 Provider-native structured output provides high reliability and strict validation because the model provider enforces the schema. Use it when available.
 
-<Note>
-  If the provider natively supports structured output for your model choice, it is functionally equivalent to write `responseFormat: contactInfoSchema` instead of `responseFormat: providerStrategy(contactInfoSchema)`.
-
-  In either case, if structured output is not supported, the agent will fall back to a tool calling strategy.
-</Note>
+> [!NOTE]
+>
+> If the provider natively supports structured output for your model choice, it is functionally equivalent to write `responseFormat: contactInfoSchema` instead of `responseFormat: providerStrategy(contactInfoSchema)`.
+>
+> In either case, if structured output is not supported, the agent will fall back to a tool calling strategy.
 
 ## Tool calling strategy
 
@@ -184,150 +182,148 @@ function toolStrategy<StructuredResponseT>(
 ): ToolStrategy<StructuredResponseT>
 ```
 
-<ParamField>
-  The schema defining the structured output format. Supports:
+**schema** *required*
 
-  * **Zod Schema**: A zod schema
-  * **Standard Schema**: Any schema implementing the [Standard Schema](https://standardschema.dev/) spec
-  * **JSON Schema**: A JSON schema object
-</ParamField>
+The schema defining the structured output format. Supports:
 
-<ParamField>
-  Custom content for the tool message returned when structured output is generated.
-  If not provided, defaults to a message showing the structured response data.
-</ParamField>
+* **Zod Schema**: A zod schema
+* **Standard Schema**: Any schema implementing the [Standard Schema](https://standardschema.dev/) spec
+* **JSON Schema**: A JSON schema object
 
-<ParamField>
-  Options parameter containing an optional `handleError` parameter for customizing the error handling strategy.
+**options.toolMessageContent**
 
-  * **`true`**: Catch all errors with default error template (default)
-  * **`False`**: No retry, let exceptions propagate
-  * **`(error: ToolStrategyError) => string | Promise<string>`**: retry with the provided message or throw the error
-</ParamField>
+Custom content for the tool message returned when structured output is generated.
+If not provided, defaults to a message showing the structured response data.
 
-<CodeGroup>
-  ```ts Zod Schema theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  import * as z from "zod";
-  import { createAgent, toolStrategy } from "langchain";
+**options.handleError**
 
-  const ProductReview = z.object({
-      rating: z.number().min(1).max(5).optional(),
-      sentiment: z.enum(["positive", "negative"]),
-      keyPoints: z.array(z.string()).describe("The key points of the review. Lowercase, 1-3 words each."),
-  });
+Options parameter containing an optional `handleError` parameter for customizing the error handling strategy.
 
-  const agent = createAgent({
-      model: "gpt-5.5",
-      tools: [],
-      responseFormat: toolStrategy(ProductReview)
-  })
+* **`true`**: Catch all errors with default error template (default)
+* **`False`**: No retry, let exceptions propagate
+* **`(error: ToolStrategyError) => string | Promise<string>`**: retry with the provided message or throw the error
 
-  const result = await agent.invoke({
-      "messages": [{"role": "user", "content": "Analyze this review: 'Great product: 5 out of 5 stars. Fast shipping, but expensive'"}]
-  })
+```ts Zod Schema theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+import * as z from "zod";
+import { createAgent, toolStrategy } from "langchain";
 
-  console.log(result.structuredResponse);
-  // { "rating": 5, "sentiment": "positive", "keyPoints": ["fast shipping", "expensive"] }
-  ```
+const ProductReview = z.object({
+    rating: z.number().min(1).max(5).optional(),
+    sentiment: z.enum(["positive", "negative"]),
+    keyPoints: z.array(z.string()).describe("The key points of the review. Lowercase, 1-3 words each."),
+});
 
-  ```ts Standard Schema theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  import * as v from "valibot";
-  import { toStandardJsonSchema } from "@valibot/to-json-schema";
-  import { createAgent, toolStrategy } from "langchain";
+const agent = createAgent({
+    model: "gpt-5.5",
+    tools: [],
+    responseFormat: toolStrategy(ProductReview)
+})
 
-  const ProductReview = toStandardJsonSchema(
-      v.object({
-          rating: v.optional(v.pipe(v.number(), v.minValue(1), v.maxValue(5))),
-          sentiment: v.picklist(["positive", "negative"]),
-          keyPoints: v.pipe(v.array(v.string()), v.description("The key points of the review. Lowercase, 1-3 words each.")),
-      })
-  );
+const result = await agent.invoke({
+    "messages": [{"role": "user", "content": "Analyze this review: 'Great product: 5 out of 5 stars. Fast shipping, but expensive'"}]
+})
 
-  const agent = createAgent({
-      model: "gpt-5.5",
-      tools: [],
-      responseFormat: toolStrategy(ProductReview)
-  })
+console.log(result.structuredResponse);
+// { "rating": 5, "sentiment": "positive", "keyPoints": ["fast shipping", "expensive"] }
+```
 
-  const result = await agent.invoke({
-      messages: [{"role": "user", "content": "Analyze this review: 'Great product: 5 out of 5 stars. Fast shipping, but expensive'"}]
-  })
+```ts Standard Schema theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+import * as v from "valibot";
+import { toStandardJsonSchema } from "@valibot/to-json-schema";
+import { createAgent, toolStrategy } from "langchain";
 
-  console.log(result.structuredResponse);
-  // { "rating": 5, "sentiment": "positive", "keyPoints": ["fast shipping", "expensive"] }
-  ```
+const ProductReview = toStandardJsonSchema(
+    v.object({
+        rating: v.optional(v.pipe(v.number(), v.minValue(1), v.maxValue(5))),
+        sentiment: v.picklist(["positive", "negative"]),
+        keyPoints: v.pipe(v.array(v.string()), v.description("The key points of the review. Lowercase, 1-3 words each.")),
+    })
+);
 
-  ```ts JSON Schema theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  import { createAgent, toolStrategy } from "langchain";
+const agent = createAgent({
+    model: "gpt-5.5",
+    tools: [],
+    responseFormat: toolStrategy(ProductReview)
+})
 
-  const productReviewSchema = {
-      "type": "object",
-      "description": "Analysis of a product review.",
-      "properties": {
-          "rating": {
-              "type": ["integer", "null"],
-              "description": "The rating of the product (1-5)",
-              "minimum": 1,
-              "maximum": 5
-          },
-          "sentiment": {
-              "type": "string",
-              "enum": ["positive", "negative"],
-              "description": "The sentiment of the review"
-          },
-          "key_points": {
-              "type": "array",
-              "items": {"type": "string"},
-              "description": "The key points of the review"
-          }
-      },
-      "required": ["sentiment", "key_points"]
-  }
+const result = await agent.invoke({
+    messages: [{"role": "user", "content": "Analyze this review: 'Great product: 5 out of 5 stars. Fast shipping, but expensive'"}]
+})
 
-  const agent = createAgent({
-      model: "gpt-5.5",
-      tools: [],
-      responseFormat: toolStrategy(productReviewSchema)
-  });
+console.log(result.structuredResponse);
+// { "rating": 5, "sentiment": "positive", "keyPoints": ["fast shipping", "expensive"] }
+```
 
-  const result = await agent.invoke({
-      messages: [{"role": "user", "content": "Analyze this review: 'Great product: 5 out of 5 stars. Fast shipping, but expensive'"}]
-  })
+```ts JSON Schema theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+import { createAgent, toolStrategy } from "langchain";
 
-  console.log(result.structuredResponse);
-  // { "rating": 5, "sentiment": "positive", "keyPoints": ["fast shipping", "expensive"] }
-  ```
+const productReviewSchema = {
+    "type": "object",
+    "description": "Analysis of a product review.",
+    "properties": {
+        "rating": {
+            "type": ["integer", "null"],
+            "description": "The rating of the product (1-5)",
+            "minimum": 1,
+            "maximum": 5
+        },
+        "sentiment": {
+            "type": "string",
+            "enum": ["positive", "negative"],
+            "description": "The sentiment of the review"
+        },
+        "key_points": {
+            "type": "array",
+            "items": {"type": "string"},
+            "description": "The key points of the review"
+        }
+    },
+    "required": ["sentiment", "key_points"]
+}
 
-  ```ts Union Types theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  import * as z from "zod";
-  import { createAgent, toolStrategy } from "langchain";
+const agent = createAgent({
+    model: "gpt-5.5",
+    tools: [],
+    responseFormat: toolStrategy(productReviewSchema)
+});
 
-  const ProductReview = z.object({
-      rating: z.number().min(1).max(5).optional(),
-      sentiment: z.enum(["positive", "negative"]),
-      keyPoints: z.array(z.string()).describe("The key points of the review. Lowercase, 1-3 words each."),
-  });
+const result = await agent.invoke({
+    messages: [{"role": "user", "content": "Analyze this review: 'Great product: 5 out of 5 stars. Fast shipping, but expensive'"}]
+})
 
-  const CustomerComplaint = z.object({
-      issueType: z.enum(["product", "service", "shipping", "billing"]),
-      severity: z.enum(["low", "medium", "high"]),
-      description: z.string().describe("Brief description of the complaint"),
-  });
+console.log(result.structuredResponse);
+// { "rating": 5, "sentiment": "positive", "keyPoints": ["fast shipping", "expensive"] }
+```
 
-  const agent = createAgent({
-      model: "gpt-5.5",
-      tools: [],
-      responseFormat: toolStrategy([ProductReview, CustomerComplaint])
-  });
+```ts Union Types theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+import * as z from "zod";
+import { createAgent, toolStrategy } from "langchain";
 
-  const result = await agent.invoke({
-      messages: [{"role": "user", "content": "Analyze this review: 'Great product: 5 out of 5 stars. Fast shipping, but expensive'"}]
-  })
+const ProductReview = z.object({
+    rating: z.number().min(1).max(5).optional(),
+    sentiment: z.enum(["positive", "negative"]),
+    keyPoints: z.array(z.string()).describe("The key points of the review. Lowercase, 1-3 words each."),
+});
 
-  console.log(result.structuredResponse);
-  // { "rating": 5, "sentiment": "positive", "keyPoints": ["fast shipping", "expensive"] }
-  ```
-</CodeGroup>
+const CustomerComplaint = z.object({
+    issueType: z.enum(["product", "service", "shipping", "billing"]),
+    severity: z.enum(["low", "medium", "high"]),
+    description: z.string().describe("Brief description of the complaint"),
+});
+
+const agent = createAgent({
+    model: "gpt-5.5",
+    tools: [],
+    responseFormat: toolStrategy([ProductReview, CustomerComplaint])
+});
+
+const result = await agent.invoke({
+    messages: [{"role": "user", "content": "Analyze this review: 'Great product: 5 out of 5 stars. Fast shipping, but expensive'"}]
+})
+
+console.log(result.structuredResponse);
+// { "rating": 5, "sentiment": "positive", "keyPoints": ["fast shipping", "expensive"] }
+```
 
 ### Custom tool message content
 
@@ -541,12 +537,6 @@ const responseFormat = toolStrategy(ProductRating, {
 
 ***
 
-<div>
-  <Callout icon="terminal-2">
-    [Connect these docs](/use-these-docs) to your agent of choice via MCP for real-time answers.
-  </Callout>
+[Connect these docs](/use-these-docs) to your agent of choice via MCP for real-time answers.
 
-  <Callout icon="edit">
-    [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/oss/langchain/structured-output.mdx) or [file an issue](https://github.com/langchain-ai/docs/issues/new/choose).
-  </Callout>
-</div>
+[Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/oss/langchain/structured-output.mdx) or [file an issue](https://github.com/langchain-ai/docs/issues/new/choose).

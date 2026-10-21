@@ -4,9 +4,9 @@
 
 Build custom UIs that run inside LangSmith and call the LangSmith API, either by chatting with LangSmith Chat or locally with the LangSmith CLI.
 
-<Note>
-  Custom apps are available on [**Plus** and **Enterprise** plans](https://www.langchain.com/pricing).
-</Note>
+> [!NOTE]
+>
+> Custom apps are available on [**Plus** and **Enterprise** plans](https://www.langchain.com/pricing).
 
 A custom app is a UI you build that runs inside LangSmith and calls the [LangSmith API](/langsmith/smith-api-ref). Use one for a workflow the built-in UI does not cover, such as a purpose-built annotation surface, an experiment comparison view, or a dashboard scoped to your own traces.
 
@@ -16,13 +16,13 @@ An app runs in a sandbox with no network access of its own. The host forwards it
 
 ## Configure self-hosted chat
 
-<Warning>
-  On self-hosted deployments, building and editing apps with chat requires [sandbox service URLs](/langsmith/enable-self-hosted-sandboxes#optional-enable-service-urls). Enabling Sandboxes alone is not sufficient.
-</Warning>
+> [!WARNING]
+>
+> On self-hosted deployments, building and editing apps with chat requires [sandbox service URLs](/langsmith/enable-self-hosted-sandboxes#optional-enable-service-urls). Enabling Sandboxes alone is not sufficient.
 
-<Note>
-  Building and editing apps with chat is enabled starting with Helm chart version 0.17.3 for v0.17 and 0.18.0-rc.13 for the v0.18 preview.
-</Note>
+> [!NOTE]
+>
+> Building and editing apps with chat is enabled starting with Helm chart version 0.17.3 for v0.17 and 0.18.0-rc.13 for the v0.18 preview.
 
 ## Build an app
 
@@ -39,72 +39,68 @@ Without both, the **App** action opens the CLI instructions instead. Chat also n
 
 To build an app with chat:
 
-<Steps>
-  <Step title="Start a new app">
-    Go to **Custom Apps** and select **App** to open chat. In a workspace with no apps yet, the page opens chat directly.
-  </Step>
+**1. Start a new app**
 
-  <Step title="Describe what you want to build">
-    Type what the app should do into the composer, and select the model to build with from the model menu in the composer. The composer accepts a prompt while the sandbox behind it is still starting. When Chat starts writing files, LangSmith saves a draft and opens the **Preview** and **Code** tabs beside the chat.
-  </Step>
+Go to **Custom Apps** and select **App** to open chat. In a workspace with no apps yet, the page opens chat directly.
 
-  <Step title="Review what Chat built">
-    The **Preview** tab renders a live build of your changes. The **Code** tab holds the file tree, the source, and the changes from the session. A badge in the header counts the changed files.
-  </Step>
+**2. Describe what you want to build**
 
-  <Step title="Deploy the app">
-    Select **Deploy**. The first deploy asks for a name, builds the app, and publishes it to the workspace.
+Type what the app should do into the composer, and select the model to build with from the model menu in the composer. The composer accepts a prompt while the sandbox behind it is still starting. When Chat starts writing files, LangSmith saves a draft and opens the **Preview** and **Code** tabs beside the chat.
 
-    If you leave the page before the first deploy, LangSmith discards the app. Once Chat has started editing, LangSmith asks before discarding it.
-  </Step>
-</Steps>
+**3. Review what Chat built**
+
+The **Preview** tab renders a live build of your changes. The **Code** tab holds the file tree, the source, and the changes from the session. A badge in the header counts the changed files.
+
+**4. Deploy the app**
+
+Select **Deploy**. The first deploy asks for a name, builds the app, and publishes it to the workspace.
+
+If you leave the page before the first deploy, LangSmith discards the app. Once Chat has started editing, LangSmith asks before discarding it.
 
 ### Build locally with the CLI
 
 Building locally uses the [LangSmith CLI](/langsmith/langsmith-cli), which scaffolds a starter, runs it in a real sandbox on your machine, and uploads it when you are ready. To build an app locally:
 
-<Steps>
-  <Step title="Install the CLI">
-    ```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-    curl -fsSL https://cli.langsmith.com/install.sh | sh
-    ```
+**1. Install the CLI**
 
-    For Windows, Homebrew, and other options, see [Install](/langsmith/langsmith-cli#install).
-  </Step>
+```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+curl -fsSL https://cli.langsmith.com/install.sh | sh
+```
 
-  <Step title="Authenticate">
-    ```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-    langsmith auth login
-    ```
+For Windows, Homebrew, and other options, see [Install](/langsmith/langsmith-cli#install).
 
-    To use an API key instead, set `LANGSMITH_API_KEY`, plus `LANGSMITH_ENDPOINT` for a self-hosted instance. For profiles and other options, see [Authenticate](/langsmith/langsmith-cli#authenticate).
-  </Step>
+**2. Authenticate**
 
-  <Step title="Scaffold an app">
-    ```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-    langsmith apps init --name my-annotation-view --template annotation-queue
-    ```
+```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+langsmith auth login
+```
 
-    `init` creates a directory named after the app and, if `npm` is on your `PATH`, installs its dependencies. It also writes an `AGENTS.md` that gives a coding agent the conventions and API surface it needs to produce a working app on the first pass. Omit `--template` for a blank single-file starter.
-  </Step>
+To use an API key instead, set `LANGSMITH_API_KEY`, plus `LANGSMITH_ENDPOINT` for a self-hosted instance. For profiles and other options, see [Authenticate](/langsmith/langsmith-cli#authenticate).
 
-  <Step title="Iterate locally">
-    ```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-    cd my-annotation-view
-    langsmith apps dev
-    ```
+**3. Scaffold an app**
 
-    The app runs in the same kind of sandbox it gets inside LangSmith, with API calls proxied through your own credentials. Failed calls and uncaught errors stream to the terminal, so most debugging needs no browser devtools. Add `--verbose` for every successful call and all console output, or `--quiet` to silence the app.
-  </Step>
+```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+langsmith apps init --name my-annotation-view --template annotation-queue
+```
 
-  <Step title="Push it live">
-    ```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-    langsmith apps push
-    ```
+`init` creates a directory named after the app and, if `npm` is on your `PATH`, installs its dependencies. It also writes an `AGENTS.md` that gives a coding agent the conventions and API surface it needs to produce a working app on the first pass. Omit `--template` for a blank single-file starter.
 
-    The first push creates the app and records its ID in `.langsmith/app.json`, which links the directory to it. Later pushes update the same app. Commit that file so teammates push to the same app.
-  </Step>
-</Steps>
+**4. Iterate locally**
+
+```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+cd my-annotation-view
+langsmith apps dev
+```
+
+The app runs in the same kind of sandbox it gets inside LangSmith, with API calls proxied through your own credentials. Failed calls and uncaught errors stream to the terminal, so most debugging needs no browser devtools. Add `--verbose` for every successful call and all console output, or `--quiet` to silence the app.
+
+**5. Push it live**
+
+```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+langsmith apps push
+```
+
+The first push creates the app and records its ID in `.langsmith/app.json`, which links the directory to it. Later pushes update the same app. Commit that file so teammates push to the same app.
 
 #### Starter templates
 
@@ -178,12 +174,6 @@ Editing in the browser also requires the `sandboxes:create`, `sandboxes:read`, `
 
 ***
 
-<div>
-  <Callout icon="terminal-2">
-    [Connect these docs](/use-these-docs) to your agent of choice via MCP for real-time answers.
-  </Callout>
+[Connect these docs](/use-these-docs) to your agent of choice via MCP for real-time answers.
 
-  <Callout icon="edit">
-    [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/custom-apps.mdx) or [file an issue](https://github.com/langchain-ai/docs/issues/new/choose).
-  </Callout>
-</div>
+[Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/custom-apps.mdx) or [file an issue](https://github.com/langchain-ai/docs/issues/new/choose).

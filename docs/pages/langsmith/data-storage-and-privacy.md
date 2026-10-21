@@ -20,9 +20,9 @@ The [Agent Server](/langsmith/agent-server) provides a durable execution runtime
 
 When running the Agent server (either in-memory or in Docker), LangSmith tracing may be enabled to facilitate faster debugging and offer observability of graph state and LLM prompts in production. You can always disable tracing by setting `LANGSMITH_TRACING=false` in your server's runtime environment.
 
-<Note>
-  For more granular control, you can use [conditional tracing](/langsmith/conditional-tracing) to selectively enable or disable tracing based on runtime conditions, such as client requirements or data sensitivity.
-</Note>
+> [!NOTE]
+>
+> For more granular control, you can use [conditional tracing](/langsmith/conditional-tracing) to selectively enable or disable tracing based on runtime conditions, such as client requirements or data sensitivity.
 
 ### In-memory development server
 
@@ -61,12 +61,6 @@ In summary, you can opt-out of server-side telemetry by turning off CLI analytic
 
 ***
 
-<div>
-  <Callout icon="terminal-2">
-    [Connect these docs](/use-these-docs) to your agent of choice via MCP for real-time answers.
-  </Callout>
+[Connect these docs](/use-these-docs) to your agent of choice via MCP for real-time answers.
 
-  <Callout icon="edit">
-    [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/data-storage-and-privacy.mdx) or [file an issue](https://github.com/langchain-ai/docs/issues/new/choose).
-  </Callout>
-</div>
+[Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/data-storage-and-privacy.mdx) or [file an issue](https://github.com/langchain-ai/docs/issues/new/choose).

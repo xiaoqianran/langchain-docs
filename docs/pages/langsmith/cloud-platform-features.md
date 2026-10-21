@@ -20,9 +20,9 @@ All traffic from deployments created after January 6, 2025 comes through a NAT g
 
 Use the following static IP addresses to allowlist traffic for each region:
 
-<Note>
-  Other LangSmith services egress from a [separate IP list](/langsmith/cloud#egress-from-langchain-saas).
-</Note>
+> [!NOTE]
+>
+> Other LangSmith services egress from a [separate IP list](/langsmith/cloud#egress-from-langchain-saas).
 
 | GCP US | GCP EU | GCP APAC | AWS US |
 | - | - | - | - |
@@ -59,19 +59,19 @@ The maximum payload size for all requests sent to Cloud deployments is 25 MB. A
 
 The control plane offers two deployment types: Serverless and Dedicated. Each is available in three [sizes](#sizes): Small, Medium, and Large.
 
-<Note>
-  `langgraph deploy` creates Serverless deployments by default. Older CLI versions use `dev` for legacy Development deployments without scale-to-zero and `prod` for Dedicated deployments. Legacy `dev` is not equivalent to Serverless; see [`langgraph deploy`](/langsmith/cli#deploy).
-</Note>
+> [!NOTE]
+>
+> `langgraph deploy` creates Serverless deployments by default. Older CLI versions use `dev` for legacy Development deployments without scale-to-zero and `prod` for Dedicated deployments. Legacy `dev` is not equivalent to Serverless; see [`langgraph deploy`](/langsmith/cli#deploy).
 
 | **Deployment type** | **Scaling** | **Database** | **Best for** |
 | - | - | - | - |
 | Serverless | Scales to zero after inactivity, wakes on the next request | Shared, multi-tenant | Background and other latency-tolerant production workloads, development, and testing |
 | Dedicated | Always-on, autoscales across replicas | Dedicated, with automatic backups and high availability | Latency-sensitive workloads that need always-on capacity |
 
-<Warning>
-  **Immutable deployment type**
-  Once a deployment is created, the deployment type cannot be changed. You can still change its [size](#sizes).
-</Warning>
+> [!WARNING]
+>
+> **Immutable deployment type**
+> Once a deployment is created, the deployment type cannot be changed. You can still change its [size](#sizes).
 
 Agent Server is fault-tolerant on both deployment types; it automatically recovers from transient Redis or Postgres interruptions and retries failed background runs.
 
@@ -85,9 +85,9 @@ The platform checks for scheduled runs and enabled [cron jobs](/langsmith/cron-j
 
 The replica does not scale out. Its queue worker handles up to 10 concurrent runs by default, configurable with [`N_JOBS_PER_WORKER`](/langsmith/env-var-cloud#n_jobs_per_worker); additional runs queue.
 
-<Note>
-  Scale to zero is in [beta](/langsmith/release-stages) and is initially available only for deployments on usage-based pricing. See [Manage billing](/langsmith/billing#langsmith-deployment-billing) for pricing and the transition timeline.
-</Note>
+> [!NOTE]
+>
+> Scale to zero is in [beta](/langsmith/release-stages) and is initially available only for deployments on usage-based pricing. See [Manage billing](/langsmith/billing#langsmith-deployment-billing) for pricing and the transition timeline.
 
 ### Dedicated
 
@@ -168,12 +168,6 @@ Application-level scaling levers (durability modes, async patterns, avoiding syn
 
 ***
 
-<div>
-  <Callout icon="terminal-2">
-    [Connect these docs](/use-these-docs) to your agent of choice via MCP for real-time answers.
-  </Callout>
+[Connect these docs](/use-these-docs) to your agent of choice via MCP for real-time answers.
 
-  <Callout icon="edit">
-    [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/cloud-platform-features.mdx) or [file an issue](https://github.com/langchain-ai/docs/issues/new/choose).
-  </Callout>
-</div>
+[Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/cloud-platform-features.mdx) or [file an issue](https://github.com/langchain-ai/docs/issues/new/choose).

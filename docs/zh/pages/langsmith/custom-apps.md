@@ -6,9 +6,9 @@
 
 通过与 LangSmith Chat 聊天或在本地使用 LangSmith CLI 构建在 LangSmith 内运行并调用 LangSmith API 的自定义 UI。
 
-<Note>
-  [**Plus** and **Enterprise** plans](https://www.langchain.com/pricing) 上提供自定义应用程序。
-</Note>
+> [!注意]
+>
+> [**Plus** and **Enterprise** plans](https://www.langchain.com/pricing) 上提供自定义应用程序。
 
 自定义应用程序是您构建的 UI，它在 LangSmith 内运行并调用 [LangSmith API](/langsmith/smith-api-ref)。将其用于内置 UI 未涵盖的工作流程，例如专门构建的注释表面、实验比较视图或范围为您自己的跟踪的仪表板。
 
@@ -18,11 +18,11 @@
 
 ## 配置自托管聊天
 
-<Warning>
-  在自托管部署中，使用聊天功能构建和编辑应用程序需要 [sandbox service URLs](/langsmith/enable-self-hosted-sandboxes#optional-enable-service-urls)。仅启用沙箱是不够的。
-</Warning><Note>
-  从 Helm Chart 版本 0.17.3（适用于 v0.17）和 0.18.0-rc.13（适用于 v0.18 预览）开始，可以使用聊天功能构建和编辑应用程序。
-</Note>
+> [!警告]
+>
+> 在自托管部署中，使用聊天功能构建和编辑应用程序需要 [sandbox service URLs](/langsmith/enable-self-hosted-sandboxes#optional-enable-service-urls)。仅启用沙箱是不够的。> [!注意]
+>
+> 从 Helm Chart 版本 0.17.3（适用于 v0.17）和 0.18.0-rc.13（适用于 v0.18 预览）开始，可以使用聊天功能构建和编辑应用程序。
 
 ## 构建一个应用程序
 
@@ -39,74 +39,70 @@
 
 要构建带有聊天功能的应用程序：
 
-<Steps>
-  <Step title="Start a new app">
-    转到 **自定义应用程序** 并选择 **应用程序** 以打开聊天。在还没有应用程序的工作区中，页面直接打开聊天。
-  </Step><Step title="Describe what you want to build">
-    在 Composer 中输入应用程序应执行的操作，然后从 Composer 的模型菜单中选择要构建的模型。作曲家在其背后的沙箱仍在启动时接受提示。当聊天开始写入文件时，LangSmith 保存草稿并打开聊天旁边的 **预览** 和 **代码** 选项卡。
-  </Step>
+**1.启动一个新应用程序**
 
-  <Step title="Review what Chat built">
-    **预览**选项卡呈现您的更改的实时构建。 **代码** 选项卡包含文件树、源代码以及会话中的更改。标头中的徽章对已更改的文件进行计数。
-  </Step>
+转到 **自定义应用程序** 并选择 **应用程序** 以打开聊天。在还没有应用程序的工作区中，页面直接打开聊天。
 
-  <Step title="Deploy the app">
-    选择**部署**。第一次部署要求输入名称、构建应用程序并将其发布到工作区。
+**2.描述您想要构建的内容**在 Composer 中输入应用程序应执行的操作，然后从 Composer 的模型菜单中选择要构建的模型。作曲家在其背后的沙箱仍在启动时接受提示。当聊天开始写入文件时，LangSmith 保存草稿并打开聊天旁边的 **预览** 和 **代码** 选项卡。
 
-    如果您在首次部署之前离开该页面，LangSmith 会丢弃该应用程序。一旦 Chat 开始编辑，LangSmith 会在丢弃之前询问。
-  </Step>
-</Steps>
+**3.查看 Chat 构建的内容**
+
+**预览**选项卡呈现您的更改的实时构建。 **代码** 选项卡包含文件树、源代码以及会话中的更改。标头中的徽章对已更改的文件进行计数。
+
+**4.部署应用程序**
+
+选择**部署**。第一次部署要求输入名称、构建应用程序并将其发布到工作区。
+
+如果您在首次部署之前离开页面，LangSmith 会丢弃该应用程序。一旦 Chat 开始编辑，LangSmith 会在丢弃之前询问。
 
 ### 使用 CLI 本地构建
 
-本地构建使用 [LangSmith CLI](/langsmith/langsmith-cli)，它搭建一个启动器，在您计算机上的真实沙箱中运行它，并在您准备好时上传它。要在本地构建应用程序：
+本地构建使用 [LangSmith CLI](/langsmith/langsmith-cli)，它搭建了一个启动器，在您计算机上的真实沙箱中运行它，并在您准备好时上传它。要在本地构建应用程序：
 
-<Steps>
-  <Step title="Install the CLI">
-    ```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-    curl -fsSL https://cli.langsmith.com/install.sh | sh
-    ```
+**1.安装 CLI**
 
-    对于 Windows、Homebrew 和其他选项，请参阅 [Install](/langsmith/langsmith-cli#install)。
-  </Step>
+```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+curl -fsSL https://cli.langsmith.com/install.sh | sh
+```
 
-  <Step title="Authenticate">
-    ```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-    langsmith auth login
-    ```要改用 API 密钥，请为自托管实例设置 `LANGSMITH_API_KEY`，再加上 `LANGSMITH_ENDPOINT`。有关配置文件和其他选项，请参阅[Authenticate](/langsmith/langsmith-cli#authenticate)。
-  </Step>
+对于 Windows、Homebrew 和其他选项，请参阅 [Install](/langsmith/langsmith-cli#install)。
 
-  <Step title="Scaffold an app">
-    ```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-    langsmith apps init --name my-annotation-view --template annotation-queue
-    ```
+**2.验证**
 
-    `init` 创建一个以应用程序命名的目录，如果 `npm` 在您的 `PATH` 上，则安装其依赖项。它还编写了一个 `AGENTS.md` ，为编码代理提供了在第一次传递时生成工作应用程序所需的约定和 API 界面。对于空白的单文件启动器，省略 `--template`。
-  </Step>
+```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+langsmith auth login
+```要改用 API 密钥，请为自托管实例设置 `LANGSMITH_API_KEY`，再加上 `LANGSMITH_ENDPOINT`。有关配置文件和其他选项，请参阅[Authenticate](/langsmith/langsmith-cli#authenticate)。
 
-  <Step title="Iterate locally">
-    ```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-    cd my-annotation-view
-    langsmith apps dev
-    ```
+**3.搭建应用程序**
 
-    该应用程序在与 LangSmith 内相同类型的沙箱中运行，并通过您自己的凭据代理 API 调用。失败的调用和未捕获的错误会流到终端，因此大多数调试不需要浏览器开发工具。为每个成功的调用和所有控制台输出添加 `--verbose` ，或添加 `--quiet` 以使应用程序静音。
-  </Step>
+```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+langsmith apps init --name my-annotation-view --template annotation-queue
+```
 
-  <Step title="Push it live">
-    ```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-    langsmith apps push
-    ```
+`init` 创建一个以应用程序命名的目录，如果 `npm` 在您的 `PATH` 上，则安装其依赖项。它还编写了一个 `AGENTS.md` ，为编码代理提供了在第一次传递时生成工作应用程序所需的约定和 API 界面。对于空白的单文件启动器，省略 `--template`。
 
-    第一次推送创建应用程序并将其 ID 记录在 `.langsmith/app.json` 中，该 ID 将目录链接到它。稍后推送更新同一应用程序。提交该文件，以便队友推送到同一个应用程序。
-  </Step>
-</Steps>
+**4.本地迭代**
+
+```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+cd my-annotation-view
+langsmith apps dev
+```
+
+该应用程序在与 LangSmith 内相同类型的沙箱中运行，并通过您自己的凭据代理 API 调用。失败的调用和未捕获的错误会流到终端，因此大多数调试不需要浏览器开发工具。为每个成功的调用和所有控制台输出添加 `--verbose` ，或添加 `--quiet` 以使应用程序静音。
+
+**5.实时推送**
+
+```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+langsmith apps push
+```
+
+第一次推送创建应用程序并将其 ID 记录在 `.langsmith/app.json` 中，该 ID 将目录链接到它。稍后推送更新同一应用程序。提交该文件，以便队友推送到同一个应用程序。
 
 #### 入门模板
 
 将其中之一传递给`langsmith apps init --template`：|模板|它的脚手架是什么？
 | - | - |
-| `annotation-queue` |队列审查 UI：运行和线程项目、特定于类型的查看器和反馈规则。 |
+| `annotation-queue` |队列审核 UI：运行和线程项目、特定于类型的查看器和反馈规则。 |
 | `annotation-queue-grid` |与可编辑电子表格相同的审核工作流程。 |
 | `experiment-comparison` |评估实验与基线的并排比较。 |
 | `coding-agent-dashboard` |编码代理运行的图表：随时间变化的使用情况、成本、错误和活动。 |
@@ -130,7 +126,7 @@
 
 ### 使用 CLI 进行本地编辑
 
-从浏览器进行的部署会存储应用程序的源代码，`langsmith apps push` 也是如此。要在本地编辑应用程序，请将其下拉：
+来自浏览器的部署会存储应用程序的源代码，`langsmith apps push` 也是如此。要在本地编辑应用程序，请将其下拉：
 
 ```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 langsmith apps pull my-app
@@ -166,12 +162,6 @@ npm install --prefix my-app
 
 ***
 
-<div>
-  <Callout icon="terminal-2">
-    [Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
-  </Callout>
+[Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
 
-  <Callout icon="edit">
-    [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/custom-apps.mdx) 或 [file an issue](https://github.com/langchain-ai/docs/issues/new/choose)。
-  </Callout>
-</div>
+[Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/custom-apps.mdx) 或 [file an issue](https://github.com/langchain-ai/docs/issues/new/choose)。

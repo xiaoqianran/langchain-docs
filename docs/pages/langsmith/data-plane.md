@@ -61,9 +61,9 @@ Scale-down behavior depends on the autoscaler and operator version. For self-hos
 
 ### MongoDB checkpointing
 
-<Info>
-  Available for [Cloud](/langsmith/cloud) (with an externally managed MongoDB instance) and [Standalone](/langsmith/deploy-standalone-server) deployments.
-</Info>
+> [!NOTE]
+>
+> Available for [Cloud](/langsmith/cloud) (with an externally managed MongoDB instance) and [Standalone](/langsmith/deploy-standalone-server) deployments.
 
 You can use MongoDB as an alternative backend for checkpoint storage. When configured, MongoDB handles only checkpoint data—PostgreSQL remains required for all other server resources.
 
@@ -75,7 +75,7 @@ Agent Server is automatically configured to send traces to LangSmith. See the ta
 
 | Cloud | Hybrid | Self-Hosted |
 | - | - | - |
-| Required<br />Trace to LangSmith SaaS. | Optional<br />Disable tracing or trace to LangSmith SaaS. | Optional<br />Disable tracing, trace to LangSmith SaaS, or trace to Self-Hosted LangSmith. |
+| Required Trace to LangSmith SaaS. | Optional Disable tracing or trace to LangSmith SaaS. | Optional Disable tracing, trace to LangSmith SaaS, or trace to Self-Hosted LangSmith. |
 
 ### Telemetry
 
@@ -83,7 +83,7 @@ Agent Server is automatically configured to report telemetry metadata for billin
 
 | Cloud | Hybrid | Self-Hosted |
 | - | - | - |
-| Telemetry sent to LangSmith SaaS. | Telemetry sent to LangSmith SaaS. | Self-reported usage (audit) for air-gapped license key.<br />Telemetry sent to LangSmith SaaS for LangSmith License Key. |
+| Telemetry sent to LangSmith SaaS. | Telemetry sent to LangSmith SaaS. | Self-reported usage (audit) for air-gapped license key. Telemetry sent to LangSmith SaaS for LangSmith License Key. |
 
 ### Licensing
 
@@ -95,12 +95,6 @@ Agent Server is automatically configured to perform license key validation. See 
 
 ***
 
-<div>
-  <Callout icon="terminal-2">
-    [Connect these docs](/use-these-docs) to your agent of choice via MCP for real-time answers.
-  </Callout>
+[Connect these docs](/use-these-docs) to your agent of choice via MCP for real-time answers.
 
-  <Callout icon="edit">
-    [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/data-plane.mdx) or [file an issue](https://github.com/langchain-ai/docs/issues/new/choose).
-  </Callout>
-</div>
+[Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/data-plane.mdx) or [file an issue](https://github.com/langchain-ai/docs/issues/new/choose).

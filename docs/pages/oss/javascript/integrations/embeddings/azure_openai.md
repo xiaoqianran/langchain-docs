@@ -12,11 +12,11 @@ You can learn more about Azure OpenAI and its difference with the OpenAI API on 
 
 This will help you get started with AzureOpenAIEmbeddings [embedding models](/oss/javascript/integrations/embeddings) using LangChain. For detailed documentation on `AzureOpenAIEmbeddings` features and configuration options, please refer to the [API reference](https://reference.langchain.com/javascript/langchain-openai/AzureOpenAIEmbeddings).
 
-<Info>
-  **Previously, LangChain.js supported integration with Azure OpenAI using the dedicated [Azure OpenAI SDK](https://github.com/Azure/azure-sdk-for-js/tree/main/sdk/openai/openai). This SDK is now deprecated in favor of the new Azure integration in the OpenAI SDK, which allows to access the latest OpenAI models and features the same day they are released, and allows seamless transition between the OpenAI API and Azure OpenAI.**
-
-  If you are using Azure OpenAI with the deprecated SDK, see the [migration guide](#migration-from-azure-openai-sdk) to update to the new API.
-</Info>
+> [!NOTE]
+>
+> **Previously, LangChain.js supported integration with Azure OpenAI using the dedicated [Azure OpenAI SDK](https://github.com/Azure/azure-sdk-for-js/tree/main/sdk/openai/openai). This SDK is now deprecated in favor of the new Azure integration in the OpenAI SDK, which allows to access the latest OpenAI models and features the same day they are released, and allows seamless transition between the OpenAI API and Azure OpenAI.**
+>
+> If you are using Azure OpenAI with the deprecated SDK, see the [migration guide](#migration-from-azure-openai-sdk) to update to the new API.
 
 ## Overview
 
@@ -56,27 +56,25 @@ If you want to get automated tracing of your model calls you can also set your [
 
 The LangChain AzureOpenAIEmbeddings integration lives in the `@langchain/openai` package:
 
-<CodeGroup>
-  ```bash npm theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  npm install @langchain/openai @langchain/core
-  ```
+```bash npm theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+npm install @langchain/openai @langchain/core
+```
 
-  ```bash yarn theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  yarn add @langchain/openai @langchain/core
-  ```
+```bash yarn theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+yarn add @langchain/openai @langchain/core
+```
 
-  ```bash pnpm theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  pnpm add @langchain/openai @langchain/core
-  ```
-</CodeGroup>
+```bash pnpm theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+pnpm add @langchain/openai @langchain/core
+```
 
-<Info>
-  **You can find the list of supported API versions in the [Azure OpenAI documentation](https://learn.microsoft.com/azure/ai-services/openai/reference).**
-</Info>
+> [!NOTE]
+>
+> **You can find the list of supported API versions in the [Azure OpenAI documentation](https://learn.microsoft.com/azure/ai-services/openai/reference).**
 
-<Tip>
-  **If `AZURE_OPENAI_API_EMBEDDINGS_DEPLOYMENT_NAME` is not defined, it will fall back to the value of `AZURE_OPENAI_API_DEPLOYMENT_NAME` for the deployment name. The same applies to the `azureOpenAIApiEmbeddingsDeploymentName` parameter in the `AzureOpenAIEmbeddings` constructor, which will fall back to the value of `azureOpenAIApiDeploymentName` if not defined.**
-</Tip>
+> [!TIP]
+>
+> **If `AZURE_OPENAI_API_EMBEDDINGS_DEPLOYMENT_NAME` is not defined, it will fall back to the value of `AZURE_OPENAI_API_DEPLOYMENT_NAME` for the deployment name. The same applies to the `azureOpenAIApiEmbeddingsDeploymentName` parameter in the `AzureOpenAIEmbeddings` constructor, which will fall back to the value of `azureOpenAIApiDeploymentName` if not defined.**
 
 ## Instantiation
 
@@ -336,12 +334,6 @@ For detailed documentation of all `AzureOpenAIEmbeddings` features and configura
 
 ***
 
-<div>
-  <Callout icon="terminal-2">
-    [Connect these docs](/use-these-docs) to your agent of choice via MCP for real-time answers.
-  </Callout>
+[Connect these docs](/use-these-docs) to your agent of choice via MCP for real-time answers.
 
-  <Callout icon="edit">
-    [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/oss/javascript/integrations/embeddings/azure_openai.mdx) or [file an issue](https://github.com/langchain-ai/docs/issues/new/choose).
-  </Callout>
-</div>
+[Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/oss/javascript/integrations/embeddings/azure_openai.mdx) or [file an issue](https://github.com/langchain-ai/docs/issues/new/choose).

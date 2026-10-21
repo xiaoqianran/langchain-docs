@@ -2,9 +2,9 @@
 
 # LangSmith-managed ClickHouse
 
-<Check>
-  Please read the [LangSmith architectural overview](/langsmith/self-hosted) and [guide on connecting to external ClickHouse](/langsmith/self-host-external-clickhouse) before proceeding with this guide.
-</Check>
+> [!TIP]
+>
+> Please read the [LangSmith architectural overview](/langsmith/self-hosted) and [guide on connecting to external ClickHouse](/langsmith/self-host-external-clickhouse) before proceeding with this guide.
 
 LangSmith uses ClickHouse as the primary storage engine for **traces** and **feedback**. For easier management and scaling, it is recommended to connect a self-hosted LangSmith instance to an external ClickHouse instance. LangSmith-managed ClickHouse is an option that allows you to use a fully managed ClickHouse instance that is monitored and maintained by the LangSmith team.
 
@@ -18,9 +18,7 @@ The architecture of using LangSmith-managed ClickHouse with your self-hosted Lan
 
 The overall architecture looks like this:
 
-<img alt="LangSmith managed ClickHouse architecture." />
-
-<img alt="LangSmith managed ClickHouse architecture." />
+![LangSmith managed ClickHouse architecture.](https://mintcdn.com/langchain-5e9cc07a/JOyLr_spVEW0t2KF/langsmith/images/managed-clickhouse-light.png?fit=max\&auto=format\&n=JOyLr_spVEW0t2KF\&q=85\&s=26fae5c3f413c15302ea0c00bebf8e93)
 
 ## Requirements
 
@@ -50,9 +48,9 @@ LangChain defines sensitive application data as `inputs`, `outputs`, `errors`, `
 
 ### Stored feedback data fields
 
-<Note>
-  Because all feedback data is stored in ClickHouse, do not send sensitive information in feedback (scores and annotations/comments) or in any other run fields that are mentioned in [Stored run data fields](#stored-run-data-fields).
-</Note>
+> [!NOTE]
+>
+> Because all feedback data is stored in ClickHouse, do not send sensitive information in feedback (scores and annotations/comments) or in any other run fields that are mentioned in [Stored run data fields](#stored-run-data-fields).
 
 Using a LangSmith-managed ClickHouse setup, **all feedback data fields are stored in ClickHouse**:
 
@@ -80,9 +78,9 @@ This [reference doc](/langsmith/feedback-data-format) explains the stored feedba
 
 Run data fields are split between the managed ClickHouse database and your cloud object storage (e.g., S3 or GCS).
 
-<Note>
-  For run fields stored in object storage, only a reference or pointer is kept in ClickHouse. For example, `inputs` and `outputs` content are offloaded to S3/GCS, with the ClickHouse record storing corresponding S3 URLs in the `inputs_s3_urls` and `outputs_s3_urls` fields.
-</Note>
+> [!NOTE]
+>
+> For run fields stored in object storage, only a reference or pointer is kept in ClickHouse. For example, `inputs` and `outputs` content are offloaded to S3/GCS, with the ClickHouse record storing corresponding S3 URLs in the `inputs_s3_urls` and `outputs_s3_urls` fields.
 
 The table details each run field and where it is stored:
 
@@ -132,12 +130,6 @@ This [reference doc](/langsmith/run-data-format) explains the format of stored r
 
 ***
 
-<div>
-  <Callout icon="terminal-2">
-    [Connect these docs](/use-these-docs) to your agent of choice via MCP for real-time answers.
-  </Callout>
+[Connect these docs](/use-these-docs) to your agent of choice via MCP for real-time answers.
 
-  <Callout icon="edit">
-    [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/langsmith-managed-clickhouse.mdx) or [file an issue](https://github.com/langchain-ai/docs/issues/new/choose).
-  </Callout>
-</div>
+[Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/langsmith-managed-clickhouse.mdx) or [file an issue](https://github.com/langchain-ai/docs/issues/new/choose).

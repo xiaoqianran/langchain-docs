@@ -9,46 +9,34 @@ Deploy LangSmith agents to LangChain-managed Cloud infrastructure on AWS and GCP
 * **Serverless**: Scales to zero when idle. Suits background agents, testing, and latency-tolerant production workloads.
 * **Dedicated**: Stays on and autoscales across replicas. Suits latency-sensitive production workloads.
 
-<Callout icon="clipboard-check">
-  Agent deployments running on Cloud require a [Plus plan or above](https://www.langchain.com/pricing). Before creating your first agent deployment, verify that your application runs locally with `langgraph dev`. Refer to [Local development and testing](/langsmith/local-dev-testing).
-</Callout>
+Agent deployments running on Cloud require a [Plus plan or above](https://www.langchain.com/pricing). Before creating your first agent deployment, verify that your application runs locally with `langgraph dev`. Refer to [Local development and testing](/langsmith/local-dev-testing).
 
-<CardGroup>
-  <Card title="Deploy on Cloud" icon="cloud" href="/langsmith/deploy-to-cloud">
-    Step-by-step setup guide for creating, configuring, and managing Cloud deployments from the LangSmith UI or the `langgraph deploy` CLI.
-  </Card>
+> **[Deploy on Cloud](/langsmith/deploy-to-cloud)**
+>
+> Step-by-step setup guide for creating, configuring, and managing Cloud deployments from the LangSmith UI or the `langgraph deploy` CLI.
 
-  <Card title="Cloud platform features" icon="settings" href="/langsmith/cloud-platform-features">
-    Reference for Cloud-only platform behavior: data regions, static IPs, payload limits, deployment types, and managed database provisioning.
-  </Card>
+> **[Cloud platform features](/langsmith/cloud-platform-features)**
+>
+> Reference for Cloud-only platform behavior: data regions, static IPs, payload limits, deployment types, and managed database provisioning.
 
-  <Card title="Quickstart" icon="bolt" href="/langsmith/deployment-quickstart">
-    Deploy your first LangGraph application to Cloud in a few minutes.
-  </Card>
-</CardGroup>
+> **[Quickstart](/langsmith/deployment-quickstart)**
+>
+> Deploy your first LangGraph application to Cloud in a few minutes.
 
 To deploy a code-first Deep Agent without standing up your own Agent Server, [Managed Deep Agents](/langsmith/python/managed-deep-agents-overview) offers a CLI-first managed runtime in public beta.
 
 ## Next steps
 
-<CardGroup>
-  <Card title="Run the quickstart" icon="bolt" href="/langsmith/deployment-quickstart">
-    Deploy a starter LangGraph application end-to-end.
-  </Card>
+> **[Run the quickstart](/langsmith/deployment-quickstart)**
+>
+> Deploy a starter LangGraph application end-to-end.
 
-  <Card title="Read the full deploy guide" icon="book" href="/langsmith/deploy-to-cloud">
-    Configure environment variables, secrets, revisions, and deployment settings.
-  </Card>
-</CardGroup>
+> **[Read the full deploy guide](/langsmith/deploy-to-cloud)**
+>
+> Configure environment variables, secrets, revisions, and deployment settings.
 
 ***
 
-<div>
-  <Callout icon="terminal-2">
-    [Connect these docs](/use-these-docs) to your agent of choice via MCP for real-time answers.
-  </Callout>
+[Connect these docs](/use-these-docs) to your agent of choice via MCP for real-time answers.
 
-  <Callout icon="edit">
-    [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/deploy-to-cloud-overview.mdx) or [file an issue](https://github.com/langchain-ai/docs/issues/new/choose).
-  </Callout>
-</div>
+[Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/deploy-to-cloud-overview.mdx) or [file an issue](https://github.com/langchain-ai/docs/issues/new/choose).

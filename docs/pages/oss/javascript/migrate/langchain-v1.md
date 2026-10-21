@@ -2,43 +2,39 @@
 
 # LangChain v1 migration guide
 
-<Prompt description="Migrate a codebase to LangChain v1." icon="arrow-right">
-  Migrate this codebase to LangChain v1 (requires `langchain` and `@langchain/core` at v1, and Node.js 22+).
+Migrate this codebase to LangChain v1 (requires `langchain` and `@langchain/core` at v1, and Node.js 22+).
 
-  Key changes:
+Key changes:
 
-  1. **`createReactAgent` → `createAgent`**: replace `import { createReactAgent } from "@langchain/langgraph/prebuilts"` with `import { createAgent } from "langchain"`. Rename `prompt` to `systemPrompt`.
-  2. **Hooks become middleware**: replace `preModelHook` / `postModelHook` customization with middleware using `beforeModel`, `afterModel`, and `wrapToolCall`. For human-in-the-loop tool approval, use `humanInTheLoopMiddleware({ interruptOn: {...} })` from `langchain`.
-  3. **Structured output**: keep `responseFormat`, but use `toolStrategy` / `providerStrategy`. Prompted output is removed.
-  4. **Streaming node name**: when filtering or matching streamed events by node name, rename `"agent"` to `"model"`.
-  5. **Runtime context**: pass static context via the `context` property instead of only `config.configurable`.
-  6. **Package namespace**: legacy chains, indexing, and community re-exports moved to `@langchain/classic`. Install `@langchain/classic` and update those imports.
-  7. **Standard content blocks**: prefer `message.contentBlocks` for provider-agnostic content. Existing `message.content` remains valid.
+1. **`createReactAgent` → `createAgent`**: replace `import { createReactAgent } from "@langchain/langgraph/prebuilts"` with `import { createAgent } from "langchain"`. Rename `prompt` to `systemPrompt`.
+2. **Hooks become middleware**: replace `preModelHook` / `postModelHook` customization with middleware using `beforeModel`, `afterModel`, and `wrapToolCall`. For human-in-the-loop tool approval, use `humanInTheLoopMiddleware({ interruptOn: {...} })` from `langchain`.
+3. **Structured output**: keep `responseFormat`, but use `toolStrategy` / `providerStrategy`. Prompted output is removed.
+4. **Streaming node name**: when filtering or matching streamed events by node name, rename `"agent"` to `"model"`.
+5. **Runtime context**: pass static context via the `context` property instead of only `config.configurable`.
+6. **Package namespace**: legacy chains, indexing, and community re-exports moved to `@langchain/classic`. Install `@langchain/classic` and update those imports.
+7. **Standard content blocks**: prefer `message.contentBlocks` for provider-agnostic content. Existing `message.content` remains valid.
 
-  Search the codebase for `createReactAgent`, `@langchain/langgraph/prebuilts`, `preModelHook`, `postModelHook`, and legacy imports that should move to `@langchain/classic`, and apply the necessary changes. Flag anything that cannot be migrated automatically.
-</Prompt>
+Search the codebase for `createReactAgent`, `@langchain/langgraph/prebuilts`, `preModelHook`, `postModelHook`, and legacy imports that should move to `@langchain/classic`, and apply the necessary changes. Flag anything that cannot be migrated automatically.
 
 This migration guide outlines the major changes in LangChain v1. To learn more about the new features of v1, see the [introductory post](/oss/javascript/releases/langchain-v1).
 
 To upgrade,
 
-<CodeGroup>
-  ```bash npm theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  npm install langchain@latest @langchain/core@latest
-  ```
+```bash npm theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+npm install langchain@latest @langchain/core@latest
+```
 
-  ```bash pnpm theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  pnpm install langchain@latest @langchain/core@latest
-  ```
+```bash pnpm theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+pnpm install langchain@latest @langchain/core@latest
+```
 
-  ```bash yarn theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  yarn add langchain@latest @langchain/core@latest
-  ```
+```bash yarn theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+yarn add langchain@latest @langchain/core@latest
+```
 
-  ```bash bun theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  bun add langchain@latest @langchain/core@latest
-  ```
-</CodeGroup>
+```bash bun theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+bun add langchain@latest @langchain/core@latest
+```
 
 ## `createAgent`
 
@@ -73,137 +69,131 @@ import { createAgent } from "langchain"; // [!code ++]
 
 The `prompt` parameter has been renamed to `systemPrompt`:
 
-<CodeGroup>
-  ```typescript v1 (new) theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  import { createAgent } from "langchain";
+```typescript v1 (new) theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+import { createAgent } from "langchain";
 
-  agent = createAgent({
-    model,
-    tools,
-    systemPrompt: "You are a helpful assistant.", // [!code highlight]
-  });
-  ```
+agent = createAgent({
+  model,
+  tools,
+  systemPrompt: "You are a helpful assistant.", // [!code highlight]
+});
+```
 
-  ```typescript v0 (old) theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  import { createReactAgent } from "@langchain/langgraph/prebuilts";
+```typescript v0 (old) theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+import { createReactAgent } from "@langchain/langgraph/prebuilts";
 
-  const agent = createReactAgent({
-    model,
-    tools,
-    prompt: "You are a helpful assistant.", // [!code highlight]
-  });
-  ```
-</CodeGroup>
+const agent = createReactAgent({
+  model,
+  tools,
+  prompt: "You are a helpful assistant.", // [!code highlight]
+});
+```
 
 #### `SystemMessage`
 
 If using `SystemMessage` objects in the system prompt, the string content is now used directly:
 
-<CodeGroup>
-  ```typescript v1 (new) theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  import { SystemMessage, createAgent } from "langchain";
+```typescript v1 (new) theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+import { SystemMessage, createAgent } from "langchain";
 
-  const agent = createAgent({
-    model,
-    tools,
-    systemPrompt: "You are a helpful assistant.", // [!code highlight]
-  });
-  ```
+const agent = createAgent({
+  model,
+  tools,
+  systemPrompt: "You are a helpful assistant.", // [!code highlight]
+});
+```
 
-  ```typescript v0 (old) theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  import { createReactAgent } from "@langchain/langgraph/prebuilts";
+```typescript v0 (old) theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+import { createReactAgent } from "@langchain/langgraph/prebuilts";
 
-  const agent = createReactAgent({
-    model,
-    tools,
-    prompt: new SystemMessage(content: "You are a helpful assistant."), // [!code highlight]
-  });
-  ```
-</CodeGroup>
+const agent = createReactAgent({
+  model,
+  tools,
+  prompt: new SystemMessage(content: "You are a helpful assistant."), // [!code highlight]
+});
+```
 
 #### Dynamic prompts
 
 Dynamic prompts are a core context engineering pattern—they adapt what you tell the model based on the current conversation state. To do this, use `dynamicSystemPromptMiddleware`:
 
-<CodeGroup>
-  ```typescript v1 (new) theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  import { createAgent, dynamicSystemPromptMiddleware } from "langchain";
-  import * as z from "zod";
+```typescript v1 (new) theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+import { createAgent, dynamicSystemPromptMiddleware } from "langchain";
+import * as z from "zod";
 
-  const contextSchema = z.object({
-    userRole: z.enum(["expert", "beginner"]).default("beginner"),
-  });
+const contextSchema = z.object({
+  userRole: z.enum(["expert", "beginner"]).default("beginner"),
+});
 
-  const userRolePrompt = dynamicSystemPromptMiddleware<z.infer<typeof contextSchema>>( // [!code highlight]
-      (_state, runtime) => {
-          const userRole = runtime.context.userRole;
-          const basePrompt = "You are a helpful assistant.";
+const userRolePrompt = dynamicSystemPromptMiddleware<z.infer<typeof contextSchema>>( // [!code highlight]
+    (_state, runtime) => {
+        const userRole = runtime.context.userRole;
+        const basePrompt = "You are a helpful assistant.";
 
-          if (userRole === "expert") {
-              return `${basePrompt} Provide detailed technical responses.`;
-          } else if (userRole === "beginner") {
-              return `${basePrompt} Explain concepts simply and avoid jargon.`;
-          }
-          return basePrompt; // [!code highlight]
-      }
-  );
-
-  const agent = createAgent({
-    model,
-    tools,
-    middleware: [userRolePrompt],
-    contextSchema,
-  });
-
-  await agent.invoke(
-    {
-      messages: [new HumanMessage("Explain async programming")],
-    },
-    {
-      context: {
-        userRole: "expert",
-      },
+        if (userRole === "expert") {
+            return `${basePrompt} Provide detailed technical responses.`;
+        } else if (userRole === "beginner") {
+            return `${basePrompt} Explain concepts simply and avoid jargon.`;
+        }
+        return basePrompt; // [!code highlight]
     }
-  );
-  ```
+);
 
-  ```typescript v0 (old) theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  import { createReactAgent } from "@langchain/langgraph/prebuilts";
+const agent = createAgent({
+  model,
+  tools,
+  middleware: [userRolePrompt],
+  contextSchema,
+});
 
-  const contextSchema = z.object({
-    userRole: z.enum(["expert", "beginner"]),
-  });
-
-  const agent = createReactAgent({
-    model,
-    tools,
-    prompt: (state) => {
-      const userRole = state.context.userRole;
-      const basePrompt = "You are a helpful assistant.";
-
-      if (userRole === "expert") {
-        return `${basePrompt} Provide detailed technical responses.`;
-      } else if (userRole === "beginner") {
-        return `${basePrompt} Explain concepts simply and avoid jargon.`;
-      }
-      return basePrompt;
+await agent.invoke(
+  {
+    messages: [new HumanMessage("Explain async programming")],
+  },
+  {
+    context: {
+      userRole: "expert",
     },
-    contextSchema,
-  });
+  }
+);
+```
 
-  // Use with context via config.configurable
-  await agent.invoke(
-    {
-      messages: [new HumanMessage("Explain async programming")],
-    },
-    {
-      config: {
-        configurable: { userRole: "expert" },
-      },
+```typescript v0 (old) theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+import { createReactAgent } from "@langchain/langgraph/prebuilts";
+
+const contextSchema = z.object({
+  userRole: z.enum(["expert", "beginner"]),
+});
+
+const agent = createReactAgent({
+  model,
+  tools,
+  prompt: (state) => {
+    const userRole = state.context.userRole;
+    const basePrompt = "You are a helpful assistant.";
+
+    if (userRole === "expert") {
+      return `${basePrompt} Provide detailed technical responses.`;
+    } else if (userRole === "beginner") {
+      return `${basePrompt} Explain concepts simply and avoid jargon.`;
     }
-  );
-  ```
-</CodeGroup>
+    return basePrompt;
+  },
+  contextSchema,
+});
+
+// Use with context via config.configurable
+await agent.invoke(
+  {
+    messages: [new HumanMessage("Explain async programming")],
+  },
+  {
+    config: {
+      configurable: { userRole: "expert" },
+    },
+  }
+);
+```
 
 ### Pre-model hook
 
@@ -217,36 +207,34 @@ Common use cases include:
 
 v1 includes built-in summarization middleware:
 
-<CodeGroup>
-  ```typescript v1 (new) theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  import { createAgent, summarizationMiddleware } from "langchain";
+```typescript v1 (new) theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+import { createAgent, summarizationMiddleware } from "langchain";
 
-  const agent = createAgent({
-    model: "claude-sonnet-4-6",
-    tools,
-    middleware: [
-      summarizationMiddleware({
-        model: "claude-sonnet-4-6",
-        trigger: { tokens: 1000 },
-      }),
-    ],
-  });
-  ```
+const agent = createAgent({
+  model: "claude-sonnet-4-6",
+  tools,
+  middleware: [
+    summarizationMiddleware({
+      model: "claude-sonnet-4-6",
+      trigger: { tokens: 1000 },
+    }),
+  ],
+});
+```
 
-  ```typescript v0 (old) theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  import { createReactAgent } from "@langchain/langgraph/prebuilts";
+```typescript v0 (old) theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+import { createReactAgent } from "@langchain/langgraph/prebuilts";
 
-  function customSummarization(state) {
-    // Custom logic for message summarization
-  }
+function customSummarization(state) {
+  // Custom logic for message summarization
+}
 
-  const agent = createReactAgent({
-    model: "claude-sonnet-4-6",
-    tools,
-    preModelHook: customSummarization,
-  });
-  ```
-</CodeGroup>
+const agent = createReactAgent({
+  model: "claude-sonnet-4-6",
+  tools,
+  preModelHook: customSummarization,
+});
+```
 
 ### Post-model hook
 
@@ -259,110 +247,106 @@ Common use cases include:
 
 v1 includes a built-in human-in-the-loop middleware:
 
-<CodeGroup>
-  ```typescript v1 (new) theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  import { createAgent, humanInTheLoopMiddleware } from "langchain";
+```typescript v1 (new) theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+import { createAgent, humanInTheLoopMiddleware } from "langchain";
 
-  const agent = createAgent({
-    model: "claude-sonnet-4-6",
-    tools: [readEmail, sendEmail],
-    middleware: [
-      humanInTheLoopMiddleware({
-        interruptOn: {
-          sendEmail: { allowedDecisions: ["approve", "edit", "reject"] },
-        },
-      }),
-    ],
-  });
-  ```
+const agent = createAgent({
+  model: "claude-sonnet-4-6",
+  tools: [readEmail, sendEmail],
+  middleware: [
+    humanInTheLoopMiddleware({
+      interruptOn: {
+        sendEmail: { allowedDecisions: ["approve", "edit", "reject"] },
+      },
+    }),
+  ],
+});
+```
 
-  ```typescript v0 (old) theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  import { createReactAgent } from "@langchain/langgraph/prebuilts";
+```typescript v0 (old) theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+import { createReactAgent } from "@langchain/langgraph/prebuilts";
 
-  function customHumanInTheLoopHook(state) {
-    // Custom approval logic
-  }
+function customHumanInTheLoopHook(state) {
+  // Custom approval logic
+}
 
-  const agent = createReactAgent({
-    model: "claude-sonnet-4-6",
-    tools: [readEmail, sendEmail],
-    postModelHook: customHumanInTheLoopHook,
-  });
-  ```
-</CodeGroup>
+const agent = createReactAgent({
+  model: "claude-sonnet-4-6",
+  tools: [readEmail, sendEmail],
+  postModelHook: customHumanInTheLoopHook,
+});
+```
 
 ### Custom state
 
 Custom state is now defined in middleware using the `stateSchema` property. Use Zod to declare additional state fields that are carried through the agent run.
 
-<CodeGroup>
-  ```typescript v1 (new) theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  import * as z from "zod";
-  import { createAgent, createMiddleware, tool } from "langchain";
+```typescript v1 (new) theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+import * as z from "zod";
+import { createAgent, createMiddleware, tool } from "langchain";
 
-  const UserState = z.object({
-    userName: z.string(),
-  });
+const UserState = z.object({
+  userName: z.string(),
+});
 
-  const userState = createMiddleware({
-    name: "UserState",
-    stateSchema: UserState,
-    beforeModel: (state) => {
-      // Access custom state properties
-      const name = state.userName;
-      // Optionally modify messages/system prompt based on state
-      return;
-    },
-  });
+const userState = createMiddleware({
+  name: "UserState",
+  stateSchema: UserState,
+  beforeModel: (state) => {
+    // Access custom state properties
+    const name = state.userName;
+    // Optionally modify messages/system prompt based on state
+    return;
+  },
+});
 
-  const greet = tool(
-    async () => {
-      return "Hello!";
-    },
-    {
-      name: "greet",
-      description: "Greet the user",
-      schema: z.object({}),
-    }
-  );
+const greet = tool(
+  async () => {
+    return "Hello!";
+  },
+  {
+    name: "greet",
+    description: "Greet the user",
+    schema: z.object({}),
+  }
+);
 
-  const agent = createAgent({
-    model: "claude-sonnet-4-6",
-    tools: [greet],
-    middleware: [userState],
-  });
+const agent = createAgent({
+  model: "claude-sonnet-4-6",
+  tools: [greet],
+  middleware: [userState],
+});
 
-  await agent.invoke({
-    messages: [{ role: "user", content: "Hi" }],
-    userName: "Ada",
-  });
-  ```
+await agent.invoke({
+  messages: [{ role: "user", content: "Hi" }],
+  userName: "Ada",
+});
+```
 
-  ```typescript v0 (old) theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  import { getCurrentTaskInput } from "@langchain/langgraph";
-  import { createReactAgent } from "@langchain/langgraph/prebuilts";
-  import * as z from "zod";
+```typescript v0 (old) theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+import { getCurrentTaskInput } from "@langchain/langgraph";
+import { createReactAgent } from "@langchain/langgraph/prebuilts";
+import * as z from "zod";
 
-  const UserState = z.object({
-    userName: z.string(),
-  });
+const UserState = z.object({
+  userName: z.string(),
+});
 
-  const greet = tool(
-    async () => {
-      const state = await getCurrentTaskInput();
-      const userName = state.userName;
-      return `Hello ${userName}!`;
-    },
-  );
+const greet = tool(
+  async () => {
+    const state = await getCurrentTaskInput();
+    const userName = state.userName;
+    return `Hello ${userName}!`;
+  },
+);
 
-  // Custom state was provided via agent-level state schema or accessed ad hoc in hooks
-  const agent = createReactAgent({
-    model: "claude-sonnet-4-6",
-    tools: [greet],
-    stateSchema: UserState,
-  });
-  ```
-</CodeGroup>
+// Custom state was provided via agent-level state schema or accessed ad hoc in hooks
+const agent = createReactAgent({
+  model: "claude-sonnet-4-6",
+  tools: [greet],
+  stateSchema: UserState,
+});
+```
 
 ### Model
 
@@ -372,39 +356,37 @@ This functionality has been ported to the middleware interface in v1.
 
 #### Dynamic model selection
 
-<CodeGroup>
-  ```typescript v1 (new) theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  import { createAgent, createMiddleware } from "langchain";
+```typescript v1 (new) theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+import { createAgent, createMiddleware } from "langchain";
 
-  const dynamicModel = createMiddleware({
-    name: "DynamicModel",
-    wrapModelCall: (request, handler) => {
-      const messageCount = request.state.messages.length;
-      const model = messageCount > 10 ? "openai:gpt-5.5" : "openai:gpt-5-nano";
-      return handler({ ...request, model });
-    },
-  });
+const dynamicModel = createMiddleware({
+  name: "DynamicModel",
+  wrapModelCall: (request, handler) => {
+    const messageCount = request.state.messages.length;
+    const model = messageCount > 10 ? "openai:gpt-5.5" : "openai:gpt-5-nano";
+    return handler({ ...request, model });
+  },
+});
 
-  const agent = createAgent({
-    model: "gpt-5-nano",
-    tools,
-    middleware: [dynamicModel],
-  });
-  ```
+const agent = createAgent({
+  model: "gpt-5-nano",
+  tools,
+  middleware: [dynamicModel],
+});
+```
 
-  ```typescript v0 (old) theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  import { createReactAgent } from "@langchain/langgraph/prebuilts";
+```typescript v0 (old) theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+import { createReactAgent } from "@langchain/langgraph/prebuilts";
 
-  function selectModel(state) {
-    return state.messages.length > 10 ? "openai:gpt-5.5" : "openai:gpt-5-nano";
-  }
+function selectModel(state) {
+  return state.messages.length > 10 ? "openai:gpt-5.5" : "openai:gpt-5-nano";
+}
 
-  const agent = createReactAgent({
-    model: selectModel,
-    tools,
-  });
-  ```
-</CodeGroup>
+const agent = createReactAgent({
+  model: selectModel,
+  tools,
+});
+```
 
 #### Pre-bound models
 
@@ -431,51 +413,49 @@ The `tools` argument to `createAgent` accepts:
 
 You can now configure the handling of tool errors with middleware implementing the `wrapToolCall` method.
 
-<CodeGroup>
-  ```typescript v1 (new) theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  import { createAgent, createMiddleware, ToolMessage } from "langchain";
+```typescript v1 (new) theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+import { createAgent, createMiddleware, ToolMessage } from "langchain";
 
-  const handleToolErrors = createMiddleware({
-    name: "HandleToolErrors",
-    wrapToolCall: async (request, handler) => {
-      try {
-        return await handler(request);
-      } catch (error) {
-        // Only handle errors that occur during tool execution due to invalid inputs
-        // that pass schema validation but fail at runtime (e.g., invalid SQL syntax).
-        // Do NOT handle:
-        // - Network failures (use tool retry middleware instead)
-        // - Incorrect tool implementation errors (should bubble up)
-        // - Schema mismatch errors (already auto-handled by the framework)
-        //
-        // Return a custom error message to the model
-        return new ToolMessage({
-          content: `Tool error: Please check your input and try again. (${error})`,
-          tool_call_id: request.toolCall.id!,
-        });
-      }
-    },
-  });
+const handleToolErrors = createMiddleware({
+  name: "HandleToolErrors",
+  wrapToolCall: async (request, handler) => {
+    try {
+      return await handler(request);
+    } catch (error) {
+      // Only handle errors that occur during tool execution due to invalid inputs
+      // that pass schema validation but fail at runtime (e.g., invalid SQL syntax).
+      // Do NOT handle:
+      // - Network failures (use tool retry middleware instead)
+      // - Incorrect tool implementation errors (should bubble up)
+      // - Schema mismatch errors (already auto-handled by the framework)
+      //
+      // Return a custom error message to the model
+      return new ToolMessage({
+        content: `Tool error: Please check your input and try again. (${error})`,
+        tool_call_id: request.toolCall.id!,
+      });
+    }
+  },
+});
 
-  const agent = createAgent({
-    model: "claude-sonnet-4-6",
-    tools: [checkWeather, searchWeb],
-    middleware: [handleToolErrors],
-  });
-  ```
+const agent = createAgent({
+  model: "claude-sonnet-4-6",
+  tools: [checkWeather, searchWeb],
+  middleware: [handleToolErrors],
+});
+```
 
-  ```typescript v0 (old) theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  import { createReactAgent, ToolNode } from "@langchain/langgraph/prebuilts";
+```typescript v0 (old) theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+import { createReactAgent, ToolNode } from "@langchain/langgraph/prebuilts";
 
-  const agent = createReactAgent({
-    model: "claude-sonnet-4-6",
-    tools: new ToolNode(
-      [checkWeather, searchWeb],
-      { handleToolErrors: true } // [!code highlight]
-    ),
-  });
-  ```
-</CodeGroup>
+const agent = createReactAgent({
+  model: "claude-sonnet-4-6",
+  tools: new ToolNode(
+    [checkWeather, searchWeb],
+    { handleToolErrors: true } // [!code highlight]
+  ),
+});
+```
 
 ### Structured output
 
@@ -490,41 +470,39 @@ In v1, there are two strategies:
 * `toolStrategy` uses artificial tool calling to generate structured output
 * `providerStrategy` uses provider-native structured output generation
 
-<CodeGroup>
-  ```typescript v1 (new) theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  import { createAgent, toolStrategy } from "langchain";
-  import * as z from "zod";
+```typescript v1 (new) theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+import { createAgent, toolStrategy } from "langchain";
+import * as z from "zod";
 
-  const OutputSchema = z.object({
-    summary: z.string(),
-    sentiment: z.string(),
-  });
+const OutputSchema = z.object({
+  summary: z.string(),
+  sentiment: z.string(),
+});
 
-  const agent = createAgent({
-    model: "gpt-5.4-mini",
-    tools,
-    // explicitly using tool strategy
-    responseFormat: toolStrategy(OutputSchema), // [!code highlight]
-  });
-  ```
+const agent = createAgent({
+  model: "gpt-5.4-mini",
+  tools,
+  // explicitly using tool strategy
+  responseFormat: toolStrategy(OutputSchema), // [!code highlight]
+});
+```
 
-  ```typescript v0 (old) theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  import { createReactAgent } from "@langchain/langgraph/prebuilts";
-  import * as z from "zod";
+```typescript v0 (old) theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+import { createReactAgent } from "@langchain/langgraph/prebuilts";
+import * as z from "zod";
 
-  const OutputSchema = z.object({
-    summary: z.string(),
-    sentiment: z.string(),
-  });
+const OutputSchema = z.object({
+  summary: z.string(),
+  sentiment: z.string(),
+});
 
-  const agent = createReactAgent({
-    model: "gpt-5.4-mini",
-    tools,
-    // Structured output was driven primarily via tool-calling with fewer options
-    responseFormat: OutputSchema,
-  });
-  ```
-</CodeGroup>
+const agent = createReactAgent({
+  model: "gpt-5.4-mini",
+  tools,
+  // Structured output was driven primarily via tool-calling with fewer options
+  responseFormat: OutputSchema,
+});
+```
 
 #### Prompted output removed
 
@@ -538,43 +516,41 @@ When streaming events from agents, the node name was changed from `"agent"` to `
 
 When invoking an agent, pass static, read-only configuration via the `context` config argument. This replaces patterns that used `config.configurable`.
 
-<CodeGroup>
-  ```typescript v1 (new) theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  import { createAgent, HumanMessage } from "langchain";
-  import * as z from "zod";
+```typescript v1 (new) theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+import { createAgent, HumanMessage } from "langchain";
+import * as z from "zod";
 
-  const agent = createAgent({
-    model: "gpt-5.5",
-    tools,
-    contextSchema: z.object({ userId: z.string(), sessionId: z.string() }),
-  });
+const agent = createAgent({
+  model: "gpt-5.5",
+  tools,
+  contextSchema: z.object({ userId: z.string(), sessionId: z.string() }),
+});
 
-  const result = await agent.invoke(
-    { messages: [new HumanMessage("Hello")] },
-    { context: { userId: "123", sessionId: "abc" } }, // [!code highlight]
-  );
-  ```
+const result = await agent.invoke(
+  { messages: [new HumanMessage("Hello")] },
+  { context: { userId: "123", sessionId: "abc" } }, // [!code highlight]
+);
+```
 
-  ```typescript v0 (old) theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  import { createReactAgent, HumanMessage } from "@langchain/langgraph/prebuilts";
+```typescript v0 (old) theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+import { createReactAgent, HumanMessage } from "@langchain/langgraph/prebuilts";
 
-  const agent = createReactAgent({ model, tools });
+const agent = createReactAgent({ model, tools });
 
-  // Pass context via config.configurable
-  const result = await agent.invoke(
-    { messages: [new HumanMessage("Hello")] },
-    {
-      config: { // [!code highlight]
-        configurable: { userId: "123", sessionId: "abc" }, // [!code highlight]
-      }, // [!code highlight]
-    }
-  );
-  ```
-</CodeGroup>
+// Pass context via config.configurable
+const result = await agent.invoke(
+  { messages: [new HumanMessage("Hello")] },
+  {
+    config: { // [!code highlight]
+      configurable: { userId: "123", sessionId: "abc" }, // [!code highlight]
+    }, // [!code highlight]
+  }
+);
+```
 
-<Note>
-  The old `config.configurable` pattern still works for backward compatibility, but using the new `context` parameter is recommended for new applications or applications migrating to v1.
-</Note>
+> [!NOTE]
+>
+> The old `config.configurable` pattern still works for backward compatibility, but using the new `context` parameter is recommended for new applications or applications migrating to v1.
 
 ***
 
@@ -590,65 +566,61 @@ In v1, messages gain provider-agnostic standard content blocks. Access them via 
 
 ### Read standardized content
 
-<CodeGroup>
-  ```typescript v1 (new) theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  import { initChatModel } from "langchain";
+```typescript v1 (new) theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+import { initChatModel } from "langchain";
 
-  const model = await initChatModel("gpt-5-nano");
-  const response = await model.invoke("Explain AI");
+const model = await initChatModel("gpt-5-nano");
+const response = await model.invoke("Explain AI");
 
-  for (const block of response.contentBlocks) {
-    if (block.type === "reasoning") {
-      console.log(block.reasoning);
-    } else if (block.type === "text") {
-      console.log(block.text);
-    }
+for (const block of response.contentBlocks) {
+  if (block.type === "reasoning") {
+    console.log(block.reasoning);
+  } else if (block.type === "text") {
+    console.log(block.text);
   }
-  ```
+}
+```
 
-  ```typescript v0 (old) theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  // Provider-native formats vary; you needed per-provider handling.
-  const response = await model.invoke("Explain AI");
-  for (const item of response.content as any[]) {
-    if (item.type === "reasoning") {
-      // OpenAI-style reasoning
-    } else if (item.type === "thinking") {
-      // Anthropic-style thinking
-    } else if (item.type === "text") {
-      // Text
-    }
+```typescript v0 (old) theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+// Provider-native formats vary; you needed per-provider handling.
+const response = await model.invoke("Explain AI");
+for (const item of response.content as any[]) {
+  if (item.type === "reasoning") {
+    // OpenAI-style reasoning
+  } else if (item.type === "thinking") {
+    // Anthropic-style thinking
+  } else if (item.type === "text") {
+    // Text
   }
-  ```
-</CodeGroup>
+}
+```
 
 ### Create multimodal messages
 
-<CodeGroup>
-  ```typescript v1 (new) theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  import { HumanMessage } from "langchain";
+```typescript v1 (new) theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+import { HumanMessage } from "langchain";
 
-  const message = new HumanMessage({
-    contentBlocks: [
-      { type: "text", text: "Describe this image." },
-      { type: "image", url: "https://example.com/image.jpg" },
-    ],
-  });
-  const res = await model.invoke([message]);
-  ```
+const message = new HumanMessage({
+  contentBlocks: [
+    { type: "text", text: "Describe this image." },
+    { type: "image", url: "https://example.com/image.jpg" },
+  ],
+});
+const res = await model.invoke([message]);
+```
 
-  ```typescript v0 (old) theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  import { HumanMessage } from "langchain";
+```typescript v0 (old) theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+import { HumanMessage } from "langchain";
 
-  const message = new HumanMessage({
-    // Provider-native structure
-    content: [
-      { type: "text", text: "Describe this image." },
-      { type: "image_url", image_url: { url: "https://example.com/image.jpg" } },
-    ],
-  });
-  const res = await model.invoke([message]);
-  ```
-</CodeGroup>
+const message = new HumanMessage({
+  // Provider-native structure
+  content: [
+    { type: "text", text: "Describe this image." },
+    { type: "image_url", image_url: { url: "https://example.com/image.jpg" } },
+  ],
+});
+const res = await model.invoke([message]);
+```
 
 ### Example block types
 
@@ -673,23 +645,21 @@ See the content blocks [reference](/oss/javascript/langchain/messages#content-bl
 
 Standard content blocks are **not serialized** into the `content` attribute by default. If you need to access standard content blocks in the `content` attribute (e.g., when sending messages to a client), you can opt-in to serializing them into `content`.
 
-<CodeGroup>
-  ```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  export LC_OUTPUT_VERSION=v1
-  ```
+```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+export LC_OUTPUT_VERSION=v1
+```
 
-  ```typescript theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  import { initChatModel } from "langchain";
+```typescript theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+import { initChatModel } from "langchain";
 
-  const model = await initChatModel("gpt-5-nano", {
-    outputVersion: "v1",
-  });
-  ```
-</CodeGroup>
+const model = await initChatModel("gpt-5-nano", {
+  outputVersion: "v1",
+});
+```
 
-<Note>
-  Learn more: [Messages](/oss/javascript/langchain/messages#message-content) and [Standard content blocks](/oss/javascript/langchain/messages#standard-content-blocks). See [Multimodal](/oss/javascript/langchain/messages#multimodal) for input examples.
-</Note>
+> [!NOTE]
+>
+> Learn more: [Messages](/oss/javascript/langchain/messages#message-content) and [Standard content blocks](/oss/javascript/langchain/messages#standard-content-blocks). See [Multimodal](/oss/javascript/langchain/messages#multimodal) for input examples.
 
 ***
 
@@ -712,23 +682,21 @@ The v1 package includes:
 
 If you use legacy chains, the indexing API, or functionality previously re-exported from `@langchain/community`, install `@langchain/classic` and update imports:
 
-<CodeGroup>
-  ```bash npm theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  npm install @langchain/classic
-  ```
+```bash npm theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+npm install @langchain/classic
+```
 
-  ```bash pnpm theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  pnpm install @langchain/classic
-  ```
+```bash pnpm theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+pnpm install @langchain/classic
+```
 
-  ```bash yarn theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  yarn add @langchain/classic
-  ```
+```bash yarn theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+yarn add @langchain/classic
+```
 
-  ```bash bun theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  bun add @langchain/classic
-  ```
-</CodeGroup>
+```bash bun theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+bun add @langchain/classic
+```
 
 ```typescript theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 // v1 (new)
@@ -760,75 +728,69 @@ Legacy functionality outside the focus of standard interfaces and agents has bee
 
 Methods, functions, and other objects that were already deprecated and slated for removal in 1.0 have been deleted.
 
-<Accordion title="View removed deprecated APIs">
-  The following deprecated APIs have been removed in v1:
-
-  #### Core functionality
-
-  * `TraceGroup` - Use LangSmith tracing instead
-  * `BaseDocumentLoader.loadAndSplit` - Use `.load()` followed by a text splitter
-  * `RemoteRunnable` - No longer supported
-
-  #### Prompts
-
-  * `BasePromptTemplate.serialize` and `.deserialize` - Use JSON serialization directly
-  * `ChatPromptTemplate.fromPromptMessages` - Use `ChatPromptTemplate.fromMessages`
-
-  #### Retrievers
-
-  * `BaseRetrieverInterface.getRelevantDocuments` - Use `.invoke()` instead
-
-  #### Runnables
-
-  * `Runnable.bind` - Use `.bindTools()` or other specific binding methods
-  * `Runnable.map` - Use `.batch()` instead
-  * `RunnableBatchOptions.maxConcurrency` - Use `maxConcurrency` in the config object
-
-  #### Chat models
-
-  * `BaseChatModel.predictMessages` - Use `.invoke()` instead
-  * `BaseChatModel.predict` - Use `.invoke()` instead
-  * `BaseChatModel.serialize` - Use JSON serialization directly
-  * `BaseChatModel.callPrompt` - Use `.invoke()` instead
-  * `BaseChatModel.call` - Use `.invoke()` instead
-
-  #### LLMs
-
-  * `BaseLLMParams.concurrency` - Use `maxConcurrency` in the config object
-  * `BaseLLM.call` - Use `.invoke()` instead
-  * `BaseLLM.predict` - Use `.invoke()` instead
-  * `BaseLLM.predictMessages` - Use `.invoke()` instead
-  * `BaseLLM.serialize` - Use JSON serialization directly
-
-  #### Streaming
-
-  * `createChatMessageChunkEncoderStream` - Use `.stream()` method directly
-
-  #### Tracing
-
-  * `BaseTracer.runMap` - Use LangSmith tracing APIs
-  * `getTracingCallbackHandler` - Use LangSmith tracing
-  * `getTracingV2CallbackHandler` - Use LangSmith tracing
-  * `LangChainTracerV1` - Use LangSmith tracing
-
-  #### Memory and storage
-
-  * `BaseListChatMessageHistory.addAIChatMessage` - Use `.addMessage()` with `AIMessage`
-  * `BaseStoreInterface` - Use specific store implementations
-
-  #### Utilities
-
-  * `getRuntimeEnvironmentSync` - Use async `getRuntimeEnvironment()`
-</Accordion>
+> **View removed deprecated APIs**
+>
+> The following deprecated APIs have been removed in v1:
+>
+> #### Core functionality
+>
+> * `TraceGroup` - Use LangSmith tracing instead
+> * `BaseDocumentLoader.loadAndSplit` - Use `.load()` followed by a text splitter
+> * `RemoteRunnable` - No longer supported
+>
+> #### Prompts
+>
+> * `BasePromptTemplate.serialize` and `.deserialize` - Use JSON serialization directly
+> * `ChatPromptTemplate.fromPromptMessages` - Use `ChatPromptTemplate.fromMessages`
+>
+> #### Retrievers
+>
+> * `BaseRetrieverInterface.getRelevantDocuments` - Use `.invoke()` instead
+>
+> #### Runnables
+>
+> * `Runnable.bind` - Use `.bindTools()` or other specific binding methods
+> * `Runnable.map` - Use `.batch()` instead
+> * `RunnableBatchOptions.maxConcurrency` - Use `maxConcurrency` in the config object
+>
+> #### Chat models
+>
+> * `BaseChatModel.predictMessages` - Use `.invoke()` instead
+> * `BaseChatModel.predict` - Use `.invoke()` instead
+> * `BaseChatModel.serialize` - Use JSON serialization directly
+> * `BaseChatModel.callPrompt` - Use `.invoke()` instead
+> * `BaseChatModel.call` - Use `.invoke()` instead
+>
+> #### LLMs
+>
+> * `BaseLLMParams.concurrency` - Use `maxConcurrency` in the config object
+> * `BaseLLM.call` - Use `.invoke()` instead
+> * `BaseLLM.predict` - Use `.invoke()` instead
+> * `BaseLLM.predictMessages` - Use `.invoke()` instead
+> * `BaseLLM.serialize` - Use JSON serialization directly
+>
+> #### Streaming
+>
+> * `createChatMessageChunkEncoderStream` - Use `.stream()` method directly
+>
+> #### Tracing
+>
+> * `BaseTracer.runMap` - Use LangSmith tracing APIs
+> * `getTracingCallbackHandler` - Use LangSmith tracing
+> * `getTracingV2CallbackHandler` - Use LangSmith tracing
+> * `LangChainTracerV1` - Use LangSmith tracing
+>
+> #### Memory and storage
+>
+> * `BaseListChatMessageHistory.addAIChatMessage` - Use `.addMessage()` with `AIMessage`
+> * `BaseStoreInterface` - Use specific store implementations
+>
+> #### Utilities
+>
+> * `getRuntimeEnvironmentSync` - Use async `getRuntimeEnvironment()`
 
 ***
 
-<div>
-  <Callout icon="terminal-2">
-    [Connect these docs](/use-these-docs) to your agent of choice via MCP for real-time answers.
-  </Callout>
+[Connect these docs](/use-these-docs) to your agent of choice via MCP for real-time answers.
 
-  <Callout icon="edit">
-    [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/oss/javascript/migrate/langchain-v1.mdx) or [file an issue](https://github.com/langchain-ai/docs/issues/new/choose).
-  </Callout>
-</div>
+[Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/oss/javascript/migrate/langchain-v1.mdx) or [file an issue](https://github.com/langchain-ai/docs/issues/new/choose).

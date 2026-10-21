@@ -13,9 +13,9 @@ Understanding both aspects helps you build a comprehensive evaluation strategy t
 
 Offline evaluation tests applications on curated datasets before deployment. By running evaluations on examples with reference outputs, teams can compare versions, validate functionality, and build confidence before exposing changes to users.
 
-Run offline evaluations client-side using the LangSmith SDK ([Python](https://reference.langchain.com/python/langsmith/observability/sdk/) or [TypeScript](https://reference.langchain.com/javascript/modules/langsmith.html)) or server-side via the [Playground](/langsmith/prompt-engineering-concepts#playground) or by [binding evaluators to a dataset](/langsmith/bind-evaluator-to-dataset).
+Run offline evaluations client-side using the LangSmith SDK ([Python](https://reference.langchain.com/python/langsmith/observability/sdk/) or [TypeScript](https://reference.langchain.com/javascript/langsmith)) or server-side via the [Playground](/langsmith/prompt-engineering-concepts#playground) or by [binding evaluators to a dataset](/langsmith/bind-evaluator-to-dataset).
 
-<img alt="Offline" />
+![Offline](https://mintcdn.com/langchain-5e9cc07a/4kN8yiLrZX_amfFn/langsmith/images/offline.png?fit=max\&auto=format\&n=4kN8yiLrZX_amfFn\&q=85\&s=879e4ee3616cecd7cff39879cfc6ec7b)
 
 ### Benchmarking
 
@@ -40,7 +40,7 @@ For more details, refer to the [Pytest](/langsmith/pytest) and [Vitest/Jest](/la
 
 LangSmith's comparison view highlights regressions (red) and improvements (green) relative to the baseline, enabling quick identification of changes.
 
-<img alt="Comparison view" />
+![Comparison view](https://mintcdn.com/langchain-5e9cc07a/Tdk8epB4BZgbugRX/langsmith/images/comparison-diff-view-light.png?fit=max\&auto=format\&n=Tdk8epB4BZgbugRX\&q=85\&s=2ddb234fd3779b443b9e41f7addeef21)
 
 ### Backtesting
 
@@ -62,7 +62,7 @@ Online evaluation assesses production application outputs in near real-time. Wit
 
 Online evaluators typically run server-side. LangSmith supports custom [LLM-as-judge evaluators](/langsmith/llm-as-judge) and code evaluators. [LangChain Tuned Evaluators](/langsmith/tuned-evaluators) provide specialized judges managed by LangChain.
 
-<img alt="Online" />
+![Online](https://mintcdn.com/langchain-5e9cc07a/4kN8yiLrZX_amfFn/langsmith/images/online.png?fit=max\&auto=format\&n=4kN8yiLrZX_amfFn\&q=85\&s=8d6c1b932e5487c4c01d84ae4f984240)
 
 ### Real-time monitoring
 
@@ -147,12 +147,6 @@ Run pairwise evaluations for:
 
 ***
 
-<div>
-  <Callout icon="terminal-2">
-    [Connect these docs](/use-these-docs) to your agent of choice via MCP for real-time answers.
-  </Callout>
+[Connect these docs](/use-these-docs) to your agent of choice via MCP for real-time answers.
 
-  <Callout icon="edit">
-    [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/evaluation-types.mdx) or [file an issue](https://github.com/langchain-ai/docs/issues/new/choose).
-  </Callout>
-</div>
+[Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/evaluation-types.mdx) or [file an issue](https://github.com/langchain-ai/docs/issues/new/choose).

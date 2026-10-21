@@ -22,7 +22,7 @@ LangSmith supports two types of evaluations that serve different purposes in you
 
 ### Offline evaluations
 
-<Icon icon="flask" /> Use offline evaluations for **pre-deployment testing**:
+&#x20;Use offline evaluations for **pre-deployment testing**:
 
 * **Benchmarking**: Compare multiple versions to find the best performer.
 * **Regression testing**: Ensure new versions don't degrade quality.
@@ -33,7 +33,7 @@ Offline evaluations target [*examples*](#examples) from [*datasets*](#datasets):
 
 ### Online evaluations
 
-<Icon icon="radar" /> Use online evaluations for **production monitoring**:
+&#x20;Use online evaluations for **production monitoring**:
 
 * **Real-time monitoring**: Track quality continuously on live traffic.
 * **Anomaly detection**: Flag unusual patterns or edge cases.
@@ -97,9 +97,7 @@ Offline evaluations run on datasets and examples. The presence of reference outp
 
 A dataset is a *collection of examples* used for evaluating an application. An example is a test input, reference output pair.
 
-<img alt="List of datasets on the Examples tab in the LangSmith UI." />
-
-<img alt="List of datasets on the Examples tab in the LangSmith UI." />
+![List of datasets on the Examples tab in the LangSmith UI.](https://mintcdn.com/langchain-5e9cc07a/VoZdM8AAAwg3DXcJ/langsmith/images/datasets-light.png?fit=max\&auto=format\&n=VoZdM8AAAwg3DXcJ\&q=85\&s=63d27de8050bedc78eb18ccc0d1cad35)
 
 #### Examples
 
@@ -109,9 +107,7 @@ Each example consists of:
 * **Reference outputs** (optional): a dictionary of reference outputs. These do not get passed to your application, they are only used in evaluators.
 * **Metadata** (optional): a dictionary of additional information that can be used to create filtered views of a dataset.
 
-<img alt="Example in the LangSmith UI." />
-
-<img alt="Example in the LangSmith UI." />
+![Example in the LangSmith UI.](https://mintcdn.com/langchain-5e9cc07a/FQbj5E6QVw8CM9M2/langsmith/images/example-light.png?fit=max\&auto=format\&n=FQbj5E6QVw8CM9M2\&q=85\&s=f6d052b31a7f05ad79ed6e7911dfce32)
 
 Learn more about [managing datasets](/langsmith/manage-datasets).
 
@@ -119,7 +115,7 @@ Learn more about [managing datasets](/langsmith/manage-datasets).
 
 An *experiment* represents the results of evaluating a specific application version on a dataset. Each experiment captures outputs, evaluator scores, and execution traces for every example in the dataset.
 
-<img alt="Experiment view" />
+![Experiment view](https://mintcdn.com/langchain-5e9cc07a/0B2PFrFBMRWNccee/langsmith/images/experiment-view.png?fit=max\&auto=format\&n=0B2PFrFBMRWNccee\&q=85\&s=89c78822157136d0e28e9a110dbdbfd5)
 
 Multiple experiments typically run on a given dataset to test different application configurations (e.g., different prompts or LLMs). LangSmith displays all experiments associated with a dataset and supports [comparing multiple experiments](/langsmith/compare-experiment-results) side-by-side.
 
@@ -347,12 +343,6 @@ The following table summarizes the key differences between offline and online ev
 
 ***
 
-<div>
-  <Callout icon="terminal-2">
-    [Connect these docs](/use-these-docs) to your agent of choice via MCP for real-time answers.
-  </Callout>
+[Connect these docs](/use-these-docs) to your agent of choice via MCP for real-time answers.
 
-  <Callout icon="edit">
-    [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/evaluation-concepts.mdx) or [file an issue](https://github.com/langchain-ai/docs/issues/new/choose).
-  </Callout>
-</div>
+[Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/evaluation-concepts.mdx) or [file an issue](https://github.com/langchain-ai/docs/issues/new/choose).

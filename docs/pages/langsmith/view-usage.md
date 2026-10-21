@@ -10,9 +10,9 @@ LangSmith provides several views into your [organization's](/langsmith/administr
 
 | View | Where to find it | Who can see it | Plan availability |
 | - | - | - | - |
-| [Usage graph](#usage-graph) | **Enterprise**: Settings > Usage > Usage graph<br />**Self-serve**: Settings > Billing > Usage graph | All org members | All plans |
-| [Granular usage](#granular-usage) | **Enterprise**: Settings > Usage > Granular usage<br />**Self-serve**: Settings > Billing > Granular usage | All org members | All plans |
-| [Contract usage](#contract-usage) | **Enterprise**: Settings > Usage > Contract usage<br />**Self-serve**: Settings > Billing > Contract usage | Org admins only (`organization:manage`) | Enterprise only |
+| [Usage graph](#usage-graph) | **Enterprise**: Settings > Usage > Usage graph **Self-serve**: Settings > Billing > Usage graph | All org members | All plans |
+| [Granular usage](#granular-usage) | **Enterprise**: Settings > Usage > Granular usage **Self-serve**: Settings > Billing > Granular usage | All org members | All plans |
+| [Contract usage](#contract-usage) | **Enterprise**: Settings > Usage > Contract usage **Self-serve**: Settings > Billing > Contract usage | Org admins only (`organization:manage`) | Enterprise only |
 | [Invoices](#invoices) | Settings > Billing > Invoices | All org members | Self-serve Cloud only |
 | [Evaluator spend](/langsmith/evaluator-spend) | Evaluators page, evaluator detail | All workspace members | Tracked weekly, resetting at Monday 12AM UTC, separate from the monthly billing period below |
 
@@ -34,9 +34,9 @@ Navigate to **Settings** > **Billing and Usage** > **Usage Graph**.
 
 For more details on trace retention tiers, refer to [Data retention](/langsmith/usage-and-billing#data-retention).
 
-<Note>
-  The usage graph uses the term `tenant_id` interchangeably with workspace ID.
-</Note>
+> [!NOTE]
+>
+> The usage graph uses the term `tenant_id` interchangeably with workspace ID.
 
 ## Contract usage
 
@@ -51,13 +51,13 @@ This view shows:
 * **Monthly usage chart**: Bar chart showing usage amounts for each month within your contract period.
 * **Product rates**: Table of your entitled products and their pricing.
 
-<Note>
-  Contract usage requires the [`organization:manage` permission](/langsmith/organization-workspace-operations) and is only available to Enterprise customers with prepaid commitments.
-</Note>
+> [!NOTE]
+>
+> Contract usage requires the [`organization:manage` permission](/langsmith/organization-workspace-operations) and is only available to Enterprise customers with prepaid commitments.
 
-<Note>
-  If your contract spans multiple organizations under the same billing entity, the contract usage view shows the **combined** usage accrued across all of those organizations, not just the one you're currently viewing. [Granular usage](#granular-usage) is always scoped to a single organization, so to view granular usage for a specific org, switch to that org and view its granular usage separately.
-</Note>
+> [!NOTE]
+>
+> If your contract spans multiple organizations under the same billing entity, the contract usage view shows the **combined** usage accrued across all of those organizations, not just the one you're currently viewing. [Granular usage](#granular-usage) is always scoped to a single organization, so to view granular usage for a specific org, switch to that org and view its granular usage separately.
 
 ## Invoices
 
@@ -104,9 +104,9 @@ Granular usage is available on [Self-hosted](/langsmith/self-hosted) but require
   GRANULAR_USAGE_TABLE_ENABLED=true
   ```
 
-<Warning>
-  Data collection begins from the moment the feature is enabled. There is no backfill of historical usage data prior to enabling it. Plan accordingly when choosing when to enable this feature.
-</Warning>
+> [!WARNING]
+>
+> Data collection begins from the moment the feature is enabled. There is no backfill of historical usage data prior to enabling it. Plan accordingly when choosing when to enable this feature.
 
 ### Aggregate usage on Self-hosted
 
@@ -129,12 +129,6 @@ For programmatic access to trace counts, see [View trace counts across your orga
 
 ***
 
-<div>
-  <Callout icon="terminal-2">
-    [Connect these docs](/use-these-docs) to your agent of choice via MCP for real-time answers.
-  </Callout>
+[Connect these docs](/use-these-docs) to your agent of choice via MCP for real-time answers.
 
-  <Callout icon="edit">
-    [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/view-usage.mdx) or [file an issue](https://github.com/langchain-ai/docs/issues/new/choose).
-  </Callout>
-</div>
+[Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/view-usage.mdx) or [file an issue](https://github.com/langchain-ai/docs/issues/new/choose).

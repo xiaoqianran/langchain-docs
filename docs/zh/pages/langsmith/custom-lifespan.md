@@ -10,14 +10,14 @@
 
 下面是使用 FastAPI 的示例。
 
-<Note>
-  “仅限Python”
-  目前，我们仅支持使用 `langgraph-api>=0.0.26` 进行 Python 部署中的自定义生命周期事件。
-</Note>
+> [!注意]
+>
+>“仅限Python”
+> 目前，我们仅支持使用 `langgraph-api>=0.0.26` 的 Python 部署中的自定义生命周期事件。
 
 ## 创建应用程序
 
-从 **现有** LangSmith 应用程序开始，将以下生命周期代码添加到您的 `webapp.py` 文件中。如果您是从头开始，则可以使用 CLI 从模板创建新应用程序。
+从 **现有** LangSmith 应用程序开始，将以下生命周期代码添加到您的 `webapp.py` 文件中。如果您从头开始，则可以使用 CLI 从模板创建新应用程序。
 
 ```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 langgraph new --template=new-langgraph-project-python my_new_project
@@ -85,12 +85,6 @@ langgraph dev --no-browser
 
 ***
 
-<div>
-  <Callout icon="terminal-2">
-    [Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
-  </Callout>
+[Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
 
-  <Callout icon="edit">
-    [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/custom-lifespan.mdx) 或 [file an issue](https://github.com/langchain-ai/docs/issues/new/choose)。
-  </Callout>
-</div>
+[Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/custom-lifespan.mdx) 或 [file an issue](https://github.com/langchain-ai/docs/issues/new/choose)。

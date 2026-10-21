@@ -4,11 +4,11 @@
 
 # 双重短信
 
-<Info>
-  **先决条件**
-
-  * [Agent Server](/langsmith/agent-server)
-</Info>
+> [!注意]
+>
+> **先决条件**
+>
+> * [Agent Server](/langsmith/agent-server)
 
 很多时候，用户可能会以意想不到的方式与您的图表进行交互。
 例如，用户可以发送一条消息，并在图表完成运行之前发送第二条消息。
@@ -17,11 +17,11 @@
 
 [Enqueue](#enqueue-default) 是在 [Agent Server](/langsmith/agent-server) 中创建运行时的默认双短信（多任务）策略。
 
-<Note>
-  双重短信是LangSmith部署的一项功能。 [LangGraph open source framework](/oss/python/langgraph/overview) 中不可用。
-</Note>
+> [!注意]
+>
+> 双重短信是LangSmith部署的一个功能。 [LangGraph open source framework](/oss/python/langgraph/overview) 中不可用。
 
-<img alt="Double-text strategies across first vs. second run: Reject keeps only the first; Enqueue runs the second afterward; Interrupt halts the first to run the second; Rollback reverts the first and reruns with the second." />
+![Double-text strategies across first vs. second run: Reject keeps only the first; Enqueue runs the second afterward; Interrupt halts the first to run the second; Rollback reverts the first and reruns with the second.](https://mintcdn.com/langchain-5e9cc07a/Hucw5hmCzWXDanL-/langsmith/images/double-texting.png?fit=max\&auto=format\&n=Hucw5hmCzWXDanL-\&q=85\&s=1cae1e8cd4920872e7992460b081f76d)
 
 ## 入队（默认）
 
@@ -31,7 +31,7 @@
 
 ## 拒绝
 
-当当前运行正在进行时，此选项会拒绝任何额外的传入运行，并防止并发执行或双重发短信。
+当当前运行正在进行时，此选项会拒绝任何额外的传入运行，并防止并发执行或重复发短信。
 
 有关配置拒绝双文本选项，请参阅[how-to guide](/langsmith/reject-concurrent)。
 
@@ -45,16 +45,10 @@
 
 在处理新的用户输入之前，此选项会暂停当前执行并恢复所有进度（包括初始运行输入）。新输入被视为从初始状态开始的全新运行。
 
-有关回滚双文本选项的配置，请参阅[how-to guide](/langsmith/rollback-concurrent)。
+关于回滚双文本选项的配置，请参考[how-to guide](/langsmith/rollback-concurrent)。
 
 ***
 
-<div>
-  <Callout icon="terminal-2">
-    [Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
-  </Callout>
+[Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
 
-  <Callout icon="edit">
-    [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/double-texting.mdx) 或 [file an issue](https://github.com/langchain-ai/docs/issues/new/choose)。
-  </Callout>
-</div>
+[Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/double-texting.mdx) 或 [file an issue](https://github.com/langchain-ai/docs/issues/new/choose)。

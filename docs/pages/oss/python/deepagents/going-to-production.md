@@ -26,15 +26,15 @@ This page covers:
 
 ## LangSmith Deployments
 
-<img alt="Managed Deep Agents packages your agent configuration, tools, and runtime settings for LangSmith" />
+![Managed Deep Agents packages your agent configuration, tools, and runtime settings for LangSmith](https://mintcdn.com/langchain-5e9cc07a/9oyV6nbtSbBRfaE1/oss/images/deepagents/production/deepagents-deploy-config.png?fit=max\&auto=format\&n=9oyV6nbtSbBRfaE1\&q=85\&s=5c3f2961994afe5fe67a2f5c9e9ba7ac)
 
 The recommended path for taking a Deep Agent to production is [Managed Deep Agents](/langsmith/python/managed-deep-agents-overview), a CLI-first hosted runtime for creating, running, and operating deep agents in LangSmith. Managed Deep Agents is in public [beta](/langsmith/release-stages) on [LangSmith Cloud](/langsmith/cloud). It runs the same Deep Agents harness, but you author the agent as a project of files and declare it for the managed runtime rather than compiling it yourself. See [Relationship to Deep Agents](/langsmith/python/managed-deep-agents-overview#relationship-to-deep-agents).
 
 For teams that need custom application code, custom routes, advanced authentication, you can configure a [LangSmith Deployment](/langsmith/deployment) directly. Either path provisions the infrastructure your agent needs: [threads](/langsmith/use-threads), [runs](/langsmith/runs), a store, and a checkpointer, so you don't have to set these up yourself. A traditional LangSmith Deployment also gives you [authentication](/langsmith/auth), [webhooks](/langsmith/use-webhooks), [cron jobs](/langsmith/cron-jobs), and [observability](/langsmith/observability) out of the box, and can expose your agent via [MCP](/langsmith/server-mcp) or [A2A](/langsmith/server-a2a).
 
-<Tip>
-  LangSmith Cloud deployments automatically send traces to a project named after your deployment. Open [LangSmith](https://smith.langchain.com?utm_source=docs\&utm_medium=cta\&utm_campaign=langsmith-signup\&utm_content=oss-deepagents-going-to-production) to debug runs and monitor usage. For hybrid or self-hosted setups, see [LangSmith tracing](/langsmith/data-plane#langsmith-tracing). We recommend you also set up [LangSmith Engine](/langsmith/engine), which monitors your traces, detects issues, and proposes fixes.
-</Tip>
+> [!TIP]
+>
+> LangSmith Cloud deployments automatically send traces to a project named after your deployment. Open [LangSmith](https://smith.langchain.com?utm_source=docs\&utm_medium=cta\&utm_campaign=langsmith-signup\&utm_content=oss-deepagents-going-to-production) to debug runs and monitor usage. For hybrid or self-hosted setups, see [LangSmith tracing](/langsmith/data-plane#langsmith-tracing). We recommend you also set up [LangSmith Engine](/langsmith/engine), which monitors your traces, detects issues, and proposes fixes.
 
 All code snippets on this page use the following `langgraph.json` unless otherwise specified:
 
@@ -69,242 +69,240 @@ In production, every invocation should carry two run-level parameters:
 
 The two are independent and almost always passed together:
 
-<CodeGroup>
-  ```python Google theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  from dataclasses import dataclass
+```python Google theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+from dataclasses import dataclass
 
-  from deepagents import create_deep_agent
-  from langchain_core.utils.uuid import uuid7
-
-
-  @dataclass
-  class Context:
-      user_id: str
+from deepagents import create_deep_agent
+from langchain_core.utils.uuid import uuid7
 
 
-  agent = create_deep_agent(
-      model="google_genai:gemini-3.6-flash",
-      context_schema=Context,
-  )
-
-  # Start a conversation
-  config = {"configurable": {"thread_id": str(uuid7())}}
-  agent.invoke(
-      {"messages": [{"role": "user", "content": "Plan a 3-day trip to Tokyo"}]},
-      config=config,
-      context=Context(user_id="user-123"),
-  )
-
-  # Follow-up on the same conversation: reuse the same thread_id
-  agent.invoke(
-      {"messages": [{"role": "user", "content": "Make it 5 days instead"}]},
-      config=config,
-      context=Context(user_id="user-123"),
-  )
-  ```
-
-  ```python OpenAI theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  from dataclasses import dataclass
-
-  from deepagents import create_deep_agent
-  from langchain_core.utils.uuid import uuid7
+@dataclass
+class Context:
+    user_id: str
 
 
-  @dataclass
-  class Context:
-      user_id: str
+agent = create_deep_agent(
+    model="google_genai:gemini-3.6-flash",
+    context_schema=Context,
+)
+
+# Start a conversation
+config = {"configurable": {"thread_id": str(uuid7())}}
+agent.invoke(
+    {"messages": [{"role": "user", "content": "Plan a 3-day trip to Tokyo"}]},
+    config=config,
+    context=Context(user_id="user-123"),
+)
+
+# Follow-up on the same conversation: reuse the same thread_id
+agent.invoke(
+    {"messages": [{"role": "user", "content": "Make it 5 days instead"}]},
+    config=config,
+    context=Context(user_id="user-123"),
+)
+```
+
+```python OpenAI theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+from dataclasses import dataclass
+
+from deepagents import create_deep_agent
+from langchain_core.utils.uuid import uuid7
 
 
-  agent = create_deep_agent(
-      model="openai:gpt-5.5",
-      context_schema=Context,
-  )
-
-  # Start a conversation
-  config = {"configurable": {"thread_id": str(uuid7())}}
-  agent.invoke(
-      {"messages": [{"role": "user", "content": "Plan a 3-day trip to Tokyo"}]},
-      config=config,
-      context=Context(user_id="user-123"),
-  )
-
-  # Follow-up on the same conversation: reuse the same thread_id
-  agent.invoke(
-      {"messages": [{"role": "user", "content": "Make it 5 days instead"}]},
-      config=config,
-      context=Context(user_id="user-123"),
-  )
-  ```
-
-  ```python Anthropic theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  from dataclasses import dataclass
-
-  from deepagents import create_deep_agent
-  from langchain_core.utils.uuid import uuid7
+@dataclass
+class Context:
+    user_id: str
 
 
-  @dataclass
-  class Context:
-      user_id: str
+agent = create_deep_agent(
+    model="openai:gpt-5.5",
+    context_schema=Context,
+)
+
+# Start a conversation
+config = {"configurable": {"thread_id": str(uuid7())}}
+agent.invoke(
+    {"messages": [{"role": "user", "content": "Plan a 3-day trip to Tokyo"}]},
+    config=config,
+    context=Context(user_id="user-123"),
+)
+
+# Follow-up on the same conversation: reuse the same thread_id
+agent.invoke(
+    {"messages": [{"role": "user", "content": "Make it 5 days instead"}]},
+    config=config,
+    context=Context(user_id="user-123"),
+)
+```
+
+```python Anthropic theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+from dataclasses import dataclass
+
+from deepagents import create_deep_agent
+from langchain_core.utils.uuid import uuid7
 
 
-  agent = create_deep_agent(
-      model="anthropic:claude-sonnet-5",
-      context_schema=Context,
-  )
-
-  # Start a conversation
-  config = {"configurable": {"thread_id": str(uuid7())}}
-  agent.invoke(
-      {"messages": [{"role": "user", "content": "Plan a 3-day trip to Tokyo"}]},
-      config=config,
-      context=Context(user_id="user-123"),
-  )
-
-  # Follow-up on the same conversation: reuse the same thread_id
-  agent.invoke(
-      {"messages": [{"role": "user", "content": "Make it 5 days instead"}]},
-      config=config,
-      context=Context(user_id="user-123"),
-  )
-  ```
-
-  ```python OpenRouter theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  from dataclasses import dataclass
-
-  from deepagents import create_deep_agent
-  from langchain_core.utils.uuid import uuid7
+@dataclass
+class Context:
+    user_id: str
 
 
-  @dataclass
-  class Context:
-      user_id: str
+agent = create_deep_agent(
+    model="anthropic:claude-sonnet-5",
+    context_schema=Context,
+)
+
+# Start a conversation
+config = {"configurable": {"thread_id": str(uuid7())}}
+agent.invoke(
+    {"messages": [{"role": "user", "content": "Plan a 3-day trip to Tokyo"}]},
+    config=config,
+    context=Context(user_id="user-123"),
+)
+
+# Follow-up on the same conversation: reuse the same thread_id
+agent.invoke(
+    {"messages": [{"role": "user", "content": "Make it 5 days instead"}]},
+    config=config,
+    context=Context(user_id="user-123"),
+)
+```
+
+```python OpenRouter theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+from dataclasses import dataclass
+
+from deepagents import create_deep_agent
+from langchain_core.utils.uuid import uuid7
 
 
-  agent = create_deep_agent(
-      model="openrouter:z-ai/glm-5.2",
-      context_schema=Context,
-  )
-
-  # Start a conversation
-  config = {"configurable": {"thread_id": str(uuid7())}}
-  agent.invoke(
-      {"messages": [{"role": "user", "content": "Plan a 3-day trip to Tokyo"}]},
-      config=config,
-      context=Context(user_id="user-123"),
-  )
-
-  # Follow-up on the same conversation: reuse the same thread_id
-  agent.invoke(
-      {"messages": [{"role": "user", "content": "Make it 5 days instead"}]},
-      config=config,
-      context=Context(user_id="user-123"),
-  )
-  ```
-
-  ```python Fireworks theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  from dataclasses import dataclass
-
-  from deepagents import create_deep_agent
-  from langchain_core.utils.uuid import uuid7
+@dataclass
+class Context:
+    user_id: str
 
 
-  @dataclass
-  class Context:
-      user_id: str
+agent = create_deep_agent(
+    model="openrouter:z-ai/glm-5.2",
+    context_schema=Context,
+)
+
+# Start a conversation
+config = {"configurable": {"thread_id": str(uuid7())}}
+agent.invoke(
+    {"messages": [{"role": "user", "content": "Plan a 3-day trip to Tokyo"}]},
+    config=config,
+    context=Context(user_id="user-123"),
+)
+
+# Follow-up on the same conversation: reuse the same thread_id
+agent.invoke(
+    {"messages": [{"role": "user", "content": "Make it 5 days instead"}]},
+    config=config,
+    context=Context(user_id="user-123"),
+)
+```
+
+```python Fireworks theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+from dataclasses import dataclass
+
+from deepagents import create_deep_agent
+from langchain_core.utils.uuid import uuid7
 
 
-  agent = create_deep_agent(
-      model="fireworks:accounts/fireworks/models/glm-5p2",
-      context_schema=Context,
-  )
-
-  # Start a conversation
-  config = {"configurable": {"thread_id": str(uuid7())}}
-  agent.invoke(
-      {"messages": [{"role": "user", "content": "Plan a 3-day trip to Tokyo"}]},
-      config=config,
-      context=Context(user_id="user-123"),
-  )
-
-  # Follow-up on the same conversation: reuse the same thread_id
-  agent.invoke(
-      {"messages": [{"role": "user", "content": "Make it 5 days instead"}]},
-      config=config,
-      context=Context(user_id="user-123"),
-  )
-  ```
-
-  ```python Baseten theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  from dataclasses import dataclass
-
-  from deepagents import create_deep_agent
-  from langchain_core.utils.uuid import uuid7
+@dataclass
+class Context:
+    user_id: str
 
 
-  @dataclass
-  class Context:
-      user_id: str
+agent = create_deep_agent(
+    model="fireworks:accounts/fireworks/models/glm-5p2",
+    context_schema=Context,
+)
+
+# Start a conversation
+config = {"configurable": {"thread_id": str(uuid7())}}
+agent.invoke(
+    {"messages": [{"role": "user", "content": "Plan a 3-day trip to Tokyo"}]},
+    config=config,
+    context=Context(user_id="user-123"),
+)
+
+# Follow-up on the same conversation: reuse the same thread_id
+agent.invoke(
+    {"messages": [{"role": "user", "content": "Make it 5 days instead"}]},
+    config=config,
+    context=Context(user_id="user-123"),
+)
+```
+
+```python Baseten theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+from dataclasses import dataclass
+
+from deepagents import create_deep_agent
+from langchain_core.utils.uuid import uuid7
 
 
-  agent = create_deep_agent(
-      model="baseten:zai-org/GLM-5.2",
-      context_schema=Context,
-  )
-
-  # Start a conversation
-  config = {"configurable": {"thread_id": str(uuid7())}}
-  agent.invoke(
-      {"messages": [{"role": "user", "content": "Plan a 3-day trip to Tokyo"}]},
-      config=config,
-      context=Context(user_id="user-123"),
-  )
-
-  # Follow-up on the same conversation: reuse the same thread_id
-  agent.invoke(
-      {"messages": [{"role": "user", "content": "Make it 5 days instead"}]},
-      config=config,
-      context=Context(user_id="user-123"),
-  )
-  ```
-
-  ```python Ollama theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  from dataclasses import dataclass
-
-  from deepagents import create_deep_agent
-  from langchain_core.utils.uuid import uuid7
+@dataclass
+class Context:
+    user_id: str
 
 
-  @dataclass
-  class Context:
-      user_id: str
+agent = create_deep_agent(
+    model="baseten:zai-org/GLM-5.2",
+    context_schema=Context,
+)
+
+# Start a conversation
+config = {"configurable": {"thread_id": str(uuid7())}}
+agent.invoke(
+    {"messages": [{"role": "user", "content": "Plan a 3-day trip to Tokyo"}]},
+    config=config,
+    context=Context(user_id="user-123"),
+)
+
+# Follow-up on the same conversation: reuse the same thread_id
+agent.invoke(
+    {"messages": [{"role": "user", "content": "Make it 5 days instead"}]},
+    config=config,
+    context=Context(user_id="user-123"),
+)
+```
+
+```python Ollama theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+from dataclasses import dataclass
+
+from deepagents import create_deep_agent
+from langchain_core.utils.uuid import uuid7
 
 
-  agent = create_deep_agent(
-      model="ollama:north-mini-code-1.0",
-      context_schema=Context,
-  )
+@dataclass
+class Context:
+    user_id: str
 
-  # Start a conversation
-  config = {"configurable": {"thread_id": str(uuid7())}}
-  agent.invoke(
-      {"messages": [{"role": "user", "content": "Plan a 3-day trip to Tokyo"}]},
-      config=config,
-      context=Context(user_id="user-123"),
-  )
 
-  # Follow-up on the same conversation: reuse the same thread_id
-  agent.invoke(
-      {"messages": [{"role": "user", "content": "Make it 5 days instead"}]},
-      config=config,
-      context=Context(user_id="user-123"),
-  )
-  ```
-</CodeGroup>
+agent = create_deep_agent(
+    model="ollama:north-mini-code-1.0",
+    context_schema=Context,
+)
 
-<Card title="View example trace" icon="chart-line" href="https://smith.langchain.com/public/2dea64cd-d02d-449c-b44c-4e6604fb5719/r">
-  Open a public LangSmith run for this example.
-</Card>
+# Start a conversation
+config = {"configurable": {"thread_id": str(uuid7())}}
+agent.invoke(
+    {"messages": [{"role": "user", "content": "Plan a 3-day trip to Tokyo"}]},
+    config=config,
+    context=Context(user_id="user-123"),
+)
+
+# Follow-up on the same conversation: reuse the same thread_id
+agent.invoke(
+    {"messages": [{"role": "user", "content": "Make it 5 days instead"}]},
+    config=config,
+    context=Context(user_id="user-123"),
+)
+```
+
+> **[View example trace](https://smith.langchain.com/public/2dea64cd-d02d-449c-b44c-4e6604fb5719/r)**
+>
+> Open a public LangSmith run for this example.
 
 When deploying with the LangGraph SDK, the SDK manages threads for you and you pass the returned `thread_id` to each run:
 
@@ -324,15 +322,15 @@ async for chunk in client.runs.stream(
     print(chunk.data)
 ```
 
-<Tip>
-  `thread_id` scopes the *conversation* (message history, checkpoints). `context` carries *per-run* data your tools and middleware read. They are independent: changing one does not affect the other, and you can pass either or both.
-</Tip>
+> [!TIP]
+>
+> `thread_id` scopes the *conversation* (message history, checkpoints). `context` carries *per-run* data your tools and middleware read. They are independent: changing one does not affect the other, and you can pass either or both.
 
 ### Multi-tenancy
 
 When your agent serves multiple users, you need to handle three concerns: verifying who each user is, controlling what they can access, and managing the credentials the agent uses to act on their behalf.
 
-<img alt="Three authentication layers compose: end-user auth, agent-acting-as-user auth, and team RBAC" />
+![Three authentication layers compose: end-user auth, agent-acting-as-user auth, and team RBAC](https://mintcdn.com/langchain-5e9cc07a/9oyV6nbtSbBRfaE1/oss/images/deepagents/production/auth-layers.png?fit=max\&auto=format\&n=9oyV6nbtSbBRfaE1\&q=85\&s=11137d8bae74093c459416fd3e541d68)
 
 #### User identity and access control
 
@@ -390,9 +388,9 @@ async def github_action(runtime: ToolRuntime):
 
 LLM-based applications are heavily I/O-bound: calling language models, databases, and external services. Async programming lets these operations run concurrently instead of blocking, improving throughput and responsiveness.
 
-<Note>
-  LangChain follows the convention of prefixing `a` to async method names (e.g., `ainvoke`, `abefore_agent`, `astream`). Sync and async variants live in the same class or namespace.
-</Note>
+> [!NOTE]
+>
+> LangChain follows the convention of prefixing `a` to async method names (e.g., `ainvoke`, `abefore_agent`, `astream`). Sync and async variants live in the same class or namespace.
 
 When building for production:
 
@@ -404,7 +402,7 @@ When building for production:
 
 Deep Agents run on LangGraph, which provides durable execution out of the box. The [persistence](/oss/python/langgraph/persistence) layer checkpoints state at each step, so a run interrupted by a failure, timeout, or [human-in-the-loop](/oss/python/langgraph/interrupts) pause resumes from its last recorded state without reprocessing previous steps. For long-running deep agents that spawn many subagents, this means a mid-run failure doesn't lose completed work.
 
-<img alt="Durable execution: when a worker crashes mid-run, another worker picks the run up from the latest checkpoint" />
+![Durable execution: when a worker crashes mid-run, another worker picks the run up from the latest checkpoint](https://mintcdn.com/langchain-5e9cc07a/9oyV6nbtSbBRfaE1/oss/images/deepagents/production/durable-execution.png?fit=max\&auto=format\&n=9oyV6nbtSbBRfaE1\&q=85\&s=d3bfd69460769dba142c68c7a20ae43b)
 
 Checkpointing also enables:
 
@@ -412,15 +410,15 @@ Checkpointing also enables:
 * **[Time travel](/oss/python/langgraph/use-time-travel).** Every checkpointed step is a snapshot you can rewind to, letting you replay from an earlier state if something goes wrong.
 * **Safe handling of sensitive operations.** For workflows involving payments or other irreversible actions, checkpoints provide an audit trail and a recovery point to inspect the exact state that led to an action.
 
-<Tip>
-  [LangSmith Deployments](/langsmith/deployment) configure a persistent checkpointer automatically. If you are self-hosting, see [persistence](/oss/python/langgraph/persistence) for setup instructions.
-</Tip>
+> [!TIP]
+>
+> [LangSmith Deployments](/langsmith/deployment) configure a persistent checkpointer automatically. If you are self-hosting, see [persistence](/oss/python/langgraph/persistence) for setup instructions.
 
 ## Memory
 
 Without memory, every conversation starts from scratch. Memory lets your agent retain information across conversations (user preferences, learned instructions, past experiences) so it can personalize its behavior over time. For an overview of memory types, see the [memory concepts guide](/oss/python/concepts/memory).
 
-<img alt="Short-term memory is scoped to a single thread via checkpoints; long-term memory persists across threads via the store" />
+![Short-term memory is scoped to a single thread via checkpoints; long-term memory persists across threads via the store](https://mintcdn.com/langchain-5e9cc07a/9oyV6nbtSbBRfaE1/oss/images/deepagents/production/memory.png?fit=max\&auto=format\&n=9oyV6nbtSbBRfaE1\&q=85\&s=3ec585271dcd8d62e0207d79d68c296b)
 
 ### Scoping
 
@@ -432,114 +430,112 @@ Memory is always persistent across conversations. The main question is how it's 
 | **Assistant** | `(assistant_id)` | Shared instructions for one assistant | "Cap posts at 280 characters" |
 | **Global** | `(org_id)` | Read-only policies for all users and assistants | "Never disclose internal pricing" |
 
-<Warning>
-  Shared memory (assistant, user, or organization scope) is a vector for prompt injection. If one user can write to memory that another user's conversation reads, a malicious user could inject instructions into that shared state. Enforce read-only access where appropriate. For example, make organization-wide policies writable only through application code, not by the agent itself. Use [permissions](/oss/python/deepagents/permissions) to declaratively deny writes to shared paths, or [backend policy hooks](/oss/python/deepagents/backends#add-policy-hooks) for custom validation logic.
-</Warning>
+> [!WARNING]
+>
+> Shared memory (assistant, user, or organization scope) is a vector for prompt injection. If one user can write to memory that another user's conversation reads, a malicious user could inject instructions into that shared state. Enforce read-only access where appropriate. For example, make organization-wide policies writable only through application code, not by the agent itself. Use [permissions](/oss/python/deepagents/permissions) to declaratively deny writes to shared paths, or [backend policy hooks](/oss/python/deepagents/backends#add-policy-hooks) for custom validation logic.
 
 ### Configuration
 
 In Deep Agents, memory is stored as files in a virtual filesystem. By default, files are scoped to a single thread (conversation) and not shared across threads.
 Otherwise, to share memory across threads, route a path like `/memories/` to a [StoreBackend](https://reference.langchain.com/python/deepagents/backends/store/StoreBackend) that writes to the LangGraph [Store](/langsmith/custom-store). Use a [CompositeBackend](https://reference.langchain.com/python/deepagents/backends/composite/CompositeBackend) to give the agent both thread-scoped scratch space and cross-thread [long-term memory](/oss/python/deepagents/memory).
 
-<Note>
-  The `rt.server_info` and `rt.execution_info` namespace patterns shown below require `deepagents>=0.5.0`.
-</Note>
+> [!NOTE]
+>
+> The `rt.server_info` and `rt.execution_info` namespace patterns shown below require `deepagents>=0.5.0`.
 
-<Tabs>
-  <Tab title="User (recommended)">
-    Namespace by `user_id`. Each user gets their own private memory. This is the recommended default since most applications deploy a single assistant.
+**User (recommended)**
 
-    ```python agent.py theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-    from deepagents import create_deep_agent
-    from deepagents.backends import CompositeBackend, StateBackend, StoreBackend
+Namespace by `user_id`. Each user gets their own private memory. This is the recommended default since most applications deploy a single assistant.
 
-    agent = create_deep_agent(
-        model="google_genai:gemini-3.6-flash",
-        backend=CompositeBackend(
-            default=StateBackend(),
-            routes={
-                "/memories/": StoreBackend(
-                    namespace=lambda rt: (
-                        rt.server_info.assistant_id,  # [!code highlight]
-                        rt.server_info.user.identity,  # [!code highlight]
-                    ),
+```python agent.py theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+from deepagents import create_deep_agent
+from deepagents.backends import CompositeBackend, StateBackend, StoreBackend
+
+agent = create_deep_agent(
+    model="google_genai:gemini-3.6-flash",
+    backend=CompositeBackend(
+        default=StateBackend(),
+        routes={
+            "/memories/": StoreBackend(
+                namespace=lambda rt: (
+                    rt.server_info.assistant_id,  # [!code highlight]
+                    rt.server_info.user.identity,  # [!code highlight]
                 ),
-            },
-        ),
-        system_prompt="""You have persistent memory at /memories/.
+            ),
+        },
+    ),
+    system_prompt="""You have persistent memory at /memories/.
 
-        Read /memories/instructions.txt at the start of each conversation for
-        accumulated knowledge and preferences. When you learn something that
-        should persist, update that file.""",
-    )
-    ```
-  </Tab>
+    Read /memories/instructions.txt at the start of each conversation for
+    accumulated knowledge and preferences. When you learn something that
+    should persist, update that file.""",
+)
+```
 
-  <Tab title="Assistant">
-    Namespace by `assistant_id`. Memory is shared across all users of the same assistant, so any user can read or update it. Use this for shared instructions or knowledge that applies to everyone using a given assistant (e.g., "always reply in formal tone").
+**Assistant**
 
-    ```python agent.py theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-    from deepagents import create_deep_agent
-    from deepagents.backends import CompositeBackend, StateBackend, StoreBackend
+Namespace by `assistant_id`. Memory is shared across all users of the same assistant, so any user can read or update it. Use this for shared instructions or knowledge that applies to everyone using a given assistant (e.g., "always reply in formal tone").
 
-    agent = create_deep_agent(
-        model="google_genai:gemini-3.6-flash",
-        backend=CompositeBackend(
-            default=StateBackend(),
-            routes={
-                "/memories/": StoreBackend(
-                    namespace=lambda rt: (
-                        rt.server_info.assistant_id,  # [!code highlight]
-                    ),
+```python agent.py theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+from deepagents import create_deep_agent
+from deepagents.backends import CompositeBackend, StateBackend, StoreBackend
+
+agent = create_deep_agent(
+    model="google_genai:gemini-3.6-flash",
+    backend=CompositeBackend(
+        default=StateBackend(),
+        routes={
+            "/memories/": StoreBackend(
+                namespace=lambda rt: (
+                    rt.server_info.assistant_id,  # [!code highlight]
                 ),
-            },
-        ),
-    )
-    ```
-  </Tab>
+            ),
+        },
+    ),
+)
+```
 
-  <Tab title="User">
-    Namespace by `user_id` alone. Memory follows the user across all assistants. Use this for a global user profile (name, timezone, communication preferences) that should apply regardless of which assistant the user is talking to.
+**User**
 
-    ```python agent.py theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-    from deepagents import create_deep_agent
-    from deepagents.backends import CompositeBackend, StateBackend, StoreBackend
+Namespace by `user_id` alone. Memory follows the user across all assistants. Use this for a global user profile (name, timezone, communication preferences) that should apply regardless of which assistant the user is talking to.
 
-    agent = create_deep_agent(
-        model="google_genai:gemini-3.6-flash",
-        backend=CompositeBackend(
-            default=StateBackend(),
-            routes={
-                "/memories/": StoreBackend(
-                    namespace=lambda rt: (rt.server_info.user.identity,),  # [!code highlight]
-                ),
-            },
-        ),
-    )
-    ```
-  </Tab>
+```python agent.py theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+from deepagents import create_deep_agent
+from deepagents.backends import CompositeBackend, StateBackend, StoreBackend
 
-  <Tab title="Organization">
-    Namespace by `org_id`. Memory is shared across all users and all assistants. Typically used for organization-wide policies (compliance rules, brand guidelines) that should be read-only for the agent. Write access should be restricted to application code to prevent prompt injection.
+agent = create_deep_agent(
+    model="google_genai:gemini-3.6-flash",
+    backend=CompositeBackend(
+        default=StateBackend(),
+        routes={
+            "/memories/": StoreBackend(
+                namespace=lambda rt: (rt.server_info.user.identity,),  # [!code highlight]
+            ),
+        },
+    ),
+)
+```
 
-    ```python agent.py theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-    from deepagents import create_deep_agent
-    from deepagents.backends import CompositeBackend, StateBackend, StoreBackend
+**Organization**
 
-    agent = create_deep_agent(
-        model="google_genai:gemini-3.6-flash",
-        backend=CompositeBackend(
-            default=StateBackend(),
-            routes={
-                "/memories/": StoreBackend(
-                    namespace=lambda rt: (rt.context.org_id,),
-                ),
-            },
-        ),
-    )
-    ```
-  </Tab>
-</Tabs>
+Namespace by `org_id`. Memory is shared across all users and all assistants. Typically used for organization-wide policies (compliance rules, brand guidelines) that should be read-only for the agent. Write access should be restricted to application code to prevent prompt injection.
+
+```python agent.py theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+from deepagents import create_deep_agent
+from deepagents.backends import CompositeBackend, StateBackend, StoreBackend
+
+agent = create_deep_agent(
+    model="google_genai:gemini-3.6-flash",
+    backend=CompositeBackend(
+        default=StateBackend(),
+        routes={
+            "/memories/": StoreBackend(
+                namespace=lambda rt: (rt.context.org_id,),
+            ),
+        },
+    ),
+)
+```
 
 You can also read and write to the store from your application code using the [Store API](/langsmith/custom-store). See [Advanced usage](/oss/python/deepagents/memory#advanced-usage) for examples.
 
@@ -566,9 +562,9 @@ Choose a backend based on what needs to persist:
 
 For the full list of backends and how to build custom ones, see [backends](/oss/python/deepagents/backends).
 
-<Warning>
-  `FilesystemBackend` and `LocalShellBackend` access the host directly. Don't use them in deployed agents.
-</Warning>
+> [!WARNING]
+>
+> `FilesystemBackend` and `LocalShellBackend` access the host directly. Don't use them in deployed agents.
 
 ### Sandboxes
 
@@ -583,155 +579,151 @@ The key decision is how long a sandbox lives. Does each conversation get a fresh
 | **Thread-scoped** | [Thread](/langsmith/use-threads) metadata | Fresh per conversation, cleaned up on TTL | A data analysis bot where each conversation starts clean |
 | **Assistant-scoped** | [Assistant](/langsmith/assistants) config | Shared across all conversations | A coding assistant that maintains a cloned repo across conversations |
 
-<Note>
-  The examples below use an async [graph factory](/langsmith/graph-rebuild) instead of a static graph because the sandbox needs the `thread_id` or `assistant_id` to look up or create the correct sandbox. Graph factories don't receive a full `Runtime` (no `server_info` or `execution_info`); instead, accept a `RunnableConfig` and read `thread_id` and `assistant_id` from `config["configurable"]`. The factory is async because sandbox creation is an I/O-bound operation that requires per-run information only available at invocation time.
-</Note>
+> [!NOTE]
+>
+> The examples below use an async [graph factory](/langsmith/graph-rebuild) instead of a static graph because the sandbox needs the `thread_id` or `assistant_id` to look up or create the correct sandbox. Graph factories don't receive a full `Runtime` (no `server_info` or `execution_info`); instead, accept a `RunnableConfig` and read `thread_id` and `assistant_id` from `config["configurable"]`. The factory is async because sandbox creation is an I/O-bound operation that requires per-run information only available at invocation time.
 
-<Tabs>
-  <Tab title="Thread-scoped (most common)">
-    Each conversation gets its own sandbox. The [graph factory](/langsmith/graph-rebuild) reads `thread_id` from the run config, so each [thread](/langsmith/use-threads) automatically gets its own isolated environment. Named sandbox lookup handles deduplication across runs. Cleaned up when the sandbox [TTL](/langsmith/configure-ttl) expires.
+**Thread-scoped (most common)**
 
-    ```python agent.py theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-    from deepagents import create_deep_agent
-    from deepagents.backends.langsmith import LangSmithSandbox
-    from langchain_core.runnables import RunnableConfig
-    from langsmith.sandbox import SandboxClient
+Each conversation gets its own sandbox. The [graph factory](/langsmith/graph-rebuild) reads `thread_id` from the run config, so each [thread](/langsmith/use-threads) automatically gets its own isolated environment. Named sandbox lookup handles deduplication across runs. Cleaned up when the sandbox [TTL](/langsmith/configure-ttl) expires.
 
-    client = SandboxClient()
+```python agent.py theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+from deepagents import create_deep_agent
+from deepagents.backends.langsmith import LangSmithSandbox
+from langchain_core.runnables import RunnableConfig
+from langsmith.sandbox import SandboxClient
+
+client = SandboxClient()
 
 
-    async def agent(config: RunnableConfig):
-        thread_id = config["configurable"]["thread_id"]  # [!code highlight]
-        sandbox_name = f"thread-{thread_id}"
-        existing = [
-            sb
-            for sb in client.list_sandboxes()
-            if getattr(sb, "name", None) == sandbox_name
-        ]
-        if existing:
-            ls_sandbox = existing[0]
-        else:
-            ls_sandbox = client.create_sandbox(
-                name=sandbox_name,
-                idle_ttl_seconds=3600,  # TTL: clean up when idle
-            )
-        return create_deep_agent(
-            model="google_genai:gemini-3.6-flash",
-            backend=LangSmithSandbox(sandbox=ls_sandbox),
+async def agent(config: RunnableConfig):
+    thread_id = config["configurable"]["thread_id"]  # [!code highlight]
+    sandbox_name = f"thread-{thread_id}"
+    existing = [
+        sb
+        for sb in client.list_sandboxes()
+        if getattr(sb, "name", None) == sandbox_name
+    ]
+    if existing:
+        ls_sandbox = existing[0]
+    else:
+        ls_sandbox = client.create_sandbox(
+            name=sandbox_name,
+            idle_ttl_seconds=3600,  # TTL: clean up when idle
         )
-    ```
-  </Tab>
+    return create_deep_agent(
+        model="google_genai:gemini-3.6-flash",
+        backend=LangSmithSandbox(sandbox=ls_sandbox),
+    )
+```
 
-  <Tab title="Assistant-scoped">
-    All conversations share one sandbox. The [graph factory](/langsmith/graph-rebuild) reads the [assistant](/langsmith/assistants) ID from `config["configurable"]`, so every thread on the same assistant returns to the same environment. Files, installed packages, and cloned repositories persist across conversations.
+**Assistant-scoped**
 
-    ```python agent.py theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-    from deepagents import create_deep_agent
-    from deepagents.backends.langsmith import LangSmithSandbox
-    from langchain_core.runnables import RunnableConfig
-    from langsmith.sandbox import SandboxClient
+All conversations share one sandbox. The [graph factory](/langsmith/graph-rebuild) reads the [assistant](/langsmith/assistants) ID from `config["configurable"]`, so every thread on the same assistant returns to the same environment. Files, installed packages, and cloned repositories persist across conversations.
 
-    client = SandboxClient()
+```python agent.py theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+from deepagents import create_deep_agent
+from deepagents.backends.langsmith import LangSmithSandbox
+from langchain_core.runnables import RunnableConfig
+from langsmith.sandbox import SandboxClient
+
+client = SandboxClient()
 
 
-    async def agent(config: RunnableConfig):
-        assistant_id = config["configurable"]["assistant_id"]  # [!code highlight]
-        sandbox_name = f"assistant-{assistant_id}"
-        existing = [
-            sb
-            for sb in client.list_sandboxes()
-            if getattr(sb, "name", None) == sandbox_name
-        ]
-        if existing:
-            ls_sandbox = existing[0]
-        else:
-            ls_sandbox = client.create_sandbox(name=sandbox_name)
-        return create_deep_agent(
-            model="google_genai:gemini-3.6-flash",
-            backend=LangSmithSandbox(sandbox=ls_sandbox),
-        )
-    ```
+async def agent(config: RunnableConfig):
+    assistant_id = config["configurable"]["assistant_id"]  # [!code highlight]
+    sandbox_name = f"assistant-{assistant_id}"
+    existing = [
+        sb
+        for sb in client.list_sandboxes()
+        if getattr(sb, "name", None) == sandbox_name
+    ]
+    if existing:
+        ls_sandbox = existing[0]
+    else:
+        ls_sandbox = client.create_sandbox(name=sandbox_name)
+    return create_deep_agent(
+        model="google_genai:gemini-3.6-flash",
+        backend=LangSmithSandbox(sandbox=ls_sandbox),
+    )
+```
 
-    <Warning>
-      Assistant-scoped sandboxes accumulate files, installed packages, and other in-sandbox state over time. Configure a TTL with your sandbox provider, use snapshots to reset periodically, or implement cleanup logic to prevent the sandbox's disk and memory from growing unbounded.
-    </Warning>
-  </Tab>
-</Tabs>
+> [!WARNING]
+>
+> Assistant-scoped sandboxes accumulate files, installed packages, and other in-sandbox state over time. Configure a TTL with your sandbox provider, use snapshots to reset periodically, or implement cleanup logic to prevent the sandbox's disk and memory from growing unbounded.
 
 Because the `agent` variable is an async function (not a compiled graph), the server treats it as a [graph factory](/langsmith/graph-rebuild) and calls it on each run, injecting the config. The factory looks up or creates the sandbox by name and returns a fresh agent graph wired to that sandbox.
 
 Once deployed with `langgraph deploy`, invoke the agent from your application code using the SDK. The client-side code is the same regardless of scope. The scoping is handled entirely in the agent factory above, but the behavior differs:
 
-<Tabs>
-  <Tab title="Thread-scoped">
-    Each thread gets its own sandbox. Follow-up messages within the same thread reuse the same sandbox, but a new thread always starts fresh with no leftover files or installed packages from previous conversations.
+**Thread-scoped**
 
-    ```python client.py theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-    from langgraph_sdk import get_client
+Each thread gets its own sandbox. Follow-up messages within the same thread reuse the same sandbox, but a new thread always starts fresh with no leftover files or installed packages from previous conversations.
 
-    client = get_client(url="<DEPLOYMENT_URL>", api_key="<LANGSMITH_API_KEY>")
+```python client.py theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+from langgraph_sdk import get_client
 
-    # Conversation 1: install pandas and analyze data
-    thread_1 = await client.threads.create()
-    async for chunk in client.runs.stream(
-        thread_1["thread_id"],
-        "agent",
-        input={"messages": [{"role": "human", "content": "Install pandas and analyze sales_data.csv"}]},
-        stream_mode="updates",
-    ):
-        print(chunk.data)
+client = get_client(url="<DEPLOYMENT_URL>", api_key="<LANGSMITH_API_KEY>")
 
-    # Follow-up in the same conversation — pandas is still installed
-    async for chunk in client.runs.stream(
-        thread_1["thread_id"],
-        "agent",
-        input={"messages": [{"role": "human", "content": "Now plot the results"}]},
-        stream_mode="updates",
-    ):
-        print(chunk.data)
+# Conversation 1: install pandas and analyze data
+thread_1 = await client.threads.create()
+async for chunk in client.runs.stream(
+    thread_1["thread_id"],
+    "agent",
+    input={"messages": [{"role": "human", "content": "Install pandas and analyze sales_data.csv"}]},
+    stream_mode="updates",
+):
+    print(chunk.data)
 
-    # Conversation 2: fresh sandbox — pandas is NOT installed, no files from conversation 1
-    thread_2 = await client.threads.create()
-    async for chunk in client.runs.stream(
-        thread_2["thread_id"],
-        "agent",
-        input={"messages": [{"role": "human", "content": "What packages are installed?"}]},
-        stream_mode="updates",
-    ):
-        print(chunk.data)
-    ```
-  </Tab>
+# Follow-up in the same conversation — pandas is still installed
+async for chunk in client.runs.stream(
+    thread_1["thread_id"],
+    "agent",
+    input={"messages": [{"role": "human", "content": "Now plot the results"}]},
+    stream_mode="updates",
+):
+    print(chunk.data)
 
-  <Tab title="Assistant-scoped">
-    All threads share one sandbox. This is useful when the sandbox has state that's expensive to recreate, such as a cloned repo, installed dependencies, or build artifacts. Any conversation on the same assistant picks up where the last one left off without repeating setup.
+# Conversation 2: fresh sandbox — pandas is NOT installed, no files from conversation 1
+thread_2 = await client.threads.create()
+async for chunk in client.runs.stream(
+    thread_2["thread_id"],
+    "agent",
+    input={"messages": [{"role": "human", "content": "What packages are installed?"}]},
+    stream_mode="updates",
+):
+    print(chunk.data)
+```
 
-    ```python client.py theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-    from langgraph_sdk import get_client
+**Assistant-scoped**
 
-    client = get_client(url="<DEPLOYMENT_URL>", api_key="<LANGSMITH_API_KEY>")
+All threads share one sandbox. This is useful when the sandbox has state that's expensive to recreate, such as a cloned repo, installed dependencies, or build artifacts. Any conversation on the same assistant picks up where the last one left off without repeating setup.
 
-    # Conversation 1: clone and set up the project
-    thread_1 = await client.threads.create()
-    async for chunk in client.runs.stream(
-        thread_1["thread_id"],
-        "agent",
-        input={"messages": [{"role": "human", "content": "Clone https://github.com/org/repo and install dependencies"}]},
-        stream_mode="updates",
-    ):
-        print(chunk.data)
+```python client.py theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+from langgraph_sdk import get_client
 
-    # Conversation 2: repo and dependencies are still there
-    thread_2 = await client.threads.create()
-    async for chunk in client.runs.stream(
-        thread_2["thread_id"],
-        "agent",
-        input={"messages": [{"role": "human", "content": "Run the test suite and fix any failures"}]},
-        stream_mode="updates",
-    ):
-        print(chunk.data)
-    ```
-  </Tab>
-</Tabs>
+client = get_client(url="<DEPLOYMENT_URL>", api_key="<LANGSMITH_API_KEY>")
+
+# Conversation 1: clone and set up the project
+thread_1 = await client.threads.create()
+async for chunk in client.runs.stream(
+    thread_1["thread_id"],
+    "agent",
+    input={"messages": [{"role": "human", "content": "Clone https://github.com/org/repo and install dependencies"}]},
+    stream_mode="updates",
+):
+    print(chunk.data)
+
+# Conversation 2: repo and dependencies are still there
+thread_2 = await client.threads.create()
+async for chunk in client.runs.stream(
+    thread_2["thread_id"],
+    "agent",
+    input={"messages": [{"role": "human", "content": "Run the test suite and fix any failures"}]},
+    stream_mode="updates",
+):
+    print(chunk.data)
+```
 
 #### File transfers
 
@@ -742,89 +734,89 @@ Sandboxes are isolated containers, so your application code can't directly acces
 
 For provider-specific file transfer examples, see [working with files](/oss/python/deepagents/sandboxes#working-with-files). For provider setup, security, and lifecycle patterns, see the full [sandboxes guide](/oss/python/deepagents/sandboxes).
 
-<Accordion title="Example: syncing skills and memories with custom middleware">
-  [Skill](/oss/python/deepagents/skills) scripts that the agent needs to execute must be uploaded into the sandbox before the agent runs. You may also want to sync [memories](/oss/python/deepagents/memory) so the agent can read and update them inside the container. Use [custom middleware](/oss/python/langchain/middleware/custom) with `before_agent` and `after_agent` hooks to move files across the sandbox boundary:
-
-  ```python agent.py theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  from deepagents import create_deep_agent
-  from deepagents.backends import CompositeBackend, StoreBackend
-  from deepagents.backends.langsmith import LangSmithSandbox
-  from langchain.agents.middleware import AgentMiddleware, AgentState
-  from langgraph.runtime import Runtime
-  from langsmith.sandbox import SandboxClient
-
-
-  def _safe_filename(key: str) -> str:
-      """Reject keys that contain path traversal or glob characters."""
-      name = key.split("/")[-1]
-      if ".." in name or any(c in name for c in ("*", "?")):
-          raise ValueError(f"Invalid key: {key}")
-      return name
-
-
-  class SandboxSyncMiddleware(AgentMiddleware):
-      """Sync skills and memories between the store and the sandbox."""
-
-      def __init__(self, backend: CompositeBackend):
-          super().__init__()
-          self.backend = backend
-
-      async def abefore_agent(self, state: AgentState, runtime: Runtime) -> None:
-          """Upload skill scripts and memories into the sandbox."""
-          user_id = runtime.server_info.user.identity  # [!code highlight]
-          store = runtime.store
-          files = []
-          for item in await store.asearch(("skills", user_id)):
-              name = _safe_filename(item.key)
-              files.append((f"/skills/{name}", item.value["content"].encode()))
-          for item in await store.asearch(("memories", user_id)):
-              name = _safe_filename(item.key)
-              files.append((f"/memories/{name}", item.value["content"].encode()))
-          if files:
-              await self.backend.upload_files(files)
-
-      async def aafter_agent(self, state: AgentState, runtime: Runtime) -> None:
-          """Sync updated memories back to the store."""
-          user_id = runtime.server_info.user.identity  # [!code highlight]
-          store = runtime.store
-          items = await store.asearch(("memories", user_id))
-          results = await self.backend.download_files(
-              [f"/memories/{item.key}" for item in items]
-          )
-          for result in results:
-              if result.content is not None:
-                  await store.aput(
-                      ("memories", user_id),
-                      result.path.split("/")[-1],
-                      {"content": result.content.decode()},
-                  )
-
-
-  client = SandboxClient()
-  ls_sandbox = client.create_sandbox()
-
-
-  backend = CompositeBackend(
-      default=LangSmithSandbox(sandbox=ls_sandbox),
-      routes={
-          "/skills/": StoreBackend(
-              rt,
-              namespace=lambda rt: ("skills", rt.server_info.user.identity),  # [!code highlight]
-          ),
-          "/memories/": StoreBackend(
-              rt,
-              namespace=lambda rt: ("memories", rt.server_info.user.identity),  # [!code highlight]
-          ),
-      },
-  )
-
-  agent = create_deep_agent(
-      model="google_genai:gemini-3.6-flash",
-      backend=backend,
-      middleware=[SandboxSyncMiddleware(backend)],
-  )
-  ```
-</Accordion>
+> **Example: syncing skills and memories with custom middleware**
+>
+> [Skill](/oss/python/deepagents/skills) scripts that the agent needs to execute must be uploaded into the sandbox before the agent runs. You may also want to sync [memories](/oss/python/deepagents/memory) so the agent can read and update them inside the container. Use [custom middleware](/oss/python/langchain/middleware/custom) with `before_agent` and `after_agent` hooks to move files across the sandbox boundary:
+>
+> ```python agent.py theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> from deepagents import create_deep_agent
+> from deepagents.backends import CompositeBackend, StoreBackend
+> from deepagents.backends.langsmith import LangSmithSandbox
+> from langchain.agents.middleware import AgentMiddleware, AgentState
+> from langgraph.runtime import Runtime
+> from langsmith.sandbox import SandboxClient
+>
+>
+> def _safe_filename(key: str) -> str:
+>     """Reject keys that contain path traversal or glob characters."""
+>     name = key.split("/")[-1]
+>     if ".." in name or any(c in name for c in ("*", "?")):
+>         raise ValueError(f"Invalid key: {key}")
+>     return name
+>
+>
+> class SandboxSyncMiddleware(AgentMiddleware):
+>     """Sync skills and memories between the store and the sandbox."""
+>
+>     def __init__(self, backend: CompositeBackend):
+>         super().__init__()
+>         self.backend = backend
+>
+>     async def abefore_agent(self, state: AgentState, runtime: Runtime) -> None:
+>         """Upload skill scripts and memories into the sandbox."""
+>         user_id = runtime.server_info.user.identity  # [!code highlight]
+>         store = runtime.store
+>         files = []
+>         for item in await store.asearch(("skills", user_id)):
+>             name = _safe_filename(item.key)
+>             files.append((f"/skills/{name}", item.value["content"].encode()))
+>         for item in await store.asearch(("memories", user_id)):
+>             name = _safe_filename(item.key)
+>             files.append((f"/memories/{name}", item.value["content"].encode()))
+>         if files:
+>             await self.backend.upload_files(files)
+>
+>     async def aafter_agent(self, state: AgentState, runtime: Runtime) -> None:
+>         """Sync updated memories back to the store."""
+>         user_id = runtime.server_info.user.identity  # [!code highlight]
+>         store = runtime.store
+>         items = await store.asearch(("memories", user_id))
+>         results = await self.backend.download_files(
+>             [f"/memories/{item.key}" for item in items]
+>         )
+>         for result in results:
+>             if result.content is not None:
+>                 await store.aput(
+>                     ("memories", user_id),
+>                     result.path.split("/")[-1],
+>                     {"content": result.content.decode()},
+>                 )
+>
+>
+> client = SandboxClient()
+> ls_sandbox = client.create_sandbox()
+>
+>
+> backend = CompositeBackend(
+>     default=LangSmithSandbox(sandbox=ls_sandbox),
+>     routes={
+>         "/skills/": StoreBackend(
+>             rt,
+>             namespace=lambda rt: ("skills", rt.server_info.user.identity),  # [!code highlight]
+>         ),
+>         "/memories/": StoreBackend(
+>             rt,
+>             namespace=lambda rt: ("memories", rt.server_info.user.identity),  # [!code highlight]
+>         ),
+>     },
+> )
+>
+> agent = create_deep_agent(
+>     model="google_genai:gemini-3.6-flash",
+>     backend=backend,
+>     middleware=[SandboxSyncMiddleware(backend)],
+> )
+> ```
 
 #### Managing secrets
 
@@ -832,7 +824,7 @@ Sandboxes are isolated containers, so environment variables from your host aren'
 
 **Auth proxy (recommended).** The [sandbox auth proxy](/langsmith/sandbox-auth-proxy) intercepts outbound requests from the sandbox and injects authentication headers automatically. Sandbox code calls external APIs normally, and the proxy adds the correct credentials based on the destination host. This means API keys never appear in sandbox code, environment variables, or logs.
 
-<img alt="The sandbox auth proxy injects credentials into outbound requests so secrets never enter the sandbox" />
+![The sandbox auth proxy injects credentials into outbound requests so secrets never enter the sandbox](https://mintcdn.com/langchain-5e9cc07a/9oyV6nbtSbBRfaE1/oss/images/deepagents/production/sandbox-auth-proxy.png?fit=max\&auto=format\&n=9oyV6nbtSbBRfaE1\&q=85\&s=632c4a493f1d5928e41c6865ab86d1da)
 
 ```json theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 {
@@ -861,9 +853,9 @@ The `${SECRET_KEY}` references resolve against secrets stored in your LangSmith 
 
 **Workspace secrets.** For API keys that don't need proxy-based injection (e.g., keys used by the agent server itself, not sandbox code), store them as [workspace secrets](/langsmith/set-up-hierarchy#configure-workspace-settings) in LangSmith. These are available as environment variables at runtime for all agents in the workspace.
 
-<Warning>
-  Avoid passing secrets into sandboxes via environment variables or file uploads. Agents can read any accessible file or environment variable inside the sandbox, including credentials. The auth proxy keeps secrets out of the sandbox entirely.
-</Warning>
+> [!WARNING]
+>
+> Avoid passing secrets into sandboxes via environment variables or file uploads. Agents can read any accessible file or environment variable inside the sandbox, including credentials. The auth proxy keeps secrets out of the sandbox entirely.
 
 ## Guardrails
 
@@ -936,12 +928,6 @@ For UI patterns specific to deep agents, such as subagent cards, todo lists, and
 
 ***
 
-<div>
-  <Callout icon="terminal-2">
-    [Connect these docs](/use-these-docs) to your agent of choice via MCP for real-time answers.
-  </Callout>
+[Connect these docs](/use-these-docs) to your agent of choice via MCP for real-time answers.
 
-  <Callout icon="edit">
-    [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/oss/deepagents/going-to-production.mdx) or [file an issue](https://github.com/langchain-ai/docs/issues/new/choose).
-  </Callout>
-</div>
+[Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/oss/deepagents/going-to-production.mdx) or [file an issue](https://github.com/langchain-ai/docs/issues/new/choose).

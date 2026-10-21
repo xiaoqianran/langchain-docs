@@ -6,13 +6,13 @@
 
 自定义加密允许代理服务器将您的加密处理程序用于每租户密钥和外部密钥管理系统。除非您需要这些功能，否则请使用[built-in AES encryption](/langsmith/aes-encryption)。
 
-<Warning>
-  代理服务器版本 0.5.34–0.6.21 包含自定义加密的预发行版本。升级到 0.6.22+ 时，使用这些版本加密的数据将被损坏。不要在这些版本上使用自定义加密。
-</Warning>
+> [!警告]
+>
+> 代理服务器版本 0.5.34–0.6.21 包含自定义加密的预发布版本。升级到 0.6.22+ 时，使用这些版本加密的数据将被损坏。不要在这些版本上使用自定义加密。
 
-<Warning>
-  仅当内置 AES 加密不能满足您的需求时才使用自定义加密。自定义加密要求您实现和维护加密处理程序，并增加了操作复杂性。如果您只需要静态密钥、密钥轮换或可选的选择性字段加密，请改用 [built-in AES encryption](/langsmith/aes-encryption)。
-</Warning>
+> [!警告]
+>
+> 仅当内置 AES 加密不能满足您的需求时才使用自定义加密。自定义加密要求您实现和维护加密处理程序，并增加了操作复杂性。如果您只需要静态密钥、密钥轮换或可选的选择性字段加密，请改用 [built-in AES encryption](/langsmith/aes-encryption)。
 
 当您需要时使用自定义加密：
 
@@ -44,9 +44,9 @@
 }
 ```
 
-<Note>
-  如果您要从基本加密迁移，请保持 `LANGGRAPH_AES_KEY` 配置。自定义加密处理新写入，同时现有 AES 加密数据仍然可读。
-</Note>
+> [!注意]
+>
+> 如果您要从基本加密迁移，请保持 `LANGGRAPH_AES_KEY` 配置。自定义加密处理新写入，同时现有 AES 加密数据仍然可读。
 
 ### 定义加密上下文
 
@@ -167,19 +167,19 @@ async def decrypt_json(ctx: EncryptionContext, data: dict) -> dict:
 
 #### JSON 加密注意事项
 
-<Warning>
-  **无法搜索或过滤加密字段。** 设计您的元数据架构，以便您需要查询的字段保持未加密状态。
-</Warning>
+> [!警告]
+>
+> **无法搜索或过滤加密字段。** 设计您的元数据架构，以便您需要查询的字段保持未加密状态。
 
-<Warning>
-  **JSON 加密器必须保留密钥结构。** SQL JSONB 合并操作在密钥级别工作。更改密钥的加密器——无论是通过合并字段（例如，将敏感数据移至`__encrypted__`）还是通过加密密钥名称本身——都会在合并期间导致数据丢失。使用每密钥加密：在保留密钥的同时就地转换值。
-</Warning><Note>
-  **迁移注意事项：** 在加密值中使用可识别的前缀或格式，以便解密器可以检测并跳过未加密的数据。这允许您将来加密其他字段，而无需重新加密现有记录。上面的示例使用了这种模式。
-</Note>
+> [!警告]
+>
+> **JSON 加密器必须保留密钥结构。** SQL JSONB 合并操作在密钥级别工作。更改密钥的加密器——无论是通过合并字段（例如，将敏感数据移至`__encrypted__`）还是通过加密密钥名称本身——都会在合并期间导致数据丢失。使用每密钥加密：在保留密钥的同时就地转换值。> [!注意]
+>
+> **迁移注意事项：** 在加密值中使用可识别的前缀或格式，以便解密器可以检测并跳过未加密的数据。这允许您将来加密其他字段，而无需重新加密现有记录。上面的示例使用了这种模式。
 
-<Note>
-  **性能考虑：** 每密钥加密意味着每个字段一次加密调用。如果您的加密涉及到外部服务（例如 KMS）的往返，这可能会显着影响延迟。考虑在本地缓存数据密钥或使用信封加密，其中使用 KMS 加密本地数据密钥并将其用于多个字段。
-</Note>
+> [!注意]
+>
+> **性能考虑：** 每密钥加密意味着每个字段一次加密调用。如果您的加密涉及到外部服务（例如 KMS）的往返，这可能会显着影响延迟。考虑在本地缓存数据密钥或使用信封加密，其中使用 KMS 加密本地数据密钥并将其用于多个字段。
 
 授权过滤器使用的字段（例如，`tenant_id`、`owner`）必须保持不变且**未加密**，用于搜索和过滤的字段也必须保持不变。如果自定义加密器更改授权过滤器字段，代理服务器将拒绝写入。此外，**一些系统管理的字段永远不会被加密**：* 资源标识符（`thread_id`、`run_id`、`assistant_id`、`graph_id`、`checkpoint_id`、`task_id`）
 * 命名为 LangGraph 系统字段（`langgraph_version`、`langgraph_api_version`、`langgraph_plan`、`langgraph_host`、`langgraph_api_url`、`langgraph_request_id`、`langgraph_auth_user`、`langgraph_auth_user_id`、`langgraph_auth_permissions`）
@@ -204,9 +204,9 @@ async def decrypt_json(ctx: EncryptionContext, data: dict) -> dict:
 
 ### 延迟轮换自定义加密密钥
 
-<Note>
-  延迟重新加密需要 Agent Server 版本 `0.14.0` 或更高版本、Python SDK 版本 `langgraph-sdk>=0.4.3`、PostgreSQL 检查点、`PREFER_GRPC_CHECKPOINTER=true` 和 `LANGGRAPH_STORE_BACKEND=grpc`。
-</Note>当处理程序使用旧密钥解密数据时，从 blob 或 JSON 解密处理程序返回 `DecryptResult`。其`plaintext`值返回给调用者，其`replacement`值是新的密文，供Agent Server持久保存。
+> [!注意]
+>
+> 延迟重新加密需要 Agent Server 版本 `0.14.0` 或更高版本、Python SDK 版本 `langgraph-sdk>=0.4.3`、PostgreSQL 检查点、`PREFER_GRPC_CHECKPOINTER=true` 和 `LANGGRAPH_STORE_BACKEND=grpc`。当处理程序使用旧密钥解密数据时，从 blob 或 JSON 解密处理程序返回 `DecryptResult`。其`plaintext`值返回给调用者，其`replacement`值是新的密文，供Agent Server持久保存。
 
 例如，将上面的 blob 解密处理程序替换为首先尝试当前租户密钥，然后在旧密钥成功时返回替换密文的处理程序：
 
@@ -247,9 +247,9 @@ JSON 解密处理程序可以以相同的方式返回 `DecryptResult[dict]`。�
 
 代理服务器通过比较和交换操作写入替换内容，因此它不会覆盖并发更新。重新加密是尽力而为：如果存储的值在写回之前发生更改或写回失败，则读取仍然会成功。
 
-<Warning>
-  惰性重新加密仅在读取数据时更新数据。保持旧密钥可用，而未读数据可能仍需要它们。
-</Warning>
+> [!警告]
+>
+> 惰性重新加密仅在读取数据时更新数据。保持旧密钥可用，而未读数据可能仍需要它们。
 
 ### 监控延迟重新加密
 
@@ -375,12 +375,6 @@ KMS 自动轮换相同密钥 ID 的背衬材料。旧的加密数据密钥仍然
 
 ***
 
-<div>
-  <Callout icon="terminal-2">
-    [Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
-  </Callout>
+[Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
 
-  <Callout icon="edit">
-    [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/custom-encryption.mdx) 或 [file an issue](https://github.com/langchain-ai/docs/issues/new/choose)。
-  </Callout>
-</div>
+[Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/custom-encryption.mdx) 或 [file an issue](https://github.com/langchain-ai/docs/issues/new/choose)。

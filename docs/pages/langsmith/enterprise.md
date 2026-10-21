@@ -6,136 +6,114 @@ Hosting options, access control, data privacy, cost controls, and security compl
 
 This page is a reference hub for enterprise teams and includes information on features that are important for your organization, like [hosting options](#hosting-options), [access control](#access-control), [data privacy](#data-privacy-and-pii), and [cost controls](#cost-controls-and-usage).
 
-<Callout>
-  For questions about Enterprise [pricing](/langsmith/pricing-plans) or to get started, [contact our sales team](https://www.langchain.com/contact-sales).
-</Callout>
+For questions about Enterprise [pricing](/langsmith/pricing-plans) or to get started, [contact our sales team](https://www.langchain.com/contact-sales).
 
 ## Hosting options
 
 Choose how to host LangSmith to match your infrastructure and data residency requirements.
 
-<CardGroup>
-  <Card title="Cloud" icon="cloud" href="/langsmith/cloud">
-    Host LangSmith in LangSmith's managed cloud with US or EU data residency.
-  </Card>
+> **[Cloud](/langsmith/cloud)**
+>
+> Host LangSmith in LangSmith's managed cloud with US or EU data residency.
 
-  <Card title="Hybrid" icon="topology-complex" href="/langsmith/hybrid">
-    Run the control plane in LangSmith's cloud and your data plane in your own VPC for full data isolation.
-  </Card>
+> **[Hybrid](/langsmith/hybrid)**
+>
+> Run the control plane in LangSmith's cloud and your data plane in your own VPC for full data isolation.
 
-  <Card title="Self-hosted" icon="server-2" href="/langsmith/self-hosted">
-    Host LangSmith entirely within your own infrastructure using Kubernetes.
-  </Card>
-</CardGroup>
+> **[Self-hosted](/langsmith/self-hosted)**
+>
+> Host LangSmith entirely within your own infrastructure using Kubernetes.
 
 ## User management
 
 Manage users and automate provisioning across your organization.
 
-<CardGroup>
-  <Card title="User management" icon="users" href="/langsmith/user-management">
-    Invite users, assign roles, and configure SCIM for automated provisioning and deprovisioning.
-  </Card>
+> **[User management](/langsmith/user-management)**
+>
+> Invite users, assign roles, and configure SCIM for automated provisioning and deprovisioning.
 
-  <Card title="SSO & JIT provisioning" icon="login" href="/langsmith/authentication-methods">
-    Configure SAML or OIDC single sign-on and just-in-time user provisioning for your identity provider.
-  </Card>
+> **[SSO & JIT provisioning](/langsmith/authentication-methods)**
+>
+> Configure SAML or OIDC single sign-on and just-in-time user provisioning for your identity provider.
 
-  <Card title="Organization setup" icon="building" href="/langsmith/set-up-hierarchy">
-    Create and configure organizations, workspaces, and the user hierarchy within your enterprise.
-  </Card>
+> **[Organization setup](/langsmith/set-up-hierarchy)**
+>
+> Create and configure organizations, workspaces, and the user hierarchy within your enterprise.
 
-  <Card title="Manage by API" icon="terminal-2" href="/langsmith/manage-organization-by-api">
-    Programmatically manage users, configure security settings, and administer your organization via API.
-  </Card>
-</CardGroup>
+> **[Manage by API](/langsmith/manage-organization-by-api)**
+>
+> Programmatically manage users, configure security settings, and administer your organization via API.
 
 ## Access control
 
 Control who can access what within your organization.
 
-<CardGroup>
-  <Card title="Role-based access control (RBAC)" icon="shield-lock" href="/langsmith/rbac">
-    Define permissions per workspace using built-in or custom roles. Available exclusively on Enterprise plans.
-  </Card>
+> **[Role-based access control (RBAC)](/langsmith/rbac)**
+>
+> Define permissions per workspace using built-in or custom roles. Available exclusively on Enterprise plans.
 
-  <Card title="Attribute-based access control (ABAC)" icon="tag" href="/langsmith/abac">
-    Apply fine-grained, tag-based access policies to restrict resource access—including blocking PII data from specific users.
-  </Card>
+> **[Attribute-based access control (ABAC)](/langsmith/abac)**
+>
+> Apply fine-grained, tag-based access policies to restrict resource access—including blocking PII data from specific users.
 
-  <Card title="Workload isolation" icon="layout-sidebar" href="/langsmith/workload-isolation">
-    Use multi-workspace models to isolate teams, establish trust boundaries, and separate environments.
-  </Card>
+> **[Workload isolation](/langsmith/workload-isolation)**
+>
+> Use multi-workspace models to isolate teams, establish trust boundaries, and separate environments.
 
-  <Card title="Resource tags" icon="tag" href="/langsmith/set-up-resource-tags">
-    Tag resources for use with ABAC policies and to organize environments like dev, staging, and prod.
-  </Card>
-</CardGroup>
+> **[Resource tags](/langsmith/set-up-resource-tags)**
+>
+> Tag resources for use with ABAC policies and to organize environments like dev, staging, and prod.
 
 ## Data privacy and PII
 
 Control how sensitive data is stored and accessed.
 
-<CardGroup>
-  <Card title="Data storage & privacy" icon="database" href="/langsmith/data-storage-and-privacy">
-    Understand what LangSmith stores, how encryption works, and how to opt out of telemetry and tracing.
-  </Card>
+> **[Data storage & privacy](/langsmith/data-storage-and-privacy)**
+>
+> Understand what LangSmith stores, how encryption works, and how to opt out of telemetry and tracing.
 
-  <Card title="PII controls with ABAC" icon="eye-off" href="/langsmith/abac">
-    Use ABAC deny policies to restrict access to traces and datasets that contain personally identifiable information.
-  </Card>
-</CardGroup>
+> **[PII controls with ABAC](/langsmith/abac)**
+>
+> Use ABAC deny policies to restrict access to traces and datasets that contain personally identifiable information.
 
 ## Data retention & cleanup
 
 Configure how long data is retained and how to delete it.
 
-<CardGroup>
-  <Card title="Data purging for compliance" icon="trash" href="/langsmith/data-purging-compliance">
-    Set custom retention periods, delete traces by metadata, and meet deletion requirements.
-  </Card>
+> **[Data purging for compliance](/langsmith/data-purging-compliance)**
+>
+> Set custom retention periods, delete traces by metadata, and meet deletion requirements.
 
-  <Card title="Data retention settings" icon="clock" href="/langsmith/usage-and-billing#data-retention">
-    Understand base vs. extended retention tiers, auto-upgrades, and how retention affects billing.
-  </Card>
-</CardGroup>
+> **[Data retention settings](/langsmith/usage-and-billing#data-retention)**
+>
+> Understand base vs. extended retention tiers, auto-upgrades, and how retention affects billing.
 
 ## Cost controls and usage
 
 Track and limit spending across your organization.
 
-<CardGroup>
-  <Card title="Billing & spend limits" icon="credit-card" href="/langsmith/billing">
-    Set monthly usage limits, track prepaid contract usage, and optimize tracing spend.
-  </Card>
+> **[Billing & spend limits](/langsmith/billing)**
+>
+> Set monthly usage limits, track prepaid contract usage, and optimize tracing spend.
 
-  <Card title="Granular usage reporting" icon="chart-bar" href="/langsmith/granular-usage">
-    Break down trace usage by workspace, project, user, or API key to attribute costs across teams.
-  </Card>
-</CardGroup>
+> **[Granular usage reporting](/langsmith/granular-usage)**
+>
+> Break down trace usage by workspace, project, user, or API key to attribute costs across teams.
 
 ## Security & compliance
 
 Review LangSmith's security posture and compliance certifications.
 
-<CardGroup>
-  <Card title="Shared responsibility model" icon="shield-check" href="/langsmith/shared-responsibility-model">
-    Review the security responsibilities shared between LangChain and your organization. LangSmith holds SOC 2 Type II, HIPAA, and GDPR certifications.
-  </Card>
+> **[Shared responsibility model](/langsmith/shared-responsibility-model)**
+>
+> Review the security responsibilities shared between LangChain and your organization. LangSmith holds SOC 2 Type II, HIPAA, and GDPR certifications.
 
-  <Card title="Scalability & resilience" icon="chart-arrows-vertical" href="/langsmith/scalability-and-resilience">
-    Review SLA guarantees, disaster recovery strategies, and high availability configurations.
-  </Card>
-</CardGroup>
+> **[Scalability & resilience](/langsmith/scalability-and-resilience)**
+>
+> Review SLA guarantees, disaster recovery strategies, and high availability configurations.
 
 ***
 
-<div>
-  <Callout icon="terminal-2">
-    [Connect these docs](/use-these-docs) to your agent of choice via MCP for real-time answers.
-  </Callout>
+[Connect these docs](/use-these-docs) to your agent of choice via MCP for real-time answers.
 
-  <Callout icon="edit">
-    [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/enterprise.mdx) or [file an issue](https://github.com/langchain-ai/docs/issues/new/choose).
-  </Callout>
-</div>
+[Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/enterprise.mdx) or [file an issue](https://github.com/langchain-ai/docs/issues/new/choose).

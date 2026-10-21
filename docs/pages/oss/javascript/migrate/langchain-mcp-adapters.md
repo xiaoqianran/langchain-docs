@@ -4,11 +4,9 @@
 
 Upgrade from @langchain/mcp-adapters 1.x to 2.0, covering renamed APIs, stricter configuration, authentication, elicitation, and tool result changes.
 
-<Prompt description="Migrate from @langchain/mcp-adapters 1.x to 2.0." icon="arrow-right">
-  Migrate this codebase from `@langchain/mcp-adapters` 1.x to 2.0 and update its peer dependencies.
+Migrate this codebase from `@langchain/mcp-adapters` 1.x to 2.0 and update its peer dependencies.
 
-  Fetch and read the full migration guide at [https://docs.langchain.com/oss/javascript/migrate/langchain-mcp-adapters.md](https://docs.langchain.com/oss/javascript/migrate/langchain-mcp-adapters.md) as the source of truth. Search this codebase and apply all relevant migration changes, including dependency and test updates. Run the relevant checks, then summarize the changes and flag anything that requires a manual decision or could not be verified. If you cannot access the guide, ask for its contents before proceeding.
-</Prompt>
+Fetch and read the full migration guide at [https://docs.langchain.com/oss/javascript/migrate/langchain-mcp-adapters.md](https://docs.langchain.com/oss/javascript/migrate/langchain-mcp-adapters.md) as the source of truth. Search this codebase and apply all relevant migration changes, including dependency and test updates. Run the relevant checks, then summarize the changes and flag anything that requires a manual decision or could not be verified. If you cannot access the guide, ask for its contents before proceeding.
 
 `@langchain/mcp-adapters` 2.0 rebuilds the adapter on the MCP TypeScript SDK 2 client. It negotiates the MCP protocol era for each server and answers modern MCP elicitation with LangGraph interrupts. This guide covers the changes that affect 1.x code. For the feature documentation, see [Model Context Protocol (MCP)](/oss/javascript/langchain/mcp).
 
@@ -26,23 +24,21 @@ Upgrade from @langchain/mcp-adapters 1.x to 2.0, covering renamed APIs, stricter
 
 Upgrade the adapter and its peer dependencies:
 
-<CodeGroup>
-  ```bash npm theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  npm install @langchain/mcp-adapters@^2.0.0 @langchain/core @langchain/langgraph
-  ```
+```bash npm theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+npm install @langchain/mcp-adapters@^2.0.0 @langchain/core @langchain/langgraph
+```
 
-  ```bash pnpm theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  pnpm add @langchain/mcp-adapters@^2.0.0 @langchain/core @langchain/langgraph
-  ```
+```bash pnpm theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+pnpm add @langchain/mcp-adapters@^2.0.0 @langchain/core @langchain/langgraph
+```
 
-  ```bash yarn theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  yarn add @langchain/mcp-adapters@^2.0.0 @langchain/core @langchain/langgraph
-  ```
+```bash yarn theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+yarn add @langchain/mcp-adapters@^2.0.0 @langchain/core @langchain/langgraph
+```
 
-  ```bash bun theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  bun add @langchain/mcp-adapters@^2.0.0 @langchain/core @langchain/langgraph
-  ```
-</CodeGroup>
+```bash bun theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+bun add @langchain/mcp-adapters@^2.0.0 @langchain/core @langchain/langgraph
+```
 
 * **Peer dependencies**: The adapter requires `@langchain/core` 1.2.6 or later (was 1.0.0) and `@langchain/langgraph` 1.4.13 or later (was 1.4.10).
 * **MCP SDK**: The adapter includes the MCP SDK 2 client. If your code creates an SDK client for `loadMcpTools`, replace `@modelcontextprotocol/sdk` imports with `@modelcontextprotocol/client`. Import the stdio transport from `@modelcontextprotocol/client/stdio`. Add the SDK as a direct dependency if your code imports it, including to [complete an OAuth redirect](/oss/javascript/langchain/mcp/auth#complete-the-redirect).
@@ -242,12 +238,6 @@ Only elicitation is answered through these interrupts. Requests for [sampling](h
 
 ***
 
-<div>
-  <Callout icon="terminal-2">
-    [Connect these docs](/use-these-docs) to your agent of choice via MCP for real-time answers.
-  </Callout>
+[Connect these docs](/use-these-docs) to your agent of choice via MCP for real-time answers.
 
-  <Callout icon="edit">
-    [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/oss/javascript/migrate/langchain-mcp-adapters.mdx) or [file an issue](https://github.com/langchain-ai/docs/issues/new/choose).
-  </Callout>
-</div>
+[Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/oss/javascript/migrate/langchain-mcp-adapters.mdx) or [file an issue](https://github.com/langchain-ai/docs/issues/new/choose).

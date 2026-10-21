@@ -13,9 +13,9 @@ This section covers how data retention works and how it's priced in LangSmith.
 * **Privacy**: Many data privacy regulations, such as GDPR in Europe or CCPA in California, require organizations to delete personal data once it's no longer necessary for the purposes for which it was collected. Setting retention periods aids in compliance with such regulations.
 * **Cost**: LangSmith charges less for traces that have low data retention. For more information, learn how to [enforce spend limits](/langsmith/billing#enforce-spend-limits).
 
-<Tip>
-  Plan your retention tiers before you start sending traces. Changes apply to new traces only—existing traces keep their original tier. See [Change project-level default retention](/langsmith/billing#change-project-level-default-retention).
-</Tip>
+> [!TIP]
+>
+> Plan your retention tiers before you start sending traces. Changes apply to new traces only—existing traces keep their original tier. See [Change project-level default retention](/langsmith/billing#change-project-level-default-retention).
 
 ### How it works
 
@@ -26,9 +26,9 @@ LangSmith has two tiers of traces based on Data Retention with the following cha
 | **Price** | [See pricing page](https://www.langchain.com/pricing-langsmith) | [See pricing page](https://www.langchain.com/pricing-langsmith) |
 | **Retention Period** | 14 days | 180 days |
 
-<Warning>
-  Starting September 14, 2026, the maximum long-lived trace retention period for SaaS customers is changing to 180 days. Enterprise customers can still customize the extended retention period per workspace up to this new maximum. Changes apply to new traces only—existing traces are unaffected. See [Customize extended retention policy](/langsmith/data-purging-compliance#customize-extended-retention-policy).
-</Warning>
+> [!WARNING]
+>
+> Starting September 14, 2026, the maximum long-lived trace retention period for SaaS customers is changing to 180 days. Enterprise customers can still customize the extended retention period per workspace up to this new maximum. Changes apply to new traces only—existing traces are unaffected. See [Customize extended retention policy](/langsmith/data-purging-compliance#customize-extended-retention-policy).
 
 **Data deletion after retention ends**
 
@@ -40,9 +40,9 @@ A default retention tier belongs to a tracing project. In an [agent-based worksp
 
 ### Data retention auto-upgrades
 
-<Warning>
-  Auto upgrades can have an impact on your bill. Please read this section carefully to fully understand your estimated LangSmith tracing costs.
-</Warning>
+> [!WARNING]
+>
+> Auto upgrades can have an impact on your bill. Please read this section carefully to fully understand your estimated LangSmith tracing costs.
 
 Most traces use base retention. Some actions, such as online evaluators and automation rules, can extend a trace to a longer retention period at a higher cost. You control which actions extend retention.
 
@@ -57,13 +57,13 @@ Retention behavior by action:
 
 This change applies to new actions only. Traces that were already upgraded by a previous action keep their extended retention.
 
-<Note>
-  When you create or edit an online evaluator on a tracing project, you can opt out of upgrading the traces that evaluator scores, keeping them at base retention. This option is available only when the project's default retention is the base tier. For step-by-step instructions, see [Manage evaluator trace retention](/langsmith/evaluators#manage-evaluator-trace-retention).
-</Note>
+> [!NOTE]
+>
+> When you create or edit an online evaluator on a tracing project, you can opt out of upgrading the traces that evaluator scores, keeping them at base retention. This option is available only when the project's default retention is the base tier. For step-by-step instructions, see [Manage evaluator trace retention](/langsmith/evaluators#manage-evaluator-trace-retention).
 
-<Note>
-  Retention extension is enabled by default for new online evaluators and automation rules. You can opt out when configuring each evaluator or rule.
-</Note>
+> [!NOTE]
+>
+> Retention extension is enabled by default for new online evaluators and automation rules. You can opt out when configuring each evaluator or rule.
 
 **Why auto-upgrade traces?**
 
@@ -128,9 +128,9 @@ This 429 is thrown by our application load balancer and is a mechanism in place 
 | `POST` | `/feedbacks*` | 5000 | 1 minute |
 | `*` | `*` | 2000 | 1 minute |
 
-<Note>
-  The LangSmith SDK takes steps to minimize the likelihood of reaching these limits on run-related endpoints by batching up to 100 runs from a single session ID into a single API call.
-</Note>
+> [!NOTE]
+>
+> The LangSmith SDK takes steps to minimize the likelihood of reaching these limits on run-related endpoints by batching up to 100 runs from a single session ID into a single API call.
 
 ### Plan-level hourly trace event limit
 
@@ -246,11 +246,11 @@ Since some 429 responses are temporary and may succeed on a successive call, if 
 
 For convenience, LangChain applications built with the LangSmith SDK has this capability built-in.
 
-<Note>
-  It is important to note that if you are saturating the endpoints for extended periods of time, retries may not be effective as your application will eventually run large enough backlogs to exhaust all retries.
-
-  If that is the case, we would like to discuss your needs more specifically. Please contact support via [LangSmith Support](https://support.langchain.com) with details about your applications throughput needs and sample code and we can work with you to better understand whether the best approach is fixing a bug, changes to your application code, or a different LangSmith plan.
-</Note>
+> [!NOTE]
+>
+> It is important to note that if you are saturating the endpoints for extended periods of time, retries may not be effective as your application will eventually run large enough backlogs to exhaust all retries.
+>
+> If that is the case, we would like to discuss your needs more specifically. Please contact support via [LangSmith Support](https://support.langchain.com) with details about your applications throughput needs and sample code and we can work with you to better understand whether the best approach is fixing a bug, changes to your application code, or a different LangSmith plan.
 
 ## Usage limits
 
@@ -286,12 +286,6 @@ Usage limits can be updated from the `Settings` page under `Usage and Billing`. 
 
 ***
 
-<div>
-  <Callout icon="terminal-2">
-    [Connect these docs](/use-these-docs) to your agent of choice via MCP for real-time answers.
-  </Callout>
+[Connect these docs](/use-these-docs) to your agent of choice via MCP for real-time answers.
 
-  <Callout icon="edit">
-    [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/usage-and-billing.mdx) or [file an issue](https://github.com/langchain-ai/docs/issues/new/choose).
-  </Callout>
-</div>
+[Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/usage-and-billing.mdx) or [file an issue](https://github.com/langchain-ai/docs/issues/new/choose).

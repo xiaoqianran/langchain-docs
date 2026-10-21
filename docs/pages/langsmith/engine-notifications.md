@@ -49,25 +49,38 @@ If Slack is not configured on your self-hosted instance, the **Slack** tab shows
 
 To add a Slack destination:
 
-<Steps>
-  <Step title="Connect a Slack workspace">
-    Connecting a Slack workspace is an organization-level action you perform once, not per project. Connecting or disconnecting a workspace requires the `organization:manage` permission. In your LangSmith instance, open **Settings**, go to your organization's **General** settings, and under **Slack** click **Connect Slack**. Authorize the configured app in Slack. You can connect more than one Slack workspace to an organization.
-  </Step>
+**1. Connect a Slack workspace**
 
-  <Step title="Add a Slack destination">
-    On the **Engine** page, click **Configure Engine**. Under **Notifications**, click **Add** if the editor is not already open. Select the **Slack** tab, then use the channel selector to choose a workspace and channel. If no workspace is connected, click **Connect Slack** in the channel selector and complete authorization.
-  </Step>
+Connecting a Slack workspace is an organization-level action you perform once, not per project. Connecting or disconnecting a workspace requires the `organization:manage` permission. In your LangSmith instance, open **Settings**, go to your organization's **General** settings, and under **Slack** click **Connect Slack**. Authorize the configured app in Slack. You can connect more than one Slack workspace to an organization.
 
-  <Step title="Choose events and severity">
-    Under **Notify when**, select which [event types](#event-types) post a message to the channel. Under **Minimum issue severity**, choose which issue severities trigger a notification. Click **Add** to save.
-  </Step>
-</Steps>
+**2. Add a Slack destination**
+
+On the **Engine** page, click **Configure Engine**. Under **Notifications**, click **Add** if the editor is not already open. Select the **Slack** tab, then use the channel selector to choose a workspace and channel. If no workspace is connected, click **Connect Slack** in the channel selector and complete authorization.
+
+**3. Choose events and severity**
+
+Under **Notify when**, select which [event types](#event-types) post a message to the channel. Under **Minimum issue severity**, choose which issue severities trigger a notification. Click **Add** to save.
 
 LangSmith joins the selected public channel when it first delivers a message, if needed. To post to a private channel, invite the configured Slack app to that channel in Slack first, then refresh the channel picker.
 
 Each Slack message includes the issue title, description, and severity, a **View issue** link back to LangSmith, and (for issue events) a chart of the issue's recurrence over time. If a workspace's connection becomes invalid, for example, the app is removed from Slack, its destinations stop delivering until you reconnect it from your organization's **General** settings.
 
 Slack destinations use the configured Slack app to post messages. They do not send the [webhook payload](#webhook-payload-reference), so webhook signing secrets and custom headers do not apply.
+
+### Mention a coding agent
+
+A Slack destination can mention a coding agent's Slack bot, such as [Open SWE](https://github.com/langchain-ai/open-swe), in the thread of an Engine notification. The mention gives the agent Engine's fix prompt for the issue, so it can work on a fix from Slack.
+
+To mention a coding agent:
+
+1. In Slack, add the agent's bot to the destination's channel.
+2. In the Slack destination's settings, select the bot under **Mention agent on new issues**. To use a bot that is not listed, enter its Slack user ID. To stop mentioning the agent, select **None**.
+3. (Optional) Under **Message to the agent**, enter an instruction of up to 1,000 characters. When empty, the mention uses `Investigate this issue and open a fix if needed.`
+4. Save the destination.
+
+The agent is mentioned in the thread of each **Issue created** message. If the destination notifies on **Fix PR ready**, the mention appears under the **Fix PR ready** message instead, once per issue.
+
+The mention includes an issue marker, `<!-- langsmith-issue {"id":"<issue-id>"} -->`. When the agent opens a pull request with that marker in its body, in a repository [connected to Engine](/langsmith/engine-repositories), Engine links the pull request to the issue. The marker must be in the body when the pull request is opened.
 
 ## Create Jira work items
 
@@ -79,42 +92,40 @@ You need permission to manage Jira automation rules and a project where the rule
 
 To create a work item for each new Engine issue:
 
-<Steps>
-  <Step title="Configure the incoming webhook in Jira">
-    Create a Jira Automation rule with an **Incoming webhook** trigger. If Jira requires a saved rule to generate the URL, save it without enabling it first.
+**1. Configure the incoming webhook in Jira**
 
-    Select **No work items from the webhook**, called **No issues from the webhook** in older interfaces. Engine sends its own event payload, rather than Jira issue keys.
+Create a Jira Automation rule with an **Incoming webhook** trigger. If Jira requires a saved rule to generate the URL, save it without enabling it first.
 
-    Generate the trigger's secret/token. Copy the webhook URL and token before saving. Keep the token out of the URL; LangSmith sends it in the authentication header.
-  </Step>
+Select **No work items from the webhook**, called **No issues from the webhook** in older interfaces. Engine sends its own event payload, rather than Jira issue keys.
 
-  <Step title="Add the Jira creation action">
-    Restrict the rule to the intended project. Add a **Create work item** action, called **Create issue** in older interfaces. Select an existing project and issue type, and configure any fields Jira requires.
+Generate the trigger's secret/token. Copy the webhook URL and token before saving. Keep the token out of the URL; LangSmith sends it in the authentication header.
 
-    For Jira Cloud, set **Summary** to `{{webhookData.object.name}}`. Set **Description** to:
+**2. Add the Jira creation action**
 
-    ```text theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-    {{webhookData.object.description}}
+Restrict the rule to the intended project. Add a **Create work item** action, called **Create issue** in older interfaces. Select an existing project and issue type, and configure any fields Jira requires.
 
-    Severity: {{webhookData.object.severity}}
-    LangSmith issue: {{webhookData.object.url}}
-    ```
+For Jira Cloud, set **Summary** to `{{webhookData.object.name}}`. Set **Description** to:
 
-    Jira Cloud exposes the envelope's `data` member as `webhookData`. Use `webhookData.object.*` for issue fields. The extra `.data` in `webhookData.data.object.name` resolves to an empty summary. Verify payload handling in your installed Jira Data Center version before using these mappings there.
-  </Step>
+```text theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+{{webhookData.object.description}}
 
-  <Step title="Add the Jira destination in LangSmith">
-    On the **Engine** page, click **Configure Engine**. Under **Notifications**, click **Add** and select **Jira**. Enter the **Jira Webhook URL** and **Jira webhook token** from the trigger.
+Severity: {{webhookData.object.severity}}
+LangSmith issue: {{webhookData.object.url}}
+```
 
-    Under **Notify when**, select only **Issue created** for this creation rule. Choose the **Minimum issue severity**, then click **Add**. Enable the rule in Jira.
-  </Step>
+Jira Cloud exposes the envelope's `data` member as `webhookData`. Use `webhookData.object.*` for issue fields. The extra `.data` in `webhookData.data.object.name` resolves to an empty summary. Verify payload handling in your installed Jira Data Center version before using these mappings there.
 
-  <Step title="Verify Jira created the work item">
-    After Engine creates an issue that matches your severity filter, check Jira's automation audit log. Confirm that the rule succeeds and creates a work item with the expected summary, description, severity, and LangSmith issue link.
+**3. Add the Jira destination in LangSmith**
 
-    An HTTP success means Jira accepted the webhook, not that it created a work item. Rule conditions, required fields, actor permissions, and automation usage limits can prevent creation.
-  </Step>
-</Steps>
+On the **Engine** page, click **Configure Engine**. Under **Notifications**, click **Add** and select **Jira**. Enter the **Jira Webhook URL** and **Jira webhook token** from the trigger.
+
+Under **Notify when**, select only **Issue created** for this creation rule. Choose the **Minimum issue severity**, then click **Add**. Enable the rule in Jira.
+
+**4. Verify Jira created the work item**
+
+After Engine creates an issue that matches your severity filter, check Jira's automation audit log. Confirm that the rule succeeds and creates a work item with the expected summary, description, severity, and LangSmith issue link.
+
+An HTTP success means Jira accepted the webhook, not that it created a work item. Rule conditions, required fields, actor permissions, and automation usage limits can prevent creation.
 
 LangSmith stores the Jira token without displaying it again. To replace it, enter a new token. Changing the webhook URL also requires entering a token for the replacement URL. If you lose the token, rotate it in Jira and update the LangSmith destination.
 
@@ -144,9 +155,9 @@ LangSmith sends a `POST` request with a JSON body to your webhook URL. The reque
 | Attempts | Up to 4 attempts (1 initial plus 3 retries with exponential backoff) on transport errors, HTTP `408`, `425`, `429`, and any HTTP `5xx`. Other `4xx` responses are treated as permanent and are not retried |
 | Response | Success is determined from the status code alone. Response bodies are ignored. |
 
-<Note>
-  Retries deliver a byte-identical payload, including the same `id`. Dedupe on `id` so a retried delivery does not produce a duplicate downstream effect.
-</Note>
+> [!NOTE]
+>
+> Retries deliver a byte-identical payload, including the same `id`. Dedupe on `id` so a retried delivery does not produce a duplicate downstream effect.
 
 ### Custom headers
 
@@ -164,61 +175,59 @@ sha256=<hex-encoded HMAC-SHA256 digest>
 
 Verify the signature before parsing or acting on the payload. The HMAC input is the exact raw request body bytes, and the HMAC key is the destination's signing secret. Do not parse and reserialize the JSON body before verification.
 
-<CodeGroup>
-  ```python Python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  import hashlib
-  import hmac
-  from typing import Optional
+```python Python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+import hashlib
+import hmac
+from typing import Optional
 
 
-  def verify_langsmith_signature(
-      *,
-      body: bytes,
-      signing_secret: str,
-      signature_header: Optional[str],
-  ) -> bool:
-      if not signature_header or not signature_header.startswith("sha256="):
-          return False
+def verify_langsmith_signature(
+    *,
+    body: bytes,
+    signing_secret: str,
+    signature_header: Optional[str],
+) -> bool:
+    if not signature_header or not signature_header.startswith("sha256="):
+        return False
 
-      expected = "sha256=" + hmac.new(
-          signing_secret.encode("utf-8"),
-          body,
-          hashlib.sha256,
-      ).hexdigest()
+    expected = "sha256=" + hmac.new(
+        signing_secret.encode("utf-8"),
+        body,
+        hashlib.sha256,
+    ).hexdigest()
 
-      return hmac.compare_digest(expected, signature_header)
-  ```
+    return hmac.compare_digest(expected, signature_header)
+```
 
-  ```typescript TypeScript theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  import { createHmac, timingSafeEqual } from "node:crypto";
+```typescript TypeScript theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+import { createHmac, timingSafeEqual } from "node:crypto";
 
-  export function verifyLangSmithSignature({
-    body,
-    signingSecret,
-    signatureHeader,
-  }: {
-    body: Buffer;
-    signingSecret: string;
-    signatureHeader: string | undefined;
-  }) {
-    if (!signatureHeader?.startsWith("sha256=")) {
-      return false;
-    }
-
-    const expected = `sha256=${createHmac("sha256", signingSecret)
-      .update(body)
-      .digest("hex")}`;
-
-    const expectedBytes = Buffer.from(expected);
-    const actualBytes = Buffer.from(signatureHeader);
-
-    return (
-      expectedBytes.length === actualBytes.length &&
-      timingSafeEqual(expectedBytes, actualBytes)
-    );
+export function verifyLangSmithSignature({
+  body,
+  signingSecret,
+  signatureHeader,
+}: {
+  body: Buffer;
+  signingSecret: string;
+  signatureHeader: string | undefined;
+}) {
+  if (!signatureHeader?.startsWith("sha256=")) {
+    return false;
   }
-  ```
-</CodeGroup>
+
+  const expected = `sha256=${createHmac("sha256", signingSecret)
+    .update(body)
+    .digest("hex")}`;
+
+  const expectedBytes = Buffer.from(expected);
+  const actualBytes = Buffer.from(signatureHeader);
+
+  return (
+    expectedBytes.length === actualBytes.length &&
+    timingSafeEqual(expectedBytes, actualBytes)
+  );
+}
+```
 
 ### Roll a signing secret
 
@@ -409,12 +418,6 @@ Sent when LangSmith Engine fails to complete a run. This event is session-scoped
 
 ***
 
-<div>
-  <Callout icon="terminal-2">
-    [Connect these docs](/use-these-docs) to your agent of choice via MCP for real-time answers.
-  </Callout>
+[Connect these docs](/use-these-docs) to your agent of choice via MCP for real-time answers.
 
-  <Callout icon="edit">
-    [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/engine-notifications.mdx) or [file an issue](https://github.com/langchain-ai/docs/issues/new/choose).
-  </Callout>
-</div>
+[Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/engine-notifications.mdx) or [file an issue](https://github.com/langchain-ai/docs/issues/new/choose).

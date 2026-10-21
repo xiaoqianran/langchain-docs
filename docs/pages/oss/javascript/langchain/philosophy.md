@@ -16,122 +16,114 @@ Today developers can choose how they build agents: use [LangChain](/oss/javascri
 
 With LangChain, we have two core focuses:
 
-<Steps>
-  <Step title="We want to enable developers to build with the best models.">
-    Different providers expose different APIs, with different model parameters and different message formats.
-    Standardizing these model inputs and outputs is a core focus, making it easy for developer to easily change to the most recent state-of-the-art model, avoiding lock-in.
-  </Step>
+**1. We want to enable developers to build with the best models.**
 
-  <Step title="We want to make it easy to use models to orchestrate more complex flows that interact with other data and computation.">
-    Models should be used for more than just *text generation* - they should also be used to orchestrate more complex flows that interact with other data. LangChain makes it easy to define [tools](/oss/javascript/langchain/tools) that LLMs can use dynamically, as well as help with parsing of and access to unstructured data.
-  </Step>
-</Steps>
+Different providers expose different APIs, with different model parameters and different message formats.
+Standardizing these model inputs and outputs is a core focus, making it easy for developer to easily change to the most recent state-of-the-art model, avoiding lock-in.
+
+**2. We want to make it easy to use models to orchestrate more complex flows that interact with other data and computation.**
+
+Models should be used for more than just *text generation* - they should also be used to orchestrate more complex flows that interact with other data. LangChain makes it easy to define [tools](/oss/javascript/langchain/tools) that LLMs can use dynamically, as well as help with parsing of and access to unstructured data.
 
 ## History
 
 Given the constant rate of change in the field, LangChain has also evolved over time. Below is a brief timeline of how LangChain has changed over the years, evolving alongside what it means to build with LLMs:
 
-<Update label="2022-10-24" description="v0.0.1">
-  A month before ChatGPT, **LangChain was launched as a Python package**. It consisted of two main components:
+**2022-10-24**
 
-  * LLM abstractions
-  * "Chains", or predetermined steps of computation to run, for common use cases. For example - RAG: run a retrieval step, then run a generation step.
+A month before ChatGPT, **LangChain was launched as a Python package**. It consisted of two main components:
 
-  The name LangChain comes from "Language" (like Language models) and "Chains".
-</Update>
+* LLM abstractions
+* "Chains", or predetermined steps of computation to run, for common use cases. For example - RAG: run a retrieval step, then run a generation step.
 
-<Update label="2022-12">
-  The first general purpose agents were added to LangChain.
+The name LangChain comes from "Language" (like Language models) and "Chains".
 
-  These general purpose agents were based on the [ReAct paper](https://arxiv.org/abs/2210.03629) (ReAct standing for Reasoning and Acting). They used LLMs to generate JSON that represented tool calls, and then parsed that JSON to determine what tools to call.
-</Update>
+**2022-12**
 
-<Update label="2023-01">
-  OpenAI releases a 'Chat Completion' API.
+The first general purpose agents were added to LangChain.
 
-  Previously, models took in strings and returned a string. In the ChatCompletions API, they evolved to take in a list of messages and return a message. Other model providers followed suit, and LangChain updated to work with lists of messages.
-</Update>
+These general purpose agents were based on the [ReAct paper](https://arxiv.org/abs/2210.03629) (ReAct standing for Reasoning and Acting). They used LLMs to generate JSON that represented tool calls, and then parsed that JSON to determine what tools to call.
 
-<Update label="2023-01">
-  LangChain releases a JavaScript version.
+**2023-01**
 
-  LLMs and agents will change how applications are built and JavaScript is the language of application developers.
-</Update>
+OpenAI releases a 'Chat Completion' API.
 
-<Update label="2023-02">
-  **LangChain Inc. was formed as a company** around the open source LangChain project.
+Previously, models took in strings and returned a string. In the ChatCompletions API, they evolved to take in a list of messages and return a message. Other model providers followed suit, and LangChain updated to work with lists of messages.
 
-  The main goal was to "make intelligent agents ubiquitous". The team recognized that while LangChain was a key part (LangChain made it simple to get started with LLMs), there was also a need for other components.
-</Update>
+**2023-01**
 
-<Update label="2023-03">
-  OpenAI releases 'function calling' in their API.
+LangChain releases a JavaScript version.
 
-  This allowed the API to explicitly generate payloads that represented tool calls. Other model providers followed suit, and LangChain was updated to use this as the preferred method for tool calling (rather than parsing JSON).
-</Update>
+LLMs and agents will change how applications are built and JavaScript is the language of application developers.
 
-<Update label="2023-06">
-  **LangSmith is released** as closed source platform by LangChain Inc., providing observability and evals.
+**2023-02**
 
-  The main issue with building agents is getting them to be reliable, and LangSmith, which provides observability and evals, was built to solve that need. LangChain was updated to integrate seamlessly with LangSmith.
-</Update>
+**LangChain Inc. was formed as a company** around the open source LangChain project.
 
-<Update label="2024-01" description="v0.1.0">
-  **LangChain releases 0.1.0**, its first non-0.0.x.
+The main goal was to "make intelligent agents ubiquitous". The team recognized that while LangChain was a key part (LangChain made it simple to get started with LLMs), there was also a need for other components.
 
-  The industry matured from prototypes to production, and as such, LangChain increased its focus on stability.
-</Update>
+**2023-03**
 
-<Update label="2024-02">
-  **LangGraph is released** as an open-source library.
+OpenAI releases 'function calling' in their API.
 
-  The original LangChain had two focuses: LLM abstractions, and high-level interfaces for getting started with common applications; however, it was missing a low-level orchestration layer that allowed developers to control the exact flow of their agent. Enter: LangGraph.
+This allowed the API to explicitly generate payloads that represented tool calls. Other model providers followed suit, and LangChain was updated to use this as the preferred method for tool calling (rather than parsing JSON).
 
-  When building LangGraph, we learned from lessons when building LangChain and added functionality we discovered was needed: streaming, durable execution, short-term memory, human-in-the-loop, and more.
-</Update>
+**2023-06**
 
-<Update label="2024-06">
-  **LangChain has over 700 integrations.**
+**LangSmith is released** as closed source platform by LangChain Inc., providing observability and evals.
 
-  Integrations were split out of the core LangChain package, and either moved into their own standalone packages (for the core integrations) or `@langchain/community`.
-</Update>
+The main issue with building agents is getting them to be reliable, and LangSmith, which provides observability and evals, was built to solve that need. LangChain was updated to integrate seamlessly with LangSmith.
 
-<Update label="2024-10">
-  LangGraph becomes the preferred way to build any AI application that is more than a single LLM call.
+**2024-01**
 
-  As developers tried to improve the reliability of their applications, they needed more control than the high-level interfaces provided. LangGraph provided that low-level flexibility. Most chains and agents were marked as deprecated in LangChain with guides on how to migrate them to LangGraph. There is still one high-level abstraction created in LangGraph: an agent abstraction. It is built on top of low-level LangGraph and has the same interface as the ReAct agents from LangChain.
-</Update>
+**LangChain releases 0.1.0**, its first non-0.0.x.
 
-<Update label="2025-04">
-  Model APIs become more multimodal.
+The industry matured from prototypes to production, and as such, LangChain increased its focus on stability.
 
-  Models started to accept files, images, videos, and more. We updated the `@langchain/core` message format accordingly to allow developers to specify these multimodal inputs in a standard way.
-</Update>
+**2024-02**
 
-<Update label="2025-10-20" description="v1.0.0">
-  **LangChain releases 1.0** with two major changes:
+**LangGraph is released** as an open-source library.
 
-  1. Complete revamp of all chains and agents in `langchain`. All chains and agents are now replaced with only one high level abstraction: an agent abstraction built on top of LangGraph. This was the high-level abstraction that was originally created in LangGraph, but just moved to LangChain.
+The original LangChain had two focuses: LLM abstractions, and high-level interfaces for getting started with common applications; however, it was missing a low-level orchestration layer that allowed developers to control the exact flow of their agent. Enter: LangGraph.
 
-     For users still using old LangChain chains/agents who do NOT want to upgrade (note: we recommend you do), you can continue using old LangChain by installing the `@langchain/classic` package.
+When building LangGraph, we learned from lessons when building LangChain and added functionality we discovered was needed: streaming, durable execution, short-term memory, human-in-the-loop, and more.
 
-  2. A standard message content format: Model APIs evolved from returning messages with a simple content string to more complex output types - reasoning blocks, citations, server-side tool calls, etc. LangChain evolved its message formats to standardize these across providers.
-</Update>
+**2024-06**
 
-<Update label="2026-03-15" description="v0.5.3">
-  **Deep Agents is released** as an open-source agent harness built on LangGraph.
+**LangChain has over 700 integrations.**
 
-  While LangChain provides flexible building blocks for custom agent architectures, [Deep Agents](/oss/javascript/langchain/overview) offers a batteries-included option for complex, long-running tasks like research and coding. It adds built-in planning tools, a virtual filesystem with pluggable backends (in-memory, disk, LangGraph store, sandboxes), and subagent spawning for context isolation. Use Deep Agents for more autonomous agents with predefined tools; use LangChain for full control over your agent architecture.
-</Update>
+Integrations were split out of the core LangChain package, and either moved into their own standalone packages (for the core integrations) or `@langchain/community`.
+
+**2024-10**
+
+LangGraph becomes the preferred way to build any AI application that is more than a single LLM call.
+
+As developers tried to improve the reliability of their applications, they needed more control than the high-level interfaces provided. LangGraph provided that low-level flexibility. Most chains and agents were marked as deprecated in LangChain with guides on how to migrate them to LangGraph. There is still one high-level abstraction created in LangGraph: an agent abstraction. It is built on top of low-level LangGraph and has the same interface as the ReAct agents from LangChain.
+
+**2025-04**
+
+Model APIs become more multimodal.
+
+Models started to accept files, images, videos, and more. We updated the `@langchain/core` message format accordingly to allow developers to specify these multimodal inputs in a standard way.
+
+**2025-10-20**
+
+**LangChain releases 1.0** with two major changes:
+
+1. Complete revamp of all chains and agents in `langchain`. All chains and agents are now replaced with only one high level abstraction: an agent abstraction built on top of LangGraph. This was the high-level abstraction that was originally created in LangGraph, but just moved to LangChain.
+
+   For users still using old LangChain chains/agents who do NOT want to upgrade (note: we recommend you do), you can continue using old LangChain by installing the `@langchain/classic` package.
+
+2. A standard message content format: Model APIs evolved from returning messages with a simple content string to more complex output types - reasoning blocks, citations, server-side tool calls, etc. LangChain evolved its message formats to standardize these across providers.
+
+**2026-03-15**
+
+**Deep Agents is released** as an open-source agent harness built on LangGraph.
+
+While LangChain provides flexible building blocks for custom agent architectures, [Deep Agents](/oss/javascript/langchain/overview) offers a batteries-included option for complex, long-running tasks like research and coding. It adds built-in planning tools, a virtual filesystem with pluggable backends (in-memory, disk, LangGraph store, sandboxes), and subagent spawning for context isolation. Use Deep Agents for more autonomous agents with predefined tools; use LangChain for full control over your agent architecture.
 
 ***
 
-<div>
-  <Callout icon="terminal-2">
-    [Connect these docs](/use-these-docs) to your agent of choice via MCP for real-time answers.
-  </Callout>
+[Connect these docs](/use-these-docs) to your agent of choice via MCP for real-time answers.
 
-  <Callout icon="edit">
-    [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/oss/langchain/philosophy.mdx) or [file an issue](https://github.com/langchain-ai/docs/issues/new/choose).
-  </Callout>
-</div>
+[Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/oss/langchain/philosophy.mdx) or [file an issue](https://github.com/langchain-ai/docs/issues/new/choose).

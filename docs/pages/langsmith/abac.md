@@ -4,15 +4,15 @@
 
 This reference explains LangSmith's Attribute-Based Access Control (ABAC) system, which enables fine-grained access control based on resource attributes, complementing [RBAC](/langsmith/rbac). For automated user provisioning into roles, see [SCIM](/langsmith/user-management#set-up-scim-for-your-organization).
 
-<Note>
-  ABAC (Attribute-Based Access Control) is an Enterprise feature for managing fine-grained access control. If you are interested in this feature, [contact our sales team](https://www.langchain.com/contact-sales). Other plans default to using the Admin role for all users.
-</Note>
+> [!NOTE]
+>
+> ABAC (Attribute-Based Access Control) is an Enterprise feature for managing fine-grained access control. If you are interested in this feature, [contact our sales team](https://www.langchain.com/contact-sales). Other plans default to using the Admin role for all users.
 
 ABAC complements [Role-Based Access Control (RBAC)](/langsmith/rbac) by adding tag-based conditions to access decisions. While RBAC grants blanket permissions based on a user's role (e.g., "can read all projects"), ABAC lets you restrict or grant access based on resource tags (e.g., "can only read projects tagged with Environment=Development").
 
-<Note>
-  Roles and resource tags can be managed via the UI or API. ABAC policies are configurable via the [API](https://api.smith.langchain.com/docs#/access_policies). Once configured, policies are automatically enforced in both the API and the UI.
-</Note>
+> [!NOTE]
+>
+> Roles and resource tags can be managed via the UI or API. ABAC policies are configurable via the [API](https://api.smith.langchain.com/docs#/access_policies). Once configured, policies are automatically enforced in both the API and the UI.
 
 ## Before you begin
 
@@ -35,9 +35,9 @@ ABAC complements [Role-Based Access Control (RBAC)](/langsmith/rbac) by adding t
      DEFAULT_ORG_FEATURE_CAN_USE_ABAC: "true"
      ```
 
-     <Note>
-       This environment variable has no effect on personal organizations, because [RBAC](/langsmith/rbac) is not enabled for personal organizations.
-     </Note>
+     > [!NOTE]
+     >
+     > This environment variable has no effect on personal organizations, because [RBAC](/langsmith/rbac) is not enabled for personal organizations.
 
 2. Set up authentication. To manage access policies via the API, you need a Personal Access Token (PAT) from an [Organization Admin](/langsmith/rbac#organization-admin) user, or an organization-scoped service key with Organization Admin permissions. Set the following environment variables before running any scripts:
 
@@ -84,9 +84,9 @@ The `effect` determines what happens when conditions match:
 * **`allow`** - Grant access when conditions match
 * **`deny`** - Block access when conditions match
 
-<Note>
-  Deny policies always take precedence. If both an allow and deny policy match, access is denied.
-</Note>
+> [!NOTE]
+>
+> Deny policies always take precedence. If both an allow and deny policy match, access is denied.
 
 ### Condition groups
 
@@ -110,13 +110,13 @@ Each condition group specifies:
 | `mcp_server` | `mcp-servers:read`, `mcp-servers:invoke`, `mcp-servers:update`, `mcp-servers:delete`. See [Fleet tool access control](/langsmith/fleet/access-and-oversight#tool-access-control). |
 | `fleet_integration` | `mcp-servers:read`, `mcp-servers:invoke`. See [Fleet tool access control](/langsmith/fleet/access-and-oversight#tool-access-control). |
 
-<Note>
-  Runs don't have their own tags. Run permissions (`runs:read`, `runs:read-inputs`, `runs:read-outputs`, `runs:create`, `runs:share`, `runs:delete`) are evaluated against the parent project's tags. For how the input and output permissions affect responses, refer to [Control access to run inputs and outputs](#control-access-to-run-inputs-and-outputs).
-</Note>
+> [!NOTE]
+>
+> Runs don't have their own tags. Run permissions (`runs:read`, `runs:read-inputs`, `runs:read-outputs`, `runs:create`, `runs:share`, `runs:delete`) are evaluated against the parent project's tags. For how the input and output permissions affect responses, refer to [Control access to run inputs and outputs](#control-access-to-run-inputs-and-outputs).
 
-<Note>
-  Cloning copies examples from a source dataset to a target dataset. The `datasets:clone` permission is checked for both datasets: once using the source dataset’s tags, and once using the target dataset’s tags. To clone successfully, a policy must grant `datasets:clone` access to both datasets.
-</Note>
+> [!NOTE]
+>
+> Cloning copies examples from a source dataset to a target dataset. The `datasets:clone` permission is checked for both datasets: once using the source dataset’s tags, and once using the target dataset’s tags. To clone successfully, a policy must grant `datasets:clone` access to both datasets.
 
 #### Conditions
 
@@ -151,9 +151,9 @@ Each operator has an `_if_exists` variant that matches by default when the tag k
 | `matches_if_exists` | Glob pattern match, or if tag key absent |
 | `not_matches_if_exists` | Match when value doesn't match glob pattern, or if tag key absent |
 
-<Tip>
-  In an **allow** policy, `_if_exists` variants grant access to resources that either match the condition or don't have the specified tag key. In a **deny** policy, they block resources that either match the condition or don't have the tag key.
-</Tip>
+> [!TIP]
+>
+> In an **allow** policy, `_if_exists` variants grant access to resources that either match the condition or don't have the specified tag key. In a **deny** policy, they block resources that either match the condition or don't have the tag key.
 
 ### Roles
 
@@ -355,9 +355,9 @@ This is supported on project, dataset, and prompt creation endpoints (including 
 
 For full details and examples, see [Tag a resource at creation time](/langsmith/set-up-resource-tags#tag-a-resource-at-creation-time) in the resource tags guide.
 
-<Note>
-  If you rely on the LangSmith SDK to auto-create tracing projects during trace ingestion, the `tag_value_ids` parameter is not available on that auto-create path. To ensure ABAC policies apply from the start, pre-create the project via `POST /api/v1/sessions` with the desired `tag_value_ids` before starting your trace session.
-</Note>
+> [!NOTE]
+>
+> If you rely on the LangSmith SDK to auto-create tracing projects during trace ingestion, the `tag_value_ids` parameter is not available on that auto-create path. To ensure ABAC policies apply from the start, pre-create the project via `POST /api/v1/sessions` with the desired `tag_value_ids` before starting your trace session.
 
 ## Troubleshooting
 
@@ -390,12 +390,6 @@ For full details and examples, see [Tag a resource at creation time](/langsmith/
 
 ***
 
-<div>
-  <Callout icon="terminal-2">
-    [Connect these docs](/use-these-docs) to your agent of choice via MCP for real-time answers.
-  </Callout>
+[Connect these docs](/use-these-docs) to your agent of choice via MCP for real-time answers.
 
-  <Callout icon="edit">
-    [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/abac.mdx) or [file an issue](https://github.com/langchain-ai/docs/issues/new/choose).
-  </Callout>
-</div>
+[Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/abac.mdx) or [file an issue](https://github.com/langchain-ai/docs/issues/new/choose).

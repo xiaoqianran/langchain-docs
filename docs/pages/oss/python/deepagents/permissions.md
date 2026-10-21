@@ -6,15 +6,15 @@ Control filesystem access with declarative permission rules for Deep Agents
 
 Control which files and directories an agent can read or write to using declarative permission rules. Pass a list of rules to `permissions=` and the agent's built-in filesystem tools respect them.
 
-<Note>
-  Permissions require `deepagents>=0.5.2`.
-</Note>
+> [!NOTE]
+>
+> Permissions require `deepagents>=0.5.2`.
 
 Permissions only apply to the built-in filesystem tools (`ls`, `read_file`, `glob`, `grep`, `write_file`, `edit_file`, `delete`). Custom tools and MCP tools that access the filesystem are not covered. Permissions also do not apply to [sandbox backends](/oss/python/deepagents/sandboxes), which support arbitrary command execution via the `execute` tool.
 
-<Tip>
-  Use `permissions` when you need **path-based allow/deny rules** on the built-in filesystem tools. Use [backend policy hooks](/oss/python/deepagents/backends#add-policy-hooks) when you need custom validation logic (rate limiting, audit logging, content inspection) or need to control custom tools.
-</Tip>
+> [!TIP]
+>
+> Use `permissions` when you need **path-based allow/deny rules** on the built-in filesystem tools. Use [backend policy hooks](/oss/python/deepagents/backends#add-policy-hooks) when you need custom validation logic (rate limiting, audit logging, content inspection) or need to control custom tools.
 
 ## Basic usage
 
@@ -52,9 +52,9 @@ Rules use first-match-wins evaluation: the first rule whose `operations` and `pa
 
 ## Pause for human approval
 
-<Note>
-  The `"interrupt"` mode requires `deepagents>=0.6.8`.
-</Note>
+> [!NOTE]
+>
+> The `"interrupt"` mode requires `deepagents>=0.6.8`.
 
 Set `mode="interrupt"` to pause for human approval instead of allowing or denying a matching operation outright. When the agent calls a built-in write tool (`write_file`, `edit_file`, `delete`) on a path that matches an interrupt-mode rule, `create_deep_agent` raises a human-in-the-loop interrupt rather than running the tool, and a reviewer can approve, edit, or reject the call.
 
@@ -79,15 +79,15 @@ agent = create_deep_agent(
 
 Interrupt-mode rules are wired into the agent's human-in-the-loop middleware automatically and merge with any `interrupt_on` you pass, so you handle and resume them the same way as tool-call interrupts. See [Human-in-the-loop](/oss/python/deepagents/human-in-the-loop) for the resume flow.
 
-<Note>
-  Deleting a directory is all-or-nothing: `delete` checks the `write` permission on the target and every descendant path, and refuses the entire operation if any of them is denied, rather than removing part of the tree. `delete` applies this same conservative check to an existing empty directory, since it is still a directory rather than a confirmed leaf target.
+> [!NOTE]
+>
+> Deleting a directory is all-or-nothing: `delete` checks the `write` permission on the target and every descendant path, and refuses the entire operation if any of them is denied, rather than removing part of the tree. `delete` applies this same conservative check to an existing empty directory, since it is still a directory rather than a confirmed leaf target.
+>
+> Deleting a plain file is an exact-match case instead: `delete` resolves the target the same way `write_file` and `edit_file` do, using first-match-wins evaluation, so an earlier, narrower `allow` rule wins over a later catch-all `deny`. `deepagents>=0.7.3` is required for this exact-match behavior.
 
-  Deleting a plain file is an exact-match case instead: `delete` resolves the target the same way `write_file` and `edit_file` do, using first-match-wins evaluation, so an earlier, narrower `allow` rule wins over a later catch-all `deny`. `deepagents>=0.7.3` is required for this exact-match behavior.
-</Note>
-
-<Tip>
-  Anchor interrupt patterns with a literal leading segment (for example, `/secrets/**` or `/projects/*/secrets/**`). Bulk tools (`ls`, `glob`, `grep`, and `delete` on a directory) fire the interrupt when their search subtree could overlap the rule's anchored prefix, so a fully unanchored pattern like `/**/secrets` conservatively over-fires.
-</Tip>
+> [!TIP]
+>
+> Anchor interrupt patterns with a literal leading segment (for example, `/secrets/**` or `/projects/*/secrets/**`). Bulk tools (`ls`, `glob`, `grep`, and `delete` on a directory) fire the interrupt when their search subtree could overlap the rule's anchored prefix, so a fully unanchored pattern like `/**/secrets` conservatively over-fires.
 
 ## Examples
 
@@ -344,12 +344,6 @@ except NotImplementedError:
 
 ***
 
-<div>
-  <Callout icon="terminal-2">
-    [Connect these docs](/use-these-docs) to your agent of choice via MCP for real-time answers.
-  </Callout>
+[Connect these docs](/use-these-docs) to your agent of choice via MCP for real-time answers.
 
-  <Callout icon="edit">
-    [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/oss/deepagents/permissions.mdx) or [file an issue](https://github.com/langchain-ai/docs/issues/new/choose).
-  </Callout>
-</div>
+[Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/oss/deepagents/permissions.mdx) or [file an issue](https://github.com/langchain-ai/docs/issues/new/choose).

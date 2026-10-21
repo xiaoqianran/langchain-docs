@@ -6,21 +6,17 @@ How the agent switcher moves between the agent list and a single agent, which se
 
 To move between the [agents](/langsmith/agents) in your workspace, use the agent switcher in the top bar. Select an agent to see counts, charts, and trace lists for that agent only.
 
-<Note>
-  Agent-based workspaces are available on [LangSmith Cloud](/langsmith/cloud). They are not available on [self-hosted](/langsmith/self-hosted) LangSmith. To check whether your workspace is agent-based, look at the control at the top left. In an agent-based workspace, it is a workspace switcher that names your workspace. In a [project-based](/langsmith/observability-concepts#tracing-projects) workspace, it shows the LangSmith logo.
-</Note>
+> [!NOTE]
+>
+> Agent-based workspaces are available on [LangSmith Cloud](/langsmith/cloud). They are not available on [self-hosted](/langsmith/self-hosted) LangSmith. To check whether your workspace is agent-based, look at the control at the top left. In an agent-based workspace, it is a workspace switcher that names your workspace. In a [project-based](/langsmith/observability-concepts#tracing-projects) workspace, it shows the LangSmith logo.
 
-<img alt="An agent's Overview, with the agent switcher in the top bar naming the agent, the ID field below it, and the metrics row for the last 7 days across all environments." />
-
-<img alt="An agent's Overview, with the agent switcher in the top bar naming the agent, the ID field below it, and the metrics row for the last 7 days across all environments." />
+![An agent's Overview, with the agent switcher in the top bar naming the agent, the ID field below it, and the metrics row for the last 7 days across all environments.](https://mintcdn.com/langchain-5e9cc07a/J7ZKUnuaUY3KEDGH/langsmith/images/agent-switcher-closed-light.png?fit=max\&auto=format\&n=J7ZKUnuaUY3KEDGH\&q=85\&s=d706de1809cf475248ca264d2f68d943)
 
 ## Switch between agents
 
 The agent switcher sits at the left of the top bar, after the workspace switcher and the panel collapse toggle. It reads either **All agents** or the name of the agent you are in. In a section other than the Overview, a breadcrumb follows it and names that section.
 
-<img alt="The agent switcher open, with a search box above a list of agents and a check mark beside the selected one." />
-
-<img alt="The agent switcher open, with a search box above a list of agents and a check mark beside the selected one." />
+![The agent switcher open, with a search box above a list of agents and a check mark beside the selected one.](https://mintcdn.com/langchain-5e9cc07a/0GS5eCN4HA5fQwNT/langsmith/images/agent-switcher-open-light.png?fit=max\&auto=format\&n=0GS5eCN4HA5fQwNT\&q=85\&s=0b42353f60159bf455491f6d0a85845c)
 
 The address behind it is `/o/<workspaceId>/a/<agentIdentifier>/...`. The workspace slot takes a UUID, and the agent slot takes the agent's [identifier](/langsmith/agents#identifiers-and-display-names). A hyphen in the agent slot means all agents, so `/a/-` is the **All agents** view and `/a/<agentIdentifier>` is a single agent. Either state can be set from the address bar, which is how to link directly to one of the two views.
 
@@ -77,12 +73,6 @@ Below the **ID** field, the Overview shows the following, in order:
 
 ***
 
-<div>
-  <Callout icon="terminal-2">
-    [Connect these docs](/use-these-docs) to your agent of choice via MCP for real-time answers.
-  </Callout>
+[Connect these docs](/use-these-docs) to your agent of choice via MCP for real-time answers.
 
-  <Callout icon="edit">
-    [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/navigate-agents.mdx) or [file an issue](https://github.com/langchain-ai/docs/issues/new/choose).
-  </Callout>
-</div>
+[Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/navigate-agents.mdx) or [file an issue](https://github.com/langchain-ai/docs/issues/new/choose).

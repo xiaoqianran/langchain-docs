@@ -4,9 +4,9 @@
 
 Provision LangSmith self-hosted on AWS, Azure, or GCP using LangChain's production-ready Terraform modules.
 
-<Info>
-  Self-hosted LangSmith is an add-on to the Enterprise plan designed for LangChain's largest, most security-conscious customers. See [pricing](https://www.langchain.com/pricing) for details, or [contact the LangChain sales team](https://www.langchain.com/contact-sales) to request a license key for trial.
-</Info>
+> [!NOTE]
+>
+> Self-hosted LangSmith is an add-on to the Enterprise plan designed for LangChain's largest, most security-conscious customers. See [pricing](https://www.langchain.com/pricing) for details, or [contact the LangChain sales team](https://www.langchain.com/contact-sales) to request a license key for trial.
 
 LangChain publishes production-ready Terraform modules for [LangSmith self-hosted](/langsmith/self-hosted) at [github.com/langchain-ai/terraform](https://github.com/langchain-ai/terraform). The modules provision the cloud foundation (network, cluster, database, cache, object storage, secrets, DNS) and install the LangSmith Helm chart with sensible defaults.
 
@@ -14,25 +14,23 @@ Use this path when you want infrastructure as code from day one. If you already 
 
 Each module release tag deploys one Helm chart line: the `v0.17.*` tags deploy chart 0.17, and the `v0.16.*` tags deploy chart 0.16. Check out the tag for the chart line you want before you configure the module.
 
-<Tip>
-  **Prefer Helm?** The [Kubernetes setup guide](/langsmith/kubernetes) walks through installing with Helm against any conformant cluster, no Terraform required. The Terraform path bundles cluster provisioning, secrets wiring, and the Helm release into one workflow.
-</Tip>
+> [!TIP]
+>
+> **Prefer Helm?** The [Kubernetes setup guide](/langsmith/kubernetes) walks through installing with Helm against any conformant cluster, no Terraform required. The Terraform path bundles cluster provisioning, secrets wiring, and the Helm release into one workflow.
 
 ## Choose a provider
 
-<CardGroup>
-  <Card title="AWS (EKS)" icon="brand-aws" href="/langsmith/self-host-terraform-aws-deploy">
-    Provision EKS, RDS PostgreSQL, ElastiCache, S3, and networking.
-  </Card>
+> **[AWS (EKS)](/langsmith/self-host-terraform-aws-deploy)**
+>
+> Provision EKS, RDS PostgreSQL, ElastiCache, S3, and networking.
 
-  <Card title="Azure (AKS)" icon="brand-windows" href="/langsmith/self-host-terraform-azure-deploy">
-    Provision AKS, Azure Database for PostgreSQL, Azure Managed Redis, Blob Storage, and Key Vault.
-  </Card>
+> **[Azure (AKS)](/langsmith/self-host-terraform-azure-deploy)**
+>
+> Provision AKS, Azure Database for PostgreSQL, Azure Managed Redis, Blob Storage, and Key Vault.
 
-  <Card title="GCP (GKE)" icon="brand-google" href="/langsmith/self-host-terraform-gcp-deploy">
-    Provision GKE, Cloud SQL, Memorystore, GCS, and Workload Identity.
-  </Card>
-</CardGroup>
+> **[GCP (GKE)](/langsmith/self-host-terraform-gcp-deploy)**
+>
+> Provision GKE, Cloud SQL, Memorystore, GCS, and Workload Identity.
 
 ## Prerequisites
 
@@ -63,9 +61,9 @@ Each tier is a combination of settings in `terraform.tfvars`: `postgres_source`,
 
 On AWS and Azure, start from the `terraform.tfvars.example`, `terraform.tfvars.minimum`, `terraform.tfvars.dev`, or `terraform.tfvars.production` template. On GCP, start from `terraform.tfvars.example` or `terraform.tfvars.minimum`. The templates do not map one-to-one to these tiers: every template keeps ClickHouse in-cluster, and the dev templates use managed PostgreSQL and Redis. After copying one, set the three `*_source` values and `sizing_profile` to match the tier you want.
 
-<Warning>
-  Use in-cluster ClickHouse for development and POC, not production. Production deployments must use [LangChain Managed ClickHouse](/langsmith/langsmith-managed-clickhouse) or a self-managed external ClickHouse cluster. Blob storage is always required because trace payloads must not live in ClickHouse.
-</Warning>
+> [!WARNING]
+>
+> Use in-cluster ClickHouse for development and POC, not production. Production deployments must use [LangChain Managed ClickHouse](/langsmith/langsmith-managed-clickhouse) or a self-managed external ClickHouse cluster. Blob storage is always required because trace payloads must not live in ClickHouse.
 
 ## What the modules provision
 
@@ -87,11 +85,11 @@ Each module exposes flags for the optional LangSmith add-ons. Toggle each in `te
 * **[LLM Gateway](/langsmith/llm-gateway)** (`enable_llm_gateway`): One LangSmith API key for models across the providers your organization configures, in beta. `enable_gateway_pii_redaction` adds PII redaction.
 * **[SSO with OIDC](/langsmith/self-host-sso)** (`enable_sso_oidc`): Log in through a standard OIDC provider instead of basic auth. Enable it only after you have logged in as the org admin with basic auth, because the flag disables basic auth.
 
-<Note>
-  Run `make init-values && make deploy` to apply a flag change. `enable_fleet` also creates Terraform resources, so run `make apply` first. Fleet replaces the legacy `enable_agent_builder` flag, and its prerequisites differ by provider. See the Fleet section of the [AWS](/langsmith/self-host-terraform-aws-deploy#fleet), [GCP](/langsmith/self-host-terraform-gcp-deploy#fleet), or [Azure](/langsmith/self-host-terraform-azure-deploy#fleet) deploy guide.
-
-  `enable_sso_oidc` is available in all three modules on the `v0.17.*` tags, and in the AWS module from v0.16.83. The LLM Gateway flags are available only in the Azure module, on the `v0.17.*` tags.
-</Note>
+> [!NOTE]
+>
+> Run `make init-values && make deploy` to apply a flag change. `enable_fleet` also creates Terraform resources, so run `make apply` first. Fleet replaces the legacy `enable_agent_builder` flag, and its prerequisites differ by provider. See the Fleet section of the [AWS](/langsmith/self-host-terraform-aws-deploy#fleet), [GCP](/langsmith/self-host-terraform-gcp-deploy#fleet), or [Azure](/langsmith/self-host-terraform-azure-deploy#fleet) deploy guide.
+>
+> `enable_sso_oidc` is available in all three modules on the `v0.17.*` tags, and in the AWS module from v0.16.83. The LLM Gateway flags are available only in the Azure module, on the `v0.17.*` tags.
 
 ## Next steps
 
@@ -102,12 +100,6 @@ Each module exposes flags for the optional LangSmith add-ons. Toggle each in `te
 
 ***
 
-<div>
-  <Callout icon="terminal-2">
-    [Connect these docs](/use-these-docs) to your agent of choice via MCP for real-time answers.
-  </Callout>
+[Connect these docs](/use-these-docs) to your agent of choice via MCP for real-time answers.
 
-  <Callout icon="edit">
-    [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/self-host-terraform.mdx) or [file an issue](https://github.com/langchain-ai/docs/issues/new/choose).
-  </Callout>
-</div>
+[Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/self-host-terraform.mdx) or [file an issue](https://github.com/langchain-ai/docs/issues/new/choose).

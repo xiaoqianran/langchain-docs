@@ -9,13 +9,13 @@ It also provides some non-Google models such as [Anthropic's Claude](https://doc
 
 This will help you getting started with `ChatVertexAI` [chat models](/oss/javascript/langchain/models). For detailed documentation of all `ChatVertexAI` features and configurations head to the [API reference](https://reference.langchain.com/javascript/langchain-google-vertexai/index/ChatVertexAI).
 
-<Note>
-  **This library will be deprecated**
-
-  This library will be replaced by the [ChatGoogle](/oss/javascript/integrations/chat/google) library.
-  New implementations should use the [ChatGoogle](/oss/javascript/integrations/chat/google) library instead and
-  existing implementations should consider migrating.
-</Note>
+> [!NOTE]
+>
+> **This library will be deprecated**
+>
+> This library will be replaced by the [ChatGoogle](/oss/javascript/integrations/chat/google) library.
+> New implementations should use the [ChatGoogle](/oss/javascript/integrations/chat/google) library instead and
+> existing implementations should consider migrating.
 
 ## Overview
 
@@ -79,35 +79,31 @@ If you want to get automated tracing of your model calls you can also set your [
 
 The LangChain Gemini Enterprise Agent Platform chat integration lives in the `@langchain/google-vertexai` package:
 
-<CodeGroup>
-  ```bash npm theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  npm install @langchain/google-vertexai @langchain/core
-  ```
+```bash npm theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+npm install @langchain/google-vertexai @langchain/core
+```
 
-  ```bash yarn theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  yarn add @langchain/google-vertexai @langchain/core
-  ```
+```bash yarn theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+yarn add @langchain/google-vertexai @langchain/core
+```
 
-  ```bash pnpm theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  pnpm add @langchain/google-vertexai @langchain/core
-  ```
-</CodeGroup>
+```bash pnpm theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+pnpm add @langchain/google-vertexai @langchain/core
+```
 
 Or if using in a web environment like a [Vercel Edge function](https://vercel.com/blog/edge-functions-generally-available):
 
-<CodeGroup>
-  ```bash npm theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  npm install @langchain/google-vertexai-web @langchain/core
-  ```
+```bash npm theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+npm install @langchain/google-vertexai-web @langchain/core
+```
 
-  ```bash yarn theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  yarn add @langchain/google-vertexai-web @langchain/core
-  ```
+```bash yarn theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+yarn add @langchain/google-vertexai-web @langchain/core
+```
 
-  ```bash pnpm theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  pnpm add @langchain/google-vertexai-web @langchain/core
-  ```
-</CodeGroup>
+```bash pnpm theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+pnpm add @langchain/google-vertexai-web @langchain/core
+```
 
 ## Instantiation
 
@@ -299,12 +295,6 @@ For detailed documentation of all `ChatVertexAI` features and configurations hea
 
 ***
 
-<div>
-  <Callout icon="terminal-2">
-    [Connect these docs](/use-these-docs) to your agent of choice via MCP for real-time answers.
-  </Callout>
+[Connect these docs](/use-these-docs) to your agent of choice via MCP for real-time answers.
 
-  <Callout icon="edit">
-    [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/oss/javascript/integrations/chat/google_vertex_ai.mdx) or [file an issue](https://github.com/langchain-ai/docs/issues/new/choose).
-  </Callout>
-</div>
+[Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/oss/javascript/integrations/chat/google_vertex_ai.mdx) or [file an issue](https://github.com/langchain-ai/docs/issues/new/choose).

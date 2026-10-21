@@ -18,9 +18,9 @@ Store items are organized by a **namespace** tuple (for example, `("memories", "
 
 A user who writes to logical namespace `("memories",)` with automatic prefix rewriting actually stores data at `("user-123", "memories")`. Another user cannot read or overwrite that data because their requests are scoped to `("user-456", ...)`.
 
-<Note>
-  Store authorization handlers receive a **mutable** `value` dict. Changes to `value["namespace"]` take effect on the operation. You do not return a metadata filter like you do for threads.
-</Note>
+> [!NOTE]
+>
+> Store authorization handlers receive a **mutable** `value` dict. Changes to `value["namespace"]` take effect on the operation. You do not return a metadata filter like you do for threads.
 
 ## Prerequisites
 
@@ -56,9 +56,9 @@ Store isolation requires a `@auth.on.store` handler. Two common patterns work we
 
 Both patterns use a single `@auth.on.store` handler that covers all store actions (`put`, `get`, `search`, `delete`, and `list_namespaces`). You only need action-specific handlers such as `@auth.on.store.put` if you want different rules per operation.
 
-<Tip>
-  If you use a global `@auth.on` handler that denies unhandled requests, register `@auth.on.store` explicitly so store operations are allowed. See the [Auth reference](https://reference.langchain.com/python/langgraph-sdk/auth/Auth) for action-specific handler names.
-</Tip>
+> [!TIP]
+>
+> If you use a global `@auth.on` handler that denies unhandled requests, register `@auth.on.store` explicitly so store operations are allowed. See the [Auth reference](https://reference.langchain.com/python/langgraph-sdk/auth/Auth) for action-specific handler names.
 
 ### Explicit namespace + deny
 
@@ -242,12 +242,6 @@ For multi-user agents, configure both. See [Make conversations private](/langsmi
 
 ***
 
-<div>
-  <Callout icon="terminal-2">
-    [Connect these docs](/use-these-docs) to your agent of choice via MCP for real-time answers.
-  </Callout>
+[Connect these docs](/use-these-docs) to your agent of choice via MCP for real-time answers.
 
-  <Callout icon="edit">
-    [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/store-auth.mdx) or [file an issue](https://github.com/langchain-ai/docs/issues/new/choose).
-  </Callout>
-</div>
+[Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/store-auth.mdx) or [file an issue](https://github.com/langchain-ai/docs/issues/new/choose).

@@ -11,14 +11,14 @@
    * **Runtime context**: Data scoped to a single run or invocation
    * **Cross-conversation context**: Data that persists across multiple conversations or sessions
 
-<Tip>
-  Runtime context refers to local context: data and dependencies your code needs to run. It does **not** refer to:
-
-  * The LLM context, which is the data passed into the LLM's prompt.
-  * The "context window", which is the maximum number of tokens that can be passed to the LLM.
-
-  Runtime context is a form of dependency injection and can be used to optimize the LLM context. It lets you provide dependencies (like database connections, user IDs, or API clients) to your tools and nodes at runtime rather than hardcoding them. For example, you can use user metadata in the runtime context to fetch user preferences and feed them into the context window.
-</Tip>
+> [!TIP]
+>
+> Runtime context refers to local context: data and dependencies your code needs to run. It does **not** refer to:
+>
+> * The LLM context, which is the data passed into the LLM's prompt.
+> * The "context window", which is the maximum number of tokens that can be passed to the LLM.
+>
+> Runtime context is a form of dependency injection and can be used to optimize the LLM context. It lets you provide dependencies (like database connections, user IDs, or API clients) to your tools and nodes at runtime rather than hardcoding them. For example, you can use user metadata in the runtime context to fetch user preferences and feed them into the context window.
 
 LangGraph provides three ways to manage context, which combines the mutability and lifetime dimensions:
 
@@ -43,139 +43,135 @@ graph.invoke(
 )
 ```
 
-<Tabs>
-  <Tab title="Agent prompt">
-    ```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-    from dataclasses import dataclass
-    from langchain.agents import create_agent
-    from langchain.agents.middleware import dynamic_prompt, ModelRequest
+**Agent prompt**
+
+```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+from dataclasses import dataclass
+from langchain.agents import create_agent
+from langchain.agents.middleware import dynamic_prompt, ModelRequest
 
 
-    @dataclass
-    class ContextSchema:
-        user_name: str
+@dataclass
+class ContextSchema:
+    user_name: str
 
-    @dynamic_prompt  # [!code highlight]
-    def personalized_prompt(request: ModelRequest) -> str:  # [!code highlight]
-        user_name = request.runtime.context.user_name
-        return f"You are a helpful assistant. Address the user as {user_name}."
+@dynamic_prompt  # [!code highlight]
+def personalized_prompt(request: ModelRequest) -> str:  # [!code highlight]
+    user_name = request.runtime.context.user_name
+    return f"You are a helpful assistant. Address the user as {user_name}."
 
-    agent = create_agent(
-        model="claude-sonnet-4-6",
-        tools=[get_weather],
-        middleware=[personalized_prompt],
-        context_schema=ContextSchema
-    )
+agent = create_agent(
+    model="claude-sonnet-4-6",
+    tools=[get_weather],
+    middleware=[personalized_prompt],
+    context_schema=ContextSchema
+)
 
-    agent.invoke(
-        {"messages": [{"role": "user", "content": "what is the weather in sf"}]},
-        context=ContextSchema(user_name="John Smith")  # [!code highlight]
-    )
-    ```
+agent.invoke(
+    {"messages": [{"role": "user", "content": "what is the weather in sf"}]},
+    context=ContextSchema(user_name="John Smith")  # [!code highlight]
+)
+```
 
-    See [Agents](/oss/python/langchain/agents) for details.
-  </Tab>
+See [Agents](/oss/python/langchain/agents) for details.
 
-  <Tab title="Workflow node">
-    ```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-    from langgraph.runtime import Runtime
+**Workflow node**
 
-    def node(state: State, runtime: Runtime[ContextSchema]):  # [!code highlight]
-        user_name = runtime.context.user_name
-        ...
-    ```
+```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+from langgraph.runtime import Runtime
 
-    * See [the Graph API](/oss/python/langgraph/use-graph-api#add-runtime-configuration) for details.
-  </Tab>
+def node(state: State, runtime: Runtime[ContextSchema]):  # [!code highlight]
+    user_name = runtime.context.user_name
+    ...
+```
 
-  <Tab title="In a tool">
-    ```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-    from langchain.tools import tool, ToolRuntime
+* See [the Graph API](/oss/python/langgraph/use-graph-api#add-runtime-configuration) for details.
 
-    @tool
-    def get_user_email(runtime: ToolRuntime[ContextSchema]) -> str:
-        """Retrieve user information based on user ID."""
-        # simulate fetching user info from a database
-        email = get_user_email_from_db(runtime.context.user_name)  # [!code highlight]
-        return email
-    ```
+**In a tool**
 
-    See the [tool calling guide](/oss/python/langchain/tools#context) for details.
-  </Tab>
-</Tabs>
+```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+from langchain.tools import tool, ToolRuntime
 
-<Tip>
-  The `Runtime` object can be used to access static context and other utilities like the active store and stream writer.
-  See the [`Runtime`](https://reference.langchain.com/python/langgraph/runtime/Runtime) documentation for details.
-</Tip>
+@tool
+def get_user_email(runtime: ToolRuntime[ContextSchema]) -> str:
+    """Retrieve user information based on user ID."""
+    # simulate fetching user info from a database
+    email = get_user_email_from_db(runtime.context.user_name)  # [!code highlight]
+    return email
+```
+
+See the [tool calling guide](/oss/python/langchain/tools#context) for details.
+
+> [!TIP]
+>
+> The `Runtime` object can be used to access static context and other utilities like the active store and stream writer.
+> See the [`Runtime`](https://reference.langchain.com/python/langgraph/runtime/Runtime) documentation for details.
 
 ## Dynamic runtime context
 
 **Dynamic runtime context** represents mutable data that can evolve during a single run and is managed through the LangGraph state object. This includes conversation history, intermediate results, and values derived from tools or LLM outputs. In LangGraph, the state object acts as [short-term memory](/oss/python/concepts/memory) during a run.
 
-<Tabs>
-  <Tab title="In an agent">
-    Example shows how to incorporate state into an agent **prompt**.
+**In an agent**
 
-    State can also be accessed by the agent's **tools**, which can read or update the state as needed. See [tool calling guide](/oss/python/langchain/tools#short-term-memory-state) for details.
+Example shows how to incorporate state into an agent **prompt**.
 
-    ```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-    from langchain.agents import create_agent
-    from langchain.agents.middleware import dynamic_prompt, ModelRequest
-    from langchain.agents import AgentState
+State can also be accessed by the agent's **tools**, which can read or update the state as needed. See [tool calling guide](/oss/python/langchain/tools#short-term-memory-state) for details.
+
+```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+from langchain.agents import create_agent
+from langchain.agents.middleware import dynamic_prompt, ModelRequest
+from langchain.agents import AgentState
 
 
-    class CustomState(AgentState):  # [!code highlight]
-        user_name: str
+class CustomState(AgentState):  # [!code highlight]
+    user_name: str
 
-    @dynamic_prompt  # [!code highlight]
-    def personalized_prompt(request: ModelRequest) -> str:  # [!code highlight]
-        user_name = request.state.get("user_name", "User")
-        return f"You are a helpful assistant. User's name is {user_name}"
+@dynamic_prompt  # [!code highlight]
+def personalized_prompt(request: ModelRequest) -> str:  # [!code highlight]
+    user_name = request.state.get("user_name", "User")
+    return f"You are a helpful assistant. User's name is {user_name}"
 
-    agent = create_agent(
-        model="claude-sonnet-4-6",
-        tools=[...],
-        state_schema=CustomState,  # [!code highlight]
-        middleware=[personalized_prompt],  # [!code highlight]
-    )
+agent = create_agent(
+    model="claude-sonnet-4-6",
+    tools=[...],
+    state_schema=CustomState,  # [!code highlight]
+    middleware=[personalized_prompt],  # [!code highlight]
+)
 
-    agent.invoke({
-        "messages": "hi!",
-        "user_name": "John Smith"
-    })
-    ```
-  </Tab>
+agent.invoke({
+    "messages": "hi!",
+    "user_name": "John Smith"
+})
+```
 
-  <Tab title="In a workflow">
-    ```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-    from typing_extensions import TypedDict
-    from langchain.messages import AnyMessage
-    from langgraph.graph import StateGraph
+**In a workflow**
 
-    class CustomState(TypedDict):  # [!code highlight]
-        messages: list[AnyMessage]
-        extra_field: int
+```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+from typing_extensions import TypedDict
+from langchain.messages import AnyMessage
+from langgraph.graph import StateGraph
 
-    def node(state: CustomState):  # [!code highlight]
-        messages = state["messages"]
-        ...
-        return {  # [!code highlight]
-            "extra_field": state["extra_field"] + 1  # [!code highlight]
-        }
+class CustomState(TypedDict):  # [!code highlight]
+    messages: list[AnyMessage]
+    extra_field: int
 
-    builder = StateGraph(State)
-    builder.add_node(node)
-    builder.set_entry_point("node")
-    graph = builder.compile()
-    ```
-  </Tab>
-</Tabs>
+def node(state: CustomState):  # [!code highlight]
+    messages = state["messages"]
+    ...
+    return {  # [!code highlight]
+        "extra_field": state["extra_field"] + 1  # [!code highlight]
+    }
 
-<Tip>
-  **Turning on memory**
-  Please see the [memory guide](/oss/python/langgraph/add-memory) for more details on how to enable memory. This is a powerful feature that allows you to persist the agent's state across multiple invocations. Otherwise, the state is scoped only to a single run.
-</Tip>
+builder = StateGraph(State)
+builder.add_node(node)
+builder.set_entry_point("node")
+graph = builder.compile()
+```
+
+> [!TIP]
+>
+> **Turning on memory**
+> Please see the [memory guide](/oss/python/langgraph/add-memory) for more details on how to enable memory. This is a powerful feature that allows you to persist the agent's state across multiple invocations. Otherwise, the state is scoped only to a single run.
 
 ## Dynamic cross-conversation context
 
@@ -189,12 +185,6 @@ graph.invoke(
 
 ***
 
-<div>
-  <Callout icon="terminal-2">
-    [Connect these docs](/use-these-docs) to your agent of choice via MCP for real-time answers.
-  </Callout>
+[Connect these docs](/use-these-docs) to your agent of choice via MCP for real-time answers.
 
-  <Callout icon="edit">
-    [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/oss/concepts/context.mdx) or [file an issue](https://github.com/langchain-ai/docs/issues/new/choose).
-  </Callout>
-</div>
+[Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/oss/concepts/context.mdx) or [file an issue](https://github.com/langchain-ai/docs/issues/new/choose).

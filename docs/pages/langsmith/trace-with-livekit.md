@@ -2,15 +2,15 @@
 
 # Trace LiveKit applications
 
-<Note>
-  This integration is in beta, so its API may change.
-</Note>
+> [!NOTE]
+>
+> This integration is in beta, so its API may change.
 
 Use the LangSmith LiveKit integration to trace your [LiveKit Agents](https://docs.livekit.io/agents/) voice agents, including their transcripts and audio recordings. For high-level conventions, see [Voice tracing fundamentals](/langsmith/trace-voice-fundamentals).
 
-<Note>
-  This setup requires `langsmith[livekit]>=0.11.2` and `livekit-agents>=1.6`. LiveKit Agents 1.7 and later require `langsmith[livekit]>=0.12.4`.
-</Note>
+> [!NOTE]
+>
+> This setup requires `langsmith[livekit]>=0.11.2` and `livekit-agents>=1.6`. LiveKit Agents 1.7 and later require `langsmith[livekit]>=0.12.4`.
 
 Each conversation appears as one LangSmith trace with its pipeline events, latency, and token metrics.
 
@@ -18,15 +18,13 @@ Each conversation appears as one LangSmith trace with its pipeline events, laten
 
 Install the integration along with the LiveKit plugins your agent uses:
 
-<CodeGroup>
-  ```bash pip theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  pip install "langsmith[livekit]" "livekit-agents[openai,silero,turn-detector]"
-  ```
+```bash pip theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+pip install "langsmith[livekit]" "livekit-agents[openai,silero,turn-detector]"
+```
 
-  ```bash uv theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  uv add "langsmith[livekit]" "livekit-agents[openai,silero,turn-detector]"
-  ```
-</CodeGroup>
+```bash uv theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+uv add "langsmith[livekit]" "livekit-agents[openai,silero,turn-detector]"
+```
 
 ## Set environment variables
 
@@ -161,9 +159,9 @@ async def my_agent(ctx: agents.JobContext):
 
 By default, the LiveKit integration will capture the recording from LiveKit if present.
 
-<Note>
-  In console mode, also pass `--record` on the command line (`python agent.py console --record`). Without it LiveKit creates the recorder but never starts it, so there is no file to attach. The recording reflects what was played to the client, so a barge-in shows up truncated.
-</Note>
+> [!NOTE]
+>
+> In console mode, also pass `--record` on the command line (`python agent.py console --record`). Without it LiveKit creates the recorder but never starts it, so there is no file to attach. The recording reflects what was played to the client, so a barge-in shows up truncated.
 
 ### Record with Egress
 
@@ -260,30 +258,22 @@ async def my_agent(ctx: agents.JobContext):
 
 `download_from_storage` represents your storage client's download operation. The default attachment name and MIME type are `recording.ogg` and `audio/ogg`. Set `name` or `mime_type` in `complete_recording` if your Egress output uses another format.
 
-<Note>
-  Always call `complete_recording`, including on failure with `data=None`. Otherwise, the integration waits for `recording_timeout_seconds` (30 seconds by default) before exporting the trace without audio. Using `complete_recording` to capture Egress recordings requires setting a `thread_id`.
-</Note>
+> [!NOTE]
+>
+> Always call `complete_recording`, including on failure with `data=None`. Otherwise, the integration waits for `recording_timeout_seconds` (30 seconds by default) before exporting the trace without audio. Using `complete_recording` to capture Egress recordings requires setting a `thread_id`.
 
 ## Next steps
 
-<CardGroup>
-  <Card title="Voice fundamentals" icon="waveform" href="/langsmith/trace-voice-fundamentals">
-    Core conventions for tracing voice agents.
-  </Card>
+> **[Voice fundamentals](/langsmith/trace-voice-fundamentals)**
+>
+> Core conventions for tracing voice agents.
 
-  <Card title="Upload files with traces" icon="paperclip" href="/langsmith/upload-files-with-traces">
-    Attach the conversation audio recording to your trace.
-  </Card>
-</CardGroup>
+> **[Upload files with traces](/langsmith/upload-files-with-traces)**
+>
+> Attach the conversation audio recording to your trace.
 
 ***
 
-<div>
-  <Callout icon="terminal-2">
-    [Connect these docs](/use-these-docs) to your agent of choice via MCP for real-time answers.
-  </Callout>
+[Connect these docs](/use-these-docs) to your agent of choice via MCP for real-time answers.
 
-  <Callout icon="edit">
-    [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/trace-with-livekit.mdx) or [file an issue](https://github.com/langchain-ai/docs/issues/new/choose).
-  </Callout>
-</div>
+[Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/trace-with-livekit.mdx) or [file an issue](https://github.com/langchain-ai/docs/issues/new/choose).

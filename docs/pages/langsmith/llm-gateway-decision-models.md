@@ -31,79 +31,77 @@ The response contains `answers` keyed by question name rather than a chat messag
 
 The `typesafe/` prefix routes the request through your workspace's TypeSafe provider secret. Pass your LangSmith API key, not your TypeSafe API key, as the SDK's `api_key` or `apiKey`. Use the gateway base URL without `/v1` for the SDKs:
 
-<Tabs>
-  <Tab title="Python">
-    Install the TypeSafe SDK:
+**Python**
 
-    ```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-    pip install typesafe-sdk
-    ```
+Install the TypeSafe SDK:
 
-    ```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-    import os
+```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+pip install typesafe-sdk
+```
 
-    from typesafe_sdk import Noul, TypeSafeClient
+```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+import os
 
-    client = TypeSafeClient(
-        api_key=os.environ["LANGSMITH_API_KEY"],
-        base_url="https://gateway.smith.langchain.com",
-    )
+from typesafe_sdk import Noul, TypeSafeClient
 
-    response = client.system_one(
-        state="Hello!",
-        model="typesafe/jev-1.13.0",
-        questions={
-            "is_helpful": Noul(
-                instructions="Does this explain what an LLM gateway does?"
-            ),
-        },
-    )
-    ```
-  </Tab>
+client = TypeSafeClient(
+    api_key=os.environ["LANGSMITH_API_KEY"],
+    base_url="https://gateway.smith.langchain.com",
+)
 
-  <Tab title="JavaScript">
-    Install the TypeSafe SDK:
+response = client.system_one(
+    state="Hello!",
+    model="typesafe/jev-1.13.0",
+    questions={
+        "is_helpful": Noul(
+            instructions="Does this explain what an LLM gateway does?"
+        ),
+    },
+)
+```
 
-    ```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-    npm install @typesafe-ai/sdk
-    ```
+**JavaScript**
 
-    ```javascript theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-    import { noul, TypeSafeClient } from "@typesafe-ai/sdk";
+Install the TypeSafe SDK:
 
-    const client = new TypeSafeClient({
-      apiKey: process.env.LANGSMITH_API_KEY,
-      baseURL: "https://gateway.smith.langchain.com",
-    });
+```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+npm install @typesafe-ai/sdk
+```
 
-    const response = await client.systemOne({
-      state: "Hello!",
-      model: "typesafe/jev-1.13.0",
-      questions: {
-        is_helpful: noul("Does this explain what an LLM gateway does?"),
-      },
-    });
-    ```
-  </Tab>
+```javascript theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+import { noul, TypeSafeClient } from "@typesafe-ai/sdk";
 
-  <Tab title="cURL">
-    ```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-    curl https://gateway.smith.langchain.com/v1/systemone \
-        -H "Authorization: Bearer $LANGSMITH_API_KEY" \
-        -H "Content-Type: application/json" \
-        -d '{
-          "state": "Hello!",
-          "model": "typesafe/jev-1.13.0",
-          "questions": {
-            "is_helpful": {
-              "type": "noul",
-              "instructions": "Does this explain what an LLM gateway does?"
-            }
-          }
-        }'
-    ```
-  </Tab>
-</Tabs>
+const client = new TypeSafeClient({
+  apiKey: process.env.LANGSMITH_API_KEY,
+  baseURL: "https://gateway.smith.langchain.com",
+});
+
+const response = await client.systemOne({
+  state: "Hello!",
+  model: "typesafe/jev-1.13.0",
+  questions: {
+    is_helpful: noul("Does this explain what an LLM gateway does?"),
+  },
+});
+```
+
+**cURL**
+
+```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+curl https://gateway.smith.langchain.com/v1/systemone \
+    -H "Authorization: Bearer $LANGSMITH_API_KEY" \
+    -H "Content-Type: application/json" \
+    -d '{
+      "state": "Hello!",
+      "model": "typesafe/jev-1.13.0",
+      "questions": {
+        "is_helpful": {
+          "type": "noul",
+          "instructions": "Does this explain what an LLM gateway does?"
+        }
+      }
+    }'
+```
 
 ## Use OpenAI decision models
 
@@ -164,12 +162,6 @@ Gateway [access](/langsmith/llm-gateway-model-access-policies), [rate-limit](/la
 
 ***
 
-<div>
-  <Callout icon="terminal-2">
-    [Connect these docs](/use-these-docs) to your agent of choice via MCP for real-time answers.
-  </Callout>
+[Connect these docs](/use-these-docs) to your agent of choice via MCP for real-time answers.
 
-  <Callout icon="edit">
-    [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/llm-gateway-decision-models.mdx) or [file an issue](https://github.com/langchain-ai/docs/issues/new/choose).
-  </Callout>
-</div>
+[Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/llm-gateway-decision-models.mdx) or [file an issue](https://github.com/langchain-ai/docs/issues/new/choose).

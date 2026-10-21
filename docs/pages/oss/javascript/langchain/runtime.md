@@ -12,9 +12,9 @@ LangGraph exposes a [`Runtime`](https://reference.langchain.com/javascript/langc
 4. **Execution info**: identity and retry information for the current execution (thread ID, run ID, attempt number)
 5. **Server info**: server-specific metadata when running on LangGraph Server (assistant ID, graph ID, authenticated user)
 
-<Tip>
-  The runtime context is how you thread data through your agent. Rather than storing things in global state, you can attach values—like a database connection, user session, or configuration—to the context and access them inside tools and middleware. This keeps things stateless, testable, and reusable.
-</Tip>
+> [!TIP]
+>
+> The runtime context is how you thread data through your agent. Rather than storing things in global state, you can attach values—like a database connection, user session, or configuration—to the context and access them inside tools and middleware. This keeps things stateless, testable, and reusable.
 
 You can access the runtime information within [tools](#inside-tools) and [middleware](#inside-middleware).
 
@@ -124,9 +124,9 @@ const contextAwareTool = tool(
 
 `serverInfo` is `null` when not running on LangGraph Server (e.g., during local development).
 
-<Note>
-  Requires `deepagents>=1.9.0` (or `@langchain/langgraph>=1.2.8`) for `runtime.executionInfo` and `runtime.serverInfo`.
-</Note>
+> [!NOTE]
+>
+> Requires `deepagents>=1.9.0` (or `@langchain/langgraph>=1.2.8`) for `runtime.executionInfo` and `runtime.serverInfo`.
 
 ### Inside middleware
 
@@ -209,18 +209,12 @@ const authGate = createMiddleware({
 });
 ```
 
-<Note>
-  Requires `deepagents>=1.9.0` (or `@langchain/langgraph>=1.2.8`).
-</Note>
+> [!NOTE]
+>
+> Requires `deepagents>=1.9.0` (or `@langchain/langgraph>=1.2.8`).
 
 ***
 
-<div>
-  <Callout icon="terminal-2">
-    [Connect these docs](/use-these-docs) to your agent of choice via MCP for real-time answers.
-  </Callout>
+[Connect these docs](/use-these-docs) to your agent of choice via MCP for real-time answers.
 
-  <Callout icon="edit">
-    [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/oss/langchain/runtime.mdx) or [file an issue](https://github.com/langchain-ai/docs/issues/new/choose).
-  </Callout>
-</div>
+[Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/oss/langchain/runtime.mdx) or [file an issue](https://github.com/langchain-ai/docs/issues/new/choose).

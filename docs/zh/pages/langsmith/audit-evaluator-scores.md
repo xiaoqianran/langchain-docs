@@ -8,56 +8,48 @@
 
 ## 在比较视图中
 
-在比较视图中，您可以单击任何反馈标签以显示反馈详细信息。从那里，单击右侧的“编辑”图标以显示更正视图。然后，您可以在“进行更正”下的文本框中输入您想要的分数。如果您愿意，您还可以对更正内容附上解释。 This is useful if you are using a [few-shot evaluator](/langsmith/create-few-shot-evaluators) and will be automatically inserted into your few-shot examples in place of the `few_shot_explanation` prompt variable.
+在比较视图中，您可以单击任何反馈标签以显示反馈详细信息。从那里，单击右侧的“编辑”图标以显示更正视图。然后，您可以在“进行更正”下的文本框中输入您想要的分数。如果您愿意，您还可以对更正内容附上解释。如果您使用 [few-shot evaluator](/langsmith/create-few-shot-evaluators)，这非常有用，并且会自动插入到您的少数示例中，以代替 `few_shot_explanation` 提示变量。
 
-<img alt="Audit Evaluator Comparison View" />
+![Audit Evaluator Comparison View](https://mintcdn.com/langchain-5e9cc07a/aKRoUGXX6ygp4DlC/langsmith/images/corrections-comparison-view.png?fit=max\&auto=format\&n=aKRoUGXX6ygp4DlC\&q=85\&s=5b815b771c18f291a9ef1b7defb9feb3)
 
-## In the runs table
+## 在运行表中
 
 在运行表中，找到“反馈”列，然后单击反馈标签以显示反馈详细信息。再次单击右侧的“编辑”图标以显示更正视图。
 
-<img alt="Audit Evaluator Runs Table" />
+![Audit Evaluator Runs Table](https://mintcdn.com/langchain-5e9cc07a/aKRoUGXX6ygp4DlC/langsmith/images/corrections-runs-table.png?fit=max\&auto=format\&n=aKRoUGXX6ygp4DlC\&q=85\&s=5e64530681ac9125751af2383b67ba35)
 
-## In the SDK
+## 在 SDK 中
 
-可以通过 SDK 的 `update_feedback` 函数和 `correction` 字典进行更正。您必须指定一个 `score` 键，该键对应于要在 UI 中呈现的数字。<CodeGroup>
-  ```python Python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  import langsmith
+可以通过 SDK 的 `update_feedback` 函数和 `correction` 字典进行更正。您必须指定一个 `score` 键，该键对应于要在 UI 中呈现的数字。```python Python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+import langsmith
 
-  client = langsmith.Client()
+client = langsmith.Client()
 
-  client.update_feedback(
-      my_feedback_id,
-      correction={
-          "score": 1,
-      },
-  )
-  ```
+client.update_feedback(
+    my_feedback_id,
+    correction={
+        "score": 1,
+    },
+)
+```
 
-  ```typescript TypeScript theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  import { Client } from 'langsmith';
+```typescript TypeScript theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+import { Client } from 'langsmith';
 
-  const client = new Client();
+const client = new Client();
 
-  await client.updateFeedback(
-      myFeedbackId,
-      {
-          correction: {
-              score: 1,
-          }
-      }
-  )
-  ```
-</CodeGroup>
+await client.updateFeedback(
+    myFeedbackId,
+    {
+        correction: {
+            score: 1,
+        }
+    }
+)
+```
 
 ***
 
-<div>
-  <Callout icon="terminal-2">
-    [Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
-  </Callout>
+[Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
 
-  <Callout icon="edit">
-    [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/audit-evaluator-scores.mdx) 或 [file an issue](https://github.com/langchain-ai/docs/issues/new/choose)。
-  </Callout>
-</div>
+[Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/audit-evaluator-scores.mdx) 或 [file an issue](https://github.com/langchain-ai/docs/issues/new/choose)。

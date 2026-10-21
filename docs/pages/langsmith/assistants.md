@@ -6,13 +6,13 @@
 
 For example, imagine a general-purpose writing agent built on a common graph architecture. While the structure remains the same, different writing styles—such as blog posts and tweets—require tailored configurations to optimize performance. To support these variations, you can create multiple assistants (e.g., one for blogs and another for tweets) that share the underlying graph but differ in model selection and system prompt.
 
-<img alt="assistant versions" />
+![assistant versions](https://mintcdn.com/langchain-5e9cc07a/IMK8wJkjSpMCGODD/langsmith/images/assistants.png?fit=max\&auto=format\&n=IMK8wJkjSpMCGODD\&q=85\&s=05402316c8fe86fead077ec774e873f0)
 
 The Agent Server API provides several endpoints for creating and managing assistants and their versions. See the [API reference](/langsmith/server-api-ref) for more details.
 
-<Info>
-  Assistants are a [LangSmith Deployment](/langsmith/deployment) concept. They are not available in the open source LangGraph library.
-</Info>
+> [!NOTE]
+>
+> Assistants are a [LangSmith Deployment](/langsmith/deployment) concept. They are not available in the open source LangGraph library.
 
 ## How assistants work with deployments
 
@@ -38,14 +38,14 @@ Assistants have several key features:
 * **[Versioned](#versioning) configurations**: Each assistant maintains its own configuration history through versioning. Editing an assistant creates a new version, and you can promote or roll back to any version.
 * **[Configuration](#configuration) updates without graph changes**: Update prompts, model selection, and other settings through assistant configurations, enabling rapid iteration without modifying or redeploying your graph code.
 
-<Note>
-  When invoking an assistant, you can specify either in [`langgraph.json`](/langsmith/application-structure#configuration-file):
-
-  * A **graph ID** (e.g., `"agent"`): Uses the default assistant for that graph
-  * An **assistant ID** (UUID): Uses a specific assistant configuration
-
-  This flexibility allows you to quickly test with default settings or precisely control which configuration is used.
-</Note>
+> [!NOTE]
+>
+> When invoking an assistant, you can specify either in [`langgraph.json`](/langsmith/application-structure#configuration-file):
+>
+> * A **graph ID** (e.g., `"agent"`): Uses the default assistant for that graph
+> * An **assistant ID** (UUID): Uses a specific assistant configuration
+>
+> This flexibility allows you to quickly test with default settings or precisely control which configuration is used.
 
 ### Configuration
 
@@ -119,20 +119,14 @@ Assistants support versioning to track changes over time. Once you've created an
 * Rolling back to a previous version is as simple as setting it as active.
 * All versions remain available for reference and rollback.
 
-<Warning>
-  When updating an assistant, you must provide the entire configuration payload. The update endpoint creates new versions from scratch and does not merge with previous versions. Make sure to include all configuration fields you want to retain.
-</Warning>
+> [!WARNING]
+>
+> When updating an assistant, you must provide the entire configuration payload. The update endpoint creates new versions from scratch and does not merge with previous versions. Make sure to include all configuration fields you want to retain.
 
 For more details on how to manage assistant versions, refer to the [Manage assistants guide](/langsmith/configuration-cloud#create-a-new-version-for-your-assistant).
 
 ***
 
-<div>
-  <Callout icon="terminal-2">
-    [Connect these docs](/use-these-docs) to your agent of choice via MCP for real-time answers.
-  </Callout>
+[Connect these docs](/use-these-docs) to your agent of choice via MCP for real-time answers.
 
-  <Callout icon="edit">
-    [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/assistants.mdx) or [file an issue](https://github.com/langchain-ai/docs/issues/new/choose).
-  </Callout>
-</div>
+[Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/assistants.mdx) or [file an issue](https://github.com/langchain-ai/docs/issues/new/choose).

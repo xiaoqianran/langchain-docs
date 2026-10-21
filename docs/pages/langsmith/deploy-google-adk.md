@@ -27,9 +27,9 @@ Install the package with the `google-adk` extra. The extra pulls in `google-adk`
 pip install "deployments-wrap-sdk[google-adk]"
 ```
 
-<Note>
-  The PyPI distribution name is `deployments-wrap-sdk`, but the Python import path is `saf_sdk`. Both refer to the same package.
-</Note>
+> [!NOTE]
+>
+> The PyPI distribution name is `deployments-wrap-sdk`, but the Python import path is `saf_sdk`. Both refer to the same package.
 
 ## Quickstart
 
@@ -252,12 +252,6 @@ This means ADK's own session/state semantics are preserved end-to-end while the 
 
 ***
 
-<div>
-  <Callout icon="terminal-2">
-    [Connect these docs](/use-these-docs) to your agent of choice via MCP for real-time answers.
-  </Callout>
+[Connect these docs](/use-these-docs) to your agent of choice via MCP for real-time answers.
 
-  <Callout icon="edit">
-    [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/deploy-google-adk.mdx) or [file an issue](https://github.com/langchain-ai/docs/issues/new/choose).
-  </Callout>
-</div>
+[Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/deploy-google-adk.mdx) or [file an issue](https://github.com/langchain-ai/docs/issues/new/choose).

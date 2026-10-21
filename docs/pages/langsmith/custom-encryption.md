@@ -4,13 +4,13 @@
 
 Custom encryption lets Agent Server use your encryption handlers for per-tenant keys and external key management systems. Use [built-in AES encryption](/langsmith/aes-encryption) unless you need these capabilities.
 
-<Warning>
-  Agent Server versions 0.5.34–0.6.21 included a pre-release version of custom encryption. Data encrypted with these versions will be corrupted when upgrading to 0.6.22+. Do not use custom encryption on these versions.
-</Warning>
+> [!WARNING]
+>
+> Agent Server versions 0.5.34–0.6.21 included a pre-release version of custom encryption. Data encrypted with these versions will be corrupted when upgrading to 0.6.22+. Do not use custom encryption on these versions.
 
-<Warning>
-  Only use custom encryption if built-in AES encryption does not meet your needs. Custom encryption requires you to implement and maintain encryption handlers, and adds operational complexity. If you only need a static key, key rotation, or optional selective field encryption, use [built-in AES encryption](/langsmith/aes-encryption) instead.
-</Warning>
+> [!WARNING]
+>
+> Only use custom encryption if built-in AES encryption does not meet your needs. Custom encryption requires you to implement and maintain encryption handlers, and adds operational complexity. If you only need a static key, key rotation, or optional selective field encryption, use [built-in AES encryption](/langsmith/aes-encryption) instead.
 
 Use custom encryption when you need:
 
@@ -44,9 +44,9 @@ Add your encryption module to `langgraph.json`:
 }
 ```
 
-<Note>
-  If you're migrating from basic encryption, keep `LANGGRAPH_AES_KEY` configured. Custom encryption handles new writes while existing AES-encrypted data remains readable.
-</Note>
+> [!NOTE]
+>
+> If you're migrating from basic encryption, keep `LANGGRAPH_AES_KEY` configured. Custom encryption handles new writes while existing AES-encrypted data remains readable.
 
 ### Define encryption context
 
@@ -169,21 +169,21 @@ async def decrypt_json(ctx: EncryptionContext, data: dict) -> dict:
 
 #### JSON encryption considerations
 
-<Warning>
-  **Encrypted fields cannot be searched or filtered.** Design your metadata schema so that fields you need to query remain unencrypted.
-</Warning>
+> [!WARNING]
+>
+> **Encrypted fields cannot be searched or filtered.** Design your metadata schema so that fields you need to query remain unencrypted.
 
-<Warning>
-  **JSON encryptors must preserve key structure.** SQL JSONB merge operations work at the key level. Encryptors that change keys—whether by consolidating fields (e.g., moving sensitive data into `__encrypted__`) or by encrypting key names themselves—cause data loss during merges. Use per-key encryption: transform values in-place while preserving keys.
-</Warning>
+> [!WARNING]
+>
+> **JSON encryptors must preserve key structure.** SQL JSONB merge operations work at the key level. Encryptors that change keys—whether by consolidating fields (e.g., moving sensitive data into `__encrypted__`) or by encrypting key names themselves—cause data loss during merges. Use per-key encryption: transform values in-place while preserving keys.
 
-<Note>
-  **Migration consideration:** Use a recognizable prefix or format in encrypted values so your decryptor can detect and skip unencrypted data. This allows you to encrypt additional fields in the future without re-encrypting existing records. The example above uses this pattern.
-</Note>
+> [!NOTE]
+>
+> **Migration consideration:** Use a recognizable prefix or format in encrypted values so your decryptor can detect and skip unencrypted data. This allows you to encrypt additional fields in the future without re-encrypting existing records. The example above uses this pattern.
 
-<Note>
-  **Performance consideration:** Per-key encryption means one encryption call per field. If your encryption involves round-trips to an external service (e.g., KMS), this can significantly impact latency. Consider caching data keys locally or using envelope encryption where you encrypt a local data key with KMS and use it for multiple fields.
-</Note>
+> [!NOTE]
+>
+> **Performance consideration:** Per-key encryption means one encryption call per field. If your encryption involves round-trips to an external service (e.g., KMS), this can significantly impact latency. Consider caching data keys locally or using envelope encryption where you encrypt a local data key with KMS and use it for multiple fields.
 
 Fields used by authorization filters (e.g., `tenant_id`, `owner`) must remain unchanged and **unencrypted**, as must fields used for search and filtering. Agent Server rejects writes if a custom encryptor changes an authorization-filter field. Additionally, **some system-managed fields will never be encrypted**:
 
@@ -210,9 +210,9 @@ Fields used by authorization filters (e.g., `tenant_id`, `owner`) must remain un
 
 ### Rotate custom encryption keys lazily
 
-<Note>
-  Lazy re-encryption requires Agent Server version `0.14.0` or later, Python SDK version `langgraph-sdk>=0.4.3`, the PostgreSQL checkpointer, `PREFER_GRPC_CHECKPOINTER=true`, and `LANGGRAPH_STORE_BACKEND=grpc`.
-</Note>
+> [!NOTE]
+>
+> Lazy re-encryption requires Agent Server version `0.14.0` or later, Python SDK version `langgraph-sdk>=0.4.3`, the PostgreSQL checkpointer, `PREFER_GRPC_CHECKPOINTER=true`, and `LANGGRAPH_STORE_BACKEND=grpc`.
 
 Return `DecryptResult` from a blob or JSON decrypt handler when the handler decrypts data with an old key. Its `plaintext` value is returned to the caller, and its `replacement` value is new ciphertext for Agent Server to persist.
 
@@ -255,9 +255,9 @@ JSON decrypt handlers can return `DecryptResult[dict]` in the same way. The repl
 
 Agent Server writes the replacement with a compare-and-swap operation, so it does not overwrite a concurrent update. Re-encryption is best effort: a read still succeeds if the stored value changes before writeback or if writeback fails.
 
-<Warning>
-  Lazy re-encryption only updates data as it is read. Keep old keys available while unread data may still require them.
-</Warning>
+> [!WARNING]
+>
+> Lazy re-encryption only updates data as it is read. Keep old keys available while unread data may still require them.
 
 ### Monitor lazy re-encryption
 
@@ -387,12 +387,6 @@ KMS rotates backing material for the same key ID automatically. Old encrypted da
 
 ***
 
-<div>
-  <Callout icon="terminal-2">
-    [Connect these docs](/use-these-docs) to your agent of choice via MCP for real-time answers.
-  </Callout>
+[Connect these docs](/use-these-docs) to your agent of choice via MCP for real-time answers.
 
-  <Callout icon="edit">
-    [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/custom-encryption.mdx) or [file an issue](https://github.com/langchain-ai/docs/issues/new/choose).
-  </Callout>
-</div>
+[Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/custom-encryption.mdx) or [file an issue](https://github.com/langchain-ai/docs/issues/new/choose).

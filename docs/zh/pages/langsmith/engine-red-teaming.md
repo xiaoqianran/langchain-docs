@@ -4,11 +4,11 @@
 
 # 主动识别红队问题
 
-使用合成的 LangSmith 引擎探针测试已部署的代理，以在其投入生产之前发现提示注入、数据泄露和不安全的工具使用。
+使用合成的 LangSmith 引擎探针测试已部署的代理，以在投入生产之前发现提示注入、数据泄露和不安全的工具使用。
 
-<Note>
-  红队处于私人状态[beta](/langsmith/release-stages#beta)。它仅适用于已启用它的组织的LangSmith 云。它仅支持在 [LangSmith Cloud deployments](/langsmith/deploy-to-cloud) 上运行的代理，而不支持外部托管的代理。要请求访问，[join the waitlist](https://www.langchain.com/langsmith-engine-v2-new-feature-access)。
-</Note>
+> [!注意]
+>
+> 红队处于私人状态[beta](/langsmith/release-stages#beta)。它仅适用于已启用它的组织的LangSmith 云。它仅支持在 [LangSmith Cloud deployments](/langsmith/deploy-to-cloud) 上运行的代理，而不支持外部托管的代理。要请求访问，[join the waitlist](https://www.langchain.com/langsmith-engine-v2-new-feature-access)。
 
 红队通过发送新的综合请求并判断其响应方式来测试已部署的代理。您的跟踪中的 [issues Engine detects](/langsmith/engine-issues) 来自生产中已经发生的故障。红队会查找尚未发生的故障，例如成功的提示注入、未经代理要求确认而进行的后续工具调用，或者泄漏到答案中的隐藏上下文。
 
@@ -32,9 +32,9 @@ Red Teaming 探测作为跟踪项目的 [baseline deployment](/langsmith/engine-
 * **权限**： `runs:read` 在跟踪项目上查看红队报告。要开始运行，您还需要项目上的 `runs:create` 和基线部署上的 `deployments:update`。
 * **连接的存储库（推荐）**：使用 [connected GitHub repository](/langsmith/engine-repositories)，引擎从源读取代理的提示、工具和护栏。如果没有，调查结果仅依赖于跟踪，并且报告显示**存储库上下文不可用**。
 
-<Warning>
-  探测是真实的请求。每个探针都会在基线部署上创建一个线程和运行，并且您的代理可以在响应时调用其工具。选择综合测试流量和工具副作用可接受的部署，例如暂存部署。
-</Warning>
+> [!警告]
+>
+> 探测是真实的请求。每个探针都会在基线部署上创建一个线程和运行，并且您的代理可以在响应时调用其工具。选择综合测试流量和工具副作用可接受的部署，例如暂存部署。
 
 ## 开始红队运行
 
@@ -120,10 +120,10 @@ Red Teaming 探测作为跟踪项目的 [baseline deployment](/langsmith/engine-
 每次红队运行都是有界的：|限制|每次运行的价值 |
 | - | - |
 |痕迹审查 | 25、从最多 100 个最近的跟踪摘要中选择 |
-|假设| 50 | 50
-|每个假设的探索 | 2 |
+|假设| 50|
+|每个假设的探索| 2 |
 |对基线部署的请求 | 100 | 100
-|推荐 | 20 | 20
+|推荐 | 20 |
 
 ## Red Teaming 如何处理您的数据
 
@@ -141,12 +141,6 @@ Red Teaming 探测作为跟踪项目的 [baseline deployment](/langsmith/engine-
 
 ***
 
-<div>
-  <Callout icon="terminal-2">
-    [Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
-  </Callout>
+[Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
 
-  <Callout icon="edit">
-    [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/engine-red-teaming.mdx) 或 [file an issue](https://github.com/langchain-ai/docs/issues/new/choose)。
-  </Callout>
-</div>
+[Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/engine-red-teaming.mdx) 或 [file an issue](https://github.com/langchain-ai/docs/issues/new/choose)。

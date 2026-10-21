@@ -6,55 +6,51 @@ Deploy and manage agents with durable execution, real-time streaming, and horizo
 
 **LangSmith Deployment** is a workflow orchestration runtime purpose-built for agent workloads. It provides the managed infrastructure agents need to run reliably in production at scale, supporting the full lifecycle from local development to deployment. Deploy to Cloud, BYOC, or your own infrastructure.
 
-<Note>
-  This page covers how your **agents** run in production with **LangSmith Deployment**.
-
-  Where you run LangSmith for observability, evaluation, and prompt engineering is separate; refer to [Platform setup](/langsmith/platform-setup) for details.
-</Note>
+> [!NOTE]
+>
+> This page covers how your **agents** run in production with **LangSmith Deployment**.
+>
+> Where you run LangSmith for observability, evaluation, and prompt engineering is separate; refer to [Platform setup](/langsmith/platform-setup) for details.
 
 ## Deployable products
 
 LangSmith Deployment is framework-agnostic which means you can deploy agents built with:
 
-<CardGroup>
-  <Card title="LangGraph (and LangChain)" href="/langsmith/deployment-quickstart" icon="chart-dots-3">
-    Use the LangGraph CLI and app templates to deploy an application to LangSmith.
-  </Card>
+> **[LangGraph (and LangChain)](/langsmith/deployment-quickstart)**
+>
+> Use the LangGraph CLI and app templates to deploy an application to LangSmith.
 
-  <Card title="Google ADK" href="/langsmith/deploy-google-adk" icon="google">
-    Deploy Google Agent Development Kit (ADK) agent as a LangGraph with the `deployments-wrap-sdk` package.
-  </Card>
+> **[Google ADK](/langsmith/deploy-google-adk)**
+>
+> Deploy Google Agent Development Kit (ADK) agent as a LangGraph with the `deployments-wrap-sdk` package.
 
-  <Card title="Other frameworks" href="/langsmith/deploy-other-frameworks" icon="packages">
-    Deploy Claude Agent SDK, Strands, CrewAI, AutoGen, and other agent frameworks with the Functional API or `deployments-wrap-sdk`.
-  </Card>
+> **[Other frameworks](/langsmith/deploy-other-frameworks)**
+>
+> Deploy Claude Agent SDK, Strands, CrewAI, AutoGen, and other agent frameworks with the Functional API or `deployments-wrap-sdk`.
 
-  <Card title="Looking to deploy Deep Agents?" href="/langsmith/python/managed-deep-agents-overview" type="tip">
-    Use Managed Deep Agents: the managed runtime for deploying code-first Deep Agents.
-  </Card>
-</CardGroup>
+> **[Looking to deploy Deep Agents?](/langsmith/python/managed-deep-agents-overview)**
+>
+> Use Managed Deep Agents: the managed runtime for deploying code-first Deep Agents.
 
 ## LangSmith Deployment environments
 
 Pick an environment based on where you want the [control plane](/langsmith/control-plane) and [data plane](/langsmith/data-plane) (Agent Servers and their databases) to run. All infrastructure types use the same [Agent Server](/langsmith/agent-server) runtime.
 
-<CardGroup>
-  <Card title="Cloud" href="/langsmith/deploy-to-cloud-overview" icon="cloud">
-    Fully managed by LangChain on AWS and GCP. Create deployments from GitHub in the LangSmith UI or with [`langgraph deploy`](/langsmith/cli#deploy). Requires a [Plus plan or above](https://www.langchain.com/pricing).
-  </Card>
+> **[Cloud](/langsmith/deploy-to-cloud-overview)**
+>
+> Fully managed by LangChain on AWS and GCP. Create deployments from GitHub in the LangSmith UI or with [`langgraph deploy`](/langsmith/cli#deploy). Requires a [Plus plan or above](https://www.langchain.com/pricing).
 
-  <Card title="Self-hosted with control plane" href="/langsmith/deploy-with-control-plane" icon="buildings">
-    Run the LangSmith Deployment control plane and Agent Servers in your own Kubernetes cluster, alongside self-hosted LangSmith. Requires the [Enterprise plan](https://www.langchain.com/pricing) with LangSmith Deployment enabled.
-  </Card>
+> **[Self-hosted with control plane](/langsmith/deploy-with-control-plane)**
+>
+> Run the LangSmith Deployment control plane and Agent Servers in your own Kubernetes cluster, alongside self-hosted LangSmith. Requires the [Enterprise plan](https://www.langchain.com/pricing) with LangSmith Deployment enabled.
 
-  <Card title="Hybrid" href="/langsmith/hybrid" icon="cloud-network">
-    LangChain-managed control plane with Agent Servers and their data plane in your infrastructure. Traces flow to LangSmith Cloud or self-hosted LangSmith.
-  </Card>
+> **[Hybrid](/langsmith/hybrid)**
+>
+> LangChain-managed control plane with Agent Servers and their data plane in your infrastructure. Traces flow to LangSmith Cloud or self-hosted LangSmith.
 
-  <Card title="Standalone server" href="/langsmith/deploy-standalone-server" icon="server">
-    Deploy Agent Server with Docker, Compose, or Kubernetes. Bring your own PostgreSQL, Redis, and LangSmith license; no control plane. Optional [LangSmith tracing](/langsmith/observability) to Cloud or a self-hosted instance.
-  </Card>
-</CardGroup>
+> **[Standalone server](/langsmith/deploy-standalone-server)**
+>
+> Deploy Agent Server with Docker, Compose, or Kubernetes. Bring your own PostgreSQL, Redis, and LangSmith license; no control plane. Optional [LangSmith tracing](/langsmith/observability) to Cloud or a self-hosted instance.
 
 ## Common setups
 
@@ -69,64 +65,40 @@ For where the LangSmith platform runs, see [Platform setup](/langsmith/platform-
 
 Once deployed, agents work with [Agent Server](/langsmith/assistants)'s execution model: **assistants** for configuration, **threads** for state, and **runs** for workloads. For capabilities, tutorials, server customization, and operations, see [Agent Server](/langsmith/develop-agents-overview).
 
-<CardGroup>
-  <Card title="Update prompts and contexts without redeploying" icon="edit" href="/langsmith/prompt-context-hub">
-    Manage the prompts and versioned contexts your deployed agents pull at runtime, so you can change behavior without a full deploy.
-  </Card>
+> **[Update prompts and contexts without redeploying](/langsmith/prompt-context-hub)**
+>
+> Manage the prompts and versioned contexts your deployed agents pull at runtime, so you can change behavior without a full deploy.
 
-  <Card title="Interact with your deployment using RemoteGraph" icon="link" href="/langsmith/use-remote-graph">
-    Call your deployed graph from client code as if it were a local compiled graph.
-  </Card>
-</CardGroup>
+> **[Interact with your deployment using RemoteGraph](/langsmith/use-remote-graph)**
+>
+> Call your deployed graph from client code as if it were a local compiled graph.
 
-<CardGroup>
-  <Card title="Find and fix failures with Engine" icon="https://mintcdn.com/langchain-5e9cc07a/DcM1RJP509SEqR6s/images/brand/engine-icon-dark.png?fit=max&auto=format&n=DcM1RJP509SEqR6s&q=85&s=a49c49604f90440bfb95fbdc44a2b927" href="/langsmith/engine">
-    Once agents are in production, use LangSmith Engine to detect recurring failures in their traces, diagnose root causes, and resolve them.
-  </Card>
-</CardGroup>
+> **[Find and fix failures with Engine](/langsmith/engine)**
+>
+> Once agents are in production, use LangSmith Engine to detect recurring failures in their traces, diagnose root causes, and resolve them.
 
 ## Full-stack web apps
 
 Ship a LangChain.js agent and chat UI together as a single web app. The Vite example uses LangSmith Deployment as the agent backend behind a separate UI. Other examples embed the agent inside the web framework's route handlers and ship to the host platform.
 
-<Card title="Full-stack web apps" href="/langsmith/deploy-frameworks-and-platforms" icon="code">
-  Ship a LangChain.js chat app: embed the agent in Next.js, SvelteKit, Nuxt, Cloudflare Workers, or Deno Deploy (no Agent Server required), or pair LangSmith Deployment with a Vite + React UI.
-
-  <div>
-    <span>
-      <img alt="LangSmith" />
-    </span>
-
-    <span>
-      <img alt="Next.js" />
-    </span>
-
-    <span>
-      <img alt="SvelteKit" />
-    </span>
-
-    <span>
-      <img alt="Nuxt" />
-    </span>
-
-    <span>
-      <img alt="Cloudflare Workers" />
-    </span>
-
-    <span>
-      <img alt="Deno Deploy" />
-    </span>
-  </div>
-</Card>
+> **[Full-stack web apps](/langsmith/deploy-frameworks-and-platforms)**
+>
+> Ship a LangChain.js chat app: embed the agent in Next.js, SvelteKit, Nuxt, Cloudflare Workers, or Deno Deploy (no Agent Server required), or pair LangSmith Deployment with a Vite + React UI.
+>
+> ![LangSmith](https://mintcdn.com/langchain-5e9cc07a/ZPKed1feKJ8F6LVo/images/providers/light/langchain.svg?fit=max\&auto=format\&n=ZPKed1feKJ8F6LVo\&q=85\&s=b910ed9cd0b6b8adb4b6da400882e92c)
+>
+> ![Next.js](https://mintcdn.com/langchain-5e9cc07a/h9vvRKKSgCSjvd_Y/images/providers/light/nextjs.svg?fit=max\&auto=format\&n=h9vvRKKSgCSjvd_Y\&q=85\&s=4f3336e9534db50f25f87173a41322d5)
+>
+> ![SvelteKit](https://mintcdn.com/langchain-5e9cc07a/h9vvRKKSgCSjvd_Y/images/providers/light/svelte.svg?fit=max\&auto=format\&n=h9vvRKKSgCSjvd_Y\&q=85\&s=07e7e35c40e4522f739feea9ef3e33b7)
+>
+> ![Nuxt](https://mintcdn.com/langchain-5e9cc07a/h9vvRKKSgCSjvd_Y/images/providers/light/nuxt.svg?fit=max\&auto=format\&n=h9vvRKKSgCSjvd_Y\&q=85\&s=5d965ed1f93f51ac604e66b935a65368)
+>
+> ![Cloudflare Workers](https://mintcdn.com/langchain-5e9cc07a/h9vvRKKSgCSjvd_Y/images/providers/light/cloudflare.svg?fit=max\&auto=format\&n=h9vvRKKSgCSjvd_Y\&q=85\&s=ae129fcbfc78ccaece42b1c4d3699311)
+>
+> ![Deno Deploy](https://mintcdn.com/langchain-5e9cc07a/Tz8fh3A43FeUPf69/images/providers/light/deno.svg?fit=max\&auto=format\&n=Tz8fh3A43FeUPf69\&q=85\&s=8d213b0000104542fcaa7ab160595224)
 
 ***
 
-<div>
-  <Callout icon="terminal-2">
-    [Connect these docs](/use-these-docs) to your agent of choice via MCP for real-time answers.
-  </Callout>
+[Connect these docs](/use-these-docs) to your agent of choice via MCP for real-time answers.
 
-  <Callout icon="edit">
-    [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/deployment.mdx) or [file an issue](https://github.com/langchain-ai/docs/issues/new/choose).
-  </Callout>
-</div>
+[Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/deployment.mdx) or [file an issue](https://github.com/langchain-ai/docs/issues/new/choose).

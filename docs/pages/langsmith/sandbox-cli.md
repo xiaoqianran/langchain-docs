@@ -223,9 +223,9 @@ langsmith sandbox tunnel \
   --remote-port 5432
 ```
 
-<Tip>
-  For HTTP applications you want to open in a browser or share with teammates, use [Sandbox service URLs](/langsmith/sandbox-service-urls). Use tunnels for raw TCP protocols or local development tools.
-</Tip>
+> [!TIP]
+>
+> For HTTP applications you want to open in a browser or share with teammates, use [Sandbox service URLs](/langsmith/sandbox-service-urls). Use tunnels for raw TCP protocols or local development tools.
 
 ## Set up SSH access
 
@@ -246,9 +246,9 @@ ssh sandbox-my-vm
 
 The sandbox image must run `sshd` on port `22`. If `sshd` is not running, `ssh-setup` warns and the SSH connection will not work until you start it inside the sandbox.
 
-<Warning>
-  `ssh-setup` modifies local SSH configuration and writes a `ProxyCommand` that calls `langsmith sandbox tunnel`. Depending on how the CLI is authenticated, the generated block may contain credentials or references to credentials. Run it only on trusted machines and do not commit or share the generated SSH config block.
-</Warning>
+> [!WARNING]
+>
+> `ssh-setup` modifies local SSH configuration and writes a `ProxyCommand` that calls `langsmith sandbox tunnel`. Depending on how the CLI is authenticated, the generated block may contain credentials or references to credentials. Run it only on trusted machines and do not commit or share the generated SSH config block.
 
 ## Command reference
 
@@ -273,12 +273,6 @@ The sandbox image must run `sshd` on port `22`. If `sshd` is not running, `ssh-s
 
 ***
 
-<div>
-  <Callout icon="terminal-2">
-    [Connect these docs](/use-these-docs) to your agent of choice via MCP for real-time answers.
-  </Callout>
+[Connect these docs](/use-these-docs) to your agent of choice via MCP for real-time answers.
 
-  <Callout icon="edit">
-    [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/sandbox-cli.mdx) or [file an issue](https://github.com/langchain-ai/docs/issues/new/choose).
-  </Callout>
-</div>
+[Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/sandbox-cli.mdx) or [file an issue](https://github.com/langchain-ai/docs/issues/new/choose).

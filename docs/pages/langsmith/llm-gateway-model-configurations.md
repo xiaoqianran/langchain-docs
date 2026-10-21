@@ -4,9 +4,9 @@
 
 Call saved model configurations through the LLM Gateway to reach custom endpoints and use them in fallback chains.
 
-<Note>
-  The LLM Gateway is in [beta](/langsmith/release-stages).
-</Note>
+> [!NOTE]
+>
+> The LLM Gateway is in [beta](/langsmith/release-stages).
 
 [Model configurations](/langsmith/model-configurations) are named, reusable definitions that pair a provider and model with credentials and settings. The LLM Gateway can route a request through a saved configuration when you set the model ID to `custom/<name>`. Use a configuration to reach an endpoint that a provider-prefixed model ID cannot address, such as a custom OpenAI-compatible endpoint.
 
@@ -26,21 +26,19 @@ Workspace admins create configurations under **Settings** > **Model configuratio
 
 Use `custom/<name>` as the model ID in any standard gateway request, replacing `<name>` with the configuration's exact name as shown in **Settings** > **Model configurations**:
 
-<CodeGroup>
-  ```bash Cloud theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  curl https://gateway.smith.langchain.com/v1/responses \
-      -H "Authorization: Bearer $LANGSMITH_API_KEY" \
-      -H "Content-Type: application/json" \
-      -d '{"model":"custom/my-openai-config","input":"Hello!"}'
-  ```
+```bash Cloud theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+curl https://gateway.smith.langchain.com/v1/responses \
+    -H "Authorization: Bearer $LANGSMITH_API_KEY" \
+    -H "Content-Type: application/json" \
+    -d '{"model":"custom/my-openai-config","input":"Hello!"}'
+```
 
-  ```bash BYOC theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  curl https://<data_plane_host>/gateway/v1/responses \
-      -H "Authorization: Bearer $LANGSMITH_API_KEY" \
-      -H "Content-Type: application/json" \
-      -d '{"model":"custom/my-openai-config","input":"Hello!"}'
-  ```
-</CodeGroup>
+```bash BYOC theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+curl https://<data_plane_host>/gateway/v1/responses \
+    -H "Authorization: Bearer $LANGSMITH_API_KEY" \
+    -H "Content-Type: application/json" \
+    -d '{"model":"custom/my-openai-config","input":"Hello!"}'
+```
 
 The gateway looks up the configuration by name in the API key's workspace, including [organization-scoped configurations](/langsmith/model-configurations#organization-scoped-model-configurations), routes the request to the configured provider and endpoint, and returns the response in the [API format](/langsmith/llm-gateway-api-formats) the client used.
 
@@ -65,12 +63,6 @@ To give a Playground prompt its own fallback behavior, set the prompt's model to
 
 ***
 
-<div>
-  <Callout icon="terminal-2">
-    [Connect these docs](/use-these-docs) to your agent of choice via MCP for real-time answers.
-  </Callout>
+[Connect these docs](/use-these-docs) to your agent of choice via MCP for real-time answers.
 
-  <Callout icon="edit">
-    [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/llm-gateway-model-configurations.mdx) or [file an issue](https://github.com/langchain-ai/docs/issues/new/choose).
-  </Callout>
-</div>
+[Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/llm-gateway-model-configurations.mdx) or [file an issue](https://github.com/langchain-ai/docs/issues/new/choose).

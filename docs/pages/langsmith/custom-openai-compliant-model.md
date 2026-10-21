@@ -21,16 +21,12 @@ Once you have deployed a model server, you can use it in the [Playground](/langs
 
 To access the **Prompt Settings** menu:
 
-1. Under the **Prompts** heading select the gear <Icon icon="settings" /> icon next to the model name.
+1. Under the **Prompts** heading select the gear  icon next to the model name.
 2. In the **Model Configuration** tab, select the model to edit in the dropdown.
 3. For the **Provider** dropdown, select **OpenAI Compatible Endpoint**.
 4. Add your OpenAI Compatible Endpoint to the **Base URL** input. See [Base URL format](#base-url-format) for examples.
 
-   <div>
-     <img alt="Model Configuration window in the LangSmith UI with a model selected and the Provider dropdown with OpenAI Compatible Endpoint selected." />
-
-     <img alt="Model Configuration window in the LangSmith UI with a model selected and the Provider dropdown with OpenAI Compatible Endpoint selected." />
-   </div>
+   ![Model Configuration window in the LangSmith UI with a model selected and the Provider dropdown with OpenAI Compatible Endpoint selected.](https://mintcdn.com/langchain-5e9cc07a/cemWY9w7h0W8uMbk/langsmith/images/openai-compatible-endpoint.png?fit=max\&auto=format\&n=cemWY9w7h0W8uMbk\&q=85\&s=fdbe548e512ed40fb512578d02986b45)
 
 If everything is set up correctly, you should see the model's response in the Playground. You can also use this functionality to invoke downstream pipelines.
 
@@ -57,12 +53,6 @@ set the Base URL to `https://my-server.example.com/api/v2`.
 
 ***
 
-<div>
-  <Callout icon="terminal-2">
-    [Connect these docs](/use-these-docs) to your agent of choice via MCP for real-time answers.
-  </Callout>
+[Connect these docs](/use-these-docs) to your agent of choice via MCP for real-time answers.
 
-  <Callout icon="edit">
-    [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/custom-openai-compliant-model.mdx) or [file an issue](https://github.com/langchain-ai/docs/issues/new/choose).
-  </Callout>
-</div>
+[Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/custom-openai-compliant-model.mdx) or [file an issue](https://github.com/langchain-ai/docs/issues/new/choose).

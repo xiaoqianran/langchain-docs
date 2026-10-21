@@ -20,84 +20,82 @@ Different errors need different handling strategies:
 
 The sections below cover each strategy with code examples.
 
-<Tabs>
-  <Tab title="Transient errors" icon="rotate">
-    Add retry middleware to automatically retry network issues and rate limits. Model calls and tool calls each have their own retry middleware with exponential backoff:
+**Transient errors**
 
-    ```typescript theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-    import { createAgent, modelRetryMiddleware, toolRetryMiddleware } from "langchain";
+Add retry middleware to automatically retry network issues and rate limits. Model calls and tool calls each have their own retry middleware with exponential backoff:
 
-    const agent = createAgent({
-      model: "google:gemini-3.6-flash",
-      tools: [searchTool, fetchUrlTool],
-      middleware: [
-        modelRetryMiddleware({ maxRetries: 3, backoffFactor: 2.0, initialDelayMs: 1000 }),
-        toolRetryMiddleware({
-          maxRetries: 2,
-          tools: ["search", "fetch_url"],
-          retryOn: [TimeoutError, TypeError],
-        }),
-      ],
-    });
-    ```
-  </Tab>
+```typescript theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+import { createAgent, modelRetryMiddleware, toolRetryMiddleware } from "langchain";
 
-  <Tab title="User-fixable" icon="user">
-    Pause and collect information from the user when needed (like account IDs, order numbers, or clarifications). Use `interrupt_on` to pause the agent before specific tool calls:
+const agent = createAgent({
+  model: "google:gemini-3.6-flash",
+  tools: [searchTool, fetchUrlTool],
+  middleware: [
+    modelRetryMiddleware({ maxRetries: 3, backoffFactor: 2.0, initialDelayMs: 1000 }),
+    toolRetryMiddleware({
+      maxRetries: 2,
+      tools: ["search", "fetch_url"],
+      retryOn: [TimeoutError, TypeError],
+    }),
+  ],
+});
+```
 
-    ```typescript theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-    import { createDeepAgent } from "deepagents";
+**User-fixable**
 
-    const agent = createDeepAgent({
-      model: "google:gemini-3.6-flash",
-      tools: [sendEmailTool, deleteRecordTool],
-      interruptOn: {
-        send_email: true,
-        delete_record: true,
-      },
-    });
-    ```
+Pause and collect information from the user when needed (like account IDs, order numbers, or clarifications). Use `interrupt_on` to pause the agent before specific tool calls:
 
-    For the full human-in-the-loop guide, see [Human-in-the-loop](/oss/javascript/deepagents/human-in-the-loop).
-  </Tab>
+```typescript theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+import { createDeepAgent } from "deepagents";
 
-  <Tab title="Provider outage" icon="arrows-exchange">
-    If your primary model provider goes down entirely, use [ModelFallbackMiddleware](https://reference.langchain.com/javascript/langchain/index/modelFallbackMiddleware) to switch to an alternative model:
+const agent = createDeepAgent({
+  model: "google:gemini-3.6-flash",
+  tools: [sendEmailTool, deleteRecordTool],
+  interruptOn: {
+    send_email: true,
+    delete_record: true,
+  },
+});
+```
 
-    ```typescript theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-    import { createAgent, modelFallbackMiddleware } from "langchain";
+For the full human-in-the-loop guide, see [Human-in-the-loop](/oss/javascript/deepagents/human-in-the-loop).
 
-    const agent = createAgent({
-      model: "google:gemini-3.6-flash",
-      tools: [searchTool],
-      middleware: [
-        modelFallbackMiddleware("gpt-5.5"),
-      ],
-    });
-    ```
-  </Tab>
+**Provider outage**
 
-  <Tab title="Excessive calls" icon="gauge">
-    Without limits, a confused agent can burn through your LLM API budget in minutes by looping on the same tool call or making hundreds of model calls. Set caps on both model calls and tool executions per run:
+If your primary model provider goes down entirely, use [ModelFallbackMiddleware](https://reference.langchain.com/javascript/langchain/index/modelFallbackMiddleware) to switch to an alternative model:
 
-    ```typescript theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-    import { createAgent, modelCallLimitMiddleware, toolCallLimitMiddleware } from "langchain";
+```typescript theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+import { createAgent, modelFallbackMiddleware } from "langchain";
 
-    const agent = createAgent({
-      model: "google:gemini-3.6-flash",
-      tools: [searchTool],
-      middleware: [
-        modelCallLimitMiddleware({ runLimit: 50 }),
-        toolCallLimitMiddleware({ runLimit: 200 }),
-      ],
-    });
-    ```
-  </Tab>
+const agent = createAgent({
+  model: "google:gemini-3.6-flash",
+  tools: [searchTool],
+  middleware: [
+    modelFallbackMiddleware("gpt-5.5"),
+  ],
+});
+```
 
-  <Tab title="Unexpected" icon="alert-triangle">
-    Let them bubble up for debugging. Do not catch what you cannot handle. This pattern applies to custom middleware in the JavaScript SDK as well.
-  </Tab>
-</Tabs>
+**Excessive calls**
+
+Without limits, a confused agent can burn through your LLM API budget in minutes by looping on the same tool call or making hundreds of model calls. Set caps on both model calls and tool executions per run:
+
+```typescript theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+import { createAgent, modelCallLimitMiddleware, toolCallLimitMiddleware } from "langchain";
+
+const agent = createAgent({
+  model: "google:gemini-3.6-flash",
+  tools: [searchTool],
+  middleware: [
+    modelCallLimitMiddleware({ runLimit: 50 }),
+    toolCallLimitMiddleware({ runLimit: 200 }),
+  ],
+});
+```
+
+**Unexpected**
+
+Let them bubble up for debugging. Do not catch what you cannot handle. This pattern applies to custom middleware in the JavaScript SDK as well.
 
 ## Rate limiting
 
@@ -180,12 +178,6 @@ When a tool raises an exception during execution, the agent run halts by default
 
 ***
 
-<div>
-  <Callout icon="terminal-2">
-    [Connect these docs](/use-these-docs) to your agent of choice via MCP for real-time answers.
-  </Callout>
+[Connect these docs](/use-these-docs) to your agent of choice via MCP for real-time answers.
 
-  <Callout icon="edit">
-    [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/oss/deepagents/fault-tolerance.mdx) or [file an issue](https://github.com/langchain-ai/docs/issues/new/choose).
-  </Callout>
-</div>
+[Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/oss/deepagents/fault-tolerance.mdx) or [file an issue](https://github.com/langchain-ai/docs/issues/new/choose).

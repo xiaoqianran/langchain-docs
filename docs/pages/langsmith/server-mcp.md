@@ -57,15 +57,13 @@ To use MCP, ensure you have the following dependencies installed:
 
 Install them with:
 
-<CodeGroup>
-  ```bash pip theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  pip install "langgraph-api>=0.2.3" "langgraph-sdk>=0.1.61"
-  ```
+```bash pip theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+pip install "langgraph-api>=0.2.3" "langgraph-sdk>=0.1.61"
+```
 
-  ```bash uv theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  uv add "langgraph-api>=0.2.3" "langgraph-sdk>=0.1.61"
-  ```
-</CodeGroup>
+```bash uv theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+uv add "langgraph-api>=0.2.3" "langgraph-sdk>=0.1.61"
+```
 
 ## Usage overview
 
@@ -79,96 +77,92 @@ To enable MCP:
 
 Use an MCP-compliant client to connect to the Agent Server. The following examples show how to connect using different programming languages.
 
-<Tabs>
-  <Tab title="JavaScript/TypeScript">
-    ```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-    npm install @modelcontextprotocol/sdk
-    ```
+**JavaScript/TypeScript**
 
-    > **Note**
-    > Replace `serverUrl` with your Agent Server URL and configure authentication headers as needed.
+```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+npm install @modelcontextprotocol/sdk
+```
 
-    ```js theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-    import { Client } from "@modelcontextprotocol/sdk/client/index.js";
-    import { StreamableHTTPClientTransport } from "@modelcontextprotocol/sdk/client/streamableHttp.js";
+> **Note**
+> Replace `serverUrl` with your Agent Server URL and configure authentication headers as needed.
 
-    // Connects to the LangGraph MCP endpoint
-    async function connectClient(url) {
-        const baseUrl = new URL(url);
-        const client = new Client({
-            name: 'streamable-http-client',
-            version: '1.0.0'
-        });
+```js theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+import { Client } from "@modelcontextprotocol/sdk/client/index.js";
+import { StreamableHTTPClientTransport } from "@modelcontextprotocol/sdk/client/streamableHttp.js";
 
-        const transport = new StreamableHTTPClientTransport(baseUrl);
-        await client.connect(transport);
+// Connects to the LangGraph MCP endpoint
+async function connectClient(url) {
+    const baseUrl = new URL(url);
+    const client = new Client({
+        name: 'streamable-http-client',
+        version: '1.0.0'
+    });
 
-        console.log("Connected using Streamable HTTP transport");
-        console.log(JSON.stringify(await client.listTools(), null, 2));
-        return client;
-    }
+    const transport = new StreamableHTTPClientTransport(baseUrl);
+    await client.connect(transport);
 
-    const serverUrl = "http://localhost:2024/mcp";
+    console.log("Connected using Streamable HTTP transport");
+    console.log(JSON.stringify(await client.listTools(), null, 2));
+    return client;
+}
 
-    connectClient(serverUrl)
-        .then(() => {
-            console.log("Client connected successfully");
-        })
-        .catch(error => {
-            console.error("Failed to connect client:", error);
-        });
-    ```
-  </Tab>
+const serverUrl = "http://localhost:2024/mcp";
 
-  <Tab title="Python">
-    Install LangChain with the MCP extra:
+connectClient(serverUrl)
+    .then(() => {
+        console.log("Client connected successfully");
+    })
+    .catch(error => {
+        console.error("Failed to connect client:", error);
+    });
+```
 
-    <CodeGroup>
-      ```bash pip theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-      pip install "langchain[mcp]"
-      ```
+**Python**
 
-      ```bash uv theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-      uv add "langchain[mcp]"
-      ```
-    </CodeGroup>
+Install LangChain with the MCP extra:
 
-    Connect to a remote MCP endpoint and use an agent as a tool:
+```bash pip theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+pip install "langchain[mcp]"
+```
 
-    ```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-    import asyncio
-    import os
+```bash uv theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+uv add "langchain[mcp]"
+```
 
-    from fastmcp.client import Client
-    from fastmcp.client.transports import StreamableHttpTransport
-    from langchain.agents import create_agent
-    from langchain.mcp import MCPAdapter
+Connect to a remote MCP endpoint and use an agent as a tool:
+
+```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+import asyncio
+import os
+
+from fastmcp.client import Client
+from fastmcp.client.transports import StreamableHttpTransport
+from langchain.agents import create_agent
+from langchain.mcp import MCPAdapter
 
 
-    async def main():
-        async with MCPAdapter(
-            Client(
-                StreamableHttpTransport(
-                    "https://mcp-finance-agent.xxx.us.langgraph.app/mcp",
-                    headers={"X-Api-Key": os.environ["LANGSMITH_API_KEY"]},
-                )
+async def main():
+    async with MCPAdapter(
+        Client(
+            StreamableHttpTransport(
+                "https://mcp-finance-agent.xxx.us.langgraph.app/mcp",
+                headers={"X-Api-Key": os.environ["LANGSMITH_API_KEY"]},
             )
-        ) as adapter:
-            # Load the remote graph as if it was a tool
-            tools = await adapter.list_tools()
+        )
+    ) as adapter:
+        # Load the remote graph as if it was a tool
+        tools = await adapter.list_tools()
 
-            agent = create_agent("gpt-5.5", tools)
-            agent_response = await agent.ainvoke(
-                {"messages": "What can the finance agent do for me?"}
-            )
-            print(agent_response)
+        agent = create_agent("gpt-5.5", tools)
+        agent_response = await agent.ainvoke(
+            {"messages": "What can the finance agent do for me?"}
+        )
+        print(agent_response)
 
 
-    if __name__ == "__main__":
-        asyncio.run(main())
-    ```
-  </Tab>
-</Tabs>
+if __name__ == "__main__":
+    asyncio.run(main())
+```
 
 ## Expose an agent as MCP tool
 
@@ -243,10 +237,10 @@ For more details, see the [low-level concepts guide](/oss/python/langgraph/graph
 
 ## Use user-scoped MCP tools in your deployment
 
-<Tip>
-  **Prerequisites**
-  You have added your own [custom auth middleware](/langsmith/custom-auth) that populates the `langgraph_auth_user` object, making it accessible through configurable context for every node in your graph.
-</Tip>
+> [!TIP]
+>
+> **Prerequisites**
+> You have added your own [custom auth middleware](/langsmith/custom-auth) that populates the `langgraph_auth_user` object, making it accessible through configurable context for every node in your graph.
 
 To make user-scoped tools available to your LangSmith deployment, start with implementing a snippet like the following:
 
@@ -304,12 +298,6 @@ This will prevent the server from exposing the `/mcp` endpoint.
 
 ***
 
-<div>
-  <Callout icon="terminal-2">
-    [Connect these docs](/use-these-docs) to your agent of choice via MCP for real-time answers.
-  </Callout>
+[Connect these docs](/use-these-docs) to your agent of choice via MCP for real-time answers.
 
-  <Callout icon="edit">
-    [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/server-mcp.mdx) or [file an issue](https://github.com/langchain-ai/docs/issues/new/choose).
-  </Callout>
-</div>
+[Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/server-mcp.mdx) or [file an issue](https://github.com/langchain-ai/docs/issues/new/choose).

@@ -8,11 +8,11 @@ Tools extend what [agents](/oss/python/langchain/agents) can do—letting them f
 
 Under the hood, tools are callable functions with well-defined inputs and outputs that get passed to a [chat model](/oss/python/langchain/models). The model decides when to invoke a tool based on the conversation context, and what input arguments to provide.
 
-<Tip>
-  For details on how models handle tool calls, see [Tool calling](/oss/python/langchain/models#tool-calling). Trace tool calls and debug errors with [LangSmith](https://smith.langchain.com?utm_source=docs\&utm_medium=cta\&utm_campaign=langsmith-signup\&utm_content=oss-langchain-tools). Follow the [tracing quickstart](/langsmith/trace-with-langchain) to get set up.
-
-  We recommend you also set up [LangSmith Engine](/langsmith/engine) which monitors your traces, detects issues, and proposes fixes.
-</Tip>
+> [!TIP]
+>
+> For details on how models handle tool calls, see [Tool calling](/oss/python/langchain/models#tool-calling). Trace tool calls and debug errors with [LangSmith](https://smith.langchain.com?utm_source=docs\&utm_medium=cta\&utm_campaign=langsmith-signup\&utm_content=oss-langchain-tools). Follow the [tracing quickstart](/langsmith/trace-with-langchain) to get set up.
+>
+> We recommend you also set up [LangSmith Engine](/langsmith/engine) which monitors your traces, detects issues, and proposes fixes.
 
 ## Create tools
 
@@ -36,13 +36,13 @@ def search_database(query: str, limit: int = 10) -> str:
 
 Type hints are **required** as they define the tool's input schema. The docstring should be informative and concise to help the model understand the tool's purpose.
 
-<Note>
-  **Server-side tool use:** Some chat models feature built-in tools (web search, code interpreters) that are executed server-side. See [Server-side tool use](#server-side-tool-use) for details.
-</Note>
+> [!NOTE]
+>
+> **Server-side tool use:** Some chat models feature built-in tools (web search, code interpreters) that are executed server-side. See [Server-side tool use](#server-side-tool-use) for details.
 
-<Warning>
-  Prefer `snake_case` for tool names (e.g., `web_search` instead of `Web Search`). Some model providers have issues with or reject names containing spaces or special characters with errors. Sticking to alphanumeric characters, underscores, and hyphens helps to improve compatibility across providers.
-</Warning>
+> [!WARNING]
+>
+> Prefer `snake_case` for tool names (e.g., `web_search` instead of `Web Search`). Some model providers have issues with or reject names containing spaces or special characters with errors. Sticking to alphanumeric characters, underscores, and hyphens helps to improve compatibility across providers.
 
 ### Customize tool properties
 
@@ -74,54 +74,52 @@ def calc(expression: str) -> str:
 
 Define complex inputs with Pydantic models or JSON schemas:
 
-<CodeGroup>
-  ```python Pydantic model theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  from pydantic import BaseModel, Field
-  from typing import Literal
+```python Pydantic model theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+from pydantic import BaseModel, Field
+from typing import Literal
 
-  class WeatherInput(BaseModel):
-      """Input for weather queries."""
-      location: str = Field(description="City name or coordinates")
-      units: Literal["celsius", "fahrenheit"] = Field(
-          default="celsius",
-          description="Temperature unit preference"
-      )
-      include_forecast: bool = Field(
-          default=False,
-          description="Include 5-day forecast"
-      )
+class WeatherInput(BaseModel):
+    """Input for weather queries."""
+    location: str = Field(description="City name or coordinates")
+    units: Literal["celsius", "fahrenheit"] = Field(
+        default="celsius",
+        description="Temperature unit preference"
+    )
+    include_forecast: bool = Field(
+        default=False,
+        description="Include 5-day forecast"
+    )
 
-  @tool(args_schema=WeatherInput)
-  def get_weather(location: str, units: str = "celsius", include_forecast: bool = False) -> str:
-      """Get current weather and optional forecast."""
-      temp = 22 if units == "celsius" else 72
-      result = f"Current weather in {location}: {temp} degrees {units[0].upper()}"
-      if include_forecast:
-          result += "\nNext 5 days: Sunny"
-      return result
-  ```
+@tool(args_schema=WeatherInput)
+def get_weather(location: str, units: str = "celsius", include_forecast: bool = False) -> str:
+    """Get current weather and optional forecast."""
+    temp = 22 if units == "celsius" else 72
+    result = f"Current weather in {location}: {temp} degrees {units[0].upper()}"
+    if include_forecast:
+        result += "\nNext 5 days: Sunny"
+    return result
+```
 
-  ```python JSON Schema theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  weather_schema = {
-      "type": "object",
-      "properties": {
-          "location": {"type": "string"},
-          "units": {"type": "string"},
-          "include_forecast": {"type": "boolean"}
-      },
-      "required": ["location", "units", "include_forecast"]
-  }
+```python JSON Schema theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+weather_schema = {
+    "type": "object",
+    "properties": {
+        "location": {"type": "string"},
+        "units": {"type": "string"},
+        "include_forecast": {"type": "boolean"}
+    },
+    "required": ["location", "units", "include_forecast"]
+}
 
-  @tool(args_schema=weather_schema)
-  def get_weather(location: str, units: str = "celsius", include_forecast: bool = False) -> str:
-      """Get current weather and optional forecast."""
-      temp = 22 if units == "celsius" else 72
-      result = f"Current weather in {location}: {temp} degrees {units[0].upper()}"
-      if include_forecast:
-          result += "\nNext 5 days: Sunny"
-      return result
-  ```
-</CodeGroup>
+@tool(args_schema=weather_schema)
+def get_weather(location: str, units: str = "celsius", include_forecast: bool = False) -> str:
+    """Get current weather and optional forecast."""
+    temp = 22 if units == "celsius" else 72
+    result = f"Current weather in {location}: {temp} degrees {units[0].upper()}"
+    if include_forecast:
+        result += "\nNext 5 days: Sunny"
+    return result
+```
 
 ### Reserved argument names
 
@@ -237,9 +235,9 @@ def get_user_preference(
     return preferences.get(pref_name, "Not set")
 ```
 
-<Warning>
-  The `runtime` parameter is hidden from the model. For the example above, the model only sees `pref_name` in the tool schema.
-</Warning>
+> [!WARNING]
+>
+> The `runtime` parameter is hidden from the model. For the example above, the model only sees `pref_name` in the tool schema.
 
 #### Update state
 
@@ -273,21 +271,21 @@ def set_user_name(new_name: str, runtime: ToolRuntime[None, CustomState]) -> Com
     )
 ```
 
-<Card title="View example trace" icon="chart-line" href="https://smith.langchain.com/public/d77e4082-5e11-4004-b5ac-351caf69c151/r">
-  Open a public LangSmith run for this example.
-</Card>
+> **[View example trace](https://smith.langchain.com/public/d77e4082-5e11-4004-b5ac-351caf69c151/r)**
+>
+> Open a public LangSmith run for this example.
 
-<Tip>
-  When tools update state variables, consider defining a [reducer](/oss/python/langgraph/graph-api#reducers) for those fields. Since LLMs can call multiple tools in parallel, a reducer determines how to resolve conflicts when the same state field is updated by concurrent tool calls.
-</Tip>
+> [!TIP]
+>
+> When tools update state variables, consider defining a [reducer](/oss/python/langgraph/graph-api#reducers) for those fields. Since LLMs can call multiple tools in parallel, a reducer determines how to resolve conflicts when the same state field is updated by concurrent tool calls.
 
 ### Context
 
 Context provides immutable configuration data that is passed at invocation time. Use it for user IDs, session details, or application-specific settings that shouldn't change during a conversation.
 
-<Note>
-  While `thread_id` (passed via `config={"configurable": {"thread_id": ...}}`) scopes the *conversation*: message history and checkpoints, `context` carries *per-run* data your tools and middleware read at invocation time. Persistence requires a [checkpointer](/oss/python/langchain/short-term-memory). In production you typically pass both a stable `thread_id` per conversation and a `context` object on every invoke.
-</Note>
+> [!NOTE]
+>
+> While `thread_id` (passed via `config={"configurable": {"thread_id": ...}}`) scopes the *conversation*: message history and checkpoints, `context` carries *per-run* data your tools and middleware read at invocation time. Persistence requires a [checkpointer](/oss/python/langchain/short-term-memory). In production you typically pass both a stable `thread_id` per conversation and a `context` object on every invoke.
 
 Access context through `runtime.context`. Configure a [checkpointer](/oss/python/langchain/short-term-memory) and pass `context` with a stable `thread_id` so the conversation persists across invocations:
 
@@ -365,9 +363,9 @@ result = agent.invoke(
 print(result["messages"][-1].content_blocks)
 ```
 
-<Card title="View example trace" icon="chart-line" href="https://smith.langchain.com/public/1a8a880e-fdc6-4e8c-9035-f41dfab4884b/r">
-  Open a public LangSmith run for this example.
-</Card>
+> **[View example trace](https://smith.langchain.com/public/1a8a880e-fdc6-4e8c-9035-f41dfab4884b/r)**
+>
+> Open a public LangSmith run for this example.
 
 ### Long-term memory (Store)
 
@@ -375,9 +373,9 @@ The [`BaseStore`](https://reference.langchain.com/python/langchain-core/stores/B
 
 Access the store through `runtime.store`. The store uses a namespace/key pattern to organize data:
 
-<Tip>
-  For production deployments, use a persistent store implementation like [`PostgresStore`](https://reference.langchain.com/python/langgraph/store/#langgraph.store.postgres.PostgresStore), `MongoDBStore`, or `RedisStore` instead of `InMemoryStore`. See the [memory documentation](/oss/python/langgraph/add-memory) for setup details.
-</Tip>
+> [!TIP]
+>
+> For production deployments, use a persistent store implementation like [`PostgresStore`](https://reference.langchain.com/python/langgraph/store/#langgraph.store.postgres.PostgresStore), `MongoDBStore`, or `RedisStore` instead of `InMemoryStore`. See the [memory documentation](/oss/python/langgraph/add-memory) for setup details.
 
 ```python expandable theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 from langgraph.store.memory import InMemoryStore
@@ -446,9 +444,9 @@ def get_weather(city: str, runtime: ToolRuntime) -> str:
     return f"It's always sunny in {city}!"
 ```
 
-<Note>
-  If you use `runtime.stream_writer` inside your tool, the tool must be invoked within a LangGraph execution context. See [Streaming](/oss/python/langchain/streaming) for more details.
-</Note>
+> [!NOTE]
+>
+> If you use `runtime.stream_writer` inside your tool, the tool must be invoked within a LangGraph execution context. See [Streaming](/oss/python/langchain/streaming) for more details.
 
 ### Execution info
 
@@ -466,9 +464,9 @@ def log_execution_context(runtime: ToolRuntime) -> str:
     return "done"
 ```
 
-<Note>
-  Requires `deepagents>=0.5.0` (or `langgraph>=1.1.5`).
-</Note>
+> [!NOTE]
+>
+> Requires `deepagents>=0.5.0` (or `langgraph>=1.1.5`).
 
 ### Server info
 
@@ -490,39 +488,39 @@ def get_assistant_scoped_data(runtime: ToolRuntime) -> str:
 
 `server_info` is `None` when the tool is not running on LangGraph Server (e.g., during local development or testing).
 
-<Note>
-  Requires `deepagents>=0.5.0` (or `langgraph>=1.1.5`).
-</Note>
+> [!NOTE]
+>
+> Requires `deepagents>=0.5.0` (or `langgraph>=1.1.5`).
 
-<Accordion title="Migrate from older injection patterns">
-  Older examples used `InjectedState`, `InjectedStore`, `get_runtime()`, or `InjectedToolCallId`. Use [`ToolRuntime`](https://reference.langchain.com/python/langchain/tools/#langchain.tools.ToolRuntime) instead for one explicit interface to state, context, store, and execution metadata.
-
-  #### Previous pattern
-
-  ```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  from langchain.tools import tool, InjectedState
-
-  @tool
-  def summarize(state: InjectedState) -> str:
-      """Summarize the conversation."""
-      messages = state["messages"]
-      return f"Conversation length: {len(messages)} messages."
-  ```
-
-  #### Recommended pattern
-
-  ```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  from langchain.tools import tool, ToolRuntime
-
-  @tool
-  def summarize(runtime: ToolRuntime) -> str:
-      """Summarize the conversation."""
-      messages = runtime.state["messages"]
-      return f"Conversation length: {len(messages)} messages."
-  ```
-
-  For agent-level migrations (for example `create_react_agent` and custom state), see the [LangChain v1 migration guide](/oss/python/migrate/langchain-v1).
-</Accordion>
+> **Migrate from older injection patterns**
+>
+> Older examples used `InjectedState`, `InjectedStore`, `get_runtime()`, or `InjectedToolCallId`. Use [`ToolRuntime`](https://reference.langchain.com/python/langchain/tools/#langchain.tools.ToolRuntime) instead for one explicit interface to state, context, store, and execution metadata.
+>
+> #### Previous pattern
+>
+> ```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> from langchain.tools import tool, InjectedState
+>
+> @tool
+> def summarize(state: InjectedState) -> str:
+>     """Summarize the conversation."""
+>     messages = state["messages"]
+>     return f"Conversation length: {len(messages)} messages."
+> ```
+>
+> #### Recommended pattern
+>
+> ```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> from langchain.tools import tool, ToolRuntime
+>
+> @tool
+> def summarize(runtime: ToolRuntime) -> str:
+>     """Summarize the conversation."""
+>     messages = runtime.state["messages"]
+>     return f"Conversation length: {len(messages)} messages."
+> ```
+>
+> For agent-level migrations (for example `create_react_agent` and custom state), see the [LangChain v1 migration guide](/oss/python/migrate/langchain-v1).
 
 ## Tool execution
 
@@ -552,9 +550,9 @@ def get_weather(city: str) -> str:
     return f"It is currently sunny in {city}."
 ```
 
-<Card title="View example trace" icon="chart-line" href="https://smith.langchain.com/public/3d0c3e6d-cb98-44a6-9335-f44180a9d7bd/r">
-  Open a public LangSmith run for this example.
-</Card>
+> **[View example trace](https://smith.langchain.com/public/3d0c3e6d-cb98-44a6-9335-f44180a9d7bd/r)**
+>
+> Open a public LangSmith run for this example.
 
 Behavior:
 
@@ -582,9 +580,9 @@ def get_weather_data(city: str) -> dict:
     }
 ```
 
-<Card title="View example trace" icon="chart-line" href="https://smith.langchain.com/public/ef7c7454-03e6-481c-b5d3-be3862290879/r">
-  Open a public LangSmith run for this example.
-</Card>
+> **[View example trace](https://smith.langchain.com/public/ef7c7454-03e6-481c-b5d3-be3862290879/r)**
+>
+> Open a public LangSmith run for this example.
 
 Behavior:
 
@@ -688,9 +686,9 @@ result = agent.invoke({
 # "Order 12345 is shipped and will arrive in 2 days."
 ```
 
-<Card title="View example trace" icon="chart-line" href="https://smith.langchain.com/public/73ccdc9c-8579-4a93-906c-1338c04bf047/r">
-  Open a public LangSmith run for this example.
-</Card>
+> **[View example trace](https://smith.langchain.com/public/73ccdc9c-8579-4a93-906c-1338c04bf047/r)**
+>
+> Open a public LangSmith run for this example.
 
 Behavior:
 
@@ -704,13 +702,13 @@ Use this when:
 * You want to avoid an extra model call when no additional reasoning is needed.
 * You need deterministic, unmodified output: the model cannot rephrase, summarize, or act on the tool result.
 
-<Warning>
-  Because the model does not process the tool's output, `return_direct=True` is not suitable for tools whose results require further reasoning, summarization, or chaining with other tool calls.
-</Warning>
+> [!WARNING]
+>
+> Because the model does not process the tool's output, `return_direct=True` is not suitable for tools whose results require further reasoning, summarization, or chaining with other tool calls.
 
-<Warning>
-  **Mixed parallel calls:** If the model calls a `return_direct=True` tool alongside tools that do not have `return_direct=True`, the agent does **not** exit after that step. It routes back to the model with every `ToolMessage` from the batch, so the model can reason over all results. `return_direct` only short-circuits the loop when every tool call in the step has `return_direct=True`.
-</Warning>
+> [!WARNING]
+>
+> **Mixed parallel calls:** If the model calls a `return_direct=True` tool alongside tools that do not have `return_direct=True`, the agent does **not** exit after that step. It routes back to the model with every `ToolMessage` from the batch, so the model can reason over all results. `return_direct` only short-circuits the loop when every tool call in the step has `return_direct=True`.
 
 #### Return a Command with return\_direct
 
@@ -746,224 +744,222 @@ To write to a parent graph instead, set `graph=Command.PARENT`. In that case the
 
 Handle tool errors using LangChain agent [middleware](/oss/python/langchain/middleware) to retry failed tool calls or return custom error messages:
 
-<CodeGroup>
-  ```python Google theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  from collections.abc import Callable
+```python Google theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+from collections.abc import Callable
 
-  from langchain.agents import create_agent
-  from langchain.agents.middleware import wrap_tool_call
-  from langchain.messages import ToolMessage
-  from langchain.tools.tool_node import ToolCallRequest
-
-
-  @wrap_tool_call
-  def handle_tool_errors(
-      request: ToolCallRequest,
-      handler: Callable[[ToolCallRequest], ToolMessage],
-  ) -> ToolMessage:
-      """Convert tool exceptions into ToolMessages the model can handle."""
-      try:
-          return handler(request)
-      except Exception as e:
-          return ToolMessage(
-              content=f"Tool error: Please check your input and try again. ({e})",
-              tool_call_id=request.tool_call["id"],
-          )
+from langchain.agents import create_agent
+from langchain.agents.middleware import wrap_tool_call
+from langchain.messages import ToolMessage
+from langchain.tools.tool_node import ToolCallRequest
 
 
-  agent = create_agent(
-      model="google_genai:gemini-3.6-flash",
-      tools=[],
-      middleware=[handle_tool_errors],
-  )
-  ```
-
-  ```python OpenAI theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  from collections.abc import Callable
-
-  from langchain.agents import create_agent
-  from langchain.agents.middleware import wrap_tool_call
-  from langchain.messages import ToolMessage
-  from langchain.tools.tool_node import ToolCallRequest
-
-
-  @wrap_tool_call
-  def handle_tool_errors(
-      request: ToolCallRequest,
-      handler: Callable[[ToolCallRequest], ToolMessage],
-  ) -> ToolMessage:
-      """Convert tool exceptions into ToolMessages the model can handle."""
-      try:
-          return handler(request)
-      except Exception as e:
-          return ToolMessage(
-              content=f"Tool error: Please check your input and try again. ({e})",
-              tool_call_id=request.tool_call["id"],
-          )
+@wrap_tool_call
+def handle_tool_errors(
+    request: ToolCallRequest,
+    handler: Callable[[ToolCallRequest], ToolMessage],
+) -> ToolMessage:
+    """Convert tool exceptions into ToolMessages the model can handle."""
+    try:
+        return handler(request)
+    except Exception as e:
+        return ToolMessage(
+            content=f"Tool error: Please check your input and try again. ({e})",
+            tool_call_id=request.tool_call["id"],
+        )
 
 
-  agent = create_agent(
-      model="openai:gpt-5.5",
-      tools=[],
-      middleware=[handle_tool_errors],
-  )
-  ```
+agent = create_agent(
+    model="google_genai:gemini-3.6-flash",
+    tools=[],
+    middleware=[handle_tool_errors],
+)
+```
 
-  ```python Anthropic theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  from collections.abc import Callable
+```python OpenAI theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+from collections.abc import Callable
 
-  from langchain.agents import create_agent
-  from langchain.agents.middleware import wrap_tool_call
-  from langchain.messages import ToolMessage
-  from langchain.tools.tool_node import ToolCallRequest
-
-
-  @wrap_tool_call
-  def handle_tool_errors(
-      request: ToolCallRequest,
-      handler: Callable[[ToolCallRequest], ToolMessage],
-  ) -> ToolMessage:
-      """Convert tool exceptions into ToolMessages the model can handle."""
-      try:
-          return handler(request)
-      except Exception as e:
-          return ToolMessage(
-              content=f"Tool error: Please check your input and try again. ({e})",
-              tool_call_id=request.tool_call["id"],
-          )
+from langchain.agents import create_agent
+from langchain.agents.middleware import wrap_tool_call
+from langchain.messages import ToolMessage
+from langchain.tools.tool_node import ToolCallRequest
 
 
-  agent = create_agent(
-      model="anthropic:claude-sonnet-5",
-      tools=[],
-      middleware=[handle_tool_errors],
-  )
-  ```
-
-  ```python OpenRouter theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  from collections.abc import Callable
-
-  from langchain.agents import create_agent
-  from langchain.agents.middleware import wrap_tool_call
-  from langchain.messages import ToolMessage
-  from langchain.tools.tool_node import ToolCallRequest
-
-
-  @wrap_tool_call
-  def handle_tool_errors(
-      request: ToolCallRequest,
-      handler: Callable[[ToolCallRequest], ToolMessage],
-  ) -> ToolMessage:
-      """Convert tool exceptions into ToolMessages the model can handle."""
-      try:
-          return handler(request)
-      except Exception as e:
-          return ToolMessage(
-              content=f"Tool error: Please check your input and try again. ({e})",
-              tool_call_id=request.tool_call["id"],
-          )
+@wrap_tool_call
+def handle_tool_errors(
+    request: ToolCallRequest,
+    handler: Callable[[ToolCallRequest], ToolMessage],
+) -> ToolMessage:
+    """Convert tool exceptions into ToolMessages the model can handle."""
+    try:
+        return handler(request)
+    except Exception as e:
+        return ToolMessage(
+            content=f"Tool error: Please check your input and try again. ({e})",
+            tool_call_id=request.tool_call["id"],
+        )
 
 
-  agent = create_agent(
-      model="openrouter:z-ai/glm-5.2",
-      tools=[],
-      middleware=[handle_tool_errors],
-  )
-  ```
+agent = create_agent(
+    model="openai:gpt-5.5",
+    tools=[],
+    middleware=[handle_tool_errors],
+)
+```
 
-  ```python Fireworks theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  from collections.abc import Callable
+```python Anthropic theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+from collections.abc import Callable
 
-  from langchain.agents import create_agent
-  from langchain.agents.middleware import wrap_tool_call
-  from langchain.messages import ToolMessage
-  from langchain.tools.tool_node import ToolCallRequest
-
-
-  @wrap_tool_call
-  def handle_tool_errors(
-      request: ToolCallRequest,
-      handler: Callable[[ToolCallRequest], ToolMessage],
-  ) -> ToolMessage:
-      """Convert tool exceptions into ToolMessages the model can handle."""
-      try:
-          return handler(request)
-      except Exception as e:
-          return ToolMessage(
-              content=f"Tool error: Please check your input and try again. ({e})",
-              tool_call_id=request.tool_call["id"],
-          )
+from langchain.agents import create_agent
+from langchain.agents.middleware import wrap_tool_call
+from langchain.messages import ToolMessage
+from langchain.tools.tool_node import ToolCallRequest
 
 
-  agent = create_agent(
-      model="fireworks:accounts/fireworks/models/glm-5p2",
-      tools=[],
-      middleware=[handle_tool_errors],
-  )
-  ```
-
-  ```python Baseten theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  from collections.abc import Callable
-
-  from langchain.agents import create_agent
-  from langchain.agents.middleware import wrap_tool_call
-  from langchain.messages import ToolMessage
-  from langchain.tools.tool_node import ToolCallRequest
-
-
-  @wrap_tool_call
-  def handle_tool_errors(
-      request: ToolCallRequest,
-      handler: Callable[[ToolCallRequest], ToolMessage],
-  ) -> ToolMessage:
-      """Convert tool exceptions into ToolMessages the model can handle."""
-      try:
-          return handler(request)
-      except Exception as e:
-          return ToolMessage(
-              content=f"Tool error: Please check your input and try again. ({e})",
-              tool_call_id=request.tool_call["id"],
-          )
+@wrap_tool_call
+def handle_tool_errors(
+    request: ToolCallRequest,
+    handler: Callable[[ToolCallRequest], ToolMessage],
+) -> ToolMessage:
+    """Convert tool exceptions into ToolMessages the model can handle."""
+    try:
+        return handler(request)
+    except Exception as e:
+        return ToolMessage(
+            content=f"Tool error: Please check your input and try again. ({e})",
+            tool_call_id=request.tool_call["id"],
+        )
 
 
-  agent = create_agent(
-      model="baseten:zai-org/GLM-5.2",
-      tools=[],
-      middleware=[handle_tool_errors],
-  )
-  ```
+agent = create_agent(
+    model="anthropic:claude-sonnet-5",
+    tools=[],
+    middleware=[handle_tool_errors],
+)
+```
 
-  ```python Ollama theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  from collections.abc import Callable
+```python OpenRouter theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+from collections.abc import Callable
 
-  from langchain.agents import create_agent
-  from langchain.agents.middleware import wrap_tool_call
-  from langchain.messages import ToolMessage
-  from langchain.tools.tool_node import ToolCallRequest
-
-
-  @wrap_tool_call
-  def handle_tool_errors(
-      request: ToolCallRequest,
-      handler: Callable[[ToolCallRequest], ToolMessage],
-  ) -> ToolMessage:
-      """Convert tool exceptions into ToolMessages the model can handle."""
-      try:
-          return handler(request)
-      except Exception as e:
-          return ToolMessage(
-              content=f"Tool error: Please check your input and try again. ({e})",
-              tool_call_id=request.tool_call["id"],
-          )
+from langchain.agents import create_agent
+from langchain.agents.middleware import wrap_tool_call
+from langchain.messages import ToolMessage
+from langchain.tools.tool_node import ToolCallRequest
 
 
-  agent = create_agent(
-      model="ollama:north-mini-code-1.0",
-      tools=[],
-      middleware=[handle_tool_errors],
-  )
-  ```
-</CodeGroup>
+@wrap_tool_call
+def handle_tool_errors(
+    request: ToolCallRequest,
+    handler: Callable[[ToolCallRequest], ToolMessage],
+) -> ToolMessage:
+    """Convert tool exceptions into ToolMessages the model can handle."""
+    try:
+        return handler(request)
+    except Exception as e:
+        return ToolMessage(
+            content=f"Tool error: Please check your input and try again. ({e})",
+            tool_call_id=request.tool_call["id"],
+        )
+
+
+agent = create_agent(
+    model="openrouter:z-ai/glm-5.2",
+    tools=[],
+    middleware=[handle_tool_errors],
+)
+```
+
+```python Fireworks theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+from collections.abc import Callable
+
+from langchain.agents import create_agent
+from langchain.agents.middleware import wrap_tool_call
+from langchain.messages import ToolMessage
+from langchain.tools.tool_node import ToolCallRequest
+
+
+@wrap_tool_call
+def handle_tool_errors(
+    request: ToolCallRequest,
+    handler: Callable[[ToolCallRequest], ToolMessage],
+) -> ToolMessage:
+    """Convert tool exceptions into ToolMessages the model can handle."""
+    try:
+        return handler(request)
+    except Exception as e:
+        return ToolMessage(
+            content=f"Tool error: Please check your input and try again. ({e})",
+            tool_call_id=request.tool_call["id"],
+        )
+
+
+agent = create_agent(
+    model="fireworks:accounts/fireworks/models/glm-5p2",
+    tools=[],
+    middleware=[handle_tool_errors],
+)
+```
+
+```python Baseten theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+from collections.abc import Callable
+
+from langchain.agents import create_agent
+from langchain.agents.middleware import wrap_tool_call
+from langchain.messages import ToolMessage
+from langchain.tools.tool_node import ToolCallRequest
+
+
+@wrap_tool_call
+def handle_tool_errors(
+    request: ToolCallRequest,
+    handler: Callable[[ToolCallRequest], ToolMessage],
+) -> ToolMessage:
+    """Convert tool exceptions into ToolMessages the model can handle."""
+    try:
+        return handler(request)
+    except Exception as e:
+        return ToolMessage(
+            content=f"Tool error: Please check your input and try again. ({e})",
+            tool_call_id=request.tool_call["id"],
+        )
+
+
+agent = create_agent(
+    model="baseten:zai-org/GLM-5.2",
+    tools=[],
+    middleware=[handle_tool_errors],
+)
+```
+
+```python Ollama theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+from collections.abc import Callable
+
+from langchain.agents import create_agent
+from langchain.agents.middleware import wrap_tool_call
+from langchain.messages import ToolMessage
+from langchain.tools.tool_node import ToolCallRequest
+
+
+@wrap_tool_call
+def handle_tool_errors(
+    request: ToolCallRequest,
+    handler: Callable[[ToolCallRequest], ToolMessage],
+) -> ToolMessage:
+    """Convert tool exceptions into ToolMessages the model can handle."""
+    try:
+        return handler(request)
+    except Exception as e:
+        return ToolMessage(
+            content=f"Tool error: Please check your input and try again. ({e})",
+            tool_call_id=request.tool_call["id"],
+        )
+
+
+agent = create_agent(
+    model="ollama:north-mini-code-1.0",
+    tools=[],
+    middleware=[handle_tool_errors],
+)
+```
 
 ### State injection
 
@@ -987,210 +983,206 @@ With dynamic tools, the set of tools available to the agent is modified at runti
 
 There are two approaches depending on whether tools are known ahead of time:
 
-<Tabs>
-  <Tab title="Filtering pre-registered tools">
-    When all possible tools are known at agent creation time, you can pre-register them and dynamically filter which ones are exposed to the model based on state, permissions, or context.
+**Filtering pre-registered tools**
 
-    <Tabs>
-      <Tab title="State">
-        Enable advanced tools only after certain conversation milestones:
+When all possible tools are known at agent creation time, you can pre-register them and dynamically filter which ones are exposed to the model based on state, permissions, or context.
 
-        ```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-        from langchain.agents import create_agent
-        from langchain.agents.middleware import wrap_model_call, ModelRequest, ModelResponse
-        from typing import Callable
+**State**
 
-        @wrap_model_call
-        def state_based_tools(
-            request: ModelRequest,
-            handler: Callable[[ModelRequest], ModelResponse]
-        ) -> ModelResponse:
-            """Filter tools based on conversation State."""
-            # Read from State: check if user has authenticated
-            state = request.state
-            is_authenticated = state.get("authenticated", False)
-            message_count = len(state["messages"])
+Enable advanced tools only after certain conversation milestones:
 
-            # Only enable sensitive tools after authentication
-            if not is_authenticated:
-                tools = [t for t in request.tools if t.name.startswith("public_")]
-                request = request.override(tools=tools)
-            elif message_count < 5:
-                # Limit tools early in conversation
-                tools = [t for t in request.tools if t.name != "advanced_search"]
-                request = request.override(tools=tools)
+```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+from langchain.agents import create_agent
+from langchain.agents.middleware import wrap_model_call, ModelRequest, ModelResponse
+from typing import Callable
 
-            return handler(request)
+@wrap_model_call
+def state_based_tools(
+    request: ModelRequest,
+    handler: Callable[[ModelRequest], ModelResponse]
+) -> ModelResponse:
+    """Filter tools based on conversation State."""
+    # Read from State: check if user has authenticated
+    state = request.state
+    is_authenticated = state.get("authenticated", False)
+    message_count = len(state["messages"])
 
-        agent = create_agent(
-            model="gpt-5.5",
-            tools=[public_search, private_search, advanced_search],
-            middleware=[state_based_tools]
-        )
-        ```
-      </Tab>
+    # Only enable sensitive tools after authentication
+    if not is_authenticated:
+        tools = [t for t in request.tools if t.name.startswith("public_")]
+        request = request.override(tools=tools)
+    elif message_count < 5:
+        # Limit tools early in conversation
+        tools = [t for t in request.tools if t.name != "advanced_search"]
+        request = request.override(tools=tools)
 
-      <Tab title="Store">
-        Filter tools based on user preferences or feature flags in Store:
+    return handler(request)
 
-        ```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-        from dataclasses import dataclass
-        from langchain.agents import create_agent
-        from langchain.agents.middleware import wrap_model_call, ModelRequest, ModelResponse
-        from typing import Callable
-        from langgraph.store.memory import InMemoryStore
+agent = create_agent(
+    model="gpt-5.5",
+    tools=[public_search, private_search, advanced_search],
+    middleware=[state_based_tools]
+)
+```
 
-        @dataclass
-        class Context:
-            user_id: str
+**Store**
 
-        @wrap_model_call
-        def store_based_tools(
-            request: ModelRequest,
-            handler: Callable[[ModelRequest], ModelResponse]
-        ) -> ModelResponse:
-            """Filter tools based on Store preferences."""
-            user_id = request.runtime.context.user_id
+Filter tools based on user preferences or feature flags in Store:
 
-            # Read from Store: get user's enabled features
-            store = request.runtime.store
-            feature_flags = store.get(("features",), user_id)
+```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+from dataclasses import dataclass
+from langchain.agents import create_agent
+from langchain.agents.middleware import wrap_model_call, ModelRequest, ModelResponse
+from typing import Callable
+from langgraph.store.memory import InMemoryStore
 
-            if feature_flags:
-                enabled_features = feature_flags.value.get("enabled_tools", [])
-                # Only include tools that are enabled for this user
-                tools = [t for t in request.tools if t.name in enabled_features]
-                request = request.override(tools=tools)
+@dataclass
+class Context:
+    user_id: str
 
-            return handler(request)
+@wrap_model_call
+def store_based_tools(
+    request: ModelRequest,
+    handler: Callable[[ModelRequest], ModelResponse]
+) -> ModelResponse:
+    """Filter tools based on Store preferences."""
+    user_id = request.runtime.context.user_id
 
-        agent = create_agent(
-            model="gpt-5.5",
-            tools=[search_tool, analysis_tool, export_tool],
-            middleware=[store_based_tools],
-            context_schema=Context,
-            store=InMemoryStore()
-        )
-        ```
-      </Tab>
+    # Read from Store: get user's enabled features
+    store = request.runtime.store
+    feature_flags = store.get(("features",), user_id)
 
-      <Tab title="Runtime Context">
-        Filter tools based on user permissions from Runtime Context:
+    if feature_flags:
+        enabled_features = feature_flags.value.get("enabled_tools", [])
+        # Only include tools that are enabled for this user
+        tools = [t for t in request.tools if t.name in enabled_features]
+        request = request.override(tools=tools)
 
-        ```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-        from dataclasses import dataclass
-        from langchain.agents import create_agent
-        from langchain.agents.middleware import wrap_model_call, ModelRequest, ModelResponse
-        from typing import Callable
+    return handler(request)
 
-        @dataclass
-        class Context:
-            user_role: str
+agent = create_agent(
+    model="gpt-5.5",
+    tools=[search_tool, analysis_tool, export_tool],
+    middleware=[store_based_tools],
+    context_schema=Context,
+    store=InMemoryStore()
+)
+```
 
-        @wrap_model_call
-        def context_based_tools(
-            request: ModelRequest,
-            handler: Callable[[ModelRequest], ModelResponse]
-        ) -> ModelResponse:
-            """Filter tools based on Runtime Context permissions."""
-            # Read from Runtime Context: get user role
-            if request.runtime is None or request.runtime.context is None:
-                # If no context provided, default to viewer (most restrictive)
-                user_role = "viewer"
-            else:
-                user_role = request.runtime.context.user_role
+**Runtime Context**
 
-            if user_role == "admin":
-                # Admins get all tools
-                pass
-            elif user_role == "editor":
-                # Editors can't delete
-                tools = [t for t in request.tools if t.name != "delete_data"]
-                request = request.override(tools=tools)
-            else:
-                # Viewers get read-only tools
-                tools = [t for t in request.tools if t.name.startswith("read_")]
-                request = request.override(tools=tools)
+Filter tools based on user permissions from Runtime Context:
 
-            return handler(request)
+```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+from dataclasses import dataclass
+from langchain.agents import create_agent
+from langchain.agents.middleware import wrap_model_call, ModelRequest, ModelResponse
+from typing import Callable
 
-        agent = create_agent(
-            model="gpt-5.5",
-            tools=[read_data, write_data, delete_data],
-            middleware=[context_based_tools],
-            context_schema=Context
-        )
-        ```
-      </Tab>
-    </Tabs>
+@dataclass
+class Context:
+    user_role: str
 
-    This approach is best when:
+@wrap_model_call
+def context_based_tools(
+    request: ModelRequest,
+    handler: Callable[[ModelRequest], ModelResponse]
+) -> ModelResponse:
+    """Filter tools based on Runtime Context permissions."""
+    # Read from Runtime Context: get user role
+    if request.runtime is None or request.runtime.context is None:
+        # If no context provided, default to viewer (most restrictive)
+        user_role = "viewer"
+    else:
+        user_role = request.runtime.context.user_role
 
-    * All possible tools are known at compile/startup time
-    * You want to filter based on permissions, feature flags, or conversation state
-    * Tools are static but their availability is dynamic
+    if user_role == "admin":
+        # Admins get all tools
+        pass
+    elif user_role == "editor":
+        # Editors can't delete
+        tools = [t for t in request.tools if t.name != "delete_data"]
+        request = request.override(tools=tools)
+    else:
+        # Viewers get read-only tools
+        tools = [t for t in request.tools if t.name.startswith("read_")]
+        request = request.override(tools=tools)
 
-    See [Dynamically selecting tools](/oss/python/langchain/middleware/custom#dynamically-selecting-tools) for more examples.
-  </Tab>
+    return handler(request)
 
-  <Tab title="Runtime tool registration">
-    When tools are discovered or created at runtime (e.g., loaded from an MCP server, generated based on user data, or fetched from a remote registry), you need to both register the tools and handle their execution dynamically.
+agent = create_agent(
+    model="gpt-5.5",
+    tools=[read_data, write_data, delete_data],
+    middleware=[context_based_tools],
+    context_schema=Context
+)
+```
 
-    This requires two middleware hooks:
+This approach is best when:
 
-    1. `wrap_model_call` - Add the dynamic tools to the request
-    2. `wrap_tool_call` - Handle execution of the dynamically added tools
+* All possible tools are known at compile/startup time
+* You want to filter based on permissions, feature flags, or conversation state
+* Tools are static but their availability is dynamic
 
-    ```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-    from langchain.tools import tool
-    from langchain.agents import create_agent
-    from langchain.agents.middleware import AgentMiddleware, ModelRequest, ToolCallRequest
+See [Dynamically selecting tools](/oss/python/langchain/middleware/custom#dynamically-selecting-tools) for more examples.
 
-    # A tool that will be added dynamically at runtime
-    @tool
-    def calculate_tip(bill_amount: float, tip_percentage: float = 20.0) -> str:
-        """Calculate the tip amount for a bill."""
-        tip = bill_amount * (tip_percentage / 100)
-        return f"Tip: ${tip:.2f}, Total: ${bill_amount + tip:.2f}"
+**Runtime tool registration**
 
-    class DynamicToolMiddleware(AgentMiddleware):
-        """Middleware that registers and handles dynamic tools."""
+When tools are discovered or created at runtime (e.g., loaded from an MCP server, generated based on user data, or fetched from a remote registry), you need to both register the tools and handle their execution dynamically.
 
-        def wrap_model_call(self, request: ModelRequest, handler):
-            # Add dynamic tool to the request
-            # This could be loaded from an MCP server, database, etc.
-            updated = request.override(tools=[*request.tools, calculate_tip])
-            return handler(updated)
+This requires two middleware hooks:
 
-        def wrap_tool_call(self, request: ToolCallRequest, handler):
-            # Handle execution of the dynamic tool
-            if request.tool_call["name"] == "calculate_tip":
-                return handler(request.override(tool=calculate_tip))
-            return handler(request)
+1. `wrap_model_call` - Add the dynamic tools to the request
+2. `wrap_tool_call` - Handle execution of the dynamically added tools
 
-    agent = create_agent(
-        model="gpt-5.5",
-        tools=[get_weather],  # Only static tools registered here
-        middleware=[DynamicToolMiddleware()],
-    )
+```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+from langchain.tools import tool
+from langchain.agents import create_agent
+from langchain.agents.middleware import AgentMiddleware, ModelRequest, ToolCallRequest
 
-    # The agent can now use both get_weather AND calculate_tip
-    result = agent.invoke({
-        "messages": [{"role": "user", "content": "Calculate a 20% tip on $85"}]
-    })
-    ```
+# A tool that will be added dynamically at runtime
+@tool
+def calculate_tip(bill_amount: float, tip_percentage: float = 20.0) -> str:
+    """Calculate the tip amount for a bill."""
+    tip = bill_amount * (tip_percentage / 100)
+    return f"Tip: ${tip:.2f}, Total: ${bill_amount + tip:.2f}"
 
-    This approach is best when:
+class DynamicToolMiddleware(AgentMiddleware):
+    """Middleware that registers and handles dynamic tools."""
 
-    * Tools are discovered at runtime (e.g., from an MCP server)
-    * Tools are generated dynamically based on user data or configuration
-    * You're integrating with external tool registries
+    def wrap_model_call(self, request: ModelRequest, handler):
+        # Add dynamic tool to the request
+        # This could be loaded from an MCP server, database, etc.
+        updated = request.override(tools=[*request.tools, calculate_tip])
+        return handler(updated)
 
-    <Note>
-      The `wrap_tool_call` hook is required for runtime-registered tools because the agent needs to know how to execute tools that weren't in the original tool list. Without it, the agent won't know how to invoke the dynamically added tool.
-    </Note>
-  </Tab>
-</Tabs>
+    def wrap_tool_call(self, request: ToolCallRequest, handler):
+        # Handle execution of the dynamic tool
+        if request.tool_call["name"] == "calculate_tip":
+            return handler(request.override(tool=calculate_tip))
+        return handler(request)
+
+agent = create_agent(
+    model="gpt-5.5",
+    tools=[get_weather],  # Only static tools registered here
+    middleware=[DynamicToolMiddleware()],
+)
+
+# The agent can now use both get_weather AND calculate_tip
+result = agent.invoke({
+    "messages": [{"role": "user", "content": "Calculate a 20% tip on $85"}]
+})
+```
+
+This approach is best when:
+
+* Tools are discovered at runtime (e.g., from an MCP server)
+* Tools are generated dynamically based on user data or configuration
+* You're integrating with external tool registries
+
+> [!NOTE]
+>
+> The `wrap_tool_call` hook is required for runtime-registered tools because the agent needs to know how to execute tools that weren't in the original tool list. Without it, the agent won't know how to invoke the dynamically added tool.
 
 ## Headless tools
 
@@ -1216,17 +1208,17 @@ In both runtimes, the model sees a normal tool it can call, but the actual execu
 3. **Handle** the interrupt payload when the tool is invoked. Instead of running locally, the graph pauses with a payload shaped like `{"type": "tool", "tool_call": {"id", "name", "args"}}`.
 4. **Resume** the graph after your app, another service, or a human step performs the action. For browser-based flows, you can mirror the schema in the frontend and attach `.implement(...)` there.
 
-<Info>
-  If you call `tool(...)` in Python with only `name`, `description`, and `args_schema`, LangChain returns a `HeadlessTool`. There is no `.implement()` API on the Python side.
-</Info>
+> [!NOTE]
+>
+> If you call `tool(...)` in Python with only `name`, `description`, and `args_schema`, LangChain returns a `HeadlessTool`. There is no `.implement()` API on the Python side.
 
 When the model issues a tool call for one of these tools, the run **interrupts** instead of executing the tool locally. Your app can inspect the payload, perform the action in the right environment (for example a browser, another service, or a human review step), then **resume** the graph with the tool result. When you use the supported JS SDK hooks, they can detect headless-tool interrupts, run the matching client implementation, and submit the resume command for you.
 
 Use the optional **`onTool`** callback to observe lifecycle events (`start`, `success`, `error`) for UI feedback such as spinners or toasts.
 
-<Card title="Headless tools frontend pattern" href="/oss/python/langchain/frontend/headless-tools" icon="device-desktop">
-  See an end-to-end example of schema-only tools executed in the client with `useStream`.
-</Card>
+> **[Headless tools frontend pattern](/oss/python/langchain/frontend/headless-tools)**
+>
+> See an end-to-end example of schema-only tools executed in the client with `useStream`.
 
 ## Prebuilt tools
 
@@ -1249,9 +1241,9 @@ async with MCPAdapter("https://example.com/mcp") as adapter:
     agent = create_agent("claude-sonnet-4-6", tools)
 ```
 
-<Note>
-  The `langchain.mcp` namespace requires `langchain[mcp]>=1.4.0` and is in beta. The API may change.
-</Note>
+> [!NOTE]
+>
+> The `langchain.mcp` namespace requires `langchain[mcp]>=1.4.0` and is in beta. The API may change.
 
 For transports, authentication, multiple servers, and handling tool results, see [Model Context Protocol (MCP)](/oss/python/langchain/mcp).
 
@@ -1263,12 +1255,6 @@ Refer to the individual [chat model integration pages](/oss/python/integrations/
 
 ***
 
-<div>
-  <Callout icon="terminal-2">
-    [Connect these docs](/use-these-docs) to your agent of choice via MCP for real-time answers.
-  </Callout>
+[Connect these docs](/use-these-docs) to your agent of choice via MCP for real-time answers.
 
-  <Callout icon="edit">
-    [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/oss/langchain/tools.mdx) or [file an issue](https://github.com/langchain-ai/docs/issues/new/choose).
-  </Callout>
-</div>
+[Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/oss/langchain/tools.mdx) or [file an issue](https://github.com/langchain-ai/docs/issues/new/choose).

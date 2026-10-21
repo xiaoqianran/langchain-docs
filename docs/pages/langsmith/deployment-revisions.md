@@ -10,49 +10,47 @@ A revision deploys a version of your application to an existing Cloud deployment
 
 When you [create a deployment](/langsmith/deploy-to-cloud), LangSmith creates its first revision. Use the LangSmith UI or LangGraph CLI to create subsequent revisions.
 
-<Tabs>
-  <Tab title="LangSmith UI">
-    From the [LangSmith UI](https://smith.langchain.com?utm_source=docs\&utm_medium=cta\&utm_campaign=langsmith-signup\&utm_content=langsmith-deployment-revisions), select **Deployments**, then select a deployment.
+**LangSmith UI**
 
-    1. In the top-right corner of the **Deployment** view, select **+ New Revision**.
-    2. In the **New Revision** modal, specify the full path to the [API configuration file](/langsmith/cli#configuration-file), including the file name. For example, enter `langgraph.json` if the file is in the repository root.
-    3. Choose whether to make the deployment shareable through [Studio](/langsmith/studio).
-    4. Add, remove, or update environment variables and secrets. Existing values are prepopulated. For more information, see [Environment variables](/langsmith/env-var-cloud).
-    5. Select **Submit**. LangSmith queues the revision for deployment.
-  </Tab>
+From the [LangSmith UI](https://smith.langchain.com?utm_source=docs\&utm_medium=cta\&utm_campaign=langsmith-signup\&utm_content=langsmith-deployment-revisions), select **Deployments**, then select a deployment.
 
-  <Tab title="LangGraph CLI">
-    Run `langgraph deploy` again from your project directory. The command finds the existing deployment by name and creates a revision with your latest code changes:
+1. In the top-right corner of the **Deployment** view, select **+ New Revision**.
+2. In the **New Revision** modal, specify the full path to the [API configuration file](/langsmith/cli#configuration-file), including the file name. For example, enter `langgraph.json` if the file is in the repository root.
+3. Choose whether to make the deployment shareable through [Studio](/langsmith/studio).
+4. Add, remove, or update environment variables and secrets. Existing values are prepopulated. For more information, see [Environment variables](/langsmith/env-var-cloud).
+5. Select **Submit**. LangSmith queues the revision for deployment.
 
-    ```shell theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-    langgraph deploy
-    ```
+**LangGraph CLI**
 
-    To target a deployment by ID, run:
+Run `langgraph deploy` again from your project directory. The command finds the existing deployment by name and creates a revision with your latest code changes:
 
-    ```shell theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-    langgraph deploy --deployment-id <DEPLOYMENT_ID>
-    ```
+```shell theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+langgraph deploy
+```
 
-    To view deployment IDs, run:
+To target a deployment by ID, run:
 
-    ```shell theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-    langgraph deploy list
-    ```
+```shell theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+langgraph deploy --deployment-id <DEPLOYMENT_ID>
+```
 
-    <Note>
-      `langgraph deploy` can update only deployments originally created with `langgraph deploy`. Use the LangSmith UI to update deployments created through the UI or GitHub integration.
-    </Note>
-  </Tab>
-</Tabs>
+To view deployment IDs, run:
+
+```shell theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+langgraph deploy list
+```
+
+> [!NOTE]
+>
+> `langgraph deploy` can update only deployments originally created with `langgraph deploy`. Use the LangSmith UI to update deployments created through the UI or GitHub integration.
 
 ## Interrupt a revision
 
 Interrupt a revision only when it is stuck and prevents you from deploying another revision.
 
-<Warning>
-  Interrupted revisions have undefined behavior. LangChain might remove this feature in the future.
-</Warning>
+> [!WARNING]
+>
+> Interrupted revisions have undefined behavior. LangChain might remove this feature in the future.
 
 To interrupt a revision:
 
@@ -68,12 +66,6 @@ To interrupt a revision:
 
 ***
 
-<div>
-  <Callout icon="terminal-2">
-    [Connect these docs](/use-these-docs) to your agent of choice via MCP for real-time answers.
-  </Callout>
+[Connect these docs](/use-these-docs) to your agent of choice via MCP for real-time answers.
 
-  <Callout icon="edit">
-    [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/deployment-revisions.mdx) or [file an issue](https://github.com/langchain-ai/docs/issues/new/choose).
-  </Callout>
-</div>
+[Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/deployment-revisions.mdx) or [file an issue](https://github.com/langchain-ai/docs/issues/new/choose).

@@ -51,9 +51,9 @@ Context Hub 承诺支持 `files` 中的三种条目类型：
 
 当链接的代理或技能存储库获得新的提交时，LangSmith 将该更新传播到引用它的父存储库。
 
-<Tip>
-  如果您发现自己将相同的上下文块复制到多个代理中，请将其拉出到技能存储库中并从每个代理中引用它。
-</Tip>
+> [!提示]
+>
+> 如果您发现自己将相同的上下文块复制到多个代理中，请将其拉出到技能存储库中并从每个代理中引用它。
 
 ## Context Hub 与商店后端LangSmith 中的上下文可以由两个不同的后端管理：
 **Context Hub** 和 **商店后端**。它们有不同的用途，大多数代理都使用这两种用途。
@@ -90,12 +90,6 @@ Context Hub 承诺支持 `files` 中的三种条目类型：
 
 ***
 
-<div>
-  <Callout icon="terminal-2">
-    [Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
-  </Callout>
+[Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
 
-  <Callout icon="edit">
-    [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/context-engineering-concepts.mdx) 或 [file an issue](https://github.com/langchain-ai/docs/issues/new/choose)。
-  </Callout>
-</div>
+[Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/context-engineering-concepts.mdx) 或 [file an issue](https://github.com/langchain-ai/docs/issues/new/choose)。

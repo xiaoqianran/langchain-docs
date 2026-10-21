@@ -65,9 +65,9 @@ Deep Agents only attaches [`SubAgentMiddleware`](https://reference.langchain.com
 
 Async subagents are unaffected—they flow through their own middleware and tools, described in [Async subagents](/oss/javascript/deepagents/async-subagents).
 
-<Tip>
-  Don't reach for `excluded_middleware` here—`SubAgentMiddleware` is required scaffolding and listing it raises `ValueError`. The `general_purpose_subagent.enabled = False` knob is the supported path.
-</Tip>
+> [!TIP]
+>
+> Don't reach for `excluded_middleware` here—`SubAgentMiddleware` is required scaffolding and listing it raises `ValueError`. The `general_purpose_subagent.enabled = False` knob is the supported path.
 
 ## Custom subagents
 
@@ -83,15 +83,15 @@ Define subagents as dictionaries matching the [`SubAgent`](https://reference.lan
 | - | - | - |
 | `name` | `string` | Required. Unique identifier for the subagent. The main agent uses this name when calling the `task()` tool. The subagent name becomes metadata for `AIMessage`s and for streaming, which helps to differentiate between agents. |
 | `description` | `string` | Required. Description of what this subagent does. Be specific and action-oriented. The main agent uses this to decide when to delegate. |
-| `systemPrompt` | `string` | Required for `mode: "isolated"` (the default). Instructions for the subagent. Custom isolated subagents must define their own. Include tool usage guidance and output format requirements.<br />Does not inherit from main agent. For `mode: "fork"`, omit this field unless you need a fork-only addendum. See [Forked subagents](#forked-subagents). |
+| `systemPrompt` | `string` | Required for `mode: "isolated"` (the default). Instructions for the subagent. Custom isolated subagents must define their own. Include tool usage guidance and output format requirements. Does not inherit from main agent. For `mode: "fork"`, omit this field unless you need a fork-only addendum. See [Forked subagents](#forked-subagents). |
 | `mode` | `"isolated"` \| `"fork"` | Optional. Context mode. Defaults to `"isolated"`, where the subagent only sees the delegated task. Set to `"fork"` to inherit the parent's conversation and system prompt instead. See [Forked subagents](#forked-subagents). |
-| `tools` | `StructuredTool[]` | Optional. Tools the subagent can use. Keep this minimal and include only what's needed.<br />Inherits from main agent by default. When specified, overrides the inherited tools entirely. |
-| `model` | `LanguageModelLike \| string` | Optional. Overrides the main agent's model. Omit to use the main agent's model.<br />Inherits from main agent by default. You can pass either a model identifier string like `'openai:gpt-5.5'` (using the `'provider:model'` format) or a LangChain chat model object (`await initChatModel("gpt-5.5")` or `new ChatOpenAI({ model: "gpt-5.5" })`). |
-| `middleware` | `AgentMiddleware[]` | Optional. Additional middleware for custom behavior, logging, or rate limiting.<br />Does not inherit from the main agent. Appended to the [synchronous subagent stack](/oss/javascript/deepagents/customization#synchronous-subagent-stack). |
-| `interruptOn` | `Record<string, boolean \| InterruptOnConfig>` | Optional. Configure [human-in-the-loop](/oss/javascript/deepagents/human-in-the-loop) for specific tools. Options: `True`, `False`. or an `InterruptOnConfig` with `allowed_decisions`. Requires checkpointer.<br />Inherits from main agent by default. Subagent value overrides the default. |
-| `skills` | `string[]` | Optional. [Skills](/oss/javascript/deepagents/skills) source paths. When specified, the subagent will load skills from these directories (e.g., `["/skills/research/", "/skills/web-search/"]`). This allows subagents to have different skill sets than the main agent.<br />Does not inherit from main agent. Only the general-purpose subagent inherits the main agent's skills. When a subagent has skills, it runs its own independent [`SkillsMiddleware`](https://reference.langchain.com/javascript/deepagents/middleware/createSkillsMiddleware) instance. Skill state is fully isolated—a subagent's loaded skills are not visible to the parent, and vice versa. |
+| `tools` | `StructuredTool[]` | Optional. Tools the subagent can use. Keep this minimal and include only what's needed. Inherits from main agent by default. When specified, overrides the inherited tools entirely. |
+| `model` | `LanguageModelLike \| string` | Optional. Overrides the main agent's model. Omit to use the main agent's model. Inherits from main agent by default. You can pass either a model identifier string like `'openai:gpt-5.5'` (using the `'provider:model'` format) or a LangChain chat model object (`await initChatModel("gpt-5.5")` or `new ChatOpenAI({ model: "gpt-5.5" })`). |
+| `middleware` | `AgentMiddleware[]` | Optional. Additional middleware for custom behavior, logging, or rate limiting. Does not inherit from the main agent. Appended to the [synchronous subagent stack](/oss/javascript/deepagents/customization#synchronous-subagent-stack). |
+| `interruptOn` | `Record<string, boolean \| InterruptOnConfig>` | Optional. Configure [human-in-the-loop](/oss/javascript/deepagents/human-in-the-loop) for specific tools. Options: `True`, `False`. or an `InterruptOnConfig` with `allowed_decisions`. Requires checkpointer. Inherits from main agent by default. Subagent value overrides the default. |
+| `skills` | `string[]` | Optional. [Skills](/oss/javascript/deepagents/skills) source paths. When specified, the subagent will load skills from these directories (e.g., `["/skills/research/", "/skills/web-search/"]`). This allows subagents to have different skill sets than the main agent. Does not inherit from main agent. Only the general-purpose subagent inherits the main agent's skills. When a subagent has skills, it runs its own independent [`SkillsMiddleware`](https://reference.langchain.com/javascript/deepagents/middleware/createSkillsMiddleware) instance. Skill state is fully isolated—a subagent's loaded skills are not visible to the parent, and vice versa. |
 | `responseFormat` | `ResponseFormat` | Optional. [Structured output](/oss/javascript/langchain/structured-output) schema for the subagent. When set, the parent receives the subagent's result as JSON instead of free-form text. Accepts Zod schemas, JSON schema objects, `toolStrategy(...)`, or `providerStrategy(...)`. See [Structured output](#structured-output). |
-| `permissions` | `FilesystemPermission[]` | Optional. [Filesystem permission rules](/oss/javascript/deepagents/permissions) for the subagent. When set, **replaces** the parent agent's permissions entirely.<br />Inherits from main agent by default. |
+| `permissions` | `FilesystemPermission[]` | Optional. [Filesystem permission rules](/oss/javascript/deepagents/permissions) for the subagent. When set, **replaces** the parent agent's permissions entirely. Inherits from main agent by default. |
 
 ### CompiledSubAgent
 
@@ -106,399 +106,397 @@ For complex workflows, use a prebuilt LangGraph graph as a [`CompiledSubAgent`](
 
 ## Using SubAgent
 
-<CodeGroup>
-  ```ts Google theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  import { tool } from "langchain";
-  import { TavilySearch } from "@langchain/tavily";
-  import { createDeepAgent, type SubAgent } from "deepagents";
-  import { z } from "zod";
+```ts Google theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+import { tool } from "langchain";
+import { TavilySearch } from "@langchain/tavily";
+import { createDeepAgent, type SubAgent } from "deepagents";
+import { z } from "zod";
 
-  const internetSearch = tool(
-    async ({
-      query,
-      maxResults = 5,
-      topic = "general",
-      includeRawContent = false,
-    }: {
-      query: string;
-      maxResults?: number;
-      topic?: "general" | "news" | "finance";
-      includeRawContent?: boolean;
-    }) => {
-      const tavilySearch = new TavilySearch({
-        maxResults,
-        tavilyApiKey: process.env.TAVILY_API_KEY,
-        includeRawContent,
-        topic,
-      });
-      return await tavilySearch._call({ query });
-    },
-    {
-      name: "internet_search",
-      description: "Run a web search",
-      schema: z.object({
-        query: z.string().describe("The search query"),
-        maxResults: z.number().optional().default(5),
-        topic: z
-          .enum(["general", "news", "finance"])
-          .optional()
-          .default("general"),
-        includeRawContent: z.boolean().optional().default(false),
-      }),
-    },
-  );
+const internetSearch = tool(
+  async ({
+    query,
+    maxResults = 5,
+    topic = "general",
+    includeRawContent = false,
+  }: {
+    query: string;
+    maxResults?: number;
+    topic?: "general" | "news" | "finance";
+    includeRawContent?: boolean;
+  }) => {
+    const tavilySearch = new TavilySearch({
+      maxResults,
+      tavilyApiKey: process.env.TAVILY_API_KEY,
+      includeRawContent,
+      topic,
+    });
+    return await tavilySearch._call({ query });
+  },
+  {
+    name: "internet_search",
+    description: "Run a web search",
+    schema: z.object({
+      query: z.string().describe("The search query"),
+      maxResults: z.number().optional().default(5),
+      topic: z
+        .enum(["general", "news", "finance"])
+        .optional()
+        .default("general"),
+      includeRawContent: z.boolean().optional().default(false),
+    }),
+  },
+);
 
-  const researchSubagent: SubAgent = {
-    name: "research-agent",
-    description: "Used to research more in depth questions",
-    systemPrompt: "You are a great researcher",
-    tools: [internetSearch],
-    model: "google:gemini-3.6-flash", // Optional override, defaults to main agent model
-  };
-  const subagents = [researchSubagent];
+const researchSubagent: SubAgent = {
+  name: "research-agent",
+  description: "Used to research more in depth questions",
+  systemPrompt: "You are a great researcher",
+  tools: [internetSearch],
+  model: "google:gemini-3.6-flash", // Optional override, defaults to main agent model
+};
+const subagents = [researchSubagent];
 
-  const agent = createDeepAgent({
-    model: "google:gemini-3.6-flash",
-    subagents,
-  });
-  ```
+const agent = createDeepAgent({
+  model: "google:gemini-3.6-flash",
+  subagents,
+});
+```
 
-  ```ts OpenAI theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  import { tool } from "langchain";
-  import { TavilySearch } from "@langchain/tavily";
-  import { createDeepAgent, type SubAgent } from "deepagents";
-  import { z } from "zod";
+```ts OpenAI theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+import { tool } from "langchain";
+import { TavilySearch } from "@langchain/tavily";
+import { createDeepAgent, type SubAgent } from "deepagents";
+import { z } from "zod";
 
-  const internetSearch = tool(
-    async ({
-      query,
-      maxResults = 5,
-      topic = "general",
-      includeRawContent = false,
-    }: {
-      query: string;
-      maxResults?: number;
-      topic?: "general" | "news" | "finance";
-      includeRawContent?: boolean;
-    }) => {
-      const tavilySearch = new TavilySearch({
-        maxResults,
-        tavilyApiKey: process.env.TAVILY_API_KEY,
-        includeRawContent,
-        topic,
-      });
-      return await tavilySearch._call({ query });
-    },
-    {
-      name: "internet_search",
-      description: "Run a web search",
-      schema: z.object({
-        query: z.string().describe("The search query"),
-        maxResults: z.number().optional().default(5),
-        topic: z
-          .enum(["general", "news", "finance"])
-          .optional()
-          .default("general"),
-        includeRawContent: z.boolean().optional().default(false),
-      }),
-    },
-  );
+const internetSearch = tool(
+  async ({
+    query,
+    maxResults = 5,
+    topic = "general",
+    includeRawContent = false,
+  }: {
+    query: string;
+    maxResults?: number;
+    topic?: "general" | "news" | "finance";
+    includeRawContent?: boolean;
+  }) => {
+    const tavilySearch = new TavilySearch({
+      maxResults,
+      tavilyApiKey: process.env.TAVILY_API_KEY,
+      includeRawContent,
+      topic,
+    });
+    return await tavilySearch._call({ query });
+  },
+  {
+    name: "internet_search",
+    description: "Run a web search",
+    schema: z.object({
+      query: z.string().describe("The search query"),
+      maxResults: z.number().optional().default(5),
+      topic: z
+        .enum(["general", "news", "finance"])
+        .optional()
+        .default("general"),
+      includeRawContent: z.boolean().optional().default(false),
+    }),
+  },
+);
 
-  const researchSubagent: SubAgent = {
-    name: "research-agent",
-    description: "Used to research more in depth questions",
-    systemPrompt: "You are a great researcher",
-    tools: [internetSearch],
-    model: "openai:gpt-5.5", // Optional override, defaults to main agent model
-  };
-  const subagents = [researchSubagent];
+const researchSubagent: SubAgent = {
+  name: "research-agent",
+  description: "Used to research more in depth questions",
+  systemPrompt: "You are a great researcher",
+  tools: [internetSearch],
+  model: "openai:gpt-5.5", // Optional override, defaults to main agent model
+};
+const subagents = [researchSubagent];
 
-  const agent = createDeepAgent({
-    model: "google:gemini-3.6-flash",
-    subagents,
-  });
-  ```
+const agent = createDeepAgent({
+  model: "google:gemini-3.6-flash",
+  subagents,
+});
+```
 
-  ```ts Anthropic theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  import { tool } from "langchain";
-  import { TavilySearch } from "@langchain/tavily";
-  import { createDeepAgent, type SubAgent } from "deepagents";
-  import { z } from "zod";
+```ts Anthropic theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+import { tool } from "langchain";
+import { TavilySearch } from "@langchain/tavily";
+import { createDeepAgent, type SubAgent } from "deepagents";
+import { z } from "zod";
 
-  const internetSearch = tool(
-    async ({
-      query,
-      maxResults = 5,
-      topic = "general",
-      includeRawContent = false,
-    }: {
-      query: string;
-      maxResults?: number;
-      topic?: "general" | "news" | "finance";
-      includeRawContent?: boolean;
-    }) => {
-      const tavilySearch = new TavilySearch({
-        maxResults,
-        tavilyApiKey: process.env.TAVILY_API_KEY,
-        includeRawContent,
-        topic,
-      });
-      return await tavilySearch._call({ query });
-    },
-    {
-      name: "internet_search",
-      description: "Run a web search",
-      schema: z.object({
-        query: z.string().describe("The search query"),
-        maxResults: z.number().optional().default(5),
-        topic: z
-          .enum(["general", "news", "finance"])
-          .optional()
-          .default("general"),
-        includeRawContent: z.boolean().optional().default(false),
-      }),
-    },
-  );
+const internetSearch = tool(
+  async ({
+    query,
+    maxResults = 5,
+    topic = "general",
+    includeRawContent = false,
+  }: {
+    query: string;
+    maxResults?: number;
+    topic?: "general" | "news" | "finance";
+    includeRawContent?: boolean;
+  }) => {
+    const tavilySearch = new TavilySearch({
+      maxResults,
+      tavilyApiKey: process.env.TAVILY_API_KEY,
+      includeRawContent,
+      topic,
+    });
+    return await tavilySearch._call({ query });
+  },
+  {
+    name: "internet_search",
+    description: "Run a web search",
+    schema: z.object({
+      query: z.string().describe("The search query"),
+      maxResults: z.number().optional().default(5),
+      topic: z
+        .enum(["general", "news", "finance"])
+        .optional()
+        .default("general"),
+      includeRawContent: z.boolean().optional().default(false),
+    }),
+  },
+);
 
-  const researchSubagent: SubAgent = {
-    name: "research-agent",
-    description: "Used to research more in depth questions",
-    systemPrompt: "You are a great researcher",
-    tools: [internetSearch],
-    model: "anthropic:claude-sonnet-5", // Optional override, defaults to main agent model
-  };
-  const subagents = [researchSubagent];
+const researchSubagent: SubAgent = {
+  name: "research-agent",
+  description: "Used to research more in depth questions",
+  systemPrompt: "You are a great researcher",
+  tools: [internetSearch],
+  model: "anthropic:claude-sonnet-5", // Optional override, defaults to main agent model
+};
+const subagents = [researchSubagent];
 
-  const agent = createDeepAgent({
-    model: "google:gemini-3.6-flash",
-    subagents,
-  });
-  ```
+const agent = createDeepAgent({
+  model: "google:gemini-3.6-flash",
+  subagents,
+});
+```
 
-  ```ts OpenRouter theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  import { tool } from "langchain";
-  import { TavilySearch } from "@langchain/tavily";
-  import { createDeepAgent, type SubAgent } from "deepagents";
-  import { z } from "zod";
+```ts OpenRouter theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+import { tool } from "langchain";
+import { TavilySearch } from "@langchain/tavily";
+import { createDeepAgent, type SubAgent } from "deepagents";
+import { z } from "zod";
 
-  const internetSearch = tool(
-    async ({
-      query,
-      maxResults = 5,
-      topic = "general",
-      includeRawContent = false,
-    }: {
-      query: string;
-      maxResults?: number;
-      topic?: "general" | "news" | "finance";
-      includeRawContent?: boolean;
-    }) => {
-      const tavilySearch = new TavilySearch({
-        maxResults,
-        tavilyApiKey: process.env.TAVILY_API_KEY,
-        includeRawContent,
-        topic,
-      });
-      return await tavilySearch._call({ query });
-    },
-    {
-      name: "internet_search",
-      description: "Run a web search",
-      schema: z.object({
-        query: z.string().describe("The search query"),
-        maxResults: z.number().optional().default(5),
-        topic: z
-          .enum(["general", "news", "finance"])
-          .optional()
-          .default("general"),
-        includeRawContent: z.boolean().optional().default(false),
-      }),
-    },
-  );
+const internetSearch = tool(
+  async ({
+    query,
+    maxResults = 5,
+    topic = "general",
+    includeRawContent = false,
+  }: {
+    query: string;
+    maxResults?: number;
+    topic?: "general" | "news" | "finance";
+    includeRawContent?: boolean;
+  }) => {
+    const tavilySearch = new TavilySearch({
+      maxResults,
+      tavilyApiKey: process.env.TAVILY_API_KEY,
+      includeRawContent,
+      topic,
+    });
+    return await tavilySearch._call({ query });
+  },
+  {
+    name: "internet_search",
+    description: "Run a web search",
+    schema: z.object({
+      query: z.string().describe("The search query"),
+      maxResults: z.number().optional().default(5),
+      topic: z
+        .enum(["general", "news", "finance"])
+        .optional()
+        .default("general"),
+      includeRawContent: z.boolean().optional().default(false),
+    }),
+  },
+);
 
-  const researchSubagent: SubAgent = {
-    name: "research-agent",
-    description: "Used to research more in depth questions",
-    systemPrompt: "You are a great researcher",
-    tools: [internetSearch],
-    model: "openrouter:z-ai/glm-5.2", // Optional override, defaults to main agent model
-  };
-  const subagents = [researchSubagent];
+const researchSubagent: SubAgent = {
+  name: "research-agent",
+  description: "Used to research more in depth questions",
+  systemPrompt: "You are a great researcher",
+  tools: [internetSearch],
+  model: "openrouter:z-ai/glm-5.2", // Optional override, defaults to main agent model
+};
+const subagents = [researchSubagent];
 
-  const agent = createDeepAgent({
-    model: "google:gemini-3.6-flash",
-    subagents,
-  });
-  ```
+const agent = createDeepAgent({
+  model: "google:gemini-3.6-flash",
+  subagents,
+});
+```
 
-  ```ts Fireworks theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  import { tool } from "langchain";
-  import { TavilySearch } from "@langchain/tavily";
-  import { createDeepAgent, type SubAgent } from "deepagents";
-  import { z } from "zod";
+```ts Fireworks theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+import { tool } from "langchain";
+import { TavilySearch } from "@langchain/tavily";
+import { createDeepAgent, type SubAgent } from "deepagents";
+import { z } from "zod";
 
-  const internetSearch = tool(
-    async ({
-      query,
-      maxResults = 5,
-      topic = "general",
-      includeRawContent = false,
-    }: {
-      query: string;
-      maxResults?: number;
-      topic?: "general" | "news" | "finance";
-      includeRawContent?: boolean;
-    }) => {
-      const tavilySearch = new TavilySearch({
-        maxResults,
-        tavilyApiKey: process.env.TAVILY_API_KEY,
-        includeRawContent,
-        topic,
-      });
-      return await tavilySearch._call({ query });
-    },
-    {
-      name: "internet_search",
-      description: "Run a web search",
-      schema: z.object({
-        query: z.string().describe("The search query"),
-        maxResults: z.number().optional().default(5),
-        topic: z
-          .enum(["general", "news", "finance"])
-          .optional()
-          .default("general"),
-        includeRawContent: z.boolean().optional().default(false),
-      }),
-    },
-  );
+const internetSearch = tool(
+  async ({
+    query,
+    maxResults = 5,
+    topic = "general",
+    includeRawContent = false,
+  }: {
+    query: string;
+    maxResults?: number;
+    topic?: "general" | "news" | "finance";
+    includeRawContent?: boolean;
+  }) => {
+    const tavilySearch = new TavilySearch({
+      maxResults,
+      tavilyApiKey: process.env.TAVILY_API_KEY,
+      includeRawContent,
+      topic,
+    });
+    return await tavilySearch._call({ query });
+  },
+  {
+    name: "internet_search",
+    description: "Run a web search",
+    schema: z.object({
+      query: z.string().describe("The search query"),
+      maxResults: z.number().optional().default(5),
+      topic: z
+        .enum(["general", "news", "finance"])
+        .optional()
+        .default("general"),
+      includeRawContent: z.boolean().optional().default(false),
+    }),
+  },
+);
 
-  const researchSubagent: SubAgent = {
-    name: "research-agent",
-    description: "Used to research more in depth questions",
-    systemPrompt: "You are a great researcher",
-    tools: [internetSearch],
-    model: "fireworks:accounts/fireworks/models/glm-5p2", // Optional override, defaults to main agent model
-  };
-  const subagents = [researchSubagent];
+const researchSubagent: SubAgent = {
+  name: "research-agent",
+  description: "Used to research more in depth questions",
+  systemPrompt: "You are a great researcher",
+  tools: [internetSearch],
+  model: "fireworks:accounts/fireworks/models/glm-5p2", // Optional override, defaults to main agent model
+};
+const subagents = [researchSubagent];
 
-  const agent = createDeepAgent({
-    model: "google:gemini-3.6-flash",
-    subagents,
-  });
-  ```
+const agent = createDeepAgent({
+  model: "google:gemini-3.6-flash",
+  subagents,
+});
+```
 
-  ```ts Baseten theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  import { tool } from "langchain";
-  import { TavilySearch } from "@langchain/tavily";
-  import { createDeepAgent, type SubAgent } from "deepagents";
-  import { z } from "zod";
+```ts Baseten theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+import { tool } from "langchain";
+import { TavilySearch } from "@langchain/tavily";
+import { createDeepAgent, type SubAgent } from "deepagents";
+import { z } from "zod";
 
-  const internetSearch = tool(
-    async ({
-      query,
-      maxResults = 5,
-      topic = "general",
-      includeRawContent = false,
-    }: {
-      query: string;
-      maxResults?: number;
-      topic?: "general" | "news" | "finance";
-      includeRawContent?: boolean;
-    }) => {
-      const tavilySearch = new TavilySearch({
-        maxResults,
-        tavilyApiKey: process.env.TAVILY_API_KEY,
-        includeRawContent,
-        topic,
-      });
-      return await tavilySearch._call({ query });
-    },
-    {
-      name: "internet_search",
-      description: "Run a web search",
-      schema: z.object({
-        query: z.string().describe("The search query"),
-        maxResults: z.number().optional().default(5),
-        topic: z
-          .enum(["general", "news", "finance"])
-          .optional()
-          .default("general"),
-        includeRawContent: z.boolean().optional().default(false),
-      }),
-    },
-  );
+const internetSearch = tool(
+  async ({
+    query,
+    maxResults = 5,
+    topic = "general",
+    includeRawContent = false,
+  }: {
+    query: string;
+    maxResults?: number;
+    topic?: "general" | "news" | "finance";
+    includeRawContent?: boolean;
+  }) => {
+    const tavilySearch = new TavilySearch({
+      maxResults,
+      tavilyApiKey: process.env.TAVILY_API_KEY,
+      includeRawContent,
+      topic,
+    });
+    return await tavilySearch._call({ query });
+  },
+  {
+    name: "internet_search",
+    description: "Run a web search",
+    schema: z.object({
+      query: z.string().describe("The search query"),
+      maxResults: z.number().optional().default(5),
+      topic: z
+        .enum(["general", "news", "finance"])
+        .optional()
+        .default("general"),
+      includeRawContent: z.boolean().optional().default(false),
+    }),
+  },
+);
 
-  const researchSubagent: SubAgent = {
-    name: "research-agent",
-    description: "Used to research more in depth questions",
-    systemPrompt: "You are a great researcher",
-    tools: [internetSearch],
-    model: "baseten:zai-org/GLM-5.2", // Optional override, defaults to main agent model
-  };
-  const subagents = [researchSubagent];
+const researchSubagent: SubAgent = {
+  name: "research-agent",
+  description: "Used to research more in depth questions",
+  systemPrompt: "You are a great researcher",
+  tools: [internetSearch],
+  model: "baseten:zai-org/GLM-5.2", // Optional override, defaults to main agent model
+};
+const subagents = [researchSubagent];
 
-  const agent = createDeepAgent({
-    model: "google:gemini-3.6-flash",
-    subagents,
-  });
-  ```
+const agent = createDeepAgent({
+  model: "google:gemini-3.6-flash",
+  subagents,
+});
+```
 
-  ```ts Ollama theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  import { tool } from "langchain";
-  import { TavilySearch } from "@langchain/tavily";
-  import { createDeepAgent, type SubAgent } from "deepagents";
-  import { z } from "zod";
+```ts Ollama theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+import { tool } from "langchain";
+import { TavilySearch } from "@langchain/tavily";
+import { createDeepAgent, type SubAgent } from "deepagents";
+import { z } from "zod";
 
-  const internetSearch = tool(
-    async ({
-      query,
-      maxResults = 5,
-      topic = "general",
-      includeRawContent = false,
-    }: {
-      query: string;
-      maxResults?: number;
-      topic?: "general" | "news" | "finance";
-      includeRawContent?: boolean;
-    }) => {
-      const tavilySearch = new TavilySearch({
-        maxResults,
-        tavilyApiKey: process.env.TAVILY_API_KEY,
-        includeRawContent,
-        topic,
-      });
-      return await tavilySearch._call({ query });
-    },
-    {
-      name: "internet_search",
-      description: "Run a web search",
-      schema: z.object({
-        query: z.string().describe("The search query"),
-        maxResults: z.number().optional().default(5),
-        topic: z
-          .enum(["general", "news", "finance"])
-          .optional()
-          .default("general"),
-        includeRawContent: z.boolean().optional().default(false),
-      }),
-    },
-  );
+const internetSearch = tool(
+  async ({
+    query,
+    maxResults = 5,
+    topic = "general",
+    includeRawContent = false,
+  }: {
+    query: string;
+    maxResults?: number;
+    topic?: "general" | "news" | "finance";
+    includeRawContent?: boolean;
+  }) => {
+    const tavilySearch = new TavilySearch({
+      maxResults,
+      tavilyApiKey: process.env.TAVILY_API_KEY,
+      includeRawContent,
+      topic,
+    });
+    return await tavilySearch._call({ query });
+  },
+  {
+    name: "internet_search",
+    description: "Run a web search",
+    schema: z.object({
+      query: z.string().describe("The search query"),
+      maxResults: z.number().optional().default(5),
+      topic: z
+        .enum(["general", "news", "finance"])
+        .optional()
+        .default("general"),
+      includeRawContent: z.boolean().optional().default(false),
+    }),
+  },
+);
 
-  const researchSubagent: SubAgent = {
-    name: "research-agent",
-    description: "Used to research more in depth questions",
-    systemPrompt: "You are a great researcher",
-    tools: [internetSearch],
-    model: "ollama:north-mini-code-1.0", // Optional override, defaults to main agent model
-  };
-  const subagents = [researchSubagent];
+const researchSubagent: SubAgent = {
+  name: "research-agent",
+  description: "Used to research more in depth questions",
+  systemPrompt: "You are a great researcher",
+  tools: [internetSearch],
+  model: "ollama:north-mini-code-1.0", // Optional override, defaults to main agent model
+};
+const subagents = [researchSubagent];
 
-  const agent = createDeepAgent({
-    model: "google:gemini-3.6-flash",
-    subagents,
-  });
-  ```
-</CodeGroup>
+const agent = createDeepAgent({
+  model: "google:gemini-3.6-flash",
+  subagents,
+});
+```
 
 ## Using CompiledSubAgent
 
@@ -507,308 +505,306 @@ You can create a custom subagent using LangChain's [`create_agent`](https://refe
 
 If you're creating a custom LangGraph graph, make sure that the graph has a [state key called `"messages"`](/oss/javascript/langgraph/quickstart#2-define-state):
 
-<CodeGroup>
-  ```ts Google theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  import { CompiledSubAgent, createDeepAgent } from "deepagents";
-  import { createAgent } from "langchain";
-  import { tool } from "langchain";
-  import { z } from "zod";
+```ts Google theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+import { CompiledSubAgent, createDeepAgent } from "deepagents";
+import { createAgent } from "langchain";
+import { tool } from "langchain";
+import { z } from "zod";
 
-  const internetSearch = tool(
-    async ({ query }: { query: string }) => `search results for ${query}`,
-    {
-      name: "internet_search",
-      description: "Run a web search",
-      schema: z.object({ query: z.string() }),
-    },
-  );
+const internetSearch = tool(
+  async ({ query }: { query: string }) => `search results for ${query}`,
+  {
+    name: "internet_search",
+    description: "Run a web search",
+    schema: z.object({ query: z.string() }),
+  },
+);
 
-  const researchInstructions = "You are a research coordinator.";
-  const yourModel = "google:gemini-3.6-flash";
-  const specializedTools: never[] = [];
+const researchInstructions = "You are a research coordinator.";
+const yourModel = "google:gemini-3.6-flash";
+const specializedTools: never[] = [];
 
-  // Create a custom agent graph
-  const customGraph = createAgent({
-    model: yourModel,
-    tools: specializedTools,
-    prompt: "You are a specialized agent for data analysis...",
-  });
+// Create a custom agent graph
+const customGraph = createAgent({
+  model: yourModel,
+  tools: specializedTools,
+  prompt: "You are a specialized agent for data analysis...",
+});
 
-  // Use it as a custom subagent
-  const customSubagent: CompiledSubAgent = {
-    name: "data-analyzer",
-    description: "Specialized agent for complex data analysis tasks",
-    runnable: customGraph,
-  };
+// Use it as a custom subagent
+const customSubagent: CompiledSubAgent = {
+  name: "data-analyzer",
+  description: "Specialized agent for complex data analysis tasks",
+  runnable: customGraph,
+};
 
-  const subagents = [customSubagent];
+const subagents = [customSubagent];
 
-  const agent = createDeepAgent({
-    model: "google:gemini-3.6-flash",
-    tools: [internetSearch],
-    systemPrompt: researchInstructions,
-    subagents: subagents,
-  });
-  ```
+const agent = createDeepAgent({
+  model: "google:gemini-3.6-flash",
+  tools: [internetSearch],
+  systemPrompt: researchInstructions,
+  subagents: subagents,
+});
+```
 
-  ```ts OpenAI theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  import { CompiledSubAgent, createDeepAgent } from "deepagents";
-  import { createAgent } from "langchain";
-  import { tool } from "langchain";
-  import { z } from "zod";
+```ts OpenAI theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+import { CompiledSubAgent, createDeepAgent } from "deepagents";
+import { createAgent } from "langchain";
+import { tool } from "langchain";
+import { z } from "zod";
 
-  const internetSearch = tool(
-    async ({ query }: { query: string }) => `search results for ${query}`,
-    {
-      name: "internet_search",
-      description: "Run a web search",
-      schema: z.object({ query: z.string() }),
-    },
-  );
+const internetSearch = tool(
+  async ({ query }: { query: string }) => `search results for ${query}`,
+  {
+    name: "internet_search",
+    description: "Run a web search",
+    schema: z.object({ query: z.string() }),
+  },
+);
 
-  const researchInstructions = "You are a research coordinator.";
-  const yourModel = "google:gemini-3.6-flash";
-  const specializedTools: never[] = [];
+const researchInstructions = "You are a research coordinator.";
+const yourModel = "google:gemini-3.6-flash";
+const specializedTools: never[] = [];
 
-  // Create a custom agent graph
-  const customGraph = createAgent({
-    model: yourModel,
-    tools: specializedTools,
-    prompt: "You are a specialized agent for data analysis...",
-  });
+// Create a custom agent graph
+const customGraph = createAgent({
+  model: yourModel,
+  tools: specializedTools,
+  prompt: "You are a specialized agent for data analysis...",
+});
 
-  // Use it as a custom subagent
-  const customSubagent: CompiledSubAgent = {
-    name: "data-analyzer",
-    description: "Specialized agent for complex data analysis tasks",
-    runnable: customGraph,
-  };
+// Use it as a custom subagent
+const customSubagent: CompiledSubAgent = {
+  name: "data-analyzer",
+  description: "Specialized agent for complex data analysis tasks",
+  runnable: customGraph,
+};
 
-  const subagents = [customSubagent];
+const subagents = [customSubagent];
 
-  const agent = createDeepAgent({
-    model: "openai:gpt-5.5",
-    tools: [internetSearch],
-    systemPrompt: researchInstructions,
-    subagents: subagents,
-  });
-  ```
+const agent = createDeepAgent({
+  model: "openai:gpt-5.5",
+  tools: [internetSearch],
+  systemPrompt: researchInstructions,
+  subagents: subagents,
+});
+```
 
-  ```ts Anthropic theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  import { CompiledSubAgent, createDeepAgent } from "deepagents";
-  import { createAgent } from "langchain";
-  import { tool } from "langchain";
-  import { z } from "zod";
+```ts Anthropic theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+import { CompiledSubAgent, createDeepAgent } from "deepagents";
+import { createAgent } from "langchain";
+import { tool } from "langchain";
+import { z } from "zod";
 
-  const internetSearch = tool(
-    async ({ query }: { query: string }) => `search results for ${query}`,
-    {
-      name: "internet_search",
-      description: "Run a web search",
-      schema: z.object({ query: z.string() }),
-    },
-  );
+const internetSearch = tool(
+  async ({ query }: { query: string }) => `search results for ${query}`,
+  {
+    name: "internet_search",
+    description: "Run a web search",
+    schema: z.object({ query: z.string() }),
+  },
+);
 
-  const researchInstructions = "You are a research coordinator.";
-  const yourModel = "google:gemini-3.6-flash";
-  const specializedTools: never[] = [];
+const researchInstructions = "You are a research coordinator.";
+const yourModel = "google:gemini-3.6-flash";
+const specializedTools: never[] = [];
 
-  // Create a custom agent graph
-  const customGraph = createAgent({
-    model: yourModel,
-    tools: specializedTools,
-    prompt: "You are a specialized agent for data analysis...",
-  });
+// Create a custom agent graph
+const customGraph = createAgent({
+  model: yourModel,
+  tools: specializedTools,
+  prompt: "You are a specialized agent for data analysis...",
+});
 
-  // Use it as a custom subagent
-  const customSubagent: CompiledSubAgent = {
-    name: "data-analyzer",
-    description: "Specialized agent for complex data analysis tasks",
-    runnable: customGraph,
-  };
+// Use it as a custom subagent
+const customSubagent: CompiledSubAgent = {
+  name: "data-analyzer",
+  description: "Specialized agent for complex data analysis tasks",
+  runnable: customGraph,
+};
 
-  const subagents = [customSubagent];
+const subagents = [customSubagent];
 
-  const agent = createDeepAgent({
-    model: "anthropic:claude-sonnet-5",
-    tools: [internetSearch],
-    systemPrompt: researchInstructions,
-    subagents: subagents,
-  });
-  ```
+const agent = createDeepAgent({
+  model: "anthropic:claude-sonnet-5",
+  tools: [internetSearch],
+  systemPrompt: researchInstructions,
+  subagents: subagents,
+});
+```
 
-  ```ts OpenRouter theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  import { CompiledSubAgent, createDeepAgent } from "deepagents";
-  import { createAgent } from "langchain";
-  import { tool } from "langchain";
-  import { z } from "zod";
+```ts OpenRouter theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+import { CompiledSubAgent, createDeepAgent } from "deepagents";
+import { createAgent } from "langchain";
+import { tool } from "langchain";
+import { z } from "zod";
 
-  const internetSearch = tool(
-    async ({ query }: { query: string }) => `search results for ${query}`,
-    {
-      name: "internet_search",
-      description: "Run a web search",
-      schema: z.object({ query: z.string() }),
-    },
-  );
+const internetSearch = tool(
+  async ({ query }: { query: string }) => `search results for ${query}`,
+  {
+    name: "internet_search",
+    description: "Run a web search",
+    schema: z.object({ query: z.string() }),
+  },
+);
 
-  const researchInstructions = "You are a research coordinator.";
-  const yourModel = "google:gemini-3.6-flash";
-  const specializedTools: never[] = [];
+const researchInstructions = "You are a research coordinator.";
+const yourModel = "google:gemini-3.6-flash";
+const specializedTools: never[] = [];
 
-  // Create a custom agent graph
-  const customGraph = createAgent({
-    model: yourModel,
-    tools: specializedTools,
-    prompt: "You are a specialized agent for data analysis...",
-  });
+// Create a custom agent graph
+const customGraph = createAgent({
+  model: yourModel,
+  tools: specializedTools,
+  prompt: "You are a specialized agent for data analysis...",
+});
 
-  // Use it as a custom subagent
-  const customSubagent: CompiledSubAgent = {
-    name: "data-analyzer",
-    description: "Specialized agent for complex data analysis tasks",
-    runnable: customGraph,
-  };
+// Use it as a custom subagent
+const customSubagent: CompiledSubAgent = {
+  name: "data-analyzer",
+  description: "Specialized agent for complex data analysis tasks",
+  runnable: customGraph,
+};
 
-  const subagents = [customSubagent];
+const subagents = [customSubagent];
 
-  const agent = createDeepAgent({
-    model: "openrouter:z-ai/glm-5.2",
-    tools: [internetSearch],
-    systemPrompt: researchInstructions,
-    subagents: subagents,
-  });
-  ```
+const agent = createDeepAgent({
+  model: "openrouter:z-ai/glm-5.2",
+  tools: [internetSearch],
+  systemPrompt: researchInstructions,
+  subagents: subagents,
+});
+```
 
-  ```ts Fireworks theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  import { CompiledSubAgent, createDeepAgent } from "deepagents";
-  import { createAgent } from "langchain";
-  import { tool } from "langchain";
-  import { z } from "zod";
+```ts Fireworks theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+import { CompiledSubAgent, createDeepAgent } from "deepagents";
+import { createAgent } from "langchain";
+import { tool } from "langchain";
+import { z } from "zod";
 
-  const internetSearch = tool(
-    async ({ query }: { query: string }) => `search results for ${query}`,
-    {
-      name: "internet_search",
-      description: "Run a web search",
-      schema: z.object({ query: z.string() }),
-    },
-  );
+const internetSearch = tool(
+  async ({ query }: { query: string }) => `search results for ${query}`,
+  {
+    name: "internet_search",
+    description: "Run a web search",
+    schema: z.object({ query: z.string() }),
+  },
+);
 
-  const researchInstructions = "You are a research coordinator.";
-  const yourModel = "google:gemini-3.6-flash";
-  const specializedTools: never[] = [];
+const researchInstructions = "You are a research coordinator.";
+const yourModel = "google:gemini-3.6-flash";
+const specializedTools: never[] = [];
 
-  // Create a custom agent graph
-  const customGraph = createAgent({
-    model: yourModel,
-    tools: specializedTools,
-    prompt: "You are a specialized agent for data analysis...",
-  });
+// Create a custom agent graph
+const customGraph = createAgent({
+  model: yourModel,
+  tools: specializedTools,
+  prompt: "You are a specialized agent for data analysis...",
+});
 
-  // Use it as a custom subagent
-  const customSubagent: CompiledSubAgent = {
-    name: "data-analyzer",
-    description: "Specialized agent for complex data analysis tasks",
-    runnable: customGraph,
-  };
+// Use it as a custom subagent
+const customSubagent: CompiledSubAgent = {
+  name: "data-analyzer",
+  description: "Specialized agent for complex data analysis tasks",
+  runnable: customGraph,
+};
 
-  const subagents = [customSubagent];
+const subagents = [customSubagent];
 
-  const agent = createDeepAgent({
-    model: "fireworks:accounts/fireworks/models/glm-5p2",
-    tools: [internetSearch],
-    systemPrompt: researchInstructions,
-    subagents: subagents,
-  });
-  ```
+const agent = createDeepAgent({
+  model: "fireworks:accounts/fireworks/models/glm-5p2",
+  tools: [internetSearch],
+  systemPrompt: researchInstructions,
+  subagents: subagents,
+});
+```
 
-  ```ts Baseten theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  import { CompiledSubAgent, createDeepAgent } from "deepagents";
-  import { createAgent } from "langchain";
-  import { tool } from "langchain";
-  import { z } from "zod";
+```ts Baseten theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+import { CompiledSubAgent, createDeepAgent } from "deepagents";
+import { createAgent } from "langchain";
+import { tool } from "langchain";
+import { z } from "zod";
 
-  const internetSearch = tool(
-    async ({ query }: { query: string }) => `search results for ${query}`,
-    {
-      name: "internet_search",
-      description: "Run a web search",
-      schema: z.object({ query: z.string() }),
-    },
-  );
+const internetSearch = tool(
+  async ({ query }: { query: string }) => `search results for ${query}`,
+  {
+    name: "internet_search",
+    description: "Run a web search",
+    schema: z.object({ query: z.string() }),
+  },
+);
 
-  const researchInstructions = "You are a research coordinator.";
-  const yourModel = "google:gemini-3.6-flash";
-  const specializedTools: never[] = [];
+const researchInstructions = "You are a research coordinator.";
+const yourModel = "google:gemini-3.6-flash";
+const specializedTools: never[] = [];
 
-  // Create a custom agent graph
-  const customGraph = createAgent({
-    model: yourModel,
-    tools: specializedTools,
-    prompt: "You are a specialized agent for data analysis...",
-  });
+// Create a custom agent graph
+const customGraph = createAgent({
+  model: yourModel,
+  tools: specializedTools,
+  prompt: "You are a specialized agent for data analysis...",
+});
 
-  // Use it as a custom subagent
-  const customSubagent: CompiledSubAgent = {
-    name: "data-analyzer",
-    description: "Specialized agent for complex data analysis tasks",
-    runnable: customGraph,
-  };
+// Use it as a custom subagent
+const customSubagent: CompiledSubAgent = {
+  name: "data-analyzer",
+  description: "Specialized agent for complex data analysis tasks",
+  runnable: customGraph,
+};
 
-  const subagents = [customSubagent];
+const subagents = [customSubagent];
 
-  const agent = createDeepAgent({
-    model: "baseten:zai-org/GLM-5.2",
-    tools: [internetSearch],
-    systemPrompt: researchInstructions,
-    subagents: subagents,
-  });
-  ```
+const agent = createDeepAgent({
+  model: "baseten:zai-org/GLM-5.2",
+  tools: [internetSearch],
+  systemPrompt: researchInstructions,
+  subagents: subagents,
+});
+```
 
-  ```ts Ollama theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  import { CompiledSubAgent, createDeepAgent } from "deepagents";
-  import { createAgent } from "langchain";
-  import { tool } from "langchain";
-  import { z } from "zod";
+```ts Ollama theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+import { CompiledSubAgent, createDeepAgent } from "deepagents";
+import { createAgent } from "langchain";
+import { tool } from "langchain";
+import { z } from "zod";
 
-  const internetSearch = tool(
-    async ({ query }: { query: string }) => `search results for ${query}`,
-    {
-      name: "internet_search",
-      description: "Run a web search",
-      schema: z.object({ query: z.string() }),
-    },
-  );
+const internetSearch = tool(
+  async ({ query }: { query: string }) => `search results for ${query}`,
+  {
+    name: "internet_search",
+    description: "Run a web search",
+    schema: z.object({ query: z.string() }),
+  },
+);
 
-  const researchInstructions = "You are a research coordinator.";
-  const yourModel = "google:gemini-3.6-flash";
-  const specializedTools: never[] = [];
+const researchInstructions = "You are a research coordinator.";
+const yourModel = "google:gemini-3.6-flash";
+const specializedTools: never[] = [];
 
-  // Create a custom agent graph
-  const customGraph = createAgent({
-    model: yourModel,
-    tools: specializedTools,
-    prompt: "You are a specialized agent for data analysis...",
-  });
+// Create a custom agent graph
+const customGraph = createAgent({
+  model: yourModel,
+  tools: specializedTools,
+  prompt: "You are a specialized agent for data analysis...",
+});
 
-  // Use it as a custom subagent
-  const customSubagent: CompiledSubAgent = {
-    name: "data-analyzer",
-    description: "Specialized agent for complex data analysis tasks",
-    runnable: customGraph,
-  };
+// Use it as a custom subagent
+const customSubagent: CompiledSubAgent = {
+  name: "data-analyzer",
+  description: "Specialized agent for complex data analysis tasks",
+  runnable: customGraph,
+};
 
-  const subagents = [customSubagent];
+const subagents = [customSubagent];
 
-  const agent = createDeepAgent({
-    model: "ollama:north-mini-code-1.0",
-    tools: [internetSearch],
-    systemPrompt: researchInstructions,
-    subagents: subagents,
-  });
-  ```
-</CodeGroup>
+const agent = createDeepAgent({
+  model: "ollama:north-mini-code-1.0",
+  tools: [internetSearch],
+  systemPrompt: researchInstructions,
+  subagents: subagents,
+});
+```
 
 ## Forked subagents
 
@@ -841,9 +837,9 @@ graph TD
     class IOut,FOut output
 ```
 
-<Note>
-  Subagent forking requires `deepagents>=1.13.3`. It is in [**beta**](/oss/javascript/versioning); APIs and behavior may change between releases.
-</Note>
+> [!NOTE]
+>
+> Subagent forking requires `deepagents>=1.13.3`. It is in [**beta**](/oss/javascript/versioning); APIs and behavior may change between releases.
 
 ### Configure a forked subagent
 
@@ -894,9 +890,9 @@ const result = await agent.invoke({
 });
 ```
 
-<Card title="View example trace" icon="chart-line" href="https://smith.langchain.com/public/efa7623d-0431-4516-8187-0cd7e2d3a753/r">
-  Open a public LangSmith run for this example.
-</Card>
+> **[View example trace](https://smith.langchain.com/public/efa7623d-0431-4516-8187-0cd7e2d3a753/r)**
+>
+> Open a public LangSmith run for this example.
 
 ### How it works
 
@@ -945,146 +941,142 @@ By default, the main agent delegates to subagents through `task` tool calls (it 
 
 Reach for dynamic subagents when work spans many independent units (reviewing every file in a directory, triaging a batch of tickets), needs multiple perspectives, or benefits from recursive analysis.
 
-<Warning>
-  Dynamic subagents use the interpreter runtime, which is in [**beta**](/oss/javascript/versioning). APIs and lifecycle behavior may change between releases.
-</Warning>
+> [!WARNING]
+>
+> Dynamic subagents use the interpreter runtime, which is in [**beta**](/oss/javascript/versioning). APIs and lifecycle behavior may change between releases.
 
 ### Enable dynamic subagents
 
 Dynamic subagents become available as soon as the agent has both subagents and the interpreter middleware. Install the QuickJS interpreter package, then add `CodeInterpreterMiddleware` to your agent.
 
-<CodeGroup>
-  ```bash npm theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  npm install deepagents @langchain/quickjs
-  ```
+```bash npm theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+npm install deepagents @langchain/quickjs
+```
 
-  ```bash pnpm theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  pnpm add deepagents @langchain/quickjs
-  ```
+```bash pnpm theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+pnpm add deepagents @langchain/quickjs
+```
 
-  ```bash yarn theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  yarn add deepagents @langchain/quickjs
-  ```
-</CodeGroup>
+```bash yarn theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+yarn add deepagents @langchain/quickjs
+```
 
-<CodeGroup>
-  ```ts Google theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  import { createDeepAgent } from "deepagents";
-  import { createCodeInterpreterMiddleware } from "@langchain/quickjs";
+```ts Google theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+import { createDeepAgent } from "deepagents";
+import { createCodeInterpreterMiddleware } from "@langchain/quickjs";
 
-  const agent = createDeepAgent({
-    model: "google:gemini-3.6-flash",
-    subagents: [{
-      name: "reviewer",
-      description: "Reviews code for security issues, citing lines and severity",
-      systemPrompt: "You are a security-focused code reviewer. Report issues with line numbers and severity.",
-    }],
-    middleware: [createCodeInterpreterMiddleware()],
-  });
-  ```
+const agent = createDeepAgent({
+  model: "google:gemini-3.6-flash",
+  subagents: [{
+    name: "reviewer",
+    description: "Reviews code for security issues, citing lines and severity",
+    systemPrompt: "You are a security-focused code reviewer. Report issues with line numbers and severity.",
+  }],
+  middleware: [createCodeInterpreterMiddleware()],
+});
+```
 
-  ```ts OpenAI theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  import { createDeepAgent } from "deepagents";
-  import { createCodeInterpreterMiddleware } from "@langchain/quickjs";
+```ts OpenAI theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+import { createDeepAgent } from "deepagents";
+import { createCodeInterpreterMiddleware } from "@langchain/quickjs";
 
-  const agent = createDeepAgent({
-    model: "openai:gpt-5.5",
-    subagents: [{
-      name: "reviewer",
-      description: "Reviews code for security issues, citing lines and severity",
-      systemPrompt: "You are a security-focused code reviewer. Report issues with line numbers and severity.",
-    }],
-    middleware: [createCodeInterpreterMiddleware()],
-  });
-  ```
+const agent = createDeepAgent({
+  model: "openai:gpt-5.5",
+  subagents: [{
+    name: "reviewer",
+    description: "Reviews code for security issues, citing lines and severity",
+    systemPrompt: "You are a security-focused code reviewer. Report issues with line numbers and severity.",
+  }],
+  middleware: [createCodeInterpreterMiddleware()],
+});
+```
 
-  ```ts Anthropic theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  import { createDeepAgent } from "deepagents";
-  import { createCodeInterpreterMiddleware } from "@langchain/quickjs";
+```ts Anthropic theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+import { createDeepAgent } from "deepagents";
+import { createCodeInterpreterMiddleware } from "@langchain/quickjs";
 
-  const agent = createDeepAgent({
-    model: "anthropic:claude-sonnet-5",
-    subagents: [{
-      name: "reviewer",
-      description: "Reviews code for security issues, citing lines and severity",
-      systemPrompt: "You are a security-focused code reviewer. Report issues with line numbers and severity.",
-    }],
-    middleware: [createCodeInterpreterMiddleware()],
-  });
-  ```
+const agent = createDeepAgent({
+  model: "anthropic:claude-sonnet-5",
+  subagents: [{
+    name: "reviewer",
+    description: "Reviews code for security issues, citing lines and severity",
+    systemPrompt: "You are a security-focused code reviewer. Report issues with line numbers and severity.",
+  }],
+  middleware: [createCodeInterpreterMiddleware()],
+});
+```
 
-  ```ts OpenRouter theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  import { createDeepAgent } from "deepagents";
-  import { createCodeInterpreterMiddleware } from "@langchain/quickjs";
+```ts OpenRouter theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+import { createDeepAgent } from "deepagents";
+import { createCodeInterpreterMiddleware } from "@langchain/quickjs";
 
-  const agent = createDeepAgent({
-    model: "openrouter:z-ai/glm-5.2",
-    subagents: [{
-      name: "reviewer",
-      description: "Reviews code for security issues, citing lines and severity",
-      systemPrompt: "You are a security-focused code reviewer. Report issues with line numbers and severity.",
-    }],
-    middleware: [createCodeInterpreterMiddleware()],
-  });
-  ```
+const agent = createDeepAgent({
+  model: "openrouter:z-ai/glm-5.2",
+  subagents: [{
+    name: "reviewer",
+    description: "Reviews code for security issues, citing lines and severity",
+    systemPrompt: "You are a security-focused code reviewer. Report issues with line numbers and severity.",
+  }],
+  middleware: [createCodeInterpreterMiddleware()],
+});
+```
 
-  ```ts Fireworks theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  import { createDeepAgent } from "deepagents";
-  import { createCodeInterpreterMiddleware } from "@langchain/quickjs";
+```ts Fireworks theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+import { createDeepAgent } from "deepagents";
+import { createCodeInterpreterMiddleware } from "@langchain/quickjs";
 
-  const agent = createDeepAgent({
-    model: "fireworks:accounts/fireworks/models/glm-5p2",
-    subagents: [{
-      name: "reviewer",
-      description: "Reviews code for security issues, citing lines and severity",
-      systemPrompt: "You are a security-focused code reviewer. Report issues with line numbers and severity.",
-    }],
-    middleware: [createCodeInterpreterMiddleware()],
-  });
-  ```
+const agent = createDeepAgent({
+  model: "fireworks:accounts/fireworks/models/glm-5p2",
+  subagents: [{
+    name: "reviewer",
+    description: "Reviews code for security issues, citing lines and severity",
+    systemPrompt: "You are a security-focused code reviewer. Report issues with line numbers and severity.",
+  }],
+  middleware: [createCodeInterpreterMiddleware()],
+});
+```
 
-  ```ts Baseten theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  import { createDeepAgent } from "deepagents";
-  import { createCodeInterpreterMiddleware } from "@langchain/quickjs";
+```ts Baseten theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+import { createDeepAgent } from "deepagents";
+import { createCodeInterpreterMiddleware } from "@langchain/quickjs";
 
-  const agent = createDeepAgent({
-    model: "baseten:zai-org/GLM-5.2",
-    subagents: [{
-      name: "reviewer",
-      description: "Reviews code for security issues, citing lines and severity",
-      systemPrompt: "You are a security-focused code reviewer. Report issues with line numbers and severity.",
-    }],
-    middleware: [createCodeInterpreterMiddleware()],
-  });
-  ```
+const agent = createDeepAgent({
+  model: "baseten:zai-org/GLM-5.2",
+  subagents: [{
+    name: "reviewer",
+    description: "Reviews code for security issues, citing lines and severity",
+    systemPrompt: "You are a security-focused code reviewer. Report issues with line numbers and severity.",
+  }],
+  middleware: [createCodeInterpreterMiddleware()],
+});
+```
 
-  ```ts Ollama theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  import { createDeepAgent } from "deepagents";
-  import { createCodeInterpreterMiddleware } from "@langchain/quickjs";
+```ts Ollama theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+import { createDeepAgent } from "deepagents";
+import { createCodeInterpreterMiddleware } from "@langchain/quickjs";
 
-  const agent = createDeepAgent({
-    model: "ollama:north-mini-code-1.0",
-    subagents: [{
-      name: "reviewer",
-      description: "Reviews code for security issues, citing lines and severity",
-      systemPrompt: "You are a security-focused code reviewer. Report issues with line numbers and severity.",
-    }],
-    middleware: [createCodeInterpreterMiddleware()],
-  });
-  ```
-</CodeGroup>
+const agent = createDeepAgent({
+  model: "ollama:north-mini-code-1.0",
+  subagents: [{
+    name: "reviewer",
+    description: "Reviews code for security issues, citing lines and severity",
+    systemPrompt: "You are a security-focused code reviewer. Report issues with line numbers and severity.",
+  }],
+  middleware: [createCodeInterpreterMiddleware()],
+});
+```
 
-<Note>
-  Dynamic subagent dispatch is on by default whenever the agent has subagents and the interpreter middleware. Pass `createCodeInterpreterMiddleware({ subagents: false })` to require dispatch through the normal `task` tool path.
-</Note>
+> [!NOTE]
+>
+> Dynamic subagent dispatch is on by default whenever the agent has subagents and the interpreter middleware. Pass `createCodeInterpreterMiddleware({ subagents: false })` to require dispatch through the normal `task` tool path.
 
 ### Trigger dynamic orchestration
 
 Dynamic dispatch is implicit: the agent decides to fan work out from code based on the shape of the task, not a per-call flag.
 
-<Tip>
-  **The word "workflow" is a useful trigger.** The built-in interpreter system prompt treats a "workflow" as a signal to organize work through the interpreter—dispatching subagents with `task()` from code. Phrasing a request as a "workflow" is a deliberate lever you can pull to opt into dynamic orchestration: include it when you want the agent to fan work out from code. For a single, direct delegation, phrase the request plainly instead.
-</Tip>
+> [!TIP]
+>
+> **The word "workflow" is a useful trigger.** The built-in interpreter system prompt treats a "workflow" as a signal to organize work through the interpreter—dispatching subagents with `task()` from code. Phrasing a request as a "workflow" is a deliberate lever you can pull to opt into dynamic orchestration: include it when you want the agent to fan work out from code. For a single, direct delegation, phrase the request plainly instead.
 
 For example, phrasing the request as a "workflow" opts into fan-out from code:
 
@@ -1116,9 +1108,7 @@ To trigger dynamic subagents, ask for a "workflow". Instead of grinding through 
 
 As subagents spawn, `dcode` shows them live in the dynamic subagents panel, grouped into phases by dispatch.
 
-<Frame>
-  <img alt="The dcode dynamic subagents panel showing spawned subagents grouped into phases by dispatch" />
-</Frame>
+![The dcode dynamic subagents panel showing spawned subagents grouped into phases by dispatch](https://mintcdn.com/langchain-5e9cc07a/mcM5dSw40KzBUENf/oss/images/deepagents/dcode-dynamic-subagents-panel.png?fit=max\&auto=format\&n=mcM5dSw40KzBUENf\&q=85\&s=bc20632b54e21fecfc5ff4f8d169a2c7)
 
 `dcode` is the fastest way to try this, but you can also use dynamic subagents in the coding agent of your choice over [ACP](/oss/javascript/deepagents/acp) (for example, Zed).
 
@@ -1132,444 +1122,442 @@ Use [`streamEvents`](/oss/javascript/deepagents/event-streaming) to get typed pr
 
 The simplest pattern is to iterate `stream.subagents` to track each delegated task as it starts, runs, and completes. Each subagent handle exposes `.name`, `.messages`, `.tool_calls`, and `.output`.
 
-<CodeGroup>
-  ```ts Google theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  import { createDeepAgent } from "deepagents";
+```ts Google theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+import { createDeepAgent } from "deepagents";
 
-  const agent = createDeepAgent({
-    model: "google:gemini-3.6-flash",
-    name: "main-agent",
-    systemPrompt:
-      "You are a project coordinator with no research knowledge. " +
-      "For every user request, you must call the task() tool with " +
-      "subagent_type set to research-agent. Never answer research " +
-      "questions yourself.",
-    subagents: [
-      {
-        name: "research-agent",
-        description:
-          "Delegate research to this subagent. Give one topic at a time.",
-        systemPrompt: "You are a great researcher. Return a brief summary.",
-      },
-    ],
-  });
+const agent = createDeepAgent({
+  model: "google:gemini-3.6-flash",
+  name: "main-agent",
+  systemPrompt:
+    "You are a project coordinator with no research knowledge. " +
+    "For every user request, you must call the task() tool with " +
+    "subagent_type set to research-agent. Never answer research " +
+    "questions yourself.",
+  subagents: [
+    {
+      name: "research-agent",
+      description:
+        "Delegate research to this subagent. Give one topic at a time.",
+      systemPrompt: "You are a great researcher. Return a brief summary.",
+    },
+  ],
+});
 
-  async function streamSubagentProgress() {
-    const stream = await agent.streamEvents(
-      {
-        messages: [
-          {
-            role: "user",
-            content: "Research one recent advance in quantum computing.",
-          },
-        ],
-      },
-      { version: "v3" },
-    );
+async function streamSubagentProgress() {
+  const stream = await agent.streamEvents(
+    {
+      messages: [
+        {
+          role: "user",
+          content: "Research one recent advance in quantum computing.",
+        },
+      ],
+    },
+    { version: "v3" },
+  );
 
-    const coordinatorMessages: string[] = [];
-    const subagentHandles: { name: string }[] = [];
+  const coordinatorMessages: string[] = [];
+  const subagentHandles: { name: string }[] = [];
 
-    await Promise.all([
-      (async () => {
-        for await (const message of stream.messages) {
-          const text = await message.text;
-          console.log("[coordinator]", text);
-          coordinatorMessages.push(text);
+  await Promise.all([
+    (async () => {
+      for await (const message of stream.messages) {
+        const text = await message.text;
+        console.log("[coordinator]", text);
+        coordinatorMessages.push(text);
+      }
+    })(),
+    (async () => {
+      for await (const subagent of stream.subagents) {
+        console.log(`[${subagent.name}] started`);
+        subagentHandles.push({ name: subagent.name });
+        for await (const message of subagent.messages) {
+          console.log(`[${subagent.name}]`, await message.text);
         }
-      })(),
-      (async () => {
-        for await (const subagent of stream.subagents) {
-          console.log(`[${subagent.name}] started`);
-          subagentHandles.push({ name: subagent.name });
-          for await (const message of subagent.messages) {
-            console.log(`[${subagent.name}]`, await message.text);
-          }
+      }
+    })(),
+    stream.output,
+  ]);
+
+  return { coordinatorMessages, subagentHandles };
+}
+```
+
+```ts OpenAI theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+import { createDeepAgent } from "deepagents";
+
+const agent = createDeepAgent({
+  model: "openai:gpt-5.5",
+  name: "main-agent",
+  systemPrompt:
+    "You are a project coordinator with no research knowledge. " +
+    "For every user request, you must call the task() tool with " +
+    "subagent_type set to research-agent. Never answer research " +
+    "questions yourself.",
+  subagents: [
+    {
+      name: "research-agent",
+      description:
+        "Delegate research to this subagent. Give one topic at a time.",
+      systemPrompt: "You are a great researcher. Return a brief summary.",
+    },
+  ],
+});
+
+async function streamSubagentProgress() {
+  const stream = await agent.streamEvents(
+    {
+      messages: [
+        {
+          role: "user",
+          content: "Research one recent advance in quantum computing.",
+        },
+      ],
+    },
+    { version: "v3" },
+  );
+
+  const coordinatorMessages: string[] = [];
+  const subagentHandles: { name: string }[] = [];
+
+  await Promise.all([
+    (async () => {
+      for await (const message of stream.messages) {
+        const text = await message.text;
+        console.log("[coordinator]", text);
+        coordinatorMessages.push(text);
+      }
+    })(),
+    (async () => {
+      for await (const subagent of stream.subagents) {
+        console.log(`[${subagent.name}] started`);
+        subagentHandles.push({ name: subagent.name });
+        for await (const message of subagent.messages) {
+          console.log(`[${subagent.name}]`, await message.text);
         }
-      })(),
-      stream.output,
-    ]);
+      }
+    })(),
+    stream.output,
+  ]);
 
-    return { coordinatorMessages, subagentHandles };
-  }
-  ```
+  return { coordinatorMessages, subagentHandles };
+}
+```
 
-  ```ts OpenAI theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  import { createDeepAgent } from "deepagents";
+```ts Anthropic theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+import { createDeepAgent } from "deepagents";
 
-  const agent = createDeepAgent({
-    model: "openai:gpt-5.5",
-    name: "main-agent",
-    systemPrompt:
-      "You are a project coordinator with no research knowledge. " +
-      "For every user request, you must call the task() tool with " +
-      "subagent_type set to research-agent. Never answer research " +
-      "questions yourself.",
-    subagents: [
-      {
-        name: "research-agent",
-        description:
-          "Delegate research to this subagent. Give one topic at a time.",
-        systemPrompt: "You are a great researcher. Return a brief summary.",
-      },
-    ],
-  });
+const agent = createDeepAgent({
+  model: "anthropic:claude-sonnet-5",
+  name: "main-agent",
+  systemPrompt:
+    "You are a project coordinator with no research knowledge. " +
+    "For every user request, you must call the task() tool with " +
+    "subagent_type set to research-agent. Never answer research " +
+    "questions yourself.",
+  subagents: [
+    {
+      name: "research-agent",
+      description:
+        "Delegate research to this subagent. Give one topic at a time.",
+      systemPrompt: "You are a great researcher. Return a brief summary.",
+    },
+  ],
+});
 
-  async function streamSubagentProgress() {
-    const stream = await agent.streamEvents(
-      {
-        messages: [
-          {
-            role: "user",
-            content: "Research one recent advance in quantum computing.",
-          },
-        ],
-      },
-      { version: "v3" },
-    );
+async function streamSubagentProgress() {
+  const stream = await agent.streamEvents(
+    {
+      messages: [
+        {
+          role: "user",
+          content: "Research one recent advance in quantum computing.",
+        },
+      ],
+    },
+    { version: "v3" },
+  );
 
-    const coordinatorMessages: string[] = [];
-    const subagentHandles: { name: string }[] = [];
+  const coordinatorMessages: string[] = [];
+  const subagentHandles: { name: string }[] = [];
 
-    await Promise.all([
-      (async () => {
-        for await (const message of stream.messages) {
-          const text = await message.text;
-          console.log("[coordinator]", text);
-          coordinatorMessages.push(text);
+  await Promise.all([
+    (async () => {
+      for await (const message of stream.messages) {
+        const text = await message.text;
+        console.log("[coordinator]", text);
+        coordinatorMessages.push(text);
+      }
+    })(),
+    (async () => {
+      for await (const subagent of stream.subagents) {
+        console.log(`[${subagent.name}] started`);
+        subagentHandles.push({ name: subagent.name });
+        for await (const message of subagent.messages) {
+          console.log(`[${subagent.name}]`, await message.text);
         }
-      })(),
-      (async () => {
-        for await (const subagent of stream.subagents) {
-          console.log(`[${subagent.name}] started`);
-          subagentHandles.push({ name: subagent.name });
-          for await (const message of subagent.messages) {
-            console.log(`[${subagent.name}]`, await message.text);
-          }
+      }
+    })(),
+    stream.output,
+  ]);
+
+  return { coordinatorMessages, subagentHandles };
+}
+```
+
+```ts OpenRouter theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+import { createDeepAgent } from "deepagents";
+
+const agent = createDeepAgent({
+  model: "openrouter:z-ai/glm-5.2",
+  name: "main-agent",
+  systemPrompt:
+    "You are a project coordinator with no research knowledge. " +
+    "For every user request, you must call the task() tool with " +
+    "subagent_type set to research-agent. Never answer research " +
+    "questions yourself.",
+  subagents: [
+    {
+      name: "research-agent",
+      description:
+        "Delegate research to this subagent. Give one topic at a time.",
+      systemPrompt: "You are a great researcher. Return a brief summary.",
+    },
+  ],
+});
+
+async function streamSubagentProgress() {
+  const stream = await agent.streamEvents(
+    {
+      messages: [
+        {
+          role: "user",
+          content: "Research one recent advance in quantum computing.",
+        },
+      ],
+    },
+    { version: "v3" },
+  );
+
+  const coordinatorMessages: string[] = [];
+  const subagentHandles: { name: string }[] = [];
+
+  await Promise.all([
+    (async () => {
+      for await (const message of stream.messages) {
+        const text = await message.text;
+        console.log("[coordinator]", text);
+        coordinatorMessages.push(text);
+      }
+    })(),
+    (async () => {
+      for await (const subagent of stream.subagents) {
+        console.log(`[${subagent.name}] started`);
+        subagentHandles.push({ name: subagent.name });
+        for await (const message of subagent.messages) {
+          console.log(`[${subagent.name}]`, await message.text);
         }
-      })(),
-      stream.output,
-    ]);
+      }
+    })(),
+    stream.output,
+  ]);
 
-    return { coordinatorMessages, subagentHandles };
-  }
-  ```
+  return { coordinatorMessages, subagentHandles };
+}
+```
 
-  ```ts Anthropic theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  import { createDeepAgent } from "deepagents";
+```ts Fireworks theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+import { createDeepAgent } from "deepagents";
 
-  const agent = createDeepAgent({
-    model: "anthropic:claude-sonnet-5",
-    name: "main-agent",
-    systemPrompt:
-      "You are a project coordinator with no research knowledge. " +
-      "For every user request, you must call the task() tool with " +
-      "subagent_type set to research-agent. Never answer research " +
-      "questions yourself.",
-    subagents: [
-      {
-        name: "research-agent",
-        description:
-          "Delegate research to this subagent. Give one topic at a time.",
-        systemPrompt: "You are a great researcher. Return a brief summary.",
-      },
-    ],
-  });
+const agent = createDeepAgent({
+  model: "fireworks:accounts/fireworks/models/glm-5p2",
+  name: "main-agent",
+  systemPrompt:
+    "You are a project coordinator with no research knowledge. " +
+    "For every user request, you must call the task() tool with " +
+    "subagent_type set to research-agent. Never answer research " +
+    "questions yourself.",
+  subagents: [
+    {
+      name: "research-agent",
+      description:
+        "Delegate research to this subagent. Give one topic at a time.",
+      systemPrompt: "You are a great researcher. Return a brief summary.",
+    },
+  ],
+});
 
-  async function streamSubagentProgress() {
-    const stream = await agent.streamEvents(
-      {
-        messages: [
-          {
-            role: "user",
-            content: "Research one recent advance in quantum computing.",
-          },
-        ],
-      },
-      { version: "v3" },
-    );
+async function streamSubagentProgress() {
+  const stream = await agent.streamEvents(
+    {
+      messages: [
+        {
+          role: "user",
+          content: "Research one recent advance in quantum computing.",
+        },
+      ],
+    },
+    { version: "v3" },
+  );
 
-    const coordinatorMessages: string[] = [];
-    const subagentHandles: { name: string }[] = [];
+  const coordinatorMessages: string[] = [];
+  const subagentHandles: { name: string }[] = [];
 
-    await Promise.all([
-      (async () => {
-        for await (const message of stream.messages) {
-          const text = await message.text;
-          console.log("[coordinator]", text);
-          coordinatorMessages.push(text);
+  await Promise.all([
+    (async () => {
+      for await (const message of stream.messages) {
+        const text = await message.text;
+        console.log("[coordinator]", text);
+        coordinatorMessages.push(text);
+      }
+    })(),
+    (async () => {
+      for await (const subagent of stream.subagents) {
+        console.log(`[${subagent.name}] started`);
+        subagentHandles.push({ name: subagent.name });
+        for await (const message of subagent.messages) {
+          console.log(`[${subagent.name}]`, await message.text);
         }
-      })(),
-      (async () => {
-        for await (const subagent of stream.subagents) {
-          console.log(`[${subagent.name}] started`);
-          subagentHandles.push({ name: subagent.name });
-          for await (const message of subagent.messages) {
-            console.log(`[${subagent.name}]`, await message.text);
-          }
+      }
+    })(),
+    stream.output,
+  ]);
+
+  return { coordinatorMessages, subagentHandles };
+}
+```
+
+```ts Baseten theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+import { createDeepAgent } from "deepagents";
+
+const agent = createDeepAgent({
+  model: "baseten:zai-org/GLM-5.2",
+  name: "main-agent",
+  systemPrompt:
+    "You are a project coordinator with no research knowledge. " +
+    "For every user request, you must call the task() tool with " +
+    "subagent_type set to research-agent. Never answer research " +
+    "questions yourself.",
+  subagents: [
+    {
+      name: "research-agent",
+      description:
+        "Delegate research to this subagent. Give one topic at a time.",
+      systemPrompt: "You are a great researcher. Return a brief summary.",
+    },
+  ],
+});
+
+async function streamSubagentProgress() {
+  const stream = await agent.streamEvents(
+    {
+      messages: [
+        {
+          role: "user",
+          content: "Research one recent advance in quantum computing.",
+        },
+      ],
+    },
+    { version: "v3" },
+  );
+
+  const coordinatorMessages: string[] = [];
+  const subagentHandles: { name: string }[] = [];
+
+  await Promise.all([
+    (async () => {
+      for await (const message of stream.messages) {
+        const text = await message.text;
+        console.log("[coordinator]", text);
+        coordinatorMessages.push(text);
+      }
+    })(),
+    (async () => {
+      for await (const subagent of stream.subagents) {
+        console.log(`[${subagent.name}] started`);
+        subagentHandles.push({ name: subagent.name });
+        for await (const message of subagent.messages) {
+          console.log(`[${subagent.name}]`, await message.text);
         }
-      })(),
-      stream.output,
-    ]);
+      }
+    })(),
+    stream.output,
+  ]);
 
-    return { coordinatorMessages, subagentHandles };
-  }
-  ```
+  return { coordinatorMessages, subagentHandles };
+}
+```
 
-  ```ts OpenRouter theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  import { createDeepAgent } from "deepagents";
+```ts Ollama theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+import { createDeepAgent } from "deepagents";
 
-  const agent = createDeepAgent({
-    model: "openrouter:z-ai/glm-5.2",
-    name: "main-agent",
-    systemPrompt:
-      "You are a project coordinator with no research knowledge. " +
-      "For every user request, you must call the task() tool with " +
-      "subagent_type set to research-agent. Never answer research " +
-      "questions yourself.",
-    subagents: [
-      {
-        name: "research-agent",
-        description:
-          "Delegate research to this subagent. Give one topic at a time.",
-        systemPrompt: "You are a great researcher. Return a brief summary.",
-      },
-    ],
-  });
+const agent = createDeepAgent({
+  model: "ollama:north-mini-code-1.0",
+  name: "main-agent",
+  systemPrompt:
+    "You are a project coordinator with no research knowledge. " +
+    "For every user request, you must call the task() tool with " +
+    "subagent_type set to research-agent. Never answer research " +
+    "questions yourself.",
+  subagents: [
+    {
+      name: "research-agent",
+      description:
+        "Delegate research to this subagent. Give one topic at a time.",
+      systemPrompt: "You are a great researcher. Return a brief summary.",
+    },
+  ],
+});
 
-  async function streamSubagentProgress() {
-    const stream = await agent.streamEvents(
-      {
-        messages: [
-          {
-            role: "user",
-            content: "Research one recent advance in quantum computing.",
-          },
-        ],
-      },
-      { version: "v3" },
-    );
+async function streamSubagentProgress() {
+  const stream = await agent.streamEvents(
+    {
+      messages: [
+        {
+          role: "user",
+          content: "Research one recent advance in quantum computing.",
+        },
+      ],
+    },
+    { version: "v3" },
+  );
 
-    const coordinatorMessages: string[] = [];
-    const subagentHandles: { name: string }[] = [];
+  const coordinatorMessages: string[] = [];
+  const subagentHandles: { name: string }[] = [];
 
-    await Promise.all([
-      (async () => {
-        for await (const message of stream.messages) {
-          const text = await message.text;
-          console.log("[coordinator]", text);
-          coordinatorMessages.push(text);
+  await Promise.all([
+    (async () => {
+      for await (const message of stream.messages) {
+        const text = await message.text;
+        console.log("[coordinator]", text);
+        coordinatorMessages.push(text);
+      }
+    })(),
+    (async () => {
+      for await (const subagent of stream.subagents) {
+        console.log(`[${subagent.name}] started`);
+        subagentHandles.push({ name: subagent.name });
+        for await (const message of subagent.messages) {
+          console.log(`[${subagent.name}]`, await message.text);
         }
-      })(),
-      (async () => {
-        for await (const subagent of stream.subagents) {
-          console.log(`[${subagent.name}] started`);
-          subagentHandles.push({ name: subagent.name });
-          for await (const message of subagent.messages) {
-            console.log(`[${subagent.name}]`, await message.text);
-          }
-        }
-      })(),
-      stream.output,
-    ]);
+      }
+    })(),
+    stream.output,
+  ]);
 
-    return { coordinatorMessages, subagentHandles };
-  }
-  ```
-
-  ```ts Fireworks theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  import { createDeepAgent } from "deepagents";
-
-  const agent = createDeepAgent({
-    model: "fireworks:accounts/fireworks/models/glm-5p2",
-    name: "main-agent",
-    systemPrompt:
-      "You are a project coordinator with no research knowledge. " +
-      "For every user request, you must call the task() tool with " +
-      "subagent_type set to research-agent. Never answer research " +
-      "questions yourself.",
-    subagents: [
-      {
-        name: "research-agent",
-        description:
-          "Delegate research to this subagent. Give one topic at a time.",
-        systemPrompt: "You are a great researcher. Return a brief summary.",
-      },
-    ],
-  });
-
-  async function streamSubagentProgress() {
-    const stream = await agent.streamEvents(
-      {
-        messages: [
-          {
-            role: "user",
-            content: "Research one recent advance in quantum computing.",
-          },
-        ],
-      },
-      { version: "v3" },
-    );
-
-    const coordinatorMessages: string[] = [];
-    const subagentHandles: { name: string }[] = [];
-
-    await Promise.all([
-      (async () => {
-        for await (const message of stream.messages) {
-          const text = await message.text;
-          console.log("[coordinator]", text);
-          coordinatorMessages.push(text);
-        }
-      })(),
-      (async () => {
-        for await (const subagent of stream.subagents) {
-          console.log(`[${subagent.name}] started`);
-          subagentHandles.push({ name: subagent.name });
-          for await (const message of subagent.messages) {
-            console.log(`[${subagent.name}]`, await message.text);
-          }
-        }
-      })(),
-      stream.output,
-    ]);
-
-    return { coordinatorMessages, subagentHandles };
-  }
-  ```
-
-  ```ts Baseten theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  import { createDeepAgent } from "deepagents";
-
-  const agent = createDeepAgent({
-    model: "baseten:zai-org/GLM-5.2",
-    name: "main-agent",
-    systemPrompt:
-      "You are a project coordinator with no research knowledge. " +
-      "For every user request, you must call the task() tool with " +
-      "subagent_type set to research-agent. Never answer research " +
-      "questions yourself.",
-    subagents: [
-      {
-        name: "research-agent",
-        description:
-          "Delegate research to this subagent. Give one topic at a time.",
-        systemPrompt: "You are a great researcher. Return a brief summary.",
-      },
-    ],
-  });
-
-  async function streamSubagentProgress() {
-    const stream = await agent.streamEvents(
-      {
-        messages: [
-          {
-            role: "user",
-            content: "Research one recent advance in quantum computing.",
-          },
-        ],
-      },
-      { version: "v3" },
-    );
-
-    const coordinatorMessages: string[] = [];
-    const subagentHandles: { name: string }[] = [];
-
-    await Promise.all([
-      (async () => {
-        for await (const message of stream.messages) {
-          const text = await message.text;
-          console.log("[coordinator]", text);
-          coordinatorMessages.push(text);
-        }
-      })(),
-      (async () => {
-        for await (const subagent of stream.subagents) {
-          console.log(`[${subagent.name}] started`);
-          subagentHandles.push({ name: subagent.name });
-          for await (const message of subagent.messages) {
-            console.log(`[${subagent.name}]`, await message.text);
-          }
-        }
-      })(),
-      stream.output,
-    ]);
-
-    return { coordinatorMessages, subagentHandles };
-  }
-  ```
-
-  ```ts Ollama theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  import { createDeepAgent } from "deepagents";
-
-  const agent = createDeepAgent({
-    model: "ollama:north-mini-code-1.0",
-    name: "main-agent",
-    systemPrompt:
-      "You are a project coordinator with no research knowledge. " +
-      "For every user request, you must call the task() tool with " +
-      "subagent_type set to research-agent. Never answer research " +
-      "questions yourself.",
-    subagents: [
-      {
-        name: "research-agent",
-        description:
-          "Delegate research to this subagent. Give one topic at a time.",
-        systemPrompt: "You are a great researcher. Return a brief summary.",
-      },
-    ],
-  });
-
-  async function streamSubagentProgress() {
-    const stream = await agent.streamEvents(
-      {
-        messages: [
-          {
-            role: "user",
-            content: "Research one recent advance in quantum computing.",
-          },
-        ],
-      },
-      { version: "v3" },
-    );
-
-    const coordinatorMessages: string[] = [];
-    const subagentHandles: { name: string }[] = [];
-
-    await Promise.all([
-      (async () => {
-        for await (const message of stream.messages) {
-          const text = await message.text;
-          console.log("[coordinator]", text);
-          coordinatorMessages.push(text);
-        }
-      })(),
-      (async () => {
-        for await (const subagent of stream.subagents) {
-          console.log(`[${subagent.name}] started`);
-          subagentHandles.push({ name: subagent.name });
-          for await (const message of subagent.messages) {
-            console.log(`[${subagent.name}]`, await message.text);
-          }
-        }
-      })(),
-      stream.output,
-    ]);
-
-    return { coordinatorMessages, subagentHandles };
-  }
-  ```
-</CodeGroup>
+  return { coordinatorMessages, subagentHandles };
+}
+```
 
 ### LangSmith tracing
 
 As your deep agent runs, all runs executed by a subagent or the coordinator will have the agent name in their metadata under the `lc_agent_name` key—for example, `{'lc_agent_name': 'research-agent'}`. This lets you identify and filter runs by subagent in LangSmith.
 
-<img alt="LangSmith Example trace showing the metadata" />
+![LangSmith Example trace showing the metadata](https://mintcdn.com/langchain-5e9cc07a/IlqYrcANJ39avG84/oss/images/deepagents/deepagents-langsmith.png?fit=max\&auto=format\&n=IlqYrcANJ39avG84\&q=85\&s=4c3a1512fb27abc30da37751aee19afd)
 
-<Tip>
-  Open the run in [LangSmith](https://smith.langchain.com?utm_source=docs\&utm_medium=cta\&utm_campaign=langsmith-signup\&utm_content=oss-deepagents-subagents) to compare the coordinator trace with each subagent run. Follow the [observability quickstart](/langsmith/observability-quickstart) to get set up. We recommend you also set up [LangSmith Engine](/langsmith/engine) which monitors your traces, detects issues, and proposes fixes.
-</Tip>
+> [!TIP]
+>
+> Open the run in [LangSmith](https://smith.langchain.com?utm_source=docs\&utm_medium=cta\&utm_campaign=langsmith-signup\&utm_content=oss-deepagents-subagents) to compare the coordinator trace with each subagent run. Follow the [observability quickstart](/langsmith/observability-quickstart) to get set up. We recommend you also set up [LangSmith Engine](/langsmith/engine) which monitors your traces, detects issues, and proposes fixes.
 
 ## Filter by subagent in LangSmith
 
@@ -1582,7 +1570,7 @@ Because each subagent's `name` is written to the `lc_agent_name` metadata key on
 3. Click **Add filter** and select **Metadata**.
 4. Set the **Key** to `lc_agent_name` and the **Value** to the subagent name, for example `coordinator`.
 
-<img alt="LangSmith Runs view with a metadata filter on lc_agent_name set to coordinator" />
+![LangSmith Runs view with a metadata filter on lc\_agent\_name set to coordinator](https://mintcdn.com/langchain-5e9cc07a/t_yuR4Fo_XGdcWGH/langsmith/images/deepagents-lc-agent-name-filter.png?fit=max\&auto=format\&n=t_yuR4Fo_XGdcWGH\&q=85\&s=ffc65c0b9b5292fce5f0589b8f2478ce)
 
 This shows only the runs produced by that subagent. You can save the filter as a named view for reuse. For a full reference on filtering options, see [Filter traces](/langsmith/filter-traces).
 
@@ -1619,318 +1607,316 @@ For the full filter query language reference, see [Trace query syntax](/langsmit
 
 Subagents support [structured output](/oss/javascript/langchain/structured-output), so the parent agent receives predictable, parseable JSON instead of free-form text.
 
-<Note>
-  Structured output for subagents requires `deepagents>=1.8.4`.
-</Note>
+> [!NOTE]
+>
+> Structured output for subagents requires `deepagents>=1.8.4`.
 
 Pass `responseFormat` on the subagent config. When the subagent finishes, its structured response is JSON-serialized and returned as the `ToolMessage` content to the parent agent. The schema accepts anything supported by `createAgent`: Zod schemas, JSON schema objects, `toolStrategy(...)`, or `providerStrategy(...)`.
 
-<CodeGroup>
-  ```ts Google theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  import { z } from "zod";
-  import { createDeepAgent } from "deepagents";
-  import { tool } from "langchain";
+```ts Google theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+import { z } from "zod";
+import { createDeepAgent } from "deepagents";
+import { tool } from "langchain";
 
-  const webSearch = tool(
-    async ({ query }: { query: string }) => `web results for ${query}`,
-    {
-      name: "web_search",
-      description: "Search the web",
-      schema: z.object({ query: z.string() }),
-    },
-  );
+const webSearch = tool(
+  async ({ query }: { query: string }) => `web results for ${query}`,
+  {
+    name: "web_search",
+    description: "Search the web",
+    schema: z.object({ query: z.string() }),
+  },
+);
 
-  const ResearchFindings = z.object({
-    summary: z.string().describe("Summary of findings"),
-    confidence: z.number().describe("Confidence score from 0 to 1"),
-    sources: z.array(z.string()).describe("List of source URLs"),
-  });
+const ResearchFindings = z.object({
+  summary: z.string().describe("Summary of findings"),
+  confidence: z.number().describe("Confidence score from 0 to 1"),
+  sources: z.array(z.string()).describe("List of source URLs"),
+});
 
-  const researchSubagent = {
-    name: "researcher",
-    description: "Researches topics and returns structured findings",
-    systemPrompt: "Research the given topic thoroughly. Return your findings.",
-    tools: [webSearch],
-    responseFormat: ResearchFindings,
-  };
+const researchSubagent = {
+  name: "researcher",
+  description: "Researches topics and returns structured findings",
+  systemPrompt: "Research the given topic thoroughly. Return your findings.",
+  tools: [webSearch],
+  responseFormat: ResearchFindings,
+};
 
-  const agent = createDeepAgent({
-    model: "google:gemini-3.6-flash",
-    subagents: [researchSubagent],
-  });
+const agent = createDeepAgent({
+  model: "google:gemini-3.6-flash",
+  subagents: [researchSubagent],
+});
 
-  const result = await agent.invoke({
-    messages: [
-      { role: "user", content: "Research recent advances in quantum computing" },
-    ],
-  });
+const result = await agent.invoke({
+  messages: [
+    { role: "user", content: "Research recent advances in quantum computing" },
+  ],
+});
 
-  // The parent's ToolMessage contains JSON-serialized structured data:
-  // '{"summary": "...", "confidence": 0.87, "sources": ["https://..."]}'
-  ```
+// The parent's ToolMessage contains JSON-serialized structured data:
+// '{"summary": "...", "confidence": 0.87, "sources": ["https://..."]}'
+```
 
-  ```ts OpenAI theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  import { z } from "zod";
-  import { createDeepAgent } from "deepagents";
-  import { tool } from "langchain";
+```ts OpenAI theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+import { z } from "zod";
+import { createDeepAgent } from "deepagents";
+import { tool } from "langchain";
 
-  const webSearch = tool(
-    async ({ query }: { query: string }) => `web results for ${query}`,
-    {
-      name: "web_search",
-      description: "Search the web",
-      schema: z.object({ query: z.string() }),
-    },
-  );
+const webSearch = tool(
+  async ({ query }: { query: string }) => `web results for ${query}`,
+  {
+    name: "web_search",
+    description: "Search the web",
+    schema: z.object({ query: z.string() }),
+  },
+);
 
-  const ResearchFindings = z.object({
-    summary: z.string().describe("Summary of findings"),
-    confidence: z.number().describe("Confidence score from 0 to 1"),
-    sources: z.array(z.string()).describe("List of source URLs"),
-  });
+const ResearchFindings = z.object({
+  summary: z.string().describe("Summary of findings"),
+  confidence: z.number().describe("Confidence score from 0 to 1"),
+  sources: z.array(z.string()).describe("List of source URLs"),
+});
 
-  const researchSubagent = {
-    name: "researcher",
-    description: "Researches topics and returns structured findings",
-    systemPrompt: "Research the given topic thoroughly. Return your findings.",
-    tools: [webSearch],
-    responseFormat: ResearchFindings,
-  };
+const researchSubagent = {
+  name: "researcher",
+  description: "Researches topics and returns structured findings",
+  systemPrompt: "Research the given topic thoroughly. Return your findings.",
+  tools: [webSearch],
+  responseFormat: ResearchFindings,
+};
 
-  const agent = createDeepAgent({
-    model: "openai:gpt-5.5",
-    subagents: [researchSubagent],
-  });
+const agent = createDeepAgent({
+  model: "openai:gpt-5.5",
+  subagents: [researchSubagent],
+});
 
-  const result = await agent.invoke({
-    messages: [
-      { role: "user", content: "Research recent advances in quantum computing" },
-    ],
-  });
+const result = await agent.invoke({
+  messages: [
+    { role: "user", content: "Research recent advances in quantum computing" },
+  ],
+});
 
-  // The parent's ToolMessage contains JSON-serialized structured data:
-  // '{"summary": "...", "confidence": 0.87, "sources": ["https://..."]}'
-  ```
+// The parent's ToolMessage contains JSON-serialized structured data:
+// '{"summary": "...", "confidence": 0.87, "sources": ["https://..."]}'
+```
 
-  ```ts Anthropic theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  import { z } from "zod";
-  import { createDeepAgent } from "deepagents";
-  import { tool } from "langchain";
+```ts Anthropic theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+import { z } from "zod";
+import { createDeepAgent } from "deepagents";
+import { tool } from "langchain";
 
-  const webSearch = tool(
-    async ({ query }: { query: string }) => `web results for ${query}`,
-    {
-      name: "web_search",
-      description: "Search the web",
-      schema: z.object({ query: z.string() }),
-    },
-  );
+const webSearch = tool(
+  async ({ query }: { query: string }) => `web results for ${query}`,
+  {
+    name: "web_search",
+    description: "Search the web",
+    schema: z.object({ query: z.string() }),
+  },
+);
 
-  const ResearchFindings = z.object({
-    summary: z.string().describe("Summary of findings"),
-    confidence: z.number().describe("Confidence score from 0 to 1"),
-    sources: z.array(z.string()).describe("List of source URLs"),
-  });
+const ResearchFindings = z.object({
+  summary: z.string().describe("Summary of findings"),
+  confidence: z.number().describe("Confidence score from 0 to 1"),
+  sources: z.array(z.string()).describe("List of source URLs"),
+});
 
-  const researchSubagent = {
-    name: "researcher",
-    description: "Researches topics and returns structured findings",
-    systemPrompt: "Research the given topic thoroughly. Return your findings.",
-    tools: [webSearch],
-    responseFormat: ResearchFindings,
-  };
+const researchSubagent = {
+  name: "researcher",
+  description: "Researches topics and returns structured findings",
+  systemPrompt: "Research the given topic thoroughly. Return your findings.",
+  tools: [webSearch],
+  responseFormat: ResearchFindings,
+};
 
-  const agent = createDeepAgent({
-    model: "anthropic:claude-sonnet-5",
-    subagents: [researchSubagent],
-  });
+const agent = createDeepAgent({
+  model: "anthropic:claude-sonnet-5",
+  subagents: [researchSubagent],
+});
 
-  const result = await agent.invoke({
-    messages: [
-      { role: "user", content: "Research recent advances in quantum computing" },
-    ],
-  });
+const result = await agent.invoke({
+  messages: [
+    { role: "user", content: "Research recent advances in quantum computing" },
+  ],
+});
 
-  // The parent's ToolMessage contains JSON-serialized structured data:
-  // '{"summary": "...", "confidence": 0.87, "sources": ["https://..."]}'
-  ```
+// The parent's ToolMessage contains JSON-serialized structured data:
+// '{"summary": "...", "confidence": 0.87, "sources": ["https://..."]}'
+```
 
-  ```ts OpenRouter theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  import { z } from "zod";
-  import { createDeepAgent } from "deepagents";
-  import { tool } from "langchain";
+```ts OpenRouter theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+import { z } from "zod";
+import { createDeepAgent } from "deepagents";
+import { tool } from "langchain";
 
-  const webSearch = tool(
-    async ({ query }: { query: string }) => `web results for ${query}`,
-    {
-      name: "web_search",
-      description: "Search the web",
-      schema: z.object({ query: z.string() }),
-    },
-  );
+const webSearch = tool(
+  async ({ query }: { query: string }) => `web results for ${query}`,
+  {
+    name: "web_search",
+    description: "Search the web",
+    schema: z.object({ query: z.string() }),
+  },
+);
 
-  const ResearchFindings = z.object({
-    summary: z.string().describe("Summary of findings"),
-    confidence: z.number().describe("Confidence score from 0 to 1"),
-    sources: z.array(z.string()).describe("List of source URLs"),
-  });
+const ResearchFindings = z.object({
+  summary: z.string().describe("Summary of findings"),
+  confidence: z.number().describe("Confidence score from 0 to 1"),
+  sources: z.array(z.string()).describe("List of source URLs"),
+});
 
-  const researchSubagent = {
-    name: "researcher",
-    description: "Researches topics and returns structured findings",
-    systemPrompt: "Research the given topic thoroughly. Return your findings.",
-    tools: [webSearch],
-    responseFormat: ResearchFindings,
-  };
+const researchSubagent = {
+  name: "researcher",
+  description: "Researches topics and returns structured findings",
+  systemPrompt: "Research the given topic thoroughly. Return your findings.",
+  tools: [webSearch],
+  responseFormat: ResearchFindings,
+};
 
-  const agent = createDeepAgent({
-    model: "openrouter:z-ai/glm-5.2",
-    subagents: [researchSubagent],
-  });
+const agent = createDeepAgent({
+  model: "openrouter:z-ai/glm-5.2",
+  subagents: [researchSubagent],
+});
 
-  const result = await agent.invoke({
-    messages: [
-      { role: "user", content: "Research recent advances in quantum computing" },
-    ],
-  });
+const result = await agent.invoke({
+  messages: [
+    { role: "user", content: "Research recent advances in quantum computing" },
+  ],
+});
 
-  // The parent's ToolMessage contains JSON-serialized structured data:
-  // '{"summary": "...", "confidence": 0.87, "sources": ["https://..."]}'
-  ```
+// The parent's ToolMessage contains JSON-serialized structured data:
+// '{"summary": "...", "confidence": 0.87, "sources": ["https://..."]}'
+```
 
-  ```ts Fireworks theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  import { z } from "zod";
-  import { createDeepAgent } from "deepagents";
-  import { tool } from "langchain";
+```ts Fireworks theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+import { z } from "zod";
+import { createDeepAgent } from "deepagents";
+import { tool } from "langchain";
 
-  const webSearch = tool(
-    async ({ query }: { query: string }) => `web results for ${query}`,
-    {
-      name: "web_search",
-      description: "Search the web",
-      schema: z.object({ query: z.string() }),
-    },
-  );
+const webSearch = tool(
+  async ({ query }: { query: string }) => `web results for ${query}`,
+  {
+    name: "web_search",
+    description: "Search the web",
+    schema: z.object({ query: z.string() }),
+  },
+);
 
-  const ResearchFindings = z.object({
-    summary: z.string().describe("Summary of findings"),
-    confidence: z.number().describe("Confidence score from 0 to 1"),
-    sources: z.array(z.string()).describe("List of source URLs"),
-  });
+const ResearchFindings = z.object({
+  summary: z.string().describe("Summary of findings"),
+  confidence: z.number().describe("Confidence score from 0 to 1"),
+  sources: z.array(z.string()).describe("List of source URLs"),
+});
 
-  const researchSubagent = {
-    name: "researcher",
-    description: "Researches topics and returns structured findings",
-    systemPrompt: "Research the given topic thoroughly. Return your findings.",
-    tools: [webSearch],
-    responseFormat: ResearchFindings,
-  };
+const researchSubagent = {
+  name: "researcher",
+  description: "Researches topics and returns structured findings",
+  systemPrompt: "Research the given topic thoroughly. Return your findings.",
+  tools: [webSearch],
+  responseFormat: ResearchFindings,
+};
 
-  const agent = createDeepAgent({
-    model: "fireworks:accounts/fireworks/models/glm-5p2",
-    subagents: [researchSubagent],
-  });
+const agent = createDeepAgent({
+  model: "fireworks:accounts/fireworks/models/glm-5p2",
+  subagents: [researchSubagent],
+});
 
-  const result = await agent.invoke({
-    messages: [
-      { role: "user", content: "Research recent advances in quantum computing" },
-    ],
-  });
+const result = await agent.invoke({
+  messages: [
+    { role: "user", content: "Research recent advances in quantum computing" },
+  ],
+});
 
-  // The parent's ToolMessage contains JSON-serialized structured data:
-  // '{"summary": "...", "confidence": 0.87, "sources": ["https://..."]}'
-  ```
+// The parent's ToolMessage contains JSON-serialized structured data:
+// '{"summary": "...", "confidence": 0.87, "sources": ["https://..."]}'
+```
 
-  ```ts Baseten theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  import { z } from "zod";
-  import { createDeepAgent } from "deepagents";
-  import { tool } from "langchain";
+```ts Baseten theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+import { z } from "zod";
+import { createDeepAgent } from "deepagents";
+import { tool } from "langchain";
 
-  const webSearch = tool(
-    async ({ query }: { query: string }) => `web results for ${query}`,
-    {
-      name: "web_search",
-      description: "Search the web",
-      schema: z.object({ query: z.string() }),
-    },
-  );
+const webSearch = tool(
+  async ({ query }: { query: string }) => `web results for ${query}`,
+  {
+    name: "web_search",
+    description: "Search the web",
+    schema: z.object({ query: z.string() }),
+  },
+);
 
-  const ResearchFindings = z.object({
-    summary: z.string().describe("Summary of findings"),
-    confidence: z.number().describe("Confidence score from 0 to 1"),
-    sources: z.array(z.string()).describe("List of source URLs"),
-  });
+const ResearchFindings = z.object({
+  summary: z.string().describe("Summary of findings"),
+  confidence: z.number().describe("Confidence score from 0 to 1"),
+  sources: z.array(z.string()).describe("List of source URLs"),
+});
 
-  const researchSubagent = {
-    name: "researcher",
-    description: "Researches topics and returns structured findings",
-    systemPrompt: "Research the given topic thoroughly. Return your findings.",
-    tools: [webSearch],
-    responseFormat: ResearchFindings,
-  };
+const researchSubagent = {
+  name: "researcher",
+  description: "Researches topics and returns structured findings",
+  systemPrompt: "Research the given topic thoroughly. Return your findings.",
+  tools: [webSearch],
+  responseFormat: ResearchFindings,
+};
 
-  const agent = createDeepAgent({
-    model: "baseten:zai-org/GLM-5.2",
-    subagents: [researchSubagent],
-  });
+const agent = createDeepAgent({
+  model: "baseten:zai-org/GLM-5.2",
+  subagents: [researchSubagent],
+});
 
-  const result = await agent.invoke({
-    messages: [
-      { role: "user", content: "Research recent advances in quantum computing" },
-    ],
-  });
+const result = await agent.invoke({
+  messages: [
+    { role: "user", content: "Research recent advances in quantum computing" },
+  ],
+});
 
-  // The parent's ToolMessage contains JSON-serialized structured data:
-  // '{"summary": "...", "confidence": 0.87, "sources": ["https://..."]}'
-  ```
+// The parent's ToolMessage contains JSON-serialized structured data:
+// '{"summary": "...", "confidence": 0.87, "sources": ["https://..."]}'
+```
 
-  ```ts Ollama theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  import { z } from "zod";
-  import { createDeepAgent } from "deepagents";
-  import { tool } from "langchain";
+```ts Ollama theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+import { z } from "zod";
+import { createDeepAgent } from "deepagents";
+import { tool } from "langchain";
 
-  const webSearch = tool(
-    async ({ query }: { query: string }) => `web results for ${query}`,
-    {
-      name: "web_search",
-      description: "Search the web",
-      schema: z.object({ query: z.string() }),
-    },
-  );
+const webSearch = tool(
+  async ({ query }: { query: string }) => `web results for ${query}`,
+  {
+    name: "web_search",
+    description: "Search the web",
+    schema: z.object({ query: z.string() }),
+  },
+);
 
-  const ResearchFindings = z.object({
-    summary: z.string().describe("Summary of findings"),
-    confidence: z.number().describe("Confidence score from 0 to 1"),
-    sources: z.array(z.string()).describe("List of source URLs"),
-  });
+const ResearchFindings = z.object({
+  summary: z.string().describe("Summary of findings"),
+  confidence: z.number().describe("Confidence score from 0 to 1"),
+  sources: z.array(z.string()).describe("List of source URLs"),
+});
 
-  const researchSubagent = {
-    name: "researcher",
-    description: "Researches topics and returns structured findings",
-    systemPrompt: "Research the given topic thoroughly. Return your findings.",
-    tools: [webSearch],
-    responseFormat: ResearchFindings,
-  };
+const researchSubagent = {
+  name: "researcher",
+  description: "Researches topics and returns structured findings",
+  systemPrompt: "Research the given topic thoroughly. Return your findings.",
+  tools: [webSearch],
+  responseFormat: ResearchFindings,
+};
 
-  const agent = createDeepAgent({
-    model: "ollama:north-mini-code-1.0",
-    subagents: [researchSubagent],
-  });
+const agent = createDeepAgent({
+  model: "ollama:north-mini-code-1.0",
+  subagents: [researchSubagent],
+});
 
-  const result = await agent.invoke({
-    messages: [
-      { role: "user", content: "Research recent advances in quantum computing" },
-    ],
-  });
+const result = await agent.invoke({
+  messages: [
+    { role: "user", content: "Research recent advances in quantum computing" },
+  ],
+});
 
-  // The parent's ToolMessage contains JSON-serialized structured data:
-  // '{"summary": "...", "confidence": 0.87, "sources": ["https://..."]}'
-  ```
-</CodeGroup>
+// The parent's ToolMessage contains JSON-serialized structured data:
+// '{"summary": "...", "confidence": 0.87, "sources": ["https://..."]}'
+```
 
-<Card title="View example trace" icon="chart-line" href="https://smith.langchain.com/public/f34744b4-0794-4f4f-9e31-f7c9e3f0b2e5/r">
-  Open a public LangSmith run for this example.
-</Card>
+> **[View example trace](https://smith.langchain.com/public/f34744b4-0794-4f4f-9e31-f7c9e3f0b2e5/r)**
+>
+> Open a public LangSmith run for this example.
 
 Without `response_format`, the parent receives the subagent's last message text as-is. With it, the parent always gets valid JSON matching the schema, which is useful when the parent needs to process the result programmatically or pass it to downstream tools.
 
@@ -1949,217 +1935,215 @@ In addition to any user-defined subagents, every deep agent has access to a `gen
 
 Include a subagent with `name: "general-purpose"` in your `subagents` list to replace the default. Use this to configure a different model, tools, or system prompt for the general-purpose subagent:
 
-<CodeGroup>
-  ```ts Google theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  import { createDeepAgent } from "deepagents";
-  import { tool } from "langchain";
-  import { z } from "zod";
+```ts Google theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+import { createDeepAgent } from "deepagents";
+import { tool } from "langchain";
+import { z } from "zod";
 
-  const internetSearch = tool(
-    async ({ query }: { query: string }) => `search results for ${query}`,
+const internetSearch = tool(
+  async ({ query }: { query: string }) => `search results for ${query}`,
+  {
+    name: "internet_search",
+    description: "Run a web search",
+    schema: z.object({ query: z.string() }),
+  },
+);
+
+// Main agent uses Gemini; general-purpose subagent uses GPT
+const agent = await createDeepAgent({
+  model: "google:gemini-3.6-flash",
+  tools: [internetSearch],
+  subagents: [
     {
-      name: "internet_search",
-      description: "Run a web search",
-      schema: z.object({ query: z.string() }),
+      name: "general-purpose",
+      description: "General-purpose agent for research and multi-step tasks",
+      systemPrompt: "You are a general-purpose assistant.",
+      tools: [internetSearch],
+      model: "openai:gpt-5.5", // Different model for delegated tasks
     },
-  );
+  ],
+});
+```
 
-  // Main agent uses Gemini; general-purpose subagent uses GPT
-  const agent = await createDeepAgent({
-    model: "google:gemini-3.6-flash",
-    tools: [internetSearch],
-    subagents: [
-      {
-        name: "general-purpose",
-        description: "General-purpose agent for research and multi-step tasks",
-        systemPrompt: "You are a general-purpose assistant.",
-        tools: [internetSearch],
-        model: "openai:gpt-5.5", // Different model for delegated tasks
-      },
-    ],
-  });
-  ```
+```ts OpenAI theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+import { createDeepAgent } from "deepagents";
+import { tool } from "langchain";
+import { z } from "zod";
 
-  ```ts OpenAI theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  import { createDeepAgent } from "deepagents";
-  import { tool } from "langchain";
-  import { z } from "zod";
+const internetSearch = tool(
+  async ({ query }: { query: string }) => `search results for ${query}`,
+  {
+    name: "internet_search",
+    description: "Run a web search",
+    schema: z.object({ query: z.string() }),
+  },
+);
 
-  const internetSearch = tool(
-    async ({ query }: { query: string }) => `search results for ${query}`,
+// Main agent uses Gemini; general-purpose subagent uses GPT
+const agent = await createDeepAgent({
+  model: "openai:gpt-5.5",
+  tools: [internetSearch],
+  subagents: [
     {
-      name: "internet_search",
-      description: "Run a web search",
-      schema: z.object({ query: z.string() }),
+      name: "general-purpose",
+      description: "General-purpose agent for research and multi-step tasks",
+      systemPrompt: "You are a general-purpose assistant.",
+      tools: [internetSearch],
+      model: "openai:gpt-5.5", // Different model for delegated tasks
     },
-  );
+  ],
+});
+```
 
-  // Main agent uses Gemini; general-purpose subagent uses GPT
-  const agent = await createDeepAgent({
-    model: "openai:gpt-5.5",
-    tools: [internetSearch],
-    subagents: [
-      {
-        name: "general-purpose",
-        description: "General-purpose agent for research and multi-step tasks",
-        systemPrompt: "You are a general-purpose assistant.",
-        tools: [internetSearch],
-        model: "openai:gpt-5.5", // Different model for delegated tasks
-      },
-    ],
-  });
-  ```
+```ts Anthropic theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+import { createDeepAgent } from "deepagents";
+import { tool } from "langchain";
+import { z } from "zod";
 
-  ```ts Anthropic theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  import { createDeepAgent } from "deepagents";
-  import { tool } from "langchain";
-  import { z } from "zod";
+const internetSearch = tool(
+  async ({ query }: { query: string }) => `search results for ${query}`,
+  {
+    name: "internet_search",
+    description: "Run a web search",
+    schema: z.object({ query: z.string() }),
+  },
+);
 
-  const internetSearch = tool(
-    async ({ query }: { query: string }) => `search results for ${query}`,
+// Main agent uses Gemini; general-purpose subagent uses GPT
+const agent = await createDeepAgent({
+  model: "anthropic:claude-sonnet-5",
+  tools: [internetSearch],
+  subagents: [
     {
-      name: "internet_search",
-      description: "Run a web search",
-      schema: z.object({ query: z.string() }),
+      name: "general-purpose",
+      description: "General-purpose agent for research and multi-step tasks",
+      systemPrompt: "You are a general-purpose assistant.",
+      tools: [internetSearch],
+      model: "openai:gpt-5.5", // Different model for delegated tasks
     },
-  );
+  ],
+});
+```
 
-  // Main agent uses Gemini; general-purpose subagent uses GPT
-  const agent = await createDeepAgent({
-    model: "anthropic:claude-sonnet-5",
-    tools: [internetSearch],
-    subagents: [
-      {
-        name: "general-purpose",
-        description: "General-purpose agent for research and multi-step tasks",
-        systemPrompt: "You are a general-purpose assistant.",
-        tools: [internetSearch],
-        model: "openai:gpt-5.5", // Different model for delegated tasks
-      },
-    ],
-  });
-  ```
+```ts OpenRouter theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+import { createDeepAgent } from "deepagents";
+import { tool } from "langchain";
+import { z } from "zod";
 
-  ```ts OpenRouter theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  import { createDeepAgent } from "deepagents";
-  import { tool } from "langchain";
-  import { z } from "zod";
+const internetSearch = tool(
+  async ({ query }: { query: string }) => `search results for ${query}`,
+  {
+    name: "internet_search",
+    description: "Run a web search",
+    schema: z.object({ query: z.string() }),
+  },
+);
 
-  const internetSearch = tool(
-    async ({ query }: { query: string }) => `search results for ${query}`,
+// Main agent uses Gemini; general-purpose subagent uses GPT
+const agent = await createDeepAgent({
+  model: "openrouter:z-ai/glm-5.2",
+  tools: [internetSearch],
+  subagents: [
     {
-      name: "internet_search",
-      description: "Run a web search",
-      schema: z.object({ query: z.string() }),
+      name: "general-purpose",
+      description: "General-purpose agent for research and multi-step tasks",
+      systemPrompt: "You are a general-purpose assistant.",
+      tools: [internetSearch],
+      model: "openai:gpt-5.5", // Different model for delegated tasks
     },
-  );
+  ],
+});
+```
 
-  // Main agent uses Gemini; general-purpose subagent uses GPT
-  const agent = await createDeepAgent({
-    model: "openrouter:z-ai/glm-5.2",
-    tools: [internetSearch],
-    subagents: [
-      {
-        name: "general-purpose",
-        description: "General-purpose agent for research and multi-step tasks",
-        systemPrompt: "You are a general-purpose assistant.",
-        tools: [internetSearch],
-        model: "openai:gpt-5.5", // Different model for delegated tasks
-      },
-    ],
-  });
-  ```
+```ts Fireworks theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+import { createDeepAgent } from "deepagents";
+import { tool } from "langchain";
+import { z } from "zod";
 
-  ```ts Fireworks theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  import { createDeepAgent } from "deepagents";
-  import { tool } from "langchain";
-  import { z } from "zod";
+const internetSearch = tool(
+  async ({ query }: { query: string }) => `search results for ${query}`,
+  {
+    name: "internet_search",
+    description: "Run a web search",
+    schema: z.object({ query: z.string() }),
+  },
+);
 
-  const internetSearch = tool(
-    async ({ query }: { query: string }) => `search results for ${query}`,
+// Main agent uses Gemini; general-purpose subagent uses GPT
+const agent = await createDeepAgent({
+  model: "fireworks:accounts/fireworks/models/glm-5p2",
+  tools: [internetSearch],
+  subagents: [
     {
-      name: "internet_search",
-      description: "Run a web search",
-      schema: z.object({ query: z.string() }),
+      name: "general-purpose",
+      description: "General-purpose agent for research and multi-step tasks",
+      systemPrompt: "You are a general-purpose assistant.",
+      tools: [internetSearch],
+      model: "openai:gpt-5.5", // Different model for delegated tasks
     },
-  );
+  ],
+});
+```
 
-  // Main agent uses Gemini; general-purpose subagent uses GPT
-  const agent = await createDeepAgent({
-    model: "fireworks:accounts/fireworks/models/glm-5p2",
-    tools: [internetSearch],
-    subagents: [
-      {
-        name: "general-purpose",
-        description: "General-purpose agent for research and multi-step tasks",
-        systemPrompt: "You are a general-purpose assistant.",
-        tools: [internetSearch],
-        model: "openai:gpt-5.5", // Different model for delegated tasks
-      },
-    ],
-  });
-  ```
+```ts Baseten theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+import { createDeepAgent } from "deepagents";
+import { tool } from "langchain";
+import { z } from "zod";
 
-  ```ts Baseten theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  import { createDeepAgent } from "deepagents";
-  import { tool } from "langchain";
-  import { z } from "zod";
+const internetSearch = tool(
+  async ({ query }: { query: string }) => `search results for ${query}`,
+  {
+    name: "internet_search",
+    description: "Run a web search",
+    schema: z.object({ query: z.string() }),
+  },
+);
 
-  const internetSearch = tool(
-    async ({ query }: { query: string }) => `search results for ${query}`,
+// Main agent uses Gemini; general-purpose subagent uses GPT
+const agent = await createDeepAgent({
+  model: "baseten:zai-org/GLM-5.2",
+  tools: [internetSearch],
+  subagents: [
     {
-      name: "internet_search",
-      description: "Run a web search",
-      schema: z.object({ query: z.string() }),
+      name: "general-purpose",
+      description: "General-purpose agent for research and multi-step tasks",
+      systemPrompt: "You are a general-purpose assistant.",
+      tools: [internetSearch],
+      model: "openai:gpt-5.5", // Different model for delegated tasks
     },
-  );
+  ],
+});
+```
 
-  // Main agent uses Gemini; general-purpose subagent uses GPT
-  const agent = await createDeepAgent({
-    model: "baseten:zai-org/GLM-5.2",
-    tools: [internetSearch],
-    subagents: [
-      {
-        name: "general-purpose",
-        description: "General-purpose agent for research and multi-step tasks",
-        systemPrompt: "You are a general-purpose assistant.",
-        tools: [internetSearch],
-        model: "openai:gpt-5.5", // Different model for delegated tasks
-      },
-    ],
-  });
-  ```
+```ts Ollama theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+import { createDeepAgent } from "deepagents";
+import { tool } from "langchain";
+import { z } from "zod";
 
-  ```ts Ollama theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  import { createDeepAgent } from "deepagents";
-  import { tool } from "langchain";
-  import { z } from "zod";
+const internetSearch = tool(
+  async ({ query }: { query: string }) => `search results for ${query}`,
+  {
+    name: "internet_search",
+    description: "Run a web search",
+    schema: z.object({ query: z.string() }),
+  },
+);
 
-  const internetSearch = tool(
-    async ({ query }: { query: string }) => `search results for ${query}`,
+// Main agent uses Gemini; general-purpose subagent uses GPT
+const agent = await createDeepAgent({
+  model: "ollama:north-mini-code-1.0",
+  tools: [internetSearch],
+  subagents: [
     {
-      name: "internet_search",
-      description: "Run a web search",
-      schema: z.object({ query: z.string() }),
+      name: "general-purpose",
+      description: "General-purpose agent for research and multi-step tasks",
+      systemPrompt: "You are a general-purpose assistant.",
+      tools: [internetSearch],
+      model: "openai:gpt-5.5", // Different model for delegated tasks
     },
-  );
-
-  // Main agent uses Gemini; general-purpose subagent uses GPT
-  const agent = await createDeepAgent({
-    model: "ollama:north-mini-code-1.0",
-    tools: [internetSearch],
-    subagents: [
-      {
-        name: "general-purpose",
-        description: "General-purpose agent for research and multi-step tasks",
-        systemPrompt: "You are a general-purpose assistant.",
-        tools: [internetSearch],
-        model: "openai:gpt-5.5", // Different model for delegated tasks
-      },
-    ],
-  });
-  ```
-</CodeGroup>
+  ],
+});
+```
 
 When you provide a subagent with the general-purpose name, the default general-purpose subagent is not added. Your spec fully replaces it.
 
@@ -2169,9 +2153,9 @@ To remove the built-in general-purpose subagent entirely instead of replacing it
 
 The general-purpose subagent is ideal for context isolation without specialized behavior. The main agent can delegate a complex multi-step task to this subagent and get a concise result back without bloat from intermediate tool calls.
 
-<Card title="Example">
-  Instead of the main agent making 10 web searches and filling its context with results, it delegates to the general-purpose subagent: `task(name="general-purpose", task="Research quantum computing trends")`. The subagent performs all the searches internally and returns only a summary.
-</Card>
+> **Example**
+>
+> Instead of the main agent making 10 web searches and filling its context with results, it delegates to the general-purpose subagent: `task(name="general-purpose", task="Research quantum computing trends")`. The subagent performs all the searches internally and returns only a summary.
 
 ### Skills inheritance
 
@@ -2180,9 +2164,9 @@ When configuring [skills](/oss/javascript/deepagents/skills) with `create_deep_a
 * **General-purpose subagent**: Automatically inherits skills from the main agent
 * **Custom subagents**: Do NOT inherit skills by default—use the `skills` parameter to give them their own skills
 
-<Note>
-  Only subagents configured with skills get a `SkillsMiddleware` instance—custom subagents without a `skills` parameter do not. When present, skill state is fully isolated in both directions: the parent's skills are not visible to the child, and the child's skills are not propagated back to the parent.
-</Note>
+> [!NOTE]
+>
+> Only subagents configured with skills get a `SkillsMiddleware` instance—custom subagents without a `skills` parameter do not. When present, skill state is fully isolated in both directions: the parent's skills are not visible to the child, and the child's skills are not propagated back to the parent.
 
 ```ts theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 import { createDeepAgent } from "deepagents";
@@ -2262,140 +2246,138 @@ const emailAgentBad = {
 
 Different models excel at different tasks:
 
-<CodeGroup>
-  ```ts Google theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  const subagents = [
-    {
-      name: "contract-reviewer",
-      description: "Reviews legal documents and contracts",
-      systemPrompt: "You are an expert legal reviewer...",
-      tools: [readDocument, analyzeContract],
-      model: "google:gemini-3.6-flash", // Large context for long documents
-    },
-    {
-      name: "financial-analyst",
-      description: "Analyzes financial data and market trends",
-      systemPrompt: "You are an expert financial analyst...",
-      tools: [getStockPrice, analyzeFundamentals],
-      model: "openai:gpt-5.5", // Better for numerical analysis
-    },
-  ];
-  ```
+```ts Google theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+const subagents = [
+  {
+    name: "contract-reviewer",
+    description: "Reviews legal documents and contracts",
+    systemPrompt: "You are an expert legal reviewer...",
+    tools: [readDocument, analyzeContract],
+    model: "google:gemini-3.6-flash", // Large context for long documents
+  },
+  {
+    name: "financial-analyst",
+    description: "Analyzes financial data and market trends",
+    systemPrompt: "You are an expert financial analyst...",
+    tools: [getStockPrice, analyzeFundamentals],
+    model: "openai:gpt-5.5", // Better for numerical analysis
+  },
+];
+```
 
-  ```ts OpenAI theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  const subagents = [
-    {
-      name: "contract-reviewer",
-      description: "Reviews legal documents and contracts",
-      systemPrompt: "You are an expert legal reviewer...",
-      tools: [readDocument, analyzeContract],
-      model: "openai:gpt-5.5", // Large context for long documents
-    },
-    {
-      name: "financial-analyst",
-      description: "Analyzes financial data and market trends",
-      systemPrompt: "You are an expert financial analyst...",
-      tools: [getStockPrice, analyzeFundamentals],
-      model: "openai:gpt-5.5", // Better for numerical analysis
-    },
-  ];
-  ```
+```ts OpenAI theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+const subagents = [
+  {
+    name: "contract-reviewer",
+    description: "Reviews legal documents and contracts",
+    systemPrompt: "You are an expert legal reviewer...",
+    tools: [readDocument, analyzeContract],
+    model: "openai:gpt-5.5", // Large context for long documents
+  },
+  {
+    name: "financial-analyst",
+    description: "Analyzes financial data and market trends",
+    systemPrompt: "You are an expert financial analyst...",
+    tools: [getStockPrice, analyzeFundamentals],
+    model: "openai:gpt-5.5", // Better for numerical analysis
+  },
+];
+```
 
-  ```ts Anthropic theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  const subagents = [
-    {
-      name: "contract-reviewer",
-      description: "Reviews legal documents and contracts",
-      systemPrompt: "You are an expert legal reviewer...",
-      tools: [readDocument, analyzeContract],
-      model: "anthropic:claude-sonnet-5", // Large context for long documents
-    },
-    {
-      name: "financial-analyst",
-      description: "Analyzes financial data and market trends",
-      systemPrompt: "You are an expert financial analyst...",
-      tools: [getStockPrice, analyzeFundamentals],
-      model: "openai:gpt-5.5", // Better for numerical analysis
-    },
-  ];
-  ```
+```ts Anthropic theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+const subagents = [
+  {
+    name: "contract-reviewer",
+    description: "Reviews legal documents and contracts",
+    systemPrompt: "You are an expert legal reviewer...",
+    tools: [readDocument, analyzeContract],
+    model: "anthropic:claude-sonnet-5", // Large context for long documents
+  },
+  {
+    name: "financial-analyst",
+    description: "Analyzes financial data and market trends",
+    systemPrompt: "You are an expert financial analyst...",
+    tools: [getStockPrice, analyzeFundamentals],
+    model: "openai:gpt-5.5", // Better for numerical analysis
+  },
+];
+```
 
-  ```ts OpenRouter theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  const subagents = [
-    {
-      name: "contract-reviewer",
-      description: "Reviews legal documents and contracts",
-      systemPrompt: "You are an expert legal reviewer...",
-      tools: [readDocument, analyzeContract],
-      model: "openrouter:z-ai/glm-5.2", // Large context for long documents
-    },
-    {
-      name: "financial-analyst",
-      description: "Analyzes financial data and market trends",
-      systemPrompt: "You are an expert financial analyst...",
-      tools: [getStockPrice, analyzeFundamentals],
-      model: "openai:gpt-5.5", // Better for numerical analysis
-    },
-  ];
-  ```
+```ts OpenRouter theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+const subagents = [
+  {
+    name: "contract-reviewer",
+    description: "Reviews legal documents and contracts",
+    systemPrompt: "You are an expert legal reviewer...",
+    tools: [readDocument, analyzeContract],
+    model: "openrouter:z-ai/glm-5.2", // Large context for long documents
+  },
+  {
+    name: "financial-analyst",
+    description: "Analyzes financial data and market trends",
+    systemPrompt: "You are an expert financial analyst...",
+    tools: [getStockPrice, analyzeFundamentals],
+    model: "openai:gpt-5.5", // Better for numerical analysis
+  },
+];
+```
 
-  ```ts Fireworks theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  const subagents = [
-    {
-      name: "contract-reviewer",
-      description: "Reviews legal documents and contracts",
-      systemPrompt: "You are an expert legal reviewer...",
-      tools: [readDocument, analyzeContract],
-      model: "fireworks:accounts/fireworks/models/glm-5p2", // Large context for long documents
-    },
-    {
-      name: "financial-analyst",
-      description: "Analyzes financial data and market trends",
-      systemPrompt: "You are an expert financial analyst...",
-      tools: [getStockPrice, analyzeFundamentals],
-      model: "openai:gpt-5.5", // Better for numerical analysis
-    },
-  ];
-  ```
+```ts Fireworks theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+const subagents = [
+  {
+    name: "contract-reviewer",
+    description: "Reviews legal documents and contracts",
+    systemPrompt: "You are an expert legal reviewer...",
+    tools: [readDocument, analyzeContract],
+    model: "fireworks:accounts/fireworks/models/glm-5p2", // Large context for long documents
+  },
+  {
+    name: "financial-analyst",
+    description: "Analyzes financial data and market trends",
+    systemPrompt: "You are an expert financial analyst...",
+    tools: [getStockPrice, analyzeFundamentals],
+    model: "openai:gpt-5.5", // Better for numerical analysis
+  },
+];
+```
 
-  ```ts Baseten theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  const subagents = [
-    {
-      name: "contract-reviewer",
-      description: "Reviews legal documents and contracts",
-      systemPrompt: "You are an expert legal reviewer...",
-      tools: [readDocument, analyzeContract],
-      model: "baseten:zai-org/GLM-5.2", // Large context for long documents
-    },
-    {
-      name: "financial-analyst",
-      description: "Analyzes financial data and market trends",
-      systemPrompt: "You are an expert financial analyst...",
-      tools: [getStockPrice, analyzeFundamentals],
-      model: "openai:gpt-5.5", // Better for numerical analysis
-    },
-  ];
-  ```
+```ts Baseten theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+const subagents = [
+  {
+    name: "contract-reviewer",
+    description: "Reviews legal documents and contracts",
+    systemPrompt: "You are an expert legal reviewer...",
+    tools: [readDocument, analyzeContract],
+    model: "baseten:zai-org/GLM-5.2", // Large context for long documents
+  },
+  {
+    name: "financial-analyst",
+    description: "Analyzes financial data and market trends",
+    systemPrompt: "You are an expert financial analyst...",
+    tools: [getStockPrice, analyzeFundamentals],
+    model: "openai:gpt-5.5", // Better for numerical analysis
+  },
+];
+```
 
-  ```ts Ollama theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  const subagents = [
-    {
-      name: "contract-reviewer",
-      description: "Reviews legal documents and contracts",
-      systemPrompt: "You are an expert legal reviewer...",
-      tools: [readDocument, analyzeContract],
-      model: "ollama:north-mini-code-1.0", // Large context for long documents
-    },
-    {
-      name: "financial-analyst",
-      description: "Analyzes financial data and market trends",
-      systemPrompt: "You are an expert financial analyst...",
-      tools: [getStockPrice, analyzeFundamentals],
-      model: "openai:gpt-5.5", // Better for numerical analysis
-    },
-  ];
-  ```
-</CodeGroup>
+```ts Ollama theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+const subagents = [
+  {
+    name: "contract-reviewer",
+    description: "Reviews legal documents and contracts",
+    systemPrompt: "You are an expert legal reviewer...",
+    tools: [readDocument, analyzeContract],
+    model: "ollama:north-mini-code-1.0", // Large context for long documents
+  },
+  {
+    name: "financial-analyst",
+    description: "Analyzes financial data and market trends",
+    systemPrompt: "You are an expert financial analyst...",
+    tools: [getStockPrice, analyzeFundamentals],
+    model: "openai:gpt-5.5", // Better for numerical analysis
+  },
+];
+```
 
 ### Return concise results
 
@@ -2423,231 +2405,229 @@ const dataAnalyst = {
 
 Create specialized subagents for different domains:
 
-<CodeGroup>
-  ```ts Google theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  import { createDeepAgent } from "deepagents";
+```ts Google theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+import { createDeepAgent } from "deepagents";
 
-  const subagents = [
-    {
-      name: "data-collector",
-      description: "Gathers raw data from various sources",
-      systemPrompt: "Collect comprehensive data on the topic",
-      tools: [webSearch, apiCall, databaseQuery],
-    },
-    {
-      name: "data-analyzer",
-      description: "Analyzes collected data for insights",
-      systemPrompt: "Analyze data and extract key insights",
-      tools: [statisticalAnalysis],
-    },
-    {
-      name: "report-writer",
-      description: "Writes polished reports from analysis",
-      systemPrompt: "Create professional reports from insights",
-      tools: [formatDocument],
-    },
-  ];
+const subagents = [
+  {
+    name: "data-collector",
+    description: "Gathers raw data from various sources",
+    systemPrompt: "Collect comprehensive data on the topic",
+    tools: [webSearch, apiCall, databaseQuery],
+  },
+  {
+    name: "data-analyzer",
+    description: "Analyzes collected data for insights",
+    systemPrompt: "Analyze data and extract key insights",
+    tools: [statisticalAnalysis],
+  },
+  {
+    name: "report-writer",
+    description: "Writes polished reports from analysis",
+    systemPrompt: "Create professional reports from insights",
+    tools: [formatDocument],
+  },
+];
 
-  const agent = createDeepAgent({
-    model: "google:gemini-3.6-flash",
-    systemPrompt:
-      "You coordinate data analysis and reporting. Use subagents for specialized tasks.",
-    subagents: subagents,
-  });
-  ```
+const agent = createDeepAgent({
+  model: "google:gemini-3.6-flash",
+  systemPrompt:
+    "You coordinate data analysis and reporting. Use subagents for specialized tasks.",
+  subagents: subagents,
+});
+```
 
-  ```ts OpenAI theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  import { createDeepAgent } from "deepagents";
+```ts OpenAI theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+import { createDeepAgent } from "deepagents";
 
-  const subagents = [
-    {
-      name: "data-collector",
-      description: "Gathers raw data from various sources",
-      systemPrompt: "Collect comprehensive data on the topic",
-      tools: [webSearch, apiCall, databaseQuery],
-    },
-    {
-      name: "data-analyzer",
-      description: "Analyzes collected data for insights",
-      systemPrompt: "Analyze data and extract key insights",
-      tools: [statisticalAnalysis],
-    },
-    {
-      name: "report-writer",
-      description: "Writes polished reports from analysis",
-      systemPrompt: "Create professional reports from insights",
-      tools: [formatDocument],
-    },
-  ];
+const subagents = [
+  {
+    name: "data-collector",
+    description: "Gathers raw data from various sources",
+    systemPrompt: "Collect comprehensive data on the topic",
+    tools: [webSearch, apiCall, databaseQuery],
+  },
+  {
+    name: "data-analyzer",
+    description: "Analyzes collected data for insights",
+    systemPrompt: "Analyze data and extract key insights",
+    tools: [statisticalAnalysis],
+  },
+  {
+    name: "report-writer",
+    description: "Writes polished reports from analysis",
+    systemPrompt: "Create professional reports from insights",
+    tools: [formatDocument],
+  },
+];
 
-  const agent = createDeepAgent({
-    model: "openai:gpt-5.5",
-    systemPrompt:
-      "You coordinate data analysis and reporting. Use subagents for specialized tasks.",
-    subagents: subagents,
-  });
-  ```
+const agent = createDeepAgent({
+  model: "openai:gpt-5.5",
+  systemPrompt:
+    "You coordinate data analysis and reporting. Use subagents for specialized tasks.",
+  subagents: subagents,
+});
+```
 
-  ```ts Anthropic theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  import { createDeepAgent } from "deepagents";
+```ts Anthropic theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+import { createDeepAgent } from "deepagents";
 
-  const subagents = [
-    {
-      name: "data-collector",
-      description: "Gathers raw data from various sources",
-      systemPrompt: "Collect comprehensive data on the topic",
-      tools: [webSearch, apiCall, databaseQuery],
-    },
-    {
-      name: "data-analyzer",
-      description: "Analyzes collected data for insights",
-      systemPrompt: "Analyze data and extract key insights",
-      tools: [statisticalAnalysis],
-    },
-    {
-      name: "report-writer",
-      description: "Writes polished reports from analysis",
-      systemPrompt: "Create professional reports from insights",
-      tools: [formatDocument],
-    },
-  ];
+const subagents = [
+  {
+    name: "data-collector",
+    description: "Gathers raw data from various sources",
+    systemPrompt: "Collect comprehensive data on the topic",
+    tools: [webSearch, apiCall, databaseQuery],
+  },
+  {
+    name: "data-analyzer",
+    description: "Analyzes collected data for insights",
+    systemPrompt: "Analyze data and extract key insights",
+    tools: [statisticalAnalysis],
+  },
+  {
+    name: "report-writer",
+    description: "Writes polished reports from analysis",
+    systemPrompt: "Create professional reports from insights",
+    tools: [formatDocument],
+  },
+];
 
-  const agent = createDeepAgent({
-    model: "anthropic:claude-sonnet-5",
-    systemPrompt:
-      "You coordinate data analysis and reporting. Use subagents for specialized tasks.",
-    subagents: subagents,
-  });
-  ```
+const agent = createDeepAgent({
+  model: "anthropic:claude-sonnet-5",
+  systemPrompt:
+    "You coordinate data analysis and reporting. Use subagents for specialized tasks.",
+  subagents: subagents,
+});
+```
 
-  ```ts OpenRouter theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  import { createDeepAgent } from "deepagents";
+```ts OpenRouter theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+import { createDeepAgent } from "deepagents";
 
-  const subagents = [
-    {
-      name: "data-collector",
-      description: "Gathers raw data from various sources",
-      systemPrompt: "Collect comprehensive data on the topic",
-      tools: [webSearch, apiCall, databaseQuery],
-    },
-    {
-      name: "data-analyzer",
-      description: "Analyzes collected data for insights",
-      systemPrompt: "Analyze data and extract key insights",
-      tools: [statisticalAnalysis],
-    },
-    {
-      name: "report-writer",
-      description: "Writes polished reports from analysis",
-      systemPrompt: "Create professional reports from insights",
-      tools: [formatDocument],
-    },
-  ];
+const subagents = [
+  {
+    name: "data-collector",
+    description: "Gathers raw data from various sources",
+    systemPrompt: "Collect comprehensive data on the topic",
+    tools: [webSearch, apiCall, databaseQuery],
+  },
+  {
+    name: "data-analyzer",
+    description: "Analyzes collected data for insights",
+    systemPrompt: "Analyze data and extract key insights",
+    tools: [statisticalAnalysis],
+  },
+  {
+    name: "report-writer",
+    description: "Writes polished reports from analysis",
+    systemPrompt: "Create professional reports from insights",
+    tools: [formatDocument],
+  },
+];
 
-  const agent = createDeepAgent({
-    model: "openrouter:z-ai/glm-5.2",
-    systemPrompt:
-      "You coordinate data analysis and reporting. Use subagents for specialized tasks.",
-    subagents: subagents,
-  });
-  ```
+const agent = createDeepAgent({
+  model: "openrouter:z-ai/glm-5.2",
+  systemPrompt:
+    "You coordinate data analysis and reporting. Use subagents for specialized tasks.",
+  subagents: subagents,
+});
+```
 
-  ```ts Fireworks theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  import { createDeepAgent } from "deepagents";
+```ts Fireworks theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+import { createDeepAgent } from "deepagents";
 
-  const subagents = [
-    {
-      name: "data-collector",
-      description: "Gathers raw data from various sources",
-      systemPrompt: "Collect comprehensive data on the topic",
-      tools: [webSearch, apiCall, databaseQuery],
-    },
-    {
-      name: "data-analyzer",
-      description: "Analyzes collected data for insights",
-      systemPrompt: "Analyze data and extract key insights",
-      tools: [statisticalAnalysis],
-    },
-    {
-      name: "report-writer",
-      description: "Writes polished reports from analysis",
-      systemPrompt: "Create professional reports from insights",
-      tools: [formatDocument],
-    },
-  ];
+const subagents = [
+  {
+    name: "data-collector",
+    description: "Gathers raw data from various sources",
+    systemPrompt: "Collect comprehensive data on the topic",
+    tools: [webSearch, apiCall, databaseQuery],
+  },
+  {
+    name: "data-analyzer",
+    description: "Analyzes collected data for insights",
+    systemPrompt: "Analyze data and extract key insights",
+    tools: [statisticalAnalysis],
+  },
+  {
+    name: "report-writer",
+    description: "Writes polished reports from analysis",
+    systemPrompt: "Create professional reports from insights",
+    tools: [formatDocument],
+  },
+];
 
-  const agent = createDeepAgent({
-    model: "fireworks:accounts/fireworks/models/glm-5p2",
-    systemPrompt:
-      "You coordinate data analysis and reporting. Use subagents for specialized tasks.",
-    subagents: subagents,
-  });
-  ```
+const agent = createDeepAgent({
+  model: "fireworks:accounts/fireworks/models/glm-5p2",
+  systemPrompt:
+    "You coordinate data analysis and reporting. Use subagents for specialized tasks.",
+  subagents: subagents,
+});
+```
 
-  ```ts Baseten theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  import { createDeepAgent } from "deepagents";
+```ts Baseten theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+import { createDeepAgent } from "deepagents";
 
-  const subagents = [
-    {
-      name: "data-collector",
-      description: "Gathers raw data from various sources",
-      systemPrompt: "Collect comprehensive data on the topic",
-      tools: [webSearch, apiCall, databaseQuery],
-    },
-    {
-      name: "data-analyzer",
-      description: "Analyzes collected data for insights",
-      systemPrompt: "Analyze data and extract key insights",
-      tools: [statisticalAnalysis],
-    },
-    {
-      name: "report-writer",
-      description: "Writes polished reports from analysis",
-      systemPrompt: "Create professional reports from insights",
-      tools: [formatDocument],
-    },
-  ];
+const subagents = [
+  {
+    name: "data-collector",
+    description: "Gathers raw data from various sources",
+    systemPrompt: "Collect comprehensive data on the topic",
+    tools: [webSearch, apiCall, databaseQuery],
+  },
+  {
+    name: "data-analyzer",
+    description: "Analyzes collected data for insights",
+    systemPrompt: "Analyze data and extract key insights",
+    tools: [statisticalAnalysis],
+  },
+  {
+    name: "report-writer",
+    description: "Writes polished reports from analysis",
+    systemPrompt: "Create professional reports from insights",
+    tools: [formatDocument],
+  },
+];
 
-  const agent = createDeepAgent({
-    model: "baseten:zai-org/GLM-5.2",
-    systemPrompt:
-      "You coordinate data analysis and reporting. Use subagents for specialized tasks.",
-    subagents: subagents,
-  });
-  ```
+const agent = createDeepAgent({
+  model: "baseten:zai-org/GLM-5.2",
+  systemPrompt:
+    "You coordinate data analysis and reporting. Use subagents for specialized tasks.",
+  subagents: subagents,
+});
+```
 
-  ```ts Ollama theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  import { createDeepAgent } from "deepagents";
+```ts Ollama theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+import { createDeepAgent } from "deepagents";
 
-  const subagents = [
-    {
-      name: "data-collector",
-      description: "Gathers raw data from various sources",
-      systemPrompt: "Collect comprehensive data on the topic",
-      tools: [webSearch, apiCall, databaseQuery],
-    },
-    {
-      name: "data-analyzer",
-      description: "Analyzes collected data for insights",
-      systemPrompt: "Analyze data and extract key insights",
-      tools: [statisticalAnalysis],
-    },
-    {
-      name: "report-writer",
-      description: "Writes polished reports from analysis",
-      systemPrompt: "Create professional reports from insights",
-      tools: [formatDocument],
-    },
-  ];
+const subagents = [
+  {
+    name: "data-collector",
+    description: "Gathers raw data from various sources",
+    systemPrompt: "Collect comprehensive data on the topic",
+    tools: [webSearch, apiCall, databaseQuery],
+  },
+  {
+    name: "data-analyzer",
+    description: "Analyzes collected data for insights",
+    systemPrompt: "Analyze data and extract key insights",
+    tools: [statisticalAnalysis],
+  },
+  {
+    name: "report-writer",
+    description: "Writes polished reports from analysis",
+    systemPrompt: "Create professional reports from insights",
+    tools: [formatDocument],
+  },
+];
 
-  const agent = createDeepAgent({
-    model: "ollama:north-mini-code-1.0",
-    systemPrompt:
-      "You coordinate data analysis and reporting. Use subagents for specialized tasks.",
-    subagents: subagents,
-  });
-  ```
-</CodeGroup>
+const agent = createDeepAgent({
+  model: "ollama:north-mini-code-1.0",
+  systemPrompt:
+    "You coordinate data analysis and reporting. Use subagents for specialized tasks.",
+  subagents: subagents,
+});
+```
 
 **Workflow:**
 
@@ -2665,308 +2645,306 @@ When you invoke a parent agent with [runtime context](/oss/javascript/langchain/
 
 This means tools running inside any subagent can access the same context values you provided to the parent:
 
-<CodeGroup>
-  ```ts Google theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  import { createDeepAgent } from "deepagents";
-  import { tool } from "langchain";
-  import type { ToolRuntime } from "@langchain/core/tools";
-  import { z } from "zod";
+```ts Google theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+import { createDeepAgent } from "deepagents";
+import { tool } from "langchain";
+import type { ToolRuntime } from "@langchain/core/tools";
+import { z } from "zod";
 
-  const contextSchema = z.object({
-    userId: z.string(),
-    sessionId: z.string(),
-  });
+const contextSchema = z.object({
+  userId: z.string(),
+  sessionId: z.string(),
+});
 
-  const getUserData = tool(
-    async (input, runtime: ToolRuntime<unknown, typeof contextSchema>) => {
-      const userId = runtime.context?.userId;
-      return `Data for user ${userId}: ${input.query}`;
-    },
-    {
-      name: "get_user_data",
-      description: "Fetch data for the current user",
-      schema: z.object({ query: z.string() }),
-    },
-  );
+const getUserData = tool(
+  async (input, runtime: ToolRuntime<unknown, typeof contextSchema>) => {
+    const userId = runtime.context?.userId;
+    return `Data for user ${userId}: ${input.query}`;
+  },
+  {
+    name: "get_user_data",
+    description: "Fetch data for the current user",
+    schema: z.object({ query: z.string() }),
+  },
+);
 
-  const researchSubagent = {
-    name: "researcher",
-    description: "Conducts research for the current user",
-    systemPrompt: "You are a research assistant.",
-    tools: [getUserData],
-  };
+const researchSubagent = {
+  name: "researcher",
+  description: "Conducts research for the current user",
+  systemPrompt: "You are a research assistant.",
+  tools: [getUserData],
+};
 
-  const agent = createDeepAgent({
-    model: "google:gemini-3.6-flash",
-    subagents: [researchSubagent],
-    contextSchema,
-  });
+const agent = createDeepAgent({
+  model: "google:gemini-3.6-flash",
+  subagents: [researchSubagent],
+  contextSchema,
+});
 
-  // Context flows to the researcher subagent and its tools automatically
-  const result = await agent.invoke(
-    { messages: [new HumanMessage("Look up my recent activity")] },
-    { context: { userId: "user-123", sessionId: "abc" } },
-  );
-  ```
+// Context flows to the researcher subagent and its tools automatically
+const result = await agent.invoke(
+  { messages: [new HumanMessage("Look up my recent activity")] },
+  { context: { userId: "user-123", sessionId: "abc" } },
+);
+```
 
-  ```ts OpenAI theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  import { createDeepAgent } from "deepagents";
-  import { tool } from "langchain";
-  import type { ToolRuntime } from "@langchain/core/tools";
-  import { z } from "zod";
+```ts OpenAI theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+import { createDeepAgent } from "deepagents";
+import { tool } from "langchain";
+import type { ToolRuntime } from "@langchain/core/tools";
+import { z } from "zod";
 
-  const contextSchema = z.object({
-    userId: z.string(),
-    sessionId: z.string(),
-  });
+const contextSchema = z.object({
+  userId: z.string(),
+  sessionId: z.string(),
+});
 
-  const getUserData = tool(
-    async (input, runtime: ToolRuntime<unknown, typeof contextSchema>) => {
-      const userId = runtime.context?.userId;
-      return `Data for user ${userId}: ${input.query}`;
-    },
-    {
-      name: "get_user_data",
-      description: "Fetch data for the current user",
-      schema: z.object({ query: z.string() }),
-    },
-  );
+const getUserData = tool(
+  async (input, runtime: ToolRuntime<unknown, typeof contextSchema>) => {
+    const userId = runtime.context?.userId;
+    return `Data for user ${userId}: ${input.query}`;
+  },
+  {
+    name: "get_user_data",
+    description: "Fetch data for the current user",
+    schema: z.object({ query: z.string() }),
+  },
+);
 
-  const researchSubagent = {
-    name: "researcher",
-    description: "Conducts research for the current user",
-    systemPrompt: "You are a research assistant.",
-    tools: [getUserData],
-  };
+const researchSubagent = {
+  name: "researcher",
+  description: "Conducts research for the current user",
+  systemPrompt: "You are a research assistant.",
+  tools: [getUserData],
+};
 
-  const agent = createDeepAgent({
-    model: "openai:gpt-5.5",
-    subagents: [researchSubagent],
-    contextSchema,
-  });
+const agent = createDeepAgent({
+  model: "openai:gpt-5.5",
+  subagents: [researchSubagent],
+  contextSchema,
+});
 
-  // Context flows to the researcher subagent and its tools automatically
-  const result = await agent.invoke(
-    { messages: [new HumanMessage("Look up my recent activity")] },
-    { context: { userId: "user-123", sessionId: "abc" } },
-  );
-  ```
+// Context flows to the researcher subagent and its tools automatically
+const result = await agent.invoke(
+  { messages: [new HumanMessage("Look up my recent activity")] },
+  { context: { userId: "user-123", sessionId: "abc" } },
+);
+```
 
-  ```ts Anthropic theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  import { createDeepAgent } from "deepagents";
-  import { tool } from "langchain";
-  import type { ToolRuntime } from "@langchain/core/tools";
-  import { z } from "zod";
+```ts Anthropic theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+import { createDeepAgent } from "deepagents";
+import { tool } from "langchain";
+import type { ToolRuntime } from "@langchain/core/tools";
+import { z } from "zod";
 
-  const contextSchema = z.object({
-    userId: z.string(),
-    sessionId: z.string(),
-  });
+const contextSchema = z.object({
+  userId: z.string(),
+  sessionId: z.string(),
+});
 
-  const getUserData = tool(
-    async (input, runtime: ToolRuntime<unknown, typeof contextSchema>) => {
-      const userId = runtime.context?.userId;
-      return `Data for user ${userId}: ${input.query}`;
-    },
-    {
-      name: "get_user_data",
-      description: "Fetch data for the current user",
-      schema: z.object({ query: z.string() }),
-    },
-  );
+const getUserData = tool(
+  async (input, runtime: ToolRuntime<unknown, typeof contextSchema>) => {
+    const userId = runtime.context?.userId;
+    return `Data for user ${userId}: ${input.query}`;
+  },
+  {
+    name: "get_user_data",
+    description: "Fetch data for the current user",
+    schema: z.object({ query: z.string() }),
+  },
+);
 
-  const researchSubagent = {
-    name: "researcher",
-    description: "Conducts research for the current user",
-    systemPrompt: "You are a research assistant.",
-    tools: [getUserData],
-  };
+const researchSubagent = {
+  name: "researcher",
+  description: "Conducts research for the current user",
+  systemPrompt: "You are a research assistant.",
+  tools: [getUserData],
+};
 
-  const agent = createDeepAgent({
-    model: "anthropic:claude-sonnet-5",
-    subagents: [researchSubagent],
-    contextSchema,
-  });
+const agent = createDeepAgent({
+  model: "anthropic:claude-sonnet-5",
+  subagents: [researchSubagent],
+  contextSchema,
+});
 
-  // Context flows to the researcher subagent and its tools automatically
-  const result = await agent.invoke(
-    { messages: [new HumanMessage("Look up my recent activity")] },
-    { context: { userId: "user-123", sessionId: "abc" } },
-  );
-  ```
+// Context flows to the researcher subagent and its tools automatically
+const result = await agent.invoke(
+  { messages: [new HumanMessage("Look up my recent activity")] },
+  { context: { userId: "user-123", sessionId: "abc" } },
+);
+```
 
-  ```ts OpenRouter theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  import { createDeepAgent } from "deepagents";
-  import { tool } from "langchain";
-  import type { ToolRuntime } from "@langchain/core/tools";
-  import { z } from "zod";
+```ts OpenRouter theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+import { createDeepAgent } from "deepagents";
+import { tool } from "langchain";
+import type { ToolRuntime } from "@langchain/core/tools";
+import { z } from "zod";
 
-  const contextSchema = z.object({
-    userId: z.string(),
-    sessionId: z.string(),
-  });
+const contextSchema = z.object({
+  userId: z.string(),
+  sessionId: z.string(),
+});
 
-  const getUserData = tool(
-    async (input, runtime: ToolRuntime<unknown, typeof contextSchema>) => {
-      const userId = runtime.context?.userId;
-      return `Data for user ${userId}: ${input.query}`;
-    },
-    {
-      name: "get_user_data",
-      description: "Fetch data for the current user",
-      schema: z.object({ query: z.string() }),
-    },
-  );
+const getUserData = tool(
+  async (input, runtime: ToolRuntime<unknown, typeof contextSchema>) => {
+    const userId = runtime.context?.userId;
+    return `Data for user ${userId}: ${input.query}`;
+  },
+  {
+    name: "get_user_data",
+    description: "Fetch data for the current user",
+    schema: z.object({ query: z.string() }),
+  },
+);
 
-  const researchSubagent = {
-    name: "researcher",
-    description: "Conducts research for the current user",
-    systemPrompt: "You are a research assistant.",
-    tools: [getUserData],
-  };
+const researchSubagent = {
+  name: "researcher",
+  description: "Conducts research for the current user",
+  systemPrompt: "You are a research assistant.",
+  tools: [getUserData],
+};
 
-  const agent = createDeepAgent({
-    model: "openrouter:z-ai/glm-5.2",
-    subagents: [researchSubagent],
-    contextSchema,
-  });
+const agent = createDeepAgent({
+  model: "openrouter:z-ai/glm-5.2",
+  subagents: [researchSubagent],
+  contextSchema,
+});
 
-  // Context flows to the researcher subagent and its tools automatically
-  const result = await agent.invoke(
-    { messages: [new HumanMessage("Look up my recent activity")] },
-    { context: { userId: "user-123", sessionId: "abc" } },
-  );
-  ```
+// Context flows to the researcher subagent and its tools automatically
+const result = await agent.invoke(
+  { messages: [new HumanMessage("Look up my recent activity")] },
+  { context: { userId: "user-123", sessionId: "abc" } },
+);
+```
 
-  ```ts Fireworks theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  import { createDeepAgent } from "deepagents";
-  import { tool } from "langchain";
-  import type { ToolRuntime } from "@langchain/core/tools";
-  import { z } from "zod";
+```ts Fireworks theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+import { createDeepAgent } from "deepagents";
+import { tool } from "langchain";
+import type { ToolRuntime } from "@langchain/core/tools";
+import { z } from "zod";
 
-  const contextSchema = z.object({
-    userId: z.string(),
-    sessionId: z.string(),
-  });
+const contextSchema = z.object({
+  userId: z.string(),
+  sessionId: z.string(),
+});
 
-  const getUserData = tool(
-    async (input, runtime: ToolRuntime<unknown, typeof contextSchema>) => {
-      const userId = runtime.context?.userId;
-      return `Data for user ${userId}: ${input.query}`;
-    },
-    {
-      name: "get_user_data",
-      description: "Fetch data for the current user",
-      schema: z.object({ query: z.string() }),
-    },
-  );
+const getUserData = tool(
+  async (input, runtime: ToolRuntime<unknown, typeof contextSchema>) => {
+    const userId = runtime.context?.userId;
+    return `Data for user ${userId}: ${input.query}`;
+  },
+  {
+    name: "get_user_data",
+    description: "Fetch data for the current user",
+    schema: z.object({ query: z.string() }),
+  },
+);
 
-  const researchSubagent = {
-    name: "researcher",
-    description: "Conducts research for the current user",
-    systemPrompt: "You are a research assistant.",
-    tools: [getUserData],
-  };
+const researchSubagent = {
+  name: "researcher",
+  description: "Conducts research for the current user",
+  systemPrompt: "You are a research assistant.",
+  tools: [getUserData],
+};
 
-  const agent = createDeepAgent({
-    model: "fireworks:accounts/fireworks/models/glm-5p2",
-    subagents: [researchSubagent],
-    contextSchema,
-  });
+const agent = createDeepAgent({
+  model: "fireworks:accounts/fireworks/models/glm-5p2",
+  subagents: [researchSubagent],
+  contextSchema,
+});
 
-  // Context flows to the researcher subagent and its tools automatically
-  const result = await agent.invoke(
-    { messages: [new HumanMessage("Look up my recent activity")] },
-    { context: { userId: "user-123", sessionId: "abc" } },
-  );
-  ```
+// Context flows to the researcher subagent and its tools automatically
+const result = await agent.invoke(
+  { messages: [new HumanMessage("Look up my recent activity")] },
+  { context: { userId: "user-123", sessionId: "abc" } },
+);
+```
 
-  ```ts Baseten theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  import { createDeepAgent } from "deepagents";
-  import { tool } from "langchain";
-  import type { ToolRuntime } from "@langchain/core/tools";
-  import { z } from "zod";
+```ts Baseten theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+import { createDeepAgent } from "deepagents";
+import { tool } from "langchain";
+import type { ToolRuntime } from "@langchain/core/tools";
+import { z } from "zod";
 
-  const contextSchema = z.object({
-    userId: z.string(),
-    sessionId: z.string(),
-  });
+const contextSchema = z.object({
+  userId: z.string(),
+  sessionId: z.string(),
+});
 
-  const getUserData = tool(
-    async (input, runtime: ToolRuntime<unknown, typeof contextSchema>) => {
-      const userId = runtime.context?.userId;
-      return `Data for user ${userId}: ${input.query}`;
-    },
-    {
-      name: "get_user_data",
-      description: "Fetch data for the current user",
-      schema: z.object({ query: z.string() }),
-    },
-  );
+const getUserData = tool(
+  async (input, runtime: ToolRuntime<unknown, typeof contextSchema>) => {
+    const userId = runtime.context?.userId;
+    return `Data for user ${userId}: ${input.query}`;
+  },
+  {
+    name: "get_user_data",
+    description: "Fetch data for the current user",
+    schema: z.object({ query: z.string() }),
+  },
+);
 
-  const researchSubagent = {
-    name: "researcher",
-    description: "Conducts research for the current user",
-    systemPrompt: "You are a research assistant.",
-    tools: [getUserData],
-  };
+const researchSubagent = {
+  name: "researcher",
+  description: "Conducts research for the current user",
+  systemPrompt: "You are a research assistant.",
+  tools: [getUserData],
+};
 
-  const agent = createDeepAgent({
-    model: "baseten:zai-org/GLM-5.2",
-    subagents: [researchSubagent],
-    contextSchema,
-  });
+const agent = createDeepAgent({
+  model: "baseten:zai-org/GLM-5.2",
+  subagents: [researchSubagent],
+  contextSchema,
+});
 
-  // Context flows to the researcher subagent and its tools automatically
-  const result = await agent.invoke(
-    { messages: [new HumanMessage("Look up my recent activity")] },
-    { context: { userId: "user-123", sessionId: "abc" } },
-  );
-  ```
+// Context flows to the researcher subagent and its tools automatically
+const result = await agent.invoke(
+  { messages: [new HumanMessage("Look up my recent activity")] },
+  { context: { userId: "user-123", sessionId: "abc" } },
+);
+```
 
-  ```ts Ollama theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  import { createDeepAgent } from "deepagents";
-  import { tool } from "langchain";
-  import type { ToolRuntime } from "@langchain/core/tools";
-  import { z } from "zod";
+```ts Ollama theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+import { createDeepAgent } from "deepagents";
+import { tool } from "langchain";
+import type { ToolRuntime } from "@langchain/core/tools";
+import { z } from "zod";
 
-  const contextSchema = z.object({
-    userId: z.string(),
-    sessionId: z.string(),
-  });
+const contextSchema = z.object({
+  userId: z.string(),
+  sessionId: z.string(),
+});
 
-  const getUserData = tool(
-    async (input, runtime: ToolRuntime<unknown, typeof contextSchema>) => {
-      const userId = runtime.context?.userId;
-      return `Data for user ${userId}: ${input.query}`;
-    },
-    {
-      name: "get_user_data",
-      description: "Fetch data for the current user",
-      schema: z.object({ query: z.string() }),
-    },
-  );
+const getUserData = tool(
+  async (input, runtime: ToolRuntime<unknown, typeof contextSchema>) => {
+    const userId = runtime.context?.userId;
+    return `Data for user ${userId}: ${input.query}`;
+  },
+  {
+    name: "get_user_data",
+    description: "Fetch data for the current user",
+    schema: z.object({ query: z.string() }),
+  },
+);
 
-  const researchSubagent = {
-    name: "researcher",
-    description: "Conducts research for the current user",
-    systemPrompt: "You are a research assistant.",
-    tools: [getUserData],
-  };
+const researchSubagent = {
+  name: "researcher",
+  description: "Conducts research for the current user",
+  systemPrompt: "You are a research assistant.",
+  tools: [getUserData],
+};
 
-  const agent = createDeepAgent({
-    model: "ollama:north-mini-code-1.0",
-    subagents: [researchSubagent],
-    contextSchema,
-  });
+const agent = createDeepAgent({
+  model: "ollama:north-mini-code-1.0",
+  subagents: [researchSubagent],
+  contextSchema,
+});
 
-  // Context flows to the researcher subagent and its tools automatically
-  const result = await agent.invoke(
-    { messages: [new HumanMessage("Look up my recent activity")] },
-    { context: { userId: "user-123", sessionId: "abc" } },
-  );
-  ```
-</CodeGroup>
+// Context flows to the researcher subagent and its tools automatically
+const result = await agent.invoke(
+  { messages: [new HumanMessage("Look up my recent activity")] },
+  { context: { userId: "user-123", sessionId: "abc" } },
+);
+```
 
 ### Per-subagent context
 
@@ -2999,9 +2977,9 @@ const verifyClaim = tool(
 );
 ```
 
-<Card title="View example trace" icon="chart-line" href="https://smith.langchain.com/public/8e104a86-0921-4274-aa71-25ac90bd78b7/r">
-  Open a public LangSmith run for this example.
-</Card>
+> **[View example trace](https://smith.langchain.com/public/8e104a86-0921-4274-aa71-25ac90bd78b7/r)**
+>
+> Open a public LangSmith run for this example.
 
 ### Identifying which subagent called a tool
 
@@ -3028,9 +3006,9 @@ const sharedLookup = tool(
 );
 ```
 
-<Card title="View example trace" icon="chart-line" href="https://smith.langchain.com/public/50309ec3-2016-43c4-bee1-0f707e501fdf/r">
-  Open a public LangSmith run for this example.
-</Card>
+> **[View example trace](https://smith.langchain.com/public/50309ec3-2016-43c4-bee1-0f707e501fdf/r)**
+>
+> Open a public LangSmith run for this example.
 
 You can combine both patterns—read agent-specific settings from `runtime.context` and read `lc_agent_name` from `runtime.config` metadata when branching tool behavior.
 
@@ -3063,9 +3041,9 @@ const flexibleSearch = tool(
 );
 ```
 
-<Card title="View example trace" icon="chart-line" href="https://smith.langchain.com/public/47447223-d4cd-4265-b0f9-c6a330258b99/r">
-  Open a public LangSmith run for this example.
-</Card>
+> **[View example trace](https://smith.langchain.com/public/47447223-d4cd-4265-b0f9-c6a330258b99/r)**
+>
+> Open a public LangSmith run for this example.
 
 ## Troubleshooting
 
@@ -3166,12 +3144,6 @@ const subagents = [
 
 ***
 
-<div>
-  <Callout icon="terminal-2">
-    [Connect these docs](/use-these-docs) to your agent of choice via MCP for real-time answers.
-  </Callout>
+[Connect these docs](/use-these-docs) to your agent of choice via MCP for real-time answers.
 
-  <Callout icon="edit">
-    [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/oss/deepagents/subagents.mdx) or [file an issue](https://github.com/langchain-ai/docs/issues/new/choose).
-  </Callout>
-</div>
+[Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/oss/deepagents/subagents.mdx) or [file an issue](https://github.com/langchain-ai/docs/issues/new/choose).

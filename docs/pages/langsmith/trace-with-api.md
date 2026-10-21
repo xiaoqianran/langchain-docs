@@ -8,27 +8,27 @@ This guide covers two approaches to tracing with the [REST API](/langsmith/smith
 
 For a full list of endpoints and request/response schemas, refer to the [API reference](/langsmith/smith-api-ref).
 
-<Warning>
-  We strongly recommend using the [Python](/langsmith/smith-python-sdk) or [TypeScript](/langsmith/smith-js-ts-sdk) SDK to send traces to LangSmith instead of the REST API directly. The SDKs include batching and background sending optimizations that prevent tracing from affecting your application's performance.
+> [!WARNING]
+>
+> We strongly recommend using the [Python](/langsmith/smith-python-sdk) or [TypeScript](/langsmith/smith-js-ts-sdk) SDK to send traces to LangSmith instead of the REST API directly. The SDKs include batching and background sending optimizations that prevent tracing from affecting your application's performance.
+>
+> If you cannot use an SDK, note that sending traces synchronously may impact application performance.
 
-  If you cannot use an SDK, note that sending traces synchronously may impact application performance.
-</Warning>
-
-<Note>
-  We recommend using **UUID v7** for run IDs. UUIDv7 embeds a timestamp, which preserves correct time-ordering of runs in a trace. Use `uuid7()` from the LangSmith SDK to generate them, or see [Specify a custom run ID](/langsmith/annotate-code#specify-a-custom-run-id) for more details.
-</Note>
+> [!NOTE]
+>
+> We recommend using **UUID v7** for run IDs. UUIDv7 embeds a timestamp, which preserves correct time-ordering of runs in a trace. Use `uuid7()` from the LangSmith SDK to generate them, or see [Specify a custom run ID](/langsmith/annotate-code#specify-a-custom-run-id) for more details.
 
 ## Basic tracing
 
 The simplest way to log runs is via the `POST /runs` and `PATCH /runs` endpoints. This approach requires minimal information to establish the trace hierarchy.
 
-<Note>
-  When using the LangSmith REST API, provide your [API key](/langsmith/create-account-api-key) in the request headers as `"x-api-key"`.
-
-  If your API key is linked to multiple workspaces, specify the workspace in the header with `"x-tenant-id"`.
-
-  In this approach, you do not need to set the `dotted_order` or `trace_id` fields—the system generates them automatically. Though simpler, it is slower and subject to lower rate limits than batch ingestion.
-</Note>
+> [!NOTE]
+>
+> When using the LangSmith REST API, provide your [API key](/langsmith/create-account-api-key) in the request headers as `"x-api-key"`.
+>
+> If your API key is linked to multiple workspaces, specify the workspace in the header with `"x-tenant-id"`.
+>
+> In this approach, you do not need to set the `dotted_order` or `trace_id` fields—the system generates them automatically. Though simpler, it is slower and subject to lower rate limits than batch ingestion.
 
 The following example traces a chat completion with a parent chain run and a child LLM run. Set [`parent_run_id`](/langsmith/run-data-format) on a child run to attach it to its parent:
 
@@ -318,12 +318,6 @@ batch_ingest_runs(api_url, api_key, patches=patches)
 
 ***
 
-<div>
-  <Callout icon="terminal-2">
-    [Connect these docs](/use-these-docs) to your agent of choice via MCP for real-time answers.
-  </Callout>
+[Connect these docs](/use-these-docs) to your agent of choice via MCP for real-time answers.
 
-  <Callout icon="edit">
-    [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/trace-with-api.mdx) or [file an issue](https://github.com/langchain-ai/docs/issues/new/choose).
-  </Callout>
-</div>
+[Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/trace-with-api.mdx) or [file an issue](https://github.com/langchain-ai/docs/issues/new/choose).

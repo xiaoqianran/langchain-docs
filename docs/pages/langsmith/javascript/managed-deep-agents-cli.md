@@ -8,9 +8,9 @@ The `mda` CLI compiles and deploys code-first [Managed Deep Agents](/langsmith/j
 
 It is included with the `managed-deepagents` npm package.
 
-<Note>
-  Managed Deep Agents is in **public [beta](/langsmith/release-stages)** on [LangSmith Cloud](/langsmith/cloud).
-</Note>
+> [!NOTE]
+>
+> Managed Deep Agents is in **public [beta](/langsmith/release-stages)** on [LangSmith Cloud](/langsmith/cloud).
 
 For the fastest end-to-end path, see the [quickstart](/langsmith/javascript/managed-deep-agents-quickstart). For workflow guidance, see [Identity](/langsmith/javascript/managed-deep-agents-identity), [Memory](/langsmith/javascript/managed-deep-agents-memory), [Evals](/langsmith/javascript/managed-deep-agents-evals), [Custom tools](/langsmith/javascript/managed-deep-agents-tools), [Connections](/langsmith/javascript/managed-deep-agents-connections), [Custom middleware](/langsmith/javascript/managed-deep-agents-middleware), [Sandboxes](/langsmith/javascript/managed-deep-agents-sandboxes), [Channels](/langsmith/javascript/managed-deep-agents-channels), [Schedules](/langsmith/javascript/managed-deep-agents-schedules), and [Deploy an agent](/langsmith/javascript/managed-deep-agents-deploy).
 
@@ -18,28 +18,26 @@ For the fastest end-to-end path, see the [quickstart](/langsmith/javascript/mana
 
 `mda init` declares `managed-deepagents` as a project dependency, so run the `mda` binary from the project.
 
-<CodeGroup>
-  ```bash npm theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  npx managed-deepagents init my-agent
-  cd my-agent
-  npm install
-  npx mda --version
-  ```
+```bash npm theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+npx managed-deepagents init my-agent
+cd my-agent
+npm install
+npx mda --version
+```
 
-  ```bash pnpm theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  pnpm dlx managed-deepagents init my-agent
-  cd my-agent
-  pnpm install
-  pnpm exec mda --version
-  ```
+```bash pnpm theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+pnpm dlx managed-deepagents init my-agent
+cd my-agent
+pnpm install
+pnpm exec mda --version
+```
 
-  ```bash bun theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  bunx managed-deepagents init my-agent
-  cd my-agent
-  bun install
-  bunx mda --version
-  ```
-</CodeGroup>
+```bash bun theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+bunx managed-deepagents init my-agent
+cd my-agent
+bun install
+bunx mda --version
+```
 
 The package provides agent, identity, schedule, and sandbox authoring APIs.
 
@@ -84,19 +82,17 @@ The LangSmith API key authenticates the deploy. The agent's model provider also 
 
 Use `mda init` to create a new project directory:
 
-<CodeGroup>
-  ```bash npm theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  npx managed-deepagents init my-agent
-  ```
+```bash npm theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+npx managed-deepagents init my-agent
+```
 
-  ```bash pnpm theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  pnpm dlx managed-deepagents init my-agent
-  ```
+```bash pnpm theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+pnpm dlx managed-deepagents init my-agent
+```
 
-  ```bash bun theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  bunx managed-deepagents init my-agent
-  ```
-</CodeGroup>
+```bash bun theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+bunx managed-deepagents init my-agent
+```
 
 | Argument or flag | Use |
 | - | - |
@@ -111,19 +107,17 @@ Use `mda init` to create a new project directory:
 
 To include Slack in a new project:
 
-<CodeGroup>
-  ```bash npm theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  npx managed-deepagents init my-agent --channel slack
-  ```
+```bash npm theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+npx managed-deepagents init my-agent --channel slack
+```
 
-  ```bash pnpm theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  pnpm dlx managed-deepagents init my-agent --channel slack
-  ```
+```bash pnpm theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+pnpm dlx managed-deepagents init my-agent --channel slack
+```
 
-  ```bash bun theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  bunx managed-deepagents init my-agent --channel slack
-  ```
-</CodeGroup>
+```bash bun theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+bunx managed-deepagents init my-agent --channel slack
+```
 
 The scaffold language comes from the package you run, not from the current directory: the npm package always writes a TypeScript project. A CLI installed from npm refuses a Python project.
 
@@ -144,19 +138,17 @@ Eval tasks are opt-in and are not created by `mda init`. Run `mda evals init -i`
 
 Run the following command from the root of an existing managed deep agent project:
 
-<CodeGroup>
-  ```bash npm theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  npx mda channels init slack
-  ```
+```bash npm theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+npx mda channels init slack
+```
 
-  ```bash pnpm theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  pnpm exec mda channels init slack
-  ```
+```bash pnpm theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+pnpm exec mda channels init slack
+```
 
-  ```bash bun theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  bunx mda channels init slack
-  ```
-</CodeGroup>
+```bash bun theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+bunx mda channels init slack
+```
 
 The command creates a Slack channel declaration in the `channels/` directory. The next `mda deploy` sets up the resources the agent needs to appear in Slack. For the complete workflow, see [Connect a Managed Deep Agent to Slack](/langsmith/javascript/managed-deep-agents-channels-slack).
 
@@ -164,19 +156,17 @@ The command creates a Slack channel declaration in the `channels/` directory. Th
 
 Use `mda build` to compile a project into a managed LangGraph app without deploying it:
 
-<CodeGroup>
-  ```bash npm theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  npx mda build
-  ```
+```bash npm theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+npx mda build
+```
 
-  ```bash pnpm theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  pnpm exec mda build
-  ```
+```bash pnpm theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+pnpm exec mda build
+```
 
-  ```bash bun theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  bunx mda build
-  ```
-</CodeGroup>
+```bash bun theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+bunx mda build
+```
 
 | Argument or flag | Use |
 | - | - |
@@ -187,19 +177,17 @@ Use `mda build` to compile a project into a managed LangGraph app without deploy
 
 Use `mda evals init` to initialize a Harbor workspace. Use the interactive handoff to develop complete tasks with a coding agent and the `eval-engineering` skill.
 
-<CodeGroup>
-  ```bash npm theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  npx mda evals init -i
-  ```
+```bash npm theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+npx mda evals init -i
+```
 
-  ```bash pnpm theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  pnpm exec mda evals init -i
-  ```
+```bash pnpm theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+pnpm exec mda evals init -i
+```
 
-  ```bash bun theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  bunx mda evals init -i
-  ```
-</CodeGroup>
+```bash bun theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+bunx mda evals init -i
+```
 
 | Command or flag | Use |
 | - | - |
@@ -216,19 +204,17 @@ For workflow guidance, see [Evals](/langsmith/javascript/managed-deep-agents-eva
 
 Use `mda dev` to compile a project and run the local LangGraph dev server:
 
-<CodeGroup>
-  ```bash npm theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  npx mda dev
-  ```
+```bash npm theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+npx mda dev
+```
 
-  ```bash pnpm theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  pnpm exec mda dev
-  ```
+```bash pnpm theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+pnpm exec mda dev
+```
 
-  ```bash bun theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  bunx mda dev
-  ```
-</CodeGroup>
+```bash bun theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+bunx mda dev
+```
 
 | Argument or flag | Use |
 | - | - |
@@ -267,35 +253,31 @@ The first argument to `mda connections create` is a slug, which is your name for
 
 The OAuth catalog saves you from looking up a provider's OAuth settings. When you pass a listed service to `--oauth`, the CLI supplies its authorization URL, token URL, token endpoint authentication method, authorization parameters, and default scopes, so you provide only your client ID and client secret. The catalog does not limit which providers you can use: for anything else, pass `--authorize-url` and `--token-url`. Catalog names include `github`, `google`, `linear`, `slack`, `atlassian`, and `notion-api`:
 
-<CodeGroup>
-  ```bash npm theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  npx mda connections catalog
-  ```
+```bash npm theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+npx mda connections catalog
+```
 
-  ```bash pnpm theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  pnpm exec mda connections catalog
-  ```
+```bash pnpm theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+pnpm exec mda connections catalog
+```
 
-  ```bash bun theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  bunx mda connections catalog
-  ```
-</CodeGroup>
+```bash bun theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+bunx mda connections catalog
+```
 
 Create an agent-owned API key for a custom Tavily tool:
 
-<CodeGroup>
-  ```bash npm theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  npx mda connections create organization-tavily --secret-from-env TAVILY_API_KEY
-  ```
+```bash npm theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+npx mda connections create organization-tavily --secret-from-env TAVILY_API_KEY
+```
 
-  ```bash pnpm theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  pnpm exec mda connections create organization-tavily --secret-from-env TAVILY_API_KEY
-  ```
+```bash pnpm theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+pnpm exec mda connections create organization-tavily --secret-from-env TAVILY_API_KEY
+```
 
-  ```bash bun theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  bunx mda connections create organization-tavily --secret-from-env TAVILY_API_KEY
-  ```
-</CodeGroup>
+```bash bun theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+bunx mda connections create organization-tavily --secret-from-env TAVILY_API_KEY
+```
 
 The following flags control connection creation:
 
@@ -328,19 +310,17 @@ For credential owners, create modes, caller identity, and runtime examples, see 
 
 Use `mda deploy` to compile and deploy a project to LangSmith:
 
-<CodeGroup>
-  ```bash npm theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  npx mda deploy
-  ```
+```bash npm theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+npx mda deploy
+```
 
-  ```bash pnpm theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  pnpm exec mda deploy
-  ```
+```bash pnpm theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+pnpm exec mda deploy
+```
 
-  ```bash bun theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  bunx mda deploy
-  ```
-</CodeGroup>
+```bash bun theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+bunx mda deploy
+```
 
 | Argument or flag | Use |
 | - | - |
@@ -373,19 +353,17 @@ On success, the CLI prints the LangSmith deployment dashboard URL. For secrets r
 
 Use `mda logs` to tail Agent Server logs for a deployed agent:
 
-<CodeGroup>
-  ```bash npm theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  npx mda logs
-  ```
+```bash npm theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+npx mda logs
+```
 
-  ```bash pnpm theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  pnpm exec mda logs
-  ```
+```bash pnpm theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+pnpm exec mda logs
+```
 
-  ```bash bun theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  bunx mda logs
-  ```
-</CodeGroup>
+```bash bun theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+bunx mda logs
+```
 
 | Argument or flag | Use |
 | - | - |
@@ -401,19 +379,17 @@ Use `mda logs` to tail Agent Server logs for a deployed agent:
 
 Use `mda delete` to delete a deployed Managed Deep Agent and the LangSmith resources it created. `mda destroy` is an alias.
 
-<CodeGroup>
-  ```bash npm theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  npx mda delete
-  ```
+```bash npm theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+npx mda delete
+```
 
-  ```bash pnpm theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  pnpm exec mda delete
-  ```
+```bash pnpm theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+pnpm exec mda delete
+```
 
-  ```bash bun theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  bunx mda delete
-  ```
-</CodeGroup>
+```bash bun theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+bunx mda delete
+```
 
 | Argument or flag | Use |
 | - | - |
@@ -437,12 +413,6 @@ Use `mda delete` to delete a deployed Managed Deep Agent and the LangSmith resou
 
 ***
 
-<div>
-  <Callout icon="terminal-2">
-    [Connect these docs](/use-these-docs) to your agent of choice via MCP for real-time answers.
-  </Callout>
+[Connect these docs](/use-these-docs) to your agent of choice via MCP for real-time answers.
 
-  <Callout icon="edit">
-    [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/managed-deep-agents-cli.mdx) or [file an issue](https://github.com/langchain-ai/docs/issues/new/choose).
-  </Callout>
-</div>
+[Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/managed-deep-agents-cli.mdx) or [file an issue](https://github.com/langchain-ai/docs/issues/new/choose).

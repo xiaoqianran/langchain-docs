@@ -8,9 +8,9 @@ Custom tools are application code the agent can call for fetching real-time data
 
 To load tools from a remote MCP server, see [Connect to MCP servers](/langsmith/python/managed-deep-agents-mcp-connectors).
 
-<Note>
-  Managed Deep Agents is in **public [beta](/langsmith/release-stages)** on [LangSmith Cloud](/langsmith/cloud).
-</Note>
+> [!NOTE]
+>
+> Managed Deep Agents is in **public [beta](/langsmith/release-stages)** on [LangSmith Cloud](/langsmith/cloud).
 
 Put authored tools under `tools/`, import them into the agent entry, and pass them to the agent definition:
 
@@ -31,70 +31,68 @@ MCP connectors are declared under `tools/` as well, so the `tools/mcp.py` file n
 
 Use authored tools for business logic, private APIs, database access, and other code that belongs in your agent project.
 
-<Steps>
-  <Step title="Define a tool module">
-    ```python tools/customer.py theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-    from langchain.tools import tool
+**1. Define a tool module**
+
+```python tools/customer.py theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+from langchain.tools import tool
 
 
-    @tool(parse_docstring=True)
-    def lookup_customer(customer_id: str) -> str:
-        """Look up a customer record by ID.
+@tool(parse_docstring=True)
+def lookup_customer(customer_id: str) -> str:
+    """Look up a customer record by ID.
 
-        Args:
-            customer_id: Customer ID from the CRM.
-        """
-        return f"Customer {customer_id} is on the enterprise plan."
-    ```
+    Args:
+        customer_id: Customer ID from the CRM.
+    """
+    return f"Customer {customer_id} is on the enterprise plan."
+```
 
-    Use clear, unique tool names to avoid collisions. For more about LangChain tool definitions, see [Tools](/oss/python/langchain/tools).
-  </Step>
+Use clear, unique tool names to avoid collisions. For more about LangChain tool definitions, see [Tools](/oss/python/langchain/tools).
 
-  <Step title="Attach the tool to the agent">
-    Import the tool into the project-root agent entry and pass it in the `tools` list:
+**2. Attach the tool to the agent**
 
-    ```python agent.py theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-    from managed_deepagents import define_deep_agent
+Import the tool into the project-root agent entry and pass it in the `tools` list:
 
-    from tools.customer import lookup_customer
+```python agent.py theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+from managed_deepagents import define_deep_agent
 
-    agent = define_deep_agent(
-        name="support-agent",
-        model="openai:gpt-5.5",
-        tools=[lookup_customer],
-    )
-    ```
+from tools.customer import lookup_customer
 
-    Your imports should work the same way they do in a normal local Python project.
-  </Step>
+agent = define_deep_agent(
+    name="support-agent",
+    model="openai:gpt-5.5",
+    tools=[lookup_customer],
+)
+```
 
-  <Step title="Add human-in-the-loop (Optional)">
-    Pause the agent before sensitive tool calls so a person can approve, edit, or reject them.
+Your imports should work the same way they do in a normal local Python project.
 
-    Set `interrupt_on` in the agent definition, and optionally set `permissions` to gate tool and filesystem access:
+**3. Add human-in-the-loop (Optional)**
 
-    ```python agent.py theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-    from managed_deepagents import define_deep_agent
+Pause the agent before sensitive tool calls so a person can approve, edit, or reject them.
 
-    from tools.customer import lookup_customer
+Set `interrupt_on` in the agent definition, and optionally set `permissions` to gate tool and filesystem access:
 
-    agent = define_deep_agent(
-        name="support-agent",
-        model="openai:gpt-5.5",
-        tools=[lookup_customer],
-        interrupt_on={"lookup_customer": True},
-    )
-    ```
+```python agent.py theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+from managed_deepagents import define_deep_agent
 
-    The `interrupt_on` field applies the same interrupt behavior as LangChain's [human-in-the-loop middleware](/oss/python/langchain/guardrails#human-in-the-loop).
+from tools.customer import lookup_customer
 
-    For decision types (approve, edit, reject), conditional interrupts, and permission rules, see the Deep Agents [Human-in-the-loop](/oss/python/deepagents/human-in-the-loop) and [Permissions](/oss/python/deepagents/permissions) guides.
+agent = define_deep_agent(
+    name="support-agent",
+    model="openai:gpt-5.5",
+    tools=[lookup_customer],
+    interrupt_on={"lookup_customer": True},
+)
+```
 
-    To resume a paused run, see [Respond to an interrupt](#respond-to-an-interrupt).
+The `interrupt_on` field applies the same interrupt behavior as LangChain's [human-in-the-loop middleware](/oss/python/langchain/guardrails#human-in-the-loop).
 
-    To pause on a form your own tool posts in Slack instead, see [Agent-owned interrupts](/langsmith/python/managed-deep-agents-agent-owned-interrupts).
-  </Step>
-</Steps>
+For decision types (approve, edit, reject), conditional interrupts, and permission rules, see the Deep Agents [Human-in-the-loop](/oss/python/deepagents/human-in-the-loop) and [Permissions](/oss/python/deepagents/permissions) guides.
+
+To resume a paused run, see [Respond to an interrupt](#respond-to-an-interrupt).
+
+To pause on a form your own tool posts in Slack instead, see [Agent-owned interrupts](/langsmith/python/managed-deep-agents-agent-owned-interrupts).
 
 ## Use secrets and context
 
@@ -140,12 +138,6 @@ To read or write files in the thread's sandbox from a tool, use `runtime.backend
 
 ***
 
-<div>
-  <Callout icon="terminal-2">
-    [Connect these docs](/use-these-docs) to your agent of choice via MCP for real-time answers.
-  </Callout>
+[Connect these docs](/use-these-docs) to your agent of choice via MCP for real-time answers.
 
-  <Callout icon="edit">
-    [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/managed-deep-agents-tools.mdx) or [file an issue](https://github.com/langchain-ai/docs/issues/new/choose).
-  </Callout>
-</div>
+[Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/managed-deep-agents-tools.mdx) or [file an issue](https://github.com/langchain-ai/docs/issues/new/choose).

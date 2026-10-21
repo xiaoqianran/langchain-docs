@@ -12,8 +12,6 @@ the agent works through its plan. It's a progress dashboard built on the same
 `useStream` hook you use for chat. It shows that agent state can power any UI,
 not just message bubbles.
 
-<PatternEmbed />
-
 ## How it works
 
 Deep agents can expose a **`todos` state** channel when you opt into [`TodoListMiddleware`](https://reference.langchain.com/python/langchain/agents/middleware/todo/TodoListMiddleware). That middleware adds the `write_todos` tool and persists task progress as the agent works through its plan. As the agent executes, it updates each
@@ -21,9 +19,9 @@ todo's status from `"pending"` to `"in_progress"` to `"completed"`. The
 [`useStream`](https://reference.langchain.com/javascript/langchain-react/index/useStream) hook exposes this state via `stream.values.todos`, and your UI
 renders it reactively.
 
-<Note>
-  Task planning is opt-in. Without [`TodoListMiddleware`](https://reference.langchain.com/python/langchain/agents/middleware/todo/TodoListMiddleware), `stream.values.todos` is not present. See [Task planning](/oss/python/deepagents/overview#task-planning).
-</Note>
+> [!NOTE]
+>
+> Task planning is opt-in. Without [`TodoListMiddleware`](https://reference.langchain.com/python/langchain/agents/middleware/todo/TodoListMiddleware), `stream.values.todos` is not present. See [Task planning](/oss/python/deepagents/overview#task-planning).
 
 The flow looks like this:
 
@@ -38,114 +36,137 @@ The flow looks like this:
 
 Enable [`TodoListMiddleware`](https://reference.langchain.com/python/langchain/agents/middleware/todo/TodoListMiddleware) on the agent.
 
-<CodeGroup>
-  ```python Google theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  from deepagents import create_deep_agent
-  from langchain.agents.middleware import TodoListMiddleware
+```python Google theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+from deepagents import create_deep_agent
+from langchain.agents.middleware import TodoListMiddleware
 
-  agent = create_deep_agent(
-      model="google_genai:gemini-3.6-flash",
-      middleware=[TodoListMiddleware()],
-  )
-  ```
+agent = create_deep_agent(
+    model="google_genai:gemini-3.6-flash",
+    middleware=[TodoListMiddleware()],
+)
+```
 
-  ```python OpenAI theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  from deepagents import create_deep_agent
-  from langchain.agents.middleware import TodoListMiddleware
+```python OpenAI theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+from deepagents import create_deep_agent
+from langchain.agents.middleware import TodoListMiddleware
 
-  agent = create_deep_agent(
-      model="openai:gpt-5.5",
-      middleware=[TodoListMiddleware()],
-  )
-  ```
+agent = create_deep_agent(
+    model="openai:gpt-5.5",
+    middleware=[TodoListMiddleware()],
+)
+```
 
-  ```python Anthropic theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  from deepagents import create_deep_agent
-  from langchain.agents.middleware import TodoListMiddleware
+```python Anthropic theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+from deepagents import create_deep_agent
+from langchain.agents.middleware import TodoListMiddleware
 
-  agent = create_deep_agent(
-      model="anthropic:claude-sonnet-5",
-      middleware=[TodoListMiddleware()],
-  )
-  ```
+agent = create_deep_agent(
+    model="anthropic:claude-sonnet-5",
+    middleware=[TodoListMiddleware()],
+)
+```
 
-  ```python OpenRouter theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  from deepagents import create_deep_agent
-  from langchain.agents.middleware import TodoListMiddleware
+```python OpenRouter theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+from deepagents import create_deep_agent
+from langchain.agents.middleware import TodoListMiddleware
 
-  agent = create_deep_agent(
-      model="openrouter:z-ai/glm-5.2",
-      middleware=[TodoListMiddleware()],
-  )
-  ```
+agent = create_deep_agent(
+    model="openrouter:z-ai/glm-5.2",
+    middleware=[TodoListMiddleware()],
+)
+```
 
-  ```python Fireworks theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  from deepagents import create_deep_agent
-  from langchain.agents.middleware import TodoListMiddleware
+```python Fireworks theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+from deepagents import create_deep_agent
+from langchain.agents.middleware import TodoListMiddleware
 
-  agent = create_deep_agent(
-      model="fireworks:accounts/fireworks/models/glm-5p2",
-      middleware=[TodoListMiddleware()],
-  )
-  ```
+agent = create_deep_agent(
+    model="fireworks:accounts/fireworks/models/glm-5p2",
+    middleware=[TodoListMiddleware()],
+)
+```
 
-  ```python Baseten theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  from deepagents import create_deep_agent
-  from langchain.agents.middleware import TodoListMiddleware
+```python Baseten theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+from deepagents import create_deep_agent
+from langchain.agents.middleware import TodoListMiddleware
 
-  agent = create_deep_agent(
-      model="baseten:zai-org/GLM-5.2",
-      middleware=[TodoListMiddleware()],
-  )
-  ```
+agent = create_deep_agent(
+    model="baseten:zai-org/GLM-5.2",
+    middleware=[TodoListMiddleware()],
+)
+```
 
-  ```python Ollama theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  from deepagents import create_deep_agent
-  from langchain.agents.middleware import TodoListMiddleware
+```python Ollama theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+from deepagents import create_deep_agent
+from langchain.agents.middleware import TodoListMiddleware
 
-  agent = create_deep_agent(
-      model="ollama:north-mini-code-1.0",
-      middleware=[TodoListMiddleware()],
-  )
-  ```
-</CodeGroup>
+agent = create_deep_agent(
+    model="ollama:north-mini-code-1.0",
+    middleware=[TodoListMiddleware()],
+)
+```
 
 Then point [`useStream`](https://reference.langchain.com/javascript/langchain-react/index/useStream) at that agent and
 read the `todos` from `stream.values`.
 
-<Info>
-  The code examples use `useStream<typeof myAgent>` for type-safe stream state. See Type inference for [Python](/oss/python/langchain/frontend/overview#type-inference) or [JavaScript](/oss/javascript/langchain/frontend/overview#type-inference) backends.
-</Info>
+> [!NOTE]
+>
+> The code examples use `useStream<typeof myAgent>` for type-safe stream state. See Type inference for [Python](/oss/python/langchain/frontend/overview#type-inference) or [JavaScript](/oss/javascript/langchain/frontend/overview#type-inference) backends.
 
-<CodeGroup>
-  ```tsx React theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  import { useStream } from "@langchain/react";
+```tsx React theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+import { useStream } from "@langchain/react";
 
-  const AGENT_URL = "http://localhost:2024";
+const AGENT_URL = "http://localhost:2024";
 
-  export function TodoAgent() {
-    const stream = useStream<typeof myAgent>({
-      apiUrl: AGENT_URL,
-      assistantId: "deep_agent_todo_list",
-    });
+export function TodoAgent() {
+  const stream = useStream<typeof myAgent>({
+    apiUrl: AGENT_URL,
+    assistantId: "deep_agent_todo_list",
+  });
 
-    const todos = stream.values?.todos ?? [];
+  const todos = stream.values?.todos ?? [];
 
-    return (
-      <div>
-        <TodoList todos={todos} />
-        {stream.messages.map((msg) => (
-          <Message key={msg.id} message={msg} />
-        ))}
-      </div>
-    );
-  }
-  ```
+  return (
+    <div>
+      <TodoList todos={todos} />
+      {stream.messages.map((msg) => (
+        <Message key={msg.id} message={msg} />
+      ))}
+    </div>
+  );
+}
+```
 
-  ```vue Vue theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  <script setup lang="ts">
-  import { useStream } from "@langchain/vue";
-  import { computed } from "vue";
+```vue Vue theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+<script setup lang="ts">
+import { useStream } from "@langchain/vue";
+import { computed } from "vue";
+
+const AGENT_URL = "http://localhost:2024";
+
+const stream = useStream<typeof myAgent>({
+  apiUrl: AGENT_URL,
+  assistantId: "deep_agent_todo_list",
+});
+
+const todos = computed(() => stream.values.value?.todos ?? []);
+</script>
+
+<template>
+  <div>
+    <TodoList :todos="todos" />
+    <Message
+      v-for="msg in stream.messages.value"
+      :key="msg.id"
+      :message="msg"
+    />
+  </div>
+</template>
+```
+
+```svelte Svelte theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+<script lang="ts">
+  import { useStream } from "@langchain/svelte";
 
   const AGENT_URL = "http://localhost:2024";
 
@@ -154,70 +175,43 @@ read the `todos` from `stream.values`.
     assistantId: "deep_agent_todo_list",
   });
 
-  const todos = computed(() => stream.values.value?.todos ?? []);
-  </script>
+  const todos = $derived(stream.values?.todos ?? []);
+</script>
 
-  <template>
+<div>
+  <TodoList {todos} />
+  {#each stream.messages as msg (msg.id)}
+    <Message message={msg} />
+  {/each}
+</div>
+```
+
+```ts Angular theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+import { Component, computed } from "@angular/core";
+import { injectStream } from "@langchain/angular";
+
+const AGENT_URL = "http://localhost:2024";
+
+@Component({
+  selector: "app-todo-agent",
+  template: `
     <div>
-      <TodoList :todos="todos" />
-      <Message
-        v-for="msg in stream.messages.value"
-        :key="msg.id"
-        :message="msg"
-      />
+      <app-todo-list [todos]="todos()" />
+      @for (msg of stream.messages(); track msg.id) {
+        <app-message [message]="msg" />
+      }
     </div>
-  </template>
-  ```
+  `,
+})
+export class TodoAgentComponent {
+  stream = injectStream<typeof myAgent>({
+    apiUrl: AGENT_URL,
+    assistantId: "deep_agent_todo_list",
+  });
 
-  ```svelte Svelte theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  <script lang="ts">
-    import { useStream } from "@langchain/svelte";
-
-    const AGENT_URL = "http://localhost:2024";
-
-    const stream = useStream<typeof myAgent>({
-      apiUrl: AGENT_URL,
-      assistantId: "deep_agent_todo_list",
-    });
-
-    const todos = $derived(stream.values?.todos ?? []);
-  </script>
-
-  <div>
-    <TodoList {todos} />
-    {#each stream.messages as msg (msg.id)}
-      <Message message={msg} />
-    {/each}
-  </div>
-  ```
-
-  ```ts Angular theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  import { Component, computed } from "@angular/core";
-  import { injectStream } from "@langchain/angular";
-
-  const AGENT_URL = "http://localhost:2024";
-
-  @Component({
-    selector: "app-todo-agent",
-    template: `
-      <div>
-        <app-todo-list [todos]="todos()" />
-        @for (msg of stream.messages(); track msg.id) {
-          <app-message [message]="msg" />
-        }
-      </div>
-    `,
-  })
-  export class TodoAgentComponent {
-    stream = injectStream<typeof myAgent>({
-      apiUrl: AGENT_URL,
-      assistantId: "deep_agent_todo_list",
-    });
-
-    todos = computed(() => this.stream.values()?.todos ?? []);
-  }
-  ```
-</CodeGroup>
+  todos = computed(() => this.stream.values()?.todos ?? []);
+}
+```
 
 ## Building the TodoList component
 
@@ -381,10 +375,10 @@ function TodoAgentLayout() {
 }
 ```
 
-<Tip>
-  Show the todo list only when `todos.length > 0`. Before the agent creates its
-  plan, there's nothing to display. Showing an empty component wastes space.
-</Tip>
+> [!TIP]
+>
+> Show the todo list only when `todos.length > 0`. Before the agent creates its
+> plan, there's nothing to display. Showing an empty component wastes space.
 
 ## Use cases
 
@@ -456,32 +450,24 @@ The todo list pattern is a specialization of the broader LangChain approach to
 rendering structured agent state. These guides cover related techniques that
 pair well with plan-based agents:
 
-<CardGroup>
-  <Card title="Structured output" icon="table" href="/oss/python/langchain/frontend/structured-output">
-    Render any structured agent state—not just todos—with custom UI components instead of plain text.
-  </Card>
+> **[Structured output](/oss/python/langchain/frontend/structured-output)**
+>
+> Render any structured agent state—not just todos—with custom UI components instead of plain text.
 
-  <Card title="Join & rejoin streams" icon="arrows-merge" href="/oss/python/langchain/frontend/join-rejoin">
-    Reconnect to a running plan after a page reload or tab switch without losing progress.
-  </Card>
+> **[Join & rejoin streams](/oss/python/langchain/frontend/join-rejoin)**
+>
+> Reconnect to a running plan after a page reload or tab switch without losing progress.
 
-  <Card title="Message queues" icon="list" href="/oss/python/langchain/frontend/message-queues">
-    Queue follow-up tasks while the agent is still working through its current plan.
-  </Card>
+> **[Message queues](/oss/python/langchain/frontend/message-queues)**
+>
+> Queue follow-up tasks while the agent is still working through its current plan.
 
-  <Card title="Human-in-the-Loop" icon="hand" href="/oss/python/langchain/frontend/human-in-the-loop">
-    Pause and resume plan execution when the agent needs user approval or input.
-  </Card>
-</CardGroup>
+> **[Human-in-the-Loop](/oss/python/langchain/frontend/human-in-the-loop)**
+>
+> Pause and resume plan execution when the agent needs user approval or input.
 
 ***
 
-<div>
-  <Callout icon="terminal-2">
-    [Connect these docs](/use-these-docs) to your agent of choice via MCP for real-time answers.
-  </Callout>
+[Connect these docs](/use-these-docs) to your agent of choice via MCP for real-time answers.
 
-  <Callout icon="edit">
-    [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/oss/deepagents/frontend/todo-list.mdx) or [file an issue](https://github.com/langchain-ai/docs/issues/new/choose).
-  </Callout>
-</div>
+[Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/oss/deepagents/frontend/todo-list.mdx) or [file an issue](https://github.com/langchain-ai/docs/issues/new/choose).

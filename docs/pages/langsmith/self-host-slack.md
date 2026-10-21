@@ -33,9 +33,9 @@ On self-hosted LangSmith, your operator creates the Slack app and configures it 
 
 If Slack is not configured on your instance, contact your operator. This notice appears in organization settings and in the **Slack** tab under each Engine project's **Notifications** settings. The operator follows the setup instructions below.
 
-<Note>
-  This connection requires LangSmith self-hosted v0.17 or later.
-</Note>
+> [!NOTE]
+>
+> This connection requires LangSmith self-hosted v0.17 or later.
 
 Before starting, make sure you have:
 
@@ -230,12 +230,6 @@ Slack notifications send content outside your deployment to the selected workspa
 
 ***
 
-<div>
-  <Callout icon="terminal-2">
-    [Connect these docs](/use-these-docs) to your agent of choice via MCP for real-time answers.
-  </Callout>
+[Connect these docs](/use-these-docs) to your agent of choice via MCP for real-time answers.
 
-  <Callout icon="edit">
-    [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/self-host-slack.mdx) or [file an issue](https://github.com/langchain-ai/docs/issues/new/choose).
-  </Callout>
-</div>
+[Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/self-host-slack.mdx) or [file an issue](https://github.com/langchain-ai/docs/issues/new/choose).

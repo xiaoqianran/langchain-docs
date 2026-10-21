@@ -6,7 +6,9 @@
 
 [**Composite evaluators**](/langsmith/composite-evaluators-ui) are a way to combine multiple evaluator scores into a single [score](/langsmith/evaluation-concepts#evaluator-outputs). This is useful when you want to evaluate multiple aspects of your application and combine the results into a single result.
 
-<Note>When an online evaluator runs on any run within a trace, the trace will be auto-upgraded to [extended data retention](/langsmith/usage-and-billing#data-retention-auto-upgrades). This upgrade will impact trace pricing, but ensures that traces meeting your evaluation criteria (typically those most valuable for analysis) are preserved for investigation. </Note>
+> [!NOTE]
+>
+> When an online evaluator runs on any run within a trace, the trace will be auto-upgraded to [extended data retention](/langsmith/usage-and-billing#data-retention-auto-upgrades). This upgrade will impact trace pricing, but ensures that traces meeting your evaluation criteria (typically those most valuable for analysis) are preserved for investigation.
 
 ## View online evaluators
 
@@ -32,7 +34,9 @@ From the tracing project or agent environment view, navigate to the **Evaluators
 4. Add the weights for the feedback keys. By default, the weights are equal for each feedback key. Adjust the weights to increase or decrease the importance of specific feedback keys in the final score.
 5. Click **Create** to save the evaluator.
 
-<Tip> If you need to adjust the weights for the composite scores, they can be updated after the evaluator is created. The resulting scores will be updated for all runs that have the evaluator configured. </Tip>
+> [!TIP]
+>
+> If you need to adjust the weights for the composite scores, they can be updated after the evaluator is created. The resulting scores will be updated for all runs that have the evaluator configured.
 
 ### 3. View composite evaluator results
 
@@ -44,16 +48,12 @@ Composite scores are attached to a run as **feedback**, similarly to feedback fr
 * [Filter for runs](/langsmith/filter-traces) with a composite score, or where the composite score meets a certain threshold.
 * [Create a chart](/langsmith/dashboards#custom-dashboards) to visualize trends in the composite score over time.
 
-<Note> If any of the constituent evaluators are not configured on the run, the composite score will not be calculated for that run. </Note>
+> [!NOTE]
+>
+> If any of the constituent evaluators are not configured on the run, the composite score will not be calculated for that run.
 
 ***
 
-<div>
-  <Callout icon="terminal-2">
-    [Connect these docs](/use-these-docs) to your agent of choice via MCP for real-time answers.
-  </Callout>
+[Connect these docs](/use-these-docs) to your agent of choice via MCP for real-time answers.
 
-  <Callout icon="edit">
-    [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/online-evaluations-composite.mdx) or [file an issue](https://github.com/langchain-ai/docs/issues/new/choose).
-  </Callout>
-</div>
+[Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/online-evaluations-composite.mdx) or [file an issue](https://github.com/langchain-ai/docs/issues/new/choose).

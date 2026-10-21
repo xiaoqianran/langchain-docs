@@ -10,31 +10,27 @@ We want to make our documentation as accessible as possible. We've included seve
 
 On any page in our documentation, you'll find a contextual menu dropdown in the top right corner:
 
-<img alt="Copy page light mode" />
-
-<img alt="Copy page dark mode" />
+![Copy page light mode](https://mintcdn.com/langchain-5e9cc07a/jKM-tvbl7XiR347g/images/copy-page-light.png?fit=max\&auto=format\&n=jKM-tvbl7XiR347g\&q=85\&s=81d6cf67dc039d588707bd97ee3f3a72)
 
 This includes our `llms.txt`, MCP server connection, and other quick access options such as ChatGPT and Claude.
 
 ## Use our MCP servers
 
-<Prompt description="Connect LangChain docs MCP servers" icon="plug">
-  Connect both LangChain documentation MCP servers to my coding agent so it can look up current LangChain, LangGraph, and LangSmith docs and API reference.
+Connect both LangChain documentation MCP servers to my coding agent so it can look up current LangChain, LangGraph, and LangSmith docs and API reference.
 
-  Servers to add:
+Servers to add:
 
-  * `docs-langchain`: [https://docs.langchain.com/mcp](https://docs.langchain.com/mcp)
-  * `reference-langchain`: [https://reference.langchain.com/mcp](https://reference.langchain.com/mcp)
+* `docs-langchain`: [https://docs.langchain.com/mcp](https://docs.langchain.com/mcp)
+* `reference-langchain`: [https://reference.langchain.com/mcp](https://reference.langchain.com/mcp)
 
-  Detect which agent or editor I am using (Claude Code, Cursor, Codex CLI, Claude Desktop, Deep Agents Code, VS Code, Antigravity, or another MCP-compatible client). Use the matching setup from [https://docs.langchain.com/use-these-docs.md](https://docs.langchain.com/use-these-docs.md):
+Detect which agent or editor I am using (Claude Code, Cursor, Codex CLI, Claude Desktop, Deep Agents Code, VS Code, Antigravity, or another MCP-compatible client). Use the matching setup from [https://docs.langchain.com/use-these-docs.md](https://docs.langchain.com/use-these-docs.md):
 
-  * Claude Code: `claude mcp add --transport http` for each server (project scope by default; use `--scope user` only if I ask for global access).
-  * Codex CLI: `codex mcp add` with each server URL.
-  * Cursor, Deep Agents Code, VS Code, or Antigravity: merge both entries into the MCP settings JSON using the field names shown on that page for my client.
-  * Claude Desktop: add both URLs under Settings > Connectors.
+* Claude Code: `claude mcp add --transport http` for each server (project scope by default; use `--scope user` only if I ask for global access).
+* Codex CLI: `codex mcp add` with each server URL.
+* Cursor, Deep Agents Code, VS Code, or Antigravity: merge both entries into the MCP settings JSON using the field names shown on that page for my client.
+* Claude Desktop: add both URLs under Settings > Connectors.
 
-  Do not invent alternate MCP URLs. After configuring, confirm both servers are listed and reachable.
-</Prompt>
+Do not invent alternate MCP URLs. After configuring, confirm both servers are listed and reachable.
 
 Our documentation exposes two complementary **Model Context Protocol (MCP) servers** that let AI applications query LangChain content in real-time. For the best results, we recommend connecting both:
 
@@ -54,16 +50,16 @@ claude mcp add --transport http docs-langchain https://docs.langchain.com/mcp
 claude mcp add --transport http reference-langchain https://reference.langchain.com/mcp
 ```
 
-<Note>
-  **Project (local) scoped**
-
-  The commands above add the MCP servers only to your current project/working directory. To add them globally and access them in all projects, add the user scope by including `--scope user`:
-
-  ```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  claude mcp add --transport http docs-langchain --scope user https://docs.langchain.com/mcp
-  claude mcp add --transport http reference-langchain --scope user https://reference.langchain.com/mcp
-  ```
-</Note>
+> [!NOTE]
+>
+> **Project (local) scoped**
+>
+> The commands above add the MCP servers only to your current project/working directory. To add them globally and access them in all projects, add the user scope by including `--scope user`:
+>
+> ```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> claude mcp add --transport http docs-langchain --scope user https://docs.langchain.com/mcp
+> claude mcp add --transport http reference-langchain --scope user https://reference.langchain.com/mcp
+> ```
 
 ### Connect with Claude Desktop
 
@@ -162,12 +158,6 @@ Have questions or feedback? Let us know in our [community forum](https://forum.l
 
 ***
 
-<div>
-  <Callout icon="terminal-2">
-    [Connect these docs](/use-these-docs) to your agent of choice via MCP for real-time answers.
-  </Callout>
+[Connect these docs](/use-these-docs) to your agent of choice via MCP for real-time answers.
 
-  <Callout icon="edit">
-    [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/use-these-docs.mdx) or [file an issue](https://github.com/langchain-ai/docs/issues/new/choose).
-  </Callout>
-</div>
+[Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/use-these-docs.mdx) or [file an issue](https://github.com/langchain-ai/docs/issues/new/choose).

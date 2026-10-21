@@ -11,13 +11,9 @@ The [Playground](/langsmith/prompt-engineering-concepts#playground) enables you 
 To access **Prompt Settings**:
 
 1. Navigate to the **Playground** in the left sidebar.
-2. Under the **Prompts** heading select the gear <Icon icon="settings" /> icon next to the model name, which will launch the **Prompt Settings** window.
+2. Under the **Prompts** heading select the gear  icon next to the model name, which will launch the **Prompt Settings** window.
 
-   <div>
-     <img alt="Model Configuration window in the LangSmith UI, settings for Provider, Model, Temperature, Max Output Tokens, Top P, Presence Penalty, Frequency Penalty, Reasoning Effort, etc." />
-
-     <img alt="Model Configuration window in the LangSmith UI, settings for Provider, Model, Temperature, Max Output Tokens, Top P, Presence Penalty, Frequency Penalty, Reasoning Effort, etc." />
-   </div>
+   ![Model Configuration window in the LangSmith UI, settings for Provider, Model, Temperature, Max Output Tokens, Top P, Presence Penalty, Frequency Penalty, Reasoning Effort, etc.](https://mintcdn.com/langchain-5e9cc07a/6r3GRtwWCl4ozaHW/langsmith/images/model-config-light.png?fit=max\&auto=format\&n=6r3GRtwWCl4ozaHW\&q=85\&s=6c0f7d7012b1e5295fe545149f955e6b)
 
 ## Model configurations
 
@@ -29,11 +25,11 @@ To access **Prompt Settings**:
 2. Click the **Save As** button in the top bar.
 3. Enter a name and optional description for your configuration and confirm.
 4. Now that you've saved the configuration, anyone in your organization's [workspace](/langsmith/administration-overview#workspaces) can access it. All saved configurations are available in the **Model Configuration** dropdown.
-5. Once you have created a saved configuration, you can set it as your default, so any new prompt you create will automatically use this configuration. To set a configuration as your default, click the **Set as default** <Icon icon="pinned" /> icon next to the model name in the dropdown.
+5. Once you have created a saved configuration, you can set it as your default, so any new prompt you create will automatically use this configuration. To set a configuration as your default, click the **Set as default**  icon next to the model name in the dropdown.
 
-<Note>
-  OAuth client credential fields appear in this popover only after the configuration is saved as a preset. To attach OAuth to a one-off configuration, save it as a preset first (refer to [OAuth client credentials](/langsmith/model-configurations#oauth-client-credentials)).
-</Note>
+> [!NOTE]
+>
+> OAuth client credential fields appear in this popover only after the configuration is saved as a preset. To attach OAuth to a one-off configuration, save it as a preset first (refer to [OAuth client credentials](/langsmith/model-configurations#oauth-client-credentials)).
 
 ### Edit configurations
 
@@ -43,7 +39,7 @@ To access **Prompt Settings**:
 ### Delete configurations
 
 1. Select the configuration you want to remove.
-2. Click the trash <Icon icon="trash" /> icon to delete it.
+2. Click the trash  icon to delete it.
 
 ### Extra parameters
 
@@ -72,9 +68,7 @@ The **Extra Parameters** field allows you to pass additional model parameters th
 * **Parallel Tool Calls**: Calling multiple tools in parallel when appropriate. This allows the model to gather information from different sources simultaneously. (Dependent on model support for parallel execution.)
 * **Tool Choice**: Select the tools that the model can access. For more details, refer to [Use tools in a prompt](/langsmith/use-tools).
 
-<Callout icon="tool">
-  To manage which tools are available in your workspace, including enabling, disabling, and editing tools across prompts, refer to [Manage tools with the registry](/langsmith/use-tools#manage-tools-with-the-registry).
-</Callout>
+To manage which tools are available in your workspace, including enabling, disabling, and editing tools across prompts, refer to [Manage tools with the registry](/langsmith/use-tools#manage-tools-with-the-registry).
 
 ## Prompt formatting
 
@@ -85,12 +79,6 @@ The **Prompt Format** tab allows you to specify:
 
 ***
 
-<div>
-  <Callout icon="terminal-2">
-    [Connect these docs](/use-these-docs) to your agent of choice via MCP for real-time answers.
-  </Callout>
+[Connect these docs](/use-these-docs) to your agent of choice via MCP for real-time answers.
 
-  <Callout icon="edit">
-    [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/managing-model-configurations.mdx) or [file an issue](https://github.com/langchain-ai/docs/issues/new/choose).
-  </Callout>
-</div>
+[Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/managing-model-configurations.mdx) or [file an issue](https://github.com/langchain-ai/docs/issues/new/choose).

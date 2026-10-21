@@ -14,39 +14,35 @@ The `sandbox-host` image packages the host daemon and runtime artifacts, includi
 
 The host Deployment uses `maxSurge: 0` and `maxUnavailable: 1`. Kubernetes terminates a host before creating its replacement, then waits for the replacement to become ready. Required one-host-per-node placement and the shared host port prevent two host pods from occupying the same node.
 
-<Frame>
-  <SandboxDiagram name="rollout" />
-</Frame>
+**rollout**
 
 A normal rollout temporarily removes one host's capacity. With a single-host pool, requests to create a sandbox fail until the replacement host is ready. Existing unready hosts or infrastructure failures can reduce capacity further; `maxUnavailable` is not a guarantee against unrelated outages.
 
 For host-owned JuiceFS mounts, startup includes mounting the filesystem and checking storage access before opening the host listener. A replacement that cannot access storage blocks progress instead of accepting sandbox traffic.
 
-<Warning>
-  A rolling upgrade is not live migration or uninterrupted execution. Sandboxes on a draining host pause, and their open connections can disconnect. Applications must handle reconnects and interrupted work.
-</Warning>
+> [!WARNING]
+>
+> A rolling upgrade is not live migration or uninterrupted execution. Sandboxes on a draining host pause, and their open connections can disconnect. Applications must handle reconnects and interrupted work.
 
 ## Follow a host drain
 
 A graceful host shutdown attempts to suspend persistent sandboxes before the pod exits:
 
-<Steps>
-  <Step title="Stop new placement">
-    The host enters a draining state and notifies the platform backend. New sandbox placements use other ready hosts.
-  </Step>
+**1. Stop new placement**
 
-  <Step title="Save running sandboxes">
-    The host stops routing to each sandbox as it suspends that VM. It attempts to save the VM's memory to JuiceFS and reports the sandbox stopped.
-  </Step>
+The host enters a draining state and notifies the platform backend. New sandbox placements use other ready hosts.
 
-  <Step title="Release the host">
-    The host keeps renewing its Lease while stopping workloads. Once the VMs have stopped, it releases the Lease and tears down its storage mount.
-  </Step>
+**2. Save running sandboxes**
 
-  <Step title="Resume on demand">
-    A later start or wake request places the sandbox on an available, compatible host. A complete saved memory image allows processes to resume; otherwise recovery uses the persisted filesystem.
-  </Step>
-</Steps>
+The host stops routing to each sandbox as it suspends that VM. It attempts to save the VM's memory to JuiceFS and reports the sandbox stopped.
+
+**3. Release the host**
+
+The host keeps renewing its Lease while stopping workloads. Once the VMs have stopped, it releases the Lease and tears down its storage mount.
+
+**4. Resume on demand**
+
+A later start or wake request places the sandbox on an available, compatible host. A complete saved memory image allows processes to resume; otherwise recovery uses the persisted filesystem.
 
 Stopped sandboxes do not all restart when the replacement host becomes ready. They remain stopped until explicitly started or reached through a request path that wakes them.
 
@@ -88,9 +84,9 @@ Keep a consistent CPU model in the sandbox pool. Treat changes to the CPU vendor
 
 ### Example transitions, not a support matrix
 
-<Note>
-  These are documentation-based examples, not a tested LangSmith compatibility matrix or an expansion of supported platforms. Every lower-risk candidate still requires validation on your exact deployment. Keep the exposed CPU model and features, host kernel, and sandbox runtime consistent. Confirm that the destination meets the [Sandbox platform and KVM requirements](/langsmith/enable-self-hosted-sandboxes).
-</Note>
+> [!NOTE]
+>
+> These are documentation-based examples, not a tested LangSmith compatibility matrix or an expansion of supported platforms. Every lower-risk candidate still requires validation on your exact deployment. Keep the exposed CPU model and features, host kernel, and sandbox runtime consistent. Confirm that the destination meets the [Sandbox platform and KVM requirements](/langsmith/enable-self-hosted-sandboxes).
 
 The examples concern host-node changes, not changes to a saved microVM's guest configuration.
 
@@ -102,9 +98,9 @@ The examples concern host-node changes, not changes to a saved microVM's guest c
 
 A matching SKU or family is not sufficient evidence. Provider placement and available processors can vary. For example, [Google's CPU platform documentation](https://docs.cloud.google.com/compute/docs/cpu-platforms) describes machine types with multiple CPU platforms and how platform selection works.
 
-<Warning>
-  An x86-64 memory snapshot cannot resume on an Arm CPU. An instruction-set change also requires architecture-compatible guest software; booting the same x86-64 filesystem on Arm is not a recovery strategy. Do not treat a CPU architecture change as an ordinary node resize.
-</Warning>
+> [!WARNING]
+>
+> An x86-64 memory snapshot cannot resume on an Arm CPU. An instruction-set change also requires architecture-compatible guest software; booting the same x86-64 filesystem on Arm is not a recovery strategy. Do not treat a CPU architecture change as an ordinary node resize.
 
 ### Validate a transition before rollout
 
@@ -120,17 +116,15 @@ If restoration is incompatible, plan for cold starts and loss of in-memory work 
 
 ## Understand failure impact
 
-<div>
-  | Event | Platform behavior | Workload impact |
-  | - | - | - |
-  | Host crash or node loss | Waits for fencing before starting affected sandboxes on another host. | <span>One host affected</span><br />Running memory is lost. Persistent sandboxes recover from persisted disk on a later start or wake request. |
-  | Prolonged loss of Kubernetes API access | Hosts that cannot renew their Leases fence themselves to avoid conflicting writers. | <span>One host or whole pool</span><br />Can stop workloads on one host or across the pool, depending on the outage. |
-  | Host-owned JuiceFS mount failure | The host stops accepting work and stops its VMs before exiting. | <span>One host affected</span><br />Affected sandboxes lose running memory; recovery requires working shared storage. |
-  | Metadata Redis unavailable | Filesystem operations stall or fail; sustained mount health failures can stop hosts. | <span>Pool-wide disruption</span><br />Sandbox creation and running workloads can fail across the pool. |
-  | Object storage unavailable or throttled | Uncached reads and uploads stall or fail; new hosts may fail readiness. | <span>Pool-wide disruption</span><br />Slow or failing I/O and reduced ready capacity. |
-  | No ready hosts | Requests to create a sandbox fail with `NoSandboxHostsAvailable`. | <span>Sandbox creation affected</span><br />Clients must retry after capacity becomes available. |
-  | Metadata or object data lost | Restoring hosts alone cannot restore the filesystem. | <span>Persistent data loss</span><br />Recover the backing stores from tested backups. |
-</div>
+| Event | Platform behavior | Workload impact |
+| - | - | - |
+| Host crash or node loss | Waits for fencing before starting affected sandboxes on another host. | One host affected Running memory is lost. Persistent sandboxes recover from persisted disk on a later start or wake request. |
+| Prolonged loss of Kubernetes API access | Hosts that cannot renew their Leases fence themselves to avoid conflicting writers. | One host or whole pool Can stop workloads on one host or across the pool, depending on the outage. |
+| Host-owned JuiceFS mount failure | The host stops accepting work and stops its VMs before exiting. | One host affected Affected sandboxes lose running memory; recovery requires working shared storage. |
+| Metadata Redis unavailable | Filesystem operations stall or fail; sustained mount health failures can stop hosts. | Pool-wide disruption Sandbox creation and running workloads can fail across the pool. |
+| Object storage unavailable or throttled | Uncached reads and uploads stall or fail; new hosts may fail readiness. | Pool-wide disruption Slow or failing I/O and reduced ready capacity. |
+| No ready hosts | Requests to create a sandbox fail with `NoSandboxHostsAvailable`. | Sandbox creation affected Clients must retry after capacity becomes available. |
+| Metadata or object data lost | Restoring hosts alone cannot restore the filesystem. | Persistent data loss Recover the backing stores from tested backups. |
 
 Fencing prevents a replacement from writing a persistent sandbox's disk while the old host might still be running. Recovery is therefore not instantaneous after a host disappears. Do not bypass that delay by manually changing sandbox ownership or deleting shared storage state.
 
@@ -185,12 +179,6 @@ Before running production workloads:
 
 ***
 
-<div>
-  <Callout icon="terminal-2">
-    [Connect these docs](/use-these-docs) to your agent of choice via MCP for real-time answers.
-  </Callout>
+[Connect these docs](/use-these-docs) to your agent of choice via MCP for real-time answers.
 
-  <Callout icon="edit">
-    [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/self-host-sandbox-operations.mdx) or [file an issue](https://github.com/langchain-ai/docs/issues/new/choose).
-  </Callout>
-</div>
+[Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/self-host-sandbox-operations.mdx) or [file an issue](https://github.com/langchain-ai/docs/issues/new/choose).

@@ -4,9 +4,7 @@
 
 In the [LangSmith UI](https://smith.langchain.com?utm_source=docs\&utm_medium=cta\&utm_campaign=langsmith-signup\&utm_content=langsmith-create-a-prompt), navigate to the **Playground** in the left-hand sidebar or from the application homepage.
 
-<img alt="Empty playground" />
-
-<img alt="Empty playground" />
+![Empty playground](https://mintcdn.com/langchain-5e9cc07a/W4JD1iHHqOz2208Y/langsmith/images/empty-playground-light.png?fit=max\&auto=format\&n=W4JD1iHHqOz2208Y\&q=85\&s=786a59677dc324a56ace6047f9e842c7)
 
 ## Compose your prompt
 
@@ -31,21 +29,15 @@ Prompts become particularly useful when you add variables in your prompt. You ca
 
 * Add `{variable_name}` to your prompt (with one curly brace on each side for f-string or two for mustache).
 
-  <img alt="Variable in prompt box." />
-
-  <img alt="Variable in prompt box." />
+  ![Variable in prompt box.](https://mintcdn.com/langchain-5e9cc07a/IBetwXCjfWGXPKi_/langsmith/images/prompt-with-variable-light.png?fit=max\&auto=format\&n=IBetwXCjfWGXPKi_\&q=85\&s=82145f5811abf37c65895de427fedcd4)
 
 * Highlight text you want to templatize and click **Convert to variable** tooltip button that displays. Enter a name for your variable, and convert.
 
-  <img alt="Double clicking on a prompt displays the variable icon." />
-
-  <img alt="Double clicking on a prompt displays the variable icon." />
+  ![Double clicking on a prompt displays the variable icon.](https://mintcdn.com/langchain-5e9cc07a/M4xkWV5X4-OcEJgy/langsmith/images/convert-to-variable-light.png?fit=max\&auto=format\&n=M4xkWV5X4-OcEJgy\&q=85\&s=a1c23d34cb194d5c63f0fcab575fc194)
 
 Once you've added a variable, the right panel of the playground will have an **Input** box for a sample input for the prompt variable. Fill these in with values to test the prompt.
 
-<Callout icon="book">
-  For more details on the prompt template formats generally and examples in both syntax, refer to the [Prompt template format](/langsmith/prompt-template-format) guide.
-</Callout>
+For more details on the prompt template formats generally and examples in both syntax, refer to the [Prompt template format](/langsmith/prompt-template-format) guide.
 
 ### Structured output
 
@@ -55,13 +47,11 @@ Adding an output schema to your prompt will get output in a structured format. L
 
 You can also add a tool by clicking the **+ Tool** button at the bottom of the prompt editor. For more information on how to use tools, refer to [Use tools](/langsmith/use-tools).
 
-<Callout type="info" icon="feather">
-  Use the **[Chat](/langsmith/chat)** in the Playground to generate tools, create output schemas, and optimize your prompts with AI assistance.
-</Callout>
+Use the **[Chat](/langsmith/chat)** in the Playground to generate tools, create output schemas, and optimize your prompts with AI assistance.
 
 ## Run the prompt
 
-To run a prompt, use <Icon icon="player-play" /> **Start** at the top of the right panel in the playground.
+To run a prompt, use  **Start** at the top of the right panel in the playground.
 
 ## Set model fallbacks
 
@@ -73,9 +63,9 @@ To save your prompt, click the **Save** button and name your prompt.
 
 The model and configuration you select in the playground settings will be saved with the prompt. When you reopen the prompt, the model and configuration will automatically load from the saved version.
 
-<Check>
-  The first time you create a public prompt, you'll be asked to set a LangChain Hub handle. All your public prompts will be linked to this handle. In a shared workspace, this handle will be set for the whole workspace.
-</Check>
+> [!TIP]
+>
+> The first time you create a public prompt, you'll be asked to set a LangChain Hub handle. All your public prompts will be linked to this handle. In a shared workspace, this handle will be set for the whole workspace.
 
 ## View your prompts
 
@@ -83,7 +73,7 @@ After you've created a prompt, you can view a table of your prompts under **Prom
 
 ## Add metadata
 
-To add metadata to your prompt, click the <Icon icon="dots-vertical" /> **More** icon on the top right-hand side of the page and then click the <Icon icon="pencil" /> **Update metadata** from the dropdown. This brings you to a page where you can add additional information about the prompt, including a description and README.
+To add metadata to your prompt, click the  **More** icon on the top right-hand side of the page and then click the  **Update metadata** from the dropdown. This brings you to a page where you can add additional information about the prompt, including a description and README.
 
 # Next steps
 
@@ -91,12 +81,6 @@ Now that you've created a prompt, you can use it in your application code. See [
 
 ***
 
-<div>
-  <Callout icon="terminal-2">
-    [Connect these docs](/use-these-docs) to your agent of choice via MCP for real-time answers.
-  </Callout>
+[Connect these docs](/use-these-docs) to your agent of choice via MCP for real-time answers.
 
-  <Callout icon="edit">
-    [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/create-a-prompt.mdx) or [file an issue](https://github.com/langchain-ai/docs/issues/new/choose).
-  </Callout>
-</div>
+[Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/create-a-prompt.mdx) or [file an issue](https://github.com/langchain-ai/docs/issues/new/choose).

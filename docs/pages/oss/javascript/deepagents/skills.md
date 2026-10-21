@@ -8,155 +8,151 @@ Skills package domain expertise, such as workflows, best practices, scripts, ref
 
 Skills help you avoid context bloat by loading only summaries at startup and reading full instructions when a task requires them. You can share skills across agents and projects, and compose multiple skills in a single agent so each one covers a distinct capability.
 
-<Note>
-  Skills require `deepagents>=1.7.0`.
-</Note>
+> [!NOTE]
+>
+> Skills require `deepagents>=1.7.0`.
 
-<Tip>
-  For ready-to-use skills that improve your agent's performance on LangChain ecosystem tasks, see the [LangChain Skills](https://github.com/langchain-ai/langchain-skills) repository.
-</Tip>
+> [!TIP]
+>
+> For ready-to-use skills that improve your agent's performance on LangChain ecosystem tasks, see the [LangChain Skills](https://github.com/langchain-ai/langchain-skills) repository.
 
 ## Usage
 
-<Steps>
-  <Step title="Create a top-level skills directory">
-    Create a directory to hold all skills for your project, such as `skills/` under your backend root.
-  </Step>
+**1. Create a top-level skills directory**
 
-  <Step title="Create a subdirectory inside your skills directory for your skill">
-    Each skill is a directory containing a `SKILL.md` file: a markdown file with YAML [frontmatter](#frontmatter-fields) (`name` and `description`) followed by instructions the agent follows when the skill is activated. A skill directory can also optionally include supporting files such as scripts, reference docs, and templates.
+Create a directory to hold all skills for your project, such as `skills/` under your backend root.
 
-    <Tree>
-      <Tree.Folder name="skills">
-        <Tree.Folder name="langgraph-docs">
-          <Tree.File name="SKILL.md" />
+**2. Create a subdirectory inside your skills directory for your skill**
 
-          <Tree.Folder name="scripts">
-            <Tree.File name="fetch_docs.py" />
-          </Tree.Folder>
+Each skill is a directory containing a `SKILL.md` file: a markdown file with YAML [frontmatter](#frontmatter-fields) (`name` and `description`) followed by instructions the agent follows when the skill is activated. A skill directory can also optionally include supporting files such as scripts, reference docs, and templates.
 
-          <Tree.Folder name="references">
-            <Tree.File name="api-patterns.md" />
+**skills**
 
-            <Tree.File name="style-guide.md" />
-          </Tree.Folder>
+**langgraph-docs**
 
-          <Tree.Folder name="assets">
-            <Tree.File name="report-template.md" />
+**SKILL.md**
 
-            <Tree.File name="schema.json" />
-          </Tree.Folder>
-        </Tree.Folder>
-      </Tree.Folder>
-    </Tree>
+**scripts**
 
-    Deep agent skills follow the [Agent Skills specification](https://agentskills.io/specification).
-  </Step>
+**fetch\_docs.py**
 
-  <Step title="Add a `SKILL.md` file with YAML frontmatter and instructions.">
-    The `SKILL.md` starts with YAML [frontmatter](#frontmatter-fields) followed by markdown instructions:
+**references**
 
-    ```md theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-    ---
-    name: langgraph-docs
-    description: Use this skill for requests related to LangGraph in order to fetch relevant documentation to provide accurate, up-to-date guidance.
-    ---
+**api-patterns.md**
 
-    # langgraph-docs
+**style-guide.md**
 
-    ## Overview
+**assets**
 
-    This skill explains how to access LangGraph documentation to help answer questions and guide implementation.
+**report-template.md**
 
-    ## Instructions
+**schema.json**
 
-    ### 1. Fetch the documentation index
+Deep agent skills follow the [Agent Skills specification](https://agentskills.io/specification).
 
-    Use the fetch_url tool to read the following URL:
-    https://docs.langchain.com/llms.txt
+**3. Add a `SKILL.md` file with YAML frontmatter and instructions.**
 
-    This provides a structured list of all available documentation with descriptions.
+The `SKILL.md` starts with YAML [frontmatter](#frontmatter-fields) followed by markdown instructions:
 
-    ### 2. Select relevant documentation
+```md theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+---
+name: langgraph-docs
+description: Use this skill for requests related to LangGraph in order to fetch relevant documentation to provide accurate, up-to-date guidance.
+---
 
-    Based on the question, identify 2-4 most relevant documentation URLs from the index. Prioritize:
+# langgraph-docs
 
-    - Specific how-to guides for implementation questions
-    - Core concept pages for understanding questions
-    - Tutorials for end-to-end examples
-    - Reference docs for API details
+## Overview
 
-    ### 3. Fetch and synthesize
+This skill explains how to access LangGraph documentation to help answer questions and guide implementation.
 
-    Use the fetch_url tool to read the selected documentation URLs, then answer the user's question. Give a direct answer first, include the minimum necessary context, and link to the source pages rather than quoting long passages.
-    ```
+## Instructions
 
-    <Note>
-      Reference any [supporting resources](#add-supporting-resources) in your `SKILL.md` with a description of what each file contains and when to use it. The agent discovers these files through the references in the skill instructions.
-    </Note>
-  </Step>
+### 1. Fetch the documentation index
 
-  <Step title="Pass the skills path when creating your agent">
-    Pass the path to your top-level skills directory in the `skills` argument when creating your agent:
+Use the fetch_url tool to read the following URL:
+https://docs.langchain.com/llms.txt
 
-    ```ts theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-    import { createDeepAgent, FilesystemBackend } from "deepagents";
+This provides a structured list of all available documentation with descriptions.
 
-    const backend = new FilesystemBackend({ rootDir: process.cwd() });
+### 2. Select relevant documentation
 
-    const agent = await createDeepAgent({
-      model: "anthropic:claude-sonnet-4-6",
-      backend,
-      skills: ["/skills/"],
-    });
-    ```
+Based on the question, identify 2-4 most relevant documentation URLs from the index. Prioritize:
 
-    This example uses `FilesystemBackend` to load skills from disk. For other storage options, including loading skills from remote sources, see [Backends and remote skill loading](#backends-and-remote-skill-loading).
+- Specific how-to guides for implementation questions
+- Core concept pages for understanding questions
+- Tutorials for end-to-end examples
+- Reference docs for API details
 
-    Each source path can point at a directory that contains skill directories, or directly at a skill directory with `SKILL.md`.
+### 3. Fetch and synthesize
 
-    <ParamField type="list[str]">
-      List of skill source paths.
+Use the fetch_url tool to read the selected documentation URLs, then answer the user's question. Give a direct answer first, include the minimum necessary context, and link to the source pages rather than quoting long passages.
+```
 
-      Paths must be specified using forward slashes and are relative to the backend's root.
+> [!NOTE]
+>
+> Reference any [supporting resources](#add-supporting-resources) in your `SKILL.md` with a description of what each file contains and when to use it. The agent discovers these files through the references in the skill instructions.
 
-      * If omitted, no skills are loaded.
+**4. Pass the skills path when creating your agent**
 
-      * When using `StateBackend` (default), provide skill files with `invoke(files={...})`. Use `create_file_data()` from `deepagents.backends.utils` to format file contents; raw strings are not supported.
+Pass the path to your top-level skills directory in the `skills` argument when creating your agent:
 
-      * With `FilesystemBackend` and `StoreBackend`, create the backend, call `backend.uploadFiles()` to add skill files, then pass the backend to `createDeepAgent`. For `FilesystemBackend`, use `virtualMode: true` to sandbox paths under `rootDir`. Skills already on disk under `rootDir` load without uploading.
+```ts theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+import { createDeepAgent, FilesystemBackend } from "deepagents";
 
-      Later sources override earlier ones for skills with the same name (last one wins).
+const backend = new FilesystemBackend({ rootDir: process.cwd() });
 
-      <Note>
-        When multiple skill sources contain a skill with the same name, the skill from the source listed later in the `skills` array takes precedence (last one wins). This lets you layer skills from different origins, such as base skills overridden by project-specific versions.
-      </Note>
-    </ParamField>
-  </Step>
+const agent = await createDeepAgent({
+  model: "anthropic:claude-sonnet-4-6",
+  backend,
+  skills: ["/skills/"],
+});
+```
 
-  <Step title="Invoke the agent">
-    Send a task to the agent with `invoke()`. At startup, the agent loads each skill's [`name`](#frontmatter-fields) and [`description`](#frontmatter-fields) from [frontmatter](#frontmatter-fields) into the system prompt. When your task matches a skill's description, the agent reads that skill's `SKILL.md` and follows its instructions.
+This example uses `FilesystemBackend` to load skills from disk. For other storage options, including loading skills from remote sources, see [Backends and remote skill loading](#backends-and-remote-skill-loading).
 
-    ```ts theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-    const result = await agent.invoke(
-      { messages: [{ role: "user", content: "What is LangGraph?" }] },
-      { configurable: { thread_id: "1" } },
-    );
-    ```
+Each source path can point at a directory that contains skill directories, or directly at a skill directory with `SKILL.md`.
 
-    <Card title="View example trace" icon="chart-line" href="https://smith.langchain.com/public/39b1ef25-cf7f-4a4f-96b9-79e4902604d8/r">
-      Open a public LangSmith run for this example.
-    </Card>
-  </Step>
-</Steps>
+**skills** `list[str]`
+
+List of skill source paths.
+
+Paths must be specified using forward slashes and are relative to the backend's root.
+
+* If omitted, no skills are loaded.
+
+* When using `StateBackend` (default), provide skill files with `invoke(files={...})`. Use `create_file_data()` from `deepagents.backends.utils` to format file contents; raw strings are not supported.
+
+* With `FilesystemBackend` and `StoreBackend`, create the backend, call `backend.uploadFiles()` to add skill files, then pass the backend to `createDeepAgent`. For `FilesystemBackend`, use `virtualMode: true` to sandbox paths under `rootDir`. Skills already on disk under `rootDir` load without uploading.
+
+Later sources override earlier ones for skills with the same name (last one wins).
+
+> [!NOTE]
+>
+> When multiple skill sources contain a skill with the same name, the skill from the source listed later in the `skills` array takes precedence (last one wins). This lets you layer skills from different origins, such as base skills overridden by project-specific versions.
+
+**5. Invoke the agent**
+
+Send a task to the agent with `invoke()`. At startup, the agent loads each skill's [`name`](#frontmatter-fields) and [`description`](#frontmatter-fields) from [frontmatter](#frontmatter-fields) into the system prompt. When your task matches a skill's description, the agent reads that skill's `SKILL.md` and follows its instructions.
+
+```ts theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+const result = await agent.invoke(
+  { messages: [{ role: "user", content: "What is LangGraph?" }] },
+  { configurable: { thread_id: "1" } },
+);
+```
+
+> **[View example trace](https://smith.langchain.com/public/39b1ef25-cf7f-4a4f-96b9-79e4902604d8/r)**
+>
+> Open a public LangSmith run for this example.
 
 ## How skills work
 
 As agents take on more complex tasks, the context they need grows with them. Loading all instructions into the system prompt wastes tokens on information irrelevant to the current task, and providing the same guidance manually across sessions does not scale.
 
-<Info>
-  Skills use **progressive disclosure**: the agent loads skill information in layers instead of all at once. At startup, it sees only each skill's name and description. When a skill is invoked, it reads the full `SKILL.md` instructions. Supporting files load afterward, only when the instructions call for them.
-</Info>
+> [!NOTE]
+>
+> Skills use **progressive disclosure**: the agent loads skill information in layers instead of all at once. At startup, it sees only each skill's name and description. When a skill is invoked, it reads the full `SKILL.md` instructions. Supporting files load afterward, only when the instructions call for them.
 
 Skills load in three levels. Each level adds more detail only when the task needs it:
 
@@ -168,15 +164,11 @@ Skills load in three levels. Each level adds more detail only when the task need
 
 The following diagram shows what appears in agent context at a given moment. At startup, level 1 metadata for every skill is in the system prompt. When a skill is invoked, level 2 instructions join the context. Level 3 files stay on the backend until the agent reads them after invocation.
 
-<div>
-  <img alt="How skill components map into agent context at startup and activation" />
-</div>
+![How skill components map into agent context at startup and activation](https://mintcdn.com/langchain-5e9cc07a/-Q4wgirblfw7Ioet/oss/images/deepagents/skills-composition.svg?fit=max\&auto=format\&n=-Q4wgirblfw7Ioet\&q=85\&s=9450c441ece57465053644ede8991271)
 
 As the agent works through a task, it loads skill information in layers:
 
-<div>
-  <img alt="How skills load in layers from metadata to instructions to resources" />
-</div>
+![How skills load in layers from metadata to instructions to resources](https://mintcdn.com/langchain-5e9cc07a/-Q4wgirblfw7Ioet/oss/images/deepagents/skills-progressive-disclosure.svg?fit=max\&auto=format\&n=-Q4wgirblfw7Ioet\&q=85\&s=ba55587d858f5588bea425dc503e3246)
 
 In Deep Agents, [`SkillsMiddleware`](https://reference.langchain.com/javascript/deepagents/middleware/createSkillsMiddleware) (part of the [Deep Agents stack](/oss/javascript/deepagents/customization#deep-agents-stack) when you pass `skills`) handles the first two levels, with the third level being handled by the LLM:
 
@@ -190,9 +182,9 @@ To give the agent a skill's instructions without waiting for it to choose the sk
 
 If you find yourself giving similar instructions to an agent, especially if they are detailed and contain multiple steps, consider codifying the instructions for the agent. That way, in future when you want to accomplish a similar task, the agent will already know what to do.
 
-<Tip>
-  You can also ask your agent to write a skill for a task you worked on with the agent.
-</Tip>
+> [!TIP]
+>
+> You can also ask your agent to write a skill for a task you worked on with the agent.
 
 Skills are especially helpful for codifying:
 
@@ -224,19 +216,17 @@ When you have multiple skills in related domains, differentiate their descriptio
 
 **Keep instructions focused.** The Agent Skills specification recommends keeping your `SKILL.md` under 500 lines. When instructions grow longer, move detailed reference material into [supporting resource files](#add-supporting-resources) and reference them from the main `SKILL.md`:
 
-<Tree>
-  <Tree.Folder name="skills">
-    <Tree.Folder name="data-pipeline">
-      <Tree.File name="SKILL.md" />
+**skills**
 
-      <Tree.Folder name="references">
-        <Tree.File name="schema-reference.md" />
+**data-pipeline**
 
-        <Tree.File name="error-codes.md" />
-      </Tree.Folder>
-    </Tree.Folder>
-  </Tree.Folder>
-</Tree>
+**SKILL.md**
+
+**references**
+
+**schema-reference.md**
+
+**error-codes.md**
 
 The agent loads reference files only when the instructions call for them, keeping each layer of progressive disclosure appropriately sized. Keep file references one level deep from `SKILL.md` and avoid deeply nested reference chains, which force the agent through multiple reads to reach the information it needs.
 
@@ -252,9 +242,9 @@ The agent loads reference files only when the instructions call for them, keepin
 * Consolidating related capabilities into a single skill with sections for each sub-task
 * Using reference files to keep the main `SKILL.md` concise while covering multiple sub-tasks
 
-<Tip>
-  Use the [`skills-ref` validation tool](https://github.com/agentskills/agentskills/tree/main/skills-ref) to check that your `SKILL.md` [frontmatter](#frontmatter-fields) follows the Agent Skills specification naming and format conventions.
-</Tip>
+> [!TIP]
+>
+> Use the [`skills-ref` validation tool](https://github.com/agentskills/agentskills/tree/main/skills-ref) to check that your `SKILL.md` [frontmatter](#frontmatter-fields) follows the Agent Skills specification naming and format conventions.
 
 ## Add supporting resources
 
@@ -309,7 +299,9 @@ A skill can bring its own tools. The agent sees them only after it reads the ski
 
 Skill tools are a Deep Agents feature, not part of the [Agent Skills specification](https://agentskills.io/specification). Deep Agents reads the tool names from the spec's free-form `metadata` field. They are unrelated to the spec's `allowed-tools` field, which pre-approves tools rather than adding them.
 
-<Note>Skill tools require `deepagents>=1.15.0`.</Note>
+> [!NOTE]
+>
+> Skill tools require `deepagents>=1.15.0`.
 
 List the tools under `metadata.include_tools` in the skill's frontmatter, separated by spaces. A YAML list does not match any tool.
 
@@ -370,9 +362,9 @@ Skill tools follow these rules:
 * When [summarization](/oss/javascript/deepagents/context-engineering#summarization) drops that read from the conversation, the tool is unavailable until the agent reads the skill again.
 * [Pinning a skill](#pin-skills) makes its tools available the same way reading its `SKILL.md` does. They stay available until summarization drops the pinned skill's message.
 
-<Note>
-  On models that accept new tools mid-conversation, Deep Agents adds a skill tool after the read, which keeps the prompt cache valid. On other models, it adds the tool to the request's `tools`, which invalidates the cache. See the [Anthropic](/oss/javascript/integrations/chat/anthropic#change-tools-mid-conversation) and [OpenAI](/oss/javascript/integrations/chat/openai#add-tools-mid-conversation) integration pages.
-</Note>
+> [!NOTE]
+>
+> On models that accept new tools mid-conversation, Deep Agents adds a skill tool after the read, which keeps the prompt cache valid. On other models, it adds the tool to the request's `tools`, which invalidates the cache. See the [Anthropic](/oss/javascript/integrations/chat/anthropic#change-tools-mid-conversation) and [OpenAI](/oss/javascript/integrations/chat/openai#add-tools-mid-conversation) integration pages.
 
 ### Resolve tools at runtime
 
@@ -481,9 +473,9 @@ const result = await agent.invoke(
 );
 ```
 
-<Card title="View example trace" icon="chart-line" href="https://smith.langchain.com/public/2c02ac34-3a67-455e-9f14-12f5e0426a53/r">
-  Open a public LangSmith run for this example.
-</Card>
+> **[View example trace](https://smith.langchain.com/public/2c02ac34-3a67-455e-9f14-12f5e0426a53/r)**
+>
+> Open a public LangSmith run for this example.
 
 When you write a resolver:
 
@@ -538,146 +530,144 @@ Deep Agents supports different backends depending on how you want to store and m
 * `StoreBackend`: Stores files in a LangGraph store for durable, cross-thread storage.
 * `FilesystemBackend`: Reads and writes skill files from disk under a configurable `root_dir`.
 
-<Tabs>
-  <Tab title="StateBackend">
-    ```ts theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-    import { createDeepAgent, StateBackend, type FileData } from "deepagents";
-    import { MemorySaver } from "@langchain/langgraph";
+**StateBackend**
 
-    const checkpointer = new MemorySaver();
-    const backend = new StateBackend();
+```ts theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+import { createDeepAgent, StateBackend, type FileData } from "deepagents";
+import { MemorySaver } from "@langchain/langgraph";
 
-    function createFileData(content: string): FileData {
-      const now = new Date().toISOString();
-      return {
-        content: content.split("\n"),
-        created_at: now,
-        modified_at: now,
-      };
-    }
+const checkpointer = new MemorySaver();
+const backend = new StateBackend();
 
-    const skillsFiles: Record<string, FileData> = {};
-    const skillUrl =
-      "https://raw.githubusercontent.com/langchain-ai/deepagentsjs/refs/heads/main/examples/skills/langgraph-docs/SKILL.md";
-    const response = await fetch(skillUrl);
-    const skillContent = await response.text();
+function createFileData(content: string): FileData {
+  const now = new Date().toISOString();
+  return {
+    content: content.split("\n"),
+    created_at: now,
+    modified_at: now,
+  };
+}
 
-    skillsFiles["/skills/langgraph-docs/SKILL.md"] = createFileData(skillContent);
+const skillsFiles: Record<string, FileData> = {};
+const skillUrl =
+  "https://raw.githubusercontent.com/langchain-ai/deepagentsjs/refs/heads/main/examples/skills/langgraph-docs/SKILL.md";
+const response = await fetch(skillUrl);
+const skillContent = await response.text();
 
-    const agent = await createDeepAgent({
-      model: "anthropic:claude-sonnet-4-6",
-      backend,
-      checkpointer, // Required !
-      // IMPORTANT: deepagents skill source paths are virtual (POSIX) paths relative to the backend root.
-      skills: ["/skills/"],
-    });
+skillsFiles["/skills/langgraph-docs/SKILL.md"] = createFileData(skillContent);
 
-    const config = { configurable: { thread_id: `thread-${Date.now()}` } };
-    const result = await agent.invoke(
-      {
-        messages: [{ role: "user", content: "what is langraph?" }],
-        files: skillsFiles,
-      },
-      config,
-    );
-    ```
+const agent = await createDeepAgent({
+  model: "anthropic:claude-sonnet-4-6",
+  backend,
+  checkpointer, // Required !
+  // IMPORTANT: deepagents skill source paths are virtual (POSIX) paths relative to the backend root.
+  skills: ["/skills/"],
+});
 
-    <Card title="View example trace" icon="chart-line" href="https://smith.langchain.com/public/e5b8f897-96f4-42d7-9d88-f2fd8e246bd2/r">
-      Open a public LangSmith run for this example.
-    </Card>
-  </Tab>
+const config = { configurable: { thread_id: `thread-${Date.now()}` } };
+const result = await agent.invoke(
+  {
+    messages: [{ role: "user", content: "what is langraph?" }],
+    files: skillsFiles,
+  },
+  config,
+);
+```
 
-  <Tab title="StoreBackend">
-    ```ts theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-    import { createDeepAgent, StoreBackend } from "deepagents";
-    import { InMemoryStore, MemorySaver } from "@langchain/langgraph";
+> **[View example trace](https://smith.langchain.com/public/e5b8f897-96f4-42d7-9d88-f2fd8e246bd2/r)**
+>
+> Open a public LangSmith run for this example.
 
-    const checkpointer = new MemorySaver();
-    const store = new InMemoryStore();
-    const backend = new StoreBackend({
-      namespace: () => ["filesystem"],
-      store,
-    });
+**StoreBackend**
 
-    const skillUrl =
-      "https://raw.githubusercontent.com/langchain-ai/deepagentsjs/refs/heads/main/examples/skills/langgraph-docs/SKILL.md";
+```ts theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+import { createDeepAgent, StoreBackend } from "deepagents";
+import { InMemoryStore, MemorySaver } from "@langchain/langgraph";
 
-    const response = await fetch(skillUrl);
-    const skillContent = await response.text();
+const checkpointer = new MemorySaver();
+const store = new InMemoryStore();
+const backend = new StoreBackend({
+  namespace: () => ["filesystem"],
+  store,
+});
 
-    await backend.uploadFiles([
-      ["/skills/langgraph-docs/SKILL.md", new TextEncoder().encode(skillContent)],
-    ]);
+const skillUrl =
+  "https://raw.githubusercontent.com/langchain-ai/deepagentsjs/refs/heads/main/examples/skills/langgraph-docs/SKILL.md";
 
-    const agent = await createDeepAgent({
-      model: "anthropic:claude-sonnet-4-6",
-      backend,
-      store,
-      checkpointer,
-      // IMPORTANT: deepagents skill source paths are virtual (POSIX) paths relative to the backend root.
-      skills: ["/skills/"],
-    });
+const response = await fetch(skillUrl);
+const skillContent = await response.text();
 
-    const config = {
-      recursionLimit: 50,
-      configurable: { thread_id: `thread-${Date.now()}` },
-    };
-    const result = await agent.invoke(
-      { messages: [{ role: "user", content: "what is langraph?" }] },
-      config,
-    );
-    ```
+await backend.uploadFiles([
+  ["/skills/langgraph-docs/SKILL.md", new TextEncoder().encode(skillContent)],
+]);
 
-    <Card title="View example trace" icon="chart-line" href="https://smith.langchain.com/public/8c49b6ee-d5e4-4c9d-b136-a561527e37c2/r">
-      Open a public LangSmith run for this example.
-    </Card>
-  </Tab>
+const agent = await createDeepAgent({
+  model: "anthropic:claude-sonnet-4-6",
+  backend,
+  store,
+  checkpointer,
+  // IMPORTANT: deepagents skill source paths are virtual (POSIX) paths relative to the backend root.
+  skills: ["/skills/"],
+});
 
-  <Tab title="FilesystemBackend">
-    ```ts theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-    import { createDeepAgent, FilesystemBackend } from "deepagents";
-    import { MemorySaver } from "@langchain/langgraph";
+const config = {
+  recursionLimit: 50,
+  configurable: { thread_id: `thread-${Date.now()}` },
+};
+const result = await agent.invoke(
+  { messages: [{ role: "user", content: "what is langraph?" }] },
+  config,
+);
+```
 
-    const checkpointer = new MemorySaver();
+> **[View example trace](https://smith.langchain.com/public/8c49b6ee-d5e4-4c9d-b136-a561527e37c2/r)**
+>
+> Open a public LangSmith run for this example.
 
-    const skillUrl =
-      "https://raw.githubusercontent.com/langchain-ai/deepagentsjs/refs/heads/main/examples/skills/langgraph-docs/SKILL.md";
-    const response = await fetch(skillUrl);
-    const skillContent = await response.text();
+**FilesystemBackend**
 
-    let backend = new FilesystemBackend({
-      rootDir: process.cwd(),
-      virtualMode: true,
-    });
-    await backend.uploadFiles([
-      ["/skills/langgraph-docs/SKILL.md", new TextEncoder().encode(skillContent)],
-    ]);
+```ts theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+import { createDeepAgent, FilesystemBackend } from "deepagents";
+import { MemorySaver } from "@langchain/langgraph";
 
-    const agent = await createDeepAgent({
-      model: "anthropic:claude-sonnet-4-6",
-      backend,
-      // IMPORTANT: deepagents skill source paths are virtual (POSIX) paths relative to the backend root.
-      skills: ["/skills/"],
-      interruptOn: {
-        read_file: true,
-        write_file: true,
-        delete_file: true,
-      },
-      checkpointer, // Required for filesystem operations!
-    });
+const checkpointer = new MemorySaver();
 
-    const config = { configurable: { thread_id: `thread-${Date.now()}` } };
-    const result = await agent.invoke(
-      { messages: [{ role: "user", content: "what is langraph?" }] },
-      config,
-    );
-    ```
+const skillUrl =
+  "https://raw.githubusercontent.com/langchain-ai/deepagentsjs/refs/heads/main/examples/skills/langgraph-docs/SKILL.md";
+const response = await fetch(skillUrl);
+const skillContent = await response.text();
 
-    <Card title="View example trace" icon="chart-line" href="https://smith.langchain.com/public/6bad9cac-ea04-4364-b28f-d1bdaf39b8d8/r">
-      Open a public LangSmith run for this example.
-    </Card>
-  </Tab>
-</Tabs>
+let backend = new FilesystemBackend({
+  rootDir: process.cwd(),
+  virtualMode: true,
+});
+await backend.uploadFiles([
+  ["/skills/langgraph-docs/SKILL.md", new TextEncoder().encode(skillContent)],
+]);
+
+const agent = await createDeepAgent({
+  model: "anthropic:claude-sonnet-4-6",
+  backend,
+  // IMPORTANT: deepagents skill source paths are virtual (POSIX) paths relative to the backend root.
+  skills: ["/skills/"],
+  interruptOn: {
+    read_file: true,
+    write_file: true,
+    delete_file: true,
+  },
+  checkpointer, // Required for filesystem operations!
+});
+
+const config = { configurable: { thread_id: `thread-${Date.now()}` } };
+const result = await agent.invoke(
+  { messages: [{ role: "user", content: "what is langraph?" }] },
+  config,
+);
+```
+
+> **[View example trace](https://smith.langchain.com/public/6bad9cac-ea04-4364-b28f-d1bdaf39b8d8/r)**
+>
+> Open a public LangSmith run for this example.
 
 ## Skill availability
 
@@ -714,26 +704,26 @@ function createAgentForUser(userRole: string) {
 
 This pattern keeps one maintained copy of each skill and varies only the paths passed to each agent. In deployments, a graph factory is a natural place to parse user information and construct the agent with the right skill paths.
 
-<Note>
-  The SDK only loads the sources you pass in `skills`. It does not automatically scan directories such as `~/.deepagents/...` or `~/.agents/...`.
-
-  For Deep Agents Code storage conventions, see [App data](/oss/deepagents/code/configuration#data-locations).
-
-  <Accordion title="Emulate Deep Agents Code source order in the SDK">
-    To match Deep Agents Code layering in SDK code, pass all desired sources explicitly in lowest-to-highest precedence order:
-
-    ```text theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-    [
-    "<user-home>/.deepagents/{agent}/skills/",
-    "<user-home>/.agents/skills/",
-    "<project-root>/.deepagents/skills/",
-    "<project-root>/.agents/skills/",
-    ]
-    ```
-
-    Then pass that ordered list as `skills` when creating your agent.
-  </Accordion>
-</Note>
+> [!NOTE]
+>
+> The SDK only loads the sources you pass in `skills`. It does not automatically scan directories such as `~/.deepagents/...` or `~/.agents/...`.
+>
+> For Deep Agents Code storage conventions, see [App data](/oss/deepagents/code/configuration#data-locations).
+>
+> > **Emulate Deep Agents Code source order in the SDK**
+> >
+> > To match Deep Agents Code layering in SDK code, pass all desired sources explicitly in lowest-to-highest precedence order:
+> >
+> > ```text theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> > [
+> > "<user-home>/.deepagents/{agent}/skills/",
+> > "<user-home>/.agents/skills/",
+> > "<project-root>/.deepagents/skills/",
+> > "<project-root>/.agents/skills/",
+> > ]
+> > ```
+> >
+> > Then pass that ordered list as `skills` when creating your agent.
 
 ### Isolate skill libraries
 
@@ -795,11 +785,13 @@ Skills load once per thread and stay in agent state, so every later model call o
 
 Reset the stored metadata to load every source again on the next model call.
 
-<Note>
-  Local runs often have no checkpointer, so skill edits take effect immediately and skills appear to reload on their own. [LangSmith Deployments](/langsmith/deployment) configure a persistent checkpointer automatically, so the same agent holds its skills for the life of a thread once deployed. See [Going to production](/oss/javascript/deepagents/going-to-production).
-</Note>
+> [!NOTE]
+>
+> Local runs often have no checkpointer, so skill edits take effect immediately and skills appear to reload on their own. [LangSmith Deployments](/langsmith/deployment) configure a persistent checkpointer automatically, so the same agent holds its skills for the life of a thread once deployed. See [Going to production](/oss/javascript/deepagents/going-to-production).
 
-<Note>Reloading skills requires `deepagents>=1.14.0`.</Note>
+> [!NOTE]
+>
+> Reloading skills requires `deepagents>=1.14.0`.
 
 Pass the reset as run input to reload and run in a single call:
 
@@ -821,9 +813,9 @@ await agent.updateState(config, { skillsMetadata: null });
 
 Use `null`, not an empty list. An empty list means the sources loaded and held no skills, so the agent sees no skills for the rest of the thread.
 
-<Note>
-  A reload that finds a different set of skills changes the system prompt and invalidates the prompt cache for that thread. A reload that finds the same skills produces the same prompt and costs nothing.
-</Note>
+> [!NOTE]
+>
+> A reload that finds a different set of skills changes the system prompt and invalidates the prompt cache for that thread. A reload that finds the same skills produces the same prompt and costs nothing.
 
 Middleware can reset the value as well, which lets your application decide when a thread is stale.
 
@@ -846,7 +838,9 @@ const reloadEditedSkills = createMiddleware({
 
 The agent reads a skill only when it decides the skill matches the task. When a user names a skill in your app, for example by typing `/langgraph-docs` or choosing it from a menu, pin the skill. Deep Agents then adds the skill's instructions to the conversation, so the agent does not have to choose it.
 
-<Note>Pinning skills requires `deepagents>=1.15.0`.</Note>
+> [!NOTE]
+>
+> Pinning skills requires `deepagents>=1.15.0`.
 
 Pass skill names in `pinnedSkills` with the run input:
 
@@ -937,217 +931,215 @@ Skill availability controls which skill files the agent can see. Skill permissio
 
 To let agents use a curated skill library without modifying it, route the skill path to the backend that contains the approved library and deny write operations under that path. The agent can discover and read skills; only your application code or an admin workflow updates the backend.
 
-<CodeGroup>
-  ```ts Google theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  import { InMemoryStore } from "@langchain/langgraph";
-  import {
-    createDeepAgent,
-    CompositeBackend,
-    StateBackend,
-    StoreBackend,
-  } from "deepagents";
+```ts Google theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+import { InMemoryStore } from "@langchain/langgraph";
+import {
+  createDeepAgent,
+  CompositeBackend,
+  StateBackend,
+  StoreBackend,
+} from "deepagents";
 
-  const store = new InMemoryStore(); // Good for local dev; omit for LangSmith Deployment
+const store = new InMemoryStore(); // Good for local dev; omit for LangSmith Deployment
 
-  const agent = createDeepAgent({
-    model: "google:gemini-3.6-flash",
-    backend: new CompositeBackend(new StateBackend(), {
-      "/skills/": new StoreBackend({
-        namespace: (rt) => ["curated-skills", rt.context.orgId],
-      }),
+const agent = createDeepAgent({
+  model: "google:gemini-3.6-flash",
+  backend: new CompositeBackend(new StateBackend(), {
+    "/skills/": new StoreBackend({
+      namespace: (rt) => ["curated-skills", rt.context.orgId],
     }),
-    skills: ["/skills/"],
-    permissions: [
-      {
-        operations: ["write"],
-        paths: ["/skills/**"],
-        mode: "deny",
-      },
-    ],
-    store,
-  });
-  ```
+  }),
+  skills: ["/skills/"],
+  permissions: [
+    {
+      operations: ["write"],
+      paths: ["/skills/**"],
+      mode: "deny",
+    },
+  ],
+  store,
+});
+```
 
-  ```ts OpenAI theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  import { InMemoryStore } from "@langchain/langgraph";
-  import {
-    createDeepAgent,
-    CompositeBackend,
-    StateBackend,
-    StoreBackend,
-  } from "deepagents";
+```ts OpenAI theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+import { InMemoryStore } from "@langchain/langgraph";
+import {
+  createDeepAgent,
+  CompositeBackend,
+  StateBackend,
+  StoreBackend,
+} from "deepagents";
 
-  const store = new InMemoryStore(); // Good for local dev; omit for LangSmith Deployment
+const store = new InMemoryStore(); // Good for local dev; omit for LangSmith Deployment
 
-  const agent = createDeepAgent({
-    model: "openai:gpt-5.5",
-    backend: new CompositeBackend(new StateBackend(), {
-      "/skills/": new StoreBackend({
-        namespace: (rt) => ["curated-skills", rt.context.orgId],
-      }),
+const agent = createDeepAgent({
+  model: "openai:gpt-5.5",
+  backend: new CompositeBackend(new StateBackend(), {
+    "/skills/": new StoreBackend({
+      namespace: (rt) => ["curated-skills", rt.context.orgId],
     }),
-    skills: ["/skills/"],
-    permissions: [
-      {
-        operations: ["write"],
-        paths: ["/skills/**"],
-        mode: "deny",
-      },
-    ],
-    store,
-  });
-  ```
+  }),
+  skills: ["/skills/"],
+  permissions: [
+    {
+      operations: ["write"],
+      paths: ["/skills/**"],
+      mode: "deny",
+    },
+  ],
+  store,
+});
+```
 
-  ```ts Anthropic theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  import { InMemoryStore } from "@langchain/langgraph";
-  import {
-    createDeepAgent,
-    CompositeBackend,
-    StateBackend,
-    StoreBackend,
-  } from "deepagents";
+```ts Anthropic theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+import { InMemoryStore } from "@langchain/langgraph";
+import {
+  createDeepAgent,
+  CompositeBackend,
+  StateBackend,
+  StoreBackend,
+} from "deepagents";
 
-  const store = new InMemoryStore(); // Good for local dev; omit for LangSmith Deployment
+const store = new InMemoryStore(); // Good for local dev; omit for LangSmith Deployment
 
-  const agent = createDeepAgent({
-    model: "anthropic:claude-sonnet-5",
-    backend: new CompositeBackend(new StateBackend(), {
-      "/skills/": new StoreBackend({
-        namespace: (rt) => ["curated-skills", rt.context.orgId],
-      }),
+const agent = createDeepAgent({
+  model: "anthropic:claude-sonnet-5",
+  backend: new CompositeBackend(new StateBackend(), {
+    "/skills/": new StoreBackend({
+      namespace: (rt) => ["curated-skills", rt.context.orgId],
     }),
-    skills: ["/skills/"],
-    permissions: [
-      {
-        operations: ["write"],
-        paths: ["/skills/**"],
-        mode: "deny",
-      },
-    ],
-    store,
-  });
-  ```
+  }),
+  skills: ["/skills/"],
+  permissions: [
+    {
+      operations: ["write"],
+      paths: ["/skills/**"],
+      mode: "deny",
+    },
+  ],
+  store,
+});
+```
 
-  ```ts OpenRouter theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  import { InMemoryStore } from "@langchain/langgraph";
-  import {
-    createDeepAgent,
-    CompositeBackend,
-    StateBackend,
-    StoreBackend,
-  } from "deepagents";
+```ts OpenRouter theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+import { InMemoryStore } from "@langchain/langgraph";
+import {
+  createDeepAgent,
+  CompositeBackend,
+  StateBackend,
+  StoreBackend,
+} from "deepagents";
 
-  const store = new InMemoryStore(); // Good for local dev; omit for LangSmith Deployment
+const store = new InMemoryStore(); // Good for local dev; omit for LangSmith Deployment
 
-  const agent = createDeepAgent({
-    model: "openrouter:z-ai/glm-5.2",
-    backend: new CompositeBackend(new StateBackend(), {
-      "/skills/": new StoreBackend({
-        namespace: (rt) => ["curated-skills", rt.context.orgId],
-      }),
+const agent = createDeepAgent({
+  model: "openrouter:z-ai/glm-5.2",
+  backend: new CompositeBackend(new StateBackend(), {
+    "/skills/": new StoreBackend({
+      namespace: (rt) => ["curated-skills", rt.context.orgId],
     }),
-    skills: ["/skills/"],
-    permissions: [
-      {
-        operations: ["write"],
-        paths: ["/skills/**"],
-        mode: "deny",
-      },
-    ],
-    store,
-  });
-  ```
+  }),
+  skills: ["/skills/"],
+  permissions: [
+    {
+      operations: ["write"],
+      paths: ["/skills/**"],
+      mode: "deny",
+    },
+  ],
+  store,
+});
+```
 
-  ```ts Fireworks theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  import { InMemoryStore } from "@langchain/langgraph";
-  import {
-    createDeepAgent,
-    CompositeBackend,
-    StateBackend,
-    StoreBackend,
-  } from "deepagents";
+```ts Fireworks theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+import { InMemoryStore } from "@langchain/langgraph";
+import {
+  createDeepAgent,
+  CompositeBackend,
+  StateBackend,
+  StoreBackend,
+} from "deepagents";
 
-  const store = new InMemoryStore(); // Good for local dev; omit for LangSmith Deployment
+const store = new InMemoryStore(); // Good for local dev; omit for LangSmith Deployment
 
-  const agent = createDeepAgent({
-    model: "fireworks:accounts/fireworks/models/glm-5p2",
-    backend: new CompositeBackend(new StateBackend(), {
-      "/skills/": new StoreBackend({
-        namespace: (rt) => ["curated-skills", rt.context.orgId],
-      }),
+const agent = createDeepAgent({
+  model: "fireworks:accounts/fireworks/models/glm-5p2",
+  backend: new CompositeBackend(new StateBackend(), {
+    "/skills/": new StoreBackend({
+      namespace: (rt) => ["curated-skills", rt.context.orgId],
     }),
-    skills: ["/skills/"],
-    permissions: [
-      {
-        operations: ["write"],
-        paths: ["/skills/**"],
-        mode: "deny",
-      },
-    ],
-    store,
-  });
-  ```
+  }),
+  skills: ["/skills/"],
+  permissions: [
+    {
+      operations: ["write"],
+      paths: ["/skills/**"],
+      mode: "deny",
+    },
+  ],
+  store,
+});
+```
 
-  ```ts Baseten theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  import { InMemoryStore } from "@langchain/langgraph";
-  import {
-    createDeepAgent,
-    CompositeBackend,
-    StateBackend,
-    StoreBackend,
-  } from "deepagents";
+```ts Baseten theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+import { InMemoryStore } from "@langchain/langgraph";
+import {
+  createDeepAgent,
+  CompositeBackend,
+  StateBackend,
+  StoreBackend,
+} from "deepagents";
 
-  const store = new InMemoryStore(); // Good for local dev; omit for LangSmith Deployment
+const store = new InMemoryStore(); // Good for local dev; omit for LangSmith Deployment
 
-  const agent = createDeepAgent({
-    model: "baseten:zai-org/GLM-5.2",
-    backend: new CompositeBackend(new StateBackend(), {
-      "/skills/": new StoreBackend({
-        namespace: (rt) => ["curated-skills", rt.context.orgId],
-      }),
+const agent = createDeepAgent({
+  model: "baseten:zai-org/GLM-5.2",
+  backend: new CompositeBackend(new StateBackend(), {
+    "/skills/": new StoreBackend({
+      namespace: (rt) => ["curated-skills", rt.context.orgId],
     }),
-    skills: ["/skills/"],
-    permissions: [
-      {
-        operations: ["write"],
-        paths: ["/skills/**"],
-        mode: "deny",
-      },
-    ],
-    store,
-  });
-  ```
+  }),
+  skills: ["/skills/"],
+  permissions: [
+    {
+      operations: ["write"],
+      paths: ["/skills/**"],
+      mode: "deny",
+    },
+  ],
+  store,
+});
+```
 
-  ```ts Ollama theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  import { InMemoryStore } from "@langchain/langgraph";
-  import {
-    createDeepAgent,
-    CompositeBackend,
-    StateBackend,
-    StoreBackend,
-  } from "deepagents";
+```ts Ollama theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+import { InMemoryStore } from "@langchain/langgraph";
+import {
+  createDeepAgent,
+  CompositeBackend,
+  StateBackend,
+  StoreBackend,
+} from "deepagents";
 
-  const store = new InMemoryStore(); // Good for local dev; omit for LangSmith Deployment
+const store = new InMemoryStore(); // Good for local dev; omit for LangSmith Deployment
 
-  const agent = createDeepAgent({
-    model: "ollama:north-mini-code-1.0",
-    backend: new CompositeBackend(new StateBackend(), {
-      "/skills/": new StoreBackend({
-        namespace: (rt) => ["curated-skills", rt.context.orgId],
-      }),
+const agent = createDeepAgent({
+  model: "ollama:north-mini-code-1.0",
+  backend: new CompositeBackend(new StateBackend(), {
+    "/skills/": new StoreBackend({
+      namespace: (rt) => ["curated-skills", rt.context.orgId],
     }),
-    skills: ["/skills/"],
-    permissions: [
-      {
-        operations: ["write"],
-        paths: ["/skills/**"],
-        mode: "deny",
-      },
-    ],
-    store,
-  });
-  ```
-</CodeGroup>
+  }),
+  skills: ["/skills/"],
+  permissions: [
+    {
+      operations: ["write"],
+      paths: ["/skills/**"],
+      mode: "deny",
+    },
+  ],
+  store,
+});
+```
 
 Use this for enterprise knowledge bases, approved tool instructions, or centrally managed skill packs where the agent should use the content but should not rewrite the source of truth.
 
@@ -1231,17 +1223,15 @@ Skills execute code through [sandbox scripts](#sandbox-scripts): the agent runs 
 
 Skills can include scripts alongside the `SKILL.md` file. Reference scripts in your `SKILL.md` so the agent knows they exist and when to run them:
 
-<Tree>
-  <Tree.Folder name="skills">
-    <Tree.Folder name="arxiv-search">
-      <Tree.File name="SKILL.md" />
+**skills**
 
-      <Tree.Folder name="scripts">
-        <Tree.File name="search.ts" />
-      </Tree.Folder>
-    </Tree.Folder>
-  </Tree.Folder>
-</Tree>
+**arxiv-search**
+
+**SKILL.md**
+
+**scripts**
+
+**search.ts**
 
 ```md theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 ---
@@ -1267,977 +1257,975 @@ The agent can *read* scripts from any backend, but to *execute* them, the agent 
 * **`before_agent`**: Read skill files from the backend and upload them into the sandbox so the agent can execute scripts from the start.
 * **`after_agent`**: Download any updated or newly created skill files from the sandbox and write them back to the backend so changes persist across runs.
 
-<CodeGroup>
-  ```ts Google theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  import { readFile, readdir } from "node:fs/promises";
-  import { join, posix, relative, resolve } from "node:path";
-  import { fileURLToPath } from "node:url";
+```ts Google theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+import { readFile, readdir } from "node:fs/promises";
+import { join, posix, relative, resolve } from "node:path";
+import { fileURLToPath } from "node:url";
 
-  import { createMiddleware } from "langchain";
-  import {
-    CompositeBackend,
-    createDeepAgent,
-    type FileData,
-    LangSmithSandbox,
-    StoreBackend,
-  } from "deepagents";
-  import { InMemoryStore } from "@langchain/langgraph";
-  import { SandboxClient } from "langsmith/sandbox";
+import { createMiddleware } from "langchain";
+import {
+  CompositeBackend,
+  createDeepAgent,
+  type FileData,
+  LangSmithSandbox,
+  StoreBackend,
+} from "deepagents";
+import { InMemoryStore } from "@langchain/langgraph";
+import { SandboxClient } from "langsmith/sandbox";
 
-  /** Identical skill bundles for every user: one shared store namespace. */
-  const SKILLS_SHARED_NAMESPACE = ["skills", "builtin"] as const;
+/** Identical skill bundles for every user: one shared store namespace. */
+const SKILLS_SHARED_NAMESPACE = ["skills", "builtin"] as const;
 
-  function createFileData(content: string): FileData {
-    const now = new Date().toISOString();
-    return {
-      content: content.split("\n"),
-      created_at: now,
-      modified_at: now,
-    };
+function createFileData(content: string): FileData {
+  const now = new Date().toISOString();
+  return {
+    content: content.split("\n"),
+    created_at: now,
+    modified_at: now,
+  };
+}
+
+function normalizeSkillsStoreKey(key: string): string {
+  const k = String(key);
+  if (k.includes("..") || /[*?]/.test(k)) {
+    throw new Error(`Invalid key: ${key}`);
   }
+  return k.startsWith("/") ? k : `/${k}`;
+}
 
-  function normalizeSkillsStoreKey(key: string): string {
-    const k = String(key);
-    if (k.includes("..") || /[*?]/.test(k)) {
-      throw new Error(`Invalid key: ${key}`);
+async function walkFiles(dir: string): Promise<string[]> {
+  const entries = await readdir(dir, { withFileTypes: true });
+  const files: string[] = [];
+  for (const entry of entries) {
+    const fullPath = join(dir, entry.name);
+    if (entry.isDirectory()) {
+      files.push(...(await walkFiles(fullPath)));
+    } else if (entry.isFile()) {
+      files.push(fullPath);
     }
-    return k.startsWith("/") ? k : `/${k}`;
   }
+  return files.sort((a, b) => a.localeCompare(b));
+}
 
-  async function walkFiles(dir: string): Promise<string[]> {
-    const entries = await readdir(dir, { withFileTypes: true });
-    const files: string[] = [];
-    for (const entry of entries) {
-      const fullPath = join(dir, entry.name);
-      if (entry.isDirectory()) {
-        files.push(...(await walkFiles(fullPath)));
-      } else if (entry.isFile()) {
-        files.push(fullPath);
+/** Load canonical skill files from disk into the shared store namespace (run once at deploy).
+ *  You can retrieve skills from any source (local filesystem, remote URL, etc.).
+ */
+async function seedSkillStore(store: InMemoryStore) {
+  const moduleDir = resolve(fileURLToPath(new URL(".", import.meta.url)));
+  const skillsDir = resolve(moduleDir, "skills");
+  const filePaths = await walkFiles(skillsDir);
+  for (const filePath of filePaths) {
+    const rel = relative(skillsDir, filePath);
+    // StoreBackend keys are paths *relative to the routed backend root*.
+    // CompositeBackend strips the route prefix (`/skills/`) before delegating,
+    // so store keys should look like "/<skillname>/SKILL.md".
+    const key = `/${posix.normalize(rel.split("\\").join("/"))}`;
+    const content = await readFile(filePath, "utf8");
+    await store.put([...SKILLS_SHARED_NAMESPACE], key, createFileData(content));
+  }
+}
+
+/** Copy shared skill files from the store into the sandbox before each agent run. */
+function createSkillSandboxSyncMiddleware(backend: CompositeBackend) {
+  return createMiddleware({
+    name: "SkillSandboxSyncMiddleware",
+    beforeAgent: async (state, runtime) => {
+      const store = (runtime as any).store;
+      if (!store) {
+        throw new Error(
+          "Store is required for syncing skills into the sandbox. " +
+            "Pass `store` to createDeepAgent and ensure your runtime provides it.",
+        );
       }
-    }
-    return files.sort((a, b) => a.localeCompare(b));
-  }
 
-  /** Load canonical skill files from disk into the shared store namespace (run once at deploy).
-   *  You can retrieve skills from any source (local filesystem, remote URL, etc.).
-   */
-  async function seedSkillStore(store: InMemoryStore) {
-    const moduleDir = resolve(fileURLToPath(new URL(".", import.meta.url)));
-    const skillsDir = resolve(moduleDir, "skills");
-    const filePaths = await walkFiles(skillsDir);
-    for (const filePath of filePaths) {
-      const rel = relative(skillsDir, filePath);
-      // StoreBackend keys are paths *relative to the routed backend root*.
-      // CompositeBackend strips the route prefix (`/skills/`) before delegating,
-      // so store keys should look like "/<skillname>/SKILL.md".
-      const key = `/${posix.normalize(rel.split("\\").join("/"))}`;
-      const content = await readFile(filePath, "utf8");
-      await store.put([...SKILLS_SHARED_NAMESPACE], key, createFileData(content));
-    }
-  }
+      const encoder = new TextEncoder();
+      const files: Array<[string, Uint8Array]> = [];
 
-  /** Copy shared skill files from the store into the sandbox before each agent run. */
-  function createSkillSandboxSyncMiddleware(backend: CompositeBackend) {
-    return createMiddleware({
-      name: "SkillSandboxSyncMiddleware",
-      beforeAgent: async (state, runtime) => {
-        const store = (runtime as any).store;
-        if (!store) {
-          throw new Error(
-            "Store is required for syncing skills into the sandbox. " +
-              "Pass `store` to createDeepAgent and ensure your runtime provides it.",
-          );
-        }
-
-        const encoder = new TextEncoder();
-        const files: Array<[string, Uint8Array]> = [];
-
-        for (const item of await store.search([...SKILLS_SHARED_NAMESPACE])) {
-          const normalized = normalizeSkillsStoreKey(String(item.key));
-          const data = item.value as FileData;
-          // CompositeBackend routes paths and batches uploads to the right backend.
-          files.push([
-            `/skills${normalized}`,
-            encoder.encode(data.content.join("\n")),
-          ]);
-        }
-
-        if (files.length > 0) await backend.uploadFiles(files);
-
-        return state;
-      },
-    });
-  }
-
-  async function main() {
-    const store = new InMemoryStore();
-    await seedSkillStore(store);
-
-    const client = new SandboxClient();
-    const lsSandbox = await client.createSandbox();
-
-    const backend = new CompositeBackend(
-      new LangSmithSandbox({ sandbox: lsSandbox }),
-      {
-        "/skills/": new StoreBackend({
-          store,
-          namespace: () => [...SKILLS_SHARED_NAMESPACE],
-        } as any),
-      },
-    );
-
-    try {
-      const agent = await createDeepAgent({
-        model: "google:gemini-3.6-flash",
-        backend,
-        skills: ["/skills/"],
-        store,
-        middleware: [createSkillSandboxSyncMiddleware(backend)],
-      });
-
-    } finally {
-      await client.deleteSandbox(lsSandbox.name);
-    }
-  }
-
-  main().catch((err) => {
-    console.error(err);
-    process.exitCode = 1;
-  });
-  ```
-
-  ```ts OpenAI theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  import { readFile, readdir } from "node:fs/promises";
-  import { join, posix, relative, resolve } from "node:path";
-  import { fileURLToPath } from "node:url";
-
-  import { createMiddleware } from "langchain";
-  import {
-    CompositeBackend,
-    createDeepAgent,
-    type FileData,
-    LangSmithSandbox,
-    StoreBackend,
-  } from "deepagents";
-  import { InMemoryStore } from "@langchain/langgraph";
-  import { SandboxClient } from "langsmith/sandbox";
-
-  /** Identical skill bundles for every user: one shared store namespace. */
-  const SKILLS_SHARED_NAMESPACE = ["skills", "builtin"] as const;
-
-  function createFileData(content: string): FileData {
-    const now = new Date().toISOString();
-    return {
-      content: content.split("\n"),
-      created_at: now,
-      modified_at: now,
-    };
-  }
-
-  function normalizeSkillsStoreKey(key: string): string {
-    const k = String(key);
-    if (k.includes("..") || /[*?]/.test(k)) {
-      throw new Error(`Invalid key: ${key}`);
-    }
-    return k.startsWith("/") ? k : `/${k}`;
-  }
-
-  async function walkFiles(dir: string): Promise<string[]> {
-    const entries = await readdir(dir, { withFileTypes: true });
-    const files: string[] = [];
-    for (const entry of entries) {
-      const fullPath = join(dir, entry.name);
-      if (entry.isDirectory()) {
-        files.push(...(await walkFiles(fullPath)));
-      } else if (entry.isFile()) {
-        files.push(fullPath);
+      for (const item of await store.search([...SKILLS_SHARED_NAMESPACE])) {
+        const normalized = normalizeSkillsStoreKey(String(item.key));
+        const data = item.value as FileData;
+        // CompositeBackend routes paths and batches uploads to the right backend.
+        files.push([
+          `/skills${normalized}`,
+          encoder.encode(data.content.join("\n")),
+        ]);
       }
-    }
-    return files.sort((a, b) => a.localeCompare(b));
-  }
 
-  /** Load canonical skill files from disk into the shared store namespace (run once at deploy).
-   *  You can retrieve skills from any source (local filesystem, remote URL, etc.).
-   */
-  async function seedSkillStore(store: InMemoryStore) {
-    const moduleDir = resolve(fileURLToPath(new URL(".", import.meta.url)));
-    const skillsDir = resolve(moduleDir, "skills");
-    const filePaths = await walkFiles(skillsDir);
-    for (const filePath of filePaths) {
-      const rel = relative(skillsDir, filePath);
-      // StoreBackend keys are paths *relative to the routed backend root*.
-      // CompositeBackend strips the route prefix (`/skills/`) before delegating,
-      // so store keys should look like "/<skillname>/SKILL.md".
-      const key = `/${posix.normalize(rel.split("\\").join("/"))}`;
-      const content = await readFile(filePath, "utf8");
-      await store.put([...SKILLS_SHARED_NAMESPACE], key, createFileData(content));
-    }
-  }
+      if (files.length > 0) await backend.uploadFiles(files);
 
-  /** Copy shared skill files from the store into the sandbox before each agent run. */
-  function createSkillSandboxSyncMiddleware(backend: CompositeBackend) {
-    return createMiddleware({
-      name: "SkillSandboxSyncMiddleware",
-      beforeAgent: async (state, runtime) => {
-        const store = (runtime as any).store;
-        if (!store) {
-          throw new Error(
-            "Store is required for syncing skills into the sandbox. " +
-              "Pass `store` to createDeepAgent and ensure your runtime provides it.",
-          );
-        }
-
-        const encoder = new TextEncoder();
-        const files: Array<[string, Uint8Array]> = [];
-
-        for (const item of await store.search([...SKILLS_SHARED_NAMESPACE])) {
-          const normalized = normalizeSkillsStoreKey(String(item.key));
-          const data = item.value as FileData;
-          // CompositeBackend routes paths and batches uploads to the right backend.
-          files.push([
-            `/skills${normalized}`,
-            encoder.encode(data.content.join("\n")),
-          ]);
-        }
-
-        if (files.length > 0) await backend.uploadFiles(files);
-
-        return state;
-      },
-    });
-  }
-
-  async function main() {
-    const store = new InMemoryStore();
-    await seedSkillStore(store);
-
-    const client = new SandboxClient();
-    const lsSandbox = await client.createSandbox();
-
-    const backend = new CompositeBackend(
-      new LangSmithSandbox({ sandbox: lsSandbox }),
-      {
-        "/skills/": new StoreBackend({
-          store,
-          namespace: () => [...SKILLS_SHARED_NAMESPACE],
-        } as any),
-      },
-    );
-
-    try {
-      const agent = await createDeepAgent({
-        model: "openai:gpt-5.5",
-        backend,
-        skills: ["/skills/"],
-        store,
-        middleware: [createSkillSandboxSyncMiddleware(backend)],
-      });
-
-    } finally {
-      await client.deleteSandbox(lsSandbox.name);
-    }
-  }
-
-  main().catch((err) => {
-    console.error(err);
-    process.exitCode = 1;
+      return state;
+    },
   });
-  ```
+}
 
-  ```ts Anthropic theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  import { readFile, readdir } from "node:fs/promises";
-  import { join, posix, relative, resolve } from "node:path";
-  import { fileURLToPath } from "node:url";
+async function main() {
+  const store = new InMemoryStore();
+  await seedSkillStore(store);
 
-  import { createMiddleware } from "langchain";
-  import {
-    CompositeBackend,
-    createDeepAgent,
-    type FileData,
-    LangSmithSandbox,
-    StoreBackend,
-  } from "deepagents";
-  import { InMemoryStore } from "@langchain/langgraph";
-  import { SandboxClient } from "langsmith/sandbox";
+  const client = new SandboxClient();
+  const lsSandbox = await client.createSandbox();
 
-  /** Identical skill bundles for every user: one shared store namespace. */
-  const SKILLS_SHARED_NAMESPACE = ["skills", "builtin"] as const;
+  const backend = new CompositeBackend(
+    new LangSmithSandbox({ sandbox: lsSandbox }),
+    {
+      "/skills/": new StoreBackend({
+        store,
+        namespace: () => [...SKILLS_SHARED_NAMESPACE],
+      } as any),
+    },
+  );
 
-  function createFileData(content: string): FileData {
-    const now = new Date().toISOString();
-    return {
-      content: content.split("\n"),
-      created_at: now,
-      modified_at: now,
-    };
+  try {
+    const agent = await createDeepAgent({
+      model: "google:gemini-3.6-flash",
+      backend,
+      skills: ["/skills/"],
+      store,
+      middleware: [createSkillSandboxSyncMiddleware(backend)],
+    });
+
+  } finally {
+    await client.deleteSandbox(lsSandbox.name);
   }
+}
 
-  function normalizeSkillsStoreKey(key: string): string {
-    const k = String(key);
-    if (k.includes("..") || /[*?]/.test(k)) {
-      throw new Error(`Invalid key: ${key}`);
+main().catch((err) => {
+  console.error(err);
+  process.exitCode = 1;
+});
+```
+
+```ts OpenAI theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+import { readFile, readdir } from "node:fs/promises";
+import { join, posix, relative, resolve } from "node:path";
+import { fileURLToPath } from "node:url";
+
+import { createMiddleware } from "langchain";
+import {
+  CompositeBackend,
+  createDeepAgent,
+  type FileData,
+  LangSmithSandbox,
+  StoreBackend,
+} from "deepagents";
+import { InMemoryStore } from "@langchain/langgraph";
+import { SandboxClient } from "langsmith/sandbox";
+
+/** Identical skill bundles for every user: one shared store namespace. */
+const SKILLS_SHARED_NAMESPACE = ["skills", "builtin"] as const;
+
+function createFileData(content: string): FileData {
+  const now = new Date().toISOString();
+  return {
+    content: content.split("\n"),
+    created_at: now,
+    modified_at: now,
+  };
+}
+
+function normalizeSkillsStoreKey(key: string): string {
+  const k = String(key);
+  if (k.includes("..") || /[*?]/.test(k)) {
+    throw new Error(`Invalid key: ${key}`);
+  }
+  return k.startsWith("/") ? k : `/${k}`;
+}
+
+async function walkFiles(dir: string): Promise<string[]> {
+  const entries = await readdir(dir, { withFileTypes: true });
+  const files: string[] = [];
+  for (const entry of entries) {
+    const fullPath = join(dir, entry.name);
+    if (entry.isDirectory()) {
+      files.push(...(await walkFiles(fullPath)));
+    } else if (entry.isFile()) {
+      files.push(fullPath);
     }
-    return k.startsWith("/") ? k : `/${k}`;
   }
+  return files.sort((a, b) => a.localeCompare(b));
+}
 
-  async function walkFiles(dir: string): Promise<string[]> {
-    const entries = await readdir(dir, { withFileTypes: true });
-    const files: string[] = [];
-    for (const entry of entries) {
-      const fullPath = join(dir, entry.name);
-      if (entry.isDirectory()) {
-        files.push(...(await walkFiles(fullPath)));
-      } else if (entry.isFile()) {
-        files.push(fullPath);
+/** Load canonical skill files from disk into the shared store namespace (run once at deploy).
+ *  You can retrieve skills from any source (local filesystem, remote URL, etc.).
+ */
+async function seedSkillStore(store: InMemoryStore) {
+  const moduleDir = resolve(fileURLToPath(new URL(".", import.meta.url)));
+  const skillsDir = resolve(moduleDir, "skills");
+  const filePaths = await walkFiles(skillsDir);
+  for (const filePath of filePaths) {
+    const rel = relative(skillsDir, filePath);
+    // StoreBackend keys are paths *relative to the routed backend root*.
+    // CompositeBackend strips the route prefix (`/skills/`) before delegating,
+    // so store keys should look like "/<skillname>/SKILL.md".
+    const key = `/${posix.normalize(rel.split("\\").join("/"))}`;
+    const content = await readFile(filePath, "utf8");
+    await store.put([...SKILLS_SHARED_NAMESPACE], key, createFileData(content));
+  }
+}
+
+/** Copy shared skill files from the store into the sandbox before each agent run. */
+function createSkillSandboxSyncMiddleware(backend: CompositeBackend) {
+  return createMiddleware({
+    name: "SkillSandboxSyncMiddleware",
+    beforeAgent: async (state, runtime) => {
+      const store = (runtime as any).store;
+      if (!store) {
+        throw new Error(
+          "Store is required for syncing skills into the sandbox. " +
+            "Pass `store` to createDeepAgent and ensure your runtime provides it.",
+        );
       }
-    }
-    return files.sort((a, b) => a.localeCompare(b));
-  }
 
-  /** Load canonical skill files from disk into the shared store namespace (run once at deploy).
-   *  You can retrieve skills from any source (local filesystem, remote URL, etc.).
-   */
-  async function seedSkillStore(store: InMemoryStore) {
-    const moduleDir = resolve(fileURLToPath(new URL(".", import.meta.url)));
-    const skillsDir = resolve(moduleDir, "skills");
-    const filePaths = await walkFiles(skillsDir);
-    for (const filePath of filePaths) {
-      const rel = relative(skillsDir, filePath);
-      // StoreBackend keys are paths *relative to the routed backend root*.
-      // CompositeBackend strips the route prefix (`/skills/`) before delegating,
-      // so store keys should look like "/<skillname>/SKILL.md".
-      const key = `/${posix.normalize(rel.split("\\").join("/"))}`;
-      const content = await readFile(filePath, "utf8");
-      await store.put([...SKILLS_SHARED_NAMESPACE], key, createFileData(content));
-    }
-  }
+      const encoder = new TextEncoder();
+      const files: Array<[string, Uint8Array]> = [];
 
-  /** Copy shared skill files from the store into the sandbox before each agent run. */
-  function createSkillSandboxSyncMiddleware(backend: CompositeBackend) {
-    return createMiddleware({
-      name: "SkillSandboxSyncMiddleware",
-      beforeAgent: async (state, runtime) => {
-        const store = (runtime as any).store;
-        if (!store) {
-          throw new Error(
-            "Store is required for syncing skills into the sandbox. " +
-              "Pass `store` to createDeepAgent and ensure your runtime provides it.",
-          );
-        }
-
-        const encoder = new TextEncoder();
-        const files: Array<[string, Uint8Array]> = [];
-
-        for (const item of await store.search([...SKILLS_SHARED_NAMESPACE])) {
-          const normalized = normalizeSkillsStoreKey(String(item.key));
-          const data = item.value as FileData;
-          // CompositeBackend routes paths and batches uploads to the right backend.
-          files.push([
-            `/skills${normalized}`,
-            encoder.encode(data.content.join("\n")),
-          ]);
-        }
-
-        if (files.length > 0) await backend.uploadFiles(files);
-
-        return state;
-      },
-    });
-  }
-
-  async function main() {
-    const store = new InMemoryStore();
-    await seedSkillStore(store);
-
-    const client = new SandboxClient();
-    const lsSandbox = await client.createSandbox();
-
-    const backend = new CompositeBackend(
-      new LangSmithSandbox({ sandbox: lsSandbox }),
-      {
-        "/skills/": new StoreBackend({
-          store,
-          namespace: () => [...SKILLS_SHARED_NAMESPACE],
-        } as any),
-      },
-    );
-
-    try {
-      const agent = await createDeepAgent({
-        model: "anthropic:claude-sonnet-5",
-        backend,
-        skills: ["/skills/"],
-        store,
-        middleware: [createSkillSandboxSyncMiddleware(backend)],
-      });
-
-    } finally {
-      await client.deleteSandbox(lsSandbox.name);
-    }
-  }
-
-  main().catch((err) => {
-    console.error(err);
-    process.exitCode = 1;
-  });
-  ```
-
-  ```ts OpenRouter theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  import { readFile, readdir } from "node:fs/promises";
-  import { join, posix, relative, resolve } from "node:path";
-  import { fileURLToPath } from "node:url";
-
-  import { createMiddleware } from "langchain";
-  import {
-    CompositeBackend,
-    createDeepAgent,
-    type FileData,
-    LangSmithSandbox,
-    StoreBackend,
-  } from "deepagents";
-  import { InMemoryStore } from "@langchain/langgraph";
-  import { SandboxClient } from "langsmith/sandbox";
-
-  /** Identical skill bundles for every user: one shared store namespace. */
-  const SKILLS_SHARED_NAMESPACE = ["skills", "builtin"] as const;
-
-  function createFileData(content: string): FileData {
-    const now = new Date().toISOString();
-    return {
-      content: content.split("\n"),
-      created_at: now,
-      modified_at: now,
-    };
-  }
-
-  function normalizeSkillsStoreKey(key: string): string {
-    const k = String(key);
-    if (k.includes("..") || /[*?]/.test(k)) {
-      throw new Error(`Invalid key: ${key}`);
-    }
-    return k.startsWith("/") ? k : `/${k}`;
-  }
-
-  async function walkFiles(dir: string): Promise<string[]> {
-    const entries = await readdir(dir, { withFileTypes: true });
-    const files: string[] = [];
-    for (const entry of entries) {
-      const fullPath = join(dir, entry.name);
-      if (entry.isDirectory()) {
-        files.push(...(await walkFiles(fullPath)));
-      } else if (entry.isFile()) {
-        files.push(fullPath);
+      for (const item of await store.search([...SKILLS_SHARED_NAMESPACE])) {
+        const normalized = normalizeSkillsStoreKey(String(item.key));
+        const data = item.value as FileData;
+        // CompositeBackend routes paths and batches uploads to the right backend.
+        files.push([
+          `/skills${normalized}`,
+          encoder.encode(data.content.join("\n")),
+        ]);
       }
-    }
-    return files.sort((a, b) => a.localeCompare(b));
-  }
 
-  /** Load canonical skill files from disk into the shared store namespace (run once at deploy).
-   *  You can retrieve skills from any source (local filesystem, remote URL, etc.).
-   */
-  async function seedSkillStore(store: InMemoryStore) {
-    const moduleDir = resolve(fileURLToPath(new URL(".", import.meta.url)));
-    const skillsDir = resolve(moduleDir, "skills");
-    const filePaths = await walkFiles(skillsDir);
-    for (const filePath of filePaths) {
-      const rel = relative(skillsDir, filePath);
-      // StoreBackend keys are paths *relative to the routed backend root*.
-      // CompositeBackend strips the route prefix (`/skills/`) before delegating,
-      // so store keys should look like "/<skillname>/SKILL.md".
-      const key = `/${posix.normalize(rel.split("\\").join("/"))}`;
-      const content = await readFile(filePath, "utf8");
-      await store.put([...SKILLS_SHARED_NAMESPACE], key, createFileData(content));
-    }
-  }
+      if (files.length > 0) await backend.uploadFiles(files);
 
-  /** Copy shared skill files from the store into the sandbox before each agent run. */
-  function createSkillSandboxSyncMiddleware(backend: CompositeBackend) {
-    return createMiddleware({
-      name: "SkillSandboxSyncMiddleware",
-      beforeAgent: async (state, runtime) => {
-        const store = (runtime as any).store;
-        if (!store) {
-          throw new Error(
-            "Store is required for syncing skills into the sandbox. " +
-              "Pass `store` to createDeepAgent and ensure your runtime provides it.",
-          );
-        }
-
-        const encoder = new TextEncoder();
-        const files: Array<[string, Uint8Array]> = [];
-
-        for (const item of await store.search([...SKILLS_SHARED_NAMESPACE])) {
-          const normalized = normalizeSkillsStoreKey(String(item.key));
-          const data = item.value as FileData;
-          // CompositeBackend routes paths and batches uploads to the right backend.
-          files.push([
-            `/skills${normalized}`,
-            encoder.encode(data.content.join("\n")),
-          ]);
-        }
-
-        if (files.length > 0) await backend.uploadFiles(files);
-
-        return state;
-      },
-    });
-  }
-
-  async function main() {
-    const store = new InMemoryStore();
-    await seedSkillStore(store);
-
-    const client = new SandboxClient();
-    const lsSandbox = await client.createSandbox();
-
-    const backend = new CompositeBackend(
-      new LangSmithSandbox({ sandbox: lsSandbox }),
-      {
-        "/skills/": new StoreBackend({
-          store,
-          namespace: () => [...SKILLS_SHARED_NAMESPACE],
-        } as any),
-      },
-    );
-
-    try {
-      const agent = await createDeepAgent({
-        model: "openrouter:z-ai/glm-5.2",
-        backend,
-        skills: ["/skills/"],
-        store,
-        middleware: [createSkillSandboxSyncMiddleware(backend)],
-      });
-
-    } finally {
-      await client.deleteSandbox(lsSandbox.name);
-    }
-  }
-
-  main().catch((err) => {
-    console.error(err);
-    process.exitCode = 1;
+      return state;
+    },
   });
-  ```
+}
 
-  ```ts Fireworks theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  import { readFile, readdir } from "node:fs/promises";
-  import { join, posix, relative, resolve } from "node:path";
-  import { fileURLToPath } from "node:url";
+async function main() {
+  const store = new InMemoryStore();
+  await seedSkillStore(store);
 
-  import { createMiddleware } from "langchain";
-  import {
-    CompositeBackend,
-    createDeepAgent,
-    type FileData,
-    LangSmithSandbox,
-    StoreBackend,
-  } from "deepagents";
-  import { InMemoryStore } from "@langchain/langgraph";
-  import { SandboxClient } from "langsmith/sandbox";
+  const client = new SandboxClient();
+  const lsSandbox = await client.createSandbox();
 
-  /** Identical skill bundles for every user: one shared store namespace. */
-  const SKILLS_SHARED_NAMESPACE = ["skills", "builtin"] as const;
+  const backend = new CompositeBackend(
+    new LangSmithSandbox({ sandbox: lsSandbox }),
+    {
+      "/skills/": new StoreBackend({
+        store,
+        namespace: () => [...SKILLS_SHARED_NAMESPACE],
+      } as any),
+    },
+  );
 
-  function createFileData(content: string): FileData {
-    const now = new Date().toISOString();
-    return {
-      content: content.split("\n"),
-      created_at: now,
-      modified_at: now,
-    };
+  try {
+    const agent = await createDeepAgent({
+      model: "openai:gpt-5.5",
+      backend,
+      skills: ["/skills/"],
+      store,
+      middleware: [createSkillSandboxSyncMiddleware(backend)],
+    });
+
+  } finally {
+    await client.deleteSandbox(lsSandbox.name);
   }
+}
 
-  function normalizeSkillsStoreKey(key: string): string {
-    const k = String(key);
-    if (k.includes("..") || /[*?]/.test(k)) {
-      throw new Error(`Invalid key: ${key}`);
+main().catch((err) => {
+  console.error(err);
+  process.exitCode = 1;
+});
+```
+
+```ts Anthropic theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+import { readFile, readdir } from "node:fs/promises";
+import { join, posix, relative, resolve } from "node:path";
+import { fileURLToPath } from "node:url";
+
+import { createMiddleware } from "langchain";
+import {
+  CompositeBackend,
+  createDeepAgent,
+  type FileData,
+  LangSmithSandbox,
+  StoreBackend,
+} from "deepagents";
+import { InMemoryStore } from "@langchain/langgraph";
+import { SandboxClient } from "langsmith/sandbox";
+
+/** Identical skill bundles for every user: one shared store namespace. */
+const SKILLS_SHARED_NAMESPACE = ["skills", "builtin"] as const;
+
+function createFileData(content: string): FileData {
+  const now = new Date().toISOString();
+  return {
+    content: content.split("\n"),
+    created_at: now,
+    modified_at: now,
+  };
+}
+
+function normalizeSkillsStoreKey(key: string): string {
+  const k = String(key);
+  if (k.includes("..") || /[*?]/.test(k)) {
+    throw new Error(`Invalid key: ${key}`);
+  }
+  return k.startsWith("/") ? k : `/${k}`;
+}
+
+async function walkFiles(dir: string): Promise<string[]> {
+  const entries = await readdir(dir, { withFileTypes: true });
+  const files: string[] = [];
+  for (const entry of entries) {
+    const fullPath = join(dir, entry.name);
+    if (entry.isDirectory()) {
+      files.push(...(await walkFiles(fullPath)));
+    } else if (entry.isFile()) {
+      files.push(fullPath);
     }
-    return k.startsWith("/") ? k : `/${k}`;
   }
+  return files.sort((a, b) => a.localeCompare(b));
+}
 
-  async function walkFiles(dir: string): Promise<string[]> {
-    const entries = await readdir(dir, { withFileTypes: true });
-    const files: string[] = [];
-    for (const entry of entries) {
-      const fullPath = join(dir, entry.name);
-      if (entry.isDirectory()) {
-        files.push(...(await walkFiles(fullPath)));
-      } else if (entry.isFile()) {
-        files.push(fullPath);
+/** Load canonical skill files from disk into the shared store namespace (run once at deploy).
+ *  You can retrieve skills from any source (local filesystem, remote URL, etc.).
+ */
+async function seedSkillStore(store: InMemoryStore) {
+  const moduleDir = resolve(fileURLToPath(new URL(".", import.meta.url)));
+  const skillsDir = resolve(moduleDir, "skills");
+  const filePaths = await walkFiles(skillsDir);
+  for (const filePath of filePaths) {
+    const rel = relative(skillsDir, filePath);
+    // StoreBackend keys are paths *relative to the routed backend root*.
+    // CompositeBackend strips the route prefix (`/skills/`) before delegating,
+    // so store keys should look like "/<skillname>/SKILL.md".
+    const key = `/${posix.normalize(rel.split("\\").join("/"))}`;
+    const content = await readFile(filePath, "utf8");
+    await store.put([...SKILLS_SHARED_NAMESPACE], key, createFileData(content));
+  }
+}
+
+/** Copy shared skill files from the store into the sandbox before each agent run. */
+function createSkillSandboxSyncMiddleware(backend: CompositeBackend) {
+  return createMiddleware({
+    name: "SkillSandboxSyncMiddleware",
+    beforeAgent: async (state, runtime) => {
+      const store = (runtime as any).store;
+      if (!store) {
+        throw new Error(
+          "Store is required for syncing skills into the sandbox. " +
+            "Pass `store` to createDeepAgent and ensure your runtime provides it.",
+        );
       }
-    }
-    return files.sort((a, b) => a.localeCompare(b));
-  }
 
-  /** Load canonical skill files from disk into the shared store namespace (run once at deploy).
-   *  You can retrieve skills from any source (local filesystem, remote URL, etc.).
-   */
-  async function seedSkillStore(store: InMemoryStore) {
-    const moduleDir = resolve(fileURLToPath(new URL(".", import.meta.url)));
-    const skillsDir = resolve(moduleDir, "skills");
-    const filePaths = await walkFiles(skillsDir);
-    for (const filePath of filePaths) {
-      const rel = relative(skillsDir, filePath);
-      // StoreBackend keys are paths *relative to the routed backend root*.
-      // CompositeBackend strips the route prefix (`/skills/`) before delegating,
-      // so store keys should look like "/<skillname>/SKILL.md".
-      const key = `/${posix.normalize(rel.split("\\").join("/"))}`;
-      const content = await readFile(filePath, "utf8");
-      await store.put([...SKILLS_SHARED_NAMESPACE], key, createFileData(content));
-    }
-  }
+      const encoder = new TextEncoder();
+      const files: Array<[string, Uint8Array]> = [];
 
-  /** Copy shared skill files from the store into the sandbox before each agent run. */
-  function createSkillSandboxSyncMiddleware(backend: CompositeBackend) {
-    return createMiddleware({
-      name: "SkillSandboxSyncMiddleware",
-      beforeAgent: async (state, runtime) => {
-        const store = (runtime as any).store;
-        if (!store) {
-          throw new Error(
-            "Store is required for syncing skills into the sandbox. " +
-              "Pass `store` to createDeepAgent and ensure your runtime provides it.",
-          );
-        }
-
-        const encoder = new TextEncoder();
-        const files: Array<[string, Uint8Array]> = [];
-
-        for (const item of await store.search([...SKILLS_SHARED_NAMESPACE])) {
-          const normalized = normalizeSkillsStoreKey(String(item.key));
-          const data = item.value as FileData;
-          // CompositeBackend routes paths and batches uploads to the right backend.
-          files.push([
-            `/skills${normalized}`,
-            encoder.encode(data.content.join("\n")),
-          ]);
-        }
-
-        if (files.length > 0) await backend.uploadFiles(files);
-
-        return state;
-      },
-    });
-  }
-
-  async function main() {
-    const store = new InMemoryStore();
-    await seedSkillStore(store);
-
-    const client = new SandboxClient();
-    const lsSandbox = await client.createSandbox();
-
-    const backend = new CompositeBackend(
-      new LangSmithSandbox({ sandbox: lsSandbox }),
-      {
-        "/skills/": new StoreBackend({
-          store,
-          namespace: () => [...SKILLS_SHARED_NAMESPACE],
-        } as any),
-      },
-    );
-
-    try {
-      const agent = await createDeepAgent({
-        model: "fireworks:accounts/fireworks/models/glm-5p2",
-        backend,
-        skills: ["/skills/"],
-        store,
-        middleware: [createSkillSandboxSyncMiddleware(backend)],
-      });
-
-    } finally {
-      await client.deleteSandbox(lsSandbox.name);
-    }
-  }
-
-  main().catch((err) => {
-    console.error(err);
-    process.exitCode = 1;
-  });
-  ```
-
-  ```ts Baseten theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  import { readFile, readdir } from "node:fs/promises";
-  import { join, posix, relative, resolve } from "node:path";
-  import { fileURLToPath } from "node:url";
-
-  import { createMiddleware } from "langchain";
-  import {
-    CompositeBackend,
-    createDeepAgent,
-    type FileData,
-    LangSmithSandbox,
-    StoreBackend,
-  } from "deepagents";
-  import { InMemoryStore } from "@langchain/langgraph";
-  import { SandboxClient } from "langsmith/sandbox";
-
-  /** Identical skill bundles for every user: one shared store namespace. */
-  const SKILLS_SHARED_NAMESPACE = ["skills", "builtin"] as const;
-
-  function createFileData(content: string): FileData {
-    const now = new Date().toISOString();
-    return {
-      content: content.split("\n"),
-      created_at: now,
-      modified_at: now,
-    };
-  }
-
-  function normalizeSkillsStoreKey(key: string): string {
-    const k = String(key);
-    if (k.includes("..") || /[*?]/.test(k)) {
-      throw new Error(`Invalid key: ${key}`);
-    }
-    return k.startsWith("/") ? k : `/${k}`;
-  }
-
-  async function walkFiles(dir: string): Promise<string[]> {
-    const entries = await readdir(dir, { withFileTypes: true });
-    const files: string[] = [];
-    for (const entry of entries) {
-      const fullPath = join(dir, entry.name);
-      if (entry.isDirectory()) {
-        files.push(...(await walkFiles(fullPath)));
-      } else if (entry.isFile()) {
-        files.push(fullPath);
+      for (const item of await store.search([...SKILLS_SHARED_NAMESPACE])) {
+        const normalized = normalizeSkillsStoreKey(String(item.key));
+        const data = item.value as FileData;
+        // CompositeBackend routes paths and batches uploads to the right backend.
+        files.push([
+          `/skills${normalized}`,
+          encoder.encode(data.content.join("\n")),
+        ]);
       }
-    }
-    return files.sort((a, b) => a.localeCompare(b));
-  }
 
-  /** Load canonical skill files from disk into the shared store namespace (run once at deploy).
-   *  You can retrieve skills from any source (local filesystem, remote URL, etc.).
-   */
-  async function seedSkillStore(store: InMemoryStore) {
-    const moduleDir = resolve(fileURLToPath(new URL(".", import.meta.url)));
-    const skillsDir = resolve(moduleDir, "skills");
-    const filePaths = await walkFiles(skillsDir);
-    for (const filePath of filePaths) {
-      const rel = relative(skillsDir, filePath);
-      // StoreBackend keys are paths *relative to the routed backend root*.
-      // CompositeBackend strips the route prefix (`/skills/`) before delegating,
-      // so store keys should look like "/<skillname>/SKILL.md".
-      const key = `/${posix.normalize(rel.split("\\").join("/"))}`;
-      const content = await readFile(filePath, "utf8");
-      await store.put([...SKILLS_SHARED_NAMESPACE], key, createFileData(content));
-    }
-  }
+      if (files.length > 0) await backend.uploadFiles(files);
 
-  /** Copy shared skill files from the store into the sandbox before each agent run. */
-  function createSkillSandboxSyncMiddleware(backend: CompositeBackend) {
-    return createMiddleware({
-      name: "SkillSandboxSyncMiddleware",
-      beforeAgent: async (state, runtime) => {
-        const store = (runtime as any).store;
-        if (!store) {
-          throw new Error(
-            "Store is required for syncing skills into the sandbox. " +
-              "Pass `store` to createDeepAgent and ensure your runtime provides it.",
-          );
-        }
-
-        const encoder = new TextEncoder();
-        const files: Array<[string, Uint8Array]> = [];
-
-        for (const item of await store.search([...SKILLS_SHARED_NAMESPACE])) {
-          const normalized = normalizeSkillsStoreKey(String(item.key));
-          const data = item.value as FileData;
-          // CompositeBackend routes paths and batches uploads to the right backend.
-          files.push([
-            `/skills${normalized}`,
-            encoder.encode(data.content.join("\n")),
-          ]);
-        }
-
-        if (files.length > 0) await backend.uploadFiles(files);
-
-        return state;
-      },
-    });
-  }
-
-  async function main() {
-    const store = new InMemoryStore();
-    await seedSkillStore(store);
-
-    const client = new SandboxClient();
-    const lsSandbox = await client.createSandbox();
-
-    const backend = new CompositeBackend(
-      new LangSmithSandbox({ sandbox: lsSandbox }),
-      {
-        "/skills/": new StoreBackend({
-          store,
-          namespace: () => [...SKILLS_SHARED_NAMESPACE],
-        } as any),
-      },
-    );
-
-    try {
-      const agent = await createDeepAgent({
-        model: "baseten:zai-org/GLM-5.2",
-        backend,
-        skills: ["/skills/"],
-        store,
-        middleware: [createSkillSandboxSyncMiddleware(backend)],
-      });
-
-    } finally {
-      await client.deleteSandbox(lsSandbox.name);
-    }
-  }
-
-  main().catch((err) => {
-    console.error(err);
-    process.exitCode = 1;
+      return state;
+    },
   });
-  ```
+}
 
-  ```ts Ollama theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  import { readFile, readdir } from "node:fs/promises";
-  import { join, posix, relative, resolve } from "node:path";
-  import { fileURLToPath } from "node:url";
+async function main() {
+  const store = new InMemoryStore();
+  await seedSkillStore(store);
 
-  import { createMiddleware } from "langchain";
-  import {
-    CompositeBackend,
-    createDeepAgent,
-    type FileData,
-    LangSmithSandbox,
-    StoreBackend,
-  } from "deepagents";
-  import { InMemoryStore } from "@langchain/langgraph";
-  import { SandboxClient } from "langsmith/sandbox";
+  const client = new SandboxClient();
+  const lsSandbox = await client.createSandbox();
 
-  /** Identical skill bundles for every user: one shared store namespace. */
-  const SKILLS_SHARED_NAMESPACE = ["skills", "builtin"] as const;
+  const backend = new CompositeBackend(
+    new LangSmithSandbox({ sandbox: lsSandbox }),
+    {
+      "/skills/": new StoreBackend({
+        store,
+        namespace: () => [...SKILLS_SHARED_NAMESPACE],
+      } as any),
+    },
+  );
 
-  function createFileData(content: string): FileData {
-    const now = new Date().toISOString();
-    return {
-      content: content.split("\n"),
-      created_at: now,
-      modified_at: now,
-    };
+  try {
+    const agent = await createDeepAgent({
+      model: "anthropic:claude-sonnet-5",
+      backend,
+      skills: ["/skills/"],
+      store,
+      middleware: [createSkillSandboxSyncMiddleware(backend)],
+    });
+
+  } finally {
+    await client.deleteSandbox(lsSandbox.name);
   }
+}
 
-  function normalizeSkillsStoreKey(key: string): string {
-    const k = String(key);
-    if (k.includes("..") || /[*?]/.test(k)) {
-      throw new Error(`Invalid key: ${key}`);
+main().catch((err) => {
+  console.error(err);
+  process.exitCode = 1;
+});
+```
+
+```ts OpenRouter theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+import { readFile, readdir } from "node:fs/promises";
+import { join, posix, relative, resolve } from "node:path";
+import { fileURLToPath } from "node:url";
+
+import { createMiddleware } from "langchain";
+import {
+  CompositeBackend,
+  createDeepAgent,
+  type FileData,
+  LangSmithSandbox,
+  StoreBackend,
+} from "deepagents";
+import { InMemoryStore } from "@langchain/langgraph";
+import { SandboxClient } from "langsmith/sandbox";
+
+/** Identical skill bundles for every user: one shared store namespace. */
+const SKILLS_SHARED_NAMESPACE = ["skills", "builtin"] as const;
+
+function createFileData(content: string): FileData {
+  const now = new Date().toISOString();
+  return {
+    content: content.split("\n"),
+    created_at: now,
+    modified_at: now,
+  };
+}
+
+function normalizeSkillsStoreKey(key: string): string {
+  const k = String(key);
+  if (k.includes("..") || /[*?]/.test(k)) {
+    throw new Error(`Invalid key: ${key}`);
+  }
+  return k.startsWith("/") ? k : `/${k}`;
+}
+
+async function walkFiles(dir: string): Promise<string[]> {
+  const entries = await readdir(dir, { withFileTypes: true });
+  const files: string[] = [];
+  for (const entry of entries) {
+    const fullPath = join(dir, entry.name);
+    if (entry.isDirectory()) {
+      files.push(...(await walkFiles(fullPath)));
+    } else if (entry.isFile()) {
+      files.push(fullPath);
     }
-    return k.startsWith("/") ? k : `/${k}`;
   }
+  return files.sort((a, b) => a.localeCompare(b));
+}
 
-  async function walkFiles(dir: string): Promise<string[]> {
-    const entries = await readdir(dir, { withFileTypes: true });
-    const files: string[] = [];
-    for (const entry of entries) {
-      const fullPath = join(dir, entry.name);
-      if (entry.isDirectory()) {
-        files.push(...(await walkFiles(fullPath)));
-      } else if (entry.isFile()) {
-        files.push(fullPath);
+/** Load canonical skill files from disk into the shared store namespace (run once at deploy).
+ *  You can retrieve skills from any source (local filesystem, remote URL, etc.).
+ */
+async function seedSkillStore(store: InMemoryStore) {
+  const moduleDir = resolve(fileURLToPath(new URL(".", import.meta.url)));
+  const skillsDir = resolve(moduleDir, "skills");
+  const filePaths = await walkFiles(skillsDir);
+  for (const filePath of filePaths) {
+    const rel = relative(skillsDir, filePath);
+    // StoreBackend keys are paths *relative to the routed backend root*.
+    // CompositeBackend strips the route prefix (`/skills/`) before delegating,
+    // so store keys should look like "/<skillname>/SKILL.md".
+    const key = `/${posix.normalize(rel.split("\\").join("/"))}`;
+    const content = await readFile(filePath, "utf8");
+    await store.put([...SKILLS_SHARED_NAMESPACE], key, createFileData(content));
+  }
+}
+
+/** Copy shared skill files from the store into the sandbox before each agent run. */
+function createSkillSandboxSyncMiddleware(backend: CompositeBackend) {
+  return createMiddleware({
+    name: "SkillSandboxSyncMiddleware",
+    beforeAgent: async (state, runtime) => {
+      const store = (runtime as any).store;
+      if (!store) {
+        throw new Error(
+          "Store is required for syncing skills into the sandbox. " +
+            "Pass `store` to createDeepAgent and ensure your runtime provides it.",
+        );
       }
-    }
-    return files.sort((a, b) => a.localeCompare(b));
-  }
 
-  /** Load canonical skill files from disk into the shared store namespace (run once at deploy).
-   *  You can retrieve skills from any source (local filesystem, remote URL, etc.).
-   */
-  async function seedSkillStore(store: InMemoryStore) {
-    const moduleDir = resolve(fileURLToPath(new URL(".", import.meta.url)));
-    const skillsDir = resolve(moduleDir, "skills");
-    const filePaths = await walkFiles(skillsDir);
-    for (const filePath of filePaths) {
-      const rel = relative(skillsDir, filePath);
-      // StoreBackend keys are paths *relative to the routed backend root*.
-      // CompositeBackend strips the route prefix (`/skills/`) before delegating,
-      // so store keys should look like "/<skillname>/SKILL.md".
-      const key = `/${posix.normalize(rel.split("\\").join("/"))}`;
-      const content = await readFile(filePath, "utf8");
-      await store.put([...SKILLS_SHARED_NAMESPACE], key, createFileData(content));
-    }
-  }
+      const encoder = new TextEncoder();
+      const files: Array<[string, Uint8Array]> = [];
 
-  /** Copy shared skill files from the store into the sandbox before each agent run. */
-  function createSkillSandboxSyncMiddleware(backend: CompositeBackend) {
-    return createMiddleware({
-      name: "SkillSandboxSyncMiddleware",
-      beforeAgent: async (state, runtime) => {
-        const store = (runtime as any).store;
-        if (!store) {
-          throw new Error(
-            "Store is required for syncing skills into the sandbox. " +
-              "Pass `store` to createDeepAgent and ensure your runtime provides it.",
-          );
-        }
+      for (const item of await store.search([...SKILLS_SHARED_NAMESPACE])) {
+        const normalized = normalizeSkillsStoreKey(String(item.key));
+        const data = item.value as FileData;
+        // CompositeBackend routes paths and batches uploads to the right backend.
+        files.push([
+          `/skills${normalized}`,
+          encoder.encode(data.content.join("\n")),
+        ]);
+      }
 
-        const encoder = new TextEncoder();
-        const files: Array<[string, Uint8Array]> = [];
+      if (files.length > 0) await backend.uploadFiles(files);
 
-        for (const item of await store.search([...SKILLS_SHARED_NAMESPACE])) {
-          const normalized = normalizeSkillsStoreKey(String(item.key));
-          const data = item.value as FileData;
-          // CompositeBackend routes paths and batches uploads to the right backend.
-          files.push([
-            `/skills${normalized}`,
-            encoder.encode(data.content.join("\n")),
-          ]);
-        }
-
-        if (files.length > 0) await backend.uploadFiles(files);
-
-        return state;
-      },
-    });
-  }
-
-  async function main() {
-    const store = new InMemoryStore();
-    await seedSkillStore(store);
-
-    const client = new SandboxClient();
-    const lsSandbox = await client.createSandbox();
-
-    const backend = new CompositeBackend(
-      new LangSmithSandbox({ sandbox: lsSandbox }),
-      {
-        "/skills/": new StoreBackend({
-          store,
-          namespace: () => [...SKILLS_SHARED_NAMESPACE],
-        } as any),
-      },
-    );
-
-    try {
-      const agent = await createDeepAgent({
-        model: "ollama:north-mini-code-1.0",
-        backend,
-        skills: ["/skills/"],
-        store,
-        middleware: [createSkillSandboxSyncMiddleware(backend)],
-      });
-
-    } finally {
-      await client.deleteSandbox(lsSandbox.name);
-    }
-  }
-
-  main().catch((err) => {
-    console.error(err);
-    process.exitCode = 1;
+      return state;
+    },
   });
-  ```
-</CodeGroup>
+}
 
-<Card title="View example trace" icon="chart-line" href="https://smith.langchain.com/public/cca657b7-b162-47f9-9fca-a20bed29cb66/r">
-  Open a public LangSmith run for this example.
-</Card>
+async function main() {
+  const store = new InMemoryStore();
+  await seedSkillStore(store);
+
+  const client = new SandboxClient();
+  const lsSandbox = await client.createSandbox();
+
+  const backend = new CompositeBackend(
+    new LangSmithSandbox({ sandbox: lsSandbox }),
+    {
+      "/skills/": new StoreBackend({
+        store,
+        namespace: () => [...SKILLS_SHARED_NAMESPACE],
+      } as any),
+    },
+  );
+
+  try {
+    const agent = await createDeepAgent({
+      model: "openrouter:z-ai/glm-5.2",
+      backend,
+      skills: ["/skills/"],
+      store,
+      middleware: [createSkillSandboxSyncMiddleware(backend)],
+    });
+
+  } finally {
+    await client.deleteSandbox(lsSandbox.name);
+  }
+}
+
+main().catch((err) => {
+  console.error(err);
+  process.exitCode = 1;
+});
+```
+
+```ts Fireworks theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+import { readFile, readdir } from "node:fs/promises";
+import { join, posix, relative, resolve } from "node:path";
+import { fileURLToPath } from "node:url";
+
+import { createMiddleware } from "langchain";
+import {
+  CompositeBackend,
+  createDeepAgent,
+  type FileData,
+  LangSmithSandbox,
+  StoreBackend,
+} from "deepagents";
+import { InMemoryStore } from "@langchain/langgraph";
+import { SandboxClient } from "langsmith/sandbox";
+
+/** Identical skill bundles for every user: one shared store namespace. */
+const SKILLS_SHARED_NAMESPACE = ["skills", "builtin"] as const;
+
+function createFileData(content: string): FileData {
+  const now = new Date().toISOString();
+  return {
+    content: content.split("\n"),
+    created_at: now,
+    modified_at: now,
+  };
+}
+
+function normalizeSkillsStoreKey(key: string): string {
+  const k = String(key);
+  if (k.includes("..") || /[*?]/.test(k)) {
+    throw new Error(`Invalid key: ${key}`);
+  }
+  return k.startsWith("/") ? k : `/${k}`;
+}
+
+async function walkFiles(dir: string): Promise<string[]> {
+  const entries = await readdir(dir, { withFileTypes: true });
+  const files: string[] = [];
+  for (const entry of entries) {
+    const fullPath = join(dir, entry.name);
+    if (entry.isDirectory()) {
+      files.push(...(await walkFiles(fullPath)));
+    } else if (entry.isFile()) {
+      files.push(fullPath);
+    }
+  }
+  return files.sort((a, b) => a.localeCompare(b));
+}
+
+/** Load canonical skill files from disk into the shared store namespace (run once at deploy).
+ *  You can retrieve skills from any source (local filesystem, remote URL, etc.).
+ */
+async function seedSkillStore(store: InMemoryStore) {
+  const moduleDir = resolve(fileURLToPath(new URL(".", import.meta.url)));
+  const skillsDir = resolve(moduleDir, "skills");
+  const filePaths = await walkFiles(skillsDir);
+  for (const filePath of filePaths) {
+    const rel = relative(skillsDir, filePath);
+    // StoreBackend keys are paths *relative to the routed backend root*.
+    // CompositeBackend strips the route prefix (`/skills/`) before delegating,
+    // so store keys should look like "/<skillname>/SKILL.md".
+    const key = `/${posix.normalize(rel.split("\\").join("/"))}`;
+    const content = await readFile(filePath, "utf8");
+    await store.put([...SKILLS_SHARED_NAMESPACE], key, createFileData(content));
+  }
+}
+
+/** Copy shared skill files from the store into the sandbox before each agent run. */
+function createSkillSandboxSyncMiddleware(backend: CompositeBackend) {
+  return createMiddleware({
+    name: "SkillSandboxSyncMiddleware",
+    beforeAgent: async (state, runtime) => {
+      const store = (runtime as any).store;
+      if (!store) {
+        throw new Error(
+          "Store is required for syncing skills into the sandbox. " +
+            "Pass `store` to createDeepAgent and ensure your runtime provides it.",
+        );
+      }
+
+      const encoder = new TextEncoder();
+      const files: Array<[string, Uint8Array]> = [];
+
+      for (const item of await store.search([...SKILLS_SHARED_NAMESPACE])) {
+        const normalized = normalizeSkillsStoreKey(String(item.key));
+        const data = item.value as FileData;
+        // CompositeBackend routes paths and batches uploads to the right backend.
+        files.push([
+          `/skills${normalized}`,
+          encoder.encode(data.content.join("\n")),
+        ]);
+      }
+
+      if (files.length > 0) await backend.uploadFiles(files);
+
+      return state;
+    },
+  });
+}
+
+async function main() {
+  const store = new InMemoryStore();
+  await seedSkillStore(store);
+
+  const client = new SandboxClient();
+  const lsSandbox = await client.createSandbox();
+
+  const backend = new CompositeBackend(
+    new LangSmithSandbox({ sandbox: lsSandbox }),
+    {
+      "/skills/": new StoreBackend({
+        store,
+        namespace: () => [...SKILLS_SHARED_NAMESPACE],
+      } as any),
+    },
+  );
+
+  try {
+    const agent = await createDeepAgent({
+      model: "fireworks:accounts/fireworks/models/glm-5p2",
+      backend,
+      skills: ["/skills/"],
+      store,
+      middleware: [createSkillSandboxSyncMiddleware(backend)],
+    });
+
+  } finally {
+    await client.deleteSandbox(lsSandbox.name);
+  }
+}
+
+main().catch((err) => {
+  console.error(err);
+  process.exitCode = 1;
+});
+```
+
+```ts Baseten theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+import { readFile, readdir } from "node:fs/promises";
+import { join, posix, relative, resolve } from "node:path";
+import { fileURLToPath } from "node:url";
+
+import { createMiddleware } from "langchain";
+import {
+  CompositeBackend,
+  createDeepAgent,
+  type FileData,
+  LangSmithSandbox,
+  StoreBackend,
+} from "deepagents";
+import { InMemoryStore } from "@langchain/langgraph";
+import { SandboxClient } from "langsmith/sandbox";
+
+/** Identical skill bundles for every user: one shared store namespace. */
+const SKILLS_SHARED_NAMESPACE = ["skills", "builtin"] as const;
+
+function createFileData(content: string): FileData {
+  const now = new Date().toISOString();
+  return {
+    content: content.split("\n"),
+    created_at: now,
+    modified_at: now,
+  };
+}
+
+function normalizeSkillsStoreKey(key: string): string {
+  const k = String(key);
+  if (k.includes("..") || /[*?]/.test(k)) {
+    throw new Error(`Invalid key: ${key}`);
+  }
+  return k.startsWith("/") ? k : `/${k}`;
+}
+
+async function walkFiles(dir: string): Promise<string[]> {
+  const entries = await readdir(dir, { withFileTypes: true });
+  const files: string[] = [];
+  for (const entry of entries) {
+    const fullPath = join(dir, entry.name);
+    if (entry.isDirectory()) {
+      files.push(...(await walkFiles(fullPath)));
+    } else if (entry.isFile()) {
+      files.push(fullPath);
+    }
+  }
+  return files.sort((a, b) => a.localeCompare(b));
+}
+
+/** Load canonical skill files from disk into the shared store namespace (run once at deploy).
+ *  You can retrieve skills from any source (local filesystem, remote URL, etc.).
+ */
+async function seedSkillStore(store: InMemoryStore) {
+  const moduleDir = resolve(fileURLToPath(new URL(".", import.meta.url)));
+  const skillsDir = resolve(moduleDir, "skills");
+  const filePaths = await walkFiles(skillsDir);
+  for (const filePath of filePaths) {
+    const rel = relative(skillsDir, filePath);
+    // StoreBackend keys are paths *relative to the routed backend root*.
+    // CompositeBackend strips the route prefix (`/skills/`) before delegating,
+    // so store keys should look like "/<skillname>/SKILL.md".
+    const key = `/${posix.normalize(rel.split("\\").join("/"))}`;
+    const content = await readFile(filePath, "utf8");
+    await store.put([...SKILLS_SHARED_NAMESPACE], key, createFileData(content));
+  }
+}
+
+/** Copy shared skill files from the store into the sandbox before each agent run. */
+function createSkillSandboxSyncMiddleware(backend: CompositeBackend) {
+  return createMiddleware({
+    name: "SkillSandboxSyncMiddleware",
+    beforeAgent: async (state, runtime) => {
+      const store = (runtime as any).store;
+      if (!store) {
+        throw new Error(
+          "Store is required for syncing skills into the sandbox. " +
+            "Pass `store` to createDeepAgent and ensure your runtime provides it.",
+        );
+      }
+
+      const encoder = new TextEncoder();
+      const files: Array<[string, Uint8Array]> = [];
+
+      for (const item of await store.search([...SKILLS_SHARED_NAMESPACE])) {
+        const normalized = normalizeSkillsStoreKey(String(item.key));
+        const data = item.value as FileData;
+        // CompositeBackend routes paths and batches uploads to the right backend.
+        files.push([
+          `/skills${normalized}`,
+          encoder.encode(data.content.join("\n")),
+        ]);
+      }
+
+      if (files.length > 0) await backend.uploadFiles(files);
+
+      return state;
+    },
+  });
+}
+
+async function main() {
+  const store = new InMemoryStore();
+  await seedSkillStore(store);
+
+  const client = new SandboxClient();
+  const lsSandbox = await client.createSandbox();
+
+  const backend = new CompositeBackend(
+    new LangSmithSandbox({ sandbox: lsSandbox }),
+    {
+      "/skills/": new StoreBackend({
+        store,
+        namespace: () => [...SKILLS_SHARED_NAMESPACE],
+      } as any),
+    },
+  );
+
+  try {
+    const agent = await createDeepAgent({
+      model: "baseten:zai-org/GLM-5.2",
+      backend,
+      skills: ["/skills/"],
+      store,
+      middleware: [createSkillSandboxSyncMiddleware(backend)],
+    });
+
+  } finally {
+    await client.deleteSandbox(lsSandbox.name);
+  }
+}
+
+main().catch((err) => {
+  console.error(err);
+  process.exitCode = 1;
+});
+```
+
+```ts Ollama theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+import { readFile, readdir } from "node:fs/promises";
+import { join, posix, relative, resolve } from "node:path";
+import { fileURLToPath } from "node:url";
+
+import { createMiddleware } from "langchain";
+import {
+  CompositeBackend,
+  createDeepAgent,
+  type FileData,
+  LangSmithSandbox,
+  StoreBackend,
+} from "deepagents";
+import { InMemoryStore } from "@langchain/langgraph";
+import { SandboxClient } from "langsmith/sandbox";
+
+/** Identical skill bundles for every user: one shared store namespace. */
+const SKILLS_SHARED_NAMESPACE = ["skills", "builtin"] as const;
+
+function createFileData(content: string): FileData {
+  const now = new Date().toISOString();
+  return {
+    content: content.split("\n"),
+    created_at: now,
+    modified_at: now,
+  };
+}
+
+function normalizeSkillsStoreKey(key: string): string {
+  const k = String(key);
+  if (k.includes("..") || /[*?]/.test(k)) {
+    throw new Error(`Invalid key: ${key}`);
+  }
+  return k.startsWith("/") ? k : `/${k}`;
+}
+
+async function walkFiles(dir: string): Promise<string[]> {
+  const entries = await readdir(dir, { withFileTypes: true });
+  const files: string[] = [];
+  for (const entry of entries) {
+    const fullPath = join(dir, entry.name);
+    if (entry.isDirectory()) {
+      files.push(...(await walkFiles(fullPath)));
+    } else if (entry.isFile()) {
+      files.push(fullPath);
+    }
+  }
+  return files.sort((a, b) => a.localeCompare(b));
+}
+
+/** Load canonical skill files from disk into the shared store namespace (run once at deploy).
+ *  You can retrieve skills from any source (local filesystem, remote URL, etc.).
+ */
+async function seedSkillStore(store: InMemoryStore) {
+  const moduleDir = resolve(fileURLToPath(new URL(".", import.meta.url)));
+  const skillsDir = resolve(moduleDir, "skills");
+  const filePaths = await walkFiles(skillsDir);
+  for (const filePath of filePaths) {
+    const rel = relative(skillsDir, filePath);
+    // StoreBackend keys are paths *relative to the routed backend root*.
+    // CompositeBackend strips the route prefix (`/skills/`) before delegating,
+    // so store keys should look like "/<skillname>/SKILL.md".
+    const key = `/${posix.normalize(rel.split("\\").join("/"))}`;
+    const content = await readFile(filePath, "utf8");
+    await store.put([...SKILLS_SHARED_NAMESPACE], key, createFileData(content));
+  }
+}
+
+/** Copy shared skill files from the store into the sandbox before each agent run. */
+function createSkillSandboxSyncMiddleware(backend: CompositeBackend) {
+  return createMiddleware({
+    name: "SkillSandboxSyncMiddleware",
+    beforeAgent: async (state, runtime) => {
+      const store = (runtime as any).store;
+      if (!store) {
+        throw new Error(
+          "Store is required for syncing skills into the sandbox. " +
+            "Pass `store` to createDeepAgent and ensure your runtime provides it.",
+        );
+      }
+
+      const encoder = new TextEncoder();
+      const files: Array<[string, Uint8Array]> = [];
+
+      for (const item of await store.search([...SKILLS_SHARED_NAMESPACE])) {
+        const normalized = normalizeSkillsStoreKey(String(item.key));
+        const data = item.value as FileData;
+        // CompositeBackend routes paths and batches uploads to the right backend.
+        files.push([
+          `/skills${normalized}`,
+          encoder.encode(data.content.join("\n")),
+        ]);
+      }
+
+      if (files.length > 0) await backend.uploadFiles(files);
+
+      return state;
+    },
+  });
+}
+
+async function main() {
+  const store = new InMemoryStore();
+  await seedSkillStore(store);
+
+  const client = new SandboxClient();
+  const lsSandbox = await client.createSandbox();
+
+  const backend = new CompositeBackend(
+    new LangSmithSandbox({ sandbox: lsSandbox }),
+    {
+      "/skills/": new StoreBackend({
+        store,
+        namespace: () => [...SKILLS_SHARED_NAMESPACE],
+      } as any),
+    },
+  );
+
+  try {
+    const agent = await createDeepAgent({
+      model: "ollama:north-mini-code-1.0",
+      backend,
+      skills: ["/skills/"],
+      store,
+      middleware: [createSkillSandboxSyncMiddleware(backend)],
+    });
+
+  } finally {
+    await client.deleteSandbox(lsSandbox.name);
+  }
+}
+
+main().catch((err) => {
+  console.error(err);
+  process.exitCode = 1;
+});
+```
+
+> **[View example trace](https://smith.langchain.com/public/cca657b7-b162-47f9-9fca-a20bed29cb66/r)**
+>
+> Open a public LangSmith run for this example.
 
 For a complete example that seeds both skills and memories before execution and syncs both back afterward, see [syncing skills and memories with custom middleware](/oss/javascript/deepagents/going-to-production#example-syncing-skills-and-memories-with-custom-middleware).
 
@@ -2371,20 +2359,14 @@ allowed-tools: fetch_url
 Instructions for the agent go here. See [Usage](#usage) for a complete example of skill instructions.
 ```
 
-<Warning>
-  Refer to the full [Agent Skills specification](https://agentskills.io/specification) for detailed constraints and validation rules. In Deep Agents, `SKILL.md` files must be under 10 MB. Files exceeding this limit are skipped during skill loading.
-</Warning>
+> [!WARNING]
+>
+> Refer to the full [Agent Skills specification](https://agentskills.io/specification) for detailed constraints and validation rules. In Deep Agents, `SKILL.md` files must be under 10 MB. Files exceeding this limit are skipped during skill loading.
 
 For more example skills, see [Deep Agents example skills](https://github.com/langchain-ai/deepagentsjs/tree/main/examples/skills).
 
 ***
 
-<div>
-  <Callout icon="terminal-2">
-    [Connect these docs](/use-these-docs) to your agent of choice via MCP for real-time answers.
-  </Callout>
+[Connect these docs](/use-these-docs) to your agent of choice via MCP for real-time answers.
 
-  <Callout icon="edit">
-    [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/oss/deepagents/skills.mdx) or [file an issue](https://github.com/langchain-ai/docs/issues/new/choose).
-  </Callout>
-</div>
+[Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/oss/deepagents/skills.mdx) or [file an issue](https://github.com/langchain-ai/docs/issues/new/choose).

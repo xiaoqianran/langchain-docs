@@ -10,8 +10,6 @@ how to render
 structured, type-safe UI cards for every tool call your agent makes, complete
 with loading states and error handling.
 
-<PatternEmbed />
-
 ## How tool calling works
 
 When a LangGraph agent decides it needs external data, it emits one or more
@@ -31,35 +29,58 @@ The first step is wiring up [`useStream`](https://reference.langchain.com/javasc
 reactive state including a `toolCalls` array that updates in real time as the
 agent streams.
 
-<Info>
-  The code examples use `useStream<typeof myAgent>` for type-safe stream state. See Type inference for [Python](/oss/python/langchain/frontend/overview#type-inference) or [JavaScript](/oss/javascript/langchain/frontend/overview#type-inference) backends.
-</Info>
+> [!NOTE]
+>
+> The code examples use `useStream<typeof myAgent>` for type-safe stream state. See Type inference for [Python](/oss/python/langchain/frontend/overview#type-inference) or [JavaScript](/oss/javascript/langchain/frontend/overview#type-inference) backends.
 
-<CodeGroup>
-  ```tsx React theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  import { useStream } from "@langchain/react";
+```tsx React theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+import { useStream } from "@langchain/react";
 
-  const AGENT_URL = "http://localhost:2024";
+const AGENT_URL = "http://localhost:2024";
 
-  export function Chat() {
-    const stream = useStream<typeof myAgent>({
-      apiUrl: AGENT_URL,
-      assistantId: "tool_calling",
-    });
+export function Chat() {
+  const stream = useStream<typeof myAgent>({
+    apiUrl: AGENT_URL,
+    assistantId: "tool_calling",
+  });
 
-    return (
-      <div>
-        {stream.messages.map((msg) => (
-          <Message key={msg.id} message={msg} toolCalls={stream.toolCalls} />
-        ))}
-      </div>
-    );
-  }
-  ```
+  return (
+    <div>
+      {stream.messages.map((msg) => (
+        <Message key={msg.id} message={msg} toolCalls={stream.toolCalls} />
+      ))}
+    </div>
+  );
+}
+```
 
-  ```vue Vue theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  <script setup lang="ts">
-  import { useStream } from "@langchain/vue";
+```vue Vue theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+<script setup lang="ts">
+import { useStream } from "@langchain/vue";
+
+const AGENT_URL = "http://localhost:2024";
+
+const stream = useStream<typeof myAgent>({
+  apiUrl: AGENT_URL,
+  assistantId: "tool_calling",
+});
+</script>
+
+<template>
+  <div>
+    <Message
+      v-for="msg in stream.messages.value"
+      :key="msg.id"
+      :message="msg"
+      :tool-calls="stream.toolCalls.value"
+    />
+  </div>
+</template>
+```
+
+```svelte Svelte theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+<script lang="ts">
+  import { useStream } from "@langchain/svelte";
 
   const AGENT_URL = "http://localhost:2024";
 
@@ -67,61 +88,36 @@ agent streams.
     apiUrl: AGENT_URL,
     assistantId: "tool_calling",
   });
-  </script>
+</script>
 
-  <template>
-    <div>
-      <Message
-        v-for="msg in stream.messages.value"
-        :key="msg.id"
-        :message="msg"
-        :tool-calls="stream.toolCalls.value"
-      />
-    </div>
-  </template>
-  ```
+<div>
+  {#each stream.messages as msg (msg.id)}
+    <Message message={msg} toolCalls={stream.toolCalls} />
+  {/each}
+</div>
+```
 
-  ```svelte Svelte theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  <script lang="ts">
-    import { useStream } from "@langchain/svelte";
+```ts Angular theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+import { Component } from "@angular/core";
+import { injectStream } from "@langchain/angular";
 
-    const AGENT_URL = "http://localhost:2024";
+const AGENT_URL = "http://localhost:2024";
 
-    const stream = useStream<typeof myAgent>({
-      apiUrl: AGENT_URL,
-      assistantId: "tool_calling",
-    });
-  </script>
-
-  <div>
-    {#each stream.messages as msg (msg.id)}
-      <Message message={msg} toolCalls={stream.toolCalls} />
-    {/each}
-  </div>
-  ```
-
-  ```ts Angular theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  import { Component } from "@angular/core";
-  import { injectStream } from "@langchain/angular";
-
-  const AGENT_URL = "http://localhost:2024";
-
-  @Component({
-    selector: "app-chat",
-    template: `
-      @for (msg of stream.messages(); track msg.id) {
-        <app-message [message]="msg" [toolCalls]="stream.toolCalls()" />
-      }
-    `,
-  })
-  export class ChatComponent {
-    stream = injectStream<typeof myAgent>({
-      apiUrl: AGENT_URL,
-      assistantId: "tool_calling",
-    });
-  }
-  ```
-</CodeGroup>
+@Component({
+  selector: "app-chat",
+  template: `
+    @for (msg of stream.messages(); track msg.id) {
+      <app-message [message]="msg" [toolCalls]="stream.toolCalls()" />
+    }
+  `,
+})
+export class ChatComponent {
+  stream = injectStream<typeof myAgent>({
+    apiUrl: AGENT_URL,
+    assistantId: "tool_calling",
+  });
+}
+```
 
 ## The AssembledToolCall type
 
@@ -286,10 +282,10 @@ type WeatherToolCall = ToolCallFromTool<typeof getWeather>;
 // WeatherToolCall.input and WeatherToolCall.args are now { location: string }
 ```
 
-<Tip>
-  Using `ToolCallFromTool` gives you compile-time safety. If the tool schema
-  changes, your UI components will flag type errors immediately.
-</Tip>
+> [!TIP]
+>
+> Using `ToolCallFromTool` gives you compile-time safety. If the tool schema
+> changes, your UI components will flag type errors immediately.
 
 ## Rendering tool calls inline with streaming text
 
@@ -303,11 +299,11 @@ This means users see:
 2. A loading card the moment a tool call is emitted
 3. The card updates to show the result once the tool completes
 
-<Note>
-  Tool calls update in place. The same `callId` transitions from `"running"` to
-  `"finished"` (or `"error"`), so your UI re-renders the same component
-  with new state.
-</Note>
+> [!NOTE]
+>
+> Tool calls update in place. The same `callId` transitions from `"running"` to
+> `"finished"` (or `"error"`), so your UI re-renders the same component
+> with new state.
 
 ## Handling multiple concurrent tool calls
 
@@ -350,12 +346,6 @@ Follow these guidelines when building tool call UIs:
 
 ***
 
-<div>
-  <Callout icon="terminal-2">
-    [Connect these docs](/use-these-docs) to your agent of choice via MCP for real-time answers.
-  </Callout>
+[Connect these docs](/use-these-docs) to your agent of choice via MCP for real-time answers.
 
-  <Callout icon="edit">
-    [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/oss/langchain/frontend/tool-calling.mdx) or [file an issue](https://github.com/langchain-ai/docs/issues/new/choose).
-  </Callout>
-</div>
+[Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/oss/langchain/frontend/tool-calling.mdx) or [file an issue](https://github.com/langchain-ai/docs/issues/new/choose).

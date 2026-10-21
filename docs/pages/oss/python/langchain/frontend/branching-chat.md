@@ -10,11 +10,9 @@ conversational path without losing the checkpoint history. Branching chat uses
 LangGraph checkpoints as fork points: every edit or regeneration submits a new
 run from the selected message's parent checkpoint.
 
-<PatternEmbed />
-
-<Note>
-  This feature requires the [LangGraph Agent Server](/oss/python/langgraph/local-server). Run your agent locally with `langgraph dev` or [deploy it to LangSmith](/langsmith/deployment) to use this pattern.
-</Note>
+> [!NOTE]
+>
+> This feature requires the [LangGraph Agent Server](/oss/python/langgraph/local-server). Run your agent locally with `langgraph dev` or [deploy it to LangSmith](/langsmith/deployment) to use this pattern.
 
 ## What is branching chat?
 
@@ -35,35 +33,58 @@ Use the root stream for messages, then read per-message checkpoint metadata in
 the component that renders each message. The metadata includes the parent
 checkpoint ID to fork from.
 
-<Info>
-  The code examples use `useStream<typeof myAgent>` for type-safe stream state. See Type inference for [Python](/oss/python/langchain/frontend/overview#type-inference) or [JavaScript](/oss/javascript/langchain/frontend/overview#type-inference) backends.
-</Info>
+> [!NOTE]
+>
+> The code examples use `useStream<typeof myAgent>` for type-safe stream state. See Type inference for [Python](/oss/python/langchain/frontend/overview#type-inference) or [JavaScript](/oss/javascript/langchain/frontend/overview#type-inference) backends.
 
-<CodeGroup>
-  ```tsx React theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  import { useStream } from "@langchain/react";
+```tsx React theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+import { useStream } from "@langchain/react";
 
-  const AGENT_URL = "http://localhost:2024";
+const AGENT_URL = "http://localhost:2024";
 
-  export function Chat() {
-    const stream = useStream<typeof myAgent>({
-      apiUrl: AGENT_URL,
-      assistantId: "simple_agent",
-    });
+export function Chat() {
+  const stream = useStream<typeof myAgent>({
+    apiUrl: AGENT_URL,
+    assistantId: "simple_agent",
+  });
 
-    return (
-      <div>
-        {stream.messages.map((msg) => (
-          <MessageWithForkControls key={msg.id} stream={stream} message={msg} />
-        ))}
-      </div>
-    );
-  }
-  ```
+  return (
+    <div>
+      {stream.messages.map((msg) => (
+        <MessageWithForkControls key={msg.id} stream={stream} message={msg} />
+      ))}
+    </div>
+  );
+}
+```
 
-  ```vue Vue theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  <script setup lang="ts">
-  import { useStream } from "@langchain/vue";
+```vue Vue theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+<script setup lang="ts">
+import { useStream } from "@langchain/vue";
+
+const AGENT_URL = "http://localhost:2024";
+
+const stream = useStream<typeof myAgent>({
+  apiUrl: AGENT_URL,
+  assistantId: "simple_agent",
+});
+</script>
+
+<template>
+  <div>
+    <MessageWithForkControls
+      v-for="msg in stream.messages.value"
+      :key="msg.id"
+      :stream="stream"
+      :message="msg"
+    />
+  </div>
+</template>
+```
+
+```svelte Svelte theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+<script lang="ts">
+  import { useStream } from "@langchain/svelte";
 
   const AGENT_URL = "http://localhost:2024";
 
@@ -71,67 +92,42 @@ checkpoint ID to fork from.
     apiUrl: AGENT_URL,
     assistantId: "simple_agent",
   });
-  </script>
+</script>
 
-  <template>
-    <div>
-      <MessageWithForkControls
-        v-for="msg in stream.messages.value"
-        :key="msg.id"
-        :stream="stream"
-        :message="msg"
+<div>
+  {#each stream.messages as msg (msg.id)}
+    <Message
+      message={msg}
+      {stream}
+    />
+  {/each}
+</div>
+```
+
+```ts Angular theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+import { Component } from "@angular/core";
+import { injectStream } from "@langchain/angular";
+
+const AGENT_URL = "http://localhost:2024";
+
+@Component({
+  selector: "app-chat",
+  template: `
+    @for (msg of stream.messages(); track msg.id) {
+      <app-message
+        [message]="msg"
+        [stream]="stream"
       />
-    </div>
-  </template>
-  ```
-
-  ```svelte Svelte theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  <script lang="ts">
-    import { useStream } from "@langchain/svelte";
-
-    const AGENT_URL = "http://localhost:2024";
-
-    const stream = useStream<typeof myAgent>({
-      apiUrl: AGENT_URL,
-      assistantId: "simple_agent",
-    });
-  </script>
-
-  <div>
-    {#each stream.messages as msg (msg.id)}
-      <Message
-        message={msg}
-        {stream}
-      />
-    {/each}
-  </div>
-  ```
-
-  ```ts Angular theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  import { Component } from "@angular/core";
-  import { injectStream } from "@langchain/angular";
-
-  const AGENT_URL = "http://localhost:2024";
-
-  @Component({
-    selector: "app-chat",
-    template: `
-      @for (msg of stream.messages(); track msg.id) {
-        <app-message
-          [message]="msg"
-          [stream]="stream"
-        />
-      }
-    `,
-  })
-  export class ChatComponent {
-    stream = injectStream<typeof myAgent>({
-      apiUrl: AGENT_URL,
-      assistantId: "simple_agent",
-    });
-  }
-  ```
-</CodeGroup>
+    }
+  `,
+})
+export class ChatComponent {
+  stream = injectStream<typeof myAgent>({
+    apiUrl: AGENT_URL,
+    assistantId: "simple_agent",
+  });
+}
+```
 
 ## Understand message metadata
 
@@ -251,11 +247,11 @@ function handleRegenerate(
 
 Each regeneration creates a new path for the AI message at that position.
 
-<Tip>
-  Regeneration is useful for non-deterministic agents. Since LLM outputs vary
-  with temperature, regenerating the same prompt often produces meaningfully
-  different responses.
-</Tip>
+> [!TIP]
+>
+> Regeneration is useful for non-deterministic agents. Since LLM outputs vary
+> with temperature, regenerating the same prompt often produces meaningfully
+> different responses.
 
 ## How branching works under the hood
 
@@ -297,12 +293,6 @@ timeline view across checkpoints.
 
 ***
 
-<div>
-  <Callout icon="terminal-2">
-    [Connect these docs](/use-these-docs) to your agent of choice via MCP for real-time answers.
-  </Callout>
+[Connect these docs](/use-these-docs) to your agent of choice via MCP for real-time answers.
 
-  <Callout icon="edit">
-    [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/oss/langchain/frontend/branching-chat.mdx) or [file an issue](https://github.com/langchain-ai/docs/issues/new/choose).
-  </Callout>
-</div>
+[Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/oss/langchain/frontend/branching-chat.mdx) or [file an issue](https://github.com/langchain-ai/docs/issues/new/choose).

@@ -6,31 +6,29 @@ Integrate with Google using LangChain JavaScript.
 
 LangChain provides integrations with [Google AI Studio](https://aistudio.google.com/) and [Gemini Enterprise Agent Platform](https://cloud.google.com/products/gemini-enterprise-agent-platform) through the `@langchain/google` package.
 
-<Info>
-  Looking for the older `@langchain/google-genai` or `@langchain/google-vertexai` packages? They are maintained under [long-term support](#legacy-packages) but are no longer recommended for new projects.
-</Info>
+> [!NOTE]
+>
+> Looking for the older `@langchain/google-genai` or `@langchain/google-vertexai` packages? They are maintained under [long-term support](#legacy-packages) but are no longer recommended for new projects.
 
 ## Chat models
 
 The [`ChatGoogle`](/oss/javascript/integrations/chat/google) class is the recommended way to access Gemini models (such as `gemini-2.5-pro`, `gemini-2.5-flash`, and `gemini-3.1-pro-preview`) and open models like Gemma. It supports both Google AI Studio and Gemini Enterprise Agent Platform in a single interface
 
-<Tip>
-  See [this section for general instructions on installing LangChain packages](/oss/javascript/langchain/install).
-</Tip>
+> [!TIP]
+>
+> See [this section for general instructions on installing LangChain packages](/oss/javascript/langchain/install).
 
-<CodeGroup>
-  ```bash npm theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  npm install @langchain/google @langchain/core
-  ```
+```bash npm theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+npm install @langchain/google @langchain/core
+```
 
-  ```bash yarn theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  yarn add @langchain/google @langchain/core
-  ```
+```bash yarn theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+yarn add @langchain/google @langchain/core
+```
 
-  ```bash pnpm theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  pnpm add @langchain/google @langchain/core
-  ```
-</CodeGroup>
+```bash pnpm theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+pnpm add @langchain/google @langchain/core
+```
 
 Configure your API key:
 
@@ -50,15 +48,13 @@ const res = await model.invoke([
 
 `ChatGoogle` supports tool calling, structured output, multimodal inputs (images, audio, video), reasoning/thinking, image generation, text-to-speech, and Gemini-specific native tools like Google Search grounding and code execution.
 
-<CardGroup>
-  <Card title="ChatGoogle" icon="message-chatbot" href="/oss/javascript/integrations/chat/google">
-    Full chat model documentation, including setup, invocation, streaming, structured output, and more.
-  </Card>
+> **[ChatGoogle](/oss/javascript/integrations/chat/google)**
+>
+> Full chat model documentation, including setup, invocation, streaming, structured output, and more.
 
-  <Card title="Gemini native tools" icon="tool" href="/oss/javascript/integrations/tools/google">
-    Google Search, Code Execution, URL Context, Google Maps, File Search, Computer Use, and MCP servers.
-  </Card>
-</CardGroup>
+> **[Gemini native tools](/oss/javascript/integrations/tools/google)**
+>
+> Google Search, Code Execution, URL Context, Google Maps, File Search, Computer Use, and MCP servers.
 
 ### Third-party models on Gemini Enterprise Agent Platform
 
@@ -137,18 +133,12 @@ The [`@langchain/google-cloud-sql-pg`](https://www.npmjs.com/package/@langchain/
 
 The [`@langchain/google-common`](https://github.com/langchain-ai/langchainjs/tree/main/libs/providers/langchain-google-common) package provides shared Gemini client abstractions for legacy integrations such as [`@langchain/google-vertexai`](/oss/javascript/integrations/chat/google_vertex_ai). It does not include authorization code and is **not** a stand-alone package—do not install or import it directly.
 
-<Tip>
-  To migrate from `@langchain/google-genai` or `@langchain/google-vertexai` to `@langchain/google`, see the [ChatGoogle](/oss/javascript/integrations/chat/google) page for setup instructions. The `ChatGoogle` class provides equivalent functionality with unified access to both Google AI Studio and Gemini Enterprise Agent Platform.
-</Tip>
+> [!TIP]
+>
+> To migrate from `@langchain/google-genai` or `@langchain/google-vertexai` to `@langchain/google`, see the [ChatGoogle](/oss/javascript/integrations/chat/google) page for setup instructions. The `ChatGoogle` class provides equivalent functionality with unified access to both Google AI Studio and Gemini Enterprise Agent Platform.
 
 ***
 
-<div>
-  <Callout icon="terminal-2">
-    [Connect these docs](/use-these-docs) to your agent of choice via MCP for real-time answers.
-  </Callout>
+[Connect these docs](/use-these-docs) to your agent of choice via MCP for real-time answers.
 
-  <Callout icon="edit">
-    [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/oss/javascript/integrations/providers/google.mdx) or [file an issue](https://github.com/langchain-ai/docs/issues/new/choose).
-  </Callout>
-</div>
+[Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/oss/javascript/integrations/providers/google.mdx) or [file an issue](https://github.com/langchain-ai/docs/issues/new/choose).

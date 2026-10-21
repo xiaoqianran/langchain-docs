@@ -4,9 +4,9 @@
 
 Split gateway spend caps and rate limits by a custom request header so each of your end customers gets its own limit under a single API key.
 
-<Note>
-  The LLM Gateway is in [beta](/langsmith/release-stages).
-</Note>
+> [!NOTE]
+>
+> The LLM Gateway is in [beta](/langsmith/release-stages).
 
 A [spend policy](/langsmith/llm-gateway-spend-policies) can separate a default limit by custom request header, so each header value gets an independent limit. Spend and [rate limit policies](/langsmith/llm-gateway-rate-limit-policies) can also match one specific header value. Use these options to cap your own end customers, tenants, or teams without issuing a separate [LangSmith API key](/langsmith/create-account-api-key) for each one.
 
@@ -20,13 +20,13 @@ Header names are normalized before matching: the `X-Gateway-` prefix is stripped
 
 The gateway stamps caller identity itself and ignores client attempts to override it. Headers that resolve to `organization_id`, `workspace_id`, `workspace_handle`, `user_id`, `user_email`, `api_key_id`, `api_key_short`, `auth_mode`, `user_agent`, `applied_policy_ids`, or `applied_policy_names`, and any header whose normalized name starts with `gateway`, are discarded.
 
-<Warning>
-  The gateway trusts the `X-Gateway-*` headers on an incoming request. Set the header in your own backend after you authenticate the end user, and do not distribute the gateway API key to end users. A caller that controls both the key and the header can choose which limit to use.
-</Warning>
+> [!WARNING]
+>
+> The gateway trusts the `X-Gateway-*` headers on an incoming request. Set the header in your own backend after you authenticate the end user, and do not distribute the gateway API key to end users. A caller that controls both the key and the header can choose which limit to use.
 
-<Warning>
-  Creating and managing policies requires the `organization:manage` permission. For the full permissions breakdown, refer to [Traces, Engine, and access control](/langsmith/llm-gateway-access).
-</Warning>
+> [!WARNING]
+>
+> Creating and managing policies requires the `organization:manage` permission. For the full permissions breakdown, refer to [Traces, Engine, and access control](/langsmith/llm-gateway-access).
 
 ## Separate a default spend limit by header
 
@@ -83,82 +83,78 @@ A reseller or multi-tenant application usually calls the gateway from its own ba
 
 Attach the header to each request your backend makes on behalf of an end customer:
 
-<CodeGroup>
-  ```bash curl theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  curl https://gateway.smith.langchain.com/openai/v1/chat/completions \
-      -H "Authorization: Bearer $LANGSMITH_API_KEY" \
-      -H "Content-Type: application/json" \
-      -H "X-Gateway-Customer-Id: acme" \
-      -d '{"model":"gpt-5.4-mini","messages":[{"role":"user","content":"ping"}]}'
-  ```
+```bash curl theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+curl https://gateway.smith.langchain.com/openai/v1/chat/completions \
+    -H "Authorization: Bearer $LANGSMITH_API_KEY" \
+    -H "Content-Type: application/json" \
+    -H "X-Gateway-Customer-Id: acme" \
+    -d '{"model":"gpt-5.4-mini","messages":[{"role":"user","content":"ping"}]}'
+```
 
-  ```python OpenAI SDK theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  import os
+```python OpenAI SDK theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+import os
 
-  from openai import OpenAI
+from openai import OpenAI
 
-  client = OpenAI(
-      base_url=os.environ["OPENAI_BASE_URL"],
-      api_key=os.environ["LANGSMITH_API_KEY"],
-  )
-  customer_id = "acme"
-  response = client.chat.completions.create(
-      model="gpt-5.4-mini",
-      messages=[{"role": "user", "content": "ping"}],
-      extra_headers={"X-Gateway-Customer-Id": customer_id},
-  )
-  print(response.choices[0].message.content)
-  ```
-</CodeGroup>
+client = OpenAI(
+    base_url=os.environ["OPENAI_BASE_URL"],
+    api_key=os.environ["LANGSMITH_API_KEY"],
+)
+customer_id = "acme"
+response = client.chat.completions.create(
+    model="gpt-5.4-mini",
+    messages=[{"role": "user", "content": "ping"}],
+    extra_headers={"X-Gateway-Customer-Id": customer_id},
+)
+print(response.choices[0].message.content)
+```
 
-<Note>
-  If your LangSmith account is on a regional instance, use the corresponding [regional gateway](/langsmith/llm-gateway-how-it-works#use-a-regional-gateway).
-</Note>
+> [!NOTE]
+>
+> If your LangSmith account is on a regional instance, use the corresponding [regional gateway](/langsmith/llm-gateway-how-it-works#use-a-regional-gateway).
 
 ### Step 2. Create a cap for one customer
 
 Create one spend policy per end customer through the [LangSmith REST API](/langsmith/smith-api-ref):
 
-<CodeGroup>
-  ```bash curl theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  curl -X POST "https://api.smith.langchain.com/v1/platform/gateway-policies" \
-      -H "X-Api-Key: $LANGSMITH_API_KEY" \
-      -H "Content-Type: application/json" \
-      -d '{
-            "name": "customer-acme-monthly-cap",
-            "policy_type": "spend_cap",
-            "action": "block",
-            "subject_matchers": [
-              {"key": "workspace_id", "value": "0b1c2d3e-4f56-7890-abcd-ef1234567890"},
-              {"key": "customer_id", "value": "acme"}
-            ],
-            "config": {"window": "monthly", "limit_usd": 250}
-          }'
-  ```
-
-  ```python Python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  import os
-
-  import httpx
-
-  response = httpx.post(
-      "https://api.smith.langchain.com/v1/platform/gateway-policies",
-      headers={"X-Api-Key": os.environ["LANGSMITH_API_KEY"]},
-      json={
+```bash curl theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+curl -X POST "https://api.smith.langchain.com/v1/platform/gateway-policies" \
+    -H "X-Api-Key: $LANGSMITH_API_KEY" \
+    -H "Content-Type: application/json" \
+    -d '{
           "name": "customer-acme-monthly-cap",
           "policy_type": "spend_cap",
           "action": "block",
           "subject_matchers": [
-              {"key": "workspace_id", "value": "0b1c2d3e-4f56-7890-abcd-ef1234567890"},
-              {"key": "customer_id", "value": "acme"},
+            {"key": "workspace_id", "value": "0b1c2d3e-4f56-7890-abcd-ef1234567890"},
+            {"key": "customer_id", "value": "acme"}
           ],
-          "config": {"window": "monthly", "limit_usd": 250},
-      },
-      timeout=30.0,
-  )
-  response.raise_for_status()
-  ```
-</CodeGroup>
+          "config": {"window": "monthly", "limit_usd": 250}
+        }'
+```
+
+```python Python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+import os
+
+import httpx
+
+response = httpx.post(
+    "https://api.smith.langchain.com/v1/platform/gateway-policies",
+    headers={"X-Api-Key": os.environ["LANGSMITH_API_KEY"]},
+    json={
+        "name": "customer-acme-monthly-cap",
+        "policy_type": "spend_cap",
+        "action": "block",
+        "subject_matchers": [
+            {"key": "workspace_id", "value": "0b1c2d3e-4f56-7890-abcd-ef1234567890"},
+            {"key": "customer_id", "value": "acme"},
+        ],
+        "config": {"window": "monthly", "limit_usd": 250},
+    },
+    timeout=30.0,
+)
+response.raise_for_status()
+```
 
 The matcher key is the normalized name `customer_id`, not the header name `X-Gateway-Customer-Id`. The policy belongs to the organization that owns the API key.
 
@@ -297,12 +293,6 @@ The sync script in [step 3](#step-3-sync-policies-with-your-customer-list) appli
 
 ***
 
-<div>
-  <Callout icon="terminal-2">
-    [Connect these docs](/use-these-docs) to your agent of choice via MCP for real-time answers.
-  </Callout>
+[Connect these docs](/use-these-docs) to your agent of choice via MCP for real-time answers.
 
-  <Callout icon="edit">
-    [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/llm-gateway-header-policies.mdx) or [file an issue](https://github.com/langchain-ai/docs/issues/new/choose).
-  </Callout>
-</div>
+[Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/llm-gateway-header-policies.mdx) or [file an issue](https://github.com/langchain-ai/docs/issues/new/choose).

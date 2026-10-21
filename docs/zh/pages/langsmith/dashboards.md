@@ -6,7 +6,7 @@
 
 仪表板可让您深入了解 [trace](/langsmith/observability-concepts#traces) 数据，帮助您发现趋势并监控应用程序的运行状况。仪表板可在 [LangSmith UI](https://smith.langchain.com?utm_source=docs\&utm_medium=cta\&utm_campaign=langsmith-signup\&utm_content=langsmith-dashboards) 的 **监控** 中使用。
 
-LangSmith提供两种仪表板类型：
+LangSmith 提供两种仪表板类型：
 
 * **预构建仪表板**：为每个跟踪项目或[agent environment](/langsmith/agent-environments)自动生成。
 * **自定义仪表板**：您可以根据需要配置的图表集合。根据您的[platform setup](/langsmith/platform-setup)，有两种体验可供选择：
@@ -33,9 +33,13 @@ LangSmith提供两种仪表板类型：
 
 您可以使用 group by [run tag or metadata](/langsmith/add-metadata-tags) 将数据拆分为对您的应用程序重要的属性。全局组设置显示在仪表板的右上角。请注意，**工具**和**运行类型**图表已经应用了分组依据，因此全局分组依据不会生效。全局分组依据将应用于所有其他图表。
 
-<Note>向运行添加元数据时，我们建议在跟踪以及特定运行（例如 LLM 调用）上使用相同的元数据。元数据和标签不会从父运行传播到子运行，反之亦然。如果您想查看按元数据键分组的跟踪图表和 LLM 调用图表，则跟踪（根运行）和 LLM 运行都需要 [metadata attached](/langsmith/add-metadata-tags).</Note>
+> [!注意]
+>
+> 在向运行添加元数据时，我们建议在跟踪以及特定运行（例如 LLM 调用）上使用相同的元数据。元数据和标签不会从父运行传播到子运行，反之亦然。如果您想查看按元数据键分组的跟踪图表和 LLM 调用图表，则跟踪（根运行）和 LLM 运行都需要 [metadata attached](/langsmith/add-metadata-tags)。
 
-## 自定义仪表板<Note>适用于 LangSmith [Cloud](/langsmith/cloud) US，以及 LangSmith [Self-hosted](/langsmith/self-hosted) 安装，[query SmithDB](/langsmith/self-host-smithdb-install#step-6-switch-queries-to-smithdb).</Note>
+## 自定义仪表板> [!注意]
+>
+> 适用于 LangSmith [Cloud](/langsmith/cloud) US，以及LangSmith [Self-hosted](/langsmith/self-hosted) 安装[query SmithDB](/langsmith/self-host-smithdb-install#step-6-switch-queries-to-smithdb)。
 
 创建定制的图表集合来跟踪对您的应用程序最重要的指标。
 
@@ -67,7 +71,7 @@ LangSmith提供两种仪表板类型：
 
 #### 选择数据源打开 **+ 选择项目或数据集** 以查找源。在基于代理的工作区中，该按钮显示为 **+ 选择环境或数据集**。使用弹出窗口顶部的选项卡在两种源类型之间切换：**跟踪**（基于代理的工作区中的**环境**）和**数据集**。
 
-* **跟踪项目或环境**：为每个图表添加一个或多个。 LangSmith 池将每个选定的项目或环境运行到一个集合中，而不是单独显示每个项目或环境。要按项目或环境细分结果，请使用[Group by](#filter-and-group)。
+* **跟踪项目或环境**：为每个图表添加一个或多个。 LangSmith 池将每个选定的项目或环境运行到一个集合中，而不是单独显示每个项目或环境。要按项目或环境细分结果，请使用 [Group by](#filter-and-group)。
 * **数据集**：为每个图表选择一个数据集。
   * 以静默方式选择第二个数据集来替换前一个数据集。
   * 图表取自跟踪项目或环境，或取自数据集，但不能同时取自两者。在选择项目或环境时选取数据集（反之亦然）会清除现有选择。
@@ -84,7 +88,7 @@ LangSmith提供两种仪表板类型：
 |反馈评分 |选择反馈键。 |平均值、最小值、最大值 |
 |比率|定义分子和分母，每个分子和分母都有自己的过滤器。对于错误率、LLM 运行份额等有用。 — |
 
-要使用多个指标进行过滤，请阅读以下 [Filter and group](#filter-and-group) 部分。
+要使用多个指标进行过滤，请阅读以下[Filter and group](#filter-and-group)部分。
 
 #### 过滤和分组
 
@@ -104,10 +108,10 @@ LangSmith提供两种仪表板类型：
 
 **分组**通过以下两种方式之一在同一图表上创建多个系列：
 
-1. **分组依据**：根据一个属性自动将数据分成系列。可用属性：运行名称、运行类型、标签、项目、[Metadata](/langsmith/add-metadata-tags)（带有`metadata.ls_model_name`等路径）和反馈标签。小组按频率排名，上限为前 20 名。
-2. **数据系列**：使用**添加另一个指标**按钮手动添加指标。每个系列都可以带有自己的过滤器，因此您可以在同一图表上将“状态为错误的计数”与“状态为成功的计数”进行比较。<Note>
-  分组依据和多指标在单个图表上是互斥的。只允许有一个分组依据属性。圆环图、排名条形图和表格图不支持多个数据系列（多余的数据将被删除或阻止）。
-</Note>
+1. **分组依据**：根据一个属性自动将数据分成系列。可用属性：运行名称、运行类型、标签、项目、[Metadata](/langsmith/add-metadata-tags)（具有 `metadata.ls_model_name` 等路径）和反馈标签。小组按频率排名，上限为前 20 名。
+2. **数据系列**：使用**添加另一个指标**按钮手动添加指标。每个系列都可以带有自己的过滤器，因此您可以在同一图表上将“状态为错误的计数”与“状态为成功的计数”进行比较。> [!注意]
+>
+> 分组依据和多指标在单个图表上是互斥的。只允许有一个分组依据属性。圆环图、排名条形图和表格图不支持多个数据系列（多余的数据将被删除或阻止）。
 
 #### 选择可视化
 
@@ -132,7 +136,9 @@ LangSmith提供两种仪表板类型：
 * **仪表板时间范围**：在仪表板顶部设置一次。每个图表都使用此范围，除非它覆盖其自己的存储桶大小。
 * **克隆仪表板**：使用仪表板标题中的复制图标。克隆 [prebuilt dashboard](#prebuilt-dashboards) 将其图表转换为完全可编辑的自定义图表。
 
-## 自定义仪表板（旧版）<Note>适用于 LangSmith [Cloud](/langsmith/cloud) EU/APAC 客户，以及查询 ClickHouse 的 LangSmith [Self-hosted](/langsmith/self-hosted) 安装。</Note>
+## 自定义仪表板（旧版）> [!注意]
+>
+> 适用于 LangSmith [Cloud](/langsmith/cloud) EU/APAC 客户，以及查询 ClickHouse 的 LangSmith [Self-hosted](/langsmith/self-hosted) 安装。
 
 创建定制的图表集合来跟踪对您的应用程序最重要的指标。
 
@@ -196,18 +202,13 @@ LangSmith提供两种仪表板类型：
 **创建图表**1. **指标选择**：选择指标`Run count`。
 2. **图表过滤器**：添加树过滤器以包含名称为 `triage_input` 的所有轨迹。这意味着您只包含命中 `triage_input` 节点的跟踪。还为 `Is Root` is `true` 添加图表过滤器，因此计数不会因跟踪中的节点数量而增加。
 3. **数据系列**：为`triage_input`节点所做的每个决策创建一个数据系列。决策的输出存储在输出对象的`triage.response`字段中，决策的值是`no`、`email`或`notify`。每个决策都会在图表中生成一个单独的数据系列。
-   <img alt="Decision at node" />
 
-现在，您可以可视化随着时间的推移在 `triage_input` 节点所做的决策。
+   ![Decision at node](https://mintcdn.com/langchain-5e9cc07a/aKRoUGXX6ygp4DlC/langsmith/images/decision-at-node.png?fit=max\&auto=format\&n=aKRoUGXX6ygp4DlC\&q=85\&s=eb98a2c2c7988b5b6c5c3db9740ed172)
+
+现在，您可以可视化随着时间的推移在 `triage_input` 节点做出的决策。
 
 ***
 
-<div>
-  <Callout icon="terminal-2">
-    [Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
-  </Callout>
+[Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
 
-  <Callout icon="edit">
-    [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/dashboards.mdx) 或 [file an issue](https://github.com/langchain-ai/docs/issues/new/choose)。
-  </Callout>
-</div>
+[Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/dashboards.mdx) 或 [file an issue](https://github.com/langchain-ai/docs/issues/new/choose)。

@@ -111,11 +111,11 @@ We can now set up automations to move examples with feedback of some form into a
 
 The first will take all runs with positive feedback and automatically add them to a dataset. The logic behind this is that any run with positive feedback we can use as a good example in future iterations. Let's create a dataset called `classifier-github-issues` to add this data to.
 
-<img alt="Optimization Negative" />
+![Optimization Negative](https://mintcdn.com/langchain-5e9cc07a/E8FdemkcQxROovD9/langsmith/images/class-optimization-neg.png?fit=max\&auto=format\&n=E8FdemkcQxROovD9\&q=85\&s=e36c57f7e0e224ff1ea29bcfbe9891fc)
 
 The second will take all runs with a correction and use a webhook to add them to a dataset. When creating this webhook, we will select the option to "Use Corrections". This option will make it so that when creating a dataset from a run, rather than using the output of the run as the gold-truth output of the datapoint, it will use the correction.
 
-<img alt="Optimization Positive" />
+![Optimization Positive](https://mintcdn.com/langchain-5e9cc07a/E8FdemkcQxROovD9/langsmith/images/class-optimization-pos.png?fit=max\&auto=format\&n=E8FdemkcQxROovD9\&q=85\&s=6485ca961ed1c29d33f25f75f90ba939)
 
 ## Update the application
 
@@ -266,12 +266,6 @@ def topic_classifier(
 
 ***
 
-<div>
-  <Callout icon="terminal-2">
-    [Connect these docs](/use-these-docs) to your agent of choice via MCP for real-time answers.
-  </Callout>
+[Connect these docs](/use-these-docs) to your agent of choice via MCP for real-time answers.
 
-  <Callout icon="edit">
-    [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/optimize-classifier.mdx) or [file an issue](https://github.com/langchain-ai/docs/issues/new/choose).
-  </Callout>
-</div>
+[Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/optimize-classifier.mdx) or [file an issue](https://github.com/langchain-ai/docs/issues/new/choose).

@@ -8,9 +8,9 @@ A Slack channel lets people invoke a managed deep agent through app mentions, di
 
 Managed Deep Agents creates and configures the resources that connect Slack to the deployed agent. Add a channel declaration to the agent project, then deploy.
 
-<Note>
-  Managed Deep Agents is in **public [beta](/langsmith/release-stages)** on [LangSmith Cloud](/langsmith/cloud).
-</Note>
+> [!NOTE]
+>
+> Managed Deep Agents is in **public [beta](/langsmith/release-stages)** on [LangSmith Cloud](/langsmith/cloud).
 
 ## Project structure
 
@@ -49,21 +49,21 @@ channel = channels.slack()
 
 Edit the channel declaration to control how the agent appears in Slack.
 
-<ParamField type="string">
-  The agent name in Slack. The name must contain 1–35 characters and can contain letters, numbers, spaces, underscores, dashes, and periods. It cannot start or end with a space or dash.
-</ParamField>
+**name** `string`
 
-<ParamField type="string">
-  A description of what the agent does. The description can contain up to 139 characters.
-</ParamField>
+The agent name in Slack. The name must contain 1–35 characters and can contain letters, numbers, spaces, underscores, dashes, and periods. It cannot start or end with a space or dash.
 
-<ParamField type="string">
-  A path to the agent icon shown in Slack, relative to the `channels/` directory. The icon must be a 512 by 512 pixel PNG file no larger than 1 MB. If you omit this parameter, Managed Deep Agents will generate an icon for you.
-</ParamField>
+**description** `string`
 
-<ParamField type="string">
-  The background color behind the agent icon as a six-digit hexadecimal color, such as `#1d4ed8`.
-</ParamField>
+A description of what the agent does. The description can contain up to 139 characters.
+
+**icon** `string`
+
+A path to the agent icon shown in Slack, relative to the `channels/` directory. The icon must be a 512 by 512 pixel PNG file no larger than 1 MB. If you omit this parameter, Managed Deep Agents will generate an icon for you.
+
+**background\_color** `string`
+
+The background color behind the agent icon as a six-digit hexadecimal color, such as `#1d4ed8`.
 
 For example, put an icon next to the channel declaration:
 
@@ -88,13 +88,13 @@ channel = channels.slack(
 
 ### Configure which messages start runs
 
-<ParamField type="bool">
-  Whether every new channel message can start an agent run. When `False`, channel messages start runs only when they mention the agent; direct messages still start runs.
-</ParamField>
+**trigger\_on\_all\_messages** `bool` (default: False)
 
-<ParamField type="bool">
-  Whether messages from other Slack bots can start agent runs.
-</ParamField>
+Whether every new channel message can start an agent run. When `False`, channel messages start runs only when they mention the agent; direct messages still start runs.
+
+**allow\_bot\_triggers** `bool` (default: False)
+
+Whether messages from other Slack bots can start agent runs.
 
 ## React to the message that starts a run
 
@@ -105,11 +105,11 @@ never blocks or delays the reply.
 Every message gets the same emoji by default. Pass a function to choose one per
 message:
 
-<ParamField type="bool | str | Callable">
-  Pass `False` to turn reactions off, a Slack emoji short name to use that emoji
-  instead, or a callable taking `{"text": ...}` and returning a short name. The
-  callable may be sync or async.
-</ParamField>
+**reactions** `bool | str | Callable` (default: "eyes")
+
+Pass `False` to turn reactions off, a Slack emoji short name to use that emoji
+instead, or a callable taking `{"text": ...}` and returning a short name. The
+callable may be sync or async.
 
 ```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 from managed_deepagents import channels
@@ -191,31 +191,29 @@ workspace-scoped LangSmith API key, with `TYPESAFE_API_KEY` in your workspace
 
 During deployment, Managed Deep Agents provisions your agent in Slack from the channel declaration.
 
-<Steps>
-  <Step title="Deploy your agent">
-    Run the deployment command from the project root:
+**1. Deploy your agent**
 
-    ```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-    uv run mda deploy
-    ```
+Run the deployment command from the project root:
 
-    Managed Deep Agents deploys the agent and sets up the resources it needs to appear in Slack.
-  </Step>
+```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+uv run mda deploy
+```
 
-  <Step title="Authorize Slack if prompted">
-    If you haven't authorized LangSmith before, the CLI displays an HTTPS authorization link. Open the link, select the Slack workspace, and approve the requested access.
+Managed Deep Agents deploys the agent and sets up the resources it needs to appear in Slack.
 
-    Return to the terminal and press Enter. The CLI checks the authorization again and continues provisioning. If the Slack workspace requires admin approval, complete that approval before continuing.
-  </Step>
+**2. Authorize Slack if prompted**
 
-  <Step title="Use the agent in Slack">
-    After the first deployment, your agent sends you a direct message in Slack. Reply to the message to start an agent run. The final response appears in the Slack conversation.
-  </Step>
-</Steps>
+If you haven't authorized LangSmith before, the CLI displays an HTTPS authorization link. Open the link, select the Slack workspace, and approve the requested access.
 
-<Note>
-  Human-in-the-loop requests in Slack support only the `approve` and `reject` [decision types](/langsmith/python/managed-deep-agents-tools#human-in-the-loop).
-</Note>
+Return to the terminal and press Enter. The CLI checks the authorization again and continues provisioning. If the Slack workspace requires admin approval, complete that approval before continuing.
+
+**3. Use the agent in Slack**
+
+After the first deployment, your agent sends you a direct message in Slack. Reply to the message to start an agent run. The final response appears in the Slack conversation.
+
+> [!NOTE]
+>
+> Human-in-the-loop requests in Slack support only the `approve` and `reject` [decision types](/langsmith/python/managed-deep-agents-tools#human-in-the-loop).
 
 If Slack is already authorized, deployment completes without an authorization prompt.
 
@@ -225,9 +223,9 @@ After you change the agent's name, description, icon, or background color in the
 
 A Slack channel moves files in both directions. Uploads land in the agent's sandbox under `/workspace/attachments/`, and the agent sends a file back by calling `attach_file` with a path under `/workspace`. Declaring a Slack channel and a [sandbox](/langsmith/python/managed-deep-agents-sandboxes) is the whole setup.
 
-<Note>
-  Slack file transfer requires `managed-deepagents>=0.8.0` and a sandbox. Without a sandbox, incoming files are not saved and `attach_file` is not offered to the model.
-</Note>
+> [!NOTE]
+>
+> Slack file transfer requires `managed-deepagents>=0.8.0` and a sandbox. Without a sandbox, incoming files are not saved and `attach_file` is not offered to the model.
 
 Managed Deep Agents stages the files on the incoming message before the run, along with files shared earlier in the same Slack thread. The agent reads an attachment status message for the paths, then opens the files with its sandbox tools. That status and the file contents are labeled as data, not instructions.
 
@@ -260,12 +258,6 @@ Files stay scoped to the Slack thread they arrived in, because every thread gets
 
 ***
 
-<div>
-  <Callout icon="terminal-2">
-    [Connect these docs](/use-these-docs) to your agent of choice via MCP for real-time answers.
-  </Callout>
+[Connect these docs](/use-these-docs) to your agent of choice via MCP for real-time answers.
 
-  <Callout icon="edit">
-    [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/managed-deep-agents-channels-slack.mdx) or [file an issue](https://github.com/langchain-ai/docs/issues/new/choose).
-  </Callout>
-</div>
+[Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/managed-deep-agents-channels-slack.mdx) or [file an issue](https://github.com/langchain-ai/docs/issues/new/choose).

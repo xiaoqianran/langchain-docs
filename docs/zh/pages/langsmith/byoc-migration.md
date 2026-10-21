@@ -18,84 +18,82 @@
 |数据集 |数据集及其示例和文件附件。 |
 |实验|实验、实验运行和反馈随数据集一起迁移。 |
 |注释队列 |队列配置和设置。迁移的队列开始为空。 |
-|自动化规则|映射到目标项目的项目自动化规则。 |
-|提示|提示完整的提交历史记录。 |
-|图表|监控图表和仪表板。 |
+|自动化规则 |映射到目标项目的项目自动化规则。 |
+|提示| Prompts with the full commit history. |
+|图表| Monitoring charts and dashboards. |
 |定制型号定价|工作区-自定义模型价格条目。 |
 |发动机问题 |每个项目的引擎配置和检测到的问题。问题作为元数据迁移，包括建议的修复，没有链接的跟踪或拉取请求。 |
 |舰队|代理、共享技能、MCP 服务器、集成、身份验证提供程序、计划、触发器、Webhooks、使用限制、沙箱策略和工作区机密。 |
 |上下文中心 | Context Hub 代理和技能，包括文件、存储库元数据、提交历史记录和提交标签。 |
 
-每种资源类型都有自己的命令、标志和警告。命令参考参见[tool README](https://github.com/langchain-ai/langsmith-data-migration-tool/blob/main/README.md)。<Note>
-  属于 BYOC 尚不支持的功能的资源（例如[Managed Deep Agents](/langsmith/python/managed-deep-agents-overview)）无法迁移。参见[Available features](/langsmith/byoc#available-features)。
-</Note>
+每种资源类型都有自己的命令、标志和警告。 For the command reference, see the [tool README](https://github.com/langchain-ai/langsmith-data-migration-tool/blob/main/README.md).> [!注意]
+>
+> 属于 BYOC 尚不支持的功能的资源（例如[Managed Deep Agents](/langsmith/python/managed-deep-agents-overview)）无法迁移。参见[Available features](/langsmith/byoc#available-features)。
 
 ## 使用工具迁移
 
-<Steps>
-  <Step title="Install the tool">
-    使用 `uv`、`uvx` 或 `pip` 安装最新版本。有关当前安装命令，请参阅[Installation](https://github.com/langchain-ai/langsmith-data-migration-tool#installation)。
+**1.安装工具**
 
-    验证安装：
+使用 `uv`、`uvx` 或 `pip` 安装最新版本。有关当前安装命令，请参阅[Installation](https://github.com/langchain-ai/langsmith-data-migration-tool#installation)。
 
-    ```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-    langsmith-migrator --help
-    ```
-  </Step>
+验证安装：
 
-  <Step title="Create the destination workspaces">
-    实例之间的工作空间 ID 不同，因此首先在数据平面中创建目标工作空间。请参阅 [BYOC onboarding docs](/langsmith/byoc-onboarding) 的 `Create workspaces` 部分。
+```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+langsmith-migrator --help
+```
 
-    迁移命令针对每个工作区对运行。对每一对重复这些操作。
-  </Step>
+**2.创建目标工作区**
 
-  <Step title="Create the destination tracing projects">
-    该工具不会创建跟踪项目。在迁移自动化规则或图表之前，在目标工作区中创建所需的项目，否则这些映射没有目标。
-  </Step>
+实例之间的工作空间 ID 不同，因此首先在数据平面中创建目标工作空间。请参阅 [BYOC onboarding docs](/langsmith/byoc-onboarding) 的 `Create workspaces` 部分。
 
-  <Step title="Configure the connection details">
-    设置源和目标凭据以及端点：
+迁移命令针对每个工作区对运行。对每一对重复这些操作。
 
-    ```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-    export LANGSMITH_OLD_API_KEY="<source_instance_key>"
-    export LANGSMITH_NEW_API_KEY="<data_plane_key>"
-    export LANGSMITH_OLD_BASE_URL="<source_instance_api_url>"
-    export LANGSMITH_NEW_BASE_URL="https://<data_plane_host>"
-    export LANGSMITH_VERIFY_SSL=true
-    ```
+**3.创建目的地跟踪项目**
 
-    <Note>
-      `OLD` 指您当前的 LangSmith 部署，`NEW` 指目标 BYOC 数据平面：* **`LANGSMITH_OLD_API_KEY`**：当前部署中的 API 密钥，有权读取要迁移的所有资源。对于位于 [smith.langchain.com](https://smith.langchain.com?utm_source=docs\&utm_medium=cta\&utm_campaign=langsmith-signup\&utm_content=langsmith-byoc-migration) 的 LangSmith 云，请在 **设置 > API 密钥** 下创建它。对于另一个云区域或自托管实例，请使用该部署的 UI。
-      * **`LANGSMITH_NEW_API_KEY`**：在 **设置 > API 密钥** 下于 [aws.smith.langchain.com](https://aws.smith.langchain.com) 创建的 API 密钥。将其范围限定为目标 BYOC 数据平面中的工作区。参见[Create an API key](/langsmith/create-account-api-key#api-keys)。
-      * **`LANGSMITH_OLD_BASE_URL`**：您当前部署的 API URL。对于 GCP US 中的 LangSmith 云，请使用 `https://api.smith.langchain.com`。对于另一个云区域，请使用其 [regional API URL](/langsmith/create-account-api-key#configure-the-sdk)。对于自托管 LangSmith，请使用您实例的 API URL。
-      * **`LANGSMITH_NEW_BASE_URL`**：您的目标 BYOC 数据平面的 API URL，包括 `https://`。在 **设置 > 数据平面** 下找到它。参见[BYOC onboarding](/langsmith/byoc-onboarding)。
-    </Note>
+该工具不会创建跟踪项目。在迁移自动化规则或图表之前，在目标工作区中创建所需的项目，否则这些映射没有目标。
 
-    <Warning>
-      目标键的范围必须限于目标数据平面中的工作区。组织范围的密钥不起作用。
+**4.配置连接详细信息**
 
-      要迁移具有所有者的舰队代理，请使用个人访问令牌 (`lsv2_pt_*`) 作为目标密钥。 Workspace API 密钥不携带用户身份，因此使用它们创建的代理没有所有者。
-    </Warning>
-  </Step>
+设置源和目标凭据以及端点：
 
-  <Step title="Test both connections">
-    ```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-    langsmith-migrator test
-    ```
-  </Step>
+```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+export LANGSMITH_OLD_API_KEY="<source_instance_key>"
+export LANGSMITH_NEW_API_KEY="<data_plane_key>"
+export LANGSMITH_OLD_BASE_URL="<source_instance_api_url>"
+export LANGSMITH_NEW_BASE_URL="https://<data_plane_host>"
+export LANGSMITH_VERIFY_SSL=true
+```> [!注意]
+>
+> `OLD` 指您当前的 LangSmith 部署，`NEW` 指目标 BYOC 数据平面：
+>
+> * **`LANGSMITH_OLD_API_KEY`**：当前部署中的 API 密钥，有权读取要迁移的所有资源。对于位于 [smith.langchain.com](https://smith.langchain.com?utm_source=docs\&utm_medium=cta\&utm_campaign=langsmith-signup\&utm_content=langsmith-byoc-migration) 的 LangSmith 云，请在 **设置 > API 密钥** 下创建它。对于另一个云区域或自托管实例，请使用该部署的 UI。
+> * **`LANGSMITH_NEW_API_KEY`**：在 **设置 > API 密钥** 下于 [aws.smith.langchain.com](https://aws.smith.langchain.com) 创建的 API 密钥。将其范围限定为目标 BYOC 数据平面中的工作区。 See [Create an API key](/langsmith/create-account-api-key#api-keys).
+> * **`LANGSMITH_OLD_BASE_URL`**：您当前部署的 API URL。 For LangSmith Cloud in GCP US, use `https://api.smith.langchain.com`. For another Cloud region, use its [regional API URL](/langsmith/create-account-api-key#configure-the-sdk).对于自托管 LangSmith，请使用您实例的 API URL。
+> * **`LANGSMITH_NEW_BASE_URL`**：您的目标 BYOC 数据平面的 API URL，包括 `https://`。 Find it under **Settings > Data Planes**. See [BYOC onboarding](/langsmith/byoc-onboarding).
 
-  <Step title="Run the migration">
-    使用交互式向导浏览每种资源类型：
+> [!警告]
+>
+> 目标键的范围必须位于目标数据平面中的工作区。 An organization-scoped key does not work.
+>
+> 要迁移具有所有者的舰队代理，请使用个人访问令牌 (`lsv2_pt_*`) 作为目标密钥。 Workspace API 密钥不携带用户身份，因此使用它们创建的代理没有所有者。
 
-    ```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-    langsmith-migrator migrate-all
-    ```要一次迁移一种资源类型，请改为运行其命令，例如 `datasets`、`prompts` 或 `fleet`。添加 `--dry-run` 以预览步骤而无需编写，并添加 `-v` 以进行详细输出。使用 `langsmith-migrator resume` 重试上一个会话中待处理或失败的项目。
+**5. Test both connections**
 
-    有关每个命令标志、工作区映射和项目映射，请参阅 [tool README](https://github.com/langchain-ai/langsmith-data-migration-tool/blob/main/README.md)。
-  </Step>
-</Steps>
+```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+langsmith-migrator test
+```**6。运行迁移**
 
-## 完成舰队手动步骤
+使用交互式向导浏览每种资源类型：
+
+```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+langsmith-migrator migrate-all
+```
+
+要一次迁移一种资源类型，请改为运行其命令，例如 `datasets`、`prompts` 或 `fleet`。添加 `--dry-run` 以预览步骤而无需编写，并添加 `-v` 以进行详细输出。使用 `langsmith-migrator resume` 重试上一个会话中待处理或失败的项目。
+
+有关每个命令标志、工作区映射和项目映射，请参阅 [tool README](https://github.com/langchain-ai/langsmith-data-migration-tool/blob/main/README.md)。
+
+## Complete the Fleet manual steps
 
 [Fleet](/langsmith/fleet/index)资源使用`fleet`命令迁移，但某些值不能跨实例。迁移后在目标工作区中完成以下操作：* **重新输入秘密值**：Fleet API 不返回秘密值。该工具将工作区机密和身份验证提供程序客户端机密创建为空占位符。
 * **重新验证 OAuth 连接**：每用户代理连接（例如 Gmail、Slack 和 GitHub）与各个用户令牌绑定。每个用户都必须重新连接。
@@ -122,10 +120,10 @@
 
 要移动跟踪应用程序，请创建作用域为数据平面中的工作区的 API 密钥，然后重新指向应用程序：
 
-* **切换**：将 `LANGSMITH_ENDPOINT` 设置为数据平面端点，将 `LANGSMITH_API_KEY` 设置为新密钥。参见[Trace to a data plane](/langsmith/byoc-usage#trace-to-a-data-plane)。
-* **双跟踪**：在转换期间写入旧实例和数据平面。参见[Trace to multiple endpoints](/langsmith/byoc-usage#trace-to-multiple-endpoints)。
+* **切换**：将 `LANGSMITH_ENDPOINT` 设置为数据平面端点，将 `LANGSMITH_API_KEY` 设置为新密钥。 See [Trace to a data plane](/langsmith/byoc-usage#trace-to-a-data-plane).
+* **双跟踪**：在转换期间写入旧实例和数据平面。 See [Trace to multiple endpoints](/langsmith/byoc-usage#trace-to-multiple-endpoints).
 
-### 已部署代理
+### Deployed agents
 
 将在现有实例上运行的代理重新部署到数据平面中的工作区中。使用 LangSmith UI 或 API。您可能还需要在数据平面集群中重新创建服务帐户、映像拉取机密和其他资源。
 
@@ -136,7 +134,7 @@
 
 欲了解更多信息，请参阅[LangSmith Deployment](/langsmith/deployment)。
 
-### 见解报告[Insights](/langsmith/insights) 报告不会跨实例迁移。要保留报告，请在 LangSmith UI 中打开其详细信息，然后选择 **下载**。
+### Insights reports[Insights](/langsmith/insights) 报告不会跨实例迁移。要保留报告，请在 LangSmith UI 中打开其详细信息，然后选择 **下载**。
 
 ## 另请参阅
 
@@ -146,12 +144,6 @@
 
 ***
 
-<div>
-  <Callout icon="terminal-2">
-    [Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
-  </Callout>
+[Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
 
-  <Callout icon="edit">
-    [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/byoc-migration.mdx) 或 [file an issue](https://github.com/langchain-ai/docs/issues/new/choose)。
-  </Callout>
-</div>
+[Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/byoc-migration.mdx) 或 [file an issue](https://github.com/langchain-ai/docs/issues/new/choose)。

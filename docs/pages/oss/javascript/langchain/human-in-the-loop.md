@@ -28,9 +28,9 @@ In the default batched mode, provide decisions in the same order as the actions 
 
 Use `reject` when the human is denying the requested action. Use `respond` only when the human is acting as the tool, such as answering an `ask_user` prompt. Do not use `respond` to deny side-effecting tools, because its message is treated as a successful tool result.
 
-<Tip>
-  When **editing** tool arguments, make changes conservatively. Significant modifications to the original arguments may cause the model to re-evaluate its approach and potentially execute the tool multiple times or take unexpected actions.
-</Tip>
+> [!TIP]
+>
+> When **editing** tool arguments, make changes conservatively. Significant modifications to the original arguments may cause the model to re-evaluate its approach and potentially execute the tool multiple times or take unexpected actions.
 
 ## Configuring interrupts
 
@@ -71,54 +71,54 @@ const agent = createAgent({
 });
 ```
 
-<Info>
-  You must configure a checkpointer to persist the graph state across interrupts.
+> [!NOTE]
+>
+> You must configure a checkpointer to persist the graph state across interrupts.
+>
+> In production, use a persistent checkpointer like [`AsyncPostgresSaver`](https://reference.langchain.com/javascript/langchain-langgraph-checkpoint-postgres/index/PostgresSaver) or [`MongoDBSaver`](https://reference.langchain.com/javascript/langchain-langgraph-checkpoint-mongodb/MongoDBSaver). For testing or prototyping, use [`InMemorySaver`](https://reference.langchain.com/javascript/langchain-langgraph-checkpoint/index/MemorySaver).
+>
+> When invoking the agent, pass a `config` that includes the **thread ID** to associate execution with a conversation thread.
+> See the [LangGraph interrupts documentation](/oss/javascript/langgraph/interrupts) for details.
 
-  In production, use a persistent checkpointer like [`AsyncPostgresSaver`](https://reference.langchain.com/javascript/classes/_langchain_langgraph-checkpoint-postgres.AsyncPostgresSaver.html) or [`MongoDBSaver`](https://reference.langchain.com/javascript/langchain-langgraph-checkpoint-mongodb/MongoDBSaver). For testing or prototyping, use [`InMemorySaver`](https://reference.langchain.com/javascript/classes/_langchain_langgraph-checkpoint.MemorySaver.html).
-
-  When invoking the agent, pass a `config` that includes the **thread ID** to associate execution with a conversation thread.
-  See the [LangGraph interrupts documentation](/oss/javascript/langgraph/interrupts) for details.
-</Info>
-
-<Accordion title="Configuration options">
-  <ParamField type="object">
-    Mapping of tool names to approval configs. Values can be `true` (interrupt with default config), `false` (auto-approve), or an `InterruptOnConfig` object.
-  </ParamField>
-
-  <ParamField type="string">
-    Prefix for action request descriptions
-  </ParamField>
-
-  <ParamField type="string">
-    How the agent pauses for review. `"batched"` raises one interrupt per model turn, answered with an ordered list. `"per_call"` raises one interrupt per gated call, answered by interrupt ID. `"per_call"` requires `langchain>=1.5.18`. See [Set the interrupt mode](#set-the-interrupt-mode).
-  </ParamField>
-
-  <ParamField type="string | null">
-    In per-call mode, text added before the result of a call that a reviewer replaced with an `edit` decision, so the model knows the call changed. Defaults to a note that a human reviewer replaced the call. Pass `null` to add nothing.
-  </ParamField>
-
-  **`InterruptOnConfig` options:**
-
-  <ParamField type="string[]">
-    List of allowed decisions: `'approve'`, `'edit'`, `'reject'`, or `'respond'`
-  </ParamField>
-
-  <ParamField type="string | callable">
-    Static string or callable function for custom description
-  </ParamField>
-
-  <ParamField type="callable">
-    Optional predicate that receives a [ToolCallRequest](https://reference.langchain.com/javascript/langchain/index/ToolCallRequest) and returns `true` to interrupt or `false` to auto-approve. Use it to gate interrupts on a call's arguments. Requires `langchain>=1.4.6`.
-  </ParamField>
-</Accordion>
+> **Configuration options**
+>
+> **interruptOn** `object` *required*
+>
+> Mapping of tool names to approval configs. Values can be `true` (interrupt with default config), `false` (auto-approve), or an `InterruptOnConfig` object.
+>
+> **descriptionPrefix** `string` (default: Tool execution requires approval)
+>
+> Prefix for action request descriptions
+>
+> **interruptMode** `string` (default: batched)
+>
+> How the agent pauses for review. `"batched"` raises one interrupt per model turn, answered with an ordered list. `"per_call"` raises one interrupt per gated call, answered by interrupt ID. `"per_call"` requires `langchain>=1.5.18`. See [Set the interrupt mode](#set-the-interrupt-mode).
+>
+> **editNotice** `string | null`
+>
+> In per-call mode, text added before the result of a call that a reviewer replaced with an `edit` decision, so the model knows the call changed. Defaults to a note that a human reviewer replaced the call. Pass `null` to add nothing.
+>
+> **`InterruptOnConfig` options:**
+>
+> **allowedDecisions** `string[]`
+>
+> List of allowed decisions: `'approve'`, `'edit'`, `'reject'`, or `'respond'`
+>
+> **description** `string | callable`
+>
+> Static string or callable function for custom description
+>
+> **when** `callable`
+>
+> Optional predicate that receives a [ToolCallRequest](https://reference.langchain.com/javascript/langchain/index/ToolCallRequest) and returns `true` to interrupt or `false` to auto-approve. Use it to gate interrupts on a call's arguments. Requires `langchain>=1.4.6`.
 
 ## Conditional interrupts
 
 By default, every tool call listed in `interruptOn` pauses for review. To pause only some calls, add a `when` predicate to a tool's `InterruptOnConfig`. The predicate receives a `ToolCallRequest` and returns `true` to interrupt or `false` to auto-approve, so you can gate on the tool's arguments.
 
-<Note>
-  Conditional interrupts require `langchain>=1.4.6`.
-</Note>
+> [!NOTE]
+>
+> Conditional interrupts require `langchain>=1.4.6`.
 
 ```typescript theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 import { createAgent, humanInTheLoopMiddleware } from "langchain";
@@ -172,314 +172,312 @@ Use per-call mode for new agents. LangChain plans to make it the default in the 
 
 ## Pause once per tool call
 
-<Note>
-  Per-call interrupts require `langchain>=1.5.18` and `createAgent` version `"v2"`, the default.
-</Note>
+> [!NOTE]
+>
+> Per-call interrupts require `langchain>=1.5.18` and `createAgent` version `"v2"`, the default.
 
 Set `interruptMode: "per_call"` to review each tool call separately. This agent gates `write_file` and `execute_sql`, and lets `read_data` run without review:
 
-<CodeGroup>
-  ```ts Google theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  import { MemorySaver } from "@langchain/langgraph";
-  import { createAgent, humanInTheLoopMiddleware, tool } from "langchain";
-  import * as z from "zod";
+```ts Google theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+import { MemorySaver } from "@langchain/langgraph";
+import { createAgent, humanInTheLoopMiddleware, tool } from "langchain";
+import * as z from "zod";
 
-  const writeFile = tool(
-    ({ path, content }) => `Wrote ${content.length} characters to ${path}`,
-    {
-      name: "write_file",
-      description: "Write content to a file.",
-      schema: z.object({ path: z.string(), content: z.string() }),
-    },
-  );
+const writeFile = tool(
+  ({ path, content }) => `Wrote ${content.length} characters to ${path}`,
+  {
+    name: "write_file",
+    description: "Write content to a file.",
+    schema: z.object({ path: z.string(), content: z.string() }),
+  },
+);
 
-  const executeSql = tool(() => "Deleted 42 rows", {
-    name: "execute_sql",
-    description: "Run a SQL query.",
-    schema: z.object({ query: z.string() }),
-  });
+const executeSql = tool(() => "Deleted 42 rows", {
+  name: "execute_sql",
+  description: "Run a SQL query.",
+  schema: z.object({ query: z.string() }),
+});
 
-  const readData = tool(({ table }) => `3 rows from ${table}`, {
-    name: "read_data",
-    description: "Read rows from a table.",
-    schema: z.object({ table: z.string() }),
-  });
+const readData = tool(({ table }) => `3 rows from ${table}`, {
+  name: "read_data",
+  description: "Read rows from a table.",
+  schema: z.object({ table: z.string() }),
+});
 
-  let agent = createAgent({
-    model: "google:gemini-3.6-flash",
-    tools: [writeFile, executeSql, readData],
-    middleware: [
-      humanInTheLoopMiddleware({
-        interruptOn: {
-          write_file: true,
-          execute_sql: { allowedDecisions: ["approve", "reject"] },
-          read_data: false,
-        },
-        interruptMode: "per_call", // [!code highlight]
-      }),
-    ],
-    checkpointer: new MemorySaver(),
-  });
-  ```
+let agent = createAgent({
+  model: "google:gemini-3.6-flash",
+  tools: [writeFile, executeSql, readData],
+  middleware: [
+    humanInTheLoopMiddleware({
+      interruptOn: {
+        write_file: true,
+        execute_sql: { allowedDecisions: ["approve", "reject"] },
+        read_data: false,
+      },
+      interruptMode: "per_call", // [!code highlight]
+    }),
+  ],
+  checkpointer: new MemorySaver(),
+});
+```
 
-  ```ts OpenAI theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  import { MemorySaver } from "@langchain/langgraph";
-  import { createAgent, humanInTheLoopMiddleware, tool } from "langchain";
-  import * as z from "zod";
+```ts OpenAI theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+import { MemorySaver } from "@langchain/langgraph";
+import { createAgent, humanInTheLoopMiddleware, tool } from "langchain";
+import * as z from "zod";
 
-  const writeFile = tool(
-    ({ path, content }) => `Wrote ${content.length} characters to ${path}`,
-    {
-      name: "write_file",
-      description: "Write content to a file.",
-      schema: z.object({ path: z.string(), content: z.string() }),
-    },
-  );
+const writeFile = tool(
+  ({ path, content }) => `Wrote ${content.length} characters to ${path}`,
+  {
+    name: "write_file",
+    description: "Write content to a file.",
+    schema: z.object({ path: z.string(), content: z.string() }),
+  },
+);
 
-  const executeSql = tool(() => "Deleted 42 rows", {
-    name: "execute_sql",
-    description: "Run a SQL query.",
-    schema: z.object({ query: z.string() }),
-  });
+const executeSql = tool(() => "Deleted 42 rows", {
+  name: "execute_sql",
+  description: "Run a SQL query.",
+  schema: z.object({ query: z.string() }),
+});
 
-  const readData = tool(({ table }) => `3 rows from ${table}`, {
-    name: "read_data",
-    description: "Read rows from a table.",
-    schema: z.object({ table: z.string() }),
-  });
+const readData = tool(({ table }) => `3 rows from ${table}`, {
+  name: "read_data",
+  description: "Read rows from a table.",
+  schema: z.object({ table: z.string() }),
+});
 
-  let agent = createAgent({
-    model: "openai:gpt-5.5",
-    tools: [writeFile, executeSql, readData],
-    middleware: [
-      humanInTheLoopMiddleware({
-        interruptOn: {
-          write_file: true,
-          execute_sql: { allowedDecisions: ["approve", "reject"] },
-          read_data: false,
-        },
-        interruptMode: "per_call", // [!code highlight]
-      }),
-    ],
-    checkpointer: new MemorySaver(),
-  });
-  ```
+let agent = createAgent({
+  model: "openai:gpt-5.5",
+  tools: [writeFile, executeSql, readData],
+  middleware: [
+    humanInTheLoopMiddleware({
+      interruptOn: {
+        write_file: true,
+        execute_sql: { allowedDecisions: ["approve", "reject"] },
+        read_data: false,
+      },
+      interruptMode: "per_call", // [!code highlight]
+    }),
+  ],
+  checkpointer: new MemorySaver(),
+});
+```
 
-  ```ts Anthropic theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  import { MemorySaver } from "@langchain/langgraph";
-  import { createAgent, humanInTheLoopMiddleware, tool } from "langchain";
-  import * as z from "zod";
+```ts Anthropic theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+import { MemorySaver } from "@langchain/langgraph";
+import { createAgent, humanInTheLoopMiddleware, tool } from "langchain";
+import * as z from "zod";
 
-  const writeFile = tool(
-    ({ path, content }) => `Wrote ${content.length} characters to ${path}`,
-    {
-      name: "write_file",
-      description: "Write content to a file.",
-      schema: z.object({ path: z.string(), content: z.string() }),
-    },
-  );
+const writeFile = tool(
+  ({ path, content }) => `Wrote ${content.length} characters to ${path}`,
+  {
+    name: "write_file",
+    description: "Write content to a file.",
+    schema: z.object({ path: z.string(), content: z.string() }),
+  },
+);
 
-  const executeSql = tool(() => "Deleted 42 rows", {
-    name: "execute_sql",
-    description: "Run a SQL query.",
-    schema: z.object({ query: z.string() }),
-  });
+const executeSql = tool(() => "Deleted 42 rows", {
+  name: "execute_sql",
+  description: "Run a SQL query.",
+  schema: z.object({ query: z.string() }),
+});
 
-  const readData = tool(({ table }) => `3 rows from ${table}`, {
-    name: "read_data",
-    description: "Read rows from a table.",
-    schema: z.object({ table: z.string() }),
-  });
+const readData = tool(({ table }) => `3 rows from ${table}`, {
+  name: "read_data",
+  description: "Read rows from a table.",
+  schema: z.object({ table: z.string() }),
+});
 
-  let agent = createAgent({
-    model: "anthropic:claude-sonnet-5",
-    tools: [writeFile, executeSql, readData],
-    middleware: [
-      humanInTheLoopMiddleware({
-        interruptOn: {
-          write_file: true,
-          execute_sql: { allowedDecisions: ["approve", "reject"] },
-          read_data: false,
-        },
-        interruptMode: "per_call", // [!code highlight]
-      }),
-    ],
-    checkpointer: new MemorySaver(),
-  });
-  ```
+let agent = createAgent({
+  model: "anthropic:claude-sonnet-5",
+  tools: [writeFile, executeSql, readData],
+  middleware: [
+    humanInTheLoopMiddleware({
+      interruptOn: {
+        write_file: true,
+        execute_sql: { allowedDecisions: ["approve", "reject"] },
+        read_data: false,
+      },
+      interruptMode: "per_call", // [!code highlight]
+    }),
+  ],
+  checkpointer: new MemorySaver(),
+});
+```
 
-  ```ts OpenRouter theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  import { MemorySaver } from "@langchain/langgraph";
-  import { createAgent, humanInTheLoopMiddleware, tool } from "langchain";
-  import * as z from "zod";
+```ts OpenRouter theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+import { MemorySaver } from "@langchain/langgraph";
+import { createAgent, humanInTheLoopMiddleware, tool } from "langchain";
+import * as z from "zod";
 
-  const writeFile = tool(
-    ({ path, content }) => `Wrote ${content.length} characters to ${path}`,
-    {
-      name: "write_file",
-      description: "Write content to a file.",
-      schema: z.object({ path: z.string(), content: z.string() }),
-    },
-  );
+const writeFile = tool(
+  ({ path, content }) => `Wrote ${content.length} characters to ${path}`,
+  {
+    name: "write_file",
+    description: "Write content to a file.",
+    schema: z.object({ path: z.string(), content: z.string() }),
+  },
+);
 
-  const executeSql = tool(() => "Deleted 42 rows", {
-    name: "execute_sql",
-    description: "Run a SQL query.",
-    schema: z.object({ query: z.string() }),
-  });
+const executeSql = tool(() => "Deleted 42 rows", {
+  name: "execute_sql",
+  description: "Run a SQL query.",
+  schema: z.object({ query: z.string() }),
+});
 
-  const readData = tool(({ table }) => `3 rows from ${table}`, {
-    name: "read_data",
-    description: "Read rows from a table.",
-    schema: z.object({ table: z.string() }),
-  });
+const readData = tool(({ table }) => `3 rows from ${table}`, {
+  name: "read_data",
+  description: "Read rows from a table.",
+  schema: z.object({ table: z.string() }),
+});
 
-  let agent = createAgent({
-    model: "openrouter:z-ai/glm-5.2",
-    tools: [writeFile, executeSql, readData],
-    middleware: [
-      humanInTheLoopMiddleware({
-        interruptOn: {
-          write_file: true,
-          execute_sql: { allowedDecisions: ["approve", "reject"] },
-          read_data: false,
-        },
-        interruptMode: "per_call", // [!code highlight]
-      }),
-    ],
-    checkpointer: new MemorySaver(),
-  });
-  ```
+let agent = createAgent({
+  model: "openrouter:z-ai/glm-5.2",
+  tools: [writeFile, executeSql, readData],
+  middleware: [
+    humanInTheLoopMiddleware({
+      interruptOn: {
+        write_file: true,
+        execute_sql: { allowedDecisions: ["approve", "reject"] },
+        read_data: false,
+      },
+      interruptMode: "per_call", // [!code highlight]
+    }),
+  ],
+  checkpointer: new MemorySaver(),
+});
+```
 
-  ```ts Fireworks theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  import { MemorySaver } from "@langchain/langgraph";
-  import { createAgent, humanInTheLoopMiddleware, tool } from "langchain";
-  import * as z from "zod";
+```ts Fireworks theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+import { MemorySaver } from "@langchain/langgraph";
+import { createAgent, humanInTheLoopMiddleware, tool } from "langchain";
+import * as z from "zod";
 
-  const writeFile = tool(
-    ({ path, content }) => `Wrote ${content.length} characters to ${path}`,
-    {
-      name: "write_file",
-      description: "Write content to a file.",
-      schema: z.object({ path: z.string(), content: z.string() }),
-    },
-  );
+const writeFile = tool(
+  ({ path, content }) => `Wrote ${content.length} characters to ${path}`,
+  {
+    name: "write_file",
+    description: "Write content to a file.",
+    schema: z.object({ path: z.string(), content: z.string() }),
+  },
+);
 
-  const executeSql = tool(() => "Deleted 42 rows", {
-    name: "execute_sql",
-    description: "Run a SQL query.",
-    schema: z.object({ query: z.string() }),
-  });
+const executeSql = tool(() => "Deleted 42 rows", {
+  name: "execute_sql",
+  description: "Run a SQL query.",
+  schema: z.object({ query: z.string() }),
+});
 
-  const readData = tool(({ table }) => `3 rows from ${table}`, {
-    name: "read_data",
-    description: "Read rows from a table.",
-    schema: z.object({ table: z.string() }),
-  });
+const readData = tool(({ table }) => `3 rows from ${table}`, {
+  name: "read_data",
+  description: "Read rows from a table.",
+  schema: z.object({ table: z.string() }),
+});
 
-  let agent = createAgent({
-    model: "fireworks:accounts/fireworks/models/glm-5p2",
-    tools: [writeFile, executeSql, readData],
-    middleware: [
-      humanInTheLoopMiddleware({
-        interruptOn: {
-          write_file: true,
-          execute_sql: { allowedDecisions: ["approve", "reject"] },
-          read_data: false,
-        },
-        interruptMode: "per_call", // [!code highlight]
-      }),
-    ],
-    checkpointer: new MemorySaver(),
-  });
-  ```
+let agent = createAgent({
+  model: "fireworks:accounts/fireworks/models/glm-5p2",
+  tools: [writeFile, executeSql, readData],
+  middleware: [
+    humanInTheLoopMiddleware({
+      interruptOn: {
+        write_file: true,
+        execute_sql: { allowedDecisions: ["approve", "reject"] },
+        read_data: false,
+      },
+      interruptMode: "per_call", // [!code highlight]
+    }),
+  ],
+  checkpointer: new MemorySaver(),
+});
+```
 
-  ```ts Baseten theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  import { MemorySaver } from "@langchain/langgraph";
-  import { createAgent, humanInTheLoopMiddleware, tool } from "langchain";
-  import * as z from "zod";
+```ts Baseten theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+import { MemorySaver } from "@langchain/langgraph";
+import { createAgent, humanInTheLoopMiddleware, tool } from "langchain";
+import * as z from "zod";
 
-  const writeFile = tool(
-    ({ path, content }) => `Wrote ${content.length} characters to ${path}`,
-    {
-      name: "write_file",
-      description: "Write content to a file.",
-      schema: z.object({ path: z.string(), content: z.string() }),
-    },
-  );
+const writeFile = tool(
+  ({ path, content }) => `Wrote ${content.length} characters to ${path}`,
+  {
+    name: "write_file",
+    description: "Write content to a file.",
+    schema: z.object({ path: z.string(), content: z.string() }),
+  },
+);
 
-  const executeSql = tool(() => "Deleted 42 rows", {
-    name: "execute_sql",
-    description: "Run a SQL query.",
-    schema: z.object({ query: z.string() }),
-  });
+const executeSql = tool(() => "Deleted 42 rows", {
+  name: "execute_sql",
+  description: "Run a SQL query.",
+  schema: z.object({ query: z.string() }),
+});
 
-  const readData = tool(({ table }) => `3 rows from ${table}`, {
-    name: "read_data",
-    description: "Read rows from a table.",
-    schema: z.object({ table: z.string() }),
-  });
+const readData = tool(({ table }) => `3 rows from ${table}`, {
+  name: "read_data",
+  description: "Read rows from a table.",
+  schema: z.object({ table: z.string() }),
+});
 
-  let agent = createAgent({
-    model: "baseten:zai-org/GLM-5.2",
-    tools: [writeFile, executeSql, readData],
-    middleware: [
-      humanInTheLoopMiddleware({
-        interruptOn: {
-          write_file: true,
-          execute_sql: { allowedDecisions: ["approve", "reject"] },
-          read_data: false,
-        },
-        interruptMode: "per_call", // [!code highlight]
-      }),
-    ],
-    checkpointer: new MemorySaver(),
-  });
-  ```
+let agent = createAgent({
+  model: "baseten:zai-org/GLM-5.2",
+  tools: [writeFile, executeSql, readData],
+  middleware: [
+    humanInTheLoopMiddleware({
+      interruptOn: {
+        write_file: true,
+        execute_sql: { allowedDecisions: ["approve", "reject"] },
+        read_data: false,
+      },
+      interruptMode: "per_call", // [!code highlight]
+    }),
+  ],
+  checkpointer: new MemorySaver(),
+});
+```
 
-  ```ts Ollama theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  import { MemorySaver } from "@langchain/langgraph";
-  import { createAgent, humanInTheLoopMiddleware, tool } from "langchain";
-  import * as z from "zod";
+```ts Ollama theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+import { MemorySaver } from "@langchain/langgraph";
+import { createAgent, humanInTheLoopMiddleware, tool } from "langchain";
+import * as z from "zod";
 
-  const writeFile = tool(
-    ({ path, content }) => `Wrote ${content.length} characters to ${path}`,
-    {
-      name: "write_file",
-      description: "Write content to a file.",
-      schema: z.object({ path: z.string(), content: z.string() }),
-    },
-  );
+const writeFile = tool(
+  ({ path, content }) => `Wrote ${content.length} characters to ${path}`,
+  {
+    name: "write_file",
+    description: "Write content to a file.",
+    schema: z.object({ path: z.string(), content: z.string() }),
+  },
+);
 
-  const executeSql = tool(() => "Deleted 42 rows", {
-    name: "execute_sql",
-    description: "Run a SQL query.",
-    schema: z.object({ query: z.string() }),
-  });
+const executeSql = tool(() => "Deleted 42 rows", {
+  name: "execute_sql",
+  description: "Run a SQL query.",
+  schema: z.object({ query: z.string() }),
+});
 
-  const readData = tool(({ table }) => `3 rows from ${table}`, {
-    name: "read_data",
-    description: "Read rows from a table.",
-    schema: z.object({ table: z.string() }),
-  });
+const readData = tool(({ table }) => `3 rows from ${table}`, {
+  name: "read_data",
+  description: "Read rows from a table.",
+  schema: z.object({ table: z.string() }),
+});
 
-  let agent = createAgent({
-    model: "ollama:north-mini-code-1.0",
-    tools: [writeFile, executeSql, readData],
-    middleware: [
-      humanInTheLoopMiddleware({
-        interruptOn: {
-          write_file: true,
-          execute_sql: { allowedDecisions: ["approve", "reject"] },
-          read_data: false,
-        },
-        interruptMode: "per_call", // [!code highlight]
-      }),
-    ],
-    checkpointer: new MemorySaver(),
-  });
-  ```
-</CodeGroup>
+let agent = createAgent({
+  model: "ollama:north-mini-code-1.0",
+  tools: [writeFile, executeSql, readData],
+  middleware: [
+    humanInTheLoopMiddleware({
+      interruptOn: {
+        write_file: true,
+        execute_sql: { allowedDecisions: ["approve", "reject"] },
+        read_data: false,
+      },
+      interruptMode: "per_call", // [!code highlight]
+    }),
+  ],
+  checkpointer: new MemorySaver(),
+});
+```
 
 ### Read the interrupts
 
@@ -527,103 +525,101 @@ Each interrupt also carries a `response_schema`: a JSON schema with one branch p
 
 Each tab shows one `write_file` branch, an answer that matches it, and the [ToolMessage](https://reference.langchain.com/javascript/langchain-core/messages/ToolMessage) the model receives. For readability, the branches below omit the `additionalProperties` fields.
 
-<Tabs>
-  <Tab title="approve">
-    Run the call as proposed.
+**approve**
 
-    ```json Schema branch theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-    {"type": "object", "properties": {"type": {"type": "string", "const": "approve"}}, "required": ["type"]}
-    ```
+Run the call as proposed.
 
-    ```ts Answer theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-    { type: "approve" }
-    ```
+```json Schema branch theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+{"type": "object", "properties": {"type": {"type": "string", "const": "approve"}}, "required": ["type"]}
+```
 
-    ```text Model receives theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-    Wrote 14 characters to orders_archive.csv
-    ```
-  </Tab>
+```ts Answer theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+{ type: "approve" }
+```
 
-  <Tab title="edit">
-    Run the call with new arguments. `edited_action.name` must stay `write_file`, and `edited_action.args` must match `write_file`'s argument schema. Arguments the tool does not declare are handled the same way as when the model sends them: a `z.object` schema drops them, and a `z.looseObject` schema keeps them.
+```text Model receives theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+Wrote 14 characters to orders_archive.csv
+```
 
-    ```json Schema branch theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-    {
+**edit**
+
+Run the call with new arguments. `edited_action.name` must stay `write_file`, and `edited_action.args` must match `write_file`'s argument schema. Arguments the tool does not declare are handled the same way as when the model sends them: a `z.object` schema drops them, and a `z.looseObject` schema keeps them.
+
+```json Schema branch theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+{
+  "type": "object",
+  "properties": {
+    "type": {"type": "string", "const": "edit"},
+    "edited_action": {
       "type": "object",
       "properties": {
-        "type": {"type": "string", "const": "edit"},
-        "edited_action": {
+        "name": {"type": "string", "const": "write_file"},
+        "args": {
           "type": "object",
           "properties": {
-            "name": {"type": "string", "const": "write_file"},
-            "args": {
-              "type": "object",
-              "properties": {
-                "path": {"type": "string"},
-                "content": {"type": "string"}
-              },
-              "required": ["path", "content"]
-            }
+            "path": {"type": "string"},
+            "content": {"type": "string"}
           },
-          "required": ["name", "args"]
+          "required": ["path", "content"]
         }
       },
-      "required": ["type", "edited_action"]
+      "required": ["name", "args"]
     }
-    ```
+  },
+  "required": ["type", "edited_action"]
+}
+```
 
-    ```ts Answer theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-    {
-      type: "edit",
-      edited_action: {
-        name: "write_file",
-        args: { path: "archive/orders_2024.csv", content: "id,total\n1,20\n" },
-      },
-    }
-    ```
+```ts Answer theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+{
+  type: "edit",
+  edited_action: {
+    name: "write_file",
+    args: { path: "archive/orders_2024.csv", content: "id,total\n1,20\n" },
+  },
+}
+```
 
-    The model receives the tool's result after a note that a reviewer replaced the call. Set `editNotice` on the middleware to change the note, or pass `null` to remove it.
+The model receives the tool's result after a note that a reviewer replaced the call. Set `editNotice` on the middleware to change the note, or pass `null` to remove it.
 
-    ```text Model receives theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-    Note: a human reviewer replaced this tool call before it ran. The call recorded in your message is the one you produced, not the one that executed. This was intentional and authorized. Do not re-issue your original call. Executed instead: write_file with arguments {"path":"archive/orders_2024.csv","content":"id,total\n1,20\n"}.
+```text Model receives theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+Note: a human reviewer replaced this tool call before it ran. The call recorded in your message is the one you produced, not the one that executed. This was intentional and authorized. Do not re-issue your original call. Executed instead: write_file with arguments {"path":"archive/orders_2024.csv","content":"id,total\n1,20\n"}.
 
-    Tool response:
-    Wrote 14 characters to archive/orders_2024.csv
-    ```
-  </Tab>
+Tool response:
+Wrote 14 characters to archive/orders_2024.csv
+```
 
-  <Tab title="reject">
-    Skip the call. The `message` is optional and tells the model why.
+**reject**
 
-    ```json Schema branch theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-    {"type": "object", "properties": {"type": {"type": "string", "const": "reject"}, "message": {"type": "string"}}, "required": ["type"]}
-    ```
+Skip the call. The `message` is optional and tells the model why.
 
-    ```ts Answer theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-    { type: "reject", message: "Write to the archive/ folder instead." }
-    ```
+```json Schema branch theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+{"type": "object", "properties": {"type": {"type": "string", "const": "reject"}, "message": {"type": "string"}}, "required": ["type"]}
+```
 
-    ```text Model receives (error status) theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-    Write to the archive/ folder instead.
-    ```
-  </Tab>
+```ts Answer theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+{ type: "reject", message: "Write to the archive/ folder instead." }
+```
 
-  <Tab title="respond">
-    Skip the call and answer in place of the tool. The `message` is required. The model receives it as a successful tool result, so use `reject` to deny a call.
+```text Model receives (error status) theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+Write to the archive/ folder instead.
+```
 
-    ```json Schema branch theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-    {"type": "object", "properties": {"type": {"type": "string", "const": "respond"}, "message": {"type": "string"}}, "required": ["type", "message"]}
-    ```
+**respond**
 
-    ```ts Answer theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-    { type: "respond", message: "Saved orders_archive.csv to the shared drive myself." }
-    ```
+Skip the call and answer in place of the tool. The `message` is required. The model receives it as a successful tool result, so use `reject` to deny a call.
 
-    ```text Model receives theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-    Saved orders_archive.csv to the shared drive myself.
-    ```
-  </Tab>
-</Tabs>
+```json Schema branch theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+{"type": "object", "properties": {"type": {"type": "string", "const": "respond"}, "message": {"type": "string"}}, "required": ["type", "message"]}
+```
+
+```ts Answer theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+{ type: "respond", message: "Saved orders_archive.csv to the shared drive myself." }
+```
+
+```text Model receives theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+Saved orders_archive.csv to the shared drive myself.
+```
 
 ### Resume each call by ID
 
@@ -646,9 +642,9 @@ result = await agent.invoke(new Command({ resume: decisions }), config);
 
 You can also answer interrupts one at a time. An interrupt you do not answer stays pending, and its tool runs once it gets an answer.
 
-<Warning>
-  If one of several answers sent together is invalid, the tools for the others can run while their interrupts still show as pending. Answering them again runs those tools twice. Check answers against `response_schema` before you send them together, or send one at a time.
-</Warning>
+> [!WARNING]
+>
+> If one of several answers sent together is invalid, the tools for the others can run while their interrupts still show as pending. Answering them again runs those tools twice. Check answers against `response_schema` before you send them together, or send one at a time.
 
 ### Correct an invalid answer
 
@@ -751,117 +747,115 @@ await agent.invoke(
 
 ### Decision types
 
-<Tabs>
-  <Tab title="approve">
-    Use `approve` to approve the tool call as-is and execute it without changes.
+**approve**
 
-    ```typescript theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-    await agent.invoke(
-        new Command({
-            // Decisions are provided as a list, one per action under review.
-            // The order of decisions must match the order of actions
-            // in the interrupt request.
-            resume: {
-                decisions: [
-                    {
-                        type: "approve",
+Use `approve` to approve the tool call as-is and execute it without changes.
+
+```typescript theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+await agent.invoke(
+    new Command({
+        // Decisions are provided as a list, one per action under review.
+        // The order of decisions must match the order of actions
+        // in the interrupt request.
+        resume: {
+            decisions: [
+                {
+                    type: "approve",
+                }
+            ]
+        }
+    }),
+    config  // Same thread ID to resume the paused conversation
+);
+```
+
+**edit**
+
+Use `edit` to modify the tool call before execution.
+Provide the edited action with the new tool name and arguments.
+
+```typescript theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+await agent.invoke(
+    new Command({
+        // Decisions are provided as a list, one per action under review.
+        // The order of decisions must match the order of actions
+        // in the interrupt request.
+        resume: {
+            decisions: [
+                {
+                    type: "edit",
+                    // Edited action with tool name and args
+                    editedAction: {
+                        // Tool name to call.
+                        // Will usually be the same as the original action.
+                        name: "new_tool_name",
+                        // Arguments to pass to the tool.
+                        args: { key1: "new_value", key2: "original_value" },
                     }
-                ]
-            }
-        }),
-        config  // Same thread ID to resume the paused conversation
-    );
-    ```
-  </Tab>
+                }
+            ]
+        }
+    }),
+    config  // Same thread ID to resume the paused conversation
+);
+```
 
-  <Tab title="edit">
-    Use `edit` to modify the tool call before execution.
-    Provide the edited action with the new tool name and arguments.
+> [!TIP]
+>
+> When **editing** tool arguments, make changes conservatively. Significant modifications to the original arguments may cause the model to re-evaluate its approach and potentially execute the tool multiple times or take unexpected actions.
 
-    ```typescript theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-    await agent.invoke(
-        new Command({
-            // Decisions are provided as a list, one per action under review.
-            // The order of decisions must match the order of actions
-            // in the interrupt request.
-            resume: {
-                decisions: [
-                    {
-                        type: "edit",
-                        // Edited action with tool name and args
-                        editedAction: {
-                            // Tool name to call.
-                            // Will usually be the same as the original action.
-                            name: "new_tool_name",
-                            // Arguments to pass to the tool.
-                            args: { key1: "new_value", key2: "original_value" },
-                        }
-                    }
-                ]
-            }
-        }),
-        config  // Same thread ID to resume the paused conversation
-    );
-    ```
+**reject**
 
-    <Tip>
-      When **editing** tool arguments, make changes conservatively. Significant modifications to the original arguments may cause the model to re-evaluate its approach and potentially execute the tool multiple times or take unexpected actions.
-    </Tip>
-  </Tab>
+Use `reject` to deny the tool call and provide feedback instead of execution. The tool is not executed.
 
-  <Tab title="reject">
-    Use `reject` to deny the tool call and provide feedback instead of execution. The tool is not executed.
+```typescript theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+await agent.invoke(
+    new Command({
+        // Decisions are provided as a list, one per action under review.
+        // The order of decisions must match the order of actions
+        // in the interrupt request.
+        resume: {
+            decisions: [
+                {
+                    type: "reject",
+                    // Optional: explain why the action was rejected
+                    // and whether the agent should retry a different approach.
+                    message: "User rejected this action. Do not retry this tool call.",
+                }
+            ]
+        }
+    }),
+    config  // Same thread ID to resume the paused conversation
+);
+```
 
-    ```typescript theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-    await agent.invoke(
-        new Command({
-            // Decisions are provided as a list, one per action under review.
-            // The order of decisions must match the order of actions
-            // in the interrupt request.
-            resume: {
-                decisions: [
-                    {
-                        type: "reject",
-                        // Optional: explain why the action was rejected
-                        // and whether the agent should retry a different approach.
-                        message: "User rejected this action. Do not retry this tool call.",
-                    }
-                ]
-            }
-        }),
-        config  // Same thread ID to resume the paused conversation
-    );
-    ```
+The `message` is added to the conversation as feedback to help the agent understand why the action was rejected and what it should do instead. When you omit `message`, the middleware uses a default rejection message that tells the model the tool was not executed and not to retry the same tool call unless the user asks. For side-effecting tools, provide a domain-specific message that is explicit about whether the agent should abandon the action, ask a follow-up question, or try a safer alternative.
 
-    The `message` is added to the conversation as feedback to help the agent understand why the action was rejected and what it should do instead. When you omit `message`, the middleware uses a default rejection message that tells the model the tool was not executed and not to retry the same tool call unless the user asks. For side-effecting tools, provide a domain-specific message that is explicit about whether the agent should abandon the action, ask a follow-up question, or try a safer alternative.
-  </Tab>
+**respond**
 
-  <Tab title="respond">
-    Use `respond` for "ask user" style tools where the tool's real implementation is the human's reply. The `message` content is returned directly as the tool result; the tool itself is not executed.
+Use `respond` for "ask user" style tools where the tool's real implementation is the human's reply. The `message` content is returned directly as the tool result; the tool itself is not executed.
 
-    ```typescript theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-    await agent.invoke(
-        new Command({
-            // Decisions are provided as a list, one per action under review.
-            // The order of decisions must match the order of actions
-            // in the interrupt request.
-            resume: {
-                decisions: [
-                    {
-                        type: "respond",
-                        // The human's reply, returned directly as the tool result
-                        message: "Blue.",
-                    }
-                ]
-            }
-        }),
-        config  // Same thread ID to resume the paused conversation
-    );
-    ```
+```typescript theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+await agent.invoke(
+    new Command({
+        // Decisions are provided as a list, one per action under review.
+        // The order of decisions must match the order of actions
+        // in the interrupt request.
+        resume: {
+            decisions: [
+                {
+                    type: "respond",
+                    // The human's reply, returned directly as the tool result
+                    message: "Blue.",
+                }
+            ]
+        }
+    }),
+    config  // Same thread ID to resume the paused conversation
+);
+```
 
-    The `message` is returned to the agent as a successful `ToolMessage`. Use `respond` when the tool is intentionally a placeholder for human input, for example, an `ask_user` tool that prompts for clarification. Do not use `respond` to deny a proposed action, because it tells the model that the tool completed successfully.
-  </Tab>
-</Tabs>
+The `message` is returned to the agent as a successful `ToolMessage`. Use `respond` when the tool is intentionally a placeholder for human input, for example, an `ask_user` tool that prompts for clarification. Do not use `respond` to deny a proposed action, because it tells the model that the tool completed successfully.
 
 ***
 
@@ -967,12 +961,6 @@ Review the [execution lifecycle](#execution-lifecycle) above to understand how t
 
 ***
 
-<div>
-  <Callout icon="terminal-2">
-    [Connect these docs](/use-these-docs) to your agent of choice via MCP for real-time answers.
-  </Callout>
+[Connect these docs](/use-these-docs) to your agent of choice via MCP for real-time answers.
 
-  <Callout icon="edit">
-    [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/oss/langchain/human-in-the-loop.mdx) or [file an issue](https://github.com/langchain-ai/docs/issues/new/choose).
-  </Callout>
-</div>
+[Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/oss/langchain/human-in-the-loop.mdx) or [file an issue](https://github.com/langchain-ai/docs/issues/new/choose).

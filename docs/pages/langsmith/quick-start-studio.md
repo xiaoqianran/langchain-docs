@@ -28,26 +28,24 @@ To test your application locally using Studio:
 
 1. Install the [LangGraph CLI](/langsmith/cli):
 
-   <CodeGroup>
-     ```bash pip theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-     pip install -U "langgraph-cli[inmem]"
-     langgraph dev
-     ```
+   ```bash pip theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+   pip install -U "langgraph-cli[inmem]"
+   langgraph dev
+   ```
 
-     ```bash uv theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-     uv add "langgraph-cli[inmem]"
-     langgraph dev
-     ```
+   ```bash uv theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+   uv add "langgraph-cli[inmem]"
+   langgraph dev
+   ```
 
-     ```bash npm theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-     npx @langchain/langgraph-cli dev
-     ```
-   </CodeGroup>
+   ```bash npm theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+   npx @langchain/langgraph-cli dev
+   ```
 
-   <Warning>
-     **Browser Compatibility**
-     Safari blocks `localhost` connections to Studio. To work around this, run the command with `--tunnel` to access Studio via a secure tunnel. You'll need to manually add the tunnel URL to allowed origins by clicking **Connect to a local server** in the Studio UI. See the [troubleshooting guide](/langsmith/troubleshooting-studio#safari-connection-issues) for steps.
-   </Warning>
+   > [!WARNING]
+   >
+   > **Browser Compatibility**
+   > Safari blocks `localhost` connections to Studio. To work around this, run the command with `--tunnel` to access Studio via a secure tunnel. You'll need to manually add the tunnel URL to allowed origins by clicking **Connect to a local server** in the Studio UI. See the [troubleshooting guide](/langsmith/troubleshooting-studio#safari-connection-issues) for steps.
 
    This will start the Agent Server locally, running in-memory. The server will run in watch mode, listening for and automatically restarting on code changes. Read this [reference](/langsmith/cli#dev) to learn about all the options for starting the API server.
 
@@ -76,53 +74,49 @@ To test your application locally using Studio:
 
 For step-by-step debugging with breakpoints and variable inspection, run the following:
 
-<CodeGroup>
-  ```bash pip theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  # Install debugpy package
-  pip install debugpy
-  # Start server with debugging enabled
-  langgraph dev --debug-port 5678
-  ```
+```bash pip theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+# Install debugpy package
+pip install debugpy
+# Start server with debugging enabled
+langgraph dev --debug-port 5678
+```
 
-  ```bash uv theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  # Install debugpy package
-  uv add debugpy
-  # Start server with debugging enabled
-  langgraph dev --debug-port 5678
-  ```
-</CodeGroup>
+```bash uv theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+# Install debugpy package
+uv add debugpy
+# Start server with debugging enabled
+langgraph dev --debug-port 5678
+```
 
 Then attach your preferred debugger:
 
-<Tabs>
-  <Tab title="VS Code">
-    Add this configuration to `launch.json`:
+**VS Code**
 
-    ```json theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-    {
-        "name": "Attach to LangGraph",
-        "type": "debugpy",
-        "request": "attach",
-        "connect": {
-          "host": "0.0.0.0",
-          "port": 5678
-        }
+Add this configuration to `launch.json`:
+
+```json theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+{
+    "name": "Attach to LangGraph",
+    "type": "debugpy",
+    "request": "attach",
+    "connect": {
+      "host": "0.0.0.0",
+      "port": 5678
     }
-    ```
-  </Tab>
+}
+```
 
-  <Tab title="PyCharm">
-    1. Go to Run > Edit Configurations
-    2. Click + and select "Python Debug Server"
-    3. Set IDE host name: `localhost`
-    4. Set port: `5678` (or the port number you chose in the previous step)
-    5. Click "OK" and start debugging
-  </Tab>
-</Tabs>
+**PyCharm**
 
-<Tip>
-  For issues getting started, refer to the [troubleshooting guide](/langsmith/troubleshooting-studio).
-</Tip>
+1. Go to Run > Edit Configurations
+2. Click + and select "Python Debug Server"
+3. Set IDE host name: `localhost`
+4. Set port: `5678` (or the port number you chose in the previous step)
+5. Click "OK" and start debugging
+
+> [!TIP]
+>
+> For issues getting started, refer to the [troubleshooting guide](/langsmith/troubleshooting-studio).
 
 ## Next steps
 
@@ -137,12 +131,6 @@ For more information on how to run Studio, refer to the following guides:
 
 ***
 
-<div>
-  <Callout icon="terminal-2">
-    [Connect these docs](/use-these-docs) to your agent of choice via MCP for real-time answers.
-  </Callout>
+[Connect these docs](/use-these-docs) to your agent of choice via MCP for real-time answers.
 
-  <Callout icon="edit">
-    [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/quick-start-studio.mdx) or [file an issue](https://github.com/langchain-ai/docs/issues/new/choose).
-  </Callout>
-</div>
+[Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/quick-start-studio.mdx) or [file an issue](https://github.com/langchain-ai/docs/issues/new/choose).

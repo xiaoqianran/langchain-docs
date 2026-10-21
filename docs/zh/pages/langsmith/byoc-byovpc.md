@@ -55,7 +55,7 @@ LangChain 保留管理工作负载安全组、用于访问数据平面的 EKS AP
 
 每个提供的子网必须有一个允许以下流量的关联网络 ACL。验证按优先级顺序评估规则，包括拒绝规则。|子网层 |方向 |协议和端口|来源或目的地|
 | - | - | - | - |
-|所有提供的子网|入境和出境 | TCP 和 UDP，端口 1–65535 | VPC 主 CIDR |
+|所有提供的子网 |入境和出境 | TCP 和 UDP，端口 1–65535 | VPC 主 CIDR |
 |私人申请|出境 | TCP 443 | TCP 443 `0.0.0.0/0` |
 |私人申请|入境 | TCP 1024–65535，用于返回流量 | `0.0.0.0/0` |
 |公共|入境 | TCP 443 | TCP 443 `0.0.0.0/0` |
@@ -65,9 +65,9 @@ LangChain 保留管理工作负载安全组、用于访问数据平面的 EKS AP
 
 ## 使用 Terraform 创建 VPC
 
-<Note>
-  使用 Terraform 模块是可选的。您可以使用自己的工具创建VPC，并使用该模块作为参考来满足[network requirements](#meet-the-network-requirements)。
-</Note>
+> [!注意]
+>
+> 使用 Terraform 模块是可选的。您可以使用自己的工具创建VPC，并使用该模块作为参考来满足[network requirements](#meet-the-network-requirements)。
 
 [⟦T12⟧ Terraform module](https://github.com/langchain-ai/terraform/tree/main/modules/byoc/aws/byovpc) 创建符合 LangSmith 数据平面要求的网络。使用它来创建VPC，或配置现有VPC以满足[network requirements](#meet-the-network-requirements)。
 
@@ -153,12 +153,6 @@ VPC、可用区和私有子网配置创建后无法更改。您无法在 LangCha
 
 ***
 
-<div>
-  <Callout icon="terminal-2">
-    [Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
-  </Callout>
+[Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
 
-  <Callout icon="edit">
-    [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/byoc-byovpc.mdx) 或 [file an issue](https://github.com/langchain-ai/docs/issues/new/choose)。
-  </Callout>
-</div>
+[Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/byoc-byovpc.mdx) 或 [file an issue](https://github.com/langchain-ai/docs/issues/new/choose)。

@@ -34,64 +34,60 @@ The token encodes the sandbox, the tenant, the exact file path, and the response
 
 A link is pinned to that path, not to a snapshot of the file. The file itself is not captured or copied when the link is minted.
 
-<Warning>
-  Do not modify a file after minting a link for it. A later write to that path may or may not be reflected in what the link serves, so treat the file as immutable for the life of the link. When the contents change, write a new file and mint a new link for it.
-</Warning>
+> [!WARNING]
+>
+> Do not modify a file after minting a link for it. A later write to that path may or may not be reflected in what the link serves, so treat the file as immutable for the life of the link. When the contents change, write a new file and mint a new link for it.
 
 Links are served from the sandbox service domain, on the sandbox's own host, never from the LangSmith API host. Downloaded content is therefore isolated from your LangSmith session.
 
 ## Create a link
 
-<CodeGroup>
-  ```python Python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  # Never expires
-  link = sb.generate_download_url("/app/report.csv")
+```python Python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+# Never expires
+link = sb.generate_download_url("/app/report.csv")
 
-  # Expires in an hour
-  link = sb.generate_download_url("/app/report.csv", expires_in_seconds=3600)
+# Expires in an hour
+link = sb.generate_download_url("/app/report.csv", expires_in_seconds=3600)
 
-  # Rendered in the browser instead of downloaded
-  link = sb.generate_download_url(
-      "/app/page.html",
-      content_type="text/html",
-      content_disposition="inline",
-  )
+# Rendered in the browser instead of downloaded
+link = sb.generate_download_url(
+    "/app/page.html",
+    content_type="text/html",
+    content_disposition="inline",
+)
 
-  print(link.download_url)
-  print(link.expires_at)  # None when the link never expires
-  ```
+print(link.download_url)
+print(link.expires_at)  # None when the link never expires
+```
 
-  ```ts TypeScript theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  // Never expires
-  let link = await sandbox.generateDownloadURL("/app/report.csv");
+```ts TypeScript theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+// Never expires
+let link = await sandbox.generateDownloadURL("/app/report.csv");
 
-  // Expires in an hour
-  link = await sandbox.generateDownloadURL("/app/report.csv", {
-    expiresInSeconds: 3600,
-  });
+// Expires in an hour
+link = await sandbox.generateDownloadURL("/app/report.csv", {
+  expiresInSeconds: 3600,
+});
 
-  // Rendered in the browser instead of downloaded
-  link = await sandbox.generateDownloadURL("/app/page.html", {
-    contentType: "text/html",
-    contentDisposition: "inline",
-  });
+// Rendered in the browser instead of downloaded
+link = await sandbox.generateDownloadURL("/app/page.html", {
+  contentType: "text/html",
+  contentDisposition: "inline",
+});
 
-  console.log(link.download_url);
-  console.log(link.expires_at); // null when the link never expires
-  ```
-</CodeGroup>
+console.log(link.download_url);
+console.log(link.expires_at); // null when the link never expires
+```
 
 Call it on the client instead of a sandbox instance to mint a link by sandbox name:
 
-<CodeGroup>
-  ```python Python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  link = client.generate_download_url("my-sandbox", "/app/report.csv")
-  ```
+```python Python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+link = client.generate_download_url("my-sandbox", "/app/report.csv")
+```
 
-  ```ts TypeScript theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  const link = await client.generateDownloadURL("my-sandbox", "/app/report.csv");
-  ```
-</CodeGroup>
+```ts TypeScript theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+const link = await client.generateDownloadURL("my-sandbox", "/app/report.csv");
+```
 
 ### Options
 
@@ -146,9 +142,9 @@ Fetching a link **wakes a stopped sandbox**, so the first request after an idle 
 
 ## Security considerations
 
-<Warning>
-  A download link is a bearer credential embedded in a URL. Anyone who obtains it can read that one file until it expires. Treat a link like a password: send it over a channel you trust, and prefer a short `expires_in_seconds` for anything sensitive.
-</Warning>
+> [!WARNING]
+>
+> A download link is a bearer credential embedded in a URL. Anyone who obtains it can read that one file until it expires. Treat a link like a password: send it over a channel you trust, and prefer a short `expires_in_seconds` for anything sensitive.
 
 * **Links cannot be revoked.** A minted link stays valid until it expires, even if the API key that created it is deleted or loses `sandboxes:exec`. Set an expiry when that matters.
 * **Links die with the sandbox.** Deleting the sandbox invalidates every link into it.
@@ -180,12 +176,6 @@ Use a download link to hand one file to an outside consumer. Use `read()` to pul
 
 ***
 
-<div>
-  <Callout icon="terminal-2">
-    [Connect these docs](/use-these-docs) to your agent of choice via MCP for real-time answers.
-  </Callout>
+[Connect these docs](/use-these-docs) to your agent of choice via MCP for real-time answers.
 
-  <Callout icon="edit">
-    [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/sandbox-download-links.mdx) or [file an issue](https://github.com/langchain-ai/docs/issues/new/choose).
-  </Callout>
-</div>
+[Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/sandbox-download-links.mdx) or [file an issue](https://github.com/langchain-ai/docs/issues/new/choose).

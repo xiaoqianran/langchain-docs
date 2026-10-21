@@ -11,14 +11,14 @@
    * **Runtime context**: Data scoped to a single run or invocation
    * **Cross-conversation context**: Data that persists across multiple conversations or sessions
 
-<Tip>
-  Runtime context refers to local context: data and dependencies your code needs to run. It does **not** refer to:
-
-  * The LLM context, which is the data passed into the LLM's prompt.
-  * The "context window", which is the maximum number of tokens that can be passed to the LLM.
-
-  The runtime context is how you thread data through your agent. Rather than storing things in global state, you can attach values — like a database connection, user session, or configuration — to the context and access them inside tools and middleware. This keeps things stateless, testable, and reusable. For example, you can use user metadata in the runtime context to fetch user preferences and feed them into the context window.
-</Tip>
+> [!TIP]
+>
+> Runtime context refers to local context: data and dependencies your code needs to run. It does **not** refer to:
+>
+> * The LLM context, which is the data passed into the LLM's prompt.
+> * The "context window", which is the maximum number of tokens that can be passed to the LLM.
+>
+> The runtime context is how you thread data through your agent. Rather than storing things in global state, you can attach values — like a database connection, user session, or configuration — to the context and access them inside tools and middleware. This keeps things stateless, testable, and reusable. For example, you can use user metadata in the runtime context to fetch user preferences and feed them into the context window.
 
 LangGraph provides three ways to manage context, which combines the mutability and lifetime dimensions:
 
@@ -45,73 +45,71 @@ await graph.invoke(
 
 **Dynamic runtime context** represents mutable data that can evolve during a single run and is managed through the LangGraph state object. This includes conversation history, intermediate results, and values derived from tools or LLM outputs. In LangGraph, the state object acts as [short-term memory](/oss/javascript/concepts/memory) during a run.
 
-<Tabs>
-  <Tab title="In an agent">
-    Example shows how to incorporate state into an agent **prompt**.
+**In an agent**
 
-    State can also be accessed by the agent's **tools**, which can read or update the state as needed. See [tool calling guide](/oss/javascript/langchain/tools#access-context) for details.
+Example shows how to incorporate state into an agent **prompt**.
 
-    ```typescript theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-    import { createAgent, createMiddleware } from "langchain";
-    import type { AgentState } from "langchain";
-    import * as z from "zod";
+State can also be accessed by the agent's **tools**, which can read or update the state as needed. See [tool calling guide](/oss/javascript/langchain/tools#access-context) for details.
 
-    const CustomState = z.object({ // [!code highlight]
-      userName: z.string(),
-    });
+```typescript theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+import { createAgent, createMiddleware } from "langchain";
+import type { AgentState } from "langchain";
+import * as z from "zod";
 
-    const personalizedPrompt = createMiddleware({ // [!code highlight]
-      name: "PersonalizedPrompt",
-      stateSchema: CustomState,
-      wrapModelCall: (request, handler) => {
-        const userName = request.state.userName || "User";
-        const systemPrompt = `You are a helpful assistant. User's name is ${userName}`;
-        return handler({ ...request, systemPrompt });
-      },
-    });
+const CustomState = z.object({ // [!code highlight]
+  userName: z.string(),
+});
 
-    const agent = createAgent({  // [!code highlight]
-      model: "claude-sonnet-4-6",
-      tools: [/* your tools here */],
-      middleware: [personalizedPrompt] as const, // [!code highlight]
-    });
+const personalizedPrompt = createMiddleware({ // [!code highlight]
+  name: "PersonalizedPrompt",
+  stateSchema: CustomState,
+  wrapModelCall: (request, handler) => {
+    const userName = request.state.userName || "User";
+    const systemPrompt = `You are a helpful assistant. User's name is ${userName}`;
+    return handler({ ...request, systemPrompt });
+  },
+});
 
-    await agent.invoke({
-      messages: [{ role: "user", content: "hi!" }],
-      userName: "John Smith",
-    });
-    ```
-  </Tab>
+const agent = createAgent({  // [!code highlight]
+  model: "claude-sonnet-4-6",
+  tools: [/* your tools here */],
+  middleware: [personalizedPrompt] as const, // [!code highlight]
+});
 
-  <Tab title="In a workflow">
-    ```typescript theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-    import { z } from "zod/v4";
-    import { StateGraph, StateSchema, MessagesValue, START } from "@langchain/langgraph";
+await agent.invoke({
+  messages: [{ role: "user", content: "hi!" }],
+  userName: "John Smith",
+});
+```
 
-    const CustomState = new StateSchema({  // [!code highlight]
-      messages: MessagesValue,
-      extraField: z.number(),
-    });
+**In a workflow**
 
-    const builder = new StateGraph(CustomState)
-      .addNode("node", async (state) => {  // [!code highlight]
-        const messages = state.messages;
-        // ...
-        return {  // [!code highlight]
-          extraField: state.extraField + 1,
-        };
-      })
-      .addEdge(START, "node");
+```typescript theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+import { z } from "zod/v4";
+import { StateGraph, StateSchema, MessagesValue, START } from "@langchain/langgraph";
 
-    const graph = builder.compile();
-    ```
-  </Tab>
-</Tabs>
+const CustomState = new StateSchema({  // [!code highlight]
+  messages: MessagesValue,
+  extraField: z.number(),
+});
 
-<Tip>
-  **Turning on memory**
-  Please see the [memory guide](/oss/javascript/langgraph/add-memory) for more details on how to enable memory. This is a powerful feature that allows you to persist the agent's state across multiple invocations. Otherwise, the state is scoped only to a single run.
-</Tip>
+const builder = new StateGraph(CustomState)
+  .addNode("node", async (state) => {  // [!code highlight]
+    const messages = state.messages;
+    // ...
+    return {  // [!code highlight]
+      extraField: state.extraField + 1,
+    };
+  })
+  .addEdge(START, "node");
+
+const graph = builder.compile();
+```
+
+> [!TIP]
+>
+> **Turning on memory**
+> Please see the [memory guide](/oss/javascript/langgraph/add-memory) for more details on how to enable memory. This is a powerful feature that allows you to persist the agent's state across multiple invocations. Otherwise, the state is scoped only to a single run.
 
 ## Dynamic cross-conversation context
 
@@ -125,12 +123,6 @@ await graph.invoke(
 
 ***
 
-<div>
-  <Callout icon="terminal-2">
-    [Connect these docs](/use-these-docs) to your agent of choice via MCP for real-time answers.
-  </Callout>
+[Connect these docs](/use-these-docs) to your agent of choice via MCP for real-time answers.
 
-  <Callout icon="edit">
-    [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/oss/concepts/context.mdx) or [file an issue](https://github.com/langchain-ai/docs/issues/new/choose).
-  </Callout>
-</div>
+[Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/oss/concepts/context.mdx) or [file an issue](https://github.com/langchain-ai/docs/issues/new/choose).

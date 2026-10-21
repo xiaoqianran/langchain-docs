@@ -8,13 +8,13 @@ Interpreters give agents a programmable, **in-memory** workspace inside the agen
 
 Where [sandboxes](/oss/javascript/deepagents/sandboxes) are a code-first way for acting on an environment (such as running commands, installing dependencies, and editing files), interpreters are a code-first way for composing tools, preserving state, and deciding what information should return to the model.
 
-<Warning>
-  Interpreters are in [**beta**](/oss/javascript/versioning). APIs and lifecycle behavior may change between releases.
-</Warning>
+> [!WARNING]
+>
+> Interpreters are in [**beta**](/oss/javascript/versioning). APIs and lifecycle behavior may change between releases.
 
-<Note>
-  Interpreters require `@langchain/quickjs`.
-</Note>
+> [!NOTE]
+>
+> Interpreters require `@langchain/quickjs`.
 
 ## Why use interpreters?
 
@@ -22,23 +22,21 @@ Most agent work alternates between model reasoning and tool calls. A model can f
 
 Interpreters move that orchestration into code so the model reasons about *what* to do, not every intermediate step.
 
-<CardGroup>
-  <Card title="Programmatic tool calling (PTC)" icon="tool" href="#programmatic-tool-calling-ptc">
-    Call selected tools from interpreter code, including loops, retries, branching, and parallel batches.
-  </Card>
+> **[Programmatic tool calling (PTC)](#programmatic-tool-calling-ptc)**
+>
+> Call selected tools from interpreter code, including loops, retries, branching, and parallel batches.
 
-  <Card title="Dynamic subagents" icon="arrows-split" href="#dynamic-subagents">
-    Dispatch subagents from code for fan-out, verification, and recursive workflows over large inputs.
-  </Card>
+> **[Dynamic subagents](#dynamic-subagents)**
+>
+> Dispatch subagents from code for fan-out, verification, and recursive workflows over large inputs.
 
-  <Card title="Stateful work" icon="database" href="#how-interpreters-work">
-    Keep intermediate values in runtime state without overloading the model context.
-  </Card>
+> **[Stateful work](#how-interpreters-work)**
+>
+> Keep intermediate values in runtime state without overloading the model context.
 
-  <Card title="Deterministic transforms" icon="code" href="#how-interpreters-work">
-    Sort, group, parse, validate, score, and aggregate structured data without another model turn.
-  </Card>
-</CardGroup>
+> **[Deterministic transforms](#how-interpreters-work)**
+>
+> Sort, group, parse, validate, score, and aggregate structured data without another model turn.
 
 ## Choose a pattern
 
@@ -58,91 +56,87 @@ Use [sandboxes](/oss/javascript/deepagents/sandboxes) for code against an enviro
 
 Install the QuickJS middleware package, then pass interpreter middleware using the `middleware` argument on `createDeepAgent`.
 
-<CodeGroup>
-  ```bash npm theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  npm install deepagents @langchain/quickjs
-  ```
+```bash npm theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+npm install deepagents @langchain/quickjs
+```
 
-  ```bash pnpm theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  pnpm add deepagents @langchain/quickjs
-  ```
+```bash pnpm theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+pnpm add deepagents @langchain/quickjs
+```
 
-  ```bash yarn theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  yarn add deepagents @langchain/quickjs
-  ```
-</CodeGroup>
+```bash yarn theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+yarn add deepagents @langchain/quickjs
+```
 
-<CodeGroup>
-  ```ts Google theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  import { createDeepAgent } from "deepagents";
-  import { createCodeInterpreterMiddleware } from "@langchain/quickjs";
+```ts Google theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+import { createDeepAgent } from "deepagents";
+import { createCodeInterpreterMiddleware } from "@langchain/quickjs";
 
-  const agent = createDeepAgent({
-    model: "google:gemini-3.6-flash",
-    middleware: [createCodeInterpreterMiddleware()],
-  });
-  ```
+const agent = createDeepAgent({
+  model: "google:gemini-3.6-flash",
+  middleware: [createCodeInterpreterMiddleware()],
+});
+```
 
-  ```ts OpenAI theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  import { createDeepAgent } from "deepagents";
-  import { createCodeInterpreterMiddleware } from "@langchain/quickjs";
+```ts OpenAI theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+import { createDeepAgent } from "deepagents";
+import { createCodeInterpreterMiddleware } from "@langchain/quickjs";
 
-  const agent = createDeepAgent({
-    model: "openai:gpt-5.5",
-    middleware: [createCodeInterpreterMiddleware()],
-  });
-  ```
+const agent = createDeepAgent({
+  model: "openai:gpt-5.5",
+  middleware: [createCodeInterpreterMiddleware()],
+});
+```
 
-  ```ts Anthropic theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  import { createDeepAgent } from "deepagents";
-  import { createCodeInterpreterMiddleware } from "@langchain/quickjs";
+```ts Anthropic theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+import { createDeepAgent } from "deepagents";
+import { createCodeInterpreterMiddleware } from "@langchain/quickjs";
 
-  const agent = createDeepAgent({
-    model: "anthropic:claude-sonnet-5",
-    middleware: [createCodeInterpreterMiddleware()],
-  });
-  ```
+const agent = createDeepAgent({
+  model: "anthropic:claude-sonnet-5",
+  middleware: [createCodeInterpreterMiddleware()],
+});
+```
 
-  ```ts OpenRouter theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  import { createDeepAgent } from "deepagents";
-  import { createCodeInterpreterMiddleware } from "@langchain/quickjs";
+```ts OpenRouter theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+import { createDeepAgent } from "deepagents";
+import { createCodeInterpreterMiddleware } from "@langchain/quickjs";
 
-  const agent = createDeepAgent({
-    model: "openrouter:z-ai/glm-5.2",
-    middleware: [createCodeInterpreterMiddleware()],
-  });
-  ```
+const agent = createDeepAgent({
+  model: "openrouter:z-ai/glm-5.2",
+  middleware: [createCodeInterpreterMiddleware()],
+});
+```
 
-  ```ts Fireworks theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  import { createDeepAgent } from "deepagents";
-  import { createCodeInterpreterMiddleware } from "@langchain/quickjs";
+```ts Fireworks theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+import { createDeepAgent } from "deepagents";
+import { createCodeInterpreterMiddleware } from "@langchain/quickjs";
 
-  const agent = createDeepAgent({
-    model: "fireworks:accounts/fireworks/models/glm-5p2",
-    middleware: [createCodeInterpreterMiddleware()],
-  });
-  ```
+const agent = createDeepAgent({
+  model: "fireworks:accounts/fireworks/models/glm-5p2",
+  middleware: [createCodeInterpreterMiddleware()],
+});
+```
 
-  ```ts Baseten theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  import { createDeepAgent } from "deepagents";
-  import { createCodeInterpreterMiddleware } from "@langchain/quickjs";
+```ts Baseten theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+import { createDeepAgent } from "deepagents";
+import { createCodeInterpreterMiddleware } from "@langchain/quickjs";
 
-  const agent = createDeepAgent({
-    model: "baseten:zai-org/GLM-5.2",
-    middleware: [createCodeInterpreterMiddleware()],
-  });
-  ```
+const agent = createDeepAgent({
+  model: "baseten:zai-org/GLM-5.2",
+  middleware: [createCodeInterpreterMiddleware()],
+});
+```
 
-  ```ts Ollama theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  import { createDeepAgent } from "deepagents";
-  import { createCodeInterpreterMiddleware } from "@langchain/quickjs";
+```ts Ollama theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+import { createDeepAgent } from "deepagents";
+import { createCodeInterpreterMiddleware } from "@langchain/quickjs";
 
-  const agent = createDeepAgent({
-    model: "ollama:north-mini-code-1.0",
-    middleware: [createCodeInterpreterMiddleware()],
-  });
-  ```
-</CodeGroup>
+const agent = createDeepAgent({
+  model: "ollama:north-mini-code-1.0",
+  middleware: [createCodeInterpreterMiddleware()],
+});
+```
 
 ## How interpreters work
 
@@ -193,77 +187,75 @@ const result: string = await tools.webSearch({
 
 Enable PTC with an explicit allowlist:
 
-<CodeGroup>
-  ```ts Google theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  import { createDeepAgent } from "deepagents";
-  import { createCodeInterpreterMiddleware } from "@langchain/quickjs";
+```ts Google theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+import { createDeepAgent } from "deepagents";
+import { createCodeInterpreterMiddleware } from "@langchain/quickjs";
 
-  const agent = createDeepAgent({
-    model: "google:gemini-3.6-flash",
-    middleware: [createCodeInterpreterMiddleware({ ptc: ["web_search"] })],
-  });
-  ```
+const agent = createDeepAgent({
+  model: "google:gemini-3.6-flash",
+  middleware: [createCodeInterpreterMiddleware({ ptc: ["web_search"] })],
+});
+```
 
-  ```ts OpenAI theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  import { createDeepAgent } from "deepagents";
-  import { createCodeInterpreterMiddleware } from "@langchain/quickjs";
+```ts OpenAI theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+import { createDeepAgent } from "deepagents";
+import { createCodeInterpreterMiddleware } from "@langchain/quickjs";
 
-  const agent = createDeepAgent({
-    model: "openai:gpt-5.5",
-    middleware: [createCodeInterpreterMiddleware({ ptc: ["web_search"] })],
-  });
-  ```
+const agent = createDeepAgent({
+  model: "openai:gpt-5.5",
+  middleware: [createCodeInterpreterMiddleware({ ptc: ["web_search"] })],
+});
+```
 
-  ```ts Anthropic theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  import { createDeepAgent } from "deepagents";
-  import { createCodeInterpreterMiddleware } from "@langchain/quickjs";
+```ts Anthropic theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+import { createDeepAgent } from "deepagents";
+import { createCodeInterpreterMiddleware } from "@langchain/quickjs";
 
-  const agent = createDeepAgent({
-    model: "anthropic:claude-sonnet-5",
-    middleware: [createCodeInterpreterMiddleware({ ptc: ["web_search"] })],
-  });
-  ```
+const agent = createDeepAgent({
+  model: "anthropic:claude-sonnet-5",
+  middleware: [createCodeInterpreterMiddleware({ ptc: ["web_search"] })],
+});
+```
 
-  ```ts OpenRouter theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  import { createDeepAgent } from "deepagents";
-  import { createCodeInterpreterMiddleware } from "@langchain/quickjs";
+```ts OpenRouter theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+import { createDeepAgent } from "deepagents";
+import { createCodeInterpreterMiddleware } from "@langchain/quickjs";
 
-  const agent = createDeepAgent({
-    model: "openrouter:z-ai/glm-5.2",
-    middleware: [createCodeInterpreterMiddleware({ ptc: ["web_search"] })],
-  });
-  ```
+const agent = createDeepAgent({
+  model: "openrouter:z-ai/glm-5.2",
+  middleware: [createCodeInterpreterMiddleware({ ptc: ["web_search"] })],
+});
+```
 
-  ```ts Fireworks theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  import { createDeepAgent } from "deepagents";
-  import { createCodeInterpreterMiddleware } from "@langchain/quickjs";
+```ts Fireworks theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+import { createDeepAgent } from "deepagents";
+import { createCodeInterpreterMiddleware } from "@langchain/quickjs";
 
-  const agent = createDeepAgent({
-    model: "fireworks:accounts/fireworks/models/glm-5p2",
-    middleware: [createCodeInterpreterMiddleware({ ptc: ["web_search"] })],
-  });
-  ```
+const agent = createDeepAgent({
+  model: "fireworks:accounts/fireworks/models/glm-5p2",
+  middleware: [createCodeInterpreterMiddleware({ ptc: ["web_search"] })],
+});
+```
 
-  ```ts Baseten theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  import { createDeepAgent } from "deepagents";
-  import { createCodeInterpreterMiddleware } from "@langchain/quickjs";
+```ts Baseten theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+import { createDeepAgent } from "deepagents";
+import { createCodeInterpreterMiddleware } from "@langchain/quickjs";
 
-  const agent = createDeepAgent({
-    model: "baseten:zai-org/GLM-5.2",
-    middleware: [createCodeInterpreterMiddleware({ ptc: ["web_search"] })],
-  });
-  ```
+const agent = createDeepAgent({
+  model: "baseten:zai-org/GLM-5.2",
+  middleware: [createCodeInterpreterMiddleware({ ptc: ["web_search"] })],
+});
+```
 
-  ```ts Ollama theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  import { createDeepAgent } from "deepagents";
-  import { createCodeInterpreterMiddleware } from "@langchain/quickjs";
+```ts Ollama theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+import { createDeepAgent } from "deepagents";
+import { createCodeInterpreterMiddleware } from "@langchain/quickjs";
 
-  const agent = createDeepAgent({
-    model: "ollama:north-mini-code-1.0",
-    middleware: [createCodeInterpreterMiddleware({ ptc: ["web_search"] })],
-  });
-  ```
-</CodeGroup>
+const agent = createDeepAgent({
+  model: "ollama:north-mini-code-1.0",
+  middleware: [createCodeInterpreterMiddleware({ ptc: ["web_search"] })],
+});
+```
 
 After PTC is enabled, the agent can call the allowlisted tool from interpreter code. This example searches several topics in parallel and combines the results before returning to the model:
 
@@ -279,9 +271,9 @@ const results = await Promise.all(
 results.join("\n\n");
 ```
 
-<Warning>
-  PTC calls currently execute through the interpreter bridge and do not go through the normal tool calling path. As a result, `interruptOn` approval workflows are not enforced per PTC-invoked tool call.
-</Warning>
+> [!WARNING]
+>
+> PTC calls currently execute through the interpreter bridge and do not go through the normal tool calling path. As a result, `interruptOn` approval workflows are not enforced per PTC-invoked tool call.
 
 ## Dynamic subagents
 
@@ -327,11 +319,11 @@ Every tool you expose through PTC is an outside capability that interpreter code
 | Wall-clock or datetime access | No | Expose an explicit time tool if needed |
 | Shell commands, package installs, tests, OS-level execution | No | Use a [sandbox backend](/oss/javascript/deepagents/sandboxes) |
 
-<Note>
-  **How code execution works**
-
-  Interpreter code runs in a WASM-sandboxed QuickJS runtime via [QuickJS-Emscripten](https://github.com/justjake/quickjs-emscripten), not in the host Node.js process. Treat interpreters as a capability-scoped execution layer: bridge only the tools and subagents the agent needs, and keep the PTC allowlist narrow.
-</Note>
+> [!NOTE]
+>
+> **How code execution works**
+>
+> Interpreter code runs in a WASM-sandboxed QuickJS runtime via [QuickJS-Emscripten](https://github.com/justjake/quickjs-emscripten), not in the host Node.js process. Treat interpreters as a capability-scoped execution layer: bridge only the tools and subagents the agent needs, and keep the PTC allowlist narrow.
 
 ## Configuration
 
@@ -339,7 +331,7 @@ Every tool you expose through PTC is an outside capability that interpreter code
 
 | Option | Default | Purpose |
 | - | - | - |
-| `memoryLimitBytes` | `64 * 1024 * 1024` <br />(64 MB) | Cap QuickJS heap memory per session. |
+| `memoryLimitBytes` | `64 * 1024 * 1024` (64 MB) | Cap QuickJS heap memory per session. |
 | `maxStackSizeBytes` | `320 * 1024` | Cap QuickJS stack size per session. |
 | `executionTimeoutMs` | `5000` | Timeout limit in milliseconds for each `eval` call. Negative values disable the timeout. |
 | `toolName` | `"eval"` | Name of the interpreter tool exposed to the model. |
@@ -352,12 +344,6 @@ Every tool you expose through PTC is an outside capability that interpreter code
 
 ***
 
-<div>
-  <Callout icon="terminal-2">
-    [Connect these docs](/use-these-docs) to your agent of choice via MCP for real-time answers.
-  </Callout>
+[Connect these docs](/use-these-docs) to your agent of choice via MCP for real-time answers.
 
-  <Callout icon="edit">
-    [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/oss/deepagents/interpreters.mdx) or [file an issue](https://github.com/langchain-ai/docs/issues/new/choose).
-  </Callout>
-</div>
+[Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/oss/deepagents/interpreters.mdx) or [file an issue](https://github.com/langchain-ai/docs/issues/new/choose).

@@ -163,125 +163,123 @@ printf '%s\n' 'your-password' | ./install-script.sh secret -u admin --password-s
 
 Use this path when installer scripts are not allowed. These steps use normal `kubectl`, `helm`, and `curl` commands only.
 
-<Steps>
-  <Step title="Add the Helm repo and get the values file">
-    Add the LangChain Helm repo:
+**1. Add the Helm repo and get the values file**
 
-    ```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-    helm repo add langchain https://langchain-ai.github.io/helm
-    helm repo update langchain
-    ```
+Add the LangChain Helm repo:
 
-    Download the customer values file:
+```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+helm repo add langchain https://langchain-ai.github.io/helm
+helm repo update langchain
+```
 
-    ```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-    curl -fsSL https://raw.githubusercontent.com/langchain-ai/helm/main/charts/mission-control/values.yaml -o values.yaml
-    ```
+Download the customer values file:
 
-    Review `values.yaml` before installing. Keep `config.auth.enabled: true` for production.
+```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+curl -fsSL https://raw.githubusercontent.com/langchain-ai/helm/main/charts/mission-control/values.yaml -o values.yaml
+```
 
-    If your platform requires non-root containers, Mission Control can run as UID `1001`. Add this to `values.yaml` before installing:
+Review `values.yaml` before installing. Keep `config.auth.enabled: true` for production.
 
-    ```yaml theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-    backend:
-      podSecurityContext:
-        runAsNonRoot: true
-        runAsUser: 1001
-        runAsGroup: 1001
-        fsGroup: 1001
-      securityContext:
-        allowPrivilegeEscalation: false
-        capabilities:
-          drop:
-            - ALL
-      extraEnv:
-        - name: HOME
-          value: /tmp
-        - name: HELM_CACHE_HOME
-          value: /tmp/.cache/helm
-        - name: HELM_CONFIG_HOME
-          value: /tmp/.config/helm
-        - name: HELM_DATA_HOME
-          value: /tmp/.local/share/helm
+If your platform requires non-root containers, Mission Control can run as UID `1001`. Add this to `values.yaml` before installing:
 
-    frontend:
-      podSecurityContext:
-        runAsNonRoot: true
-        runAsUser: 1001
-        runAsGroup: 1001
-      securityContext:
-        allowPrivilegeEscalation: false
-        capabilities:
-          drop:
-            - ALL
-    ```
-  </Step>
+```yaml theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+backend:
+  podSecurityContext:
+    runAsNonRoot: true
+    runAsUser: 1001
+    runAsGroup: 1001
+    fsGroup: 1001
+  securityContext:
+    allowPrivilegeEscalation: false
+    capabilities:
+      drop:
+        - ALL
+  extraEnv:
+    - name: HOME
+      value: /tmp
+    - name: HELM_CACHE_HOME
+      value: /tmp/.cache/helm
+    - name: HELM_CONFIG_HOME
+      value: /tmp/.config/helm
+    - name: HELM_DATA_HOME
+      value: /tmp/.local/share/helm
 
-  <Step title="Create the namespace">
-    ```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-    kubectl create namespace langsmith --dry-run=client -o yaml | kubectl apply -f -
-    ```
-  </Step>
+frontend:
+  podSecurityContext:
+    runAsNonRoot: true
+    runAsUser: 1001
+    runAsGroup: 1001
+  securityContext:
+    allowPrivilegeEscalation: false
+    capabilities:
+      drop:
+        - ALL
+```
 
-  <Step title="Create the auth credentials Secret">
-    Credentials are stored in a Kubernetes Secret. They are not written to `values.yaml`.
+**2. Create the namespace**
 
-    ```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-    read -r -p "Username: " MC_USER
-    read -r -s -p "Password: " MC_PASS; echo
+```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+kubectl create namespace langsmith --dry-run=client -o yaml | kubectl apply -f -
+```
 
-    kubectl create secret generic mission-control-auth \
-      --namespace=langsmith \
-      --from-literal=username="$MC_USER" \
-      --from-literal=password="$MC_PASS" \
-      --dry-run=client -o yaml | kubectl apply -f -
-    ```
+**3. Create the auth credentials Secret**
 
-    For multi-replica backend deployments, include a shared JWT signing key in the same Secret and set `config.auth.jwtSecretKey: jwtSecret` in `values.yaml`:
+Credentials are stored in a Kubernetes Secret. They are not written to `values.yaml`.
 
-    ```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-    JWT_SECRET="$(openssl rand -base64 32)"
+```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+read -r -p "Username: " MC_USER
+read -r -s -p "Password: " MC_PASS; echo
 
-    kubectl create secret generic mission-control-auth \
-      --namespace=langsmith \
-      --from-literal=username="$MC_USER" \
-      --from-literal=password="$MC_PASS" \
-      --from-literal=jwtSecret="$JWT_SECRET" \
-      --dry-run=client -o yaml | kubectl apply -f -
-    ```
-  </Step>
+kubectl create secret generic mission-control-auth \
+  --namespace=langsmith \
+  --from-literal=username="$MC_USER" \
+  --from-literal=password="$MC_PASS" \
+  --dry-run=client -o yaml | kubectl apply -f -
+```
 
-  <Step title="Install with Helm">
-    ```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-    helm upgrade --install mission-control langchain/mission-control \
-      --namespace langsmith \
-      --create-namespace \
-      --values values.yaml \
-      --rollback-on-failure
-    ```
+For multi-replica backend deployments, include a shared JWT signing key in the same Secret and set `config.auth.jwtSecretKey: jwtSecret` in `values.yaml`:
 
-    Wait for both workloads to become ready (the backend runs as a StatefulSet, the frontend as a Deployment):
+```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+JWT_SECRET="$(openssl rand -base64 32)"
 
-    ```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-    kubectl rollout status statefulset/mission-control-backend -n langsmith
-    kubectl rollout status deployment/mission-control-frontend -n langsmith
-    ```
+kubectl create secret generic mission-control-auth \
+  --namespace=langsmith \
+  --from-literal=username="$MC_USER" \
+  --from-literal=password="$MC_PASS" \
+  --from-literal=jwtSecret="$JWT_SECRET" \
+  --dry-run=client -o yaml | kubectl apply -f -
+```
 
-    You can also inspect the pods directly:
+**4. Install with Helm**
 
-    ```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-    kubectl get pods -n langsmith
-    ```
-  </Step>
+```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+helm upgrade --install mission-control langchain/mission-control \
+  --namespace langsmith \
+  --create-namespace \
+  --values values.yaml \
+  --rollback-on-failure
+```
 
-  <Step title="Access the UI">
-    ```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-    kubectl port-forward svc/mission-control-frontend 3000:3000 -n langsmith
-    ```
+Wait for both workloads to become ready (the backend runs as a StatefulSet, the frontend as a Deployment):
 
-    Open [http://localhost:3000](http://localhost:3000/) and log in with the credentials from step 3.
-  </Step>
-</Steps>
+```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+kubectl rollout status statefulset/mission-control-backend -n langsmith
+kubectl rollout status deployment/mission-control-frontend -n langsmith
+```
+
+You can also inspect the pods directly:
+
+```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+kubectl get pods -n langsmith
+```
+
+**5. Access the UI**
+
+```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+kubectl port-forward svc/mission-control-frontend 3000:3000 -n langsmith
+```
+
+Open [http://localhost:3000](http://localhost:3000/) and log in with the credentials from step 3.
 
 ## Upgrade
 
@@ -382,12 +380,6 @@ Set feature flags to `false` in `values.yaml` to remove the corresponding write 
 
 ***
 
-<div>
-  <Callout icon="terminal-2">
-    [Connect these docs](/use-these-docs) to your agent of choice via MCP for real-time answers.
-  </Callout>
+[Connect these docs](/use-these-docs) to your agent of choice via MCP for real-time answers.
 
-  <Callout icon="edit">
-    [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/self-hosted-mission-control.mdx) or [file an issue](https://github.com/langchain-ai/docs/issues/new/choose).
-  </Callout>
-</div>
+[Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/self-hosted-mission-control.mdx) or [file an issue](https://github.com/langchain-ai/docs/issues/new/choose).

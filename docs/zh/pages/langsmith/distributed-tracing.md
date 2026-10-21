@@ -13,9 +13,9 @@ LangSmith 支持开箱即用的分布式跟踪，使用上下文传播标头（`
 * 跟踪在客户端启动
 * 在服务器上继续
 
-<Warning>
-  **仅接受来自可信服务的分布式跟踪标头。** `langsmith-trace` 和 `baggage` 标头用作可信跟踪上下文。不要在直接从不受信任的第三方或公共互联网接收请求的服务上添加`TracingMiddleware`（或传递入站请求标头作为跟踪`parent`）。保持对内部、服务到服务调用的分布式跟踪，并从网关或代理处不受信任的入站请求中剥离这些标头。信任来自外部呼叫者的`baggage`，可以让他们影响您的跑步记录方式。
-</Warning>
+> [!警告]
+>
+> **仅接受来自可信服务的分布式跟踪标头。** `langsmith-trace` 和 `baggage` 标头用作可信跟踪上下文。不要在直接从不受信任的第三方或公共互联网接收请求的服务上添加`TracingMiddleware`（或传递入站请求标头作为跟踪`parent`）。保持对内部、服务到服务调用的分布式跟踪，并从网关或代理处不受信任的入站请求中剥离这些标头。信任来自外部呼叫者的`baggage`，可以让他们影响您的跑步记录方式。
 
 ## Python 中的分布式跟踪
 
@@ -34,9 +34,9 @@ async def my_client_function():
         return await client.post("/my-route", headers=headers)
 ```
 
-然后服务器（或其他服务）可以通过适当地处理标头来继续跟踪。如果您使用 asgi 应用程序 Starlette 或 FastAPI，则可以使用 LangSmith 的 `TracingMiddleware` 连接分布式跟踪。<Info>
-  `TracingMiddleware`类已添加到`langsmith==0.1.133`中。
-</Info>
+然后服务器（或其他服务）可以通过适当地处理标头来继续跟踪。如果您使用 asgi 应用程序 Starlette 或 FastAPI，则可以使用 LangSmith 的 `TracingMiddleware` 连接分布式跟踪。> [!注意]
+>
+> `langsmith==0.1.133` 中添加了`TracingMiddleware` 类。
 
 使用 FastAPI 的示例：
 
@@ -105,9 +105,9 @@ async def fake_route(request: Request):
 
 ## TypeScript 中的分布式跟踪
 
-<Note>
-  TypeScript 中的分布式跟踪需要 `langsmith>=0.1.31`
-</Note>
+> [!注意]
+>
+> TypeScript 中的分布式跟踪需要 `langsmith>=0.1.31`
 
 首先，我们从客户端获取当前的运行树并将其转换为 `langsmith-trace` 和 `baggage` 标头值，我们可以将其传递给服务器：
 
@@ -133,59 +133,51 @@ await client();
 
 要将新创建的运行树传递给可跟踪函数，我们可以使用 `withRunTree` 帮助器，这将确保运行树在可跟踪调用中传播。
 
-<CodeGroup>
-  ```typescript Express.JS theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  // server.mts
-  import { RunTree } from "langsmith";
-  import { traceable, withRunTree } from "langsmith/traceable";
-  import express from "express";
-  import bodyParser from "body-parser";
+```typescript Express.JS theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+// server.mts
+import { RunTree } from "langsmith";
+import { traceable, withRunTree } from "langsmith/traceable";
+import express from "express";
+import bodyParser from "body-parser";
 
-      const server = traceable(
-          (text: string) => `Hello from the server! Received "${text}"`,
-          { name: "server" }
-      );
+    const server = traceable(
+        (text: string) => `Hello from the server! Received "${text}"`,
+        { name: "server" }
+    );
 
-      const app = express();
-      app.use(bodyParser.text());
+    const app = express();
+    app.use(bodyParser.text());
 
-  app.post("/", async (req, res) => {
-      const runTree = RunTree.fromHeaders(req.headers);
-      const result = await withRunTree(runTree, () => server(req.body));
-      res.send(result);
-  });
-  ```
+app.post("/", async (req, res) => {
+    const runTree = RunTree.fromHeaders(req.headers);
+    const result = await withRunTree(runTree, () => server(req.body));
+    res.send(result);
+});
+```
 
-  ```typescript Hono theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  // server.mts
-  import { RunTree } from "langsmith";
-  import { traceable, withRunTree } from "langsmith/traceable";
-  import { Hono } from "hono";
+```typescript Hono theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+// server.mts
+import { RunTree } from "langsmith";
+import { traceable, withRunTree } from "langsmith/traceable";
+import { Hono } from "hono";
 
-      const server = traceable(
-          (text: string) => `Hello from the server! Received "${text}"`,
-          { name: "server" }
-      );
+    const server = traceable(
+        (text: string) => `Hello from the server! Received "${text}"`,
+        { name: "server" }
+    );
 
-      const app = new Hono();
+    const app = new Hono();
 
-  app.post("/", async (c) => {
-      const body = await c.req.text();
-      const runTree = RunTree.fromHeaders(c.req.raw.headers);
-      const result = await withRunTree(runTree, () => server(body));
-      return c.body(result);
-  });
-  ```
-</CodeGroup>
+app.post("/", async (c) => {
+    const body = await c.req.text();
+    const runTree = RunTree.fromHeaders(c.req.raw.headers);
+    const result = await withRunTree(runTree, () => server(body));
+    return c.body(result);
+});
+```
 
 ***
 
-<div>
-  <Callout icon="terminal-2">
-    [Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
-  </Callout>
+[Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
 
-  <Callout icon="edit">
-    [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/distributed-tracing.mdx) 或 [file an issue](https://github.com/langchain-ai/docs/issues/new/choose)。
-  </Callout>
-</div>
+[Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/distributed-tracing.mdx) 或 [file an issue](https://github.com/langchain-ai/docs/issues/new/choose)。

@@ -6,9 +6,9 @@ Configure the model and core capabilities of a managed deep agent.
 
 The agent definition selects the model and core capabilities of a managed deep agent.
 
-<Note>
-  Managed Deep Agents is in **public [beta](/langsmith/release-stages)** on [LangSmith Cloud](/langsmith/cloud).
-</Note>
+> [!NOTE]
+>
+> Managed Deep Agents is in **public [beta](/langsmith/release-stages)** on [LangSmith Cloud](/langsmith/cloud).
 
 The agent entry lives at the project root:
 
@@ -21,53 +21,51 @@ For the full project layout, see [Project structure](/langsmith/python/managed-d
 
 To define the agent, use `define_deep_agent`:
 
-<CodeGroup>
-  ```python OpenAI theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  from managed_deepagents import define_deep_agent
+```python OpenAI theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+from managed_deepagents import define_deep_agent
 
-  agent = define_deep_agent(
-      name="research-assistant",
-      model="openai:gpt-5.5",
-  )
-  ```
+agent = define_deep_agent(
+    name="research-assistant",
+    model="openai:gpt-5.5",
+)
+```
 
-  ```python Anthropic theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  from managed_deepagents import define_deep_agent
+```python Anthropic theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+from managed_deepagents import define_deep_agent
 
-  agent = define_deep_agent(
-      name="research-assistant",
-      model="anthropic:claude-sonnet-4-6",
-  )
-  ```
+agent = define_deep_agent(
+    name="research-assistant",
+    model="anthropic:claude-sonnet-4-6",
+)
+```
 
-  ```python Google Gemini theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  from managed_deepagents import define_deep_agent
+```python Google Gemini theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+from managed_deepagents import define_deep_agent
 
-  agent = define_deep_agent(
-      name="research-assistant",
-      model="google_genai:gemini-3.6-flash",
-  )
-  ```
+agent = define_deep_agent(
+    name="research-assistant",
+    model="google_genai:gemini-3.6-flash",
+)
+```
 
-  ```python Microsoft Foundry theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  # Install the required dependency: uv add langchain-azure-ai
-  import os
+```python Microsoft Foundry theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+# Install the required dependency: uv add langchain-azure-ai
+import os
 
-  from langchain_azure_ai.chat_models import AzureAIOpenAIApiChatModel
-  from managed_deepagents import define_deep_agent
+from langchain_azure_ai.chat_models import AzureAIOpenAIApiChatModel
+from managed_deepagents import define_deep_agent
 
-  model = AzureAIOpenAIApiChatModel(
-      endpoint=os.environ["AZURE_AI_OPENAI_ENDPOINT"],
-      credential=os.environ["AZURE_OPENAI_API_KEY"],
-      model=os.environ["AZURE_OPENAI_DEPLOYMENT_NAME"],
-  )
+model = AzureAIOpenAIApiChatModel(
+    endpoint=os.environ["AZURE_AI_OPENAI_ENDPOINT"],
+    credential=os.environ["AZURE_OPENAI_API_KEY"],
+    model=os.environ["AZURE_OPENAI_DEPLOYMENT_NAME"],
+)
 
-  agent = define_deep_agent(
-      name="research-assistant",
-      model=model,
-  )
-  ```
-</CodeGroup>
+agent = define_deep_agent(
+    name="research-assistant",
+    model=model,
+)
+```
 
 Configure the system prompt, skills, memory, sandbox, identity, channels, and schedules through their project files rather than the agent definition. See [Project structure](/langsmith/python/managed-deep-agents-project-structure). To select the system prompt, skills, MCP servers, or sandbox for each run, see [Select configuration per run](#select-configuration-per-run).
 
@@ -77,9 +75,9 @@ Configure the system prompt, skills, memory, sandbox, identity, channels, and sc
 
 | Parameter | What it does |
 | - | - |
-| `name=` | Required. Pass a static string that starts with a letter and contains only letters, numbers, underscores, or hyphens, such as `"research-assistant"`.<br /><br /> Managed Deep Agents uses the name as the agent's graph ID and the default LangSmith deployment name, and clients pass it as `assistant_id` when they call the deployment. You can override the deployment name with `mda deploy --name` without changing the agent definition. |
-| `model=` | Set the chat model the agent uses. The simplest option is a `provider:model` string. Add the provider's API key to `.env` so the model works locally and in the deployment.<br /><br /> Pass a LangChain chat model instance instead when you need to configure model parameters in code. For model options and supported providers, see [Models](/oss/python/deepagents/models).<br /><br /> To connect to LLM Gateway, see [Use LLM Gateway](#use-llm-gateway). |
-| `tools=` | Adds tools the agent can call. Pass tools in the `tools` list so the agent can call application logic or external services.<br /><br /> Define tools in local modules, import them into the agent entry, and add them to the definition. See [Custom tools](/langsmith/python/managed-deep-agents-tools). To add tools from remote MCP servers without importing them into the agent entry, use [MCP connectors](/langsmith/python/managed-deep-agents-mcp-connectors). |
+| `name=` | Required. Pass a static string that starts with a letter and contains only letters, numbers, underscores, or hyphens, such as `"research-assistant"`.  Managed Deep Agents uses the name as the agent's graph ID and the default LangSmith deployment name, and clients pass it as `assistant_id` when they call the deployment. You can override the deployment name with `mda deploy --name` without changing the agent definition. |
+| `model=` | Set the chat model the agent uses. The simplest option is a `provider:model` string. Add the provider's API key to `.env` so the model works locally and in the deployment.  Pass a LangChain chat model instance instead when you need to configure model parameters in code. For model options and supported providers, see [Models](/oss/python/deepagents/models).  To connect to LLM Gateway, see [Use LLM Gateway](#use-llm-gateway). |
+| `tools=` | Adds tools the agent can call. Pass tools in the `tools` list so the agent can call application logic or external services.  Define tools in local modules, import them into the agent entry, and add them to the definition. See [Custom tools](/langsmith/python/managed-deep-agents-tools). To add tools from remote MCP servers without importing them into the agent entry, use [MCP connectors](/langsmith/python/managed-deep-agents-mcp-connectors). |
 | `middleware=` | Adds behavior around model calls, tool calls, and the agent lifecycle. Pass middleware in the `middleware` list. Middleware runs in list order. See [Custom middleware](/langsmith/python/managed-deep-agents-middleware). |
 | `subagents=` | Defines specialized agents for delegated tasks. Pass subagent definitions when the agent should delegate specialized or context-heavy work. Each subagent can have its own prompt, model, and tools. See [Subagents](/oss/python/deepagents/subagents). |
 | `permissions=` | Controls path-level access for filesystem tools. Pass filesystem permission rules to control which paths the agent's built-in filesystem tools can read or write. Cleared when the project declares a [sandbox](/langsmith/python/managed-deep-agents-sandboxes), because a permission rule disables the sandbox `execute` tool. See [Permissions](/oss/python/deepagents/permissions). |
@@ -205,9 +203,9 @@ agent = define_deep_agent(
 )
 ```
 
-<Note>
-  Gateway model IDs use a slash between provider and model (`langsmith:provider/model-name`). Model strings that call a provider directly use a colon (`provider:model-name`).
-</Note>
+> [!NOTE]
+>
+> Gateway model IDs use a slash between provider and model (`langsmith:provider/model-name`). Model strings that call a provider directly use a colon (`provider:model-name`).
 
 The gateway routes each request by model ID. `moonshotai/kimi-k3` is a LangChain-hosted model, so it requires no provider secret and draws on [Gateway Credits](/langsmith/llm-gateway-credits). A model ID that starts with a provider your workspace has configured, such as `anthropic/claude-opus-5`, uses that [provider secret](/langsmith/llm-gateway-admin-setup#1-add-provider-secrets) and bills to your own provider account.
 
@@ -221,12 +219,6 @@ mda init my-agent --gateway
 
 ***
 
-<div>
-  <Callout icon="terminal-2">
-    [Connect these docs](/use-these-docs) to your agent of choice via MCP for real-time answers.
-  </Callout>
+[Connect these docs](/use-these-docs) to your agent of choice via MCP for real-time answers.
 
-  <Callout icon="edit">
-    [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/managed-deep-agents-agent-definition.mdx) or [file an issue](https://github.com/langchain-ai/docs/issues/new/choose).
-  </Callout>
-</div>
+[Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/managed-deep-agents-agent-definition.mdx) or [file an issue](https://github.com/langchain-ai/docs/issues/new/choose).

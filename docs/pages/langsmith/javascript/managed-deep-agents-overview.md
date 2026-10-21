@@ -81,32 +81,24 @@ Stay on Deep Agents when you run the agent yourself or need a [backend](/oss/jav
 
 ## Next steps
 
-<CardGroup>
-  <Card title="Quickstart" icon="rocket" href="/langsmith/javascript/managed-deep-agents-quickstart">
-    Create and deploy your first Managed Deep Agent with the `mda` CLI.
-  </Card>
+> **[Quickstart](/langsmith/javascript/managed-deep-agents-quickstart)**
+>
+> Create and deploy your first Managed Deep Agent with the `mda` CLI.
 
-  <Card title="Tutorial" icon="book" href="/langsmith/javascript/managed-deep-agents-tutorial">
-    Add a custom search tool, durable memory, and a daily schedule.
-  </Card>
+> **[Tutorial](/langsmith/javascript/managed-deep-agents-tutorial)**
+>
+> Add a custom search tool, durable memory, and a daily schedule.
 
-  <Card title="Agent Server" icon="server" href="/langsmith/agent-server-overview">
-    Explore the runtime that hosts Managed Deep Agents deployments.
-  </Card>
+> **[Agent Server](/langsmith/agent-server-overview)**
+>
+> Explore the runtime that hosts Managed Deep Agents deployments.
 
-  <Card title="MCP endpoint" icon="plug" href="/langsmith/javascript/managed-deep-agents-mcp-endpoint">
-    Call a deployed agent as a tool from Claude Code or another MCP client.
-  </Card>
-</CardGroup>
+> **[MCP endpoint](/langsmith/javascript/managed-deep-agents-mcp-endpoint)**
+>
+> Call a deployed agent as a tool from Claude Code or another MCP client.
 
 ***
 
-<div>
-  <Callout icon="terminal-2">
-    [Connect these docs](/use-these-docs) to your agent of choice via MCP for real-time answers.
-  </Callout>
+[Connect these docs](/use-these-docs) to your agent of choice via MCP for real-time answers.
 
-  <Callout icon="edit">
-    [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/managed-deep-agents-overview.mdx) or [file an issue](https://github.com/langchain-ai/docs/issues/new/choose).
-  </Callout>
-</div>
+[Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/managed-deep-agents-overview.mdx) or [file an issue](https://github.com/langchain-ai/docs/issues/new/choose).

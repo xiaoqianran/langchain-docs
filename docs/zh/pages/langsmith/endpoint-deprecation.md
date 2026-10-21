@@ -8,7 +8,9 @@ LangSmith 如何弃用和删除云和自托管部署中的 API 端点和 SDK 方
 
 LangSmith 在删除 API 端点和 SDK 方法之前先弃用它们，以便您有时间迁移到替代品。本页介绍如何宣布弃用以及它们保持支持的时间。
 
-<Note>此策略仅适用于[LangSmith API reference](/langsmith/smith-api-ref)和[Agent Server API reference](/langsmith/server-api-ref)中记录的公共端点。内部未记录的端点不包括在内，并且可以随时更改，包括重大更改。</Note>
+> [!注意]
+>
+> 此策略仅适用于 [LangSmith API reference](/langsmith/smith-api-ref) 和 [Agent Server API reference](/langsmith/server-api-ref) 中记录的公共端点。内部未记录的端点不包括在内，并且可以随时更改，包括重大更改。
 
 ## 弃用生命周期
 
@@ -17,7 +19,7 @@ LangSmith 在删除 API 端点和 SDK 方法之前先弃用它们，以便您有
 3. **支持**：已弃用的端点将在最短的时间内继续运行，具体取决于您的部署。参见[Deprecation window by deployment](#deprecation-window-by-deployment)。
 4. **删除**：支持窗口结束后，端点被删除。
 
-在云中，如果活跃消费者仍然接近删除日期，LangSmith可能会对已弃用的端点应用速率限制和增加延迟，并在部分请求上返回明确的错误消息，作为在删除之前吸引剩余使用情况的最后手段。我们会提前直接联系受影响的客户。
+在云中，如果活跃消费者仍然接近删除日期，LangSmith可能会对已弃用的端点应用速率限制和增加延迟，并对部分请求返回明确的错误消息，作为在删除之前吸引剩余使用情况的最后手段。我们会提前直接联系受影响的客户。
 
 ## 部署的弃用窗口
 
@@ -45,12 +47,6 @@ LangSmith 在删除 API 端点和 SDK 方法之前先弃用它们，以便您有
 
 ***
 
-<div>
-  <Callout icon="terminal-2">
-    [Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
-  </Callout>
+[Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
 
-  <Callout icon="edit">
-    [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/endpoint-deprecation.mdx) 或 [file an issue](https://github.com/langchain-ai/docs/issues/new/choose)。
-  </Callout>
-</div>
+[Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/endpoint-deprecation.mdx) 或 [file an issue](https://github.com/langchain-ai/docs/issues/new/choose)。

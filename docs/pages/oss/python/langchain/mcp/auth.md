@@ -6,9 +6,9 @@ Authenticate MCP connections with bearer tokens, OAuth 2.1, or per-user credenti
 
 Most remote MCP servers require authentication. [`MCPAdapter`](https://reference.langchain.com/python/langchain/mcp/adapter/MCPAdapter) delegates auth to FastMCP, so any credential a `fastmcp.Client` accepts works: a static [bearer token](#bearer-token), a full [OAuth 2.1](#oauth-authentication) flow, or any [`httpx.Auth`](https://www.python-httpx.org/advanced/authentication/). Pass the credential on a prebuilt client and hand that client to the adapter. When one agent talks to several servers, use [per-server authentication](#per-server-authentication); in a deployment, use [per-user authentication](#per-user-authentication) so each run reaches the server as the caller.
 
-<Note>
-  The `langchain.mcp` namespace requires `langchain[mcp]>=1.4.0` and is in beta. The API may change.
-</Note>
+> [!NOTE]
+>
+> The `langchain.mcp` namespace requires `langchain[mcp]>=1.4.0` and is in beta. The API may change.
 
 ## Bearer token
 
@@ -115,12 +115,6 @@ In production, `token_for` stands in for whatever the deployment already has: an
 
 ***
 
-<div>
-  <Callout icon="terminal-2">
-    [Connect these docs](/use-these-docs) to your agent of choice via MCP for real-time answers.
-  </Callout>
+[Connect these docs](/use-these-docs) to your agent of choice via MCP for real-time answers.
 
-  <Callout icon="edit">
-    [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/oss/langchain/mcp/auth.mdx) or [file an issue](https://github.com/langchain-ai/docs/issues/new/choose).
-  </Callout>
-</div>
+[Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/oss/langchain/mcp/auth.mdx) or [file an issue](https://github.com/langchain-ai/docs/issues/new/choose).

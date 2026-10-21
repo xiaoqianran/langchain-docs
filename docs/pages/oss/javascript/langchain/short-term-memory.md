@@ -6,9 +6,9 @@ Memory is a system that remembers information about previous interactions. For A
 
 Short term memory lets your application remember previous interactions within a single thread or conversation.
 
-<Note>
-  A thread organizes multiple interactions in a session, similar to the way email groups messages in a single conversation.
-</Note>
+> [!NOTE]
+>
+> A thread organizes multiple interactions in a session, similar to the way email groups messages in a single conversation.
 
 Conversation history is the most common form of short-term memory. Long conversations pose a challenge to today's LLMs; a full history may not fit inside an LLM's context window, resulting in a context loss or errors.
 
@@ -16,274 +16,272 @@ Even if your model supports the full context length, most LLMs still perform poo
 
 Chat models accept context using [messages](/oss/javascript/langchain/messages), which include instructions (a system message) and inputs (human messages). In chat applications, messages alternate between human inputs and model responses, resulting in a list of messages that grows longer over time. Because context windows are limited, many applications can benefit from using techniques to remove or "forget" stale information.
 
-<Tip>
-  Need to remember information **across** conversations? Use [long-term memory](/oss/javascript/langchain/long-term-memory) to store and recall user-specific or application-level data across different threads and sessions.
-</Tip>
+> [!TIP]
+>
+> Need to remember information **across** conversations? Use [long-term memory](/oss/javascript/langchain/long-term-memory) to store and recall user-specific or application-level data across different threads and sessions.
 
 ## Usage
 
 To add short-term memory (thread-level persistence) to an agent, you need to specify a `checkpointer` when creating an agent.
 
-<Info>
-  LangChain's agent manages short-term memory as a part of your agent's state.
+> [!NOTE]
+>
+> LangChain's agent manages short-term memory as a part of your agent's state.
+>
+> By storing these in the graph's state, the agent can access the full context for a given conversation while maintaining separation between different threads.
+>
+> State is persisted to a database (or memory) using a checkpointer so the thread can be resumed at any time.
+>
+> Short-term memory updates when the agent is invoked or a step (like a tool call) is completed, and the state is read at the start of each step.
 
-  By storing these in the graph's state, the agent can access the full context for a given conversation while maintaining separation between different threads.
+```ts Google theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+import { createAgent, tool } from "langchain";
+import { MemorySaver } from "@langchain/langgraph"; // [!code highlight]
+import * as z from "zod";
 
-  State is persisted to a database (or memory) using a checkpointer so the thread can be resumed at any time.
+const getUserInfo = tool(() => "No user profile on file.", {
+  name: "get_user_info",
+  description: "Look up information about the current user.",
+  schema: z.object({}),
+});
 
-  Short-term memory updates when the agent is invoked or a step (like a tool call) is completed, and the state is read at the start of each step.
-</Info>
+const checkpointer = new MemorySaver(); // [!code highlight]
 
-<CodeGroup>
-  ```ts Google theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  import { createAgent, tool } from "langchain";
-  import { MemorySaver } from "@langchain/langgraph"; // [!code highlight]
-  import * as z from "zod";
+const agent = createAgent({
+  model: "google:gemini-3.6-flash",
+  tools: [getUserInfo],
+  checkpointer,
+});
 
-  const getUserInfo = tool(() => "No user profile on file.", {
-    name: "get_user_info",
-    description: "Look up information about the current user.",
-    schema: z.object({}),
-  });
+const threadConfig = { configurable: { thread_id: "1" } };
+let result = await agent.invoke(
+  { messages: [{ role: "user", content: "Hi! My name is Bob." }] },
+  threadConfig, // [!code highlight]
+);
+let response = result.messages.at(-1)?.content;
+console.log(response); // "Hi Bob! Nice to see you here. How are you doing?"
 
-  const checkpointer = new MemorySaver(); // [!code highlight]
+result = await agent.invoke(
+  { messages: [{ role: "user", content: "What's my name?" }] },
+  threadConfig, // [!code highlight]
+);
+response = result.messages.at(-1)?.content;
+console.log(response); // "You are Bob!"
+```
 
-  const agent = createAgent({
-    model: "google:gemini-3.6-flash",
-    tools: [getUserInfo],
-    checkpointer,
-  });
+```ts OpenAI theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+import { createAgent, tool } from "langchain";
+import { MemorySaver } from "@langchain/langgraph"; // [!code highlight]
+import * as z from "zod";
 
-  const threadConfig = { configurable: { thread_id: "1" } };
-  let result = await agent.invoke(
-    { messages: [{ role: "user", content: "Hi! My name is Bob." }] },
-    threadConfig, // [!code highlight]
-  );
-  let response = result.messages.at(-1)?.content;
-  console.log(response); // "Hi Bob! Nice to see you here. How are you doing?"
+const getUserInfo = tool(() => "No user profile on file.", {
+  name: "get_user_info",
+  description: "Look up information about the current user.",
+  schema: z.object({}),
+});
 
-  result = await agent.invoke(
-    { messages: [{ role: "user", content: "What's my name?" }] },
-    threadConfig, // [!code highlight]
-  );
-  response = result.messages.at(-1)?.content;
-  console.log(response); // "You are Bob!"
-  ```
+const checkpointer = new MemorySaver(); // [!code highlight]
 
-  ```ts OpenAI theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  import { createAgent, tool } from "langchain";
-  import { MemorySaver } from "@langchain/langgraph"; // [!code highlight]
-  import * as z from "zod";
+const agent = createAgent({
+  model: "openai:gpt-5.5",
+  tools: [getUserInfo],
+  checkpointer,
+});
 
-  const getUserInfo = tool(() => "No user profile on file.", {
-    name: "get_user_info",
-    description: "Look up information about the current user.",
-    schema: z.object({}),
-  });
+const threadConfig = { configurable: { thread_id: "1" } };
+let result = await agent.invoke(
+  { messages: [{ role: "user", content: "Hi! My name is Bob." }] },
+  threadConfig, // [!code highlight]
+);
+let response = result.messages.at(-1)?.content;
+console.log(response); // "Hi Bob! Nice to see you here. How are you doing?"
 
-  const checkpointer = new MemorySaver(); // [!code highlight]
+result = await agent.invoke(
+  { messages: [{ role: "user", content: "What's my name?" }] },
+  threadConfig, // [!code highlight]
+);
+response = result.messages.at(-1)?.content;
+console.log(response); // "You are Bob!"
+```
 
-  const agent = createAgent({
-    model: "openai:gpt-5.5",
-    tools: [getUserInfo],
-    checkpointer,
-  });
+```ts Anthropic theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+import { createAgent, tool } from "langchain";
+import { MemorySaver } from "@langchain/langgraph"; // [!code highlight]
+import * as z from "zod";
 
-  const threadConfig = { configurable: { thread_id: "1" } };
-  let result = await agent.invoke(
-    { messages: [{ role: "user", content: "Hi! My name is Bob." }] },
-    threadConfig, // [!code highlight]
-  );
-  let response = result.messages.at(-1)?.content;
-  console.log(response); // "Hi Bob! Nice to see you here. How are you doing?"
+const getUserInfo = tool(() => "No user profile on file.", {
+  name: "get_user_info",
+  description: "Look up information about the current user.",
+  schema: z.object({}),
+});
 
-  result = await agent.invoke(
-    { messages: [{ role: "user", content: "What's my name?" }] },
-    threadConfig, // [!code highlight]
-  );
-  response = result.messages.at(-1)?.content;
-  console.log(response); // "You are Bob!"
-  ```
+const checkpointer = new MemorySaver(); // [!code highlight]
 
-  ```ts Anthropic theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  import { createAgent, tool } from "langchain";
-  import { MemorySaver } from "@langchain/langgraph"; // [!code highlight]
-  import * as z from "zod";
+const agent = createAgent({
+  model: "anthropic:claude-sonnet-5",
+  tools: [getUserInfo],
+  checkpointer,
+});
 
-  const getUserInfo = tool(() => "No user profile on file.", {
-    name: "get_user_info",
-    description: "Look up information about the current user.",
-    schema: z.object({}),
-  });
+const threadConfig = { configurable: { thread_id: "1" } };
+let result = await agent.invoke(
+  { messages: [{ role: "user", content: "Hi! My name is Bob." }] },
+  threadConfig, // [!code highlight]
+);
+let response = result.messages.at(-1)?.content;
+console.log(response); // "Hi Bob! Nice to see you here. How are you doing?"
 
-  const checkpointer = new MemorySaver(); // [!code highlight]
+result = await agent.invoke(
+  { messages: [{ role: "user", content: "What's my name?" }] },
+  threadConfig, // [!code highlight]
+);
+response = result.messages.at(-1)?.content;
+console.log(response); // "You are Bob!"
+```
 
-  const agent = createAgent({
-    model: "anthropic:claude-sonnet-5",
-    tools: [getUserInfo],
-    checkpointer,
-  });
+```ts OpenRouter theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+import { createAgent, tool } from "langchain";
+import { MemorySaver } from "@langchain/langgraph"; // [!code highlight]
+import * as z from "zod";
 
-  const threadConfig = { configurable: { thread_id: "1" } };
-  let result = await agent.invoke(
-    { messages: [{ role: "user", content: "Hi! My name is Bob." }] },
-    threadConfig, // [!code highlight]
-  );
-  let response = result.messages.at(-1)?.content;
-  console.log(response); // "Hi Bob! Nice to see you here. How are you doing?"
+const getUserInfo = tool(() => "No user profile on file.", {
+  name: "get_user_info",
+  description: "Look up information about the current user.",
+  schema: z.object({}),
+});
 
-  result = await agent.invoke(
-    { messages: [{ role: "user", content: "What's my name?" }] },
-    threadConfig, // [!code highlight]
-  );
-  response = result.messages.at(-1)?.content;
-  console.log(response); // "You are Bob!"
-  ```
+const checkpointer = new MemorySaver(); // [!code highlight]
 
-  ```ts OpenRouter theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  import { createAgent, tool } from "langchain";
-  import { MemorySaver } from "@langchain/langgraph"; // [!code highlight]
-  import * as z from "zod";
+const agent = createAgent({
+  model: "openrouter:z-ai/glm-5.2",
+  tools: [getUserInfo],
+  checkpointer,
+});
 
-  const getUserInfo = tool(() => "No user profile on file.", {
-    name: "get_user_info",
-    description: "Look up information about the current user.",
-    schema: z.object({}),
-  });
+const threadConfig = { configurable: { thread_id: "1" } };
+let result = await agent.invoke(
+  { messages: [{ role: "user", content: "Hi! My name is Bob." }] },
+  threadConfig, // [!code highlight]
+);
+let response = result.messages.at(-1)?.content;
+console.log(response); // "Hi Bob! Nice to see you here. How are you doing?"
 
-  const checkpointer = new MemorySaver(); // [!code highlight]
+result = await agent.invoke(
+  { messages: [{ role: "user", content: "What's my name?" }] },
+  threadConfig, // [!code highlight]
+);
+response = result.messages.at(-1)?.content;
+console.log(response); // "You are Bob!"
+```
 
-  const agent = createAgent({
-    model: "openrouter:z-ai/glm-5.2",
-    tools: [getUserInfo],
-    checkpointer,
-  });
+```ts Fireworks theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+import { createAgent, tool } from "langchain";
+import { MemorySaver } from "@langchain/langgraph"; // [!code highlight]
+import * as z from "zod";
 
-  const threadConfig = { configurable: { thread_id: "1" } };
-  let result = await agent.invoke(
-    { messages: [{ role: "user", content: "Hi! My name is Bob." }] },
-    threadConfig, // [!code highlight]
-  );
-  let response = result.messages.at(-1)?.content;
-  console.log(response); // "Hi Bob! Nice to see you here. How are you doing?"
+const getUserInfo = tool(() => "No user profile on file.", {
+  name: "get_user_info",
+  description: "Look up information about the current user.",
+  schema: z.object({}),
+});
 
-  result = await agent.invoke(
-    { messages: [{ role: "user", content: "What's my name?" }] },
-    threadConfig, // [!code highlight]
-  );
-  response = result.messages.at(-1)?.content;
-  console.log(response); // "You are Bob!"
-  ```
+const checkpointer = new MemorySaver(); // [!code highlight]
 
-  ```ts Fireworks theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  import { createAgent, tool } from "langchain";
-  import { MemorySaver } from "@langchain/langgraph"; // [!code highlight]
-  import * as z from "zod";
+const agent = createAgent({
+  model: "fireworks:accounts/fireworks/models/glm-5p2",
+  tools: [getUserInfo],
+  checkpointer,
+});
 
-  const getUserInfo = tool(() => "No user profile on file.", {
-    name: "get_user_info",
-    description: "Look up information about the current user.",
-    schema: z.object({}),
-  });
+const threadConfig = { configurable: { thread_id: "1" } };
+let result = await agent.invoke(
+  { messages: [{ role: "user", content: "Hi! My name is Bob." }] },
+  threadConfig, // [!code highlight]
+);
+let response = result.messages.at(-1)?.content;
+console.log(response); // "Hi Bob! Nice to see you here. How are you doing?"
 
-  const checkpointer = new MemorySaver(); // [!code highlight]
+result = await agent.invoke(
+  { messages: [{ role: "user", content: "What's my name?" }] },
+  threadConfig, // [!code highlight]
+);
+response = result.messages.at(-1)?.content;
+console.log(response); // "You are Bob!"
+```
 
-  const agent = createAgent({
-    model: "fireworks:accounts/fireworks/models/glm-5p2",
-    tools: [getUserInfo],
-    checkpointer,
-  });
+```ts Baseten theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+import { createAgent, tool } from "langchain";
+import { MemorySaver } from "@langchain/langgraph"; // [!code highlight]
+import * as z from "zod";
 
-  const threadConfig = { configurable: { thread_id: "1" } };
-  let result = await agent.invoke(
-    { messages: [{ role: "user", content: "Hi! My name is Bob." }] },
-    threadConfig, // [!code highlight]
-  );
-  let response = result.messages.at(-1)?.content;
-  console.log(response); // "Hi Bob! Nice to see you here. How are you doing?"
+const getUserInfo = tool(() => "No user profile on file.", {
+  name: "get_user_info",
+  description: "Look up information about the current user.",
+  schema: z.object({}),
+});
 
-  result = await agent.invoke(
-    { messages: [{ role: "user", content: "What's my name?" }] },
-    threadConfig, // [!code highlight]
-  );
-  response = result.messages.at(-1)?.content;
-  console.log(response); // "You are Bob!"
-  ```
+const checkpointer = new MemorySaver(); // [!code highlight]
 
-  ```ts Baseten theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  import { createAgent, tool } from "langchain";
-  import { MemorySaver } from "@langchain/langgraph"; // [!code highlight]
-  import * as z from "zod";
+const agent = createAgent({
+  model: "baseten:zai-org/GLM-5.2",
+  tools: [getUserInfo],
+  checkpointer,
+});
 
-  const getUserInfo = tool(() => "No user profile on file.", {
-    name: "get_user_info",
-    description: "Look up information about the current user.",
-    schema: z.object({}),
-  });
+const threadConfig = { configurable: { thread_id: "1" } };
+let result = await agent.invoke(
+  { messages: [{ role: "user", content: "Hi! My name is Bob." }] },
+  threadConfig, // [!code highlight]
+);
+let response = result.messages.at(-1)?.content;
+console.log(response); // "Hi Bob! Nice to see you here. How are you doing?"
 
-  const checkpointer = new MemorySaver(); // [!code highlight]
+result = await agent.invoke(
+  { messages: [{ role: "user", content: "What's my name?" }] },
+  threadConfig, // [!code highlight]
+);
+response = result.messages.at(-1)?.content;
+console.log(response); // "You are Bob!"
+```
 
-  const agent = createAgent({
-    model: "baseten:zai-org/GLM-5.2",
-    tools: [getUserInfo],
-    checkpointer,
-  });
+```ts Ollama theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+import { createAgent, tool } from "langchain";
+import { MemorySaver } from "@langchain/langgraph"; // [!code highlight]
+import * as z from "zod";
 
-  const threadConfig = { configurable: { thread_id: "1" } };
-  let result = await agent.invoke(
-    { messages: [{ role: "user", content: "Hi! My name is Bob." }] },
-    threadConfig, // [!code highlight]
-  );
-  let response = result.messages.at(-1)?.content;
-  console.log(response); // "Hi Bob! Nice to see you here. How are you doing?"
+const getUserInfo = tool(() => "No user profile on file.", {
+  name: "get_user_info",
+  description: "Look up information about the current user.",
+  schema: z.object({}),
+});
 
-  result = await agent.invoke(
-    { messages: [{ role: "user", content: "What's my name?" }] },
-    threadConfig, // [!code highlight]
-  );
-  response = result.messages.at(-1)?.content;
-  console.log(response); // "You are Bob!"
-  ```
+const checkpointer = new MemorySaver(); // [!code highlight]
 
-  ```ts Ollama theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  import { createAgent, tool } from "langchain";
-  import { MemorySaver } from "@langchain/langgraph"; // [!code highlight]
-  import * as z from "zod";
+const agent = createAgent({
+  model: "ollama:north-mini-code-1.0",
+  tools: [getUserInfo],
+  checkpointer,
+});
 
-  const getUserInfo = tool(() => "No user profile on file.", {
-    name: "get_user_info",
-    description: "Look up information about the current user.",
-    schema: z.object({}),
-  });
+const threadConfig = { configurable: { thread_id: "1" } };
+let result = await agent.invoke(
+  { messages: [{ role: "user", content: "Hi! My name is Bob." }] },
+  threadConfig, // [!code highlight]
+);
+let response = result.messages.at(-1)?.content;
+console.log(response); // "Hi Bob! Nice to see you here. How are you doing?"
 
-  const checkpointer = new MemorySaver(); // [!code highlight]
+result = await agent.invoke(
+  { messages: [{ role: "user", content: "What's my name?" }] },
+  threadConfig, // [!code highlight]
+);
+response = result.messages.at(-1)?.content;
+console.log(response); // "You are Bob!"
+```
 
-  const agent = createAgent({
-    model: "ollama:north-mini-code-1.0",
-    tools: [getUserInfo],
-    checkpointer,
-  });
-
-  const threadConfig = { configurable: { thread_id: "1" } };
-  let result = await agent.invoke(
-    { messages: [{ role: "user", content: "Hi! My name is Bob." }] },
-    threadConfig, // [!code highlight]
-  );
-  let response = result.messages.at(-1)?.content;
-  console.log(response); // "Hi Bob! Nice to see you here. How are you doing?"
-
-  result = await agent.invoke(
-    { messages: [{ role: "user", content: "What's my name?" }] },
-    threadConfig, // [!code highlight]
-  );
-  response = result.messages.at(-1)?.content;
-  console.log(response); // "You are Bob!"
-  ```
-</CodeGroup>
-
-<Card title="View example trace" icon="chart-line" href="https://smith.langchain.com/public/b512e509-c58f-4a96-8ee3-9fe060257d62/r">
-  Open a public LangSmith run for this example.
-</Card>
+> **[View example trace](https://smith.langchain.com/public/b512e509-c58f-4a96-8ee3-9fe060257d62/r)**
+>
+> Open a public LangSmith run for this example.
 
 ### In production
 
@@ -296,9 +294,9 @@ const DB_URI = "postgresql://postgres:postgres@localhost:5432/postgres?sslmode=d
 const checkpointer = PostgresSaver.fromConnString(DB_URI);
 ```
 
-<Note>
-  For more checkpointer options including SQLite, Postgres, and Azure Cosmos DB, see the [list of checkpointer libraries](/oss/javascript/langgraph/checkpointers#checkpointer-libraries) in the Persistence documentation.
-</Note>
+> [!NOTE]
+>
+> For more checkpointer options including SQLite, Postgres, and Azure Cosmos DB, see the [list of checkpointer libraries](/oss/javascript/langgraph/checkpointers#checkpointer-libraries) in the Persistence documentation.
 
 ## Customizing agent memory
 
@@ -339,23 +337,21 @@ const result = await agent.invoke({
 
 With [short-term memory](#usage) enabled, long conversations can exceed the LLM's context window. Common solutions are:
 
-<CardGroup>
-  <Card title="Trim messages" icon="scissors" href="#trim-messages">
-    Remove first or last N messages (before calling LLM)
-  </Card>
+> **[Trim messages](#trim-messages)**
+>
+> Remove first or last N messages (before calling LLM)
 
-  <Card title="Delete messages" icon="trash" href="#delete-messages">
-    Delete messages from LangGraph state permanently
-  </Card>
+> **[Delete messages](#delete-messages)**
+>
+> Delete messages from LangGraph state permanently
 
-  <Card title="Summarize messages" icon="stack-2" href="#summarize-messages">
-    Summarize earlier messages in the history and replace them with a summary
-  </Card>
+> **[Summarize messages](#summarize-messages)**
+>
+> Summarize earlier messages in the history and replace them with a summary
 
-  <Card title="Custom strategies" icon="adjustments">
-    Custom strategies (e.g., message filtering, etc.)
-  </Card>
-</CardGroup>
+> **Custom strategies**
+>
+> Custom strategies (e.g., message filtering, etc.)
 
 This allows the agent to keep track of the conversation without exceeding the LLM's context window.
 
@@ -430,12 +426,12 @@ const deleteMessages = (state) => {
 };
 ```
 
-<Warning>
-  When deleting messages, **make sure** that the resulting message history is valid. Check the limitations of the LLM provider you're using. For example:
-
-  * Some providers expect message history to start with a `user` message
-  * Most providers require `assistant` messages with tool calls to be followed by corresponding `tool` result messages.
-</Warning>
+> [!WARNING]
+>
+> When deleting messages, **make sure** that the resulting message history is valid. Check the limitations of the LLM provider you're using. For example:
+>
+> * Some providers expect message history to start with a `user` message
+> * Most providers require `assistant` messages with tool calls to be followed by corresponding `tool` result messages.
 
 ```typescript theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 import { RemoveMessage } from "@langchain/core/messages";
@@ -521,7 +517,7 @@ for await (const snapshot of streamC.values) {
 The problem with trimming or removing messages, as shown above, is that you may lose information from culling of the message queue.
 Because of this, some applications benefit from a more sophisticated approach of summarizing the message history using a chat model.
 
-<img alt="Summary" />
+![Summary](https://mintcdn.com/langchain-5e9cc07a/ybiAaBfoBvFquMDz/oss/images/summary.png?fit=max\&auto=format\&n=ybiAaBfoBvFquMDz\&q=85\&s=c8ed3facdccd4ef5c7e52902c72ba938)
 
 To summarize message history in an agent, use the built-in [`summarizationMiddleware`](/oss/javascript/langchain/middleware#summarization):
 
@@ -881,12 +877,6 @@ const agent = createAgent({
 
 ***
 
-<div>
-  <Callout icon="terminal-2">
-    [Connect these docs](/use-these-docs) to your agent of choice via MCP for real-time answers.
-  </Callout>
+[Connect these docs](/use-these-docs) to your agent of choice via MCP for real-time answers.
 
-  <Callout icon="edit">
-    [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/oss/langchain/short-term-memory.mdx) or [file an issue](https://github.com/langchain-ai/docs/issues/new/choose).
-  </Callout>
-</div>
+[Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/oss/langchain/short-term-memory.mdx) or [file an issue](https://github.com/langchain-ai/docs/issues/new/choose).

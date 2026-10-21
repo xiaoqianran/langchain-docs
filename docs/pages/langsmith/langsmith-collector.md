@@ -6,9 +6,9 @@ The various services in a LangSmith deployment emit telemetry data in the form o
 
 This page describes how to configure an [OTel Collector](https://opentelemetry.io/docs/collector/configuration/) to gather telemetry data from LangSmith. Note that all of the concepts discussed below can be translated to other collectors such as [Fluentd](https://www.fluentd.org/) or [FluentBit](https://fluentbit.io/).
 
-<Warning>
-  **This section is only applicable for Kubernetes deployments.**
-</Warning>
+> [!WARNING]
+>
+> **This section is only applicable for Kubernetes deployments.**
 
 # Receivers
 
@@ -53,9 +53,9 @@ volumeMounts:
     readOnly: true
 ```
 
-<Info>
-  **This configuration requires 'get', 'list', and 'watch' permissions on pods in the given namespace.**
-</Info>
+> [!NOTE]
+>
+> **This configuration requires 'get', 'list', and 'watch' permissions on pods in the given namespace.**
 
 ## Metrics
 
@@ -92,9 +92,9 @@ prometheus:
             target_label: instance
 ```
 
-<Info>
-  **This configuration requires 'get', 'list', and 'watch' permissions on pods, services and endpoints in the given namespace.**
-</Info>
+> [!NOTE]
+>
+> **This configuration requires 'get', 'list', and 'watch' permissions on pods, services and endpoints in the given namespace.**
 
 ### Traces
 
@@ -132,9 +132,9 @@ otlphttp/traces:
   endpoint: <your_traces_endpoint>
 ```
 
-<Note>
-  **The OTel Collector also supports exporting directly to a [Datadog](https://docs.datadoghq.com/opentelemetry/setup/collector_exporter) endpoint.**
-</Note>
+> [!NOTE]
+>
+> **The OTel Collector also supports exporting directly to a [Datadog](https://docs.datadoghq.com/opentelemetry/setup/collector_exporter) endpoint.**
 
 # Example collector configuration: Logs sidecar
 
@@ -264,12 +264,6 @@ config:
 
 ***
 
-<div>
-  <Callout icon="terminal-2">
-    [Connect these docs](/use-these-docs) to your agent of choice via MCP for real-time answers.
-  </Callout>
+[Connect these docs](/use-these-docs) to your agent of choice via MCP for real-time answers.
 
-  <Callout icon="edit">
-    [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/langsmith-collector.mdx) or [file an issue](https://github.com/langchain-ai/docs/issues/new/choose).
-  </Callout>
-</div>
+[Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/langsmith-collector.mdx) or [file an issue](https://github.com/langchain-ai/docs/issues/new/choose).

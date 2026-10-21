@@ -6,8 +6,6 @@ Display model thinking and reasoning processes in collapsible blocks
 
 Reasoning tokens expose the internal thought process of advanced models like OpenAI's GPT-5 and Anthropic's Claude with extended thinking. These models produce structured content blocks that separate reasoning from the final answer, letting you build UIs that show *how* the model arrived at its response.
 
-<PatternEmbed />
-
 ## What are reasoning tokens?
 
 When models with reasoning capabilities process a prompt, they generate two distinct types of content:
@@ -25,9 +23,9 @@ These are delivered as typed content blocks within an `AIMessage`, accessible vi
 { type: "text", text: "The answer is 42." }
 ```
 
-<Note>
-  Not all models produce reasoning tokens. This pattern applies specifically to models that support extended thinking or chain-of-thought output. Standard chat models return only text blocks.
-</Note>
+> [!NOTE]
+>
+> Not all models produce reasoning tokens. This pattern applies specifically to models that support extended thinking or chain-of-thought output. Standard chat models return only text blocks.
 
 ## Use cases
 
@@ -71,126 +69,124 @@ reads `contentBlocks` and separates reasoning from text. Set `isStreaming` on
 the last message while `stream.isLoading` is true so thinking blocks update as
 tokens arrive.
 
-<Info>
-  The code examples use `useStream<typeof myAgent>` for type-safe stream state. See Type inference for [Python](/oss/python/langchain/frontend/overview#type-inference) or [JavaScript](/oss/javascript/langchain/frontend/overview#type-inference) backends.
-</Info>
+> [!NOTE]
+>
+> The code examples use `useStream<typeof myAgent>` for type-safe stream state. See Type inference for [Python](/oss/python/langchain/frontend/overview#type-inference) or [JavaScript](/oss/javascript/langchain/frontend/overview#type-inference) backends.
 
-<CodeGroup>
-  ```tsx React theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  import { useStream } from "@langchain/react";
-  import { AIMessage, HumanMessage } from "langchain";
+```tsx React theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+import { useStream } from "@langchain/react";
+import { AIMessage, HumanMessage } from "langchain";
 
-  function Chat() {
-    const stream = useStream<typeof myAgent>({
-      apiUrl: "http://localhost:2024",
-      assistantId: "reasoning",
-    });
+function Chat() {
+  const stream = useStream<typeof myAgent>({
+    apiUrl: "http://localhost:2024",
+    assistantId: "reasoning",
+  });
 
-    return (
-      <div className="messages">
-        {stream.messages.map((msg, i) => {
-          if (HumanMessage.isInstance(msg)) {
-            return <HumanBubble key={i} text={msg.text} />;
-          }
-          if (AIMessage.isInstance(msg)) {
-            return (
-              <AIResponse
-                key={i}
-                message={msg}
-                isStreaming={stream.isLoading && i === stream.messages.length - 1}
-              />
-            );
-          }
-          return null;
-        })}
-      </div>
-    );
-  }
-  ```
+  return (
+    <div className="messages">
+      {stream.messages.map((msg, i) => {
+        if (HumanMessage.isInstance(msg)) {
+          return <HumanBubble key={i} text={msg.text} />;
+        }
+        if (AIMessage.isInstance(msg)) {
+          return (
+            <AIResponse
+              key={i}
+              message={msg}
+              isStreaming={stream.isLoading && i === stream.messages.length - 1}
+            />
+          );
+        }
+        return null;
+      })}
+    </div>
+  );
+}
+```
 
-  ```vue Vue theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  <script setup lang="ts">
-  import { useStream } from "@langchain/vue";
+```vue Vue theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+<script setup lang="ts">
+import { useStream } from "@langchain/vue";
+import { AIMessage, HumanMessage } from "langchain";
+
+const stream = useStream<typeof myAgent>({
+  apiUrl: "http://localhost:2024",
+  assistantId: "reasoning",
+});
+</script>
+
+<template>
+  <div class="messages">
+    <template v-for="(msg, i) in stream.messages.value" :key="i">
+      <HumanBubble v-if="HumanMessage.isInstance(msg)" :text="msg.text" />
+      <AIResponse
+        v-else-if="AIMessage.isInstance(msg)"
+        :message="msg"
+        :isStreaming="stream.isLoading.value && i === stream.messages.value.length - 1"
+      />
+    </template>
+  </div>
+</template>
+```
+
+```svelte Svelte theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+<script lang="ts">
+  import { useStream } from "@langchain/svelte";
   import { AIMessage, HumanMessage } from "langchain";
 
   const stream = useStream<typeof myAgent>({
     apiUrl: "http://localhost:2024",
     assistantId: "reasoning",
   });
-  </script>
+</script>
 
-  <template>
+<div class="messages">
+  {#each stream.messages as msg, i}
+    {#if HumanMessage.isInstance(msg)}
+      <HumanBubble text={msg.text} />
+    {:else if AIMessage.isInstance(msg)}
+      <AIResponse
+        message={msg}
+        isStreaming={stream.isLoading && i === stream.messages.length - 1}
+      />
+    {/if}
+  {/each}
+</div>
+```
+
+```ts Angular theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+import { Component } from "@angular/core";
+import { injectStream } from "@langchain/angular";
+import { AIMessage, HumanMessage } from "langchain";
+
+@Component({
+  selector: "app-chat",
+  template: `
     <div class="messages">
-      <template v-for="(msg, i) in stream.messages.value" :key="i">
-        <HumanBubble v-if="HumanMessage.isInstance(msg)" :text="msg.text" />
-        <AIResponse
-          v-else-if="AIMessage.isInstance(msg)"
-          :message="msg"
-          :isStreaming="stream.isLoading.value && i === stream.messages.value.length - 1"
-        />
-      </template>
-    </div>
-  </template>
-  ```
-
-  ```svelte Svelte theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  <script lang="ts">
-    import { useStream } from "@langchain/svelte";
-    import { AIMessage, HumanMessage } from "langchain";
-
-    const stream = useStream<typeof myAgent>({
-      apiUrl: "http://localhost:2024",
-      assistantId: "reasoning",
-    });
-  </script>
-
-  <div class="messages">
-    {#each stream.messages as msg, i}
-      {#if HumanMessage.isInstance(msg)}
-        <HumanBubble text={msg.text} />
-      {:else if AIMessage.isInstance(msg)}
-        <AIResponse
-          message={msg}
-          isStreaming={stream.isLoading && i === stream.messages.length - 1}
-        />
-      {/if}
-    {/each}
-  </div>
-  ```
-
-  ```ts Angular theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  import { Component } from "@angular/core";
-  import { injectStream } from "@langchain/angular";
-  import { AIMessage, HumanMessage } from "langchain";
-
-  @Component({
-    selector: "app-chat",
-    template: `
-      <div class="messages">
-        @for (msg of stream.messages(); track $index) {
-          @if (isHuman(msg)) {
-            <human-bubble [text]="msg.text" />
-          } @else if (isAI(msg)) {
-            <ai-response
-              [message]="msg"
-              [isStreaming]="stream.isLoading() && $index === stream.messages().length - 1"
-            />
-          }
+      @for (msg of stream.messages(); track $index) {
+        @if (isHuman(msg)) {
+          <human-bubble [text]="msg.text" />
+        } @else if (isAI(msg)) {
+          <ai-response
+            [message]="msg"
+            [isStreaming]="stream.isLoading() && $index === stream.messages().length - 1"
+          />
         }
-      </div>
-    `,
-  })
-  export class ChatComponent {
-    stream = injectStream<typeof myAgent>({
-      apiUrl: "http://localhost:2024",
-      assistantId: "reasoning",
-    });
+      }
+    </div>
+  `,
+})
+export class ChatComponent {
+  stream = injectStream<typeof myAgent>({
+    apiUrl: "http://localhost:2024",
+    assistantId: "reasoning",
+  });
 
-    isHuman = HumanMessage.isInstance;
-    isAI = AIMessage.isInstance;
-  }
-  ```
-</CodeGroup>
+  isHuman = HumanMessage.isInstance;
+  isAI = AIMessage.isInstance;
+}
+```
 
 ## Building a ThinkingBubble component
 
@@ -335,12 +331,6 @@ message.contentBlocks.forEach((block) => {
 
 ***
 
-<div>
-  <Callout icon="terminal-2">
-    [Connect these docs](/use-these-docs) to your agent of choice via MCP for real-time answers.
-  </Callout>
+[Connect these docs](/use-these-docs) to your agent of choice via MCP for real-time answers.
 
-  <Callout icon="edit">
-    [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/oss/langchain/frontend/reasoning-tokens.mdx) or [file an issue](https://github.com/langchain-ai/docs/issues/new/choose).
-  </Callout>
-</div>
+[Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/oss/langchain/frontend/reasoning-tokens.mdx) or [file an issue](https://github.com/langchain-ai/docs/issues/new/choose).

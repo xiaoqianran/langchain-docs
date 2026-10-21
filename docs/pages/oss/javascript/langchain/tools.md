@@ -8,11 +8,11 @@ Tools extend what [agents](/oss/javascript/langchain/agents) can do—letting th
 
 Under the hood, tools are callable functions with well-defined inputs and outputs that get passed to a [chat model](/oss/javascript/langchain/models). The model decides when to invoke a tool based on the conversation context, and what input arguments to provide.
 
-<Tip>
-  For details on how models handle tool calls, see [Tool calling](/oss/javascript/langchain/models#tool-calling). Trace tool calls and debug errors with [LangSmith](https://smith.langchain.com?utm_source=docs\&utm_medium=cta\&utm_campaign=langsmith-signup\&utm_content=oss-langchain-tools). Follow the [tracing quickstart](/langsmith/trace-with-langchain) to get set up.
-
-  We recommend you also set up [LangSmith Engine](/langsmith/engine) which monitors your traces, detects issues, and proposes fixes.
-</Tip>
+> [!TIP]
+>
+> For details on how models handle tool calls, see [Tool calling](/oss/javascript/langchain/models#tool-calling). Trace tool calls and debug errors with [LangSmith](https://smith.langchain.com?utm_source=docs\&utm_medium=cta\&utm_campaign=langsmith-signup\&utm_content=oss-langchain-tools). Follow the [tracing quickstart](/langsmith/trace-with-langchain) to get set up.
+>
+> We recommend you also set up [LangSmith Engine](/langsmith/engine) which monitors your traces, detects issues, and proposes fixes.
 
 ## Create tools
 
@@ -37,13 +37,13 @@ const searchDatabase = tool(
 );
 ```
 
-<Note>
-  **Server-side tool use:** Some chat models feature built-in tools (web search, code interpreters) that are executed server-side. See [Server-side tool use](#server-side-tool-use) for details.
-</Note>
+> [!NOTE]
+>
+> **Server-side tool use:** Some chat models feature built-in tools (web search, code interpreters) that are executed server-side. See [Server-side tool use](#server-side-tool-use) for details.
 
-<Warning>
-  Prefer `snake_case` for tool names (e.g., `web_search` instead of `Web Search`). Some model providers have issues with or reject names containing spaces or special characters with errors. Sticking to alphanumeric characters, underscores, and hyphens helps to improve compatibility across providers.
-</Warning>
+> [!WARNING]
+>
+> Prefer `snake_case` for tool names (e.g., `web_search` instead of `Web Search`). Some model providers have issues with or reject names containing spaces or special characters with errors. Sticking to alphanumeric characters, underscores, and hyphens helps to improve compatibility across providers.
 
 ## Access context
 
@@ -53,9 +53,9 @@ Tools are most powerful when they can access runtime information like conversati
 
 Context provides immutable configuration data that is passed at invocation time. Use it for user IDs, session details, or application-specific settings that shouldn't change during a conversation.
 
-<Note>
-  While `thread_id` (passed via `config={"configurable": {"thread_id": ...}}`) scopes the *conversation*: message history and checkpoints, `context` carries *per-run* data your tools and middleware read at invocation time. Persistence requires a [checkpointer](/oss/javascript/langchain/short-term-memory). In production you typically pass both a stable `thread_id` per conversation and a `context` object on every invoke.
-</Note>
+> [!NOTE]
+>
+> While `thread_id` (passed via `config={"configurable": {"thread_id": ...}}`) scopes the *conversation*: message history and checkpoints, `context` carries *per-run* data your tools and middleware read at invocation time. Persistence requires a [checkpointer](/oss/javascript/langchain/short-term-memory). In production you typically pass both a stable `thread_id` per conversation and a `context` object on every invoke.
 
 Tools can access an agent's runtime context through the `config` parameter. Configure a [checkpointer](/oss/javascript/langchain/short-term-memory) and pass `context` with a stable `thread_id` so the conversation persists across invocations:
 
@@ -111,9 +111,9 @@ result = await agent.invoke(
 console.log(result.messages.at(-1)?.content);
 ```
 
-<Card title="View example trace" icon="chart-line" href="https://smith.langchain.com/public/f61429d4-8472-4971-b2c3-ed4e41d859ed/r">
-  Open a public LangSmith run for this example.
-</Card>
+> **[View example trace](https://smith.langchain.com/public/f61429d4-8472-4971-b2c3-ed4e41d859ed/r)**
+>
+> Open a public LangSmith run for this example.
 
 ### Long-term memory (Store)
 
@@ -121,9 +121,9 @@ The [`BaseStore`](https://reference.langchain.com/javascript/langchain-core/stor
 
 Access the store through `config.store`. The store uses a namespace/key pattern to organize data:
 
-<Tip>
-  For production deployments, use a persistent store implementation like [`PostgresStore`](https://reference.langchain.com/javascript/langchain-langgraph-checkpoint-postgres/store/PostgresStore), `MongoDBStore`, or `RedisStore` instead of `InMemoryStore`. See the [memory documentation](/oss/javascript/langgraph/add-memory) for setup details.
-</Tip>
+> [!TIP]
+>
+> For production deployments, use a persistent store implementation like [`PostgresStore`](https://reference.langchain.com/javascript/langchain-langgraph-checkpoint-postgres/store/PostgresStore), `MongoDBStore`, or `RedisStore` instead of `InMemoryStore`. See the [memory documentation](/oss/javascript/langgraph/add-memory) for setup details.
 
 ```ts expandable theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 import * as z from "zod";
@@ -253,9 +253,9 @@ const logExecutionContext = tool(
 );
 ```
 
-<Note>
-  Requires `deepagents>=1.9.0` (or `@langchain/langgraph>=1.2.8`).
-</Note>
+> [!NOTE]
+>
+> Requires `deepagents>=1.9.0` (or `@langchain/langgraph>=1.2.8`).
 
 ### Server info
 
@@ -286,9 +286,9 @@ const getAssistantScopedData = tool(
 
 `serverInfo` is `null` when the tool is not running on LangGraph Server.
 
-<Note>
-  Requires `deepagents>=1.9.0` (or `@langchain/langgraph>=1.2.8`).
-</Note>
+> [!NOTE]
+>
+> Requires `deepagents>=1.9.0` (or `@langchain/langgraph>=1.2.8`).
 
 ## Tool execution
 
@@ -319,9 +319,9 @@ const getWeather = tool(({ city }) => `It is currently sunny in ${city}.`, {
 });
 ```
 
-<Card title="View example trace" icon="chart-line" href="https://smith.langchain.com/public/04567cb5-57fc-49b6-8737-ec6828fcf20d/r">
-  Open a public LangSmith run for this example.
-</Card>
+> **[View example trace](https://smith.langchain.com/public/04567cb5-57fc-49b6-8737-ec6828fcf20d/r)**
+>
+> Open a public LangSmith run for this example.
 
 Behavior:
 
@@ -353,9 +353,9 @@ const getWeatherData = tool(
 );
 ```
 
-<Card title="View example trace" icon="chart-line" href="https://smith.langchain.com/public/7ed64816-9681-4c3b-8c1a-803dff7b5d0e/r">
-  Open a public LangSmith run for this example.
-</Card>
+> **[View example trace](https://smith.langchain.com/public/7ed64816-9681-4c3b-8c1a-803dff7b5d0e/r)**
+>
+> Open a public LangSmith run for this example.
 
 Behavior:
 
@@ -429,9 +429,9 @@ const setLanguage = tool(
 );
 ```
 
-<Card title="View example trace" icon="chart-line" href="https://smith.langchain.com/public/44d6ee7a-f6cf-4c15-9d19-248e28359eeb/r">
-  Open a public LangSmith run for this example.
-</Card>
+> **[View example trace](https://smith.langchain.com/public/44d6ee7a-f6cf-4c15-9d19-248e28359eeb/r)**
+>
+> Open a public LangSmith run for this example.
 
 Behavior:
 
@@ -476,9 +476,9 @@ const result = await agent.invoke({
 // "Order 12345 is shipped and will arrive in 2 days."
 ```
 
-<Card title="View example trace" icon="chart-line" href="https://smith.langchain.com/public/648dc7a3-0190-4546-946b-14fb56a18496/r">
-  Open a public LangSmith run for this example.
-</Card>
+> **[View example trace](https://smith.langchain.com/public/648dc7a3-0190-4546-946b-14fb56a18496/r)**
+>
+> Open a public LangSmith run for this example.
 
 Behavior:
 
@@ -492,187 +492,185 @@ Use this when:
 * You want to avoid an extra model call when no additional reasoning is needed.
 * You need deterministic, unmodified output: the model cannot rephrase, summarize, or act on the tool result.
 
-<Warning>
-  Because the model does not process the tool's output, `return_direct=True` is not suitable for tools whose results require further reasoning, summarization, or chaining with other tool calls.
-</Warning>
+> [!WARNING]
+>
+> Because the model does not process the tool's output, `return_direct=True` is not suitable for tools whose results require further reasoning, summarization, or chaining with other tool calls.
 
-<Warning>
-  **Mixed parallel calls:** If the model calls a `return_direct=True` tool alongside tools that do not have `return_direct=True`, the agent does **not** exit after that step. It routes back to the model with every `ToolMessage` from the batch, so the model can reason over all results. `return_direct` only short-circuits the loop when every tool call in the step has `return_direct=True`.
-</Warning>
+> [!WARNING]
+>
+> **Mixed parallel calls:** If the model calls a `return_direct=True` tool alongside tools that do not have `return_direct=True`, the agent does **not** exit after that step. It routes back to the model with every `ToolMessage` from the batch, so the model can reason over all results. `return_direct` only short-circuits the loop when every tool call in the step has `return_direct=True`.
 
 ### Error handling
 
 Handle tool errors using LangChain agent [middleware](/oss/javascript/langchain/middleware) to retry failed tool calls or return custom error messages:
 
-<CodeGroup>
-  ```ts Google theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  import { createAgent, createMiddleware, ToolMessage } from "langchain";
+```ts Google theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+import { createAgent, createMiddleware, ToolMessage } from "langchain";
 
-  const handleToolErrors = createMiddleware({
-    name: "HandleToolErrors",
-    wrapToolCall: async (request, handler) => {
-      try {
-        return await handler(request);
-      } catch (error) {
-        return new ToolMessage({
-          content: `Tool error: Please check your input and try again. (${error})`,
-          tool_call_id: request.toolCall.id!,
-        });
-      }
-    },
-  });
+const handleToolErrors = createMiddleware({
+  name: "HandleToolErrors",
+  wrapToolCall: async (request, handler) => {
+    try {
+      return await handler(request);
+    } catch (error) {
+      return new ToolMessage({
+        content: `Tool error: Please check your input and try again. (${error})`,
+        tool_call_id: request.toolCall.id!,
+      });
+    }
+  },
+});
 
-  const agent = createAgent({
-    model: "google:gemini-3.6-flash",
-    tools: [],
-    middleware: [handleToolErrors],
-  });
-  ```
+const agent = createAgent({
+  model: "google:gemini-3.6-flash",
+  tools: [],
+  middleware: [handleToolErrors],
+});
+```
 
-  ```ts OpenAI theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  import { createAgent, createMiddleware, ToolMessage } from "langchain";
+```ts OpenAI theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+import { createAgent, createMiddleware, ToolMessage } from "langchain";
 
-  const handleToolErrors = createMiddleware({
-    name: "HandleToolErrors",
-    wrapToolCall: async (request, handler) => {
-      try {
-        return await handler(request);
-      } catch (error) {
-        return new ToolMessage({
-          content: `Tool error: Please check your input and try again. (${error})`,
-          tool_call_id: request.toolCall.id!,
-        });
-      }
-    },
-  });
+const handleToolErrors = createMiddleware({
+  name: "HandleToolErrors",
+  wrapToolCall: async (request, handler) => {
+    try {
+      return await handler(request);
+    } catch (error) {
+      return new ToolMessage({
+        content: `Tool error: Please check your input and try again. (${error})`,
+        tool_call_id: request.toolCall.id!,
+      });
+    }
+  },
+});
 
-  const agent = createAgent({
-    model: "openai:gpt-5.5",
-    tools: [],
-    middleware: [handleToolErrors],
-  });
-  ```
+const agent = createAgent({
+  model: "openai:gpt-5.5",
+  tools: [],
+  middleware: [handleToolErrors],
+});
+```
 
-  ```ts Anthropic theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  import { createAgent, createMiddleware, ToolMessage } from "langchain";
+```ts Anthropic theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+import { createAgent, createMiddleware, ToolMessage } from "langchain";
 
-  const handleToolErrors = createMiddleware({
-    name: "HandleToolErrors",
-    wrapToolCall: async (request, handler) => {
-      try {
-        return await handler(request);
-      } catch (error) {
-        return new ToolMessage({
-          content: `Tool error: Please check your input and try again. (${error})`,
-          tool_call_id: request.toolCall.id!,
-        });
-      }
-    },
-  });
+const handleToolErrors = createMiddleware({
+  name: "HandleToolErrors",
+  wrapToolCall: async (request, handler) => {
+    try {
+      return await handler(request);
+    } catch (error) {
+      return new ToolMessage({
+        content: `Tool error: Please check your input and try again. (${error})`,
+        tool_call_id: request.toolCall.id!,
+      });
+    }
+  },
+});
 
-  const agent = createAgent({
-    model: "anthropic:claude-sonnet-5",
-    tools: [],
-    middleware: [handleToolErrors],
-  });
-  ```
+const agent = createAgent({
+  model: "anthropic:claude-sonnet-5",
+  tools: [],
+  middleware: [handleToolErrors],
+});
+```
 
-  ```ts OpenRouter theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  import { createAgent, createMiddleware, ToolMessage } from "langchain";
+```ts OpenRouter theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+import { createAgent, createMiddleware, ToolMessage } from "langchain";
 
-  const handleToolErrors = createMiddleware({
-    name: "HandleToolErrors",
-    wrapToolCall: async (request, handler) => {
-      try {
-        return await handler(request);
-      } catch (error) {
-        return new ToolMessage({
-          content: `Tool error: Please check your input and try again. (${error})`,
-          tool_call_id: request.toolCall.id!,
-        });
-      }
-    },
-  });
+const handleToolErrors = createMiddleware({
+  name: "HandleToolErrors",
+  wrapToolCall: async (request, handler) => {
+    try {
+      return await handler(request);
+    } catch (error) {
+      return new ToolMessage({
+        content: `Tool error: Please check your input and try again. (${error})`,
+        tool_call_id: request.toolCall.id!,
+      });
+    }
+  },
+});
 
-  const agent = createAgent({
-    model: "openrouter:z-ai/glm-5.2",
-    tools: [],
-    middleware: [handleToolErrors],
-  });
-  ```
+const agent = createAgent({
+  model: "openrouter:z-ai/glm-5.2",
+  tools: [],
+  middleware: [handleToolErrors],
+});
+```
 
-  ```ts Fireworks theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  import { createAgent, createMiddleware, ToolMessage } from "langchain";
+```ts Fireworks theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+import { createAgent, createMiddleware, ToolMessage } from "langchain";
 
-  const handleToolErrors = createMiddleware({
-    name: "HandleToolErrors",
-    wrapToolCall: async (request, handler) => {
-      try {
-        return await handler(request);
-      } catch (error) {
-        return new ToolMessage({
-          content: `Tool error: Please check your input and try again. (${error})`,
-          tool_call_id: request.toolCall.id!,
-        });
-      }
-    },
-  });
+const handleToolErrors = createMiddleware({
+  name: "HandleToolErrors",
+  wrapToolCall: async (request, handler) => {
+    try {
+      return await handler(request);
+    } catch (error) {
+      return new ToolMessage({
+        content: `Tool error: Please check your input and try again. (${error})`,
+        tool_call_id: request.toolCall.id!,
+      });
+    }
+  },
+});
 
-  const agent = createAgent({
-    model: "fireworks:accounts/fireworks/models/glm-5p2",
-    tools: [],
-    middleware: [handleToolErrors],
-  });
-  ```
+const agent = createAgent({
+  model: "fireworks:accounts/fireworks/models/glm-5p2",
+  tools: [],
+  middleware: [handleToolErrors],
+});
+```
 
-  ```ts Baseten theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  import { createAgent, createMiddleware, ToolMessage } from "langchain";
+```ts Baseten theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+import { createAgent, createMiddleware, ToolMessage } from "langchain";
 
-  const handleToolErrors = createMiddleware({
-    name: "HandleToolErrors",
-    wrapToolCall: async (request, handler) => {
-      try {
-        return await handler(request);
-      } catch (error) {
-        return new ToolMessage({
-          content: `Tool error: Please check your input and try again. (${error})`,
-          tool_call_id: request.toolCall.id!,
-        });
-      }
-    },
-  });
+const handleToolErrors = createMiddleware({
+  name: "HandleToolErrors",
+  wrapToolCall: async (request, handler) => {
+    try {
+      return await handler(request);
+    } catch (error) {
+      return new ToolMessage({
+        content: `Tool error: Please check your input and try again. (${error})`,
+        tool_call_id: request.toolCall.id!,
+      });
+    }
+  },
+});
 
-  const agent = createAgent({
-    model: "baseten:zai-org/GLM-5.2",
-    tools: [],
-    middleware: [handleToolErrors],
-  });
-  ```
+const agent = createAgent({
+  model: "baseten:zai-org/GLM-5.2",
+  tools: [],
+  middleware: [handleToolErrors],
+});
+```
 
-  ```ts Ollama theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  import { createAgent, createMiddleware, ToolMessage } from "langchain";
+```ts Ollama theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+import { createAgent, createMiddleware, ToolMessage } from "langchain";
 
-  const handleToolErrors = createMiddleware({
-    name: "HandleToolErrors",
-    wrapToolCall: async (request, handler) => {
-      try {
-        return await handler(request);
-      } catch (error) {
-        return new ToolMessage({
-          content: `Tool error: Please check your input and try again. (${error})`,
-          tool_call_id: request.toolCall.id!,
-        });
-      }
-    },
-  });
+const handleToolErrors = createMiddleware({
+  name: "HandleToolErrors",
+  wrapToolCall: async (request, handler) => {
+    try {
+      return await handler(request);
+    } catch (error) {
+      return new ToolMessage({
+        content: `Tool error: Please check your input and try again. (${error})`,
+        tool_call_id: request.toolCall.id!,
+      });
+    }
+  },
+});
 
-  const agent = createAgent({
-    model: "ollama:north-mini-code-1.0",
-    tools: [],
-    middleware: [handleToolErrors],
-  });
-  ```
-</CodeGroup>
+const agent = createAgent({
+  model: "ollama:north-mini-code-1.0",
+  tools: [],
+  middleware: [handleToolErrors],
+});
+```
 
 ### State injection
 
@@ -686,231 +684,227 @@ With dynamic tools, the set of tools available to the agent is modified at runti
 
 There are two approaches depending on whether tools are known ahead of time:
 
-<Tabs>
-  <Tab title="Filtering pre-registered tools">
-    When all possible tools are known at agent creation time, you can pre-register them and dynamically filter which ones are exposed to the model based on state, permissions, or context.
+**Filtering pre-registered tools**
 
-    <Tabs>
-      <Tab title="State">
-        Enable advanced tools only after certain conversation milestones:
+When all possible tools are known at agent creation time, you can pre-register them and dynamically filter which ones are exposed to the model based on state, permissions, or context.
 
-        ```typescript theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-        import { createMiddleware, tool } from "langchain";
-        import { createDeepAgent } from "deepagents";
+**State**
 
-        const stateBasedTools = createMiddleware({
-            name: "StateBasedTools",
-            wrapModelCall: (request, handler) => {
-                // Read from State: check authentication and conversation length
-                const state = request.state as typeof request.state & {
-                    authenticated?: boolean;
-                };
-                const isAuthenticated = state.authenticated ?? false;
-                const messageCount = state.messages.length;
+Enable advanced tools only after certain conversation milestones:
 
-                let filteredTools = request.tools;
+```typescript theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+import { createMiddleware, tool } from "langchain";
+import { createDeepAgent } from "deepagents";
 
-                // Only enable sensitive tools after authentication
-                if (!isAuthenticated) {
-                    filteredTools = request.tools.filter(
-                        (t: any) => typeof t.name === "string" && t.name.startsWith("public_"),
-                    );
-                } else if (messageCount < 5) {
-                    filteredTools = request.tools.filter(
-                        (t: any) => typeof t.name === "string" && t.name !== "advanced_search",
-                    );
-                }
+const stateBasedTools = createMiddleware({
+    name: "StateBasedTools",
+    wrapModelCall: (request, handler) => {
+        // Read from State: check authentication and conversation length
+        const state = request.state as typeof request.state & {
+            authenticated?: boolean;
+        };
+        const isAuthenticated = state.authenticated ?? false;
+        const messageCount = state.messages.length;
 
-                return handler({ ...request, tools: filteredTools });
-            },
-        });
+        let filteredTools = request.tools;
 
-        const agent = await createDeepAgent({
-            model: "claude-sonnet-4-6",
-            tools: tools,
-            middleware: [stateBasedTools] as any,
-        });
-        ```
-      </Tab>
-
-      <Tab title="Store">
-        Filter tools based on user preferences or feature flags in Store:
-
-        ```typescript theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-        import { createMiddleware } from "langchain";
-        import { createDeepAgent, StoreBackend } from "deepagents";
-        import * as z from "zod";
-        import { InMemoryStore } from "@langchain/langgraph";
-
-        const contextSchema = z.object({
-          userId: z.string(),
-        });
-
-        const storeBasedTools = createMiddleware({
-          name: "StoreBasedTools",
-          contextSchema,
-          wrapModelCall: async (request, handler) => {
-            const userId =
-              (request.runtime?.context as { userId?: string } | undefined)?.userId ??
-                "user-123";
-
-            // Read from Store: get user's enabled features
-            const runtimeStore = request.runtime?.store as InMemoryStore | undefined;
-            const rawFlags = (await runtimeStore?.get(
-              ["features"],
-              userId as string,
-            )) as unknown;
-            const featureFlags = rawFlags as FeatureFlags | undefined;
-
-            let filteredTools = request.tools;
-
-            if (featureFlags) {
-              const enabledFeatures = featureFlags.enabledTools || [];
-              filteredTools = request.tools.filter((t) =>
-                enabledFeatures.includes(t.name as string)
-              );
-            }
-
-            return handler({ ...request, tools: filteredTools });
-          },
-        });
-
-        const agent = await createDeepAgent({
-          model: "claude-sonnet-4-6",
-          backend: new StoreBackend(),
-          store,
-          checkpointer,
-          tools,
-          middleware: [storeBasedTools] as any,
-        });
-        ```
-      </Tab>
-
-      <Tab title="Runtime Context">
-        Filter tools based on user permissions from Runtime Context:
-
-        ```typescript theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-        import * as z from "zod";
-        import { createMiddleware } from "langchain";
-        import { createDeepAgent } from "deepagents";
-
-        const contextSchema = z.object({
-          userRole: z.string(),
-        });
-
-        const contextBasedTools = createMiddleware({
-          name: "ContextBasedTools",
-          contextSchema,
-          wrapModelCall: (request, handler) => {
-            // Read from Runtime Context: get user role
-            const userRole = request.runtime.context.userRole;
-
-            let filteredTools = request.tools;
-
-            if (userRole === "admin") {
-              // Admins get all tools
-            } else if (userRole === "editor") {
-              filteredTools = request.tools.filter((t) => t.name !== "delete_data");
-            } else {
-              filteredTools = request.tools.filter(
-                (t) => (t.name as string).startsWith("read_"),
-              );
-            }
-
-            return handler({ ...request, tools: filteredTools });
-          },
-        });
-
-        const agent = await createDeepAgent({
-          model: "claude-sonnet-4-6",
-          store,
-          checkpointer,
-          tools,
-          middleware: [contextBasedTools] as any,
-        });
-        ```
-      </Tab>
-    </Tabs>
-
-    This approach is best when:
-
-    * All possible tools are known at compile/startup time
-    * You want to filter based on permissions, feature flags, or conversation state
-    * Tools are static but their availability is dynamic
-
-    See [Dynamically selecting tools](/oss/javascript/langchain/middleware/custom#dynamically-selecting-tools) for more examples.
-  </Tab>
-
-  <Tab title="Runtime tool registration">
-    When tools are discovered or created at runtime (e.g., loaded from an MCP server, generated based on user data, or fetched from a remote registry), you need to both register the tools and handle their execution dynamically.
-
-    This requires two middleware hooks:
-
-    1. `wrap_model_call` - Add the dynamic tools to the request
-    2. `wrap_tool_call` - Handle execution of the dynamically added tools
-
-    ```typescript theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-    import { createAgent, createMiddleware, tool } from "langchain";
-    import * as z from "zod";
-
-    // A tool that will be added dynamically at runtime
-    const calculateTip = tool(
-      ({ billAmount, tipPercentage = 20 }) => {
-        const tip = billAmount * (tipPercentage / 100);
-        return `Tip: $${tip.toFixed(2)}, Total: $${(billAmount + tip).toFixed(2)}`;
-      },
-      {
-        name: "calculate_tip",
-        description: "Calculate the tip amount for a bill",
-        schema: z.object({
-          billAmount: z.number().describe("The bill amount"),
-          tipPercentage: z.number().default(20).describe("Tip percentage"),
-        }),
-      }
-    );
-
-    const dynamicToolMiddleware = createMiddleware({
-      name: "DynamicToolMiddleware",
-      wrapModelCall: (request, handler) => {
-        // Add dynamic tool to the request
-        // This could be loaded from an MCP server, database, etc.
-        return handler({
-          ...request,
-          tools: [...request.tools, calculateTip],
-        });
-      },
-      wrapToolCall: (request, handler) => {
-        // Handle execution of the dynamic tool
-        if (request.toolCall.name === "calculate_tip") {
-          return handler({ ...request, tool: calculateTip });
+        // Only enable sensitive tools after authentication
+        if (!isAuthenticated) {
+            filteredTools = request.tools.filter(
+                (t: any) => typeof t.name === "string" && t.name.startsWith("public_"),
+            );
+        } else if (messageCount < 5) {
+            filteredTools = request.tools.filter(
+                (t: any) => typeof t.name === "string" && t.name !== "advanced_search",
+            );
         }
-        return handler(request);
-      },
+
+        return handler({ ...request, tools: filteredTools });
+    },
+});
+
+const agent = await createDeepAgent({
+    model: "claude-sonnet-4-6",
+    tools: tools,
+    middleware: [stateBasedTools] as any,
+});
+```
+
+**Store**
+
+Filter tools based on user preferences or feature flags in Store:
+
+```typescript theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+import { createMiddleware } from "langchain";
+import { createDeepAgent, StoreBackend } from "deepagents";
+import * as z from "zod";
+import { InMemoryStore } from "@langchain/langgraph";
+
+const contextSchema = z.object({
+  userId: z.string(),
+});
+
+const storeBasedTools = createMiddleware({
+  name: "StoreBasedTools",
+  contextSchema,
+  wrapModelCall: async (request, handler) => {
+    const userId =
+      (request.runtime?.context as { userId?: string } | undefined)?.userId ??
+        "user-123";
+
+    // Read from Store: get user's enabled features
+    const runtimeStore = request.runtime?.store as InMemoryStore | undefined;
+    const rawFlags = (await runtimeStore?.get(
+      ["features"],
+      userId as string,
+    )) as unknown;
+    const featureFlags = rawFlags as FeatureFlags | undefined;
+
+    let filteredTools = request.tools;
+
+    if (featureFlags) {
+      const enabledFeatures = featureFlags.enabledTools || [];
+      filteredTools = request.tools.filter((t) =>
+        enabledFeatures.includes(t.name as string)
+      );
+    }
+
+    return handler({ ...request, tools: filteredTools });
+  },
+});
+
+const agent = await createDeepAgent({
+  model: "claude-sonnet-4-6",
+  backend: new StoreBackend(),
+  store,
+  checkpointer,
+  tools,
+  middleware: [storeBasedTools] as any,
+});
+```
+
+**Runtime Context**
+
+Filter tools based on user permissions from Runtime Context:
+
+```typescript theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+import * as z from "zod";
+import { createMiddleware } from "langchain";
+import { createDeepAgent } from "deepagents";
+
+const contextSchema = z.object({
+  userRole: z.string(),
+});
+
+const contextBasedTools = createMiddleware({
+  name: "ContextBasedTools",
+  contextSchema,
+  wrapModelCall: (request, handler) => {
+    // Read from Runtime Context: get user role
+    const userRole = request.runtime.context.userRole;
+
+    let filteredTools = request.tools;
+
+    if (userRole === "admin") {
+      // Admins get all tools
+    } else if (userRole === "editor") {
+      filteredTools = request.tools.filter((t) => t.name !== "delete_data");
+    } else {
+      filteredTools = request.tools.filter(
+        (t) => (t.name as string).startsWith("read_"),
+      );
+    }
+
+    return handler({ ...request, tools: filteredTools });
+  },
+});
+
+const agent = await createDeepAgent({
+  model: "claude-sonnet-4-6",
+  store,
+  checkpointer,
+  tools,
+  middleware: [contextBasedTools] as any,
+});
+```
+
+This approach is best when:
+
+* All possible tools are known at compile/startup time
+* You want to filter based on permissions, feature flags, or conversation state
+* Tools are static but their availability is dynamic
+
+See [Dynamically selecting tools](/oss/javascript/langchain/middleware/custom#dynamically-selecting-tools) for more examples.
+
+**Runtime tool registration**
+
+When tools are discovered or created at runtime (e.g., loaded from an MCP server, generated based on user data, or fetched from a remote registry), you need to both register the tools and handle their execution dynamically.
+
+This requires two middleware hooks:
+
+1. `wrap_model_call` - Add the dynamic tools to the request
+2. `wrap_tool_call` - Handle execution of the dynamically added tools
+
+```typescript theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+import { createAgent, createMiddleware, tool } from "langchain";
+import * as z from "zod";
+
+// A tool that will be added dynamically at runtime
+const calculateTip = tool(
+  ({ billAmount, tipPercentage = 20 }) => {
+    const tip = billAmount * (tipPercentage / 100);
+    return `Tip: $${tip.toFixed(2)}, Total: $${(billAmount + tip).toFixed(2)}`;
+  },
+  {
+    name: "calculate_tip",
+    description: "Calculate the tip amount for a bill",
+    schema: z.object({
+      billAmount: z.number().describe("The bill amount"),
+      tipPercentage: z.number().default(20).describe("Tip percentage"),
+    }),
+  }
+);
+
+const dynamicToolMiddleware = createMiddleware({
+  name: "DynamicToolMiddleware",
+  wrapModelCall: (request, handler) => {
+    // Add dynamic tool to the request
+    // This could be loaded from an MCP server, database, etc.
+    return handler({
+      ...request,
+      tools: [...request.tools, calculateTip],
     });
+  },
+  wrapToolCall: (request, handler) => {
+    // Handle execution of the dynamic tool
+    if (request.toolCall.name === "calculate_tip") {
+      return handler({ ...request, tool: calculateTip });
+    }
+    return handler(request);
+  },
+});
 
-    const agent = createAgent({
-      model: "gpt-5.5",
-      tools: [getWeather], // Only static tools registered here
-      middleware: [dynamicToolMiddleware],
-    });
+const agent = createAgent({
+  model: "gpt-5.5",
+  tools: [getWeather], // Only static tools registered here
+  middleware: [dynamicToolMiddleware],
+});
 
-    // The agent can now use both getWeather AND calculateTip
-    const result = await agent.invoke({
-      messages: [{ role: "user", content: "Calculate a 20% tip on $85" }],
-    });
-    ```
+// The agent can now use both getWeather AND calculateTip
+const result = await agent.invoke({
+  messages: [{ role: "user", content: "Calculate a 20% tip on $85" }],
+});
+```
 
-    This approach is best when:
+This approach is best when:
 
-    * Tools are discovered at runtime (e.g., from an MCP server)
-    * Tools are generated dynamically based on user data or configuration
-    * You're integrating with external tool registries
+* Tools are discovered at runtime (e.g., from an MCP server)
+* Tools are generated dynamically based on user data or configuration
+* You're integrating with external tool registries
 
-    <Note>
-      The `wrap_tool_call` hook is required for runtime-registered tools because the agent needs to know how to execute tools that weren't in the original tool list. Without it, the agent won't know how to invoke the dynamically added tool.
-    </Note>
-  </Tab>
-</Tabs>
+> [!NOTE]
+>
+> The `wrap_tool_call` hook is required for runtime-registered tools because the agent needs to know how to execute tools that weren't in the original tool list. Without it, the agent won't know how to invoke the dynamically added tool.
 
 ## Headless tools
 
@@ -936,17 +930,17 @@ In both runtimes, the model sees a normal tool it can call, but the actual execu
 3. **Register** the definition from step 1 with `createAgent` or your graph so the model sees the tool in its usual tool-calling loop.
 4. **Pass** the implementation from step 2 to your streaming hook's `tools` option.
 
-<Info>
-  Put **tool definitions** (`tool({ name, description, schema })`) and **implementations** (`.implement(...)`) in **separate modules**. Import the shared definition file from your server agent and from your frontend so names and schemas stay aligned; keep client-only execute logic in implementation modules the server never loads.
-</Info>
+> [!NOTE]
+>
+> Put **tool definitions** (`tool({ name, description, schema })`) and **implementations** (`.implement(...)`) in **separate modules**. Import the shared definition file from your server agent and from your frontend so names and schemas stay aligned; keep client-only execute logic in implementation modules the server never loads.
 
 When the model issues a tool call for one of these tools, the run **interrupts** instead of executing the tool locally. Your app can inspect the payload, perform the action in the right environment (for example a browser, another service, or a human review step), then **resume** the graph with the tool result. When you use the supported JS SDK hooks, they can detect headless-tool interrupts, run the matching client implementation, and submit the resume command for you.
 
 Use the optional **`onTool`** callback to observe lifecycle events (`start`, `success`, `error`) for UI feedback such as spinners or toasts.
 
-<Card title="Headless tools frontend pattern" href="/oss/javascript/langchain/frontend/headless-tools" icon="device-desktop">
-  See an end-to-end example of schema-only tools executed in the client with `useStream`.
-</Card>
+> **[Headless tools frontend pattern](/oss/javascript/langchain/frontend/headless-tools)**
+>
+> See an end-to-end example of schema-only tools executed in the client with `useStream`.
 
 ## Prebuilt tools
 
@@ -970,12 +964,6 @@ Refer to the individual [chat model integration pages](/oss/javascript/integrati
 
 ***
 
-<div>
-  <Callout icon="terminal-2">
-    [Connect these docs](/use-these-docs) to your agent of choice via MCP for real-time answers.
-  </Callout>
+[Connect these docs](/use-these-docs) to your agent of choice via MCP for real-time answers.
 
-  <Callout icon="edit">
-    [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/oss/langchain/tools.mdx) or [file an issue](https://github.com/langchain-ai/docs/issues/new/choose).
-  </Callout>
-</div>
+[Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/oss/langchain/tools.mdx) or [file an issue](https://github.com/langchain-ai/docs/issues/new/choose).

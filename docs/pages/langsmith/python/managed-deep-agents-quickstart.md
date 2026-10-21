@@ -8,9 +8,9 @@ Create and deploy your first Managed Deep Agent: scaffold a project, configure t
 
 After this quickstart, the [tutorial](/langsmith/python/managed-deep-agents-tutorial) adds durable memory and a daily schedule on the same project.
 
-<Note>
-  Managed Deep Agents is in **public [beta](/langsmith/release-stages)** on [LangSmith Cloud](/langsmith/cloud).
-</Note>
+> [!NOTE]
+>
+> Managed Deep Agents is in **public [beta](/langsmith/release-stages)** on [LangSmith Cloud](/langsmith/cloud).
 
 ## Prerequisites
 
@@ -30,277 +30,263 @@ npx skills add langchain-ai/langchain-skills --skill managed-deep-agents --yes
 
 Or paste this prompt into your coding agent:
 
-<Prompt description="Build a Managed Deep Agent with the quickstart" icon="sparkles">
-  Create and deploy a Managed Deep Agent in this working directory by following the Managed Deep Agents quickstart.
+Create and deploy a Managed Deep Agent in this working directory by following the Managed Deep Agents quickstart.
 
-  ## Step 1: Read the guide
+## Step 1: Read the guide
 
-  Fetch and follow [https://docs.langchain.com/langsmith/managed-deep-agents-quickstart.md](https://docs.langchain.com/langsmith/managed-deep-agents-quickstart.md) as the source of truth for CLI commands, project layout, and deployment steps. Prefer the Python or TypeScript path that matches this project.
+Fetch and follow [https://docs.langchain.com/langsmith/managed-deep-agents-quickstart.md](https://docs.langchain.com/langsmith/managed-deep-agents-quickstart.md) as the source of truth for CLI commands, project layout, and deployment steps. Prefer the Python or TypeScript path that matches this project.
 
-  ## Step 2: Install the skill
+## Step 2: Install the skill
 
-  If the `managed-deep-agents` skill is not already available, install it:
+If the `managed-deep-agents` skill is not already available, install it:
 
-  ```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  npx skills add langchain-ai/langchain-skills --skill managed-deep-agents --yes
-  ```
+```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+npx skills add langchain-ai/langchain-skills --skill managed-deep-agents --yes
+```
 
-  Use that skill for the rest of the workflow when it is available.
+Use that skill for the rest of the workflow when it is available.
 
-  ## Step 3: Prerequisites and secrets
+## Step 3: Prerequisites and secrets
 
-  Confirm the user has LangSmith access and any required model or search credentials. If a required API key is missing, ask them to set it in the shell or a `.env` file, then wait. Do not invent, hardcode, or commit secrets.
+Confirm the user has LangSmith access and any required model or search credentials. If a required API key is missing, ask them to set it in the shell or a `.env` file, then wait. Do not invent, hardcode, or commit secrets.
 
-  ## Step 4: Scaffold, configure, test, and deploy
+## Step 4: Scaffold, configure, test, and deploy
 
-  Follow the quickstart steps in order: initialize the project with `mda`, configure the model and instructions, add search as shown on the page, test in LangSmith Studio, and deploy with the `mda` CLI. Stop and ask when a dashboard action or credential can only be completed by the user in the LangSmith UI.
+Follow the quickstart steps in order: initialize the project with `mda`, configure the model and instructions, add search as shown on the page, test in LangSmith Studio, and deploy with the `mda` CLI. Stop and ask when a dashboard action or credential can only be completed by the user in the LangSmith UI.
 
-  ## Rules
+## Rules
 
-  * Stay scoped to the quickstart. Do not add unrelated products or rewrite the generated project layout unless the guide requires it.
-  * Prefer the `mda` CLI and the `managed-deep-agents` skill over inventing a custom deployment path.
-  * Ask rather than guess when a secret, plan-tier limit, or UI-only step is unclear.
-</Prompt>
+* Stay scoped to the quickstart. Do not add unrelated products or rewrite the generated project layout unless the guide requires it.
+* Prefer the `mda` CLI and the `managed-deep-agents` skill over inventing a custom deployment path.
+* Ask rather than guess when a secret, plan-tier limit, or UI-only step is unclear.
 
 ## Create and deploy an agent
 
-<Steps>
-  <Step title="Set up the project">
-    Create a project and open its directory:
+**1. Set up the project**
 
-    ```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-    uvx --from managed-deepagents mda init research-assistant
-    cd research-assistant
-    ```
+Create a project and open its directory:
 
-    You now have all the scaffolding for your agent.
-  </Step>
+```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+uvx --from managed-deepagents mda init research-assistant
+cd research-assistant
+```
 
-  <Step title="Add your keys">
-    Add your model provider API key to `.env`:
+You now have all the scaffolding for your agent.
 
-    ```text .env theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-    OPENAI_API_KEY=<OPENAI_API_KEY>
-    # ANTHROPIC_API_KEY=<ANTHROPIC_API_KEY>
-    # GOOGLE_API_KEY=<GOOGLE_API_KEY>
-    # AZURE_AI_OPENAI_ENDPOINT=https://<resource>.services.ai.azure.com/openai/v1
-    # AZURE_OPENAI_API_KEY=<AZURE_OPENAI_API_KEY>
-    # AZURE_OPENAI_DEPLOYMENT_NAME=<AZURE_OPENAI_DEPLOYMENT_NAME>
-    ```
+**2. Add your keys**
 
-    This quickstart uses OpenAI by default. For Google, Anthropic, or Microsoft Foundry, set the matching values instead. `mda deploy` adds the provider key to the deployment. You can also use any [other chat provider](/oss/python/integrations/chat/).
+Add your model provider API key to `.env`:
 
-    <Warning>
-      Do not commit the `.env` file into version control. It contains secrets.
-    </Warning>
-  </Step>
+```text .env theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+OPENAI_API_KEY=<OPENAI_API_KEY>
+# ANTHROPIC_API_KEY=<ANTHROPIC_API_KEY>
+# GOOGLE_API_KEY=<GOOGLE_API_KEY>
+# AZURE_AI_OPENAI_ENDPOINT=https://<resource>.services.ai.azure.com/openai/v1
+# AZURE_OPENAI_API_KEY=<AZURE_OPENAI_API_KEY>
+# AZURE_OPENAI_DEPLOYMENT_NAME=<AZURE_OPENAI_DEPLOYMENT_NAME>
+```
 
-  <Step title="Set up LangSmith">
-    Managed Deep Agents runs on LangSmith. Your LangSmith API key authenticates local development with `mda dev`, deploys the agent with `mda deploy`, and opens the agent in [LangSmith Studio](/langsmith/studio) so you can chat with it and inspect traces.
+This quickstart uses OpenAI by default. For Google, Anthropic, or Microsoft Foundry, set the matching values instead. `mda deploy` adds the provider key to the deployment. You can also use any [other chat provider](/oss/python/integrations/chat/).
 
-    [Sign up for LangSmith](https://smith.langchain.com?utm_source=docs\&utm_medium=cta\&utm_campaign=langsmith-signup\&utm_content=langsmith-managed-deep-agents-quickstart) if you do not already have an account.
+> [!WARNING]
+>
+> Do not commit the `.env` file into version control. It contains secrets.
 
-    To create a LangSmith API key, open [Settings](https://smith.langchain.com/settings), go to **API Keys**, and click **Create API Key**. For more details, see [Create an account and API key](/langsmith/create-account-api-key).
+**3. Set up LangSmith**
 
-    Add your LangSmith API key to `.env`:
+Managed Deep Agents runs on LangSmith. Your LangSmith API key authenticates local development with `mda dev`, deploys the agent with `mda deploy`, and opens the agent in [LangSmith Studio](/langsmith/studio) so you can chat with it and inspect traces.
 
-    ```text .env theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-    LANGSMITH_API_KEY=<LANGSMITH_API_KEY>
-    ```
-  </Step>
+[Sign up for LangSmith](https://smith.langchain.com?utm_source=docs\&utm_medium=cta\&utm_campaign=langsmith-signup\&utm_content=langsmith-managed-deep-agents-quickstart) if you do not already have an account.
 
-  <Step title="Edit the instructions">
-    Open `instructions.md` and describe how the agent should behave:
+To create a LangSmith API key, open [Settings](https://smith.langchain.com/settings), go to **API Keys**, and click **Create API Key**. For more details, see [Create an account and API key](/langsmith/create-account-api-key).
 
-    ```markdown instructions.md theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-    # Research assistant
+Add your LangSmith API key to `.env`:
 
-    You are a careful research assistant. Use internet search to find sources,
-    keep notes, and return concise answers with citations.
-    ```
+```text .env theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+LANGSMITH_API_KEY=<LANGSMITH_API_KEY>
+```
 
-    When you deploy, Managed Deep Agents syncs these instructions to [LangSmith Context Hub](/langsmith/python/managed-deep-agents-context-hub), where you can update them without redeploying the agent.
-  </Step>
+**4. Edit the instructions**
 
-  <Step title="Configure your model and search">
-    Now set the model and a built-in web search tool. Google, OpenAI, Anthropic, and Microsoft Foundry offer server-side search without a separate search package or search API key. Pass the provider tool dict that matches your model:
+Open `instructions.md` and describe how the agent should behave:
 
-    Open `agent.py`:
+```markdown instructions.md theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+# Research assistant
 
-    <CodeGroup>
-      ```python OpenAI theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-      from managed_deepagents import define_deep_agent
+You are a careful research assistant. Use internet search to find sources,
+keep notes, and return concise answers with citations.
+```
 
-      # OpenAI's built-in web search — no extra install or API key needed
-      agent = define_deep_agent(
-          name="research-assistant",
-          model="openai:gpt-5.5",
-          tools=[{"type": "web_search"}],
-      )
-      ```
+When you deploy, Managed Deep Agents syncs these instructions to [LangSmith Context Hub](/langsmith/python/managed-deep-agents-context-hub), where you can update them without redeploying the agent.
 
-      ```python Google theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-      from managed_deepagents import define_deep_agent
+**5. Configure your model and search**
 
-      # Google's built-in search — no extra install or API key needed
-      agent = define_deep_agent(
-          name="research-assistant",
-          model="google_genai:gemini-3.6-flash",
-          tools=[{"google_search": {}}],
-      )
-      ```
+Now set the model and a built-in web search tool. Google, OpenAI, Anthropic, and Microsoft Foundry offer server-side search without a separate search package or search API key. Pass the provider tool dict that matches your model:
 
-      ```python Anthropic theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-      from managed_deepagents import define_deep_agent
+Open `agent.py`:
 
-      # Anthropic's built-in web search — no extra install or API key needed
-      agent = define_deep_agent(
-          name="research-assistant",
-          model="anthropic:claude-sonnet-4-6",
-          tools=[{"type": "web_search_20260209", "name": "web_search"}],
-      )
-      ```
+```python OpenAI theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+from managed_deepagents import define_deep_agent
 
-      ```python Microsoft Foundry theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-      # Install the required dependency: uv add langchain-azure-ai
-      import os
+# OpenAI's built-in web search — no extra install or API key needed
+agent = define_deep_agent(
+    name="research-assistant",
+    model="openai:gpt-5.5",
+    tools=[{"type": "web_search"}],
+)
+```
 
-      from langchain_azure_ai.chat_models import AzureAIOpenAIApiChatModel
-      from managed_deepagents import define_deep_agent
+```python Google theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+from managed_deepagents import define_deep_agent
 
-      model = AzureAIOpenAIApiChatModel(
-          endpoint=os.environ["AZURE_AI_OPENAI_ENDPOINT"],
-          credential=os.environ["AZURE_OPENAI_API_KEY"],
-          model=os.environ["AZURE_OPENAI_DEPLOYMENT_NAME"],
-      )
+# Google's built-in search — no extra install or API key needed
+agent = define_deep_agent(
+    name="research-assistant",
+    model="google_genai:gemini-3.6-flash",
+    tools=[{"google_search": {}}],
+)
+```
 
-      agent = define_deep_agent(
-          name="research-assistant",
-          model=model,
-          tools=[{"type": "web_search"}],
-      )
-      ```
-    </CodeGroup>
+```python Anthropic theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+from managed_deepagents import define_deep_agent
 
-    The agent name is also the default deployment name. For model concepts and provider options, see [Models](/oss/python/langchain/models).
+# Anthropic's built-in web search — no extra install or API key needed
+agent = define_deep_agent(
+    name="research-assistant",
+    model="anthropic:claude-sonnet-4-6",
+    tools=[{"type": "web_search_20260209", "name": "web_search"}],
+)
+```
 
-    <Accordion title="Using another provider?">
-      You can use a Tavily search tool instead.
-      Add a [Tavily API key](https://app.tavily.com) to `.env`:
+```python Microsoft Foundry theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+# Install the required dependency: uv add langchain-azure-ai
+import os
 
-      ```text .env theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-      TAVILY_API_KEY=<TAVILY_API_KEY>
-      ```
+from langchain_azure_ai.chat_models import AzureAIOpenAIApiChatModel
+from managed_deepagents import define_deep_agent
 
-      Install the Tavily client:
+model = AzureAIOpenAIApiChatModel(
+    endpoint=os.environ["AZURE_AI_OPENAI_ENDPOINT"],
+    credential=os.environ["AZURE_OPENAI_API_KEY"],
+    model=os.environ["AZURE_OPENAI_DEPLOYMENT_NAME"],
+)
 
-      ```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-      uv add tavily-python
-      ```
+agent = define_deep_agent(
+    name="research-assistant",
+    model=model,
+    tools=[{"type": "web_search"}],
+)
+```
 
-      Create a custom `internet_search` tool:
+The agent name is also the default deployment name. For model concepts and provider options, see [Models](/oss/python/langchain/models).
 
-      ```python tools/search.py theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-      import os
-      from typing import Literal
+> **Using another provider?**
+>
+> You can use a Tavily search tool instead.
+> Add a [Tavily API key](https://app.tavily.com) to `.env`:
+>
+> ```text .env theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> TAVILY_API_KEY=<TAVILY_API_KEY>
+> ```
+>
+> Install the Tavily client:
+>
+> ```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> uv add tavily-python
+> ```
+>
+> Create a custom `internet_search` tool:
+>
+> ```python tools/search.py theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> import os
+> from typing import Literal
+>
+> from langchain.tools import tool
+> from tavily import TavilyClient
+>
+>
+> tavily_client = TavilyClient(api_key=os.environ["TAVILY_API_KEY"])
+>
+>
+> @tool
+> def internet_search(
+>     query: str,
+>     max_results: int = 5,
+>     topic: Literal["general", "news", "finance"] = "general",
+> ) -> dict:
+>     """Search the internet for relevant sources."""
+>     return tavily_client.search(
+>         query,
+>         max_results=max_results,
+>         topic=topic,
+>     )
+> ```
+>
+> Import the tool and add it to the agent:
+>
+> ```python agent.py theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> from managed_deepagents import define_deep_agent
+>
+> from tools.search import internet_search
+>
+> agent = define_deep_agent(
+>     name="research-assistant",
+>     model="openai:gpt-5.5",
+>     tools=[internet_search],
+> )
+> ```
+>
+> For more authored tools, see [Custom tools](/langsmith/python/managed-deep-agents-tools).
 
-      from langchain.tools import tool
-      from tavily import TavilyClient
+**6. Run locally**
 
+Install the project dependencies and start the agent:
 
-      tavily_client = TavilyClient(api_key=os.environ["TAVILY_API_KEY"])
+```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+uv sync
+uv run mda dev
+```
 
+`mda dev` loads the API keys from `.env`, starts a local Agent Server, and opens the agent in LangSmith Studio.
 
-      @tool
-      def internet_search(
-          query: str,
-          max_results: int = 5,
-          topic: Literal["general", "news", "finance"] = "general",
-      ) -> dict:
-          """Search the internet for relevant sources."""
-          return tavily_client.search(
-              query,
-              max_results=max_results,
-              topic=topic,
-          )
-      ```
+In Studio, send:
 
-      Import the tool and add it to the agent:
+```txt wrap theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+What were the main announcements from the latest LangChain release?
+```
 
-      ```python agent.py theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-      from managed_deepagents import define_deep_agent
+You should see the agent call the web search tool, then return a concise answer that cites sources. If search never appears in the trace, confirm the provider tool dict matches the model you set in `agent.py` or `agent.ts`.
 
-      from tools.search import internet_search
+For more information, see [Develop locally with LangSmith Studio](/langsmith/python/managed-deep-agents-local-development).
 
-      agent = define_deep_agent(
-          name="research-assistant",
-          model="openai:gpt-5.5",
-          tools=[internet_search],
-      )
-      ```
+**7. Deploy the agent**
 
-      For more authored tools, see [Custom tools](/langsmith/python/managed-deep-agents-tools).
-    </Accordion>
-  </Step>
+Deploy the project by running:
 
-  <Step title="Run locally">
-    Install the project dependencies and start the agent:
+```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+uv run mda deploy
+```
 
-    ```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-    uv sync
-    uv run mda dev
-    ```
+Managed Deep Agents packages the project and runs it as a hosted deployment on [LangSmith Agent Server](/langsmith/agent-server). When deployment finishes, the CLI prints the deployment dashboard URL.
 
-    `mda dev` loads the API keys from `.env`, starts a local Agent Server, and opens the agent in LangSmith Studio.
-
-    In Studio, send:
-
-    ```txt wrap theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-    What were the main announcements from the latest LangChain release?
-    ```
-
-    You should see the agent call the web search tool, then return a concise answer that cites sources. If search never appears in the trace, confirm the provider tool dict matches the model you set in `agent.py` or `agent.ts`.
-
-    For more information, see [Develop locally with LangSmith Studio](/langsmith/python/managed-deep-agents-local-development).
-  </Step>
-
-  <Step title="Deploy the agent">
-    Deploy the project by running:
-
-    ```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-    uv run mda deploy
-    ```
-
-    Managed Deep Agents packages the project and runs it as a hosted deployment on [LangSmith Agent Server](/langsmith/agent-server). When deployment finishes, the CLI prints the deployment dashboard URL.
-
-    Open that URL. You should see the deployment in a ready state. Send the same research question from the previous step and confirm the hosted agent returns an answer with a search tool call. For deployment options and secrets handling, see [Deploy a Managed Deep Agent](/langsmith/python/managed-deep-agents-deploy). To inspect the agent's execution after it runs, use [LangSmith observability](/langsmith/observability-quickstart).
-  </Step>
-</Steps>
+Open that URL. You should see the deployment in a ready state. Send the same research question from the previous step and confirm the hosted agent returns an answer with a search tool call. For deployment options and secrets handling, see [Deploy a Managed Deep Agent](/langsmith/python/managed-deep-agents-deploy). To inspect the agent's execution after it runs, use [LangSmith observability](/langsmith/observability-quickstart).
 
 ## Next steps
 
-<CardGroup>
-  <Card title="Tutorial" icon="book" href="/langsmith/python/managed-deep-agents-tutorial">
-    Add a custom Tavily search tool, durable memory, and a daily schedule.
-  </Card>
+> **[Tutorial](/langsmith/python/managed-deep-agents-tutorial)**
+>
+> Add a custom Tavily search tool, durable memory, and a daily schedule.
 
-  <Card title="Custom tools" icon="tool" href="/langsmith/python/managed-deep-agents-tools">
-    Add authored LangChain tools from your project.
-  </Card>
+> **[Custom tools](/langsmith/python/managed-deep-agents-tools)**
+>
+> Add authored LangChain tools from your project.
 
-  <Card title="Connections" icon="key" href="/langsmith/python/managed-deep-agents-connections">
-    Authenticate with external services, as the agent or as the caller.
-  </Card>
-</CardGroup>
+> **[Connections](/langsmith/python/managed-deep-agents-connections)**
+>
+> Authenticate with external services, as the agent or as the caller.
 
 ***
 
-<div>
-  <Callout icon="terminal-2">
-    [Connect these docs](/use-these-docs) to your agent of choice via MCP for real-time answers.
-  </Callout>
+[Connect these docs](/use-these-docs) to your agent of choice via MCP for real-time answers.
 
-  <Callout icon="edit">
-    [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/managed-deep-agents-quickstart.mdx) or [file an issue](https://github.com/langchain-ai/docs/issues/new/choose).
-  </Callout>
-</div>
+[Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/managed-deep-agents-quickstart.mdx) or [file an issue](https://github.com/langchain-ai/docs/issues/new/choose).

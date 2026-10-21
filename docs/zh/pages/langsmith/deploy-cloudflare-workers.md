@@ -6,35 +6,33 @@
 
 使用 Vite、React、Hono 和 Durable 对象在 Cloudflare Workers 上部署 LangChain 深度代理以进行 SSE 重放。
 
-以下页面详细介绍了一个在 [Cloudflare Workers](https://developers.cloudflare.com/workers/) 上部署 LangChain **深度代理** 的示例应用程序：流式聊天 UI、子代理和线程历史记录，所有这些都由作为 Worker 路由 (HTTP + SSE) 实现的 [Agent Streaming Protocol](https://github.com/langchain-ai/agent-protocol/tree/main/streaming) 支持。 React SPA 由同一个 Worker 通过 [Workers Assets](https://developers.cloudflare.com/workers/static-assets/) 提供。没有单独的后端进程：一个 Worker 为 SPA 和协议 API 提供服务。
+以下页面详细介绍了一个在 [Cloudflare Workers](https://developers.cloudflare.com/workers/) 上部署 LangChain **深度代理** 的示例应用程序：流式聊天 UI、子代理和线程历史记录，所有这些都由作为工作路由 (HTTP + SSE) 实现的 [Agent Streaming Protocol](https://github.com/langchain-ai/agent-protocol/tree/main/streaming) 支持。 React SPA 由同一个 Worker 通过 [Workers Assets](https://developers.cloudflare.com/workers/static-assets/) 提供。没有单独的后端进程：一个 Worker 为 SPA 和协议 API 提供服务。
 
 来源：部署手册中的[⟦T6⟧](https://github.com/langchain-ai/deployment-cookbook/tree/main/js-cloudflare)。
 
 ## 部署到 Cloudflare
 
-<Steps>
-  <Step title="Install and build">
-    ```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-    cd js-cloudflare
-    cp .env.example .dev.vars   # set OPENAI_API_KEY for local dev
-    pnpm install
-    pnpm build
-    ```
-  </Step>
+**1.安装和构建**
 
-  <Step title="Configure secrets">
-    ```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-    npx wrangler login
-    npx wrangler secret put OPENAI_API_KEY
-    ```
-  </Step>
+```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+cd js-cloudflare
+cp .env.example .dev.vars   # set OPENAI_API_KEY for local dev
+pnpm install
+pnpm build
+```
 
-  <Step title="Deploy">
-    ```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-    pnpm run deploy
-    ```
-  </Step>
-</Steps>
+**2.配置机密**
+
+```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+npx wrangler login
+npx wrangler secret put OPENAI_API_KEY
+```
+
+**3.部署**
+
+```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+pnpm run deploy
+```
 
 Wrangler 在一次部署中上传 Vite 构建 (SPA) 和 Worker 脚本。 `nodejs_compat` 和 `nodejs_compat_populate_process_env` 已启用，因此 LangChain 可以从环境中读取 `OPENAI_API_KEY`。
 
@@ -113,12 +111,12 @@ flowchart TB
 | - | - |
 |前端 | Vite + React SPA (`src/`) |
 | API层| `worker/index.ts` | 霍诺 (Hono) 路线
-|运行时 |工人V8 + `nodejs_compat` |
+|运行时|工人V8 + `nodejs_compat` |
 |上交所回放 |每线程 **持久对象** (`ThreadSession`) |
 |代理运行 |工人隔离；协议事件发布到 DO |
 |静态资产 |工人资产 (`wrangler.jsonc` → `assets`) |
 |秘密 | `wrangler secret` / `.dev.vars` |
-|本地开发| `vite`（Cloudflare Vite 插件运行 Worker 运行时）|
+|本地开发 | `vite`（Cloudflare Vite 插件运行 Worker 运行时）|
 
 **Worker**（代理 + 检查点）和 **Durable Object**（SSE 事件日志）之间的划分是 Cloudflare 上的主要设计选择。工作隔离是短暂的，因此重播缓冲区位于持久对象中而不是进程内存中。
 
@@ -166,12 +164,6 @@ pnpm typecheck
 
 ***
 
-<div>
-  <Callout icon="terminal-2">
-    [Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
-  </Callout>
+[Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
 
-  <Callout icon="edit">
-    [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/deploy-cloudflare-workers.mdx) 或 [file an issue](https://github.com/langchain-ai/docs/issues/new/choose)。
-  </Callout>
-</div>
+[Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/deploy-cloudflare-workers.mdx) 或 [file an issue](https://github.com/langchain-ai/docs/issues/new/choose)。

@@ -102,9 +102,9 @@ secrets/
 
 When `.openwikiignore` has active rules, OpenWiki filters filesystem discovery and restricts shell execute so ignored paths stay out of the run. Repository agents use constrained filesystem tools rather than arbitrary host shell commands or unrestricted repository inspection.
 
-<Note>
-  This is a read boundary: ignored paths are never read, scanned, or reproduced in the generated docs. It does not guarantee a topic will never be mentioned, because the agent may still infer an ignored area from other allowed evidence such as tests, the README, commit messages, or the existing wiki.
-</Note>
+> [!NOTE]
+>
+> This is a read boundary: ignored paths are never read, scanned, or reproduced in the generated docs. It does not guarantee a topic will never be mentioned, because the agent may still infer an ignored area from other allowed evidence such as tests, the README, commit messages, or the existing wiki.
 
 ## Diagrams
 
@@ -139,12 +139,6 @@ Normal `--init` and `--update` runs do not rewrite this file.
 
 ***
 
-<div>
-  <Callout icon="terminal-2">
-    [Connect these docs](/use-these-docs) to your agent of choice via MCP for real-time answers.
-  </Callout>
+[Connect these docs](/use-these-docs) to your agent of choice via MCP for real-time answers.
 
-  <Callout icon="edit">
-    [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/oss/openwiki/code-mode.mdx) or [file an issue](https://github.com/langchain-ai/docs/issues/new/choose).
-  </Callout>
-</div>
+[Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/oss/openwiki/code-mode.mdx) or [file an issue](https://github.com/langchain-ai/docs/issues/new/choose).

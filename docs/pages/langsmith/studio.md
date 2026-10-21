@@ -2,13 +2,13 @@
 
 # LangSmith Studio
 
-<Info>
-  **Prerequisites**
-
-  * [LangSmith](/langsmith/observability)
-  * [Agent Server](/langsmith/agent-server)
-  * [LangGraph CLI](/langsmith/cli)
-</Info>
+> [!NOTE]
+>
+> **Prerequisites**
+>
+> * [LangSmith](/langsmith/observability)
+> * [Agent Server](/langsmith/agent-server)
+> * [LangGraph CLI](/langsmith/cli)
 
 Studio is a specialized agent IDE that enables visualization, interaction, and debugging of agentic systems that implement the Agent Server API protocol. Studio also integrates with [tracing](/langsmith/observability-concepts), [evaluation](/langsmith/evaluation), and [prompt engineering](/langsmith/prompt-context-hub#prompts).
 
@@ -62,16 +62,10 @@ Go from [testing graphs locally](/langsmith/local-dev-testing) in Studio to depl
 
 ## Video guide
 
-<iframe title="YouTube video player" />
+[YouTube video player](https://www.youtube.com/embed/Mi1gSlHwZLM?si=oWCeHQ640zPHoLwn)
 
 ***
 
-<div>
-  <Callout icon="terminal-2">
-    [Connect these docs](/use-these-docs) to your agent of choice via MCP for real-time answers.
-  </Callout>
+[Connect these docs](/use-these-docs) to your agent of choice via MCP for real-time answers.
 
-  <Callout icon="edit">
-    [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/studio.mdx) or [file an issue](https://github.com/langchain-ai/docs/issues/new/choose).
-  </Callout>
-</div>
+[Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/studio.mdx) or [file an issue](https://github.com/langchain-ai/docs/issues/new/choose).

@@ -4,9 +4,9 @@
 
 Install self-hosted LangSmith and its dependencies in a Kubernetes cluster with Helm, including Insights and Chat.
 
-<Info>
-  Self-hosted LangSmith is an add-on to the Enterprise plan designed for LangChain's largest, most security-conscious customers. For more details, refer to [Pricing](https://www.langchain.com/pricing). [Contact our sales team](https://www.langchain.com/contact-sales) if you want a license key to trial LangSmith in your environment.
-</Info>
+> [!NOTE]
+>
+> Self-hosted LangSmith is an add-on to the Enterprise plan designed for LangChain's largest, most security-conscious customers. For more details, refer to [Pricing](https://www.langchain.com/pricing). [Contact our sales team](https://www.langchain.com/contact-sales) if you want a license key to trial LangSmith in your environment.
 
 This guide describes how to set up LangSmith in a Kubernetes cluster. You use Helm to install LangSmith and its dependencies.
 
@@ -24,9 +24,9 @@ LangSmith runs on any conformant Kubernetes cluster. It has been tested on the f
 * OpenShift 4.14 or later
 * Minikube and Kind (for development purposes)
 
-<Tip>
-  **Prefer infrastructure as code?** [Deploy with Terraform](/langsmith/self-host-terraform) bundles cluster provisioning, secrets wiring, and the Helm release for AWS, Azure, and GCP into one workflow. This guide covers the Helm-only path against any conformant cluster you already manage.
-</Tip>
+> [!TIP]
+>
+> **Prefer infrastructure as code?** [Deploy with Terraform](/langsmith/self-host-terraform) bundles cluster provisioning, secrets wiring, and the Helm release for AWS, Azure, and GCP into one workflow. This guide covers the Helm-only path against any conformant cluster you already manage.
 
 ## Prerequisites
 
@@ -86,15 +86,15 @@ You need a working Kubernetes cluster that you can access with `kubectl`. Your c
    gp2 (default)   ebs.csi.eks.amazonaws.com   Delete          WaitForFirstConsumer   true                   161d
    ```
 
-   <Note>
-     Use a storage class that supports volume expansion. Traces can require a lot of disk space, and your volumes may need to be resized over time.
-   </Note>
+   > [!NOTE]
+   >
+   > Use a storage class that supports volume expansion. Traces can require a lot of disk space, and your volumes may need to be resized over time.
 
    Refer to the [Kubernetes documentation](https://kubernetes.io/docs/concepts/storage/storage-classes/) for more information on storage classes.
 
-<Note>
-  LangSmith services listen on both IPv4 and IPv6 by default as of 0.14.0. No additional configuration is required for IPv4-only, IPv6-only, or dual-stack clusters.
-</Note>
+> [!NOTE]
+>
+> LangSmith services listen on both IPv4 and IPv6 by default as of 0.14.0. No additional configuration is required for IPv4-only, IPv6-only, or dual-stack clusters.
 
 ### Network access
 
@@ -121,19 +121,19 @@ For the minimum supported version of each datastore, refer to [Minimum versions 
    * If you are new to Kubernetes or Helm, start from one of the [LangSmith Helm chart examples](https://github.com/langchain-ai/helm/tree/main/charts/langsmith/examples).
    * For a full list of configuration options, refer to the [LangSmith Helm chart `values.yaml`](https://github.com/langchain-ai/helm/tree/main/charts/langsmith/values.yaml).
 
-   <Warning>
-     Only override the settings you need in `langsmith_config.yaml`. Do not copy the entire `values.yaml`. Keeping your config minimal ensures you continue to inherit new defaults and upgrades from the Helm chart.
-   </Warning>
+   > [!WARNING]
+   >
+   > Only override the settings you need in `langsmith_config.yaml`. Do not copy the entire `values.yaml`. Keeping your config minimal ensures you continue to inherit new defaults and upgrades from the Helm chart.
 
-   <Tip>
-     If your cluster enforces non-root or read-only container policies, start from the [read-only Helm configuration example](https://github.com/langchain-ai/helm/blob/main/charts/langsmith/examples/read_only_config.yaml). LangSmith containers do not require root privileges. The example shows how to set `runAsNonRoot`, service UIDs and GIDs, `fsGroup`, `RuntimeDefault` seccomp profiles, dropped capabilities, disabled privilege escalation, and writable `emptyDir` mounts for services that need temporary storage.
-   </Tip>
+   > [!TIP]
+   >
+   > If your cluster enforces non-root or read-only container policies, start from the [read-only Helm configuration example](https://github.com/langchain-ai/helm/blob/main/charts/langsmith/examples/read_only_config.yaml). LangSmith containers do not require root privileges. The example shows how to set `runAsNonRoot`, service UIDs and GIDs, `fsGroup`, `RuntimeDefault` seccomp profiles, dropped capabilities, disabled privilege escalation, and writable `emptyDir` mounts for services that need temporary storage.
 
 2. Set the following minimum configuration options (using basic auth), with the keys and secrets from the [prerequisites](#keys-and-secrets):
 
-   <Warning>
-     Set `apiKeySalt` once and do not change it. This value is used to hash all API keys at rest. Rotating it permanently invalidates every existing API key in your organization, requiring all users to regenerate their keys.
-   </Warning>
+   > [!WARNING]
+   >
+   > Set `apiKeySalt` once and do not change it. This value is used to hash all API keys at rest. Rotating it permanently invalidates every existing API key in your organization, requiring all users to regenerate their keys.
 
    ```yaml theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
    config:
@@ -165,9 +165,9 @@ Self-hosted LangSmith uses an Ed25519 JSON Web Key Set (JWKS) to sign tokens for
 
 The JWKS contains a private key. Store it in a Kubernetes Secret and keep it stable across upgrades. LangSmith derives the public key and serves it from `/.well-known/jwks.json`, so clients such as the LLM auth proxy can verify tokens without receiving the private key.
 
-<Note>
-  The Helm configuration in this section requires LangSmith chart version 0.16.0 or later.
-</Note>
+> [!NOTE]
+>
+> The Helm configuration in this section requires LangSmith chart version 0.16.0 or later.
 
 Generate an Ed25519 key with [step CLI](https://smallstep.com/docs/step-cli/installation/) or your internal key-management process. RSA keys are rejected.
 
@@ -206,9 +206,9 @@ Choose one of the following storage options:
 
   `config.existingSecretName` replaces the chart-managed Secret for the entire LangSmith installation. Do not point it to a JWKS-only Secret. Preserve all existing keys, including `langsmith_license_key` and `api_key_salt`. For the complete Secret structure, see [Use an existing Secret for your installation](/langsmith/self-host-using-an-existing-secret).
 
-<Warning>
-  Starting with chart version 0.16.0, the chart owns `LANGSMITH_SIGNING_JWKS`. When upgrading from an earlier chart version, remove this environment variable from `commonEnv` and `platformBackend.deployment.extraEnv`. Setting it there causes a duplicate environment-variable error. If you previously loaded it from a separate Secret, such as `langsmith-signing-jwks`, move the value into the chart configuration and remove that reference. Configure it through `config.signingJwks` or the `langsmith_signing_jwks` key in `config.existingSecretName` instead.
-</Warning>
+> [!WARNING]
+>
+> Starting with chart version 0.16.0, the chart owns `LANGSMITH_SIGNING_JWKS`. When upgrading from an earlier chart version, remove this environment variable from `commonEnv` and `platformBackend.deployment.extraEnv`. Setting it there causes a duplicate environment-variable error. If you previously loaded it from a separate Secret, such as `langsmith-signing-jwks`, move the value into the chart configuration and remove that reference. Configure it through `config.signingJwks` or the `langsmith_signing_jwks` key in `config.existingSecretName` instead.
 
 Apply the Helm release after configuring the JWKS. If you update an externally managed Secret without changing the Helm values, restart the platform-backend pods so they load the new environment variable.
 
@@ -232,9 +232,9 @@ The response contains the public verification key and does not include the priva
         langsmith-eks-2vauP7wf 21:07:46 No resources found in default namespace.
       ```
 
-   <Note>
-     If you are using a namespace other than the default namespace, specify the namespace in the `helm` and `kubectl` commands by using the `-n <namespace>` flag.
-   </Note>
+   > [!NOTE]
+   >
+   > If you are using a namespace other than the default namespace, specify the namespace in the `helm` and `kubectl` commands by using the `-n <namespace>` flag.
 
 2. Ensure you have the LangChain Helm repo added (skip this step if you are using local charts).
 
@@ -260,13 +260,13 @@ The response contains the public verification key and does not include the priva
    * Replace `<namespace>` with the namespace you want to deploy LangSmith to.
    * Replace `<version>` with the version of LangSmith you want to install from the previous step. Most users should install the latest version available.
 
-   <Note>
-     The latest stable chart is on the v17 line (`0.17.x`). Values written for the v16 line can fail to render on v17. If you are upgrading an existing v16 installation rather than installing a new one, follow [Upgrade from v16 to v17](/langsmith/self-host-upgrades#upgrade-from-v16-to-v17) first.
-   </Note>
+   > [!NOTE]
+   >
+   > The latest stable chart is on the v17 line (`0.17.x`). Values written for the v16 line can fail to render on v17. If you are upgrading an existing v16 installation rather than installing a new one, follow [Upgrade from v16 to v17](/langsmith/self-host-upgrades#upgrade-from-v16-to-v17) first.
 
-   <Note>
-     The namespace specified with `-n <namespace>` must already exist before running this command. If it does not exist, either create it first with `kubectl create namespace <namespace>`, or add the `--create-namespace` flag to the helm command above.
-   </Note>
+   > [!NOTE]
+   >
+   > The namespace specified with `-n <namespace>` must already exist before running this command. If it does not exist, either create it first with `kubectl create namespace <namespace>`, or add the `--create-namespace` flag to the helm command above.
 
    When the `helm install` command finishes successfully, you should see output similar to this:
 
@@ -330,7 +330,7 @@ The response contains the public verification key and does not include the priva
 
    The LangSmith UI should be visible and operational.
 
-   <img alt="Langsmith ui" />
+   ![Langsmith ui](https://mintcdn.com/langchain-5e9cc07a/4kN8yiLrZX_amfFn/langsmith/images/langsmith-ui.png?fit=max\&auto=format\&n=4kN8yiLrZX_amfFn\&q=85\&s=5310f686e7b9eebaaee4fe2a152a8675)
 
 ## Next steps
 
@@ -353,12 +353,6 @@ After completing this guide, your LangSmith instance should be running, but it m
 
 ***
 
-<div>
-  <Callout icon="terminal-2">
-    [Connect these docs](/use-these-docs) to your agent of choice via MCP for real-time answers.
-  </Callout>
+[Connect these docs](/use-these-docs) to your agent of choice via MCP for real-time answers.
 
-  <Callout icon="edit">
-    [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/kubernetes.mdx) or [file an issue](https://github.com/langchain-ai/docs/issues/new/choose).
-  </Callout>
-</div>
+[Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/kubernetes.mdx) or [file an issue](https://github.com/langchain-ai/docs/issues/new/choose).

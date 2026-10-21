@@ -4,15 +4,15 @@
 
 Understand where gateway traces land and who can see and configure what.
 
-<Note>
-  The LLM Gateway is in [beta](/langsmith/release-stages).
-</Note>
+> [!NOTE]
+>
+> The LLM Gateway is in [beta](/langsmith/release-stages).
 
 Every call through the LLM Gateway is traced to LangSmith, and policy violations surface in [LangSmith Engine](/langsmith/engine) for triage.
 
-<Note>
-  Gateway traces record metadata (token counts, policy outcomes, caller identity) for every call. Input and output content is **not** logged by default, and traces without content are **not billed** against your LangSmith trace quota. Content logging, and the associated billing, only applies when you explicitly enable it with a [data policy](/langsmith/llm-gateway-data-policy).
-</Note>
+> [!NOTE]
+>
+> Gateway traces record metadata (token counts, policy outcomes, caller identity) for every call. Input and output content is **not** logged by default, and traces without content are **not billed** against your LangSmith trace quota. Content logging, and the associated billing, only applies when you explicitly enable it with a [data policy](/langsmith/llm-gateway-data-policy).
 
 ## Where gateway traces appear
 
@@ -100,12 +100,6 @@ If you need to limit who can see gateway traces, you have two options:
 
 ***
 
-<div>
-  <Callout icon="terminal-2">
-    [Connect these docs](/use-these-docs) to your agent of choice via MCP for real-time answers.
-  </Callout>
+[Connect these docs](/use-these-docs) to your agent of choice via MCP for real-time answers.
 
-  <Callout icon="edit">
-    [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/llm-gateway-access.mdx) or [file an issue](https://github.com/langchain-ai/docs/issues/new/choose).
-  </Callout>
-</div>
+[Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/llm-gateway-access.mdx) or [file an issue](https://github.com/langchain-ai/docs/issues/new/choose).

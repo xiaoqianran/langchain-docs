@@ -6,36 +6,34 @@ Configure channels to trigger your Fleet agents automatically.
 
 Channels define when your agent starts running. Connect your agent to external events so it responds automatically to messages, emails, or other events.
 
-<Tip>
-  To trigger an agent on a recurring basis, use [schedules](/langsmith/fleet/schedules).
-</Tip>
+> [!TIP]
+>
+> To trigger an agent on a recurring basis, use [schedules](/langsmith/fleet/schedules).
 
 ## Add a channel
 
 To add a channel:
 
-<Steps>
-  <Step title="Open your agent">
-    Open your agent in the [Fleet](https://smith.langchain.com/agents?utm_source=docs\&utm_medium=cta\&utm_campaign=langsmith-signup\&utm_content=langsmith-fleet-channels) inbox.
-  </Step>
+**1. Open your agent**
 
-  <Step title="Add the channel">
-    1. In the sidebar, expand the **Channels** drawer and click **Connect your first channel**.
-    2. Select the channel you want to add, then follow the prompts to authenticate.
-  </Step>
-</Steps>
+Open your agent in the [Fleet](https://smith.langchain.com/agents?utm_source=docs\&utm_medium=cta\&utm_campaign=langsmith-signup\&utm_content=langsmith-fleet-channels) inbox.
+
+**2. Add the channel**
+
+1. In the sidebar, expand the **Channels** drawer and click **Connect your first channel**.
+2. Select the channel you want to add, then follow the prompts to authenticate.
 
 ### Add a Gmail channel
 
 The Gmail channel activates your agent when new emails arrive in your inbox. To let your agent read and respond to emails, add Gmail tools in the **Tools** section. Available Gmail tools include reading emails, sending replies, creating drafts, managing labels, and marking messages as read. See [Tool integrations](/langsmith/fleet/tools) for more information.
 
-<Warning>
-  The Gmail channel only monitors your primary inbox. The following emails do not activate the channel:
-
-  * **Alias emails**: Messages sent to an email alias rather than your primary address.
-  * **Mailing list emails**: Messages received through a mailing list or group.
-  * **Emails outside the inbox**: Messages that skip the inbox due to filters, or that land in spam, trash, or other folders.
-</Warning>
+> [!WARNING]
+>
+> The Gmail channel only monitors your primary inbox. The following emails do not activate the channel:
+>
+> * **Alias emails**: Messages sent to an email alias rather than your primary address.
+> * **Mailing list emails**: Messages received through a mailing list or group.
+> * **Emails outside the inbox**: Messages that skip the inbox due to filters, or that land in spam, trash, or other folders.
 
 ### Add a Slack channel
 
@@ -55,9 +53,9 @@ You can pause and resume channels without removing them. To pause all channels:
 
 1. In the [Fleet](https://smith.langchain.com/agents?utm_source=docs\&utm_medium=cta\&utm_campaign=langsmith-signup\&utm_content=langsmith-fleet-channels) inbox, open your agent.
 2. In the sidebar, expand the **Channels** drawer.
-3. Click the <Icon icon="player-pause" /> **Pause channels** button to pause all channels.
+3. Click the  **Pause channels** button to pause all channels.
 
-To resume all channels, click <Icon icon="player-play" /> **Resume channels** button.
+To resume all channels, click  **Resume channels** button.
 
 ## Thread behavior
 
@@ -70,12 +68,6 @@ You can manually mark any thread as read or unread at any time.
 
 ***
 
-<div>
-  <Callout icon="terminal-2">
-    [Connect these docs](/use-these-docs) to your agent of choice via MCP for real-time answers.
-  </Callout>
+[Connect these docs](/use-these-docs) to your agent of choice via MCP for real-time answers.
 
-  <Callout icon="edit">
-    [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/fleet/channels.mdx) or [file an issue](https://github.com/langchain-ai/docs/issues/new/choose).
-  </Callout>
-</div>
+[Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/fleet/channels.mdx) or [file an issue](https://github.com/langchain-ai/docs/issues/new/choose).

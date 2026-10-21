@@ -8,12 +8,12 @@ Tracing projects can accumulate large amounts of data across [threads](/langsmit
 
 In an [agent-based workspace](/langsmith/agents), a tracing project is one [environment](/langsmith/agent-environments) of one agent, so a filter applies to the environment you have open rather than to the agent as a whole. To filter across an agent's environments, filter each one in turn.
 
-<Note>
-  Tracing projects have two filtering experiences. Check the top of your project to see which one applies to you:
-
-  * **A single search bar with a scope selector to its left**: Refer to [Filter traces](/langsmith/filter-traces).
-  * **An Add filter button that builds filter chips**: Refer to [Filter traces (ClickHouse)](/langsmith/filter-traces-in-application).
-</Note>
+> [!NOTE]
+>
+> Tracing projects have two filtering experiences. Check the top of your project to see which one applies to you:
+>
+> * **A single search bar with a scope selector to its left**: Refer to [Filter traces](/langsmith/filter-traces).
+> * **An Add filter button that builds filter chips**: Refer to [Filter traces (ClickHouse)](/langsmith/filter-traces-in-application).
 
 This page covers:
 
@@ -63,26 +63,24 @@ As you specify more filters, you can click each filter individually to update th
 
 You can filter tracing data based on the content in the inputs and outputs of the thread, trace, or run.
 
-To filter either inputs or outputs, you can use the **<Icon icon="zoom" /> Full-Text Search** filter, which will match keywords in either field. For a more targeted search, you can use the&#x20;**&#x20;Input** or **<Icon icon="arrow-up-left" /> Output** filters, which will only match content based on the respective field.
+To filter either inputs or outputs, you can use the&#x20;**&#x20;Full-Text Search** filter, which will match keywords in either field. For a more targeted search, you can use the&#x20;**&#x20;Input** or&#x20;**&#x20;Output** filters, which will only match content based on the respective field.
 
-<Note>
-  For performance, LangSmith indexes up to 250 characters of data for full-text search. If your search query exceeds this limit, we recommend using [Input/Output key-value search](/langsmith/filter-traces-in-application#filter-based-on-input-%2F-output-key-value-pairs) instead.
-</Note>
+> [!NOTE]
+>
+> For performance, LangSmith indexes up to 250 characters of data for full-text search. If your search query exceeds this limit, we recommend using [Input/Output key-value search](/langsmith/filter-traces-in-application#filter-based-on-input-%2F-output-key-value-pairs) instead.
 
 You can also specify multiple to match all terms provided, either by:
 
 * Including multiple terms separated by whitespace with the **Full-Text Search**.
-* Adding multiple filters with the <Icon icon="plus" /> button after you've added the first filter.
+* Adding multiple filters with the  button after you've added the first filter.
 
 LangSmith splits the text and matches any partial keyword matches in any order. LangSmith excludes common stop words from the search (from the nltk stop word list along with a few other common JSON keywords).
 
-<Note>
-  Tokens must be at least 2 characters long to be indexed. Single-character tokens (for example, `a`, `x`) are excluded from search.
-</Note>
+> [!NOTE]
+>
+> Tokens must be at least 2 characters long to be indexed. Single-character tokens (for example, `a`, `x`) are excluded from search.
 
-<img alt="LangSmith filter bar showing full-text search and input/output filters with example search terms for python, tensorflow, embedding, fine, and tune" />
-
-<img alt="LangSmith filter bar showing full-text search and input/output filters with example search terms for python, tensorflow, embedding, fine, and tune" />
+![LangSmith filter bar showing full-text search and input/output filters with example search terms for python, tensorflow, embedding, fine, and tune](https://mintcdn.com/langchain-5e9cc07a/PUuoao8vpJsRGlfG/langsmith/images/filter-bar-search-light.png?fit=max\&auto=format\&n=PUuoao8vpJsRGlfG\&q=85\&s=bbec4ff93f1bbf16577f7d9c4105f8e3)
 
 Based on the filters in the image, the system will search for `python` and `tensorflow` in either inputs or outputs, and `embedding` in the inputs along with `fine` and `tune` in the outputs.
 
@@ -92,9 +90,9 @@ You can remove filters as needed from the filter path, which will widen the sear
 
 In addition to full-text search, you can filter based on specific key-value pairs in the inputs and outputs. This allows for more precise filtering, especially when dealing with structured data.
 
-<Note>
-  LangSmith indexes up to 100 unique keys per run to keep your data organized and searchable. Each key also has a character limit of 250 characters per value. If your data exceeds either of these limits, the text won't be indexed. This helps ensure fast, reliable performance.
-</Note>
+> [!NOTE]
+>
+> LangSmith indexes up to 100 unique keys per run to keep your data organized and searchable. Each key also has a character limit of 250 characters per value. If your data exceeds either of these limits, the text won't be indexed. This helps ensure fast, reliable performance.
 
 To filter based on key-value pairs, for example, to match the following input:
 
@@ -126,9 +124,7 @@ Select **Output Key**, enter `documents.page_content` as the key and enter `The 
 
 You can add multiple key-value filters to create more complex queries. You can also use the **Filter Shortcuts** on the right side to filter based on common key-value pairs quickly:
 
-<img alt="LangSmith filter shortcuts panel showing quick access to common key-value pair filters" />
-
-<img alt="LangSmith filter shortcuts panel showing quick access to common key-value pair filters" />
+![LangSmith filter shortcuts panel showing quick access to common key-value pair filters](https://mintcdn.com/langchain-5e9cc07a/PUuoao8vpJsRGlfG/langsmith/images/filter-shortcut-pane-light.png?fit=max\&auto=format\&n=PUuoao8vpJsRGlfG\&q=85\&s=cfc23409c3e4aa8d002bf81dca0ea4f1)
 
 ### Example: Filtering for tool calls
 
@@ -203,7 +199,7 @@ This will match root and non-root runs where the `tool_calls` name is `Plan`.
 
 ### Negative filtering on key-value pairs
 
-Different types of negative filtering can be applied to **\{x} Metadata**, **<Icon icon="arrow-down-right" /> Input**, and **<Icon icon="arrow-up-left" /> Output** fields to exclude specific runs from your results.
+Different types of negative filtering can be applied to **\{x} Metadata**,&#x20;**&#x20;Input**, and&#x20;**&#x20;Output** fields to exclude specific runs from your results.
 
 For example, to find all runs where the metadata key `phone` is not equal to `1234567890`:
 
@@ -218,9 +214,9 @@ You can also filter for runs that neither have a specific key nor a specific val
 
 Finally, you can also filter for runs that do not have a specific key but have a specific value. To find runs where there is no `phone` key but there is a value of `1234567890` for some other key, set the **Key** operator to `is not` with key `phone`, and the **Value** operator to `is` with value `1234567890`.
 
-<Tip>
-  You can use the `does not contain` operator instead of `is not` to perform a substring match.
-</Tip>
+> [!TIP]
+>
+> You can use the `does not contain` operator instead of `is not` to perform a substring match.
 
 ## Save a filter
 
@@ -236,7 +232,7 @@ With the filter selected in the dropdown, you can make any changes to filter par
 
 ### Delete a saved filter
 
-Click the <Icon icon="dots-vertical" /> icon next to the saved filter in the dropdown, and delete the filter using the trash <Icon icon="trash" /> icon.
+Click the  icon next to the saved filter in the dropdown, and delete the filter using the trash  icon.
 
 ## Copy a filter
 
@@ -245,7 +241,7 @@ You can copy a constructed filter to share it with colleagues, reuse it later, o
 To copy the filter:
 
 1. Create it in the UI.
-2. Click the <Icon icon="copy" /> icon in the filter bar. If you have constructed tree or trace filters, you can also copy those.
+2. Click the  icon in the filter bar. If you have constructed tree or trace filters, you can also copy those.
 3. This will give you a string representing the filter in the LangSmith query language. For example: `and(eq(is_root, true), and(eq(feedback_key, "user_score"), eq(feedback_score, 1)))`.
 
 For more information on the query language syntax, refer to the [Trace query syntax](/langsmith/trace-query-syntax#filter-query-language).
@@ -256,9 +252,7 @@ You can also apply filters directly in the [Details view](/langsmith/view-traces
 
 By default, only the runs that match the filters will be shown. To see the matched runs within the broader context of the trace tree, switch the view option from "Filtered Only" to "Show All" or "Most relevant".
 
-<img alt="LangSmith trace view showing filter options with 'Filtered Only', 'Show All', and 'Most relevant' view modes" />
-
-<img alt="LangSmith trace view showing filter options with 'Filtered Only', 'Show All', and 'Most relevant' view modes" />
+![LangSmith trace view showing filter options with 'Filtered Only', 'Show All', and 'Most relevant' view modes](https://mintcdn.com/langchain-5e9cc07a/ztEgJlzh5Nckzc57/langsmith/images/trace-view-filter-light.png?fit=max\&auto=format\&n=ztEgJlzh5Nckzc57\&q=85\&s=76902cc9c8b0a8809dff49a192d9dbcb)
 
 ## Manually specify a raw query in LangSmith query language
 
@@ -266,9 +260,9 @@ If you have [copied a previously constructed filter](#copy-a-filter), you may wa
 
 In order to do this, you can click on **Switch to raw query** on the bottom of the filters popover in the Details view. From there you can paste a raw query into the text box.
 
-<Note>
-  This will add that query to the existing queries, not overwrite it.
-</Note>
+> [!NOTE]
+>
+> This will add that query to the existing queries, not overwrite it.
 
 ## Advanced filters
 
@@ -294,12 +288,6 @@ Extending the [tool call filtering example](#example-filtering-for-tool-calls), 
 
 ***
 
-<div>
-  <Callout icon="terminal-2">
-    [Connect these docs](/use-these-docs) to your agent of choice via MCP for real-time answers.
-  </Callout>
+[Connect these docs](/use-these-docs) to your agent of choice via MCP for real-time answers.
 
-  <Callout icon="edit">
-    [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/filter-traces-in-application.mdx) or [file an issue](https://github.com/langchain-ai/docs/issues/new/choose).
-  </Callout>
-</div>
+[Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/filter-traces-in-application.mdx) or [file an issue](https://github.com/langchain-ai/docs/issues/new/choose).

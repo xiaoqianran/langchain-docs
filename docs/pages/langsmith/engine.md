@@ -10,19 +10,17 @@ LangSmith Engine is the LangSmith agent for agent engineering. Working from your
 
 For each issue, Engine surfaces the contributing traces, proposes a fix, keeps the issue current by attaching new traces that match the same failure pattern, and creates ground truth dataset examples from the production trace inputs.
 
-<CardGroup>
-  <Card title="Build: Open a pull request" icon="git-pull-request" href="/langsmith/engine-issues#open-a-pull-request">
-    Apply the proposed fix by opening a pull request in your connected repository. Engine can propose code changes to agents built with Deep Agents, LangChain, and LangGraph.
-  </Card>
+> **[Build: Open a pull request](/langsmith/engine-issues#open-a-pull-request)**
+>
+> Apply the proposed fix by opening a pull request in your connected repository. Engine can propose code changes to agents built with Deep Agents, LangChain, and LangGraph.
 
-  <Card title="Test: Generate datasets" icon="database" href="/langsmith/engine-issues#add-offline-examples">
-    Create ground truth dataset examples from production traces for offline evaluation, so you can verify a fix before it ships.
-  </Card>
+> **[Test: Generate datasets](/langsmith/engine-issues#add-offline-examples)**
+>
+> Create ground truth dataset examples from production traces for offline evaluation, so you can verify a fix before it ships.
 
-  <Card title="Monitor: Track recurring issues" icon="chart-line" href="/langsmith/engine-issues#filter-and-sort-issues">
-    Scan your tracing projects on a schedule to surface, prioritize, and diagnose recurring issues, and add new matching traces to each issue as they appear.
-  </Card>
-</CardGroup>
+> **[Monitor: Track recurring issues](/langsmith/engine-issues#filter-and-sort-issues)**
+>
+> Scan your tracing projects on a schedule to surface, prioritize, and diagnose recurring issues, and add new matching traces to each issue as they appear.
 
 ## How Engine differs from Insights
 
@@ -102,9 +100,9 @@ Engine never merges a pull request. Every change it proposes goes through your r
 
 ### Understand LSU costs
 
-<Note>
-  LangSmith Cloud uses LangChain-managed inference. Self-hosted deployments can also use [their own model providers](/langsmith/engine-self-hosted-model-providers), with API keys or cloud identity. [BYOC](/langsmith/engine-self-hosted#engine-on-byoc) deployments use only their own model providers. With your own providers, you pay them for model calls and LangChain charges a lower LSU rate for Engine usage.
-</Note>
+> [!NOTE]
+>
+> LangSmith Cloud uses LangChain-managed inference. Self-hosted deployments can also use [their own model providers](/langsmith/engine-self-hosted-model-providers), with API keys or cloud identity. [BYOC](/langsmith/engine-self-hosted#engine-on-byoc) deployments use only their own model providers. With your own providers, you pay them for model calls and LangChain charges a lower LSU rate for Engine usage.
 
 Engine charges in **LangChain Standard Units (LSUs)**, a normalized unit of work covering compute, storage, and memory, plus model inference when LangChain provides it. LSU consumption scales with the number of traces analyzed, the number and complexity of the LLM calls Engine makes to diagnose and fix issues, and the size of any connected repository. LSUs cost **\$1 USD each**. For an estimate of your expected LSU usage, see the [LangSmith Usage Calculator](https://www.langchain.com/pricing#pricing-calc).
 
@@ -125,7 +123,7 @@ The setup dialog shows an estimated monthly cost range that updates with the lev
 Organization Admins can set spend limits at two levels:
 
 * **Org-wide limit**: Open **Settings** and select **Engine** under **Engine**. On the month-to-date spend card, click the limit chip and set a limit in the popover.
-* **Project or environment limit**: Open the **Engine** tab in a tracing project or agent environment and click the **Configure Engine** <Icon icon="settings" /> icon. Under **Spend limit**, click the limit chip (the chip reads **None** when no limit is set) and set a limit in the popover.
+* **Project or environment limit**: Open the **Engine** tab in a tracing project or agent environment and click the **Configure Engine**  icon. Under **Spend limit**, click the limit chip (the chip reads **None** when no limit is set) and set a limit in the popover.
 
 You can enter limits in LSU or USD (1 LSU = \$1). When a limit is reached, LangSmith pauses new Engine runs until the limit is raised or the next monthly billing period begins.
 
@@ -142,23 +140,21 @@ For offline self-hosted deployments, spend reporting and limit enforcement diffe
 
 ## Get started
 
-<CardGroup>
-  <Card title="Set up Engine" icon="settings" href="/langsmith/engine-setup">
-    Enable Engine for your organization and turn it on for a tracing project or agent environment.
-  </Card>
+> **[Set up Engine](/langsmith/engine-setup)**
+>
+> Enable Engine for your organization and turn it on for a tracing project or agent environment.
 
-  <Card title="Find and fix issues" icon="bug" href="/langsmith/engine-issues">
-    Review the issues Engine detects, open pull requests, and create dataset examples.
-  </Card>
+> **[Find and fix issues](/langsmith/engine-issues)**
+>
+> Review the issues Engine detects, open pull requests, and create dataset examples.
 
-  <Card title="Connect Engine to your repository" icon="brand-github" href="/langsmith/engine-repositories">
-    Let Engine read your source code and open pull requests with proposed fixes.
-  </Card>
+> **[Connect Engine to your repository](/langsmith/engine-repositories)**
+>
+> Let Engine read your source code and open pull requests with proposed fixes.
 
-  <Card title="Engine notifications" icon="bell" href="/langsmith/engine-notifications">
-    Send detected issues to Slack, Jira, or your incident-management and paging tools.
-  </Card>
-</CardGroup>
+> **[Engine notifications](/langsmith/engine-notifications)**
+>
+> Send detected issues to Slack, Jira, or your incident-management and paging tools.
 
 ## See also
 
@@ -169,12 +165,6 @@ For offline self-hosted deployments, spend reporting and limit enforcement diffe
 
 ***
 
-<div>
-  <Callout icon="terminal-2">
-    [Connect these docs](/use-these-docs) to your agent of choice via MCP for real-time answers.
-  </Callout>
+[Connect these docs](/use-these-docs) to your agent of choice via MCP for real-time answers.
 
-  <Callout icon="edit">
-    [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/engine.mdx) or [file an issue](https://github.com/langchain-ai/docs/issues/new/choose).
-  </Callout>
-</div>
+[Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/engine.mdx) or [file an issue](https://github.com/langchain-ai/docs/issues/new/choose).

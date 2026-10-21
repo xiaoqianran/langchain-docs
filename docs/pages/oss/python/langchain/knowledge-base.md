@@ -29,19 +29,17 @@ This tutorial focuses on text retrieval and covers the following concepts:
 
 This tutorial reads a PDF using the `pypdf` package:
 
-<CodeGroup>
-  ```bash pip theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  pip install pypdf
-  ```
+```bash pip theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+pip install pypdf
+```
 
-  ```bash conda theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  conda install pypdf -c conda-forge
-  ```
+```bash conda theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+conda install pypdf -c conda-forge
+```
 
-  ```bash uv theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  uv add pypdf
-  ```
-</CodeGroup>
+```bash uv theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+uv add pypdf
+```
 
 For more details, see the [Installation guide](/oss/python/langchain/install).
 
@@ -101,258 +99,256 @@ Vector search stores numeric vectors associated with text. Embed a query as a ve
 
 LangChain supports embeddings from [many providers](/oss/python/integrations/embeddings/). Select a model to specify how text should be converted into a numeric vector:
 
-<Tabs>
-  <Tab title="OpenAI">
-    ```shell theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-    pip install -U "langchain-openai"
-    ```
-
-    ```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-    import getpass
-    import os
-
-    if not os.environ.get("OPENAI_API_KEY"):
-        os.environ["OPENAI_API_KEY"] = getpass.getpass("Enter API key for OpenAI: ")
-
-    from langchain_openai import OpenAIEmbeddings
-
-    embeddings = OpenAIEmbeddings(model="text-embedding-3-large")
-    ```
-  </Tab>
-
-  <Tab title="Azure">
-    ```shell theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-    pip install -U "langchain-openai"
-    ```
-
-    ```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-    import getpass
-    import os
-
-    if not os.environ.get("AZURE_OPENAI_API_KEY"):
-        os.environ["AZURE_OPENAI_API_KEY"] = getpass.getpass("Enter API key for Azure: ")
-
-    from langchain_openai import AzureOpenAIEmbeddings
-
-    embeddings = AzureOpenAIEmbeddings(
-        azure_endpoint=os.environ["AZURE_OPENAI_ENDPOINT"],
-        azure_deployment=os.environ["AZURE_OPENAI_DEPLOYMENT_NAME"],
-        openai_api_version=os.environ["AZURE_OPENAI_API_VERSION"],
-    )
-    ```
-  </Tab>
+**OpenAI**
 
-  <Tab title="Google Gemini">
-    ```shell theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-    pip install -qU langchain-google-genai
-    ```
-
-    ```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-    import getpass
-    import os
-
-    if not os.environ.get("GOOGLE_API_KEY"):
-        os.environ["GOOGLE_API_KEY"] = getpass.getpass("Enter API key for Google Gemini: ")
+```shell theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+pip install -U "langchain-openai"
+```
 
-    from langchain_google_genai import GoogleGenerativeAIEmbeddings
-
-    embeddings = GoogleGenerativeAIEmbeddings(model="models/gemini-embedding-001")
-    ```
-  </Tab>
+```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+import getpass
+import os
 
-  <Tab title="Gemini Enterprise Agent Platform">
-    ```shell theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-    pip install -qU langchain-google-vertexai
-    ```
+if not os.environ.get("OPENAI_API_KEY"):
+    os.environ["OPENAI_API_KEY"] = getpass.getpass("Enter API key for OpenAI: ")
 
-    ```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-    from langchain_google_vertexai import VertexAIEmbeddings
+from langchain_openai import OpenAIEmbeddings
 
-    embeddings = VertexAIEmbeddings(model="text-embedding-005")
-    ```
-  </Tab>
+embeddings = OpenAIEmbeddings(model="text-embedding-3-large")
+```
 
-  <Tab title="AWS">
-    ```shell theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-    pip install -qU langchain-aws
-    ```
+**Azure**
 
-    ```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-    from langchain_aws import BedrockEmbeddings
+```shell theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+pip install -U "langchain-openai"
+```
 
-    embeddings = BedrockEmbeddings(model_id="amazon.titan-embed-text-v2:0")
-    ```
-  </Tab>
+```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+import getpass
+import os
 
-  <Tab title="HuggingFace">
-    ```shell theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-    pip install -qU langchain-huggingface
-    ```
+if not os.environ.get("AZURE_OPENAI_API_KEY"):
+    os.environ["AZURE_OPENAI_API_KEY"] = getpass.getpass("Enter API key for Azure: ")
 
-    ```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-    from langchain_huggingface import HuggingFaceEmbeddings
+from langchain_openai import AzureOpenAIEmbeddings
 
-    embeddings = HuggingFaceEmbeddings(
-        model_name="sentence-transformers/all-mpnet-base-v2",
-        encode_kwargs={"normalize_embeddings": True},
-    )
-    ```
-  </Tab>
+embeddings = AzureOpenAIEmbeddings(
+    azure_endpoint=os.environ["AZURE_OPENAI_ENDPOINT"],
+    azure_deployment=os.environ["AZURE_OPENAI_DEPLOYMENT_NAME"],
+    openai_api_version=os.environ["AZURE_OPENAI_API_VERSION"],
+)
+```
 
-  <Tab title="Ollama">
-    ```shell theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-    pip install -qU langchain-ollama
-    ```
+**Google Gemini**
 
-    ```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-    from langchain_ollama import OllamaEmbeddings
+```shell theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+pip install -qU langchain-google-genai
+```
 
-    embeddings = OllamaEmbeddings(model="llama3")
-    ```
-  </Tab>
+```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+import getpass
+import os
 
-  <Tab title="Cohere">
-    ```shell theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-    pip install -qU langchain-cohere
-    ```
+if not os.environ.get("GOOGLE_API_KEY"):
+    os.environ["GOOGLE_API_KEY"] = getpass.getpass("Enter API key for Google Gemini: ")
 
-    ```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-    import getpass
-    import os
+from langchain_google_genai import GoogleGenerativeAIEmbeddings
 
-    if not os.environ.get("COHERE_API_KEY"):
-        os.environ["COHERE_API_KEY"] = getpass.getpass("Enter API key for Cohere: ")
+embeddings = GoogleGenerativeAIEmbeddings(model="models/gemini-embedding-001")
+```
 
-    from langchain_cohere import CohereEmbeddings
+**Gemini Enterprise Agent Platform**
 
-    embeddings = CohereEmbeddings(model="embed-english-v3.0")
-    ```
-  </Tab>
+```shell theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+pip install -qU langchain-google-vertexai
+```
 
-  <Tab title="MistralAI">
-    ```shell theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-    pip install -qU langchain-mistralai
-    ```
+```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+from langchain_google_vertexai import VertexAIEmbeddings
 
-    ```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-    import getpass
-    import os
+embeddings = VertexAIEmbeddings(model="text-embedding-005")
+```
 
-    if not os.environ.get("MISTRALAI_API_KEY"):
-        os.environ["MISTRALAI_API_KEY"] = getpass.getpass("Enter API key for MistralAI: ")
+**AWS**
 
-    from langchain_mistralai import MistralAIEmbeddings
+```shell theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+pip install -qU langchain-aws
+```
 
-    embeddings = MistralAIEmbeddings(model="mistral-embed")
-    ```
-  </Tab>
+```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+from langchain_aws import BedrockEmbeddings
 
-  <Tab title="Nomic">
-    ```shell theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-    pip install -qU langchain-nomic
-    ```
+embeddings = BedrockEmbeddings(model_id="amazon.titan-embed-text-v2:0")
+```
 
-    ```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-    import getpass
-    import os
+**HuggingFace**
 
-    if not os.environ.get("NOMIC_API_KEY"):
-        os.environ["NOMIC_API_KEY"] = getpass.getpass("Enter API key for Nomic: ")
+```shell theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+pip install -qU langchain-huggingface
+```
 
-    from langchain_nomic import NomicEmbeddings
+```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+from langchain_huggingface import HuggingFaceEmbeddings
 
-    embeddings = NomicEmbeddings(model="nomic-embed-text-v1.5")
-    ```
-  </Tab>
+embeddings = HuggingFaceEmbeddings(
+    model_name="sentence-transformers/all-mpnet-base-v2",
+    encode_kwargs={"normalize_embeddings": True},
+)
+```
 
-  <Tab title="NVIDIA">
-    ```shell theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-    pip install -qU langchain-nvidia-ai-endpoints
-    ```
+**Ollama**
 
-    ```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-    import getpass
-    import os
+```shell theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+pip install -qU langchain-ollama
+```
 
-    if not os.environ.get("NVIDIA_API_KEY"):
-        os.environ["NVIDIA_API_KEY"] = getpass.getpass("Enter API key for NVIDIA: ")
+```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+from langchain_ollama import OllamaEmbeddings
 
-    from langchain_nvidia_ai_endpoints import NVIDIAEmbeddings
+embeddings = OllamaEmbeddings(model="llama3")
+```
 
-    embeddings = NVIDIAEmbeddings(model="NV-Embed-QA")
-    ```
-  </Tab>
+**Cohere**
 
-  <Tab title="Voyage AI">
-    ```shell theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-    pip install -qU langchain-voyageai
-    ```
+```shell theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+pip install -qU langchain-cohere
+```
 
-    ```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-    import getpass
-    import os
+```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+import getpass
+import os
 
-    if not os.environ.get("VOYAGE_API_KEY"):
-        os.environ["VOYAGE_API_KEY"] = getpass.getpass("Enter API key for Voyage AI: ")
+if not os.environ.get("COHERE_API_KEY"):
+    os.environ["COHERE_API_KEY"] = getpass.getpass("Enter API key for Cohere: ")
 
-    from langchain_voyageai import VoyageAIEmbeddings
+from langchain_cohere import CohereEmbeddings
 
-    embeddings = VoyageAIEmbeddings(model="voyage-3")
-    ```
-  </Tab>
+embeddings = CohereEmbeddings(model="embed-english-v3.0")
+```
 
-  <Tab title="IBM watsonx">
-    ```shell theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-    pip install -qU langchain-ibm
-    ```
+**MistralAI**
 
-    ```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-    import getpass
-    import os
+```shell theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+pip install -qU langchain-mistralai
+```
 
-    if not os.environ.get("WATSONX_APIKEY"):
-        os.environ["WATSONX_APIKEY"] = getpass.getpass("Enter API key for IBM watsonx: ")
+```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+import getpass
+import os
 
-    from langchain_ibm import WatsonxEmbeddings
+if not os.environ.get("MISTRALAI_API_KEY"):
+    os.environ["MISTRALAI_API_KEY"] = getpass.getpass("Enter API key for MistralAI: ")
 
-    embeddings = WatsonxEmbeddings(
-        model_id="ibm/slate-125m-english-rtrvr",
-        url="https://us-south.ml.cloud.ibm.com",
-        project_id="<WATSONX PROJECT_ID>",
-    )
-    ```
-  </Tab>
+from langchain_mistralai import MistralAIEmbeddings
 
-  <Tab title="Fake">
-    ```shell theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-    pip install -qU langchain-core
-    ```
+embeddings = MistralAIEmbeddings(model="mistral-embed")
+```
 
-    ```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-    from langchain_core.embeddings import DeterministicFakeEmbedding
+**Nomic**
 
-    embeddings = DeterministicFakeEmbedding(size=4096)
-    ```
-  </Tab>
+```shell theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+pip install -qU langchain-nomic
+```
 
-  <Tab title="Isaacus">
-    ```shell theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-    pip install -qU langchain-isaacus
-    ```
+```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+import getpass
+import os
 
-    ```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-    import getpass
-    import os
+if not os.environ.get("NOMIC_API_KEY"):
+    os.environ["NOMIC_API_KEY"] = getpass.getpass("Enter API key for Nomic: ")
 
-    if not os.environ.get("ISAACUS_API_KEY"):
-        os.environ["ISAACUS_API_KEY"] = getpass.getpass("Enter API key for Isaacus: ")
+from langchain_nomic import NomicEmbeddings
 
-    from langchain_isaacus import IsaacusEmbeddings
+embeddings = NomicEmbeddings(model="nomic-embed-text-v1.5")
+```
 
-    embeddings = IsaacusEmbeddings(model="kanon-2-embedder")
-    ```
-  </Tab>
-</Tabs>
+**NVIDIA**
+
+```shell theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+pip install -qU langchain-nvidia-ai-endpoints
+```
+
+```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+import getpass
+import os
+
+if not os.environ.get("NVIDIA_API_KEY"):
+    os.environ["NVIDIA_API_KEY"] = getpass.getpass("Enter API key for NVIDIA: ")
+
+from langchain_nvidia_ai_endpoints import NVIDIAEmbeddings
+
+embeddings = NVIDIAEmbeddings(model="NV-Embed-QA")
+```
+
+**Voyage AI**
+
+```shell theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+pip install -qU langchain-voyageai
+```
+
+```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+import getpass
+import os
+
+if not os.environ.get("VOYAGE_API_KEY"):
+    os.environ["VOYAGE_API_KEY"] = getpass.getpass("Enter API key for Voyage AI: ")
+
+from langchain_voyageai import VoyageAIEmbeddings
+
+embeddings = VoyageAIEmbeddings(model="voyage-3")
+```
+
+**IBM watsonx**
+
+```shell theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+pip install -qU langchain-ibm
+```
+
+```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+import getpass
+import os
+
+if not os.environ.get("WATSONX_APIKEY"):
+    os.environ["WATSONX_APIKEY"] = getpass.getpass("Enter API key for IBM watsonx: ")
+
+from langchain_ibm import WatsonxEmbeddings
+
+embeddings = WatsonxEmbeddings(
+    model_id="ibm/slate-125m-english-rtrvr",
+    url="https://us-south.ml.cloud.ibm.com",
+    project_id="<WATSONX PROJECT_ID>",
+)
+```
+
+**Fake**
+
+```shell theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+pip install -qU langchain-core
+```
+
+```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+from langchain_core.embeddings import DeterministicFakeEmbedding
+
+embeddings = DeterministicFakeEmbedding(size=4096)
+```
+
+**Isaacus**
+
+```shell theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+pip install -qU langchain-isaacus
+```
+
+```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+import getpass
+import os
+
+if not os.environ.get("ISAACUS_API_KEY"):
+    os.environ["ISAACUS_API_KEY"] = getpass.getpass("Enter API key for Isaacus: ")
+
+from langchain_isaacus import IsaacusEmbeddings
+
+embeddings = IsaacusEmbeddings(model="kanon-2-embedder")
+```
 
 ```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 vector_1 = embeddings.embed_query(documents[0].page_content)
@@ -377,196 +373,194 @@ LangChain [`VectorStore`](https://reference.langchain.com/python/langchain-core/
 
 LangChain includes [integrations](/oss/python/integrations/vectorstores) with many vector store technologies. Some are hosted and need credentials, some run in separate infrastructure (local or third-party), and others run in-memory for lightweight workloads. Select a vector store:
 
-<Tabs>
-  <Tab title="In-memory">
-    ```shell theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-    pip install -U "langchain-core"
-    ```
+**In-memory**
 
-    ```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-    from langchain_core.vectorstores import InMemoryVectorStore
+```shell theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+pip install -U "langchain-core"
+```
 
-    vector_store = InMemoryVectorStore(embeddings)
-    ```
-  </Tab>
+```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+from langchain_core.vectorstores import InMemoryVectorStore
 
-  <Tab title="Amazon OpenSearch">
-    ```shell theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-    pip install -qU  boto3
-    ```
+vector_store = InMemoryVectorStore(embeddings)
+```
 
-    ```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-    from opensearchpy import RequestsHttpConnection
+**Amazon OpenSearch**
 
-    service = "es"  # must set the service as 'es'
-    region = "us-east-2"
-    credentials = boto3.Session(
-        aws_access_key_id="xxxxxx", aws_secret_access_key="xxxxx"
-    ).get_credentials()
-    awsauth = AWS4Auth("xxxxx", "xxxxxx", region, service, session_token=credentials.token)
+```shell theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+pip install -qU  boto3
+```
 
-    vector_store = OpenSearchVectorSearch.from_documents(
-        docs,
-        embeddings,
-        opensearch_url="host url",
-        http_auth=awsauth,
-        timeout=300,
-        use_ssl=True,
-        verify_certs=True,
-        connection_class=RequestsHttpConnection,
-        index_name="test-index",
-    )
-    ```
-  </Tab>
+```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+from opensearchpy import RequestsHttpConnection
 
-  <Tab title="AstraDB">
-    ```shell theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-    pip install -U "langchain-astradb"
-    ```
+service = "es"  # must set the service as 'es'
+region = "us-east-2"
+credentials = boto3.Session(
+    aws_access_key_id="xxxxxx", aws_secret_access_key="xxxxx"
+).get_credentials()
+awsauth = AWS4Auth("xxxxx", "xxxxxx", region, service, session_token=credentials.token)
 
-    ```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-    from langchain_astradb import AstraDBVectorStore
+vector_store = OpenSearchVectorSearch.from_documents(
+    docs,
+    embeddings,
+    opensearch_url="host url",
+    http_auth=awsauth,
+    timeout=300,
+    use_ssl=True,
+    verify_certs=True,
+    connection_class=RequestsHttpConnection,
+    index_name="test-index",
+)
+```
 
-    vector_store = AstraDBVectorStore(
-        embedding=embeddings,
-        api_endpoint=ASTRA_DB_API_ENDPOINT,
-        collection_name="astra_vector_langchain",
-        token=ASTRA_DB_APPLICATION_TOKEN,
-        namespace=ASTRA_DB_NAMESPACE,
-    )
-    ```
-  </Tab>
+**AstraDB**
 
-  <Tab title="Chroma">
-    ```shell theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-    pip install -qU langchain-chroma
-    ```
+```shell theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+pip install -U "langchain-astradb"
+```
 
-    ```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-    from langchain_chroma import Chroma
+```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+from langchain_astradb import AstraDBVectorStore
 
-    vector_store = Chroma(
-        collection_name="example_collection",
-        embedding_function=embeddings,
-        persist_directory="./chroma_langchain_db",  # Where to save data locally, remove if not necessary
-    )
-    ```
-  </Tab>
+vector_store = AstraDBVectorStore(
+    embedding=embeddings,
+    api_endpoint=ASTRA_DB_API_ENDPOINT,
+    collection_name="astra_vector_langchain",
+    token=ASTRA_DB_APPLICATION_TOKEN,
+    namespace=ASTRA_DB_NAMESPACE,
+)
+```
 
-  <Tab title="Milvus">
-    ```shell theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-    pip install -qU langchain-milvus
-    ```
+**Chroma**
 
-    ```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-    from langchain_milvus import Milvus
+```shell theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+pip install -qU langchain-chroma
+```
 
-    URI = "./milvus_example.db"
+```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+from langchain_chroma import Chroma
 
-    vector_store = Milvus(
-        embedding_function=embeddings,
-        connection_args={"uri": URI},
-        index_params={"index_type": "FLAT", "metric_type": "L2"},
-    )
-    ```
-  </Tab>
+vector_store = Chroma(
+    collection_name="example_collection",
+    embedding_function=embeddings,
+    persist_directory="./chroma_langchain_db",  # Where to save data locally, remove if not necessary
+)
+```
 
-  <Tab title="MongoDB">
-    ```shell theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-    pip install -qU langchain-mongodb
-    ```
+**Milvus**
 
-    ```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-    from langchain_mongodb import MongoDBAtlasVectorSearch
+```shell theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+pip install -qU langchain-milvus
+```
 
-    vector_store = MongoDBAtlasVectorSearch(
-        embedding=embeddings,
-        collection=MONGODB_COLLECTION,
-        index_name=ATLAS_VECTOR_SEARCH_INDEX_NAME,
-        relevance_score_fn="cosine",
-    )
-    ```
-  </Tab>
+```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+from langchain_milvus import Milvus
 
-  <Tab title="PGVector">
-    ```shell theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-    pip install -qU langchain-postgres
-    ```
+URI = "./milvus_example.db"
 
-    ```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-    from langchain_postgres import PGVector
+vector_store = Milvus(
+    embedding_function=embeddings,
+    connection_args={"uri": URI},
+    index_params={"index_type": "FLAT", "metric_type": "L2"},
+)
+```
 
-    vector_store = PGVector(
-        embeddings=embeddings,
-        collection_name="my_docs",
-        connection="postgresql+psycopg://...",
-    )
-    ```
-  </Tab>
+**MongoDB**
 
-  <Tab title="PGVectorStore">
-    ```shell theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-    pip install -qU langchain-postgres
-    ```
+```shell theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+pip install -qU langchain-mongodb
+```
 
-    ```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-    from langchain_postgres import PGEngine, PGVectorStore
+```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+from langchain_mongodb import MongoDBAtlasVectorSearch
 
-    pg_engine = PGEngine.from_connection_string(
-        url="postgresql+psycopg://..."
-    )
+vector_store = MongoDBAtlasVectorSearch(
+    embedding=embeddings,
+    collection=MONGODB_COLLECTION,
+    index_name=ATLAS_VECTOR_SEARCH_INDEX_NAME,
+    relevance_score_fn="cosine",
+)
+```
 
-    vector_store = PGVectorStore.create_sync(
-        engine=pg_engine,
-        table_name='test_table',
-        embedding_service=embeddings
-    )
-    ```
-  </Tab>
+**PGVector**
 
-  <Tab title="Pinecone">
-    ```shell theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-    pip install -qU langchain-pinecone
-    ```
+```shell theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+pip install -qU langchain-postgres
+```
 
-    ```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-    from langchain_pinecone import PineconeVectorStore
-    from pinecone import Pinecone
+```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+from langchain_postgres import PGVector
 
-    pc = Pinecone(api_key=...)
-    index = pc.Index(index_name)
+vector_store = PGVector(
+    embeddings=embeddings,
+    collection_name="my_docs",
+    connection="postgresql+psycopg://...",
+)
+```
 
-    vector_store = PineconeVectorStore(embedding=embeddings, index=index)
-    ```
-  </Tab>
+**PGVectorStore**
 
-  <Tab title="Qdrant">
-    ```shell theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-    pip install -qU langchain-qdrant
-    ```
+```shell theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+pip install -qU langchain-postgres
+```
 
-    ```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-    from qdrant_client.models import Distance, VectorParams
-    from langchain_qdrant import QdrantVectorStore
-    from qdrant_client import QdrantClient
+```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+from langchain_postgres import PGEngine, PGVectorStore
 
-    client = QdrantClient(":memory:")
+pg_engine = PGEngine.from_connection_string(
+    url="postgresql+psycopg://..."
+)
 
-    vector_size = len(embeddings.embed_query("sample text"))
+vector_store = PGVectorStore.create_sync(
+    engine=pg_engine,
+    table_name='test_table',
+    embedding_service=embeddings
+)
+```
 
-    if not client.collection_exists("test"):
-        client.create_collection(
-            collection_name="test",
-            vectors_config=VectorParams(size=vector_size, distance=Distance.COSINE)
-        )
-    vector_store = QdrantVectorStore(
-        client=client,
+**Pinecone**
+
+```shell theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+pip install -qU langchain-pinecone
+```
+
+```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+from langchain_pinecone import PineconeVectorStore
+from pinecone import Pinecone
+
+pc = Pinecone(api_key=...)
+index = pc.Index(index_name)
+
+vector_store = PineconeVectorStore(embedding=embeddings, index=index)
+```
+
+**Qdrant**
+
+```shell theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+pip install -qU langchain-qdrant
+```
+
+```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+from qdrant_client.models import Distance, VectorParams
+from langchain_qdrant import QdrantVectorStore
+from qdrant_client import QdrantClient
+
+client = QdrantClient(":memory:")
+
+vector_size = len(embeddings.embed_query("sample text"))
+
+if not client.collection_exists("test"):
+    client.create_collection(
         collection_name="test",
-        embedding=embeddings,
+        vectors_config=VectorParams(size=vector_size, distance=Distance.COSINE)
     )
-    ```
-  </Tab>
-</Tabs>
+vector_store = QdrantVectorStore(
+    client=client,
+    collection_name="test",
+    embedding=embeddings,
+)
+```
 
 ## Load and split a PDF
 
@@ -820,12 +814,6 @@ For more on RAG:
 
 ***
 
-<div>
-  <Callout icon="terminal-2">
-    [Connect these docs](/use-these-docs) to your agent of choice via MCP for real-time answers.
-  </Callout>
+[Connect these docs](/use-these-docs) to your agent of choice via MCP for real-time answers.
 
-  <Callout icon="edit">
-    [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/oss/langchain/knowledge-base.mdx) or [file an issue](https://github.com/langchain-ai/docs/issues/new/choose).
-  </Callout>
-</div>
+[Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/oss/langchain/knowledge-base.mdx) or [file an issue](https://github.com/langchain-ai/docs/issues/new/choose).

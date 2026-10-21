@@ -10,9 +10,9 @@ In an agent-based workspace, running a report against a single [environment](/la
 
 Insights uses hierarchical categorization to make sense of your data and highlight actionable trends.
 
-<Note>
-  Insights is available for LangSmith Plus and Enterprise [plans](/langsmith/pricing-plans).
-</Note>
+> [!NOTE]
+>
+> Insights is available for LangSmith Plus and Enterprise [plans](/langsmith/pricing-plans).
 
 ## Prerequisites
 
@@ -22,88 +22,82 @@ Insights uses hierarchical categorization to make sense of your data and highlig
 
 ## Generate your first Insights report
 
-<Tabs>
-  <Tab title="UI" icon="layout-dashboard">
-    1. Navigate to **Tracing** in the left-hand menu and select a tracing project or an agent and environment. In an agent-based workspace, a report runs against one environment rather than the whole agent.
-    2. Click **+New** in the top right corner then **New Insights Report** to generate new insights over it.
-    3. Enter a name for your job.
-    4. If you haven't already, [configure a model](/langsmith/model-configurations) for Insights in your workspace settings.
-    5. Answer the guided questions to focus your Insights Report on what you want to learn about your agent, then click **Run job**.
+**UI**
 
-    <Tip>Toggle to Manual mode to [configure the job manually](#configure-a-job).</Tip>
+1. Navigate to **Tracing** in the left-hand menu and select a tracing project or an agent and environment. In an agent-based workspace, a report runs against one environment rather than the whole agent.
+2. Click **+New** in the top right corner then **New Insights Report** to generate new insights over it.
+3. Enter a name for your job.
+4. If you haven't already, [configure a model](/langsmith/model-configurations) for Insights in your workspace settings.
+5. Answer the guided questions to focus your Insights Report on what you want to learn about your agent, then click **Run job**.
 
-    This will kick off a background Insights Report. Reports can take up to 30 minutes to complete.
-  </Tab>
+> [!TIP]
+>
+> Toggle to Manual mode to [configure the job manually](#configure-a-job).
 
-  <Tab title="SDK" icon="code">
-    You can generate Insights Reports over data stored outside LangSmith using the [Python SDK](/langsmith/smith-python-sdk). This allows you to analyze chat histories from your production systems, logs, or other sources.
+This will kick off a background Insights Report. Reports can take up to 30 minutes to complete.
 
-    When you call `generate_insights()`, the SDK will:
+**SDK**
 
-    1. Upload your chat histories as traces to a new LangSmith project.
-    2. Generate an Insights Report over those uploaded traces.
-    3. Return a link to your results in the [LangSmith UI](https://smith.langchain.com?utm_source=docs\&utm_medium=cta\&utm_campaign=langsmith-signup\&utm_content=langsmith-insights).
+You can generate Insights Reports over data stored outside LangSmith using the [Python SDK](/langsmith/smith-python-sdk). This allows you to analyze chat histories from your production systems, logs, or other sources.
 
-    <CodeGroup>
-      ```python Python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-      import os
-      from langsmith import Client
+When you call `generate_insights()`, the SDK will:
 
-      client = Client()
+1. Upload your chat histories as traces to a new LangSmith project.
+2. Generate an Insights Report over those uploaded traces.
+3. Return a link to your results in the [LangSmith UI](https://smith.langchain.com?utm_source=docs\&utm_medium=cta\&utm_campaign=langsmith-signup\&utm_content=langsmith-insights).
 
-      chat_histories = [
-          [
-              {"role": "user", "content": "how are you"},
-              {"role": "assistant", "content": "good!"},
-          ],
-          [
-              {"role": "user", "content": "do you like art"},
-              {"role": "assistant", "content": "only Tarkovsky"},
-          ],
-      ]
+```python Python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+import os
+from langsmith import Client
 
-      report = client.generate_insights(
-          chat_histories=chat_histories,
-          name="Customer Support Topics - March 2024",
-          instructions="What are the main topics and questions users are asking about?",
-          openai_api_key=os.environ["OPENAI_API_KEY"],  # optional if already set as workspace secret
-      )
+client = Client()
 
-      # client.poll_insights(report=report)
-      ```
-    </CodeGroup>
-  </Tab>
+chat_histories = [
+    [
+        {"role": "user", "content": "how are you"},
+        {"role": "assistant", "content": "good!"},
+    ],
+    [
+        {"role": "user", "content": "do you like art"},
+        {"role": "assistant", "content": "only Tarkovsky"},
+    ],
+]
 
-  <Tab title="CLI" icon="terminal-2">
-    The [LangSmith CLI](/langsmith/langsmith-cli) creates a report from a JSON file that uses the fields of a [manual configuration](#manual-configuration):
+report = client.generate_insights(
+    chat_histories=chat_histories,
+    name="Customer Support Topics - March 2024",
+    instructions="What are the main topics and questions users are asking about?",
+    openai_api_key=os.environ["OPENAI_API_KEY"],  # optional if already set as workspace secret
+)
 
-    ```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-    langsmith insights create --project my-app --config insights.json --wait
-    ```
+# client.poll_insights(report=report)
+```
 
-    For the file format and the commands that run, list, and update saved configurations, see [Manage insights](/langsmith/langsmith-cli#manage-insights).
-  </Tab>
-</Tabs>
+**CLI**
 
-<Note>
-  Generating insights over 1,000 threads typically costs \$1.00-\$2.00 with OpenAI models and \$3.00-\$4.00 with current Anthropic models. The cost scales with the number of threads sampled and the size of each thread.
-</Note>
+The [LangSmith CLI](/langsmith/langsmith-cli) creates a report from a JSON file that uses the fields of a [manual configuration](#manual-configuration):
+
+```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+langsmith insights create --project my-app --config insights.json --wait
+```
+
+For the file format and the commands that run, list, and update saved configurations, see [Manage insights](/langsmith/langsmith-cli#manage-insights).
+
+> [!NOTE]
+>
+> Generating insights over 1,000 threads typically costs \$1.00-\$2.00 with OpenAI models and \$3.00-\$4.00 with current Anthropic models. The cost scales with the number of threads sampled and the size of each thread.
 
 ## Understand the results
 
 Once your job has completed, you can navigate to the **Insights** tab where you'll see a table of Insights Report. Each Report contains insights generated over a specific sample of traces from the tracing project.
 
-<Frame>
-  <img />
-</Frame>
+![](https://mintcdn.com/langchain-5e9cc07a/lC4dVnXBXgUXGkP0/langsmith/images/insights-job-results.png?fit=max\&auto=format\&n=lC4dVnXBXgUXGkP0\&q=85\&s=1a95e426b2984bcf417f92d1c4d739b6)
 
 Click into your job to see traces organized into a set of auto-generated categories.
 
 You can drill down through categories and subcategories to view the underlying traces, feedback, and run statistics.
 
-<Frame>
-  <img />
-</Frame>
+![](https://mintcdn.com/langchain-5e9cc07a/4-kFQm9_42J5OnwH/langsmith/images/insights-nav.gif?s=6a22bfd0d94262b7aa78468a8379ea0f)
 
 ### Executive summary
 
@@ -209,9 +203,9 @@ You must specify what parts of each trace to send to the summarizer using at lea
 
 You can access nested fields using dot notation. For example, `{{run.inputs.foo.bar}}` includes only the `bar` field within `foo` in the last run's inputs.
 
-<Note>
-  For projects with [threads](/langsmith/threads), Insights analyzes full conversations. Only the most recent root run from each thread is used for `run.*` variables. Use `all_thread_messages` to access the complete conversation history.
-</Note>
+> [!NOTE]
+>
+> For projects with [threads](/langsmith/threads), Insights analyzes full conversations. Only the most recent root run from each thread is used for `run.*` variables. Use `all_thread_messages` to access the complete conversation history.
 
 #### Attributes
 
@@ -252,12 +246,6 @@ Select from previously saved configs in the dropdown in the top-left corner of t
 
 ***
 
-<div>
-  <Callout icon="terminal-2">
-    [Connect these docs](/use-these-docs) to your agent of choice via MCP for real-time answers.
-  </Callout>
+[Connect these docs](/use-these-docs) to your agent of choice via MCP for real-time answers.
 
-  <Callout icon="edit">
-    [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/insights.mdx) or [file an issue](https://github.com/langchain-ai/docs/issues/new/choose).
-  </Callout>
-</div>
+[Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/insights.mdx) or [file an issue](https://github.com/langchain-ai/docs/issues/new/choose).

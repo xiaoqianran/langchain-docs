@@ -8,9 +8,9 @@ LangSmith 中的代理是什么，工作区如何组织其代理，环境如何�
 
 *代理*是一种人工智能系统，它使用工具、技能和子代理来端到端地完成任务。在LangSmith中，代理也是工作空间组织的单位。命名一次，LangSmith 会记录该代理在该名称下执行的操作，分为四个[environments](/langsmith/agent-environments)：生产、暂存、开发和本地。跟踪、警报、评估器和预构建的仪表板均属于一个代理的一个环境。 [dataset](/langsmith/evaluation-concepts#datasets) 和自定义仪表板是例外。数据集附加到一个或多个代理，但不附加到任何环境，而自定义仪表板附加到代理而不是环境。
 
-每个跟踪都携带其代理和该代理的环境之一，因此生成跟踪的内容及其运行位置会在到达时记录下来。然后，LangSmith 可以根据该上下文采取行动：警报监视生产并保持本地运行的安静状态，每个环境都有自己的预构建仪表板，[Insights](/langsmith/insights) 报告涵盖您运行它的环境的流量。<Note>
-  [LangSmith Cloud](/langsmith/cloud) 上提供基于代理的工作区。它们在 [self-hosted](/langsmith/self-hosted) LangSmith 上不可用。要检查您的工作区是否基于代理，请查看左上角的控件。在基于代理的工作区中，它是一个为您的工作区命名的工作区切换器。在[project-based](/langsmith/observability-concepts#tracing-projects)工作区中，它显示LangSmith徽标。
-</Note>
+每个跟踪都携带其代理和该代理的环境之一，因此生成跟踪的内容及其运行位置会在到达时记录下来。然后，LangSmith 可以根据该上下文采取行动：警报监视生产并对本地运行保持安静，每个环境都有自己的预构建仪表板，[Insights](/langsmith/insights) 报告涵盖您运行它的环境的流量。> [!注意]
+>
+> [LangSmith Cloud](/langsmith/cloud) 上提供基于代理的工作区。它们在 [self-hosted](/langsmith/self-hosted) LangSmith 上不可用。要检查您的工作区是否基于代理，请查看左上角的控件。在基于代理的工作区中，它是一个为您的工作区命名的工作区切换器。在[project-based](/langsmith/observability-concepts#tracing-projects)工作区中，它显示LangSmith徽标。
 
 ```mermaid actions={false} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 %%{init: {"theme":"base","themeVariables":{"fontFamily":"Inter, system-ui, sans-serif","lineColor":"#40668D","primaryColor":"#E5F4FF","primaryTextColor":"#030710","primaryBorderColor":"#006DDD","clusterBkg":"transparent"}}}%%
@@ -48,32 +48,24 @@ flowchart LR
 
 ## 后续步骤
 
-<CardGroup>
-  <Card title="Environments" href="/langsmith/agent-environments" icon="stack">
-    代理的轨迹分为四种环境，以及如何在它们之间切换。
-  </Card>
+> **[Environments](/langsmith/agent-environments)**
+>
+> 代理的轨迹分为四种环境，以及如何在它们之间切换。
 
-  <Card title="Navigate agents" href="/langsmith/navigate-agents" icon="compass">
-    座席切换器、座席列表和座席概述。
-  </Card>
+> **[Navigate agents](/langsmith/navigate-agents)**
+>
+> 座席切换器、座席列表和座席概述。
 
-  <Card title="Log traces to an agent" href="/langsmith/log-traces-to-agent" icon="target">
-    代理寻址如何将跟踪发送到代理和环境，以及为什么它不能与项目寻址相结合。
-  </Card>
+> **[Log traces to an agent](/langsmith/log-traces-to-agent)**
+>
+> 代理寻址如何将跟踪发送到代理和环境，以及为什么它不能与项目寻址相结合。
 
-  <Card title="Create an agent" href="/langsmith/create-an-agent" icon="plus">
-    创建代理的四种方法、每个路由的决定以及标识符必须遵循的规则。
-  </Card>
-</CardGroup>
+> **[Create an agent](/langsmith/create-an-agent)**
+>
+> 创建代理的四种方法、每个路由的决定以及标识符必须遵循的规则。
 
 ***
 
-<div>
-  <Callout icon="terminal-2">
-    [Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时答案。
-  </Callout>
+[Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
 
-  <Callout icon="edit">
-    [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/agents.mdx) 或 [file an issue](https://github.com/langchain-ai/docs/issues/new/choose)。
-  </Callout>
-</div>
+[Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/agents.mdx) 或 [file an issue](https://github.com/langchain-ai/docs/issues/new/choose)。

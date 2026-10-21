@@ -10,14 +10,14 @@ Use this guide to create your first context, view its files and history, and pro
 
 ## 1. Open the Context Hub
 
-<Note>
-  If you don't see **Context** in the left-hand navigation, verify that Context Hub is enabled for your workspace and that you have the required permissions.
-</Note>
+> [!NOTE]
+>
+> If you don't see **Context** in the left-hand navigation, verify that Context Hub is enabled for your workspace and that you have the required permissions.
 
 In the [LangSmith UI](https://smith.langchain.com?utm_source=docs\&utm_medium=cta\&utm_campaign=langsmith-signup\&utm_content=langsmith-use-the-context-hub), select **Context** in the
 left-hand navigation. The Context Hub lists every agent and skill in your workspace.
 
-<img alt="The Context Hub home view listing existing Agent and Skill contexts with their commit metadata." />
+![The Context Hub home view listing existing Agent and Skill contexts with their commit metadata.](https://mintcdn.com/langchain-5e9cc07a/VMau0Ih_5sR7Yf36/langsmith/images/context-hub-home.png?fit=max\&auto=format\&n=VMau0Ih_5sR7Yf36\&q=85\&s=7067ab68c361e53e17514009ae3405b0)
 
 ## 2. Create a context
 
@@ -28,7 +28,7 @@ left-hand navigation. The Context Hub lists every agent and skill in your worksp
    * **Agent:** a full agent bundle including an `AGENTS.md` file and tools.
    * **Skill:** a reusable capability that agents can use, including a `SKILL.md` file.
 
-   <img alt="The Create dropdown showing the Agent and Skill context type options." />
+   ![The Create dropdown showing the Agent and Skill context type options.](https://mintcdn.com/langchain-5e9cc07a/VMau0Ih_5sR7Yf36/langsmith/images/context-hub-create-context.png?fit=max\&auto=format\&n=VMau0Ih_5sR7Yf36\&q=85\&s=8ff29b4fac4c167d55ca593fb943a02a)
 
 3. Fill in a name and description. For skills, a description is required. You can also enter the initial file contents (`SKILL.md` for a skill, `AGENTS.md` for an agent) now, or add them after creation. Click **Create Agent** or **Create Skill**. LangSmith creates the repo and opens it for editing.
 
@@ -36,7 +36,7 @@ left-hand navigation. The Context Hub lists every agent and skill in your worksp
 
 Click on an agent or skill from the Context Hub to view it.
 
-<img alt="An Agent context with an AGENTS.md file open, showing the environments panel, commit history, and file tree." />
+![An Agent context with an AGENTS.md file open, showing the environments panel, commit history, and file tree.](https://mintcdn.com/langchain-5e9cc07a/VMau0Ih_5sR7Yf36/langsmith/images/context-hub-agent-view.png?fit=max\&auto=format\&n=VMau0Ih_5sR7Yf36\&q=85\&s=a333c5d93ad3532eb10c30053f53c267)
 
 The middle panel shows the file tree for the current commit and the right panel previews the selected file. Click a file in the middle panel to open it.
 
@@ -49,9 +49,9 @@ Each save creates a new **commit** in the history panel on the left. Select a co
 Once a commit is ready to ship, promote it to an environment so downstream
 agents can pull it.
 
-<Note>
-  Context Hub currently supports two environment tags for promotion: `staging` and `production`.
-</Note>
+> [!NOTE]
+>
+> Context Hub currently supports two environment tags for promotion: `staging` and `production`.
 
 1. With the target commit selected, click **Promote** in the top right.
 
@@ -60,7 +60,7 @@ agents can pull it.
    * **Promote to Production:** the commit your production agents pull.
    * **Promote to Staging:** a pre-production environment for validation.
 
-   <img alt="The Promote dropdown with options to promote a commit to Production or Staging." />
+   ![The Promote dropdown with options to promote a commit to Production or Staging.](https://mintcdn.com/langchain-5e9cc07a/VMau0Ih_5sR7Yf36/langsmith/images/context-hub-promote.png?fit=max\&auto=format\&n=VMau0Ih_5sR7Yf36\&q=85\&s=96dc0abf55f702cb873f78eaa99429fe)
 
 3. The environment label (for example, `Production 7ca95573`) moves to the
    promoted commit. Use the **Tag** button next to **Promote** to attach a
@@ -79,12 +79,6 @@ To use a prior version in an environment, select that commit and promote it to `
 
 ***
 
-<div>
-  <Callout icon="terminal-2">
-    [Connect these docs](/use-these-docs) to your agent of choice via MCP for real-time answers.
-  </Callout>
+[Connect these docs](/use-these-docs) to your agent of choice via MCP for real-time answers.
 
-  <Callout icon="edit">
-    [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/use-the-context-hub.mdx) or [file an issue](https://github.com/langchain-ai/docs/issues/new/choose).
-  </Callout>
-</div>
+[Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/use-the-context-hub.mdx) or [file an issue](https://github.com/langchain-ai/docs/issues/new/choose).

@@ -28,9 +28,9 @@ In the default batched mode, provide decisions in the same order as the actions 
 
 Use `reject` when the human is denying the requested action. Use `respond` only when the human is acting as the tool, such as answering an `ask_user` prompt. Do not use `respond` to deny side-effecting tools, because its message is treated as a successful tool result.
 
-<Tip>
-  When **editing** tool arguments, make changes conservatively. Significant modifications to the original arguments may cause the model to re-evaluate its approach and potentially execute the tool multiple times or take unexpected actions.
-</Tip>
+> [!TIP]
+>
+> When **editing** tool arguments, make changes conservatively. Significant modifications to the original arguments may cause the model to re-evaluate its approach and potentially execute the tool multiple times or take unexpected actions.
 
 ## Configuring interrupts
 
@@ -68,53 +68,53 @@ agent = create_agent(
 )
 ```
 
-<Info>
-  You must configure a checkpointer to persist the graph state across interrupts.
-  In production, use a persistent checkpointer like [`AsyncPostgresSaver`](https://reference.langchain.com/python/langgraph/checkpoints/#langgraph.checkpoint.postgres.aio.AsyncPostgresSaver) or [`MongoDBSaver`](https://pypi.org/project/langgraph-checkpoint-mongodb/). For testing or prototyping, use [`InMemorySaver`](https://reference.langchain.com/python/langgraph/checkpoints/#langgraph.checkpoint.memory.InMemorySaver).
+> [!NOTE]
+>
+> You must configure a checkpointer to persist the graph state across interrupts.
+> In production, use a persistent checkpointer like [`AsyncPostgresSaver`](https://reference.langchain.com/python/langgraph/checkpoints/#langgraph.checkpoint.postgres.aio.AsyncPostgresSaver) or [`MongoDBSaver`](https://pypi.org/project/langgraph-checkpoint-mongodb/). For testing or prototyping, use [`InMemorySaver`](https://reference.langchain.com/python/langgraph/checkpoints/#langgraph.checkpoint.memory.InMemorySaver).
+>
+> When invoking the agent, pass a `config` that includes the **thread ID** to associate execution with a conversation thread.
+> See the [LangGraph interrupts documentation](/oss/python/langgraph/interrupts) for details.
 
-  When invoking the agent, pass a `config` that includes the **thread ID** to associate execution with a conversation thread.
-  See the [LangGraph interrupts documentation](/oss/python/langgraph/interrupts) for details.
-</Info>
-
-<Accordion title="Configuration options">
-  <ParamField type="dict">
-    Mapping of tool names to approval configs. Values can be `True` (interrupt with default config), `False` (auto-approve), or an `InterruptOnConfig` object.
-  </ParamField>
-
-  <ParamField type="string">
-    Prefix for action request descriptions
-  </ParamField>
-
-  <ParamField type="string">
-    How the agent pauses for review. `"batched"` raises one interrupt per model turn, answered with an ordered list. `"per_call"` raises one interrupt per gated call, answered by interrupt ID. `"per_call"` requires `langchain>=1.4.6`. See [Set the interrupt mode](#set-the-interrupt-mode).
-  </ParamField>
-
-  <ParamField type="string | None">
-    Text added before the result of a call that a reviewer replaced with an `edit` decision, so the model knows the call changed. Defaults to a note that a human reviewer replaced the call. Pass `None` to add nothing.
-  </ParamField>
-
-  **`InterruptOnConfig` options:**
-
-  <ParamField type="list[string]">
-    List of allowed decisions: `'approve'`, `'edit'`, `'reject'`, or `'respond'`
-  </ParamField>
-
-  <ParamField type="string | callable">
-    Static string or callable function for custom description
-  </ParamField>
-
-  <ParamField type="callable">
-    Optional predicate that receives a [ToolCallRequest](https://reference.langchain.com/python/langgraph.prebuilt/tool_node/ToolCallRequest) and returns `True` to interrupt or `False` to auto-approve. Use it to gate interrupts on a call's arguments. Requires `langchain>=1.3.3`.
-  </ParamField>
-</Accordion>
+> **Configuration options**
+>
+> **interrupt\_on** `dict` *required*
+>
+> Mapping of tool names to approval configs. Values can be `True` (interrupt with default config), `False` (auto-approve), or an `InterruptOnConfig` object.
+>
+> **description\_prefix** `string` (default: Tool execution requires approval)
+>
+> Prefix for action request descriptions
+>
+> **interrupt\_mode** `string` (default: batched)
+>
+> How the agent pauses for review. `"batched"` raises one interrupt per model turn, answered with an ordered list. `"per_call"` raises one interrupt per gated call, answered by interrupt ID. `"per_call"` requires `langchain>=1.4.6`. See [Set the interrupt mode](#set-the-interrupt-mode).
+>
+> **edit\_notice** `string | None`
+>
+> Text added before the result of a call that a reviewer replaced with an `edit` decision, so the model knows the call changed. Defaults to a note that a human reviewer replaced the call. Pass `None` to add nothing.
+>
+> **`InterruptOnConfig` options:**
+>
+> **allowed\_decisions** `list[string]`
+>
+> List of allowed decisions: `'approve'`, `'edit'`, `'reject'`, or `'respond'`
+>
+> **description** `string | callable`
+>
+> Static string or callable function for custom description
+>
+> **when** `callable`
+>
+> Optional predicate that receives a [ToolCallRequest](https://reference.langchain.com/python/langgraph.prebuilt/tool_node/ToolCallRequest) and returns `True` to interrupt or `False` to auto-approve. Use it to gate interrupts on a call's arguments. Requires `langchain>=1.3.3`.
 
 ## Conditional interrupts
 
 By default, every tool call listed in `interrupt_on` pauses for review. To pause only some calls, add a `when` predicate to a tool's `InterruptOnConfig`. The predicate receives a `ToolCallRequest` and returns `True` to interrupt or `False` to auto-approve, so you can gate on the tool's arguments.
 
-<Note>
-  Conditional interrupts require `langchain>=1.3.3`.
-</Note>
+> [!NOTE]
+>
+> Conditional interrupts require `langchain>=1.3.3`.
 
 ```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 from langchain.agents import create_agent
@@ -170,307 +170,305 @@ Use per-call mode for new agents. LangChain plans to make it the default in the 
 
 ## Pause once per tool call
 
-<Note>
-  Per-call interrupts require `langchain>=1.4.6`.
-</Note>
+> [!NOTE]
+>
+> Per-call interrupts require `langchain>=1.4.6`.
 
 Set `interrupt_mode="per_call"` to review each tool call separately. This agent gates `write_file` and `execute_sql`, and lets `read_data` run without review:
 
-<CodeGroup>
-  ```python Google theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  from langchain.agents import create_agent
-  from langchain.agents.middleware import HumanInTheLoopMiddleware
-  from langchain.tools import tool
-  from langgraph.checkpoint.memory import InMemorySaver
+```python Google theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+from langchain.agents import create_agent
+from langchain.agents.middleware import HumanInTheLoopMiddleware
+from langchain.tools import tool
+from langgraph.checkpoint.memory import InMemorySaver
 
 
-  @tool
-  def write_file(path: str, content: str) -> str:
-      """Write content to a file."""
-      return f"Wrote {len(content)} characters to {path}"
+@tool
+def write_file(path: str, content: str) -> str:
+    """Write content to a file."""
+    return f"Wrote {len(content)} characters to {path}"
 
 
-  @tool
-  def execute_sql(query: str) -> str:
-      """Run a SQL query."""
-      return "Deleted 42 rows"
+@tool
+def execute_sql(query: str) -> str:
+    """Run a SQL query."""
+    return "Deleted 42 rows"
 
 
-  @tool
-  def read_data(table: str) -> str:
-      """Read rows from a table."""
-      return f"3 rows from {table}"
+@tool
+def read_data(table: str) -> str:
+    """Read rows from a table."""
+    return f"3 rows from {table}"
 
 
-  agent = create_agent(
-      model="google_genai:gemini-3.6-flash",
-      tools=[write_file, execute_sql, read_data],
-      middleware=[
-          HumanInTheLoopMiddleware(
-              interrupt_on={
-                  "write_file": True,
-                  "execute_sql": {"allowed_decisions": ["approve", "reject"]},
-                  "read_data": False,
-              },
-              interrupt_mode="per_call",  # [!code highlight]
-          ),
-      ],
-      checkpointer=InMemorySaver(),
-  )
-  ```
+agent = create_agent(
+    model="google_genai:gemini-3.6-flash",
+    tools=[write_file, execute_sql, read_data],
+    middleware=[
+        HumanInTheLoopMiddleware(
+            interrupt_on={
+                "write_file": True,
+                "execute_sql": {"allowed_decisions": ["approve", "reject"]},
+                "read_data": False,
+            },
+            interrupt_mode="per_call",  # [!code highlight]
+        ),
+    ],
+    checkpointer=InMemorySaver(),
+)
+```
 
-  ```python OpenAI theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  from langchain.agents import create_agent
-  from langchain.agents.middleware import HumanInTheLoopMiddleware
-  from langchain.tools import tool
-  from langgraph.checkpoint.memory import InMemorySaver
-
-
-  @tool
-  def write_file(path: str, content: str) -> str:
-      """Write content to a file."""
-      return f"Wrote {len(content)} characters to {path}"
+```python OpenAI theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+from langchain.agents import create_agent
+from langchain.agents.middleware import HumanInTheLoopMiddleware
+from langchain.tools import tool
+from langgraph.checkpoint.memory import InMemorySaver
 
 
-  @tool
-  def execute_sql(query: str) -> str:
-      """Run a SQL query."""
-      return "Deleted 42 rows"
+@tool
+def write_file(path: str, content: str) -> str:
+    """Write content to a file."""
+    return f"Wrote {len(content)} characters to {path}"
 
 
-  @tool
-  def read_data(table: str) -> str:
-      """Read rows from a table."""
-      return f"3 rows from {table}"
+@tool
+def execute_sql(query: str) -> str:
+    """Run a SQL query."""
+    return "Deleted 42 rows"
 
 
-  agent = create_agent(
-      model="openai:gpt-5.5",
-      tools=[write_file, execute_sql, read_data],
-      middleware=[
-          HumanInTheLoopMiddleware(
-              interrupt_on={
-                  "write_file": True,
-                  "execute_sql": {"allowed_decisions": ["approve", "reject"]},
-                  "read_data": False,
-              },
-              interrupt_mode="per_call",  # [!code highlight]
-          ),
-      ],
-      checkpointer=InMemorySaver(),
-  )
-  ```
-
-  ```python Anthropic theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  from langchain.agents import create_agent
-  from langchain.agents.middleware import HumanInTheLoopMiddleware
-  from langchain.tools import tool
-  from langgraph.checkpoint.memory import InMemorySaver
+@tool
+def read_data(table: str) -> str:
+    """Read rows from a table."""
+    return f"3 rows from {table}"
 
 
-  @tool
-  def write_file(path: str, content: str) -> str:
-      """Write content to a file."""
-      return f"Wrote {len(content)} characters to {path}"
+agent = create_agent(
+    model="openai:gpt-5.5",
+    tools=[write_file, execute_sql, read_data],
+    middleware=[
+        HumanInTheLoopMiddleware(
+            interrupt_on={
+                "write_file": True,
+                "execute_sql": {"allowed_decisions": ["approve", "reject"]},
+                "read_data": False,
+            },
+            interrupt_mode="per_call",  # [!code highlight]
+        ),
+    ],
+    checkpointer=InMemorySaver(),
+)
+```
+
+```python Anthropic theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+from langchain.agents import create_agent
+from langchain.agents.middleware import HumanInTheLoopMiddleware
+from langchain.tools import tool
+from langgraph.checkpoint.memory import InMemorySaver
 
 
-  @tool
-  def execute_sql(query: str) -> str:
-      """Run a SQL query."""
-      return "Deleted 42 rows"
+@tool
+def write_file(path: str, content: str) -> str:
+    """Write content to a file."""
+    return f"Wrote {len(content)} characters to {path}"
 
 
-  @tool
-  def read_data(table: str) -> str:
-      """Read rows from a table."""
-      return f"3 rows from {table}"
+@tool
+def execute_sql(query: str) -> str:
+    """Run a SQL query."""
+    return "Deleted 42 rows"
 
 
-  agent = create_agent(
-      model="anthropic:claude-sonnet-5",
-      tools=[write_file, execute_sql, read_data],
-      middleware=[
-          HumanInTheLoopMiddleware(
-              interrupt_on={
-                  "write_file": True,
-                  "execute_sql": {"allowed_decisions": ["approve", "reject"]},
-                  "read_data": False,
-              },
-              interrupt_mode="per_call",  # [!code highlight]
-          ),
-      ],
-      checkpointer=InMemorySaver(),
-  )
-  ```
-
-  ```python OpenRouter theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  from langchain.agents import create_agent
-  from langchain.agents.middleware import HumanInTheLoopMiddleware
-  from langchain.tools import tool
-  from langgraph.checkpoint.memory import InMemorySaver
+@tool
+def read_data(table: str) -> str:
+    """Read rows from a table."""
+    return f"3 rows from {table}"
 
 
-  @tool
-  def write_file(path: str, content: str) -> str:
-      """Write content to a file."""
-      return f"Wrote {len(content)} characters to {path}"
+agent = create_agent(
+    model="anthropic:claude-sonnet-5",
+    tools=[write_file, execute_sql, read_data],
+    middleware=[
+        HumanInTheLoopMiddleware(
+            interrupt_on={
+                "write_file": True,
+                "execute_sql": {"allowed_decisions": ["approve", "reject"]},
+                "read_data": False,
+            },
+            interrupt_mode="per_call",  # [!code highlight]
+        ),
+    ],
+    checkpointer=InMemorySaver(),
+)
+```
+
+```python OpenRouter theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+from langchain.agents import create_agent
+from langchain.agents.middleware import HumanInTheLoopMiddleware
+from langchain.tools import tool
+from langgraph.checkpoint.memory import InMemorySaver
 
 
-  @tool
-  def execute_sql(query: str) -> str:
-      """Run a SQL query."""
-      return "Deleted 42 rows"
+@tool
+def write_file(path: str, content: str) -> str:
+    """Write content to a file."""
+    return f"Wrote {len(content)} characters to {path}"
 
 
-  @tool
-  def read_data(table: str) -> str:
-      """Read rows from a table."""
-      return f"3 rows from {table}"
+@tool
+def execute_sql(query: str) -> str:
+    """Run a SQL query."""
+    return "Deleted 42 rows"
 
 
-  agent = create_agent(
-      model="openrouter:z-ai/glm-5.2",
-      tools=[write_file, execute_sql, read_data],
-      middleware=[
-          HumanInTheLoopMiddleware(
-              interrupt_on={
-                  "write_file": True,
-                  "execute_sql": {"allowed_decisions": ["approve", "reject"]},
-                  "read_data": False,
-              },
-              interrupt_mode="per_call",  # [!code highlight]
-          ),
-      ],
-      checkpointer=InMemorySaver(),
-  )
-  ```
-
-  ```python Fireworks theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  from langchain.agents import create_agent
-  from langchain.agents.middleware import HumanInTheLoopMiddleware
-  from langchain.tools import tool
-  from langgraph.checkpoint.memory import InMemorySaver
+@tool
+def read_data(table: str) -> str:
+    """Read rows from a table."""
+    return f"3 rows from {table}"
 
 
-  @tool
-  def write_file(path: str, content: str) -> str:
-      """Write content to a file."""
-      return f"Wrote {len(content)} characters to {path}"
+agent = create_agent(
+    model="openrouter:z-ai/glm-5.2",
+    tools=[write_file, execute_sql, read_data],
+    middleware=[
+        HumanInTheLoopMiddleware(
+            interrupt_on={
+                "write_file": True,
+                "execute_sql": {"allowed_decisions": ["approve", "reject"]},
+                "read_data": False,
+            },
+            interrupt_mode="per_call",  # [!code highlight]
+        ),
+    ],
+    checkpointer=InMemorySaver(),
+)
+```
+
+```python Fireworks theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+from langchain.agents import create_agent
+from langchain.agents.middleware import HumanInTheLoopMiddleware
+from langchain.tools import tool
+from langgraph.checkpoint.memory import InMemorySaver
 
 
-  @tool
-  def execute_sql(query: str) -> str:
-      """Run a SQL query."""
-      return "Deleted 42 rows"
+@tool
+def write_file(path: str, content: str) -> str:
+    """Write content to a file."""
+    return f"Wrote {len(content)} characters to {path}"
 
 
-  @tool
-  def read_data(table: str) -> str:
-      """Read rows from a table."""
-      return f"3 rows from {table}"
+@tool
+def execute_sql(query: str) -> str:
+    """Run a SQL query."""
+    return "Deleted 42 rows"
 
 
-  agent = create_agent(
-      model="fireworks:accounts/fireworks/models/glm-5p2",
-      tools=[write_file, execute_sql, read_data],
-      middleware=[
-          HumanInTheLoopMiddleware(
-              interrupt_on={
-                  "write_file": True,
-                  "execute_sql": {"allowed_decisions": ["approve", "reject"]},
-                  "read_data": False,
-              },
-              interrupt_mode="per_call",  # [!code highlight]
-          ),
-      ],
-      checkpointer=InMemorySaver(),
-  )
-  ```
-
-  ```python Baseten theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  from langchain.agents import create_agent
-  from langchain.agents.middleware import HumanInTheLoopMiddleware
-  from langchain.tools import tool
-  from langgraph.checkpoint.memory import InMemorySaver
+@tool
+def read_data(table: str) -> str:
+    """Read rows from a table."""
+    return f"3 rows from {table}"
 
 
-  @tool
-  def write_file(path: str, content: str) -> str:
-      """Write content to a file."""
-      return f"Wrote {len(content)} characters to {path}"
+agent = create_agent(
+    model="fireworks:accounts/fireworks/models/glm-5p2",
+    tools=[write_file, execute_sql, read_data],
+    middleware=[
+        HumanInTheLoopMiddleware(
+            interrupt_on={
+                "write_file": True,
+                "execute_sql": {"allowed_decisions": ["approve", "reject"]},
+                "read_data": False,
+            },
+            interrupt_mode="per_call",  # [!code highlight]
+        ),
+    ],
+    checkpointer=InMemorySaver(),
+)
+```
+
+```python Baseten theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+from langchain.agents import create_agent
+from langchain.agents.middleware import HumanInTheLoopMiddleware
+from langchain.tools import tool
+from langgraph.checkpoint.memory import InMemorySaver
 
 
-  @tool
-  def execute_sql(query: str) -> str:
-      """Run a SQL query."""
-      return "Deleted 42 rows"
+@tool
+def write_file(path: str, content: str) -> str:
+    """Write content to a file."""
+    return f"Wrote {len(content)} characters to {path}"
 
 
-  @tool
-  def read_data(table: str) -> str:
-      """Read rows from a table."""
-      return f"3 rows from {table}"
+@tool
+def execute_sql(query: str) -> str:
+    """Run a SQL query."""
+    return "Deleted 42 rows"
 
 
-  agent = create_agent(
-      model="baseten:zai-org/GLM-5.2",
-      tools=[write_file, execute_sql, read_data],
-      middleware=[
-          HumanInTheLoopMiddleware(
-              interrupt_on={
-                  "write_file": True,
-                  "execute_sql": {"allowed_decisions": ["approve", "reject"]},
-                  "read_data": False,
-              },
-              interrupt_mode="per_call",  # [!code highlight]
-          ),
-      ],
-      checkpointer=InMemorySaver(),
-  )
-  ```
-
-  ```python Ollama theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  from langchain.agents import create_agent
-  from langchain.agents.middleware import HumanInTheLoopMiddleware
-  from langchain.tools import tool
-  from langgraph.checkpoint.memory import InMemorySaver
+@tool
+def read_data(table: str) -> str:
+    """Read rows from a table."""
+    return f"3 rows from {table}"
 
 
-  @tool
-  def write_file(path: str, content: str) -> str:
-      """Write content to a file."""
-      return f"Wrote {len(content)} characters to {path}"
+agent = create_agent(
+    model="baseten:zai-org/GLM-5.2",
+    tools=[write_file, execute_sql, read_data],
+    middleware=[
+        HumanInTheLoopMiddleware(
+            interrupt_on={
+                "write_file": True,
+                "execute_sql": {"allowed_decisions": ["approve", "reject"]},
+                "read_data": False,
+            },
+            interrupt_mode="per_call",  # [!code highlight]
+        ),
+    ],
+    checkpointer=InMemorySaver(),
+)
+```
+
+```python Ollama theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+from langchain.agents import create_agent
+from langchain.agents.middleware import HumanInTheLoopMiddleware
+from langchain.tools import tool
+from langgraph.checkpoint.memory import InMemorySaver
 
 
-  @tool
-  def execute_sql(query: str) -> str:
-      """Run a SQL query."""
-      return "Deleted 42 rows"
+@tool
+def write_file(path: str, content: str) -> str:
+    """Write content to a file."""
+    return f"Wrote {len(content)} characters to {path}"
 
 
-  @tool
-  def read_data(table: str) -> str:
-      """Read rows from a table."""
-      return f"3 rows from {table}"
+@tool
+def execute_sql(query: str) -> str:
+    """Run a SQL query."""
+    return "Deleted 42 rows"
 
 
-  agent = create_agent(
-      model="ollama:north-mini-code-1.0",
-      tools=[write_file, execute_sql, read_data],
-      middleware=[
-          HumanInTheLoopMiddleware(
-              interrupt_on={
-                  "write_file": True,
-                  "execute_sql": {"allowed_decisions": ["approve", "reject"]},
-                  "read_data": False,
-              },
-              interrupt_mode="per_call",  # [!code highlight]
-          ),
-      ],
-      checkpointer=InMemorySaver(),
-  )
-  ```
-</CodeGroup>
+@tool
+def read_data(table: str) -> str:
+    """Read rows from a table."""
+    return f"3 rows from {table}"
+
+
+agent = create_agent(
+    model="ollama:north-mini-code-1.0",
+    tools=[write_file, execute_sql, read_data],
+    middleware=[
+        HumanInTheLoopMiddleware(
+            interrupt_on={
+                "write_file": True,
+                "execute_sql": {"allowed_decisions": ["approve", "reject"]},
+                "read_data": False,
+            },
+            interrupt_mode="per_call",  # [!code highlight]
+        ),
+    ],
+    checkpointer=InMemorySaver(),
+)
+```
 
 ### Read the interrupts
 
@@ -499,103 +497,101 @@ Each interrupt also carries a `response_schema`: a JSON schema with one branch p
 
 Each tab shows one `write_file` branch, an answer that matches it, and the [ToolMessage](https://reference.langchain.com/python/langchain-core/messages/tool/ToolMessage) the model receives. For readability, the branches below expand `$ref` definitions in place and omit the `title` and `description` fields.
 
-<Tabs>
-  <Tab title="approve">
-    Run the call as proposed.
+**approve**
 
-    ```json Schema branch theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-    {"properties": {"type": {"const": "approve", "type": "string"}}, "required": ["type"], "type": "object"}
-    ```
+Run the call as proposed.
 
-    ```python Answer theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-    {"type": "approve"}
-    ```
+```json Schema branch theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+{"properties": {"type": {"const": "approve", "type": "string"}}, "required": ["type"], "type": "object"}
+```
 
-    ```text Model receives theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-    Wrote 14 characters to orders_archive.csv
-    ```
-  </Tab>
+```python Answer theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+{"type": "approve"}
+```
 
-  <Tab title="edit">
-    Run the call with new arguments. `edited_action.name` must stay `write_file`, and `edited_action.args` must match `write_file`'s argument schema. Arguments the tool does not declare are ignored, as they are when the model sends them.
+```text Model receives theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+Wrote 14 characters to orders_archive.csv
+```
 
-    ```json Schema branch theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-    {
+**edit**
+
+Run the call with new arguments. `edited_action.name` must stay `write_file`, and `edited_action.args` must match `write_file`'s argument schema. Arguments the tool does not declare are ignored, as they are when the model sends them.
+
+```json Schema branch theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+{
+  "properties": {
+    "type": {"const": "edit", "type": "string"},
+    "edited_action": {
       "properties": {
-        "type": {"const": "edit", "type": "string"},
-        "edited_action": {
+        "name": {"const": "write_file", "type": "string"},
+        "args": {
           "properties": {
-            "name": {"const": "write_file", "type": "string"},
-            "args": {
-              "properties": {
-                "path": {"type": "string"},
-                "content": {"type": "string"}
-              },
-              "required": ["path", "content"],
-              "type": "object"
-            }
+            "path": {"type": "string"},
+            "content": {"type": "string"}
           },
-          "required": ["name", "args"],
+          "required": ["path", "content"],
           "type": "object"
         }
       },
-      "required": ["type", "edited_action"],
+      "required": ["name", "args"],
       "type": "object"
     }
-    ```
+  },
+  "required": ["type", "edited_action"],
+  "type": "object"
+}
+```
 
-    ```python Answer theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-    {
-        "type": "edit",
-        "edited_action": {
-            "name": "write_file",
-            "args": {"path": "archive/orders_2024.csv", "content": "id,total\n1,20\n"},
-        },
-    }
-    ```
+```python Answer theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+{
+    "type": "edit",
+    "edited_action": {
+        "name": "write_file",
+        "args": {"path": "archive/orders_2024.csv", "content": "id,total\n1,20\n"},
+    },
+}
+```
 
-    The model receives the tool's result after a note that a reviewer replaced the call. Set `edit_notice` on the middleware to change the note, or pass `None` to remove it.
+The model receives the tool's result after a note that a reviewer replaced the call. Set `edit_notice` on the middleware to change the note, or pass `None` to remove it.
 
-    ```text Model receives theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-    Note: a human reviewer replaced this tool call before it ran. The call recorded in your message is the one you produced, not the one that executed. This was intentional and authorized. Do not re-issue your original call. Executed instead: write_file with arguments {"path": "archive/orders_2024.csv", "content": "id,total\n1,20\n"}.
+```text Model receives theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+Note: a human reviewer replaced this tool call before it ran. The call recorded in your message is the one you produced, not the one that executed. This was intentional and authorized. Do not re-issue your original call. Executed instead: write_file with arguments {"path": "archive/orders_2024.csv", "content": "id,total\n1,20\n"}.
 
-    Tool response:
-    Wrote 14 characters to archive/orders_2024.csv
-    ```
-  </Tab>
+Tool response:
+Wrote 14 characters to archive/orders_2024.csv
+```
 
-  <Tab title="reject">
-    Skip the call. The `message` is optional and tells the model why.
+**reject**
 
-    ```json Schema branch theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-    {"properties": {"type": {"const": "reject", "type": "string"}, "message": {"type": "string"}}, "required": ["type"], "type": "object"}
-    ```
+Skip the call. The `message` is optional and tells the model why.
 
-    ```python Answer theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-    {"type": "reject", "message": "Write to the archive/ folder instead."}
-    ```
+```json Schema branch theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+{"properties": {"type": {"const": "reject", "type": "string"}, "message": {"type": "string"}}, "required": ["type"], "type": "object"}
+```
 
-    ```text Model receives (error status) theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-    User rejected the tool call for `write_file` with reason: Write to the archive/ folder instead.
-    ```
-  </Tab>
+```python Answer theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+{"type": "reject", "message": "Write to the archive/ folder instead."}
+```
 
-  <Tab title="respond">
-    Skip the call and answer in place of the tool. The `message` is required. The model receives it as a successful tool result, so use `reject` to deny a call.
+```text Model receives (error status) theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+User rejected the tool call for `write_file` with reason: Write to the archive/ folder instead.
+```
 
-    ```json Schema branch theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-    {"properties": {"type": {"const": "respond", "type": "string"}, "message": {"type": "string"}}, "required": ["type", "message"], "type": "object"}
-    ```
+**respond**
 
-    ```python Answer theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-    {"type": "respond", "message": "Saved orders_archive.csv to the shared drive myself."}
-    ```
+Skip the call and answer in place of the tool. The `message` is required. The model receives it as a successful tool result, so use `reject` to deny a call.
 
-    ```text Model receives theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-    Saved orders_archive.csv to the shared drive myself.
-    ```
-  </Tab>
-</Tabs>
+```json Schema branch theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+{"properties": {"type": {"const": "respond", "type": "string"}, "message": {"type": "string"}}, "required": ["type", "message"], "type": "object"}
+```
+
+```python Answer theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+{"type": "respond", "message": "Saved orders_archive.csv to the shared drive myself."}
+```
+
+```text Model receives theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+Saved orders_archive.csv to the shared drive myself.
+```
 
 ### Resume each call by ID
 
@@ -619,9 +615,9 @@ result = agent.invoke(Command(resume=decisions), config=config, version="v2")
 
 You can also answer interrupts one at a time. An interrupt you do not answer stays pending, and its tool runs once it gets an answer.
 
-<Warning>
-  If one of several answers sent together is invalid, the tools for the others can run while their interrupts still show as pending. Answering them again runs those tools twice. Check answers against `response_schema` before you send them together, or send one at a time.
-</Warning>
+> [!WARNING]
+>
+> If one of several answers sent together is invalid, the tools for the others can run while their interrupts still show as pending. Answering them again runs those tools twice. Check answers against `response_schema` before you send them together, or send one at a time.
 
 ### Correct an invalid answer
 
@@ -724,121 +720,119 @@ agent.invoke(
 
 ### Decision types
 
-<Tabs>
-  <Tab title="approve">
-    Use `approve` to approve the tool call as-is and execute it without changes.
+**approve**
 
-    ```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-    agent.invoke(
-        Command(
-            # Decisions are provided as a list, one per action under review.
-            # The order of decisions must match the order of actions
-            # in the interrupt request.
-            resume={
-                "decisions": [
-                    {
-                        "type": "approve",
+Use `approve` to approve the tool call as-is and execute it without changes.
+
+```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+agent.invoke(
+    Command(
+        # Decisions are provided as a list, one per action under review.
+        # The order of decisions must match the order of actions
+        # in the interrupt request.
+        resume={
+            "decisions": [
+                {
+                    "type": "approve",
+                }
+            ]
+        }
+    ),
+    config=config,  # Same thread ID to resume the paused conversation
+    version="v2",
+)
+```
+
+**edit**
+
+Use `edit` to modify the tool call before execution.
+Provide the edited action with the new tool name and arguments.
+
+```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+agent.invoke(
+    Command(
+        # Decisions are provided as a list, one per action under review.
+        # The order of decisions must match the order of actions
+        # in the interrupt request.
+        resume={
+            "decisions": [
+                {
+                    "type": "edit",
+                    # Edited action with tool name and args
+                    "edited_action": {
+                        # Tool name to call.
+                        # Will usually be the same as the original action.
+                        "name": "new_tool_name",
+                        # Arguments to pass to the tool.
+                        "args": {"key1": "new_value", "key2": "original_value"},
                     }
-                ]
-            }
-        ),
-        config=config,  # Same thread ID to resume the paused conversation
-        version="v2",
-    )
-    ```
-  </Tab>
+                }
+            ]
+        }
+    ),
+    config=config,  # Same thread ID to resume the paused conversation
+    version="v2",
+)
+```
 
-  <Tab title="edit">
-    Use `edit` to modify the tool call before execution.
-    Provide the edited action with the new tool name and arguments.
+> [!TIP]
+>
+> When **editing** tool arguments, make changes conservatively. Significant modifications to the original arguments may cause the model to re-evaluate its approach and potentially execute the tool multiple times or take unexpected actions.
 
-    ```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-    agent.invoke(
-        Command(
-            # Decisions are provided as a list, one per action under review.
-            # The order of decisions must match the order of actions
-            # in the interrupt request.
-            resume={
-                "decisions": [
-                    {
-                        "type": "edit",
-                        # Edited action with tool name and args
-                        "edited_action": {
-                            # Tool name to call.
-                            # Will usually be the same as the original action.
-                            "name": "new_tool_name",
-                            # Arguments to pass to the tool.
-                            "args": {"key1": "new_value", "key2": "original_value"},
-                        }
-                    }
-                ]
-            }
-        ),
-        config=config,  # Same thread ID to resume the paused conversation
-        version="v2",
-    )
-    ```
+**reject**
 
-    <Tip>
-      When **editing** tool arguments, make changes conservatively. Significant modifications to the original arguments may cause the model to re-evaluate its approach and potentially execute the tool multiple times or take unexpected actions.
-    </Tip>
-  </Tab>
+Use `reject` to deny the tool call and provide feedback instead of execution. The tool is not executed.
 
-  <Tab title="reject">
-    Use `reject` to deny the tool call and provide feedback instead of execution. The tool is not executed.
+```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+agent.invoke(
+    Command(
+        # Decisions are provided as a list, one per action under review.
+        # The order of decisions must match the order of actions
+        # in the interrupt request.
+        resume={
+            "decisions": [
+                {
+                    "type": "reject",
+                    # Optional: explain why the action was rejected
+                    # and whether the agent should retry a different approach.
+                    "message": "User rejected this action. Do not retry this tool call.",
+                }
+            ]
+        }
+    ),
+    config=config,  # Same thread ID to resume the paused conversation
+    version="v2",
+)
+```
 
-    ```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-    agent.invoke(
-        Command(
-            # Decisions are provided as a list, one per action under review.
-            # The order of decisions must match the order of actions
-            # in the interrupt request.
-            resume={
-                "decisions": [
-                    {
-                        "type": "reject",
-                        # Optional: explain why the action was rejected
-                        # and whether the agent should retry a different approach.
-                        "message": "User rejected this action. Do not retry this tool call.",
-                    }
-                ]
-            }
-        ),
-        config=config,  # Same thread ID to resume the paused conversation
-        version="v2",
-    )
-    ```
+The `message` is added to the conversation as feedback to help the agent understand why the action was rejected and what it should do instead. When you omit `message`, the middleware uses a default rejection message that tells the model the tool was not executed and not to retry the same tool call unless the user asks. For side-effecting tools, provide a domain-specific message that is explicit about whether the agent should abandon the action, ask a follow-up question, or try a safer alternative.
 
-    The `message` is added to the conversation as feedback to help the agent understand why the action was rejected and what it should do instead. When you omit `message`, the middleware uses a default rejection message that tells the model the tool was not executed and not to retry the same tool call unless the user asks. For side-effecting tools, provide a domain-specific message that is explicit about whether the agent should abandon the action, ask a follow-up question, or try a safer alternative.
-  </Tab>
+**respond**
 
-  <Tab title="respond">
-    Use `respond` for "ask user" style tools where the tool's real implementation is the human's reply. The `message` content is returned directly as the tool result; the tool itself is not executed.
+Use `respond` for "ask user" style tools where the tool's real implementation is the human's reply. The `message` content is returned directly as the tool result; the tool itself is not executed.
 
-    ```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-    agent.invoke(
-        Command(
-            # Decisions are provided as a list, one per action under review.
-            # The order of decisions must match the order of actions
-            # in the interrupt request.
-            resume={
-                "decisions": [
-                    {
-                        "type": "respond",
-                        # The human's reply, returned directly as the tool result
-                        "message": "Blue.",
-                    }
-                ]
-            }
-        ),
-        config=config,  # Same thread ID to resume the paused conversation
-        version="v2",
-    )
-    ```
+```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+agent.invoke(
+    Command(
+        # Decisions are provided as a list, one per action under review.
+        # The order of decisions must match the order of actions
+        # in the interrupt request.
+        resume={
+            "decisions": [
+                {
+                    "type": "respond",
+                    # The human's reply, returned directly as the tool result
+                    "message": "Blue.",
+                }
+            ]
+        }
+    ),
+    config=config,  # Same thread ID to resume the paused conversation
+    version="v2",
+)
+```
 
-    The `message` is returned to the agent as a successful `ToolMessage`. Use `respond` when the tool is intentionally a placeholder for human input, for example, an `ask_user` tool that prompts for clarification. Do not use `respond` to deny a proposed action, because it tells the model that the tool completed successfully.
-  </Tab>
-</Tabs>
+The `message` is returned to the agent as a successful `ToolMessage`. Use `respond` when the tool is intentionally a placeholder for human input, for example, an `ask_user` tool that prompts for clarification. Do not use `respond` to deny a proposed action, because it tells the model that the tool completed successfully.
 
 ***
 
@@ -931,12 +925,6 @@ Review the [execution lifecycle](#execution-lifecycle) above to understand how t
 
 ***
 
-<div>
-  <Callout icon="terminal-2">
-    [Connect these docs](/use-these-docs) to your agent of choice via MCP for real-time answers.
-  </Callout>
+[Connect these docs](/use-these-docs) to your agent of choice via MCP for real-time answers.
 
-  <Callout icon="edit">
-    [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/oss/langchain/human-in-the-loop.mdx) or [file an issue](https://github.com/langchain-ai/docs/issues/new/choose).
-  </Callout>
-</div>
+[Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/oss/langchain/human-in-the-loop.mdx) or [file an issue](https://github.com/langchain-ai/docs/issues/new/choose).

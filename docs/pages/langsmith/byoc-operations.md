@@ -17,9 +17,9 @@ LangChain scales your data plane as load changes, so you do not need to size or 
 
 Data planes are provisioned for high availability by default. The deployment spans multiple availability zones in your region, and RDS and ElastiCache run Multi-AZ with automatic failover.
 
-<Note>
-  To run a data plane without high availability, contact the LangChain team.
-</Note>
+> [!NOTE]
+>
+> To run a data plane without high availability, contact the LangChain team.
 
 ## Instance sizes
 
@@ -64,9 +64,9 @@ The LangChain team has no standing access to your data, and can only manage the 
 * **You run the query**: You run the query yourself, and validate and sanitize the output before sharing it with LangChain.
 * **Break-glass access**: You allowlist a specific engineer to perform the operation. You can revoke that access at any time.
 
-<Note>
-  If break-glass access is needed, the LangChain team reaches out with instructions.
-</Note>
+> [!NOTE]
+>
+> If break-glass access is needed, the LangChain team reaches out with instructions.
 
 ## Auditing
 
@@ -83,12 +83,6 @@ Setting up alerts on those logs is your responsibility.
 
 ***
 
-<div>
-  <Callout icon="terminal-2">
-    [Connect these docs](/use-these-docs) to your agent of choice via MCP for real-time answers.
-  </Callout>
+[Connect these docs](/use-these-docs) to your agent of choice via MCP for real-time answers.
 
-  <Callout icon="edit">
-    [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/byoc-operations.mdx) or [file an issue](https://github.com/langchain-ai/docs/issues/new/choose).
-  </Callout>
-</div>
+[Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/byoc-operations.mdx) or [file an issue](https://github.com/langchain-ai/docs/issues/new/choose).

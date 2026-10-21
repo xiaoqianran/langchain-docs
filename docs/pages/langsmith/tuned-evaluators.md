@@ -4,9 +4,9 @@
 
 Use specialized LangChain-managed judges to attach quality feedback to traces.
 
-<Note>
-  LangChain Tuned Evaluators are in **[beta](/langsmith/release-stages)**. Their interface and behavior may change before general availability.
-</Note>
+> [!NOTE]
+>
+> LangChain Tuned Evaluators are in **[beta](/langsmith/release-stages)**. Their interface and behavior may change before general availability.
 
 LangChain Tuned Evaluators attach feedback to your traces. Each evaluator uses a specialized judge trained for a specific evaluation task. LangChain writes, tests, versions, and maintains the prompt and judge model so that you can focus on using the feedback to find and fix problems in your agent.
 
@@ -22,23 +22,21 @@ Use Perceived Error feedback to:
 
 ## Understand how LangChain Tuned Evaluators work
 
-<Steps>
-  <Step title="Add an evaluator">
-    Add a LangChain Tuned Evaluator to a compatible tracing project.
-  </Step>
+**1. Add an evaluator**
 
-  <Step title="Identify an eligible thread">
-    LangSmith identifies a thread that meets the evaluator's requirements and the project's filters and sampling configuration.
-  </Step>
+Add a LangChain Tuned Evaluator to a compatible tracing project.
 
-  <Step title="Evaluate the thread">
-    The specialized LangChain-managed judge evaluates the eligible thread.
-  </Step>
+**2. Identify an eligible thread**
 
-  <Step title="Attach feedback">
-    LangSmith attaches the result and its explanation to the thread as feedback.
-  </Step>
-</Steps>
+LangSmith identifies a thread that meets the evaluator's requirements and the project's filters and sampling configuration.
+
+**3. Evaluate the thread**
+
+The specialized LangChain-managed judge evaluates the eligible thread.
+
+**4. Attach feedback**
+
+LangSmith attaches the result and its explanation to the thread as feedback.
 
 ## Before you begin
 
@@ -124,12 +122,6 @@ Organization settings can take a few seconds to propagate. If LangSmith reports 
 
 ***
 
-<div>
-  <Callout icon="terminal-2">
-    [Connect these docs](/use-these-docs) to your agent of choice via MCP for real-time answers.
-  </Callout>
+[Connect these docs](/use-these-docs) to your agent of choice via MCP for real-time answers.
 
-  <Callout icon="edit">
-    [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/tuned-evaluators.mdx) or [file an issue](https://github.com/langchain-ai/docs/issues/new/choose).
-  </Callout>
-</div>
+[Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/tuned-evaluators.mdx) or [file an issue](https://github.com/langchain-ai/docs/issues/new/choose).

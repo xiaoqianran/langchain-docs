@@ -8,11 +8,9 @@ Before you run an evaluation, you need to have an [existing dataset](/langsmith/
 
 To run evaluations from Studio instead, see [run experiments over a dataset in Studio](/langsmith/observability-studio#run-experiments-over-a-dataset). If you prefer to run experiments in code, see [run an evaluation using the SDK](/langsmith/evaluate-llm-application).
 
-<img alt="Playground experiment" />
+![Playground experiment](https://mintcdn.com/langchain-5e9cc07a/H9jA2WRyA-MV4-H0/langsmith/images/playground-experiment.gif?s=05ec3d2b1aa6590c443a033924fc6141)
 
-<Callout type="info" icon="feather">
-  The **[Chat](/langsmith/chat)** is available in the Playground to help you optimize prompts before running evaluations.
-</Callout>
+The **[Chat](/langsmith/chat)** is available in the Playground to help you optimize prompts before running evaluations.
 
 ## Create an experiment in the Playground
 
@@ -39,12 +37,6 @@ To learn more about adding evaluators in via UI, visit [how to define an LLM-as-
 
 ***
 
-<div>
-  <Callout icon="terminal-2">
-    [Connect these docs](/use-these-docs) to your agent of choice via MCP for real-time answers.
-  </Callout>
+[Connect these docs](/use-these-docs) to your agent of choice via MCP for real-time answers.
 
-  <Callout icon="edit">
-    [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/run-evaluation-from-playground.mdx) or [file an issue](https://github.com/langchain-ai/docs/issues/new/choose).
-  </Callout>
-</div>
+[Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/run-evaluation-from-playground.mdx) or [file an issue](https://github.com/langchain-ai/docs/issues/new/choose).

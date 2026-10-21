@@ -8,15 +8,13 @@ Agent Server supports two approaches to application-level encryption at rest. Us
 
 ## Choose an encryption approach
 
-<CardGroup>
-  <Card title="Built-in AES encryption" icon="shield-lock" href="/langsmith/aes-encryption">
-    Recommended for most deployments. Configure an AES key to encrypt checkpoint data and selected JSON fields. Supports lazy key rotation.
-  </Card>
+> **[Built-in AES encryption](/langsmith/aes-encryption)**
+>
+> Recommended for most deployments. Configure an AES key to encrypt checkpoint data and selected JSON fields. Supports lazy key rotation.
 
-  <Card title="Custom encryption" icon="settings-code" href="/langsmith/custom-encryption">
-    Use only when built-in AES does not meet your requirements. Supports per-tenant keys and external key management systems through custom handlers.
-  </Card>
-</CardGroup>
+> **[Custom encryption](/langsmith/custom-encryption)**
+>
+> Use only when built-in AES does not meet your requirements. Supports per-tenant keys and external key management systems through custom handlers.
 
 Choose [built-in AES encryption](/langsmith/aes-encryption) if you need:
 
@@ -32,12 +30,6 @@ Choose [custom encryption](/langsmith/custom-encryption) only if you need:
 
 ***
 
-<div>
-  <Callout icon="terminal-2">
-    [Connect these docs](/use-these-docs) to your agent of choice via MCP for real-time answers.
-  </Callout>
+[Connect these docs](/use-these-docs) to your agent of choice via MCP for real-time answers.
 
-  <Callout icon="edit">
-    [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/encryption.mdx) or [file an issue](https://github.com/langchain-ai/docs/issues/new/choose).
-  </Callout>
-</div>
+[Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/encryption.mdx) or [file an issue](https://github.com/langchain-ai/docs/issues/new/choose).

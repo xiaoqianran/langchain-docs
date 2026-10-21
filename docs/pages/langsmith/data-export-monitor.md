@@ -14,11 +14,11 @@ This page covers:
 * [Failure modes and retry policy](#failure-modes-and-retry-policy), including automatic retry behavior, failure scenarios, status lifecycle, concurrency limits, and progress tracking.
 * [Troubleshooting failed exports](#troubleshooting-failed-exports).
 
-<Note>
-  **For self-hosted, GCP EU, GCP APAC, and AWS US SaaS**
-
-  Update the LangSmith URL in the requests below for self-hosted installs, GCP EU (`eu.api.smith.langchain.com`), GCP APAC (`apac.api.smith.langchain.com`), or AWS US (`aws.api.smith.langchain.com`).
-</Note>
+> [!NOTE]
+>
+> **For self-hosted, GCP EU, GCP APAC, and AWS US SaaS**
+>
+> Update the LangSmith URL in the requests below for self-hosted installs, GCP EU (`eu.api.smith.langchain.com`), GCP APAC (`apac.api.smith.langchain.com`), or AWS US (`aws.api.smith.langchain.com`).
 
 ## Monitor export status
 
@@ -113,9 +113,9 @@ Export jobs automatically retry transient failures with the following behavior:
 | **Destination deleted** | Bucket removed during export | No | Recreate destination and restart export. |
 | **Terminal processing errors** | Data serialization issues, resource exhaustion | Yes, retried up to 20 times (subject to change). | Check run error details; may require investigation. |
 
-<Note>
-  Any single run failure (after all retries are exhausted) causes the entire export to fail.
-</Note>
+> [!NOTE]
+>
+> Any single run failure (after all retries are exhausted) causes the entire export to fail.
 
 ### Export status lifecycle
 
@@ -190,12 +190,6 @@ For storage-related errors, you can test your destination configuration using th
 
 ***
 
-<div>
-  <Callout icon="terminal-2">
-    [Connect these docs](/use-these-docs) to your agent of choice via MCP for real-time answers.
-  </Callout>
+[Connect these docs](/use-these-docs) to your agent of choice via MCP for real-time answers.
 
-  <Callout icon="edit">
-    [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/data-export-monitor.mdx) or [file an issue](https://github.com/langchain-ai/docs/issues/new/choose).
-  </Callout>
-</div>
+[Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/data-export-monitor.mdx) or [file an issue](https://github.com/langchain-ai/docs/issues/new/choose).

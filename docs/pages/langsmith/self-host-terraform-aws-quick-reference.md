@@ -292,9 +292,9 @@ make tf ARGS="state list"
 
 ## Teardown
 
-<Warning>
-  Teardown permanently deletes LangSmith data. Step 1 deletes the ClickHouse volume, step 4 deletes every trace object in S3, and step 6 deletes the SSM parameters. Those parameters include the API key salt, the JWT secret, and the encryption keys, which must never change. A database restored from the `-final` RDS snapshot needs them: without the original salt and keys, existing API keys stop working and encrypted data cannot be read. If you keep the snapshot, export the SSM parameters to a secure location before `make purge-secrets`.
-</Warning>
+> [!WARNING]
+>
+> Teardown permanently deletes LangSmith data. Step 1 deletes the ClickHouse volume, step 4 deletes every trace object in S3, and step 6 deletes the SSM parameters. Those parameters include the API key salt, the JWT secret, and the encryption keys, which must never change. A database restored from the `-final` RDS snapshot needs them: without the original salt and keys, existing API keys stop working and encrypted data cannot be read. If you keep the snapshot, export the SSM parameters to a secure location before `make purge-secrets`.
 
 ```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 cd terraform/modules/aws
@@ -332,12 +332,6 @@ RDS takes a final snapshot named `<identifier>-final` unless `postgres_skip_fina
 
 ***
 
-<div>
-  <Callout icon="terminal-2">
-    [Connect these docs](/use-these-docs) to your agent of choice via MCP for real-time answers.
-  </Callout>
+[Connect these docs](/use-these-docs) to your agent of choice via MCP for real-time answers.
 
-  <Callout icon="edit">
-    [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/self-host-terraform-aws-quick-reference.mdx) or [file an issue](https://github.com/langchain-ai/docs/issues/new/choose).
-  </Callout>
-</div>
+[Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/self-host-terraform-aws-quick-reference.mdx) or [file an issue](https://github.com/langchain-ai/docs/issues/new/choose).

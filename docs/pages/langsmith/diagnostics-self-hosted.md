@@ -6,9 +6,7 @@ Diagnostic steps for troubleshooting self-hosted LangSmith Deployment issues bef
 
 This page provides diagnostic steps to help you troubleshoot issues with self-hosted [LangSmith Deployment](/langsmith/deployment) before reaching out to support. Follow these steps systematically to identify and resolve common deployment issues.
 
-<Callout icon="headset">
-  If you complete these diagnostic steps and still need assistance, refer to [Support](#support) at the end of this guide for information on what to gather before reaching out.
-</Callout>
+If you complete these diagnostic steps and still need assistance, refer to [Support](#support) at the end of this guide for information on what to gather before reaching out.
 
 ## Prerequisites
 
@@ -24,9 +22,9 @@ Verify what was deployed and understand the baseline state of your system. This 
 
 Run the following commands to view all deployed Kubernetes resources.
 
-<Note>
-  Ensure that you're in the correct namespace when you run the commands in this section. Or, specify the namespace explicitly with the `-n` flag. For example: `kubectl get deployments -n langsmith`.
-</Note>
+> [!NOTE]
+>
+> Ensure that you're in the correct namespace when you run the commands in this section. Or, specify the namespace explicitly with the `-n` flag. For example: `kubectl get deployments -n langsmith`.
 
 List all deployments:
 
@@ -62,9 +60,9 @@ Your deployment includes the following core components:
 * **`langsmith-redis`**: The [Redis](/langsmith/data-plane#redis) instance serving as the task queue for `langsmith-listener`. The listener enqueues tasks here and workers pull tasks from this queue.
 * **`langsmith-operator`**: The `lgps` Kubernetes operator that reconciles underlying Kubernetes resources for `lgps` resources. Part of the data plane infrastructure.
 
-<Note>
-  Additional components may be present in your deployment depending on your configuration. For an overview, refer to [LangSmith Deployment components](/langsmith/components).
-</Note>
+> [!NOTE]
+>
+> Additional components may be present in your deployment depending on your configuration. For an overview, refer to [LangSmith Deployment components](/langsmith/components).
 
 ## Step 2. Enable debug logging
 
@@ -88,9 +86,9 @@ If the issue is with an individual Agent Server deployment:
 2. On a deployment's view, select **+ New Revision**.
 3. Add a new environment variable `LOG_LEVEL` and set it to `DEBUG`.
 
-<Note>
-  You can also find debug logs in the UI on a deployment's view, click on **Server Logs** and select **Debug** for the **Log level: Info** dropdown.
-</Note>
+> [!NOTE]
+>
+> You can also find debug logs in the UI on a deployment's view, click on **Server Logs** and select **Debug** for the **Log level: Info** dropdown.
 
 ### For widespread issues
 
@@ -178,12 +176,6 @@ Having this information in the ticket will help the [support](https://support.la
 
 ***
 
-<div>
-  <Callout icon="terminal-2">
-    [Connect these docs](/use-these-docs) to your agent of choice via MCP for real-time answers.
-  </Callout>
+[Connect these docs](/use-these-docs) to your agent of choice via MCP for real-time answers.
 
-  <Callout icon="edit">
-    [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/diagnostics-self-hosted.mdx) or [file an issue](https://github.com/langchain-ai/docs/issues/new/choose).
-  </Callout>
-</div>
+[Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/diagnostics-self-hosted.mdx) or [file an issue](https://github.com/langchain-ai/docs/issues/new/choose).

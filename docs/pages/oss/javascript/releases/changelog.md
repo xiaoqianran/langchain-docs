@@ -4,204 +4,194 @@
 
 Log of updates and improvements to our JavaScript/TypeScript packages
 
-<Callout icon="rss">
-  **Subscribe**: Our changelog includes an [RSS feed](https://docs.langchain.com/oss/javascript/releases/changelog/rss.xml) that can integrate with [Slack](https://slack.com/help/articles/218688467-Add-RSS-feeds-to-Slack), [email](https://zapier.com/apps/email/integrations/rss/1441/send-new-rss-feed-entries-via-email), Discord bots like [Readybot](https://readybot.io/) or [RSS Feeds to Discord Bot](https://rss.app/en/bots/rssfeeds-discord-bot), and other subscription tools.
-</Callout>
+**Subscribe**: Our changelog includes an [RSS feed](https://docs.langchain.com/oss/javascript/releases/changelog/rss.xml) that can integrate with [Slack](https://slack.com/help/articles/218688467-Add-RSS-feeds-to-Slack), [email](https://zapier.com/apps/email/integrations/rss/1441/send-new-rss-feed-entries-via-email), Discord bots like [Readybot](https://readybot.io/) or [RSS Feeds to Discord Bot](https://rss.app/en/bots/rssfeeds-discord-bot), and other subscription tools.
 
-<Update label="Oct 15, 2026">
-  ## `langchain` v1.5.18
+**Oct 15, 2026**
 
-  `humanInTheLoopMiddleware` can now pause once per tool call. Set `interruptMode: "per_call"` and each gated call raises its own interrupt, which you answer by interrupt ID. Batched mode is still the default.
+## `langchain` v1.5.18
 
-  ```typescript theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  humanInTheLoopMiddleware({ interruptOn: {...}, interruptMode: "per_call" });
-  ```
+`humanInTheLoopMiddleware` can now pause once per tool call. Set `interruptMode: "per_call"` and each gated call raises its own interrupt, which you answer by interrupt ID. Batched mode is still the default.
 
-  ### Features
+```typescript theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+humanInTheLoopMiddleware({ interruptOn: {...}, interruptMode: "per_call" });
+```
 
-  * **Typed answers**: each interrupt carries a `response_schema` listing the decisions that call allows, so a client can build its form from the schema. See [Read the response schema](/oss/javascript/langchain/human-in-the-loop#read-the-response-schema).
-  * **Checked before saving**: LangGraph rejects an invalid answer before it is saved, so you can correct it and answer the same interrupt again. See [Correct an invalid answer](/oss/javascript/langchain/human-in-the-loop#correct-an-invalid-answer).
-  * **Edits stay on the called tool**: an `edit` can't switch tools, and its arguments are checked against the tool's own schema.
-  * **`respond` everywhere**: `interruptOn: { tool: true }` now allows every decision, `respond` included, in both modes, as in Python.
+### Features
 
-  Use per-call mode for new agents. LangChain plans to make it the default in the next major release. See [Pause once per tool call](/oss/javascript/langchain/human-in-the-loop#pause-once-per-tool-call) and the [human-in-the-loop overview](/oss/javascript/concepts/human-in-the-loop).
-</Update>
+* **Typed answers**: each interrupt carries a `response_schema` listing the decisions that call allows, so a client can build its form from the schema. See [Read the response schema](/oss/javascript/langchain/human-in-the-loop#read-the-response-schema).
+* **Checked before saving**: LangGraph rejects an invalid answer before it is saved, so you can correct it and answer the same interrupt again. See [Correct an invalid answer](/oss/javascript/langchain/human-in-the-loop#correct-an-invalid-answer).
+* **Edits stay on the called tool**: an `edit` can't switch tools, and its arguments are checked against the tool's own schema.
+* **`respond` everywhere**: `interruptOn: { tool: true }` now allows every decision, `respond` included, in both modes, as in Python.
 
-<Update label="Mar 24, 2026">
-  ## `deepagents` v1.9.0-alpha.0
+Use per-call mode for new agents. LangChain plans to make it the default in the next major release. See [Pause once per tool call](/oss/javascript/langchain/human-in-the-loop#pause-once-per-tool-call) and the [human-in-the-loop overview](/oss/javascript/concepts/human-in-the-loop).
 
-  Alpha release of `deepagents` v1.9.0.
+**Mar 24, 2026**
 
-  * **[Async subagents](/oss/javascript/deepagents/async-subagents)**: Deep Agents can launch non-blocking background tasks, so users can continue interacting with the agent while subagents work concurrently. Requires [LangSmith Deployment](/langsmith/deployment) for sub-agents.
+## `deepagents` v1.9.0-alpha.0
 
-  * **[Backend](/oss/javascript/deepagents/backends) protocol v2**: We've introduced a new v2 backend protocol (`BackendProtocolV2`) with backward-compatible changes to the Deep Agents backend interface. Key changes:
-    * **Structured result types**: All methods now return structured `Result` objects (e.g., `ReadResult`, `LsResult`, `GrepResult`, `GlobResult`) with consistent error handling via an `error` field, instead of returning raw values or throwing exceptions.
-    * **Multi-modal file support**: `read()` returns a `ReadResult` with a `.content` field instead of a plain string. For binary files (images, PDFs, audio, video), the full raw `Uint8Array` content is returned via `readRaw()`, enabling agents to work with multi-modal files natively.
-    * **Simplified method names**: `lsInfo` -> `ls`, `grepRaw` -> `grep`, `globInfo` -> `glob`.
-    * **Backward compatible**: Existing v1 backends can be adapted to the v2 interface using `adaptBackendProtocol`. The v1 interfaces (`BackendProtocolV1`, `SandboxBackendProtocolV1`) are deprecated but retained for compatibility.
-</Update>
+Alpha release of `deepagents` v1.9.0.
 
-<Update label="Jan 14, 2026">
-  ## v1.1.0
+* **[Async subagents](/oss/javascript/deepagents/async-subagents)**: Deep Agents can launch non-blocking background tasks, so users can continue interacting with the agent while subagents work concurrently. Requires [LangSmith Deployment](/langsmith/deployment) for sub-agents.
 
-  ### `@langchain/langgraph`
+* **[Backend](/oss/javascript/deepagents/backends) protocol v2**: We've introduced a new v2 backend protocol (`BackendProtocolV2`) with backward-compatible changes to the Deep Agents backend interface. Key changes:
+  * **Structured result types**: All methods now return structured `Result` objects (e.g., `ReadResult`, `LsResult`, `GrepResult`, `GlobResult`) with consistent error handling via an `error` field, instead of returning raw values or throwing exceptions.
+  * **Multi-modal file support**: `read()` returns a `ReadResult` with a `.content` field instead of a plain string. For binary files (images, PDFs, audio, video), the full raw `Uint8Array` content is returned via `readRaw()`, enabling agents to work with multi-modal files natively.
+  * **Simplified method names**: `lsInfo` -> `ls`, `grepRaw` -> `grep`, `globInfo` -> `glob`.
+  * **Backward compatible**: Existing v1 backends can be adapted to the v2 interface using `adaptBackendProtocol`. The v1 interfaces (`BackendProtocolV1`, `SandboxBackendProtocolV1`) are deprecated but retained for compatibility.
 
-  Introducing **StateSchema** - a cleaner, library-agnostic way to define graph state that works with any [Standard Schema](https://github.com/standard-schema/standard-schema)-compliant validation library.
+**Jan 14, 2026**
 
-  ### Standard JSON Schema support
+## v1.1.0
 
-  LangGraph now supports [Standard JSON Schema](https://standardschema.dev/json-schema), an open specification implemented by Zod 4, Valibot, ArkType, and other schema libraries. This means you can use your preferred validation library without lock-in:
+### `@langchain/langgraph`
 
-  ```typescript theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  import { z } from "zod"; // or valibot, arktype, etc.
-  import { StateSchema, ReducedValue, MessagesValue } from "@langchain/langgraph";
+Introducing **StateSchema** - a cleaner, library-agnostic way to define graph state that works with any [Standard Schema](https://github.com/standard-schema/standard-schema)-compliant validation library.
 
-  const AgentState = new StateSchema({
-    messages: MessagesValue,
-    currentStep: z.string(),
-    count: z.number().default(0),
-    history: new ReducedValue(
-      z.array(z.string()).default(() => []),
-      {
-        inputSchema: z.string(),
-        reducer: (current, next) => [...current, next],
-      }
-    ),
-  });
+### Standard JSON Schema support
 
-  // Type-safe state and update types
-  type State = typeof AgentState.State;
-  type Update = typeof AgentState.Update;
+LangGraph now supports [Standard JSON Schema](https://standardschema.dev/json-schema), an open specification implemented by Zod 4, Valibot, ArkType, and other schema libraries. This means you can use your preferred validation library without lock-in:
 
-  const graph = new StateGraph(AgentState)
-    .addNode("agent", (state) => ({ count: state.count + 1 }))
-    .addEdge(START, "agent")
-    .addEdge("agent", END)
-    .compile();
-  ```
+```typescript theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+import { z } from "zod"; // or valibot, arktype, etc.
+import { StateSchema, ReducedValue, MessagesValue } from "@langchain/langgraph";
 
-  ### New state value primitives
+const AgentState = new StateSchema({
+  messages: MessagesValue,
+  currentStep: z.string(),
+  count: z.number().default(0),
+  history: new ReducedValue(
+    z.array(z.string()).default(() => []),
+    {
+      inputSchema: z.string(),
+      reducer: (current, next) => [...current, next],
+    }
+  ),
+});
 
-  * **ReducedValue**: Define fields with custom reducers for accumulating values. Supports separate input and output schemas for type-safe reducer inputs.
-  * **UntrackedValue**: Define transient state that exists during execution but is never checkpointed - useful for database connections, caches, or runtime-only configuration.
-  * **MessagesValue**: A prebuilt `ReducedValue` for chat messages with the standard messages reducer.
+// Type-safe state and update types
+type State = typeof AgentState.State;
+type Update = typeof AgentState.Update;
 
-  ### Type helper exports
+const graph = new StateGraph(AgentState)
+  .addNode("agent", (state) => ({ count: state.count + 1 }))
+  .addEdge(START, "agent")
+  .addEdge("agent", END)
+  .compile();
+```
 
-  New exported type utilities for typing functions outside the graph builder:
+### New state value primitives
 
-  * `GraphNode<Schema, Nodes?, Config?>` - Type node functions with full inference
-  * `ConditionalEdgeRouter<Schema, Nodes?>` - Type conditional edge routers
+* **ReducedValue**: Define fields with custom reducers for accumulating values. Supports separate input and output schemas for type-safe reducer inputs.
+* **UntrackedValue**: Define transient state that exists during execution but is never checkpointed - useful for database connections, caches, or runtime-only configuration.
+* **MessagesValue**: A prebuilt `ReducedValue` for chat messages with the standard messages reducer.
 
-  ```typescript theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  // Type standalone node functions
-  const myNode: GraphNode<typeof AgentState> = (state, config) => {
-    return { count: state.count + 1 };
-  };
+### Type helper exports
 
-  // Use schema type helpers directly
-  const processState = (state: typeof AgentState.State) => {
-    console.log(state.count);
-  };
-  ```
+New exported type utilities for typing functions outside the graph builder:
 
-  The existing `Annotation` and zod-based API continues to work unchanged - `StateSchema` is an additional option for those who prefer schema-first definitions.
+* `GraphNode<Schema, Nodes?, Config?>` - Type node functions with full inference
+* `ConditionalEdgeRouter<Schema, Nodes?>` - Type conditional edge routers
 
-  <Card title="Learn more about StateSchema" icon="book" href="/oss/javascript/langgraph/graph-api#schema">
-    See the full documentation for defining graph state with StateSchema, ReducedValue, and UntrackedValue.
-  </Card>
+```typescript theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+// Type standalone node functions
+const myNode: GraphNode<typeof AgentState> = (state, config) => {
+  return { count: state.count + 1 };
+};
 
-  <Card title="Learn about type utilities" icon="code" href="/oss/javascript/langgraph/graph-api#type-utilities">
-    Use GraphNode and ConditionalEdgeRouter to type functions outside the graph builder.
-  </Card>
-</Update>
+// Use schema type helpers directly
+const processState = (state: typeof AgentState.State) => {
+  console.log(state.count);
+};
+```
 
-<Update label="Dec 12, 2025">
-  ## v1.2.0
+The existing `Annotation` and zod-based API continues to work unchanged - `StateSchema` is an additional option for those who prefer schema-first definitions.
 
-  ### `langchain`
+> **[Learn more about StateSchema](/oss/javascript/langgraph/graph-api#schema)**
+>
+> See the full documentation for defining graph state with StateSchema, ReducedValue, and UntrackedValue.
 
-  * [Structured output](/oss/javascript/langchain/structured-output): Added ability to manually set `strict` mode when using `providerStrategy` for structured output.
+> **[Learn about type utilities](/oss/javascript/langgraph/graph-api#type-utilities)**
+>
+> Use GraphNode and ConditionalEdgeRouter to type functions outside the graph builder.
 
-  ### `@langchain/openai`
+**Dec 12, 2025**
 
-  * **New provider built-in tools:** Support for file search, web search, code interpreter, image generation, computer use, shell, and MCP connector tools executed server-side by the provider. See [Server-side tool use](/oss/javascript/langchain/tools#server-side-tool-use) and the [OpenAI](/oss/javascript/integrations/chat/openai) chat integration.
-  * **Content moderation:** New `moderateContent` option on `ChatOpenAI` for detecting and handling unsafe content.
-  * Prefer responses API for GPT-5.2 Pro model.
+## v1.2.0
 
-  ## v1.3.0
+### `langchain`
 
-  ### `@langchain/anthropic`
+* [Structured output](/oss/javascript/langchain/structured-output): Added ability to manually set `strict` mode when using `providerStrategy` for structured output.
 
-  * **New provider built-in tools:** Support for text editor, web fetch, computer use, tool search, and MCP toolset tools executed server-side by the provider. See [Server-side tool use](/oss/javascript/langchain/tools#server-side-tool-use) and the [Anthropic](/oss/javascript/integrations/chat/anthropic) chat integration.
-  * Exposed `ChatAnthropicInput` type for improved type safety.
+### `@langchain/openai`
 
-  ## v1.1.0
+* **New provider built-in tools:** Support for file search, web search, code interpreter, image generation, computer use, shell, and MCP connector tools executed server-side by the provider. See [Server-side tool use](/oss/javascript/langchain/tools#server-side-tool-use) and the [OpenAI](/oss/javascript/integrations/chat/openai) chat integration.
+* **Content moderation:** New `moderateContent` option on `ChatOpenAI` for detecting and handling unsafe content.
+* Prefer responses API for GPT-5.2 Pro model.
 
-  ### `@langchain/ollama`
+## v1.3.0
 
-  * **Native structured outputs:** Added support for native structured output via `withStructuredOutput`.
-  * Support for custom `baseUrl` configuration.
+### `@langchain/anthropic`
 
-  ## v1.0.0
+* **New provider built-in tools:** Support for text editor, web fetch, computer use, tool search, and MCP toolset tools executed server-side by the provider. See [Server-side tool use](/oss/javascript/langchain/tools#server-side-tool-use) and the [Anthropic](/oss/javascript/integrations/chat/anthropic) chat integration.
+* Exposed `ChatAnthropicInput` type for improved type safety.
 
-  ### `@langchain/community`
+## v1.1.0
 
-  * Jira document loader updated to use v3 API.
-  * LanceDB: Added `similaritySearch()` and `similaritySearchWithScore()` support.
-  * Elasticsearch hybrid search support.
-  * New `GoogleCalendarDeleteTool`.
-  * Various bug fixes for LlamaCppEmbeddings, PrismaVectorStore, IBM WatsonX, and security improvements.
+### `@langchain/ollama`
 
-  ### Other packages
+* **Native structured outputs:** Added support for native structured output via `withStructuredOutput`.
+* Support for custom `baseUrl` configuration.
 
-  * **@langchain/xai:** Native Live Search support.
-  * **@langchain/tavily:** Added Tavily's research endpoint.
-  * **@langchain/mongodb:** New MongoDB LLM cache.
-  * **@langchain/mcp-adapters:** Added `onConnectionError` option.
-  * **@langchain/google-common:** `jsonSchema` method support in `withStructuredOutput`.
-  * **@langchain/core:** Security fixes, better subgraph nesting in Mermaid graphs, UUID7 for run IDs.
-</Update>
+## v1.0.0
 
-<Update label="Nov 25, 2025">
-  ## v1.1.0
+### `@langchain/community`
 
-  * [Model profiles](/oss/javascript/langchain/models#model-profiles): Chat models now expose supported features and capabilities through a `.profile` getter. These data are derived from [models.dev](https://models.dev), an open source project providing model capability data.
-  * [Model retry middleware](/oss/javascript/langchain/middleware/built-in#model-retry): New middleware for automatically retrying failed model calls with configurable exponential backoff, improving agent reliability.
-  * [Content moderation middleware](/oss/javascript/langchain/middleware/built-in#provider-specific-middleware): OpenAI content moderation middleware for detecting and handling unsafe content in agent interactions. Supports checking user input, model output, and tool results.
-  * [Summarization middleware](/oss/javascript/langchain/middleware/built-in#summarization): Updated to support flexible trigger points using model profiles for context-aware summarization.
-  * [Structured output](/oss/javascript/langchain/structured-output): `ProviderStrategy` support (native structured output) can now be inferred from model profiles.
-  * [`SystemMessage` for `createAgent`](/oss/javascript/langchain/middleware/custom#dynamic-prompt): Support for passing `SystemMessage` instances directly to `createAgent`'s `systemPrompt` parameter and a new `concat` method for extending system messages. Enables advanced features like cache control and structured content blocks.
-  * [Dynamic system prompt middleware](/oss/javascript/langchain/short-term-memory): Return values from `dynamicSystemPromptMiddleware` are now purely additive. When returning a [`SystemMessage`](https://reference.langchain.com/javascript/langchain-core/messages/SystemMessage) or `string`, they are merged with existing system messages rather than replacing them, making it easier to compose multiple middleware that modify the prompt.
-  * **Compatibility improvements:** Fixed error handling for Zod v4 validation errors in structured output and tool schemas, ensuring detailed error messages are properly displayed.
-</Update>
+* Jira document loader updated to use v3 API.
+* LanceDB: Added `similaritySearch()` and `similaritySearchWithScore()` support.
+* Elasticsearch hybrid search support.
+* New `GoogleCalendarDeleteTool`.
+* Various bug fixes for LlamaCppEmbeddings, PrismaVectorStore, IBM WatsonX, and security improvements.
 
-<Update label="Oct 20, 2025">
-  ## v1.0.0
+### Other packages
 
-  ### `langchain`
+* **@langchain/xai:** Native Live Search support.
+* **@langchain/tavily:** Added Tavily's research endpoint.
+* **@langchain/mongodb:** New MongoDB LLM cache.
+* **@langchain/mcp-adapters:** Added `onConnectionError` option.
+* **@langchain/google-common:** `jsonSchema` method support in `withStructuredOutput`.
+* **@langchain/core:** Security fixes, better subgraph nesting in Mermaid graphs, UUID7 for run IDs.
 
-  * [Release notes](/oss/javascript/releases/langchain-v1)
-  * [Migration guide](/oss/javascript/migrate/langchain-v1)
+**Nov 25, 2025**
 
-  ### `langgraph`
+## v1.1.0
 
-  * [Release notes](/oss/javascript/releases/langgraph-v1)
-  * [Migration guide](/oss/javascript/migrate/langgraph-v1)
+* [Model profiles](/oss/javascript/langchain/models#model-profiles): Chat models now expose supported features and capabilities through a `.profile` getter. These data are derived from [models.dev](https://models.dev), an open source project providing model capability data.
+* [Model retry middleware](/oss/javascript/langchain/middleware/built-in#model-retry): New middleware for automatically retrying failed model calls with configurable exponential backoff, improving agent reliability.
+* [Content moderation middleware](/oss/javascript/langchain/middleware/built-in#provider-specific-middleware): OpenAI content moderation middleware for detecting and handling unsafe content in agent interactions. Supports checking user input, model output, and tool results.
+* [Summarization middleware](/oss/javascript/langchain/middleware/built-in#summarization): Updated to support flexible trigger points using model profiles for context-aware summarization.
+* [Structured output](/oss/javascript/langchain/structured-output): `ProviderStrategy` support (native structured output) can now be inferred from model profiles.
+* [`SystemMessage` for `createAgent`](/oss/javascript/langchain/middleware/custom#dynamic-prompt): Support for passing `SystemMessage` instances directly to `createAgent`'s `systemPrompt` parameter and a new `concat` method for extending system messages. Enables advanced features like cache control and structured content blocks.
+* [Dynamic system prompt middleware](/oss/javascript/langchain/short-term-memory): Return values from `dynamicSystemPromptMiddleware` are now purely additive. When returning a [`SystemMessage`](https://reference.langchain.com/javascript/langchain-core/messages/SystemMessage) or `string`, they are merged with existing system messages rather than replacing them, making it easier to compose multiple middleware that modify the prompt.
+* **Compatibility improvements:** Fixed error handling for Zod v4 validation errors in structured output and tool schemas, ensuring detailed error messages are properly displayed.
 
-  <Callout icon="speakerphone">
-    If you encounter any issues or have feedback, please [open an issue](https://github.com/langchain-ai/docs/issues/new?template=01-langchain.yml) so we can improve. To view v0.x documentation, [go to the archived content](https://github.com/langchain-ai/langchainjs/tree/v0.3/docs/core_docs/docs).
-  </Callout>
-</Update>
+**Oct 20, 2025**
+
+## v1.0.0
+
+### `langchain`
+
+* [Release notes](/oss/javascript/releases/langchain-v1)
+* [Migration guide](/oss/javascript/migrate/langchain-v1)
+
+### `langgraph`
+
+* [Release notes](/oss/javascript/releases/langgraph-v1)
+* [Migration guide](/oss/javascript/migrate/langgraph-v1)
+
+If you encounter any issues or have feedback, please [open an issue](https://github.com/langchain-ai/docs/issues/new?template=01-langchain.yml) so we can improve. To view v0.x documentation, [go to the archived content](https://github.com/langchain-ai/langchainjs/tree/v0.3/docs/core_docs/docs).
 
 ***
 
-<div>
-  <Callout icon="terminal-2">
-    [Connect these docs](/use-these-docs) to your agent of choice via MCP for real-time answers.
-  </Callout>
+[Connect these docs](/use-these-docs) to your agent of choice via MCP for real-time answers.
 
-  <Callout icon="edit">
-    [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/oss/javascript/releases/changelog.mdx) or [file an issue](https://github.com/langchain-ai/docs/issues/new/choose).
-  </Callout>
-</div>
+[Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/oss/javascript/releases/changelog.mdx) or [file an issue](https://github.com/langchain-ai/docs/issues/new/choose).

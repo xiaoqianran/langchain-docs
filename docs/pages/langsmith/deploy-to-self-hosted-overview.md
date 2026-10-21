@@ -8,39 +8,35 @@ Self-hosted LangSmith Deployment runs the [Agent Server](/langsmith/agent-server
 
 LangChain ships the container images, Helm charts, and license; you provide the Kubernetes cluster (or Docker host), PostgreSQL, Redis, and the networking and observability tooling that fit your environment. Self-hosted is the best deployment option when you have data residency, regulatory constraints, custom networking, or air-gapped requirements.
 
-<Callout icon="clipboard-check">
-  Self-hosted deployments require an [Enterprise plan](https://www.langchain.com/pricing) and the LangSmith license key delivered with that plan. For a setup guide, see [Self-hosted LangSmith](/langsmith/self-hosted).
-</Callout>
+Self-hosted deployments require an [Enterprise plan](https://www.langchain.com/pricing) and the LangSmith license key delivered with that plan. For a setup guide, see [Self-hosted LangSmith](/langsmith/self-hosted).
 
 ## Topologies
 
 LangSmith supports three self-hosted topologies that trade off setup complexity against control-plane features. Reference pages for [platform features](/langsmith/self-hosted-platform-features), [Agent Server metrics](/langsmith/self-hosted-agent-server-metrics), and [diagnostics](/langsmith/diagnostics-self-hosted) apply to all three.
 
-<CardGroup>
-  <Card title="Full self-hosted platform" icon="buildings" href="/langsmith/deploy-with-control-plane">
-    The complete LangSmith platform—[control plane](/langsmith/control-plane) UI and APIs, [data plane](/langsmith/data-plane) listener, observability, evaluation, and agent deployment management. Best for teams that want the LangSmith product experience inside their own network.
-  </Card>
+> **[Full self-hosted platform](/langsmith/deploy-with-control-plane)**
+>
+> The complete LangSmith platform—[control plane](/langsmith/control-plane) UI and APIs, [data plane](/langsmith/data-plane) listener, observability, evaluation, and agent deployment management. Best for teams that want the LangSmith product experience inside their own network.
 
-  <Card title="Hybrid" icon="cloud-network" href="/langsmith/hybrid">
-    LangChain-hosted control plane with the data plane (Agent Servers and databases) in your infrastructure. Best when you want managed deployment workflows but need agent workloads and customer data to stay inside your VPC.
-  </Card>
+> **[Hybrid](/langsmith/hybrid)**
+>
+> LangChain-hosted control plane with the data plane (Agent Servers and databases) in your infrastructure. Best when you want managed deployment workflows but need agent workloads and customer data to stay inside your VPC.
 
-  <Card title="Standalone server" icon="server" href="/langsmith/deploy-standalone-server">
-    The lightest option—Agent Server containers (API + queue workers) with your own PostgreSQL and Redis. No control plane, no managed UI. Best for embedding the runtime into existing infrastructure or running air-gapped.
-  </Card>
+> **[Standalone server](/langsmith/deploy-standalone-server)**
+>
+> The lightest option—Agent Server containers (API + queue workers) with your own PostgreSQL and Redis. No control plane, no managed UI. Best for embedding the runtime into existing infrastructure or running air-gapped.
 
-  <Card title="Platform features" icon="list-check" href="/langsmith/self-hosted-platform-features">
-    Reference for self-hosted-only platform behavior: custom Postgres and Redis, listeners, and resource customization.
-  </Card>
+> **[Platform features](/langsmith/self-hosted-platform-features)**
+>
+> Reference for self-hosted-only platform behavior: custom Postgres and Redis, listeners, and resource customization.
 
-  <Card title="Agent Server metrics" icon="chart-line" href="/langsmith/self-hosted-agent-server-metrics">
-    Prometheus and Datadog export for Agent Server, including Deployment UI metrics and internal metrics.
-  </Card>
+> **[Agent Server metrics](/langsmith/self-hosted-agent-server-metrics)**
+>
+> Prometheus and Datadog export for Agent Server, including Deployment UI metrics and internal metrics.
 
-  <Card title="Diagnostics" icon="stethoscope" href="/langsmith/diagnostics-self-hosted">
-    Collect logs, inspect state, and troubleshoot a self-hosted installation.
-  </Card>
-</CardGroup>
+> **[Diagnostics](/langsmith/diagnostics-self-hosted)**
+>
+> Collect logs, inspect state, and troubleshoot a self-hosted installation.
 
 ## Who manages what
 
@@ -58,24 +54,16 @@ In return, you can integrate with your own [Postgres](/langsmith/self-hosted-pla
 
 ## Next steps
 
-<CardGroup>
-  <Card title="Pick a topology" icon="git-fork" href="/langsmith/deploy-standalone-server">
-    Compare standalone server, full platform, and hybrid to find the right fit.
-  </Card>
+> **[Pick a topology](/langsmith/deploy-standalone-server)**
+>
+> Compare standalone server, full platform, and hybrid to find the right fit.
 
-  <Card title="Enable LangSmith Deployment" icon="book" href="/langsmith/enable-self-hosted-deployment">
-    Add a control plane and data plane to deploy and manage agents on self-hosted LangSmith.
-  </Card>
-</CardGroup>
+> **[Enable LangSmith Deployment](/langsmith/enable-self-hosted-deployment)**
+>
+> Add a control plane and data plane to deploy and manage agents on self-hosted LangSmith.
 
 ***
 
-<div>
-  <Callout icon="terminal-2">
-    [Connect these docs](/use-these-docs) to your agent of choice via MCP for real-time answers.
-  </Callout>
+[Connect these docs](/use-these-docs) to your agent of choice via MCP for real-time answers.
 
-  <Callout icon="edit">
-    [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/deploy-to-self-hosted-overview.mdx) or [file an issue](https://github.com/langchain-ai/docs/issues/new/choose).
-  </Callout>
-</div>
+[Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/deploy-to-self-hosted-overview.mdx) or [file an issue](https://github.com/langchain-ai/docs/issues/new/choose).

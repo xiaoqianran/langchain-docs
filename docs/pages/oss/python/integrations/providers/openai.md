@@ -8,52 +8,42 @@ This page covers all LangChain integrations with [OpenAI](https://en.wikipedia.o
 
 ## Model interfaces
 
-<Columns>
-  <Card title="ChatOpenAI" href="/oss/python/integrations/chat/openai" icon="message">
-    OpenAI chat models.
-  </Card>
+> **[ChatOpenAI](/oss/python/integrations/chat/openai)**
+>
+> OpenAI chat models.
 
-  <Card title="Decisions API" href="/oss/python/integrations/decision_models/openai" icon="arrows-split">
-    Typed answers and calibrated probabilities for routing, classification, and agent middleware.
-  </Card>
+> **[Decisions API](/oss/python/integrations/decision_models/openai)**
+>
+> Typed answers and calibrated probabilities for routing, classification, and agent middleware.
 
-  <Card title="AzureChatOpenAI" href="/oss/python/integrations/chat/azure_chat_openai" icon="brand-windows">
-    Azure OpenAI chat models with enterprise features.
-  </Card>
+> **[AzureChatOpenAI](/oss/python/integrations/chat/azure_chat_openai)**
+>
+> Azure OpenAI chat models with enterprise features.
 
-  <Card title="OpenAIEmbeddings" href="/oss/python/integrations/embeddings/openai" icon="stack-2">
-    OpenAI embedding models.
-  </Card>
+> **[OpenAIEmbeddings](/oss/python/integrations/embeddings/openai)**
+>
+> OpenAI embedding models.
 
-  <Card title="AzureOpenAIEmbeddings" href="/oss/python/integrations/embeddings/azure_openai" icon="brand-windows">
-    Azure OpenAI embedding models with enterprise features.
-  </Card>
-</Columns>
+> **[AzureOpenAIEmbeddings](/oss/python/integrations/embeddings/azure_openai)**
+>
+> Azure OpenAI embedding models with enterprise features.
 
 ## Other
 
-<Columns>
-  <Card title="OpenAI" href="/oss/python/integrations/llms/openai" icon="cursor-text">
-    (Legacy) OpenAI text completion models.
-  </Card>
+> **[OpenAI](/oss/python/integrations/llms/openai)**
+>
+> (Legacy) OpenAI text completion models.
 
-  <Card title="AzureOpenAI" href="/oss/python/integrations/llms/azure_openai" icon="brand-windows">
-    Wrapper for (legacy) OpenAI text completion models hosted on Azure.
-  </Card>
+> **[AzureOpenAI](/oss/python/integrations/llms/azure_openai)**
+>
+> Wrapper for (legacy) OpenAI text completion models hosted on Azure.
 
-  <Card title="OpenAIModerationChain" href="https://python.langchain.com/v0.1/docs/guides/productionization/safety/moderation" icon="link">
-    Detect text that could be hateful, violent, etc.
-  </Card>
-</Columns>
+> **[OpenAIModerationChain](https://python.langchain.com/v0.1/docs/guides/productionization/safety/moderation)**
+>
+> Detect text that could be hateful, violent, etc.
 
 ***
 
-<div>
-  <Callout icon="terminal-2">
-    [Connect these docs](/use-these-docs) to your agent of choice via MCP for real-time answers.
-  </Callout>
+[Connect these docs](/use-these-docs) to your agent of choice via MCP for real-time answers.
 
-  <Callout icon="edit">
-    [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/oss/python/integrations/providers/openai.mdx) or [file an issue](https://github.com/langchain-ai/docs/issues/new/choose).
-  </Callout>
-</div>
+[Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/oss/python/integrations/providers/openai.mdx) or [file an issue](https://github.com/langchain-ai/docs/issues/new/choose).

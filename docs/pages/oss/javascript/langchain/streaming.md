@@ -4,9 +4,9 @@
 
 Stream real-time updates from agent runs
 
-<Tip>
-  For new applications, we recommend [event streaming](/oss/javascript/langchain/event-streaming)—the typed-projection API introduced in LangChain v1.3. Event streaming gives you separate iterators per projection (messages, values, tool calls, subgraphs) so you can consume them independently instead of branching on `stream_mode` chunks.
-</Tip>
+> [!TIP]
+>
+> For new applications, we recommend [event streaming](/oss/javascript/langchain/event-streaming)—the typed-projection API introduced in LangChain v1.3. Event streaming gives you separate iterators per projection (messages, values, tool calls, subgraphs) so you can consume them independently instead of branching on `stream_mode` chunks.
 
 LangChain implements a streaming system to surface real-time updates.
 
@@ -18,17 +18,17 @@ LangChain's streaming system lets you surface live feedback from agent runs to y
 
 What's possible with LangChain streaming:
 
-* <Icon icon="brain" /> [**Stream agent progress**](#agent-progress)—get state updates after each agent step.
-* <Icon icon="binary" /> [**Stream LLM tokens**](#llm-tokens)—stream language model tokens as they're generated.
-* <Icon icon="bulb" /> [**Stream thinking / reasoning tokens**](#streaming-thinking-/-reasoning-tokens)—surface model reasoning as it's generated.
-* <Icon icon="table" /> [**Stream custom updates**](#custom-updates)—emit user-defined signals (e.g., `"Fetched 10/100 records"`).
-* <Icon icon="stack-push" /> [**Stream multiple modes**](#stream-multiple-modes)—choose from `updates` (agent progress), `messages` (LLM tokens + metadata), or `custom` (arbitrary user data).
+* &#x20;[**Stream agent progress**](#agent-progress)—get state updates after each agent step.
+* &#x20;[**Stream LLM tokens**](#llm-tokens)—stream language model tokens as they're generated.
+* &#x20;[**Stream thinking / reasoning tokens**](#streaming-thinking-/-reasoning-tokens)—surface model reasoning as it's generated.
+* &#x20;[**Stream custom updates**](#custom-updates)—emit user-defined signals (e.g., `"Fetched 10/100 records"`).
+* &#x20;[**Stream multiple modes**](#stream-multiple-modes)—choose from `updates` (agent progress), `messages` (LLM tokens + metadata), or `custom` (arbitrary user data).
 
 See the [common patterns](#common-patterns) section below for additional end-to-end examples.
 
 ## Supported stream modes
 
-Pass one or more of the following stream modes as a list to the [`stream`](https://reference.langchain.com/javascript/classes/_langchain_langgraph.index.CompiledStateGraph.html#stream) method:
+Pass one or more of the following stream modes as a list to the [`stream`](https://reference.langchain.com/javascript/langchain-langgraph/index/CompiledStateGraph/stream) method:
 
 | Mode | Description |
 | - | - |
@@ -38,7 +38,7 @@ Pass one or more of the following stream modes as a list to the [`stream`](https
 
 ## Agent progress
 
-To stream agent progress, use the [`stream`](https://reference.langchain.com/javascript/classes/_langchain_langgraph.index.CompiledStateGraph.html#stream) method with `streamMode: "updates"`. This emits an event after every agent step.
+To stream agent progress, use the [`stream`](https://reference.langchain.com/javascript/langchain-langgraph/index/CompiledStateGraph/stream) method with `streamMode: "updates"`. This emits an event after every agent step.
 
 For example, if you have an agent that calls a tool once, you should see the following updates:
 
@@ -48,386 +48,384 @@ For example, if you have an agent that calls a tool once, you should see the fol
 
 Pass a `thread_id` via `configurable` so the conversation is checkpointed and follow-up turns can resume the same history. `thread_id` is independent of `streamMode`; you can also pass `context` alongside it for per-run data your tools read from `runtime.context`.
 
-<CodeGroup>
-  ```ts Google theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  import { createAgent, tool } from "langchain";
-  import { uuid7 } from "langsmith";
-  import { MemorySaver } from "@langchain/langgraph";
-  import z from "zod";
+```ts Google theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+import { createAgent, tool } from "langchain";
+import { uuid7 } from "langsmith";
+import { MemorySaver } from "@langchain/langgraph";
+import z from "zod";
 
-  const getWeather = tool(
-    async ({ city }) => {
-      return `The weather in ${city} is always sunny!`;
-    },
-    {
-      name: "get_weather",
-      description: "Get weather for a given city.",
-      schema: z.object({
-        city: z.string(),
-      }),
-    },
-  );
+const getWeather = tool(
+  async ({ city }) => {
+    return `The weather in ${city} is always sunny!`;
+  },
+  {
+    name: "get_weather",
+    description: "Get weather for a given city.",
+    schema: z.object({
+      city: z.string(),
+    }),
+  },
+);
 
-  const agent = createAgent({
-    model: "google:gemini-3.6-flash",
-    tools: [getWeather],
-    checkpointer: new MemorySaver(),
-  });
+const agent = createAgent({
+  model: "google:gemini-3.6-flash",
+  tools: [getWeather],
+  checkpointer: new MemorySaver(),
+});
 
-  const config = { configurable: { thread_id: uuid7() } };
+const config = { configurable: { thread_id: uuid7() } };
 
-  const stream = await agent.streamEvents(
-    { messages: [{ role: "user", content: "what is the weather in sf" }] },
-    { ...config, version: "v3" },
-  );
-  await Promise.all([
-    (async () => {
-      for await (const message of stream.messages) {
-        for await (const token of message.text) {
-          process.stdout.write(token);
-        }
+const stream = await agent.streamEvents(
+  { messages: [{ role: "user", content: "what is the weather in sf" }] },
+  { ...config, version: "v3" },
+);
+await Promise.all([
+  (async () => {
+    for await (const message of stream.messages) {
+      for await (const token of message.text) {
+        process.stdout.write(token);
       }
-    })(),
-    (async () => {
-      for await (const call of stream.toolCalls) {
-        console.log(`\nTool call: ${call.name}(${JSON.stringify(call.input)})`);
-        console.log(`Tool result: ${await call.output}`);
+    }
+  })(),
+  (async () => {
+    for await (const call of stream.toolCalls) {
+      console.log(`\nTool call: ${call.name}(${JSON.stringify(call.input)})`);
+      console.log(`Tool result: ${await call.output}`);
+    }
+  })(),
+]);
+
+const finalState = await stream.output;
+// Tool call: get_weather({"city":"San Francisco"})
+// Tool result: [object ToolMessage]
+// According to the data I have, the weather in San Francisco is always sunny! Would you like current conditions or a short forecast for today or the next few days?
+```
+
+```ts OpenAI theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+import { createAgent, tool } from "langchain";
+import { uuid7 } from "langsmith";
+import { MemorySaver } from "@langchain/langgraph";
+import z from "zod";
+
+const getWeather = tool(
+  async ({ city }) => {
+    return `The weather in ${city} is always sunny!`;
+  },
+  {
+    name: "get_weather",
+    description: "Get weather for a given city.",
+    schema: z.object({
+      city: z.string(),
+    }),
+  },
+);
+
+const agent = createAgent({
+  model: "openai:gpt-5.5",
+  tools: [getWeather],
+  checkpointer: new MemorySaver(),
+});
+
+const config = { configurable: { thread_id: uuid7() } };
+
+const stream = await agent.streamEvents(
+  { messages: [{ role: "user", content: "what is the weather in sf" }] },
+  { ...config, version: "v3" },
+);
+await Promise.all([
+  (async () => {
+    for await (const message of stream.messages) {
+      for await (const token of message.text) {
+        process.stdout.write(token);
       }
-    })(),
-  ]);
+    }
+  })(),
+  (async () => {
+    for await (const call of stream.toolCalls) {
+      console.log(`\nTool call: ${call.name}(${JSON.stringify(call.input)})`);
+      console.log(`Tool result: ${await call.output}`);
+    }
+  })(),
+]);
 
-  const finalState = await stream.output;
-  // Tool call: get_weather({"city":"San Francisco"})
-  // Tool result: [object ToolMessage]
-  // According to the data I have, the weather in San Francisco is always sunny! Would you like current conditions or a short forecast for today or the next few days?
-  ```
+const finalState = await stream.output;
+// Tool call: get_weather({"city":"San Francisco"})
+// Tool result: [object ToolMessage]
+// According to the data I have, the weather in San Francisco is always sunny! Would you like current conditions or a short forecast for today or the next few days?
+```
 
-  ```ts OpenAI theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  import { createAgent, tool } from "langchain";
-  import { uuid7 } from "langsmith";
-  import { MemorySaver } from "@langchain/langgraph";
-  import z from "zod";
+```ts Anthropic theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+import { createAgent, tool } from "langchain";
+import { uuid7 } from "langsmith";
+import { MemorySaver } from "@langchain/langgraph";
+import z from "zod";
 
-  const getWeather = tool(
-    async ({ city }) => {
-      return `The weather in ${city} is always sunny!`;
-    },
-    {
-      name: "get_weather",
-      description: "Get weather for a given city.",
-      schema: z.object({
-        city: z.string(),
-      }),
-    },
-  );
+const getWeather = tool(
+  async ({ city }) => {
+    return `The weather in ${city} is always sunny!`;
+  },
+  {
+    name: "get_weather",
+    description: "Get weather for a given city.",
+    schema: z.object({
+      city: z.string(),
+    }),
+  },
+);
 
-  const agent = createAgent({
-    model: "openai:gpt-5.5",
-    tools: [getWeather],
-    checkpointer: new MemorySaver(),
-  });
+const agent = createAgent({
+  model: "anthropic:claude-sonnet-5",
+  tools: [getWeather],
+  checkpointer: new MemorySaver(),
+});
 
-  const config = { configurable: { thread_id: uuid7() } };
+const config = { configurable: { thread_id: uuid7() } };
 
-  const stream = await agent.streamEvents(
-    { messages: [{ role: "user", content: "what is the weather in sf" }] },
-    { ...config, version: "v3" },
-  );
-  await Promise.all([
-    (async () => {
-      for await (const message of stream.messages) {
-        for await (const token of message.text) {
-          process.stdout.write(token);
-        }
+const stream = await agent.streamEvents(
+  { messages: [{ role: "user", content: "what is the weather in sf" }] },
+  { ...config, version: "v3" },
+);
+await Promise.all([
+  (async () => {
+    for await (const message of stream.messages) {
+      for await (const token of message.text) {
+        process.stdout.write(token);
       }
-    })(),
-    (async () => {
-      for await (const call of stream.toolCalls) {
-        console.log(`\nTool call: ${call.name}(${JSON.stringify(call.input)})`);
-        console.log(`Tool result: ${await call.output}`);
+    }
+  })(),
+  (async () => {
+    for await (const call of stream.toolCalls) {
+      console.log(`\nTool call: ${call.name}(${JSON.stringify(call.input)})`);
+      console.log(`Tool result: ${await call.output}`);
+    }
+  })(),
+]);
+
+const finalState = await stream.output;
+// Tool call: get_weather({"city":"San Francisco"})
+// Tool result: [object ToolMessage]
+// According to the data I have, the weather in San Francisco is always sunny! Would you like current conditions or a short forecast for today or the next few days?
+```
+
+```ts OpenRouter theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+import { createAgent, tool } from "langchain";
+import { uuid7 } from "langsmith";
+import { MemorySaver } from "@langchain/langgraph";
+import z from "zod";
+
+const getWeather = tool(
+  async ({ city }) => {
+    return `The weather in ${city} is always sunny!`;
+  },
+  {
+    name: "get_weather",
+    description: "Get weather for a given city.",
+    schema: z.object({
+      city: z.string(),
+    }),
+  },
+);
+
+const agent = createAgent({
+  model: "openrouter:z-ai/glm-5.2",
+  tools: [getWeather],
+  checkpointer: new MemorySaver(),
+});
+
+const config = { configurable: { thread_id: uuid7() } };
+
+const stream = await agent.streamEvents(
+  { messages: [{ role: "user", content: "what is the weather in sf" }] },
+  { ...config, version: "v3" },
+);
+await Promise.all([
+  (async () => {
+    for await (const message of stream.messages) {
+      for await (const token of message.text) {
+        process.stdout.write(token);
       }
-    })(),
-  ]);
+    }
+  })(),
+  (async () => {
+    for await (const call of stream.toolCalls) {
+      console.log(`\nTool call: ${call.name}(${JSON.stringify(call.input)})`);
+      console.log(`Tool result: ${await call.output}`);
+    }
+  })(),
+]);
 
-  const finalState = await stream.output;
-  // Tool call: get_weather({"city":"San Francisco"})
-  // Tool result: [object ToolMessage]
-  // According to the data I have, the weather in San Francisco is always sunny! Would you like current conditions or a short forecast for today or the next few days?
-  ```
+const finalState = await stream.output;
+// Tool call: get_weather({"city":"San Francisco"})
+// Tool result: [object ToolMessage]
+// According to the data I have, the weather in San Francisco is always sunny! Would you like current conditions or a short forecast for today or the next few days?
+```
 
-  ```ts Anthropic theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  import { createAgent, tool } from "langchain";
-  import { uuid7 } from "langsmith";
-  import { MemorySaver } from "@langchain/langgraph";
-  import z from "zod";
+```ts Fireworks theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+import { createAgent, tool } from "langchain";
+import { uuid7 } from "langsmith";
+import { MemorySaver } from "@langchain/langgraph";
+import z from "zod";
 
-  const getWeather = tool(
-    async ({ city }) => {
-      return `The weather in ${city} is always sunny!`;
-    },
-    {
-      name: "get_weather",
-      description: "Get weather for a given city.",
-      schema: z.object({
-        city: z.string(),
-      }),
-    },
-  );
+const getWeather = tool(
+  async ({ city }) => {
+    return `The weather in ${city} is always sunny!`;
+  },
+  {
+    name: "get_weather",
+    description: "Get weather for a given city.",
+    schema: z.object({
+      city: z.string(),
+    }),
+  },
+);
 
-  const agent = createAgent({
-    model: "anthropic:claude-sonnet-5",
-    tools: [getWeather],
-    checkpointer: new MemorySaver(),
-  });
+const agent = createAgent({
+  model: "fireworks:accounts/fireworks/models/glm-5p2",
+  tools: [getWeather],
+  checkpointer: new MemorySaver(),
+});
 
-  const config = { configurable: { thread_id: uuid7() } };
+const config = { configurable: { thread_id: uuid7() } };
 
-  const stream = await agent.streamEvents(
-    { messages: [{ role: "user", content: "what is the weather in sf" }] },
-    { ...config, version: "v3" },
-  );
-  await Promise.all([
-    (async () => {
-      for await (const message of stream.messages) {
-        for await (const token of message.text) {
-          process.stdout.write(token);
-        }
+const stream = await agent.streamEvents(
+  { messages: [{ role: "user", content: "what is the weather in sf" }] },
+  { ...config, version: "v3" },
+);
+await Promise.all([
+  (async () => {
+    for await (const message of stream.messages) {
+      for await (const token of message.text) {
+        process.stdout.write(token);
       }
-    })(),
-    (async () => {
-      for await (const call of stream.toolCalls) {
-        console.log(`\nTool call: ${call.name}(${JSON.stringify(call.input)})`);
-        console.log(`Tool result: ${await call.output}`);
+    }
+  })(),
+  (async () => {
+    for await (const call of stream.toolCalls) {
+      console.log(`\nTool call: ${call.name}(${JSON.stringify(call.input)})`);
+      console.log(`Tool result: ${await call.output}`);
+    }
+  })(),
+]);
+
+const finalState = await stream.output;
+// Tool call: get_weather({"city":"San Francisco"})
+// Tool result: [object ToolMessage]
+// According to the data I have, the weather in San Francisco is always sunny! Would you like current conditions or a short forecast for today or the next few days?
+```
+
+```ts Baseten theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+import { createAgent, tool } from "langchain";
+import { uuid7 } from "langsmith";
+import { MemorySaver } from "@langchain/langgraph";
+import z from "zod";
+
+const getWeather = tool(
+  async ({ city }) => {
+    return `The weather in ${city} is always sunny!`;
+  },
+  {
+    name: "get_weather",
+    description: "Get weather for a given city.",
+    schema: z.object({
+      city: z.string(),
+    }),
+  },
+);
+
+const agent = createAgent({
+  model: "baseten:zai-org/GLM-5.2",
+  tools: [getWeather],
+  checkpointer: new MemorySaver(),
+});
+
+const config = { configurable: { thread_id: uuid7() } };
+
+const stream = await agent.streamEvents(
+  { messages: [{ role: "user", content: "what is the weather in sf" }] },
+  { ...config, version: "v3" },
+);
+await Promise.all([
+  (async () => {
+    for await (const message of stream.messages) {
+      for await (const token of message.text) {
+        process.stdout.write(token);
       }
-    })(),
-  ]);
+    }
+  })(),
+  (async () => {
+    for await (const call of stream.toolCalls) {
+      console.log(`\nTool call: ${call.name}(${JSON.stringify(call.input)})`);
+      console.log(`Tool result: ${await call.output}`);
+    }
+  })(),
+]);
 
-  const finalState = await stream.output;
-  // Tool call: get_weather({"city":"San Francisco"})
-  // Tool result: [object ToolMessage]
-  // According to the data I have, the weather in San Francisco is always sunny! Would you like current conditions or a short forecast for today or the next few days?
-  ```
+const finalState = await stream.output;
+// Tool call: get_weather({"city":"San Francisco"})
+// Tool result: [object ToolMessage]
+// According to the data I have, the weather in San Francisco is always sunny! Would you like current conditions or a short forecast for today or the next few days?
+```
 
-  ```ts OpenRouter theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  import { createAgent, tool } from "langchain";
-  import { uuid7 } from "langsmith";
-  import { MemorySaver } from "@langchain/langgraph";
-  import z from "zod";
+```ts Ollama theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+import { createAgent, tool } from "langchain";
+import { uuid7 } from "langsmith";
+import { MemorySaver } from "@langchain/langgraph";
+import z from "zod";
 
-  const getWeather = tool(
-    async ({ city }) => {
-      return `The weather in ${city} is always sunny!`;
-    },
-    {
-      name: "get_weather",
-      description: "Get weather for a given city.",
-      schema: z.object({
-        city: z.string(),
-      }),
-    },
-  );
+const getWeather = tool(
+  async ({ city }) => {
+    return `The weather in ${city} is always sunny!`;
+  },
+  {
+    name: "get_weather",
+    description: "Get weather for a given city.",
+    schema: z.object({
+      city: z.string(),
+    }),
+  },
+);
 
-  const agent = createAgent({
-    model: "openrouter:z-ai/glm-5.2",
-    tools: [getWeather],
-    checkpointer: new MemorySaver(),
-  });
+const agent = createAgent({
+  model: "ollama:north-mini-code-1.0",
+  tools: [getWeather],
+  checkpointer: new MemorySaver(),
+});
 
-  const config = { configurable: { thread_id: uuid7() } };
+const config = { configurable: { thread_id: uuid7() } };
 
-  const stream = await agent.streamEvents(
-    { messages: [{ role: "user", content: "what is the weather in sf" }] },
-    { ...config, version: "v3" },
-  );
-  await Promise.all([
-    (async () => {
-      for await (const message of stream.messages) {
-        for await (const token of message.text) {
-          process.stdout.write(token);
-        }
+const stream = await agent.streamEvents(
+  { messages: [{ role: "user", content: "what is the weather in sf" }] },
+  { ...config, version: "v3" },
+);
+await Promise.all([
+  (async () => {
+    for await (const message of stream.messages) {
+      for await (const token of message.text) {
+        process.stdout.write(token);
       }
-    })(),
-    (async () => {
-      for await (const call of stream.toolCalls) {
-        console.log(`\nTool call: ${call.name}(${JSON.stringify(call.input)})`);
-        console.log(`Tool result: ${await call.output}`);
-      }
-    })(),
-  ]);
+    }
+  })(),
+  (async () => {
+    for await (const call of stream.toolCalls) {
+      console.log(`\nTool call: ${call.name}(${JSON.stringify(call.input)})`);
+      console.log(`Tool result: ${await call.output}`);
+    }
+  })(),
+]);
 
-  const finalState = await stream.output;
-  // Tool call: get_weather({"city":"San Francisco"})
-  // Tool result: [object ToolMessage]
-  // According to the data I have, the weather in San Francisco is always sunny! Would you like current conditions or a short forecast for today or the next few days?
-  ```
+const finalState = await stream.output;
+// Tool call: get_weather({"city":"San Francisco"})
+// Tool result: [object ToolMessage]
+// According to the data I have, the weather in San Francisco is always sunny! Would you like current conditions or a short forecast for today or the next few days?
+```
 
-  ```ts Fireworks theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  import { createAgent, tool } from "langchain";
-  import { uuid7 } from "langsmith";
-  import { MemorySaver } from "@langchain/langgraph";
-  import z from "zod";
+> **[View example trace](https://smith.langchain.com/public/d4b012af-7fb4-4417-b327-e770969de2aa/r)**
+>
+> Open a public LangSmith run for this example.
 
-  const getWeather = tool(
-    async ({ city }) => {
-      return `The weather in ${city} is always sunny!`;
-    },
-    {
-      name: "get_weather",
-      description: "Get weather for a given city.",
-      schema: z.object({
-        city: z.string(),
-      }),
-    },
-  );
-
-  const agent = createAgent({
-    model: "fireworks:accounts/fireworks/models/glm-5p2",
-    tools: [getWeather],
-    checkpointer: new MemorySaver(),
-  });
-
-  const config = { configurable: { thread_id: uuid7() } };
-
-  const stream = await agent.streamEvents(
-    { messages: [{ role: "user", content: "what is the weather in sf" }] },
-    { ...config, version: "v3" },
-  );
-  await Promise.all([
-    (async () => {
-      for await (const message of stream.messages) {
-        for await (const token of message.text) {
-          process.stdout.write(token);
-        }
-      }
-    })(),
-    (async () => {
-      for await (const call of stream.toolCalls) {
-        console.log(`\nTool call: ${call.name}(${JSON.stringify(call.input)})`);
-        console.log(`Tool result: ${await call.output}`);
-      }
-    })(),
-  ]);
-
-  const finalState = await stream.output;
-  // Tool call: get_weather({"city":"San Francisco"})
-  // Tool result: [object ToolMessage]
-  // According to the data I have, the weather in San Francisco is always sunny! Would you like current conditions or a short forecast for today or the next few days?
-  ```
-
-  ```ts Baseten theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  import { createAgent, tool } from "langchain";
-  import { uuid7 } from "langsmith";
-  import { MemorySaver } from "@langchain/langgraph";
-  import z from "zod";
-
-  const getWeather = tool(
-    async ({ city }) => {
-      return `The weather in ${city} is always sunny!`;
-    },
-    {
-      name: "get_weather",
-      description: "Get weather for a given city.",
-      schema: z.object({
-        city: z.string(),
-      }),
-    },
-  );
-
-  const agent = createAgent({
-    model: "baseten:zai-org/GLM-5.2",
-    tools: [getWeather],
-    checkpointer: new MemorySaver(),
-  });
-
-  const config = { configurable: { thread_id: uuid7() } };
-
-  const stream = await agent.streamEvents(
-    { messages: [{ role: "user", content: "what is the weather in sf" }] },
-    { ...config, version: "v3" },
-  );
-  await Promise.all([
-    (async () => {
-      for await (const message of stream.messages) {
-        for await (const token of message.text) {
-          process.stdout.write(token);
-        }
-      }
-    })(),
-    (async () => {
-      for await (const call of stream.toolCalls) {
-        console.log(`\nTool call: ${call.name}(${JSON.stringify(call.input)})`);
-        console.log(`Tool result: ${await call.output}`);
-      }
-    })(),
-  ]);
-
-  const finalState = await stream.output;
-  // Tool call: get_weather({"city":"San Francisco"})
-  // Tool result: [object ToolMessage]
-  // According to the data I have, the weather in San Francisco is always sunny! Would you like current conditions or a short forecast for today or the next few days?
-  ```
-
-  ```ts Ollama theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  import { createAgent, tool } from "langchain";
-  import { uuid7 } from "langsmith";
-  import { MemorySaver } from "@langchain/langgraph";
-  import z from "zod";
-
-  const getWeather = tool(
-    async ({ city }) => {
-      return `The weather in ${city} is always sunny!`;
-    },
-    {
-      name: "get_weather",
-      description: "Get weather for a given city.",
-      schema: z.object({
-        city: z.string(),
-      }),
-    },
-  );
-
-  const agent = createAgent({
-    model: "ollama:north-mini-code-1.0",
-    tools: [getWeather],
-    checkpointer: new MemorySaver(),
-  });
-
-  const config = { configurable: { thread_id: uuid7() } };
-
-  const stream = await agent.streamEvents(
-    { messages: [{ role: "user", content: "what is the weather in sf" }] },
-    { ...config, version: "v3" },
-  );
-  await Promise.all([
-    (async () => {
-      for await (const message of stream.messages) {
-        for await (const token of message.text) {
-          process.stdout.write(token);
-        }
-      }
-    })(),
-    (async () => {
-      for await (const call of stream.toolCalls) {
-        console.log(`\nTool call: ${call.name}(${JSON.stringify(call.input)})`);
-        console.log(`Tool result: ${await call.output}`);
-      }
-    })(),
-  ]);
-
-  const finalState = await stream.output;
-  // Tool call: get_weather({"city":"San Francisco"})
-  // Tool result: [object ToolMessage]
-  // According to the data I have, the weather in San Francisco is always sunny! Would you like current conditions or a short forecast for today or the next few days?
-  ```
-</CodeGroup>
-
-<Card title="View example trace" icon="chart-line" href="https://smith.langchain.com/public/d4b012af-7fb4-4417-b327-e770969de2aa/r">
-  Open a public LangSmith run for this example.
-</Card>
-
-<Note>
-  Persisting conversation history with `thread_id` requires the agent to be configured with a [checkpointer](/oss/javascript/langchain/long-term-memory). On [LangSmith deployments](/langsmith/deployment) a checkpointer is provisioned automatically. Locally, pass one explicitly, for example `createAgent({ ..., checkpointer: new MemorySaver() })`. The remaining snippets on this page omit `thread_id` for brevity, but you should pass it in production.
-</Note>
+> [!NOTE]
+>
+> Persisting conversation history with `thread_id` requires the agent to be configured with a [checkpointer](/oss/javascript/langchain/long-term-memory). On [LangSmith deployments](/langsmith/deployment) a checkpointer is provisioned automatically. Locally, pass one explicitly, for example `createAgent({ ..., checkpointer: new MemorySaver() })`. The remaining snippets on this page omit `thread_id` for brevity, but you should pass it in production.
 
 ## LLM tokens
 
@@ -464,9 +462,9 @@ for await (const [token, metadata] of await agent.stream(
 }
 ```
 
-<Note>
-  **Wrapping an agent as a node in a parent `StateGraph`?** [`createAgent`](https://reference.langchain.com/javascript/langchain/index/createAgent) returns a `ReactAgent` wrapper; pass `agent.graph` when adding it as a node. Use `subgraphs: true` so message chunks include the subgraph namespace. See [Subgraph outputs](/oss/javascript/langgraph/streaming#subgraph-outputs).
-</Note>
+> [!NOTE]
+>
+> **Wrapping an agent as a node in a parent `StateGraph`?** [`createAgent`](https://reference.langchain.com/javascript/langchain/index/createAgent) returns a `ReactAgent` wrapper; pass `agent.graph` when adding it as a node. Use `subgraphs: true` so message chunks include the subgraph namespace. See [Subgraph outputs](/oss/javascript/langgraph/streaming#subgraph-outputs).
 
 ## Custom updates
 
@@ -512,9 +510,9 @@ Looking up data for city: San Francisco
 Acquired data for city: San Francisco
 ```
 
-<Note>
-  If you add the `writer` parameter to your tool, you won't be able to invoke the tool outside of a LangGraph execution context without providing a writer function.
-</Note>
+> [!NOTE]
+>
+> If you add the `writer` parameter to your tool, you won't be able to invoke the tool outside of a LangGraph execution context without providing a writer function.
 
 ## Stream multiple modes
 
@@ -565,13 +563,13 @@ Below are examples showing common use cases for streaming.
 
 Some models perform internal reasoning before producing a final answer. You can stream these thinking / reasoning tokens as they're generated by filtering [standard content blocks](/oss/javascript/langchain/messages#standard-content-blocks) for the `type` `"reasoning"`.
 
-<Note>
-  Reasoning output must be enabled on the model.
-
-  See the [reasoning section](/oss/javascript/langchain/models#reasoning) and your [provider's integration page](/oss/javascript/integrations/providers/overview) for configuration details.
-
-  To quickly check a model's reasoning support, see [models.dev](https://models.dev).
-</Note>
+> [!NOTE]
+>
+> Reasoning output must be enabled on the model.
+>
+> See the [reasoning section](/oss/javascript/langchain/models#reasoning) and your [provider's integration page](/oss/javascript/integrations/providers/overview) for configuration details.
+>
+> To quickly check a model's reasoning support, see [models.dev](https://models.dev).
 
 To stream thinking tokens from an agent, use `streamMode: "messages"` and filter for reasoning content blocks. Use a model instance (e.g. `ChatAnthropic`) with extended thinking enabled when the model supports it:
 
@@ -613,9 +611,9 @@ for await (const message of stream.messages) {
 }
 ```
 
-<Card title="View example trace" icon="chart-line" href="https://smith.langchain.com/public/1c167f24-489a-47da-b7df-0b4b21789d9b/r">
-  Open a public LangSmith run for this example.
-</Card>
+> **[View example trace](https://smith.langchain.com/public/1c167f24-489a-47da-b7df-0b4b21789d9b/r)**
+>
+> Open a public LangSmith run for this example.
 
 ```shell title="Output" theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 [thinking] The user is asking about the weather in San Francisco. I have a tool
@@ -647,13 +645,13 @@ const model = new ChatOpenAI({
 });
 ```
 
-<Tip>
-  When deploying to LangSmith, set `streaming=False` on any models whose output you don't want streamed to the client. This is configured in your graph code before deployment.
-</Tip>
+> [!TIP]
+>
+> When deploying to LangSmith, set `streaming=False` on any models whose output you don't want streamed to the client. This is configured in your graph code before deployment.
 
-<Note>
-  Not all chat model integrations support the `streaming` parameter. If your model doesn't support it, use `disableStreaming: true` instead. This parameter is available on all chat models via the base class.
-</Note>
+> [!NOTE]
+>
+> Not all chat model integrations support the `streaming` parameter. If your model doesn't support it, use `disableStreaming: true` instead. This parameter is available on all chat models via the base class.
 
 See the [LangGraph streaming guide](/oss/javascript/langgraph/streaming#disable-streaming-for-specific-chat-models) for more details.
 
@@ -668,12 +666,6 @@ See the [LangGraph streaming guide](/oss/javascript/langgraph/streaming#disable-
 
 ***
 
-<div>
-  <Callout icon="terminal-2">
-    [Connect these docs](/use-these-docs) to your agent of choice via MCP for real-time answers.
-  </Callout>
+[Connect these docs](/use-these-docs) to your agent of choice via MCP for real-time answers.
 
-  <Callout icon="edit">
-    [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/oss/langchain/streaming.mdx) or [file an issue](https://github.com/langchain-ai/docs/issues/new/choose).
-  </Callout>
-</div>
+[Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/oss/langchain/streaming.mdx) or [file an issue](https://github.com/langchain-ai/docs/issues/new/choose).

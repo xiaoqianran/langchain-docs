@@ -4,9 +4,9 @@
 
 Automatically retry a request against backup models when the primary model rate-limits, errors, or returns another configured status code.
 
-<Note>
-  The LLM Gateway is in [beta](/langsmith/release-stages).
-</Note>
+> [!NOTE]
+>
+> The LLM Gateway is in [beta](/langsmith/release-stages).
 
 Model fallbacks retry a request against one or more backup models when the primary model returns a configured error, such as a rate limit or provider outage. Define the fallback order once in LangSmith, then continue using the standard LLM Gateway endpoint and model ID in your application.
 
@@ -31,9 +31,9 @@ Each attempt is traced and counted against [spend policies](/langsmith/llm-gatew
 
 ## Create a fallback chain
 
-<Warning>
-  Creating and managing fallback chains requires `organization:manage` permission. For the full permissions breakdown, see [Access control](/langsmith/llm-gateway-access).
-</Warning>
+> [!WARNING]
+>
+> Creating and managing fallback chains requires `organization:manage` permission. For the full permissions breakdown, see [Access control](/langsmith/llm-gateway-access).
 
 To create a fallback chain:
 
@@ -51,21 +51,19 @@ A provider and model can have one fallback chain in each workspace. To change it
 
 Call the standard LLM Gateway endpoint with the primary provider-prefixed model ID. You do not need a route-specific URL or additional request fields:
 
-<CodeGroup>
-  ```bash Cloud theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  curl https://gateway.smith.langchain.com/v1/chat/completions \
-      -H "Authorization: Bearer $LANGSMITH_API_KEY" \
-      -H "Content-Type: application/json" \
-      -d '{"model":"anthropic/claude-opus-5","messages":[{"role":"user","content":"Hello!"}]}'
-  ```
+```bash Cloud theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+curl https://gateway.smith.langchain.com/v1/chat/completions \
+    -H "Authorization: Bearer $LANGSMITH_API_KEY" \
+    -H "Content-Type: application/json" \
+    -d '{"model":"anthropic/claude-opus-5","messages":[{"role":"user","content":"Hello!"}]}'
+```
 
-  ```bash BYOC theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  curl https://<data_plane_host>/gateway/v1/chat/completions \
-      -H "Authorization: Bearer $LANGSMITH_API_KEY" \
-      -H "Content-Type: application/json" \
-      -d '{"model":"anthropic/claude-opus-5","messages":[{"role":"user","content":"Hello!"}]}'
-  ```
-</CodeGroup>
+```bash BYOC theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+curl https://<data_plane_host>/gateway/v1/chat/completions \
+    -H "Authorization: Bearer $LANGSMITH_API_KEY" \
+    -H "Content-Type: application/json" \
+    -d '{"model":"anthropic/claude-opus-5","messages":[{"role":"user","content":"Hello!"}]}'
+```
 
 The gateway applies the fallback chain configured for `anthropic/claude-opus-5` in the API key's workspace. If no chain matches, the gateway returns the primary model's response without attempting a fallback.
 
@@ -83,7 +81,7 @@ To configure fallbacks for a prompt:
 
 3. [Create a prompt](/langsmith/create-a-prompt) in the Playground. Open **Model Configuration**, select **LangSmith Gateway** as the **Provider**, and enter `custom/<my_config_name>` in the **Model** field. Replace `<my_config_name>` with the saved configuration's name, without angle brackets. You can type the value even if it is not listed. Click **Apply**.
 
-   <img alt="Model Configuration dialog with LangSmith Gateway selected as the provider and custom/<my_config_name> entered in the Model field." />
+   ![Model Configuration dialog with LangSmith Gateway selected as the provider and custom/\<my\_config\_name> entered in the Model field.](https://mintcdn.com/langchain-5e9cc07a/fF0qKKSfCv3bTXzB/images/llm-gateway-prompt-model-configuration.png?fit=max\&auto=format\&n=fF0qKKSfCv3bTXzB\&q=85\&s=6d628cfacd6bfbee2162ba9c69207940)
 
 4. **Save** the prompt, then [pull it with its model](/langsmith/manage-prompts-programmatically#pull-a-prompt). In Python, set `include_model=True` when calling `client.pull_prompt` so the saved Gateway model configuration is included.
 
@@ -110,12 +108,6 @@ For example, configure `anthropic/claude-opus-5` as the primary model, `openai/g
 
 ***
 
-<div>
-  <Callout icon="terminal-2">
-    [Connect these docs](/use-these-docs) to your agent of choice via MCP for real-time answers.
-  </Callout>
+[Connect these docs](/use-these-docs) to your agent of choice via MCP for real-time answers.
 
-  <Callout icon="edit">
-    [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/llm-gateway-fallbacks.mdx) or [file an issue](https://github.com/langchain-ai/docs/issues/new/choose).
-  </Callout>
-</div>
+[Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/llm-gateway-fallbacks.mdx) or [file an issue](https://github.com/langchain-ai/docs/issues/new/choose).

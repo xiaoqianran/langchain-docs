@@ -20,7 +20,7 @@ If you are ready to install, start with the [deployment walkthrough](/langsmith/
 
 LangSmith on AWS deploys in two stages with one optional add-on. The infrastructure stage provisions the cloud foundation. The application stage installs the LangSmith Helm chart. The LangSmith Deployment add-on is opt-in and adds the host-backend, listener, and operator services for managing LangGraph applications from the UI.
 
-<img alt="LangSmith on AWS service layout" />
+![LangSmith on AWS service layout](https://mintcdn.com/langchain-5e9cc07a/D6uoP5M0BV8YGC-1/images/self-hosted-terraform/aws-architecture.png?fit=max\&auto=format\&n=D6uoP5M0BV8YGC-1\&q=85\&s=b5c82e77df6510b1c3d0d8589ffc4ae7)
 
 | Stage | Layer | What it adds |
 | - | - | - |
@@ -53,13 +53,13 @@ These pods run on every deployment. All write logs and metrics; the busier compo
 | `langsmith-ace-backend` | Async compute (dataset runs, evaluations, background jobs) | None | 1 to 5 | No | Postgres, Redis |
 | `langsmith-clickhouse` | Columnar store (trace spans, run metadata, eval results) | None | StatefulSet, single replica | No | EBS GP3 PVC |
 
-<Warning>
-  In-cluster ClickHouse is dev/POC only (single pod, no replication, no backups). For production use [LangChain Managed ClickHouse](/langsmith/langsmith-managed-clickhouse) or a self-managed external cluster.
-</Warning>
+> [!WARNING]
+>
+> In-cluster ClickHouse is dev/POC only (single pod, no replication, no backups). For production use [LangChain Managed ClickHouse](/langsmith/langsmith-managed-clickhouse) or a self-managed external cluster.
 
-<Note>
-  [SmithDB](https://www.langchain.com/blog/introducing-smithdb?utm_source=docs) is LangSmith's purpose-built observability backend, available for self-hosted starting with chart v16 (see [self-hosted support](/langsmith/smithdb-sdk-migration#about-self-hosted)). The AWS modules provision ClickHouse by default. Setting `enable_smithdb = true` also provisions SmithDB's dependencies: a dedicated metastore RDS PostgreSQL instance (with `smithdb_metastore_source = "create"`, the default), an S3 object-store bucket, an IRSA role, and Karpenter NodePools for NVMe instance-store nodes. ClickHouse stays enabled on chart v16 and v17. See [SmithDB](/langsmith/self-host-terraform-aws-deploy#smithdb) in the deployment guide.
-</Note>
+> [!NOTE]
+>
+> [SmithDB](https://www.langchain.com/blog/introducing-smithdb?utm_source=docs) is LangSmith's purpose-built observability backend, available for self-hosted starting with chart v16 (see [self-hosted support](/langsmith/smithdb-sdk-migration#about-self-hosted)). The AWS modules provision ClickHouse by default. Setting `enable_smithdb = true` also provisions SmithDB's dependencies: a dedicated metastore RDS PostgreSQL instance (with `smithdb_metastore_source = "create"`, the default), an S3 object-store bucket, an IRSA role, and Karpenter NodePools for NVMe instance-store nodes. ClickHouse stays enabled on chart v16 and v17. See [SmithDB](/langsmith/self-host-terraform-aws-deploy#smithdb) in the deployment guide.
 
 ### One-time jobs
 
@@ -403,12 +403,6 @@ kubectl run s3-test --rm -it --image=amazon/aws-cli -n langsmith \
 
 ***
 
-<div>
-  <Callout icon="terminal-2">
-    [Connect these docs](/use-these-docs) to your agent of choice via MCP for real-time answers.
-  </Callout>
+[Connect these docs](/use-these-docs) to your agent of choice via MCP for real-time answers.
 
-  <Callout icon="edit">
-    [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/self-host-terraform-aws-architecture.mdx) or [file an issue](https://github.com/langchain-ai/docs/issues/new/choose).
-  </Callout>
-</div>
+[Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/self-host-terraform-aws-architecture.mdx) or [file an issue](https://github.com/langchain-ai/docs/issues/new/choose).

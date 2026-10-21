@@ -69,9 +69,9 @@ These are network ACL requirements. Workload security groups and your egress con
 
 ## Create the VPC with Terraform
 
-<Note>
-  Using the Terraform module is optional. You can create the VPC with your own tooling and use the module as a reference to meet the [network requirements](#meet-the-network-requirements).
-</Note>
+> [!NOTE]
+>
+> Using the Terraform module is optional. You can create the VPC with your own tooling and use the module as a reference to meet the [network requirements](#meet-the-network-requirements).
 
 The [`byovpc` Terraform module](https://github.com/langchain-ai/terraform/tree/main/modules/byoc/aws/byovpc) creates a network aligned with the LangSmith data plane requirements. Use it to create a VPC, or configure an existing VPC to meet the [network requirements](#meet-the-network-requirements).
 
@@ -163,12 +163,6 @@ Deleting a data plane removes LangChain-managed resources. Your VPC and other cu
 
 ***
 
-<div>
-  <Callout icon="terminal-2">
-    [Connect these docs](/use-these-docs) to your agent of choice via MCP for real-time answers.
-  </Callout>
+[Connect these docs](/use-these-docs) to your agent of choice via MCP for real-time answers.
 
-  <Callout icon="edit">
-    [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/byoc-byovpc.mdx) or [file an issue](https://github.com/langchain-ai/docs/issues/new/choose).
-  </Callout>
-</div>
+[Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/byoc-byovpc.mdx) or [file an issue](https://github.com/langchain-ai/docs/issues/new/choose).

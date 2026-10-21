@@ -8,10 +8,10 @@ Adding middleware lets you intercept and modify requests and responses globally 
 
 Below is an example using FastAPI.
 
-<Note>
-  "Python only"
-  We currently only support custom middleware in Python deployments with `langgraph-api>=0.0.26`.
-</Note>
+> [!NOTE]
+>
+> "Python only"
+> We currently only support custom middleware in Python deployments with `langgraph-api>=0.0.26`.
 
 ## Create app
 
@@ -99,12 +99,6 @@ Now that you've added custom middleware to your deployment, you can use similar 
 
 ***
 
-<div>
-  <Callout icon="terminal-2">
-    [Connect these docs](/use-these-docs) to your agent of choice via MCP for real-time answers.
-  </Callout>
+[Connect these docs](/use-these-docs) to your agent of choice via MCP for real-time answers.
 
-  <Callout icon="edit">
-    [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/custom-middleware.mdx) or [file an issue](https://github.com/langchain-ai/docs/issues/new/choose).
-  </Callout>
-</div>
+[Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/custom-middleware.mdx) or [file an issue](https://github.com/langchain-ai/docs/issues/new/choose).

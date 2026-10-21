@@ -10,64 +10,52 @@ Prompts, retrieval context, skills, and task instructions change more often than
 
 ## Prompts
 
-<Columns>
-  <Card title="Create and update prompts" icon="edit" href="/langsmith/create-a-prompt">
-    Build prompts via the UI or SDK, configure settings, use tools, add multimodal inputs, and connect model providers.
-  </Card>
+> **[Create and update prompts](/langsmith/create-a-prompt)**
+>
+> Build prompts via the UI or SDK, configure settings, use tools, add multimodal inputs, and connect model providers.
 
-  <Card title="Manage prompts" icon="tags" href="/langsmith/manage-prompts">
-    Organize with tags, commit changes, trigger webhooks, and share through the public prompt hub.
-  </Card>
+> **[Manage prompts](/langsmith/manage-prompts)**
+>
+> Organize with tags, commit changes, trigger webhooks, and share through the public prompt hub.
 
-  <Card title="Explore the prompt hub" icon="folders" href="/langsmith/manage-prompts#public-prompt-hub">
-    Browse and manage prompt tags and discover community prompts from the LangChain Hub.
-  </Card>
+> **[Explore the prompt hub](/langsmith/manage-prompts#public-prompt-hub)**
+>
+> Browse and manage prompt tags and discover community prompts from the LangChain Hub.
 
-  <Card title="Open the Playground" icon="test-pipe" href="/langsmith/prompt-engineering-concepts#playground">
-    Test and experiment with prompts using custom endpoints and model configurations.
-  </Card>
+> **[Open the Playground](/langsmith/prompt-engineering-concepts#playground)**
+>
+> Test and experiment with prompts using custom endpoints and model configurations.
 
-  <Card title="Follow tutorials" icon="notebook" href="/langsmith/optimize-classifier">
-    Learn step-by-step techniques, like optimizing classifiers and advanced prompt engineering.
-  </Card>
-</Columns>
+> **[Follow tutorials](/langsmith/optimize-classifier)**
+>
+> Learn step-by-step techniques, like optimizing classifiers and advanced prompt engineering.
 
-<Callout type="info" icon="feather">
-  Use the **[Chat](/langsmith/chat)** in the Playground to optimize prompts, generate tools, and create output schemas with AI-powered assistance.
-</Callout>
+Use the **[Chat](/langsmith/chat)** in the Playground to optimize prompts, generate tools, and create output schemas with AI-powered assistance.
 
 ## Context Hub
 
-<Columns>
-  <Card title="Concepts" icon="bulb" href="/langsmith/context-engineering-concepts">
-    Learn the core concepts of context engineering: skills, agents, versioning, and sharing.
-  </Card>
+> **[Concepts](/langsmith/context-engineering-concepts)**
+>
+> Learn the core concepts of context engineering: skills, agents, versioning, and sharing.
 
-  <Card title="Use the Context Hub" icon="pointer" href="/langsmith/use-the-context-hub">
-    Create a context, view its files and history, and promote it to an environment.
-  </Card>
+> **[Use the Context Hub](/langsmith/use-the-context-hub)**
+>
+> Create a context, view its files and history, and promote it to an environment.
 
-  <Card title="Manage contexts with the SDK" icon="code" href="/langsmith/manage-contexts-sdk">
-    Push, pull, list, and delete agent and skill repos in the Context Hub programmatically.
-  </Card>
+> **[Manage contexts with the SDK](/langsmith/manage-contexts-sdk)**
+>
+> Push, pull, list, and delete agent and skill repos in the Context Hub programmatically.
 
-  <Card title="Configure commit webhooks" icon="webhook" href="/langsmith/context-hub-webhooks">
-    Send every agent and skill commit in your workspace to an external HTTPS endpoint.
-  </Card>
-</Columns>
+> **[Configure commit webhooks](/langsmith/context-hub-webhooks)**
+>
+> Send every agent and skill commit in your workspace to an external HTTPS endpoint.
 
-<Note>
-  To set up a LangSmith instance, visit the [Platform setup section](/langsmith/platform-setup) to choose between cloud, hybrid, or self-hosted. All options include observability, evaluation, prompt engineering, and deployment.
-</Note>
+> [!NOTE]
+>
+> To set up a LangSmith instance, visit the [Platform setup section](/langsmith/platform-setup) to choose between cloud, hybrid, or self-hosted. All options include observability, evaluation, prompt engineering, and deployment.
 
 ***
 
-<div>
-  <Callout icon="terminal-2">
-    [Connect these docs](/use-these-docs) to your agent of choice via MCP for real-time answers.
-  </Callout>
+[Connect these docs](/use-these-docs) to your agent of choice via MCP for real-time answers.
 
-  <Callout icon="edit">
-    [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/prompt-context-hub.mdx) or [file an issue](https://github.com/langchain-ai/docs/issues/new/choose).
-  </Callout>
-</div>
+[Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/prompt-context-hub.mdx) or [file an issue](https://github.com/langchain-ai/docs/issues/new/choose).

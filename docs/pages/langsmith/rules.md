@@ -11,13 +11,13 @@ Automation rules can trigger actions such as: adding traces to a dataset, adding
 * Post all traces with a low evaluator score to your webhook endpoint.
 * Upgrade all traces with errors for extended data retention.
 
-<Info>
-  To configure online evaluations, visit the [online evaluations](/langsmith/online-evaluations-llm-as-judge) page.
-</Info>
+> [!NOTE]
+>
+> To configure online evaluations, visit the [online evaluations](/langsmith/online-evaluations-llm-as-judge) page.
 
-<Note>
-  An automation rule can upgrade matching traces to [extended data retention](/langsmith/usage-and-billing#data-retention-auto-upgrades) when retention extension is enabled for that rule. This upgrade impacts trace pricing, but ensures that traces meeting your automation criteria (typically those most valuable for analysis) are preserved for investigation. Each action type has its own default, refer to the [action-level retention settings](#create-a-rule) for details. For the full retention model, see [data retention auto-upgrades](/langsmith/usage-and-billing#data-retention-auto-upgrades).
-</Note>
+> [!NOTE]
+>
+> An automation rule can upgrade matching traces to [extended data retention](/langsmith/usage-and-billing#data-retention-auto-upgrades) when retention extension is enabled for that rule. This upgrade impacts trace pricing, but ensures that traces meeting your automation criteria (typically those most valuable for analysis) are preserved for investigation. Each action type has its own default, refer to the [action-level retention settings](#create-a-rule) for details. For the full retention model, see [data retention auto-upgrades](/langsmith/usage-and-billing#data-retention-auto-upgrades).
 
 ## How automation rules execute
 
@@ -89,9 +89,9 @@ In the [UI](https://smith.langchain.com?utm_source=docs\&utm_medium=cta\&utm_cam
 
 6. (Optional) Apply rule to past runs by toggling the **Apply to Past Runs** and entering a **Backfill From** date. This is only possible upon rule creation.
 
-   <Note>
-     The backfill is processed as a background job, so you will not see the results immediately. In order to track progress of the backfill, you can [view logs for your automations](#view-logs-for-your-automations).
-   </Note>
+   > [!NOTE]
+   >
+   > The backfill is processed as a background job, so you will not see the results immediately. In order to track progress of the backfill, you can [view logs for your automations](#view-logs-for-your-automations).
 
 7. Select the action the rule performs. Rules with the **Runs** item type support every action below. Rules with the **Threads** item type support only **Add to Annotation Queue**, **Add to Dataset**, and **Trigger Webhooks**.
 
@@ -100,18 +100,18 @@ In the [UI](https://smith.langchain.com?utm_source=docs\&utm_medium=cta\&utm_cam
    * **Trigger Webhooks**: Post the matched items to every [webhook](/langsmith/webhooks) URL configured on the rule.
    * **Extend Data Retention**: Extends the data retention period on matching traces that use base retention [(refer to the data retention docs for more details)](/langsmith/usage-and-billing#data-retention).
 
-     <Note>
-       Each action has an independent **Extend Data Retention** toggle that controls whether matching traces are upgraded to extended retention. The defaults are the same for both item types:
-
-       * **Add to Dataset**: opt-in (default: off). Enable the toggle to upgrade matching traces.
-       * **Add to Annotation Queue**: opt-out (default: on). Disable the toggle to skip upgrading matching traces.
-       * **Trigger Webhooks**: opt-in (default: off). Enable the toggle to upgrade matching traces.
-       * **Extend Data Retention** action and online/code evaluators: unchanged; always upgrade matching traces.
-
-       For a thread rule, an enabled toggle upgrades every trace in the matched thread. For more information, refer to [Extend data retention for a thread](#extend-data-retention-for-a-thread).
-
-       The retention toggle for each action is an admin-only control, gated by the [`rules:configure-retention`](/langsmith/organization-workspace-operations#rules) permission. Non-admin workspace members see the toggles as disabled and cannot change them, but can still create and edit rules without affecting retention settings. For the full retention model, refer to [data retention auto-upgrades](/langsmith/usage-and-billing#data-retention-auto-upgrades).
-     </Note>
+     > [!NOTE]
+     >
+     > Each action has an independent **Extend Data Retention** toggle that controls whether matching traces are upgraded to extended retention. The defaults are the same for both item types:
+     >
+     > * **Add to Dataset**: opt-in (default: off). Enable the toggle to upgrade matching traces.
+     > * **Add to Annotation Queue**: opt-out (default: on). Disable the toggle to skip upgrading matching traces.
+     > * **Trigger Webhooks**: opt-in (default: off). Enable the toggle to upgrade matching traces.
+     > * **Extend Data Retention** action and online/code evaluators: unchanged; always upgrade matching traces.
+     >
+     > For a thread rule, an enabled toggle upgrades every trace in the matched thread. For more information, refer to [Extend data retention for a thread](#extend-data-retention-for-a-thread).
+     >
+     > The retention toggle for each action is an admin-only control, gated by the [`rules:configure-retention`](/langsmith/organization-workspace-operations#rules) permission. Non-admin workspace members see the toggles as disabled and cannot change them, but can still create and edit rules without affecting retention settings. For the full retention model, refer to [data retention auto-upgrades](/langsmith/usage-and-billing#data-retention-auto-upgrades).
 
 ## View logs for your automations
 
@@ -126,12 +126,6 @@ The logs tab allows you to:
 
 ***
 
-<div>
-  <Callout icon="terminal-2">
-    [Connect these docs](/use-these-docs) to your agent of choice via MCP for real-time answers.
-  </Callout>
+[Connect these docs](/use-these-docs) to your agent of choice via MCP for real-time answers.
 
-  <Callout icon="edit">
-    [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/rules.mdx) or [file an issue](https://github.com/langchain-ai/docs/issues/new/choose).
-  </Callout>
-</div>
+[Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/rules.mdx) or [file an issue](https://github.com/langchain-ai/docs/issues/new/choose).

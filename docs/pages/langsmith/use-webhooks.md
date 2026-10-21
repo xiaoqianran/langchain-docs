@@ -2,9 +2,9 @@
 
 # Use webhooks
 
-<Note>
-  This page covers **LangGraph API webhooks**, a way to receive a POST callback when a specific run completes. If you are looking for **LangSmith automation webhooks** (triggered when automation rules match runs or threads), see [Configure webhook notifications for rules](/langsmith/webhooks).
-</Note>
+> [!NOTE]
+>
+> This page covers **LangGraph API webhooks**, a way to receive a POST callback when a specific run completes. If you are looking for **LangSmith automation webhooks** (triggered when automation rules match runs or threads), see [Configure webhook notifications for rules](/langsmith/webhooks).
 
 Webhooks enable event-driven communication from your LangSmith application to external services. For example, you may want to issue an update to a separate service once an API call to LangSmith has finished running.
 
@@ -34,42 +34,40 @@ In this guide, we’ll show how to trigger a webhook after streaming a run.
 
 Before making API calls, set up your assistant and thread.
 
-<Tabs>
-  <Tab title="Python">
-    ```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-    from langgraph_sdk import get_client
+**Python**
 
-    client = get_client(url=<DEPLOYMENT_URL>)
-    assistant_id = "agent"
-    thread = await client.threads.create()
-    print(thread)
-    ```
-  </Tab>
+```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+from langgraph_sdk import get_client
 
-  <Tab title="JavaScript">
-    ```js theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-    import { Client } from "@langchain/langgraph-sdk";
+client = get_client(url=<DEPLOYMENT_URL>)
+assistant_id = "agent"
+thread = await client.threads.create()
+print(thread)
+```
 
-    const client = new Client({ apiUrl: <DEPLOYMENT_URL> });
-    const assistantID = "agent";
-    const thread = await client.threads.create();
-    console.log(thread);
-    ```
-  </Tab>
+**JavaScript**
 
-  <Tab title="cURL">
-    ```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-    curl --request POST \
-        --url <DEPLOYMENT_URL>/assistants/search \
-        --header 'Content-Type: application/json' \
-        --data '{ "limit": 10, "offset": 0 }' | jq -c 'map(select(.config == null or .config == {})) | .[0]' && \
-    curl --request POST \
-        --url <DEPLOYMENT_URL>/threads \
-        --header 'Content-Type: application/json' \
-        --data '{}'
-    ```
-  </Tab>
-</Tabs>
+```js theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+import { Client } from "@langchain/langgraph-sdk";
+
+const client = new Client({ apiUrl: <DEPLOYMENT_URL> });
+const assistantID = "agent";
+const thread = await client.threads.create();
+console.log(thread);
+```
+
+**cURL**
+
+```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+curl --request POST \
+    --url <DEPLOYMENT_URL>/assistants/search \
+    --header 'Content-Type: application/json' \
+    --data '{ "limit": 10, "offset": 0 }' | jq -c 'map(select(.config == null or .config == {})) | .[0]' && \
+curl --request POST \
+    --url <DEPLOYMENT_URL>/threads \
+    --header 'Content-Type: application/json' \
+    --data '{}'
+```
 
 Example response:
 
@@ -91,54 +89,52 @@ To use a webhook, specify the `webhook` parameter in your API request. When the 
 
 For example, if your server listens for webhook events at `https://my-server.app/my-webhook-endpoint`, include this in your request:
 
-<Tabs>
-  <Tab title="Python">
-    ```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-    input = { "messages": [{ "role": "user", "content": "Hello!" }] }
+**Python**
 
-    async for chunk in client.runs.stream(
-        thread_id=thread["thread_id"],
-        assistant_id=assistant_id,
-        input=input,
-        stream_mode="events",
-        webhook="https://my-server.app/my-webhook-endpoint"
-    ):
-        pass
-    ```
-  </Tab>
+```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+input = { "messages": [{ "role": "user", "content": "Hello!" }] }
 
-  <Tab title="JavaScript">
-    ```js theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-    const input = { messages: [{ role: "human", content: "Hello!" }] };
+async for chunk in client.runs.stream(
+    thread_id=thread["thread_id"],
+    assistant_id=assistant_id,
+    input=input,
+    stream_mode="events",
+    webhook="https://my-server.app/my-webhook-endpoint"
+):
+    pass
+```
 
-    const streamResponse = client.runs.stream(
-      thread["thread_id"],
-      assistantID,
-      {
-        input: input,
-        webhook: "https://my-server.app/my-webhook-endpoint"
-      }
-    );
+**JavaScript**
 
-    for await (const chunk of streamResponse) {
-      // Handle stream output
-    }
-    ```
-  </Tab>
+```js theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+const input = { messages: [{ role: "human", content: "Hello!" }] };
 
-  <Tab title="cURL">
-    ```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-    curl --request POST \
-        --url <DEPLOYMENT_URL>/threads/<THREAD_ID>/runs/stream \
-        --header 'Content-Type: application/json' \
-        --data '{
-            "assistant_id": <ASSISTANT_ID>,
-            "input": {"messages": [{"role": "user", "content": "Hello!"}]},
-            "webhook": "https://my-server.app/my-webhook-endpoint"
-        }'
-    ```
-  </Tab>
-</Tabs>
+const streamResponse = client.runs.stream(
+  thread["thread_id"],
+  assistantID,
+  {
+    input: input,
+    webhook: "https://my-server.app/my-webhook-endpoint"
+  }
+);
+
+for await (const chunk of streamResponse) {
+  // Handle stream output
+}
+```
+
+**cURL**
+
+```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+curl --request POST \
+    --url <DEPLOYMENT_URL>/threads/<THREAD_ID>/runs/stream \
+    --header 'Content-Type: application/json' \
+    --data '{
+        "assistant_id": <ASSISTANT_ID>,
+        "input": {"messages": [{"role": "user", "content": "Hello!"}]},
+        "webhook": "https://my-server.app/my-webhook-endpoint"
+    }'
+```
 
 ## Webhook payload
 
@@ -216,9 +212,9 @@ Your server should extract and validate this token before processing requests.
 
 ## Add headers to webhook requests
 
-<Note>
-  Available in `langgraph-api>=0.5.36`.
-</Note>
+> [!NOTE]
+>
+> Available in `langgraph-api>=0.5.36`.
 
 You can configure static headers to include with all outbound webhook requests. This is useful for authentication, routing, or passing metadata to your webhook endpoint.
 
@@ -262,15 +258,15 @@ For security, only environment variables starting with `LG_WEBHOOK_` can be refe
 }
 ```
 
-<Note>
-  Missing required environment variables will block server startup, ensuring you don't deploy with incomplete configuration.
-</Note>
+> [!NOTE]
+>
+> Missing required environment variables will block server startup, ensuring you don't deploy with incomplete configuration.
 
 ## Restrict webhook destinations
 
-<Note>
-  Available in `langgraph-api>=0.5.36`.
-</Note>
+> [!NOTE]
+>
+> Available in `langgraph-api>=0.5.36`.
 
 For security or compliance purposes, you can restrict which URLs are valid webhook destinations using the `webhooks.url` configuration:
 
@@ -322,12 +318,6 @@ These tools help you verify that LangSmith is correctly triggering and sending w
 
 ***
 
-<div>
-  <Callout icon="terminal-2">
-    [Connect these docs](/use-these-docs) to your agent of choice via MCP for real-time answers.
-  </Callout>
+[Connect these docs](/use-these-docs) to your agent of choice via MCP for real-time answers.
 
-  <Callout icon="edit">
-    [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/use-webhooks.mdx) or [file an issue](https://github.com/langchain-ai/docs/issues/new/choose).
-  </Callout>
-</div>
+[Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/use-webhooks.mdx) or [file an issue](https://github.com/langchain-ai/docs/issues/new/choose).

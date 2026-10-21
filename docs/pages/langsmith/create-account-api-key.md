@@ -16,29 +16,27 @@ Use a tracing key to log [traces](/langsmith/observability-concepts#traces). Use
 
 To create a PAT or service key in the UI:
 
-<Steps>
-  <Step title="Open API Keys settings" icon="settings">
-    Navigate to the [**Settings** page](https://smith.langchain.com/settings) and select the **API Keys** section.
-  </Step>
+**1. Open API Keys settings**
 
-  <Step title="Configure the key type" icon="key">
-    For service keys, choose between an organization-scoped and workspace-scoped key. If the key is workspace-scoped, you must specify the workspaces.
+Navigate to the [**Settings** page](https://smith.langchain.com/settings) and select the **API Keys** section.
 
-    [Enterprise](/langsmith/pricing-plans) users can also [assign specific workspace roles](/langsmith/administration-overview#workspace-roles-rbac) to service keys, which adjusts their permissions independently of any user.
-  </Step>
+**2. Configure the key type**
 
-  <Step title="Set expiration" icon="calendar">
-    Set the key's expiration. The key becomes unusable after the number of days chosen, or never, if that is selected.
-  </Step>
+For service keys, choose between an organization-scoped and workspace-scoped key. If the key is workspace-scoped, you must specify the workspaces.
 
-  <Step title="Create the key" icon="circle-check">
-    Click **Create API Key.** LangSmith will display the API key only once, so make sure to copy it and store it in a safe place.
-  </Step>
-</Steps>
+[Enterprise](/langsmith/pricing-plans) users can also [assign specific workspace roles](/langsmith/administration-overview#workspace-roles-rbac) to service keys, which adjusts their permissions independently of any user.
 
-<Tip>
-  [Enterprise](/langsmith/pricing-plans) Organization Admins can edit the [role](/langsmith/administration-overview#workspace-roles-rbac) on an existing service key without rotating the key. On the [**Settings** page](https://smith.langchain.com/settings) **API Keys** section, switch to the **Service** tab and click any service key row to open the edit dialog. Update the workspace role (and, for organization-scoped keys, the org role) and click **Save**. The key string itself is unchanged.
-</Tip>
+**3. Set expiration**
+
+Set the key's expiration. The key becomes unusable after the number of days chosen, or never, if that is selected.
+
+**4. Create the key**
+
+Click **Create API Key.** LangSmith will display the API key only once, so make sure to copy it and store it in a safe place.
+
+> [!TIP]
+>
+> [Enterprise](/langsmith/pricing-plans) Organization Admins can edit the [role](/langsmith/administration-overview#workspace-roles-rbac) on an existing service key without rotating the key. On the [**Settings** page](https://smith.langchain.com/settings) **API Keys** section, switch to the **Service** tab and click any service key row to open the edit dialog. Update the workspace role (and, for organization-scoped keys, the org role) and click **Save**. The key string itself is unchanged.
 
 ## Deactivate or delete a personal access token
 
@@ -127,25 +125,21 @@ The create, list, and delete endpoints are available over HTTP. Generated SDK ke
 
 Install the SDK for your language:
 
-<Tabs>
-  <Tab title="Python">
-    <CodeGroup>
-      ```bash pip theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-      pip install langsmith
-      ```
+**Python**
 
-      ```bash uv theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-      uv add langsmith
-      ```
-    </CodeGroup>
-  </Tab>
+```bash pip theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+pip install langsmith
+```
 
-  <Tab title="TypeScript">
-    ```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-    npm install langsmith
-    ```
-  </Tab>
-</Tabs>
+```bash uv theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+uv add langsmith
+```
+
+**TypeScript**
+
+```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+npm install langsmith
+```
 
 For full details, refer to the [Python SDK](/langsmith/smith-python-sdk) or [JS/TS SDK](/langsmith/smith-js-ts-sdk) reference.
 
@@ -164,24 +158,44 @@ You may also need the following additional environment variables:
     <thead>
       <tr>
         <th>Region</th>
+
+        <th>
+          URL
+        </th>
       </tr>
     </thead>
 
     <tbody>
       <tr>
         <td>GCP US</td>
+
+        <td>
+          `https://api.smith.langchain.com`
+        </td>
       </tr>
 
       <tr>
         <td>GCP EU</td>
+
+        <td>
+          `https://eu.api.smith.langchain.com`
+        </td>
       </tr>
 
       <tr>
         <td>GCP APAC</td>
+
+        <td>
+          `https://apac.api.smith.langchain.com`
+        </td>
       </tr>
 
       <tr>
         <td>AWS US</td>
+
+        <td>
+          `https://aws.api.smith.langchain.com`
+        </td>
       </tr>
     </tbody>
   </table>
@@ -198,12 +212,6 @@ See [instructions for managing your organization via API](/langsmith/manage-orga
 
 ***
 
-<div>
-  <Callout icon="terminal-2">
-    [Connect these docs](/use-these-docs) to your agent of choice via MCP for real-time answers.
-  </Callout>
+[Connect these docs](/use-these-docs) to your agent of choice via MCP for real-time answers.
 
-  <Callout icon="edit">
-    [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/create-account-api-key.mdx) or [file an issue](https://github.com/langchain-ai/docs/issues/new/choose).
-  </Callout>
-</div>
+[Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/create-account-api-key.mdx) or [file an issue](https://github.com/langchain-ai/docs/issues/new/choose).

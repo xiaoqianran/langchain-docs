@@ -4,9 +4,9 @@
 
 Diagnose SmithDB failures, gather troubleshooting context, or disable and reset a SmithDB deployment on self-hosted LangSmith.
 
-<Note>
-  Keep ClickHouse configured and available throughout everything on this page. If no documented issue matches, contact LangChain through the [Support Portal](https://support.langchain.com/).
-</Note>
+> [!NOTE]
+>
+> Keep ClickHouse configured and available throughout everything on this page. If no documented issue matches, contact LangChain through the [Support Portal](https://support.langchain.com/).
 
 Use this page to diagnose SmithDB installation and migration failures, gather context before you escalate, or back SmithDB out of a deployment: return traffic to ClickHouse, disable the SmithDB services, and optionally remove SmithDB data.
 
@@ -60,21 +60,21 @@ The migration Job defaults to `backoffLimit: 3`, allowing retries before Kuberne
 
 If the Job failed from under-provisioning, adjust both `smithdb.migration.job.parallelism` and `smithdb.migration.job.resources` (`smithdb.migration.deployment.resources` on LangSmith 0.16). Preserve TaskDB, delete only the migration Job, and run the normal Helm upgrade. Deleting an active Job may leave a small amount of untracked object-storage data from in-flight writes. The recreated Job resumes progress tracked in TaskDB.
 
-<Warning>
-  When resetting the SmithDB metastore or object store, reset TaskDB too. The chart-managed TaskDB PVC is deleted by default when SmithDB is disabled. Clear an external or retained TaskDB manually, or stale migration state can cause work to be skipped.
-</Warning>
+> [!WARNING]
+>
+> When resetting the SmithDB metastore or object store, reset TaskDB too. The chart-managed TaskDB PVC is deleted by default when SmithDB is disabled. Clear an external or retained TaskDB manually, or stale migration state can cause work to be skipped.
 
-<Warning>
-  For validation failures, unclear causes, or issues other than under-provisioning, stop and escalate. Keep queries disabled and migration enabled. Preserve the failed Job, TaskDB, SmithDB metastore, and object storage. Contact LangChain through the [Support Portal](https://support.langchain.com/).
-</Warning>
+> [!WARNING]
+>
+> For validation failures, unclear causes, or issues other than under-provisioning, stop and escalate. Keep queries disabled and migration enabled. Preserve the failed Job, TaskDB, SmithDB metastore, and object storage. Contact LangChain through the [Support Portal](https://support.langchain.com/).
 
 ## Disable or reset SmithDB
 
 Use this section to route LangSmith traffic back to ClickHouse and disable the SmithDB services. For the installation and cutover sequence, see [Install LangSmith with SmithDB](/langsmith/self-host-smithdb-install).
 
-<Warning>
-  If a historical migration is active or its progress must be preserved, stop before disabling SmithDB. Disabling migration removes chart-managed TaskDB resources and, by default, its PVC. Contact LangChain through the [Support Portal](https://support.langchain.com/) if you need to preserve migration progress.
-</Warning>
+> [!WARNING]
+>
+> If a historical migration is active or its progress must be preserved, stop before disabling SmithDB. Disabling migration removes chart-managed TaskDB resources and, by default, its PVC. Contact LangChain through the [Support Portal](https://support.langchain.com/) if you need to preserve migration progress.
 
 If you re-enable SmithDB ingestion later, you need to run another migration to bring it back in sync with ClickHouse.
 
@@ -116,20 +116,14 @@ Apply the chart again. Separating traffic cutover from workload removal avoids r
 
 ### Step 3. (Optional) Remove SmithDB data
 
-<Danger>
-  This cleanup is destructive. Continue only after the SmithDB services are disabled and you no longer need the data for re-enablement, diagnosis, or recovery.
-</Danger>
+> [!CAUTION]
+>
+> This cleanup is destructive. Continue only after the SmithDB services are disabled and you no longer need the data for re-enablement, diagnosis, or recovery.
 
 Optionally remove the dedicated SmithDB object-storage data and PostgreSQL metastore. Re-enabling SmithDB after this cleanup requires recreating its supporting infrastructure and re-migrating data from ClickHouse.
 
 ***
 
-<div>
-  <Callout icon="terminal-2">
-    [Connect these docs](/use-these-docs) to your agent of choice via MCP for real-time answers.
-  </Callout>
+[Connect these docs](/use-these-docs) to your agent of choice via MCP for real-time answers.
 
-  <Callout icon="edit">
-    [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/self-host-smithdb-troubleshooting.mdx) or [file an issue](https://github.com/langchain-ai/docs/issues/new/choose).
-  </Callout>
-</div>
+[Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/self-host-smithdb-troubleshooting.mdx) or [file an issue](https://github.com/langchain-ai/docs/issues/new/choose).

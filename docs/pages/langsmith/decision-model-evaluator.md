@@ -8,9 +8,9 @@ A decision model evaluator uses a [decision model](/langsmith/online-evaluations
 
 This guide shows you how to define a decision model evaluator in the [LangSmith UI](https://smith.langchain.com?utm_source=docs\&utm_medium=cta\&utm_campaign=langsmith-signup\&utm_content=langsmith-decision-model-evaluator). You can use it on a dataset to [automatically run evaluations on experiments](/langsmith/bind-evaluator-to-dataset), or on a tracing project as an [online evaluator](/langsmith/online-evaluations-decision-models). To use an LLM as the judge instead, see [How to define an LLM-as-a-judge evaluator](/langsmith/llm-as-judge).
 
-<Note>
-  You can create decision model evaluators only in the LangSmith UI. The LangSmith SDKs do not support creating them yet.
-</Note>
+> [!NOTE]
+>
+> You can create decision model evaluators only in the LangSmith UI. The LangSmith SDKs do not support creating them yet.
 
 ## Step 1. Create the evaluator
 
@@ -71,12 +71,6 @@ On a dataset, the evaluator runs on each new experiment. On a tracing project, i
 
 ***
 
-<div>
-  <Callout icon="terminal-2">
-    [Connect these docs](/use-these-docs) to your agent of choice via MCP for real-time answers.
-  </Callout>
+[Connect these docs](/use-these-docs) to your agent of choice via MCP for real-time answers.
 
-  <Callout icon="edit">
-    [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/decision-model-evaluator.mdx) or [file an issue](https://github.com/langchain-ai/docs/issues/new/choose).
-  </Callout>
-</div>
+[Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/decision-model-evaluator.mdx) or [file an issue](https://github.com/langchain-ai/docs/issues/new/choose).

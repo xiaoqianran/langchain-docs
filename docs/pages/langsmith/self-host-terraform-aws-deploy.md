@@ -81,9 +81,9 @@ For Linux, follow the [AWS CLI install guide](https://docs.aws.amazon.com/cli/la
 
 The IAM user or role running Terraform needs `AdministratorAccess`, or `PowerUserAccess` plus `IAMFullAccess`. The module creates IAM roles and policies for IRSA, so `PowerUserAccess` alone is not enough. For a scoped-down policy, refer to [`PERMISSIONS.md`](https://github.com/langchain-ai/terraform/blob/main/modules/aws/PERMISSIONS.md) in the module.
 
-<Tip>
-  Run `make preflight` from `modules/aws/` after you authenticate and create `infra/terraform.tfvars` (see [Clone and configure](#clone-and-configure)). The read-only checks confirm the CLI tools, the `tfvars` file, the active credentials, and the region, then probe read access to each AWS service the module uses. To also test that the credentials can create resources, run `make preflight ARGS="--create-test-resources"`.
-</Tip>
+> [!TIP]
+>
+> Run `make preflight` from `modules/aws/` after you authenticate and create `infra/terraform.tfvars` (see [Clone and configure](#clone-and-configure)). The read-only checks confirm the CLI tools, the `tfvars` file, the active credentials, and the region, then probe read access to each AWS service the module uses. To also test that the credentials can create resources, run `make preflight ARGS="--create-test-resources"`.
 
 ### Authenticate
 
@@ -122,15 +122,15 @@ Two independent settings control capacity:
 
 Size the infrastructure for your target tier before deploying. For per-tier recommendations, refer to [Scaling guidance](/langsmith/self-host-scale).
 
-<Note>
-  For production workloads, also plan to provision external [LangChain Managed ClickHouse](/langsmith/langsmith-managed-clickhouse) or a self-managed external ClickHouse cluster. In-cluster ClickHouse is supported for dev/POC only.
-</Note>
+> [!NOTE]
+>
+> For production workloads, also plan to provision external [LangChain Managed ClickHouse](/langsmith/langsmith-managed-clickhouse) or a self-managed external ClickHouse cluster. In-cluster ClickHouse is supported for dev/POC only.
 
 ## Quickstart
 
-<Tip>
-  For a condensed cheat sheet of `make` targets, required variables, and common constraints, see the [AWS quick reference](/langsmith/self-host-terraform-aws-quick-reference).
-</Tip>
+> [!TIP]
+>
+> For a condensed cheat sheet of `make` targets, required variables, and common constraints, see the [AWS quick reference](/langsmith/self-host-terraform-aws-quick-reference).
 
 For the fastest path from zero to a running LangSmith instance, run these commands in order:
 
@@ -203,9 +203,9 @@ cd terraform/modules/aws
 
 The `main` branch and `v0.17.*` release tags deploy LangSmith Helm chart v17, which this guide describes.
 
-<Note>
-  To stay on chart v16, run `git checkout release/0.16` or check out a `v0.16.*` tag. Callouts in this guide mark where chart v16 differs.
-</Note>
+> [!NOTE]
+>
+> To stay on chart v16, run `git checkout release/0.16` or check out a `v0.16.*` tag. Callouts in this guide mark where chart v16 differs.
 
 All subsequent commands run from `modules/aws/`. Run `make help` for the full target list.
 
@@ -251,15 +251,15 @@ langsmith_domain       = "langsmith.example.com"
 # acm_certificate_arn  = "arn:aws:acm:us-west-2:<account-id>:certificate/<cert-id>"  # optional with a domain
 ```
 
-<Note>
-  With a domain and no `acm_certificate_arn`, Terraform requests an ACM certificate, and `make apply` waits until DNS validation succeeds. With `dns_create_zone = true` (the default), Terraform creates a new hosted zone for `langsmith_domain`, and validation succeeds only after you delegate that zone's NS records from the parent domain. To validate in a zone that already resolves, set `dns_create_zone = false` and `dns_existing_zone_id`. To deploy before the delegation is in place, follow the staged deploy pattern in [Auto-provisioned DNS](/langsmith/self-host-terraform-aws-architecture#auto-provisioned-dns).
-</Note>
+> [!NOTE]
+>
+> With a domain and no `acm_certificate_arn`, Terraform requests an ACM certificate, and `make apply` waits until DNS validation succeeds. With `dns_create_zone = true` (the default), Terraform creates a new hosted zone for `langsmith_domain`, and validation succeeds only after you delegate that zone's NS records from the parent domain. To validate in a zone that already resolves, set `dns_create_zone = false` and `dns_existing_zone_id`. To deploy before the delegation is in place, follow the staged deploy pattern in [Auto-provisioned DNS](/langsmith/self-host-terraform-aws-architecture#auto-provisioned-dns).
 
 See the [AWS variables reference](/langsmith/self-host-terraform-aws-variables) for every input variable.
 
-<Tip>
-  Configure a remote state backend before applying. Copy `infra/backend.tf.example` to `infra/backend.tf` and set the S3 bucket, key, region, and DynamoDB lock table. Without it, Terraform keeps state locally.
-</Tip>
+> [!TIP]
+>
+> Configure a remote state backend before applying. Copy `infra/backend.tf.example` to `infra/backend.tf` and set the S3 bucket, key, region, and DynamoDB lock table. Without it, Terraform keeps state locally.
 
 ### Load secrets into SSM Parameter Store
 
@@ -339,9 +339,9 @@ make deploy
 
 `deploy.sh` installs the latest patch on the LangSmith Helm chart v17 line (`~0.17.0`) by default. To pin an exact patch, set `langsmith_helm_chart_version = "0.17.x"` in `terraform.tfvars`, or run `CHART_VERSION=0.17.x make deploy`. The environment variable wins over the `tfvars` setting. `deploy.sh` rejects versions off the v17 line, and Terraform validation rejects a `langsmith_helm_chart_version` off that line at plan time. `deploy.sh` also rejects values files that still use chart v15 keys (`config.insights`, `config.polly`, `backend.agentBootstrap`).
 
-<Note>
-  On chart v16, use a `v0.16.*` module release or the `release/0.16` branch. Those releases pin `~0.16.0` and accept only `0.16.x` versions. To move an existing chart v16 deployment to v17, follow [Upgrade from chart v16 to v17](#upgrade-from-chart-v16-to-v17).
-</Note>
+> [!NOTE]
+>
+> On chart v16, use a `v0.16.*` module release or the `release/0.16` branch. Those releases pin `~0.16.0` and accept only `0.16.x` versions. To move an existing chart v16 deployment to v17, follow [Upgrade from chart v16 to v17](#upgrade-from-chart-v16-to-v17).
 
 ### Verify
 
@@ -354,9 +354,9 @@ When all pods are `Running`, open the URL that `make deploy` printed. It uses `l
 
 ### Upgrade from chart v16 to v17
 
-<Warning>
-  Downgrading from chart v17 to v16 is not supported. Back up the database before you upgrade.
-</Warning>
+> [!WARNING]
+>
+> Downgrading from chart v17 to v16 is not supported. Back up the database before you upgrade.
 
 A deployment with `enable_sandboxes = false` and `enable_smithdb = false` only moves the chart pin. Sandboxes and SmithDB need the extra steps below. The module sets no Engine values, so if you enabled Engine in your own values overrides, also apply the Engine change in [Upgrade from v16 to v17](/langsmith/self-host-upgrades#upgrade-from-v16-to-v17).
 
@@ -412,9 +412,9 @@ For details on agent deployment, see [LangSmith Deployment](/langsmith/enable-se
 
 ### Fleet
 
-<Note>
-  Fleet is the current form of the feature formerly called Agent Builder. It requires LangSmith Helm chart v15 or later and the Fleet entitlement in your license.
-</Note>
+> [!NOTE]
+>
+> Fleet is the current form of the feature formerly called Agent Builder. It requires LangSmith Helm chart v15 or later and the Fleet entitlement in your license.
 
 Enable Fleet with `enable_fleet = true`. Fleet installs the host-backend it needs, so `enable_deployments` is optional.
 
@@ -432,9 +432,9 @@ Fleet reuses the `agent-builder-encryption-key` SSM parameter, so deployments th
 
 `sandbox-host` mounts JuiceFS itself, and a `juicefs-format` Job formats the volume. `make init-values` writes `sandboxes.juicefs.existingSecretName` pointing at the `juicefs-csi-config` Secret, sets `sandboxes.juicefs.hostMount.cacheDirs` to the local NVMe cache paths on sandbox-host nodes when there are any, and puts the IRSA role annotation on `sandboxes.sandboxHost.serviceAccount`.
 
-<Note>
-  On chart v16, the chart bundles the JuiceFS CSI driver instead. `make init-values` from a `v0.16.*` module release writes `sandboxes.juicefs.csi.existingSecretName` and puts the IRSA role annotation on `sandboxes.juicefs.csi.node.serviceAccount`. The `juicefs-csi-config` Secret is the same on both lines.
-</Note>
+> [!NOTE]
+>
+> On chart v16, the chart bundles the JuiceFS CSI driver instead. `make init-values` from a `v0.16.*` module release writes `sandboxes.juicefs.csi.existingSecretName` and puts the IRSA role annotation on `sandboxes.juicefs.csi.node.serviceAccount`. The `juicefs-csi-config` Secret is the same on both lines.
 
 To enable sandboxes on an existing deployment:
 
@@ -485,9 +485,9 @@ make tf ARGS="output bastion_ssm_command"
 aws ssm start-session --target <instance-id> --region us-west-2
 ```
 
-<Note>
-  The bastion runs in a private subnet with no public IP and reaches SSM through the NAT gateway. Setting `bastion_enable_ssh = true` moves it to a public subnet with a public IP. Set `bastion_existing_security_group_id` to attach your own security group. The bastion comes preinstalled with `kubectl`, `helm`, `terraform`, `git`, and `jq`, with kubeconfig already configured for the EKS cluster. Install the [Session Manager plugin](https://docs.aws.amazon.com/systems-manager/latest/userguide/session-manager-working-with-install-plugin.html) for the AWS CLI on your workstation.
-</Note>
+> [!NOTE]
+>
+> The bastion runs in a private subnet with no public IP and reaches SSM through the NAT gateway. Setting `bastion_enable_ssh = true` moves it to a public subnet with a public IP. Set `bastion_existing_security_group_id` to attach your own security group. The bastion comes preinstalled with `kubectl`, `helm`, `terraform`, `git`, and `jq`, with kubeconfig already configured for the EKS cluster. Install the [Session Manager plugin](https://docs.aws.amazon.com/systems-manager/latest/userguide/session-manager-working-with-install-plugin.html) for the AWS CLI on your workstation.
 
 ## Ingress, DNS, and TLS
 
@@ -504,9 +504,9 @@ Terraform rejects a configuration that turns on more than one of these.
 
 In ALB Ingress mode, the AWS Load Balancer Controller creates its own ALB, and the Terraform ALB goes unused. The Route 53 alias record that Terraform creates for `langsmith_domain` still points at the Terraform ALB, so point the domain at the Ingress hostname instead (`kubectl get ingress -n langsmith`).
 
-<Warning>
-  Deployments created before Envoy Gateway became the default, with no gateway flag set, switch to Envoy Gateway on the next `make apply`. To keep ALB Ingress, set `enable_envoy_gateway = false` before applying.
-</Warning>
+> [!WARNING]
+>
+> Deployments created before Envoy Gateway became the default, with no gateway flag set, switch to Envoy Gateway on the next `make apply`. To keep ALB Ingress, set `enable_envoy_gateway = false` before applying.
 
 `tls_certificate_source` selects the certificate:
 
@@ -518,9 +518,9 @@ For Let's Encrypt DNS-01 through Route 53, which Istio requires, set `create_cer
 
 With `langsmith_domain` set and `acm_certificate_arn` empty, `make apply` creates the ACM certificate and the Route 53 alias record. `make tls` does the same outside Terraform: it requests and DNS-validates a certificate, writes the alias record, and writes the certificate ARN to `terraform.tfvars`.
 
-<Warning>
-  Do not run `make tls` after `make apply` has created the certificate and alias for `langsmith_domain`. The ARN that `make tls` writes turns off the Terraform DNS module, so the next `make apply` destroys the Terraform certificate, the alias record, and the hosted zone if Terraform created it (`dns_create_zone = true`).
-</Warning>
+> [!WARNING]
+>
+> Do not run `make tls` after `make apply` has created the certificate and alias for `langsmith_domain`. The ARN that `make tls` writes turns off the Terraform DNS module, so the next `make apply` destroys the Terraform certificate, the alias record, and the hosted zone if Terraform created it (`dns_create_zone = true`).
 
 ### Split dataplane namespace
 
@@ -541,12 +541,6 @@ The manifest targets the `langsmith-agents` namespace; edit it for a different n
 
 ***
 
-<div>
-  <Callout icon="terminal-2">
-    [Connect these docs](/use-these-docs) to your agent of choice via MCP for real-time answers.
-  </Callout>
+[Connect these docs](/use-these-docs) to your agent of choice via MCP for real-time answers.
 
-  <Callout icon="edit">
-    [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/self-host-terraform-aws-deploy.mdx) or [file an issue](https://github.com/langchain-ai/docs/issues/new/choose).
-  </Callout>
-</div>
+[Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/self-host-terraform-aws-deploy.mdx) or [file an issue](https://github.com/langchain-ai/docs/issues/new/choose).

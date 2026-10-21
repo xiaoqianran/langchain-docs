@@ -6,101 +6,73 @@ The [Playground](/langsmith/prompt-engineering-concepts#playground) supports a w
 
 Use this page for a list of the available providers and their configuration options:
 
-<div>
-  <a href="#amazon-bedrock">
-    <img alt="" />
+![](https://mintcdn.com/langchain-5e9cc07a/ZPKed1feKJ8F6LVo/images/providers/light/bedrock.svg?fit=max\&auto=format\&n=ZPKed1feKJ8F6LVo\&q=85\&s=d6fc326f6c429075add5a742c87d12b1)
 
-    <img alt="" />
+Amazon Bedrock
 
-    <span>Amazon Bedrock</span>
-  </a>
+[Open](#amazon-bedrock)
 
-  <a href="#anthropic">
-    <img alt="" />
+![](https://mintcdn.com/langchain-5e9cc07a/ZPKed1feKJ8F6LVo/images/providers/light/anthropic.svg?fit=max\&auto=format\&n=ZPKed1feKJ8F6LVo\&q=85\&s=f681e2a9025c2e1104d4260c6b27d638)
 
-    <img alt="" />
+Anthropic
 
-    <span>Anthropic</span>
-  </a>
+[Open](#anthropic)
 
-  <a href="#azure-openai">
-    <img alt="" />
+![](https://mintcdn.com/langchain-5e9cc07a/ZPKed1feKJ8F6LVo/images/providers/light/microsoft.svg?fit=max\&auto=format\&n=ZPKed1feKJ8F6LVo\&q=85\&s=9189910834f230f7f94115d88e7ec4bf)
 
-    <img alt="" />
+Azure OpenAI
 
-    <span>Azure OpenAI</span>
-  </a>
+[Open](#azure-openai)
 
-  <a href="#deepseek">
-    <img alt="" />
+![](https://mintcdn.com/langchain-5e9cc07a/ZPKed1feKJ8F6LVo/images/providers/light/deepseek.svg?fit=max\&auto=format\&n=ZPKed1feKJ8F6LVo\&q=85\&s=5a11e956e2ba24fd746aebd929ee1a5e)
 
-    <img alt="" />
+DeepSeek
 
-    <span>DeepSeek</span>
-  </a>
+[Open](#deepseek)
 
-  <a href="#fireworks">
-    <img alt="" />
+![](https://mintcdn.com/langchain-5e9cc07a/ZPKed1feKJ8F6LVo/images/providers/light/fireworks.svg?fit=max\&auto=format\&n=ZPKed1feKJ8F6LVo\&q=85\&s=a0b3bbc0a57a2753099203eb71ed191b)
 
-    <img alt="" />
+Fireworks
 
-    <span>Fireworks</span>
-  </a>
+[Open](#fireworks)
 
-  <a href="#google-gemini">
-    <img alt="" />
+![](https://mintcdn.com/langchain-5e9cc07a/ZPKed1feKJ8F6LVo/images/providers/light/gemini.svg?fit=max\&auto=format\&n=ZPKed1feKJ8F6LVo\&q=85\&s=486f57c43a26c9661700c37d0f575c05)
 
-    <img alt="" />
+Google Gemini
 
-    <span>Google Gemini</span>
-  </a>
+[Open](#google-gemini)
 
-  <a href="#gemini-enterprise-agent-platform">
-    <img alt="" />
+![](https://mintcdn.com/langchain-5e9cc07a/ZPKed1feKJ8F6LVo/images/providers/light/gemini.svg?fit=max\&auto=format\&n=ZPKed1feKJ8F6LVo\&q=85\&s=486f57c43a26c9661700c37d0f575c05)
 
-    <img alt="" />
+Gemini Enterprise Agent Platform
 
-    <span>Gemini Enterprise Agent Platform</span>
-  </a>
+[Open](#gemini-enterprise-agent-platform)
 
-  <a href="#groq">
-    <img alt="" />
+![](https://mintcdn.com/langchain-5e9cc07a/ZPKed1feKJ8F6LVo/images/providers/light/groq.svg?fit=max\&auto=format\&n=ZPKed1feKJ8F6LVo\&q=85\&s=3f3d47f8a0619a4b2a81ecf11743caf1)
 
-    <img alt="" />
+Groq
 
-    <span>Groq</span>
-  </a>
+[Open](#groq)
 
-  <a href="#mistral-ai">
-    <img alt="" />
+![](https://mintcdn.com/langchain-5e9cc07a/ZPKed1feKJ8F6LVo/images/providers/light/mistral.svg?fit=max\&auto=format\&n=ZPKed1feKJ8F6LVo\&q=85\&s=2b060bfbf269ab1b7f41f3a835f7a0b6)
 
-    <img alt="" />
+Mistral AI
 
-    <span>Mistral AI</span>
-  </a>
+[Open](#mistral-ai)
 
-  <a href="#openai">
-    <img alt="" />
+![](https://mintcdn.com/langchain-5e9cc07a/ZPKed1feKJ8F6LVo/images/providers/light/openai.svg?fit=max\&auto=format\&n=ZPKed1feKJ8F6LVo\&q=85\&s=fb29ba01edf0644930f3eda68ab6c0c2)
 
-    <img alt="" />
+OpenAI
 
-    <span>OpenAI</span>
-  </a>
+[Open](#openai)
 
-  <a href="#openai-compatible-endpoint">
-    <Icon icon="link" />
+[OpenAI compatible endpoint](#openai-compatible-endpoint)
 
-    <span>OpenAI compatible endpoint</span>
-  </a>
+![](https://mintcdn.com/langchain-5e9cc07a/z7oQGiHwXv52HwOy/images/providers/light/xai.svg?fit=max\&auto=format\&n=z7oQGiHwXv52HwOy\&q=85\&s=9e2e1244434658c80b07b419d4af6db9)
 
-  <a href="#xai">
-    <img alt="" />
+XAI
 
-    <img alt="" />
-
-    <span>XAI</span>
-  </a>
-</div>
+[Open](#xai)
 
 For details on creating and managing model configurations, refer to the [Configure prompt settings](/langsmith/managing-model-configurations) page.
 
@@ -114,9 +86,9 @@ Amazon Bedrock supports three authentication methods. **IAM trusted entity is th
 
 #### IAM trusted entity (recommended)
 
-<Note>
-  **Not available for [self-hosted LangSmith](/langsmith/self-hosted) or [BYOC](/langsmith/byoc).** Use access keys or the Bedrock API key instead.
-</Note>
+> [!NOTE]
+>
+> **Not available for [self-hosted LangSmith](/langsmith/self-hosted) or [BYOC](/langsmith/byoc).** Use access keys or the Bedrock API key instead.
 
 With IAM trusted entity authentication, you create an IAM role in your AWS account and allow LangSmith to assume it. No access keys are stored in LangSmith. Instead, LangSmith uses [AWS STS](https://docs.aws.amazon.com/STS/latest/APIReference/welcome.html) to assume the role on each request.
 
@@ -145,13 +117,13 @@ To set this up:
 }
 ```
 
-<Tip>
-  You can find your workspace ID in your [LangSmith workspace settings](https://smith.langchain.com/settings).
-</Tip>
+> [!TIP]
+>
+> You can find your workspace ID in your [LangSmith workspace settings](https://smith.langchain.com/settings).
 
 3. In the LangSmith Playground, open the Bedrock provider's secrets configuration by clicking the **Key** icon (the IAM Trusted Entity option is not available in the model configuration dropdown itself). Then expand the **IAM Trusted Entity** section and enter the ARN of the role you created.
 
-   <img alt="Bedrock secrets and API keys configuration with the IAM Trusted Entity section" />
+   ![Bedrock secrets and API keys configuration with the IAM Trusted Entity section](https://mintcdn.com/langchain-5e9cc07a/5xyMbImu-yvQUeiG/images/langsmith/bedrock-secrets-config.png?fit=max\&auto=format\&n=5xyMbImu-yvQUeiG\&q=85\&s=5ba03ea30f7bba78bc51d0fa8e273878)
 
 For more details on trust policies, see the [AWS documentation](https://aws.amazon.com/blogs/security/how-to-use-trust-policies-with-iam-roles/).
 
@@ -164,11 +136,12 @@ Alternatively, you can authenticate with AWS access keys (`AWS_ACCESS_KEY_ID` an
 Bedrock API keys authenticate requests with a bearer token instead of AWS credentials. To configure a Bedrock API key:
 
 1. [Generate an API key](https://docs.aws.amazon.com/bedrock/latest/userguide/api-keys.html) in the Amazon Bedrock console.
-2. In LangSmith, go to **Settings** > **Provider Secrets**, add a new secret, and select **Amazon Bedrock** as the provider.
-3. Select **Bearer token** under **Authentication**.
-4. Enter the API key as `AWS_BEARER_TOKEN_BEDROCK`.
-5. (Optional) Set `AWS_BEDROCK_REGION`. The default is `us-east-1`.
-6. Select **Save**.
+2. In LangSmith, navigate to  **Settings** > **Integrations** > **Provider secrets** and select **+ Secret**.
+3. Under **Provider**, select **Amazon Bedrock**.
+4. Under **Authentication**, select **Bearer token**.
+5. Enter the API key as `AWS_BEARER_TOKEN_BEDROCK`.
+6. (Optional) Set `AWS_BEDROCK_REGION`. The default is `us-east-1`.
+7. Select **Save**.
 
 ### Available models
 
@@ -234,9 +207,9 @@ For the current list of available models, refer to the [Anthropic documentation]
 | **Top P** | 0.0 - 1.0 | Optional | Nucleus sampling (uncheck for model default) |
 | **Top K** | 1+ | Optional | Limits to top K tokens (uncheck for model default) |
 
-<Note>
-  Temperature, Top P, and Top K are optional. When unchecked, Claude uses its internal defaults.
-</Note>
+> [!NOTE]
+>
+> Temperature, Top P, and Top K are optional. When unchecked, Claude uses its internal defaults.
 
 #### Extended Thinking
 
@@ -273,9 +246,9 @@ In the Azure OpenAI provider configuration, enter your endpoint, deployment name
 
 #### Workload identity for self-hosted LangSmith
 
-<Note>
-  Azure OpenAI workload identity requires self-hosted LangSmith `0.16.58` or later on Azure Kubernetes Service (AKS).
-</Note>
+> [!NOTE]
+>
+> Azure OpenAI workload identity requires self-hosted LangSmith `0.16.58` or later on Azure Kubernetes Service (AKS).
 
 Use [AKS workload identity](https://learn.microsoft.com/en-us/azure/aks/workload-identity-overview) to authenticate without storing an API key:
 
@@ -469,9 +442,9 @@ The downloaded file looks like this:
 
 In the LangSmith Playground, open the Gemini Enterprise Agent Platform provider configuration and paste the **entire contents** of the downloaded JSON key file into the **Service Account JSON** field.
 
-<Warning>
-  Treat your service account JSON key like a password. Do not share it or commit it to source control. If a key is compromised, revoke it immediately from the [Google Cloud Console](https://console.cloud.google.com/iam-admin/serviceaccounts) and create a new one.
-</Warning>
+> [!WARNING]
+>
+> Treat your service account JSON key like a password. Do not share it or commit it to source control. If a key is compromised, revoke it immediately from the [Google Cloud Console](https://console.cloud.google.com/iam-admin/serviceaccounts) and create a new one.
 
 #### Workload identity for self-hosted LangSmith
 
@@ -589,9 +562,9 @@ Controls reasoning depth before responding. Higher effort = better quality for c
 | `high` | Deep reasoning |
 | `xhigh` | Extra deep reasoning (if supported by model) |
 
-<Note>
-  When reasoning\_effort is active (not `none`), temperature, top\_p, and penalties are automatically disabled.
-</Note>
+> [!NOTE]
+>
+> When reasoning\_effort is active (not `none`), temperature, top\_p, and penalties are automatically disabled.
 
 **Service Tier**: Available on newer models.
 
@@ -743,24 +716,16 @@ Set this when running experiments or evaluations to avoid hitting rate limits.
 
 ## Next steps
 
-<CardGroup>
-  <Card title="Configure prompt settings" icon="settings" href="/langsmith/managing-model-configurations">
-    Learn how to create and manage model configurations in the Playground.
-  </Card>
+> **[Configure prompt settings](/langsmith/managing-model-configurations)**
+>
+> Learn how to create and manage model configurations in the Playground.
 
-  <Card title="Create a prompt" icon="edit" href="/langsmith/create-a-prompt">
-    Get started building prompts with your chosen model provider.
-  </Card>
-</CardGroup>
+> **[Create a prompt](/langsmith/create-a-prompt)**
+>
+> Get started building prompts with your chosen model provider.
 
 ***
 
-<div>
-  <Callout icon="terminal-2">
-    [Connect these docs](/use-these-docs) to your agent of choice via MCP for real-time answers.
-  </Callout>
+[Connect these docs](/use-these-docs) to your agent of choice via MCP for real-time answers.
 
-  <Callout icon="edit">
-    [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/playground-model-providers.mdx) or [file an issue](https://github.com/langchain-ai/docs/issues/new/choose).
-  </Callout>
-</div>
+[Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/playground-model-providers.mdx) or [file an issue](https://github.com/langchain-ai/docs/issues/new/choose).

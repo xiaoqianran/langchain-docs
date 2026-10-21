@@ -6,9 +6,9 @@ Convert an agent built with create_deep_agent into a Managed Deep Agents project
 
 Managed Deep Agents runs the same [Deep Agents](/oss/python/deepagents/overview) harness you already build against, so moving an existing agent is a repackaging job rather than a rewrite. Your tools, middleware, and subagents carry over as they are. The agent entry changes, and the system prompt, skills, and memory move into project files.
 
-<Note>
-  Managed Deep Agents is in **public [beta](/langsmith/release-stages)** on [LangSmith Cloud](/langsmith/cloud).
-</Note>
+> [!NOTE]
+>
+> Managed Deep Agents is in **public [beta](/langsmith/release-stages)** on [LangSmith Cloud](/langsmith/cloud).
 
 ## Decide whether to move
 
@@ -43,40 +43,38 @@ Most agents move without changes beyond the entry file. Four cases need a decisi
 
 If none of these apply, the agent logic transfers as written.
 
-<Prompt description="Convert a Deep Agents project into a Managed Deep Agents project." icon="arrow-right">
-  Convert this codebase from a self-hosted Deep Agents agent into a Managed Deep Agents (MDA) project.
+Convert this codebase from a self-hosted Deep Agents agent into a Managed Deep Agents (MDA) project.
 
-  ## Step 1: Read the guide
+## Step 1: Read the guide
 
-  Fetch and follow [https://docs.langchain.com/langsmith/python/managed-deep-agents-migrate.md](https://docs.langchain.com/langsmith/python/managed-deep-agents-migrate.md) as the source of truth for the parameter mapping and project layout.
+Fetch and follow [https://docs.langchain.com/langsmith/python/managed-deep-agents-migrate.md](https://docs.langchain.com/langsmith/python/managed-deep-agents-migrate.md) as the source of truth for the parameter mapping and project layout.
 
-  ## Step 2: Add the SDK
+## Step 2: Add the SDK
 
-  Convert the project in place; do not run `mda init`, which only creates a new directory. Add `managed-deepagents` to the existing project manifest, pinned to the version `mda --version` reports, and leave every existing dependency alone.
+Convert the project in place; do not run `mda init`, which only creates a new directory. Add `managed-deepagents` to the existing project manifest, pinned to the version `mda --version` reports, and leave every existing dependency alone.
 
-  In Python, if the manifest sets `build-backend = "hatchling.build"`, also add `[tool.hatch.metadata] allow-direct-references = true`. `mda build` rewrites the requirement into a path reference that Hatchling otherwise rejects at install time.
+In Python, if the manifest sets `build-backend = "hatchling.build"`, also add `[tool.hatch.metadata] allow-direct-references = true`. `mda build` rewrites the requirement into a path reference that Hatchling otherwise rejects at install time.
 
-  ## Step 3: Move the configuration
+## Step 3: Move the configuration
 
-  Find the `create_deep_agent` (or `createDeepAgent`) call site, then:
+Find the `create_deep_agent` (or `createDeepAgent`) call site, then:
 
-  * Replace it with `define_deep_agent` (or `defineDeepAgent`) in `agent.py` (or `agent.ts`) at the project root, exporting a variable named `agent`. The definition call must live in that file, not be re-exported into it.
-  * Add a static `name`, which is required. Use a string matching `[a-zA-Z][a-zA-Z0-9_-]*`.
-  * Move the `system_prompt` text into `instructions.md` next to the agent entry, and remove the parameter.
-  * Move the files referenced by `skills` into `skills/<name>/SKILL.md`, and remove the parameter.
-  * Replace `memory` with a root `memory.py` (or `memory.ts`) exporting a variable named `memory` set to `define_memory(scope="agent")`, and remove the parameter. Leave the file out if the agent needs no durable memory. Warn the user that this mounts an empty tree and any existing memory content must be moved into `instructions.md` or a skill.
-  * Delete `backend`, `store`, and `checkpointer`. The runtime owns all three. If the agent used a sandbox backend, add a `sandbox/` declaration exporting `define_sandbox(...)` instead. The managed sandbox is the only backend Managed Deep Agents offers.
-  * Keep `model`, `tools`, `middleware`, `subagents`, `permissions`, `cache`, and `debug` as they are, along with the interrupt, response-format, and context-schema parameters under their existing names. Warn the user that a project declaring `sandbox/` runs with `permissions` cleared, because a filesystem permission rule disables the sandbox `execute` tool.
-  * Leave tool and middleware modules where they already live and keep importing them from the agent entry. Do not restructure the project.
+* Replace it with `define_deep_agent` (or `defineDeepAgent`) in `agent.py` (or `agent.ts`) at the project root, exporting a variable named `agent`. The definition call must live in that file, not be re-exported into it.
+* Add a static `name`, which is required. Use a string matching `[a-zA-Z][a-zA-Z0-9_-]*`.
+* Move the `system_prompt` text into `instructions.md` next to the agent entry, and remove the parameter.
+* Move the files referenced by `skills` into `skills/<name>/SKILL.md`, and remove the parameter.
+* Replace `memory` with a root `memory.py` (or `memory.ts`) exporting a variable named `memory` set to `define_memory(scope="agent")`, and remove the parameter. Leave the file out if the agent needs no durable memory. Warn the user that this mounts an empty tree and any existing memory content must be moved into `instructions.md` or a skill.
+* Delete `backend`, `store`, and `checkpointer`. The runtime owns all three. If the agent used a sandbox backend, add a `sandbox/` declaration exporting `define_sandbox(...)` instead. The managed sandbox is the only backend Managed Deep Agents offers.
+* Keep `model`, `tools`, `middleware`, `subagents`, `permissions`, `cache`, and `debug` as they are, along with the interrupt, response-format, and context-schema parameters under their existing names. Warn the user that a project declaring `sandbox/` runs with `permissions` cleared, because a filesystem permission rule disables the sandbox `execute` tool.
+* Leave tool and middleware modules where they already live and keep importing them from the agent entry. Do not restructure the project.
 
-  ## Step 4: Handle gaps explicitly
+## Step 4: Handle gaps explicitly
 
-  If the codebase passes `state_schema` in Python, builds a custom `BackendProtocol`, or wraps the agent in its own server routes or application code, stop and ask the user how to proceed. Managed Deep Agents does not accept these. Do not invent replacements.
+If the codebase passes `state_schema` in Python, builds a custom `BackendProtocol`, or wraps the agent in its own server routes or application code, stop and ask the user how to proceed. Managed Deep Agents does not accept these. Do not invent replacements.
 
-  ## Step 5: Verify
+## Step 5: Verify
 
-  Run `mda build`, then `mda dev`, and confirm the agent starts and answers a test message. `mda build` does not validate the definition call, so a leftover managed parameter only appears at graph load. Report anything that could not be migrated.
-</Prompt>
+Run `mda build`, then `mda dev`, and confirm the agent starts and answers a test message. `mda build` does not validate the definition call, so a leftover managed parameter only appears at graph load. Report anything that could not be migrated.
 
 ## Map the parameters
 
@@ -104,163 +102,161 @@ Convert the project in place. The existing layout, module structure, and depende
 
 To install the `mda` CLI first, see the [quickstart](/langsmith/python/managed-deep-agents-quickstart).
 
-<Steps>
-  <Step title="Add the SDK to the project">
-    ```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-    uv add managed-deepagents
-    ```
+**1. Add the SDK to the project**
 
-    Pin the version to match the CLI, which `mda --version` reports.
+```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+uv add managed-deepagents
+```
 
-    If the project builds with Hatchling, allow direct references in `pyproject.toml`:
+Pin the version to match the CLI, which `mda --version` reports.
 
-    ```toml pyproject.toml theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-    [tool.hatch.metadata]
-    allow-direct-references = true
-    ```
+If the project builds with Hatchling, allow direct references in `pyproject.toml`:
 
-    `mda build` rewrites the `managed-deepagents` requirement into a path reference to the runtime it stages, and Hatchling rejects that by default. Without the setting, `mda build` still succeeds and `mda dev` fails while installing the project, with `Dependency #N of field project.dependencies cannot be a direct reference`. Projects scaffolded by `mda init` declare no build backend, so the setting only comes up when converting an existing project.
+```toml pyproject.toml theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+[tool.hatch.metadata]
+allow-direct-references = true
+```
 
-    Leave every dependency the project already declares in place. Tools and middleware keep importing what they always did.
-  </Step>
+`mda build` rewrites the `managed-deepagents` requirement into a path reference to the runtime it stages, and Hatchling rejects that by default. Without the setting, `mda build` still succeeds and `mda dev` fails while installing the project, with `Dependency #N of field project.dependencies cannot be a direct reference`. Projects scaffolded by `mda init` declare no build backend, so the setting only comes up when converting an existing project.
 
-  <Step title="Rewrite the agent entry">
-    Convert the call site using the table above, in a file named `agent.py` at the project root:
+Leave every dependency the project already declares in place. Tools and middleware keep importing what they always did.
 
-    ```python agent.py (before) theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-    from deepagents import create_deep_agent
+**2. Rewrite the agent entry**
 
-    from tools.search import internet_search
+Convert the call site using the table above, in a file named `agent.py` at the project root:
 
-    agent = create_deep_agent(
-        model="openai:gpt-5.5",
-        tools=[internet_search],
-        system_prompt=SYSTEM_PROMPT,
-        skills=["/skills/research/"],
-        checkpointer=checkpointer,  # yours to construct and wire
-    )
-    ```
+```python agent.py (before) theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+from deepagents import create_deep_agent
 
-    ```python agent.py (after) theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-    from managed_deepagents import define_deep_agent
+from tools.search import internet_search
 
-    from tools.search import internet_search
+agent = create_deep_agent(
+    model="openai:gpt-5.5",
+    tools=[internet_search],
+    system_prompt=SYSTEM_PROMPT,
+    skills=["/skills/research/"],
+    checkpointer=checkpointer,  # yours to construct and wire
+)
+```
 
-    agent = define_deep_agent(
-        name="research-assistant",
-        model="openai:gpt-5.5",
-        tools=[internet_search],
-    )
-    ```
+```python agent.py (after) theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+from managed_deepagents import define_deep_agent
 
-    The entry must export a variable named `agent`, and the definition call itself has to live in this file. A root entry that re-exports the definition from another module fails, and the error names `name` rather than the real problem.
+from tools.search import internet_search
 
-    A `src/` layout is otherwise fine. Keep the packages where they are and import them from the root entry.
-  </Step>
+agent = define_deep_agent(
+    name="research-assistant",
+    model="openai:gpt-5.5",
+    tools=[internet_search],
+)
+```
 
-  <Step title="Move the prompt, skills, and memory into files">
-    Put the system prompt in `instructions.md` at the project root. Give each skill its own directory under `skills/` with a `SKILL.md`.
+The entry must export a variable named `agent`, and the definition call itself has to live in this file. A root entry that re-exports the definition from another module fails, and the error names `name` rather than the real problem.
 
-    If the agent needs memory that persists across threads, declare it in a root file exporting a variable named `memory`:
+A `src/` layout is otherwise fine. Keep the packages where they are and import them from the root entry.
 
-    ```python memory.py theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-    from managed_deepagents import define_memory
+**3. Move the prompt, skills, and memory into files**
 
-    memory = define_memory(scope="agent")
-    ```
+Put the system prompt in `instructions.md` at the project root. Give each skill its own directory under `skills/` with a `SKILL.md`.
 
-    Durable memory is opt-in, and a project without the file mounts none. The scope is the only knob: `"agent"` mounts one tree that every caller of the deployment shares. To control what the agent keeps there, write a memory policy into `instructions.md`. See [Guide what to remember](/langsmith/python/managed-deep-agents-memory#guide-what-to-remember).
+If the agent needs memory that persists across threads, declare it in a root file exporting a variable named `memory`:
 
-    <Warning>
-      `define_memory` mounts an empty memory tree. Content from the files the old `memory` parameter pointed at does not transfer, so move anything the agent still needs into `instructions.md` or a skill before deleting those files.
-    </Warning>
-  </Step>
+```python memory.py theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+from managed_deepagents import define_memory
 
-  <Step title="Declare a sandbox">
-    An agent that passed a sandbox `backend` needs a managed sandbox declaration instead. Create the directory and declare it:
+memory = define_memory(scope="agent")
+```
 
-    ```python sandbox/__init__.py theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-    from managed_deepagents import define_sandbox
+Durable memory is opt-in, and a project without the file mounts none. The scope is the only knob: `"agent"` mounts one tree that every caller of the deployment shares. To control what the agent keeps there, write a memory policy into `instructions.md`. See [Guide what to remember](/langsmith/python/managed-deep-agents-memory#guide-what-to-remember).
 
-    sandbox = define_sandbox(
-        idle_ttl_seconds=600,
-        default_timeout=600,
-    )
-    ```
+> [!WARNING]
+>
+> `define_memory` mounts an empty memory tree. Content from the files the old `memory` parameter pointed at does not transfer, so move anything the agent still needs into `instructions.md` or a skill before deleting those files.
 
-    <Warning>
-      Declaring a sandbox clears `permissions`. A filesystem permission rule disables the sandbox `execute` tool, so the runtime drops the rules rather than the shell. Restrict a sandboxed agent through the tools you give it instead.
-    </Warning>
+**4. Declare a sandbox**
 
-    To provision a snapshot, add `sandbox/setup.sh`. Skip this step for an agent that had no sandbox backend. See [Sandboxes](/langsmith/python/managed-deep-agents-sandboxes).
-  </Step>
+An agent that passed a sandbox `backend` needs a managed sandbox declaration instead. Create the directory and declare it:
 
-  <Step title="Declare identity">
-    (Optional) To give each caller private threads and downstream credentials, add a root identity declaration:
+```python sandbox/__init__.py theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+from managed_deepagents import define_sandbox
 
-    ```python identity.py theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-    from managed_deepagents import auth, define_identity
+sandbox = define_sandbox(
+    idle_ttl_seconds=600,
+    default_timeout=600,
+)
+```
 
-    identity = define_identity(auth=auth.langsmith_api_key())
-    ```
+> [!WARNING]
+>
+> Declaring a sandbox clears `permissions`. A filesystem permission rule disables the sandbox `execute` tool, so the runtime drops the rules rather than the shell. Restrict a sandboxed agent through the tools you give it instead.
 
-    Without the file the deployment runs with no managed auth, which `mda dev` reports as `Identity none`. See [Identity](/langsmith/python/managed-deep-agents-identity).
-  </Step>
+To provision a snapshot, add `sandbox/setup.sh`. Skip this step for an agent that had no sandbox backend. See [Sandboxes](/langsmith/python/managed-deep-agents-sandboxes).
 
-  <Step title="Set credentials and ignore the build output">
-    Put the model and tool API keys in a `.env` file at the project root. A value exported in your shell is not read. For shared workspace secrets and OAuth, use [connections](/langsmith/python/managed-deep-agents-connections) instead.
+**5. Declare identity**
 
-    Add the build directory to `.gitignore`:
+(Optional) To give each caller private threads and downstream credentials, add a root identity declaration:
 
-    ```text .gitignore theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-    .env
-    .env.*
-    .mda/
-    ```
+```python identity.py theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+from managed_deepagents import auth, define_identity
 
-    `mda build` copies the whole project root into `.mda/build`, and `mda deploy` uploads it. Anything sitting next to the agent entry ships with the agent, so move what the deployment does not need out of the project root.
-  </Step>
+identity = define_identity(auth=auth.langsmith_api_key())
+```
 
-  <Step title="Compile, then run">
-    Compile without deploying:
+Without the file the deployment runs with no managed auth, which `mda dev` reports as `Identity none`. See [Identity](/langsmith/python/managed-deep-agents-identity).
 
-    ```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-    mda build
-    ```
+**6. Set credentials and ignore the build output**
 
-    Then start it locally:
+Put the model and tool API keys in a `.env` file at the project root. A value exported in your shell is not read. For shared workspace secrets and OAuth, use [connections](/langsmith/python/managed-deep-agents-connections) instead.
 
-    ```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-    mda dev
-    ```
+Add the build directory to `.gitignore`:
 
-    <Note>
-      `mda build` does not inspect the definition call, so it exits 0 even when a managed parameter is still there. A leftover parameter surfaces when the graph loads under `mda dev`.
-    </Note>
+```text .gitignore theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+.env
+.env.*
+.mda/
+```
 
-    See [Local development](/langsmith/python/managed-deep-agents-local-development).
-  </Step>
+`mda build` copies the whole project root into `.mda/build`, and `mda deploy` uploads it. Anything sitting next to the agent entry ships with the agent, so move what the deployment does not need out of the project root.
 
-  <Step title="Deploy">
-    Upload the project and let LangSmith build and host it:
+**7. Compile, then run**
 
-    ```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-    mda deploy
-    ```
+Compile without deploying:
 
-    See [Deploy](/langsmith/python/managed-deep-agents-deploy).
-  </Step>
-</Steps>
+```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+mda build
+```
 
-<Tip>
-  Starting a new agent rather than moving one? Scaffold the whole project, including the identity, sandbox, `.env`, and `.gitignore` files above:
+Then start it locally:
 
-  ```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  mda init research-assistant
-  ```
+```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+mda dev
+```
 
-  The install channel selects the authoring language: the npm package scaffolds TypeScript, and the PyPI package scaffolds Python. The command creates a new directory and does not run in place, so it suits a greenfield project rather than a migration. See the [quickstart](/langsmith/python/managed-deep-agents-quickstart).
-</Tip>
+> [!NOTE]
+>
+> `mda build` does not inspect the definition call, so it exits 0 even when a managed parameter is still there. A leftover parameter surfaces when the graph loads under `mda dev`.
+
+See [Local development](/langsmith/python/managed-deep-agents-local-development).
+
+**8. Deploy**
+
+Upload the project and let LangSmith build and host it:
+
+```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+mda deploy
+```
+
+See [Deploy](/langsmith/python/managed-deep-agents-deploy).
+
+> [!TIP]
+>
+> Starting a new agent rather than moving one? Scaffold the whole project, including the identity, sandbox, `.env`, and `.gitignore` files above:
+>
+> ```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> mda init research-assistant
+> ```
+>
+> The install channel selects the authoring language: the npm package scaffolds TypeScript, and the PyPI package scaffolds Python. The command creates a new directory and does not run in place, so it suits a greenfield project rather than a migration. See the [quickstart](/langsmith/python/managed-deep-agents-quickstart).
 
 ## See also
 
@@ -271,12 +267,6 @@ To install the `mda` CLI first, see the [quickstart](/langsmith/python/managed-d
 
 ***
 
-<div>
-  <Callout icon="terminal-2">
-    [Connect these docs](/use-these-docs) to your agent of choice via MCP for real-time answers.
-  </Callout>
+[Connect these docs](/use-these-docs) to your agent of choice via MCP for real-time answers.
 
-  <Callout icon="edit">
-    [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/managed-deep-agents-migrate.mdx) or [file an issue](https://github.com/langchain-ai/docs/issues/new/choose).
-  </Callout>
-</div>
+[Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/managed-deep-agents-migrate.mdx) or [file an issue](https://github.com/langchain-ai/docs/issues/new/choose).

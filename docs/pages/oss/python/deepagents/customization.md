@@ -6,91 +6,89 @@ Learn how to customize Deep Agents with system prompts, tools, subagents, and mo
 
 Build the harness around your goal. `create_deep_agent` gives you a production-ready foundation: connect it to your data, shape its behavior, and add the capabilities your use case needs.
 
-<CodeGroup>
-  ```python Google theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  from deepagents import create_deep_agent
+```python Google theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+from deepagents import create_deep_agent
 
-  agent = create_deep_agent(
-      model="google_genai:gemini-3.6-flash",
-      system_prompt="You are a helpful assistant.",
-      tools=[search, fetch_url],
-      memory=["./AGENTS.md"],
-      skills=["./skills/"],
-  )
-  ```
+agent = create_deep_agent(
+    model="google_genai:gemini-3.6-flash",
+    system_prompt="You are a helpful assistant.",
+    tools=[search, fetch_url],
+    memory=["./AGENTS.md"],
+    skills=["./skills/"],
+)
+```
 
-  ```python OpenAI theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  from deepagents import create_deep_agent
+```python OpenAI theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+from deepagents import create_deep_agent
 
-  agent = create_deep_agent(
-      model="openai:gpt-5.5",
-      system_prompt="You are a helpful assistant.",
-      tools=[search, fetch_url],
-      memory=["./AGENTS.md"],
-      skills=["./skills/"],
-  )
-  ```
+agent = create_deep_agent(
+    model="openai:gpt-5.5",
+    system_prompt="You are a helpful assistant.",
+    tools=[search, fetch_url],
+    memory=["./AGENTS.md"],
+    skills=["./skills/"],
+)
+```
 
-  ```python Anthropic theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  from deepagents import create_deep_agent
+```python Anthropic theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+from deepagents import create_deep_agent
 
-  agent = create_deep_agent(
-      model="anthropic:claude-sonnet-5",
-      system_prompt="You are a helpful assistant.",
-      tools=[search, fetch_url],
-      memory=["./AGENTS.md"],
-      skills=["./skills/"],
-  )
-  ```
+agent = create_deep_agent(
+    model="anthropic:claude-sonnet-5",
+    system_prompt="You are a helpful assistant.",
+    tools=[search, fetch_url],
+    memory=["./AGENTS.md"],
+    skills=["./skills/"],
+)
+```
 
-  ```python OpenRouter theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  from deepagents import create_deep_agent
+```python OpenRouter theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+from deepagents import create_deep_agent
 
-  agent = create_deep_agent(
-      model="openrouter:z-ai/glm-5.2",
-      system_prompt="You are a helpful assistant.",
-      tools=[search, fetch_url],
-      memory=["./AGENTS.md"],
-      skills=["./skills/"],
-  )
-  ```
+agent = create_deep_agent(
+    model="openrouter:z-ai/glm-5.2",
+    system_prompt="You are a helpful assistant.",
+    tools=[search, fetch_url],
+    memory=["./AGENTS.md"],
+    skills=["./skills/"],
+)
+```
 
-  ```python Fireworks theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  from deepagents import create_deep_agent
+```python Fireworks theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+from deepagents import create_deep_agent
 
-  agent = create_deep_agent(
-      model="fireworks:accounts/fireworks/models/glm-5p2",
-      system_prompt="You are a helpful assistant.",
-      tools=[search, fetch_url],
-      memory=["./AGENTS.md"],
-      skills=["./skills/"],
-  )
-  ```
+agent = create_deep_agent(
+    model="fireworks:accounts/fireworks/models/glm-5p2",
+    system_prompt="You are a helpful assistant.",
+    tools=[search, fetch_url],
+    memory=["./AGENTS.md"],
+    skills=["./skills/"],
+)
+```
 
-  ```python Baseten theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  from deepagents import create_deep_agent
+```python Baseten theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+from deepagents import create_deep_agent
 
-  agent = create_deep_agent(
-      model="baseten:zai-org/GLM-5.2",
-      system_prompt="You are a helpful assistant.",
-      tools=[search, fetch_url],
-      memory=["./AGENTS.md"],
-      skills=["./skills/"],
-  )
-  ```
+agent = create_deep_agent(
+    model="baseten:zai-org/GLM-5.2",
+    system_prompt="You are a helpful assistant.",
+    tools=[search, fetch_url],
+    memory=["./AGENTS.md"],
+    skills=["./skills/"],
+)
+```
 
-  ```python Ollama theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  from deepagents import create_deep_agent
+```python Ollama theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+from deepagents import create_deep_agent
 
-  agent = create_deep_agent(
-      model="ollama:north-mini-code-1.0",
-      system_prompt="You are a helpful assistant.",
-      tools=[search, fetch_url],
-      memory=["./AGENTS.md"],
-      skills=["./skills/"],
-  )
-  ```
-</CodeGroup>
+agent = create_deep_agent(
+    model="ollama:north-mini-code-1.0",
+    system_prompt="You are a helpful assistant.",
+    tools=[search, fetch_url],
+    memory=["./AGENTS.md"],
+    skills=["./skills/"],
+)
+```
 
 | Parameter | What it does |
 | - | - |
@@ -109,644 +107,612 @@ Build the harness around your goal. `create_deep_agent` gives you a production-r
 | [`context_schema=`](/oss/python/deepagents/context-engineering#runtime-context) | Per-run runtime context schema (user IDs, API keys, feature flags) |
 | [profiles](#profiles) | Per-model defaults as a reusable bundle |
 
-<Accordion title="Full function signature">
-  ```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  create_deep_agent(
-      model: str | BaseChatModel | None = None,
-      tools: Sequence[BaseTool | Callable | dict[str, Any]] | None = None,
-      *,
-      system_prompt: str | SystemMessage | None = None,
-      middleware: Sequence[AgentMiddleware[StateT_co, ContextT]] = (),
-      subagents: Sequence[SubAgent | CompiledSubAgent | AsyncSubAgent] | None = None,
-      skills: list[str] | None = None,
-      memory: list[str] | None = None,
-      permissions: list[FilesystemPermission] | None = None,
-      backend: BackendProtocol | None = None,
-      interrupt_on: dict[str, bool | InterruptOnConfig] | None = None,
-      response_format: ResponseFormat[ResponseT] | type[ResponseT] | dict[str, Any] | None = None,
-      state_schema: type[DeepAgentState] | None = None,
-      context_schema: type[ContextT] | None = None,
-      checkpointer: Checkpointer | None = None,
-      store: BaseStore | None = None,
-      debug: bool = False,
-      name: str | None = None,
-      cache: BaseCache | None = None
-  ) -> CompiledStateGraph[AgentState[ResponseT], ContextT, InputAgentState, OutputAgentState[ResponseT]]
-  ```
-</Accordion>
+> **Full function signature**
+>
+> ```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> create_deep_agent(
+>     model: str | BaseChatModel | None = None,
+>     tools: Sequence[BaseTool | Callable | dict[str, Any]] | None = None,
+>     *,
+>     system_prompt: str | SystemMessage | None = None,
+>     middleware: Sequence[AgentMiddleware[StateT_co, ContextT]] = (),
+>     subagents: Sequence[SubAgent | CompiledSubAgent | AsyncSubAgent] | None = None,
+>     skills: list[str] | None = None,
+>     memory: list[str] | None = None,
+>     permissions: list[FilesystemPermission] | None = None,
+>     backend: BackendProtocol | None = None,
+>     interrupt_on: dict[str, bool | InterruptOnConfig] | None = None,
+>     response_format: ResponseFormat[ResponseT] | type[ResponseT] | dict[str, Any] | None = None,
+>     state_schema: type[DeepAgentState] | None = None,
+>     context_schema: type[ContextT] | None = None,
+>     checkpointer: Checkpointer | None = None,
+>     store: BaseStore | None = None,
+>     debug: bool = False,
+>     name: str | None = None,
+>     cache: BaseCache | None = None
+> ) -> CompiledStateGraph[AgentState[ResponseT], ContextT, InputAgentState, OutputAgentState[ResponseT]]
+> ```
 
 For the full parameter list, see the [`create_deep_agent`](https://reference.langchain.com/python/deepagents/graph/create_deep_agent) API reference. To compose a fully custom harness from scratch, see [Configure the harness](/oss/python/langchain/agents#configure-the-harness) or follow the step-by-step [Build a deep agent from scratch](/oss/python/langchain/deep-agent-from-scratch) guide.
 
-<Tip>
-  As you add tools, subagents, and backends, use [LangSmith](https://smith.langchain.com?utm_source=docs\&utm_medium=cta\&utm_campaign=langsmith-signup\&utm_content=oss-deepagents-customization) to trace how each piece behaves together. Follow the [observability quickstart](/langsmith/observability-quickstart) to get set up, and see [Going to production](/oss/python/deepagents/going-to-production) for deployment on LangSmith.
-
-  We recommend you also set up [LangSmith Engine](/langsmith/engine), which monitors your traces, detects issues, and proposes fixes.
-</Tip>
+> [!TIP]
+>
+> As you add tools, subagents, and backends, use [LangSmith](https://smith.langchain.com?utm_source=docs\&utm_medium=cta\&utm_campaign=langsmith-signup\&utm_content=oss-deepagents-customization) to trace how each piece behaves together. Follow the [observability quickstart](/langsmith/observability-quickstart) to get set up, and see [Going to production](/oss/python/deepagents/going-to-production) for deployment on LangSmith.
+>
+> We recommend you also set up [LangSmith Engine](/langsmith/engine), which monitors your traces, detects issues, and proposes fixes.
 
 ## Model
 
 Pass a `model` string in `provider:model` format, or an initialized model instance. See [supported models](/oss/python/deepagents/models#supported-models) for all providers and [suggested models](/oss/python/deepagents/models#suggested-models) for tested recommendations.
 
-<Tip>
-  Use the `provider:model` format (for example `openai:gpt-5.5`) to quickly switch between models.
-</Tip>
-
-<Tabs>
-  <Tab title="OpenAI">
-    👉 Read the [OpenAI chat model integration docs](/oss/python/integrations/chat/openai/)
-
-    <CodeGroup>
-      ```bash pip theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-      pip install -U "langchain[openai]"
-      ```
-
-      ```bash uv theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-      uv add "langchain[openai]"
-      ```
-    </CodeGroup>
-
-    <CodeGroup>
-      ```python default parameters theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-      import os
-      from deepagents import create_deep_agent
-
-      os.environ["OPENAI_API_KEY"] = "sk-..."
-
-      agent = create_deep_agent(model="openai:gpt-5.5")
-      # this calls init_chat_model for the specified model with default parameters
-      # to use specific model parameters, use init_chat_model directly
-      ```
-
-      ```python init_chat_model theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-      import os
-      from langchain.chat_models import init_chat_model
-      from deepagents import create_deep_agent
-
-      os.environ["OPENAI_API_KEY"] = "sk-..."
-
-      model = init_chat_model(model="openai:gpt-5.5")
-      agent = create_deep_agent(model=model)
-      ```
-
-      ```python model class theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-      import os
-      from langchain_openai import ChatOpenAI
-      from deepagents import create_deep_agent
-
-      os.environ["OPENAI_API_KEY"] = "sk-..."
-
-      model = ChatOpenAI(model="gpt-5.5")
-      agent = create_deep_agent(model=model)
-      ```
-    </CodeGroup>
-  </Tab>
-
-  <Tab title="Anthropic">
-    👉 Read the [Anthropic chat model integration docs](/oss/python/integrations/chat/anthropic/)
-
-    <CodeGroup>
-      ```bash pip theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-      pip install -U "langchain[anthropic]"
-      ```
-
-      ```bash uv theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-      uv add "langchain[anthropic]"
-      ```
-    </CodeGroup>
-
-    <CodeGroup>
-      ```python default parameters theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-      import os
-      from deepagents import create_deep_agent
-
-      os.environ["ANTHROPIC_API_KEY"] = "sk-..."
-
-      agent = create_deep_agent(model="anthropic:claude-sonnet-4-6")
-      # this calls init_chat_model for the specified model with default parameters
-      # to use specific model parameters, use init_chat_model directly
-      ```
-
-      ```python init_chat_model theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-      import os
-      from langchain.chat_models import init_chat_model
-      from deepagents import create_deep_agent
-
-      os.environ["ANTHROPIC_API_KEY"] = "sk-..."
-
-      model = init_chat_model(model="claude-sonnet-4-6")
-      agent = create_deep_agent(model=model)
-      ```
-
-      ```python model class theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-      import os
-      from langchain_anthropic import ChatAnthropic
-      from deepagents import create_deep_agent
-
-      os.environ["ANTHROPIC_API_KEY"] = "sk-..."
-
-      model = ChatAnthropic(model="claude-sonnet-4-6")
-      agent = create_deep_agent(model=model)
-      ```
-    </CodeGroup>
-  </Tab>
-
-  <Tab title="Azure">
-    👉 Read the [Azure chat model integration docs](/oss/python/integrations/chat/azure_chat_openai/)
-
-    <CodeGroup>
-      ```bash pip theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-      pip install -U "langchain[openai]"
-      ```
-
-      ```bash uv theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-      uv add "langchain[openai]"
-      ```
-    </CodeGroup>
-
-    <CodeGroup>
-      ```python default parameters theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-      import os
-      from deepagents import create_deep_agent
-
-      os.environ["AZURE_OPENAI_API_KEY"] = "..."
-      os.environ["AZURE_OPENAI_ENDPOINT"] = "..."
-      os.environ["OPENAI_API_VERSION"] = "2025-03-01-preview"
-
-      agent = create_deep_agent(model="azure_openai:gpt-5.5")
-      # this calls init_chat_model for the specified model with default parameters
-      # to use specific model parameters, use init_chat_model directly
-      ```
-
-      ```python init_chat_model theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-      import os
-      from langchain.chat_models import init_chat_model
-      from deepagents import create_deep_agent
-
-      os.environ["AZURE_OPENAI_API_KEY"] = "..."
-      os.environ["AZURE_OPENAI_ENDPOINT"] = "..."
-      os.environ["OPENAI_API_VERSION"] = "2025-03-01-preview"
-
-      model = init_chat_model(
-          model="azure_openai:gpt-5.5",
-          azure_deployment=os.environ["AZURE_OPENAI_DEPLOYMENT_NAME"],
-      )
-      agent = create_deep_agent(model=model)
-      ```
-
-      ```python model class theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-      import os
-      from langchain_openai import AzureChatOpenAI
-      from deepagents import create_deep_agent
-
-      os.environ["AZURE_OPENAI_API_KEY"] = "..."
-      os.environ["AZURE_OPENAI_ENDPOINT"] = "..."
-      os.environ["OPENAI_API_VERSION"] = "2025-03-01-preview"
-
-      model = AzureChatOpenAI(
-          model="gpt-5.5",
-          azure_deployment=os.environ["AZURE_OPENAI_DEPLOYMENT_NAME"],
-      )
-      agent = create_deep_agent(model=model)
-      ```
-    </CodeGroup>
-  </Tab>
-
-  <Tab title="Google Gemini">
-    👉 Read the [Google GenAI chat model integration docs](/oss/python/integrations/chat/google_generative_ai/)
-
-    <CodeGroup>
-      ```bash pip theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-      pip install -U "langchain[google-genai]"
-      ```
-
-      ```bash uv theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-      uv add "langchain[google-genai]"
-      ```
-    </CodeGroup>
-
-    <CodeGroup>
-      ```python default parameters theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-      import os
-      from deepagents import create_deep_agent
-
-      os.environ["GOOGLE_API_KEY"] = "..."
-
-      agent = create_deep_agent(model="google_genai:gemini-3.6-flash")
-      # this calls init_chat_model for the specified model with default parameters
-      # to use specific model parameters, use init_chat_model directly
-      ```
-
-      ```python init_chat_model theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-      import os
-      from langchain.chat_models import init_chat_model
-      from deepagents import create_deep_agent
-
-      os.environ["GOOGLE_API_KEY"] = "..."
-
-      model = init_chat_model(model="google_genai:gemini-3.6-flash")
-      agent = create_deep_agent(model=model)
-      ```
-
-      ```python model class theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-      import os
-      from langchain_google_genai import ChatGoogleGenerativeAI
-      from deepagents import create_deep_agent
-
-      os.environ["GOOGLE_API_KEY"] = "..."
-
-      model = ChatGoogleGenerativeAI(model="gemini-3.6-flash")
-      agent = create_deep_agent(model=model)
-      ```
-    </CodeGroup>
-  </Tab>
-
-  <Tab title="AWS Bedrock">
-    👉 Read the [AWS Bedrock chat model integration docs](/oss/python/integrations/chat/bedrock/)
-
-    <CodeGroup>
-      ```bash pip theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-      pip install -U "langchain[aws]"
-      ```
-
-      ```bash uv theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-      uv add "langchain[aws]"
-      ```
-    </CodeGroup>
-
-    <CodeGroup>
-      ```python default parameters theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-      from deepagents import create_deep_agent
-
-      # Follow the steps here to configure your credentials:
-      # https://docs.aws.amazon.com/bedrock/latest/userguide/getting-started.html
-
-      agent = create_deep_agent(
-          model="anthropic.claude-sonnet-4-6",
-          model_provider="bedrock_converse",
-      )
-      # this calls init_chat_model for the specified model with default parameters
-      # to use specific model parameters, use init_chat_model directly
-      ```
-
-      ```python init_chat_model theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-      from langchain.chat_models import init_chat_model
-      from deepagents import create_deep_agent
-
-      # Follow the steps here to configure your credentials:
-      # https://docs.aws.amazon.com/bedrock/latest/userguide/getting-started.html
-
-      model = init_chat_model(
-          model="anthropic.claude-sonnet-4-6",
-          model_provider="bedrock_converse",
-      )
-      agent = create_deep_agent(model=model)
-      ```
-
-      ```python model class theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-      from langchain_aws import ChatBedrock
-      from deepagents import create_deep_agent
-
-      # Follow the steps here to configure your credentials:
-      # https://docs.aws.amazon.com/bedrock/latest/userguide/getting-started.html
-
-      model = ChatBedrock(model="anthropic.claude-sonnet-4-6")
-      agent = create_deep_agent(model=model)
-      ```
-    </CodeGroup>
-  </Tab>
-
-  <Tab title="HuggingFace">
-    👉 Read the [HuggingFace chat model integration docs](/oss/python/integrations/chat/huggingface/)
-
-    <CodeGroup>
-      ```bash pip theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-      pip install -U "langchain[huggingface]"
-      ```
-
-      ```bash uv theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-      uv add "langchain[huggingface]"
-      ```
-    </CodeGroup>
-
-    <CodeGroup>
-      ```python default parameters theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-      import os
-      from deepagents import create_deep_agent
-
-      os.environ["HUGGINGFACEHUB_API_TOKEN"] = "hf_..."
-
-      agent = create_deep_agent(
-          model="microsoft/Phi-3-mini-4k-instruct",
-          model_provider="huggingface",
-          temperature=0.7,
-          max_tokens=1024,
-      )
-      # this calls init_chat_model for the specified model with default parameters
-      # to use specific model parameters, use init_chat_model directly
-      ```
-
-      ```python init_chat_model theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-      import os
-      from langchain.chat_models import init_chat_model
-      from deepagents import create_deep_agent
-
-      os.environ["HUGGINGFACEHUB_API_TOKEN"] = "hf_..."
-
-      model = init_chat_model(
-          model="microsoft/Phi-3-mini-4k-instruct",
-          model_provider="huggingface",
-          temperature=0.7,
-          max_tokens=1024,
-      )
-      agent = create_deep_agent(model=model)
-      ```
-
-      ```python model class theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-      import os
-      from langchain_huggingface import ChatHuggingFace, HuggingFaceEndpoint
-      from deepagents import create_deep_agent
-
-      os.environ["HUGGINGFACEHUB_API_TOKEN"] = "hf_..."
-
-      llm = HuggingFaceEndpoint(
-          repo_id="microsoft/Phi-3-mini-4k-instruct",
-          temperature=0.7,
-          max_length=1024,
-      )
-      model = ChatHuggingFace(llm=llm)
-      agent = create_deep_agent(model=model)
-      ```
-    </CodeGroup>
-  </Tab>
-
-  <Tab title="Other">
-    Pass any [supported model string](/oss/python/deepagents/models#supported-models), or an initialized model instance. For example:
-
-    <CodeGroup>
-      ```bash pip theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-      pip install -U "langchain[deepseek]"
-      ```
-
-      ```bash uv theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-      uv add "langchain[deepseek]"
-      ```
-    </CodeGroup>
-
-    <CodeGroup>
-      ```python default parameters theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-      from deepagents import create_deep_agent
-
-      agent = create_deep_agent(model="provider:model-name")
-      ```
-
-      ```python init_chat_model theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-      from deepagents import create_deep_agent
-      from langchain.chat_models import init_chat_model
-
-      model = init_chat_model("provider:model-name")
-      agent = create_deep_agent(model=model)
-      ```
-
-      ```python model class theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-      from langchain_<provider> import Chat<Provider>
-      # from langchain_deepseek import ChatDeepSeek
-
-      from deepagents import create_deep_agent
-
-      model = Chat<Provider>(model="model-name")
-      # model = ChatDeepSeek(model="deepseek-v4-pro")
-
-      agent = create_deep_agent(model=model)
-      ```
-    </CodeGroup>
-  </Tab>
-</Tabs>
-
-<Tip>
-  Chat models automatically retry transient API failures (with exponential backoff). For defaults, limits, and code samples for tuning `max_retries` / `timeout` live on the LangChain [Models](/oss/python/langchain/models#connection-resilience) page.
-</Tip>
+> [!TIP]
+>
+> Use the `provider:model` format (for example `openai:gpt-5.5`) to quickly switch between models.
+
+**OpenAI**
+
+👉 Read the [OpenAI chat model integration docs](/oss/python/integrations/chat/openai/)
+
+```bash pip theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+pip install -U "langchain[openai]"
+```
+
+```bash uv theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+uv add "langchain[openai]"
+```
+
+```python default parameters theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+import os
+from deepagents import create_deep_agent
+
+os.environ["OPENAI_API_KEY"] = "sk-..."
+
+agent = create_deep_agent(model="openai:gpt-5.5")
+# this calls init_chat_model for the specified model with default parameters
+# to use specific model parameters, use init_chat_model directly
+```
+
+```python init_chat_model theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+import os
+from langchain.chat_models import init_chat_model
+from deepagents import create_deep_agent
+
+os.environ["OPENAI_API_KEY"] = "sk-..."
+
+model = init_chat_model(model="openai:gpt-5.5")
+agent = create_deep_agent(model=model)
+```
+
+```python model class theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+import os
+from langchain_openai import ChatOpenAI
+from deepagents import create_deep_agent
+
+os.environ["OPENAI_API_KEY"] = "sk-..."
+
+model = ChatOpenAI(model="gpt-5.5")
+agent = create_deep_agent(model=model)
+```
+
+**Anthropic**
+
+👉 Read the [Anthropic chat model integration docs](/oss/python/integrations/chat/anthropic/)
+
+```bash pip theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+pip install -U "langchain[anthropic]"
+```
+
+```bash uv theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+uv add "langchain[anthropic]"
+```
+
+```python default parameters theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+import os
+from deepagents import create_deep_agent
+
+os.environ["ANTHROPIC_API_KEY"] = "sk-..."
+
+agent = create_deep_agent(model="anthropic:claude-sonnet-4-6")
+# this calls init_chat_model for the specified model with default parameters
+# to use specific model parameters, use init_chat_model directly
+```
+
+```python init_chat_model theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+import os
+from langchain.chat_models import init_chat_model
+from deepagents import create_deep_agent
+
+os.environ["ANTHROPIC_API_KEY"] = "sk-..."
+
+model = init_chat_model(model="claude-sonnet-4-6")
+agent = create_deep_agent(model=model)
+```
+
+```python model class theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+import os
+from langchain_anthropic import ChatAnthropic
+from deepagents import create_deep_agent
+
+os.environ["ANTHROPIC_API_KEY"] = "sk-..."
+
+model = ChatAnthropic(model="claude-sonnet-4-6")
+agent = create_deep_agent(model=model)
+```
+
+**Azure**
+
+👉 Read the [Azure chat model integration docs](/oss/python/integrations/chat/azure_chat_openai/)
+
+```bash pip theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+pip install -U "langchain[openai]"
+```
+
+```bash uv theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+uv add "langchain[openai]"
+```
+
+```python default parameters theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+import os
+from deepagents import create_deep_agent
+
+os.environ["AZURE_OPENAI_API_KEY"] = "..."
+os.environ["AZURE_OPENAI_ENDPOINT"] = "..."
+os.environ["OPENAI_API_VERSION"] = "2025-03-01-preview"
+
+agent = create_deep_agent(model="azure_openai:gpt-5.5")
+# this calls init_chat_model for the specified model with default parameters
+# to use specific model parameters, use init_chat_model directly
+```
+
+```python init_chat_model theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+import os
+from langchain.chat_models import init_chat_model
+from deepagents import create_deep_agent
+
+os.environ["AZURE_OPENAI_API_KEY"] = "..."
+os.environ["AZURE_OPENAI_ENDPOINT"] = "..."
+os.environ["OPENAI_API_VERSION"] = "2025-03-01-preview"
+
+model = init_chat_model(
+    model="azure_openai:gpt-5.5",
+    azure_deployment=os.environ["AZURE_OPENAI_DEPLOYMENT_NAME"],
+)
+agent = create_deep_agent(model=model)
+```
+
+```python model class theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+import os
+from langchain_openai import AzureChatOpenAI
+from deepagents import create_deep_agent
+
+os.environ["AZURE_OPENAI_API_KEY"] = "..."
+os.environ["AZURE_OPENAI_ENDPOINT"] = "..."
+os.environ["OPENAI_API_VERSION"] = "2025-03-01-preview"
+
+model = AzureChatOpenAI(
+    model="gpt-5.5",
+    azure_deployment=os.environ["AZURE_OPENAI_DEPLOYMENT_NAME"],
+)
+agent = create_deep_agent(model=model)
+```
+
+**Google Gemini**
+
+👉 Read the [Google GenAI chat model integration docs](/oss/python/integrations/chat/google_generative_ai/)
+
+```bash pip theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+pip install -U "langchain[google-genai]"
+```
+
+```bash uv theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+uv add "langchain[google-genai]"
+```
+
+```python default parameters theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+import os
+from deepagents import create_deep_agent
+
+os.environ["GOOGLE_API_KEY"] = "..."
+
+agent = create_deep_agent(model="google_genai:gemini-3.6-flash")
+# this calls init_chat_model for the specified model with default parameters
+# to use specific model parameters, use init_chat_model directly
+```
+
+```python init_chat_model theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+import os
+from langchain.chat_models import init_chat_model
+from deepagents import create_deep_agent
+
+os.environ["GOOGLE_API_KEY"] = "..."
+
+model = init_chat_model(model="google_genai:gemini-3.6-flash")
+agent = create_deep_agent(model=model)
+```
+
+```python model class theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+import os
+from langchain_google_genai import ChatGoogleGenerativeAI
+from deepagents import create_deep_agent
+
+os.environ["GOOGLE_API_KEY"] = "..."
+
+model = ChatGoogleGenerativeAI(model="gemini-3.6-flash")
+agent = create_deep_agent(model=model)
+```
+
+**AWS Bedrock**
+
+👉 Read the [AWS Bedrock chat model integration docs](/oss/python/integrations/chat/bedrock/)
+
+```bash pip theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+pip install -U "langchain[aws]"
+```
+
+```bash uv theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+uv add "langchain[aws]"
+```
+
+```python default parameters theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+from deepagents import create_deep_agent
+
+# Follow the steps here to configure your credentials:
+# https://docs.aws.amazon.com/bedrock/latest/userguide/getting-started.html
+
+agent = create_deep_agent(
+    model="anthropic.claude-sonnet-4-6",
+    model_provider="bedrock_converse",
+)
+# this calls init_chat_model for the specified model with default parameters
+# to use specific model parameters, use init_chat_model directly
+```
+
+```python init_chat_model theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+from langchain.chat_models import init_chat_model
+from deepagents import create_deep_agent
+
+# Follow the steps here to configure your credentials:
+# https://docs.aws.amazon.com/bedrock/latest/userguide/getting-started.html
+
+model = init_chat_model(
+    model="anthropic.claude-sonnet-4-6",
+    model_provider="bedrock_converse",
+)
+agent = create_deep_agent(model=model)
+```
+
+```python model class theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+from langchain_aws import ChatBedrock
+from deepagents import create_deep_agent
+
+# Follow the steps here to configure your credentials:
+# https://docs.aws.amazon.com/bedrock/latest/userguide/getting-started.html
+
+model = ChatBedrock(model="anthropic.claude-sonnet-4-6")
+agent = create_deep_agent(model=model)
+```
+
+**HuggingFace**
+
+👉 Read the [HuggingFace chat model integration docs](/oss/python/integrations/chat/huggingface/)
+
+```bash pip theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+pip install -U "langchain[huggingface]"
+```
+
+```bash uv theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+uv add "langchain[huggingface]"
+```
+
+```python default parameters theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+import os
+from deepagents import create_deep_agent
+
+os.environ["HUGGINGFACEHUB_API_TOKEN"] = "hf_..."
+
+agent = create_deep_agent(
+    model="microsoft/Phi-3-mini-4k-instruct",
+    model_provider="huggingface",
+    temperature=0.7,
+    max_tokens=1024,
+)
+# this calls init_chat_model for the specified model with default parameters
+# to use specific model parameters, use init_chat_model directly
+```
+
+```python init_chat_model theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+import os
+from langchain.chat_models import init_chat_model
+from deepagents import create_deep_agent
+
+os.environ["HUGGINGFACEHUB_API_TOKEN"] = "hf_..."
+
+model = init_chat_model(
+    model="microsoft/Phi-3-mini-4k-instruct",
+    model_provider="huggingface",
+    temperature=0.7,
+    max_tokens=1024,
+)
+agent = create_deep_agent(model=model)
+```
+
+```python model class theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+import os
+from langchain_huggingface import ChatHuggingFace, HuggingFaceEndpoint
+from deepagents import create_deep_agent
+
+os.environ["HUGGINGFACEHUB_API_TOKEN"] = "hf_..."
+
+llm = HuggingFaceEndpoint(
+    repo_id="microsoft/Phi-3-mini-4k-instruct",
+    temperature=0.7,
+    max_length=1024,
+)
+model = ChatHuggingFace(llm=llm)
+agent = create_deep_agent(model=model)
+```
+
+**Other**
+
+Pass any [supported model string](/oss/python/deepagents/models#supported-models), or an initialized model instance. For example:
+
+```bash pip theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+pip install -U "langchain[deepseek]"
+```
+
+```bash uv theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+uv add "langchain[deepseek]"
+```
+
+```python default parameters theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+from deepagents import create_deep_agent
+
+agent = create_deep_agent(model="provider:model-name")
+```
+
+```python init_chat_model theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+from deepagents import create_deep_agent
+from langchain.chat_models import init_chat_model
+
+model = init_chat_model("provider:model-name")
+agent = create_deep_agent(model=model)
+```
+
+```python model class theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+from langchain_<provider> import Chat<Provider>
+# from langchain_deepseek import ChatDeepSeek
+
+from deepagents import create_deep_agent
+
+model = Chat<Provider>(model="model-name")
+# model = ChatDeepSeek(model="deepseek-v4-pro")
+
+agent = create_deep_agent(model=model)
+```
+
+> [!TIP]
+>
+> Chat models automatically retry transient API failures (with exponential backoff). For defaults, limits, and code samples for tuning `max_retries` / `timeout` live on the LangChain [Models](/oss/python/langchain/models#connection-resilience) page.
 
 ## Tools
 
 In addition to [built-in tools](/oss/python/deepagents/overview#execution-environment) for file management and subagent spawning, you can provide custom tools:
 
-<CodeGroup>
-  ```python Google theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  import os
-  from typing import Literal
-  from tavily import TavilyClient
-  from deepagents import create_deep_agent
+```python Google theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+import os
+from typing import Literal
+from tavily import TavilyClient
+from deepagents import create_deep_agent
 
-  tavily_client = TavilyClient(api_key=os.environ["TAVILY_API_KEY"])
-
-
-  def internet_search(
-      query: str,
-      max_results: int = 5,
-      topic: Literal["general", "news", "finance"] = "general",
-      include_raw_content: bool = False,
-  ):
-      """Run a web search"""
-      return tavily_client.search(
-          query,
-          max_results=max_results,
-          include_raw_content=include_raw_content,
-          topic=topic,
-      )
+tavily_client = TavilyClient(api_key=os.environ["TAVILY_API_KEY"])
 
 
-  agent = create_deep_agent(
-      model="google_genai:gemini-3.6-flash",
-      tools=[internet_search],
-  )
-  ```
-
-  ```python OpenAI theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  import os
-  from typing import Literal
-  from tavily import TavilyClient
-  from deepagents import create_deep_agent
-
-  tavily_client = TavilyClient(api_key=os.environ["TAVILY_API_KEY"])
-
-
-  def internet_search(
-      query: str,
-      max_results: int = 5,
-      topic: Literal["general", "news", "finance"] = "general",
-      include_raw_content: bool = False,
-  ):
-      """Run a web search"""
-      return tavily_client.search(
-          query,
-          max_results=max_results,
-          include_raw_content=include_raw_content,
-          topic=topic,
-      )
+def internet_search(
+    query: str,
+    max_results: int = 5,
+    topic: Literal["general", "news", "finance"] = "general",
+    include_raw_content: bool = False,
+):
+    """Run a web search"""
+    return tavily_client.search(
+        query,
+        max_results=max_results,
+        include_raw_content=include_raw_content,
+        topic=topic,
+    )
 
 
-  agent = create_deep_agent(
-      model="openai:gpt-5.5",
-      tools=[internet_search],
-  )
-  ```
+agent = create_deep_agent(
+    model="google_genai:gemini-3.6-flash",
+    tools=[internet_search],
+)
+```
 
-  ```python Anthropic theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  import os
-  from typing import Literal
-  from tavily import TavilyClient
-  from deepagents import create_deep_agent
+```python OpenAI theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+import os
+from typing import Literal
+from tavily import TavilyClient
+from deepagents import create_deep_agent
 
-  tavily_client = TavilyClient(api_key=os.environ["TAVILY_API_KEY"])
-
-
-  def internet_search(
-      query: str,
-      max_results: int = 5,
-      topic: Literal["general", "news", "finance"] = "general",
-      include_raw_content: bool = False,
-  ):
-      """Run a web search"""
-      return tavily_client.search(
-          query,
-          max_results=max_results,
-          include_raw_content=include_raw_content,
-          topic=topic,
-      )
+tavily_client = TavilyClient(api_key=os.environ["TAVILY_API_KEY"])
 
 
-  agent = create_deep_agent(
-      model="anthropic:claude-sonnet-5",
-      tools=[internet_search],
-  )
-  ```
-
-  ```python OpenRouter theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  import os
-  from typing import Literal
-  from tavily import TavilyClient
-  from deepagents import create_deep_agent
-
-  tavily_client = TavilyClient(api_key=os.environ["TAVILY_API_KEY"])
-
-
-  def internet_search(
-      query: str,
-      max_results: int = 5,
-      topic: Literal["general", "news", "finance"] = "general",
-      include_raw_content: bool = False,
-  ):
-      """Run a web search"""
-      return tavily_client.search(
-          query,
-          max_results=max_results,
-          include_raw_content=include_raw_content,
-          topic=topic,
-      )
+def internet_search(
+    query: str,
+    max_results: int = 5,
+    topic: Literal["general", "news", "finance"] = "general",
+    include_raw_content: bool = False,
+):
+    """Run a web search"""
+    return tavily_client.search(
+        query,
+        max_results=max_results,
+        include_raw_content=include_raw_content,
+        topic=topic,
+    )
 
 
-  agent = create_deep_agent(
-      model="openrouter:z-ai/glm-5.2",
-      tools=[internet_search],
-  )
-  ```
+agent = create_deep_agent(
+    model="openai:gpt-5.5",
+    tools=[internet_search],
+)
+```
 
-  ```python Fireworks theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  import os
-  from typing import Literal
-  from tavily import TavilyClient
-  from deepagents import create_deep_agent
+```python Anthropic theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+import os
+from typing import Literal
+from tavily import TavilyClient
+from deepagents import create_deep_agent
 
-  tavily_client = TavilyClient(api_key=os.environ["TAVILY_API_KEY"])
-
-
-  def internet_search(
-      query: str,
-      max_results: int = 5,
-      topic: Literal["general", "news", "finance"] = "general",
-      include_raw_content: bool = False,
-  ):
-      """Run a web search"""
-      return tavily_client.search(
-          query,
-          max_results=max_results,
-          include_raw_content=include_raw_content,
-          topic=topic,
-      )
+tavily_client = TavilyClient(api_key=os.environ["TAVILY_API_KEY"])
 
 
-  agent = create_deep_agent(
-      model="fireworks:accounts/fireworks/models/glm-5p2",
-      tools=[internet_search],
-  )
-  ```
-
-  ```python Baseten theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  import os
-  from typing import Literal
-  from tavily import TavilyClient
-  from deepagents import create_deep_agent
-
-  tavily_client = TavilyClient(api_key=os.environ["TAVILY_API_KEY"])
-
-
-  def internet_search(
-      query: str,
-      max_results: int = 5,
-      topic: Literal["general", "news", "finance"] = "general",
-      include_raw_content: bool = False,
-  ):
-      """Run a web search"""
-      return tavily_client.search(
-          query,
-          max_results=max_results,
-          include_raw_content=include_raw_content,
-          topic=topic,
-      )
+def internet_search(
+    query: str,
+    max_results: int = 5,
+    topic: Literal["general", "news", "finance"] = "general",
+    include_raw_content: bool = False,
+):
+    """Run a web search"""
+    return tavily_client.search(
+        query,
+        max_results=max_results,
+        include_raw_content=include_raw_content,
+        topic=topic,
+    )
 
 
-  agent = create_deep_agent(
-      model="baseten:zai-org/GLM-5.2",
-      tools=[internet_search],
-  )
-  ```
+agent = create_deep_agent(
+    model="anthropic:claude-sonnet-5",
+    tools=[internet_search],
+)
+```
 
-  ```python Ollama theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  import os
-  from typing import Literal
-  from tavily import TavilyClient
-  from deepagents import create_deep_agent
+```python OpenRouter theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+import os
+from typing import Literal
+from tavily import TavilyClient
+from deepagents import create_deep_agent
 
-  tavily_client = TavilyClient(api_key=os.environ["TAVILY_API_KEY"])
-
-
-  def internet_search(
-      query: str,
-      max_results: int = 5,
-      topic: Literal["general", "news", "finance"] = "general",
-      include_raw_content: bool = False,
-  ):
-      """Run a web search"""
-      return tavily_client.search(
-          query,
-          max_results=max_results,
-          include_raw_content=include_raw_content,
-          topic=topic,
-      )
+tavily_client = TavilyClient(api_key=os.environ["TAVILY_API_KEY"])
 
 
-  agent = create_deep_agent(
-      model="ollama:north-mini-code-1.0",
-      tools=[internet_search],
-  )
-  ```
-</CodeGroup>
+def internet_search(
+    query: str,
+    max_results: int = 5,
+    topic: Literal["general", "news", "finance"] = "general",
+    include_raw_content: bool = False,
+):
+    """Run a web search"""
+    return tavily_client.search(
+        query,
+        max_results=max_results,
+        include_raw_content=include_raw_content,
+        topic=topic,
+    )
+
+
+agent = create_deep_agent(
+    model="openrouter:z-ai/glm-5.2",
+    tools=[internet_search],
+)
+```
+
+```python Fireworks theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+import os
+from typing import Literal
+from tavily import TavilyClient
+from deepagents import create_deep_agent
+
+tavily_client = TavilyClient(api_key=os.environ["TAVILY_API_KEY"])
+
+
+def internet_search(
+    query: str,
+    max_results: int = 5,
+    topic: Literal["general", "news", "finance"] = "general",
+    include_raw_content: bool = False,
+):
+    """Run a web search"""
+    return tavily_client.search(
+        query,
+        max_results=max_results,
+        include_raw_content=include_raw_content,
+        topic=topic,
+    )
+
+
+agent = create_deep_agent(
+    model="fireworks:accounts/fireworks/models/glm-5p2",
+    tools=[internet_search],
+)
+```
+
+```python Baseten theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+import os
+from typing import Literal
+from tavily import TavilyClient
+from deepagents import create_deep_agent
+
+tavily_client = TavilyClient(api_key=os.environ["TAVILY_API_KEY"])
+
+
+def internet_search(
+    query: str,
+    max_results: int = 5,
+    topic: Literal["general", "news", "finance"] = "general",
+    include_raw_content: bool = False,
+):
+    """Run a web search"""
+    return tavily_client.search(
+        query,
+        max_results=max_results,
+        include_raw_content=include_raw_content,
+        topic=topic,
+    )
+
+
+agent = create_deep_agent(
+    model="baseten:zai-org/GLM-5.2",
+    tools=[internet_search],
+)
+```
+
+```python Ollama theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+import os
+from typing import Literal
+from tavily import TavilyClient
+from deepagents import create_deep_agent
+
+tavily_client = TavilyClient(api_key=os.environ["TAVILY_API_KEY"])
+
+
+def internet_search(
+    query: str,
+    max_results: int = 5,
+    topic: Literal["general", "news", "finance"] = "general",
+    include_raw_content: bool = False,
+):
+    """Run a web search"""
+    return tavily_client.search(
+        query,
+        max_results=max_results,
+        include_raw_content=include_raw_content,
+        topic=topic,
+    )
+
+
+agent = create_deep_agent(
+    model="ollama:north-mini-code-1.0",
+    tools=[internet_search],
+)
+```
 
 ### MCP tools
 
-<Tip>
-  Deep Agents fully support [Model Context Protocol (MCP)](/oss/python/langchain/mcp) tools. You can load tools from any MCP server—databases, APIs, file systems, and more—and pass them directly to `create_deep_agent`.
-</Tip>
+> [!TIP]
+>
+> Deep Agents fully support [Model Context Protocol (MCP)](/oss/python/langchain/mcp) tools. You can load tools from any MCP server—databases, APIs, file systems, and more—and pass them directly to `create_deep_agent`.
 
 Install LangChain with the `mcp` extra to connect to MCP servers:
 
@@ -754,182 +720,180 @@ Install LangChain with the `mcp` extra to connect to MCP servers:
 pip install "langchain[mcp]"
 ```
 
-<CodeGroup>
-  ```python Google theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  import asyncio
+```python Google theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+import asyncio
 
-  from deepagents import create_deep_agent
-  from langchain.mcp import MCPAdapter
-
-
-  async def main():
-      config = {"mcpServers": {"my_server": {"url": "http://localhost:8000/mcp"}}}
-      async with MCPAdapter(config) as adapter:
-          tools = await adapter.list_tools()
-          agent = create_deep_agent(
-              model="google_genai:gemini-3.6-flash",
-              tools=tools,
-          )
-          await agent.ainvoke(
-              {
-                  "messages": [
-                      {"role": "user", "content": "Use the MCP server to help me."}
-                  ]
-              },
-              config={"configurable": {"thread_id": "1"}},
-          )
-  ```
-
-  ```python OpenAI theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  import asyncio
-
-  from deepagents import create_deep_agent
-  from langchain.mcp import MCPAdapter
+from deepagents import create_deep_agent
+from langchain.mcp import MCPAdapter
 
 
-  async def main():
-      config = {"mcpServers": {"my_server": {"url": "http://localhost:8000/mcp"}}}
-      async with MCPAdapter(config) as adapter:
-          tools = await adapter.list_tools()
-          agent = create_deep_agent(
-              model="openai:gpt-5.5",
-              tools=tools,
-          )
-          await agent.ainvoke(
-              {
-                  "messages": [
-                      {"role": "user", "content": "Use the MCP server to help me."}
-                  ]
-              },
-              config={"configurable": {"thread_id": "1"}},
-          )
-  ```
+async def main():
+    config = {"mcpServers": {"my_server": {"url": "http://localhost:8000/mcp"}}}
+    async with MCPAdapter(config) as adapter:
+        tools = await adapter.list_tools()
+        agent = create_deep_agent(
+            model="google_genai:gemini-3.6-flash",
+            tools=tools,
+        )
+        await agent.ainvoke(
+            {
+                "messages": [
+                    {"role": "user", "content": "Use the MCP server to help me."}
+                ]
+            },
+            config={"configurable": {"thread_id": "1"}},
+        )
+```
 
-  ```python Anthropic theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  import asyncio
+```python OpenAI theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+import asyncio
 
-  from deepagents import create_deep_agent
-  from langchain.mcp import MCPAdapter
-
-
-  async def main():
-      config = {"mcpServers": {"my_server": {"url": "http://localhost:8000/mcp"}}}
-      async with MCPAdapter(config) as adapter:
-          tools = await adapter.list_tools()
-          agent = create_deep_agent(
-              model="anthropic:claude-sonnet-5",
-              tools=tools,
-          )
-          await agent.ainvoke(
-              {
-                  "messages": [
-                      {"role": "user", "content": "Use the MCP server to help me."}
-                  ]
-              },
-              config={"configurable": {"thread_id": "1"}},
-          )
-  ```
-
-  ```python OpenRouter theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  import asyncio
-
-  from deepagents import create_deep_agent
-  from langchain.mcp import MCPAdapter
+from deepagents import create_deep_agent
+from langchain.mcp import MCPAdapter
 
 
-  async def main():
-      config = {"mcpServers": {"my_server": {"url": "http://localhost:8000/mcp"}}}
-      async with MCPAdapter(config) as adapter:
-          tools = await adapter.list_tools()
-          agent = create_deep_agent(
-              model="openrouter:z-ai/glm-5.2",
-              tools=tools,
-          )
-          await agent.ainvoke(
-              {
-                  "messages": [
-                      {"role": "user", "content": "Use the MCP server to help me."}
-                  ]
-              },
-              config={"configurable": {"thread_id": "1"}},
-          )
-  ```
+async def main():
+    config = {"mcpServers": {"my_server": {"url": "http://localhost:8000/mcp"}}}
+    async with MCPAdapter(config) as adapter:
+        tools = await adapter.list_tools()
+        agent = create_deep_agent(
+            model="openai:gpt-5.5",
+            tools=tools,
+        )
+        await agent.ainvoke(
+            {
+                "messages": [
+                    {"role": "user", "content": "Use the MCP server to help me."}
+                ]
+            },
+            config={"configurable": {"thread_id": "1"}},
+        )
+```
 
-  ```python Fireworks theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  import asyncio
+```python Anthropic theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+import asyncio
 
-  from deepagents import create_deep_agent
-  from langchain.mcp import MCPAdapter
-
-
-  async def main():
-      config = {"mcpServers": {"my_server": {"url": "http://localhost:8000/mcp"}}}
-      async with MCPAdapter(config) as adapter:
-          tools = await adapter.list_tools()
-          agent = create_deep_agent(
-              model="fireworks:accounts/fireworks/models/glm-5p2",
-              tools=tools,
-          )
-          await agent.ainvoke(
-              {
-                  "messages": [
-                      {"role": "user", "content": "Use the MCP server to help me."}
-                  ]
-              },
-              config={"configurable": {"thread_id": "1"}},
-          )
-  ```
-
-  ```python Baseten theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  import asyncio
-
-  from deepagents import create_deep_agent
-  from langchain.mcp import MCPAdapter
+from deepagents import create_deep_agent
+from langchain.mcp import MCPAdapter
 
 
-  async def main():
-      config = {"mcpServers": {"my_server": {"url": "http://localhost:8000/mcp"}}}
-      async with MCPAdapter(config) as adapter:
-          tools = await adapter.list_tools()
-          agent = create_deep_agent(
-              model="baseten:zai-org/GLM-5.2",
-              tools=tools,
-          )
-          await agent.ainvoke(
-              {
-                  "messages": [
-                      {"role": "user", "content": "Use the MCP server to help me."}
-                  ]
-              },
-              config={"configurable": {"thread_id": "1"}},
-          )
-  ```
+async def main():
+    config = {"mcpServers": {"my_server": {"url": "http://localhost:8000/mcp"}}}
+    async with MCPAdapter(config) as adapter:
+        tools = await adapter.list_tools()
+        agent = create_deep_agent(
+            model="anthropic:claude-sonnet-5",
+            tools=tools,
+        )
+        await agent.ainvoke(
+            {
+                "messages": [
+                    {"role": "user", "content": "Use the MCP server to help me."}
+                ]
+            },
+            config={"configurable": {"thread_id": "1"}},
+        )
+```
 
-  ```python Ollama theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  import asyncio
+```python OpenRouter theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+import asyncio
 
-  from deepagents import create_deep_agent
-  from langchain.mcp import MCPAdapter
+from deepagents import create_deep_agent
+from langchain.mcp import MCPAdapter
 
 
-  async def main():
-      config = {"mcpServers": {"my_server": {"url": "http://localhost:8000/mcp"}}}
-      async with MCPAdapter(config) as adapter:
-          tools = await adapter.list_tools()
-          agent = create_deep_agent(
-              model="ollama:north-mini-code-1.0",
-              tools=tools,
-          )
-          await agent.ainvoke(
-              {
-                  "messages": [
-                      {"role": "user", "content": "Use the MCP server to help me."}
-                  ]
-              },
-              config={"configurable": {"thread_id": "1"}},
-          )
-  ```
-</CodeGroup>
+async def main():
+    config = {"mcpServers": {"my_server": {"url": "http://localhost:8000/mcp"}}}
+    async with MCPAdapter(config) as adapter:
+        tools = await adapter.list_tools()
+        agent = create_deep_agent(
+            model="openrouter:z-ai/glm-5.2",
+            tools=tools,
+        )
+        await agent.ainvoke(
+            {
+                "messages": [
+                    {"role": "user", "content": "Use the MCP server to help me."}
+                ]
+            },
+            config={"configurable": {"thread_id": "1"}},
+        )
+```
+
+```python Fireworks theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+import asyncio
+
+from deepagents import create_deep_agent
+from langchain.mcp import MCPAdapter
+
+
+async def main():
+    config = {"mcpServers": {"my_server": {"url": "http://localhost:8000/mcp"}}}
+    async with MCPAdapter(config) as adapter:
+        tools = await adapter.list_tools()
+        agent = create_deep_agent(
+            model="fireworks:accounts/fireworks/models/glm-5p2",
+            tools=tools,
+        )
+        await agent.ainvoke(
+            {
+                "messages": [
+                    {"role": "user", "content": "Use the MCP server to help me."}
+                ]
+            },
+            config={"configurable": {"thread_id": "1"}},
+        )
+```
+
+```python Baseten theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+import asyncio
+
+from deepagents import create_deep_agent
+from langchain.mcp import MCPAdapter
+
+
+async def main():
+    config = {"mcpServers": {"my_server": {"url": "http://localhost:8000/mcp"}}}
+    async with MCPAdapter(config) as adapter:
+        tools = await adapter.list_tools()
+        agent = create_deep_agent(
+            model="baseten:zai-org/GLM-5.2",
+            tools=tools,
+        )
+        await agent.ainvoke(
+            {
+                "messages": [
+                    {"role": "user", "content": "Use the MCP server to help me."}
+                ]
+            },
+            config={"configurable": {"thread_id": "1"}},
+        )
+```
+
+```python Ollama theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+import asyncio
+
+from deepagents import create_deep_agent
+from langchain.mcp import MCPAdapter
+
+
+async def main():
+    config = {"mcpServers": {"my_server": {"url": "http://localhost:8000/mcp"}}}
+    async with MCPAdapter(config) as adapter:
+        tools = await adapter.list_tools()
+        agent = create_deep_agent(
+            model="ollama:north-mini-code-1.0",
+            tools=tools,
+        )
+        await agent.ainvoke(
+            {
+                "messages": [
+                    {"role": "user", "content": "Use the MCP server to help me."}
+                ]
+            },
+            config={"configurable": {"thread_id": "1"}},
+        )
+```
 
 For detailed configuration options including stdio servers, OAuth authentication, tool filtering, and stateful sessions, see the full [MCP guide](/oss/python/langchain/mcp).
 
@@ -937,143 +901,139 @@ For detailed configuration options including stdio servers, OAuth authentication
 
 Pass `system_prompt=` to give the agent your own instructions:
 
-<CodeGroup>
-  ```python Google theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  from deepagents import create_deep_agent
+```python Google theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+from deepagents import create_deep_agent
 
-  research_instructions = """\
-  You are an expert researcher. Your job is to conduct \
-  thorough research, and then write a polished report. \
-  """
+research_instructions = """\
+You are an expert researcher. Your job is to conduct \
+thorough research, and then write a polished report. \
+"""
 
-  agent = create_deep_agent(
-      model="google_genai:gemini-3.6-flash",
-      system_prompt=research_instructions,
-  )
-  ```
+agent = create_deep_agent(
+    model="google_genai:gemini-3.6-flash",
+    system_prompt=research_instructions,
+)
+```
 
-  ```python OpenAI theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  from deepagents import create_deep_agent
+```python OpenAI theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+from deepagents import create_deep_agent
 
-  research_instructions = """\
-  You are an expert researcher. Your job is to conduct \
-  thorough research, and then write a polished report. \
-  """
+research_instructions = """\
+You are an expert researcher. Your job is to conduct \
+thorough research, and then write a polished report. \
+"""
 
-  agent = create_deep_agent(
-      model="openai:gpt-5.5",
-      system_prompt=research_instructions,
-  )
-  ```
+agent = create_deep_agent(
+    model="openai:gpt-5.5",
+    system_prompt=research_instructions,
+)
+```
 
-  ```python Anthropic theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  from deepagents import create_deep_agent
+```python Anthropic theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+from deepagents import create_deep_agent
 
-  research_instructions = """\
-  You are an expert researcher. Your job is to conduct \
-  thorough research, and then write a polished report. \
-  """
+research_instructions = """\
+You are an expert researcher. Your job is to conduct \
+thorough research, and then write a polished report. \
+"""
 
-  agent = create_deep_agent(
-      model="anthropic:claude-sonnet-5",
-      system_prompt=research_instructions,
-  )
-  ```
+agent = create_deep_agent(
+    model="anthropic:claude-sonnet-5",
+    system_prompt=research_instructions,
+)
+```
 
-  ```python OpenRouter theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  from deepagents import create_deep_agent
+```python OpenRouter theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+from deepagents import create_deep_agent
 
-  research_instructions = """\
-  You are an expert researcher. Your job is to conduct \
-  thorough research, and then write a polished report. \
-  """
+research_instructions = """\
+You are an expert researcher. Your job is to conduct \
+thorough research, and then write a polished report. \
+"""
 
-  agent = create_deep_agent(
-      model="openrouter:z-ai/glm-5.2",
-      system_prompt=research_instructions,
-  )
-  ```
+agent = create_deep_agent(
+    model="openrouter:z-ai/glm-5.2",
+    system_prompt=research_instructions,
+)
+```
 
-  ```python Fireworks theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  from deepagents import create_deep_agent
+```python Fireworks theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+from deepagents import create_deep_agent
 
-  research_instructions = """\
-  You are an expert researcher. Your job is to conduct \
-  thorough research, and then write a polished report. \
-  """
+research_instructions = """\
+You are an expert researcher. Your job is to conduct \
+thorough research, and then write a polished report. \
+"""
 
-  agent = create_deep_agent(
-      model="fireworks:accounts/fireworks/models/glm-5p2",
-      system_prompt=research_instructions,
-  )
-  ```
+agent = create_deep_agent(
+    model="fireworks:accounts/fireworks/models/glm-5p2",
+    system_prompt=research_instructions,
+)
+```
 
-  ```python Baseten theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  from deepagents import create_deep_agent
+```python Baseten theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+from deepagents import create_deep_agent
 
-  research_instructions = """\
-  You are an expert researcher. Your job is to conduct \
-  thorough research, and then write a polished report. \
-  """
+research_instructions = """\
+You are an expert researcher. Your job is to conduct \
+thorough research, and then write a polished report. \
+"""
 
-  agent = create_deep_agent(
-      model="baseten:zai-org/GLM-5.2",
-      system_prompt=research_instructions,
-  )
-  ```
+agent = create_deep_agent(
+    model="baseten:zai-org/GLM-5.2",
+    system_prompt=research_instructions,
+)
+```
 
-  ```python Ollama theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  from deepagents import create_deep_agent
+```python Ollama theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+from deepagents import create_deep_agent
 
-  research_instructions = """\
-  You are an expert researcher. Your job is to conduct \
-  thorough research, and then write a polished report. \
-  """
+research_instructions = """\
+You are an expert researcher. Your job is to conduct \
+thorough research, and then write a polished report. \
+"""
 
-  agent = create_deep_agent(
-      model="ollama:north-mini-code-1.0",
-      system_prompt=research_instructions,
-  )
-  ```
-</CodeGroup>
+agent = create_deep_agent(
+    model="ollama:north-mini-code-1.0",
+    system_prompt=research_instructions,
+)
+```
 
-<Note>
-  Besides a string, the main agent also accepts a [`SystemMessage`](https://reference.langchain.com/python/langchain-core/messages/system/SystemMessage) with structured [content blocks](/oss/python/langchain/messages#standard-content-blocks); Deep Agents preserve those blocks ([subagent](/oss/python/deepagents/subagents) dictionary specs remain strings).
-</Note>
+> [!NOTE]
+>
+> Besides a string, the main agent also accepts a [`SystemMessage`](https://reference.langchain.com/python/langchain-core/messages/system/SystemMessage) with structured [content blocks](/oss/python/langchain/messages#standard-content-blocks); Deep Agents preserve those blocks ([subagent](/oss/python/deepagents/subagents) dictionary specs remain strings).
 
-<AccordionGroup>
-  <Accordion title="Subagent prompts">
-    Declarative [subagents](/oss/python/deepagents/subagents) resolve profile overlays against their own model, then apply the resolved profile's `base_system_prompt` / `system_prompt_suffix` to the subagent's authored `system_prompt`. A profile that ships only a `system_prompt_suffix` (the common case for built-in Anthropic / OpenAI profiles) appends to the authored prompt. A profile that sets `base_system_prompt` replaces it outright.
-  </Accordion>
+> **Subagent prompts**
+>
+> Declarative [subagents](/oss/python/deepagents/subagents) resolve profile overlays against their own model, then apply the resolved profile's `base_system_prompt` / `system_prompt_suffix` to the subagent's authored `system_prompt`. A profile that ships only a `system_prompt_suffix` (the common case for built-in Anthropic / OpenAI profiles) appends to the authored prompt. A profile that sets `base_system_prompt` replaces it outright.
 
-  <Accordion title="General-purpose subagent prompt">
-    The auto-added [general-purpose subagent](/oss/python/deepagents/subagents#the-general-purpose-subagent) resolves its base prompt as **`general_purpose_subagent.system_prompt` (if set) -> `HarnessProfile.base_system_prompt` (if set) -> SDK general-purpose default**, with the profile suffix layered on top. When both override fields are set, the general-purpose-specific one wins so a caller tuning both fields never sees their GP override silently dropped:
-
-    ```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-    from deepagents import (
-        GeneralPurposeSubagentProfile,
-        HarnessProfile,
-        register_harness_profile,
-    )
-
-    register_harness_profile(
-        "anthropic",
-        HarnessProfile(
-            base_system_prompt="You are ACME's support orchestrator.",  # main agent
-            general_purpose_subagent=GeneralPurposeSubagentProfile(
-                system_prompt="You are a research subagent. Cite sources.",  # GP subagent
-            ),
-            system_prompt_suffix="Always think step by step.",
-        ),
-    )
-    ```
-
-    | Stack | Final system prompt |
-    | - | - |
-    | Main agent | `"You are ACME's support orchestrator." + SUFFIX` |
-    | GP subagent | `"You are a research subagent. Cite sources." + SUFFIX` |
-  </Accordion>
-</AccordionGroup>
+> **General-purpose subagent prompt**
+>
+> The auto-added [general-purpose subagent](/oss/python/deepagents/subagents#the-general-purpose-subagent) resolves its base prompt as **`general_purpose_subagent.system_prompt` (if set) -> `HarnessProfile.base_system_prompt` (if set) -> SDK general-purpose default**, with the profile suffix layered on top. When both override fields are set, the general-purpose-specific one wins so a caller tuning both fields never sees their GP override silently dropped:
+>
+> ```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> from deepagents import (
+>     GeneralPurposeSubagentProfile,
+>     HarnessProfile,
+>     register_harness_profile,
+> )
+>
+> register_harness_profile(
+>     "anthropic",
+>     HarnessProfile(
+>         base_system_prompt="You are ACME's support orchestrator.",  # main agent
+>         general_purpose_subagent=GeneralPurposeSubagentProfile(
+>             system_prompt="You are a research subagent. Cite sources.",  # GP subagent
+>         ),
+>         system_prompt_suffix="Always think step by step.",
+>     ),
+> )
+> ```
+>
+> | Stack | Final system prompt |
+> | - | - |
+> | Main agent | `"You are ACME's support orchestrator." + SUFFIX` |
+> | GP subagent | `"You are a research subagent. Cite sources." + SUFFIX` |
 
 ## Middleware
 
@@ -1120,9 +1080,9 @@ From first to last:
 
 10. [`MemoryMiddleware`](https://reference.langchain.com/python/deepagents/middleware/memory/MemoryMiddleware): Only when you pass `memory`.
 
-    <Note>
-      `MemoryMiddleware` is placed **after** profile extras and the prompt caching middleware so updates to injected memory are less likely to invalidate the cache prefix. The same ordering concern is called out in the `create_deep_agent` implementation comments.
-    </Note>
+    > [!NOTE]
+    >
+    > `MemoryMiddleware` is placed **after** profile extras and the prompt caching middleware so updates to injected memory are less likely to invalidate the cache prefix. The same ordering concern is called out in the `create_deep_agent` implementation comments.
 
 11. `HumanInTheLoopMiddleware`: Only when you pass `interrupt_on`. Pauses for human approval or input at configured tool calls.
 
@@ -1148,331 +1108,329 @@ For provider-specific middleware that is optimized for specific LLM providers, s
 
 You can provide additional middleware to extend functionality, add tools, or implement custom hooks:
 
-<CodeGroup>
-  ```python Google theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  from langchain.agents.middleware import wrap_tool_call
-  from langchain.tools import tool
-  from deepagents import create_deep_agent
+```python Google theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+from langchain.agents.middleware import wrap_tool_call
+from langchain.tools import tool
+from deepagents import create_deep_agent
 
 
-  @tool
-  def get_weather(city: str) -> str:
-      """Get the weather in a city."""
-      return f"The weather in {city} is sunny."
+@tool
+def get_weather(city: str) -> str:
+    """Get the weather in a city."""
+    return f"The weather in {city} is sunny."
 
 
-  call_count = [0]  # Use list to allow modification in nested function
+call_count = [0]  # Use list to allow modification in nested function
 
 
-  @wrap_tool_call
-  def log_tool_calls(request, handler):
-      """Intercept and log every tool call - demonstrates cross-cutting concern."""
-      call_count[0] += 1
-      tool_name = request.name if hasattr(request, "name") else str(request)
+@wrap_tool_call
+def log_tool_calls(request, handler):
+    """Intercept and log every tool call - demonstrates cross-cutting concern."""
+    call_count[0] += 1
+    tool_name = request.name if hasattr(request, "name") else str(request)
 
-      print(f"[Middleware] Tool call #{call_count[0]}: {tool_name}")
-      print(f"[Middleware] Arguments: {request.args if hasattr(request, 'args') else 'N/A'}")
+    print(f"[Middleware] Tool call #{call_count[0]}: {tool_name}")
+    print(f"[Middleware] Arguments: {request.args if hasattr(request, 'args') else 'N/A'}")
 
-      # Execute the tool call
-      result = handler(request)
+    # Execute the tool call
+    result = handler(request)
 
-      # Log the result
-      print(f"[Middleware] Tool call #{call_count[0]} completed")
+    # Log the result
+    print(f"[Middleware] Tool call #{call_count[0]} completed")
 
-      return result
+    return result
 
 
-  agent = create_deep_agent(
-      model="google_genai:gemini-3.6-flash",
-      tools=[get_weather],
-      middleware=[log_tool_calls],
-  )
-  ```
+agent = create_deep_agent(
+    model="google_genai:gemini-3.6-flash",
+    tools=[get_weather],
+    middleware=[log_tool_calls],
+)
+```
 
-  ```python OpenAI theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  from langchain.agents.middleware import wrap_tool_call
-  from langchain.tools import tool
-  from deepagents import create_deep_agent
+```python OpenAI theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+from langchain.agents.middleware import wrap_tool_call
+from langchain.tools import tool
+from deepagents import create_deep_agent
 
 
-  @tool
-  def get_weather(city: str) -> str:
-      """Get the weather in a city."""
-      return f"The weather in {city} is sunny."
+@tool
+def get_weather(city: str) -> str:
+    """Get the weather in a city."""
+    return f"The weather in {city} is sunny."
 
 
-  call_count = [0]  # Use list to allow modification in nested function
+call_count = [0]  # Use list to allow modification in nested function
 
 
-  @wrap_tool_call
-  def log_tool_calls(request, handler):
-      """Intercept and log every tool call - demonstrates cross-cutting concern."""
-      call_count[0] += 1
-      tool_name = request.name if hasattr(request, "name") else str(request)
+@wrap_tool_call
+def log_tool_calls(request, handler):
+    """Intercept and log every tool call - demonstrates cross-cutting concern."""
+    call_count[0] += 1
+    tool_name = request.name if hasattr(request, "name") else str(request)
 
-      print(f"[Middleware] Tool call #{call_count[0]}: {tool_name}")
-      print(f"[Middleware] Arguments: {request.args if hasattr(request, 'args') else 'N/A'}")
+    print(f"[Middleware] Tool call #{call_count[0]}: {tool_name}")
+    print(f"[Middleware] Arguments: {request.args if hasattr(request, 'args') else 'N/A'}")
 
-      # Execute the tool call
-      result = handler(request)
+    # Execute the tool call
+    result = handler(request)
 
-      # Log the result
-      print(f"[Middleware] Tool call #{call_count[0]} completed")
+    # Log the result
+    print(f"[Middleware] Tool call #{call_count[0]} completed")
 
-      return result
+    return result
 
 
-  agent = create_deep_agent(
-      model="openai:gpt-5.5",
-      tools=[get_weather],
-      middleware=[log_tool_calls],
-  )
-  ```
+agent = create_deep_agent(
+    model="openai:gpt-5.5",
+    tools=[get_weather],
+    middleware=[log_tool_calls],
+)
+```
 
-  ```python Anthropic theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  from langchain.agents.middleware import wrap_tool_call
-  from langchain.tools import tool
-  from deepagents import create_deep_agent
+```python Anthropic theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+from langchain.agents.middleware import wrap_tool_call
+from langchain.tools import tool
+from deepagents import create_deep_agent
 
 
-  @tool
-  def get_weather(city: str) -> str:
-      """Get the weather in a city."""
-      return f"The weather in {city} is sunny."
+@tool
+def get_weather(city: str) -> str:
+    """Get the weather in a city."""
+    return f"The weather in {city} is sunny."
 
 
-  call_count = [0]  # Use list to allow modification in nested function
+call_count = [0]  # Use list to allow modification in nested function
 
 
-  @wrap_tool_call
-  def log_tool_calls(request, handler):
-      """Intercept and log every tool call - demonstrates cross-cutting concern."""
-      call_count[0] += 1
-      tool_name = request.name if hasattr(request, "name") else str(request)
+@wrap_tool_call
+def log_tool_calls(request, handler):
+    """Intercept and log every tool call - demonstrates cross-cutting concern."""
+    call_count[0] += 1
+    tool_name = request.name if hasattr(request, "name") else str(request)
 
-      print(f"[Middleware] Tool call #{call_count[0]}: {tool_name}")
-      print(f"[Middleware] Arguments: {request.args if hasattr(request, 'args') else 'N/A'}")
+    print(f"[Middleware] Tool call #{call_count[0]}: {tool_name}")
+    print(f"[Middleware] Arguments: {request.args if hasattr(request, 'args') else 'N/A'}")
 
-      # Execute the tool call
-      result = handler(request)
+    # Execute the tool call
+    result = handler(request)
 
-      # Log the result
-      print(f"[Middleware] Tool call #{call_count[0]} completed")
+    # Log the result
+    print(f"[Middleware] Tool call #{call_count[0]} completed")
 
-      return result
+    return result
 
 
-  agent = create_deep_agent(
-      model="anthropic:claude-sonnet-5",
-      tools=[get_weather],
-      middleware=[log_tool_calls],
-  )
-  ```
+agent = create_deep_agent(
+    model="anthropic:claude-sonnet-5",
+    tools=[get_weather],
+    middleware=[log_tool_calls],
+)
+```
 
-  ```python OpenRouter theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  from langchain.agents.middleware import wrap_tool_call
-  from langchain.tools import tool
-  from deepagents import create_deep_agent
+```python OpenRouter theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+from langchain.agents.middleware import wrap_tool_call
+from langchain.tools import tool
+from deepagents import create_deep_agent
 
 
-  @tool
-  def get_weather(city: str) -> str:
-      """Get the weather in a city."""
-      return f"The weather in {city} is sunny."
+@tool
+def get_weather(city: str) -> str:
+    """Get the weather in a city."""
+    return f"The weather in {city} is sunny."
 
 
-  call_count = [0]  # Use list to allow modification in nested function
+call_count = [0]  # Use list to allow modification in nested function
 
 
-  @wrap_tool_call
-  def log_tool_calls(request, handler):
-      """Intercept and log every tool call - demonstrates cross-cutting concern."""
-      call_count[0] += 1
-      tool_name = request.name if hasattr(request, "name") else str(request)
+@wrap_tool_call
+def log_tool_calls(request, handler):
+    """Intercept and log every tool call - demonstrates cross-cutting concern."""
+    call_count[0] += 1
+    tool_name = request.name if hasattr(request, "name") else str(request)
 
-      print(f"[Middleware] Tool call #{call_count[0]}: {tool_name}")
-      print(f"[Middleware] Arguments: {request.args if hasattr(request, 'args') else 'N/A'}")
+    print(f"[Middleware] Tool call #{call_count[0]}: {tool_name}")
+    print(f"[Middleware] Arguments: {request.args if hasattr(request, 'args') else 'N/A'}")
 
-      # Execute the tool call
-      result = handler(request)
+    # Execute the tool call
+    result = handler(request)
 
-      # Log the result
-      print(f"[Middleware] Tool call #{call_count[0]} completed")
+    # Log the result
+    print(f"[Middleware] Tool call #{call_count[0]} completed")
 
-      return result
+    return result
 
 
-  agent = create_deep_agent(
-      model="openrouter:z-ai/glm-5.2",
-      tools=[get_weather],
-      middleware=[log_tool_calls],
-  )
-  ```
+agent = create_deep_agent(
+    model="openrouter:z-ai/glm-5.2",
+    tools=[get_weather],
+    middleware=[log_tool_calls],
+)
+```
 
-  ```python Fireworks theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  from langchain.agents.middleware import wrap_tool_call
-  from langchain.tools import tool
-  from deepagents import create_deep_agent
+```python Fireworks theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+from langchain.agents.middleware import wrap_tool_call
+from langchain.tools import tool
+from deepagents import create_deep_agent
 
 
-  @tool
-  def get_weather(city: str) -> str:
-      """Get the weather in a city."""
-      return f"The weather in {city} is sunny."
+@tool
+def get_weather(city: str) -> str:
+    """Get the weather in a city."""
+    return f"The weather in {city} is sunny."
 
 
-  call_count = [0]  # Use list to allow modification in nested function
+call_count = [0]  # Use list to allow modification in nested function
 
 
-  @wrap_tool_call
-  def log_tool_calls(request, handler):
-      """Intercept and log every tool call - demonstrates cross-cutting concern."""
-      call_count[0] += 1
-      tool_name = request.name if hasattr(request, "name") else str(request)
+@wrap_tool_call
+def log_tool_calls(request, handler):
+    """Intercept and log every tool call - demonstrates cross-cutting concern."""
+    call_count[0] += 1
+    tool_name = request.name if hasattr(request, "name") else str(request)
 
-      print(f"[Middleware] Tool call #{call_count[0]}: {tool_name}")
-      print(f"[Middleware] Arguments: {request.args if hasattr(request, 'args') else 'N/A'}")
+    print(f"[Middleware] Tool call #{call_count[0]}: {tool_name}")
+    print(f"[Middleware] Arguments: {request.args if hasattr(request, 'args') else 'N/A'}")
 
-      # Execute the tool call
-      result = handler(request)
+    # Execute the tool call
+    result = handler(request)
 
-      # Log the result
-      print(f"[Middleware] Tool call #{call_count[0]} completed")
+    # Log the result
+    print(f"[Middleware] Tool call #{call_count[0]} completed")
 
-      return result
+    return result
 
 
-  agent = create_deep_agent(
-      model="fireworks:accounts/fireworks/models/glm-5p2",
-      tools=[get_weather],
-      middleware=[log_tool_calls],
-  )
-  ```
+agent = create_deep_agent(
+    model="fireworks:accounts/fireworks/models/glm-5p2",
+    tools=[get_weather],
+    middleware=[log_tool_calls],
+)
+```
 
-  ```python Baseten theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  from langchain.agents.middleware import wrap_tool_call
-  from langchain.tools import tool
-  from deepagents import create_deep_agent
+```python Baseten theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+from langchain.agents.middleware import wrap_tool_call
+from langchain.tools import tool
+from deepagents import create_deep_agent
 
 
-  @tool
-  def get_weather(city: str) -> str:
-      """Get the weather in a city."""
-      return f"The weather in {city} is sunny."
+@tool
+def get_weather(city: str) -> str:
+    """Get the weather in a city."""
+    return f"The weather in {city} is sunny."
 
 
-  call_count = [0]  # Use list to allow modification in nested function
+call_count = [0]  # Use list to allow modification in nested function
 
 
-  @wrap_tool_call
-  def log_tool_calls(request, handler):
-      """Intercept and log every tool call - demonstrates cross-cutting concern."""
-      call_count[0] += 1
-      tool_name = request.name if hasattr(request, "name") else str(request)
+@wrap_tool_call
+def log_tool_calls(request, handler):
+    """Intercept and log every tool call - demonstrates cross-cutting concern."""
+    call_count[0] += 1
+    tool_name = request.name if hasattr(request, "name") else str(request)
 
-      print(f"[Middleware] Tool call #{call_count[0]}: {tool_name}")
-      print(f"[Middleware] Arguments: {request.args if hasattr(request, 'args') else 'N/A'}")
+    print(f"[Middleware] Tool call #{call_count[0]}: {tool_name}")
+    print(f"[Middleware] Arguments: {request.args if hasattr(request, 'args') else 'N/A'}")
 
-      # Execute the tool call
-      result = handler(request)
+    # Execute the tool call
+    result = handler(request)
 
-      # Log the result
-      print(f"[Middleware] Tool call #{call_count[0]} completed")
+    # Log the result
+    print(f"[Middleware] Tool call #{call_count[0]} completed")
 
-      return result
+    return result
 
 
-  agent = create_deep_agent(
-      model="baseten:zai-org/GLM-5.2",
-      tools=[get_weather],
-      middleware=[log_tool_calls],
-  )
-  ```
+agent = create_deep_agent(
+    model="baseten:zai-org/GLM-5.2",
+    tools=[get_weather],
+    middleware=[log_tool_calls],
+)
+```
 
-  ```python Ollama theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  from langchain.agents.middleware import wrap_tool_call
-  from langchain.tools import tool
-  from deepagents import create_deep_agent
+```python Ollama theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+from langchain.agents.middleware import wrap_tool_call
+from langchain.tools import tool
+from deepagents import create_deep_agent
 
 
-  @tool
-  def get_weather(city: str) -> str:
-      """Get the weather in a city."""
-      return f"The weather in {city} is sunny."
+@tool
+def get_weather(city: str) -> str:
+    """Get the weather in a city."""
+    return f"The weather in {city} is sunny."
 
 
-  call_count = [0]  # Use list to allow modification in nested function
+call_count = [0]  # Use list to allow modification in nested function
 
 
-  @wrap_tool_call
-  def log_tool_calls(request, handler):
-      """Intercept and log every tool call - demonstrates cross-cutting concern."""
-      call_count[0] += 1
-      tool_name = request.name if hasattr(request, "name") else str(request)
+@wrap_tool_call
+def log_tool_calls(request, handler):
+    """Intercept and log every tool call - demonstrates cross-cutting concern."""
+    call_count[0] += 1
+    tool_name = request.name if hasattr(request, "name") else str(request)
 
-      print(f"[Middleware] Tool call #{call_count[0]}: {tool_name}")
-      print(f"[Middleware] Arguments: {request.args if hasattr(request, 'args') else 'N/A'}")
+    print(f"[Middleware] Tool call #{call_count[0]}: {tool_name}")
+    print(f"[Middleware] Arguments: {request.args if hasattr(request, 'args') else 'N/A'}")
 
-      # Execute the tool call
-      result = handler(request)
+    # Execute the tool call
+    result = handler(request)
 
-      # Log the result
-      print(f"[Middleware] Tool call #{call_count[0]} completed")
+    # Log the result
+    print(f"[Middleware] Tool call #{call_count[0]} completed")
 
-      return result
+    return result
 
 
-  agent = create_deep_agent(
-      model="ollama:north-mini-code-1.0",
-      tools=[get_weather],
-      middleware=[log_tool_calls],
-  )
-  ```
-</CodeGroup>
+agent = create_deep_agent(
+    model="ollama:north-mini-code-1.0",
+    tools=[get_weather],
+    middleware=[log_tool_calls],
+)
+```
 
-<Warning>
-  **Do not mutate attributes after initialization**
-
-  If you need to track values across hook invocations (for example, counters or accumulated data), use graph state.
-  Graph state is scoped to a thread by design, so updates are safe under concurrency.
-
-  **Do this:**
-
-  ```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  from langchain.agents.middleware import AgentMiddleware
-
-
-  class CustomMiddleware(AgentMiddleware):
-      def __init__(self):
-          pass
-
-      def before_agent(self, state, runtime):
-          return {"x": state.get("x", 0) + 1}  # Update graph state instead
-  ```
-
-  Do **not** do this:
-
-  ```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  class CustomMiddlewareBad(AgentMiddleware):
-      def __init__(self):
-          self.x = 1
-
-      def before_agent(self, state, runtime):
-          self.x += 1  # Mutation causes race conditions
-  ```
-
-  Mutation in place, such as modifying `self.x` in `before_agent` or changing other shared values in hooks, can lead to subtle bugs and race conditions because many operations run concurrently (subagents, parallel tools, and parallel invocations on different threads).
-
-  For full details on extending state with custom properties, see [Custom middleware - Custom state schema](/oss/python/langchain/middleware/custom#custom-state-schema).
-
-  If you must use mutation in custom middleware, consider what happens when subagents, parallel tools, or concurrent agent invocations run at the same time.
-</Warning>
+> [!WARNING]
+>
+> **Do not mutate attributes after initialization**
+>
+> If you need to track values across hook invocations (for example, counters or accumulated data), use graph state.
+> Graph state is scoped to a thread by design, so updates are safe under concurrency.
+>
+> **Do this:**
+>
+> ```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> from langchain.agents.middleware import AgentMiddleware
+>
+>
+> class CustomMiddleware(AgentMiddleware):
+>     def __init__(self):
+>         pass
+>
+>     def before_agent(self, state, runtime):
+>         return {"x": state.get("x", 0) + 1}  # Update graph state instead
+> ```
+>
+> Do **not** do this:
+>
+> ```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> class CustomMiddlewareBad(AgentMiddleware):
+>     def __init__(self):
+>         self.x = 1
+>
+>     def before_agent(self, state, runtime):
+>         self.x += 1  # Mutation causes race conditions
+> ```
+>
+> Mutation in place, such as modifying `self.x` in `before_agent` or changing other shared values in hooks, can lead to subtle bugs and race conditions because many operations run concurrently (subagents, parallel tools, and parallel invocations on different threads).
+>
+> For full details on extending state with custom properties, see [Custom middleware - Custom state schema](/oss/python/langchain/middleware/custom#custom-state-schema).
+>
+> If you must use mutation in custom middleware, consider what happens when subagents, parallel tools, or concurrent agent invocations run at the same time.
 
 ### Override a default middleware instance
 
-<Note>
-  Overriding a default middleware by matching `.name` requires `deepagents>=0.7`.
-</Note>
+> [!NOTE]
+>
+> Overriding a default middleware by matching `.name` requires `deepagents>=0.7`.
 
 Pass a middleware instance whose `.name` matches an entry in the [Deep Agents stack](#deep-agents-stack), such as [`SummarizationMiddleware`](https://reference.langchain.com/python/langchain/agents/middleware/summarization/SummarizationMiddleware), to replace that built-in instance in place instead of appending a duplicate. Any middleware you pass whose `.name` does **not** match a built-in entry is not replaced, it lands after the last core middleware entry and before the profile, prompt-caching, and memory. See [Full stack](#full-stack) for the complete ordering.
 
@@ -1496,9 +1454,9 @@ agent = create_deep_agent(
 )
 ```
 
-<Note>
-  An override **replaces** the default middleware instance, it is not merged with it. That means your replacement must be fully configured with any settings it needs. This is especially important for `FilesystemMiddleware`: if you override it, you must pass the `backend` (and `permissions`, if applicable) directly to your custom instance, since it won't inherit the `backend=` and `permissions=` passed to `create_deep_agent()`. To restrict the available filesystem tools, pass a `tools` allowlist to your custom [`FilesystemMiddleware`](https://reference.langchain.com/python/deepagents/middleware/filesystem/FilesystemMiddleware) instance; see [Virtual filesystem access](/oss/python/deepagents/overview#virtual-filesystem-access) for the "Restricting filesystem tools" example.
-</Note>
+> [!NOTE]
+>
+> An override **replaces** the default middleware instance, it is not merged with it. That means your replacement must be fully configured with any settings it needs. This is especially important for `FilesystemMiddleware`: if you override it, you must pass the `backend` (and `permissions`, if applicable) directly to your custom instance, since it won't inherit the `backend=` and `permissions=` passed to `create_deep_agent()`. To restrict the available filesystem tools, pass a `tools` allowlist to your custom [`FilesystemMiddleware`](https://reference.langchain.com/python/deepagents/middleware/filesystem/FilesystemMiddleware) instance; see [Virtual filesystem access](/oss/python/deepagents/overview#virtual-filesystem-access) for the "Restricting filesystem tools" example.
 
 The general-purpose subagent, which Deep Agents adds automatically, inherits overrides for its default middleware from the main agent, without carrying over middleware that's specific to the main agent.
 
@@ -1506,240 +1464,236 @@ Declarative subagents defined via `subagents=` do not inherit the main agent's m
 
 #### Examples
 
-<AccordionGroup>
-  <Accordion title="Adjust when summarization triggers" icon="adjustments">
-    Override [`SummarizationMiddleware`](https://reference.langchain.com/python/langchain/agents/middleware/summarization/SummarizationMiddleware) with custom `trigger` and `keep` thresholds to compact conversation history earlier or later than the default, and control how many recent messages survive each compaction.
+> **Adjust when summarization triggers**
+>
+> Override [`SummarizationMiddleware`](https://reference.langchain.com/python/langchain/agents/middleware/summarization/SummarizationMiddleware) with custom `trigger` and `keep` thresholds to compact conversation history earlier or later than the default, and control how many recent messages survive each compaction.
+>
+> ```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> from deepagents import create_deep_agent
+> from deepagents.backends import StateBackend
+> from deepagents.middleware import SummarizationMiddleware
+>
+> backend = StateBackend()
+> model = "anthropic:claude-sonnet-4-6"
+>
+> agent = create_deep_agent(
+>     model=model,
+>     middleware=[
+>         SummarizationMiddleware(
+>             model=model,
+>             backend=backend,
+>             trigger=("tokens", 100000),  # summarize once the conversation exceeds 100k tokens
+>             keep=("messages", 20),  # keep the most recent 20 messages verbatim
+>         ),
+>     ],
+> )
+> ```
+>
+> `trigger` also accepts `("fraction", ...)` for a percentage of the model's context window, and a list of thresholds combines them with OR semantics. See the [`SummarizationMiddleware`](https://reference.langchain.com/python/langchain/agents/middleware/summarization/SummarizationMiddleware) reference for the full set of options.
 
-    ```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-    from deepagents import create_deep_agent
-    from deepagents.backends import StateBackend
-    from deepagents.middleware import SummarizationMiddleware
+> **Update the prompt cache TTL**
+>
+> Override [`AnthropicPromptCachingMiddleware`](https://reference.langchain.com/python/langchain-anthropic/middleware/prompt_caching/AnthropicPromptCachingMiddleware) to extend the cache lifetime beyond the default `5m` TTL, useful for agents with long gaps between turns. See [Prompt caching](/oss/python/deepagents/overview#prompt-caching) for how caching is applied by default.
+>
+> ```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> from deepagents import create_deep_agent
+> from langchain_anthropic.middleware import AnthropicPromptCachingMiddleware
+>
+> agent = create_deep_agent(
+>     model="anthropic:claude-sonnet-4-6",
+>     middleware=[
+>         AnthropicPromptCachingMiddleware(ttl="1h"),  # replaces the default 5m TTL
+>     ],
+> )
+> ```
 
-    backend = StateBackend()
-    model = "anthropic:claude-sonnet-4-6"
+> **Restrict the enabled filesystem tools**
+>
+> > [!NOTE]
+> >
+> > The `tools` allowlist on `FilesystemMiddleware` requires `deepagents>=0.7`.
+>
+> Override [`FilesystemMiddleware`](https://reference.langchain.com/python/deepagents/middleware/filesystem/FilesystemMiddleware) with a `tools` allowlist to expose only a subset of the filesystem tools to the model, instead of the full default set.
+>
+> ```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> from deepagents import create_deep_agent
+> from deepagents.backends import StateBackend
+> from deepagents.middleware import FilesystemMiddleware
+>
+> backend = StateBackend()
+>
+> # Read-only agent: write_file, edit_file, delete, and execute are never shown
+> agent = create_deep_agent(
+>     model="anthropic:claude-sonnet-4-6",
+>     backend=backend,
+>     middleware=[
+>         FilesystemMiddleware(backend=backend, tools=["read_file", "ls", "glob", "grep"]),
+>     ],
+> )
+> ```
+>
+> See [Restricting filesystem tools](/oss/python/deepagents/overview#virtual-filesystem-access) for more details.
 
-    agent = create_deep_agent(
-        model=model,
-        middleware=[
-            SummarizationMiddleware(
-                model=model,
-                backend=backend,
-                trigger=("tokens", 100000),  # summarize once the conversation exceeds 100k tokens
-                keep=("messages", 20),  # keep the most recent 20 messages verbatim
-            ),
-        ],
-    )
-    ```
+> **Customize how the skill catalog appears in the system prompt**
+>
+> Override [`SkillsMiddleware`](https://reference.langchain.com/python/deepagents/middleware/skills/SkillsMiddleware) with a custom `system_prompt=` template to control how
+> the auto-generated skill catalog is framed — for example, to add surrounding context,
+> reorder sections, or place routing hints (priorities, category bias) in the same
+> block as the catalog. The template must include the `{skills_locations}`,
+> `{skills_list}`, and `{skills_load_warnings}` slots, which the middleware substitutes
+> on every turn — so the catalog stays in sync automatically as skills are added,
+> renamed, or removed.
+>
+> The example below places routing hints alongside the catalog:
+>
+> ```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> from deepagents import create_deep_agent
+> from deepagents.backends.filesystem import FilesystemBackend
+> from deepagents.middleware.skills import SkillsMiddleware
+>
+> backend = FilesystemBackend(root_dir="/path/to/skills")
+>
+> custom_skills_prompt = """## Skills
+>
+> Routing hints:
+> - For research topics → prefer arxiv-search first
+> - For general questions → use web-research
+> - For LangGraph documentation → langgraph-docs
+>
+> {skills_locations}
+>
+> {skills_list}
+>
+> {skills_load_warnings}
+> """
+>
+> agent = create_deep_agent(
+>     model="anthropic:claude-sonnet-4-6",
+>     middleware=[
+>         SkillsMiddleware(
+>             backend=backend,
+>             sources=["/path/to/skills"],
+>             system_prompt=custom_skills_prompt,
+>         ),
+>     ],
+> )
+> ```
+>
+> Do not also pass `skills=` to `create_deep_agent` in this case: the override instance
+> already owns `backend` and `sources`. Any missing slot (`{skills_locations}`,
+> `{skills_list}`, `{skills_load_warnings}`) raises `ValueError` at construction time.
 
-    `trigger` also accepts `("fraction", ...)` for a percentage of the model's context window, and a list of thresholds combines them with OR semantics. See the [`SummarizationMiddleware`](https://reference.langchain.com/python/langchain/agents/middleware/summarization/SummarizationMiddleware) reference for the full set of options.
-  </Accordion>
-
-  <Accordion title="Update the prompt cache TTL" icon="clock">
-    Override [`AnthropicPromptCachingMiddleware`](https://reference.langchain.com/python/langchain-anthropic/middleware/prompt_caching/AnthropicPromptCachingMiddleware) to extend the cache lifetime beyond the default `5m` TTL, useful for agents with long gaps between turns. See [Prompt caching](/oss/python/deepagents/overview#prompt-caching) for how caching is applied by default.
-
-    ```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-    from deepagents import create_deep_agent
-    from langchain_anthropic.middleware import AnthropicPromptCachingMiddleware
-
-    agent = create_deep_agent(
-        model="anthropic:claude-sonnet-4-6",
-        middleware=[
-            AnthropicPromptCachingMiddleware(ttl="1h"),  # replaces the default 5m TTL
-        ],
-    )
-    ```
-  </Accordion>
-
-  <Accordion title="Restrict the enabled filesystem tools" icon="filter">
-    <Note>
-      The `tools` allowlist on `FilesystemMiddleware` requires `deepagents>=0.7`.
-    </Note>
-
-    Override [`FilesystemMiddleware`](https://reference.langchain.com/python/deepagents/middleware/filesystem/FilesystemMiddleware) with a `tools` allowlist to expose only a subset of the filesystem tools to the model, instead of the full default set.
-
-    ```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-    from deepagents import create_deep_agent
-    from deepagents.backends import StateBackend
-    from deepagents.middleware import FilesystemMiddleware
-
-    backend = StateBackend()
-
-    # Read-only agent: write_file, edit_file, delete, and execute are never shown
-    agent = create_deep_agent(
-        model="anthropic:claude-sonnet-4-6",
-        backend=backend,
-        middleware=[
-            FilesystemMiddleware(backend=backend, tools=["read_file", "ls", "glob", "grep"]),
-        ],
-    )
-    ```
-
-    See [Restricting filesystem tools](/oss/python/deepagents/overview#virtual-filesystem-access) for more details.
-  </Accordion>
-
-  <Accordion title="Customize how the skill catalog appears in the system prompt" icon="template">
-    Override [`SkillsMiddleware`](https://reference.langchain.com/python/deepagents/middleware/skills/SkillsMiddleware) with a custom `system_prompt=` template to control how
-    the auto-generated skill catalog is framed — for example, to add surrounding context,
-    reorder sections, or place routing hints (priorities, category bias) in the same
-    block as the catalog. The template must include the `{skills_locations}`,
-    `{skills_list}`, and `{skills_load_warnings}` slots, which the middleware substitutes
-    on every turn — so the catalog stays in sync automatically as skills are added,
-    renamed, or removed.
-
-    The example below places routing hints alongside the catalog:
-
-    ```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-    from deepagents import create_deep_agent
-    from deepagents.backends.filesystem import FilesystemBackend
-    from deepagents.middleware.skills import SkillsMiddleware
-
-    backend = FilesystemBackend(root_dir="/path/to/skills")
-
-    custom_skills_prompt = """## Skills
-
-    Routing hints:
-    - For research topics → prefer arxiv-search first
-    - For general questions → use web-research
-    - For LangGraph documentation → langgraph-docs
-
-    {skills_locations}
-
-    {skills_list}
-
-    {skills_load_warnings}
-    """
-
-    agent = create_deep_agent(
-        model="anthropic:claude-sonnet-4-6",
-        middleware=[
-            SkillsMiddleware(
-                backend=backend,
-                sources=["/path/to/skills"],
-                system_prompt=custom_skills_prompt,
-            ),
-        ],
-    )
-    ```
-
-    Do not also pass `skills=` to `create_deep_agent` in this case: the override instance
-    already owns `backend` and `sources`. Any missing slot (`{skills_locations}`,
-    `{skills_list}`, `{skills_load_warnings}`) raises `ValueError` at construction time.
-  </Accordion>
-
-  <Accordion title="Suppress the auto-generated skill catalog" icon="eye-off">
-    Override [`SkillsMiddleware`](https://reference.langchain.com/python/deepagents/middleware/skills/SkillsMiddleware) with `system_prompt=None` to load skills without
-    appending a skills section to the system prompt at all. Skills remain in
-    `state["skills_metadata"]` and skill files stay reachable through the filesystem
-    tools, so callers who prefer to write their own description block (for example, a
-    compact hand-written routing summary) in `create_deep_agent(system_prompt=...)` can
-    add exactly the guidance they need without the built-in one.
-
-    ```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-    from deepagents import create_deep_agent
-    from deepagents.backends.filesystem import FilesystemBackend
-    from deepagents.middleware.skills import SkillsMiddleware
-
-    backend = FilesystemBackend(root_dir="/path/to/skills")
-
-    agent = create_deep_agent(
-        model="anthropic:claude-sonnet-4-6",
-        system_prompt="""You are a research assistant.
-
-    Skills (read the SKILL.md file when relevant):
-    - /path/to/skills/arxiv-search/SKILL.md — papers
-    - /path/to/skills/web-research/SKILL.md — general web lookups
-    - /path/to/skills/langgraph-docs/SKILL.md — LangGraph documentation
-    """,
-        middleware=[
-            SkillsMiddleware(
-                backend=backend,
-                sources=["/path/to/skills"],
-                system_prompt=None,
-            ),
-        ],
-    )
-    ```
-
-    Skill names, paths, and any hand-written hints in `create_deep_agent`'s `system_prompt`
-    are the caller's responsibility to keep in sync when skills change.
-  </Accordion>
-</AccordionGroup>
+> **Suppress the auto-generated skill catalog**
+>
+> Override [`SkillsMiddleware`](https://reference.langchain.com/python/deepagents/middleware/skills/SkillsMiddleware) with `system_prompt=None` to load skills without
+> appending a skills section to the system prompt at all. Skills remain in
+> `state["skills_metadata"]` and skill files stay reachable through the filesystem
+> tools, so callers who prefer to write their own description block (for example, a
+> compact hand-written routing summary) in `create_deep_agent(system_prompt=...)` can
+> add exactly the guidance they need without the built-in one.
+>
+> ```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> from deepagents import create_deep_agent
+> from deepagents.backends.filesystem import FilesystemBackend
+> from deepagents.middleware.skills import SkillsMiddleware
+>
+> backend = FilesystemBackend(root_dir="/path/to/skills")
+>
+> agent = create_deep_agent(
+>     model="anthropic:claude-sonnet-4-6",
+>     system_prompt="""You are a research assistant.
+>
+> Skills (read the SKILL.md file when relevant):
+> - /path/to/skills/arxiv-search/SKILL.md — papers
+> - /path/to/skills/web-research/SKILL.md — general web lookups
+> - /path/to/skills/langgraph-docs/SKILL.md — LangGraph documentation
+> """,
+>     middleware=[
+>         SkillsMiddleware(
+>             backend=backend,
+>             sources=["/path/to/skills"],
+>             system_prompt=None,
+>         ),
+>     ],
+> )
+> ```
+>
+> Skill names, paths, and any hand-written hints in `create_deep_agent`'s `system_prompt`
+> are the caller's responsibility to keep in sync when skills change.
 
 ### Interpreters
 
 Use [interpreters](/oss/python/deepagents/interpreters) to add an `eval` tool that runs JavaScript in a scoped QuickJS runtime. Interpreters are useful when the agent needs to compose tools programmatically, batch work, handle errors in code, or transform structured data without a full shell environment.
 
-<CodeGroup>
-  ```python Google theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  from deepagents import create_deep_agent
-  from langchain_quickjs import CodeInterpreterMiddleware
+```python Google theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+from deepagents import create_deep_agent
+from langchain_quickjs import CodeInterpreterMiddleware
 
-  agent = create_deep_agent(
-      model="google_genai:gemini-3.6-flash",
-      middleware=[CodeInterpreterMiddleware()],
-  )
-  ```
+agent = create_deep_agent(
+    model="google_genai:gemini-3.6-flash",
+    middleware=[CodeInterpreterMiddleware()],
+)
+```
 
-  ```python OpenAI theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  from deepagents import create_deep_agent
-  from langchain_quickjs import CodeInterpreterMiddleware
+```python OpenAI theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+from deepagents import create_deep_agent
+from langchain_quickjs import CodeInterpreterMiddleware
 
-  agent = create_deep_agent(
-      model="openai:gpt-5.5",
-      middleware=[CodeInterpreterMiddleware()],
-  )
-  ```
+agent = create_deep_agent(
+    model="openai:gpt-5.5",
+    middleware=[CodeInterpreterMiddleware()],
+)
+```
 
-  ```python Anthropic theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  from deepagents import create_deep_agent
-  from langchain_quickjs import CodeInterpreterMiddleware
+```python Anthropic theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+from deepagents import create_deep_agent
+from langchain_quickjs import CodeInterpreterMiddleware
 
-  agent = create_deep_agent(
-      model="anthropic:claude-sonnet-5",
-      middleware=[CodeInterpreterMiddleware()],
-  )
-  ```
+agent = create_deep_agent(
+    model="anthropic:claude-sonnet-5",
+    middleware=[CodeInterpreterMiddleware()],
+)
+```
 
-  ```python OpenRouter theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  from deepagents import create_deep_agent
-  from langchain_quickjs import CodeInterpreterMiddleware
+```python OpenRouter theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+from deepagents import create_deep_agent
+from langchain_quickjs import CodeInterpreterMiddleware
 
-  agent = create_deep_agent(
-      model="openrouter:z-ai/glm-5.2",
-      middleware=[CodeInterpreterMiddleware()],
-  )
-  ```
+agent = create_deep_agent(
+    model="openrouter:z-ai/glm-5.2",
+    middleware=[CodeInterpreterMiddleware()],
+)
+```
 
-  ```python Fireworks theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  from deepagents import create_deep_agent
-  from langchain_quickjs import CodeInterpreterMiddleware
+```python Fireworks theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+from deepagents import create_deep_agent
+from langchain_quickjs import CodeInterpreterMiddleware
 
-  agent = create_deep_agent(
-      model="fireworks:accounts/fireworks/models/glm-5p2",
-      middleware=[CodeInterpreterMiddleware()],
-  )
-  ```
+agent = create_deep_agent(
+    model="fireworks:accounts/fireworks/models/glm-5p2",
+    middleware=[CodeInterpreterMiddleware()],
+)
+```
 
-  ```python Baseten theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  from deepagents import create_deep_agent
-  from langchain_quickjs import CodeInterpreterMiddleware
+```python Baseten theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+from deepagents import create_deep_agent
+from langchain_quickjs import CodeInterpreterMiddleware
 
-  agent = create_deep_agent(
-      model="baseten:zai-org/GLM-5.2",
-      middleware=[CodeInterpreterMiddleware()],
-  )
-  ```
+agent = create_deep_agent(
+    model="baseten:zai-org/GLM-5.2",
+    middleware=[CodeInterpreterMiddleware()],
+)
+```
 
-  ```python Ollama theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  from deepagents import create_deep_agent
-  from langchain_quickjs import CodeInterpreterMiddleware
+```python Ollama theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+from deepagents import create_deep_agent
+from langchain_quickjs import CodeInterpreterMiddleware
 
-  agent = create_deep_agent(
-      model="ollama:north-mini-code-1.0",
-      middleware=[CodeInterpreterMiddleware()],
-  )
-  ```
-</CodeGroup>
+agent = create_deep_agent(
+    model="ollama:north-mini-code-1.0",
+    middleware=[CodeInterpreterMiddleware()],
+)
+```
 
 For setup, programmatic tool calling, subagent orchestration, and limits, see [Interpreters](/oss/python/deepagents/interpreters).
 
@@ -1795,596 +1749,582 @@ Tools for a deep agent can make use of virtual file systems to store, access, an
 
 If you are using [skills](#skills) or [memory](#memory), you must add the expected skill or memory files to the backend before creating the agent.
 
-<Tabs>
-  <Tab title="StateBackend">
-    A thread-scoped filesystem backend stored in `langgraph` state.
-
-    Files persist across turns within a thread (via your checkpointer) and are not shared across threads.
-
-    <CodeGroup>
-      ```python Google theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-      from deepagents import create_deep_agent
-      from deepagents.backends import StateBackend
-
-      # By default we provide a StateBackend
-      agent = create_deep_agent(model="google_genai:gemini-3.6-flash")
-
-      # Under the hood, it looks like
-      agent2 = create_deep_agent(
-          model="google_genai:gemini-3.6-flash",
-          backend=StateBackend(),
-      )
-      ```
-
-      ```python OpenAI theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-      from deepagents import create_deep_agent
-      from deepagents.backends import StateBackend
-
-      # By default we provide a StateBackend
-      agent = create_deep_agent(model="openai:gpt-5.5")
-
-      # Under the hood, it looks like
-      agent2 = create_deep_agent(
-          model="openai:gpt-5.5",
-          backend=StateBackend(),
-      )
-      ```
-
-      ```python Anthropic theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-      from deepagents import create_deep_agent
-      from deepagents.backends import StateBackend
-
-      # By default we provide a StateBackend
-      agent = create_deep_agent(model="anthropic:claude-sonnet-5")
-
-      # Under the hood, it looks like
-      agent2 = create_deep_agent(
-          model="anthropic:claude-sonnet-5",
-          backend=StateBackend(),
-      )
-      ```
-
-      ```python OpenRouter theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-      from deepagents import create_deep_agent
-      from deepagents.backends import StateBackend
-
-      # By default we provide a StateBackend
-      agent = create_deep_agent(model="openrouter:z-ai/glm-5.2")
-
-      # Under the hood, it looks like
-      agent2 = create_deep_agent(
-          model="openrouter:z-ai/glm-5.2",
-          backend=StateBackend(),
-      )
-      ```
-
-      ```python Fireworks theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-      from deepagents import create_deep_agent
-      from deepagents.backends import StateBackend
-
-      # By default we provide a StateBackend
-      agent = create_deep_agent(model="fireworks:accounts/fireworks/models/glm-5p2")
-
-      # Under the hood, it looks like
-      agent2 = create_deep_agent(
-          model="fireworks:accounts/fireworks/models/glm-5p2",
-          backend=StateBackend(),
-      )
-      ```
-
-      ```python Baseten theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-      from deepagents import create_deep_agent
-      from deepagents.backends import StateBackend
-
-      # By default we provide a StateBackend
-      agent = create_deep_agent(model="baseten:zai-org/GLM-5.2")
-
-      # Under the hood, it looks like
-      agent2 = create_deep_agent(
-          model="baseten:zai-org/GLM-5.2",
-          backend=StateBackend(),
-      )
-      ```
-
-      ```python Ollama theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-      from deepagents import create_deep_agent
-      from deepagents.backends import StateBackend
-
-      # By default we provide a StateBackend
-      agent = create_deep_agent(model="ollama:north-mini-code-1.0")
-
-      # Under the hood, it looks like
-      agent2 = create_deep_agent(
-          model="ollama:north-mini-code-1.0",
-          backend=StateBackend(),
-      )
-      ```
-    </CodeGroup>
-  </Tab>
-
-  <Tab title="FilesystemBackend">
-    The local machine's filesystem.
-
-    <Warning>
-      This backend grants agents direct filesystem read/write access.
-      Use with caution and only in appropriate environments.
-      For more information, see [`FilesystemBackend`](/oss/python/deepagents/backends#filesystembackend-local-disk).
-    </Warning>
-
-    <CodeGroup>
-      ```python Google theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-      from deepagents import create_deep_agent
-      from deepagents.backends import FilesystemBackend
-
-      agent = create_deep_agent(
-          model="google_genai:gemini-3.6-flash",
-          backend=FilesystemBackend(root_dir=".", virtual_mode=True),
-      )
-      ```
-
-      ```python OpenAI theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-      from deepagents import create_deep_agent
-      from deepagents.backends import FilesystemBackend
-
-      agent = create_deep_agent(
-          model="openai:gpt-5.5",
-          backend=FilesystemBackend(root_dir=".", virtual_mode=True),
-      )
-      ```
-
-      ```python Anthropic theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-      from deepagents import create_deep_agent
-      from deepagents.backends import FilesystemBackend
-
-      agent = create_deep_agent(
-          model="anthropic:claude-sonnet-5",
-          backend=FilesystemBackend(root_dir=".", virtual_mode=True),
-      )
-      ```
-
-      ```python OpenRouter theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-      from deepagents import create_deep_agent
-      from deepagents.backends import FilesystemBackend
-
-      agent = create_deep_agent(
-          model="openrouter:z-ai/glm-5.2",
-          backend=FilesystemBackend(root_dir=".", virtual_mode=True),
-      )
-      ```
-
-      ```python Fireworks theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-      from deepagents import create_deep_agent
-      from deepagents.backends import FilesystemBackend
-
-      agent = create_deep_agent(
-          model="fireworks:accounts/fireworks/models/glm-5p2",
-          backend=FilesystemBackend(root_dir=".", virtual_mode=True),
-      )
-      ```
-
-      ```python Baseten theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-      from deepagents import create_deep_agent
-      from deepagents.backends import FilesystemBackend
-
-      agent = create_deep_agent(
-          model="baseten:zai-org/GLM-5.2",
-          backend=FilesystemBackend(root_dir=".", virtual_mode=True),
-      )
-      ```
-
-      ```python Ollama theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-      from deepagents import create_deep_agent
-      from deepagents.backends import FilesystemBackend
-
-      agent = create_deep_agent(
-          model="ollama:north-mini-code-1.0",
-          backend=FilesystemBackend(root_dir=".", virtual_mode=True),
-      )
-      ```
-    </CodeGroup>
-
-    <Tip>
-      Wrap `FilesystemBackend` in a `CompositeBackend` to prevent internal agent data (offloaded tool results, conversation history) from being written to disk alongside your project files. See the [recommended pattern](/oss/python/deepagents/backends#filesystembackend-local-disk).
-    </Tip>
-  </Tab>
-
-  <Tab title="LocalShellBackend">
-    A filesystem with shell execution directly on the host. Provides filesystem tools plus the `execute` tool for running commands.
-
-    <Warning>
-      This backend grants agents direct filesystem read/write access **and** unrestricted shell execution on your host.
-      Use with extreme caution and only in appropriate environments.
-      For more information, see [`LocalShellBackend`](/oss/python/deepagents/backends#localshellbackend-local-shell).
-    </Warning>
-
-    <CodeGroup>
-      ```python Google theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-      from deepagents import create_deep_agent
-      from deepagents.backends import LocalShellBackend
-
-      agent = create_deep_agent(
-          model="google_genai:gemini-3.6-flash",
-          backend=LocalShellBackend(root_dir=".", virtual_mode=True, env={"PATH": "/usr/bin:/bin"}),
-      )
-      ```
-
-      ```python OpenAI theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-      from deepagents import create_deep_agent
-      from deepagents.backends import LocalShellBackend
-
-      agent = create_deep_agent(
-          model="openai:gpt-5.5",
-          backend=LocalShellBackend(root_dir=".", virtual_mode=True, env={"PATH": "/usr/bin:/bin"}),
-      )
-      ```
-
-      ```python Anthropic theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-      from deepagents import create_deep_agent
-      from deepagents.backends import LocalShellBackend
-
-      agent = create_deep_agent(
-          model="anthropic:claude-sonnet-5",
-          backend=LocalShellBackend(root_dir=".", virtual_mode=True, env={"PATH": "/usr/bin:/bin"}),
-      )
-      ```
-
-      ```python OpenRouter theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-      from deepagents import create_deep_agent
-      from deepagents.backends import LocalShellBackend
-
-      agent = create_deep_agent(
-          model="openrouter:z-ai/glm-5.2",
-          backend=LocalShellBackend(root_dir=".", virtual_mode=True, env={"PATH": "/usr/bin:/bin"}),
-      )
-      ```
-
-      ```python Fireworks theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-      from deepagents import create_deep_agent
-      from deepagents.backends import LocalShellBackend
-
-      agent = create_deep_agent(
-          model="fireworks:accounts/fireworks/models/glm-5p2",
-          backend=LocalShellBackend(root_dir=".", virtual_mode=True, env={"PATH": "/usr/bin:/bin"}),
-      )
-      ```
-
-      ```python Baseten theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-      from deepagents import create_deep_agent
-      from deepagents.backends import LocalShellBackend
-
-      agent = create_deep_agent(
-          model="baseten:zai-org/GLM-5.2",
-          backend=LocalShellBackend(root_dir=".", virtual_mode=True, env={"PATH": "/usr/bin:/bin"}),
-      )
-      ```
-
-      ```python Ollama theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-      from deepagents import create_deep_agent
-      from deepagents.backends import LocalShellBackend
-
-      agent = create_deep_agent(
-          model="ollama:north-mini-code-1.0",
-          backend=LocalShellBackend(root_dir=".", virtual_mode=True, env={"PATH": "/usr/bin:/bin"}),
-      )
-      ```
-    </CodeGroup>
-  </Tab>
-
-  <Tab title="StoreBackend">
-    A filesystem that provides long-term storage that is *persisted across threads*.
-
-    <CodeGroup>
-      ```python Google theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-      from deepagents import create_deep_agent
-      from deepagents.backends import StoreBackend
-      from langgraph.store.memory import InMemoryStore
-
-      agent = create_deep_agent(
-          model="google_genai:gemini-3.6-flash",
-          backend=StoreBackend(
-              namespace=lambda rt: (rt.server_info.user.identity,),
-          ),
-          store=InMemoryStore(),  # Good for local dev; omit for LangSmith Deployment
-      )
-      ```
-
-      ```python OpenAI theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-      from deepagents import create_deep_agent
-      from deepagents.backends import StoreBackend
-      from langgraph.store.memory import InMemoryStore
-
-      agent = create_deep_agent(
-          model="openai:gpt-5.5",
-          backend=StoreBackend(
-              namespace=lambda rt: (rt.server_info.user.identity,),
-          ),
-          store=InMemoryStore(),  # Good for local dev; omit for LangSmith Deployment
-      )
-      ```
-
-      ```python Anthropic theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-      from deepagents import create_deep_agent
-      from deepagents.backends import StoreBackend
-      from langgraph.store.memory import InMemoryStore
-
-      agent = create_deep_agent(
-          model="anthropic:claude-sonnet-5",
-          backend=StoreBackend(
-              namespace=lambda rt: (rt.server_info.user.identity,),
-          ),
-          store=InMemoryStore(),  # Good for local dev; omit for LangSmith Deployment
-      )
-      ```
-
-      ```python OpenRouter theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-      from deepagents import create_deep_agent
-      from deepagents.backends import StoreBackend
-      from langgraph.store.memory import InMemoryStore
-
-      agent = create_deep_agent(
-          model="openrouter:z-ai/glm-5.2",
-          backend=StoreBackend(
-              namespace=lambda rt: (rt.server_info.user.identity,),
-          ),
-          store=InMemoryStore(),  # Good for local dev; omit for LangSmith Deployment
-      )
-      ```
-
-      ```python Fireworks theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-      from deepagents import create_deep_agent
-      from deepagents.backends import StoreBackend
-      from langgraph.store.memory import InMemoryStore
-
-      agent = create_deep_agent(
-          model="fireworks:accounts/fireworks/models/glm-5p2",
-          backend=StoreBackend(
-              namespace=lambda rt: (rt.server_info.user.identity,),
-          ),
-          store=InMemoryStore(),  # Good for local dev; omit for LangSmith Deployment
-      )
-      ```
-
-      ```python Baseten theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-      from deepagents import create_deep_agent
-      from deepagents.backends import StoreBackend
-      from langgraph.store.memory import InMemoryStore
-
-      agent = create_deep_agent(
-          model="baseten:zai-org/GLM-5.2",
-          backend=StoreBackend(
-              namespace=lambda rt: (rt.server_info.user.identity,),
-          ),
-          store=InMemoryStore(),  # Good for local dev; omit for LangSmith Deployment
-      )
-      ```
-
-      ```python Ollama theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-      from deepagents import create_deep_agent
-      from deepagents.backends import StoreBackend
-      from langgraph.store.memory import InMemoryStore
-
-      agent = create_deep_agent(
-          model="ollama:north-mini-code-1.0",
-          backend=StoreBackend(
-              namespace=lambda rt: (rt.server_info.user.identity,),
-          ),
-          store=InMemoryStore(),  # Good for local dev; omit for LangSmith Deployment
-      )
-      ```
-    </CodeGroup>
-
-    <Note>
-      When deploying to [LangSmith Deployment](/langsmith/deployment), omit the `store` parameter. The platform automatically provisions a store for your agent.
-    </Note>
-
-    <Tip>
-      The `namespace` parameter controls data isolation. For multi-user deployments, always set a [namespace factory](/oss/python/deepagents/backends#namespace-factories) to isolate data per user or tenant.
-    </Tip>
-  </Tab>
-
-  <Tab title="ContextHubBackend">
-    Durable filesystem storage in a LangSmith Hub repo.
-
-    <CodeGroup>
-      ```python Google theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-      from deepagents import create_deep_agent
-      from deepagents.backends import ContextHubBackend
-
-      agent = create_deep_agent(
-          model="google_genai:gemini-3.6-flash",
-          backend=ContextHubBackend("my-agent"),
-      )
-      ```
-
-      ```python OpenAI theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-      from deepagents import create_deep_agent
-      from deepagents.backends import ContextHubBackend
-
-      agent = create_deep_agent(
-          model="openai:gpt-5.5",
-          backend=ContextHubBackend("my-agent"),
-      )
-      ```
-
-      ```python Anthropic theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-      from deepagents import create_deep_agent
-      from deepagents.backends import ContextHubBackend
-
-      agent = create_deep_agent(
-          model="anthropic:claude-sonnet-5",
-          backend=ContextHubBackend("my-agent"),
-      )
-      ```
-
-      ```python OpenRouter theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-      from deepagents import create_deep_agent
-      from deepagents.backends import ContextHubBackend
-
-      agent = create_deep_agent(
-          model="openrouter:z-ai/glm-5.2",
-          backend=ContextHubBackend("my-agent"),
-      )
-      ```
-
-      ```python Fireworks theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-      from deepagents import create_deep_agent
-      from deepagents.backends import ContextHubBackend
-
-      agent = create_deep_agent(
-          model="fireworks:accounts/fireworks/models/glm-5p2",
-          backend=ContextHubBackend("my-agent"),
-      )
-      ```
-
-      ```python Baseten theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-      from deepagents import create_deep_agent
-      from deepagents.backends import ContextHubBackend
-
-      agent = create_deep_agent(
-          model="baseten:zai-org/GLM-5.2",
-          backend=ContextHubBackend("my-agent"),
-      )
-      ```
-
-      ```python Ollama theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-      from deepagents import create_deep_agent
-      from deepagents.backends import ContextHubBackend
-
-      agent = create_deep_agent(
-          model="ollama:north-mini-code-1.0",
-          backend=ContextHubBackend("my-agent"),
-      )
-      ```
-    </CodeGroup>
-
-    For more details, see [`ContextHubBackend`](/oss/python/deepagents/backends#contexthubbackend).
-  </Tab>
-
-  <Tab title="CompositeBackend">
-    A flexible backend where you can specify different routes in the filesystem to point towards different backends.
-
-    <CodeGroup>
-      ```python Google theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-      from deepagents import create_deep_agent
-      from deepagents.backends import CompositeBackend, StateBackend, StoreBackend
-      from langgraph.store.memory import InMemoryStore
-
-      agent = create_deep_agent(
-          model="google_genai:gemini-3.6-flash",
-          backend=CompositeBackend(
-              default=StateBackend(),
-              routes={
-                  "/memories/": StoreBackend(namespace=lambda _rt: ("memories",)),
-              },
-          ),
-          store=InMemoryStore(),  # Store passed to create_deep_agent, not backend
-      )
-      ```
-
-      ```python OpenAI theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-      from deepagents import create_deep_agent
-      from deepagents.backends import CompositeBackend, StateBackend, StoreBackend
-      from langgraph.store.memory import InMemoryStore
-
-      agent = create_deep_agent(
-          model="openai:gpt-5.5",
-          backend=CompositeBackend(
-              default=StateBackend(),
-              routes={
-                  "/memories/": StoreBackend(namespace=lambda _rt: ("memories",)),
-              },
-          ),
-          store=InMemoryStore(),  # Store passed to create_deep_agent, not backend
-      )
-      ```
-
-      ```python Anthropic theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-      from deepagents import create_deep_agent
-      from deepagents.backends import CompositeBackend, StateBackend, StoreBackend
-      from langgraph.store.memory import InMemoryStore
-
-      agent = create_deep_agent(
-          model="anthropic:claude-sonnet-5",
-          backend=CompositeBackend(
-              default=StateBackend(),
-              routes={
-                  "/memories/": StoreBackend(namespace=lambda _rt: ("memories",)),
-              },
-          ),
-          store=InMemoryStore(),  # Store passed to create_deep_agent, not backend
-      )
-      ```
-
-      ```python OpenRouter theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-      from deepagents import create_deep_agent
-      from deepagents.backends import CompositeBackend, StateBackend, StoreBackend
-      from langgraph.store.memory import InMemoryStore
-
-      agent = create_deep_agent(
-          model="openrouter:z-ai/glm-5.2",
-          backend=CompositeBackend(
-              default=StateBackend(),
-              routes={
-                  "/memories/": StoreBackend(namespace=lambda _rt: ("memories",)),
-              },
-          ),
-          store=InMemoryStore(),  # Store passed to create_deep_agent, not backend
-      )
-      ```
-
-      ```python Fireworks theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-      from deepagents import create_deep_agent
-      from deepagents.backends import CompositeBackend, StateBackend, StoreBackend
-      from langgraph.store.memory import InMemoryStore
-
-      agent = create_deep_agent(
-          model="fireworks:accounts/fireworks/models/glm-5p2",
-          backend=CompositeBackend(
-              default=StateBackend(),
-              routes={
-                  "/memories/": StoreBackend(namespace=lambda _rt: ("memories",)),
-              },
-          ),
-          store=InMemoryStore(),  # Store passed to create_deep_agent, not backend
-      )
-      ```
-
-      ```python Baseten theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-      from deepagents import create_deep_agent
-      from deepagents.backends import CompositeBackend, StateBackend, StoreBackend
-      from langgraph.store.memory import InMemoryStore
-
-      agent = create_deep_agent(
-          model="baseten:zai-org/GLM-5.2",
-          backend=CompositeBackend(
-              default=StateBackend(),
-              routes={
-                  "/memories/": StoreBackend(namespace=lambda _rt: ("memories",)),
-              },
-          ),
-          store=InMemoryStore(),  # Store passed to create_deep_agent, not backend
-      )
-      ```
-
-      ```python Ollama theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-      from deepagents import create_deep_agent
-      from deepagents.backends import CompositeBackend, StateBackend, StoreBackend
-      from langgraph.store.memory import InMemoryStore
-
-      agent = create_deep_agent(
-          model="ollama:north-mini-code-1.0",
-          backend=CompositeBackend(
-              default=StateBackend(),
-              routes={
-                  "/memories/": StoreBackend(namespace=lambda _rt: ("memories",)),
-              },
-          ),
-          store=InMemoryStore(),  # Store passed to create_deep_agent, not backend
-      )
-      ```
-    </CodeGroup>
-  </Tab>
-</Tabs>
+**StateBackend**
+
+A thread-scoped filesystem backend stored in `langgraph` state.
+
+Files persist across turns within a thread (via your checkpointer) and are not shared across threads.
+
+```python Google theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+from deepagents import create_deep_agent
+from deepagents.backends import StateBackend
+
+# By default we provide a StateBackend
+agent = create_deep_agent(model="google_genai:gemini-3.6-flash")
+
+# Under the hood, it looks like
+agent2 = create_deep_agent(
+    model="google_genai:gemini-3.6-flash",
+    backend=StateBackend(),
+)
+```
+
+```python OpenAI theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+from deepagents import create_deep_agent
+from deepagents.backends import StateBackend
+
+# By default we provide a StateBackend
+agent = create_deep_agent(model="openai:gpt-5.5")
+
+# Under the hood, it looks like
+agent2 = create_deep_agent(
+    model="openai:gpt-5.5",
+    backend=StateBackend(),
+)
+```
+
+```python Anthropic theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+from deepagents import create_deep_agent
+from deepagents.backends import StateBackend
+
+# By default we provide a StateBackend
+agent = create_deep_agent(model="anthropic:claude-sonnet-5")
+
+# Under the hood, it looks like
+agent2 = create_deep_agent(
+    model="anthropic:claude-sonnet-5",
+    backend=StateBackend(),
+)
+```
+
+```python OpenRouter theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+from deepagents import create_deep_agent
+from deepagents.backends import StateBackend
+
+# By default we provide a StateBackend
+agent = create_deep_agent(model="openrouter:z-ai/glm-5.2")
+
+# Under the hood, it looks like
+agent2 = create_deep_agent(
+    model="openrouter:z-ai/glm-5.2",
+    backend=StateBackend(),
+)
+```
+
+```python Fireworks theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+from deepagents import create_deep_agent
+from deepagents.backends import StateBackend
+
+# By default we provide a StateBackend
+agent = create_deep_agent(model="fireworks:accounts/fireworks/models/glm-5p2")
+
+# Under the hood, it looks like
+agent2 = create_deep_agent(
+    model="fireworks:accounts/fireworks/models/glm-5p2",
+    backend=StateBackend(),
+)
+```
+
+```python Baseten theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+from deepagents import create_deep_agent
+from deepagents.backends import StateBackend
+
+# By default we provide a StateBackend
+agent = create_deep_agent(model="baseten:zai-org/GLM-5.2")
+
+# Under the hood, it looks like
+agent2 = create_deep_agent(
+    model="baseten:zai-org/GLM-5.2",
+    backend=StateBackend(),
+)
+```
+
+```python Ollama theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+from deepagents import create_deep_agent
+from deepagents.backends import StateBackend
+
+# By default we provide a StateBackend
+agent = create_deep_agent(model="ollama:north-mini-code-1.0")
+
+# Under the hood, it looks like
+agent2 = create_deep_agent(
+    model="ollama:north-mini-code-1.0",
+    backend=StateBackend(),
+)
+```
+
+**FilesystemBackend**
+
+The local machine's filesystem.
+
+> [!WARNING]
+>
+> This backend grants agents direct filesystem read/write access.
+> Use with caution and only in appropriate environments.
+> For more information, see [`FilesystemBackend`](/oss/python/deepagents/backends#filesystembackend-local-disk).
+
+```python Google theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+from deepagents import create_deep_agent
+from deepagents.backends import FilesystemBackend
+
+agent = create_deep_agent(
+    model="google_genai:gemini-3.6-flash",
+    backend=FilesystemBackend(root_dir=".", virtual_mode=True),
+)
+```
+
+```python OpenAI theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+from deepagents import create_deep_agent
+from deepagents.backends import FilesystemBackend
+
+agent = create_deep_agent(
+    model="openai:gpt-5.5",
+    backend=FilesystemBackend(root_dir=".", virtual_mode=True),
+)
+```
+
+```python Anthropic theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+from deepagents import create_deep_agent
+from deepagents.backends import FilesystemBackend
+
+agent = create_deep_agent(
+    model="anthropic:claude-sonnet-5",
+    backend=FilesystemBackend(root_dir=".", virtual_mode=True),
+)
+```
+
+```python OpenRouter theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+from deepagents import create_deep_agent
+from deepagents.backends import FilesystemBackend
+
+agent = create_deep_agent(
+    model="openrouter:z-ai/glm-5.2",
+    backend=FilesystemBackend(root_dir=".", virtual_mode=True),
+)
+```
+
+```python Fireworks theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+from deepagents import create_deep_agent
+from deepagents.backends import FilesystemBackend
+
+agent = create_deep_agent(
+    model="fireworks:accounts/fireworks/models/glm-5p2",
+    backend=FilesystemBackend(root_dir=".", virtual_mode=True),
+)
+```
+
+```python Baseten theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+from deepagents import create_deep_agent
+from deepagents.backends import FilesystemBackend
+
+agent = create_deep_agent(
+    model="baseten:zai-org/GLM-5.2",
+    backend=FilesystemBackend(root_dir=".", virtual_mode=True),
+)
+```
+
+```python Ollama theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+from deepagents import create_deep_agent
+from deepagents.backends import FilesystemBackend
+
+agent = create_deep_agent(
+    model="ollama:north-mini-code-1.0",
+    backend=FilesystemBackend(root_dir=".", virtual_mode=True),
+)
+```
+
+> [!TIP]
+>
+> Wrap `FilesystemBackend` in a `CompositeBackend` to prevent internal agent data (offloaded tool results, conversation history) from being written to disk alongside your project files. See the [recommended pattern](/oss/python/deepagents/backends#filesystembackend-local-disk).
+
+**LocalShellBackend**
+
+A filesystem with shell execution directly on the host. Provides filesystem tools plus the `execute` tool for running commands.
+
+> [!WARNING]
+>
+> This backend grants agents direct filesystem read/write access **and** unrestricted shell execution on your host.
+> Use with extreme caution and only in appropriate environments.
+> For more information, see [`LocalShellBackend`](/oss/python/deepagents/backends#localshellbackend-local-shell).
+
+```python Google theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+from deepagents import create_deep_agent
+from deepagents.backends import LocalShellBackend
+
+agent = create_deep_agent(
+    model="google_genai:gemini-3.6-flash",
+    backend=LocalShellBackend(root_dir=".", virtual_mode=True, env={"PATH": "/usr/bin:/bin"}),
+)
+```
+
+```python OpenAI theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+from deepagents import create_deep_agent
+from deepagents.backends import LocalShellBackend
+
+agent = create_deep_agent(
+    model="openai:gpt-5.5",
+    backend=LocalShellBackend(root_dir=".", virtual_mode=True, env={"PATH": "/usr/bin:/bin"}),
+)
+```
+
+```python Anthropic theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+from deepagents import create_deep_agent
+from deepagents.backends import LocalShellBackend
+
+agent = create_deep_agent(
+    model="anthropic:claude-sonnet-5",
+    backend=LocalShellBackend(root_dir=".", virtual_mode=True, env={"PATH": "/usr/bin:/bin"}),
+)
+```
+
+```python OpenRouter theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+from deepagents import create_deep_agent
+from deepagents.backends import LocalShellBackend
+
+agent = create_deep_agent(
+    model="openrouter:z-ai/glm-5.2",
+    backend=LocalShellBackend(root_dir=".", virtual_mode=True, env={"PATH": "/usr/bin:/bin"}),
+)
+```
+
+```python Fireworks theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+from deepagents import create_deep_agent
+from deepagents.backends import LocalShellBackend
+
+agent = create_deep_agent(
+    model="fireworks:accounts/fireworks/models/glm-5p2",
+    backend=LocalShellBackend(root_dir=".", virtual_mode=True, env={"PATH": "/usr/bin:/bin"}),
+)
+```
+
+```python Baseten theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+from deepagents import create_deep_agent
+from deepagents.backends import LocalShellBackend
+
+agent = create_deep_agent(
+    model="baseten:zai-org/GLM-5.2",
+    backend=LocalShellBackend(root_dir=".", virtual_mode=True, env={"PATH": "/usr/bin:/bin"}),
+)
+```
+
+```python Ollama theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+from deepagents import create_deep_agent
+from deepagents.backends import LocalShellBackend
+
+agent = create_deep_agent(
+    model="ollama:north-mini-code-1.0",
+    backend=LocalShellBackend(root_dir=".", virtual_mode=True, env={"PATH": "/usr/bin:/bin"}),
+)
+```
+
+**StoreBackend**
+
+A filesystem that provides long-term storage that is *persisted across threads*.
+
+```python Google theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+from deepagents import create_deep_agent
+from deepagents.backends import StoreBackend
+from langgraph.store.memory import InMemoryStore
+
+agent = create_deep_agent(
+    model="google_genai:gemini-3.6-flash",
+    backend=StoreBackend(
+        namespace=lambda rt: (rt.server_info.user.identity,),
+    ),
+    store=InMemoryStore(),  # Good for local dev; omit for LangSmith Deployment
+)
+```
+
+```python OpenAI theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+from deepagents import create_deep_agent
+from deepagents.backends import StoreBackend
+from langgraph.store.memory import InMemoryStore
+
+agent = create_deep_agent(
+    model="openai:gpt-5.5",
+    backend=StoreBackend(
+        namespace=lambda rt: (rt.server_info.user.identity,),
+    ),
+    store=InMemoryStore(),  # Good for local dev; omit for LangSmith Deployment
+)
+```
+
+```python Anthropic theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+from deepagents import create_deep_agent
+from deepagents.backends import StoreBackend
+from langgraph.store.memory import InMemoryStore
+
+agent = create_deep_agent(
+    model="anthropic:claude-sonnet-5",
+    backend=StoreBackend(
+        namespace=lambda rt: (rt.server_info.user.identity,),
+    ),
+    store=InMemoryStore(),  # Good for local dev; omit for LangSmith Deployment
+)
+```
+
+```python OpenRouter theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+from deepagents import create_deep_agent
+from deepagents.backends import StoreBackend
+from langgraph.store.memory import InMemoryStore
+
+agent = create_deep_agent(
+    model="openrouter:z-ai/glm-5.2",
+    backend=StoreBackend(
+        namespace=lambda rt: (rt.server_info.user.identity,),
+    ),
+    store=InMemoryStore(),  # Good for local dev; omit for LangSmith Deployment
+)
+```
+
+```python Fireworks theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+from deepagents import create_deep_agent
+from deepagents.backends import StoreBackend
+from langgraph.store.memory import InMemoryStore
+
+agent = create_deep_agent(
+    model="fireworks:accounts/fireworks/models/glm-5p2",
+    backend=StoreBackend(
+        namespace=lambda rt: (rt.server_info.user.identity,),
+    ),
+    store=InMemoryStore(),  # Good for local dev; omit for LangSmith Deployment
+)
+```
+
+```python Baseten theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+from deepagents import create_deep_agent
+from deepagents.backends import StoreBackend
+from langgraph.store.memory import InMemoryStore
+
+agent = create_deep_agent(
+    model="baseten:zai-org/GLM-5.2",
+    backend=StoreBackend(
+        namespace=lambda rt: (rt.server_info.user.identity,),
+    ),
+    store=InMemoryStore(),  # Good for local dev; omit for LangSmith Deployment
+)
+```
+
+```python Ollama theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+from deepagents import create_deep_agent
+from deepagents.backends import StoreBackend
+from langgraph.store.memory import InMemoryStore
+
+agent = create_deep_agent(
+    model="ollama:north-mini-code-1.0",
+    backend=StoreBackend(
+        namespace=lambda rt: (rt.server_info.user.identity,),
+    ),
+    store=InMemoryStore(),  # Good for local dev; omit for LangSmith Deployment
+)
+```
+
+> [!NOTE]
+>
+> When deploying to [LangSmith Deployment](/langsmith/deployment), omit the `store` parameter. The platform automatically provisions a store for your agent.
+
+> [!TIP]
+>
+> The `namespace` parameter controls data isolation. For multi-user deployments, always set a [namespace factory](/oss/python/deepagents/backends#namespace-factories) to isolate data per user or tenant.
+
+**ContextHubBackend**
+
+Durable filesystem storage in a LangSmith Hub repo.
+
+```python Google theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+from deepagents import create_deep_agent
+from deepagents.backends import ContextHubBackend
+
+agent = create_deep_agent(
+    model="google_genai:gemini-3.6-flash",
+    backend=ContextHubBackend("my-agent"),
+)
+```
+
+```python OpenAI theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+from deepagents import create_deep_agent
+from deepagents.backends import ContextHubBackend
+
+agent = create_deep_agent(
+    model="openai:gpt-5.5",
+    backend=ContextHubBackend("my-agent"),
+)
+```
+
+```python Anthropic theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+from deepagents import create_deep_agent
+from deepagents.backends import ContextHubBackend
+
+agent = create_deep_agent(
+    model="anthropic:claude-sonnet-5",
+    backend=ContextHubBackend("my-agent"),
+)
+```
+
+```python OpenRouter theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+from deepagents import create_deep_agent
+from deepagents.backends import ContextHubBackend
+
+agent = create_deep_agent(
+    model="openrouter:z-ai/glm-5.2",
+    backend=ContextHubBackend("my-agent"),
+)
+```
+
+```python Fireworks theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+from deepagents import create_deep_agent
+from deepagents.backends import ContextHubBackend
+
+agent = create_deep_agent(
+    model="fireworks:accounts/fireworks/models/glm-5p2",
+    backend=ContextHubBackend("my-agent"),
+)
+```
+
+```python Baseten theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+from deepagents import create_deep_agent
+from deepagents.backends import ContextHubBackend
+
+agent = create_deep_agent(
+    model="baseten:zai-org/GLM-5.2",
+    backend=ContextHubBackend("my-agent"),
+)
+```
+
+```python Ollama theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+from deepagents import create_deep_agent
+from deepagents.backends import ContextHubBackend
+
+agent = create_deep_agent(
+    model="ollama:north-mini-code-1.0",
+    backend=ContextHubBackend("my-agent"),
+)
+```
+
+For more details, see [`ContextHubBackend`](/oss/python/deepagents/backends#contexthubbackend).
+
+**CompositeBackend**
+
+A flexible backend where you can specify different routes in the filesystem to point towards different backends.
+
+```python Google theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+from deepagents import create_deep_agent
+from deepagents.backends import CompositeBackend, StateBackend, StoreBackend
+from langgraph.store.memory import InMemoryStore
+
+agent = create_deep_agent(
+    model="google_genai:gemini-3.6-flash",
+    backend=CompositeBackend(
+        default=StateBackend(),
+        routes={
+            "/memories/": StoreBackend(namespace=lambda _rt: ("memories",)),
+        },
+    ),
+    store=InMemoryStore(),  # Store passed to create_deep_agent, not backend
+)
+```
+
+```python OpenAI theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+from deepagents import create_deep_agent
+from deepagents.backends import CompositeBackend, StateBackend, StoreBackend
+from langgraph.store.memory import InMemoryStore
+
+agent = create_deep_agent(
+    model="openai:gpt-5.5",
+    backend=CompositeBackend(
+        default=StateBackend(),
+        routes={
+            "/memories/": StoreBackend(namespace=lambda _rt: ("memories",)),
+        },
+    ),
+    store=InMemoryStore(),  # Store passed to create_deep_agent, not backend
+)
+```
+
+```python Anthropic theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+from deepagents import create_deep_agent
+from deepagents.backends import CompositeBackend, StateBackend, StoreBackend
+from langgraph.store.memory import InMemoryStore
+
+agent = create_deep_agent(
+    model="anthropic:claude-sonnet-5",
+    backend=CompositeBackend(
+        default=StateBackend(),
+        routes={
+            "/memories/": StoreBackend(namespace=lambda _rt: ("memories",)),
+        },
+    ),
+    store=InMemoryStore(),  # Store passed to create_deep_agent, not backend
+)
+```
+
+```python OpenRouter theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+from deepagents import create_deep_agent
+from deepagents.backends import CompositeBackend, StateBackend, StoreBackend
+from langgraph.store.memory import InMemoryStore
+
+agent = create_deep_agent(
+    model="openrouter:z-ai/glm-5.2",
+    backend=CompositeBackend(
+        default=StateBackend(),
+        routes={
+            "/memories/": StoreBackend(namespace=lambda _rt: ("memories",)),
+        },
+    ),
+    store=InMemoryStore(),  # Store passed to create_deep_agent, not backend
+)
+```
+
+```python Fireworks theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+from deepagents import create_deep_agent
+from deepagents.backends import CompositeBackend, StateBackend, StoreBackend
+from langgraph.store.memory import InMemoryStore
+
+agent = create_deep_agent(
+    model="fireworks:accounts/fireworks/models/glm-5p2",
+    backend=CompositeBackend(
+        default=StateBackend(),
+        routes={
+            "/memories/": StoreBackend(namespace=lambda _rt: ("memories",)),
+        },
+    ),
+    store=InMemoryStore(),  # Store passed to create_deep_agent, not backend
+)
+```
+
+```python Baseten theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+from deepagents import create_deep_agent
+from deepagents.backends import CompositeBackend, StateBackend, StoreBackend
+from langgraph.store.memory import InMemoryStore
+
+agent = create_deep_agent(
+    model="baseten:zai-org/GLM-5.2",
+    backend=CompositeBackend(
+        default=StateBackend(),
+        routes={
+            "/memories/": StoreBackend(namespace=lambda _rt: ("memories",)),
+        },
+    ),
+    store=InMemoryStore(),  # Store passed to create_deep_agent, not backend
+)
+```
+
+```python Ollama theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+from deepagents import create_deep_agent
+from deepagents.backends import CompositeBackend, StateBackend, StoreBackend
+from langgraph.store.memory import InMemoryStore
+
+agent = create_deep_agent(
+    model="ollama:north-mini-code-1.0",
+    backend=CompositeBackend(
+        default=StateBackend(),
+        routes={
+            "/memories/": StoreBackend(namespace=lambda _rt: ("memories",)),
+        },
+    ),
+    store=InMemoryStore(),  # Store passed to create_deep_agent, not backend
+)
+```
 
 For more information, see [Backends](/oss/python/deepagents/backends).
 
@@ -2395,263 +2335,249 @@ Use a sandbox backend when you want your deep agent to write files, install depe
 
 You configure sandboxes by passing a sandbox backend to `backend` when creating your deep agent:
 
-<Tabs>
-  <Tab title="LangSmith">
-    <CodeGroup>
-      ```bash pip theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-      pip install langsmith
-      ```
+**LangSmith**
 
-      ```bash uv theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-      uv add langsmith
-      ```
-    </CodeGroup>
+```bash pip theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+pip install langsmith
+```
 
-    ```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-    from deepagents import create_deep_agent
-    from deepagents.backends import LangSmithSandbox
-    from langchain_anthropic import ChatAnthropic
-    from langsmith.sandbox import SandboxClient
+```bash uv theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+uv add langsmith
+```
 
-    client = SandboxClient()
-    ls_sandbox = client.create_sandbox()
-    backend = LangSmithSandbox(sandbox=ls_sandbox)
+```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+from deepagents import create_deep_agent
+from deepagents.backends import LangSmithSandbox
+from langchain_anthropic import ChatAnthropic
+from langsmith.sandbox import SandboxClient
 
-    agent = create_deep_agent(
-        model=ChatAnthropic(model="claude-sonnet-4-6"),
-        system_prompt="You are a Python coding assistant with sandbox access.",
-        backend=backend,
+client = SandboxClient()
+ls_sandbox = client.create_sandbox()
+backend = LangSmithSandbox(sandbox=ls_sandbox)
+
+agent = create_deep_agent(
+    model=ChatAnthropic(model="claude-sonnet-4-6"),
+    system_prompt="You are a Python coding assistant with sandbox access.",
+    backend=backend,
+)
+try:
+    result = agent.invoke(
+        {
+            "messages": [
+                {
+                    "role": "user",
+                    "content": "Create a small Python package and run pytest",
+                }
+            ]
+        }
     )
-    try:
-        result = agent.invoke(
-            {
-                "messages": [
-                    {
-                        "role": "user",
-                        "content": "Create a small Python package and run pytest",
-                    }
-                ]
-            }
-        )
-    finally:
-        client.delete_sandbox(ls_sandbox.name)
-    ```
-  </Tab>
+finally:
+    client.delete_sandbox(ls_sandbox.name)
+```
 
-  <Tab title="Daytona">
-    <CodeGroup>
-      ```bash pip theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-      pip install langchain-daytona
-      ```
+**Daytona**
 
-      ```bash uv theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-      uv add langchain-daytona
-      ```
-    </CodeGroup>
+```bash pip theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+pip install langchain-daytona
+```
 
-    ```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-    from daytona import Daytona
-    from deepagents import create_deep_agent
-    from langchain_anthropic import ChatAnthropic
-    from langchain_daytona import DaytonaSandbox
+```bash uv theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+uv add langchain-daytona
+```
 
-    sandbox = Daytona().create()
-    backend = DaytonaSandbox(sandbox=sandbox)
+```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+from daytona import Daytona
+from deepagents import create_deep_agent
+from langchain_anthropic import ChatAnthropic
+from langchain_daytona import DaytonaSandbox
 
-    agent = create_deep_agent(
-        model=ChatAnthropic(model="claude-sonnet-4-6"),
-        system_prompt="You are a Python coding assistant with sandbox access.",
-        backend=backend,
+sandbox = Daytona().create()
+backend = DaytonaSandbox(sandbox=sandbox)
+
+agent = create_deep_agent(
+    model=ChatAnthropic(model="claude-sonnet-4-6"),
+    system_prompt="You are a Python coding assistant with sandbox access.",
+    backend=backend,
+)
+
+try:
+    result = agent.invoke(
+        {
+            "messages": [
+                {
+                    "role": "user",
+                    "content": "Create a small Python package and run pytest",
+                }
+            ]
+        }
     )
+finally:
+    sandbox.stop()
+```
 
-    try:
-        result = agent.invoke(
-            {
-                "messages": [
-                    {
-                        "role": "user",
-                        "content": "Create a small Python package and run pytest",
-                    }
-                ]
-            }
-        )
-    finally:
-        sandbox.stop()
-    ```
-  </Tab>
+**E2B**
 
-  <Tab title="E2B">
-    <CodeGroup>
-      ```bash pip theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-      pip install langchain-e2b
-      ```
+```bash pip theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+pip install langchain-e2b
+```
 
-      ```bash uv theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-      uv add langchain-e2b
-      ```
-    </CodeGroup>
+```bash uv theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+uv add langchain-e2b
+```
 
-    ```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-    from e2b import Sandbox
-    from deepagents import create_deep_agent
-    from langchain_anthropic import ChatAnthropic
-    from langchain_e2b import E2BSandbox
+```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+from e2b import Sandbox
+from deepagents import create_deep_agent
+from langchain_anthropic import ChatAnthropic
+from langchain_e2b import E2BSandbox
 
-    e2b_sandbox = Sandbox.create()
-    backend = E2BSandbox(sandbox=e2b_sandbox)
+e2b_sandbox = Sandbox.create()
+backend = E2BSandbox(sandbox=e2b_sandbox)
 
-    agent = create_deep_agent(
-        model=ChatAnthropic(model="claude-sonnet-4-6"),
-        system_prompt="You are a Python coding assistant with sandbox access.",
-        backend=backend,
+agent = create_deep_agent(
+    model=ChatAnthropic(model="claude-sonnet-4-6"),
+    system_prompt="You are a Python coding assistant with sandbox access.",
+    backend=backend,
+)
+
+try:
+    result = agent.invoke(
+        {
+            "messages": [
+                {
+                    "role": "user",
+                    "content": "Create a small Python package and run pytest",
+                }
+            ]
+        }
     )
+finally:
+    e2b_sandbox.kill()
+```
 
-    try:
-        result = agent.invoke(
-            {
-                "messages": [
-                    {
-                        "role": "user",
-                        "content": "Create a small Python package and run pytest",
-                    }
-                ]
-            }
-        )
-    finally:
-        e2b_sandbox.kill()
-    ```
-  </Tab>
+**Modal**
 
-  <Tab title="Modal">
-    <CodeGroup>
-      ```bash pip theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-      pip install langchain-modal
-      ```
+```bash pip theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+pip install langchain-modal
+```
 
-      ```bash uv theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-      uv add langchain-modal
-      ```
-    </CodeGroup>
+```bash uv theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+uv add langchain-modal
+```
 
-    ```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-    import modal
-    from deepagents import create_deep_agent
-    from langchain_anthropic import ChatAnthropic
-    from langchain_modal import ModalSandbox
+```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+import modal
+from deepagents import create_deep_agent
+from langchain_anthropic import ChatAnthropic
+from langchain_modal import ModalSandbox
 
-    app = modal.App.lookup("your-app")
-    modal_sandbox = modal.Sandbox.create(app=app)
-    backend = ModalSandbox(sandbox=modal_sandbox)
+app = modal.App.lookup("your-app")
+modal_sandbox = modal.Sandbox.create(app=app)
+backend = ModalSandbox(sandbox=modal_sandbox)
 
-    agent = create_deep_agent(
-        model=ChatAnthropic(model="claude-sonnet-4-6"),
-        system_prompt="You are a Python coding assistant with sandbox access.",
-        backend=backend,
+agent = create_deep_agent(
+    model=ChatAnthropic(model="claude-sonnet-4-6"),
+    system_prompt="You are a Python coding assistant with sandbox access.",
+    backend=backend,
+)
+try:
+    result = agent.invoke(
+        {
+            "messages": [
+                {
+                    "role": "user",
+                    "content": "Create a small Python package and run pytest",
+                }
+            ]
+        }
     )
-    try:
-        result = agent.invoke(
-            {
-                "messages": [
-                    {
-                        "role": "user",
-                        "content": "Create a small Python package and run pytest",
-                    }
-                ]
-            }
-        )
-    finally:
-        modal_sandbox.terminate()
-    ```
-  </Tab>
+finally:
+    modal_sandbox.terminate()
+```
 
-  <Tab title="Runloop">
-    <CodeGroup>
-      ```bash pip theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-      pip install langchain-runloop
-      ```
+**Runloop**
 
-      ```bash uv theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-      uv add langchain-runloop
-      ```
-    </CodeGroup>
+```bash pip theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+pip install langchain-runloop
+```
 
-    ```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-    import os
+```bash uv theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+uv add langchain-runloop
+```
 
-    from deepagents import create_deep_agent
-    from langchain_anthropic import ChatAnthropic
-    from langchain_runloop import RunloopSandbox
-    from runloop_api_client import RunloopSDK
+```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+import os
 
-    client = RunloopSDK(bearer_token=os.environ["RUNLOOP_API_KEY"])
+from deepagents import create_deep_agent
+from langchain_anthropic import ChatAnthropic
+from langchain_runloop import RunloopSandbox
+from runloop_api_client import RunloopSDK
 
-    devbox = client.devbox.create()
-    backend = RunloopSandbox(devbox=devbox)
+client = RunloopSDK(bearer_token=os.environ["RUNLOOP_API_KEY"])
 
-    agent = create_deep_agent(
-        model=ChatAnthropic(model="claude-sonnet-4-6"),
-        system_prompt="You are a Python coding assistant with sandbox access.",
-        backend=backend,
+devbox = client.devbox.create()
+backend = RunloopSandbox(devbox=devbox)
+
+agent = create_deep_agent(
+    model=ChatAnthropic(model="claude-sonnet-4-6"),
+    system_prompt="You are a Python coding assistant with sandbox access.",
+    backend=backend,
+)
+
+try:
+    result = agent.invoke(
+        {
+            "messages": [
+                {
+                    "role": "user",
+                    "content": "Create a small Python package and run pytest",
+                }
+            ]
+        }
     )
+finally:
+    devbox.shutdown()
+```
 
-    try:
-        result = agent.invoke(
-            {
-                "messages": [
-                    {
-                        "role": "user",
-                        "content": "Create a small Python package and run pytest",
-                    }
-                ]
-            }
-        )
-    finally:
-        devbox.shutdown()
-    ```
-  </Tab>
+**Vercel**
 
-  <Tab title="Vercel">
-    <CodeGroup>
-      ```bash pip theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-      pip install langchain-vercel-sandbox
-      ```
+```bash pip theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+pip install langchain-vercel-sandbox
+```
 
-      ```bash uv theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-      uv add langchain-vercel-sandbox
-      ```
-    </CodeGroup>
+```bash uv theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+uv add langchain-vercel-sandbox
+```
 
-    ```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-    from deepagents import create_deep_agent
-    from langchain_anthropic import ChatAnthropic
-    from langchain_vercel_sandbox import VercelSandbox
-    from vercel.sandbox import Sandbox
+```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+from deepagents import create_deep_agent
+from langchain_anthropic import ChatAnthropic
+from langchain_vercel_sandbox import VercelSandbox
+from vercel.sandbox import Sandbox
 
-    sandbox = Sandbox.create(runtime="python3.13")
-    backend = VercelSandbox(sandbox=sandbox)
+sandbox = Sandbox.create(runtime="python3.13")
+backend = VercelSandbox(sandbox=sandbox)
 
-    agent = create_deep_agent(
-        model=ChatAnthropic(model="claude-sonnet-4-6"),
-        system_prompt="You are a Python coding assistant with sandbox access.",
-        backend=backend,
+agent = create_deep_agent(
+    model=ChatAnthropic(model="claude-sonnet-4-6"),
+    system_prompt="You are a Python coding assistant with sandbox access.",
+    backend=backend,
+)
+
+try:
+    result = agent.invoke(
+        {
+            "messages": [
+                {
+                    "role": "user",
+                    "content": "Create a small Python package and run pytest",
+                }
+            ]
+        }
     )
-
-    try:
-        result = agent.invoke(
-            {
-                "messages": [
-                    {
-                        "role": "user",
-                        "content": "Create a small Python package and run pytest",
-                    }
-                ]
-            }
-        )
-    finally:
-        sandbox.stop()
-    ```
-  </Tab>
-</Tabs>
+finally:
+    sandbox.stop()
+```
 
 For more information, see [Sandboxes](/oss/python/deepagents/sandboxes).
 
@@ -2660,280 +2586,278 @@ For more information, see [Sandboxes](/oss/python/deepagents/sandboxes).
 Some tool operations may be sensitive and require human approval before execution.
 You can configure the approval for each tool:
 
-<CodeGroup>
-  ```python Google theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  from langchain.tools import tool
-  from deepagents import create_deep_agent
-  from langgraph.checkpoint.memory import MemorySaver
+```python Google theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+from langchain.tools import tool
+from deepagents import create_deep_agent
+from langgraph.checkpoint.memory import MemorySaver
 
 
-  @tool
-  def remove_file(path: str) -> str:
-      """Delete a file from the filesystem."""
-      return f"Deleted {path}"
+@tool
+def remove_file(path: str) -> str:
+    """Delete a file from the filesystem."""
+    return f"Deleted {path}"
 
 
-  @tool
-  def fetch_file(path: str) -> str:
-      """Read a file from the filesystem."""
-      return f"Contents of {path}"
-
+@tool
+def fetch_file(path: str) -> str:
+    """Read a file from the filesystem."""
+    return f"Contents of {path}"
 
-  @tool
-  def notify_email(to: str, subject: str, body: str) -> str:
-      """Send an email."""
-      return f"Sent email to {to}"
 
+@tool
+def notify_email(to: str, subject: str, body: str) -> str:
+    """Send an email."""
+    return f"Sent email to {to}"
 
-  # Checkpointer is REQUIRED for human-in-the-loop
-  checkpointer = MemorySaver()
 
-  agent = create_deep_agent(
-      model="google_genai:gemini-3.6-flash",
-      tools=[remove_file, fetch_file, notify_email],
-      interrupt_on={
-          "remove_file": True,  # Default: approve, edit, reject, respond
-          "fetch_file": False,  # No interrupts needed
-          "notify_email": {"allowed_decisions": ["approve", "reject"]},  # No editing
-      },
-      checkpointer=checkpointer,  # Required!
-  )
-  ```
+# Checkpointer is REQUIRED for human-in-the-loop
+checkpointer = MemorySaver()
 
-  ```python OpenAI theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  from langchain.tools import tool
-  from deepagents import create_deep_agent
-  from langgraph.checkpoint.memory import MemorySaver
+agent = create_deep_agent(
+    model="google_genai:gemini-3.6-flash",
+    tools=[remove_file, fetch_file, notify_email],
+    interrupt_on={
+        "remove_file": True,  # Default: approve, edit, reject, respond
+        "fetch_file": False,  # No interrupts needed
+        "notify_email": {"allowed_decisions": ["approve", "reject"]},  # No editing
+    },
+    checkpointer=checkpointer,  # Required!
+)
+```
 
+```python OpenAI theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+from langchain.tools import tool
+from deepagents import create_deep_agent
+from langgraph.checkpoint.memory import MemorySaver
 
-  @tool
-  def remove_file(path: str) -> str:
-      """Delete a file from the filesystem."""
-      return f"Deleted {path}"
 
+@tool
+def remove_file(path: str) -> str:
+    """Delete a file from the filesystem."""
+    return f"Deleted {path}"
 
-  @tool
-  def fetch_file(path: str) -> str:
-      """Read a file from the filesystem."""
-      return f"Contents of {path}"
 
+@tool
+def fetch_file(path: str) -> str:
+    """Read a file from the filesystem."""
+    return f"Contents of {path}"
 
-  @tool
-  def notify_email(to: str, subject: str, body: str) -> str:
-      """Send an email."""
-      return f"Sent email to {to}"
 
+@tool
+def notify_email(to: str, subject: str, body: str) -> str:
+    """Send an email."""
+    return f"Sent email to {to}"
 
-  # Checkpointer is REQUIRED for human-in-the-loop
-  checkpointer = MemorySaver()
 
-  agent = create_deep_agent(
-      model="openai:gpt-5.5",
-      tools=[remove_file, fetch_file, notify_email],
-      interrupt_on={
-          "remove_file": True,  # Default: approve, edit, reject, respond
-          "fetch_file": False,  # No interrupts needed
-          "notify_email": {"allowed_decisions": ["approve", "reject"]},  # No editing
-      },
-      checkpointer=checkpointer,  # Required!
-  )
-  ```
+# Checkpointer is REQUIRED for human-in-the-loop
+checkpointer = MemorySaver()
 
-  ```python Anthropic theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  from langchain.tools import tool
-  from deepagents import create_deep_agent
-  from langgraph.checkpoint.memory import MemorySaver
+agent = create_deep_agent(
+    model="openai:gpt-5.5",
+    tools=[remove_file, fetch_file, notify_email],
+    interrupt_on={
+        "remove_file": True,  # Default: approve, edit, reject, respond
+        "fetch_file": False,  # No interrupts needed
+        "notify_email": {"allowed_decisions": ["approve", "reject"]},  # No editing
+    },
+    checkpointer=checkpointer,  # Required!
+)
+```
 
+```python Anthropic theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+from langchain.tools import tool
+from deepagents import create_deep_agent
+from langgraph.checkpoint.memory import MemorySaver
 
-  @tool
-  def remove_file(path: str) -> str:
-      """Delete a file from the filesystem."""
-      return f"Deleted {path}"
 
+@tool
+def remove_file(path: str) -> str:
+    """Delete a file from the filesystem."""
+    return f"Deleted {path}"
 
-  @tool
-  def fetch_file(path: str) -> str:
-      """Read a file from the filesystem."""
-      return f"Contents of {path}"
 
+@tool
+def fetch_file(path: str) -> str:
+    """Read a file from the filesystem."""
+    return f"Contents of {path}"
 
-  @tool
-  def notify_email(to: str, subject: str, body: str) -> str:
-      """Send an email."""
-      return f"Sent email to {to}"
-
 
-  # Checkpointer is REQUIRED for human-in-the-loop
-  checkpointer = MemorySaver()
-
-  agent = create_deep_agent(
-      model="anthropic:claude-sonnet-5",
-      tools=[remove_file, fetch_file, notify_email],
-      interrupt_on={
-          "remove_file": True,  # Default: approve, edit, reject, respond
-          "fetch_file": False,  # No interrupts needed
-          "notify_email": {"allowed_decisions": ["approve", "reject"]},  # No editing
-      },
-      checkpointer=checkpointer,  # Required!
-  )
-  ```
+@tool
+def notify_email(to: str, subject: str, body: str) -> str:
+    """Send an email."""
+    return f"Sent email to {to}"
 
-  ```python OpenRouter theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  from langchain.tools import tool
-  from deepagents import create_deep_agent
-  from langgraph.checkpoint.memory import MemorySaver
 
+# Checkpointer is REQUIRED for human-in-the-loop
+checkpointer = MemorySaver()
 
-  @tool
-  def remove_file(path: str) -> str:
-      """Delete a file from the filesystem."""
-      return f"Deleted {path}"
+agent = create_deep_agent(
+    model="anthropic:claude-sonnet-5",
+    tools=[remove_file, fetch_file, notify_email],
+    interrupt_on={
+        "remove_file": True,  # Default: approve, edit, reject, respond
+        "fetch_file": False,  # No interrupts needed
+        "notify_email": {"allowed_decisions": ["approve", "reject"]},  # No editing
+    },
+    checkpointer=checkpointer,  # Required!
+)
+```
 
+```python OpenRouter theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+from langchain.tools import tool
+from deepagents import create_deep_agent
+from langgraph.checkpoint.memory import MemorySaver
 
-  @tool
-  def fetch_file(path: str) -> str:
-      """Read a file from the filesystem."""
-      return f"Contents of {path}"
-
 
-  @tool
-  def notify_email(to: str, subject: str, body: str) -> str:
-      """Send an email."""
-      return f"Sent email to {to}"
+@tool
+def remove_file(path: str) -> str:
+    """Delete a file from the filesystem."""
+    return f"Deleted {path}"
 
 
-  # Checkpointer is REQUIRED for human-in-the-loop
-  checkpointer = MemorySaver()
+@tool
+def fetch_file(path: str) -> str:
+    """Read a file from the filesystem."""
+    return f"Contents of {path}"
+
 
-  agent = create_deep_agent(
-      model="openrouter:z-ai/glm-5.2",
-      tools=[remove_file, fetch_file, notify_email],
-      interrupt_on={
-          "remove_file": True,  # Default: approve, edit, reject, respond
-          "fetch_file": False,  # No interrupts needed
-          "notify_email": {"allowed_decisions": ["approve", "reject"]},  # No editing
-      },
-      checkpointer=checkpointer,  # Required!
-  )
-  ```
+@tool
+def notify_email(to: str, subject: str, body: str) -> str:
+    """Send an email."""
+    return f"Sent email to {to}"
 
-  ```python Fireworks theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  from langchain.tools import tool
-  from deepagents import create_deep_agent
-  from langgraph.checkpoint.memory import MemorySaver
 
+# Checkpointer is REQUIRED for human-in-the-loop
+checkpointer = MemorySaver()
 
-  @tool
-  def remove_file(path: str) -> str:
-      """Delete a file from the filesystem."""
-      return f"Deleted {path}"
+agent = create_deep_agent(
+    model="openrouter:z-ai/glm-5.2",
+    tools=[remove_file, fetch_file, notify_email],
+    interrupt_on={
+        "remove_file": True,  # Default: approve, edit, reject, respond
+        "fetch_file": False,  # No interrupts needed
+        "notify_email": {"allowed_decisions": ["approve", "reject"]},  # No editing
+    },
+    checkpointer=checkpointer,  # Required!
+)
+```
 
+```python Fireworks theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+from langchain.tools import tool
+from deepagents import create_deep_agent
+from langgraph.checkpoint.memory import MemorySaver
 
-  @tool
-  def fetch_file(path: str) -> str:
-      """Read a file from the filesystem."""
-      return f"Contents of {path}"
-
-
-  @tool
-  def notify_email(to: str, subject: str, body: str) -> str:
-      """Send an email."""
-      return f"Sent email to {to}"
-
-
-  # Checkpointer is REQUIRED for human-in-the-loop
-  checkpointer = MemorySaver()
-
-  agent = create_deep_agent(
-      model="fireworks:accounts/fireworks/models/glm-5p2",
-      tools=[remove_file, fetch_file, notify_email],
-      interrupt_on={
-          "remove_file": True,  # Default: approve, edit, reject, respond
-          "fetch_file": False,  # No interrupts needed
-          "notify_email": {"allowed_decisions": ["approve", "reject"]},  # No editing
-      },
-      checkpointer=checkpointer,  # Required!
-  )
-  ```
-
-  ```python Baseten theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  from langchain.tools import tool
-  from deepagents import create_deep_agent
-  from langgraph.checkpoint.memory import MemorySaver
-
-
-  @tool
-  def remove_file(path: str) -> str:
-      """Delete a file from the filesystem."""
-      return f"Deleted {path}"
-
-
-  @tool
-  def fetch_file(path: str) -> str:
-      """Read a file from the filesystem."""
-      return f"Contents of {path}"
-
-
-  @tool
-  def notify_email(to: str, subject: str, body: str) -> str:
-      """Send an email."""
-      return f"Sent email to {to}"
-
-
-  # Checkpointer is REQUIRED for human-in-the-loop
-  checkpointer = MemorySaver()
-
-  agent = create_deep_agent(
-      model="baseten:zai-org/GLM-5.2",
-      tools=[remove_file, fetch_file, notify_email],
-      interrupt_on={
-          "remove_file": True,  # Default: approve, edit, reject, respond
-          "fetch_file": False,  # No interrupts needed
-          "notify_email": {"allowed_decisions": ["approve", "reject"]},  # No editing
-      },
-      checkpointer=checkpointer,  # Required!
-  )
-  ```
-
-  ```python Ollama theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  from langchain.tools import tool
-  from deepagents import create_deep_agent
-  from langgraph.checkpoint.memory import MemorySaver
-
-
-  @tool
-  def remove_file(path: str) -> str:
-      """Delete a file from the filesystem."""
-      return f"Deleted {path}"
-
-
-  @tool
-  def fetch_file(path: str) -> str:
-      """Read a file from the filesystem."""
-      return f"Contents of {path}"
-
-
-  @tool
-  def notify_email(to: str, subject: str, body: str) -> str:
-      """Send an email."""
-      return f"Sent email to {to}"
-
-
-  # Checkpointer is REQUIRED for human-in-the-loop
-  checkpointer = MemorySaver()
-
-  agent = create_deep_agent(
-      model="ollama:north-mini-code-1.0",
-      tools=[remove_file, fetch_file, notify_email],
-      interrupt_on={
-          "remove_file": True,  # Default: approve, edit, reject, respond
-          "fetch_file": False,  # No interrupts needed
-          "notify_email": {"allowed_decisions": ["approve", "reject"]},  # No editing
-      },
-      checkpointer=checkpointer,  # Required!
-  )
-  ```
-</CodeGroup>
+
+@tool
+def remove_file(path: str) -> str:
+    """Delete a file from the filesystem."""
+    return f"Deleted {path}"
+
+
+@tool
+def fetch_file(path: str) -> str:
+    """Read a file from the filesystem."""
+    return f"Contents of {path}"
+
+
+@tool
+def notify_email(to: str, subject: str, body: str) -> str:
+    """Send an email."""
+    return f"Sent email to {to}"
+
+
+# Checkpointer is REQUIRED for human-in-the-loop
+checkpointer = MemorySaver()
+
+agent = create_deep_agent(
+    model="fireworks:accounts/fireworks/models/glm-5p2",
+    tools=[remove_file, fetch_file, notify_email],
+    interrupt_on={
+        "remove_file": True,  # Default: approve, edit, reject, respond
+        "fetch_file": False,  # No interrupts needed
+        "notify_email": {"allowed_decisions": ["approve", "reject"]},  # No editing
+    },
+    checkpointer=checkpointer,  # Required!
+)
+```
+
+```python Baseten theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+from langchain.tools import tool
+from deepagents import create_deep_agent
+from langgraph.checkpoint.memory import MemorySaver
+
+
+@tool
+def remove_file(path: str) -> str:
+    """Delete a file from the filesystem."""
+    return f"Deleted {path}"
+
+
+@tool
+def fetch_file(path: str) -> str:
+    """Read a file from the filesystem."""
+    return f"Contents of {path}"
+
+
+@tool
+def notify_email(to: str, subject: str, body: str) -> str:
+    """Send an email."""
+    return f"Sent email to {to}"
+
+
+# Checkpointer is REQUIRED for human-in-the-loop
+checkpointer = MemorySaver()
+
+agent = create_deep_agent(
+    model="baseten:zai-org/GLM-5.2",
+    tools=[remove_file, fetch_file, notify_email],
+    interrupt_on={
+        "remove_file": True,  # Default: approve, edit, reject, respond
+        "fetch_file": False,  # No interrupts needed
+        "notify_email": {"allowed_decisions": ["approve", "reject"]},  # No editing
+    },
+    checkpointer=checkpointer,  # Required!
+)
+```
+
+```python Ollama theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+from langchain.tools import tool
+from deepagents import create_deep_agent
+from langgraph.checkpoint.memory import MemorySaver
+
+
+@tool
+def remove_file(path: str) -> str:
+    """Delete a file from the filesystem."""
+    return f"Deleted {path}"
+
+
+@tool
+def fetch_file(path: str) -> str:
+    """Read a file from the filesystem."""
+    return f"Contents of {path}"
+
+
+@tool
+def notify_email(to: str, subject: str, body: str) -> str:
+    """Send an email."""
+    return f"Sent email to {to}"
+
+
+# Checkpointer is REQUIRED for human-in-the-loop
+checkpointer = MemorySaver()
+
+agent = create_deep_agent(
+    model="ollama:north-mini-code-1.0",
+    tools=[remove_file, fetch_file, notify_email],
+    interrupt_on={
+        "remove_file": True,  # Default: approve, edit, reject, respond
+        "fetch_file": False,  # No interrupts needed
+        "notify_email": {"allowed_decisions": ["approve", "reject"]},  # No editing
+    },
+    checkpointer=checkpointer,  # Required!
+)
+```
 
 You can configure interrupt for agents and subagents on tool call as well as from within tool calls.
 For more information, see [Human-in-the-loop](/oss/python/deepagents/human-in-the-loop).
@@ -2949,1151 +2873,1139 @@ For example skills, see [Deep Agents example skills](https://github.com/langchai
 
 To add skills to your deep agent, pass them as an argument to `create_deep_agent`:
 
-<Tabs>
-  <Tab title="StateBackend">
-    <CodeGroup>
-      ```python Google theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-      from urllib.request import urlopen
-      from deepagents import create_deep_agent
-      from deepagents.backends import StateBackend
-      from deepagents.backends.utils import create_file_data
-      from langgraph.checkpoint.memory import MemorySaver
+**StateBackend**
 
-      checkpointer = MemorySaver()
-      backend = StateBackend()
+```python Google theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+from urllib.request import urlopen
+from deepagents import create_deep_agent
+from deepagents.backends import StateBackend
+from deepagents.backends.utils import create_file_data
+from langgraph.checkpoint.memory import MemorySaver
 
-      skill_url = "https://raw.githubusercontent.com/langchain-ai/deepagents/refs/heads/main/libs/code/examples/skills/langgraph-docs/SKILL.md"
-      with urlopen(skill_url) as response:
-          skill_content = response.read().decode('utf-8')
+checkpointer = MemorySaver()
+backend = StateBackend()
 
-      skills_files = {
-          "/skills/langgraph-docs/SKILL.md": create_file_data(skill_content),
-      }
+skill_url = "https://raw.githubusercontent.com/langchain-ai/deepagents/refs/heads/main/libs/code/examples/skills/langgraph-docs/SKILL.md"
+with urlopen(skill_url) as response:
+    skill_content = response.read().decode('utf-8')
 
-      agent = create_deep_agent(
-          model="google_genai:gemini-3.6-flash",
-          backend=backend,
-          skills=["/skills/"],
-          checkpointer=checkpointer,
-      )
+skills_files = {
+    "/skills/langgraph-docs/SKILL.md": create_file_data(skill_content),
+}
 
-      result = agent.invoke(
-          {
-              "messages": [{"role": "user", "content": "What is langgraph?"}],
-              # Seed the default StateBackend's in-state filesystem (virtual paths must start with "/").
-              "files": skills_files,
-          },
-          config={"configurable": {"thread_id": "12345"}},
-      )
-      ```
+agent = create_deep_agent(
+    model="google_genai:gemini-3.6-flash",
+    backend=backend,
+    skills=["/skills/"],
+    checkpointer=checkpointer,
+)
 
-      ```python OpenAI theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-      from urllib.request import urlopen
-      from deepagents import create_deep_agent
-      from deepagents.backends import StateBackend
-      from deepagents.backends.utils import create_file_data
-      from langgraph.checkpoint.memory import MemorySaver
+result = agent.invoke(
+    {
+        "messages": [{"role": "user", "content": "What is langgraph?"}],
+        # Seed the default StateBackend's in-state filesystem (virtual paths must start with "/").
+        "files": skills_files,
+    },
+    config={"configurable": {"thread_id": "12345"}},
+)
+```
 
-      checkpointer = MemorySaver()
-      backend = StateBackend()
+```python OpenAI theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+from urllib.request import urlopen
+from deepagents import create_deep_agent
+from deepagents.backends import StateBackend
+from deepagents.backends.utils import create_file_data
+from langgraph.checkpoint.memory import MemorySaver
 
-      skill_url = "https://raw.githubusercontent.com/langchain-ai/deepagents/refs/heads/main/libs/code/examples/skills/langgraph-docs/SKILL.md"
-      with urlopen(skill_url) as response:
-          skill_content = response.read().decode('utf-8')
+checkpointer = MemorySaver()
+backend = StateBackend()
 
-      skills_files = {
-          "/skills/langgraph-docs/SKILL.md": create_file_data(skill_content),
-      }
+skill_url = "https://raw.githubusercontent.com/langchain-ai/deepagents/refs/heads/main/libs/code/examples/skills/langgraph-docs/SKILL.md"
+with urlopen(skill_url) as response:
+    skill_content = response.read().decode('utf-8')
 
-      agent = create_deep_agent(
-          model="openai:gpt-5.5",
-          backend=backend,
-          skills=["/skills/"],
-          checkpointer=checkpointer,
-      )
+skills_files = {
+    "/skills/langgraph-docs/SKILL.md": create_file_data(skill_content),
+}
 
-      result = agent.invoke(
-          {
-              "messages": [{"role": "user", "content": "What is langgraph?"}],
-              # Seed the default StateBackend's in-state filesystem (virtual paths must start with "/").
-              "files": skills_files,
-          },
-          config={"configurable": {"thread_id": "12345"}},
-      )
-      ```
+agent = create_deep_agent(
+    model="openai:gpt-5.5",
+    backend=backend,
+    skills=["/skills/"],
+    checkpointer=checkpointer,
+)
 
-      ```python Anthropic theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-      from urllib.request import urlopen
-      from deepagents import create_deep_agent
-      from deepagents.backends import StateBackend
-      from deepagents.backends.utils import create_file_data
-      from langgraph.checkpoint.memory import MemorySaver
+result = agent.invoke(
+    {
+        "messages": [{"role": "user", "content": "What is langgraph?"}],
+        # Seed the default StateBackend's in-state filesystem (virtual paths must start with "/").
+        "files": skills_files,
+    },
+    config={"configurable": {"thread_id": "12345"}},
+)
+```
 
-      checkpointer = MemorySaver()
-      backend = StateBackend()
+```python Anthropic theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+from urllib.request import urlopen
+from deepagents import create_deep_agent
+from deepagents.backends import StateBackend
+from deepagents.backends.utils import create_file_data
+from langgraph.checkpoint.memory import MemorySaver
 
-      skill_url = "https://raw.githubusercontent.com/langchain-ai/deepagents/refs/heads/main/libs/code/examples/skills/langgraph-docs/SKILL.md"
-      with urlopen(skill_url) as response:
-          skill_content = response.read().decode('utf-8')
+checkpointer = MemorySaver()
+backend = StateBackend()
 
-      skills_files = {
-          "/skills/langgraph-docs/SKILL.md": create_file_data(skill_content),
-      }
+skill_url = "https://raw.githubusercontent.com/langchain-ai/deepagents/refs/heads/main/libs/code/examples/skills/langgraph-docs/SKILL.md"
+with urlopen(skill_url) as response:
+    skill_content = response.read().decode('utf-8')
 
-      agent = create_deep_agent(
-          model="anthropic:claude-sonnet-5",
-          backend=backend,
-          skills=["/skills/"],
-          checkpointer=checkpointer,
-      )
+skills_files = {
+    "/skills/langgraph-docs/SKILL.md": create_file_data(skill_content),
+}
 
-      result = agent.invoke(
-          {
-              "messages": [{"role": "user", "content": "What is langgraph?"}],
-              # Seed the default StateBackend's in-state filesystem (virtual paths must start with "/").
-              "files": skills_files,
-          },
-          config={"configurable": {"thread_id": "12345"}},
-      )
-      ```
+agent = create_deep_agent(
+    model="anthropic:claude-sonnet-5",
+    backend=backend,
+    skills=["/skills/"],
+    checkpointer=checkpointer,
+)
 
-      ```python OpenRouter theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-      from urllib.request import urlopen
-      from deepagents import create_deep_agent
-      from deepagents.backends import StateBackend
-      from deepagents.backends.utils import create_file_data
-      from langgraph.checkpoint.memory import MemorySaver
+result = agent.invoke(
+    {
+        "messages": [{"role": "user", "content": "What is langgraph?"}],
+        # Seed the default StateBackend's in-state filesystem (virtual paths must start with "/").
+        "files": skills_files,
+    },
+    config={"configurable": {"thread_id": "12345"}},
+)
+```
 
-      checkpointer = MemorySaver()
-      backend = StateBackend()
+```python OpenRouter theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+from urllib.request import urlopen
+from deepagents import create_deep_agent
+from deepagents.backends import StateBackend
+from deepagents.backends.utils import create_file_data
+from langgraph.checkpoint.memory import MemorySaver
 
-      skill_url = "https://raw.githubusercontent.com/langchain-ai/deepagents/refs/heads/main/libs/code/examples/skills/langgraph-docs/SKILL.md"
-      with urlopen(skill_url) as response:
-          skill_content = response.read().decode('utf-8')
+checkpointer = MemorySaver()
+backend = StateBackend()
 
-      skills_files = {
-          "/skills/langgraph-docs/SKILL.md": create_file_data(skill_content),
-      }
+skill_url = "https://raw.githubusercontent.com/langchain-ai/deepagents/refs/heads/main/libs/code/examples/skills/langgraph-docs/SKILL.md"
+with urlopen(skill_url) as response:
+    skill_content = response.read().decode('utf-8')
 
-      agent = create_deep_agent(
-          model="openrouter:z-ai/glm-5.2",
-          backend=backend,
-          skills=["/skills/"],
-          checkpointer=checkpointer,
-      )
+skills_files = {
+    "/skills/langgraph-docs/SKILL.md": create_file_data(skill_content),
+}
 
-      result = agent.invoke(
-          {
-              "messages": [{"role": "user", "content": "What is langgraph?"}],
-              # Seed the default StateBackend's in-state filesystem (virtual paths must start with "/").
-              "files": skills_files,
-          },
-          config={"configurable": {"thread_id": "12345"}},
-      )
-      ```
+agent = create_deep_agent(
+    model="openrouter:z-ai/glm-5.2",
+    backend=backend,
+    skills=["/skills/"],
+    checkpointer=checkpointer,
+)
 
-      ```python Fireworks theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-      from urllib.request import urlopen
-      from deepagents import create_deep_agent
-      from deepagents.backends import StateBackend
-      from deepagents.backends.utils import create_file_data
-      from langgraph.checkpoint.memory import MemorySaver
+result = agent.invoke(
+    {
+        "messages": [{"role": "user", "content": "What is langgraph?"}],
+        # Seed the default StateBackend's in-state filesystem (virtual paths must start with "/").
+        "files": skills_files,
+    },
+    config={"configurable": {"thread_id": "12345"}},
+)
+```
 
-      checkpointer = MemorySaver()
-      backend = StateBackend()
+```python Fireworks theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+from urllib.request import urlopen
+from deepagents import create_deep_agent
+from deepagents.backends import StateBackend
+from deepagents.backends.utils import create_file_data
+from langgraph.checkpoint.memory import MemorySaver
 
-      skill_url = "https://raw.githubusercontent.com/langchain-ai/deepagents/refs/heads/main/libs/code/examples/skills/langgraph-docs/SKILL.md"
-      with urlopen(skill_url) as response:
-          skill_content = response.read().decode('utf-8')
+checkpointer = MemorySaver()
+backend = StateBackend()
 
-      skills_files = {
-          "/skills/langgraph-docs/SKILL.md": create_file_data(skill_content),
-      }
+skill_url = "https://raw.githubusercontent.com/langchain-ai/deepagents/refs/heads/main/libs/code/examples/skills/langgraph-docs/SKILL.md"
+with urlopen(skill_url) as response:
+    skill_content = response.read().decode('utf-8')
 
-      agent = create_deep_agent(
-          model="fireworks:accounts/fireworks/models/glm-5p2",
-          backend=backend,
-          skills=["/skills/"],
-          checkpointer=checkpointer,
-      )
+skills_files = {
+    "/skills/langgraph-docs/SKILL.md": create_file_data(skill_content),
+}
 
-      result = agent.invoke(
-          {
-              "messages": [{"role": "user", "content": "What is langgraph?"}],
-              # Seed the default StateBackend's in-state filesystem (virtual paths must start with "/").
-              "files": skills_files,
-          },
-          config={"configurable": {"thread_id": "12345"}},
-      )
-      ```
+agent = create_deep_agent(
+    model="fireworks:accounts/fireworks/models/glm-5p2",
+    backend=backend,
+    skills=["/skills/"],
+    checkpointer=checkpointer,
+)
 
-      ```python Baseten theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-      from urllib.request import urlopen
-      from deepagents import create_deep_agent
-      from deepagents.backends import StateBackend
-      from deepagents.backends.utils import create_file_data
-      from langgraph.checkpoint.memory import MemorySaver
+result = agent.invoke(
+    {
+        "messages": [{"role": "user", "content": "What is langgraph?"}],
+        # Seed the default StateBackend's in-state filesystem (virtual paths must start with "/").
+        "files": skills_files,
+    },
+    config={"configurable": {"thread_id": "12345"}},
+)
+```
 
-      checkpointer = MemorySaver()
-      backend = StateBackend()
+```python Baseten theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+from urllib.request import urlopen
+from deepagents import create_deep_agent
+from deepagents.backends import StateBackend
+from deepagents.backends.utils import create_file_data
+from langgraph.checkpoint.memory import MemorySaver
 
-      skill_url = "https://raw.githubusercontent.com/langchain-ai/deepagents/refs/heads/main/libs/code/examples/skills/langgraph-docs/SKILL.md"
-      with urlopen(skill_url) as response:
-          skill_content = response.read().decode('utf-8')
+checkpointer = MemorySaver()
+backend = StateBackend()
 
-      skills_files = {
-          "/skills/langgraph-docs/SKILL.md": create_file_data(skill_content),
-      }
+skill_url = "https://raw.githubusercontent.com/langchain-ai/deepagents/refs/heads/main/libs/code/examples/skills/langgraph-docs/SKILL.md"
+with urlopen(skill_url) as response:
+    skill_content = response.read().decode('utf-8')
 
-      agent = create_deep_agent(
-          model="baseten:zai-org/GLM-5.2",
-          backend=backend,
-          skills=["/skills/"],
-          checkpointer=checkpointer,
-      )
+skills_files = {
+    "/skills/langgraph-docs/SKILL.md": create_file_data(skill_content),
+}
 
-      result = agent.invoke(
-          {
-              "messages": [{"role": "user", "content": "What is langgraph?"}],
-              # Seed the default StateBackend's in-state filesystem (virtual paths must start with "/").
-              "files": skills_files,
-          },
-          config={"configurable": {"thread_id": "12345"}},
-      )
-      ```
+agent = create_deep_agent(
+    model="baseten:zai-org/GLM-5.2",
+    backend=backend,
+    skills=["/skills/"],
+    checkpointer=checkpointer,
+)
 
-      ```python Ollama theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-      from urllib.request import urlopen
-      from deepagents import create_deep_agent
-      from deepagents.backends import StateBackend
-      from deepagents.backends.utils import create_file_data
-      from langgraph.checkpoint.memory import MemorySaver
+result = agent.invoke(
+    {
+        "messages": [{"role": "user", "content": "What is langgraph?"}],
+        # Seed the default StateBackend's in-state filesystem (virtual paths must start with "/").
+        "files": skills_files,
+    },
+    config={"configurable": {"thread_id": "12345"}},
+)
+```
 
-      checkpointer = MemorySaver()
-      backend = StateBackend()
+```python Ollama theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+from urllib.request import urlopen
+from deepagents import create_deep_agent
+from deepagents.backends import StateBackend
+from deepagents.backends.utils import create_file_data
+from langgraph.checkpoint.memory import MemorySaver
 
-      skill_url = "https://raw.githubusercontent.com/langchain-ai/deepagents/refs/heads/main/libs/code/examples/skills/langgraph-docs/SKILL.md"
-      with urlopen(skill_url) as response:
-          skill_content = response.read().decode('utf-8')
+checkpointer = MemorySaver()
+backend = StateBackend()
 
-      skills_files = {
-          "/skills/langgraph-docs/SKILL.md": create_file_data(skill_content),
-      }
+skill_url = "https://raw.githubusercontent.com/langchain-ai/deepagents/refs/heads/main/libs/code/examples/skills/langgraph-docs/SKILL.md"
+with urlopen(skill_url) as response:
+    skill_content = response.read().decode('utf-8')
 
-      agent = create_deep_agent(
-          model="ollama:north-mini-code-1.0",
-          backend=backend,
-          skills=["/skills/"],
-          checkpointer=checkpointer,
-      )
+skills_files = {
+    "/skills/langgraph-docs/SKILL.md": create_file_data(skill_content),
+}
 
-      result = agent.invoke(
-          {
-              "messages": [{"role": "user", "content": "What is langgraph?"}],
-              # Seed the default StateBackend's in-state filesystem (virtual paths must start with "/").
-              "files": skills_files,
-          },
-          config={"configurable": {"thread_id": "12345"}},
-      )
-      ```
-    </CodeGroup>
-  </Tab>
+agent = create_deep_agent(
+    model="ollama:north-mini-code-1.0",
+    backend=backend,
+    skills=["/skills/"],
+    checkpointer=checkpointer,
+)
 
-  <Tab title="StoreBackend">
-    ```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-    from urllib.request import urlopen
-    from deepagents import create_deep_agent
-    from deepagents.backends import StoreBackend
-    from langgraph.store.memory import InMemoryStore
+result = agent.invoke(
+    {
+        "messages": [{"role": "user", "content": "What is langgraph?"}],
+        # Seed the default StateBackend's in-state filesystem (virtual paths must start with "/").
+        "files": skills_files,
+    },
+    config={"configurable": {"thread_id": "12345"}},
+)
+```
 
-    store = InMemoryStore()
-    backend = StoreBackend(
-        namespace=lambda _rt: ("filesystem",),
-        store=store,
-    )
+**StoreBackend**
 
-    skill_url = "https://raw.githubusercontent.com/langchain-ai/deepagents/refs/heads/main/libs/code/examples/skills/langgraph-docs/SKILL.md"
-    with urlopen(skill_url) as response:
-        skill_content = response.read().decode('utf-8')
+```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+from urllib.request import urlopen
+from deepagents import create_deep_agent
+from deepagents.backends import StoreBackend
+from langgraph.store.memory import InMemoryStore
 
-    backend.upload_files(
-        [("/skills/langgraph-docs/SKILL.md", skill_content.encode("utf-8"))]
-    )
+store = InMemoryStore()
+backend = StoreBackend(
+    namespace=lambda _rt: ("filesystem",),
+    store=store,
+)
 
-    agent = create_deep_agent(
-        model="google_genai:gemini-3.6-flash",
-        backend=backend,
-        store=store,
-        skills=["/skills/"],
-    )
+skill_url = "https://raw.githubusercontent.com/langchain-ai/deepagents/refs/heads/main/libs/code/examples/skills/langgraph-docs/SKILL.md"
+with urlopen(skill_url) as response:
+    skill_content = response.read().decode('utf-8')
 
-    result = agent.invoke(
-        {"messages": [{"role": "user", "content": "What is langgraph?"}]},
-        config={"configurable": {"thread_id": "12345"}},
-    )
-    ```
-  </Tab>
+backend.upload_files(
+    [("/skills/langgraph-docs/SKILL.md", skill_content.encode("utf-8"))]
+)
 
-  <Tab title="FilesystemBackend">
-    ```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-    from urllib.request import urlopen
-    from deepagents import create_deep_agent
-    from deepagents.backends.filesystem import FilesystemBackend
-    from langgraph.checkpoint.memory import MemorySaver
+agent = create_deep_agent(
+    model="google_genai:gemini-3.6-flash",
+    backend=backend,
+    store=store,
+    skills=["/skills/"],
+)
 
-    # Checkpointer is REQUIRED for human-in-the-loop
-    checkpointer = MemorySaver()
+result = agent.invoke(
+    {"messages": [{"role": "user", "content": "What is langgraph?"}]},
+    config={"configurable": {"thread_id": "12345"}},
+)
+```
 
-    skill_url = "https://raw.githubusercontent.com/langchain-ai/deepagents/refs/heads/main/libs/code/examples/skills/langgraph-docs/SKILL.md"
-    with urlopen(skill_url) as response:
-        skill_content = response.read().decode('utf-8')
+**FilesystemBackend**
 
-    backend = FilesystemBackend(root_dir="/Users/user/{project}", virtual_mode=True)
-    backend.upload_files(
-        [("/skills/langgraph-docs/SKILL.md", skill_content.encode("utf-8"))]
-    )
+```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+from urllib.request import urlopen
+from deepagents import create_deep_agent
+from deepagents.backends.filesystem import FilesystemBackend
+from langgraph.checkpoint.memory import MemorySaver
 
-    agent = create_deep_agent(
-        model="google_genai:gemini-3.6-flash",
-        backend=backend,
-        skills=["/skills/"],
-        interrupt_on={
-            "write_file": True,
-            "read_file": False,
-            "edit_file": True,
-        },
-        checkpointer=checkpointer,  # Required for filesystem operations!
-    )
+# Checkpointer is REQUIRED for human-in-the-loop
+checkpointer = MemorySaver()
 
-    result = agent.invoke(
-        {"messages": [{"role": "user", "content": "What is langgraph?"}]},
-        config={"configurable": {"thread_id": "12345"}},
-    )
-    ```
-  </Tab>
-</Tabs>
+skill_url = "https://raw.githubusercontent.com/langchain-ai/deepagents/refs/heads/main/libs/code/examples/skills/langgraph-docs/SKILL.md"
+with urlopen(skill_url) as response:
+    skill_content = response.read().decode('utf-8')
+
+backend = FilesystemBackend(root_dir="/Users/user/{project}", virtual_mode=True)
+backend.upload_files(
+    [("/skills/langgraph-docs/SKILL.md", skill_content.encode("utf-8"))]
+)
+
+agent = create_deep_agent(
+    model="google_genai:gemini-3.6-flash",
+    backend=backend,
+    skills=["/skills/"],
+    interrupt_on={
+        "write_file": True,
+        "read_file": False,
+        "edit_file": True,
+    },
+    checkpointer=checkpointer,  # Required for filesystem operations!
+)
+
+result = agent.invoke(
+    {"messages": [{"role": "user", "content": "What is langgraph?"}]},
+    config={"configurable": {"thread_id": "12345"}},
+)
+```
 
 ## Memory
 
 Use [`AGENTS.md` files](https://agents.md/) to provide extra context to your deep agent.
 
-<Tip>
-  To generate a repository wiki that coding agents discover through `AGENTS.md`, see [OpenWiki](/oss/openwiki/overview).
-</Tip>
+> [!TIP]
+>
+> To generate a repository wiki that coding agents discover through `AGENTS.md`, see [OpenWiki](/oss/openwiki/overview).
 
 You can pass one or more file paths to the `memory` parameter when creating your deep agent:
 
-<Tabs>
-  <Tab title="StateBackend">
-    <CodeGroup>
-      ```python Google theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-      from urllib.request import urlopen
-
-      from deepagents import create_deep_agent
-      from deepagents.backends.utils import create_file_data
-      from langgraph.checkpoint.memory import MemorySaver
-
-      with urlopen(
-          "https://raw.githubusercontent.com/langchain-ai/deepagents/refs/heads/main/examples/text-to-sql-agent/AGENTS.md"
-      ) as response:
-          agents_md = response.read().decode("utf-8")
-      checkpointer = MemorySaver()
-
-      agent = create_deep_agent(
-          model="google_genai:gemini-3.6-flash",
-          memory=[
-              "/AGENTS.md"
-          ],
-          checkpointer=checkpointer,
-      )
-
-      result = agent.invoke(
-          {
-              "messages": [
-                  {
-                      "role": "user",
-                      "content": "Please tell me what's in your memory files.",
-                  }
-              ],
-              # Seed the default StateBackend's in-state filesystem (virtual paths must start with "/").
-              "files": {"/AGENTS.md": create_file_data(agents_md)},
-          },
-          config={"configurable": {"thread_id": "123456"}},
-      )
-      ```
-
-      ```python OpenAI theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-      from urllib.request import urlopen
-
-      from deepagents import create_deep_agent
-      from deepagents.backends.utils import create_file_data
-      from langgraph.checkpoint.memory import MemorySaver
-
-      with urlopen(
-          "https://raw.githubusercontent.com/langchain-ai/deepagents/refs/heads/main/examples/text-to-sql-agent/AGENTS.md"
-      ) as response:
-          agents_md = response.read().decode("utf-8")
-      checkpointer = MemorySaver()
-
-      agent = create_deep_agent(
-          model="openai:gpt-5.5",
-          memory=[
-              "/AGENTS.md"
-          ],
-          checkpointer=checkpointer,
-      )
-
-      result = agent.invoke(
-          {
-              "messages": [
-                  {
-                      "role": "user",
-                      "content": "Please tell me what's in your memory files.",
-                  }
-              ],
-              # Seed the default StateBackend's in-state filesystem (virtual paths must start with "/").
-              "files": {"/AGENTS.md": create_file_data(agents_md)},
-          },
-          config={"configurable": {"thread_id": "123456"}},
-      )
-      ```
-
-      ```python Anthropic theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-      from urllib.request import urlopen
-
-      from deepagents import create_deep_agent
-      from deepagents.backends.utils import create_file_data
-      from langgraph.checkpoint.memory import MemorySaver
-
-      with urlopen(
-          "https://raw.githubusercontent.com/langchain-ai/deepagents/refs/heads/main/examples/text-to-sql-agent/AGENTS.md"
-      ) as response:
-          agents_md = response.read().decode("utf-8")
-      checkpointer = MemorySaver()
-
-      agent = create_deep_agent(
-          model="anthropic:claude-sonnet-5",
-          memory=[
-              "/AGENTS.md"
-          ],
-          checkpointer=checkpointer,
-      )
-
-      result = agent.invoke(
-          {
-              "messages": [
-                  {
-                      "role": "user",
-                      "content": "Please tell me what's in your memory files.",
-                  }
-              ],
-              # Seed the default StateBackend's in-state filesystem (virtual paths must start with "/").
-              "files": {"/AGENTS.md": create_file_data(agents_md)},
-          },
-          config={"configurable": {"thread_id": "123456"}},
-      )
-      ```
-
-      ```python OpenRouter theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-      from urllib.request import urlopen
-
-      from deepagents import create_deep_agent
-      from deepagents.backends.utils import create_file_data
-      from langgraph.checkpoint.memory import MemorySaver
-
-      with urlopen(
-          "https://raw.githubusercontent.com/langchain-ai/deepagents/refs/heads/main/examples/text-to-sql-agent/AGENTS.md"
-      ) as response:
-          agents_md = response.read().decode("utf-8")
-      checkpointer = MemorySaver()
-
-      agent = create_deep_agent(
-          model="openrouter:z-ai/glm-5.2",
-          memory=[
-              "/AGENTS.md"
-          ],
-          checkpointer=checkpointer,
-      )
-
-      result = agent.invoke(
-          {
-              "messages": [
-                  {
-                      "role": "user",
-                      "content": "Please tell me what's in your memory files.",
-                  }
-              ],
-              # Seed the default StateBackend's in-state filesystem (virtual paths must start with "/").
-              "files": {"/AGENTS.md": create_file_data(agents_md)},
-          },
-          config={"configurable": {"thread_id": "123456"}},
-      )
-      ```
-
-      ```python Fireworks theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-      from urllib.request import urlopen
-
-      from deepagents import create_deep_agent
-      from deepagents.backends.utils import create_file_data
-      from langgraph.checkpoint.memory import MemorySaver
-
-      with urlopen(
-          "https://raw.githubusercontent.com/langchain-ai/deepagents/refs/heads/main/examples/text-to-sql-agent/AGENTS.md"
-      ) as response:
-          agents_md = response.read().decode("utf-8")
-      checkpointer = MemorySaver()
-
-      agent = create_deep_agent(
-          model="fireworks:accounts/fireworks/models/glm-5p2",
-          memory=[
-              "/AGENTS.md"
-          ],
-          checkpointer=checkpointer,
-      )
-
-      result = agent.invoke(
-          {
-              "messages": [
-                  {
-                      "role": "user",
-                      "content": "Please tell me what's in your memory files.",
-                  }
-              ],
-              # Seed the default StateBackend's in-state filesystem (virtual paths must start with "/").
-              "files": {"/AGENTS.md": create_file_data(agents_md)},
-          },
-          config={"configurable": {"thread_id": "123456"}},
-      )
-      ```
-
-      ```python Baseten theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-      from urllib.request import urlopen
-
-      from deepagents import create_deep_agent
-      from deepagents.backends.utils import create_file_data
-      from langgraph.checkpoint.memory import MemorySaver
-
-      with urlopen(
-          "https://raw.githubusercontent.com/langchain-ai/deepagents/refs/heads/main/examples/text-to-sql-agent/AGENTS.md"
-      ) as response:
-          agents_md = response.read().decode("utf-8")
-      checkpointer = MemorySaver()
-
-      agent = create_deep_agent(
-          model="baseten:zai-org/GLM-5.2",
-          memory=[
-              "/AGENTS.md"
-          ],
-          checkpointer=checkpointer,
-      )
-
-      result = agent.invoke(
-          {
-              "messages": [
-                  {
-                      "role": "user",
-                      "content": "Please tell me what's in your memory files.",
-                  }
-              ],
-              # Seed the default StateBackend's in-state filesystem (virtual paths must start with "/").
-              "files": {"/AGENTS.md": create_file_data(agents_md)},
-          },
-          config={"configurable": {"thread_id": "123456"}},
-      )
-      ```
-
-      ```python Ollama theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-      from urllib.request import urlopen
-
-      from deepagents import create_deep_agent
-      from deepagents.backends.utils import create_file_data
-      from langgraph.checkpoint.memory import MemorySaver
-
-      with urlopen(
-          "https://raw.githubusercontent.com/langchain-ai/deepagents/refs/heads/main/examples/text-to-sql-agent/AGENTS.md"
-      ) as response:
-          agents_md = response.read().decode("utf-8")
-      checkpointer = MemorySaver()
-
-      agent = create_deep_agent(
-          model="ollama:north-mini-code-1.0",
-          memory=[
-              "/AGENTS.md"
-          ],
-          checkpointer=checkpointer,
-      )
-
-      result = agent.invoke(
-          {
-              "messages": [
-                  {
-                      "role": "user",
-                      "content": "Please tell me what's in your memory files.",
-                  }
-              ],
-              # Seed the default StateBackend's in-state filesystem (virtual paths must start with "/").
-              "files": {"/AGENTS.md": create_file_data(agents_md)},
-          },
-          config={"configurable": {"thread_id": "123456"}},
-      )
-      ```
-    </CodeGroup>
-  </Tab>
-
-  <Tab title="StoreBackend">
-    <CodeGroup>
-      ```python Google theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-      from urllib.request import urlopen
-
-      from deepagents import create_deep_agent
-      from deepagents.backends import StoreBackend
-      from deepagents.backends.utils import create_file_data
-      from langgraph.store.memory import InMemoryStore
-
-      with urlopen(
-          "https://raw.githubusercontent.com/langchain-ai/deepagents/refs/heads/main/examples/text-to-sql-agent/AGENTS.md"
-      ) as response:
-          agents_md = response.read().decode("utf-8")
-
-      # Create the store and add the file to it
-      store = InMemoryStore()
-      file_data = create_file_data(agents_md)
-      store.put(
-          namespace=("filesystem",),
-          key="/AGENTS.md",
-          value=file_data,
-      )
-
-      agent = create_deep_agent(
-          model="google_genai:gemini-3.6-flash",
-          backend=StoreBackend(namespace=lambda _rt: ("filesystem",)),
-          store=store,
-          memory=["/AGENTS.md"],
-      )
-
-      result = agent.invoke(
-          {
-              "messages": [
-                  {
-                      "role": "user",
-                      "content": "Please tell me what's in your memory files.",
-                  }
-              ],
-              "files": {"/AGENTS.md": create_file_data(agents_md)},
-          },
-          config={"configurable": {"thread_id": "12345"}},
-      )
-      ```
-
-      ```python OpenAI theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-      from urllib.request import urlopen
-
-      from deepagents import create_deep_agent
-      from deepagents.backends import StoreBackend
-      from deepagents.backends.utils import create_file_data
-      from langgraph.store.memory import InMemoryStore
-
-      with urlopen(
-          "https://raw.githubusercontent.com/langchain-ai/deepagents/refs/heads/main/examples/text-to-sql-agent/AGENTS.md"
-      ) as response:
-          agents_md = response.read().decode("utf-8")
-
-      # Create the store and add the file to it
-      store = InMemoryStore()
-      file_data = create_file_data(agents_md)
-      store.put(
-          namespace=("filesystem",),
-          key="/AGENTS.md",
-          value=file_data,
-      )
-
-      agent = create_deep_agent(
-          model="openai:gpt-5.5",
-          backend=StoreBackend(namespace=lambda _rt: ("filesystem",)),
-          store=store,
-          memory=["/AGENTS.md"],
-      )
-
-      result = agent.invoke(
-          {
-              "messages": [
-                  {
-                      "role": "user",
-                      "content": "Please tell me what's in your memory files.",
-                  }
-              ],
-              "files": {"/AGENTS.md": create_file_data(agents_md)},
-          },
-          config={"configurable": {"thread_id": "12345"}},
-      )
-      ```
-
-      ```python Anthropic theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-      from urllib.request import urlopen
-
-      from deepagents import create_deep_agent
-      from deepagents.backends import StoreBackend
-      from deepagents.backends.utils import create_file_data
-      from langgraph.store.memory import InMemoryStore
-
-      with urlopen(
-          "https://raw.githubusercontent.com/langchain-ai/deepagents/refs/heads/main/examples/text-to-sql-agent/AGENTS.md"
-      ) as response:
-          agents_md = response.read().decode("utf-8")
-
-      # Create the store and add the file to it
-      store = InMemoryStore()
-      file_data = create_file_data(agents_md)
-      store.put(
-          namespace=("filesystem",),
-          key="/AGENTS.md",
-          value=file_data,
-      )
-
-      agent = create_deep_agent(
-          model="anthropic:claude-sonnet-5",
-          backend=StoreBackend(namespace=lambda _rt: ("filesystem",)),
-          store=store,
-          memory=["/AGENTS.md"],
-      )
-
-      result = agent.invoke(
-          {
-              "messages": [
-                  {
-                      "role": "user",
-                      "content": "Please tell me what's in your memory files.",
-                  }
-              ],
-              "files": {"/AGENTS.md": create_file_data(agents_md)},
-          },
-          config={"configurable": {"thread_id": "12345"}},
-      )
-      ```
-
-      ```python OpenRouter theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-      from urllib.request import urlopen
-
-      from deepagents import create_deep_agent
-      from deepagents.backends import StoreBackend
-      from deepagents.backends.utils import create_file_data
-      from langgraph.store.memory import InMemoryStore
-
-      with urlopen(
-          "https://raw.githubusercontent.com/langchain-ai/deepagents/refs/heads/main/examples/text-to-sql-agent/AGENTS.md"
-      ) as response:
-          agents_md = response.read().decode("utf-8")
-
-      # Create the store and add the file to it
-      store = InMemoryStore()
-      file_data = create_file_data(agents_md)
-      store.put(
-          namespace=("filesystem",),
-          key="/AGENTS.md",
-          value=file_data,
-      )
-
-      agent = create_deep_agent(
-          model="openrouter:z-ai/glm-5.2",
-          backend=StoreBackend(namespace=lambda _rt: ("filesystem",)),
-          store=store,
-          memory=["/AGENTS.md"],
-      )
-
-      result = agent.invoke(
-          {
-              "messages": [
-                  {
-                      "role": "user",
-                      "content": "Please tell me what's in your memory files.",
-                  }
-              ],
-              "files": {"/AGENTS.md": create_file_data(agents_md)},
-          },
-          config={"configurable": {"thread_id": "12345"}},
-      )
-      ```
-
-      ```python Fireworks theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-      from urllib.request import urlopen
-
-      from deepagents import create_deep_agent
-      from deepagents.backends import StoreBackend
-      from deepagents.backends.utils import create_file_data
-      from langgraph.store.memory import InMemoryStore
-
-      with urlopen(
-          "https://raw.githubusercontent.com/langchain-ai/deepagents/refs/heads/main/examples/text-to-sql-agent/AGENTS.md"
-      ) as response:
-          agents_md = response.read().decode("utf-8")
-
-      # Create the store and add the file to it
-      store = InMemoryStore()
-      file_data = create_file_data(agents_md)
-      store.put(
-          namespace=("filesystem",),
-          key="/AGENTS.md",
-          value=file_data,
-      )
-
-      agent = create_deep_agent(
-          model="fireworks:accounts/fireworks/models/glm-5p2",
-          backend=StoreBackend(namespace=lambda _rt: ("filesystem",)),
-          store=store,
-          memory=["/AGENTS.md"],
-      )
-
-      result = agent.invoke(
-          {
-              "messages": [
-                  {
-                      "role": "user",
-                      "content": "Please tell me what's in your memory files.",
-                  }
-              ],
-              "files": {"/AGENTS.md": create_file_data(agents_md)},
-          },
-          config={"configurable": {"thread_id": "12345"}},
-      )
-      ```
-
-      ```python Baseten theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-      from urllib.request import urlopen
-
-      from deepagents import create_deep_agent
-      from deepagents.backends import StoreBackend
-      from deepagents.backends.utils import create_file_data
-      from langgraph.store.memory import InMemoryStore
-
-      with urlopen(
-          "https://raw.githubusercontent.com/langchain-ai/deepagents/refs/heads/main/examples/text-to-sql-agent/AGENTS.md"
-      ) as response:
-          agents_md = response.read().decode("utf-8")
-
-      # Create the store and add the file to it
-      store = InMemoryStore()
-      file_data = create_file_data(agents_md)
-      store.put(
-          namespace=("filesystem",),
-          key="/AGENTS.md",
-          value=file_data,
-      )
-
-      agent = create_deep_agent(
-          model="baseten:zai-org/GLM-5.2",
-          backend=StoreBackend(namespace=lambda _rt: ("filesystem",)),
-          store=store,
-          memory=["/AGENTS.md"],
-      )
-
-      result = agent.invoke(
-          {
-              "messages": [
-                  {
-                      "role": "user",
-                      "content": "Please tell me what's in your memory files.",
-                  }
-              ],
-              "files": {"/AGENTS.md": create_file_data(agents_md)},
-          },
-          config={"configurable": {"thread_id": "12345"}},
-      )
-      ```
-
-      ```python Ollama theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-      from urllib.request import urlopen
-
-      from deepagents import create_deep_agent
-      from deepagents.backends import StoreBackend
-      from deepagents.backends.utils import create_file_data
-      from langgraph.store.memory import InMemoryStore
-
-      with urlopen(
-          "https://raw.githubusercontent.com/langchain-ai/deepagents/refs/heads/main/examples/text-to-sql-agent/AGENTS.md"
-      ) as response:
-          agents_md = response.read().decode("utf-8")
-
-      # Create the store and add the file to it
-      store = InMemoryStore()
-      file_data = create_file_data(agents_md)
-      store.put(
-          namespace=("filesystem",),
-          key="/AGENTS.md",
-          value=file_data,
-      )
-
-      agent = create_deep_agent(
-          model="ollama:north-mini-code-1.0",
-          backend=StoreBackend(namespace=lambda _rt: ("filesystem",)),
-          store=store,
-          memory=["/AGENTS.md"],
-      )
-
-      result = agent.invoke(
-          {
-              "messages": [
-                  {
-                      "role": "user",
-                      "content": "Please tell me what's in your memory files.",
-                  }
-              ],
-              "files": {"/AGENTS.md": create_file_data(agents_md)},
-          },
-          config={"configurable": {"thread_id": "12345"}},
-      )
-      ```
-    </CodeGroup>
-  </Tab>
-
-  <Tab title="FilesystemBackend">
-    <CodeGroup>
-      ```python Google theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-      from deepagents import create_deep_agent
-      from deepagents.backends import FilesystemBackend
-      from langgraph.checkpoint.memory import MemorySaver
-
-      # Checkpointer is REQUIRED for human-in-the-loop
-      checkpointer = MemorySaver()
-
-      agent = create_deep_agent(
-          model="google_genai:gemini-3.6-flash",
-          backend=FilesystemBackend(root_dir="/Users/user/{project}"),
-          memory=[
-              "./AGENTS.md"
-          ],
-          interrupt_on={
-              "write_file": True,  # Default: approve, edit, reject
-              "read_file": False,  # No interrupts needed
-              "edit_file": True,   # Default: approve, edit, reject
-          },
-          checkpointer=checkpointer,  # Required!
-      )
-
-      result = agent.invoke(
-          {
-              "messages": [
-                  {
-                      "role": "user",
-                      "content": "Please tell me what's in your memory files.",
-                  }
-              ],
-          },
-          config={"configurable": {"thread_id": "12345"}},
-      )
-      ```
-
-      ```python OpenAI theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-      from deepagents import create_deep_agent
-      from deepagents.backends import FilesystemBackend
-      from langgraph.checkpoint.memory import MemorySaver
-
-      # Checkpointer is REQUIRED for human-in-the-loop
-      checkpointer = MemorySaver()
-
-      agent = create_deep_agent(
-          model="openai:gpt-5.5",
-          backend=FilesystemBackend(root_dir="/Users/user/{project}"),
-          memory=[
-              "./AGENTS.md"
-          ],
-          interrupt_on={
-              "write_file": True,  # Default: approve, edit, reject
-              "read_file": False,  # No interrupts needed
-              "edit_file": True,   # Default: approve, edit, reject
-          },
-          checkpointer=checkpointer,  # Required!
-      )
-
-      result = agent.invoke(
-          {
-              "messages": [
-                  {
-                      "role": "user",
-                      "content": "Please tell me what's in your memory files.",
-                  }
-              ],
-          },
-          config={"configurable": {"thread_id": "12345"}},
-      )
-      ```
-
-      ```python Anthropic theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-      from deepagents import create_deep_agent
-      from deepagents.backends import FilesystemBackend
-      from langgraph.checkpoint.memory import MemorySaver
-
-      # Checkpointer is REQUIRED for human-in-the-loop
-      checkpointer = MemorySaver()
-
-      agent = create_deep_agent(
-          model="anthropic:claude-sonnet-5",
-          backend=FilesystemBackend(root_dir="/Users/user/{project}"),
-          memory=[
-              "./AGENTS.md"
-          ],
-          interrupt_on={
-              "write_file": True,  # Default: approve, edit, reject
-              "read_file": False,  # No interrupts needed
-              "edit_file": True,   # Default: approve, edit, reject
-          },
-          checkpointer=checkpointer,  # Required!
-      )
-
-      result = agent.invoke(
-          {
-              "messages": [
-                  {
-                      "role": "user",
-                      "content": "Please tell me what's in your memory files.",
-                  }
-              ],
-          },
-          config={"configurable": {"thread_id": "12345"}},
-      )
-      ```
-
-      ```python OpenRouter theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-      from deepagents import create_deep_agent
-      from deepagents.backends import FilesystemBackend
-      from langgraph.checkpoint.memory import MemorySaver
-
-      # Checkpointer is REQUIRED for human-in-the-loop
-      checkpointer = MemorySaver()
-
-      agent = create_deep_agent(
-          model="openrouter:z-ai/glm-5.2",
-          backend=FilesystemBackend(root_dir="/Users/user/{project}"),
-          memory=[
-              "./AGENTS.md"
-          ],
-          interrupt_on={
-              "write_file": True,  # Default: approve, edit, reject
-              "read_file": False,  # No interrupts needed
-              "edit_file": True,   # Default: approve, edit, reject
-          },
-          checkpointer=checkpointer,  # Required!
-      )
-
-      result = agent.invoke(
-          {
-              "messages": [
-                  {
-                      "role": "user",
-                      "content": "Please tell me what's in your memory files.",
-                  }
-              ],
-          },
-          config={"configurable": {"thread_id": "12345"}},
-      )
-      ```
-
-      ```python Fireworks theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-      from deepagents import create_deep_agent
-      from deepagents.backends import FilesystemBackend
-      from langgraph.checkpoint.memory import MemorySaver
-
-      # Checkpointer is REQUIRED for human-in-the-loop
-      checkpointer = MemorySaver()
-
-      agent = create_deep_agent(
-          model="fireworks:accounts/fireworks/models/glm-5p2",
-          backend=FilesystemBackend(root_dir="/Users/user/{project}"),
-          memory=[
-              "./AGENTS.md"
-          ],
-          interrupt_on={
-              "write_file": True,  # Default: approve, edit, reject
-              "read_file": False,  # No interrupts needed
-              "edit_file": True,   # Default: approve, edit, reject
-          },
-          checkpointer=checkpointer,  # Required!
-      )
-
-      result = agent.invoke(
-          {
-              "messages": [
-                  {
-                      "role": "user",
-                      "content": "Please tell me what's in your memory files.",
-                  }
-              ],
-          },
-          config={"configurable": {"thread_id": "12345"}},
-      )
-      ```
-
-      ```python Baseten theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-      from deepagents import create_deep_agent
-      from deepagents.backends import FilesystemBackend
-      from langgraph.checkpoint.memory import MemorySaver
-
-      # Checkpointer is REQUIRED for human-in-the-loop
-      checkpointer = MemorySaver()
-
-      agent = create_deep_agent(
-          model="baseten:zai-org/GLM-5.2",
-          backend=FilesystemBackend(root_dir="/Users/user/{project}"),
-          memory=[
-              "./AGENTS.md"
-          ],
-          interrupt_on={
-              "write_file": True,  # Default: approve, edit, reject
-              "read_file": False,  # No interrupts needed
-              "edit_file": True,   # Default: approve, edit, reject
-          },
-          checkpointer=checkpointer,  # Required!
-      )
-
-      result = agent.invoke(
-          {
-              "messages": [
-                  {
-                      "role": "user",
-                      "content": "Please tell me what's in your memory files.",
-                  }
-              ],
-          },
-          config={"configurable": {"thread_id": "12345"}},
-      )
-      ```
-
-      ```python Ollama theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-      from deepagents import create_deep_agent
-      from deepagents.backends import FilesystemBackend
-      from langgraph.checkpoint.memory import MemorySaver
-
-      # Checkpointer is REQUIRED for human-in-the-loop
-      checkpointer = MemorySaver()
-
-      agent = create_deep_agent(
-          model="ollama:north-mini-code-1.0",
-          backend=FilesystemBackend(root_dir="/Users/user/{project}"),
-          memory=[
-              "./AGENTS.md"
-          ],
-          interrupt_on={
-              "write_file": True,  # Default: approve, edit, reject
-              "read_file": False,  # No interrupts needed
-              "edit_file": True,   # Default: approve, edit, reject
-          },
-          checkpointer=checkpointer,  # Required!
-      )
-
-      result = agent.invoke(
-          {
-              "messages": [
-                  {
-                      "role": "user",
-                      "content": "Please tell me what's in your memory files.",
-                  }
-              ],
-          },
-          config={"configurable": {"thread_id": "12345"}},
-      )
-      ```
-    </CodeGroup>
-  </Tab>
-</Tabs>
+**StateBackend**
+
+```python Google theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+from urllib.request import urlopen
+
+from deepagents import create_deep_agent
+from deepagents.backends.utils import create_file_data
+from langgraph.checkpoint.memory import MemorySaver
+
+with urlopen(
+    "https://raw.githubusercontent.com/langchain-ai/deepagents/refs/heads/main/examples/text-to-sql-agent/AGENTS.md"
+) as response:
+    agents_md = response.read().decode("utf-8")
+checkpointer = MemorySaver()
+
+agent = create_deep_agent(
+    model="google_genai:gemini-3.6-flash",
+    memory=[
+        "/AGENTS.md"
+    ],
+    checkpointer=checkpointer,
+)
+
+result = agent.invoke(
+    {
+        "messages": [
+            {
+                "role": "user",
+                "content": "Please tell me what's in your memory files.",
+            }
+        ],
+        # Seed the default StateBackend's in-state filesystem (virtual paths must start with "/").
+        "files": {"/AGENTS.md": create_file_data(agents_md)},
+    },
+    config={"configurable": {"thread_id": "123456"}},
+)
+```
+
+```python OpenAI theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+from urllib.request import urlopen
+
+from deepagents import create_deep_agent
+from deepagents.backends.utils import create_file_data
+from langgraph.checkpoint.memory import MemorySaver
+
+with urlopen(
+    "https://raw.githubusercontent.com/langchain-ai/deepagents/refs/heads/main/examples/text-to-sql-agent/AGENTS.md"
+) as response:
+    agents_md = response.read().decode("utf-8")
+checkpointer = MemorySaver()
+
+agent = create_deep_agent(
+    model="openai:gpt-5.5",
+    memory=[
+        "/AGENTS.md"
+    ],
+    checkpointer=checkpointer,
+)
+
+result = agent.invoke(
+    {
+        "messages": [
+            {
+                "role": "user",
+                "content": "Please tell me what's in your memory files.",
+            }
+        ],
+        # Seed the default StateBackend's in-state filesystem (virtual paths must start with "/").
+        "files": {"/AGENTS.md": create_file_data(agents_md)},
+    },
+    config={"configurable": {"thread_id": "123456"}},
+)
+```
+
+```python Anthropic theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+from urllib.request import urlopen
+
+from deepagents import create_deep_agent
+from deepagents.backends.utils import create_file_data
+from langgraph.checkpoint.memory import MemorySaver
+
+with urlopen(
+    "https://raw.githubusercontent.com/langchain-ai/deepagents/refs/heads/main/examples/text-to-sql-agent/AGENTS.md"
+) as response:
+    agents_md = response.read().decode("utf-8")
+checkpointer = MemorySaver()
+
+agent = create_deep_agent(
+    model="anthropic:claude-sonnet-5",
+    memory=[
+        "/AGENTS.md"
+    ],
+    checkpointer=checkpointer,
+)
+
+result = agent.invoke(
+    {
+        "messages": [
+            {
+                "role": "user",
+                "content": "Please tell me what's in your memory files.",
+            }
+        ],
+        # Seed the default StateBackend's in-state filesystem (virtual paths must start with "/").
+        "files": {"/AGENTS.md": create_file_data(agents_md)},
+    },
+    config={"configurable": {"thread_id": "123456"}},
+)
+```
+
+```python OpenRouter theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+from urllib.request import urlopen
+
+from deepagents import create_deep_agent
+from deepagents.backends.utils import create_file_data
+from langgraph.checkpoint.memory import MemorySaver
+
+with urlopen(
+    "https://raw.githubusercontent.com/langchain-ai/deepagents/refs/heads/main/examples/text-to-sql-agent/AGENTS.md"
+) as response:
+    agents_md = response.read().decode("utf-8")
+checkpointer = MemorySaver()
+
+agent = create_deep_agent(
+    model="openrouter:z-ai/glm-5.2",
+    memory=[
+        "/AGENTS.md"
+    ],
+    checkpointer=checkpointer,
+)
+
+result = agent.invoke(
+    {
+        "messages": [
+            {
+                "role": "user",
+                "content": "Please tell me what's in your memory files.",
+            }
+        ],
+        # Seed the default StateBackend's in-state filesystem (virtual paths must start with "/").
+        "files": {"/AGENTS.md": create_file_data(agents_md)},
+    },
+    config={"configurable": {"thread_id": "123456"}},
+)
+```
+
+```python Fireworks theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+from urllib.request import urlopen
+
+from deepagents import create_deep_agent
+from deepagents.backends.utils import create_file_data
+from langgraph.checkpoint.memory import MemorySaver
+
+with urlopen(
+    "https://raw.githubusercontent.com/langchain-ai/deepagents/refs/heads/main/examples/text-to-sql-agent/AGENTS.md"
+) as response:
+    agents_md = response.read().decode("utf-8")
+checkpointer = MemorySaver()
+
+agent = create_deep_agent(
+    model="fireworks:accounts/fireworks/models/glm-5p2",
+    memory=[
+        "/AGENTS.md"
+    ],
+    checkpointer=checkpointer,
+)
+
+result = agent.invoke(
+    {
+        "messages": [
+            {
+                "role": "user",
+                "content": "Please tell me what's in your memory files.",
+            }
+        ],
+        # Seed the default StateBackend's in-state filesystem (virtual paths must start with "/").
+        "files": {"/AGENTS.md": create_file_data(agents_md)},
+    },
+    config={"configurable": {"thread_id": "123456"}},
+)
+```
+
+```python Baseten theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+from urllib.request import urlopen
+
+from deepagents import create_deep_agent
+from deepagents.backends.utils import create_file_data
+from langgraph.checkpoint.memory import MemorySaver
+
+with urlopen(
+    "https://raw.githubusercontent.com/langchain-ai/deepagents/refs/heads/main/examples/text-to-sql-agent/AGENTS.md"
+) as response:
+    agents_md = response.read().decode("utf-8")
+checkpointer = MemorySaver()
+
+agent = create_deep_agent(
+    model="baseten:zai-org/GLM-5.2",
+    memory=[
+        "/AGENTS.md"
+    ],
+    checkpointer=checkpointer,
+)
+
+result = agent.invoke(
+    {
+        "messages": [
+            {
+                "role": "user",
+                "content": "Please tell me what's in your memory files.",
+            }
+        ],
+        # Seed the default StateBackend's in-state filesystem (virtual paths must start with "/").
+        "files": {"/AGENTS.md": create_file_data(agents_md)},
+    },
+    config={"configurable": {"thread_id": "123456"}},
+)
+```
+
+```python Ollama theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+from urllib.request import urlopen
+
+from deepagents import create_deep_agent
+from deepagents.backends.utils import create_file_data
+from langgraph.checkpoint.memory import MemorySaver
+
+with urlopen(
+    "https://raw.githubusercontent.com/langchain-ai/deepagents/refs/heads/main/examples/text-to-sql-agent/AGENTS.md"
+) as response:
+    agents_md = response.read().decode("utf-8")
+checkpointer = MemorySaver()
+
+agent = create_deep_agent(
+    model="ollama:north-mini-code-1.0",
+    memory=[
+        "/AGENTS.md"
+    ],
+    checkpointer=checkpointer,
+)
+
+result = agent.invoke(
+    {
+        "messages": [
+            {
+                "role": "user",
+                "content": "Please tell me what's in your memory files.",
+            }
+        ],
+        # Seed the default StateBackend's in-state filesystem (virtual paths must start with "/").
+        "files": {"/AGENTS.md": create_file_data(agents_md)},
+    },
+    config={"configurable": {"thread_id": "123456"}},
+)
+```
+
+**StoreBackend**
+
+```python Google theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+from urllib.request import urlopen
+
+from deepagents import create_deep_agent
+from deepagents.backends import StoreBackend
+from deepagents.backends.utils import create_file_data
+from langgraph.store.memory import InMemoryStore
+
+with urlopen(
+    "https://raw.githubusercontent.com/langchain-ai/deepagents/refs/heads/main/examples/text-to-sql-agent/AGENTS.md"
+) as response:
+    agents_md = response.read().decode("utf-8")
+
+# Create the store and add the file to it
+store = InMemoryStore()
+file_data = create_file_data(agents_md)
+store.put(
+    namespace=("filesystem",),
+    key="/AGENTS.md",
+    value=file_data,
+)
+
+agent = create_deep_agent(
+    model="google_genai:gemini-3.6-flash",
+    backend=StoreBackend(namespace=lambda _rt: ("filesystem",)),
+    store=store,
+    memory=["/AGENTS.md"],
+)
+
+result = agent.invoke(
+    {
+        "messages": [
+            {
+                "role": "user",
+                "content": "Please tell me what's in your memory files.",
+            }
+        ],
+        "files": {"/AGENTS.md": create_file_data(agents_md)},
+    },
+    config={"configurable": {"thread_id": "12345"}},
+)
+```
+
+```python OpenAI theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+from urllib.request import urlopen
+
+from deepagents import create_deep_agent
+from deepagents.backends import StoreBackend
+from deepagents.backends.utils import create_file_data
+from langgraph.store.memory import InMemoryStore
+
+with urlopen(
+    "https://raw.githubusercontent.com/langchain-ai/deepagents/refs/heads/main/examples/text-to-sql-agent/AGENTS.md"
+) as response:
+    agents_md = response.read().decode("utf-8")
+
+# Create the store and add the file to it
+store = InMemoryStore()
+file_data = create_file_data(agents_md)
+store.put(
+    namespace=("filesystem",),
+    key="/AGENTS.md",
+    value=file_data,
+)
+
+agent = create_deep_agent(
+    model="openai:gpt-5.5",
+    backend=StoreBackend(namespace=lambda _rt: ("filesystem",)),
+    store=store,
+    memory=["/AGENTS.md"],
+)
+
+result = agent.invoke(
+    {
+        "messages": [
+            {
+                "role": "user",
+                "content": "Please tell me what's in your memory files.",
+            }
+        ],
+        "files": {"/AGENTS.md": create_file_data(agents_md)},
+    },
+    config={"configurable": {"thread_id": "12345"}},
+)
+```
+
+```python Anthropic theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+from urllib.request import urlopen
+
+from deepagents import create_deep_agent
+from deepagents.backends import StoreBackend
+from deepagents.backends.utils import create_file_data
+from langgraph.store.memory import InMemoryStore
+
+with urlopen(
+    "https://raw.githubusercontent.com/langchain-ai/deepagents/refs/heads/main/examples/text-to-sql-agent/AGENTS.md"
+) as response:
+    agents_md = response.read().decode("utf-8")
+
+# Create the store and add the file to it
+store = InMemoryStore()
+file_data = create_file_data(agents_md)
+store.put(
+    namespace=("filesystem",),
+    key="/AGENTS.md",
+    value=file_data,
+)
+
+agent = create_deep_agent(
+    model="anthropic:claude-sonnet-5",
+    backend=StoreBackend(namespace=lambda _rt: ("filesystem",)),
+    store=store,
+    memory=["/AGENTS.md"],
+)
+
+result = agent.invoke(
+    {
+        "messages": [
+            {
+                "role": "user",
+                "content": "Please tell me what's in your memory files.",
+            }
+        ],
+        "files": {"/AGENTS.md": create_file_data(agents_md)},
+    },
+    config={"configurable": {"thread_id": "12345"}},
+)
+```
+
+```python OpenRouter theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+from urllib.request import urlopen
+
+from deepagents import create_deep_agent
+from deepagents.backends import StoreBackend
+from deepagents.backends.utils import create_file_data
+from langgraph.store.memory import InMemoryStore
+
+with urlopen(
+    "https://raw.githubusercontent.com/langchain-ai/deepagents/refs/heads/main/examples/text-to-sql-agent/AGENTS.md"
+) as response:
+    agents_md = response.read().decode("utf-8")
+
+# Create the store and add the file to it
+store = InMemoryStore()
+file_data = create_file_data(agents_md)
+store.put(
+    namespace=("filesystem",),
+    key="/AGENTS.md",
+    value=file_data,
+)
+
+agent = create_deep_agent(
+    model="openrouter:z-ai/glm-5.2",
+    backend=StoreBackend(namespace=lambda _rt: ("filesystem",)),
+    store=store,
+    memory=["/AGENTS.md"],
+)
+
+result = agent.invoke(
+    {
+        "messages": [
+            {
+                "role": "user",
+                "content": "Please tell me what's in your memory files.",
+            }
+        ],
+        "files": {"/AGENTS.md": create_file_data(agents_md)},
+    },
+    config={"configurable": {"thread_id": "12345"}},
+)
+```
+
+```python Fireworks theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+from urllib.request import urlopen
+
+from deepagents import create_deep_agent
+from deepagents.backends import StoreBackend
+from deepagents.backends.utils import create_file_data
+from langgraph.store.memory import InMemoryStore
+
+with urlopen(
+    "https://raw.githubusercontent.com/langchain-ai/deepagents/refs/heads/main/examples/text-to-sql-agent/AGENTS.md"
+) as response:
+    agents_md = response.read().decode("utf-8")
+
+# Create the store and add the file to it
+store = InMemoryStore()
+file_data = create_file_data(agents_md)
+store.put(
+    namespace=("filesystem",),
+    key="/AGENTS.md",
+    value=file_data,
+)
+
+agent = create_deep_agent(
+    model="fireworks:accounts/fireworks/models/glm-5p2",
+    backend=StoreBackend(namespace=lambda _rt: ("filesystem",)),
+    store=store,
+    memory=["/AGENTS.md"],
+)
+
+result = agent.invoke(
+    {
+        "messages": [
+            {
+                "role": "user",
+                "content": "Please tell me what's in your memory files.",
+            }
+        ],
+        "files": {"/AGENTS.md": create_file_data(agents_md)},
+    },
+    config={"configurable": {"thread_id": "12345"}},
+)
+```
+
+```python Baseten theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+from urllib.request import urlopen
+
+from deepagents import create_deep_agent
+from deepagents.backends import StoreBackend
+from deepagents.backends.utils import create_file_data
+from langgraph.store.memory import InMemoryStore
+
+with urlopen(
+    "https://raw.githubusercontent.com/langchain-ai/deepagents/refs/heads/main/examples/text-to-sql-agent/AGENTS.md"
+) as response:
+    agents_md = response.read().decode("utf-8")
+
+# Create the store and add the file to it
+store = InMemoryStore()
+file_data = create_file_data(agents_md)
+store.put(
+    namespace=("filesystem",),
+    key="/AGENTS.md",
+    value=file_data,
+)
+
+agent = create_deep_agent(
+    model="baseten:zai-org/GLM-5.2",
+    backend=StoreBackend(namespace=lambda _rt: ("filesystem",)),
+    store=store,
+    memory=["/AGENTS.md"],
+)
+
+result = agent.invoke(
+    {
+        "messages": [
+            {
+                "role": "user",
+                "content": "Please tell me what's in your memory files.",
+            }
+        ],
+        "files": {"/AGENTS.md": create_file_data(agents_md)},
+    },
+    config={"configurable": {"thread_id": "12345"}},
+)
+```
+
+```python Ollama theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+from urllib.request import urlopen
+
+from deepagents import create_deep_agent
+from deepagents.backends import StoreBackend
+from deepagents.backends.utils import create_file_data
+from langgraph.store.memory import InMemoryStore
+
+with urlopen(
+    "https://raw.githubusercontent.com/langchain-ai/deepagents/refs/heads/main/examples/text-to-sql-agent/AGENTS.md"
+) as response:
+    agents_md = response.read().decode("utf-8")
+
+# Create the store and add the file to it
+store = InMemoryStore()
+file_data = create_file_data(agents_md)
+store.put(
+    namespace=("filesystem",),
+    key="/AGENTS.md",
+    value=file_data,
+)
+
+agent = create_deep_agent(
+    model="ollama:north-mini-code-1.0",
+    backend=StoreBackend(namespace=lambda _rt: ("filesystem",)),
+    store=store,
+    memory=["/AGENTS.md"],
+)
+
+result = agent.invoke(
+    {
+        "messages": [
+            {
+                "role": "user",
+                "content": "Please tell me what's in your memory files.",
+            }
+        ],
+        "files": {"/AGENTS.md": create_file_data(agents_md)},
+    },
+    config={"configurable": {"thread_id": "12345"}},
+)
+```
+
+**FilesystemBackend**
+
+```python Google theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+from deepagents import create_deep_agent
+from deepagents.backends import FilesystemBackend
+from langgraph.checkpoint.memory import MemorySaver
+
+# Checkpointer is REQUIRED for human-in-the-loop
+checkpointer = MemorySaver()
+
+agent = create_deep_agent(
+    model="google_genai:gemini-3.6-flash",
+    backend=FilesystemBackend(root_dir="/Users/user/{project}"),
+    memory=[
+        "./AGENTS.md"
+    ],
+    interrupt_on={
+        "write_file": True,  # Default: approve, edit, reject
+        "read_file": False,  # No interrupts needed
+        "edit_file": True,   # Default: approve, edit, reject
+    },
+    checkpointer=checkpointer,  # Required!
+)
+
+result = agent.invoke(
+    {
+        "messages": [
+            {
+                "role": "user",
+                "content": "Please tell me what's in your memory files.",
+            }
+        ],
+    },
+    config={"configurable": {"thread_id": "12345"}},
+)
+```
+
+```python OpenAI theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+from deepagents import create_deep_agent
+from deepagents.backends import FilesystemBackend
+from langgraph.checkpoint.memory import MemorySaver
+
+# Checkpointer is REQUIRED for human-in-the-loop
+checkpointer = MemorySaver()
+
+agent = create_deep_agent(
+    model="openai:gpt-5.5",
+    backend=FilesystemBackend(root_dir="/Users/user/{project}"),
+    memory=[
+        "./AGENTS.md"
+    ],
+    interrupt_on={
+        "write_file": True,  # Default: approve, edit, reject
+        "read_file": False,  # No interrupts needed
+        "edit_file": True,   # Default: approve, edit, reject
+    },
+    checkpointer=checkpointer,  # Required!
+)
+
+result = agent.invoke(
+    {
+        "messages": [
+            {
+                "role": "user",
+                "content": "Please tell me what's in your memory files.",
+            }
+        ],
+    },
+    config={"configurable": {"thread_id": "12345"}},
+)
+```
+
+```python Anthropic theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+from deepagents import create_deep_agent
+from deepagents.backends import FilesystemBackend
+from langgraph.checkpoint.memory import MemorySaver
+
+# Checkpointer is REQUIRED for human-in-the-loop
+checkpointer = MemorySaver()
+
+agent = create_deep_agent(
+    model="anthropic:claude-sonnet-5",
+    backend=FilesystemBackend(root_dir="/Users/user/{project}"),
+    memory=[
+        "./AGENTS.md"
+    ],
+    interrupt_on={
+        "write_file": True,  # Default: approve, edit, reject
+        "read_file": False,  # No interrupts needed
+        "edit_file": True,   # Default: approve, edit, reject
+    },
+    checkpointer=checkpointer,  # Required!
+)
+
+result = agent.invoke(
+    {
+        "messages": [
+            {
+                "role": "user",
+                "content": "Please tell me what's in your memory files.",
+            }
+        ],
+    },
+    config={"configurable": {"thread_id": "12345"}},
+)
+```
+
+```python OpenRouter theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+from deepagents import create_deep_agent
+from deepagents.backends import FilesystemBackend
+from langgraph.checkpoint.memory import MemorySaver
+
+# Checkpointer is REQUIRED for human-in-the-loop
+checkpointer = MemorySaver()
+
+agent = create_deep_agent(
+    model="openrouter:z-ai/glm-5.2",
+    backend=FilesystemBackend(root_dir="/Users/user/{project}"),
+    memory=[
+        "./AGENTS.md"
+    ],
+    interrupt_on={
+        "write_file": True,  # Default: approve, edit, reject
+        "read_file": False,  # No interrupts needed
+        "edit_file": True,   # Default: approve, edit, reject
+    },
+    checkpointer=checkpointer,  # Required!
+)
+
+result = agent.invoke(
+    {
+        "messages": [
+            {
+                "role": "user",
+                "content": "Please tell me what's in your memory files.",
+            }
+        ],
+    },
+    config={"configurable": {"thread_id": "12345"}},
+)
+```
+
+```python Fireworks theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+from deepagents import create_deep_agent
+from deepagents.backends import FilesystemBackend
+from langgraph.checkpoint.memory import MemorySaver
+
+# Checkpointer is REQUIRED for human-in-the-loop
+checkpointer = MemorySaver()
+
+agent = create_deep_agent(
+    model="fireworks:accounts/fireworks/models/glm-5p2",
+    backend=FilesystemBackend(root_dir="/Users/user/{project}"),
+    memory=[
+        "./AGENTS.md"
+    ],
+    interrupt_on={
+        "write_file": True,  # Default: approve, edit, reject
+        "read_file": False,  # No interrupts needed
+        "edit_file": True,   # Default: approve, edit, reject
+    },
+    checkpointer=checkpointer,  # Required!
+)
+
+result = agent.invoke(
+    {
+        "messages": [
+            {
+                "role": "user",
+                "content": "Please tell me what's in your memory files.",
+            }
+        ],
+    },
+    config={"configurable": {"thread_id": "12345"}},
+)
+```
+
+```python Baseten theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+from deepagents import create_deep_agent
+from deepagents.backends import FilesystemBackend
+from langgraph.checkpoint.memory import MemorySaver
+
+# Checkpointer is REQUIRED for human-in-the-loop
+checkpointer = MemorySaver()
+
+agent = create_deep_agent(
+    model="baseten:zai-org/GLM-5.2",
+    backend=FilesystemBackend(root_dir="/Users/user/{project}"),
+    memory=[
+        "./AGENTS.md"
+    ],
+    interrupt_on={
+        "write_file": True,  # Default: approve, edit, reject
+        "read_file": False,  # No interrupts needed
+        "edit_file": True,   # Default: approve, edit, reject
+    },
+    checkpointer=checkpointer,  # Required!
+)
+
+result = agent.invoke(
+    {
+        "messages": [
+            {
+                "role": "user",
+                "content": "Please tell me what's in your memory files.",
+            }
+        ],
+    },
+    config={"configurable": {"thread_id": "12345"}},
+)
+```
+
+```python Ollama theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+from deepagents import create_deep_agent
+from deepagents.backends import FilesystemBackend
+from langgraph.checkpoint.memory import MemorySaver
+
+# Checkpointer is REQUIRED for human-in-the-loop
+checkpointer = MemorySaver()
+
+agent = create_deep_agent(
+    model="ollama:north-mini-code-1.0",
+    backend=FilesystemBackend(root_dir="/Users/user/{project}"),
+    memory=[
+        "./AGENTS.md"
+    ],
+    interrupt_on={
+        "write_file": True,  # Default: approve, edit, reject
+        "read_file": False,  # No interrupts needed
+        "edit_file": True,   # Default: approve, edit, reject
+    },
+    checkpointer=checkpointer,  # Required!
+)
+
+result = agent.invoke(
+    {
+        "messages": [
+            {
+                "role": "user",
+                "content": "Please tell me what's in your memory files.",
+            }
+        ],
+    },
+    config={"configurable": {"thread_id": "12345"}},
+)
+```
 
 ## Profiles
 
@@ -4179,9 +4091,9 @@ print(result["structured_response"])
 # location='San Francisco, California' temperature=18.3 condition='Sunny' humidity=48 wind_speed=7.6 forecast='Pleasant sunny conditions expected to continue with temperatures around 64°F (18°C) during the day, dropping to around 52°F (11°C) at night. Clear skies with minimal precipitation expected.'
 ```
 
-<Card title="View example trace" icon="chart-line" href="https://smith.langchain.com/public/1f7faa8f-571a-45d4-a549-5510c0feae4e/r">
-  Open a public LangSmith run for this example.
-</Card>
+> **[View example trace](https://smith.langchain.com/public/1f7faa8f-571a-45d4-a549-5510c0feae4e/r)**
+>
+> Open a public LangSmith run for this example.
 
 For more information and examples, see [response format](/oss/python/langchain/structured-output#response-format).
 
@@ -4191,12 +4103,6 @@ For more information and examples, see [response format](/oss/python/langchain/s
 
 ***
 
-<div>
-  <Callout icon="terminal-2">
-    [Connect these docs](/use-these-docs) to your agent of choice via MCP for real-time answers.
-  </Callout>
+[Connect these docs](/use-these-docs) to your agent of choice via MCP for real-time answers.
 
-  <Callout icon="edit">
-    [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/oss/deepagents/customization.mdx) or [file an issue](https://github.com/langchain-ai/docs/issues/new/choose).
-  </Callout>
-</div>
+[Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/oss/deepagents/customization.mdx) or [file an issue](https://github.com/langchain-ai/docs/issues/new/choose).

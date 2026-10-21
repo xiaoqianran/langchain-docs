@@ -6,9 +6,9 @@ Integrate with Google Gemini tools using LangChain JavaScript.
 
 The `@langchain/google` package supports Gemini's built-in tools, which provide capabilities like web search grounding, code execution, URL context retrieval, and more. These tools are passed as Gemini-native objects to `ChatGoogle` via `bindTools()` or the `tools` call option.
 
-<Warning>
-  You cannot mix Gemini native tools (Google Search, Code Execution, etc.) with standard LangChain tools (Zod-based function tools) in the same request. See the [ChatGoogle](/oss/javascript/integrations/chat/google) page for standard tool calling usage.
-</Warning>
+> [!WARNING]
+>
+> You cannot mix Gemini native tools (Google Search, Code Execution, etc.) with standard LangChain tools (Zod-based function tools) in the same request. See the [ChatGoogle](/oss/javascript/integrations/chat/google) page for standard tool calling usage.
 
 ### Google Search
 
@@ -44,9 +44,9 @@ const llm = new ChatGoogle("gemini-2.5-flash")
 ]);
 ```
 
-<Note>
-  The `googleSearchRetrieval` tool is maintained for backwards compatibility, but `googleSearch` is preferred.
-</Note>
+> [!NOTE]
+>
+> The `googleSearchRetrieval` tool is maintained for backwards compatibility, but `googleSearch` is preferred.
 
 For more information, see [Google's Grounding with Google Search documentation](https://ai.google.dev/gemini-api/docs/grounding).
 
@@ -254,12 +254,6 @@ For more information, see [Google's Agent Search grounding documentation](https:
 
 ***
 
-<div>
-  <Callout icon="terminal-2">
-    [Connect these docs](/use-these-docs) to your agent of choice via MCP for real-time answers.
-  </Callout>
+[Connect these docs](/use-these-docs) to your agent of choice via MCP for real-time answers.
 
-  <Callout icon="edit">
-    [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/oss/javascript/integrations/tools/google.mdx) or [file an issue](https://github.com/langchain-ai/docs/issues/new/choose).
-  </Callout>
-</div>
+[Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/oss/javascript/integrations/tools/google.mdx) or [file an issue](https://github.com/langchain-ai/docs/issues/new/choose).

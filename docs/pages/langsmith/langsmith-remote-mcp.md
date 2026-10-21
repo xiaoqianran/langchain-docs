@@ -16,24 +16,44 @@ The Remote MCP is available on all LangSmith Cloud regions, on [BYOC](/langsmith
   <thead>
     <tr>
       <th>Region</th>
+
+      <th>
+        URL
+      </th>
     </tr>
   </thead>
 
   <tbody>
     <tr>
       <td>GCP US</td>
+
+      <td>
+        `https://api.smith.langchain.com/mcp`
+      </td>
     </tr>
 
     <tr>
       <td>GCP EU</td>
+
+      <td>
+        `https://eu.api.smith.langchain.com/mcp`
+      </td>
     </tr>
 
     <tr>
       <td>GCP APAC</td>
+
+      <td>
+        `https://apac.api.smith.langchain.com/mcp`
+      </td>
     </tr>
 
     <tr>
       <td>AWS US</td>
+
+      <td>
+        `https://aws.api.smith.langchain.com/mcp`
+      </td>
     </tr>
   </tbody>
 </table>
@@ -71,13 +91,13 @@ Send a [LangSmith API key](/langsmith/create-account-api-key) in the `X-Api-Key`
 
 Requests are authorized as the user that owns the API key, scoped to that key's workspace and permissions—the same authorization the key has elsewhere in the LangSmith API. Tools that accept a `workspace_id` argument can target a specific workspace; otherwise the key's own workspace is used.
 
-<Warning>
-  On [BYOC](/langsmith/byoc), the API key must be assigned to your LangSmith workspace.
-</Warning>
+> [!WARNING]
+>
+> On [BYOC](/langsmith/byoc), the API key must be assigned to your LangSmith workspace.
 
-<Note>
-  The `X-Api-Key` header is specific to the Remote MCP. The [standalone LangSmith MCP Server](/langsmith/langsmith-mcp-server) uses a different header, `LANGSMITH-API-KEY`.
-</Note>
+> [!NOTE]
+>
+> The `X-Api-Key` header is specific to the Remote MCP. The [standalone LangSmith MCP Server](/langsmith/langsmith-mcp-server) uses a different header, `LANGSMITH-API-KEY`.
 
 ## Quickstart
 
@@ -181,9 +201,9 @@ Any MCP client supporting the [Streamable HTTP transport](https://spec.modelcont
 
 ## Known client incompatibilities
 
-<Note>
-  **OpenAI Codex CLI** does not work with the LangSmith Remote MCP. Codex omits the [RFC 8707](https://datatracker.ietf.org/doc/html/rfc8707) `resource` parameter required by the [MCP authorization spec](https://modelcontextprotocol.io/specification/draft/basic/authorization) during the OAuth flow, so login appears to succeed but the issued token is not bound to the LangSmith MCP and `initialize` fails with an auth-required error. Two upstream issues affect token exchange and authorize requests in Codex (refer to [openai/codex#20729](https://github.com/openai/codex/issues/20729) and [openai/codex#13891](https://github.com/openai/codex/issues/13891)). In the meantime, use the [LangSmith CLI](/langsmith/langsmith-cli) from Codex. The LangSmith CLI supports the same projects, traces, runs, datasets, experiments, and threads as the MCP server, with native OAuth login.
-</Note>
+> [!NOTE]
+>
+> **OpenAI Codex CLI** does not work with the LangSmith Remote MCP. Codex omits the [RFC 8707](https://datatracker.ietf.org/doc/html/rfc8707) `resource` parameter required by the [MCP authorization spec](https://modelcontextprotocol.io/specification/draft/basic/authorization) during the OAuth flow, so login appears to succeed but the issued token is not bound to the LangSmith MCP and `initialize` fails with an auth-required error. Two upstream issues affect token exchange and authorize requests in Codex (refer to [openai/codex#20729](https://github.com/openai/codex/issues/20729) and [openai/codex#13891](https://github.com/openai/codex/issues/13891)). In the meantime, use the [LangSmith CLI](/langsmith/langsmith-cli) from Codex. The LangSmith CLI supports the same projects, traces, runs, datasets, experiments, and threads as the MCP server, with native OAuth login.
 
 ## Available tools
 
@@ -229,12 +249,6 @@ For deployments on earlier versions, run the [standalone LangSmith MCP Server](/
 
 ***
 
-<div>
-  <Callout icon="terminal-2">
-    [Connect these docs](/use-these-docs) to your agent of choice via MCP for real-time answers.
-  </Callout>
+[Connect these docs](/use-these-docs) to your agent of choice via MCP for real-time answers.
 
-  <Callout icon="edit">
-    [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/langsmith-remote-mcp.mdx) or [file an issue](https://github.com/langchain-ai/docs/issues/new/choose).
-  </Callout>
-</div>
+[Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/langsmith-remote-mcp.mdx) or [file an issue](https://github.com/langchain-ai/docs/issues/new/choose).

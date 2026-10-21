@@ -10,10 +10,10 @@
 
 所有缓存 API **仅限服务器端**，并且需要 LangGraph 代理服务器运行时。值必须是 JSON 可序列化的。
 
-<Note>
-  `swr` 需要代理服务器运行时 **v0.7.79** 或更高版本，当前处于 **[beta](/langsmith/release-stages)**。
-  `cache_get` 和 `cache_set` 需要 **v0.7.29** 或更高版本。
-</Note>
+> [!注意]
+>
+> `swr` 需要代理服务器运行时 **v0.7.79** 或更高版本，当前处于 **[beta](/langsmith/release-stages)**。
+> `cache_get` 和 `cache_set` 需要 **v0.7.29** 或更高版本。
 
 ## 快速开始
 
@@ -42,7 +42,7 @@ result = await swr(
     fresh_for=timedelta(minutes=5),
     max_age=timedelta(hours=1),
 )
-```|参数|默认 |描述 |
+```|参数|默认|描述 |
 | - | - | - |
 | `fresh_for` | `timedelta(0)` |将缓存值视为新鲜值的持续时间。在此窗口期间，`swr` 返回缓存的值，无需重新验证。 |
 | `max_age` | `timedelta(days=1)` |缓存条目的最大生命周期。此后，`swr`在返回之前阻塞加载器。上限为 1 天。 |
@@ -81,7 +81,7 @@ profile: UserProfile = result.value  # deserialized automatically
 
 ## 缓存身份验证凭据
 
-您可以将凭证验证缓存在 [custom auth handler](/langsmith/custom-auth) 中，以避免每个请求都影响您的身份提供者：
+您可以将凭证验证缓存在 [custom auth handler](/langsmith/custom-auth) 中，以避免每次请求时都影响您的身份提供者：
 
 ```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 from datetime import timedelta
@@ -107,7 +107,7 @@ async def authenticate(headers: dict) -> Auth.types.MinimalUserDict:
 
 ## 检查缓存状态
 
-`swr` 返回一个 `SWRResult` 对象，其中包含值和缓存状态：
+`swr` 返回一个 `SWRResult` 对象，其值和缓存状态：
 
 ```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 result = await swr("my-key", my_loader)
@@ -152,7 +152,7 @@ async def cache_get(key: str) -> Any | None
 async def cache_set(key: str, value: Any, *, ttl: timedelta | None = None) -> None
 ```
 
-|参数|类型 |默认 |描述 |
+|参数|类型 |默认|描述 |
 | - | - | - | - |
 | `key` | `str` |必填|缓存键 |
 | `value` | `Any` |必填|要缓存的值。必须是 JSON 可序列化的 |
@@ -166,12 +166,6 @@ async def cache_set(key: str, value: Any, *, ttl: timedelta | None = None) -> No
 
 ***
 
-<div>
-  <Callout icon="terminal-2">
-    [Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
-  </Callout>
+[Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
 
-  <Callout icon="edit">
-    [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/caching.mdx) 或 [file an issue](https://github.com/langchain-ai/docs/issues/new/choose)。
-  </Callout>
-</div>
+[Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/caching.mdx) 或 [file an issue](https://github.com/langchain-ai/docs/issues/new/choose)。

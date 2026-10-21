@@ -2,10 +2,10 @@
 
 # How to add TTLs to your application
 
-<Tip>
-  **Prerequisites**
-  This guide assumes familiarity with [LangSmith](/langsmith/observability), [Persistence](/oss/python/langgraph/persistence), and [Cross-thread persistence](/oss/python/langgraph/stores) concepts.
-</Tip>
+> [!TIP]
+>
+> **Prerequisites**
+> This guide assumes familiarity with [LangSmith](/langsmith/observability), [Persistence](/oss/python/langgraph/persistence), and [Cross-thread persistence](/oss/python/langgraph/stores) concepts.
 
 LangSmith persists both [checkpoints](/oss/python/langgraph/checkpointers#checkpoints) (thread state) and [cross-thread memories](/oss/python/langgraph/stores) (store items). You can configure Time-to-Live (TTL) policies in [`langgraph.json`](/langsmith/application-structure#configuration-file) to manage the lifecycle of this data automatically, preventing indefinite accumulation.
 
@@ -38,9 +38,9 @@ Add a `checkpointer.ttl` configuration to your `langgraph.json` file:
 * `default_ttl`: Sets the default TTL window in minutes (e.g., 43200 minutes = 30 days). The `delete` window starts when the TTL is applied and does not refresh with activity. The `keep_latest` window refreshes when a run finishes or thread state is updated. If omitted, threads do not expire by default.
 * `sweep_limit`: (*Agent server v0.8+*) Sets how many threads the sweeper processes in a single iteration. Defaults to `10000` (Agent server v0.12+) or `1000` (Agent server v0.8-0.11).
 
-<Note>
-  Global TTL configuration applies to new threads. The `delete` strategy does not apply retroactively to existing threads. The `keep_latest` strategy applies to an existing thread after a run finishes or its state is updated; inactive existing threads remain unchanged.
-</Note>
+> [!NOTE]
+>
+> Global TTL configuration applies to new threads. The `delete` strategy does not apply retroactively to existing threads. The `keep_latest` strategy applies to an existing thread after a run finishes or its state is updated; inactive existing threads remain unchanged.
 
 ## Configuring store item TTL
 
@@ -108,9 +108,9 @@ thread = await client.threads.create(
 )
 ```
 
-<Note>
-  A thread-level TTL overrides the default TTL for that thread and uses the strategy behavior described above.
-</Note>
+> [!NOTE]
+>
+> A thread-level TTL overrides the default TTL for that thread and uses the strategy behavior described above.
 
 ## Runtime overrides
 
@@ -124,12 +124,6 @@ For details on other configurable options, refer to the [LangGraph CLI reference
 
 ***
 
-<div>
-  <Callout icon="terminal-2">
-    [Connect these docs](/use-these-docs) to your agent of choice via MCP for real-time answers.
-  </Callout>
+[Connect these docs](/use-these-docs) to your agent of choice via MCP for real-time answers.
 
-  <Callout icon="edit">
-    [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/configure-ttl.mdx) or [file an issue](https://github.com/langchain-ai/docs/issues/new/choose).
-  </Callout>
-</div>
+[Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/configure-ttl.mdx) or [file an issue](https://github.com/langchain-ai/docs/issues/new/choose).

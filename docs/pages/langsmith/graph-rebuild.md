@@ -6,9 +6,9 @@ Rebuild your graph with different configurations for each run using ServerRuntim
 
 You might need to rebuild your graph with a different configuration for a new run. For example, you might want to load different tools depending on the user's credentials. This guide shows how you can do this using `ServerRuntime`.
 
-<Note>
-  In most cases, customization is best handled by conditioning on the config within individual nodes rather than dynamically changing the whole graph structure. This makes it easier to test and manage.
-</Note>
+> [!NOTE]
+>
+> In most cases, customization is best handled by conditioning on the config within individual nodes rather than dynamically changing the whole graph structure. This makes it easier to test and manage.
 
 ## Prerequisites
 
@@ -63,9 +63,9 @@ To make the server aware of your graph, you need to specify a path to the variab
 
 To rebuild your graph on each new run, provide a **factory function** that returns (or yields) a graph. The factory can optionally accept a `ServerRuntime` parameter or a `RunnableConfig`. The server inspects your function's type annotations to determine which arguments to inject, so make sure to include the correct type hints. The server's queue workers will call your factory function any time they need to process a run. The function will also be called for certain other endpoints to update state, read state, or to fetch assistant schemas. The `ServerRuntime` tells you which context triggered the call.
 
-<Note>
-  `ServerRuntime` is in [beta](/langsmith/release-stages) and may change in future releases.
-</Note>
+> [!NOTE]
+>
+> `ServerRuntime` is in [beta](/langsmith/release-stages) and may change in future releases.
 
 #### Simple factory
 
@@ -191,12 +191,6 @@ See more info on the [LangGraph API configuration file](/langsmith/cli#configura
 
 ***
 
-<div>
-  <Callout icon="terminal-2">
-    [Connect these docs](/use-these-docs) to your agent of choice via MCP for real-time answers.
-  </Callout>
+[Connect these docs](/use-these-docs) to your agent of choice via MCP for real-time answers.
 
-  <Callout icon="edit">
-    [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/graph-rebuild.mdx) or [file an issue](https://github.com/langchain-ai/docs/issues/new/choose).
-  </Callout>
-</div>
+[Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/graph-rebuild.mdx) or [file an issue](https://github.com/langchain-ai/docs/issues/new/choose).

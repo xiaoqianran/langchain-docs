@@ -17,43 +17,41 @@
 | **您的代理服务器** | LangChain | LangChain 的云（AWS 和 GCP）|
 | **您的应用程序的 CI/CD** | LangChain | LangChain 的云（AWS 和 GCP）|
 
-<Callout icon="rocket">
-  如果您准备好将应用程序部署到 LangSmith 云（AWS 或 GCP），请按照 [Cloud deployment quickstart](/langsmith/deployment-quickstart) 或 [full setup guide](/langsmith/deploy-to-cloud) 操作。本页介绍了云托管架构以供参考。
-</Callout>
+如果您准备好将应用程序部署到 LangSmith 云（AWS 或 GCP），请按照 [Cloud deployment quickstart](/langsmith/deployment-quickstart) 或 [full setup guide](/langsmith/deploy-to-cloud) 操作。本页介绍了云托管架构以供参考。
 
-<img alt="Cloud deployment: LangChain hosts and manages all components including the UI, APIs, and your Agent Servers." />
+![Cloud deployment: LangChain hosts and manages all components including the UI, APIs, and your Agent Servers.](https://mintcdn.com/langchain-5e9cc07a/JOyLr_spVEW0t2KF/langsmith/images/langgraph-cloud-architecture.png?fit=max\&auto=format\&n=JOyLr_spVEW0t2KF\&q=85\&s=3f0316122425895270d0ecd47b12e139)
 
-## 云架构和可扩展性
+## 云架构和可扩展性> [!注意]
+>
+> 本部分仅与云管理的 LangSmith（[https://smith.langchain.com](https://smith.langchain.com?utm_source=docs\&utm_medium=cta\&utm_campaign=langsmith-signup\&utm_content=langsmith-cloud)、[https://eu.smith.langchain.com](https://eu.smith.langchain.com)、[https://apac.smith.langchain.com](https://apac.smith.langchain.com) 和 [https://aws.smith.langchain.com](https://aws.smith.langchain.com)）相关。
+>
+> 有关自托管LangSmith解决方案的信息，请参阅[Self-hosted documentation](/langsmith/self-hosted)。
 
-<Note>
-  本部分仅与云管理的 LangSmith（[https://smith.langchain.com](https://smith.langchain.com?utm_source=docs\&utm_medium=cta\&utm_campaign=langsmith-signup\&utm_content=langsmith-cloud)、[https://eu.smith.langchain.com](https://eu.smith.langchain.com)、[https://apac.smith.langchain.com](https://apac.smith.langchain.com) 和 [https://aws.smith.langchain.com](https://aws.smith.langchain.com)）相关。有关自托管LangSmith解决方案的信息，请参阅[Self-hosted documentation](/langsmith/self-hosted)。
-</Note>
-
-对于美国、欧盟和亚太地区 SaaS 区域，LangSmith 托管在 Google Cloud Platform (GCP) 上；对于 AWS 托管的美国 SaaS 区域，LangSmith 托管在 Amazon Web Services (AWS) 上。该平台被设计为具有高度可扩展性。许多客户在 LangSmith 上运行生产工作负载，以实现 LLM 应用程序可观察性、评估和代理部署。
+LangSmith 对于美国、欧盟和亚太地区 SaaS 区域托管在 Google Cloud Platform (GCP) 上，对于 AWS 托管的美国 SaaS 区域托管在 Amazon Web Services (AWS) 上。该平台被设计为具有高度可扩展性。许多客户在 LangSmith 上运行生产工作负载，以实现 LLM 应用程序可观察性、评估和代理部署。
 
 位于美国的 LangSmith 服务（默认 GCP 区域）托管在 GCP 的 `us-central1`（爱荷华州）区域。
 
-<Note>
-  [EU-based LangSmith service](https://eu.smith.langchain.com) 在 GCP 的 `europe-west4`（荷兰）区域可用并托管。如果您对该地区的企业计划感兴趣，请[contact our sales team](https://www.langchain.com/contact-sales)。
-</Note>
+> [!注意]
+>
+> [EU-based LangSmith service](https://eu.smith.langchain.com) 已在 GCP 的 `europe-west4`（荷兰）区域提供并托管。如果您对该地区的企业计划感兴趣，请[contact our sales team](https://www.langchain.com/contact-sales)。
 
-<Note>
-  截至 2026 年 4 月，LangSmith SaaS 在`us-east-2`（俄亥俄州）的 AWS 上可用。
-</Note>
+> [!注意]
+>
+> 自 2026 年 4 月起，LangSmith SaaS 在`us-east-2`（俄亥俄州）的 AWS 上可用。
 
-<Note>
-  截至 2026 年 5 月，LangSmith SaaS 在亚太地区的`australia-southeast1`（悉尼）的 GCP 上可用。
-</Note>
+> [!注意]
+>
+> 自 2026 年 5 月起，LangSmith SaaS 在亚太地区的`australia-southeast1`（悉尼）的 GCP 上可用。
 
-### 区域存储
+### 区域存储此表中的资源和服务存储在与注册发生的 URL 对应的位置（GCP US、GCP EU、GCP APAC 或 AWS US）。云管理的 LangSmith 使用 [Supabase](https://supabase.com) 进行身份验证/授权，使用 [ClickHouse Cloud](https://clickhouse.com/cloud) 进行数据仓库。
 
-此表中的资源和服务存储在与注册发生的 URL 对应的位置（GCP US、GCP EU、GCP APAC 或 AWS US）。云管理的 LangSmith 使用 [Supabase](https://supabase.com) 进行身份验证/授权，使用 [ClickHouse Cloud](https://clickhouse.com/cloud) 进行数据仓库。| |基仕伯美国 | GCP 欧盟 |基仕伯亚太区 | AWS 美国 |
+| |基仕伯美国 | GCP 欧盟 |基仕伯亚太区 | AWS 美国 |
 | - | - | - | - | - |
 |网址 | [https://smith.langchain.com](https://smith.langchain.com?utm_source=docs\&utm_medium=cta\&utm_campaign=langsmith-signup\&utm_content=langsmith-cloud) | [https://eu.smith.langchain.com](https://eu.smith.langchain.com) | [https://apac.smith.langchain.com](https://apac.smith.langchain.com) | [https://aws.smith.langchain.com](https://aws.smith.langchain.com) |
 | API 网址 | [https://api.smith.langchain.com](https://api.smith.langchain.com) | [https://eu.api.smith.langchain.com](https://eu.api.smith.langchain.com) | [https://apac.api.smith.langchain.com](https://apac.api.smith.langchain.com) | [https://aws.api.smith.langchain.com](https://aws.api.smith.langchain.com) |
 |云| GCP us-central1（爱荷华州）| GCP europe-west4（荷兰） | GCP 澳大利亚-southeast1（悉尼）| AWS us-east-2（俄亥俄州）|
 |苏帕巴斯| AWS us-east-1（弗吉尼亚北部）| AWS eu-central-1（德国）| AWS ap-southeast-2（悉尼）| AWS us-east-2（俄亥俄州）|
-| ClickHouse云 | us-central1（爱荷华州）| europe-west4 (荷兰) |澳大利亚-southeast1（悉尼） | us-east-2（俄亥俄州） |
+| ClickHouse云| us-central1（爱荷华州）| europe-west4 (荷兰) |澳大利亚-southeast1（悉尼） | us-east-2（俄亥俄州） |
 | [LangSmith deployment](/langsmith/deployment) | GCP us-central1（爱荷华州）； `*.us.langgraph.app` | GCP europe-west4（荷兰）； `*.eu.langgraph.app` | GCP 澳大利亚-东南部1（悉尼）； `*.apac.langgraph.app` | AWS us-east-2（俄亥俄州）； `*.aws.us.langgraph.app` |
 
 请参阅[Regions FAQ](/langsmith/regions-faq)了解更多信息。
@@ -64,11 +62,11 @@
 
 * Stripe 和 Metronome 的付款和账单信息
 
-### GCP 服务
+### GCP 服务以下内容适用于 GCP 上的**美国、欧盟和亚太地区** SaaS 区域。
 
-以下内容适用于 GCP 上的**美国、欧盟和亚太地区** SaaS 区域。
+LangSmith 由以下服务组成，全部托管在 Google Kubernetes Engine (GKE) 上：
 
-LangSmith 由以下服务组成，全部托管在 Google Kubernetes Engine (GKE) 上：* LangSmith 前端：服务于LangSmith UI。
+* LangSmith 前端：服务于LangSmith UI。
 * LangSmith 后端：为LangSmith API 提供服务。
 * LangSmith 平台后端：处理身份验证和其他大批量任务。 （内部服务）
 * LangSmith Playground：处理向各种 LLM 提供商转发 Playground 功能的请求。
@@ -81,17 +79,17 @@ LangSmith 使用以下 GCP 存储服务：
 * Google Cloud Memorystore for Redis 用于排队和缓存。
 * GCP 上的 Clickhouse Cloud 用于跟踪提取和分析。我们的服务通过专用端点连接到托管在同一 GCP 区域的 Clickhouse Cloud。
 
-我们使用的一些其他 GCP 服务包括：
-
-* Google Cloud Load Balancer，用于将流量路由到 LangSmith 服务。
+我们使用的一些其他 GCP 服务包括：* Google Cloud Load Balancer，用于将流量路由到 LangSmith 服务。
 * 用于缓存静态资源的 Google Cloud CDN。
 * Google Cloud Armor 提供安全性和速率限制。有关我们执行的速率限制的更多信息，请参阅[Rate limits](/langsmith/usage-and-billing#rate-limits)。
 
-### AWS 服务以下内容适用于`us-east-2`（俄亥俄州）的 **AWS US** SaaS 区域。相同的逻辑 LangSmith 组件在 **Amazon EKS** 而不是 GKE 上运行。
+### AWS 服务
+
+以下内容适用于`us-east-2`（俄亥俄州）的 **AWS US** SaaS 区域。相同的逻辑 LangSmith 组件在 **Amazon EKS** 而不是 GKE 上运行。
 
 LangSmith 由以下服务组成，全部托管在 Amazon EKS 上：
 
-* LangSmith 前端：服务于LangSmith UI。
+* LangSmith 前端：服务于 LangSmith UI。
 * LangSmith 后端：为LangSmith API 提供服务。
 * LangSmith 平台后端：处理身份验证和其他大批量任务。 （内部服务）
 * LangSmith Playground：处理向各种 LLM 提供商转发 Playground 功能的请求。
@@ -102,17 +100,13 @@ LangSmith 使用以下 AWS 存储和数据服务：
 * Amazon S3 用于运行输入和输出。
 * 用于事务工作负载的 Amazon RDS for PostgreSQL。
 * Amazon ElastiCache for Redis 用于排队和缓存。
-* `us-east-2` 中基于 AWS PrivateLink 的 ClickHouse Cloud 用于跟踪摄取和分析，与上表[regional storage](#regional-storage) 一致。
+* `us-east-2` 中基于 AWS PrivateLink 的 ClickHouse Cloud 用于跟踪摄取和分析，与上表[regional storage](#regional-storage) 一致。我们使用的一些其他 AWS 服务包括：
 
-我们使用的一些其他 AWS 服务包括：* Elastic Load Balancing（网络负载均衡器）和 Istio 入口，用于将流量路由到 LangSmith 服务。已记录的 API 速率限制在 Istio 入口网关处强制执行。详情请参见[Rate limits](/langsmith/usage-and-billing#rate-limits)。
+* Elastic Load Balancing（网络负载均衡器）和 Istio 入口，用于将流量路由到 LangSmith 服务。已记录的 API 速率限制在 Istio 入口网关处强制执行。详情请参见[Rate limits](/langsmith/usage-and-billing#rate-limits)。
 * Amazon CloudFront 用于缓存静态资产（包括 Web UI 主机名 `aws.smith.langchain.com`）。
 * CloudFront 上的 AWS WAF，用于边缘的托管规则组（例如，AWS 托管规则常见保护和机器人控制）。
 
-<div>
-  <img alt="Light mode overview" />
-
-  <img alt="Dark mode overview" />
-</div>
+![Light mode overview](https://mintcdn.com/langchain-5e9cc07a/rqYqeBEA_2oeiw17/langsmith/images/cloud-arch-light.png?fit=max\&auto=format\&n=rqYqeBEA_2oeiw17\&q=85\&s=0790cbdf4fe131c74d1e60bb120834e3)
 
 ## 将 IP 地址列入白名单
 
@@ -120,9 +114,9 @@ LangSmith 使用以下 AWS 存储和数据服务：
 
 离开 LangSmith 服务的互联网流量通过 NAT 网关进行路由，并源自以下 IP 地址。 Vertex AI 请求可以使用不同的路径，如 [Allow Vertex AI access](#allow-vertex-ai-access) 中所述。
 
-<Note>
-  [LangSmith Deployment](/langsmith/deployment) 上的特工从 [separate IP list](/langsmith/cloud-platform-features#allowlist-ip-addresses) 出口。
-</Note>|基仕伯美国 | GCP 欧盟 |基仕伯亚太区 | AWS 美国 |
+> [!注意]
+>
+> [LangSmith Deployment](/langsmith/deployment) 出口处的特工人员从 [separate IP list](/langsmith/cloud-platform-features#allowlist-ip-addresses) 出口。|基仕伯美国 | GCP 欧盟 |基仕伯亚太区 | AWS 美国 |
 | - | - | - | - |
 | 34.59.65.97 | 34.13.192.67 | 34.151.89.217 | 18.188.147.158 |
 | 34.67.51.221 | 34.147.105.64 | 34.116.97.4 | 18.219.86.202 |
@@ -137,7 +131,7 @@ LangSmith 使用以下 AWS 存储和数据服务：
 
 #### 允许 Vertex AI 访问
 
-对于来自 GCP 上的LangSmith SaaS 的 Vertex AI 连接，仅公共出口 IP 允许列表可能无法满足 VPC 服务控制。专用 Google 访问将 Google API 流量保留在 Google 网络内，而不是使用 NAT 网关的公共 IP 地址。请参阅 Google 的 [source IP access guidance](https://docs.cloud.google.com/vpc-service-controls/docs/access-level-design#granting_access_based_on_source_ip)。
+对于来自 GCP 上的LangSmith SaaS 的 Vertex AI 连接，单独的公共出口 IP 允许列表可能无法满足 VPC 服务控制。专用 Google 访问将 Google API 流量保留在 Google 网络内，而不是使用 NAT 网关的公共 IP 地址。请参阅 Google 的 [source IP access guidance](https://docs.cloud.google.com/vpc-service-controls/docs/access-level-design#granting_access_based_on_source_ip)。
 
 为您的 LangSmith SaaS 区域对应的源项目配置 VPC Service Controls 入口规则：| LangSmith SaaS 区域 |源 GCP 项目 ID |入口规则的源项目编号 |
 | - | - | - |
@@ -164,9 +158,7 @@ LangChain 终端节点映射到以下静态 IP 地址，以便在我们的 **GCP
 
 ## 专用连接（企业）
 
-<Callout icon="lock">
-  [**Enterprise only.**](/langsmith/pricing-plans) 专用连接专供企业客户使用。请联系您的客户代表或[sales@langchain.dev](mailto:sales@langchain.dev)以启用此功能。
-</Callout>
+[**Enterprise only.**](/langsmith/pricing-plans) 专用连接专供企业客户使用。请联系您的客户代表或[sales@langchain.dev](mailto:sales@langchain.dev)以启用此功能。
 
 企业客户可以使用 **AWS PrivateLink** 或 **GCP Private Service Connect (PSC)** 连接到 LangSmith，而无需向公共互联网公开流量。
 
@@ -180,37 +172,35 @@ LangChain 终端节点映射到以下静态 IP 地址，以便在我们的 **GCP
 | - | - |
 |美国 (`us-east-2`) | `com.amazonaws.vpce.us-east-2.vpce-svc-054f37092752bff6b` |
 
-＃＃＃＃ 设置**1.请求访问权限：** 联系您的客户代表或使用您的 AWS 账户 ID 的 [sales@langchain.dev](mailto:sales@langchain.dev)。 LangChain will add your account to the endpoint service's allowed principals list.
+＃＃＃＃ 设置**1.请求访问权限：** 联系您的客户代表或使用您的 AWS 账户 ID [sales@langchain.dev](mailto:sales@langchain.dev)。 LangChain 会将您的帐户添加到端点服务的允许主体列表中。
 
-**2. Create an Interface VPC Endpoint** in your AWS account. Attach a security group that allows **TCP 443 inbound** from your VPC CIDR (or from the instances that need to reach LangSmith):
+**2.在您的 AWS 账户中创建接口 VPC 终端节点**。附加一个安全组，允许来自您的 VPC CIDR（或需要到达 LangSmith 的实例）的 **TCP 443 入站**：
 
-<CodeGroup>
-  ```bash AWS CLI theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  aws ec2 create-vpc-endpoint \
-    --vpc-id <YOUR_VPC_ID> \
-    --service-name <SERVICE_NAME_FROM_TABLE_ABOVE> \
-    --vpc-endpoint-type Interface \
-    --subnet-ids <YOUR_SUBNET_IDS> \
-    --security-group-ids <YOUR_SECURITY_GROUP_ID> \
-    --region <YOUR_REGION>
-  ```
+```bash AWS CLI theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+aws ec2 create-vpc-endpoint \
+  --vpc-id <YOUR_VPC_ID> \
+  --service-name <SERVICE_NAME_FROM_TABLE_ABOVE> \
+  --vpc-endpoint-type Interface \
+  --subnet-ids <YOUR_SUBNET_IDS> \
+  --security-group-ids <YOUR_SECURITY_GROUP_ID> \
+  --region <YOUR_REGION>
+```
 
-  ```hcl Terraform theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  resource "aws_vpc_endpoint" "langsmith" {
-    vpc_id              = "<YOUR_VPC_ID>"
-    service_name        = "<SERVICE_NAME_FROM_TABLE_ABOVE>"
-    vpc_endpoint_type   = "Interface"
-    subnet_ids          = ["<YOUR_SUBNET_IDS>"]
-    security_group_ids  = ["<YOUR_SECURITY_GROUP_ID>"]
-  }
-  ```
-</CodeGroup>
+```hcl Terraform theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+resource "aws_vpc_endpoint" "langsmith" {
+  vpc_id              = "<YOUR_VPC_ID>"
+  service_name        = "<SERVICE_NAME_FROM_TABLE_ABOVE>"
+  vpc_endpoint_type   = "Interface"
+  subnet_ids          = ["<YOUR_SUBNET_IDS>"]
+  security_group_ids  = ["<YOUR_SECURITY_GROUP_ID>"]
+}
+```
 
-**3. Wait for acceptance.** LangChain will accept the connection. The endpoint status will change from `pendingAcceptance` to `available`. Allow a few minutes after acceptance for the change to fully propagate before testing connectivity.
+**3.等待接受。** LangChain 将接受连接。端点状态将从`pendingAcceptance`更改为`available`。接受更改后需要几分钟时间才能完全传播，然后再测试连接。
 
 ####配置DNS
 
-Configure DNS so that `aws.api.smith.langchain.com` resolves to your VPC endpoint's private DNS name within your VPC. You can use any private DNS solution: Route 53 Private Hosted Zones, a corporate DNS resolver, or any DNS server reachable from your VPC.
+配置 DNS，以便 `aws.api.smith.langchain.com` 解析为您的 VPC 内的 VPC 终端节点的私有 DNS 名称。您可以使用任何私有 DNS 解决方案：Route 53 私有托管区域、企业 DNS 解析器或可从您的 VPC 访问的任何 DNS 服务器。
 
 首先，获取端点的 DNS 名称：
 
@@ -221,49 +211,47 @@ aws ec2 describe-vpc-endpoints \
   --output text --region <YOUR_REGION>
 ```
 
-Then, create a CNAME record for `aws.api.smith.langchain.com` pointing to that DNS name.以下是使用 Route 53 的示例：
+然后，为 `aws.api.smith.langchain.com` 创建一条指向该 DNS 名称的 CNAME 记录。以下是使用 Route 53 的示例：
 
-<CodeGroup>
-  ```bash AWS CLI theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  aws route53 create-hosted-zone \
-    --name aws.api.smith.langchain.com \
-    --vpc VPCRegion=<YOUR_REGION>,VPCId=<YOUR_VPC_ID> \
-    --caller-reference langsmith-privatelink-$(date +%s) \
-    --hosted-zone-config PrivateZone=true
+```bash AWS CLI theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+aws route53 create-hosted-zone \
+  --name aws.api.smith.langchain.com \
+  --vpc VPCRegion=<YOUR_REGION>,VPCId=<YOUR_VPC_ID> \
+  --caller-reference langsmith-privatelink-$(date +%s) \
+  --hosted-zone-config PrivateZone=true
 
-  aws route53 change-resource-record-sets \
-    --hosted-zone-id <HOSTED_ZONE_ID> \
-    --change-batch '{
-      "Changes": [{
-        "Action": "CREATE",
-        "ResourceRecordSet": {
-          "Name": "aws.api.smith.langchain.com",
-          "Type": "CNAME",
-          "TTL": 300,
-          "ResourceRecords": [{"Value": "<ENDPOINT_DNS_NAME>"}]
-        }
-      }]
-    }'
-  ```
+aws route53 change-resource-record-sets \
+  --hosted-zone-id <HOSTED_ZONE_ID> \
+  --change-batch '{
+    "Changes": [{
+      "Action": "CREATE",
+      "ResourceRecordSet": {
+        "Name": "aws.api.smith.langchain.com",
+        "Type": "CNAME",
+        "TTL": 300,
+        "ResourceRecords": [{"Value": "<ENDPOINT_DNS_NAME>"}]
+      }
+    }]
+  }'
+```
 
-  ```hcl Terraform theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  resource "aws_route53_zone" "langsmith_privatelink" {
-    name = "aws.api.smith.langchain.com"
+```hcl Terraform theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+resource "aws_route53_zone" "langsmith_privatelink" {
+  name = "aws.api.smith.langchain.com"
 
-    vpc {
-      vpc_id = "<YOUR_VPC_ID>"
-    }
+  vpc {
+    vpc_id = "<YOUR_VPC_ID>"
   }
+}
 
-  resource "aws_route53_record" "langsmith_privatelink" {
-    zone_id = aws_route53_zone.langsmith_privatelink.zone_id
-    name    = "aws.api.smith.langchain.com"
-    type    = "CNAME"
-    ttl     = 300
-    records = [aws_vpc_endpoint.langsmith.dns_entry[0]["dns_name"]]
-  }
-  ```
-</CodeGroup>
+resource "aws_route53_record" "langsmith_privatelink" {
+  zone_id = aws_route53_zone.langsmith_privatelink.zone_id
+  name    = "aws.api.smith.langchain.com"
+  type    = "CNAME"
+  ttl     = 300
+  records = [aws_vpc_endpoint.langsmith.dns_entry[0]["dns_name"]]
+}
+```
 
 #### 验证连接
 
@@ -305,78 +293,74 @@ curl https://aws.api.smith.langchain.com/ok
 
 在您的 VPC 中创建针对服务附件的转发规则：
 
-<CodeGroup>
-  ```bash gcloud CLI theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  # Create the PSC endpoint
-  gcloud compute forwarding-rules create langsmith-psc-endpoint \
-    --region=<REGION> \
-    --network=<YOUR_VPC_NETWORK> \
-    --subnet=<YOUR_SUBNET> \
-    --target-service-attachment=projects/langchain-prod/regions/<REGION>/serviceAttachments/gateway-psc-publish \
-    --load-balancing-scheme=""
+```bash gcloud CLI theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+# Create the PSC endpoint
+gcloud compute forwarding-rules create langsmith-psc-endpoint \
+  --region=<REGION> \
+  --network=<YOUR_VPC_NETWORK> \
+  --subnet=<YOUR_SUBNET> \
+  --target-service-attachment=projects/langchain-prod/regions/<REGION>/serviceAttachments/gateway-psc-publish \
+  --load-balancing-scheme=""
 
-  # Get the assigned IP address
-  gcloud compute forwarding-rules describe langsmith-psc-endpoint \
-    --region=<REGION> \
-    --format="value(IPAddress)"
-  ```
+# Get the assigned IP address
+gcloud compute forwarding-rules describe langsmith-psc-endpoint \
+  --region=<REGION> \
+  --format="value(IPAddress)"
+```
 
-  ```hcl Terraform theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  resource "google_compute_forwarding_rule" "langsmith_psc" {
-    name                  = "langsmith-psc-endpoint"
-    project               = "<YOUR_PROJECT_ID>"
-    region                = "<REGION>"
-    network               = "<YOUR_VPC_NETWORK>"
-    subnetwork            = "<YOUR_SUBNET>"
-    target                = "projects/langchain-prod/regions/<REGION>/serviceAttachments/gateway-psc-publish"
-    load_balancing_scheme = ""
-  }
-  ```
-</CodeGroup>
+```hcl Terraform theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+resource "google_compute_forwarding_rule" "langsmith_psc" {
+  name                  = "langsmith-psc-endpoint"
+  project               = "<YOUR_PROJECT_ID>"
+  region                = "<REGION>"
+  network               = "<YOUR_VPC_NETWORK>"
+  subnetwork            = "<YOUR_SUBNET>"
+  target                = "projects/langchain-prod/regions/<REGION>/serviceAttachments/gateway-psc-publish"
+  load_balancing_scheme = ""
+}
+```
 
 ####配置DNS
 
 在您的 VPC 中创建私有 DNS 区域并添加指向 PSC 终端节点 IP 的 A 记录：
 
-<CodeGroup>
-  ```bash gcloud CLI theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  # Create a private DNS zone
-  gcloud dns managed-zones create langsmith-psc \
-    --dns-name="<REGION>.p.api.smith.langchain.com." \
-    --visibility=private \
-    --networks=<YOUR_VPC_NETWORK>
+```bash gcloud CLI theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+# Create a private DNS zone
+gcloud dns managed-zones create langsmith-psc \
+  --dns-name="<REGION>.p.api.smith.langchain.com." \
+  --visibility=private \
+  --networks=<YOUR_VPC_NETWORK>
 
-  # Add an A record pointing to the PSC endpoint IP
-  gcloud dns record-sets create "<REGION>.p.api.smith.langchain.com." \
-    --zone=langsmith-psc \
-    --type=A \
-    --rrdatas=<PSC_ENDPOINT_IP>
-  ```
+# Add an A record pointing to the PSC endpoint IP
+gcloud dns record-sets create "<REGION>.p.api.smith.langchain.com." \
+  --zone=langsmith-psc \
+  --type=A \
+  --rrdatas=<PSC_ENDPOINT_IP>
+```
 
-  ```hcl Terraform theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  resource "google_dns_managed_zone" "langsmith_psc" {
-    name        = "langsmith-psc"
-    project     = "<YOUR_PROJECT_ID>"
-    dns_name    = "<REGION>.p.api.smith.langchain.com."
-    visibility  = "private"
+```hcl Terraform theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+resource "google_dns_managed_zone" "langsmith_psc" {
+  name        = "langsmith-psc"
+  project     = "<YOUR_PROJECT_ID>"
+  dns_name    = "<REGION>.p.api.smith.langchain.com."
+  visibility  = "private"
 
-    private_visibility_config {
-      networks {
-        network_url = "<YOUR_VPC_NETWORK_SELF_LINK>"
-      }
+  private_visibility_config {
+    networks {
+      network_url = "<YOUR_VPC_NETWORK_SELF_LINK>"
     }
   }
+}
 
-  resource "google_dns_record_set" "langsmith_psc" {
-    name         = "<REGION>.p.api.smith.langchain.com."
-    project      = "<YOUR_PROJECT_ID>"
-    managed_zone = google_dns_managed_zone.langsmith_psc.name
-    type         = "A"
-    ttl          = 300
-    rrdatas      = [google_compute_forwarding_rule.langsmith_psc.ip_address]
-  }
-  ```
-</CodeGroup>
+resource "google_dns_record_set" "langsmith_psc" {
+  name         = "<REGION>.p.api.smith.langchain.com."
+  project      = "<YOUR_PROJECT_ID>"
+  managed_zone = google_dns_managed_zone.langsmith_psc.name
+  type         = "A"
+  ttl          = 300
+  rrdatas      = [google_compute_forwarding_rule.langsmith_psc.ip_address]
+}
+```
 
 #### 验证连接
 
@@ -384,13 +368,13 @@ curl https://aws.api.smith.langchain.com/ok
 
 ```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 curl https://<REGION>.p.api.smith.langchain.com/ok
-```## API 速率限制
+```
 
-LangSmith 对API端点实施速率限制，以确保服务稳定性和公平使用。下表显示了 GCP US 和 GCP EU 区域中不同端点的速率限制。 GCP APAC 和 AWS US 强制实施类似的服务特定限制；如果您的组织需要确切的限制，请联系支持人员。请注意：
+## API 速率限制LangSmith 对 API 端点实施速率限制，以确保服务稳定性和公平使用。下表显示了 GCP US 和 GCP EU 区域中不同端点的速率限制。 GCP APAC 和 AWS US 强制实施类似的服务特定限制；如果您的组织需要确切的限制，请联系支持人员。请注意：
 
 * 速率限制表示为 `count / interval`，其中 count 是时间间隔内允许的请求数（以秒为单位）。例如，`2000 / 10`表示每10秒2000个请求。
 * 当端点列中未指定 HTTP 方法时，速率限制适用于该端点的所有 HTTP 方法。
-* 当列出特定方法时（例如，`POST`、`GET`），速率限制仅适用于该方法。|匹配/端点（方法）|身份密钥|美国产品限价|欧盟产品限制|类别 |
+* 当列出特定方法时（例如，`POST`、`GET`），速率限制仅适用于该方法。|匹配/端点（方法）|身份密钥 |美国产品限价|欧盟产品限制|类别 |
 | - | - | - | - | - |
 |选项，`/info`，`*/v1/metadata/submit` |知识产权| 2000 / 10 | 2000 / 10 | [High throughput](#rate-limit-categories) |
 | `/auth` | `x-api-key` | 2000 / 10 | 2000 / 10 | [High throughput](#rate-limit-categories) |
@@ -442,12 +426,6 @@ LangSmith 对API端点实施速率限制，以确保服务稳定性和公平使�
 
 ***
 
-<div>
-  <Callout icon="terminal-2">
-    [Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
-  </Callout>
+[Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
 
-  <Callout icon="edit">
-    [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/cloud.mdx) 或 [file an issue](https://github.com/langchain-ai/docs/issues/new/choose)。
-  </Callout>
-</div>
+[Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/cloud.mdx) 或 [file an issue](https://github.com/langchain-ai/docs/issues/new/choose)。

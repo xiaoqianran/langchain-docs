@@ -47,17 +47,15 @@ sequenceDiagram
 
 安装所需的依赖项。从您的 `custom-auth` 目录开始，并确保您已安装 `langgraph-cli`：
 
-<CodeGroup>
-  ```bash pip theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  cd custom-auth
-  pip install -U "langgraph-cli[inmem]"
-  ```
+```bash pip theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+cd custom-auth
+pip install -U "langgraph-cli[inmem]"
+```
 
-  ```bash uv theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  cd custom-auth
-  uv add "langgraph-cli[inmem]"
-  ```
-</CodeGroup>
+```bash uv theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+cd custom-auth
+uv add "langgraph-cli[inmem]"
+```
 
 ## 2. 设置身份验证提供程序
 
@@ -266,7 +264,7 @@ except Exception as e:
 
 ## 后续步骤
 
-您已经成功为您的 LangGraph 应用程序构建了一个生产就绪的身份验证系统！让我们回顾一下您已完成的工作：
+您已成功为您的 LangGraph 应用程序构建了生产就绪的身份验证系统！让我们回顾一下您已完成的工作：
 
 1. 设置身份验证提供程序（本例中为 Supabase）
 2. 新增真实用户账号及邮箱/密码认证
@@ -280,12 +278,6 @@ except Exception as e:
 
 ***
 
-<div>
-  <Callout icon="terminal-2">
-    [Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
-  </Callout>
+[Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
 
-  <Callout icon="edit">
-    [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/add-auth-server.mdx) 或 [file an issue](https://github.com/langchain-ai/docs/issues/new/choose)。
-  </Callout>
-</div>
+[Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/add-auth-server.mdx) 或 [file an issue](https://github.com/langchain-ai/docs/issues/new/choose)。

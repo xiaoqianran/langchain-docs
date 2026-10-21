@@ -33,17 +33,17 @@ export LANGGRAPH_AES_JSON_KEYS="api_key,secret_token,user_credentials"
 
 These keys are encrypted wherever they appear in thread, assistant, run, cron, and store data.
 
-<Warning>
-  Encrypted fields cannot be searched or filtered.
-</Warning>
+> [!WARNING]
+>
+> Encrypted fields cannot be searched or filtered.
 
 System fields cannot be encrypted: `langgraph_version`, `langgraph_api_version`, `langgraph_plan`, `langgraph_host`, `langgraph_api_url`, `langgraph_request_id`, `langgraph_auth_user_id`, and `langgraph_auth_permissions`.
 
 ## Rotate AES keys
 
-<Note>
-  AES key rotation requires Agent Server version `0.17.0.dev3` or later, the PostgreSQL checkpointer with `PREFER_GRPC_CHECKPOINTER=true`, and the Go store with `LANGGRAPH_STORE_BACKEND=grpc`. Python, custom, SQLite, and MongoDB checkpointers do not support rotation.
-</Note>
+> [!NOTE]
+>
+> AES key rotation requires Agent Server version `0.17.0.dev3` or later, the PostgreSQL checkpointer with `PREFER_GRPC_CHECKPOINTER=true`, and the Go store with `LANGGRAPH_STORE_BACKEND=grpc`. Python, custom, SQLite, and MongoDB checkpointers do not support rotation.
 
 Agent Server encrypts new data with `LANGGRAPH_AES_KEY`. Key envelopes identify which configured key decrypts each value. When Agent Server reads data encrypted with an old key, it returns the plaintext and lazily re-encrypts the stored value with the current key.
 
@@ -72,12 +72,12 @@ To rotate a key:
 
 5. Keep old keys configured until telemetry confirms they are no longer needed.
 
-<Warning>
-  * Never change the primary key before every replica can decrypt both keys.
-  * Lazy rotation updates only accessed rows. Cold rows and compare-and-swap misses may retain old ciphertext.
-  * Removing keys early can make retained data unreadable.
-  * Once key-envelope ciphertext exists, Agent Server versions without envelope support cannot read it.
-</Warning>
+> [!WARNING]
+>
+> * Never change the primary key before every replica can decrypt both keys.
+> * Lazy rotation updates only accessed rows. Cold rows and compare-and-swap misses may retain old ciphertext.
+> * Removing keys early can make retained data unreadable.
+> * Once key-envelope ciphertext exists, Agent Server versions without envelope support cannot read it.
 
 ## Related
 
@@ -86,12 +86,6 @@ To rotate a key:
 
 ***
 
-<div>
-  <Callout icon="terminal-2">
-    [Connect these docs](/use-these-docs) to your agent of choice via MCP for real-time answers.
-  </Callout>
+[Connect these docs](/use-these-docs) to your agent of choice via MCP for real-time answers.
 
-  <Callout icon="edit">
-    [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/aes-encryption.mdx) or [file an issue](https://github.com/langchain-ai/docs/issues/new/choose).
-  </Callout>
-</div>
+[Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/aes-encryption.mdx) or [file an issue](https://github.com/langchain-ai/docs/issues/new/choose).

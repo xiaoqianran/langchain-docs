@@ -10,133 +10,115 @@ Add real traces to a dataset so a failure you saw once becomes a test you run ev
 
 LangSmith supports two types of evaluation based on when and where they run:
 
-<CardGroup>
-  <Card title="Offline Evaluation" icon="flask">
-    **Test before you ship**
+> **Offline Evaluation**
+>
+> **Test before you ship**
+>
+> Run evaluations on curated datasets during development to compare versions, benchmark performance, and catch regressions.
 
-    Run evaluations on curated datasets during development to compare versions, benchmark performance, and catch regressions.
-  </Card>
-
-  <Card title="Online Evaluation" icon="radar">
-    **Monitor in production**
-
-    Evaluate real user interactions in real-time to detect issues and measure quality on live traffic.
-  </Card>
-</CardGroup>
+> **Online Evaluation**
+>
+> **Monitor in production**
+>
+> Evaluate real user interactions in real-time to detect issues and measure quality on live traffic.
 
 ## Set up your account
 
-<Steps>
-  <Step title="Create an account" icon="user-plus">
-    Sign up at [smith.langchain.com](https://smith.langchain.com?utm_source=docs\&utm_medium=cta\&utm_campaign=langsmith-signup\&utm_content=snippets-langsmith-account-api-key-quickstart) (no credit card required).
-    You can log in with **Google**, **GitHub**, or **email**.
-  </Step>
+**1. Create an account**
 
-  <Step title="Create an API key" icon="key">
-    Go to your [Settings page](https://smith.langchain.com/settings) > **API Keys** > **Create API Key**.
-    Copy the key and save it securely.
-  </Step>
-</Steps>
+Sign up at [smith.langchain.com](https://smith.langchain.com?utm_source=docs\&utm_medium=cta\&utm_campaign=langsmith-signup\&utm_content=snippets-langsmith-account-api-key-quickstart) (no credit card required).
+You can log in with **Google**, **GitHub**, or **email**.
+
+**2. Create an API key**
+
+Go to your [Settings page](https://smith.langchain.com/settings) > **API Keys** > **Create API Key**.
+Copy the key and save it securely.
 
 Once your account and API key are ready, [run your first evaluation](/langsmith/evaluation-quickstart).
 
 ## Evaluation workflow
 
-<Tabs>
-  <Tab title="Offline evaluation flow">
-    <Steps>
-      <Step title="Create a dataset">
-        Create a [dataset](/langsmith/manage-datasets) with <Tooltip>[examples](/langsmith/evaluation-concepts#examples)</Tooltip> from manually curated test cases, historical production traces, or synthetic data generation.
-      </Step>
+**Offline evaluation flow**
 
-      <Step title="Define evaluators">
-        Create <Tooltip>[evaluators](/langsmith/evaluation-concepts#evaluators)</Tooltip> to score performance:
+**1. Create a dataset**
 
-        * [Human](/langsmith/evaluation-concepts#human) review
-        * [Code](/langsmith/evaluation-concepts#code) rules
-        * [LLM-as-judge](/langsmith/llm-as-judge)
-        * [Pairwise](/langsmith/evaluate-pairwise) comparison
-      </Step>
+Create a [dataset](/langsmith/manage-datasets) with [examples](/langsmith/evaluation-concepts#examples) (Individual test cases with inputs and reference outputs) from manually curated test cases, historical production traces, or synthetic data generation.
 
-      <Step title="Run an experiment">
-        Execute your application on the dataset to create an <Tooltip>[experiment](/langsmith/evaluation-concepts#experiment)</Tooltip>. Configure [repetitions, concurrency, and caching](/langsmith/experiment-configuration) to optimize runs.
-      </Step>
+**2. Define evaluators**
 
-      <Step title="Analyze results">
-        Compare experiments for [benchmarking](/langsmith/evaluation-types#benchmarking), [unit tests](/langsmith/evaluation-types#unit-tests), [regression tests](/langsmith/evaluation-types#regression-tests), or [backtesting](/langsmith/evaluation-types#backtesting).
-      </Step>
-    </Steps>
-  </Tab>
+Create [evaluators](/langsmith/evaluation-concepts#evaluators) (Functions that score how well your application performs) to score performance:
 
-  <Tab title="Online evaluation flow">
-    <Steps>
-      <Step title="Deploy your application">
-        Each interaction creates a <Tooltip>[run](/langsmith/evaluation-concepts#runs)</Tooltip> without reference outputs.
-      </Step>
+* [Human](/langsmith/evaluation-concepts#human) review
+* [Code](/langsmith/evaluation-concepts#code) rules
+* [LLM-as-judge](/langsmith/llm-as-judge)
+* [Pairwise](/langsmith/evaluate-pairwise) comparison
 
-      <Step title="Configure online evaluators">
-        Set up [evaluators](/langsmith/online-evaluations-llm-as-judge) to run automatically on production traces: safety checks, format validation, quality heuristics, and reference-free LLM-as-judge. Apply [filters and sampling rates](/langsmith/online-evaluations-llm-as-judge#configure-a-sampling-rate) to control costs.
-      </Step>
+**3. Run an experiment**
 
-      <Step title="Monitor in real-time">
-        Evaluators run automatically on [runs](/langsmith/evaluation-concepts#runs) or <Tooltip>[threads](/langsmith/online-evaluations-multi-turn)</Tooltip>, providing real-time monitoring, anomaly detection, and alerting.
-      </Step>
+Execute your application on the dataset to create an [experiment](/langsmith/evaluation-concepts#experiment) (Results of evaluating a specific application version on a dataset). Configure [repetitions, concurrency, and caching](/langsmith/experiment-configuration) to optimize runs.
 
-      <Step title="Establish a feedback loop">
-        Add failing production traces to your [dataset](/langsmith/manage-datasets), create targeted evaluators, validate fixes with offline experiments, and redeploy.
-      </Step>
-    </Steps>
-  </Tab>
-</Tabs>
+**4. Analyze results**
 
-<Tip>
-  For more on the differences between offline and online evaluation, refer to the [Evaluation concepts](/langsmith/evaluation-concepts#quick-reference-offline-vs-online-evaluation) page.
-</Tip>
+Compare experiments for [benchmarking](/langsmith/evaluation-types#benchmarking), [unit tests](/langsmith/evaluation-types#unit-tests), [regression tests](/langsmith/evaluation-types#regression-tests), or [backtesting](/langsmith/evaluation-types#backtesting).
+
+**Online evaluation flow**
+
+**1. Deploy your application**
+
+Each interaction creates a [run](/langsmith/evaluation-concepts#runs) (A single execution trace including inputs, outputs, and intermediate steps) without reference outputs.
+
+**2. Configure online evaluators**
+
+Set up [evaluators](/langsmith/online-evaluations-llm-as-judge) to run automatically on production traces: safety checks, format validation, quality heuristics, and reference-free LLM-as-judge. Apply [filters and sampling rates](/langsmith/online-evaluations-llm-as-judge#configure-a-sampling-rate) to control costs.
+
+**3. Monitor in real-time**
+
+Evaluators run automatically on [runs](/langsmith/evaluation-concepts#runs) or [threads](/langsmith/online-evaluations-multi-turn) (Collections of related runs forming multi-turn conversations), providing real-time monitoring, anomaly detection, and alerting.
+
+**4. Establish a feedback loop**
+
+Add failing production traces to your [dataset](/langsmith/manage-datasets), create targeted evaluators, validate fixes with offline experiments, and redeploy.
+
+> [!TIP]
+>
+> For more on the differences between offline and online evaluation, refer to the [Evaluation concepts](/langsmith/evaluation-concepts#quick-reference-offline-vs-online-evaluation) page.
 
 ## Get started
 
-<Columns>
-  <Card title="Evaluation quickstart" icon="rocket" href="/langsmith/evaluation-quickstart">
-    Get started with offline evaluation.
-  </Card>
+> **[Evaluation quickstart](/langsmith/evaluation-quickstart)**
+>
+> Get started with offline evaluation.
 
-  <Card title="Manage datasets" icon="database" href="/langsmith/manage-datasets">
-    Create and manage datasets for evaluation through the UI or SDK.
-  </Card>
+> **[Manage datasets](/langsmith/manage-datasets)**
+>
+> Create and manage datasets for evaluation through the UI or SDK.
 
-  <Card title="Run offline evaluations" icon="microscope" href="/langsmith/evaluate-llm-application">
-    Explore evaluation types, techniques, and frameworks for comprehensive testing.
-  </Card>
+> **[Run offline evaluations](/langsmith/evaluate-llm-application)**
+>
+> Explore evaluation types, techniques, and frameworks for comprehensive testing.
 
-  <Card title="Analyze results" icon="chart-bar" href="/langsmith/analyze-an-experiment">
-    View and analyze evaluation results, compare experiments, filter data, and export findings.
-  </Card>
+> **[Analyze results](/langsmith/analyze-an-experiment)**
+>
+> View and analyze evaluation results, compare experiments, filter data, and export findings.
 
-  <Card title="Run online evaluations" icon="radar" href="/langsmith/online-evaluations-llm-as-judge">
-    Monitor production quality in real-time from the Observability tab.
-  </Card>
+> **[Run online evaluations](/langsmith/online-evaluations-llm-as-judge)**
+>
+> Monitor production quality in real-time from the Observability tab.
 
-  <Card title="Follow tutorials" icon="book" href="/langsmith/evaluate-chatbot-tutorial">
-    Learn by following step-by-step tutorials, from simple chatbots to complex agent evaluations.
-  </Card>
+> **[Follow tutorials](/langsmith/evaluate-chatbot-tutorial)**
+>
+> Learn by following step-by-step tutorials, from simple chatbots to complex agent evaluations.
 
-  <Card title="Studio" icon="window" href="/langsmith/studio">
-    Use an interactive environment for developing and debugging agents.
-  </Card>
-</Columns>
+> **[Studio](/langsmith/studio)**
+>
+> Use an interactive environment for developing and debugging agents.
 
-<Note>
-  To set up a LangSmith instance, visit the [Platform setup section](/langsmith/platform-setup) to choose between cloud, hybrid, or self-hosted. All options include observability, evaluation, prompt engineering, and deployment.
-</Note>
+> [!NOTE]
+>
+> To set up a LangSmith instance, visit the [Platform setup section](/langsmith/platform-setup) to choose between cloud, hybrid, or self-hosted. All options include observability, evaluation, prompt engineering, and deployment.
 
 ***
 
-<div>
-  <Callout icon="terminal-2">
-    [Connect these docs](/use-these-docs) to your agent of choice via MCP for real-time answers.
-  </Callout>
+[Connect these docs](/use-these-docs) to your agent of choice via MCP for real-time answers.
 
-  <Callout icon="edit">
-    [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/evaluation.mdx) or [file an issue](https://github.com/langchain-ai/docs/issues/new/choose).
-  </Callout>
-</div>
+[Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/evaluation.mdx) or [file an issue](https://github.com/langchain-ai/docs/issues/new/choose).

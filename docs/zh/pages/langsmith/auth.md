@@ -26,12 +26,12 @@ LangSmith 提供不同的安全默认值：
 * 默认使用 LangSmith API 密钥
 * 需要在 `x-api-key` 标头中提供有效的 API 密钥
 * 可以使用您的身份验证处理程序进行定制
-* 当 [⟦T13⟧](/langsmith/cli#configuration-file) 中的 `auth.allow_langsmith_api_keys` 为 `true` 时，可以接受 LangSmith API 密钥以及自定义身份验证（代理服务器 v0.14.0rc2+）
+* 当 `auth.allow_langsmith_api_keys` 中的 `true` 为 [⟦T13⟧](/langsmith/cli#configuration-file) 时，可以接受 LangSmith API 密钥以及自定义身份验证（代理服务器 v0.14.0rc2+）
 
-<Note>
-  **自定义授权**
-  LangSmith 中的所有计划**支持**自定义身份验证。
-</Note>
+> [!注意]
+>
+> **自定义授权**
+> LangSmith 中的所有计划**支持**自定义身份验证。
 
 ### 自托管
 
@@ -116,20 +116,20 @@ async def authenticate(headers: dict) -> Auth.types.MinimalUserDict:
 * 通过 [⟦T17⟧](https://reference.langchain.com/python/langgraph-sdk/auth/types/AuthContext) 发送给您的授权处理人员
 * 通过 `config["configuration"]["langgraph_auth_user"]` 进行申请
 
-<Accordion title="Supported Parameters">
-  [⟦T19⟧](https://reference.langchain.com/python/langgraph-sdk/auth/Auth/authenticate) 处理程序可以按名称接受以下任何参数：
-
-  * 请求（Request）：原始ASGI请求对象
-  * path (str): 请求路径，例如`"/threads/abcd-1234-abcd-1234/runs/abcd-1234-abcd-1234/stream"`
-  * method (str): HTTP 方法，例如 `"GET"`
-  * path\_params(dict\[str, str]): URL路径参数，例如`{"thread_id": "abcd-1234-abcd-1234", "run_id": "abcd-1234-abcd-1234"}`
-  * query\_params(dict\[str, str])：URL查询参数，例如`{"stream": "true"}`
-  * headers (dict\[bytes, bytes]): 请求头
-  * 授权 (str | None)：授权标头值（例如，`"Bearer <token>"`）
-
-  在我们的许多教程中，为了简洁起见，我们只会显示“授权”参数，但您可以根据需要选择接受更多信息
-  实施您的自定义身份验证方案。
-</Accordion>
+> **支持的参数**
+>
+> [⟦T19⟧](https://reference.langchain.com/python/langgraph-sdk/auth/Auth/authenticate) 处理程序可以按名称接受以下任何参数：
+>
+> * 请求（Request）：原始ASGI请求对象
+> * path (str): 请求路径，例如`"/threads/abcd-1234-abcd-1234/runs/abcd-1234-abcd-1234/stream"`
+> * method (str): HTTP 方法，例如 `"GET"`
+> * path\_params(dict\[str, str])：URL路径参数，例如`{"thread_id": "abcd-1234-abcd-1234", "run_id": "abcd-1234-abcd-1234"}`
+> * query\_params(dict\[str, str])：URL查询参数，例如`{"stream": "true"}`
+> * headers(dict\[bytes, bytes]): 请求头
+> * 授权 (str | None)：授权标头值（例如，`"Bearer <token>"`）
+>
+> 在我们的许多教程中，为了简洁起见，我们只会显示“授权”参数，但您可以根据需要选择接受更多信息
+> 实施您的自定义身份验证方案。
 
 ### 代理认证自定义身份验证允许委派访问。您在 `@auth.authenticate` 中返回的值将添加到运行上下文中，为代理提供用户范围的凭据，让它们代表用户访问资源。
 
@@ -232,10 +232,10 @@ async def add_owner(
 2、只有拥有“assistants:create”权限的用户才可以创建新的助手
 3. 对所有用户禁用所有其他端点（例如，删除助手、crons、存储）。
 
-<Tip>
-  **支持的处理程序**
-  有关支持的资源和操作的完整列表，请参阅下面的 [Supported Resources](#supported-resources) 部分。
-</Tip>
+> [!提示]
+>
+> **支持的处理程序**
+> 有关支持的资源和操作的完整列表，请参阅下面的 [Supported Resources](#supported-resources) 部分。
 
 ```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 # Generic / global handler catches calls that aren't handled by more specific handlers
@@ -329,7 +329,7 @@ async def on_assistant_create(
 
 授权处理程序可以返回 `None`、布尔值或过滤字典。
 
-* `None` 和 `True` 意思是“授权访问所有底层资源”
+* `None` 和 `True` 表示“授权访问所有底层资源”
 * `False` 表示“拒绝访问所有底层资源（引发 403 异常）”
 * 元数据过滤字典将限制对资源的访问过滤字典是具有与资源元数据匹配的键的字典。它支持三种运算符：
 
@@ -405,39 +405,39 @@ LangGraph 提供三个级别的授权处理程序，从最通用到最具体：
 将使用最具体的匹配处理程序。例如，对于线程创建，`@auth.on.threads.create`优先于`@auth.on.threads`。
 如果注册了更具体的处理程序，则不会为该资源和操作调用更通用的处理程序。
 
-<Tip>
-  “类型安全”
-  每个处理程序在 `Auth.types.on.<resource>.<action>.value` 处都有可用于其 `value` 参数的类型提示。例如：
-
-  ```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  @auth.on.threads.create
-  async def on_thread_create(
-  ctx: Auth.types.AuthContext,
-  value: Auth.types.on.threads.create.value  # Specific type for thread creation
-  ):
-  ...
-
-  @auth.on.threads
-  async def on_threads(
-  ctx: Auth.types.AuthContext,
-  value: Auth.types.on.threads.value  # Union type of all thread actions
-  ):
-  ...
-
-  @auth.on
-  async def on_all(
-  ctx: Auth.types.AuthContext,
-  value: dict  # Union type of all possible actions
-  ):
-  ...
-  ```
-
-  更具体的处理程序提供更好的类型提示，因为它们处理更少的操作类型。
-</Tip>
+> [!提示]
+>
+> “类型安全”
+> 每个处理程序在 `Auth.types.on.<resource>.<action>.value` 处都有可用于其 `value` 参数的类型提示。例如：
+>
+> ```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> @auth.on.threads.create
+> async def on_thread_create(
+> ctx: Auth.types.AuthContext,
+> value: Auth.types.on.threads.create.value  # Specific type for thread creation
+> ):
+> ...
+>
+> @auth.on.threads
+> async def on_threads(
+> ctx: Auth.types.AuthContext,
+> value: Auth.types.on.threads.value  # Union type of all thread actions
+> ):
+> ...
+>
+> @auth.on
+> async def on_all(
+> ctx: Auth.types.AuthContext,
+> value: dict  # Union type of all possible actions
+> ):
+> ...
+> ```
+>
+> 更具体的处理程序提供更好的类型提示，因为它们处理更少的操作类型。
 
 #### 支持的操作和类型
 
-以下是所有支持的操作处理程序：|资源 |处理程序 |描述 |值类型 |
+以下是所有支持的操作处理程序：|资源 |处理程序 |描述 |值类型|
 | - | - | - | - |
 | **话题** | `@auth.on.threads.create` |线程创建 | [⟦T63⟧](https://reference.langchain.com/python/langgraph-sdk/auth/types/ThreadsCreate) |
 | | `@auth.on.threads.read` |主题检索 | [⟦T65⟧](https://reference.langchain.com/python/langgraph-sdk/auth/types/ThreadsRead) |
@@ -462,12 +462,12 @@ LangGraph 提供三个级别的授权处理程序，从最通用到最具体：
 | | `@auth.on.store.delete` |删除项目 | `Auth.types.on.store.delete.value` |
 | | `@auth.on.store.list_namespaces` |列出命名空间 | `Auth.types.on.store.list_namespaces.value` |存储授权与线程和助手不同。处理程序必须重写 `value` 中的可变 `namespace` 字段以限定每个用户的数据范围，而不是返回元数据过滤器。有关演练，请参阅 [Isolate store per user](/langsmith/store-auth)。
 
-<Note>
-  《关于跑步》
-
-  运行的范围仅限于其父线程以进行访问控制。这意味着权限通常是从线程继承的，反映了数据模型的会话性质。除创建之外的所有运行操作（读取、列出）均由线程的处理程序控制。
-  有一个特定的 `create_run` 处理程序用于创建新的运行，因为它有更多参数可供您在处理程序中查看。
-</Note>
+> [!注意]
+>
+> “关于跑步”
+>
+> 运行的范围仅限于其父线程以进行访问控制。这意味着权限通常是从线程继承的，反映了数据模型的会话性质。除创建之外的所有运行操作（读取、列出）均由线程的处理程序控制。
+> 有一个特定的 `create_run` 处理程序用于创建新的运行，因为它有更多参数可供您在处理程序中查看。
 
 ## 后续步骤
 
@@ -478,12 +478,6 @@ LangGraph 提供三个级别的授权处理程序，从最通用到最具体：
 
 ***
 
-<div>
-  <Callout icon="terminal-2">
-    [Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
-  </Callout>
+[Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
 
-  <Callout icon="edit">
-    [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/auth.mdx) 或 [file an issue](https://github.com/langchain-ai/docs/issues/new/choose)。
-  </Callout>
-</div>
+[Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/auth.mdx) 或 [file an issue](https://github.com/langchain-ai/docs/issues/new/choose)。

@@ -4,9 +4,9 @@
 
 Load MCP tools into LangChain agents, control their execution, and handle server results and requests.
 
-<Note>
-  The `langchain.mcp` namespace requires `langchain[mcp]>=1.4.0` and is in beta. The API may change.
-</Note>
+> [!NOTE]
+>
+> The `langchain.mcp` namespace requires `langchain[mcp]>=1.4.0` and is in beta. The API may change.
 
 [`MCPAdapter`](https://reference.langchain.com/python/langchain/mcp/adapter/MCPAdapter) bridges MCP servers and LangChain agents: it discovers the tools a server advertises and adapts them into standard LangChain tools. Pass the tools from `list_tools()` to [`create_agent`](https://reference.langchain.com/python/langchain/agents/factory/create_agent) as you would any other LangChain tool.
 
@@ -37,9 +37,9 @@ async def run_agent(server) -> dict:
         )
 ```
 
-<Card title="View example trace" icon="chart-line" href="https://smith.langchain.com/public/cdf13577-f7e0-46d5-8399-abfc6400c82b/r">
-  Open a public LangSmith run for this example.
-</Card>
+> **[View example trace](https://smith.langchain.com/public/cdf13577-f7e0-46d5-8399-abfc6400c82b/r)**
+>
+> Open a public LangSmith run for this example.
 
 For general guidance on defining, binding, and using LangChain tools, see [Tools](/oss/python/langchain/tools). For several MCP servers and their namespaced tool catalogs, see [Connections](/oss/python/langchain/mcp/connections#multiple-servers).
 
@@ -81,9 +81,9 @@ async def access_multimodal_tool_content(server) -> dict:
     return result
 ```
 
-<Card title="View example trace" icon="chart-line" href="https://smith.langchain.com/public/3102a6bc-697f-42a5-88c7-100c9b9dbd25/r">
-  Open a public LangSmith run for this example.
-</Card>
+> **[View example trace](https://smith.langchain.com/public/3102a6bc-697f-42a5-88c7-100c9b9dbd25/r)**
+>
+> Open a public LangSmith run for this example.
 
 ### Structured content
 
@@ -113,9 +113,9 @@ async def run_agent_structured(server) -> dict:
     return result
 ```
 
-<Card title="View example trace" icon="chart-line" href="https://smith.langchain.com/public/339c6cf0-3f24-468e-a465-e514010915d1/r">
-  Open a public LangSmith run for this example.
-</Card>
+> **[View example trace](https://smith.langchain.com/public/339c6cf0-3f24-468e-a465-e514010915d1/r)**
+>
+> Open a public LangSmith run for this example.
 
 The artifact is an `MCPToolArtifact`, whose `structured_content` field holds the tool result's `structuredContent`. A tool that returns no structured content leaves `artifact` as `None`.
 
@@ -312,9 +312,9 @@ Elicitation is on by default. The adapter advertises the capability and drives t
 
 Resume with `Command(resume={"responses": {key: answer}})`. The interrupt payload and answer types live in `langchain.mcp.elicitation`.
 
-<Note>
-  Resuming reruns the tool from the beginning. Any work performed before the server asks for input can repeat. Make that work safe to repeat without duplicating side effects.
-</Note>
+> [!NOTE]
+>
+> Resuming reruns the tool from the beginning. Any work performed before the server asks for input can repeat. Make that work safe to repeat without duplicating side effects.
 
 Each answer uses one of these actions:
 
@@ -326,9 +326,9 @@ The adapter forwards the answer to the server, which decides how the tool call f
 
 Only elicitation is answered this way. A server that instead asks for [sampling](https://modelcontextprotocol.io/specification/2025-06-18/client/sampling) or [roots](https://modelcontextprotocol.io/specification/2025-06-18/client/roots) raises an error, because the modern, sessionless protocol has no live back-channel for those requests. See [Sampling and roots](/oss/python/migrate/langchain-mcp-adapters#sampling-and-roots).
 
-<Note>
-  Interrupt-driven elicitation answers a server that returns its request as an `InputRequiredResult`. A server that only pushes elicitation over a legacy handshake session cannot be answered this way.
-</Note>
+> [!NOTE]
+>
+> Interrupt-driven elicitation answers a server that returns its request as an `InputRequiredResult`. A server that only pushes elicitation over a legacy handshake session cannot be answered this way.
 
 ## See also
 
@@ -350,12 +350,6 @@ Only elicitation is answered this way. A server that instead asks for [sampling]
 
 ***
 
-<div>
-  <Callout icon="terminal-2">
-    [Connect these docs](/use-these-docs) to your agent of choice via MCP for real-time answers.
-  </Callout>
+[Connect these docs](/use-these-docs) to your agent of choice via MCP for real-time answers.
 
-  <Callout icon="edit">
-    [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/oss/langchain/mcp/tools.mdx) or [file an issue](https://github.com/langchain-ai/docs/issues/new/choose).
-  </Callout>
-</div>
+[Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/oss/langchain/mcp/tools.mdx) or [file an issue](https://github.com/langchain-ai/docs/issues/new/choose).

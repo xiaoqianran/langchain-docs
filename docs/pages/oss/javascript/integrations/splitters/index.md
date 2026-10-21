@@ -4,35 +4,33 @@
 
 Integrate with text splitters using LangChain.
 
-<CodeGroup>
-  ```bash npm theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  npm install @langchain/textsplitters @langchain/core
-  # Requires Node.js 22+
-  ```
+```bash npm theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+npm install @langchain/textsplitters @langchain/core
+# Requires Node.js 22+
+```
 
-  ```bash pnpm theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  pnpm add @langchain/textsplitters @langchain/core
-  # Requires Node.js 22+
-  ```
+```bash pnpm theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+pnpm add @langchain/textsplitters @langchain/core
+# Requires Node.js 22+
+```
 
-  ```bash yarn theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  yarn add @langchain/textsplitters @langchain/core
-  # Requires Node.js 22+
-  ```
+```bash yarn theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+yarn add @langchain/textsplitters @langchain/core
+# Requires Node.js 22+
+```
 
-  ```bash bun theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  bun add @langchain/textsplitters @langchain/core
-  # Requires Node.js 22+
-  ```
-</CodeGroup>
+```bash bun theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+bun add @langchain/textsplitters @langchain/core
+# Requires Node.js 22+
+```
 
 **Text splitters** break large docs into smaller chunks that will be retrievable individually and fit within model context window limit.
 
 There are several strategies for splitting documents, each with its own advantages.
 
-<Tip>
-  For most use cases, start with the [`RecursiveCharacterTextSplitter`](/oss/javascript/integrations/splitters/recursive_text_splitter). It provides a solid balance between keeping context intact and managing chunk size. This default strategy works well out of the box, and you should only consider adjusting it if you need to fine-tune performance for your specific application.
-</Tip>
+> [!TIP]
+>
+> For most use cases, start with the [`RecursiveCharacterTextSplitter`](/oss/javascript/integrations/splitters/recursive_text_splitter). It provides a solid balance between keeping context intact and managing chunk size. This default strategy works well out of the box, and you should only consider adjusting it if you need to fine-tune performance for your specific application.
 
 ## Text structure-based
 
@@ -96,12 +94,6 @@ Some documents have an inherent structure, such as HTML, Markdown, or JSON files
 
 ***
 
-<div>
-  <Callout icon="terminal-2">
-    [Connect these docs](/use-these-docs) to your agent of choice via MCP for real-time answers.
-  </Callout>
+[Connect these docs](/use-these-docs) to your agent of choice via MCP for real-time answers.
 
-  <Callout icon="edit">
-    [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/oss/integrations/splitters/index.mdx) or [file an issue](https://github.com/langchain-ai/docs/issues/new/choose).
-  </Callout>
-</div>
+[Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/oss/integrations/splitters/index.mdx) or [file an issue](https://github.com/langchain-ai/docs/issues/new/choose).

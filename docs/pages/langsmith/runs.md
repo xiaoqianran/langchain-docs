@@ -70,32 +70,24 @@ The Agent Server API provides several endpoints for creating and managing runs. 
 
 ## In this section
 
-<CardGroup>
-  <Card title="Kick off background runs" icon="player-play" href="/langsmith/background-run">
-    Run your agent asynchronously and poll for results.
-  </Card>
+> **[Kick off background runs](/langsmith/background-run)**
+>
+> Run your agent asynchronously and poll for results.
 
-  <Card title="Run multiple agents on the same thread" icon="messages" href="/langsmith/same-thread">
-    Use multiple assistants on a shared thread to combine agent capabilities.
-  </Card>
+> **[Run multiple agents on the same thread](/langsmith/same-thread)**
+>
+> Use multiple assistants on a shared thread to combine agent capabilities.
 
-  <Card title="Stateless runs" icon="player-skip-forward" href="/langsmith/stateless-runs">
-    Execute runs without persisting state when conversation history isn't needed.
-  </Card>
+> **[Stateless runs](/langsmith/stateless-runs)**
+>
+> Execute runs without persisting state when conversation history isn't needed.
 
-  <Card title="Cancel a run" icon="player-stop" href="/langsmith/cancel-run">
-    Cancel a single run or multiple runs via the API.
-  </Card>
-</CardGroup>
+> **[Cancel a run](/langsmith/cancel-run)**
+>
+> Cancel a single run or multiple runs via the API.
 
 ***
 
-<div>
-  <Callout icon="terminal-2">
-    [Connect these docs](/use-these-docs) to your agent of choice via MCP for real-time answers.
-  </Callout>
+[Connect these docs](/use-these-docs) to your agent of choice via MCP for real-time answers.
 
-  <Callout icon="edit">
-    [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/runs.mdx) or [file an issue](https://github.com/langchain-ai/docs/issues/new/choose).
-  </Callout>
-</div>
+[Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/runs.mdx) or [file an issue](https://github.com/langchain-ai/docs/issues/new/choose).

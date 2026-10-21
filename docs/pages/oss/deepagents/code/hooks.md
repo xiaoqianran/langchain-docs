@@ -87,25 +87,25 @@ An invalid plugin hook document is skipped on its own and reported as a configur
 
 Each entry in a matcher group's `hooks` array is a command handler:
 
-<ResponseField name="type" type="string">
-  Handler type. Only `command` is supported. A command handler runs a subprocess that receives the event JSON on stdin.
-</ResponseField>
+**type** `string` *required*
 
-<ResponseField name="command" type="string">
-  Shell command to run. Always required. Pipes, redirects, globs, and environment-variable expansion are supported. The event payload is written to stdin as JSON, never interpolated into arguments. When `argv` is also set, this string is not executed through the shell.
-</ResponseField>
+Handler type. Only `command` is supported. A command handler runs a subprocess that receives the event JSON on stdin.
 
-<ResponseField name="argv" type="list[string]">
-  Execute an argument list directly instead of interpreting `command` through a shell. Use this for explicit executable paths and arguments.
-</ResponseField>
+**command** `string` *required*
 
-<ResponseField name="timeout" type="number">
-  Per-handler timeout in seconds. The default is 600 seconds, except for `UserPromptSubmit`, which defaults to 30 seconds. A timeout is a non-blocking failure.
-</ResponseField>
+Shell command to run. Always required. Pipes, redirects, globs, and environment-variable expansion are supported. The event payload is written to stdin as JSON, never interpolated into arguments. When `argv` is also set, this string is not executed through the shell.
 
-<ResponseField name="statusMessage" type="string">
-  Transient message shown in the UI while the handler runs.
-</ResponseField>
+**argv** `list[string]`
+
+Execute an argument list directly instead of interpreting `command` through a shell. Use this for explicit executable paths and arguments.
+
+**timeout** `number`
+
+Per-handler timeout in seconds. The default is 600 seconds, except for `UserPromptSubmit`, which defaults to 30 seconds. A timeout is a non-blocking failure.
+
+**statusMessage** `string`
+
+Transient message shown in the UI while the handler runs.
 
 Configuring an unsupported handler type or `"async": true` produces a visible configuration error.
 
@@ -352,123 +352,123 @@ The following compatibility fields are recognized but not applied. Deep Agents C
 
 ## Examples
 
-<Accordion title="Block destructive Bash commands (PreToolUse)">
-  ```bash title="~/.deepagents/hooks/block-rm.sh" theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  #!/usr/bin/env bash
-  command=$(jq -r '.tool_input.command // ""')
+> **Block destructive Bash commands (PreToolUse)**
+>
+> ```bash title="~/.deepagents/hooks/block-rm.sh" theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> #!/usr/bin/env bash
+> command=$(jq -r '.tool_input.command // ""')
+>
+> if printf '%s' "$command" | grep -Eq 'rm[[:space:]]+.*-[a-zA-Z]*[rf]'; then
+>   cat <<'JSON'
+> {
+>   "hookSpecificOutput": {
+>     "hookEventName": "PreToolUse",
+>     "permissionDecision": "deny",
+>     "permissionDecisionReason": "Recursive or forced rm is blocked by policy"
+>   }
+> }
+> JSON
+> fi
+> ```
+>
+> ```json title="~/.deepagents/hooks.json" theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> {
+>   "hooks": {
+>     "PreToolUse": [
+>       {
+>         "matcher": "Bash",
+>         "hooks": [
+>           { "type": "command", "command": "~/.deepagents/hooks/block-rm.sh" }
+>         ]
+>       }
+>     ]
+>   }
+> }
+> ```
 
-  if printf '%s' "$command" | grep -Eq 'rm[[:space:]]+.*-[a-zA-Z]*[rf]'; then
-    cat <<'JSON'
-  {
-    "hookSpecificOutput": {
-      "hookEventName": "PreToolUse",
-      "permissionDecision": "deny",
-      "permissionDecisionReason": "Recursive or forced rm is blocked by policy"
-    }
-  }
-  JSON
-  fi
-  ```
+> **Load project context on session start (SessionStart)**
+>
+> ```bash title="~/.deepagents/hooks/load-context.sh" theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> #!/usr/bin/env bash
+> context=$(git -C "$(jq -r '.cwd')" log --oneline -5 2>/dev/null)
+>
+> jq -n --arg ctx "$context" '{
+>   hookSpecificOutput: {
+>     hookEventName: "SessionStart",
+>     additionalContext: ("Recent commits:\n" + $ctx)
+>   }
+> }'
+> ```
+>
+> ```json title="~/.deepagents/hooks.json" theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> {
+>   "hooks": {
+>     "SessionStart": [
+>       {
+>         "matcher": "startup|resume",
+>         "hooks": [
+>           { "type": "command", "command": "~/.deepagents/hooks/load-context.sh" }
+>         ]
+>       }
+>     ]
+>   }
+> }
+> ```
 
-  ```json title="~/.deepagents/hooks.json" theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  {
-    "hooks": {
-      "PreToolUse": [
-        {
-          "matcher": "Bash",
-          "hooks": [
-            { "type": "command", "command": "~/.deepagents/hooks/block-rm.sh" }
-          ]
-        }
-      ]
-    }
-  }
-  ```
-</Accordion>
+> **Desktop notification when the turn ends on macOS (Stop)**
+>
+> ```json title="~/.deepagents/hooks.json" theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> {
+>   "hooks": {
+>     "Stop": [
+>       {
+>         "hooks": [
+>           {
+>             "type": "command",
+>             "command": "osascript -e 'display notification \"Agent finished\" with title \"Deep Agents Code\"'"
+>           }
+>         ]
+>       }
+>     ]
+>   }
+> }
+> ```
 
-<Accordion title="Load project context on session start (SessionStart)">
-  ```bash title="~/.deepagents/hooks/load-context.sh" theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  #!/usr/bin/env bash
-  context=$(git -C "$(jq -r '.cwd')" log --oneline -5 2>/dev/null)
-
-  jq -n --arg ctx "$context" '{
-    hookSpecificOutput: {
-      hookEventName: "SessionStart",
-      additionalContext: ("Recent commits:\n" + $ctx)
-    }
-  }'
-  ```
-
-  ```json title="~/.deepagents/hooks.json" theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  {
-    "hooks": {
-      "SessionStart": [
-        {
-          "matcher": "startup|resume",
-          "hooks": [
-            { "type": "command", "command": "~/.deepagents/hooks/load-context.sh" }
-          ]
-        }
-      ]
-    }
-  }
-  ```
-</Accordion>
-
-<Accordion title="Desktop notification when the turn ends on macOS (Stop)">
-  ```json title="~/.deepagents/hooks.json" theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  {
-    "hooks": {
-      "Stop": [
-        {
-          "hooks": [
-            {
-              "type": "command",
-              "command": "osascript -e 'display notification \"Agent finished\" with title \"Deep Agents Code\"'"
-            }
-          ]
-        }
-      ]
-    }
-  }
-  ```
-</Accordion>
-
-<Accordion title="Python handler that reads the payload">
-  ```python title="~/.deepagents/hooks/handler.py" theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  import json
-  import sys
-
-
-  def handle(payload: dict[str, object]) -> None:
-      event = payload["hook_event_name"]
-      if event == "PreToolUse":
-          tool_name = payload["tool_name"]
-          print(f"About to run {tool_name}", file=sys.stderr)
-
-
-  if __name__ == "__main__":
-      handle(json.load(sys.stdin))
-  ```
-
-  ```json title="~/.deepagents/hooks.json" theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  {
-    "hooks": {
-      "PreToolUse": [
-        {
-          "matcher": "*",
-          "hooks": [
-            {
-              "type": "command",
-              "command": "python3 ~/.deepagents/hooks/handler.py"
-            }
-          ]
-        }
-      ]
-    }
-  }
-  ```
-</Accordion>
+> **Python handler that reads the payload**
+>
+> ```python title="~/.deepagents/hooks/handler.py" theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> import json
+> import sys
+>
+>
+> def handle(payload: dict[str, object]) -> None:
+>     event = payload["hook_event_name"]
+>     if event == "PreToolUse":
+>         tool_name = payload["tool_name"]
+>         print(f"About to run {tool_name}", file=sys.stderr)
+>
+>
+> if __name__ == "__main__":
+>     handle(json.load(sys.stdin))
+> ```
+>
+> ```json title="~/.deepagents/hooks.json" theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> {
+>   "hooks": {
+>     "PreToolUse": [
+>       {
+>         "matcher": "*",
+>         "hooks": [
+>           {
+>             "type": "command",
+>             "command": "python3 ~/.deepagents/hooks/handler.py"
+>           }
+>         ]
+>       }
+>     ]
+>   }
+> }
+> ```
 
 ## Troubleshoot hooks
 
@@ -494,9 +494,9 @@ Hooks follow the same trust model as Git hooks or shell aliases: any process tha
 * Prefer explicit shell executables you control over shell wrappers.
 * Only install hooks from sources you trust.
 
-<Warning>
-  A hook runs with your user permissions. Treat hook configuration as executable code.
-</Warning>
+> [!WARNING]
+>
+> A hook runs with your user permissions. Treat hook configuration as executable code.
 
 ## See also
 
@@ -507,12 +507,6 @@ Hooks follow the same trust model as Git hooks or shell aliases: any process tha
 
 ***
 
-<div>
-  <Callout icon="terminal-2">
-    [Connect these docs](/use-these-docs) to your agent of choice via MCP for real-time answers.
-  </Callout>
+[Connect these docs](/use-these-docs) to your agent of choice via MCP for real-time answers.
 
-  <Callout icon="edit">
-    [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/oss/deepagents/code/hooks.mdx) or [file an issue](https://github.com/langchain-ai/docs/issues/new/choose).
-  </Callout>
-</div>
+[Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/oss/deepagents/code/hooks.mdx) or [file an issue](https://github.com/langchain-ai/docs/issues/new/choose).

@@ -39,9 +39,16 @@ OTEL_EXPORTER_OTLP_ENDPOINT="http://<my-otel-collector-endpoint>:4318"
 
 For more on `LANGSMITH_PROJECT`, refer to [Log traces to a specific project](/langsmith/log-traces-to-project).
 
-<Note>
-  **Agent-based workspaces.** Agent addressing is not yet available on the OTLP path, which reads no agent address from a request or a span. Use the `Langsmith-Project` header to name the tracing project, whichever way your workspace is organized. For the addressing model, see [Log traces to an agent](/langsmith/log-traces-to-agent).
-</Note>
+> [!NOTE]
+>
+> **Agent-based workspaces.** Sending traces to an agent is in [beta](/langsmith/release-stages). To send OTLP traces to an agent and an environment instead of a project, replace the `Langsmith-Project` header with both of the following headers:
+>
+> * **`Langsmith-Agent-Id`**: The identifier of the agent. It must be 1 to 63 lowercase letters, digits, or hyphens, start with a letter, and end with a letter or digit. LangSmith creates the agent on first use, which requires the [`projects:create` permission](/langsmith/organization-workspace-operations#projects). An archived agent still holds its identifier, so LangSmith rejects a request sent to it with a `409`.
+> * **`Langsmith-Agent-Environment`**: The environment the traces belong to. One of `local`, `development`, `staging`, or `production`.
+>
+> For example, set `OTEL_EXPORTER_OTLP_HEADERS="x-api-key=<your langsmith api key>,Langsmith-Agent-Id=<agent id>,Langsmith-Agent-Environment=<environment>"`. With `langsmith>=0.14.9`, the Python SDK's OpenTelemetry exporter sets both headers from `LANGSMITH_AGENT_ID` and `LANGSMITH_AGENT_ENVIRONMENT` when `OTEL_EXPORTER_OTLP_HEADERS` is unset. With the TypeScript SDK or another OpenTelemetry exporter, set the headers yourself.
+>
+> The headers apply to every span in the request. Send both headers or neither: LangSmith rejects a request that sets one without the other, or that sets either alongside `Langsmith-Project`, with a `400` error. A workspace that does not accept traces sent to an agent rejects the request with a `403` error and the message `agent addressing is not enabled for this workspace`. Span attributes, including `gen_ai.agent.name`, do not send traces to an agent. For how sending traces to an agent works, see [Log traces to an agent](/langsmith/log-traces-to-agent).
 
 ## Configure the collector
 
@@ -160,18 +167,12 @@ provider.force_flush()
 provider.shutdown()
 ```
 
-<Note>
-  If you prefer to redact sensitive data without routing through a collector, see [Prevent logging of sensitive data in traces](/langsmith/mask-inputs-outputs).
-</Note>
+> [!NOTE]
+>
+> If you prefer to redact sensitive data without routing through a collector, see [Prevent logging of sensitive data in traces](/langsmith/mask-inputs-outputs).
 
 ***
 
-<div>
-  <Callout icon="terminal-2">
-    [Connect these docs](/use-these-docs) to your agent of choice via MCP for real-time answers.
-  </Callout>
+[Connect these docs](/use-these-docs) to your agent of choice via MCP for real-time answers.
 
-  <Callout icon="edit">
-    [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/otel-gateway-trace-redaction.mdx) or [file an issue](https://github.com/langchain-ai/docs/issues/new/choose).
-  </Callout>
-</div>
+[Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/otel-gateway-trace-redaction.mdx) or [file an issue](https://github.com/langchain-ai/docs/issues/new/choose).

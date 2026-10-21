@@ -13,9 +13,9 @@ Common use cases include:
 * **Proactive outreach**: Draft weekly status updates, follow-up reminders, or recurring reports.
 * **Data monitoring**: Check dashboards, metrics, or feeds on a set cadence and surface anything noteworthy.
 
-<Tip>
-  To start an agent based on an event (such as a Slack message or email), use [channels](/langsmith/fleet/channels) instead.
-</Tip>
+> [!TIP]
+>
+> To start an agent based on an event (such as a Slack message or email), use [channels](/langsmith/fleet/channels) instead.
 
 ## Add a schedule
 
@@ -25,9 +25,9 @@ To add a schedule:
 
 2. Select when the schedule should run.
 
-   <Note>
-     Schedules are in UTC. Convert your desired execution time to UTC when configuring the schedule.
-   </Note>
+   > [!NOTE]
+   >
+   > Schedules are in UTC. Convert your desired execution time to UTC when configuring the schedule.
 
 3. (Optional) Add a **Prompt**. With a custom prompt, you can tell the agent what to do on each scheduled run. For example:
 
@@ -40,12 +40,6 @@ To add a schedule:
 
 ***
 
-<div>
-  <Callout icon="terminal-2">
-    [Connect these docs](/use-these-docs) to your agent of choice via MCP for real-time answers.
-  </Callout>
+[Connect these docs](/use-these-docs) to your agent of choice via MCP for real-time answers.
 
-  <Callout icon="edit">
-    [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/fleet/schedules.mdx) or [file an issue](https://github.com/langchain-ai/docs/issues/new/choose).
-  </Callout>
-</div>
+[Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/fleet/schedules.mdx) or [file an issue](https://github.com/langchain-ai/docs/issues/new/choose).

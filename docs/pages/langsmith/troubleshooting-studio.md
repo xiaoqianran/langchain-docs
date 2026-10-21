@@ -6,21 +6,19 @@ Safari blocks plain-HTTP traffic on localhost. When running Studio with `langgra
 
 ### Solution 1: Use Cloudflare Tunnel
 
-<Tabs>
-  <Tab title="Python">
-    ```shell theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-    pip install -U langgraph-cli>=0.2.6
-    langgraph dev --tunnel
-    ```
-  </Tab>
+**Python**
 
-  <Tab title="JS">
-    ```shell theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-    # Requires @langchain/langgraph-cli>=0.0.26
-    npx @langchain/langgraph-cli dev --tunnel
-    ```
-  </Tab>
-</Tabs>
+```shell theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+pip install -U langgraph-cli>=0.2.6
+langgraph dev --tunnel
+```
+
+**JS**
+
+```shell theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+# Requires @langchain/langgraph-cli>=0.0.26
+npx @langchain/langgraph-cli dev --tunnel
+```
 
 The command outputs a tunnel URL. To connect Studio:
 
@@ -32,9 +30,9 @@ The command outputs a tunnel URL. To connect Studio:
 
 This manual step is required for security - Studio requires explicit user confirmation before connecting to external URLs.
 
-<Note>
-  Cloudflare tunnels can be unreliable and may intermittently disconnect.
-</Note>
+> [!NOTE]
+>
+> Cloudflare tunnels can be unreliable and may intermittently disconnect.
 
 ### Solution 2: Use Chromium browser
 
@@ -97,21 +95,19 @@ Disable Brave Shields for LangSmith using the Brave icon in the URL bar.
 
 ### Solution 2: Use Cloudflare Tunnel
 
-<Tabs>
-  <Tab title="Python">
-    ```shell theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-    pip install -U langgraph-cli>=0.2.6
-    langgraph dev --tunnel
-    ```
-  </Tab>
+**Python**
 
-  <Tab title="JS">
-    ```shell theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-    # Requires @langchain/langgraph-cli>=0.0.26
-    npx @langchain/langgraph-cli dev --tunnel
-    ```
-  </Tab>
-</Tabs>
+```shell theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+pip install -U langgraph-cli>=0.2.6
+langgraph dev --tunnel
+```
+
+**JS**
+
+```shell theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+# Requires @langchain/langgraph-cli>=0.0.26
+npx @langchain/langgraph-cli dev --tunnel
+```
 
 The command outputs a tunnel URL. To connect Studio:
 
@@ -132,19 +128,17 @@ because without proper definition, Studio assumes the conditional edge could acc
 
 Define a mapping between router outputs and target nodes:
 
-<Tabs>
-  <Tab title="Python">
-    ```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-    graph.add_conditional_edges("node_a", routing_function, {True: "node_b", False: "node_c"})
-    ```
-  </Tab>
+**Python**
 
-  <Tab title="Javascript">
-    ```ts theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-    graph.addConditionalEdges("node_a", routingFunction, { true: "node_b", false: "node_c" });
-    ```
-  </Tab>
-</Tabs>
+```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+graph.add_conditional_edges("node_a", routing_function, {True: "node_b", False: "node_c"})
+```
+
+**Javascript**
+
+```ts theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+graph.addConditionalEdges("node_a", routingFunction, { true: "node_b", false: "node_c" });
+```
 
 ### Solution 2: Router type definition
 
@@ -173,12 +167,6 @@ When you run an experiment, any attached evaluators are scheduled for execution 
 
 ***
 
-<div>
-  <Callout icon="terminal-2">
-    [Connect these docs](/use-these-docs) to your agent of choice via MCP for real-time answers.
-  </Callout>
+[Connect these docs](/use-these-docs) to your agent of choice via MCP for real-time answers.
 
-  <Callout icon="edit">
-    [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/troubleshooting-studio.mdx) or [file an issue](https://github.com/langchain-ai/docs/issues/new/choose).
-  </Callout>
-</div>
+[Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/troubleshooting-studio.mdx) or [file an issue](https://github.com/langchain-ai/docs/issues/new/choose).

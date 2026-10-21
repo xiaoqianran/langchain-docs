@@ -53,9 +53,9 @@ module "byoiam" {
 
 ## 使用现有角色部署数据平面
 
-<Warning>
-  您必须使用 [⟦T17⟧ Terraform module](https://github.com/langchain-ai/terraform/tree/main/modules/byoc/aws/byoiam) 创建 LangSmith 所需的确切 IAM 角色。 LangSmith 在部署数据平面之前对这些 IAM 资源执行广泛的验证。
-</Warning>
+> [!警告]
+>
+> 您必须使用 [⟦T17⟧ Terraform module](https://github.com/langchain-ai/terraform/tree/main/modules/byoc/aws/byoiam) 创建 LangSmith 所需的确切 IAM 角色。 LangSmith 在部署数据平面之前对这些 IAM 资源执行广泛的验证。
 
 **使用现有 IAM 角色** 复选框将数据平面配置为使用您创建的 IAM 资源。
 
@@ -74,12 +74,6 @@ module "byoiam" {
 
 ***
 
-<div>
-  <Callout icon="terminal-2">
-    [Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
-  </Callout>
+[Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
 
-  <Callout icon="edit">
-    [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/byoc-byoiam.mdx) 或 [file an issue](https://github.com/langchain-ai/docs/issues/new/choose)。
-  </Callout>
-</div>
+[Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/byoc-byoiam.mdx) 或 [file an issue](https://github.com/langchain-ai/docs/issues/new/choose)。

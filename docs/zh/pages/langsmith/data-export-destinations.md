@@ -6,11 +6,11 @@
 
 配置和管理 S3 兼容的导出目标以进行 LangSmith 批量导出。
 
-<Note>
-  **对于自托管、GCP EU、GCP APAC 和 AWS US SaaS**
-
-  更新以下自托管安装、GCP EU (`eu.api.smith.langchain.com`)、GCP APAC (`apac.api.smith.langchain.com`) 或 AWS US (`aws.api.smith.langchain.com`) 请求中的 LangSmith URL。
-</Note>
+> [!注意]
+>
+> **对于自托管、GCP EU、GCP APAC 和 AWS US SaaS**
+>
+> 更新以下自托管安装、GCP EU (`eu.api.smith.langchain.com`)、GCP APAC (`apac.api.smith.langchain.com`) 或 AWS US (`aws.api.smith.langchain.com`) 请求中的 LangSmith URL。
 
 目标是一个命名配置，告诉 LangSmith 将导出的跟踪数据写入何处。你[create a destination](/langsmith/data-export#1-create-a-destination)一次，然后在[creating export jobs](/langsmith/data-export#2-create-an-export-job)时通过ID引用它。 LangSmith 目前支持 S3 和任何与 S3 兼容的存储桶（例如 GCS 或 MinIO）作为目标。导出的数据以 [Parquet](https://parquet.apache.org/docs/overview/) 柱状格式写入，并包含与 [Run data format](/langsmith/run-data-format) 等效的字段。
 
@@ -31,7 +31,7 @@
 * **端点 URL**：S3 存储桶的端点 URL — 对于 S3 API 兼容存储桶是必需的。
 * **访问密钥**：S3 存储桶的访问密钥。
 * **密钥**：S3 存储桶的密钥。
-* **在前缀中包含存储桶**（可选）：是否将存储桶名称作为路径前缀的一部分包含在内。默认为`true`。当使用虚拟托管样式端点（其中存储桶名称已在端点 URL 中）时，设置为 `false`。
+* **在前缀中包含存储桶**（可选）：是否包含存储桶名称作为路径前缀的一部分。默认为`true`。当使用虚拟托管样式端点（其中存储桶名称已存在于端点 URL 中）时，设置为 `false`。
 * **S3 配置选项**（`config_kwargs_s3`，可选）：传递给 botocore 的高级 S3 寻址样式和请求设置。最常见的用途是为需要虚拟托管或路径式请求的 S3 兼容服务设置 `addressing_style`：
   * `"virtual"`：存储桶名称是主机名的一部分（例如`bucket.endpoint/key`）。对于某些 S3 兼容服务（例如 Volcengine TOS）是必需的。
   * `"path"`：存储桶名称是 URL 路径的一部分（例如 `endpoint/bucket/key`）。
@@ -135,7 +135,9 @@ curl --request POST \
 
 ### 凭证配置
 
-<Note>**需要 LangSmith Helm 版本 `0.10.34` 或更高版本（应用程序版本 `0.10.91` 或更高版本）**</Note>
+> [!注意]
+>
+> **需要 LangSmith Helm 版本 `0.10.34` 或更高版本（应用程序版本 `0.10.91` 或更高版本）**
 
 除了静态 `access_key_id` 和 `secret_access_key` 之外，我们还支持以下其他凭证格式：* 要使用包含 AWS 会话令牌的 [temporary credentials](https://docs.aws.amazon.com/IAM/latest/UserGuide/id_credentials_temp_use-resources.html)，
   创建批量导出目标时另外提供 `credentials.session_token` 密钥。
@@ -309,139 +311,137 @@ curl --request PATCH \
 
 AWS IAM 角色假设允许 GCP 托管的 LangSmith SaaS 导出到 S3，而无需存储静态 AWS 凭证。配置信任生产区域的 LangSmith 服务账户的 AWS 角色，然后在创建或更新目标时提供其 ARN。
 
-传递 `aws_role_arn` 而不是 `credentials` 以使用 IAM 角色假设。<Note>
-  IAM 角色代入仅适用于 GCP 托管的 LangSmith SaaS。它不适用于 AWS 托管的 SaaS 或自托管部署。
-</Note>
+传递 `aws_role_arn` 而不是 `credentials` 以使用 IAM 角色假设。> [!注意]
+>
+> IAM 角色代入仅适用于 GCP 托管的 LangSmith SaaS。它不适用于 AWS 托管的 SaaS 或自托管部署。
 
 ### 创建AWS角色
 
-创建一个具有信任策略的 AWS IAM 角色，该策略允许来自您所在区域的三个主体 ID 的 Web 身份联合。授予角色对导出存储桶的访问权限。选择您的LangSmith区域以使用相应的主题 ID。每个 Terraform 示例都使用所需的最低 `s3:PutObject` 权限：
+创建一个具有信任策略的 AWS IAM 角色，该策略允许来自您所在区域的三个主体 ID 的 Web 身份联合。授予角色对导出存储桶的访问权限。选择您的 LangSmith 区域以使用相应的主题 ID。每个 Terraform 示例都使用所需的最低 `s3:PutObject` 权限：
 
-<CodeGroup>
-  ```hcl US theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  resource "aws_iam_role" "langsmith_bulk_export" {
-    name                 = "langsmith-bulk-export"
-    max_session_duration = 43200
+```hcl US theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+resource "aws_iam_role" "langsmith_bulk_export" {
+  name                 = "langsmith-bulk-export"
+  max_session_duration = 43200
 
-    assume_role_policy = jsonencode({
+  assume_role_policy = jsonencode({
+    Version = "2012-10-17"
+    Statement = [{
+      Effect    = "Allow"
+      Principal = { Federated = "accounts.google.com" }
+      Action    = "sts:AssumeRoleWithWebIdentity"
+      Condition = {
+        StringEquals = {
+          "accounts.google.com:oaud" = "langsmith-bulk-export"
+          "accounts.google.com:sub" = [
+            "110136955440523778103",
+            "116331607438151298187",
+            "115251468294701876731",
+          ]
+        }
+      }
+    }]
+  })
+
+  inline_policy {
+    name = "langsmith-bulk-export-s3"
+    policy = jsonencode({
       Version = "2012-10-17"
       Statement = [{
-        Effect    = "Allow"
-        Principal = { Federated = "accounts.google.com" }
-        Action    = "sts:AssumeRoleWithWebIdentity"
-        Condition = {
-          StringEquals = {
-            "accounts.google.com:oaud" = "langsmith-bulk-export"
-            "accounts.google.com:sub" = [
-              "110136955440523778103",
-              "116331607438151298187",
-              "115251468294701876731",
-            ]
-          }
-        }
+        Effect   = "Allow"
+        Action   = "s3:PutObject"
+        Resource = "arn:aws:s3:::YOUR_BUCKET_NAME/*"
       }]
     })
-
-    inline_policy {
-      name = "langsmith-bulk-export-s3"
-      policy = jsonencode({
-        Version = "2012-10-17"
-        Statement = [{
-          Effect   = "Allow"
-          Action   = "s3:PutObject"
-          Resource = "arn:aws:s3:::YOUR_BUCKET_NAME/*"
-        }]
-      })
-    }
   }
-  ```
+}
+```
 
-  ```hcl EU theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  resource "aws_iam_role" "langsmith_bulk_export" {
-    name                 = "langsmith-bulk-export"
-    max_session_duration = 43200
+```hcl EU theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+resource "aws_iam_role" "langsmith_bulk_export" {
+  name                 = "langsmith-bulk-export"
+  max_session_duration = 43200
 
-    assume_role_policy = jsonencode({
+  assume_role_policy = jsonencode({
+    Version = "2012-10-17"
+    Statement = [{
+      Effect    = "Allow"
+      Principal = { Federated = "accounts.google.com" }
+      Action    = "sts:AssumeRoleWithWebIdentity"
+      Condition = {
+        StringEquals = {
+          "accounts.google.com:oaud" = "langsmith-bulk-export"
+          "accounts.google.com:sub" = [
+            "110207823358662523645",
+            "115689110758588220909",
+            "109691164801275818274",
+          ]
+        }
+      }
+    }]
+  })
+
+  inline_policy {
+    name = "langsmith-bulk-export-s3"
+    policy = jsonencode({
       Version = "2012-10-17"
       Statement = [{
-        Effect    = "Allow"
-        Principal = { Federated = "accounts.google.com" }
-        Action    = "sts:AssumeRoleWithWebIdentity"
-        Condition = {
-          StringEquals = {
-            "accounts.google.com:oaud" = "langsmith-bulk-export"
-            "accounts.google.com:sub" = [
-              "110207823358662523645",
-              "115689110758588220909",
-              "109691164801275818274",
-            ]
-          }
-        }
+        Effect   = "Allow"
+        Action   = "s3:PutObject"
+        Resource = "arn:aws:s3:::YOUR_BUCKET_NAME/*"
       }]
     })
-
-    inline_policy {
-      name = "langsmith-bulk-export-s3"
-      policy = jsonencode({
-        Version = "2012-10-17"
-        Statement = [{
-          Effect   = "Allow"
-          Action   = "s3:PutObject"
-          Resource = "arn:aws:s3:::YOUR_BUCKET_NAME/*"
-        }]
-      })
-    }
   }
-  ```
+}
+```
 
-  ```hcl APAC theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  resource "aws_iam_role" "langsmith_bulk_export" {
-    name                 = "langsmith-bulk-export"
-    max_session_duration = 43200
+```hcl APAC theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+resource "aws_iam_role" "langsmith_bulk_export" {
+  name                 = "langsmith-bulk-export"
+  max_session_duration = 43200
 
-    assume_role_policy = jsonencode({
+  assume_role_policy = jsonencode({
+    Version = "2012-10-17"
+    Statement = [{
+      Effect    = "Allow"
+      Principal = { Federated = "accounts.google.com" }
+      Action    = "sts:AssumeRoleWithWebIdentity"
+      Condition = {
+        StringEquals = {
+          "accounts.google.com:oaud" = "langsmith-bulk-export"
+          "accounts.google.com:sub" = [
+            "105923862603785245337",
+            "114288557158507552617",
+            "116622461022404604716",
+          ]
+        }
+      }
+    }]
+  })
+
+  inline_policy {
+    name = "langsmith-bulk-export-s3"
+    policy = jsonencode({
       Version = "2012-10-17"
       Statement = [{
-        Effect    = "Allow"
-        Principal = { Federated = "accounts.google.com" }
-        Action    = "sts:AssumeRoleWithWebIdentity"
-        Condition = {
-          StringEquals = {
-            "accounts.google.com:oaud" = "langsmith-bulk-export"
-            "accounts.google.com:sub" = [
-              "105923862603785245337",
-              "114288557158507552617",
-              "116622461022404604716",
-            ]
-          }
-        }
+        Effect   = "Allow"
+        Action   = "s3:PutObject"
+        Resource = "arn:aws:s3:::YOUR_BUCKET_NAME/*"
       }]
     })
-
-    inline_policy {
-      name = "langsmith-bulk-export-s3"
-      policy = jsonencode({
-        Version = "2012-10-17"
-        Statement = [{
-          Effect   = "Allow"
-          Action   = "s3:PutObject"
-          Resource = "arn:aws:s3:::YOUR_BUCKET_NAME/*"
-        }]
-      })
-    }
   }
-  ```
-</CodeGroup>
+}
+```
 
 有关可选权限，请参阅[AWS S3 permissions](#aws-s3-permissions)。
 
 ## 切换认证模式
 
-在静态凭证和[AWS IAM role assumption](#authenticate-with-an-aws-iam-role)之间切换现有目标，而无需重新创建它。使用`PATCH /api/v1/bulk-exports/destinations/{destination_id}`。
+在静态凭据和 [AWS IAM role assumption](#authenticate-with-an-aws-iam-role) 之间切换现有目标，而无需重新创建它。使用`PATCH /api/v1/bulk-exports/destinations/{destination_id}`。
 
 [**Required permission**](/langsmith/organization-workspace-operations#bulk-exports)：`bulk-exports:manage`。
 
-LangSmith 支持两种互斥模式：
+LangSmith支持两种互斥模式：
 
 * **静态凭证** (`credentials`)：`access_key_id` 和 `secret_access_key`（带有可选的 `session_token` 用于临时凭证）。
 * **IAM 角色假设** (`aws_role_arn`)：LangSmith 假设指定的 AWS IAM 角色，因此不存储静态凭证。
@@ -540,7 +540,7 @@ aws s3 --endpoint-url=<endpoint_url> cp ./test.txt s3://<bucket-name>/tmp/test.t
 
 以下是一些常见错误：
 
-|错误|描述 |
+|错误 |描述 |
 | - | - |
 |访问被拒绝| Blob 存储凭据或存储桶无效。当提供的访问密钥和秘密密钥组合没有访问指定存储桶或执行所需操作的必要权限时，会发生此错误。 |
 |存储桶无效 |指定的 Blob 存储桶无效。当存储桶不存在或没有足够的访问权限来对存储桶执行写入操作时，会引发此错误。 |
@@ -549,12 +549,6 @@ aws s3 --endpoint-url=<endpoint_url> cp ./test.txt s3://<bucket-name>/tmp/test.t
 
 ***
 
-<div>
-  <Callout icon="terminal-2">
-    [Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
-  </Callout>
+[Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
 
-  <Callout icon="edit">
-    [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/data-export-destinations.mdx) 或 [file an issue](https://github.com/langchain-ai/docs/issues/new/choose)。
-  </Callout>
-</div>
+[Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/data-export-destinations.mdx) 或 [file an issue](https://github.com/langchain-ai/docs/issues/new/choose)。

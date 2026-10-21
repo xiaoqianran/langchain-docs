@@ -4,228 +4,214 @@
 
 Integrate with chat models using LangChain JavaScript.
 
-[Chat models](/oss/javascript/langchain/models) are language models that use a sequence of [messages](/oss/javascript/langchain/messages) as inputs and return messages as outputs <Tooltip>(as opposed to plaintext)</Tooltip>.
+[Chat models](/oss/javascript/langchain/models) are language models that use a sequence of [messages](/oss/javascript/langchain/messages) as inputs and return messages as outputs (as opposed to plaintext) (Older models that do not follow the chat model interface and instead use an interface that takes a string as input and returns a string as output. These models typically do not include the prefix 'Chat' in their name or include 'LLM' as a suffix.).
 
 ## Install and use
 
-<Tip>
-  See [this section for general instructions on installing LangChain packages](/oss/javascript/langchain/install).
-</Tip>
+> [!TIP]
+>
+> See [this section for general instructions on installing LangChain packages](/oss/javascript/langchain/install).
 
-<AccordionGroup>
-  <Accordion title="OpenAI">
-    Install:
+> **OpenAI**
+>
+> Install:
+>
+> ```bash npm theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> npm install @langchain/openai @langchain/core
+> ```
+>
+> ```bash yarn theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> yarn add @langchain/openai @langchain/core
+> ```
+>
+> ```bash pnpm theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> pnpm add @langchain/openai @langchain/core
+> ```
+>
+> Add environment variables:
+>
+> ```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> OPENAI_API_KEY=your-api-key
+> ```
+>
+> Instantiate the model:
+>
+> ```typescript theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> import { ChatOpenAI } from "@langchain/openai";
+>
+> const model = new ChatOpenAI({ model: "gpt-5.4-mini" });
+> ```
+>
+> ```javascript theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> await model.invoke("Hello, world!")
+> ```
 
-    <CodeGroup>
-      ```bash npm theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-      npm install @langchain/openai @langchain/core
-      ```
+> **Anthropic**
+>
+> Install:
+>
+> ```bash npm theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> npm i @langchain/anthropic @langchain/core
+> ```
+>
+> ```bash yarn theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> yarn add @langchain/anthropic @langchain/core
+> ```
+>
+> ```bash pnpm theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> pnpm add @langchain/anthropic @langchain/core
+> ```
+>
+> Add environment variables:
+>
+> ```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> ANTHROPIC_API_KEY=your-api-key
+> ```
+>
+> Instantiate the model:
+>
+> ```typescript theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> import { ChatAnthropic } from "@langchain/anthropic";
+>
+> const model = new ChatAnthropic({
+> model: "claude-sonnet-4-6",
+> temperature: 0
+> });
+> ```
+>
+> ```javascript theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> await model.invoke("Hello, world!")
+> ```
 
-      ```bash yarn theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-      yarn add @langchain/openai @langchain/core
-      ```
+> **Google Gemini**
+>
+> Install:
+>
+> ```bash npm theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> npm install @langchain/google @langchain/core
+> ```
+>
+> ```bash yarn theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> yarn add @langchain/google @langchain/core
+> ```
+>
+> ```bash pnpm theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> pnpm add @langchain/google @langchain/core
+> ```
+>
+> Add environment variables:
+>
+> ```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> GOOGLE_API_KEY=your-api-key
+> ```
+>
+> Instantiate the model:
+>
+> ```typescript theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> import { ChatGoogle } from "@langchain/google";
+>
+> const model = new ChatGoogle("gemini-2.5-flash");
+> ```
+>
+> ```javascript theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> await model.invoke("Hello, world!")
+> ```
 
-      ```bash pnpm theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-      pnpm add @langchain/openai @langchain/core
-      ```
-    </CodeGroup>
+> **MistralAI**
+>
+> Install:
+>
+> ```bash npm theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> npm install @langchain/mistralai @langchain/core
+> ```
+>
+> ```bash yarn theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> yarn add @langchain/mistralai @langchain/core
+> ```
+>
+> ```bash pnpm theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> pnpm add @langchain/mistralai @langchain/core
+> ```
+>
+> Add environment variables:
+>
+> ```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> MISTRAL_API_KEY=your-api-key
+> ```
+>
+> Instantiate the model:
+>
+> ```typescript theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> import { ChatMistralAI } from "@langchain/mistralai";
+>
+> const model = new ChatMistralAI({
+> model: "mistral-large-latest",
+> temperature: 0
+> });
+> ```
+>
+> ```javascript theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> await model.invoke("Hello, world!")
+> ```
 
-    Add environment variables:
-
-    ```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-    OPENAI_API_KEY=your-api-key
-    ```
-
-    Instantiate the model:
-
-    ```typescript theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-    import { ChatOpenAI } from "@langchain/openai";
-
-    const model = new ChatOpenAI({ model: "gpt-5.4-mini" });
-    ```
-
-    ```javascript theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-    await model.invoke("Hello, world!")
-    ```
-  </Accordion>
-
-  <Accordion title="Anthropic">
-    Install:
-
-    <CodeGroup>
-      ```bash npm theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-      npm i @langchain/anthropic @langchain/core
-      ```
-
-      ```bash yarn theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-      yarn add @langchain/anthropic @langchain/core
-      ```
-
-      ```bash pnpm theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-      pnpm add @langchain/anthropic @langchain/core
-      ```
-    </CodeGroup>
-
-    Add environment variables:
-
-    ```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-    ANTHROPIC_API_KEY=your-api-key
-    ```
-
-    Instantiate the model:
-
-    ```typescript theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-    import { ChatAnthropic } from "@langchain/anthropic";
-
-    const model = new ChatAnthropic({
-    model: "claude-sonnet-4-6",
-    temperature: 0
-    });
-    ```
-
-    ```javascript theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-    await model.invoke("Hello, world!")
-    ```
-  </Accordion>
-
-  <Accordion title="Google Gemini">
-    Install:
-
-    <CodeGroup>
-      ```bash npm theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-      npm install @langchain/google @langchain/core
-      ```
-
-      ```bash yarn theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-      yarn add @langchain/google @langchain/core
-      ```
-
-      ```bash pnpm theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-      pnpm add @langchain/google @langchain/core
-      ```
-    </CodeGroup>
-
-    Add environment variables:
-
-    ```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-    GOOGLE_API_KEY=your-api-key
-    ```
-
-    Instantiate the model:
-
-    ```typescript theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-    import { ChatGoogle } from "@langchain/google";
-
-    const model = new ChatGoogle("gemini-2.5-flash");
-    ```
-
-    ```javascript theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-    await model.invoke("Hello, world!")
-    ```
-  </Accordion>
-
-  <Accordion title="MistralAI">
-    Install:
-
-    <CodeGroup>
-      ```bash npm theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-      npm install @langchain/mistralai @langchain/core
-      ```
-
-      ```bash yarn theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-      yarn add @langchain/mistralai @langchain/core
-      ```
-
-      ```bash pnpm theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-      pnpm add @langchain/mistralai @langchain/core
-      ```
-    </CodeGroup>
-
-    Add environment variables:
-
-    ```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-    MISTRAL_API_KEY=your-api-key
-    ```
-
-    Instantiate the model:
-
-    ```typescript theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-    import { ChatMistralAI } from "@langchain/mistralai";
-
-    const model = new ChatMistralAI({
-    model: "mistral-large-latest",
-    temperature: 0
-    });
-    ```
-
-    ```javascript theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-    await model.invoke("Hello, world!")
-    ```
-  </Accordion>
-
-  <Accordion title="Groq">
-    Install:
-
-    <CodeGroup>
-      ```bash npm theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-      npm install @langchain/groq @langchain/core
-      ```
-
-      ```bash yarn theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-      yarn add @langchain/groq @langchain/core
-      ```
-
-      ```bash pnpm theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-      pnpm add @langchain/groq @langchain/core
-      ```
-    </CodeGroup>
-
-    Add environment variables:
-
-    ```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-    GROQ_API_KEY=your-api-key
-    ```
-
-    Instantiate the model:
-
-    ```typescript theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-    import { ChatGroq } from "@langchain/groq";
-
-    const model = new ChatGroq({
-    model: "openai/gpt-oss-120b",
-    temperature: 0
-    });
-    ```
-
-    ```javascript theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-    await model.invoke("Hello, world!")
-    ```
-  </Accordion>
-</AccordionGroup>
+> **Groq**
+>
+> Install:
+>
+> ```bash npm theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> npm install @langchain/groq @langchain/core
+> ```
+>
+> ```bash yarn theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> yarn add @langchain/groq @langchain/core
+> ```
+>
+> ```bash pnpm theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> pnpm add @langchain/groq @langchain/core
+> ```
+>
+> Add environment variables:
+>
+> ```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> GROQ_API_KEY=your-api-key
+> ```
+>
+> Instantiate the model:
+>
+> ```typescript theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> import { ChatGroq } from "@langchain/groq";
+>
+> const model = new ChatGroq({
+> model: "openai/gpt-oss-120b",
+> temperature: 0
+> });
+> ```
+>
+> ```javascript theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> await model.invoke("Hello, world!")
+> ```
 
 ## Featured models
 
-<Info>
-  **While these LangChain classes support the indicated advanced feature**, you may need to refer to provider-specific documentation to learn which hosted models or backends support the feature.
-</Info>
+> [!NOTE]
+>
+> **While these LangChain classes support the indicated advanced feature**, you may need to refer to provider-specific documentation to learn which hosted models or backends support the feature.
 
-<div>
-  | Model | Stream | [Tool Calling](/oss/javascript/langchain/tools/) | [`withStructuredOutput()`](/oss/javascript/langchain/models#structured-output) | [`Multimodal`](/oss/javascript/langchain/messages#multimodal) | Downloads |
-  | :- | :- | :- | :- | :- | :- |
-  | [`ChatOpenAI`](/oss/javascript/integrations/chat/openai) | <span>✅</span> | <span>✅</span> | <span>✅</span> | <span>✅</span> | <span><a href="https://www.npmjs.com/package/@langchain/openai">  <img alt="Downloads per month" /></a></span> |
-  | [`ChatAnthropic`](/oss/javascript/integrations/chat/anthropic) | <span>✅</span> | <span>✅</span> | <span>✅</span> | <span>✅</span> | <span><a href="https://www.npmjs.com/package/@langchain/anthropic">  <img alt="Downloads per month" /></a></span> |
-  | [`ChatBedrockConverse`](/oss/javascript/integrations/chat/bedrock_converse) | <span>✅</span> | <span>✅</span> | <span>✅</span> | <span>✅</span> | <span><a href="https://www.npmjs.com/package/@langchain/aws">  <img alt="Downloads per month" /></a></span> |
-  | [`ChatGroq`](/oss/javascript/integrations/chat/groq) | <span>✅</span> | <span>✅</span> | <span>✅</span> | <span>❌</span> | <span><a href="https://www.npmjs.com/package/@langchain/groq">  <img alt="Downloads per month" /></a></span> |
-  | [`ChatOllama`](/oss/javascript/integrations/chat/ollama) | <span>✅</span> | <span>✅</span> | <span>✅</span> | <span>✅</span> | <span><a href="https://www.npmjs.com/package/@langchain/ollama">  <img alt="Downloads per month" /></a></span> |
-  | [`ChatMistralAI`](/oss/javascript/integrations/chat/mistral) | <span>✅</span> | <span>✅</span> | <span>✅</span> | <span>✅</span> | <span><a href="https://www.npmjs.com/package/@langchain/mistralai">  <img alt="Downloads per month" /></a></span> |
-  | [`ChatCohere`](/oss/javascript/integrations/chat/cohere) | <span>✅</span> | <span>✅</span> | <span>✅</span> | <span>❌</span> | <span><a href="https://www.npmjs.com/package/@langchain/cohere">  <img alt="Downloads per month" /></a></span> |
-  | [`ChatXAI`](/oss/javascript/integrations/chat/xai) | <span>✅</span> | <span>✅</span> | <span>✅</span> | <span>❌</span> | <span><a href="https://www.npmjs.com/package/@langchain/xai">  <img alt="Downloads per month" /></a></span> |
-  | [`ChatGoogle`](/oss/javascript/integrations/chat/google) | <span>✅</span> | <span>✅</span> | <span>✅</span> | <span>✅</span> | <span><a href="https://www.npmjs.com/package/@langchain/google">  <img alt="Downloads per month" /></a></span> |
-  | [`ChatCloudflareWorkersAI`](/oss/javascript/integrations/chat/cloudflare_workersai) | <span>✅</span> | <span>❌</span> | <span>❌</span> | <span>✅</span> | <span><a href="https://www.npmjs.com/package/@langchain/cloudflare">  <img alt="Downloads per month" /></a></span> |
-  | [`ChatFireworks`](/oss/javascript/integrations/chat/fireworks) | <span>✅</span> | <span>✅</span> | <span>✅</span> | <span>❌</span> | <span><a href="https://www.npmjs.com/package/@langchain/fireworks">  <img alt="Downloads per month" /></a></span> |
-  | [`ChatTogetherAI`](/oss/javascript/integrations/chat/togetherai) | <span>✅</span> | <span>✅</span> | <span>✅</span> | <span>✅</span> | <span><a href="https://www.npmjs.com/package/@langchain/together-ai">  <img alt="Downloads per month" /></a></span> |
-  | [`ChatPerplexity`](/oss/javascript/integrations/chat/perplexity) | <span>✅</span> | <span>❌</span> | <span>✅</span> | <span>❌</span> | <span><a href="https://www.npmjs.com/package/@langchain/perplexity">  <img alt="Downloads per month" /></a></span> |
-</div>
+| Model | Stream | [Tool Calling](/oss/javascript/langchain/tools/) | [`withStructuredOutput()`](/oss/javascript/langchain/models#structured-output) | [`Multimodal`](/oss/javascript/langchain/messages#multimodal) | Downloads |
+| :- | :- | :- | :- | :- | :- |
+| [`ChatOpenAI`](/oss/javascript/integrations/chat/openai) | ✅ | ✅ | ✅ | ✅ | [  ![Downloads per month](https://img.shields.io/npm/dm/@langchain/openai?style=flat-square\&label=%20&)](https://www.npmjs.com/package/@langchain/openai) |
+| [`ChatAnthropic`](/oss/javascript/integrations/chat/anthropic) | ✅ | ✅ | ✅ | ✅ | [  ![Downloads per month](https://img.shields.io/npm/dm/@langchain/anthropic?style=flat-square\&label=%20&)](https://www.npmjs.com/package/@langchain/anthropic) |
+| [`ChatBedrockConverse`](/oss/javascript/integrations/chat/bedrock_converse) | ✅ | ✅ | ✅ | ✅ | [  ![Downloads per month](https://img.shields.io/npm/dm/@langchain/aws?style=flat-square\&label=%20&)](https://www.npmjs.com/package/@langchain/aws) |
+| [`ChatGroq`](/oss/javascript/integrations/chat/groq) | ✅ | ✅ | ✅ | ❌ | [  ![Downloads per month](https://img.shields.io/npm/dm/@langchain/groq?style=flat-square\&label=%20&)](https://www.npmjs.com/package/@langchain/groq) |
+| [`ChatOllama`](/oss/javascript/integrations/chat/ollama) | ✅ | ✅ | ✅ | ✅ | [  ![Downloads per month](https://img.shields.io/npm/dm/@langchain/ollama?style=flat-square\&label=%20&)](https://www.npmjs.com/package/@langchain/ollama) |
+| [`ChatMistralAI`](/oss/javascript/integrations/chat/mistral) | ✅ | ✅ | ✅ | ✅ | [  ![Downloads per month](https://img.shields.io/npm/dm/@langchain/mistralai?style=flat-square\&label=%20&)](https://www.npmjs.com/package/@langchain/mistralai) |
+| [`ChatGoogle`](/oss/javascript/integrations/chat/google) | ✅ | ✅ | ✅ | ✅ | [  ![Downloads per month](https://img.shields.io/npm/dm/@langchain/google?style=flat-square\&label=%20&)](https://www.npmjs.com/package/@langchain/google) |
+| [`ChatCohere`](/oss/javascript/integrations/chat/cohere) | ✅ | ✅ | ✅ | ❌ | [  ![Downloads per month](https://img.shields.io/npm/dm/@langchain/cohere?style=flat-square\&label=%20&)](https://www.npmjs.com/package/@langchain/cohere) |
+| [`ChatXAI`](/oss/javascript/integrations/chat/xai) | ✅ | ✅ | ✅ | ❌ | [  ![Downloads per month](https://img.shields.io/npm/dm/@langchain/xai?style=flat-square\&label=%20&)](https://www.npmjs.com/package/@langchain/xai) |
+| [`ChatFireworks`](/oss/javascript/integrations/chat/fireworks) | ✅ | ✅ | ✅ | ❌ | [  ![Downloads per month](https://img.shields.io/npm/dm/@langchain/fireworks?style=flat-square\&label=%20&)](https://www.npmjs.com/package/@langchain/fireworks) |
+| [`ChatCloudflareWorkersAI`](/oss/javascript/integrations/chat/cloudflare_workersai) | ✅ | ❌ | ❌ | ✅ | [  ![Downloads per month](https://img.shields.io/npm/dm/@langchain/cloudflare?style=flat-square\&label=%20&)](https://www.npmjs.com/package/@langchain/cloudflare) |
+| [`ChatTogetherAI`](/oss/javascript/integrations/chat/togetherai) | ✅ | ✅ | ✅ | ✅ | [  ![Downloads per month](https://img.shields.io/npm/dm/@langchain/together-ai?style=flat-square\&label=%20&)](https://www.npmjs.com/package/@langchain/together-ai) |
+| [`ChatPerplexity`](/oss/javascript/integrations/chat/perplexity) | ✅ | ❌ | ✅ | ❌ | [  ![Downloads per month](https://img.shields.io/npm/dm/@langchain/perplexity?style=flat-square\&label=%20&)](https://www.npmjs.com/package/@langchain/perplexity) |
 
 See the [full list of chat model integrations](#all-chat-models) below for more options.
 
@@ -244,53 +230,46 @@ Certain model providers offer endpoints that are compatible with OpenAI's (legac
 
 ## All chat models
 
-<div>
-  | Model | Stream | [Tool Calling](/oss/javascript/langchain/tools/) | [`withStructuredOutput()`](/oss/javascript/langchain/models#structured-output) | [`Multimodal`](/oss/javascript/langchain/messages#multimodal) | Downloads |
-  | :- | :- | :- | :- | :- | :- |
-  | [`AzureChatOpenAI`](/oss/javascript/integrations/chat/azure) | <span>✅</span> | <span>✅</span> | <span>✅</span> | <span>✅</span> | <span><a href="https://www.npmjs.com/package/@langchain/openai">  <img alt="Downloads per month" /></a></span> |
-  | [`ChatOpenAI`](/oss/javascript/integrations/chat/openai) | <span>✅</span> | <span>✅</span> | <span>✅</span> | <span>✅</span> | <span><a href="https://www.npmjs.com/package/@langchain/openai">  <img alt="Downloads per month" /></a></span> |
-  | [`ChatAnthropic`](/oss/javascript/integrations/chat/anthropic) | <span>✅</span> | <span>✅</span> | <span>✅</span> | <span>✅</span> | <span><a href="https://www.npmjs.com/package/@langchain/anthropic">  <img alt="Downloads per month" /></a></span> |
-  | [`ChatBedrockConverse`](/oss/javascript/integrations/chat/bedrock_converse) | <span>✅</span> | <span>✅</span> | <span>✅</span> | <span>✅</span> | <span><a href="https://www.npmjs.com/package/@langchain/aws">  <img alt="Downloads per month" /></a></span> |
-  | [`ChatGoogleGenerativeAI`](/oss/javascript/integrations/chat/google_generative_ai) | <span>✅</span> | <span>✅</span> | <span>✅</span> | <span>✅</span> | <span><a href="https://www.npmjs.com/package/@langchain/google-genai">  <img alt="Downloads per month" /></a></span> |
-  | [`ChatVertexAI`](/oss/javascript/integrations/chat/google_vertex_ai) | <span>✅</span> | <span>✅</span> | <span>✅</span> | <span>✅</span> | <span><a href="https://www.npmjs.com/package/@langchain/google-vertexai">  <img alt="Downloads per month" /></a></span> |
-  | [`ChatGroq`](/oss/javascript/integrations/chat/groq) | <span>✅</span> | <span>✅</span> | <span>✅</span> | <span>❌</span> | <span><a href="https://www.npmjs.com/package/@langchain/groq">  <img alt="Downloads per month" /></a></span> |
-  | [`ChatOllama`](/oss/javascript/integrations/chat/ollama) | <span>✅</span> | <span>✅</span> | <span>✅</span> | <span>✅</span> | <span><a href="https://www.npmjs.com/package/@langchain/ollama">  <img alt="Downloads per month" /></a></span> |
-  | [`ChatMistralAI`](/oss/javascript/integrations/chat/mistral) | <span>✅</span> | <span>✅</span> | <span>✅</span> | <span>✅</span> | <span><a href="https://www.npmjs.com/package/@langchain/mistralai">  <img alt="Downloads per month" /></a></span> |
-  | [`ChatCohere`](/oss/javascript/integrations/chat/cohere) | <span>✅</span> | <span>✅</span> | <span>✅</span> | <span>❌</span> | <span><a href="https://www.npmjs.com/package/@langchain/cohere">  <img alt="Downloads per month" /></a></span> |
-  | [`ChatXAI`](/oss/javascript/integrations/chat/xai) | <span>✅</span> | <span>✅</span> | <span>✅</span> | <span>❌</span> | <span><a href="https://www.npmjs.com/package/@langchain/xai">  <img alt="Downloads per month" /></a></span> |
-  | [`ChatGoogle`](/oss/javascript/integrations/chat/google) | <span>✅</span> | <span>✅</span> | <span>✅</span> | <span>✅</span> | <span><a href="https://www.npmjs.com/package/@langchain/google">  <img alt="Downloads per month" /></a></span> |
-  | [`ChatDeepSeek`](/oss/javascript/integrations/chat/deepseek) | <span>✅</span> | <span>✅</span> | <span>✅</span> | <span>❌</span> | <span><a href="https://www.npmjs.com/package/@langchain/deepseek">  <img alt="Downloads per month" /></a></span> |
-  | [`ChatOpenRouter`](/oss/javascript/integrations/chat/openrouter) | <span>✅</span> | <span>✅</span> | <span>✅</span> | <span>✅</span> | <span><a href="https://www.npmjs.com/package/@langchain/openrouter">  <img alt="Downloads per month" /></a></span> |
-  | [`ChatCerebras`](/oss/javascript/integrations/chat/cerebras) | <span>✅</span> | <span>✅</span> | <span>✅</span> | <span>❌</span> | <span><a href="https://www.npmjs.com/package/@langchain/cerebras">  <img alt="Downloads per month" /></a></span> |
-  | [`ChatBaiduQianfan`](/oss/javascript/integrations/chat/baidu_qianfan) | <span /> | <span /> | <span /> | <span /> | <span><a href="https://www.npmjs.com/package/@langchain/baidu-qianfan">  <img alt="Downloads per month" /></a></span> |
-  | [`ChatCloudflareWorkersAI`](/oss/javascript/integrations/chat/cloudflare_workersai) | <span>✅</span> | <span>❌</span> | <span>❌</span> | <span>✅</span> | <span><a href="https://www.npmjs.com/package/@langchain/cloudflare">  <img alt="Downloads per month" /></a></span> |
-  | [`ChatFireworks`](/oss/javascript/integrations/chat/fireworks) | <span>✅</span> | <span>✅</span> | <span>✅</span> | <span>❌</span> | <span><a href="https://www.npmjs.com/package/@langchain/fireworks">  <img alt="Downloads per month" /></a></span> |
-  | [`ChatWatsonx`](/oss/javascript/integrations/chat/ibm) | <span>✅</span> | <span>✅</span> | <span>✅</span> | <span>✅</span> | <span><a href="https://www.npmjs.com/package/@langchain/ibm">  <img alt="Downloads per month" /></a></span> |
-  | [`ChatTogetherAI`](/oss/javascript/integrations/chat/togetherai) | <span>✅</span> | <span>✅</span> | <span>✅</span> | <span>✅</span> | <span><a href="https://www.npmjs.com/package/@langchain/together-ai">  <img alt="Downloads per month" /></a></span> |
-  | [`ChatYandexGPT`](/oss/javascript/integrations/chat/yandex) | <span /> | <span /> | <span /> | <span /> | <span><a href="https://www.npmjs.com/package/@langchain/yandex">  <img alt="Downloads per month" /></a></span> |
-  | [`ChatPerplexity`](/oss/javascript/integrations/chat/perplexity) | <span>✅</span> | <span>❌</span> | <span>✅</span> | <span>❌</span> | <span><a href="https://www.npmjs.com/package/@langchain/perplexity">  <img alt="Downloads per month" /></a></span> |
-  | [`ChatKServe`](https://gitlab.com/bitkaio/langchain/kserve-provider) | <span>✅</span> | <span>✅</span> | <span>✅</span> | <span>✅</span> | <span><a href="https://www.npmjs.com/package/@bitkaio/langchain-kserve">  <img alt="Downloads per month" /></a></span> |
-  | [`ChatInterfaze`](https://interfaze.ai/docs) | <span>✅</span> | <span>✅</span> | <span>✅</span> | <span>✅</span> | <span><a href="https://www.npmjs.com/package/@interfaze-ai/langchain">  <img alt="Downloads per month" /></a></span> |
-  | [`ChatSCX`](https://scx.ai/) | <span>✅</span> | <span>✅</span> | <span>✅</span> | <span>✅</span> | <span><a href="https://www.npmjs.com/package/@scx-ai/langchain">  <img alt="Downloads per month" /></a></span> |
-  | [`RecallToolkit`](https://recallmem.dev/guides/langchain) | <span /> | <span /> | <span /> | <span /> | <span><a href="https://www.npmjs.com/package/@recall-memory/langchain">  <img alt="Downloads per month" /></a></span> |
-  | [`Auxen`](https://auxen.ai) | <span>✅</span> | <span>✅</span> | <span>✅</span> | <span>❌</span> | <span>N/A</span> |
-  | [`FakeListChatModel`](/oss/javascript/integrations/chat/fake) | <span /> | <span /> | <span /> | <span /> | <span>N/A</span> |
-  | [`FuturMix`](https://futurmix.ai/) | <span>✅</span> | <span>✅</span> | <span>✅</span> | <span>✅</span> | <span>N/A</span> |
-  | [`Tuning Engines`](https://www.tuningengines.com/) | <span>✅</span> | <span>✅</span> | <span>✅</span> | <span>❌</span> | <span>N/A</span> |
-</div>
+| Model | Stream | [Tool Calling](/oss/javascript/langchain/tools/) | [`withStructuredOutput()`](/oss/javascript/langchain/models#structured-output) | [`Multimodal`](/oss/javascript/langchain/messages#multimodal) | Downloads |
+| :- | :- | :- | :- | :- | :- |
+| [`AzureChatOpenAI`](/oss/javascript/integrations/chat/azure) | ✅ | ✅ | ✅ | ✅ | [  ![Downloads per month](https://img.shields.io/npm/dm/@langchain/openai?style=flat-square\&label=%20&)](https://www.npmjs.com/package/@langchain/openai) |
+| [`ChatOpenAI`](/oss/javascript/integrations/chat/openai) | ✅ | ✅ | ✅ | ✅ | [  ![Downloads per month](https://img.shields.io/npm/dm/@langchain/openai?style=flat-square\&label=%20&)](https://www.npmjs.com/package/@langchain/openai) |
+| [`ChatAnthropic`](/oss/javascript/integrations/chat/anthropic) | ✅ | ✅ | ✅ | ✅ | [  ![Downloads per month](https://img.shields.io/npm/dm/@langchain/anthropic?style=flat-square\&label=%20&)](https://www.npmjs.com/package/@langchain/anthropic) |
+| [`ChatGoogleGenerativeAI`](/oss/javascript/integrations/chat/google_generative_ai) | ✅ | ✅ | ✅ | ✅ | [  ![Downloads per month](https://img.shields.io/npm/dm/@langchain/google-genai?style=flat-square\&label=%20&)](https://www.npmjs.com/package/@langchain/google-genai) |
+| [`ChatBedrockConverse`](/oss/javascript/integrations/chat/bedrock_converse) | ✅ | ✅ | ✅ | ✅ | [  ![Downloads per month](https://img.shields.io/npm/dm/@langchain/aws?style=flat-square\&label=%20&)](https://www.npmjs.com/package/@langchain/aws) |
+| [`ChatVertexAI`](/oss/javascript/integrations/chat/google_vertex_ai) | ✅ | ✅ | ✅ | ✅ | [  ![Downloads per month](https://img.shields.io/npm/dm/@langchain/google-vertexai?style=flat-square\&label=%20&)](https://www.npmjs.com/package/@langchain/google-vertexai) |
+| [`ChatGroq`](/oss/javascript/integrations/chat/groq) | ✅ | ✅ | ✅ | ❌ | [  ![Downloads per month](https://img.shields.io/npm/dm/@langchain/groq?style=flat-square\&label=%20&)](https://www.npmjs.com/package/@langchain/groq) |
+| [`ChatOllama`](/oss/javascript/integrations/chat/ollama) | ✅ | ✅ | ✅ | ✅ | [  ![Downloads per month](https://img.shields.io/npm/dm/@langchain/ollama?style=flat-square\&label=%20&)](https://www.npmjs.com/package/@langchain/ollama) |
+| [`ChatMistralAI`](/oss/javascript/integrations/chat/mistral) | ✅ | ✅ | ✅ | ✅ | [  ![Downloads per month](https://img.shields.io/npm/dm/@langchain/mistralai?style=flat-square\&label=%20&)](https://www.npmjs.com/package/@langchain/mistralai) |
+| [`ChatGoogle`](/oss/javascript/integrations/chat/google) | ✅ | ✅ | ✅ | ✅ | [  ![Downloads per month](https://img.shields.io/npm/dm/@langchain/google?style=flat-square\&label=%20&)](https://www.npmjs.com/package/@langchain/google) |
+| [`ChatCohere`](/oss/javascript/integrations/chat/cohere) | ✅ | ✅ | ✅ | ❌ | [  ![Downloads per month](https://img.shields.io/npm/dm/@langchain/cohere?style=flat-square\&label=%20&)](https://www.npmjs.com/package/@langchain/cohere) |
+| [`ChatXAI`](/oss/javascript/integrations/chat/xai) | ✅ | ✅ | ✅ | ❌ | [  ![Downloads per month](https://img.shields.io/npm/dm/@langchain/xai?style=flat-square\&label=%20&)](https://www.npmjs.com/package/@langchain/xai) |
+| [`ChatOpenRouter`](/oss/javascript/integrations/chat/openrouter) | ✅ | ✅ | ✅ | ✅ | [  ![Downloads per month](https://img.shields.io/npm/dm/@langchain/openrouter?style=flat-square\&label=%20&)](https://www.npmjs.com/package/@langchain/openrouter) |
+| [`ChatDeepSeek`](/oss/javascript/integrations/chat/deepseek) | ✅ | ✅ | ✅ | ❌ | [  ![Downloads per month](https://img.shields.io/npm/dm/@langchain/deepseek?style=flat-square\&label=%20&)](https://www.npmjs.com/package/@langchain/deepseek) |
+| [`ChatCerebras`](/oss/javascript/integrations/chat/cerebras) | ✅ | ✅ | ✅ | ❌ | [  ![Downloads per month](https://img.shields.io/npm/dm/@langchain/cerebras?style=flat-square\&label=%20&)](https://www.npmjs.com/package/@langchain/cerebras) |
+| [`ChatFireworks`](/oss/javascript/integrations/chat/fireworks) | ✅ | ✅ | ✅ | ❌ | [  ![Downloads per month](https://img.shields.io/npm/dm/@langchain/fireworks?style=flat-square\&label=%20&)](https://www.npmjs.com/package/@langchain/fireworks) |
+| [`ChatBaiduQianfan`](/oss/javascript/integrations/chat/baidu_qianfan) | | | | | [  ![Downloads per month](https://img.shields.io/npm/dm/@langchain/baidu-qianfan?style=flat-square\&label=%20&)](https://www.npmjs.com/package/@langchain/baidu-qianfan) |
+| [`ChatCloudflareWorkersAI`](/oss/javascript/integrations/chat/cloudflare_workersai) | ✅ | ❌ | ❌ | ✅ | [  ![Downloads per month](https://img.shields.io/npm/dm/@langchain/cloudflare?style=flat-square\&label=%20&)](https://www.npmjs.com/package/@langchain/cloudflare) |
+| [`ChatTogetherAI`](/oss/javascript/integrations/chat/togetherai) | ✅ | ✅ | ✅ | ✅ | [  ![Downloads per month](https://img.shields.io/npm/dm/@langchain/together-ai?style=flat-square\&label=%20&)](https://www.npmjs.com/package/@langchain/together-ai) |
+| [`ChatWatsonx`](/oss/javascript/integrations/chat/ibm) | ✅ | ✅ | ✅ | ✅ | [  ![Downloads per month](https://img.shields.io/npm/dm/@langchain/ibm?style=flat-square\&label=%20&)](https://www.npmjs.com/package/@langchain/ibm) |
+| [`ChatPerplexity`](/oss/javascript/integrations/chat/perplexity) | ✅ | ❌ | ✅ | ❌ | [  ![Downloads per month](https://img.shields.io/npm/dm/@langchain/perplexity?style=flat-square\&label=%20&)](https://www.npmjs.com/package/@langchain/perplexity) |
+| [`ChatYandexGPT`](/oss/javascript/integrations/chat/yandex) | | | | | [  ![Downloads per month](https://img.shields.io/npm/dm/@langchain/yandex?style=flat-square\&label=%20&)](https://www.npmjs.com/package/@langchain/yandex) |
+| [`ChatInterfaze`](https://interfaze.ai/docs) | ✅ | ✅ | ✅ | ✅ | [  ![Downloads per month](https://img.shields.io/npm/dm/@interfaze-ai/langchain?style=flat-square\&label=%20&)](https://www.npmjs.com/package/@interfaze-ai/langchain) |
+| [`ChatKServe`](https://gitlab.com/bitkaio/langchain/kserve-provider) | ✅ | ✅ | ✅ | ✅ | [  ![Downloads per month](https://img.shields.io/npm/dm/@bitkaio/langchain-kserve?style=flat-square\&label=%20&)](https://www.npmjs.com/package/@bitkaio/langchain-kserve) |
+| [`RecallToolkit`](https://recallmem.dev/guides/langchain) | | | | | [  ![Downloads per month](https://img.shields.io/npm/dm/@recall-memory/langchain?style=flat-square\&label=%20&)](https://www.npmjs.com/package/@recall-memory/langchain) |
+| [`ChatSCX`](https://scx.ai/) | ✅ | ✅ | ✅ | ✅ | [  ![Downloads per month](https://img.shields.io/npm/dm/@scx-ai/langchain?style=flat-square\&label=%20&)](https://www.npmjs.com/package/@scx-ai/langchain) |
+| [`Auxen`](https://auxen.ai) | ✅ | ✅ | ✅ | ❌ | N/A |
+| [`ChatWebLLM`](https://github.com/ykoh42/web-llm-adapters/blob/main/packages/langchain-web-llm/README.md) | ✅ | ✅ | ✅ | | N/A |
+| [`FakeListChatModel`](/oss/javascript/integrations/chat/fake) | | | | | N/A |
+| [`FuturMix`](https://futurmix.ai/) | ✅ | ✅ | ✅ | ✅ | N/A |
+| [`Tuning Engines`](https://www.tuningengines.com/) | ✅ | ✅ | ✅ | ❌ | N/A |
 
-<Info>
-  If you'd like to contribute an integration, see [Contributing integrations](/oss/javascript/contributing#add-a-new-integration).
-</Info>
+> [!NOTE]
+>
+> If you'd like to contribute an integration, see [Contributing integrations](/oss/javascript/contributing#add-a-new-integration).
 
 ***
 
-<div>
-  <Callout icon="terminal-2">
-    [Connect these docs](/use-these-docs) to your agent of choice via MCP for real-time answers.
-  </Callout>
+[Connect these docs](/use-these-docs) to your agent of choice via MCP for real-time answers.
 
-  <Callout icon="edit">
-    [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/oss/javascript/integrations/chat/index.mdx) or [file an issue](https://github.com/langchain-ai/docs/issues/new/choose).
-  </Callout>
-</div>
+[Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/oss/javascript/integrations/chat/index.mdx) or [file an issue](https://github.com/langchain-ai/docs/issues/new/choose).

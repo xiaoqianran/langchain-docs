@@ -12,9 +12,9 @@
 
 1、实施认证：
 
-   <Note>
-     如果没有自定义 `@auth.authenticate` 处理程序，LangGraph 只能看到 API 密钥所有者（通常是开发人员），因此请求的范围不限于单个最终用户。要传播自定义令牌，您必须实现自己的处理程序。
-   </Note>
+   > [!注意]
+   >
+   > 如果没有自定义 `@auth.authenticate` 处理程序，LangGraph 只能看到 API 密钥所有者（通常是开发人员），因此请求的范围不限于单个最终用户。要传播自定义令牌，您必须实现自己的处理程序。
 
    ```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
    from langgraph_sdk import Auth
@@ -60,67 +60,65 @@
    ```
 3. 在服务器中设置身份验证后，请求必须包含基于您选择的方案所需的授权信息。假设您使用 JWT 令牌身份验证，您可以使用以下任一方法访问您的部署：
 
-   <Tabs>
-     <Tab title="Python Client">
-       ```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-       from langgraph_sdk import get_client
+   **Python 客户端**
 
-       my_token = "your-token" # In practice, you would generate a signed token with your auth provider
-       client = get_client(
-           url="http://localhost:2024",
-           headers={"Authorization": f"Bearer {my_token}"}
-       )
-       threads = await client.threads.search()
-       ```
-     </Tab>
+   ```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+   from langgraph_sdk import get_client
 
-     <Tab title="Python RemoteGraph">
-       ```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-       from langgraph.pregel.remote import RemoteGraph
+   my_token = "your-token" # In practice, you would generate a signed token with your auth provider
+   client = get_client(
+       url="http://localhost:2024",
+       headers={"Authorization": f"Bearer {my_token}"}
+   )
+   threads = await client.threads.search()
+   ```
 
-       my_token = "your-token" # In practice, you would generate a signed token with your auth provider
-       remote-graph = RemoteGraph(
-           "agent",
-           url="http://localhost:2024",
-           headers={"Authorization": f"Bearer {my_token}"}
-       )
-       threads = await remote-graph.ainvoke(...)
-       ```
-     </Tab>
+   **Python 远程图**
 
-     <Tab title="JavaScript Client">
-       ```javascript theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-       import { Client } from "@langchain/langgraph-sdk";
+   ```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+   from langgraph.pregel.remote import RemoteGraph
 
-       const my_token = "your-token"; // In practice, you would generate a signed token with your auth provider
-       const client = new Client({
-       apiUrl: "http://localhost:2024",
-       defaultHeaders: { Authorization: `Bearer ${my_token}` },
-       });
-       const threads = await client.threads.search();
-       ```
-     </Tab>
+   my_token = "your-token" # In practice, you would generate a signed token with your auth provider
+   remote-graph = RemoteGraph(
+       "agent",
+       url="http://localhost:2024",
+       headers={"Authorization": f"Bearer {my_token}"}
+   )
+   threads = await remote-graph.ainvoke(...)
+   ```
 
-     <Tab title="JavaScript RemoteGraph">
-       ```javascript theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-       import { RemoteGraph } from "@langchain/langgraph/remote";
+   **JavaScript 客户端**
 
-       const my_token = "your-token"; // In practice, you would generate a signed token with your auth provider
-       const remoteGraph = new RemoteGraph({
-       graphId: "agent",
-       url: "http://localhost:2024",
-       headers: { Authorization: `Bearer ${my_token}` },
-       });
-       const threads = await remoteGraph.invoke(...);
-       ```
-     </Tab>
+   ```javascript theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+   import { Client } from "@langchain/langgraph-sdk";
 
-     <Tab title="cURL">
-       ```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-       curl -H "Authorization: Bearer ${your-token}" http://localhost:2024/threads
-       ```
-     </Tab>
-   </Tabs>
+   const my_token = "your-token"; // In practice, you would generate a signed token with your auth provider
+   const client = new Client({
+   apiUrl: "http://localhost:2024",
+   defaultHeaders: { Authorization: `Bearer ${my_token}` },
+   });
+   const threads = await client.threads.search();
+   ```
+
+   **JavaScript RemoteGraph**
+
+   ```javascript theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+   import { RemoteGraph } from "@langchain/langgraph/remote";
+
+   const my_token = "your-token"; // In practice, you would generate a signed token with your auth provider
+   const remoteGraph = new RemoteGraph({
+   graphId: "agent",
+   url: "http://localhost:2024",
+   headers: { Authorization: `Bearer ${my_token}` },
+   });
+   const threads = await remoteGraph.invoke(...);
+   ```
+
+   **卷曲**
+
+   ```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+   curl -H "Authorization: Bearer ${your-token}" http://localhost:2024/threads
+   ```
 
    有关 RemoteGraph 的更多详细信息，请参阅 [Use RemoteGraph](/langsmith/use-remote-graph) 指南。
 
@@ -138,15 +136,15 @@ def my_node(state, config):
     ...
 ```
 
-<Note>
-  从安全秘密存储中获取用户凭据。不建议以图状态存储机密。
-</Note>
+> [!注意]
+>
+> 从安全秘密存储中获取用户凭据。不建议以图状态存储秘密。
 
 ### 授权用户使用 Studio默认情况下，如果您在资源上添加自定义授权，这也将适用于通过 [Studio](/langsmith/studio) 进行的交互。如果需要，您可以通过检查[is\_studio\_user()](https://langchain-ai.github.io/langgraph/cloud/reference/sdk/python_sdk_ref/#langgraph_sdk.auth.types.StudioUser)以不同方式处理登录的 Studio 用户。
 
-<Note>
-  `is_studio_user` 是在 langgraph-sdk 0.1.73 版本中添加的。如果您使用的是旧版本，您仍然可以检查是否`isinstance(ctx.user, StudioUser)`。
-</Note>
+> [!注意]
+>
+> `is_studio_user` 已在 langgraph-sdk 0.1.73 版本中添加。如果您使用的是旧版本，您仍然可以检查是否`isinstance(ctx.user, StudioUser)`。
 
 ```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 from langgraph_sdk.auth import is_studio_user, Auth
@@ -177,12 +175,6 @@ async def add_owner(
 
 ***
 
-<div>
-  <Callout icon="terminal-2">
-    [Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
-  </Callout>
+[Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
 
-  <Callout icon="edit">
-    [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/custom-auth.mdx) 或 [file an issue](https://github.com/langchain-ai/docs/issues/new/choose)。
-  </Callout>
-</div>
+[Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/custom-auth.mdx) 或 [file an issue](https://github.com/langchain-ai/docs/issues/new/choose)。

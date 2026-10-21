@@ -16,13 +16,13 @@ This guide covers how to set up few-shot examples as part of your LLM-as-a-judge
 
 ## Configure your evaluator
 
-<Note>
-  Few-shot examples are not currently supported in LLM-as-a-judge evaluators that use the prompt hub and are only compatible with prompts that use mustache formatting.
-
-  Few-shot examples are only supported for run-level evaluators, not thread-level. Toggle on **Runs** in the [**Configure Evaluator** panel](/langsmith/evaluators#edit-an-evaluator).
-
-  Few-shot examples are not available for [decision model evaluators](/langsmith/decision-model-evaluator).
-</Note>
+> [!NOTE]
+>
+> Few-shot examples are not currently supported in LLM-as-a-judge evaluators that use the prompt hub and are only compatible with prompts that use mustache formatting.
+>
+> Few-shot examples are only supported for run-level evaluators, not thread-level. Toggle on **Runs** in the [**Configure Evaluator** panel](/langsmith/evaluators#edit-an-evaluator).
+>
+> Few-shot examples are not available for [decision model evaluators](/langsmith/decision-model-evaluator).
 
 Before enabling few-shot examples, set up your LLM-as-a-judge evaluator. If you haven't done this yet, follow the steps in the [LLM-as-a-judge evaluator guide](/langsmith/llm-as-judge).
 
@@ -38,15 +38,15 @@ You may also specify the number of few-shot examples to use. The default is 5. I
 
 ## Make corrections
 
-<Info>
-  [Audit evaluator scores](/langsmith/audit-evaluator-scores)
-</Info>
+> [!NOTE]
+>
+> [Audit evaluator scores](/langsmith/audit-evaluator-scores)
 
 As you start logging traces or running experiments, you will likely disagree with some of the scores that your evaluator has given. When you [make corrections to these scores](/langsmith/audit-evaluator-scores), you will begin seeing examples populated inside your corrections dataset. As you make corrections, make sure to attach explanations - these will get populated into your evaluator prompt in place of the `few_shot_explanation` variable.
 
 The inputs to the few-shot examples will be the relevant fields from the inputs, outputs, and reference (if this an offline evaluator) of your chain/dataset. The outputs will be the corrected evaluator score and the explanations that you created when you left the corrections. Feel free to edit these to your liking. Here is an example of a few-shot example in a corrections dataset:
 
-<img alt="Few-shot example" />
+![Few-shot example](https://mintcdn.com/langchain-5e9cc07a/0B2PFrFBMRWNccee/langsmith/images/few-shot-example.png?fit=max\&auto=format\&n=0B2PFrFBMRWNccee\&q=85\&s=8c7bfcc6cc4ab86c18240c3cbf2ea44c)
 
 Note that the corrections may take a minute or two to be populated into your few-shot dataset. Once they are there, future runs of your evaluator will include them in the prompt!
 
@@ -57,20 +57,14 @@ In order to view your corrections dataset:
 * **Online evaluators**: Select your run rule and click **Edit Rule**
 * **Offline evaluators**: Select your evaluator and click **Edit Evaluator**
 
-<img alt="Edit Evaluator" />
+![Edit Evaluator](https://mintcdn.com/langchain-5e9cc07a/aKRoUGXX6ygp4DlC/langsmith/images/edit-evaluator.png?fit=max\&auto=format\&n=aKRoUGXX6ygp4DlC\&q=85\&s=03453ef08f1c272d5d9aaf71d1fb7301)
 
 Head to your dataset of corrections linked in the **Improve evaluator accuracy using few-shot examples** section. You can view and update your few-shot examples in the dataset.
 
-<img alt="View few-shot dataset" />
+![View few-shot dataset](https://mintcdn.com/langchain-5e9cc07a/1RIJxfRpkszanJLL/langsmith/images/view-few-shot-ds.png?fit=max\&auto=format\&n=1RIJxfRpkszanJLL\&q=85\&s=3215f3f24a08186fd76c6dbad18a3cf5)
 
 ***
 
-<div>
-  <Callout icon="terminal-2">
-    [Connect these docs](/use-these-docs) to your agent of choice via MCP for real-time answers.
-  </Callout>
+[Connect these docs](/use-these-docs) to your agent of choice via MCP for real-time answers.
 
-  <Callout icon="edit">
-    [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/create-few-shot-evaluators.mdx) or [file an issue](https://github.com/langchain-ai/docs/issues/new/choose).
-  </Callout>
-</div>
+[Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/create-few-shot-evaluators.mdx) or [file an issue](https://github.com/langchain-ai/docs/issues/new/choose).

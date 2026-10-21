@@ -10,18 +10,18 @@ The list includes API operations in LangSmith along with:
 * The specific permission string required.
 * Notes about partial access or special cases.
 
-<Info>
-  For an overview of LangSmith's RBAC system, role definitions, and permission concepts, refer to [Role-based access control](/langsmith/rbac).
-</Info>
+> [!NOTE]
+>
+> For an overview of LangSmith's RBAC system, role definitions, and permission concepts, refer to [Role-based access control](/langsmith/rbac).
 
 ## Contents
 
 | Organization-level operations | Workspace-level operations |
 | - | - |
-| **Core management:**<br />• [Organization settings](#organization-settings): Org info and configuration<br />• [Workspaces](#workspaces): Workspace management<br />• [Organization members](#organization-members): Member management<br />• [Roles and permissions](#roles-and-permissions): Custom roles | **Core resources:**<br />• [Projects](#projects): Organize traces and runs<br />• [Runs](#runs): Individual execution traces<br />• [Datasets](#datasets): Test datasets for evaluation<br />• [Examples](#examples): Individual dataset examples<br />• [Experiments](#experiments): Comparative experiments |
-| **Security and authentication:**<br />• [SSO and authentication](#sso-and-authentication): Single sign-on setup<br />• [SCIM](#scim): Identity provisioning<br />• [Access policies](#access-policies): Attribute-based access control | **Monitoring and analysis:**<br />• [Rules](#rules): Automated run rules<br />• [Alerts](#alerts): Alert rules for monitoring<br />• [Feedback](#feedback): Scores and labels on outputs<br />• [Annotation Queues](#annotation-queues): Human review queues<br />• [Charts](#charts): Custom visualizations |
-| **Billing and accounts:**<br />• [Billing and payments](#billing-and-payments): Subscription management<br />• [API keys](#api-keys): Org-level keys | **Development and configuration:**<br />• [Prompts](#prompts): Prompt templates (LangChain Hub)<br />• [Custom apps](#custom-apps): User-authored mini web apps<br />• [Deployments](#deployments): Deployment configurations<br />• [MCP Servers](#mcp-servers): Model Context Protocol servers<br />• [Fleet](#fleet): Fleet admin operations |
-| **Analytics:**<br />• [Charts and dashboards](#organization-charts-and-dashboards): Org-level visualizations<br />• [Usage and analytics](#usage-and-analytics): Usage tracking and TTL settings | **Workspace management:**<br />• [Model price map](#model-price-map): Per-token model prices<br />• [Workspace settings](#workspace-settings-and-management): Members, settings<br />• [Tags](#tags): Metadata tagging system<br />• [Bulk Exports](#bulk-exports): Data export operations |
+| **Core management:** • [Organization settings](#organization-settings): Org info and configuration • [Workspaces](#workspaces): Workspace management • [Organization members](#organization-members): Member management • [Roles and permissions](#roles-and-permissions): Custom roles | **Core resources:** • [Projects](#projects): Organize traces and runs • [Runs](#runs): Individual execution traces • [Datasets](#datasets): Test datasets for evaluation • [Examples](#examples): Individual dataset examples • [Experiments](#experiments): Comparative experiments |
+| **Security and authentication:** • [SSO and authentication](#sso-and-authentication): Single sign-on setup • [SCIM](#scim): Identity provisioning • [Access policies](#access-policies): Attribute-based access control | **Monitoring and analysis:** • [Rules](#rules): Automated run rules • [Alerts](#alerts): Alert rules for monitoring • [Feedback](#feedback): Scores and labels on outputs • [Annotation Queues](#annotation-queues): Human review queues • [Charts](#charts): Custom visualizations |
+| **Billing and accounts:** • [Billing and payments](#billing-and-payments): Subscription management • [API keys](#api-keys): Org-level keys | **Development and configuration:** • [Prompts](#prompts): Prompt templates (LangChain Hub) • [Custom apps](#custom-apps): User-authored mini web apps • [Deployments](#deployments): Deployment configurations • [MCP Servers](#mcp-servers): Model Context Protocol servers • [Fleet](#fleet): Fleet admin operations |
+| **Analytics:** • [Charts and dashboards](#organization-charts-and-dashboards): Org-level visualizations • [Usage and analytics](#usage-and-analytics): Usage tracking and TTL settings | **Workspace management:** • [Model price map](#model-price-map): Per-token model prices • [Workspace settings](#workspace-settings-and-management): Members, settings • [Tags](#tags): Metadata tagging system • [Bulk Exports](#bulk-exports): Data export operations |
 
 **Additional information:**
 
@@ -36,9 +36,9 @@ The list includes API operations in LangSmith along with:
 
 ## Organization-level operations
 
-<Info>
-  Organization-level operations are controlled by organization roles, which are separate from the RBAC feature. Learn more in the [Role-based access control](/langsmith/rbac#organization-roles) guide.
-</Info>
+> [!NOTE]
+>
+> Organization-level operations are controlled by organization roles, which are separate from the RBAC feature. Learn more in the [Role-based access control](/langsmith/rbac#organization-roles) guide.
 
 ### Organization settings
 
@@ -146,9 +146,9 @@ Attribute-based access control (ABAC) policies for fine-grained permissions.
 | Deactivate, reactivate, or delete own personal access token (PAT) | ✓ | ✓ | ✓ | ✗ | `organization:read` |
 | Deactivate, reactivate, or delete another member's personal access token (PAT) | ✓ | ✓ | ✗ | ✗ | `organization:pats:manage` |
 
-<Note>
-  \* Organization Operators and Organization Users can create or delete workspace-scoped service keys only in workspaces where their role grants `workspaces:manage-keys`, such as the Workspace Admin role. Creating an org-wide service key requires the Organization Admin role.
-</Note>
+> [!NOTE]
+>
+> \* Organization Operators and Organization Users can create or delete workspace-scoped service keys only in workspaces where their role grants `workspaces:manage-keys`, such as the Workspace Admin role. Creating an org-wide service key requires the Organization Admin role.
 
 ### Organization charts and dashboards
 
@@ -181,9 +181,9 @@ Attribute-based access control (ABAC) policies for fine-grained permissions.
 
 These operations are controlled by [workspace-level roles and permissions](/langsmith/rbac#workspace-roles).
 
-<Tip>
-  To understand what each role means and their overall capabilities, refer to the [Role-based access control](/langsmith/rbac) guide.
-</Tip>
+> [!TIP]
+>
+> To understand what each role means and their overall capabilities, refer to the [Role-based access control](/langsmith/rbac) guide.
 
 ### Tracing keys
 
@@ -230,13 +230,13 @@ Projects organize traces and runs from your LLM applications.
 | Get run cluster from insights job | ✓ | ✓ | ✓ | `projects:read` |
 | Get runs from insights job | ✓ | ✓ | ✓ | `projects:read` |
 
-<Note>
-  \* `projects:increase-trace-tier` and `projects:decrease-trace-tier` are independent and can be granted separately in custom roles. For example, you can allow a role to decrease retention without allowing it to increase retention. If a user lacks both permissions, the retention settings UI is hidden entirely. If they have only one, the UI is partially enabled (the disallowed direction is disabled).
-</Note>
+> [!NOTE]
+>
+> \* `projects:increase-trace-tier` and `projects:decrease-trace-tier` are independent and can be granted separately in custom roles. For example, you can allow a role to decrease retention without allowing it to increase retention. If a user lacks both permissions, the retention settings UI is hidden entirely. If they have only one, the UI is partially enabled (the disallowed direction is disabled).
 
-<Note>
-  Creating a saved filter view modifies an existing project and requires `projects:update`. Comparative-experiment creation requires `experiments:run`. Custom roles that only grant `projects:create` need the corresponding permission for these operations. Tracing keys do not support either operation.
-</Note>
+> [!NOTE]
+>
+> Creating a saved filter view modifies an existing project and requires `projects:update`. Comparative-experiment creation requires `experiments:run`. Custom roles that only grant `projects:create` need the corresponding permission for these operations. Tracing keys do not support either operation.
 
 ### Runs
 
@@ -329,9 +329,9 @@ Test datasets with examples for evaluation.
 | Run playground experiment (stream) | ✓ | ⚠ | ✗ | `prompts:read` + `datasets:read` + `projects:create` |
 | Run studio experiment | ✓ | ⚠ | ✗ | `datasets:read` + `projects:create` |
 
-<Note>
-  Workspace Editors have partial access because they cannot create projects, which limits their ability to create new experiments.
-</Note>
+> [!NOTE]
+>
+> Workspace Editors have partial access because they cannot create projects, which limits their ability to create new experiments.
 
 ### Examples
 
@@ -356,9 +356,9 @@ Individual examples within datasets.
 | Validate a single example | ✓ | ✓ | ✓ | `datasets:read` |
 | Validate examples (bulk) | ✓ | ✓ | ✓ | `datasets:read` |
 
-<Note>
-  Creating examples from existing runs also requires `runs:read` on each source run's project. The run's inputs and outputs are copied only if you have `runs:read-inputs` and `runs:read-outputs` for that project.
-</Note>
+> [!NOTE]
+>
+> Creating examples from existing runs also requires `runs:read` on each source run's project. The run's inputs and outputs are copied only if you have `runs:read-inputs` and `runs:read-outputs` for that project.
 
 ### Experiments
 
@@ -379,15 +379,17 @@ Comparative experiments for evaluating LLM outputs.
 | Update experiment view override | ✓ | ✓ | ✗ | `datasets:update` |
 | Delete experiment view override | ✓ | ✓ | ✗ | `datasets:update` |
 
-<Note>
-  Workspace Editors have partial access because they cannot create projects, which limits their ability to create new experiments.
-</Note>
+> [!NOTE]
+>
+> Workspace Editors have partial access because they cannot create projects, which limits their ability to create new experiments.
 
 ### Feedback
 
 Scores, labels, and corrections on LLM outputs.
 
-<Note>The feedback formula operations are deprecated in favor of [composite evaluators](/langsmith/composite-evaluators-ui) and are scheduled for removal on 2026-08-20.</Note>
+> [!NOTE]
+>
+> The feedback formula operations are deprecated in favor of [composite evaluators](/langsmith/composite-evaluators-ui) and are scheduled for removal on 2026-08-20.
 
 | Operation | Workspace Admin | Workspace Editor | Workspace Viewer | Required Permission |
 | - | :-: | :-: | :-: | - |
@@ -489,9 +491,9 @@ Prompt templates and chains in the LangChain Hub.
 | Delete quick action | ✓ | ✓ | ✓ | `prompts:read` |
 | Update quick action | ✓ | ✓ | ✓ | `prompts:read` |
 
-<Note>
-  Some prompt operations support public access for shared prompts.
-</Note>
+> [!NOTE]
+>
+> Some prompt operations support public access for shared prompts.
 
 ### Charts
 
@@ -534,9 +536,9 @@ Per-token model prices used to compute run costs. See [Cost tracking](/langsmith
 | Update a model price entry | ✓ | ✓ | ✗ | `model-price-map:update` |
 | Delete a model price entry | ✓ | ✓ | ✗ | `model-price-map:delete` |
 
-<Note>
-  These permissions replace the `runs:read` and `runs:create` checks that previously gated model prices. Built-in roles keep the access they had. Custom roles created after this change need the `model-price-map` permissions granted explicitly; they appear as their own checkboxes in the custom role editor.
-</Note>
+> [!NOTE]
+>
+> These permissions replace the `runs:read` and `runs:create` checks that previously gated model prices. Built-in roles keep the access they had. Custom roles created after this change need the `model-price-map` permissions granted explicitly; they appear as their own checkboxes in the custom role editor.
 
 ### Workspace settings and management
 
@@ -597,9 +599,9 @@ Per-token model prices used to compute run costs. See [Cost tracking](/langsmith
 | Update bulk export destination | ✓ | ✗ | ✗ | `bulk-exports:manage` |
 | Get filtered export runs | ✓ | ✓ | ✓ | `bulk-exports:read` |
 
-<Tip>
-  `bulk-exports:read` and `bulk-exports:manage` are dedicated permissions that allow you to grant export access via a [custom role](/langsmith/rbac#custom-roles) without granting the broader `workspaces:manage` scope. This is useful for security-team service keys that need to export traces but should not be able to manage workspaces, members, or secrets.
-</Tip>
+> [!TIP]
+>
+> `bulk-exports:read` and `bulk-exports:manage` are dedicated permissions that allow you to grant export access via a [custom role](/langsmith/rbac#custom-roles) without granting the broader `workspaces:manage` scope. This is useful for security-team service keys that need to export traces but should not be able to manage workspaces, members, or secrets.
 
 ### MCP servers
 
@@ -654,12 +656,6 @@ For detailed role definitions, refer to [Organization roles](/langsmith/rbac#org
 
 ***
 
-<div>
-  <Callout icon="terminal-2">
-    [Connect these docs](/use-these-docs) to your agent of choice via MCP for real-time answers.
-  </Callout>
+[Connect these docs](/use-these-docs) to your agent of choice via MCP for real-time answers.
 
-  <Callout icon="edit">
-    [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/organization-workspace-operations.mdx) or [file an issue](https://github.com/langchain-ai/docs/issues/new/choose).
-  </Callout>
-</div>
+[Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/organization-workspace-operations.mdx) or [file an issue](https://github.com/langchain-ai/docs/issues/new/choose).

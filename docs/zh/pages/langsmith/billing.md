@@ -4,7 +4,7 @@
 
 # 管理您帐户中的账单
 
-本页介绍如何管理您的 LangSmith 组织的账单：
+本页面介绍如何管理您的 LangSmith 组织的账单：
 
 * [Set up billing for your account](#set-up-billing-for-your-account)：完成 Developer 和 Plus 计划的计费设置流程，包括旧帐户的特殊说明。
 * [Track contract usage (Enterprise)](#track-contract-usage-enterprise)：查看预付费合约消费。
@@ -13,11 +13,11 @@
 
 ## 为您的帐户设置账单
 
-<Note>
-  使用本指南之前，请注意以下事项：
-
-  * 如果您对[Enterprise](https://www.langchain.com/pricing)计划感兴趣，请[contact our sales team](https://www.langchain.com/contact-sales)。本指南仅适用于我们的自助计费计划。
-</Note>
+> [!注意]
+>
+> 使用本指南之前，请注意以下事项：
+>
+> * 如果您对[Enterprise](https://www.langchain.com/pricing)计划感兴趣，请[contact our sales team](https://www.langchain.com/contact-sales)。本指南仅适用于我们的自助计费计划。
 
 要为您的 LangSmith 组织设置计费，请导航至 **设置** 下的 [Billing and Usage](https://smith.langchain.com/settings/payments) 页面。根据您组织的设置，有不同的设置指南：
 
@@ -32,11 +32,11 @@
 
 ### Plus 计划：在共享组织上设置结算
 
-团队组织每月初始获得 10,000 条跟踪。任何多余的痕迹将按[pricing](https://www.langchain.com/pricing-langsmith)页面上指定的费率收费。
+团队组织每月初始获得 10,000 条跟踪。任何多余的痕迹将按照[pricing](https://www.langchain.com/pricing-langsmith)页面上指定的费率收费。
 
-<Note>
-  您手动创建的新组织必须包含在 Plus 计划中。如果您看到有关需要升级到 Plus 才能使用此组织的消息，请按照以下步骤操作。
-</Note>
+> [!注意]
+>
+> 您手动创建的新组织必须包含在 Plus 计划中。如果您看到有关需要升级到 Plus 才能使用此组织的消息，请按照以下步骤操作。
 
 1. 单击“**升级到 Plus**”。
 2. 根据需要邀请成员加入您的组织。
@@ -44,11 +44,11 @@
 
 ## 跟踪合约使用情况（企业）
 
-合同使用情况跟踪适用于具有预付费承诺的[**Enterprise plan**](/langsmith/pricing-plans) 客户。您必须拥有 [⟦T1⟧ permission](/langsmith/organization-workspace-operations) 才能访问此功能。查看预付费合约消费详情请参见[Contract usage](/langsmith/view-usage#contract-usage)。
+合同使用情况跟踪适用于具有预付费承诺的[**Enterprise plan**](/langsmith/pricing-plans) 客户。您必须拥有[⟦T1⟧ permission](/langsmith/organization-workspace-operations)才能访问此功能。查看预付费合约消费详情请参见[Contract usage](/langsmith/view-usage#contract-usage)。
 
-<Note>
-  有关企业计划的更多详细信息，[contact our sales team](https://www.langchain.com/contact-sales)。
-</Note>
+> [!注意]
+>
+> 有关企业计划的更多详细信息，[contact our sales team](https://www.langchain.com/contact-sales)。
 
 ## 更新您的信息（仅限付费计划）
 
@@ -67,9 +67,9 @@
 
 ### 商业信息和税号
 
-<Note>
-  在某些司法管辖区，LangSmith 需要征收销售税。如果您是企业，提供您的税号可能会使您有资格获得销售税豁免。
-</Note>
+> [!注意]
+>
+> 在某些司法管辖区，需要LangSmith 征收销售税。如果您是企业，提供您的税号可能会使您有资格获得销售税豁免。
 
 要更新您组织的业务信息，请执行以下步骤：1. 导航到 **计划和账单** 选项卡。
 2. 在发票电子邮件部分下方，您将看到一个标有 **Business** 的复选框。
@@ -85,51 +85,51 @@
 
 ## 强制执行支出限制
 
-<Check>
-  在继续本节优化跟踪支出之前，您可能会发现阅读以下几页很有帮助：
+> [!提示]
+>
+> 在继续本节优化跟踪支出之前，您可能会发现阅读以下几页很有帮助：
+>
+> * [Data Retention Conceptual Docs](/langsmith/usage-and-billing#data-retention)
+> * [Usage Limiting Conceptual Docs](/langsmith/usage-and-billing#usage-limits)
 
-  * [Data Retention Conceptual Docs](/langsmith/usage-and-billing#data-retention)
-  * [Usage Limiting Conceptual Docs](/langsmith/usage-and-billing#usage-limits)
-</Check>
-
-<Note>
-  由于其计费的自定义性质，本指南中提到的某些功能目前在企业计划中不可用。如果您使用企业计划并对成本优化有疑问，请通过 [support.langchain.com](https://support.langchain.com) 联系您的销售代表或支持人员。
-</Note>
+> [!注意]
+>
+> 由于其计费的自定义性质，本指南中提到的一些功能目前在企业计划上不可用。如果您使用企业计划并对成本优化有疑问，请通过 [support.langchain.com](https://support.langchain.com) 联系您的销售代表或支持人员。
 
 ### 了解您当前的使用情况任何优化过程的第一步都是了解当前的使用情况。有关使用图、粒度使用、发票和合同使用的详细信息，请参阅[View usage](/langsmith/view-usage)。
 
-LangSmith 衡量每个工作空间的使用情况，因为工作空间通常代表组织内的开发环境或团队。
+LangSmith 衡量每个工作区的使用情况，因为工作区通常代表组织内的开发环境或团队。
 
 ### 设置使用限制
 
-<img alt="P2usagelimitsempty v2" />
+![P2usagelimitsempty v2](https://mintcdn.com/langchain-5e9cc07a/-XAfdD9knKGGfZBx/langsmith/images/p2usagelimitsempty-v2.png?fit=max\&auto=format\&n=-XAfdD9knKGGfZBx\&q=85\&s=27addecc92b87dd4131683fb8500f96c)
 
 #### 设置工作空间的支出限制
 
 1. 要设置限制，请导航至 **设置** -> **计费和使用情况** -> **使用限制**。
 2. 输入所选工作空间的支出限额。 LangSmith 将确定适当数量的基本和扩展跟踪限制以匹配该支出。跟踪限制包括您的计划附带的免费跟踪分配（请参阅[pricing page](https://smith.langchain.com/settings/payments)的详细信息）。
 
-<Note>
-  对于具有**仅多个工作区**的组织：为简单起见，LangSmith将免费跟踪纳入**仅第一个工作区**的成本计算中。实际上，任何工作空间都可以“消耗”免费跟踪。因此，虽然多工作空间组织的工作区级别支出限制是近似值，但组织级别支出限制是绝对的。
-</Note>
+> [!注意]
+>
+> 对于**仅具有多个工作空间**的组织：为简单起见，LangSmith 将免费跟踪纳入**仅第一个工作空间**的成本计算中。实际上，任何工作空间都可以“消耗”免费跟踪。因此，尽管多工作空间组织的工作区级别支出限制是近似值，但组织级别支出限制是绝对的。
 
-#### 配置跟踪层分布LangSmith 有两个跟踪层：基本跟踪和扩展跟踪。基本跟踪具有基本保留并且是短暂的（14 天），而扩展跟踪具有延长的保留并且是长期的（默认情况下为 180 天，[customizable for Enterprise customers](/langsmith/data-purging-compliance#customize-extended-retention-policy)）。欲了解更多信息，请参阅[data retention conceptual docs](/langsmith/usage-and-billing#data-retention)。
+#### 配置跟踪层分布LangSmith 有两个跟踪层：基本跟踪和扩展跟踪。基本跟踪具有基本保留并且是短暂的（14 天），而扩展跟踪具有延长的保留并且是长期的（默认为 180 天，[customizable for Enterprise customers](/langsmith/data-purging-compliance#customize-extended-retention-policy)）。欲了解更多信息，请参阅[data retention conceptual docs](/langsmith/usage-and-billing#data-retention)。
 
-<Warning>
-  从 2026 年 9 月 14 日开始，SaaS 客户的最长长期跟踪保留期将更改为 180 天。企业客户仍然可以自定义每个工作区的延长保留期，直至达到新的最大值。更改仅适用于新跟踪，现有跟踪不受影响。
-</Warning>
+> [!警告]
+>
+> 从 2026 年 9 月 14 日开始，SaaS 客户的最长长期跟踪保留期将更改为 180 天。企业客户仍然可以自定义每个工作区的延长保留期，直至达到新的最大值。更改仅适用于新跟踪，现有跟踪不受影响。
 
 通过选择 **默认数据保留** 标签下方的选项来设置所需的默认跟踪层。所有跟踪在注册时都会默认具有此层。请注意，由于扩展跟踪的成本高于基本跟踪，因此选择“**扩展**”作为默认数据保留选项将导致计费周期内允许的总体跟踪减少。默认情况下，更新此设置将仅适用于将来的传入跟踪。要应用到工作区中的所有现有轨迹，请选中该复选框。如果默认数据保留设置为 **Base**，您可以选择使用滑块在基本跟踪和扩展跟踪之间分配跟踪限制。 LangSmith 自动提供对此发行版的建议，但您可以根据您的需要进行定制。例如，如果您正在运行大量自动化或其他可能将跟踪升级为扩展的功能，您可能需要增加扩展跟踪限制。要查看可能升级跟踪的功能的完整列表，[see here](https://docs.langchain.com/langsmith/usage-and-billing#how-it-works:~:text=Data%20retention%20auto%2Dupgrades)。
 
-<Note>
-  一旦达到延长的数据保留限制，可能会导致跟踪以外的功能停止工作。如果您打算使用此功能，请阅读有关其[functionality and side effects](/langsmith/usage-and-billing#side-effects-of-extended-data-retention-traces-limit)的更多信息。
-</Note>
+> [!注意]
+>
+> 延长的数据保留限制一旦达到，可能会导致跟踪以外的功能停止工作。如果您打算使用此功能，请阅读有关其[functionality and side effects](/langsmith/usage-and-billing#side-effects-of-extended-data-retention-traces-limit)的更多信息。
 
 ### 管理痕迹的其他方法
 
 #### 自定义延长保留期（仅限[Enterprise](/langsmith/pricing-plans)）
 
-[Enterprise](/langsmith/pricing-plans) 客户可以在工作区级别自定义延长数据保留期限，以满足合规性要求。默认值为 180 天（截至 2026 年 9 月 14 日），但可以根据组织的需求进行调整。欲了解更多信息，请参阅[Customize extended retention policy](/langsmith/data-purging-compliance#customize-extended-retention-policy)。
+[Enterprise](/langsmith/pricing-plans)客户可以在工作区级别自定义延长数据保留期限，以满足合规性要求。默认值为 180 天（截至 2026 年 9 月 14 日），但可以根据组织的需求进行调整。欲了解更多信息，请参阅[Customize extended retention policy](/langsmith/data-purging-compliance#customize-extended-retention-policy)。
 
 #### 更改项目级默认保留每个跟踪项目的数据保留设置均可调整。在项目级别，您可以在两个级别之间进行选择：基础（14 天）或扩展（180 天）。要自定义最长 180 天的延长持续时间，请使用 [workspace-level configuration](/langsmith/data-purging-compliance#customize-extended-retention-policy)（仅限企业）。
 
@@ -137,7 +137,7 @@ LangSmith 衡量每个工作空间的使用情况，因为工作空间通常代�
 
 导航到 **项目** > ***您的项目名称*** > 选择 **保留** 并选择所需的默认保留。这只会影响**未来跟踪**的保留（和定价）。
 
-<img alt="P1projectretention" />
+![P1projectretention](https://mintcdn.com/langchain-5e9cc07a/H9jA2WRyA-MV4-H0/langsmith/images/p1projectretention.png?fit=max\&auto=format\&n=H9jA2WRyA-MV4-H0\&q=85\&s=394b513df5ef31d0309f5f3c78bd315a)
 
 #### 将扩展数据保留应用于一定百分比的跟踪
 
@@ -150,19 +150,19 @@ LangSmith 衡量每个工作空间的使用情况，因为工作空间通常代�
 要配置此：1. 导航到 **项目** > ***您的项目名称*** > 选择 **+ 新建** > 选择 **新建自动化**。在基于代理的工作区中，从代理的环境开始。
 2. 命名您的规则并可选择应用过滤器或采样率。有关配置过滤器的更多信息，请参阅[filtering techniques](/langsmith/filter-traces-in-application#filter-operators)。
 
-<Note>
-  当自动化规则与 [trace](/langsmith/observability-concepts#traces) 中的任何 [run](/langsmith/observability-concepts#runs) 匹配时，跟踪中的所有运行都会升级为延长数据保留（默认情况下为 180 天，[customizable for Enterprise customers](/langsmith/data-purging-compliance#customize-extended-retention-policy)）。
-</Note>
+> [!注意]
+>
+> 当自动化规则与 [trace](/langsmith/observability-concepts#traces) 中的任何 [run](/langsmith/observability-concepts#runs) 匹配时，跟踪中的所有运行都会升级为延长数据保留（默认情况下为 180 天，[customizable for Enterprise customers](/langsmith/data-purging-compliance#customize-extended-retention-policy)）。
 
-例如，这是保留所有跟踪的 10% 以延长数据保留时间的预期配置：
+例如，这是保留所有跟踪的 10% 以延长数据保留的预期配置：
 
-<img alt="P2sampletraces" />
+![P2sampletraces](https://mintcdn.com/langchain-5e9cc07a/Xbr8HuVd9jPi6qTU/langsmith/images/P2SampleTraces.png?fit=max\&auto=format\&n=Xbr8HuVd9jPi6qTU\&q=85\&s=09bbdf5ef7cf3a5a99d6bf0a704e2143)
 
 如果出于数据收集目的而希望将跟踪子集保留**超过 180 天**，您可以创建另一个运行规则，将一些运行发送到您选择的数据集。数据集允许您存储跟踪输入和输出（例如，作为键值数据集），并且即使在删除跟踪后也将无限期地保留。
 
 ### LangSmith 部署计费
 
-除了跟踪之外，LangSmith 通过LangSmith 部署对部署的代理进行收费。部署根据其消耗的资源进行计费：* **计算**：每个正在运行的副本请求的 vCPU 和内存，以 LangChain 标准单位 (LSU) 衡量。 [Autoscaling](/langsmith/cloud-platform-features#scaling) 添加了可计费副本。 [Serverless](/langsmith/cloud-platform-features#serverless) 计算费用在规模缩小时停止，而不是在流量停止时停止。 [Dedicated](/langsmith/cloud-platform-features#dedicated) 连续运行。
+除了跟踪之外，LangSmith 通过LangSmith 部署对部署的代理进行收费。部署根据其消耗的资源进行计费：* **计算**：每个正在运行的副本请求的 vCPU 和内存，以 LangChain 标准单位 (LSU) 为单位进行测量。 [Autoscaling](/langsmith/cloud-platform-features#scaling) 添加了可计费副本。 [Serverless](/langsmith/cloud-platform-features#serverless) 计算费用在规模缩小时停止，而不是在流量停止时停止。 [Dedicated](/langsmith/cloud-platform-features#dedicated) 连续运行。
 * **数据库**：专用数据库 vCPU 和内存在 LSU 中单独计量。数据库存储和Serverless的共享数据库不计费。
 
 托管 Redis 不按任何部署类型或规模计费。
@@ -186,9 +186,9 @@ LangSmith 衡量每个工作空间的使用情况，因为工作空间通常代�
 
 要估算部署成本，您还可以使用[pricing page](https://www.langchain.com/pricing)上的部署成本计算器。
 
-<Note>
-  基于使用情况的定价于 2026 年 10 月 1 日取代了每次运行和正常运行时间定价。扩展到零需要新的定价。对于过渡问题，请联系[support](https://support.langchain.com)。
-</Note>
+> [!注意]
+>
+> 2026 年 10 月 1 日，基于使用情况的定价取代了每次运行和正常运行时间定价。扩展到零需要新的定价。对于过渡问题，请联系[support](https://support.langchain.com)。
 
 对于大批量部署使用，[contact our sales team](https://www.langchain.com/contact-sales) 讨论自定义定价选项。
 
@@ -198,12 +198,6 @@ LangSmith 衡量每个工作空间的使用情况，因为工作空间通常代�
 
 ***
 
-<div>
-  <Callout icon="terminal-2">
-    [Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
-  </Callout>
+[Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
 
-  <Callout icon="edit">
-    [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/billing.mdx) 或 [file an issue](https://github.com/langchain-ai/docs/issues/new/choose)。
-  </Callout>
-</div>
+[Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/billing.mdx) 或 [file an issue](https://github.com/langchain-ai/docs/issues/new/choose)。

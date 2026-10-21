@@ -6,9 +6,9 @@ Configure Agent Server to use PostgreSQL, MongoDB, or a custom implementation fo
 
 [Agent Server](/langsmith/agent-server) persists graph state using a checkpointer backend. By default, LangSmith stores checkpoints in PostgreSQL alongside other server data. You can switch to MongoDB or provide a custom implementation.
 
-<Note>
-  Regardless of the checkpointer backend, LangSmith always requires PostgreSQL for threads, runs, assistants, crons, and the [memory store](/oss/python/langgraph/stores). The checkpointer backend only controls where checkpoint data is stored.
-</Note>
+> [!NOTE]
+>
+> Regardless of the checkpointer backend, LangSmith always requires PostgreSQL for threads, runs, assistants, crons, and the [memory store](/oss/python/langgraph/stores). The checkpointer backend only controls where checkpoint data is stored.
 
 ## Available backends
 
@@ -24,9 +24,9 @@ PostgreSQL is the default checkpointer backend. No configuration is needed. To u
 
 ## Set up MongoDB checkpointing
 
-<Info>
-  Requires Agent Server v0.7.64 or later.
-</Info>
+> [!NOTE]
+>
+> Requires Agent Server v0.7.64 or later.
 
 ### Prerequisites
 
@@ -89,74 +89,72 @@ mongodb+srv://user:password@cluster.example.net/langgraph
 
 ### Deploy by environment
 
-<Tabs>
-  <Tab title="Standalone (Kubernetes)">
-    The [langgraph-cloud Helm chart](https://github.com/langchain-ai/helm/blob/main/charts/langgraph-cloud/README.md) (v0.2.6+) has built-in MongoDB support. Enable it in your values file:
+**Standalone (Kubernetes)**
 
-    **Bundled MongoDB** (development and testing):
+The [langgraph-cloud Helm chart](https://github.com/langchain-ai/helm/blob/main/charts/langgraph-cloud/README.md) (v0.2.6+) has built-in MongoDB support. Enable it in your values file:
 
-    ```yaml theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-    mongo:
-      enabled: true
-      resources:
-        requests:
-          cpu: 500m
-          memory: 1Gi
-      persistence:
-        size: 8Gi
-    ```
+**Bundled MongoDB** (development and testing):
 
-    The chart deploys a single-node MongoDB replica set and automatically configures the server to use it.
+```yaml theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+mongo:
+  enabled: true
+  resources:
+    requests:
+      cpu: 500m
+      memory: 1Gi
+  persistence:
+    size: 8Gi
+```
 
-    **External MongoDB** (production):
+The chart deploys a single-node MongoDB replica set and automatically configures the server to use it.
 
-    ```yaml theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-    mongo:
-      enabled: true
-      external:
-        enabled: true
-        connectionUrl: "mongodb://user:password@mongo.example.net:27017/langgraph?replicaSet=rs0"
-    ```
+**External MongoDB** (production):
 
-    Or reference an existing Kubernetes secret:
+```yaml theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+mongo:
+  enabled: true
+  external:
+    enabled: true
+    connectionUrl: "mongodb://user:password@mongo.example.net:27017/langgraph?replicaSet=rs0"
+```
 
-    ```yaml theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-    mongo:
-      enabled: true
-      external:
-        enabled: true
-        existingSecretName: "my-mongo-secret"
-    ```
+Or reference an existing Kubernetes secret:
 
-    The secret must contain a `mongodb_connection_url` key.
-  </Tab>
+```yaml theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+mongo:
+  enabled: true
+  external:
+    enabled: true
+    existingSecretName: "my-mongo-secret"
+```
 
-  <Tab title="Standalone (Docker)">
-    If your `langgraph.json` already sets `backend` to `"mongo"`, you only need to provide the URI. Otherwise, set both environment variables:
+The secret must contain a `mongodb_connection_url` key.
 
-    ```shell theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-    docker run \
-        --env-file .env \
-        -p 8123:8000 \
-        -e REDIS_URI="redis://redis:6379" \
-        -e DATABASE_URI="postgres://postgres:postgres@postgres:5432/postgres" \
-        -e LS_DEFAULT_CHECKPOINTER_BACKEND=mongo \
-        -e LS_MONGODB_URI="mongodb://mongo:27017/langgraph?replicaSet=rs0" \
-        -e LANGSMITH_API_KEY="..." \
-        my-image
-    ```
+**Standalone (Docker)**
 
-    See the [standalone server guide](/langsmith/deploy-standalone-server) for a full Docker Compose example with MongoDB.
-  </Tab>
+If your `langgraph.json` already sets `backend` to `"mongo"`, you only need to provide the URI. Otherwise, set both environment variables:
 
-  <Tab title="Cloud">
-    Set `backend` to `"mongo"` in your `langgraph.json`, then add `LS_MONGODB_URI` as an environment variable in your deployment settings in the LangSmith UI.
+```shell theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+docker run \
+    --env-file .env \
+    -p 8123:8000 \
+    -e REDIS_URI="redis://redis:6379" \
+    -e DATABASE_URI="postgres://postgres:postgres@postgres:5432/postgres" \
+    -e LS_DEFAULT_CHECKPOINTER_BACKEND=mongo \
+    -e LS_MONGODB_URI="mongodb://mongo:27017/langgraph?replicaSet=rs0" \
+    -e LANGSMITH_API_KEY="..." \
+    my-image
+```
 
-    Your MongoDB instance must be reachable from the Cloud data plane. A managed service like [MongoDB Atlas](https://www.mongodb.com/atlas) works well for this.
+See the [standalone server guide](/langsmith/deploy-standalone-server) for a full Docker Compose example with MongoDB.
 
-    PostgreSQL is still auto-provisioned for non-checkpoint data.
-  </Tab>
-</Tabs>
+**Cloud**
+
+Set `backend` to `"mongo"` in your `langgraph.json`, then add `LS_MONGODB_URI` as an environment variable in your deployment settings in the LangSmith UI.
+
+Your MongoDB instance must be reachable from the Cloud data plane. A managed service like [MongoDB Atlas](https://www.mongodb.com/atlas) works well for this.
+
+PostgreSQL is still auto-provisioned for non-checkpoint data.
 
 ## Custom checkpointer
 
@@ -171,12 +169,6 @@ To use a storage backend other than PostgreSQL or MongoDB, implement a custom [B
 
 ***
 
-<div>
-  <Callout icon="terminal-2">
-    [Connect these docs](/use-these-docs) to your agent of choice via MCP for real-time answers.
-  </Callout>
+[Connect these docs](/use-these-docs) to your agent of choice via MCP for real-time answers.
 
-  <Callout icon="edit">
-    [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/configure-checkpointer.mdx) or [file an issue](https://github.com/langchain-ai/docs/issues/new/choose).
-  </Callout>
-</div>
+[Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/configure-checkpointer.mdx) or [file an issue](https://github.com/langchain-ai/docs/issues/new/choose).

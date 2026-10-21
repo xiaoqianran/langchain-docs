@@ -40,102 +40,100 @@ flowchart LR
 
 A managed deep agent consists of a project folder that contains the business logic for its behavior:
 
-<Tabs>
-  <Tab title="Model & configuration">
-    ```python agent.py theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-    from managed_deepagents import define_deep_agent
+**Model & configuration**
 
-    from middleware.audit import log_tool_calls
-    from tools.search import internet_search
+```python agent.py theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+from managed_deepagents import define_deep_agent
 
-    agent = define_deep_agent(
-        name="research-assistant",
-        model="openai:gpt-5.5",
-        tools=[internet_search],
-        middleware=[log_tool_calls],
-    )
-    ```
-  </Tab>
+from middleware.audit import log_tool_calls
+from tools.search import internet_search
 
-  <Tab title="Instructions">
-    ```markdown instructions.md theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-    # Assistant
+agent = define_deep_agent(
+    name="research-assistant",
+    model="openai:gpt-5.5",
+    tools=[internet_search],
+    middleware=[log_tool_calls],
+)
+```
 
-    You are a helpful assistant.
-    ```
-  </Tab>
+**Instructions**
 
-  <Tab title="Skills">
-    ```markdown skills/research/SKILL.md theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-    ---
-    name: research
-    description: Gather and synthesize context before answering complex questions.
-    ---
+```markdown instructions.md theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+# Assistant
 
-    # Research
+You are a helpful assistant.
+```
 
-    Use this skill when a task needs more than a direct answer.
+**Skills**
 
-    1. Identify what information is missing.
-    2. Search LangChain docs when the question is about LangChain, LangGraph, or LangSmith.
-    3. Summarize findings before responding to the user.
-    ```
-  </Tab>
+```markdown skills/research/SKILL.md theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+---
+name: research
+description: Gather and synthesize context before answering complex questions.
+---
 
-  <Tab title="Tools">
-    ```python tools/search.py theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-    from langchain.tools import tool
+# Research
 
+Use this skill when a task needs more than a direct answer.
 
-    @tool(parse_docstring=True)
-    def internet_search(query: str) -> str:
-        """Search the internet for relevant sources.
+1. Identify what information is missing.
+2. Search LangChain docs when the question is about LangChain, LangGraph, or LangSmith.
+3. Summarize findings before responding to the user.
+```
 
-        Args:
-            query: The search query.
-        """
-        return f"Results for: {query}"
-    ```
-  </Tab>
+**Tools**
 
-  <Tab title="Middleware">
-    ```python middleware/audit.py theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-    from collections.abc import Awaitable, Callable
-
-    from langchain.agents.middleware import wrap_tool_call
-    from langchain.messages import ToolMessage
-    from langchain.tools.tool_node import ToolCallRequest
-    from langgraph.types import Command
+```python tools/search.py theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+from langchain.tools import tool
 
 
-    @wrap_tool_call
-    async def log_tool_calls(
-        request: ToolCallRequest,
-        handler: Callable[[ToolCallRequest], Awaitable[ToolMessage | Command]],
-    ) -> ToolMessage | Command:
-        print(f"Calling tool: {request.tool_call['name']}")
-        result = await handler(request)
-        print(f"Finished tool: {request.tool_call['name']}")
-        return result
-    ```
-  </Tab>
+@tool(parse_docstring=True)
+def internet_search(query: str) -> str:
+    """Search the internet for relevant sources.
 
-  <Tab title="MCP Connectors">
-    ```python tools/mcp.py theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-    from managed_deepagents import define_mcp
+    Args:
+        query: The search query.
+    """
+    return f"Results for: {query}"
+```
 
-    mcp = define_mcp(
-        servers={
-            "langchainDocs": {
-                "transport": "http",
-                "url": "https://docs.langchain.com/mcp",
-                "include_tools": ["search_docs_by_lang_chain"],
-            },
+**Middleware**
+
+```python middleware/audit.py theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+from collections.abc import Awaitable, Callable
+
+from langchain.agents.middleware import wrap_tool_call
+from langchain.messages import ToolMessage
+from langchain.tools.tool_node import ToolCallRequest
+from langgraph.types import Command
+
+
+@wrap_tool_call
+async def log_tool_calls(
+    request: ToolCallRequest,
+    handler: Callable[[ToolCallRequest], Awaitable[ToolMessage | Command]],
+) -> ToolMessage | Command:
+    print(f"Calling tool: {request.tool_call['name']}")
+    result = await handler(request)
+    print(f"Finished tool: {request.tool_call['name']}")
+    return result
+```
+
+**MCP Connectors**
+
+```python tools/mcp.py theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+from managed_deepagents import define_mcp
+
+mcp = define_mcp(
+    servers={
+        "langchainDocs": {
+            "transport": "http",
+            "url": "https://docs.langchain.com/mcp",
+            "include_tools": ["search_docs_by_lang_chain"],
         },
-    )
-    ```
-  </Tab>
-</Tabs>
+    },
+)
+```
 
 When you upload this folder with the `mda` CLI, it will automatically run on managed LangSmith infrastructure.
 You provide the business logic, and Managed Deep Agents provides the agent harness and production infrastructure.
@@ -178,32 +176,24 @@ Stay on Deep Agents when you run the agent yourself or need a [backend](/oss/pyt
 
 ## Next steps
 
-<CardGroup>
-  <Card title="Quickstart" icon="rocket" href="/langsmith/python/managed-deep-agents-quickstart">
-    Create and deploy your first Managed Deep Agent with the `mda` CLI.
-  </Card>
+> **[Quickstart](/langsmith/python/managed-deep-agents-quickstart)**
+>
+> Create and deploy your first Managed Deep Agent with the `mda` CLI.
 
-  <Card title="Tutorial" icon="book" href="/langsmith/python/managed-deep-agents-tutorial">
-    Add a custom search tool, durable memory, and a daily schedule.
-  </Card>
+> **[Tutorial](/langsmith/python/managed-deep-agents-tutorial)**
+>
+> Add a custom search tool, durable memory, and a daily schedule.
 
-  <Card title="Agent Server" icon="server" href="/langsmith/agent-server-overview">
-    Explore the runtime that hosts Managed Deep Agents deployments.
-  </Card>
+> **[Agent Server](/langsmith/agent-server-overview)**
+>
+> Explore the runtime that hosts Managed Deep Agents deployments.
 
-  <Card title="MCP endpoint" icon="plug" href="/langsmith/python/managed-deep-agents-mcp-endpoint">
-    Call a deployed agent as a tool from Claude Code or another MCP client.
-  </Card>
-</CardGroup>
+> **[MCP endpoint](/langsmith/python/managed-deep-agents-mcp-endpoint)**
+>
+> Call a deployed agent as a tool from Claude Code or another MCP client.
 
 ***
 
-<div>
-  <Callout icon="terminal-2">
-    [Connect these docs](/use-these-docs) to your agent of choice via MCP for real-time answers.
-  </Callout>
+[Connect these docs](/use-these-docs) to your agent of choice via MCP for real-time answers.
 
-  <Callout icon="edit">
-    [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/managed-deep-agents-overview.mdx) or [file an issue](https://github.com/langchain-ai/docs/issues/new/choose).
-  </Callout>
-</div>
+[Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/managed-deep-agents-overview.mdx) or [file an issue](https://github.com/langchain-ai/docs/issues/new/choose).

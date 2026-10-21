@@ -6,31 +6,29 @@ Connect LangChain agents to MCP servers with MCPAdapter.
 
 [Model Context Protocol (MCP)](https://modelcontextprotocol.io) is an open protocol that standardizes how applications provide tools and context to language models. LangChain agents call tools defined on MCP servers through [`MCPAdapter`](https://reference.langchain.com/javascript/langchain-mcp-adapters/MCPAdapter), which discovers a server's tools and adapts them into LangChain tools you can pass straight to [`createAgent`](https://reference.langchain.com/javascript/langchain/index/createAgent).
 
-<Note>
-  This guide requires `@langchain/mcp-adapters` 2.0 or later. If you use 1.x, see the [1.x docs](/oss/javascript/langchain/mcp-v1) or the [migration guide](/oss/javascript/migrate/langchain-mcp-adapters).
-</Note>
+> [!NOTE]
+>
+> This guide requires `@langchain/mcp-adapters` 2.0 or later. If you use 1.x, see the [1.x docs](/oss/javascript/langchain/mcp-v1) or the [migration guide](/oss/javascript/migrate/langchain-mcp-adapters).
 
 ## Install
 
 Install the `@langchain/mcp-adapters` package and its peer dependencies:
 
-<CodeGroup>
-  ```bash npm theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  npm install @langchain/mcp-adapters@^2.0.0 @langchain/core @langchain/langgraph
-  ```
+```bash npm theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+npm install @langchain/mcp-adapters@^2.0.0 @langchain/core @langchain/langgraph
+```
 
-  ```bash pnpm theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  pnpm add @langchain/mcp-adapters@^2.0.0 @langchain/core @langchain/langgraph
-  ```
+```bash pnpm theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+pnpm add @langchain/mcp-adapters@^2.0.0 @langchain/core @langchain/langgraph
+```
 
-  ```bash yarn theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  yarn add @langchain/mcp-adapters@^2.0.0 @langchain/core @langchain/langgraph
-  ```
+```bash yarn theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+yarn add @langchain/mcp-adapters@^2.0.0 @langchain/core @langchain/langgraph
+```
 
-  ```bash bun theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  bun add @langchain/mcp-adapters@^2.0.0 @langchain/core @langchain/langgraph
-  ```
-</CodeGroup>
+```bash bun theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+bun add @langchain/mcp-adapters@^2.0.0 @langchain/core @langchain/langgraph
+```
 
 Add `@modelcontextprotocol/client` too if you import SDK types or transports.
 
@@ -69,59 +67,59 @@ async function main() {
 await main();
 ```
 
-<Card title="View example trace" icon="chart-line" href="https://smith.langchain.com/public/871aa85b-f22e-430a-ab74-5c9669203282/r">
-  Open a public LangSmith run for this example.
-</Card>
+> **[View example trace](https://smith.langchain.com/public/871aa85b-f22e-430a-ab74-5c9669203282/r)**
+>
+> Open a public LangSmith run for this example.
 
-<Accordion title="LangChain docs MCP server">
-  The [LangChain docs MCP server](/use-these-docs) is a public HTTP endpoint at `https://docs.langchain.com/mcp`.
-
-  Connect an agent to it to search and read documentation without writing custom tools:
-
-  ```ts theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  import { MCPAdapter } from "@langchain/mcp-adapters";
-  import { createAgent } from "langchain";
-
-  async function main() {
-    const adapter = new MCPAdapter({
-      servers: { docs: { url: "https://docs.langchain.com/mcp" } }, // [!code highlight]
-    });
-
-    try {
-      const tools = await adapter.listTools();
-      const agent = createAgent({ model: "claude-sonnet-5", tools });
-      return await agent.invoke({
-        messages: [
-          {
-            role: "user",
-            content: "How do I add short-term memory to a LangChain agent?",
-          },
-        ],
-      });
-    } finally {
-      await adapter.close();
-    }
-  }
-  ```
-
-  <Card title="View example trace" icon="chart-line" href="https://smith.langchain.com/public/e5a365b0-d712-46ca-ab53-61cb0e4e1acd/r">
-    Open a public LangSmith run for this example.
-  </Card>
-
-  <Note>
-    The docs MCP server is public and does not require an API key. For IDE and coding-agent setup (Claude Code, Cursor, and others), see [Use docs programmatically](/use-these-docs).
-  </Note>
-
-  The server exposes these tools:
-
-  | Tool | Description |
-  | - | - |
-  | `search_docs_by_lang_chain` | Search docs for relevant guides, how-tos, and examples. |
-  | `query_docs_filesystem_docs_by_lang_chain` | Read or search docs through a virtual filesystem (`rg`, `head`, `cat`, and related commands). |
-  | `submit_feedback` | Report a problem with a documentation page. |
-
-  `MCPAdapter` exposes these tools with the server-name prefix, for example `docs_search_docs_by_lang_chain`.
-</Accordion>
+> **LangChain docs MCP server**
+>
+> The [LangChain docs MCP server](/use-these-docs) is a public HTTP endpoint at `https://docs.langchain.com/mcp`.
+>
+> Connect an agent to it to search and read documentation without writing custom tools:
+>
+> ```ts theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> import { MCPAdapter } from "@langchain/mcp-adapters";
+> import { createAgent } from "langchain";
+>
+> async function main() {
+>   const adapter = new MCPAdapter({
+>     servers: { docs: { url: "https://docs.langchain.com/mcp" } }, // [!code highlight]
+>   });
+>
+>   try {
+>     const tools = await adapter.listTools();
+>     const agent = createAgent({ model: "claude-sonnet-5", tools });
+>     return await agent.invoke({
+>       messages: [
+>         {
+>           role: "user",
+>           content: "How do I add short-term memory to a LangChain agent?",
+>         },
+>       ],
+>     });
+>   } finally {
+>     await adapter.close();
+>   }
+> }
+> ```
+>
+> > **[View example trace](https://smith.langchain.com/public/e5a365b0-d712-46ca-ab53-61cb0e4e1acd/r)**
+> >
+> > Open a public LangSmith run for this example.
+>
+> > [!NOTE]
+> >
+> > The docs MCP server is public and does not require an API key. For IDE and coding-agent setup (Claude Code, Cursor, and others), see [Use docs programmatically](/use-these-docs).
+>
+> The server exposes these tools:
+>
+> | Tool | Description |
+> | - | - |
+> | `search_docs_by_lang_chain` | Search docs for relevant guides, how-tos, and examples. |
+> | `query_docs_filesystem_docs_by_lang_chain` | Read or search docs through a virtual filesystem (`rg`, `head`, `cat`, and related commands). |
+> | `submit_feedback` | Report a problem with a documentation page. |
+>
+> `MCPAdapter` exposes these tools with the server-name prefix, for example `docs_search_docs_by_lang_chain`.
 
 ## Transports
 
@@ -160,9 +158,9 @@ try {
 }
 ```
 
-<Card title="View example trace" icon="chart-line" href="https://smith.langchain.com/public/d9a802f7-75cf-45b4-b0f6-f4a62fa06e27/r">
-  Open a public LangSmith run for this example.
-</Card>
+> **[View example trace](https://smith.langchain.com/public/d9a802f7-75cf-45b4-b0f6-f4a62fa06e27/r)**
+>
+> Open a public LangSmith run for this example.
 
 Each server definition can use one of these transports:
 
@@ -172,34 +170,26 @@ Each server definition can use one of these transports:
 
 Transport selection and protocol negotiation are separate. The optional `mode` setting controls which MCP protocol era the client accepts. See [Protocol eras](/oss/javascript/langchain/mcp/connections#protocol-eras).
 
-<Note>
-  For new remote servers, omit both `transport` and `mode`. The adapter uses Streamable HTTP with automatic protocol negotiation. Specify these settings only when connecting to a server with known legacy requirements.
-</Note>
+> [!NOTE]
+>
+> For new remote servers, omit both `transport` and `mode`. The adapter uses Streamable HTTP with automatic protocol negotiation. Specify these settings only when connecting to a server with known legacy requirements.
 
 ## Next steps
 
-<CardGroup>
-  <Card title="Tools" icon="tool" href="/oss/javascript/langchain/mcp/tools">
-    Load MCP tools into agents, control their execution, and handle their outputs.
-  </Card>
+> **[Tools](/oss/javascript/langchain/mcp/tools)**
+>
+> Load MCP tools into agents, control their execution, and handle their outputs.
 
-  <Card title="Connections" icon="plug" href="/oss/javascript/langchain/mcp/connections">
-    Connection lifecycle, multiple servers, protocol eras, and caching.
-  </Card>
+> **[Connections](/oss/javascript/langchain/mcp/connections)**
+>
+> Connection lifecycle, multiple servers, protocol eras, and caching.
 
-  <Card title="Authentication" icon="lock" href="/oss/javascript/langchain/mcp/auth">
-    Bearer tokens, OAuth 2.1, and per-user server auth.
-  </Card>
-</CardGroup>
+> **[Authentication](/oss/javascript/langchain/mcp/auth)**
+>
+> Bearer tokens, OAuth 2.1, and per-user server auth.
 
 ***
 
-<div>
-  <Callout icon="terminal-2">
-    [Connect these docs](/use-these-docs) to your agent of choice via MCP for real-time answers.
-  </Callout>
+[Connect these docs](/use-these-docs) to your agent of choice via MCP for real-time answers.
 
-  <Callout icon="edit">
-    [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/oss/langchain/mcp/index.mdx) or [file an issue](https://github.com/langchain-ai/docs/issues/new/choose).
-  </Callout>
-</div>
+[Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/oss/langchain/mcp/index.mdx) or [file an issue](https://github.com/langchain-ai/docs/issues/new/choose).

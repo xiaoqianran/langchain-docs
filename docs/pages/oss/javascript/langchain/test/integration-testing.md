@@ -85,9 +85,9 @@ test.skipIf(!process.env.OPENAI_API_KEY)(
 );
 ```
 
-<Warning>
-  Add `.env` to your `.gitignore` to avoid committing credentials. In CI, inject secrets through your provider's secrets management (e.g., GitHub Actions secrets).
-</Warning>
+> [!WARNING]
+>
+> Add `.env` to your `.gitignore` to avoid committing credentials. In CI, inject secrets through your provider's secrets management (e.g., GitHub Actions secrets).
 
 ## Assert on structure, not content
 
@@ -110,9 +110,9 @@ test("agent calls weather tool", async () => {
 
 This example uses [custom test matchers](#use-custom-test-matchers). See the section below for setup and the full matcher reference.
 
-<Tip>
-  For more rigorous trajectory assertions, use the [AgentEvals](/oss/javascript/langchain/test/evals) evaluators which support fuzzy matching modes like `unordered` and `superset`.
-</Tip>
+> [!TIP]
+>
+> For more rigorous trajectory assertions, use the [AgentEvals](/oss/javascript/langchain/test/evals) evaluators which support fuzzy matching modes like `unordered` and `superset`.
 
 ## Use custom test matchers
 
@@ -254,12 +254,6 @@ Learn how to evaluate agent trajectories with deterministic matching or LLM-as-j
 
 ***
 
-<div>
-  <Callout icon="terminal-2">
-    [Connect these docs](/use-these-docs) to your agent of choice via MCP for real-time answers.
-  </Callout>
+[Connect these docs](/use-these-docs) to your agent of choice via MCP for real-time answers.
 
-  <Callout icon="edit">
-    [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/oss/langchain/test/integration-testing.mdx) or [file an issue](https://github.com/langchain-ai/docs/issues/new/choose).
-  </Callout>
-</div>
+[Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/oss/langchain/test/integration-testing.mdx) or [file an issue](https://github.com/langchain-ai/docs/issues/new/choose).

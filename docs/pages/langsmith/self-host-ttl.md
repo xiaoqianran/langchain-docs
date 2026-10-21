@@ -4,9 +4,9 @@
 
 LangSmith Self-Hosted supports automatic TTL and data retention for traces. Use this to comply with data privacy regulations or to reduce storage by automatically cleaning up old traces. Run rules and other qualifying actions can also extend a trace's retention period automatically.
 
-<Note>
-  **Self-hosted [Enterprise](/langsmith/pricing-plans) customers:** You can configure extended data retention at the workspace level through the UI. No environment variable changes are required. See [Customize extended retention policy](/langsmith/data-purging-compliance#customize-extended-retention-policy). The system-wide TTL configuration on this page is still supported.
-</Note>
+> [!NOTE]
+>
+> **Self-hosted [Enterprise](/langsmith/pricing-plans) customers:** You can configure extended data retention at the workspace level through the UI. No environment variable changes are required. See [Customize extended retention policy](/langsmith/data-purging-compliance#customize-extended-retention-policy). The system-wide TTL configuration on this page is still supported.
 
 ## TTL configuration precedence
 
@@ -48,9 +48,9 @@ config:
 
 As of version 0.11, a cron job runs on weekends to delete expired data that ClickHouse's built-in TTL mechanism may not have cleaned up.
 
-<Warning>
-  This job uses **mutations** (`ALTER TABLE DELETE`), which are expensive operations that can affect ClickHouse performance. Run them only during off-peak hours (nights and weekends). Testing with **1 concurrent active** mutation (the default) did not produce significant CPU, memory, or latency increases.
-</Warning>
+> [!WARNING]
+>
+> This job uses **mutations** (`ALTER TABLE DELETE`), which are expensive operations that can affect ClickHouse performance. Run them only during off-peak hours (nights and weekends). Testing with **1 concurrent active** mutation (the default) did not produce significant CPU, memory, or latency increases.
 
 ### Default schedule
 
@@ -87,9 +87,9 @@ queue:
         value: "0 20,22 * * 6"
 ```
 
-<Tip>
-  To use a single cron schedule, set both `CLICKHOUSE_TTL_CLEANUP_CRON_WEEKEND_EVENING` and `CLICKHOUSE_TTL_CLEANUP_CRON_WEEKEND_MORNING` to the same value. Job locking prevents overlapping executions.
-</Tip>
+> [!TIP]
+>
+> To use a single cron schedule, set both `CLICKHOUSE_TTL_CLEANUP_CRON_WEEKEND_EVENING` and `CLICKHOUSE_TTL_CLEANUP_CRON_WEEKEND_MORNING` to the same value. Job locking prevents overlapping executions.
 
 ### Configuring minimum expired rows per part
 
@@ -135,9 +135,9 @@ queue:
         value: "1"
 ```
 
-<Warning>
-  More concurrent `DELETE` operations can significantly slow inserts and reads. Increase this value only if you can tolerate slower insert and read latencies, and monitor the system after you do.
-</Warning>
+> [!WARNING]
+>
+> More concurrent `DELETE` operations can significantly slow inserts and reads. Increase this value only if you can tolerate slower insert and read latencies, and monitor the system after you do.
 
 ### Emergency: Stopping running mutations
 
@@ -170,12 +170,6 @@ If backups are present, copy them to external storage (for example, S3), then cl
 
 ***
 
-<div>
-  <Callout icon="terminal-2">
-    [Connect these docs](/use-these-docs) to your agent of choice via MCP for real-time answers.
-  </Callout>
+[Connect these docs](/use-these-docs) to your agent of choice via MCP for real-time answers.
 
-  <Callout icon="edit">
-    [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/self-host-ttl.mdx) or [file an issue](https://github.com/langchain-ai/docs/issues/new/choose).
-  </Callout>
-</div>
+[Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/self-host-ttl.mdx) or [file an issue](https://github.com/langchain-ai/docs/issues/new/choose).

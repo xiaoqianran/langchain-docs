@@ -37,13 +37,13 @@ export OTEL_EXPORTER_OTLP_HEADERS="x-api-key=<your_langsmith_api_key>,Langsmith-
 
 VS Code must inherit these environment variables, so export them in the shell session that launches VS Code (for example, by adding them to `~/.zshrc`, `~/.bashrc`, or a shell profile) before starting the editor.
 
-<Note>
-  Update the LangSmith endpoint for self-hosted installations or regional SaaS: GCP EU uses `eu.api.smith.langchain.com`; GCP APAC uses `apac.api.smith.langchain.com`; AWS US uses `aws.api.smith.langchain.com`. For self-hosted LangSmith, append `/api/v1/otel` to your LangSmith API URL—for example, `https://ai-company.com/api/v1/otel`.
-</Note>
+> [!NOTE]
+>
+> Update the LangSmith endpoint for self-hosted installations or regional SaaS: GCP EU uses `eu.api.smith.langchain.com`; GCP APAC uses `apac.api.smith.langchain.com`; AWS US uses `aws.api.smith.langchain.com`. For self-hosted LangSmith, append `/api/v1/otel` to your LangSmith API URL—for example, `https://ai-company.com/api/v1/otel`.
 
-<Warning>
-  `COPILOT_OTEL_CAPTURE_CONTENT=true` records full prompt and response content, system prompts, tool schemas, tool arguments, and tool results. Only enable it in trusted environments where capturing source code, file contents, and user prompts is acceptable.
-</Warning>
+> [!WARNING]
+>
+> `COPILOT_OTEL_CAPTURE_CONTENT=true` records full prompt and response content, system prompts, tool schemas, tool arguments, and tool results. Only enable it in trusted environments where capturing source code, file contents, and user prompts is acceptable.
 
 ### Alternative: VS Code settings
 
@@ -84,12 +84,6 @@ When an agent invokes a subagent, Copilot Chat propagates trace context automati
 
 ***
 
-<div>
-  <Callout icon="terminal-2">
-    [Connect these docs](/use-these-docs) to your agent of choice via MCP for real-time answers.
-  </Callout>
+[Connect these docs](/use-these-docs) to your agent of choice via MCP for real-time answers.
 
-  <Callout icon="edit">
-    [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/trace-with-vscode-copilot.mdx) or [file an issue](https://github.com/langchain-ai/docs/issues/new/choose).
-  </Callout>
-</div>
+[Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/trace-with-vscode-copilot.mdx) or [file an issue](https://github.com/langchain-ai/docs/issues/new/choose).

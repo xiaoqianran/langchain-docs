@@ -8,9 +8,9 @@ You can do this by using the LangSmith Python SDK and passing `upload_results=Fa
 
 This will run you application and evaluators exactly as it always does and return the same output, but nothing will be recorded to LangSmith. This includes not just the experiment results but also the application and evaluator traces.
 
-<Note>
-  If you want to upload results to LangSmith but also need to process them in your script (for quality gates, custom aggregations, etc.), refer to [Read experiment results locally](/langsmith/read-local-experiment-results).
-</Note>
+> [!NOTE]
+>
+> If you want to upload results to LangSmith but also need to process them in your script (for quality gates, custom aggregations, etc.), refer to [Read experiment results locally](/langsmith/read-local-experiment-results).
 
 ## Example
 
@@ -76,12 +76,6 @@ df[["inputs.question", "outputs.answer", "reference.answer", "feedback.is_concis
 
 ***
 
-<div>
-  <Callout icon="terminal-2">
-    [Connect these docs](/use-these-docs) to your agent of choice via MCP for real-time answers.
-  </Callout>
+[Connect these docs](/use-these-docs) to your agent of choice via MCP for real-time answers.
 
-  <Callout icon="edit">
-    [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/local.mdx) or [file an issue](https://github.com/langchain-ai/docs/issues/new/choose).
-  </Callout>
-</div>
+[Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/local.mdx) or [file an issue](https://github.com/langchain-ai/docs/issues/new/choose).

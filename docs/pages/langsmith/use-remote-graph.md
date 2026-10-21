@@ -11,11 +11,11 @@
 * Subgraph embedding: Compose modular graphs for a multi-agent workflow by embedding a `RemoteGraph` as a [subgraph](#use-as-a-subgraph) within another graph.
 * Reusable workflows: Use deployed graphs as nodes or [tools](https://reference.langchain.com/python/langsmith/deployment/remote_graph/#langgraph.pregel.remote.RemoteGraph.as_tool), so that you can reuse and expose complex logic.
 
-<Warning>
-  **Important: Avoid calling the same deployment**
-
-  `RemoteGraph` is designed to call graphs on other deployments. Do not use `RemoteGraph` to call itself or another graph on the same deployment, as this can lead to deadlocks and resource exhaustion. Instead, use local graph composition or [subgraphs](/oss/python/langgraph/use-subgraphs) for graphs within the same deployment.
-</Warning>
+> [!WARNING]
+>
+> **Important: Avoid calling the same deployment**
+>
+> `RemoteGraph` is designed to call graphs on other deployments. Do not use `RemoteGraph` to call itself or another graph on the same deployment, as this can lead to deadlocks and resource exhaustion. Instead, use local graph composition or [subgraphs](/oss/python/langgraph/use-subgraphs) for graphs within the same deployment.
 
 ## Prerequisites
 
@@ -37,77 +37,73 @@ Additionally, you have to provide one of the following:
 * [`client`](#use-a-client): A `LangGraphClient` instance for interacting with the deployment asynchronously (e.g., using `.astream()`, `.ainvoke()`, `.aget_state()`, `.aupdate_state()`).
 * `sync_client`: A `SyncLangGraphClient` instance for interacting with the deployment synchronously (e.g., using `.stream()`, `.invoke()`, `.get_state()`, `.update_state()`).
 
-<Note>
-  If you pass both `client` or `sync_client` as well as the `url` argument, they will take precedence over the `url` argument. If none of the `client` / `sync_client` / `url` arguments are provided, `RemoteGraph` will raise a `ValueError` at runtime.
-</Note>
+> [!NOTE]
+>
+> If you pass both `client` or `sync_client` as well as the `url` argument, they will take precedence over the `url` argument. If none of the `client` / `sync_client` / `url` arguments are provided, `RemoteGraph` will raise a `ValueError` at runtime.
 
 ### Use a URL
 
-<CodeGroup>
-  ```python Python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  from langgraph.pregel.remote import RemoteGraph
+```python Python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+from langgraph.pregel.remote import RemoteGraph
 
-  url = "<DEPLOYMENT_URL>"
+url = "<DEPLOYMENT_URL>"
 
-  # Using graph name (uses default assistant)
-  graph_name = "agent"
-  remote_graph = RemoteGraph(graph_name, url=url)
+# Using graph name (uses default assistant)
+graph_name = "agent"
+remote_graph = RemoteGraph(graph_name, url=url)
 
-  # Using assistant ID
-  assistant_id = "<ASSISTANT_ID>"
-  remote_graph = RemoteGraph(assistant_id, url=url)
-  ```
+# Using assistant ID
+assistant_id = "<ASSISTANT_ID>"
+remote_graph = RemoteGraph(assistant_id, url=url)
+```
 
-  ```typescript JavaScript theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  import { RemoteGraph } from "@langchain/langgraph/remote";
+```typescript JavaScript theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+import { RemoteGraph } from "@langchain/langgraph/remote";
 
-  const url = "<DEPLOYMENT_URL>";
+const url = "<DEPLOYMENT_URL>";
 
-  // Using graph name (uses default assistant)
-  const graphName = "agent";
-  const remoteGraph = new RemoteGraph({ graphId: graphName, url });
+// Using graph name (uses default assistant)
+const graphName = "agent";
+const remoteGraph = new RemoteGraph({ graphId: graphName, url });
 
-  // Using assistant ID
-  const assistantId = "<ASSISTANT_ID>";
-  const remoteGraph = new RemoteGraph({ graphId: assistantId, url });
-  ```
-</CodeGroup>
+// Using assistant ID
+const assistantId = "<ASSISTANT_ID>";
+const remoteGraph = new RemoteGraph({ graphId: assistantId, url });
+```
 
 ### Use a client
 
-<CodeGroup>
-  ```python Python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  from langgraph_sdk import get_client, get_sync_client
-  from langgraph.pregel.remote import RemoteGraph
+```python Python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+from langgraph_sdk import get_client, get_sync_client
+from langgraph.pregel.remote import RemoteGraph
 
-  url = "<DEPLOYMENT_URL>"
-  client = get_client(url=url)
-  sync_client = get_sync_client(url=url)
+url = "<DEPLOYMENT_URL>"
+client = get_client(url=url)
+sync_client = get_sync_client(url=url)
 
-  # Using graph name (uses default assistant)
-  graph_name = "agent"
-  remote_graph = RemoteGraph(graph_name, client=client, sync_client=sync_client)
+# Using graph name (uses default assistant)
+graph_name = "agent"
+remote_graph = RemoteGraph(graph_name, client=client, sync_client=sync_client)
 
-  # Using assistant ID
-  assistant_id = "<ASSISTANT_ID>"
-  remote_graph = RemoteGraph(assistant_id, client=client, sync_client=sync_client)
-  ```
+# Using assistant ID
+assistant_id = "<ASSISTANT_ID>"
+remote_graph = RemoteGraph(assistant_id, client=client, sync_client=sync_client)
+```
 
-  ```typescript JavaScript theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  import { Client } from "@langchain/langgraph-sdk";
-  import { RemoteGraph } from "@langchain/langgraph/remote";
+```typescript JavaScript theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+import { Client } from "@langchain/langgraph-sdk";
+import { RemoteGraph } from "@langchain/langgraph/remote";
 
-  const client = new Client({ apiUrl: "<DEPLOYMENT_URL>" });
+const client = new Client({ apiUrl: "<DEPLOYMENT_URL>" });
 
-  // Using graph name (uses default assistant)
-  const graphName = "agent";
-  const remoteGraph = new RemoteGraph({ graphId: graphName, client });
+// Using graph name (uses default assistant)
+const graphName = "agent";
+const remoteGraph = new RemoteGraph({ graphId: graphName, client });
 
-  // Using assistant ID
-  const assistantId = "<ASSISTANT_ID>";
-  const remoteGraph = new RemoteGraph({ graphId: assistantId, client });
-  ```
-</CodeGroup>
+// Using assistant ID
+const assistantId = "<ASSISTANT_ID>";
+const remoteGraph = new RemoteGraph({ graphId: assistantId, client });
+```
 
 ## Invoke the graph
 
@@ -115,58 +111,54 @@ Additionally, you have to provide one of the following:
 
 ### Asynchronously
 
-<Note>
-  To use the graph asynchronously, you must provide either the `url` or `client` when initializing the `RemoteGraph`.
-</Note>
+> [!NOTE]
+>
+> To use the graph asynchronously, you must provide either the `url` or `client` when initializing the `RemoteGraph`.
 
-<CodeGroup>
-  ```python Python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  # invoke the graph
-  result = await remote_graph.ainvoke({
-      "messages": [{"role": "user", "content": "what's the weather in sf"}]
-  })
+```python Python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+# invoke the graph
+result = await remote_graph.ainvoke({
+    "messages": [{"role": "user", "content": "what's the weather in sf"}]
+})
 
-  # stream outputs from the graph
-  async for chunk in remote_graph.astream({
-      "messages": [{"role": "user", "content": "what's the weather in la"}]
-  }):
-      print(chunk)
-  ```
+# stream outputs from the graph
+async for chunk in remote_graph.astream({
+    "messages": [{"role": "user", "content": "what's the weather in la"}]
+}):
+    print(chunk)
+```
 
-  ```typescript JavaScript theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  // invoke the graph
-  const result = await remoteGraph.invoke({
-      messages: [{role: "user", content: "what's the weather in sf"}]
-  })
+```typescript JavaScript theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+// invoke the graph
+const result = await remoteGraph.invoke({
+    messages: [{role: "user", content: "what's the weather in sf"}]
+})
 
-  // stream outputs from the graph
-  for await (const chunk of await remoteGraph.stream({
-      messages: [{role: "user", content: "what's the weather in la"}]
-  })):
-      console.log(chunk)
-  ```
-</CodeGroup>
+// stream outputs from the graph
+for await (const chunk of await remoteGraph.stream({
+    messages: [{role: "user", content: "what's the weather in la"}]
+})):
+    console.log(chunk)
+```
 
 ### Synchronously
 
-<Note>
-  To use the graph synchronously, you must provide either the `url` or `sync_client` when initializing the `RemoteGraph`.
-</Note>
+> [!NOTE]
+>
+> To use the graph synchronously, you must provide either the `url` or `sync_client` when initializing the `RemoteGraph`.
 
-<CodeGroup>
-  ```python Python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  # invoke the graph
-  result = remote_graph.invoke({
-      "messages": [{"role": "user", "content": "what's the weather in sf"}]
-  })
+```python Python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+# invoke the graph
+result = remote_graph.invoke({
+    "messages": [{"role": "user", "content": "what's the weather in sf"}]
+})
 
-  # stream outputs from the graph
-  for chunk in remote_graph.stream({
-      "messages": [{"role": "user", "content": "what's the weather in la"}]
-  }):
-      print(chunk)
-  ```
-</CodeGroup>
+# stream outputs from the graph
+for chunk in remote_graph.stream({
+    "messages": [{"role": "user", "content": "what's the weather in la"}]
+}):
+    print(chunk)
+```
 
 ## Persist state at the thread level
 
@@ -174,130 +166,120 @@ By default, graph runs (for example, calls made with `.invoke()` or `.stream()`)
 
 If you want to preserve the outputs of a run—for example, to support human-in-the-loop workflows—you can create a thread and pass its ID through the `config` argument. This works the same way as with a regular compiled graph:
 
-<CodeGroup>
-  ```python Python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  from langgraph_sdk import get_sync_client
+```python Python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+from langgraph_sdk import get_sync_client
 
-  url = "<DEPLOYMENT_URL>"
-  graph_name = "agent"
-  sync_client = get_sync_client(url=url)
-  remote_graph = RemoteGraph(graph_name, url=url)
+url = "<DEPLOYMENT_URL>"
+graph_name = "agent"
+sync_client = get_sync_client(url=url)
+remote_graph = RemoteGraph(graph_name, url=url)
 
-  # create a thread (or use an existing thread instead)
-  thread = sync_client.threads.create()
+# create a thread (or use an existing thread instead)
+thread = sync_client.threads.create()
 
-  # invoke the graph with the thread config
-  config = {"configurable": {"thread_id": thread["thread_id"]}}
-  result = remote_graph.invoke({
-      "messages": [{"role": "user", "content": "what's the weather in sf"}]
-  }, config=config)
+# invoke the graph with the thread config
+config = {"configurable": {"thread_id": thread["thread_id"]}}
+result = remote_graph.invoke({
+    "messages": [{"role": "user", "content": "what's the weather in sf"}]
+}, config=config)
 
-  # verify that the state was persisted to the thread
-  thread_state = remote_graph.get_state(config)
-  print(thread_state)
-  ```
+# verify that the state was persisted to the thread
+thread_state = remote_graph.get_state(config)
+print(thread_state)
+```
 
-  ```typescript JavaScript theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  import { Client } from "@langchain/langgraph-sdk";
-  import { RemoteGraph } from "@langchain/langgraph/remote";
+```typescript JavaScript theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+import { Client } from "@langchain/langgraph-sdk";
+import { RemoteGraph } from "@langchain/langgraph/remote";
 
-  const url = "<DEPLOYMENT_URL>";
-  const graphName = "agent";
-  const client = new Client({ apiUrl: url });
-  const remoteGraph = new RemoteGraph({ graphId: graphName, url });
+const url = "<DEPLOYMENT_URL>";
+const graphName = "agent";
+const client = new Client({ apiUrl: url });
+const remoteGraph = new RemoteGraph({ graphId: graphName, url });
 
-  // create a thread (or use an existing thread instead)
-  const thread = await client.threads.create();
+// create a thread (or use an existing thread instead)
+const thread = await client.threads.create();
 
-  // invoke the graph with the thread config
-  const config = { configurable: { thread_id: thread.thread_id }};
-  const result = await remoteGraph.invoke({
-    messages: [{ role: "user", content: "what's the weather in sf" }],
-  }, config);
+// invoke the graph with the thread config
+const config = { configurable: { thread_id: thread.thread_id }};
+const result = await remoteGraph.invoke({
+  messages: [{ role: "user", content: "what's the weather in sf" }],
+}, config);
 
-  // verify that the state was persisted to the thread
-  const threadState = await remoteGraph.getState(config);
-  console.log(threadState);
-  ```
-</CodeGroup>
+// verify that the state was persisted to the thread
+const threadState = await remoteGraph.getState(config);
+console.log(threadState);
+```
 
 ## Use as a subgraph
 
-<Note>
-  If you need to use a `checkpointer` with a graph that has a `RemoteGraph` subgraph node, make sure to use UUIDs as thread IDs.
-</Note>
+> [!NOTE]
+>
+> If you need to use a `checkpointer` with a graph that has a `RemoteGraph` subgraph node, make sure to use UUIDs as thread IDs.
 
 A graph can also call out to multiple `RemoteGraph` instances as [*subgraph*](/oss/python/langgraph/use-subgraphs) nodes. This allows for modular, scalable workflows where different responsibilities are split across separate graphs.
 
 `RemoteGraph` exposes the same interface as a regular `CompiledGraph`, so you can use it directly as a subgraph inside another graph. For example:
 
-<CodeGroup>
-  ```python Python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  from langgraph_sdk import get_sync_client
-  from langgraph.graph import StateGraph, MessagesState, START
-  from typing import TypedDict
+```python Python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+from langgraph_sdk import get_sync_client
+from langgraph.graph import StateGraph, MessagesState, START
+from typing import TypedDict
 
-  url = "<DEPLOYMENT_URL>"
-  graph_name = "agent"
-  remote_graph = RemoteGraph(graph_name, url=url)
+url = "<DEPLOYMENT_URL>"
+graph_name = "agent"
+remote_graph = RemoteGraph(graph_name, url=url)
 
-  # define parent graph
-  builder = StateGraph(MessagesState)
-  # add remote graph directly as a node
-  builder.add_node("child", remote_graph)
-  builder.add_edge(START, "child")
-  graph = builder.compile()
+# define parent graph
+builder = StateGraph(MessagesState)
+# add remote graph directly as a node
+builder.add_node("child", remote_graph)
+builder.add_edge(START, "child")
+graph = builder.compile()
 
-  # invoke the parent graph
-  result = graph.invoke({
-      "messages": [{"role": "user", "content": "what's the weather in sf"}]
-  })
-  print(result)
+# invoke the parent graph
+result = graph.invoke({
+    "messages": [{"role": "user", "content": "what's the weather in sf"}]
+})
+print(result)
 
-  # stream outputs from both the parent graph and subgraph
-  for chunk in graph.stream({
-      "messages": [{"role": "user", "content": "what's the weather in sf"}]
-  }, subgraphs=True):
-      print(chunk)
-  ```
+# stream outputs from both the parent graph and subgraph
+for chunk in graph.stream({
+    "messages": [{"role": "user", "content": "what's the weather in sf"}]
+}, subgraphs=True):
+    print(chunk)
+```
 
-  ```typescript JavaScript theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  import { MessagesAnnotation, StateGraph, START } from "@langchain/langgraph";
-  import { RemoteGraph } from "@langchain/langgraph/remote";
+```typescript JavaScript theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+import { MessagesAnnotation, StateGraph, START } from "@langchain/langgraph";
+import { RemoteGraph } from "@langchain/langgraph/remote";
 
-  const url = "<DEPLOYMENT_URL>";
-  const graphName = "agent";
-  const remoteGraph = new RemoteGraph({ graphId: graphName, url });
+const url = "<DEPLOYMENT_URL>";
+const graphName = "agent";
+const remoteGraph = new RemoteGraph({ graphId: graphName, url });
 
-  // define parent graph and add remote graph directly as a node
-  const graph = new StateGraph(MessagesAnnotation)
-    .addNode("child", remoteGraph)
-    .addEdge(START, "child")
-    .compile()
+// define parent graph and add remote graph directly as a node
+const graph = new StateGraph(MessagesAnnotation)
+  .addNode("child", remoteGraph)
+  .addEdge(START, "child")
+  .compile()
 
-  // invoke the parent graph
-  const result = await graph.invoke({
-    messages: [{ role: "user", content: "what's the weather in sf" }]
-  });
-  console.log(result);
+// invoke the parent graph
+const result = await graph.invoke({
+  messages: [{ role: "user", content: "what's the weather in sf" }]
+});
+console.log(result);
 
-  // stream outputs from both the parent graph and subgraph
-  for await (const chunk of await graph.stream({
-    messages: [{ role: "user", content: "what's the weather in la" }]
-  }, { subgraphs: true })) {
-    console.log(chunk);
-  }
-  ```
-</CodeGroup>
+// stream outputs from both the parent graph and subgraph
+for await (const chunk of await graph.stream({
+  messages: [{ role: "user", content: "what's the weather in la" }]
+}, { subgraphs: true })) {
+  console.log(chunk);
+}
+```
 
 ***
 
-<div>
-  <Callout icon="terminal-2">
-    [Connect these docs](/use-these-docs) to your agent of choice via MCP for real-time answers.
-  </Callout>
+[Connect these docs](/use-these-docs) to your agent of choice via MCP for real-time answers.
 
-  <Callout icon="edit">
-    [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/use-remote-graph.mdx) or [file an issue](https://github.com/langchain-ai/docs/issues/new/choose).
-  </Callout>
-</div>
+[Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/use-remote-graph.mdx) or [file an issue](https://github.com/langchain-ai/docs/issues/new/choose).

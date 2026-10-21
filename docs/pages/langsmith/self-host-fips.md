@@ -4,9 +4,9 @@
 
 Run self-hosted LangSmith installation on FIPS 140 compliant container images
 
-<Note>
-  FIPS and airgapped LangSmith deployments require a conversation with your LangChain account executive before rollout. Reach out to scope licensing, supported configurations, and upgrade paths before you change your installation.
-</Note>
+> [!NOTE]
+>
+> FIPS and airgapped LangSmith deployments require a conversation with your LangChain account executive before rollout. Reach out to scope licensing, supported configurations, and upgrade paths before you change your installation.
 
 As of v15, every LangChain-authored LangSmith image has a `-fips` counterpart that runs in FIPS 140 mode. Use these images when your self-hosted deployment needs FIPS compliance, for example in federal agencies, defense contractors, and regulated industries.
 
@@ -23,11 +23,11 @@ Every LangChain-authored image has a `-fips` counterpart published at the same t
 | `langchain/langsmith-frontend` | `langchain/langsmith-frontend-fips` |
 | `langchain/langgraph-operator` | `langchain/langgraph-operator-fips` |
 
-<Note>
-  **Fewer images from LangSmith 0.16.21 (chart `0.16.0-rc.17`) onward.** The platform backend, playground, host backend, and the Fleet tool and trigger servers now all run from the single `langsmith-backend` image, so `langsmith-go-backend-fips`, `langsmith-playground-fips`, `hosted-langserve-backend-fips`, `agent-builder-tool-server-fips`, and `agent-builder-trigger-server-fips` are no longer needed. The corresponding `values.yaml` keys: `platformBackendImage`, `playgroundImage`, `hostBackendImage`, `fleetToolServerImage`, and `fleetTriggerServerImage`, have been removed from the chart; any values you still set for them are ignored.
-
-  On **earlier** versions those five images are published with `-fips` counterparts at the same tag as well; point each of those keys at its `-fips` repository too.
-</Note>
+> [!NOTE]
+>
+> **Fewer images from LangSmith 0.16.21 (chart `0.16.0-rc.17`) onward.** The platform backend, playground, host backend, and the Fleet tool and trigger servers now all run from the single `langsmith-backend` image, so `langsmith-go-backend-fips`, `langsmith-playground-fips`, `hosted-langserve-backend-fips`, `agent-builder-tool-server-fips`, and `agent-builder-trigger-server-fips` are no longer needed. The corresponding `values.yaml` keys: `platformBackendImage`, `playgroundImage`, `hostBackendImage`, `fleetToolServerImage`, and `fleetTriggerServerImage`, have been removed from the chart; any values you still set for them are ignored.
+>
+> On **earlier** versions those five images are published with `-fips` counterparts at the same tag as well; point each of those keys at its `-fips` repository too.
 
 PostgreSQL, Redis, and ClickHouse are not published as FIPS variants by LangChain. If your deployment requires FIPS for these components, bring your own FIPS-mode service and connect via [external Postgres](/langsmith/self-host-external-postgres), [external Redis](/langsmith/self-host-external-redis), or [external ClickHouse](/langsmith/self-host-external-clickhouse).
 
@@ -106,12 +106,6 @@ The `-fips` naming convention applies identically when mirroring images to a pri
 
 ***
 
-<div>
-  <Callout icon="terminal-2">
-    [Connect these docs](/use-these-docs) to your agent of choice via MCP for real-time answers.
-  </Callout>
+[Connect these docs](/use-these-docs) to your agent of choice via MCP for real-time answers.
 
-  <Callout icon="edit">
-    [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/self-host-fips.mdx) or [file an issue](https://github.com/langchain-ai/docs/issues/new/choose).
-  </Callout>
-</div>
+[Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/self-host-fips.mdx) or [file an issue](https://github.com/langchain-ai/docs/issues/new/choose).

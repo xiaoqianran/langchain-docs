@@ -22,9 +22,9 @@
 
 使用以下静态 IP 地址将每个区域的流量列入白名单：
 
-<Note>
-  其他 LangSmith 服务从 [separate IP list](/langsmith/cloud#egress-from-langchain-saas) 出口。
-</Note>|基仕伯美国 | GCP 欧盟 |基仕伯亚太区 | AWS 美国 |
+> [!注意]
+>
+> 其他 LangSmith 服务从 [separate IP list](/langsmith/cloud#egress-from-langchain-saas) 出口。|基仕伯美国 | GCP 欧盟 |基仕伯亚太区 | AWS 美国 |
 | - | - | - | - |
 | 35.197.29.146 | 34.90.213.236 | 34.40.236.16 | 3.13.80.97 |
 | 34.145.102.123 | 34.145.102.123 34.13.244.114 | 34.13.244.114 34.40.140.88 | 3.146.216.198 |
@@ -57,19 +57,19 @@
 
 ## 部署类型控制平面提供两种部署类型：无服务器和专用。每个都有三种 [sizes](#sizes) 可供选择：小号、中号和大号。
 
-<Note>
-  `langgraph deploy` 默认创建无服务器部署。较旧的 CLI 版本使用 `dev` 进行遗留开发部署，无需缩放至零，使用 `prod` 进行专用部署。遗留`dev`并不等同于Serverless；参见[⟦T5⟧](/langsmith/cli#deploy)。
-</Note>
+> [!注意]
+>
+> `langgraph deploy` 默认创建无服务器部署。较旧的 CLI 版本使用 `dev` 进行遗留开发部署，无需缩放至零，使用 `prod` 进行专用部署。 Legacy `dev` is not equivalent to Serverless;参见[⟦T5⟧](/langsmith/cli#deploy)。
 
 | **部署类型** | **缩放** | **数据库** | **最适合** |
 | - | - | - | - |
 |无服务器|不活动后缩放至零，在下一个请求时唤醒 |共享、多租户 |后台和其他耐延迟生产工作负载、开发和测试 |
-|专注|始终在线、跨副本自动缩放 |专用，具有自动备份和高可用性|需要始终在线容量的延迟敏感工作负载 |
+|专注| Always-on, autoscales across replicas |专用，具有自动备份和高可用性|需要始终在线容量的延迟敏感工作负载 |
 
-<Warning>
-  **不可变部署类型**
-  一旦创建部署，部署类型就无法更改。您仍然可以更改其[size](#sizes)。
-</Warning>
+> [!警告]
+>
+> **Immutable deployment type**
+> 部署一旦创建，就无法更改部署类型。 You can still change its [size](#sizes).
 
 代理服务器在两种部署类型上都是容错的；它会自动从短暂的 Redis 或 Postgres 中断中恢复，并重试失败的后台运行。
 
@@ -81,23 +81,23 @@
 
 副本不会横向扩展。默认情况下，其队列工作程序最多可处理 10 个并发运行，可通过 [⟦T9⟧](/langsmith/env-var-cloud#n_jobs_per_worker) 进行配置；额外的运行队列。
 
-<Note>
-  缩放到零位于 [beta](/langsmith/release-stages) 中，最初仅适用于基于使用定价的部署。有关定价和过渡时间表，请参阅[Manage billing](/langsmith/billing#langsmith-deployment-billing)。
-</Note>
+> [!注意]
+>
+> 缩放至零位于 [beta](/langsmith/release-stages) 中，最初仅适用于基于使用情况定价的部署。有关定价和过渡时间表，请参阅[Manage billing](/langsmith/billing#langsmith-deployment-billing)。
 
-### 专注专用部署保持在[autoscales](#scaling)单独的API服务器和队列工作副本上。每个都有自己的数据库，具有自动备份、时间点恢复和高可用性。它适合需要始终在线容量的延迟敏感型工作负载。
+＃＃＃ 投入的专用部署保持在[autoscales](#scaling)单独的API服务器和队列工作副本上。每个都有自己的数据库，具有自动备份、时间点恢复和高可用性。它适合需要始终在线容量的延迟敏感型工作负载。
 
 要请求更多资源，[contact support](https://support.langchain.com)。增加取决于您的使用案例和可用容量。
 
 ## 尺寸
 
-这些表显示了 GCP 中LangSmith 云上的计费计算所请求的 vCPU 和内存。 Redis 被排除在外，因为它不按任何部署类型或规模计费；参见[Compute billing](/langsmith/billing#langsmith-deployment-billing)。
+这些表显示了 GCP 中LangSmith 云上的计费计算请求的 vCPU 和内存。 Redis 被排除在外，因为它不按任何部署类型或规模计费； see [Compute billing](/langsmith/billing#langsmith-deployment-billing).
 
 无服务器部署运行一个包含 API 服务器和队列工作线程的副本，以及一个单独的 Redis 容器：
 
 |集装箱|无服务器 S |无服务器 M |无服务器 L |
 | - | - | - | - |
-| API服务器| 0.4 个 vCPU/1 GiB | 2 个 vCPU / 2 GiB | 4 个 vCPU/4 GiB |
+| API服务器| 0.4 vCPU / 1 GiB | 2 个 vCPU / 2 GiB | 4 个 vCPU/4 GiB |
 |队列工作者 | 0.4 个 vCPU/1 GiB | 2 个 vCPU / 2 GiB | 4 个 vCPU/4 GiB |
 | **可计费运行时间总计** | **0.8 vCPU / 2 GiB** | **4 个 vCPU/4 GiB** | **8 个 vCPU/8 GiB** |
 |数据库|共享、多租户 |共享、多租户 |共享、多租户 |
@@ -110,7 +110,7 @@
 |队列工作副本 | 1 到 10 | 1 至 20 | 1 至 40 |
 | **最低计费总运行时间** | **3 个 vCPU/6 GiB** | **6 个 vCPU/12 GiB** | **12 个 vCPU/24 GiB** |
 |数据库实例 | 1 个 vCPU / 4 GiB | 2 个 vCPU / 8 GiB | 4 个 vCPU/16 GiB |
-|数据库存储 |自动缩放磁盘 |自动缩放磁盘|自动缩放磁盘|
+|数据库存储|自动缩放磁盘|自动缩放磁盘 |自动缩放磁盘|
 
 最低计费运行时总数包括 2 个 API 服务器副本和 1 个队列工作线程。 [Autoscaling](#scaling) 按列出的每个副本大小添加副本。
 
@@ -122,7 +122,7 @@
 
 部署中的所有图表共享其计算、数据库、自动缩放和部署类型。它们也作为一个修订版一起发布。当代理需要不同的大小、延迟配置文件或与其他代理隔离时，为代理提供自己的部署。
 
-## 数据库配置
+## Database provisioning
 
 控制平面和 [data plane](/langsmith/data-plane) 侦听器应用程序协调起来，为每个云部署自动创建一个 Postgres 数据库。该数据库充当部署的[persistence layer](/oss/python/langgraph/persistence#memory-store)。
 
@@ -154,12 +154,6 @@
 
 ***
 
-<div>
-  <Callout icon="terminal-2">
-    [Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
-  </Callout>
+[Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
 
-  <Callout icon="edit">
-    [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/cloud-platform-features.mdx) 或 [file an issue](https://github.com/langchain-ai/docs/issues/new/choose)。
-  </Callout>
-</div>
+[Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/cloud-platform-features.mdx) or [file an issue](https://github.com/langchain-ai/docs/issues/new/choose).

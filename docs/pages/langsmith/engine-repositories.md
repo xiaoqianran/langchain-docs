@@ -22,9 +22,9 @@ Enable [Engine](/langsmith/engine) for your tracing project or agent environment
 
 On GitHub, you need permission to install the App on the repositories you want to connect, or access to an existing installation. Your GitHub organization or enterprise may require an administrator to approve the installation. Complete your organization's SSO sign-in when prompted.
 
-<Note>
-  For Enterprise Managed Users, connect organization-owned repositories. GitHub does not allow this App to be installed on a managed user's personal account. See [Enterprise Managed Users](/langsmith/engine-self-hosted-github#enterprise-managed-users) for the requirements on GitHub.com and `ghe.com`.
-</Note>
+> [!NOTE]
+>
+> For Enterprise Managed Users, connect organization-owned repositories. GitHub does not allow this App to be installed on a managed user's personal account. See [Enterprise Managed Users](/langsmith/engine-self-hosted-github#enterprise-managed-users) for the requirements on GitHub.com and `ghe.com`.
 
 For fixes, the repository must permit Engine's branches and draft PRs. Review [Repository policies](#repository-policies) before testing a fix.
 
@@ -113,12 +113,6 @@ On a BYOC data plane, an Organization Admin registers a GitHub App and saves its
 
 ***
 
-<div>
-  <Callout icon="terminal-2">
-    [Connect these docs](/use-these-docs) to your agent of choice via MCP for real-time answers.
-  </Callout>
+[Connect these docs](/use-these-docs) to your agent of choice via MCP for real-time answers.
 
-  <Callout icon="edit">
-    [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/engine-repositories.mdx) or [file an issue](https://github.com/langchain-ai/docs/issues/new/choose).
-  </Callout>
-</div>
+[Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/engine-repositories.mdx) or [file an issue](https://github.com/langchain-ai/docs/issues/new/choose).

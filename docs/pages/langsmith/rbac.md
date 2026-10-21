@@ -4,9 +4,9 @@
 
 This reference explains LangSmith's Role-Based Access Control (RBAC) system for managing organization-level and workspace-level permissions.
 
-<Note>
-  RBAC (Role-Based Access Control) is an Enterprise feature for managing workspace-level permissions. If you are interested in this feature, [contact our sales team](https://www.langchain.com/contact-sales). Other plans default to using the Admin role for all users.
-</Note>
+> [!NOTE]
+>
+> RBAC (Role-Based Access Control) is an Enterprise feature for managing workspace-level permissions. If you are interested in this feature, [contact our sales team](https://www.langchain.com/contact-sales). Other plans default to using the Admin role for all users.
 
 LangSmith's RBAC system manages user permissions within workspaces. RBAC allows you to control who can access your LangSmith [workspace](/langsmith/administration-overview#workspaces) and what they can do within it.
 
@@ -20,9 +20,9 @@ On Enterprise plans, organizations can create [custom workspace roles](#custom-r
 
 To learn how to set up RBAC and assign roles to users, refer to the [User Management guide](/langsmith/user-management#set-up-access-control). Your identity provider can also assign roles automatically via [SCIM groups](/langsmith/user-management#set-up-scim-for-your-organization) or [SSO Groups Sync](/langsmith/user-management#sso-groups-sync-alternative).
 
-<Note>
-  For a comprehensive list of required permissions along with the operations and roles that can perform them, refer to the [Organization and workspace reference](/langsmith/organization-workspace-operations).
-</Note>
+> [!NOTE]
+>
+> For a comprehensive list of required permissions along with the operations and roles that can perform them, refer to the [Organization and workspace reference](/langsmith/organization-workspace-operations).
 
 ## Role types
 
@@ -161,9 +161,9 @@ Workspace roles are part of the **Enterprise RBAC feature** and control what use
 | [Workspace Editor](#workspace-editor) | Full permissions for most resources, cannot manage workspace settings or delete certain resources |
 | [Workspace Viewer](#workspace-viewer) | Read-only access to all workspace resources |
 
-<Note>
-  RBAC (Role-Based Access Control) is a feature that is only available to [Enterprise](https://langchain.com/pricing) customers. If you are interested in this feature, [contact our sales team](https://www.langchain.com/contact-sales). Other plans default to using the Admin role for all users.
-</Note>
+> [!NOTE]
+>
+> RBAC (Role-Based Access Control) is a feature that is only available to [Enterprise](https://langchain.com/pricing) customers. If you are interested in this feature, [contact our sales team](https://www.langchain.com/contact-sales). Other plans default to using the Admin role for all users.
 
 #### Workspace admin
 
@@ -194,13 +194,15 @@ For a comprehensive list of required permissions along with the operations and r
 
 For a comprehensive list of required permissions along with the operations and roles that can perform them, refer to the [Organization and workspace reference](/langsmith/organization-workspace-operations).
 
-<Tip>
-  For step-by-step instructions on assigning workspace roles to users, refer to the [User Management guide](/langsmith/user-management#assign-a-role-to-a-user).
-</Tip>
+> [!TIP]
+>
+> For step-by-step instructions on assigning workspace roles to users, refer to the [User Management guide](/langsmith/user-management#assign-a-role-to-a-user).
 
 ## Custom roles
 
-<Info>Creating custom roles is available for organizations on the Enterprise plan.</Info>
+> [!NOTE]
+>
+> Creating custom roles is available for organizations on the Enterprise plan.
 
 [Organization Admins](#organization-admin) can create custom roles with specific combinations of permissions tailored to their organization's needs.
 
@@ -227,7 +229,9 @@ Note the following details on custom roles:
 
 ### Restrict roles
 
-<Info>Role restriction is available for organizations on the [Enterprise](/langsmith/pricing-plans) plan.</Info>
+> [!NOTE]
+>
+> Role restriction is available for organizations on the [Enterprise](/langsmith/pricing-plans) plan.
 
 [Organization Admins](#organization-admin) and [Organization Operators](#organization-operator) (roles with the `organization:manage` permission) can mark any role—system or custom—as **restricted**. Restricted roles can only be assigned to workspace members by users who hold the built-in [Workspace Admin](#workspace-admin) role. Users who have the `workspaces:manage-members` permission but do not hold the Workspace Admin role cannot assign restricted roles.
 
@@ -245,9 +249,9 @@ After a role is restricted, users who do not hold the Workspace Admin role canno
 
 To unrestrict a role, follow the same steps and toggle the **Restricted** setting off.
 
-<Note>
-  Role restriction applies to both system roles (Workspace Admin, Workspace Editor, Workspace Viewer) and custom roles. It is available on LangSmith [Cloud](/langsmith/cloud) and [Self-hosted](/langsmith/self-hosted).
-</Note>
+> [!NOTE]
+>
+> Role restriction applies to both system roles (Workspace Admin, Workspace Editor, Workspace Viewer) and custom roles. It is available on LangSmith [Cloud](/langsmith/cloud) and [Self-hosted](/langsmith/self-hosted).
 
 ### Understand permission behavior
 
@@ -263,12 +267,6 @@ Some permissions offer granular control when used in custom roles:
 
 ***
 
-<div>
-  <Callout icon="terminal-2">
-    [Connect these docs](/use-these-docs) to your agent of choice via MCP for real-time answers.
-  </Callout>
+[Connect these docs](/use-these-docs) to your agent of choice via MCP for real-time answers.
 
-  <Callout icon="edit">
-    [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/rbac.mdx) or [file an issue](https://github.com/langchain-ai/docs/issues/new/choose).
-  </Callout>
-</div>
+[Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/rbac.mdx) or [file an issue](https://github.com/langchain-ai/docs/issues/new/choose).

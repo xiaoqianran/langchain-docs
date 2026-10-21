@@ -8,69 +8,67 @@ Before you start, review the [prerequisites](/langsmith/byoc#prerequisites).
 
 By default, LangChain creates a VPC for your data plane. To create and manage the network yourself, follow [Bring your own VPC on AWS](/langsmith/byoc-byovpc) before creating the IAM role and data plane below.
 
-<Steps>
-  <Step title="Enable BYOC on your organization">
-    Create an organization in LangSmith on AWS at [aws.smith.langchain.com](https://aws.smith.langchain.com), or reuse an existing one.
+**1. Enable BYOC on your organization**
 
-    Send your organization ID to the LangChain team to enable BYOC.
-  </Step>
+Create an organization in LangSmith on AWS at [aws.smith.langchain.com](https://aws.smith.langchain.com), or reuse an existing one.
 
-  <Step title="Create the IAM role">
-    LangChain provides the external ID for the IAM role. Navigate to **Settings > Data Planes** and use the copy button next to the **Data Planes** header to copy it.
+Send your organization ID to the LangChain team to enable BYOC.
 
-    Apply the [`langsmith-byoc-role` Terraform module](https://github.com/langchain-ai/terraform/tree/main/modules/byoc/aws/langsmith-byoc-role) in your AWS account using the copied external ID. This creates the cross-account role LangChain assumes to provision and manage the data plane. The role's trust policy must use this value in its `ExternalId` condition.
+**2. Create the IAM role**
 
-    For BYOVPC, set `allow_vpc_creation_permissions = false` and supply your VPC ID in `vpc_ids`. See [Create the reduced-permission IAM role](/langsmith/byoc-byovpc#create-the-reduced-permission-iam-role).
+LangChain provides the external ID for the IAM role. Navigate to **Settings > Data Planes** and use the copy button next to the **Data Planes** header to copy it.
 
-    <Note>
-      LangChain recommends a fresh AWS account dedicated to LangSmith BYOC.
-    </Note>
-  </Step>
+Apply the [`langsmith-byoc-role` Terraform module](https://github.com/langchain-ai/terraform/tree/main/modules/byoc/aws/langsmith-byoc-role) in your AWS account using the copied external ID. This creates the cross-account role LangChain assumes to provision and manage the data plane. The role's trust policy must use this value in its `ExternalId` condition.
 
-  <Step title="Create the data plane">
-    Navigate to **Settings > Data Planes** and create a data plane with the following parameters:
+For BYOVPC, set `allow_vpc_creation_permissions = false` and supply your VPC ID in `vpc_ids`. See [Create the reduced-permission IAM role](/langsmith/byoc-byovpc#create-the-reduced-permission-iam-role).
 
-    * **Name**: Lowercase letters, digits, and hyphens, up to 24 characters.
-    * **AWS region**: One of the [supported regions](/langsmith/byoc#regions-and-cloud-providers).
-    * **AWS IAM role ARN**: The ARN of the role you created in the previous step, which LangSmith assumes in your account.
-    * **Network configuration**: For a LangChain-managed VPC, supply a private RFC 1918 CIDR range from `/16` to `/18`. For BYOVPC, supply the [VPC and subnet IDs](/langsmith/byoc-byovpc#supply-the-vpc-and-subnet-ids) instead of a CIDR range.
-    * **Load balancer access**: Private by default, which keeps the ingress load balancer reachable only from your VPC. Set it to **Public** to make the load balancer internet-facing.
-  </Step>
+> [!NOTE]
+>
+> LangChain recommends a fresh AWS account dedicated to LangSmith BYOC.
 
-  <Step title="Wait for provisioning">
-    LangChain provisions the infrastructure on your behalf. The data plane moves from `Requested` to `Provisioning` to `Active`.
+**3. Create the data plane**
 
-    For BYOVPC, LangSmith validates your VPC and subnets before provisioning, then creates the workload infrastructure inside your VPC.
+Navigate to **Settings > Data Planes** and create a data plane with the following parameters:
 
-    <Note>
-      End-to-end provisioning of a data plane takes around 60 to 90 minutes.
-    </Note>
+* **Name**: Lowercase letters, digits, and hyphens, up to 24 characters.
+* **AWS region**: One of the [supported regions](/langsmith/byoc#regions-and-cloud-providers).
+* **AWS IAM role ARN**: The ARN of the role you created in the previous step, which LangSmith assumes in your account.
+* **Network configuration**: For a LangChain-managed VPC, supply a private RFC 1918 CIDR range from `/16` to `/18`. For BYOVPC, supply the [VPC and subnet IDs](/langsmith/byoc-byovpc#supply-the-vpc-and-subnet-ids) instead of a CIDR range.
+* **Load balancer access**: Private by default, which keeps the ingress load balancer reachable only from your VPC. Set it to **Public** to make the load balancer internet-facing.
 
-    Track its state in **Settings > Data Planes**. If the data plane transitions to `Provisioning Failed`, contact the LangChain team.
-  </Step>
+**4. Wait for provisioning**
 
-  <Step title="Set up private connectivity">
-    Data planes are provisioned with a private endpoint by default, so you need private connectivity to reach it, such as Tailscale, AWS PrivateLink, or VPC peering.
+LangChain provisions the infrastructure on your behalf. The data plane moves from `Requested` to `Provisioning` to `Active`.
 
-    Find the API URL under **Settings > Data Planes**. If the frontend cannot reach your data plane, LangSmith prompts you to switch to a workspace on a data plane that is reachable, which can be a Cloud workspace.
-  </Step>
+For BYOVPC, LangSmith validates your VPC and subnets before provisioning, then creates the workload infrastructure inside your VPC.
 
-  <Step title="Create workspaces">
-    A workspace named `dp-<data_plane_name>` is provisioned automatically inside the new data plane. It is not accessible until the data plane is reachable.
+> [!NOTE]
+>
+> End-to-end provisioning of a data plane takes around 60 to 90 minutes.
 
-    You can create additional workspaces in the data plane. Select the target data plane when you create each one: a workspace belongs to exactly one data plane, and a data plane can hold many workspaces.
+Track its state in **Settings > Data Planes**. If the data plane transitions to `Provisioning Failed`, contact the LangChain team.
 
-    <Warning>
-      Pick the correct data plane carefully when you create a workspace. A workspace cannot be moved to another data plane after creation.
-    </Warning>
-  </Step>
+**5. Set up private connectivity**
 
-  <Step title="(Optional) Migrate existing data">
-    If you are moving from an existing LangSmith Cloud or [self-hosted](/langsmith/self-hosted) instance, users, roles, datasets, prompts, experiments, annotation queue configuration, automation rules, dashboards, and Fleet resources can be copied over. Traces cannot be migrated today.
+Data planes are provisioned with a private endpoint by default, so you need private connectivity to reach it, such as Tailscale, AWS PrivateLink, or VPC peering.
 
-    For more information, see [Migrate to BYOC](/langsmith/byoc-migration).
-  </Step>
-</Steps>
+Find the API URL under **Settings > Data Planes**. If the frontend cannot reach your data plane, LangSmith prompts you to switch to a workspace on a data plane that is reachable, which can be a Cloud workspace.
+
+**6. Create workspaces**
+
+A workspace named `dp-<data_plane_name>` is provisioned automatically inside the new data plane. It is not accessible until the data plane is reachable.
+
+You can create additional workspaces in the data plane. Select the target data plane when you create each one: a workspace belongs to exactly one data plane, and a data plane can hold many workspaces.
+
+> [!WARNING]
+>
+> Pick the correct data plane carefully when you create a workspace. A workspace cannot be moved to another data plane after creation.
+
+**7. (Optional) Migrate existing data**
+
+If you are moving from an existing LangSmith Cloud or [self-hosted](/langsmith/self-hosted) instance, users, roles, datasets, prompts, experiments, annotation queue configuration, automation rules, dashboards, and Fleet resources can be copied over. Traces cannot be migrated today.
+
+For more information, see [Migrate to BYOC](/langsmith/byoc-migration).
 
 ## Next steps
 
@@ -79,12 +77,6 @@ By default, LangChain creates a VPC for your data plane. To create and manage th
 
 ***
 
-<div>
-  <Callout icon="terminal-2">
-    [Connect these docs](/use-these-docs) to your agent of choice via MCP for real-time answers.
-  </Callout>
+[Connect these docs](/use-these-docs) to your agent of choice via MCP for real-time answers.
 
-  <Callout icon="edit">
-    [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/byoc-onboarding.mdx) or [file an issue](https://github.com/langchain-ai/docs/issues/new/choose).
-  </Callout>
-</div>
+[Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/byoc-onboarding.mdx) or [file an issue](https://github.com/langchain-ai/docs/issues/new/choose).

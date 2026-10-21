@@ -25,9 +25,9 @@ For runnable end-to-end examples that combine these filters with the SDK, refer 
 | `select` | Select the fields to return in the response. By default, all fields are returned. See [run data format](/langsmith/run-data-format) for available fields. |
 | `query` (*experimental*) | Natural language query, which translates your query into a filter statement. |
 
-<Note>
-  **Performance tip**: Passing the `select` parameter and excluding `inputs` and `outputs` from the list can significantly improve query performance and reduce response sizes, especially for large runs.
-</Note>
+> [!NOTE]
+>
+> **Performance tip**: Passing the `select` parameter and excluding `inputs` and `outputs` from the list can significantly improve query performance and reduce response sizes, especially for large runs.
 
 ## Filter query language
 
@@ -45,9 +45,25 @@ The filtering grammar is based on comparator functions applied to fields of the 
 | `gte` | Greater than or equal to | `gte(latency, 1.5)` |
 | `lt` | Less than | `lt(start_time, "2024-01-01T00:00:00Z")` |
 | `lte` | Less than or equal to | `lte(feedback_score, 0.5)` |
+| `like` | Pattern match; `%` matches any sequence of characters | `like(metadata_value, "%prod%")` |
+| `notlike` | Inverse of `like` | `notlike(metadata_value, "%staging%")` |
 | `has` | Check if the run contains a tag or metadata key-value | `has(tags, "production")` |
 | `search` | Search for a substring across all string fields | `search("invoice")` |
 | `in` | Check if a field value is in a list | `in(metadata_key, ["session_id", "thread_id"])` |
+
+### Wildcard pattern matching
+
+`like` and `notlike` match a field value against a pattern. How the pattern applies depends on the field:
+
+* **`name`, `metadata_key`, and `metadata_value`**: `%` matches any sequence of characters, including none. Matching is case-sensitive. Without `%`, `like` matches only the exact value, the same as `eq`.
+* **`inputs`, `outputs`, and `error`**: Matching is case-insensitive and always matches a substring, so `%` is optional. LangSmith can match each word of the pattern separately rather than as a phrase, so do not rely on `like` to match an exact phrase in these fields.
+
+For example:
+
+* `like(metadata_value, "%prod%")` matches any value that contains `prod`, such as `production` or `eu-prod-1`.
+* `notlike(metadata_value, "%staging%")` matches any value that does not contain `staging`.
+
+In the UI filter builder, the **contains** and **does not contain** operators produce `like` and `notlike` filters. To translate a search bar query, refer to the [UI-to-API operator map](#ui-to-api-operator-map).
 
 ### Logical operators
 
@@ -82,13 +98,42 @@ or(eq(status, "error"), and(eq(feedback_key, "score"), lt(feedback_score, 0.5)))
 * **Durations**: seconds, as either a number or a string with the `s` suffix, `"5s"`, `"1.5s"`, `"90s"`, or `1.5`. Other unit suffixes (`m`, `h`) are not supported.
 * **Lists**: JSON array syntax, `["session_id", "thread_id"]`.
 
+## UI-to-API operator map
+
+The search bar in the LangSmith UI uses its own syntax, documented in [Filter traces](/langsmith/filter-traces#operators). The following table maps each search bar operator to the comparator that does the same job in this language:
+
+| Search bar operator | Search bar syntax | API comparator |
+| - | - | - |
+| is | `name:value` | `eq(name, "value")` |
+| is not | `-name:value` | `neq(name, "value")` |
+| wildcard | `name:*value*` | `like(name, "%value%")`. Replace each `*` with `%`. |
+| matches | `input:~value` | `like(inputs, "%value%")`. Also applies to `outputs` and `error`. |
+| does not match | `-input:~value` | `notlike(inputs, "%value%")` |
+| comparison | `latency:>5` | `gt(latency, 5)`. Use `gte`, `lt`, and `lte` for `>=`, `<`, and `<=`. |
+| exists | `metadata.env:*` | `eq(metadata_key, "env")` |
+
+## Alert filters
+
+Alert rules accept the same filter query language in their `filter` and `denominator_filter` fields:
+
+* **`filter`**: Selects the runs that count toward the alert.
+* **`denominator_filter`**: Selects the baseline population for a percentage-based alert. When it is empty, every run counts toward the baseline.
+
+Alert filters accept only `and`. Combining conditions with `or` is not supported.
+
+Example alert filter that matches runs whose `env` metadata value does not contain `staging`:
+
+```text theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+and(eq(metadata_key, "env"), notlike(metadata_value, "%staging%"))
+```
+
 ## Quick reference examples
 
 The following examples show the filter string only. Pass the string as the `filter`, `trace_filter`, or `tree_filter` argument in `client.list_runs()` or the `/runs/query` API endpoint.
 
-<Tip>
-  For complete SDK examples with Python, TypeScript, and Java code, refer to [Query traces using the SDK](/langsmith/export-traces#use-filter-query-language).
-</Tip>
+> [!TIP]
+>
+> For complete SDK examples with Python, TypeScript, and Java code, refer to [Query traces using the SDK](/langsmith/export-traces#use-filter-query-language).
 
 ### Filter by run name
 
@@ -142,6 +187,12 @@ and(eq(metadata_key, "user_id"), eq(metadata_value, "usr_abc123"))
 
 # Runs from the production environment
 and(eq(metadata_key, "environment"), eq(metadata_value, "production"))
+
+# Runs whose "env" metadata value contains "prod" (like: contains)
+and(eq(metadata_key, "env"), like(metadata_value, "%prod%"))
+
+# Runs whose "env" metadata value does not contain "staging" (notlike: does not contain)
+and(eq(metadata_key, "env"), notlike(metadata_value, "%staging%"))
 ```
 
 ### Filter by thread ID
@@ -194,18 +245,12 @@ and(eq(feedback_key, "user_score"), eq(feedback_score, 1))
 eq(name, "ExpandQuery")
 ```
 
-<Note>
-  `tree_filter` applies the same query syntax to runs anywhere in the trace tree. For predicates over arbitrary nested child-run fields, such as returned `inputs`, `outputs`, or `extra` payload paths, first narrow candidates with server-side filters, then hydrate root traces with child runs and traverse them locally. See [Query trace trees with child-run predicates](/langsmith/export-traces#query-trace-trees-with-child-run-predicates).
-</Note>
+> [!NOTE]
+>
+> `tree_filter` applies the same query syntax to runs anywhere in the trace tree. For predicates over arbitrary nested child-run fields, such as returned `inputs`, `outputs`, or `extra` payload paths, first narrow candidates with server-side filters, then hydrate root traces with child runs and traverse them locally. See [Query trace trees with child-run predicates](/langsmith/export-traces#query-trace-trees-with-child-run-predicates).
 
 ***
 
-<div>
-  <Callout icon="terminal-2">
-    [Connect these docs](/use-these-docs) to your agent of choice via MCP for real-time answers.
-  </Callout>
+[Connect these docs](/use-these-docs) to your agent of choice via MCP for real-time answers.
 
-  <Callout icon="edit">
-    [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/trace-query-syntax.mdx) or [file an issue](https://github.com/langchain-ai/docs/issues/new/choose).
-  </Callout>
-</div>
+[Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/trace-query-syntax.mdx) or [file an issue](https://github.com/langchain-ai/docs/issues/new/choose).

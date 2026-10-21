@@ -14,42 +14,42 @@ Below are tutorials for common use cases, organized by framework.
 
 [Deep Agents](/oss/javascript/deepagents/overview) include built-in functionality for managing context, a virtual filesystem, and other common agent requirements.
 
-<Card title="Data analysis" icon="chart-pie" href="/oss/javascript/deepagents/data-analysis">
-  Build a data analysis agent that sends reports to Slack.
-</Card>
+> **[Data analysis](/oss/javascript/deepagents/data-analysis)**
+>
+> Build a data analysis agent that sends reports to Slack.
 
-<Card title="Deep research" icon="search" href="/oss/javascript/deepagents/deep-research">
-  Build a multi-step web research agent with subagent delegation and strategic reflection.
-</Card>
+> **[Deep research](/oss/javascript/deepagents/deep-research)**
+>
+> Build a multi-step web research agent with subagent delegation and strategic reflection.
 
 ### LangChain
 
 [LangChain](/oss/javascript/langchain/overview) [agent](/oss/javascript/langchain/agents) implementations make it easy to get started for simple use cases.
 
-<Card title="Semantic Search" icon="search" href="/oss/javascript/langchain/knowledge-base">
-  Build a semantic search engine over a PDF with LangChain components.
-</Card>
+> **[Semantic Search](/oss/javascript/langchain/knowledge-base)**
+>
+> Build a semantic search engine over a PDF with LangChain components.
 
-<Card title="RAG Agent" icon="user-search" href="/oss/javascript/deepagents/rag">
-  Create a Retrieval Augmented Generation (RAG) agent.
-</Card>
+> **[RAG Agent](/oss/javascript/deepagents/rag)**
+>
+> Create a Retrieval Augmented Generation (RAG) agent.
 
-<Card title="SQL Agent" icon="database" href="/oss/javascript/langchain/sql-agent">
-  Build a SQL agent to interact with databases with human-in-the-loop review.
-</Card>
+> **[SQL Agent](/oss/javascript/langchain/sql-agent)**
+>
+> Build a SQL agent to interact with databases with human-in-the-loop review.
 
-<Card title="Voice Agent" icon="microphone" href="/oss/javascript/langchain/voice-agent">
-  Build an agent you can speak and listen to.
-</Card>
+> **[Voice Agent](/oss/javascript/langchain/voice-agent)**
+>
+> Build an agent you can speak and listen to.
 
 ### LangGraph
 
 LangChain's [agent](/oss/javascript/langchain/agents) implementations use [LangGraph](/oss/javascript/langgraph/overview) primitives.
 If deeper customization is required, agents can be implemented directly in LangGraph.
 
-<Card title="Custom RAG Agent" icon="user-search" href="/oss/javascript/langgraph/agentic-rag">
-  Build a RAG agent using LangGraph primitives for fine-grained control.
-</Card>
+> **[Custom RAG Agent](/oss/javascript/langgraph/agentic-rag)**
+>
+> Build a RAG agent using LangGraph primitives for fine-grained control.
 
 ### Multi-agent
 
@@ -59,40 +59,34 @@ These tutorials demonstrate [multi-agent patterns](/oss/javascript/langchain/mul
 
 These guides explain the core concepts and APIs underlying LangChain and LangGraph.
 
-<Card title="Memory" icon="brain" href="/oss/javascript/concepts/memory">
-  Understand persistence of interactions within and across threads.
-</Card>
+> **[Memory](/oss/javascript/concepts/memory)**
+>
+> Understand persistence of interactions within and across threads.
 
-<Card title="Context engineering" icon="notebook" href="/oss/javascript/concepts/context">
-  Learn methods for providing AI applications the right information and tools to accomplish a task.
-</Card>
+> **[Context engineering](/oss/javascript/concepts/context)**
+>
+> Learn methods for providing AI applications the right information and tools to accomplish a task.
 
-<Card title="Graph API" icon="topology-star" href="/oss/javascript/langgraph/graph-api">
-  Explore LangGraph’s declarative graph-building API.
-</Card>
+> **[Graph API](/oss/javascript/langgraph/graph-api)**
+>
+> Explore LangGraph’s declarative graph-building API.
 
-<Card title="Functional API" icon="code" href="/oss/javascript/langgraph/functional-api">
-  Build agents as a single function.
-</Card>
+> **[Functional API](/oss/javascript/langgraph/functional-api)**
+>
+> Build agents as a single function.
 
 ## Additional resources
 
-<Card title="LangChain Academy" icon="school" href="https://academy.langchain.com/">
-  Courses and exercises to level up your LangChain skills.
-</Card>
+> **[LangChain Academy](https://academy.langchain.com/)**
+>
+> Courses and exercises to level up your LangChain skills.
 
-<Card title="Case Studies" icon="presentation" href="/oss/javascript/langgraph/case-studies">
-  See how teams are using LangChain and LangGraph in production.
-</Card>
+> **[Case Studies](/oss/javascript/langgraph/case-studies)**
+>
+> See how teams are using LangChain and LangGraph in production.
 
 ***
 
-<div>
-  <Callout icon="terminal-2">
-    [Connect these docs](/use-these-docs) to your agent of choice via MCP for real-time answers.
-  </Callout>
+[Connect these docs](/use-these-docs) to your agent of choice via MCP for real-time answers.
 
-  <Callout icon="edit">
-    [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/oss/learn.mdx) or [file an issue](https://github.com/langchain-ai/docs/issues/new/choose).
-  </Callout>
-</div>
+[Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/oss/learn.mdx) or [file an issue](https://github.com/langchain-ai/docs/issues/new/choose).

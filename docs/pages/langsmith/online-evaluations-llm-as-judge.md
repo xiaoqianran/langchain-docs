@@ -6,7 +6,9 @@
 
 **[LLM-as-a-judge](/langsmith/evaluation-concepts#llm-as-judge)** evaluators use an LLM to evaluate traces as a scalable substitute for human-like judgment. This guide covers **run-level** evaluators that evaluate a single run. For evaluating entire conversation threads, see [multi-turn online evaluators](/langsmith/online-evaluations-multi-turn).
 
-<Note>When an online evaluator runs on any run within a trace, the trace will be auto-upgraded to [extended data retention](/langsmith/usage-and-billing#data-retention-auto-upgrades). This upgrade will impact trace pricing, but ensures that traces meeting your evaluation criteria (typically those most valuable for analysis) are preserved for investigation. </Note>
+> [!NOTE]
+>
+> When an online evaluator runs on any run within a trace, the trace will be auto-upgraded to [extended data retention](/langsmith/usage-and-billing#data-retention-auto-upgrades). This upgrade will impact trace pricing, but ensures that traces meeting your evaluation criteria (typically those most valuable for analysis) are preserved for investigation.
 
 ## View online evaluators
 
@@ -34,13 +36,13 @@ You can apply a filter to the runs that trigger the evaluator. You may want to a
 
 Evaluators use the filter builder, with the same fields and operators described in [Filter traces (ClickHouse)](/langsmith/filter-traces-in-application).
 
-<Tip>
-  It's often helpful to inspect runs as you're creating a filter for your evaluator. With the evaluator configuration panel open, you can inspect runs and apply filters to them. Any filters you apply to the runs table will automatically be reflected in filters on your evaluator.
-</Tip>
+> [!TIP]
+>
+> It's often helpful to inspect runs as you're creating a filter for your evaluator. With the evaluator configuration panel open, you can inspect runs and apply filters to them. Any filters you apply to the runs table will automatically be reflected in filters on your evaluator.
 
-<Tip>
-  If you also have a webhook automation rule on this project and want the webhook payload to include this evaluator's scores, add a feedback filter to the webhook rule rather than relying on rule ordering. For example, filter on `eq(feedback_key, "answer_usefulness")` so the webhook only fires after the score exists. See [Ensuring evaluations complete before the webhook fires](/langsmith/webhooks#ensuring-evaluations-complete-before-the-webhook-fires) for details.
-</Tip>
+> [!TIP]
+>
+> If you also have a webhook automation rule on this project and want the webhook payload to include this evaluator's scores, add a feedback filter to the webhook rule rather than relying on rule ordering. For example, filter on `eq(feedback_key, "answer_usefulness")` so the webhook only fires after the score exists. See [Ensuring evaluations complete before the webhook fires](/langsmith/webhooks#ensuring-evaluations-complete-before-the-webhook-fires) for details.
 
 ## Configure a sampling rate
 
@@ -58,9 +60,9 @@ You can only backfill when you create the rule.
 
 When you backfill a [thread-level evaluation rule](/langsmith/online-evaluations-multi-turn), LangSmith finds threads with matching trace activity between the start date you selected and the time you created the rule, then applies the rule's filters. Once each selected thread is idle, LangSmith evaluates its root-run history and attaches the feedback to a representative trace in the thread. After the backfill finishes, the rule stays active and keeps evaluating new matching threads through the normal live flow.
 
-<Note>
-  The backfill is processed as a background job, so you will not see the results immediately.
-</Note>
+> [!NOTE]
+>
+> The backfill is processed as a background job, so you will not see the results immediately.
 
 In order to track progress of the backfill, you can view logs for your evaluator by heading to the **Evaluators** tab within a tracing project or agent environment and clicking the Logs button for the evaluator you created. Online evaluator logs are similar to [automation rule logs](/langsmith/rules#view-logs-for-your-automations).
 
@@ -94,9 +96,7 @@ If your traces contain multimodal content like images, audio, or documents, you 
      * If you want to include a specific attachment, you can use the suggested variable name, such as `{{attachment.file_name}}`, this will map the file with `file_name` in the attachment list to pass it to the evaluator.
      * If you want to include all attachments, use the `{{attachments}`}\` variable.
 
-  <img alt="Edit evaluator modal with an image attachment selected for the input." />
-
-  <img alt="Edit evaluator modal with an image attachment selected for the input." />
+  ![Edit evaluator modal with an image attachment selected for the input.](https://mintcdn.com/langchain-5e9cc07a/PCte2XqN2om94BaK/langsmith/images/variable-multimodal-content-light.png?fit=max\&auto=format\&n=PCte2XqN2om94BaK\&q=85\&s=4f96e959ec461208c43add7c5c02b8b0)
 
 The evaluator can then access these attachments when evaluating the trace. This is useful for evaluators that need to:
 
@@ -106,12 +106,6 @@ The evaluator can then access these attachments when evaluating the trace. This 
 
 ***
 
-<div>
-  <Callout icon="terminal-2">
-    [Connect these docs](/use-these-docs) to your agent of choice via MCP for real-time answers.
-  </Callout>
+[Connect these docs](/use-these-docs) to your agent of choice via MCP for real-time answers.
 
-  <Callout icon="edit">
-    [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/online-evaluations-llm-as-judge.mdx) or [file an issue](https://github.com/langchain-ai/docs/issues/new/choose).
-  </Callout>
-</div>
+[Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/online-evaluations-llm-as-judge.mdx) or [file an issue](https://github.com/langchain-ai/docs/issues/new/choose).

@@ -6,13 +6,13 @@
 
 代理的环境如何划分其踪迹、如何选择一个踪迹以及该组的哪些部分是固定的。
 
-*环境*记录代理在生成跟踪时运行的位置。 [agent](/langsmith/agents) 记录的每条踪迹都准确地落在其一个环境中，该环境是从固定的四个环境中提取的。
+*环境*记录代理在生成跟踪时运行的位置。 [agent](/langsmith/agents) 记录的每一条轨迹都准确地落在其一个环境中，该环境是从固定的四个环境中提取的。
 
 由于环境随跟踪一起移动，因此代理运行的位置是跟踪本身的属性。
 
-<Note>
-  基于代理的工作区可在 [LangSmith Cloud](/langsmith/cloud) 上使用。它们在 [self-hosted](/langsmith/self-hosted) LangSmith 上不可用。要检查您的工作区是否基于代理，请查看左上角的控件。在基于代理的工作区中，它是一个为您的工作区命名的工作区切换器。在[project-based](/langsmith/observability-concepts#tracing-projects)工作区中，它显示LangSmith徽标。
-</Note>
+> [!注意]
+>
+> 基于代理的工作区在 [LangSmith Cloud](/langsmith/cloud) 上可用。它们在 [self-hosted](/langsmith/self-hosted) LangSmith 上不可用。要检查您的工作区是否基于代理，请查看左上角的控件。在基于代理的工作区中，它是一个为您的工作区命名的工作区切换器。在[project-based](/langsmith/observability-concepts#tracing-projects)工作区中，它显示LangSmith徽标。
 
 ## 环境名称
 
@@ -48,12 +48,6 @@
 
 ***
 
-<div>
-  <Callout icon="terminal-2">
-    [Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
-  </Callout>
+[Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
 
-  <Callout icon="edit">
-    [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/agent-environments.mdx) 或 [file an issue](https://github.com/langchain-ai/docs/issues/new/choose)。
-  </Callout>
-</div>
+[Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/agent-environments.mdx) 或 [file an issue](https://github.com/langchain-ai/docs/issues/new/choose)。

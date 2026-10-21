@@ -6,9 +6,9 @@ Common issues, fixes, and diagnostic commands for LangSmith self-hosted on AWS E
 
 This page documents common issues, fixes, and diagnostic commands for LangSmith deployments provisioned with the [AWS Terraform modules](https://github.com/langchain-ai/terraform/tree/main/modules/aws).
 
-<Tip>
-  Before upgrading, review the [LangSmith self-hosted changelog](/langsmith/self-hosted-changelog) for breaking changes and required variable updates. Run `source infra/scripts/set-kubeconfig.sh` from `modules/aws/`, or `aws eks update-kubeconfig --region <region> --name <cluster-name>`, before running any `kubectl` commands.
-</Tip>
+> [!TIP]
+>
+> Before upgrading, review the [LangSmith self-hosted changelog](/langsmith/self-hosted-changelog) for breaking changes and required variable updates. Run `source infra/scripts/set-kubeconfig.sh` from `modules/aws/`, or `aws eks update-kubeconfig --region <region> --name <cluster-name>`, before running any `kubectl` commands.
 
 For a copy-paste reference of the `kubectl`, `helm`, and `aws` calls used throughout this page, skip to [Diagnostic commands](#diagnostic-commands).
 
@@ -307,9 +307,9 @@ for key in <key-1> <key-2>; do
 done
 ```
 
-<Warning>
-  Never change `name_prefix` or `environment` on an existing deployment.
-</Warning>
+> [!WARNING]
+>
+> Never change `name_prefix` or `environment` on an existing deployment.
 
 ### Postgres password rejected by Terraform validation
 
@@ -570,12 +570,6 @@ echo "=== Helm ===" && helm status langsmith -n langsmith 2>/dev/null | grep -E 
 
 ***
 
-<div>
-  <Callout icon="terminal-2">
-    [Connect these docs](/use-these-docs) to your agent of choice via MCP for real-time answers.
-  </Callout>
+[Connect these docs](/use-these-docs) to your agent of choice via MCP for real-time answers.
 
-  <Callout icon="edit">
-    [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/self-host-terraform-aws-troubleshooting.mdx) or [file an issue](https://github.com/langchain-ai/docs/issues/new/choose).
-  </Callout>
-</div>
+[Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/self-host-terraform-aws-troubleshooting.mdx) or [file an issue](https://github.com/langchain-ai/docs/issues/new/choose).

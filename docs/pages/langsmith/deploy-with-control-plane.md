@@ -4,9 +4,9 @@
 
 Build Docker images and deploy applications to a self-hosted LangSmith instance using the control plane UI.
 
-<Info>
-  **This guide is for self-hosted LangSmith customers** who have [enabled LangSmith Deployment](/langsmith/enable-self-hosted-deployment#enable-langsmith-deployment) on their instance. For Cloud customers, see [Deploy on Cloud](/langsmith/deploy-to-cloud). For standalone Agent Servers without a control plane, see [Self-host standalone servers](/langsmith/deploy-standalone-server).
-</Info>
+> [!NOTE]
+>
+> **This guide is for self-hosted LangSmith customers** who have [enabled LangSmith Deployment](/langsmith/enable-self-hosted-deployment#enable-langsmith-deployment) on their instance. For Cloud customers, see [Deploy on Cloud](/langsmith/deploy-to-cloud). For standalone Agent Servers without a control plane, see [Self-host standalone servers](/langsmith/deploy-standalone-server).
 
 This guide shows you how to deploy your applications to a [self-hosted](/langsmith/self-hosted) LangSmith instance using a [control plane](/langsmith/control-plane). With a control plane, you build Docker images locally, push them to a registry that your Kubernetes cluster has access to, and deploy them with the [LangSmith UI](https://smith.langchain.com?utm_source=docs\&utm_medium=cta\&utm_campaign=langsmith-signup\&utm_content=langsmith-deploy-with-control-plane).
 
@@ -72,9 +72,9 @@ For full details, see the [CLI reference](/langsmith/cli#build).
 
 Push your image to a container registry accessible by your Kubernetes cluster. The specific commands depend on your registry provider.
 
-<Tip>
-  Tag your images with version information (e.g., `my-registry.com/my-app:v1.0.0`) to make rollbacks easier.
-</Tip>
+> [!TIP]
+>
+> Tag your images with version information (e.g., `my-registry.com/my-app:v1.0.0`) to make rollbacks easier.
 
 ## Step 4. Deploy with the control plane UI
 
@@ -96,9 +96,9 @@ After creating a deployment, the infrastructure is [provisioned asynchronously](
 
 From the control plane UI, you can view build logs, server logs, and deployment metrics including CPU/memory usage, replicas, and API performance. For more details, refer to the [control plane monitoring documentation](/langsmith/control-plane#monitoring).
 
-<Note>
-  A [LangSmith Observability tracing project](/langsmith/observability) is automatically created for each deployment with the same name as the deployment. Tracing environment variables are set automatically by the control plane.
-</Note>
+> [!NOTE]
+>
+> A [LangSmith Observability tracing project](/langsmith/observability) is automatically created for each deployment with the same name as the deployment. Tracing environment variables are set automatically by the control plane.
 
 ## Update deployment
 
@@ -119,9 +119,9 @@ Starting from the LangSmith UI:
 
 If your container registry requires authentication (e.g., AWS ECR, Azure ACR, GCP Artifact Registry, private Docker registry), you must configure Kubernetes image pull secrets before deploying applications. This is a one-time infrastructure configuration.
 
-<Note>
-  **This configuration is done at the infrastructure level, not per-deployment.** Once configured, all deployments automatically inherit the registry credentials.
-</Note>
+> [!NOTE]
+>
+> **This configuration is done at the infrastructure level, not per-deployment.** Once configured, all deployments automatically inherit the registry credentials.
 
 Configure `imagePullSecrets` in your LangSmith Helm chart's `values.yaml` file. See the detailed steps in the [Enable LangSmith Deployment guide](/langsmith/enable-self-hosted-deployment#enable-langsmith-deployment).
 
@@ -137,12 +137,6 @@ For detailed steps on creating image pull secrets for different registry provide
 
 ***
 
-<div>
-  <Callout icon="terminal-2">
-    [Connect these docs](/use-these-docs) to your agent of choice via MCP for real-time answers.
-  </Callout>
+[Connect these docs](/use-these-docs) to your agent of choice via MCP for real-time answers.
 
-  <Callout icon="edit">
-    [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/deploy-with-control-plane.mdx) or [file an issue](https://github.com/langchain-ai/docs/issues/new/choose).
-  </Callout>
-</div>
+[Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/deploy-with-control-plane.mdx) or [file an issue](https://github.com/langchain-ai/docs/issues/new/choose).

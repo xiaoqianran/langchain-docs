@@ -55,9 +55,9 @@ If you also want to [bring your own VPC](/langsmith/byoc-byovpc), set `allow_vpc
 
 ## Deploy the data plane with existing roles
 
-<Warning>
-  You must use the [`byoiam` Terraform module](https://github.com/langchain-ai/terraform/tree/main/modules/byoc/aws/byoiam) to create the exact IAM roles required by LangSmith. LangSmith performs extensive validation of these IAM resources before deploying the data plane.
-</Warning>
+> [!WARNING]
+>
+> You must use the [`byoiam` Terraform module](https://github.com/langchain-ai/terraform/tree/main/modules/byoc/aws/byoiam) to create the exact IAM roles required by LangSmith. LangSmith performs extensive validation of these IAM resources before deploying the data plane.
 
 The **Use existing IAM roles** checkbox configures the data plane to use the IAM resources you created.
 
@@ -78,12 +78,6 @@ Continue with provisioning and private connectivity in the onboarding guide.
 
 ***
 
-<div>
-  <Callout icon="terminal-2">
-    [Connect these docs](/use-these-docs) to your agent of choice via MCP for real-time answers.
-  </Callout>
+[Connect these docs](/use-these-docs) to your agent of choice via MCP for real-time answers.
 
-  <Callout icon="edit">
-    [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/byoc-byoiam.mdx) or [file an issue](https://github.com/langchain-ai/docs/issues/new/choose).
-  </Callout>
-</div>
+[Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/byoc-byoiam.mdx) or [file an issue](https://github.com/langchain-ai/docs/issues/new/choose).

@@ -8,56 +8,52 @@ MCP support now ships inside LangChain in the `langchain.mcp` namespace, built o
 
 For the full feature documentation, see [Model Context Protocol (MCP)](/oss/python/langchain/mcp).
 
-<Prompt description="Migrate from langchain-mcp-adapters to langchain.mcp" icon="arrow-right">
-  Migrate this codebase from the standalone `langchain-mcp-adapters` package to the built-in `langchain.mcp` namespace.
+Migrate this codebase from the standalone `langchain-mcp-adapters` package to the built-in `langchain.mcp` namespace.
 
-  ## Step 1: Read the guide
+## Step 1: Read the guide
 
-  Fetch and follow [https://docs.langchain.com/oss/python/migrate/langchain-mcp-adapters.md](https://docs.langchain.com/oss/python/migrate/langchain-mcp-adapters.md) as the source of truth for package changes, import paths, client APIs, connection config, callbacks, interceptors, auth, and features that are not yet wrapped. For current feature docs after migration, also fetch [https://docs.langchain.com/oss/python/langchain/mcp.md](https://docs.langchain.com/oss/python/langchain/mcp.md) and its linked pages when needed.
+Fetch and follow [https://docs.langchain.com/oss/python/migrate/langchain-mcp-adapters.md](https://docs.langchain.com/oss/python/migrate/langchain-mcp-adapters.md) as the source of truth for package changes, import paths, client APIs, connection config, callbacks, interceptors, auth, and features that are not yet wrapped. For current feature docs after migration, also fetch [https://docs.langchain.com/oss/python/langchain/mcp.md](https://docs.langchain.com/oss/python/langchain/mcp.md) and its linked pages when needed.
 
-  ## Step 2: Upgrade the package
+## Step 2: Upgrade the package
 
-  Uninstall `langchain-mcp-adapters` and install `langchain[mcp]` at `>=1.4.0` with the package manager already used in this project (`uv` or `pip`). Prefer pinning a current stable version when the project already pins versions.
+Uninstall `langchain-mcp-adapters` and install `langchain[mcp]` at `>=1.4.0` with the package manager already used in this project (`uv` or `pip`). Prefer pinning a current stable version when the project already pins versions.
 
-  ## Step 3: Apply the migration
+## Step 3: Apply the migration
 
-  Identify every call site that imports from `langchain_mcp_adapters` or uses `MultiServerMCPClient`, then apply the before/after changes from the guide, including:
+Identify every call site that imports from `langchain_mcp_adapters` or uses `MultiServerMCPClient`, then apply the before/after changes from the guide, including:
 
-  * Replace `MultiServerMCPClient` with `MCPAdapter` (async context manager; use `list_tools()`).
-  * Move server config to the standard `MCPConfig` shape (`mcpServers`) and drop per-entry `transport` keys when the guide says transport is inferred.
-  * Update import paths, renamed helpers (for example `convert_mcp_tool_to_langchain_tool` to `as_langchain_tool`), constructor arguments, callbacks, tool interceptors, and auth to the mappings on the page.
-  * Preserve behavior that the guide marks as kept (for example `MCPToolArtifact` and multimodal content).
+* Replace `MultiServerMCPClient` with `MCPAdapter` (async context manager; use `list_tools()`).
+* Move server config to the standard `MCPConfig` shape (`mcpServers`) and drop per-entry `transport` keys when the guide says transport is inferred.
+* Update import paths, renamed helpers (for example `convert_mcp_tool_to_langchain_tool` to `as_langchain_tool`), constructor arguments, callbacks, tool interceptors, and auth to the mappings on the page.
+* Preserve behavior that the guide marks as kept (for example `MCPToolArtifact` and multimodal content).
 
-  ## Step 4: Handle gaps explicitly
+## Step 4: Handle gaps explicitly
 
-  If the codebase uses prompts, resources, sampling, roots, SSE/WebSocket transports, `to_fastmcp`, or any API the guide marks as not supported or protocol-deprecated, stop and ask the user how to proceed. Do not invent replacements.
+If the codebase uses prompts, resources, sampling, roots, SSE/WebSocket transports, `to_fastmcp`, or any API the guide marks as not supported or protocol-deprecated, stop and ask the user how to proceed. Do not invent replacements.
 
-  ## Rules
+## Rules
 
-  * Stay scoped to this migration. Do not rewrite unrelated agent code.
-  * Prefer `langchain.mcp` APIs from the guide over keeping `langchain-mcp-adapters`.
-  * Ask rather than guess when a call site or parameter is not covered by the guide.
-</Prompt>
+* Stay scoped to this migration. Do not rewrite unrelated agent code.
+* Prefer `langchain.mcp` APIs from the guide over keeping `langchain-mcp-adapters`.
+* Ask rather than guess when a call site or parameter is not covered by the guide.
 
-<Note>
-  The `langchain.mcp` namespace requires `langchain[mcp]>=1.4.0` and is in beta. Importing from it raises a `LangChainBetaWarning`. The API may change.
-</Note>
+> [!NOTE]
+>
+> The `langchain.mcp` namespace requires `langchain[mcp]>=1.4.0` and is in beta. Importing from it raises a `LangChainBetaWarning`. The API may change.
 
 ## Install
 
 Replace the standalone package with the `mcp` extra, which pulls in FastMCP:
 
-<CodeGroup>
-  ```bash pip theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  pip uninstall langchain-mcp-adapters
-  pip install "langchain[mcp]"
-  ```
+```bash pip theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+pip uninstall langchain-mcp-adapters
+pip install "langchain[mcp]"
+```
 
-  ```bash uv theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  uv remove langchain-mcp-adapters
-  uv add "langchain[mcp]"
-  ```
-</CodeGroup>
+```bash uv theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+uv remove langchain-mcp-adapters
+uv add "langchain[mcp]"
+```
 
 ## Import paths
 
@@ -262,12 +258,6 @@ Some `langchain-mcp-adapters` features have no replacement because the MCP proto
 
 ***
 
-<div>
-  <Callout icon="terminal-2">
-    [Connect these docs](/use-these-docs) to your agent of choice via MCP for real-time answers.
-  </Callout>
+[Connect these docs](/use-these-docs) to your agent of choice via MCP for real-time answers.
 
-  <Callout icon="edit">
-    [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/oss/python/migrate/langchain-mcp-adapters.mdx) or [file an issue](https://github.com/langchain-ai/docs/issues/new/choose).
-  </Callout>
-</div>
+[Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/oss/python/migrate/langchain-mcp-adapters.mdx) or [file an issue](https://github.com/langchain-ai/docs/issues/new/choose).

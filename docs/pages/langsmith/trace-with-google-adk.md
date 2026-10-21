@@ -4,47 +4,43 @@
 
 This guide shows you how to trace [Google Agent Development Kit (ADK)](https://github.com/google/adk-python) agents in LangSmith. You'll configure automatic tracing for your ADK applications to capture agent invocations, tool calls, and LLM interactions.
 
-<Note>
-  This guide covers ADK's standard execution paths (text agents, tools, and multi-agent workflows). To trace a **Gemini Live** voice agent, which uses ADK's `Runner.run_live` streaming loop, see [Trace Gemini Live applications](/langsmith/trace-gemini-live).
-</Note>
+> [!NOTE]
+>
+> This guide covers ADK's standard execution paths (text agents, tools, and multi-agent workflows). To trace a **Gemini Live** voice agent, which uses ADK's `Runner.run_live` streaming loop, see [Trace Gemini Live applications](/langsmith/trace-gemini-live).
 
 ## Installation
 
 Install the required packages using your preferred package manager:
 
-<CodeGroup>
-  ```bash uv theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  uv add "langsmith[google-adk]"
-  ```
+```bash uv theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+uv add "langsmith[google-adk]"
+```
 
-  ```bash pip theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  pip install langsmith[google-adk]
-  ```
-</CodeGroup>
+```bash pip theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+pip install langsmith[google-adk]
+```
 
 ## Setup
 
 Set your [API keys](/langsmith/create-account-api-key):
 
-<CodeGroup>
-  ```bash shell theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  export LANGSMITH_TRACING=true
-  export LANGSMITH_ENDPOINT=https://api.smith.langchain.com
-  export LANGSMITH_API_KEY=<your_langsmith_api_key>
-  export LANGSMITH_PROJECT=<your_langsmith_project>
+```bash shell theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+export LANGSMITH_TRACING=true
+export LANGSMITH_ENDPOINT=https://api.smith.langchain.com
+export LANGSMITH_API_KEY=<your_langsmith_api_key>
+export LANGSMITH_PROJECT=<your_langsmith_project>
 
-  export GOOGLE_API_KEY=<your_google_api_key>
-  ```
+export GOOGLE_API_KEY=<your_google_api_key>
+```
 
-  ```dotenv .env theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  LANGSMITH_TRACING=true
-  LANGSMITH_ENDPOINT=https://api.smith.langchain.com
-  LANGSMITH_API_KEY=<your_langsmith_api_key>
-  LANGSMITH_PROJECT=<your_langsmith_project>
+```dotenv .env theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+LANGSMITH_TRACING=true
+LANGSMITH_ENDPOINT=https://api.smith.langchain.com
+LANGSMITH_API_KEY=<your_langsmith_api_key>
+LANGSMITH_PROJECT=<your_langsmith_project>
 
-  GOOGLE_API_KEY=<your_google_api_key>
-  ```
-</CodeGroup>
+GOOGLE_API_KEY=<your_google_api_key>
+```
 
 To create a Google API key, refer to [Google AI Studio](https://aistudio.google.com/api-keys).
 
@@ -236,12 +232,6 @@ if __name__ == "__main__":
 
 ***
 
-<div>
-  <Callout icon="terminal-2">
-    [Connect these docs](/use-these-docs) to your agent of choice via MCP for real-time answers.
-  </Callout>
+[Connect these docs](/use-these-docs) to your agent of choice via MCP for real-time answers.
 
-  <Callout icon="edit">
-    [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/trace-with-google-adk.mdx) or [file an issue](https://github.com/langchain-ai/docs/issues/new/choose).
-  </Callout>
-</div>
+[Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/trace-with-google-adk.mdx) or [file an issue](https://github.com/langchain-ai/docs/issues/new/choose).

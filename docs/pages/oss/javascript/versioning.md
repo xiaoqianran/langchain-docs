@@ -48,39 +48,37 @@ Certain APIs are explicitly marked as "internal" in a couple of ways:
 
 ## Release cycles
 
-<AccordionGroup>
-  <Accordion title="Major releases">
-    Major releases (e.g., `1.0.0` → `2.0.0`) may include:
+> **Major releases**
+>
+> Major releases (e.g., `1.0.0` → `2.0.0`) may include:
+>
+> * Breaking API changes
+> * Removal of deprecated features
+> * Significant architectural improvements
+>
+> We provide:
+>
+> * Detailed migration guides
+> * Automated migration tools when possible
+> * Extended support period for the previous major version
 
-    * Breaking API changes
-    * Removal of deprecated features
-    * Significant architectural improvements
+> **Minor releases**
+>
+> Minor releases (e.g., `1.0.0` → `1.1.0`) include:
+>
+> * New features and capabilities
+> * Performance improvements
+> * New optional parameters
+> * Backward-compatible enhancements
 
-    We provide:
-
-    * Detailed migration guides
-    * Automated migration tools when possible
-    * Extended support period for the previous major version
-  </Accordion>
-
-  <Accordion title="Minor releases">
-    Minor releases (e.g., `1.0.0` → `1.1.0`) include:
-
-    * New features and capabilities
-    * Performance improvements
-    * New optional parameters
-    * Backward-compatible enhancements
-  </Accordion>
-
-  <Accordion title="Patch releases">
-    Patch releases (e.g., `1.0.0` → `1.0.1`) include:
-
-    * Bug fixes
-    * Security updates
-    * Documentation improvements
-    * Performance optimizations without API changes
-  </Accordion>
-</AccordionGroup>
+> **Patch releases**
+>
+> Patch releases (e.g., `1.0.0` → `1.0.1`) include:
+>
+> * Bug fixes
+> * Security updates
+> * Documentation improvements
+> * Performance optimizations without API changes
 
 ## Version support policy
 
@@ -105,37 +103,33 @@ For detailed information about release status and support timelines, see the [Re
 
 To check your installed version:
 
-<CodeGroup>
-  ```javascript LangChain theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  import { version } from "langchain/package.json";
-  console.log(version);
-  ```
+```javascript LangChain theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+import { version } from "langchain/package.json";
+console.log(version);
+```
 
-  ```javascript LangGraph theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  import { version } from "@langchain/langgraph/package.json";
-  console.log(version);
-  ```
-</CodeGroup>
+```javascript LangGraph theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+import { version } from "@langchain/langgraph/package.json";
+console.log(version);
+```
 
 ## Upgrade
 
-<CodeGroup>
-  ```bash LangChain theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  # Upgrade to the latest version
-  npm update langchain @langchain/core
+```bash LangChain theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+# Upgrade to the latest version
+npm update langchain @langchain/core
 
-  # Install a specific version
-  npm install langchain@1.0.0 @langchain/core@1.0.0
-  ```
+# Install a specific version
+npm install langchain@1.0.0 @langchain/core@1.0.0
+```
 
-  ```bash LangGraph theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  # Upgrade to the latest version
-  npm update @langchain/langgraph
+```bash LangGraph theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+# Upgrade to the latest version
+npm update @langchain/langgraph
 
-  # Install a specific version
-  npm install @langchain/langgraph@1.0.0
-  ```
-</CodeGroup>
+# Install a specific version
+npm install @langchain/langgraph@1.0.0
+```
 
 ## Pre-release versions
 
@@ -151,12 +145,6 @@ We occasionally release alpha and beta versions for early testing:
 
 ***
 
-<div>
-  <Callout icon="terminal-2">
-    [Connect these docs](/use-these-docs) to your agent of choice via MCP for real-time answers.
-  </Callout>
+[Connect these docs](/use-these-docs) to your agent of choice via MCP for real-time answers.
 
-  <Callout icon="edit">
-    [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/oss/versioning.mdx) or [file an issue](https://github.com/langchain-ai/docs/issues/new/choose).
-  </Callout>
-</div>
+[Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/oss/versioning.mdx) or [file an issue](https://github.com/langchain-ai/docs/issues/new/choose).

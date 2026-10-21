@@ -33,17 +33,17 @@ graph LR
 * Subagents via tools: Subagents are invoked via tools
 * Parallel execution: The main agent can invoke multiple subagents in a single turn
 
-<Note>
-  **Supervisor vs. Router**: A supervisor agent (this pattern) is different from a [router](/oss/javascript/langchain/multi-agent/router). The supervisor is a full agent that maintains conversation context and dynamically decides which subagents to call across multiple turns. A router is typically a single classification step that dispatches to agents without maintaining ongoing conversation state.
-</Note>
+> [!NOTE]
+>
+> **Supervisor vs. Router**: A supervisor agent (this pattern) is different from a [router](/oss/javascript/langchain/multi-agent/router). The supervisor is a full agent that maintains conversation context and dynamically decides which subagents to call across multiple turns. A router is typically a single classification step that dispatches to agents without maintaining ongoing conversation state.
 
 ## When to use
 
 Use the subagents pattern when you have multiple distinct domains (e.g., calendar, email, CRM, database), subagents don't need to converse directly with users, or you want centralized workflow control. For simpler cases with just a few [tools](/oss/javascript/langchain/tools), use a [single agent](/oss/javascript/langchain/agents).
 
-<Tip>
-  **Need user interaction within a subagent?** While subagents typically return results to the main agent rather than conversing directly with users, you can use [interrupts](/oss/javascript/langgraph/interrupts#pause-using-interrupt) within a subagent to pause execution and gather user input. This is useful when a subagent needs clarification or approval before proceeding. The main agent remains the orchestrator, but the subagent can collect information from the user mid-task.
-</Tip>
+> [!TIP]
+>
+> **Need user interaction within a subagent?** While subagents typically return results to the main agent rather than conversing directly with users, you can use [interrupts](/oss/javascript/langgraph/interrupts#pause-using-interrupt) within a subagent to pause execution and gather user input. This is useful when a subagent needs clarification or approval before proceeding. The main agent remains the orchestrator, but the subagent can collect information from the user mid-task.
 
 ## Basic implementation
 
@@ -75,9 +75,9 @@ const callResearchAgent = tool(
 const mainAgent = createAgent({ model: "google:gemini-3.6-flash", tools: [callResearchAgent] });
 ```
 
-<Card title="Tutorial: Build a personal assistant with subagents" icon="sitemap" href="/oss/javascript/langchain/multi-agent/subagents-personal-assistant">
-  Learn how to build a personal assistant using the subagents pattern, where a central main agent (supervisor) coordinates specialized worker agents.
-</Card>
+> **[Tutorial: Build a personal assistant with subagents](/oss/javascript/langchain/multi-agent/subagents-personal-assistant)**
+>
+> Learn how to build a personal assistant using the subagents pattern, where a central main agent (supervisor) coordinates specialized worker agents.
 
 ## Design decisions
 
@@ -100,9 +100,9 @@ Subagent execution can be **synchronous** (blocking) or **asynchronous** (backgr
 | **Sync** | Waits for subagent to complete | Main agent needs result to continue | Simple, but blocks the conversation |
 | **Async** | Continues while subagent runs in background | Independent tasks, user shouldn't wait | Responsive, but more complex |
 
-<Tip>
-  Not to be confused with Python's `async`/`await`. Here, "async" means the main agent kicks off a background job (typically in a separate process or service) and continues without blocking.
-</Tip>
+> [!TIP]
+>
+> Not to be confused with Python's `async`/`await`. Here, "async" means the main agent kicks off a background job (typically in a separate process or service) and continues without blocking.
 
 ### Synchronous (default)
 
@@ -277,73 +277,73 @@ graph LR
 * Team distribution: Different teams can develop and deploy agents independently
 * Agent discovery: Sub-agents can be discovered via system prompt (listing available agents) or through [progressive disclosure](/oss/javascript/langchain/multi-agent/skills-sql-assistant) (loading agent information on-demand via tools)
 
-<Tip>
-  An interesting aspect of this approach is that sub-agents may have the exact same capabilities as the main agent. In such cases, invoking a sub-agent is **really about context isolation** as the primary reason—allowing complex, multi-step tasks to run in isolated context windows without bloating the main agent's conversation history. The sub-agent completes its work autonomously and returns only a concise summary, keeping the main thread focused and efficient.
-</Tip>
+> [!TIP]
+>
+> An interesting aspect of this approach is that sub-agents may have the exact same capabilities as the main agent. In such cases, invoking a sub-agent is **really about context isolation** as the primary reason—allowing complex, multi-step tasks to run in isolated context windows without bloating the main agent's conversation history. The sub-agent completes its work autonomously and returns only a concise summary, keeping the main thread focused and efficient.
 
-<Accordion title="Agent registry with task dispatcher">
-  ```typescript theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  import { tool, createAgent } from "langchain";
-  import * as z from "zod";
-
-  // Sub-agents developed by different teams
-  const researchAgent = createAgent({
-    model: "gpt-5.5",
-    prompt: "You are a research specialist...",
-  });
-
-  const writerAgent = createAgent({
-    model: "gpt-5.5",
-    prompt: "You are a writing specialist...",
-  });
-
-  // Registry of available sub-agents
-  const SUBAGENTS = {
-    research: researchAgent,
-    writer: writerAgent,
-  };
-
-  const task = tool(
-    async ({ agentName, description }) => {
-      const agent = SUBAGENTS[agentName];
-      const result = await agent.invoke({
-        messages: [
-          { role: "user", content: description }
-        ],
-      });
-      return result.messages.at(-1)?.content;
-    },
-    {
-      name: "task",
-      description: `Launch an ephemeral subagent.
-
-  Available agents:
-  - research: Research and fact-finding
-  - writer: Content creation and editing`,
-      schema: z.object({
-        agentName: z
-          .string()
-          .describe("Name of agent to invoke"),
-        description: z
-          .string()
-          .describe("Task description"),
-      }),
-    }
-  );
-
-  // Main coordinator agent
-  const mainAgent = createAgent({
-    model: "gpt-5.5",
-    tools: [task],
-    prompt: (
-      "You coordinate specialized sub-agents. " +
-      "Available: research (fact-finding), " +
-      "writer (content creation). " +
-      "Use the task tool to delegate work."
-    ),
-  });
-  ```
-</Accordion>
+> **Agent registry with task dispatcher**
+>
+> ```typescript theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> import { tool, createAgent } from "langchain";
+> import * as z from "zod";
+>
+> // Sub-agents developed by different teams
+> const researchAgent = createAgent({
+>   model: "gpt-5.5",
+>   prompt: "You are a research specialist...",
+> });
+>
+> const writerAgent = createAgent({
+>   model: "gpt-5.5",
+>   prompt: "You are a writing specialist...",
+> });
+>
+> // Registry of available sub-agents
+> const SUBAGENTS = {
+>   research: researchAgent,
+>   writer: writerAgent,
+> };
+>
+> const task = tool(
+>   async ({ agentName, description }) => {
+>     const agent = SUBAGENTS[agentName];
+>     const result = await agent.invoke({
+>       messages: [
+>         { role: "user", content: description }
+>       ],
+>     });
+>     return result.messages.at(-1)?.content;
+>   },
+>   {
+>     name: "task",
+>     description: `Launch an ephemeral subagent.
+>
+> Available agents:
+> - research: Research and fact-finding
+> - writer: Content creation and editing`,
+>     schema: z.object({
+>       agentName: z
+>         .string()
+>         .describe("Name of agent to invoke"),
+>       description: z
+>         .string()
+>         .describe("Task description"),
+>     }),
+>   }
+> );
+>
+> // Main coordinator agent
+> const mainAgent = createAgent({
+>   model: "gpt-5.5",
+>   tools: [task],
+>   prompt: (
+>     "You coordinate specialized sub-agents. " +
+>     "Available: research (fact-finding), " +
+>     "writer (content creation). " +
+>     "Use the task tool to delegate work."
+>   ),
+> });
+> ```
 
 ## Context engineering
 
@@ -551,12 +551,6 @@ Because subagents are called inside tool functions, LangGraph cannot [statically
 
 ***
 
-<div>
-  <Callout icon="terminal-2">
-    [Connect these docs](/use-these-docs) to your agent of choice via MCP for real-time answers.
-  </Callout>
+[Connect these docs](/use-these-docs) to your agent of choice via MCP for real-time answers.
 
-  <Callout icon="edit">
-    [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/oss/langchain/multi-agent/subagents.mdx) or [file an issue](https://github.com/langchain-ai/docs/issues/new/choose).
-  </Callout>
-</div>
+[Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/oss/langchain/multi-agent/subagents.mdx) or [file an issue](https://github.com/langchain-ai/docs/issues/new/choose).

@@ -45,139 +45,138 @@ The [LangSmith CLI](/langsmith/langsmith-cli) queries the same SmithDB-backed en
 
 The before and after change for each method is documented on the page for its area.
 
-<CardGroup>
-  <Card title="Query runs" icon="search" href="/langsmith/smithdb-sdk-migration-query-runs">
-    Search the runs in a project: filters, field projection, sorting, and pagination. The largest surface area in the migration.
-  </Card>
+> **[Query runs](/langsmith/smithdb-sdk-migration-query-runs)**
+>
+> Search the runs in a project: filters, field projection, sorting, and pagination. The largest surface area in the migration.
 
-  <Card title="Retrieve runs" icon="file-description" href="/langsmith/smithdb-sdk-migration-runs">
-    Fetch one run by ID, load its child runs, and build the URL of a run in the LangSmith UI.
-  </Card>
+> **[Retrieve runs](/langsmith/smithdb-sdk-migration-runs)**
+>
+> Fetch one run by ID, load its child runs, and build the URL of a run in the LangSmith UI.
 
-  <Card title="Traces" icon="timeline" href="/langsmith/smithdb-sdk-migration-traces">
-    Query the traces in a project, read their token and cost aggregates, and list the runs that belong to one trace.
-  </Card>
+> **[Traces](/langsmith/smithdb-sdk-migration-traces)**
+>
+> Query the traces in a project, read their token and cost aggregates, and list the runs that belong to one trace.
 
-  <Card title="Threads" icon="messages" href="/langsmith/smithdb-sdk-migration-threads">
-    Query the threads in a project and list the traces (turns) that belong to one thread.
-  </Card>
+> **[Threads](/langsmith/smithdb-sdk-migration-threads)**
+>
+> Query the threads in a project and list the traces (turns) that belong to one thread.
 
-  <Card title="Dataset experiment runs" icon="flask" href="/langsmith/smithdb-sdk-migration-experiments">
-    Query the runs recorded by an experiment on a dataset, including pagination and sorting by feedback score.
-  </Card>
+> **[Dataset experiment runs](/langsmith/smithdb-sdk-migration-experiments)**
+>
+> Query the runs recorded by an experiment on a dataset, including pagination and sorting by feedback score.
 
-  <Card title="Feedback and sharing" icon="star" href="/langsmith/smithdb-sdk-migration-feedback">
-    Create feedback on a run, add runs to an annotation queue, and share, unshare, or read publicly shared runs.
-  </Card>
-</CardGroup>
+> **[Feedback and sharing](/langsmith/smithdb-sdk-migration-feedback)**
+>
+> Create feedback on a run, add runs to an annotation queue, and share, unshare, or read publicly shared runs.
 
 ## Migrate with an AI agent
 
 This guide is written to be fetched and applied directly by an AI coding agent. Copy the following prompt into your agent to migrate your codebase to the SmithDB-backed methods.
 
-<Prompt description="Migrate LangSmith SDK usage to SmithDB methods" icon="arrow-right">
-  Migrate this codebase's LangSmith SDK usage to the new SmithDB-backed methods.
+Migrate this codebase's LangSmith SDK usage to the new SmithDB-backed methods.
 
-  Fetch [https://docs.langchain.com/langsmith/smithdb-sdk-migration.md](https://docs.langchain.com/langsmith/smithdb-sdk-migration.md) first. It
-  carries the minimum SDK versions, deprecation dates, exception changes, and
-  discontinued methods that apply to every call site.
+Fetch [https://docs.langchain.com/langsmith/smithdb-sdk-migration.md](https://docs.langchain.com/langsmith/smithdb-sdk-migration.md) first. It
+carries the minimum SDK versions, deprecation dates, exception changes, and
+discontinued methods that apply to every call site.
 
-  The before/after change for each method lives on a per-area page. Fetch the
-  ones covering the functionality this codebase actually uses:
+The before/after change for each method lives on a per-area page. Fetch the
+ones covering the functionality this codebase actually uses:
 
-  * Searching the runs in a project (filters, field projection, sorting,
-    pagination):
-    [https://docs.langchain.com/langsmith/smithdb-sdk-migration-query-runs.md](https://docs.langchain.com/langsmith/smithdb-sdk-migration-query-runs.md)
-  * Fetching one run by ID, loading its child runs, and building the URL of a
-    run in the LangSmith UI:
-    [https://docs.langchain.com/langsmith/smithdb-sdk-migration-runs.md](https://docs.langchain.com/langsmith/smithdb-sdk-migration-runs.md)
-  * Querying the traces in a project, reading their token and cost aggregates,
-    and listing the runs in one trace:
-    [https://docs.langchain.com/langsmith/smithdb-sdk-migration-traces.md](https://docs.langchain.com/langsmith/smithdb-sdk-migration-traces.md)
-  * Querying the threads in a project and listing the traces (turns) in one
-    thread:
-    [https://docs.langchain.com/langsmith/smithdb-sdk-migration-threads.md](https://docs.langchain.com/langsmith/smithdb-sdk-migration-threads.md)
-  * Querying the runs recorded by an experiment on a dataset:
-    [https://docs.langchain.com/langsmith/smithdb-sdk-migration-experiments.md](https://docs.langchain.com/langsmith/smithdb-sdk-migration-experiments.md)
-  * Creating feedback on a run, adding runs to an annotation queue, and
-    sharing, unsharing, or reading publicly shared runs:
-    [https://docs.langchain.com/langsmith/smithdb-sdk-migration-feedback.md](https://docs.langchain.com/langsmith/smithdb-sdk-migration-feedback.md)
+* Searching the runs in a project (filters, field projection, sorting,
+  pagination):
+  [https://docs.langchain.com/langsmith/smithdb-sdk-migration-query-runs.md](https://docs.langchain.com/langsmith/smithdb-sdk-migration-query-runs.md)
+* Fetching one run by ID, loading its child runs, and building the URL of a
+  run in the LangSmith UI:
+  [https://docs.langchain.com/langsmith/smithdb-sdk-migration-runs.md](https://docs.langchain.com/langsmith/smithdb-sdk-migration-runs.md)
+* Querying the traces in a project, reading their token and cost aggregates,
+  and listing the runs in one trace:
+  [https://docs.langchain.com/langsmith/smithdb-sdk-migration-traces.md](https://docs.langchain.com/langsmith/smithdb-sdk-migration-traces.md)
+* Querying the threads in a project and listing the traces (turns) in one
+  thread:
+  [https://docs.langchain.com/langsmith/smithdb-sdk-migration-threads.md](https://docs.langchain.com/langsmith/smithdb-sdk-migration-threads.md)
+* Querying the runs recorded by an experiment on a dataset:
+  [https://docs.langchain.com/langsmith/smithdb-sdk-migration-experiments.md](https://docs.langchain.com/langsmith/smithdb-sdk-migration-experiments.md)
+* Creating feedback on a run, adding runs to an annotation queue, and
+  sharing, unsharing, or reading publicly shared runs:
+  [https://docs.langchain.com/langsmith/smithdb-sdk-migration-feedback.md](https://docs.langchain.com/langsmith/smithdb-sdk-migration-feedback.md)
 
-  Treat those pages together as the source of truth for what changed, including
-  which methods and parameters are affected, what replaces them, and deployment
-  support.
+Treat those pages together as the source of truth for what changed, including
+which methods and parameters are affected, what replaces them, and deployment
+support.
 
-  1. Check the installed LangSmith SDK version against the minimum version
-     required for the SmithDB-backed methods per this guide, and upgrade the
-     dependency if it does not meet that minimum.
-  2. Identify every call site in this codebase that uses a method the guide
-     marks as migrated, in whichever language(s) this codebase uses.
-  3. For each call site, apply the corresponding before/after change from the
-     area page for that method, including any added, removed, or renamed
-     parameters.
+1. Check the installed LangSmith SDK version against the minimum version
+   required for the SmithDB-backed methods per this guide, and upgrade the
+   dependency if it does not meet that minimum.
+2. Identify every call site in this codebase that uses a method the guide
+   marks as migrated, in whichever language(s) this codebase uses.
+3. For each call site, apply the corresponding before/after change from the
+   area page for that method, including any added, removed, or renamed
+   parameters.
+4. Find code that reads token or cost fields (`total_tokens`, `total_cost`,
+   and the prompt and completion variants) from root or parent runs returned
+   by `runs.query`. These fields no longer include child-run usage, so trace
+   totals silently come back empty. Switch that code to `traces.query` and
+   read `trace_aggregates`, and flag it for review.
 
-  If a call site or parameter is not covered by the guide, stop and ask rather
-  than guessing.
-</Prompt>
+If a call site or parameter is not covered by the guide, stop and ask rather
+than guessing.
 
 ## Exceptions
 
-<Tabs>
-  <Tab title="Python">
-    The SmithDB-backed methods raise new exception classes instead of the legacy `langsmith.utils` exception classes.
+**Python**
 
-    | Before (`langsmith.utils`) | After (`langsmith`) | Notes |
-    | - | - | - |
-    | `LangSmithError` | `LangsmithError` | Base exception class for the SDK; casing changed |
-    | `LangSmithAPIError` | `InternalServerError` | 5xx |
-    | `LangSmithRequestTimeout` | `APITimeoutError` | Raised when a request times out |
-    | `LangSmithUserError` | *(removed)* | No direct equivalent. The 403 org-scoped-key case now raises `PermissionDeniedError`; client-side argument validation now raises a standard `ValueError` or `TypeError` |
-    | `LangSmithRateLimitError` | `RateLimitError` | 429; unchanged name |
-    | `LangSmithAuthError` | `AuthenticationError` | 401 |
-    | `LangSmithNotFoundError` | `NotFoundError` | 404; unchanged name |
-    | `LangSmithConflictError` | `ConflictError` | 409; unchanged name |
-    | `LangSmithConnectionError` | `APIConnectionError` | Raised when the client cannot connect to the API |
-    | `LangSmithExceptionGroup` | *(removed)* | No equivalent |
-    | *(not available)* | `APIError` | New: base class for all API-related errors, with `message`, `request`, and `body` attributes |
-    | *(not available)* | `APIStatusError` | New: base class for all 4xx/5xx status errors |
-    | *(not available)* | `BadRequestError` | New: 400 |
-    | *(not available)* | `PermissionDeniedError` | New: 403 |
-    | *(not available)* | `UnprocessableEntityError` | New: 422 |
-    | *(not available)* | `APIResponseValidationError` | New: raised when a response does not match the expected schema |
-  </Tab>
+The SmithDB-backed methods raise new exception classes instead of the legacy `langsmith.utils` exception classes.
 
-  <Tab title="TypeScript">
-    The SmithDB-backed methods raise new exception classes instead of plain `Error`.
+| Before (`langsmith.utils`) | After (`langsmith`) | Notes |
+| - | - | - |
+| `LangSmithError` | `LangsmithError` | Base exception class for the SDK; casing changed |
+| `LangSmithAPIError` | `InternalServerError` | 5xx |
+| `LangSmithRequestTimeout` | `APITimeoutError` | Raised when a request times out |
+| `LangSmithUserError` | *(removed)* | No direct equivalent. The 403 org-scoped-key case now raises `PermissionDeniedError`; client-side argument validation now raises a standard `ValueError` or `TypeError` |
+| `LangSmithRateLimitError` | `RateLimitError` | 429; unchanged name |
+| `LangSmithAuthError` | `AuthenticationError` | 401 |
+| `LangSmithNotFoundError` | `NotFoundError` | 404; unchanged name |
+| `LangSmithConflictError` | `ConflictError` | 409; unchanged name |
+| `LangSmithConnectionError` | `APIConnectionError` | Raised when the client cannot connect to the API |
+| `LangSmithExceptionGroup` | *(removed)* | No equivalent |
+| *(not available)* | `APIError` | New: base class for all API-related errors, with `message`, `request`, and `body` attributes |
+| *(not available)* | `APIStatusError` | New: base class for all 4xx/5xx status errors |
+| *(not available)* | `BadRequestError` | New: 400 |
+| *(not available)* | `PermissionDeniedError` | New: 403 |
+| *(not available)* | `UnprocessableEntityError` | New: 422 |
+| *(not available)* | `APIResponseValidationError` | New: raised when a response does not match the expected schema |
 
-    | Before (plain `Error`) | After (`langsmith`) | Notes |
-    | - | - | - |
-    | *(not available)* | `LangsmithError` | base class for all SDK errors |
-    | *(not available)* | `InternalServerError` | 5xx |
-    | *(not available)* | `APIConnectionTimeoutError` | Raised when a request times out |
-    | *(not available)* | `RateLimitError` | 429 |
-    | *(not available)* | `AuthenticationError` | 401 |
-    | *(not available)* | `NotFoundError` | 404 |
-    | *(not available)* | `ConflictError` | 409 |
-    | *(not available)* | `APIConnectionError` | Raised when the client cannot connect to the API |
-    | *(not available)* | `APIError` | base class for all API-related errors, with `status`, `headers`, and `error` properties |
-    | *(not available)* | `BadRequestError` | 400 |
-    | *(not available)* | `PermissionDeniedError` | 403 |
-    | *(not available)* | `UnprocessableEntityError` | 422 |
-    | *(not available)* | `APIUserAbortError` | Raised when a request is aborted via an `AbortController` |
-  </Tab>
+**TypeScript**
 
-  <Tab title="Java">
-    No change. Error handling is unaffected by this migration.
-  </Tab>
+The SmithDB-backed methods raise new exception classes instead of plain `Error`.
 
-  <Tab title="Go">
-    No change. Error handling is unaffected by this migration.
-  </Tab>
+| Before (plain `Error`) | After (`langsmith`) | Notes |
+| - | - | - |
+| *(not available)* | `LangsmithError` | base class for all SDK errors |
+| *(not available)* | `InternalServerError` | 5xx |
+| *(not available)* | `APIConnectionTimeoutError` | Raised when a request times out |
+| *(not available)* | `RateLimitError` | 429 |
+| *(not available)* | `AuthenticationError` | 401 |
+| *(not available)* | `NotFoundError` | 404 |
+| *(not available)* | `ConflictError` | 409 |
+| *(not available)* | `APIConnectionError` | Raised when the client cannot connect to the API |
+| *(not available)* | `APIError` | base class for all API-related errors, with `status`, `headers`, and `error` properties |
+| *(not available)* | `BadRequestError` | 400 |
+| *(not available)* | `PermissionDeniedError` | 403 |
+| *(not available)* | `UnprocessableEntityError` | 422 |
+| *(not available)* | `APIUserAbortError` | Raised when a request is aborted via an `AbortController` |
 
-  <Tab title="cURL">
-    No change. Error handling is unaffected by this migration.
-  </Tab>
-</Tabs>
+**Java**
+
+No change. Error handling is unaffected by this migration.
+
+**Go**
+
+No change. Error handling is unaffected by this migration.
+
+**cURL**
+
+No change. Error handling is unaffected by this migration.
 
 ## Discontinued
 
@@ -195,12 +194,6 @@ The following methods are discontinued. They call the retired `/feedback/formula
 
 ***
 
-<div>
-  <Callout icon="terminal-2">
-    [Connect these docs](/use-these-docs) to your agent of choice via MCP for real-time answers.
-  </Callout>
+[Connect these docs](/use-these-docs) to your agent of choice via MCP for real-time answers.
 
-  <Callout icon="edit">
-    [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/smithdb-sdk-migration.mdx) or [file an issue](https://github.com/langchain-ai/docs/issues/new/choose).
-  </Callout>
-</div>
+[Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/smithdb-sdk-migration.mdx) or [file an issue](https://github.com/langchain-ai/docs/issues/new/choose).

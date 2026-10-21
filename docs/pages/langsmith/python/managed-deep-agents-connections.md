@@ -27,9 +27,9 @@ api_key = await connections.get("organization-tavily", {"type": "agent"})
 
 The rest of this page covers the two choices around those steps: who owns the credential, and how the service authenticates.
 
-<Note>
-  Managed Deep Agents is in **public [beta](/langsmith/release-stages)** on [LangSmith Cloud](/langsmith/cloud).
-</Note>
+> [!NOTE]
+>
+> Managed Deep Agents is in **public [beta](/langsmith/release-stages)** on [LangSmith Cloud](/langsmith/cloud).
 
 ## Choose a credential owner
 
@@ -67,9 +67,9 @@ The default identity declaration verifies a LangSmith API key. That key authenti
 
 Code never passes a user ID to `connections.get(...)`. The runtime resolves the caller and returns that person's credential.
 
-<Note>
-  Slack and Studio complete the authorization round-trip for the caller. First-class support for custom channels is in development. To build a custom frontend against caller identity today, see [Handle the authorization interrupt](#handle-the-authorization-interrupt) and contact the [LangChain team](https://forum.langchain.com/c/help/langsmith/).
-</Note>
+> [!NOTE]
+>
+> Slack and Studio complete the authorization round-trip for the caller. First-class support for custom channels is in development. To build a custom frontend against caller identity today, see [Handle the authorization interrupt](#handle-the-authorization-interrupt) and contact the [LangChain team](https://forum.langchain.com/c/help/langsmith/).
 
 ## Choose a create mode
 
@@ -207,9 +207,9 @@ The command prints each service's default scopes and the page where you register
 
 A service with no default scopes requires `--scope`.
 
-<Accordion title="Some services run separate OAuth apps for their API and their MCP server">
-  Notion is one of them. `--oauth notion-api` registers an app against Notion's REST API, and that app does not authorize Notion's MCP server. To use the MCP server, create an [MCP OAuth connection](#create-an-mcp-oauth-connection) instead. Check the provider's documentation when a service offers both.
-</Accordion>
+> **Some services run separate OAuth apps for their API and their MCP server**
+>
+> Notion is one of them. `--oauth notion-api` registers an app against Notion's REST API, and that app does not authorize Notion's MCP server. To use the MCP server, create an [MCP OAuth connection](#create-an-mcp-oauth-connection) instead. Check the provider's documentation when a service offers both.
 
 GitHub requires an OAuth client ID and client secret. Set `GITHUB_CLIENT_SECRET`, then create the connection. Replace `********` with the client ID:
 
@@ -308,17 +308,17 @@ access_token = await connections.get("support-linear", {"type": "agent"})
 
 Use an agent-owned OAuth account when every caller should act as one shared account rather than as themselves. A company Notion account that grants read access to a question-answering agent is one example.
 
-<Tip>
-  Authorize a dedicated account that your team owns, not your own. The account you sign in with becomes the identity behind every action the agent takes, for every caller. Using a personal account costs you three things:
-
-  * The agent gets your full access at that provider.
-  * The provider's audit log shows your name for what the agent did.
-  * The agent stops working when your own access changes.
-
-  A grant made this way stays tied to the account that authorized it, even a dedicated one. A password reset, a revoked session, or a deactivated account ends the grant, so treat that account as production infrastructure.
-
-  Give the dedicated account the narrowest `--scope` values the agent needs. Set `--allowed-scope` to cap what any later authorization can request.
-</Tip>
+> [!TIP]
+>
+> Authorize a dedicated account that your team owns, not your own. The account you sign in with becomes the identity behind every action the agent takes, for every caller. Using a personal account costs you three things:
+>
+> * The agent gets your full access at that provider.
+> * The provider's audit log shows your name for what the agent did.
+> * The agent stops working when your own access changes.
+>
+> A grant made this way stays tied to the account that authorized it, even a dedicated one. A password reset, a revoked session, or a deactivated account ends the grant, so treat that account as production infrastructure.
+>
+> Give the dedicated account the narrowest `--scope` values the agent needs. Set `--allowed-scope` to cap what any later authorization can request.
 
 ### Access an OAuth token in a custom tool
 
@@ -437,77 +437,112 @@ The frontend that renders this interrupt is a web application, so these examples
 
 Detect the credential gate payload on `stream.interrupt`, render a connect card, then resume with `stream.respond` after every grant is stored:
 
-<CodeGroup>
-  ```tsx React theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  import { useStream } from "@langchain/react";
+```tsx React theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+import { useStream } from "@langchain/react";
 
-  type CredentialAuthorizationRequired = {
-    type: "credential_authorization_required";
-    message?: string;
-    credentials: Array<{
-      slug: string;
-      kind: "oauth2" | "secret";
-      connect_url?: string;
-      auth_id?: string;
-    }>;
-  };
+type CredentialAuthorizationRequired = {
+  type: "credential_authorization_required";
+  message?: string;
+  credentials: Array<{
+    slug: string;
+    kind: "oauth2" | "secret";
+    connect_url?: string;
+    auth_id?: string;
+  }>;
+};
 
-  function isCredentialAuthorization(
-    value: unknown
-  ): value is CredentialAuthorizationRequired {
-    return (
-      typeof value === "object" &&
-      value !== null &&
-      "type" in value &&
-      value.type === "credential_authorization_required"
-    );
-  }
+function isCredentialAuthorization(
+  value: unknown
+): value is CredentialAuthorizationRequired {
+  return (
+    typeof value === "object" &&
+    value !== null &&
+    "type" in value &&
+    value.type === "credential_authorization_required"
+  );
+}
 
-  export function Chat() {
-    const stream = useStream({
-      apiUrl: "https://your-deployment.example",
-      assistantId: "agent",
-    });
+export function Chat() {
+  const stream = useStream({
+    apiUrl: "https://your-deployment.example",
+    assistantId: "agent",
+  });
 
-    const payload = stream.interrupt?.value;
-    const credentialAuth = isCredentialAuthorization(payload) ? payload : null;
+  const payload = stream.interrupt?.value;
+  const credentialAuth = isCredentialAuthorization(payload) ? payload : null;
 
-    return (
-      <div>
-        {/* messages … */}
-        {credentialAuth && (
-          <ConnectCard
-            payload={credentialAuth}
-            onComplete={async (connectedSlugs) => {
-              await stream.respond(
-                {
-                  type: "credential_authorization_completed",
-                  connected_slugs: connectedSlugs,
-                },
-                { interruptId: stream.interrupt?.id }
-              );
-            }}
-          />
-        )}
-      </div>
-    );
-  }
-  ```
+  return (
+    <div>
+      {/* messages … */}
+      {credentialAuth && (
+        <ConnectCard
+          payload={credentialAuth}
+          onComplete={async (connectedSlugs) => {
+            await stream.respond(
+              {
+                type: "credential_authorization_completed",
+                connected_slugs: connectedSlugs,
+              },
+              { interruptId: stream.interrupt?.id }
+            );
+          }}
+        />
+      )}
+    </div>
+  );
+}
+```
 
-  ```vue Vue theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  <script setup lang="ts">
-  import { computed } from "vue";
-  import { useStream } from "@langchain/vue";
+```vue Vue theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+<script setup lang="ts">
+import { computed } from "vue";
+import { useStream } from "@langchain/vue";
+
+const stream = useStream({
+  apiUrl: "https://your-deployment.example",
+  assistantId: "agent",
+});
+
+const credentialAuth = computed(() => {
+  const value = stream.interrupt.value?.value;
+  return value?.type === "credential_authorization_required" ? value : null;
+});
+
+async function onComplete(connectedSlugs: string[]) {
+  await stream.respond(
+    {
+      type: "credential_authorization_completed",
+      connected_slugs: connectedSlugs,
+    },
+    { interruptId: stream.interrupt.value?.id }
+  );
+}
+</script>
+
+<template>
+  <div>
+    <!-- messages … -->
+    <ConnectCard
+      v-if="credentialAuth"
+      :payload="credentialAuth"
+      @complete="onComplete"
+    />
+  </div>
+</template>
+```
+
+```svelte Svelte theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+<script lang="ts">
+  import { useStream } from "@langchain/svelte";
 
   const stream = useStream({
     apiUrl: "https://your-deployment.example",
     assistantId: "agent",
   });
 
-  const credentialAuth = computed(() => {
-    const value = stream.interrupt.value?.value;
-    return value?.type === "credential_authorization_required" ? value : null;
-  });
+  $: payload = stream.interrupt?.value;
+  $: credentialAuth =
+    payload?.type === "credential_authorization_required" ? payload : null;
 
   async function onComplete(connectedSlugs: string[]) {
     await stream.respond(
@@ -515,94 +550,57 @@ Detect the credential gate payload on `stream.interrupt`, render a connect card,
         type: "credential_authorization_completed",
         connected_slugs: connectedSlugs,
       },
-      { interruptId: stream.interrupt.value?.id }
+      { interruptId: stream.interrupt?.id }
     );
   }
-  </script>
+</script>
 
-  <template>
-    <div>
-      <!-- messages … -->
-      <ConnectCard
-        v-if="credentialAuth"
-        :payload="credentialAuth"
-        @complete="onComplete"
-      />
-    </div>
-  </template>
-  ```
+<div>
+  <!-- messages … -->
+  {#if credentialAuth}
+    <ConnectCard payload={credentialAuth} onComplete={onComplete} />
+  {/if}
+</div>
+```
 
-  ```svelte Svelte theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  <script lang="ts">
-    import { useStream } from "@langchain/svelte";
+```ts Angular theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+import { Component, computed } from "@angular/core";
+import { injectStream } from "@langchain/angular";
 
-    const stream = useStream({
-      apiUrl: "https://your-deployment.example",
-      assistantId: "agent",
-    });
-
-    $: payload = stream.interrupt?.value;
-    $: credentialAuth =
-      payload?.type === "credential_authorization_required" ? payload : null;
-
-    async function onComplete(connectedSlugs: string[]) {
-      await stream.respond(
-        {
-          type: "credential_authorization_completed",
-          connected_slugs: connectedSlugs,
-        },
-        { interruptId: stream.interrupt?.id }
-      );
-    }
-  </script>
-
-  <div>
+@Component({
+  selector: "app-chat",
+  template: `
     <!-- messages … -->
-    {#if credentialAuth}
-      <ConnectCard payload={credentialAuth} onComplete={onComplete} />
-    {/if}
-  </div>
-  ```
-
-  ```ts Angular theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  import { Component, computed } from "@angular/core";
-  import { injectStream } from "@langchain/angular";
-
-  @Component({
-    selector: "app-chat",
-    template: `
-      <!-- messages … -->
-      @if (credentialAuth(); as auth) {
-        <app-connect-card
-          [payload]="auth"
-          (complete)="onComplete($event)"
-        />
-      }
-    `,
-  })
-  export class ChatComponent {
-    stream = injectStream({
-      apiUrl: "https://your-deployment.example",
-      assistantId: "agent",
-    });
-
-    credentialAuth = computed(() => {
-      const value = this.stream.interrupt()?.value;
-      return value?.type === "credential_authorization_required" ? value : null;
-    });
-
-    async onComplete(connectedSlugs: string[]) {
-      await this.stream.respond(
-        {
-          type: "credential_authorization_completed",
-          connected_slugs: connectedSlugs,
-        },
-        { interruptId: this.stream.interrupt()?.id }
-      );
+    @if (credentialAuth(); as auth) {
+      <app-connect-card
+        [payload]="auth"
+        (complete)="onComplete($event)"
+      />
     }
+  `,
+})
+export class ChatComponent {
+  stream = injectStream({
+    apiUrl: "https://your-deployment.example",
+    assistantId: "agent",
+  });
+
+  credentialAuth = computed(() => {
+    const value = this.stream.interrupt()?.value;
+    return value?.type === "credential_authorization_required" ? value : null;
+  });
+
+  async onComplete(connectedSlugs: string[]) {
+    await this.stream.respond(
+      {
+        type: "credential_authorization_completed",
+        connected_slugs: connectedSlugs,
+      },
+      { interruptId: this.stream.interrupt()?.id }
+    );
   }
-  ```
-</CodeGroup>
+}
+```
 
 For the general interrupt lifecycle (`stream.interrupt`, resume, checkpoints), see [Human-in-the-loop](/oss/python/langchain/frontend/human-in-the-loop).
 
@@ -638,9 +636,7 @@ Pass that object to `stream.respond(resume, { interruptId: stream.interrupt?.id 
 
 When the agent runs through the Slack channel, Slack renders OAuth entries that include an HTTPS `connect_url`. The caller opens the link, completes consent, and Slack resumes the run, so nobody has to open LangSmith to connect a service.
 
-<Frame>
-  **Screenshot placeholder:** Add the Slack OAuth authorization prompt screenshot here.
-</Frame>
+**Screenshot placeholder:** Add the Slack OAuth authorization prompt screenshot here.
 
 ## Inspect and delete connections
 
@@ -669,28 +665,28 @@ Connections are part of the Managed Deep Agents public beta. The following gaps 
 * **Workspace UI**: LangSmith does not list connections in the UI. Use `mda connections list` and `mda connections get` for connection metadata.
 * **Grant visibility**: `mda connections list` is workspace-scoped and does not report which deployments hold a credential under a slug. A run that fails with `no agent connection is set for slug '<slug>'` means this deployment owns no credential for it, even when `list` shows the slug. Run `mda connections create <slug>` from the project root to mint one.
 
-<Accordion title="Store a user-owned API key through Agent Auth">
-  An interrupt entry with `"kind": "secret"` has no `connect_url`. To collect one in a custom frontend, prompt for the value with a hidden input, then create the credential against the existing connection slug:
-
-  ```http theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  POST /v1/agent-auth/connections
-  ```
-
-  ```json theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  {
-    "slug": "organization-tavily",
-    "display_name": "organization-tavily",
-    "credential": {
-      "kind": "secret",
-      "owner_type": "user",
-      "owner_id": "<caller-identity-id>",
-      "value": "<api-key>"
-    }
-  }
-  ```
-
-  Agent Auth reuses the existing connection for that slug and attaches the caller's secret. Secret material is write-only. After a successful create, mark that slug connected and resume the run. For more information, see [Set up Agent Auth](/langsmith/agent-auth).
-</Accordion>
+> **Store a user-owned API key through Agent Auth**
+>
+> An interrupt entry with `"kind": "secret"` has no `connect_url`. To collect one in a custom frontend, prompt for the value with a hidden input, then create the credential against the existing connection slug:
+>
+> ```http theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> POST /v1/agent-auth/connections
+> ```
+>
+> ```json theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> {
+>   "slug": "organization-tavily",
+>   "display_name": "organization-tavily",
+>   "credential": {
+>     "kind": "secret",
+>     "owner_type": "user",
+>     "owner_id": "<caller-identity-id>",
+>     "value": "<api-key>"
+>   }
+> }
+> ```
+>
+> Agent Auth reuses the existing connection for that slug and attaches the caller's secret. Secret material is write-only. After a successful create, mark that slug connected and resume the run. For more information, see [Set up Agent Auth](/langsmith/agent-auth).
 
 ## See also
 
@@ -704,12 +700,6 @@ Connections are part of the Managed Deep Agents public beta. The following gaps 
 
 ***
 
-<div>
-  <Callout icon="terminal-2">
-    [Connect these docs](/use-these-docs) to your agent of choice via MCP for real-time answers.
-  </Callout>
+[Connect these docs](/use-these-docs) to your agent of choice via MCP for real-time answers.
 
-  <Callout icon="edit">
-    [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/managed-deep-agents-connections.mdx) or [file an issue](https://github.com/langchain-ai/docs/issues/new/choose).
-  </Callout>
-</div>
+[Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/managed-deep-agents-connections.mdx) or [file an issue](https://github.com/langchain-ai/docs/issues/new/choose).

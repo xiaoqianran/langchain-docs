@@ -24,9 +24,9 @@ To opt-in to distributed tracing, both client and server need to opt in.
 
 To accept distributed trace context, your graph must read the trace headers from the config and set the tracing context. The headers are passed through the `configurable` field as `langsmith-trace` and `langsmith-project`.
 
-<Warning>
-  Distributed-tracing headers (`langsmith-trace`, `baggage`) are consumed as trusted tracing context. Only configure your server to apply inbound trace context for deployments called by trusted, internal services. If your Agent Server receives requests directly from untrusted third parties or the public internet, do not propagate these headers into the tracing context: strip them at your gateway or proxy instead. Trusting `baggage` from an external caller lets them influence how your runs are recorded.
-</Warning>
+> [!WARNING]
+>
+> Distributed-tracing headers (`langsmith-trace`, `baggage`) are consumed as trusted tracing context. Only configure your server to apply inbound trace context for deployments called by trusted, internal services. If your Agent Server receives requests directly from untrusted third parties or the public internet, do not propagate these headers into the tracing context: strip them at your gateway or proxy instead. Trusting `baggage` from an external caller lets them influence how your runs are recorded.
 
 ```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 import contextlib
@@ -62,65 +62,63 @@ Export this `graph` function in your `langgraph.json`:
 
 ## Connect from the client
 
-<Tabs>
-  <Tab title="RemoteGraph">
-    Set `distributed_tracing=True` when initializing [`RemoteGraph`](https://reference.langchain.com/python/langgraph/pregel/remote/RemoteGraph). This automatically propagates trace headers on all requests.
+**RemoteGraph**
 
-    ```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-    from langgraph.graph import StateGraph
-    from langgraph.pregel.remote import RemoteGraph
+Set `distributed_tracing=True` when initializing [`RemoteGraph`](https://reference.langchain.com/python/langgraph/pregel/remote/RemoteGraph). This automatically propagates trace headers on all requests.
 
-    remote_graph = RemoteGraph(
-        "agent",
-        url="<DEPLOYMENT_URL>",
-        distributed_tracing=True,  # Enable trace propagation
-    )
+```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+from langgraph.graph import StateGraph
+from langgraph.pregel.remote import RemoteGraph
 
-    def subgraph_node(query: str):
-        # Trace context is automatically propagated
-        return remote_graph.invoke({
-            "messages": [{"role": "user", "content": query}]
-        })['messages'][-1]['content']
+remote_graph = RemoteGraph(
+    "agent",
+    url="<DEPLOYMENT_URL>",
+    distributed_tracing=True,  # Enable trace propagation
+)
 
-    # The RemoteGraph is called in the context of some on going work.
-    # This could be a parent LangGraph agent, code traced with `@ls.traceable`,
-    # or any other instrumented code.
-    graph = (
-            StateGraph(str)
-                .add_node(subgraph_node)
-                .add_edge("__start__", "subgraph_node")
-                .compile()
-    )
-    # The remote graph's execution will appear as a child of this trace
-    result = graph.invoke("What's the weather in SF?")
-    ```
-  </Tab>
+def subgraph_node(query: str):
+    # Trace context is automatically propagated
+    return remote_graph.invoke({
+        "messages": [{"role": "user", "content": query}]
+    })['messages'][-1]['content']
 
-  <Tab title="SDK">
-    If you're using the [LangGraph SDK](/langsmith/reference) directly, propagate trace headers manually using `run_tree.to_headers()`:
+# The RemoteGraph is called in the context of some on going work.
+# This could be a parent LangGraph agent, code traced with `@ls.traceable`,
+# or any other instrumented code.
+graph = (
+        StateGraph(str)
+            .add_node(subgraph_node)
+            .add_edge("__start__", "subgraph_node")
+            .compile()
+)
+# The remote graph's execution will appear as a child of this trace
+result = graph.invoke("What's the weather in SF?")
+```
 
-    ```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-    from langgraph_sdk import get_client
-    import langsmith as ls
+**SDK**
 
-    client = get_client(url="<DEPLOYMENT_URL>")
+If you're using the [LangGraph SDK](/langsmith/reference) directly, propagate trace headers manually using `run_tree.to_headers()`:
 
-    with ls.trace("call_remote_agent", inputs={"query": query}) as rt:
-        headers = rt.to_headers()
-        async for chunk in client.runs.stream(
-            thread_id=None,
-            assistant_id="agent",
-            input={"messages": [{"role": "user", "content": query}]},
-            stream_mode="values",
-            headers=headers,  # Pass trace headers
-        ):
-            pass
-        return chunk
+```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+from langgraph_sdk import get_client
+import langsmith as ls
 
-    result = await call_remote_agent("What's the weather in SF?")
-    ```
-  </Tab>
-</Tabs>
+client = get_client(url="<DEPLOYMENT_URL>")
+
+with ls.trace("call_remote_agent", inputs={"query": query}) as rt:
+    headers = rt.to_headers()
+    async for chunk in client.runs.stream(
+        thread_id=None,
+        assistant_id="agent",
+        input={"messages": [{"role": "user", "content": query}]},
+        stream_mode="values",
+        headers=headers,  # Pass trace headers
+    ):
+        pass
+    return chunk
+
+result = await call_remote_agent("What's the weather in SF?")
+```
 
 ## Related
 
@@ -129,12 +127,6 @@ Export this `graph` function in your `langgraph.json`:
 
 ***
 
-<div>
-  <Callout icon="terminal-2">
-    [Connect these docs](/use-these-docs) to your agent of choice via MCP for real-time answers.
-  </Callout>
+[Connect these docs](/use-these-docs) to your agent of choice via MCP for real-time answers.
 
-  <Callout icon="edit">
-    [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/agent-server-distributed-tracing.mdx) or [file an issue](https://github.com/langchain-ai/docs/issues/new/choose).
-  </Callout>
-</div>
+[Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/agent-server-distributed-tracing.mdx) or [file an issue](https://github.com/langchain-ai/docs/issues/new/choose).

@@ -20,7 +20,7 @@ If you are ready to install, start with the [deployment walkthrough](/langsmith/
 
 LangSmith on GCP deploys in up to five stages. Each stage adds a capability layer on top of the previous. All layers share the same GKE cluster and `langsmith` namespace.
 
-<img alt="LangSmith on GCP deployment stages and service layout" />
+![LangSmith on GCP deployment stages and service layout](https://mintcdn.com/langchain-5e9cc07a/D6uoP5M0BV8YGC-1/images/self-hosted-terraform/gcp-architecture.png?fit=max\&auto=format\&n=D6uoP5M0BV8YGC-1\&q=85\&s=195d16f6a26452c58eb3d749e36774da)
 
 | Stage | Layer | What it adds |
 | - | - | - |
@@ -32,9 +32,9 @@ LangSmith on GCP deploys in up to five stages. Each stage adds a capability laye
 
 SmithDB (`enable_smithdb`) and Sandboxes (`enable_sandboxes`) are optional add-ons outside these stages. Each adds its own node pools and managed services to the same cluster and namespace.
 
-<Note>
-  Fleet is the current form of the feature formerly called Agent Builder. Enable it with `enable_fleet`. Unlike the deprecated `enable_agent_builder` path, it does not require the LangSmith Deployment layer. The two flags are mutually exclusive and share the same encryption key. See [Enable add-ons](/langsmith/self-host-terraform-gcp-deploy#enable-add-ons) in the deployment guide.
-</Note>
+> [!NOTE]
+>
+> Fleet is the current form of the feature formerly called Agent Builder. Enable it with `enable_fleet`. Unlike the deprecated `enable_agent_builder` path, it does not require the LangSmith Deployment layer. The two flags are mutually exclusive and share the same encryption key. See [Enable add-ons](/langsmith/self-host-terraform-gcp-deploy#enable-add-ons) in the deployment guide.
 
 ## Module descriptions
 
@@ -119,13 +119,13 @@ GCS Bucket (Workload Identity, no static keys)
 | `langsmith-ace-backend` | Async compute (dataset runs, evaluations, background jobs) | — | 1 to 5 | No | Postgres, Redis |
 | `langsmith-clickhouse` | Columnar store (trace spans, run metadata, eval results) | — | StatefulSet, single replica | No | 500Gi `premium-rwo` PVC |
 
-<Warning>
-  In-cluster ClickHouse is dev/POC only (single pod, no replication, no backups). For production, use [LangChain Managed ClickHouse](/langsmith/langsmith-managed-clickhouse) or a self-managed external cluster.
-</Warning>
+> [!WARNING]
+>
+> In-cluster ClickHouse is dev/POC only (single pod, no replication, no backups). For production, use [LangChain Managed ClickHouse](/langsmith/langsmith-managed-clickhouse) or a self-managed external cluster.
 
-<Note>
-  [SmithDB](https://www.langchain.com/blog/introducing-smithdb?utm_source=docs) is LangSmith's purpose-built observability backend, available for Self-hosted starting with self-hosted version 0.16.0 (see [self-hosted support](/langsmith/smithdb-sdk-migration#about-self-hosted)). Set `enable_smithdb = true` to provision its metastore, object-store bucket, and node pools. SmithDB runs alongside ClickHouse, so the ClickHouse guidance in the previous sections still applies. Refer to [SmithDB](/langsmith/self-host-terraform-gcp-deploy#smithdb) in the deployment guide for the staged rollout.
-</Note>
+> [!NOTE]
+>
+> [SmithDB](https://www.langchain.com/blog/introducing-smithdb?utm_source=docs) is LangSmith's purpose-built observability backend, available for Self-hosted starting with self-hosted version 0.16.0 (see [self-hosted support](/langsmith/smithdb-sdk-migration#about-self-hosted)). Set `enable_smithdb = true` to provision its metastore, object-store bucket, and node pools. SmithDB runs alongside ClickHouse, so the ClickHouse guidance in the previous sections still applies. Refer to [SmithDB](/langsmith/self-host-terraform-gcp-deploy#smithdb) in the deployment guide for the staged rollout.
 
 ### One-time jobs
 
@@ -185,9 +185,9 @@ When `postgres_source = "external"` and `redis_source = "external"` (the recomme
 | KEDA | `keda` | `k8s-bootstrap` module when `enable_langsmith_deployment = true` | LangSmith Deployment add-on and later |
 | cert-manager | `cert-manager` | `k8s-bootstrap` module when `tls_certificate_source = "letsencrypt"` or `install_cert_manager = true` | Let's Encrypt TLS |
 
-<Note>
-  The `Gateway` resource is managed by Terraform; the `HTTPRoute` is managed by Helm. Do not delete the Gateway resource manually. GCP releases the external IP when the Gateway is deleted, then issues a new IP on recreate.
-</Note>
+> [!NOTE]
+>
+> The `Gateway` resource is managed by Terraform; the `HTTPRoute` is managed by Helm. Do not delete the Gateway resource manually. GCP releases the external IP when the Gateway is deleted, then issues a new IP on recreate.
 
 ## Workload Identity
 
@@ -334,12 +334,6 @@ kubectl run gcs-test --rm -it --image=google/cloud-sdk -n langsmith -- \
 
 ***
 
-<div>
-  <Callout icon="terminal-2">
-    [Connect these docs](/use-these-docs) to your agent of choice via MCP for real-time answers.
-  </Callout>
+[Connect these docs](/use-these-docs) to your agent of choice via MCP for real-time answers.
 
-  <Callout icon="edit">
-    [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/self-host-terraform-gcp-architecture.mdx) or [file an issue](https://github.com/langchain-ai/docs/issues/new/choose).
-  </Callout>
-</div>
+[Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/self-host-terraform-gcp-architecture.mdx) or [file an issue](https://github.com/langchain-ai/docs/issues/new/choose).

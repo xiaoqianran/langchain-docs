@@ -11,9 +11,9 @@ Example client-server setup:
 * Trace starts on client
 * Continues on server
 
-<Warning>
-  **Only accept distributed-tracing headers from trusted services.** The `langsmith-trace` and `baggage` headers are consumed as trusted tracing context. Do not add `TracingMiddleware` (or pass inbound request headers as the tracing `parent`) on a service that receives requests directly from untrusted third parties or the public internet. Keep distributed tracing to internal, service-to-service calls, and strip these headers from untrusted inbound requests at your gateway or proxy. Trusting `baggage` from an external caller lets them influence how your runs are recorded.
-</Warning>
+> [!WARNING]
+>
+> **Only accept distributed-tracing headers from trusted services.** The `langsmith-trace` and `baggage` headers are consumed as trusted tracing context. Do not add `TracingMiddleware` (or pass inbound request headers as the tracing `parent`) on a service that receives requests directly from untrusted third parties or the public internet. Keep distributed tracing to internal, service-to-service calls, and strip these headers from untrusted inbound requests at your gateway or proxy. Trusting `baggage` from an external caller lets them influence how your runs are recorded.
 
 ## Distributed tracing in Python
 
@@ -34,9 +34,9 @@ async def my_client_function():
 
 Then the server (or other service) can continue the trace by handling the headers appropriately. If you are using an asgi app Starlette or FastAPI, you can connect the distributed trace using LangSmith's `TracingMiddleware`.
 
-<Info>
-  The `TracingMiddleware` class was added in `langsmith==0.1.133`.
-</Info>
+> [!NOTE]
+>
+> The `TracingMiddleware` class was added in `langsmith==0.1.133`.
 
 Example using FastAPI:
 
@@ -105,9 +105,9 @@ async def fake_route(request: Request):
 
 ## Distributed tracing in TypeScript
 
-<Note>
-  Distributed tracing in TypeScript requires `langsmith>=0.1.31`
-</Note>
+> [!NOTE]
+>
+> Distributed tracing in TypeScript requires `langsmith>=0.1.31`
 
 First, we obtain the current run tree from the client and convert it to `langsmith-trace` and `baggage` header values, which we can pass to the server:
 
@@ -133,59 +133,51 @@ Then, the server converts the headers back to a run tree, which it uses to furth
 
 To pass the newly created run tree to a traceable function, we can use the `withRunTree` helper, which will ensure the run tree is propagated within traceable invocations.
 
-<CodeGroup>
-  ```typescript Express.JS theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  // server.mts
-  import { RunTree } from "langsmith";
-  import { traceable, withRunTree } from "langsmith/traceable";
-  import express from "express";
-  import bodyParser from "body-parser";
+```typescript Express.JS theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+// server.mts
+import { RunTree } from "langsmith";
+import { traceable, withRunTree } from "langsmith/traceable";
+import express from "express";
+import bodyParser from "body-parser";
 
-      const server = traceable(
-          (text: string) => `Hello from the server! Received "${text}"`,
-          { name: "server" }
-      );
+    const server = traceable(
+        (text: string) => `Hello from the server! Received "${text}"`,
+        { name: "server" }
+    );
 
-      const app = express();
-      app.use(bodyParser.text());
+    const app = express();
+    app.use(bodyParser.text());
 
-  app.post("/", async (req, res) => {
-      const runTree = RunTree.fromHeaders(req.headers);
-      const result = await withRunTree(runTree, () => server(req.body));
-      res.send(result);
-  });
-  ```
+app.post("/", async (req, res) => {
+    const runTree = RunTree.fromHeaders(req.headers);
+    const result = await withRunTree(runTree, () => server(req.body));
+    res.send(result);
+});
+```
 
-  ```typescript Hono theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  // server.mts
-  import { RunTree } from "langsmith";
-  import { traceable, withRunTree } from "langsmith/traceable";
-  import { Hono } from "hono";
+```typescript Hono theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+// server.mts
+import { RunTree } from "langsmith";
+import { traceable, withRunTree } from "langsmith/traceable";
+import { Hono } from "hono";
 
-      const server = traceable(
-          (text: string) => `Hello from the server! Received "${text}"`,
-          { name: "server" }
-      );
+    const server = traceable(
+        (text: string) => `Hello from the server! Received "${text}"`,
+        { name: "server" }
+    );
 
-      const app = new Hono();
+    const app = new Hono();
 
-  app.post("/", async (c) => {
-      const body = await c.req.text();
-      const runTree = RunTree.fromHeaders(c.req.raw.headers);
-      const result = await withRunTree(runTree, () => server(body));
-      return c.body(result);
-  });
-  ```
-</CodeGroup>
+app.post("/", async (c) => {
+    const body = await c.req.text();
+    const runTree = RunTree.fromHeaders(c.req.raw.headers);
+    const result = await withRunTree(runTree, () => server(body));
+    return c.body(result);
+});
+```
 
 ***
 
-<div>
-  <Callout icon="terminal-2">
-    [Connect these docs](/use-these-docs) to your agent of choice via MCP for real-time answers.
-  </Callout>
+[Connect these docs](/use-these-docs) to your agent of choice via MCP for real-time answers.
 
-  <Callout icon="edit">
-    [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/distributed-tracing.mdx) or [file an issue](https://github.com/langchain-ai/docs/issues/new/choose).
-  </Callout>
-</div>
+[Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/distributed-tracing.mdx) or [file an issue](https://github.com/langchain-ai/docs/issues/new/choose).

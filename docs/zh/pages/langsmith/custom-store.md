@@ -6,13 +6,13 @@
 
 在代理部署中将内置 Postgres 存储替换为自定义 BaseStore 实现。
 
-当将代理部署到LangSmith时，服务器提供内置的Postgres支持的长期内存存储，并通过pgvector进行可选的矢量搜索。您可以将其替换为您自己的 [BaseStore](https://reference.langchain.com/python/langchain-core/stores/BaseStore) 实现，以使用不同的存储后端、自定义索引或专门的搜索功能。
+当将代理部署到LangSmith时，服务器提供内置的Postgres支持的长期内存存储，并通过pgvector进行可选的向量搜索。您可以将其替换为您自己的 [BaseStore](https://reference.langchain.com/python/langchain-core/stores/BaseStore) 实现，以使用不同的存储后端、自定义索引或专门的搜索功能。
 
 您提供一个生成 `BaseStore` 实例的异步上下文管理器的路径，并且服务器自动管理存储的生命周期。
 
-<Warning>
-  定制商店处于 **alpha** 阶段。此功能可能会在次要版本更新中经历重大更改。
-</Warning>
+> [!警告]
+>
+> 定制商店处于 **alpha** 阶段。此功能可能会在次要版本更新中经历重大更改。
 
 ## 定义商店
 
@@ -24,11 +24,9 @@ langgraph new --template=new-langgraph-project-python my_new_project
 
 异步上下文管理器模式允许服务器在应用程序生命周期的正确点打开和关闭存储连接。以下示例使用 `AsyncSqliteStore` 进行语义搜索：
 
-<Note>
-  不建议在生产部署中使用 SQLite。
-</Note>
-
-```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> [!注意]
+>
+> 不建议在生产部署中使用 SQLite。```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 # ./src/agent/store.py
 import contextlib
 
@@ -52,9 +50,11 @@ async def generate_store():
     ) as store:
         await store.setup()
         yield store
-```<Note>
-  配置自定义存储后，它会完全替换内置的 Postgres 存储。语义搜索和 TTL 扫描等功能取决于您的实现。
-</Note>
+```
+
+> [!注意]
+>
+> 配置自定义存储后，它将完全替换**内置 Postgres 存储。语义搜索和 TTL 扫描等功能取决于您的实现。
 
 ## 配置`langgraph.json`
 
@@ -94,16 +94,10 @@ Using custom store. Skipping store TTL sweeper.
 ## 后续步骤
 
 * [Use a custom checkpointer](/langsmith/custom-checkpointer) 替换内置检查点存储。
-* 在LangGraph了解[persistence and memory](/oss/python/langgraph/persistence)。
+* 在LangGraph中了解[persistence and memory](/oss/python/langgraph/persistence)。
 
 ***
 
-<div>
-  <Callout icon="terminal-2">
-    [Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
-  </Callout>
+[Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
 
-  <Callout icon="edit">
-    [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/custom-store.mdx) 或 [file an issue](https://github.com/langchain-ai/docs/issues/new/choose)。
-  </Callout>
-</div>
+[Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/custom-store.mdx) 或 [file an issue](https://github.com/langchain-ai/docs/issues/new/choose)。

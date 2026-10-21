@@ -8,17 +8,17 @@ Cap weekly LLM spend per evaluator to prevent a single evaluator from exceeding 
 
 This guide shows you how to view and configure weekly evaluator spend caps.
 
-<Tip>
-  LangSmith also offers [per-trace and per-model cost tracking](/langsmith/cost-tracking) and [tracing usage limits](/langsmith/administration-overview#usage-limits) for cost control.
-</Tip>
+> [!TIP]
+>
+> LangSmith also offers [per-trace and per-model cost tracking](/langsmith/cost-tracking) and [tracing usage limits](/langsmith/administration-overview#usage-limits) for cost control.
 
-<Warning>
-  Setting spend limits is available for OpenAI, Anthropic, and Gemini models. Spend limits only enforce against runs on supported models that have [pricing configured](/langsmith/cost-tracking#create-a-new-or-modify-an-existing-model-price-entry) in LangSmith. Verify model pricing before relying on a limit. Unsupported models cannot be used in evaluators once a limit is set.
-</Warning>
+> [!WARNING]
+>
+> Setting spend limits is available for OpenAI, Anthropic, and Gemini models. Spend limits only enforce against runs on supported models that have [pricing configured](/langsmith/cost-tracking#create-a-new-or-modify-an-existing-model-price-entry) in LangSmith. Verify model pricing before relying on a limit. Unsupported models cannot be used in evaluators once a limit is set.
 
-<Note>
-  The UI labels the week-to-date window as **this week**.
-</Note>
+> [!NOTE]
+>
+> The UI labels the week-to-date window as **this week**.
 
 ## How enforcement works
 
@@ -36,15 +36,13 @@ The agent and the trace are unaffected. Only the evaluator stops producing score
 | [Organization default spend limit](#set-an-organization-default-spend-limit) | Organization **Settings** > **Usage Configuration** | `organization:manage` required to view and edit |
 | [Per-evaluator override](#override-the-default-for-an-attached-project-or-dataset) | Edit evaluator > **Advanced** > **Spend limit** | All members can view, `organization:manage` required to edit |
 
-<CardGroup>
-  <Card title="Set your first limit" icon="settings" href="#set-an-organization-default-spend-limit">
-    Open organization **Settings** and define a single weekly cap that applies to all evaluator attachments to every project and dataset across all workspaces in the organization.
-  </Card>
+> **[Set your first limit](#set-an-organization-default-spend-limit)**
+>
+> Open organization **Settings** and define a single weekly cap that applies to all evaluator attachments to every project and dataset across all workspaces in the organization.
 
-  <Card title="Override for one project or dataset" icon="edit" href="#override-the-default-for-an-attached-project-or-dataset">
-    Customize the limit for a specific project or dataset attached to an evaluator.
-  </Card>
-</CardGroup>
+> **[Override for one project or dataset](#override-the-default-for-an-attached-project-or-dataset)**
+>
+> Customize the limit for a specific project or dataset attached to an evaluator.
 
 ## View evaluator spend
 
@@ -88,7 +86,9 @@ For attachment management, refer to [Manage evaluators](/langsmith/evaluators).
 
 Organization admins set a single weekly cap that applies to every evaluator's attached projects and datasets across every workspace in the organization. There is one default per organization, not one per workspace.
 
-<Note>Setting and editing the organization default requires the `organization:manage` [permission](/langsmith/rbac).</Note>
+> [!NOTE]
+>
+> Setting and editing the organization default requires the `organization:manage`[permission](/langsmith/rbac).
 
 1. Open organization **Settings** and navigate to **Usage Configuration**.
 2. For **Evaluator spend limit**, enter a USD amount. The unit is `/ week`. Leave blank for no limit.
@@ -147,12 +147,6 @@ Configure pricing for the models your evaluators use under [Model pricing](/lang
 
 ***
 
-<div>
-  <Callout icon="terminal-2">
-    [Connect these docs](/use-these-docs) to your agent of choice via MCP for real-time answers.
-  </Callout>
+[Connect these docs](/use-these-docs) to your agent of choice via MCP for real-time answers.
 
-  <Callout icon="edit">
-    [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/evaluator-spend.mdx) or [file an issue](https://github.com/langchain-ai/docs/issues/new/choose).
-  </Callout>
-</div>
+[Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/evaluator-spend.mdx) or [file an issue](https://github.com/langchain-ai/docs/issues/new/choose).

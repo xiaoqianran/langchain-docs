@@ -6,9 +6,9 @@ Common issues, fixes, and diagnostic commands for LangSmith self-hosted on GKE d
 
 This page documents common issues, fixes, and diagnostic commands for LangSmith deployments provisioned with the [GCP Terraform modules](https://github.com/langchain-ai/terraform/tree/main/modules/gcp).
 
-<Tip>
-  Before upgrading, review the [LangSmith self-hosted changelog](/langsmith/self-hosted-changelog) for breaking changes and required variable updates. Run `gcloud container clusters get-credentials <cluster-name> --region <region> --project <project-id>` before running any `kubectl` commands.
-</Tip>
+> [!TIP]
+>
+> Before upgrading, review the [LangSmith self-hosted changelog](/langsmith/self-hosted-changelog) for breaking changes and required variable updates. Run `gcloud container clusters get-credentials <cluster-name> --region <region> --project <project-id>` before running any `kubectl` commands.
 
 For a copy-paste reference of the `kubectl`, `helm`, and `gcloud` calls used throughout this page, skip to [Diagnostic commands](#diagnostic-commands).
 
@@ -562,12 +562,6 @@ echo "=== Helm ===" && helm status langsmith -n langsmith 2>/dev/null | grep -E 
 
 ***
 
-<div>
-  <Callout icon="terminal-2">
-    [Connect these docs](/use-these-docs) to your agent of choice via MCP for real-time answers.
-  </Callout>
+[Connect these docs](/use-these-docs) to your agent of choice via MCP for real-time answers.
 
-  <Callout icon="edit">
-    [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/self-host-terraform-gcp-troubleshooting.mdx) or [file an issue](https://github.com/langchain-ai/docs/issues/new/choose).
-  </Callout>
-</div>
+[Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/self-host-terraform-gcp-troubleshooting.mdx) or [file an issue](https://github.com/langchain-ai/docs/issues/new/choose).

@@ -6,9 +6,9 @@ Configure encryption keys and model access for Insights and Chat on self-hosted 
 
 [Insights](/langsmith/insights) analyzes traces, and [Chat](/langsmith/chat) (formerly Polly) helps you work with LangSmith data. Both are part of the base installation and are enabled by default in Helm chart version 0.15.1 or later. They do not require any [additional features](/langsmith/self-host-additional-features), such as Sandboxes, Fleet, or LangSmith Deployment.
 
-<Note>
-  For charts before 0.15.1, Insights and Chat are not enabled by default. Use the configuration supported by your pinned chart, or upgrade before following this guide.
-</Note>
+> [!NOTE]
+>
+> For charts before 0.15.1, Insights and Chat are not enabled by default. Use the configuration supported by your pinned chart, or upgrade before following this guide.
 
 Each feature requires its own Fernet encryption key and model access. If you followed the [Kubernetes installation guide](/langsmith/kubernetes), you already set the keys in `langsmith_config.yaml`. Continue with [Configure model access](#configure-model-access).
 
@@ -71,12 +71,6 @@ For the general upgrade procedure, see [Upgrade an installation](/langsmith/self
 
 ***
 
-<div>
-  <Callout icon="terminal-2">
-    [Connect these docs](/use-these-docs) to your agent of choice via MCP for real-time answers.
-  </Callout>
+[Connect these docs](/use-these-docs) to your agent of choice via MCP for real-time answers.
 
-  <Callout icon="edit">
-    [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/self-host-insights-chat.mdx) or [file an issue](https://github.com/langchain-ai/docs/issues/new/choose).
-  </Callout>
-</div>
+[Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/self-host-insights-chat.mdx) or [file an issue](https://github.com/langchain-ai/docs/issues/new/choose).

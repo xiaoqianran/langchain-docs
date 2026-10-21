@@ -20,9 +20,9 @@ In LangSmith Cloud, Engine operates on data you have already chosen to share wit
 | GitHub repository | Source code and repository context from the repositories you connect (see [GitHub integration](#github-integration)). | Processed inside an isolated, LangChain-managed sandbox for the duration of each analysis run, then discarded. | Pull request authoring with proposed code fixes. |
 | Model provider (inference) | Only the content required for each analysis task. | Configured for zero data retention with each Engine model provider (see [Model subprocessors](#model-subprocessors)). | Engine reasoning and generation. |
 
-<Note>
-  Engine's read scope may expand over time. This page is updated to reflect material changes. Last reviewed September 16, 2026.
-</Note>
+> [!NOTE]
+>
+> Engine's read scope may expand over time. This page is updated to reflect material changes. Last reviewed September 16, 2026.
 
 Trace content sent to Engine can include user messages, tool outputs, and PII, and this content is sent to model subprocessors under zero data retention for each analysis task. To remove sensitive fields before traces reach LangSmith, use [client-side masking](/langsmith/mask-inputs-outputs).
 
@@ -100,12 +100,6 @@ For security questions, contact [trust@langchain.dev](mailto:trust@langchain.dev
 
 ***
 
-<div>
-  <Callout icon="terminal-2">
-    [Connect these docs](/use-these-docs) to your agent of choice via MCP for real-time answers.
-  </Callout>
+[Connect these docs](/use-these-docs) to your agent of choice via MCP for real-time answers.
 
-  <Callout icon="edit">
-    [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/engine-security.mdx) or [file an issue](https://github.com/langchain-ai/docs/issues/new/choose).
-  </Callout>
-</div>
+[Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/engine-security.mdx) or [file an issue](https://github.com/langchain-ai/docs/issues/new/choose).

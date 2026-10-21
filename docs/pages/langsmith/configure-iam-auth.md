@@ -6,9 +6,9 @@ Configure Agent Server to use cloud workload identities for PostgreSQL and Redis
 
 Agent Server can use a cloud workload identity to generate short-lived PostgreSQL and Redis credentials at runtime. This removes static database and cache passwords from your deployment configuration. Connection and pooling behavior stay the same.
 
-<Note>
-  Data store IAM authentication requires `langgraph-api>=0.12.0`.
-</Note>
+> [!NOTE]
+>
+> Data store IAM authentication requires `langgraph-api>=0.12.0`.
 
 ## Supported services
 
@@ -18,9 +18,9 @@ Agent Server can use a cloud workload identity to generate short-lived PostgreSQ
 | `azure` | Azure Database for PostgreSQL Flexible Server | Azure Managed Redis or Azure Cache for Redis | Microsoft Entra `DefaultAzureCredential` |
 | `gcp` | Cloud SQL for PostgreSQL | Memorystore for Redis Cluster | Google Application Default Credentials (ADC) |
 
-<Warning>
-  The GCP PostgreSQL provider supports Cloud SQL. It does not support AlloyDB, which requires a different token scope.
-</Warning>
+> [!WARNING]
+>
+> The GCP PostgreSQL provider supports Cloud SQL. It does not support AlloyDB, which requires a different token scope.
 
 The provider setting controls authentication only. Configure network access, TLS, database users, cache users, and provider permissions before starting Agent Server.
 
@@ -165,12 +165,6 @@ Configure `apiServer.serviceAccount` and `queue.serviceAccount` with the cloud p
 
 ***
 
-<div>
-  <Callout icon="terminal-2">
-    [Connect these docs](/use-these-docs) to your agent of choice via MCP for real-time answers.
-  </Callout>
+[Connect these docs](/use-these-docs) to your agent of choice via MCP for real-time answers.
 
-  <Callout icon="edit">
-    [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/configure-iam-auth.mdx) or [file an issue](https://github.com/langchain-ai/docs/issues/new/choose).
-  </Callout>
-</div>
+[Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/configure-iam-auth.mdx) or [file an issue](https://github.com/langchain-ai/docs/issues/new/choose).

@@ -37,9 +37,9 @@ flowchart TD
 
 The OpenTelemetry SDK instruments your application code and emits spans. Spans travel via the OTLP protocol to an OpenTelemetry Collector, which batches and routes them to one or more destinations simultaneously  (*fanout*). LangSmith receives spans at its OTLP endpoint and displays them as traces in the dashboard.
 
-<Note>
-  Update the LangSmith URL appropriately for self-hosted installations or regional SaaS in the requests below: GCP EU uses `eu.api.smith.langchain.com`; GCP APAC uses `apac.api.smith.langchain.com`; AWS US uses `aws.api.smith.langchain.com`.
-</Note>
+> [!NOTE]
+>
+> Update the LangSmith URL appropriately for self-hosted installations or regional SaaS in the requests below: GCP EU uses `eu.api.smith.langchain.com`; GCP APAC uses `apac.api.smith.langchain.com`; AWS US uses `aws.api.smith.langchain.com`.
 
 ## Trace a LangChain application
 
@@ -47,28 +47,24 @@ If you're using LangChain or LangGraph, use the built-in integration to trace yo
 
 1. Install the LangSmith package with OpenTelemetry support:
 
-   <CodeGroup>
-     ```bash pip theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-     pip install "langsmith[otel]"
-     pip install langchain
-     ```
-   </CodeGroup>
+   ```bash pip theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+   pip install "langsmith[otel]"
+   pip install langchain
+   ```
 
-   <Info>
-     Requires Python SDK version `langsmith>=0.3.18`. We recommend `langsmith>=0.4.25` to benefit from important OpenTelemetry fixes.
-   </Info>
+   > [!NOTE]
+   >
+   > Requires Python SDK version `langsmith>=0.3.18`. We recommend `langsmith>=0.4.25` to benefit from important OpenTelemetry fixes.
 
 2. In your LangChain/LangGraph App, enable the OpenTelemetry integration by setting the `LANGSMITH_OTEL_ENABLED` environment variable:
 
-   <CodeGroup>
-     ```bash Shell theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-     LANGSMITH_OTEL_ENABLED=true
-     LANGSMITH_TRACING=true
-     LANGSMITH_ENDPOINT=https://api.smith.langchain.com
-     LANGSMITH_API_KEY=<your_langsmith_api_key>
-     # For LangSmith API keys linked to multiple workspaces, set the LANGSMITH_WORKSPACE_ID environment variable to specify which workspace to use.
-     ```
-   </CodeGroup>
+   ```bash Shell theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+   LANGSMITH_OTEL_ENABLED=true
+   LANGSMITH_TRACING=true
+   LANGSMITH_ENDPOINT=https://api.smith.langchain.com
+   LANGSMITH_API_KEY=<your_langsmith_api_key>
+   # For LangSmith API keys linked to multiple workspaces, set the LANGSMITH_WORKSPACE_ID environment variable to specify which workspace to use.
+   ```
 
 3. Create a LangChain application with tracing. For example:
 
@@ -95,43 +91,44 @@ For non-LangChain applications or custom instrumentation, you can trace your app
 
 1. Install the OpenTelemetry SDK, OpenTelemetry exporter packages, as well as the OpenAI package:
 
-   <CodeGroup>
-     ```bash pip theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-     pip install openai
-     pip install opentelemetry-sdk
-     pip install opentelemetry-exporter-otlp
-     ```
-   </CodeGroup>
+   ```bash pip theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+   pip install openai
+   pip install opentelemetry-sdk
+   pip install opentelemetry-exporter-otlp
+   ```
 
 2. Setup environment variables for the endpoint, substitute your specific values:
 
-   <CodeGroup>
-     ```bash Shell theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-     OTEL_EXPORTER_OTLP_ENDPOINT=https://api.smith.langchain.com/otel
-     OTEL_EXPORTER_OTLP_HEADERS="x-api-key=<your langsmith api key>"
-     ```
-   </CodeGroup>
+   ```bash Shell theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+   OTEL_EXPORTER_OTLP_ENDPOINT=https://api.smith.langchain.com/otel
+   OTEL_EXPORTER_OTLP_HEADERS="x-api-key=<your langsmith api key>"
+   ```
 
-   <Note>
-     `OTEL_EXPORTER_OTLP_ENDPOINT` is a base URL. OTLP/HTTP exporters append the signal path (`/v1/traces`) themselves, so do not include it: setting the base endpoint to `https://api.smith.langchain.com/otel/v1/traces` sends traces to `/otel/v1/traces/v1/traces`, which returns `404`. Include the full path only with the per-signal `OTEL_EXPORTER_OTLP_TRACES_ENDPOINT` variable or a collector exporter's `traces_endpoint`, which are used exactly as given.
-   </Note>
+   > [!NOTE]
+   >
+   > `OTEL_EXPORTER_OTLP_ENDPOINT` is a base URL. OTLP/HTTP exporters append the signal path (`/v1/traces`) themselves, so do not include it: setting the base endpoint to `https://api.smith.langchain.com/otel/v1/traces` sends traces to `/otel/v1/traces/v1/traces`, which returns `404`. Include the full path only with the per-signal `OTEL_EXPORTER_OTLP_TRACES_ENDPOINT` variable or a collector exporter's `traces_endpoint`, which are used exactly as given.
 
-   <Note>
-     If you're self-hosting LangSmith, replace the base endpoint with your LangSmith api endpoint and append `/api/v1`. For example: `OTEL_EXPORTER_OTLP_ENDPOINT=https://ai-company.com/api/v1/otel`
-   </Note>
+   > [!NOTE]
+   >
+   > If you're self-hosting LangSmith, replace the base endpoint with your LangSmith api endpoint and append `/api/v1`. For example: `OTEL_EXPORTER_OTLP_ENDPOINT=https://ai-company.com/api/v1/otel`
 
    Optional: Specify a custom project name other than "default":
 
-   <CodeGroup>
-     ```bash Shell theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-     OTEL_EXPORTER_OTLP_ENDPOINT=https://api.smith.langchain.com/otel
-     OTEL_EXPORTER_OTLP_HEADERS="x-api-key=<your langsmith api key>,Langsmith-Project=<project name>"
-     ```
-   </CodeGroup>
+   ```bash Shell theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+   OTEL_EXPORTER_OTLP_ENDPOINT=https://api.smith.langchain.com/otel
+   OTEL_EXPORTER_OTLP_HEADERS="x-api-key=<your langsmith api key>,Langsmith-Project=<project name>"
+   ```
 
-   <Note>
-     **Agent-based workspaces.** Agent addressing is not yet available on the OTLP path, which reads no agent address from a request or a span. Use the `Langsmith-Project` header to name the tracing project, whichever way your workspace is organized. For the addressing model, see [Log traces to an agent](/langsmith/log-traces-to-agent).
-   </Note>
+   > [!NOTE]
+   >
+   > **Agent-based workspaces.** Sending traces to an agent is in [beta](/langsmith/release-stages). To send OTLP traces to an agent and an environment instead of a project, replace the `Langsmith-Project` header with both of the following headers:
+   >
+   > * **`Langsmith-Agent-Id`**: The identifier of the agent. It must be 1 to 63 lowercase letters, digits, or hyphens, start with a letter, and end with a letter or digit. LangSmith creates the agent on first use, which requires the [`projects:create` permission](/langsmith/organization-workspace-operations#projects). An archived agent still holds its identifier, so LangSmith rejects a request sent to it with a `409`.
+   > * **`Langsmith-Agent-Environment`**: The environment the traces belong to. One of `local`, `development`, `staging`, or `production`.
+   >
+   > For example, set `OTEL_EXPORTER_OTLP_HEADERS="x-api-key=<your langsmith api key>,Langsmith-Agent-Id=<agent id>,Langsmith-Agent-Environment=<environment>"`. With `langsmith>=0.14.9`, the Python SDK's OpenTelemetry exporter sets both headers from `LANGSMITH_AGENT_ID` and `LANGSMITH_AGENT_ENVIRONMENT` when `OTEL_EXPORTER_OTLP_HEADERS` is unset. With the TypeScript SDK or another OpenTelemetry exporter, set the headers yourself.
+   >
+   > The headers apply to every span in the request. Send both headers or neither: LangSmith rejects a request that sets one without the other, or that sets either alongside `Langsmith-Project`, with a `400` error. A workspace that does not accept traces sent to an agent rejects the request with a `403` error and the message `agent addressing is not enabled for this workspace`. Span attributes, including `gen_ai.agent.name`, do not send traces to an agent. For how sending traces to an agent works, see [Log traces to an agent](/langsmith/log-traces-to-agent).
 
 3. Log a trace.
 
@@ -200,17 +197,17 @@ For non-LangChain applications or custom instrumentation, you can trace your app
 
 4. View the trace in your LangSmith dashboard ([example](https://smith.langchain.com/public/4f2890b1-f105-44aa-a6cf-c777dcc27a37/r)).
 
-<Note>
-  If your spans reference a parent from another service or process, see [Context propagation in distributed tracing](#context-propagation-in-distributed-tracing) for how parent–child linking works and when a span can be dropped.
-</Note>
+> [!NOTE]
+>
+> If your spans reference a parent from another service or process, see [Context propagation in distributed tracing](#context-propagation-in-distributed-tracing) for how parent–child linking works and when a span can be dropped.
 
 ## Send traces to an alternate provider
 
 While LangSmith is the default destination for OpenTelemetry traces, you can also configure OpenTelemetry to send traces to other observability platforms.
 
-<Info>
-  Available in LangSmith Python SDK **≥ 0.4.1**. We recommend **≥ 0.4.25** for fixes that improve OTEL export and hybrid fan-out stability.
-</Info>
+> [!NOTE]
+>
+> Available in LangSmith Python SDK **≥ 0.4.1**. We recommend **≥ 0.4.25** for fixes that improve OTEL export and hybrid fan-out stability.
 
 ### Use environment variables for global configuration
 
@@ -218,7 +215,7 @@ By default, the LangSmith OpenTelemetry exporter will send data to the LangSmith
 
 ```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 OTEL_EXPORTER_OTLP_ENDPOINT: Override the endpoint URL
-OTEL_EXPORTER_OTLP_HEADERS: Headers for your endpoint, like its API key (if unset, your LangSmith API key and project are sent)
+OTEL_EXPORTER_OTLP_HEADERS: Headers for your endpoint, like its API key (if unset, your LangSmith API key and project are sent, or your agent and environment with `langsmith>=0.14.9`)
 OTEL_SERVICE_NAME: Set a custom service name (defaults to "langsmith")
 OTEL_RESOURCE_ATTRIBUTES: Attach custom metadata fields at the process level (see below)
 ```
@@ -280,12 +277,12 @@ result = chain.invoke({"topic": "programming"})
 print(result.content)
 ```
 
-<Info>
-  Hybrid tracing is available in version **≥ 0.4.1**. To send traces **only** to your OTEL endpoint, set:
-
-  `LANGSMITH_OTEL_ONLY="true"`
-  (Recommendation: use **langsmith ≥ 0.4.25**.)
-</Info>
+> [!NOTE]
+>
+> Hybrid tracing is available in version **≥ 0.4.1**. To send traces **only** to your OTEL endpoint, set:
+>
+> `LANGSMITH_OTEL_ONLY="true"`
+> (Recommendation: use **langsmith ≥ 0.4.25**.)
 
 ## Supported OpenTelemetry attribute and event mapping
 
@@ -506,9 +503,9 @@ if __name__ == "__main__":
     asyncio.run(main())
 ```
 
-<Note>
-  You do not need to set OTEL environment variables or exporters. `configure()` wires them for LangSmith automatically; instrumentors (like `GoogleADKInstrumentor`) create the spans.
-</Note>
+> [!NOTE]
+>
+> You do not need to set OTEL environment variables or exporters. `configure()` wires them for LangSmith automatically; instrumentors (like `GoogleADKInstrumentor`) create the spans.
 
 Here is an [example](https://smith.langchain.com/public/d6d47eeb-511e-4fda-ad17-2caa7bd7150b/r) of what the resulting trace looks like in LangSmith.
 
@@ -548,9 +545,9 @@ def my_agent():
     emit_otel_child(parent)
 ```
 
-<Note>
-  `langsmith.span.dotted_order` encodes the span's position in the trace tree. Build it from the parent's [`dotted_order`](https://docs.langchain.com/langsmith/run-data-format#what-is-dotted_order), a dot, then this span's timestamp followed by its `langsmith.span.id`.
-</Note>
+> [!NOTE]
+>
+> `langsmith.span.dotted_order` encodes the span's position in the trace tree. Build it from the parent's [`dotted_order`](https://docs.langchain.com/langsmith/run-data-format#what-is-dotted_order), a dot, then this span's timestamp followed by its `langsmith.span.id`.
 
 ### Add an attachment to a trace
 
@@ -777,15 +774,15 @@ In distributed systems, context propagation passes trace metadata between servic
 * **Span ID**: A unique identifier for the current span
 * **Sampling Decision**: Indicates whether this trace should be sampled
 
-<Warning>
-  **A span whose parent is never sent to LangSmith is dropped.**
-
-  The OTel endpoint is asynchronous: it accepts a batch, returns `200`, and materializes runs in the background. When a span's `parentSpanId` references a parent that LangSmith hasn't received yet, the child is buffered and linked once the parent arrives. This works regardless of order; a child can arrive before its parent, in a separate request, and still link correctly.
-
-  However, if the parent span is **never** exported to LangSmith, the buffered child expires and never appears as a run. LangSmith will not return an error, because the `200` was sent before processing. This commonly happens when only part of a distributed trace reaches LangSmith: the parent is emitted by a service that exports to a different backend, or it's removed by a sampling decision.
-
-  To avoid silent loss, make sure every span you want in LangSmith also has its ancestors exported to LangSmith within the buffering window. On self-hosted deployments, this window is controlled by `REDIS_RUNS_EXPIRY_SECONDS` (default 12 hours).
-</Warning>
+> [!WARNING]
+>
+> **A span whose parent is never sent to LangSmith is dropped.**
+>
+> The OTel endpoint is asynchronous: it accepts a batch, returns `200`, and materializes runs in the background. When a span's `parentSpanId` references a parent that LangSmith hasn't received yet, the child is buffered and linked once the parent arrives. This works regardless of order; a child can arrive before its parent, in a separate request, and still link correctly.
+>
+> However, if the parent span is **never** exported to LangSmith, the buffered child expires and never appears as a run. LangSmith will not return an error, because the `200` was sent before processing. This commonly happens when only part of a distributed trace reaches LangSmith: the parent is emitted by a service that exports to a different backend, or it's removed by a sampling decision.
+>
+> To avoid silent loss, make sure every span you want in LangSmith also has its ancestors exported to LangSmith within the buffering window. On self-hosted deployments, this window is controlled by `REDIS_RUNS_EXPIRY_SECONDS` (default 12 hours).
 
 #### Set up distributed tracing with LangChain
 
@@ -863,12 +860,6 @@ if __name__ == "__main__":
 
 ***
 
-<div>
-  <Callout icon="terminal-2">
-    [Connect these docs](/use-these-docs) to your agent of choice via MCP for real-time answers.
-  </Callout>
+[Connect these docs](/use-these-docs) to your agent of choice via MCP for real-time answers.
 
-  <Callout icon="edit">
-    [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/trace-with-opentelemetry.mdx) or [file an issue](https://github.com/langchain-ai/docs/issues/new/choose).
-  </Callout>
-</div>
+[Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/trace-with-opentelemetry.mdx) or [file an issue](https://github.com/langchain-ai/docs/issues/new/choose).

@@ -10,9 +10,9 @@ LangSmith 代理服务器的默认配置旨在处理各种不同工作负载的�
 
 此页面涵盖代理服务器，它运行您部署的代理。要扩展摄取跟踪并运行评估的自托管 LangSmith 实例，请参阅 [Configure LangSmith for scale](/langsmith/self-host-scale)。
 
-<Tip>
-  如果您还不熟悉 API 服务器和队列工作线程在容器级别的操作方式，请先阅读 [runtime architecture](/langsmith/agent-server#runtime-architecture) 概述。
-</Tip>
+> [!提示]
+>
+> 如果您还不熟悉 API 服务器和队列工作线程在容器级别的操作方式，请先阅读 [runtime architecture](/langsmith/agent-server#runtime-architecture) 概述。
 
 对于 [Cloud](/langsmith/cloud-platform-features#scaling)，平台会自动缩放，并且以下 Helm 配置不适用。
 
@@ -144,7 +144,7 @@ number_of_queue_workers = throughput_per_second * average_run_execution_time_sec
 * Postgres：处理所有数据的存储，包括运行、线程、助手、cron 作业、检查点和长期内存。
 * Redis：处理有关正在进行的运行的临时数据的存储，包括从队列工作程序到 API 服务器的流式消息。### 使用过滤来减少每个请求的结果
 
-[Agent Server](/langsmith/agent-server) 为每种资源类型提供搜索API。这些 API 默认实现分页并提供许多过滤选项。使用过滤来减少每个请求返回的资源数量并提高性能。
+[Agent Server](/langsmith/agent-server) 为每种资源类型提供搜索 API。这些 API 默认实现分页并提供许多过滤选项。使用过滤来减少每个请求返回的资源数量并提高性能。
 
 ### 设置 TTL 以自动删除旧数据
 
@@ -160,19 +160,19 @@ number_of_queue_workers = throughput_per_second * average_run_execution_time_sec
 
 默认情况下禁用自动缩放，但应针对突发工作负载进行配置。根据最大预期吞吐量确定应允许自动缩放程序扩展的 API 服务器的最大数量。
 
-## 配置示例<Note>
-  确切的最佳配置取决于您的应用程序复杂性、请求模式和数据要求。将以下示例与前面部分中的信息以及您的具体用法结合使用，根据需要更新您的部署配置。如果您有任何疑问，请通过[support.langchain.com](https://support.langchain.com)联系支持人员。
-</Note>
+## 配置示例> [!注意]
+>
+> 确切的最佳配置取决于您的应用程序复杂性、请求模式和数据要求。将以下示例与前面部分中的信息以及您的具体用法结合使用，根据需要更新您的部署配置。如果您有任何疑问，请通过[support.langchain.com](https://support.langchain.com)联系支持人员。
 
 下表提供了针对各种负载模式（每秒读取请求/每秒写入请求）和标准助手特征（平均运行执行时间为 1 秒、中等 CPU 和内存使用率）的不同代理服务器配置的比较概览。请求速率驱动所需的稳态运行吞吐量，该吞吐量通过队列工作线程和 `N_JOBS_PER_WORKER` 调整大小，而 API 服务器副本的大小则根据请求量本身进行调整：| | **[Low / low](#low-reads-low-writes)** | **[Low / high](#low-reads-high-writes)** | **[High / low](#high-reads-low-writes)** | [Medium / medium](#medium-reads-medium-writes) | [High / high](#high-reads-high-writes) |
-| :- | :- | :- | :-| :-| :- |
-| <Tooltip>每秒写入请求数</Tooltip> | 5 | 5 | 500 | 500 50 | 50 500 | 500
-| <Tooltip>每秒读取请求数</Tooltip> | 5 | 500 | 500 5 | 50 | 50 500 | 500
-| **API 服务器**<br />（1 个 CPU，每台服务器 2Gi）| 1（默认）| 6 | 10 | 10 3 | 15 | 15
-| **队列工作人员**<br />（1 个 CPU，每个工作人员 2Gi）| 1（默认）| 10 | 10 1（默认）| 5 | 10 | 10
-| **`N_JOBS_PER_WORKER`** | 10（默认）| 50 | 50 10 | 10 10 | 10 50 | 50
-| **Redis 资源** | 1 CPU<br />2 Gi（默认）| 1 CPU<br />2 Gi（默认）| 1 CPU<br />2 Gi（默认）| 1 CPU<br />2 Gi（默认）| 1 CPU<br />2 Gi（默认）|
-| **Postgres 资源** | 2 CPU<br />8 Gi（默认）| 4 CPU<br />16 Gi 内存 | 4 CPU<br />16 Gi | 4 CPU<br />16 Gi 内存 | 8 CPU<br />32 Gi 内存 |
+| :- | :- | :- | :- | :- | :- |
+|每秒写入请求数（部署每秒处理的写入请求数）| 5 | 5 | 500 | 500 50| 500 | 500
+|每秒读取请求数（部署每秒处理的读取请求数）| 5 | 500 | 500 5 | 50| 500 | 500
+| **API 服务器**（1 个 CPU，每台服务器 2Gi）| 1（默认）| 6 | 10 | 10 3 | 15 | 15
+| **队列工作人员**（1 个 CPU，每个工作人员 2Gi）| 1（默认）| 10 | 10 1（默认）| 5 | 10 | 10
+| **`N_JOBS_PER_WORKER`** | 10（默认）| 50| 10 | 10 10 | 10 50|
+| **Redis 资源** | 1 CPU 2 Gi（默认）| 1 CPU 2 Gi（默认）| 1 CPU 2 Gi（默认）| 1 CPU 2 Gi（默认）| 1 CPU 2 Gi（默认）|
+| **Postgres 资源** | 2 CPU 8 Gi（默认）| 4 CPU 16 Gi 内存 | 4 个 CPU 16 Gi | 4 CPU 16 Gi 内存 | 8 CPU 32 Gi 内存 |
 
 要为每个部署调整 Redis 大小，请设置 [⟦T41⟧](/langsmith/api-ref-control-plane#resource-spec) 的 `redis_cpu`、`redis_cpu_limit`、`redis_memory_mb` 和 `redis_memory_limit_mb` 字段。 Redis 内存接受 512 到 16384 MB，因此最小值为 512 Mi。 Redis CPU需要listener 0.13.22或更高版本，Redis内存低于2048需要listener 0.13.27或更高版本。参见[Listener version requirements](/langsmith/self-hosted-platform-features#listener-version-requirements)。
 
@@ -390,18 +390,12 @@ queue:
     maxReplicas: 20
 ```
 
-<Note>
-  确保您的部署环境有足够的资源来扩展到建议的大小。监控您的应用程序和基础设施以确保最佳性能。考虑实施监控和警报来跟踪资源使用情况和应用程序性能。
-</Note>
+> [!注意]
+>
+> 确保您的部署环境有足够的资源来扩展到建议的大小。监控您的应用程序和基础设施以确保最佳性能。考虑实施监控和警报来跟踪资源使用情况和应用程序性能。
 
 ***
 
-<div>
-  <Callout icon="terminal-2">
-    [Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
-  </Callout>
+[Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
 
-  <Callout icon="edit">
-    [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/agent-server-scale.mdx) 或 [file an issue](https://github.com/langchain-ai/docs/issues/new/choose)。
-  </Callout>
-</div>
+[Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/agent-server-scale.mdx) 或 [file an issue](https://github.com/langchain-ai/docs/issues/new/choose)。

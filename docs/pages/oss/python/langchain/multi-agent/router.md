@@ -36,61 +36,59 @@ Use the router pattern when you have distinct verticals (separate knowledge doma
 
 The router classifies the query and directs it to the appropriate agent(s). Use [`Command`](/oss/python/langgraph/graph-api#command) for single-agent routing or [`Send`](/oss/python/langgraph/graph-api#send) for parallel fan-out to multiple agents.
 
-<Tabs>
-  <Tab title="Single agent">
-    Use `Command` to route to a single specialized agent:
+**Single agent**
 
-    ```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-    from langgraph.types import Command
+Use `Command` to route to a single specialized agent:
 
-    def classify_query(query: str) -> str:
-        """Use LLM to classify query and determine the appropriate agent."""
-        # Classification logic here
-        ...
+```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+from langgraph.types import Command
 
-    def route_query(state: State) -> Command:
-        """Route to the appropriate agent based on query classification."""
-        active_agent = classify_query(state["query"])
+def classify_query(query: str) -> str:
+    """Use LLM to classify query and determine the appropriate agent."""
+    # Classification logic here
+    ...
 
-        # Route to the selected agent
-        return Command(goto=active_agent)
-    ```
-  </Tab>
+def route_query(state: State) -> Command:
+    """Route to the appropriate agent based on query classification."""
+    active_agent = classify_query(state["query"])
 
-  <Tab title="Multiple agents (parallel)">
-    Use `Send` to fan out to multiple specialized agents in parallel:
+    # Route to the selected agent
+    return Command(goto=active_agent)
+```
 
-    ```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-    from typing import TypedDict
-    from langgraph.types import Send
+**Multiple agents (parallel)**
 
-    class ClassificationResult(TypedDict):
-        query: str
-        agent: str
+Use `Send` to fan out to multiple specialized agents in parallel:
 
-    def classify_query(query: str) -> list[ClassificationResult]:
-        """Use LLM to classify query and determine which agents to invoke."""
-        # Classification logic here
-        ...
+```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+from typing import TypedDict
+from langgraph.types import Send
 
-    def route_query(state: State):
-        """Route to relevant agents based on query classification."""
-        classifications = classify_query(state["query"])
+class ClassificationResult(TypedDict):
+    query: str
+    agent: str
 
-        # Fan out to selected agents in parallel
-        return [
-            Send(c["agent"], {"query": c["query"]})
-            for c in classifications
-        ]
-    ```
-  </Tab>
-</Tabs>
+def classify_query(query: str) -> list[ClassificationResult]:
+    """Use LLM to classify query and determine which agents to invoke."""
+    # Classification logic here
+    ...
+
+def route_query(state: State):
+    """Route to relevant agents based on query classification."""
+    classifications = classify_query(state["query"])
+
+    # Fan out to selected agents in parallel
+    return [
+        Send(c["agent"], {"query": c["query"]})
+        for c in classifications
+    ]
+```
 
 For a complete implementation, see the tutorial below.
 
-<Card title="Tutorial: Build a multi-source knowledge base with routing" icon="book" href="/oss/python/langchain/multi-agent/router-knowledge-base">
-  Build a router that queries GitHub, Notion, and Slack in parallel, then synthesizes results into a coherent answer. Covers state definition, specialized agents, parallel execution with `Send`, and result synthesis.
-</Card>
+> **[Tutorial: Build a multi-source knowledge base with routing](/oss/python/langchain/multi-agent/router-knowledge-base)**
+>
+> Build a router that queries GitHub, Notion, and Slack in parallel, then synthesizes results into a coherent answer. Covers state definition, specialized agents, parallel execution with `Send`, and result synthesis.
 
 ## Stateless vs. stateful
 
@@ -103,14 +101,14 @@ Two approaches:
 
 Each request is routed independently—no memory between calls. For multi-turn conversations, see [Stateful routers](#stateful).
 
-<Tip>
-  **Router vs. Subagents**: Both patterns can dispatch work to multiple agents, but they differ in how routing decisions are made:
-
-  * **Router**: A dedicated routing step (often a single LLM call or rule-based logic) that classifies the input and dispatches to agents. The router itself typically doesn't maintain conversation history or perform multi-turn orchestration—it's a preprocessing step.
-  * **Subagents**: A main supervisor agent dynamically decides which [subagents](/oss/python/langchain/multi-agent/subagents) to call as part of an ongoing conversation. The main agent maintains context, can call multiple subagents across turns, and orchestrates complex multi-step workflows.
-
-  Use a **router** when you have clear input categories and want deterministic or lightweight classification. Use a **supervisor** when you need flexible, conversation-aware orchestration where the LLM decides what to do next based on evolving context.
-</Tip>
+> [!TIP]
+>
+> **Router vs. Subagents**: Both patterns can dispatch work to multiple agents, but they differ in how routing decisions are made:
+>
+> * **Router**: A dedicated routing step (often a single LLM call or rule-based logic) that classifies the input and dispatches to agents. The router itself typically doesn't maintain conversation history or perform multi-turn orchestration—it's a preprocessing step.
+> * **Subagents**: A main supervisor agent dynamically decides which [subagents](/oss/python/langchain/multi-agent/subagents) to call as part of an ongoing conversation. The main agent maintains context, can call multiple subagents across turns, and orchestrates complex multi-step workflows.
+>
+> Use a **router** when you have clear input categories and want deterministic or lightweight classification. Use a **supervisor** when you need flexible, conversation-aware orchestration where the LLM decides what to do next based on evolving context.
 
 ## Stateful
 
@@ -139,18 +137,12 @@ conversational_agent = create_agent(
 
 If you need the router itself to maintain state, use [persistence](/oss/python/langchain/short-term-memory) to store message history. When routing to an agent, fetch previous messages from state and selectively include them in the agent's context—this is a lever for [context engineering](/oss/python/langchain/context-engineering).
 
-<Warning>
-  **Stateful routers require custom history management.** If the router switches between agents across turns, conversations may not feel fluid to end users when agents have different tones or prompts. With parallel invocation, you'll need to maintain history at the router level (inputs and synthesized outputs) and leverage this history in routing logic. Consider the [handoffs pattern](/oss/python/langchain/multi-agent/handoffs) or [subagents pattern](/oss/python/langchain/multi-agent/subagents) instead—both provide clearer semantics for multi-turn conversations.
-</Warning>
+> [!WARNING]
+>
+> **Stateful routers require custom history management.** If the router switches between agents across turns, conversations may not feel fluid to end users when agents have different tones or prompts. With parallel invocation, you'll need to maintain history at the router level (inputs and synthesized outputs) and leverage this history in routing logic. Consider the [handoffs pattern](/oss/python/langchain/multi-agent/handoffs) or [subagents pattern](/oss/python/langchain/multi-agent/subagents) instead—both provide clearer semantics for multi-turn conversations.
 
 ***
 
-<div>
-  <Callout icon="terminal-2">
-    [Connect these docs](/use-these-docs) to your agent of choice via MCP for real-time answers.
-  </Callout>
+[Connect these docs](/use-these-docs) to your agent of choice via MCP for real-time answers.
 
-  <Callout icon="edit">
-    [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/oss/langchain/multi-agent/router.mdx) or [file an issue](https://github.com/langchain-ai/docs/issues/new/choose).
-  </Callout>
-</div>
+[Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/oss/langchain/multi-agent/router.mdx) or [file an issue](https://github.com/langchain-ai/docs/issues/new/choose).

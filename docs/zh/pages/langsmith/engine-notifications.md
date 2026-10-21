@@ -14,7 +14,7 @@
 * **通知时间**：触发通知的[event types](#event-types)。
 * **最低问题严重性**：确定发送哪些通知的问题 [severity filter](#severity-filtering)。
 
-要在 [watched issue](/langsmith/engine-issues#watch-an-issue) 再次出现时收到警报，请单击该问题上的 **通过 Slack 提醒我**，这将打开相同的 **通知** 部分。
+要在 [watched issue](/langsmith/engine-issues#watch-an-issue) 再次出现时收到提醒，请单击该问题上的 **通过 Slack 提醒我**，这会打开相同的 **通知** 部分。
 
 ## 事件类型
 
@@ -24,7 +24,7 @@
 | **与问题相关的新痕迹** |引擎将新跟踪链接到现有问题。 | [⟦T9⟧](#issue-trace-added) |
 | **引擎未能完成运行** |引擎运行无法完成。 | [⟦T10⟧](#issue-agent_run-failed) |
 
-对于新目的地，**通知时间**选择器提供**创建的问题**和**链接到问题的新跟踪**。在**引擎无法完成运行**从选取器中删除之前创建的目的地仍然可以接收它。在没有明确的事件类型列表的情况下创建的目标仅接收**创建的问题**。
+对于新目的地，**通知时间**选择器提供**创建的问题**和**链接到问题的新跟踪**。在**引擎无法完成运行**从选取器中删除之前创建的目的地仍然可以接收它。在没有显式事件类型列表的情况下创建的目标仅接收**创建的问题**。
 
 Webhook 负载通过事件类型来识别每个事件，如最后一列所示。参见[Webhook payload reference](#webhook-payload-reference)。
 
@@ -43,66 +43,75 @@ Webhook 负载通过事件类型来识别每个事件，如最后一列所示。
 
 ## 通知 Slack 通道
 
-如果您的自托管实例上未配置 Slack，则 **Slack** 选项卡会显示 **联系您的操作员以启用 Slack 通知**。运营商[creates a Slack app and configures its credentials](/langsmith/self-host-slack)。在 [BYOC](/langsmith/byoc) 数据平面上，**设置** > **常规设置** > **Slack** 下的组织管理员 [configures the Slack app](/langsmith/self-host-slack#create-your-slack-app-on-byoc)。然后，您可以通过 Slack 授权连接工作区。
+如果您的自托管实例上未配置 Slack，则 **Slack** 选项卡会显示 **联系您的操作员以启用 Slack 通知**。接线员[creates a Slack app and configures its credentials](/langsmith/self-host-slack)。在 [BYOC](/langsmith/byoc) 数据平面上，**设置** > **常规设置** > **Slack** 下的组织管理员 [configures the Slack app](/langsmith/self-host-slack#create-your-slack-app-on-byoc)。然后，您可以通过 Slack 授权连接工作区。
 
-添加 Slack 目标：<Steps>
-  <Step title="Connect a Slack workspace">
-    连接 Slack 工作区是您执行一次的组织级操作，而不是针对每个项目执行一次。连接或断开工作区需要 `organization:manage` 权限。在您的 LangSmith 实例中，打开 **设置**，转到组织的 **常规** 设置，然后在 **Slack** 下单击 **连接 Slack**。在 Slack 中授权配置的应用程序。您可以将多个 Slack 工作区连接到一个组织。
-  </Step>
+添加 Slack 目标：
 
-  <Step title="Add a Slack destination">
-    在**引擎**页面上，单击**配置引擎**。在“通知”下，如果编辑器尚未打开，请单击“添加”。选择 **Slack** 选项卡，然后使用通道选择器选择工作区和通道。如果没有连接工作区，请在通道选择器中单击“连接 Slack”并完成授权。
-  </Step>
+**1.连接 Slack 工作区**连接 Slack 工作区是您执行一次的组织级操作，而不是针对每个项目执行一次。连接或断开工作区需要 `organization:manage` 权限。在您的 LangSmith 实例中，打开 **设置**，转到组织的 **常规** 设置，然后在 **Slack** 下单击 **连接 Slack**。在 Slack 中授权配置的应用程序。您可以将多个 Slack 工作区连接到一个组织。
 
-  <Step title="Choose events and severity">
-    在**通知时间**下，选择哪个[event types](#event-types)向频道发布消息。在**最低问题严重性**下，选择触发通知的问题严重性。单击“**添加**”进行保存。
-  </Step>
-</Steps>如果需要，LangSmith 在首次传递消息时加入选定的公共频道。要发布到私人频道，请先邀请已配置的 Slack 应用程序加入 Slack 中的该频道，然后刷新频道选择器。
+**2.添加 Slack 目的地**
+
+在**引擎**页面上，单击**配置引擎**。在“通知”下，如果编辑器尚未打开，请单击“添加”。选择 **Slack** 选项卡，然后使用通道选择器选择工作区和通道。如果未连接工作区，请在通道选择器中单击“连接 Slack”并完成授权。
+
+**3.选择事件和严重性**
+
+在**通知时间**下，选择哪个 [event types](#event-types) 将消息发布到频道。在**最低问题严重性**下，选择触发通知的问题严重性。单击“**添加**”进行保存。如果需要，LangSmith 在首次传递消息时加入选定的公共频道。要发布到私人频道，请先邀请已配置的 Slack 应用程序加入 Slack 中的该频道，然后刷新频道选择器。
 
 每条 Slack 消息都包含问题标题、描述和严重性、返回到 LangSmith 的 **查看问题** 链接，以及（对于问题事件）问题随时间重复发生的图表。如果工作区的连接变得无效（例如，应用程序从 Slack 中删除），其目标将停止传送，直到您从组织的 **常规** 设置重新连接它。
 
 Slack 目标使用配置的 Slack 应用程序来发布消息。他们不发送 [webhook payload](#webhook-payload-reference)，因此 Webhook 签名机密和自定义标头不适用。
 
+### 提及编码代理
+
+Slack 目标可以在引擎通知的线程中提及编码代理的 Slack 机器人，例如 [Open SWE](https://github.com/langchain-ai/open-swe)。该提及为代理引擎提供了针对该问题的修复提示，因此它可以从 Slack 进行修复。
+
+提一下编码代理：1. 在 Slack 中，将代理的机器人添加到目标通道。
+2. 在 Slack 目标的设置中，选择 **在新问题上提及代理** 下的机器人。要使用未列出的机器人，请输入其 Slack 用户 ID。要停止提及代理，请选择**无**。
+3. （可选）在**给代理的消息**下，输入最多 1,000 个字符的说明。当为空时，提及使用 `Investigate this issue and open a fix if needed.`
+4. 保存目的地。
+
+每个 **Issue Created** 消息的线程中都会提到该代理。如果目的地通知 **修复 PR 就绪**，则该提及会出现在 **修复 PR 就绪** 消息下方，每个问题一次。
+
+该提及包括一个问题标记，`<!-- langsmith-issue {"id":"<issue-id>"} -->`。当代理在其主体中打开带有该标记的拉取请求时，在存储库[connected to Engine](/langsmith/engine-repositories)中，引擎将拉取请求链接到问题。打开拉取请求时，标记必须位于正文中。
+
 ## 创建 Jira 工作项
 
-**Jira** 目标将引擎事件发送到 Jira Automation 传入 Webhook。配置 Jira 规则以将新的引擎问题转化为 Jira 工作项。 LangSmith 发送带有 `X-Automation-Webhook-Token` 标头的 [webhook payload](#webhook-payload-reference)。 Jira 目标使用此令牌进行身份验证，并且没有 HMAC 签名密钥。使用最终的传入 webhook URL。 Jira 交付不遵循重定向，包括同一主机上的重定向。 `3xx` 响应是永久性传送错误，不会重试。这会将令牌和负载保留在配置的端点上。
+**Jira** 目标将引擎事件发送到 Jira Automation 传入 Webhook。配置 Jira 规则以将新的引擎问题转化为 Jira 工作项。 LangSmith 发送带有 `X-Automation-Webhook-Token` 标头的 [webhook payload](#webhook-payload-reference)。 Jira 目标使用此令牌进行身份验证，并且没有 HMAC 签名密钥。使用最终的传入 webhook URL。 Jira 交付不遵循重定向，包括同一主机上的重定向。 `3xx` 响应是永久性传送错误，不会重试。这会将令牌和有效负载保留在配置的端点上。
 
 您需要管理 Jira 自动化规则和规则可在其中创建工作项的项目的权限。 Jira Cloud 在 Atlassian 的基础设施上托管传入的 Webhook。对于 Jira Data Center，请验证您安装的版本的端点是否接受所需的令牌标头。 LangSmith 的部署类型并不能决定您使用 Jira Cloud 还是 Data Center。
 
 要为每个新引擎问题创建一个工作项：
 
-<Steps>
-  <Step title="Configure the incoming webhook in Jira">
-    使用 **传入 webhook** 触发器创建 Jira Automation 规则。如果 Jira 需要保存的规则来生成 URL，请保存它而不先启用它。
+**1.在 Jira 中配置传入的 Webhook**
 
-    选择 **No work items from the webhook**，在旧界面中称为 **No issues from the webhook**。引擎发送自己的事件负载，而不是 Jira 问题密钥。
+使用 **传入 webhook** 触发器创建 Jira Automation 规则。如果 Jira 需要保存的规则来生成 URL，请保存它而不先启用它。
 
-    生成触发器的秘密/令牌。保存前复制 Webhook URL 和令牌。将令牌保留在 URL 之外； LangSmith 在身份验证标头中发送它。
-  </Step><Step title="Add the Jira creation action">
-    将规则限制为预期项目。添加“创建工作项”操作，在旧界面中称为“创建问题”。选择现有项目和问题类型，然后配置 Jira 所需的任何字段。
+选择 **No work items from the webhook**，在旧界面中称为 **No issues from the webhook**。引擎发送自己的事件负载，而不是 Jira 问题密钥。
 
-    对于 Jira Cloud，将 **摘要** 设置为 `{{webhookData.object.name}}`。将**描述**设置为：
+生成触发器的秘密/令牌。保存前复制 Webhook URL 和令牌。将令牌保留在 URL 之外； LangSmith 在身份验证标头中发送它。**2.添加 Jira 创建操作**
 
-    ```text theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-    {{webhookData.object.description}}
+将规则限制为预期项目。添加“创建工作项”操作，在旧界面中称为“创建问题”。选择现有项目和问题类型，并配置 Jira 所需的任何字段。
 
-    Severity: {{webhookData.object.severity}}
-    LangSmith issue: {{webhookData.object.url}}
-    ```
+对于 Jira Cloud，将 **摘要** 设置为 `{{webhookData.object.name}}`。将**描述**设置为：
 
-    Jira Cloud 将信封的 `data` 成员公开为 `webhookData`。使用 `webhookData.object.*` 作为问题字段。 `webhookData.data.object.name` 中额外的 `.data` 解析为空摘要。在使用这些映射之前，请验证已安装的 Jira Data Center 版本中的有效负载处理。
-  </Step>
+```text theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+{{webhookData.object.description}}
 
-  <Step title="Add the Jira destination in LangSmith">
-    在**引擎**页面上，单击**配置引擎**。在“**通知**”下，单击“**添加**”并选择“**Jira**”。输入触发器中的 **Jira Webhook URL** 和 **Jira Webhook 令牌**。
+Severity: {{webhookData.object.severity}}
+LangSmith issue: {{webhookData.object.url}}
+```
 
-    在**通知时间**下，仅为此创建规则选择**创建的问题**。选择 **最低问题严重性**，然后单击 **添加**。在 Jira 中启用规则。
-  </Step>
+Jira Cloud 将信封的 `data` 成员公开为 `webhookData`。使用 `webhookData.object.*` 作为问题字段。 `webhookData.data.object.name` 中额外的 `.data` 解析为空摘要。在使用这些映射之前，请验证已安装的 Jira Data Center 版本中的有效负载处理。
 
-  <Step title="Verify Jira created the work item">
-    在引擎创建与您的严重性过滤器匹配的问题后，检查 Jira 的自动化审核日志。确认规则成功并创建一个包含预期摘要、描述、严重性和 LangSmith 问题链接的工作项。HTTP 成功意味着 Jira 接受了 Webhook，而不是它创建了工作项。规则条件、必填字段、参与者权限和自动化使用限制可能会阻止创建。
-  </Step>
-</Steps>
+**3.在 LangSmith** 中添加 Jira 目的地
+
+在**引擎**页面上，单击**配置引擎**。在“**通知**”下，单击“**添加**”并选择“**Jira**”。输入触发器中的 **Jira Webhook URL** 和 **Jira Webhook 令牌**。
+
+在**通知时间**下，仅为此创建规则选择**创建的问题**。选择 **最低问题严重性**，然后单击 **添加**。在 Jira 中启用规则。
+
+**4.验证 Jira 创建了工作项**在引擎创建与您的严重性过滤器匹配的问题后，检查 Jira 的自动化审核日志。确认规则成功并创建一个具有预期摘要、描述、严重性和 LangSmith 问题链接的工作项。
+
+HTTP 成功意味着 Jira 接受了 Webhook，而不是它创建了工作项。规则条件、必填字段、参与者权限和自动化使用限制可能会阻止创建。
 
 LangSmith 存储 Jira 令牌而不再次显示。要替换它，请输入新令牌。更改 Webhook URL 还需要输入替换 URL 的令牌。如果您丢失了令牌，请在 Jira 中轮换它并更新 LangSmith 目的地。
 
@@ -114,7 +123,7 @@ LangSmith 存储 Jira 令牌而不再次显示。要替换它，请输入新令�
 
 ## 发送到网络钩子
 
-将引擎事件转发到您自己的事件管理、寻呼或聊天工具。添加目标并选择 **Webhook** 选项卡。输入 URL 和（可选）[custom headers](#custom-headers)。每次交货都是[signed](#signing-secret)，因此您可以验证其真实性。
+将引擎事件转发到您自己的事件管理、寻呼或聊天工具。添加目标并选择 **Webhook** 选项卡。输入 URL 和（可选）[custom headers](#custom-headers)。每份交货都是[signed](#signing-secret)，因此您可以验证其真实性。
 
 ### 送货
 
@@ -122,15 +131,15 @@ LangSmith 将带有 JSON 正文的 `POST` 请求发送到您的 Webhook URL。�
 | - | - |
 |方法| `POST` |
 |身体| JSON，下面[common envelope](#event-envelope) |
-|方案|接受`http://`和`https://`。 `https://`强烈推荐|
+|方案|接受`http://` 和`https://`。 `https://`强烈推荐|
 |签名| `X-LangSmith-Signature` 标头，使用目的地的签名密钥进行签名 |
-|超时 |每次尝试 20 秒 |
+|超时|每次尝试 20 秒 |
 |尝试|对于传输错误、HTTP `408`、`425`、`429` 和任何 HTTP `5xx`，最多进行 4 次尝试（1 次初始加 3 次指数退避重试）。其他 `4xx` 响应被视为永久响应，不会重试 |
 |回应 |成功仅根据状态代码确定。响应主体被忽略。 |
 
-<Note>
-  重试会传递字节相同的有效负载，包括相同的`id`。在 `id` 上进行重复数据删除，因此重试传送不会产生重复的下游影响。
-</Note>
+> [!注意]
+>
+> 重试会传递字节相同的有效负载，包括相同的`id`。在 `id` 上进行重复数据删除，因此重试传送不会产生重复的下游影响。
 
 ### 自定义标头
 
@@ -144,63 +153,61 @@ LangSmith 将带有 JSON 正文的 `POST` 请求发送到您的 Webhook URL。�
 sha256=<hex-encoded HMAC-SHA256 digest>
 ```
 
-在解析或作用于有效负载之前验证签名。 HMAC 输入是确切的原始请求正文字节，HMAC 密钥是目标的签名秘密。在验证之前不要解析和重新序列化 JSON 正文。
+在解析或作用于有效负载之前验证签名。 HMAC 输入是确切的原始请求正文字节，HMAC 密钥是目标的签名秘密。在验证之前不要解析和重新序列化 JSON 主体。
 
-<CodeGroup>
-  ```python Python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  import hashlib
-  import hmac
-  from typing import Optional
+```python Python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+import hashlib
+import hmac
+from typing import Optional
 
 
-  def verify_langsmith_signature(
-      *,
-      body: bytes,
-      signing_secret: str,
-      signature_header: Optional[str],
-  ) -> bool:
-      if not signature_header or not signature_header.startswith("sha256="):
-          return False
+def verify_langsmith_signature(
+    *,
+    body: bytes,
+    signing_secret: str,
+    signature_header: Optional[str],
+) -> bool:
+    if not signature_header or not signature_header.startswith("sha256="):
+        return False
 
-      expected = "sha256=" + hmac.new(
-          signing_secret.encode("utf-8"),
-          body,
-          hashlib.sha256,
-      ).hexdigest()
+    expected = "sha256=" + hmac.new(
+        signing_secret.encode("utf-8"),
+        body,
+        hashlib.sha256,
+    ).hexdigest()
 
-      return hmac.compare_digest(expected, signature_header)
-  ```
+    return hmac.compare_digest(expected, signature_header)
+```
 
-  ```typescript TypeScript theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  import { createHmac, timingSafeEqual } from "node:crypto";
+```typescript TypeScript theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+import { createHmac, timingSafeEqual } from "node:crypto";
 
-  export function verifyLangSmithSignature({
-    body,
-    signingSecret,
-    signatureHeader,
-  }: {
-    body: Buffer;
-    signingSecret: string;
-    signatureHeader: string | undefined;
-  }) {
-    if (!signatureHeader?.startsWith("sha256=")) {
-      return false;
-    }
-
-    const expected = `sha256=${createHmac("sha256", signingSecret)
-      .update(body)
-      .digest("hex")}`;
-
-    const expectedBytes = Buffer.from(expected);
-    const actualBytes = Buffer.from(signatureHeader);
-
-    return (
-      expectedBytes.length === actualBytes.length &&
-      timingSafeEqual(expectedBytes, actualBytes)
-    );
+export function verifyLangSmithSignature({
+  body,
+  signingSecret,
+  signatureHeader,
+}: {
+  body: Buffer;
+  signingSecret: string;
+  signatureHeader: string | undefined;
+}) {
+  if (!signatureHeader?.startsWith("sha256=")) {
+    return false;
   }
-  ```
-</CodeGroup>
+
+  const expected = `sha256=${createHmac("sha256", signingSecret)
+    .update(body)
+    .digest("hex")}`;
+
+  const expectedBytes = Buffer.from(expected);
+  const actualBytes = Buffer.from(signatureHeader);
+
+  return (
+    expectedBytes.length === actualBytes.length &&
+    timingSafeEqual(expectedBytes, actualBytes)
+  );
+}
+```
 
 ### 滚动签名秘密
 
@@ -221,7 +228,7 @@ curl -X POST https://your-endpoint.example.com/webhook \
   -d @sample-issue-created.json
 ```
 
-使用 [⟦T56⟧](#issue-created) 中的示例正文作为 `sample-issue-created.json`。验证：* 自定义 `Authorization` 标头到达并与您在目标上配置的机密相匹配。
+使用 [⟦T58⟧](#issue-created) 中的示例正文作为 `sample-issue-created.json`。验证：* 自定义 `Authorization` 标头到达并与您在目标上配置的机密相匹配。
 * 处理程序保留由其 `id` 键入的事件，以便重试被重复数据删除。
 * 处理程序在开始缓慢的下游工作之前返回`2xx`。
 
@@ -232,7 +239,7 @@ curl -X POST https://your-endpoint.example.com/webhook \
 * 您还可以在目标上设置自定义标头，例如`Authorization: Bearer …`，以便在端点进行路由或附加身份验证。
 * 对事件 `id` 进行重复数据删除，以便重试传送不会导致重复通知。
 
-### 最佳实践* **快速确认。** 一旦您坚持了该事件，请立即使用 `2xx` 进行响应。将缓慢的工作（扇出、分页、下游 API 调用）移至队列中，以便您的处理程序保持在 20 秒超时范围内。
+### 最佳实践* **快速确认。** 一旦您坚持了该事件，请立即回复 `2xx`。将缓慢的工作（扇出、分页、下游 API 调用）移至队列中，以便您的处理程序保持在 20 秒超时范围内。
 * **容忍未知事件类型。** 忽略处理程序无法识别的 `type` 值。可能会添加新的事件类型，恕不另行通知。
 * **容忍新字段。** 使用宽松的模式解析有效负载。新字段可能会添加到现有事件类型中，恕不另行通知。
 
@@ -244,17 +251,17 @@ Webhook 和 Jira 目标接收以下 JSON 有效负载。 Slack 目的地则不�
 
 传递到端点的每个事件都使用相同的外部 JSON 形状。
 
-|领域 |类型 |描述 |
+|领域|类型 |描述 |
 | - | - | - |
 | `id` | UUID |本次交付的唯一标识符。重试后保持稳定。用它来删除重复数据。 |
-| `type` |字符串|事件类型。 [⟦T71⟧](#issue-created)、[⟦T72⟧](#issue-trace-added) 或 [⟦T73⟧](#issue-agent_run-failed) 之一。 |
+| `type` |字符串|事件类型。 [⟦T73⟧](#issue-created)、[⟦T74⟧](#issue-trace-added) 或 [⟦T75⟧](#issue-agent_run-failed) 之一。 |
 | `created` |整数 |事件排队时的 Unix 秒 (UTC)。 |
 | `request_id` | UUID |由同一上游操作触发的每个事件共享。参见[Batch coalescing](#batch-coalescing)。 |
-| `data` |对象|事件有效负载。始终包含 `data.object`。仅在 [⟦T79⟧](#issue-trace-added) 事件中包含 [⟦T78⟧](#data-trace)。 |
+| `data` |对象|事件有效负载。始终包含 `data.object`。仅在 [⟦T81⟧](#issue-trace-added) 事件中包含 [⟦T80⟧](#data-trace)。 |
 
-### 问题`data.object`对于 [⟦T81⟧](#issue-created) 和 [⟦T82⟧](#issue-trace-added)，`data.object` 是问题的快照。将其视为事件生成时问题的权威状态。
+### 问题`data.object`对于 [⟦T83⟧](#issue-created) 和 [⟦T84⟧](#issue-trace-added)，`data.object` 是问题的快照。将其视为事件生成时问题的权威状态。
 
-|领域 |类型 |描述 |
+|领域|类型 |描述 |
 | - | - | - |
 | `id` | UUID |问题 ID。 |
 | `name` |字符串|问题的简短标题。 |
@@ -268,7 +275,7 @@ Webhook 和 Jira 目标接收以下 JSON 有效负载。 Slack 目的地则不�
 
 ### 运行失败`data.object`
 
-对于 [⟦T96⟧](#issue-agent_run-failed)，`data.object` 描述失败的引擎运行。|领域 |类型 |描述 |
+对于 [⟦T98⟧](#issue-agent_run-failed)，`data.object` 描述失败的引擎运行。|领域|类型 |描述 |
 | - | - | - |
 | `tenant_id` | UUID |运行所属的工作空间。 |
 | `tenant_name` |字符串|工作区显示名称。 |
@@ -283,16 +290,16 @@ Webhook 和 Jira 目标接收以下 JSON 有效负载。 Slack 目的地则不�
 
 ### `data.trace`
 
-`data.trace` 仅包含在 [⟦T110⟧](#issue-trace-added) 活动中。
+`data.trace` 仅包含在 [⟦T112⟧](#issue-trace-added) 活动中。
 
-|领域 |类型 |描述 |
+|领域|类型 |描述 |
 | - | - | - |
 | `run_id` | UUID |与问题关联的运行的 ID。 |
 | `trace_id` | UUID |包含运行的跟踪的 ID。 |
 | `start_time` |字符串|运行开始时的 RFC 3339 时间戳。 |
 | `comment` |字符串\|空 |链接跟踪时记录的可选注释。空时省略。 |
 
-### 批量合并单个上游操作可以生成多个 Webhook 事件。当引擎打开一个新问题并向其附加五个跟踪时，您会收到一个 [⟦T115⟧](#issue-created) 事件和五个 [⟦T116⟧](#issue-trace-added) 事件，所有事件共享相同的 `request_id`。使用 `request_id` 将它们分组为单个下游通知。
+### 批量合并单个上游操作可以生成多个 Webhook 事件。当引擎打开一个新问题并向其附加五个跟踪时，您会收到一个 [⟦T117⟧](#issue-created) 事件和五个 [⟦T118⟧](#issue-trace-added) 事件，所有事件共享相同的 `request_id`。使用 `request_id` 将它们分组为单个下游通知。
 
 ### `issue.created`
 
@@ -381,12 +388,6 @@ Webhook 和 Jira 目标接收以下 JSON 有效负载。 Slack 目的地则不�
 
 ***
 
-<div>
-  <Callout icon="terminal-2">
-    [Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
-  </Callout>
+[Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
 
-  <Callout icon="edit">
-    [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/engine-notifications.mdx) 或 [file an issue](https://github.com/langchain-ai/docs/issues/new/choose)。
-  </Callout>
-</div>
+[Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/engine-notifications.mdx) 或 [file an issue](https://github.com/langchain-ai/docs/issues/new/choose)。

@@ -8,9 +8,9 @@ An *agent* is an AI system that completes tasks end to end using tools, skills, 
 
 Every trace carries its agent and one of that agent's environments, so what produced a trace and where it ran are recorded as it arrives. LangSmith can then act on that context: an alert watches production and stays quiet about local runs, each environment gets its own prebuilt dashboard, and an [Insights](/langsmith/insights) report covers the traffic of the environment you run it on.
 
-<Note>
-  Agent-based workspaces are available on [LangSmith Cloud](/langsmith/cloud). They are not available on [self-hosted](/langsmith/self-hosted) LangSmith. To check whether your workspace is agent-based, look at the control at the top left. In an agent-based workspace, it is a workspace switcher that names your workspace. In a [project-based](/langsmith/observability-concepts#tracing-projects) workspace, it shows the LangSmith logo.
-</Note>
+> [!NOTE]
+>
+> Agent-based workspaces are available on [LangSmith Cloud](/langsmith/cloud). They are not available on [self-hosted](/langsmith/self-hosted) LangSmith. To check whether your workspace is agent-based, look at the control at the top left. In an agent-based workspace, it is a workspace switcher that names your workspace. In a [project-based](/langsmith/observability-concepts#tracing-projects) workspace, it shows the LangSmith logo.
 
 ```mermaid actions={false} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 %%{init: {"theme":"base","themeVariables":{"fontFamily":"Inter, system-ui, sans-serif","lineColor":"#40668D","primaryColor":"#E5F4FF","primaryTextColor":"#030710","primaryBorderColor":"#006DDD","clusterBkg":"transparent"}}}%%
@@ -50,32 +50,24 @@ The identifier is also what the browser address bar carries, so you can read it 
 
 ## Next steps
 
-<CardGroup>
-  <Card title="Environments" href="/langsmith/agent-environments" icon="stack">
-    The four environments an agent's traces divide into, and how to switch between them.
-  </Card>
+> **[Environments](/langsmith/agent-environments)**
+>
+> The four environments an agent's traces divide into, and how to switch between them.
 
-  <Card title="Navigate agents" href="/langsmith/navigate-agents" icon="compass">
-    The agent switcher, the agent list, and the agent Overview.
-  </Card>
+> **[Navigate agents](/langsmith/navigate-agents)**
+>
+> The agent switcher, the agent list, and the agent Overview.
 
-  <Card title="Log traces to an agent" href="/langsmith/log-traces-to-agent" icon="target">
-    How agent addressing sends traces to an agent and an environment, and why it cannot be combined with project addressing.
-  </Card>
+> **[Log traces to an agent](/langsmith/log-traces-to-agent)**
+>
+> How agent addressing sends traces to an agent and an environment, and why it cannot be combined with project addressing.
 
-  <Card title="Create an agent" href="/langsmith/create-an-agent" icon="plus">
-    The four ways to create an agent, what each route decides about it, and the rules an identifier must follow.
-  </Card>
-</CardGroup>
+> **[Create an agent](/langsmith/create-an-agent)**
+>
+> The four ways to create an agent, what each route decides about it, and the rules an identifier must follow.
 
 ***
 
-<div>
-  <Callout icon="terminal-2">
-    [Connect these docs](/use-these-docs) to your agent of choice via MCP for real-time answers.
-  </Callout>
+[Connect these docs](/use-these-docs) to your agent of choice via MCP for real-time answers.
 
-  <Callout icon="edit">
-    [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/agents.mdx) or [file an issue](https://github.com/langchain-ai/docs/issues/new/choose).
-  </Callout>
-</div>
+[Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/agents.mdx) or [file an issue](https://github.com/langchain-ai/docs/issues/new/choose).

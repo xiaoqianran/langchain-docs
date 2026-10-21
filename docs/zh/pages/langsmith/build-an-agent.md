@@ -2,21 +2,21 @@
 
 <!-- langchain-docs: Build an agent in the UI | https://docs.langchain.com/langsmith/build-an-agent -->
 
-# 在UI中构建一个代理
+# Build an agent in the UI
 
 “构建”选项卡如何从表单配置代理、该表单的每个部分设置的内容以及新代理的跟踪记录的位置。
 
-**构建**选项卡在LangSmith而不是代码中创建代理。您填写配置表单，提交时LangSmith会从中创建一个[no-code agent](/langsmith/fleet)。在您创建之前，什么都不会被创建。
+**构建**选项卡在LangSmith而不是代码中创建代理。您填写配置表单，提交时LangSmith会从中创建一个[no-code agent](/langsmith/fleet)。 Nothing is created until you do.
 
 当您需要一个没有本地项目或部署的工作代理时，请使用它。它生成的所有内容都是 [agent](/langsmith/agents) ，就像其他任何东西一样，因此它的跟踪、仪表板和评估器的行为与您自己检测的行为相同。
 
-<Note>
-  [LangSmith Cloud](/langsmith/cloud) 上提供基于代理的工作区。它们在 [self-hosted](/langsmith/self-hosted) LangSmith 上不可用。要检查您的工作区是否基于代理，请查看左上角的控件。在基于代理的工作区中，它是一个为您的工作区命名的工作区切换器。在[project-based](/langsmith/observability-concepts#tracing-projects)工作区中，它显示LangSmith徽标。
-</Note>
+> [!注意]
+>
+> [LangSmith Cloud](/langsmith/cloud) 上提供基于代理的工作区。 They are not available on [self-hosted](/langsmith/self-hosted) LangSmith.要检查您的工作区是否基于代理，请查看左上角的控件。在基于代理的工作区中，它是一个为您的工作区命名的工作区切换器。在[project-based](/langsmith/observability-concepts#tracing-projects)工作区中，它显示LangSmith徽标。
 
-<Note>
-  在这里创建代理需要 [computer use](/langsmith/fleet/computer-use)，它包含在 Plus 和 Enterprise 计划中。如果没有它，表单仍然会打开，并且会出现一个横幅，显示代理创建不可用。
-</Note>
+> [!注意]
+>
+> 在这里创建代理需要[computer use](/langsmith/fleet/computer-use)，它包含在 Plus 和 Enterprise 计划中。如果没有它，表单仍然会打开，并且会出现一个横幅，显示代理创建不可用。
 
 **构建**选项卡仅出现在基于代理的工作区中。要从您自己的计算机上的文件构建代理，请参阅[Managed Deep Agents](/langsmith/python/managed-deep-agents-overview)。## 创建代理
 
@@ -26,7 +26,7 @@
 2. 填写[configuration sections](#configure-the-agent)。表单标题下有一行内容：**在单击“创建代理”之前不会创建任何内容。**
 3. 单击**创建代理**。
 
-LangSmith 创建代理，然后完成其余设置，例如连接帐户和注册时间表。一个对话框报告登陆的内容并提供**转到 Studio** 来测试代理。
+LangSmith 创建代理，然后完成其余的设置，例如连接帐户和注册时间表。一个对话框报告登陆的内容并提供**转到 Studio** 来测试代理。
 
 **取消** 离开而不创建任何内容并返回到代理列表。
 
@@ -39,7 +39,7 @@ LangSmith 创建代理，然后完成其余设置，例如连接帐户和注册�
 * **基础知识**：代理的**名称**、代理功能的**描述**以及支持其响应的**模型**。该名称是必需的，它是您在代理切换器中看到的标签。创建代理时需要该模型。
 * **说明**：**代理说明**，涵盖代理的角色、职责以及应如何工作。 LangSmith 完全按照输入保存。
 * **工具和帐户**：代理用于其工具的连接，通过 **添加连接** 添加。在新代理上，创建帐户时会授予帐户，并且添加工作区连接会立即启动其授权流程。有关代理使用的凭据，请参阅[Agent identity](/langsmith/fleet/agent-identity)。
-* **技能和内存**：代理为特定任务拉入的[skills](/langsmith/fleet/skills)，以及它在运行之间保留的内存文件。 **更新内存和指令**允许代理修改自己的配置，自动应用或保留以供您批准。* **渠道**：代理是否在 Slack 中工作。在新代理上，您可以在创建代理后授权 Slack。在现有代理上，连接或删除 Slack 会立即生效。如果 Slack 设置在工作区中不可用，则该部分如此说明。
+* **技能和内存**：代理为特定任务拉入的[skills](/langsmith/fleet/skills)，以及它在运行之间保留的内存文件。 **更新内存和指令**让代理可以修改自己的配置，自动应用或保留以供您批准。* **渠道**：代理是否在 Slack 中工作。在新代理上，您可以在创建代理后授权 Slack。在现有代理上，连接或删除 Slack 会立即生效。如果 Slack 设置在工作区中不可用，则该部分如此说明。
 * **时间表**：代理自行制定的[scheduled runs](/langsmith/fleet/schedules)。
 
 代理存在后，标题下的状态行将显示 **未保存的更改** 或 **所有更改已保存**。
@@ -65,12 +65,6 @@ LangSmith 创建代理，然后完成其余设置，例如连接帐户和注册�
 
 ***
 
-<div>
-  <Callout icon="terminal-2">
-    [Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
-  </Callout>
+[Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
 
-  <Callout icon="edit">
-    [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/build-an-agent.mdx) 或 [file an issue](https://github.com/langchain-ai/docs/issues/new/choose)。
-  </Callout>
-</div>
+[Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/build-an-agent.mdx) 或 [file an issue](https://github.com/langchain-ai/docs/issues/new/choose)。

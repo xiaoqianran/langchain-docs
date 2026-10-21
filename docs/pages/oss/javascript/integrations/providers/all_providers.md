@@ -6,656 +6,648 @@ Browse the complete collection of integrations available for JavaScript/TypeScri
 
 ## Top providers
 
-<Columns>
-  <Card title="Anthropic" href="/oss/javascript/integrations/providers/anthropic" icon="https://mintcdn.com/langchain-5e9cc07a/y4fKEo7ANyWBQMjp/images/providers/anthropic-icon.svg?fit=max&auto=format&n=y4fKEo7ANyWBQMjp&q=85&s=9212db764598a2d3f02f471b5436ae9e">
-    Integrate with Anthropic's Claude models for advanced reasoning and conversation.
-  </Card>
+> **[Anthropic](/oss/javascript/integrations/providers/anthropic)**
+>
+> Integrate with Anthropic's Claude models for advanced reasoning and conversation.
 
-  <Card title="AWS" href="/oss/javascript/integrations/providers/aws" icon="brand-aws">
-    Access AWS services and foundation models through comprehensive integrations.
-  </Card>
+> **[AWS](/oss/javascript/integrations/providers/aws)**
+>
+> Access AWS services and foundation models through comprehensive integrations.
 
-  <Card title="Google" href="/oss/javascript/integrations/providers/google" icon="brand-google">
-    Integrate with Google's AI services including Gemini and Gemini Enterprise Agent Platform.
-  </Card>
+> **[Google](/oss/javascript/integrations/providers/google)**
+>
+> Integrate with Google's AI services including Gemini and Gemini Enterprise Agent Platform.
 
-  <Card title="Microsoft" href="/oss/javascript/integrations/providers/microsoft" icon="brand-windows">
-    Connect to Microsoft Azure services and AI platforms.
-  </Card>
+> **[Microsoft](/oss/javascript/integrations/providers/microsoft)**
+>
+> Connect to Microsoft Azure services and AI platforms.
 
-  <Card title="OpenAI" href="/oss/javascript/integrations/providers/openai" icon="brand-openai">
-    Build with GPT models and OpenAI's comprehensive AI platform.
-  </Card>
-</Columns>
+> **[OpenAI](/oss/javascript/integrations/providers/openai)**
+>
+> Build with GPT models and OpenAI's comprehensive AI platform.
 
 ## LangGraph integrations
 
 Connect LangGraph agents to front ends and observability platforms.
 
-<Columns>
-  <Card title="AG-UI Protocol" href="https://docs.ag-ui.com/" icon="link">
-    Open event-based protocol for connecting LangGraph agents to any frontend.
-  </Card>
+> **[AG-UI Protocol](https://docs.ag-ui.com/)**
+>
+> Open event-based protocol for connecting LangGraph agents to any frontend.
 
-  <Card title="CopilotKit" href="/oss/javascript/langchain/frontend/integrations/copilotkit" icon="react">
-    React stack and Python middleware for Deep Agents, LangGraph agents, FastAPI, and generative UI.
-  </Card>
+> **[CopilotKit](/oss/javascript/langchain/frontend/integrations/copilotkit)**
+>
+> React stack and Python middleware for Deep Agents, LangGraph agents, FastAPI, and generative UI.
 
-  <Card title="OpenUI" href="/oss/javascript/langchain/frontend/integrations/openui" icon="react">
-    Render adaptive, agent-generated interfaces from LangGraph and Deep Agents using OpenUI.
-  </Card>
+> **[OpenUI](/oss/javascript/langchain/frontend/integrations/openui)**
+>
+> Render adaptive, agent-generated interfaces from LangGraph and Deep Agents using OpenUI.
 
-  <Card title="The Context Company" href="https://docs.thecontextcompany.com/frameworks/langchain-langgraph" icon="link">
-    Observability and customer analytics for production AI agents.
-  </Card>
-</Columns>
+> **[The Context Company](https://docs.thecontextcompany.com/frameworks/langchain-langgraph)**
+>
+> Observability and customer analytics for production AI agents.
 
 ## Classification models
 
-<Columns>
-  <Card title="TypeSafe" href="/oss/javascript/integrations/providers/typesafe" icon="route">
-    Classify state into typed decisions and calibrated probabilities with Jev.
-  </Card>
-</Columns>
+> **[TypeSafe](/oss/javascript/integrations/providers/typesafe)**
+>
+> Classify state into typed decisions and calibrated probabilities with Jev.
 
 ## Chat models
 
-<Columns>
-  <Card title="Anthropic" href="/oss/javascript/integrations/chat/anthropic" icon="https://mintcdn.com/langchain-5e9cc07a/y4fKEo7ANyWBQMjp/images/providers/anthropic-icon.svg?fit=max&auto=format&n=y4fKEo7ANyWBQMjp&q=85&s=9212db764598a2d3f02f471b5436ae9e">
-    Claude models for advanced conversational AI and reasoning.
-  </Card>
+> **[Anthropic](/oss/javascript/integrations/chat/anthropic)**
+>
+> Claude models for advanced conversational AI and reasoning.
 
-  <Card title="Azure OpenAI" href="/oss/javascript/integrations/chat/azure" icon="brand-windows">
-    OpenAI models through Microsoft Azure's enterprise platform.
-  </Card>
+> **[Azure OpenAI](/oss/javascript/integrations/chat/azure)**
+>
+> OpenAI models through Microsoft Azure's enterprise platform.
 
-  <Card title="Baidu Qianfan" href="/oss/javascript/integrations/chat/baidu_qianfan">
-    Baidu's Qianfan platform for Chinese language AI models.
-  </Card>
+> **[Baidu Qianfan](/oss/javascript/integrations/chat/baidu_qianfan)**
+>
+> Baidu's Qianfan platform for Chinese language AI models.
 
-  <Card title="Bedrock Converse" href="/oss/javascript/integrations/chat/bedrock_converse" icon="brand-aws">
-    Unified Bedrock Converse API for multiple foundation models.
-  </Card>
+> **[Bedrock Converse](/oss/javascript/integrations/chat/bedrock_converse)**
+>
+> Unified Bedrock Converse API for multiple foundation models.
 
-  <Card title="Cerebras" href="/oss/javascript/integrations/chat/cerebras">
-    Ultra-fast inference with Cerebras Systems' AI processors.
-  </Card>
+> **[Cerebras](/oss/javascript/integrations/chat/cerebras)**
+>
+> Ultra-fast inference with Cerebras Systems' AI processors.
 
-  <Card title="Ceki" href="https://ceki.me" icon="link">
-    Marketplace of real residential Chrome sessions for AI agents.
-  </Card>
+> **[Ceki](https://ceki.me)**
+>
+> Marketplace of real residential Chrome sessions for AI agents.
 
-  <Card title="Cloudflare Workers AI" href="/oss/javascript/integrations/chat/cloudflare_workersai">
-    Run AI models on Cloudflare's edge computing platform.
-  </Card>
+> **[ChatWebLLM](https://github.com/ykoh42/web-llm-adapters/blob/main/packages/langchain-web-llm/README.md)**
+>
+> Run WebLLM models locally with WebGPU through LangChain, LangGraph, and Deep Agents.
 
-  <Card title="Cohere" href="/oss/javascript/integrations/chat/cohere">
-    Cohere's language models for text generation and understanding.
-  </Card>
+> **[Cloudflare Workers AI](/oss/javascript/integrations/chat/cloudflare_workersai)**
+>
+> Run AI models on Cloudflare's edge computing platform.
 
-  <Card title="DeepSeek" href="/oss/javascript/integrations/chat/deepseek">
-    DeepSeek's advanced reasoning and coding models.
-  </Card>
+> **[Cohere](/oss/javascript/integrations/chat/cohere)**
+>
+> Cohere's language models for text generation and understanding.
 
-  <Card title="Fake LLM" href="/oss/javascript/integrations/chat/fake">
-    Mock chat model for testing and development purposes.
-  </Card>
+> **[DeepSeek](/oss/javascript/integrations/chat/deepseek)**
+>
+> DeepSeek's advanced reasoning and coding models.
 
-  <Card title="FuturMix" href="https://futurmix.ai/" icon="link">
-    Unified AI gateway for 22+ models with OpenAI-compatible API.
-  </Card>
+> **[Fake LLM](/oss/javascript/integrations/chat/fake)**
+>
+> Mock chat model for testing and development purposes.
 
-  <Card title="Google Gemini" href="/oss/javascript/integrations/chat/google" icon="brand-google">
-    Google's Gemini models via AI Studio and Gemini Enterprise Agent Platform.
-  </Card>
+> **[FuturMix](https://futurmix.ai/)**
+>
+> Unified AI gateway for 22+ models with OpenAI-compatible API.
 
-  <Card title="Groq" href="/oss/javascript/integrations/chat/groq" icon="https://mintcdn.com/langchain-5e9cc07a/ZPKed1feKJ8F6LVo/images/providers/groq-icon.svg?fit=max&auto=format&n=ZPKed1feKJ8F6LVo&q=85&s=3bb8cb006c20e1eb8cdbd51c8cdbb3ca">
-    Ultra-fast inference with Groq's specialized hardware.
-  </Card>
+> **[Google Gemini](/oss/javascript/integrations/chat/google)**
+>
+> Google's Gemini models via AI Studio and Gemini Enterprise Agent Platform.
 
-  <Card title="Interfaze" href="https://interfaze.ai/docs" icon="link">
-    Multimodal chat model with structured output over an OpenAI-compatible API.
-  </Card>
+> **[Groq](/oss/javascript/integrations/chat/groq)**
+>
+> Ultra-fast inference with Groq's specialized hardware.
 
-  <Card title="Mistral" href="/oss/javascript/integrations/chat/mistral" icon="https://mintcdn.com/langchain-5e9cc07a/z7oQGiHwXv52HwOy/images/providers/mistral-icon.svg?fit=max&auto=format&n=z7oQGiHwXv52HwOy&q=85&s=d8a5f193f697b47117d412b035adbe25">
-    Mistral's efficient and powerful language models.
-  </Card>
+> **[Interfaze](https://interfaze.ai/docs)**
+>
+> Multimodal chat model with structured output over an OpenAI-compatible API.
 
-  <Card title="Ollama" href="/oss/javascript/integrations/chat/ollama">
-    Run local models with Ollama's lightweight inference engine.
-  </Card>
+> **[Mistral](/oss/javascript/integrations/chat/mistral)**
+>
+> Mistral's efficient and powerful language models.
 
-  <Card title="OpenRouter" href="/oss/javascript/integrations/chat/openrouter" icon="route">
-    Access models from multiple providers through OpenRouter's unified API.
-  </Card>
+> **[Ollama](/oss/javascript/integrations/chat/ollama)**
+>
+> Run local models with Ollama's lightweight inference engine.
 
-  <Card title="OpenAI" href="/oss/javascript/integrations/chat/openai" icon="brand-openai">
-    GPT models and OpenAI's comprehensive chat capabilities.
-  </Card>
+> **[OpenRouter](/oss/javascript/integrations/chat/openrouter)**
+>
+> Access models from multiple providers through OpenRouter's unified API.
 
-  <Card title="RecallToolkit" href="https://recallmem.dev/guides/langchain" icon="link">
-    Tools for agents to search Recall memory, ask it a question about the user, and save a fact.
-  </Card>
+> **[OpenAI](/oss/javascript/integrations/chat/openai)**
+>
+> GPT models and OpenAI's comprehensive chat capabilities.
 
-  <Card title="SCX" href="https://scx.ai/">
-    Open-weight chat and multimodal models with image and video input over SCX's OpenAI-compatible API.
-  </Card>
+> **[RecallToolkit](https://recallmem.dev/guides/langchain)**
+>
+> Tools for agents to search Recall memory, ask it a question about the user, and save a fact.
 
-  <Card title="Tuning Engines" href="https://www.tuningengines.com/" icon="link">
-    Governed OpenAI-compatible endpoint for model access, policy checks, and usage accounting.
-  </Card>
+> **[SCX](https://scx.ai/)**
+>
+> Open-weight chat and multimodal models with image and video input over SCX's OpenAI-compatible API.
 
-  <Card title="xAI" href="/oss/javascript/integrations/chat/xai">
-    xAI's Grok models for conversational AI.
-  </Card>
+> **[Tuning Engines](https://www.tuningengines.com/)**
+>
+> Governed OpenAI-compatible endpoint for model access, policy checks, and usage accounting.
 
-  <Card title="Yandex" href="/oss/javascript/integrations/chat/yandex">
-    Yandex's AI models and language processing services.
-  </Card>
-</Columns>
+> **[xAI](/oss/javascript/integrations/chat/xai)**
+>
+> xAI's Grok models for conversational AI.
+
+> **[Yandex](/oss/javascript/integrations/chat/yandex)**
+>
+> Yandex's AI models and language processing services.
 
 ## LLMs
 
-<Columns>
-  <Card title="Azure OpenAI" href="/oss/javascript/integrations/llms/azure" icon="brand-windows">
-    OpenAI models through Microsoft Azure's enterprise platform.
-  </Card>
+> **[Azure OpenAI](/oss/javascript/integrations/llms/azure)**
+>
+> OpenAI models through Microsoft Azure's enterprise platform.
 
-  <Card title="Cloudflare Workers AI" href="/oss/javascript/integrations/llms/cloudflare_workersai">
-    AI models on Cloudflare's edge computing platform.
-  </Card>
+> **[Cloudflare Workers AI](/oss/javascript/integrations/llms/cloudflare_workersai)**
+>
+> AI models on Cloudflare's edge computing platform.
 
-  <Card title="Cohere" href="/oss/javascript/integrations/llms/cohere">
-    Cohere's language models for various NLP tasks.
-  </Card>
+> **[Cohere](/oss/javascript/integrations/llms/cohere)**
+>
+> Cohere's language models for various NLP tasks.
 
-  <Card title="Gemini Enterprise Agent Platform" href="/oss/javascript/integrations/llms/google_vertex_ai" icon="brand-google">
-    Google Cloud's enterprise AI and ML platform.
-  </Card>
+> **[Gemini Enterprise Agent Platform](/oss/javascript/integrations/llms/google_vertex_ai)**
+>
+> Google Cloud's enterprise AI and ML platform.
 
-  <Card title="JigsawStack" href="/oss/javascript/integrations/llms/jigsawstack">
-    JigsawStack's AI infrastructure and model services.
-  </Card>
+> **[JigsawStack](/oss/javascript/integrations/llms/jigsawstack)**
+>
+> JigsawStack's AI infrastructure and model services.
 
-  <Card title="Mistral" href="/oss/javascript/integrations/llms/mistral" icon="https://mintcdn.com/langchain-5e9cc07a/z7oQGiHwXv52HwOy/images/providers/mistral-icon.svg?fit=max&auto=format&n=z7oQGiHwXv52HwOy&q=85&s=d8a5f193f697b47117d412b035adbe25">
-    Mistral's open-source and commercial language models.
-  </Card>
+> **[Mistral](/oss/javascript/integrations/llms/mistral)**
+>
+> Mistral's open-source and commercial language models.
 
-  <Card title="Ollama" href="/oss/javascript/integrations/llms/ollama">
-    Local model serving with Ollama's simple interface.
-  </Card>
+> **[Ollama](/oss/javascript/integrations/llms/ollama)**
+>
+> Local model serving with Ollama's simple interface.
 
-  <Card title="OpenAI" href="/oss/javascript/integrations/llms/openai" icon="brand-openai">
-    GPT models and OpenAI's language model APIs.
-  </Card>
+> **[OpenAI](/oss/javascript/integrations/llms/openai)**
+>
+> GPT models and OpenAI's language model APIs.
 
-  <Card title="Yandex" href="/oss/javascript/integrations/llms/yandex">
-    Yandex's language models and AI services.
-  </Card>
-</Columns>
+> **[Yandex](/oss/javascript/integrations/llms/yandex)**
+>
+> Yandex's language models and AI services.
 
 ## Text embedding models
 
-<Columns>
-  <Card title="Azure OpenAI" href="/oss/javascript/integrations/embeddings/azure_openai" icon="brand-windows">
-    OpenAI embeddings through Microsoft Azure platform.
-  </Card>
+> **[Azure OpenAI](/oss/javascript/integrations/embeddings/azure_openai)**
+>
+> OpenAI embeddings through Microsoft Azure platform.
 
-  <Card title="Baidu Qianfan" href="/oss/javascript/integrations/embeddings/baidu_qianfan">
-    Baidu's text embedding models for Chinese content.
-  </Card>
+> **[Baidu Qianfan](/oss/javascript/integrations/embeddings/baidu_qianfan)**
+>
+> Baidu's text embedding models for Chinese content.
 
-  <Card title="Amazon Bedrock" href="/oss/javascript/integrations/embeddings/bedrock" icon="brand-aws">
-    Foundation model embeddings through Amazon Bedrock.
-  </Card>
+> **[Amazon Bedrock](/oss/javascript/integrations/embeddings/bedrock)**
+>
+> Foundation model embeddings through Amazon Bedrock.
 
-  <Card title="Cloudflare AI" href="/oss/javascript/integrations/embeddings/cloudflare_ai">
-    Text embeddings on Cloudflare's edge AI platform.
-  </Card>
+> **[Cloudflare AI](/oss/javascript/integrations/embeddings/cloudflare_ai)**
+>
+> Text embeddings on Cloudflare's edge AI platform.
 
-  <Card title="Cohere" href="/oss/javascript/integrations/embeddings/cohere">
-    Cohere's multilingual embedding models.
-  </Card>
+> **[Cohere](/oss/javascript/integrations/embeddings/cohere)**
+>
+> Cohere's multilingual embedding models.
 
-  <Card title="Google Generative AI" href="/oss/javascript/integrations/embeddings/google_generative_ai" icon="brand-google">
-    Google's embedding models for text representation.
-  </Card>
+> **[Google Generative AI](/oss/javascript/integrations/embeddings/google_generative_ai)**
+>
+> Google's embedding models for text representation.
 
-  <Card title="Gemini Enterprise Agent Platform" href="/oss/javascript/integrations/embeddings/google_vertex_ai" icon="brand-google">
-    Enterprise embedding models through Gemini Enterprise Agent Platform.
-  </Card>
+> **[Gemini Enterprise Agent Platform](/oss/javascript/integrations/embeddings/google_vertex_ai)**
+>
+> Enterprise embedding models through Gemini Enterprise Agent Platform.
 
-  <Card title="Minimax" href="/oss/javascript/integrations/embeddings/minimax">
-    Minimax's text embedding and representation models.
-  </Card>
+> **[Minimax](/oss/javascript/integrations/embeddings/minimax)**
+>
+> Minimax's text embedding and representation models.
 
-  <Card title="Mistral" href="/oss/javascript/integrations/embeddings/mistralai" icon="https://mintcdn.com/langchain-5e9cc07a/z7oQGiHwXv52HwOy/images/providers/mistral-icon.svg?fit=max&auto=format&n=z7oQGiHwXv52HwOy&q=85&s=d8a5f193f697b47117d412b035adbe25">
-    Mistral's efficient embedding models.
-  </Card>
+> **[Mistral](/oss/javascript/integrations/embeddings/mistralai)**
+>
+> Mistral's efficient embedding models.
 
-  <Card title="MixedBread AI" href="/oss/javascript/integrations/embeddings/mixedbread_ai">
-    High-quality multilingual embedding models.
-  </Card>
+> **[MixedBread AI](/oss/javascript/integrations/embeddings/mixedbread_ai)**
+>
+> High-quality multilingual embedding models.
 
-  <Card title="Nomic" href="/oss/javascript/integrations/embeddings/nomic">
-    Nomic's open-source embedding models.
-  </Card>
+> **[Nomic](/oss/javascript/integrations/embeddings/nomic)**
+>
+> Nomic's open-source embedding models.
 
-  <Card title="Ollama" href="/oss/javascript/integrations/embeddings/ollama">
-    Local embedding models through Ollama.
-  </Card>
+> **[Ollama](/oss/javascript/integrations/embeddings/ollama)**
+>
+> Local embedding models through Ollama.
 
-  <Card title="OpenAI" href="/oss/javascript/integrations/embeddings/openai" icon="brand-openai">
-    OpenAI's text-embedding models for semantic search.
-  </Card>
+> **[OpenAI](/oss/javascript/integrations/embeddings/openai)**
+>
+> OpenAI's text-embedding models for semantic search.
 
-  <Card title="Oracle AI Database" href="/oss/javascript/integrations/embeddings/oracleai">
-    Oracle's embedding models for AI applications.
-  </Card>
+> **[Oracle AI Database](/oss/javascript/integrations/embeddings/oracleai)**
+>
+> Oracle's embedding models for AI applications.
 
-  <Card title="Pinecone" href="/oss/javascript/integrations/embeddings/pinecone">
-    Pinecone's embedding models and vector database.
-  </Card>
+> **[Pinecone](/oss/javascript/integrations/embeddings/pinecone)**
+>
+> Pinecone's embedding models and vector database.
 
-  <Card title="SAP HANA Internal Embeddings" href="/oss/javascript/integrations/vectorstores/sap_hanavector">
-    SAP HANA Cloud's built-in embedding models for in-database vector generation.
-  </Card>
+> **[SAP HANA Internal Embeddings](/oss/javascript/integrations/vectorstores/sap_hanavector)**
+>
+> SAP HANA Cloud's built-in embedding models for in-database vector generation.
 
-  <Card title="SCX" href="https://scx.ai/">
-    4096-dimension E5-Mistral embeddings over SCX's OpenAI-compatible API.
-  </Card>
-</Columns>
+> **[SCX](https://scx.ai/)**
+>
+> 4096-dimension E5-Mistral embeddings over SCX's OpenAI-compatible API.
 
 ## Vector stores
 
-<Columns>
-  <Card title="Azure DocumentDB" href="/oss/javascript/integrations/vectorstores/azure_documentdb" icon="brand-windows">
-    Vector search in Azure DocumentDB (formerly Azure Cosmos DB for MongoDB vCore).
-  </Card>
+> **[Azure DocumentDB](/oss/javascript/integrations/vectorstores/azure_documentdb)**
+>
+> Vector search in Azure DocumentDB (formerly Azure Cosmos DB for MongoDB vCore).
 
-  <Card title="Azure Cosmos DB NoSQL" href="/oss/javascript/integrations/vectorstores/azure_cosmosdb_nosql" icon="brand-windows">
-    Vector storage in Azure Cosmos DB NoSQL API.
-  </Card>
+> **[Azure Cosmos DB NoSQL](/oss/javascript/integrations/vectorstores/azure_cosmosdb_nosql)**
+>
+> Vector storage in Azure Cosmos DB NoSQL API.
 
-  <Card title="Cloudflare Vectorize" href="/oss/javascript/integrations/vectorstores/cloudflare_vectorize">
-    Serverless vector database on Cloudflare's edge.
-  </Card>
+> **[Cloudflare Vectorize](/oss/javascript/integrations/vectorstores/cloudflare_vectorize)**
+>
+> Serverless vector database on Cloudflare's edge.
 
-  <Card title="Google Cloud SQL PostgreSQL" href="/oss/javascript/integrations/vectorstores/google_cloudsql_pg" icon="brand-google">
-    PostgreSQL with vector extensions on Google Cloud.
-  </Card>
+> **[Google Cloud SQL PostgreSQL](/oss/javascript/integrations/vectorstores/google_cloudsql_pg)**
+>
+> PostgreSQL with vector extensions on Google Cloud.
 
-  <Card title="Infino" href="https://infino.ai/docs" icon="https://mintcdn.com/langchain-5e9cc07a/aup58lONW4AWxpkl/images/providers/infino-icon.png?fit=max&auto=format&n=aup58lONW4AWxpkl&q=85&s=f06e566173e074c78ef54d43e30b606b">
-    Vector, BM25, and hybrid retrieval over one engine on object storage.
-  </Card>
+> **[Infino](https://infino.ai/docs)**
+>
+> Vector, BM25, and hybrid retrieval over one engine on object storage.
 
-  <Card title="LambdaDB" href="https://docs.lambdadb.ai/guides/get-started/quickstart" icon="link">
-    Serverless database for RAG and agents.
-  </Card>
+> **[LambdaDB](https://docs.lambdadb.ai/guides/get-started/quickstart)**
+>
+> Serverless database for RAG and agents.
 
-  <Card title="Memory Vector Store" href="/oss/javascript/integrations/vectorstores/memory">
-    In-memory vector storage for development and testing.
-  </Card>
+> **[Memory Vector Store](/oss/javascript/integrations/vectorstores/memory)**
+>
+> In-memory vector storage for development and testing.
 
-  <Card title="MongoDB Atlas" href="/oss/javascript/integrations/vectorstores/mongodb_atlas">
-    Vector search in MongoDB Atlas cloud database.
-  </Card>
+> **[MongoDB Atlas](/oss/javascript/integrations/vectorstores/mongodb_atlas)**
+>
+> Vector search in MongoDB Atlas cloud database.
 
-  <Card title="Oracle AI Database" href="/oss/javascript/integrations/vectorstores/oracleai">
-    Oracle Vector Search for hybrid retrieval and storage.
-  </Card>
+> **[Oracle AI Database](/oss/javascript/integrations/vectorstores/oracleai)**
+>
+> Oracle Vector Search for hybrid retrieval and storage.
 
-  <Card title="Pinecone" href="/oss/javascript/integrations/vectorstores/pinecone">
-    Managed vector database for machine learning applications.
-  </Card>
+> **[Pinecone](/oss/javascript/integrations/vectorstores/pinecone)**
+>
+> Managed vector database for machine learning applications.
 
-  <Card title="Qdrant" href="/oss/javascript/integrations/vectorstores/qdrant">
-    Open-source vector similarity search engine.
-  </Card>
+> **[Qdrant](/oss/javascript/integrations/vectorstores/qdrant)**
+>
+> Open-source vector similarity search engine.
 
-  <Card title="Redis" href="/oss/javascript/integrations/vectorstores/redis">
-    In-memory database with vector search capabilities.
-  </Card>
+> **[Redis](/oss/javascript/integrations/vectorstores/redis)**
+>
+> In-memory database with vector search capabilities.
 
-  <Card title="SAP HANA Cloud Vector Engine" href="/oss/javascript/integrations/vectorstores/sap_hanavector">
-    Vector store fully integrated into the SAP HANA Cloud database.
-  </Card>
+> **[SAP HANA Cloud Vector Engine](/oss/javascript/integrations/vectorstores/sap_hanavector)**
+>
+> Vector store fully integrated into the SAP HANA Cloud database.
 
-  <Card title="Weaviate" href="/oss/javascript/integrations/vectorstores/weaviate">
-    Open-source vector database with GraphQL API.
-  </Card>
-</Columns>
+> **[Weaviate](/oss/javascript/integrations/vectorstores/weaviate)**
+>
+> Open-source vector database with GraphQL API.
 
 ## Document loaders
 
 ### File loaders
 
-<Columns>
-  <Card title="JSON" href="/oss/javascript/integrations/document_loaders/file_loaders/json">
-    Load and parse JSON files with flexible structure handling.
-  </Card>
+> **[JSON](/oss/javascript/integrations/document_loaders/file_loaders/json)**
+>
+> Load and parse JSON files with flexible structure handling.
 
-  <Card title="JSON Lines" href="/oss/javascript/integrations/document_loaders/file_loaders/jsonlines">
-    Load newline-delimited JSON files.
-  </Card>
+> **[JSON Lines](/oss/javascript/integrations/document_loaders/file_loaders/jsonlines)**
+>
+> Load newline-delimited JSON files.
 
-  <Card title="Multi-File" href="/oss/javascript/integrations/document_loaders/file_loaders/multi_file">
-    Load multiple files of different types simultaneously.
-  </Card>
+> **[Multi-File](/oss/javascript/integrations/document_loaders/file_loaders/multi_file)**
+>
+> Load multiple files of different types simultaneously.
 
-  <Card title="Oracle AI Database" href="/oss/javascript/integrations/document_loaders/file_loaders/oracleai">
-    Load Oracle AI Vector Search tables and compatible files.
-  </Card>
+> **[Oracle AI Database](/oss/javascript/integrations/document_loaders/file_loaders/oracleai)**
+>
+> Load Oracle AI Vector Search tables and compatible files.
 
-  <Card title="Text" href="/oss/javascript/integrations/document_loaders/file_loaders/text">
-    Load plain text files with encoding detection.
-  </Card>
-</Columns>
+> **[Text](/oss/javascript/integrations/document_loaders/file_loaders/text)**
+>
+> Load plain text files with encoding detection.
 
 ### Web loaders
 
-<Columns>
-  <Card title="Google Cloud SQL PostgreSQL" href="/oss/javascript/integrations/document_loaders/web_loaders/google_cloudsql_pg" icon="brand-google">
-    Load data from Google Cloud SQL PostgreSQL databases.
-  </Card>
+> **[Google Cloud SQL PostgreSQL](/oss/javascript/integrations/document_loaders/web_loaders/google_cloudsql_pg)**
+>
+> Load data from Google Cloud SQL PostgreSQL databases.
 
-  <Card title="LangSmith" href="/oss/javascript/integrations/document_loaders/web_loaders/langsmith">
-    Load runs and datasets from LangSmith.
-  </Card>
+> **[LangSmith](/oss/javascript/integrations/document_loaders/web_loaders/langsmith)**
+>
+> Load runs and datasets from LangSmith.
 
-  <Card title="Leap0" href="https://leap0.dev/docs" icon="link">
-    Cloud sandboxes for AI agents with fast cold starts.
-  </Card>
+> **[Leap0](https://leap0.dev/docs)**
+>
+> Cloud sandboxes for AI agents with fast cold starts.
 
-  <Card title="Soniox" href="/oss/javascript/integrations/document_loaders/web_loaders/soniox">
-    High-accuracy multilingual speech-to-text API.
-  </Card>
+> **[Soniox](/oss/javascript/integrations/document_loaders/web_loaders/soniox)**
+>
+> High-accuracy multilingual speech-to-text API.
 
-  <Card title="Sourcey" href="/oss/javascript/integrations/providers/sourcey">
-    Retrieve from published Sourcey docs sites using build artefacts Sourcey already emits.
-  </Card>
+> **[Sourcey](/oss/javascript/integrations/providers/sourcey)**
+>
+> Retrieve from published Sourcey docs sites using build artefacts Sourcey already emits.
 
-  <Card title="Supadata" href="/oss/javascript/integrations/providers/supadata">
-    Load transcripts and metadata from YouTube, TikTok, and more.
-  </Card>
-</Columns>
+> **[Supadata](/oss/javascript/integrations/providers/supadata)**
+>
+> Load transcripts and metadata from YouTube, TikTok, and more.
 
 ## Document transformers
 
-<Columns>
-  <Card title="OpenAI Metadata Tagger" href="/oss/javascript/integrations/document_transformers/openai_metadata_tagger" icon="brand-openai">
-    Generate metadata tags for documents using OpenAI.
-  </Card>
-</Columns>
+> **[OpenAI Metadata Tagger](/oss/javascript/integrations/document_transformers/openai_metadata_tagger)**
+>
+> Generate metadata tags for documents using OpenAI.
 
 ## Document compressors
 
-<Columns>
-  <Card title="Cohere Rerank" href="/oss/javascript/integrations/document_compressors/cohere_rerank">
-    Rerank documents using Cohere's reranking models.
-  </Card>
+> **[Cohere Rerank](/oss/javascript/integrations/document_compressors/cohere_rerank)**
+>
+> Rerank documents using Cohere's reranking models.
 
-  <Card title="MixedBread AI" href="/oss/javascript/integrations/document_compressors/mixedbread_ai">
-    Rerank and compress documents using MixedBread AI.
-  </Card>
-</Columns>
+> **[MixedBread AI](/oss/javascript/integrations/document_compressors/mixedbread_ai)**
+>
+> Rerank and compress documents using MixedBread AI.
 
 ## Tools
 
-<Columns>
-  <Card title="AgentSearch" href="https://agentsearchhq.com/#integrations?utm_source=langchain-docs-js&utm_medium=integration-listing&utm_campaign=promo-oct26" icon="link">
-    Web search tool for LangChain.js agents, free by default with no key. Pay-per-call Extract and Render (\$0.005, x402) for full pages and JS-rendered sites.
-  </Card>
+> **[AgentSearch](https://agentsearchhq.com/#integrations?utm_source=langchain-docs-js\&utm_medium=integration-listing\&utm_campaign=promo-oct26)**
+>
+> Web search tool for LangChain.js agents, free by default with no key. Pay-per-call Extract and Render (\$0.005, x402) for full pages and JS-rendered sites.
 
-  <Card title="agentsvc" href="https://agentsvc.io/docs/langchain" icon="link">
-    Pay-per-call web, data, crypto, memory, and inbox tools for agents, paid with a credit token or USDC via x402.
-  </Card>
+> **[agentsvc](https://agentsvc.io/docs/langchain)**
+>
+> Pay-per-call web, data, crypto, memory, and inbox tools for agents, paid with a credit token or USDC via x402.
 
-  <Card title="aiworker" href="https://github.com/ai-worker227/aiworker-examples/tree/main/langchain" icon="link">
-    Paid data tools (DeFi yields, page-to-Markdown, Base token and wallet checks, Polymarket odds, history and backtests, fact checks, headline search) built from aiworker's live OpenAPI catalogue; each call pays itself in USDC over the x402 protocol from the agent's wallet, no API key.
-  </Card>
+> **[aiworker](https://github.com/ai-worker227/aiworker-examples/tree/main/langchain)**
+>
+> Paid data tools (DeFi yields, page-to-Markdown, Base token and wallet checks, Polymarket odds, history and backtests, fact checks, headline search) built from aiworker's live OpenAPI catalogue; each call pays itself in USDC over the x402 protocol from the agent's wallet, no API key.
 
-  <Card title="Atomic Mail" href="https://docs.atomicmail.ai/langchain" icon="link">
-    Email toolkit that provisions an agent-owned inbox by proof of work and sends and receives over JMAP.
-  </Card>
+> **[Atomic Mail](https://docs.atomicmail.ai/langchain)**
+>
+> Email toolkit that provisions an agent-owned inbox by proof of work and sends and receives over JMAP.
 
-  <Card title="Azure Dynamic Sessions" href="/oss/javascript/integrations/tools/azure_dynamic_sessions" icon="brand-windows">
-    Secure code execution in Azure Dynamic Sessions.
-  </Card>
+> **[Azure Dynamic Sessions](/oss/javascript/integrations/tools/azure_dynamic_sessions)**
+>
+> Secure code execution in Azure Dynamic Sessions.
 
-  <Card title="Continuity tools" href="https://github.com/zerohourzulu/continuity/blob/main/packages/remote-tools/README.md#langchain-tools" icon="link">
-    LangChain tools with application-defined permissions, stable operation identities and status-only recovery for cooperating services.
-  </Card>
+> **[Continuity tools](https://github.com/zerohourzulu/continuity/blob/main/packages/remote-tools/README.md#langchain-tools)**
+>
+> LangChain tools with application-defined permissions, stable operation identities and status-only recovery for cooperating services.
 
-  <Card title="Corsair" href="https://docs.corsair.dev/mcp-adapters/langchain" icon="link">
-    Exposes 200+ service integrations (Slack, GitHub, Gmail, Linear, Stripe, and others) to LangChain agents as tools. OAuth runs server-side and credentials stay in the developer's own database.
-  </Card>
+> **[Corsair](https://docs.corsair.dev/mcp-adapters/langchain)**
+>
+> Exposes 200+ service integrations (Slack, GitHub, Gmail, Linear, Stripe, and others) to LangChain agents as tools. OAuth runs server-side and credentials stay in the developer's own database.
 
-  <Card title="DALL-E" href="/oss/javascript/integrations/tools/dalle" icon="brand-openai">
-    Generate images using OpenAI's DALL-E models.
-  </Card>
+> **[DALL-E](/oss/javascript/integrations/tools/dalle)**
+>
+> Generate images using OpenAI's DALL-E models.
 
-  <Card title="Decodo" href="/oss/javascript/integrations/tools/decodo">
-    Code execution and analysis with Decodo.
-  </Card>
+> **[DataBazaar](https://databazaar.io/integrations?utm_source=langchain\&utm_campaign=integration-listing#langchain)**
+>
+> Dataset marketplace tools for public search, sample previews, and bounty discovery, with account-authenticated data retrieval.
 
-  <Card title="Exa Search" href="/oss/javascript/integrations/tools/exa_search">
-    AI-powered search engine for better results.
-  </Card>
+> **[Decodo](/oss/javascript/integrations/tools/decodo)**
+>
+> Code execution and analysis with Decodo.
 
-  <Card title="GetYouTubeTranscript" href="https://github.com/tubeagentkit/langchain-getyoutubetranscript#readme" icon="link">
-    GetYouTubeTranscript is an API for YouTube video transcripts (optionally with per-line timestamps) and YouTube search
-  </Card>
+> **[Exa Search](/oss/javascript/integrations/tools/exa_search)**
+>
+> AI-powered search engine for better results.
 
-  <Card title="JigsawStack" href="/oss/javascript/integrations/tools/jigsawstack">
-    AI infrastructure tools from JigsawStack.
-  </Card>
+> **[Fizzl](https://fizzl.eu/agents/langchain-js/)**
+>
+> Fizzl checks transactions, signatures, tokens, wallet approvals, and x402 paid endpoints before AI agents sign or pay.
 
-  <Card title="JSON Tool" href="/oss/javascript/integrations/tools/json">
-    Parse and manipulate JSON data structures.
-  </Card>
+> **[GetYouTubeTranscript](https://github.com/tubeagentkit/langchain-getyoutubetranscript#readme)**
+>
+> GetYouTubeTranscript is an API for YouTube video transcripts (optionally with per-line timestamps) and YouTube search
 
-  <Card title="Lambda Agent" href="/oss/javascript/integrations/tools/lambda_agent" icon="brand-aws">
-    Execute code in AWS Lambda functions.
-  </Card>
+> **[Instant Expert](https://github.com/Instant-Expert/integrations/tree/main/js/langchain-instant-expert#readme)**
+>
+> Toolkit for Instant Expert's MCP server that sends paid invitations to specific experts for a short call or written answer, with a free test mode.
 
-  <Card title="Magic Hour" href="https://docs.magichour.ai" icon="link">
-    AI text-to-video, image-to-video, and image generation tools behind one API key.
-  </Card>
+> **[JigsawStack](/oss/javascript/integrations/tools/jigsawstack)**
+>
+> AI infrastructure tools from JigsawStack.
 
-  <Card title="MCP Toolbox" href="/oss/javascript/integrations/tools/mcp_toolbox">
-    Model Context Protocol tools and utilities.
-  </Card>
+> **[JSON Tool](/oss/javascript/integrations/tools/json)**
+>
+> Parse and manipulate JSON data structures.
 
-  <Card title="Mercedes-Benz Service Reminder" href="https://github.com/gentlegiant96202/mercedes-benz-service-reminder-mcp#readme" icon="link">
-    MCP tools from SilberArrows for Mercedes-Benz Service A/B reminders, service explanations, and warning-light guidance.
-  </Card>
+> **[Lambda Agent](/oss/javascript/integrations/tools/lambda_agent)**
+>
+> Execute code in AWS Lambda functions.
 
-  <Card title="OpenAPI" href="/oss/javascript/integrations/tools/openapi">
-    Generate tools from OpenAPI specifications.
-  </Card>
+> **[Magic Hour](https://docs.magichour.ai)**
+>
+> AI text-to-video, image-to-video, and image generation tools behind one API key.
 
-  <Card title="Oracle AI Database" href="/oss/javascript/integrations/tools/oracleai">
-    Summarize, chunk, and serve data with Oracle AI Vector Search tools.
-  </Card>
+> **[M91](https://github.com/MSG91/m91-sdk#langchain)**
+>
+> Tools that pause an agent until a human approves on their phone; alerts ring through silent mode and escalate to a voice call.
 
-  <Card title="SQL" href="/oss/javascript/integrations/tools/sql">
-    Query databases using natural language.
-  </Card>
+> **[MCP Toolbox](/oss/javascript/integrations/tools/mcp_toolbox)**
+>
+> Model Context Protocol tools and utilities.
 
-  <Card title="Perplexity Search" href="/oss/javascript/integrations/tools/perplexity_search">
-    Web search results from the Perplexity Search API.
-  </Card>
+> **[Mercedes-Benz Service Reminder](https://github.com/gentlegiant96202/mercedes-benz-service-reminder-mcp#readme)**
+>
+> MCP tools from SilberArrows for Mercedes-Benz Service A/B reminders, service explanations, and warning-light guidance.
 
-  <Card title="Pexafy" href="https://docs.pexafy.com/langchain" icon="link">
-    Pexafy is a semantic search API over free stock photos from Unsplash, Pexels, Pixabay and six more libraries, returning each photo with its license and credit line.
-  </Card>
+> **[OpenAPI](/oss/javascript/integrations/tools/openapi)**
+>
+> Generate tools from OpenAPI specifications.
 
-  <Card title="pipe0" href="https://www.pipe0.com/docs/sdks/integrations/langchain" icon="link">
-    People search and contact enrichment (work emails, phone numbers, profiles, and firmographics) across multiple data providers
-  </Card>
+> **[Oracle AI Database](/oss/javascript/integrations/tools/oracleai)**
+>
+> Summarize, chunk, and serve data with Oracle AI Vector Search tools.
 
-  <Card title="Pushary" href="https://pushary.com/docs/agents/build/langgraph?utm_source=langchain&utm_medium=integration-directory&utm_campaign=pushary-langgraph-js" icon="link">
-    Phone approvals for LangGraph.js agents. An approval node built on pusharyInterrupt() asks your user on their phone, and the graph routes to the protected node only on Approve; with no answer it returns null, so the action does not run. createAskHumanTool() adds an optional ask\_human tool.
-  </Card>
+> **[SQL](/oss/javascript/integrations/tools/sql)**
+>
+> Query databases using natural language.
 
-  <Card title="Serpex" href="https://serpex.dev/docs" icon="link">
-    Multi-engine web search API for AI applications and data aggregation.
-  </Card>
+> **[Perplexity Search](/oss/javascript/integrations/tools/perplexity_search)**
+>
+> Web search results from the Perplexity Search API.
 
-  <Card title="SIGNA" href="https://github.com/codexvritra/signa/tree/main/sdk/langchain" icon="link">
-    Add wallet-signed messaging tools to LangChain agents.
-  </Card>
+> **[Pexafy](https://docs.pexafy.com/langchain)**
+>
+> Pexafy is a semantic search API over free stock photos from Unsplash, Pexels, Pixabay and six more libraries, returning each photo with its license and credit line.
 
-  <Card title="Sato Hub" href="https://github.com/satohubai/sato-hub-integrations/tree/main/packages/satohub-langchain-tools#readme" icon="link">
-    Four keyless tools over Sato Hub's daily-rebuilt index of onchain-agent building blocks: search listings, run a Preflight lookup on a repo, package, MCP endpoint or token, get a swap-venue recommendation with the fee stated, and turn a goal into a build plan of listed projects.
-  </Card>
+> **[pipe0](https://www.pipe0.com/docs/sdks/integrations/langchain)**
+>
+> People search and contact enrichment (work emails, phone numbers, profiles, and firmographics) across multiple data providers
 
-  <Card title="TalorData" href="https://www.talordata.com/docs" icon="link">
-    Unified SERP API across 33 search engines with geo-targeting.
-  </Card>
+> **[Precleared](https://precleared.dev/docs/langchain)**
+>
+> Checks whether a cold or marketing email to an address is legal in eight countries, and returns the deciding rule, footer requirements and a signed receipt.
 
-  <Card title="Tavily Crawl" href="/oss/javascript/integrations/tools/tavily_crawl">
-    Web crawling capabilities with Tavily.
-  </Card>
+> **[Pushary](https://pushary.com/docs/agents/build/langgraph?utm_source=langchain\&utm_medium=integration-directory\&utm_campaign=pushary-langgraph-js)**
+>
+> Phone approvals for LangGraph.js agents. An approval node built on pusharyInterrupt() asks your user on their phone, and the graph routes to the protected node only on Approve; with no answer it returns null, so the action does not run. createAskHumanTool() adds an optional ask\_human tool.
 
-  <Card title="Tavily Extract" href="/oss/javascript/integrations/tools/tavily_extract">
-    Extract structured data from web pages.
-  </Card>
+> **[Serpex](https://serpex.dev/docs)**
+>
+> Multi-engine web search API for AI applications and data aggregation.
 
-  <Card title="Tavily Map" href="/oss/javascript/integrations/tools/tavily_map">
-    Map and visualize web crawling results.
-  </Card>
+> **[SIGNA](https://github.com/codexvritra/signa/tree/main/sdk/langchain)**
+>
+> Add wallet-signed messaging tools to LangChain agents.
 
-  <Card title="Tavily Search" href="/oss/javascript/integrations/tools/tavily_search">
-    AI-optimized search for retrieval applications.
-  </Card>
+> **[Sato Hub](https://github.com/satohubai/sato-hub-integrations/tree/main/packages/satohub-langchain-tools#readme)**
+>
+> Four keyless tools over Sato Hub's daily-rebuilt index of onchain-agent building blocks: search listings, run a Preflight lookup on a repo, package, MCP endpoint or token, get a swap-venue recommendation with the fee stated, and turn a goal into a build plan of listed projects.
 
-  <Card title="Tavily Research" href="/oss/javascript/integrations/tools/tavily_research">
-    Comprehensive research on a given topic with Tavily.
-  </Card>
+> **[Steward](https://github.com/brianbooms/plugin-steward)**
+>
+> Tools for x402 payments that verify merchant, price, and terms before payment via LangChain MCP adapters.
 
-  <Card title="Tavily GET Research" href="/oss/javascript/integrations/tools/tavily_get_research">
-    Retrieve status and results of a research task using its request ID.
-  </Card>
+> **[TalorData](https://www.talordata.com/docs)**
+>
+> Unified SERP API across 33 search engines with geo-targeting.
 
-  <Card title="You.com" href="https://you.com/docs/integrations/langchain" icon="link">
-    Real-time web search and content extraction for LLMs.
-  </Card>
+> **[Tavily Crawl](/oss/javascript/integrations/tools/tavily_crawl)**
+>
+> Web crawling capabilities with Tavily.
 
-  <Card title="Vector Store" href="/oss/javascript/integrations/tools/vectorstore">
-    Query vector databases as tools.
-  </Card>
-</Columns>
+> **[Tavily Extract](/oss/javascript/integrations/tools/tavily_extract)**
+>
+> Extract structured data from web pages.
+
+> **[Tavily Map](/oss/javascript/integrations/tools/tavily_map)**
+>
+> Map and visualize web crawling results.
+
+> **[Tavily Search](/oss/javascript/integrations/tools/tavily_search)**
+>
+> AI-optimized search for retrieval applications.
+
+> **[Tavily Research](/oss/javascript/integrations/tools/tavily_research)**
+>
+> Comprehensive research on a given topic with Tavily.
+
+> **[Tavily GET Research](/oss/javascript/integrations/tools/tavily_get_research)**
+>
+> Retrieve status and results of a research task using its request ID.
+
+> **[WebExtract](https://webextract.dev/docs/langchain)**
+>
+> Web page extraction API returning clean Markdown plus fixed-schema JSON for article metadata, product prices and tables.
+
+> **[You.com](https://you.com/docs/integrations/langchain)**
+>
+> Real-time web search and content extraction for LLMs.
+
+> **[Vector Store](/oss/javascript/integrations/tools/vectorstore)**
+>
+> Query vector databases as tools.
 
 ## Retrievers
 
-<Columns>
-  <Card title="Bedrock Knowledge Bases" href="/oss/javascript/integrations/retrievers/bedrock-knowledge-bases" icon="brand-aws">
-    Retrieve from Amazon Bedrock Knowledge Bases.
-  </Card>
+> **[Bedrock Knowledge Bases](/oss/javascript/integrations/retrievers/bedrock-knowledge-bases)**
+>
+> Retrieve from Amazon Bedrock Knowledge Bases.
 
-  <Card title="Exa" href="/oss/javascript/integrations/retrievers/exa">
-    AI-powered web search and retrieval.
-  </Card>
+> **[Exa](/oss/javascript/integrations/retrievers/exa)**
+>
+> AI-powered web search and retrieval.
 
-  <Card title="FoxNose" href="https://github.com/FoxNoseTech/langchain-foxnose-js#readme" icon="link">
-    Retriever, document loader and agent tool for FoxNose collections, with text, vector, hybrid and vector-boosted search over the Flux delivery API.
-  </Card>
+> **[FoxNose](https://github.com/FoxNoseTech/langchain-foxnose-js#readme)**
+>
+> Retriever, document loader and agent tool for FoxNose collections, with text, vector, hybrid and vector-boosted search over the Flux delivery API.
 
-  <Card title="HyDE" href="/oss/javascript/integrations/retrievers/hyde">
-    Hypothetical Document Embeddings for better retrieval.
-  </Card>
+> **[HyDE](/oss/javascript/integrations/retrievers/hyde)**
+>
+> Hypothetical Document Embeddings for better retrieval.
 
-  <Card title="Kendra" href="/oss/javascript/integrations/retrievers/kendra-retriever" icon="brand-aws">
-    Enterprise search with Amazon Kendra.
-  </Card>
+> **[Kendra](/oss/javascript/integrations/retrievers/kendra-retriever)**
+>
+> Enterprise search with Amazon Kendra.
 
-  <Card title="Perplexity Search" href="/oss/javascript/integrations/retrievers/perplexity_search">
-    Retriever returning Documents from the Perplexity Search API.
-  </Card>
+> **[Perplexity Search](/oss/javascript/integrations/retrievers/perplexity_search)**
+>
+> Retriever returning Documents from the Perplexity Search API.
 
-  <Card title="RecallRetriever" href="https://recallmem.dev/guides/langchain" icon="link">
-    Retrieves the facts Recall learned about a user, and the user's matching messages, as documents.
-  </Card>
+> **[RecallRetriever](https://recallmem.dev/guides/langchain)**
+>
+> Retrieves the facts Recall learned about a user, and the user's matching messages, as documents.
 
-  <Card title="SAP HANA Self Query" href="/oss/javascript/integrations/retrievers/self_query/hanavector_self_query">
-    Self-querying retriever over SAP HANA Cloud Vector Engine.
-  </Card>
+> **[SAP HANA Self Query](/oss/javascript/integrations/retrievers/self_query/hanavector_self_query)**
+>
+> Self-querying retriever over SAP HANA Cloud Vector Engine.
 
-  <Card title="Time-Weighted" href="/oss/javascript/integrations/retrievers/time-weighted-retriever">
-    Time-aware document retrieval and ranking.
-  </Card>
-</Columns>
+> **[Time-Weighted](/oss/javascript/integrations/retrievers/time-weighted-retriever)**
+>
+> Time-aware document retrieval and ranking.
 
 ## Stores
 
-<Columns>
-  <Card title="AlBuddyMemoryStore" href="https://github.com/flytomoon/al-buddy-memory/blob/main/docs/integrations/langchain.md" icon="link">
-    A LangGraph `BaseStore` for long-term memory on a local SQLite file, no API key. Every put records which agent wrote it; putting a key again retires the old value instead of overwriting it, and a delete closes a fact rather than erasing it, so the history of what was believed is kept.
-  </Card>
+> **[AlBuddyMemoryStore](https://github.com/flytomoon/al-buddy-memory/blob/main/docs/integrations/langchain.md)**
+>
+> A LangGraph `BaseStore` for long-term memory on a local SQLite file, no API key. Every put records which agent wrote it; putting a key again retires the old value instead of overwriting it, and a delete closes a fact rather than erasing it, so the history of what was believed is kept.
 
-  <Card title="File System" href="/oss/javascript/integrations/stores/file_system">
-    Local file system storage for development.
-  </Card>
+> **[File System](/oss/javascript/integrations/stores/file_system)**
+>
+> Local file system storage for development.
 
-  <Card title="In-Memory" href="/oss/javascript/integrations/stores/in_memory">
-    Fast in-memory storage for temporary data.
-  </Card>
-</Columns>
+> **[In-Memory](/oss/javascript/integrations/stores/in_memory)**
+>
+> Fast in-memory storage for temporary data.
 
 ## LLM caching
 
-<Columns>
-  <Card title="Azure Cosmos DB NoSQL" href="/oss/javascript/integrations/llm_caching/azure_cosmosdb_nosql" icon="brand-windows">
-    Cache LLM responses in Azure Cosmos DB.
-  </Card>
+> **[Azure Cosmos DB NoSQL](/oss/javascript/integrations/llm_caching/azure_cosmosdb_nosql)**
+>
+> Cache LLM responses in Azure Cosmos DB.
 
-  <Card title="BetterDB Agent Cache" href="https://www.betterdb.com/ai" icon="link">
-    Multi-tier cache for AI agents backed by Valkey or Redis.
-  </Card>
-</Columns>
+> **[BetterDB Agent Cache](https://www.betterdb.com/ai)**
+>
+> Multi-tier cache for AI agents backed by Valkey or Redis.
 
 ## Middleware
 
-<Columns>
-  <Card title="BRYDGE" href="https://github.com/contactkontey-dotcom/langchain-brydge#readme" icon="link">
-    Supervises an agent's tool calls with BRYDGE and checks the destination system's own records to report whether each action happened as permitted.
-  </Card>
+> **[BRYDGE](https://github.com/contactkontey-dotcom/langchain-brydge#readme)**
+>
+> Supervises an agent's tool calls with BRYDGE and checks the destination system's own records to report whether each action happened as permitted.
 
-  <Card title="RecallChatMessageHistory" href="https://recallmem.dev/guides/langchain" icon="link">
-    Chat message history stored in a Recall session, so Recall also learns about the user from it.
-  </Card>
+> **[RecallChatMessageHistory](https://recallmem.dev/guides/langchain)**
+>
+> Chat message history stored in a Recall session, so Recall also learns about the user from it.
 
-  <Card title="RecallMiddleware" href="https://recallmem.dev/guides/langchain" icon="link">
-    Long-term memory for create\_agent agents: adds what Recall learned about the user to the system prompt and records each exchange.
-  </Card>
-</Columns>
+> **[RecallMiddleware](https://recallmem.dev/guides/langchain)**
+>
+> Long-term memory for create\_agent agents: adds what Recall learned about the user to the system prompt and records each exchange.
 
 ## Callbacks
 
-<Columns>
-  <Card title="OpenInference" href="https://arize.com/docs/ax/integrations/python-agent-frameworks/langchain/langchain-tracing" icon="link">
-    OpenTelemetry instrumentation that records LangChain and LangGraph operations using OpenInference semantic conventions.
-  </Card>
+> **[OpenInference](https://arize.com/docs/ax/integrations/python-agent-frameworks/langchain/langchain-tracing)**
+>
+> OpenTelemetry instrumentation that records LangChain and LangGraph operations using OpenInference semantic conventions.
 
-  <Card title="Respan" href="https://www.respan.ai/docs" icon="link">
-    Trace LangChain.js, LangGraph.js, and Langflow-style callback runs in Respan.
-  </Card>
+> **[Respan](https://www.respan.ai/docs)**
+>
+> Trace LangChain.js, LangGraph.js, and Langflow-style callback runs in Respan.
 
-  <Card title="SafePrompt" href="https://docs.safeprompt.dev/langchain" icon="link">
-    Validate prompts for prompt injection before they reach your model.
-  </Card>
-</Columns>
+> **[SafePrompt](https://docs.safeprompt.dev/langchain)**
+>
+> Validate prompts for prompt injection before they reach your model.
 
 ***
 
-<div>
-  <Callout icon="terminal-2">
-    [Connect these docs](/use-these-docs) to your agent of choice via MCP for real-time answers.
-  </Callout>
+[Connect these docs](/use-these-docs) to your agent of choice via MCP for real-time answers.
 
-  <Callout icon="edit">
-    [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/oss/javascript/integrations/providers/all_providers.mdx) or [file an issue](https://github.com/langchain-ai/docs/issues/new/choose).
-  </Callout>
-</div>
+[Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/oss/javascript/integrations/providers/all_providers.mdx) or [file an issue](https://github.com/langchain-ai/docs/issues/new/choose).

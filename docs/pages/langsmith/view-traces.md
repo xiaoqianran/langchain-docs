@@ -10,9 +10,9 @@ In an [agent-based workspace](/langsmith/agents), a tracing project is one [envi
 
 The side panel is organized around [threads](/langsmith/observability-concepts#threads) as the primary unit of navigation. Instead of treating each [run](/langsmith/observability-concepts#runs) as an isolated object, the UI keeps the surrounding conversation visible so you can understand where a run fits in the agent's broader execution.
 
-<Note>
-  The Threads tab and the Turns view are only available for runs instrumented with a `thread_id` metadata field. Without thread instrumentation, you'll see traces as individual runs and won't have access to the Turns view.
-</Note>
+> [!NOTE]
+>
+> The Threads tab and the Turns view are only available for runs instrumented with a `thread_id` metadata field. Without thread instrumentation, you'll see traces as individual runs and won't have access to the Turns view.
 
 Three views are available at the top of the side panel:
 
@@ -20,31 +20,27 @@ Three views are available at the top of the side panel:
 * [**Turns**](#turns-view): The per-turn summary. View each turn in the thread as a card showing its inputs and outputs, with expand/collapse. Use this when you want a structural overview without the full conversation rendering.
 * [**Details**](#details-view): The debugging layer. Drill into a specific run to inspect inputs, outputs, timing, token counts, errors, and metadata. Use this to understand what happened at a specific point in execution. Press `D` to switch to this view.
 
-<Note>
-  The Trajectory tab is disabled for threads that do not have any renderable messages. The side panel defaults to the Details view.
-</Note>
+> [!NOTE]
+>
+> The Trajectory tab is disabled for threads that do not have any renderable messages. The side panel defaults to the Details view.
 
 Use the Trajectory view to orient yourself in the conversation and identify where to focus, then switch to the Details view to inspect a specific run:
 
-<Steps>
-  <Step title="Start in the Trajectory view">
-    Open a thread and switch to the Trajectory view to see the full conversation.
-  </Step>
+**1. Start in the Trajectory view**
 
-  <Step title="Investigate">
-    Scan the trajectory to identify unexpected behavior, for example, a bad tool result, an unexpected subagent handoff, a latency spike.
-  </Step>
+Open a thread and switch to the Trajectory view to see the full conversation.
 
-  <Step title="Inspect the run">
-    Click the relevant message or tool call to open the Details view at the exact run that produced it. Review its inputs, outputs, timing, errors, and metadata.
-  </Step>
+**2. Investigate**
 
-  <Step title="Return to the trajectory">
-    Toggle back to the Trajectory view to continue scanning the conversation.
-  </Step>
-</Steps>
+Scan the trajectory to identify unexpected behavior, for example, a bad tool result, an unexpected subagent handoff, a latency spike.
 
-<div />
+**3. Inspect the run**
+
+Click the relevant message or tool call to open the Details view at the exact run that produced it. Review its inputs, outputs, timing, errors, and metadata.
+
+**4. Return to the trajectory**
+
+Toggle back to the Trajectory view to continue scanning the conversation.
 
 ## Trajectory view
 
@@ -137,12 +133,6 @@ From the Details view, you can also:
 
 ***
 
-<div>
-  <Callout icon="terminal-2">
-    [Connect these docs](/use-these-docs) to your agent of choice via MCP for real-time answers.
-  </Callout>
+[Connect these docs](/use-these-docs) to your agent of choice via MCP for real-time answers.
 
-  <Callout icon="edit">
-    [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/view-traces.mdx) or [file an issue](https://github.com/langchain-ai/docs/issues/new/choose).
-  </Callout>
-</div>
+[Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/view-traces.mdx) or [file an issue](https://github.com/langchain-ai/docs/issues/new/choose).

@@ -21,7 +21,7 @@ To open the experiment view,
 1. Select the relevant [*dataset*](/langsmith/evaluation-concepts#datasets) from the **Dataset & Experiments** page which opens the **Experiments** tab view.
 2. Click the row of the experiment you want to view.
 
-<img alt="Open experiment view" />
+![Open experiment view](https://mintcdn.com/langchain-5e9cc07a/Fr2lazPB4XVeEA7l/langsmith/images/select-experiment.png?fit=max\&auto=format\&n=Fr2lazPB4XVeEA7l\&q=85\&s=74207f0a2422f89fdc75b23f0a88c58f)
 
 ### View experiment results
 
@@ -36,21 +36,21 @@ You can customize the columns clicking the **Columns** icon at the top right of 
 * **Control decimal precision on feedback scores**. By default, LangSmith surfaces numerical feedback scores with a decimal precision of 2, but you can customize this setting to be up to 6 decimals.
 * **Set the Heat Map threshold** to high, middle, and low for numeric feedback scores in your experiment, which affects the threshold at which score chips render as red or green:
 
-<img alt="Column heatmap configuration" />
+![Column heatmap configuration](https://mintcdn.com/langchain-5e9cc07a/aKRoUGXX6ygp4DlC/langsmith/images/column-heat-map.png?fit=max\&auto=format\&n=aKRoUGXX6ygp4DlC\&q=85\&s=b0203a449f0f7df70900735ba540d712)
 
-<Tip>
-  You can set default configurations for an entire dataset or temporarily save settings just for yourself.
-</Tip>
+> [!TIP]
+>
+> You can set default configurations for an entire dataset or temporarily save settings just for yourself.
 
 #### Sort and filter
 
 To sort rows by a feedback score, click the **Sort by** icon in the column header.
 
-<img alt="Sort column" />
+![Sort column](https://mintcdn.com/langchain-5e9cc07a/Tdk8epB4BZgbugRX/langsmith/images/column-sort.png?fit=max\&auto=format\&n=Tdk8epB4BZgbugRX\&q=85\&s=19a77a5df00a579f3bd953fd75c4ade9)
 
-To filter rows, click the <Icon icon="dots-vertical" /> icon in the column header and configure your filter settings.
+To filter rows, click the  icon in the column header and configure your filter settings.
 
-<img alt="Filter column" />
+![Filter column](https://mintcdn.com/langchain-5e9cc07a/Tdk8epB4BZgbugRX/langsmith/images/column-filter.png?fit=max\&auto=format\&n=Tdk8epB4BZgbugRX\&q=85\&s=d76a7c51f386c511679ad84ad6ca4d86)
 
 #### Table views
 
@@ -60,13 +60,13 @@ Select one of three table view icons at the top right of the experiment view:
 * **Full**: Shows the full output for each run.
 * **Diff**: Shows the text difference between the reference output and the output for each run.
 
-<img alt="Diff view" />
+![Diff view](https://mintcdn.com/langchain-5e9cc07a/Tdk8epB4BZgbugRX/langsmith/images/diff-mode.png?fit=max\&auto=format\&n=Tdk8epB4BZgbugRX\&q=85\&s=800ecac6a9fc6d8ef426a41999c65a44)
 
 #### View the traces
 
 Click any row in the experiment view to open the details panel, which shows the trace alongside feedback, input, output, and attributes for that run.
 
-<img alt="View trace" />
+![View trace](https://mintcdn.com/langchain-5e9cc07a/Tdk8epB4BZgbugRX/langsmith/images/view-trace.png?fit=max\&auto=format\&n=Tdk8epB4BZgbugRX\&q=85\&s=f39235b29c4fca4bcb3cf4d4788133ca)
 
 To view the traces behind an experiment, click the **View project** icon at the top right of the experiment view.
 
@@ -74,18 +74,18 @@ To view the traces behind an experiment, click the **View project** icon at the 
 
 By hovering over the evaluator score, you can view additional details about that evaluator run. For [LLM-as-a-judge evaluators](/langsmith/llm-as-judge), click the **Source** link to view the prompt used, or **Evaluator trace** to open the trace in a new browser tab. For experiments with [repetitions](/langsmith/repetition), click the aggregate average score to view links to all individual runs.
 
-<img alt="View evaluator runs" />
+![View evaluator runs](https://mintcdn.com/langchain-5e9cc07a/Tdk8epB4BZgbugRX/langsmith/images/evaluator-run.png?fit=max\&auto=format\&n=Tdk8epB4BZgbugRX\&q=85\&s=372dc06ba8bdb552b6afbdce0de1dee7)
 
 #### Track experiment progress
 
 For experiments run from the Playground or through the SDK, a progress bar in the experiment header tracks completion in real time. The same progress appears in the **Progress** column of the experiments table. Progress reflects both run and evaluation status. Hover over the progress bar to view the number of runs completed and runs evaluated.
 
-<Note>
-  Progress tracking for experiments run through the SDK requires:
-
-  * Python: `langsmith>=0.8.16`
-  * TypeScript: `langsmith>=0.7.8`
-</Note>
+> [!NOTE]
+>
+> Progress tracking for experiments run through the SDK requires:
+>
+> * Python: `langsmith>=0.8.16`
+> * TypeScript: `langsmith>=0.7.8`
 
 ### Group results by metadata
 
@@ -93,15 +93,15 @@ You can add metadata to examples to categorize and organize them. For example, i
 
 To analyze results by metadata, use the **Group by** icon at the top right of the experiment view and select your desired metadata key. This displays average feedback scores, latency, total tokens, and cost for each metadata group.
 
-<Info>
-  You will only be able to group by example metadata on experiments created after February 20th, 2025. Any experiments before that date can still be grouped by metadata, but only if the metadata is on the experiment traces themselves.
-</Info>
+> [!NOTE]
+>
+> You will only be able to group by example metadata on experiments created after February 20th, 2025. Any experiments before that date can still be grouped by metadata, but only if the metadata is on the experiment traces themselves.
 
 ### Repetitions
 
 If you've run your experiment with [*repetitions*](/langsmith/repetition), click any row to open the details panel. The **Repetition Summary** shows a metrics table, all feedback scores, and lets you toggle through outputs or view individual repetitions with their traces.
 
-<img alt="Repetitions" />
+![Repetitions](https://mintcdn.com/langchain-5e9cc07a/Tdk8epB4BZgbugRX/langsmith/images/repetitions.png?fit=max\&auto=format\&n=Tdk8epB4BZgbugRX\&q=85\&s=15a7c9c1a20042fbcdf1d5f7adcc25de)
 
 ### Compare to another experiment
 
@@ -117,9 +117,7 @@ By designating a baseline, you can:
 * See instant diffs: View performance deltas across all experiments automatically, which means you don't necessarily need to perform manual side-by-side selection.
 * Accelerate assessment: Quickly determine if new iterations meet or exceed your current performance standards.
 
-<img alt="The Experiments tab view with an experiment marked as the baseline at the top of the table. Scores show against the baseline on the rows of other experiments." />
-
-<img alt="The Experiments tab view with an experiment marked as the baseline at the top of the table. Scores show against the baseline on the rows of other experiments." />
+![The Experiments tab view with an experiment marked as the baseline at the top of the table. Scores show against the baseline on the rows of other experiments.](https://mintcdn.com/langchain-5e9cc07a/IYnogEjgWaxIU1jM/langsmith/images/baseline-experiment-view-light.png?fit=max\&auto=format\&n=IYnogEjgWaxIU1jM\&q=85\&s=3d192616f7373ce0f7c5996a6c65cc5e)
 
 To set a baseline for a dataset:
 
@@ -152,52 +150,42 @@ See [how to evaluate an LLM application](/langsmith/evaluate-llm-application#run
 
 The columns only appear when at least one experiment in the dataset has the field set. Once populated, click on a value in these columns to filter or group experiments.
 
-<img alt="The Experiments tab view with metadata columns for models, prompts, and tools." />
-
-<img alt="The Experiments tab view with metadata columns for models, prompts, and tools." />
+![The Experiments tab view with metadata columns for models, prompts, and tools.](https://mintcdn.com/langchain-5e9cc07a/4y4TUahoyWs6oiHd/langsmith/images/metadata-columns-light.png?fit=max\&auto=format\&n=4y4TUahoyWs6oiHd\&q=85\&s=c08271466c5a6b923c1132b6edbb21c8)
 
 You can also filter and group by models, model providers, prompts, prompt commits, tools, and other experiment metadata at the top left of the **Experiments** tab view:
 
-<img alt="The Experiments tab view with metadata columns for models, prompts, and tools." />
-
-<img alt="The Experiments tab view with metadata columns for models, prompts, and tools." />
+![The Experiments tab view with metadata columns for models, prompts, and tools.](https://mintcdn.com/langchain-5e9cc07a/4y4TUahoyWs6oiHd/langsmith/images/metadata-group-by-light.png?fit=max\&auto=format\&n=4y4TUahoyWs6oiHd\&q=85\&s=4240516c40a0673a458786727df3f68d)
 
 ## Download experiment results as a CSV
 
 LangSmith lets you download experiment results as a CSV file for external analysis and sharing. Click the **Download as CSV** icon at the top right of the experiment view.
 
-<Note>
-  The CSV export always includes all columns, regardless of any column customization, sorting, or filtering you have applied in the experiment view. Column visibility settings affect only the on-screen display and are not reflected in the downloaded file.
-</Note>
+> [!NOTE]
+>
+> The CSV export always includes all columns, regardless of any column customization, sorting, or filtering you have applied in the experiment view. Column visibility settings affect only the on-screen display and are not reflected in the downloaded file.
 
-<Note>
-  There is a 5,000 row download limit for experiment results.
-</Note>
+> [!NOTE]
+>
+> There is a 5,000 row download limit for experiment results.
 
 ## Rename an experiment
 
-<Note>
-  Experiment names must be unique per workspace.
-</Note>
+> [!NOTE]
+>
+> Experiment names must be unique per workspace.
 
 You can rename an experiment in the LangSmith UI in the following places:
 
 * **Experiment view**: Rename an experiment by using the pencil icon beside the experiment name.
 
-  <img alt="Edit name in experiment view" />
+  ![Edit name in experiment view](https://mintcdn.com/langchain-5e9cc07a/4y4TUahoyWs6oiHd/langsmith/images/rename-in-experiment-view.png?fit=max\&auto=format\&n=4y4TUahoyWs6oiHd\&q=85\&s=9361c74c51c2e109f7bfd877959eb015)
 
 * **Playground**: A default name with the format `pg::prompt-name::model::uuid` (eg. `pg::gpt-5.4-mini::897ee630`) is automatically assigned. You can rename an experiment immediately after running it by editing its name in the Playground table header.
 
-  <img alt="Edit name in playground" />
+  ![Edit name in playground](https://mintcdn.com/langchain-5e9cc07a/Fr2lazPB4XVeEA7l/langsmith/images/rename-in-playground.png?fit=max\&auto=format\&n=Fr2lazPB4XVeEA7l\&q=85\&s=5b647ff1894376bbb727dabc4d73f039)
 
 ***
 
-<div>
-  <Callout icon="terminal-2">
-    [Connect these docs](/use-these-docs) to your agent of choice via MCP for real-time answers.
-  </Callout>
+[Connect these docs](/use-these-docs) to your agent of choice via MCP for real-time answers.
 
-  <Callout icon="edit">
-    [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/analyze-an-experiment.mdx) or [file an issue](https://github.com/langchain-ai/docs/issues/new/choose).
-  </Callout>
-</div>
+[Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/analyze-an-experiment.mdx) or [file an issue](https://github.com/langchain-ai/docs/issues/new/choose).

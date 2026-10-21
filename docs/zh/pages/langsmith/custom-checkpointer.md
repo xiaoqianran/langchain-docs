@@ -6,17 +6,17 @@
 
 将内置的 Postgres 检查点替换为代理部署中的自定义 BaseCheckpointSaver 实现。
 
-将代理部署到LangSmith时，服务器提供内置的 Postgres 支持的检查指针，用于处理图形运行之间的状态持久性。您可以将其替换为您自己的 [BaseCheckpointSaver](https://reference.langchain.com/python/langgraph/checkpoints/#langgraph.checkpoint.base.BaseCheckpointSaver) 实现，以使用不同的存储后端。
+将代理部署到 LangSmith 时，服务器提供内置的 Postgres 支持的检查指针，用于处理图形运行之间的状态持久性。您可以将其替换为您自己的 [BaseCheckpointSaver](https://reference.langchain.com/python/langgraph/checkpoints/#langgraph.checkpoint.base.BaseCheckpointSaver) 实现，以使用不同的存储后端。
 
 您提供一个生成 `BaseCheckpointSaver` 实例的异步上下文管理器的路径，并且服务器自动管理其生命周期。
 
-<Warning>
-  自定义检查点处于 **alpha** 状态。此功能可能会在次要版本更新中经历重大更改。
-</Warning>
+> [!警告]
+>
+> 自定义检查点处于 **alpha** 状态。此功能可能会在次要版本更新中经历重大更改。
 
-<Tip>
-  要使用 MongoDB 而不是 PostgreSQL 进行检查点存储，请参阅[Configure checkpointer backend](/langsmith/configure-checkpointer)。此页面用于实现完全自定义的存储后端。
-</Tip>
+> [!提示]
+>
+> 要使用 MongoDB 而不是 PostgreSQL 进行检查点存储，请参阅[Configure checkpointer backend](/langsmith/configure-checkpointer)。此页面用于实现完全自定义的存储后端。
 
 ## 定义检查点
 
@@ -165,12 +165,6 @@ langgraph dev --no-browser
 
 ***
 
-<div>
-  <Callout icon="terminal-2">
-    [Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
-  </Callout>
+[Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
 
-  <Callout icon="edit">
-    [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/custom-checkpointer.mdx) 或 [file an issue](https://github.com/langchain-ai/docs/issues/new/choose)。
-  </Callout>
-</div>
+[Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/custom-checkpointer.mdx) 或 [file an issue](https://github.com/langchain-ai/docs/issues/new/choose)。

@@ -14,9 +14,9 @@ In practice, skills and memory sit on a spectrum. For more on when to use each, 
 
 Use `/remember` to explicitly prompt the agent to update its memory and skills from the current conversation.
 
-<Tip>
-  Building a custom agent with the SDK? See [Memory](/oss/python/deepagents/memory) for programmatic memory backends.
-</Tip>
+> [!TIP]
+>
+> Building a custom agent with the SDK? See [Memory](/oss/python/deepagents/memory) for programmatic memory backends.
 
 ## Memory
 
@@ -62,9 +62,9 @@ It remembers for future sessions:
 
 Both files are appended to the system prompt at startup.
 
-<Tip>
-  To generate a repository wiki and wire pointers into `AGENTS.md` and `CLAUDE.md` for coding agents, see [OpenWiki](/oss/openwiki/overview).
-</Tip>
+> [!TIP]
+>
+> To generate a repository wiki and wire pointers into `AGENTS.md` and `CLAUDE.md` for coding agents, see [OpenWiki](/oss/openwiki/overview).
 
 ### How memory works
 
@@ -104,33 +104,31 @@ At startup, Deep Agents Code reads the name and description from each `SKILL.md`
 
 ### Add a skill
 
-<Steps>
-  <Step title="Create a skill">
-    ```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-    # User skill (stored in ~/.deepagents/<agent_name>/skills/)
-    dcode skills create test-skill
+**1. Create a skill**
 
-    # Project skill (stored in .deepagents/skills/)
-    dcode skills create test-skill --project
-    ```
+```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+# User skill (stored in ~/.deepagents/<agent_name>/skills/)
+dcode skills create test-skill
 
-    This generates:
+# Project skill (stored in .deepagents/skills/)
+dcode skills create test-skill --project
+```
 
-    ```plaintext theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-    skills/
-    └── test-skill
-        └── SKILL.md
-    ```
-  </Step>
+This generates:
 
-  <Step title="Edit SKILL.md">
-    Open the generated `SKILL.md` and edit the file to include your instructions.
-  </Step>
+```plaintext theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+skills/
+└── test-skill
+    └── SKILL.md
+```
 
-  <Step title="Add optional resources">
-    Optionally add additional scripts or other resources to the `test-skill` folder. For more information, see [Usage](/oss/python/deepagents/skills#add-supporting-resources).
-  </Step>
-</Steps>
+**2. Edit SKILL.md**
+
+Open the generated `SKILL.md` and edit the file to include your instructions.
+
+**3. Add optional resources**
+
+Optionally add additional scripts or other resources to the `test-skill` folder. For more information, see [Usage](/oss/python/deepagents/skills#add-supporting-resources).
 
 You can also copy existing skills directly to the agent's folder:
 
@@ -153,9 +151,9 @@ npx skills ls -a deepagents -g
 
 Global installs (`-g`) symlink skills into `~/.deepagents/agent/skills/`—the default agent's user-level skills directory. Project-level installs (omit `-g`) place skills in `.deepagents/skills/` relative to the current directory, making them available to any agent running in that project regardless of agent name.
 
-<Note>
-  Global installs target the default `agent` directory only. If you use a custom-named agent, either use project-level installs or manually symlink the skill into `~/.deepagents/{your-agent}/skills/`.
-</Note>
+> [!NOTE]
+>
+> Global installs target the default `agent` directory only. If you use a custom-named agent, either use project-level installs or manually symlink the skill into `~/.deepagents/{your-agent}/skills/`.
 
 ### Skill discovery
 
@@ -211,9 +209,9 @@ dcode --skill code-review -n 'review this patch' -q
 
 Headless runs cannot show a trust prompt. If a skill resolves outside the trusted roots, Deep Agents Code denies the turn and suggests adding the directory to `[skills].extra_allowed_dirs`.
 
-<Note>
-  `--skill` with `--quiet` or `--no-stream` requires `-n` (non-interactive mode).
-</Note>
+> [!NOTE]
+>
+> `--skill` with `--quiet` or `--no-stream` requires `-n` (non-interactive mode).
 
 ### List skills
 
@@ -231,12 +229,6 @@ dcode skills info test-skill --project
 
 ***
 
-<div>
-  <Callout icon="terminal-2">
-    [Connect these docs](/use-these-docs) to your agent of choice via MCP for real-time answers.
-  </Callout>
+[Connect these docs](/use-these-docs) to your agent of choice via MCP for real-time answers.
 
-  <Callout icon="edit">
-    [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/oss/deepagents/code/memory-and-skills.mdx) or [file an issue](https://github.com/langchain-ai/docs/issues/new/choose).
-  </Callout>
-</div>
+[Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/oss/deepagents/code/memory-and-skills.mdx) or [file an issue](https://github.com/langchain-ai/docs/issues/new/choose).

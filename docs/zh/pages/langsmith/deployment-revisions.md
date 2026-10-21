@@ -2,57 +2,55 @@
 
 <!-- langchain-docs: Revisions | https://docs.langchain.com/langsmith/deployment-revisions -->
 
-# Revisions
+# 修订
 
 创建和管理 LangSmith 云部署的修订。
 
 修订将应用程序的一个版本部署到现有的云部署。创建修订版本以发布代码更改，而无需创建另一个部署。
 
-## Create a revision
+## 创建修订版
 
-当您[create a deployment](/langsmith/deploy-to-cloud)时，LangSmith创建其第一个修订版。使用 LangSmith UI 或 LangGraph CLI 创建后续修订。
+当您 [create a deployment](/langsmith/deploy-to-cloud) 时，LangSmith 创建其第一个修订版。使用 LangSmith UI 或 LangGraph CLI 创建后续修订。
 
-<Tabs>
-  <Tab title="LangSmith UI">
-    从[LangSmith UI](https://smith.langchain.com?utm_source=docs\&utm_medium=cta\&utm_campaign=langsmith-signup\&utm_content=langsmith-deployment-revisions)，选择**部署**，然后选择一个部署。
+**LangSmith用户界面**
 
-    1. 在 **部署** 视图的右上角，选择 **+ 新修订**。
-    2. 在 **New Revision** 模式中，指定 [API configuration file](/langsmith/cli#configuration-file) 的完整路径，包括文件名。例如，如果文件位于存储库根目录中，请输入 `langgraph.json`。
-    3. 选择是否通过[Studio](/langsmith/studio)使部署可共享。
-    4. 添加、删除或更新环境变量和机密。现有值已预先填充。欲了解更多信息，请参阅[Environment variables](/langsmith/env-var-cloud)。
-    5. 选择**提交**。 LangSmith 将修订排队以进行部署。
-  </Tab>
+从[LangSmith UI](https://smith.langchain.com?utm_source=docs\&utm_medium=cta\&utm_campaign=langsmith-signup\&utm_content=langsmith-deployment-revisions)，选择“**部署**”，然后选择一个部署。
 
-  <Tab title="LangGraph CLI">
-    从项目目录再次运行 `langgraph deploy`。该命令按名称查找现有部署，并使用最新的代码更改创建修订：
+1. 在 **部署** 视图的右上角，选择 **+ 新修订**。
+2. 在 **New Revision** 模式中，指定 [API configuration file](/langsmith/cli#configuration-file) 的完整路径，包括文件名。例如，如果文件位于存储库根目录中，请输入 `langgraph.json`。
+3. 选择是否通过[Studio](/langsmith/studio)使部署可共享。
+4. 添加、删除或更新环境变量和机密。现有值已预先填充。欲了解更多信息，请参阅[Environment variables](/langsmith/env-var-cloud)。
+5. 选择**提交**。 LangSmith 将修订排队以进行部署。
 
-    ```shell theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-    langgraph deploy
-    ```
+**LangGraph CLI**
 
-    要按 ID 定位部署，请运行：```shell theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-    langgraph deploy --deployment-id <DEPLOYMENT_ID>
-    ```
+从项目目录再次运行 `langgraph deploy`。该命令按名称查找现有部署，并使用最新的代码更改创建修订：
 
-    要查看部署 ID，请运行：
+```shell theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+langgraph deploy
+```
 
-    ```shell theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-    langgraph deploy list
-    ```
+要按 ID 定位部署，请运行：
 
-    <Note>
-      `langgraph deploy` 只能更新最初使用 `langgraph deploy` 创建的部署。使用 LangSmith UI 更新通过 UI 或 GitHub 集成创建的部署。
-    </Note>
-  </Tab>
-</Tabs>
+```shell theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+langgraph deploy --deployment-id <DEPLOYMENT_ID>
+```
+
+要查看部署 ID，请运行：
+
+```shell theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+langgraph deploy list
+```> [!注意]
+>
+> `langgraph deploy` 只能更新最初使用 `langgraph deploy` 创建的部署。使用 LangSmith UI 更新通过 UI 或 GitHub 集成创建的部署。
 
 ## 中断修订
 
 仅当修订版卡住并阻止您部署另一个修订版时才中断该修订版。
 
-<Warning>
-  中断的修订具有未定义的行为。 LangChain将来可能会删除此功能。
-</Warning>
+> [!警告]
+>
+> 中断的修订具有未定义的行为。 LangChain 将来可能会删除此功能。
 
 要中断修订：
 
@@ -68,12 +66,6 @@
 
 ***
 
-<div>
-  <Callout icon="terminal-2">
-    [Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
-  </Callout>
+[Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
 
-  <Callout icon="edit">
-    [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/deployment-revisions.mdx) 或 [file an issue](https://github.com/langchain-ai/docs/issues/new/choose)。
-  </Callout>
-</div>
+[Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/deployment-revisions.mdx) 或 [file an issue](https://github.com/langchain-ai/docs/issues/new/choose)。

@@ -15,9 +15,9 @@ The agent you build will:
 3. Perform exploratory data analysis and generate visualizations
 4. Share results to a Slack channel
 
-<Tip>
-  The Slack integration is optional. The agent can be modified to save artifacts locally or share results through other channels.
-</Tip>
+> [!TIP]
+>
+> The Slack integration is optional. The agent can be modified to save artifacts locally or share results through other channels.
 
 ### Key concepts
 
@@ -48,9 +48,9 @@ For this tutorial, we'll use:
 pip install langsmith slack-sdk
 ```
 
-<Note>
-  These services are optional, though a sandboxed environment is highly recommended for any production use. You can alternatively use the local shell backend (with important [security considerations](/oss/python/deepagents/backends#localshellbackend-local-shell)) or download artifacts directly from the backend.
-</Note>
+> [!NOTE]
+>
+> These services are optional, though a sandboxed environment is highly recommended for any production use. You can alternatively use the local shell backend (with important [security considerations](/oss/python/deepagents/backends#localshellbackend-local-shell)) or download artifacts directly from the backend.
 
 ### LangSmith
 
@@ -79,150 +79,138 @@ Deep Agents use [backends](/oss/python/deepagents/backends) to execute code in s
 
 The examples below use a [LangSmith sandbox](/langsmith/sandboxes). For other providers, see [available providers](/oss/python/deepagents/sandboxes#available-providers).
 
-<Tabs>
-  <Tab title="LangSmith">
-    <CodeGroup>
-      ```bash pip theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-      pip install langsmith
-      ```
+**LangSmith**
 
-      ```bash uv theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-      uv add langsmith
-      ```
-    </CodeGroup>
+```bash pip theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+pip install langsmith
+```
 
-    ```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-    from deepagents.backends.langsmith import LangSmithSandbox
-    from langsmith.sandbox import SandboxClient
+```bash uv theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+uv add langsmith
+```
 
-    client = SandboxClient()
-    ls_sandbox = client.create_sandbox()
-    backend = LangSmithSandbox(sandbox=ls_sandbox)
-    ```
-  </Tab>
+```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+from deepagents.backends.langsmith import LangSmithSandbox
+from langsmith.sandbox import SandboxClient
 
-  <Tab title="Local shell">
-    <Warning>
-      This backend provides unrestricted filesystem and shell access. Use only in controlled environments for development and testing. See the [security considerations](/oss/python/deepagents/backends#localshellbackend-local-shell) for more details.
-    </Warning>
+client = SandboxClient()
+ls_sandbox = client.create_sandbox()
+backend = LangSmithSandbox(sandbox=ls_sandbox)
+```
 
-    ```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-    from deepagents.backends import LocalShellBackend
+**Local shell**
 
-    backend = LocalShellBackend(
-        root_dir=".",
-        virtual_mode=True,
-        env={"PATH": "/usr/bin:/bin"},
-    )
-    ```
-  </Tab>
+> [!WARNING]
+>
+> This backend provides unrestricted filesystem and shell access. Use only in controlled environments for development and testing. See the [security considerations](/oss/python/deepagents/backends#localshellbackend-local-shell) for more details.
 
-  <Tab title="AgentCore">
-    <CodeGroup>
-      ```bash pip theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-      pip install langchain-agentcore-codeinterpreter
-      ```
+```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+from deepagents.backends import LocalShellBackend
 
-      ```bash uv theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-      uv add langchain-agentcore-codeinterpreter
-      ```
-    </CodeGroup>
+backend = LocalShellBackend(
+    root_dir=".",
+    virtual_mode=True,
+    env={"PATH": "/usr/bin:/bin"},
+)
+```
 
-    ```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-    from bedrock_agentcore.tools.code_interpreter_client import CodeInterpreter
-    from langchain_agentcore_codeinterpreter import AgentCoreSandbox
+**AgentCore**
 
-    interpreter = CodeInterpreter(region="us-west-2")
-    interpreter.start()
-    backend = AgentCoreSandbox(interpreter=interpreter)
-    ```
-  </Tab>
+```bash pip theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+pip install langchain-agentcore-codeinterpreter
+```
 
-  <Tab title="Daytona">
-    <CodeGroup>
-      ```bash pip theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-      pip install langchain-daytona
-      ```
+```bash uv theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+uv add langchain-agentcore-codeinterpreter
+```
 
-      ```bash uv theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-      uv add langchain-daytona
-      ```
-    </CodeGroup>
+```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+from bedrock_agentcore.tools.code_interpreter_client import CodeInterpreter
+from langchain_agentcore_codeinterpreter import AgentCoreSandbox
 
-    ```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-    from daytona import Daytona
+interpreter = CodeInterpreter(region="us-west-2")
+interpreter.start()
+backend = AgentCoreSandbox(interpreter=interpreter)
+```
 
-    from langchain_daytona import DaytonaSandbox
+**Daytona**
 
-    sandbox = Daytona().create()
-    backend = DaytonaSandbox(sandbox=sandbox)
-    ```
+```bash pip theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+pip install langchain-daytona
+```
 
-    Verify the sandbox is ready:
+```bash uv theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+uv add langchain-daytona
+```
 
-    ```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-    result = backend.execute("echo ready")
-    print(result)
-    # ExecuteResponse(output='ready', exit_code=0, ...)
-    ```
-  </Tab>
+```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+from daytona import Daytona
 
-  <Tab title="E2B">
-    <CodeGroup>
-      ```bash pip theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-      pip install langchain-e2b
-      ```
+from langchain_daytona import DaytonaSandbox
 
-      ```bash uv theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-      uv add langchain-e2b
-      ```
-    </CodeGroup>
+sandbox = Daytona().create()
+backend = DaytonaSandbox(sandbox=sandbox)
+```
 
-    ```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-    from e2b import Sandbox
-    from langchain_e2b import E2BSandbox
+Verify the sandbox is ready:
 
-    e2b_sandbox = Sandbox.create()
-    backend = E2BSandbox(sandbox=e2b_sandbox)
-    ```
-  </Tab>
+```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+result = backend.execute("echo ready")
+print(result)
+# ExecuteResponse(output='ready', exit_code=0, ...)
+```
 
-  <Tab title="Modal">
-    ```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-    import modal
+**E2B**
 
-    from langchain_modal import ModalSandbox
+```bash pip theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+pip install langchain-e2b
+```
 
-    app = modal.App.lookup("your-app")
-    modal_sandbox = modal.Sandbox.create(app=app)
-    backend = ModalSandbox(sandbox=modal_sandbox)
-    ```
-  </Tab>
+```bash uv theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+uv add langchain-e2b
+```
 
-  <Tab title="Runloop">
-    <CodeGroup>
-      ```bash pip theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-      pip install langchain-runloop
-      ```
+```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+from e2b import Sandbox
+from langchain_e2b import E2BSandbox
 
-      ```bash uv theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-      uv add langchain-runloop
-      ```
-    </CodeGroup>
+e2b_sandbox = Sandbox.create()
+backend = E2BSandbox(sandbox=e2b_sandbox)
+```
 
-    ```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-    from runloop_api_client import RunloopSDK
+**Modal**
 
-    from langchain_runloop import RunloopSandbox
+```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+import modal
 
-    api_key = "..."
-    client = RunloopSDK(bearer_token=api_key)
+from langchain_modal import ModalSandbox
 
-    devbox = client.devbox.create()
-    backend = RunloopSandbox(devbox=devbox)
-    ```
-  </Tab>
-</Tabs>
+app = modal.App.lookup("your-app")
+modal_sandbox = modal.Sandbox.create(app=app)
+backend = ModalSandbox(sandbox=modal_sandbox)
+```
+
+**Runloop**
+
+```bash pip theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+pip install langchain-runloop
+```
+
+```bash uv theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+uv add langchain-runloop
+```
+
+```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+from runloop_api_client import RunloopSDK
+
+from langchain_runloop import RunloopSandbox
+
+api_key = "..."
+client = RunloopSDK(bearer_token=api_key)
+
+devbox = client.devbox.create()
+backend = RunloopSandbox(devbox=devbox)
+```
 
 ### Upload sample data
 
@@ -291,9 +279,9 @@ def slack_send_message(text: str, file_path: str | None = None) -> str:
     return "Message sent."
 ```
 
-<Note>
-  It is generally good practice to avoid adding credentials and other secrets to the sandbox. Here we manage the Slack token outside the sandbox in a tool.
-</Note>
+> [!NOTE]
+>
+> It is generally good practice to avoid adding credentials and other secrets to the sandbox. Here we manage the Slack token outside the sandbox in a tool.
 
 ## Enable task planning
 
@@ -714,21 +702,19 @@ View the full [LangSmith trace](https://smith.langchain.com/public/ac2443a8-16ad
 
 The agent successfully analyzes the data and shares a comprehensive report with visualizations to Slack:
 
-<Frame>
-  <img alt="Sales analysis results in Slack" />
-</Frame>
+![Sales analysis results in Slack](https://mintcdn.com/langchain-5e9cc07a/7KAsBk-8tguhrRJ6/images/data_analysis_slack_response.png?fit=max\&auto=format\&n=7KAsBk-8tguhrRJ6\&q=85\&s=b0a89738510117d55b35fc7a10265053)
 
-<Tip>
-  You can download artifacts directly from the backend without using external tools:
+> [!TIP]
+>
+> You can download artifacts directly from the backend without using external tools:
+>
+> ```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> backend.download_files(list_of_filepaths)
+> ```
 
-  ```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  backend.download_files(list_of_filepaths)
-  ```
-</Tip>
-
-<Note>
-  See [provider guides](/oss/python/deepagents/sandboxes#available-providers) for how to clean up the sandbox once finished.
-</Note>
+> [!NOTE]
+>
+> See [provider guides](/oss/python/deepagents/sandboxes#available-providers) for how to clean up the sandbox once finished.
 
 ## Next steps
 
@@ -743,12 +729,6 @@ Now that you've built a data analysis agent, explore these resources to extend i
 
 ***
 
-<div>
-  <Callout icon="terminal-2">
-    [Connect these docs](/use-these-docs) to your agent of choice via MCP for real-time answers.
-  </Callout>
+[Connect these docs](/use-these-docs) to your agent of choice via MCP for real-time answers.
 
-  <Callout icon="edit">
-    [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/oss/deepagents/data-analysis.mdx) or [file an issue](https://github.com/langchain-ai/docs/issues/new/choose).
-  </Callout>
-</div>
+[Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/oss/deepagents/data-analysis.mdx) or [file an issue](https://github.com/langchain-ai/docs/issues/new/choose).

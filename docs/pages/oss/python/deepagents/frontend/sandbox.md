@@ -16,8 +16,6 @@ the **custom API routes** that expose the sandbox filesystem to it. For sandbox
 providers, lifecycle scoping, seeding files, secrets, deployment, and production
 `useStream` configuration, see [Going to production](/oss/python/deepagents/going-to-production).
 
-<PatternEmbed />
-
 ## Architecture
 
 This setup has three parts:
@@ -121,239 +119,237 @@ lookup function between them.
 
 ### Resolve the sandbox from thread metadata
 
-<CodeGroup>
-  ```python Google theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  from deepagents import create_deep_agent
-  from deepagents.backends.langsmith import LangSmithSandbox
-  from langgraph.config import get_config
+```python Google theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+from deepagents import create_deep_agent
+from deepagents.backends.langsmith import LangSmithSandbox
+from langgraph.config import get_config
 
 
-  def get_or_create_sandbox_for_thread(thread_id: str) -> LangSmithSandbox:
-      if not thread_id:
-          raise ValueError("thread_id is required")
-      # Look up sandbox_id from thread metadata, create if missing, and seed files.
-      raise NotImplementedError(
-          "Implement sandbox lookup and creation for your deployment environment."
-      )
+def get_or_create_sandbox_for_thread(thread_id: str) -> LangSmithSandbox:
+    if not thread_id:
+        raise ValueError("thread_id is required")
+    # Look up sandbox_id from thread metadata, create if missing, and seed files.
+    raise NotImplementedError(
+        "Implement sandbox lookup and creation for your deployment environment."
+    )
 
 
-  def get_thread_id_from_config() -> str:
-      configurable = get_config().get("configurable", {})
-      thread_id = configurable.get("thread_id")
-      if not thread_id:
-          raise ValueError("No thread_id, agent must run on a thread")
-      return thread_id
+def get_thread_id_from_config() -> str:
+    configurable = get_config().get("configurable", {})
+    thread_id = configurable.get("thread_id")
+    if not thread_id:
+        raise ValueError("No thread_id, agent must run on a thread")
+    return thread_id
 
 
-  def agent():
-      return create_deep_agent(
-          model="google_genai:gemini-3.6-flash",
-          backend=lambda _runtime: get_or_create_sandbox_for_thread(
-              get_thread_id_from_config()
-          ),
-      )
-  ```
+def agent():
+    return create_deep_agent(
+        model="google_genai:gemini-3.6-flash",
+        backend=lambda _runtime: get_or_create_sandbox_for_thread(
+            get_thread_id_from_config()
+        ),
+    )
+```
 
-  ```python OpenAI theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  from deepagents import create_deep_agent
-  from deepagents.backends.langsmith import LangSmithSandbox
-  from langgraph.config import get_config
-
-
-  def get_or_create_sandbox_for_thread(thread_id: str) -> LangSmithSandbox:
-      if not thread_id:
-          raise ValueError("thread_id is required")
-      # Look up sandbox_id from thread metadata, create if missing, and seed files.
-      raise NotImplementedError(
-          "Implement sandbox lookup and creation for your deployment environment."
-      )
+```python OpenAI theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+from deepagents import create_deep_agent
+from deepagents.backends.langsmith import LangSmithSandbox
+from langgraph.config import get_config
 
 
-  def get_thread_id_from_config() -> str:
-      configurable = get_config().get("configurable", {})
-      thread_id = configurable.get("thread_id")
-      if not thread_id:
-          raise ValueError("No thread_id, agent must run on a thread")
-      return thread_id
+def get_or_create_sandbox_for_thread(thread_id: str) -> LangSmithSandbox:
+    if not thread_id:
+        raise ValueError("thread_id is required")
+    # Look up sandbox_id from thread metadata, create if missing, and seed files.
+    raise NotImplementedError(
+        "Implement sandbox lookup and creation for your deployment environment."
+    )
 
 
-  def agent():
-      return create_deep_agent(
-          model="openai:gpt-5.5",
-          backend=lambda _runtime: get_or_create_sandbox_for_thread(
-              get_thread_id_from_config()
-          ),
-      )
-  ```
-
-  ```python Anthropic theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  from deepagents import create_deep_agent
-  from deepagents.backends.langsmith import LangSmithSandbox
-  from langgraph.config import get_config
+def get_thread_id_from_config() -> str:
+    configurable = get_config().get("configurable", {})
+    thread_id = configurable.get("thread_id")
+    if not thread_id:
+        raise ValueError("No thread_id, agent must run on a thread")
+    return thread_id
 
 
-  def get_or_create_sandbox_for_thread(thread_id: str) -> LangSmithSandbox:
-      if not thread_id:
-          raise ValueError("thread_id is required")
-      # Look up sandbox_id from thread metadata, create if missing, and seed files.
-      raise NotImplementedError(
-          "Implement sandbox lookup and creation for your deployment environment."
-      )
+def agent():
+    return create_deep_agent(
+        model="openai:gpt-5.5",
+        backend=lambda _runtime: get_or_create_sandbox_for_thread(
+            get_thread_id_from_config()
+        ),
+    )
+```
+
+```python Anthropic theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+from deepagents import create_deep_agent
+from deepagents.backends.langsmith import LangSmithSandbox
+from langgraph.config import get_config
 
 
-  def get_thread_id_from_config() -> str:
-      configurable = get_config().get("configurable", {})
-      thread_id = configurable.get("thread_id")
-      if not thread_id:
-          raise ValueError("No thread_id, agent must run on a thread")
-      return thread_id
+def get_or_create_sandbox_for_thread(thread_id: str) -> LangSmithSandbox:
+    if not thread_id:
+        raise ValueError("thread_id is required")
+    # Look up sandbox_id from thread metadata, create if missing, and seed files.
+    raise NotImplementedError(
+        "Implement sandbox lookup and creation for your deployment environment."
+    )
 
 
-  def agent():
-      return create_deep_agent(
-          model="anthropic:claude-sonnet-5",
-          backend=lambda _runtime: get_or_create_sandbox_for_thread(
-              get_thread_id_from_config()
-          ),
-      )
-  ```
-
-  ```python OpenRouter theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  from deepagents import create_deep_agent
-  from deepagents.backends.langsmith import LangSmithSandbox
-  from langgraph.config import get_config
+def get_thread_id_from_config() -> str:
+    configurable = get_config().get("configurable", {})
+    thread_id = configurable.get("thread_id")
+    if not thread_id:
+        raise ValueError("No thread_id, agent must run on a thread")
+    return thread_id
 
 
-  def get_or_create_sandbox_for_thread(thread_id: str) -> LangSmithSandbox:
-      if not thread_id:
-          raise ValueError("thread_id is required")
-      # Look up sandbox_id from thread metadata, create if missing, and seed files.
-      raise NotImplementedError(
-          "Implement sandbox lookup and creation for your deployment environment."
-      )
+def agent():
+    return create_deep_agent(
+        model="anthropic:claude-sonnet-5",
+        backend=lambda _runtime: get_or_create_sandbox_for_thread(
+            get_thread_id_from_config()
+        ),
+    )
+```
+
+```python OpenRouter theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+from deepagents import create_deep_agent
+from deepagents.backends.langsmith import LangSmithSandbox
+from langgraph.config import get_config
 
 
-  def get_thread_id_from_config() -> str:
-      configurable = get_config().get("configurable", {})
-      thread_id = configurable.get("thread_id")
-      if not thread_id:
-          raise ValueError("No thread_id, agent must run on a thread")
-      return thread_id
+def get_or_create_sandbox_for_thread(thread_id: str) -> LangSmithSandbox:
+    if not thread_id:
+        raise ValueError("thread_id is required")
+    # Look up sandbox_id from thread metadata, create if missing, and seed files.
+    raise NotImplementedError(
+        "Implement sandbox lookup and creation for your deployment environment."
+    )
 
 
-  def agent():
-      return create_deep_agent(
-          model="openrouter:z-ai/glm-5.2",
-          backend=lambda _runtime: get_or_create_sandbox_for_thread(
-              get_thread_id_from_config()
-          ),
-      )
-  ```
-
-  ```python Fireworks theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  from deepagents import create_deep_agent
-  from deepagents.backends.langsmith import LangSmithSandbox
-  from langgraph.config import get_config
+def get_thread_id_from_config() -> str:
+    configurable = get_config().get("configurable", {})
+    thread_id = configurable.get("thread_id")
+    if not thread_id:
+        raise ValueError("No thread_id, agent must run on a thread")
+    return thread_id
 
 
-  def get_or_create_sandbox_for_thread(thread_id: str) -> LangSmithSandbox:
-      if not thread_id:
-          raise ValueError("thread_id is required")
-      # Look up sandbox_id from thread metadata, create if missing, and seed files.
-      raise NotImplementedError(
-          "Implement sandbox lookup and creation for your deployment environment."
-      )
+def agent():
+    return create_deep_agent(
+        model="openrouter:z-ai/glm-5.2",
+        backend=lambda _runtime: get_or_create_sandbox_for_thread(
+            get_thread_id_from_config()
+        ),
+    )
+```
+
+```python Fireworks theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+from deepagents import create_deep_agent
+from deepagents.backends.langsmith import LangSmithSandbox
+from langgraph.config import get_config
 
 
-  def get_thread_id_from_config() -> str:
-      configurable = get_config().get("configurable", {})
-      thread_id = configurable.get("thread_id")
-      if not thread_id:
-          raise ValueError("No thread_id, agent must run on a thread")
-      return thread_id
+def get_or_create_sandbox_for_thread(thread_id: str) -> LangSmithSandbox:
+    if not thread_id:
+        raise ValueError("thread_id is required")
+    # Look up sandbox_id from thread metadata, create if missing, and seed files.
+    raise NotImplementedError(
+        "Implement sandbox lookup and creation for your deployment environment."
+    )
 
 
-  def agent():
-      return create_deep_agent(
-          model="fireworks:accounts/fireworks/models/glm-5p2",
-          backend=lambda _runtime: get_or_create_sandbox_for_thread(
-              get_thread_id_from_config()
-          ),
-      )
-  ```
-
-  ```python Baseten theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  from deepagents import create_deep_agent
-  from deepagents.backends.langsmith import LangSmithSandbox
-  from langgraph.config import get_config
+def get_thread_id_from_config() -> str:
+    configurable = get_config().get("configurable", {})
+    thread_id = configurable.get("thread_id")
+    if not thread_id:
+        raise ValueError("No thread_id, agent must run on a thread")
+    return thread_id
 
 
-  def get_or_create_sandbox_for_thread(thread_id: str) -> LangSmithSandbox:
-      if not thread_id:
-          raise ValueError("thread_id is required")
-      # Look up sandbox_id from thread metadata, create if missing, and seed files.
-      raise NotImplementedError(
-          "Implement sandbox lookup and creation for your deployment environment."
-      )
+def agent():
+    return create_deep_agent(
+        model="fireworks:accounts/fireworks/models/glm-5p2",
+        backend=lambda _runtime: get_or_create_sandbox_for_thread(
+            get_thread_id_from_config()
+        ),
+    )
+```
+
+```python Baseten theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+from deepagents import create_deep_agent
+from deepagents.backends.langsmith import LangSmithSandbox
+from langgraph.config import get_config
 
 
-  def get_thread_id_from_config() -> str:
-      configurable = get_config().get("configurable", {})
-      thread_id = configurable.get("thread_id")
-      if not thread_id:
-          raise ValueError("No thread_id, agent must run on a thread")
-      return thread_id
+def get_or_create_sandbox_for_thread(thread_id: str) -> LangSmithSandbox:
+    if not thread_id:
+        raise ValueError("thread_id is required")
+    # Look up sandbox_id from thread metadata, create if missing, and seed files.
+    raise NotImplementedError(
+        "Implement sandbox lookup and creation for your deployment environment."
+    )
 
 
-  def agent():
-      return create_deep_agent(
-          model="baseten:zai-org/GLM-5.2",
-          backend=lambda _runtime: get_or_create_sandbox_for_thread(
-              get_thread_id_from_config()
-          ),
-      )
-  ```
-
-  ```python Ollama theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  from deepagents import create_deep_agent
-  from deepagents.backends.langsmith import LangSmithSandbox
-  from langgraph.config import get_config
+def get_thread_id_from_config() -> str:
+    configurable = get_config().get("configurable", {})
+    thread_id = configurable.get("thread_id")
+    if not thread_id:
+        raise ValueError("No thread_id, agent must run on a thread")
+    return thread_id
 
 
-  def get_or_create_sandbox_for_thread(thread_id: str) -> LangSmithSandbox:
-      if not thread_id:
-          raise ValueError("thread_id is required")
-      # Look up sandbox_id from thread metadata, create if missing, and seed files.
-      raise NotImplementedError(
-          "Implement sandbox lookup and creation for your deployment environment."
-      )
+def agent():
+    return create_deep_agent(
+        model="baseten:zai-org/GLM-5.2",
+        backend=lambda _runtime: get_or_create_sandbox_for_thread(
+            get_thread_id_from_config()
+        ),
+    )
+```
+
+```python Ollama theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+from deepagents import create_deep_agent
+from deepagents.backends.langsmith import LangSmithSandbox
+from langgraph.config import get_config
 
 
-  def get_thread_id_from_config() -> str:
-      configurable = get_config().get("configurable", {})
-      thread_id = configurable.get("thread_id")
-      if not thread_id:
-          raise ValueError("No thread_id, agent must run on a thread")
-      return thread_id
+def get_or_create_sandbox_for_thread(thread_id: str) -> LangSmithSandbox:
+    if not thread_id:
+        raise ValueError("thread_id is required")
+    # Look up sandbox_id from thread metadata, create if missing, and seed files.
+    raise NotImplementedError(
+        "Implement sandbox lookup and creation for your deployment environment."
+    )
 
 
-  def agent():
-      return create_deep_agent(
-          model="ollama:north-mini-code-1.0",
-          backend=lambda _runtime: get_or_create_sandbox_for_thread(
-              get_thread_id_from_config()
-          ),
-      )
-  ```
-</CodeGroup>
+def get_thread_id_from_config() -> str:
+    configurable = get_config().get("configurable", {})
+    thread_id = configurable.get("thread_id")
+    if not thread_id:
+        raise ValueError("No thread_id, agent must run on a thread")
+    return thread_id
 
-<Note>
-  Similar to the example in [Going to production](/oss/python/deepagents/going-to-production#lifecycle), the
-  agent is an async graph factory invoked on each run. Store the sandbox ID on
-  thread metadata so custom `http.app` routes can call the same
-  `getOrCreateSandboxForThread` helper. Going to production uses provider label
-  lookup instead when the LangGraph SDK is the only entry point.
-</Note>
+
+def agent():
+    return create_deep_agent(
+        model="ollama:north-mini-code-1.0",
+        backend=lambda _runtime: get_or_create_sandbox_for_thread(
+            get_thread_id_from_config()
+        ),
+    )
+```
+
+> [!NOTE]
+>
+> Similar to the example in [Going to production](/oss/python/deepagents/going-to-production#lifecycle), the
+> agent is an async graph factory invoked on each run. Store the sandbox ID on
+> thread metadata so custom `http.app` routes can call the same
+> `getOrCreateSandboxForThread` helper. Going to production uses provider label
+> lookup instead when the LangGraph SDK is the only entry point.
 
 ### Seed project files
 
@@ -364,10 +360,10 @@ for seeding patterns, provider examples, and syncing
 the sandbox. For LangSmith sandboxes, pass `templateName` from a
 [sandbox snapshot](/langsmith/sandbox-snapshots) when creating the container.
 
-<Tip>
-  Run `sandbox.execute("cd /app && npm install")` after uploading
-  `package.json` so dependencies are ready before the first agent turn.
-</Tip>
+> [!TIP]
+>
+> Run `sandbox.execute("cd /app && npm install")` after uploading
+> `package.json` so dependencies are ready before the first agent turn.
 
 ## Adding the file browsing API
 
@@ -421,13 +417,13 @@ async def read_file(
     return {"path": filePath, "content": results[0].content.decode()}
 ```
 
-<Note>
-  Both the agent's backend and the API server call the same
-  `get_or_create_sandbox_for_thread` function. This ensures they always resolve
-
-  to the same sandbox for a given thread. The sandbox ID in thread metadata
-  is the single source of truth—no in-memory caches needed.
-</Note>
+> [!NOTE]
+>
+> Both the agent's backend and the API server call the same
+> `get_or_create_sandbox_for_thread` function. This ensures they always resolve
+>
+> to the same sandbox for a given thread. The sandbox ID in thread metadata
+> is the single source of truth—no in-memory caches needed.
 
 ### Configure `langgraph.json`
 
@@ -452,11 +448,11 @@ for the full set of `langgraph.json` options.
 Your custom routes are available at the same host as the LangGraph API. For
 local development with `langgraph dev`, that's `http://localhost:2024`.
 
-<Note>
-  Custom routes defined in `http.app` take priority over default LangGraph routes. This means you
-  can shadow built-in endpoints if needed, but be careful not to accidentally override routes like
-  `/threads` or `/runs`.
-</Note>
+> [!NOTE]
+>
+> Custom routes defined in `http.app` take priority over default LangGraph routes. This means you
+> can shadow built-in endpoints if needed, but be careful not to accidentally override routes like
+> `/threads` or `/runs`.
 
 ## Building the frontend
 
@@ -553,58 +549,105 @@ from file-mutating tools. When a `write_file` or `edit_file` tool call
 completes, refresh that specific file. When `execute` completes, refresh
 everything (since a shell command could modify any file):
 
-<CodeGroup>
-  ```tsx React theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  import { useStream } from "@langchain/react";
-  import { ToolMessage, AIMessage } from "langchain";
+```tsx React theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+import { useStream } from "@langchain/react";
+import { ToolMessage, AIMessage } from "langchain";
 
-  const FILE_MUTATING_TOOLS = new Set(["write_file", "edit_file", "execute"]);
+const FILE_MUTATING_TOOLS = new Set(["write_file", "edit_file", "execute"]);
 
-  export function IDEPreview() {
-    const stream = useStream<typeof myAgent>({
-      apiUrl: AGENT_URL,
-      assistantId: "deep_agent_ide",
-    });
+export function IDEPreview() {
+  const stream = useStream<typeof myAgent>({
+    apiUrl: AGENT_URL,
+    assistantId: "deep_agent_ide",
+  });
 
-    const processedIds = useRef(new Set<string>());
+  const processedIds = useRef(new Set<string>());
 
-    useEffect(() => {
-      // Build a map of file-mutating tool calls from AI messages
-      const toolCallMap = new Map();
-      for (const msg of stream.messages) {
-        if (!AIMessage.isInstance(msg)) continue;
+  useEffect(() => {
+    // Build a map of file-mutating tool calls from AI messages
+    const toolCallMap = new Map();
+    for (const msg of stream.messages) {
+      if (!AIMessage.isInstance(msg)) continue;
+      for (const tc of msg.tool_calls ?? []) {
+        if (tc.id && FILE_MUTATING_TOOLS.has(tc.name)) {
+          toolCallMap.set(tc.id, { name: tc.name, args: tc.args });
+        }
+      }
+    }
+
+    // When a ToolMessage appears for a file-mutating tool, refresh
+    for (const msg of stream.messages) {
+      if (!ToolMessage.isInstance(msg)) continue;
+      const id = msg.id ?? msg.tool_call_id;
+      if (!id || processedIds.current.has(id)) continue;
+
+      const call = toolCallMap.get(msg.tool_call_id);
+      if (!call) continue;
+      processedIds.current.add(id);
+
+      if (call.name === "write_file" || call.name === "edit_file") {
+        refreshSingleFile(call.args.path ?? call.args.file_path);
+      } else if (call.name === "execute") {
+        refreshTreeAndFiles();
+      }
+    }
+  }, [stream.messages]);
+}
+```
+
+```vue Vue theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+<script setup lang="ts">
+import { useStream } from "@langchain/vue";
+import { ToolMessage, AIMessage } from "langchain";
+import { watch } from "vue";
+
+const FILE_MUTATING_TOOLS = new Set(["write_file", "edit_file", "execute"]);
+const processedIds = new Set<string>();
+
+const stream = useStream<typeof myAgent>({
+  apiUrl: AGENT_URL,
+  assistantId: "deep_agent_ide",
+});
+
+watch(
+  () => stream.messages.value,
+  (messages) => {
+    const toolCallMap = new Map();
+    for (const msg of messages) {
+      if (AIMessage.isInstance(msg)) {
         for (const tc of msg.tool_calls ?? []) {
           if (tc.id && FILE_MUTATING_TOOLS.has(tc.name)) {
             toolCallMap.set(tc.id, { name: tc.name, args: tc.args });
           }
         }
       }
+    }
 
-      // When a ToolMessage appears for a file-mutating tool, refresh
-      for (const msg of stream.messages) {
-        if (!ToolMessage.isInstance(msg)) continue;
-        const id = msg.id ?? msg.tool_call_id;
-        if (!id || processedIds.current.has(id)) continue;
+    for (const msg of messages) {
+      if (!ToolMessage.isInstance(msg)) continue;
+      const id = msg.id ?? msg.tool_call_id;
+      if (!id || processedIds.has(id)) continue;
 
-        const call = toolCallMap.get(msg.tool_call_id);
-        if (!call) continue;
-        processedIds.current.add(id);
+      const call = toolCallMap.get(msg.tool_call_id);
+      if (!call) continue;
+      processedIds.add(id);
 
-        if (call.name === "write_file" || call.name === "edit_file") {
-          refreshSingleFile(call.args.path ?? call.args.file_path);
-        } else if (call.name === "execute") {
-          refreshTreeAndFiles();
-        }
+      if (call.name === "write_file" || call.name === "edit_file") {
+        refreshSingleFile(call.args.path ?? call.args.file_path);
+      } else if (call.name === "execute") {
+        refreshTreeAndFiles();
       }
-    }, [stream.messages]);
-  }
-  ```
+    }
+  },
+  { deep: true },
+);
+</script>
+```
 
-  ```vue Vue theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  <script setup lang="ts">
-  import { useStream } from "@langchain/vue";
+```svelte Svelte theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+<script lang="ts">
+  import { useStream } from "@langchain/svelte";
   import { ToolMessage, AIMessage } from "langchain";
-  import { watch } from "vue";
 
   const FILE_MUTATING_TOOLS = new Set(["write_file", "edit_file", "execute"]);
   const processedIds = new Set<string>();
@@ -614,139 +657,90 @@ everything (since a shell command could modify any file):
     assistantId: "deep_agent_ide",
   });
 
-  watch(
-    () => stream.messages.value,
-    (messages) => {
-      const toolCallMap = new Map();
-      for (const msg of messages) {
-        if (AIMessage.isInstance(msg)) {
-          for (const tc of msg.tool_calls ?? []) {
-            if (tc.id && FILE_MUTATING_TOOLS.has(tc.name)) {
-              toolCallMap.set(tc.id, { name: tc.name, args: tc.args });
-            }
+  $effect(() => {
+    const msgs = stream.messages;
+    const toolCallMap = new Map();
+    for (const msg of msgs) {
+      if (AIMessage.isInstance(msg)) {
+        for (const tc of msg.tool_calls ?? []) {
+          if (tc.id && FILE_MUTATING_TOOLS.has(tc.name)) {
+            toolCallMap.set(tc.id, { name: tc.name, args: tc.args });
           }
         }
       }
-
-      for (const msg of messages) {
-        if (!ToolMessage.isInstance(msg)) continue;
-        const id = msg.id ?? msg.tool_call_id;
-        if (!id || processedIds.has(id)) continue;
-
-        const call = toolCallMap.get(msg.tool_call_id);
-        if (!call) continue;
-        processedIds.add(id);
-
-        if (call.name === "write_file" || call.name === "edit_file") {
-          refreshSingleFile(call.args.path ?? call.args.file_path);
-        } else if (call.name === "execute") {
-          refreshTreeAndFiles();
-        }
-      }
-    },
-    { deep: true },
-  );
-  </script>
-  ```
-
-  ```svelte Svelte theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  <script lang="ts">
-    import { useStream } from "@langchain/svelte";
-    import { ToolMessage, AIMessage } from "langchain";
-
-    const FILE_MUTATING_TOOLS = new Set(["write_file", "edit_file", "execute"]);
-    const processedIds = new Set<string>();
-
-    const stream = useStream<typeof myAgent>({
-      apiUrl: AGENT_URL,
-      assistantId: "deep_agent_ide",
-    });
-
-    $effect(() => {
-      const msgs = stream.messages;
-      const toolCallMap = new Map();
-      for (const msg of msgs) {
-        if (AIMessage.isInstance(msg)) {
-          for (const tc of msg.tool_calls ?? []) {
-            if (tc.id && FILE_MUTATING_TOOLS.has(tc.name)) {
-              toolCallMap.set(tc.id, { name: tc.name, args: tc.args });
-            }
-          }
-        }
-      }
-
-      for (const msg of msgs) {
-        if (!ToolMessage.isInstance(msg)) continue;
-        const id = msg.id ?? msg.tool_call_id;
-        if (!id || processedIds.has(id)) continue;
-
-        const call = toolCallMap.get(msg.tool_call_id);
-        if (!call) continue;
-        processedIds.add(id);
-
-        if (call.name === "write_file" || call.name === "edit_file") {
-          refreshSingleFile(call.args.path ?? call.args.file_path);
-        } else if (call.name === "execute") {
-          refreshTreeAndFiles();
-        }
-      }
-    });
-  </script>
-  ```
-
-  ```ts Angular theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  import { Component, effect } from "@angular/core";
-  import { injectStream } from "@langchain/angular";
-  import { ToolMessage, AIMessage } from "langchain";
-
-  const FILE_MUTATING_TOOLS = new Set(["write_file", "edit_file", "execute"]);
-
-  @Component({
-    selector: "app-ide-preview",
-    template: `<!-- ... -->`,
-  })
-  export class IdePreviewComponent {
-    stream = injectStream<typeof myAgent>({
-      apiUrl: AGENT_URL,
-      assistantId: "deep_agent_ide",
-    });
-
-    private processedIds = new Set<string>();
-
-    constructor() {
-      effect(() => {
-        const messages = this.stream.messages();
-        const toolCallMap = new Map();
-        for (const msg of messages) {
-          if (AIMessage.isInstance(msg)) {
-            for (const tc of (msg as AIMessage).tool_calls ?? []) {
-              if (tc.id && FILE_MUTATING_TOOLS.has(tc.name)) {
-                toolCallMap.set(tc.id, { name: tc.name, args: tc.args });
-              }
-            }
-          }
-        }
-
-        for (const msg of messages) {
-          if (!ToolMessage.isInstance(msg)) continue;
-          const id = (msg as ToolMessage).id ?? (msg as ToolMessage).tool_call_id;
-          if (!id || this.processedIds.has(id)) continue;
-
-          const call = toolCallMap.get((msg as ToolMessage).tool_call_id);
-          if (!call) continue;
-          this.processedIds.add(id);
-
-          if (call.name === "write_file" || call.name === "edit_file") {
-            this.refreshSingleFile(call.args.path ?? call.args.file_path);
-          } else if (call.name === "execute") {
-            this.refreshTreeAndFiles();
-          }
-        }
-      });
     }
+
+    for (const msg of msgs) {
+      if (!ToolMessage.isInstance(msg)) continue;
+      const id = msg.id ?? msg.tool_call_id;
+      if (!id || processedIds.has(id)) continue;
+
+      const call = toolCallMap.get(msg.tool_call_id);
+      if (!call) continue;
+      processedIds.add(id);
+
+      if (call.name === "write_file" || call.name === "edit_file") {
+        refreshSingleFile(call.args.path ?? call.args.file_path);
+      } else if (call.name === "execute") {
+        refreshTreeAndFiles();
+      }
+    }
+  });
+</script>
+```
+
+```ts Angular theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+import { Component, effect } from "@angular/core";
+import { injectStream } from "@langchain/angular";
+import { ToolMessage, AIMessage } from "langchain";
+
+const FILE_MUTATING_TOOLS = new Set(["write_file", "edit_file", "execute"]);
+
+@Component({
+  selector: "app-ide-preview",
+  template: `<!-- ... -->`,
+})
+export class IdePreviewComponent {
+  stream = injectStream<typeof myAgent>({
+    apiUrl: AGENT_URL,
+    assistantId: "deep_agent_ide",
+  });
+
+  private processedIds = new Set<string>();
+
+  constructor() {
+    effect(() => {
+      const messages = this.stream.messages();
+      const toolCallMap = new Map();
+      for (const msg of messages) {
+        if (AIMessage.isInstance(msg)) {
+          for (const tc of (msg as AIMessage).tool_calls ?? []) {
+            if (tc.id && FILE_MUTATING_TOOLS.has(tc.name)) {
+              toolCallMap.set(tc.id, { name: tc.name, args: tc.args });
+            }
+          }
+        }
+      }
+
+      for (const msg of messages) {
+        if (!ToolMessage.isInstance(msg)) continue;
+        const id = (msg as ToolMessage).id ?? (msg as ToolMessage).tool_call_id;
+        if (!id || this.processedIds.has(id)) continue;
+
+        const call = toolCallMap.get((msg as ToolMessage).tool_call_id);
+        if (!call) continue;
+        this.processedIds.add(id);
+
+        if (call.name === "write_file" || call.name === "edit_file") {
+          this.refreshSingleFile(call.args.path ?? call.args.file_path);
+        } else if (call.name === "execute") {
+          this.refreshTreeAndFiles();
+        }
+      }
+    });
   }
-  ```
-</CodeGroup>
+}
+```
 
 ### Detecting changed files
 
@@ -886,55 +880,45 @@ For backends and sandboxes:
 
 ## Related
 
-<CardGroup>
-  <Card title="Going to production" icon="rocket" href="/oss/python/deepagents/going-to-production">
-    Deploy the agent with persistent sandboxes, auth, guardrails, and production `useStream` settings.
-  </Card>
+> **[Going to production](/oss/python/deepagents/going-to-production)**
+>
+> Deploy the agent with persistent sandboxes, auth, guardrails, and production `useStream` settings.
 
-  <Card title="Sandboxes" icon="box" href="/oss/python/deepagents/sandboxes">
-    Sandbox providers, security model, and file transfer APIs.
-  </Card>
+> **[Sandboxes](/oss/python/deepagents/sandboxes)**
+>
+> Sandbox providers, security model, and file transfer APIs.
 
-  <Card title="Frontend overview" icon="layout" href="/oss/python/deepagents/frontend/overview">
-    Other deep agent UI patterns: subagent streaming, todo lists, and custom state.
-  </Card>
+> **[Frontend overview](/oss/python/deepagents/frontend/overview)**
+>
+> Other deep agent UI patterns: subagent streaming, todo lists, and custom state.
 
-  <Card title="Application structure" icon="file-code" href="/oss/python/langgraph/application-structure">
-    Full `langgraph.json` reference, including custom `http.app` routes.
-  </Card>
-</CardGroup>
+> **[Application structure](/oss/python/langgraph/application-structure)**
+>
+> Full `langgraph.json` reference, including custom `http.app` routes.
 
 ## Related LangChain guides
 
 The sandbox IDE builds on core LangChain frontend patterns. These guides cover
 the same `useStream` primitives used in this page:
 
-<CardGroup>
-  <Card title="Tool calling" icon="hammer" href="/oss/python/langchain/frontend/tool-calling">
-    Render file and execution tool calls as purpose-built UI cards with type-safe results.
-  </Card>
+> **[Tool calling](/oss/python/langchain/frontend/tool-calling)**
+>
+> Render file and execution tool calls as purpose-built UI cards with type-safe results.
 
-  <Card title="Headless tools" icon="cpu" href="/oss/python/langchain/frontend/headless-tools">
-    Run browser and device APIs on the client side—useful for embedding live preview or terminal output in the IDE panel.
-  </Card>
+> **[Headless tools](/oss/python/langchain/frontend/headless-tools)**
+>
+> Run browser and device APIs on the client side—useful for embedding live preview or terminal output in the IDE panel.
 
-  <Card title="Open-ended generative UI" icon="layout-grid" href="/oss/python/langchain/frontend/open-ended-generative-ui">
-    Render sandboxed app previews and MCP-generated interfaces at the open end of the generative UI spectrum.
-  </Card>
+> **[Open-ended generative UI](/oss/python/langchain/frontend/open-ended-generative-ui)**
+>
+> Render sandboxed app previews and MCP-generated interfaces at the open end of the generative UI spectrum.
 
-  <Card title="Join & rejoin streams" icon="arrows-merge" href="/oss/python/langchain/frontend/join-rejoin">
-    Reconnect to a running coding session after a page reload without losing the sandbox state.
-  </Card>
-</CardGroup>
+> **[Join & rejoin streams](/oss/python/langchain/frontend/join-rejoin)**
+>
+> Reconnect to a running coding session after a page reload without losing the sandbox state.
 
 ***
 
-<div>
-  <Callout icon="terminal-2">
-    [Connect these docs](/use-these-docs) to your agent of choice via MCP for real-time answers.
-  </Callout>
+[Connect these docs](/use-these-docs) to your agent of choice via MCP for real-time answers.
 
-  <Callout icon="edit">
-    [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/oss/deepagents/frontend/sandbox.mdx) or [file an issue](https://github.com/langchain-ai/docs/issues/new/choose).
-  </Callout>
-</div>
+[Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/oss/deepagents/frontend/sandbox.mdx) or [file an issue](https://github.com/langchain-ai/docs/issues/new/choose).

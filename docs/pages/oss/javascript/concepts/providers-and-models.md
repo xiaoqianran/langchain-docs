@@ -76,19 +76,17 @@ For a full list of provider packages, see the [integrations page](/oss/javascrip
 
 Each provider supports specific model names that you pass when initializing a chat model. There are two ways to specify a model:
 
-<CodeGroup>
-  ```typescript Provider prefix format theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  import { initChatModel } from "langchain/chat_models/universal";
+```typescript Provider prefix format theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+import { initChatModel } from "langchain/chat_models/universal";
 
-  const model = await initChatModel("openai:gpt-5.5");
-  ```
+const model = await initChatModel("openai:gpt-5.5");
+```
 
-  ```typescript Direct class instantiation theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  import { ChatOpenAI } from "@langchain/openai";
+```typescript Direct class instantiation theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+import { ChatOpenAI } from "@langchain/openai";
 
-  const model = new ChatOpenAI({ model: "gpt-5.5" });
-  ```
-</CodeGroup>
+const model = new ChatOpenAI({ model: "gpt-5.5" });
+```
 
 When using [`init_chat_model`](https://reference.langchain.com/javascript/langchain/chat_models/universal/initChatModel) with the `provider:model` format, LangChain automatically resolves the provider and loads the correct integration package. You can also omit the provider prefix if the model name is unambiguous (e.g., `"gpt-5.5"` resolves to OpenAI).
 
@@ -152,38 +150,30 @@ const model = new ChatOpenAI({
 });
 ```
 
-<Warning>
-  `ChatOpenAI` targets [official OpenAI API specifications](https://github.com/openai/openai-openapi) only. Non-standard response fields from third-party providers are not extracted or preserved. Use a dedicated provider package or router when you need access to non-standard features.
-</Warning>
+> [!WARNING]
+>
+> `ChatOpenAI` targets [official OpenAI API specifications](https://github.com/openai/openai-openapi) only. Non-standard response fields from third-party providers are not extracted or preserved. Use a dedicated provider package or router when you need access to non-standard features.
 
 ## Next steps
 
-<CardGroup>
-  <Card title="Models guide" icon="cpu" href="/oss/javascript/langchain/models">
-    Learn how to use models: invoke, stream, batch, tool calling, and more.
-  </Card>
+> **[Models guide](/oss/javascript/langchain/models)**
+>
+> Learn how to use models: invoke, stream, batch, tool calling, and more.
 
-  <Card title="Chat model integrations" icon="message" href="/oss/javascript/integrations/chat">
-    Browse all chat model integrations and their capabilities.
-  </Card>
+> **[Chat model integrations](/oss/javascript/integrations/chat)**
+>
+> Browse all chat model integrations and their capabilities.
 
-  <Card title="All providers" icon="grid-dots" href="/oss/javascript/integrations/providers/overview">
-    See the full list of provider packages and integrations.
-  </Card>
+> **[All providers](/oss/javascript/integrations/providers/overview)**
+>
+> See the full list of provider packages and integrations.
 
-  <Card title="Agents" icon="robot" href="/oss/javascript/langchain/agents">
-    Build agents that use models as their reasoning engine.
-  </Card>
-</CardGroup>
+> **[Agents](/oss/javascript/langchain/agents)**
+>
+> Build agents that use models as their reasoning engine.
 
 ***
 
-<div>
-  <Callout icon="terminal-2">
-    [Connect these docs](/use-these-docs) to your agent of choice via MCP for real-time answers.
-  </Callout>
+[Connect these docs](/use-these-docs) to your agent of choice via MCP for real-time answers.
 
-  <Callout icon="edit">
-    [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/oss/concepts/providers-and-models.mdx) or [file an issue](https://github.com/langchain-ai/docs/issues/new/choose).
-  </Callout>
-</div>
+[Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/oss/concepts/providers-and-models.mdx) or [file an issue](https://github.com/langchain-ai/docs/issues/new/choose).

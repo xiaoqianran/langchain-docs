@@ -10,9 +10,9 @@ LangGraph 和托管 Deep Agents CLI 如何将部署绑定到代理和环境、�
 
 使用它可以将同一代理的暂存构建和生产构建分开，以便每个代理都报告到自己的环境中。
 
-<Note>
-  [LangSmith Cloud](/langsmith/cloud) 上提供基于代理的工作区。它们在 [self-hosted](/langsmith/self-hosted) LangSmith 上不可用。要检查您的工作区是否基于代理，请查看左上角的控件。在基于代理的工作区中，它是一个为您的工作区命名的工作区切换器。在[project-based](/langsmith/observability-concepts#tracing-projects)工作区中，它显示LangSmith徽标。
-</Note>
+> [!注意]
+>
+> [LangSmith Cloud](/langsmith/cloud) 上提供基于代理的工作区。它们在 [self-hosted](/langsmith/self-hosted) LangSmith 上不可用。要检查您的工作区是否基于代理，请查看左上角的控件。在基于代理的工作区中，它是一个为您的工作区命名的工作区切换器。在 [project-based](/langsmith/observability-concepts#tracing-projects) 工作区中，它显示 LangSmith 徽标。
 
 ## 先决条件
 
@@ -20,7 +20,7 @@ LangGraph 和托管 Deep Agents CLI 如何将部署绑定到代理和环境、�
 
 * `.env` 或您的 shell 环境中的 [LangSmith API key](/langsmith/create-account-api-key)。
 * 包含`langgraph.json`的项目文件夹。从该文件夹运行 CLI。
-* 基于代理的工作区，因为标志需要工作区上的代理模式。组织范围的 API 密钥也需要工作区，并且每个 CLI 从不同的变量中读取它：`LANGSMITH_TENANT_ID` 对于 LangGraph CLI，`LANGSMITH_WORKSPACE_ID` 对于`mda` CLI。工作区范围的密钥两者都不需要。当键属于组织范围时，LangGraph CLI 会提示输入值。在脚本或 CI 作业中，提前设置 `LANGSMITH_TENANT_ID`，并传递 `--no-input`，以便 LangGraph CLI 失败而不是等待输入。 Python 和 TypeScript LangGraph CLI 都接受 `--no-input`。
+* 基于代理的工作区，因为标志需要工作区上的代理模式。组织范围的 API 密钥也需要工作区，并且每个 CLI 从不同的变量读取它：`LANGSMITH_TENANT_ID` 对于 LangGraph CLI，`LANGSMITH_WORKSPACE_ID` 对于`mda` CLI。工作区范围的密钥两者都不需要。当键属于组织范围时，LangGraph CLI 会提示输入值。在脚本或 CI 作业中，提前设置 `LANGSMITH_TENANT_ID`，并传递 `--no-input`，以便 LangGraph CLI 失败而不是等待输入。 Python 和 TypeScript LangGraph CLI 都接受 `--no-input`。
 
 ## 寻址标志
 
@@ -35,27 +35,23 @@ LangGraph 和托管 Deep Agents CLI 如何将部署绑定到代理和环境、�
 
 1. 安装 CLI：
 
-   <CodeGroup>
-     ```bash Python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-     uv tool install --force "langgraph-cli>=0.4.32"
-     ```
+   ```bash Python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+   uv tool install --force "langgraph-cli>=0.4.32"
+   ```
 
-     ```bash TypeScript theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-     npm install -g "@langchain/langgraph-cli@1.5.2-dev.0"
-     ```
-   </CodeGroup>
+   ```bash TypeScript theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+   npm install -g "@langchain/langgraph-cli@1.5.2-dev.0"
+   ```
 
 2. 部署、命名代理和环境：
 
-   <CodeGroup>
-     ```bash Python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-     langgraph deploy --agent-id my-agent --agent-environment staging --remote
-     ```
+   ```bash Python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+   langgraph deploy --agent-id my-agent --agent-environment staging --remote
+   ```
 
-     ```bash TypeScript theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-     langgraphjs deploy --agent-id my-agent --agent-environment staging --remote
-     ```
-   </CodeGroup>
+   ```bash TypeScript theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+   langgraphjs deploy --agent-id my-agent --agent-environment staging --remote
+   ```
 
 传递两个标志或都不传递，因为 CLI 会自行拒绝其中任一标志。不要将它们与 `--name` 或 `--deployment-id` 结合使用，它们直接命名部署，并且 CLI 会拒绝与代理一起使用。
 
@@ -67,28 +63,24 @@ LangGraph 和托管 Deep Agents CLI 如何将部署绑定到代理和环境、�
 
 1. 安装 CLI：
 
-   <CodeGroup>
-     ```bash Python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-     uv tool install --force --prerelease allow "managed-deepagents==0.7.5.dev4"
-     uv add --prerelease allow "managed-deepagents==0.7.5.dev4"
-     ```
+   ```bash Python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+   uv tool install --force --prerelease allow "managed-deepagents==0.7.5.dev4"
+   uv add --prerelease allow "managed-deepagents==0.7.5.dev4"
+   ```
 
-     ```bash TypeScript theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-     npm install "managed-deepagents@0.7.5-dev.4"
-     ```
-   </CodeGroup>
+   ```bash TypeScript theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+   npm install "managed-deepagents@0.7.5-dev.4"
+   ```
 
 2. 在当前文件夹中部署项目：
 
-   <CodeGroup>
-     ```bash Python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-     mda deploy . --agent-id my-agent --agent-environment staging
-     ```
+   ```bash Python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+   mda deploy . --agent-id my-agent --agent-environment staging
+   ```
 
-     ```bash TypeScript theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-     npx mda deploy . --agent-id my-agent --agent-environment staging
-     ```
-   </CodeGroup>在 Python 中，将 CLI 作为工具安装并将相同版本固定为项目依赖项，可以使全局 `mda` 二进制文件和项目自身的依赖项保持在一个版本上。对于其余标志，请参阅 [Deploy projects](/langsmith/python/managed-deep-agents-cli#deploy-projects)，对于不使用代理标志的部署，请参阅 [Deploy a Managed Deep Agent](/langsmith/python/managed-deep-agents-deploy)。
+   ```bash TypeScript theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+   npx mda deploy . --agent-id my-agent --agent-environment staging
+   ```在 Python 中，将 CLI 作为工具安装并将相同版本固定为项目依赖项，可以使全局 `mda` 二进制文件和项目自身的依赖项保持在一个版本上。对于其余标志，请参阅 [Deploy projects](/langsmith/python/managed-deep-agents-cli#deploy-projects)，对于不使用代理标志的部署，请参阅 [Deploy a Managed Deep Agent](/langsmith/python/managed-deep-agents-deploy)。
 
 ## 确认绑定
 
@@ -105,12 +97,6 @@ LangGraph 和托管 Deep Agents CLI 如何将部署绑定到代理和环境、�
 
 ***
 
-<div>
-  <Callout icon="terminal-2">
-    [Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
-  </Callout>
+[Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
 
-  <Callout icon="edit">
-    [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/deploy-to-agent-environment.mdx) 或 [file an issue](https://github.com/langchain-ai/docs/issues/new/choose)。
-  </Callout>
-</div>
+[Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/deploy-to-agent-environment.mdx) 或 [file an issue](https://github.com/langchain-ai/docs/issues/new/choose)。

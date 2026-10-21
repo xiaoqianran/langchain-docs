@@ -9,9 +9,9 @@ This ensures that data can be handled consistently regardless of the source.
 
 All document loaders implement the [BaseLoader](https://reference.langchain.com/javascript/langchain-core/document_loaders/base/BaseDocumentLoader) interface.
 
-<Warning>
-  Community document loaders are user-contributed and unverified. LangChain does not review or endorse these integrations; use them at your own risk.
-</Warning>
+> [!WARNING]
+>
+> Community document loaders are user-contributed and unverified. LangChain does not review or endorse these integrations; use them at your own risk.
 
 ## Interface
 
@@ -38,9 +38,9 @@ LangChain.js categorizes document loaders in two different ways:
 
 ### File loaders
 
-<Info>
-  If you'd like to contribute an integration, see [Contributing integrations](/oss/javascript/contributing#add-a-new-integration).
-</Info>
+> [!NOTE]
+>
+> If you'd like to contribute an integration, see [Contributing integrations](/oss/javascript/contributing#add-a-new-integration).
 
 #### Common file types
 
@@ -80,28 +80,20 @@ LangChain.js categorizes document loaders in two different ways:
 
 ## All document loaders
 
-<div>
-  | Integration | Downloads |
-  | :- | :- |
-  | [`Google cloud SQL for postgresql`](/oss/javascript/integrations/document_loaders/web_loaders/google_cloudsql_pg) | <span><a href="https://www.npmjs.com/package/@langchain/google-cloud-sql-pg">  <img alt="Downloads per month" /></a></span> |
-  | [`Soniox`](/oss/javascript/integrations/document_loaders/web_loaders/soniox) | <span><a href="https://www.npmjs.com/package/@soniox/langchain">  <img alt="Downloads per month" /></a></span> |
-  | [`DirectoryLoader`](/oss/javascript/integrations/document_loaders/file_loaders/directory) | <span>N/A</span> |
-  | [`JSON files`](/oss/javascript/integrations/document_loaders/file_loaders/json) | <span>N/A</span> |
-  | [`Jsonlines files -`](/oss/javascript/integrations/document_loaders/file_loaders/jsonlines) | <span>N/A</span> |
-  | [`LangSmithLoader`](/oss/javascript/integrations/document_loaders/web_loaders/langsmith) | <span>N/A</span> |
-  | [`Multiple individual files -`](/oss/javascript/integrations/document_loaders/file_loaders/multi_file) | <span>N/A</span> |
-  | [`OracleDocLoader`](/oss/javascript/integrations/document_loaders/file_loaders/oracleai) | <span>N/A</span> |
-  | [`TextLoader`](/oss/javascript/integrations/document_loaders/file_loaders/text) | <span>N/A</span> |
-</div>
+| Integration | Downloads |
+| :- | :- |
+| [`Google cloud SQL for postgresql`](/oss/javascript/integrations/document_loaders/web_loaders/google_cloudsql_pg) | [  ![Downloads per month](https://img.shields.io/npm/dm/@langchain/google-cloud-sql-pg?style=flat-square\&label=%20&)](https://www.npmjs.com/package/@langchain/google-cloud-sql-pg) |
+| [`Soniox`](/oss/javascript/integrations/document_loaders/web_loaders/soniox) | [  ![Downloads per month](https://img.shields.io/npm/dm/@soniox/langchain?style=flat-square\&label=%20&)](https://www.npmjs.com/package/@soniox/langchain) |
+| [`DirectoryLoader`](/oss/javascript/integrations/document_loaders/file_loaders/directory) | N/A |
+| [`JSON files`](/oss/javascript/integrations/document_loaders/file_loaders/json) | N/A |
+| [`Jsonlines files -`](/oss/javascript/integrations/document_loaders/file_loaders/jsonlines) | N/A |
+| [`LangSmithLoader`](/oss/javascript/integrations/document_loaders/web_loaders/langsmith) | N/A |
+| [`Multiple individual files -`](/oss/javascript/integrations/document_loaders/file_loaders/multi_file) | N/A |
+| [`OracleDocLoader`](/oss/javascript/integrations/document_loaders/file_loaders/oracleai) | N/A |
+| [`TextLoader`](/oss/javascript/integrations/document_loaders/file_loaders/text) | N/A |
 
 ***
 
-<div>
-  <Callout icon="terminal-2">
-    [Connect these docs](/use-these-docs) to your agent of choice via MCP for real-time answers.
-  </Callout>
+[Connect these docs](/use-these-docs) to your agent of choice via MCP for real-time answers.
 
-  <Callout icon="edit">
-    [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/oss/javascript/integrations/document_loaders/index.mdx) or [file an issue](https://github.com/langchain-ai/docs/issues/new/choose).
-  </Callout>
-</div>
+[Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/oss/javascript/integrations/document_loaders/index.mdx) or [file an issue](https://github.com/langchain-ai/docs/issues/new/choose).

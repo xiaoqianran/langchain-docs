@@ -55,9 +55,9 @@ CPU 目标是 CPU 限制的 50%：`queue_cpu_limit` 对于队列工作线程，`
 
 ### MongoDB 检查点
 
-<Info>
-  适用于 [Cloud](/langsmith/cloud)（具有外部管理的 MongoDB 实例）和 [Standalone](/langsmith/deploy-standalone-server) 部署。
-</Info>
+> [!注意]
+>
+> 适用于 [Cloud](/langsmith/cloud)（具有外部管理的 MongoDB 实例）和 [Standalone](/langsmith/deploy-standalone-server) 部署。
 
 您可以使用 MongoDB 作为检查点存储的替代后端。配置后，MongoDB 仅处理检查点数据 - 所有其他服务器资源仍然需要 PostgreSQL。
 
@@ -69,13 +69,13 @@ CPU 目标是 CPU 限制的 50%：`queue_cpu_limit` 对于队列工作线程，`
 
 |云|混合动力|自托管 |
 | - | - | - |
-|需要<br />追踪到LangSmith SaaS。 |可选<br />禁用跟踪或跟踪到LangSmith SaaS。 |可选<br />禁用跟踪，跟踪到LangSmith SaaS，或跟踪到自托管LangSmith。 |
+|需要跟踪LangSmith SaaS。 |可选禁用跟踪或跟踪LangSmith SaaS。 |可选禁用跟踪，跟踪到LangSmith SaaS，或跟踪到自托管LangSmith。 |
 
 ### 遥测
 
 代理服务器会自动配置为报告遥测元数据以用于计费目的。有关每个部署选项的详细信息，请参阅下表。|云|混合动力|自托管 |
 | - | - | - |
-|遥测数据发送至LangSmith SaaS。 |遥测数据发送至LangSmith SaaS。 |自我报告气隙许可证密钥的使用情况（审核）。<br />将遥测发送至 LangSmith SaaS 以获取 LangSmith 许可证密钥。 |
+|遥测数据发送至LangSmith SaaS。 |遥测数据发送至LangSmith SaaS。 |自我报告气隙许可证密钥的使用情况（审核）。遥测数据发送至 LangSmith SaaS 以获取 LangSmith 许可证密钥。 |
 
 ### 许可
 
@@ -87,12 +87,6 @@ CPU 目标是 CPU 限制的 50%：`queue_cpu_limit` 对于队列工作线程，`
 
 ***
 
-<div>
-  <Callout icon="terminal-2">
-    [Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
-  </Callout>
+[Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
 
-  <Callout icon="edit">
-    [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/data-plane.mdx) 或 [file an issue](https://github.com/langchain-ai/docs/issues/new/choose)。
-  </Callout>
-</div>
+[Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/data-plane.mdx) 或 [file an issue](https://github.com/langchain-ai/docs/issues/new/choose)。

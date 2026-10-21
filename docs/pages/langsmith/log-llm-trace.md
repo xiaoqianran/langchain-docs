@@ -13,363 +13,361 @@ There are four requirements for a fully functional LLM trace:
 | 3. Set `ls_provider` and `ls_model_name` | Pass both in `metadata` | Cost tracking, Playground model selection |
 | 4. Provide token counts | Set `usage_metadata` on the run | Token counts and cost calculation |
 
-<Note>
-  If you are using LangChain OSS, the [OpenAI wrapper](/langsmith/trace-openai), or the [Anthropic wrapper](/langsmith/trace-anthropic), these details are handled automatically.
-
-  The examples on this page use the `traceable` decorator/wrapper (the recommended approach for Python and JS/TS). The same requirements apply if you use the [RunTree](/langsmith/annotate-code#use-the-runtree-api) or [API](/langsmith/smith-api-ref) directly.
-</Note>
+> [!NOTE]
+>
+> If you are using LangChain OSS, the [OpenAI wrapper](/langsmith/trace-openai), or the [Anthropic wrapper](/langsmith/trace-anthropic), these details are handled automatically.
+>
+> The examples on this page use the `traceable` decorator/wrapper (the recommended approach for Python and JS/TS). The same requirements apply if you use the [RunTree](/langsmith/annotate-code#use-the-runtree-api) or [API](/langsmith/smith-api-ref) directly.
 
 ## Messages format
 
 When tracing a custom model or a custom input/output format, it must either follow the LangChain format, OpenAI completions format or Anthropic messages format. For more details,  refer to the [OpenAI Chat Completions](https://platform.openai.com/docs/api-reference/chat/create) or [Anthropic Messages](https://platform.claude.com/docs/en/api/messages) documentation. The LangChain format is:
 
-<Expandable title="LangChain format">
-  <ParamField type="array">
-    A list of messages containing the content of the conversation.
+**LangChain format**
 
-    <ParamField type="string">
-      Identifies the message type. One of: <code>system</code> | <code>reasoning</code> | <code>user</code> | <code>assistant</code> | <code>tool</code>
-    </ParamField>
+**messages** `array` *required*
 
-    <ParamField type="array">
-      Content of the message. List of typed dictionaries.
+A list of messages containing the content of the conversation.
 
-      <Expandable title="Content options">
-        <ParamField type="string">
-          One of: <code>text</code> | <code>image</code> | <code>file</code> | <code>audio</code> | <code>video</code> | <code>tool\_call</code> | <code>server\_tool\_call</code> | <code>server\_tool\_result</code>.
-        </ParamField>
+**role** `string` *required*
 
-        <Expandable title="text">
-          <ParamField type="literal('text')" />
+Identifies the message type. One of: `system` | `reasoning` | `user` | `assistant` | `tool`
 
-          <ParamField type="string">
-            Text content.
-          </ParamField>
+**content** `array` *required*
 
-          <ParamField type="object[]">
-            List of annotations for the text
-          </ParamField>
+Content of the message. List of typed dictionaries.
 
-          <ParamField type="object">
-            Additional provider-specific data.
-          </ParamField>
-        </Expandable>
+**Content options**
 
-        <Expandable title="reasoning">
-          <ParamField type="literal('reasoning')" />
+**type** `string` *required*
 
-          <ParamField type="string">
-            Text content.
-          </ParamField>
+One of: `text` | `image` | `file` | `audio` | `video` | `tool_call` | `server_tool_call` | `server_tool_result`.
 
-          <ParamField type="object">
-            Additional provider-specific data.
-          </ParamField>
-        </Expandable>
+**text**
 
-        <Expandable title="image">
-          <ParamField type="literal('image')" />
+**type** `literal('text')` *required*
 
-          <ParamField type="string">
-            URL pointing to the image location.
-          </ParamField>
+**text** `string` *required*
 
-          <ParamField type="string">
-            Base64-encoded image data.
-          </ParamField>
+Text content.
 
-          <ParamField type="string">
-            Reference ID to an externally stored image (e.g., in a provider’s file system or in a bucket).
-          </ParamField>
+**annotations** `object[]`
 
-          <ParamField type="string">
-            Image [MIME type](https://www.iana.org/assignments/media-types/media-types.xhtml#image) (e.g., `image/jpeg`, `image/png`).
-          </ParamField>
-        </Expandable>
+List of annotations for the text
 
-        <Expandable title="file (e.g., PDFs)">
-          <ParamField type="literal('file')" />
+**extras** `object`
 
-          <ParamField type="string">
-            URL pointing to the file.
-          </ParamField>
+Additional provider-specific data.
 
-          <ParamField type="string">
-            Base64-encoded file data.
-          </ParamField>
+**reasoning**
 
-          <ParamField type="string">
-            Reference ID to an externally stored file (e.g., in a provider’s file system or in a bucket).
-          </ParamField>
+**type** `literal('reasoning')` *required*
 
-          <ParamField type="string">
-            File [MIME type](https://www.iana.org/assignments/media-types/media-types.xhtml#image) (e.g., `application/pdf`).
-          </ParamField>
-        </Expandable>
+**text** `string` *required*
 
-        <Expandable title="audio">
-          <ParamField type="literal('audio')" />
+Text content.
 
-          <ParamField type="string">
-            URL pointing to the audio file.
-          </ParamField>
+**extras** `object`
 
-          <ParamField type="string">
-            Base64-encoded audio data.
-          </ParamField>
+Additional provider-specific data.
 
-          <ParamField type="string">
-            Reference ID to an externally stored audio file (e.g., in a provider’s file system or in a bucket).
-          </ParamField>
+**image**
 
-          <ParamField type="string">
-            Audio [MIME type](https://www.iana.org/assignments/media-types/media-types.xhtml#image) (e.g., `audio/mpeg`, `audio/wav`).
-          </ParamField>
-        </Expandable>
+**type** `literal('image')` *required*
 
-        <Expandable title="video">
-          <ParamField type="literal('video')" />
+**url** `string`
 
-          <ParamField type="string">
-            URL pointing to the video file.
-          </ParamField>
+URL pointing to the image location.
 
-          <ParamField type="string">
-            Base64-encoded video data.
-          </ParamField>
+**base64** `string` *required*
 
-          <ParamField type="string">
-            Reference ID to an externally stored video file (e.g., in a provider’s file system or in a bucket).
-          </ParamField>
+Base64-encoded image data.
 
-          <ParamField type="string">
-            Video [MIME type](https://www.iana.org/assignments/media-types/media-types.xhtml#image) (e.g., `video/mp4`, `video/webm`).
-          </ParamField>
-        </Expandable>
+**id** `string`
 
-        <Expandable title="tool_call">
-          <ParamField type="literal('tool_call')" />
+Reference ID to an externally stored image (e.g., in a provider’s file system or in a bucket).
 
-          <ParamField type="string" />
+**mime\_type** `string`
 
-          <ParamField type="object">
-            Arguments to pass to the tool.
-          </ParamField>
+Image [MIME type](https://www.iana.org/assignments/media-types/media-types.xhtml#image) (e.g., `image/jpeg`, `image/png`).
 
-          <ParamField type="string">
-            Unique identifier for this tool call.
-          </ParamField>
-        </Expandable>
+**file (e.g., PDFs)**
 
-        <Expandable title="server_tool_call">
-          <ParamField type="literal('server_tool_call')" />
+**type** `literal('file')` *required*
 
-          <ParamField type="string">
-            Unique identifier for this tool call.
-          </ParamField>
+**url** `string`
 
-          <ParamField type="string">
-            The name of the tool to be called.
-          </ParamField>
+URL pointing to the file.
 
-          <ParamField type="object">
-            Arguments to pass to the tool.
-          </ParamField>
-        </Expandable>
+**base64** `string` *required*
 
-        <Expandable title="server_tool_result">
-          <ParamField type="literal('server_tool_result')" />
+Base64-encoded file data.
 
-          <ParamField type="string">
-            Identifier of the corresponding server tool call.
-          </ParamField>
+**id** `string`
 
-          <ParamField type="string">
-            Unique identifier for this tool call.
-          </ParamField>
+Reference ID to an externally stored file (e.g., in a provider’s file system or in a bucket).
 
-          <ParamField type="string">
-            Execution status of the server-side tool. One of: <code>success</code> | <code>error</code>.
-          </ParamField>
+**mime\_type** `string`
 
-          <ParamField>
-            Output of the executed tool.
-          </ParamField>
-        </Expandable>
-      </Expandable>
-    </ParamField>
+File [MIME type](https://www.iana.org/assignments/media-types/media-types.xhtml#image) (e.g., `application/pdf`).
 
-    <ParamField type="string">
-      Must match the <code>id</code> of a prior <code>assistant</code> message’s <code>tool\_calls\[i]</code> entry. Only valid when <code>role</code> is <code>tool</code>.
-    </ParamField>
+**audio**
 
-    <ParamField type="object">
-      Use this field to send token counts and/or costs with your model's output. See [Provide token and cost information](/langsmith/log-llm-trace#provide-token-and-cost-information) for more details.
-    </ParamField>
-  </ParamField>
-</Expandable>
+**type** `literal('audio')` *required*
 
-<CodeGroup>
-  ```python Text and reasoning theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-   inputs = {
-    "messages": [
-      {
-        "role": "user",
-        "content": [
-          {
-            "type": "text",
-            "text": "Hi, can you tell me the capital of France?"
-          }
-        ]
-      }
-    ]
-  }
+**url** `string`
 
-  outputs = {
-    "messages": [
-      {
-        "role": "assistant",
-        "content": [
-          {
-            "type": "text",
-            "text": "The capital of France is Paris."
+URL pointing to the audio file.
+
+**base64** `string` *required*
+
+Base64-encoded audio data.
+
+**id** `string`
+
+Reference ID to an externally stored audio file (e.g., in a provider’s file system or in a bucket).
+
+**mime\_type** `string`
+
+Audio [MIME type](https://www.iana.org/assignments/media-types/media-types.xhtml#image) (e.g., `audio/mpeg`, `audio/wav`).
+
+**video**
+
+**type** `literal('video')` *required*
+
+**url** `string`
+
+URL pointing to the video file.
+
+**base64** `string` *required*
+
+Base64-encoded video data.
+
+**id** `string`
+
+Reference ID to an externally stored video file (e.g., in a provider’s file system or in a bucket).
+
+**mime\_type** `string`
+
+Video [MIME type](https://www.iana.org/assignments/media-types/media-types.xhtml#image) (e.g., `video/mp4`, `video/webm`).
+
+**tool\_call**
+
+**type** `literal('tool_call')` *required*
+
+**name** `string`
+
+**args** `object` *required*
+
+Arguments to pass to the tool.
+
+**id** `string`
+
+Unique identifier for this tool call.
+
+**server\_tool\_call**
+
+**type** `literal('server_tool_call')` *required*
+
+**id** `string` *required*
+
+Unique identifier for this tool call.
+
+**name** `string` *required*
+
+The name of the tool to be called.
+
+**args** `object` *required*
+
+Arguments to pass to the tool.
+
+**server\_tool\_result**
+
+**type** `literal('server_tool_result')` *required*
+
+**tool\_call\_id** `string` *required*
+
+Identifier of the corresponding server tool call.
+
+**id** `string`
+
+Unique identifier for this tool call.
+
+**status** `string` *required*
+
+Execution status of the server-side tool. One of: `success` | `error`.
+
+**output**
+
+Output of the executed tool.
+
+**tool\_call\_id** `string`
+
+Must match the `id` of a prior `assistant` message’s `tool_calls[i]` entry. Only valid when `role` is `tool`.
+
+**usage\_metadata** `object`
+
+Use this field to send token counts and/or costs with your model's output. See [Provide token and cost information](/langsmith/log-llm-trace#provide-token-and-cost-information) for more details.
+
+```python Text and reasoning theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+ inputs = {
+  "messages": [
+    {
+      "role": "user",
+      "content": [
+        {
+          "type": "text",
+          "text": "Hi, can you tell me the capital of France?"
+        }
+      ]
+    }
+  ]
+}
+
+outputs = {
+  "messages": [
+    {
+      "role": "assistant",
+      "content": [
+        {
+          "type": "text",
+          "text": "The capital of France is Paris."
+        },
+        {
+          "type": "reasoning",
+          "text": "The user is asking about..."
+        }
+      ]
+    }
+  ]
+}
+
+```
+
+```python Tool calls theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+input = {
+  "messages": [
+    {
+      "role": "user",
+      "content": [
+        {
+          "type": "text",
+          "text": "What's the weather in San Francisco?"
+        }
+      ]
+    }
+  ]
+}
+
+outputs = {
+  "messages": [
+    {
+      "role": "assistant",
+      "content": [{"type": "tool_call", "name": "get_weather", "args": {"city": "San Francisco"}, "id": "call_1"}],
+    },
+    {
+      "role": "tool",
+      "tool_call_id": "call_1",
+      "content": [
+        {
+          "type": "text",
+          "text": "{\"temperature\": \"18°C\", \"condition\": \"Sunny\"}"
+        }
+      ]
+    },
+    {
+      "role": "assistant",
+      "content": [
+        {
+          "type": "text",
+          "text": "The weather in San Francisco is 18°C and sunny."
+        }
+      ]
+    }
+  ]
+}
+```
+
+```python Multimodal theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+inputs = {
+  "messages": [
+    {
+      "role": "user",
+      "content": [
+        {
+          "type": "text",
+          "text": "What breed is this dog?"
+        },
+        {
+          "type": "image",
+          "url": "https://fastly.picsum.photos/id/237/200/300.jpg?hmac=TmmQSbShHz9CdQm0NkEjx1Dyh_Y984R9LpNrpvH2D_U",
+          # alternative to a url, you can provide a base64 encoded image
+          # "base64": "<base64 encoded image>",
+          "mime_type": "image/jpeg",
+        }
+      ]
+    }
+  ]
+}
+
+outputs = {
+  "messages": [
+    {
+      "role": "assistant",
+      "content": [
+        {
+          "type": "text",
+          "text": "This looks like a Black Labrador."
+        }
+      ]
+    }
+  ]
+}
+```
+
+```python Server-side tool calls theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+input = {
+  "messages": [
+    {
+      "role": "user",
+      "content": [
+        {
+          "type": "text",
+          "text": "What is the price of AAPL?"
+        }
+      ]
+    }
+  ]
+}
+
+output = {
+  "messages": [
+    {
+      "role": "assistant",
+      "content": [
+        {
+          "type": "server_tool_call",
+          "name": "web_search",
+          "args": {
+            "query": "price of AAPL",
+            "type": "search"
           },
-          {
-            "type": "reasoning",
-            "text": "The user is asking about..."
-          }
-        ]
-      }
-    ]
-  }
-
-  ```
-
-  ```python Tool calls theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  input = {
-    "messages": [
-      {
-        "role": "user",
-        "content": [
-          {
-            "type": "text",
-            "text": "What's the weather in San Francisco?"
-          }
-        ]
-      }
-    ]
-  }
-
-  outputs = {
-    "messages": [
-      {
-        "role": "assistant",
-        "content": [{"type": "tool_call", "name": "get_weather", "args": {"city": "San Francisco"}, "id": "call_1"}],
-      },
-      {
-        "role": "tool",
-        "tool_call_id": "call_1",
-        "content": [
-          {
-            "type": "text",
-            "text": "{\"temperature\": \"18°C\", \"condition\": \"Sunny\"}"
-          }
-        ]
-      },
-      {
-        "role": "assistant",
-        "content": [
-          {
-            "type": "text",
-            "text": "The weather in San Francisco is 18°C and sunny."
-          }
-        ]
-      }
-    ]
-  }
-  ```
-
-  ```python Multimodal theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  inputs = {
-    "messages": [
-      {
-        "role": "user",
-        "content": [
-          {
-            "type": "text",
-            "text": "What breed is this dog?"
-          },
-          {
-            "type": "image",
-            "url": "https://fastly.picsum.photos/id/237/200/300.jpg?hmac=TmmQSbShHz9CdQm0NkEjx1Dyh_Y984R9LpNrpvH2D_U",
-            # alternative to a url, you can provide a base64 encoded image
-            # "base64": "<base64 encoded image>",
-            "mime_type": "image/jpeg",
-          }
-        ]
-      }
-    ]
-  }
-
-  outputs = {
-    "messages": [
-      {
-        "role": "assistant",
-        "content": [
-          {
-            "type": "text",
-            "text": "This looks like a Black Labrador."
-          }
-        ]
-      }
-    ]
-  }
-  ```
-
-  ```python Server-side tool calls theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  input = {
-    "messages": [
-      {
-        "role": "user",
-        "content": [
-          {
-            "type": "text",
-            "text": "What is the price of AAPL?"
-          }
-        ]
-      }
-    ]
-  }
-
-  output = {
-    "messages": [
-      {
-        "role": "assistant",
-        "content": [
-          {
-            "type": "server_tool_call",
-            "name": "web_search",
-            "args": {
-              "query": "price of AAPL",
-              "type": "search"
-            },
-            "id": "call_1"
-          },
-          {
-            "type": "server_tool_result",
-            "tool_call_id": "call_1",
-            "status": "success"
-          },
-          {
-            "type": "text",
-            "text": "The price of AAPL is $150.00"
-          }
-        ]
-      }
-    ]
-  }
-  ```
-</CodeGroup>
+          "id": "call_1"
+        },
+        {
+          "type": "server_tool_result",
+          "tool_call_id": "call_1",
+          "status": "success"
+        },
+        {
+          "type": "text",
+          "text": "The price of AAPL is $150.00"
+        }
+      ]
+    }
+  ]
+}
+```
 
 ## Convert custom I/O formats into LangSmith compatible formats
 
@@ -415,90 +413,88 @@ When using a custom model, it is recommended to also provide the following `meta
 * `ls_provider`: The provider of the model, e.g., `"openai"`, `"anthropic"`.
 * `ls_model_name`: The name of the model, e.g., `"gpt-5.4-mini"`, `"claude-opus-4-8"`.
 
-<CodeGroup>
-  ```python Python wrap theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  from langsmith import traceable
+```python Python wrap theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+from langsmith import traceable
 
-  inputs = [
-      {"role": "system", "content": "You are a helpful assistant."},
-      {"role": "user", "content": "I'd like to book a table for two."},
-  ]
-  output = {
-      "choices": [
-          {
-              "message": {
-                  "role": "assistant",
-                  "content": "Sure, what time would you like to book the table for?"
-              }
-          }
-      ]
-  }
+inputs = [
+    {"role": "system", "content": "You are a helpful assistant."},
+    {"role": "user", "content": "I'd like to book a table for two."},
+]
+output = {
+    "choices": [
+        {
+            "message": {
+                "role": "assistant",
+                "content": "Sure, what time would you like to book the table for?"
+            }
+        }
+    ]
+}
 
-  @traceable(
-      run_type="llm",
-      metadata={"ls_provider": "my_provider", "ls_model_name": "my_model"}
-  )
-  def chat_model(messages: list):
-      return output
+@traceable(
+    run_type="llm",
+    metadata={"ls_provider": "my_provider", "ls_model_name": "my_model"}
+)
+def chat_model(messages: list):
+    return output
 
-  chat_model(inputs)
-  ```
+chat_model(inputs)
+```
 
-  ```typescript TypeScript wrap theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  import { traceable } from "langsmith/traceable";
+```typescript TypeScript wrap theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+import { traceable } from "langsmith/traceable";
 
-  const messages = [
-      { role: "system", content: "You are a helpful assistant." },
-      { role: "user", content: "I'd like to book a table for two." }
-  ];
-  const output = {
-      choices: [
-          {
-              message: {
-                  role: "assistant",
-                  content: "Sure, what time would you like to book the table for?",
-              },
-          },
-      ],
-      usage_metadata: {
-          input_tokens: 27,
-          output_tokens: 13,
-          total_tokens: 40,
-      },
-  };
+const messages = [
+    { role: "system", content: "You are a helpful assistant." },
+    { role: "user", content: "I'd like to book a table for two." }
+];
+const output = {
+    choices: [
+        {
+            message: {
+                role: "assistant",
+                content: "Sure, what time would you like to book the table for?",
+            },
+        },
+    ],
+    usage_metadata: {
+        input_tokens: 27,
+        output_tokens: 13,
+        total_tokens: 40,
+    },
+};
 
-  // Can also use one of:
-  // const output = {
-  //     message: {
-  //         role: "assistant",
-  //         content: "Sure, what time would you like to book the table for?"
-  //     }
-  // };
-  //
-  // const output = {
-  //     role: "assistant",
-  //     content: "Sure, what time would you like to book the table for?"
-  // };
-  //
-  // const output = ["assistant", "Sure, what time would you like to book the table for?"];
+// Can also use one of:
+// const output = {
+//     message: {
+//         role: "assistant",
+//         content: "Sure, what time would you like to book the table for?"
+//     }
+// };
+//
+// const output = {
+//     role: "assistant",
+//     content: "Sure, what time would you like to book the table for?"
+// };
+//
+// const output = ["assistant", "Sure, what time would you like to book the table for?"];
 
-  const chatModel = traceable(
-      async ({ messages }: { messages: { role: string; content: string }[] }) => {
-          return output;
-      },
-      {
-          run_type: "llm",
-          name: "chat_model",
-          metadata: {
-              ls_provider: "my_provider",
-              ls_model_name: "my_model"
-          }
-      }
-  );
+const chatModel = traceable(
+    async ({ messages }: { messages: { role: string; content: string }[] }) => {
+        return output;
+    },
+    {
+        run_type: "llm",
+        name: "chat_model",
+        metadata: {
+            ls_provider: "my_provider",
+            ls_model_name: "my_model"
+        }
+    }
+);
 
-  await chatModel({ messages });
-  ```
-</CodeGroup>
+await chatModel({ messages });
+```
 
 If you implement a custom streaming `chat_model`, you can "reduce" the outputs into the same format as the non-streaming version. This is only supported in Python:
 
@@ -535,9 +531,9 @@ list(
 )
 ```
 
-<Check>
-  Setting `ls_model_name` in your `metadata` is required for LangSmith to identify the model and calculate costs for custom LLM traces. Without it, token counts may still be recorded but costs won't be estimated.
-</Check>
+> [!TIP]
+>
+> Setting `ls_model_name` in your `metadata` is required for LangSmith to identify the model and calculate costs for custom LLM traces. Without it, token counts may still be recorded but costs won't be estimated.
 
 To learn more about how to use the `metadata` fields, refer to the [Add metadata and tags](/langsmith/add-metadata-tags) guide. To customize how custom agent runs appear in the Trajectory view, see [Customize the Trajectory view](/langsmith/view-traces#customize-the-trajectory-view).
 
@@ -566,49 +562,47 @@ If you are using `traceable` or one of the SDK wrappers, LangSmith will automati
 
 Here's an example:
 
-<CodeGroup>
-  ```python Python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  from langsmith.run_trees import RunTree
-  run_tree = RunTree(
-      name="CustomChatModel",
-      run_type="llm",
-      inputs={ ... }
-  )
-  run_tree.post()
-  llm_stream = ...
-  first_token = None
-  for token in llm_stream:
-      if first_token is None:
-        first_token = token
-        run_tree.add_event({
-          "name": "new_token"
-        })
-  run_tree.end(outputs={ ... })
-  run_tree.patch()
-  ```
+```python Python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+from langsmith.run_trees import RunTree
+run_tree = RunTree(
+    name="CustomChatModel",
+    run_type="llm",
+    inputs={ ... }
+)
+run_tree.post()
+llm_stream = ...
+first_token = None
+for token in llm_stream:
+    if first_token is None:
+      first_token = token
+      run_tree.add_event({
+        "name": "new_token"
+      })
+run_tree.end(outputs={ ... })
+run_tree.patch()
+```
 
-  ```typescript TypeScript theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  import { RunTree } from "langsmith";
-  const runTree = new RunTree({
-      name: "CustomChatModel",
-      run_type: "llm",
-      inputs: { ... },
-  });
-  await runTree.postRun();
-  const llmStream = ...;
-  let firstToken;
-  for (const token of llmStream) {
-      if (firstToken == null) {
-          firstToken = token;
-          runTree.addEvent({ name: "new_token" });
-      }
-  }
-  await runTree.end({
-      outputs: { ... },
-  });
-  await runTree.patchRun();
-  ```
-</CodeGroup>
+```typescript TypeScript theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+import { RunTree } from "langsmith";
+const runTree = new RunTree({
+    name: "CustomChatModel",
+    run_type: "llm",
+    inputs: { ... },
+});
+await runTree.postRun();
+const llmStream = ...;
+let firstToken;
+for (const token of llmStream) {
+    if (firstToken == null) {
+        firstToken = token;
+        runTree.addEvent({ name: "new_token" });
+    }
+}
+await runTree.end({
+    outputs: { ... },
+});
+await runTree.patchRun();
+```
 
 ## Related
 
@@ -620,12 +614,6 @@ Here's an example:
 
 ***
 
-<div>
-  <Callout icon="terminal-2">
-    [Connect these docs](/use-these-docs) to your agent of choice via MCP for real-time answers.
-  </Callout>
+[Connect these docs](/use-these-docs) to your agent of choice via MCP for real-time answers.
 
-  <Callout icon="edit">
-    [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/log-llm-trace.mdx) or [file an issue](https://github.com/langchain-ai/docs/issues/new/choose).
-  </Callout>
-</div>
+[Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/log-llm-trace.mdx) or [file an issue](https://github.com/langchain-ai/docs/issues/new/choose).

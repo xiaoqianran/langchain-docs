@@ -36,69 +36,67 @@ Use the router pattern when you have distinct verticals (separate knowledge doma
 
 The router classifies the query and directs it to the appropriate agent(s). Use [`Command`](/oss/javascript/langgraph/graph-api#command) for single-agent routing or [`Send`](/oss/javascript/langgraph/graph-api#send) for parallel fan-out to multiple agents.
 
-<Tabs>
-  <Tab title="Single agent">
-    Use `Command` to route to a single specialized agent:
+**Single agent**
 
-    ```typescript theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-    import { z } from "zod";
-    import { Command } from "@langchain/langgraph";
+Use `Command` to route to a single specialized agent:
 
-    const ClassificationResult = z.object({
-      query: z.string(),
-      agent: z.string(),
-    });
+```typescript theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+import { z } from "zod";
+import { Command } from "@langchain/langgraph";
 
-    function classifyQuery(query: string): z.infer<typeof ClassificationResult> {
-      // Use LLM to classify query and determine the appropriate agent
-      // Classification logic here
-      ...
-    }
+const ClassificationResult = z.object({
+  query: z.string(),
+  agent: z.string(),
+});
 
-    function routeQuery(state: z.infer<typeof ClassificationResult>) {
-      const classification = classifyQuery(state.query);
+function classifyQuery(query: string): z.infer<typeof ClassificationResult> {
+  // Use LLM to classify query and determine the appropriate agent
+  // Classification logic here
+  ...
+}
 
-      // Route to the selected agent
-      return new Command({ goto: classification.agent });
-    }
-    ```
-  </Tab>
+function routeQuery(state: z.infer<typeof ClassificationResult>) {
+  const classification = classifyQuery(state.query);
 
-  <Tab title="Multiple agents (parallel)">
-    Use `Send` to fan out to multiple specialized agents in parallel:
+  // Route to the selected agent
+  return new Command({ goto: classification.agent });
+}
+```
 
-    ```typescript theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-    import { z } from "zod";
-    import { Command } from "@langchain/langgraph";
+**Multiple agents (parallel)**
 
-    const ClassificationResult = z.object({
-      query: z.string(),
-      agent: z.string(),
-    });
+Use `Send` to fan out to multiple specialized agents in parallel:
 
-    function classifyQuery(query: string): z.infer<typeof ClassificationResult>[] {
-      // Use LLM to classify query and determine the appropriate agent
-      // Classification logic here
-      ...
-    }
+```typescript theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+import { z } from "zod";
+import { Command } from "@langchain/langgraph";
 
-    function routeQuery(state: typeof State.State) {
-      const classifications = classifyQuery(state.query);
+const ClassificationResult = z.object({
+  query: z.string(),
+  agent: z.string(),
+});
 
-      // Fan out to selected agents in parallel
-      return classifications.map(
-        (c) => new Send(c.agent, { query: c.query })
-      );
-    }
-    ```
-  </Tab>
-</Tabs>
+function classifyQuery(query: string): z.infer<typeof ClassificationResult>[] {
+  // Use LLM to classify query and determine the appropriate agent
+  // Classification logic here
+  ...
+}
+
+function routeQuery(state: typeof State.State) {
+  const classifications = classifyQuery(state.query);
+
+  // Fan out to selected agents in parallel
+  return classifications.map(
+    (c) => new Send(c.agent, { query: c.query })
+  );
+}
+```
 
 For a complete implementation, see the tutorial below.
 
-<Card title="Tutorial: Build a multi-source knowledge base with routing" icon="book" href="/oss/javascript/langchain/multi-agent/router-knowledge-base">
-  Build a router that queries GitHub, Notion, and Slack in parallel, then synthesizes results into a coherent answer. Covers state definition, specialized agents, parallel execution with `Send`, and result synthesis.
-</Card>
+> **[Tutorial: Build a multi-source knowledge base with routing](/oss/javascript/langchain/multi-agent/router-knowledge-base)**
+>
+> Build a router that queries GitHub, Notion, and Slack in parallel, then synthesizes results into a coherent answer. Covers state definition, specialized agents, parallel execution with `Send`, and result synthesis.
 
 ## Stateless vs. stateful
 
@@ -111,14 +109,14 @@ Two approaches:
 
 Each request is routed independently—no memory between calls. For multi-turn conversations, see [Stateful routers](#stateful).
 
-<Tip>
-  **Router vs. Subagents**: Both patterns can dispatch work to multiple agents, but they differ in how routing decisions are made:
-
-  * **Router**: A dedicated routing step (often a single LLM call or rule-based logic) that classifies the input and dispatches to agents. The router itself typically doesn't maintain conversation history or perform multi-turn orchestration—it's a preprocessing step.
-  * **Subagents**: A main supervisor agent dynamically decides which [subagents](/oss/javascript/langchain/multi-agent/subagents) to call as part of an ongoing conversation. The main agent maintains context, can call multiple subagents across turns, and orchestrates complex multi-step workflows.
-
-  Use a **router** when you have clear input categories and want deterministic or lightweight classification. Use a **supervisor** when you need flexible, conversation-aware orchestration where the LLM decides what to do next based on evolving context.
-</Tip>
+> [!TIP]
+>
+> **Router vs. Subagents**: Both patterns can dispatch work to multiple agents, but they differ in how routing decisions are made:
+>
+> * **Router**: A dedicated routing step (often a single LLM call or rule-based logic) that classifies the input and dispatches to agents. The router itself typically doesn't maintain conversation history or perform multi-turn orchestration—it's a preprocessing step.
+> * **Subagents**: A main supervisor agent dynamically decides which [subagents](/oss/javascript/langchain/multi-agent/subagents) to call as part of an ongoing conversation. The main agent maintains context, can call multiple subagents across turns, and orchestrates complex multi-step workflows.
+>
+> Use a **router** when you have clear input categories and want deterministic or lightweight classification. Use a **supervisor** when you need flexible, conversation-aware orchestration where the LLM decides what to do next based on evolving context.
 
 ## Stateful
 
@@ -155,18 +153,12 @@ const conversationalAgent = createAgent({
 
 If you need the router itself to maintain state, use [persistence](/oss/javascript/langchain/short-term-memory) to store message history. When routing to an agent, fetch previous messages from state and selectively include them in the agent's context—this is a lever for [context engineering](/oss/javascript/langchain/context-engineering).
 
-<Warning>
-  **Stateful routers require custom history management.** If the router switches between agents across turns, conversations may not feel fluid to end users when agents have different tones or prompts. With parallel invocation, you'll need to maintain history at the router level (inputs and synthesized outputs) and leverage this history in routing logic. Consider the [handoffs pattern](/oss/javascript/langchain/multi-agent/handoffs) or [subagents pattern](/oss/javascript/langchain/multi-agent/subagents) instead—both provide clearer semantics for multi-turn conversations.
-</Warning>
+> [!WARNING]
+>
+> **Stateful routers require custom history management.** If the router switches between agents across turns, conversations may not feel fluid to end users when agents have different tones or prompts. With parallel invocation, you'll need to maintain history at the router level (inputs and synthesized outputs) and leverage this history in routing logic. Consider the [handoffs pattern](/oss/javascript/langchain/multi-agent/handoffs) or [subagents pattern](/oss/javascript/langchain/multi-agent/subagents) instead—both provide clearer semantics for multi-turn conversations.
 
 ***
 
-<div>
-  <Callout icon="terminal-2">
-    [Connect these docs](/use-these-docs) to your agent of choice via MCP for real-time answers.
-  </Callout>
+[Connect these docs](/use-these-docs) to your agent of choice via MCP for real-time answers.
 
-  <Callout icon="edit">
-    [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/oss/langchain/multi-agent/router.mdx) or [file an issue](https://github.com/langchain-ai/docs/issues/new/choose).
-  </Callout>
-</div>
+[Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/oss/langchain/multi-agent/router.mdx) or [file an issue](https://github.com/langchain-ai/docs/issues/new/choose).

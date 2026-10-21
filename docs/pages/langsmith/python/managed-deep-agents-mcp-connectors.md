@@ -8,9 +8,9 @@ Connect a managed deep agent to remote [Model Context Protocol (MCP)](/oss/pytho
 
 Most remote MCP servers require authentication. A [connection](/langsmith/python/managed-deep-agents-connections) supplies it, and declaring the connection as user-owned makes each caller authorize their own account.
 
-<Note>
-  Managed Deep Agents is in **public [beta](/langsmith/release-stages)** on [LangSmith Cloud](/langsmith/cloud).
-</Note>
+> [!NOTE]
+>
+> Managed Deep Agents is in **public [beta](/langsmith/release-stages)** on [LangSmith Cloud](/langsmith/cloud).
 
 Declare MCP servers in `tools/mcp.py`:
 
@@ -29,57 +29,55 @@ To implement application logic in the project instead, use an [authored tool](/l
 
 Use an MCP server when tools already live on a remote MCP server and you want MDA to load them without importing them into the agent definition.
 
-<Steps>
-  <Step title="Declare the servers">
-    Use `define_mcp` to declare one or more remote servers:
+**1. Declare the servers**
 
-    ```python tools/mcp.py theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-    from managed_deepagents import define_mcp
+Use `define_mcp` to declare one or more remote servers:
 
-    mcp = define_mcp(
-        servers={
-            "langchainDocs": {
-                "transport": "http",
-                "url": "https://docs.langchain.com/mcp",
-            },
+```python tools/mcp.py theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+from managed_deepagents import define_mcp
+
+mcp = define_mcp(
+    servers={
+        "langchainDocs": {
+            "transport": "http",
+            "url": "https://docs.langchain.com/mcp",
         },
-    )
-    ```
+    },
+)
+```
 
-    The module must export a module-level `mcp`. A project has one MCP declaration, so declare every server in it.
+The module must export a module-level `mcp`. A project has one MCP declaration, so declare every server in it.
 
-    Managed Deep Agents supports Streamable HTTP (`"http"`) and legacy SSE (`"sse"`) transports. Stdio MCP servers are not supported. Expose a stdio server over HTTP or implement its operation as an [authored tool](/langsmith/python/managed-deep-agents-tools) instead.
+Managed Deep Agents supports Streamable HTTP (`"http"`) and legacy SSE (`"sse"`) transports. Stdio MCP servers are not supported. Expose a stdio server over HTTP or implement its operation as an [authored tool](/langsmith/python/managed-deep-agents-tools) instead.
 
-    For connection options, see [Manage connections](/langsmith/python/managed-deep-agents-connections).
-  </Step>
+For connection options, see [Manage connections](/langsmith/python/managed-deep-agents-connections).
 
-  <Step title="Select tools (Optional)">
-    By default, Managed Deep Agents exposes every tool from each server. To expose only selected tools, set an allowlist inside that server's configuration:
+**2. Select tools (Optional)**
 
-    ```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-    {
-        "transport": "http",
-        "url": "https://docs.langchain.com/mcp",
-        "include_tools": ["search_docs_by_lang_chain"],
-    }
-    ```
+By default, Managed Deep Agents exposes every tool from each server. To expose only selected tools, set an allowlist inside that server's configuration:
 
-    To expose every tool except selected tools, replace `include_tools` with `exclude_tools`.
+```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+{
+    "transport": "http",
+    "url": "https://docs.langchain.com/mcp",
+    "include_tools": ["search_docs_by_lang_chain"],
+}
+```
 
-    You can use both options together. The denylist applies after the allowlist, and the same tool cannot appear in both lists.
+To expose every tool except selected tools, replace `include_tools` with `exclude_tools`.
 
-    Selection uses raw MCP tool names before Managed Deep Agents prefixes them. Tool names are prefixed with the server name by default to avoid collisions. For example, the `search_docs_by_lang_chain` tool from the `langchainDocs` server is exposed as `langchainDocs__search_docs_by_lang_chain`.
-  </Step>
+You can use both options together. The denylist applies after the allowlist, and the same tool cannot appear in both lists.
 
-  <Step title="Pass credentials (Optional)">
-    If an MCP server requires credentials, declare a connection on the server config and create that connection in the workspace.
+Selection uses raw MCP tool names before Managed Deep Agents prefixes them. Tool names are prefixed with the server name by default to avoid collisions. For example, the `search_docs_by_lang_chain` tool from the `langchainDocs` server is exposed as `langchainDocs__search_docs_by_lang_chain`.
 
-    * **MCP OAuth**: For servers that advertise OAuth and support automatic client registration, create with `mda connections create <slug>` (inferred from the MCP declaration) or `mda connections create <slug> --mcp <url>`. You do not supply a client ID or secret.
-    * **Opaque secret or general OAuth**: For a static API key, or for a BYOT OAuth app you register yourself, create an opaque secret or general OAuth connection, then set the server's `connection` option to `connections.get(...)`.
+**3. Pass credentials (Optional)**
 
-    For create modes, owners, and runtime authorization, see [Manage connections](/langsmith/python/managed-deep-agents-connections).
-  </Step>
-</Steps>
+If an MCP server requires credentials, declare a connection on the server config and create that connection in the workspace.
+
+* **MCP OAuth**: For servers that advertise OAuth and support automatic client registration, create with `mda connections create <slug>` (inferred from the MCP declaration) or `mda connections create <slug> --mcp <url>`. You do not supply a client ID or secret.
+* **Opaque secret or general OAuth**: For a static API key, or for a BYOT OAuth app you register yourself, create an opaque secret or general OAuth connection, then set the server's `connection` option to `connections.get(...)`.
+
+For create modes, owners, and runtime authorization, see [Manage connections](/langsmith/python/managed-deep-agents-connections).
 
 ## Configure MCP servers
 
@@ -120,12 +118,6 @@ For more information, see [Project structure](/langsmith/python/managed-deep-age
 
 ***
 
-<div>
-  <Callout icon="terminal-2">
-    [Connect these docs](/use-these-docs) to your agent of choice via MCP for real-time answers.
-  </Callout>
+[Connect these docs](/use-these-docs) to your agent of choice via MCP for real-time answers.
 
-  <Callout icon="edit">
-    [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/managed-deep-agents-mcp-connectors.mdx) or [file an issue](https://github.com/langchain-ai/docs/issues/new/choose).
-  </Callout>
-</div>
+[Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/managed-deep-agents-mcp-connectors.mdx) or [file an issue](https://github.com/langchain-ai/docs/issues/new/choose).

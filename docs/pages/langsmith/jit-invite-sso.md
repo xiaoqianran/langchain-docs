@@ -24,50 +24,48 @@ The `invites_enabled` setting controls manual user invitations. When enabled, [o
 
 You can update these settings in the LangSmith UI or with the LangSmith API:
 
-<Tabs>
-  <Tab title="UI" icon="layout">
-    In the [LangSmith UI](https://smith.langchain.com?utm_source=docs\&utm_medium=cta\&utm_campaign=langsmith-signup\&utm_content=langsmith-jit-invite-sso):
+**UI**
 
-    1. Navigate to **Settings** > **Organization** > **Access and Security** > **General**.
-    2. Toggle **Enable JIT provisioning** and **Allow invites** as needed.
-    3. [Configure SSO default workspaces and roles](#configure-default-sso-settings) in **Settings** > **SSO configuration**.
-  </Tab>
+In the [LangSmith UI](https://smith.langchain.com?utm_source=docs\&utm_medium=cta\&utm_campaign=langsmith-signup\&utm_content=langsmith-jit-invite-sso):
 
-  <Tab title="API" icon="code">
-    Update organization settings programmatically using the [Update organization info](/langsmith/smith-api/orgs/update-current-organization-info) endpoint:
+1. Navigate to **Settings** > **Organization** > **Access and Security** > **General**.
+2. Toggle **Enable JIT provisioning** and **Allow invites** as needed.
+3. [Configure SSO default workspaces and roles](#configure-default-sso-settings) in **Settings** > **SSO configuration**.
 
-    ```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-    curl -X PATCH https://api.smith.langchain.com/api/v1/organizations/current/info \
-      -H "Authorization: Bearer $LANGSMITH_API_KEY" \
-      -H "Content-Type: application/json" \
-      -d '{
-        "jit_provisioning_enabled": true,
-        "invites_enabled": true
-      }'
-    ```
+**API**
 
-    Response includes updated current organization configuration:
+Update organization settings programmatically using the [Update organization info](/langsmith/smith-api/orgs/update-current-organization-info) endpoint:
 
-    ```json theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-    {
-      "id": "org-uuid",
-      "display_name": "My Organization",
-      "jit_provisioning_enabled": true,
-      "invites_enabled": true,
-      "sso_login_slug": "my-org",
-      ...
-    }
-    ```
-  </Tab>
-</Tabs>
+```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+curl -X PATCH https://api.smith.langchain.com/api/v1/organizations/current/info \
+  -H "Authorization: Bearer $LANGSMITH_API_KEY" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "jit_provisioning_enabled": true,
+    "invites_enabled": true
+  }'
+```
 
-<Note>
-  Consider the following if you are using [LangSmith self-hosted](/langsmith/self-hosted):
+Response includes updated current organization configuration:
 
-  * The JIT provisioning and the invites settings only apply to the default organization (identified by `default_sso_provision=true`). Other organizations must use invites in self-hosted.
-  * The environment variable `SELF_HOSTED_JIT_PROVISIONING_ENABLED` can globally override the JIT provisioning setting. When set to `false`, JIT provisioning is disabled for all organizations regardless of their individual settings.
-  * For additional self-hosted user management customizations, refer to [Customize user management](/langsmith/self-host-user-management).
-</Note>
+```json theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+{
+  "id": "org-uuid",
+  "display_name": "My Organization",
+  "jit_provisioning_enabled": true,
+  "invites_enabled": true,
+  "sso_login_slug": "my-org",
+  ...
+}
+```
+
+> [!NOTE]
+>
+> Consider the following if you are using [LangSmith self-hosted](/langsmith/self-hosted):
+>
+> * The JIT provisioning and the invites settings only apply to the default organization (identified by `default_sso_provision=true`). Other organizations must use invites in self-hosted.
+> * The environment variable `SELF_HOSTED_JIT_PROVISIONING_ENABLED` can globally override the JIT provisioning setting. When set to `false`, JIT provisioning is disabled for all organizations regardless of their individual settings.
+> * For additional self-hosted user management customizations, refer to [Customize user management](/langsmith/self-host-user-management).
 
 ## How user access works
 
@@ -90,9 +88,9 @@ When a user attempts to sign in via SSO, LangSmith follows this decision flow:
    └─ NO → Deny access (user must be added via SCIM or by administrator)
    ```
 
-<Note>
-  When both JIT provisioning and invites are enabled, **invites take precedence**. If a user has a pending invitation, they are added with the invite's contents, not the default SSO settings.
-</Note>
+> [!NOTE]
+>
+> When both JIT provisioning and invites are enabled, **invites take precedence**. If a user has a pending invitation, they are added with the invite's contents, not the default SSO settings.
 
 ## Configuration scenarios
 
@@ -201,9 +199,9 @@ When [JIT provisioning](#jit-provisioning) is enabled, configure default setting
 
 If your organization uses [SCIM](/langsmith/user-management#set-up-scim-for-your-organization) (System for Cross-domain Identity Management), users can be automatically provisioned and managed through your identity provider. SCIM provides an additional mechanism for user management that works alongside JIT and invite settings.
 
-<Note>
-  SCIM group membership overrides manually assigned roles or roles assigned via JIT provisioning. If you're using SCIM, consider disabling JIT provisioning to avoid conflicts.
-</Note>
+> [!NOTE]
+>
+> SCIM group membership overrides manually assigned roles or roles assigned via JIT provisioning. If you're using SCIM, consider disabling JIT provisioning to avoid conflicts.
 
 ## SSO Groups Sync
 
@@ -227,12 +225,6 @@ We recommend choosing one of SCIM or SSO Groups Sync per organization, not both,
 
 ***
 
-<div>
-  <Callout icon="terminal-2">
-    [Connect these docs](/use-these-docs) to your agent of choice via MCP for real-time answers.
-  </Callout>
+[Connect these docs](/use-these-docs) to your agent of choice via MCP for real-time answers.
 
-  <Callout icon="edit">
-    [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/jit-invite-sso.mdx) or [file an issue](https://github.com/langchain-ai/docs/issues/new/choose).
-  </Callout>
-</div>
+[Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/jit-invite-sso.mdx) or [file an issue](https://github.com/langchain-ai/docs/issues/new/choose).

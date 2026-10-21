@@ -14,15 +14,13 @@ This guide shows you how to trace LiteLLM calls with LangSmith using:
 
 Install the following when using either the LiteLLM Python SDK or LiteLLM Proxy:
 
-<CodeGroup>
-  ```bash Python SDK theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  pip install litellm langsmith openai
-  ```
+```bash Python SDK theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+pip install litellm langsmith openai
+```
 
-  ```bash Proxy usage theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  npm install openai langsmith
-  ```
-</CodeGroup>
+```bash Proxy usage theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+npm install openai langsmith
+```
 
 The examples in this guide use OpenAI models, but you can install the necessary provider for your use case.
 
@@ -33,9 +31,9 @@ LiteLLM supports two ways to send traces to LangSmith, which operate at differen
 * [LangSmith SDK tracing](#use-langsmith_tracing-and-traceable) with `LANGSMITH_TRACING=true` enables application-level tracing via the LangSmith SDK. This is useful when you want to trace broader business logic, multi-step pipelines, or spans created with `@traceable`.
 * LiteLLM’s built-in [`langsmith` callback](#log-litellm-call-with-the-langsmith-callback) logs model calls directly from LiteLLM. This is recommended when you want to trace LiteLLM requests specifically, or run async applications.
 
-<Note>
-  Avoid enabling LiteLLM's `langsmith` callback and LangSmith tracing for the same LiteLLM calls, as this can result in duplicate traces.
-</Note>
+> [!NOTE]
+>
+> Avoid enabling LiteLLM's `langsmith` callback and LangSmith tracing for the same LiteLLM calls, as this can result in duplicate traces.
 
 ### Use `LANGSMITH_TRACING` and `traceable`
 
@@ -90,9 +88,9 @@ You can use `LANGSMITH_TRACING=true` together with `@traceable` for predictable 
 
    In this example, the `messages` argument becomes the trace input, and the returned assistant message object becomes the trace output. The LiteLLM call itself runs normally—`@traceable` wraps it with observability rather than modifying its behavior. This approach traces your application logic, not just the model call.
 
-   <Tip>
-     For more general examples using `@traceable`, refer to the [Custom instrumentation](/langsmith/annotate-code#use-@traceable-/-traceable) page.
-   </Tip>
+   > [!TIP]
+   >
+   > For more general examples using `@traceable`, refer to the [Custom instrumentation](/langsmith/annotate-code#use-@traceable-/-traceable) page.
 
 ### Log LiteLLM call with the `langsmith` callback
 
@@ -100,9 +98,9 @@ LiteLLM can send traces directly to LangSmith using its built-in [callback syste
 
 LiteLLM callbacks run in an asynchronous environment. When making asynchronous calls with `litellm.acompletion()`, you can enable the `langsmith` callback to log successful model calls.
 
-<Tip>
-  This approach is best suited for async applications. For simple synchronous scripts, use the `@traceable` method shown in the [previous section](#use-langsmith_tracing-and-traceable).
-</Tip>
+> [!TIP]
+>
+> This approach is best suited for async applications. For simple synchronous scripts, use the `@traceable` method shown in the [previous section](#use-langsmith_tracing-and-traceable).
 
 1. Set the following environment variables:
 
@@ -180,9 +178,9 @@ The LiteLLM proxy runs as a standalone server and exposes an OpenAI-compatible A
    export OPENAI_API_KEY="your_openai_key"
    ```
 
-   <Note>
-     The LiteLLM proxy runs as a separate service. If you enable LangSmith tracing at the proxy level, you must configure `LANGSMITH_API_KEY` and related environment variables in the proxy’s runtime environment. These settings are not shared with your application process.
-   </Note>
+   > [!NOTE]
+   >
+   > The LiteLLM proxy runs as a separate service. If you enable LangSmith tracing at the proxy level, you must configure `LANGSMITH_API_KEY` and related environment variables in the proxy’s runtime environment. These settings are not shared with your application process.
 
 3. Start the proxy:
 
@@ -196,43 +194,41 @@ The LiteLLM proxy runs as a standalone server and exposes an OpenAI-compatible A
 
 4. Call the proxy from another terminal window:
 
-   <CodeGroup>
-     ```python Python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-     from openai import OpenAI
+   ```python Python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+   from openai import OpenAI
 
-     client = OpenAI(
-         base_url="http://localhost:4000/v1",
-         api_key="anything"  # proxy may require a key but doesn't validate it by default
-     )
+   client = OpenAI(
+       base_url="http://localhost:4000/v1",
+       api_key="anything"  # proxy may require a key but doesn't validate it by default
+   )
 
-     response = client.chat.completions.create(
-         model="gpt-5.5",
-         messages=[
-             {"role": "user", "content": "What is LiteLLM?"}
-         ],
-     )
+   response = client.chat.completions.create(
+       model="gpt-5.5",
+       messages=[
+           {"role": "user", "content": "What is LiteLLM?"}
+       ],
+   )
 
-     print(response.choices[0].message.content)
-     ```
+   print(response.choices[0].message.content)
+   ```
 
-     ```javascript JavaScript theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-     import OpenAI from "openai";
+   ```javascript JavaScript theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+   import OpenAI from "openai";
 
-     const client = new OpenAI({
-     apiKey: "anything",
-     baseURL: "http://localhost:4000/v1",
-     });
+   const client = new OpenAI({
+   apiKey: "anything",
+   baseURL: "http://localhost:4000/v1",
+   });
 
-     const response = await client.chat.completions.create({
-     model: "gpt-5.5",
-     messages: [
-         { role: "user", content: "Explain LiteLLM tracing." }
-     ],
-     });
+   const response = await client.chat.completions.create({
+   model: "gpt-5.5",
+   messages: [
+       { role: "user", content: "Explain LiteLLM tracing." }
+   ],
+   });
 
-     console.log(response.choices[0].message.content);
-     ```
-   </CodeGroup>
+   console.log(response.choices[0].message.content);
+   ```
 
    The client sends a normal chat completion request, and the proxy handles provider routing and response formatting.
 
@@ -244,12 +240,6 @@ The LiteLLM proxy runs as a standalone server and exposes an OpenAI-compatible A
 
 ***
 
-<div>
-  <Callout icon="terminal-2">
-    [Connect these docs](/use-these-docs) to your agent of choice via MCP for real-time answers.
-  </Callout>
+[Connect these docs](/use-these-docs) to your agent of choice via MCP for real-time answers.
 
-  <Callout icon="edit">
-    [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/trace-litellm.mdx) or [file an issue](https://github.com/langchain-ai/docs/issues/new/choose).
-  </Callout>
-</div>
+[Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/trace-litellm.mdx) or [file an issue](https://github.com/langchain-ai/docs/issues/new/choose).

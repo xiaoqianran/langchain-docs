@@ -10,57 +10,51 @@ When creating either a custom class for yourself or to publish in a LangChain in
 
 First, install the required dependencies:
 
-<CardGroup>
-  <Card title="langchain-core" icon="cube" href="https://github.com/langchain-ai/langchainjs/tree/main/libs/langchain-core#readme">
-    Defines the interfaces we want to import to define our custom components
-  </Card>
+> **[langchain-core](https://github.com/langchain-ai/langchainjs/tree/main/libs/langchain-core#readme)**
+>
+> Defines the interfaces we want to import to define our custom components
 
-  <Card title="langchain-tests" icon="flask" href="https://github.com/langchain-ai/langchainjs/tree/main/internal/standard-tests#readme">
-    Provides the standard tests and plugins necessary to run them
-  </Card>
-</CardGroup>
+> **[langchain-tests](https://github.com/langchain-ai/langchainjs/tree/main/internal/standard-tests#readme)**
+>
+> Provides the standard tests and plugins necessary to run them
 
-<CodeGroup>
-  ```bash npm theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  npm install @langchain/core
-  npm install @langchain/standard-tests
-  ```
+```bash npm theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+npm install @langchain/core
+npm install @langchain/standard-tests
+```
 
-  ```bash pnpm theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  pnpm add @langchain/core
-  pnpm add @langchain/standard-tests
-  ```
+```bash pnpm theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+pnpm add @langchain/core
+pnpm add @langchain/standard-tests
+```
 
-  ```bash yarn theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  yarn add @langchain/core
-  yarn add @langchain/standard-tests
-  ```
+```bash yarn theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+yarn add @langchain/core
+yarn add @langchain/standard-tests
+```
 
-  ```bash bun theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  bun add @langchain/core
-  bun add @langchain/standard-tests
-  ```
-</CodeGroup>
+```bash bun theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+bun add @langchain/core
+bun add @langchain/standard-tests
+```
 
 There are 2 namespaces in the `langchain-tests` package:
 
-<AccordionGroup>
-  <Accordion title="Unit tests" icon="settings">
-    **Location**: `src.unit_tests`
+> **Unit tests**
+>
+> **Location**: `src.unit_tests`
+>
+> Designed to test the component in isolation and without access to external services
+>
+> [View API reference](https://reference.langchain.com/python/langchain-tests/unit_tests)
 
-    Designed to test the component in isolation and without access to external services
-
-    [View API reference](https://reference.langchain.com/python/langchain-tests/unit_tests)
-  </Accordion>
-
-  <Accordion title="Integration tests" icon="network">
-    **Location**: `src.integration_tests`
-
-    Designed to test the component with access to external services (in particular, the external service that the component is designed to interact with)
-
-    [View API reference](https://reference.langchain.com/python/langchain-tests/integration_tests)
-  </Accordion>
-</AccordionGroup>
+> **Integration tests**
+>
+> **Location**: `src.integration_tests`
+>
+> Designed to test the component with access to external services (in particular, the external service that the component is designed to interact with)
+>
+> [View API reference](https://reference.langchain.com/python/langchain-tests/integration_tests)
 
 ## Implementing standard tests
 
@@ -88,12 +82,12 @@ class ChatParrotLinkStandardIntegrationTests extends ChatModelIntegrationTests<
     }
 ```
 
-<Note>
-  You should organize tests in these subdirectories relative to the root of your package:
-
-  * `tests/unit_tests` for unit tests
-  * `tests/integration_tests` for integration tests
-</Note>
+> [!NOTE]
+>
+> You should organize tests in these subdirectories relative to the root of your package:
+>
+> * `tests/unit_tests` for unit tests
+> * `tests/integration_tests` for integration tests
 
 To see the complete list of configurable capabilities and their defaults, see [Implementing standard tests](/oss/javascript/contributing/standard-tests-langchain#implementing-standard-tests).
 
@@ -112,12 +106,6 @@ For a full list of the standard test suites that are available, as well as infor
 
 ***
 
-<div>
-  <Callout icon="terminal-2">
-    [Connect these docs](/use-these-docs) to your agent of choice via MCP for real-time answers.
-  </Callout>
+[Connect these docs](/use-these-docs) to your agent of choice via MCP for real-time answers.
 
-  <Callout icon="edit">
-    [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/oss/contributing/standard-tests-langchain.mdx) or [file an issue](https://github.com/langchain-ai/docs/issues/new/choose).
-  </Callout>
-</div>
+[Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/oss/contributing/standard-tests-langchain.mdx) or [file an issue](https://github.com/langchain-ai/docs/issues/new/choose).

@@ -46,9 +46,9 @@ async function runAgent(serverUrl: string) {
 }
 ```
 
-<Card title="View example trace" icon="chart-line" href="https://smith.langchain.com/public/6d4a6e1b-2d3f-429a-a9f7-d212429ac6b4/r">
-  Open a public LangSmith run for this example.
-</Card>
+> **[View example trace](https://smith.langchain.com/public/6d4a6e1b-2d3f-429a-a9f7-d212429ac6b4/r)**
+>
+> Open a public LangSmith run for this example.
 
 `close()` aborts in-flight adapter work, closes its connections, and clears its caches. You can call `listTools()` again to open fresh connections, but use the newly returned tools. Previously returned tools retain their closed clients.
 
@@ -81,9 +81,9 @@ async function listServerTools(calendarUrl: string, filesServerPath: string) {
 }
 ```
 
-<Card title="View example trace" icon="chart-line" href="https://smith.langchain.com/public/493622a5-b24a-4d48-93df-f5b6263beb9f/r">
-  Open a public LangSmith run for this example.
-</Card>
+> **[View example trace](https://smith.langchain.com/public/493622a5-b24a-4d48-93df-f5b6263beb9f/r)**
+>
+> Open a public LangSmith run for this example.
 
 `listToolsets()` groups tools by server name. `listTools()` returns one array; pass a server name or an array of names to select which tools it returns. Selection filters the result, but discovery still contacts every configured server. A failure on an unselected server can fail the call.
 
@@ -115,9 +115,9 @@ export async function makeGraph() {
 }
 ```
 
-<Card title="View example trace" icon="chart-line" href="https://smith.langchain.com/public/d70d86cb-8960-4b0a-a087-18a23d649f71/r">
-  Open a public LangSmith run for this example.
-</Card>
+> **[View example trace](https://smith.langchain.com/public/d70d86cb-8960-4b0a-a087-18a23d649f71/r)**
+>
+> Open a public LangSmith run for this example.
 
 Keep the adapter open across runs. Close it during application shutdown, after active runs finish. For runs with different user credentials, see [Per-user authentication](/oss/javascript/langchain/mcp/auth#per-user-authentication).
 
@@ -171,9 +171,9 @@ async function listToolsAcrossEras(modernUrl: string, legacyUrl: string) {
 }
 ```
 
-<Card title="View example trace" icon="chart-line" href="https://smith.langchain.com/public/0263dee8-0ce0-48a5-ba30-62bea305de1b/r">
-  Open a public LangSmith run for this example.
-</Card>
+> **[View example trace](https://smith.langchain.com/public/0263dee8-0ce0-48a5-ba30-62bea305de1b/r)**
+>
+> Open a public LangSmith run for this example.
 
 Each server's `mode` controls its negotiation independently:
 
@@ -195,12 +195,6 @@ In `"auto"` mode, a URL server that answers the Streamable HTTP request with 404
 
 ***
 
-<div>
-  <Callout icon="terminal-2">
-    [Connect these docs](/use-these-docs) to your agent of choice via MCP for real-time answers.
-  </Callout>
+[Connect these docs](/use-these-docs) to your agent of choice via MCP for real-time answers.
 
-  <Callout icon="edit">
-    [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/oss/langchain/mcp/connections.mdx) or [file an issue](https://github.com/langchain-ai/docs/issues/new/choose).
-  </Callout>
-</div>
+[Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/oss/langchain/mcp/connections.mdx) or [file an issue](https://github.com/langchain-ai/docs/issues/new/choose).

@@ -103,15 +103,13 @@ See a [usage example](/oss/python/integrations/vectorstores/valkey).
 
 We need to install the `langchain-aws` library.
 
-<CodeGroup>
-  ```bash pip theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  pip install langchain-aws
-  ```
+```bash pip theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+pip install langchain-aws
+```
 
-  ```bash uv theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  uv add langchain-aws
-  ```
-</CodeGroup>
+```bash uv theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+uv add langchain-aws
+```
 
 See a [usage example](/oss/python/integrations/retrievers/bedrock).
 
@@ -126,15 +124,13 @@ from langchain_aws import AmazonKnowledgeBasesRetriever
 > [Amazon Bedrock AgentCore Browser](https://docs.aws.amazon.com/bedrock-agentcore/latest/devguide/browser-tool.html)
 > enables agents to interact with web pages through a managed Chrome browser for navigation, content extraction, and web automation.
 
-<CodeGroup>
-  ```bash pip theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  pip install langchain-aws bedrock-agentcore playwright beautifulsoup4
-  ```
+```bash pip theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+pip install langchain-aws bedrock-agentcore playwright beautifulsoup4
+```
 
-  ```bash uv theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  uv add langchain-aws bedrock-agentcore playwright beautifulsoup4
-  ```
-</CodeGroup>
+```bash uv theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+uv add langchain-aws bedrock-agentcore playwright beautifulsoup4
+```
 
 See a [usage example](/oss/python/integrations/tools/bedrock_agentcore_browser).
 
@@ -161,15 +157,13 @@ await toolkit.cleanup()
 > [Amazon Bedrock AgentCore Code Interpreter](https://docs.aws.amazon.com/bedrock-agentcore/latest/devguide/code-interpreter-tool.html)
 > enables agents to execute Python, JavaScript, and TypeScript code in secure, managed sandbox environments for calculations, data analysis, and visualizations.
 
-<CodeGroup>
-  ```bash pip theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  pip install langchain-aws bedrock-agentcore
-  ```
+```bash pip theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+pip install langchain-aws bedrock-agentcore
+```
 
-  ```bash uv theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  uv add langchain-aws bedrock-agentcore
-  ```
-</CodeGroup>
+```bash uv theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+uv add langchain-aws bedrock-agentcore
+```
 
 See a [usage example](/oss/python/integrations/tools/bedrock_agentcore_code_interpreter).
 
@@ -195,15 +189,13 @@ await toolkit.cleanup()
 
 [Amazon Bedrock AgentCore Web Search](https://docs.aws.amazon.com/bedrock-agentcore/latest/devguide/gateway-target-connector-web-search-tool.html) gives agents current information from the web with a source URL on every result, authenticated with your AWS credentials rather than a search API key.
 
-<CodeGroup>
-  ```bash pip theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  pip install langchain-aws bedrock-agentcore
-  ```
+```bash pip theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+pip install langchain-aws bedrock-agentcore
+```
 
-  ```bash uv theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  uv add langchain-aws bedrock-agentcore
-  ```
-</CodeGroup>
+```bash uv theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+uv add langchain-aws bedrock-agentcore
+```
 
 See a [usage example](/oss/python/integrations/tools/bedrock_agentcore_web_search).
 
@@ -228,11 +220,9 @@ finally:
 
 ## Sandboxes
 
-<Columns>
-  <Card title="AgentCoreSandbox" href="/oss/python/integrations/sandboxes/aws" icon="terminal">
-    Amazon Bedrock AgentCore Code Interpreter sandbox backend for deepagents.
-  </Card>
-</Columns>
+> **[AgentCoreSandbox](/oss/python/integrations/sandboxes/aws)**
+>
+> Amazon Bedrock AgentCore Code Interpreter sandbox backend for deepagents.
 
 ## Graphs
 
@@ -243,15 +233,13 @@ finally:
 
 For the Cypher and SPARQL integrations below, we need to install the `langchain-aws` library.
 
-<CodeGroup>
-  ```bash pip theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  pip install langchain-aws
-  ```
+```bash pip theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+pip install langchain-aws
+```
 
-  ```bash uv theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  uv add langchain-aws
-  ```
-</CodeGroup>
+```bash uv theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+uv add langchain-aws
+```
 
 ### Amazon neptune with cypher
 
@@ -277,15 +265,13 @@ from langchain_aws.chains import create_neptune_sparql_qa_chain
 > [Amazon Bedrock AgentCore Memory](https://docs.aws.amazon.com/bedrock-agentcore/latest/devguide/memory.html) provides
 > managed persistence for LangGraph agents, enabling conversation history and state management across sessions with automatic scaling and high availability.
 
-<CodeGroup>
-  ```bash pip theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  pip install langgraph-checkpoint-aws
-  ```
+```bash pip theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+pip install langgraph-checkpoint-aws
+```
 
-  ```bash uv theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  uv add langgraph-checkpoint-aws
-  ```
-</CodeGroup>
+```bash uv theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+uv add langgraph-checkpoint-aws
+```
 
 ```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 from langgraph_checkpoint_aws import AgentCoreMemorySaver
@@ -350,21 +336,19 @@ def pre_model_hook(state, config, *, store):
 
 We need to install the `boto3` and `nltk` libraries.
 
-<CodeGroup>
-  ```bash pip theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  pip install boto3 nltk
-  ```
+```bash pip theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+pip install boto3 nltk
+```
 
-  ```bash uv theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  uv add boto3 nltk
-  ```
-</CodeGroup>
+```bash uv theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+uv add boto3 nltk
+```
 
 See a [usage example](https://python.langchain.com/v0.1/docs/guides/productionization/safety/amazon_comprehend_chain/).
 
-<Warning>
-  The `langchain-experimental` package is no longer maintained. Examples that import from `langchain_experimental` may be outdated or broken. Use with caution.
-</Warning>
+> [!WARNING]
+>
+> The `langchain-experimental` package is no longer maintained. Examples that import from `langchain_experimental` may be outdated or broken. Use with caution.
 
 ```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 from langchain_experimental.comprehend_moderation import AmazonComprehendModerationChain
@@ -377,15 +361,13 @@ from langchain_experimental.comprehend_moderation import AmazonComprehendModerat
 > [Amazon Bedrock AgentCore Runtime](https://docs.aws.amazon.com/bedrock-agentcore/latest/devguide/agents-tools-runtime.html) provides
 > managed, serverless execution for LangGraph agents with built-in observability, automatic scaling, and seamless integration with other AgentCore services.
 
-<CodeGroup>
-  ```bash pip theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  pip install bedrock-agentcore
-  ```
+```bash pip theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+pip install bedrock-agentcore
+```
 
-  ```bash uv theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  uv add bedrock-agentcore
-  ```
-</CodeGroup>
+```bash uv theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+uv add bedrock-agentcore
+```
 
 ```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 from bedrock_agentcore.runtime import BedrockAgentCoreApp
@@ -412,12 +394,6 @@ agentcore launch -e your_agent.py
 
 ***
 
-<div>
-  <Callout icon="terminal-2">
-    [Connect these docs](/use-these-docs) to your agent of choice via MCP for real-time answers.
-  </Callout>
+[Connect these docs](/use-these-docs) to your agent of choice via MCP for real-time answers.
 
-  <Callout icon="edit">
-    [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/oss/python/integrations/providers/aws.mdx) or [file an issue](https://github.com/langchain-ai/docs/issues/new/choose).
-  </Callout>
-</div>
+[Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/oss/python/integrations/providers/aws.mdx) or [file an issue](https://github.com/langchain-ai/docs/issues/new/choose).

@@ -6,9 +6,9 @@ Declare managed cron schedules for Managed Deep Agents deployments, or create th
 
 Managed Deep Agents can run agents on a cron schedule. When you deploy the project, `mda deploy` provisions each schedule as a LangSmith cron after the deployment is live.
 
-<Note>
-  Managed Deep Agents is in **public [beta](/langsmith/release-stages)** on [LangSmith Cloud](/langsmith/cloud).
-</Note>
+> [!NOTE]
+>
+> Managed Deep Agents is in **public [beta](/langsmith/release-stages)** on [LangSmith Cloud](/langsmith/cloud).
 
 ## Project structure
 
@@ -77,9 +77,9 @@ Neither Managed Deep Agents nor the `mda` CLI creates the thread, so this is a o
 
 Use that thread ID in the schedule declaration.
 
-<Note>
-  The following example requires [durable memory](/langsmith/javascript/managed-deep-agents-memory).
-</Note>
+> [!NOTE]
+>
+> The following example requires [durable memory](/langsmith/javascript/managed-deep-agents-memory).
 
 ```ts schedules/nightly-memory.ts theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 import { defineSchedule } from "managed-deepagents";
@@ -97,9 +97,9 @@ Set `deliverTo` to post the final response through a configured [Slack channel](
 
 Use a Slack channel ID because scheduled runs have no originating thread.
 
-<Note>
-  Schedule delivery requires `managed-deepagents` version 0.4.0 or later.
-</Note>
+> [!NOTE]
+>
+> Schedule delivery requires `managed-deepagents` version 0.4.0 or later.
 
 ```ts schedules/monday-greeting.ts theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 import { defineSchedule } from "managed-deepagents";
@@ -141,15 +141,15 @@ Test the project locally with [`mda dev`](/langsmith/javascript/managed-deep-age
 
 When the deployment reaches `DEPLOYED`, `mda deploy` deletes the cron jobs that earlier `schedules/` declarations created and creates cron jobs for the current declarations. Removing a local schedule file and redeploying removes the corresponding managed cron. Schedules created at runtime are unaffected.
 
-<Warning>
-  If you deploy with `--no-wait`, the CLI triggers the remote build and exits before the deployment reaches `DEPLOYED`, so it does not reconcile schedules during that invocation. Run `mda deploy` without `--no-wait` when adding, changing, or removing schedules.
-</Warning>
+> [!WARNING]
+>
+> If you deploy with `--no-wait`, the CLI triggers the remote build and exits before the deployment reaches `DEPLOYED`, so it does not reconcile schedules during that invocation. Run `mda deploy` without `--no-wait` when adding, changing, or removing schedules.
 
 ## Create schedules at runtime
 
-<Note>
-  Runtime schedules require `managed-deepagents` 0.9.0 or later.
-</Note>
+> [!NOTE]
+>
+> Runtime schedules require `managed-deepagents` 0.9.0 or later.
 
 Declarations in `schedules/` are fixed when you deploy. `runtime.schedules` creates schedules while the agent runs, so the agent can set up recurring or one-time work in response to a conversation. It is available on the runtime that tools and [middleware](/langsmith/javascript/managed-deep-agents-middleware) receive, and it acts for the caller of the current run. Each schedule belongs to the current user or to the agent.
 
@@ -227,41 +227,41 @@ A one-time schedule defaults to the current thread, so its run continues the con
 
 ### Create options
 
-<ParamField type="object">
-  `{ type: "user" }` selects the authenticated person of the current run, and the schedule runs as that person. An optional `id` must match that person. `{ type: "agent" }` selects the schedules the agent owns, which run as the agent's service identity.
-</ParamField>
+**owner** `object` *required*
 
-<ParamField type="string">
-  A five-field cron expression for a recurring schedule. Give exactly one of `cron` and `at`.
-</ParamField>
+`{ type: "user" }` selects the authenticated person of the current run, and the schedule runs as that person. An optional `id` must match that person. `{ type: "agent" }` selects the schedules the agent owns, which run as the agent's service identity.
 
-<ParamField type="Date | string">
-  A `Date`, or an ISO 8601 timestamp that ends with `Z` or a UTC offset. The schedule runs once. The runtime rounds it up to the next whole minute. It must be at least one minute and at most 365 days in the future.
-</ParamField>
+**cron** `string`
 
-<ParamField type="string">
-  An IANA time zone for `cron`, such as `America/Los_Angeles`. Do not pass it with `at`.
-</ParamField>
+A five-field cron expression for a recurring schedule. Give exactly one of `cron` and `at`.
 
-<ParamField type="string">
-  A prompt that each run receives as a user message. Give exactly one of `prompt` and `input`.
-</ParamField>
+**at** `Date | string`
 
-<ParamField type="object | object[]">
-  A structured LangGraph input for each run.
-</ParamField>
+A `Date`, or an ISO 8601 timestamp that ends with `Z` or a UTC offset. The schedule runs once. The runtime rounds it up to the next whole minute. It must be at least one minute and at most 365 days in the future.
 
-<ParamField type="boolean">
-  `true` starts each run on a new thread. `false` continues the current thread. Defaults to `true` with `cron` and `false` with `at`.
-</ParamField>
+**timezone** `string` (default: UTC)
 
-<ParamField type="boolean">
-  Create the schedule without running it.
-</ParamField>
+An IANA time zone for `cron`, such as `America/Los_Angeles`. Do not pass it with `at`.
 
-<ParamField type="object">
-  JSON metadata for your own use. Keys that start with `mda_` are reserved.
-</ParamField>
+**prompt** `string`
+
+A prompt that each run receives as a user message. Give exactly one of `prompt` and `input`.
+
+**input** `object | object[]`
+
+A structured LangGraph input for each run.
+
+**newThread** `boolean`
+
+`true` starts each run on a new thread. `false` continues the current thread. Defaults to `true` with `cron` and `false` with `at`.
+
+**paused** `boolean` (default: false)
+
+Create the schedule without running it.
+
+**metadata** `object`
+
+JSON metadata for your own use. Keys that start with `mda_` are reserved.
 
 ### Manage schedules
 
@@ -289,9 +289,9 @@ To change the limit, set these variables in the deployment environment:
 | `MDA_MAX_AGENT_SCHEDULES` | Schedules owned by the agent |
 | `MDA_MAX_USER_SCHEDULES` | Schedules owned by each user |
 
-<Note>
-  Schedule limits require `managed-deepagents>=0.9.3`.
-</Note>
+> [!NOTE]
+>
+> Schedule limits require `managed-deepagents>=0.9.3`.
 
 ## Troubleshoot schedules
 
@@ -313,24 +313,16 @@ To change the limit, set these variables in the deployment environment:
 
 ## Next steps
 
-<CardGroup>
-  <Card title="Deploy an agent" icon="upload" href="/langsmith/javascript/managed-deep-agents-deploy">
-    Deploy and reconcile schedule changes.
-  </Card>
+> **[Deploy an agent](/langsmith/javascript/managed-deep-agents-deploy)**
+>
+> Deploy and reconcile schedule changes.
 
-  <Card title="CLI reference" icon="terminal" href="/langsmith/javascript/managed-deep-agents-cli">
-    Look up `mda deploy` flags and troubleshooting.
-  </Card>
-</CardGroup>
+> **[CLI reference](/langsmith/javascript/managed-deep-agents-cli)**
+>
+> Look up `mda deploy` flags and troubleshooting.
 
 ***
 
-<div>
-  <Callout icon="terminal-2">
-    [Connect these docs](/use-these-docs) to your agent of choice via MCP for real-time answers.
-  </Callout>
+[Connect these docs](/use-these-docs) to your agent of choice via MCP for real-time answers.
 
-  <Callout icon="edit">
-    [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/managed-deep-agents-schedules.mdx) or [file an issue](https://github.com/langchain-ai/docs/issues/new/choose).
-  </Callout>
-</div>
+[Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/managed-deep-agents-schedules.mdx) or [file an issue](https://github.com/langchain-ai/docs/issues/new/choose).

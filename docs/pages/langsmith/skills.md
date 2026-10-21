@@ -6,31 +6,29 @@ Use Agent Skills to work with LangSmith traces, datasets, and evaluators from yo
 
 Agent Skills are reusable, on‑demand capabilities that bundle instructions plus optional helper scripts. This page summarizes the LangSmith‑oriented skills you can add to a compatible coding agent to query traces, generate datasets, and define evaluators. To work with the same LangSmith data directly from the terminal, use the [LangSmith CLI](/langsmith/langsmith-cli).
 
-<Note>
-  These skills follow the Agent Skills specification and are maintained in the [`langsmith-skills` GitHub repository](https://github.com/langchain-ai/langsmith-skills). You can copy the `SKILL.md` and any referenced `scripts/` into your agent’s skills directory. The installers below only install the LangSmith skills (trace, dataset, evaluator).
-</Note>
+> [!NOTE]
+>
+> These skills follow the Agent Skills specification and are maintained in the [`langsmith-skills` GitHub repository](https://github.com/langchain-ai/langsmith-skills). You can copy the `SKILL.md` and any referenced `scripts/` into your agent’s skills directory. The installers below only install the LangSmith skills (trace, dataset, evaluator).
 
 ## Quick install
 
 Install only the LangSmith skills (trace, dataset, evaluator) using `npx skills`:
 
-<CodeGroup>
-  ```bash Local (current project) theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  npx skills add langchain-ai/langsmith-skills --skill '*' --yes
-  ```
+```bash Local (current project) theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+npx skills add langchain-ai/langsmith-skills --skill '*' --yes
+```
 
-  ```bash Global (all projects) theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  npx skills add langchain-ai/langsmith-skills --skill '*' --yes --global
-  ```
+```bash Global (all projects) theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+npx skills add langchain-ai/langsmith-skills --skill '*' --yes --global
+```
 
-  ```bash Link to a specific agent (e.g., Claude Code) theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  npx skills add langchain-ai/langsmith-skills --agent claude-code --skill '*' --yes --global
-  ```
-</CodeGroup>
+```bash Link to a specific agent (e.g., Claude Code) theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+npx skills add langchain-ai/langsmith-skills --agent claude-code --skill '*' --yes --global
+```
 
-<Tip>
-  To update, re‑run the command. If target skill folders already exist, remove them first (e.g., `rm -rf ~/.claude/skills/langsmith-*`).
-</Tip>
+> [!TIP]
+>
+> To update, re‑run the command. If target skill folders already exist, remove them first (e.g., `rm -rf ~/.claude/skills/langsmith-*`).
 
 ## Configure environment
 
@@ -86,12 +84,6 @@ Included LangSmith skills:
 
 ***
 
-<div>
-  <Callout icon="terminal-2">
-    [Connect these docs](/use-these-docs) to your agent of choice via MCP for real-time answers.
-  </Callout>
+[Connect these docs](/use-these-docs) to your agent of choice via MCP for real-time answers.
 
-  <Callout icon="edit">
-    [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/skills.mdx) or [file an issue](https://github.com/langchain-ai/docs/issues/new/choose).
-  </Callout>
-</div>
+[Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/skills.mdx) or [file an issue](https://github.com/langchain-ai/docs/issues/new/choose).

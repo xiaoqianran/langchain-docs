@@ -39,80 +39,79 @@ The following table shows tools that generate video, image, or audio assets:
 
 ## All tools and toolkits
 
-<div>
-  | Integration | Downloads |
-  | :- | :- |
-  | [`Dall-e`](/oss/javascript/integrations/tools/dalle) | <span><a href="https://www.npmjs.com/package/@langchain/openai">  <img alt="Downloads per month" /></a></span> |
-  | [`OpenAI`](/oss/javascript/integrations/tools/openai) | <span><a href="https://www.npmjs.com/package/@langchain/openai">  <img alt="Downloads per month" /></a></span> |
-  | [`OpenAPI toolkit`](/oss/javascript/integrations/tools/openapi) | <span><a href="https://www.npmjs.com/package/@langchain/langgraph">  <img alt="Downloads per month" /></a></span> |
-  | [`Anthropic`](/oss/javascript/integrations/tools/anthropic) | <span><a href="https://www.npmjs.com/package/@langchain/anthropic">  <img alt="Downloads per month" /></a></span> |
-  | [`Google`](/oss/javascript/integrations/tools/google) | <span><a href="https://www.npmjs.com/package/@langchain/google">  <img alt="Downloads per month" /></a></span> |
-  | [`TavilyCrawl`](/oss/javascript/integrations/tools/tavily_crawl) | <span><a href="https://www.npmjs.com/package/@langchain/tavily">  <img alt="Downloads per month" /></a></span> |
-  | [`TavilyExtract`](/oss/javascript/integrations/tools/tavily_extract) | <span><a href="https://www.npmjs.com/package/@langchain/tavily">  <img alt="Downloads per month" /></a></span> |
-  | [`TavilyGetResearch`](/oss/javascript/integrations/tools/tavily_get_research) | <span><a href="https://www.npmjs.com/package/@langchain/tavily">  <img alt="Downloads per month" /></a></span> |
-  | [`TavilyMap`](/oss/javascript/integrations/tools/tavily_map) | <span><a href="https://www.npmjs.com/package/@langchain/tavily">  <img alt="Downloads per month" /></a></span> |
-  | [`TavilyResearch`](/oss/javascript/integrations/tools/tavily_research) | <span><a href="https://www.npmjs.com/package/@langchain/tavily">  <img alt="Downloads per month" /></a></span> |
-  | [`TavilySearch`](/oss/javascript/integrations/tools/tavily_search) | <span><a href="https://www.npmjs.com/package/@langchain/tavily">  <img alt="Downloads per month" /></a></span> |
-  | [`OracleSummary`](/oss/javascript/integrations/tools/oracleai) | <span><a href="https://www.npmjs.com/package/@oracle/langchain-oracledb">  <img alt="Downloads per month" /></a></span> |
-  | [`ExaSearchResults`](/oss/javascript/integrations/tools/exa_search) | <span><a href="https://www.npmjs.com/package/@langchain/exa">  <img alt="Downloads per month" /></a></span> |
-  | [`Composio`](/oss/javascript/integrations/tools/composio) | <span><a href="https://www.npmjs.com/package/@composio/langchain">  <img alt="Downloads per month" /></a></span> |
-  | [`Mcp toolbox for databases`](/oss/javascript/integrations/tools/mcp_toolbox) | <span><a href="https://www.npmjs.com/package/@toolbox-sdk/core">  <img alt="Downloads per month" /></a></span> |
-  | [`AtomicMailToolkit`](https://docs.atomicmail.ai/langchain) | <span><a href="https://www.npmjs.com/package/@atomicmail/langchain">  <img alt="Downloads per month" /></a></span> |
-  | [`WatsonxToolkit`](/oss/javascript/integrations/tools/ibm) | <span><a href="https://www.npmjs.com/package/@langchain/ibm">  <img alt="Downloads per month" /></a></span> |
-  | [`Bilig WorkPaper`](https://proompteng.github.io/bilig/) | <span><a href="https://www.npmjs.com/package/@bilig/workpaper">  <img alt="Downloads per month" /></a></span> |
-  | [`PerplexitySearchResults`](/oss/javascript/integrations/tools/perplexity_search) | <span><a href="https://www.npmjs.com/package/@langchain/perplexity">  <img alt="Downloads per month" /></a></span> |
-  | [`Continuity tools`](https://github.com/zerohourzulu/continuity/blob/main/packages/remote-tools/README.md#langchain-tools) | <span><a href="https://www.npmjs.com/package/@ramex-labs/continuity-remote">  <img alt="Downloads per month" /></a></span> |
-  | [`Decodo`](/oss/javascript/integrations/tools/decodo) | <span><a href="https://www.npmjs.com/package/@decodo/langchain-ts">  <img alt="Downloads per month" /></a></span> |
-  | [`Serpex`](https://serpex.dev/docs) | <span><a href="https://www.npmjs.com/package/langchain-serpex-js">  <img alt="Downloads per month" /></a></span> |
-  | [`agentsvc`](https://agentsvc.io/docs/langchain) | <span><a href="https://www.npmjs.com/package/agentsvc">  <img alt="Downloads per month" /></a></span> |
-  | [`PexafyToolkit`](https://docs.pexafy.com/langchain) | <span><a href="https://www.npmjs.com/package/langchain-pexafy">  <img alt="Downloads per month" /></a></span> |
-  | [`pipe0Tools`](https://www.pipe0.com/docs/sdks/integrations/langchain) | <span><a href="https://www.npmjs.com/package/@pipe0/langchain">  <img alt="Downloads per month" /></a></span> |
-  | [`AgentSearchTool`](https://agentsearchhq.com/#integrations?utm_source=langchain-docs-js\&utm_medium=integration-listing\&utm_campaign=promo-oct26) | <span><a href="https://www.npmjs.com/package/@agentsearchhq/langchain">  <img alt="Downloads per month" /></a></span> |
-  | [`Pushary`](https://pushary.com/docs/agents/build/langgraph?utm_source=langchain\&utm_medium=integration-directory\&utm_campaign=pushary-langgraph-js) | <span><a href="https://www.npmjs.com/package/@pushary/langgraph">  <img alt="Downloads per month" /></a></span> |
-  | [`SatoHubTools`](https://github.com/satohubai/sato-hub-integrations/tree/main/packages/satohub-langchain-tools#readme) | <span><a href="https://www.npmjs.com/package/satohub-langchain-tools">  <img alt="Downloads per month" /></a></span> |
-  | [`Fidacy Action Firewall`](https://github.com/fidacy/fidacy-open) | <span><a href="https://www.npmjs.com/package/@fidacy/langchain">  <img alt="Downloads per month" /></a></span> |
-  | [`GetYouTubeTranscriptTool`](https://github.com/tubeagentkit/langchain-getyoutubetranscript#readme) | <span><a href="https://www.npmjs.com/package/@tubeagentkit/langchain-getyoutubetranscript">  <img alt="Downloads per month" /></a></span> |
-  | [`Falkordb`](/oss/javascript/integrations/tools/falkordb) | <span><a href="https://www.npmjs.com/package/@falkordb/langchain-ts">  <img alt="Downloads per month" /></a></span> |
-  | [`Respan`](https://www.respan.ai/docs/documentation/overview) | <span><a href="https://www.npmjs.com/package/@respan/instrumentation-langchain">  <img alt="Downloads per month" /></a></span> |
-  | [`SnapRender`](https://snap-render.com) | <span><a href="https://www.npmjs.com/package/langchain-snaprender">  <img alt="Downloads per month" /></a></span> |
-  | [`TalorDataSerpTool`](https://docs.talordata.com/serp-api/integration/sdk-integration/how-to-set-up-talordata-with-langchain) | <span><a href="https://www.npmjs.com/package/langchain-talordata">  <img alt="Downloads per month" /></a></span> |
-  | [`Azure container apps dynamic sessions`](/oss/javascript/integrations/tools/azure_dynamic_sessions) | <span><a href="https://www.npmjs.com/package/@langchain/azure-dynamic-sessions">  <img alt="Downloads per month" /></a></span> |
-  | [`aiworker`](https://github.com/ai-worker227/aiworker-examples/tree/main/langchain) | <span><a href="https://www.npmjs.com/package/aiworker-langchain-tools">  <img alt="Downloads per month" /></a></span> |
-  | [`You.com search tools`](https://you.com/docs/integrations/langchain) | <span><a href="https://www.npmjs.com/package/@youdotcom-oss/langchain">  <img alt="Downloads per month" /></a></span> |
-  | [`Corsair`](https://docs.corsair.dev/mcp-adapters/langchain) | <span><a href="https://www.npmjs.com/package/@corsair-dev/langchain">  <img alt="Downloads per month" /></a></span> |
-  | [`SafePromptCallbackHandler`](https://docs.safeprompt.dev/langchain) | <span><a href="https://www.npmjs.com/package/@safeprompt.dev/langchain">  <img alt="Downloads per month" /></a></span> |
-  | [`Mercedes-Benz Service Reminder (SilberArrows)`](https://github.com/gentlegiant96202/mercedes-benz-service-reminder-mcp#readme) | <span><a href="https://www.npmjs.com/package/mercedes-benz-service-reminder-mcp">  <img alt="Downloads per month" /></a></span> |
-  | [`The Context Company`](https://docs.thecontextcompany.com/frameworks/langchain-langgraph) | <span><a href="https://www.npmjs.com/package/@contextcompany/langchain">  <img alt="Downloads per month" /></a></span> |
-  | [`ClickSend`](/oss/javascript/integrations/tools/clicksend) | <span><a href="https://www.npmjs.com/package/@clicksend/langchain-clicksend-mcp">  <img alt="Downloads per month" /></a></span> |
-  | [`Toolstem`](https://toolstem.com) | <span><a href="https://www.npmjs.com/package/langchain-toolstem">  <img alt="Downloads per month" /></a></span> |
-  | [`iFlow Search`](https://platform.iflow.cn) | <span><a href="https://www.npmjs.com/package/@iflow-ai/search-langchain">  <img alt="Downloads per month" /></a></span> |
-  | [`MagicHourTools`](https://docs.magichour.ai) | <span><a href="https://www.npmjs.com/package/langchain-magic-hour">  <img alt="Downloads per month" /></a></span> |
-  | [`AproxPay`](https://github.com/aproxpay/langchain-aproxpay) | <span><a href="https://www.npmjs.com/package/langchain-aproxpay">  <img alt="Downloads per month" /></a></span> |
-  | [`Jigsawstack`](/oss/javascript/integrations/tools/jigsawstack) | <span><a href="https://www.npmjs.com/package/@langchain/jigsawstack">  <img alt="Downloads per month" /></a></span> |
-  | [`CekiToolkit`](https://ceki.me) | <span><a href="https://www.npmjs.com/package/@ceki/langchain-ceki">  <img alt="Downloads per month" /></a></span> |
-  | [`SIGNA`](https://github.com/codexvritra/signa/tree/main/sdk/langchain) | <span><a href="https://www.npmjs.com/package/signa-langchain">  <img alt="Downloads per month" /></a></span> |
-  | [`NiaToolkit`](/oss/javascript/integrations/tools/nia) | <span><a href="https://www.npmjs.com/package/@nozomioai/langchain-nia">  <img alt="Downloads per month" /></a></span> |
-  | [`Agent with AWS lambda`](/oss/javascript/integrations/tools/lambda_agent) | <span>N/A</span> |
-  | [`Browserless`](https://browserless.io) | <span>N/A</span> |
-  | [`JSON agent toolkit`](/oss/javascript/integrations/tools/json) | <span>N/A</span> |
-  | [`NotteBrowserToolkit`](https://docs.notte.cc/integrations/langchain) | <span>N/A</span> |
-  | [`SQLToolkit`](/oss/javascript/integrations/tools/sql) | <span>N/A</span> |
-  | [`VectorStoreToolkit`](/oss/javascript/integrations/tools/vectorstore) | <span>N/A</span> |
-  | [`Web browser`](/oss/javascript/integrations/tools/webbrowser) | <span>N/A</span> |
-</div>
+| Integration | Downloads |
+| :- | :- |
+| [`Dall-e`](/oss/javascript/integrations/tools/dalle) | [  ![Downloads per month](https://img.shields.io/npm/dm/@langchain/openai?style=flat-square\&label=%20&)](https://www.npmjs.com/package/@langchain/openai) |
+| [`OpenAI`](/oss/javascript/integrations/tools/openai) | [  ![Downloads per month](https://img.shields.io/npm/dm/@langchain/openai?style=flat-square\&label=%20&)](https://www.npmjs.com/package/@langchain/openai) |
+| [`OpenAPI toolkit`](/oss/javascript/integrations/tools/openapi) | [  ![Downloads per month](https://img.shields.io/npm/dm/@langchain/langgraph?style=flat-square\&label=%20&)](https://www.npmjs.com/package/@langchain/langgraph) |
+| [`Anthropic`](/oss/javascript/integrations/tools/anthropic) | [  ![Downloads per month](https://img.shields.io/npm/dm/@langchain/anthropic?style=flat-square\&label=%20&)](https://www.npmjs.com/package/@langchain/anthropic) |
+| [`Google`](/oss/javascript/integrations/tools/google) | [  ![Downloads per month](https://img.shields.io/npm/dm/@langchain/google?style=flat-square\&label=%20&)](https://www.npmjs.com/package/@langchain/google) |
+| [`TavilyCrawl`](/oss/javascript/integrations/tools/tavily_crawl) | [  ![Downloads per month](https://img.shields.io/npm/dm/@langchain/tavily?style=flat-square\&label=%20&)](https://www.npmjs.com/package/@langchain/tavily) |
+| [`TavilyExtract`](/oss/javascript/integrations/tools/tavily_extract) | [  ![Downloads per month](https://img.shields.io/npm/dm/@langchain/tavily?style=flat-square\&label=%20&)](https://www.npmjs.com/package/@langchain/tavily) |
+| [`TavilyGetResearch`](/oss/javascript/integrations/tools/tavily_get_research) | [  ![Downloads per month](https://img.shields.io/npm/dm/@langchain/tavily?style=flat-square\&label=%20&)](https://www.npmjs.com/package/@langchain/tavily) |
+| [`TavilyMap`](/oss/javascript/integrations/tools/tavily_map) | [  ![Downloads per month](https://img.shields.io/npm/dm/@langchain/tavily?style=flat-square\&label=%20&)](https://www.npmjs.com/package/@langchain/tavily) |
+| [`TavilyResearch`](/oss/javascript/integrations/tools/tavily_research) | [  ![Downloads per month](https://img.shields.io/npm/dm/@langchain/tavily?style=flat-square\&label=%20&)](https://www.npmjs.com/package/@langchain/tavily) |
+| [`TavilySearch`](/oss/javascript/integrations/tools/tavily_search) | [  ![Downloads per month](https://img.shields.io/npm/dm/@langchain/tavily?style=flat-square\&label=%20&)](https://www.npmjs.com/package/@langchain/tavily) |
+| [`OracleSummary`](/oss/javascript/integrations/tools/oracleai) | [  ![Downloads per month](https://img.shields.io/npm/dm/@oracle/langchain-oracledb?style=flat-square\&label=%20&)](https://www.npmjs.com/package/@oracle/langchain-oracledb) |
+| [`ExaSearchResults`](/oss/javascript/integrations/tools/exa_search) | [  ![Downloads per month](https://img.shields.io/npm/dm/@langchain/exa?style=flat-square\&label=%20&)](https://www.npmjs.com/package/@langchain/exa) |
+| [`Composio`](/oss/javascript/integrations/tools/composio) | [  ![Downloads per month](https://img.shields.io/npm/dm/@composio/langchain?style=flat-square\&label=%20&)](https://www.npmjs.com/package/@composio/langchain) |
+| [`Mcp toolbox for databases`](/oss/javascript/integrations/tools/mcp_toolbox) | [  ![Downloads per month](https://img.shields.io/npm/dm/@toolbox-sdk/core?style=flat-square\&label=%20&)](https://www.npmjs.com/package/@toolbox-sdk/core) |
+| [`AtomicMailToolkit`](https://docs.atomicmail.ai/langchain) | [  ![Downloads per month](https://img.shields.io/npm/dm/@atomicmail/langchain?style=flat-square\&label=%20&)](https://www.npmjs.com/package/@atomicmail/langchain) |
+| [`WatsonxToolkit`](/oss/javascript/integrations/tools/ibm) | [  ![Downloads per month](https://img.shields.io/npm/dm/@langchain/ibm?style=flat-square\&label=%20&)](https://www.npmjs.com/package/@langchain/ibm) |
+| [`Bilig WorkPaper`](https://proompteng.github.io/bilig/) | [  ![Downloads per month](https://img.shields.io/npm/dm/@bilig/workpaper?style=flat-square\&label=%20&)](https://www.npmjs.com/package/@bilig/workpaper) |
+| [`PerplexitySearchResults`](/oss/javascript/integrations/tools/perplexity_search) | [  ![Downloads per month](https://img.shields.io/npm/dm/@langchain/perplexity?style=flat-square\&label=%20&)](https://www.npmjs.com/package/@langchain/perplexity) |
+| [`Fizzl`](https://fizzl.eu/agents/langchain-js/) | [  ![Downloads per month](https://img.shields.io/npm/dm/fizzl-langchain?style=flat-square\&label=%20&)](https://www.npmjs.com/package/fizzl-langchain) |
+| [`Continuity tools`](https://github.com/zerohourzulu/continuity/blob/main/packages/remote-tools/README.md#langchain-tools) | [  ![Downloads per month](https://img.shields.io/npm/dm/@ramex-labs/continuity-remote?style=flat-square\&label=%20&)](https://www.npmjs.com/package/@ramex-labs/continuity-remote) |
+| [`Decodo`](/oss/javascript/integrations/tools/decodo) | [  ![Downloads per month](https://img.shields.io/npm/dm/@decodo/langchain-ts?style=flat-square\&label=%20&)](https://www.npmjs.com/package/@decodo/langchain-ts) |
+| [`Serpex`](https://serpex.dev/docs) | [  ![Downloads per month](https://img.shields.io/npm/dm/langchain-serpex-js?style=flat-square\&label=%20&)](https://www.npmjs.com/package/langchain-serpex-js) |
+| [`agentsvc`](https://agentsvc.io/docs/langchain) | [  ![Downloads per month](https://img.shields.io/npm/dm/agentsvc?style=flat-square\&label=%20&)](https://www.npmjs.com/package/agentsvc) |
+| [`PexafyToolkit`](https://docs.pexafy.com/langchain) | [  ![Downloads per month](https://img.shields.io/npm/dm/langchain-pexafy?style=flat-square\&label=%20&)](https://www.npmjs.com/package/langchain-pexafy) |
+| [`DataBazaar`](https://databazaar.io/integrations?utm_source=langchain\&utm_campaign=integration-listing#langchain) | [  ![Downloads per month](https://img.shields.io/npm/dm/databazaar-agent-tools?style=flat-square\&label=%20&)](https://www.npmjs.com/package/databazaar-agent-tools) |
+| [`pipe0Tools`](https://www.pipe0.com/docs/sdks/integrations/langchain) | [  ![Downloads per month](https://img.shields.io/npm/dm/@pipe0/langchain?style=flat-square\&label=%20&)](https://www.npmjs.com/package/@pipe0/langchain) |
+| [`Precleared`](https://precleared.dev/docs/langchain) | [  ![Downloads per month](https://img.shields.io/npm/dm/precleared?style=flat-square\&label=%20&)](https://www.npmjs.com/package/precleared) |
+| [`InstantExpertToolkit`](https://github.com/Instant-Expert/integrations/tree/main/js/langchain-instant-expert#readme) | [  ![Downloads per month](https://img.shields.io/npm/dm/langchain-instant-expert?style=flat-square\&label=%20&)](https://www.npmjs.com/package/langchain-instant-expert) |
+| [`M91`](https://github.com/MSG91/m91-sdk#langchain) | [  ![Downloads per month](https://img.shields.io/npm/dm/@msg91comm/m91?style=flat-square\&label=%20&)](https://www.npmjs.com/package/@msg91comm/m91) |
+| [`AgentSearchTool`](https://agentsearchhq.com/#integrations?utm_source=langchain-docs-js\&utm_medium=integration-listing\&utm_campaign=promo-oct26) | [  ![Downloads per month](https://img.shields.io/npm/dm/@agentsearchhq/langchain?style=flat-square\&label=%20&)](https://www.npmjs.com/package/@agentsearchhq/langchain) |
+| [`Pushary`](https://pushary.com/docs/agents/build/langgraph?utm_source=langchain\&utm_medium=integration-directory\&utm_campaign=pushary-langgraph-js) | [  ![Downloads per month](https://img.shields.io/npm/dm/@pushary/langgraph?style=flat-square\&label=%20&)](https://www.npmjs.com/package/@pushary/langgraph) |
+| [`SatoHubTools`](https://github.com/satohubai/sato-hub-integrations/tree/main/packages/satohub-langchain-tools#readme) | [  ![Downloads per month](https://img.shields.io/npm/dm/satohub-langchain-tools?style=flat-square\&label=%20&)](https://www.npmjs.com/package/satohub-langchain-tools) |
+| [`Fidacy Action Firewall`](https://github.com/fidacy/fidacy-open) | [  ![Downloads per month](https://img.shields.io/npm/dm/@fidacy/langchain?style=flat-square\&label=%20&)](https://www.npmjs.com/package/@fidacy/langchain) |
+| [`GetYouTubeTranscriptTool`](https://github.com/tubeagentkit/langchain-getyoutubetranscript#readme) | [  ![Downloads per month](https://img.shields.io/npm/dm/@tubeagentkit/langchain-getyoutubetranscript?style=flat-square\&label=%20&)](https://www.npmjs.com/package/@tubeagentkit/langchain-getyoutubetranscript) |
+| [`Falkordb`](/oss/javascript/integrations/tools/falkordb) | [  ![Downloads per month](https://img.shields.io/npm/dm/@falkordb/langchain-ts?style=flat-square\&label=%20&)](https://www.npmjs.com/package/@falkordb/langchain-ts) |
+| [`Respan`](https://www.respan.ai/docs/documentation/overview) | [  ![Downloads per month](https://img.shields.io/npm/dm/@respan/instrumentation-langchain?style=flat-square\&label=%20&)](https://www.npmjs.com/package/@respan/instrumentation-langchain) |
+| [`SnapRender`](https://snap-render.com) | [  ![Downloads per month](https://img.shields.io/npm/dm/langchain-snaprender?style=flat-square\&label=%20&)](https://www.npmjs.com/package/langchain-snaprender) |
+| [`TalorDataSerpTool`](https://docs.talordata.com/serp-api/integration/sdk-integration/how-to-set-up-talordata-with-langchain) | [  ![Downloads per month](https://img.shields.io/npm/dm/langchain-talordata?style=flat-square\&label=%20&)](https://www.npmjs.com/package/langchain-talordata) |
+| [`Azure container apps dynamic sessions`](/oss/javascript/integrations/tools/azure_dynamic_sessions) | [  ![Downloads per month](https://img.shields.io/npm/dm/@langchain/azure-dynamic-sessions?style=flat-square\&label=%20&)](https://www.npmjs.com/package/@langchain/azure-dynamic-sessions) |
+| [`aiworker`](https://github.com/ai-worker227/aiworker-examples/tree/main/langchain) | [  ![Downloads per month](https://img.shields.io/npm/dm/aiworker-langchain-tools?style=flat-square\&label=%20&)](https://www.npmjs.com/package/aiworker-langchain-tools) |
+| [`Steward`](https://github.com/brianbooms/plugin-steward) | [  ![Downloads per month](https://img.shields.io/npm/dm/@brianbooms/steward-mcp?style=flat-square\&label=%20&)](https://www.npmjs.com/package/@brianbooms/steward-mcp) |
+| [`You.com search tools`](https://you.com/docs/integrations/langchain) | [  ![Downloads per month](https://img.shields.io/npm/dm/@youdotcom-oss/langchain?style=flat-square\&label=%20&)](https://www.npmjs.com/package/@youdotcom-oss/langchain) |
+| [`Corsair`](https://docs.corsair.dev/mcp-adapters/langchain) | [  ![Downloads per month](https://img.shields.io/npm/dm/@corsair-dev/langchain?style=flat-square\&label=%20&)](https://www.npmjs.com/package/@corsair-dev/langchain) |
+| [`SafePromptCallbackHandler`](https://docs.safeprompt.dev/langchain) | [  ![Downloads per month](https://img.shields.io/npm/dm/@safeprompt.dev/langchain?style=flat-square\&label=%20&)](https://www.npmjs.com/package/@safeprompt.dev/langchain) |
+| [`Mercedes-Benz Service Reminder (SilberArrows)`](https://github.com/gentlegiant96202/mercedes-benz-service-reminder-mcp#readme) | [  ![Downloads per month](https://img.shields.io/npm/dm/mercedes-benz-service-reminder-mcp?style=flat-square\&label=%20&)](https://www.npmjs.com/package/mercedes-benz-service-reminder-mcp) |
+| [`The Context Company`](https://docs.thecontextcompany.com/frameworks/langchain-langgraph) | [  ![Downloads per month](https://img.shields.io/npm/dm/@contextcompany/langchain?style=flat-square\&label=%20&)](https://www.npmjs.com/package/@contextcompany/langchain) |
+| [`ClickSend`](/oss/javascript/integrations/tools/clicksend) | [  ![Downloads per month](https://img.shields.io/npm/dm/@clicksend/langchain-clicksend-mcp?style=flat-square\&label=%20&)](https://www.npmjs.com/package/@clicksend/langchain-clicksend-mcp) |
+| [`Toolstem`](https://toolstem.com) | [  ![Downloads per month](https://img.shields.io/npm/dm/langchain-toolstem?style=flat-square\&label=%20&)](https://www.npmjs.com/package/langchain-toolstem) |
+| [`iFlow Search`](https://platform.iflow.cn) | [  ![Downloads per month](https://img.shields.io/npm/dm/@iflow-ai/search-langchain?style=flat-square\&label=%20&)](https://www.npmjs.com/package/@iflow-ai/search-langchain) |
+| [`MagicHourTools`](https://docs.magichour.ai) | [  ![Downloads per month](https://img.shields.io/npm/dm/langchain-magic-hour?style=flat-square\&label=%20&)](https://www.npmjs.com/package/langchain-magic-hour) |
+| [`AproxPay`](https://github.com/aproxpay/langchain-aproxpay) | [  ![Downloads per month](https://img.shields.io/npm/dm/langchain-aproxpay?style=flat-square\&label=%20&)](https://www.npmjs.com/package/langchain-aproxpay) |
+| [`Jigsawstack`](/oss/javascript/integrations/tools/jigsawstack) | [  ![Downloads per month](https://img.shields.io/npm/dm/@langchain/jigsawstack?style=flat-square\&label=%20&)](https://www.npmjs.com/package/@langchain/jigsawstack) |
+| [`CekiToolkit`](https://ceki.me) | [  ![Downloads per month](https://img.shields.io/npm/dm/@ceki/langchain-ceki?style=flat-square\&label=%20&)](https://www.npmjs.com/package/@ceki/langchain-ceki) |
+| [`SIGNA`](https://github.com/codexvritra/signa/tree/main/sdk/langchain) | [  ![Downloads per month](https://img.shields.io/npm/dm/signa-langchain?style=flat-square\&label=%20&)](https://www.npmjs.com/package/signa-langchain) |
+| [`NiaToolkit`](/oss/javascript/integrations/tools/nia) | [  ![Downloads per month](https://img.shields.io/npm/dm/@nozomioai/langchain-nia?style=flat-square\&label=%20&)](https://www.npmjs.com/package/@nozomioai/langchain-nia) |
+| [`Agent with AWS lambda`](/oss/javascript/integrations/tools/lambda_agent) | N/A |
+| [`Browserless`](https://browserless.io) | N/A |
+| [`JSON agent toolkit`](/oss/javascript/integrations/tools/json) | N/A |
+| [`NotteBrowserToolkit`](https://docs.notte.cc/integrations/langchain) | N/A |
+| [`SQLToolkit`](/oss/javascript/integrations/tools/sql) | N/A |
+| [`VectorStoreToolkit`](/oss/javascript/integrations/tools/vectorstore) | N/A |
+| [`Web browser`](/oss/javascript/integrations/tools/webbrowser) | N/A |
+| [`WebExtract`](https://webextract.dev/docs/langchain) | N/A |
 
-<Info>
-  If you'd like to write your own tool, see [Create tools](/oss/javascript/langchain/tools#create-tools). If you'd like to contribute an integration, see [Build a new integration](/oss/javascript/contributing/integrations-langchain).
-</Info>
+> [!NOTE]
+>
+> If you'd like to write your own tool, see [Create tools](/oss/javascript/langchain/tools#create-tools). If you'd like to contribute an integration, see [Build a new integration](/oss/javascript/contributing/integrations-langchain).
 
 ***
 
-<div>
-  <Callout icon="terminal-2">
-    [Connect these docs](/use-these-docs) to your agent of choice via MCP for real-time answers.
-  </Callout>
+[Connect these docs](/use-these-docs) to your agent of choice via MCP for real-time answers.
 
-  <Callout icon="edit">
-    [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/oss/javascript/integrations/tools/index.mdx) or [file an issue](https://github.com/langchain-ai/docs/issues/new/choose).
-  </Callout>
-</div>
+[Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/oss/javascript/integrations/tools/index.mdx) or [file an issue](https://github.com/langchain-ai/docs/issues/new/choose).

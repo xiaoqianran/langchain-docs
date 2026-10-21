@@ -6,16 +6,16 @@ Send traces to an agent and an environment with environment variables or code, a
 
 Logging traces to an agent names the [agent](/langsmith/agents) and the [environment](/langsmith/agent-environments) a trace belongs to. Your application sends both with every run, and LangSmith records them when the trace arrives. A trace goes either to an agent or to a [project](/langsmith/log-traces-to-project), never both. For how agents and projects relate, see [Trace containers](/langsmith/observability-concepts#trace-containers).
 
-<Note>
-  Sending traces to an agent is in [beta](/langsmith/release-stages) and applies only to agent-based workspaces. The [arguments that take an agent](#using-code) can change without notice. It is supported in:
-
-  * The Python SDK from `langsmith>=0.14.9`
-  * The TypeScript SDK from `langsmith>=0.10.9`
-  * The Go SDK from `github.com/langchain-ai/langsmith-go@v0.28.0`
-  * The Java SDK from `com.langchain.smith:langsmith-java:0.1.0-beta.26`
-
-  For tracing setup that does not send traces to an agent, see [Log traces to a specific project](/langsmith/log-traces-to-project).
-</Note>
+> [!NOTE]
+>
+> Sending traces to an agent is in [beta](/langsmith/release-stages) and applies only to agent-based workspaces. The [arguments that take an agent](#using-code) can change without notice. It is supported in:
+>
+> * The Python SDK from `langsmith>=0.14.9`
+> * The TypeScript SDK from `langsmith>=0.10.9`
+> * The Go SDK from `github.com/langchain-ai/langsmith-go@v0.28.0`
+> * The Java SDK from `com.langchain.smith:langsmith-java:0.1.0-beta.26`
+>
+> For tracing setup that does not send traces to an agent, see [Log traces to a specific project](/langsmith/log-traces-to-project).
 
 ## Prerequisites
 
@@ -23,27 +23,25 @@ Logging traces to an agent names the [agent](/langsmith/agents) and the [environ
 * **An API key** from that workspace. See [create an API key](/langsmith/create-account-api-key).
 * **The SDK.** Sending traces to an agent needs `langsmith>=0.14.9` in Python, `langsmith@>=0.10.9` in TypeScript, v0.28.0 or later of `github.com/langchain-ai/langsmith-go` in Go, or 0.1.0-beta.26 or later of `com.langchain.smith:langsmith-java` in Java:
 
-  <CodeGroup>
-    ```bash uv theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-    uv add "langsmith>=0.14.9"
-    ```
+  ```bash uv theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+  uv add "langsmith>=0.14.9"
+  ```
 
-    ```bash pip theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-    pip install -U "langsmith>=0.14.9"
-    ```
+  ```bash pip theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+  pip install -U "langsmith>=0.14.9"
+  ```
 
-    ```bash npm theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-    npm install "langsmith@>=0.10.9"
-    ```
+  ```bash npm theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+  npm install "langsmith@>=0.10.9"
+  ```
 
-    ```bash go theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-    go get github.com/langchain-ai/langsmith-go@v0.28.0
-    ```
+  ```bash go theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+  go get github.com/langchain-ai/langsmith-go@v0.28.0
+  ```
 
-    ```kotlin Java/Kotlin (Gradle) theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-    implementation("com.langchain.smith:langsmith-java:0.1.0-beta.26")
-    ```
-  </CodeGroup>
+  ```kotlin Java/Kotlin (Gradle) theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+  implementation("com.langchain.smith:langsmith-java:0.1.0-beta.26")
+  ```
 
 ## Send traces to an agent
 
@@ -69,126 +67,128 @@ The first two are the usual tracing prerequisites rather than part of naming the
 
 Pass an agent address.
 
-<Tabs>
-  <Tab title="Python">
-    Pass `ls.agent_address("checkout", "production")` as the `address` argument of [`@traceable`](https://reference.langchain.com/python/langsmith/run_helpers/traceable), or of [`tracing_context`](https://reference.langchain.com/python/langsmith/run_helpers/tracing_context) for everything traced inside a block:
+**Python**
 
-    ```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-    import langsmith as ls
-    from langsmith import traceable
+Pass `ls.agent_address("checkout", "production")` as the `address` argument of [`@traceable`](https://reference.langchain.com/python/langsmith/run_helpers/traceable), or of [`tracing_context`](https://reference.langchain.com/python/langsmith/run_helpers/tracing_context) for everything traced inside a block:
 
-
-    @traceable(address=ls.agent_address("checkout", "production"))
-    def handle_order(order_id: str) -> dict:
-        return {"order_id": order_id, "status": "charged"}
-    ```
-
-    ```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-    import langsmith as ls
-    from langsmith import traceable, tracing_context
+```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+import langsmith as ls
+from langsmith import traceable
 
 
-    @traceable
-    def handle_order(order_id: str) -> dict:
-        return {"order_id": order_id, "status": "charged"}
+@traceable(address=ls.agent_address("checkout", "production"))
+def handle_order(order_id: str) -> dict:
+    return {"order_id": order_id, "status": "charged"}
+```
+
+```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+import langsmith as ls
+from langsmith import traceable, tracing_context
 
 
-    with tracing_context(address=ls.agent_address("checkout", "production")):
-        handle_order("A-1")
-    ```
-  </Tab>
+@traceable
+def handle_order(order_id: str) -> dict:
+    return {"order_id": order_id, "status": "charged"}
 
-  <Tab title="TypeScript">
-    Pass `new AgentAddress("checkout", "production")` as `address` in the config of [`traceable`](https://reference.langchain.com/javascript/langsmith/traceable):
 
-    ```ts theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-    import { AgentAddress } from "langsmith";
-    import { traceable } from "langsmith/traceable";
+with tracing_context(address=ls.agent_address("checkout", "production")):
+    handle_order("A-1")
+```
 
-    const handleOrder = traceable(
-      async (orderId: string) => ({ orderId, status: "charged" }),
-      { name: "handle_order", address: new AgentAddress("checkout", "production") },
-    );
-    ```
-  </Tab>
+**TypeScript**
 
-  <Tab title="Java">
-    Pass `new AgentAddress("checkout", "production")` as `address` in the `TraceConfig` or `RunTree` builder:
+Pass `new AgentAddress("checkout", "production")` as `address` in the config of [`traceable`](https://reference.langchain.com/javascript/langsmith/traceable):
 
-    ```java Java theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-    import com.langchain.smith.address.AgentAddress;
-    import com.langchain.smith.tracing.TraceConfig;
-    import com.langchain.smith.tracing.Tracing;
-    import java.util.Map;
-    import java.util.function.Function;
+```ts theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+import { AgentAddress } from "langsmith";
+import { traceable } from "langsmith/traceable";
 
-    public class TraceAgentExample {
-      public static void main(String[] args) {
-        Function<String, Map<String, String>> handleOrder =
-            Tracing.traceFunction(
-                orderId -> Map.of("order_id", orderId, "status", "charged"),
-                TraceConfig.builder()
-                    .name("handle_order")
-                    .address(new AgentAddress("checkout", "production"))
-                    .build());
+const handleOrder = traceable(
+  async (orderId: string) => ({ orderId, status: "charged" }),
+  { name: "handle_order", address: new AgentAddress("checkout", "production") },
+);
+```
 
-        handleOrder.apply("A-1");
-      }
-    }
-    ```
-  </Tab>
+**Java**
 
-  <Tab title="Go">
-    Create the address with `langsmith.NewAgentAddress("checkout", "production")`, which returns an error for an invalid value, and set it as `Address` on a `RunCreate`. `WithTracingAddress` sets it for every run of a standalone tracing client:
+Pass `new AgentAddress("checkout", "production")` as `address` in the `TraceConfig` or `RunTree` builder:
 
-    ```go theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-    package main
+```java Java theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+import com.langchain.smith.address.AgentAddress;
+import com.langchain.smith.tracing.TraceConfig;
+import com.langchain.smith.tracing.Tracing;
+import java.util.Map;
+import java.util.function.Function;
 
-    import (
-    	"fmt"
-    	"time"
+public class TraceAgentExample {
+  public static void main(String[] args) {
+    Function<String, Map<String, String>> handleOrder =
+        Tracing.traceFunction(
+            orderId -> Map.of("order_id", orderId, "status", "charged"),
+            TraceConfig.builder()
+                .name("handle_order")
+                .address(new AgentAddress("checkout", "production"))
+                .build());
 
-    	"github.com/google/uuid"
-    	"github.com/langchain-ai/langsmith-go"
-    )
+    handleOrder.apply("A-1");
+  }
+}
+```
 
-    func main() {
-    	agent, err := langsmith.NewAgentAddress("checkout", "production")
-    	if err != nil {
-    		panic(err.Error())
-    	}
-    	client := langsmith.NewClient()
+**Go**
 
-    	id := uuid.New()
-    	start := time.Now().UTC()
-    	order := fmt.Sprintf("%s%06dZ%s", start.Format("20060102T150405"), start.Nanosecond()/1000, id)
+Create the address with `langsmith.NewAgentAddress("checkout", "production")`, which returns an error for an invalid value, and set it as `Address` on a `RunCreate`. `WithTracingAddress` sets it for every run of a standalone tracing client:
 
-    	if err := client.CreateRun(&langsmith.RunCreate{
-    		ID:          id,
-    		TraceID:     id,
-    		Name:        "handle_order",
-    		RunType:     "chain",
-    		StartTime:   start,
-    		DottedOrder: order,
-    		Address:     agent,
-    		Inputs:      map[string]any{"order_id": "A-1"},
-    	}); err != nil {
-    		panic(err.Error())
-    	}
-    	if err := client.UpdateRun(&langsmith.RunUpdate{
-    		ID:          id,
-    		TraceID:     id,
-    		DottedOrder: order,
-    		EndTime:     time.Now().UTC(),
-    		Outputs:     map[string]any{"status": "charged"},
-    	}); err != nil {
-    		panic(err.Error())
-    	}
-    	client.Close()
-    }
-    ```
-  </Tab>
-</Tabs>
+```go theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+package main
+
+import (
+	"fmt"
+	"time"
+
+	"github.com/google/uuid"
+	"github.com/langchain-ai/langsmith-go"
+)
+
+func main() {
+	agent, err := langsmith.NewAgentAddress("checkout", "production")
+	if err != nil {
+		panic(err.Error())
+	}
+	client := langsmith.NewClient()
+
+	id := uuid.New()
+	start := time.Now().UTC()
+	order := fmt.Sprintf("%s%06dZ%s", start.Format("20060102T150405"), start.Nanosecond()/1000, id)
+
+	if err := client.CreateRun(&langsmith.RunCreate{
+		ID:          id,
+		TraceID:     id,
+		Name:        "handle_order",
+		RunType:     "chain",
+		StartTime:   start,
+		DottedOrder: order,
+		Address:     agent,
+		Inputs:      map[string]any{"order_id": "A-1"},
+	}); err != nil {
+		panic(err.Error())
+	}
+	if err := client.UpdateRun(&langsmith.RunUpdate{
+		ID:          id,
+		TraceID:     id,
+		DottedOrder: order,
+		EndTime:     time.Now().UTC(),
+		Outputs:     map[string]any{"status": "charged"},
+	}); err != nil {
+		panic(err.Error())
+	}
+	client.Close()
+}
+```
+
+### Using OpenTelemetry
+
+To send OTLP traces to an agent, set the `Langsmith-Agent-Id` and `Langsmith-Agent-Environment` headers instead of `Langsmith-Project`. With `langsmith>=0.14.9`, the Python SDK's OpenTelemetry exporter sets both headers from the agent variables when `OTEL_EXPORTER_OTLP_HEADERS` is unset. For the header rules and the errors LangSmith returns, see [Trace with OpenTelemetry](/langsmith/trace-with-opentelemetry#trace-a-non-langchain-application).
 
 ## Send your first trace
 
@@ -215,16 +215,11 @@ If your workspace does not accept runs sent to an agent, LangSmith rejects them 
 * [Agent environments](/langsmith/agent-environments)
 * [Log traces to a specific project](/langsmith/log-traces-to-project)
 * [Find an agent's project](/langsmith/resolve-an-agent)
+* [Trace with OpenTelemetry](/langsmith/trace-with-opentelemetry)
 * [Observability concepts](/langsmith/observability-concepts)
 
 ***
 
-<div>
-  <Callout icon="terminal-2">
-    [Connect these docs](/use-these-docs) to your agent of choice via MCP for real-time answers.
-  </Callout>
+[Connect these docs](/use-these-docs) to your agent of choice via MCP for real-time answers.
 
-  <Callout icon="edit">
-    [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/log-traces-to-agent.mdx) or [file an issue](https://github.com/langchain-ai/docs/issues/new/choose).
-  </Callout>
-</div>
+[Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/log-traces-to-agent.mdx) or [file an issue](https://github.com/langchain-ai/docs/issues/new/choose).

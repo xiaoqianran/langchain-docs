@@ -8,13 +8,13 @@ An agent-owned interrupt is a pause that your own code creates. A tool posts a S
 
 This differs from the platform-owned interrupts that `interrupt_on` creates. Those pause before a tool call, and Slack or Studio renders the approval card for you. With an agent-owned interrupt, you own the blocks, the form state, and what happens after the answer arrives. The platform only carries the answer back. For platform-owned interrupts, see [Human-in-the-loop](/langsmith/python/managed-deep-agents-tools#human-in-the-loop).
 
-<Note>
-  Managed Deep Agents is in **public [beta](/langsmith/release-stages)** on [LangSmith Cloud](/langsmith/cloud).
-</Note>
+> [!NOTE]
+>
+> Managed Deep Agents is in **public [beta](/langsmith/release-stages)** on [LangSmith Cloud](/langsmith/cloud).
 
-<Note>
-  Agent-owned interrupts require `managed-deepagents>=0.8.0` and a [Slack channel](/langsmith/python/managed-deep-agents-channels-slack) on a deployed agent. Forms render only in Slack. LangSmith Studio shows the raw interrupt value.
-</Note>
+> [!NOTE]
+>
+> Agent-owned interrupts require `managed-deepagents>=0.8.0` and a [Slack channel](/langsmith/python/managed-deep-agents-channels-slack) on a deployed agent. Forms render only in Slack. LangSmith Studio shows the raw interrupt value.
 
 ## How it works
 
@@ -220,12 +220,6 @@ Exceeding the last three makes the modal fail to open with nothing shown to the 
 
 ***
 
-<div>
-  <Callout icon="terminal-2">
-    [Connect these docs](/use-these-docs) to your agent of choice via MCP for real-time answers.
-  </Callout>
+[Connect these docs](/use-these-docs) to your agent of choice via MCP for real-time answers.
 
-  <Callout icon="edit">
-    [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/managed-deep-agents-agent-owned-interrupts.mdx) or [file an issue](https://github.com/langchain-ai/docs/issues/new/choose).
-  </Callout>
-</div>
+[Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/managed-deep-agents-agent-owned-interrupts.mdx) or [file an issue](https://github.com/langchain-ai/docs/issues/new/choose).

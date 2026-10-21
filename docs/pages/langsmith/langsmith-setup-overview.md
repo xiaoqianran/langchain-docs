@@ -10,23 +10,21 @@ Start with [hosting options](/langsmith/platform-setup) if you are deciding wher
 
 ## Explore
 
-<CardGroup>
-  <Card title="Hosting options" href="/langsmith/platform-setup" icon="cloud">
-    Cloud, Bring Your Own Cloud (BYOC), and Self-hosted, and how to pick the one that matches where your data has to live.
-  </Card>
+> **[Hosting options](/langsmith/platform-setup)**
+>
+> Cloud, Bring Your Own Cloud (BYOC), and Self-hosted, and how to pick the one that matches where your data has to live.
 
-  <Card title="Agent-based workspaces" href="/langsmith/agents" icon="hierarchy">
-    Agents, the environments that hold each agent's traces, how to switch between agents, and how to build an agent in the UI.
-  </Card>
+> **[Agent-based workspaces](/langsmith/agents)**
+>
+> Agents, the environments that hold each agent's traces, how to switch between agents, and how to build an agent in the UI.
 
-  <Card title="Account" href="/langsmith/admin" icon="user-cog">
-    Create an account, manage API keys, configure profiles, and review pricing and usage.
-  </Card>
+> **[Account](/langsmith/admin)**
+>
+> Create an account, manage API keys, configure profiles, and review pricing and usage.
 
-  <Card title="Govern" href="/langsmith/govern-overview" icon="shield-check">
-    Organizations and workspaces, users and access control, auditing, and compliance.
-  </Card>
-</CardGroup>
+> **[Govern](/langsmith/govern-overview)**
+>
+> Organizations and workspaces, users and access control, auditing, and compliance.
 
 ## See also
 
@@ -36,12 +34,6 @@ Start with [hosting options](/langsmith/platform-setup) if you are deciding wher
 
 ***
 
-<div>
-  <Callout icon="terminal-2">
-    [Connect these docs](/use-these-docs) to your agent of choice via MCP for real-time answers.
-  </Callout>
+[Connect these docs](/use-these-docs) to your agent of choice via MCP for real-time answers.
 
-  <Callout icon="edit">
-    [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/langsmith-setup-overview.mdx) or [file an issue](https://github.com/langchain-ai/docs/issues/new/choose).
-  </Callout>
-</div>
+[Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/langsmith-setup-overview.mdx) or [file an issue](https://github.com/langchain-ai/docs/issues/new/choose).

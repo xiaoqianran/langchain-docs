@@ -12,9 +12,9 @@ Here are the basic steps for backtesting:
 
 This process will provide you with a new dataset of representative inputs, which you can version and use for backtesting your models.
 
-<Info>
-  Often, you won't have definitive "ground truth" answers available. In such cases, you can manually label the outputs or use evaluators that don't rely on reference data. If your application allows for capturing ground-truth labels, for example by allowing users to leave feedback, we strongly recommend doing so.
-</Info>
+> [!NOTE]
+>
+> Often, you won't have definitive "ground truth" answers available. In such cases, you can manually label the outputs or use evaluators that don't rely on reference data. If your application allows for capturing ground-truth labels, for example by allowing users to leave feedback, we strongly recommend doing so.
 
 ## Setup
 
@@ -22,19 +22,17 @@ This process will provide you with a new dataset of representative inputs, which
 
 Install and set environment variables. This guide requires `langsmith>=0.2.4`.
 
-<Info>
-  For convenience we'll use the LangChain OSS framework in this tutorial, but the LangSmith functionality shown is framework-agnostic.
-</Info>
+> [!NOTE]
+>
+> For convenience we'll use the LangChain OSS framework in this tutorial, but the LangSmith functionality shown is framework-agnostic.
 
-<CodeGroup>
-  ```bash pip theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  pip install -U langsmith langchain langchain-anthropic langchainhub emoji
-  ```
+```bash pip theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+pip install -U langsmith langchain langchain-anthropic langchainhub emoji
+```
 
-  ```bash uv theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  uv add langsmith langchain langchain-anthropic langchainhub emoji
-  ```
-</CodeGroup>
+```bash uv theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+uv add langsmith langchain langchain-anthropic langchainhub emoji
+```
 
 ```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 import getpass
@@ -178,7 +176,7 @@ convert_runs_to_test(
 
 Once this step is complete, you should see a new dataset in your LangSmith project called "Tweet Writing Task-backtesting TODAYS DATE", with a single experiment like so:
 
-<img alt="Baseline experiment" />
+![Baseline experiment](https://mintcdn.com/langchain-5e9cc07a/E8FdemkcQxROovD9/langsmith/images/baseline-experiment.png?fit=max\&auto=format\&n=E8FdemkcQxROovD9\&q=85\&s=73b60a75d6b33f2830f5ed68464c586b)
 
 ## Benchmark against new system
 
@@ -264,7 +262,7 @@ candidate_results = await client.aevaluate(
 
 After running both experiments, you can view them in your dataset:
 
-<img alt="Dataset page" />
+![Dataset page](https://mintcdn.com/langchain-5e9cc07a/aKRoUGXX6ygp4DlC/langsmith/images/dataset-page.png?fit=max\&auto=format\&n=aKRoUGXX6ygp4DlC\&q=85\&s=1c5d4f1cf212e2c38917319c7bbf7f99)
 
 The results reveal an interesting tradeoff between the two models:
 
@@ -280,16 +278,10 @@ This backtesting exercise revealed that while GPT-4o is generally considered a m
 
 This insight demonstrates the value of backtesting - it helped us identify potential issues before deployment.
 
-<img alt="Tutorial comparison view" />
+![Tutorial comparison view](https://mintcdn.com/langchain-5e9cc07a/1RIJxfRpkszanJLL/langsmith/images/tutorial-comparison-view.png?fit=max\&auto=format\&n=1RIJxfRpkszanJLL\&q=85\&s=a8ab311399f3d0e69554a62f939fd475)
 
 ***
 
-<div>
-  <Callout icon="terminal-2">
-    [Connect these docs](/use-these-docs) to your agent of choice via MCP for real-time answers.
-  </Callout>
+[Connect these docs](/use-these-docs) to your agent of choice via MCP for real-time answers.
 
-  <Callout icon="edit">
-    [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/run-backtests-new-agent.mdx) or [file an issue](https://github.com/langchain-ai/docs/issues/new/choose).
-  </Callout>
-</div>
+[Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/run-backtests-new-agent.mdx) or [file an issue](https://github.com/langchain-ai/docs/issues/new/choose).

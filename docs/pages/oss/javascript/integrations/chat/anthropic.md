@@ -47,19 +47,17 @@ If you want to get automated tracing of your model calls you can also set your [
 
 The LangChain `ChatAnthropic` integration lives in the `@langchain/anthropic` package:
 
-<CodeGroup>
-  ```bash npm theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  npm install @langchain/anthropic @langchain/core
-  ```
+```bash npm theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+npm install @langchain/anthropic @langchain/core
+```
 
-  ```bash yarn theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  yarn add @langchain/anthropic @langchain/core
-  ```
+```bash yarn theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+yarn add @langchain/anthropic @langchain/core
+```
 
-  ```bash pnpm theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  pnpm add @langchain/anthropic @langchain/core
-  ```
-</CodeGroup>
+```bash pnpm theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+pnpm add @langchain/anthropic @langchain/core
+```
 
 ## Instantiation
 
@@ -96,11 +94,11 @@ Support by model:
 | `claude-opus-5`, `claude-fable-5`, `claude-opus-4-8`, `claude-opus-4-7`, `claude-sonnet-5` | Non-default values rejected (400). Omit the parameters, or pass defaults only (for example, `temperature: 1`). |
 | `claude-opus-4-6`, `claude-sonnet-4-6`, `claude-haiku-4-5`, and earlier | Accepted |
 
-<Warning>
-  **Upgrading the model string?**
-
-  Code written as `new ChatAnthropic({ model, temperature: 0 })` breaks when you upgrade the model to one of the newer models above. Remove the sampling parameters rather than adjusting their values. On these models, steer output style through prompting instead. See the [Anthropic migration guide](https://platform.claude.com/docs/en/about-claude/models/migration-guide) for details.
-</Warning>
+> [!WARNING]
+>
+> **Upgrading the model string?**
+>
+> Code written as `new ChatAnthropic({ model, temperature: 0 })` breaks when you upgrade the model to one of the newer models above. Remove the sampling parameters rather than adjusting their values. On these models, steer output style through prompting instead. See the [Anthropic migration guide](https://platform.claude.com/docs/en/about-claude/models/migration-guide) for details.
 
 ## Invocation
 
@@ -1020,9 +1018,9 @@ console.log(JSON.stringify(resWithSplits.content, null, 2));
 
 ## Mid-conversation system messages
 
-<Note>
-  Mid-conversation system messages require `@langchain/anthropic>=1.5.11`.
-</Note>
+> [!NOTE]
+>
+> Mid-conversation system messages require `@langchain/anthropic>=1.5.11`.
 
 Supported Claude models accept a [system message partway through a conversation](https://platform.claude.com/docs/en/build-with-claude/mid-conversation-system-messages). Its instructions apply from that point onward. Adding one leaves the earlier turns unchanged, so it does not invalidate the [prompt cache](#prompt-caching) for them.
 
@@ -1049,9 +1047,9 @@ For wording guidance and the full placement rules, see the [Claude documentation
 
 ### Change tools mid-conversation
 
-<Note>
-  Mid-conversation tool changes require `@langchain/anthropic>=1.5.12`.
-</Note>
+> [!NOTE]
+>
+> Mid-conversation tool changes require `@langchain/anthropic>=1.5.12`.
 
 A mid-conversation `SystemMessage` can also add or remove tools with Anthropic's [`tool_addition` and `tool_removal`](https://platform.claude.com/docs/en/build-with-claude/mid-conversation-system-messages#mid-conversation-tool-changes) content blocks. Editing `tools` on the request invalidates the prompt cache for the whole conversation. These blocks leave `tools` unchanged, so the cached prefix still matches.
 
@@ -1151,9 +1149,9 @@ Anthropic supports a context editing feature that will automatically manage the 
 
 See [Anthropic documentation](https://platform.claude.com/docs/en/build-with-claude/context-editing) for details and configuration options.
 
-<Info>
-  **Context management is supported since `@langchain/anthropic@0.3.29`**
-</Info>
+> [!NOTE]
+>
+> **Context management is supported since `@langchain/anthropic@0.3.29`**
 
 ```typescript theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 import { ChatAnthropic } from "@langchain/anthropic";
@@ -1179,12 +1177,6 @@ For detailed documentation of all `ChatAnthropic` features and configurations he
 
 ***
 
-<div>
-  <Callout icon="terminal-2">
-    [Connect these docs](/use-these-docs) to your agent of choice via MCP for real-time answers.
-  </Callout>
+[Connect these docs](/use-these-docs) to your agent of choice via MCP for real-time answers.
 
-  <Callout icon="edit">
-    [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/oss/javascript/integrations/chat/anthropic.mdx) or [file an issue](https://github.com/langchain-ai/docs/issues/new/choose).
-  </Callout>
-</div>
+[Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/oss/javascript/integrations/chat/anthropic.mdx) or [file an issue](https://github.com/langchain-ai/docs/issues/new/choose).

@@ -17,9 +17,7 @@ In the Playground you can:
 
 To test a prompt or model configuration over a dataset and score the results, [run an evaluation from the Playground](/langsmith/run-evaluation-from-playground).
 
-<Callout type="info" icon="feather">
-  Use the [Chat](/langsmith/chat) in the Playground to optimize prompts, generate tools, and create output schemas with AI assistance.
-</Callout>
+Use the [Chat](/langsmith/chat) in the Playground to optimize prompts, generate tools, and create output schemas with AI assistance.
 
 ## See also
 
@@ -31,12 +29,6 @@ To test a prompt or model configuration over a dataset and score the results, [r
 
 ***
 
-<div>
-  <Callout icon="terminal-2">
-    [Connect these docs](/use-these-docs) to your agent of choice via MCP for real-time answers.
-  </Callout>
+[Connect these docs](/use-these-docs) to your agent of choice via MCP for real-time answers.
 
-  <Callout icon="edit">
-    [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/test-from-playground.mdx) or [file an issue](https://github.com/langchain-ai/docs/issues/new/choose).
-  </Callout>
-</div>
+[Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/test-from-playground.mdx) or [file an issue](https://github.com/langchain-ai/docs/issues/new/choose).

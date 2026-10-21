@@ -19,72 +19,60 @@ dcode
 
 See the [Quickstart](/oss/deepagents/code/quickstart) to add provider credentials, run your first task, and learn interactive mode.
 
-<Frame>
-  <video aria-label="Deep Agents Code terminal demo">
-    Your browser does not support the video tag.
-  </video>
-</Frame>
+<video aria-label="Deep Agents Code terminal demo">
+  Your browser does not support the video tag.
+</video>
 
 ## Capabilities
 
-<CardGroup>
-  <Card title="Remote sandboxes" icon="cloud" href="/oss/deepagents/code/remote-sandboxes">
-    Run agent tools remotely instead of on your local machine.
-  </Card>
+> **[Remote sandboxes](/oss/deepagents/code/remote-sandboxes)**
+>
+> Run agent tools remotely instead of on your local machine.
 
-  <Card title="Goals and rubrics" icon="target-arrow" href="/oss/deepagents/code/goals-and-rubrics">
-    Define measurable objectives or grading criteria so the agent can check whether work is done.
-  </Card>
+> **[Goals and rubrics](/oss/deepagents/code/goals-and-rubrics)**
+>
+> Define measurable objectives or grading criteria so the agent can check whether work is done.
 
-  <Card title="Subagents" icon="users" href="/oss/deepagents/code/subagents">
-    Delegate work to task-specific subagents for parallel execution.
-  </Card>
+> **[Subagents](/oss/deepagents/code/subagents)**
+>
+> Delegate work to task-specific subagents for parallel execution.
 
-  <Card title="Memory" icon="brain" href="/oss/deepagents/code/memory-and-skills#memory">
-    Store and retrieve information across sessions, including project conventions and learned patterns.
-  </Card>
+> **[Memory](/oss/deepagents/code/memory-and-skills#memory)**
+>
+> Store and retrieve information across sessions, including project conventions and learned patterns.
 
-  <Card title="Context compaction" icon="arrows-minimize" href="/oss/deepagents/code/quickstart#interactive-mode">
-    Summarize older messages and offload originals to storage.
-  </Card>
+> **[Context compaction](/oss/deepagents/code/quickstart#interactive-mode)**
+>
+> Summarize older messages and offload originals to storage.
 
-  <Card title="Human-in-the-loop" icon="user" href="/oss/deepagents/code/quickstart#interactive-mode">
-    Require human approval for sensitive tool operations.
-  </Card>
+> **[Human-in-the-loop](/oss/deepagents/code/quickstart#interactive-mode)**
+>
+> Require human approval for sensitive tool operations.
 
-  <Card title="Skills" icon="puzzle" href="/oss/deepagents/code/memory-and-skills#skills">
-    Extend agent capabilities with custom expertise and instructions.
-  </Card>
+> **[Skills](/oss/deepagents/code/memory-and-skills#skills)**
+>
+> Extend agent capabilities with custom expertise and instructions.
 
-  <Card title="MCP tools" icon="plug" href="/oss/deepagents/code/mcp-tools">
-    Load external tools from Model Context Protocol servers.
-  </Card>
+> **[MCP tools](/oss/deepagents/code/mcp-tools)**
+>
+> Load external tools from Model Context Protocol servers.
 
-  <Card title="Tracing" icon="chart-dots" href="/oss/deepagents/code/quickstart#trace-with-langsmith">
-    Trace agent operations in LangSmith for observability and debugging.
-  </Card>
-</CardGroup>
+> **[Tracing](/oss/deepagents/code/quickstart#trace-with-langsmith)**
+>
+> Trace agent operations in LangSmith for observability and debugging.
 
 ## Next steps
 
-<CardGroup>
-  <Card title="Quickstart" icon="player-play" href="/oss/deepagents/code/quickstart">
-    Install Deep Agents Code, run your first task, and use interactive or non-interactive modes.
-  </Card>
+> **[Quickstart](/oss/deepagents/code/quickstart)**
+>
+> Install Deep Agents Code, run your first task, and use interactive or non-interactive modes.
 
-  <Card title="Configuration" icon="settings" href="/oss/deepagents/code/configuration">
-    Set up credentials, `config.toml`, environment variables, hooks, and CLI flags.
-  </Card>
-</CardGroup>
+> **[Configuration](/oss/deepagents/code/configuration)**
+>
+> Set up credentials, `config.toml`, environment variables, hooks, and CLI flags.
 
 ***
 
-<div>
-  <Callout icon="terminal-2">
-    [Connect these docs](/use-these-docs) to your agent of choice via MCP for real-time answers.
-  </Callout>
+[Connect these docs](/use-these-docs) to your agent of choice via MCP for real-time answers.
 
-  <Callout icon="edit">
-    [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/oss/deepagents/code/overview.mdx) or [file an issue](https://github.com/langchain-ai/docs/issues/new/choose).
-  </Callout>
-</div>
+[Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/oss/deepagents/code/overview.mdx) or [file an issue](https://github.com/langchain-ai/docs/issues/new/choose).

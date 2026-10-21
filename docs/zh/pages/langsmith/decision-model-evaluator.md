@@ -10,9 +10,9 @@
 
 本指南向您展示如何在 [LangSmith UI](https://smith.langchain.com?utm_source=docs\&utm_medium=cta\&utm_campaign=langsmith-signup\&utm_content=langsmith-decision-model-evaluator) 中定义决策模型评估器。您可以将其用于[automatically run evaluations on experiments](/langsmith/bind-evaluator-to-dataset)的数据集，或作为[online evaluator](/langsmith/online-evaluations-decision-models)用于跟踪项目。要使用法学硕士作为法官，请参阅[How to define an LLM-as-a-judge evaluator](/langsmith/llm-as-judge)。
 
-<Note>
-  您只能在 LangSmith UI 中创建决策模型评估器。 LangSmith SDK 尚不支持创建它们。
-</Note>
+> [!注意]
+>
+> 您只能在LangSmith UI 中创建决策模型评估器。 LangSmith SDK 尚不支持创建它们。
 
 ## 步骤 1. 创建评估器1. 添加 TypeSafe API 密钥。从您的 TypeSafe 帐户生成 API 密钥。在 LangSmith 中，转到 **设置 > 集成 > 提供商机密**，然后单击 **+ 机密**。选择 **TypeSafe** 作为提供程序并粘贴您的密钥。 LangSmith 将其存储为工作空间秘密`TYPESAFE_API_KEY`。要将其存储在不同的名称下，请选择 **自定义** 并输入您自己的秘密名称。有关更多信息，请参阅[Add provider secrets](/langsmith/llm-gateway-admin-setup#1-add-provider-secrets)。
 2. 在 LangSmith UI 中，打开数据集或跟踪项目的 **Evaluators** 选项卡，然后单击 **+ Evaluator**。
@@ -28,20 +28,20 @@
 在 **提示和模型** 下，打开 **模型配置** 并选择提供商和模型：* 对于 Jev，选择 **TypeSafe** 作为提供程序，然后选择 Jev 模型。如果您将密钥存储在`TYPESAFE_API_KEY`以外的名称下，请在 **API 密钥名称** 中输入该名称。单击**应用**。
 * 对于 TypeSafe 兼容端点，选择其保存的配置。参见[Use a TypeSafe-compatible endpoint](#use-a-typesafe-compatible-endpoint)。
 
-For the supported models, see [Supported models](/langsmith/online-evaluations-decision-models#supported-models).
+支持的型号请参见[Supported models](/langsmith/online-evaluations-decision-models#supported-models)。
 
-#### Use a TypeSafe-compatible endpoint
+#### 使用 TypeSafe 兼容端点
 
 兼容 TypeSafe 的端点将评估器指向任何实现 [TypeSafe System One API](https://docs.typesafe.ai) 的服务器。示例包括 OpenRouter 或您自己托管的决策模型。仅当您将其保存为模型配置后，评估者才能使用它。有关设置、设置步骤和示例基本 URL，请参阅[Connect to a TypeSafe-compatible model provider](/langsmith/typesafe-compatible-model)。
 
 ### 状态
 
-**状态**是决策模型评估的上下文。 Map variables from your run or example into it:
+**状态**是决策模型评估的上下文。将运行或示例中的变量映射到其中：
 
-* 在数据集上，映射输入、输出或参考输出。
-* 在跟踪项目中，映射运行或线程变量，例如运行的输入和输出。
+* 在数据集上映射输入、输出或参考输出。
+* 在跟踪项目上，映射运行或线程变量，例如运行的输入和输出。
 
-与 LLM 法官的提示不同，该州不应包含评分说明。 Put grading criteria in the questions instead.
+与 LLM 法官的提示不同，该州不应包含评分说明。相反，请将评分标准放入问题中。
 
 ＃＃＃ 问题问题是决策模型评估者使用的评分标准。每个问题的名称都会成为评估的运行或线程的反馈键。定义问题：
 
@@ -67,12 +67,6 @@ For the supported models, see [Supported models](/langsmith/online-evaluations-d
 
 ***
 
-<div>
-  <Callout icon="terminal-2">
-    [Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
-  </Callout>
+[Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
 
-  <Callout icon="edit">
-    [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/decision-model-evaluator.mdx) 或 [file an issue](https://github.com/langchain-ai/docs/issues/new/choose)。
-  </Callout>
-</div>
+[Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/decision-model-evaluator.mdx) 或 [file an issue](https://github.com/langchain-ai/docs/issues/new/choose)。

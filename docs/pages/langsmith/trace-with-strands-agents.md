@@ -10,15 +10,13 @@ Trace Strands Agents applications with LangSmith.
 
 Install LangSmith with Strands Agents support:
 
-<CodeGroup>
-  ```bash pip theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  pip install "langsmith[strands-agents]"
-  ```
+```bash pip theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+pip install "langsmith[strands-agents]"
+```
 
-  ```bash uv theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  uv add "langsmith[strands-agents]"
-  ```
-</CodeGroup>
+```bash uv theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+uv add "langsmith[strands-agents]"
+```
 
 This installs LangSmith, Strands Agents, Strands Agents tools, and the OpenTelemetry OTLP HTTP exporter.
 
@@ -36,9 +34,9 @@ export OTEL_EXPORTER_OTLP_HEADERS="x-api-key=<your_langsmith_api_key>,Langsmith-
 export AWS_REGION=<your_aws_region>
 ```
 
-<Note>
-  The Strands Agents integration uses the standard OpenTelemetry OTLP exporter. Configure the LangSmith endpoint and headers before calling `setup_langsmith_telemetry()`.
-</Note>
+> [!NOTE]
+>
+> The Strands Agents integration uses the standard OpenTelemetry OTLP exporter. Configure the LangSmith endpoint and headers before calling `setup_langsmith_telemetry()`.
 
 ### 2. Enable Strands Agents telemetry
 
@@ -112,12 +110,6 @@ Use this approach when you want to configure exporter options in code instead of
 
 ***
 
-<div>
-  <Callout icon="terminal-2">
-    [Connect these docs](/use-these-docs) to your agent of choice via MCP for real-time answers.
-  </Callout>
+[Connect these docs](/use-these-docs) to your agent of choice via MCP for real-time answers.
 
-  <Callout icon="edit">
-    [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/trace-with-strands-agents.mdx) or [file an issue](https://github.com/langchain-ai/docs/issues/new/choose).
-  </Callout>
-</div>
+[Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/trace-with-strands-agents.mdx) or [file an issue](https://github.com/langchain-ai/docs/issues/new/choose).

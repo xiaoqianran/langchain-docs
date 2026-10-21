@@ -8,15 +8,13 @@ Understand how self-hosted LangSmith Sandboxes use microVMs, Kubernetes hosts, a
 
 For supported platforms, prerequisites, and installation instructions, see [Enable Sandboxes](/langsmith/enable-self-hosted-sandboxes). The architecture below describes the `sandbox-host` runtime. Storage mounting and configuration options can differ across Helm releases.
 
-<CardGroup>
-  <Card title="Scaling and capacity" icon="arrows-maximize" href="/langsmith/self-host-sandbox-scaling">
-    Size the host pool, configure autoscaling, and plan memory and cache capacity.
-  </Card>
+> **[Scaling and capacity](/langsmith/self-host-sandbox-scaling)**
+>
+> Size the host pool, configure autoscaling, and plan memory and cache capacity.
 
-  <Card title="Upgrades and operations" icon="server" href="/langsmith/self-host-sandbox-operations">
-    Understand host draining, failure recovery, and production monitoring.
-  </Card>
-</CardGroup>
+> **[Upgrades and operations](/langsmith/self-host-sandbox-operations)**
+>
+> Understand host draining, failure recovery, and production monitoring.
 
 ## Understand the deployment model
 
@@ -24,26 +22,22 @@ A sandbox is a Firecracker microVM, not a Kubernetes pod. Each `sandbox-host` po
 
 The host Deployment uses required pod anti-affinity to place at most one host pod on each node. Its node selector and tolerations target a dedicated, KVM-capable node pool. Adding a sandbox does not create another pod.
 
-<Frame>
-  <SandboxDiagram name="architecture" />
-</Frame>
+**architecture**
 
 ### Understand component failure impact
 
 Each component has a different failure scope. Distinguish temporary unavailability from loss of its stored data when planning recovery.
 
-<div>
-  | Component | Where it runs and what it holds | If unavailable or lost |
-  | - | - | - |
-  | `platform-backend` | Existing LangSmith node pool. Authenticates and authorizes requests, chooses hosts, and proxies traffic. Holds no durable sandbox state. | <span>API unavailable</span><br />Sandbox API and proxied traffic fail while the service is unavailable. Restarting it does not delete sandbox disks. |
-  | PostgreSQL | Existing LangSmith database. Holds sandbox records, the host registry, and placement. | <span>API unavailable</span><br />An outage blocks operations that need sandbox records or placement.<br /><br /><span>Persistent data at risk</span><br />Losing database contents requires restoring those records, not just restarting hosts. |
-  | `sandbox-host` | Dedicated sandbox node pool, one pod per node. Holds running microVMs and their memory. | <span>One host affected</span><br />Abrupt loss stops that host's sandboxes and loses running memory. Persistent disks remain on shared storage. |
-  | JuiceFS client | Host-owned mount inside each host pod. Connects the VMs to shared storage and manages a local cache. | <span>One host affected</span><br />Mount failure fences the host and stops its VMs. Restart requires working shared storage. |
-  | Kubernetes API | Kubernetes control plane. Holds host Leases and the host Deployment. | <span>Pool-wide disruption</span><br />Hosts that cannot renew Leases eventually fence themselves. A prolonged cluster-wide outage can stop the entire pool. |
-  | JuiceFS Redis | Dedicated metadata store. Holds the file tree, file sizes, and the mapping to data chunks. | <span>Pool-wide disruption</span><br />An outage stalls or fails filesystem operations across hosts.<br /><br /><span>Persistent data at risk</span><br />Lost metadata requires recovery from backup. Object storage alone cannot reconstruct the filesystem. |
-  | Object storage | Shared bucket or container. Holds data blocks for disk images, saved memory, and snapshots. | <span>Pool-wide disruption</span><br />An outage blocks uncached reads and uploads. New hosts may fail readiness.<br /><br /><span>Persistent data at risk</span><br />Deleted data blocks require recovery from backup for the affected disks and snapshots. |
-  | Node-local cache | Each sandbox node. Holds disposable copies of JuiceFS data blocks. | <span>Cache rebuild only</span><br />Persisted data remains on shared storage. Hosts fetch cached copies again, with slower I/O while the cache warms. |
-</div>
+| Component | Where it runs and what it holds | If unavailable or lost |
+| - | - | - |
+| `platform-backend` | Existing LangSmith node pool. Authenticates and authorizes requests, chooses hosts, and proxies traffic. Holds no durable sandbox state. | API unavailable Sandbox API and proxied traffic fail while the service is unavailable. Restarting it does not delete sandbox disks. |
+| PostgreSQL | Existing LangSmith database. Holds sandbox records, the host registry, and placement. | API unavailable An outage blocks operations that need sandbox records or placement. Persistent data at risk Losing database contents requires restoring those records, not just restarting hosts. |
+| `sandbox-host` | Dedicated sandbox node pool, one pod per node. Holds running microVMs and their memory. | One host affected Abrupt loss stops that host's sandboxes and loses running memory. Persistent disks remain on shared storage. |
+| JuiceFS client | Host-owned mount inside each host pod. Connects the VMs to shared storage and manages a local cache. | One host affected Mount failure fences the host and stops its VMs. Restart requires working shared storage. |
+| Kubernetes API | Kubernetes control plane. Holds host Leases and the host Deployment. | Pool-wide disruption Hosts that cannot renew Leases eventually fence themselves. A prolonged cluster-wide outage can stop the entire pool. |
+| JuiceFS Redis | Dedicated metadata store. Holds the file tree, file sizes, and the mapping to data chunks. | Pool-wide disruption An outage stalls or fails filesystem operations across hosts. Persistent data at risk Lost metadata requires recovery from backup. Object storage alone cannot reconstruct the filesystem. |
+| Object storage | Shared bucket or container. Holds data blocks for disk images, saved memory, and snapshots. | Pool-wide disruption An outage blocks uncached reads and uploads. New hosts may fail readiness. Persistent data at risk Deleted data blocks require recovery from backup for the affected disks and snapshots. |
+| Node-local cache | Each sandbox node. Holds disposable copies of JuiceFS data blocks. | Cache rebuild only Persisted data remains on shared storage. Hosts fetch cached copies again, with slower I/O while the cache warms. |
 
 For fencing, recovery behavior, and storage protection, see [Understand failure impact](/langsmith/self-host-sandbox-operations#understand-failure-impact).
 
@@ -53,9 +47,7 @@ One elected host observes pool health and runs the [host autoscaler](/langsmith/
 
 A host pod runs the sandbox daemon and Firecracker processes. In deployments with a host-owned JuiceFS mount, it also runs the JuiceFS client. The daemon connects to the agent inside each guest through `vsock`.
 
-<Frame>
-  <SandboxDiagram name="node" />
-</Frame>
+**node**
 
 The host uses host networking on port `19190`. The platform backend connects to the host's node address; clients use the LangSmith API or [service URLs](/langsmith/sandbox-service-urls), not the host listener directly. Keep host listeners on private networks.
 
@@ -96,9 +88,9 @@ sequenceDiagram
 
 Placement considers committed CPU and prefers the sandbox's previous host when its load is close to the least-loaded candidate. Returning to that host can reuse cached data. It is a preference, not a guarantee that a sandbox stays on one node.
 
-<Note>
-  The utilization target controls scaling, not admission. A busy pool can still place work on an existing host. With no ready hosts, creation fails with `NoSandboxHostsAvailable` rather than waiting in a capacity queue. See [Plan for bursts](/langsmith/self-host-sandbox-scaling#plan-for-bursts).
-</Note>
+> [!NOTE]
+>
+> The utilization target controls scaling, not admission. A busy pool can still place work on an existing host. With no ready hosts, creation fails with `NoSandboxHostsAvailable` rather than waiting in a capacity queue. See [Plan for bursts](/langsmith/self-host-sandbox-scaling#plan-for-bursts).
 
 ## Track persistent state
 
@@ -108,9 +100,9 @@ JuiceFS separates a filesystem's metadata from its contents:
 * **Object storage**: Data chunks for disk images, saved memory images, and snapshots.
 * **Local cache**: Copies of data blocks on individual nodes. A node replacement loses that cache, not the shared filesystem.
 
-<Warning>
-  JuiceFS Redis is durable storage, not the LangSmith cache Redis. Object storage alone cannot reconstruct the filesystem without its metadata. Protect both stores, use `noeviction` for metadata Redis, and test recovery. See [Protect sandbox storage](/langsmith/self-host-sandbox-operations#protect-sandbox-storage).
-</Warning>
+> [!WARNING]
+>
+> JuiceFS Redis is durable storage, not the LangSmith cache Redis. Object storage alone cannot reconstruct the filesystem without its metadata. Protect both stores, use `noeviction` for metadata Redis, and test recovery. See [Protect sandbox storage](/langsmith/self-host-sandbox-operations#protect-sandbox-storage).
 
 ### Distinguish suspend from a crash
 
@@ -153,12 +145,6 @@ Restoring memory requires a complete, compatible memory image. It is not live mi
 
 ***
 
-<div>
-  <Callout icon="terminal-2">
-    [Connect these docs](/use-these-docs) to your agent of choice via MCP for real-time answers.
-  </Callout>
+[Connect these docs](/use-these-docs) to your agent of choice via MCP for real-time answers.
 
-  <Callout icon="edit">
-    [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/self-host-sandbox-architecture.mdx) or [file an issue](https://github.com/langchain-ai/docs/issues/new/choose).
-  </Callout>
-</div>
+[Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/self-host-sandbox-architecture.mdx) or [file an issue](https://github.com/langchain-ai/docs/issues/new/choose).

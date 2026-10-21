@@ -4,7 +4,7 @@
 
 # 使用 Deno Deploy 进行部署
 
-在 Deno Deploy 上部署一个LangChain深度代理，使用 Hono 路由处理程序和从一个入口点提供服务的 Vite React SPA。
+使用 Hono 路由处理程序和从一个入口点提供服务的 Vite React SPA 在 Deno Deploy 上部署 LangChain 深度代理。
 
 以下页面详细介绍了一个在 [Deno Deploy](https://deno.com/deploy) 上部署 LangChain **深度代理** 的示例应用程序：流式聊天 UI、子代理和线程历史记录，所有这些都由在 Hono 服务器上实现为 HTTP + SSE 路由处理程序的 [Agent Streaming Protocol](https://github.com/langchain-ai/agent-protocol/tree/main/streaming) 支持。 React 前端是一个 Vite SPA（从 Next.js 示例移植）； Deno 从单个 `main.ts` 入口点提供构建的静态资产和 API。
 
@@ -14,20 +14,18 @@
 
 ## 部署到 Deno 部署
 
-<Steps>
-  <Step title="Create a Deno Deploy project">
-    分叉或克隆[⟦T6⟧](https://github.com/langchain-ai/deployment-cookbook)。在[Deno Deploy dashboard](https://dash.deno.com/)中，创建一个链接到此存储库的新项目。
-  </Step>
+**1.创建 Deno Deploy 项目**
 
-  <Step title="Configure build settings">
-    * 将 **根目录** 设置为 `js-deno`。
-    * 将**构建命令**设置为`deno task build:client`（将Vite SPA构建为`dist/`）。
-    * 将**入口点**设置为`main.ts`。
-    * 在项目环境变量中添加`OPENAI_API_KEY`。
-  </Step><Step title="Deploy">
-    从仪表板部署。 Deno 的构建环境运行构建命令，因此 `dist/` 是在云端生成的，永远不需要提交。
-  </Step>
-</Steps>
+分叉或克隆[⟦T6⟧](https://github.com/langchain-ai/deployment-cookbook)。在[Deno Deploy dashboard](https://dash.deno.com/)中，创建一个链接到此存储库的新项目。
+
+**2.配置构建设置**
+
+* 将 **根目录** 设置为 `js-deno`。
+* 将**构建命令**设置为`deno task build:client`（将Vite SPA构建为`dist/`）。
+* 将**入口点**设置为`main.ts`。
+* 在项目环境变量中添加`OPENAI_API_KEY`。
+
+**3.部署**从仪表板部署。 Deno 的构建环境运行构建命令，因此 `dist/` 是在云端生成的，永远不需要提交。
 
 或者，使用内置的 `deno deploy` CLI (Deno 2.x)。 [⟦T15⟧](https://github.com/langchain-ai/deployment-cookbook/blob/main/js-deno/deno.json)中的`deploy`块设置`org`/`app`。将它们更改为您自己的（或传递 `--org`/`--app` 标志，这会覆盖它们）。
 
@@ -44,14 +42,14 @@ deno deploy env add OPENAI_API_KEY <your-key> --org <your-org> --app <your-app>
 deno task deploy
 ```
 
-`deno task deploy` 运行 `deno task build:client && deno deploy --prod`，然后运行 `rm -rf dist`。需要在本地构建，因为`deno deploy --source local`上传您的工作树（减去`.gitignore`）并且**不**运行构建命令。这些仅针对 GitHub 连接的应用程序运行。
+`deno task deploy` 运行 `deno task build:client && deno deploy --prod`，然后运行 `rm -rf dist`。需要本地构建，因为`deno deploy --source local`上传您的工作树（减去`.gitignore`）并且**不**运行构建命令。这些仅针对 GitHub 连接的应用程序运行。
 
-<Warning>
-  CLI `--source local` 流程特有的两个陷阱：
-
-  * **`dist/` 不得被 gitignored。** 上传者尊重 `.gitignore`，因此新构建的 `dist/` 必须在上传窗口期间可见，否则每个非 `/api` 路由都会返回 **404**。存储库根`.gitignore`忽略所有`dist`，因此`js-deno/.gitignore`将其重新包含在`!dist/`和`!dist/**`中。 `deno task deploy`流程在上传后删除了`dist/`，因此尽管没有被忽略，它也不会停留在`git status`中。
-  * **不要使用 `deploy.include` 列表。** 有一个 Deno Deploy 错误，其中添加 `include` 会使构建将入口点解析为 `src/main.ts` 并失败。改为依赖默认的基于 `.gitignore` 的上传。
-</Warning>（可选）通过添加 [⟦T42⟧](https://github.com/langchain-ai/deployment-cookbook/blob/main/js-deno/.env.example) 中的变量来启用 LangSmith 跟踪。
+> [!警告]
+>
+> CLI `--source local` 流程特有的两个陷阱：
+>
+> * **`dist/` 不得被 gitignored。** 上传者尊重 `.gitignore`，因此新构建的 `dist/` 必须在上传窗口期间可见，否则每个非 `/api` 路由都会返回 **404**。存储库根`.gitignore`忽略所有`dist`，因此`js-deno/.gitignore`将其重新包含在`!dist/`和`!dist/**`中。 `deno task deploy`流程在上传后删除了`dist/`，因此尽管没有被忽略，它也不会停留在`git status`中。
+> * **不要使用 `deploy.include` 列表。** 有一个 Deno Deploy 错误，添加 `include` 会使构建将入口点解析为 `src/main.ts` 并失败。改为依赖默认的基于 `.gitignore` 的上传。（可选）通过添加 [⟦T42⟧](https://github.com/langchain-ai/deployment-cookbook/blob/main/js-deno/.env.example) 中的变量来启用 LangSmith 跟踪。
 
 ## 所需的 API 端点
 
@@ -119,7 +117,7 @@ flowchart TB
 此示例作为**单个 Deno 进程**运行：* **`main.ts`**：`Deno.serve` + Hono 应用程序。挂载`/api`路线并从`dist/`为Vite建造的SPA提供服务。
 * **`server/routes.ts`**：代理流协议的 Hono 路由定义。
 * **`server/session.ts`**：`LocalThreadSession`：在 LangGraph `StreamChannel` 中缓冲协议事件，使用 `matchesSubscription` 进行过滤，并通过 SSE `ReadableStream` 扇出匹配帧。
-* **`server/threads.ts`**：LangGraph SDK 有线格式中由检查指针支持的 `getState` / `updateState` / `getHistory` 帮助程序。
+* **`server/threads.ts`**：LangGraph SDK 有线格式中支持检查指针的 `getState` / `updateState` / `getHistory` 帮助程序。
 * **`server/registry.ts`**：进程本地单例拥有代理和每个线程 ID 一个会话。
 * **`server/agent/`**：与 Next.js 示例相同的 `createDeepAgent` 编排器（研究员 + math-whiz 子代理、模拟工具）。
 
@@ -172,12 +170,6 @@ deno task start
 
 ***
 
-<div>
-  <Callout icon="terminal-2">
-    [Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
-  </Callout>
+[Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
 
-  <Callout icon="edit">
-    [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/deploy-deno.mdx) 或 [file an issue](https://github.com/langchain-ai/docs/issues/new/choose)。
-  </Callout>
-</div>
+[Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/deploy-deno.mdx) 或 [file an issue](https://github.com/langchain-ai/docs/issues/new/choose)。

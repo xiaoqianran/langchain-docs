@@ -13,7 +13,7 @@ Playground 允许您使用任何符合 OpenAI API 的模型。您可以通过在
 * [LiteLLM Proxy](https://github.com/BerriAI/litellm?tab=readme-ov-file#quick-start-proxy---cli)
 * [Ollama](https://ollama.com/)
 
-您可以使用这些提供程序来部署您的模型并获取与 OpenAI API 兼容的 API 端点。
+您可以使用这些提供程序来部署模型并获取与 OpenAI API 兼容的 API 端点。
 
 请查看完整的 [specification](https://platform.openai.com/docs/api-reference/chat) 了解更多信息。
 
@@ -23,18 +23,14 @@ Playground 允许您使用任何符合 OpenAI API 的模型。您可以通过在
 
 要访问 **提示设置** 菜单：
 
-1. 在 **提示** 标题下，选择型号名称旁边的齿轮 <Icon icon="settings" /> 图标。
+1. 在 **提示** 标题下，选择型号名称旁边的齿轮图标。
 2. 在 **模型配置** 选项卡中，从下拉列表中选择要编辑的模型。
 3. 对于 **提供商** 下拉列表，选择 **OpenAI 兼容端点**。
 4. 将您的 OpenAI 兼容端点添加到 **Base URL** 输入。示例请参见[Base URL format](#base-url-format)。
 
-   <div>
-     <img alt="Model Configuration window in the LangSmith UI with a model selected and the Provider dropdown with OpenAI Compatible Endpoint selected." />
+   ![Model Configuration window in the LangSmith UI with a model selected and the Provider dropdown with OpenAI Compatible Endpoint selected.](https://mintcdn.com/langchain-5e9cc07a/cemWY9w7h0W8uMbk/langsmith/images/openai-compatible-endpoint.png?fit=max\&auto=format\&n=cemWY9w7h0W8uMbk\&q=85\&s=fdbe548e512ed40fb512578d02986b45)
 
-     <img alt="Model Configuration window in the LangSmith UI with a model selected and the Provider dropdown with OpenAI Compatible Endpoint selected." />
-   </div>如果一切设置正确，您应该在 Playground 中看到模型的响应。您还可以使用此功能来调用下游管道。
-
-有关如何存储模型配置的信息，请参阅[Configure prompt settings](/langsmith/managing-model-configurations)。
+如果一切设置正确，您应该在 Playground 中看到模型的响应。您还可以使用此功能来调用下游管道。有关如何存储模型配置的信息，请参阅[Configure prompt settings](/langsmith/managing-model-configurations)。
 
 如果您的 OpenAI 兼容端点位于 OAuth2 网关后面，请将 OAuth `client_credentials` 存储在模型配置上，而不是将静态 API 密钥作为工作区机密进行分发。参见[OAuth client credentials](/langsmith/model-configurations#oauth-client-credentials)。
 
@@ -57,12 +53,6 @@ LangSmith 自动附加 `/chat/completions` — 不要将其包含在基本 URL �
 
 ***
 
-<div>
-  <Callout icon="terminal-2">
-    [Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
-  </Callout>
+[Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
 
-  <Callout icon="edit">
-    [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/custom-openai-compliant-model.mdx) 或 [file an issue](https://github.com/langchain-ai/docs/issues/new/choose)。
-  </Callout>
-</div>
+[Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/custom-openai-compliant-model.mdx) 或 [file an issue](https://github.com/langchain-ai/docs/issues/new/choose)。

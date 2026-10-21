@@ -8,50 +8,36 @@ This section is a reference for the SDKs, CLI, and APIs you use to deploy and in
 
 ## SDKs and CLI
 
-<CardGroup>
-  <Card title="LangSmith Deployments SDK" icon="package" href="/langsmith/smith-deployments-sdk">
-    Management of LangSmith deployments and revisions using the LangGraph SDK.
-  </Card>
-</CardGroup>
+> **[LangSmith Deployments SDK](/langsmith/smith-deployments-sdk)**
+>
+> Management of LangSmith deployments and revisions using the LangGraph SDK.
 
-<CardGroup>
-  <Card title="LangGraph CLI" icon="terminal" href="/langsmith/cli">
-    Build, deploy, and interact with agents from the command line.
-  </Card>
+> **[LangGraph CLI](/langsmith/cli)**
+>
+> Build, deploy, and interact with agents from the command line.
 
-  <Card title="RemoteGraph" icon="git-merge" href="/langsmith/remote-graph">
-    Client-side interface for calling deployed graphs as if they were local.
-  </Card>
-</CardGroup>
+> **[RemoteGraph](/langsmith/remote-graph)**
+>
+> Client-side interface for calling deployed graphs as if they were local.
 
 ## APIs
 
-<CardGroup>
-  <Card title="Agent Server API" icon="server" href="/langsmith/server-api-ref">
-    REST endpoints exposed by the Agent Server runtime: assistants, threads, runs, cron jobs, and the long-term memory store.
-  </Card>
+> **[Agent Server API](/langsmith/server-api-ref)**
+>
+> REST endpoints exposed by the Agent Server runtime: assistants, threads, runs, cron jobs, and the long-term memory store.
 
-  <Card title="Control Plane API" icon="settings" href="/langsmith/api-ref-control-plane">
-    REST endpoints for managing deployments, revisions, and listeners.
-  </Card>
-</CardGroup>
+> **[Control Plane API](/langsmith/api-ref-control-plane)**
+>
+> REST endpoints for managing deployments, revisions, and listeners.
 
 ## Releases
 
-<CardGroup>
-  <Card title="Agent Server changelog" icon="versions" href="/langsmith/agent-server-changelog">
-    Version history and release notes for the Agent Server runtime.
-  </Card>
-</CardGroup>
+> **[Agent Server changelog](/langsmith/agent-server-changelog)**
+>
+> Version history and release notes for the Agent Server runtime.
 
 ***
 
-<div>
-  <Callout icon="terminal-2">
-    [Connect these docs](/use-these-docs) to your agent of choice via MCP for real-time answers.
-  </Callout>
+[Connect these docs](/use-these-docs) to your agent of choice via MCP for real-time answers.
 
-  <Callout icon="edit">
-    [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/deploy-reference-overview.mdx) or [file an issue](https://github.com/langchain-ai/docs/issues/new/choose).
-  </Callout>
-</div>
+[Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/deploy-reference-overview.mdx) or [file an issue](https://github.com/langchain-ai/docs/issues/new/choose).

@@ -21,8 +21,6 @@ See [Core capabilities](#core-capabilities) for a full breakdown of each compone
 
 ## Try it
 
-<PatternEmbed />
-
 ## Quickstart
 
 ```ts theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
@@ -51,39 +49,37 @@ console.log(
 );
 ```
 
-<Card title="View example trace" icon="chart-line" href="https://smith.langchain.com/public/8e31d898-1083-4a78-a6d8-29f16e24760f/r">
-  Open a public LangSmith run for this example.
-</Card>
+> **[View example trace](https://smith.langchain.com/public/8e31d898-1083-4a78-a6d8-29f16e24760f/r)**
+>
+> Open a public LangSmith run for this example.
 
 See the [Quickstart](/oss/javascript/deepagents/quickstart/) and [Customization guide](/oss/javascript/deepagents/customization/) to get started building your own agents and applications with Deep Agents.
 
-<Tip>
-  Trace requests, debug agent behavior, and evaluate outputs with [LangSmith](https://smith.langchain.com?utm_source=docs\&utm_medium=cta\&utm_campaign=langsmith-signup\&utm_content=oss-deepagents-overview). Follow the [observability quickstart](/langsmith/observability-quickstart) to get set up. When ready for production, see [Going to production](/oss/javascript/deepagents/going-to-production) for LangSmith deployment options.
-</Tip>
+> [!TIP]
+>
+> Trace requests, debug agent behavior, and evaluate outputs with [LangSmith](https://smith.langchain.com?utm_source=docs\&utm_medium=cta\&utm_campaign=langsmith-signup\&utm_content=oss-deepagents-overview). Follow the [observability quickstart](/langsmith/observability-quickstart) to get set up. When ready for production, see [Going to production](/oss/javascript/deepagents/going-to-production) for LangSmith deployment options.
 
 ## Core capabilities
 
-<img alt="Agent harness capabilities by category" />
+![Agent harness capabilities by category](https://mintcdn.com/langchain-5e9cc07a/jtty0O--UJOKG0nK/oss/images/agent_harness_capabilities.svg?fit=max\&auto=format\&n=jtty0O--UJOKG0nK\&q=85\&s=0ff671d72badd0844826660dfcb04391)
 
 Deep Agents is an ["agent harness"](/oss/javascript/concepts/products#agent-harnesses-like-the-deep-agents-sdk). It is the same core tool calling loop as other agent frameworks, but with built-in capabilities that make agents reliable for real tasks:
 
-<CardGroup>
-  <Card title="Execution environment" icon="bolt" href="#execution-environment">
-    Tools, virtual filesystem, optional sandbox, and REPL (interpreter)
-  </Card>
+> **[Execution environment](#execution-environment)**
+>
+> Tools, virtual filesystem, optional sandbox, and REPL (interpreter)
 
-  <Card title="Context management" icon="database" href="#context-management">
-    Skills, memory, summarization, context offloading, and prompt caching
-  </Card>
+> **[Context management](#context-management)**
+>
+> Skills, memory, summarization, context offloading, and prompt caching
 
-  <Card title="Delegation" icon="sitemap" href="#delegation">
-    Subagent spawning and optional task planning
-  </Card>
+> **[Delegation](#delegation)**
+>
+> Subagent spawning and optional task planning
 
-  <Card title="Steering" icon="user" href="#steering">
-    Human-in-the-loop approval and interrupts
-  </Card>
-</CardGroup>
+> **[Steering](#steering)**
+>
+> Human-in-the-loop approval and interrupts
 
 [`deepagents`](https://www.npmjs.com/package/deepagents) is a standalone library built on top of [LangChain](/oss/javascript/langchain/)'s core building blocks for agents and using [LangGraph](/oss/javascript/langgraph/)'s tooling for running agents in production.
 
@@ -125,33 +121,33 @@ The backends support the following file system operations:
 | `grep` | Search file contents with multiple output modes (files only, content with context, or counts) |
 | `execute` | Run shell commands in the environment (available with [sandbox backends](/oss/javascript/deepagents/sandboxes) only) |
 
-<Accordion title="Supported multimodal file extensions">
-  | Type | Extensions |
-  | - | - |
-  | [Image](/oss/javascript/langchain/messages#multimodal) | `.png`, `.jpg`, `.jpeg`, `.gif`, `.webp`, `.heic`, `.heif` |
-  | [Video](/oss/javascript/langchain/messages#multimodal) | `.mp4`, `.mpeg`, `.mov`, `.avi`, `.flv`, `.mpg`, `.webm`, `.wmv`, `.3gpp` |
-  | [Audio](/oss/javascript/langchain/messages#multimodal) | `.wav`, `.mp3`, `.aiff`, `.aac`, `.ogg`, `.flac` |
-  | [File](/oss/javascript/langchain/messages#multimodal) | `.pdf`, `.ppt`, `.pptx` |
-</Accordion>
+> **Supported multimodal file extensions**
+>
+> | Type | Extensions |
+> | - | - |
+> | [Image](/oss/javascript/langchain/messages#multimodal) | `.png`, `.jpg`, `.jpeg`, `.gif`, `.webp`, `.heic`, `.heif` |
+> | [Video](/oss/javascript/langchain/messages#multimodal) | `.mp4`, `.mpeg`, `.mov`, `.avi`, `.flv`, `.mpg`, `.webm`, `.wmv`, `.3gpp` |
+> | [Audio](/oss/javascript/langchain/messages#multimodal) | `.wav`, `.mp3`, `.aiff`, `.aac`, `.ogg`, `.flac` |
+> | [File](/oss/javascript/langchain/messages#multimodal) | `.pdf`, `.ppt`, `.pptx` |
 
-<Accordion title="Running without the default filesystem tools" icon="ban">
-  To hide the filesystem tools listed above from the model, register a [harness profile](/oss/javascript/deepagents/profiles#harness-profiles) with `excluded_tools`:
-
-  ```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  from deepagents import HarnessProfile, register_harness_profile
-
-  register_harness_profile(
-      "anthropic:claude-sonnet-4-6",
-      HarnessProfile(
-          excluded_tools=frozenset(
-              {"ls", "read_file", "write_file", "edit_file", "delete", "glob", "grep"}
-          ),
-      ),
-  )
-  ```
-
-  Removing [`FilesystemMiddleware`](https://reference.langchain.com/javascript/deepagents/middleware/createFilesystemMiddleware) itself via `excluded_middleware` is intentionally rejected—it is required scaffolding in the [Deep Agents stack](/oss/javascript/deepagents/customization#deep-agents-stack). Use `excluded_tools` to hide only the model-visible tool surface and leave the middleware in place. To remove the `task` tool, see [Running without subagents](/oss/javascript/deepagents/subagents#running-without-subagents).
-</Accordion>
+> **Running without the default filesystem tools**
+>
+> To hide the filesystem tools listed above from the model, register a [harness profile](/oss/javascript/deepagents/profiles#harness-profiles) with `excluded_tools`:
+>
+> ```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> from deepagents import HarnessProfile, register_harness_profile
+>
+> register_harness_profile(
+>     "anthropic:claude-sonnet-4-6",
+>     HarnessProfile(
+>         excluded_tools=frozenset(
+>             {"ls", "read_file", "write_file", "edit_file", "delete", "glob", "grep"}
+>         ),
+>     ),
+> )
+> ```
+>
+> Removing [`FilesystemMiddleware`](https://reference.langchain.com/javascript/deepagents/middleware/createFilesystemMiddleware) itself via `excluded_middleware` is intentionally rejected—it is required scaffolding in the [Deep Agents stack](/oss/javascript/deepagents/customization#deep-agents-stack). Use `excluded_tools` to hide only the model-visible tool surface and leave the middleware in place. To remove the `task` tool, see [Running without subagents](/oss/javascript/deepagents/subagents#running-without-subagents).
 
 The virtual filesystem is used by several other harness capabilities such as skills, memory, code execution, and context management.
 You can also use the file system when building custom tools and middleware for Deep Agents.
@@ -266,77 +262,75 @@ Planning is often useful for:
 
 Pass [`TodoListMiddleware`](https://reference.langchain.com/javascript/langchain/index/todoListMiddleware) to the middleware parameter to give the agent a `write_todos` tool for maintaining a structured task list during execution.
 
-<CodeGroup>
-  ```ts Google theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  import { createDeepAgent } from "deepagents";
-  import { todoListMiddleware } from "langchain";
+```ts Google theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+import { createDeepAgent } from "deepagents";
+import { todoListMiddleware } from "langchain";
 
-  const agent = await createDeepAgent({
-    model: "google:gemini-3.6-flash",
-    middleware: [todoListMiddleware()],
-  });
-  ```
+const agent = await createDeepAgent({
+  model: "google:gemini-3.6-flash",
+  middleware: [todoListMiddleware()],
+});
+```
 
-  ```ts OpenAI theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  import { createDeepAgent } from "deepagents";
-  import { todoListMiddleware } from "langchain";
+```ts OpenAI theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+import { createDeepAgent } from "deepagents";
+import { todoListMiddleware } from "langchain";
 
-  const agent = await createDeepAgent({
-    model: "openai:gpt-5.5",
-    middleware: [todoListMiddleware()],
-  });
-  ```
+const agent = await createDeepAgent({
+  model: "openai:gpt-5.5",
+  middleware: [todoListMiddleware()],
+});
+```
 
-  ```ts Anthropic theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  import { createDeepAgent } from "deepagents";
-  import { todoListMiddleware } from "langchain";
+```ts Anthropic theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+import { createDeepAgent } from "deepagents";
+import { todoListMiddleware } from "langchain";
 
-  const agent = await createDeepAgent({
-    model: "anthropic:claude-sonnet-5",
-    middleware: [todoListMiddleware()],
-  });
-  ```
+const agent = await createDeepAgent({
+  model: "anthropic:claude-sonnet-5",
+  middleware: [todoListMiddleware()],
+});
+```
 
-  ```ts OpenRouter theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  import { createDeepAgent } from "deepagents";
-  import { todoListMiddleware } from "langchain";
+```ts OpenRouter theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+import { createDeepAgent } from "deepagents";
+import { todoListMiddleware } from "langchain";
 
-  const agent = await createDeepAgent({
-    model: "openrouter:z-ai/glm-5.2",
-    middleware: [todoListMiddleware()],
-  });
-  ```
+const agent = await createDeepAgent({
+  model: "openrouter:z-ai/glm-5.2",
+  middleware: [todoListMiddleware()],
+});
+```
 
-  ```ts Fireworks theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  import { createDeepAgent } from "deepagents";
-  import { todoListMiddleware } from "langchain";
+```ts Fireworks theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+import { createDeepAgent } from "deepagents";
+import { todoListMiddleware } from "langchain";
 
-  const agent = await createDeepAgent({
-    model: "fireworks:accounts/fireworks/models/glm-5p2",
-    middleware: [todoListMiddleware()],
-  });
-  ```
+const agent = await createDeepAgent({
+  model: "fireworks:accounts/fireworks/models/glm-5p2",
+  middleware: [todoListMiddleware()],
+});
+```
 
-  ```ts Baseten theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  import { createDeepAgent } from "deepagents";
-  import { todoListMiddleware } from "langchain";
+```ts Baseten theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+import { createDeepAgent } from "deepagents";
+import { todoListMiddleware } from "langchain";
 
-  const agent = await createDeepAgent({
-    model: "baseten:zai-org/GLM-5.2",
-    middleware: [todoListMiddleware()],
-  });
-  ```
+const agent = await createDeepAgent({
+  model: "baseten:zai-org/GLM-5.2",
+  middleware: [todoListMiddleware()],
+});
+```
 
-  ```ts Ollama theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  import { createDeepAgent } from "deepagents";
-  import { todoListMiddleware } from "langchain";
+```ts Ollama theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+import { createDeepAgent } from "deepagents";
+import { todoListMiddleware } from "langchain";
 
-  const agent = await createDeepAgent({
-    model: "ollama:north-mini-code-1.0",
-    middleware: [todoListMiddleware()],
-  });
-  ```
-</CodeGroup>
+const agent = await createDeepAgent({
+  model: "ollama:north-mini-code-1.0",
+  middleware: [todoListMiddleware()],
+});
+```
 
 Tasks support status tracking (`'pending'`, `'in_progress'`, `'completed'`) and are persisted in agent state. This gives agents a lightweight planning layer for organizing long-running and multi-step work.
 
@@ -374,36 +368,28 @@ For more information, see [Human-in-the-loop](/oss/javascript/deepagents/human-i
 
 ## Get started
 
-<CardGroup>
-  <Card title="Quickstart" icon="rocket" href="/oss/javascript/deepagents/quickstart">
-    Build your first deep agent
-  </Card>
+> **[Quickstart](/oss/javascript/deepagents/quickstart)**
+>
+> Build your first deep agent
 
-  <Card title="Customization" icon="adjustments" href="/oss/javascript/deepagents/customization">
-    Learn about customization options
-  </Card>
+> **[Customization](/oss/javascript/deepagents/customization)**
+>
+> Learn about customization options
 
-  <Card title="Code" icon="terminal" href="/oss/deepagents/code/overview">
-    Use Deep Agents Code
-  </Card>
+> **[Code](/oss/deepagents/code/overview)**
+>
+> Use Deep Agents Code
 
-  <Card title="ACP" icon="plug-connected" href="/oss/javascript/deepagents/acp">
-    Use deep agents in code editors with ACP
-  </Card>
+> **[ACP](/oss/javascript/deepagents/acp)**
+>
+> Use deep agents in code editors with ACP
 
-  <Card title="Reference" icon="external-link" href="https://reference.langchain.com/javascript/modules/deepagents.html">
-    See the `deepagents` API reference
-  </Card>
-</CardGroup>
+> **[Reference](https://reference.langchain.com/javascript/modules/deepagents.html)**
+>
+> See the `deepagents` API reference
 
 ***
 
-<div>
-  <Callout icon="terminal-2">
-    [Connect these docs](/use-these-docs) to your agent of choice via MCP for real-time answers.
-  </Callout>
+[Connect these docs](/use-these-docs) to your agent of choice via MCP for real-time answers.
 
-  <Callout icon="edit">
-    [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/oss/deepagents/overview.mdx) or [file an issue](https://github.com/langchain-ai/docs/issues/new/choose).
-  </Callout>
-</div>
+[Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/oss/deepagents/overview.mdx) or [file an issue](https://github.com/langchain-ai/docs/issues/new/choose).

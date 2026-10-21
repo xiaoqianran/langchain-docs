@@ -12,32 +12,22 @@ For a complete list of supported models and variants, see the [Ollama model libr
 
 ## Model interfaces
 
-<Columns>
-  <Card title="ChatOllama" href="/oss/python/integrations/chat/ollama" icon="message">
-    Ollama chat models.
-  </Card>
+> **[ChatOllama](/oss/python/integrations/chat/ollama)**
+>
+> Ollama chat models.
 
-  <Card title="OllamaEmbeddings" href="/oss/python/integrations/embeddings/ollama" icon="message">
-    Ollama embedding models.
-  </Card>
-</Columns>
+> **[OllamaEmbeddings](/oss/python/integrations/embeddings/ollama)**
+>
+> Ollama embedding models.
 
 ## Other
 
-<Columns>
-  <Card title="OllamaLLM" href="/oss/python/integrations/llms/ollama" icon="cursor-text">
-    (Legacy) Ollama text completion models.
-  </Card>
-</Columns>
+> **[OllamaLLM](/oss/python/integrations/llms/ollama)**
+>
+> (Legacy) Ollama text completion models.
 
 ***
 
-<div>
-  <Callout icon="terminal-2">
-    [Connect these docs](/use-these-docs) to your agent of choice via MCP for real-time answers.
-  </Callout>
+[Connect these docs](/use-these-docs) to your agent of choice via MCP for real-time answers.
 
-  <Callout icon="edit">
-    [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/oss/python/integrations/providers/ollama.mdx) or [file an issue](https://github.com/langchain-ai/docs/issues/new/choose).
-  </Callout>
-</div>
+[Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/oss/python/integrations/providers/ollama.mdx) or [file an issue](https://github.com/langchain-ai/docs/issues/new/choose).

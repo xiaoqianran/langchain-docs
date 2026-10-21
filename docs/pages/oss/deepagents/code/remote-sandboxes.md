@@ -8,194 +8,174 @@ Deep Agents Code uses the [sandbox as tool](/oss/python/deepagents/sandboxes#san
 
 For a deeper look at sandbox architecture, integration patterns, and security best practices, see [Sandboxes](/oss/python/deepagents/sandboxes).
 
-<Steps>
-  <Step title="Install provider dependency" icon="download">
-    Each built-in provider ships as an optional extra. Install one from within a session with `/install`, or from the shell with `dcode --install`. Third-party providers such as E2B install as packages with the `--package` flag:
+**1. Install provider dependency**
 
-    <Tabs>
-      <Tab title="LangSmith">
-        Included by default when installing `deepagents-code`. No extra installation needed.
-      </Tab>
+Each built-in provider ships as an optional extra. Install one from within a session with `/install`, or from the shell with `dcode --install`. Third-party providers such as E2B install as packages with the `--package` flag:
 
-      <Tab title="AgentCore">
-        <CodeGroup>
-          ```txt In session theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-          /install agentcore
-          ```
+**LangSmith**
 
-          ```bash Shell theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-          dcode --install agentcore
-          ```
-        </CodeGroup>
-      </Tab>
+Included by default when installing `deepagents-code`. No extra installation needed.
 
-      <Tab title="Daytona">
-        <CodeGroup>
-          ```txt In session theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-          /install daytona
-          ```
+**AgentCore**
 
-          ```bash Shell theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-          dcode --install daytona
-          ```
-        </CodeGroup>
-      </Tab>
+```txt In session theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+/install agentcore
+```
 
-      <Tab title="Modal">
-        <CodeGroup>
-          ```txt In session theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-          /install modal
-          ```
+```bash Shell theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+dcode --install agentcore
+```
 
-          ```bash Shell theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-          dcode --install modal
-          ```
-        </CodeGroup>
-      </Tab>
+**Daytona**
 
-      <Tab title="Runloop">
-        <CodeGroup>
-          ```txt In session theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-          /install runloop
-          ```
+```txt In session theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+/install daytona
+```
 
-          ```bash Shell theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-          dcode --install runloop
-          ```
-        </CodeGroup>
-      </Tab>
+```bash Shell theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+dcode --install daytona
+```
 
-      <Tab title="Vercel">
-        <CodeGroup>
-          ```txt In session theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-          /install vercel
-          ```
+**Modal**
 
-          ```bash Shell theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-          dcode --install vercel
-          ```
-        </CodeGroup>
-      </Tab>
+```txt In session theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+/install modal
+```
 
-      <Tab title="E2B">
-        E2B is a [third-party provider](#third-party-providers) published by the `langchain-e2b` package. Install it as a package, not a `deepagents-code` extra:
+```bash Shell theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+dcode --install modal
+```
 
-        <CodeGroup>
-          ```txt In session theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-          /install langchain-e2b --package
-          ```
+**Runloop**
 
-          ```bash Shell theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-          dcode --install langchain-e2b --package
-          ```
-        </CodeGroup>
-      </Tab>
-    </Tabs>
+```txt In session theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+/install runloop
+```
 
-    To install support for every built-in provider at once, use the `all-sandboxes` extra: `/install all-sandboxes` in a session, or `dcode --install all-sandboxes` from the shell. The `all-sandboxes` extra does not include third-party providers such as E2B.
-  </Step>
+```bash Shell theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+dcode --install runloop
+```
 
-  <Step title="Set provider credentials" icon="key">
-    <Tabs>
-      <Tab title="LangSmith">
-        ```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-        export LANGSMITH_API_KEY="your-key"
-        ```
-      </Tab>
+**Vercel**
 
-      <Tab title="AgentCore">
-        ```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-        export AWS_ACCESS_KEY_ID="your-key"
-        export AWS_SECRET_ACCESS_KEY="your-secret"
-        export AWS_REGION="us-west-2"
+```txt In session theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+/install vercel
+```
 
-        # Only when using temporary/STS credentials:
-        export AWS_SESSION_TOKEN="session-token"
-        ```
-      </Tab>
+```bash Shell theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+dcode --install vercel
+```
 
-      <Tab title="Daytona">
-        ```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-        export DAYTONA_API_KEY="your-key"
-        ```
-      </Tab>
+**E2B**
 
-      <Tab title="Modal">
-        ```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-        modal setup
-        ```
-      </Tab>
+E2B is a [third-party provider](#third-party-providers) published by the `langchain-e2b` package. Install it as a package, not a `deepagents-code` extra:
 
-      <Tab title="Runloop">
-        ```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-        export RUNLOOP_API_KEY="your-key"
-        ```
-      </Tab>
+```txt In session theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+/install langchain-e2b --package
+```
 
-      <Tab title="Vercel">
-        ```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-        export VERCEL_TOKEN="your-token"
-        export VERCEL_PROJECT_ID="your-project-id"
-        export VERCEL_TEAM_ID="your-team-id"
-        ```
+```bash Shell theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+dcode --install langchain-e2b --package
+```
 
-        When running on Vercel, [OIDC](https://vercel.com/docs/oidc) credentials are used automatically instead.
-      </Tab>
+To install support for every built-in provider at once, use the `all-sandboxes` extra: `/install all-sandboxes` in a session, or `dcode --install all-sandboxes` from the shell. The `all-sandboxes` extra does not include third-party providers such as E2B.
 
-      <Tab title="E2B">
-        ```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-        export E2B_API_KEY="your-key"
-        ```
-      </Tab>
-    </Tabs>
-  </Step>
+**2. Set provider credentials**
 
-  <Step title="Run Deep Agents Code with a sandbox" icon="player-play">
-    <Tabs>
-      <Tab title="LangSmith">
-        ```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-        dcode --sandbox langsmith
-        ```
-      </Tab>
+**LangSmith**
 
-      <Tab title="AgentCore">
-        ```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-        dcode --sandbox agentcore
-        ```
-      </Tab>
+```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+export LANGSMITH_API_KEY="your-key"
+```
 
-      <Tab title="Daytona">
-        ```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-        dcode --sandbox daytona
-        ```
-      </Tab>
+**AgentCore**
 
-      <Tab title="Modal">
-        ```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-        dcode --sandbox modal
-        ```
-      </Tab>
+```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+export AWS_ACCESS_KEY_ID="your-key"
+export AWS_SECRET_ACCESS_KEY="your-secret"
+export AWS_REGION="us-west-2"
 
-      <Tab title="Runloop">
-        ```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-        dcode --sandbox runloop
-        ```
-      </Tab>
+# Only when using temporary/STS credentials:
+export AWS_SESSION_TOKEN="session-token"
+```
 
-      <Tab title="Vercel">
-        ```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-        dcode --sandbox vercel
-        ```
-      </Tab>
+**Daytona**
 
-      <Tab title="E2B">
-        ```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-        dcode --sandbox e2b
-        ```
-      </Tab>
-    </Tabs>
-  </Step>
-</Steps>
+```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+export DAYTONA_API_KEY="your-key"
+```
+
+**Modal**
+
+```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+modal setup
+```
+
+**Runloop**
+
+```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+export RUNLOOP_API_KEY="your-key"
+```
+
+**Vercel**
+
+```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+export VERCEL_TOKEN="your-token"
+export VERCEL_PROJECT_ID="your-project-id"
+export VERCEL_TEAM_ID="your-team-id"
+```
+
+When running on Vercel, [OIDC](https://vercel.com/docs/oidc) credentials are used automatically instead.
+
+**E2B**
+
+```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+export E2B_API_KEY="your-key"
+```
+
+**3. Run Deep Agents Code with a sandbox**
+
+**LangSmith**
+
+```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+dcode --sandbox langsmith
+```
+
+**AgentCore**
+
+```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+dcode --sandbox agentcore
+```
+
+**Daytona**
+
+```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+dcode --sandbox daytona
+```
+
+**Modal**
+
+```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+dcode --sandbox modal
+```
+
+**Runloop**
+
+```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+dcode --sandbox runloop
+```
+
+**Vercel**
+
+```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+dcode --sandbox vercel
+```
+
+**E2B**
+
+```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+dcode --sandbox e2b
+```
 
 ## Sandbox flags and examples
 
@@ -237,9 +217,9 @@ dcode --sandbox modal --sandbox-setup ./setup.sh
 dcode --sandbox
 ```
 
-<Note>
-  Because `--sandbox` accepts an optional value, keep the bare form **last** on the command line. Otherwise a following argument (e.g. `dcode --sandbox agents`) is consumed as the flag's value. Pass an explicit provider name to avoid ambiguity.
-</Note>
+> [!NOTE]
+>
+> Because `--sandbox` accepts an optional value, keep the bare form **last** on the command line. Otherwise a following argument (e.g. `dcode --sandbox agents`) is consumed as the flag's value. Pass an explicit provider name to avoid ambiguity.
 
 ## Pluggable providers
 
@@ -270,46 +250,46 @@ dcode --sandbox e2b
 
 If you pass a `--sandbox` name that is not installed or declared, Deep Agents Code lists the available providers and explains how to install or configure the missing one.
 
-<Accordion title="Publishing a sandbox provider" icon="package">
-  To distribute a provider so users can run `dcode --sandbox <name>` after installing your package, implement a `SandboxProvider` subclass and register it under the `deepagents_code.sandbox_providers` entry-point group.
-
-  Override the `metadata` property so Deep Agents Code can surface your working directory and capability flags without instantiating the provider:
-
-  ```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  from deepagents_code.integrations.sandbox_provider import (
-      SandboxInstallHint,
-      SandboxProvider,
-      SandboxProviderMetadata,
-  )
-
-
-  class AcmeProvider(SandboxProvider):
-      @property
-      def metadata(self) -> SandboxProviderMetadata:
-          return SandboxProviderMetadata(
-              name="acme",
-              working_dir="/workspace",
-              install=SandboxInstallHint(kind="package", name="acme-dcode-sandbox"),
-              supports_sandbox_id=True,
-              supports_snapshot_name=False,
-          )
-
-      def get_or_create(self, *, sandbox_id=None, **kwargs):
-          ...  # return a SandboxBackendProtocol
-
-      def delete(self, *, sandbox_id, **kwargs):
-          ...
-  ```
-
-  Implement `get_or_create` and `delete`; async callers are handled by the base class. Then register the entry point in your package's `pyproject.toml`:
-
-  ```toml theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  [project.entry-points."deepagents_code.sandbox_providers"]
-  acme = "acme_sandbox.provider:AcmeProvider"
-  ```
-
-  If you omit the `metadata` property, a generic default (`/workspace`, no snapshot support) is used.
-</Accordion>
+> **Publishing a sandbox provider**
+>
+> To distribute a provider so users can run `dcode --sandbox <name>` after installing your package, implement a `SandboxProvider` subclass and register it under the `deepagents_code.sandbox_providers` entry-point group.
+>
+> Override the `metadata` property so Deep Agents Code can surface your working directory and capability flags without instantiating the provider:
+>
+> ```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> from deepagents_code.integrations.sandbox_provider import (
+>     SandboxInstallHint,
+>     SandboxProvider,
+>     SandboxProviderMetadata,
+> )
+>
+>
+> class AcmeProvider(SandboxProvider):
+>     @property
+>     def metadata(self) -> SandboxProviderMetadata:
+>         return SandboxProviderMetadata(
+>             name="acme",
+>             working_dir="/workspace",
+>             install=SandboxInstallHint(kind="package", name="acme-dcode-sandbox"),
+>             supports_sandbox_id=True,
+>             supports_snapshot_name=False,
+>         )
+>
+>     def get_or_create(self, *, sandbox_id=None, **kwargs):
+>         ...  # return a SandboxBackendProtocol
+>
+>     def delete(self, *, sandbox_id, **kwargs):
+>         ...
+> ```
+>
+> Implement `get_or_create` and `delete`; async callers are handled by the base class. Then register the entry point in your package's `pyproject.toml`:
+>
+> ```toml theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> [project.entry-points."deepagents_code.sandbox_providers"]
+> acme = "acme_sandbox.provider:AcmeProvider"
+> ```
+>
+> If you omit the `metadata` property, a generic default (`/workspace`, no snapshot support) is used.
 
 ### Config-declared providers
 
@@ -336,35 +316,35 @@ supports_snapshot_name = false
 region = "us-east-1"
 ```
 
-<ResponseField name="class_path" type="string">
-  Fully-qualified provider class in `module.path:ClassName` format. Deep Agents Code imports and instantiates this class for the provider.
-</ResponseField>
+**class\_path** `string`
 
-<ResponseField name="working_dir" type="string">
-  Default working directory inside the sandbox. Defaults to `/workspace`.
-</ResponseField>
+Fully-qualified provider class in `module.path:ClassName` format. Deep Agents Code imports and instantiates this class for the provider.
 
-<ResponseField name="package" type="string">
-  Package name suggested in error messages when the provider's dependencies are missing.
-</ResponseField>
+**working\_dir** `string`
 
-<ResponseField name="supports_sandbox_id" type="boolean">
-  Whether `--sandbox-id` reattach is allowed for this provider. Defaults to `true`.
-</ResponseField>
+Default working directory inside the sandbox. Defaults to `/workspace`.
 
-<ResponseField name="supports_snapshot_name" type="boolean">
-  Whether `--sandbox-snapshot-name` is allowed for this provider. Defaults to `false`.
-</ResponseField>
+**package** `string`
 
-<ResponseField name="params" type="object">
-  Extra keyword arguments forwarded to the provider's `get_or_create()`.
-</ResponseField>
+Package name suggested in error messages when the provider's dependencies are missing.
+
+**supports\_sandbox\_id** `boolean`
+
+Whether `--sandbox-id` reattach is allowed for this provider. Defaults to `true`.
+
+**supports\_snapshot\_name** `boolean`
+
+Whether `--sandbox-snapshot-name` is allowed for this provider. Defaults to `false`.
+
+**params** `object`
+
+Extra keyword arguments forwarded to the provider's `get_or_create()`.
 
 A config entry that reuses a built-in provider's name **overrides** that built-in while keeping its dependency pre-flight check. Malformed entries are skipped with a warning rather than crashing startup.
 
-<Warning>
-  Setting `class_path` causes Deep Agents Code to import and run arbitrary Python from the named module—module-level code executes on import. This is the same trust model as the model [`class_path`](/oss/deepagents/code/config-file#arbitrary-providers): you control your own machine and your own config file.
-</Warning>
+> [!WARNING]
+>
+> Setting `class_path` causes Deep Agents Code to import and run arbitrary Python from the named module—module-level code executes on import. This is the same trust model as the model [`class_path`](/oss/deepagents/code/config-file#arbitrary-providers): you control your own machine and your own config file.
 
 ## Setup scripts
 
@@ -389,18 +369,12 @@ source ~/.bashrc
 
 Deep Agents Code expands `${VAR}` references in setup scripts using your local environment variables. Store secrets in a local `.env` file for the setup script to access.
 
-<Warning>
-  Sandboxes isolate code execution, but agents remain vulnerable to prompt injection with untrusted inputs. Use human-in-the-loop approval, short-lived secrets, and trusted setup scripts only. See [Security considerations](/oss/python/deepagents/sandboxes#security-considerations) for details.
-</Warning>
+> [!WARNING]
+>
+> Sandboxes isolate code execution, but agents remain vulnerable to prompt injection with untrusted inputs. Use human-in-the-loop approval, short-lived secrets, and trusted setup scripts only. See [Security considerations](/oss/python/deepagents/sandboxes#security-considerations) for details.
 
 ***
 
-<div>
-  <Callout icon="terminal-2">
-    [Connect these docs](/use-these-docs) to your agent of choice via MCP for real-time answers.
-  </Callout>
+[Connect these docs](/use-these-docs) to your agent of choice via MCP for real-time answers.
 
-  <Callout icon="edit">
-    [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/oss/deepagents/code/remote-sandboxes.mdx) or [file an issue](https://github.com/langchain-ai/docs/issues/new/choose).
-  </Callout>
-</div>
+[Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/oss/deepagents/code/remote-sandboxes.mdx) or [file an issue](https://github.com/langchain-ai/docs/issues/new/choose).

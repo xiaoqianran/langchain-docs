@@ -8,32 +8,30 @@ The LangSmith CLI is a command-line tool for querying and managing your LangSmit
 
 ## Install
 
-<CodeGroup>
-  ```bash macOS / Linux (recommended) theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  curl -fsSL https://cli.langsmith.com/install.sh | sh
-  ```
+```bash macOS / Linux (recommended) theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+curl -fsSL https://cli.langsmith.com/install.sh | sh
+```
 
-  ```powershell Windows theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  irm https://cli.langsmith.com/install.ps1 | iex
-  ```
+```powershell Windows theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+irm https://cli.langsmith.com/install.ps1 | iex
+```
 
-  ```bash Homebrew theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  brew install langchain-ai/tap/langsmith-cli
-  ```
+```bash Homebrew theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+brew install langchain-ai/tap/langsmith-cli
+```
 
-  ```powershell Scoop theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  scoop install langsmith-cli
-  ```
+```powershell Scoop theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+scoop install langsmith-cli
+```
 
-  ```bash GitHub Releases theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  # Download the latest binary for your platform:
-  # https://github.com/langchain-ai/langsmith-cli/releases
-  ```
+```bash GitHub Releases theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+# Download the latest binary for your platform:
+# https://github.com/langchain-ai/langsmith-cli/releases
+```
 
-  ```bash Go install theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  go install github.com/langchain-ai/langsmith-cli/cmd/langsmith@latest
-  ```
-</CodeGroup>
+```bash Go install theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+go install github.com/langchain-ai/langsmith-cli/cmd/langsmith@latest
+```
 
 To upgrade at any time:
 
@@ -43,9 +41,9 @@ langsmith self-update
 
 Use the `--dry-run` flag to preview the update without installing.
 
-<Note>
-  Querying a [SmithDB](/langsmith/smithdb-sdk-migration)-backed deployment requires LangSmith CLI `v0.2.44` or later.
-</Note>
+> [!NOTE]
+>
+> Querying a [SmithDB](/langsmith/smithdb-sdk-migration)-backed deployment requires LangSmith CLI `v0.2.44` or later.
 
 ## Authenticate
 
@@ -53,9 +51,9 @@ Use the `--dry-run` flag to preview the update without installing.
 
 The recommended local setup is to authenticate with OAuth:
 
-<Note>
-  `langsmith auth login` also works against self-hosted instances from LangSmith CLI `v0.2.46` and newer, provided the deployment is on LangSmith `0.16` or later with the OAuth authorization server enabled (requires a signing JWKS to be configured). See [Self-hosted instances](#self-hosted-instances). On earlier deployments, or without a signing JWKS, authenticate with an API key or create an API-key profile.
-</Note>
+> [!NOTE]
+>
+> `langsmith auth login` also works against self-hosted instances from LangSmith CLI `v0.2.46` and newer, provided the deployment is on LangSmith `0.16` or later with the OAuth authorization server enabled (requires a signing JWKS to be configured). See [Self-hosted instances](#self-hosted-instances). On earlier deployments, or without a signing JWKS, authenticate with an API key or create an API-key profile.
 
 ```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 langsmith auth login
@@ -115,47 +113,45 @@ langsmith --api-key lsv2_... trace list --project my-app
 
 Point the CLI at your instance with `--api-url`, or with `LANGSMITH_ENDPOINT`. Both the browser-based login and API keys are supported.
 
-<Tabs>
-  <Tab title="OAuth">
-    Requires LangSmith CLI `v0.2.46` or later and a deployment on LangSmith `0.16` or later, with the OAuth authorization server enabled. The chart exposes the OAuth authorization server under `/api`, but those endpoints stay inert until you [configure a signing JWKS](/langsmith/kubernetes#configure-a-signing-jwks).
+**OAuth**
 
-    The OAuth authorization server is enabled automatically when `config.hostname` is set in your Helm chart **and** a signing JWKS is configured (via `config.signingJwks`, or the key `langsmith_signing_jwks` in `config.existingSecretName`). Without the signing JWKS, the OAuth endpoints are inactive and the CLI will receive a `404` — use the API key tab instead.
+Requires LangSmith CLI `v0.2.46` or later and a deployment on LangSmith `0.16` or later, with the OAuth authorization server enabled. The chart exposes the OAuth authorization server under `/api`, but those endpoints stay inert until you [configure a signing JWKS](/langsmith/kubernetes#configure-a-signing-jwks).
 
-    ```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-    langsmith auth login --api-url https://langsmith.example.com --profile self-hosted
-    ```
+The OAuth authorization server is enabled automatically when `config.hostname` is set in your Helm chart **and** a signing JWKS is configured (via `config.signingJwks`, or the key `langsmith_signing_jwks` in `config.existingSecretName`). Without the signing JWKS, the OAuth endpoints are inactive and the CLI will receive a `404` — use the API key tab instead.
 
-    Pass your instance's base URL. The CLI reads the deployment's authorization server metadata to find the OAuth endpoints, so `https://langsmith.example.com` and `https://langsmith.example.com/api` both work.
+```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+langsmith auth login --api-url https://langsmith.example.com --profile self-hosted
+```
 
-    Tokens are stored under the named profile, so later commands only need `--profile`:
+Pass your instance's base URL. The CLI reads the deployment's authorization server metadata to find the OAuth endpoints, so `https://langsmith.example.com` and `https://langsmith.example.com/api` both work.
 
-    ```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-    langsmith --profile self-hosted project list
-    ```
-  </Tab>
+Tokens are stored under the named profile, so later commands only need `--profile`:
 
-  <Tab title="API key">
-    Works on every LangSmith version.
+```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+langsmith --profile self-hosted project list
+```
 
-    ```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-    export LANGSMITH_ENDPOINT="https://langsmith.example.com"
-    export LANGSMITH_API_KEY="lsv2_..."
+**API key**
 
-    langsmith project list
-    ```
+Works on every LangSmith version.
 
-    To save the endpoint and key as a reusable profile instead:
+```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+export LANGSMITH_ENDPOINT="https://langsmith.example.com"
+export LANGSMITH_API_KEY="lsv2_..."
 
-    ```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-    LANGSMITH_API_KEY="lsv2_..." langsmith profile create self-hosted \
-      --api-url https://langsmith.example.com --set-current
-    ```
-  </Tab>
-</Tabs>
+langsmith project list
+```
 
-<Warning>
-  `LANGSMITH_ENDPOINT` takes precedence over a profile's `api_url`. If it is set in your shell, every profile you select resolves to that endpoint — a common cause of commands unexpectedly reaching LangSmith Cloud while a self-hosted profile is active. Unset it when working with profiles, or pass `--api-url` explicitly.
-</Warning>
+To save the endpoint and key as a reusable profile instead:
+
+```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+LANGSMITH_API_KEY="lsv2_..." langsmith profile create self-hosted \
+  --api-url https://langsmith.example.com --set-current
+```
+
+> [!WARNING]
+>
+> `LANGSMITH_ENDPOINT` takes precedence over a profile's `api_url`. If it is set in your shell, every profile you select resolves to that endpoint — a common cause of commands unexpectedly reaching LangSmith Cloud while a self-hosted profile is active. Unset it when working with profiles, or pass `--api-url` explicitly.
 
 ## Quickstart
 
@@ -319,9 +315,9 @@ langsmith experiment get my-experiment-2024-01-15
 
 `insights` commands create, run, and read [Insights](/langsmith/insights) reports, which group a project's traces into categories to surface usage patterns and failure modes. Every `insights` command needs `--project`, `--project-id`, or the `LANGSMITH_PROJECT` environment variable.
 
-<Note>
-  `insights create`, `insights run`, and `insights config` require LangSmith CLI v0.2.60 or later.
-</Note>
+> [!NOTE]
+>
+> `insights create`, `insights run`, and `insights config` require LangSmith CLI v0.2.60 or later.
 
 To create a report, define it in a JSON file:
 
@@ -466,12 +462,6 @@ Most `trace` and `run` commands share these filters:
 
 ***
 
-<div>
-  <Callout icon="terminal-2">
-    [Connect these docs](/use-these-docs) to your agent of choice via MCP for real-time answers.
-  </Callout>
+[Connect these docs](/use-these-docs) to your agent of choice via MCP for real-time answers.
 
-  <Callout icon="edit">
-    [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/langsmith-cli.mdx) or [file an issue](https://github.com/langchain-ai/docs/issues/new/choose).
-  </Callout>
-</div>
+[Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/langsmith-cli.mdx) or [file an issue](https://github.com/langchain-ai/docs/issues/new/choose).

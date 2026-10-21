@@ -24,9 +24,9 @@ To simplify setup of transformations for our end users, LangSmith offers a pre-d
 * Extract messages from your collected runs and transform them into the OpenAI standard format, which makes them compatible all LangChain ChatModels and most model providers' SDK for downstream evaluation and experimentation
 * Extract any tools used by your LLM and add them to your example's input to be used for reproducibility in downstream evaluation
 
-<Check>
-  Users who want to iterate on their system prompts often also add the Remove System Messages transformation on their input messages when using our Chat Model schema, which will prevent you from saving the system prompt to your dataset.
-</Check>
+> [!TIP]
+>
+> Users who want to iterate on their system prompts often also add the Remove System Messages transformation on their input messages when using our Chat Model schema, which will prevent you from saving the system prompt to your dataset.
 
 ### Compatibility
 
@@ -114,12 +114,6 @@ And the transformations look as follows:
 
 ***
 
-<div>
-  <Callout icon="terminal-2">
-    [Connect these docs](/use-these-docs) to your agent of choice via MCP for real-time answers.
-  </Callout>
+[Connect these docs](/use-these-docs) to your agent of choice via MCP for real-time answers.
 
-  <Callout icon="edit">
-    [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/dataset-transformations.mdx) or [file an issue](https://github.com/langchain-ai/docs/issues/new/choose).
-  </Callout>
-</div>
+[Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/dataset-transformations.mdx) or [file an issue](https://github.com/langchain-ai/docs/issues/new/choose).

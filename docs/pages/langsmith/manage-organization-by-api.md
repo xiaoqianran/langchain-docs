@@ -4,29 +4,29 @@
 
 LangSmith's API supports programmatic access via API key to all of the actions available in the UI, with only a few exceptions that are noted in [User-only endpoints](#user-only-endpoints).
 
-<Tip>
-  Prefer infrastructure-as-code? Use the [LangSmith Terraform provider](/langsmith/manage-with-terraform) to manage workspaces, roles, members, evaluators, and alerts declaratively.
-</Tip>
+> [!TIP]
+>
+> Prefer infrastructure-as-code? Use the [LangSmith Terraform provider](/langsmith/manage-with-terraform) to manage workspaces, roles, members, evaluators, and alerts declaratively.
 
-<Check>
-  Before diving into this content, it might be helpful to read the following:
+> [!TIP]
+>
+> Before diving into this content, it might be helpful to read the following:
+>
+> * [Conceptual guide on organizations and workspaces](/langsmith/administration-overview)
+> * [Organization setup how-to guild](/langsmith/set-up-hierarchy#set-up-an-organization)
 
-  * [Conceptual guide on organizations and workspaces](/langsmith/administration-overview)
-  * [Organization setup how-to guild](/langsmith/set-up-hierarchy#set-up-an-organization)
-</Check>
+> [!NOTE]
+>
+> There are a few limitations that will be lifted soon:
+>
+> * The LangSmith SDKs do not support these organization management actions yet.
+> * Organization-scoped [service keys](/langsmith/administration-overview#service-keys) with Organization Admin permission may be used for these actions.
 
-<Note>
-  There are a few limitations that will be lifted soon:
-
-  * The LangSmith SDKs do not support these organization management actions yet.
-  * Organization-scoped [service keys](/langsmith/administration-overview#service-keys) with Organization Admin permission may be used for these actions.
-</Note>
-
-<Warning>
-  Use the `X-Tenant-Id` header to specify which workspace to target. If the header is not present, operations will default to the workspace the key was initially created in if it is not organization-scoped.
-
-  **If `X-Tenant-Id` is not specified when accessing workspace-scoped resources with an organization-scoped service key, the request will fail with `403 Forbidden`.**
-</Warning>
+> [!WARNING]
+>
+> Use the `X-Tenant-Id` header to specify which workspace to target. If the header is not present, operations will default to the workspace the key was initially created in if it is not organization-scoped.
+>
+> **If `X-Tenant-Id` is not specified when accessing workspace-scoped resources with an organization-scoped service key, the request will fail with `403 Forbidden`.**
 
 Some commonly-used endpoints and use cases are listed below. For a complete list of available endpoints, see the [API docs](/langsmith/smith-api-ref). **The `X-Organization-Id` header should be present on all requests, and `X-Tenant-Id` header should be present on requests that are scoped to a particular workspace.**
 
@@ -64,9 +64,9 @@ Workspace level:
 * [Update a user's workspace role](/langsmith/smith-api/workspaces/add-member-to-current-workspace)
 * [Remove someone from a workspace](/langsmith/smith-api/workspaces/delete-current-workspace-member)
 
-<Note>
-  These params should be omitted: `read_only` (deprecated), `password` and `full_name` ([basic auth](/langsmith/authentication-methods) only)
-</Note>
+> [!NOTE]
+>
+> These params should be omitted: `read_only` (deprecated), `password` and `full_name` ([basic auth](/langsmith/authentication-methods) only)
 
 ## API keys
 
@@ -78,17 +78,17 @@ For tracing-only credentials, refer to [Create, list, and delete tracing keys](/
 
 ## Security settings
 
-<Note>
-  Organization Admin permissions are required to make these changes.
-</Note>
+> [!NOTE]
+>
+> Organization Admin permissions are required to make these changes.
 
-<Note>
-  "Shared resources" in this context refer to [public prompts](/langsmith/create-a-prompt#save-your-prompt), [shared runs](/langsmith/manage-trace#share-a-trace), and [shared datasets](/langsmith/manage-datasets#share-a-dataset).
-</Note>
+> [!NOTE]
+>
+> "Shared resources" in this context refer to [public prompts](/langsmith/create-a-prompt#save-your-prompt), [shared runs](/langsmith/manage-trace#share-a-trace), and [shared datasets](/langsmith/manage-datasets#share-a-dataset).
 
-<Warning>
-  Updating these settings affects **all resources in the organization**.
-</Warning>
+> [!WARNING]
+>
+> Updating these settings affects **all resources in the organization**.
 
 You can update these settings under the **Settings > Shared** tab for a workspace, or via API:
 
@@ -225,12 +225,6 @@ if __name__ == "__main__":
 
 ***
 
-<div>
-  <Callout icon="terminal-2">
-    [Connect these docs](/use-these-docs) to your agent of choice via MCP for real-time answers.
-  </Callout>
+[Connect these docs](/use-these-docs) to your agent of choice via MCP for real-time answers.
 
-  <Callout icon="edit">
-    [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/manage-organization-by-api.mdx) or [file an issue](https://github.com/langchain-ai/docs/issues/new/choose).
-  </Callout>
-</div>
+[Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/manage-organization-by-api.mdx) or [file an issue](https://github.com/langchain-ai/docs/issues/new/choose).

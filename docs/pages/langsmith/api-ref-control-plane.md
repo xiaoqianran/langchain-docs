@@ -21,24 +21,44 @@ The control plane hosts for Cloud data regions:
   <thead>
     <tr>
       <th>Region</th>
+
+      <th>
+        URL
+      </th>
     </tr>
   </thead>
 
   <tbody>
     <tr>
       <td>GCP US</td>
+
+      <td>
+        `https://api.host.langchain.com`
+      </td>
     </tr>
 
     <tr>
       <td>GCP EU</td>
+
+      <td>
+        `https://eu.api.host.langchain.com`
+      </td>
     </tr>
 
     <tr>
       <td>GCP APAC</td>
+
+      <td>
+        `https://apac.api.host.langchain.com`
+      </td>
     </tr>
 
     <tr>
       <td>AWS US</td>
+
+      <td>
+        `https://aws.api.host.langchain.com`
+      </td>
     </tr>
   </tbody>
 </table>
@@ -297,12 +317,6 @@ if __name__ == "__main__":
 
 ***
 
-<div>
-  <Callout icon="terminal-2">
-    [Connect these docs](/use-these-docs) to your agent of choice via MCP for real-time answers.
-  </Callout>
+[Connect these docs](/use-these-docs) to your agent of choice via MCP for real-time answers.
 
-  <Callout icon="edit">
-    [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/api-ref-control-plane.mdx) or [file an issue](https://github.com/langchain-ai/docs/issues/new/choose).
-  </Callout>
-</div>
+[Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/api-ref-control-plane.mdx) or [file an issue](https://github.com/langchain-ai/docs/issues/new/choose).

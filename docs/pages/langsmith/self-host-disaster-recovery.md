@@ -4,13 +4,13 @@
 
 This page describes how to plan, configure, and operate disaster recovery (DR) for self-hosted LangSmith Observability and Evaluation. It covers what data must be protected, where it lives, how to back it up, and how to recover the platform after a regional or zonal failure.
 
-<Note>
-  **Shared responsibility.** For self-hosted deployments you are responsible for backups, replication, restore testing, and recovery procedures for every component, including LangSmith pods and all backing data stores. LangChain is responsible only for the LangSmith software itself. For the equivalent SaaS responsibilities, see the [Shared responsibility model](/langsmith/shared-responsibility-model).
-</Note>
+> [!NOTE]
+>
+> **Shared responsibility.** For self-hosted deployments you are responsible for backups, replication, restore testing, and recovery procedures for every component, including LangSmith pods and all backing data stores. LangChain is responsible only for the LangSmith software itself. For the equivalent SaaS responsibilities, see the [Shared responsibility model](/langsmith/shared-responsibility-model).
 
-<Tip>
-  For details on the architectural primitives (stateless services, queue heartbeats, exactly-once semantics) that this page assumes, refer to [Scalability and resilience](/langsmith/scalability-and-resilience).
-</Tip>
+> [!TIP]
+>
+> For details on the architectural primitives (stateless services, queue heartbeats, exactly-once semantics) that this page assumes, refer to [Scalability and resilience](/langsmith/scalability-and-resilience).
 
 ## What you are recovering
 
@@ -25,13 +25,13 @@ Self-hosted LangSmith is composed of stateless services backed by four state sto
 | Redis (or Valkey) | Ephemeral queue state, pub/sub, cache, run heartbeats | Ephemeral | Reprovision; no restore required |
 | Kubernetes objects | Helm values, `Secret`s, TLS material, IRSA / Workload Identity bindings | Configuration | Re-apply from source control or back up cluster state |
 
-<Warning>
-  All durable data stores must be protected together. Postgres, ClickHouse, and blob storage are the three stores that hold durable data; Redis is ephemeral and does not need to be backed up. Restoring Postgres without ClickHouse and blob storage (or vice versa) produces an inconsistent installation. References from Postgres to runs in ClickHouse and to objects in blob storage break across the divergence point. Always take coordinated backups, or use point-in-time recovery (PITR) targets that are close together across stores.
-</Warning>
+> [!WARNING]
+>
+> All durable data stores must be protected together. Postgres, ClickHouse, and blob storage are the three stores that hold durable data; Redis is ephemeral and does not need to be backed up. Restoring Postgres without ClickHouse and blob storage (or vice versa) produces an inconsistent installation. References from Postgres to runs in ClickHouse and to objects in blob storage break across the divergence point. Always take coordinated backups, or use point-in-time recovery (PITR) targets that are close together across stores.
 
-<Warning>
-  The Redis guidance above applies to the platform's caches and queues, not the JuiceFS metadata store used by Sandboxes. JuiceFS Redis holds durable filesystem metadata and requires persistence and backups alongside object storage. See [Protect sandbox storage](/langsmith/self-host-sandbox-operations#protect-sandbox-storage).
-</Warning>
+> [!WARNING]
+>
+> The Redis guidance above applies to the platform's caches and queues, not the JuiceFS metadata store used by Sandboxes. JuiceFS Redis holds durable filesystem metadata and requires persistence and backups alongside object storage. See [Protect sandbox storage](/langsmith/self-host-sandbox-operations#protect-sandbox-storage).
 
 ## Plan your RPO and RTO
 
@@ -56,34 +56,32 @@ LangSmith uses PostgreSQL as the primary store for operational and transactional
 
 We strongly recommend running Postgres on a managed service in production. Managed services provide built-in automated backups, PITR, and HA failover. For setup, refer to [Connect external Postgres](/langsmith/self-host-external-postgres).
 
-<Tabs>
-  <Tab title="AWS">
-    Run [Amazon RDS for PostgreSQL](https://docs.aws.amazon.com/AmazonRDS/latest/UserGuide/CHAP_GettingStarted.CreatingConnecting.PostgreSQL.html) or [Aurora PostgreSQL](https://docs.aws.amazon.com/AmazonRDS/latest/AuroraUserGuide/Aurora.Overview.html) in Multi-AZ mode.
+**AWS**
 
-    * **Backups:** Enable [automated backups](https://docs.aws.amazon.com/AmazonRDS/latest/UserGuide/USER_WorkingWithAutomatedBackups.html) with a retention window that matches your compliance posture (7 to 35 days is typical).
-    * **PITR:** Automated backups include PITR within the retention window.
-    * **HA:** Multi-AZ deployments maintain a synchronous standby in a second availability zone with automatic failover.
-    * **Cross-region DR:** For Aurora, configure an [Aurora Global Database](https://docs.aws.amazon.com/AmazonRDS/latest/AuroraUserGuide/aurora-global-database.html). For RDS, use [cross-region read replicas](https://docs.aws.amazon.com/AmazonRDS/latest/UserGuide/USER_ReadRepl.XRgn.html) or copy automated snapshots to a secondary region.
-    * **Encryption:** Enable storage encryption with a customer-managed [KMS](https://aws.amazon.com/kms/) key.
-  </Tab>
+Run [Amazon RDS for PostgreSQL](https://docs.aws.amazon.com/AmazonRDS/latest/UserGuide/CHAP_GettingStarted.CreatingConnecting.PostgreSQL.html) or [Aurora PostgreSQL](https://docs.aws.amazon.com/AmazonRDS/latest/AuroraUserGuide/Aurora.Overview.html) in Multi-AZ mode.
 
-  <Tab title="GCP">
-    Run [Cloud SQL for PostgreSQL](https://cloud.google.com/sql/docs/postgres) with [high availability](https://cloud.google.com/sql/docs/postgres/high-availability) enabled.
+* **Backups:** Enable [automated backups](https://docs.aws.amazon.com/AmazonRDS/latest/UserGuide/USER_WorkingWithAutomatedBackups.html) with a retention window that matches your compliance posture (7 to 35 days is typical).
+* **PITR:** Automated backups include PITR within the retention window.
+* **HA:** Multi-AZ deployments maintain a synchronous standby in a second availability zone with automatic failover.
+* **Cross-region DR:** For Aurora, configure an [Aurora Global Database](https://docs.aws.amazon.com/AmazonRDS/latest/AuroraUserGuide/aurora-global-database.html). For RDS, use [cross-region read replicas](https://docs.aws.amazon.com/AmazonRDS/latest/UserGuide/USER_ReadRepl.XRgn.html) or copy automated snapshots to a secondary region.
+* **Encryption:** Enable storage encryption with a customer-managed [KMS](https://aws.amazon.com/kms/) key.
 
-    * **Backups:** Enable [automated backups](https://cloud.google.com/sql/docs/postgres/backup-recovery/backups) with PITR.
-    * **HA:** Regional instances replicate synchronously to a standby in a second zone.
-    * **Cross-region DR:** Configure [cross-region read replicas](https://cloud.google.com/sql/docs/postgres/replication/cross-region-replicas) and promote them on regional failure.
-    * **Encryption:** Use [Cloud KMS customer-managed encryption keys](https://docs.cloud.google.com/sql/docs/postgres/cmek).
-  </Tab>
+**GCP**
 
-  <Tab title="Azure">
-    Run [Azure Database for PostgreSQL Flexible Server](https://learn.microsoft.com/en-us/azure/postgresql/flexible-server/overview) with zone-redundant HA.
+Run [Cloud SQL for PostgreSQL](https://cloud.google.com/sql/docs/postgres) with [high availability](https://cloud.google.com/sql/docs/postgres/high-availability) enabled.
 
-    * **Backups:** Enable [automatic backups](https://learn.microsoft.com/en-us/azure/postgresql/flexible-server/concepts-backup-restore) with geo-redundant backup storage.
-    * **HA:** Zone-redundant HA maintains a synchronous standby in a different availability zone.
-    * **Cross-region DR:** Use [read replicas](https://learn.microsoft.com/en-us/azure/postgresql/flexible-server/concepts-read-replicas) in a secondary region for promotion on regional failure.
-  </Tab>
-</Tabs>
+* **Backups:** Enable [automated backups](https://cloud.google.com/sql/docs/postgres/backup-recovery/backups) with PITR.
+* **HA:** Regional instances replicate synchronously to a standby in a second zone.
+* **Cross-region DR:** Configure [cross-region read replicas](https://cloud.google.com/sql/docs/postgres/replication/cross-region-replicas) and promote them on regional failure.
+* **Encryption:** Use [Cloud KMS customer-managed encryption keys](https://docs.cloud.google.com/sql/docs/postgres/cmek).
+
+**Azure**
+
+Run [Azure Database for PostgreSQL Flexible Server](https://learn.microsoft.com/en-us/azure/postgresql/flexible-server/overview) with zone-redundant HA.
+
+* **Backups:** Enable [automatic backups](https://learn.microsoft.com/en-us/azure/postgresql/flexible-server/concepts-backup-restore) with geo-redundant backup storage.
+* **HA:** Zone-redundant HA maintains a synchronous standby in a different availability zone.
+* **Cross-region DR:** Use [read replicas](https://learn.microsoft.com/en-us/azure/postgresql/flexible-server/concepts-read-replicas) in a secondary region for promotion on regional failure.
 
 ### In-cluster Postgres
 
@@ -112,40 +110,38 @@ If you self-manage ClickHouse for compliance or air-gap reasons, use a replicate
 
 For an example replicated configuration, see the [replicated ClickHouse example](https://github.com/langchain-ai/helm/blob/main/charts/langsmith/examples/replicated-clickhouse/README.md) in the Helm repo.
 
-<Warning>
-  Restoring ClickHouse can take significantly longer than restoring Postgres at the same data volume because trace tables are large. Account for this when setting your RTO. Validate restore time on a representative dataset during DR drills.
-</Warning>
+> [!WARNING]
+>
+> Restoring ClickHouse can take significantly longer than restoring Postgres at the same data volume because trace tables are large. Account for this when setting your RTO. Validate restore time on a representative dataset during DR drills.
 
 ## Blob storage
 
 If you have enabled [blob storage](/langsmith/self-host-blob-storage) (recommended for production), your run inputs, outputs, errors, manifests, extras, events, and attachments live in S3, GCS, or Azure Blob Storage. Cloud blob services are durable by design, but you should still configure protection against accidental deletion and regional outages.
 
-<Tabs>
-  <Tab title="AWS">
-    * Enable [S3 Versioning](https://docs.aws.amazon.com/AmazonS3/latest/userguide/Versioning.html) to protect against accidental deletes and overwrites.
-    * Enable [MFA Delete](https://docs.aws.amazon.com/AmazonS3/latest/userguide/MultiFactorAuthenticationDelete.html) for high-security buckets.
-    * For cross-region DR, configure [Cross-Region Replication (CRR)](https://docs.aws.amazon.com/AmazonS3/latest/userguide/replication.html) to a bucket in your DR region.
-    * Use [S3 Object Lock](https://docs.aws.amazon.com/AmazonS3/latest/userguide/object-lock.html) for write-once-read-many (WORM) retention.
-    * Encrypt with [SSE-KMS](https://docs.aws.amazon.com/AmazonS3/latest/userguide/UsingKMSEncryption.html). LangSmith supports passing a specific KMS key ARN, see [KMS encryption header support](/langsmith/self-host-blob-storage#kms-encryption-header-support).
-  </Tab>
+**AWS**
 
-  <Tab title="GCP">
-    * Enable [Object Versioning](https://cloud.google.com/storage/docs/object-versioning) on the bucket.
-    * Use [dual-region or multi-region buckets](https://cloud.google.com/storage/docs/locations) for geo-redundancy.
-    * For cross-region DR, use [Storage Transfer Service](https://cloud.google.com/storage-transfer-service) or [Object Lifecycle Management](https://cloud.google.com/storage/docs/lifecycle) with replication policies.
-    * Encrypt with [Customer-Managed Encryption Keys (CMEK)](https://cloud.google.com/storage/docs/encryption/customer-managed-keys).
-  </Tab>
+* Enable [S3 Versioning](https://docs.aws.amazon.com/AmazonS3/latest/userguide/Versioning.html) to protect against accidental deletes and overwrites.
+* Enable [MFA Delete](https://docs.aws.amazon.com/AmazonS3/latest/userguide/MultiFactorAuthenticationDelete.html) for high-security buckets.
+* For cross-region DR, configure [Cross-Region Replication (CRR)](https://docs.aws.amazon.com/AmazonS3/latest/userguide/replication.html) to a bucket in your DR region.
+* Use [S3 Object Lock](https://docs.aws.amazon.com/AmazonS3/latest/userguide/object-lock.html) for write-once-read-many (WORM) retention.
+* Encrypt with [SSE-KMS](https://docs.aws.amazon.com/AmazonS3/latest/userguide/UsingKMSEncryption.html). LangSmith supports passing a specific KMS key ARN, see [KMS encryption header support](/langsmith/self-host-blob-storage#kms-encryption-header-support).
 
-  <Tab title="Azure">
-    * Choose a [redundancy tier](https://learn.microsoft.com/en-us/azure/storage/common/storage-redundancy) that matches your DR objectives. Use **RA-GRS** or **RA-GZRS** for cross-region read access during a primary region outage.
-    * Enable [soft delete and blob versioning](https://learn.microsoft.com/en-us/azure/storage/blobs/soft-delete-blob-overview).
-    * Encrypt with a [customer-managed key in Key Vault](https://learn.microsoft.com/en-us/azure/storage/common/customer-managed-keys-overview).
-  </Tab>
-</Tabs>
+**GCP**
 
-<Warning>
-  **Keep TTL lifecycle rules in your DR bucket.** If you copy data to a DR bucket, replicate the lifecycle rules for `ttl_s/`, `ttl_l/`, and any custom `ttl_XXd/` prefixes too. Missing rules in the DR bucket will cause data to be retained indefinitely after failover. See [TTL configuration](/langsmith/self-host-blob-storage#ttl-configuration).
-</Warning>
+* Enable [Object Versioning](https://cloud.google.com/storage/docs/object-versioning) on the bucket.
+* Use [dual-region or multi-region buckets](https://cloud.google.com/storage/docs/locations) for geo-redundancy.
+* For cross-region DR, use [Storage Transfer Service](https://cloud.google.com/storage-transfer-service) or [Object Lifecycle Management](https://cloud.google.com/storage/docs/lifecycle) with replication policies.
+* Encrypt with [Customer-Managed Encryption Keys (CMEK)](https://cloud.google.com/storage/docs/encryption/customer-managed-keys).
+
+**Azure**
+
+* Choose a [redundancy tier](https://learn.microsoft.com/en-us/azure/storage/common/storage-redundancy) that matches your DR objectives. Use **RA-GRS** or **RA-GZRS** for cross-region read access during a primary region outage.
+* Enable [soft delete and blob versioning](https://learn.microsoft.com/en-us/azure/storage/blobs/soft-delete-blob-overview).
+* Encrypt with a [customer-managed key in Key Vault](https://learn.microsoft.com/en-us/azure/storage/common/customer-managed-keys-overview).
+
+> [!WARNING]
+>
+> **Keep TTL lifecycle rules in your DR bucket.** If you copy data to a DR bucket, replicate the lifecycle rules for `ttl_s/`, `ttl_l/`, and any custom `ttl_XXd/` prefixes too. Missing rules in the DR bucket will cause data to be retained indefinitely after failover. See [TTL configuration](/langsmith/self-host-blob-storage#ttl-configuration).
 
 ## Redis
 
@@ -155,9 +151,9 @@ Redis stores ephemeral metadata, queue state, and cross-instance pub/sub. **No d
 * Enable Multi-AZ failover.
 * For cross-region DR, provision a fresh Redis instance in the DR region during failover; do **not** reuse an active region's Redis URI in the new cluster.
 
-<Warning>
-  Each LangSmith installation must use its own dedicated Redis instance. **Do not share a Redis instance across two installations**, including a primary and a DR replica that may both be active at any point. Sharing Redis causes deployment tasks to be routed to the wrong cluster. See [Connect external Redis](/langsmith/self-host-external-redis).
-</Warning>
+> [!WARNING]
+>
+> Each LangSmith installation must use its own dedicated Redis instance. **Do not share a Redis instance across two installations**, including a primary and a DR replica that may both be active at any point. Sharing Redis causes deployment tasks to be routed to the wrong cluster. See [Connect external Redis](/langsmith/self-host-external-redis).
 
 ## Kubernetes configuration and secrets
 
@@ -194,9 +190,9 @@ This protects against a regional outage. It is significantly more expensive but 
 * Redis provisioned fresh in the DR region during failover.
 * DNS managed by [Route 53](https://aws.amazon.com/route53/), [Cloud DNS](https://cloud.google.com/dns), or [Azure DNS](https://azure.microsoft.com/en-us/products/dns/) with health checks and failover policies pointing at the LangSmith frontend ingress in each region.
 
-<Note>
-  LangSmith is a single-write platform. A cross-region deployment should be **active/passive**, not active/active. Writing to both regions concurrently against the same logical installation is not supported and will produce data inconsistency.
-</Note>
+> [!NOTE]
+>
+> LangSmith is a single-write platform. A cross-region deployment should be **active/passive**, not active/active. Writing to both regions concurrently against the same logical installation is not supported and will produce data inconsistency.
 
 ## Recovery procedures
 
@@ -213,69 +209,65 @@ In a single-region Multi-AZ deployment, zonal failures are handled automatically
 
 This is the cross-region failover runbook. Adapt to your specific infrastructure.
 
-<Steps>
-  <Step title="Declare failover">
-    Confirm the primary region is unavailable. Communicate to stakeholders that you are failing over and what the expected RTO is.
-  </Step>
+**1. Declare failover**
 
-  <Step title="Promote data stores">
-    Promote the Postgres cross-region replica to primary in the DR region. For ClickHouse Cloud or LangSmith Managed ClickHouse, initiate the documented region failover. For self-managed ClickHouse, restore the latest backup into the DR cluster (this is typically the longest step).
-  </Step>
+Confirm the primary region is unavailable. Communicate to stakeholders that you are failing over and what the expected RTO is.
 
-  <Step title="Repoint blob storage">
-    Update the LangSmith Helm `config.blobStorage.bucketName` and `apiURL` to point at the DR bucket. Confirm the bucket has the same TTL lifecycle rules. See [Blob storage configuration](/langsmith/self-host-blob-storage#configuration).
-  </Step>
+**2. Promote data stores**
 
-  <Step title="Provision Redis">
-    Create a fresh managed Redis instance in the DR region. Update the LangSmith Helm `redis.external` values to point at it. **Do not import dumps from the primary Redis**; provision empty.
-  </Step>
+Promote the Postgres cross-region replica to primary in the DR region. For ClickHouse Cloud or LangSmith Managed ClickHouse, initiate the documented region failover. For self-managed ClickHouse, restore the latest backup into the DR cluster (this is typically the longest step).
 
-  <Step title="Scale the DR cluster">
-    If running warm/cold, scale the LangSmith deployments to their production replica counts. Apply any pending Helm value updates from source control.
-  </Step>
+**3. Repoint blob storage**
 
-  <Step title="Run smoke tests">
-    Submit a test trace, verify it lands in ClickHouse and (if blob storage is enabled) in the DR bucket. Open the UI and confirm traces, datasets, and projects load. Validate authentication. See [Diagnostics](/langsmith/diagnostics-self-hosted).
-  </Step>
+Update the LangSmith Helm `config.blobStorage.bucketName` and `apiURL` to point at the DR bucket. Confirm the bucket has the same TTL lifecycle rules. See [Blob storage configuration](/langsmith/self-host-blob-storage#configuration).
 
-  <Step title="Cut DNS over">
-    Update DNS to route traffic to the DR ingress. Communicate the cutover to stakeholders.
-  </Step>
+**4. Provision Redis**
 
-  <Step title="Plan failback">
-    Once the primary region is healthy, plan a controlled failback. This is typically scheduled into a maintenance window and involves rebuilding the primary as the new DR replica before swapping again.
-  </Step>
-</Steps>
+Create a fresh managed Redis instance in the DR region. Update the LangSmith Helm `redis.external` values to point at it. **Do not import dumps from the primary Redis**; provision empty.
+
+**5. Scale the DR cluster**
+
+If running warm/cold, scale the LangSmith deployments to their production replica counts. Apply any pending Helm value updates from source control.
+
+**6. Run smoke tests**
+
+Submit a test trace, verify it lands in ClickHouse and (if blob storage is enabled) in the DR bucket. Open the UI and confirm traces, datasets, and projects load. Validate authentication. See [Diagnostics](/langsmith/diagnostics-self-hosted).
+
+**7. Cut DNS over**
+
+Update DNS to route traffic to the DR ingress. Communicate the cutover to stakeholders.
+
+**8. Plan failback**
+
+Once the primary region is healthy, plan a controlled failback. This is typically scheduled into a maintenance window and involves rebuilding the primary as the new DR replica before swapping again.
 
 ### Restore from snapshot
 
 If you have lost the primary data store entirely and need to restore from snapshot:
 
-<Steps>
-  <Step title="Stop ingestion">
-    Scale `langsmith-queue` and `langsmith-ingest-queue` to zero so no new traces are written while you restore.
-  </Step>
+**1. Stop ingestion**
 
-  <Step title="Restore Postgres">
-    Restore the Postgres backup to a new instance or perform PITR to the latest pre-incident timestamp. Update the LangSmith Helm `postgres.external` connection details to point to the restored instance.
-  </Step>
+Scale `langsmith-queue` and `langsmith-ingest-queue` to zero so no new traces are written while you restore.
 
-  <Step title="Restore ClickHouse">
-    Restore the most recent ClickHouse backup that aligns in time with the Postgres restore point. Restore time scales with data size.
-  </Step>
+**2. Restore Postgres**
 
-  <Step title="Restore blob storage">
-    If you lost blob data (rare), restore versioned objects from S3/GCS/Azure or copy from a replicated DR bucket.
-  </Step>
+Restore the Postgres backup to a new instance or perform PITR to the latest pre-incident timestamp. Update the LangSmith Helm `postgres.external` connection details to point to the restored instance.
 
-  <Step title="Resume ingestion">
-    Scale `langsmith-queue` and `langsmith-ingest-queue` back to production replica counts. Submit a smoke-test trace and verify it lands.
-  </Step>
-</Steps>
+**3. Restore ClickHouse**
 
-<Warning>
-  Always restore Postgres, ClickHouse, and blob storage to the closest possible coordinated point in time. Restoring Postgres to a more recent point than ClickHouse can produce dangling project references and missing traces in the UI.
-</Warning>
+Restore the most recent ClickHouse backup that aligns in time with the Postgres restore point. Restore time scales with data size.
+
+**4. Restore blob storage**
+
+If you lost blob data (rare), restore versioned objects from S3/GCS/Azure or copy from a replicated DR bucket.
+
+**5. Resume ingestion**
+
+Scale `langsmith-queue` and `langsmith-ingest-queue` back to production replica counts. Submit a smoke-test trace and verify it lands.
+
+> [!WARNING]
+>
+> Always restore Postgres, ClickHouse, and blob storage to the closest possible coordinated point in time. Restoring Postgres to a more recent point than ClickHouse can produce dangling project references and missing traces in the UI.
 
 ## Testing your DR plan
 
@@ -302,12 +294,6 @@ A backup is only as good as the last successful restore. Schedule the following 
 
 ***
 
-<div>
-  <Callout icon="terminal-2">
-    [Connect these docs](/use-these-docs) to your agent of choice via MCP for real-time answers.
-  </Callout>
+[Connect these docs](/use-these-docs) to your agent of choice via MCP for real-time answers.
 
-  <Callout icon="edit">
-    [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/self-host-disaster-recovery.mdx) or [file an issue](https://github.com/langchain-ai/docs/issues/new/choose).
-  </Callout>
-</div>
+[Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/self-host-disaster-recovery.mdx) or [file an issue](https://github.com/langchain-ai/docs/issues/new/choose).

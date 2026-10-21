@@ -6,7 +6,9 @@
 
 Code evaluators allow you to write an evaluator in Python or JavaScript directly in LangSmith. Often used for validating structure or statistical properties of your data.
 
-<Note>When an online evaluator runs on any run within a trace, the trace will be auto-upgraded to [extended data retention](/langsmith/usage-and-billing#data-retention-auto-upgrades). This upgrade will impact trace pricing, but ensures that traces meeting your evaluation criteria (typically those most valuable for analysis) are preserved for investigation. </Note>
+> [!NOTE]
+>
+> When an online evaluator runs on any run within a trace, the trace will be auto-upgraded to [extended data retention](/langsmith/usage-and-billing#data-retention-auto-upgrades). This upgrade will impact trace pricing, but ensures that traces meeting your evaluation criteria (typically those most valuable for analysis) are preserved for investigation.
 
 ## View online evaluators
 
@@ -34,9 +36,9 @@ Evaluators use the filter builder, with the same fields and operators described 
 
 To process feedback from an earlier evaluator, filter this evaluator for the feedback key, then read the score from `run["feedback"]`, or [include extended stats](/langsmith/evaluators#include-extended-stats) to read it from `run["feedback_stats"]`. For example, use `eq(feedback_key, "answer_usefulness")` to run when the `answer_usefulness` feedback exists. The filter is based on the feedback key, not the evaluator that produced it, so feedback from any source with that key triggers the code evaluator. For more information, see [Chain evaluators](/langsmith/evaluators#chain-evaluators).
 
-<Tip>
-  It's often helpful to inspect runs as you're creating a filter for your evaluator. With the evaluator configuration panel open, you can inspect runs and apply filters to them. Any filters you apply to the runs table will automatically be reflected in filters on your evaluator.
-</Tip>
+> [!TIP]
+>
+> It's often helpful to inspect runs as you're creating a filter for your evaluator. With the evaluator configuration panel open, you can inspect runs and apply filters to them. Any filters you apply to the runs table will automatically be reflected in filters on your evaluator.
 
 ### 4. (Optional) Configure a sampling rate
 
@@ -54,21 +56,21 @@ In order to track progress of the backfill, you can view logs for your evaluator
 
 ## Write your evaluation function
 
-<Note>
-  **Code evaluators restrictions.**
-
-  **Allowed Libraries**: You can import all standard library functions, as well as the following public packages:
-
-  ```
-  numpy (v2.2.2): "numpy"
-  pandas (v1.5.2): "pandas"
-  jsonschema (v4.21.1): "jsonschema"
-  scipy (v1.14.1): "scipy"
-  sklearn (v1.26.4): "scikit-learn"
-  ```
-
-  **Network Access**: You cannot access the internet from a code evaluator.
-</Note>
+> [!NOTE]
+>
+> **Code evaluators restrictions.**
+>
+> **Allowed Libraries**: You can import all standard library functions, as well as the following public packages:
+>
+> ```
+> numpy (v2.2.2): "numpy"
+> pandas (v1.5.2): "pandas"
+> jsonschema (v4.21.1): "jsonschema"
+> scipy (v1.14.1): "scipy"
+> sklearn (v1.26.4): "scikit-learn"
+> ```
+>
+> **Network Access**: You cannot access the internet from a code evaluator.
 
 Code evaluators must be written inline. We recommend testing locally before setting up your code evaluator in LangSmith.
 
@@ -84,57 +86,55 @@ They return a single value:
 
 The following example shows a function that validates that each run in the experiment has a known JSON field:
 
-<CodeGroup>
-  ```python Python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  import json
+```python Python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+import json
 
-  def perform_eval(run):
-    output_to_validate = run['outputs']
-    is_valid_json = 0
+def perform_eval(run):
+  output_to_validate = run['outputs']
+  is_valid_json = 0
 
-    # assert you can serialize/deserialize as json
-    try:
-      json.loads(json.dumps(output_to_validate))
-    except Exception as e:
-      return { "formatted": False }
+  # assert you can serialize/deserialize as json
+  try:
+    json.loads(json.dumps(output_to_validate))
+  except Exception as e:
+    return { "formatted": False }
 
-    # assert output facts exist
-    if "facts" not in output_to_validate:
-      return { "formatted": False }
+  # assert output facts exist
+  if "facts" not in output_to_validate:
+    return { "formatted": False }
 
-    # assert required fields exist
-    if "years_mentioned" not in output_to_validate["facts"]:
-      return { "formatted": False }
+  # assert required fields exist
+  if "years_mentioned" not in output_to_validate["facts"]:
+    return { "formatted": False }
 
-    return {"formatted": True}
-  ```
+  return {"formatted": True}
+```
 
-  ```javascript JavaScript theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  function perform_eval(run) {
-      const outputToValidate = run.outputs;
+```javascript JavaScript theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+function perform_eval(run) {
+    const outputToValidate = run.outputs;
 
-      // Assert you can serialize/deserialize as json
-      try {
-          JSON.stringify(outputToValidate);
-          JSON.parse(JSON.stringify(outputToValidate));
-      } catch (e) {
-          return { "formatted": false };
-      }
+    // Assert you can serialize/deserialize as json
+    try {
+        JSON.stringify(outputToValidate);
+        JSON.parse(JSON.stringify(outputToValidate));
+    } catch (e) {
+        return { "formatted": false };
+    }
 
-      // Assert output facts exist
-      if (!("facts" in outputToValidate)) {
-          return { "formatted": false };
-      }
+    // Assert output facts exist
+    if (!("facts" in outputToValidate)) {
+        return { "formatted": false };
+    }
 
-      // Assert required fields exist
-      if (!outputToValidate["facts"].hasOwnProperty("years_mentioned")) {
-          return { "formatted": false };
-      }
+    // Assert required fields exist
+    if (!outputToValidate["facts"].hasOwnProperty("years_mentioned")) {
+        return { "formatted": false };
+    }
 
-      return { "formatted": true };
-  }
-  ```
-</CodeGroup>
+    return { "formatted": true };
+}
+```
 
 ## Test and save your evaluation function
 
@@ -146,12 +146,6 @@ If you prefer a video tutorial, check out the [Online Evaluations video](https:/
 
 ***
 
-<div>
-  <Callout icon="terminal-2">
-    [Connect these docs](/use-these-docs) to your agent of choice via MCP for real-time answers.
-  </Callout>
+[Connect these docs](/use-these-docs) to your agent of choice via MCP for real-time answers.
 
-  <Callout icon="edit">
-    [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/online-evaluations-code.mdx) or [file an issue](https://github.com/langchain-ai/docs/issues/new/choose).
-  </Callout>
-</div>
+[Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/online-evaluations-code.mdx) or [file an issue](https://github.com/langchain-ai/docs/issues/new/choose).

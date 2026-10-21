@@ -6,9 +6,9 @@ Start faster with curated Fleet templates and customize tools, prompts, and chan
 
 LangSmith Fleet includes [starter templates](https://www.langchain.com/templates) to help you create agents quickly. Templates include predefined instructions, [tools](/langsmith/fleet/tools), and [channels](/langsmith/fleet/essentials#channels) (if applicable) for common use cases. You can use templates as-is, or as a baseline to customize.
 
-<Tip>
-  If you're new to Fleet, start with the step-by-step [quickstart](/langsmith/fleet/quickstart) to build your first agent using a template.
-</Tip>
+> [!TIP]
+>
+> If you're new to Fleet, start with the step-by-step [quickstart](/langsmith/fleet/quickstart) to build your first agent using a template.
 
 ## Features
 
@@ -32,28 +32,20 @@ Templates serve as starting points that you clone to create your own agent. When
 
 ## Available templates
 
-<CardGroup>
-  <Card title="Executive Assistant" icon="mail">
-    Manages your inbox, calendar, and daily brief.
-  </Card>
+> **Executive Assistant**
+>
+> Manages your inbox, calendar, and daily brief.
 
-  <Card title="Software Engineer" icon="code">
-    Ships code from Slack, Linear, and GitHub in a sandbox.
-  </Card>
-</CardGroup>
+> **Software Engineer**
+>
+> Ships code from Slack, Linear, and GitHub in a sandbox.
 
-<Info>
-  The available templates may change over time. For the most up-to-date set, open **Templates** in Fleet or the [templates gallery](https://www.langchain.com/templates).
-</Info>
+> [!NOTE]
+>
+> The available templates may change over time. For the most up-to-date set, open **Templates** in Fleet or the [templates gallery](https://www.langchain.com/templates).
 
 ***
 
-<div>
-  <Callout icon="terminal-2">
-    [Connect these docs](/use-these-docs) to your agent of choice via MCP for real-time answers.
-  </Callout>
+[Connect these docs](/use-these-docs) to your agent of choice via MCP for real-time answers.
 
-  <Callout icon="edit">
-    [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/fleet/templates.mdx) or [file an issue](https://github.com/langchain-ai/docs/issues/new/choose).
-  </Callout>
-</div>
+[Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/fleet/templates.mdx) or [file an issue](https://github.com/langchain-ai/docs/issues/new/choose).

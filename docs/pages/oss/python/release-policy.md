@@ -4,238 +4,230 @@
 
 This page explains the LangChain and LangGraph release policies. Click on the tabs below to view the release policies for each:
 
-<Tabs>
-  <Tab title="LangChain">
-    The LangChain ecosystem is composed of different component packages (e.g., `langchain-core`, `langchain`, partner packages, etc.)
+**LangChain**
 
-    ## Release cadence
+The LangChain ecosystem is composed of different component packages (e.g., `langchain-core`, `langchain`, partner packages, etc.)
 
-    With the release of LangChain 1.0, **minor** releases (e.g., from `1.0.x` to `1.1.0`) of `langchain` and `langchain-core` follow semantic versioning and may be released frequently. Minor releases contain new features and improvements but do not include breaking changes.
+## Release cadence
 
-    Patch versions are released frequently, up to a few times per week, as they contain bug fixes and minor improvements.
+With the release of LangChain 1.0, **minor** releases (e.g., from `1.0.x` to `1.1.0`) of `langchain` and `langchain-core` follow semantic versioning and may be released frequently. Minor releases contain new features and improvements but do not include breaking changes.
 
-    ## API stability
+Patch versions are released frequently, up to a few times per week, as they contain bug fixes and minor improvements.
 
-    The development of LLM applications is a rapidly evolving field, and we are constantly learning from our users and the community. As such, we expect that the APIs in `langchain` and `langchain-core` will continue to evolve to better serve the needs of our users.
+## API stability
 
-    With LangChain 1.0's adoption of semantic versioning:
+The development of LLM applications is a rapidly evolving field, and we are constantly learning from our users and the community. As such, we expect that the APIs in `langchain` and `langchain-core` will continue to evolve to better serve the needs of our users.
 
-    * Breaking changes to the public API will only occur in major version releases (e.g., `2.0.0`)
-    * Minor version bumps (e.g., `1.0.0` to `1.1.0`) add new features without breaking changes
-    * Patch version bumps (e.g., `1.0.0` to `1.0.1`) contain bug fixes and minor improvements
+With LangChain 1.0's adoption of semantic versioning:
 
-    We will generally try to avoid making unnecessary changes, and will provide a deprecation policy for features that are being removed.
+* Breaking changes to the public API will only occur in major version releases (e.g., `2.0.0`)
+* Minor version bumps (e.g., `1.0.0` to `1.1.0`) add new features without breaking changes
+* Patch version bumps (e.g., `1.0.0` to `1.0.1`) contain bug fixes and minor improvements
 
-    ### Stability of other packages
+We will generally try to avoid making unnecessary changes, and will provide a deprecation policy for features that are being removed.
 
-    The stability of other packages in the LangChain ecosystem may vary:
+### Stability of other packages
 
-    * **Partner packages maintained by LangChain** (such as `langchain-openai` and `langchain-anthropic`) follow semantic versioning and are expected to be stable post 1.0. Other partner packages may follow different stability and versioning policies, and users should refer to the documentation of those packages for more information.
+The stability of other packages in the LangChain ecosystem may vary:
 
-    ## Deprecation policy
+* **Partner packages maintained by LangChain** (such as `langchain-openai` and `langchain-anthropic`) follow semantic versioning and are expected to be stable post 1.0. Other partner packages may follow different stability and versioning policies, and users should refer to the documentation of those packages for more information.
 
-    We will generally avoid deprecating features until a better alternative is available.
+## Deprecation policy
 
-    With LangChain 1.0's semantic versioning approach, deprecated features will continue to work throughout the entire 1.x release series. Breaking changes, including the removal of deprecated features, will only occur in major version releases (e.g., 2.0).
+We will generally avoid deprecating features until a better alternative is available.
 
-    When a feature is deprecated in `langchain` or `langchain-core`, we will:
+With LangChain 1.0's semantic versioning approach, deprecated features will continue to work throughout the entire 1.x release series. Breaking changes, including the removal of deprecated features, will only occur in major version releases (e.g., 2.0).
 
-    * Clearly mark it as deprecated in the code and documentation
-    * Provide migration guidance to the recommended alternative
-    * Provide security updates for the deprecated feature through all 1.x minor releases
+When a feature is deprecated in `langchain` or `langchain-core`, we will:
 
-    In some situations, we may allow deprecated features to remain in the code base even longer if they are not causing maintenance issues, to further reduce the burden on users.
+* Clearly mark it as deprecated in the code and documentation
+* Provide migration guidance to the recommended alternative
+* Provide security updates for the deprecated feature through all 1.x minor releases
 
-    ## Long-term support (LTS)
+In some situations, we may allow deprecated features to remain in the code base even longer if they are not causing maintenance issues, to further reduce the burden on users.
 
-    LangChain follows a long-term support (LTS) policy to provide stability for production applications:
+## Long-term support (LTS)
 
-    ### Release status definitions
+LangChain follows a long-term support (LTS) policy to provide stability for production applications:
 
-    Packages are marked with one of the following statuses:
+### Release status definitions
 
-    * **ACTIVE**: Current active development, includes bug fixes, security patches, and new features
-    * **MAINTENANCE**: Receives all security patches and critical bug fixes, but no new features
+Packages are marked with one of the following statuses:
 
-    ### Current LTS releases
+* **ACTIVE**: Current active development, includes bug fixes, security patches, and new features
+* **MAINTENANCE**: Receives all security patches and critical bug fixes, but no new features
 
-    **LangChain 1.0** is designated as an LTS release:
+### Current LTS releases
 
-    * **Status**: ACTIVE until the release of 2.0
-    * **Support period**: After 2.0 is released, 1.0 will enter MAINTENANCE mode for at least 1 year
-    * **Semver compliance**: Users can upgrade between minor versions (e.g., 1.0 to 1.1) without breaking changes
+**LangChain 1.0** is designated as an LTS release:
 
-    ### Legacy version support
+* **Status**: ACTIVE until the release of 2.0
+* **Support period**: After 2.0 is released, 1.0 will enter MAINTENANCE mode for at least 1 year
+* **Semver compliance**: Users can upgrade between minor versions (e.g., 1.0 to 1.1) without breaking changes
 
-    **LangChain 0.3**:
+### Legacy version support
 
-    * **Status**: MAINTENANCE mode
-    * **Support period**: Until December 2026
-    * **Support includes**: Security patches and critical bug fixes
-  </Tab>
+**LangChain 0.3**:
 
-  <Tab title="LangGraph">
-    LangGraph follows a structured release policy to ensure stability and predictability for users building production applications.
+* **Status**: MAINTENANCE mode
+* **Support period**: Until December 2026
+* **Support includes**: Security patches and critical bug fixes
 
-    ## Release cadence
+**LangGraph**
 
-    We expect to space out **major** releases by at least 6-12 months to provide stability for production applications.
+LangGraph follows a structured release policy to ensure stability and predictability for users building production applications.
 
-    **Minor** releases are typically released every 1-2 months with new features and improvements.
+## Release cadence
 
-    **Patch** releases are released as needed, often weekly, to address bugs and security issues.
+We expect to space out **major** releases by at least 6-12 months to provide stability for production applications.
 
-    ## API stability
+**Minor** releases are typically released every 1-2 months with new features and improvements.
 
-    ### Stable APIs
+**Patch** releases are released as needed, often weekly, to address bugs and security issues.
 
-    All APIs without special prefixes are considered stable and ready for production use. We maintain backward compatibility for stable features within a major version.
+## API stability
 
-    ### Beta features
+### Stable APIs
 
-    Features marked as `beta` in the documentation are:
+All APIs without special prefixes are considered stable and ready for production use. We maintain backward compatibility for stable features within a major version.
 
-    * Feature-complete and tested
-    * Safe for production use with the understanding they may change
-    * Subject to minor API adjustments based on user feedback
+### Beta features
 
-    ### Experimental features
+Features marked as `beta` in the documentation are:
 
-    Features marked as `experimental` or `alpha`:
+* Feature-complete and tested
+* Safe for production use with the understanding they may change
+* Subject to minor API adjustments based on user feedback
 
-    * Are under active development
-    * May change significantly or be removed
-    * Should be used with caution in production
+### Experimental features
 
-    ### Internal APIs
+Features marked as `experimental` or `alpha`:
 
-    APIs prefixed with underscore (`_`) or explicitly marked as internal:
+* Are under active development
+* May change significantly or be removed
+* Should be used with caution in production
 
-    * Are not part of the public API
-    * May change without notice
-    * Should not be used directly
+### Internal APIs
 
-    ## Deprecation policy
+APIs prefixed with underscore (`_`) or explicitly marked as internal:
 
-    When deprecating features:
+* Are not part of the public API
+* May change without notice
+* Should not be used directly
 
-    1. **Deprecation Notice**: Features are marked as deprecated with clear migration guidance
-    2. **Grace Period**: Deprecated features remain functional for at least one minor version
-    3. **Removal**: Features are removed only in major version releases
-    4. **Migration Support**: We provide migration guides and, when possible, automated tools
+## Deprecation policy
 
-    ## Platform compatibility
+When deprecating features:
 
-    ### Python support
+1. **Deprecation Notice**: Features are marked as deprecated with clear migration guidance
+2. **Grace Period**: Deprecated features remain functional for at least one minor version
+3. **Removal**: Features are removed only in major version releases
+4. **Migration Support**: We provide migration guides and, when possible, automated tools
 
-    * We support Python versions that are actively maintained by the Python Software Foundation
-    * Python version requirements may change only in major releases
-    * Currently requires Python 3.10 or later
+## Platform compatibility
 
-    ## Breaking changes
+### Python support
 
-    Breaking changes are only introduced in major versions and include:
+* We support Python versions that are actively maintained by the Python Software Foundation
+* Python version requirements may change only in major releases
+* Currently requires Python 3.10 or later
 
-    * Removal of deprecated APIs
-    * Changes to required parameters
-    * Changes to default behavior that affect existing applications
-    * Minimum Python/Node.js version updates
+## Breaking changes
 
-    ## Migration support
+Breaking changes are only introduced in major versions and include:
 
-    For major version upgrades, we provide:
+* Removal of deprecated APIs
+* Changes to required parameters
+* Changes to default behavior that affect existing applications
+* Minimum Python/Node.js version updates
 
-    * Comprehensive migration guides
-    * Automated migration scripts when feasible
-    * Extended support period for the previous major version
-    * Clear documentation of all breaking changes
+## Migration support
 
-    ## Long-term support (LTS)
+For major version upgrades, we provide:
 
-    LangGraph follows a long-term support (LTS) policy to provide stability for production applications:
+* Comprehensive migration guides
+* Automated migration scripts when feasible
+* Extended support period for the previous major version
+* Clear documentation of all breaking changes
 
-    ### Release status definitions
+## Long-term support (LTS)
 
-    Packages are marked with one of the following statuses:
+LangGraph follows a long-term support (LTS) policy to provide stability for production applications:
 
-    * **ACTIVE**: Current active development, includes bug fixes, security patches, and new features
-    * **MAINTENANCE**: Receives all security patches and critical bug fixes, but no new features
+### Release status definitions
 
-    ### Current LTS releases
+Packages are marked with one of the following statuses:
 
-    **LangGraph 1.0** is designated as an LTS release:
+* **ACTIVE**: Current active development, includes bug fixes, security patches, and new features
+* **MAINTENANCE**: Receives all security patches and critical bug fixes, but no new features
 
-    * **Status**: ACTIVE until the release of 2.0
-    * **Support period**: After 2.0 is released, 1.0 will enter MAINTENANCE mode for at least 1 year
-    * **Semver compliance**: Users can upgrade between minor versions (e.g., 1.0 to 1.1) without breaking changes
+### Current LTS releases
 
-    ### Legacy version support
+**LangGraph 1.0** is designated as an LTS release:
 
-    **LangGraph 0.4**:
+* **Status**: ACTIVE until the release of 2.0
+* **Support period**: After 2.0 is released, 1.0 will enter MAINTENANCE mode for at least 1 year
+* **Semver compliance**: Users can upgrade between minor versions (e.g., 1.0 to 1.1) without breaking changes
 
-    * **Status**: MAINTENANCE mode
-    * **Support period**: Until December 2026
-    * **Support includes**: All security patches and critical bug fixes
+### Legacy version support
 
-    ## See also
+**LangGraph 0.4**:
 
-    * [Versioning](/oss/python/versioning) - Version numbering and support details
-    * [Releases](/oss/python/releases) - Version-specific release notes and migration guides
-  </Tab>
+* **Status**: MAINTENANCE mode
+* **Support period**: Until December 2026
+* **Support includes**: All security patches and critical bug fixes
 
-  <Tab title="Deep Agents">
-    Deep Agents (`deepagents`) is a rapidly evolving package for building advanced agent architectures.
+## See also
 
-    ## Pre-1.0 status
+* [Versioning](/oss/python/versioning) - Version numbering and support details
+* [Releases](/oss/python/releases) - Version-specific release notes and migration guides
 
-    Deep Agents is currently in pre-1.0 development. While we minimize breaking changes when possible, the API may evolve as we incorporate learnings from the community and adapt to the rapidly changing landscape of agentic applications.
+**Deep Agents**
 
-    ## Release cadence
+Deep Agents (`deepagents`) is a rapidly evolving package for building advanced agent architectures.
 
-    **Minor** releases (e.g., `0.1.0` to `0.2.0`) may contain new features and potentially breaking changes as the package matures.
+## Pre-1.0 status
 
-    **Patch** releases (e.g., `0.1.0` to `0.1.1`) contain bug fixes and minor improvements without breaking changes.
+Deep Agents is currently in pre-1.0 development. While we minimize breaking changes when possible, the API may evolve as we incorporate learnings from the community and adapt to the rapidly changing landscape of agentic applications.
 
-    ## API stability
+## Release cadence
 
-    As a pre-1.0 package:
+**Minor** releases (e.g., `0.1.0` to `0.2.0`) may contain new features and potentially breaking changes as the package matures.
 
-    * APIs may change between minor versions
-    * We aim to minimize disruption by providing clear migration guidance when changes occur
-    * Features marked as `experimental` or `alpha` are subject to more significant changes
+**Patch** releases (e.g., `0.1.0` to `0.1.1`) contain bug fixes and minor improvements without breaking changes.
 
-    ## Deprecation policy
+## API stability
 
-    When deprecating features in Deep Agents:
+As a pre-1.0 package:
 
-    * We provide deprecation warnings in advance when possible
-    * Migration guidance is included in release notes
-    * Deprecated features are removed in subsequent minor releases
+* APIs may change between minor versions
+* We aim to minimize disruption by providing clear migration guidance when changes occur
+* Features marked as `experimental` or `alpha` are subject to more significant changes
 
-    ## Path to 1.0
+## Deprecation policy
 
-    Deep Agents will reach 1.0 when:
+When deprecating features in Deep Agents:
 
-    * Core APIs have stabilized based on community feedback
-    * The package has been battle-tested in production environments
-    * Breaking changes are no longer expected for core functionality
+* We provide deprecation warnings in advance when possible
+* Migration guidance is included in release notes
+* Deprecated features are removed in subsequent minor releases
 
-    After 1.0, Deep Agents will follow the same semantic versioning and LTS policies as LangChain and LangGraph.
+## Path to 1.0
 
-    ## See also
+Deep Agents will reach 1.0 when:
 
-    * [Versioning](/oss/python/versioning) - Version numbering and support details
-  </Tab>
-</Tabs>
+* Core APIs have stabilized based on community feedback
+* The package has been battle-tested in production environments
+* Breaking changes are no longer expected for core functionality
+
+After 1.0, Deep Agents will follow the same semantic versioning and LTS policies as LangChain and LangGraph.
+
+## See also
+
+* [Versioning](/oss/python/versioning) - Version numbering and support details
 
 ***
 
-<div>
-  <Callout icon="terminal-2">
-    [Connect these docs](/use-these-docs) to your agent of choice via MCP for real-time answers.
-  </Callout>
+[Connect these docs](/use-these-docs) to your agent of choice via MCP for real-time answers.
 
-  <Callout icon="edit">
-    [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/oss/release-policy.mdx) or [file an issue](https://github.com/langchain-ai/docs/issues/new/choose).
-  </Callout>
-</div>
+[Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/oss/release-policy.mdx) or [file an issue](https://github.com/langchain-ai/docs/issues/new/choose).

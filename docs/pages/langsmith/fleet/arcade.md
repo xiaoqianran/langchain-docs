@@ -17,45 +17,41 @@ When you connect Arcade to your workspace, a workspace admin selects an Arcade o
 
 Only [workspace admins](/langsmith/rbac#workspace-admin) can configure the Arcade integration, including adding or deleting MCP Gateways. Once configured, the integration is available to all users in the workspace.
 
-<Steps>
-  <Step title="Open the Integrations tab">
-    Navigate to [**Fleet** > **Integrations**](https://smith.langchain.com/agents/tools). In the left menu under **Apps**, click **Arcade**.
-  </Step>
+**1. Open the Integrations tab**
 
-  <Step title="Connect your Arcade account">
-    Click **Connect** to authenticate with Arcade via OAuth. This links your Arcade account to the workspace.
-  </Step>
+Navigate to [**Fleet** > **Integrations**](https://smith.langchain.com/agents/tools). In the left menu under **Apps**, click **Arcade**.
 
-  <Step title="Select an organization and project">
-    Choose the Arcade **Organization** and **Project** for the workspace. All MCP gateways installed in the workspace come from this project.
-  </Step>
+**2. Connect your Arcade account**
 
-  <Step title="Install MCP gateways">
-    Browse the available gateways from your Arcade project and click **Add to workspace** to install them. Installed gateways appear as MCP servers available to all agents in the workspace.
-  </Step>
-</Steps>
+Click **Connect** to authenticate with Arcade via OAuth. This links your Arcade account to the workspace.
+
+**3. Select an organization and project**
+
+Choose the Arcade **Organization** and **Project** for the workspace. All MCP gateways installed in the workspace come from this project.
+
+**4. Install MCP gateways**
+
+Browse the available gateways from your Arcade project and click **Add to workspace** to install them. Installed gateways appear as MCP servers available to all agents in the workspace.
 
 ## Connect as a workspace member
 
 After an admin configures Arcade, other users must connect their own Arcade account to use the tools. Each user authenticates individually so that tool calls use their own credentials, not the admin's.
 
-<Steps>
-  <Step title="Get an invitation to the Arcade project">
-    Ask the workspace admin to invite you to their Arcade organization and project. You must be a member of the same project to access its gateways.
-  </Step>
+**1. Get an invitation to the Arcade project**
 
-  <Step title="Connect your account">
-    Navigate to [**Fleet** > **Integrations**](https://smith.langchain.com/agents/tools). In the left menu under **Apps**, click **Arcade**, then click **Connect** to authenticate via OAuth.
-  </Step>
+Ask the workspace admin to invite you to their Arcade organization and project. You must be a member of the same project to access its gateways.
 
-  <Step title="Browse available tools">
-    After connecting, MCP servers installed by the admin appear automatically. You can add these tools to your agents from the agent editor.
-  </Step>
-</Steps>
+**2. Connect your account**
 
-<Note>
-  Workspace members cannot change the Arcade organization or project. Only admins can modify the workspace-level configuration.
-</Note>
+Navigate to [**Fleet** > **Integrations**](https://smith.langchain.com/agents/tools). In the left menu under **Apps**, click **Arcade**, then click **Connect** to authenticate via OAuth.
+
+**3. Browse available tools**
+
+After connecting, MCP servers installed by the admin appear automatically. You can add these tools to your agents from the agent editor.
+
+> [!NOTE]
+>
+> Workspace members cannot change the Arcade organization or project. Only admins can modify the workspace-level configuration.
 
 ## Use Arcade tools with an agent
 
@@ -71,23 +67,21 @@ The agent can now call these tools at runtime. When a tool requires authorizatio
 
 Admins can update the workspace-level Arcade organization and project at any time.
 
-<Warning>
-  Changing the organization or project **removes all installed MCP servers** from the workspace. You will need to reinstall gateways from the new project afterward.
-</Warning>
+> [!WARNING]
+>
+> Changing the organization or project **removes all installed MCP servers** from the workspace. You will need to reinstall gateways from the new project afterward.
 
-<Steps>
-  <Step title="Open configuration">
-    Navigate to [**Fleet** > **Integrations**](https://smith.langchain.com/agents/tools). In the left menu under **Apps**, click **Arcade**. Click the settings icon to open the **Arcade Workspace Configuration** dialog.
-  </Step>
+**1. Open configuration**
 
-  <Step title="Select new organization and project">
-    Choose the new organization and project from the dropdowns.
-  </Step>
+Navigate to [**Fleet** > **Integrations**](https://smith.langchain.com/agents/tools). In the left menu under **Apps**, click **Arcade**. Click the settings icon to open the **Arcade Workspace Configuration** dialog.
 
-  <Step title="Confirm the change">
-    Click **Save Changes**. If the change removes existing MCP servers, confirm in the follow-up dialog. All previously installed gateways are removed and you can install new ones from the updated project.
-  </Step>
-</Steps>
+**2. Select new organization and project**
+
+Choose the new organization and project from the dropdowns.
+
+**3. Confirm the change**
+
+Click **Save Changes**. If the change removes existing MCP servers, confirm in the follow-up dialog. All previously installed gateways are removed and you can install new ones from the updated project.
 
 ## Disconnect from Arcade
 
@@ -97,28 +91,20 @@ Admins can remove the Arcade integration entirely by deleting the workspace conf
 
 ## Next steps
 
-<CardGroup>
-  <Card title="Add more tools" icon="puzzle" href="/langsmith/fleet/tools">
-    Connect additional services to your agent
-  </Card>
+> **[Add more tools](/langsmith/fleet/tools)**
+>
+> Connect additional services to your agent
 
-  <Card title="Remote MCP servers" icon="server" href="/langsmith/fleet/remote-mcp-servers">
-    Connect custom MCP servers to your workspace
-  </Card>
+> **[Remote MCP servers](/langsmith/fleet/remote-mcp-servers)**
+>
+> Connect custom MCP servers to your workspace
 
-  <Card title="Manage agent settings" icon="settings" href="/langsmith/fleet/manage-agent-settings">
-    Configure agent behavior and permissions
-  </Card>
-</CardGroup>
+> **[Manage agent settings](/langsmith/fleet/manage-agent-settings)**
+>
+> Configure agent behavior and permissions
 
 ***
 
-<div>
-  <Callout icon="terminal-2">
-    [Connect these docs](/use-these-docs) to your agent of choice via MCP for real-time answers.
-  </Callout>
+[Connect these docs](/use-these-docs) to your agent of choice via MCP for real-time answers.
 
-  <Callout icon="edit">
-    [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/fleet/arcade.mdx) or [file an issue](https://github.com/langchain-ai/docs/issues/new/choose).
-  </Callout>
-</div>
+[Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/fleet/arcade.mdx) or [file an issue](https://github.com/langchain-ai/docs/issues/new/choose).

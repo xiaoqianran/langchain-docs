@@ -8,38 +8,28 @@ Integrate with Fireworks AI using LangChain Python.
 
 ## Installation and setup
 
-<CodeGroup>
-  ```bash pip theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  pip install langchain-fireworks
-  ```
+```bash pip theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+pip install langchain-fireworks
+```
 
-  ```bash uv theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  uv add langchain-fireworks
-  ```
-</CodeGroup>
+```bash uv theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+uv add langchain-fireworks
+```
 
 Get an API key from [fireworks.ai](https://app.fireworks.ai/login) and set the `FIREWORKS_API_KEY` environment variable.
 
 ## Model interfaces
 
-<Columns>
-  <Card title="ChatFireworks" href="/oss/python/integrations/chat/fireworks" icon="message">
-    Interface to chat models hosted on Fireworks AI.
-  </Card>
+> **[ChatFireworks](/oss/python/integrations/chat/fireworks)**
+>
+> Interface to chat models hosted on Fireworks AI.
 
-  <Card title="FireworksEmbeddings" href="/oss/python/integrations/embeddings/fireworks" icon="layers-difference">
-    Embedding models served by Fireworks AI.
-  </Card>
-</Columns>
+> **[FireworksEmbeddings](/oss/python/integrations/embeddings/fireworks)**
+>
+> Embedding models served by Fireworks AI.
 
 ***
 
-<div>
-  <Callout icon="terminal-2">
-    [Connect these docs](/use-these-docs) to your agent of choice via MCP for real-time answers.
-  </Callout>
+[Connect these docs](/use-these-docs) to your agent of choice via MCP for real-time answers.
 
-  <Callout icon="edit">
-    [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/oss/python/integrations/providers/fireworks.mdx) or [file an issue](https://github.com/langchain-ai/docs/issues/new/choose).
-  </Callout>
-</div>
+[Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/oss/python/integrations/providers/fireworks.mdx) or [file an issue](https://github.com/langchain-ai/docs/issues/new/choose).

@@ -15,35 +15,33 @@ The **Cloud** hosting option is a fully managed model where LangChain hosts and 
 | **Your Agent Servers** | LangChain | LangChain's cloud (AWS and GCP) |
 | **CI/CD for your apps** | LangChain | LangChain's cloud (AWS and GCP) |
 
-<Callout icon="rocket">
-  If you're ready to deploy your app to LangSmith Cloud (AWS or GCP), follow the [Cloud deployment quickstart](/langsmith/deployment-quickstart) or the [full setup guide](/langsmith/deploy-to-cloud). This page explains the Cloud managed architecture for reference.
-</Callout>
+If you're ready to deploy your app to LangSmith Cloud (AWS or GCP), follow the [Cloud deployment quickstart](/langsmith/deployment-quickstart) or the [full setup guide](/langsmith/deploy-to-cloud). This page explains the Cloud managed architecture for reference.
 
-<img alt="Cloud deployment: LangChain hosts and manages all components including the UI, APIs, and your Agent Servers." />
+![Cloud deployment: LangChain hosts and manages all components including the UI, APIs, and your Agent Servers.](https://mintcdn.com/langchain-5e9cc07a/JOyLr_spVEW0t2KF/langsmith/images/langgraph-cloud-architecture.png?fit=max\&auto=format\&n=JOyLr_spVEW0t2KF\&q=85\&s=3f0316122425895270d0ecd47b12e139)
 
 ## Cloud architecture and scalability
 
-<Note>
-  This section is only relevant for cloud-managed LangSmith at [https://smith.langchain.com](https://smith.langchain.com?utm_source=docs\&utm_medium=cta\&utm_campaign=langsmith-signup\&utm_content=langsmith-cloud), [https://eu.smith.langchain.com](https://eu.smith.langchain.com), [https://apac.smith.langchain.com](https://apac.smith.langchain.com), and [https://aws.smith.langchain.com](https://aws.smith.langchain.com).
-
-  For information on the Self-hosted LangSmith solution, refer to the [Self-hosted documentation](/langsmith/self-hosted).
-</Note>
+> [!NOTE]
+>
+> This section is only relevant for cloud-managed LangSmith at [https://smith.langchain.com](https://smith.langchain.com?utm_source=docs\&utm_medium=cta\&utm_campaign=langsmith-signup\&utm_content=langsmith-cloud), [https://eu.smith.langchain.com](https://eu.smith.langchain.com), [https://apac.smith.langchain.com](https://apac.smith.langchain.com), and [https://aws.smith.langchain.com](https://aws.smith.langchain.com).
+>
+> For information on the Self-hosted LangSmith solution, refer to the [Self-hosted documentation](/langsmith/self-hosted).
 
 LangSmith is hosted on Google Cloud Platform (GCP) for the US, EU, and APAC SaaS regions and on Amazon Web Services (AWS) for the AWS-hosted US SaaS region. The platform is designed to be highly scalable. Many customers run production workloads on LangSmith for LLM application observability, evaluation, and agent deployment.
 
 The US-based LangSmith service (default GCP region) is hosted in the `us-central1` (Iowa) region of GCP.
 
-<Note>
-  The [EU-based LangSmith service](https://eu.smith.langchain.com) is available and hosted in the `europe-west4` (Netherlands) region of GCP. If you are interested in an Enterprise plan in this region, [contact our sales team](https://www.langchain.com/contact-sales).
-</Note>
+> [!NOTE]
+>
+> The [EU-based LangSmith service](https://eu.smith.langchain.com) is available and hosted in the `europe-west4` (Netherlands) region of GCP. If you are interested in an Enterprise plan in this region, [contact our sales team](https://www.langchain.com/contact-sales).
 
-<Note>
-  As of April 2026, LangSmith SaaS is available on AWS in `us-east-2` (Ohio).
-</Note>
+> [!NOTE]
+>
+> As of April 2026, LangSmith SaaS is available on AWS in `us-east-2` (Ohio).
 
-<Note>
-  As of May 2026, LangSmith SaaS is available in APAC on GCP in `australia-southeast1` (Sydney).
-</Note>
+> [!NOTE]
+>
+> As of May 2026, LangSmith SaaS is available in APAC on GCP in `australia-southeast1` (Sydney).
 
 ### Regional storage
 
@@ -116,11 +114,7 @@ Some additional AWS services we use include:
 * Amazon CloudFront for caching static assets (including the web UI hostname `aws.smith.langchain.com`).
 * AWS WAF on CloudFront for managed rule groups at the edge (for example, AWS Managed Rules common protections and Bot Control).
 
-<div>
-  <img alt="Light mode overview" />
-
-  <img alt="Dark mode overview" />
-</div>
+![Light mode overview](https://mintcdn.com/langchain-5e9cc07a/rqYqeBEA_2oeiw17/langsmith/images/cloud-arch-light.png?fit=max\&auto=format\&n=rqYqeBEA_2oeiw17\&q=85\&s=0790cbdf4fe131c74d1e60bb120834e3)
 
 ## Allowlisting IP addresses
 
@@ -128,9 +122,9 @@ Some additional AWS services we use include:
 
 Internet-bound traffic leaving LangSmith services is routed through a NAT gateway and originates from the following IP addresses. Vertex AI requests can use a different path, as described in [Allow Vertex AI access](#allow-vertex-ai-access).
 
-<Note>
-  Agents on [LangSmith Deployment](/langsmith/deployment) egress from a [separate IP list](/langsmith/cloud-platform-features#allowlist-ip-addresses).
-</Note>
+> [!NOTE]
+>
+> Agents on [LangSmith Deployment](/langsmith/deployment) egress from a [separate IP list](/langsmith/cloud-platform-features#allowlist-ip-addresses).
 
 | GCP US | GCP EU | GCP APAC | AWS US |
 | - | - | - | - |
@@ -178,9 +172,7 @@ You may need to allowlist these to enable traffic from your private network to L
 
 ## Private connectivity (Enterprise)
 
-<Callout icon="lock">
-  [**Enterprise only.**](/langsmith/pricing-plans) Private connectivity is available exclusively for Enterprise customers. Contact your account representative or [sales@langchain.dev](mailto:sales@langchain.dev) to enable this feature.
-</Callout>
+[**Enterprise only.**](/langsmith/pricing-plans) Private connectivity is available exclusively for Enterprise customers. Contact your account representative or [sales@langchain.dev](mailto:sales@langchain.dev) to enable this feature.
 
 Enterprise customers can connect to LangSmith without exposing traffic to the public internet using **AWS PrivateLink** or **GCP Private Service Connect (PSC)**.
 
@@ -200,27 +192,25 @@ Customers on **AWS** can connect to LangSmith via [AWS PrivateLink](https://docs
 
 **2. Create an Interface VPC Endpoint** in your AWS account. Attach a security group that allows **TCP 443 inbound** from your VPC CIDR (or from the instances that need to reach LangSmith):
 
-<CodeGroup>
-  ```bash AWS CLI theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  aws ec2 create-vpc-endpoint \
-    --vpc-id <YOUR_VPC_ID> \
-    --service-name <SERVICE_NAME_FROM_TABLE_ABOVE> \
-    --vpc-endpoint-type Interface \
-    --subnet-ids <YOUR_SUBNET_IDS> \
-    --security-group-ids <YOUR_SECURITY_GROUP_ID> \
-    --region <YOUR_REGION>
-  ```
+```bash AWS CLI theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+aws ec2 create-vpc-endpoint \
+  --vpc-id <YOUR_VPC_ID> \
+  --service-name <SERVICE_NAME_FROM_TABLE_ABOVE> \
+  --vpc-endpoint-type Interface \
+  --subnet-ids <YOUR_SUBNET_IDS> \
+  --security-group-ids <YOUR_SECURITY_GROUP_ID> \
+  --region <YOUR_REGION>
+```
 
-  ```hcl Terraform theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  resource "aws_vpc_endpoint" "langsmith" {
-    vpc_id              = "<YOUR_VPC_ID>"
-    service_name        = "<SERVICE_NAME_FROM_TABLE_ABOVE>"
-    vpc_endpoint_type   = "Interface"
-    subnet_ids          = ["<YOUR_SUBNET_IDS>"]
-    security_group_ids  = ["<YOUR_SECURITY_GROUP_ID>"]
-  }
-  ```
-</CodeGroup>
+```hcl Terraform theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+resource "aws_vpc_endpoint" "langsmith" {
+  vpc_id              = "<YOUR_VPC_ID>"
+  service_name        = "<SERVICE_NAME_FROM_TABLE_ABOVE>"
+  vpc_endpoint_type   = "Interface"
+  subnet_ids          = ["<YOUR_SUBNET_IDS>"]
+  security_group_ids  = ["<YOUR_SECURITY_GROUP_ID>"]
+}
+```
 
 **3. Wait for acceptance.** LangChain will accept the connection. The endpoint status will change from `pendingAcceptance` to `available`. Allow a few minutes after acceptance for the change to fully propagate before testing connectivity.
 
@@ -239,47 +229,45 @@ aws ec2 describe-vpc-endpoints \
 
 Then, create a CNAME record for `aws.api.smith.langchain.com` pointing to that DNS name. Here's an example using Route 53:
 
-<CodeGroup>
-  ```bash AWS CLI theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  aws route53 create-hosted-zone \
-    --name aws.api.smith.langchain.com \
-    --vpc VPCRegion=<YOUR_REGION>,VPCId=<YOUR_VPC_ID> \
-    --caller-reference langsmith-privatelink-$(date +%s) \
-    --hosted-zone-config PrivateZone=true
+```bash AWS CLI theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+aws route53 create-hosted-zone \
+  --name aws.api.smith.langchain.com \
+  --vpc VPCRegion=<YOUR_REGION>,VPCId=<YOUR_VPC_ID> \
+  --caller-reference langsmith-privatelink-$(date +%s) \
+  --hosted-zone-config PrivateZone=true
 
-  aws route53 change-resource-record-sets \
-    --hosted-zone-id <HOSTED_ZONE_ID> \
-    --change-batch '{
-      "Changes": [{
-        "Action": "CREATE",
-        "ResourceRecordSet": {
-          "Name": "aws.api.smith.langchain.com",
-          "Type": "CNAME",
-          "TTL": 300,
-          "ResourceRecords": [{"Value": "<ENDPOINT_DNS_NAME>"}]
-        }
-      }]
-    }'
-  ```
+aws route53 change-resource-record-sets \
+  --hosted-zone-id <HOSTED_ZONE_ID> \
+  --change-batch '{
+    "Changes": [{
+      "Action": "CREATE",
+      "ResourceRecordSet": {
+        "Name": "aws.api.smith.langchain.com",
+        "Type": "CNAME",
+        "TTL": 300,
+        "ResourceRecords": [{"Value": "<ENDPOINT_DNS_NAME>"}]
+      }
+    }]
+  }'
+```
 
-  ```hcl Terraform theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  resource "aws_route53_zone" "langsmith_privatelink" {
-    name = "aws.api.smith.langchain.com"
+```hcl Terraform theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+resource "aws_route53_zone" "langsmith_privatelink" {
+  name = "aws.api.smith.langchain.com"
 
-    vpc {
-      vpc_id = "<YOUR_VPC_ID>"
-    }
+  vpc {
+    vpc_id = "<YOUR_VPC_ID>"
   }
+}
 
-  resource "aws_route53_record" "langsmith_privatelink" {
-    zone_id = aws_route53_zone.langsmith_privatelink.zone_id
-    name    = "aws.api.smith.langchain.com"
-    type    = "CNAME"
-    ttl     = 300
-    records = [aws_vpc_endpoint.langsmith.dns_entry[0]["dns_name"]]
-  }
-  ```
-</CodeGroup>
+resource "aws_route53_record" "langsmith_privatelink" {
+  zone_id = aws_route53_zone.langsmith_privatelink.zone_id
+  name    = "aws.api.smith.langchain.com"
+  type    = "CNAME"
+  ttl     = 300
+  records = [aws_vpc_endpoint.langsmith.dns_entry[0]["dns_name"]]
+}
+```
 
 #### Verify connectivity
 
@@ -323,78 +311,74 @@ After access is granted, create a PSC endpoint and configure DNS using either th
 
 Create a forwarding rule in your VPC targeting the service attachment:
 
-<CodeGroup>
-  ```bash gcloud CLI theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  # Create the PSC endpoint
-  gcloud compute forwarding-rules create langsmith-psc-endpoint \
-    --region=<REGION> \
-    --network=<YOUR_VPC_NETWORK> \
-    --subnet=<YOUR_SUBNET> \
-    --target-service-attachment=projects/langchain-prod/regions/<REGION>/serviceAttachments/gateway-psc-publish \
-    --load-balancing-scheme=""
+```bash gcloud CLI theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+# Create the PSC endpoint
+gcloud compute forwarding-rules create langsmith-psc-endpoint \
+  --region=<REGION> \
+  --network=<YOUR_VPC_NETWORK> \
+  --subnet=<YOUR_SUBNET> \
+  --target-service-attachment=projects/langchain-prod/regions/<REGION>/serviceAttachments/gateway-psc-publish \
+  --load-balancing-scheme=""
 
-  # Get the assigned IP address
-  gcloud compute forwarding-rules describe langsmith-psc-endpoint \
-    --region=<REGION> \
-    --format="value(IPAddress)"
-  ```
+# Get the assigned IP address
+gcloud compute forwarding-rules describe langsmith-psc-endpoint \
+  --region=<REGION> \
+  --format="value(IPAddress)"
+```
 
-  ```hcl Terraform theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  resource "google_compute_forwarding_rule" "langsmith_psc" {
-    name                  = "langsmith-psc-endpoint"
-    project               = "<YOUR_PROJECT_ID>"
-    region                = "<REGION>"
-    network               = "<YOUR_VPC_NETWORK>"
-    subnetwork            = "<YOUR_SUBNET>"
-    target                = "projects/langchain-prod/regions/<REGION>/serviceAttachments/gateway-psc-publish"
-    load_balancing_scheme = ""
-  }
-  ```
-</CodeGroup>
+```hcl Terraform theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+resource "google_compute_forwarding_rule" "langsmith_psc" {
+  name                  = "langsmith-psc-endpoint"
+  project               = "<YOUR_PROJECT_ID>"
+  region                = "<REGION>"
+  network               = "<YOUR_VPC_NETWORK>"
+  subnetwork            = "<YOUR_SUBNET>"
+  target                = "projects/langchain-prod/regions/<REGION>/serviceAttachments/gateway-psc-publish"
+  load_balancing_scheme = ""
+}
+```
 
 #### Configure DNS
 
 Create a private DNS zone in your VPC and add an A record pointing to the PSC endpoint IP:
 
-<CodeGroup>
-  ```bash gcloud CLI theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  # Create a private DNS zone
-  gcloud dns managed-zones create langsmith-psc \
-    --dns-name="<REGION>.p.api.smith.langchain.com." \
-    --visibility=private \
-    --networks=<YOUR_VPC_NETWORK>
+```bash gcloud CLI theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+# Create a private DNS zone
+gcloud dns managed-zones create langsmith-psc \
+  --dns-name="<REGION>.p.api.smith.langchain.com." \
+  --visibility=private \
+  --networks=<YOUR_VPC_NETWORK>
 
-  # Add an A record pointing to the PSC endpoint IP
-  gcloud dns record-sets create "<REGION>.p.api.smith.langchain.com." \
-    --zone=langsmith-psc \
-    --type=A \
-    --rrdatas=<PSC_ENDPOINT_IP>
-  ```
+# Add an A record pointing to the PSC endpoint IP
+gcloud dns record-sets create "<REGION>.p.api.smith.langchain.com." \
+  --zone=langsmith-psc \
+  --type=A \
+  --rrdatas=<PSC_ENDPOINT_IP>
+```
 
-  ```hcl Terraform theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  resource "google_dns_managed_zone" "langsmith_psc" {
-    name        = "langsmith-psc"
-    project     = "<YOUR_PROJECT_ID>"
-    dns_name    = "<REGION>.p.api.smith.langchain.com."
-    visibility  = "private"
+```hcl Terraform theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+resource "google_dns_managed_zone" "langsmith_psc" {
+  name        = "langsmith-psc"
+  project     = "<YOUR_PROJECT_ID>"
+  dns_name    = "<REGION>.p.api.smith.langchain.com."
+  visibility  = "private"
 
-    private_visibility_config {
-      networks {
-        network_url = "<YOUR_VPC_NETWORK_SELF_LINK>"
-      }
+  private_visibility_config {
+    networks {
+      network_url = "<YOUR_VPC_NETWORK_SELF_LINK>"
     }
   }
+}
 
-  resource "google_dns_record_set" "langsmith_psc" {
-    name         = "<REGION>.p.api.smith.langchain.com."
-    project      = "<YOUR_PROJECT_ID>"
-    managed_zone = google_dns_managed_zone.langsmith_psc.name
-    type         = "A"
-    ttl          = 300
-    rrdatas      = [google_compute_forwarding_rule.langsmith_psc.ip_address]
-  }
-  ```
-</CodeGroup>
+resource "google_dns_record_set" "langsmith_psc" {
+  name         = "<REGION>.p.api.smith.langchain.com."
+  project      = "<YOUR_PROJECT_ID>"
+  managed_zone = google_dns_managed_zone.langsmith_psc.name
+  type         = "A"
+  ttl          = 300
+  rrdatas      = [google_compute_forwarding_rule.langsmith_psc.ip_address]
+}
+```
 
 #### Verify connectivity
 
@@ -468,12 +452,6 @@ For more information on rate limits and other service limits, refer to the [Admi
 
 ***
 
-<div>
-  <Callout icon="terminal-2">
-    [Connect these docs](/use-these-docs) to your agent of choice via MCP for real-time answers.
-  </Callout>
+[Connect these docs](/use-these-docs) to your agent of choice via MCP for real-time answers.
 
-  <Callout icon="edit">
-    [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/cloud.mdx) or [file an issue](https://github.com/langchain-ai/docs/issues/new/choose).
-  </Callout>
-</div>
+[Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/cloud.mdx) or [file an issue](https://github.com/langchain-ai/docs/issues/new/choose).

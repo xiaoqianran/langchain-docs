@@ -6,13 +6,13 @@ LLM applications can be challenging to evaluate since they often generate conver
 
 This guide shows you how to define an [LLM-as-a-judge evaluator](/langsmith/evaluation-concepts#llm-as-judge) for [offline evaluation](/langsmith/evaluation-concepts#offline-evaluations) using the [LangSmith SDK](https://reference.langchain.com/python/langsmith/observability/sdk).
 
-<Tip>
-  For a quick start, use [openevals](/langsmith/openevals), which provides ready-to-use LLM-as-a-judge evaluators.
-</Tip>
+> [!TIP]
+>
+> For a quick start, use [openevals](/langsmith/openevals), which provides ready-to-use LLM-as-a-judge evaluators.
 
-<Note>
-  The SDK does not support [decision model evaluators](/langsmith/decision-model-evaluator). These evaluators use a decision model, such as Jev, as the judge. To create one, use the UI.
-</Note>
+> [!NOTE]
+>
+> The SDK does not support [decision model evaluators](/langsmith/decision-model-evaluator). These evaluators use a decision model, such as Jev, as the judge. To create one, use the UI.
 
 ## Create your own LLM-as-a-judge evaluator
 
@@ -90,137 +90,129 @@ results = evaluate(
 
 When your dataset examples include reference outputs (expected answers), you can pass `reference_outputs` as a parameter to your evaluator function. LangSmith automatically provides the example's reference outputs to any evaluator that declares this parameter.
 
-<CodeGroup>
-  ```python Python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  from langsmith import evaluate, traceable, wrappers, Client
-  from openai import OpenAI
-  from pydantic import BaseModel
+```python Python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+from langsmith import evaluate, traceable, wrappers, Client
+from openai import OpenAI
+from pydantic import BaseModel
 
-  # Wrap the OpenAI client to automatically trace all LLM calls
-  oai_client = wrappers.wrap_openai(OpenAI())
+# Wrap the OpenAI client to automatically trace all LLM calls
+oai_client = wrappers.wrap_openai(OpenAI())
 
-  # Define an evaluator that checks the answer against a reference answer
-  def matches_expected(inputs: dict, outputs: dict, reference_outputs: dict) -> bool:
-      """Use an LLM to judge if the actual answer matches the expected answer."""
-      instructions = """
-  Given a question, an expected answer, and an actual answer, determine if the
-  actual answer is semantically equivalent to the expected answer."""
+# Define an evaluator that checks the answer against a reference answer
+def matches_expected(inputs: dict, outputs: dict, reference_outputs: dict) -> bool:
+    """Use an LLM to judge if the actual answer matches the expected answer."""
+    instructions = """
+Given a question, an expected answer, and an actual answer, determine if the
+actual answer is semantically equivalent to the expected answer."""
 
-      class Response(BaseModel):
-          answers_match: bool
+    class Response(BaseModel):
+        answers_match: bool
 
-      msg = (
-          f"Question: {inputs['question']}\n"
-          f"Expected answer: {reference_outputs['answer']}\n"
-          f"Actual answer: {outputs['answer']}"
-      )
+    msg = (
+        f"Question: {inputs['question']}\n"
+        f"Expected answer: {reference_outputs['answer']}\n"
+        f"Actual answer: {outputs['answer']}"
+    )
 
-      response = oai_client.beta.chat.completions.parse(
-          model="gpt-5.5",
-          messages=[{"role": "system", "content": instructions}, {"role": "user", "content": msg}],
-          response_format=Response,
-      )
+    response = oai_client.beta.chat.completions.parse(
+        model="gpt-5.5",
+        messages=[{"role": "system", "content": instructions}, {"role": "user", "content": msg}],
+        response_format=Response,
+    )
 
-      return response.choices[0].message.parsed.answers_match
+    return response.choices[0].message.parsed.answers_match
 
-  @traceable
-  def my_app(inputs: dict) -> dict:
-      # Your application logic here
-      return {"answer": "Paris"}
+@traceable
+def my_app(inputs: dict) -> dict:
+    # Your application logic here
+    return {"answer": "Paris"}
 
-  # Create a dataset with reference outputs (expected answers)
-  ls_client = Client()
-  dataset = ls_client.create_dataset("geography-qa")
-  examples = [
-      {
-          "inputs": {"question": "What is the capital of France?"},
-          "outputs": {"answer": "Paris"},
-      },
-      {
-          "inputs": {"question": "What is the capital of Germany?"},
-          "outputs": {"answer": "Berlin"},
-      },
-  ]
-  ls_client.create_examples(dataset_id=dataset.id, examples=examples)
+# Create a dataset with reference outputs (expected answers)
+ls_client = Client()
+dataset = ls_client.create_dataset("geography-qa")
+examples = [
+    {
+        "inputs": {"question": "What is the capital of France?"},
+        "outputs": {"answer": "Paris"},
+    },
+    {
+        "inputs": {"question": "What is the capital of Germany?"},
+        "outputs": {"answer": "Berlin"},
+    },
+]
+ls_client.create_examples(dataset_id=dataset.id, examples=examples)
 
-  results = evaluate(
-      my_app,
-      data=dataset,
-      evaluators=[matches_expected]
-  )
-  ```
+results = evaluate(
+    my_app,
+    data=dataset,
+    evaluators=[matches_expected]
+)
+```
 
-  ```typescript TypeScript theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  import { evaluate } from "langsmith/evaluation";
-  import { Client } from "langsmith";
-  import OpenAI from "openai";
-  import { zodResponseFormat } from "openai/helpers/zod";
-  import { z } from "zod";
+```typescript TypeScript theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+import { evaluate } from "langsmith/evaluation";
+import { Client } from "langsmith";
+import OpenAI from "openai";
+import { zodResponseFormat } from "openai/helpers/zod";
+import { z } from "zod";
 
-  const oaiClient = new OpenAI();
+const oaiClient = new OpenAI();
 
-  const matchesExpected = async ({
-    inputs,
-    outputs,
-    referenceOutputs,
-  }: {
-    inputs: Record<string, any>;
-    outputs: Record<string, any>;
-    referenceOutputs?: Record<string, any>;
-  }): Promise<boolean> => {
-    const instructions = `Given a question, an expected answer, and an actual answer, determine if the
-  actual answer is semantically equivalent to the expected answer.`;
+const matchesExpected = async ({
+  inputs,
+  outputs,
+  referenceOutputs,
+}: {
+  inputs: Record<string, any>;
+  outputs: Record<string, any>;
+  referenceOutputs?: Record<string, any>;
+}): Promise<boolean> => {
+  const instructions = `Given a question, an expected answer, and an actual answer, determine if the
+actual answer is semantically equivalent to the expected answer.`;
 
-    const ResponseSchema = z.object({ answers_match: z.boolean() });
+  const ResponseSchema = z.object({ answers_match: z.boolean() });
 
-    const msg = `Question: ${inputs.question}\nExpected answer: ${referenceOutputs?.answer}\nActual answer: ${outputs.answer}`;
+  const msg = `Question: ${inputs.question}\nExpected answer: ${referenceOutputs?.answer}\nActual answer: ${outputs.answer}`;
 
-    const response = await oaiClient.beta.chat.completions.parse({
-      model: "gpt-5.5",
-      messages: [
-        { role: "system", content: instructions },
-        { role: "user", content: msg },
-      ],
-      response_format: zodResponseFormat(ResponseSchema, "response"),
-    });
-
-    return response.choices[0].message.parsed?.answers_match ?? false;
-  };
-
-  const myApp = async (inputs: Record<string, any>): Promise<Record<string, any>> => {
-    // Your application logic here
-    return { answer: "Paris" };
-  };
-
-  // Create a dataset with reference outputs (expected answers)
-  const lsClient = new Client();
-  const dataset = await lsClient.createDataset("geography-qa-ts");
-  await lsClient.createExamples({
-    inputs: [
-      { question: "What is the capital of France?" },
-      { question: "What is the capital of Germany?" },
+  const response = await oaiClient.beta.chat.completions.parse({
+    model: "gpt-5.5",
+    messages: [
+      { role: "system", content: instructions },
+      { role: "user", content: msg },
     ],
-    outputs: [{ answer: "Paris" }, { answer: "Berlin" }],
-    datasetId: dataset.id,
+    response_format: zodResponseFormat(ResponseSchema, "response"),
   });
 
-  await evaluate(myApp, {
-    data: dataset.name,
-    evaluators: [matchesExpected],
-  });
-  ```
-</CodeGroup>
+  return response.choices[0].message.parsed?.answers_match ?? false;
+};
+
+const myApp = async (inputs: Record<string, any>): Promise<Record<string, any>> => {
+  // Your application logic here
+  return { answer: "Paris" };
+};
+
+// Create a dataset with reference outputs (expected answers)
+const lsClient = new Client();
+const dataset = await lsClient.createDataset("geography-qa-ts");
+await lsClient.createExamples({
+  inputs: [
+    { question: "What is the capital of France?" },
+    { question: "What is the capital of Germany?" },
+  ],
+  outputs: [{ answer: "Paris" }, { answer: "Berlin" }],
+  datasetId: dataset.id,
+});
+
+await evaluate(myApp, {
+  data: dataset.name,
+  evaluators: [matchesExpected],
+});
+```
 
 For more information on how to write a custom evaluator, refer to [How to define a code evaluator (SDK)](/langsmith/code-evaluator-sdk).
 
 ***
 
-<div>
-  <Callout icon="terminal-2">
-    [Connect these docs](/use-these-docs) to your agent of choice via MCP for real-time answers.
-  </Callout>
+[Connect these docs](/use-these-docs) to your agent of choice via MCP for real-time answers.
 
-  <Callout icon="edit">
-    [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/llm-as-judge-sdk.mdx) or [file an issue](https://github.com/langchain-ai/docs/issues/new/choose).
-  </Callout>
-</div>
+[Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/llm-as-judge-sdk.mdx) or [file an issue](https://github.com/langchain-ai/docs/issues/new/choose).

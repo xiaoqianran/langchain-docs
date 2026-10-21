@@ -10,29 +10,27 @@ Source: [`js-cloudflare`](https://github.com/langchain-ai/deployment-cookbook/tr
 
 ## Deploy to Cloudflare
 
-<Steps>
-  <Step title="Install and build">
-    ```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-    cd js-cloudflare
-    cp .env.example .dev.vars   # set OPENAI_API_KEY for local dev
-    pnpm install
-    pnpm build
-    ```
-  </Step>
+**1. Install and build**
 
-  <Step title="Configure secrets">
-    ```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-    npx wrangler login
-    npx wrangler secret put OPENAI_API_KEY
-    ```
-  </Step>
+```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+cd js-cloudflare
+cp .env.example .dev.vars   # set OPENAI_API_KEY for local dev
+pnpm install
+pnpm build
+```
 
-  <Step title="Deploy">
-    ```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-    pnpm run deploy
-    ```
-  </Step>
-</Steps>
+**2. Configure secrets**
+
+```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+npx wrangler login
+npx wrangler secret put OPENAI_API_KEY
+```
+
+**3. Deploy**
+
+```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+pnpm run deploy
+```
 
 Wrangler uploads the Vite build (SPA) and the Worker script in one deploy. `nodejs_compat` and `nodejs_compat_populate_process_env` are enabled so LangChain can read `OPENAI_API_KEY` from the environment.
 
@@ -170,12 +168,6 @@ pnpm typecheck
 
 ***
 
-<div>
-  <Callout icon="terminal-2">
-    [Connect these docs](/use-these-docs) to your agent of choice via MCP for real-time answers.
-  </Callout>
+[Connect these docs](/use-these-docs) to your agent of choice via MCP for real-time answers.
 
-  <Callout icon="edit">
-    [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/deploy-cloudflare-workers.mdx) or [file an issue](https://github.com/langchain-ai/docs/issues/new/choose).
-  </Callout>
-</div>
+[Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/deploy-cloudflare-workers.mdx) or [file an issue](https://github.com/langchain-ai/docs/issues/new/choose).

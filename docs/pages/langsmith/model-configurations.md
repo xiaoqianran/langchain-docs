@@ -32,9 +32,9 @@ The **Feature Access** table controls provider and model availability independen
 
 All features support custom workspace configurations, so you can use any provider or model—even for features that show a curated list by default.
 
-<Note>
-  **Insights** uses two separate rows—one for analysis and one for summarization. The UI displays a warning if you select incompatible providers or non-recommended models for either row.
-</Note>
+> [!NOTE]
+>
+> **Insights** uses two separate rows—one for analysis and one for summarization. The UI displays a warning if you select incompatible providers or non-recommended models for either row.
 
 ### Configure feature access
 
@@ -46,9 +46,9 @@ To configure feature access in the [UI](https://smith.langchain.com?utm_source=d
 4. Click **Available Models** and select which models users can choose from.
 5. Use the **Default Model** dropdown to set the model preselected when users open the feature.
 
-<Note>
-  Providers disabled for the whole organization in **Settings** > **Model providers** appear locked in this table and can't be re-enabled per workspace. See [Organization-wide provider control](#organization-wide-provider-control).
-</Note>
+> [!NOTE]
+>
+> Providers disabled for the whole organization in **Settings** > **Model providers** appear locked in this table and can't be re-enabled per workspace. See [Organization-wide provider control](#organization-wide-provider-control).
 
 ## Organization-wide provider control
 
@@ -68,11 +68,11 @@ Managing organization-wide providers requires the [Organization Admin](/langsmit
 
 ## Organization-scoped model configurations
 
-<Note>
-  Organization-scoped model configurations are available on LangSmith [Self-hosted](/langsmith/self-hosted) and [Cloud Enterprise](/langsmith/pricing-plans) only.
-
-  On self-hosted installations, organization-scoped model configurations require Helm chart version `0.17.0-rc.42` or later and application version `0.17.28rc1` or later.
-</Note>
+> [!NOTE]
+>
+> Organization-scoped model configurations are available on LangSmith [Self-hosted](/langsmith/self-hosted) and [Cloud Enterprise](/langsmith/pricing-plans) only.
+>
+> On self-hosted installations, organization-scoped model configurations require Helm chart version `0.17.0-rc.42` or later and application version `0.17.28rc1` or later.
 
 [Organization admins](/langsmith/rbac#organization-admin) can create model configurations at the organization level, so a single configuration is available across every [workspace](/langsmith/administration-overview#workspaces) in the organization without duplicating it per workspace.
 
@@ -125,20 +125,20 @@ The **Configurations** table is a shared library of named model configurations f
 
 ### Edit a configuration
 
-1. In the **Configurations** table, click the overflow menu <Icon icon="dots-vertical" /> next to the configuration.
+1. In the **Configurations** table, click the overflow menu  next to the configuration.
 2. Select **Edit**.
 3. Update the configuration and click **Save**.
 
 ### Delete a configuration
 
-1. In the **Configurations** table, click the overflow menu <Icon icon="dots-vertical" /> next to the configuration.
-2. Select <Icon icon="trash" /> **Delete** and confirm.
+1. In the **Configurations** table, click the overflow menu  next to the configuration.
+2. Select  **Delete** and confirm.
 
 ## OAuth client credentials
 
-<Note>
-  OAuth client credentials are available on LangSmith [Cloud](/langsmith/cloud) and [Self-hosted](/langsmith/self-hosted) deployments running version `0.16.0-rc.6` or later.
-</Note>
+> [!NOTE]
+>
+> OAuth client credentials are available on LangSmith [Cloud](/langsmith/cloud) and [Self-hosted](/langsmith/self-hosted) deployments running version `0.16.0-rc.6` or later.
 
 When a model configuration sits behind an OAuth2 gateway, you can store the OAuth `client_credentials` directly on the configuration instead of distributing a static API key. LangSmith exchanges those credentials for a short-lived bearer token at request time, attaches it as `Authorization: Bearer <token>` on the outbound LLM call, and refreshes the token before it expires. This is a per-configuration self-service alternative to routing the workspace through the [LLM auth proxy](/langsmith/llm-auth-proxy-self-hosted); the two are mutually exclusive per configuration.
 
@@ -148,7 +148,7 @@ OAuth client credentials are available on every [plan](/langsmith/pricing-plans)
 
 Configuring OAuth requires the [Workspace Admin](/langsmith/rbac#workspace-admin) role, or a [custom role](/langsmith/rbac#custom-roles) with the `workspaces:manage-model-configs` permission. Members without it see the OAuth fields disabled, with a masked secret hint. In the [LangSmith UI](https://smith.langchain.com?utm_source=docs\&utm_medium=cta\&utm_campaign=langsmith-signup\&utm_content=langsmith-model-configurations):
 
-1. Navigate to **Settings** > **Model configurations** and either click **+ Create** or open an existing row through the overflow menu <Icon icon="dots-vertical" /> > **Edit**.
+1. Navigate to **Settings** > **Model configurations** and either click **+ Create** or open an existing row through the overflow menu  > **Edit**.
 2. Select a compatible provider and configure model parameters as usual.
 3. Toggle **Use Custom OAuth** on.
 4. Fill the OAuth fields:
@@ -160,9 +160,7 @@ Configuring OAuth requires the [Workspace Admin](/langsmith/rbac#workspace-admin
    * **Extra headers**: additional headers sent with the token request. Reserved headers such as `Authorization` are rejected at save time.
 5. Click **Save**.
 
-<img alt="Model configuration Create modal in LangSmith Settings with Use Custom OAuth toggled on, showing Token URL, Client ID, masked Client Secret, and Token Endpoint Auth Method set to HTTP Basic." />
-
-<img alt="Model configuration Create modal in LangSmith Settings with Use Custom OAuth toggled on, showing Token URL, Client ID, masked Client Secret, and Token Endpoint Auth Method set to HTTP Basic." />
+![Model configuration Create modal in LangSmith Settings with Use Custom OAuth toggled on, showing Token URL, Client ID, masked Client Secret, and Token Endpoint Auth Method set to HTTP Basic.](https://mintcdn.com/langchain-5e9cc07a/8fWMAwmd5vok0QuC/langsmith/images/model-config-oauth-create-light.png?fit=max\&auto=format\&n=8fWMAwmd5vok0QuC\&q=85\&s=28ae7c822f8a52653b8820ceffe59b72)
 
 ### Edit semantics
 
@@ -227,30 +225,24 @@ When OAuth is enabled on a configuration, LangSmith does not prompt for a worksp
 
 ### FAQ
 
-<Accordion title="Can a single set of OAuth credentials be shared across workspaces?">
-  No. OAuth credentials are stored on the model configuration, which is workspace-scoped. Each workspace enters its own credentials, even when the credentials point at the same IdP client.
-</Accordion>
+> **Can a single set of OAuth credentials be shared across workspaces?**
+>
+> No. OAuth credentials are stored on the model configuration, which is workspace-scoped. Each workspace enters its own credentials, even when the credentials point at the same IdP client.
 
-<Accordion title="Why is my OAuth-enabled configuration suddenly using a static workspace key?">
-  If the broker cannot mint a bearer (IdP unreachable, credentials invalid, configuration deleted between request preparation and execution), the request falls back to the static workspace API key for the provider. Re-open the model configuration and verify the Token URL is reachable, the Client ID and secret are current, and the Token Endpoint Auth Method matches what your IdP expects.
-</Accordion>
+> **Why is my OAuth-enabled configuration suddenly using a static workspace key?**
+>
+> If the broker cannot mint a bearer (IdP unreachable, credentials invalid, configuration deleted between request preparation and execution), the request falls back to the static workspace API key for the provider. Re-open the model configuration and verify the Token URL is reachable, the Client ID and secret are current, and the Token Endpoint Auth Method matches what your IdP expects.
 
-<Accordion title="How do I rotate the client secret?">
-  Edit the model configuration and retype the secret in the **Client Secret** field. The previous secret is overwritten on save. The Redis-cached bearer continues to work until its TTL expires, after which the broker mints a new bearer using the rotated secret.
-</Accordion>
+> **How do I rotate the client secret?**
+>
+> Edit the model configuration and retype the secret in the **Client Secret** field. The previous secret is overwritten on save. The Redis-cached bearer continues to work until its TTL expires, after which the broker mints a new bearer using the rotated secret.
 
-<Accordion title="Can OAuth and the LLM auth proxy be used together?">
-  Yes. Routing is per-configuration. Configurations with OAuth enabled use OAuth; configurations without it fall through to the LLM auth proxy when the proxy is enabled at the organization level. A single multi-model job can mix the two flows.
-</Accordion>
+> **Can OAuth and the LLM auth proxy be used together?**
+>
+> Yes. Routing is per-configuration. Configurations with OAuth enabled use OAuth; configurations without it fall through to the LLM auth proxy when the proxy is enabled at the organization level. A single multi-model job can mix the two flows.
 
 ***
 
-<div>
-  <Callout icon="terminal-2">
-    [Connect these docs](/use-these-docs) to your agent of choice via MCP for real-time answers.
-  </Callout>
+[Connect these docs](/use-these-docs) to your agent of choice via MCP for real-time answers.
 
-  <Callout icon="edit">
-    [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/model-configurations.mdx) or [file an issue](https://github.com/langchain-ai/docs/issues/new/choose).
-  </Callout>
-</div>
+[Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/model-configurations.mdx) or [file an issue](https://github.com/langchain-ai/docs/issues/new/choose).

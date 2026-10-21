@@ -6,7 +6,7 @@
 
 将代理的代码存储库连接到LangSmith引擎，以便它可以在调查问题时读取您的源代码并以拉取请求的形式提出修复建议。
 
-连接代理的代码存储库让 [LangSmith Engine](/langsmith/engine) 在调查跟踪时读取您的源代码，并以拉取请求的形式提出修复。对于痕量分析，连接是可选的。有关引擎从源访问中获得的内容及其使用的权限，请参阅[Why connect GitHub](/langsmith/engine#why-connect-github)。
+连接代理的代码存储库可让 [LangSmith Engine](/langsmith/engine) 在调查跟踪时读取您的源代码，并以拉取请求的形式提出修复建议。对于痕量分析，连接是可选的。有关引擎从源访问中获得的内容及其使用的权限，请参阅[Why connect GitHub](/langsmith/engine#why-connect-github)。
 
 引擎连接到 GitHub 上的存储库：
 
@@ -18,13 +18,13 @@
 
 ### 连接存储库
 
-这些步骤适用于 LangSmith 云，以及使用已配置的 GitHub 应用程序的自托管和 BYOC 部署。为您的跟踪项目或代理环境启用 [Engine](/langsmith/engine)。您需要获得在该项目中配置 Engine 以及在 LangSmith 工作区中连接 GitHub 集成的权限。如果这些操作不可用，请询问工作区管理员。
+这些步骤适用于 LangSmith 云，以及使用已配置的 GitHub 应用程序的自托管和 BYOC 部署。为您的跟踪项目或代理环境启用 [Engine](/langsmith/engine)。您需要获得在该项目中配置 Engine 以及连接 LangSmith 工作区中的 GitHub 集成的权限。如果这些操作不可用，请询问工作区管理员。
 
 在 GitHub 上，您需要获得在要连接的存储库上安装应用程序或访问现有安装的权限。您的 GitHub 组织或企业可能需要管理员批准安装。当出现提示时，完成组织的 SSO 登录。
 
-<Note>
-  对于企业托管用户，连接组织拥有的存储库。 GitHub 不允许将此应用程序安装在托管用户的个人帐户上。请参阅 [Enterprise Managed Users](/langsmith/engine-self-hosted-github#enterprise-managed-users) 了解 GitHub.com 和 `ghe.com` 的要求。
-</Note>
+> [!注意]
+>
+> 对于企业托管用户，连接组织拥有的存储库。 GitHub 不允许将此应用程序安装在托管用户的个人帐户上。请参阅 [Enterprise Managed Users](/langsmith/engine-self-hosted-github#enterprise-managed-users) 了解 GitHub.com 和 `ghe.com` 的要求。
 
 对于修复，存储库必须允许引擎的分支和草案 PR。在测试修复之前查看[Repository policies](#repository-policies)。
 
@@ -58,7 +58,7 @@
 
 #### 验证连接
 
-使用具有代表性跟踪的测试存储库和引擎项目。在自托管 LangSmith 上，在此测试期间要求您的运营商[verify webhook delivery](/langsmith/engine-self-hosted-github#verify-webhook-delivery)。
+使用具有代表性跟踪的测试存储库和引擎项目。在自托管 LangSmith 上，请在此测试期间要求您的运营商[verify webhook delivery](/langsmith/engine-self-hosted-github#verify-webhook-delivery)。
 
 要验证连接：1. 运行引擎分析并确认它可以使用存储库的源代码。
 2. 生成问题的修复程序，检查其差异，然后单击 **Open PR**。确认 **查看 PR** 在预期的 GitHub 实例、存储库和基础分支上打开草稿 PR。
@@ -74,16 +74,16 @@
 
 查看适用于这些分支机构和应用程序身份的策略。在目标分支上保留正常的审查和合并需求。当一个人合并时，可能仍然需要满足目标分支的要求；配置应用程序不会绕过存储库策略。引擎不会获取 Git LFS 文件内容或初始化 Git 子模块。
 
-#### 存储库选择疑难解答
+#### 存储库选择故障排除
 
 |症状|检查什么 |
 | - | - |
 | GitHub 未配置，或 GitHub 打开前连接失败 |在自托管 LangSmith 上，请让您的运营商检查 [deployment configuration](/langsmith/engine-self-hosted-github#configure-langsmith)。 |
 |您的组织不是安装目标 |确认您的 GitHub 角色、组织审批政策和应用程序的可见性。私人应用程序只能安装在其所属的帐户上。 |
 |您的管理用户帐户不是安装目标 |使用组织拥有的存储库。个人托管用户存储库无法使用此集成。 |
-| App已安装，但LangSmith无连接 |在 LangSmith 中启动 **连接 GitHub**，包括在管理员批准安装之后或您直接从 GitHub 安装之后。在自托管 LangSmith 上，如果授权未完成，请要求您的运营商[check setup](/langsmith/engine-self-hosted-github#troubleshoot-setup)。 |
+| App已安装，但LangSmith无连接 |在 LangSmith 中启动 **连接 GitHub**，包括在管理员批准安装之后或您直接从 GitHub 安装之后。在自托管 LangSmith 上，如果授权未完成，请让您的运营商[check setup](/langsmith/engine-self-hosted-github#troubleshoot-setup)。 |
 |缺少安装或存储库 |检查您授权的 GitHub 帐户、应用程序选择的存储库以及安装是否连接到此 LangSmith 工作区。出现提示时完成组织的 SSO 授权。 ||授权成功，但无法读取仓库 |检查应用程序的存储库访问权限。在自托管 LangSmith 上，还请您的运营商检查 [GitHub API and sandbox network access](/langsmith/engine-self-hosted-github#allow-network-access)。浏览器登录不会测试这些连接。 |
-|无法推送修复|检查适用于新修复分支的规则，包括签名提交要求、分支限制和预接收挂钩。参见[Repository policies](#repository-policies)。 |
+|无法推送修复 |检查适用于新修复分支的规则，包括签名提交要求、分支限制和预接收挂钩。参见[Repository policies](#repository-policies)。 |
 
 ## 自托管LangSmith
 
@@ -102,12 +102,6 @@
 
 ***
 
-<div>
-  <Callout icon="terminal-2">
-    [Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
-  </Callout>
+[Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
 
-  <Callout icon="edit">
-    [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/engine-repositories.mdx) 或 [file an issue](https://github.com/langchain-ai/docs/issues/new/choose)。
-  </Callout>
-</div>
+[Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/engine-repositories.mdx) 或 [file an issue](https://github.com/langchain-ai/docs/issues/new/choose)。

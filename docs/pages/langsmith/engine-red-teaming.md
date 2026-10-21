@@ -4,9 +4,9 @@
 
 Test a deployed agent with synthetic LangSmith Engine probes to find prompt injection, data exposure, and unsafe tool use before they reach production.
 
-<Note>
-  Red Teaming is in private [beta](/langsmith/release-stages#beta). It is available only on LangSmith Cloud, for organizations where it has been enabled. It supports only agents running on [LangSmith Cloud deployments](/langsmith/deploy-to-cloud), not externally hosted agents. To request access, [join the waitlist](https://www.langchain.com/langsmith-engine-v2-new-feature-access).
-</Note>
+> [!NOTE]
+>
+> Red Teaming is in private [beta](/langsmith/release-stages#beta). It is available only on LangSmith Cloud, for organizations where it has been enabled. It supports only agents running on [LangSmith Cloud deployments](/langsmith/deploy-to-cloud), not externally hosted agents. To request access, [join the waitlist](https://www.langchain.com/langsmith-engine-v2-new-feature-access).
 
 Red Teaming tests a deployed agent by sending it new, synthetic requests and judging how it responds. The [issues Engine detects](/langsmith/engine-issues) from your traces come from failures that already happened in production. Red Teaming looks for failures that have not happened yet, such as a prompt injection that succeeds, a consequential tool call made without the confirmation your agent requires, or hidden context that leaks into an answer.
 
@@ -34,9 +34,9 @@ To run Red Teaming, you need:
 * **Permissions**: `runs:read` on the tracing project to view red-team reports. To start a run, you also need `runs:create` on the project and `deployments:update` on the baseline deployment.
 * **A connected repository (recommended)**: With a [connected GitHub repository](/langsmith/engine-repositories), Engine reads your agent's prompts, tools, and guardrails from source. Without one, findings rely on traces alone, and the report shows **Repository context was not available**.
 
-<Warning>
-  Probes are real requests. Each probe creates a thread and a run on the baseline deployment, and your agent can call its tools while it responds. Choose a deployment where synthetic test traffic and tool side effects are acceptable, such as a staging deployment.
-</Warning>
+> [!WARNING]
+>
+> Probes are real requests. Each probe creates a thread and a run on the baseline deployment, and your agent can call its tools while it responds. Choose a deployment where synthetic test traffic and tool side effects are acceptable, such as a staging deployment.
 
 ## Start a Red Teaming run
 
@@ -156,12 +156,6 @@ For how Engine handles your data more broadly, see [Engine security](/langsmith/
 
 ***
 
-<div>
-  <Callout icon="terminal-2">
-    [Connect these docs](/use-these-docs) to your agent of choice via MCP for real-time answers.
-  </Callout>
+[Connect these docs](/use-these-docs) to your agent of choice via MCP for real-time answers.
 
-  <Callout icon="edit">
-    [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/engine-red-teaming.mdx) or [file an issue](https://github.com/langchain-ai/docs/issues/new/choose).
-  </Callout>
-</div>
+[Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/engine-red-teaming.mdx) or [file an issue](https://github.com/langchain-ai/docs/issues/new/choose).

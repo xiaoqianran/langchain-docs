@@ -40,186 +40,174 @@ results = client.evaluate(
 )
 ```
 
-<Check>
-  `evaluate()`会自动跟踪你的目标函数。这意味着，如果您在目标函数中运行任何可跟踪代码，这也将作为目标跟踪的子运行进行跟踪。
-</Check>## 示例：单个 LLM 通话
+> [!提示]
+>
+> `evaluate()` 将自动跟踪您的目标函数。这意味着，如果您在目标函数中运行任何可跟踪代码，这也将作为目标跟踪的子运行进行跟踪。## 示例：单个 LLM 通话
 
-<CodeGroup>
-  ```python Python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  from langsmith import wrappers
-  from openai import OpenAI
+```python Python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+from langsmith import wrappers
+from openai import OpenAI
 
-  # Optionally wrap the OpenAI client to automatically
-  # trace all model calls.
-  oai_client = wrappers.wrap_openai(OpenAI())
+# Optionally wrap the OpenAI client to automatically
+# trace all model calls.
+oai_client = wrappers.wrap_openai(OpenAI())
 
-  def target(inputs: dict) -> dict:
-    # This assumes your dataset has inputs with a 'messages' key.
-    # You can update to match your dataset schema.
-    messages = inputs["messages"]
-    response = oai_client.chat.completions.create(
-        messages=messages,
-        model="gpt-5.4-mini",
-    )
-    return {"answer": response.choices[0].message.content}
-  ```
+def target(inputs: dict) -> dict:
+  # This assumes your dataset has inputs with a 'messages' key.
+  # You can update to match your dataset schema.
+  messages = inputs["messages"]
+  response = oai_client.chat.completions.create(
+      messages=messages,
+      model="gpt-5.4-mini",
+  )
+  return {"answer": response.choices[0].message.content}
+```
 
-  ```typescript TypeScript theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  import OpenAI from 'openai';
-  import { wrapOpenAI } from "langsmith/wrappers";
+```typescript TypeScript theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+import OpenAI from 'openai';
+import { wrapOpenAI } from "langsmith/wrappers";
 
-  const client = wrapOpenAI(new OpenAI());
+const client = wrapOpenAI(new OpenAI());
 
-  // This is the function you will evaluate.
-  const target = async(inputs) => {
-    // This assumes your dataset has inputs with a `messages` key
-    const messages = inputs.messages;
-    const response = await client.chat.completions.create({
-        messages: messages,
-        model: 'gpt-5.4-mini',
-    });
-    return { answer: response.choices[0].message.content };
-  }
-  ```
+// This is the function you will evaluate.
+const target = async(inputs) => {
+  // This assumes your dataset has inputs with a `messages` key
+  const messages = inputs.messages;
+  const response = await client.chat.completions.create({
+      messages: messages,
+      model: 'gpt-5.4-mini',
+  });
+  return { answer: response.choices[0].message.content };
+}
+```
 
-  ```python Python (LangChain) theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  from langchain.chat_models import init_chat_model
+```python Python (LangChain) theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+from langchain.chat_models import init_chat_model
 
-  model = init_chat_model("gpt-5.4-mini")
+model = init_chat_model("gpt-5.4-mini")
 
-  def target(inputs: dict) -> dict:
-    # This assumes your dataset has inputs with a `messages` key
-    messages = inputs["messages"]
-    response = model.invoke(messages)
-    return {"answer": response.content}
-  ```
+def target(inputs: dict) -> dict:
+  # This assumes your dataset has inputs with a `messages` key
+  messages = inputs["messages"]
+  response = model.invoke(messages)
+  return {"answer": response.content}
+```
 
-  ```typescript TypeScript (LangChain) theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  import { ChatOpenAI } from '@langchain/openai';
+```typescript TypeScript (LangChain) theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+import { ChatOpenAI } from '@langchain/openai';
 
-  // This is the function you will evaluate.
-  const target = async(inputs) => {
-    // This assumes your dataset has inputs with a `messages` key
-    const messages = inputs.messages;
-    const model = new ChatOpenAI({ model: "gpt-5.4-mini" });
-    const response = await model.invoke(messages);
-    return {"answer": response.content};
-  }
-  ```
-</CodeGroup>
+// This is the function you will evaluate.
+const target = async(inputs) => {
+  // This assumes your dataset has inputs with a `messages` key
+  const messages = inputs.messages;
+  const model = new ChatOpenAI({ model: "gpt-5.4-mini" });
+  const response = await model.invoke(messages);
+  return {"answer": response.content};
+}
+```
 
 ## 示例：非 LLM 组件
 
-<CodeGroup>
-  ```python Python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  from langsmith import traceable
+```python Python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+from langsmith import traceable
 
-  # Optionally decorate with '@traceable' to trace all invocations of this function.
-  @traceable
-  def calculator_tool(operation: str, number1: float, number2: float) -> str:
-    if operation == "add":
-        return str(number1 + number2)
-    elif operation == "subtract":
-        return str(number1 - number2)
-    elif operation == "multiply":
-        return str(number1 * number2)
-    elif operation == "divide":
-        return str(number1 / number2)
-    else:
-        raise ValueError(f"Unrecognized operation: {operation}.")
+# Optionally decorate with '@traceable' to trace all invocations of this function.
+@traceable
+def calculator_tool(operation: str, number1: float, number2: float) -> str:
+  if operation == "add":
+      return str(number1 + number2)
+  elif operation == "subtract":
+      return str(number1 - number2)
+  elif operation == "multiply":
+      return str(number1 * number2)
+  elif operation == "divide":
+      return str(number1 / number2)
+  else:
+      raise ValueError(f"Unrecognized operation: {operation}.")
 
-  # This is the function you will evaluate.
-  def target(inputs: dict) -> dict:
-    # This assumes your dataset has inputs with `operation`, `num1`, and `num2` keys.
-    operation = inputs["operation"]
-    number1 = inputs["num1"]
-    number2 = inputs["num2"]
-    result = calculator_tool(operation, number1, number2)
-    return {"result": result}
-  ```
+# This is the function you will evaluate.
+def target(inputs: dict) -> dict:
+  # This assumes your dataset has inputs with `operation`, `num1`, and `num2` keys.
+  operation = inputs["operation"]
+  number1 = inputs["num1"]
+  number2 = inputs["num2"]
+  result = calculator_tool(operation, number1, number2)
+  return {"result": result}
+```
 
-  ```typescript TypeScript theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  import { traceable } from "langsmith/traceable";
+```typescript TypeScript theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+import { traceable } from "langsmith/traceable";
 
-  // Optionally wrap in 'traceable' to trace all invocations of this function.
-  const calculatorTool = traceable(async ({ operation, number1, number2 }) => {
-  // Functions must return strings
-  if (operation === "add") {
-    return (number1 + number2).toString();
-  } else if (operation === "subtract") {
-    return (number1 - number2).toString();
-  } else if (operation === "multiply") {
-    return (number1 * number2).toString();
-  } else if (operation === "divide") {
-    return (number1 / number2).toString();
-  } else {
-    throw new Error("Invalid operation.");
-  }
-  });
+// Optionally wrap in 'traceable' to trace all invocations of this function.
+const calculatorTool = traceable(async ({ operation, number1, number2 }) => {
+// Functions must return strings
+if (operation === "add") {
+  return (number1 + number2).toString();
+} else if (operation === "subtract") {
+  return (number1 - number2).toString();
+} else if (operation === "multiply") {
+  return (number1 * number2).toString();
+} else if (operation === "divide") {
+  return (number1 / number2).toString();
+} else {
+  throw new Error("Invalid operation.");
+}
+});
 
-  // This is the function you will evaluate.
-  const target = async (inputs) => {
-  // This assumes your dataset has inputs with `operation`, `num1`, and `num2` keys
-  const result = await calculatorTool.invoke({
-    operation: inputs.operation,
-    number1: inputs.num1,
-    number2: inputs.num2,
-  });
-  return { result };
-  }
-  ```
-</CodeGroup>
+// This is the function you will evaluate.
+const target = async (inputs) => {
+// This assumes your dataset has inputs with `operation`, `num1`, and `num2` keys
+const result = await calculatorTool.invoke({
+  operation: inputs.operation,
+  number1: inputs.num1,
+  number2: inputs.num2,
+});
+return { result };
+}
+```
 
 ## 示例：应用程序或代理
 
-<CodeGroup>
-  ```python Python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  from my_agent import agent
+```python Python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+from my_agent import agent
 
-        # This is the function you will evaluate.
-  def target(inputs: dict) -> dict:
-    # This assumes your dataset has inputs with a `messages` key
-    messages = inputs["messages"]
-    # Replace `invoke` with whatever you use to call your agent
-    response = agent.invoke({"messages": messages})
-    # This assumes your agent output is in the right format
-    return response
-  ```
+      # This is the function you will evaluate.
+def target(inputs: dict) -> dict:
+  # This assumes your dataset has inputs with a `messages` key
+  messages = inputs["messages"]
+  # Replace `invoke` with whatever you use to call your agent
+  response = agent.invoke({"messages": messages})
+  # This assumes your agent output is in the right format
+  return response
+```
 
-  ```typescript TypeScript theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  import { agent } from 'my_agent';
+```typescript TypeScript theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+import { agent } from 'my_agent';
 
-  // This is the function you will evaluate.
-  const target = async(inputs) => {
-  // This assumes your dataset has inputs with a `messages` key
-  const messages = inputs.messages;
-  // Replace `invoke` with whatever you use to call your agent
-  const response = await agent.invoke({ messages });
-  // This assumes your agent output is in the right format
-  return response;
-  }
-  ```
-</CodeGroup>
+// This is the function you will evaluate.
+const target = async(inputs) => {
+// This assumes your dataset has inputs with a `messages` key
+const messages = inputs.messages;
+// Replace `invoke` with whatever you use to call your agent
+const response = await agent.invoke({ messages });
+// This assumes your agent output is in the right format
+return response;
+}
+```
 
-<Check>
-  如果您有一个 LangGraph/LangChain 代理，它接受数据集中定义的输入并返回要在评估器中使用的输出格式，您可以直接将该对象作为目标传递：
-
-  ```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  from my_agent import agent
-  from langsmith import Client
-  client = Client()
-  client.evaluate(agent, ...)
-  ```
-</Check>
+> [!提示]
+>
+> 如果您有一个 LangGraph/LangChain 代理，它接受数据集中定义的输入并返回您要在评估器中使用的输出格式，您可以直接将该对象作为目标传递：
+>
+> ```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> from my_agent import agent
+> from langsmith import Client
+> client = Client()
+> client.evaluate(agent, ...)
+> ```
 
 ***
 
-<div>
-  <Callout icon="terminal-2">
-    [Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
-  </Callout>
+[Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
 
-  <Callout icon="edit">
-    [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/define-target-function.mdx) 或 [file an issue](https://github.com/langchain-ai/docs/issues/new/choose)。
-  </Callout>
-</div>
+[Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/define-target-function.mdx) 或 [file an issue](https://github.com/langchain-ai/docs/issues/new/choose)。

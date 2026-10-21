@@ -6,15 +6,15 @@ LLM applications can be challenging to evaluate since they often generate conver
 
 This guide shows you how to define an [LLM-as-a-judge evaluator](/langsmith/evaluation-concepts#llm-as-judge) for [offline evaluation](/langsmith/evaluation-concepts#offline-evaluations) using the [LangSmith UI](https://smith.langchain.com?utm_source=docs\&utm_medium=cta\&utm_campaign=langsmith-signup\&utm_content=langsmith-llm-as-judge).
 
-<Note>
-  This guide uses the LangSmith UI. You can also create an LLM-as-a-judge evaluator programmatically with the SDK, and it appears in the LangSmith UI the same as one created here. Refer to [Manage evaluators with the SDK](/langsmith/manage-evaluators-sdk).
+> [!NOTE]
+>
+> This guide uses the LangSmith UI. You can also create an LLM-as-a-judge evaluator programmatically with the SDK, and it appears in the LangSmith UI the same as one created here. Refer to [Manage evaluators with the SDK](/langsmith/manage-evaluators-sdk).
+>
+> To run evaluations in real-time on your production traces, refer to [setting up online evaluations](/langsmith/online-evaluations-llm-as-judge).
 
-  To run evaluations in real-time on your production traces, refer to [setting up online evaluations](/langsmith/online-evaluations-llm-as-judge).
-</Note>
-
-<Tip>
-  If your dataset examples were built with [assertions written in an annotation queue](/langsmith/assertions), an LLM-as-a-judge evaluator can read `example.outputs["assertions"]` and grade each one against your application's output.
-</Tip>
+> [!TIP]
+>
+> If your dataset examples were built with [assertions written in an annotation queue](/langsmith/assertions), an LLM-as-a-judge evaluator can read `example.outputs["assertions"]` and grade each one against your application's output.
 
 ## Step 1. Create the evaluator
 
@@ -87,12 +87,6 @@ Once you are finished configuring, save your changes.
 
 ***
 
-<div>
-  <Callout icon="terminal-2">
-    [Connect these docs](/use-these-docs) to your agent of choice via MCP for real-time answers.
-  </Callout>
+[Connect these docs](/use-these-docs) to your agent of choice via MCP for real-time answers.
 
-  <Callout icon="edit">
-    [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/llm-as-judge.mdx) or [file an issue](https://github.com/langchain-ai/docs/issues/new/choose).
-  </Callout>
-</div>
+[Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/llm-as-judge.mdx) or [file an issue](https://github.com/langchain-ai/docs/issues/new/choose).

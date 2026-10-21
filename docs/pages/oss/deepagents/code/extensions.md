@@ -6,13 +6,13 @@ Customize dcode with Python tools, middleware, and storage routes
 
 Python extensions customize the dcode agent server without modifying dcode itself. Use them to register model tools, LangChain middleware, virtual storage routes.
 
-<Note>
-  Python extensions require `DEEPAGENTS_CODE_EXPERIMENTAL=1`. This experimental API can change or be removed without notice.
-</Note>
+> [!NOTE]
+>
+> Python extensions require `DEEPAGENTS_CODE_EXPERIMENTAL=1`. This experimental API can change or be removed without notice.
 
-<Warning>
-  Extensions run arbitrary Python with your user account's permissions. Load extensions only from sources you trust. Extension tools are not automatically added to the human-approval map, so extensions that perform sensitive work must enforce their own approval or policy through middleware.
-</Warning>
+> [!WARNING]
+>
+> Extensions run arbitrary Python with your user account's permissions. Load extensions only from sources you trust. Extension tools are not automatically added to the human-approval map, so extensions that perform sensitive work must enforce their own approval or policy through middleware.
 
 ## Create an extension
 
@@ -194,12 +194,6 @@ Each extension setup is transactional. If import or initialization fails, Deep A
 
 ***
 
-<div>
-  <Callout icon="terminal-2">
-    [Connect these docs](/use-these-docs) to your agent of choice via MCP for real-time answers.
-  </Callout>
+[Connect these docs](/use-these-docs) to your agent of choice via MCP for real-time answers.
 
-  <Callout icon="edit">
-    [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/oss/deepagents/code/extensions.mdx) or [file an issue](https://github.com/langchain-ai/docs/issues/new/choose).
-  </Callout>
-</div>
+[Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/oss/deepagents/code/extensions.mdx) or [file an issue](https://github.com/langchain-ai/docs/issues/new/choose).

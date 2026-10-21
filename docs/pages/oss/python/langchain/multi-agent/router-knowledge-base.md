@@ -48,9 +48,9 @@ We will cover the following concepts:
 * [StateGraph](/oss/python/langgraph/graph-api) for workflow orchestration
 * [Send API](/oss/python/langgraph/graph-api#send) for parallel execution
 
-<Tip>
-  **Router vs. Subagents**: The [subagents pattern](/oss/python/langchain/multi-agent/subagents) can also route to multiple agents. Use the router pattern when you need specialized preprocessing, custom routing logic, or want explicit control over parallel execution. Use the subagents pattern when you want the LLM to decide which agents to call dynamically.
-</Tip>
+> [!TIP]
+>
+> **Router vs. Subagents**: The [subagents pattern](/oss/python/langchain/multi-agent/subagents) can also route to multiple agents. Use the router pattern when you need specialized preprocessing, custom routing logic, or want explicit control over parallel execution. Use the subagents pattern when you want the LLM to decide which agents to call dynamically.
 
 ## Setup
 
@@ -58,19 +58,17 @@ We will cover the following concepts:
 
 This tutorial requires the `langchain` and `langgraph` packages:
 
-<CodeGroup>
-  ```bash pip theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  pip install langchain langgraph
-  ```
+```bash pip theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+pip install langchain langgraph
+```
 
-  ```bash uv theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  uv add langchain langgraph
-  ```
+```bash uv theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+uv add langchain langgraph
+```
 
-  ```bash conda theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  conda install langchain langgraph -c conda-forge
-  ```
-</CodeGroup>
+```bash conda theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+conda install langchain langgraph -c conda-forge
+```
 
 For more details, see our [Installation guide](/oss/python/langchain/install).
 
@@ -78,287 +76,255 @@ For more details, see our [Installation guide](/oss/python/langchain/install).
 
 Set up [LangSmith](https://smith.langchain.com?utm_source=docs\&utm_medium=cta\&utm_campaign=langsmith-signup\&utm_content=oss-langchain-multi-agent-router-knowledge-base) to inspect what is happening inside your agent. Then set the following environment variables:
 
-<CodeGroup>
-  ```bash Shell theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  export LANGSMITH_TRACING="true"
-  export LANGSMITH_API_KEY="..."
-  ```
+```bash Shell theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+export LANGSMITH_TRACING="true"
+export LANGSMITH_API_KEY="..."
+```
 
-  ```python Python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  import getpass
-  import os
+```python Python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+import getpass
+import os
 
-  os.environ["LANGSMITH_TRACING"] = "true"
-  os.environ["LANGSMITH_API_KEY"] = getpass.getpass()
-  ```
-</CodeGroup>
+os.environ["LANGSMITH_TRACING"] = "true"
+os.environ["LANGSMITH_API_KEY"] = getpass.getpass()
+```
 
 ### Select an LLM
 
 Select a chat model from LangChain's suite of integrations:
 
-<Tabs>
-  <Tab title="OpenAI">
-    👉 Read the [OpenAI chat model integration docs](/oss/python/integrations/chat/openai/)
+**OpenAI**
 
-    <CodeGroup>
-      ```bash pip theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-      pip install -U "langchain[openai]"
-      ```
+👉 Read the [OpenAI chat model integration docs](/oss/python/integrations/chat/openai/)
 
-      ```bash uv theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-      uv add "langchain[openai]"
-      ```
-    </CodeGroup>
+```bash pip theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+pip install -U "langchain[openai]"
+```
 
-    <CodeGroup>
-      ```python init_chat_model theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-      import os
-      from langchain.chat_models import init_chat_model
+```bash uv theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+uv add "langchain[openai]"
+```
 
-      os.environ["OPENAI_API_KEY"] = "sk-..."
+```python init_chat_model theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+import os
+from langchain.chat_models import init_chat_model
 
-      model = init_chat_model("gpt-5.5")
-      ```
+os.environ["OPENAI_API_KEY"] = "sk-..."
 
-      ```python Model Class theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-      import os
-      from langchain_openai import ChatOpenAI
+model = init_chat_model("gpt-5.5")
+```
 
-      os.environ["OPENAI_API_KEY"] = "sk-..."
+```python Model Class theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+import os
+from langchain_openai import ChatOpenAI
 
-      model = ChatOpenAI(model="gpt-5.5")
-      ```
-    </CodeGroup>
-  </Tab>
+os.environ["OPENAI_API_KEY"] = "sk-..."
 
-  <Tab title="Anthropic">
-    👉 Read the [Anthropic chat model integration docs](/oss/python/integrations/chat/anthropic/)
+model = ChatOpenAI(model="gpt-5.5")
+```
 
-    <CodeGroup>
-      ```bash pip theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-      pip install -U "langchain[anthropic]"
-      ```
+**Anthropic**
 
-      ```bash uv theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-      uv add "langchain[anthropic]"
-      ```
-    </CodeGroup>
+👉 Read the [Anthropic chat model integration docs](/oss/python/integrations/chat/anthropic/)
 
-    <CodeGroup>
-      ```python init_chat_model theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-      import os
-      from langchain.chat_models import init_chat_model
+```bash pip theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+pip install -U "langchain[anthropic]"
+```
 
-      os.environ["ANTHROPIC_API_KEY"] = "sk-..."
+```bash uv theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+uv add "langchain[anthropic]"
+```
 
-      model = init_chat_model("claude-sonnet-4-6")
-      ```
+```python init_chat_model theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+import os
+from langchain.chat_models import init_chat_model
 
-      ```python Model Class theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-      import os
-      from langchain_anthropic import ChatAnthropic
+os.environ["ANTHROPIC_API_KEY"] = "sk-..."
 
-      os.environ["ANTHROPIC_API_KEY"] = "sk-..."
+model = init_chat_model("claude-sonnet-4-6")
+```
 
-      model = ChatAnthropic(model="claude-sonnet-4-6")
-      ```
-    </CodeGroup>
-  </Tab>
+```python Model Class theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+import os
+from langchain_anthropic import ChatAnthropic
 
-  <Tab title="Azure">
-    👉 Read the [Azure chat model integration docs](/oss/python/integrations/chat/azure_chat_openai/)
+os.environ["ANTHROPIC_API_KEY"] = "sk-..."
 
-    <CodeGroup>
-      ```bash pip theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-      pip install -U "langchain[openai]"
-      ```
+model = ChatAnthropic(model="claude-sonnet-4-6")
+```
 
-      ```bash uv theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-      uv add "langchain[openai]"
-      ```
-    </CodeGroup>
+**Azure**
 
-    <CodeGroup>
-      ```python init_chat_model theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-      import os
-      from langchain.chat_models import init_chat_model
+👉 Read the [Azure chat model integration docs](/oss/python/integrations/chat/azure_chat_openai/)
 
-      os.environ["AZURE_OPENAI_API_KEY"] = "..."
-      os.environ["AZURE_OPENAI_ENDPOINT"] = "..."
-      os.environ["OPENAI_API_VERSION"] = "2025-03-01-preview"
+```bash pip theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+pip install -U "langchain[openai]"
+```
 
-      model = init_chat_model(
-          "azure_openai:gpt-5.5",
-          azure_deployment=os.environ["AZURE_OPENAI_DEPLOYMENT_NAME"],
-      )
-      ```
+```bash uv theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+uv add "langchain[openai]"
+```
 
-      ```python Model Class theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-      import os
-      from langchain_openai import AzureChatOpenAI
+```python init_chat_model theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+import os
+from langchain.chat_models import init_chat_model
 
-      os.environ["AZURE_OPENAI_API_KEY"] = "..."
-      os.environ["AZURE_OPENAI_ENDPOINT"] = "..."
-      os.environ["OPENAI_API_VERSION"] = "2025-03-01-preview"
+os.environ["AZURE_OPENAI_API_KEY"] = "..."
+os.environ["AZURE_OPENAI_ENDPOINT"] = "..."
+os.environ["OPENAI_API_VERSION"] = "2025-03-01-preview"
 
-      model = AzureChatOpenAI(
-          model="gpt-5.5",
-          azure_deployment=os.environ["AZURE_OPENAI_DEPLOYMENT_NAME"]
-      )
-      ```
-    </CodeGroup>
-  </Tab>
+model = init_chat_model(
+    "azure_openai:gpt-5.5",
+    azure_deployment=os.environ["AZURE_OPENAI_DEPLOYMENT_NAME"],
+)
+```
 
-  <Tab title="Google Gemini">
-    👉 Read the [Google GenAI chat model integration docs](/oss/python/integrations/chat/google_generative_ai/)
+```python Model Class theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+import os
+from langchain_openai import AzureChatOpenAI
 
-    <CodeGroup>
-      ```bash pip theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-      pip install -U "langchain[google-genai]"
-      ```
+os.environ["AZURE_OPENAI_API_KEY"] = "..."
+os.environ["AZURE_OPENAI_ENDPOINT"] = "..."
+os.environ["OPENAI_API_VERSION"] = "2025-03-01-preview"
 
-      ```bash uv theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-      uv add "langchain[google-genai]"
-      ```
-    </CodeGroup>
+model = AzureChatOpenAI(
+    model="gpt-5.5",
+    azure_deployment=os.environ["AZURE_OPENAI_DEPLOYMENT_NAME"]
+)
+```
 
-    <CodeGroup>
-      ```python init_chat_model theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-      import os
-      from langchain.chat_models import init_chat_model
+**Google Gemini**
 
-      os.environ["GOOGLE_API_KEY"] = "..."
+👉 Read the [Google GenAI chat model integration docs](/oss/python/integrations/chat/google_generative_ai/)
 
-      model = init_chat_model("google_genai:gemini-3.7-flash")
-      ```
+```bash pip theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+pip install -U "langchain[google-genai]"
+```
 
-      ```python Model Class theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-      import os
-      from langchain_google_genai import ChatGoogleGenerativeAI
+```bash uv theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+uv add "langchain[google-genai]"
+```
 
-      os.environ["GOOGLE_API_KEY"] = "..."
+```python init_chat_model theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+import os
+from langchain.chat_models import init_chat_model
 
-      model = ChatGoogleGenerativeAI(model="gemini-3.7-flash")
-      ```
-    </CodeGroup>
-  </Tab>
+os.environ["GOOGLE_API_KEY"] = "..."
 
-  <Tab title="AWS Bedrock">
-    👉 Read the [AWS Bedrock chat model integration docs](/oss/python/integrations/chat/bedrock/)
+model = init_chat_model("google_genai:gemini-3.7-flash")
+```
 
-    <CodeGroup>
-      ```bash pip theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-      pip install -U "langchain[aws]"
-      ```
+```python Model Class theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+import os
+from langchain_google_genai import ChatGoogleGenerativeAI
 
-      ```bash uv theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-      uv add "langchain[aws]"
-      ```
-    </CodeGroup>
+os.environ["GOOGLE_API_KEY"] = "..."
 
-    <CodeGroup>
-      ```python init_chat_model theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-      from langchain.chat_models import init_chat_model
+model = ChatGoogleGenerativeAI(model="gemini-3.7-flash")
+```
 
-      # Follow the steps here to configure your credentials:
-      # https://docs.aws.amazon.com/bedrock/latest/userguide/getting-started.html
+**AWS Bedrock**
 
-      model = init_chat_model(
-          "us.anthropic.claude-sonnet-4-6",
-          model_provider="bedrock_converse",
-      )
-      ```
+👉 Read the [AWS Bedrock chat model integration docs](/oss/python/integrations/chat/bedrock/)
 
-      ```python Model Class theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-      from langchain_aws import ChatBedrock
+```bash pip theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+pip install -U "langchain[aws]"
+```
 
-      model = ChatBedrock(model="us.anthropic.claude-sonnet-4-6")
-      ```
-    </CodeGroup>
-  </Tab>
+```bash uv theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+uv add "langchain[aws]"
+```
 
-  <Tab title="HuggingFace">
-    👉 Read the [HuggingFace chat model integration docs](/oss/python/integrations/chat/huggingface/)
+```python init_chat_model theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+from langchain.chat_models import init_chat_model
 
-    <CodeGroup>
-      ```bash pip theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-      pip install -U "langchain[huggingface]"
-      ```
+# Follow the steps here to configure your credentials:
+# https://docs.aws.amazon.com/bedrock/latest/userguide/getting-started.html
 
-      ```bash uv theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-      uv add "langchain[huggingface]"
-      ```
-    </CodeGroup>
+model = init_chat_model(
+    "us.anthropic.claude-sonnet-4-6",
+    model_provider="bedrock_converse",
+)
+```
 
-    <CodeGroup>
-      ```python init_chat_model theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-      import os
-      from langchain.chat_models import init_chat_model
+```python Model Class theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+from langchain_aws import ChatBedrock
 
-      os.environ["HUGGINGFACEHUB_API_TOKEN"] = "hf_..."
+model = ChatBedrock(model="us.anthropic.claude-sonnet-4-6")
+```
 
-      model = init_chat_model(
-          "microsoft/Phi-3-mini-4k-instruct",
-          model_provider="huggingface",
-          temperature=0.7,
-          max_tokens=1024,
-      )
-      ```
+**HuggingFace**
 
-      ```python Model Class theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-      import os
-      from langchain_huggingface import ChatHuggingFace, HuggingFaceEndpoint
+👉 Read the [HuggingFace chat model integration docs](/oss/python/integrations/chat/huggingface/)
 
-      os.environ["HUGGINGFACEHUB_API_TOKEN"] = "hf_..."
+```bash pip theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+pip install -U "langchain[huggingface]"
+```
 
-      llm = HuggingFaceEndpoint(
-          repo_id="microsoft/Phi-3-mini-4k-instruct",
-          temperature=0.7,
-          max_length=1024,
-      )
-      model = ChatHuggingFace(llm=llm)
-      ```
-    </CodeGroup>
-  </Tab>
+```bash uv theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+uv add "langchain[huggingface]"
+```
 
-  <Tab title="OpenRouter">
-    👉 Read the [OpenRouter chat model integration docs](/oss/python/integrations/chat/openrouter/)
+```python init_chat_model theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+import os
+from langchain.chat_models import init_chat_model
 
-    <CodeGroup>
-      ```bash pip theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-      pip install -U "langchain-openrouter"
-      ```
+os.environ["HUGGINGFACEHUB_API_TOKEN"] = "hf_..."
 
-      ```bash uv theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-      uv add "langchain-openrouter"
-      ```
-    </CodeGroup>
+model = init_chat_model(
+    "microsoft/Phi-3-mini-4k-instruct",
+    model_provider="huggingface",
+    temperature=0.7,
+    max_tokens=1024,
+)
+```
 
-    <CodeGroup>
-      ```python init_chat_model theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-      import os
-      from langchain.chat_models import init_chat_model
+```python Model Class theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+import os
+from langchain_huggingface import ChatHuggingFace, HuggingFaceEndpoint
 
-      os.environ["OPENROUTER_API_KEY"] = "sk-..."
+os.environ["HUGGINGFACEHUB_API_TOKEN"] = "hf_..."
 
-      model = init_chat_model(
-          "auto",
-          model_provider="openrouter",
-      )
-      ```
+llm = HuggingFaceEndpoint(
+    repo_id="microsoft/Phi-3-mini-4k-instruct",
+    temperature=0.7,
+    max_length=1024,
+)
+model = ChatHuggingFace(llm=llm)
+```
 
-      ```python Model Class theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-      import os
-      from langchain_openrouter import ChatOpenRouter
+**OpenRouter**
 
-      os.environ["OPENROUTER_API_KEY"] = "sk-..."
+👉 Read the [OpenRouter chat model integration docs](/oss/python/integrations/chat/openrouter/)
 
-      model = ChatOpenRouter(model="auto")
-      ```
-    </CodeGroup>
-  </Tab>
-</Tabs>
+```bash pip theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+pip install -U "langchain-openrouter"
+```
+
+```bash uv theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+uv add "langchain-openrouter"
+```
+
+```python init_chat_model theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+import os
+from langchain.chat_models import init_chat_model
+
+os.environ["OPENROUTER_API_KEY"] = "sk-..."
+
+model = init_chat_model(
+    "auto",
+    model_provider="openrouter",
+)
+```
+
+```python Model Class theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+import os
+from langchain_openrouter import ChatOpenRouter
+
+os.environ["OPENROUTER_API_KEY"] = "sk-..."
+
+model = ChatOpenRouter(model="auto")
+```
 
 ## 1. Define state
 
@@ -719,260 +685,260 @@ After all agents complete, the `synthesize_results` function iterates over the c
 * References the original query to ensure the answer addresses what the user asked
 * Combines information from all sources without redundancy
 
-<Note>
-  **Partial results**: In this tutorial, all selected agents must complete before synthesis.
-</Note>
+> [!NOTE]
+>
+> **Partial results**: In this tutorial, all selected agents must complete before synthesis.
 
 ## 8. Complete working example
 
 Here's everything together in a runnable script:
 
-<Expandable title="View complete code">
-  ```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  """
-  Multi-Source Knowledge Router Example
+**View complete code**
 
-  This example demonstrates the router pattern for multi-agent systems.
-  A router classifies queries, routes them to specialized agents in parallel,
-  and synthesizes results into a combined response.
-  """
+```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+"""
+Multi-Source Knowledge Router Example
 
-  import operator
-  from typing import Annotated, Literal, TypedDict
+This example demonstrates the router pattern for multi-agent systems.
+A router classifies queries, routes them to specialized agents in parallel,
+and synthesizes results into a combined response.
+"""
 
-  from langchain.agents import create_agent
-  from langchain.chat_models import init_chat_model
-  from langchain.tools import tool
-  from langgraph.graph import StateGraph, START, END
-  from langgraph.types import Send
-  from pydantic import BaseModel, Field
+import operator
+from typing import Annotated, Literal, TypedDict
 
-
-  # State definitions
-  class AgentInput(TypedDict):
-      """Simple input state for each subagent."""
-      query: str
+from langchain.agents import create_agent
+from langchain.chat_models import init_chat_model
+from langchain.tools import tool
+from langgraph.graph import StateGraph, START, END
+from langgraph.types import Send
+from pydantic import BaseModel, Field
 
 
-  class AgentOutput(TypedDict):
-      """Output from each subagent."""
-      source: str
-      result: str
+# State definitions
+class AgentInput(TypedDict):
+    """Simple input state for each subagent."""
+    query: str
 
 
-  class Classification(TypedDict):
-      """A single routing decision: which agent to call with what query."""
-      source: Literal["github", "notion", "slack"]
-      query: str
+class AgentOutput(TypedDict):
+    """Output from each subagent."""
+    source: str
+    result: str
 
 
-  class RouterState(TypedDict):
-      query: str
-      classifications: list[Classification]
-      results: Annotated[list[AgentOutput], operator.add]
-      final_answer: str
+class Classification(TypedDict):
+    """A single routing decision: which agent to call with what query."""
+    source: Literal["github", "notion", "slack"]
+    query: str
 
 
-  # Structured output schema for classifier
-  class ClassificationResult(BaseModel):
-      """Result of classifying a user query into agent-specific sub-questions."""
-      classifications: list[Classification] = Field(
-          description="List of agents to invoke with their targeted sub-questions"
-      )
+class RouterState(TypedDict):
+    query: str
+    classifications: list[Classification]
+    results: Annotated[list[AgentOutput], operator.add]
+    final_answer: str
 
 
-  # Tools
-  @tool
-  def search_code(query: str, repo: str = "main") -> str:
-      """Search code in GitHub repositories."""
-      return f"Found code matching '{query}' in {repo}: authentication middleware in src/auth.py"
+# Structured output schema for classifier
+class ClassificationResult(BaseModel):
+    """Result of classifying a user query into agent-specific sub-questions."""
+    classifications: list[Classification] = Field(
+        description="List of agents to invoke with their targeted sub-questions"
+    )
 
 
-  @tool
-  def search_issues(query: str) -> str:
-      """Search GitHub issues and pull requests."""
-      return f"Found 3 issues matching '{query}': #142 (API auth docs), #89 (OAuth flow), #203 (token refresh)"
+# Tools
+@tool
+def search_code(query: str, repo: str = "main") -> str:
+    """Search code in GitHub repositories."""
+    return f"Found code matching '{query}' in {repo}: authentication middleware in src/auth.py"
 
 
-  @tool
-  def search_prs(query: str) -> str:
-      """Search pull requests for implementation details."""
-      return f"PR #156 added JWT authentication, PR #178 updated OAuth scopes"
+@tool
+def search_issues(query: str) -> str:
+    """Search GitHub issues and pull requests."""
+    return f"Found 3 issues matching '{query}': #142 (API auth docs), #89 (OAuth flow), #203 (token refresh)"
 
 
-  @tool
-  def search_notion(query: str) -> str:
-      """Search Notion workspace for documentation."""
-      return f"Found documentation: 'API Authentication Guide' - covers OAuth2 flow, API keys, and JWT tokens"
+@tool
+def search_prs(query: str) -> str:
+    """Search pull requests for implementation details."""
+    return f"PR #156 added JWT authentication, PR #178 updated OAuth scopes"
 
 
-  @tool
-  def get_page(page_id: str) -> str:
-      """Get a specific Notion page by ID."""
-      return f"Page content: Step-by-step authentication setup instructions"
+@tool
+def search_notion(query: str) -> str:
+    """Search Notion workspace for documentation."""
+    return f"Found documentation: 'API Authentication Guide' - covers OAuth2 flow, API keys, and JWT tokens"
 
 
-  @tool
-  def search_slack(query: str) -> str:
-      """Search Slack messages and threads."""
-      return f"Found discussion in #engineering: 'Use Bearer tokens for API auth, see docs for refresh flow'"
+@tool
+def get_page(page_id: str) -> str:
+    """Get a specific Notion page by ID."""
+    return f"Page content: Step-by-step authentication setup instructions"
 
 
-  @tool
-  def get_thread(thread_id: str) -> str:
-      """Get a specific Slack thread."""
-      return f"Thread discusses best practices for API key rotation"
+@tool
+def search_slack(query: str) -> str:
+    """Search Slack messages and threads."""
+    return f"Found discussion in #engineering: 'Use Bearer tokens for API auth, see docs for refresh flow'"
 
 
-  # Models and agents
-  model = init_chat_model("openai:gpt-5.5")
-  router_llm = init_chat_model("openai:gpt-5.4-mini")
-
-  github_agent = create_agent(
-      model,
-      tools=[search_code, search_issues, search_prs],
-      system_prompt=(
-          "You are a GitHub expert. Answer questions about code, "
-          "API references, and implementation details by searching "
-          "repositories, issues, and pull requests."
-      ),
-  )
-
-  notion_agent = create_agent(
-      model,
-      tools=[search_notion, get_page],
-      system_prompt=(
-          "You are a Notion expert. Answer questions about internal "
-          "processes, policies, and team documentation by searching "
-          "the organization's Notion workspace."
-      ),
-  )
-
-  slack_agent = create_agent(
-      model,
-      tools=[search_slack, get_thread],
-      system_prompt=(
-          "You are a Slack expert. Answer questions by searching "
-          "relevant threads and discussions where team members have "
-          "shared knowledge and solutions."
-      ),
-  )
+@tool
+def get_thread(thread_id: str) -> str:
+    """Get a specific Slack thread."""
+    return f"Thread discusses best practices for API key rotation"
 
 
-  # Workflow nodes
-  def classify_query(state: RouterState) -> dict:
-      """Classify query and determine which agents to invoke."""
-      structured_llm = router_llm.with_structured_output(ClassificationResult)
+# Models and agents
+model = init_chat_model("openai:gpt-5.5")
+router_llm = init_chat_model("openai:gpt-5.4-mini")
 
-      result = structured_llm.invoke([
-          {
-              "role": "system",
-              "content": """Analyze this query and determine which knowledge bases to consult.
-  For each relevant source, generate a targeted sub-question optimized for that source.
+github_agent = create_agent(
+    model,
+    tools=[search_code, search_issues, search_prs],
+    system_prompt=(
+        "You are a GitHub expert. Answer questions about code, "
+        "API references, and implementation details by searching "
+        "repositories, issues, and pull requests."
+    ),
+)
 
-  Available sources:
-  - github: Code, API references, implementation details, issues, pull requests
-  - notion: Internal documentation, processes, policies, team wikis
-  - slack: Team discussions, informal knowledge sharing, recent conversations
+notion_agent = create_agent(
+    model,
+    tools=[search_notion, get_page],
+    system_prompt=(
+        "You are a Notion expert. Answer questions about internal "
+        "processes, policies, and team documentation by searching "
+        "the organization's Notion workspace."
+    ),
+)
 
-  Return ONLY the sources that are relevant to the query."""
-          },
-          {"role": "user", "content": state["query"]}
-      ])
-
-      return {"classifications": result.classifications}
-
-
-  def route_to_agents(state: RouterState) -> list[Send]:
-      """Fan out to agents based on classifications."""
-      return [
-          Send(c["source"], {"query": c["query"]})
-          for c in state["classifications"]
-      ]
-
-
-  def query_github(state: AgentInput) -> dict:
-      """Query the GitHub agent."""
-      result = github_agent.invoke({
-          "messages": [{"role": "user", "content": state["query"]}]
-      })
-      return {"results": [{"source": "github", "result": result["messages"][-1].content}]}
+slack_agent = create_agent(
+    model,
+    tools=[search_slack, get_thread],
+    system_prompt=(
+        "You are a Slack expert. Answer questions by searching "
+        "relevant threads and discussions where team members have "
+        "shared knowledge and solutions."
+    ),
+)
 
 
-  def query_notion(state: AgentInput) -> dict:
-      """Query the Notion agent."""
-      result = notion_agent.invoke({
-          "messages": [{"role": "user", "content": state["query"]}]
-      })
-      return {"results": [{"source": "notion", "result": result["messages"][-1].content}]}
+# Workflow nodes
+def classify_query(state: RouterState) -> dict:
+    """Classify query and determine which agents to invoke."""
+    structured_llm = router_llm.with_structured_output(ClassificationResult)
+
+    result = structured_llm.invoke([
+        {
+            "role": "system",
+            "content": """Analyze this query and determine which knowledge bases to consult.
+For each relevant source, generate a targeted sub-question optimized for that source.
+
+Available sources:
+- github: Code, API references, implementation details, issues, pull requests
+- notion: Internal documentation, processes, policies, team wikis
+- slack: Team discussions, informal knowledge sharing, recent conversations
+
+Return ONLY the sources that are relevant to the query."""
+        },
+        {"role": "user", "content": state["query"]}
+    ])
+
+    return {"classifications": result.classifications}
 
 
-  def query_slack(state: AgentInput) -> dict:
-      """Query the Slack agent."""
-      result = slack_agent.invoke({
-          "messages": [{"role": "user", "content": state["query"]}]
-      })
-      return {"results": [{"source": "slack", "result": result["messages"][-1].content}]}
+def route_to_agents(state: RouterState) -> list[Send]:
+    """Fan out to agents based on classifications."""
+    return [
+        Send(c["source"], {"query": c["query"]})
+        for c in state["classifications"]
+    ]
 
 
-  def synthesize_results(state: RouterState) -> dict:
-      """Combine results from all agents into a coherent answer."""
-      if not state["results"]:
-          return {"final_answer": "No results found from any knowledge source."}
-
-      formatted = [
-          f"**From {r['source'].title()}:**\n{r['result']}"
-          for r in state["results"]
-      ]
-
-      synthesis_response = router_llm.invoke([
-          {
-              "role": "system",
-              "content": f"""Synthesize these search results to answer the original question: "{state['query']}"
-
-  - Combine information from multiple sources without redundancy
-  - Highlight the most relevant and actionable information
-  - Note any discrepancies between sources
-  - Keep the response concise and well-organized"""
-          },
-          {"role": "user", "content": "\n\n".join(formatted)}
-      ])
-
-      return {"final_answer": synthesis_response.content}
+def query_github(state: AgentInput) -> dict:
+    """Query the GitHub agent."""
+    result = github_agent.invoke({
+        "messages": [{"role": "user", "content": state["query"]}]
+    })
+    return {"results": [{"source": "github", "result": result["messages"][-1].content}]}
 
 
-  # Build workflow
-  workflow = (
-      StateGraph(RouterState)
-      .add_node("classify", classify_query)
-      .add_node("github", query_github)
-      .add_node("notion", query_notion)
-      .add_node("slack", query_slack)
-      .add_node("synthesize", synthesize_results)
-      .add_edge(START, "classify")
-      .add_conditional_edges("classify", route_to_agents, ["github", "notion", "slack"])
-      .add_edge("github", "synthesize")
-      .add_edge("notion", "synthesize")
-      .add_edge("slack", "synthesize")
-      .add_edge("synthesize", END)
-      .compile()
-  )
+def query_notion(state: AgentInput) -> dict:
+    """Query the Notion agent."""
+    result = notion_agent.invoke({
+        "messages": [{"role": "user", "content": state["query"]}]
+    })
+    return {"results": [{"source": "notion", "result": result["messages"][-1].content}]}
 
 
-  if __name__ == "__main__":
-      result = workflow.invoke({
-          "query": "How do I authenticate API requests?"
-      })
+def query_slack(state: AgentInput) -> dict:
+    """Query the Slack agent."""
+    result = slack_agent.invoke({
+        "messages": [{"role": "user", "content": state["query"]}]
+    })
+    return {"results": [{"source": "slack", "result": result["messages"][-1].content}]}
 
-      print("Original query:", result["query"])
-      print("\nClassifications:")
-      for c in result["classifications"]:
-          print(f"  {c['source']}: {c['query']}")
-      print("\n" + "=" * 60 + "\n")
-      print("Final Answer:")
-      print(result["final_answer"])
-  ```
-</Expandable>
+
+def synthesize_results(state: RouterState) -> dict:
+    """Combine results from all agents into a coherent answer."""
+    if not state["results"]:
+        return {"final_answer": "No results found from any knowledge source."}
+
+    formatted = [
+        f"**From {r['source'].title()}:**\n{r['result']}"
+        for r in state["results"]
+    ]
+
+    synthesis_response = router_llm.invoke([
+        {
+            "role": "system",
+            "content": f"""Synthesize these search results to answer the original question: "{state['query']}"
+
+- Combine information from multiple sources without redundancy
+- Highlight the most relevant and actionable information
+- Note any discrepancies between sources
+- Keep the response concise and well-organized"""
+        },
+        {"role": "user", "content": "\n\n".join(formatted)}
+    ])
+
+    return {"final_answer": synthesis_response.content}
+
+
+# Build workflow
+workflow = (
+    StateGraph(RouterState)
+    .add_node("classify", classify_query)
+    .add_node("github", query_github)
+    .add_node("notion", query_notion)
+    .add_node("slack", query_slack)
+    .add_node("synthesize", synthesize_results)
+    .add_edge(START, "classify")
+    .add_conditional_edges("classify", route_to_agents, ["github", "notion", "slack"])
+    .add_edge("github", "synthesize")
+    .add_edge("notion", "synthesize")
+    .add_edge("slack", "synthesize")
+    .add_edge("synthesize", END)
+    .compile()
+)
+
+
+if __name__ == "__main__":
+    result = workflow.invoke({
+        "query": "How do I authenticate API requests?"
+    })
+
+    print("Original query:", result["query"])
+    print("\nClassifications:")
+    for c in result["classifications"]:
+        print(f"  {c['source']}: {c['query']}")
+    print("\n" + "=" * 60 + "\n")
+    print("Final Answer:")
+    print(result["final_answer"])
+```
 
 ## 9. Advanced: Stateful routers
 
@@ -1026,17 +992,17 @@ result = conversational_agent.invoke(
 print(result["messages"][-1].content)
 ```
 
-<Tip>
-  The tool wrapper approach is recommended for most use cases. It provides clean separation: the router handles multi-source querying, while the conversational agent handles context and memory.
-</Tip>
+> [!TIP]
+>
+> The tool wrapper approach is recommended for most use cases. It provides clean separation: the router handles multi-source querying, while the conversational agent handles context and memory.
 
 ### Full persistence approach
 
 If you need the router itself to maintain state—for example, to use previous search results in routing decisions—use [persistence](/oss/python/langchain/short-term-memory) to store message history at the router level.
 
-<Warning>
-  **Stateful routers add complexity.** When routing to different agents across turns, conversations may feel inconsistent if agents have different tones or prompts. Consider the [handoffs pattern](/oss/python/langchain/multi-agent/handoffs) or [subagents pattern](/oss/python/langchain/multi-agent/subagents) instead—both provide clearer semantics for multi-turn conversations with different agents.
-</Warning>
+> [!WARNING]
+>
+> **Stateful routers add complexity.** When routing to different agents across turns, conversations may feel inconsistent if agents have different tones or prompts. Consider the [handoffs pattern](/oss/python/langchain/multi-agent/handoffs) or [subagents pattern](/oss/python/langchain/multi-agent/subagents) instead—both provide clearer semantics for multi-turn conversations with different agents.
 
 ## 10. Key takeaways
 
@@ -1048,13 +1014,13 @@ The router pattern excels when you have:
 
 The pattern has three phases: **decompose** (analyze the query and generate targeted sub-questions), **route** (execute queries in parallel), and **synthesize** (combine results).
 
-<Tip>
-  **When to use the router pattern**
-
-  Use the router pattern when you have multiple independent knowledge sources, need low-latency parallel queries, and want explicit control over routing logic.
-
-  For simpler cases with dynamic tool selection, consider the [subagents pattern](/oss/python/langchain/multi-agent/subagents). For workflows where agents need to converse with users sequentially, consider [handoffs](/oss/python/langchain/multi-agent/handoffs).
-</Tip>
+> [!TIP]
+>
+> **When to use the router pattern**
+>
+> Use the router pattern when you have multiple independent knowledge sources, need low-latency parallel queries, and want explicit control over routing logic.
+>
+> For simpler cases with dynamic tool selection, consider the [subagents pattern](/oss/python/langchain/multi-agent/subagents). For workflows where agents need to converse with users sequentially, consider [handoffs](/oss/python/langchain/multi-agent/handoffs).
 
 ## Next steps
 
@@ -1065,12 +1031,6 @@ The pattern has three phases: **decompose** (analyze the query and generate targ
 
 ***
 
-<div>
-  <Callout icon="terminal-2">
-    [Connect these docs](/use-these-docs) to your agent of choice via MCP for real-time answers.
-  </Callout>
+[Connect these docs](/use-these-docs) to your agent of choice via MCP for real-time answers.
 
-  <Callout icon="edit">
-    [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/oss/langchain/multi-agent/router-knowledge-base.mdx) or [file an issue](https://github.com/langchain-ai/docs/issues/new/choose).
-  </Callout>
-</div>
+[Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/oss/langchain/multi-agent/router-knowledge-base.mdx) or [file an issue](https://github.com/langchain-ai/docs/issues/new/choose).

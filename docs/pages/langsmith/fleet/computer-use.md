@@ -6,9 +6,9 @@ Run code, manage files, and call authenticated APIs from a persistent virtual co
 
 Computer use gives your Fleet agent access to an isolated virtual computer. The agent can write and execute code, manage files, install packages, and call authenticated external APIs without exposing credentials to the language model.
 
-<Note>
-  Computer use is available on the [Plus and Enterprise plans](https://langchain.com/pricing).
-</Note>
+> [!NOTE]
+>
+> Computer use is available on the [Plus and Enterprise plans](https://langchain.com/pricing).
 
 ## Computer modes
 
@@ -21,27 +21,25 @@ Choose how the virtual computer is shared across an agent's conversation threads
 
 ## Configure computer use
 
-<Warning>
-  The computer mode is set when the agent is created and cannot be changed afterward. To switch modes, create a new agent.
-</Warning>
+> [!WARNING]
+>
+> The computer mode is set when the agent is created and cannot be changed afterward. To switch modes, create a new agent.
 
-<Steps>
-  <Step title="Open the Create agent dialog">
-    In the [Fleet](https://smith.langchain.com/agents?utm_source=docs\&utm_medium=cta\&utm_campaign=langsmith-signup\&utm_content=langsmith-fleet-computer-use) left navigation, under **My Agents**, click <Icon icon="plus" /> and select either **Create with AI** or **Blank agent**. Enter a name for your agent.
-  </Step>
+**1. Open the Create agent dialog**
 
-  <Step title="Enable computer use">
-    Under **Should your agent use a computer?**, select **Yes**, then choose **Shared computer** or **Computer per thread**. If you select **No** (the default), the agent is created with no computer access.
-  </Step>
+In the [Fleet](https://smith.langchain.com/agents?utm_source=docs\&utm_medium=cta\&utm_campaign=langsmith-signup\&utm_content=langsmith-fleet-computer-use) left navigation, under **My Agents**, click  and select either **Create with AI** or **Blank agent**. Enter a name for your agent.
 
-  <Step title="Set the base snapshot (optional)">
-    Expand **Advanced** to choose a **Snapshot** for new computers.
-  </Step>
+**2. Enable computer use**
 
-  <Step title="Create the agent">
-    Click **Create Agent**.
-  </Step>
-</Steps>
+Under **Should your agent use a computer?**, select **Yes**, then choose **Shared computer** or **Computer per thread**. If you select **No** (the default), the agent is created with no computer access.
+
+**3. Set the base snapshot (optional)**
+
+Expand **Advanced** to choose a **Snapshot** for new computers.
+
+**4. Create the agent**
+
+Click **Create Agent**.
 
 ## Access profiles
 
@@ -57,19 +55,17 @@ A profile also has a **Network scope** that controls outbound traffic for the ag
 
 ### Add an access profile
 
-<Steps>
-  <Step title="Create the access profile">
-    Go to the [Fleet Integrations tab](https://smith.langchain.com/agents/tools) and navigate to the **Computer** section. Click **+ Create profile** and follow the prompts to configure the host patterns and credentials.
-  </Step>
+**1. Create the access profile**
 
-  <Step title="Attach the profile to an agent">
-    In the agent editor, click the **Computer** node. Click **+ Add** next to **Access profiles** and select the profile you created.
-  </Step>
+Go to the [Fleet Integrations tab](https://smith.langchain.com/agents/tools) and navigate to the **Computer** section. Click **+ Create profile** and follow the prompts to configure the host patterns and credentials.
 
-  <Step title="Save changes">
-    Click **Save changes**.
-  </Step>
-</Steps>
+**2. Attach the profile to an agent**
+
+In the agent editor, click the **Computer** node. Click **+ Add** next to **Access profiles** and select the profile you created.
+
+**3. Save changes**
+
+Click **Save changes**.
 
 ## Computer lifecycle
 
@@ -78,44 +74,36 @@ Each agent has two lifecycle settings that control how long a computer stays act
 * **Idle timeout**: When the computer has not received any commands for this duration, it pauses and the disk is archived. The agent can resume the same computer later without losing data. Default: **15 minutes**.
 * **Stopped computer cleanup**: After a computer has been stopped for this duration, it is permanently deleted along with all disk data. Default: **14 days**.
 
-<Note>
-  **Stopped computer cleanup** applies only to **Computer per thread** mode. Shared computers are not deleted automatically.
-</Note>
+> [!NOTE]
+>
+> **Stopped computer cleanup** applies only to **Computer per thread** mode. Shared computers are not deleted automatically.
 
 ## Base snapshot
 
 A snapshot is the disk image used to boot the computer. By default, all Fleet agents use the workspace default snapshot. To build, capture, or configure custom snapshots, see [Sandbox snapshots](/langsmith/sandbox-snapshots). [Change the snapshot for an agent](#configure-lifecycle-and-snapshot) in the settings popover.
 
-<Note>
-  Snapshot changes apply only to new computers for the agent. The single shared computer in **Shared computer** mode keeps its original snapshot for its lifetime.
-</Note>
+> [!NOTE]
+>
+> Snapshot changes apply only to new computers for the agent. The single shared computer in **Shared computer** mode keeps its original snapshot for its lifetime.
 
 ## Configure lifecycle and snapshot
 
 The snapshot, idle timeout, and stopped computer cleanup for an agent are all set in the **Computer lifecycle** section of the settings popover.
 
-<Steps>
-  <Step title="Open the settings popover">
-    In [Fleet](https://smith.langchain.com/agents?utm_source=docs\&utm_medium=cta\&utm_campaign=langsmith-signup\&utm_content=langsmith-fleet-computer-use), open the agent and click the <Icon icon="settings" /> settings icon in the agent editor.
-  </Step>
+**1. Open the settings popover**
 
-  <Step title="Set the lifecycle fields">
-    Scroll to the **Computer lifecycle** section. Set the **Snapshot**, **Idle timeout**, and, for **Computer per thread** mode, **Stopped computer cleanup**.
-  </Step>
+In [Fleet](https://smith.langchain.com/agents?utm_source=docs\&utm_medium=cta\&utm_campaign=langsmith-signup\&utm_content=langsmith-fleet-computer-use), open the agent and click the  settings icon in the agent editor.
 
-  <Step title="Save changes">
-    Click **Save changes**.
-  </Step>
-</Steps>
+**2. Set the lifecycle fields**
+
+Scroll to the **Computer lifecycle** section. Set the **Snapshot**, **Idle timeout**, and, for **Computer per thread** mode, **Stopped computer cleanup**.
+
+**3. Save changes**
+
+Click **Save changes**.
 
 ***
 
-<div>
-  <Callout icon="terminal-2">
-    [Connect these docs](/use-these-docs) to your agent of choice via MCP for real-time answers.
-  </Callout>
+[Connect these docs](/use-these-docs) to your agent of choice via MCP for real-time answers.
 
-  <Callout icon="edit">
-    [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/fleet/computer-use.mdx) or [file an issue](https://github.com/langchain-ai/docs/issues/new/choose).
-  </Callout>
-</div>
+[Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/fleet/computer-use.mdx) or [file an issue](https://github.com/langchain-ai/docs/issues/new/choose).

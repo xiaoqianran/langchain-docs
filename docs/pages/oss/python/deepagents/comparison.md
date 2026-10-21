@@ -6,9 +6,9 @@ Compare LangChain Deep Agents with the Claude Agent SDK to choose the right tool
 
 This page explains how [LangChain Deep Agents](/oss/python/deepagents/overview) compares to the [Claude Agent SDK](https://platform.anthropic.com/docs/en/agent-sdk/overview). Both are harnesses for building custom agents, but they make different tradeoffs around execution environments, deployment, and vendor coupling.
 
-<Info>
-  Deep Agents is used in production by [OpenSWE](https://github.com/langchain-ai/open-swe) and [LangSmith Fleet](/langsmith/fleet/index).
-</Info>
+> [!NOTE]
+>
+> Deep Agents is used in production by [OpenSWE](https://github.com/langchain-ai/open-swe) and [LangSmith Fleet](/langsmith/fleet/index).
 
 ## At a glance
 
@@ -59,9 +59,9 @@ Deep Agents runs in two modes, and your tools, middleware, and subagents carry o
 * **Managed:** create, run, and operate deep agents with [Managed Deep Agents](/langsmith/python/managed-deep-agents-overview) in LangSmith. The managed runtime owns the backend, store, and checkpointer, so you declare the agent for the runtime instead of compiling it yourself, and the system prompt, skills, and memory move into project files. See [Relationship to Deep Agents](/langsmith/python/managed-deep-agents-overview#relationship-to-deep-agents).
 * **Self-hosted:** run [`langgraph build`](/langsmith/cli#build) to produce a [standalone Docker image](/langsmith/deploy-standalone-server) you can deploy anywhere, with no changes to the agent.
 
-<Tip>
-  For a managed agent platform that works across any model provider, use [LangSmith Fleet](/langsmith/fleet/index). [Claude managed agents](https://platform.claude.com/docs/en/managed-agents/overview) is limited to the Anthropic ecosystem.
-</Tip>
+> [!TIP]
+>
+> For a managed agent platform that works across any model provider, use [LangSmith Fleet](/langsmith/fleet/index). [Claude managed agents](https://platform.claude.com/docs/en/managed-agents/overview) is limited to the Anthropic ecosystem.
 
 ### LLM
 
@@ -78,20 +78,14 @@ The Claude Agent SDK is purpose-built for Claude and Anthropic's product surface
 * **Choose Deep Agents** if you want model and infrastructure flexibility, built-in multi-tenant deployment, and the option to run managed or self-hosted with the same agent code.
 * **Choose Claude Agent SDK** if you are already invested in the Anthropic ecosystem and wish to self-host and build the API, auth, and multi-tenant layers yourself.
 
-<Note>
-  **Notice a mistake?**
-
-  We drafted this comparison on April 16th, 2026. If products have changed, please [file an issue](https://github.com/langchain-ai/docs/issues).
-</Note>
+> [!NOTE]
+>
+> **Notice a mistake?**
+>
+> We drafted this comparison on April 16th, 2026. If products have changed, please [file an issue](https://github.com/langchain-ai/docs/issues).
 
 ***
 
-<div>
-  <Callout icon="terminal-2">
-    [Connect these docs](/use-these-docs) to your agent of choice via MCP for real-time answers.
-  </Callout>
+[Connect these docs](/use-these-docs) to your agent of choice via MCP for real-time answers.
 
-  <Callout icon="edit">
-    [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/oss/deepagents/comparison.mdx) or [file an issue](https://github.com/langchain-ai/docs/issues/new/choose).
-  </Callout>
-</div>
+[Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/oss/deepagents/comparison.mdx) or [file an issue](https://github.com/langchain-ai/docs/issues/new/choose).

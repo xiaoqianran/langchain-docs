@@ -12,7 +12,7 @@ If you are ready to install, start with the [deployment walkthrough](/langsmith/
 
 LangSmith on Azure deploys in stages. Each stage adds a capability layer on top of the previous. All layers share the same AKS cluster and `langsmith` namespace.
 
-<img alt="LangSmith on Azure service layout" />
+![LangSmith on Azure service layout](https://mintcdn.com/langchain-5e9cc07a/D6uoP5M0BV8YGC-1/images/self-hosted-terraform/azure-architecture.png?fit=max\&auto=format\&n=D6uoP5M0BV8YGC-1\&q=85\&s=5ee76baf8bca85d865a4e75e2ab7d4b6)
 
 | Stage | Layer | What it adds |
 | - | - | - |
@@ -114,13 +114,13 @@ AKS nodes get no public IPs. By default, they egress through an outbound public 
 | `langsmith-ace-backend` | Async compute (dataset runs, evaluations, background jobs) | None | 1 to 5 | No |
 | `langsmith-clickhouse` | Columnar store (trace spans, run metadata, eval results) | 8123, 9000 | StatefulSet, single replica, 500Gi PVC | No |
 
-<Warning>
-  In-cluster ClickHouse is dev/POC only (single pod, no replication, no backups). For production use [LangChain Managed ClickHouse](/langsmith/langsmith-managed-clickhouse) or a self-managed external cluster.
-</Warning>
+> [!WARNING]
+>
+> In-cluster ClickHouse is dev/POC only (single pod, no replication, no backups). For production use [LangChain Managed ClickHouse](/langsmith/langsmith-managed-clickhouse) or a self-managed external cluster.
 
-<Note>
-  [SmithDB](https://www.langchain.com/blog/introducing-smithdb?utm_source=docs) is LangSmith's purpose-built observability backend, available for self-hosted LangSmith starting with version 0.16.0 (see [self-hosted support](/langsmith/smithdb-sdk-migration#about-self-hosted)). These Terraform modules provision ClickHouse by default, so the guidance in the previous sections applies to most deployments. Set `enable_smithdb = true` to add the SmithDB infrastructure: a dedicated PostgreSQL 18 metastore, a storage account and Blob container, Workload Identity, and Premium SSD v2 cache volumes. On Azure, SmithDB requires a stable release on the LangSmith Helm chart 0.17 line, which the `v0.17.*` module tags deploy. On the `v0.16.*` line, SmithDB needs module tag v0.16.56 or later and `langsmith_helm_chart_version = "~0.17.0"`.
-</Note>
+> [!NOTE]
+>
+> [SmithDB](https://www.langchain.com/blog/introducing-smithdb?utm_source=docs) is LangSmith's purpose-built observability backend, available for self-hosted LangSmith starting with version 0.16.0 (see [self-hosted support](/langsmith/smithdb-sdk-migration#about-self-hosted)). These Terraform modules provision ClickHouse by default, so the guidance in the previous sections applies to most deployments. Set `enable_smithdb = true` to add the SmithDB infrastructure: a dedicated PostgreSQL 18 metastore, a storage account and Blob container, Workload Identity, and Premium SSD v2 cache volumes. On Azure, SmithDB requires a stable release on the LangSmith Helm chart 0.17 line, which the `v0.17.*` module tags deploy. On the `v0.16.*` line, SmithDB needs module tag v0.16.56 or later and `langsmith_helm_chart_version = "~0.17.0"`.
 
 ### One-time jobs
 
@@ -331,9 +331,9 @@ Four sizing profiles are available.
 | default | `Standard_D8s_v5` | 8 | 32 GB | 1 | 10 | Core LangSmith, system pods (set min 3 for production) |
 | large | `Standard_D16s_v5` | 16 | 64 GB | 0 | 2 | ClickHouse (in-cluster), LangSmith Deployment agent pods |
 
-<Note>
-  ClickHouse (when in-cluster) requests 1 to 4 CPU and 2 to 16 GB RAM depending on profile. With [LangChain Managed ClickHouse](/langsmith/langsmith-managed-clickhouse), the `large` pool is only needed for agent pods that the LangSmith Deployment operator spawns.
-</Note>
+> [!NOTE]
+>
+> ClickHouse (when in-cluster) requests 1 to 4 CPU and 2 to 16 GB RAM depending on profile. With [LangChain Managed ClickHouse](/langsmith/langsmith-managed-clickhouse), the `large` pool is only needed for agent pods that the LangSmith Deployment operator spawns.
 
 ## Optional modules
 
@@ -349,12 +349,6 @@ Each module is count-controlled (`0` disabled, `1` enabled). Enable any combinat
 
 ***
 
-<div>
-  <Callout icon="terminal-2">
-    [Connect these docs](/use-these-docs) to your agent of choice via MCP for real-time answers.
-  </Callout>
+[Connect these docs](/use-these-docs) to your agent of choice via MCP for real-time answers.
 
-  <Callout icon="edit">
-    [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/self-host-terraform-azure-architecture.mdx) or [file an issue](https://github.com/langchain-ai/docs/issues/new/choose).
-  </Callout>
-</div>
+[Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/self-host-terraform-azure-architecture.mdx) or [file an issue](https://github.com/langchain-ai/docs/issues/new/choose).

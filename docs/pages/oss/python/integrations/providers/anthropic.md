@@ -8,32 +8,22 @@ This page covers all LangChain integrations with [Anthropic](https://www.anthrop
 
 ## Model interfaces
 
-<Columns>
-  <Card title="ChatAnthropic" href="/oss/python/integrations/chat/anthropic" icon="message">
-    Anthropic chat models.
-  </Card>
+> **[ChatAnthropic](/oss/python/integrations/chat/anthropic)**
+>
+> Anthropic chat models.
 
-  <Card title="Anthropic middleware" href="/oss/python/integrations/middleware/anthropic" icon="stack-2">
-    Anthropic-specific middleware for Claude models.
-  </Card>
-</Columns>
+> **[Anthropic middleware](/oss/python/integrations/middleware/anthropic)**
+>
+> Anthropic-specific middleware for Claude models.
 
 ## Other
 
-<Columns>
-  <Card title="AnthropicLLM" href="/oss/python/integrations/llms/anthropic" icon="cursor-text">
-    (Legacy) Anthropic text completion models.
-  </Card>
-</Columns>
+> **[AnthropicLLM](/oss/python/integrations/llms/anthropic)**
+>
+> (Legacy) Anthropic text completion models.
 
 ***
 
-<div>
-  <Callout icon="terminal-2">
-    [Connect these docs](/use-these-docs) to your agent of choice via MCP for real-time answers.
-  </Callout>
+[Connect these docs](/use-these-docs) to your agent of choice via MCP for real-time answers.
 
-  <Callout icon="edit">
-    [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/oss/python/integrations/providers/anthropic.mdx) or [file an issue](https://github.com/langchain-ai/docs/issues/new/choose).
-  </Callout>
-</div>
+[Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/oss/python/integrations/providers/anthropic.mdx) or [file an issue](https://github.com/langchain-ai/docs/issues/new/choose).

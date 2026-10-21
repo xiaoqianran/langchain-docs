@@ -185,43 +185,43 @@ async def stt_stream(
 
 The application implements an AssemblyAI client to manage the WebSocket connection and message parsing. See below for implementations; similar adapters can be constructed for other STT providers.
 
-<Accordion title="AssemblyAI Client">
-  ```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  class AssemblyAISTT:
-      def __init__(self, api_key: str | None = None, sample_rate: int = 16000):
-          self.api_key = api_key or os.getenv("ASSEMBLYAI_API_KEY")
-          self.sample_rate = sample_rate
-          self._ws: WebSocketClientProtocol | None = None
-
-      async def send_audio(self, audio_chunk: bytes) -> None:
-          """Send PCM audio bytes to AssemblyAI."""
-          ws = await self._ensure_connection()
-          await ws.send(audio_chunk)
-
-      async def receive_events(self) -> AsyncIterator[STTEvent]:
-          """Yield STT events as they arrive from AssemblyAI."""
-          async for raw_message in self._ws:
-              message = json.loads(raw_message)
-
-              if message["type"] == "Turn":
-                  # Final formatted transcript
-                  if message.get("turn_is_formatted"):
-                      yield STTOutputEvent.create(message["transcript"])
-                  # Partial transcript
-                  else:
-                      yield STTChunkEvent.create(message["transcript"])
-
-      async def _ensure_connection(self) -> WebSocketClientProtocol:
-          """Establish WebSocket connection if not already connected."""
-          if self._ws is None:
-              url = f"wss://streaming.assemblyai.com/v3/ws?sample_rate={self.sample_rate}&format_turns=true"
-              self._ws = await websockets.connect(
-                  url,
-                  additional_headers={"Authorization": self.api_key}
-              )
-          return self._ws
-  ```
-</Accordion>
+> **AssemblyAI Client**
+>
+> ```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> class AssemblyAISTT:
+>     def __init__(self, api_key: str | None = None, sample_rate: int = 16000):
+>         self.api_key = api_key or os.getenv("ASSEMBLYAI_API_KEY")
+>         self.sample_rate = sample_rate
+>         self._ws: WebSocketClientProtocol | None = None
+>
+>     async def send_audio(self, audio_chunk: bytes) -> None:
+>         """Send PCM audio bytes to AssemblyAI."""
+>         ws = await self._ensure_connection()
+>         await ws.send(audio_chunk)
+>
+>     async def receive_events(self) -> AsyncIterator[STTEvent]:
+>         """Yield STT events as they arrive from AssemblyAI."""
+>         async for raw_message in self._ws:
+>             message = json.loads(raw_message)
+>
+>             if message["type"] == "Turn":
+>                 # Final formatted transcript
+>                 if message.get("turn_is_formatted"):
+>                     yield STTOutputEvent.create(message["transcript"])
+>                 # Partial transcript
+>                 else:
+>                     yield STTChunkEvent.create(message["transcript"])
+>
+>     async def _ensure_connection(self) -> WebSocketClientProtocol:
+>         """Establish WebSocket connection if not already connected."""
+>         if self._ws is None:
+>             url = f"wss://streaming.assemblyai.com/v3/ws?sample_rate={self.sample_rate}&format_turns=true"
+>             self._ws = await websockets.connect(
+>                 url,
+>                 additional_headers={"Authorization": self.api_key}
+>             )
+>         return self._ws
+> ```
 
 ## 2. LangChain agent
 
@@ -348,81 +348,81 @@ async def tts_stream(
 
 The application implements a Cartesia client to manage the WebSocket connection and audio streaming. See below for implementations; similar adapters can be constructed for other TTS providers.
 
-<Accordion title="Cartesia Client">
-  ```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  import base64
-  import json
-  import websockets
-
-  class CartesiaTTS:
-      def __init__(
-          self,
-          api_key: Optional[str] = None,
-          voice_id: str = "f6ff7c0c-e396-40a9-a70b-f7607edb6937",
-          model_id: str = "sonic-3",
-          sample_rate: int = 24000,
-          encoding: str = "pcm_s16le",
-      ):
-          self.api_key = api_key or os.getenv("CARTESIA_API_KEY")
-          self.voice_id = voice_id
-          self.model_id = model_id
-          self.sample_rate = sample_rate
-          self.encoding = encoding
-          self._ws: WebSocketClientProtocol | None = None
-
-      def _generate_context_id(self) -> str:
-          """Generate a valid context_id for Cartesia."""
-          timestamp = int(time.time() * 1000)
-          counter = self._context_counter
-          self._context_counter += 1
-          return f"ctx_{timestamp}_{counter}"
-
-      async def send_text(self, text: str | None) -> None:
-          """Send text to Cartesia for synthesis."""
-          if not text or not text.strip():
-              return
-
-          ws = await self._ensure_connection()
-          payload = {
-              "model_id": self.model_id,
-              "transcript": text,
-              "voice": {
-                  "mode": "id",
-                  "id": self.voice_id,
-              },
-              "output_format": {
-                  "container": "raw",
-                  "encoding": self.encoding,
-                  "sample_rate": self.sample_rate,
-              },
-              "language": self.language,
-              "context_id": self._generate_context_id(),
-          }
-          await ws.send(json.dumps(payload))
-
-      async def receive_events(self) -> AsyncIterator[TTSChunkEvent]:
-          """Yield audio chunks as they arrive from Cartesia."""
-          async for raw_message in self._ws:
-              message = json.loads(raw_message)
-
-              # Decode and yield audio chunks
-              if "data" in message and message["data"]:
-                  audio_chunk = base64.b64decode(message["data"])
-                  if audio_chunk:
-                      yield TTSChunkEvent.create(audio_chunk)
-
-      async def _ensure_connection(self) -> WebSocketClientProtocol:
-          """Establish WebSocket connection if not already connected."""
-          if self._ws is None:
-              url = (
-                  f"wss://api.cartesia.ai/tts/websocket"
-                  f"?api_key={self.api_key}&cartesia_version={self.cartesia_version}"
-              )
-              self._ws = await websockets.connect(url)
-
-          return self._ws
-  ```
-</Accordion>
+> **Cartesia Client**
+>
+> ```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> import base64
+> import json
+> import websockets
+>
+> class CartesiaTTS:
+>     def __init__(
+>         self,
+>         api_key: Optional[str] = None,
+>         voice_id: str = "f6ff7c0c-e396-40a9-a70b-f7607edb6937",
+>         model_id: str = "sonic-3",
+>         sample_rate: int = 24000,
+>         encoding: str = "pcm_s16le",
+>     ):
+>         self.api_key = api_key or os.getenv("CARTESIA_API_KEY")
+>         self.voice_id = voice_id
+>         self.model_id = model_id
+>         self.sample_rate = sample_rate
+>         self.encoding = encoding
+>         self._ws: WebSocketClientProtocol | None = None
+>
+>     def _generate_context_id(self) -> str:
+>         """Generate a valid context_id for Cartesia."""
+>         timestamp = int(time.time() * 1000)
+>         counter = self._context_counter
+>         self._context_counter += 1
+>         return f"ctx_{timestamp}_{counter}"
+>
+>     async def send_text(self, text: str | None) -> None:
+>         """Send text to Cartesia for synthesis."""
+>         if not text or not text.strip():
+>             return
+>
+>         ws = await self._ensure_connection()
+>         payload = {
+>             "model_id": self.model_id,
+>             "transcript": text,
+>             "voice": {
+>                 "mode": "id",
+>                 "id": self.voice_id,
+>             },
+>             "output_format": {
+>                 "container": "raw",
+>                 "encoding": self.encoding,
+>                 "sample_rate": self.sample_rate,
+>             },
+>             "language": self.language,
+>             "context_id": self._generate_context_id(),
+>         }
+>         await ws.send(json.dumps(payload))
+>
+>     async def receive_events(self) -> AsyncIterator[TTSChunkEvent]:
+>         """Yield audio chunks as they arrive from Cartesia."""
+>         async for raw_message in self._ws:
+>             message = json.loads(raw_message)
+>
+>             # Decode and yield audio chunks
+>             if "data" in message and message["data"]:
+>                 audio_chunk = base64.b64decode(message["data"])
+>                 if audio_chunk:
+>                     yield TTSChunkEvent.create(audio_chunk)
+>
+>     async def _ensure_connection(self) -> WebSocketClientProtocol:
+>         """Establish WebSocket connection if not already connected."""
+>         if self._ws is None:
+>             url = (
+>                 f"wss://api.cartesia.ai/tts/websocket"
+>                 f"?api_key={self.api_key}&cartesia_version={self.cartesia_version}"
+>             )
+>             self._ws = await websockets.connect(url)
+>
+>         return self._ws
+> ```
 
 ### LangSmith
 
@@ -486,12 +486,6 @@ For more on building agents with LangChain, see the [Agents guide](/oss/python/l
 
 ***
 
-<div>
-  <Callout icon="terminal-2">
-    [Connect these docs](/use-these-docs) to your agent of choice via MCP for real-time answers.
-  </Callout>
+[Connect these docs](/use-these-docs) to your agent of choice via MCP for real-time answers.
 
-  <Callout icon="edit">
-    [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/oss/langchain/voice-agent.mdx) or [file an issue](https://github.com/langchain-ai/docs/issues/new/choose).
-  </Callout>
-</div>
+[Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/oss/langchain/voice-agent.mdx) or [file an issue](https://github.com/langchain-ai/docs/issues/new/choose).

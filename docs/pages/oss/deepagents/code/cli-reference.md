@@ -127,16 +127,14 @@ Add `--package` to install an arbitrary provider package via `uv --with` (see [A
 
 Remove one installed extra while preserving the rest of the Deep Agents Code installation:
 
-<CodeGroup>
-  ```bash Shell theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  dcode uninstall groq
-  dcode --uninstall groq
-  ```
+```bash Shell theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+dcode uninstall groq
+dcode --uninstall groq
+```
 
-  ```text In session theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  /uninstall groq
-  ```
-</CodeGroup>
+```text In session theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+/uninstall groq
+```
 
 Removal rebuilds a uv tool installation without the selected extra while preserving the interpreter, release channel, other extras, and packages installed with `--package`.
 
@@ -212,9 +210,9 @@ dcode -n "Build the project" -S recommended
 dcode -n "Fix the build" -S all
 ```
 
-<Warning>
-  `-S all` lets the agent execute arbitrary shell commands with no human confirmation.
-</Warning>
+> [!WARNING]
+>
+> `-S all` lets the agent execute arbitrary shell commands with no human confirmation.
 
 For more examples and tracing setup, see [Non-interactive mode and piping](/oss/deepagents/code/quickstart#non-interactive-mode-and-piping).
 
@@ -272,25 +270,25 @@ dcode -n "Audit this repository" --allow-fs-tools ls,read_file,glob,grep
 
 Valid names are `ls`, `read_file`, `write_file`, `edit_file`, `delete`, `glob`, `grep`, and `execute`. Explicit lists must include `read_file`. The allowlist applies to the main agent and synchronous subagents in every session mode, but not to async subagents or non-filesystem tools.
 
-<Note>
-  `--allow-fs-tools` and `-S`/`--shell-allow-list` control different layers of shell access:
-
-  * **`--allow-fs-tools`** controls which filesystem tools are available. Shell access requires `execute`.
-  * **`-S`/`--shell-allow-list`** controls which shell commands are permitted through `execute`. It does not affect other filesystem tools.
-
-  | `--allow-fs-tools` includes `execute`? | `-S` set? | Shell access |
-  | - | - | - |
-  | Yes | Yes | Allowed commands run (interactive confirms; non-interactive auto-approves) |
-  | Yes | No | Tool exists, but no command is pre-approved |
-  | No | Yes | No shell access — `execute` is absent, so `-S` has nothing to gate |
-  | No | No | No shell access |
-
-  In non-interactive mode, pass both to enable commands without a human to approve them:
-
-  ```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  dcode -n "Fix the failing tests" --allow-fs-tools execute -S "pytest,git,make"
-  ```
-</Note>
+> [!NOTE]
+>
+> `--allow-fs-tools` and `-S`/`--shell-allow-list` control different layers of shell access:
+>
+> * **`--allow-fs-tools`** controls which filesystem tools are available. Shell access requires `execute`.
+> * **`-S`/`--shell-allow-list`** controls which shell commands are permitted through `execute`. It does not affect other filesystem tools.
+>
+> | `--allow-fs-tools` includes `execute`? | `-S` set? | Shell access |
+> | - | - | - |
+> | Yes | Yes | Allowed commands run (interactive confirms; non-interactive auto-approves) |
+> | Yes | No | Tool exists, but no command is pre-approved |
+> | No | Yes | No shell access — `execute` is absent, so `-S` has nothing to gate |
+> | No | No | No shell access |
+>
+> In non-interactive mode, pass both to enable commands without a human to approve them:
+>
+> ```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> dcode -n "Fix the failing tests" --allow-fs-tools execute -S "pytest,git,make"
+> ```
 
 Run [`/tools`](#diagnose-and-audit-a-session) in a session to inspect the active tool set. From the shell, place tool-shaping flags before the subcommand:
 
@@ -432,9 +430,9 @@ dcode --sandbox modal --sandbox-setup ./setup.sh
 dcode --sandbox
 ```
 
-<Note>
-  Because `--sandbox` accepts an optional value, keep the bare form **last** on the command line. Otherwise a following argument (for example, `dcode --sandbox agents`) is consumed as the flag's value.
-</Note>
+> [!NOTE]
+>
+> Because `--sandbox` accepts an optional value, keep the bare form **last** on the command line. Otherwise a following argument (for example, `dcode --sandbox agents`) is consumed as the flag's value.
 
 Install sandbox extras with `dcode --install` (for example, `dcode --install daytona` or `dcode --install all-sandboxes`). See [Remote sandboxes](/oss/deepagents/code/remote-sandboxes) for provider setup, working directories, and third-party providers.
 
@@ -594,12 +592,6 @@ Destructive commands (`agents reset`, `skills delete`, `threads delete`) support
 
 ***
 
-<div>
-  <Callout icon="terminal-2">
-    [Connect these docs](/use-these-docs) to your agent of choice via MCP for real-time answers.
-  </Callout>
+[Connect these docs](/use-these-docs) to your agent of choice via MCP for real-time answers.
 
-  <Callout icon="edit">
-    [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/oss/deepagents/code/cli-reference.mdx) or [file an issue](https://github.com/langchain-ai/docs/issues/new/choose).
-  </Callout>
-</div>
+[Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/oss/deepagents/code/cli-reference.mdx) or [file an issue](https://github.com/langchain-ai/docs/issues/new/choose).

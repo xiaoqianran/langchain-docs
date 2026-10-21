@@ -4,82 +4,64 @@
 
 Instrument your LLM application, investigate traces, and monitor performance in production with LangSmith.
 
-<div>
-  <div>
-    <h1>LangSmith Observability</h1>
+# LangSmith Observability
 
-    LangSmith Observability provides full visibility into your LLM application: from individual traces to production-wide performance metrics. Traces are the record of what your agents did in production. Use them to debug failures, monitor quality, and build the datasets you evaluate against.
+LangSmith Observability provides full visibility into your LLM application: from individual traces to production-wide performance metrics. Traces are the record of what your agents did in production. Use them to debug failures, monitor quality, and build the datasets you evaluate against.
 
-    <Callout icon="plug">
-      LangSmith works with many frameworks and providers. Browse [available integrations](/langsmith/integrations) to connect your stack including OpenAI, Anthropic, CrewAI, Vercel AI SDK, Pydantic AI, and more.
-    </Callout>
+LangSmith works with many frameworks and providers. Browse [available integrations](/langsmith/integrations) to connect your stack including OpenAI, Anthropic, CrewAI, Vercel AI SDK, Pydantic AI, and more.
 
-    <h2>Get started</h2>
+## Get started
 
-    <Steps>
-      <Step title="Create an account" icon="user-plus">
-        Sign up at [smith.langchain.com](https://smith.langchain.com?utm_source=docs\&utm_medium=cta\&utm_campaign=langsmith-signup\&utm_content=snippets-langsmith-account-api-key-quickstart) (no credit card required).
-        You can log in with **Google**, **GitHub**, or **email**.
-      </Step>
+**1. Create an account**
 
-      <Step title="Create an API key" icon="key">
-        Go to your [Settings page](https://smith.langchain.com/settings) > **API Keys** > **Create API Key**.
-        Copy the key and save it securely.
-      </Step>
-    </Steps>
+Sign up at [smith.langchain.com](https://smith.langchain.com?utm_source=docs\&utm_medium=cta\&utm_campaign=langsmith-signup\&utm_content=snippets-langsmith-account-api-key-quickstart) (no credit card required).
+You can log in with **Google**, **GitHub**, or **email**.
 
-    Once your account and API key are ready, set up tracing:
+**2. Create an API key**
 
-    <CardGroup>
-      <Card title="Set up tracing" icon="settings" href="/langsmith/observability-quickstart">
-        Add tracing to your app in minutes with environment variables, framework integrations, or the SDK.
-      </Card>
+Go to your [Settings page](https://smith.langchain.com/settings) > **API Keys** > **Create API Key**.
+Copy the key and save it securely.
 
-      <Card title="Trace a RAG application" icon="notebook" href="/langsmith/observability-llm-tutorial">
-        Follow a step-by-step tutorial to instrument a retrieval-augmented generation app from start to finish.
-      </Card>
-    </CardGroup>
+Once your account and API key are ready, set up tracing:
 
-    <h2>Investigate and monitor</h2>
+> **[Set up tracing](/langsmith/observability-quickstart)**
+>
+> Add tracing to your app in minutes with environment variables, framework integrations, or the SDK.
 
-    <CardGroup>
-      <Card title="View traces" icon="route" href="/langsmith/view-traces">
-        Inspect threads and runs in the Messages, Turns, and Details views.
-      </Card>
+> **[Trace a RAG application](/langsmith/observability-llm-tutorial)**
+>
+> Follow a step-by-step tutorial to instrument a retrieval-augmented generation app from start to finish.
 
-      <Card title="Monitor performance" icon="chart-area" href="/langsmith/dashboards">
-        Build dashboards and set alerts to track quality and catch issues early.
-      </Card>
+## Investigate and monitor
 
-      <Card title="Configure automations" icon="robot" href="/langsmith/rules">
-        Automate workflows with rules, webhooks, and online evaluations.
-      </Card>
+> **[View traces](/langsmith/view-traces)**
+>
+> Inspect threads and runs in the Messages, Turns, and Details views.
 
-      <Card title="Collect feedback" icon="users" href="/langsmith/attach-user-feedback">
-        Annotate outputs and gather user feedback using queues or inline annotation.
-      </Card>
-    </CardGroup>
+> **[Monitor performance](/langsmith/dashboards)**
+>
+> Build dashboards and set alerts to track quality and catch issues early.
 
-    <Card title="Find and fix failures with Engine" icon="https://mintcdn.com/langchain-5e9cc07a/DcM1RJP509SEqR6s/images/brand/engine-icon-no-bg-dark.svg?fit=max&auto=format&n=DcM1RJP509SEqR6s&q=85&s=17cb861b0ae9666e1eb0876aa6aca68a" href="/langsmith/engine">
-      Automatically detect recurring issues in your traces, diagnose their root cause, and resolve them with LangSmith Engine.
-    </Card>
+> **[Configure automations](/langsmith/rules)**
+>
+> Automate workflows with rules, webhooks, and online evaluations.
 
-    For terminology and core concepts, refer to [Observability concepts](/langsmith/observability-concepts). For trace pricing, retention, and limits, see [Usage and billing](/langsmith/usage-and-billing).
+> **[Collect feedback](/langsmith/attach-user-feedback)**
+>
+> Annotate outputs and gather user feedback using queues or inline annotation.
 
-    <Note>
-      To set up a LangSmith instance, visit the [Platform setup section](/langsmith/platform-setup) to choose between cloud, hybrid, or self-hosted. All options include observability, evaluation, prompt engineering, and deployment.
-    </Note>
-  </div>
-</div>
+> **[Find and fix failures with Engine](/langsmith/engine)**
+>
+> Automatically detect recurring issues in your traces, diagnose their root cause, and resolve them with LangSmith Engine.
+
+For terminology and core concepts, refer to [Observability concepts](/langsmith/observability-concepts). For trace pricing, retention, and limits, see [Usage and billing](/langsmith/usage-and-billing).
+
+> [!NOTE]
+>
+> To set up a LangSmith instance, visit the [Platform setup section](/langsmith/platform-setup) to choose between cloud, hybrid, or self-hosted. All options include observability, evaluation, prompt engineering, and deployment.
 
 ***
 
-<div>
-  <Callout icon="terminal-2">
-    [Connect these docs](/use-these-docs) to your agent of choice via MCP for real-time answers.
-  </Callout>
+[Connect these docs](/use-these-docs) to your agent of choice via MCP for real-time answers.
 
-  <Callout icon="edit">
-    [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/observability.mdx) or [file an issue](https://github.com/langchain-ai/docs/issues/new/choose).
-  </Callout>
-</div>
+[Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/observability.mdx) or [file an issue](https://github.com/langchain-ai/docs/issues/new/choose).

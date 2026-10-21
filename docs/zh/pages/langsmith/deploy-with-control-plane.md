@@ -6,15 +6,15 @@
 
 使用控制平面 UI 构建 Docker 映像并将应用程序部署到自托管 LangSmith 实例。
 
-<Info>
-  **本指南适用于实例上具有 [enabled LangSmith Deployment](/langsmith/enable-self-hosted-deployment#enable-langsmith-deployment) 的自托管 LangSmith 客户**。对于云客户，请参阅[Deploy on Cloud](/langsmith/deploy-to-cloud)。对于没有控制平面的独立代理服务器，请参阅[Self-host standalone servers](/langsmith/deploy-standalone-server)。
-</Info>
+> [!注意]
+>
+> **本指南适用于实例上具有 [enabled LangSmith Deployment](/langsmith/enable-self-hosted-deployment#enable-langsmith-deployment) 的自托管 LangSmith 客户**。对于云客户，请参阅[Deploy on Cloud](/langsmith/deploy-to-cloud)。对于没有控制平面的独立代理服务器，请参阅[Self-host standalone servers](/langsmith/deploy-standalone-server)。
 
 本指南向您展示如何使用 [control plane](/langsmith/control-plane) 将应用程序部署到 [self-hosted](/langsmith/self-hosted) LangSmith 实例。使用控制平面，您可以在本地构建 Docker 映像，将它们推送到 Kubernetes 集群有权访问的注册表，并使用 [LangSmith UI](https://smith.langchain.com?utm_source=docs\&utm_medium=cta\&utm_campaign=langsmith-signup\&utm_content=langsmith-deploy-with-control-plane) 部署它们。
 
 ## 拓扑结构
 
-在现有自托管 LangSmith 实例上启用 LangSmith 部署会添加控制平面、数据平面侦听器以及在集群中配置代理服务器的操作员。基础LangSmith平台继续处理可观测性、评估和提示；部署的代理服务器将跟踪发送回它。
+在现有自托管 LangSmith 实例上启用 LangSmith 部署会添加控制平面、数据平面侦听器以及在集群中配置代理服务器的操作员。基础LangSmith平台继续处理可观察性、评估和提示；部署的代理服务器将跟踪发送回它。
 
 LangSmith部署添加的组件详情请参见[Enable LangSmith Deployment](/langsmith/enable-self-hosted-deployment#enable-langsmith-deployment)。
 
@@ -53,7 +53,7 @@ langgraph build -t my-image
 
 构建命令选项包括：|选项|默认|描述 |
 | - | - | - |
-| `-t, --tag TEXT` |必填| Docker 镜像的标签 |
+| `-t, --tag TEXT` |必填 | Docker 镜像的标签 |
 | `--platform TEXT` | |要构建的目标平台（例如，`linux/amd64,linux/arm64`）|
 | `--pull / --no-pull` | `--pull` |使用最新的远程 Docker 镜像构建 |
 | `-c, --config FILE` | `langgraph.json` |配置文件路径 |
@@ -70,9 +70,9 @@ langgraph build --platform linux/amd64 -t my-image:v1.0.0
 
 将您的映像推送到 Kubernetes 集群可访问的容器注册表。具体命令取决于您的注册表提供商。
 
-<Tip>
-  使用版本信息标记您的映像（例如，`my-registry.com/my-app:v1.0.0`）以使回滚更容易。
-</Tip>
+> [!提示]
+>
+> 使用版本信息标记您的映像（例如，`my-registry.com/my-app:v1.0.0`），以便更轻松地回滚。
 
 ## 步骤 4. 使用控制平面 UI 进行部署
 
@@ -92,9 +92,9 @@ langgraph build --platform linux/amd64 -t my-image:v1.0.0
 
 从控制平面 UI 中，您可以查看构建日志、服务器日志和部署指标，包括 CPU/内存使用情况、副本和 API 性能。更多详情请参阅[control plane monitoring documentation](/langsmith/control-plane#monitoring)。
 
-<Note>
-  会自动为每个部署创建一个与部署同名的[LangSmith Observability tracing project](/langsmith/observability)。跟踪环境变量由控制平面自动设置。
-</Note>
+> [!注意]
+>
+> 会为每个部署自动创建一个与部署同名的[LangSmith Observability tracing project](/langsmith/observability)。跟踪环境变量由控制平面自动设置。
 
 ## 更新部署要部署应用程序的新版本，请创建一个 [new revision](/langsmith/control-plane#revisions)：
 
@@ -113,9 +113,9 @@ langgraph build --platform linux/amd64 -t my-image:v1.0.0
 
 如果您的容器注册表需要身份验证（例如 AWS ECR、Azure ACR、GCP ArtifactRegistry、私有 Docker 注册表），则必须在部署应用程序之前配置 Kubernetes 映像拉取机密。这是一次性基础设施配置。
 
-<Note>
-  **此配置是在基础架构级别完成的，而不是在每个部署中完成。** 配置后，所有部署都会自动继承注册表凭据。
-</Note>
+> [!注意]
+>
+> **此配置是在基础架构级别完成的，而不是在每个部署中完成。** 配置后，所有部署都会自动继承注册表凭据。
 
 在 LangSmith Helm 图表的 `values.yaml` 文件中配置 `imagePullSecrets`。详细步骤请参见[Enable LangSmith Deployment guide](/langsmith/enable-self-hosted-deployment#enable-langsmith-deployment)。
 
@@ -129,12 +129,6 @@ langgraph build --platform linux/amd64 -t my-image:v1.0.0
 
 ***
 
-<div>
-  <Callout icon="terminal-2">
-    [Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
-  </Callout>
+[Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
 
-  <Callout icon="edit">
-    [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/deploy-with-control-plane.mdx) 或 [file an issue](https://github.com/langchain-ai/docs/issues/new/choose)。
-  </Callout>
-</div>
+[Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/deploy-with-control-plane.mdx) 或 [file an issue](https://github.com/langchain-ai/docs/issues/new/choose)。

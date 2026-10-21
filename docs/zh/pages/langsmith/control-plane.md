@@ -27,7 +27,7 @@
 
 本节介绍控制平面API的数据模型。该 API 用于创建、更新和删除部署。更多详情请参阅[control plane API reference](/langsmith/api-ref-control-plane)。
 
-### 集成集成是 `git` 存储库提供程序（例如 GitHub）的抽象。它包含连接 `git` 存储库并从其部署所需的所有元数据。
+### 集成集成是 `git` 存储库提供商（例如 GitHub）的抽象。它包含连接 `git` 存储库并从其部署所需的所有元数据。
 
 ### 部署
 
@@ -72,12 +72,6 @@
 
 ***
 
-<div>
-  <Callout icon="terminal-2">
-    [Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
-  </Callout>
+[Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
 
-  <Callout icon="edit">
-    [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/control-plane.mdx) 或 [file an issue](https://github.com/langchain-ai/docs/issues/new/choose)。
-  </Callout>
-</div>
+[Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/control-plane.mdx) 或 [file an issue](https://github.com/langchain-ai/docs/issues/new/choose)。

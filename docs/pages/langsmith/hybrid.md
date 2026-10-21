@@ -14,12 +14,12 @@ This setup gives you control over where your agent workloads run while letting y
 
 | Component | Where it runs | Who manages it |
 | - | - | - |
-| <Tooltip>Agent Servers</Tooltip> <br />for [LangSmith Deployment](/langsmith/deployment) | Your infrastructure | You |
-| LangSmith <br />(tracing, evaluation, prompts) | Self-hosted in your infrastructure, or LangSmith SaaS | You (self-hosted) or LangSmith (SaaS) |
+| Agent Servers (The server that runs your applications.) for [LangSmith Deployment](/langsmith/deployment) | Your infrastructure | You |
+| LangSmith (tracing, evaluation, prompts) | Self-hosted in your infrastructure, or LangSmith SaaS | You (self-hosted) or LangSmith (SaaS) |
 
-<Note>
-  Hybrid is a platform setup for LangSmith Deployment (agent serving). To set up LangSmith for observability, evaluation, and prompt engineering only, see [Set up LangSmith](/langsmith/platform-setup).
-</Note>
+> [!NOTE]
+>
+> Hybrid is a platform setup for LangSmith Deployment (agent serving). To set up LangSmith for observability, evaluation, and prompt engineering only, see [Set up LangSmith](/langsmith/platform-setup).
 
 ## Workflow
 
@@ -41,24 +41,44 @@ Agent Servers send traces to LangSmith based on the `LANGSMITH_ENDPOINT` environ
     <thead>
       <tr>
         <th>Region</th>
+
+        <th>
+          URL
+        </th>
       </tr>
     </thead>
 
     <tbody>
       <tr>
         <td>GCP US</td>
+
+        <td>
+          `https://api.smith.langchain.com`
+        </td>
       </tr>
 
       <tr>
         <td>GCP EU</td>
+
+        <td>
+          `https://eu.api.smith.langchain.com`
+        </td>
       </tr>
 
       <tr>
         <td>GCP APAC</td>
+
+        <td>
+          `https://apac.api.smith.langchain.com`
+        </td>
       </tr>
 
       <tr>
         <td>AWS US</td>
+
+        <td>
+          `https://aws.api.smith.langchain.com`
+        </td>
       </tr>
     </tbody>
   </table>
@@ -69,12 +89,6 @@ In both cases, authenticate with a [LangSmith API key](/langsmith/create-account
 
 ***
 
-<div>
-  <Callout icon="terminal-2">
-    [Connect these docs](/use-these-docs) to your agent of choice via MCP for real-time answers.
-  </Callout>
+[Connect these docs](/use-these-docs) to your agent of choice via MCP for real-time answers.
 
-  <Callout icon="edit">
-    [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/hybrid.mdx) or [file an issue](https://github.com/langchain-ai/docs/issues/new/choose).
-  </Callout>
-</div>
+[Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/hybrid.mdx) or [file an issue](https://github.com/langchain-ai/docs/issues/new/choose).

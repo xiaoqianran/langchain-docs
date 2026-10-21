@@ -20,7 +20,7 @@
 
 1. 导航到项目中的跟踪。
 2. 选择**运行**选项卡。
-3. 找到运行表右上角的格式图标 <Icon icon="adjustments-horizontal" />。
+3. 找到运行表右上角的格式图标。
 4. 在 **配置输入和输出预览** 侧窗口中，从下拉列表中选择跟踪名称。
 
 当您选择跟踪名称时，LangSmith 加载成功的跟踪示例并将其结构呈现为可扩展树。树中的每个节点代表数据中的一个字段，显示：* 字段名称（例如，`messages` 用于 LLM 对话历史记录、`output`、`metadata`）。
@@ -28,9 +28,7 @@
 * 数组的项目计数（例如，(3) 表示 3 个项目）。
 * 预览内联显示的字符串和数字的值。
 
-<img alt="Configure Input and Output previews side panel showing the tree view of trace data structure" />
-
-<img alt="Configure Input and Output previews side panel showing the tree view of trace data structure" />
+![Configure Input and Output previews side panel showing the tree view of trace data structure](https://mintcdn.com/langchain-5e9cc07a/PK5r912I08t0EBD8/langsmith/images/configure-preview.png?fit=max\&auto=format\&n=PK5r912I08t0EBD8\&q=85\&s=0fbc9a7b69a70c39daaf477d93b7623a)
 
 ### 设置路径
 
@@ -47,7 +45,7 @@
    当您选择复选框时，系统会使用正确的语法自动构建路径（例如 messages\[-1].content）。|方法|最适合 |示例|
 | - | - | - |
 |树种选择|探索不熟悉的数据结构，查看样本值 |点击：消息 → \[-1] → 内容 |
-|手动打字 |当您确切知道自己想要什么时，深度路径会更快 |类型：output.data.results\[0].answer |
+|手动打字|当您确切知道自己想要什么时，深度路径会更快 |类型：output.data.results\[0].answer |
 
 超过 3 个项目的数组会自动压缩，以防止出现过多的视图：
 
@@ -91,13 +89,13 @@
 1. 展开**消息**。
 2. 展开`[-1]`。
 3. 单击**内容**。
-4. 结果：`messages[-1].content`（始终显示最后一条消息）。
-
-<Note>
-  如果您在树中看到`"No paths available"`：* 确保您在过去 7 天内至少有一次使用所选跟踪名称的成功跟踪。
-  * 跟踪必须在您配置的输入/输出字段中包含数据。
-  * 如果需要，尝试发送测试跟踪。
-</Note>
+4. 结果：`messages[-1].content`（始终显示最后一条消息）。> [!注意]
+>
+> 如果您在树中看到`"No paths available"`：
+>
+> * 确保您在过去 7 天内至少有一个具有所选跟踪名称的成功跟踪。
+> * 跟踪必须在您正在配置的输入/输出字段中包含数据。
+> * 如果需要，尝试发送测试跟踪。
 
 ## 后续步骤
 
@@ -107,12 +105,6 @@
 
 ***
 
-<div>
-  <Callout icon="terminal-2">
-    [Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
-  </Callout>
+[Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
 
-  <Callout icon="edit">
-    [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/configure-input-output-preview.mdx) 或 [file an issue](https://github.com/langchain-ai/docs/issues/new/choose)。
-  </Callout>
-</div>
+[Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/configure-input-output-preview.mdx) 或 [file an issue](https://github.com/langchain-ai/docs/issues/new/choose)。

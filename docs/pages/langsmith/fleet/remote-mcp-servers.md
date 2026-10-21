@@ -42,69 +42,61 @@ sequenceDiagram
 
 You can add MCP servers directly from your agent or from workspace settings.
 
-<Note>
-  Adding MCP servers requires the **MCP Server Create** permission. Workspace admins can grant this permission to users from workspace settings.
-</Note>
+> [!NOTE]
+>
+> Adding MCP servers requires the **MCP Server Create** permission. Workspace admins can grant this permission to users from workspace settings.
 
 ### Add to a specific agent
 
 To add a remote MCP server to a specific agent:
 
-<Steps>
-  <Step title="Open the Connections drawer">
-    Open your agent, then in the sidebar expand the **Connections** drawer.
-  </Step>
+**1. Open the Connections drawer**
 
-  <Step title="Add the MCP server">
-    1. Click **Add connection**, then click **+ Add custom MCP**.
-    2. Enter the server name and URL, then configure authentication (see [authentication types](#authentication-types)).
-  </Step>
+Open your agent, then in the sidebar expand the **Connections** drawer.
 
-  <Step title="Discover tools">
-    Fleet discovers available tools from your MCP server and makes them available in this agent.
-  </Step>
-</Steps>
+**2. Add the MCP server**
+
+1. Click **Add connection**, then click **+ Add custom MCP**.
+2. Enter the server name and URL, then configure authentication (see [authentication types](#authentication-types)).
+
+**3. Discover tools**
+
+Fleet discovers available tools from your MCP server and makes them available in this agent.
 
 ### Add to all agents in the workspace
 
 To add a remote MCP server to all agents in the workspace:
 
-<Tabs>
-  <Tab title="From Fleet > Integrations">
-    <Steps>
-      <Step title="Navigate to Fleet > Integrations">
-        In the LangSmith UI, navigate to the [**Fleet** > **Integrations**](https://smith.langchain.com/agents/tools) tab.
-      </Step>
+**From Fleet > Integrations**
 
-      <Step title="Add the server">
-        1. Click **+ Custom MCP** at the bottom of the left sidebar.
-        2. Add a **Name** for the MCP server.
-        3. Add the MCP **URL** (e.g., `https://api.example.com/mcp`)
-        4. Select the **Authentication** type. See [Authentication types](#authentication-types) for more details.
-      </Step>
+**1. Navigate to Fleet > Integrations**
 
-      <Step title="Save the server">
-        Click **Save server**. Fleet will automatically discover available tools from your MCP server and make them available in your agents. The configured headers are applied to both tool discovery requests and tool execution requests.
-      </Step>
-    </Steps>
-  </Tab>
+In the LangSmith UI, navigate to the [**Fleet** > **Integrations**](https://smith.langchain.com/agents/tools) tab.
 
-  <Tab title="From workspace settings">
-    <Steps>
-      <Step title="Navigate to MCP server settings">
-        In the LangSmith UI, navigate to the [Settings > MCP servers](https://smith.langchain.com/settings/workspaces/mcp-servers) tab.
-      </Step>
+**2. Add the server**
 
-      <Step title="Add the server">
-        Click **Add server** and enter the server name and URL, then configure authentication (see [authentication types](#authentication-types)).
-      </Step>
+1. Click **+ Custom MCP** at the bottom of the left sidebar.
+2. Add a **Name** for the MCP server.
+3. Add the MCP **URL** (e.g., `https://api.example.com/mcp`)
+4. Select the **Authentication** type. See [Authentication types](#authentication-types) for more details.
 
-      <Step title="Save the server">
-        Click **Save server**. Fleet will automatically discover available tools from your MCP server and make them available in your agents. The configured headers are applied to both tool discovery requests and tool execution requests.
-      </Step>
-    </Steps>
-  </Tab>
-</Tabs>
+**3. Save the server**
+
+Click **Save server**. Fleet will automatically discover available tools from your MCP server and make them available in your agents. The configured headers are applied to both tool discovery requests and tool execution requests.
+
+**From workspace settings**
+
+**1. Navigate to MCP server settings**
+
+In the LangSmith UI, navigate to the [Settings > MCP servers](https://smith.langchain.com/settings/workspaces/mcp-servers) tab.
+
+**2. Add the server**
+
+Click **Add server** and enter the server name and URL, then configure authentication (see [authentication types](#authentication-types)).
+
+**3. Save the server**
+
+Click **Save server**. Fleet will automatically discover available tools from your MCP server and make them available in your agents. The configured headers are applied to both tool discovery requests and tool execution requests.
 
 ### Authentication types
 
@@ -115,9 +107,9 @@ Select an authentication type based on the server's requirements:
   * **Key**: `Authorization`
   * **Value**: `Bearer API_KEY`
 
-  <Info>
-    You can add multiple headers if your MCP server requires additional authentication or configuration parameters. Each header key-value pair is sent with every request to the server.
-  </Info>
+  > [!NOTE]
+  >
+  > You can add multiple headers if your MCP server requires additional authentication or configuration parameters. Each header key-value pair is sent with every request to the server.
 
 * **OAuth 2.1 (Auto)**: Select this for servers that support OAuth via dynamic client registration (DCR). Fleet registers a client for you and prompts you to log in with your account for that service. No setup is required, so prefer this option when the server supports it.
 
@@ -129,61 +121,59 @@ Select an authentication type based on the server's requirements:
 
 An OAuth provider stores your OAuth application's client ID, secret, and endpoints at the organization level. Register a provider once, then select it whenever you add an MCP server with **OAuth 2.1 (Manual)**.
 
-<Note>
-  Managing OAuth providers requires the `workspaces:manage` permission, included in the [Workspace Admin](/langsmith/rbac#workspace-admin) role.
-</Note>
+> [!NOTE]
+>
+> Managing OAuth providers requires the `workspaces:manage` permission, included in the [Workspace Admin](/langsmith/rbac#workspace-admin) role.
 
-<Note>
-  On self-hosted LangSmith v0.17, the Client Credentials grant requires v0.17.32 or later (Helm chart 0.17.5 or later). Also set `FF_FLEET_OAUTH_CLIENT_CREDENTIALS_ENABLED=true` on both `hostBackend` and `platformBackend`, for example through `hostBackend.deployment.extraEnv` and `platformBackend.deployment.extraEnv`.
-</Note>
+> [!NOTE]
+>
+> On self-hosted LangSmith v0.17, the Client Credentials grant requires v0.17.32 or later (Helm chart 0.17.5 or later). Also set `FF_FLEET_OAUTH_CLIENT_CREDENTIALS_ENABLED=true` on both `hostBackend` and `platformBackend`, for example through `hostBackend.deployment.extraEnv` and `platformBackend.deployment.extraEnv`.
 
 To register an OAuth provider:
 
-<Steps>
-  <Step title="Create the OAuth application with your identity provider">
-    In your identity provider (for example, GitHub or Google), create an OAuth application. Note its client ID and client secret.
+**1. Create the OAuth application with your identity provider**
 
-    For the Authorization Code grant, set the application's redirect (callback) URL to:
+In your identity provider (for example, GitHub or Google), create an OAuth application. Note its client ID and client secret.
 
-    ```txt theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-    https://<your-langsmith-host>/host-oauth-callback/<provider-id>
-    ```
+For the Authorization Code grant, set the application's redirect (callback) URL to:
 
-    Replace `<provider-id>` with the Provider ID you choose in the next step. The Client Credentials grant does not use a redirect URL.
-  </Step>
+```txt theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+https://<your-langsmith-host>/host-oauth-callback/<provider-id>
+```
 
-  <Step title="Register the provider in LangSmith">
-    Go to **Settings** > **OAuth providers** and click **OAuth Provider**. Fill in the fields for every provider:
+Replace `<provider-id>` with the Provider ID you choose in the next step. The Client Credentials grant does not use a redirect URL.
 
-    * **Provider ID**: A short identifier using letters, numbers, hyphens, and underscores (for example, `github`). This value appears in the redirect URL.
-    * **Display Name**: A human-readable name (for example, `GitHub OAuth`).
-    * **Client ID** and **Client Secret**: From the OAuth application you created.
-    * **Grant Type**: **Authorization Code** or **Client Credentials**.
-    * **Token URL**: The provider's token endpoint (for example, `https://example.com/oauth/token`).
+**2. Register the provider in LangSmith**
 
-    For **Authorization Code**, also set:
+Go to **Settings** > **OAuth providers** and click **OAuth Provider**. Fill in the fields for every provider:
 
-    * **Authorization URL**: The provider's authorization endpoint (for example, `https://example.com/oauth/authorize`).
-    * **Enable PKCE**: Turn this on. Only providers with PKCE enabled appear when you add a manual-OAuth MCP server.
-    * **Scope** (under **Advanced**): Optional. Overrides the `scope` parameter sent to the authorization URL.
+* **Provider ID**: A short identifier using letters, numbers, hyphens, and underscores (for example, `github`). This value appears in the redirect URL.
+* **Display Name**: A human-readable name (for example, `GitHub OAuth`).
+* **Client ID** and **Client Secret**: From the OAuth application you created.
+* **Grant Type**: **Authorization Code** or **Client Credentials**.
+* **Token URL**: The provider's token endpoint (for example, `https://example.com/oauth/token`).
 
-    For **Client Credentials**, also set:
+For **Authorization Code**, also set:
 
-    * **Token Authentication**: How Fleet sends the client ID and secret to the token URL, either **HTTP Basic** (the default) or **Request body**.
-    * **Scope** (under **Advanced**): Optional. Space-separated scopes sent with the token request.
-    * **Audience** (under **Advanced**): Optional. Some providers, such as Auth0, require it.
-  </Step>
+* **Authorization URL**: The provider's authorization endpoint (for example, `https://example.com/oauth/authorize`).
+* **Enable PKCE**: Turn this on. Only providers with PKCE enabled appear when you add a manual-OAuth MCP server.
+* **Scope** (under **Advanced**): Optional. Overrides the `scope` parameter sent to the authorization URL.
 
-  <Step title="Select the provider when adding the server">
-    When you [add the MCP server](#add-a-remote-mcp-server), choose **OAuth 2.1 (Manual)** and select the provider you registered. For an Authorization Code provider, each user connects their account. For a Client Credentials provider, Fleet authorizes as the agent, so no user is prompted to connect.
-  </Step>
-</Steps>
+For **Client Credentials**, also set:
+
+* **Token Authentication**: How Fleet sends the client ID and secret to the token URL, either **HTTP Basic** (the default) or **Request body**.
+* **Scope** (under **Advanced**): Optional. Space-separated scopes sent with the token request.
+* **Audience** (under **Advanced**): Optional. Some providers, such as Auth0, require it.
+
+**3. Select the provider when adding the server**
+
+When you [add the MCP server](#add-a-remote-mcp-server), choose **OAuth 2.1 (Manual)** and select the provider you registered. For an Authorization Code provider, each user connects their account. For a Client Credentials provider, Fleet authorizes as the agent, so no user is prompted to connect.
 
 ## Update your MCP server URL
 
-<Warning>
-  Changing the URL of a custom MCP server will break any agents that use tools from that server.
-</Warning>
+> [!WARNING]
+>
+> Changing the URL of a custom MCP server will break any agents that use tools from that server.
 
 Fleet stores tool references by MCP server URL. If you update the URL of a custom MCP server, existing agents will fail when attempting to call those tools because the stored URL no longer matches.
 
@@ -201,12 +191,6 @@ To view all available MCP servers and configuration details, navigate to the [Fl
 
 ***
 
-<div>
-  <Callout icon="terminal-2">
-    [Connect these docs](/use-these-docs) to your agent of choice via MCP for real-time answers.
-  </Callout>
+[Connect these docs](/use-these-docs) to your agent of choice via MCP for real-time answers.
 
-  <Callout icon="edit">
-    [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/fleet/remote-mcp-servers.mdx) or [file an issue](https://github.com/langchain-ai/docs/issues/new/choose).
-  </Callout>
-</div>
+[Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/fleet/remote-mcp-servers.mdx) or [file an issue](https://github.com/langchain-ai/docs/issues/new/choose).

@@ -6,11 +6,9 @@ Queue multiple messages and manage them while the agent processes sequentially
 
 Message queuing lets users send multiple messages in rapid succession without waiting for the agent to finish processing the current one. Each message is accepted immediately, queued for the active thread, and processed sequentially, giving you full visibility and control over the pending work.
 
-<PatternEmbed />
-
-<Note>
-  This feature requires the [LangGraph Agent Server](/oss/javascript/langgraph/local-server). Run your agent locally with `langgraph dev` or [deploy it to LangSmith](/langsmith/deployment) to use this pattern.
-</Note>
+> [!NOTE]
+>
+> This feature requires the [LangGraph Agent Server](/oss/javascript/langgraph/local-server). Run your agent locally with `langgraph dev` or [deploy it to LangSmith](/langsmith/deployment) to use this pattern.
 
 ## Why message queues?
 
@@ -62,44 +60,72 @@ wait behind the active request. Read `queue.entries` and `queue.size` to render
 pending work, and use `queue.cancel()` or `queue.clear()` to remove items before
 they start processing.
 
-<Info>
-  The code examples use `useStream<typeof myAgent>` for type-safe stream state. See Type inference for [Python](/oss/python/langchain/frontend/overview#type-inference) or [JavaScript](/oss/javascript/langchain/frontend/overview#type-inference) backends.
-</Info>
+> [!NOTE]
+>
+> The code examples use `useStream<typeof myAgent>` for type-safe stream state. See Type inference for [Python](/oss/python/langchain/frontend/overview#type-inference) or [JavaScript](/oss/javascript/langchain/frontend/overview#type-inference) backends.
 
-<CodeGroup>
-  ```tsx React theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  import { useStream, useSubmissionQueue } from "@langchain/react";
+```tsx React theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+import { useStream, useSubmissionQueue } from "@langchain/react";
 
-  function Chat() {
-    const stream = useStream<typeof myAgent>({
-      apiUrl: "http://localhost:2024",
-      assistantId: "simple_agent",
+function Chat() {
+  const stream = useStream<typeof myAgent>({
+    apiUrl: "http://localhost:2024",
+    assistantId: "simple_agent",
+  });
+  const queue = useSubmissionQueue(stream);
+
+  const handleSubmit = (text: string) => {
+    stream.submit({
+      messages: [{ type: "human", content: text }],
     });
-    const queue = useSubmissionQueue(stream);
+  };
 
-    const handleSubmit = (text: string) => {
-      stream.submit({
-        messages: [{ type: "human", content: text }],
-      });
-    };
+  const pendingCount = queue.size;
+  const entries = queue.entries;
 
-    const pendingCount = queue.size;
-    const entries = queue.entries;
+  return (
+    <div>
+      <MessageList messages={stream.messages} />
+      {pendingCount > 0 && <QueueList entries={entries} queue={queue} />}
+      <ChatInput onSubmit={handleSubmit} />
+    </div>
+  );
+}
+```
 
-    return (
-      <div>
-        <MessageList messages={stream.messages} />
-        {pendingCount > 0 && <QueueList entries={entries} queue={queue} />}
-        <ChatInput onSubmit={handleSubmit} />
-      </div>
-    );
-  }
-  ```
+```vue Vue theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+<script setup lang="ts">
+import { useStream, useSubmissionQueue } from "@langchain/vue";
+import { computed } from "vue";
 
-  ```vue Vue theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  <script setup lang="ts">
-  import { useStream, useSubmissionQueue } from "@langchain/vue";
-  import { computed } from "vue";
+const stream = useStream<typeof myAgent>({
+  apiUrl: "http://localhost:2024",
+  assistantId: "simple_agent",
+});
+const queue = useSubmissionQueue(stream);
+
+function handleSubmit(text: string) {
+  stream.submit({
+    messages: [{ type: "human", content: text }],
+  });
+}
+
+const pendingCount = computed(() => queue.size.value);
+const entries = computed(() => queue.entries.value);
+</script>
+
+<template>
+  <div>
+    <MessageList :messages="stream.messages" />
+    <QueueList v-if="pendingCount > 0" :entries="entries" :queue="queue" />
+    <ChatInput @submit="handleSubmit" />
+  </div>
+</template>
+```
+
+```svelte Svelte theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+<script lang="ts">
+  import { useStream, useSubmissionQueue } from "@langchain/svelte";
 
   const stream = useStream<typeof myAgent>({
     apiUrl: "http://localhost:2024",
@@ -112,75 +138,45 @@ they start processing.
       messages: [{ type: "human", content: text }],
     });
   }
+</script>
 
-  const pendingCount = computed(() => queue.size.value);
-  const entries = computed(() => queue.entries.value);
-  </script>
+<div>
+  <MessageList messages={stream.messages} />
+  {#if queue.size > 0}
+    <QueueList entries={queue.entries} {queue} />
+  {/if}
+  <ChatInput on:submit={(e) => handleSubmit(e.detail)} />
+</div>
+```
 
-  <template>
-    <div>
-      <MessageList :messages="stream.messages" />
-      <QueueList v-if="pendingCount > 0" :entries="entries" :queue="queue" />
-      <ChatInput @submit="handleSubmit" />
-    </div>
-  </template>
-  ```
+```ts Angular theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+import { Component } from "@angular/core";
+import { injectStream, injectSubmissionQueue } from "@langchain/angular";
 
-  ```svelte Svelte theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  <script lang="ts">
-    import { useStream, useSubmissionQueue } from "@langchain/svelte";
-
-    const stream = useStream<typeof myAgent>({
-      apiUrl: "http://localhost:2024",
-      assistantId: "simple_agent",
-    });
-    const queue = useSubmissionQueue(stream);
-
-    function handleSubmit(text: string) {
-      stream.submit({
-        messages: [{ type: "human", content: text }],
-      });
+@Component({
+  selector: "app-chat",
+  template: `
+    <message-list [messages]="stream.messages()" />
+    @if (queue.size() > 0) {
+      <queue-list [entries]="queue.entries()" [queue]="queue" />
     }
-  </script>
+    <chat-input (onSubmit)="handleSubmit($event)" />
+  `,
+})
+export class ChatComponent {
+  stream = injectStream<typeof myAgent>({
+    apiUrl: "http://localhost:2024",
+    assistantId: "simple_agent",
+  });
+  queue = injectSubmissionQueue(this.stream);
 
-  <div>
-    <MessageList messages={stream.messages} />
-    {#if queue.size > 0}
-      <QueueList entries={queue.entries} {queue} />
-    {/if}
-    <ChatInput on:submit={(e) => handleSubmit(e.detail)} />
-  </div>
-  ```
-
-  ```ts Angular theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  import { Component } from "@angular/core";
-  import { injectStream, injectSubmissionQueue } from "@langchain/angular";
-
-  @Component({
-    selector: "app-chat",
-    template: `
-      <message-list [messages]="stream.messages()" />
-      @if (queue.size() > 0) {
-        <queue-list [entries]="queue.entries()" [queue]="queue" />
-      }
-      <chat-input (onSubmit)="handleSubmit($event)" />
-    `,
-  })
-  export class ChatComponent {
-    stream = injectStream<typeof myAgent>({
-      apiUrl: "http://localhost:2024",
-      assistantId: "simple_agent",
+  handleSubmit(text: string) {
+    this.stream.submit({
+      messages: [{ type: "human", content: text }],
     });
-    queue = injectSubmissionQueue(this.stream);
-
-    handleSubmit(text: string) {
-      this.stream.submit({
-        messages: [{ type: "human", content: text }],
-      });
-    }
   }
-  ```
-</CodeGroup>
+}
+```
 
 ## Displaying the queue
 
@@ -218,9 +214,9 @@ function QueueList({ entries, queue }) {
 }
 ```
 
-<Tip>
-  Display the first few characters of each queued message as a preview so users can quickly identify which items to cancel without reading full messages.
-</Tip>
+> [!TIP]
+>
+> Display the first few characters of each queued message as a preview so users can quickly identify which items to cancel without reading full messages.
 
 ## Cancelling queued messages
 
@@ -242,11 +238,11 @@ Remove all pending messages at once. Useful when the user changes context or wan
 await queue.clear();
 ```
 
-<Note>
-  Cancelling a queue entry only affects messages that have **not yet started
-  processing**. If the agent is already working on a message, cancelling it from
-  the queue has no effect. Use `stream.stop()` to interrupt the current run.
-</Note>
+> [!NOTE]
+>
+> Cancelling a queue entry only affects messages that have **not yet started
+> processing**. If the agent is already working on a message, cancelling it from
+> the queue has no effect. Use `stream.stop()` to interrupt the current run.
 
 ## Chaining follow-up submissions with `onCreated`
 
@@ -276,57 +272,55 @@ When a user wants to begin a fresh conversation, update the reactive `threadId`
 that you pass into the stream. Passing `null` clears the current thread binding;
 the next submission creates a new thread.
 
-<CodeGroup>
-  ```tsx React theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  function NewThreadButton() {
-    const [threadId, setThreadId] = useState<string | null>(null);
-    const stream = useStream<typeof myAgent>({ threadId, onThreadId: setThreadId });
+```tsx React theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+function NewThreadButton() {
+  const [threadId, setThreadId] = useState<string | null>(null);
+  const stream = useStream<typeof myAgent>({ threadId, onThreadId: setThreadId });
 
-    return (
-      <button onClick={() => setThreadId(null)}>
-        New conversation
-      </button>
-    );
-  }
-  ```
+  return (
+    <button onClick={() => setThreadId(null)}>
+      New conversation
+    </button>
+  );
+}
+```
 
-  ```vue Vue theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  <script setup lang="ts">
-  const threadId = ref<string | null>(null);
+```vue Vue theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+<script setup lang="ts">
+const threadId = ref<string | null>(null);
+const stream = useStream<typeof myAgent>({
+  threadId,
+  onThreadId: (id) => (threadId.value = id),
+});
+</script>
+
+<template>
+  <button @click="threadId = null">New conversation</button>
+</template>
+```
+
+```svelte Svelte theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+<script lang="ts">
+  let threadId = $state<string | null>(null);
   const stream = useStream<typeof myAgent>({
-    threadId,
-    onThreadId: (id) => (threadId.value = id),
+    threadId: () => threadId,
+    onThreadId: (id) => (threadId = id),
   });
-  </script>
+</script>
 
-  <template>
-    <button @click="threadId = null">New conversation</button>
-  </template>
-  ```
+<button onclick={() => (threadId = null)}>New conversation</button>
+```
 
-  ```svelte Svelte theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  <script lang="ts">
-    let threadId = $state<string | null>(null);
-    const stream = useStream<typeof myAgent>({
-      threadId: () => threadId,
-      onThreadId: (id) => (threadId = id),
-    });
-  </script>
+```ts Angular theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+threadId = signal<string | null>(null);
+stream = injectStream<typeof myAgent>({
+  threadId: this.threadId,
+  onThreadId: (id) => this.threadId.set(id),
+});
 
-  <button onclick={() => (threadId = null)}>New conversation</button>
-  ```
-
-  ```ts Angular theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  threadId = signal<string | null>(null);
-  stream = injectStream<typeof myAgent>({
-    threadId: this.threadId,
-    onThreadId: (id) => this.threadId.set(id),
-  });
-
-  // In template:
-  // <button (click)="threadId.set(null)">New conversation</button>
-  ```
-</CodeGroup>
+// In template:
+// <button (click)="threadId.set(null)">New conversation</button>
+```
 
 ## Best practices
 
@@ -342,12 +336,6 @@ the next submission creates a new thread.
 
 ***
 
-<div>
-  <Callout icon="terminal-2">
-    [Connect these docs](/use-these-docs) to your agent of choice via MCP for real-time answers.
-  </Callout>
+[Connect these docs](/use-these-docs) to your agent of choice via MCP for real-time answers.
 
-  <Callout icon="edit">
-    [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/oss/langchain/frontend/message-queues.mdx) or [file an issue](https://github.com/langchain-ai/docs/issues/new/choose).
-  </Callout>
-</div>
+[Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/oss/langchain/frontend/message-queues.mdx) or [file an issue](https://github.com/langchain-ai/docs/issues/new/choose).

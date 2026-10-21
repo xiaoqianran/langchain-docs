@@ -8,37 +8,33 @@ Set up your LangSmith account: create API keys, configure your profile, connect 
 
 ## Get started
 
-<Steps>
-  <Step title="Create an account" icon="user-plus">
-    Sign up at [smith.langchain.com](https://smith.langchain.com?utm_source=docs\&utm_medium=cta\&utm_campaign=langsmith-signup\&utm_content=snippets-langsmith-account-api-key-quickstart) (no credit card required).
-    You can log in with **Google**, **GitHub**, or **email**.
-  </Step>
+**1. Create an account**
 
-  <Step title="Create an API key" icon="key">
-    Go to your [Settings page](https://smith.langchain.com/settings) > **API Keys** > **Create API Key**.
-    Copy the key and save it securely.
-  </Step>
-</Steps>
+Sign up at [smith.langchain.com](https://smith.langchain.com?utm_source=docs\&utm_medium=cta\&utm_campaign=langsmith-signup\&utm_content=snippets-langsmith-account-api-key-quickstart) (no credit card required).
+You can log in with **Google**, **GitHub**, or **email**.
+
+**2. Create an API key**
+
+Go to your [Settings page](https://smith.langchain.com/settings) > **API Keys** > **Create API Key**.
+Copy the key and save it securely.
 
 ## Explore
 
-<CardGroup>
-  <Card title="Profile configuration" icon="user-cog" href="/langsmith/profile-configuration">
-    Configure your personal account settings and preferences.
-  </Card>
+> **[Profile configuration](/langsmith/profile-configuration)**
+>
+> Configure your personal account settings and preferences.
 
-  <Card title="Integrations" icon="plug" href="/langsmith/get-started-integrations">
-    Connect LangSmith to your existing tools and services.
-  </Card>
+> **[Integrations](/langsmith/get-started-integrations)**
+>
+> Connect LangSmith to your existing tools and services.
 
-  <Card title="Pricing plans" icon="credit-card" href="/langsmith/pricing-plans">
-    Compare plans and choose the right tier for your team.
-  </Card>
+> **[Pricing plans](/langsmith/pricing-plans)**
+>
+> Compare plans and choose the right tier for your team.
 
-  <Card title="Enterprise" icon="building" href="/langsmith/enterprise">
-    Enterprise capabilities, support, and onboarding.
-  </Card>
-</CardGroup>
+> **[Enterprise](/langsmith/enterprise)**
+>
+> Enterprise capabilities, support, and onboarding.
 
 ## Related
 
@@ -46,12 +42,6 @@ Set up your LangSmith account: create API keys, configure your profile, connect 
 
 ***
 
-<div>
-  <Callout icon="terminal-2">
-    [Connect these docs](/use-these-docs) to your agent of choice via MCP for real-time answers.
-  </Callout>
+[Connect these docs](/use-these-docs) to your agent of choice via MCP for real-time answers.
 
-  <Callout icon="edit">
-    [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/admin.mdx) or [file an issue](https://github.com/langchain-ai/docs/issues/new/choose).
-  </Callout>
-</div>
+[Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/admin.mdx) or [file an issue](https://github.com/langchain-ai/docs/issues/new/choose).

@@ -4,12 +4,12 @@
 
 # 如何将 TTL 添加到您的应用程序中
 
-<Tip>
-  **先决条件**
-  本指南假设您熟悉 [LangSmith](/langsmith/observability)、[Persistence](/oss/python/langgraph/persistence) 和 [Cross-thread persistence](/oss/python/langgraph/stores) 概念。
-</Tip>
+> [!提示]
+>
+> **先决条件**
+> 本指南假设您熟悉 [LangSmith](/langsmith/observability)、[Persistence](/oss/python/langgraph/persistence) 和 [Cross-thread persistence](/oss/python/langgraph/stores) 概念。
 
-LangSmith 保留[checkpoints](/oss/python/langgraph/checkpointers#checkpoints)（线程状态）和[cross-thread memories](/oss/python/langgraph/stores)（存储项）。您可以在 [⟦T4⟧](/langsmith/application-structure#configuration-file) 中配置生存时间 (TTL) 策略来自动管理此数据的生命周期，防止无限期累积。
+LangSmith 保留[checkpoints](/oss/python/langgraph/checkpointers#checkpoints)（线程状态）和[cross-thread memories](/oss/python/langgraph/stores)（存储项目）。您可以在 [⟦T4⟧](/langsmith/application-structure#configuration-file) 中配置生存时间 (TTL) 策略来自动管理此数据的生命周期，防止无限期累积。
 
 ## 配置线程和检查点TTL
 
@@ -38,9 +38,9 @@ LangSmith 保留[checkpoints](/oss/python/langgraph/checkpointers#checkpoints)�
 * `default_ttl`：设置默认 TTL 窗口（以分钟为单位）（例如，43200 分钟 = 30 天）。 `delete` 窗口在应用 TTL 时启动，并且不会随活动刷新。当运行完成或线程状态更新时，`keep_latest`窗口会刷新。如果省略，线程默认不会过期。
 * `sweep_limit`: (*Agent server v0.8+*) 设置sweeper 在一次迭代中处理的线程数。默认为 `10000`（代理服务器 v0.12+）或 `1000`（代理服务器 v0.8-0.11）。
 
-<Note>
-  全局 TTL 配置适用于新线程。 `delete` 策略不会追溯应用于现有线程。 `keep_latest`策略适用于运行完成或状态更新后的现有线程；不活动的现有线程保持不变。
-</Note>
+> [!注意]
+>
+> 全局 TTL 配置适用于新线程。 `delete` 策略不会追溯应用于现有线程。 `keep_latest`策略适用于运行完成或状态更新后的现有线程；不活动的现有线程保持不变。
 
 ## 配置商店商品 TTL存储项允许跨线程数据持久化。为存储项配置 TTL 有助于通过删除陈旧数据来管理内存。
 
@@ -106,9 +106,9 @@ thread = await client.threads.create(
 )
 ```
 
-<Note>
-  线程级 TTL 会覆盖该线程的默认 TTL，并使用上述策略行为。
-</Note>
+> [!注意]
+>
+> 线程级 TTL 会覆盖该线程的默认 TTL 并使用上述策略行为。
 
 ## 运行时覆盖对于商店物品，将 `ttl` 传递给 `put` 以覆盖默认寿命。将`refresh_ttl`传递给`get`或`search`来控制读取刷新是否过期。
 
@@ -120,12 +120,6 @@ thread = await client.threads.create(
 
 ***
 
-<div>
-  <Callout icon="terminal-2">
-    [Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
-  </Callout>
+[Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
 
-  <Callout icon="edit">
-    [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/configure-ttl.mdx) 或 [file an issue](https://github.com/langchain-ai/docs/issues/new/choose)。
-  </Callout>
-</div>
+[Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/configure-ttl.mdx) 或 [file an issue](https://github.com/langchain-ai/docs/issues/new/choose)。

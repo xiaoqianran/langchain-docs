@@ -223,15 +223,15 @@ graph = create_deep_agent(model="fireworks:accounts/fireworks/models/glm-5p2")
 
 Harbor runs the entire agent inside the trial container.
 
-<Accordion title="Single-trial lifecycle">
-  1. **Parse and prepare**: `harbor run` parses the flags into a job config. The job factory resolves and caches the tasks, validates the environment resource limits, and resolves the metrics before any trial runs. Caching applies to remote tasks only, so a `-p` local task is read in place.
-  2. **Fan out**: Harbor builds the trial list from `n_attempts × tasks × agents`, then runs trials concurrently up to the `-n` limit, with `-r` retries. Parallelism is per trial, so different tasks, agents, and attempts run together, each in its own sandbox.
-  3. **Create the trial**: The trial loads the cached task, builds the LangGraph agent from `project_path`, `graph`, and `model`, and constructs the environment without starting it.
-  4. **Start the environment**: The environment starts and brings up the container. For the Docker environment, this builds or reuses the image and runs the container.
-  5. **Install the agent**: Harbor creates a virtual environment in the container, uploads `project_path`, and pip installs the `langgraph.json` dependencies inside the container.
-  6. **Run and verify**: Harbor runs the graph inside the container through the LangGraph runner, then runs `tests/test.sh`, which writes the reward to `/logs/verifier/reward.txt`.
-  7. **Finalize**: Harbor stops and deletes the container and writes the trial result. The job aggregates all trial results into one job result.
-</Accordion>
+> **Single-trial lifecycle**
+>
+> 1. **Parse and prepare**: `harbor run` parses the flags into a job config. The job factory resolves and caches the tasks, validates the environment resource limits, and resolves the metrics before any trial runs. Caching applies to remote tasks only, so a `-p` local task is read in place.
+> 2. **Fan out**: Harbor builds the trial list from `n_attempts × tasks × agents`, then runs trials concurrently up to the `-n` limit, with `-r` retries. Parallelism is per trial, so different tasks, agents, and attempts run together, each in its own sandbox.
+> 3. **Create the trial**: The trial loads the cached task, builds the LangGraph agent from `project_path`, `graph`, and `model`, and constructs the environment without starting it.
+> 4. **Start the environment**: The environment starts and brings up the container. For the Docker environment, this builds or reuses the image and runs the container.
+> 5. **Install the agent**: Harbor creates a virtual environment in the container, uploads `project_path`, and pip installs the `langgraph.json` dependencies inside the container.
+> 6. **Run and verify**: Harbor runs the graph inside the container through the LangGraph runner, then runs `tests/test.sh`, which writes the reward to `/logs/verifier/reward.txt`.
+> 7. **Finalize**: Harbor stops and deletes the container and writes the trial result. The job aggregates all trial results into one job result.
 
 For more information on building Deep Agents, see the [Deep Agents documentation](/oss/python/deepagents/overview).
 
@@ -292,12 +292,6 @@ harbor run -d "<org/name>" \
 
 ***
 
-<div>
-  <Callout icon="terminal-2">
-    [Connect these docs](/use-these-docs) to your agent of choice via MCP for real-time answers.
-  </Callout>
+[Connect these docs](/use-these-docs) to your agent of choice via MCP for real-time answers.
 
-  <Callout icon="edit">
-    [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/harbor-integrations.mdx) or [file an issue](https://github.com/langchain-ai/docs/issues/new/choose).
-  </Callout>
-</div>
+[Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/harbor-integrations.mdx) or [file an issue](https://github.com/langchain-ai/docs/issues/new/choose).

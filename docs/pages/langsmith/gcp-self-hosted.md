@@ -11,54 +11,50 @@ This page provides:
 * [Service recommendations](#compute-options) and best practices.
 * [Google Cloud Well-Architected best practices](#google-cloud-well-architected-best-practices) for operational excellence, security, and reliability.
 
-<Note>
-  LangChain publishes production-ready [Terraform modules for GCP](https://github.com/langchain-ai/terraform/tree/main/modules/gcp) that provision GKE, Cloud SQL, Memorystore, Cloud Storage, and networking in a single workflow. Start with the [Deploy with Terraform overview](/langsmith/self-host-terraform) to choose between the Terraform and Helm-only paths.
-</Note>
+> [!NOTE]
+>
+> LangChain publishes production-ready [Terraform modules for GCP](https://github.com/langchain-ai/terraform/tree/main/modules/gcp) that provision GKE, Cloud SQL, Memorystore, Cloud Storage, and networking in a single workflow. Start with the [Deploy with Terraform overview](/langsmith/self-host-terraform) to choose between the Terraform and Helm-only paths.
 
 ## Initial setup
 
-<Steps>
-  <Step title="Deploy to Kubernetes">
-    Follow the [Kubernetes installation guide](/langsmith/kubernetes). LangSmith is tested on Google Kubernetes Engine (GKE).
+**1. Deploy to Kubernetes**
 
-    **GKE-specific notes:**
+Follow the [Kubernetes installation guide](/langsmith/kubernetes). LangSmith is tested on Google Kubernetes Engine (GKE).
 
-    * LangSmith works with standard GKE clusters
-    * Use GCE persistent disk storage class
-  </Step>
+**GKE-specific notes:**
 
-  <Step title="Configure external services">
-    For production deployments, connect to GCP managed services:
+* LangSmith works with standard GKE clusters
+* Use GCE persistent disk storage class
 
-    <CardGroup>
-      <Card title="Google Cloud Storage" icon="database" href="/langsmith/self-host-blob-storage#google-cloud-storage">
-        Store trace data in GCS
-      </Card>
+**2. Configure external services**
 
-      <Card title="Cloud SQL" icon="database" href="/langsmith/self-host-external-postgres#google-cloud-sql">
-        PostgreSQL database
-      </Card>
+For production deployments, connect to GCP managed services:
 
-      <Card title="Memorystore" icon="cpu" href="/langsmith/self-host-external-redis#google-cloud-memorystore">
-        Redis or Valkey for caching
-      </Card>
+> **[Google Cloud Storage](/langsmith/self-host-blob-storage#google-cloud-storage)**
+>
+> Store trace data in GCS
 
-      <Card title="ClickHouse Cloud" icon="chart-line" href="/langsmith/self-host-external-clickhouse">
-        Analytics database
-      </Card>
-    </CardGroup>
-  </Step>
+> **[Cloud SQL](/langsmith/self-host-external-postgres#google-cloud-sql)**
+>
+> PostgreSQL database
 
-  <Step title="Set up authentication">
-    Use [Workload Identity](https://cloud.google.com/kubernetes-engine/docs/how-to/workload-identity) to authenticate LangSmith pods to GCP services.
+> **[Memorystore](/langsmith/self-host-external-redis#google-cloud-memorystore)**
+>
+> Redis or Valkey for caching
 
-    **Key pages:**
+> **[ClickHouse Cloud](/langsmith/self-host-external-clickhouse)**
+>
+> Analytics database
 
-    * [GCS HMAC key authentication](/langsmith/self-host-blob-storage#google-cloud-storage)
-    * [Cloud SQL IAM authentication](/langsmith/self-host-external-postgres#iam-authentication)
-    * [Memorystore IAM authentication](/langsmith/self-host-external-redis#iam-authentication)
-  </Step>
-</Steps>
+**3. Set up authentication**
+
+Use [Workload Identity](https://cloud.google.com/kubernetes-engine/docs/how-to/workload-identity) to authenticate LangSmith pods to GCP services.
+
+**Key pages:**
+
+* [GCS HMAC key authentication](/langsmith/self-host-blob-storage#google-cloud-storage)
+* [Cloud SQL IAM authentication](/langsmith/self-host-external-postgres#iam-authentication)
+* [Memorystore IAM authentication](/langsmith/self-host-external-redis#iam-authentication)
 
 After completing these initial setup steps, you can review the complete GCP architecture and best practices below.
 
@@ -66,13 +62,13 @@ After completing these initial setup steps, you can review the complete GCP arch
 
 We recommend leveraging GCP's managed services to provide a scalable, secure, and resilient platform. The following architecture applies to both self-hosted and hybrid and aligns with the [Google Cloud Well-Architected Framework](https://docs.cloud.google.com/architecture/framework):
 
-<img alt="Architecture diagram showing GCP relations to LangSmith services" />
+![Architecture diagram showing GCP relations to LangSmith services](https://mintcdn.com/langchain-5e9cc07a/LfXIN_8o8vFFKdKi/langsmith/images/gcp-architecture-self-hosted.png?fit=max\&auto=format\&n=LfXIN_8o8vFFKdKi\&q=85\&s=0d2e8479b285ddad25a0d9f649f9ab43)
 
-* <Icon icon="globe" /> **Ingress & networking**: Requests enter via [Cloud Load Balancing](https://cloud.google.com/load-balancing) within your [VPC](https://cloud.google.com/vpc), secured using [Cloud Armor](https://cloud.google.com/armor) and [IAM](https://cloud.google.com/iam)-based authentication.
+* &#x20;**Ingress & networking**: Requests enter via [Cloud Load Balancing](https://cloud.google.com/load-balancing) within your [VPC](https://cloud.google.com/vpc), secured using [Cloud Armor](https://cloud.google.com/armor) and [IAM](https://cloud.google.com/iam)-based authentication.
 
-* <Icon icon="cube" /> **Frontend & backend services:** Containers run on [Google Kubernetes Engine (GKE)](https://cloud.google.com/kubernetes-engine), orchestrated behind the load balancer. Routes requests to other services within the cluster as necessary.
+* &#x20;**Frontend & backend services:** Containers run on [Google Kubernetes Engine (GKE)](https://cloud.google.com/kubernetes-engine), orchestrated behind the load balancer. Routes requests to other services within the cluster as necessary.
 
-* <Icon icon="database" /> **Storage & databases:**
+* &#x20;**Storage & databases:**
   * [Cloud SQL for PostgreSQL](https://cloud.google.com/sql/docs/postgres): metadata, projects, users, and short-term and long-term memory for deployed agents. LangSmith supports PostgreSQL version 14 or higher.
   * [Memorystore](https://cloud.google.com/memorystore) ([Redis](https://cloud.google.com/memorystore/docs/redis) or [Valkey](https://cloud.google.com/memorystore/docs/valkey)): caching and job queues. Memorystore can be in single-instance or cluster mode. LangSmith requires Redis OSS version 6.2 or higher, or Valkey 8.
   * ClickHouse + [Persistent Disks](https://cloud.google.com/compute/docs/disks): analytics and trace storage.
@@ -81,9 +77,9 @@ We recommend leveraging GCP's managed services to provide a scalable, secure, an
     * ClickHouse is not required for hybrid deployments.
   * [Cloud Storage](https://cloud.google.com/storage): object storage for trace artifacts and telemetry.
 
-* <Icon icon="sparkles" /> **LLM integration:** Optionally proxy requests to [Gemini Enterprise Agent Platform](https://cloud.google.com/products/gemini-enterprise-agent-platform) for LLM inference.
+* &#x20;**LLM integration:** Optionally proxy requests to [Gemini Enterprise Agent Platform](https://cloud.google.com/products/gemini-enterprise-agent-platform) for LLM inference.
 
-* <Icon icon="chart-line" /> **Monitoring & observability:** Integrate with [Cloud Monitoring](https://cloud.google.com/monitoring) and [Cloud Logging](https://cloud.google.com/logging)
+* &#x20;**Monitoring & observability:** Integrate with [Cloud Monitoring](https://cloud.google.com/monitoring) and [Cloud Logging](https://cloud.google.com/logging)
 
 ## Compute options
 
@@ -159,12 +155,6 @@ Integrate with:
 
 ***
 
-<div>
-  <Callout icon="terminal-2">
-    [Connect these docs](/use-these-docs) to your agent of choice via MCP for real-time answers.
-  </Callout>
+[Connect these docs](/use-these-docs) to your agent of choice via MCP for real-time answers.
 
-  <Callout icon="edit">
-    [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/gcp-self-hosted.mdx) or [file an issue](https://github.com/langchain-ai/docs/issues/new/choose).
-  </Callout>
-</div>
+[Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/gcp-self-hosted.mdx) or [file an issue](https://github.com/langchain-ai/docs/issues/new/choose).

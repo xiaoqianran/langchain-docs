@@ -29,19 +29,19 @@ For the multi-tenant SaaS equivalent, see the [LangSmith shared responsibility m
 
 For details on how upgrades, autoscaling, and maintenance windows work, see [BYOC operations](/langsmith/byoc-operations).
 
-<Note>
-  With [BYOVPC](/langsmith/byoc-byovpc), you also create and maintain:
-
-  * VPC
-  * Subnets
-  * Routes,
-  * Gateways
-  * Customer-side VPC endpoints
-  * Flow logs
-  * Egress controls
-
-  LangChain validates the supplied network before provisioning and manages the workload infrastructure inside it. Customer-managed network resources remain your responsibility during operation and after data plane deletion.
-</Note>
+> [!NOTE]
+>
+> With [BYOVPC](/langsmith/byoc-byovpc), you also create and maintain:
+>
+> * VPC
+> * Subnets
+> * Routes,
+> * Gateways
+> * Customer-side VPC endpoints
+> * Flow logs
+> * Egress controls
+>
+> LangChain validates the supplied network before provisioning and manages the workload infrastructure inside it. Customer-managed network resources remain your responsibility during operation and after data plane deletion.
 
 ## Data and security
 
@@ -76,12 +76,6 @@ The IAM permissions that scope LangChain access are described in [Cross-account 
 
 ***
 
-<div>
-  <Callout icon="terminal-2">
-    [Connect these docs](/use-these-docs) to your agent of choice via MCP for real-time answers.
-  </Callout>
+[Connect these docs](/use-these-docs) to your agent of choice via MCP for real-time answers.
 
-  <Callout icon="edit">
-    [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/byoc-shared-responsibility.mdx) or [file an issue](https://github.com/langchain-ai/docs/issues/new/choose).
-  </Callout>
-</div>
+[Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/byoc-shared-responsibility.mdx) or [file an issue](https://github.com/langchain-ai/docs/issues/new/choose).

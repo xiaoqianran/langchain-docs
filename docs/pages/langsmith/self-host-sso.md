@@ -8,8 +8,6 @@ The LangSmith implementation supports any provider that is OIDC compliant. Once 
 
 By default, LangSmith Self-Hosted supports the `Authorization Code` flow with `Client Secret`. In this version of the flow, your client secret is stored securely in LangSmith (not on the frontend) and used for authentication and establishing auth sessions.
 
-<div />
-
 ## Considerations
 
 * You may upgrade a [`basic` auth](/langsmith/self-host-basic-auth) installation to `oauth` mode, but not a [`none` auth](/langsmith/authentication-methods#none) installation.
@@ -28,9 +26,9 @@ You must have the following to complete the [Provider setup](#provider-setup):
 * An IdP that supports using an external discovery/issuer URL. LangSmith uses this to fetch the necessary routes and keys for your IdP.
 * The `OIDC`, `email`, and `profile` scopes. LangSmith uses these to fetch the necessary user information and email for your users.
 
-<Note>
-  LangSmith SSO is only supported over `https`.
-</Note>
+> [!NOTE]
+>
+> LangSmith SSO is only supported over `https`.
 
 ## Configuration
 
@@ -58,9 +56,9 @@ config:
 
 Configure Microsoft Entra ID as a single sign-on provider using OAuth2.0 and OIDC. For additional information, refer to Microsoft's [OpenID Connect documentation](https://learn.microsoft.com/en-us/entra/identity-platform/v2-protocols-oidc).
 
-<Note>
-  Registering the application in Microsoft Entra ID requires the `Application Administrator` or `Cloud Application Administrator` role, or higher, in your tenant.
-</Note>
+> [!NOTE]
+>
+> Registering the application in Microsoft Entra ID requires the `Application Administrator` or `Cloud Application Administrator` role, or higher, in your tenant.
 
 #### Step 1. Register the application
 
@@ -76,9 +74,9 @@ From the app's **Overview** page, record the following values for use in Helm co
 * **Directory (tenant) ID**: used to construct the issuer URL.
 * **OIDC issuer URL**: `https://login.microsoftonline.com/<tenant-id>/v2.0`, used as `oauthIssuerUrl`.
 
-<Warning>
-  Include the `/v2.0` suffix in `oauthIssuerUrl`. Without it, login still works, but [SSO Groups Sync](#sso-groups-sync) does not assign roles.
-</Warning>
+> [!WARNING]
+>
+> Include the `/v2.0` suffix in `oauthIssuerUrl`. Without it, login still works, but [SSO Groups Sync](#sso-groups-sync) does not assign roles.
 
 #### Step 2. Create a client secret
 
@@ -116,9 +114,9 @@ config:
 
 For details about `initialOrgAdminEmail`, refer to the [general configuration section](#configuration).
 
-<Note>
-  Microsoft Entra ID's `oid` claim is used as the OIDC `sub` claim by default. For details, refer to [Override sub claim](#override-sub-claim).
-</Note>
+> [!NOTE]
+>
+> Microsoft Entra ID's `oid` claim is used as the OIDC `sub` claim by default. For details, refer to [Override sub claim](#override-sub-claim).
 
 To assign org and workspace roles from Microsoft Entra ID groups on login, refer to [SSO Groups Sync](#sso-groups-sync).
 
@@ -126,9 +124,9 @@ To assign org and workspace roles from Microsoft Entra ID groups on login, refer
 
 You can use Google Workspace as a single sign-on (SSO) provider using [OAuth2.0 and OIDC](https://developers.google.com/identity/openid-connect/openid-connect) without PKCE.
 
-<Note>
-  You must have administrator-level access to your organization's Google Cloud Platform (GCP) account to create a new project, or permissions to create and configure OAuth 2.0 credentials for an existing project. We recommend that you create a new project for managing access, since each GCP project has a single OAuth consent screen.
-</Note>
+> [!NOTE]
+>
+> You must have administrator-level access to your organization's Google Cloud Platform (GCP) account to create a new project, or permissions to create and configure OAuth 2.0 credentials for an existing project. We recommend that you create a new project for managing access, since each GCP project has a single OAuth consent screen.
 
 1. Create a new GCP project, see the Google documentation topic [creating and managing projects](https://cloud.google.com/resource-manager/docs/creating-managing-projects)
 
@@ -174,15 +172,15 @@ You can use Google Workspace as a single sign-on (SSO) provider using [OAuth2.0 
 For additional information, see Okta's [documentation](https://help.okta.com/en-us/content/topics/apps/apps_app_integration_wizard_oidc.htm).
 If you have any questions or issues, please contact support via [support.langchain.com](https://support.langchain.com).
 
-<div>
-  <b>Via Okta Integration Network (recommended)</b>
-</div>
+**Via Okta Integration Network (recommended)**
 
-<Info>For details on SCIM setup, refer to [Set up SCIM for your organization](/langsmith/user-management#set-up-scim-for-your-organization).</Info>
+> [!NOTE]
+>
+> For details on SCIM setup, refer to [Set up SCIM for your organization](/langsmith/user-management#set-up-scim-for-your-organization).
 
-<Note>
-  This method of configuration is required in order to use SCIM with Okta.
-</Note>
+> [!NOTE]
+>
+> This method of configuration is required in order to use SCIM with Okta.
 
 1. Sign in to [Okta](https://login.okta.com/).
 2. In the upper-right corner, select Admin. The button is not visible from the Admin area.
@@ -217,15 +215,15 @@ config:
     oauthScopes: "email,profile,openid"
 ```
 
-<Info>For details on SCIM setup, refer to [Set up SCIM for your organization](/langsmith/user-management#set-up-scim-for-your-organization).</Info>
+> [!NOTE]
+>
+> For details on SCIM setup, refer to [Set up SCIM for your organization](/langsmith/user-management#set-up-scim-for-your-organization).
 
-<div>
-  <b>Via Custom App Integration</b>
-</div>
+**Via Custom App Integration**
 
-<Warning>
-  SCIM is not compatible with this method of configuration. Refer to [**Via Okta Integration Network**](#via-okta-integration-network).
-</Warning>
+> [!WARNING]
+>
+> SCIM is not compatible with this method of configuration. Refer to [**Via Okta Integration Network**](#via-okta-integration-network).
 
 1. Log in to Okta as an administrator, and go to the **Okta Admin console**.
 2. Under **Applications** > **Applications** click **Create App Integration**.
@@ -266,9 +264,9 @@ Users can sign in using the **Login via SSO** button on the LangSmith homepage.
 
 ### Session length controls
 
-<Note>
-  All of the environment variables in this section are for the `platform-backend` service and can be added using `platformBackend.deployment.extraEnv` in Helm.
-</Note>
+> [!NOTE]
+>
+> All of the environment variables in this section are for the `platform-backend` service and can be added using `platformBackend.deployment.extraEnv` in Helm.
 
 * By default, session length is controlled by the expiration of the identity token returned by the identity provider
 * Most setups should use refresh tokens to enable session length extension beyond the identity token expiration up to `OAUTH_SESSION_MAX_SEC`, which may require including the `offline_access` scope by adding to `oauthScopes` in Helm
@@ -313,9 +311,9 @@ ISSUER_SUB_CLAIM_OVERRIDES='{"https://login.microsoftonline.com/": "oid", "https
 
 ### SSO Groups Sync
 
-<Note>
-  SSO Groups Sync on self-hosted requires LangSmith chart version **0.15.0-rc.3** (application version **0.15.2rc1**) or later.
-</Note>
+> [!NOTE]
+>
+> SSO Groups Sync on self-hosted requires LangSmith chart version **0.15.0-rc.3** (application version **0.15.2rc1**) or later.
 
 [SSO Groups Sync](/langsmith/user-management#sso-groups-sync-alternative) lets LangSmith assign org and workspace roles from a group membership claim on the OIDC token, as a simpler alternative to [SCIM](/langsmith/user-management#set-up-scim-for-your-organization). On self-hosted, you must configure the IdP to include groups in the OIDC ID token before LangSmith can read them.
 
@@ -347,50 +345,48 @@ The exact scope name (`groups`, `roles`, etc.) depends on your IdP. Check your I
 
 Per-provider SSO Groups Sync settings are stored on the SSO provider record and toggled via the [LangSmith UI](https://smith.langchain.com?utm_source=docs\&utm_medium=cta\&utm_campaign=langsmith-signup\&utm_content=langsmith-self-host-sso) or [API](/langsmith/reference) (not via Helm values).
 
-<Tabs>
-  <Tab title="UI">
-    Once your IdP emits the groups claim, configure SSO Groups Sync from the UI: go to **Settings** > **SSO configuration** and scroll to the **SSO Groups Sync** section. The claim name configured in the **Groups claim field** must match the claim emitted by your IdP.
-  </Tab>
+**UI**
 
-  <Tab title="API">
-    To configure SSO Groups Sync via the API, first `GET` the current SSO settings to retrieve the provider `id`, then `PATCH` using that `id`:
+Once your IdP emits the groups claim, configure SSO Groups Sync from the UI: go to **Settings** > **SSO configuration** and scroll to the **SSO Groups Sync** section. The claim name configured in the **Groups claim field** must match the claim emitted by your IdP.
 
-    ```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-    # 1. Fetch the current SSO settings (and the id required for PATCH)
-    curl -s "$SELF_HOSTED_LANGSMITH_ENDPOINT/api/v1/orgs/current/sso-settings" \
-      -H "X-Api-Key: $LANGSMITH_API_KEY" | jq .
+**API**
 
-    # 2. PATCH using the id returned above
-    curl -s -X PATCH "$SELF_HOSTED_LANGSMITH_ENDPOINT/api/v1/orgs/current/sso-settings/<id>" \
-      -H "X-Api-Key: $LANGSMITH_API_KEY" \
-      -H "Content-Type: application/json" \
-      -d '{
-        "sso_groups_enabled": true,
-        "sso_groups_claim_field": "groups",
-        "sso_groups_required": true,
-        "sso_groups_role_sync_enabled": true
-      }' | jq .
-    ```
+To configure SSO Groups Sync via the API, first `GET` the current SSO settings to retrieve the provider `id`, then `PATCH` using that `id`:
 
-    <Warning>
-      `DELETE` is also available on this resource but is not covered here. `DELETE` removes the SSO provider entirely and locks out login if the org has **Login via SSO only** enabled, or if no other authentication providers (for example, social login) are configured.
-    </Warning>
-  </Tab>
-</Tabs>
+```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+# 1. Fetch the current SSO settings (and the id required for PATCH)
+curl -s "$SELF_HOSTED_LANGSMITH_ENDPOINT/api/v1/orgs/current/sso-settings" \
+  -H "X-Api-Key: $LANGSMITH_API_KEY" | jq .
+
+# 2. PATCH using the id returned above
+curl -s -X PATCH "$SELF_HOSTED_LANGSMITH_ENDPOINT/api/v1/orgs/current/sso-settings/<id>" \
+  -H "X-Api-Key: $LANGSMITH_API_KEY" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "sso_groups_enabled": true,
+    "sso_groups_claim_field": "groups",
+    "sso_groups_required": true,
+    "sso_groups_role_sync_enabled": true
+  }' | jq .
+```
+
+> [!WARNING]
+>
+> `DELETE` is also available on this resource but is not covered here. `DELETE` removes the SSO provider entirely and locks out login if the org has **Login via SSO only** enabled, or if no other authentication providers (for example, social login) are configured.
 
 #### Emit the groups claim from Microsoft Entra ID
 
 For OIDC on self-hosted, add the groups claim through the App Registration Manifest. Skip the **Token configuration** > **Add groups claim** flow, which does not support display names for cloud-only security groups.
 
-<Warning>
-  Set the top-level `groupMembershipClaims` property to `"ApplicationGroup"`. Other values change behavior in ways that are hard to diagnose:
-
-  * Missing or `"None"`: no groups appear in the token.
-  * `"SecurityGroup"` or `"All"`: groups appear, but the `cloud_displayname` value is silently ignored and the token contains group object IDs instead of names.
-  * `"ApplicationGroup"`: groups resolve to display names, but only for groups explicitly assigned to the Enterprise Application under **Users and groups**.
-
-  The `cloud_displayname` value is only supported for single-tenant applications.
-</Warning>
+> [!WARNING]
+>
+> Set the top-level `groupMembershipClaims` property to `"ApplicationGroup"`. Other values change behavior in ways that are hard to diagnose:
+>
+> * Missing or `"None"`: no groups appear in the token.
+> * `"SecurityGroup"` or `"All"`: groups appear, but the `cloud_displayname` value is silently ignored and the token contains group object IDs instead of names.
+> * `"ApplicationGroup"`: groups resolve to display names, but only for groups explicitly assigned to the Enterprise Application under **Users and groups**.
+>
+> The `cloud_displayname` value is only supported for single-tenant applications.
 
 In **App registrations** > your app > **Manifest**, merge the following into the manifest, keeping any existing `optionalClaims.idToken` entries such as `email`:
 
@@ -457,15 +453,15 @@ If the groups claim is correct but LangSmith does not assign roles, check the to
 
 We recommend running with a [`Client Secret`](#provider-setup). However, if your IdP does not support this, you can use the `Authorization Code with PKCE` flow.
 
-<Warning>
-  The PKCE workflow is **deprecated as of v16** and will be **fully removed in v17**. A migration path from PKCE to OAuth with client secret will be provided. We recommend migrating to the [client secret flow](#provider-setup) as soon as possible.
-</Warning>
+> [!WARNING]
+>
+> The PKCE workflow is **deprecated as of v16** and will be **fully removed in v17**. A migration path from PKCE to OAuth with client secret will be provided. We recommend migrating to the [client secret flow](#provider-setup) as soon as possible.
 
 ### Requirements
 
-<Note>
-  This flow does **not** require a `Client Secret`.
-</Note>
+> [!NOTE]
+>
+> This flow does **not** require a `Client Secret`.
 
 There are a couple of requirements for using OAuth SSO with LangSmith:
 
@@ -485,12 +481,6 @@ config:
 
 ***
 
-<div>
-  <Callout icon="terminal-2">
-    [Connect these docs](/use-these-docs) to your agent of choice via MCP for real-time answers.
-  </Callout>
+[Connect these docs](/use-these-docs) to your agent of choice via MCP for real-time answers.
 
-  <Callout icon="edit">
-    [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/self-host-sso.mdx) or [file an issue](https://github.com/langchain-ai/docs/issues/new/choose).
-  </Callout>
-</div>
+[Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/self-host-sso.mdx) or [file an issue](https://github.com/langchain-ai/docs/issues/new/choose).

@@ -13,27 +13,27 @@ The Playground supports two methods for incorporating multimodal content in your
    * Test how the model handles different inputs
    * Create reusable prompts that work with varying content
 
-<Note>
-  Not all models support multimodal content. Before using multimodal features in the Playground, make sure your selected model supports the file types you want to use.
-</Note>
+> [!NOTE]
+>
+> Not all models support multimodal content. Before using multimodal features in the Playground, make sure your selected model supports the file types you want to use.
 
 ## Inline content
 
 Click the file icon in the message where you want to add multimodal content. Under the `Upload content` tab, you can upload a file and include it inline in the prompt.
 
-<img alt="Upload inline multimodal content" />
+![Upload inline multimodal content](https://mintcdn.com/langchain-5e9cc07a/1RIJxfRpkszanJLL/langsmith/images/upload-inline-multimodal-content.png?fit=max\&auto=format\&n=1RIJxfRpkszanJLL\&q=85\&s=b93d2a6731d26d3ff58a3d0d6d909159)
 
 ## Template variables
 
 Click the file icon in the message where you want to add multimodal content. Under the `Template variables` tab, you can create a template variable for a specific attachment type. Currently, only images, PDFs, and audio files (.wav, .mp3) are supported.
 
-<img alt="Template variable multimodal content" />
+![Template variable multimodal content](https://mintcdn.com/langchain-5e9cc07a/ImHGLQW1HnQYwnJV/langsmith/images/template-variable-multimodal-content.png?fit=max\&auto=format\&n=ImHGLQW1HnQYwnJV\&q=85\&s=e69596dd9fe7d16252c7054bf9efcdf0)
 
 ## Populate the template variable
 
 Once you've added a template variable, you can provide content for it using the panel on the right side of the screen. Simply click the `+` button to upload or select content that will be used to populate the template variable.
 
-<img alt="Manual prompt multimodal" />
+![Manual prompt multimodal](https://mintcdn.com/langchain-5e9cc07a/4kN8yiLrZX_amfFn/langsmith/images/manual-prompt-multimodal.png?fit=max\&auto=format\&n=4kN8yiLrZX_amfFn\&q=85\&s=5983e91ca9f596918c9068f8d7450d8d)
 
 ## Run an evaluation
 
@@ -41,12 +41,6 @@ After testing out your prompt manually, you can [run an evaluation](/langsmith/e
 
 ***
 
-<div>
-  <Callout icon="terminal-2">
-    [Connect these docs](/use-these-docs) to your agent of choice via MCP for real-time answers.
-  </Callout>
+[Connect these docs](/use-these-docs) to your agent of choice via MCP for real-time answers.
 
-  <Callout icon="edit">
-    [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/multimodal-content.mdx) or [file an issue](https://github.com/langchain-ai/docs/issues/new/choose).
-  </Callout>
-</div>
+[Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/multimodal-content.mdx) or [file an issue](https://github.com/langchain-ai/docs/issues/new/choose).

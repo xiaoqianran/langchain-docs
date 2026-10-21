@@ -6,17 +6,17 @@
 
 使用批量导出到 GCS 将LangSmith 跟踪数据加载到 BigQuery 中。
 
-<Info>
-  **适用计划限制**
-
-  对于2026年8月3日之后注册的客户，批量导出仅适用于[LangSmith Enterprise plan](https://www.langchain.com/pricing-langsmith)。在 2026 年 8 月 3 日或之前注册的客户可以在 2027 年 2 月 1 日之前使用 Plus 或 Enterprise 套餐的批量导出功能。
-</Info>
+> [!注意]
+>
+> **适用计划限制**
+>
+> 对于2026年8月3日之后注册的客户，批量导出仅适用于[LangSmith Enterprise plan](https://www.langchain.com/pricing-langsmith)。在 2026 年 8 月 3 日或之前注册的客户可以在 2027 年 2 月 1 日之前使用 Plus 或 Enterprise 套餐的批量导出功能。
 
 LangSmith 可以将跟踪数据以 Parquet 格式导出到 Google Cloud Storage (GCS) 存储桶。从那里，您可以将其作为外部表（从 GCS 就地查询）或本机表（复制到 BigQuery 存储中）加载到 BigQuery 中。
 
 本指南涵盖：
 
-* 为 LangSmith 设置 GCS 存储桶和 HMAC 凭据。
+* 为 LangSmith 设置 GCS 存储桶和 HMAC 凭证。
 * 创建批量导出目的地和导出作业。
 * 将导出的数据加载到 BigQuery 中。
 
@@ -153,11 +153,11 @@ curl --request POST \
   }'
 ```
 
-批量导出默认为`zstandard`压缩。此示例设置 `snappy`，因为 Snappy 速度快且受到 BigQuery 的广泛支持。所有可用选项，请参阅[Bulk export trace data](/langsmith/data-export#2-create-an-export-job)，包括字段过滤和过滤表达式。
+批量导出默认为`zstandard`压缩。此示例设置 `snappy`，因为 Snappy 速度很快且受到 BigQuery 的广泛支持。所有可用选项请参考[Bulk export trace data](/langsmith/data-export#2-create-an-export-job)，包括字段过滤和过滤表达式。
 
-<Note>
-  在[Self-hosted LangSmith](/langsmith/self-hosted)上，默认为`gzip`。设置 `FF_BULK_EXPORT_DEFAULT_COMPRESSION` 环境变量以更改默认值。
-</Note>
+> [!注意]
+>
+> 在[Self-hosted LangSmith](/langsmith/self-hosted)上，默认为`gzip`。设置 `FF_BULK_EXPORT_DEFAULT_COMPRESSION` 环境变量以更改默认值。
 
 ### 输出文件结构
 
@@ -176,62 +176,60 @@ BigQuery 提供两种访问导出数据的方法。两者都需要首先授予 B
 
 ### 创建表
 
-<Tabs>
-  <Tab title="External table">
-    外部表直接从 GCS 查询数据，无需将其复制到 BigQuery 中。
+**外部表**
 
-    1. 在 BigQuery 控制台的 **Explorer** 窗格中展开您的项目和数据集。
-    2. 单击数据集的 **操作** 菜单（三个点）并选择 **创建表**。
-    3. 在**来源**下：
-       * 将**创建表自**设置为**Google Cloud Storage**。
-       * 将文件路径设置为`gs://YOUR_BUCKET_NAME/YOUR_PREFIX/export_id=*`。使用 `export_id=*` 将 BigQuery 范围限定为 Hive 分区的导出目录，并排除 LangSmith 在目标验证期间写入的 `tmp/` 文件夹（请参阅 [Temporary validation file](#temporary-validation-file)）。
-       * 将**文件格式**设置为**Parquet**。
-    4. 勾选**源数据分区**，然后：
-       * 将 **源 URI 前缀** 设置为 `gs://YOUR_BUCKET_NAME/YOUR_PREFIX`。
-       * 将**分区推断模式**设置为**自动推断类型**。
-    5. 在**目的地**下：* 选择您的项目和数据集。
-       * 输入表名，例如`langsmith_runs`。
-       * 将**表类型**设置为**外部表**。
-    6. 在**架构**下，启用**自动检测**。
-    7. 单击**创建表**。
+外部表直接从 GCS 查询数据，无需将其复制到 BigQuery 中。
 
-    分区路径列（`export_id`、`tenant_id`、`session_id`、`resource`、`year`、`month`、`day`）可用作可查询列。在查询中过滤 `year`、`month` 或 `day` 以启用分区修剪。
-  </Tab>
+1. 在 BigQuery 控制台的 **Explorer** 窗格中展开您的项目和数据集。
+2. 单击数据集的 **操作** 菜单（三个点）并选择 **创建表**。
+3. 在**来源**下：
+   * 将**创建表自**设置为**Google Cloud Storage**。
+   * 将文件路径设置为`gs://YOUR_BUCKET_NAME/YOUR_PREFIX/export_id=*`。使用 `export_id=*` 将 BigQuery 范围限定为 Hive 分区的导出目录，并排除 LangSmith 在目标验证期间写入的 `tmp/` 文件夹（请参阅 [Temporary validation file](#temporary-validation-file)）。
+   * 将**文件格式**设置为**Parquet**。
+4. 勾选**源数据分区**，然后：
+   * 将 **源 URI 前缀** 设置为 `gs://YOUR_BUCKET_NAME/YOUR_PREFIX`。
+   * 将**分区推断模式**设置为**自动推断类型**。
+5. 在**目的地**下：
+   * 选择您的项目和数据集。* 输入表名，例如`langsmith_runs`。
+   * 将**表类型**设置为**外部表**。
+6. 在**架构**下，启用**自动检测**。
+7. 单击**创建表**。
 
-  <Tab title="Native table">
-    本机表将 Parquet 数据传输到 BigQuery 存储中，以获得完整的查询性能。
+分区路径列（`export_id`、`tenant_id`、`session_id`、`resource`、`year`、`month`、`day`）可用作可查询列。在查询中过滤 `year`、`month` 或 `day` 以启用分区修剪。
 
-    1. 转到 Google Cloud 控制台中的[Data Transfer page](https://console.cloud.google.com/bigquery/transfers)，然后选择 **+ 创建传输**。
+**本机表**
 
-    2. 对于 **源类型**，选择 **Google 云存储**。
+本机表将 Parquet 数据传输到 BigQuery 存储中，以获得完整的查询性能。
 
-    3. 输入**传输名称**。如有必要，您可以随时编辑传输。
+1. 转到 Google Cloud 控制台中的[Data Transfer page](https://console.cloud.google.com/bigquery/transfers)，然后选择 **+ 创建传输**。
 
-    4. 选择**计划选项**。如果您不想重复导出，可以选择**按需**并手动触发导出。
+2. 对于 **源类型**，选择 **Google 云存储**。
 
-    5. 在 BigQuery 控制台中，在 **Explorer** 窗格中展开您的项目和数据集。
+3. 输入**传输名称**。如有必要，您可以随时编辑传输。
 
-    6. 单击数据集的 **操作** 菜单（三个点）并选择 **创建表**。7. 在**来源**下：
-       * 将**创建表自**设置为**Google Cloud Storage**。
-       * 将文件路径设置为`gs://YOUR_BUCKET_NAME/YOUR_PREFIX/export_id=*`。使用 `export_id=*` 会排除 LangSmith 在目标验证期间写入的 `tmp/` 文件夹（请参阅 [Temporary validation file](#temporary-validation-file)）。
-       * 将**文件格式**设置为**Parquet**。
+4. 选择**计划选项**。如果您不想重复导出，可以选择**按需**并手动触发导出。
 
-    8. 勾选**源数据分区**，然后：
-       * 将 **源 URI 前缀** 设置为 `gs://YOUR_BUCKET_NAME/YOUR_PREFIX`。
-       * 将**分区推断模式**设置为**自动推断类型**。
+5. 在 BigQuery 控制台中，在 **Explorer** 窗格中展开您的项目和数据集。
 
-    9. 在**目的地**下：
-       * 选择您的项目和数据集。
-       * 输入表名，例如`langsmith_runs`。
-       * 将**表类型**设置为**本机表**。
+6. 单击数据集的 **操作** 菜单（三个点）并选择 **创建表**。7. 在**来源**下：
+   * 将**创建表自**设置为**Google Cloud Storage**。
+   * 将文件路径设置为`gs://YOUR_BUCKET_NAME/YOUR_PREFIX/export_id=*`。使用 `export_id=*` 会排除 LangSmith 在目标验证期间写入的 `tmp/` 文件夹（请参阅 [Temporary validation file](#temporary-validation-file)）。
+   * 将**文件格式**设置为**Parquet**。
 
-    10. 在**高级选项**下，将新表的**写入首选项**设置为**如果为空则写入**。
+8. 勾选**源数据分区**，然后：
+   * 将 **源 URI 前缀** 设置为 `gs://YOUR_BUCKET_NAME/YOUR_PREFIX`。
+   * 将**分区推断模式**设置为**自动推断类型**。
 
-    11. 单击**创建表**。
+9. 在**目的地**下：
+   * 选择您的项目和数据集。
+   * 输入表名，例如`langsmith_runs`。
+   * 将**表类型**设置为**本机表**。
 
-    BigQuery 运行加载作业来复制数据。 Hive 分区列在表中显示为常规列。有关可用数据列的完整列表，请参阅[Exportable fields](/langsmith/data-export#exportable-fields)。
-  </Tab>
-</Tabs>
+10. 在**高级选项**下，将新表的**写入首选项**设置为**如果为空则写入**。
+
+11. 单击**创建表**。
+
+BigQuery 运行加载作业来复制数据。 Hive 分区列在表中显示为常规列。有关可用数据列的完整列表，请参阅[Exportable fields](/langsmith/data-export#exportable-fields)。
 
 ## 凭证轮换
 
@@ -274,12 +272,6 @@ BigQuery 提供两种访问导出数据的方法。两者都需要首先授予 B
 
 有关其他错误代码和导出状态详细信息，请参阅[Monitor and troubleshoot bulk exports](/langsmith/data-export-monitor)。
 
-***<div>
-  <Callout icon="terminal-2">
-    [Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
-  </Callout>
+***[Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
 
-  <Callout icon="edit">
-    [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/big-query-bulk-export.mdx) 或 [file an issue](https://github.com/langchain-ai/docs/issues/new/choose)。
-  </Callout>
-</div>
+[Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/big-query-bulk-export.mdx) 或 [file an issue](https://github.com/langchain-ai/docs/issues/new/choose)。

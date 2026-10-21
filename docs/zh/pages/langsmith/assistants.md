@@ -8,13 +8,13 @@
 
 例如，想象一个基于通用图形架构构建的通用写入代理。虽然结构保持不变，但不同的写作风格（例如博客文章和推文）需要量身定制的配置来优化性能。为了支持这些变化，您可以创建多个助手（例如，一个用于博客，另一个用于推文），它们共享底层图表，但模型选择和系统提示不同。
 
-<img alt="assistant versions" />
+![assistant versions](https://mintcdn.com/langchain-5e9cc07a/IMK8wJkjSpMCGODD/langsmith/images/assistants.png?fit=max\&auto=format\&n=IMK8wJkjSpMCGODD\&q=85\&s=05402316c8fe86fead077ec774e873f0)
 
 代理服务器 API 提供了多个用于创建和管理助手及其版本的端点。更多详情请参阅[API reference](/langsmith/server-api-ref)。
 
-<Info>
-  助手是一个[LangSmith Deployment](/langsmith/deployment)概念。它们在开源 LangGraph 库中不可用。
-</Info>
+> [!注意]
+>
+> 助手是一个 [LangSmith Deployment](/langsmith/deployment) 概念。它们在开源 LangGraph 库中不可用。
 
 ## 助手如何处理部署当您使用 LangSmith 部署部署图形时，[Agent Server](/langsmith/agent-server) 会自动创建一个与该图形的默认配置绑定的**默认助手**。然后，您可以为同一图表创建其他助手，每个助手都有自己的配置。
 
@@ -36,20 +36,20 @@
 * **[Managed via API and UI](/langsmith/configuration-cloud)**：使用代理服务器/LangGraph SDK 或[LangSmith UI](https://smith.langchain.com?utm_source=docs\&utm_medium=cta\&utm_campaign=langsmith-signup\&utm_content=langsmith-assistants) 创建、列出、更新、版本和获取助手。
 * **一个图表，多个助手**：单个部署的图表可以支持多个助手，每个助手具有不同的配置（例如提示、模型、工具）。
 * **[Versioned](#versioning)配置**：每个助手通过版本控制维护自己的配置历史记录。编辑助手会创建一个新版本，您可以升级或回滚到任何版本。
-* **[Configuration](#configuration)更新，无需图形更改**：通过助手配置更新提示、模型选择和其他设置，无需修改或重新部署图形代码即可实现快速迭代。<Note>
-  调用助手时，您可以在[⟦T4⟧](/langsmith/application-structure#configuration-file)中指定：
-
-  * **图表 ID**（例如，`"agent"`）：使用该图表的默认助手
-  * **助手 ID** (UUID)：使用特定的助手配置
-
-  这种灵活性使您可以使用默认设置快速测试或精确控制所使用的配置。
-</Note>
+* **[Configuration](#configuration)更新无需图形更改**：通过助手配置更新提示、模型选择和其他设置，无需修改或重新部署图形代码即可实现快速迭代。> [!注意]
+>
+> 调用助手时，您可以在[⟦T4⟧](/langsmith/application-structure#configuration-file)中指定：
+>
+> * **图表 ID**（例如，`"agent"`）：使用该图表的默认助手
+> * **助手 ID** (UUID)：使用特定的助手配置
+>
+> 这种灵活性使您可以使用默认设置快速测试或精确控制所使用的配置。
 
 ### 配置
 
 助手基于 [configuration](/oss/python/langgraph/graph-api#runtime-context) 的 LangGraph 开源概念构建。
 
-While configuration is available in the open source LangGraph library, assistants are only present in [LangSmith Deployment](/langsmith/deployment) because they are tightly coupled to your deployed graph.部署后，[Agent Server](/langsmith/agent-server)将使用图表的默认配置设置自动为每个图表创建一个默认助手。
+虽然开源 LangGraph 库中提供了配置，但助手仅出现在 [LangSmith Deployment](/langsmith/deployment) 中，因为它们与您部署的图形紧密耦合。部署后，[Agent Server](/langsmith/agent-server)将使用图表的默认配置设置自动为每个图表创建一个默认助手。
 
 实际上，助手只是具有特定配置的图的“实例”。因此，多个助手可以引用相同的图表，但可以包含不同的配置（例如提示、模型、工具）。 LangSmith 部署 API 提供了多个用于创建和管理助手的端点。有关如何创建助手的更多详细信息，请参阅[API reference](/langsmith/server-api-ref)和[this how-to](/langsmith/configuration-cloud)。
 
@@ -57,13 +57,13 @@ While configuration is available in the open source LangGraph library, assistant
 
 * **用户级个性化**
   * 自定义每个用户的模型选择、系统提示或工具可用性。
-  * 存储用户偏好并自动将其应用到每次交互中。
-  * Enable users to choose between different AI personalities or expertise levels.
+  * 存储用户偏好并将其自动应用于每次交互。
+  * 使用户能够在不同的人工智能个性或专业水平之间进行选择。
 
-* **Customer or organization-specific configurations**
-  * Maintain separate configurations for different customers or organizations.
-  * Customize behavior for each client without deploying separate infrastructure.
-  * Isolate configuration changes to specific customers.
+* **客户或组织特定的配置**
+  * 为不同的客户或组织维护单独的配置。
+  * 为每个客户端定制行为，无需部署单独的基础设施。
+  * 隔离特定客户的配置更改。
 
 ```mermaid actions={false} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 graph TD
@@ -79,14 +79,14 @@ graph TD
 ```
 
 * **特定于环境的配置**
-  * Use different models or settings for development, staging, and production.
-  * Test configuration changes in staging before promoting to production.
-  * Reduce costs in non-production environments with smaller models.
+  * 使用不同的模型或设置进行开发、暂存和生产。
+  * 在升级到生产之前测试暂存中的配置更改。
+  * 使用较小的模型降低非生产环境中的成本。
 
 * **A/B 测试和实验**
-  * Compare different prompts, models, or parameter settings.
-  * Roll out configuration changes gradually to a subset of users.
-  * Measure performance differences between configuration variants.* **专门任务变体**
+  * 比较不同的提示、型号或参数设置。
+  * 逐步向一部分用户推出配置更改。
+  * 测量配置变体之间的性能差异。* **专门任务变体**
   * 创建通用代理的特定于域的版本。
   * 优化不同语言、地区、行业的配置。
   * 在改变执行细节的同时保持一致的图形逻辑。
@@ -104,7 +104,7 @@ graph TD
     style D fill:#B3E0F2,stroke:#4A90E2,stroke-width:2px,color:#1E3A5F
 ```
 
-### Versioning
+### 版本控制
 
 助手支持版本控制以跟踪随时间的变化。创建助手后，后续编辑将自动创建新版本。
 
@@ -113,20 +113,14 @@ graph TD
 * 回滚到以前的版本就像将其设置为活动状态一样简单。
 * 所有版本仍可供参考和回滚。
 
-<Warning>
-  更新助手时，您必须提供完整的配置负载。更新端点从头开始创建新版本，并且不会与以前的版本合并。确保包含您想要保留的所有配置字段。
-</Warning>
+> [!警告]
+>
+> 更新助手时，您必须提供完整的配置负载。更新端点从头开始创建新版本，并且不会与以前的版本合并。确保包含您想要保留的所有配置字段。
 
 有关如何管理助手版本的更多详细信息，请参阅[Manage assistants guide](/langsmith/configuration-cloud#create-a-new-version-for-your-assistant)。
 
 ***
 
-<div>
-  <Callout icon="terminal-2">
-    [Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
-  </Callout>
+[Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
 
-  <Callout icon="edit">
-    [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/assistants.mdx) or [file an issue](https://github.com/langchain-ai/docs/issues/new/choose).
-  </Callout>
-</div>
+[Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/assistants.mdx) 或 [file an issue](https://github.com/langchain-ai/docs/issues/new/choose)。

@@ -4,9 +4,9 @@
 
 View and analyze LLM Gateway costs by user, API key, and model.
 
-<Note>
-  The LLM Gateway is in [beta](/langsmith/release-stages).
-</Note>
+> [!NOTE]
+>
+> The LLM Gateway is in [beta](/langsmith/release-stages).
 
 The LLM Gateway **Spend Monitoring** dashboard shows how much LLM cost a [workspace](/langsmith/administration-overview#workspaces) has accrued through the gateway. Use it to compare spend over time and identify the users, [API keys](/langsmith/create-account-api-key), and models that account for that spend. The dashboard covers one workspace at a time; switch workspaces to compare them.
 
@@ -75,9 +75,9 @@ Custom-header grouping breaks down an API key's spend by request header value. U
 
 This option requires an enabled default API-key spend policy with **Separate limits by custom header** configured. An organization-level policy with a **Custom header condition** does not enable this option. Neither does a default workspace or user policy.
 
-<Warning>
-  The required policy enforces a spend cap for each API-key and header-value pair. It is not an analytics-only setting. Requests that exceed a matching cap are blocked with HTTP `402`, and existing organization-level caps still apply.
-</Warning>
+> [!WARNING]
+>
+> The required policy enforces a spend cap for each API-key and header-value pair. It is not an analytics-only setting. Requests that exceed a matching cap are blocked with HTTP `402`, and existing organization-level caps still apply.
 
 To configure custom-header grouping:
 
@@ -101,12 +101,6 @@ For more information about independent limits and requests without the header, s
 
 ***
 
-<div>
-  <Callout icon="terminal-2">
-    [Connect these docs](/use-these-docs) to your agent of choice via MCP for real-time answers.
-  </Callout>
+[Connect these docs](/use-these-docs) to your agent of choice via MCP for real-time answers.
 
-  <Callout icon="edit">
-    [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/llm-gateway-monitoring.mdx) or [file an issue](https://github.com/langchain-ai/docs/issues/new/choose).
-  </Callout>
-</div>
+[Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/llm-gateway-monitoring.mdx) or [file an issue](https://github.com/langchain-ai/docs/issues/new/choose).

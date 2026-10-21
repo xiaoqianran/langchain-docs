@@ -209,9 +209,9 @@ Terraform rejects a configuration that sets more than one of `enable_envoy_gatew
 | `enable_usage_telemetry` | `false` | no | Enable extended usage telemetry reporting. |
 | `enable_sso_oidc` | `false` | no | Enable SSO through any OIDC provider and turn off basic auth. First store `oauth-client-id`, `oauth-client-secret`, and `oauth-issuer-url` in SSM with `infra/scripts/manage-ssm.sh set`; `make init-values` fails without them. Turn it on only after the first install, once org-admin access is confirmed. |
 
-<Warning>
-  `enable_agent_builder` was removed in chart v16. Setting it to `true` fails validation at `terraform plan`, so replace `enable_agent_builder = true` with `enable_fleet = true`.
-</Warning>
+> [!WARNING]
+>
+> `enable_agent_builder` was removed in chart v16. Setting it to `true` fails validation at `terraform plan`, so replace `enable_agent_builder = true` with `enable_fleet = true`.
 
 ## Sandboxes
 
@@ -252,12 +252,6 @@ Sourcing `infra/scripts/setup-env.sh` reads each value from SSM Parameter Store 
 
 ***
 
-<div>
-  <Callout icon="terminal-2">
-    [Connect these docs](/use-these-docs) to your agent of choice via MCP for real-time answers.
-  </Callout>
+[Connect these docs](/use-these-docs) to your agent of choice via MCP for real-time answers.
 
-  <Callout icon="edit">
-    [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/self-host-terraform-aws-variables.mdx) or [file an issue](https://github.com/langchain-ai/docs/issues/new/choose).
-  </Callout>
-</div>
+[Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/self-host-terraform-aws-variables.mdx) or [file an issue](https://github.com/langchain-ai/docs/issues/new/choose).

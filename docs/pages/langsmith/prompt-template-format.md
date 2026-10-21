@@ -4,9 +4,9 @@
 
 This page describes the [prompt template](/langsmith/prompt-engineering-concepts#prompts-vs-prompt-templates) formats supported in the [Playground](/langsmith/prompt-engineering-concepts#playground), [prompt hub](/langsmith/manage-prompts#public-prompt-hub), and [evaluators](/langsmith/evaluation-concepts#evaluators). Prompt templates allow you to create reusable prompts with dynamic placeholders that get filled in at runtime.
 
-<Tip>
-  For a general overview of prompt engineering and prompt templates, refer to the [Concepts](/langsmith/prompt-engineering-concepts#prompts-vs-prompt-templates) page.
-</Tip>
+> [!TIP]
+>
+> For a general overview of prompt engineering and prompt templates, refer to the [Concepts](/langsmith/prompt-engineering-concepts#prompts-vs-prompt-templates) page.
 
 LangSmith supports two prompt template formats, which work for different levels of complexity:
 
@@ -19,9 +19,7 @@ LangSmith supports two prompt template formats, which work for different levels 
 
 You can switch between formats in the [UI](https://smith.langchain.com?utm_source=docs\&utm_medium=cta\&utm_campaign=langsmith-signup\&utm_content=langsmith-prompt-template-format). LangSmith will automatically [convert your template](#conversion-between-formats) when possible, though some mustache features (like loops and conditionals) cannot be converted to f-string format.
 
-<Callout icon="test-pipe">
-  Use the [Playground](https://smith.langchain.com/playground) to test out the examples on this page. Switch the **Prompt format** under the prompt settings <Icon icon="settings" /> menu in the Playground.
-</Callout>
+Use the [Playground](https://smith.langchain.com/playground) to test out the examples on this page. Switch the **Prompt format** under the prompt settings  menu in the Playground.
 
 ## F-string syntax
 
@@ -134,9 +132,9 @@ Hello, {{name}}! Welcome to {{company}}.
 Hello, Ashley! Welcome to LangChain.
 ```
 
-<Note>
-  `{{!-- ... --}}` is a mustache comment and won't appear in the output. Refer to the [Comments](#comments) section.
-</Note>
+> [!NOTE]
+>
+> `{{!-- ... --}}` is a mustache comment and won't appear in the output. Refer to the [Comments](#comments) section.
 
 ### Nested object access
 
@@ -247,9 +245,9 @@ Company: TechCorp
     - Carol (Sales Manager)
 ```
 
-<Tip>
-  You can create a structure as deep as you need, but consider flattening very deep structures before templating for readability. This approach is useful for nested categories, conversation threads with metadata, or any hierarchical data representation.
-</Tip>
+> [!TIP]
+>
+> You can create a structure as deep as you need, but consider flattening very deep structures before templating for readability. This approach is useful for nested categories, conversation threads with metadata, or any hierarchical data representation.
 
 ### Nested loops
 
@@ -512,9 +510,9 @@ Second message: {{all_messages.1}}
 * **`first_human_last_ai`**: Just the initial question (`first_human`) and final answer (`last_ai`). Use this to check if the AI ultimately answered the original question, ignoring the middle conversation.
 * **`trajectory`**: Every message in the session as a flat, deduplicated list, including tool calls and tool results. Each message has a `role` of `human`, `ai`, `system`, or `tool`, and a `content` field holding either a string or a list of content blocks such as `text`, `reasoning`, and `tool_call`. Use this to evaluate the path an agent took.
 
-<Note>
-  `trajectory` is mutually exclusive with the thread variables. A prompt uses either `trajectory` or `all_messages`, `human_ai_pairs`, and `first_human_last_ai`. For how that rule is enforced and how to use `trajectory` in a thread evaluator, see [Evaluate trajectories](/langsmith/online-evaluations-multi-turn#evaluate-trajectories).
-</Note>
+> [!NOTE]
+>
+> `trajectory` is mutually exclusive with the thread variables. A prompt uses either `trajectory` or `all_messages`, `human_ai_pairs`, and `first_human_last_ai`. For how that rule is enforced and how to use `trajectory` in a thread evaluator, see [Evaluate trajectories](/langsmith/online-evaluations-multi-turn#evaluate-trajectories).
 
 ### Example with thread context
 
@@ -673,12 +671,6 @@ If you try to convert a mustache template with these features, LangSmith will ei
 
 ***
 
-<div>
-  <Callout icon="terminal-2">
-    [Connect these docs](/use-these-docs) to your agent of choice via MCP for real-time answers.
-  </Callout>
+[Connect these docs](/use-these-docs) to your agent of choice via MCP for real-time answers.
 
-  <Callout icon="edit">
-    [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/prompt-template-format.mdx) or [file an issue](https://github.com/langchain-ai/docs/issues/new/choose).
-  </Callout>
-</div>
+[Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/prompt-template-format.mdx) or [file an issue](https://github.com/langchain-ai/docs/issues/new/choose).

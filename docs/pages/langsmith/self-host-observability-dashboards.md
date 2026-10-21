@@ -128,21 +128,21 @@ For Datadog bucket panels, enable the appropriate AWS or GCP integration and sel
 
 The Datadog preview shows shared filters, component tabs, and colored Sandbox sections. Its charts show anonymized development telemetry, not performance benchmarks.
 
-<img alt="Datadog dashboard with shared deployment filters, SmithDB and Sandboxes tabs, colored sections, and boot-path charts" />
+![Datadog dashboard with shared deployment filters, SmithDB and Sandboxes tabs, colored sections, and boot-path charts](https://mintcdn.com/langchain-5e9cc07a/m7kBkYmNUWbh4aBg/images/sandbox-dashboard-datadog-overview.png?fit=max\&auto=format\&n=m7kBkYmNUWbh4aBg\&q=85\&s=fd4fc7074e51092bde0dae9bf59af38e)
 
-<Accordion title="Public API traffic and latency">
-  <img alt="Sandbox API requests by status, latency percentiles, and endpoint rankings" />
-</Accordion>
+> **Public API traffic and latency**
+>
+> ![Sandbox API requests by status, latency percentiles, and endpoint rankings](https://mintcdn.com/langchain-5e9cc07a/m7kBkYmNUWbh4aBg/images/sandbox-dashboard-api.png?fit=max\&auto=format\&n=m7kBkYmNUWbh4aBg\&q=85\&s=8a4c4f3d9438babf0126163434c7fa9e)
 
-<Accordion title="Lifecycle operations and failures">
-  <img alt="Sandbox operation errors, operation rates, and creation duration by outcome and stage" />
-</Accordion>
+> **Lifecycle operations and failures**
+>
+> ![Sandbox operation errors, operation rates, and creation duration by outcome and stage](https://mintcdn.com/langchain-5e9cc07a/m7kBkYmNUWbh4aBg/images/sandbox-dashboard-lifecycle.png?fit=max\&auto=format\&n=m7kBkYmNUWbh4aBg\&q=85\&s=d6b1e082b6bfd9afa22e0f11e6da240b)
 
 ## Preview the Grafana Sandbox tab
 
 The Grafana preview shows shared filters and mixed-width Sandbox panels. Its charts use synthetic example data, not live telemetry or performance benchmarks.
 
-<img alt="Grafana dashboard with shared data source and namespace selectors, component tabs, and mixed-width Sandbox charts" />
+![Grafana dashboard with shared data source and namespace selectors, component tabs, and mixed-width Sandbox charts](https://mintcdn.com/langchain-5e9cc07a/m7kBkYmNUWbh4aBg/images/sandbox-dashboard-grafana-overview.png?fit=max\&auto=format\&n=m7kBkYmNUWbh4aBg\&q=85\&s=fff175f785cfe9ae664480a12dd770a9)
 
 ## Update existing dashboards
 
@@ -167,12 +167,6 @@ For empty optional sections, check integration availability, metric names, and s
 
 ***
 
-<div>
-  <Callout icon="terminal-2">
-    [Connect these docs](/use-these-docs) to your agent of choice via MCP for real-time answers.
-  </Callout>
+[Connect these docs](/use-these-docs) to your agent of choice via MCP for real-time answers.
 
-  <Callout icon="edit">
-    [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/self-host-observability-dashboards.mdx) or [file an issue](https://github.com/langchain-ai/docs/issues/new/choose).
-  </Callout>
-</div>
+[Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/self-host-observability-dashboards.mdx) or [file an issue](https://github.com/langchain-ai/docs/issues/new/choose).

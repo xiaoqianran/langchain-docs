@@ -51,9 +51,9 @@ Context Hub commits support three entry types in `files`:
 
 When a linked agent or skill repo gets a new commit, LangSmith propagates that update to parent repos that reference it.
 
-<Tip>
-  If you find yourself copying the same block of context into several agents, pull it out into a skill repo and reference it from each agent.
-</Tip>
+> [!TIP]
+>
+> If you find yourself copying the same block of context into several agents, pull it out into a skill repo and reference it from each agent.
 
 ## Context Hub vs. store backend
 
@@ -94,12 +94,6 @@ Workspace-level sharing and visibility controls make the Hub a natural place to 
 
 ***
 
-<div>
-  <Callout icon="terminal-2">
-    [Connect these docs](/use-these-docs) to your agent of choice via MCP for real-time answers.
-  </Callout>
+[Connect these docs](/use-these-docs) to your agent of choice via MCP for real-time answers.
 
-  <Callout icon="edit">
-    [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/context-engineering-concepts.mdx) or [file an issue](https://github.com/langchain-ai/docs/issues/new/choose).
-  </Callout>
-</div>
+[Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/context-engineering-concepts.mdx) or [file an issue](https://github.com/langchain-ai/docs/issues/new/choose).

@@ -11,54 +11,50 @@ This page provides:
 * [Service recommendations](#compute-options) and best practices.
 * [AWS Well-Architected best practices](#aws-well-architected-best-practices) for operational excellence, security, and reliability.
 
-<Note>
-  LangChain publishes production-ready [Terraform modules for AWS](https://github.com/langchain-ai/terraform/tree/main/modules/aws) that provision EKS, RDS, ElastiCache, S3, and networking in a single workflow. Start with the [Deploy with Terraform overview](/langsmith/self-host-terraform) to choose between the Terraform and Helm-only paths.
-</Note>
+> [!NOTE]
+>
+> LangChain publishes production-ready [Terraform modules for AWS](https://github.com/langchain-ai/terraform/tree/main/modules/aws) that provision EKS, RDS, ElastiCache, S3, and networking in a single workflow. Start with the [Deploy with Terraform overview](/langsmith/self-host-terraform) to choose between the Terraform and Helm-only paths.
 
 ## Initial setup
 
-<Steps>
-  <Step title="Deploy to Kubernetes">
-    Follow the [Kubernetes installation guide](/langsmith/kubernetes). LangSmith is tested on Amazon Elastic Kubernetes Service (EKS).
+**1. Deploy to Kubernetes**
 
-    **EKS-specific notes:**
+Follow the [Kubernetes installation guide](/langsmith/kubernetes). LangSmith is tested on Amazon Elastic Kubernetes Service (EKS).
 
-    * Ensure the EBS CSI Driver is installed for persistent storage
-    * Use the `ebs.csi.aws.com` storage class provisioner
-  </Step>
+**EKS-specific notes:**
 
-  <Step title="Configure external services">
-    For production deployments, connect to AWS managed services:
+* Ensure the EBS CSI Driver is installed for persistent storage
+* Use the `ebs.csi.aws.com` storage class provisioner
 
-    <CardGroup>
-      <Card title="Amazon S3" icon="database" href="/langsmith/self-host-blob-storage#amazon-s3">
-        Store trace data in S3
-      </Card>
+**2. Configure external services**
 
-      <Card title="Amazon RDS" icon="database" href="/langsmith/self-host-external-postgres#amazon-rds">
-        PostgreSQL database
-      </Card>
+For production deployments, connect to AWS managed services:
 
-      <Card title="Amazon ElastiCache" icon="cpu" href="/langsmith/self-host-external-redis#amazon-elasticache">
-        Redis or Valkey for caching
-      </Card>
+> **[Amazon S3](/langsmith/self-host-blob-storage#amazon-s3)**
+>
+> Store trace data in S3
 
-      <Card title="ClickHouse Cloud" icon="chart-line" href="/langsmith/self-host-external-clickhouse">
-        Analytics database
-      </Card>
-    </CardGroup>
-  </Step>
+> **[Amazon RDS](/langsmith/self-host-external-postgres#amazon-rds)**
+>
+> PostgreSQL database
 
-  <Step title="Set up authentication">
-    Use [IAM Roles for Service Accounts (IRSA)](https://docs.aws.amazon.com/eks/latest/userguide/iam-roles-for-service-accounts.html) to authenticate LangSmith pods to AWS services without static credentials.
+> **[Amazon ElastiCache](/langsmith/self-host-external-redis#amazon-elasticache)**
+>
+> Redis or Valkey for caching
 
-    **Key pages:**
+> **[ClickHouse Cloud](/langsmith/self-host-external-clickhouse)**
+>
+> Analytics database
 
-    * [S3 IRSA configuration](/langsmith/self-host-blob-storage#amazon-s3)
-    * [RDS IAM authentication](/langsmith/self-host-external-postgres#iam-authentication)
-    * [ElastiCache IAM authentication](/langsmith/self-host-external-redis#iam-authentication)
-  </Step>
-</Steps>
+**3. Set up authentication**
+
+Use [IAM Roles for Service Accounts (IRSA)](https://docs.aws.amazon.com/eks/latest/userguide/iam-roles-for-service-accounts.html) to authenticate LangSmith pods to AWS services without static credentials.
+
+**Key pages:**
+
+* [S3 IRSA configuration](/langsmith/self-host-blob-storage#amazon-s3)
+* [RDS IAM authentication](/langsmith/self-host-external-postgres#iam-authentication)
+* [ElastiCache IAM authentication](/langsmith/self-host-external-redis#iam-authentication)
 
 After completing these initial setup steps, you can review the complete AWS architecture and best practices below.
 
@@ -66,13 +62,13 @@ After completing these initial setup steps, you can review the complete AWS arch
 
 We recommend leveraging AWS's managed services to provide a scalable, secure, and resilient platform. The following architecture applies to both self-hosted and hybrid and aligns with the [AWS Well-Architected Framework](https://aws.amazon.com/architecture/well-architected/):
 
-<img alt="Architecture diagram showing AWS relations to LangSmith services" />
+![Architecture diagram showing AWS relations to LangSmith services](https://mintcdn.com/langchain-5e9cc07a/MMsbRrh5gYIlD_3t/langsmith/images/aws-architecture-self-hosted.png?fit=max\&auto=format\&n=MMsbRrh5gYIlD_3t\&q=85\&s=c2ae668eb790588e05a86aaca8e8fc76)
 
-* <Icon icon="globe" /> **Ingress & networking**: Requests enter via [Amazon Application Load Balancer (ALB)](https://aws.amazon.com/elasticloadbalancing/application-load-balancer/) within your [VPC](https://aws.amazon.com/vpc/), secured using [AWS WAF](https://aws.amazon.com/waf/) and [IAM](https://aws.amazon.com/iam/)-based authentication.
+* &#x20;**Ingress & networking**: Requests enter via [Amazon Application Load Balancer (ALB)](https://aws.amazon.com/elasticloadbalancing/application-load-balancer/) within your [VPC](https://aws.amazon.com/vpc/), secured using [AWS WAF](https://aws.amazon.com/waf/) and [IAM](https://aws.amazon.com/iam/)-based authentication.
 
-* <Icon icon="cube" /> **Frontend & backend services:** Containers run on [Amazon EKS](https://aws.amazon.com/eks/), orchestrated behind the ALB, and route requests to other services within the cluster as necessary.
+* &#x20;**Frontend & backend services:** Containers run on [Amazon EKS](https://aws.amazon.com/eks/), orchestrated behind the ALB, and route requests to other services within the cluster as necessary.
 
-* <Icon icon="database" /> **Storage & databases:**
+* &#x20;**Storage & databases:**
   * [Amazon RDS for PostgreSQL](https://aws.amazon.com/rds/postgresql/) or [Aurora](https://aws.amazon.com/rds/aurora/): metadata, projects, users, and short-term and long-term memory for deployed agents. LangSmith supports PostgreSQL version 14 or higher.
   * [Amazon ElastiCache](https://aws.amazon.com/elasticache/) (Redis or Valkey): caching and job queues. ElastiCache can be in single-instance or cluster mode. LangSmith requires Redis OSS version 6.2 or higher, or Valkey 8.
   * ClickHouse + [Amazon EBS](https://aws.amazon.com/ebs/): analytics and trace storage.
@@ -81,9 +77,9 @@ We recommend leveraging AWS's managed services to provide a scalable, secure, an
     * ClickHouse is not required for hybrid deployments.
   * [Amazon S3](https://aws.amazon.com/s3/): object storage for trace artifacts and telemetry.
 
-* <Icon icon="sparkles" /> **LLM integration:** Optionally proxy requests to [Amazon Bedrock](https://aws.amazon.com/bedrock/) or [Amazon SageMaker](https://aws.amazon.com/sagemaker/) for LLM inference.
+* &#x20;**LLM integration:** Optionally proxy requests to [Amazon Bedrock](https://aws.amazon.com/bedrock/) or [Amazon SageMaker](https://aws.amazon.com/sagemaker/) for LLM inference.
 
-* <Icon icon="chart-line" /> **Monitoring & observability:** Integrate with [Amazon CloudWatch](https://aws.amazon.com/cloudwatch/)
+* &#x20;**Monitoring & observability:** Integrate with [Amazon CloudWatch](https://aws.amazon.com/cloudwatch/)
 
 ## Compute options
 
@@ -159,12 +155,6 @@ Integrate with:
 
 ***
 
-<div>
-  <Callout icon="terminal-2">
-    [Connect these docs](/use-these-docs) to your agent of choice via MCP for real-time answers.
-  </Callout>
+[Connect these docs](/use-these-docs) to your agent of choice via MCP for real-time answers.
 
-  <Callout icon="edit">
-    [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/aws-self-hosted.mdx) or [file an issue](https://github.com/langchain-ai/docs/issues/new/choose).
-  </Callout>
-</div>
+[Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/aws-self-hosted.mdx) or [file an issue](https://github.com/langchain-ai/docs/issues/new/choose).

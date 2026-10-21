@@ -6,9 +6,9 @@ Access models across providers with one LangSmith API key while tracing calls an
 
 Use one [LangSmith API key](/langsmith/create-account-api-key) to call models across configured providers. Switch providers by changing the model ID, while the LLM Gateway traces every model call and applies centralized governance policies.
 
-<Note>
-  **Beta:** The LLM Gateway is in [beta](/langsmith/release-stages).
-</Note>
+> [!NOTE]
+>
+> **Beta:** The LLM Gateway is in [beta](/langsmith/release-stages).
 
 ## What the gateway provides
 
@@ -59,32 +59,24 @@ For base URLs, examples, and translation behavior, see [API formats](/langsmith/
 
 ## Go further
 
-<CardGroup>
-  <Card title="Quickstart" icon="rocket" href="/langsmith/llm-gateway-quickstart">
-    Make a request with cURL, Python, or TypeScript, then view its trace.
-  </Card>
+> **[Quickstart](/langsmith/llm-gateway-quickstart)**
+>
+> Make a request with cURL, Python, or TypeScript, then view its trace.
 
-  <Card title="Administrator setup" icon="settings" href="/langsmith/llm-gateway-admin-setup">
-    Enable the gateway, add provider credentials, and grant developer access.
-  </Card>
-</CardGroup>
+> **[Administrator setup](/langsmith/llm-gateway-admin-setup)**
+>
+> Enable the gateway, add provider credentials, and grant developer access.
 
-<Tip>
-  Need to use the gateway with prompts stored in the Prompt Hub? See [Prompt Hub with the gateway](/langsmith/manage-prompts-programmatically#use-with-the-langsmith-gateway) for how to route Prompt Hub model calls through the gateway using two environment variables.
-
-  Need provider-native request and response behavior? Use [Direct model access](/langsmith/llm-gateway-direct-model-access) to bypass the standardization layer. This is an advanced alternative to the standard API.
-
-  For further questions, contact [LangChain support](https://support.langchain.com).
-</Tip>
+> [!TIP]
+>
+> Need to use the gateway with prompts stored in the Prompt Hub? See [Prompt Hub with the gateway](/langsmith/manage-prompts-programmatically#use-with-the-langsmith-gateway) for how to route Prompt Hub model calls through the gateway using two environment variables.
+>
+> Need provider-native request and response behavior? Use [Direct model access](/langsmith/llm-gateway-direct-model-access) to bypass the standardization layer. This is an advanced alternative to the standard API.
+>
+> For further questions, contact [LangChain support](https://support.langchain.com).
 
 ***
 
-<div>
-  <Callout icon="terminal-2">
-    [Connect these docs](/use-these-docs) to your agent of choice via MCP for real-time answers.
-  </Callout>
+[Connect these docs](/use-these-docs) to your agent of choice via MCP for real-time answers.
 
-  <Callout icon="edit">
-    [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/llm-gateway.mdx) or [file an issue](https://github.com/langchain-ai/docs/issues/new/choose).
-  </Callout>
-</div>
+[Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/llm-gateway.mdx) or [file an issue](https://github.com/langchain-ai/docs/issues/new/choose).

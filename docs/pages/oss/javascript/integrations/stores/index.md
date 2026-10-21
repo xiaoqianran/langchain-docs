@@ -19,17 +19,15 @@ All [`BaseStores`](https://reference.langchain.com/javascript/langchain-core/sto
 
 The generic nature of the interface allows you to use different types for keys and values. For example, `BaseStore<string, BaseMessage>` would store messages with string keys, while `BaseStore<string, number[]>` would store arrays of numbers.
 
-<Note>
-  Base stores are designed to work with **multiple** key-value pairs at once for efficiency. This saves on network round-trips and may allow for more efficient batch operations in the underlying store.
-</Note>
+> [!NOTE]
+>
+> Base stores are designed to work with **multiple** key-value pairs at once for efficiency. This saves on network round-trips and may allow for more efficient batch operations in the underlying store.
 
 ## Built-in stores for local development
 
-<Columns>
-  <Card title="InMemoryStore" icon="link" href="/oss/javascript/integrations/stores/in_memory" />
+> **[InMemoryStore](/oss/javascript/integrations/stores/in_memory)**
 
-  <Card title="LocalFileStore" icon="link" href="/oss/javascript/integrations/stores/file_system" />
-</Columns>
+> **[LocalFileStore](/oss/javascript/integrations/stores/file_system)**
 
 ## Custom stores
 
@@ -37,22 +35,14 @@ You can also implement your own custom store by extending the [`BaseStore`](http
 
 ## All key-value stores
 
-<div>
-  | Integration | Downloads |
-  | :- | :- |
-  | [`AlBuddyMemoryStore`](https://github.com/flytomoon/al-buddy-memory/blob/main/docs/integrations/langchain.md) | <span><a href="https://www.npmjs.com/package/al-buddy-memory">  <img alt="Downloads per month" /></a></span> |
-  | [`InMemoryStore`](/oss/javascript/integrations/stores/in_memory) | <span>N/A</span> |
-  | [`LocalFileStore`](/oss/javascript/integrations/stores/file_system) | <span>N/A</span> |
-</div>
+| Integration | Downloads |
+| :- | :- |
+| [`AlBuddyMemoryStore`](https://github.com/flytomoon/al-buddy-memory/blob/main/docs/integrations/langchain.md) | [  ![Downloads per month](https://img.shields.io/npm/dm/al-buddy-memory?style=flat-square\&label=%20&)](https://www.npmjs.com/package/al-buddy-memory) |
+| [`InMemoryStore`](/oss/javascript/integrations/stores/in_memory) | N/A |
+| [`LocalFileStore`](/oss/javascript/integrations/stores/file_system) | N/A |
 
 ***
 
-<div>
-  <Callout icon="terminal-2">
-    [Connect these docs](/use-these-docs) to your agent of choice via MCP for real-time answers.
-  </Callout>
+[Connect these docs](/use-these-docs) to your agent of choice via MCP for real-time answers.
 
-  <Callout icon="edit">
-    [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/oss/javascript/integrations/stores/index.mdx) or [file an issue](https://github.com/langchain-ai/docs/issues/new/choose).
-  </Callout>
-</div>
+[Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/oss/javascript/integrations/stores/index.mdx) or [file an issue](https://github.com/langchain-ai/docs/issues/new/choose).

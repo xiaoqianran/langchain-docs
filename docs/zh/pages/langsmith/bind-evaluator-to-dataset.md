@@ -4,10 +4,10 @@
 
 # 自动运行实验评估器
 
-LangSmith 支持两种方式对通过 SDK 创建的实验进行评分：
+LangSmith 支持两种对通过 SDK 创建的实验进行评分的方法：
 
 * **以编程方式**，通过在代码中指定评估器（有关详细信息，请参阅[How to evaluate an LLM application](/langsmith/evaluate-llm-application)）
-* 通过 **将评估器绑定到 UI 中的数据集**。除了您通过 SDK 设置的任何评估器之外，这还将自动对创建的任何新实验运行评估器。当您迭代应用程序（目标函数）并且拥有一组要为所有实验运行的标准评估器时，这非常有用。
+* 通过 **将评估器绑定到 UI 中的数据集**。除了您通过 SDK 设置的任何评估器之外，这还将自动对创建的任何新实验运行评估器。 This is useful when you're iterating on your application (target function), and have a standard set of evaluators you want to run for all experiments.
 
 ## 在数据集上配置评估器
 
@@ -15,11 +15,11 @@ LangSmith 支持两种方式对通过 SDK 创建的实验进行评分：
 2. 单击**评估者**选项卡。
 3. 单击**+ 评估器** 打开**配置评估器** 面板。
 4. 选择以下选项之一：
-   * **从头开始创建**：构建新的 [LLM-as-a-Judge](/langsmith/llm-as-judge)、[Code](/langsmith/online-evaluations-code) 或 [Composite](/langsmith/composite-evaluators-ui) 评估器，或选择 **从标记数据** 创建 LLM 作为法官评估器 [aligned to human feedback](/langsmith/improve-judge-evaluator-feedback)。要使用 [decision model](/langsmith/decision-model-evaluator) 作为法官，请选择 **LLM-as-a-Judge Evaluator**，然后选择决策模型。
+   * **Create from scratch**: Build a new [LLM-as-a-Judge](/langsmith/llm-as-judge), [Code](/langsmith/online-evaluations-code), or [Composite](/langsmith/composite-evaluators-ui) evaluator, or select **From labeled data** to create an LLM-as-a-judge evaluator [aligned to human feedback](/langsmith/improve-judge-evaluator-feedback).要使用 [decision model](/langsmith/decision-model-evaluator) 作为法官，请选择 **LLM-as-a-Judge Evaluator**，然后选择决策模型。
    * **附加现有评估器**：选择工作区中已有的评估器以重用它。
-   * **从模板创建**：从现成的评估器开始。<Note>
-  为数据集配置评估器时，它只会影响配置评估器后创建的实验运行。它不会影响在配置评估器之前创建的实验运行的评估。
-</Note>
+   * **从模板创建**：从现成的评估器开始。> [!注意]
+>
+> 当您为数据集配置评估器时，它只会影响配置评估器后创建的实验运行。它不会影响在配置评估器之前创建的实验运行的评估。
 
 ## 法学硕士法官评估员
 
@@ -40,34 +40,32 @@ LangSmith 支持两种方式对通过 SDK 创建的实验进行评分：
 
 下面的代码显示了一个简单的评估器函数的示例，该函数检查输出是否完全等于参考输出。
 
-<CodeGroup>
-  ```python Python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  import numpy as np
+```python Python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+import numpy as np
 
-  def perform_eval(run, example):
-      # run is a Run object
-      # example is an Example object
-      output = run['outputs']['output']
-      ref_output = example['outputs']['outputs']
-      output_match = np.array_equal(output, ref_output)
+def perform_eval(run, example):
+    # run is a Run object
+    # example is an Example object
+    output = run['outputs']['output']
+    ref_output = example['outputs']['outputs']
+    output_match = np.array_equal(output, ref_output)
 
-      return { "exact_match": output_match }
-  ```
+    return { "exact_match": output_match }
+```
 
-  ```javascript JavaScript theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  function perform_eval(run, example) {
-      // run is a Run object
-      // example is an Example object
-      const output = run.outputs.output;
-      const refOutput = example.outputs.outputs;
+```javascript JavaScript theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+function perform_eval(run, example) {
+    // run is a Run object
+    // example is an Example object
+    const output = run.outputs.output;
+    const refOutput = example.outputs.outputs;
 
-      // Deep equality check for arrays/objects
-      const outputMatch = JSON.stringify(output) === JSON.stringify(refOutput);
+    // Deep equality check for arrays/objects
+    const outputMatch = JSON.stringify(output) === JSON.stringify(refOutput);
 
-      return { "exact_match": outputMatch };
-  }
-  ```
-</CodeGroup>
+    return { "exact_match": outputMatch };
+}
+```
 
 ## 后续步骤
 
@@ -76,12 +74,6 @@ LangSmith 支持两种方式对通过 SDK 创建的实验进行评分：
 
 ***
 
-<div>
-  <Callout icon="terminal-2">
-    [Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
-  </Callout>
+[Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
 
-  <Callout icon="edit">
-    [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/bind-evaluator-to-dataset.mdx) 或 [file an issue](https://github.com/langchain-ai/docs/issues/new/choose)。
-  </Callout>
-</div>
+[Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/bind-evaluator-to-dataset.mdx) 或 [file an issue](https://github.com/langchain-ai/docs/issues/new/choose)。

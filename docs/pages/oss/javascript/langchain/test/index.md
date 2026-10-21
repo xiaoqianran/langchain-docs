@@ -14,32 +14,24 @@ There are a few approaches to testing your agents:
 
 Agentic applications tend to lean more on integration because they chain multiple components together and must deal with flakiness due to the nondeterministic nature of LLMs.
 
-<Tip>
-  Run evaluations at scale, track results over time, and compare experiments with [LangSmith](https://smith.langchain.com?utm_source=docs\&utm_medium=cta\&utm_campaign=langsmith-signup\&utm_content=oss-langchain-test-index). See [Evaluate an LLM application](/langsmith/evaluate-llm-application) to get started.
-</Tip>
+> [!TIP]
+>
+> Run evaluations at scale, track results over time, and compare experiments with [LangSmith](https://smith.langchain.com?utm_source=docs\&utm_medium=cta\&utm_campaign=langsmith-signup\&utm_content=oss-langchain-test-index). See [Evaluate an LLM application](/langsmith/evaluate-llm-application) to get started.
 
-<CardGroup>
-  <Card title="Unit testing" icon="flask" href="/oss/javascript/langchain/test/unit-testing">
-    Mock chat models and use in-memory persistence to test agent logic without API calls.
-  </Card>
+> **[Unit testing](/oss/javascript/langchain/test/unit-testing)**
+>
+> Mock chat models and use in-memory persistence to test agent logic without API calls.
 
-  <Card title="Integration testing" icon="plug" href="/oss/javascript/langchain/test/integration-testing">
-    Test your agent with real LLM APIs. Organize tests, manage keys, handle flakiness, and control costs.
-  </Card>
+> **[Integration testing](/oss/javascript/langchain/test/integration-testing)**
+>
+> Test your agent with real LLM APIs. Organize tests, manage keys, handle flakiness, and control costs.
 
-  <Card title="Evals" icon="scale" href="/oss/javascript/langchain/test/evals">
-    Evaluate agent trajectories with deterministic matching or LLM-as-judge evaluators.
-  </Card>
-</CardGroup>
+> **[Evals](/oss/javascript/langchain/test/evals)**
+>
+> Evaluate agent trajectories with deterministic matching or LLM-as-judge evaluators.
 
 ***
 
-<div>
-  <Callout icon="terminal-2">
-    [Connect these docs](/use-these-docs) to your agent of choice via MCP for real-time answers.
-  </Callout>
+[Connect these docs](/use-these-docs) to your agent of choice via MCP for real-time answers.
 
-  <Callout icon="edit">
-    [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/oss/langchain/test/index.mdx) or [file an issue](https://github.com/langchain-ai/docs/issues/new/choose).
-  </Callout>
-</div>
+[Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/oss/langchain/test/index.mdx) or [file an issue](https://github.com/langchain-ai/docs/issues/new/choose).

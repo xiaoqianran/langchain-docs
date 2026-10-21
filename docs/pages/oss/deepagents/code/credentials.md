@@ -20,25 +20,25 @@ Open the credential manager from any session:
 
 The manager lists installed LLM provider and whether they have an environment key set, surfaces known providers that you can add from within the app, and includes non-model services such as Tavily web search. Select a provider to add or replace its key, install support for an uninstalled provider, or remove one you have already stored. Keys you add persist across sessions.
 
-<Accordion title="Provider row labels" icon="list-check">
-  Each row shows the provider name followed by where its key comes from:
-
-  | Label | Meaning |
-  | - | - |
-  | `[stored]` | A key saved in this manager via `/auth` |
-  | `[env: VARNAME]` | The key comes from environment variable `VARNAME` (the resolved name, such as `DEEPAGENTS_CODE_OPENAI_API_KEY` or `OPENAI_API_KEY`) |
-  | `[missing]` | No key is stored and the env var is unset; select the row to paste one |
-</Accordion>
+> **Provider row labels**
+>
+> Each row shows the provider name followed by where its key comes from:
+>
+> | Label | Meaning |
+> | - | - |
+> | `[stored]` | A key saved in this manager via `/auth` |
+> | `[env: VARNAME]` | The key comes from environment variable `VARNAME` (the resolved name, such as `DEEPAGENTS_CODE_OPENAI_API_KEY` or `OPENAI_API_KEY`) |
+> | `[missing]` | No key is stored and the env var is unset; select the row to paste one |
 
 The `/auth` prompt also has an optional **base URL** field. Leave it blank to use the provider's default endpoint, or set a custom one to use with this key. The base URL is saved alongside the key. See [Endpoints, keys, and gateways](/oss/deepagents/code/config-file#endpoints-keys-and-gateways) for how endpoints resolve, including with gateways.
 
-<Warning>
-  A stored base URL is not a secret and may be logged; the key paired with it is never logged.
-</Warning>
+> [!WARNING]
+>
+> A stored base URL is not a secret and may be logged; the key paired with it is never logged.
 
-<Note>
-  Keys are scoped to your user account on this machine — Deep Agents Code never transmits them anywhere except to the configured provider's API.
-</Note>
+> [!NOTE]
+>
+> Keys are scoped to your user account on this machine — Deep Agents Code never transmits them anywhere except to the configured provider's API.
 
 ### Sign in with ChatGPT
 
@@ -68,9 +68,9 @@ echo "$ANTHROPIC_API_KEY" | dcode auth set anthropic
 dcode auth set openai --from-env OPENAI_API_KEY
 ```
 
-<Note>
-  `set` refuses to run in an interactive terminal so an accidental invocation cannot hang waiting on input — pipe the key via stdin or use `--from-env VAR`. Stored keys go through the same store as `/auth`, so warnings (for example, about file permissions on `auth.json`) are printed to stderr.
-</Note>
+> [!NOTE]
+>
+> `set` refuses to run in an interactive terminal so an accidental invocation cannot hang waiting on input — pipe the key via stdin or use `--from-env VAR`. Stored keys go through the same store as `/auth`, so warnings (for example, about file permissions on `auth.json`) are printed to stderr.
 
 Remove a stored key or print the store location:
 
@@ -79,9 +79,9 @@ dcode auth remove anthropic
 dcode auth path
 ```
 
-<Note>
-  `dcode auth set` manages API keys only. The `openai_codex` provider uses a ChatGPT browser sign-in rather than an API key, so run [`/auth` and select `openai_codex`](#sign-in-with-chatgpt) to sign in instead. `dcode auth remove openai_codex` does sign you out.
-</Note>
+> [!NOTE]
+>
+> `dcode auth set` manages API keys only. The `openai_codex` provider uses a ChatGPT browser sign-in rather than an API key, so run [`/auth` and select `openai_codex`](#sign-in-with-chatgpt) to sign in instead. `dcode auth remove openai_codex` does sign you out.
 
 ## Environment variables (CI and headless)
 
@@ -125,39 +125,35 @@ Each provider's API key and its endpoint (`base_url`) resolve as a pair from the
 
 The built-in `web_search` tool uses [Tavily](https://tavily.com). Deep Agents Code shows a "Web search disabled" notification on startup until you provide a key. You can store the key in the [`/auth`](#use-%2Fauth-recommended) credential manager, where Tavily appears as a non-model service, or set the `TAVILY_API_KEY` environment variable.
 
-<Tabs>
-  <Tab title="Use /auth (recommended)">
-    Get a key from [tavily.com](https://tavily.com) (it starts with `tvly-`; the free tier is sufficient for most Deep Agents Code usage), then store it in the credential manager:
+**Use /auth (recommended)**
 
-    ```txt theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-    /auth
-    ```
+Get a key from [tavily.com](https://tavily.com) (it starts with `tvly-`; the free tier is sufficient for most Deep Agents Code usage), then store it in the credential manager:
 
-    Select **Tavily** from the list and paste the key. You can also reach this prompt directly from the "Web search disabled" notification by choosing **Enter API key**.
-  </Tab>
+```txt theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+/auth
+```
 
-  <Tab title="Set an environment variable">
-    <Steps>
-      <Step title="Get a key">
-        Sign up at [tavily.com](https://tavily.com) and copy the key (it starts with `tvly-`). The free tier is sufficient for most Deep Agents Code usage.
-      </Step>
+Select **Tavily** from the list and paste the key. You can also reach this prompt directly from the "Web search disabled" notification by choosing **Enter API key**.
 
-      <Step title="Add it to your environment">
-        Add the key to `~/.deepagents/.env` so every session picks it up:
+**Set an environment variable**
 
-        ```bash title="~/.deepagents/.env" theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-        TAVILY_API_KEY=tvly-...
-        ```
+**1. Get a key**
 
-        Shell exports take precedence over `.env` values (see [Loading order and precedence](/oss/deepagents/code/configuration#loading-order-and-precedence)). To scope a key to Deep Agents Code only without affecting other tools that read `TAVILY_API_KEY`, use the [`DEEPAGENTS_CODE_` prefix](/oss/deepagents/code/configuration#deepagents_code_-prefix): `DEEPAGENTS_CODE_TAVILY_API_KEY=tvly-...`.
-      </Step>
+Sign up at [tavily.com](https://tavily.com) and copy the key (it starts with `tvly-`). The free tier is sufficient for most Deep Agents Code usage.
 
-      <Step title="Reload or restart">
-        In an existing session, run `/reload` to re-read `.env` files. On the next launch, the "Web search disabled" notification goes away and the agent can call `web_search`.
-      </Step>
-    </Steps>
-  </Tab>
-</Tabs>
+**2. Add it to your environment**
+
+Add the key to `~/.deepagents/.env` so every session picks it up:
+
+```bash title="~/.deepagents/.env" theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+TAVILY_API_KEY=tvly-...
+```
+
+Shell exports take precedence over `.env` values (see [Loading order and precedence](/oss/deepagents/code/configuration#loading-order-and-precedence)). To scope a key to Deep Agents Code only without affecting other tools that read `TAVILY_API_KEY`, use the [`DEEPAGENTS_CODE_` prefix](/oss/deepagents/code/configuration#deepagents_code_-prefix): `DEEPAGENTS_CODE_TAVILY_API_KEY=tvly-...`.
+
+**3. Reload or restart**
+
+In an existing session, run `/reload` to re-read `.env` files. On the next launch, the "Web search disabled" notification goes away and the agent can call `web_search`.
 
 ## See also
 
@@ -168,12 +164,6 @@ The built-in `web_search` tool uses [Tavily](https://tavily.com). Deep Agents Co
 
 ***
 
-<div>
-  <Callout icon="terminal-2">
-    [Connect these docs](/use-these-docs) to your agent of choice via MCP for real-time answers.
-  </Callout>
+[Connect these docs](/use-these-docs) to your agent of choice via MCP for real-time answers.
 
-  <Callout icon="edit">
-    [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/oss/deepagents/code/credentials.mdx) or [file an issue](https://github.com/langchain-ai/docs/issues/new/choose).
-  </Callout>
-</div>
+[Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/oss/deepagents/code/credentials.mdx) or [file an issue](https://github.com/langchain-ai/docs/issues/new/choose).

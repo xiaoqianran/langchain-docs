@@ -8,14 +8,14 @@ Integrate with the ChatGoogleGenerativeAI chat model using LangChain JavaScript.
 
 This will help you getting started with `ChatGoogleGenerativeAI` [chat models](/oss/javascript/langchain/models). For detailed documentation of all `ChatGoogleGenerativeAI` features and configurations head to the [API reference](https://reference.langchain.com/javascript/langchain-google-genai/ChatGoogleGenerativeAI).
 
-<Note>
-  **This library will be deprecated**
-
-  This library is based on a deprecated library from Google and will
-  be replaced by the [ChatGoogle](/oss/javascript/integrations/chat/google) library.
-  New implementations should use the [ChatGoogle](/oss/javascript/integrations/chat/google) library instead and
-  existing implementations should consider migrating.
-</Note>
+> [!NOTE]
+>
+> **This library will be deprecated**
+>
+> This library is based on a deprecated library from Google and will
+> be replaced by the [ChatGoogle](/oss/javascript/integrations/chat/google) library.
+> New implementations should use the [ChatGoogle](/oss/javascript/integrations/chat/google) library instead and
+> existing implementations should consider migrating.
 
 ## Overview
 
@@ -39,9 +39,9 @@ You can access Google's `gemini` and `gemini-vision` models, as well as other
 generative models in LangChain through `ChatGoogleGenerativeAI` class in the
 `@langchain/google-genai` integration package.
 
-<Tip>
-  You can also access Google's `gemini` family of models via the LangChain `VertexAI` and `VertexAI-web` integrations. See the [Gemini Enterprise Agent Platform docs](/oss/javascript/integrations/chat/google_vertex_ai).
-</Tip>
+> [!TIP]
+>
+> You can also access Google's `gemini` family of models via the LangChain `VertexAI` and `VertexAI-web` integrations. See the [Gemini Enterprise Agent Platform docs](/oss/javascript/integrations/chat/google_vertex_ai).
 
 ### Credentials
 
@@ -64,19 +64,17 @@ If you want to get automated tracing of your model calls you can also set your [
 
 The LangChain `ChatGoogleGenerativeAI` integration lives in the `@langchain/google-genai` package:
 
-<CodeGroup>
-  ```bash npm theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  npm install @langchain/google-genai @langchain/core
-  ```
+```bash npm theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+npm install @langchain/google-genai @langchain/core
+```
 
-  ```bash yarn theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  yarn add @langchain/google-genai @langchain/core
-  ```
+```bash yarn theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+yarn add @langchain/google-genai @langchain/core
+```
 
-  ```bash pnpm theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  pnpm add @langchain/google-genai @langchain/core
-  ```
-</CodeGroup>
+```bash pnpm theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+pnpm add @langchain/google-genai @langchain/core
+```
 
 ## Instantiation
 
@@ -625,12 +623,6 @@ For detailed documentation of all `ChatGoogleGenerativeAI` features and configur
 
 ***
 
-<div>
-  <Callout icon="terminal-2">
-    [Connect these docs](/use-these-docs) to your agent of choice via MCP for real-time answers.
-  </Callout>
+[Connect these docs](/use-these-docs) to your agent of choice via MCP for real-time answers.
 
-  <Callout icon="edit">
-    [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/oss/javascript/integrations/chat/google_generative_ai.mdx) or [file an issue](https://github.com/langchain-ai/docs/issues/new/choose).
-  </Callout>
-</div>
+[Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/oss/javascript/integrations/chat/google_generative_ai.mdx) or [file an issue](https://github.com/langchain-ai/docs/issues/new/choose).

@@ -13,9 +13,9 @@ The install runs in two stages:
 
 After the base install, enable optional add-ons (LangSmith Deployment, Fleet, Insights, Polly, SmithDB, and the LLM Gateway) and SSO by setting flags and redeploying.
 
-<Note>
-  These pages follow the module's `v0.17.*` release tags, which deploy the LangSmith Helm chart 0.17 line. In a module tag, the first two numbers name the chart line and the last number is the module revision, so `v0.17.4` still deploys the newest 0.17 chart patch. The `v0.16.*` tags deploy chart 0.16. They have no LLM Gateway or SSO flags and federate 8 Workload Identity ServiceAccounts instead of 10. From v0.16.56, they deploy SmithDB only with `langsmith_helm_chart_version` set to `~0.17.0`. A deployment that has run chart 0.17 cannot return to 0.16.
-</Note>
+> [!NOTE]
+>
+> These pages follow the module's `v0.17.*` release tags, which deploy the LangSmith Helm chart 0.17 line. In a module tag, the first two numbers name the chart line and the last number is the module revision, so `v0.17.4` still deploys the newest 0.17 chart patch. The `v0.16.*` tags deploy chart 0.16. They have no LLM Gateway or SSO flags and federate 8 Workload Identity ServiceAccounts instead of 10. From v0.16.56, they deploy SmithDB only with `langsmith_helm_chart_version` set to `~0.17.0`. A deployment that has run chart 0.17 cannot return to 0.16.
 
 ```mermaid actions={false} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 %%{init: {'flowchart': {'nodeSpacing': 25, 'rankSpacing': 30}}}%%
@@ -220,15 +220,15 @@ sizing_profile = "production"   # minimum | dev | production | production-large
 
 `environment` defaults to `name_prefix`. Set it only to tag resources with a different value.
 
-<Warning>
-  `name_prefix` replaces `identifier`. If an existing `terraform.tfvars` sets `identifier = "-prod"`, change it to `name_prefix = "prod"`. Resource names do not change.
+> [!WARNING]
+>
+> `name_prefix` replaces `identifier`. If an existing `terraform.tfvars` sets `identifier = "-prod"`, change it to `name_prefix = "prod"`. Resource names do not change.
+>
+> Leave `unique_resource_names` unset on an existing deployment. Turning it on renames every resource, which Terraform runs as destroy and recreate. You lose the PostgreSQL and Blob Storage data.
 
-  Leave `unique_resource_names` unset on an existing deployment. Turning it on renames every resource, which Terraform runs as destroy and recreate. You lose the PostgreSQL and Blob Storage data.
-</Warning>
-
-<Warning>
-  In-cluster ClickHouse runs as a single pod with no replication or backups, dev/POC only. For production, use [LangChain Managed ClickHouse](/langsmith/langsmith-managed-clickhouse).
-</Warning>
+> [!WARNING]
+>
+> In-cluster ClickHouse runs as a single pod with no replication or backups, dev/POC only. For production, use [LangChain Managed ClickHouse](/langsmith/langsmith-managed-clickhouse).
 
 For all variables, see the [Azure variables reference](/langsmith/self-host-terraform-azure-variables).
 
@@ -264,9 +264,9 @@ make apply   # ~15 to 20 min on first run; do not interrupt it
 
 `make init` runs `terraform init` in `infra/`, which downloads the providers, including AzureRM, and initializes the backend. Run it once per clone. After you check out a new module tag, run `make init ARGS=-upgrade`.
 
-<Note>
-  `make apply` runs in three stages: Azure infrastructure including AKS → Kubernetes bootstrap (namespace, secrets, cert-manager, KEDA) → remaining resources such as the DNS zone and WAF. Each stage prompts for confirmation. To skip all three prompts, run `make apply ARGS="-auto-approve"`.
-</Note>
+> [!NOTE]
+>
+> `make apply` runs in three stages: Azure infrastructure including AKS → Kubernetes bootstrap (namespace, secrets, cert-manager, KEDA) → remaining resources such as the DNS zone and WAF. Each stage prompts for confirmation. To skip all three prompts, run `make apply ARGS="-auto-approve"`.
 
 ### Cluster credentials and Kubernetes Secrets
 
@@ -421,9 +421,9 @@ make k8s-secrets    # re-create langsmith-config-secret from Key Vault
 
 ### Upgrade from chart 0.16
 
-<Warning>
-  Back up the database before you upgrade. LangSmith database migrations are forward-only, so a deployment cannot return to chart 0.16 after it runs 0.17. For more information, see [Upgrade an installation](/langsmith/self-host-upgrades).
-</Warning>
+> [!WARNING]
+>
+> Back up the database before you upgrade. LangSmith database migrations are forward-only, so a deployment cannot return to chart 0.16 after it runs 0.17. For more information, see [Upgrade an installation](/langsmith/self-host-upgrades).
 
 To move a deployment from chart 0.16 to 0.17:
 
@@ -438,9 +438,9 @@ To move a deployment from chart 0.16 to 0.17:
 
 3. Check that `infra/variables.tf` on the new tag declares every variable that your `terraform.tfvars` sets.
 
-   <Warning>
-     Variables added on the `v0.16.*` line reach the `v0.17.*` line in a later tag. v0.17.0 does not declare `ingress_load_balancer`, `ingress_load_balancer_subnet_id`, `ingress_load_balancer_ip`, `ingress_load_balancer_manage_subnet_assignment`, `envoy_gateway_image_registry`, or `envoy_gateway_image_pull_secret_name`, which v0.17.1 adds. `aks_network_owner_checks` reaches the `v0.17.*` line in a later tag. Terraform only warns about an undeclared variable in `terraform.tfvars`, so a deployment that sets one on a tag that lacks it loses that setting without an error.
-   </Warning>
+   > [!WARNING]
+   >
+   > Variables added on the `v0.16.*` line reach the `v0.17.*` line in a later tag. v0.17.0 does not declare `ingress_load_balancer`, `ingress_load_balancer_subnet_id`, `ingress_load_balancer_ip`, `ingress_load_balancer_manage_subnet_assignment`, `envoy_gateway_image_registry`, or `envoy_gateway_image_pull_secret_name`, which v0.17.1 adds. `aks_network_owner_checks` reaches the `v0.17.*` line in a later tag. Terraform only warns about an undeclared variable in `terraform.tfvars`, so a deployment that sets one on a tag that lacks it loses that setting without an error.
 
 4. If `terraform.tfvars` sets `langsmith_helm_chart_version` to a 0.16 version, clear it or set a 0.17 version, and run `unset CHART_VERSION` if your shell sets it. On a 0.16 value, `deploy.sh` exits with `does not resolve to the chart 0.17 line`.
 
@@ -564,9 +564,9 @@ make init-values    # appends langsmith-values-agent-builder.yaml to values chai
 make deploy
 ```
 
-<Warning>
-  Do not set `config.agentBuilder.encryptionKey` inline in `values-overrides.yaml`. An inline value overrides the key in `langsmith-config-secret` and creates a mismatch.
-</Warning>
+> [!WARNING]
+>
+> Do not set `config.agentBuilder.encryptionKey` inline in `values-overrides.yaml`. An inline value overrides the key in `langsmith-config-secret` and creates a mismatch.
 
 ### Insights and Polly
 
@@ -602,17 +602,17 @@ helm get values langsmith -n langsmith | grep -A3 insights
 # Expected: enabled: true
 ```
 
-<Warning>
-  **Encryption keys must never change after first enable.** Changing `insights_encryption_key` or `polly_encryption_key` permanently corrupts all existing encrypted data. There is no recovery path. These keys live in Key Vault and never rotate automatically.
-</Warning>
+> [!WARNING]
+>
+> **Encryption keys must never change after first enable.** Changing `insights_encryption_key` or `polly_encryption_key` permanently corrupts all existing encrypted data. There is no recovery path. These keys live in Key Vault and never rotate automatically.
 
 If the Polly UI shows "Unable to connect to LangGraph server" after the first enable, the frontend started before the `langsmith-polly-config` ConfigMap existed. Run `kubectl rollout restart deployment langsmith-frontend -n langsmith`.
 
 ### SmithDB
 
-<Warning>
-  SmithDB on Azure requires a stable release on the LangSmith Helm chart 0.17 line, which the `v0.17.*` module tags deploy by default. A 0.17 release candidate is not a supported configuration. On a `v0.16.*` tag, SmithDB needs v0.16.56 or later and `langsmith_helm_chart_version = "~0.17.0"`.
-</Warning>
+> [!WARNING]
+>
+> SmithDB on Azure requires a stable release on the LangSmith Helm chart 0.17 line, which the `v0.17.*` module tags deploy by default. A 0.17 release candidate is not a supported configuration. On a `v0.16.*` tag, SmithDB needs v0.16.56 or later and `langsmith_helm_chart_version = "~0.17.0"`.
 
 `enable_smithdb = true` provisions the Azure infrastructure SmithDB needs: a dedicated PostgreSQL 18 metastore, a Blob container, a Workload Identity, and Premium SSD v2 cache volumes. It also requires a non-empty `availability_zones`, because Premium SSD v2 attaches only to zonal VMs in most regions. AKS applies zones only at cluster creation, so set `availability_zones` in the first `make apply` if you plan to use SmithDB. On a cluster created without zones, adding them later passes the plan, but the module ignores zone changes on the existing node pool: the nodes stay non-zonal, and every plan prints a zone drift warning.
 
@@ -662,9 +662,9 @@ After the deploy, an organization admin turns the gateway on for workspaces, add
 
 `enable_sso_oidc = true` switches LangSmith login from basic auth to [SSO](/langsmith/self-host-sso) through a standard OIDC provider, such as Microsoft Entra ID, Okta, Auth0, or Google Workspace.
 
-<Warning>
-  Enable SSO only after the initial install, once you have logged in as the org admin with basic auth. The flag disables basic auth, so enabling it before an admin account exists locks you out of the UI. If you use SCIM, set it up after SSO.
-</Warning>
+> [!WARNING]
+>
+> Enable SSO only after the initial install, once you have logged in as the org admin with basic auth. The flag disables basic auth, so enabling it before an admin account exists locks you out of the UI. If you use SCIM, set it up after SSO.
 
 To enable SSO:
 
@@ -713,13 +713,13 @@ Set `ingress_controller` in `terraform.tfvars` before `make apply`. For the full
 | `agic` | Azure Application Gateway v2 + AKS-managed `ingress_application_gateway` add-on | Enterprise Azure, native L7 WAF, HTTP-only, `dns01` with a custom domain, or `existing` with your own certificate. |
 | `none` | No ingress controller | Clusters that already run their own controller. |
 
-<Warning>
-  Changing `ingress_controller` on an existing deployment removes the old controller and its load balancer, and the public IP changes. If a deployment runs ingress-nginx and `ingress_controller` is unset, `make plan` and `make apply` stop with an error. Set `ingress_controller = "nginx"` to keep NGINX, or `ingress_controller = "envoy-gateway"` to move. To move, run `make apply`, `make init-values`, and `make deploy` back to back, then update any DNS A record that points at the old IP.
-</Warning>
+> [!WARNING]
+>
+> Changing `ingress_controller` on an existing deployment removes the old controller and its load balancer, and the public IP changes. If a deployment runs ingress-nginx and `ingress_controller` is unset, `make plan` and `make apply` stop with an error. Set `ingress_controller = "nginx"` to keep NGINX, or `ingress_controller = "envoy-gateway"` to move. To move, run `make apply`, `make init-values`, and `make deploy` back to back, then update any DNS A record that points at the old IP.
 
-<Warning>
-  `letsencrypt` (HTTP-01) only works with `nginx`, `istio` (self-managed), and `envoy-gateway`. `istio-addon` does not create an IngressClass, so the ACME solver cannot receive traffic. With `agic`, the Application Gateway rewrites the ACME challenge path, so the HTTP-01 solver fails. For both, use `dns01` with a custom domain, `existing` with your own certificate, or `none` for HTTP-only.
-</Warning>
+> [!WARNING]
+>
+> `letsencrypt` (HTTP-01) only works with `nginx`, `istio` (self-managed), and `envoy-gateway`. `istio-addon` does not create an IngressClass, so the ACME solver cannot receive traffic. With `agic`, the Application Gateway rewrites the ACME challenge path, so the HTTP-01 solver fails. For both, use `dns01` with a custom domain, `existing` with your own certificate, or `none` for HTTP-only.
 
 ## DNS and TLS
 
@@ -790,12 +790,6 @@ kubectl -n langsmith create secret generic <secret-name> --from-file=ca.crt=ca-b
 
 ***
 
-<div>
-  <Callout icon="terminal-2">
-    [Connect these docs](/use-these-docs) to your agent of choice via MCP for real-time answers.
-  </Callout>
+[Connect these docs](/use-these-docs) to your agent of choice via MCP for real-time answers.
 
-  <Callout icon="edit">
-    [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/self-host-terraform-azure-deploy.mdx) or [file an issue](https://github.com/langchain-ai/docs/issues/new/choose).
-  </Callout>
-</div>
+[Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/self-host-terraform-azure-deploy.mdx) or [file an issue](https://github.com/langchain-ai/docs/issues/new/choose).

@@ -15,11 +15,9 @@ durable. A user can refresh the page, a reviewer can answer from a different
 component, and the agent still resumes from the exact point where execution
 stopped instead of replaying the whole run.
 
-<Note>
-  This page uses the default batched interrupt mode. For per-call interrupts (`interrupt_mode="per_call"`), see [Pause once per tool call](/oss/python/langchain/human-in-the-loop#pause-once-per-tool-call).
-</Note>
-
-<PatternEmbed />
+> [!NOTE]
+>
+> This page uses the default batched interrupt mode. For per-call interrupts (`interrupt_mode="per_call"`), see [Pause once per tool call](/oss/python/langchain/human-in-the-loop#pause-once-per-tool-call).
 
 ## How interrupts work
 
@@ -46,45 +44,76 @@ approval card while that value is set, then resume the run with
 `stream.submit(null, { command: { resume: response } })` after the user
 approves, rejects, or edits the action.
 
-<Info>
-  The code examples use `useStream<typeof myAgent>` for type-safe stream state. See Type inference for [Python](/oss/python/langchain/frontend/overview#type-inference) or [JavaScript](/oss/javascript/langchain/frontend/overview#type-inference) backends.
-</Info>
+> [!NOTE]
+>
+> The code examples use `useStream<typeof myAgent>` for type-safe stream state. See Type inference for [Python](/oss/python/langchain/frontend/overview#type-inference) or [JavaScript](/oss/javascript/langchain/frontend/overview#type-inference) backends.
 
-<CodeGroup>
-  ```tsx React theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  import { useStream } from "@langchain/react";
+```tsx React theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+import { useStream } from "@langchain/react";
 
-  const AGENT_URL = "http://localhost:2024";
+const AGENT_URL = "http://localhost:2024";
 
-  export function Chat() {
-    const stream = useStream<typeof myAgent>({
-      apiUrl: AGENT_URL,
-      assistantId: "human_in_the_loop",
-    });
+export function Chat() {
+  const stream = useStream<typeof myAgent>({
+    apiUrl: AGENT_URL,
+    assistantId: "human_in_the_loop",
+  });
 
-    const interrupt = stream.interrupt;
+  const interrupt = stream.interrupt;
 
-    return (
-      <div>
-        {stream.messages.map((msg) => (
-          <Message key={msg.id} message={msg} />
-        ))}
-        {interrupt && (
-          <ApprovalCard
-            interrupt={interrupt}
-            onRespond={(response) =>
-              stream.submit(null, { command: { resume: response } })
-            }
-          />
-        )}
-      </div>
-    );
-  }
-  ```
+  return (
+    <div>
+      {stream.messages.map((msg) => (
+        <Message key={msg.id} message={msg} />
+      ))}
+      {interrupt && (
+        <ApprovalCard
+          interrupt={interrupt}
+          onRespond={(response) =>
+            stream.submit(null, { command: { resume: response } })
+          }
+        />
+      )}
+    </div>
+  );
+}
+```
 
-  ```vue Vue theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  <script setup lang="ts">
-  import { useStream } from "@langchain/vue";
+```vue Vue theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+<script setup lang="ts">
+import { useStream } from "@langchain/vue";
+
+const AGENT_URL = "http://localhost:2024";
+
+const stream = useStream<typeof myAgent>({
+  apiUrl: AGENT_URL,
+  assistantId: "human_in_the_loop",
+});
+
+function handleRespond(response: HITLResponse) {
+  stream.submit(null, { command: { resume: response } });
+}
+</script>
+
+<template>
+  <div>
+    <Message
+      v-for="msg in stream.messages.value"
+      :key="msg.id"
+      :message="msg"
+    />
+    <ApprovalCard
+      v-if="stream.interrupt.value"
+      :interrupt="stream.interrupt.value"
+      @respond="handleRespond"
+    />
+  </div>
+</template>
+```
+
+```svelte Svelte theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+<script lang="ts">
+  import { useStream } from "@langchain/svelte";
 
   const AGENT_URL = "http://localhost:2024";
 
@@ -96,84 +125,51 @@ approves, rejects, or edits the action.
   function handleRespond(response: HITLResponse) {
     stream.submit(null, { command: { resume: response } });
   }
-  </script>
+</script>
 
-  <template>
-    <div>
-      <Message
-        v-for="msg in stream.messages.value"
-        :key="msg.id"
-        :message="msg"
-      />
-      <ApprovalCard
-        v-if="stream.interrupt.value"
-        :interrupt="stream.interrupt.value"
-        @respond="handleRespond"
-      />
-    </div>
-  </template>
-  ```
+<div>
+  {#each stream.messages as msg (msg.id)}
+    <Message message={msg} />
+  {/each}
 
-  ```svelte Svelte theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  <script lang="ts">
-    import { useStream } from "@langchain/svelte";
+  {#if stream.interrupt}
+    <ApprovalCard interrupt={stream.interrupt} onRespond={handleRespond} />
+  {/if}
+</div>
+```
 
-    const AGENT_URL = "http://localhost:2024";
+```ts Angular theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+import { Component } from "@angular/core";
+import { injectStream } from "@langchain/angular";
+import type { HITLResponse } from "langchain";
 
-    const stream = useStream<typeof myAgent>({
-      apiUrl: AGENT_URL,
-      assistantId: "human_in_the_loop",
-    });
+const AGENT_URL = "http://localhost:2024";
 
-    function handleRespond(response: HITLResponse) {
-      stream.submit(null, { command: { resume: response } });
+@Component({
+  selector: "app-chat",
+  template: `
+    @for (msg of stream.messages(); track msg.id) {
+      <app-message [message]="msg" />
     }
-  </script>
-
-  <div>
-    {#each stream.messages as msg (msg.id)}
-      <Message message={msg} />
-    {/each}
-
-    {#if stream.interrupt}
-      <ApprovalCard interrupt={stream.interrupt} onRespond={handleRespond} />
-    {/if}
-  </div>
-  ```
-
-  ```ts Angular theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  import { Component } from "@angular/core";
-  import { injectStream } from "@langchain/angular";
-  import type { HITLResponse } from "langchain";
-
-  const AGENT_URL = "http://localhost:2024";
-
-  @Component({
-    selector: "app-chat",
-    template: `
-      @for (msg of stream.messages(); track msg.id) {
-        <app-message [message]="msg" />
-      }
-      @if (stream.interrupt()) {
-        <app-approval-card
-          [interrupt]="stream.interrupt()"
-          (respond)="handleRespond($event)"
-        />
-      }
-    `,
-  })
-  export class ChatComponent {
-    stream = injectStream<typeof myAgent>({
-      apiUrl: AGENT_URL,
-      assistantId: "human_in_the_loop",
-    });
-
-    handleRespond(response: HITLResponse) {
-      this.stream.submit(null, { command: { resume: response } });
+    @if (stream.interrupt()) {
+      <app-approval-card
+        [interrupt]="stream.interrupt()"
+        (respond)="handleRespond($event)"
+      />
     }
+  `,
+})
+export class ChatComponent {
+  stream = injectStream<typeof myAgent>({
+    apiUrl: AGENT_URL,
+    assistantId: "human_in_the_loop",
+  });
+
+  handleRespond(response: HITLResponse) {
+    this.stream.submit(null, { command: { resume: response } });
   }
-  ```
-</CodeGroup>
+}
+```
 
 ## The interrupt payload
 
@@ -239,14 +235,14 @@ const response: HITLResponse = {
 stream.submit(null, { command: { resume: response } });
 ```
 
-<Note>
-  When an action is rejected, the agent receives the rejection reason and can
-  decide how to proceed. If you omit `message`, the backend uses a default
-  message that tells the model the tool was not executed and not to retry the
-  same tool call unless the user asks. For side-effecting tools, pass a clear
-  message that tells the agent whether to abandon the action, ask a follow-up
-  question, or try a safer alternative.
-</Note>
+> [!NOTE]
+>
+> When an action is rejected, the agent receives the rejection reason and can
+> decide how to proceed. If you omit `message`, the backend uses a default
+> message that tells the model the tool was not executed and not to retry the
+> same tool call unless the user asks. For side-effecting tools, pass a clear
+> message that tells the agent whether to abandon the action, ask a follow-up
+> question, or try a safer alternative.
 
 ### Edit
 
@@ -284,9 +280,9 @@ const response: HITLResponse = {
 stream.submit(null, { command: { resume: response } });
 ```
 
-<Note>
-  Use `respond` when the tool is intentionally a placeholder for human input, for example, an `ask_user` tool that prompts the agent to collect information from the user. Do not use `respond` to deny a proposed action, because it is returned to the model as a successful tool result.
-</Note>
+> [!NOTE]
+>
+> Use `respond` when the tool is intentionally a placeholder for human input, for example, an `ask_user` tool that prompts the agent to collect information from the user. Do not use `respond` to deny a proposed action, because it is returned to the model as a successful tool result.
 
 ## Building the ApprovalCard
 
@@ -343,11 +339,11 @@ After the user makes a decision, the full cycle looks like this:
    * `{ type: "respond", message }`: The human's message is returned directly as the tool result without executing the tool
 4. The `interrupt` property resets to `null` as the agent resumes streaming
 
-<Tip>
-  You can chain multiple HITL checkpoints in a single agent run. For example, an
-  agent might ask for approval to search, then ask again before sending an email
-  with the results. Each interrupt is handled independently.
-</Tip>
+> [!TIP]
+>
+> You can chain multiple HITL checkpoints in a single agent run. For example, an
+> agent might ask for approval to search, then ask again before sending an email
+> with the results. Each interrupt is handled independently.
 
 ## Handling multiple pending actions
 
@@ -407,8 +403,6 @@ social post each need a *different* form, with their own fields, validation, and
 copy. For that, raise the `interrupt()` **from inside the tool** and let the
 payload describe the exact form the UI should render. Each tool can surface a
 completely different interface.
-
-<PatternEmbed />
 
 ### Describe the form in the interrupt payload
 
@@ -571,11 +565,11 @@ card by reading it back off the message:
 })}
 ```
 
-<Tip>
-  Because the resolved card lives in the message history, it survives refreshes
-  and is visible to every component reading the thread and the human's decision
-  becomes part of the durable transcript, not just transient UI state.
-</Tip>
+> [!TIP]
+>
+> Because the resolved card lives in the message history, it survives refreshes
+> and is visible to every component reading the thread and the human's decision
+> becomes part of the durable transcript, not just transient UI state.
 
 ## Best practices
 
@@ -598,12 +592,6 @@ Keep these guidelines in mind when implementing HITL workflows:
 
 ***
 
-<div>
-  <Callout icon="terminal-2">
-    [Connect these docs](/use-these-docs) to your agent of choice via MCP for real-time answers.
-  </Callout>
+[Connect these docs](/use-these-docs) to your agent of choice via MCP for real-time answers.
 
-  <Callout icon="edit">
-    [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/oss/langchain/frontend/human-in-the-loop.mdx) or [file an issue](https://github.com/langchain-ai/docs/issues/new/choose).
-  </Callout>
-</div>
+[Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/oss/langchain/frontend/human-in-the-loop.mdx) or [file an issue](https://github.com/langchain-ai/docs/issues/new/choose).

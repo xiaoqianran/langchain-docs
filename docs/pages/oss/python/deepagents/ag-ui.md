@@ -7,14 +7,14 @@ Expose deep agents over the Agent User Interaction Protocol (AG-UI) to stream ev
 [Agent User Interaction Protocol (AG-UI)](https://docs.ag-ui.com) is an open, lightweight, event-based protocol that standardizes how AI agents connect to user-facing applications.
 Exposing a deep agent over AG-UI turns its run into a typed event stream (messages, tool calls, reasoning, state, and lifecycle) that any AG-UI client can consume, so you can drive a frontend without coupling it to LangGraph internals.
 
-<Note>
-  AG-UI is designed for agent-to-user interaction: the connection between an agentic backend and a user-facing frontend. It is distinct from the other Deep Agents protocols:
-
-  * **AG-UI** connects a deep agent to a frontend application (this page).
-  * [Agent Client Protocol (ACP)](/oss/python/deepagents/acp) connects a deep agent to code editors and IDEs.
-  * [Model Context Protocol (MCP)](/oss/python/langchain/mcp) lets a deep agent call tools hosted by external servers.
-  * [Agent2Agent (A2A)](/oss/python/deepagents/a2a) connects a deep agent to other agents.
-</Note>
+> [!NOTE]
+>
+> AG-UI is designed for agent-to-user interaction: the connection between an agentic backend and a user-facing frontend. It is distinct from the other Deep Agents protocols:
+>
+> * **AG-UI** connects a deep agent to a frontend application (this page).
+> * [Agent Client Protocol (ACP)](/oss/python/deepagents/acp) connects a deep agent to code editors and IDEs.
+> * [Model Context Protocol (MCP)](/oss/python/langchain/mcp) lets a deep agent call tools hosted by external servers.
+> * [Agent2Agent (A2A)](/oss/python/deepagents/a2a) connects a deep agent to other agents.
 
 ## Quickstart
 
@@ -24,15 +24,13 @@ Serve a deep agent as a LangGraph graph, then connect the TypeScript `@ag-ui/lan
 
 Install Deep Agents and the LangGraph CLI to serve the graph. The AG-UI adapter used in later steps is TypeScript (`@ag-ui/langgraph`). For a Python CopilotKit or AG-UI FastAPI bridge, see [CopilotKit](/oss/python/langchain/frontend/integrations/copilotkit).
 
-<CodeGroup>
-  ```bash pip theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  pip install deepagents "langgraph-cli[inmem]"
-  ```
+```bash pip theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+pip install deepagents "langgraph-cli[inmem]"
+```
 
-  ```bash uv theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  uv add deepagents "langgraph-cli[inmem]"
-  ```
-</CodeGroup>
+```bash uv theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+uv add deepagents "langgraph-cli[inmem]"
+```
 
 A deep agent created with `createDeepAgent` (`create_deep_agent` in Python) is a LangGraph graph. Expose it to AG-UI clients by serving it as a LangGraph server, then point the AG-UI adapter at that server.
 
@@ -82,9 +80,9 @@ const agent = new LangGraphAgent({
 });
 ```
 
-<Card title="AG-UI LangGraph adapter on npm" icon="brand-npm" href="https://www.npmjs.com/package/@ag-ui/langgraph">
-  The `@ag-ui/langgraph` package implements the AG-UI protocol for LangGraph graphs, including deep agents.
-</Card>
+> **[AG-UI LangGraph adapter on npm](https://www.npmjs.com/package/@ag-ui/langgraph)**
+>
+> The `@ag-ui/langgraph` package implements the AG-UI protocol for LangGraph graphs, including deep agents.
 
 ## Stream events
 
@@ -161,27 +159,25 @@ const input = {
 
 For the interrupt model itself, see [Human-in-the-loop](/oss/python/deepagents/human-in-the-loop).
 
-<Info>
-  For the complete event schema, see the [AG-UI events reference](https://docs.ag-ui.com/concepts/events).
-</Info>
+> [!NOTE]
+>
+> For the complete event schema, see the [AG-UI events reference](https://docs.ag-ui.com/concepts/events).
 
 ## Connect a frontend
 
 Any AG-UI client can drive a deep agent exposed over the protocol, so you do not have to build message rendering, streaming, or state sync yourself. Point the client at the adapter (or a runtime that wraps it) and select the agent by its `graphId`.
 
-<CardGroup>
-  <Card title="CopilotKit" icon="brand-react" href="/oss/python/langchain/frontend/integrations/copilotkit">
-    React chat runtime with AG-UI support for LangGraph and Deep Agents, including the Python FastAPI bridge.
-  </Card>
+> **[CopilotKit](/oss/python/langchain/frontend/integrations/copilotkit)**
+>
+> React chat runtime with AG-UI support for LangGraph and Deep Agents, including the Python FastAPI bridge.
 
-  <Card title="AG-UI clients" icon="apps" href="https://docs.ag-ui.com/integrations">
-    The full list of AG-UI clients and SDKs, including terminal and mobile clients.
-  </Card>
+> **[AG-UI clients](https://docs.ag-ui.com/integrations)**
+>
+> The full list of AG-UI clients and SDKs, including terminal and mobile clients.
 
-  <Card title="Build a custom client" icon="code" href="https://docs.ag-ui.com/quickstart/clients">
-    Consume the event stream directly with the AG-UI SDK to build your own interface.
-  </Card>
-</CardGroup>
+> **[Build a custom client](https://docs.ag-ui.com/quickstart/clients)**
+>
+> Consume the event stream directly with the AG-UI SDK to build your own interface.
 
 ## Programmatic API
 
@@ -212,12 +208,6 @@ To seed input, pass `initialMessages` to the constructor, or call `addMessage` o
 
 ***
 
-<div>
-  <Callout icon="terminal-2">
-    [Connect these docs](/use-these-docs) to your agent of choice via MCP for real-time answers.
-  </Callout>
+[Connect these docs](/use-these-docs) to your agent of choice via MCP for real-time answers.
 
-  <Callout icon="edit">
-    [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/oss/deepagents/ag-ui.mdx) or [file an issue](https://github.com/langchain-ai/docs/issues/new/choose).
-  </Callout>
-</div>
+[Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/oss/deepagents/ag-ui.mdx) or [file an issue](https://github.com/langchain-ai/docs/issues/new/choose).

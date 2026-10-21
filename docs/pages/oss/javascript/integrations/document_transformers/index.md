@@ -8,20 +8,12 @@ Document transformers take a sequence of documents and transform them—for exam
 
 ## All document transformers
 
-<div>
-  | Integration | Downloads |
-  | :- | :- |
-  | [`OpenAI functions metadata tagger -`](/oss/javascript/integrations/document_transformers/openai_metadata_tagger) | <span><a href="https://www.npmjs.com/package/@langchain/openai">  <img alt="Downloads per month" /></a></span> |
-</div>
+| Integration | Downloads |
+| :- | :- |
+| [`OpenAI functions metadata tagger -`](/oss/javascript/integrations/document_transformers/openai_metadata_tagger) | [  ![Downloads per month](https://img.shields.io/npm/dm/@langchain/openai?style=flat-square\&label=%20&)](https://www.npmjs.com/package/@langchain/openai) |
 
 ***
 
-<div>
-  <Callout icon="terminal-2">
-    [Connect these docs](/use-these-docs) to your agent of choice via MCP for real-time answers.
-  </Callout>
+[Connect these docs](/use-these-docs) to your agent of choice via MCP for real-time answers.
 
-  <Callout icon="edit">
-    [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/oss/javascript/integrations/document_transformers/index.mdx) or [file an issue](https://github.com/langchain-ai/docs/issues/new/choose).
-  </Callout>
-</div>
+[Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/oss/javascript/integrations/document_transformers/index.mdx) or [file an issue](https://github.com/langchain-ai/docs/issues/new/choose).

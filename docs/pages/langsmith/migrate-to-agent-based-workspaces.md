@@ -34,9 +34,9 @@ What does not change: your traces, datasets, prompts, and experiments are the sa
 
 A new organization on LangSmith Cloud gets agent-based workspaces. In an existing organization, LangChain migrates the workspaces, and the migration keeps your existing tracing projects as described in [What changes](#what-changes). No action is required from you.
 
-<Note>
-  This page describes the change, not its schedule. Timing is not published.
-</Note>
+> [!NOTE]
+>
+> This page describes the change, not its schedule. Timing is not published.
 
 ## See also
 
@@ -47,12 +47,6 @@ A new organization on LangSmith Cloud gets agent-based workspaces. In an existin
 
 ***
 
-<div>
-  <Callout icon="terminal-2">
-    [Connect these docs](/use-these-docs) to your agent of choice via MCP for real-time answers.
-  </Callout>
+[Connect these docs](/use-these-docs) to your agent of choice via MCP for real-time answers.
 
-  <Callout icon="edit">
-    [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/migrate-to-agent-based-workspaces.mdx) or [file an issue](https://github.com/langchain-ai/docs/issues/new/choose).
-  </Callout>
-</div>
+[Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/migrate-to-agent-based-workspaces.mdx) or [file an issue](https://github.com/langchain-ai/docs/issues/new/choose).

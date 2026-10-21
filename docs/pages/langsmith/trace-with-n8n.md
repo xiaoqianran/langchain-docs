@@ -6,9 +6,9 @@ Learn how to trace n8n AI workflows in LangSmith.
 
 [n8n](https://n8n.io/) is a workflow automation platform that includes advanced AI capabilities built on LangChain. You can connect your n8n instance to LangSmith to record and monitor AI workflow runs.
 
-<Note>
-  LangSmith tracing is available for **self-hosted n8n instances** only.
-</Note>
+> [!NOTE]
+>
+> LangSmith tracing is available for **self-hosted n8n instances** only.
 
 ## Prerequisites
 
@@ -47,12 +47,6 @@ After running an AI workflow:
 
 ***
 
-<div>
-  <Callout icon="terminal-2">
-    [Connect these docs](/use-these-docs) to your agent of choice via MCP for real-time answers.
-  </Callout>
+[Connect these docs](/use-these-docs) to your agent of choice via MCP for real-time answers.
 
-  <Callout icon="edit">
-    [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/trace-with-n8n.mdx) or [file an issue](https://github.com/langchain-ai/docs/issues/new/choose).
-  </Callout>
-</div>
+[Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/trace-with-n8n.mdx) or [file an issue](https://github.com/langchain-ai/docs/issues/new/choose).

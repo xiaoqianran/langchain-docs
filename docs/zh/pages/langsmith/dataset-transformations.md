@@ -4,7 +4,7 @@
 
 # 数据集转换
 
-LangSmith 允许您将转换附加到数据集架构中的字段，这些转换在将数据添加到数据集之前适用于您的数据，无论是来自 UI、API 还是运行规则。
+LangSmith 允许您将转换附加到数据集模式中的字段，这些转换在将数据添加到数据集之前适用于您的数据，无论是来自 UI、API 还是运行规则。
 
 与 [LangSmith's prebuilt JSON schema types](/langsmith/dataset-json-types) 结合使用，您可以在将数据保存到数据集之前轻松对其进行预处理。
 
@@ -23,13 +23,13 @@ LangSmith 允许您将转换附加到数据集架构中的字段，这些转换�
 为了简化最终用户的转换设置，LangSmith 提供了一个预定义的架构，该架构将执行以下操作：* 从收集的运行中提取消息并将其转换为 OpenAI 标准格式，这使得它们兼容所有 LangChain ChatModels 和大多数模型提供商的 SDK，用于下游评估和实验
 * 提取法学硕士使用的任何工具并将其添加到示例的输入中，以用于下游评估的可重复性
 
-<Check>
-  使用我们的聊天模型架构时，想要迭代系统提示的用户通常还会在其输入消息上添加删除系统消息转换，这将阻止您将系统提示保存到数据集。
-</Check>
+> [!提示]
+>
+> 使用我们的聊天模型架构时，想要迭代系统提示的用户通常还会在其输入消息中添加删除系统消息转换，这将阻止您将系统提示保存到数据集。
 
 ### 兼容性
 
-LLM 运行收集模式旨在从 LangChain [⟦T15⟧](https://reference.langchain.com/python/langchain-core/language_models/chat_models/BaseChatModel) 运行或从 [LangSmith OpenAI wrapper](/langsmith/annotate-code#use-%40traceable-%2F-traceable) 跟踪运行收集数据。
+LLM 运行收集模式旨在从 LangChain [⟦T15⟧](https://reference.langchain.com/python/langchain-core/language_models/chat_models/BaseChatModel) 运行或从 [LangSmith OpenAI wrapper](/langsmith/annotate-code#use-%40traceable-%2F-traceable) 跟踪的运行收集数据。
 
 如果您正在跟踪的 LLM 运行不兼容，请通过 [support.langchain.com](https://support.langchain.com) 联系支持人员，我们可以提供支持。
 
@@ -111,12 +111,6 @@ LLM 运行收集模式旨在从 LangChain [⟦T15⟧](https://reference.langchai
 
 ***
 
-<div>
-  <Callout icon="terminal-2">
-    [Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
-  </Callout>
+[Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
 
-  <Callout icon="edit">
-    [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/dataset-transformations.mdx) 或 [file an issue](https://github.com/langchain-ai/docs/issues/new/choose)。
-  </Callout>
-</div>
+[Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/dataset-transformations.mdx) 或 [file an issue](https://github.com/langchain-ai/docs/issues/new/choose)。

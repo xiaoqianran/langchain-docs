@@ -8,9 +8,9 @@ Add web search powered by Parallel to Managed Deep Agents without a separate acc
 
 LangSmith manages the search infrastructure, so you can add search without hosting a service or creating a separate Parallel account or API key. The integration offers zero data retention.
 
-<Note>
-  Built-in search is available only on LangSmith Plus and Startup plans. Usage is free during private beta.
-</Note>
+> [!NOTE]
+>
+> Built-in search is available only on LangSmith Plus and Startup plans. Usage is free during private beta.
 
 ## Before you begin
 
@@ -42,41 +42,39 @@ You do not need a Parallel API key.
 
 If the file already defines `mcp`, add `Parallel` to the existing `servers` map. Define `mcp` only once.
 
-<Tabs>
-  <Tab title="Python">
-    Add `Parallel` to the `servers` map in `tools/mcp.py`.
+**Python**
 
-    ```python tools/mcp.py theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-    from managed_deepagents import define_mcp
+Add `Parallel` to the `servers` map in `tools/mcp.py`.
 
-    mcp = define_mcp(
-        servers={
-            "Parallel": {
-                "transport": "http",
-                "url": "https://api.smith.langchain.com/v1/managed-tools/servers/parallel/mcp",
-            },
-        },
-    )
-    ```
-  </Tab>
+```python tools/mcp.py theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+from managed_deepagents import define_mcp
 
-  <Tab title="TypeScript">
-    Add `Parallel` to the `servers` map in `tools/mcp.ts`.
-
-    ```typescript tools/mcp.ts theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-    import { defineMcp } from "managed-deepagents";
-
-    export const mcp = defineMcp({
-      servers: {
+mcp = define_mcp(
+    servers={
         "Parallel": {
-          transport: "http",
-          url: "https://api.smith.langchain.com/v1/managed-tools/servers/parallel/mcp",
+            "transport": "http",
+            "url": "https://api.smith.langchain.com/v1/managed-tools/servers/parallel/mcp",
         },
-      },
-    });
-    ```
-  </Tab>
-</Tabs>
+    },
+)
+```
+
+**TypeScript**
+
+Add `Parallel` to the `servers` map in `tools/mcp.ts`.
+
+```typescript tools/mcp.ts theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+import { defineMcp } from "managed-deepagents";
+
+export const mcp = defineMcp({
+  servers: {
+    "Parallel": {
+      transport: "http",
+      url: "https://api.smith.langchain.com/v1/managed-tools/servers/parallel/mcp",
+    },
+  },
+});
+```
 
 Your agent can now use Parallel search alongside its other tools.
 
@@ -91,12 +89,6 @@ Your use of this integration must comply with Parallel's terms of service, inclu
 
 ***
 
-<div>
-  <Callout icon="terminal-2">
-    [Connect these docs](/use-these-docs) to your agent of choice via MCP for real-time answers.
-  </Callout>
+[Connect these docs](/use-these-docs) to your agent of choice via MCP for real-time answers.
 
-  <Callout icon="edit">
-    [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/managed-deep-agents-search.mdx) or [file an issue](https://github.com/langchain-ai/docs/issues/new/choose).
-  </Callout>
-</div>
+[Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/managed-deep-agents-search.mdx) or [file an issue](https://github.com/langchain-ai/docs/issues/new/choose).

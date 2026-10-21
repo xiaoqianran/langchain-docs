@@ -4,9 +4,9 @@
 
 Trace OpenAI Realtime voice agents in LangSmith using the LangSmith SDK.
 
-<Note>
-  This integration is in beta, so its API may change.
-</Note>
+> [!NOTE]
+>
+> This integration is in beta, so its API may change.
 
 OpenAI Realtime is a speech-to-speech model that streams typed events over a WebSocket. Regardless of whether you build it with a raw connection or the OpenAI Agents SDK, the integration captures each conversation as a single LangSmith trace, with a span for every meaningful event (transcripts, model responses, and tool calls) grouped by turn.
 
@@ -23,15 +23,13 @@ There are two ways to build with the OpenAI Realtime API, and LangSmith provides
 
 The `langsmith[openai-realtime]>=0.9.7` extra provides both wrappers:
 
-<CodeGroup>
-  ```bash pip theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  pip install "langsmith[openai-realtime]"
-  ```
+```bash pip theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+pip install "langsmith[openai-realtime]"
+```
 
-  ```bash uv theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  uv add "langsmith[openai-realtime]"
-  ```
-</CodeGroup>
+```bash uv theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+uv add "langsmith[openai-realtime]"
+```
 
 ## Set environment variables
 
@@ -66,15 +64,15 @@ async with client.realtime.connect(model="gpt-realtime-2") as raw, wrap_realtime
         ...  # your existing handling: play audio, run tools, update UI
 ```
 
-<Note>
-  Each conversation is captured as its own trace. To group it with related interactions in a LangSmith [thread](/langsmith/threads) (for example to continue an earlier session or pick up from a text chat), pass a `thread_id`. Reusing the same ID across traces links their events together.
-</Note>
+> [!NOTE]
+>
+> Each conversation is captured as its own trace. To group it with related interactions in a LangSmith [thread](/langsmith/threads) (for example to continue an earlier session or pick up from a text chat), pass a `thread_id`. Reusing the same ID across traces links their events together.
 
 Any [`@traceable`](/langsmith/annotate-code) tools you run while handling an event nest under that event automatically.
 
-<Note>
-  Enable `input_audio_transcription` and the agent transcript in your `session.update` in order to view a transcript as part of the trace.
-</Note>
+> [!NOTE]
+>
+> Enable `input_audio_transcription` and the agent transcript in your `session.update` in order to view a transcript as part of the trace.
 
 ### Record the conversation audio
 
@@ -103,17 +101,17 @@ async with client.realtime.connect(model="gpt-realtime-2") as raw, wrap_realtime
             speaker.play(base64.b64decode(event.delta))
 ```
 
-<Note>
-  You should record the agent's audio from the speaker, so that the recording reflects only what was played. During a barge-in, generated audio is discarded before playback and should not be recorded. Doing this keeps the trace aligned with what the user actually heard.
-</Note>
+> [!NOTE]
+>
+> You should record the agent's audio from the speaker, so that the recording reflects only what was played. During a barge-in, generated audio is discarded before playback and should not be recorded. Doing this keeps the trace aligned with what the user actually heard.
 
 ## Using the OpenAI Agents SDK
 
 Use this when you build the agent with the [OpenAI Agents SDK](https://openai.github.io/openai-agents-python/realtime/guide/) (`RealtimeAgent` / `RealtimeRunner`), which owns the turn and tool-call loop.
 
-<Note>
-  The Agents SDK's built-in realtime tracing uploads to OpenAI's own dashboard. Call `agents.set_tracing_disabled(True)` to avoid a second, separate upload path.
-</Note>
+> [!NOTE]
+>
+> The Agents SDK's built-in realtime tracing uploads to OpenAI's own dashboard. Call `agents.set_tracing_disabled(True)` to avoid a second, separate upload path.
 
 ### Set up tracing
 
@@ -141,9 +139,9 @@ async with wrap_realtime_session(
 
 The conversation transcript is reconstructed from the session's `history` snapshots, so messages appear even though the SDK streams them as partials.
 
-<Note>
-  Each conversation is captured as its own trace. To group it with related interactions in a LangSmith [thread](/langsmith/threads), for example to continue an earlier session or pick up from a text chat, pass a `thread_id`. Reusing the same ID across traces links their events together.
-</Note>
+> [!NOTE]
+>
+> Each conversation is captured as its own trace. To group it with related interactions in a LangSmith [thread](/langsmith/threads), for example to continue an earlier session or pick up from a text chat, pass a `thread_id`. Reusing the same ID across traces links their events together.
 
 ### Record the conversation audio
 
@@ -164,30 +162,22 @@ async for event in conn:
         speaker.play(event.audio.data)
 ```
 
-<Note>
-  You should record the agent's audio from the speaker, so that the recording reflects only what was played. During a barge-in, generated audio is discarded before playback and should not be recorded. Doing this keeps the trace aligned with what the user actually heard.
-</Note>
+> [!NOTE]
+>
+> You should record the agent's audio from the speaker, so that the recording reflects only what was played. During a barge-in, generated audio is discarded before playback and should not be recorded. Doing this keeps the trace aligned with what the user actually heard.
 
 ## Next steps
 
-<CardGroup>
-  <Card title="Voice fundamentals" icon="waveform" href="/langsmith/trace-voice-fundamentals">
-    Core conventions for tracing voice agents.
-  </Card>
+> **[Voice fundamentals](/langsmith/trace-voice-fundamentals)**
+>
+> Core conventions for tracing voice agents.
 
-  <Card title="Upload files with traces" icon="paperclip" href="/langsmith/upload-files-with-traces">
-    Attach the conversation audio recording to your trace.
-  </Card>
-</CardGroup>
+> **[Upload files with traces](/langsmith/upload-files-with-traces)**
+>
+> Attach the conversation audio recording to your trace.
 
 ***
 
-<div>
-  <Callout icon="terminal-2">
-    [Connect these docs](/use-these-docs) to your agent of choice via MCP for real-time answers.
-  </Callout>
+[Connect these docs](/use-these-docs) to your agent of choice via MCP for real-time answers.
 
-  <Callout icon="edit">
-    [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/trace-openai-realtime.mdx) or [file an issue](https://github.com/langchain-ai/docs/issues/new/choose).
-  </Callout>
-</div>
+[Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/trace-openai-realtime.mdx) or [file an issue](https://github.com/langchain-ai/docs/issues/new/choose).

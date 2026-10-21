@@ -2,9 +2,9 @@
 
 # Export LangSmith telemetry to your observability backend
 
-<Warning>
-  **This section is only applicable for Kubernetes deployments.**
-</Warning>
+> [!WARNING]
+>
+> **This section is only applicable for Kubernetes deployments.**
 
 Self-Hosted LangSmith instances produce telemetry data in the form of logs, metrics and traces. This section will show you how to access and export that data to an observability collector or backend.
 
@@ -48,9 +48,9 @@ For tabbed SmithDB and Sandbox dashboards, see [Monitor self-hosted LangSmith wi
 
 The frontend service exposes its Nginx metrics at the following endpoint: `langsmith-frontend.langsmith.svc.cluster.local:80/nginx_status`. You can either scrape them yourself, or bring up a [Prometheus Nginx exporter](https://github.com/prometheus-community/helm-charts/tree/main/charts/prometheus-nginx-exporter).
 
-<Warning>
-  **The following sections apply for in-cluster databases only. If you are using external databases, you will need to configure exposing and fetching metrics.**
-</Warning>
+> [!WARNING]
+>
+> **The following sections apply for in-cluster databases only. If you are using external databases, you will need to configure exposing and fetching metrics.**
 
 ### Postgres + Redis
 
@@ -78,12 +78,6 @@ config:
 
 ***
 
-<div>
-  <Callout icon="terminal-2">
-    [Connect these docs](/use-these-docs) to your agent of choice via MCP for real-time answers.
-  </Callout>
+[Connect these docs](/use-these-docs) to your agent of choice via MCP for real-time answers.
 
-  <Callout icon="edit">
-    [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/export-backend.mdx) or [file an issue](https://github.com/langchain-ai/docs/issues/new/choose).
-  </Callout>
-</div>
+[Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/export-backend.mdx) or [file an issue](https://github.com/langchain-ai/docs/issues/new/choose).

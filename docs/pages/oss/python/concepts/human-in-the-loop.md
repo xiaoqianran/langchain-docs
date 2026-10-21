@@ -11,9 +11,9 @@ You add review with [`HumanInTheLoopMiddleware`](https://reference.langchain.com
 * **Per-call**: One pause for each tool call that needs review.
 * **Batched**: One pause per model turn, covering every tool call in that turn. Batched mode is the current default.
 
-<Note>
-  Per-call mode requires `langchain>=1.4.6`. Deep Agents uses batched mode.
-</Note>
+> [!NOTE]
+>
+> Per-call mode requires `langchain>=1.4.6`. Deep Agents uses batched mode.
 
 ## Follow an approval from pause to resume
 
@@ -145,12 +145,6 @@ Per-call mode also changes how middleware order and multi-answer resumes behave.
 
 ***
 
-<div>
-  <Callout icon="terminal-2">
-    [Connect these docs](/use-these-docs) to your agent of choice via MCP for real-time answers.
-  </Callout>
+[Connect these docs](/use-these-docs) to your agent of choice via MCP for real-time answers.
 
-  <Callout icon="edit">
-    [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/oss/concepts/human-in-the-loop.mdx) or [file an issue](https://github.com/langchain-ai/docs/issues/new/choose).
-  </Callout>
-</div>
+[Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/oss/concepts/human-in-the-loop.mdx) or [file an issue](https://github.com/langchain-ai/docs/issues/new/choose).

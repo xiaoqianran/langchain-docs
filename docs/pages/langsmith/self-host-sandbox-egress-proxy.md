@@ -38,57 +38,55 @@ The forward proxy can require Basic authentication, which needs LangSmith 0.17.3
 
 To route Sandbox egress through a forward proxy:
 
-<Steps>
-  <Step title="Add the proxy settings to your values">
-    Set `sandboxes.authProxy.httpProxy` in your LangSmith Helm values:
+**1. Add the proxy settings to your values**
 
-    ```yaml theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-    sandboxes:
-      authProxy:
-        httpProxy:
-          url: http://proxy.corp.internal:3128
-          noProxy:
-            - .corp.internal
-    ```
+Set `sandboxes.authProxy.httpProxy` in your LangSmith Helm values:
 
-    * **`url`**: The proxy URL, `http://host:port`, or `https://host:port` when the connection to the proxy itself uses TLS. The host can be a hostname, an IP address, or an in-cluster Service name. Leave it empty to send egress directly. The chart stores the URL in the LangSmith app Secret, because it can carry credentials (see the next step). When you set `config.existingSecretName`, leave `url` empty and add the URL to that Secret under the key `sandbox_egress_proxy_url` instead.
-    * **`noProxy`**: Destinations that the host dials directly instead of through the proxy, with the same matching as the `NO_PROXY` environment variable. An entry such as `corp.internal` matches that host and its subdomains, an entry with a leading dot such as `.corp.internal` matches only subdomains, and `*` matches every host. Entries can also be IP addresses, CIDR ranges such as `10.0.0.0/8`, or `host:port` pairs.
+```yaml theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+sandboxes:
+  authProxy:
+    httpProxy:
+      url: http://proxy.corp.internal:3128
+      noProxy:
+        - .corp.internal
+```
 
-    The chart fails the render when `url` is not an `http://` or `https://` URL without a path, or when you set `url` together with `config.existingSecretName` or `config.disableSecretCreation`. On LangSmith 0.17.36 or later, `sandbox-host` also checks the proxy address when it starts: a loopback or cloud metadata address stops the pod with `sandbox host config invalid` instead of failing each Sandbox creation.
-  </Step>
+* **`url`**: The proxy URL, `http://host:port`, or `https://host:port` when the connection to the proxy itself uses TLS. The host can be a hostname, an IP address, or an in-cluster Service name. Leave it empty to send egress directly. The chart stores the URL in the LangSmith app Secret, because it can carry credentials (see the next step). When you set `config.existingSecretName`, leave `url` empty and add the URL to that Secret under the key `sandbox_egress_proxy_url` instead.
+* **`noProxy`**: Destinations that the host dials directly instead of through the proxy, with the same matching as the `NO_PROXY` environment variable. An entry such as `corp.internal` matches that host and its subdomains, an entry with a leading dot such as `.corp.internal` matches only subdomains, and `*` matches every host. Entries can also be IP addresses, CIDR ranges such as `10.0.0.0/8`, or `host:port` pairs.
 
-  <Step title="(Optional) Authenticate to the proxy">
-    When the proxy requires a username and password, add them to the URL:
+The chart fails the render when `url` is not an `http://` or `https://` URL without a path, or when you set `url` together with `config.existingSecretName` or `config.disableSecretCreation`. On LangSmith 0.17.36 or later, `sandbox-host` also checks the proxy address when it starts: a loopback or cloud metadata address stops the pod with `sandbox host config invalid` instead of failing each Sandbox creation.
 
-    ```text theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-    http://svc-sandboxes:p%40ssw0rd@proxy.corp.internal:3128
-    ```
+**2. (Optional) Authenticate to the proxy**
 
-    Percent-encode reserved characters in the username and password, such as `@` as `%40`, `:` as `%3A`, and `/` as `%2F`. Set the URL as `url` in your values, or as the `sandbox_egress_proxy_url` key in `config.existingSecretName`.
+When the proxy requires a username and password, add them to the URL:
 
-    `sandbox-host` sends the credentials to the proxy as a Basic `Proxy-Authorization` header on every `CONNECT` and plain HTTP proxy request. Sandboxes never see them: the host opens the tunnels, and it drops any `Proxy-Authorization` header that code in a Sandbox sends. Basic credentials are not encrypted, so use an `https` proxy URL when the network between the Sandbox nodes and the proxy is not trusted.
+```text theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+http://svc-sandboxes:p%40ssw0rd@proxy.corp.internal:3128
+```
 
-    When the proxy rejects the credentials, connections from Sandboxes fail and the `sandbox-host` logs show `upstream proxy CONNECT rejected: 407`. After you rotate the password, update the Secret and restart the `sandbox-host` Deployment; it reads the URL only when it starts.
-  </Step>
+Percent-encode reserved characters in the username and password, such as `@` as `%40`, `:` as `%3A`, and `/` as `%2F`. Set the URL as `url` in your values, or as the `sandbox_egress_proxy_url` key in `config.existingSecretName`.
 
-  <Step title="(Optional) Trust a private CA for an HTTPS proxy">
-    When the proxy URL uses `https` and a private CA issues the proxy's certificate, add that CA to the bundle in `config.customCa`. The `sandbox-host` pods trust the same bundle as other LangSmith services, in addition to the system roots. See [Mount internal CAs for TLS](/langsmith/self-host-custom-tls-certificates#mount-internal-cas-for-tls).
-  </Step>
+`sandbox-host` sends the credentials to the proxy as a Basic `Proxy-Authorization` header on every `CONNECT` and plain HTTP proxy request. Sandboxes never see them: the host opens the tunnels, and it drops any `Proxy-Authorization` header that code in a Sandbox sends. Basic credentials are not encrypted, so use an `https` proxy URL when the network between the Sandbox nodes and the proxy is not trusted.
 
-  <Step title="Apply the change">
-    Upgrade the Helm release. Changing these settings rolls the `sandbox-host` Deployment, so each host drains its running Sandboxes before it restarts. See [Understand a rolling upgrade](/langsmith/self-host-sandbox-operations#understand-a-rolling-upgrade).
-  </Step>
+When the proxy rejects the credentials, connections from Sandboxes fail and the `sandbox-host` logs show `upstream proxy CONNECT rejected: 407`. After you rotate the password, update the Secret and restart the `sandbox-host` Deployment; it reads the URL only when it starts.
 
-  <Step title="Verify egress">
-    Create a Sandbox and request a public URL from inside it:
+**3. (Optional) Trust a private CA for an HTTPS proxy**
 
-    ```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-    curl -sS -o /dev/null -w '%{http_code}\n' https://www.langchain.com/
-    ```
+When the proxy URL uses `https` and a private CA issues the proxy's certificate, add that CA to the bundle in `config.customCa`. The `sandbox-host` pods trust the same bundle as other LangSmith services, in addition to the system roots. See [Mount internal CAs for TLS](/langsmith/self-host-custom-tls-certificates#mount-internal-cas-for-tls).
 
-    The command prints `200`, and your forward proxy logs a `CONNECT www.langchain.com:443` request from a Sandbox node. A request to an `http://` URL appears in the proxy log as a `GET http://...` request instead.
-  </Step>
-</Steps>
+**4. Apply the change**
+
+Upgrade the Helm release. Changing these settings rolls the `sandbox-host` Deployment, so each host drains its running Sandboxes before it restarts. See [Understand a rolling upgrade](/langsmith/self-host-sandbox-operations#understand-a-rolling-upgrade).
+
+**5. Verify egress**
+
+Create a Sandbox and request a public URL from inside it:
+
+```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+curl -sS -o /dev/null -w '%{http_code}\n' https://www.langchain.com/
+```
+
+The command prints `200`, and your forward proxy logs a `CONNECT www.langchain.com:443` request from a Sandbox node. A request to an `http://` URL appears in the proxy log as a `GET http://...` request instead.
 
 ## Reach private services directly
 
@@ -108,9 +106,9 @@ The host checks the address it connects to after resolving the hostname. Loopbac
 
 A Sandbox can also reach a Service in your cluster by its Kubernetes name, such as `api.team.svc.cluster.local`, when its `allow_list` names it. Your forward proxy cannot resolve cluster names, so add `.svc.cluster.local` to `noProxy` when you use one.
 
-<Warning>
-  Every matching entry counts, including `*` and `*:443`. On a self-hosted installation, an `allow_list` such as `["*:80", "*:443"]` also opens private destinations on those ports. Anyone who can create or update a Sandbox can allow-list a private address, including addresses inside your cluster, so limit who can create Sandboxes accordingly.
-</Warning>
+> [!WARNING]
+>
+> Every matching entry counts, including `*` and `*:443`. On a self-hosted installation, an `allow_list` such as `["*:80", "*:443"]` also opens private destinations on those ports. Anyone who can create or update a Sandbox can allow-list a private address, including addresses inside your cluster, so limit who can create Sandboxes accordingly.
 
 ## Secure the proxy
 
@@ -132,12 +130,6 @@ Configure the proxy's access policy to block the destinations Sandboxes must not
 
 ***
 
-<div>
-  <Callout icon="terminal-2">
-    [Connect these docs](/use-these-docs) to your agent of choice via MCP for real-time answers.
-  </Callout>
+[Connect these docs](/use-these-docs) to your agent of choice via MCP for real-time answers.
 
-  <Callout icon="edit">
-    [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/self-host-sandbox-egress-proxy.mdx) or [file an issue](https://github.com/langchain-ai/docs/issues/new/choose).
-  </Callout>
-</div>
+[Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/self-host-sandbox-egress-proxy.mdx) or [file an issue](https://github.com/langchain-ai/docs/issues/new/choose).

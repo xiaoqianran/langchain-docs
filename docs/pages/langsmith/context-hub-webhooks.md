@@ -61,61 +61,59 @@ sha256=<lowercase hex HMAC-SHA256 digest>
 
 Compute the HMAC-SHA256 digest over the exact raw request body bytes with the webhook's signing secret. Verify the signature before parsing the JSON, and compare the complete header value in constant time. Parsing and reserializing the body before verification can change its bytes and invalidate the signature.
 
-<CodeGroup>
-  ```python Python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  import hashlib
-  import hmac
-  from typing import Optional
+```python Python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+import hashlib
+import hmac
+from typing import Optional
 
 
-  def verify_langsmith_signature(
-      *,
-      body: bytes,
-      signing_secret: str,
-      signature_header: Optional[str],
-  ) -> bool:
-      if not signature_header or not signature_header.startswith("sha256="):
-          return False
+def verify_langsmith_signature(
+    *,
+    body: bytes,
+    signing_secret: str,
+    signature_header: Optional[str],
+) -> bool:
+    if not signature_header or not signature_header.startswith("sha256="):
+        return False
 
-      expected = "sha256=" + hmac.new(
-          signing_secret.encode("utf-8"),
-          body,
-          hashlib.sha256,
-      ).hexdigest()
+    expected = "sha256=" + hmac.new(
+        signing_secret.encode("utf-8"),
+        body,
+        hashlib.sha256,
+    ).hexdigest()
 
-      return hmac.compare_digest(expected, signature_header)
-  ```
+    return hmac.compare_digest(expected, signature_header)
+```
 
-  ```typescript TypeScript theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  import { createHmac, timingSafeEqual } from "node:crypto";
+```typescript TypeScript theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+import { createHmac, timingSafeEqual } from "node:crypto";
 
-  export function verifyLangSmithSignature({
-    body,
-    signingSecret,
-    signatureHeader,
-  }: {
-    body: Buffer;
-    signingSecret: string;
-    signatureHeader: string | undefined;
-  }) {
-    if (!signatureHeader?.startsWith("sha256=")) {
-      return false;
-    }
-
-    const expected = `sha256=${createHmac("sha256", signingSecret)
-      .update(body)
-      .digest("hex")}`;
-
-    const expectedBytes = Buffer.from(expected);
-    const actualBytes = Buffer.from(signatureHeader);
-
-    return (
-      expectedBytes.length === actualBytes.length &&
-      timingSafeEqual(expectedBytes, actualBytes)
-    );
+export function verifyLangSmithSignature({
+  body,
+  signingSecret,
+  signatureHeader,
+}: {
+  body: Buffer;
+  signingSecret: string;
+  signatureHeader: string | undefined;
+}) {
+  if (!signatureHeader?.startsWith("sha256=")) {
+    return false;
   }
-  ```
-</CodeGroup>
+
+  const expected = `sha256=${createHmac("sha256", signingSecret)
+    .update(body)
+    .digest("hex")}`;
+
+  const expectedBytes = Buffer.from(expected);
+  const actualBytes = Buffer.from(signatureHeader);
+
+  return (
+    expectedBytes.length === actualBytes.length &&
+    timingSafeEqual(expectedBytes, actualBytes)
+  );
+}
+```
 
 ## Event envelope
 
@@ -198,12 +196,6 @@ A breaking change to `data.commit` uses a new event type suffix, such as `.v2`. 
 
 ***
 
-<div>
-  <Callout icon="terminal-2">
-    [Connect these docs](/use-these-docs) to your agent of choice via MCP for real-time answers.
-  </Callout>
+[Connect these docs](/use-these-docs) to your agent of choice via MCP for real-time answers.
 
-  <Callout icon="edit">
-    [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/context-hub-webhooks.mdx) or [file an issue](https://github.com/langchain-ai/docs/issues/new/choose).
-  </Callout>
-</div>
+[Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/context-hub-webhooks.mdx) or [file an issue](https://github.com/langchain-ai/docs/issues/new/choose).

@@ -4,9 +4,9 @@
 
 Access provider APIs directly through provider-specific LLM Gateway paths without using the gateway standardization layer.
 
-<Note>
-  The LLM Gateway is in [beta](/langsmith/release-stages).
-</Note>
+> [!NOTE]
+>
+> The LLM Gateway is in [beta](/langsmith/release-stages).
 
 Direct model access exposes each provider API through a provider-specific gateway path. The gateway still handles authentication, provider secrets, policies, and tracing, but it does not translate the request and response into another provider's API format.
 
@@ -52,40 +52,38 @@ export GOOGLE_API_KEY="$LANGSMITH_API_KEY"
 
 The gateway resolves the actual provider key from your workspace's Provider Secrets, so the provider key does not need to be stored locally.
 
-<CodeGroup>
-  ```python OpenAI SDK theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  import os
+```python OpenAI SDK theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+import os
 
-  from openai import OpenAI
+from openai import OpenAI
 
-  client = OpenAI(
-      base_url=os.environ["OPENAI_BASE_URL"],
-      api_key=os.environ["LANGSMITH_API_KEY"],
-  )
-  response = client.chat.completions.create(
-      model="gpt-5.4-mini",
-      messages=[{"role": "user", "content": "ping"}],
-  )
-  print(response.choices[0].message.content)
-  ```
+client = OpenAI(
+    base_url=os.environ["OPENAI_BASE_URL"],
+    api_key=os.environ["LANGSMITH_API_KEY"],
+)
+response = client.chat.completions.create(
+    model="gpt-5.4-mini",
+    messages=[{"role": "user", "content": "ping"}],
+)
+print(response.choices[0].message.content)
+```
 
-  ```python Anthropic SDK theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  import os
+```python Anthropic SDK theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+import os
 
-  import anthropic
+import anthropic
 
-  client = anthropic.Anthropic(
-      base_url=os.environ["ANTHROPIC_BASE_URL"],
-      api_key=os.environ["LANGSMITH_API_KEY"],
-  )
-  message = client.messages.create(
-      model="claude-opus-5",
-      max_tokens=1024,
-      messages=[{"role": "user", "content": "ping"}],
-  )
-  print(message.content[0].text)
-  ```
-</CodeGroup>
+client = anthropic.Anthropic(
+    base_url=os.environ["ANTHROPIC_BASE_URL"],
+    api_key=os.environ["LANGSMITH_API_KEY"],
+)
+message = client.messages.create(
+    model="claude-opus-5",
+    max_tokens=1024,
+    messages=[{"role": "user", "content": "ping"}],
+)
+print(message.content[0].text)
+```
 
 Direct paths use the provider's native model name without a provider prefix.
 
@@ -112,12 +110,6 @@ If your LangSmith account is on a regional instance, use the corresponding [regi
 
 ***
 
-<div>
-  <Callout icon="terminal-2">
-    [Connect these docs](/use-these-docs) to your agent of choice via MCP for real-time answers.
-  </Callout>
+[Connect these docs](/use-these-docs) to your agent of choice via MCP for real-time answers.
 
-  <Callout icon="edit">
-    [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/llm-gateway-direct-model-access.mdx) or [file an issue](https://github.com/langchain-ai/docs/issues/new/choose).
-  </Callout>
-</div>
+[Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/llm-gateway-direct-model-access.mdx) or [file an issue](https://github.com/langchain-ai/docs/issues/new/choose).

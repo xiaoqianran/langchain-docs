@@ -106,9 +106,9 @@ enable_gateway_pii_redaction = false  # Presidio PII redaction (requires enable_
 enable_sso_oidc      = false          # OIDC SSO; enable only after logging in as the org admin with basic auth
 ```
 
-<Warning>
-  The LangSmith Deployment add-on requires `default_node_pool_min_count = 5` first. Operator-spawned pods need node headroom; without it, agent pods stay in `Pending` indefinitely.
-</Warning>
+> [!WARNING]
+>
+> The LangSmith Deployment add-on requires `default_node_pool_min_count = 5` first. Operator-spawned pods need node headroom; without it, agent pods stay in `Pending` indefinitely.
 
 ## Sizing profiles
 
@@ -243,18 +243,12 @@ make clean       # removes local secrets, config, helm values, and tfstate files
 
 `make destroy-force` and `make clean-force` run the same steps without the confirmation prompt.
 
-<Warning>
-  `make clean-force` also answers the prompt that guards a state file which still tracks resources, and then deletes `terraform.tfstate`. With the default local backend, that file is the only state, so running it before `make destroy` succeeds orphans the Azure resources. Run `make clean-force` only after a successful `make destroy`.
-</Warning>
+> [!WARNING]
+>
+> `make clean-force` also answers the prompt that guards a state file which still tracks resources, and then deletes `terraform.tfstate`. With the default local backend, that file is the only state, so running it before `make destroy` succeeds orphans the Azure resources. Run `make clean-force` only after a successful `make destroy`.
 
 ***
 
-<div>
-  <Callout icon="terminal-2">
-    [Connect these docs](/use-these-docs) to your agent of choice via MCP for real-time answers.
-  </Callout>
+[Connect these docs](/use-these-docs) to your agent of choice via MCP for real-time answers.
 
-  <Callout icon="edit">
-    [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/self-host-terraform-azure-quick-reference.mdx) or [file an issue](https://github.com/langchain-ai/docs/issues/new/choose).
-  </Callout>
-</div>
+[Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/self-host-terraform-azure-quick-reference.mdx) or [file an issue](https://github.com/langchain-ai/docs/issues/new/choose).

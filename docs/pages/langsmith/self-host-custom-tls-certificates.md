@@ -11,9 +11,9 @@ This page covers:
 
 ## Mount internal CAs for TLS
 
-<Note>
-  You must use Helm chart version 0.11.9 or later to mount internal CAs using the configuration below.
-</Note>
+> [!NOTE]
+>
+> You must use Helm chart version 0.11.9 or later to mount internal CAs using the configuration below.
 
 Use this approach to make internal/public CAs trusted system‑wide by LangSmith (Playground model calls and [database/external service connections](/langsmith/self-hosted#storage-services)).
 
@@ -51,20 +51,20 @@ Use this approach to make internal/public CAs trusted system‑wide by LangSmith
        customTls: true # Only enable if you want TLS for Postgres.
    ```
 4. Make sure to use TLS supported connection strings:
-   * <b>Postgres</b>: Add `?sslmode=verify-full&sslrootcert=system` to the end.
-   * <b>Redis</b>: Use `rediss://` instead of `redis://` as the prefix.
+   * **Postgres**: Add `?sslmode=verify-full&sslrootcert=system` to the end.
+   * **Redis**: Use `rediss://` instead of `redis://` as the prefix.
 
 ## Use custom TLS certificates for model providers
 
-<Note>
-  This feature is currently only available for the following model providers:
-
-  * Azure OpenAI
-  * OpenAI
-  * Custom (our custom model server). Refer to the [custom model server documentation](/langsmith/custom-endpoint) for more information.
-
-  These TLS settings apply to all invocations of the selected model providers (including Online Evaluation). Use them when the provider requires mutual TLS (client cert/key) or when you must override trust with a specific CA for provider calls. They complement the internal CA bundle configured above.
-</Note>
+> [!NOTE]
+>
+> This feature is currently only available for the following model providers:
+>
+> * Azure OpenAI
+> * OpenAI
+> * Custom (our custom model server). Refer to the [custom model server documentation](/langsmith/custom-endpoint) for more information.
+>
+> These TLS settings apply to all invocations of the selected model providers (including Online Evaluation). Use them when the provider requires mutual TLS (client cert/key) or when you must override trust with a specific CA for provider calls. They complement the internal CA bundle configured above.
 
 You can use custom TLS certificates to connect to model providers in the Playground. This is useful if you are using a self-signed certificate, a certificate from a custom certificate authority, or mutual TLS authentication.
 
@@ -78,12 +78,6 @@ Once you have set these environment variables, enter the Playground **Settings**
 
 ***
 
-<div>
-  <Callout icon="terminal-2">
-    [Connect these docs](/use-these-docs) to your agent of choice via MCP for real-time answers.
-  </Callout>
+[Connect these docs](/use-these-docs) to your agent of choice via MCP for real-time answers.
 
-  <Callout icon="edit">
-    [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/self-host-custom-tls-certificates.mdx) or [file an issue](https://github.com/langchain-ai/docs/issues/new/choose).
-  </Callout>
-</div>
+[Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/self-host-custom-tls-certificates.mdx) or [file an issue](https://github.com/langchain-ai/docs/issues/new/choose).

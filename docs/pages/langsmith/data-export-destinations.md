@@ -4,11 +4,11 @@
 
 Configure and manage S3-compatible export destinations for LangSmith bulk exports.
 
-<Note>
-  **For self-hosted, GCP EU, GCP APAC, and AWS US SaaS**
-
-  Update the LangSmith URL in the requests below for self-hosted installs, GCP EU (`eu.api.smith.langchain.com`), GCP APAC (`apac.api.smith.langchain.com`), or AWS US (`aws.api.smith.langchain.com`).
-</Note>
+> [!NOTE]
+>
+> **For self-hosted, GCP EU, GCP APAC, and AWS US SaaS**
+>
+> Update the LangSmith URL in the requests below for self-hosted installs, GCP EU (`eu.api.smith.langchain.com`), GCP APAC (`apac.api.smith.langchain.com`), or AWS US (`aws.api.smith.langchain.com`).
 
 A destination is a named configuration that tells LangSmith where to write exported trace data. You [create a destination](/langsmith/data-export#1-create-a-destination) once, then reference it by ID when [creating export jobs](/langsmith/data-export#2-create-an-export-job). LangSmith currently supports S3 and any S3-compatible bucket (such as GCS or MinIO) as a destination. Exported data is written in [Parquet](https://parquet.apache.org/docs/overview/) columnar format and contains equivalent fields to the [Run data format](/langsmith/run-data-format).
 
@@ -139,7 +139,9 @@ Use the returned `id` to reference this destination in subsequent bulk export op
 
 ### Credentials configuration
 
-<Note>**Requires LangSmith Helm version `0.10.34` or later (application version `0.10.91` or later)**</Note>
+> [!NOTE]
+>
+> **Requires LangSmith Helm version `0.10.34` or later (application version `0.10.91` or later)**
 
 We support the following additional credentials formats besides static `access_key_id` and `secret_access_key`:
 
@@ -321,129 +323,127 @@ AWS IAM role assumption lets GCP-hosted LangSmith SaaS export to S3 without stor
 
 Pass `aws_role_arn` instead of `credentials` to use IAM role assumption.
 
-<Note>
-  IAM role assumption is available only on GCP-hosted LangSmith SaaS. It is not available on AWS-hosted SaaS or self-hosted deployments.
-</Note>
+> [!NOTE]
+>
+> IAM role assumption is available only on GCP-hosted LangSmith SaaS. It is not available on AWS-hosted SaaS or self-hosted deployments.
 
 ### Create the AWS role
 
 Create an AWS IAM role with a trust policy that permits web identity federation from the three subject IDs for your region. Grant the role access to your export bucket. Select your LangSmith region to use the corresponding subject IDs. Each Terraform example uses the minimum required `s3:PutObject` permission:
 
-<CodeGroup>
-  ```hcl US theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  resource "aws_iam_role" "langsmith_bulk_export" {
-    name                 = "langsmith-bulk-export"
-    max_session_duration = 43200
+```hcl US theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+resource "aws_iam_role" "langsmith_bulk_export" {
+  name                 = "langsmith-bulk-export"
+  max_session_duration = 43200
 
-    assume_role_policy = jsonencode({
+  assume_role_policy = jsonencode({
+    Version = "2012-10-17"
+    Statement = [{
+      Effect    = "Allow"
+      Principal = { Federated = "accounts.google.com" }
+      Action    = "sts:AssumeRoleWithWebIdentity"
+      Condition = {
+        StringEquals = {
+          "accounts.google.com:oaud" = "langsmith-bulk-export"
+          "accounts.google.com:sub" = [
+            "110136955440523778103",
+            "116331607438151298187",
+            "115251468294701876731",
+          ]
+        }
+      }
+    }]
+  })
+
+  inline_policy {
+    name = "langsmith-bulk-export-s3"
+    policy = jsonencode({
       Version = "2012-10-17"
       Statement = [{
-        Effect    = "Allow"
-        Principal = { Federated = "accounts.google.com" }
-        Action    = "sts:AssumeRoleWithWebIdentity"
-        Condition = {
-          StringEquals = {
-            "accounts.google.com:oaud" = "langsmith-bulk-export"
-            "accounts.google.com:sub" = [
-              "110136955440523778103",
-              "116331607438151298187",
-              "115251468294701876731",
-            ]
-          }
-        }
+        Effect   = "Allow"
+        Action   = "s3:PutObject"
+        Resource = "arn:aws:s3:::YOUR_BUCKET_NAME/*"
       }]
     })
-
-    inline_policy {
-      name = "langsmith-bulk-export-s3"
-      policy = jsonencode({
-        Version = "2012-10-17"
-        Statement = [{
-          Effect   = "Allow"
-          Action   = "s3:PutObject"
-          Resource = "arn:aws:s3:::YOUR_BUCKET_NAME/*"
-        }]
-      })
-    }
   }
-  ```
+}
+```
 
-  ```hcl EU theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  resource "aws_iam_role" "langsmith_bulk_export" {
-    name                 = "langsmith-bulk-export"
-    max_session_duration = 43200
+```hcl EU theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+resource "aws_iam_role" "langsmith_bulk_export" {
+  name                 = "langsmith-bulk-export"
+  max_session_duration = 43200
 
-    assume_role_policy = jsonencode({
+  assume_role_policy = jsonencode({
+    Version = "2012-10-17"
+    Statement = [{
+      Effect    = "Allow"
+      Principal = { Federated = "accounts.google.com" }
+      Action    = "sts:AssumeRoleWithWebIdentity"
+      Condition = {
+        StringEquals = {
+          "accounts.google.com:oaud" = "langsmith-bulk-export"
+          "accounts.google.com:sub" = [
+            "110207823358662523645",
+            "115689110758588220909",
+            "109691164801275818274",
+          ]
+        }
+      }
+    }]
+  })
+
+  inline_policy {
+    name = "langsmith-bulk-export-s3"
+    policy = jsonencode({
       Version = "2012-10-17"
       Statement = [{
-        Effect    = "Allow"
-        Principal = { Federated = "accounts.google.com" }
-        Action    = "sts:AssumeRoleWithWebIdentity"
-        Condition = {
-          StringEquals = {
-            "accounts.google.com:oaud" = "langsmith-bulk-export"
-            "accounts.google.com:sub" = [
-              "110207823358662523645",
-              "115689110758588220909",
-              "109691164801275818274",
-            ]
-          }
-        }
+        Effect   = "Allow"
+        Action   = "s3:PutObject"
+        Resource = "arn:aws:s3:::YOUR_BUCKET_NAME/*"
       }]
     })
-
-    inline_policy {
-      name = "langsmith-bulk-export-s3"
-      policy = jsonencode({
-        Version = "2012-10-17"
-        Statement = [{
-          Effect   = "Allow"
-          Action   = "s3:PutObject"
-          Resource = "arn:aws:s3:::YOUR_BUCKET_NAME/*"
-        }]
-      })
-    }
   }
-  ```
+}
+```
 
-  ```hcl APAC theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  resource "aws_iam_role" "langsmith_bulk_export" {
-    name                 = "langsmith-bulk-export"
-    max_session_duration = 43200
+```hcl APAC theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+resource "aws_iam_role" "langsmith_bulk_export" {
+  name                 = "langsmith-bulk-export"
+  max_session_duration = 43200
 
-    assume_role_policy = jsonencode({
+  assume_role_policy = jsonencode({
+    Version = "2012-10-17"
+    Statement = [{
+      Effect    = "Allow"
+      Principal = { Federated = "accounts.google.com" }
+      Action    = "sts:AssumeRoleWithWebIdentity"
+      Condition = {
+        StringEquals = {
+          "accounts.google.com:oaud" = "langsmith-bulk-export"
+          "accounts.google.com:sub" = [
+            "105923862603785245337",
+            "114288557158507552617",
+            "116622461022404604716",
+          ]
+        }
+      }
+    }]
+  })
+
+  inline_policy {
+    name = "langsmith-bulk-export-s3"
+    policy = jsonencode({
       Version = "2012-10-17"
       Statement = [{
-        Effect    = "Allow"
-        Principal = { Federated = "accounts.google.com" }
-        Action    = "sts:AssumeRoleWithWebIdentity"
-        Condition = {
-          StringEquals = {
-            "accounts.google.com:oaud" = "langsmith-bulk-export"
-            "accounts.google.com:sub" = [
-              "105923862603785245337",
-              "114288557158507552617",
-              "116622461022404604716",
-            ]
-          }
-        }
+        Effect   = "Allow"
+        Action   = "s3:PutObject"
+        Resource = "arn:aws:s3:::YOUR_BUCKET_NAME/*"
       }]
     })
-
-    inline_policy {
-      name = "langsmith-bulk-export-s3"
-      policy = jsonencode({
-        Version = "2012-10-17"
-        Statement = [{
-          Effect   = "Allow"
-          Action   = "s3:PutObject"
-          Resource = "arn:aws:s3:::YOUR_BUCKET_NAME/*"
-        }]
-      })
-    }
   }
-  ```
-</CodeGroup>
+}
+```
 
 See [AWS S3 permissions](#aws-s3-permissions) for optional permissions.
 
@@ -566,12 +566,6 @@ Here are some common errors:
 
 ***
 
-<div>
-  <Callout icon="terminal-2">
-    [Connect these docs](/use-these-docs) to your agent of choice via MCP for real-time answers.
-  </Callout>
+[Connect these docs](/use-these-docs) to your agent of choice via MCP for real-time answers.
 
-  <Callout icon="edit">
-    [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/data-export-destinations.mdx) or [file an issue](https://github.com/langchain-ai/docs/issues/new/choose).
-  </Callout>
-</div>
+[Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/data-export-destinations.mdx) or [file an issue](https://github.com/langchain-ai/docs/issues/new/choose).

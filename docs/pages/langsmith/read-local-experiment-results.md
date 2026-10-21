@@ -11,11 +11,11 @@ When running [evaluations](/langsmith/evaluation-concepts), you may want to proc
 
 This guide shows you how to iterate over and process [experiment](/langsmith/evaluation-concepts#experiment) results from the [`ExperimentResults`](https://reference.langchain.com/python/langsmith/schemas/ExperimentResults) object returned by [`Client.evaluate()`](https://reference.langchain.com/python/langsmith/client/Client/evaluate).
 
-<Note>
-  This page focuses on processing results programmatically while still uploading them to LangSmith.
-
-  If you want to run evaluations locally **without** recording anything to LangSmith (for quick testing or validation), refer to [Run an evaluation locally](/langsmith/local) which uses `upload_results=False`.
-</Note>
+> [!NOTE]
+>
+> This page focuses on processing results programmatically while still uploading them to LangSmith.
+>
+> If you want to run evaluations locally **without** recording anything to LangSmith (for quick testing or validation), refer to [Run an evaluation locally](/langsmith/local) which uses `upload_results=False`.
 
 ## Iterate over evaluation results
 
@@ -176,12 +176,6 @@ For more information on running evaluations without uploading results, refer to 
 
 ***
 
-<div>
-  <Callout icon="terminal-2">
-    [Connect these docs](/use-these-docs) to your agent of choice via MCP for real-time answers.
-  </Callout>
+[Connect these docs](/use-these-docs) to your agent of choice via MCP for real-time answers.
 
-  <Callout icon="edit">
-    [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/read-local-experiment-results.mdx) or [file an issue](https://github.com/langchain-ai/docs/issues/new/choose).
-  </Callout>
-</div>
+[Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/read-local-experiment-results.mdx) or [file an issue](https://github.com/langchain-ai/docs/issues/new/choose).

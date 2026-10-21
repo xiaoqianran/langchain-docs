@@ -25,15 +25,15 @@ This page explains how to:
 
 * [Update existing backends to v2](#update-existing-backends-to-v2)
 
-<Tip>
-  When you deploy on [LangSmith Deployment](/langsmith/deployment), a store is provisioned automatically. Use [LangSmith](/langsmith/observability) tracing to debug file paths, permission denials, and cross-thread storage. Follow the [observability quickstart](/langsmith/observability-quickstart) to get set up.
+> [!TIP]
+>
+> When you deploy on [LangSmith Deployment](/langsmith/deployment), a store is provisioned automatically. Use [LangSmith](/langsmith/observability) tracing to debug file paths, permission denials, and cross-thread storage. Follow the [observability quickstart](/langsmith/observability-quickstart) to get set up.
+>
+> We recommend you also set up [LangSmith Engine](/langsmith/engine), which monitors your traces, detects issues, and proposes fixes.
 
-  We recommend you also set up [LangSmith Engine](/langsmith/engine), which monitors your traces, detects issues, and proposes fixes.
-</Tip>
-
-<Tip>
-  To generate a durable repository wiki that agents can read through filesystem tools, see [OpenWiki](/oss/openwiki/overview).
-</Tip>
+> [!TIP]
+>
+> To generate a durable repository wiki that agents can read through filesystem tools, see [OpenWiki](/oss/openwiki/overview).
 
 ## Quickstart
 
@@ -41,12 +41,12 @@ Here are a few prebuilt filesystem backends that you can quickly use with your d
 
 | Built-in backend | Description |
 | - | - |
-| [Default](#statebackend) | `agent = create_deep_agent(model="google_genai:gemini-3.6-flash")` <br /> Thread-scoped. The default filesystem backend for an agent is stored in `langgraph` state. Files persist across turns within a thread (via your checkpointer) and are not shared across threads. |
-| [Local filesystem persistence](#filesystembackend-local-disk) | `agent = create_deep_agent(model="google_genai:gemini-3.6-flash", backend=FilesystemBackend(root_dir="/Users/nh/Desktop/"))` <br />This gives the deep agent access to your local machine's filesystem. You can specify the root directory that the agent has access to. Note that any provided `root_dir` must be an absolute path. Typically, wrap in a [CompositeBackend](#compositebackend-router) to keep internal agent data (offloaded tool results, conversation history) separate from your project files. |
-| [Durable store (LangGraph store)](#storebackend-langgraph-store) | `agent = create_deep_agent(model="google_genai:gemini-3.6-flash", backend=StoreBackend())` <br />This gives the agent access to long-term storage that is *persisted across threads*. This is great for storing longer term memories or instructions that are applicable to the agent over multiple executions. |
-| [Context Hub](#contexthubbackend) | `agent = create_deep_agent(model="google_genai:gemini-3.6-flash", backend=ContextHubBackend("my-agent"))` <br />Stores files durably in a LangSmith Hub repo, without provisioning a separate LangGraph store. |
-| [Sandbox](/oss/javascript/deepagents/sandboxes) | `agent = create_deep_agent(model="google_genai:gemini-3.6-flash", backend=sandbox)` <br />Execute code in isolated environments. Sandboxes provide filesystem tools plus the `execute` tool for running shell commands. Choose from LangSmith, AgentCore, Daytona, or other [sandbox integrations](/oss/javascript/integrations/sandboxes). |
-| [Local shell](#localshellbackend-local-shell) | `agent = create_deep_agent(model="google_genai:gemini-3.6-flash", backend=LocalShellBackend(root_dir=".", env={"PATH": "/usr/bin:/bin"}))` <br />Filesystem and shell execution directly on the host. No isolation—use only in controlled development environments. See [security considerations](#localshellbackend-local-shell) below. |
+| [Default](#statebackend) | `agent = create_deep_agent(model="google_genai:gemini-3.6-flash")`  Thread-scoped. The default filesystem backend for an agent is stored in `langgraph` state. Files persist across turns within a thread (via your checkpointer) and are not shared across threads. |
+| [Local filesystem persistence](#filesystembackend-local-disk) | `agent = create_deep_agent(model="google_genai:gemini-3.6-flash", backend=FilesystemBackend(root_dir="/Users/nh/Desktop/"))` This gives the deep agent access to your local machine's filesystem. You can specify the root directory that the agent has access to. Note that any provided `root_dir` must be an absolute path. Typically, wrap in a [CompositeBackend](#compositebackend-router) to keep internal agent data (offloaded tool results, conversation history) separate from your project files. |
+| [Durable store (LangGraph store)](#storebackend-langgraph-store) | `agent = create_deep_agent(model="google_genai:gemini-3.6-flash", backend=StoreBackend())` This gives the agent access to long-term storage that is *persisted across threads*. This is great for storing longer term memories or instructions that are applicable to the agent over multiple executions. |
+| [Context Hub](#contexthubbackend) | `agent = create_deep_agent(model="google_genai:gemini-3.6-flash", backend=ContextHubBackend("my-agent"))` Stores files durably in a LangSmith Hub repo, without provisioning a separate LangGraph store. |
+| [Sandbox](/oss/javascript/deepagents/sandboxes) | `agent = create_deep_agent(model="google_genai:gemini-3.6-flash", backend=sandbox)` Execute code in isolated environments. Sandboxes provide filesystem tools plus the `execute` tool for running shell commands. Choose from LangSmith, AgentCore, Daytona, or other [sandbox integrations](/oss/javascript/integrations/sandboxes). |
+| [Local shell](#localshellbackend-local-shell) | `agent = create_deep_agent(model="google_genai:gemini-3.6-flash", backend=LocalShellBackend(root_dir=".", env={"PATH": "/usr/bin:/bin"}))` Filesystem and shell execution directly on the host. No isolation—use only in controlled development environments. See [security considerations](#localshellbackend-local-shell) below. |
 | [Composite](#compositebackend-router) | Thread-scoped by default, `/memories/` persisted across threads. The Composite backend is maximally flexible. You can specify different routes in the filesystem to point towards different backends. See Composite routing below for a ready-to-paste example. |
 
 ```mermaid theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
@@ -103,9 +103,9 @@ const agent2 = createDeepAgent({
 * Stores files in LangGraph agent state for the current thread via [`StateBackend`](https://reference.langchain.com/javascript/deepagents/backends/StateBackend).
 * Persists across multiple agent turns on the same thread via checkpoints. Files are not shared across threads.
 
-<Warning>
-  Designed to be used from within a graph. Calling backend methods (e.g., `state_backend.upload_files(...)`) outside of a graph run won't take effect until the graph executes.
-</Warning>
+> [!WARNING]
+>
+> Designed to be used from within a graph. Calling backend methods (e.g., `state_backend.upload_files(...)`) outside of a graph run won't take effect until the graph executes.
 
 **Best for:**
 
@@ -119,99 +119,97 @@ even after that subagent's execution is complete. Those files will continue to b
 
 [`FilesystemBackend`](https://reference.langchain.com/javascript/deepagents/backends/FilesystemBackend) reads and writes real files under a configurable root directory.
 
-<Warning>
-  This backend grants agents direct filesystem read/write access.
-  Use with caution and only in appropriate environments.
+> [!WARNING]
+>
+> This backend grants agents direct filesystem read/write access.
+> Use with caution and only in appropriate environments.
+>
+> **Appropriate use cases:**
+>
+> * Local development CLIs (coding assistants, development tools)
+> * CI/CD pipelines (see security considerations below)
+>
+> **Inappropriate use cases:**
+>
+> * Web servers or HTTP APIs - use `StateBackend`, `StoreBackend`, or a [sandbox backend](/oss/javascript/deepagents/sandboxes) instead
+>
+> **Security risks:**
+>
+> * Agents can read any accessible file, including secrets (API keys, credentials, `.env` files)
+> * Combined with network tools, secrets may be exfiltrated via SSRF attacks
+> * File modifications are permanent and irreversible
+>
+> **Recommended safeguards:**
+>
+> 1. Enable [Human-in-the-Loop (HITL) middleware](/oss/javascript/deepagents/human-in-the-loop) to review sensitive operations.
+> 2. Exclude secrets from accessible filesystem paths (especially in CI/CD).
+> 3. Use a [sandbox backend](/oss/javascript/deepagents/sandboxes) for production environments requiring filesystem interaction.
+> 4. **Always** use `virtual_mode=True` with `root_dir` to enable path-based access restrictions (blocks `..`, `~`, and absolute paths outside root).
+>
+>    Note that the default (`virtual_mode=False`) provides no security even with `root_dir` set.
 
-  **Appropriate use cases:**
+```ts Google theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+import { createDeepAgent, FilesystemBackend } from "deepagents";
 
-  * Local development CLIs (coding assistants, development tools)
-  * CI/CD pipelines (see security considerations below)
+const agent = createDeepAgent({
+  model: "google:gemini-3.6-flash",
+  backend: new FilesystemBackend({ rootDir: ".", virtualMode: true }),
+});
+```
 
-  **Inappropriate use cases:**
+```ts OpenAI theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+import { createDeepAgent, FilesystemBackend } from "deepagents";
 
-  * Web servers or HTTP APIs - use `StateBackend`, `StoreBackend`, or a [sandbox backend](/oss/javascript/deepagents/sandboxes) instead
+const agent = createDeepAgent({
+  model: "openai:gpt-5.5",
+  backend: new FilesystemBackend({ rootDir: ".", virtualMode: true }),
+});
+```
 
-  **Security risks:**
+```ts Anthropic theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+import { createDeepAgent, FilesystemBackend } from "deepagents";
 
-  * Agents can read any accessible file, including secrets (API keys, credentials, `.env` files)
-  * Combined with network tools, secrets may be exfiltrated via SSRF attacks
-  * File modifications are permanent and irreversible
+const agent = createDeepAgent({
+  model: "anthropic:claude-sonnet-5",
+  backend: new FilesystemBackend({ rootDir: ".", virtualMode: true }),
+});
+```
 
-  **Recommended safeguards:**
+```ts OpenRouter theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+import { createDeepAgent, FilesystemBackend } from "deepagents";
 
-  1. Enable [Human-in-the-Loop (HITL) middleware](/oss/javascript/deepagents/human-in-the-loop) to review sensitive operations.
-  2. Exclude secrets from accessible filesystem paths (especially in CI/CD).
-  3. Use a [sandbox backend](/oss/javascript/deepagents/sandboxes) for production environments requiring filesystem interaction.
-  4. **Always** use `virtual_mode=True` with `root_dir` to enable path-based access restrictions (blocks `..`, `~`, and absolute paths outside root).
+const agent = createDeepAgent({
+  model: "openrouter:z-ai/glm-5.2",
+  backend: new FilesystemBackend({ rootDir: ".", virtualMode: true }),
+});
+```
 
-     Note that the default (`virtual_mode=False`) provides no security even with `root_dir` set.
-</Warning>
+```ts Fireworks theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+import { createDeepAgent, FilesystemBackend } from "deepagents";
 
-<CodeGroup>
-  ```ts Google theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  import { createDeepAgent, FilesystemBackend } from "deepagents";
+const agent = createDeepAgent({
+  model: "fireworks:accounts/fireworks/models/glm-5p2",
+  backend: new FilesystemBackend({ rootDir: ".", virtualMode: true }),
+});
+```
 
-  const agent = createDeepAgent({
-    model: "google:gemini-3.6-flash",
-    backend: new FilesystemBackend({ rootDir: ".", virtualMode: true }),
-  });
-  ```
+```ts Baseten theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+import { createDeepAgent, FilesystemBackend } from "deepagents";
 
-  ```ts OpenAI theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  import { createDeepAgent, FilesystemBackend } from "deepagents";
+const agent = createDeepAgent({
+  model: "baseten:zai-org/GLM-5.2",
+  backend: new FilesystemBackend({ rootDir: ".", virtualMode: true }),
+});
+```
 
-  const agent = createDeepAgent({
-    model: "openai:gpt-5.5",
-    backend: new FilesystemBackend({ rootDir: ".", virtualMode: true }),
-  });
-  ```
+```ts Ollama theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+import { createDeepAgent, FilesystemBackend } from "deepagents";
 
-  ```ts Anthropic theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  import { createDeepAgent, FilesystemBackend } from "deepagents";
-
-  const agent = createDeepAgent({
-    model: "anthropic:claude-sonnet-5",
-    backend: new FilesystemBackend({ rootDir: ".", virtualMode: true }),
-  });
-  ```
-
-  ```ts OpenRouter theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  import { createDeepAgent, FilesystemBackend } from "deepagents";
-
-  const agent = createDeepAgent({
-    model: "openrouter:z-ai/glm-5.2",
-    backend: new FilesystemBackend({ rootDir: ".", virtualMode: true }),
-  });
-  ```
-
-  ```ts Fireworks theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  import { createDeepAgent, FilesystemBackend } from "deepagents";
-
-  const agent = createDeepAgent({
-    model: "fireworks:accounts/fireworks/models/glm-5p2",
-    backend: new FilesystemBackend({ rootDir: ".", virtualMode: true }),
-  });
-  ```
-
-  ```ts Baseten theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  import { createDeepAgent, FilesystemBackend } from "deepagents";
-
-  const agent = createDeepAgent({
-    model: "baseten:zai-org/GLM-5.2",
-    backend: new FilesystemBackend({ rootDir: ".", virtualMode: true }),
-  });
-  ```
-
-  ```ts Ollama theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  import { createDeepAgent, FilesystemBackend } from "deepagents";
-
-  const agent = createDeepAgent({
-    model: "ollama:north-mini-code-1.0",
-    backend: new FilesystemBackend({ rootDir: ".", virtualMode: true }),
-  });
-  ```
-</CodeGroup>
+const agent = createDeepAgent({
+  model: "ollama:north-mini-code-1.0",
+  backend: new FilesystemBackend({ rootDir: ".", virtualMode: true }),
+});
+```
 
 **How it works:**
 
@@ -227,140 +225,138 @@ even after that subagent's execution is complete. Those files will continue to b
 
 For a durable repository wiki that agents can read with these filesystem tools (from `openwiki/`), see [OpenWiki](/oss/openwiki/overview).
 
-<Tip>
-  **Wrap `FilesystemBackend` in a `CompositeBackend`** for most use cases. Deep Agents automatically write internal data to the backend, including offloaded large tool results (under `/large_tool_results/`) and conversation history (under `/conversation_history/`). When you use `FilesystemBackend` alone, these internal files are written to real disk under `root_dir`, mixing agent artifacts with your project files.
-
-  Use a `CompositeBackend` to route your project directory to `FilesystemBackend` while keeping internal paths in ephemeral `StateBackend` storage:
-
-  ```typescript theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  import { createDeepAgent, CompositeBackend, FilesystemBackend, StateBackend } from "deepagents";
-
-  const agent = createDeepAgent({
-    backend: new CompositeBackend(
-      new StateBackend(),
-      {
-        "/workspace/": new FilesystemBackend({ rootDir: "/path/to/project", virtualMode: true }),
-      },
-    ),
-  });
-  ```
-
-  This way, agent reads and writes under `/workspace/` go to real disk, while offloaded tool results and other internal data stay in ephemeral state. See [Route to different backends](#route-to-different-backends) for more routing patterns.
-</Tip>
+> [!TIP]
+>
+> **Wrap `FilesystemBackend` in a `CompositeBackend`** for most use cases. Deep Agents automatically write internal data to the backend, including offloaded large tool results (under `/large_tool_results/`) and conversation history (under `/conversation_history/`). When you use `FilesystemBackend` alone, these internal files are written to real disk under `root_dir`, mixing agent artifacts with your project files.
+>
+> Use a `CompositeBackend` to route your project directory to `FilesystemBackend` while keeping internal paths in ephemeral `StateBackend` storage:
+>
+> ```typescript theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> import { createDeepAgent, CompositeBackend, FilesystemBackend, StateBackend } from "deepagents";
+>
+> const agent = createDeepAgent({
+>   backend: new CompositeBackend(
+>     new StateBackend(),
+>     {
+>       "/workspace/": new FilesystemBackend({ rootDir: "/path/to/project", virtualMode: true }),
+>     },
+>   ),
+> });
+> ```
+>
+> This way, agent reads and writes under `/workspace/` go to real disk, while offloaded tool results and other internal data stay in ephemeral state. See [Route to different backends](#route-to-different-backends) for more routing patterns.
 
 ### LocalShellBackend (local shell)
 
-<Warning>
-  This backend grants agents direct filesystem read/write access **and** unrestricted shell execution on your host.
-  Use with extreme caution and only in appropriate environments.
+> [!WARNING]
+>
+> This backend grants agents direct filesystem read/write access **and** unrestricted shell execution on your host.
+> Use with extreme caution and only in appropriate environments.
+>
+> **Appropriate use cases:**
+>
+> * Local development CLIs (coding assistants, development tools)
+> * Personal development environments where you trust the agent's code
+> * CI/CD pipelines with proper secret management
+>
+> **Inappropriate use cases:**
+>
+> * Production environments (such as web servers, APIs, multi-tenant systems)
+> * Processing untrusted user input or executing untrusted code
+>
+> **Security risks:**
+>
+> * Agents can execute **arbitrary shell commands** with your user's permissions
+> * Agents can read any accessible file, including secrets (API keys, credentials, `.env` files)
+> * Secrets may be exposed
+> * File modifications and command execution are **permanent and irreversible**
+> * Commands run directly on your host system
+> * Commands can consume unlimited CPU, memory, disk
+>
+> **Recommended safeguards:**
+>
+> 1. Enable [Human-in-the-Loop (HITL) middleware](/oss/javascript/deepagents/human-in-the-loop) to review and approve operations before execution. This is **strongly recommended**.
+> 2. Run in dedicated development environments only. Never use on shared or production systems.
+> 3. Use a [sandbox backend](/oss/javascript/deepagents/sandboxes) for production environments requiring shell execution.
+>
+> **Note:** `virtual_mode=True` provides no security with shell access enabled, since commands can access any path on the system.
 
-  **Appropriate use cases:**
+```ts Google theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+import { createDeepAgent, LocalShellBackend } from "deepagents";
 
-  * Local development CLIs (coding assistants, development tools)
-  * Personal development environments where you trust the agent's code
-  * CI/CD pipelines with proper secret management
+const backend = new LocalShellBackend({ workingDirectory: "." });
 
-  **Inappropriate use cases:**
+const agent = createDeepAgent({
+  model: "google:gemini-3.6-flash",
+  backend,
+});
+```
 
-  * Production environments (such as web servers, APIs, multi-tenant systems)
-  * Processing untrusted user input or executing untrusted code
+```ts OpenAI theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+import { createDeepAgent, LocalShellBackend } from "deepagents";
 
-  **Security risks:**
+const backend = new LocalShellBackend({ workingDirectory: "." });
 
-  * Agents can execute **arbitrary shell commands** with your user's permissions
-  * Agents can read any accessible file, including secrets (API keys, credentials, `.env` files)
-  * Secrets may be exposed
-  * File modifications and command execution are **permanent and irreversible**
-  * Commands run directly on your host system
-  * Commands can consume unlimited CPU, memory, disk
+const agent = createDeepAgent({
+  model: "openai:gpt-5.5",
+  backend,
+});
+```
 
-  **Recommended safeguards:**
+```ts Anthropic theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+import { createDeepAgent, LocalShellBackend } from "deepagents";
 
-  1. Enable [Human-in-the-Loop (HITL) middleware](/oss/javascript/deepagents/human-in-the-loop) to review and approve operations before execution. This is **strongly recommended**.
-  2. Run in dedicated development environments only. Never use on shared or production systems.
-  3. Use a [sandbox backend](/oss/javascript/deepagents/sandboxes) for production environments requiring shell execution.
+const backend = new LocalShellBackend({ workingDirectory: "." });
 
-  **Note:** `virtual_mode=True` provides no security with shell access enabled, since commands can access any path on the system.
-</Warning>
+const agent = createDeepAgent({
+  model: "anthropic:claude-sonnet-5",
+  backend,
+});
+```
 
-<CodeGroup>
-  ```ts Google theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  import { createDeepAgent, LocalShellBackend } from "deepagents";
+```ts OpenRouter theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+import { createDeepAgent, LocalShellBackend } from "deepagents";
 
-  const backend = new LocalShellBackend({ workingDirectory: "." });
+const backend = new LocalShellBackend({ workingDirectory: "." });
 
-  const agent = createDeepAgent({
-    model: "google:gemini-3.6-flash",
-    backend,
-  });
-  ```
+const agent = createDeepAgent({
+  model: "openrouter:z-ai/glm-5.2",
+  backend,
+});
+```
 
-  ```ts OpenAI theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  import { createDeepAgent, LocalShellBackend } from "deepagents";
+```ts Fireworks theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+import { createDeepAgent, LocalShellBackend } from "deepagents";
 
-  const backend = new LocalShellBackend({ workingDirectory: "." });
+const backend = new LocalShellBackend({ workingDirectory: "." });
 
-  const agent = createDeepAgent({
-    model: "openai:gpt-5.5",
-    backend,
-  });
-  ```
+const agent = createDeepAgent({
+  model: "fireworks:accounts/fireworks/models/glm-5p2",
+  backend,
+});
+```
 
-  ```ts Anthropic theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  import { createDeepAgent, LocalShellBackend } from "deepagents";
+```ts Baseten theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+import { createDeepAgent, LocalShellBackend } from "deepagents";
 
-  const backend = new LocalShellBackend({ workingDirectory: "." });
+const backend = new LocalShellBackend({ workingDirectory: "." });
 
-  const agent = createDeepAgent({
-    model: "anthropic:claude-sonnet-5",
-    backend,
-  });
-  ```
+const agent = createDeepAgent({
+  model: "baseten:zai-org/GLM-5.2",
+  backend,
+});
+```
 
-  ```ts OpenRouter theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  import { createDeepAgent, LocalShellBackend } from "deepagents";
+```ts Ollama theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+import { createDeepAgent, LocalShellBackend } from "deepagents";
 
-  const backend = new LocalShellBackend({ workingDirectory: "." });
+const backend = new LocalShellBackend({ workingDirectory: "." });
 
-  const agent = createDeepAgent({
-    model: "openrouter:z-ai/glm-5.2",
-    backend,
-  });
-  ```
-
-  ```ts Fireworks theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  import { createDeepAgent, LocalShellBackend } from "deepagents";
-
-  const backend = new LocalShellBackend({ workingDirectory: "." });
-
-  const agent = createDeepAgent({
-    model: "fireworks:accounts/fireworks/models/glm-5p2",
-    backend,
-  });
-  ```
-
-  ```ts Baseten theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  import { createDeepAgent, LocalShellBackend } from "deepagents";
-
-  const backend = new LocalShellBackend({ workingDirectory: "." });
-
-  const agent = createDeepAgent({
-    model: "baseten:zai-org/GLM-5.2",
-    backend,
-  });
-  ```
-
-  ```ts Ollama theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  import { createDeepAgent, LocalShellBackend } from "deepagents";
-
-  const backend = new LocalShellBackend({ workingDirectory: "." });
-
-  const agent = createDeepAgent({
-    model: "ollama:north-mini-code-1.0",
-    backend,
-  });
-  ```
-</CodeGroup>
+const agent = createDeepAgent({
+  model: "ollama:north-mini-code-1.0",
+  backend,
+});
+```
 
 **How it works:**
 
@@ -376,120 +372,118 @@ For a durable repository wiki that agents can read with these filesystem tools (
 
 ### StoreBackend (LangGraph store)
 
-<CodeGroup>
-  ```ts Google theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  import { createDeepAgent, StoreBackend } from "deepagents";
-  import { InMemoryStore } from "@langchain/langgraph";
+```ts Google theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+import { createDeepAgent, StoreBackend } from "deepagents";
+import { InMemoryStore } from "@langchain/langgraph";
 
-  const store = new InMemoryStore(); // Good for local dev; omit for LangSmith Deployment
+const store = new InMemoryStore(); // Good for local dev; omit for LangSmith Deployment
 
-  const agent = createDeepAgent({
-    model: "google:gemini-3.6-flash",
-    backend: new StoreBackend({
-      namespace: (rt) => [rt.serverInfo.user.identity],
-    }),
-    store,
-  });
-  ```
+const agent = createDeepAgent({
+  model: "google:gemini-3.6-flash",
+  backend: new StoreBackend({
+    namespace: (rt) => [rt.serverInfo.user.identity],
+  }),
+  store,
+});
+```
 
-  ```ts OpenAI theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  import { createDeepAgent, StoreBackend } from "deepagents";
-  import { InMemoryStore } from "@langchain/langgraph";
+```ts OpenAI theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+import { createDeepAgent, StoreBackend } from "deepagents";
+import { InMemoryStore } from "@langchain/langgraph";
 
-  const store = new InMemoryStore(); // Good for local dev; omit for LangSmith Deployment
+const store = new InMemoryStore(); // Good for local dev; omit for LangSmith Deployment
 
-  const agent = createDeepAgent({
-    model: "openai:gpt-5.5",
-    backend: new StoreBackend({
-      namespace: (rt) => [rt.serverInfo.user.identity],
-    }),
-    store,
-  });
-  ```
+const agent = createDeepAgent({
+  model: "openai:gpt-5.5",
+  backend: new StoreBackend({
+    namespace: (rt) => [rt.serverInfo.user.identity],
+  }),
+  store,
+});
+```
 
-  ```ts Anthropic theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  import { createDeepAgent, StoreBackend } from "deepagents";
-  import { InMemoryStore } from "@langchain/langgraph";
+```ts Anthropic theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+import { createDeepAgent, StoreBackend } from "deepagents";
+import { InMemoryStore } from "@langchain/langgraph";
 
-  const store = new InMemoryStore(); // Good for local dev; omit for LangSmith Deployment
+const store = new InMemoryStore(); // Good for local dev; omit for LangSmith Deployment
 
-  const agent = createDeepAgent({
-    model: "anthropic:claude-sonnet-5",
-    backend: new StoreBackend({
-      namespace: (rt) => [rt.serverInfo.user.identity],
-    }),
-    store,
-  });
-  ```
+const agent = createDeepAgent({
+  model: "anthropic:claude-sonnet-5",
+  backend: new StoreBackend({
+    namespace: (rt) => [rt.serverInfo.user.identity],
+  }),
+  store,
+});
+```
 
-  ```ts OpenRouter theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  import { createDeepAgent, StoreBackend } from "deepagents";
-  import { InMemoryStore } from "@langchain/langgraph";
+```ts OpenRouter theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+import { createDeepAgent, StoreBackend } from "deepagents";
+import { InMemoryStore } from "@langchain/langgraph";
 
-  const store = new InMemoryStore(); // Good for local dev; omit for LangSmith Deployment
+const store = new InMemoryStore(); // Good for local dev; omit for LangSmith Deployment
 
-  const agent = createDeepAgent({
-    model: "openrouter:z-ai/glm-5.2",
-    backend: new StoreBackend({
-      namespace: (rt) => [rt.serverInfo.user.identity],
-    }),
-    store,
-  });
-  ```
+const agent = createDeepAgent({
+  model: "openrouter:z-ai/glm-5.2",
+  backend: new StoreBackend({
+    namespace: (rt) => [rt.serverInfo.user.identity],
+  }),
+  store,
+});
+```
 
-  ```ts Fireworks theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  import { createDeepAgent, StoreBackend } from "deepagents";
-  import { InMemoryStore } from "@langchain/langgraph";
+```ts Fireworks theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+import { createDeepAgent, StoreBackend } from "deepagents";
+import { InMemoryStore } from "@langchain/langgraph";
 
-  const store = new InMemoryStore(); // Good for local dev; omit for LangSmith Deployment
+const store = new InMemoryStore(); // Good for local dev; omit for LangSmith Deployment
 
-  const agent = createDeepAgent({
-    model: "fireworks:accounts/fireworks/models/glm-5p2",
-    backend: new StoreBackend({
-      namespace: (rt) => [rt.serverInfo.user.identity],
-    }),
-    store,
-  });
-  ```
+const agent = createDeepAgent({
+  model: "fireworks:accounts/fireworks/models/glm-5p2",
+  backend: new StoreBackend({
+    namespace: (rt) => [rt.serverInfo.user.identity],
+  }),
+  store,
+});
+```
 
-  ```ts Baseten theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  import { createDeepAgent, StoreBackend } from "deepagents";
-  import { InMemoryStore } from "@langchain/langgraph";
+```ts Baseten theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+import { createDeepAgent, StoreBackend } from "deepagents";
+import { InMemoryStore } from "@langchain/langgraph";
 
-  const store = new InMemoryStore(); // Good for local dev; omit for LangSmith Deployment
+const store = new InMemoryStore(); // Good for local dev; omit for LangSmith Deployment
 
-  const agent = createDeepAgent({
-    model: "baseten:zai-org/GLM-5.2",
-    backend: new StoreBackend({
-      namespace: (rt) => [rt.serverInfo.user.identity],
-    }),
-    store,
-  });
-  ```
+const agent = createDeepAgent({
+  model: "baseten:zai-org/GLM-5.2",
+  backend: new StoreBackend({
+    namespace: (rt) => [rt.serverInfo.user.identity],
+  }),
+  store,
+});
+```
 
-  ```ts Ollama theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  import { createDeepAgent, StoreBackend } from "deepagents";
-  import { InMemoryStore } from "@langchain/langgraph";
+```ts Ollama theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+import { createDeepAgent, StoreBackend } from "deepagents";
+import { InMemoryStore } from "@langchain/langgraph";
 
-  const store = new InMemoryStore(); // Good for local dev; omit for LangSmith Deployment
+const store = new InMemoryStore(); // Good for local dev; omit for LangSmith Deployment
 
-  const agent = createDeepAgent({
-    model: "ollama:north-mini-code-1.0",
-    backend: new StoreBackend({
-      namespace: (rt) => [rt.serverInfo.user.identity],
-    }),
-    store,
-  });
-  ```
-</CodeGroup>
+const agent = createDeepAgent({
+  model: "ollama:north-mini-code-1.0",
+  backend: new StoreBackend({
+    namespace: (rt) => [rt.serverInfo.user.identity],
+  }),
+  store,
+});
+```
 
-<Note>
-  When deploying to [LangSmith Deployment](/langsmith/deployment), omit the `store` parameter. The platform automatically provisions a store for your agent.
-</Note>
+> [!NOTE]
+>
+> When deploying to [LangSmith Deployment](/langsmith/deployment), omit the `store` parameter. The platform automatically provisions a store for your agent.
 
-<Tip>
-  The `namespace` parameter controls data isolation. For multi-user deployments, always set a [namespace factory](/oss/javascript/deepagents/backends#namespace-factories) to isolate data per user or tenant.
-</Tip>
+> [!TIP]
+>
+> The `namespace` parameter controls data isolation. For multi-user deployments, always set a [namespace factory](/oss/javascript/deepagents/backends#namespace-factories) to isolate data per user or tenant.
 
 **How it works:**
 
@@ -518,9 +512,9 @@ The `Runtime` provides:
 
 * `rt.executionInfo`—Execution identity information (thread ID, run ID, checkpoint ID)
 
-<Note>
-  The `Runtime` argument is available in `deepagents>=1.9.1`. Earlier 1.9.x releases passed a `BackendContext` instead—see [migrating from `BackendContext`](#migrating-from-backendcontext) below. `rt.serverInfo` and `rt.executionInfo` require `deepagents>=1.9.0`.
-</Note>
+> [!NOTE]
+>
+> The `Runtime` argument is available in `deepagents>=1.9.1`. Earlier 1.9.x releases passed a `BackendContext` instead—see [migrating from `BackendContext`](#migrating-from-backendcontext) below. `rt.serverInfo` and `rt.executionInfo` require `deepagents>=1.9.0`.
 
 **Common namespace patterns:**
 
@@ -547,19 +541,19 @@ You can combine multiple components to create more specific scopes—for example
 
 Namespace components must contain only alphanumeric characters, hyphens, underscores, dots, `@`, `+`, colons, and tildes. Wildcards (`*`, `?`) are rejected to prevent glob injection.
 
-<Warning>
-  The `namespace` parameter will be **required** in v1.9.0. Always set it explicitly for new code.
-</Warning>
+> [!WARNING]
+>
+> The `namespace` parameter will be **required** in v1.9.0. Always set it explicitly for new code.
 
-<Note>
-  When no namespace factory is provided, the legacy default uses the `assistant_id` from LangGraph config metadata. This means all users of the same [assistant](/langsmith/assistants) share the same storage. For multi-user [going to production](/oss/javascript/deepagents/going-to-production), always provide a namespace factory.
-</Note>
+> [!NOTE]
+>
+> When no namespace factory is provided, the legacy default uses the `assistant_id` from LangGraph config metadata. This means all users of the same [assistant](/langsmith/assistants) share the same storage. For multi-user [going to production](/oss/javascript/deepagents/going-to-production), always provide a namespace factory.
 
 ### ContextHubBackend
 
-<Note>
-  **Before you begin:** `ContextHubBackend` requires a Context Hub repo set up in LangSmith. Read the [Context Hub concepts](/langsmith/context-engineering-concepts) page first if you're unfamiliar with agent repos and skill repos.
-</Note>
+> [!NOTE]
+>
+> **Before you begin:** `ContextHubBackend` requires a Context Hub repo set up in LangSmith. Read the [Context Hub concepts](/langsmith/context-engineering-concepts) page first if you're unfamiliar with agent repos and skill repos.
 
 `ContextHubBackend` stores your agent's filesystem in a LangSmith Context Hub repo. It can use a standalone repo or an agent repo that links out to skill repos.
 
@@ -569,9 +563,9 @@ This means your agent's context is intentionally spread across repos: one repo p
 
 Construct it with a repo identifier in `owner/name` or `name` format.
 
-<Note>
-  Set `LANGSMITH_API_KEY` before using `ContextHubBackend`.
-</Note>
+> [!NOTE]
+>
+> Set `LANGSMITH_API_KEY` before using `ContextHubBackend`.
 
 **How it works:**
 
@@ -592,161 +586,159 @@ Construct it with a repo identifier in `owner/name` or `name` format.
 
 ### CompositeBackend (router)
 
-<CodeGroup>
-  ```ts Google theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  import {
-    createDeepAgent,
-    CompositeBackend,
-    StateBackend,
-    StoreBackend,
-  } from "deepagents";
-  import { InMemoryStore } from "@langchain/langgraph";
+```ts Google theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+import {
+  createDeepAgent,
+  CompositeBackend,
+  StateBackend,
+  StoreBackend,
+} from "deepagents";
+import { InMemoryStore } from "@langchain/langgraph";
 
-  const store = new InMemoryStore();
+const store = new InMemoryStore();
 
-  const agent = createDeepAgent({
-    model: "google:gemini-3.6-flash",
-    backend: new CompositeBackend(new StateBackend(), {
-      "/memories/": new StoreBackend({
-        namespace: () => ["memories"],
-      }),
+const agent = createDeepAgent({
+  model: "google:gemini-3.6-flash",
+  backend: new CompositeBackend(new StateBackend(), {
+    "/memories/": new StoreBackend({
+      namespace: () => ["memories"],
     }),
-    store,
-  });
-  ```
+  }),
+  store,
+});
+```
 
-  ```ts OpenAI theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  import {
-    createDeepAgent,
-    CompositeBackend,
-    StateBackend,
-    StoreBackend,
-  } from "deepagents";
-  import { InMemoryStore } from "@langchain/langgraph";
+```ts OpenAI theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+import {
+  createDeepAgent,
+  CompositeBackend,
+  StateBackend,
+  StoreBackend,
+} from "deepagents";
+import { InMemoryStore } from "@langchain/langgraph";
 
-  const store = new InMemoryStore();
+const store = new InMemoryStore();
 
-  const agent = createDeepAgent({
-    model: "openai:gpt-5.5",
-    backend: new CompositeBackend(new StateBackend(), {
-      "/memories/": new StoreBackend({
-        namespace: () => ["memories"],
-      }),
+const agent = createDeepAgent({
+  model: "openai:gpt-5.5",
+  backend: new CompositeBackend(new StateBackend(), {
+    "/memories/": new StoreBackend({
+      namespace: () => ["memories"],
     }),
-    store,
-  });
-  ```
+  }),
+  store,
+});
+```
 
-  ```ts Anthropic theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  import {
-    createDeepAgent,
-    CompositeBackend,
-    StateBackend,
-    StoreBackend,
-  } from "deepagents";
-  import { InMemoryStore } from "@langchain/langgraph";
+```ts Anthropic theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+import {
+  createDeepAgent,
+  CompositeBackend,
+  StateBackend,
+  StoreBackend,
+} from "deepagents";
+import { InMemoryStore } from "@langchain/langgraph";
 
-  const store = new InMemoryStore();
+const store = new InMemoryStore();
 
-  const agent = createDeepAgent({
-    model: "anthropic:claude-sonnet-5",
-    backend: new CompositeBackend(new StateBackend(), {
-      "/memories/": new StoreBackend({
-        namespace: () => ["memories"],
-      }),
+const agent = createDeepAgent({
+  model: "anthropic:claude-sonnet-5",
+  backend: new CompositeBackend(new StateBackend(), {
+    "/memories/": new StoreBackend({
+      namespace: () => ["memories"],
     }),
-    store,
-  });
-  ```
+  }),
+  store,
+});
+```
 
-  ```ts OpenRouter theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  import {
-    createDeepAgent,
-    CompositeBackend,
-    StateBackend,
-    StoreBackend,
-  } from "deepagents";
-  import { InMemoryStore } from "@langchain/langgraph";
+```ts OpenRouter theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+import {
+  createDeepAgent,
+  CompositeBackend,
+  StateBackend,
+  StoreBackend,
+} from "deepagents";
+import { InMemoryStore } from "@langchain/langgraph";
 
-  const store = new InMemoryStore();
+const store = new InMemoryStore();
 
-  const agent = createDeepAgent({
-    model: "openrouter:z-ai/glm-5.2",
-    backend: new CompositeBackend(new StateBackend(), {
-      "/memories/": new StoreBackend({
-        namespace: () => ["memories"],
-      }),
+const agent = createDeepAgent({
+  model: "openrouter:z-ai/glm-5.2",
+  backend: new CompositeBackend(new StateBackend(), {
+    "/memories/": new StoreBackend({
+      namespace: () => ["memories"],
     }),
-    store,
-  });
-  ```
+  }),
+  store,
+});
+```
 
-  ```ts Fireworks theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  import {
-    createDeepAgent,
-    CompositeBackend,
-    StateBackend,
-    StoreBackend,
-  } from "deepagents";
-  import { InMemoryStore } from "@langchain/langgraph";
+```ts Fireworks theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+import {
+  createDeepAgent,
+  CompositeBackend,
+  StateBackend,
+  StoreBackend,
+} from "deepagents";
+import { InMemoryStore } from "@langchain/langgraph";
 
-  const store = new InMemoryStore();
+const store = new InMemoryStore();
 
-  const agent = createDeepAgent({
-    model: "fireworks:accounts/fireworks/models/glm-5p2",
-    backend: new CompositeBackend(new StateBackend(), {
-      "/memories/": new StoreBackend({
-        namespace: () => ["memories"],
-      }),
+const agent = createDeepAgent({
+  model: "fireworks:accounts/fireworks/models/glm-5p2",
+  backend: new CompositeBackend(new StateBackend(), {
+    "/memories/": new StoreBackend({
+      namespace: () => ["memories"],
     }),
-    store,
-  });
-  ```
+  }),
+  store,
+});
+```
 
-  ```ts Baseten theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  import {
-    createDeepAgent,
-    CompositeBackend,
-    StateBackend,
-    StoreBackend,
-  } from "deepagents";
-  import { InMemoryStore } from "@langchain/langgraph";
+```ts Baseten theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+import {
+  createDeepAgent,
+  CompositeBackend,
+  StateBackend,
+  StoreBackend,
+} from "deepagents";
+import { InMemoryStore } from "@langchain/langgraph";
 
-  const store = new InMemoryStore();
+const store = new InMemoryStore();
 
-  const agent = createDeepAgent({
-    model: "baseten:zai-org/GLM-5.2",
-    backend: new CompositeBackend(new StateBackend(), {
-      "/memories/": new StoreBackend({
-        namespace: () => ["memories"],
-      }),
+const agent = createDeepAgent({
+  model: "baseten:zai-org/GLM-5.2",
+  backend: new CompositeBackend(new StateBackend(), {
+    "/memories/": new StoreBackend({
+      namespace: () => ["memories"],
     }),
-    store,
-  });
-  ```
+  }),
+  store,
+});
+```
 
-  ```ts Ollama theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  import {
-    createDeepAgent,
-    CompositeBackend,
-    StateBackend,
-    StoreBackend,
-  } from "deepagents";
-  import { InMemoryStore } from "@langchain/langgraph";
+```ts Ollama theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+import {
+  createDeepAgent,
+  CompositeBackend,
+  StateBackend,
+  StoreBackend,
+} from "deepagents";
+import { InMemoryStore } from "@langchain/langgraph";
 
-  const store = new InMemoryStore();
+const store = new InMemoryStore();
 
-  const agent = createDeepAgent({
-    model: "ollama:north-mini-code-1.0",
-    backend: new CompositeBackend(new StateBackend(), {
-      "/memories/": new StoreBackend({
-        namespace: () => ["memories"],
-      }),
+const agent = createDeepAgent({
+  model: "ollama:north-mini-code-1.0",
+  backend: new CompositeBackend(new StateBackend(), {
+    "/memories/": new StoreBackend({
+      namespace: () => ["memories"],
     }),
-    store,
-  });
-  ```
-</CodeGroup>
+  }),
+  store,
+});
+```
 
 **How it works:**
 
@@ -765,9 +757,9 @@ Construct it with a repo identifier in `owner/name` or `name` format.
 * The backend must implement `AnyBackendProtocol` (`BackendProtocolV1` or `BackendProtocolV2`)—for example, `new StateBackend()`, `new FilesystemBackend({ rootDir: "." })`, `new StoreBackend()`.
 * If omitted, the default is `new StateBackend()`.
 
-<Note>
-  Before version 1.9.0, only `BackendProtocol` was supported which is now `BackendProtocolV1`. V1 backends are automatically adapted to V2 at runtime via `adaptBackendProtocol()`. No code changes are required to keep using existing V1 backends. To update to v2, see [update existing backends to v2](#update-existing-backends-to-v2).
-</Note>
+> [!NOTE]
+>
+> Before version 1.9.0, only `BackendProtocol` was supported which is now `BackendProtocolV1`. V1 backends are automatically adapted to V2 at runtime via `adaptBackendProtocol()`. No code changes are required to keep using existing V1 backends. To update to v2, see [update existing backends to v2](#update-existing-backends-to-v2).
 
 ## Route to different backends
 
@@ -810,9 +802,9 @@ Message history keeps content-addressed references. Before each model call, the 
 
 Use a backend that stores blobs outside graph state, such as a sandbox or `FilesystemBackend`. Offloading has no effect when the blob path routes to `StateBackend`, including through `CompositeBackend`. If you keep `StateBackend` as the default backend, route the blob directory to external storage.
 
-<Note>
-  Inline media in user messages is replaced at the next model call. The original input payload still appears in earlier checkpoints. Keep the blob storage available when resuming a thread so the middleware can restore its media.
-</Note>
+> [!NOTE]
+>
+> Inline media in user messages is replaced at the next model call. The original input payload still appears in earlier checkpoints. Keep the blob storage available when resuming a thread so the middleware can restore its media.
 
 ## Custom backends
 
@@ -836,60 +828,60 @@ To also support the `execute` tool (running shell commands), implement [`Sandbox
 
 All methods must return structured Result objects with an optional `error` field—do not throw on missing files or invalid patterns.
 
-<Accordion title="Example: S3-style backend skeleton">
-  This skeleton maps filesystem paths to object keys. Fill in each method with your storage client's list, read, search, upload, and read-modify-write operations.
-
-  ```typescript theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  import {
-    type BackendProtocolV2,
-    type EditResult,
-    type GlobResult,
-    type GrepResult,
-    type LsResult,
-    type ReadRawResult,
-    type ReadResult,
-    type WriteResult,
-  } from "deepagents";
-
-  class S3Backend implements BackendProtocolV2 {
-    constructor(private bucket: string, private prefix: string = "") {
-      this.prefix = prefix.replace(/\/$/, "");
-    }
-
-    private key(path: string): string {
-      return `${this.prefix}${path}`;
-    }
-
-    async ls(path: string): Promise<LsResult> {
-      ...
-    }
-
-    async read(filePath: string, offset?: number, limit?: number): Promise<ReadResult> {
-      ...
-    }
-
-    async readRaw(filePath: string): Promise<ReadRawResult> {
-      ...
-    }
-
-    async grep(pattern: string, path?: string | null, glob?: string | null): Promise<GrepResult> {
-      ...
-    }
-
-    async glob(pattern: string, path = "/"): Promise<GlobResult> {
-      ...
-    }
-
-    async write(filePath: string, content: string): Promise<WriteResult> {
-      ...
-    }
-
-    async edit(filePath: string, oldString: string, newString: string, replaceAll?: boolean): Promise<EditResult> {
-      ...
-    }
-  }
-  ```
-</Accordion>
+> **Example: S3-style backend skeleton**
+>
+> This skeleton maps filesystem paths to object keys. Fill in each method with your storage client's list, read, search, upload, and read-modify-write operations.
+>
+> ```typescript theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> import {
+>   type BackendProtocolV2,
+>   type EditResult,
+>   type GlobResult,
+>   type GrepResult,
+>   type LsResult,
+>   type ReadRawResult,
+>   type ReadResult,
+>   type WriteResult,
+> } from "deepagents";
+>
+> class S3Backend implements BackendProtocolV2 {
+>   constructor(private bucket: string, private prefix: string = "") {
+>     this.prefix = prefix.replace(/\/$/, "");
+>   }
+>
+>   private key(path: string): string {
+>     return `${this.prefix}${path}`;
+>   }
+>
+>   async ls(path: string): Promise<LsResult> {
+>     ...
+>   }
+>
+>   async read(filePath: string, offset?: number, limit?: number): Promise<ReadResult> {
+>     ...
+>   }
+>
+>   async readRaw(filePath: string): Promise<ReadRawResult> {
+>     ...
+>   }
+>
+>   async grep(pattern: string, path?: string | null, glob?: string | null): Promise<GrepResult> {
+>     ...
+>   }
+>
+>   async glob(pattern: string, path = "/"): Promise<GlobResult> {
+>     ...
+>   }
+>
+>   async write(filePath: string, content: string): Promise<WriteResult> {
+>     ...
+>   }
+>
+>   async edit(filePath: string, oldString: string, newString: string, replaceAll?: boolean): Promise<EditResult> {
+>     ...
+>   }
+> }
+> ```
 
 ## Permissions
 
@@ -975,9 +967,9 @@ class PolicyWrapper implements BackendProtocolV2 {
 
 ## Multimodal and binary files
 
-<Note>
-  Multi-modal file support (PDFs, audio, video) requires `deepagents>=1.9.0`.
-</Note>
+> [!NOTE]
+>
+> Multi-modal file support (PDFs, audio, video) requires `deepagents>=1.9.0`.
 
 V2 backends support binary files natively. When `read()` encounters a binary file (determined by MIME type from the file extension), it returns a `ReadResult` with `Uint8Array` content and the corresponding `mimeType`. Text files return `string` content.
 
@@ -1032,9 +1024,9 @@ Backends may encounter either format when reading from state or store. The frame
 
 ## Migrate from backend factories
 
-<Warning>
-  The backend factory pattern is **deprecated** as of `deepagents` 1.9.0. Pass pre-constructed backend instances directly instead of factory functions.
-</Warning>
+> [!WARNING]
+>
+> The backend factory pattern is **deprecated** as of `deepagents` 1.9.0. Pass pre-constructed backend instances directly instead of factory functions.
 
 Previously, backends like `StateBackend` and `StoreBackend` required a factory function that received a runtime object, because they needed runtime context (state, store) to operate. Backends now resolve this context internally via LangGraph's `get_config()`, `get_store()`, and `get_runtime()` helpers, so you can pass instances directly.
 
@@ -1058,9 +1050,9 @@ Previously, backends like `StateBackend` and `StoreBackend` required a factory f
 | `StoreBackend(stateAndStore, options?)` constructor overload | `new StoreBackend(options?)` |
 | `filesUpdate` field on `WriteResult` and `EditResult` | State writes are now handled internally by the backend |
 
-<Note>
-  The factory pattern still works at runtime and emits a deprecation warning. Update your code to use direct instances before the next major version.
-</Note>
+> [!NOTE]
+>
+> The factory pattern still works at runtime and emits a deprecation warning. Update your code to use direct instances before the next major version.
 
 ### Migration example
 
@@ -1199,44 +1191,44 @@ Backends implement `BackendProtocolV2`. All query methods return structured Resu
 
 ## Update existing backends to V2
 
-<Accordion title="Migration guide">
-  ### Method renames
-
-  | V1 method | V2 method | Return type change |
-  | - | - | - |
-  | `lsInfo(path)` | `ls(path)` | `FileInfo[]` → `LsResult` |
-  | `read(filePath, offset, limit)` | `read(filePath, offset, limit)` | `string` → `ReadResult` |
-  | `readRaw(filePath)` | `readRaw(filePath)` | `FileData` → `ReadRawResult` |
-  | `grepRaw(pattern, path, glob)` | `grep(pattern, path, glob)` | `GrepMatch[] \| string` → `GrepResult` |
-  | `globInfo(pattern, path)` | `glob(pattern, path)` | `FileInfo[]` → `GlobResult` |
-  | `write(...)` | `write(...)` | Unchanged (`WriteResult`) |
-  | `edit(...)` | `edit(...)` | Unchanged (`EditResult`) |
-
-  ### Type renames
-
-  | V1 type | V2 type |
-  | - | - |
-  | `BackendProtocol` | `BackendProtocolV2` |
-  | `SandboxBackendProtocol` | `SandboxBackendProtocolV2` |
-
-  ### Adaptation utilities
-
-  If you have existing V1 backends that you need to use with V2-only code, use the adaptation functions:
-
-  ```typescript theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  import { adaptBackendProtocol, adaptSandboxProtocol } from "deepagents";
-
-  // Adapt a V1 backend to V2
-  const v2Backend = adaptBackendProtocol(v1Backend);
-
-  // Adapt a V1 sandbox to V2
-  const v2Sandbox = adaptSandboxProtocol(v1Sandbox);
-  ```
-
-  <Note>
-    The framework auto-adapts V1 backends passed to `createDeepAgent()`. Manual adaptation is only needed when calling protocol methods directly.
-  </Note>
-</Accordion>
+> **Migration guide**
+>
+> ### Method renames
+>
+> | V1 method | V2 method | Return type change |
+> | - | - | - |
+> | `lsInfo(path)` | `ls(path)` | `FileInfo[]` → `LsResult` |
+> | `read(filePath, offset, limit)` | `read(filePath, offset, limit)` | `string` → `ReadResult` |
+> | `readRaw(filePath)` | `readRaw(filePath)` | `FileData` → `ReadRawResult` |
+> | `grepRaw(pattern, path, glob)` | `grep(pattern, path, glob)` | `GrepMatch[] \| string` → `GrepResult` |
+> | `globInfo(pattern, path)` | `glob(pattern, path)` | `FileInfo[]` → `GlobResult` |
+> | `write(...)` | `write(...)` | Unchanged (`WriteResult`) |
+> | `edit(...)` | `edit(...)` | Unchanged (`EditResult`) |
+>
+> ### Type renames
+>
+> | V1 type | V2 type |
+> | - | - |
+> | `BackendProtocol` | `BackendProtocolV2` |
+> | `SandboxBackendProtocol` | `SandboxBackendProtocolV2` |
+>
+> ### Adaptation utilities
+>
+> If you have existing V1 backends that you need to use with V2-only code, use the adaptation functions:
+>
+> ```typescript theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> import { adaptBackendProtocol, adaptSandboxProtocol } from "deepagents";
+>
+> // Adapt a V1 backend to V2
+> const v2Backend = adaptBackendProtocol(v1Backend);
+>
+> // Adapt a V1 sandbox to V2
+> const v2Sandbox = adaptSandboxProtocol(v1Sandbox);
+> ```
+>
+> > [!NOTE]
+> >
+> > The framework auto-adapts V1 backends passed to `createDeepAgent()`. Manual adaptation is only needed when calling protocol methods directly.
 
 ## See also
 
@@ -1246,12 +1238,6 @@ Backends implement `BackendProtocolV2`. All query methods return structured Resu
 
 ***
 
-<div>
-  <Callout icon="terminal-2">
-    [Connect these docs](/use-these-docs) to your agent of choice via MCP for real-time answers.
-  </Callout>
+[Connect these docs](/use-these-docs) to your agent of choice via MCP for real-time answers.
 
-  <Callout icon="edit">
-    [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/oss/deepagents/backends.mdx) or [file an issue](https://github.com/langchain-ai/docs/issues/new/choose).
-  </Callout>
-</div>
+[Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/oss/deepagents/backends.mdx) or [file an issue](https://github.com/langchain-ai/docs/issues/new/choose).

@@ -4,9 +4,9 @@
 
 Set cost limits on LLM usage across your organization and prevent runaway spend before it reaches providers.
 
-<Note>
-  The LLM Gateway is in [beta](/langsmith/release-stages).
-</Note>
+> [!NOTE]
+>
+> The LLM Gateway is in [beta](/langsmith/release-stages).
 
 A spend policy defines a cost cap for a specific scope (organization, workspace, API key, or user) over a time window (monthly, weekly, daily, or hourly). The [LLM Gateway](/langsmith/llm-gateway) tracks spend in real time and blocks any request that would push spend past the cap, returning a `402` response:
 
@@ -51,9 +51,9 @@ You can apply multiple time windows to the same scope. For example, a workspace 
 
 ## Create a spend policy
 
-<Warning>
-  Creating and managing policies requires `organization:manage` permission. For the full permissions breakdown, refer to [Traces, Engine, and access control](/langsmith/llm-gateway-access).
-</Warning>
+> [!WARNING]
+>
+> Creating and managing policies requires `organization:manage` permission. For the full permissions breakdown, refer to [Traces, Engine, and access control](/langsmith/llm-gateway-access).
 
 1. Go to **LLM Gateway** and select **Cost Controls**.
 2. Click **Create spend limit**.
@@ -88,12 +88,6 @@ This is useful for diagnosing whether a blocked request represents a genuine cos
 
 ***
 
-<div>
-  <Callout icon="terminal-2">
-    [Connect these docs](/use-these-docs) to your agent of choice via MCP for real-time answers.
-  </Callout>
+[Connect these docs](/use-these-docs) to your agent of choice via MCP for real-time answers.
 
-  <Callout icon="edit">
-    [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/llm-gateway-spend-policies.mdx) or [file an issue](https://github.com/langchain-ai/docs/issues/new/choose).
-  </Callout>
-</div>
+[Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/llm-gateway-spend-policies.mdx) or [file an issue](https://github.com/langchain-ai/docs/issues/new/choose).

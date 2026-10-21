@@ -2,9 +2,9 @@
 
 # Upgrade an installation
 
-<Warning>
-  Downgrades are not officially supported. LangSmith upgrades may include database migrations and other changes that are not backward-compatible. If you need to roll back to a previous version, contact technical support via the [Support Portal](https://support.langchain.com) for guidance.
-</Warning>
+> [!WARNING]
+>
+> Downgrades are not officially supported. LangSmith upgrades may include database migrations and other changes that are not backward-compatible. If you need to roll back to a previous version, contact technical support via the [Support Portal](https://support.langchain.com) for guidance.
 
 If you don't have the repo added, run the following command to add it:
 
@@ -22,9 +22,9 @@ Update your helm chart config file with any updates that are needed in the new v
 
 Run the following command to upgrade the chart (replace `version` with the version you want to upgrade to):
 
-<Note>
-  If you are using a namespace other than the default namespace, you will need to specify the namespace in the `helm` and `kubectl` commands by using the `-n <namespace` flag.
-</Note>
+> [!NOTE]
+>
+> If you are using a namespace other than the default namespace, you will need to specify the namespace in the `helm` and `kubectl` commands by using the `-n <namespace` flag.
 
 Find the latest version of the chart. You can find this in the [LangSmith Helm Chart GitHub repository](https://github.com/langchain-ai/helm/releases) or by running the following command:
 
@@ -45,11 +45,11 @@ langchain/langsmith              	0.16.40      	0.16.70    	Helm chart to deploy
 
 Choose the version you want to upgrade to (generally the latest version is recommended) and note the version number:
 
-<Note>
-  If your installation is more than one major version behind the latest chart, upgrade one major version at a time. Do not skip major versions. Repeat this upgrade procedure for each intervening major version before upgrading to the latest supported version.
-
-  For example, to upgrade from 0.15 to 0.17, first upgrade to the latest 0.16 chart, then upgrade to the latest 0.17 chart.
-</Note>
+> [!NOTE]
+>
+> If your installation is more than one major version behind the latest chart, upgrade one major version at a time. Do not skip major versions. Repeat this upgrade procedure for each intervening major version before upgrading to the latest supported version.
+>
+> For example, to upgrade from 0.15 to 0.17, first upgrade to the latest 0.16 chart, then upgrade to the latest 0.17 chart.
 
 ```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 helm upgrade <release-name> langchain/langsmith --version <version> --values <path-to-values-file> --wait --debug
@@ -105,15 +105,15 @@ langsmith-queue-d58cb64f7-87d68          1/1     Running     0          15h
 
 3. Visit the external IP for the `langsmith-frontend` service on your browser. The LangSmith UI should be visible and operational.
 
-   <img alt="LangSmith UI" />
+   ![LangSmith UI](https://mintcdn.com/langchain-5e9cc07a/4kN8yiLrZX_amfFn/langsmith/images/langsmith-ui.png?fit=max\&auto=format\&n=4kN8yiLrZX_amfFn\&q=85\&s=5310f686e7b9eebaaee4fe2a152a8675)
 
 ## Upgrade from v16 to v17
 
 Chart v17 changes the values for SmithDB, sandboxes, and Engine. Update your values file before you run `helm upgrade`. Chart v17 fails to render the SmithDB, sandbox, and Engine values below until you change them. If you deploy with the Terraform modules, follow the upgrade steps in the [AWS](/langsmith/self-host-terraform-aws-deploy#upgrade-from-chart-v16-to-v17), [GCP](/langsmith/self-host-terraform-gcp-deploy), or [Azure](/langsmith/self-host-terraform-azure-deploy) deploy guide, which apply these changes to the module's values files.
 
-<Warning>
-  Downgrading from chart v17 to v16 is not supported. Back up the database before you upgrade.
-</Warning>
+> [!WARNING]
+>
+> Downgrading from chart v17 to v16 is not supported. Back up the database before you upgrade.
 
 * **SmithDB**: Move `smithdb.migration.deployment` to `smithdb.migration.job`. With `smithdb.enabled: true`, move the flat autoscaling keys (`enabled`, `minReplicas`, `maxReplicas`, and the rest) on `query`, `ingestion`, `mutations`, `runRules`, `statsQuery`, and `compactionWorker` under `autoscaling.hpa.*`. For `compactionWorker`, you can use `autoscaling.keda.*` instead, but enable only one scaler. For the cache volume changes, see [Cache storage](/langsmith/self-host-smithdb-infrastructure#cache-storage).
 * **Sandboxes**: Chart v17 removes the bundled JuiceFS CSI driver, and `sandbox-host` mounts JuiceFS itself. Chart v17 ignores a leftover `sandboxes.juicefs.csi` block, and its validation then fails with `sandboxes.juicefs.redis.metaURL is required when sandboxes.enabled is true and sandboxes.juicefs.existingSecretName is not set.` Move the settings:
@@ -136,12 +136,6 @@ Chart v17 changes the values for SmithDB, sandboxes, and Engine. Update your val
 
 ***
 
-<div>
-  <Callout icon="terminal-2">
-    [Connect these docs](/use-these-docs) to your agent of choice via MCP for real-time answers.
-  </Callout>
+[Connect these docs](/use-these-docs) to your agent of choice via MCP for real-time answers.
 
-  <Callout icon="edit">
-    [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/self-host-upgrades.mdx) or [file an issue](https://github.com/langchain-ai/docs/issues/new/choose).
-  </Callout>
-</div>
+[Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/self-host-upgrades.mdx) or [file an issue](https://github.com/langchain-ai/docs/issues/new/choose).

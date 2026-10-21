@@ -16,15 +16,15 @@
 
 ## 配置你的评估器
 
-<Note>
-  目前，使用提示中心的 LLM-as-a-judge 评估程序不支持少数样本示例，并且仅与使用胡子格式的提示兼容。
+> [!注意]
+>
+> 使用提示中心的 LLM-as-a-judge 评估程序目前不支持少数样本示例，并且仅与使用胡子格式的提示兼容。
+>
+> 少数样本示例仅支持运行级别评估器，而不支持线程级别。在 [**Configure Evaluator** panel](/langsmith/evaluators#edit-an-evaluator) 中打开 **运行**。
+>
+> [decision model evaluators](/langsmith/decision-model-evaluator) 没有少数镜头示例。
 
-  Few-shot 示例仅支持运行级别评估器，而不支持线程级别。在 [**Configure Evaluator** panel](/langsmith/evaluators#edit-an-evaluator) 中打开 **运行**。
-
-  [decision model evaluators](/langsmith/decision-model-evaluator) 没有少数镜头示例。
-</Note>
-
-在启用少量示例之前，请设置您的 LLM 作为法官评估器。如果您尚未执行此操作，请按照[LLM-as-a-judge evaluator guide](/langsmith/llm-as-judge)中的步骤操作。
+在启用少量示例之前，请设置您的 LLM 作为法官评估器。如果您尚未执行此操作，请按照[LLM-as-a-judge evaluator guide](/langsmith/llm-as-judge) 中的步骤操作。
 
 ### 1.配置变量映射每个小样本示例均根据配置中指定的变量映射进行格式化。少量示例的变量映射应包含与主提示相同的变量，以及一个 `few_shot_explanation` 和一个 `score` 变量，它们应与您的反馈键具有相同的名称。
 
@@ -36,13 +36,13 @@
 
 ## 进行更正
 
-<Info>
-  [Audit evaluator scores](/langsmith/audit-evaluator-scores)
-</Info>当您开始记录跟踪或运行实验时，您可能会不同意评估者给出的某些分数。当您[make corrections to these scores](/langsmith/audit-evaluator-scores)时，您将开始看到校正数据集中填充的示例。当您进行更正时，请确保附加解释 - 这些解释将代替 `few_shot_explanation` 变量填充到您的评估器提示中。
+> [!注意]
+>
+> [Audit evaluator scores](/langsmith/audit-evaluator-scores)当您开始记录跟踪或运行实验时，您可能会不同意评估者给出的某些分数。当您[make corrections to these scores](/langsmith/audit-evaluator-scores)时，您将开始看到校正数据集中填充的示例。当您进行更正时，请确保附加解释 - 这些解释将代替 `few_shot_explanation` 变量填充到您的评估器提示中。
 
 少数样本示例的输入将是链/数据集的输入、输出和参考（如果这是离线评估器）的相关字段。输出将是更正的评估者分数以及您在留下更正时创建的解释。您可以根据自己的喜好随意编辑这些内容。以下是校正数据集中的几个样本的示例：
 
-<img alt="Few-shot example" />
+![Few-shot example](https://mintcdn.com/langchain-5e9cc07a/0B2PFrFBMRWNccee/langsmith/images/few-shot-example.png?fit=max\&auto=format\&n=0B2PFrFBMRWNccee\&q=85\&s=8c7bfcc6cc4ab86c18240c3cbf2ea44c)
 
 请注意，更正可能需要一两分钟才能填充到您的几次数据集中。一旦它们出现，您的评估器将来的运行将把它们包含在提示中！
 
@@ -53,18 +53,12 @@
 * **在线评估器**：选择您的运行规则并单击 **编辑规则**
 * **离线评估者**：选择您的评估者并单击 **编辑评估者**
 
-<img alt="Edit Evaluator" />前往**使用少量示例提高评估器准确性**部分中链接的修正数据集。您可以查看和更新​​数据集中的少数样本示例。
+![Edit Evaluator](https://mintcdn.com/langchain-5e9cc07a/aKRoUGXX6ygp4DlC/langsmith/images/edit-evaluator.png?fit=max\&auto=format\&n=aKRoUGXX6ygp4DlC\&q=85\&s=03453ef08f1c272d5d9aaf71d1fb7301)前往**使用少量示例提高评估器准确性**部分中链接的修正数据集。您可以查看和更新​​数据集中的少数样本示例。
 
-<img alt="View few-shot dataset" />
+![View few-shot dataset](https://mintcdn.com/langchain-5e9cc07a/1RIJxfRpkszanJLL/langsmith/images/view-few-shot-ds.png?fit=max\&auto=format\&n=1RIJxfRpkszanJLL\&q=85\&s=3215f3f24a08186fd76c6dbad18a3cf5)
 
 ***
 
-<div>
-  <Callout icon="terminal-2">
-    [Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
-  </Callout>
+[Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
 
-  <Callout icon="edit">
-    [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/create-few-shot-evaluators.mdx) 或 [file an issue](https://github.com/langchain-ai/docs/issues/new/choose)。
-  </Callout>
-</div>
+[Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/create-few-shot-evaluators.mdx) 或 [file an issue](https://github.com/langchain-ai/docs/issues/new/choose)。

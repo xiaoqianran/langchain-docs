@@ -4,9 +4,9 @@
 
 This guide will walk you through the process of using your self-hosted instance of LangSmith.
 
-<Info>
-  This guide assumes you have already deployed a self-hosted LangSmith instance. If you have not, please refer to the [kubernetes deployment guide](/langsmith/kubernetes).
-</Info>
+> [!NOTE]
+>
+> This guide assumes you have already deployed a self-hosted LangSmith instance. If you have not, please refer to the [kubernetes deployment guide](/langsmith/kubernetes).
 
 ### Configuring the application you want to use with LangSmith
 
@@ -64,12 +64,6 @@ To access the API reference, navigate to `http://<host>/api/docs` in your browse
 
 ***
 
-<div>
-  <Callout icon="terminal-2">
-    [Connect these docs](/use-these-docs) to your agent of choice via MCP for real-time answers.
-  </Callout>
+[Connect these docs](/use-these-docs) to your agent of choice via MCP for real-time answers.
 
-  <Callout icon="edit">
-    [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/self-host-usage.mdx) or [file an issue](https://github.com/langchain-ai/docs/issues/new/choose).
-  </Callout>
-</div>
+[Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/self-host-usage.mdx) or [file an issue](https://github.com/langchain-ai/docs/issues/new/choose).

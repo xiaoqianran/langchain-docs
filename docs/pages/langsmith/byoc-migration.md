@@ -28,78 +28,76 @@ The tool migrates the following resources between a source instance and a destin
 
 Each resource type has its own command, flags, and caveats. For the command reference, see the [tool README](https://github.com/langchain-ai/langsmith-data-migration-tool/blob/main/README.md).
 
-<Note>
-  Resources belonging to a feature that BYOC does not support yet, such as [Managed Deep Agents](/langsmith/python/managed-deep-agents-overview), cannot be migrated. See [Available features](/langsmith/byoc#available-features).
-</Note>
+> [!NOTE]
+>
+> Resources belonging to a feature that BYOC does not support yet, such as [Managed Deep Agents](/langsmith/python/managed-deep-agents-overview), cannot be migrated. See [Available features](/langsmith/byoc#available-features).
 
 ## Migrate with the tool
 
-<Steps>
-  <Step title="Install the tool">
-    Install the latest release with `uv`, `uvx`, or `pip`. For the current install commands, see [Installation](https://github.com/langchain-ai/langsmith-data-migration-tool#installation).
+**1. Install the tool**
 
-    Verify the install:
+Install the latest release with `uv`, `uvx`, or `pip`. For the current install commands, see [Installation](https://github.com/langchain-ai/langsmith-data-migration-tool#installation).
 
-    ```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-    langsmith-migrator --help
-    ```
-  </Step>
+Verify the install:
 
-  <Step title="Create the destination workspaces">
-    Workspace IDs differ between instances, so create the target workspaces in the data plane first. See the `Create workspaces` section of the [BYOC onboarding docs](/langsmith/byoc-onboarding).
+```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+langsmith-migrator --help
+```
 
-    Migration commands run per workspace pair. Repeat them for each pair.
-  </Step>
+**2. Create the destination workspaces**
 
-  <Step title="Create the destination tracing projects">
-    The tool does not create tracing projects. Create the projects you need in the destination workspace before you migrate automation rules or charts, or those mappings have no target.
-  </Step>
+Workspace IDs differ between instances, so create the target workspaces in the data plane first. See the `Create workspaces` section of the [BYOC onboarding docs](/langsmith/byoc-onboarding).
 
-  <Step title="Configure the connection details">
-    Set the source and destination credentials and endpoints:
+Migration commands run per workspace pair. Repeat them for each pair.
 
-    ```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-    export LANGSMITH_OLD_API_KEY="<source_instance_key>"
-    export LANGSMITH_NEW_API_KEY="<data_plane_key>"
-    export LANGSMITH_OLD_BASE_URL="<source_instance_api_url>"
-    export LANGSMITH_NEW_BASE_URL="https://<data_plane_host>"
-    export LANGSMITH_VERIFY_SSL=true
-    ```
+**3. Create the destination tracing projects**
 
-    <Note>
-      `OLD` refers to your current LangSmith deployment, and `NEW` refers to the destination BYOC data plane:
+The tool does not create tracing projects. Create the projects you need in the destination workspace before you migrate automation rules or charts, or those mappings have no target.
 
-      * **`LANGSMITH_OLD_API_KEY`**: An API key from your current deployment with permission to read all resources you want to migrate. For LangSmith Cloud at [smith.langchain.com](https://smith.langchain.com?utm_source=docs\&utm_medium=cta\&utm_campaign=langsmith-signup\&utm_content=langsmith-byoc-migration), create it under **Settings > API Keys**. For another Cloud region or a self-hosted instance, use that deployment's UI.
-      * **`LANGSMITH_NEW_API_KEY`**: An API key created under **Settings > API Keys** at [aws.smith.langchain.com](https://aws.smith.langchain.com). Scope it to a workspace in your destination BYOC data plane. See [Create an API key](/langsmith/create-account-api-key#api-keys).
-      * **`LANGSMITH_OLD_BASE_URL`**: Your current deployment's API URL. For LangSmith Cloud in GCP US, use `https://api.smith.langchain.com`. For another Cloud region, use its [regional API URL](/langsmith/create-account-api-key#configure-the-sdk). For self-hosted LangSmith, use your instance's API URL.
-      * **`LANGSMITH_NEW_BASE_URL`**: Your destination BYOC data plane's API URL, including `https://`. Find it under **Settings > Data Planes**. See [BYOC onboarding](/langsmith/byoc-onboarding).
-    </Note>
+**4. Configure the connection details**
 
-    <Warning>
-      The destination key must be scoped to a workspace in the target data plane. An organization-scoped key does not work.
+Set the source and destination credentials and endpoints:
 
-      To migrate Fleet agents with an owner, use a personal access token (`lsv2_pt_*`) as the destination key. Workspace API keys carry no user identity, so agents created with them have no owner.
-    </Warning>
-  </Step>
+```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+export LANGSMITH_OLD_API_KEY="<source_instance_key>"
+export LANGSMITH_NEW_API_KEY="<data_plane_key>"
+export LANGSMITH_OLD_BASE_URL="<source_instance_api_url>"
+export LANGSMITH_NEW_BASE_URL="https://<data_plane_host>"
+export LANGSMITH_VERIFY_SSL=true
+```
 
-  <Step title="Test both connections">
-    ```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-    langsmith-migrator test
-    ```
-  </Step>
+> [!NOTE]
+>
+> `OLD` refers to your current LangSmith deployment, and `NEW` refers to the destination BYOC data plane:
+>
+> * **`LANGSMITH_OLD_API_KEY`**: An API key from your current deployment with permission to read all resources you want to migrate. For LangSmith Cloud at [smith.langchain.com](https://smith.langchain.com?utm_source=docs\&utm_medium=cta\&utm_campaign=langsmith-signup\&utm_content=langsmith-byoc-migration), create it under **Settings > API Keys**. For another Cloud region or a self-hosted instance, use that deployment's UI.
+> * **`LANGSMITH_NEW_API_KEY`**: An API key created under **Settings > API Keys** at [aws.smith.langchain.com](https://aws.smith.langchain.com). Scope it to a workspace in your destination BYOC data plane. See [Create an API key](/langsmith/create-account-api-key#api-keys).
+> * **`LANGSMITH_OLD_BASE_URL`**: Your current deployment's API URL. For LangSmith Cloud in GCP US, use `https://api.smith.langchain.com`. For another Cloud region, use its [regional API URL](/langsmith/create-account-api-key#configure-the-sdk). For self-hosted LangSmith, use your instance's API URL.
+> * **`LANGSMITH_NEW_BASE_URL`**: Your destination BYOC data plane's API URL, including `https://`. Find it under **Settings > Data Planes**. See [BYOC onboarding](/langsmith/byoc-onboarding).
 
-  <Step title="Run the migration">
-    Use the interactive wizard to walk through every resource type:
+> [!WARNING]
+>
+> The destination key must be scoped to a workspace in the target data plane. An organization-scoped key does not work.
+>
+> To migrate Fleet agents with an owner, use a personal access token (`lsv2_pt_*`) as the destination key. Workspace API keys carry no user identity, so agents created with them have no owner.
 
-    ```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-    langsmith-migrator migrate-all
-    ```
+**5. Test both connections**
 
-    To migrate one resource type at a time, run its command instead, such as `datasets`, `prompts`, or `fleet`. Add `--dry-run` to preview a step without writing, and `-v` for verbose output. Use `langsmith-migrator resume` to retry pending or failed items from a previous session.
+```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+langsmith-migrator test
+```
 
-    For per-command flags, workspace mapping, and project mapping, see the [tool README](https://github.com/langchain-ai/langsmith-data-migration-tool/blob/main/README.md).
-  </Step>
-</Steps>
+**6. Run the migration**
+
+Use the interactive wizard to walk through every resource type:
+
+```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+langsmith-migrator migrate-all
+```
+
+To migrate one resource type at a time, run its command instead, such as `datasets`, `prompts`, or `fleet`. Add `--dry-run` to preview a step without writing, and `-v` for verbose output. Use `langsmith-migrator resume` to retry pending or failed items from a previous session.
+
+For per-command flags, workspace mapping, and project mapping, see the [tool README](https://github.com/langchain-ai/langsmith-data-migration-tool/blob/main/README.md).
 
 ## Complete the Fleet manual steps
 
@@ -160,12 +158,6 @@ For more information, see [LangSmith Deployment](/langsmith/deployment).
 
 ***
 
-<div>
-  <Callout icon="terminal-2">
-    [Connect these docs](/use-these-docs) to your agent of choice via MCP for real-time answers.
-  </Callout>
+[Connect these docs](/use-these-docs) to your agent of choice via MCP for real-time answers.
 
-  <Callout icon="edit">
-    [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/byoc-migration.mdx) or [file an issue](https://github.com/langchain-ai/docs/issues/new/choose).
-  </Callout>
-</div>
+[Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/byoc-migration.mdx) or [file an issue](https://github.com/langchain-ai/docs/issues/new/choose).

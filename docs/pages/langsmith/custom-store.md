@@ -8,9 +8,9 @@ When deploying agents to LangSmith, the server provides a built-in Postgres-back
 
 You provide a path to an async context manager that yields a `BaseStore` instance, and the server manages the store's lifecycle automatically.
 
-<Warning>
-  Custom stores are in **alpha**. This feature may experience breaking changes in minor version updates.
-</Warning>
+> [!WARNING]
+>
+> Custom stores are in **alpha**. This feature may experience breaking changes in minor version updates.
 
 ## Define the store
 
@@ -22,9 +22,9 @@ langgraph new --template=new-langgraph-project-python my_new_project
 
 The async context manager pattern lets the server open and close the store connection at the right points in the application lifecycle. The following example uses `AsyncSqliteStore` with semantic search:
 
-<Note>
-  SQLite is not recommended for use in production deployments.
-</Note>
+> [!NOTE]
+>
+> SQLite is not recommended for use in production deployments.
 
 ```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 # ./src/agent/store.py
@@ -52,9 +52,9 @@ async def generate_store():
         yield store
 ```
 
-<Note>
-  When a custom store is configured, it **replaces** the built-in Postgres store entirely. Capabilities like semantic search and TTL sweeping depend on your implementation.
-</Note>
+> [!NOTE]
+>
+> When a custom store is configured, it **replaces** the built-in Postgres store entirely. Capabilities like semantic search and TTL sweeping depend on your implementation.
 
 ## Configure `langgraph.json`
 
@@ -98,12 +98,6 @@ You can deploy this app as-is to LangSmith or to your self-hosted platform.
 
 ***
 
-<div>
-  <Callout icon="terminal-2">
-    [Connect these docs](/use-these-docs) to your agent of choice via MCP for real-time answers.
-  </Callout>
+[Connect these docs](/use-these-docs) to your agent of choice via MCP for real-time answers.
 
-  <Callout icon="edit">
-    [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/custom-store.mdx) or [file an issue](https://github.com/langchain-ai/docs/issues/new/choose).
-  </Callout>
-</div>
+[Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/custom-store.mdx) or [file an issue](https://github.com/langchain-ai/docs/issues/new/choose).

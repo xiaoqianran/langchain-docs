@@ -8,7 +8,7 @@ A **snapshot** is a reusable sandbox filesystem. Build a custom snapshot from a 
 
 You can also capture a snapshot from a running sandbox—install packages, write data files, or configure state, then snapshot the result and reuse it as a new starting point.
 
-<img alt="Sandboxes snapshots page" />
+![Sandboxes snapshots page](https://mintcdn.com/langchain-5e9cc07a/5nd3ca6haxRbnJZj/images/langsmith/sandboxes/sb-snapshots.png?fit=max\&auto=format\&n=5nd3ca6haxRbnJZj\&q=85\&s=6f56db23342150d156d0c6d783a1ead7)
 
 ## Understand the default snapshot
 
@@ -26,9 +26,9 @@ The compressed ext4 file, rather than a separately pulled container image, is th
 
 Scanning the `sandbox-host` container image alone does not inspect the files inside this compressed artifact. To verify the default snapshot, extract and scan the embedded filesystem separately.
 
-<Note>
-  This procedure verifies the default snapshot filesystem. LangSmith supplies other required runtime components separately when the sandbox starts; they are not part of the snapshot.
-</Note>
+> [!NOTE]
+>
+> This procedure verifies the default snapshot filesystem. LangSmith supplies other required runtime components separately when the sandbox starts; they are not part of the snapshot.
 
 To independently inspect the default snapshot, use the exact `sandbox-host` container image configured by your Helm release. If you mirror images, use the reference in `images.sandboxHostImage` from your private registry.
 
@@ -82,35 +82,33 @@ Point your filesystem or SBOM scanner at `$SNAPSHOT_WORKDIR/rootfs`. The scanner
 
 Build a snapshot by pointing at any container image. The call blocks until the snapshot is ready (default timeout is 60 seconds; bump it for large images).
 
-<CodeGroup>
-  ```python Python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  from langsmith.sandbox import SandboxClient
+```python Python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+from langsmith.sandbox import SandboxClient
 
-  client = SandboxClient()
+client = SandboxClient()
 
-  snapshot = client.create_snapshot(
-      "python",
-      docker_image="python:3.12-slim",
-      fs_capacity_bytes=1 * 1024**3,  # 1 GiB
-  )
-
-  print(snapshot.id)
-  ```
-
-  ```ts TypeScript theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  import { SandboxClient } from "langsmith/sandbox";
-
-  const client = new SandboxClient();
-
-  const snapshot = await client.createSnapshot(
+snapshot = client.create_snapshot(
     "python",
-    "python:3.12-slim",
-    1_073_741_824, // 1 GiB
-  );
+    docker_image="python:3.12-slim",
+    fs_capacity_bytes=1 * 1024**3,  # 1 GiB
+)
 
-  console.log(snapshot.id);
-  ```
-</CodeGroup>
+print(snapshot.id)
+```
+
+```ts TypeScript theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+import { SandboxClient } from "langsmith/sandbox";
+
+const client = new SandboxClient();
+
+const snapshot = await client.createSnapshot(
+  "python",
+  "python:3.12-slim",
+  1_073_741_824, // 1 GiB
+);
+
+console.log(snapshot.id);
+```
 
 ### Verify a snapshot built from a container image
 
@@ -146,45 +144,43 @@ Repository and tag discovery is advisory and bounded. You can always enter a kno
 
 Username and password authentication works with all supported private registry providers. For ECR, the password is an ECR authorization token and expires after 12 hours. Update the saved registry credentials when the token expires.
 
-<CodeGroup>
-  ```python Python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  import os
+```python Python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+import os
 
-  registry = client.registries.create(
-      name="internal",
-      url="registry.example.com",
-      username="me",
-      password=os.environ["REGISTRY_PASSWORD"],
-  )
+registry = client.registries.create(
+    name="internal",
+    url="registry.example.com",
+    username="me",
+    password=os.environ["REGISTRY_PASSWORD"],
+)
 
-  snapshot = client.create_snapshot(
-      "internal-python",
-      docker_image="registry.example.com/internal/python:3.12",
-      fs_capacity_bytes=2 * 1024**3,
-      registry_id=registry.id,
-      timeout=600,
-  )
-  ```
-
-  ```ts TypeScript theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  const registry = await client.registries.create({
-    name: "internal",
-    url: "registry.example.com",
-    username: "me",
-    password: process.env.REGISTRY_PASSWORD,
-  });
-
-  const snapshot = await client.createSnapshot(
+snapshot = client.create_snapshot(
     "internal-python",
-    "registry.example.com/internal/python:3.12",
-    2_147_483_648,
-    {
-      registryId: registry.id,
-      timeout: 600,
-    },
-  );
-  ```
-</CodeGroup>
+    docker_image="registry.example.com/internal/python:3.12",
+    fs_capacity_bytes=2 * 1024**3,
+    registry_id=registry.id,
+    timeout=600,
+)
+```
+
+```ts TypeScript theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+const registry = await client.registries.create({
+  name: "internal",
+  url: "registry.example.com",
+  username: "me",
+  password: process.env.REGISTRY_PASSWORD,
+});
+
+const snapshot = await client.createSnapshot(
+  "internal-python",
+  "registry.example.com/internal/python:3.12",
+  2_147_483_648,
+  {
+    registryId: registry.id,
+    timeout: 600,
+  },
+);
+```
 
 List, inspect, update, and delete registries with `client.registries.list()`, `client.registries.retrieve(name)`, `client.registries.update(name, ...)`, and `client.registries.delete(name)`.
 
@@ -192,9 +188,13 @@ List, inspect, update, and delete registries with `client.registries.list()`, `c
 
 AWS IAM role authentication avoids storing an expiring ECR authorization token in LangSmith. It supports private ECR registries in the commercial AWS partition. Public ECR, AWS GovCloud, AWS China, and custom ECR-compatible domains continue to use username and password authentication.
 
-<Note>
-  The **AWS IAM role** authentication method appears only when your LangSmith deployment supports it. If the option is unavailable, use username and password authentication.
-</Note>
+> [!NOTE]
+>
+> The **AWS IAM role** authentication method appears only when your LangSmith deployment supports it. If the option is unavailable, use username and password authentication.
+
+> [!NOTE]
+>
+> **BYOC deployments:** AWS IAM role authentication works on [BYOC](/langsmith/byoc) AWS data planes with no extra setup. Follow the steps below. If your data plane uses [bring your own IAM](/langsmith/byoc-byoiam), apply the latest version of the [`byoiam` Terraform module](https://github.com/langchain-ai/terraform/tree/main/modules/byoc/aws/byoiam) first. It grants the workload role permission to assume your ECR role.
 
 To register an ECR role:
 
@@ -221,6 +221,20 @@ To register an ECR role:
   ]
 }
 ```
+
+> [!NOTE]
+>
+> **BYOC deployments:** BYOC data planes pass session tags when they assume the role, so the trust policy must also allow `sts:TagSession`. Add it as a separate statement without the `sts:ExternalId` condition. Otherwise AWS denies the role assumption:
+>
+> ```json theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> {
+>   "Effect": "Allow",
+>   "Principal": {
+>     "AWS": "<principal-arn-shown-in-langsmith>"
+>   },
+>   "Action": "sts:TagSession"
+> }
+> ```
 
 4. Give the role permission to discover and pull the required ECR images. The following policy grants access to every repository in one AWS account and region. Replace the placeholders, or narrow the repository resource to the repositories LangSmith can use:
 
@@ -250,7 +264,7 @@ To register an ECR role:
 }
 ```
 
-5. For hosted LangSmith, add the `LangSmithSandboxECR=true` tag to the IAM role.
+5. For hosted LangSmith and BYOC, add the `LangSmithSandboxECR=true` tag to the IAM role.
 6. Return to LangSmith, enter the role ARN in **AWS role ARN**, then register the private registry.
 
 LangSmith assumes the role separately for repository discovery, tag discovery, and each snapshot build attempt. It obtains a fresh ECR authorization token for delayed jobs and retries, and does not persist temporary AWS credentials or generated ECR tokens.
@@ -263,212 +277,198 @@ When you have a local `Dockerfile` but don't want to publish the image to a regi
 
 The call blocks until the snapshot is ready (default timeout is 60 seconds; raise it for large or slow builds). `fs_capacity_bytes` must be large enough to hold the build context, the intermediate layers, and the final image.
 
-<CodeGroup>
-  ```python Python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  from langsmith.sandbox import SandboxClient
+```python Python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+from langsmith.sandbox import SandboxClient
 
-  client = SandboxClient()
+client = SandboxClient()
 
-  snapshot = client.create_snapshot_from_dockerfile(
-      "my-app",
-      dockerfile="Dockerfile",
-      fs_capacity_bytes=2 * 1024**3,  # 2 GiB
-      context=".",  # build context directory (default: current directory)
-  )
-
-  print(snapshot.id)
-  ```
-
-  ```ts TypeScript theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  import { SandboxClient } from "langsmith/sandbox";
-
-  const client = new SandboxClient();
-
-  const snapshot = await client.createSnapshotFromDockerfile(
+snapshot = client.create_snapshot_from_dockerfile(
     "my-app",
-    "Dockerfile",
-    2_147_483_648, // 2 GiB
-    { context: "." },
-  );
+    dockerfile="Dockerfile",
+    fs_capacity_bytes=2 * 1024**3,  # 2 GiB
+    context=".",  # build context directory (default: current directory)
+)
 
-  console.log(snapshot.id);
-  ```
-</CodeGroup>
+print(snapshot.id)
+```
 
-<Note>
-  `dockerfile` is resolved relative to `context` unless you pass an absolute path, and it must live inside the context directory. The `.git` directory is excluded from the uploaded context automatically.
-</Note>
+```ts TypeScript theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+import { SandboxClient } from "langsmith/sandbox";
+
+const client = new SandboxClient();
+
+const snapshot = await client.createSnapshotFromDockerfile(
+  "my-app",
+  "Dockerfile",
+  2_147_483_648, // 2 GiB
+  { context: "." },
+);
+
+console.log(snapshot.id);
+```
+
+> [!NOTE]
+>
+> `dockerfile` is resolved relative to `context` unless you pass an absolute path, and it must live inside the context directory. The `.git` directory is excluded from the uploaded context automatically.
 
 ### Build args and target stage
 
 Pass `build_args` / `buildArgs` to set Docker `ARG` values, and `target` to stop at a specific stage of a multi-stage build.
 
-<CodeGroup>
-  ```python Python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  snapshot = client.create_snapshot_from_dockerfile(
-      "my-app",
-      dockerfile="Dockerfile",
-      fs_capacity_bytes=2 * 1024**3,
-      build_args={"PYTHON_VERSION": "3.12", "ENV": "prod"},
-      target="runtime",
-  )
-  ```
-
-  ```ts TypeScript theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  const snapshot = await client.createSnapshotFromDockerfile(
+```python Python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+snapshot = client.create_snapshot_from_dockerfile(
     "my-app",
-    "Dockerfile",
-    2_147_483_648,
-    {
-      buildArgs: { PYTHON_VERSION: "3.12", ENV: "prod" },
-      target: "runtime",
-    },
-  );
-  ```
-</CodeGroup>
+    dockerfile="Dockerfile",
+    fs_capacity_bytes=2 * 1024**3,
+    build_args={"PYTHON_VERSION": "3.12", "ENV": "prod"},
+    target="runtime",
+)
+```
+
+```ts TypeScript theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+const snapshot = await client.createSnapshotFromDockerfile(
+  "my-app",
+  "Dockerfile",
+  2_147_483_648,
+  {
+    buildArgs: { PYTHON_VERSION: "3.12", ENV: "prod" },
+    target: "runtime",
+  },
+);
+```
 
 ### Stream build logs
 
 Pass a callback to `on_build_log` / `onBuildLog` to receive the build's stdout and stderr as it runs, which is useful for surfacing progress or debugging a failing build.
 
-<CodeGroup>
-  ```python Python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  snapshot = client.create_snapshot_from_dockerfile(
-      "my-app",
-      dockerfile="Dockerfile",
-      fs_capacity_bytes=2 * 1024**3,
-      on_build_log=lambda line: print(line, end=""),
-  )
-  ```
-
-  ```ts TypeScript theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  const snapshot = await client.createSnapshotFromDockerfile(
+```python Python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+snapshot = client.create_snapshot_from_dockerfile(
     "my-app",
-    "Dockerfile",
-    2_147_483_648,
-    { onBuildLog: (line) => process.stdout.write(line) },
-  );
-  ```
-</CodeGroup>
+    dockerfile="Dockerfile",
+    fs_capacity_bytes=2 * 1024**3,
+    on_build_log=lambda line: print(line, end=""),
+)
+```
+
+```ts TypeScript theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+const snapshot = await client.createSnapshotFromDockerfile(
+  "my-app",
+  "Dockerfile",
+  2_147_483_648,
+  { onBuildLog: (line) => process.stdout.write(line) },
+);
+```
 
 ### Speed up cold builds
 
 `vcpus` / `vCpus` and `mem_bytes` / `memBytes` size the temporary builder sandbox. The build runs BuildKit plus the native snapshotter's layer copies inside it, which contend for the builder's default 0.5 vCPU, so giving the builder more CPU can cut a cold build's wall time substantially. Memory is tied to CPU at 4 GiB per vCPU and must stay within 50% of that target, so a 2-vCPU builder accepts 4 to 12 GiB. Omit memory and it follows the ratio.
 
-<CodeGroup>
-  ```python Python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  snapshot = client.create_snapshot_from_dockerfile(
-      "my-app",
-      dockerfile="Dockerfile",
-      fs_capacity_bytes=2 * 1024**3,
-      vcpus=2,
-      mem_bytes=8 * 1024**3,  # 8 GiB
-      timeout=600,
-  )
-  ```
-
-  ```ts TypeScript theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  const snapshot = await client.createSnapshotFromDockerfile(
+```python Python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+snapshot = client.create_snapshot_from_dockerfile(
     "my-app",
-    "Dockerfile",
-    2_147_483_648,
-    {
-      vCpus: 2,
-      memBytes: 8_589_934_592, // 8 GiB
-      timeout: 600,
-    },
-  );
-  ```
-</CodeGroup>
+    dockerfile="Dockerfile",
+    fs_capacity_bytes=2 * 1024**3,
+    vcpus=2,
+    mem_bytes=8 * 1024**3,  # 8 GiB
+    timeout=600,
+)
+```
 
-<Tip>
-  Both the sync `SandboxClient` and the `AsyncSandboxClient` expose this method with the same arguments—`await client.create_snapshot_from_dockerfile(...)` on the async client.
-</Tip>
+```ts TypeScript theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+const snapshot = await client.createSnapshotFromDockerfile(
+  "my-app",
+  "Dockerfile",
+  2_147_483_648,
+  {
+    vCpus: 2,
+    memBytes: 8_589_934_592, // 8 GiB
+    timeout: 600,
+  },
+);
+```
+
+> [!TIP]
+>
+> Both the sync `SandboxClient` and the `AsyncSandboxClient` expose this method with the same arguments—`await client.create_snapshot_from_dockerfile(...)` on the async client.
 
 ## Capture a snapshot from a running sandbox
 
 Start a sandbox from an existing snapshot, install packages or prepare data, then capture the result as a new snapshot. The returned snapshot has its `source_sandbox_id` set to the sandbox it was captured from, and can be used as the `snapshot_id` for any later `create_sandbox` call.
 
-<CodeGroup>
-  ```python Python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  sb = client.create_sandbox(snapshot_id=base_snapshot_id, name="setup-box")
-  sb.run("pip install numpy pandas scikit-learn", timeout=180)
-  sb.write("/opt/config.yaml", "model: gpt-5\n")
+```python Python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+sb = client.create_sandbox(snapshot_id=base_snapshot_id, name="setup-box")
+sb.run("pip install numpy pandas scikit-learn", timeout=180)
+sb.write("/opt/config.yaml", "model: gpt-5\n")
 
-  # Capture the current filesystem as a new snapshot
-  snapshot = sb.capture_snapshot("ml-ready")
-  print(snapshot.id, snapshot.source_sandbox_id)
+# Capture the current filesystem as a new snapshot
+snapshot = sb.capture_snapshot("ml-ready")
+print(snapshot.id, snapshot.source_sandbox_id)
 
-  sb.delete()
+sb.delete()
 
-  # Boot fresh sandboxes pre-loaded with those dependencies
-  with client.sandbox(snapshot_id=snapshot.id) as sb:
-      sb.run("python -c 'import numpy; print(numpy.__version__)'")
-      assert sb.read("/opt/config.yaml") == b"model: gpt-5\n"
-  ```
+# Boot fresh sandboxes pre-loaded with those dependencies
+with client.sandbox(snapshot_id=snapshot.id) as sb:
+    sb.run("python -c 'import numpy; print(numpy.__version__)'")
+    assert sb.read("/opt/config.yaml") == b"model: gpt-5\n"
+```
 
-  ```ts TypeScript theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  const running = await client.createSandbox(baseSnapshotId, { name: "setup-box" });
-  await running.run("pip install numpy pandas scikit-learn", { timeout: 180 });
-  await running.write("/opt/config.yaml", "model: gpt-5\n");
+```ts TypeScript theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+const running = await client.createSandbox(baseSnapshotId, { name: "setup-box" });
+await running.run("pip install numpy pandas scikit-learn", { timeout: 180 });
+await running.write("/opt/config.yaml", "model: gpt-5\n");
 
-  const snapshot = await running.captureSnapshot("ml-ready");
-  console.log(snapshot.id, snapshot.source_sandbox_id);
+const snapshot = await running.captureSnapshot("ml-ready");
+console.log(snapshot.id, snapshot.source_sandbox_id);
 
-  await running.delete();
+await running.delete();
 
-  const sandbox = await client.createSandbox(snapshot.id);
-  try {
-    await sandbox.run("python -c 'import numpy; print(numpy.__version__)'");
-    const cfg = await sandbox.read("/opt/config.yaml");
-    console.log(new TextDecoder().decode(cfg));
-  } finally {
-    await sandbox.delete();
-  }
-  ```
-</CodeGroup>
+const sandbox = await client.createSandbox(snapshot.id);
+try {
+  await sandbox.run("python -c 'import numpy; print(numpy.__version__)'");
+  const cfg = await sandbox.read("/opt/config.yaml");
+  console.log(new TextDecoder().decode(cfg));
+} finally {
+  await sandbox.delete();
+}
+```
 
-<Note>
-  By default, capture preserves the **filesystem only**. Installed packages (under `/usr/local`, `/root`, `/opt`, the home directory, etc.) and files you wrote to those locations are kept, as is `/tmp`. Only `/dev/shm` is a tmpfs, so everything else lives on the sandbox's disk. Running processes, open sockets, and in-memory state are **not** carried over: boot the new sandbox and start the processes you need again, or [capture memory too](#resume-from-memory).
-</Note>
+> [!NOTE]
+>
+> By default, capture preserves the **filesystem only**. Installed packages (under `/usr/local`, `/root`, `/opt`, the home directory, etc.) and files you wrote to those locations are kept, as is `/tmp`. Only `/dev/shm` is a tmpfs, so everything else lives on the sandbox's disk. Running processes, open sockets, and in-memory state are **not** carried over: boot the new sandbox and start the processes you need again, or [capture memory too](#resume-from-memory).
 
-<Tip>
-  You can boot a sandbox from a snapshot by **name** instead of ID — handy when you know the human-readable label you captured with:
-
-  <CodeGroup>
-    ```python Python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-    sb = client.create_sandbox(snapshot_name="ml-ready")
-    ```
-
-    ```ts TypeScript theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-    const sb = await client.createSandbox({ snapshotName: "ml-ready" });
-    ```
-  </CodeGroup>
-
-  Pass at most one of `snapshot_id` / `snapshot_name` (or `snapshotId` / `snapshotName` in TypeScript). Omit both to use the default runtime.
-</Tip>
+> [!TIP]
+>
+> You can boot a sandbox from a snapshot by **name** instead of ID — handy when you know the human-readable label you captured with:
+>
+> ```python Python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> sb = client.create_sandbox(snapshot_name="ml-ready")
+> ```
+>
+> ```ts TypeScript theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> const sb = await client.createSandbox({ snapshotName: "ml-ready" });
+> ```
+>
+> Pass at most one of `snapshot_id` / `snapshot_name` (or `snapshotId` / `snapshotName` in TypeScript). Omit both to use the default runtime.
 
 ### Tune capture timing
 
 `capture_snapshot` blocks until the new snapshot is ready. Raise the `timeout` kwarg (default 60s) if your filesystem is large or your storage backend is slow.
 
-<CodeGroup>
-  ```python Python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  snapshot = sb.capture_snapshot("ml-ready-v2", timeout=600)
-  ```
+```python Python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+snapshot = sb.capture_snapshot("ml-ready-v2", timeout=600)
+```
 
-  ```ts TypeScript theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  const snapshot = await sb.captureSnapshot("ml-ready-v2", { timeout: 600 });
-  ```
-</CodeGroup>
+```ts TypeScript theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+const snapshot = await sb.captureSnapshot("ml-ready-v2", { timeout: 600 });
+```
 
 ### Resume from memory
 
 A snapshot can carry the sandbox's RAM alongside its filesystem. Boot from one and the sandbox resumes where it left off, with its processes still running, instead of cold-booting. Use this for environments that are slow to warm up, such as a loaded model or a started database.
 
-<Note>
-  Memory snapshots are available over the REST API only. The `langsmith.sandbox` Python and TypeScript clients do not expose these fields yet.
-</Note>
+> [!NOTE]
+>
+> Memory snapshots are available over the REST API only. The `langsmith.sandbox` Python and TypeScript clients do not expose these fields yet.
 
 Capture memory by setting `include_memory` on a capture:
 
@@ -507,73 +507,67 @@ Capturing memory from a **stopped** sandbox only works when that sandbox was cre
 
 ## List, fetch, and delete snapshots
 
-<CodeGroup>
-  ```python Python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  # List all snapshots in the workspace
-  snapshots = client.list_snapshots()
-  for s in snapshots:
-      print(s.id, s.name, s.status)
+```python Python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+# List all snapshots in the workspace
+snapshots = client.list_snapshots()
+for s in snapshots:
+    print(s.id, s.name, s.status)
 
-  # Fetch a single snapshot by ID
-  snapshot = client.get_snapshot("550e8400-e29b-41d4-a716-446655440000")
+# Fetch a single snapshot by ID
+snapshot = client.get_snapshot("550e8400-e29b-41d4-a716-446655440000")
 
-  # Delete a snapshot (fails if any sandbox still references it)
-  client.delete_snapshot(snapshot.id)
-  ```
+# Delete a snapshot (fails if any sandbox still references it)
+client.delete_snapshot(snapshot.id)
+```
 
-  ```ts TypeScript theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  const snapshots = await client.listSnapshots();
-  for (const s of snapshots) {
-    console.log(s.id, s.name, s.status);
-  }
+```ts TypeScript theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+const snapshots = await client.listSnapshots();
+for (const s of snapshots) {
+  console.log(s.id, s.name, s.status);
+}
 
-  const snapshot = await client.getSnapshot("550e8400-e29b-41d4-a716-446655440000");
+const snapshot = await client.getSnapshot("550e8400-e29b-41d4-a716-446655440000");
 
-  await client.deleteSnapshot(snapshot.id);
-  ```
-</CodeGroup>
+await client.deleteSnapshot(snapshot.id);
+```
 
-<Note>
-  `list_snapshots` / `listSnapshots` paginates server-side (default page size 50, max 500) and accepts optional filters: `name_contains` / `nameContains` (case-insensitive substring on name), `limit` (1–500), and `offset` (≥ 0). Page through results by advancing `offset`.
-
-  <CodeGroup>
-    ```python Python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-    page = client.list_snapshots(name_contains="ml", limit=100)
-    ```
-
-    ```ts TypeScript theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-    const page = await client.listSnapshots({ nameContains: "ml", limit: 100 });
-    ```
-  </CodeGroup>
-</Note>
+> [!NOTE]
+>
+> `list_snapshots` / `listSnapshots` paginates server-side (default page size 50, max 500) and accepts optional filters: `name_contains` / `nameContains` (case-insensitive substring on name), `limit` (1–500), and `offset` (≥ 0). Page through results by advancing `offset`.
+>
+> ```python Python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> page = client.list_snapshots(name_contains="ml", limit=100)
+> ```
+>
+> ```ts TypeScript theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> const page = await client.listSnapshots({ nameContains: "ml", limit: 100 });
+> ```
 
 ## Stopped sandboxes
 
 A stopped sandbox keeps its filesystem, and the next request wakes it automatically. You do not need to start it yourself: send the command you wanted to run and the sandbox comes back up to serve it.
 
-<CodeGroup>
-  ```python Python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  sb = client.create_sandbox(snapshot_id=snapshot.id, name="my-vm")
-  sb.run("echo 'hello' > /tmp/state.txt")
+```python Python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+sb = client.create_sandbox(snapshot_id=snapshot.id, name="my-vm")
+sb.run("echo 'hello' > /tmp/state.txt")
 
-  # Stop early to release resources. The idle timeout does this for you.
-  sb.stop()
+# Stop early to release resources. The idle timeout does this for you.
+sb.stop()
 
-  # No start call: this wakes the sandbox and runs once it is up.
-  result = sb.run("cat /tmp/state.txt")
-  assert result.stdout.strip() == "hello"
-  ```
+# No start call: this wakes the sandbox and runs once it is up.
+result = sb.run("cat /tmp/state.txt")
+assert result.stdout.strip() == "hello"
+```
 
-  ```ts TypeScript theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  const sb = await client.createSandbox(snapshot.id, { name: "my-vm" });
-  await sb.run("echo 'hello' > /tmp/state.txt");
+```ts TypeScript theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+const sb = await client.createSandbox(snapshot.id, { name: "my-vm" });
+await sb.run("echo 'hello' > /tmp/state.txt");
 
-  await sb.stop();
+await sb.stop();
 
-  const result = await sb.run("cat /tmp/state.txt");
-  console.log(result.stdout.trim()); // "hello"
-  ```
-</CodeGroup>
+const result = await sb.run("cat /tmp/state.txt");
+console.log(result.stdout.trim()); // "hello"
+```
 
 The first request after a stop pays the boot cost, so it is slower than the ones that follow. Create the sandbox with `preserve_memory_on_stop` to [resume from memory](#resume-from-memory) instead of cold-booting.
 
@@ -585,12 +579,6 @@ The first request after a stop pays the boot cost, so it is slower than the ones
 
 ***
 
-<div>
-  <Callout icon="terminal-2">
-    [Connect these docs](/use-these-docs) to your agent of choice via MCP for real-time answers.
-  </Callout>
+[Connect these docs](/use-these-docs) to your agent of choice via MCP for real-time answers.
 
-  <Callout icon="edit">
-    [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/sandbox-snapshots.mdx) or [file an issue](https://github.com/langchain-ai/docs/issues/new/choose).
-  </Callout>
-</div>
+[Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/sandbox-snapshots.mdx) or [file an issue](https://github.com/langchain-ai/docs/issues/new/choose).

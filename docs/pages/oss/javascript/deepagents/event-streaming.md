@@ -84,9 +84,9 @@ await Promise.all(watchers);
 console.log({ running, completed, failed });
 ```
 
-<Card title="View example trace" icon="chart-line" href="https://smith.langchain.com/public/af4407a9-dadd-4090-8e7b-f77e85f0d65a/r">
-  Open a public LangSmith run for this example.
-</Card>
+> **[View example trace](https://smith.langchain.com/public/af4407a9-dadd-4090-8e7b-f77e85f0d65a/r)**
+>
+> Open a public LangSmith run for this example.
 
 ## Stream messages
 
@@ -139,9 +139,9 @@ for await (const subagent of stream.subagents) {
 }
 ```
 
-<Card title="View example trace" icon="chart-line" href="https://smith.langchain.com/public/036480ea-6f7d-4459-ad25-e04f3f13308b/r">
-  Open a public LangSmith run for this example.
-</Card>
+> **[View example trace](https://smith.langchain.com/public/036480ea-6f7d-4459-ad25-e04f3f13308b/r)**
+>
+> Open a public LangSmith run for this example.
 
 ## Stream nested work
 
@@ -173,9 +173,9 @@ for await (const subagent of stream.subagents) {
 }
 ```
 
-<Card title="View example trace" icon="chart-line" href="https://smith.langchain.com/public/a698b0c5-8151-43b6-aee4-aeac1a6926e7/r">
-  Open a public LangSmith run for this example.
-</Card>
+> **[View example trace](https://smith.langchain.com/public/a698b0c5-8151-43b6-aee4-aeac1a6926e7/r)**
+>
+> Open a public LangSmith run for this example.
 
 ## Consume concurrently
 
@@ -204,9 +204,9 @@ await Promise.all([
 ]);
 ```
 
-<Card title="View example trace" icon="chart-line" href="https://smith.langchain.com/public/a3643504-3b56-47f4-ac30-2e6597dc7e04/r">
-  Open a public LangSmith run for this example.
-</Card>
+> **[View example trace](https://smith.langchain.com/public/a3643504-3b56-47f4-ac30-2e6597dc7e04/r)**
+>
+> Open a public LangSmith run for this example.
 
 When you need exact arrival order across the coordinator and all subagents, iterate raw protocol events and use `namespace` to identify the source:
 
@@ -232,9 +232,9 @@ for await (const event of stream) {
 }
 ```
 
-<Card title="View example trace" icon="chart-line" href="https://smith.langchain.com/public/851be40f-46b1-424d-a13f-705a955db1a8/r">
-  Open a public LangSmith run for this example.
-</Card>
+> **[View example trace](https://smith.langchain.com/public/851be40f-46b1-424d-a13f-705a955db1a8/r)**
+>
+> Open a public LangSmith run for this example.
 
 ## Subagents versus subgraphs
 
@@ -248,12 +248,6 @@ for await (const event of stream) {
 
 ***
 
-<div>
-  <Callout icon="terminal-2">
-    [Connect these docs](/use-these-docs) to your agent of choice via MCP for real-time answers.
-  </Callout>
+[Connect these docs](/use-these-docs) to your agent of choice via MCP for real-time answers.
 
-  <Callout icon="edit">
-    [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/oss/deepagents/event-streaming.mdx) or [file an issue](https://github.com/langchain-ai/docs/issues/new/choose).
-  </Callout>
-</div>
+[Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/oss/deepagents/event-streaming.mdx) or [file an issue](https://github.com/langchain-ai/docs/issues/new/choose).

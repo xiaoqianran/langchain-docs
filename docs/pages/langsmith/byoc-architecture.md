@@ -19,7 +19,7 @@ The table below summarizes the split:
 | **Control plane** | LangChain's cloud, `us-east-2` | Authentication, organization and workspace configuration, billing and usage metadata, LangSmith API keys, and the static frontend assets |
 | **Data plane** | Your AWS account, in the region you choose | Traces, prompts, datasets, evaluators, experiments, insights runs, annotation queues, agent deployments, workspace secrets, and other application data |
 
-<img alt="BYOC architecture diagram. The LangSmith UI and the client apps in your application VPC both reach the data plane over one private connection, using PrivateLink, VPC peering, or Tailscale, which terminates at a network load balancer. The load balancer feeds an Istio ingress in an EKS cluster in your AWS account, which routes to the LangSmith services that run the backend, SmithDB, and sandboxes, and those services read and write S3, RDS, and ElastiCache. The LangChain cloud control plane holds Crossplane, on-call engineers, alerting, and the LangSmith control plane services. It reaches the cluster over PrivateLink for scaling and upgrades, receives auth and telemetry back over a second PrivateLink, and assumes an IAM role in your account to provision resources." />
+![BYOC architecture diagram. The LangSmith UI and the client apps in your application VPC both reach the data plane over one private connection, using PrivateLink, VPC peering, or Tailscale, which terminates at a network load balancer. The load balancer feeds an Istio ingress in an EKS cluster in your AWS account, which routes to the LangSmith services that run the backend, SmithDB, and sandboxes, and those services read and write S3, RDS, and ElastiCache. The LangChain cloud control plane holds Crossplane, on-call engineers, alerting, and the LangSmith control plane services. It reaches the cluster over PrivateLink for scaling and upgrades, receives auth and telemetry back over a second PrivateLink, and assumes an IAM role in your account to provision resources.](https://mintcdn.com/langchain-5e9cc07a/sRMLsyZ-6iriBvN5/langsmith/images/byoc-architecture.png?fit=max\&auto=format\&n=sRMLsyZ-6iriBvN5\&q=85\&s=8e65825805f6f2449a623213239c26ee)
 
 ## Provisioned resources
 
@@ -67,7 +67,7 @@ Sensitive data does not leave your VPC, and does not pass through LangChain's VP
 
 To ingest or query data programmatically, point your client at your data plane directly. The data flow is always `browser or client → data plane → back to client`.
 
-<img alt="Data traffic diagram. A user on their own machine, VPC, or network opens aws.smith.langchain.com in a browser. The browser makes two requests: first it fetches the UI bundle of HTML, CSS, and JavaScript from the static assets in LangChain's cloud, which hold no customer data; second it sends data plane API requests to the network load balancer in your BYOC VPC, which routes to the EKS cluster running LangSmith and on to S3, RDS, and the cache." />
+![Data traffic diagram. A user on their own machine, VPC, or network opens aws.smith.langchain.com in a browser. The browser makes two requests: first it fetches the UI bundle of HTML, CSS, and JavaScript from the static assets in LangChain's cloud, which hold no customer data; second it sends data plane API requests to the network load balancer in your BYOC VPC, which routes to the EKS cluster running LangSmith and on to S3, RDS, and the cache.](https://mintcdn.com/langchain-5e9cc07a/sRMLsyZ-6iriBvN5/langsmith/images/byoc-data-flow.png?fit=max\&auto=format\&n=sRMLsyZ-6iriBvN5\&q=85\&s=3f85cc69ca981f5ba14ad68a7bae5e7b)
 
 ### Connectivity
 
@@ -92,12 +92,6 @@ Traffic reaches LangSmith through an Istio ingress fronted by an AWS NLB, using 
 
 ***
 
-<div>
-  <Callout icon="terminal-2">
-    [Connect these docs](/use-these-docs) to your agent of choice via MCP for real-time answers.
-  </Callout>
+[Connect these docs](/use-these-docs) to your agent of choice via MCP for real-time answers.
 
-  <Callout icon="edit">
-    [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/byoc-architecture.mdx) or [file an issue](https://github.com/langchain-ai/docs/issues/new/choose).
-  </Callout>
-</div>
+[Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/byoc-architecture.mdx) or [file an issue](https://github.com/langchain-ai/docs/issues/new/choose).

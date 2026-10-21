@@ -4,76 +4,74 @@
 
 Enable the agent-gateway service on a self-hosted LangSmith install using the Helm chart, then make your first gateway call.
 
-<Note>
-  The LLM Gateway is in [beta](/langsmith/release-stages).
-</Note>
+> [!NOTE]
+>
+> The LLM Gateway is in [beta](/langsmith/release-stages).
 
 The LLM Gateway (the `agent-gateway` service) proxies model calls from agents and coding agents to upstream LLM providers. The gateway applies policies at granular scopes for reliability, spend limits, and redaction of PII and secrets. You can also route your LangSmith deployment's model calls through the gateway.
 
 This guide enables it on a self-hosted Kubernetes install using the Helm chart. For the SaaS equivalent, see [LLM Gateway](/langsmith/llm-gateway).
 
-<Note>
-  Enabling the gateway requires Helm chart version 0.17.1 or later, which ships LangSmith version 0.17.30.
-</Note>
+> [!NOTE]
+>
+> Enabling the gateway requires Helm chart version 0.17.1 or later, which ships LangSmith version 0.17.30.
 
-<Info>
-  The [Spend Monitoring dashboard](/langsmith/llm-gateway-monitoring) is available with SmithDB, but not ClickHouse.
-</Info>
+> [!NOTE]
+>
+> The [Spend Monitoring dashboard](/langsmith/llm-gateway-monitoring) is available with SmithDB, but not ClickHouse.
 
 ## Enable the gateway
 
-<Steps>
-  <Step title="Add Helm values" icon="settings">
-    <Note>
-      The `agent-gateway` service requires access to Postgres and Redis, and network access to other LangSmith pods, similar to `backend` and `platform-backend`. You may need to configure network policies, Kubernetes service accounts, and pod annotations to enable this access.
-    </Note>
+**1. Add Helm values**
 
-    Add these values to your Helm values file:
+> [!NOTE]
+>
+> The `agent-gateway` service requires access to Postgres and Redis, and network access to other LangSmith pods, similar to `backend` and `platform-backend`. You may need to configure network policies, Kubernetes service accounts, and pod annotations to enable this access.
 
-    ```yaml theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-    agentGateway:
-      enabled: true
+Add these values to your Helm values file:
 
-      # Defaults shown for reference—override only if you have a reason.
-      # containerPort: 8083
-      # deployment:
-      #   replicas: 1
-      #   resources:
-      #     limits:   { cpu: 2, memory: 2Gi }
-      #     requests: { cpu: 1, memory: 1Gi }
-      # autoscaling:
-      #   enabled: true
-      #   minReplicas: 1
-      #   maxReplicas: 5
-      #   targetCPUUtilizationPercentage: 50
-      #   targetMemoryUtilizationPercentage: 70
-      # service:
-      #   type: ClusterIP
-      #   port: 8083
-    ```
+```yaml theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+agentGateway:
+  enabled: true
 
-    Autoscaling is enabled by default. With the default resources, each replica handled \~100 concurrent streams on N2 instances or similar in testing, with prompts from \~40 to \~7,500 tokens.
-  </Step>
+  # Defaults shown for reference—override only if you have a reason.
+  # containerPort: 8083
+  # deployment:
+  #   replicas: 1
+  #   resources:
+  #     limits:   { cpu: 2, memory: 2Gi }
+  #     requests: { cpu: 1, memory: 1Gi }
+  # autoscaling:
+  #   enabled: true
+  #   minReplicas: 1
+  #   maxReplicas: 5
+  #   targetCPUUtilizationPercentage: 50
+  #   targetMemoryUtilizationPercentage: 70
+  # service:
+  #   type: ClusterIP
+  #   port: 8083
+```
 
-  <Step title="Apply and verify" icon="rocket">
-    Apply the chart with chart version 0.17.1 or later. See [Upgrade an installation](/langsmith/self-host-upgrades) for additional instructions.
+Autoscaling is enabled by default. With the default resources, each replica handled \~100 concurrent streams on N2 instances or similar in testing, with prompts from \~40 to \~7,500 tokens.
 
-    ```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-    helm search repo langchain/langsmith --versions
+**2. Apply and verify**
 
-    helm upgrade --install langsmith langchain/langsmith \
-      --version <chart-version> \
-      -f values.yaml --timeout=20m
-    ```
+Apply the chart with chart version 0.17.1 or later. See [Upgrade an installation](/langsmith/self-host-upgrades) for additional instructions.
 
-    Verify the deployment is healthy. The Deployment is named `<release-fullname>-agent-gateway`, which is `langsmith-agent-gateway` for a release named `langsmith`:
+```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+helm search repo langchain/langsmith --versions
 
-    ```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-    kubectl get deploy langsmith-agent-gateway
-    kubectl rollout status deploy/langsmith-agent-gateway
-    ```
-  </Step>
-</Steps>
+helm upgrade --install langsmith langchain/langsmith \
+  --version <chart-version> \
+  -f values.yaml --timeout=20m
+```
+
+Verify the deployment is healthy. The Deployment is named `<release-fullname>-agent-gateway`, which is `langsmith-agent-gateway` for a release named `langsmith`:
+
+```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+kubectl get deploy langsmith-agent-gateway
+kubectl rollout status deploy/langsmith-agent-gateway
+```
 
 ## Enable Presidio PII detection (optional)
 
@@ -112,102 +110,98 @@ agentGateway:
 
 This mirrors the [SaaS quickstart](/langsmith/llm-gateway-quickstart) with the base URL adjusted for self-hosted. Complete the steps above (gateway deployed, Ingress up) before continuing.
 
-<Info>
-  An organization admin must add provider API keys to workspace or organization model provider secrets for the models you want to reach, then grant users a role with the `gateway:invoke` and `workspaces:read` [permissions](/langsmith/organization-workspace-operations) and [distribute a workspace-scoped API key](/langsmith/llm-gateway-admin-setup#4-distribute-api-keys-to-users). See [Admin setup](/langsmith/llm-gateway-admin-setup).
-</Info>
+> [!NOTE]
+>
+> An organization admin must add provider API keys to workspace or organization model provider secrets for the models you want to reach, then grant users a role with the `gateway:invoke` and `workspaces:read` [permissions](/langsmith/organization-workspace-operations) and [distribute a workspace-scoped API key](/langsmith/llm-gateway-admin-setup#4-distribute-api-keys-to-users). See [Admin setup](/langsmith/llm-gateway-admin-setup).
 
-<Steps>
-  <Step title="Set environment variables" icon="terminal">
-    ```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-    # Replace with your Ingress hostname.
-    export LANGSMITH_GATEWAY_BASE_URL="https://<your-hostname>/gateway/v1"
-    export LANGSMITH_API_KEY="lsv2_..."
-    ```
+**1. Set environment variables**
 
-    For LangChain and Deep Agents, the convenience variables work the same way as the SaaS docs describe: they append `/openai/v1` to whatever you set if you're using OpenAI models.
+```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+# Replace with your Ingress hostname.
+export LANGSMITH_GATEWAY_BASE_URL="https://<your-hostname>/gateway/v1"
+export LANGSMITH_API_KEY="lsv2_..."
+```
 
-    ```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-    export LANGSMITH_GATEWAY="https://<your-hostname>/gateway"
-    export LANGSMITH_GATEWAY_API_KEY="$LANGSMITH_API_KEY"
-    ```
-  </Step>
+For LangChain and Deep Agents, the convenience variables work the same way as the SaaS docs describe: they append `/openai/v1` to whatever you set if you're using OpenAI models.
 
-  <Step title="Make a call" icon="send">
-    Either header works: `Authorization: Bearer <key>` or `X-Api-Key: <key>`. The examples below use the `Authorization` header. You can also test a call through the LLM Gateway home page simulator.
+```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+export LANGSMITH_GATEWAY="https://<your-hostname>/gateway"
+export LANGSMITH_GATEWAY_API_KEY="$LANGSMITH_API_KEY"
+```
 
-    <CodeGroup>
-      ```bash cURL theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-      curl "$LANGSMITH_GATEWAY_BASE_URL/chat/completions" \
-          -H "Authorization: Bearer $LANGSMITH_API_KEY" \
-          -H "Content-Type: application/json" \
-          -d '{"model":"openai/gpt-5.4-mini","messages":[{"role":"user","content":"ping"}]}'
-      ```
+**2. Make a call**
 
-      ```python Python (OpenAI SDK) theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-      import os
+Either header works: `Authorization: Bearer <key>` or `X-Api-Key: <key>`. The examples below use the `Authorization` header. You can also test a call through the LLM Gateway home page simulator.
 
-      from openai import OpenAI
+```bash cURL theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+curl "$LANGSMITH_GATEWAY_BASE_URL/chat/completions" \
+    -H "Authorization: Bearer $LANGSMITH_API_KEY" \
+    -H "Content-Type: application/json" \
+    -d '{"model":"openai/gpt-5.4-mini","messages":[{"role":"user","content":"ping"}]}'
+```
 
-      client = OpenAI(
-          base_url=os.environ["LANGSMITH_GATEWAY_BASE_URL"],
-          api_key=os.environ["LANGSMITH_API_KEY"],
-      )
-      response = client.chat.completions.create(
-          model="openai/gpt-5.4-mini",
-          messages=[{"role": "user", "content": "ping"}],
-      )
-      print(response.choices[0].message.content)
-      ```
+```python Python (OpenAI SDK) theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+import os
 
-      ```typescript TypeScript (OpenAI SDK) theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-      import OpenAI from "openai";
+from openai import OpenAI
 
-      const client = new OpenAI({
-        baseURL: process.env.LANGSMITH_GATEWAY_BASE_URL,
-        apiKey: process.env.LANGSMITH_API_KEY,
-      });
-      const response = await client.chat.completions.create({
-        model: "openai/gpt-5.4-mini",
-        messages: [{ role: "user", content: "ping" }],
-      });
-      console.log(response.choices[0].message.content);
-      ```
+client = OpenAI(
+    base_url=os.environ["LANGSMITH_GATEWAY_BASE_URL"],
+    api_key=os.environ["LANGSMITH_API_KEY"],
+)
+response = client.chat.completions.create(
+    model="openai/gpt-5.4-mini",
+    messages=[{"role": "user", "content": "ping"}],
+)
+print(response.choices[0].message.content)
+```
 
-      ```python Python (LangChain) theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-      import os
+```typescript TypeScript (OpenAI SDK) theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+import OpenAI from "openai";
 
-      from langchain.agents import create_agent
-      from langchain.chat_models import init_chat_model
+const client = new OpenAI({
+  baseURL: process.env.LANGSMITH_GATEWAY_BASE_URL,
+  apiKey: process.env.LANGSMITH_API_KEY,
+});
+const response = await client.chat.completions.create({
+  model: "openai/gpt-5.4-mini",
+  messages: [{ role: "user", content: "ping" }],
+});
+console.log(response.choices[0].message.content);
+```
 
-      model = init_chat_model(
-          model="openai/gpt-5.4-mini",
-          model_provider="openai",
-          base_url=os.environ["LANGSMITH_GATEWAY_BASE_URL"],
-          api_key=os.environ["LANGSMITH_API_KEY"],
-      )
-      agent = create_agent(model=model, system_prompt="You are a helpful assistant.")
-      result = agent.invoke({"messages": [{"role": "user", "content": "ping"}]})
-      print(result["messages"][-1].content)
-      ```
-    </CodeGroup>
+```python Python (LangChain) theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+import os
 
-    A `200` confirms the gateway, API key, and provider secret are all wired correctly.
-  </Step>
+from langchain.agents import create_agent
+from langchain.chat_models import init_chat_model
 
-  <Step title="View the trace" icon="activity">
-    In the LangSmith UI, go to the tracing project named `gateway` in the workspace tied to your API key. Every call routed through the gateway appears there with input, output, latency, and token usage, if tracing contents are enabled.
-  </Step>
+model = init_chat_model(
+    model="openai/gpt-5.4-mini",
+    model_provider="openai",
+    base_url=os.environ["LANGSMITH_GATEWAY_BASE_URL"],
+    api_key=os.environ["LANGSMITH_API_KEY"],
+)
+agent = create_agent(model=model, system_prompt="You are a helpful assistant.")
+result = agent.invoke({"messages": [{"role": "user", "content": "ping"}]})
+print(result["messages"][-1].content)
+```
 
-  <Step title="Set a spend policy (optional)" icon="shield">
-    Go to **LLM Gateway** and select **Cost Controls** to cap spend per workspace or per API key. Once a request exceeds the cap, the gateway returns a `402` with a message naming the policies that blocked the request:
+A `200` confirms the gateway, API key, and provider secret are all wired correctly.
 
-    ```json theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-    {"type": "error", "error": {"message": "request blocked by gateway policies: R&D Spend Cap"}}
-    ```
+**3. View the trace**
 
-    For the full guide, see [Spend policies](/langsmith/llm-gateway-spend-policies).
-  </Step>
-</Steps>
+In the LangSmith UI, go to the tracing project named `gateway` in the workspace tied to your API key. Every call routed through the gateway appears there with input, output, latency, and token usage, if tracing contents are enabled.
+
+**4. Set a spend policy (optional)**
+
+Go to **LLM Gateway** and select **Cost Controls** to cap spend per workspace or per API key. Once a request exceeds the cap, the gateway returns a `402` with a message naming the policies that blocked the request:
+
+```json theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+{"type": "error", "error": {"message": "request blocked by gateway policies: R&D Spend Cap"}}
+```
+
+For the full guide, see [Spend policies](/langsmith/llm-gateway-spend-policies).
 
 ## Troubleshooting
 
@@ -228,12 +222,6 @@ This mirrors the [SaaS quickstart](/langsmith/llm-gateway-quickstart) with the b
 
 ***
 
-<div>
-  <Callout icon="terminal-2">
-    [Connect these docs](/use-these-docs) to your agent of choice via MCP for real-time answers.
-  </Callout>
+[Connect these docs](/use-these-docs) to your agent of choice via MCP for real-time answers.
 
-  <Callout icon="edit">
-    [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/llm-gateway-self-hosted.mdx) or [file an issue](https://github.com/langchain-ai/docs/issues/new/choose).
-  </Callout>
-</div>
+[Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/llm-gateway-self-hosted.mdx) or [file an issue](https://github.com/langchain-ai/docs/issues/new/choose).

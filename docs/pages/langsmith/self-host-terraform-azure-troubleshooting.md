@@ -6,9 +6,9 @@ Common issues, fixes, and diagnostic commands for LangSmith self-hosted on Azure
 
 This page documents common issues, fixes, and diagnostic commands for LangSmith deployments provisioned with the [Azure Terraform modules](https://github.com/langchain-ai/terraform/tree/main/modules/azure).
 
-<Tip>
-  Before upgrading, review the [LangSmith self-hosted changelog](/langsmith/self-hosted-changelog) for breaking changes and required variable updates. Run `make kubeconfig` before running any `kubectl` commands. It fetches the cluster credentials and, on Microsoft Entra ID clusters, converts them for `kubelogin`.
-</Tip>
+> [!TIP]
+>
+> Before upgrading, review the [LangSmith self-hosted changelog](/langsmith/self-hosted-changelog) for breaking changes and required variable updates. Run `make kubeconfig` before running any `kubectl` commands. It fetches the cluster credentials and, on Microsoft Entra ID clusters, converts them for `kubelogin`.
 
 For a copy-paste reference of the `kubectl`, `helm`, and `az` calls used throughout this page, skip to [Diagnostic commands](#diagnostic-commands).
 
@@ -90,9 +90,9 @@ az vm list-usage --location eastus --query "[?contains(name.value,'DSv5')]" -o t
 
 **Alternative, switch VM family if DSv5 quota is exhausted:** Set `default_node_pool_vm_size = "Standard_D8s_v3"` and use `Standard_D16s_v3` for the `large` pool in `additional_node_pools`. Same vCPU and RAM, different quota pool. Move back to v5 once the quota arrives. Do not fall back to DSv2 (`Standard_DS4_v2`, `Standard_DS5_v2`), which Azure has retired.
 
-<Note>
-  `max_pods` is immutable on an existing node pool. Set it before the first `terraform apply`.
-</Note>
+> [!NOTE]
+>
+> `max_pods` is immutable on an existing node pool. Set it before the first `terraform apply`.
 
 ### `LocationIsOfferRestricted`: Postgres Flexible Server blocked in the region
 
@@ -578,9 +578,9 @@ kubectl delete job langsmith-agent-bootstrap -n langsmith --ignore-not-found
 
 **Fix:** Set `sizing_profile = "production-large"` in `terraform.tfvars`, which gives the listener `4Gi`, then run `make init-values` and `make deploy`. To stay on your profile, raise `listener.deployment.resources.limits.memory` in `helm/values/langsmith-values-sizing-<profile>.yaml` and run `make deploy`. `make init-values` copies the sizing file again, so repeat the edit after each run.
 
-<Note>
-  The chart reads `listener.deployment.resources` for container limits, not the flat `listener.resources`. A `listener.resources` value in any overlay file is silently ignored.
-</Note>
+> [!NOTE]
+>
+> The chart reads `listener.deployment.resources` for container limits, not the flat `listener.resources`. A `listener.resources` value in any overlay file is silently ignored.
 
 ### Stale HPA scales `listener` or `host-backend` to max replicas
 
@@ -756,12 +756,6 @@ make status-quick   # skip the Key Vault, kubeconfig, Kubernetes, and Helm check
 
 ***
 
-<div>
-  <Callout icon="terminal-2">
-    [Connect these docs](/use-these-docs) to your agent of choice via MCP for real-time answers.
-  </Callout>
+[Connect these docs](/use-these-docs) to your agent of choice via MCP for real-time answers.
 
-  <Callout icon="edit">
-    [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/self-host-terraform-azure-troubleshooting.mdx) or [file an issue](https://github.com/langchain-ai/docs/issues/new/choose).
-  </Callout>
-</div>
+[Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/self-host-terraform-azure-troubleshooting.mdx) or [file an issue](https://github.com/langchain-ai/docs/issues/new/choose).

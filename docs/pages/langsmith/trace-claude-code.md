@@ -36,9 +36,13 @@ Then move the install onto the new version from your shell and restart Claude Co
 claude plugin update langsmith-tracing@langsmith-claude-code-plugins
 ```
 
-<Note> The marketplace update on its own only refreshes the catalog clone. Your install stays pinned to the version directory it was installed from, so the hooks keep running the old bundle until `claude plugin update` moves it. To skip both steps next time, run `/plugin`, open **Marketplaces** → `langsmith-claude-code-plugins` and choose **Enable auto-update**: third-party marketplaces have it off by default, and enabling it updates the marketplace and its installed plugins together. </Note>
+> [!NOTE]
+>
+> The marketplace update on its own only refreshes the catalog clone. Your install stays pinned to the version directory it was installed from, so the hooks keep running the old bundle until `claude plugin update` moves it. To skip both steps next time, run `/plugin`, open **Marketplaces** → `langsmith-claude-code-plugins` and choose **Enable auto-update**: third-party marketplaces have it off by default, and enabling it updates the marketplace and its installed plugins together.
 
-<Note> If you are migrating from the previously recommended version of tracing Claude Code with manually created stop hooks, refer to [Migrating from the manual stop hook](#migrating-from-the-manual-stop-hook). </Note>
+> [!NOTE]
+>
+> If you are migrating from the previously recommended version of tracing Claude Code with manually created stop hooks, refer to [Migrating from the manual stop hook](#migrating-from-the-manual-stop-hook).
 
 ### Setting environment variables
 
@@ -64,7 +68,9 @@ To get set up, create or edit [Claude Code's project settings file](https://code
 }
 ```
 
-<Note> Alternatively, to enable tracing to LangSmith for all Claude Code sessions, you can add the previous JSON to your [global Claude Code settings.json](https://code.claude.com/docs/en/settings#:~:text=User%20settings%20are%20defined%20in%20~/.claude/settings.json%20and%20apply%20to%20all%20projects.) file. </Note>
+> [!NOTE]
+>
+> Alternatively, to enable tracing to LangSmith for all Claude Code sessions, you can add the previous JSON to your [global Claude Code settings.json](https://code.claude.com/docs/en/settings#:~:text=User%20settings%20are%20defined%20in%20~/.claude/settings.json%20and%20apply%20to%20all%20projects.) file.
 
 **Option 2: Shell environment variables**
 
@@ -89,26 +95,24 @@ In LangSmith, you'll find:
 
 Set the `CC_LANGSMITH_METADATA` environment variable to a JSON object to attach custom metadata to all traced runs. This is useful for tagging traces with contextual information such as PR URLs, authors, or environment names.
 
-<Tabs>
-  <Tab title="Settings file (recommended)">
-    ```json theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-    {
-      "env": {
-        "TRACE_TO_LANGSMITH": "true",
-        "CC_LANGSMITH_API_KEY": "<LangSmith API key>",
-        "CC_LANGSMITH_PROJECT": "my-project",
-        "CC_LANGSMITH_METADATA": "{\"author\":\"jane\",\"environment\":\"development\"}"
-      }
-    }
-    ```
-  </Tab>
+**Settings file (recommended)**
 
-  <Tab title="Shell environment variable">
-    ```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-    export CC_LANGSMITH_METADATA='{"author":"jane","environment":"development"}'
-    ```
-  </Tab>
-</Tabs>
+```json theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+{
+  "env": {
+    "TRACE_TO_LANGSMITH": "true",
+    "CC_LANGSMITH_API_KEY": "<LangSmith API key>",
+    "CC_LANGSMITH_PROJECT": "my-project",
+    "CC_LANGSMITH_METADATA": "{\"author\":\"jane\",\"environment\":\"development\"}"
+  }
+}
+```
+
+**Shell environment variable**
+
+```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+export CC_LANGSMITH_METADATA='{"author":"jane","environment":"development"}'
+```
 
 The metadata keys and values will appear on all runs in LangSmith, which you can use to filter and search traces.
 
@@ -129,26 +133,24 @@ Muted runs keep their normal nesting, names, timing, status, model and tool iden
 
 To start threads in metadata-only mode without running a command in each one, set `CC_LANGSMITH_DEFAULT_MUTED` to `"true"`:
 
-<Tabs>
-  <Tab title="Settings file (recommended)">
-    ```json theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-    {
-      "env": {
-        "TRACE_TO_LANGSMITH": "true",
-        "CC_LANGSMITH_API_KEY": "<LangSmith API key>",
-        "CC_LANGSMITH_PROJECT": "my-project",
-        "CC_LANGSMITH_DEFAULT_MUTED": "true"
-      }
-    }
-    ```
-  </Tab>
+**Settings file (recommended)**
 
-  <Tab title="Shell environment variable">
-    ```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-    export CC_LANGSMITH_DEFAULT_MUTED="true"
-    ```
-  </Tab>
-</Tabs>
+```json theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+{
+  "env": {
+    "TRACE_TO_LANGSMITH": "true",
+    "CC_LANGSMITH_API_KEY": "<LangSmith API key>",
+    "CC_LANGSMITH_PROJECT": "my-project",
+    "CC_LANGSMITH_DEFAULT_MUTED": "true"
+  }
+}
+```
+
+**Shell environment variable**
+
+```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+export CC_LANGSMITH_DEFAULT_MUTED="true"
+```
 
 Set the variable to `"false"` to return to the unmuted default. The comparison is case-insensitive, and any other value mutes, including an empty string.
 
@@ -327,38 +329,36 @@ Each replica object supports the following fields:
 
 There are two ways to set the `CC_LANGSMITH_RUNS_ENDPOINTS` environment variable:
 
-<Tabs>
-  <Tab title="Settings file (recommended)">
-    In your local `.claude/settings.local.json` or global `~/.claude/settings.json`:
+**Settings file (recommended)**
 
-    ```json theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-    {
-      "env": {
-        "TRACE_TO_LANGSMITH": "true",
-        "CC_LANGSMITH_RUNS_ENDPOINTS": "[{\"apiUrl\":\"https://api.smith.langchain.com\",\"apiKey\":\"ls__key_workspace_a\",\"projectName\":\"project-prod\"},{\"apiUrl\":\"https://api.smith.langchain.com\",\"apiKey\":\"ls__key_workspace_b\",\"projectName\":\"project-staging\",\"updates\":{\"metadata\":{\"environment\":\"staging\"}}}]"
-      }
-    }
-    ```
+In your local `.claude/settings.local.json` or global `~/.claude/settings.json`:
 
-    <Tip>
-      To generate the escaped JSON string, use:
+```json theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+{
+  "env": {
+    "TRACE_TO_LANGSMITH": "true",
+    "CC_LANGSMITH_RUNS_ENDPOINTS": "[{\"apiUrl\":\"https://api.smith.langchain.com\",\"apiKey\":\"ls__key_workspace_a\",\"projectName\":\"project-prod\"},{\"apiUrl\":\"https://api.smith.langchain.com\",\"apiKey\":\"ls__key_workspace_b\",\"projectName\":\"project-staging\",\"updates\":{\"metadata\":{\"environment\":\"staging\"}}}]"
+  }
+}
+```
 
-      ```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-      echo '[{"apiUrl":"...","apiKey":"...","projectName":"..."}]' | jq -cR .
-      ```
-    </Tip>
-  </Tab>
+> [!TIP]
+>
+> To generate the escaped JSON string, use:
+>
+> ```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> echo '[{"apiUrl":"...","apiKey":"...","projectName":"..."}]' | jq -cR .
+> ```
 
-  <Tab title="Shell environment variable">
-    **Option 2: Shell environment variable**
+**Shell environment variable**
 
-    Add to your `~/.zshrc`, `~/.bashrc`, or `~/.bash_profile`:
+**Option 2: Shell environment variable**
 
-    ```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-    export CC_LANGSMITH_RUNS_ENDPOINTS='[{"apiUrl":"https://api.smith.langchain.com","apiKey":"ls__key_workspace_a","projectName":"project-prod"},{"apiUrl":"https://api.smith.langchain.com","apiKey":"ls__key_workspace_b","projectName":"project-staging","updates":{"metadata":{"environment":"staging"}}}]'
-    ```
-  </Tab>
-</Tabs>
+Add to your `~/.zshrc`, `~/.bashrc`, or `~/.bash_profile`:
+
+```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+export CC_LANGSMITH_RUNS_ENDPOINTS='[{"apiUrl":"https://api.smith.langchain.com","apiKey":"ls__key_workspace_a","projectName":"project-prod"},{"apiUrl":"https://api.smith.langchain.com","apiKey":"ls__key_workspace_b","projectName":"project-staging","updates":{"metadata":{"environment":"staging"}}}]'
+```
 
 ## Troubleshooting
 
@@ -411,12 +411,6 @@ The plugin is open-source under the MIT license and is available in [this GitHub
 
 ***
 
-<div>
-  <Callout icon="terminal-2">
-    [Connect these docs](/use-these-docs) to your agent of choice via MCP for real-time answers.
-  </Callout>
+[Connect these docs](/use-these-docs) to your agent of choice via MCP for real-time answers.
 
-  <Callout icon="edit">
-    [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/trace-claude-code.mdx) or [file an issue](https://github.com/langchain-ai/docs/issues/new/choose).
-  </Callout>
-</div>
+[Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/trace-claude-code.mdx) or [file an issue](https://github.com/langchain-ai/docs/issues/new/choose).

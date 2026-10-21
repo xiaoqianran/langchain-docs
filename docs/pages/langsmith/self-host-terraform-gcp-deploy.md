@@ -127,9 +127,9 @@ You also need a LangSmith license key ([contact our sales team](https://www.lang
 
 ## Quickstart
 
-<Tip>
-  For a condensed cheat sheet of `make` targets, required variables, and common constraints, see the [GCP quick reference](/langsmith/self-host-terraform-gcp-quick-reference).
-</Tip>
+> [!TIP]
+>
+> For a condensed cheat sheet of `make` targets, required variables, and common constraints, see the [GCP quick reference](/langsmith/self-host-terraform-gcp-quick-reference).
 
 For the fastest path from zero to a running LangSmith instance, run these commands in order. They deploy Helm chart 0.17. To deploy chart 0.16, see [Clone and configure](#clone-and-configure).
 
@@ -193,16 +193,16 @@ cd terraform/modules/gcp
 
 All subsequent commands run from `modules/gcp/`. Run `make help` for the full target list.
 
-<Note>
-  The `main` branch and `v0.17.x` release tags deploy Helm chart 0.17, and this guide describes them. `v0.16.x` tags deploy chart 0.16. To stay on chart 0.16, list the tags and check out the latest `v0.16.x` tag:
-
-  ```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  git tag -l 'v0.16.*' --sort=-v:refname | head -1
-  git checkout <tag>
-  ```
-
-  Notes that start with "On chart 0.16" describe where the 0.16 line differs. To move an existing deployment to chart 0.17, see [Upgrade from chart 0.16](#upgrade-from-chart-0-16).
-</Note>
+> [!NOTE]
+>
+> The `main` branch and `v0.17.x` release tags deploy Helm chart 0.17, and this guide describes them. `v0.16.x` tags deploy chart 0.16. To stay on chart 0.16, list the tags and check out the latest `v0.16.x` tag:
+>
+> ```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> git tag -l 'v0.16.*' --sort=-v:refname | head -1
+> git checkout <tag>
+> ```
+>
+> Notes that start with "On chart 0.16" describe where the 0.16 line differs. To move an existing deployment to chart 0.17, see [Upgrade from chart 0.16](#upgrade-from-chart-0-16).
 
 Generate `terraform.tfvars` with the interactive wizard:
 
@@ -243,9 +243,9 @@ enable_langsmith_deployment = true
 
 Keep the license key and passwords out of `terraform.tfvars`. `setup-env.sh` stores them in Secret Manager and exports them as `TF_VAR_*` variables. See the [GCP variables reference](/langsmith/self-host-terraform-gcp-variables) for every input variable.
 
-<Tip>
-  Configure a remote state backend before applying. Copy `infra/backend.tf.example` to `infra/backend.tf` and point it at a GCS bucket you control. Local state is fragile and can be lost during directory restructuring.
-</Tip>
+> [!TIP]
+>
+> Configure a remote state backend before applying. Copy `infra/backend.tf.example` to `infra/backend.tf` and point it at a GCS bucket you control. Local state is fragile and can be lost during directory restructuring.
 
 ### Load secrets into Secret Manager
 
@@ -267,9 +267,9 @@ make preflight
 
 ### Apply
 
-<Note>
-  Provisioning the GCP cloud foundation takes 25 to 35 minutes on a clean project. Do not interrupt the apply.
-</Note>
+> [!NOTE]
+>
+> Provisioning the GCP cloud foundation takes 25 to 35 minutes on a clean project. Do not interrupt the apply.
 
 ```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 make init
@@ -332,11 +332,11 @@ make deploy
 
 `make deploy` runs `helm/scripts/deploy.sh`, which refreshes the kubeconfig, runs preflight checks, builds the `langsmith-config` Kubernetes Secret from the `TF_VAR_*` values and `LANGSMITH_ADMIN_EMAIL`, applies the layered values files, and runs `helm upgrade --install`.
 
-<Note>
-  The deploy script installs Helm chart version `~0.17.0` by default and refuses versions outside the 0.17 line. To pin a specific 0.17 release, set `langsmith_helm_chart_version` in `terraform.tfvars` or export `CHART_VERSION`.
-
-  On chart 0.16, the default is `~0.16.0`, and the script refuses versions outside the 0.16 line.
-</Note>
+> [!NOTE]
+>
+> The deploy script installs Helm chart version `~0.17.0` by default and refuses versions outside the 0.17 line. To pin a specific 0.17 release, set `langsmith_helm_chart_version` in `terraform.tfvars` or export `CHART_VERSION`.
+>
+> On chart 0.16, the default is `~0.16.0`, and the script refuses versions outside the 0.16 line.
 
 Expect 8 to 12 minutes for the chart to install and pods to become ready.
 
@@ -385,9 +385,9 @@ helm upgrade --install langsmith langchain/langsmith \
   --wait --timeout 15m
 ```
 
-<Note>
-  To use S3-compatible blob storage instead of Workload Identity, add `--set config.blobStorage.engine=S3` and pass HMAC keys with `--set config.blobStorage.accessKey=<key>` and `--set config.blobStorage.accessKeySecret=<secret>`. Create the HMAC key under **Cloud Storage** > **Settings** > **Interoperability**.
-</Note>
+> [!NOTE]
+>
+> To use S3-compatible blob storage instead of Workload Identity, add `--set config.blobStorage.engine=S3` and pass HMAC keys with `--set config.blobStorage.accessKey=<key>` and `--set config.blobStorage.accessKeySecret=<secret>`. Create the HMAC key under **Cloud Storage** > **Settings** > **Interoperability**.
 
 ### Verify and configure DNS
 
@@ -445,9 +445,9 @@ Each add-on is gated by a flag in `infra/terraform.tfvars`. Set the flag, then r
 * SmithDB and Sandboxes.
 * Fleet, standalone Polly, and standalone Insights, when Postgres or Redis is external.
 
-<Note>
-  The add-ons in this section require Helm chart version 0.16.0 or later.
-</Note>
+> [!NOTE]
+>
+> The add-ons in this section require Helm chart version 0.16.0 or later.
 
 ### LangSmith Deployment
 
@@ -483,21 +483,21 @@ kubectl get crd | grep langchain
 kubectl get pods -n keda
 ```
 
-<Warning>
-  `config.deployment.url` must include `https://`. Without the protocol, operator-spawned agents stay stuck in `DEPLOYING` indefinitely.
-</Warning>
+> [!WARNING]
+>
+> `config.deployment.url` must include `https://`. Without the protocol, operator-spawned agents stay stuck in `DEPLOYING` indefinitely.
 
 ### Fleet
 
-<Note>
-  Fleet is the current form of the feature formerly called Agent Builder, deployed as a standalone service.
-</Note>
+> [!NOTE]
+>
+> Fleet is the current form of the feature formerly called Agent Builder, deployed as a standalone service.
 
 You can enable Fleet with `enable_fleet`. Unlike the deprecated `enable_agent_builder` path, it does not require LangSmith Deployment. With external Postgres and Redis, Terraform provisions a dedicated `langsmith_fleet` database on Cloud SQL and creates the `langsmith-fleet-postgres` and `langsmith-fleet-redis` secrets that point at the existing Cloud SQL and Memorystore instances. Fleet reuses `langsmith_agent_builder_encryption_key`, so migrating from `enable_agent_builder` keeps the same key and data.
 
-<Note>
-  Fleet requires the Agent Builder or Fleet entitlement in your license.
-</Note>
+> [!NOTE]
+>
+> Fleet requires the Agent Builder or Fleet entitlement in your license.
 
 ```hcl theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 # infra/terraform.tfvars
@@ -518,15 +518,15 @@ Verify:
 kubectl get pods -n langsmith | grep standalone-fleet
 ```
 
-<Warning>
-  Do not enable `enable_fleet` and `enable_agent_builder` together. The deploy script refuses the combination, because Fleet replaces the legacy Agent Builder path.
-</Warning>
+> [!WARNING]
+>
+> Do not enable `enable_fleet` and `enable_agent_builder` together. The deploy script refuses the combination, because Fleet replaces the legacy Agent Builder path.
 
 ### Agent Builder (deprecated)
 
-<Note>
-  On GCP, `enable_agent_builder` is deprecated in favor of [Fleet](#fleet) (`enable_fleet`). Use Fleet for new deployments. This section documents the older path for existing installs.
-</Note>
+> [!NOTE]
+>
+> On GCP, `enable_agent_builder` is deprecated in favor of [Fleet](#fleet) (`enable_fleet`). Use Fleet for new deployments. This section documents the older path for existing installs.
 
 Prerequisite: LangSmith Deployment healthy. Adds the Agent Builder UI and its tool and trigger servers. Helm chart 0.16 removed the bundled agent bootstrap Job, so this path no longer registers an agent runtime, and the deploy script warns when you enable it without Fleet.
 
@@ -572,9 +572,9 @@ kubectl get pods -n langsmith | grep -E "insights|polly"
 kubectl get pods -n langsmith -w
 ```
 
-<Warning>
-  `langsmith_insights_encryption_key` and `langsmith_polly_encryption_key` must never change after first enable. Rotating either permanently breaks existing encrypted data.
-</Warning>
+> [!WARNING]
+>
+> `langsmith_insights_encryption_key` and `langsmith_polly_encryption_key` must never change after first enable. Rotating either permanently breaks existing encrypted data.
 
 ### SmithDB
 
@@ -610,9 +610,9 @@ LangSmith then moves to SmithDB in stages. ClickHouse stays enabled throughout. 
 
 While the backfill runs, every chart version change requires deleting the backfill Job before the next deploy. `make deploy` stops and prints the `kubectl delete job` command. Backfill progress is kept, so the new Job resumes rather than starting over.
 
-<Note>
-  On chart 0.16, SmithDB always uses Local SSD and compute node pools, and `smithdb_sizing`, `smithdb_cache_storage`, and the `make smithdb-*` targets do not exist. Set the three stage flags in `terraform.tfvars` by hand, and run `make deploy-all` after each change. The backfill stage needs its `make apply` step: Terraform grants the SmithDB service account read access to the traces bucket and raises the namespace quota only when `smithdb_migration_enabled = true`. The backfill stage requires Helm chart version 0.16.6 or later.
-</Note>
+> [!NOTE]
+>
+> On chart 0.16, SmithDB always uses Local SSD and compute node pools, and `smithdb_sizing`, `smithdb_cache_storage`, and the `make smithdb-*` targets do not exist. Set the three stage flags in `terraform.tfvars` by hand, and run `make deploy-all` after each change. The backfill stage needs its `make apply` step: Terraform grants the SmithDB service account read access to the traces bucket and raises the namespace quota only when `smithdb_migration_enabled = true`. The backfill stage requires Helm chart version 0.16.6 or later.
 
 Verify:
 
@@ -640,9 +640,9 @@ If your Helm release name is not `langsmith`, set `platform_backend_component_la
 
 The deploy script sets the sandbox-host image tag from the chart's app version, so the image always matches the chart.
 
-<Note>
-  On chart 0.16, sandboxes mount JuiceFS through a JuiceFS CSI driver that the chart installs, and `sandbox_host_image_tag` is required in `terraform.tfvars`. Chart 0.17 ignores that variable.
-</Note>
+> [!NOTE]
+>
+> On chart 0.16, sandboxes mount JuiceFS through a JuiceFS CSI driver that the chart installs, and `sandbox_host_image_tag` is required in `terraform.tfvars`. Chart 0.17 ignores that variable.
 
 ### Expected pods by add-on
 
@@ -658,9 +658,9 @@ The deploy script sets the sandbox-host image tag from the chart's app version, 
 
 ## Upgrade from chart 0.16
 
-<Warning>
-  Back up the databases before you upgrade. Downgrading from chart 0.17 to 0.16 is not supported.
-</Warning>
+> [!WARNING]
+>
+> Back up the databases before you upgrade. Downgrading from chart 0.17 to 0.16 is not supported.
 
 To move a deployment from a `v0.16.x` tag to chart 0.17:
 
@@ -714,12 +714,6 @@ For the full list of changes, see [`MIGRATION-0.16-to-0.17.md`](https://github.c
 
 ***
 
-<div>
-  <Callout icon="terminal-2">
-    [Connect these docs](/use-these-docs) to your agent of choice via MCP for real-time answers.
-  </Callout>
+[Connect these docs](/use-these-docs) to your agent of choice via MCP for real-time answers.
 
-  <Callout icon="edit">
-    [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/self-host-terraform-gcp-deploy.mdx) or [file an issue](https://github.com/langchain-ai/docs/issues/new/choose).
-  </Callout>
-</div>
+[Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/self-host-terraform-gcp-deploy.mdx) or [file an issue](https://github.com/langchain-ai/docs/issues/new/choose).

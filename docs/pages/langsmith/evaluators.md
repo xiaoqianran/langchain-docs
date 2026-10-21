@@ -8,21 +8,21 @@ View and manage evaluators at the workspace level in LangSmith.
 
 What an evaluator attaches to depends on how your workspace is organized.
 
-<Note>
-  **Agent-based workspaces.** This section applies if your workspace organizes traces by [agent and environment](/langsmith/agents). To check, look at the control at the top left: it names your workspace. If it shows the LangSmith logo instead, and the sidebar has an **Application** section with an application picker, your workspace is project-based. Skip this section and read [Tracing projects](/langsmith/observability-concepts#tracing-projects).
-</Note>
+> [!NOTE]
+>
+> **Agent-based workspaces.** This section applies if your workspace organizes traces by [agent and environment](/langsmith/agents). To check, look at the control at the top left: it names your workspace. If it shows the LangSmith logo instead, and the sidebar has an **Application** section with an application picker, your workspace is project-based. Skip this section and read [Tracing projects](/langsmith/observability-concepts#tracing-projects).
 
 An evaluator attaches to an [environment](/langsmith/agent-environments#environment-names) of an [agent](/langsmith/agents). Attach it to **Production** alone to score production traffic without also scoring local runs.
 
-<Note>
-  **Project-based workspaces.** This section applies if your workspace organizes traces by [tracing project](/langsmith/observability-concepts#tracing-projects). To check, look at the control at the top left. In a project-based workspace, it shows the LangSmith logo, and the sidebar has an **Application** section with an application picker. If the control shows your workspace name instead, your workspace is agent-based. Skip this section and read [Agents](/langsmith/agents).
-</Note>
+> [!NOTE]
+>
+> **Project-based workspaces.** This section applies if your workspace organizes traces by [tracing project](/langsmith/observability-concepts#tracing-projects). To check, look at the control at the top left. In a project-based workspace, it shows the LangSmith logo, and the sidebar has an **Application** section with an application picker. If the control shows your workspace name instead, your workspace is agent-based. Skip this section and read [Agents](/langsmith/agents).
 
 An evaluator attaches to a [tracing project](/langsmith/observability-concepts#tracing-projects).
 
-<Tip>
-  Evaluator scores are a high-priority signal for the [LangSmith Engine](/langsmith/engine): it pulls low-scoring traces when choosing what to analyze, so attaching an evaluator to a project sharpens the issues Engine finds there.
-</Tip>
+> [!TIP]
+>
+> Evaluator scores are a high-priority signal for the [LangSmith Engine](/langsmith/engine): it pulls low-scoring traces when choosing what to analyze, so attaching an evaluator to a project sharpens the issues Engine finds there.
 
 ## View evaluators
 
@@ -74,50 +74,48 @@ Use the LangSmith SDK to create evaluators programmatically. The SDK is availabl
 
 The SDK does not support [decision model evaluators](/langsmith/decision-model-evaluator) yet. To create one, use the UI.
 
-<Note>
-  Managing evaluators through the SDK requires `langsmith>=0.9.8` (Python, PyPI) or `langsmith>=0.7.16` (TypeScript, npm).
-</Note>
+> [!NOTE]
+>
+> Managing evaluators through the SDK requires `langsmith>=0.9.8` (Python, PyPI) or `langsmith>=0.7.16` (TypeScript, npm).
 
-<CodeGroup>
-  ```python Python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  import asyncio
+```python Python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+import asyncio
 
-  from langsmith import Client
-
-
-  async def main():
-      client = Client()
-
-      created = await client.evaluators.create(
-          name="Correctness evaluator",
-          type="code",
-          code_evaluator={
-              "code": "def perform_eval(run, example):\n    return {'score': 1}",
-              "language": "python",
-          },
-      )
-      print("Created evaluator:", created.evaluator.id)
+from langsmith import Client
 
 
-  asyncio.run(main())
-  ```
+async def main():
+    client = Client()
 
-  ```typescript TypeScript theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  import { Client } from "langsmith";
+    created = await client.evaluators.create(
+        name="Correctness evaluator",
+        type="code",
+        code_evaluator={
+            "code": "def perform_eval(run, example):\n    return {'score': 1}",
+            "language": "python",
+        },
+    )
+    print("Created evaluator:", created.evaluator.id)
 
-  const client = new Client();
 
-  const created = await client.evaluators.create({
-    name: "Correctness evaluator",
-    type: "code",
-    code_evaluator: {
-      code: "def perform_eval(run, example):\n    return {'score': 1}",
-      language: "python",
-    },
-  });
-  console.log("Created evaluator:", created.evaluator?.id);
-  ```
-</CodeGroup>
+asyncio.run(main())
+```
+
+```typescript TypeScript theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+import { Client } from "langsmith";
+
+const client = new Client();
+
+const created = await client.evaluators.create({
+  name: "Correctness evaluator",
+  type: "code",
+  code_evaluator: {
+    code: "def perform_eval(run, example):\n    return {'score': 1}",
+    language: "python",
+  },
+});
+console.log("Created evaluator:", created.evaluator?.id);
+```
 
 To create an LLM-as-a-judge evaluator and to retrieve, update, list, or delete evaluators, refer to [Manage evaluators with the SDK](/langsmith/manage-evaluators-sdk).
 
@@ -132,7 +130,7 @@ Click any evaluator in the table to open its detail view. The detail view has fo
 
 ## Edit an evaluator
 
-Open an evaluator. In the **Overview** tab, click the **Edit evaluator** <Icon icon="pencil" /> icon to open the **Configure Evaluator** panel. Update the evaluator's configuration. Click **Save**.
+Open an evaluator. In the **Overview** tab, click the **Edit evaluator**  icon to open the **Configure Evaluator** panel. Update the evaluator's configuration. Click **Save**.
 
 Because the evaluator is shared, changes apply across every trace container and dataset it is attached to.
 
@@ -216,12 +214,6 @@ You cannot delete an evaluator while it is attached to a trace container or data
 
 ***
 
-<div>
-  <Callout icon="terminal-2">
-    [Connect these docs](/use-these-docs) to your agent of choice via MCP for real-time answers.
-  </Callout>
+[Connect these docs](/use-these-docs) to your agent of choice via MCP for real-time answers.
 
-  <Callout icon="edit">
-    [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/evaluators.mdx) or [file an issue](https://github.com/langchain-ai/docs/issues/new/choose).
-  </Callout>
-</div>
+[Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/evaluators.mdx) or [file an issue](https://github.com/langchain-ai/docs/issues/new/choose).

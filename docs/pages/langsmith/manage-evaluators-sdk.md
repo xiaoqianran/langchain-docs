@@ -13,9 +13,9 @@ Managing evaluators through the SDK requires:
 * Python: `langsmith>=0.9.8` (PyPI)
 * TypeScript: `langsmith>=0.7.16` (npm)
 
-<Note>
-  For installation and setup, refer to the [Python SDK documentation](https://reference.langchain.com/python/langsmith) and [TypeScript SDK documentation](https://reference.langchain.com/javascript/modules/langsmith.html).
-</Note>
+> [!NOTE]
+>
+> For installation and setup, refer to the [Python SDK documentation](https://reference.langchain.com/python/langsmith) and [TypeScript SDK documentation](https://reference.langchain.com/javascript/modules/langsmith.html).
 
 The examples on this page initialize the client with no arguments, so it reads the `LANGSMITH_API_KEY` and `LANGSMITH_ENDPOINT` environment variables. Configure your [API key](/langsmith/create-account-api-key) through environment variables rather than hardcoding it.
 
@@ -27,244 +27,234 @@ In the following examples, replace placeholders such as `<evaluator-uuid>` with 
 
 A code evaluator scores each run or example with a function that you define.
 
-<CodeGroup>
-  ```python Python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  import asyncio
+```python Python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+import asyncio
 
-  from langsmith import Client
-
-
-  async def main():
-      client = Client()
-
-      created = await client.evaluators.create(
-          name="Correctness evaluator",
-          type="code",
-          code_evaluator={
-              "code": "def perform_eval(run, example):\n    return {'score': 1}",
-              "language": "python",
-          },
-      )
-      evaluator_id = created.evaluator.id
-      print("Created evaluator:", evaluator_id)
+from langsmith import Client
 
 
-  asyncio.run(main())
-  ```
+async def main():
+    client = Client()
 
-  ```typescript TypeScript theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  import { Client } from "langsmith";
+    created = await client.evaluators.create(
+        name="Correctness evaluator",
+        type="code",
+        code_evaluator={
+            "code": "def perform_eval(run, example):\n    return {'score': 1}",
+            "language": "python",
+        },
+    )
+    evaluator_id = created.evaluator.id
+    print("Created evaluator:", evaluator_id)
 
-  const client = new Client();
 
-  const created = await client.evaluators.create({
-    name: "Correctness evaluator",
-    type: "code",
-    code_evaluator: {
-      code: "def perform_eval(run, example):\n    return {'score': 1}",
-      language: "python",
-    },
-  });
-  const evaluatorId = created.evaluator?.id;
-  console.log("Created evaluator:", evaluatorId);
-  ```
-</CodeGroup>
+asyncio.run(main())
+```
+
+```typescript TypeScript theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+import { Client } from "langsmith";
+
+const client = new Client();
+
+const created = await client.evaluators.create({
+  name: "Correctness evaluator",
+  type: "code",
+  code_evaluator: {
+    code: "def perform_eval(run, example):\n    return {'score': 1}",
+    language: "python",
+  },
+});
+const evaluatorId = created.evaluator?.id;
+console.log("Created evaluator:", evaluatorId);
+```
 
 ### LLM-as-a-judge evaluator
 
 An LLM-as-a-judge evaluator references a prompt from the [prompt hub](/langsmith/prompt-engineering-quickstart) and maps your run or example fields to the prompt variables.
 
-<Note>
-  The prompt must be a structured prompt (type `StructuredPrompt`). A `StructuredPrompt` combines a prompt template with an output schema, ensuring the model returns data in a defined structure.
-</Note>
+> [!NOTE]
+>
+> The prompt must be a structured prompt (type `StructuredPrompt`). A `StructuredPrompt` combines a prompt template with an output schema, ensuring the model returns data in a defined structure.
 
-<CodeGroup>
-  ```python Python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  import asyncio
+```python Python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+import asyncio
 
-  from langsmith import Client
-
-
-  async def main():
-      client = Client()
-
-      created = await client.evaluators.create(
-          name="LLM judge",
-          type="llm",
-          llm_evaluator={
-              "prompt_repo_handle": "<prompt-repo-handle>",
-              "commit_hash_or_tag": "<commit-hash-or-tag>",
-              "variable_mapping": {
-                  "input": "inputs.question",
-                  "output": "outputs.answer",
-                  "reference": "reference.answer",
-              },
-          },
-      )
-      evaluator_id = created.evaluator.id
+from langsmith import Client
 
 
-  asyncio.run(main())
-  ```
+async def main():
+    client = Client()
 
-  ```typescript TypeScript theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  const created = await client.evaluators.create({
-    name: "LLM judge",
-    type: "llm",
-    llm_evaluator: {
-      prompt_repo_handle: "<prompt-repo-handle>",
-      commit_hash_or_tag: "<commit-hash-or-tag>",
-      variable_mapping: {
-        input: "inputs.question",
-        output: "outputs.answer",
-        reference: "reference.answer",
-      },
+    created = await client.evaluators.create(
+        name="LLM judge",
+        type="llm",
+        llm_evaluator={
+            "prompt_repo_handle": "<prompt-repo-handle>",
+            "commit_hash_or_tag": "<commit-hash-or-tag>",
+            "variable_mapping": {
+                "input": "inputs.question",
+                "output": "outputs.answer",
+                "reference": "reference.answer",
+            },
+        },
+    )
+    evaluator_id = created.evaluator.id
+
+
+asyncio.run(main())
+```
+
+```typescript TypeScript theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+const created = await client.evaluators.create({
+  name: "LLM judge",
+  type: "llm",
+  llm_evaluator: {
+    prompt_repo_handle: "<prompt-repo-handle>",
+    commit_hash_or_tag: "<commit-hash-or-tag>",
+    variable_mapping: {
+      input: "inputs.question",
+      output: "outputs.answer",
+      reference: "reference.answer",
     },
-  });
-  const evaluatorId = created.evaluator?.id;
-  ```
-</CodeGroup>
+  },
+});
+const evaluatorId = created.evaluator?.id;
+```
 
 The `prompt_repo_handle` is the prompt's internal repository name, not its display title or URL. To find it, list your workspace prompts and read the `repo_handle` field, or retrieve a specific prompt by its identifier in LangSmith. The identifier of a prompt can be in the format:
 
 * `promptName` (for private prompts), for example `my-prompt`.
 * `owner/promptName` (for public prompts), for example `langchain-ai/correctness`.
 
-<CodeGroup>
-  ```python Python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  # List workspace prompts and read each repo handle
-  for prompt in client.list_prompts(limit=10).repos:
-      print("prompt-repo-handle:", prompt.repo_handle)   # value to use for prompt_repo_handle
-      print("prompt-full-name:", prompt.full_name)     # display name
-      print("description:", prompt.description)
+```python Python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+# List workspace prompts and read each repo handle
+for prompt in client.list_prompts(limit=10).repos:
+    print("prompt-repo-handle:", prompt.repo_handle)   # value to use for prompt_repo_handle
+    print("prompt-full-name:", prompt.full_name)     # display name
+    print("description:", prompt.description)
 
-  # Or retrieve a specific prompt by identifier
-  prompt = client.get_prompt("<prompt-identifier>")
-  print("prompt-repo-handle:", prompt.repo_handle)
-  ```
+# Or retrieve a specific prompt by identifier
+prompt = client.get_prompt("<prompt-identifier>")
+print("prompt-repo-handle:", prompt.repo_handle)
+```
 
-  ```typescript TypeScript theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  // List workspace prompts and read each repo handle.
-  // listPrompts() has no `limit` option in this SDK version — it's an async
-  // generator over all prompts, so cap the count client-side and break.
-  const prompts = client.listPrompts();
-  let count = 0;
-  for await (const prompt of prompts) {
-    console.log("prompt-repo-handle:", prompt.repo_handle);
-    console.log("prompt-full-name:", prompt.full_name);
-    console.log("description:", prompt.description);
-    console.log("---");
-    if (++count >= 10) break; // first 10 only; stops further pagination
-  }
-
-  // Or retrieve a specific prompt by identifier
-  const prompt = await client.getPrompt("<prompt-identifier>");
+```typescript TypeScript theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+// List workspace prompts and read each repo handle.
+// listPrompts() has no `limit` option in this SDK version — it's an async
+// generator over all prompts, so cap the count client-side and break.
+const prompts = client.listPrompts();
+let count = 0;
+for await (const prompt of prompts) {
   console.log("prompt-repo-handle:", prompt.repo_handle);
-  ```
-</CodeGroup>
+  console.log("prompt-full-name:", prompt.full_name);
+  console.log("description:", prompt.description);
+  console.log("---");
+  if (++count >= 10) break; // first 10 only; stops further pagination
+}
+
+// Or retrieve a specific prompt by identifier
+const prompt = await client.getPrompt("<prompt-identifier>");
+console.log("prompt-repo-handle:", prompt.repo_handle);
+```
 
 ## Retrieve an evaluator
 
 Fetch a single evaluator by its ID to read its configuration, including its name, type, feedback keys, and run rules.
 
-<CodeGroup>
-  ```python Python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  import asyncio
+```python Python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+import asyncio
 
-  from langsmith import Client
-
-
-  async def main():
-      client = Client()
-      evaluator_id = "<evaluator-uuid>"
-
-      evaluator = await client.evaluators.retrieve(evaluator_id)
-      print(evaluator.name)
-      print(evaluator.type)
-      print(evaluator.feedback_keys)
-      print(evaluator.run_rules)
+from langsmith import Client
 
 
-  asyncio.run(main())
-  ```
+async def main():
+    client = Client()
+    evaluator_id = "<evaluator-uuid>"
 
-  ```typescript TypeScript theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  const evaluator = await client.evaluators.retrieve(evaluatorId);
-  console.log(evaluator.name);
-  console.log(evaluator.type);
-  console.log(evaluator.feedback_keys);
-  console.log(evaluator.run_rules);
-  ```
-</CodeGroup>
+    evaluator = await client.evaluators.retrieve(evaluator_id)
+    print(evaluator.name)
+    print(evaluator.type)
+    print(evaluator.feedback_keys)
+    print(evaluator.run_rules)
+
+
+asyncio.run(main())
+```
+
+```typescript TypeScript theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+const evaluator = await client.evaluators.retrieve(evaluatorId);
+console.log(evaluator.name);
+console.log(evaluator.type);
+console.log(evaluator.feedback_keys);
+console.log(evaluator.run_rules);
+```
 
 ## Update an evaluator
 
 Pass the field that matches the evaluator type: `code_evaluator` for a code evaluator or `llm_evaluator` for an LLM-as-a-judge evaluator. `update` changes only the fields you pass.
 
-<CodeGroup>
-  ```python Python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  import asyncio
+```python Python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+import asyncio
 
-  from langsmith import Client
-
-
-  async def main():
-      client = Client()
-
-      # Update a code evaluator
-      code_evaluator_id = "<code-evaluator-uuid>"
-
-      updated = await client.evaluators.update(
-          code_evaluator_id,
-          name="Updated correctness evaluator",
-          code_evaluator={
-              "code": "def perform_eval(run, example):\n    return {'score': 0.8}",
-              "language": "python",
-          },
-      )
-      print(updated.evaluator.name if updated.evaluator else None)
-
-      # Update the name and prompt of an LLM-as-a-judge evaluator
-      llm_evaluator_id = "<llm-evaluator-uuid>"
-
-      await client.evaluators.update(
-          llm_evaluator_id,
-          name="Updated LLM judge",
-          llm_evaluator={
-              "prompt_repo_handle": "<prompt-repo-handle>",
-              "commit_hash_or_tag": "<commit-hash-or-tag>",
-          },
-      )
+from langsmith import Client
 
 
-  asyncio.run(main())
-  ```
+async def main():
+    client = Client()
 
-  ```typescript TypeScript theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  // Update a code evaluator
-  const codeEvaluatorId = "<code-evaluator-uuid>";
+    # Update a code evaluator
+    code_evaluator_id = "<code-evaluator-uuid>"
 
-  const updated = await client.evaluators.update(codeEvaluatorId, {
-    name: "Updated correctness evaluator",
-    code_evaluator: {
-      code: "def perform_eval(run, example):\n    return {'score': 0.8}",
-      language: "python",
-    },
-  });
-  console.log(updated.evaluator?.name);
+    updated = await client.evaluators.update(
+        code_evaluator_id,
+        name="Updated correctness evaluator",
+        code_evaluator={
+            "code": "def perform_eval(run, example):\n    return {'score': 0.8}",
+            "language": "python",
+        },
+    )
+    print(updated.evaluator.name if updated.evaluator else None)
 
-  // Update the name and prompt of an LLM-as-a-judge evaluator
-  const llmEvaluatorId = "<llm-evaluator-uuid>";
+    # Update the name and prompt of an LLM-as-a-judge evaluator
+    llm_evaluator_id = "<llm-evaluator-uuid>"
 
-  await client.evaluators.update(llmEvaluatorId, {
-    name: "Updated LLM judge",
-    llm_evaluator: {
-      prompt_repo_handle: "<prompt-repo-handle>",
-      commit_hash_or_tag: "<commit-hash-or-tag>",
-    },
-  });
-  ```
-</CodeGroup>
+    await client.evaluators.update(
+        llm_evaluator_id,
+        name="Updated LLM judge",
+        llm_evaluator={
+            "prompt_repo_handle": "<prompt-repo-handle>",
+            "commit_hash_or_tag": "<commit-hash-or-tag>",
+        },
+    )
+
+
+asyncio.run(main())
+```
+
+```typescript TypeScript theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+// Update a code evaluator
+const codeEvaluatorId = "<code-evaluator-uuid>";
+
+const updated = await client.evaluators.update(codeEvaluatorId, {
+  name: "Updated correctness evaluator",
+  code_evaluator: {
+    code: "def perform_eval(run, example):\n    return {'score': 0.8}",
+    language: "python",
+  },
+});
+console.log(updated.evaluator?.name);
+
+// Update the name and prompt of an LLM-as-a-judge evaluator
+const llmEvaluatorId = "<llm-evaluator-uuid>";
+
+await client.evaluators.update(llmEvaluatorId, {
+  name: "Updated LLM judge",
+  llm_evaluator: {
+    prompt_repo_handle: "<prompt-repo-handle>",
+    commit_hash_or_tag: "<commit-hash-or-tag>",
+  },
+});
+```
 
 ### Configure runtime settings
 
@@ -273,137 +263,133 @@ An LLM-as-a-judge evaluator accepts additional settings that control how it scor
 * **`variable_mapping`**: Maps run or example fields to the judge prompt variables. It applies when the evaluator runs.
 * **`use_corrections_dataset`** and **`num_few_shot_examples`**: Enable few-shot learning from human score corrections. They apply only when the evaluator is attached to a project or dataset and corrections have been submitted.
 
-<Note>
-  These settings take effect on the next evaluation run, not when you call `update`.
-</Note>
+> [!NOTE]
+>
+> These settings take effect on the next evaluation run, not when you call `update`.
 
-<CodeGroup>
-  ```python Python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  import asyncio
+```python Python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+import asyncio
 
-  from langsmith import Client
-
-
-  async def main():
-      client = Client()
-      llm_evaluator_id = "<llm-evaluator-uuid>"
-
-      await client.evaluators.update(
-          llm_evaluator_id,
-          llm_evaluator={
-              "prompt_repo_handle": "<prompt-repo-handle>",
-              "commit_hash_or_tag": "<commit-hash-or-tag>",
-              "variable_mapping": {
-                  "input": "inputs.question",
-                  "output": "outputs.answer",
-              },
-              "use_corrections_dataset": True,
-              "num_few_shot_examples": 3,
-          },
-      )
+from langsmith import Client
 
 
-  asyncio.run(main())
-  ```
+async def main():
+    client = Client()
+    llm_evaluator_id = "<llm-evaluator-uuid>"
 
-  ```typescript TypeScript theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  const llmEvaluatorId = "<llm-evaluator-uuid>";
+    await client.evaluators.update(
+        llm_evaluator_id,
+        llm_evaluator={
+            "prompt_repo_handle": "<prompt-repo-handle>",
+            "commit_hash_or_tag": "<commit-hash-or-tag>",
+            "variable_mapping": {
+                "input": "inputs.question",
+                "output": "outputs.answer",
+            },
+            "use_corrections_dataset": True,
+            "num_few_shot_examples": 3,
+        },
+    )
 
-  await client.evaluators.update(llmEvaluatorId, {
-    llm_evaluator: {
-      prompt_repo_handle: "<prompt-repo-handle>",
-      commit_hash_or_tag: "<commit-hash-or-tag>",
-      variable_mapping: {
-        input: "inputs.question",
-        output: "outputs.answer",
-      },
-      use_corrections_dataset: true,
-      num_few_shot_examples: 3,
+
+asyncio.run(main())
+```
+
+```typescript TypeScript theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+const llmEvaluatorId = "<llm-evaluator-uuid>";
+
+await client.evaluators.update(llmEvaluatorId, {
+  llm_evaluator: {
+    prompt_repo_handle: "<prompt-repo-handle>",
+    commit_hash_or_tag: "<commit-hash-or-tag>",
+    variable_mapping: {
+      input: "inputs.question",
+      output: "outputs.answer",
     },
-  });
-  ```
-</CodeGroup>
+    use_corrections_dataset: true,
+    num_few_shot_examples: 3,
+  },
+});
+```
 
 ## List evaluators
 
 Filter by name, type, feedback key, attached resource, or tag value, and sort or paginate the results. `list()` auto-paginates through every match when you iterate the returned object directly. `limit` sets the per-request page size (1 to 100), not the total number of results. `sort_by` is optional, accepts `created_at` or `updated_at`, and defaults to `created_at`.
 
-<CodeGroup>
-  ```python Python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  import asyncio
+```python Python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+import asyncio
 
-  from langsmith import Client
-
-
-  async def main():
-      client = Client()
-
-      # Read a single page of results
-      page = await client.evaluators.list(
-          name_contains="correctness",
-          type="code",
-          limit=10,
-      )
-      for evaluator in page.evaluators:
-          print(evaluator.id, evaluator.name, evaluator.type)
-
-      # Collect every match into a list
-      evaluators = [
-          evaluator
-          async for evaluator in client.evaluators.list(feedback_key="correctness", limit=20)
-      ]
-
-      # Filter, sort, and paginate
-      page = await client.evaluators.list(
-          feedback_key="correctness",
-          name_contains="judge",
-          resource_id=["<project-or-dataset-uuid>"],
-          tag_value_id=["<tag-value-uuid>"],
-          type="llm",
-          sort_by="updated_at",  # "created_at" (default) or "updated_at"
-          sort_by_desc=False,
-          limit=20,
-          offset=0,
-      )
+from langsmith import Client
 
 
-  asyncio.run(main())
-  ```
+async def main():
+    client = Client()
 
-  ```typescript TypeScript theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  // Read a single page of results
-  const page = await client.evaluators.list({
-    name_contains: "correctness",
-    type: "code",
-    limit: 10,
-  });
-  for (const evaluator of page.evaluators) {
-    console.log(evaluator.id, evaluator.name, evaluator.type);
-  }
+    # Read a single page of results
+    page = await client.evaluators.list(
+        name_contains="correctness",
+        type="code",
+        limit=10,
+    )
+    for evaluator in page.evaluators:
+        print(evaluator.id, evaluator.name, evaluator.type)
 
-  // Collect every match into an array
-  const evaluators = [];
-  for await (const evaluator of client.evaluators.list({
-    feedback_key: "correctness",
-    limit: 20,
-  })) {
-    evaluators.push(evaluator);
-  }
+    # Collect every match into a list
+    evaluators = [
+        evaluator
+        async for evaluator in client.evaluators.list(feedback_key="correctness", limit=20)
+    ]
 
-  // Filter, sort, and paginate
-  await client.evaluators.list({
-    feedback_key: "correctness",
-    name_contains: "judge",
-    resource_id: ["<project-or-dataset-uuid>"],
-    tag_value_id: ["<tag-value-uuid>"],
-    type: "llm",
-    sort_by: "updated_at", // "created_at" (default) or "updated_at"
-    sort_by_desc: false,
-    limit: 20,
-    offset: 0,
-  });
-  ```
-</CodeGroup>
+    # Filter, sort, and paginate
+    page = await client.evaluators.list(
+        feedback_key="correctness",
+        name_contains="judge",
+        resource_id=["<project-or-dataset-uuid>"],
+        tag_value_id=["<tag-value-uuid>"],
+        type="llm",
+        sort_by="updated_at",  # "created_at" (default) or "updated_at"
+        sort_by_desc=False,
+        limit=20,
+        offset=0,
+    )
+
+
+asyncio.run(main())
+```
+
+```typescript TypeScript theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+// Read a single page of results
+const page = await client.evaluators.list({
+  name_contains: "correctness",
+  type: "code",
+  limit: 10,
+});
+for (const evaluator of page.evaluators) {
+  console.log(evaluator.id, evaluator.name, evaluator.type);
+}
+
+// Collect every match into an array
+const evaluators = [];
+for await (const evaluator of client.evaluators.list({
+  feedback_key: "correctness",
+  limit: 20,
+})) {
+  evaluators.push(evaluator);
+}
+
+// Filter, sort, and paginate
+await client.evaluators.list({
+  feedback_key: "correctness",
+  name_contains: "judge",
+  resource_id: ["<project-or-dataset-uuid>"],
+  tag_value_id: ["<tag-value-uuid>"],
+  type: "llm",
+  sort_by: "updated_at", // "created_at" (default) or "updated_at"
+  sort_by_desc: false,
+  limit: 20,
+  offset: 0,
+});
+```
 
 ## Track evaluator spend
 
@@ -414,144 +400,140 @@ Retrieve estimated USD spend and trace counts for your evaluators:
 * **`type`**: Scopes results to a single evaluator type, `llm` or `code`. Omit it to include all types.
 * **Empty result**: If no spend is recorded for the window, the returned `groups` list is empty.
 
-<Note>
-  Pass exactly one of `group_by`, `evaluator_id`, `session_id` (the LangSmith tracing project UUID), or `dataset_id`.
-</Note>
+> [!NOTE]
+>
+> Pass exactly one of `group_by`, `evaluator_id`, `session_id` (the LangSmith tracing project UUID), or `dataset_id`.
 
-<CodeGroup>
-  ```python Python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  import asyncio
+```python Python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+import asyncio
 
-  from langsmith import Client
-
-
-  async def main():
-      client = Client()
-      evaluator_uuid = "<evaluator-uuid>"
-      start_date = "<period-start-date>" # for example, "2026-06-29"
-
-      # Spend for a single evaluator
-      spend = await client.evaluators.spend(
-          period_start=start_date,
-          evaluator_id=evaluator_uuid,
-      )
-      for group in spend.groups or []:
-          print(group.evaluator_name, group.total_spend_usd, group.total_trace_count)
-
-      # Group spend by evaluator
-      spend_by_evaluator = await client.evaluators.spend(
-          period_start=start_date,
-          group_by="evaluator",
-          type="llm",
-      )
-      print("Group by evaluator")
-      for group in spend_by_evaluator.groups or []:
-          print(group.evaluator_name, group.total_spend_usd, group.total_trace_count)
-
-      # Group spend by resource
-      spend_by_resource = await client.evaluators.spend(
-          period_start=start_date,
-          group_by="resource",
-          type="llm",
-      )
-      print("Group by resource")
-      for group in spend_by_resource.groups or []:
-          print(group.session_name, group.dataset_name, group.total_spend_usd, group.total_trace_count)
-
-      # Group spend by run_rule
-      spend_by_run_rule = await client.evaluators.spend(
-          period_start=start_date,
-          group_by="run_rule",
-          type="llm",
-      )
-      print("Group by run_rule")
-      for group in spend_by_run_rule.groups or []:
-          print(group.run_rule_name, group.total_spend_usd, group.total_trace_count)
+from langsmith import Client
 
 
-  asyncio.run(main())
-  ```
+async def main():
+    client = Client()
+    evaluator_uuid = "<evaluator-uuid>"
+    start_date = "<period-start-date>" # for example, "2026-06-29"
 
-  ```typescript TypeScript theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  const evaluatorUUID = "<evaluator-uuid>";
-  const startDate = "<period-start-date>"; // for example, "2026-06-29"
+    # Spend for a single evaluator
+    spend = await client.evaluators.spend(
+        period_start=start_date,
+        evaluator_id=evaluator_uuid,
+    )
+    for group in spend.groups or []:
+        print(group.evaluator_name, group.total_spend_usd, group.total_trace_count)
 
-  // Spend for a single evaluator
-  const spend = await client.evaluators.spend({
-    period_start: startDate,
-    evaluator_id: evaluatorUUID,
-  });
-  for (const group of spend.groups ?? []) {
-    console.log(group.evaluator_name, group.total_spend_usd, group.total_trace_count);
-  }
+    # Group spend by evaluator
+    spend_by_evaluator = await client.evaluators.spend(
+        period_start=start_date,
+        group_by="evaluator",
+        type="llm",
+    )
+    print("Group by evaluator")
+    for group in spend_by_evaluator.groups or []:
+        print(group.evaluator_name, group.total_spend_usd, group.total_trace_count)
 
-  // Group spend by evaluator
-  const spendByEvaluator = await client.evaluators.spend({
-    period_start: startDate,
-    group_by: "evaluator",
-    type: "llm",
-  });
-  console.log("Group by evaluator");
-  for (const group of spendByEvaluator.groups ?? []) {
-    console.log(group.evaluator_name, group.total_spend_usd, group.total_trace_count);
-  }
+    # Group spend by resource
+    spend_by_resource = await client.evaluators.spend(
+        period_start=start_date,
+        group_by="resource",
+        type="llm",
+    )
+    print("Group by resource")
+    for group in spend_by_resource.groups or []:
+        print(group.session_name, group.dataset_name, group.total_spend_usd, group.total_trace_count)
 
-  // Group spend by resource
-  const spendByResource = await client.evaluators.spend({
-    period_start: startDate,
-    group_by: "resource",
-    type: "llm",
-  });
-  console.log("Group by resource");
-  for (const group of spendByResource.groups ?? []) {
-    console.log(group.session_name, group.dataset_name, group.total_spend_usd, group.total_trace_count);
-  }
+    # Group spend by run_rule
+    spend_by_run_rule = await client.evaluators.spend(
+        period_start=start_date,
+        group_by="run_rule",
+        type="llm",
+    )
+    print("Group by run_rule")
+    for group in spend_by_run_rule.groups or []:
+        print(group.run_rule_name, group.total_spend_usd, group.total_trace_count)
 
-  // Group spend by run_rule
-  const spendByRunRule = await client.evaluators.spend({
-    period_start: startDate,
-    group_by: "run_rule",
-    type: "llm",
-  });
-  console.log("Group by run_rule");
-  for (const group of spendByRunRule.groups ?? []) {
-    console.log(group.run_rule_name, group.total_spend_usd, group.total_trace_count);
-  }
-  ```
-</CodeGroup>
+
+asyncio.run(main())
+```
+
+```typescript TypeScript theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+const evaluatorUUID = "<evaluator-uuid>";
+const startDate = "<period-start-date>"; // for example, "2026-06-29"
+
+// Spend for a single evaluator
+const spend = await client.evaluators.spend({
+  period_start: startDate,
+  evaluator_id: evaluatorUUID,
+});
+for (const group of spend.groups ?? []) {
+  console.log(group.evaluator_name, group.total_spend_usd, group.total_trace_count);
+}
+
+// Group spend by evaluator
+const spendByEvaluator = await client.evaluators.spend({
+  period_start: startDate,
+  group_by: "evaluator",
+  type: "llm",
+});
+console.log("Group by evaluator");
+for (const group of spendByEvaluator.groups ?? []) {
+  console.log(group.evaluator_name, group.total_spend_usd, group.total_trace_count);
+}
+
+// Group spend by resource
+const spendByResource = await client.evaluators.spend({
+  period_start: startDate,
+  group_by: "resource",
+  type: "llm",
+});
+console.log("Group by resource");
+for (const group of spendByResource.groups ?? []) {
+  console.log(group.session_name, group.dataset_name, group.total_spend_usd, group.total_trace_count);
+}
+
+// Group spend by run_rule
+const spendByRunRule = await client.evaluators.spend({
+  period_start: startDate,
+  group_by: "run_rule",
+  type: "llm",
+});
+console.log("Group by run_rule");
+for (const group of spendByRunRule.groups ?? []) {
+  console.log(group.run_rule_name, group.total_spend_usd, group.total_trace_count);
+}
+```
 
 ## Delete an evaluator
 
 You cannot delete an evaluator while it is attached to a tracing project, an agent environment, or a dataset. Set `delete_run_rules` to `true` to delete the run rules that reference the evaluator before deleting the evaluator.
 
-<CodeGroup>
-  ```python Python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  import asyncio
+```python Python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+import asyncio
 
-  from langsmith import Client
-
-
-  async def main():
-      client = Client()
-      evaluator_id = "<evaluator-uuid>"
-
-      await client.evaluators.delete(
-          evaluator_id,
-          delete_run_rules=True, # run rules referencing the evaluator are deleted first
-      )
+from langsmith import Client
 
 
-  asyncio.run(main())
-  ```
+async def main():
+    client = Client()
+    evaluator_id = "<evaluator-uuid>"
 
-  ```typescript TypeScript theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  const evaluatorId = "<evaluator-uuid>";
+    await client.evaluators.delete(
+        evaluator_id,
+        delete_run_rules=True, # run rules referencing the evaluator are deleted first
+    )
 
-  await client.evaluators.delete(evaluatorId, {
-    delete_run_rules: true, // run rules referencing the evaluator are deleted first
-  });
-  ```
-</CodeGroup>
+
+asyncio.run(main())
+```
+
+```typescript TypeScript theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+const evaluatorId = "<evaluator-uuid>";
+
+await client.evaluators.delete(evaluatorId, {
+  delete_run_rules: true, // run rules referencing the evaluator are deleted first
+});
+```
 
 ## Related
 
@@ -561,12 +543,6 @@ You cannot delete an evaluator while it is attached to a tracing project, an age
 
 ***
 
-<div>
-  <Callout icon="terminal-2">
-    [Connect these docs](/use-these-docs) to your agent of choice via MCP for real-time answers.
-  </Callout>
+[Connect these docs](/use-these-docs) to your agent of choice via MCP for real-time answers.
 
-  <Callout icon="edit">
-    [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/manage-evaluators-sdk.mdx) or [file an issue](https://github.com/langchain-ai/docs/issues/new/choose).
-  </Callout>
-</div>
+[Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/manage-evaluators-sdk.mdx) or [file an issue](https://github.com/langchain-ai/docs/issues/new/choose).

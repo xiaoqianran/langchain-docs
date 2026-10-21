@@ -2,11 +2,11 @@
 
 # Example data format
 
-<Check>
-  Before diving into this content, it might be helpful to read the following:
-
-  * [Conceptual guide on evaluation](/langsmith/evaluation-concepts)
-</Check>
+> [!TIP]
+>
+> Before diving into this content, it might be helpful to read the following:
+>
+> * [Conceptual guide on evaluation](/langsmith/evaluation-concepts)
 
 LangSmith stores examples in datasets as follows:
 
@@ -25,18 +25,12 @@ LangSmith stores examples in datasets as follows:
 
 To learn more about how examples are used in evaluation, read our how-to guide on [evaluating LLM applications](/langsmith/evaluate-llm-application).
 
-<Tip>
-  The `outputs` field can also hold [assertions](/langsmith/assertions), free-form claims a reviewer wrote about a correct answer. Offline evaluators read them from `reference_outputs["assertions"]`.
-</Tip>
+> [!TIP]
+>
+> The `outputs` field can also hold [assertions](/langsmith/assertions), free-form claims a reviewer wrote about a correct answer. Offline evaluators read them from `reference_outputs["assertions"]`.
 
 ***
 
-<div>
-  <Callout icon="terminal-2">
-    [Connect these docs](/use-these-docs) to your agent of choice via MCP for real-time answers.
-  </Callout>
+[Connect these docs](/use-these-docs) to your agent of choice via MCP for real-time answers.
 
-  <Callout icon="edit">
-    [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/example-data-format.mdx) or [file an issue](https://github.com/langchain-ai/docs/issues/new/choose).
-  </Callout>
-</div>
+[Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/example-data-format.mdx) or [file an issue](https://github.com/langchain-ai/docs/issues/new/choose).

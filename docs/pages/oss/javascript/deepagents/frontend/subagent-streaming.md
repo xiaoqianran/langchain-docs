@@ -17,8 +17,6 @@ tool-call metadata, and results. Your UI can show delegation, progress, errors,
 and final synthesis without asking users to read interleaved tokens from every
 worker.
 
-<PatternEmbed />
-
 ## Why selector-based subagent streams
 
 The root stream stays focused on the coordinator conversation:
@@ -45,56 +43,101 @@ tool-call ID that spawned them so each card appears under the coordinator turn
 Point the stream at your deep agent, render coordinator messages from `stream.messages`, and use `stream.subagents` to mount cards for active specialists. In chat layouts, index subagents by the
 tool-call ID that spawned them so each card appears under the coordinator turn that delegated the work.
 
-<Info>
-  The code examples use `useStream<typeof myAgent>` for type-safe stream state. See Type inference for [Python](/oss/python/langchain/frontend/overview#type-inference) or [JavaScript](/oss/javascript/langchain/frontend/overview#type-inference) backends.
-</Info>
+> [!NOTE]
+>
+> The code examples use `useStream<typeof myAgent>` for type-safe stream state. See Type inference for [Python](/oss/python/langchain/frontend/overview#type-inference) or [JavaScript](/oss/javascript/langchain/frontend/overview#type-inference) backends.
 
-<CodeGroup>
-  ```tsx React theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  import { useStream } from "@langchain/react";
-  import { AIMessage, HumanMessage } from "langchain";
+```tsx React theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+import { useStream } from "@langchain/react";
+import { AIMessage, HumanMessage } from "langchain";
 
-  const AGENT_URL = "http://localhost:2024";
+const AGENT_URL = "http://localhost:2024";
 
-  export function DeepAgentChat() {
-    const stream = useStream<typeof myAgent>({
-      apiUrl: AGENT_URL,
-      assistantId: "deep_agent_subagent_cards",
-    });
-    const subagents = [...stream.subagents.values()];
-    const subagentsByCallId = new Map(subagents.map((s) => [s.id, s]));
+export function DeepAgentChat() {
+  const stream = useStream<typeof myAgent>({
+    apiUrl: AGENT_URL,
+    assistantId: "deep_agent_subagent_cards",
+  });
+  const subagents = [...stream.subagents.values()];
+  const subagentsByCallId = new Map(subagents.map((s) => [s.id, s]));
 
-    return (
-      <div>
-        {stream.messages.map((msg) => {
-          const turnSubagents = AIMessage.isInstance(msg)
-            ? (msg.tool_calls ?? [])
-                .map((tc) => subagentsByCallId.get(tc.id ?? ""))
-                .filter((s): s is NonNullable<typeof s> => !!s)
-            : [];
+  return (
+    <div>
+      {stream.messages.map((msg) => {
+        const turnSubagents = AIMessage.isInstance(msg)
+          ? (msg.tool_calls ?? [])
+              .map((tc) => subagentsByCallId.get(tc.id ?? ""))
+              .filter((s): s is NonNullable<typeof s> => !!s)
+          : [];
 
-          return (
-            <div key={msg.id}>
-              {HumanMessage.isInstance(msg) && <HumanBubble>{msg.text}</HumanBubble>}
-              {AIMessage.isInstance(msg) && msg.text.trim() && (
-                <AIBubble>{msg.text}</AIBubble>
-              )}
-              {turnSubagents.map((subagent) => (
-                <SubagentCard key={subagent.id} stream={stream} subagent={subagent} />
-              ))}
-            </div>
-          );
-        })}
-      </div>
-    );
-  }
-  ```
+        return (
+          <div key={msg.id}>
+            {HumanMessage.isInstance(msg) && <HumanBubble>{msg.text}</HumanBubble>}
+            {AIMessage.isInstance(msg) && msg.text.trim() && (
+              <AIBubble>{msg.text}</AIBubble>
+            )}
+            {turnSubagents.map((subagent) => (
+              <SubagentCard key={subagent.id} stream={stream} subagent={subagent} />
+            ))}
+          </div>
+        );
+      })}
+    </div>
+  );
+}
+```
 
-  ```vue Vue theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  <script setup lang="ts">
-  import { computed } from "vue";
-  import { useStream } from "@langchain/vue";
-  import { AIMessage, HumanMessage } from "langchain";
+```vue Vue theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+<script setup lang="ts">
+import { computed } from "vue";
+import { useStream } from "@langchain/vue";
+import { AIMessage, HumanMessage } from "langchain";
+
+const AGENT_URL = "http://localhost:2024";
+
+const stream = useStream<typeof myAgent>({
+  apiUrl: AGENT_URL,
+  assistantId: "deep_agent_subagent_cards",
+});
+
+const subagentsByCallId = computed(
+  () => new Map([...stream.subagents.value.values()].map((s) => [s.id, s]))
+);
+
+function subagentsForMessage(msg: unknown) {
+  if (!AIMessage.isInstance(msg)) return [];
+  return (msg.tool_calls ?? [])
+    .map((tc) => subagentsByCallId.value.get(tc.id ?? ""))
+    .filter(Boolean);
+}
+</script>
+
+<template>
+  <div>
+    <div
+      v-for="msg in stream.messages.value"
+      :key="msg.id"
+    >
+      <HumanBubble v-if="HumanMessage.isInstance(msg)">
+        {{ msg.text }}
+      </HumanBubble>
+      <AIBubble v-else-if="AIMessage.isInstance(msg) && msg.text.trim()">
+        {{ msg.text }}
+      </AIBubble>
+      <SubagentCard
+        v-for="subagent in subagentsForMessage(msg)"
+        :key="subagent.id"
+        :stream="stream"
+        :subagent="subagent"
+      />
+    </div>
+  </div>
+</template>
+```
+
+```svelte Svelte theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+<script lang="ts">
+  import { useStream } from "@langchain/svelte";
 
   const AGENT_URL = "http://localhost:2024";
 
@@ -102,91 +145,44 @@ tool-call ID that spawned them so each card appears under the coordinator turn t
     apiUrl: AGENT_URL,
     assistantId: "deep_agent_subagent_cards",
   });
+</script>
 
-  const subagentsByCallId = computed(
-    () => new Map([...stream.subagents.value.values()].map((s) => [s.id, s]))
-  );
+<div>
+  {#each stream.messages as msg (msg.id)}
+    <Message {msg} />
+  {/each}
+  {#each [...stream.subagents.values()] as subagent (subagent.id)}
+    <SubagentCard {stream} {subagent} />
+  {/each}
+</div>
+```
 
-  function subagentsForMessage(msg: unknown) {
-    if (!AIMessage.isInstance(msg)) return [];
-    return (msg.tool_calls ?? [])
-      .map((tc) => subagentsByCallId.value.get(tc.id ?? ""))
-      .filter(Boolean);
-  }
-  </script>
+```ts Angular theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+import { Component, computed } from "@angular/core";
+import { injectStream } from "@langchain/angular";
 
-  <template>
-    <div>
-      <div
-        v-for="msg in stream.messages.value"
-        :key="msg.id"
-      >
-        <HumanBubble v-if="HumanMessage.isInstance(msg)">
-          {{ msg.text }}
-        </HumanBubble>
-        <AIBubble v-else-if="AIMessage.isInstance(msg) && msg.text.trim()">
-          {{ msg.text }}
-        </AIBubble>
-        <SubagentCard
-          v-for="subagent in subagentsForMessage(msg)"
-          :key="subagent.id"
-          :stream="stream"
-          :subagent="subagent"
-        />
-      </div>
-    </div>
-  </template>
-  ```
+const AGENT_URL = "http://localhost:2024";
 
-  ```svelte Svelte theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  <script lang="ts">
-    import { useStream } from "@langchain/svelte";
+@Component({
+  selector: "app-deep-agent-chat",
+  template: `
+    @for (msg of stream.messages(); track msg.id) {
+      <app-message [message]="msg" />
+    }
+    @for (subagent of subagents(); track subagent.id) {
+      <app-subagent-card [stream]="stream" [subagent]="subagent" />
+    }
+  `,
+})
+export class DeepAgentChatComponent {
+  stream = injectStream<typeof myAgent>({
+    apiUrl: AGENT_URL,
+    assistantId: "deep_agent_subagent_cards",
+  });
 
-    const AGENT_URL = "http://localhost:2024";
-
-    const stream = useStream<typeof myAgent>({
-      apiUrl: AGENT_URL,
-      assistantId: "deep_agent_subagent_cards",
-    });
-  </script>
-
-  <div>
-    {#each stream.messages as msg (msg.id)}
-      <Message {msg} />
-    {/each}
-    {#each [...stream.subagents.values()] as subagent (subagent.id)}
-      <SubagentCard {stream} {subagent} />
-    {/each}
-  </div>
-  ```
-
-  ```ts Angular theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  import { Component, computed } from "@angular/core";
-  import { injectStream } from "@langchain/angular";
-
-  const AGENT_URL = "http://localhost:2024";
-
-  @Component({
-    selector: "app-deep-agent-chat",
-    template: `
-      @for (msg of stream.messages(); track msg.id) {
-        <app-message [message]="msg" />
-      }
-      @for (subagent of subagents(); track subagent.id) {
-        <app-subagent-card [stream]="stream" [subagent]="subagent" />
-      }
-    `,
-  })
-  export class DeepAgentChatComponent {
-    stream = injectStream<typeof myAgent>({
-      apiUrl: AGENT_URL,
-      assistantId: "deep_agent_subagent_cards",
-    });
-
-    subagents = computed(() => [...this.stream.subagents().values()]);
-  }
-  ```
-</CodeGroup>
+  subagents = computed(() => [...this.stream.subagents().values()]);
+}
+```
 
 ## Submitting messages
 
@@ -201,11 +197,11 @@ stream.submit(
 );
 ```
 
-<Note>
-  Deep Agents sets a default recursion limit of 10,000, which is sufficient for
-  most multi-expert setups. You can override this via `config.recursion_limit` if
-  needed.
-</Note>
+> [!NOTE]
+>
+> Deep Agents sets a default recursion limit of 10,000, which is sufficient for
+> most multi-expert setups. You can override this via `config.recursion_limit` if
+> needed.
 
 ## The SubagentDiscoverySnapshot
 
@@ -383,32 +379,24 @@ These LangChain frontend patterns work with subagent cards the same way they
 work with single-agent streams. Deep Agents are built on the same `useStream`
 API, so these guides apply directly:
 
-<CardGroup>
-  <Card title="Tool calling" icon="hammer" href="/oss/javascript/langchain/frontend/tool-calling">
-    Render each subagent's tool calls as rich, type-safe UI cards with pending, completed, and failed states.
-  </Card>
+> **[Tool calling](/oss/javascript/langchain/frontend/tool-calling)**
+>
+> Render each subagent's tool calls as rich, type-safe UI cards with pending, completed, and failed states.
 
-  <Card title="Markdown messages" icon="markdown" href="/oss/javascript/langchain/frontend/markdown-messages">
-    Display coordinator and subagent messages as formatted markdown with proper streaming support.
-  </Card>
+> **[Markdown messages](/oss/javascript/langchain/frontend/markdown-messages)**
+>
+> Display coordinator and subagent messages as formatted markdown with proper streaming support.
 
-  <Card title="Human-in-the-Loop" icon="hand" href="/oss/javascript/langchain/frontend/human-in-the-loop">
-    Pause a delegated subagent for user approval or input using the same interrupt API.
-  </Card>
+> **[Human-in-the-Loop](/oss/javascript/langchain/frontend/human-in-the-loop)**
+>
+> Pause a delegated subagent for user approval or input using the same interrupt API.
 
-  <Card title="Reasoning tokens" icon="brain" href="/oss/javascript/langchain/frontend/reasoning-tokens">
-    Surface model thinking inside subagent cards using collapsible reasoning blocks.
-  </Card>
-</CardGroup>
+> **[Reasoning tokens](/oss/javascript/langchain/frontend/reasoning-tokens)**
+>
+> Surface model thinking inside subagent cards using collapsible reasoning blocks.
 
 ***
 
-<div>
-  <Callout icon="terminal-2">
-    [Connect these docs](/use-these-docs) to your agent of choice via MCP for real-time answers.
-  </Callout>
+[Connect these docs](/use-these-docs) to your agent of choice via MCP for real-time answers.
 
-  <Callout icon="edit">
-    [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/oss/deepagents/frontend/subagent-streaming.mdx) or [file an issue](https://github.com/langchain-ai/docs/issues/new/choose).
-  </Callout>
-</div>
+[Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/oss/deepagents/frontend/subagent-streaming.mdx) or [file an issue](https://github.com/langchain-ai/docs/issues/new/choose).

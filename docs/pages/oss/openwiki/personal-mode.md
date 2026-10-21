@@ -36,9 +36,7 @@ During an ingestion run, connector tools write raw data and manifests under `~/.
 
 Connector secrets are referenced by env var name and stored in `~/.openwiki/.env`.
 
-<Important>
-  Connector config files should never contain raw secret values.
-</Important>
+Connector config files should never contain raw secret values.
 
 ### Built-in sources
 
@@ -59,42 +57,40 @@ You can configure the same source more than once. For example, add one web searc
 
 For sources that need credentials, authenticate first, then ingest. Sources such as Hacker News and Custom MCP need no auth by default; web search needs `TAVILY_API_KEY` in `~/.openwiki/.env`.
 
-<Steps>
-  <Step title="Authenticate the provider" icon="key">
-    Run a local browser OAuth flow for providers that require it. OpenWiki saves returned tokens to `~/.openwiki/.env`, creates connector config when possible, and discovers MCP tools for MCP-backed providers:
+**1. Authenticate the provider**
 
-    ```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-    openwiki auth notion
-    openwiki auth gmail
-    openwiki auth x
-    openwiki auth slack
-    ```
+Run a local browser OAuth flow for providers that require it. OpenWiki saves returned tokens to `~/.openwiki/.env`, creates connector config when possible, and discovers MCP tools for MCP-backed providers:
 
-    * Slack and Gmail require app client credentials to already be set in `~/.openwiki/.env`
-    * Notion uses dynamic client registration for hosted MCP
-    * X uses OAuth 2.0 with PKCE
-    * After `openwiki auth gmail`, the Google connector can ingest Gmail directly with no MCP transport setup
+```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+openwiki auth notion
+openwiki auth gmail
+openwiki auth x
+openwiki auth slack
+```
 
-    Advanced retry helpers:
+* Slack and Gmail require app client credentials to already be set in `~/.openwiki/.env`
+* Notion uses dynamic client registration for hosted MCP
+* X uses OAuth 2.0 with PKCE
+* After `openwiki auth gmail`, the Google connector can ingest Gmail directly with no MCP transport setup
 
-    ```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-    openwiki auth configure <provider>
-    openwiki auth tools <provider>
-    ```
-  </Step>
+Advanced retry helpers:
 
-  <Step title="Ingest the source" icon="download">
-    Pull raw data into `~/.openwiki/connectors/` and synthesize updates into the personal wiki:
+```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+openwiki auth configure <provider>
+openwiki auth tools <provider>
+```
 
-    ```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-    openwiki ingest all
-    openwiki ingest web-search
-    openwiki ingest web-search-2
-    ```
+**2. Ingest the source**
 
-    You can also refresh from chat or with `openwiki personal --update` after sources are configured.
-  </Step>
-</Steps>
+Pull raw data into `~/.openwiki/connectors/` and synthesize updates into the personal wiki:
+
+```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+openwiki ingest all
+openwiki ingest web-search
+openwiki ingest web-search-2
+```
+
+You can also refresh from chat or with `openwiki personal --update` after sources are configured.
 
 ### Slack OAuth
 
@@ -143,12 +139,6 @@ openwiki cron delete <source|all>
 
 ***
 
-<div>
-  <Callout icon="terminal-2">
-    [Connect these docs](/use-these-docs) to your agent of choice via MCP for real-time answers.
-  </Callout>
+[Connect these docs](/use-these-docs) to your agent of choice via MCP for real-time answers.
 
-  <Callout icon="edit">
-    [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/oss/openwiki/personal-mode.mdx) or [file an issue](https://github.com/langchain-ai/docs/issues/new/choose).
-  </Callout>
-</div>
+[Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/oss/openwiki/personal-mode.mdx) or [file an issue](https://github.com/langchain-ai/docs/issues/new/choose).

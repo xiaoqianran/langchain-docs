@@ -26,7 +26,7 @@ This page covers:
 
 ## LangSmith Deployments
 
-<img alt="Managed Deep Agents packages your agent configuration, tools, and runtime settings for LangSmith" />
+![Managed Deep Agents packages your agent configuration, tools, and runtime settings for LangSmith](https://mintcdn.com/langchain-5e9cc07a/9oyV6nbtSbBRfaE1/oss/images/deepagents/production/deepagents-deploy-config.png?fit=max\&auto=format\&n=9oyV6nbtSbBRfaE1\&q=85\&s=5c3f2961994afe5fe67a2f5c9e9ba7ac)
 
 The recommended path for taking a Deep Agent to production is [Managed Deep Agents](/langsmith/javascript/managed-deep-agents-overview), a CLI-first hosted runtime for creating, running, and operating deep agents in LangSmith. Managed Deep Agents is in public [beta](/langsmith/release-stages) on [LangSmith Cloud](/langsmith/cloud). It runs the same Deep Agents harness, but you author the agent as a project of files and declare it for the managed runtime rather than compiling it yourself. See [Relationship to Deep Agents](/langsmith/javascript/managed-deep-agents-overview#relationship-to-deep-agents).
 
@@ -34,69 +34,49 @@ For teams that need custom application code, custom routes, advanced authenticat
 
 You can also deploy on JavaScript frameworks and hosting platforms without LangSmith Cloud.
 
-<div>
-  <div>
-    <p>Frameworks and platforms</p>
+Frameworks and platforms
 
-    <a href="/langsmith/deploy-frameworks-and-platforms">
-      View all guides
-    </a>
-  </div>
+[View all guides](/langsmith/deploy-frameworks-and-platforms)
 
-  <div>
-    <a href="/langsmith/deploy-vite-langsmith">
-      <img alt="" />
+![](https://mintcdn.com/langchain-5e9cc07a/ZPKed1feKJ8F6LVo/images/providers/light/langchain.svg?fit=max\&auto=format\&n=ZPKed1feKJ8F6LVo\&q=85\&s=b910ed9cd0b6b8adb4b6da400882e92c)
 
-      <img alt="" />
+LangSmith
 
-      <span>LangSmith</span>
-    </a>
+[Open](/langsmith/deploy-vite-langsmith)
 
-    <a href="/langsmith/deploy-nextjs">
-      <img alt="" />
+![](https://mintcdn.com/langchain-5e9cc07a/h9vvRKKSgCSjvd_Y/images/providers/light/nextjs.svg?fit=max\&auto=format\&n=h9vvRKKSgCSjvd_Y\&q=85\&s=4f3336e9534db50f25f87173a41322d5)
 
-      <img alt="" />
+Next.js
 
-      <span>Next.js</span>
-    </a>
+[Open](/langsmith/deploy-nextjs)
 
-    <a href="/langsmith/deploy-sveltekit">
-      <img alt="" />
+![](https://mintcdn.com/langchain-5e9cc07a/h9vvRKKSgCSjvd_Y/images/providers/light/svelte.svg?fit=max\&auto=format\&n=h9vvRKKSgCSjvd_Y\&q=85\&s=07e7e35c40e4522f739feea9ef3e33b7)
 
-      <img alt="" />
+SvelteKit
 
-      <span>SvelteKit</span>
-    </a>
+[Open](/langsmith/deploy-sveltekit)
 
-    <a href="/langsmith/deploy-nuxt">
-      <img alt="" />
+![](https://mintcdn.com/langchain-5e9cc07a/h9vvRKKSgCSjvd_Y/images/providers/light/nuxt.svg?fit=max\&auto=format\&n=h9vvRKKSgCSjvd_Y\&q=85\&s=5d965ed1f93f51ac604e66b935a65368)
 
-      <img alt="" />
+Nuxt
 
-      <span>Nuxt</span>
-    </a>
+[Open](/langsmith/deploy-nuxt)
 
-    <a href="/langsmith/deploy-cloudflare-workers">
-      <img alt="" />
+![](https://mintcdn.com/langchain-5e9cc07a/h9vvRKKSgCSjvd_Y/images/providers/light/cloudflare.svg?fit=max\&auto=format\&n=h9vvRKKSgCSjvd_Y\&q=85\&s=ae129fcbfc78ccaece42b1c4d3699311)
 
-      <img alt="" />
+Cloudflare
 
-      <span>Cloudflare</span>
-    </a>
+[Open](/langsmith/deploy-cloudflare-workers)
 
-    <a href="/langsmith/deploy-deno">
-      <img alt="" />
+![](https://mintcdn.com/langchain-5e9cc07a/Tz8fh3A43FeUPf69/images/providers/light/deno.svg?fit=max\&auto=format\&n=Tz8fh3A43FeUPf69\&q=85\&s=8d213b0000104542fcaa7ab160595224)
 
-      <img alt="" />
+Deno
 
-      <span>Deno</span>
-    </a>
-  </div>
-</div>
+[Open](/langsmith/deploy-deno)
 
-<Tip>
-  LangSmith Cloud deployments automatically send traces to a project named after your deployment. Open [LangSmith](https://smith.langchain.com?utm_source=docs\&utm_medium=cta\&utm_campaign=langsmith-signup\&utm_content=oss-deepagents-going-to-production) to debug runs and monitor usage. For hybrid or self-hosted setups, see [LangSmith tracing](/langsmith/data-plane#langsmith-tracing). We recommend you also set up [LangSmith Engine](/langsmith/engine), which monitors your traces, detects issues, and proposes fixes.
-</Tip>
+> [!TIP]
+>
+> LangSmith Cloud deployments automatically send traces to a project named after your deployment. Open [LangSmith](https://smith.langchain.com?utm_source=docs\&utm_medium=cta\&utm_campaign=langsmith-signup\&utm_content=oss-deepagents-going-to-production) to debug runs and monitor usage. For hybrid or self-hosted setups, see [LangSmith tracing](/langsmith/data-plane#langsmith-tracing). We recommend you also set up [LangSmith Engine](/langsmith/engine), which monitors your traces, detects issues, and proposes fixes.
 
 All code snippets on this page use the following `langgraph.json` unless otherwise specified:
 
@@ -131,193 +111,191 @@ In production, every invocation should carry two run-level parameters:
 
 The two are independent and almost always passed together:
 
-<CodeGroup>
-  ```ts Google theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  import { createDeepAgent } from "deepagents";
-  import { uuid7 } from "langsmith";
-  import { z } from "zod";
+```ts Google theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+import { createDeepAgent } from "deepagents";
+import { uuid7 } from "langsmith";
+import { z } from "zod";
 
-  const contextSchema = z.object({ userId: z.string() });
+const contextSchema = z.object({ userId: z.string() });
 
-  const agent = createDeepAgent({
-    model: "google:gemini-3.6-flash",
-    contextSchema,
-  });
+const agent = createDeepAgent({
+  model: "google:gemini-3.6-flash",
+  contextSchema,
+});
 
-  // Start a conversation
-  const config = { configurable: { thread_id: uuid7() } };
-  await agent.invoke(
-    { messages: [{ role: "user", content: "Plan a 3-day trip to Tokyo" }] },
-    { ...config, context: { userId: "user-123" } },
-  );
+// Start a conversation
+const config = { configurable: { thread_id: uuid7() } };
+await agent.invoke(
+  { messages: [{ role: "user", content: "Plan a 3-day trip to Tokyo" }] },
+  { ...config, context: { userId: "user-123" } },
+);
 
-  // Follow-up on the same conversation: reuse the same thread_id
-  await agent.invoke(
-    { messages: [{ role: "user", content: "Make it 5 days instead" }] },
-    { ...config, context: { userId: "user-123" } },
-  );
-  ```
+// Follow-up on the same conversation: reuse the same thread_id
+await agent.invoke(
+  { messages: [{ role: "user", content: "Make it 5 days instead" }] },
+  { ...config, context: { userId: "user-123" } },
+);
+```
 
-  ```ts OpenAI theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  import { createDeepAgent } from "deepagents";
-  import { uuid7 } from "langsmith";
-  import { z } from "zod";
+```ts OpenAI theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+import { createDeepAgent } from "deepagents";
+import { uuid7 } from "langsmith";
+import { z } from "zod";
 
-  const contextSchema = z.object({ userId: z.string() });
+const contextSchema = z.object({ userId: z.string() });
 
-  const agent = createDeepAgent({
-    model: "openai:gpt-5.5",
-    contextSchema,
-  });
+const agent = createDeepAgent({
+  model: "openai:gpt-5.5",
+  contextSchema,
+});
 
-  // Start a conversation
-  const config = { configurable: { thread_id: uuid7() } };
-  await agent.invoke(
-    { messages: [{ role: "user", content: "Plan a 3-day trip to Tokyo" }] },
-    { ...config, context: { userId: "user-123" } },
-  );
+// Start a conversation
+const config = { configurable: { thread_id: uuid7() } };
+await agent.invoke(
+  { messages: [{ role: "user", content: "Plan a 3-day trip to Tokyo" }] },
+  { ...config, context: { userId: "user-123" } },
+);
 
-  // Follow-up on the same conversation: reuse the same thread_id
-  await agent.invoke(
-    { messages: [{ role: "user", content: "Make it 5 days instead" }] },
-    { ...config, context: { userId: "user-123" } },
-  );
-  ```
+// Follow-up on the same conversation: reuse the same thread_id
+await agent.invoke(
+  { messages: [{ role: "user", content: "Make it 5 days instead" }] },
+  { ...config, context: { userId: "user-123" } },
+);
+```
 
-  ```ts Anthropic theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  import { createDeepAgent } from "deepagents";
-  import { uuid7 } from "langsmith";
-  import { z } from "zod";
+```ts Anthropic theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+import { createDeepAgent } from "deepagents";
+import { uuid7 } from "langsmith";
+import { z } from "zod";
 
-  const contextSchema = z.object({ userId: z.string() });
+const contextSchema = z.object({ userId: z.string() });
 
-  const agent = createDeepAgent({
-    model: "anthropic:claude-sonnet-5",
-    contextSchema,
-  });
+const agent = createDeepAgent({
+  model: "anthropic:claude-sonnet-5",
+  contextSchema,
+});
 
-  // Start a conversation
-  const config = { configurable: { thread_id: uuid7() } };
-  await agent.invoke(
-    { messages: [{ role: "user", content: "Plan a 3-day trip to Tokyo" }] },
-    { ...config, context: { userId: "user-123" } },
-  );
+// Start a conversation
+const config = { configurable: { thread_id: uuid7() } };
+await agent.invoke(
+  { messages: [{ role: "user", content: "Plan a 3-day trip to Tokyo" }] },
+  { ...config, context: { userId: "user-123" } },
+);
 
-  // Follow-up on the same conversation: reuse the same thread_id
-  await agent.invoke(
-    { messages: [{ role: "user", content: "Make it 5 days instead" }] },
-    { ...config, context: { userId: "user-123" } },
-  );
-  ```
+// Follow-up on the same conversation: reuse the same thread_id
+await agent.invoke(
+  { messages: [{ role: "user", content: "Make it 5 days instead" }] },
+  { ...config, context: { userId: "user-123" } },
+);
+```
 
-  ```ts OpenRouter theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  import { createDeepAgent } from "deepagents";
-  import { uuid7 } from "langsmith";
-  import { z } from "zod";
+```ts OpenRouter theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+import { createDeepAgent } from "deepagents";
+import { uuid7 } from "langsmith";
+import { z } from "zod";
 
-  const contextSchema = z.object({ userId: z.string() });
+const contextSchema = z.object({ userId: z.string() });
 
-  const agent = createDeepAgent({
-    model: "openrouter:z-ai/glm-5.2",
-    contextSchema,
-  });
+const agent = createDeepAgent({
+  model: "openrouter:z-ai/glm-5.2",
+  contextSchema,
+});
 
-  // Start a conversation
-  const config = { configurable: { thread_id: uuid7() } };
-  await agent.invoke(
-    { messages: [{ role: "user", content: "Plan a 3-day trip to Tokyo" }] },
-    { ...config, context: { userId: "user-123" } },
-  );
+// Start a conversation
+const config = { configurable: { thread_id: uuid7() } };
+await agent.invoke(
+  { messages: [{ role: "user", content: "Plan a 3-day trip to Tokyo" }] },
+  { ...config, context: { userId: "user-123" } },
+);
 
-  // Follow-up on the same conversation: reuse the same thread_id
-  await agent.invoke(
-    { messages: [{ role: "user", content: "Make it 5 days instead" }] },
-    { ...config, context: { userId: "user-123" } },
-  );
-  ```
+// Follow-up on the same conversation: reuse the same thread_id
+await agent.invoke(
+  { messages: [{ role: "user", content: "Make it 5 days instead" }] },
+  { ...config, context: { userId: "user-123" } },
+);
+```
 
-  ```ts Fireworks theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  import { createDeepAgent } from "deepagents";
-  import { uuid7 } from "langsmith";
-  import { z } from "zod";
+```ts Fireworks theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+import { createDeepAgent } from "deepagents";
+import { uuid7 } from "langsmith";
+import { z } from "zod";
 
-  const contextSchema = z.object({ userId: z.string() });
+const contextSchema = z.object({ userId: z.string() });
 
-  const agent = createDeepAgent({
-    model: "fireworks:accounts/fireworks/models/glm-5p2",
-    contextSchema,
-  });
+const agent = createDeepAgent({
+  model: "fireworks:accounts/fireworks/models/glm-5p2",
+  contextSchema,
+});
 
-  // Start a conversation
-  const config = { configurable: { thread_id: uuid7() } };
-  await agent.invoke(
-    { messages: [{ role: "user", content: "Plan a 3-day trip to Tokyo" }] },
-    { ...config, context: { userId: "user-123" } },
-  );
+// Start a conversation
+const config = { configurable: { thread_id: uuid7() } };
+await agent.invoke(
+  { messages: [{ role: "user", content: "Plan a 3-day trip to Tokyo" }] },
+  { ...config, context: { userId: "user-123" } },
+);
 
-  // Follow-up on the same conversation: reuse the same thread_id
-  await agent.invoke(
-    { messages: [{ role: "user", content: "Make it 5 days instead" }] },
-    { ...config, context: { userId: "user-123" } },
-  );
-  ```
+// Follow-up on the same conversation: reuse the same thread_id
+await agent.invoke(
+  { messages: [{ role: "user", content: "Make it 5 days instead" }] },
+  { ...config, context: { userId: "user-123" } },
+);
+```
 
-  ```ts Baseten theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  import { createDeepAgent } from "deepagents";
-  import { uuid7 } from "langsmith";
-  import { z } from "zod";
+```ts Baseten theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+import { createDeepAgent } from "deepagents";
+import { uuid7 } from "langsmith";
+import { z } from "zod";
 
-  const contextSchema = z.object({ userId: z.string() });
+const contextSchema = z.object({ userId: z.string() });
 
-  const agent = createDeepAgent({
-    model: "baseten:zai-org/GLM-5.2",
-    contextSchema,
-  });
+const agent = createDeepAgent({
+  model: "baseten:zai-org/GLM-5.2",
+  contextSchema,
+});
 
-  // Start a conversation
-  const config = { configurable: { thread_id: uuid7() } };
-  await agent.invoke(
-    { messages: [{ role: "user", content: "Plan a 3-day trip to Tokyo" }] },
-    { ...config, context: { userId: "user-123" } },
-  );
+// Start a conversation
+const config = { configurable: { thread_id: uuid7() } };
+await agent.invoke(
+  { messages: [{ role: "user", content: "Plan a 3-day trip to Tokyo" }] },
+  { ...config, context: { userId: "user-123" } },
+);
 
-  // Follow-up on the same conversation: reuse the same thread_id
-  await agent.invoke(
-    { messages: [{ role: "user", content: "Make it 5 days instead" }] },
-    { ...config, context: { userId: "user-123" } },
-  );
-  ```
+// Follow-up on the same conversation: reuse the same thread_id
+await agent.invoke(
+  { messages: [{ role: "user", content: "Make it 5 days instead" }] },
+  { ...config, context: { userId: "user-123" } },
+);
+```
 
-  ```ts Ollama theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  import { createDeepAgent } from "deepagents";
-  import { uuid7 } from "langsmith";
-  import { z } from "zod";
+```ts Ollama theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+import { createDeepAgent } from "deepagents";
+import { uuid7 } from "langsmith";
+import { z } from "zod";
 
-  const contextSchema = z.object({ userId: z.string() });
+const contextSchema = z.object({ userId: z.string() });
 
-  const agent = createDeepAgent({
-    model: "ollama:north-mini-code-1.0",
-    contextSchema,
-  });
+const agent = createDeepAgent({
+  model: "ollama:north-mini-code-1.0",
+  contextSchema,
+});
 
-  // Start a conversation
-  const config = { configurable: { thread_id: uuid7() } };
-  await agent.invoke(
-    { messages: [{ role: "user", content: "Plan a 3-day trip to Tokyo" }] },
-    { ...config, context: { userId: "user-123" } },
-  );
+// Start a conversation
+const config = { configurable: { thread_id: uuid7() } };
+await agent.invoke(
+  { messages: [{ role: "user", content: "Plan a 3-day trip to Tokyo" }] },
+  { ...config, context: { userId: "user-123" } },
+);
 
-  // Follow-up on the same conversation: reuse the same thread_id
-  await agent.invoke(
-    { messages: [{ role: "user", content: "Make it 5 days instead" }] },
-    { ...config, context: { userId: "user-123" } },
-  );
-  ```
-</CodeGroup>
+// Follow-up on the same conversation: reuse the same thread_id
+await agent.invoke(
+  { messages: [{ role: "user", content: "Make it 5 days instead" }] },
+  { ...config, context: { userId: "user-123" } },
+);
+```
 
-<Card title="View example trace" icon="chart-line" href="https://smith.langchain.com/public/f7c0af9a-f4e0-4dd6-b606-38c5790cf9cc/r">
-  Open a public LangSmith run for this example.
-</Card>
+> **[View example trace](https://smith.langchain.com/public/f7c0af9a-f4e0-4dd6-b606-38c5790cf9cc/r)**
+>
+> Open a public LangSmith run for this example.
 
 When deploying with the LangGraph SDK, the SDK manages threads for you and you pass the returned `thread_id` to each run:
 
@@ -340,15 +318,15 @@ for await (const chunk of client.runs.stream(
 }
 ```
 
-<Tip>
-  `thread_id` scopes the *conversation* (message history, checkpoints). `context` carries *per-run* data your tools and middleware read. They are independent: changing one does not affect the other, and you can pass either or both.
-</Tip>
+> [!TIP]
+>
+> `thread_id` scopes the *conversation* (message history, checkpoints). `context` carries *per-run* data your tools and middleware read. They are independent: changing one does not affect the other, and you can pass either or both.
 
 ### Multi-tenancy
 
 When your agent serves multiple users, you need to handle three concerns: verifying who each user is, controlling what they can access, and managing the credentials the agent uses to act on their behalf.
 
-<img alt="Three authentication layers compose: end-user auth, agent-acting-as-user auth, and team RBAC" />
+![Three authentication layers compose: end-user auth, agent-acting-as-user auth, and team RBAC](https://mintcdn.com/langchain-5e9cc07a/9oyV6nbtSbBRfaE1/oss/images/deepagents/production/auth-layers.png?fit=max\&auto=format\&n=9oyV6nbtSbBRfaE1\&q=85\&s=11137d8bae74093c459416fd3e541d68)
 
 #### User identity and access control
 
@@ -403,9 +381,9 @@ const authResult = await authClient.authenticate({
 
 LLM-based applications are heavily I/O-bound: calling language models, databases, and external services. Async programming lets these operations run concurrently instead of blocking, improving throughput and responsiveness.
 
-<Note>
-  LangChain follows the convention of prefixing `a` to async method names (e.g., `ainvoke`, `abefore_agent`, `astream`). Sync and async variants live in the same class or namespace.
-</Note>
+> [!NOTE]
+>
+> LangChain follows the convention of prefixing `a` to async method names (e.g., `ainvoke`, `abefore_agent`, `astream`). Sync and async variants live in the same class or namespace.
 
 When building for production:
 
@@ -417,7 +395,7 @@ When building for production:
 
 Deep Agents run on LangGraph, which provides durable execution out of the box. The [persistence](/oss/javascript/langgraph/persistence) layer checkpoints state at each step, so a run interrupted by a failure, timeout, or [human-in-the-loop](/oss/javascript/langgraph/interrupts) pause resumes from its last recorded state without reprocessing previous steps. For long-running deep agents that spawn many subagents, this means a mid-run failure doesn't lose completed work.
 
-<img alt="Durable execution: when a worker crashes mid-run, another worker picks the run up from the latest checkpoint" />
+![Durable execution: when a worker crashes mid-run, another worker picks the run up from the latest checkpoint](https://mintcdn.com/langchain-5e9cc07a/9oyV6nbtSbBRfaE1/oss/images/deepagents/production/durable-execution.png?fit=max\&auto=format\&n=9oyV6nbtSbBRfaE1\&q=85\&s=d3bfd69460769dba142c68c7a20ae43b)
 
 Checkpointing also enables:
 
@@ -425,15 +403,15 @@ Checkpointing also enables:
 * **[Time travel](/oss/javascript/langgraph/use-time-travel).** Every checkpointed step is a snapshot you can rewind to, letting you replay from an earlier state if something goes wrong.
 * **Safe handling of sensitive operations.** For workflows involving payments or other irreversible actions, checkpoints provide an audit trail and a recovery point to inspect the exact state that led to an action.
 
-<Tip>
-  [LangSmith Deployments](/langsmith/deployment) configure a persistent checkpointer automatically. If you are self-hosting, see [persistence](/oss/javascript/langgraph/persistence) for setup instructions.
-</Tip>
+> [!TIP]
+>
+> [LangSmith Deployments](/langsmith/deployment) configure a persistent checkpointer automatically. If you are self-hosting, see [persistence](/oss/javascript/langgraph/persistence) for setup instructions.
 
 ## Memory
 
 Without memory, every conversation starts from scratch. Memory lets your agent retain information across conversations (user preferences, learned instructions, past experiences) so it can personalize its behavior over time. For an overview of memory types, see the [memory concepts guide](/oss/javascript/concepts/memory).
 
-<img alt="Short-term memory is scoped to a single thread via checkpoints; long-term memory persists across threads via the store" />
+![Short-term memory is scoped to a single thread via checkpoints; long-term memory persists across threads via the store](https://mintcdn.com/langchain-5e9cc07a/9oyV6nbtSbBRfaE1/oss/images/deepagents/production/memory.png?fit=max\&auto=format\&n=9oyV6nbtSbBRfaE1\&q=85\&s=3ec585271dcd8d62e0207d79d68c296b)
 
 ### Scoping
 
@@ -445,104 +423,102 @@ Memory is always persistent across conversations. The main question is how it's 
 | **Assistant** | `(assistant_id)` | Shared instructions for one assistant | "Cap posts at 280 characters" |
 | **Global** | `(org_id)` | Read-only policies for all users and assistants | "Never disclose internal pricing" |
 
-<Warning>
-  Shared memory (assistant, user, or organization scope) is a vector for prompt injection. If one user can write to memory that another user's conversation reads, a malicious user could inject instructions into that shared state. Enforce read-only access where appropriate. For example, make organization-wide policies writable only through application code, not by the agent itself. Use [permissions](/oss/javascript/deepagents/permissions) to declaratively deny writes to shared paths, or [backend policy hooks](/oss/javascript/deepagents/backends#add-policy-hooks) for custom validation logic.
-</Warning>
+> [!WARNING]
+>
+> Shared memory (assistant, user, or organization scope) is a vector for prompt injection. If one user can write to memory that another user's conversation reads, a malicious user could inject instructions into that shared state. Enforce read-only access where appropriate. For example, make organization-wide policies writable only through application code, not by the agent itself. Use [permissions](/oss/javascript/deepagents/permissions) to declaratively deny writes to shared paths, or [backend policy hooks](/oss/javascript/deepagents/backends#add-policy-hooks) for custom validation logic.
 
 ### Configuration
 
 In Deep Agents, memory is stored as files in a virtual filesystem. By default, files are scoped to a single thread (conversation) and not shared across threads.
 Otherwise, to share memory across threads, route a path like `/memories/` to a [StoreBackend](https://reference.langchain.com/javascript/deepagents/backends/StoreBackend) that writes to the LangGraph [Store](/langsmith/custom-store). Use a [CompositeBackend](https://reference.langchain.com/javascript/deepagents/backends/CompositeBackend) to give the agent both thread-scoped scratch space and cross-thread [long-term memory](/oss/javascript/deepagents/memory).
 
-<Note>
-  The `rt.serverInfo` and `rt.executionInfo` namespace patterns shown below require `deepagents>=1.9.0`.
-</Note>
+> [!NOTE]
+>
+> The `rt.serverInfo` and `rt.executionInfo` namespace patterns shown below require `deepagents>=1.9.0`.
 
-<Tabs>
-  <Tab title="User (recommended)">
-    Namespace by `user_id`. Each user gets their own private memory. This is the recommended default since most applications deploy a single assistant.
+**User (recommended)**
 
-    ```typescript src/agent.ts theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-    import { createDeepAgent, CompositeBackend, StateBackend, StoreBackend } from "deepagents";
+Namespace by `user_id`. Each user gets their own private memory. This is the recommended default since most applications deploy a single assistant.
 
-    export const agent = createDeepAgent({
-      backend: new CompositeBackend(
-        new StateBackend(),
-        {
-          "/memories/": new StoreBackend({
-            namespace: (rt) => [
-              rt.serverInfo.assistantId,  // [!code highlight]
-              rt.serverInfo.user.identity,  // [!code highlight]
-            ],
-          }),
-        },
-      ),
-      systemPrompt: `You have persistent memory at /memories/.
+```typescript src/agent.ts theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+import { createDeepAgent, CompositeBackend, StateBackend, StoreBackend } from "deepagents";
 
-      Read /memories/instructions.txt at the start of each conversation for
-      accumulated knowledge and preferences. When you learn something that
-      should persist, update that file.`,
-    });
-    ```
-  </Tab>
+export const agent = createDeepAgent({
+  backend: new CompositeBackend(
+    new StateBackend(),
+    {
+      "/memories/": new StoreBackend({
+        namespace: (rt) => [
+          rt.serverInfo.assistantId,  // [!code highlight]
+          rt.serverInfo.user.identity,  // [!code highlight]
+        ],
+      }),
+    },
+  ),
+  systemPrompt: `You have persistent memory at /memories/.
 
-  <Tab title="Assistant">
-    Namespace by `assistant_id`. Memory is shared across all users of the same assistant, so any user can read or update it. Use this for shared instructions or knowledge that applies to everyone using a given assistant (e.g., "always reply in formal tone").
+  Read /memories/instructions.txt at the start of each conversation for
+  accumulated knowledge and preferences. When you learn something that
+  should persist, update that file.`,
+});
+```
 
-    ```typescript src/agent.ts theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-    import { createDeepAgent, CompositeBackend, StateBackend, StoreBackend } from "deepagents";
+**Assistant**
 
-    export const agent = createDeepAgent({
-      backend: new CompositeBackend(
-        new StateBackend(),
-        {
-          "/memories/": new StoreBackend({
-            namespace: (rt) => [rt.serverInfo.assistantId],  // [!code highlight]
-          }),
-        },
-      ),
-    });
-    ```
-  </Tab>
+Namespace by `assistant_id`. Memory is shared across all users of the same assistant, so any user can read or update it. Use this for shared instructions or knowledge that applies to everyone using a given assistant (e.g., "always reply in formal tone").
 
-  <Tab title="User">
-    Namespace by `user_id` alone. Memory follows the user across all assistants. Use this for a global user profile (name, timezone, communication preferences) that should apply regardless of which assistant the user is talking to.
+```typescript src/agent.ts theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+import { createDeepAgent, CompositeBackend, StateBackend, StoreBackend } from "deepagents";
 
-    ```typescript src/agent.ts theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-    import { createDeepAgent, CompositeBackend, StateBackend, StoreBackend } from "deepagents";
+export const agent = createDeepAgent({
+  backend: new CompositeBackend(
+    new StateBackend(),
+    {
+      "/memories/": new StoreBackend({
+        namespace: (rt) => [rt.serverInfo.assistantId],  // [!code highlight]
+      }),
+    },
+  ),
+});
+```
 
-    export const agent = createDeepAgent({
-      backend: new CompositeBackend(
-        new StateBackend(),
-        {
-          "/memories/": new StoreBackend({
-            namespace: (rt) => [rt.serverInfo.user.identity],  // [!code highlight]
-          }),
-        },
-      ),
-    });
-    ```
-  </Tab>
+**User**
 
-  <Tab title="Organization">
-    Namespace by `org_id`. Memory is shared across all users and all assistants. Typically used for organization-wide policies (compliance rules, brand guidelines) that should be read-only for the agent. Write access should be restricted to application code to prevent prompt injection.
+Namespace by `user_id` alone. Memory follows the user across all assistants. Use this for a global user profile (name, timezone, communication preferences) that should apply regardless of which assistant the user is talking to.
 
-    ```typescript src/agent.ts theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-    import { createDeepAgent, CompositeBackend, StateBackend, StoreBackend } from "deepagents";
+```typescript src/agent.ts theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+import { createDeepAgent, CompositeBackend, StateBackend, StoreBackend } from "deepagents";
 
-    export const agent = createDeepAgent({
-      backend: new CompositeBackend(
-        new StateBackend(),
-        {
-          "/memories/": new StoreBackend({
-            namespace: (rt) => [rt.context.orgId],
-          }),
-        },
-      ),
-    });
-    ```
-  </Tab>
-</Tabs>
+export const agent = createDeepAgent({
+  backend: new CompositeBackend(
+    new StateBackend(),
+    {
+      "/memories/": new StoreBackend({
+        namespace: (rt) => [rt.serverInfo.user.identity],  // [!code highlight]
+      }),
+    },
+  ),
+});
+```
+
+**Organization**
+
+Namespace by `org_id`. Memory is shared across all users and all assistants. Typically used for organization-wide policies (compliance rules, brand guidelines) that should be read-only for the agent. Write access should be restricted to application code to prevent prompt injection.
+
+```typescript src/agent.ts theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+import { createDeepAgent, CompositeBackend, StateBackend, StoreBackend } from "deepagents";
+
+export const agent = createDeepAgent({
+  backend: new CompositeBackend(
+    new StateBackend(),
+    {
+      "/memories/": new StoreBackend({
+        namespace: (rt) => [rt.context.orgId],
+      }),
+    },
+  ),
+});
+```
 
 You can also read and write to the store from your application code using the [Store API](/langsmith/custom-store). See [Advanced usage](/oss/javascript/deepagents/memory#advanced-usage) for examples.
 
@@ -565,9 +541,9 @@ Choose a backend based on what needs to persist:
 
 For the full list of backends and how to build custom ones, see [backends](/oss/javascript/deepagents/backends).
 
-<Warning>
-  `FilesystemBackend` and `LocalShellBackend` access the host directly. Don't use them in deployed agents.
-</Warning>
+> [!WARNING]
+>
+> `FilesystemBackend` and `LocalShellBackend` access the host directly. Don't use them in deployed agents.
 
 ### Sandboxes
 
@@ -582,149 +558,145 @@ The key decision is how long a sandbox lives. Does each conversation get a fresh
 | **Thread-scoped** | [Thread](/langsmith/use-threads) metadata | Fresh per conversation, cleaned up on TTL | A data analysis bot where each conversation starts clean |
 | **Assistant-scoped** | [Assistant](/langsmith/assistants) config | Shared across all conversations | A coding assistant that maintains a cloned repo across conversations |
 
-<Note>
-  The examples below use an async [graph factory](/langsmith/graph-rebuild) instead of a static graph because the sandbox needs the `thread_id` or `assistant_id` to look up or create the correct sandbox. Graph factories don't receive a full `Runtime` (no `server_info` or `execution_info`); instead, accept a `RunnableConfig` and read `thread_id` and `assistant_id` from `config["configurable"]`. The factory is async because sandbox creation is an I/O-bound operation that requires per-run information only available at invocation time.
-</Note>
+> [!NOTE]
+>
+> The examples below use an async [graph factory](/langsmith/graph-rebuild) instead of a static graph because the sandbox needs the `thread_id` or `assistant_id` to look up or create the correct sandbox. Graph factories don't receive a full `Runtime` (no `server_info` or `execution_info`); instead, accept a `RunnableConfig` and read `thread_id` and `assistant_id` from `config["configurable"]`. The factory is async because sandbox creation is an I/O-bound operation that requires per-run information only available at invocation time.
 
-<Tabs>
-  <Tab title="Thread-scoped (most common)">
-    Each conversation gets its own sandbox. The [graph factory](/langsmith/graph-rebuild) reads `thread_id` from the run config, so each [thread](/langsmith/use-threads) automatically gets its own isolated environment. Named sandbox lookup handles deduplication across runs. Cleaned up when the sandbox [TTL](/langsmith/configure-ttl) expires.
+**Thread-scoped (most common)**
 
-    ```typescript src/agent.ts theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-    import { createDeepAgent, LangSmithSandbox } from "deepagents";
-    import { SandboxClient } from "langsmith/sandbox";
-    import type { LangGraphRunnableConfig } from "@langchain/langgraph";
+Each conversation gets its own sandbox. The [graph factory](/langsmith/graph-rebuild) reads `thread_id` from the run config, so each [thread](/langsmith/use-threads) automatically gets its own isolated environment. Named sandbox lookup handles deduplication across runs. Cleaned up when the sandbox [TTL](/langsmith/configure-ttl) expires.
 
-    const client = new SandboxClient();
+```typescript src/agent.ts theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+import { createDeepAgent, LangSmithSandbox } from "deepagents";
+import { SandboxClient } from "langsmith/sandbox";
+import type { LangGraphRunnableConfig } from "@langchain/langgraph";
 
-    export async function agent(config: LangGraphRunnableConfig) {
-      const threadId = config.configurable?.thread_id as string;  // [!code highlight]
-      const sandboxName = `thread-${threadId}`;
-      const existing = (await client.listSandboxes()).filter(
-        (sb) => sb.name === sandboxName,
-      );
-      const lsSandbox =
-        existing[0] ??
-        (await client.createSandbox({
-          name: sandboxName,
-          idleTtlSeconds: 3600, // TTL: clean up when idle
-        }));
-      return createDeepAgent({
-        model: "google:gemini-3.6-flash",
-        backend: new LangSmithSandbox({ sandbox: lsSandbox }),
-      });
-    }
-    ```
-  </Tab>
+const client = new SandboxClient();
 
-  <Tab title="Assistant-scoped">
-    All conversations share one sandbox. The [graph factory](/langsmith/graph-rebuild) reads the [assistant](/langsmith/assistants) ID from `config["configurable"]`, so every thread on the same assistant returns to the same environment. Files, installed packages, and cloned repositories persist across conversations.
+export async function agent(config: LangGraphRunnableConfig) {
+  const threadId = config.configurable?.thread_id as string;  // [!code highlight]
+  const sandboxName = `thread-${threadId}`;
+  const existing = (await client.listSandboxes()).filter(
+    (sb) => sb.name === sandboxName,
+  );
+  const lsSandbox =
+    existing[0] ??
+    (await client.createSandbox({
+      name: sandboxName,
+      idleTtlSeconds: 3600, // TTL: clean up when idle
+    }));
+  return createDeepAgent({
+    model: "google:gemini-3.6-flash",
+    backend: new LangSmithSandbox({ sandbox: lsSandbox }),
+  });
+}
+```
 
-    ```typescript src/agent.ts theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-    import { createDeepAgent, LangSmithSandbox } from "deepagents";
-    import { SandboxClient } from "langsmith/sandbox";
-    import type { LangGraphRunnableConfig } from "@langchain/langgraph";
+**Assistant-scoped**
 
-    const client = new SandboxClient();
+All conversations share one sandbox. The [graph factory](/langsmith/graph-rebuild) reads the [assistant](/langsmith/assistants) ID from `config["configurable"]`, so every thread on the same assistant returns to the same environment. Files, installed packages, and cloned repositories persist across conversations.
 
-    export async function agent(config: LangGraphRunnableConfig) {
-      const assistantId = config.configurable?.assistant_id as string;  // [!code highlight]
-      const sandboxName = `assistant-${assistantId}`;
-      const existing = (await client.listSandboxes()).filter(
-        (sb) => sb.name === sandboxName,
-      );
-      const lsSandbox =
-        existing[0] ??
-        (await client.createSandbox({
-          name: sandboxName,
-        }));
-      return createDeepAgent({
-        model: "google:gemini-3.6-flash",
-        backend: new LangSmithSandbox({ sandbox: lsSandbox }),
-      });
-    }
-    ```
+```typescript src/agent.ts theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+import { createDeepAgent, LangSmithSandbox } from "deepagents";
+import { SandboxClient } from "langsmith/sandbox";
+import type { LangGraphRunnableConfig } from "@langchain/langgraph";
 
-    <Warning>
-      Assistant-scoped sandboxes accumulate files, installed packages, and other in-sandbox state over time. Configure a TTL with your sandbox provider, use snapshots to reset periodically, or implement cleanup logic to prevent the sandbox's disk and memory from growing unbounded.
-    </Warning>
-  </Tab>
-</Tabs>
+const client = new SandboxClient();
+
+export async function agent(config: LangGraphRunnableConfig) {
+  const assistantId = config.configurable?.assistant_id as string;  // [!code highlight]
+  const sandboxName = `assistant-${assistantId}`;
+  const existing = (await client.listSandboxes()).filter(
+    (sb) => sb.name === sandboxName,
+  );
+  const lsSandbox =
+    existing[0] ??
+    (await client.createSandbox({
+      name: sandboxName,
+    }));
+  return createDeepAgent({
+    model: "google:gemini-3.6-flash",
+    backend: new LangSmithSandbox({ sandbox: lsSandbox }),
+  });
+}
+```
+
+> [!WARNING]
+>
+> Assistant-scoped sandboxes accumulate files, installed packages, and other in-sandbox state over time. Configure a TTL with your sandbox provider, use snapshots to reset periodically, or implement cleanup logic to prevent the sandbox's disk and memory from growing unbounded.
 
 Because the `agent` variable is an async function (not a compiled graph), the server treats it as a [graph factory](/langsmith/graph-rebuild) and calls it on each run, injecting the config. The factory looks up or creates the sandbox by name and returns a fresh agent graph wired to that sandbox.
 
 Once deployed with `langgraph deploy`, invoke the agent from your application code using the SDK. The client-side code is the same regardless of scope. The scoping is handled entirely in the agent factory above, but the behavior differs:
 
-<Tabs>
-  <Tab title="Thread-scoped">
-    Each thread gets its own sandbox. Follow-up messages within the same thread reuse the same sandbox, but a new thread always starts fresh with no leftover files or installed packages from previous conversations.
+**Thread-scoped**
 
-    ```typescript client.ts theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-    import { Client } from "@langchain/langgraph-sdk";
+Each thread gets its own sandbox. Follow-up messages within the same thread reuse the same sandbox, but a new thread always starts fresh with no leftover files or installed packages from previous conversations.
 
-    const client = new Client({ apiUrl: "<DEPLOYMENT_URL>", apiKey: "<LANGSMITH_API_KEY>" });
+```typescript client.ts theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+import { Client } from "@langchain/langgraph-sdk";
 
-    // Conversation 1: install pandas and analyze data
-    const thread1 = await client.threads.create();
-    for await (const chunk of client.runs.stream(
-      thread1.thread_id,
-      "agent",
-      { input: { messages: [{ role: "human", content: "Install pandas and analyze sales_data.csv" }] } },
-    )) {
-      console.log(chunk.data);
-    }
+const client = new Client({ apiUrl: "<DEPLOYMENT_URL>", apiKey: "<LANGSMITH_API_KEY>" });
 
-    // Follow-up in the same conversation — pandas is still installed
-    for await (const chunk of client.runs.stream(
-      thread1.thread_id,
-      "agent",
-      { input: { messages: [{ role: "human", content: "Now plot the results" }] } },
-    )) {
-      console.log(chunk.data);
-    }
+// Conversation 1: install pandas and analyze data
+const thread1 = await client.threads.create();
+for await (const chunk of client.runs.stream(
+  thread1.thread_id,
+  "agent",
+  { input: { messages: [{ role: "human", content: "Install pandas and analyze sales_data.csv" }] } },
+)) {
+  console.log(chunk.data);
+}
 
-    // Conversation 2: fresh sandbox — pandas is NOT installed, no files from conversation 1
-    const thread2 = await client.threads.create();
-    for await (const chunk of client.runs.stream(
-      thread2.thread_id,
-      "agent",
-      { input: { messages: [{ role: "human", content: "What packages are installed?" }] } },
-    )) {
-      console.log(chunk.data);
-    }
-    ```
-  </Tab>
+// Follow-up in the same conversation — pandas is still installed
+for await (const chunk of client.runs.stream(
+  thread1.thread_id,
+  "agent",
+  { input: { messages: [{ role: "human", content: "Now plot the results" }] } },
+)) {
+  console.log(chunk.data);
+}
 
-  <Tab title="Assistant-scoped">
-    All threads share one sandbox. This is useful when the sandbox has state that's expensive to recreate, such as a cloned repo, installed dependencies, or build artifacts. Any conversation on the same assistant picks up where the last one left off without repeating setup.
+// Conversation 2: fresh sandbox — pandas is NOT installed, no files from conversation 1
+const thread2 = await client.threads.create();
+for await (const chunk of client.runs.stream(
+  thread2.thread_id,
+  "agent",
+  { input: { messages: [{ role: "human", content: "What packages are installed?" }] } },
+)) {
+  console.log(chunk.data);
+}
+```
 
-    ```typescript client.ts theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-    import { Client } from "@langchain/langgraph-sdk";
+**Assistant-scoped**
 
-    const client = new Client({ apiUrl: "<DEPLOYMENT_URL>", apiKey: "<LANGSMITH_API_KEY>" });
+All threads share one sandbox. This is useful when the sandbox has state that's expensive to recreate, such as a cloned repo, installed dependencies, or build artifacts. Any conversation on the same assistant picks up where the last one left off without repeating setup.
 
-    // Conversation 1: clone and set up the project
-    const thread1 = await client.threads.create();
-    for await (const chunk of client.runs.stream(
-      thread1.thread_id,
-      "agent",
-      { input: { messages: [{ role: "human", content: "Clone https://github.com/org/repo and install dependencies" }] } },
-    )) {
-      console.log(chunk.data);
-    }
+```typescript client.ts theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+import { Client } from "@langchain/langgraph-sdk";
 
-    // Conversation 2: repo and dependencies are still there
-    const thread2 = await client.threads.create();
-    for await (const chunk of client.runs.stream(
-      thread2.thread_id,
-      "agent",
-      { input: { messages: [{ role: "human", content: "Run the test suite and fix any failures" }] } },
-    )) {
-      console.log(chunk.data);
-    }
-    ```
-  </Tab>
-</Tabs>
+const client = new Client({ apiUrl: "<DEPLOYMENT_URL>", apiKey: "<LANGSMITH_API_KEY>" });
+
+// Conversation 1: clone and set up the project
+const thread1 = await client.threads.create();
+for await (const chunk of client.runs.stream(
+  thread1.thread_id,
+  "agent",
+  { input: { messages: [{ role: "human", content: "Clone https://github.com/org/repo and install dependencies" }] } },
+)) {
+  console.log(chunk.data);
+}
+
+// Conversation 2: repo and dependencies are still there
+const thread2 = await client.threads.create();
+for await (const chunk of client.runs.stream(
+  thread2.thread_id,
+  "agent",
+  { input: { messages: [{ role: "human", content: "Run the test suite and fix any failures" }] } },
+)) {
+  console.log(chunk.data);
+}
+```
 
 #### File transfers
 
@@ -735,91 +707,91 @@ Sandboxes are isolated containers, so your application code can't directly acces
 
 For provider-specific file transfer examples, see [working with files](/oss/javascript/deepagents/sandboxes#working-with-files). For provider setup, security, and lifecycle patterns, see the full [sandboxes guide](/oss/javascript/deepagents/sandboxes).
 
-<Accordion title="Example: syncing skills and memories with custom middleware">
-  [Skill](/oss/javascript/deepagents/skills) scripts that the agent needs to execute must be uploaded into the sandbox before the agent runs. You may also want to sync [memories](/oss/javascript/deepagents/memory) so the agent can read and update them inside the container. Use [custom middleware](/oss/javascript/langchain/middleware/custom) with `before_agent` and `after_agent` hooks to move files across the sandbox boundary:
-
-  ```typescript src/agent.ts theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  import { createMiddleware } from "langchain";
-  import {
-    createDeepAgent,
-    CompositeBackend,
-    LangSmithSandbox,
-    StoreBackend,
-  } from "deepagents";
-  import { SandboxClient } from "langsmith/sandbox";
-
-  function safeFilename(key: string): string {
-    const name = key.split("/").pop()!;
-    if (name.includes("..") || /[*?]/.test(name)) {
-      throw new Error(`Invalid key: ${key}`);
-    }
-    return name;
-  }
-
-  const createSandboxSyncMiddleware = (backend: CompositeBackend) => {
-    return createMiddleware({
-      name: "SandboxSyncMiddleware",
-      beforeAgent: async (state, runtime) => {
-        // Upload skill scripts and memories into the sandbox
-        const userId = runtime.serverInfo.user.identity;  // [!code highlight]
-        const store = runtime.store;
-        const encoder = new TextEncoder();
-        const files: [string, Uint8Array][] = [];
-        for (const item of await store.search(["skills", userId])) {
-          const name = safeFilename(item.key);
-          files.push([`/skills/${name}`, encoder.encode(item.value.content)]);
-        }
-        for (const item of await store.search(["memories", userId])) {
-          const name = safeFilename(item.key);
-          files.push([`/memories/${name}`, encoder.encode(item.value.content)]);
-        }
-        if (files.length > 0) {
-          await backend.uploadFiles(files);
-        }
-      },
-      afterAgent: async (state, runtime) => {
-        // Sync updated memories back to the store
-        const userId = runtime.serverInfo.user.identity;  // [!code highlight]
-        const store = runtime.store;
-        const items = await store.search(["memories", userId]);
-        const results = await backend.downloadFiles(
-          items.map((item) => `/memories/${item.key}`),
-        );
-        const decoder = new TextDecoder();
-        for (const result of results) {
-          if (result.content) {
-            await store.put(
-              ["memories", userId],
-              result.path.split("/").pop()!,
-              { content: decoder.decode(result.content) },
-            );
-          }
-        }
-      },
-    });
-  };
-
-  const client = new SandboxClient();
-  const lsSandbox = await client.createSandbox();
-
-  const backend = new CompositeBackend(
-    new LangSmithSandbox({ sandbox: lsSandbox }),
-    {
-      "/skills/": new StoreBackend({
-        namespace: (rt) => ["skills", rt.serverInfo.user.identity],  // [!code highlight]
-      }),
-      "/memories/": new StoreBackend({
-        namespace: (rt) => ["memories", rt.serverInfo.user.identity],  // [!code highlight]
-      }),
-    },
-  );
-
-  export const agent = createDeepAgent({
-    backend,
-    middleware: [createSandboxSyncMiddleware(backend)],
-  });
-  ```
-</Accordion>
+> **Example: syncing skills and memories with custom middleware**
+>
+> [Skill](/oss/javascript/deepagents/skills) scripts that the agent needs to execute must be uploaded into the sandbox before the agent runs. You may also want to sync [memories](/oss/javascript/deepagents/memory) so the agent can read and update them inside the container. Use [custom middleware](/oss/javascript/langchain/middleware/custom) with `before_agent` and `after_agent` hooks to move files across the sandbox boundary:
+>
+> ```typescript src/agent.ts theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> import { createMiddleware } from "langchain";
+> import {
+>   createDeepAgent,
+>   CompositeBackend,
+>   LangSmithSandbox,
+>   StoreBackend,
+> } from "deepagents";
+> import { SandboxClient } from "langsmith/sandbox";
+>
+> function safeFilename(key: string): string {
+>   const name = key.split("/").pop()!;
+>   if (name.includes("..") || /[*?]/.test(name)) {
+>     throw new Error(`Invalid key: ${key}`);
+>   }
+>   return name;
+> }
+>
+> const createSandboxSyncMiddleware = (backend: CompositeBackend) => {
+>   return createMiddleware({
+>     name: "SandboxSyncMiddleware",
+>     beforeAgent: async (state, runtime) => {
+>       // Upload skill scripts and memories into the sandbox
+>       const userId = runtime.serverInfo.user.identity;  // [!code highlight]
+>       const store = runtime.store;
+>       const encoder = new TextEncoder();
+>       const files: [string, Uint8Array][] = [];
+>       for (const item of await store.search(["skills", userId])) {
+>         const name = safeFilename(item.key);
+>         files.push([`/skills/${name}`, encoder.encode(item.value.content)]);
+>       }
+>       for (const item of await store.search(["memories", userId])) {
+>         const name = safeFilename(item.key);
+>         files.push([`/memories/${name}`, encoder.encode(item.value.content)]);
+>       }
+>       if (files.length > 0) {
+>         await backend.uploadFiles(files);
+>       }
+>     },
+>     afterAgent: async (state, runtime) => {
+>       // Sync updated memories back to the store
+>       const userId = runtime.serverInfo.user.identity;  // [!code highlight]
+>       const store = runtime.store;
+>       const items = await store.search(["memories", userId]);
+>       const results = await backend.downloadFiles(
+>         items.map((item) => `/memories/${item.key}`),
+>       );
+>       const decoder = new TextDecoder();
+>       for (const result of results) {
+>         if (result.content) {
+>           await store.put(
+>             ["memories", userId],
+>             result.path.split("/").pop()!,
+>             { content: decoder.decode(result.content) },
+>           );
+>         }
+>       }
+>     },
+>   });
+> };
+>
+> const client = new SandboxClient();
+> const lsSandbox = await client.createSandbox();
+>
+> const backend = new CompositeBackend(
+>   new LangSmithSandbox({ sandbox: lsSandbox }),
+>   {
+>     "/skills/": new StoreBackend({
+>       namespace: (rt) => ["skills", rt.serverInfo.user.identity],  // [!code highlight]
+>     }),
+>     "/memories/": new StoreBackend({
+>       namespace: (rt) => ["memories", rt.serverInfo.user.identity],  // [!code highlight]
+>     }),
+>   },
+> );
+>
+> export const agent = createDeepAgent({
+>   backend,
+>   middleware: [createSandboxSyncMiddleware(backend)],
+> });
+> ```
 
 #### Managing secrets
 
@@ -827,7 +799,7 @@ Sandboxes are isolated containers, so environment variables from your host aren'
 
 **Auth proxy (recommended).** The [sandbox auth proxy](/langsmith/sandbox-auth-proxy) intercepts outbound requests from the sandbox and injects authentication headers automatically. Sandbox code calls external APIs normally, and the proxy adds the correct credentials based on the destination host. This means API keys never appear in sandbox code, environment variables, or logs.
 
-<img alt="The sandbox auth proxy injects credentials into outbound requests so secrets never enter the sandbox" />
+![The sandbox auth proxy injects credentials into outbound requests so secrets never enter the sandbox](https://mintcdn.com/langchain-5e9cc07a/9oyV6nbtSbBRfaE1/oss/images/deepagents/production/sandbox-auth-proxy.png?fit=max\&auto=format\&n=9oyV6nbtSbBRfaE1\&q=85\&s=632c4a493f1d5928e41c6865ab86d1da)
 
 ```json theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 {
@@ -856,9 +828,9 @@ The `${SECRET_KEY}` references resolve against secrets stored in your LangSmith 
 
 **Workspace secrets.** For API keys that don't need proxy-based injection (e.g., keys used by the agent server itself, not sandbox code), store them as [workspace secrets](/langsmith/set-up-hierarchy#configure-workspace-settings) in LangSmith. These are available as environment variables at runtime for all agents in the workspace.
 
-<Warning>
-  Avoid passing secrets into sandboxes via environment variables or file uploads. Agents can read any accessible file or environment variable inside the sandbox, including credentials. The auth proxy keeps secrets out of the sandbox entirely.
-</Warning>
+> [!WARNING]
+>
+> Avoid passing secrets into sandboxes via environment variables or file uploads. Agents can read any accessible file or environment variable inside the sandbox, including credentials. The auth proxy keeps secrets out of the sandbox entirely.
 
 ## Guardrails
 
@@ -931,12 +903,6 @@ For UI patterns specific to deep agents, such as subagent cards, todo lists, and
 
 ***
 
-<div>
-  <Callout icon="terminal-2">
-    [Connect these docs](/use-these-docs) to your agent of choice via MCP for real-time answers.
-  </Callout>
+[Connect these docs](/use-these-docs) to your agent of choice via MCP for real-time answers.
 
-  <Callout icon="edit">
-    [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/oss/deepagents/going-to-production.mdx) or [file an issue](https://github.com/langchain-ai/docs/issues/new/choose).
-  </Callout>
-</div>
+[Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/oss/deepagents/going-to-production.mdx) or [file an issue](https://github.com/langchain-ai/docs/issues/new/choose).

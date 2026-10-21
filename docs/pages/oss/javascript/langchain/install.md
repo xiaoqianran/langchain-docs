@@ -6,78 +6,68 @@ Install the LangChain package and the independent provider packages for the mode
 
 To install the LangChain package:
 
-<CodeGroup>
-  ```bash npm theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  npm install langchain @langchain/core
-  # Requires Node.js 22+
-  ```
+```bash npm theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+npm install langchain @langchain/core
+# Requires Node.js 22+
+```
 
-  ```bash pnpm theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  pnpm add langchain @langchain/core
-  # Requires Node.js 22+
-  ```
+```bash pnpm theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+pnpm add langchain @langchain/core
+# Requires Node.js 22+
+```
 
-  ```bash yarn theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  yarn add langchain @langchain/core
-  # Requires Node.js 22+
-  ```
+```bash yarn theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+yarn add langchain @langchain/core
+# Requires Node.js 22+
+```
 
-  ```bash bun theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  bun add langchain @langchain/core
-  # Requires Bun v1.0.0+
-  ```
-</CodeGroup>
+```bash bun theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+bun add langchain @langchain/core
+# Requires Bun v1.0.0+
+```
 
 LangChain provides integrations to hundreds of LLMs and thousands of other integrations. These live in independent provider packages.
 
-<CodeGroup>
-  ```bash npm theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  # Installing the OpenAI integration
-  npm install @langchain/openai
-  # Installing the Anthropic integration
-  npm install @langchain/anthropic
-  ```
+```bash npm theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+# Installing the OpenAI integration
+npm install @langchain/openai
+# Installing the Anthropic integration
+npm install @langchain/anthropic
+```
 
-  ```bash pnpm theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  # Installing the OpenAI integration
-  pnpm install @langchain/openai
-  # Installing the Anthropic integration
-  pnpm install @langchain/anthropic
-  ```
+```bash pnpm theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+# Installing the OpenAI integration
+pnpm install @langchain/openai
+# Installing the Anthropic integration
+pnpm install @langchain/anthropic
+```
 
-  ```bash yarn theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  # Installing the OpenAI integration
-  yarn add @langchain/openai
-  # Installing the Anthropic integration
-  yarn add @langchain/anthropic
-  ```
+```bash yarn theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+# Installing the OpenAI integration
+yarn add @langchain/openai
+# Installing the Anthropic integration
+yarn add @langchain/anthropic
+```
 
-  ```bash bun theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  # Installing the OpenAI integration
-  bun add @langchain/openai
-  # Installing the Anthropic integration
-  bun add @langchain/anthropic
-  ```
-</CodeGroup>
+```bash bun theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+# Installing the OpenAI integration
+bun add @langchain/openai
+# Installing the Anthropic integration
+bun add @langchain/anthropic
+```
 
-<Tip>
-  See the [Integrations tab](/oss/javascript/integrations/providers/overview) for a full list of available integrations.
-</Tip>
+> [!TIP]
+>
+> See the [Integrations tab](/oss/javascript/integrations/providers/overview) for a full list of available integrations.
 
 Now that you have LangChain installed, you can get started by following the [Quickstart guide](/oss/javascript/langchain/quickstart).
 
-<Tip>
-  Set up [LangSmith](https://smith.langchain.com?utm_source=docs\&utm_medium=cta\&utm_campaign=langsmith-signup\&utm_content=oss-langchain-install) tracing to debug your first LangChain app. Follow the [tracing quickstart](/langsmith/trace-with-langchain) to get started. We recommend you also set up [LangSmith Engine](/langsmith/engine) which monitors your traces, detects issues, and proposes fixes.
-</Tip>
+> [!TIP]
+>
+> Set up [LangSmith](https://smith.langchain.com?utm_source=docs\&utm_medium=cta\&utm_campaign=langsmith-signup\&utm_content=oss-langchain-install) tracing to debug your first LangChain app. Follow the [tracing quickstart](/langsmith/trace-with-langchain) to get started. We recommend you also set up [LangSmith Engine](/langsmith/engine) which monitors your traces, detects issues, and proposes fixes.
 
 ***
 
-<div>
-  <Callout icon="terminal-2">
-    [Connect these docs](/use-these-docs) to your agent of choice via MCP for real-time answers.
-  </Callout>
+[Connect these docs](/use-these-docs) to your agent of choice via MCP for real-time answers.
 
-  <Callout icon="edit">
-    [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/oss/langchain/install.mdx) or [file an issue](https://github.com/langchain-ai/docs/issues/new/choose).
-  </Callout>
-</div>
+[Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/oss/langchain/install.mdx) or [file an issue](https://github.com/langchain-ai/docs/issues/new/choose).

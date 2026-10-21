@@ -8,9 +8,9 @@ LangSmith SDK profiles let you keep [API keys](/langsmith/create-account-api-key
 
 Use profiles when you switch between [LangSmith Cloud regions](/langsmith/cloud#regional-storage), self-hosted instances, or [workspaces](/langsmith/administration-overview#workspaces) often, or when you want a remote runtime to load the same SDK configuration from a mounted file.
 
-<Warning>
-  Profile files can contain API keys and OAuth refresh tokens. Do not commit them to source control, bake them into container images, or print them in logs. Store and mount them with the same care as other credentials.
-</Warning>
+> [!WARNING]
+>
+> Profile files can contain API keys and OAuth refresh tokens. Do not commit them to source control, bake them into container images, or print them in logs. Store and mount them with the same care as other credentials.
 
 ## Minimum versions
 
@@ -143,9 +143,9 @@ langsmith --format json profile list
 
 Run `langsmith auth login` to authenticate with OAuth instead of manually creating an API-key profile. The command starts a browser-based device authorization flow, stores OAuth tokens in the selected profile, and sets that profile as current.
 
-<Note>
-  `langsmith auth login` also works against self-hosted instances from LangSmith CLI `v0.2.46` and later, provided the deployment is on LangSmith `0.16` or later with the OAuth authorization server enabled. The OAuth authorization server is enabled automatically when `config.hostname` is set in your Helm chart **and** a signing JWKS is configured (`config.signingJwks` or key `langsmith_signing_jwks` in `config.existingSecretName`). On earlier deployments, or if no signing JWKS is configured, create an API-key profile instead.
-</Note>
+> [!NOTE]
+>
+> `langsmith auth login` also works against self-hosted instances from LangSmith CLI `v0.2.46` and later, provided the deployment is on LangSmith `0.16` or later with the OAuth authorization server enabled. The OAuth authorization server is enabled automatically when `config.hostname` is set in your Helm chart **and** a signing JWKS is configured (`config.signingJwks` or key `langsmith_signing_jwks` in `config.existingSecretName`). On earlier deployments, or if no signing JWKS is configured, create an API-key profile instead.
 
 ```shell theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 langsmith auth login
@@ -204,43 +204,39 @@ The older `LANGCHAIN_API_KEY`, `LANGCHAIN_ENDPOINT`, and `LANGCHAIN_WORKSPACE_ID
 
 If a profile contains both `oauth.access_token` and `api_key`, SDKs use the OAuth access token first. If an OAuth refresh token is present and the access token is expired or close to expiring, SDKs can refresh the token and write the updated token fields back to the profile file.
 
-<Note>
-  If you mount a profile file as read-only, OAuth token refresh cannot persist updated tokens. Read-only mounts are appropriate for API-key profiles. Use a writable mount only when you intentionally rely on OAuth token refresh.
-</Note>
+> [!NOTE]
+>
+> If you mount a profile file as read-only, OAuth token refresh cannot persist updated tokens. Read-only mounts are appropriate for API-key profiles. Use a writable mount only when you intentionally rely on OAuth token refresh.
 
 ## Use profiles in code
 
 When the profile file is present, create the client normally:
 
-<CodeGroup>
-  ```python Python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  from langsmith import Client
+```python Python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+from langsmith import Client
 
-  client = Client()
-  ```
+client = Client()
+```
 
-  ```typescript TypeScript theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  import { Client } from "langsmith";
+```typescript TypeScript theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+import { Client } from "langsmith";
 
-  const client = new Client();
-  ```
-</CodeGroup>
+const client = new Client();
+```
 
 To override a profile in code, pass the value explicitly:
 
-<CodeGroup>
-  ```python Python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  from langsmith import Client
+```python Python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+from langsmith import Client
 
-  client = Client(api_key="<LANGSMITH_API_KEY>")
-  ```
+client = Client(api_key="<LANGSMITH_API_KEY>")
+```
 
-  ```typescript TypeScript theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  import { Client } from "langsmith";
+```typescript TypeScript theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+import { Client } from "langsmith";
 
-  const client = new Client({ apiKey: "<LANGSMITH_API_KEY>" });
-  ```
-</CodeGroup>
+const client = new Client({ apiKey: "<LANGSMITH_API_KEY>" });
+```
 
 ## Mount profiles in remote runtimes
 
@@ -323,12 +319,6 @@ For hosted [LangSmith Cloud](/langsmith/cloud), configure these values as enviro
 
 ***
 
-<div>
-  <Callout icon="terminal-2">
-    [Connect these docs](/use-these-docs) to your agent of choice via MCP for real-time answers.
-  </Callout>
+[Connect these docs](/use-these-docs) to your agent of choice via MCP for real-time answers.
 
-  <Callout icon="edit">
-    [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/profile-configuration.mdx) or [file an issue](https://github.com/langchain-ai/docs/issues/new/choose).
-  </Callout>
-</div>
+[Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/profile-configuration.mdx) or [file an issue](https://github.com/langchain-ai/docs/issues/new/choose).

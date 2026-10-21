@@ -8,9 +8,9 @@ Custom tools are application code the agent can call for fetching real-time data
 
 To load tools from a remote MCP server, see [Connect to MCP servers](/langsmith/javascript/managed-deep-agents-mcp-connectors).
 
-<Note>
-  Managed Deep Agents is in **public [beta](/langsmith/release-stages)** on [LangSmith Cloud](/langsmith/cloud).
-</Note>
+> [!NOTE]
+>
+> Managed Deep Agents is in **public [beta](/langsmith/release-stages)** on [LangSmith Cloud](/langsmith/cloud).
 
 Put authored tools under `tools/`, import them into the agent entry, and pass them to the agent definition:
 
@@ -31,74 +31,72 @@ MCP connectors are declared under `tools/` as well, so the `tools/mcp.ts` file n
 
 Use authored tools for business logic, private APIs, database access, and other code that belongs in your agent project.
 
-<Steps>
-  <Step title="Define a tool module">
-    ```ts tools/customer.ts theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-    import { tool } from "langchain";
-    import { z } from "zod";
+**1. Define a tool module**
 
-    export const lookupCustomer = tool(
-      async ({ customerId }) => `Customer ${customerId} is on the enterprise plan.`,
-      {
-        name: "lookup_customer",
-        description: "Look up a customer record by ID.",
-        schema: z.object({
-          customerId: z.string().describe("Customer ID from the CRM."),
-        }),
-      },
-    );
-    ```
+```ts tools/customer.ts theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+import { tool } from "langchain";
+import { z } from "zod";
 
-    Use clear, unique tool names to avoid collisions. For more about LangChain tool definitions, see [Tools](/oss/javascript/langchain/tools).
-  </Step>
+export const lookupCustomer = tool(
+  async ({ customerId }) => `Customer ${customerId} is on the enterprise plan.`,
+  {
+    name: "lookup_customer",
+    description: "Look up a customer record by ID.",
+    schema: z.object({
+      customerId: z.string().describe("Customer ID from the CRM."),
+    }),
+  },
+);
+```
 
-  <Step title="Attach the tool to the agent">
-    Import the tool into the project-root agent entry and pass it in the `tools` list:
+Use clear, unique tool names to avoid collisions. For more about LangChain tool definitions, see [Tools](/oss/javascript/langchain/tools).
 
-    ```ts agent.ts theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-    import { defineDeepAgent } from "managed-deepagents";
+**2. Attach the tool to the agent**
 
-    import { lookupCustomer } from "./tools/customer";
+Import the tool into the project-root agent entry and pass it in the `tools` list:
 
-    export const agent = defineDeepAgent({
-      name: "support-agent",
-      model: "openai:gpt-5.5",
-      tools: [lookupCustomer],
-    });
-    ```
+```ts agent.ts theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+import { defineDeepAgent } from "managed-deepagents";
 
-    Your imports should work the same way they do in a normal local TypeScript project.
-  </Step>
+import { lookupCustomer } from "./tools/customer";
 
-  <Step title="Add human-in-the-loop (Optional)">
-    Pause the agent before sensitive tool calls so a person can approve, edit, or reject them.
+export const agent = defineDeepAgent({
+  name: "support-agent",
+  model: "openai:gpt-5.5",
+  tools: [lookupCustomer],
+});
+```
 
-    Set `interruptOn` in the agent definition, and optionally set `permissions` to gate tool and filesystem access:
+Your imports should work the same way they do in a normal local TypeScript project.
 
-    ```ts agent.ts theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-    import { defineDeepAgent } from "managed-deepagents";
+**3. Add human-in-the-loop (Optional)**
 
-    import { lookupCustomer } from "./tools/customer";
+Pause the agent before sensitive tool calls so a person can approve, edit, or reject them.
 
-    export const agent = defineDeepAgent({
-      name: "support-agent",
-      model: "openai:gpt-5.5",
-      tools: [lookupCustomer],
-      interruptOn: {
-        lookup_customer: true,
-      },
-    });
-    ```
+Set `interruptOn` in the agent definition, and optionally set `permissions` to gate tool and filesystem access:
 
-    The `interruptOn` field applies the same interrupt behavior as LangChain's [human-in-the-loop middleware](/oss/javascript/langchain/guardrails#human-in-the-loop).
+```ts agent.ts theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+import { defineDeepAgent } from "managed-deepagents";
 
-    For decision types (approve, edit, reject), conditional interrupts, and permission rules, see the Deep Agents [Human-in-the-loop](/oss/javascript/deepagents/human-in-the-loop) and [Permissions](/oss/javascript/deepagents/permissions) guides.
+import { lookupCustomer } from "./tools/customer";
 
-    To resume a paused run, see [Respond to an interrupt](#respond-to-an-interrupt).
+export const agent = defineDeepAgent({
+  name: "support-agent",
+  model: "openai:gpt-5.5",
+  tools: [lookupCustomer],
+  interruptOn: {
+    lookup_customer: true,
+  },
+});
+```
 
-    To pause on a form your own tool posts in Slack instead, see [Agent-owned interrupts](/langsmith/javascript/managed-deep-agents-agent-owned-interrupts).
-  </Step>
-</Steps>
+The `interruptOn` field applies the same interrupt behavior as LangChain's [human-in-the-loop middleware](/oss/javascript/langchain/guardrails#human-in-the-loop).
+
+For decision types (approve, edit, reject), conditional interrupts, and permission rules, see the Deep Agents [Human-in-the-loop](/oss/javascript/deepagents/human-in-the-loop) and [Permissions](/oss/javascript/deepagents/permissions) guides.
+
+To resume a paused run, see [Respond to an interrupt](#respond-to-an-interrupt).
+
+To pause on a form your own tool posts in Slack instead, see [Agent-owned interrupts](/langsmith/javascript/managed-deep-agents-agent-owned-interrupts).
 
 ## Use secrets and context
 
@@ -145,12 +143,6 @@ To read or write files in the thread's sandbox from a tool, use `runtime.backend
 
 ***
 
-<div>
-  <Callout icon="terminal-2">
-    [Connect these docs](/use-these-docs) to your agent of choice via MCP for real-time answers.
-  </Callout>
+[Connect these docs](/use-these-docs) to your agent of choice via MCP for real-time answers.
 
-  <Callout icon="edit">
-    [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/managed-deep-agents-tools.mdx) or [file an issue](https://github.com/langchain-ai/docs/issues/new/choose).
-  </Callout>
-</div>
+[Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/managed-deep-agents-tools.mdx) or [file an issue](https://github.com/langchain-ai/docs/issues/new/choose).

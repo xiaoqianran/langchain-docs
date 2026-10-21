@@ -6,67 +6,59 @@ LangSmith supports logging and rendering images as part of traces. This is curre
 
 In order to log images, use `wrap_openai`/ `wrapOpenAI` in Python or TypeScript respectively and pass an image URL or base64 encoded image as part of the input.
 
-<CodeGroup>
-  ```python Python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  from openai import OpenAI
-  from langsmith.wrappers import wrap_openai
-  client = wrap_openai(OpenAI())
-  response = client.chat.completions.create(
-      model="gpt-5.5",
-      messages=[
-        {
-          "role": "user",
-          "content": [
-            {"type": "text", "text": "What's in this image?"},
-            {
-              "type": "image_url",
-              "image_url": {
-                "url": "https://upload.wikimedia.org/wikipedia/commons/thumb/d/dd/Gfp-wisconsin-madison-the-nature-boardwalk.jpg/2560px-Gfp-wisconsin-madison-the-nature-boardwalk.jpg",
-              },
-            },
-          ],
-        }
-      ],
-  )
-  print(response.choices[0])
-  ```
-
-  ```typescript TypeScript theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  import OpenAI from "openai";
-  import { wrapOpenAI } from "langsmith/wrappers";
-  // Wrap the OpenAI client to automatically log traces
-  const wrappedClient = wrapOpenAI(new OpenAI());
-  const response = await wrappedClient.chat.completions.create({
-    model: "gpt-5.5",
-    messages: [
+```python Python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+from openai import OpenAI
+from langsmith.wrappers import wrap_openai
+client = wrap_openai(OpenAI())
+response = client.chat.completions.create(
+    model="gpt-5.5",
+    messages=[
       {
-        role: "user",
-        content: [
-          { type: "text", text: "What's in this image?" },
+        "role": "user",
+        "content": [
+          {"type": "text", "text": "What's in this image?"},
           {
-            type: "image_url",
-            image_url: {
+            "type": "image_url",
+            "image_url": {
               "url": "https://upload.wikimedia.org/wikipedia/commons/thumb/d/dd/Gfp-wisconsin-madison-the-nature-boardwalk.jpg/2560px-Gfp-wisconsin-madison-the-nature-boardwalk.jpg",
             },
           },
         ],
-      },
+      }
     ],
-  });
-  console.log(response.choices[0]);
-  ```
-</CodeGroup>
+)
+print(response.choices[0])
+```
+
+```typescript TypeScript theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+import OpenAI from "openai";
+import { wrapOpenAI } from "langsmith/wrappers";
+// Wrap the OpenAI client to automatically log traces
+const wrappedClient = wrapOpenAI(new OpenAI());
+const response = await wrappedClient.chat.completions.create({
+  model: "gpt-5.5",
+  messages: [
+    {
+      role: "user",
+      content: [
+        { type: "text", text: "What's in this image?" },
+        {
+          type: "image_url",
+          image_url: {
+            "url": "https://upload.wikimedia.org/wikipedia/commons/thumb/d/dd/Gfp-wisconsin-madison-the-nature-boardwalk.jpg/2560px-Gfp-wisconsin-madison-the-nature-boardwalk.jpg",
+          },
+        },
+      ],
+    },
+  ],
+});
+console.log(response.choices[0]);
+```
 
 The image will be rendered as part of the trace in the[ LangSmith UI](https://smith.langchain.com?utm_source=docs\&utm_medium=cta\&utm_campaign=langsmith-signup\&utm_content=langsmith-log-multimodal-traces).
 
 ***
 
-<div>
-  <Callout icon="terminal-2">
-    [Connect these docs](/use-these-docs) to your agent of choice via MCP for real-time answers.
-  </Callout>
+[Connect these docs](/use-these-docs) to your agent of choice via MCP for real-time answers.
 
-  <Callout icon="edit">
-    [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/log-multimodal-traces.mdx) or [file an issue](https://github.com/langchain-ai/docs/issues/new/choose).
-  </Callout>
-</div>
+[Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/log-multimodal-traces.mdx) or [file an issue](https://github.com/langchain-ai/docs/issues/new/choose).

@@ -8,9 +8,9 @@ Deploying to an agent environment binds a [deployment](/langsmith/deployment) to
 
 Use it to keep a staging build and a production build of the same agent apart, so each one reports into its own environment.
 
-<Note>
-  Agent-based workspaces are available on [LangSmith Cloud](/langsmith/cloud). They are not available on [self-hosted](/langsmith/self-hosted) LangSmith. To check whether your workspace is agent-based, look at the control at the top left. In an agent-based workspace, it is a workspace switcher that names your workspace. In a [project-based](/langsmith/observability-concepts#tracing-projects) workspace, it shows the LangSmith logo.
-</Note>
+> [!NOTE]
+>
+> Agent-based workspaces are available on [LangSmith Cloud](/langsmith/cloud). They are not available on [self-hosted](/langsmith/self-hosted) LangSmith. To check whether your workspace is agent-based, look at the control at the top left. In an agent-based workspace, it is a workspace switcher that names your workspace. In a [project-based](/langsmith/observability-concepts#tracing-projects) workspace, it shows the LangSmith logo.
 
 ## Prerequisites
 
@@ -37,27 +37,23 @@ These flags require `langgraph-cli` v0.4.32 or later in Python, and `@langchain/
 
 1. Install the CLI:
 
-   <CodeGroup>
-     ```bash Python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-     uv tool install --force "langgraph-cli>=0.4.32"
-     ```
+   ```bash Python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+   uv tool install --force "langgraph-cli>=0.4.32"
+   ```
 
-     ```bash TypeScript theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-     npm install -g "@langchain/langgraph-cli@1.5.2-dev.0"
-     ```
-   </CodeGroup>
+   ```bash TypeScript theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+   npm install -g "@langchain/langgraph-cli@1.5.2-dev.0"
+   ```
 
 2. Deploy, naming the agent and the environment:
 
-   <CodeGroup>
-     ```bash Python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-     langgraph deploy --agent-id my-agent --agent-environment staging --remote
-     ```
+   ```bash Python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+   langgraph deploy --agent-id my-agent --agent-environment staging --remote
+   ```
 
-     ```bash TypeScript theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-     langgraphjs deploy --agent-id my-agent --agent-environment staging --remote
-     ```
-   </CodeGroup>
+   ```bash TypeScript theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+   langgraphjs deploy --agent-id my-agent --agent-environment staging --remote
+   ```
 
 Pass both flags or neither, because the CLI rejects either one on its own. Do not combine them with `--name` or `--deployment-id`, which name a deployment directly and which the CLI rejects alongside an agent.
 
@@ -69,28 +65,24 @@ These flags require `managed-deepagents` 0.7.5.dev4 in Python, or 0.7.5-dev.4 in
 
 1. Install the CLI:
 
-   <CodeGroup>
-     ```bash Python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-     uv tool install --force --prerelease allow "managed-deepagents==0.7.5.dev4"
-     uv add --prerelease allow "managed-deepagents==0.7.5.dev4"
-     ```
+   ```bash Python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+   uv tool install --force --prerelease allow "managed-deepagents==0.7.5.dev4"
+   uv add --prerelease allow "managed-deepagents==0.7.5.dev4"
+   ```
 
-     ```bash TypeScript theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-     npm install "managed-deepagents@0.7.5-dev.4"
-     ```
-   </CodeGroup>
+   ```bash TypeScript theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+   npm install "managed-deepagents@0.7.5-dev.4"
+   ```
 
 2. Deploy the project in the current folder:
 
-   <CodeGroup>
-     ```bash Python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-     mda deploy . --agent-id my-agent --agent-environment staging
-     ```
+   ```bash Python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+   mda deploy . --agent-id my-agent --agent-environment staging
+   ```
 
-     ```bash TypeScript theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-     npx mda deploy . --agent-id my-agent --agent-environment staging
-     ```
-   </CodeGroup>
+   ```bash TypeScript theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+   npx mda deploy . --agent-id my-agent --agent-environment staging
+   ```
 
 In Python, installing the CLI as a tool and pinning the same version as a project dependency keeps the global `mda` binary and the project's own dependency on one version. For the rest of the flags, see [Deploy projects](/langsmith/python/managed-deep-agents-cli#deploy-projects), and for deploying without the agent flags, see [Deploy a Managed Deep Agent](/langsmith/python/managed-deep-agents-deploy).
 
@@ -109,12 +101,6 @@ If the new deployment has no row, or the Overview has no **Deployments** section
 
 ***
 
-<div>
-  <Callout icon="terminal-2">
-    [Connect these docs](/use-these-docs) to your agent of choice via MCP for real-time answers.
-  </Callout>
+[Connect these docs](/use-these-docs) to your agent of choice via MCP for real-time answers.
 
-  <Callout icon="edit">
-    [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/deploy-to-agent-environment.mdx) or [file an issue](https://github.com/langchain-ai/docs/issues/new/choose).
-  </Callout>
-</div>
+[Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/deploy-to-agent-environment.mdx) or [file an issue](https://github.com/langchain-ai/docs/issues/new/choose).

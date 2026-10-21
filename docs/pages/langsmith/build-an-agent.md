@@ -8,13 +8,13 @@ The **Build** tab creates an agent inside LangSmith instead of in code. You fill
 
 Use it when you want a working agent without a local project or a deployment. Everything it produces is an [agent](/langsmith/agents) like any other, so its traces, dashboards, and evaluators behave the same as one you instrumented yourself.
 
-<Note>
-  Agent-based workspaces are available on [LangSmith Cloud](/langsmith/cloud). They are not available on [self-hosted](/langsmith/self-hosted) LangSmith. To check whether your workspace is agent-based, look at the control at the top left. In an agent-based workspace, it is a workspace switcher that names your workspace. In a [project-based](/langsmith/observability-concepts#tracing-projects) workspace, it shows the LangSmith logo.
-</Note>
+> [!NOTE]
+>
+> Agent-based workspaces are available on [LangSmith Cloud](/langsmith/cloud). They are not available on [self-hosted](/langsmith/self-hosted) LangSmith. To check whether your workspace is agent-based, look at the control at the top left. In an agent-based workspace, it is a workspace switcher that names your workspace. In a [project-based](/langsmith/observability-concepts#tracing-projects) workspace, it shows the LangSmith logo.
 
-<Note>
-  Creating an agent here requires [computer use](/langsmith/fleet/computer-use), which is on the Plus and Enterprise plans. Without it the form still opens, and a banner says agent creation is unavailable.
-</Note>
+> [!NOTE]
+>
+> Creating an agent here requires [computer use](/langsmith/fleet/computer-use), which is on the Plus and Enterprise plans. Without it the form still opens, and a banner says agent creation is unavailable.
 
 The **Build** tab appears only in an agent-based workspace. To build an agent from files on your own machine instead, see [Managed Deep Agents](/langsmith/python/managed-deep-agents-overview).
 
@@ -70,12 +70,6 @@ An agent built in the UI has no deployment, because it runs on a Studio runtime 
 
 ***
 
-<div>
-  <Callout icon="terminal-2">
-    [Connect these docs](/use-these-docs) to your agent of choice via MCP for real-time answers.
-  </Callout>
+[Connect these docs](/use-these-docs) to your agent of choice via MCP for real-time answers.
 
-  <Callout icon="edit">
-    [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/build-an-agent.mdx) or [file an issue](https://github.com/langchain-ai/docs/issues/new/choose).
-  </Callout>
-</div>
+[Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/build-an-agent.mdx) or [file an issue](https://github.com/langchain-ai/docs/issues/new/choose).

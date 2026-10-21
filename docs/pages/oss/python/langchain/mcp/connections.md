@@ -4,9 +4,9 @@
 
 Connection lifecycle, multiple servers, deployment scaling, protocol eras, and caching for MCP in LangChain.
 
-<Note>
-  The `langchain.mcp` namespace requires `langchain[mcp]>=1.4.0` and is in beta. The API may change.
-</Note>
+> [!NOTE]
+>
+> The `langchain.mcp` namespace requires `langchain[mcp]>=1.4.0` and is in beta. The API may change.
 
 [`MCPAdapter`](https://reference.langchain.com/python/langchain/mcp/adapter/MCPAdapter) opens an MCP connection, discovers tools, and returns LangChain tools your agent can call. How you pass servers in, and how long you keep the adapter open, depends on the shape of your app. The connection itself is FastMCP's; this page covers the LangChain patterns and links out to FastMCP for transport and client details.
 
@@ -138,9 +138,9 @@ async def make_graph():
         return create_agent("claude-sonnet-5", tools)
 ```
 
-<Note>
-  In a `langgraph dev` graph factory, the annotated parameter types and the return type must be importable at runtime, not only under `TYPE_CHECKING`. `langgraph-api` classifies the factory with `typing.get_type_hints()`; if an annotation cannot resolve, it injects a config dict instead of the runtime.
-</Note>
+> [!NOTE]
+>
+> In a `langgraph dev` graph factory, the annotated parameter types and the return type must be importable at runtime, not only under `TYPE_CHECKING`. `langgraph-api` classifies the factory with `typing.get_type_hints()`; if an annotation cannot resolve, it injects a config dict instead of the runtime.
 
 For a fully worked deployment example, including per-user authentication that mints a token for each caller, see [Authentication](/oss/python/langchain/mcp/auth#per-user-authentication).
 
@@ -245,12 +245,6 @@ For the full negotiation rules, see [Protocol negotiation](https://gofastmcp.com
 
 ***
 
-<div>
-  <Callout icon="terminal-2">
-    [Connect these docs](/use-these-docs) to your agent of choice via MCP for real-time answers.
-  </Callout>
+[Connect these docs](/use-these-docs) to your agent of choice via MCP for real-time answers.
 
-  <Callout icon="edit">
-    [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/oss/langchain/mcp/connections.mdx) or [file an issue](https://github.com/langchain-ai/docs/issues/new/choose).
-  </Callout>
-</div>
+[Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/oss/langchain/mcp/connections.mdx) or [file an issue](https://github.com/langchain-ai/docs/issues/new/choose).

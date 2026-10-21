@@ -10,50 +10,36 @@
 
 ## SDK 和 CLI
 
-<CardGroup>
-  <Card title="LangSmith Deployments SDK" icon="package" href="/langsmith/smith-deployments-sdk">
-    使用 LangGraph SDK 管理 LangSmith 部署和修订。
-  </Card>
-</CardGroup>
+> **[LangSmith Deployments SDK](/langsmith/smith-deployments-sdk)**
+>
+> 使用 LangGraph SDK 管理 LangSmith 部署和修订。
 
-<CardGroup>
-  <Card title="LangGraph CLI" icon="terminal" href="/langsmith/cli">
-    从命令行构建、部署代理并与代理交互。
-  </Card>
+> **[LangGraph CLI](/langsmith/cli)**
+>
+> 从命令行构建、部署代理并与代理交互。
 
-  <Card title="RemoteGraph" icon="git-merge" href="/langsmith/remote-graph">
-    用于调用已部署图形的客户端接口，就像它们是本地图形一样。
-  </Card>
-</CardGroup>
+> **[RemoteGraph](/langsmith/remote-graph)**
+>
+> 用于调用部署的图形的客户端接口，就好像它们是本地的一样。
 
 ## API
 
-<CardGroup>
-  <Card title="Agent Server API" icon="server" href="/langsmith/server-api-ref">
-    Agent Server 运行时公开的 REST 端点：助手、线程、运行、cron 作业和长期内存存储。
-  </Card>
+> **[Agent Server API](/langsmith/server-api-ref)**
+>
+> Agent Server 运行时公开的 REST 端点：助手、线程、运行、cron 作业和长期内存存储。
 
-  <Card title="Control Plane API" icon="settings" href="/langsmith/api-ref-control-plane">
-    用于管理部署、修订和侦听器的 REST 端点。
-  </Card>
-</CardGroup>
+> **[Control Plane API](/langsmith/api-ref-control-plane)**
+>
+> 用于管理部署、修订和侦听器的 REST 端点。
 
 ## 发布
 
-<CardGroup>
-  <Card title="Agent Server changelog" icon="versions" href="/langsmith/agent-server-changelog">
-    Agent Server 运行时的版本历史记录和发行说明。
-  </Card>
-</CardGroup>
+> **[Agent Server changelog](/langsmith/agent-server-changelog)**
+>
+> Agent Server 运行时的版本历史记录和发行说明。
 
 ***
 
-<div>
-  <Callout icon="terminal-2">
-    [Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
-  </Callout>
+[Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
 
-  <Callout icon="edit">
-    [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/deploy-reference-overview.mdx) 或 [file an issue](https://github.com/langchain-ai/docs/issues/new/choose)。
-  </Callout>
-</div>
+[Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/deploy-reference-overview.mdx) 或 [file an issue](https://github.com/langchain-ai/docs/issues/new/choose)。

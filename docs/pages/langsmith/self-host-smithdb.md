@@ -4,47 +4,45 @@
 
 Run SmithDB alongside ClickHouse on a self-hosted LangSmith Kubernetes installation.
 
-<Note>
-  SmithDB is an opt-in datastore for self-hosted LangSmith. ClickHouse is required on LangSmith 0.16 and remains the default on 0.17. Do not disable ClickHouse on any version below 0.17. The minimum LangSmith version depends on your cloud. See [Cloud support](#cloud-support).
-</Note>
+> [!NOTE]
+>
+> SmithDB is an opt-in datastore for self-hosted LangSmith. ClickHouse is required on LangSmith 0.16 and remains the default on 0.17. Do not disable ClickHouse on any version below 0.17. The minimum LangSmith version depends on your cloud. See [Cloud support](#cloud-support).
 
 SmithDB is a columnar datastore built for agent trace data: deeply nested spans, multi-modal content, and spans that stay open for hours. It keeps durable data in object storage with a per-pod disk cache, and serves LangSmith trace ingestion and queries alongside the existing ClickHouse datastore.
 
 Some LangSmith features, such as the Trajectory view, trajectory evaluators, and the filter query syntax, require SmithDB. See [SmithDB feature availability](/langsmith/self-host-smithdb-features).
 
-<CardGroup>
-  <Card title="Feature availability" icon="list-check" href="/langsmith/self-host-smithdb-features">
-    See which features need SmithDB and what keeps working on ClickHouse.
-  </Card>
+> **[Feature availability](/langsmith/self-host-smithdb-features)**
+>
+> See which features need SmithDB and what keeps working on ClickHouse.
 
-  <Card title="Install SmithDB" icon="download" href="/langsmith/self-host-smithdb-install">
-    Stage infrastructure, deploy SmithDB services, enable dual ingestion, and switch queries after validation.
-  </Card>
+> **[Install SmithDB](/langsmith/self-host-smithdb-install)**
+>
+> Stage infrastructure, deploy SmithDB services, enable dual ingestion, and switch queries after validation.
 
-  <Card title="Prepare supporting infrastructure" icon="server" href="/langsmith/self-host-smithdb-infrastructure">
-    Provide a dedicated PostgreSQL metastore, object storage, and cache storage.
-  </Card>
+> **[Prepare supporting infrastructure](/langsmith/self-host-smithdb-infrastructure)**
+>
+> Provide a dedicated PostgreSQL metastore, object storage, and cache storage.
 
-  <Card title="Configure for scale" icon="chart-bar" href="/langsmith/self-host-smithdb-scale">
-    Choose a tested resource tier and size SmithDB workloads.
-  </Card>
+> **[Configure for scale](/langsmith/self-host-smithdb-scale)**
+>
+> Choose a tested resource tier and size SmithDB workloads.
 
-  <Card title="Configure observability" icon="activity" href="/langsmith/self-host-smithdb-observability">
-    Scrape SmithDB metrics and export logs and traces to your stack.
-  </Card>
+> **[Configure observability](/langsmith/self-host-smithdb-observability)**
+>
+> Scrape SmithDB metrics and export logs and traces to your stack.
 
-  <Card title="Migrate historical data" icon="transfer" href="/langsmith/self-host-smithdb-migrate">
-    Backfill ClickHouse history into SmithDB before query cutover.
-  </Card>
+> **[Migrate historical data](/langsmith/self-host-smithdb-migrate)**
+>
+> Backfill ClickHouse history into SmithDB before query cutover.
 
-  <Card title="Metrics reference" icon="chart-line" href="/langsmith/self-host-smithdb-metrics">
-    Metrics to watch on each SmithDB component and how to read them.
-  </Card>
+> **[Metrics reference](/langsmith/self-host-smithdb-metrics)**
+>
+> Metrics to watch on each SmithDB component and how to read them.
 
-  <Card title="Troubleshoot SmithDB" icon="tool" href="/langsmith/self-host-smithdb-troubleshooting">
-    Gather context, disable SmithDB, or reset a deployment safely.
-  </Card>
-</CardGroup>
+> **[Troubleshoot SmithDB](/langsmith/self-host-smithdb-troubleshooting)**
+>
+> Gather context, disable SmithDB, or reset a deployment safely.
 
 ## Cloud support
 
@@ -82,12 +80,6 @@ For SDK method changes that work with both ClickHouse and SmithDB, see [Migrate 
 
 ***
 
-<div>
-  <Callout icon="terminal-2">
-    [Connect these docs](/use-these-docs) to your agent of choice via MCP for real-time answers.
-  </Callout>
+[Connect these docs](/use-these-docs) to your agent of choice via MCP for real-time answers.
 
-  <Callout icon="edit">
-    [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/self-host-smithdb.mdx) or [file an issue](https://github.com/langchain-ai/docs/issues/new/choose).
-  </Callout>
-</div>
+[Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/self-host-smithdb.mdx) or [file an issue](https://github.com/langchain-ai/docs/issues/new/choose).

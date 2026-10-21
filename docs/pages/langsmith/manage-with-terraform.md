@@ -6,16 +6,16 @@ Use the official LangSmith Terraform provider to manage workspaces, access contr
 
 The official [LangSmith Terraform provider](https://registry.terraform.io/providers/langchain-ai/langsmith/latest) lets you manage LangSmith organization and workspace resources as code: workspaces, custom roles, organization and workspace members, resource tags, access policies, evaluators, run rules, and alert rules. It is the infrastructure-as-code counterpart to [managing your organization using the API](/langsmith/manage-organization-by-api).
 
-<Note>
-  Managing resource tags and access policies requires LangSmith Terraform provider v0.0.6 or later.
-</Note>
+> [!NOTE]
+>
+> Managing resource tags and access policies requires LangSmith Terraform provider v0.0.6 or later.
 
-<Check>
-  Before diving in, it might be helpful to read:
-
-  * [Conceptual guide on organizations and workspaces](/langsmith/administration-overview)
-  * [Organization setup how-to](/langsmith/set-up-hierarchy#set-up-an-organization)
-</Check>
+> [!TIP]
+>
+> Before diving in, it might be helpful to read:
+>
+> * [Conceptual guide on organizations and workspaces](/langsmith/administration-overview)
+> * [Organization setup how-to](/langsmith/set-up-hierarchy#set-up-an-organization)
 
 ## Install and configure
 
@@ -53,9 +53,9 @@ The provider resolves credentials the same way as the LangSmith SDK and CLI. Pre
 
 Create an API key or [service key](/langsmith/administration-overview#service-keys) in your LangSmith settings. See [Authentication methods](/langsmith/authentication-methods) for the available key types.
 
-<Warning>
-  Organization-scoped operations, like creating workspaces, inviting organization members, and managing access policies, require an **organization-scoped service key with Organization Admin permissions**. Set `workspace_id` (or `LANGSMITH_WORKSPACE_ID`) to target workspace-scoped resources such as workspace memberships, resource tags, evaluators, and run rules.
-</Warning>
+> [!WARNING]
+>
+> Organization-scoped operations, like creating workspaces, inviting organization members, and managing access policies, require an **organization-scoped service key with Organization Admin permissions**. Set `workspace_id` (or `LANGSMITH_WORKSPACE_ID`) to target workspace-scoped resources such as workspace memberships, resource tags, evaluators, and run rules.
 
 ## Examples
 
@@ -205,18 +205,12 @@ resource "langsmith_alert_rule" "error_rate" {
 
 The full list of resources and data sources—with every argument and attribute—is published and kept in sync on the Terraform Registry:
 
-<Card title="LangSmith provider on the Terraform Registry" icon="brand-terraform" href="https://registry.terraform.io/providers/langchain-ai/langsmith/latest/docs">
-  Browse the complete reference for all resources and data sources.
-</Card>
+> **[LangSmith provider on the Terraform Registry](https://registry.terraform.io/providers/langchain-ai/langsmith/latest/docs)**
+>
+> Browse the complete reference for all resources and data sources.
 
 ***
 
-<div>
-  <Callout icon="terminal-2">
-    [Connect these docs](/use-these-docs) to your agent of choice via MCP for real-time answers.
-  </Callout>
+[Connect these docs](/use-these-docs) to your agent of choice via MCP for real-time answers.
 
-  <Callout icon="edit">
-    [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/manage-with-terraform.mdx) or [file an issue](https://github.com/langchain-ai/docs/issues/new/choose).
-  </Callout>
-</div>
+[Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/manage-with-terraform.mdx) or [file an issue](https://github.com/langchain-ai/docs/issues/new/choose).

@@ -23,17 +23,15 @@
 
 首先安装本教程所需的依赖项。我们碰巧使用了OpenAI，但是LangSmith可以与任何模型一起使用：
 
-<CodeGroup>
-  ```bash pip theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  pip install -U langsmith openai
-  ```
+```bash pip theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+pip install -U langsmith openai
+```
 
-  ```bash uv theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  uv add langsmith openai
-  ```
-</CodeGroup>
+```bash uv theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+uv add langsmith openai
+```
 
-并设置环境变量以启用LangSmith跟踪：
+并设置环境变量以启用 LangSmith 跟踪：
 
 ```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 export LANGSMITH_TRACING="true"
@@ -91,7 +89,7 @@ client.create_examples(
 
 现在，如果我们进入 LangSmith UI 并在 `Datasets & Testing` 页面中查找 `QA Example Dataset`，当我们单击它时，我们应该看到我们有五个新示例。
 
-<img alt="Testing tutorial dataset" />
+![Testing tutorial dataset](https://mintcdn.com/langchain-5e9cc07a/ImHGLQW1HnQYwnJV/langsmith/images/testing-tutorial-dataset.png?fit=max\&auto=format\&n=ImHGLQW1HnQYwnJV\&q=85\&s=9ab5110714d009d5865ba0e2d8ee0ffa)
 
 ## 定义指标
 
@@ -172,11 +170,11 @@ experiment_results = client.evaluate(
 )
 ```这将输出一个 URL。如果我们点击它，我们应该会看到评估结果！
 
-<img alt="Testing tutorial run" />
+![Testing tutorial run](https://mintcdn.com/langchain-5e9cc07a/ImHGLQW1HnQYwnJV/langsmith/images/testing-tutorial-run.png?fit=max\&auto=format\&n=ImHGLQW1HnQYwnJV\&q=85\&s=9517dd9f9fc23062fcba7b061fe5cdda)
 
 如果我们返回数据集页面并选择 `Experiments` 选项卡，我们现在可以看到一次运行的摘要！
 
-<img alt="Testing tutorial one run" />
+![Testing tutorial one run](https://mintcdn.com/langchain-5e9cc07a/ImHGLQW1HnQYwnJV/langsmith/images/testing-tutorial-one-run.png?fit=max\&auto=format\&n=ImHGLQW1HnQYwnJV\&q=85\&s=4c30f7474727d2f537c75e5f80ae1298)
 
 现在让我们尝试使用不同的模型！来试试`gpt-5.5`
 
@@ -215,21 +213,21 @@ experiment_results = client.evaluate(
 
 如果我们返回数据集页面上的`Experiments`选项卡，我们应该看到所有三个运行现在都显示了！
 
-<img alt="Testing tutorial three runs" />
+![Testing tutorial three runs](https://mintcdn.com/langchain-5e9cc07a/ImHGLQW1HnQYwnJV/langsmith/images/testing-tutorial-three-runs.png?fit=max\&auto=format\&n=ImHGLQW1HnQYwnJV\&q=85\&s=9d74c18991c33d4fbd5180dbb12a4f91)
 
 ## 比较结果
 
 太棒了，我们评估了三种不同的运行。但我们如何比较结果呢？我们可以做到这一点的第一种方法是查看 `Experiments` 选项卡中的运行。如果我们这样做，我们可以看到每次运行的指标的高级视图：
 
-<img alt="Testing tutorial compare metrics" />
+![Testing tutorial compare metrics](https://mintcdn.com/langchain-5e9cc07a/ImHGLQW1HnQYwnJV/langsmith/images/testing-tutorial-compare-metrics.png?fit=max\&auto=format\&n=ImHGLQW1HnQYwnJV\&q=85\&s=224acfbea78b8b1d0e08ce59d06b5088)
 
 我们可以看出，较大的模型更适合了解谁是公司，并且严格的提示对长度有很大帮助。但如果我们想更详细地探索怎么办？为此，我们可以选择要比较的所有运行（在本例中为全部三个）并在比较视图中打开它们。我们立即并排看到所有三个测试。一些单元格采用颜色编码 - 这显示了*某个指标*与*某个基线*相比的回归。我们会自动选择基准和指标的默认值，但您可以自行更改这些值。您还可以使用 `Display` 控件选择要查看的列和指标。您还可以通过单击顶部的图标自动过滤以仅查看有改进/回归的运行。
 
-<img alt="Testing tutorial compare runs" />
+![Testing tutorial compare runs](https://mintcdn.com/langchain-5e9cc07a/ImHGLQW1HnQYwnJV/langsmith/images/testing-tutorial-compare-runs.png?fit=max\&auto=format\&n=ImHGLQW1HnQYwnJV\&q=85\&s=de5575b837cdf97d479e5c91aff9dc78)
 
 如果我们想查看更多信息，我们还可以选择将鼠标悬停在一行上时出现的`Expand`按钮，以打开包含更详细信息的侧面板：
 
-<img alt="Testing tutorial side panel" />
+![Testing tutorial side panel](https://mintcdn.com/langchain-5e9cc07a/ImHGLQW1HnQYwnJV/langsmith/images/testing-tutorial-side-panel.png?fit=max\&auto=format\&n=ImHGLQW1HnQYwnJV\&q=85\&s=a72c4924a0ad9bebceae2da9518c56cc)
 
 ## 设置自动化测试以在 CI/CD 中运行现在我们已经以一次性方式运行它，我们可以将其设置为以自动方式运行。我们可以很容易地做到这一点，只需将其作为我们在 CI/CD 中运行的 pytest 文件包含进来。作为其中的一部分，我们可以只记录结果或设置一些标准来确定它是否通过。例如，如果我想确保我们始终获得至少 80% 的生成响应通过 `length` 检查，我们可以通过以下测试进行设置：
 
@@ -254,7 +252,7 @@ def test_length_score() -> None:
 
 现在我们已经以自动化方式运行这些实验，我们希望随着时间的推移跟踪这些结果。我们可以从数据集页面的整体`Experiments`选项卡中执行此操作。默认情况下，我们显示随时间变化的评估指标（以红色突出显示）。我们还自动跟踪 git 指标，以便轻松地将其与代码分支关联起来（以黄色突出显示）。
 
-<img alt="Testing tutorial over time" />
+![Testing tutorial over time](https://mintcdn.com/langchain-5e9cc07a/ImHGLQW1HnQYwnJV/langsmith/images/testing-tutorial-over-time.png?fit=max\&auto=format\&n=ImHGLQW1HnQYwnJV\&q=85\&s=a5961747b6ea92bb2f838d025ca5e3d5)
 
 ## 结论
 
@@ -266,131 +264,125 @@ def test_length_score() -> None:
 
 ## 参考代码
 
-<Accordion title="Click to see a consolidated code snippet">
-  ```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  import openai
-  from langsmith import Client, wrappers
-
-  # Application code
-  openai_client = wrappers.wrap_openai(openai.OpenAI())
-
-  default_instructions = "Respond to the users question in a short, concise manner (one short sentence)."
-
-  def my_app(question: str, model: str = "gpt-5.4-mini", instructions: str = default_instructions) -> str:
-      return openai_client.chat.completions.create(
-          model=model,
-          temperature=0,
-          messages=[
-              {"role": "system", "content": instructions},
-              {"role": "user", "content": question},
-          ],
-      ).choices[0].message.content
-
-  client = Client()
-
-  # Define dataset: these are your test cases
-  dataset_name = "QA Example Dataset"
-  dataset = client.create_dataset(dataset_name)
-
-  client.create_examples(
-      dataset_id=dataset.id,
-      examples=[
-          {
-              "inputs": {"question": "What is LangChain?"},
-              "outputs": {"answer": "A framework for building LLM applications"},
-          },
-          {
-              "inputs": {"question": "What is LangSmith?"},
-              "outputs": {"answer": "A platform for observing and evaluating LLM applications"},
-          },
-          {
-              "inputs": {"question": "What is OpenAI?"},
-              "outputs": {"answer": "A company that creates Large Language Models"},
-          },
-          {
-              "inputs": {"question": "What is Google?"},
-              "outputs": {"answer": "A technology company known for search"},
-          },
-          {
-              "inputs": {"question": "What is Mistral?"},
-              "outputs": {"answer": "A company that creates Large Language Models"},
-          }
-      ]
-  )
-
-  # Define evaluators
-  eval_instructions = "You are an expert professor specialized in grading students' answers to questions."
-
-  def correctness(inputs: dict, outputs: dict, reference_outputs: dict) -> bool:
-      user_content = f"""You are grading the following question:
-  {inputs['question']}
-  Here is the real answer:
-  {reference_outputs['answer']}
-  You are grading the following predicted answer:
-  {outputs['response']}
-  Respond with CORRECT or INCORRECT:
-  Grade:"""
-      response = openai_client.chat.completions.create(
-          model="gpt-5.4-mini",
-          temperature=0,
-          messages=[
-              {"role": "system", "content": eval_instructions},
-              {"role": "user", "content": user_content},
-          ],
-      ).choices[0].message.content
-      return response == "CORRECT"
-
-  def concision(outputs: dict, reference_outputs: dict) -> bool:
-      return int(len(outputs["response"]) < 2 * len(reference_outputs["answer"]))
-
-  # Run evaluations
-  def ls_target(inputs: str) -> dict:
-      return {"response": my_app(inputs["question"])}
-
-  experiment_results_v1 = client.evaluate(
-      ls_target, # Your AI system
-      data=dataset_name, # The data to predict and grade over
-      evaluators=[concision, correctness], # The evaluators to score the results
-      experiment_prefix="openai-5.4-mini", # A prefix for your experiment names to easily identify them
-  )
-
-  def ls_target_v2(inputs: str) -> dict:
-      return {"response": my_app(inputs["question"], model="gpt-5.5")}
-
-  experiment_results_v2 = client.evaluate(
-      ls_target_v2,
-      data=dataset_name,
-      evaluators=[concision, correctness],
-      experiment_prefix="openai-5.5",
-  )
-
-  instructions_v3 = "Respond to the users question in a short, concise manner (one short sentence). Do NOT use more than ten words."
-
-  def ls_target_v3(inputs: str) -> dict:
-      response = my_app(
-          inputs["question"],
-          model="gpt-5.5",
-          instructions=instructions_v3
-      )
-      return {"response": response}
-
-  experiment_results_v3 = client.evaluate(
-      ls_target_v3,
-      data=dataset_name,
-      evaluators=[concision, correctness],
-      experiment_prefix="strict-openai-5.5",
-  )
-  ```
-</Accordion>
+> **点击查看合并的代码片段**
+>
+> ```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> import openai
+> from langsmith import Client, wrappers
+>
+> # Application code
+> openai_client = wrappers.wrap_openai(openai.OpenAI())
+>
+> default_instructions = "Respond to the users question in a short, concise manner (one short sentence)."
+>
+> def my_app(question: str, model: str = "gpt-5.4-mini", instructions: str = default_instructions) -> str:
+>     return openai_client.chat.completions.create(
+>         model=model,
+>         temperature=0,
+>         messages=[
+>             {"role": "system", "content": instructions},
+>             {"role": "user", "content": question},
+>         ],
+>     ).choices[0].message.content
+>
+> client = Client()
+>
+> # Define dataset: these are your test cases
+> dataset_name = "QA Example Dataset"
+> dataset = client.create_dataset(dataset_name)
+>
+> client.create_examples(
+>     dataset_id=dataset.id,
+>     examples=[
+>         {
+>             "inputs": {"question": "What is LangChain?"},
+>             "outputs": {"answer": "A framework for building LLM applications"},
+>         },
+>         {
+>             "inputs": {"question": "What is LangSmith?"},
+>             "outputs": {"answer": "A platform for observing and evaluating LLM applications"},
+>         },
+>         {
+>             "inputs": {"question": "What is OpenAI?"},
+>             "outputs": {"answer": "A company that creates Large Language Models"},
+>         },
+>         {
+>             "inputs": {"question": "What is Google?"},
+>             "outputs": {"answer": "A technology company known for search"},
+>         },
+>         {
+>             "inputs": {"question": "What is Mistral?"},
+>             "outputs": {"answer": "A company that creates Large Language Models"},
+>         }
+>     ]
+> )
+>
+> # Define evaluators
+> eval_instructions = "You are an expert professor specialized in grading students' answers to questions."
+>
+> def correctness(inputs: dict, outputs: dict, reference_outputs: dict) -> bool:
+>     user_content = f"""You are grading the following question:
+> {inputs['question']}
+> Here is the real answer:
+> {reference_outputs['answer']}
+> You are grading the following predicted answer:
+> {outputs['response']}
+> Respond with CORRECT or INCORRECT:
+> Grade:"""
+>     response = openai_client.chat.completions.create(
+>         model="gpt-5.4-mini",
+>         temperature=0,
+>         messages=[
+>             {"role": "system", "content": eval_instructions},
+>             {"role": "user", "content": user_content},
+>         ],
+>     ).choices[0].message.content
+>     return response == "CORRECT"
+>
+> def concision(outputs: dict, reference_outputs: dict) -> bool:
+>     return int(len(outputs["response"]) < 2 * len(reference_outputs["answer"]))
+>
+> # Run evaluations
+> def ls_target(inputs: str) -> dict:
+>     return {"response": my_app(inputs["question"])}
+>
+> experiment_results_v1 = client.evaluate(
+>     ls_target, # Your AI system
+>     data=dataset_name, # The data to predict and grade over
+>     evaluators=[concision, correctness], # The evaluators to score the results
+>     experiment_prefix="openai-5.4-mini", # A prefix for your experiment names to easily identify them
+> )
+>
+> def ls_target_v2(inputs: str) -> dict:
+>     return {"response": my_app(inputs["question"], model="gpt-5.5")}
+>
+> experiment_results_v2 = client.evaluate(
+>     ls_target_v2,
+>     data=dataset_name,
+>     evaluators=[concision, correctness],
+>     experiment_prefix="openai-5.5",
+> )
+>
+> instructions_v3 = "Respond to the users question in a short, concise manner (one short sentence). Do NOT use more than ten words."
+>
+> def ls_target_v3(inputs: str) -> dict:
+>     response = my_app(
+>         inputs["question"],
+>         model="gpt-5.5",
+>         instructions=instructions_v3
+>     )
+>     return {"response": response}
+>
+> experiment_results_v3 = client.evaluate(
+>     ls_target_v3,
+>     data=dataset_name,
+>     evaluators=[concision, correctness],
+>     experiment_prefix="strict-openai-5.5",
+> )
+> ```
 
 ***
 
-<div>
-  <Callout icon="terminal-2">
-    [Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
-  </Callout>
+[Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
 
-  <Callout icon="edit">
-    [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/evaluate-chatbot-tutorial.mdx) 或 [file an issue](https://github.com/langchain-ai/docs/issues/new/choose)。
-  </Callout>
-</div>
+[Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/evaluate-chatbot-tutorial.mdx) 或 [file an issue](https://github.com/langchain-ai/docs/issues/new/choose)。

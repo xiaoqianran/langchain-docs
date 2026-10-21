@@ -6,30 +6,30 @@ Integrate with Microsoft using LangChain Python.
 
 This page covers all LangChain integrations with [Microsoft Azure](https://portal.azure.com) and other [Microsoft](https://www.microsoft.com) products.
 
-<Tip>
-  **Recommended: Microsoft Foundry**
+> [!TIP]
+>
+> **Recommended: Microsoft Foundry**
+>
+> For new LangChain or LangGraph applications centered on [Microsoft Foundry](https://learn.microsoft.com/en-us/azure/foundry/), start with [`langchain-azure-ai`](/oss/python/integrations/providers/azure_ai). It adds Foundry project endpoints, Azure credential integration, Agent Service, hosting, tools, Content Safety, retrieval, and Azure observability.
+>
+> For direct [Azure OpenAI v1 API](https://learn.microsoft.com/en-us/azure/ai-foundry/openai/api-version-lifecycle?tabs=python) model access, code that switches between OpenAI and Azure, traditional Azure OpenAI API versions, completion LLMs, or a smaller dependency surface, use the `langchain-openai` package.
+>
+> A Foundry resource includes Azure OpenAI capabilities and adds a broader model catalog, agent service, and evaluation capabilities. If you use an Azure OpenAI resource, [upgrade it to a Foundry resource](https://learn.microsoft.com/en-us/azure/foundry/how-to/upgrade-azure-openai) to keep your existing API endpoint, state, and security configurations while gaining access to Foundry capabilities.
+>
+> For agent hosting, use [Microsoft Foundry hosted agents](#microsoft-foundry-hosted-agents) to deploy custom LangGraph code on a managed agent platform with built-in runtime, sessions, scaling, identity, and protocol endpoints.
+>
+> **Samples and tutorials:**
+>
+> * [microsoft-foundry/foundry-samples LangGraph hosted agent samples](https://github.com/microsoft-foundry/foundry-samples/tree/main/samples/python/hosted-agents/langgraph): Run LangGraph agents locally or deploy them to Microsoft Foundry with Responses, Invocations, and A2A samples.
+> * [Azure-Samples/langchain-azure-openai-starter](https://github.com/Azure-Samples/langchain-azure-openai-starter): Start with a production-ready LangChain and Azure OpenAI app template that lets you deploy directly to Azure with a single `azd` command.
+> * [microsoft/langchain-for-beginners](https://github.com/microsoft/langchain-for-beginners): A hands-on course introducing LangChain with Azure OpenAI.
+> * [Azure-Samples/langchain-agent-python](https://github.com/Azure-Samples/langchain-agent-python): Build and deploy LangChain agents on Azure.
 
-  For new LangChain or LangGraph applications centered on [Microsoft Foundry](https://learn.microsoft.com/en-us/azure/foundry/), start with [`langchain-azure-ai`](/oss/python/integrations/providers/azure_ai). It adds Foundry project endpoints, Azure credential integration, Agent Service, hosting, tools, Content Safety, retrieval, and Azure observability.
-
-  For direct [Azure OpenAI v1 API](https://learn.microsoft.com/en-us/azure/ai-foundry/openai/api-version-lifecycle?tabs=python) model access, code that switches between OpenAI and Azure, traditional Azure OpenAI API versions, completion LLMs, or a smaller dependency surface, use the `langchain-openai` package.
-
-  A Foundry resource includes Azure OpenAI capabilities and adds a broader model catalog, agent service, and evaluation capabilities. If you use an Azure OpenAI resource, [upgrade it to a Foundry resource](https://learn.microsoft.com/en-us/azure/foundry/how-to/upgrade-azure-openai) to keep your existing API endpoint, state, and security configurations while gaining access to Foundry capabilities.
-
-  For agent hosting, use [Microsoft Foundry hosted agents](#microsoft-foundry-hosted-agents) to deploy custom LangGraph code on a managed agent platform with built-in runtime, sessions, scaling, identity, and protocol endpoints.
-
-  **Samples and tutorials:**
-
-  * [microsoft-foundry/foundry-samples LangGraph hosted agent samples](https://github.com/microsoft-foundry/foundry-samples/tree/main/samples/python/hosted-agents/langgraph): Run LangGraph agents locally or deploy them to Microsoft Foundry with Responses, Invocations, and A2A samples.
-  * [Azure-Samples/langchain-azure-openai-starter](https://github.com/Azure-Samples/langchain-azure-openai-starter): Start with a production-ready LangChain and Azure OpenAI app template that lets you deploy directly to Azure with a single `azd` command.
-  * [microsoft/langchain-for-beginners](https://github.com/microsoft/langchain-for-beginners): A hands-on course introducing LangChain with Azure OpenAI.
-  * [Azure-Samples/langchain-agent-python](https://github.com/Azure-Samples/langchain-agent-python): Build and deploy LangChain agents on Azure.
-</Tip>
-
-<Note>
-  **Claude on Azure**
-
-  Microsoft Foundry also offers access to all [Anthropic Claude models](https://learn.microsoft.com/en-us/azure/foundry/foundry-models/how-to/use-foundry-models-claude), including Opus, Sonnet, and Haiku. Claude models are served through a dedicated Anthropic-native endpoint rather than the Azure OpenAI v1 API. Use [`langchain-anthropic`](/oss/python/integrations/chat/anthropic) pointed at your Foundry Anthropic endpoint.
-</Note>
+> [!NOTE]
+>
+> **Claude on Azure**
+>
+> Microsoft Foundry also offers access to all [Anthropic Claude models](https://learn.microsoft.com/en-us/azure/foundry/foundry-models/how-to/use-foundry-models-claude), including Opus, Sonnet, and Haiku. Claude models are served through a dedicated Anthropic-native endpoint rather than the Azure OpenAI v1 API. Use [`langchain-anthropic`](/oss/python/integrations/chat/anthropic) pointed at your Foundry Anthropic endpoint.
 
 ## Choose a package
 
@@ -69,15 +69,13 @@ Microsoft offers three main options for accessing chat models through Azure:
 
 Microsoft Foundry provides project-level access to models and Azure services. Use `AzureAIOpenAIApiChatModel` from `langchain-azure-ai` when your application uses a Foundry project, Azure credentials, or other Foundry capabilities.
 
-<CodeGroup>
-  ```bash pip theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  pip install -U langchain-azure-ai
-  ```
+```bash pip theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+pip install -U langchain-azure-ai
+```
 
-  ```bash uv theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  uv add langchain-azure-ai
-  ```
-</CodeGroup>
+```bash uv theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+uv add langchain-azure-ai
+```
 
 Set your project endpoint:
 
@@ -103,53 +101,49 @@ For a complete setup guide, see the [Microsoft Foundry chat model integration](/
 
 For direct Azure OpenAI access, [create an Azure deployment](https://learn.microsoft.com/en-us/azure/ai-services/openai/how-to/create-resource) and install the `langchain-openai` package:
 
-<CodeGroup>
-  ```bash pip theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  pip install -U langchain-openai
-  ```
+```bash pip theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+pip install -U langchain-openai
+```
 
-  ```bash uv theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  uv add langchain-openai
-  ```
-</CodeGroup>
+```bash uv theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+uv add langchain-openai
+```
 
 On the v1 API, use `ChatOpenAI` directly against your Azure endpoint—no `api_version` required:
 
-<Tabs>
-  <Tab title="Entra ID (recommended)">
-    ```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-    pip install azure-identity
-    ```
+**Entra ID (recommended)**
 
-    ```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-    from azure.identity import DefaultAzureCredential, get_bearer_token_provider
-    from langchain_openai import ChatOpenAI
+```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+pip install azure-identity
+```
 
-    token_provider = get_bearer_token_provider(
-        DefaultAzureCredential(),
-        "https://cognitiveservices.azure.com/.default",
-    )
+```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+from azure.identity import DefaultAzureCredential, get_bearer_token_provider
+from langchain_openai import ChatOpenAI
 
-    llm = ChatOpenAI(
-        model="gpt-5.4-mini",  # your Azure deployment name
-        base_url="https://YOUR-RESOURCE-NAME.openai.azure.com/openai/v1/",
-        api_key=token_provider,  # callable that handles token refresh
-    )
-    ```
-  </Tab>
+token_provider = get_bearer_token_provider(
+    DefaultAzureCredential(),
+    "https://cognitiveservices.azure.com/.default",
+)
 
-  <Tab title="API key">
-    ```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-    from langchain_openai import ChatOpenAI
+llm = ChatOpenAI(
+    model="gpt-5.4-mini",  # your Azure deployment name
+    base_url="https://YOUR-RESOURCE-NAME.openai.azure.com/openai/v1/",
+    api_key=token_provider,  # callable that handles token refresh
+)
+```
 
-    llm = ChatOpenAI(
-        model="gpt-5.4-mini",  # your Azure deployment name
-        base_url="https://YOUR-RESOURCE-NAME.openai.azure.com/openai/v1/",
-        api_key="your-azure-api-key",
-    )
-    ```
-  </Tab>
-</Tabs>
+**API key**
+
+```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+from langchain_openai import ChatOpenAI
+
+llm = ChatOpenAI(
+    model="gpt-5.4-mini",  # your Azure deployment name
+    base_url="https://YOUR-RESOURCE-NAME.openai.azure.com/openai/v1/",
+    api_key="your-azure-api-key",
+)
+```
 
 For traditional Azure OpenAI API versions, use `AzureChatOpenAI`:
 
@@ -163,45 +157,43 @@ See the [Azure ChatOpenAI integration page](/oss/python/integrations/chat/azure_
 
 Azure OpenAI supports the [Responses API](https://learn.microsoft.com/en-us/azure/ai-foundry/openai/how-to/responses), which provides stateful conversations, built-in tools (web search, file search, code interpreter), and structured reasoning summaries. `ChatOpenAI` automatically routes to the Responses API when you set the `reasoning` parameter, or you can opt in explicitly with `use_responses_api=True`:
 
-<Tabs>
-  <Tab title="Entra ID (recommended)">
-    ```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-    from azure.identity import DefaultAzureCredential, get_bearer_token_provider
-    from langchain_openai import ChatOpenAI
+**Entra ID (recommended)**
 
-    token_provider = get_bearer_token_provider(
-        DefaultAzureCredential(),
-        "https://cognitiveservices.azure.com/.default",
-    )
+```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+from azure.identity import DefaultAzureCredential, get_bearer_token_provider
+from langchain_openai import ChatOpenAI
 
-    llm = ChatOpenAI(
-        model="gpt-5.4-mini",
-        base_url="https://YOUR-RESOURCE-NAME.openai.azure.com/openai/v1/",
-        api_key=token_provider,
-        use_responses_api=True,
-    )
+token_provider = get_bearer_token_provider(
+    DefaultAzureCredential(),
+    "https://cognitiveservices.azure.com/.default",
+)
 
-    response = llm.invoke("Summarize the bitter lesson.")
-    print(response.text)
-    ```
-  </Tab>
+llm = ChatOpenAI(
+    model="gpt-5.4-mini",
+    base_url="https://YOUR-RESOURCE-NAME.openai.azure.com/openai/v1/",
+    api_key=token_provider,
+    use_responses_api=True,
+)
 
-  <Tab title="API key">
-    ```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-    from langchain_openai import ChatOpenAI
+response = llm.invoke("Summarize the bitter lesson.")
+print(response.text)
+```
 
-    llm = ChatOpenAI(
-        model="gpt-5.4-mini",
-        base_url="https://YOUR-RESOURCE-NAME.openai.azure.com/openai/v1/",
-        api_key="your-azure-api-key",
-        use_responses_api=True,
-    )
+**API key**
 
-    response = llm.invoke("Summarize the bitter lesson.")
-    print(response.text)
-    ```
-  </Tab>
-</Tabs>
+```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+from langchain_openai import ChatOpenAI
+
+llm = ChatOpenAI(
+    model="gpt-5.4-mini",
+    base_url="https://YOUR-RESOURCE-NAME.openai.azure.com/openai/v1/",
+    api_key="your-azure-api-key",
+    use_responses_api=True,
+)
+
+response = llm.invoke("Summarize the bitter lesson.")
+print(response.text)
+```
 
 For a walkthrough of reasoning effort, reasoning summaries, and streaming with the Responses API, see the [Azure ChatOpenAI integration page](/oss/python/integrations/chat/azure_chat_openai).
 
@@ -216,52 +208,48 @@ Microsoft offers two main options for accessing LLMs through Azure:
 
 See a [usage example](/oss/python/integrations/llms/azure_openai).
 
-<CodeGroup>
-  ```bash pip theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  pip install -U langchain-openai
-  ```
+```bash pip theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+pip install -U langchain-openai
+```
 
-  ```bash uv theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  uv add langchain-openai
-  ```
-</CodeGroup>
+```bash uv theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+uv add langchain-openai
+```
 
-<Tabs>
-  <Tab title="Entra ID (recommended)">
-    ```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-    from azure.identity import DefaultAzureCredential, get_bearer_token_provider
-    from langchain_openai import AzureOpenAI
+**Entra ID (recommended)**
 
-    token_provider = get_bearer_token_provider(
-        DefaultAzureCredential(),
-        "https://cognitiveservices.azure.com/.default",
-    )
+```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+from azure.identity import DefaultAzureCredential, get_bearer_token_provider
+from langchain_openai import AzureOpenAI
 
-    llm = AzureOpenAI(
-        azure_deployment="gpt-5.4-mini",  # your Azure deployment name
-        api_version="2025-04-01-preview",
-        azure_ad_token_provider=token_provider,
-    )
+token_provider = get_bearer_token_provider(
+    DefaultAzureCredential(),
+    "https://cognitiveservices.azure.com/.default",
+)
 
-    print(llm.invoke("Write a haiku about the ocean."))
-    ```
-  </Tab>
+llm = AzureOpenAI(
+    azure_deployment="gpt-5.4-mini",  # your Azure deployment name
+    api_version="2025-04-01-preview",
+    azure_ad_token_provider=token_provider,
+)
 
-  <Tab title="API key">
-    ```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-    from langchain_openai import AzureOpenAI
+print(llm.invoke("Write a haiku about the ocean."))
+```
 
-    llm = AzureOpenAI(
-        azure_deployment="gpt-5.4-mini",  # your Azure deployment name
-        api_version="2025-04-01-preview",
-        azure_endpoint="https://YOUR-RESOURCE-NAME.openai.azure.com/",
-        api_key="your-azure-api-key",
-    )
+**API key**
 
-    print(llm.invoke("Write a haiku about the ocean."))
-    ```
-  </Tab>
-</Tabs>
+```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+from langchain_openai import AzureOpenAI
+
+llm = AzureOpenAI(
+    azure_deployment="gpt-5.4-mini",  # your Azure deployment name
+    api_version="2025-04-01-preview",
+    azure_endpoint="https://YOUR-RESOURCE-NAME.openai.azure.com/",
+    api_key="your-azure-api-key",
+)
+
+print(llm.invoke("Write a haiku about the ocean."))
+```
 
 ## Embedding models
 
@@ -274,15 +262,13 @@ Choose an embeddings integration based on how your application connects to Azure
 
 Install `langchain-azure-ai`:
 
-<CodeGroup>
-  ```bash pip theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  pip install -U langchain-azure-ai
-  ```
+```bash pip theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+pip install -U langchain-azure-ai
+```
 
-  ```bash uv theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  uv add langchain-azure-ai
-  ```
-</CodeGroup>
+```bash uv theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+uv add langchain-azure-ai
+```
 
 Set your project endpoint:
 
@@ -302,9 +288,9 @@ embeddings = AzureAIOpenAIApiEmbeddingsModel(
 )
 ```
 
-<Note>
-  Foundry project configuration currently derives a direct `/openai/v1` endpoint because embeddings are not yet served through the project endpoint itself.
-</Note>
+> [!NOTE]
+>
+> Foundry project configuration currently derives a direct `/openai/v1` endpoint because embeddings are not yet served through the project endpoint itself.
 
 For more information, see the [Microsoft Foundry embeddings integration](/oss/python/integrations/providers/azure_ai#azure-ai-model-inference-for-embeddings).
 
@@ -312,52 +298,48 @@ For more information, see the [Microsoft Foundry embeddings integration](/oss/py
 
 See a [usage example](/oss/python/integrations/embeddings/azure_openai).
 
-<CodeGroup>
-  ```bash pip theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  pip install -U langchain-openai
-  ```
+```bash pip theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+pip install -U langchain-openai
+```
 
-  ```bash uv theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  uv add langchain-openai
-  ```
-</CodeGroup>
+```bash uv theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+uv add langchain-openai
+```
 
-<Tabs>
-  <Tab title="Entra ID (recommended)">
-    ```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-    from azure.identity import DefaultAzureCredential, get_bearer_token_provider
-    from langchain_openai import AzureOpenAIEmbeddings
+**Entra ID (recommended)**
 
-    token_provider = get_bearer_token_provider(
-        DefaultAzureCredential(),
-        "https://cognitiveservices.azure.com/.default",
-    )
+```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+from azure.identity import DefaultAzureCredential, get_bearer_token_provider
+from langchain_openai import AzureOpenAIEmbeddings
 
-    embeddings = AzureOpenAIEmbeddings(
-        azure_deployment="text-embedding-3-small",  # your Azure deployment name
-        api_version="2025-04-01-preview",
-        azure_ad_token_provider=token_provider,
-    )
+token_provider = get_bearer_token_provider(
+    DefaultAzureCredential(),
+    "https://cognitiveservices.azure.com/.default",
+)
 
-    vector = embeddings.embed_query("LangChain makes agents easy.")
-    ```
-  </Tab>
+embeddings = AzureOpenAIEmbeddings(
+    azure_deployment="text-embedding-3-small",  # your Azure deployment name
+    api_version="2025-04-01-preview",
+    azure_ad_token_provider=token_provider,
+)
 
-  <Tab title="API key">
-    ```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-    from langchain_openai import AzureOpenAIEmbeddings
+vector = embeddings.embed_query("LangChain makes agents easy.")
+```
 
-    embeddings = AzureOpenAIEmbeddings(
-        azure_deployment="text-embedding-3-small",  # your Azure deployment name
-        api_version="2025-04-01-preview",
-        azure_endpoint="https://YOUR-RESOURCE-NAME.openai.azure.com/",
-        api_key="your-azure-api-key",
-    )
+**API key**
 
-    vector = embeddings.embed_query("LangChain makes agents easy.")
-    ```
-  </Tab>
-</Tabs>
+```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+from langchain_openai import AzureOpenAIEmbeddings
+
+embeddings = AzureOpenAIEmbeddings(
+    azure_deployment="text-embedding-3-small",  # your Azure deployment name
+    api_version="2025-04-01-preview",
+    azure_endpoint="https://YOUR-RESOURCE-NAME.openai.azure.com/",
+    api_key="your-azure-api-key",
+)
+
+vector = embeddings.embed_query("LangChain makes agents easy.")
+```
 
 ## Middleware
 
@@ -367,15 +349,13 @@ See a [usage example](/oss/python/integrations/embeddings/azure_openai).
 
 Install the middleware package:
 
-<CodeGroup>
-  ```bash pip theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  pip install -U langchain-azure-ai
-  ```
+```bash pip theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+pip install -U langchain-azure-ai
+```
 
-  ```bash uv theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  uv add langchain-azure-ai
-  ```
-</CodeGroup>
+```bash uv theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+uv add langchain-azure-ai
+```
 
 See the [Microsoft Foundry middleware guide](/oss/python/integrations/middleware/azure_ai).
 
@@ -398,15 +378,13 @@ from langchain_azure_ai.agents.middleware import AzureContentModerationMiddlewar
 * Storing data for backup and restore, disaster recovery, and archiving.
 * Storing data for analysis by an on-premises or Azure-hosted service.
 
-<CodeGroup>
-  ```bash pip theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  pip install langchain-azure-storage
-  ```
+```bash pip theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+pip install langchain-azure-storage
+```
 
-  ```bash uv theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  uv add langchain-azure-storage
-  ```
-</CodeGroup>
+```bash uv theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+uv add langchain-azure-storage
+```
 
 See [usage examples for the Azure Blob Storage Loader](/oss/python/integrations/document_loaders/azure_blob_storage).
 
@@ -420,21 +398,19 @@ from langchain_azure_storage.document_loaders import AzureBlobStorageLoader
 
 > [Azure Blob Storage](https://learn.microsoft.com/en-us/azure/storage/blobs/storage-blobs-introduction) is Microsoft's object storage solution for the cloud. `AzureBlobBackend` implements the Deep Agents `BackendProtocol`, so a deep agent can persist its entire workspace (files, memories, and artifacts) in a blob container.
 
-<Note>
-  The `AzureBlobBackend` is part of the `langchain-azure-storage` package, which is currently in **Public Preview**.
-</Note>
+> [!NOTE]
+>
+> The `AzureBlobBackend` is part of the `langchain-azure-storage` package, which is currently in **Public Preview**.
 
 Install with the `deepagents` extra (requires Python 3.11+):
 
-<CodeGroup>
-  ```bash pip theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  pip install -U "langchain-azure-storage[deepagents]"
-  ```
+```bash pip theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+pip install -U "langchain-azure-storage[deepagents]"
+```
 
-  ```bash uv theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  uv add "langchain-azure-storage[deepagents]"
-  ```
-</CodeGroup>
+```bash uv theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+uv add "langchain-azure-storage[deepagents]"
+```
 
 ```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 from langchain_azure_storage.deepagents import AzureBlobBackend
@@ -469,15 +445,13 @@ For more information, see [Backend integrations](/oss/python/integrations/backen
 
 > [Azure Cosmos DB](https://learn.microsoft.com/azure/cosmos-db/) provides chat message history storage for conversational AI applications, enabling you to persist and retrieve conversation history with low latency and high availability.
 
-<CodeGroup>
-  ```bash pip theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  pip install langchain-azure-cosmosdb
-  ```
+```bash pip theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+pip install langchain-azure-cosmosdb
+```
 
-  ```bash uv theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  uv add langchain-azure-cosmosdb
-  ```
-</CodeGroup>
+```bash uv theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+uv add langchain-azure-cosmosdb
+```
 
 Configure your Azure Cosmos DB connection (sync or async, with access key or Microsoft Entra ID):
 
@@ -505,15 +479,13 @@ For async usage, import `AsyncCosmosDBChatMessageHistory` from the same package.
 
 > [`AzureCosmosDBNoSqlSemanticCache`](https://github.com/langchain-ai/langchain-azure/tree/main/libs/azure-cosmosdb) caches LLM responses in Azure Cosmos DB for NoSQL using vector similarity, returning cached results when a semantically similar prompt is seen again.
 
-<CodeGroup>
-  ```bash pip theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  pip install langchain-azure-cosmosdb
-  ```
+```bash pip theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+pip install langchain-azure-cosmosdb
+```
 
-  ```bash uv theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  uv add langchain-azure-cosmosdb
-  ```
-</CodeGroup>
+```bash uv theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+uv add langchain-azure-cosmosdb
+```
 
 ```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 from azure.cosmos import CosmosClient, PartitionKey
@@ -559,15 +531,13 @@ See [detailed configuration instructions](/oss/python/integrations/vectorstores/
 
 We need to install `langchain-azure-ai` and `pymongo` python packages.
 
-<CodeGroup>
-  ```bash pip theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  pip install langchain-azure-ai pymongo
-  ```
+```bash pip theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+pip install langchain-azure-ai pymongo
+```
 
-  ```bash uv theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  uv add langchain-azure-ai pymongo
-  ```
-</CodeGroup>
+```bash uv theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+uv add langchain-azure-ai pymongo
+```
 
 #### Deploy Azure cosmos DB on Microsoft Azure
 
@@ -598,15 +568,13 @@ See [detail configuration instructions](/oss/python/integrations/vectorstores/az
 
 We need to install `langchain-azure-cosmosdb` and `azure-cosmos` python packages.
 
-<CodeGroup>
-  ```bash pip theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  pip install langchain-azure-cosmosdb azure-cosmos
-  ```
+```bash pip theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+pip install langchain-azure-cosmosdb azure-cosmos
+```
 
-  ```bash uv theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  uv add langchain-azure-cosmosdb azure-cosmos
-  ```
-</CodeGroup>
+```bash uv theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+uv add langchain-azure-cosmosdb azure-cosmos
+```
 
 #### Deploy Azure cosmos DB on Microsoft Azure
 
@@ -677,15 +645,13 @@ Microsoft Foundry exposes LangChain service tools for Azure AI Content Understan
 
 Install the package with the `tools` extra:
 
-<CodeGroup>
-  ```bash pip theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  pip install -U "langchain-azure-ai[tools]"
-  ```
+```bash pip theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+pip install -U "langchain-azure-ai[tools]"
+```
 
-  ```bash uv theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  uv add "langchain-azure-ai[tools]"
-  ```
-</CodeGroup>
+```bash uv theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+uv add "langchain-azure-ai[tools]"
+```
 
 See the [Microsoft Foundry Tools guide](/oss/python/integrations/tools/azure_ai_services).
 
@@ -770,15 +736,13 @@ See the [Azure dynamic sessions setup instructions](/oss/python/integrations/too
 
 We need to install a python package.
 
-<CodeGroup>
-  ```bash pip theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  pip install langchain-azure-dynamic-sessions
-  ```
+```bash pip theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+pip install langchain-azure-dynamic-sessions
+```
 
-  ```bash uv theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  uv add langchain-azure-dynamic-sessions
-  ```
-</CodeGroup>
+```bash uv theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+uv add langchain-azure-dynamic-sessions
+```
 
 See a [usage example](/oss/python/integrations/tools/azure_dynamic_sessions).
 
@@ -792,15 +756,13 @@ Trigger Azure Logic Apps workflows to automate business processes and integratio
 
 Install the package with the `tools` extra:
 
-<CodeGroup>
-  ```bash pip theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  pip install -U "langchain-azure-ai[tools]"
-  ```
+```bash pip theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+pip install -U "langchain-azure-ai[tools]"
+```
 
-  ```bash uv theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  uv add "langchain-azure-ai[tools]"
-  ```
-</CodeGroup>
+```bash uv theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+uv add "langchain-azure-ai[tools]"
+```
 
 See the [Azure Logic Apps integration guide](/oss/python/integrations/tools/azure_logic_apps).
 
@@ -816,15 +778,13 @@ Load tools dynamically from an Azure AI Foundry Toolbox via the Model Context Pr
 
 Install the package with the `tools` extra:
 
-<CodeGroup>
-  ```bash pip theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  pip install -U "langchain-azure-ai[tools]" langchain-mcp-adapters httpx
-  ```
+```bash pip theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+pip install -U "langchain-azure-ai[tools]" langchain-mcp-adapters httpx
+```
 
-  ```bash uv theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  uv add "langchain-azure-ai[tools]" langchain-mcp-adapters httpx
-  ```
-</CodeGroup>
+```bash uv theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+uv add "langchain-azure-ai[tools]" langchain-mcp-adapters httpx
+```
 
 See the [Azure AI Foundry Toolbox guide](/oss/python/integrations/tools/azure_ai#azureaiprojecttoolbox).
 
@@ -836,15 +796,13 @@ from langchain_azure_ai.tools import AzureAIProjectToolbox
 
 Install the integration package:
 
-<CodeGroup>
-  ```bash pip theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  pip install -U "langchain-azure-ai[tools]"
-  ```
+```bash pip theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+pip install -U "langchain-azure-ai[tools]"
+```
 
-  ```bash uv theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  uv add "langchain-azure-ai[tools]"
-  ```
-</CodeGroup>
+```bash uv theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+uv add "langchain-azure-ai[tools]"
+```
 
 See a [usage example](/oss/python/integrations/tools/azure_ai_services).
 
@@ -866,9 +824,9 @@ The `AzureAIServicesToolkit` toolkit includes the following tools:
 
 [Microsoft Foundry hosted agents](https://learn.microsoft.com/en-us/azure/foundry/how-to/develop/langchain-hosted-agents) run custom LangGraph code in a managed runtime. Use the `langchain_azure_ai.agents.hosting` package to expose a compiled LangGraph graph while Foundry manages the runtime, sessions, scaling, identity, and protocol endpoints.
 
-<Note>
-  LangGraph hosting support requires `langchain-azure-ai[hosting]>=1.2.8`.
-</Note>
+> [!NOTE]
+>
+> LangGraph hosting support requires `langchain-azure-ai[hosting]>=1.2.8`.
 
 Before you begin, you need an Azure subscription, a Foundry project, a deployed chat model, Python 3.10 or later, and Azure CLI authentication. Deploying the agent also requires the Foundry Project Manager role on the project.
 
@@ -879,9 +837,9 @@ Choose a hosting protocol based on how clients interact with the agent:
 | Responses | `--protocol responses` | `ResponsesHostServer` | `/responses` | You need OpenAI-compatible chat, streaming, response history, or conversation threading. Start here for most conversational agents. |
 | Invocations | `--protocol invocations` | `InvocationsHostServer` | `/invocations` | You need a custom JSON shape, a webhook-style endpoint, or non-conversational processing. |
 
-<Note>
-  For hosted graphs using `BaseChatOpenAI`-based models with the Responses API, use `output_version="responses/v1"`. You can omit this setting in `langchain-openai` 1.0.0 or later, unless overridden by `LC_OUTPUT_VERSION`. This guidance applies to both Responses and Invocations hosting protocols.
-</Note>
+> [!NOTE]
+>
+> For hosted graphs using `BaseChatOpenAI`-based models with the Responses API, use `output_version="responses/v1"`. You can omit this setting in `langchain-openai` 1.0.0 or later, unless overridden by `LC_OUTPUT_VERSION`. This guidance applies to both Responses and Invocations hosting protocols.
 
 See the complete run samples for the [Responses protocol](https://github.com/microsoft-foundry/foundry-samples/tree/main/samples/python/hosted-agents/langgraph/responses/10-run) and [Invocations protocol](https://github.com/microsoft-foundry/foundry-samples/tree/main/samples/python/hosted-agents/langgraph/invocations/03-run).
 
@@ -891,68 +849,62 @@ If your agent already runs with the LangGraph CLI, use `langchain_azure_ai.agent
 
 Set the Foundry project endpoint and model deployment name, then select the protocol when you start the host:
 
-<Tabs>
-  <Tab title="Responses">
-    ```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-    export FOUNDRY_PROJECT_ENDPOINT="https://<account>.services.ai.azure.com/api/projects/<project>"
-    export AZURE_AI_MODEL_DEPLOYMENT_NAME="<model-deployment-name>"
-    python -m langchain_azure_ai.agents.hosting.run --protocol responses
-    ```
-  </Tab>
+**Responses**
 
-  <Tab title="Invocations">
-    ```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-    export FOUNDRY_PROJECT_ENDPOINT="https://<account>.services.ai.azure.com/api/projects/<project>"
-    export AZURE_AI_MODEL_DEPLOYMENT_NAME="<model-deployment-name>"
-    python -m langchain_azure_ai.agents.hosting.run --protocol invocations
-    ```
-  </Tab>
-</Tabs>
+```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+export FOUNDRY_PROJECT_ENDPOINT="https://<account>.services.ai.azure.com/api/projects/<project>"
+export AZURE_AI_MODEL_DEPLOYMENT_NAME="<model-deployment-name>"
+python -m langchain_azure_ai.agents.hosting.run --protocol responses
+```
+
+**Invocations**
+
+```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+export FOUNDRY_PROJECT_ENDPOINT="https://<account>.services.ai.azure.com/api/projects/<project>"
+export AZURE_AI_MODEL_DEPLOYMENT_NAME="<model-deployment-name>"
+python -m langchain_azure_ai.agents.hosting.run --protocol invocations
+```
 
 For deployment, set `codeConfiguration.entryPoint` on the agent service in `azure.yaml` to the same runner and protocol. Keep the existing project path, runtime, and dependency resolution settings:
 
-<Tabs>
-  <Tab title="Responses">
-    ```yaml theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-    services:
-        my-agent:
-            codeConfiguration:
-                entryPoint: '-m langchain_azure_ai.agents.hosting.run --protocol responses'
-    ```
-  </Tab>
+**Responses**
 
-  <Tab title="Invocations">
-    ```yaml theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-    services:
-        my-agent:
-            codeConfiguration:
-                entryPoint: '-m langchain_azure_ai.agents.hosting.run --protocol invocations'
-    ...
-    ```
-  </Tab>
-</Tabs>
+```yaml theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+services:
+    my-agent:
+        codeConfiguration:
+            entryPoint: '-m langchain_azure_ai.agents.hosting.run --protocol responses'
+```
+
+**Invocations**
+
+```yaml theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+services:
+    my-agent:
+        codeConfiguration:
+            entryPoint: '-m langchain_azure_ai.agents.hosting.run --protocol invocations'
+...
+```
 
 #### Use the SDK host classes
 
 Use the SDK host classes when you need to customize server construction, control the server lifecycle directly, or implement advanced hosting behavior such as custom routes or handlers:
 
-<Tabs>
-  <Tab title="Responses">
-    ```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-    from langchain_azure_ai.agents.hosting import ResponsesHostServer
+**Responses**
 
-    ResponsesHostServer(graph).run()
-    ```
-  </Tab>
+```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+from langchain_azure_ai.agents.hosting import ResponsesHostServer
 
-  <Tab title="Invocations">
-    ```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-    from langchain_azure_ai.agents.hosting import InvocationsHostServer
+ResponsesHostServer(graph).run()
+```
 
-    InvocationsHostServer(graph).run()
-    ```
-  </Tab>
-</Tabs>
+**Invocations**
+
+```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+from langchain_azure_ai.agents.hosting import InvocationsHostServer
+
+InvocationsHostServer(graph).run()
+```
 
 To deploy either approach, use `azd ai agent init` to initialize a hosted-agent project, `azd ai agent run` to test it locally, and `azd deploy` to deploy it. Run `azd provision` first only when you need to create the Foundry project or other Azure resources. You can also deploy with the Foundry Toolkit Visual Studio Code extension.
 
@@ -960,12 +912,6 @@ The Microsoft Learn guide includes complete examples for both protocols, convers
 
 ***
 
-<div>
-  <Callout icon="terminal-2">
-    [Connect these docs](/use-these-docs) to your agent of choice via MCP for real-time answers.
-  </Callout>
+[Connect these docs](/use-these-docs) to your agent of choice via MCP for real-time answers.
 
-  <Callout icon="edit">
-    [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/oss/python/integrations/providers/microsoft.mdx) or [file an issue](https://github.com/langchain-ai/docs/issues/new/choose).
-  </Callout>
-</div>
+[Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/oss/python/integrations/providers/microsoft.mdx) or [file an issue](https://github.com/langchain-ai/docs/issues/new/choose).

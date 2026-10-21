@@ -10,137 +10,121 @@ You can access a variety of tools in LangSmith Fleet. Use tool integrations and 
 
 You can add a tool from the [Fleet > Integrations tab](https://smith.langchain.com/agents/tools) to make it available to all agents in the workspace or from the agent sidebar to add it to a specific agent.
 
-<Tabs>
-  <Tab title="From Fleet > Integrations">
-    To add a tool to all agents in the workspace:
+**From Fleet > Integrations**
 
-    1. On the [Fleet > Integrations tab](https://smith.langchain.com/agents/tools), find the tool you want to add.
-    2. Click the **Connect**.
-    3. Follow the prompts to connect the tool to your agent.
-  </Tab>
+To add a tool to all agents in the workspace:
 
-  <Tab title="From the agent sidebar">
-    To add a tool to a specific agent:
+1. On the [Fleet > Integrations tab](https://smith.langchain.com/agents/tools), find the tool you want to add.
+2. Click the **Connect**.
+3. Follow the prompts to connect the tool to your agent.
 
-    1. In [Fleet](https://smith.langchain.com?utm_source=docs\&utm_medium=cta\&utm_campaign=langsmith-signup\&utm_content=langsmith-fleet-tools), select the agent to which you want to add the tool.
-    2. In the sidebar, expand the **Connections** drawer and click **Add connection**.
-    3. Select the tool you want to add.
-  </Tab>
-</Tabs>
+**From the agent sidebar**
+
+To add a tool to a specific agent:
+
+1. In [Fleet](https://smith.langchain.com?utm_source=docs\&utm_medium=cta\&utm_campaign=langsmith-signup\&utm_content=langsmith-fleet-tools), select the agent to which you want to add the tool.
+2. In the sidebar, expand the **Connections** drawer and click **Add connection**.
+3. Select the tool you want to add.
 
 ## Disconnect a tool
 
 To remove a tool from your agent:
 
-<Steps>
-  <Step title="Select the agent">
-    In [Fleet](https://smith.langchain.com?utm_source=docs\&utm_medium=cta\&utm_campaign=langsmith-signup\&utm_content=langsmith-fleet-tools), select the agent from which you want to remove the tool.
-  </Step>
+**1. Select the agent**
 
-  <Step title="Remove the tool">
-    1. In the sidebar, expand the **Connections** drawer and find the tool you want to remove.
-    2. Click the <Icon icon="trash" /> **Remove** icon for the tool.
-  </Step>
-</Steps>
+In [Fleet](https://smith.langchain.com?utm_source=docs\&utm_medium=cta\&utm_campaign=langsmith-signup\&utm_content=langsmith-fleet-tools), select the agent from which you want to remove the tool.
+
+**2. Remove the tool**
+
+1. In the sidebar, expand the **Connections** drawer and find the tool you want to remove.
+2. Click the  **Remove** icon for the tool.
 
 ## Built-in tools
 
 The following tools are a subset of the tools available in LangSmith Fleet. For the full up-to-date list, visit the [Fleet > Integrations tab](https://smith.langchain.com/agents/tools).
 
-<CardGroup>
-  <Card title="Gmail" icon="brand-google">
-    Read, compose, and organize emails in your Gmail inbox.
-  </Card>
+> **Gmail**
+>
+> Read, compose, and organize emails in your Gmail inbox.
 
-  <Card title="Google BigQuery" icon="brand-google">
-    Run queries and analyze large datasets stored in Google BigQuery.
-  </Card>
+> **Google BigQuery**
+>
+> Run queries and analyze large datasets stored in Google BigQuery.
 
-  <Card title="Google Calendar" icon="brand-google">
-    View, create, and manage calendar events and meeting schedules.
-  </Card>
+> **Google Calendar**
+>
+> View, create, and manage calendar events and meeting schedules.
 
-  <Card title="Google Docs" icon="brand-google">
-    Create, read, and edit documents in Google Docs.
-  </Card>
+> **Google Docs**
+>
+> Create, read, and edit documents in Google Docs.
 
-  <Card title="Google Sheets" icon="brand-google">
-    Read, update, and analyze data in Google Sheets spreadsheets.
-  </Card>
-</CardGroup>
+> **Google Sheets**
+>
+> Read, update, and analyze data in Google Sheets spreadsheets.
 
-<CardGroup>
-  <Card title="Excel" icon="brand-windows">
-    Read, write, and analyze data in Microsoft Excel workbooks.
-  </Card>
+> **Excel**
+>
+> Read, write, and analyze data in Microsoft Excel workbooks.
 
-  <Card title="Outlook" icon="brand-windows">
-    Read, draft, and organize Outlook emails, meetings, and calendar events.
-  </Card>
+> **Outlook**
+>
+> Read, draft, and organize Outlook emails, meetings, and calendar events.
 
-  <Card title="PowerPoint" icon="brand-windows">
-    Search, read, and create Microsoft PowerPoint presentations.
-  </Card>
+> **PowerPoint**
+>
+> Search, read, and create Microsoft PowerPoint presentations.
 
-  <Card title="SharePoint" icon="brand-windows">
-    Browse, read, and manage documents and sites in Microsoft SharePoint.
-  </Card>
+> **SharePoint**
+>
+> Browse, read, and manage documents and sites in Microsoft SharePoint.
 
-  <Card title="Teams" icon="brand-windows">
-    Send and read messages, channels, and collaboration updates in Microsoft Teams.
-  </Card>
+> **Teams**
+>
+> Send and read messages, channels, and collaboration updates in Microsoft Teams.
 
-  <Card title="Word" icon="brand-windows">
-    Search, read, and manage Microsoft Word documents.
-  </Card>
-</CardGroup>
+> **Word**
+>
+> Search, read, and manage Microsoft Word documents.
 
-<CardGroup>
-  <Card title="Exa" icon="search">
-    Search the web using AI-powered semantic search for highly relevant results.
-  </Card>
+> **Exa**
+>
+> Search the web using AI-powered semantic search for highly relevant results.
 
-  <Card title="GitHub" icon="brand-github">
-    Browse repositories, manage issues and pull requests, and review code on GitHub.
-  </Card>
+> **GitHub**
+>
+> Browse repositories, manage issues and pull requests, and review code on GitHub.
 
-  <Card title="Linear" icon="list-check">
-    Track issues, plan sprints, and coordinate team projects in Linear.
-  </Card>
+> **Linear**
+>
+> Track issues, plan sprints, and coordinate team projects in Linear.
 
-  <Card title="LinkedIn" icon="brand-linkedin">
-    Create posts, manage your company page, and engage with your professional network.
-  </Card>
+> **LinkedIn**
+>
+> Create posts, manage your company page, and engage with your professional network.
 
-  <Card title="Pylon" icon="messages">
-    View and respond to customer support conversations across channels.
-  </Card>
+> **Pylon**
+>
+> View and respond to customer support conversations across channels.
 
-  <Card title="Slack" icon="brand-slack">
-    Send messages, manage channels, and automate notifications in Slack.
-  </Card>
+> **Slack**
+>
+> Send messages, manage channels, and automate notifications in Slack.
 
-  <Card title="Tavily" icon="world-search">
-    Search the web and extract structured content from web pages.
-  </Card>
+> **Tavily**
+>
+> Search the web and extract structured content from web pages.
 
-  <Card title="X" icon="brand-x">
-    Publish posts, monitor mentions, and engage with your audience on X.
-  </Card>
-</CardGroup>
+> **X**
+>
+> Publish posts, monitor mentions, and engage with your audience on X.
 
-<Tip>
-  You can also connect to remote MCP servers to give your agents access to additional tools. See [Remote MCP servers](/langsmith/fleet/remote-mcp-servers) for more information.
-</Tip>
+> [!TIP]
+>
+> You can also connect to remote MCP servers to give your agents access to additional tools. See [Remote MCP servers](/langsmith/fleet/remote-mcp-servers) for more information.
 
 ***
 
-<div>
-  <Callout icon="terminal-2">
-    [Connect these docs](/use-these-docs) to your agent of choice via MCP for real-time answers.
-  </Callout>
+[Connect these docs](/use-these-docs) to your agent of choice via MCP for real-time answers.
 
-  <Callout icon="edit">
-    [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/fleet/tools.mdx) or [file an issue](https://github.com/langchain-ai/docs/issues/new/choose).
-  </Callout>
-</div>
+[Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/fleet/tools.mdx) or [file an issue](https://github.com/langchain-ai/docs/issues/new/choose).

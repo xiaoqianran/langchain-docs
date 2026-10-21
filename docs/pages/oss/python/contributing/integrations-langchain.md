@@ -6,23 +6,23 @@
 
 LangChain provides standard interfaces for several different components (language models, vector stores, etc) that are crucial when building LLM applications. Implementing a new integration helps expand LangChain's ecosystem and makes your service discoverable to millions of developers.
 
-<Warning>
-  New integrations are **not accepted as PRs** to any `langchain-ai` repository. All new integrations must be published as independent packages to PyPI (e.g., `langchain-yourprovider`). The only PR you should open to a `langchain-ai` repo is to list your published package in the docs: either a YAML row for the download table, or a hosted guide if you meet the [eligibility criteria](/oss/python/contributing/publish-langchain#eligibility-for-hosted-guides).
-</Warning>
+> [!WARNING]
+>
+> New integrations are **not accepted as PRs** to any `langchain-ai` repository. All new integrations must be published as independent packages to PyPI (e.g., `langchain-yourprovider`). The only PR you should open to a `langchain-ai` repo is to list your published package in the docs: either a YAML row for the download table, or a hosted guide if you meet the [eligibility criteria](/oss/python/contributing/publish-langchain#eligibility-for-hosted-guides).
 
 ## Why implement a LangChain integration?
 
-<Card title="Discoverability" icon="search">
-  LangChain is the most used framework for building LLM applications, with over 200 million monthly downloads.
-</Card>
+> **Discoverability**
+>
+> LangChain is the most used framework for building LLM applications, with over 200 million monthly downloads.
 
-<Card title="Interoperability" icon="refresh">
-  LangChain components expose a standard interface, allowing developers to easily swap them for each other. If you implement a LangChain integration, any developer using a different component will easily be able to swap yours in.
-</Card>
+> **Interoperability**
+>
+> LangChain components expose a standard interface, allowing developers to easily swap them for each other. If you implement a LangChain integration, any developer using a different component will easily be able to swap yours in.
 
-<Card title="Best Practices" icon="star">
-  Through their standard interface, LangChain components encourage and facilitate best practices (streaming, async, etc.) that improve developer experience and application performance.
-</Card>
+> **Best Practices**
+>
+> Through their standard interface, LangChain components encourage and facilitate best practices (streaming, async, etc.) that improve developer experience and application performance.
 
 ## Components to integrate
 
@@ -53,49 +53,41 @@ While any component can be integrated into LangChain, there are specific types o
 
 ## How to contribute an integration
 
-<Steps>
-  <Step title="Implement your package">
-    <Card title="How to implement a LangChain integration" icon="link" href="/oss/python/contributing/implement-langchain" />
-  </Step>
+**1. Implement your package**
 
-  <Step title="Pass standard tests">
-    If applicable, implement support for LangChain's [standard test](/oss/python/contributing/standard-tests-langchain) suite for your integration and successfully run them.
-  </Step>
+> **[How to implement a LangChain integration](/oss/python/contributing/implement-langchain)**
 
-  <Step title="Publish integration">
-    <Card title="How to publish an integration" icon="upload" href="/oss/python/contributing/publish-langchain" />
-  </Step>
+**2. Pass standard tests**
 
-  <Step title="List your integration">
-    Open a PR in the LangChain [docs repo](https://github.com/langchain-ai/docs) so users can find your package. Hosted guides are limited; most integrations are listed via YAML.
+If applicable, implement support for LangChain's [standard test](/oss/python/contributing/standard-tests-langchain) suite for your integration and successfully run them.
 
-    <Accordion title="How listing works" icon="book">
-      **Default (under 50,000 monthly downloads, not featured):** File an [Integration listing issue](https://github.com/langchain-ai/docs/issues/new?template=06-integration-submission.yml). After a maintainer applies `integration-run`, automation opens a PR that adds a row to [`scripts/data/integration_external_docs.yaml`](https://github.com/langchain-ai/docs/blob/main/scripts/data/integration_external_docs.yaml). The name column links to your `docs_url` (partner docs preferred, then GitHub, then PyPI or npm). Do not open a manual listing PR or add a new MDX page; automation closes those PRs and redirects to the issue form.
+**3. Publish integration**
 
-      **Hosted guide (50,000+ monthly downloads, or featured by maintainers):** Create a page under `src/oss/python/integrations/<component_type>/` from a template:
+> **[How to publish an integration](/oss/python/contributing/publish-langchain)**
 
-      * [Chat models](https://github.com/langchain-ai/docs/blob/main/src/oss/python/integrations/chat/TEMPLATE.mdx)
-      * [Tools and toolkits](https://github.com/langchain-ai/docs/blob/main/src/oss/python/integrations/tools/TEMPLATE.mdx)
-      * [Middleware](https://github.com/langchain-ai/docs/blob/main/src/oss/python/integrations/middleware/TEMPLATE.mdx)
-      * [Vector stores](https://github.com/langchain-ai/docs/blob/main/src/oss/python/integrations/vectorstores/TEMPLATE.mdx)
+**4. List your integration**
 
-      For full steps, eligibility details, and rejection criteria, see [Publish an integration](/oss/python/contributing/publish-langchain#make-your-integration-discoverable).
-    </Accordion>
-  </Step>
+Open a PR in the LangChain [docs repo](https://github.com/langchain-ai/docs) so users can find your package. Hosted guides are limited; most integrations are listed via YAML.
 
-  <Step title="Co-marketing" icon="speakerphone">
-    (Optional) Engage with the LangChain team for joint [co-marketing](/oss/python/contributing/comarketing).
-  </Step>
-</Steps>
+> **How listing works**
+>
+> **Default (under 50,000 monthly downloads, not featured):** File an [Integration listing issue](https://github.com/langchain-ai/docs/issues/new?template=06-integration-submission.yml). After a maintainer applies `integration-run`, automation opens a PR that adds a row to [`scripts/data/integration_external_docs.yaml`](https://github.com/langchain-ai/docs/blob/main/scripts/data/integration_external_docs.yaml). The name column links to your `docs_url` (partner docs preferred, then GitHub, then PyPI or npm). Do not open a manual listing PR or add a new MDX page; automation closes those PRs and redirects to the issue form.
+>
+> **Hosted guide (50,000+ monthly downloads, or featured by maintainers):** Create a page under `src/oss/python/integrations/<component_type>/` from a template:
+>
+> * [Chat models](https://github.com/langchain-ai/docs/blob/main/src/oss/python/integrations/chat/TEMPLATE.mdx)
+> * [Tools and toolkits](https://github.com/langchain-ai/docs/blob/main/src/oss/python/integrations/tools/TEMPLATE.mdx)
+> * [Middleware](https://github.com/langchain-ai/docs/blob/main/src/oss/python/integrations/middleware/TEMPLATE.mdx)
+> * [Vector stores](https://github.com/langchain-ai/docs/blob/main/src/oss/python/integrations/vectorstores/TEMPLATE.mdx)
+>
+> For full steps, eligibility details, and rejection criteria, see [Publish an integration](/oss/python/contributing/publish-langchain#make-your-integration-discoverable).
+
+**5. Co-marketing**
+
+(Optional) Engage with the LangChain team for joint [co-marketing](/oss/python/contributing/comarketing).
 
 ***
 
-<div>
-  <Callout icon="terminal-2">
-    [Connect these docs](/use-these-docs) to your agent of choice via MCP for real-time answers.
-  </Callout>
+[Connect these docs](/use-these-docs) to your agent of choice via MCP for real-time answers.
 
-  <Callout icon="edit">
-    [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/oss/contributing/integrations-langchain.mdx) or [file an issue](https://github.com/langchain-ai/docs/issues/new/choose).
-  </Callout>
-</div>
+[Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/oss/contributing/integrations-langchain.mdx) or [file an issue](https://github.com/langchain-ai/docs/issues/new/choose).

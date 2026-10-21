@@ -10,8 +10,6 @@ structure the model is providing. This pattern shows you how to parse and render
 markdown in real time as it streams from the agent, across all major frontend
 frameworks.
 
-<PatternEmbed />
-
 ## How markdown rendering works
 
 The rendering pipeline has three steps:
@@ -29,41 +27,63 @@ The rendering pipeline has three steps:
 The markdown pattern uses a simple chat agent with no special configuration.
 Wire up [`useStream`](https://reference.langchain.com/javascript/langchain-react/index/useStream) with your agent URL and assistant ID.
 
-<Info>
-  The code examples use `useStream<typeof myAgent>` for type-safe stream state. See Type inference for [Python](/oss/python/langchain/frontend/overview#type-inference) or [JavaScript](/oss/javascript/langchain/frontend/overview#type-inference) backends.
-</Info>
+> [!NOTE]
+>
+> The code examples use `useStream<typeof myAgent>` for type-safe stream state. See Type inference for [Python](/oss/python/langchain/frontend/overview#type-inference) or [JavaScript](/oss/javascript/langchain/frontend/overview#type-inference) backends.
 
-<CodeGroup>
-  ```tsx React theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  import { useStream } from "@langchain/react";
-  import { AIMessage, HumanMessage } from "langchain";
+```tsx React theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+import { useStream } from "@langchain/react";
+import { AIMessage, HumanMessage } from "langchain";
 
-  const AGENT_URL = "http://localhost:2024";
+const AGENT_URL = "http://localhost:2024";
 
-  export function Chat() {
-    const stream = useStream<typeof myAgent>({
-      apiUrl: AGENT_URL,
-      assistantId: "simple_agent",
-    });
+export function Chat() {
+  const stream = useStream<typeof myAgent>({
+    apiUrl: AGENT_URL,
+    assistantId: "simple_agent",
+  });
 
-    return (
-      <div>
-        {stream.messages.map((msg) => {
-          if (AIMessage.isInstance(msg)) {
-            return <Markdown key={msg.id}>{msg.text}</Markdown>;
-          }
-          if (HumanMessage.isInstance(msg)) {
-            return <p key={msg.id}>{msg.text}</p>;
-          }
-        })}
-      </div>
-    );
-  }
-  ```
+  return (
+    <div>
+      {stream.messages.map((msg) => {
+        if (AIMessage.isInstance(msg)) {
+          return <Markdown key={msg.id}>{msg.text}</Markdown>;
+        }
+        if (HumanMessage.isInstance(msg)) {
+          return <p key={msg.id}>{msg.text}</p>;
+        }
+      })}
+    </div>
+  );
+}
+```
 
-  ```vue Vue theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  <script setup lang="ts">
-  import { useStream } from "@langchain/vue";
+```vue Vue theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+<script setup lang="ts">
+import { useStream } from "@langchain/vue";
+import { AIMessage, HumanMessage } from "langchain";
+
+const AGENT_URL = "http://localhost:2024";
+
+const stream = useStream<typeof myAgent>({
+  apiUrl: AGENT_URL,
+  assistantId: "simple_agent",
+});
+</script>
+
+<template>
+  <div>
+    <template v-for="msg in stream.messages.value" :key="msg.id">
+      <Markdown v-if="AIMessage.isInstance(msg)">{{ msg.text }}</Markdown>
+      <p v-else-if="HumanMessage.isInstance(msg)">{{ msg.text }}</p>
+    </template>
+  </div>
+</template>
+```
+
+```svelte Svelte theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+<script lang="ts">
+  import { useStream } from "@langchain/svelte";
   import { AIMessage, HumanMessage } from "langchain";
 
   const AGENT_URL = "http://localhost:2024";
@@ -72,64 +92,40 @@ Wire up [`useStream`](https://reference.langchain.com/javascript/langchain-react
     apiUrl: AGENT_URL,
     assistantId: "simple_agent",
   });
-  </script>
+</script>
 
-  <template>
-    <div>
-      <template v-for="msg in stream.messages.value" :key="msg.id">
-        <Markdown v-if="AIMessage.isInstance(msg)">{{ msg.text }}</Markdown>
-        <p v-else-if="HumanMessage.isInstance(msg)">{{ msg.text }}</p>
-      </template>
-    </div>
-  </template>
-  ```
+<div>
+  {#each stream.messages as msg (msg.id)}
+    {#if AIMessage.isInstance(msg)}
+      <Markdown content={msg.text} />
+    {:else if HumanMessage.isInstance(msg)}
+      <p>{msg.text}</p>
+    {/if}
+  {/each}
+</div>
+```
 
-  ```svelte Svelte theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  <script lang="ts">
-    import { useStream } from "@langchain/svelte";
-    import { AIMessage, HumanMessage } from "langchain";
+```ts Angular theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+import { Component } from "@angular/core";
+import { injectStream } from "@langchain/angular";
 
-    const AGENT_URL = "http://localhost:2024";
+const AGENT_URL = "http://localhost:2024";
 
-    const stream = useStream<typeof myAgent>({
-      apiUrl: AGENT_URL,
-      assistantId: "simple_agent",
-    });
-  </script>
-
-  <div>
-    {#each stream.messages as msg (msg.id)}
-      {#if AIMessage.isInstance(msg)}
-        <Markdown content={msg.text} />
-      {:else if HumanMessage.isInstance(msg)}
-        <p>{msg.text}</p>
-      {/if}
-    {/each}
-  </div>
-  ```
-
-  ```ts Angular theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  import { Component } from "@angular/core";
-  import { injectStream } from "@langchain/angular";
-
-  const AGENT_URL = "http://localhost:2024";
-
-  @Component({
-    selector: "app-chat",
-    template: `
-      @for (msg of stream.messages(); track msg.id) {
-        <app-markdown [content]="msg.text" />
-      }
-    `,
-  })
-  export class ChatComponent {
-    stream = injectStream<typeof myAgent>({
-      apiUrl: AGENT_URL,
-      assistantId: "simple_agent",
-    });
-  }
-  ```
-</CodeGroup>
+@Component({
+  selector: "app-chat",
+  template: `
+    @for (msg of stream.messages(); track msg.id) {
+      <app-markdown [content]="msg.text" />
+    }
+  `,
+})
+export class ChatComponent {
+  stream = injectStream<typeof myAgent>({
+    apiUrl: AGENT_URL,
+    assistantId: "simple_agent",
+  });
+}
+```
 
 ## Choosing a markdown library
 
@@ -142,104 +138,102 @@ Each framework has a natural choice for markdown rendering:
 | Svelte | `marked` + `dompurify` | Sanitized HTML via `{@html}` | Same as Vue, consistent API |
 | Angular | `marked` + `dompurify` | Sanitized HTML via `[innerHTML]` | Same as Vue/Svelte |
 
-<Tip>
-  React's `react-markdown` converts markdown directly to React elements, so it
-  doesn't need HTML sanitization. There's no `dangerouslySetInnerHTML` involved.
-  For Vue, Svelte, and Angular, always sanitize the parsed HTML with `dompurify`
-  before rendering.
-</Tip>
+> [!TIP]
+>
+> React's `react-markdown` converts markdown directly to React elements, so it
+> doesn't need HTML sanitization. There's no `dangerouslySetInnerHTML` involved.
+> For Vue, Svelte, and Angular, always sanitize the parsed HTML with `dompurify`
+> before rendering.
 
 ## Building the Markdown component
 
-<CodeGroup>
-  ```tsx React theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  import ReactMarkdown from "react-markdown";
-  import remarkGfm from "remark-gfm";
+```tsx React theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+import ReactMarkdown from "react-markdown";
+import remarkGfm from "remark-gfm";
 
-  export function Markdown({ children }: { children: string }) {
-    return (
-      <div className="markdown-content">
-        <ReactMarkdown remarkPlugins={[remarkGfm]}>
-          {children}
-        </ReactMarkdown>
-      </div>
-    );
-  }
-  ```
+export function Markdown({ children }: { children: string }) {
+  return (
+    <div className="markdown-content">
+      <ReactMarkdown remarkPlugins={[remarkGfm]}>
+        {children}
+      </ReactMarkdown>
+    </div>
+  );
+}
+```
 
-  ```vue Vue theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  <script setup lang="ts">
-  import { computed, useSlots } from "vue";
+```vue Vue theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+<script setup lang="ts">
+import { computed, useSlots } from "vue";
+import { marked } from "marked";
+import DOMPurify from "dompurify";
+
+marked.setOptions({ gfm: true, breaks: true });
+
+const slots = useSlots();
+
+const html = computed(() => {
+  const slot = slots.default?.();
+  const text = slot
+    ?.map((vnode) =>
+      typeof vnode.children === "string" ? vnode.children : ""
+    )
+    .join("") ?? "";
+  if (!text) return "";
+  return DOMPurify.sanitize(marked.parse(text) as string);
+});
+</script>
+
+<template>
+  <div class="markdown-content" v-html="html" />
+</template>
+```
+
+```svelte Svelte theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+<script lang="ts">
   import { marked } from "marked";
   import DOMPurify from "dompurify";
 
+  let { content }: { content: string } = $props();
+
   marked.setOptions({ gfm: true, breaks: true });
 
-  const slots = useSlots();
+  let html = $derived.by(() => {
+    if (!content) return "";
+    return DOMPurify.sanitize(marked.parse(content) as string);
+  });
+</script>
 
-  const html = computed(() => {
-    const slot = slots.default?.();
-    const text = slot
-      ?.map((vnode) =>
-        typeof vnode.children === "string" ? vnode.children : ""
-      )
-      .join("") ?? "";
+<div class="markdown-content">
+  {@html html}
+</div>
+```
+
+```ts Angular theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+import { Component, Input, computed, signal } from "@angular/core";
+import { marked } from "marked";
+import DOMPurify from "dompurify";
+
+marked.setOptions({ gfm: true, breaks: true });
+
+@Component({
+  selector: "app-markdown",
+  template: `<div class="markdown-content" [innerHTML]="html()"></div>`,
+})
+export class MarkdownComponent {
+  @Input() set content(value: string) {
+    this._content.set(value);
+  }
+
+  private _content = signal("");
+
+  html = computed(() => {
+    const text = this._content();
     if (!text) return "";
     return DOMPurify.sanitize(marked.parse(text) as string);
   });
-  </script>
-
-  <template>
-    <div class="markdown-content" v-html="html" />
-  </template>
-  ```
-
-  ```svelte Svelte theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  <script lang="ts">
-    import { marked } from "marked";
-    import DOMPurify from "dompurify";
-
-    let { content }: { content: string } = $props();
-
-    marked.setOptions({ gfm: true, breaks: true });
-
-    let html = $derived.by(() => {
-      if (!content) return "";
-      return DOMPurify.sanitize(marked.parse(content) as string);
-    });
-  </script>
-
-  <div class="markdown-content">
-    {@html html}
-  </div>
-  ```
-
-  ```ts Angular theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  import { Component, Input, computed, signal } from "@angular/core";
-  import { marked } from "marked";
-  import DOMPurify from "dompurify";
-
-  marked.setOptions({ gfm: true, breaks: true });
-
-  @Component({
-    selector: "app-markdown",
-    template: `<div class="markdown-content" [innerHTML]="html()"></div>`,
-  })
-  export class MarkdownComponent {
-    @Input() set content(value: string) {
-      this._content.set(value);
-    }
-
-    private _content = signal("");
-
-    html = computed(() => {
-      const text = this._content();
-      if (!text) return "";
-      return DOMPurify.sanitize(marked.parse(text) as string);
-    });
-  }
-  ```
-</CodeGroup>
+}
+```
 
 ## Sanitizing HTML output
 
@@ -260,10 +254,10 @@ DOMPurify removes `<script>` tags, `onclick` attributes, `javascript:` URLs,
 and other XSS vectors while preserving safe markdown output like headings,
 lists, code blocks, tables, and links.
 
-<Note>
-  React's `react-markdown` does not need `dompurify` because it produces React
-  elements directly, no raw HTML injection is involved.
-</Note>
+> [!NOTE]
+>
+> React's `react-markdown` does not need `dompurify` because it produces React
+> elements directly, no raw HTML injection is involved.
 
 ## Streaming considerations
 
@@ -282,11 +276,11 @@ For very long responses (> 50 KB), consider these optimizations:
 * **Incremental parsing:** parse only new content and append to a rendered
   buffer (advanced, typically not needed for chat UIs)
 
-<Info>
-  For most chat applications, the simple approach of re-parsing the full message
-  on each token is sufficient. Only optimize if you observe janky scrolling or
-  dropped frames with very long messages.
-</Info>
+> [!NOTE]
+>
+> For most chat applications, the simple approach of re-parsing the full message
+> on each token is sufficient. Only optimize if you observe janky scrolling or
+> dropped frames with very long messages.
 
 ## Best practices
 
@@ -308,12 +302,6 @@ For very long responses (> 50 KB), consider these optimizations:
 
 ***
 
-<div>
-  <Callout icon="terminal-2">
-    [Connect these docs](/use-these-docs) to your agent of choice via MCP for real-time answers.
-  </Callout>
+[Connect these docs](/use-these-docs) to your agent of choice via MCP for real-time answers.
 
-  <Callout icon="edit">
-    [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/oss/langchain/frontend/markdown-messages.mdx) or [file an issue](https://github.com/langchain-ai/docs/issues/new/choose).
-  </Callout>
-</div>
+[Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/oss/langchain/frontend/markdown-messages.mdx) or [file an issue](https://github.com/langchain-ai/docs/issues/new/choose).

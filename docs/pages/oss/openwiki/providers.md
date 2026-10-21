@@ -129,9 +129,9 @@ OPENWIKI_MODEL_ID=gpt-5.5
 
 OpenWiki supports Microsoft Entra ID (formerly Azure Active Directory) as a token provider for OpenAI-compatible endpoints that require Entra bearer tokens instead of static API keys.
 
-<Note>
-  Entra ID authentication requires OpenWiki v0.7.0 or later.
-</Note>
+> [!NOTE]
+>
+> Entra ID authentication requires OpenWiki v0.7.0 or later.
 
 To configure Entra auth interactively, run `openwiki --init`, select **OpenAI-compatible**, then select **Microsoft Entra ID**. Enter the HTTPS API root, the token scope your gateway accepts, and the model ID. OpenWiki saves these settings for later `--update` runs. It does not ask for or store an access token.
 
@@ -241,12 +241,6 @@ OPENWIKI_OPENROUTER_PROVIDER_ONLY=Novita
 
 ***
 
-<div>
-  <Callout icon="terminal-2">
-    [Connect these docs](/use-these-docs) to your agent of choice via MCP for real-time answers.
-  </Callout>
+[Connect these docs](/use-these-docs) to your agent of choice via MCP for real-time answers.
 
-  <Callout icon="edit">
-    [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/oss/openwiki/providers.mdx) or [file an issue](https://github.com/langchain-ai/docs/issues/new/choose).
-  </Callout>
-</div>
+[Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/oss/openwiki/providers.mdx) or [file an issue](https://github.com/langchain-ai/docs/issues/new/choose).

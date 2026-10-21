@@ -6,324 +6,240 @@
 
 ## LLM providers
 
-<div>
-  <a href="/langsmith/trace-bedrock">
-    <img alt="" />
+![](https://mintcdn.com/langchain-5e9cc07a/ZPKed1feKJ8F6LVo/images/providers/light/bedrock.svg?fit=max\&auto=format\&n=ZPKed1feKJ8F6LVo\&q=85\&s=d6fc326f6c429075add5a742c87d12b1)
 
-    <img alt="" />
+Amazon Bedrock
 
-    <span>Amazon Bedrock</span>
-  </a>
+[Open](/langsmith/trace-bedrock)
 
-  <a href="/langsmith/trace-anthropic">
-    <img alt="" />
+![](https://mintcdn.com/langchain-5e9cc07a/ZPKed1feKJ8F6LVo/images/providers/light/anthropic.svg?fit=max\&auto=format\&n=ZPKed1feKJ8F6LVo\&q=85\&s=f681e2a9025c2e1104d4260c6b27d638)
 
-    <img alt="" />
+Anthropic
 
-    <span>Anthropic</span>
-  </a>
+[Open](/langsmith/trace-anthropic)
 
-  <a href="/langsmith/trace-deepseek">
-    <img alt="" />
+![](https://mintcdn.com/langchain-5e9cc07a/ZPKed1feKJ8F6LVo/images/providers/light/deepseek.svg?fit=max\&auto=format\&n=ZPKed1feKJ8F6LVo\&q=85\&s=5a11e956e2ba24fd746aebd929ee1a5e)
 
-    <img alt="" />
+DeepSeek
 
-    <span>DeepSeek</span>
-  </a>
+[Open](/langsmith/trace-deepseek)
 
-  <a href="/langsmith/trace-with-google-gemini">
-    <img alt="" />
+![](https://mintcdn.com/langchain-5e9cc07a/ZPKed1feKJ8F6LVo/images/providers/light/gemini.svg?fit=max\&auto=format\&n=ZPKed1feKJ8F6LVo\&q=85\&s=486f57c43a26c9661700c37d0f575c05)
 
-    <img alt="" />
+Google Gemini
 
-    <span>Google Gemini</span>
-  </a>
+[Open](/langsmith/trace-with-google-gemini)
 
-  <a href="/langsmith/trace-litellm">
-    <img alt="" />
+![](https://mintcdn.com/langchain-5e9cc07a/TiT87b4RAoWyIOkQ/images/providers/light/litellm.svg?fit=max\&auto=format\&n=TiT87b4RAoWyIOkQ\&q=85\&s=3c70d2b1a246ead959c54869ecf39a74)
 
-    <img alt="" />
+LiteLLM
 
-    <span>LiteLLM</span>
-  </a>
+[Open](/langsmith/trace-litellm)
 
-  <a href="/langsmith/trace-with-mistral">
-    <img alt="" />
+![](https://mintcdn.com/langchain-5e9cc07a/ZPKed1feKJ8F6LVo/images/providers/light/mistral.svg?fit=max\&auto=format\&n=ZPKed1feKJ8F6LVo\&q=85\&s=2b060bfbf269ab1b7f41f3a835f7a0b6)
 
-    <img alt="" />
+Mistral
 
-    <span>Mistral</span>
-  </a>
+[Open](/langsmith/trace-with-mistral)
 
-  <a href="/langsmith/trace-openai">
-    <img alt="" />
+![](https://mintcdn.com/langchain-5e9cc07a/ZPKed1feKJ8F6LVo/images/providers/light/openai.svg?fit=max\&auto=format\&n=ZPKed1feKJ8F6LVo\&q=85\&s=fb29ba01edf0644930f3eda68ab6c0c2)
 
-    <img alt="" />
+OpenAI
 
-    <span>OpenAI</span>
-  </a>
+[Open](/langsmith/trace-openai)
 
-  <a href="/langsmith/trace-with-openai-compatible">
-    <img alt="" />
+![](https://mintcdn.com/langchain-5e9cc07a/ZPKed1feKJ8F6LVo/images/providers/light/openai.svg?fit=max\&auto=format\&n=ZPKed1feKJ8F6LVo\&q=85\&s=fb29ba01edf0644930f3eda68ab6c0c2)
 
-    <img alt="" />
+OpenAI-compatible APIs
 
-    <span>OpenAI-compatible APIs</span>
-  </a>
-</div>
+[Open](/langsmith/trace-with-openai-compatible)
 
-<Callout icon="arrows-transfer-down">
-  **Using LangChain?** LangChain provides a unified interface to 100+ LLM providers, which allows you to switch between models by setting environment variables. [Initialize a model](/oss/python/langchain/models#initialize-a-model) and LangSmith will automatically trace your application.
-</Callout>
+**Using LangChain?** LangChain provides a unified interface to 100+ LLM providers, which allows you to switch between models by setting environment variables. [Initialize a model](/oss/python/langchain/models#initialize-a-model) and LangSmith will automatically trace your application.
 
 ## Agent frameworks
 
-<div>
-  <a href="/langsmith/trace-with-autogen">
-    <img alt="" />
+![](https://mintcdn.com/langchain-5e9cc07a/ZPKed1feKJ8F6LVo/images/providers/light/autogen.svg?fit=max\&auto=format\&n=ZPKed1feKJ8F6LVo\&q=85\&s=4000da450d02b72ba1115c3dcdc2fde4)
 
-    <img alt="" />
+AutoGen
 
-    <span>AutoGen</span>
-  </a>
+[Open](/langsmith/trace-with-autogen)
 
-  <a href="/langsmith/trace-claude-agent-sdk">
-    <img alt="" />
+![](https://mintcdn.com/langchain-5e9cc07a/ZPKed1feKJ8F6LVo/images/providers/light/claude.svg?fit=max\&auto=format\&n=ZPKed1feKJ8F6LVo\&q=85\&s=d3cae2da0f353a45594f57b7f2382aba)
 
-    <img alt="" />
+Claude Agent SDK
 
-    <span>Claude Agent SDK</span>
-  </a>
+[Open](/langsmith/trace-claude-agent-sdk)
 
-  <a href="/langsmith/trace-with-claude-managed-agents">
-    <img alt="" />
+![](https://mintcdn.com/langchain-5e9cc07a/ZPKed1feKJ8F6LVo/images/providers/light/claude.svg?fit=max\&auto=format\&n=ZPKed1feKJ8F6LVo\&q=85\&s=d3cae2da0f353a45594f57b7f2382aba)
 
-    <img alt="" />
+Claude Managed Agents
 
-    <span>Claude Managed Agents</span>
-  </a>
+[Open](/langsmith/trace-with-claude-managed-agents)
 
-  <a href="/langsmith/trace-with-crewai">
-    <img alt="" />
+![](https://mintcdn.com/langchain-5e9cc07a/ZPKed1feKJ8F6LVo/images/providers/light/crewai.svg?fit=max\&auto=format\&n=ZPKed1feKJ8F6LVo\&q=85\&s=5f262e7fa86dc071770356a652ddee8f)
 
-    <img alt="" />
+CrewAI
 
-    <span>CrewAI</span>
-  </a>
+[Open](/langsmith/trace-with-crewai)
 
-  <a href="/langsmith/trace-deep-agents">
-    <img alt="" />
+![](https://mintcdn.com/langchain-5e9cc07a/8njVp3mXF3LrAS1d/images/brand/docs-favicon.png?fit=max\&auto=format\&n=8njVp3mXF3LrAS1d\&q=85\&s=a61c2b4666f558992e1fd44750b08465)
 
-    <span>Deep Agents</span>
-  </a>
+Deep Agents
 
-  <a href="/langsmith/trace-with-google-adk">
-    <img alt="" />
+[Open](/langsmith/trace-deep-agents)
 
-    <img alt="" />
+![](https://mintcdn.com/langchain-5e9cc07a/ZPKed1feKJ8F6LVo/images/providers/light/googleadk.svg?fit=max\&auto=format\&n=ZPKed1feKJ8F6LVo\&q=85\&s=b89f56d14d3d07aed99317fe34b20828)
 
-    <span>Google ADK</span>
-  </a>
+Google ADK
 
-  <a href="/langsmith/trace-with-langchain">
-    <img alt="" />
+[Open](/langsmith/trace-with-google-adk)
 
-    <span>LangChain</span>
-  </a>
+![](https://mintcdn.com/langchain-5e9cc07a/8njVp3mXF3LrAS1d/images/brand/docs-favicon.png?fit=max\&auto=format\&n=8njVp3mXF3LrAS1d\&q=85\&s=a61c2b4666f558992e1fd44750b08465)
 
-  <a href="/langsmith/trace-with-langgraph">
-    <img alt="" />
+LangChain
 
-    <span>LangGraph</span>
-  </a>
+[Open](/langsmith/trace-with-langchain)
 
-  <a href="/langsmith/trace-with-mastra">
-    <img alt="" />
+![](https://mintcdn.com/langchain-5e9cc07a/8njVp3mXF3LrAS1d/images/brand/docs-favicon.png?fit=max\&auto=format\&n=8njVp3mXF3LrAS1d\&q=85\&s=a61c2b4666f558992e1fd44750b08465)
 
-    <img alt="" />
+LangGraph
 
-    <span>Mastra</span>
-  </a>
+[Open](/langsmith/trace-with-langgraph)
 
-  <a href="/langsmith/trace-with-microsoft-agent-framework">
-    <img alt="" />
+![](https://mintcdn.com/langchain-5e9cc07a/ZPKed1feKJ8F6LVo/images/providers/light/mastra.svg?fit=max\&auto=format\&n=ZPKed1feKJ8F6LVo\&q=85\&s=4a14d6600d2b99a511b09271f9a5b57e)
 
-    <img alt="" />
+Mastra
 
-    <span>Microsoft Agent Framework</span>
-  </a>
+[Open](/langsmith/trace-with-mastra)
 
-  <a href="/langsmith/trace-with-openai-agents-sdk">
-    <img alt="" />
+![](https://mintcdn.com/langchain-5e9cc07a/ZPKed1feKJ8F6LVo/images/providers/light/microsoft.svg?fit=max\&auto=format\&n=ZPKed1feKJ8F6LVo\&q=85\&s=9189910834f230f7f94115d88e7ec4bf)
 
-    <img alt="" />
+Microsoft Agent Framework
 
-    <span>OpenAI Agents</span>
-  </a>
+[Open](/langsmith/trace-with-microsoft-agent-framework)
 
-  <a href="/langsmith/trace-with-opentelemetry">
-    <img alt="" />
+![](https://mintcdn.com/langchain-5e9cc07a/ZPKed1feKJ8F6LVo/images/providers/light/openai.svg?fit=max\&auto=format\&n=ZPKed1feKJ8F6LVo\&q=85\&s=fb29ba01edf0644930f3eda68ab6c0c2)
 
-    <img alt="" />
+OpenAI Agents
 
-    <span>OpenTelemetry</span>
-  </a>
+[Open](/langsmith/trace-with-openai-agents-sdk)
 
-  <a href="/langsmith/trace-with-pydantic-ai">
-    <img alt="" />
+![](https://mintcdn.com/langchain-5e9cc07a/ZPKed1feKJ8F6LVo/images/providers/light/opentelemetry.svg?fit=max\&auto=format\&n=ZPKed1feKJ8F6LVo\&q=85\&s=84b763868676d132f14cc4055525c34d)
 
-    <img alt="" />
+OpenTelemetry
 
-    <span>PydanticAI</span>
-  </a>
+[Open](/langsmith/trace-with-opentelemetry)
 
-  <a href="/langsmith/trace-with-semantic-kernel">
-    <img alt="" />
+![](https://mintcdn.com/langchain-5e9cc07a/z7oQGiHwXv52HwOy/images/providers/light/pydanticai.svg?fit=max\&auto=format\&n=z7oQGiHwXv52HwOy\&q=85\&s=0c399e2c9d65c77eeb5644d3d7f2dca5)
 
-    <img alt="" />
+PydanticAI
 
-    <span>Semantic Kernel</span>
-  </a>
+[Open](/langsmith/trace-with-pydantic-ai)
 
-  <a href="/langsmith/trace-with-strands-agents">
-    <img alt="" />
+![](https://mintcdn.com/langchain-5e9cc07a/ZPKed1feKJ8F6LVo/images/providers/light/microsoft.svg?fit=max\&auto=format\&n=ZPKed1feKJ8F6LVo\&q=85\&s=9189910834f230f7f94115d88e7ec4bf)
 
-    <img alt="" />
+Semantic Kernel
 
-    <span>Strands Agents</span>
-  </a>
+[Open](/langsmith/trace-with-semantic-kernel)
 
-  <a href="/langsmith/trace-with-vercel-ai-sdk">
-    <img alt="" />
+![](https://mintcdn.com/langchain-5e9cc07a/ZPKed1feKJ8F6LVo/images/providers/light/bedrock.svg?fit=max\&auto=format\&n=ZPKed1feKJ8F6LVo\&q=85\&s=d6fc326f6c429075add5a742c87d12b1)
 
-    <img alt="" />
+Strands Agents
 
-    <span>Vercel AI SDK</span>
-  </a>
-</div>
+[Open](/langsmith/trace-with-strands-agents)
+
+![](https://mintcdn.com/langchain-5e9cc07a/z7oQGiHwXv52HwOy/images/providers/light/vercel.svg?fit=max\&auto=format\&n=z7oQGiHwXv52HwOy\&q=85\&s=76a0a441ec1730cb68635a19a2a29032)
+
+Vercel AI SDK
+
+[Open](/langsmith/trace-with-vercel-ai-sdk)
 
 ## Voice AI frameworks
 
-<div>
-  <a href="/langsmith/trace-openai-realtime">
-    <img alt="" />
+![](https://mintcdn.com/langchain-5e9cc07a/ZPKed1feKJ8F6LVo/images/providers/light/openai.svg?fit=max\&auto=format\&n=ZPKed1feKJ8F6LVo\&q=85\&s=fb29ba01edf0644930f3eda68ab6c0c2)
 
-    <img alt="" />
+OpenAI Realtime
 
-    <span>OpenAI Realtime</span>
-  </a>
+[Open](/langsmith/trace-openai-realtime)
 
-  <a href="/langsmith/trace-gemini-live">
-    <img alt="" />
+![](https://mintcdn.com/langchain-5e9cc07a/ZPKed1feKJ8F6LVo/images/providers/light/gemini.svg?fit=max\&auto=format\&n=ZPKed1feKJ8F6LVo\&q=85\&s=486f57c43a26c9661700c37d0f575c05)
 
-    <img alt="" />
+Gemini Live
 
-    <span>Gemini Live</span>
-  </a>
+[Open](/langsmith/trace-gemini-live)
 
-  <a href="/langsmith/trace-with-livekit">
-    <img alt="" />
+![](https://mintcdn.com/langchain-5e9cc07a/ZPKed1feKJ8F6LVo/images/providers/light/livekit.svg?fit=max\&auto=format\&n=ZPKed1feKJ8F6LVo\&q=85\&s=e8c6fd5de3893374c7b2b57c68f97de8)
 
-    <img alt="" />
+Livekit
 
-    <span>Livekit</span>
-  </a>
+[Open](/langsmith/trace-with-livekit)
 
-  <a href="/langsmith/trace-with-pipecat">
-    <img alt="" />
+![](https://mintcdn.com/langchain-5e9cc07a/ZPKed1feKJ8F6LVo/images/providers/light/pipecat.svg?fit=max\&auto=format\&n=ZPKed1feKJ8F6LVo\&q=85\&s=91517611a27adb6cde1a46a81c76233d)
 
-    <img alt="" />
+Pipecat
 
-    <span>Pipecat</span>
-  </a>
-</div>
+[Open](/langsmith/trace-with-pipecat)
 
 ## Developer tools
 
-<div>
-  <a href="/langsmith/trace-claude-code">
-    <img alt="" />
+![](https://mintcdn.com/langchain-5e9cc07a/ZPKed1feKJ8F6LVo/images/providers/light/claude.svg?fit=max\&auto=format\&n=ZPKed1feKJ8F6LVo\&q=85\&s=d3cae2da0f353a45594f57b7f2382aba)
 
-    <img alt="" />
+Claude Code
 
-    <span>Claude Code</span>
-  </a>
+[Open](/langsmith/trace-claude-code)
 
-  <a href="/langsmith/trace-with-codex">
-    <img alt="" />
+![](https://mintcdn.com/langchain-5e9cc07a/ZPKed1feKJ8F6LVo/images/providers/light/openai.svg?fit=max\&auto=format\&n=ZPKed1feKJ8F6LVo\&q=85\&s=fb29ba01edf0644930f3eda68ab6c0c2)
 
-    <img alt="" />
+OpenAI Codex
 
-    <span>OpenAI Codex</span>
-  </a>
+[Open](/langsmith/trace-with-codex)
 
-  <a href="/langsmith/trace-with-opencode">
-    <img alt="" />
+![](https://mintcdn.com/langchain-5e9cc07a/oO5HjFJbtRKTB5uq/images/providers/light/opencode.svg?fit=max\&auto=format\&n=oO5HjFJbtRKTB5uq\&q=85\&s=25a9d6bd2ec68f699ff7d461b2922dad)
 
-    <img alt="" />
+OpenCode
 
-    <span>OpenCode</span>
-  </a>
+[Open](/langsmith/trace-with-opencode)
 
-  <a href="/langsmith/trace-with-cursor">
-    <img alt="" />
+![](https://mintcdn.com/langchain-5e9cc07a/zsHfIJsc-kEYhUz3/images/providers/light/cursor.svg?fit=max\&auto=format\&n=zsHfIJsc-kEYhUz3\&q=85\&s=9f47067f77df66b7d003ad613ea8d7a6)
 
-    <img alt="" />
+Cursor
 
-    <span>Cursor</span>
-  </a>
+[Open](/langsmith/trace-with-cursor)
 
-  <a href="/langsmith/trace-with-instructor">
-    <img alt="" />
+![](https://mintcdn.com/langchain-5e9cc07a/ZPKed1feKJ8F6LVo/images/providers/light/instructor.svg?fit=max\&auto=format\&n=ZPKed1feKJ8F6LVo\&q=85\&s=d9e2a38d8afcb3f166057e835d4717a7)
 
-    <img alt="" />
+Instructor
 
-    <span>Instructor</span>
-  </a>
+[Open](/langsmith/trace-with-instructor)
 
-  <a href="/langsmith/trace-with-n8n">
-    <img alt="" />
+![](https://mintcdn.com/langchain-5e9cc07a/r98TU0ib_rpHFZca/images/providers/light/n8n.svg?fit=max\&auto=format\&n=r98TU0ib_rpHFZca\&q=85\&s=4fa6a6e73885330613947815c52d1499)
 
-    <img alt="" />
+n8n
 
-    <span>n8n</span>
-  </a>
+[Open](/langsmith/trace-with-n8n)
 
-  <a href="/langsmith/trace-with-pi">
-    <img alt="" />
+![](https://mintcdn.com/langchain-5e9cc07a/4TrOZZ3BK2K-YJOg/images/providers/light/pi.svg?fit=max\&auto=format\&n=4TrOZZ3BK2K-YJOg\&q=85\&s=a7b450733e32c31c1052067940c4ad48)
 
-    <img alt="" />
+Pi
 
-    <span>Pi</span>
-  </a>
+[Open](/langsmith/trace-with-pi)
 
-  <a href="/langsmith/trace-with-temporal">
-    <img alt="" />
+![](https://mintcdn.com/langchain-5e9cc07a/z7oQGiHwXv52HwOy/images/providers/light/temporal.svg?fit=max\&auto=format\&n=z7oQGiHwXv52HwOy\&q=85\&s=3c34b851e1be36297688e71ece797843)
 
-    <img alt="" />
+Temporal
 
-    <span>Temporal</span>
-  </a>
+[Open](/langsmith/trace-with-temporal)
 
-  <a href="/langsmith/trace-with-vscode-copilot">
-    <img alt="" />
+![](https://mintcdn.com/langchain-5e9cc07a/VoDejLXW9qn9e7mU/images/providers/light/vscode.svg?fit=max\&auto=format\&n=VoDejLXW9qn9e7mU\&q=85\&s=15987426cb92b1921d8d41f902df02ac)
 
-    <img alt="" />
+VS Code Copilot
 
-    <span>VS Code Copilot</span>
-  </a>
-</div>
+[Open](/langsmith/trace-with-vscode-copilot)
 
 These coding agent integrations follow a shared [metadata contract](/langsmith/coding-agent-metadata-contract) that standardizes the trace fields they emit.
 
 ***
 
-<div>
-  <Callout icon="terminal-2">
-    [Connect these docs](/use-these-docs) to your agent of choice via MCP for real-time answers.
-  </Callout>
+[Connect these docs](/use-these-docs) to your agent of choice via MCP for real-time answers.
 
-  <Callout icon="edit">
-    [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/integrations.mdx) or [file an issue](https://github.com/langchain-ai/docs/issues/new/choose).
-  </Callout>
-</div>
+[Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/integrations.mdx) or [file an issue](https://github.com/langchain-ai/docs/issues/new/choose).

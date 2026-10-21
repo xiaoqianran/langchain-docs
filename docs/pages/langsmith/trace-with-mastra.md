@@ -23,9 +23,9 @@ npm install @mastra/core @mastra/langsmith @mastra/observability @mastra/libsql
    export LANGCHAIN_PROJECT=<your_project_name> # optional
    ```
 
-   <Tip>
-     If [`LANGCHAIN_PROJECT`](/langsmith/log-traces-to-project) is not set, traces will be sent to the default project.
-   </Tip>
+   > [!TIP]
+   >
+   > If [`LANGCHAIN_PROJECT`](/langsmith/log-traces-to-project) is not set, traces will be sent to the default project.
 
 2. If you plan to use OpenAI models, also ensure you have an OpenAI API key available at runtime:
 
@@ -140,12 +140,6 @@ You’ll be able to inspect:
 
 ***
 
-<div>
-  <Callout icon="terminal-2">
-    [Connect these docs](/use-these-docs) to your agent of choice via MCP for real-time answers.
-  </Callout>
+[Connect these docs](/use-these-docs) to your agent of choice via MCP for real-time answers.
 
-  <Callout icon="edit">
-    [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/trace-with-mastra.mdx) or [file an issue](https://github.com/langchain-ai/docs/issues/new/choose).
-  </Callout>
-</div>
+[Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/trace-with-mastra.mdx) or [file an issue](https://github.com/langchain-ai/docs/issues/new/choose).

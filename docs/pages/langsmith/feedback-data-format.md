@@ -2,11 +2,11 @@
 
 # Feedback data format
 
-<Check>
-  Before diving into this content, it might be helpful to read the following:
-
-  * [Conceptual guide on tracing and feedback](/langsmith/observability-concepts)
-</Check>
+> [!TIP]
+>
+> Before diving into this content, it might be helpful to read the following:
+>
+> * [Conceptual guide on tracing and feedback](/langsmith/observability-concepts)
 
 **Feedback** is LangSmith's way of storing the criteria and scores from evaluation on a particular trace or intermediate run (span). Feedback can be produced from a variety of ways, such as:
 
@@ -59,12 +59,6 @@ Here is an example JSON representation of a feedback record in the above format:
 
 ***
 
-<div>
-  <Callout icon="terminal-2">
-    [Connect these docs](/use-these-docs) to your agent of choice via MCP for real-time answers.
-  </Callout>
+[Connect these docs](/use-these-docs) to your agent of choice via MCP for real-time answers.
 
-  <Callout icon="edit">
-    [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/feedback-data-format.mdx) or [file an issue](https://github.com/langchain-ai/docs/issues/new/choose).
-  </Callout>
-</div>
+[Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/feedback-data-format.mdx) or [file an issue](https://github.com/langchain-ai/docs/issues/new/choose).

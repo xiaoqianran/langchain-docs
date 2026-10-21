@@ -12,9 +12,9 @@ GKE Workload Identity Federation lets these self-hosted LangSmith services call 
 
 Each workload uses its Kubernetes service account (KSA) to impersonate a Google service account (GSA) through Application Default Credentials (ADC).
 
-<Note>
-  Keyless authentication for Chat and Insights requires Helm chart version 0.17.0 or later and LangSmith application version 0.17.29 or later.
-</Note>
+> [!NOTE]
+>
+> Keyless authentication for Chat and Insights requires Helm chart version 0.17.0 or later and LangSmith application version 0.17.29 or later.
 
 To configure keyless authentication:
 
@@ -98,12 +98,6 @@ To configure keyless authentication:
 
 ***
 
-<div>
-  <Callout icon="terminal-2">
-    [Connect these docs](/use-these-docs) to your agent of choice via MCP for real-time answers.
-  </Callout>
+[Connect these docs](/use-these-docs) to your agent of choice via MCP for real-time answers.
 
-  <Callout icon="edit">
-    [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/self-host-gke-vertex-ai-workload-identity.mdx) or [file an issue](https://github.com/langchain-ai/docs/issues/new/choose).
-  </Callout>
-</div>
+[Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/self-host-gke-vertex-ai-workload-identity.mdx) or [file an issue](https://github.com/langchain-ai/docs/issues/new/choose).

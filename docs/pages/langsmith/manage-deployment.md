@@ -30,39 +30,37 @@ To change the repository through the API, send `source_config.repo_url` in a `PA
 
 ## Delete a deployment
 
-<Tabs>
-  <Tab title="LangSmith UI">
-    To delete a deployment:
+**LangSmith UI**
 
-    1. From the [LangSmith UI](https://smith.langchain.com?utm_source=docs\&utm_medium=cta\&utm_campaign=langsmith-signup\&utm_content=langsmith-manage-deployment), select **Deployments**.
-    2. Select the menu icon for the deployment, then select **Delete**.
-    3. In the confirmation modal, select **Delete**.
-  </Tab>
+To delete a deployment:
 
-  <Tab title="LangGraph CLI">
-    To find the deployment ID, run:
+1. From the [LangSmith UI](https://smith.langchain.com?utm_source=docs\&utm_medium=cta\&utm_campaign=langsmith-signup\&utm_content=langsmith-manage-deployment), select **Deployments**.
+2. Select the menu icon for the deployment, then select **Delete**.
+3. In the confirmation modal, select **Delete**.
 
-    ```shell theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-    langgraph deploy list
-    ```
+**LangGraph CLI**
 
-    Delete the deployment by ID:
+To find the deployment ID, run:
 
-    ```shell theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-    langgraph deploy delete <DEPLOYMENT_ID>
-    ```
+```shell theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+langgraph deploy list
+```
 
-    To skip the confirmation prompt, pass `--force`:
+Delete the deployment by ID:
 
-    ```shell theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-    langgraph deploy delete --force <DEPLOYMENT_ID>
-    ```
-  </Tab>
-</Tabs>
+```shell theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+langgraph deploy delete <DEPLOYMENT_ID>
+```
 
-<Note>
-  Deletion is asynchronous. The deployment disappears from the **Deployments** view immediately, but LangSmith removes its infrastructure and metadata in stages. The deployment name might remain unavailable until deletion finishes.
-</Note>
+To skip the confirmation prompt, pass `--force`:
+
+```shell theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+langgraph deploy delete --force <DEPLOYMENT_ID>
+```
+
+> [!NOTE]
+>
+> Deletion is asynchronous. The deployment disappears from the **Deployments** view immediately, but LangSmith removes its infrastructure and metadata in stages. The deployment name might remain unavailable until deletion finishes.
 
 ## See also
 
@@ -71,12 +69,6 @@ To change the repository through the API, send `source_config.repo_url` in a `PA
 
 ***
 
-<div>
-  <Callout icon="terminal-2">
-    [Connect these docs](/use-these-docs) to your agent of choice via MCP for real-time answers.
-  </Callout>
+[Connect these docs](/use-these-docs) to your agent of choice via MCP for real-time answers.
 
-  <Callout icon="edit">
-    [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/manage-deployment.mdx) or [file an issue](https://github.com/langchain-ai/docs/issues/new/choose).
-  </Callout>
-</div>
+[Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/manage-deployment.mdx) or [file an issue](https://github.com/langchain-ai/docs/issues/new/choose).

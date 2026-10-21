@@ -37,72 +37,70 @@ At the end of this step, the shared infrastructure portion of your SmithDB Helm 
 
 Add the cache values for your version from [Cache storage](/langsmith/self-host-smithdb-infrastructure#cache-storage). On LangSmith 0.17 that is usually one line, `smithdb.cache.storageClassName`. Local SSD on either version also needs the node selectors and tolerations shown there.
 
-<Accordion title="SmithDB infrastructure Helm values">
-  ```yaml theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  smithdb:
-    serviceAccount:
-      annotations:
-        IDENTITY_ANNOTATION_KEY: IDENTITY_ANNOTATION_VALUE
-
-    config:
-      existingSecretName: smithdb-metastore
-      metastore:
-        hostSecretKey: smithdb_metastore_db_host
-        databaseSecretKey: smithdb_metastore_db_name
-        usernameSecretKey: smithdb_metastore_db_username
-        passwordSecretKey: smithdb_metastore_db_password
-        port: "5432"
-        useSsl: true
-      objectStore:
-        type: OBJECT_STORE_TYPE
-        bucket: BUCKET_NAME
-  ```
-
-  Replace the identity and object-store placeholders with the values for your provider. For Azure, also add the `azure.workload.identity/use: "true"` label to every SmithDB workload. See [Configure Blob Storage access](/langsmith/self-host-smithdb-infrastructure#configure-blob-storage-access).
-
-  <CodeGroup>
-    ```yaml AWS theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-    smithdb:
-      serviceAccount:
-        annotations:
-          eks.amazonaws.com/role-arn: arn:aws:iam::ACCOUNT_ID:role/ROLE_NAME
-
-      config:
-        objectStore:
-          type: s3
-          bucket: BUCKET_NAME
-          s3:
-            region: AWS_REGION
-    ```
-
-    ```yaml GCP theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-    smithdb:
-      serviceAccount:
-        annotations:
-          iam.gke.io/gcp-service-account: GSA_NAME@PROJECT_ID.iam.gserviceaccount.com
-
-      config:
-        objectStore:
-          type: gcs
-          bucket: BUCKET_NAME
-    ```
-
-    ```yaml Azure theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-    smithdb:
-      serviceAccount:
-        annotations:
-          azure.workload.identity/client-id: CLIENT_ID
-
-      config:
-        objectStore:
-          type: azure
-          bucket: CONTAINER_NAME
-          azure:
-            accountName: STORAGE_ACCOUNT_NAME
-            accessKeySecretKey: ""
-    ```
-  </CodeGroup>
-</Accordion>
+> **SmithDB infrastructure Helm values**
+>
+> ```yaml theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> smithdb:
+>   serviceAccount:
+>     annotations:
+>       IDENTITY_ANNOTATION_KEY: IDENTITY_ANNOTATION_VALUE
+>
+>   config:
+>     existingSecretName: smithdb-metastore
+>     metastore:
+>       hostSecretKey: smithdb_metastore_db_host
+>       databaseSecretKey: smithdb_metastore_db_name
+>       usernameSecretKey: smithdb_metastore_db_username
+>       passwordSecretKey: smithdb_metastore_db_password
+>       port: "5432"
+>       useSsl: true
+>     objectStore:
+>       type: OBJECT_STORE_TYPE
+>       bucket: BUCKET_NAME
+> ```
+>
+> Replace the identity and object-store placeholders with the values for your provider. For Azure, also add the `azure.workload.identity/use: "true"` label to every SmithDB workload. See [Configure Blob Storage access](/langsmith/self-host-smithdb-infrastructure#configure-blob-storage-access).
+>
+> ```yaml AWS theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> smithdb:
+>   serviceAccount:
+>     annotations:
+>       eks.amazonaws.com/role-arn: arn:aws:iam::ACCOUNT_ID:role/ROLE_NAME
+>
+>   config:
+>     objectStore:
+>       type: s3
+>       bucket: BUCKET_NAME
+>       s3:
+>         region: AWS_REGION
+> ```
+>
+> ```yaml GCP theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> smithdb:
+>   serviceAccount:
+>     annotations:
+>       iam.gke.io/gcp-service-account: GSA_NAME@PROJECT_ID.iam.gserviceaccount.com
+>
+>   config:
+>     objectStore:
+>       type: gcs
+>       bucket: BUCKET_NAME
+> ```
+>
+> ```yaml Azure theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> smithdb:
+>   serviceAccount:
+>     annotations:
+>       azure.workload.identity/client-id: CLIENT_ID
+>
+>   config:
+>     objectStore:
+>       type: azure
+>       bucket: CONTAINER_NAME
+>       azure:
+>         accountName: STORAGE_ACCOUNT_NAME
+>         accessKeySecretKey: ""
+> ```
 
 ### Step 2. Upgrade to the required LangSmith version
 
@@ -203,9 +201,9 @@ curl -s https://LANGSMITH_HOST/api/v1/info | jq '.instance_flags | {sdb_ingestio
 
 Then validate traces, projects, filters, and time ranges in the LangSmith UI and API, and continue monitoring ingestion and query errors.
 
-<Warning>
-  Do not disable or remove ClickHouse on LangSmith 0.16. On 0.17, retiring ClickHouse from an existing installation is a separate procedure; contact LangChain through the [Support Portal](https://support.langchain.com/) before considering it.
-</Warning>
+> [!WARNING]
+>
+> Do not disable or remove ClickHouse on LangSmith 0.16. On 0.17, retiring ClickHouse from an existing installation is a separate procedure; contact LangChain through the [Support Portal](https://support.langchain.com/) before considering it.
 
 ## Install without ClickHouse
 
@@ -233,12 +231,6 @@ If something fails during or after installation, see [Troubleshoot SmithDB](/lan
 
 ***
 
-<div>
-  <Callout icon="terminal-2">
-    [Connect these docs](/use-these-docs) to your agent of choice via MCP for real-time answers.
-  </Callout>
+[Connect these docs](/use-these-docs) to your agent of choice via MCP for real-time answers.
 
-  <Callout icon="edit">
-    [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/self-host-smithdb-install.mdx) or [file an issue](https://github.com/langchain-ai/docs/issues/new/choose).
-  </Callout>
-</div>
+[Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/self-host-smithdb-install.mdx) or [file an issue](https://github.com/langchain-ai/docs/issues/new/choose).

@@ -33,9 +33,9 @@ Semantic search lets your agent recall stored memories and documents by meaning 
    * Sets the embedding dimension to 1536 (matching the model's output).
    * Indexes all fields in your stored data (`["$"]` means index everything, or specify specific fields like `["text", "metadata.title"]`).
 
-   <Note>
-     Each deployment supports a single embedding model. LangSmith does not support configuring multiple embedding models, because it would cause ambiguity in `/store` endpoints and result in mixed-index issues.
-   </Note>
+   > [!NOTE]
+   >
+   > Each deployment supports a single embedding model. LangSmith does not support configuring multiple embedding models, because it would cause ambiguity in `/store` endpoints and result in mixed-index issues.
 
 2. To use the string embedding format, make sure your dependencies include `langchain >= 0.3.8`:
 
@@ -81,9 +81,9 @@ results[0].score     # 0.92 (similarity score, present when semantic search is c
 
 ### Changing your embedding model
 
-<Warning>
-  Changing the embedding model or dimensions requires re-embedding all existing data. There is no automated migration tooling for this. Plan accordingly if you need to switch models.
-</Warning>
+> [!WARNING]
+>
+> Changing the embedding model or dimensions requires re-embedding all existing data. There is no automated migration tooling for this. Plan accordingly if you need to switch models.
 
 ## Custom embeddings
 
@@ -154,12 +154,6 @@ results["items"][0]["score"]     # 0.92 (similarity score)
 
 ***
 
-<div>
-  <Callout icon="terminal-2">
-    [Connect these docs](/use-these-docs) to your agent of choice via MCP for real-time answers.
-  </Callout>
+[Connect these docs](/use-these-docs) to your agent of choice via MCP for real-time answers.
 
-  <Callout icon="edit">
-    [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/semantic-search.mdx) or [file an issue](https://github.com/langchain-ai/docs/issues/new/choose).
-  </Callout>
-</div>
+[Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/semantic-search.mdx) or [file an issue](https://github.com/langchain-ai/docs/issues/new/choose).

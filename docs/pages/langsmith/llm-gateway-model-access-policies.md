@@ -4,9 +4,9 @@
 
 Control which model providers and models are accessible through the LLM Gateway for your organization, workspaces, users, or API keys.
 
-<Note>
-  The LLM Gateway is in [beta](/langsmith/release-stages).
-</Note>
+> [!NOTE]
+>
+> The LLM Gateway is in [beta](/langsmith/release-stages).
 
 A model access policy defines which providers and models are permitted through the [LLM Gateway](/langsmith/llm-gateway). The gateway blocks requests for providers or models the policy does not include, returning a `403` response. If no policy applies, all providers and models are available.
 
@@ -40,9 +40,9 @@ When a request matches policies at multiple tiers, only the most specific tier a
 
 ## Create a model access policy
 
-<Warning>
-  Creating and managing policies requires `organization:manage` permission. For the full permissions breakdown, refer to [Traces, Engine, and access control](/langsmith/llm-gateway-access).
-</Warning>
+> [!WARNING]
+>
+> Creating and managing policies requires `organization:manage` permission. For the full permissions breakdown, refer to [Traces, Engine, and access control](/langsmith/llm-gateway-access).
 
 1. Go to **LLM Gateway** and select **Model Access**.
 2. Click **Create model access**.
@@ -62,12 +62,6 @@ Policies take effect immediately.
 
 ***
 
-<div>
-  <Callout icon="terminal-2">
-    [Connect these docs](/use-these-docs) to your agent of choice via MCP for real-time answers.
-  </Callout>
+[Connect these docs](/use-these-docs) to your agent of choice via MCP for real-time answers.
 
-  <Callout icon="edit">
-    [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/llm-gateway-model-access-policies.mdx) or [file an issue](https://github.com/langchain-ai/docs/issues/new/choose).
-  </Callout>
-</div>
+[Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/llm-gateway-model-access-policies.mdx) or [file an issue](https://github.com/langchain-ai/docs/issues/new/choose).

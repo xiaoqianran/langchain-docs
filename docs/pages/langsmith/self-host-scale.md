@@ -4,9 +4,9 @@
 
 Scale a self-hosted LangSmith instance for trace ingestion, evaluation workloads, and concurrent users, with example configurations for different load patterns.
 
-<Warning>
-  The scaling guidance and example configurations on this page apply to **LangSmith version v0.13.0 or higher**.
-</Warning>
+> [!WARNING]
+>
+> The scaling guidance and example configurations on this page apply to **LangSmith version v0.13.0 or higher**.
 
 A self-hosted LangSmith instance can handle a large number of traces and users. The default configuration for the self-hosted deployment can handle substantial load, and you can configure your deployment to be able to achieve higher scale. This page describes scaling considerations and provides some examples to help configure your self-hosted instance.
 
@@ -14,9 +14,9 @@ This page covers the LangSmith instance, which ingests traces and runs evaluatio
 
 For example configurations, refer to [Example LangSmith configurations for scale](#example-langsmith-configurations-for-scale).
 
-<Note>
-  For SmithDB resource sizing, see [Configure SmithDB for scale](/langsmith/self-host-smithdb-scale).
-</Note>
+> [!NOTE]
+>
+> For SmithDB resource sizing, see [Configure SmithDB for scale](/langsmith/self-host-smithdb-scale).
 
 ## Summary
 
@@ -24,26 +24,26 @@ The table below provides an overview comparing different LangSmith configuration
 
 | | **[Low / low](#low-reads-low-writes)** | **[Low / high](#low-reads-high-writes)** | **[High / low](#high-reads-low-writes)** | [Medium / medium](#medium-reads-medium-writes) | [High / high](#high-reads-high-writes) |
 | :- | :- | :- | :- | :- | :- |
-| <Tooltip>Concurrent frontend users</Tooltip> | 5 | 5 | 50 | 20 | 50 |
-| <Tooltip>Traces submitted per second</Tooltip> | 10 | 1000 | 10 | 100 | 1000 |
-| **Frontend replicas**<br />(500m CPU, 1Gi requested per replica) | 1 (default) | 4 | 2 | 2 | 4 |
-| **Platform backend replicas**<br />(1 CPU, 2Gi requested per replica) | 3 (default) | 20 | 3 (default) | 3 (default) | 20 |
-| **Ingest queue replicas**<br />(1 CPU, 2Gi requested per replica) | 3 (default) | 24 | 3 (default) | 6 | 24 |
-| **Backend replicas**<br />(1 CPU, 2Gi requested per replica) | 2 (default) | 5 | 40 | 16 | 50 |
+| Concurrent frontend users (Number of users actively viewing traces on the frontend) | 5 | 5 | 50 | 20 | 50 |
+| Traces submitted per second (Number of traces being ingested via SDKs or API endpoints) | 10 | 1000 | 10 | 100 | 1000 |
+| **Frontend replicas** (500m CPU, 1Gi requested per replica) | 1 (default) | 4 | 2 | 2 | 4 |
+| **Platform backend replicas** (1 CPU, 2Gi requested per replica) | 3 (default) | 20 | 3 (default) | 3 (default) | 20 |
+| **Ingest queue replicas** (1 CPU, 2Gi requested per replica) | 3 (default) | 24 | 3 (default) | 6 | 24 |
+| **Backend replicas** (1 CPU, 2Gi requested per replica) | 2 (default) | 5 | 40 | 16 | 50 |
 | **Redis resources** | 8 Gi (default) | 26 Gi external | 8 Gi (default) | 13Gi external | 26 Gi external |
-| **ClickHouse resources** | 4 CPU<br />16 Gi (default) | 10 CPU<br />32Gi memory | 8 CPU<br />16 Gi per replica | 16 CPU<br />24Gi memory | 14 CPU<br />24 Gi per replica |
-| **ClickHouse setup** | Single instance | Single instance | 3-node <Tooltip>replicated cluster</Tooltip> | Single instance | 3-node <Tooltip>replicated cluster</Tooltip> |
-| <Tooltip>Postgres resources</Tooltip> | 2 CPU<br />8 GB memory<br />10 GB storage (external) | 2 CPU<br />8 GB memory<br />10 GB storage (external) | 2 CPU<br />8 GB memory<br />10 GB storage (external) | 2 CPU<br />8 GB memory<br />10 GB storage (external) | 2 CPU<br />8 GB memory<br />10 GB storage (external) |
+| **ClickHouse resources** | 4 CPU 16 Gi (default) | 10 CPU 32Gi memory | 8 CPU 16 Gi per replica | 16 CPU 24Gi memory | 14 CPU 24 Gi per replica |
+| **ClickHouse setup** | Single instance | Single instance | 3-node replicated cluster (Recommended for high read loads to prevent degraded performance. Another option would be [managed clickhouse](/langsmith/self-host-external-clickhouse#langsmith-managed-clickhouse).) | Single instance | 3-node replicated cluster (Recommended for high read loads to prevent degraded performance. Another option would be [managed clickhouse](/langsmith/self-host-external-clickhouse#langsmith-managed-clickhouse).) |
+| Postgres resources (We recommend using an external instance and enabling autoexpansion for the disk to handle growing data requirements.) | 2 CPU 8 GB memory 10 GB storage (external) | 2 CPU 8 GB memory 10 GB storage (external) | 2 CPU 8 GB memory 10 GB storage (external) | 2 CPU 8 GB memory 10 GB storage (external) | 2 CPU 8 GB memory 10 GB storage (external) |
 | **Blob storage** | Disabled | Enabled | Enabled | Enabled | Enabled |
 
-<Note>
-  The per-replica figures above are resource requests, what the Kubernetes scheduler reserves.
-  The limits are higher in every case. For the defaults the chart ships, see
-  [Default resource requests and limits](#default-resource-requests-and-limits).
-
-  A container that exceeds its memory limit is OOM-killed, and one that exceeds its CPU limit is
-  throttled. Do not lower either below the shipped default without load-testing the result.
-</Note>
+> [!NOTE]
+>
+> The per-replica figures above are resource requests, what the Kubernetes scheduler reserves.
+> The limits are higher in every case. For the defaults the chart ships, see
+> [Default resource requests and limits](#default-resource-requests-and-limits).
+>
+> A container that exceeds its memory limit is OOM-killed, and one that exceeds its CPU limit is
+> throttled. Do not lower either below the shipped default without load-testing the result.
 
 Below we go into more details about the read and write paths as well as provide a `values.yaml` snippet for you to start with for your self-hosted LangSmith instance.
 
@@ -98,17 +98,17 @@ replica count. For the queue services, prefer KEDA, which scales on queue backlo
 on CPU and memory alone. For more information, see
 [KEDA autoscaling for LangSmith queues](#keda-autoscaling-for-langsmith-queues).
 
-<Warning>
-  Enabling autoscaling overrides your replica count. When either block is enabled for a
-  service, the chart stops setting `replicas` on that deployment and the autoscaler owns it, so
-  the `deployment.replicas` value you configured is no longer applied.
-
-  The shipped maximums are generic starting points, not values matched to the load patterns in
-  the [summary table](#summary). [High reads, high writes](#high-reads-high-writes) calls for
-  50 `backend` replicas, 24 `ingestQueue`, and 20 `platformBackend`, against shipped maximums
-  of 6, 10, and 10. A deployment sized for that load and then switched to autoscaling runs at a
-  fraction of the capacity you configured.
-</Warning>
+> [!WARNING]
+>
+> Enabling autoscaling overrides your replica count. When either block is enabled for a
+> service, the chart stops setting `replicas` on that deployment and the autoscaler owns it, so
+> the `deployment.replicas` value you configured is no longer applied.
+>
+> The shipped maximums are generic starting points, not values matched to the load patterns in
+> the [summary table](#summary). [High reads, high writes](#high-reads-high-writes) calls for
+> 50 `backend` replicas, 24 `ingestQueue`, and 20 `platformBackend`, against shipped maximums
+> of 6, 10, and 10. A deployment sized for that load and then switched to autoscaling runs at a
+> fraction of the capacity you configured.
 
 Set `maxReplicas` at or above the replica count for your load pattern, and `minReplicas` to
 the steady-state count you want to hold. The
@@ -160,9 +160,9 @@ For more precise guidance on how this translates to helm chart values, refer to 
 
 ## KEDA autoscaling for LangSmith queues
 
-<Note>
-  Available in LangSmith v0.13.0 and later.
-</Note>
+> [!NOTE]
+>
+> Available in LangSmith v0.13.0 and later.
 
 We highly recommend installing KEDA on your cluster. KEDA enables the `queue` and `ingest-queue` services to scale automatically based on their queue backlog size, as well as CPU and memory. This results in more efficient resource utilization and better handling of traffic spikes.
 
@@ -191,9 +191,9 @@ ingestQueue:
 
 With KEDA enabled, the queue services will automatically scale up when their backlog grows and scale down when their backlog is processed. This is especially useful for handling variable trace ingestion loads without over-provisioning resources.
 
-<Note>
-  You can also enable KEDA for other services (`backend`, `platformBackend`, etc) but they will still only scale with CPU and memory.
-</Note>
+> [!NOTE]
+>
+> You can also enable KEDA for other services (`backend`, `platformBackend`, etc) but they will still only scale with CPU and memory.
 
 ## Example LangSmith configurations for scale
 
@@ -211,15 +211,15 @@ For write load (trace ingestion):
 * Medium means up to 100 traces submitted per second
 * High means up to 1000 traces submitted per second
 
-<Note>
-  The exact optimal configuration depends on your usage and trace payloads. Use the examples below in combination with the information above and your specific usage to update your LangSmith configuration as you see fit. If you have any questions, please reach out to the LangChain team.
-</Note>
+> [!NOTE]
+>
+> The exact optimal configuration depends on your usage and trace payloads. Use the examples below in combination with the information above and your specific usage to update your LangSmith configuration as you see fit. If you have any questions, please reach out to the LangChain team.
 
-### Low reads, low writes <a name="low-reads-low-writes" />
+### Low reads, low writes&#x20;
 
 The default LangSmith configuration will handle this load. No custom resource configuration is needed here.
 
-### Low reads, high writes <a name="low-reads-high-writes" />
+### Low reads, high writes&#x20;
 
 You have a very high scale of trace ingestions, but single digit number of users on the frontend querying traces at any one time.
 
@@ -299,7 +299,7 @@ commonEnv:
     value: "0"
 ```
 
-### High reads, low writes <a name="high-reads-low-writes" />
+### High reads, low writes&#x20;
 
 You have a relatively low scale of trace ingestions, but many frontend users querying traces and/or have scripts that hit the `/runs/query` or `/runs/<run-id>` endpoints frequently.
 
@@ -350,7 +350,7 @@ clickhouse:
     cluster: "replicated"
 ```
 
-### Medium reads, medium writes <a name="medium-reads-medium-writes" />
+### Medium reads, medium writes&#x20;
 
 This is a good all around configuration that should be able to handle most usage patterns of LangSmith. In internal testing, this configuration allowed us to scale to 100 traces ingested per second and 40 read requests per second.
 
@@ -418,11 +418,11 @@ commonEnv:
     value: "0"
 ```
 
-<Warning>
-  If you still notice slow reads with the above configuration, we recommend moving to a [replicated Clickhouse cluster setup](/langsmith/self-host-external-clickhouse#ha-replicated-clickhouse-cluster)
-</Warning>
+> [!WARNING]
+>
+> If you still notice slow reads with the above configuration, we recommend moving to a [replicated Clickhouse cluster setup](/langsmith/self-host-external-clickhouse#ha-replicated-clickhouse-cluster)
 
-### High reads, high writes <a name="high-reads-high-writes" />
+### High reads, high writes&#x20;
 
 You have a very high rate of trace ingestion (approaching 1000 traces submitted per second) and also have many users querying traces on the frontend (over 50 users) and/or scripts that are consistently making requests to `/runs/query` or `/runs/<run-id>` endpoints.
 
@@ -504,20 +504,14 @@ commonEnv:
     value: "0"
 ```
 
-<Note>
-  Ensure that the Kubernetes cluster is configured with sufficient resources to scale to the recommended size. After deployment, all of the pods in the Kubernetes cluster should be in a `Running` state. Pods stuck in `Pending` may indicate that you are reaching node pool limits or need larger nodes.
-
-  Also, ensure that any ingress controller deployed on the cluster is able to handle the desired load to prevent bottlenecks.
-</Note>
+> [!NOTE]
+>
+> Ensure that the Kubernetes cluster is configured with sufficient resources to scale to the recommended size. After deployment, all of the pods in the Kubernetes cluster should be in a `Running` state. Pods stuck in `Pending` may indicate that you are reaching node pool limits or need larger nodes.
+>
+> Also, ensure that any ingress controller deployed on the cluster is able to handle the desired load to prevent bottlenecks.
 
 ***
 
-<div>
-  <Callout icon="terminal-2">
-    [Connect these docs](/use-these-docs) to your agent of choice via MCP for real-time answers.
-  </Callout>
+[Connect these docs](/use-these-docs) to your agent of choice via MCP for real-time answers.
 
-  <Callout icon="edit">
-    [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/self-host-scale.mdx) or [file an issue](https://github.com/langchain-ai/docs/issues/new/choose).
-  </Callout>
-</div>
+[Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/self-host-scale.mdx) or [file an issue](https://github.com/langchain-ai/docs/issues/new/choose).

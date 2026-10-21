@@ -6,23 +6,23 @@
 
 配置代理服务器以使用云工作负载身份进行 PostgreSQL 和 Redis 身份验证。
 
-代理服务器可以使用云工作负载身份在运行时生成短期 PostgreSQL 和 Redis 凭据。这将从您的部署配置中删除静态数据库和缓存密码。连接和池行为保持不变。
+代理服务器可以使用云工作负载身份在运行时生成短期 PostgreSQL 和 Redis 凭据。这将从部署配置中删除静态数据库和缓存密码。连接和池行为保持不变。
 
-<Note>
-  数据存储 IAM 身份验证需要 `langgraph-api>=0.12.0`。
-</Note>
+> [!注意]
+>
+> 数据存储 IAM 身份验证需要 `langgraph-api>=0.12.0`。
 
 ## 支持的服务
 
-|供应商价值 | PostgreSQL | Redis |凭证来源 |
+|供应商价值 | PostgreSQL | Redis |凭证来源|
 | - | - | - | - |
 | `aws` | Amazon RDS 或 Aurora PostgreSQL | Amazon ElastiCache 预配置缓存集群或复制组 | AWS SDK默认凭证链|
 | `azure` | Azure Database for PostgreSQL 灵活服务器 | Azure 托管 Redis 或 Azure Redis 缓存 |微软 Entra `DefaultAzureCredential` |
 | `gcp` | PostgreSQL 的云 SQL | Redis 集群的内存存储 | Google 应用程序默认凭据 (ADC) |
 
-<Warning>
-  GCP PostgreSQL 提供商支持 Cloud SQL。它不支持 AlloyDB，这需要不同的令牌范围。
-</Warning>提供者设置仅控制身份验证。在启动代理服务器之前配置网络访问、TLS、数据库用户、缓存用户和提供程序权限。
+> [!警告]
+>
+> GCP PostgreSQL 提供商支持 Cloud SQL。它不支持 AlloyDB，这需要不同的令牌范围。提供者设置仅控制身份验证。在启动代理服务器之前配置网络访问、TLS、数据库用户、缓存用户和提供程序权限。
 
 ## 启用 IAM 身份验证
 
@@ -157,12 +157,6 @@ queue:
 
 ***
 
-<div>
-  <Callout icon="terminal-2">
-    [Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
-  </Callout>
+[Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
 
-  <Callout icon="edit">
-    [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/configure-iam-auth.mdx) 或 [file an issue](https://github.com/langchain-ai/docs/issues/new/choose)。
-  </Callout>
-</div>
+[Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/configure-iam-auth.mdx) 或 [file an issue](https://github.com/langchain-ai/docs/issues/new/choose)。

@@ -6,11 +6,13 @@
 
 This guide describes setting up an evaluation that uses multiple evaluators and combines their scores with a custom aggregation function using the [LangSmith SDK](https://reference.langchain.com/python/langsmith/observability/sdk).
 
-<Note> Requires langsmith>=0.4.29 </Note>
+> [!NOTE]
+>
+> Requires langsmith>=0.4.29
 
-<Tip>
-  To create composite evaluators in the LangSmith UI, refer to [How to create a composite evaluator (UI)](/langsmith/composite-evaluators-ui).
-</Tip>
+> [!TIP]
+>
+> To create composite evaluators in the LangSmith UI, refer to [How to create a composite evaluator (UI)](/langsmith/composite-evaluators-ui).
 
 ## 1. Configure evaluators on a dataset
 
@@ -201,12 +203,6 @@ for example_with_runs in results["examples_with_runs"]:
 
 ***
 
-<div>
-  <Callout icon="terminal-2">
-    [Connect these docs](/use-these-docs) to your agent of choice via MCP for real-time answers.
-  </Callout>
+[Connect these docs](/use-these-docs) to your agent of choice via MCP for real-time answers.
 
-  <Callout icon="edit">
-    [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/composite-evaluators-sdk.mdx) or [file an issue](https://github.com/langchain-ai/docs/issues/new/choose).
-  </Callout>
-</div>
+[Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/composite-evaluators-sdk.mdx) or [file an issue](https://github.com/langchain-ai/docs/issues/new/choose).

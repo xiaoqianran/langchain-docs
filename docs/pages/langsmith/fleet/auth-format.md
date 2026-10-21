@@ -26,18 +26,12 @@ When Fleet detects this response, it interrupts the run, displays the authentica
 
 If you want your custom tools to reuse the same authentication required interrupt + UI, ensure your tools return the same shape of JSON.
 
-<Note>
-  Return only this JSON as the tool's output. Avoid including additional text or content. Fleet parses the response to trigger the authentication flow.
-</Note>
+> [!NOTE]
+>
+> Return only this JSON as the tool's output. Avoid including additional text or content. Fleet parses the response to trigger the authentication flow.
 
 ***
 
-<div>
-  <Callout icon="terminal-2">
-    [Connect these docs](/use-these-docs) to your agent of choice via MCP for real-time answers.
-  </Callout>
+[Connect these docs](/use-these-docs) to your agent of choice via MCP for real-time answers.
 
-  <Callout icon="edit">
-    [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/fleet/auth-format.mdx) or [file an issue](https://github.com/langchain-ai/docs/issues/new/choose).
-  </Callout>
-</div>
+[Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/fleet/auth-format.mdx) or [file an issue](https://github.com/langchain-ai/docs/issues/new/choose).

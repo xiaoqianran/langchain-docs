@@ -6,9 +6,7 @@ Create a LangSmith Cloud deployment from the LangSmith UI or LangGraph CLI.
 
 Create a Cloud deployment from a connected GitHub repository or directly from your local project. The LangSmith UI deploys from GitHub, while the `langgraph deploy` CLI builds and pushes from your local machine.
 
-<Callout icon="bolt">
-  For a shorter walkthrough, see the [deployment quickstart](/langsmith/deployment-quickstart).
-</Callout>
+For a shorter walkthrough, see the [deployment quickstart](/langsmith/deployment-quickstart).
 
 ## Prerequisites
 
@@ -17,64 +15,62 @@ Create a Cloud deployment from a connected GitHub repository or directly from yo
 
 ## Create a deployment
 
-<Tabs>
-  <Tab title="LangSmith UI">
-    A GitHub organization owner or admin must authorize LangChain's `hosted-langserve` GitHub app once for the workspace. After authorization, any user with deployment permissions can create deployments from repositories that the app can access.
+**LangSmith UI**
 
-    To create a deployment:
+A GitHub organization owner or admin must authorize LangChain's `hosted-langserve` GitHub app once for the workspace. After authorization, any user with deployment permissions can create deployments from repositories that the app can access.
 
-    1. From the [LangSmith UI](https://smith.langchain.com?utm_source=docs\&utm_medium=cta\&utm_campaign=langsmith-signup\&utm_content=langsmith-deploy-to-cloud), select **Deployments**.
-    2. In the top-right corner, select **+ New Deployment**.
-    3. Select **Import from GitHub**, then complete the GitHub authorization flow if prompted.
-    4. Select a repository.
-    5. Enter a deployment name.
-    6. Select the **Git Branch** to deploy.
-    7. Enter the full path to the [LangGraph API configuration file](/langsmith/cli#configuration-file), including the file name. For example, enter `langgraph.json` if the file is in the repository root.
-    8. Choose whether to enable **Automatically update deployment on push to branch**. You can change this option later in [Deployment Settings](/langsmith/manage-deployment#configure-deployment-settings).
-    9. For [deployment type](/langsmith/cloud-platform-features#deployment-types), select **Serverless** or **Dedicated**, depending on whether the workload can tolerate cold starts or needs always-on capacity.
-    10. Choose whether to make the deployment shareable through [Studio](/langsmith/studio).
-    11. Add environment variables and secrets. For more information, see [Environment variables](/langsmith/env-var-cloud).
-    12. Select **Submit**. LangSmith queues the deployment for provisioning. In a project-based workspace, LangSmith also creates a tracing project with the same name as the deployment. In an agent-based workspace, LangSmith instead binds the deployment to an [agent](/langsmith/agents), and the deployment reports into one of the agent's [environments](/langsmith/agent-environments).
+To create a deployment:
 
-    <Note>
-      The GitHub user who authorizes the `hosted-langserve` app must own the GitHub organization or account. Other users with deployment permissions do not need GitHub administrator access after the initial authorization.
-    </Note>
-  </Tab>
+1. From the [LangSmith UI](https://smith.langchain.com?utm_source=docs\&utm_medium=cta\&utm_campaign=langsmith-signup\&utm_content=langsmith-deploy-to-cloud), select **Deployments**.
+2. In the top-right corner, select **+ New Deployment**.
+3. Select **Import from GitHub**, then complete the GitHub authorization flow if prompted.
+4. Select a repository.
+5. Enter a deployment name.
+6. Select the **Git Branch** to deploy.
+7. Enter the full path to the [LangGraph API configuration file](/langsmith/cli#configuration-file), including the file name. For example, enter `langgraph.json` if the file is in the repository root.
+8. Choose whether to enable **Automatically update deployment on push to branch**. You can change this option later in [Deployment Settings](/langsmith/manage-deployment#configure-deployment-settings).
+9. For [deployment type](/langsmith/cloud-platform-features#deployment-types), select **Serverless** or **Dedicated**, depending on whether the workload can tolerate cold starts or needs always-on capacity.
+10. Choose whether to make the deployment shareable through [Studio](/langsmith/studio).
+11. Add environment variables and secrets. For more information, see [Environment variables](/langsmith/env-var-cloud).
+12. Select **Submit**. LangSmith queues the deployment for provisioning. In a project-based workspace, LangSmith also creates a tracing project with the same name as the deployment. In an agent-based workspace, LangSmith instead binds the deployment to an [agent](/langsmith/agents), and the deployment reports into one of the agent's [environments](/langsmith/agent-environments).
 
-  <Tab title="LangGraph CLI">
-    <Note>
-      The `langgraph deploy` command is in [beta](/langsmith/release-stages). It requires Docker. On Apple silicon, it also requires Docker Buildx to cross-compile for `linux/amd64`.
-    </Note>
+> [!NOTE]
+>
+> The GitHub user who authorizes the `hosted-langserve` app must own the GitHub organization or account. Other users with deployment permissions do not need GitHub administrator access after the initial authorization.
 
-    To create a deployment:
+**LangGraph CLI**
 
-    1. Install the [LangGraph CLI](/langsmith/cli):
+> [!NOTE]
+>
+> The `langgraph deploy` command is in [beta](/langsmith/release-stages). It requires Docker. On Apple silicon, it also requires Docker Buildx to cross-compile for `linux/amd64`.
 
-       ```shell theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-       uv tool install langgraph-cli
-       ```
+To create a deployment:
 
-    2. Add your LangSmith API key to a `.env` file in the project root:
+1. Install the [LangGraph CLI](/langsmith/cli):
 
-       ```shell theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-       LANGSMITH_API_KEY=lsv2_...
-       ```
+   ```shell theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+   uv tool install langgraph-cli
+   ```
 
-    3. Run:
+2. Add your LangSmith API key to a `.env` file in the project root:
 
-       ```shell theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-       langgraph deploy
-       ```
+   ```shell theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+   LANGSMITH_API_KEY=lsv2_...
+   ```
 
-       The command creates a Serverless deployment named after the project directory. To set another name, or to create a Dedicated [deployment](/langsmith/cloud-platform-features#deployment-types) instead:
+3. Run:
 
-       ```shell theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-       langgraph deploy --name my-agent --deployment-type dedicated
-       ```
+   ```shell theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+   langgraph deploy
+   ```
 
-    LangSmith queues the deployment for provisioning. Manage environment variables through the LangSmith UI or the [`env` field in `langgraph.json`](/langsmith/cli#configuration-file).
-  </Tab>
-</Tabs>
+   The command creates a Serverless deployment named after the project directory. To set another name, or to create a Dedicated [deployment](/langsmith/cloud-platform-features#deployment-types) instead:
+
+   ```shell theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+   langgraph deploy --name my-agent --deployment-type dedicated
+   ```
+
+LangSmith queues the deployment for provisioning. Manage environment variables through the LangSmith UI or the [`env` field in `langgraph.json`](/langsmith/cli#configuration-file).
 
 ## Manage GitHub repository access
 
@@ -98,12 +94,6 @@ If you rename or transfer a repository that a deployment uses, [change the deplo
 
 ***
 
-<div>
-  <Callout icon="terminal-2">
-    [Connect these docs](/use-these-docs) to your agent of choice via MCP for real-time answers.
-  </Callout>
+[Connect these docs](/use-these-docs) to your agent of choice via MCP for real-time answers.
 
-  <Callout icon="edit">
-    [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/deploy-to-cloud.mdx) or [file an issue](https://github.com/langchain-ai/docs/issues/new/choose).
-  </Callout>
-</div>
+[Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/deploy-to-cloud.mdx) or [file an issue](https://github.com/langchain-ai/docs/issues/new/choose).

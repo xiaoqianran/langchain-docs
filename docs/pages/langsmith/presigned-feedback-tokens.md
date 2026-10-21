@@ -12,117 +12,111 @@ This is useful when:
 * You want to embed feedback links in emails, Slack messages, or other external channels.
 * You need to decouple feedback collection from your backend.
 
-<Note>
-  If you are using [Agent Server](/langsmith/agent-server), presigned feedback URLs are generated automatically when you include `feedback_keys` in the run request. For that workflow, refer to [Collect user feedback for Agent Server runs](/langsmith/agent-server-feedback).
-</Note>
+> [!NOTE]
+>
+> If you are using [Agent Server](/langsmith/agent-server), presigned feedback URLs are generated automatically when you include `feedback_keys` in the run request. For that workflow, refer to [Collect user feedback for Agent Server runs](/langsmith/agent-server-feedback).
 
 ## Create a presigned feedback token
 
 Use [`create_presigned_feedback_token()`](https://reference.langchain.com/python/langsmith/client/Client/create_presigned_feedback_token) / [`createPresignedFeedbackToken`](https://reference.langchain.com/javascript/classes/langsmith.client.Client.html#createpresignedfeedbacktoken) to generate a token for a specific run and feedback key. The returned object includes a `url` that clients can call to submit feedback:
 
-<CodeGroup>
-  ```python Python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  from langsmith import Client
+```python Python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+from langsmith import Client
 
-  client = Client()
+client = Client()
 
-  run_id = "<run_id>"
+run_id = "<run_id>"
 
-  token = client.create_presigned_feedback_token(
-      run_id,
-      feedback_key="user_score",
-  )
+token = client.create_presigned_feedback_token(
+    run_id,
+    feedback_key="user_score",
+)
 
-  print(token.url)
-  # https://api.smith.langchain.com/api/v1/feedback/tokens/<token_id>
-  ```
+print(token.url)
+# https://api.smith.langchain.com/api/v1/feedback/tokens/<token_id>
+```
 
-  ```typescript TypeScript theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  import { Client } from "langsmith";
+```typescript TypeScript theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+import { Client } from "langsmith";
 
-  const client = new Client();
+const client = new Client();
 
-  const runId = "<run_id>";
+const runId = "<run_id>";
 
-  const token = await client.createPresignedFeedbackToken(runId, "user_score");
+const token = await client.createPresignedFeedbackToken(runId, "user_score");
 
-  console.log(token.url);
-  // https://api.smith.langchain.com/api/v1/feedback/tokens/<token_id>
-  ```
-</CodeGroup>
+console.log(token.url);
+// https://api.smith.langchain.com/api/v1/feedback/tokens/<token_id>
+```
 
 ### Set token expiration
 
 Tokens expire after 3 hours by default. Pass `expiration` to customize this with either a `timedelta` (relative) or a `datetime` (absolute):
 
-<CodeGroup>
-  ```python Python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  import datetime
-  from langsmith import Client
+```python Python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+import datetime
+from langsmith import Client
 
-  client = Client()
+client = Client()
 
-  run_id = "<run_id>"
+run_id = "<run_id>"
 
-  token = client.create_presigned_feedback_token(
-      run_id,
-      feedback_key="user_score",
-      expiration=datetime.timedelta(hours=24),
-  )
-  ```
+token = client.create_presigned_feedback_token(
+    run_id,
+    feedback_key="user_score",
+    expiration=datetime.timedelta(hours=24),
+)
+```
 
-  ```typescript TypeScript theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  import { Client } from "langsmith";
+```typescript TypeScript theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+import { Client } from "langsmith";
 
-  const client = new Client();
+const client = new Client();
 
-  const runId = "<run_id>";
+const runId = "<run_id>";
 
-  const token = await client.createPresignedFeedbackToken(runId, "user_score", {
-    expiration: { hours: 24 },
-  });
-  ```
-</CodeGroup>
+const token = await client.createPresignedFeedbackToken(runId, "user_score", {
+  expiration: { hours: 24 },
+});
+```
 
 ### Constrain feedback values
 
 Pass `feedback_config` to restrict what values clients can submit. This is useful for enforcing a specific feedback schema (e.g., thumbs up/down, 1–5 stars, or categorical labels):
 
-<CodeGroup>
-  ```python Python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  from langsmith import Client
+```python Python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+from langsmith import Client
 
-  client = Client()
+client = Client()
 
-  run_id = "<run_id>"
+run_id = "<run_id>"
 
-  token = client.create_presigned_feedback_token(
-      run_id,
-      feedback_key="user_score",
-      feedback_config={
-          "type": "continuous",
-          "min": 0,
-          "max": 1,
-      },
-  )
-  ```
-
-  ```typescript TypeScript theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  import { Client } from "langsmith";
-
-  const client = new Client();
-
-  const runId = "<run_id>";
-
-  const token = await client.createPresignedFeedbackToken(runId, "user_score", {
-    feedbackConfig: {
-      type: "continuous",
-      min: 0,
-      max: 1,
+token = client.create_presigned_feedback_token(
+    run_id,
+    feedback_key="user_score",
+    feedback_config={
+        "type": "continuous",
+        "min": 0,
+        "max": 1,
     },
-  });
-  ```
-</CodeGroup>
+)
+```
+
+```typescript TypeScript theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+import { Client } from "langsmith";
+
+const client = new Client();
+
+const runId = "<run_id>";
+
+const token = await client.createPresignedFeedbackToken(runId, "user_score", {
+  feedbackConfig: {
+    type: "continuous",
+    min: 0,
+    max: 1,
+  },
+});
+```
 
 ### Create tokens in batch (Python only)
 
@@ -177,60 +171,56 @@ curl --request GET \
 
 You can also submit feedback from a presigned token using the SDK, which is useful for server-side workflows where you received a token URL from another service.
 
-<CodeGroup>
-  ```python Python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  from langsmith import Client
+```python Python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+from langsmith import Client
 
-  client = Client()
+client = Client()
 
-  client.create_feedback_from_token(
-      "<token_or_url>",
-      score=1,
-      comment="This response was helpful!",
-  )
-  ```
+client.create_feedback_from_token(
+    "<token_or_url>",
+    score=1,
+    comment="This response was helpful!",
+)
+```
 
-  ```typescript TypeScript theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  // Use a direct HTTP request to the presigned URL
-  await fetch(tokenUrl, {
-    method: "POST",
-    headers: { "Content-Type": "application/json" },
-    body: JSON.stringify({
-      score: 1,
-      comment: "This response was helpful!",
-    }),
-  });
-  ```
-</CodeGroup>
+```typescript TypeScript theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+// Use a direct HTTP request to the presigned URL
+await fetch(tokenUrl, {
+  method: "POST",
+  headers: { "Content-Type": "application/json" },
+  body: JSON.stringify({
+    score: 1,
+    comment: "This response was helpful!",
+  }),
+});
+```
 
 ## List existing tokens
 
 Retrieve all presigned feedback tokens for a run using `list_presigned_feedback_tokens` / `listPresignedFeedbackTokens`.
 
-<CodeGroup>
-  ```python Python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  from langsmith import Client
+```python Python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+from langsmith import Client
 
-  client = Client()
+client = Client()
 
-  run_id = "<run_id>"
+run_id = "<run_id>"
 
-  for token in client.list_presigned_feedback_tokens(run_id):
-      print(f"ID: {token.id}, URL: {token.url}, Expires: {token.expires_at}")
-  ```
+for token in client.list_presigned_feedback_tokens(run_id):
+    print(f"ID: {token.id}, URL: {token.url}, Expires: {token.expires_at}")
+```
 
-  ```typescript TypeScript theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  import { Client } from "langsmith";
+```typescript TypeScript theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+import { Client } from "langsmith";
 
-  const client = new Client();
+const client = new Client();
 
-  const runId = "<run_id>";
+const runId = "<run_id>";
 
-  for await (const token of client.listPresignedFeedbackTokens(runId)) {
-    console.log(`URL: ${token.url}, Expires: ${token.expires_at}`);
-  }
-  ```
-</CodeGroup>
+for await (const token of client.listPresignedFeedbackTokens(runId)) {
+  console.log(`URL: ${token.url}, Expires: ${token.expires_at}`);
+}
+```
 
 ## Related
 
@@ -239,12 +229,6 @@ Retrieve all presigned feedback tokens for a run using `list_presigned_feedback_
 
 ***
 
-<div>
-  <Callout icon="terminal-2">
-    [Connect these docs](/use-these-docs) to your agent of choice via MCP for real-time answers.
-  </Callout>
+[Connect these docs](/use-these-docs) to your agent of choice via MCP for real-time answers.
 
-  <Callout icon="edit">
-    [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/presigned-feedback-tokens.mdx) or [file an issue](https://github.com/langchain-ai/docs/issues/new/choose).
-  </Callout>
-</div>
+[Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/presigned-feedback-tokens.mdx) or [file an issue](https://github.com/langchain-ai/docs/issues/new/choose).

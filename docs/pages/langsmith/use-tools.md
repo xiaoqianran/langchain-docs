@@ -33,16 +33,14 @@ The Playground lets you quickly [add tools](#add-a-tool) to any prompt with a si
 
 To add a tool to your prompt, click the **+ Tool** button at the bottom of the prompt editor.
 
-<img alt="The prompt interface with the + Tool button following the editing boxes." />
-
-<img alt="The prompt interface with the + Tool button following the editing boxes." />
+![The prompt interface with the + Tool button following the editing boxes.](https://mintcdn.com/langchain-5e9cc07a/8MkMsKDgPnLdByVh/langsmith/images/add-tool-light.png?fit=max\&auto=format\&n=8MkMsKDgPnLdByVh\&q=85\&s=e2e0487ec8c22be3d806202a88cee623)
 
 ### Use a built-in tool
 
 1. In the tool section, select the built-in tool you want to use. You'll only see the tools that are compatible with the provider and model you've chosen.
 2. When the model calls the tool, the Playground will display the response.
 
-   <img alt="Web search tool" />
+   ![Web search tool](https://mintcdn.com/langchain-5e9cc07a/1RIJxfRpkszanJLL/langsmith/images/web-search-tool.gif?s=2fb882f785abc26d0e5412557cc982ca)
 
 ### Create a custom tool
 
@@ -52,11 +50,11 @@ To create a custom tool, you'll need to provide:
 * **Description**: Clear explanation of what the tool does.
 * **Arguments**: The inputs your tool requires.
 
-<img alt="Custom tool" />
+![Custom tool](https://mintcdn.com/langchain-5e9cc07a/aKRoUGXX6ygp4DlC/langsmith/images/custom-tool.gif?s=69638e515cd7c5be413cf13348e10974)
 
 When running a custom tool in the Playground, the model will respond with a JSON object containing the tool name and the tool call.
 
-<img alt="Tool call" />
+![Tool call](https://mintcdn.com/langchain-5e9cc07a/ImHGLQW1HnQYwnJV/langsmith/images/tool-call.png?fit=max\&auto=format\&n=ImHGLQW1HnQYwnJV\&q=85\&s=44458ff5a2790122ffd7e8b62bf14032)
 
 ### Manage tools with the registry
 
@@ -69,9 +67,7 @@ Click the **+ Tool** button in the Playground to open **Manage tools**. You can 
 * Edit existing tools by clicking on them in the list.
 * Delete tools using the **Delete** at the bottom of **Manage tools**.
 
-<img alt="Manage tools with a list of available tools, Enabled switch, and edit functionality." />
-
-<img alt="Manage tools with a list of available tools, Enabled switch, and edit functionality." />
+![Manage tools with a list of available tools, Enabled switch, and edit functionality.](https://mintcdn.com/langchain-5e9cc07a/DLQJsqCmBpQwR_BQ/langsmith/images/tool-registry-manage-light.png?fit=max\&auto=format\&n=DLQJsqCmBpQwR_BQ\&q=85\&s=8dcd79666a6d90b31cdd26ebee9a8504)
 
 Tools are stored with their complete configuration including name, description, parameters, and metadata. The registry supports both custom function tools and built-in tool configurations.
 
@@ -85,18 +81,10 @@ Some models provide control over which tools are called. To configure this:
 
 To understand the available tool choice options, check the documentation for your specific provider. For example, [OpenAI's documentation on tool choice](https://platform.openai.com/docs/guides/function-calling).
 
-<img alt="Select tools from the Tool Choice Settings tab." />
-
-<img alt="Select tools from the Tool Choice Settings tab." />
+![Select tools from the Tool Choice Settings tab.](https://mintcdn.com/langchain-5e9cc07a/DLQJsqCmBpQwR_BQ/langsmith/images/tool-choice-light.png?fit=max\&auto=format\&n=DLQJsqCmBpQwR_BQ\&q=85\&s=d617d46d139efe842b8fc630db4d5318)
 
 ***
 
-<div>
-  <Callout icon="terminal-2">
-    [Connect these docs](/use-these-docs) to your agent of choice via MCP for real-time answers.
-  </Callout>
+[Connect these docs](/use-these-docs) to your agent of choice via MCP for real-time answers.
 
-  <Callout icon="edit">
-    [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/use-tools.mdx) or [file an issue](https://github.com/langchain-ai/docs/issues/new/choose).
-  </Callout>
-</div>
+[Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/use-tools.mdx) or [file an issue](https://github.com/langchain-ai/docs/issues/new/choose).

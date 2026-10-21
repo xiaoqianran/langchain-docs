@@ -2,9 +2,9 @@
 
 # Use environment variables for model providers
 
-<Note>
-  This feature is only available on Helm chart versions 0.10.27 (application version 0.10.74) and later.
-</Note>
+> [!NOTE]
+>
+> This feature is only available on Helm chart versions 0.10.27 (application version 0.10.74) and later.
 
 Many model providers support setting credentials and other configuration options through environment variables. This is useful for self-hosted deployments where you want to avoid hardcoding sensitive information in your code or configuration files. In LangSmith, most model interactions are done through the `playground` service, which allows you to configure many of those environment variables directly on the pod itself. This can be useful to avoid having to set credentials in the UI.
 
@@ -82,28 +82,20 @@ On self-hosted LangSmith running on GKE, Playground can use Workload Identity Fe
 
 For EKS clusters, you can use AWS IRSA (IAM Roles for Service Accounts) to grant the `playground` service account access to AWS resources without storing credentials. Annotate the service account with your IAM role ARN:
 
-<CodeGroup>
-  ```yaml Helm theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  playground:
-    serviceAccount:
-      create: true  # Enable if not exists
-      annotations:
-        eks.amazonaws.com/role-arn: arn:aws:iam::<account>:role/LangSmith-Playground-Role
-  ```
-</CodeGroup>
+```yaml Helm theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+playground:
+  serviceAccount:
+    create: true  # Enable if not exists
+    annotations:
+      eks.amazonaws.com/role-arn: arn:aws:iam::<account>:role/LangSmith-Playground-Role
+```
 
-<Note>
-  Ensure your AWS IAM role has the necessary permissions for the AWS resources the playground service needs to access.
-</Note>
+> [!NOTE]
+>
+> Ensure your AWS IAM role has the necessary permissions for the AWS resources the playground service needs to access.
 
 ***
 
-<div>
-  <Callout icon="terminal-2">
-    [Connect these docs](/use-these-docs) to your agent of choice via MCP for real-time answers.
-  </Callout>
+[Connect these docs](/use-these-docs) to your agent of choice via MCP for real-time answers.
 
-  <Callout icon="edit">
-    [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/self-host-playground-environment-settings.mdx) or [file an issue](https://github.com/langchain-ai/docs/issues/new/choose).
-  </Callout>
-</div>
+[Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/self-host-playground-environment-settings.mdx) or [file an issue](https://github.com/langchain-ai/docs/issues/new/choose).

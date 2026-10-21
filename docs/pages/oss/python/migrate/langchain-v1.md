@@ -2,21 +2,19 @@
 
 # LangChain v1 migration guide
 
-<Prompt description="Migrate a codebase to LangChain v1." icon="arrow-right">
-  Migrate this codebase to LangChain v1 (requires `langchain>=1.0.0`, `langchain-core>=1.0.0`, and Python 3.10+).
+Migrate this codebase to LangChain v1 (requires `langchain>=1.0.0`, `langchain-core>=1.0.0`, and Python 3.10+).
 
-  Key changes:
+Key changes:
 
-  1. **Package namespace reduction**: the `langchain` package focuses on agents, messages, tools, chat models, and embeddings. Legacy chains, retrievers, indexes, hub, embedding helpers such as `CacheBackedEmbeddings`, and community re-exports moved to `langchain-classic`. Install `langchain-classic` and update those imports to `langchain_classic.*`. Install provider packages directly (for example `langchain-openai`) instead of relying on `langchain` re-exports of community integrations.
-  2. **`create_react_agent` → `create_agent`**: replace `from langgraph.prebuilt import create_react_agent` with `from langchain.agents import create_agent`. Rename `prompt=` to `system_prompt=`. Invoke with `agent.invoke({"messages": [...]})` / `agent.stream(...)`. Prefer `langchain.agents.AgentState` over the deprecated `langgraph.prebuilt` agent state helpers.
-  3. **Hooks become middleware**: replace `pre_model_hook=`, `post_model_hook=`, and `state_modifier=` customization with `create_agent` middleware (`before_model`, `after_model`, `@wrap_model_call`, `@wrap_tool_call`). For human-in-the-loop tool approval, use `HumanInTheLoopMiddleware(interrupt_on={...})` from `langchain.agents.middleware`.
-  4. **Structured output**: keep `response_format=`, but use `ToolStrategy` / `ProviderStrategy` from `langchain.agents.structured_output`. Prompted output forms such as `response_format=("please generate ...", Schema)` are removed.
-  5. **Streaming node name**: when filtering or matching streamed events by node name, rename `"agent"` to `"model"`.
-  6. **Runtime context**: pass static context via the `context=` argument to `invoke` / `stream` (and `context_schema=` on `create_agent`) instead of only `config["configurable"]`.
-  7. **Standard content blocks**: prefer `message.content_blocks` for provider-agnostic content. Existing `message.content` remains valid.
+1. **Package namespace reduction**: the `langchain` package focuses on agents, messages, tools, chat models, and embeddings. Legacy chains, retrievers, indexes, hub, embedding helpers such as `CacheBackedEmbeddings`, and community re-exports moved to `langchain-classic`. Install `langchain-classic` and update those imports to `langchain_classic.*`. Install provider packages directly (for example `langchain-openai`) instead of relying on `langchain` re-exports of community integrations.
+2. **`create_react_agent` → `create_agent`**: replace `from langgraph.prebuilt import create_react_agent` with `from langchain.agents import create_agent`. Rename `prompt=` to `system_prompt=`. Invoke with `agent.invoke({"messages": [...]})` / `agent.stream(...)`. Prefer `langchain.agents.AgentState` over the deprecated `langgraph.prebuilt` agent state helpers.
+3. **Hooks become middleware**: replace `pre_model_hook=`, `post_model_hook=`, and `state_modifier=` customization with `create_agent` middleware (`before_model`, `after_model`, `@wrap_model_call`, `@wrap_tool_call`). For human-in-the-loop tool approval, use `HumanInTheLoopMiddleware(interrupt_on={...})` from `langchain.agents.middleware`.
+4. **Structured output**: keep `response_format=`, but use `ToolStrategy` / `ProviderStrategy` from `langchain.agents.structured_output`. Prompted output forms such as `response_format=("please generate ...", Schema)` are removed.
+5. **Streaming node name**: when filtering or matching streamed events by node name, rename `"agent"` to `"model"`.
+6. **Runtime context**: pass static context via the `context=` argument to `invoke` / `stream` (and `context_schema=` on `create_agent`) instead of only `config["configurable"]`.
+7. **Standard content blocks**: prefer `message.content_blocks` for provider-agnostic content. Existing `message.content` remains valid.
 
-  Search the codebase for `create_react_agent`, `pre_model_hook`, `post_model_hook`, `state_modifier`, imports from `langgraph.prebuilt`, and legacy `langchain` modules such as `langchain.chains`, `langchain.retrievers`, `langchain.indexes`, and `langchain.hub`, and apply the necessary changes. Flag anything that cannot be migrated automatically.
-</Prompt>
+Search the codebase for `create_react_agent`, `pre_model_hook`, `post_model_hook`, `state_modifier`, imports from `langgraph.prebuilt`, and legacy `langchain` modules such as `langchain.chains`, `langchain.retrievers`, `langchain.indexes`, and `langchain.hub`, and apply the necessary changes. Flag anything that cannot be migrated automatically.
 
 This guide outlines the major changes between [LangChain v1](/oss/python/releases/langchain-v1) and previous versions.
 
@@ -46,47 +44,43 @@ If you were using any of the following from the `langchain` package, you'll need
 * [`langchain-community`](https://pypi.org/project/langchain-community) re-exports
 * Other deprecated functionality
 
-<CodeGroup>
-  ```python v1 (new) theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  # Chains
-  from langchain_classic.chains import LLMChain
+```python v1 (new) theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+# Chains
+from langchain_classic.chains import LLMChain
 
-  # Retrievers
-  from langchain_classic.retrievers import ...
+# Retrievers
+from langchain_classic.retrievers import ...
 
-  # Indexing
-  from langchain_classic.indexes import ...
+# Indexing
+from langchain_classic.indexes import ...
 
-  # Hub
-  from langchain_classic import hub
-  ```
+# Hub
+from langchain_classic import hub
+```
 
-  ```python v0 (old) theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  # Chains
-  from langchain_classic.chains import LLMChain
+```python v0 (old) theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+# Chains
+from langchain_classic.chains import LLMChain
 
-  # Retrievers
-  from langchain.retrievers import ...
+# Retrievers
+from langchain.retrievers import ...
 
-  # Indexing
-  from langchain.indexes import ...
+# Indexing
+from langchain.indexes import ...
 
-  # Hub
-  from langchain import hub
-  ```
-</CodeGroup>
+# Hub
+from langchain import hub
+```
 
 Install with:
 
-<CodeGroup>
-  ```bash pip theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  pip install langchain-classic
-  ```
+```bash pip theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+pip install langchain-classic
+```
 
-  ```bash uv theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  uv add langchain-classic
-  ```
-</CodeGroup>
+```bash uv theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+uv add langchain-classic
+```
 
 ***
 
@@ -128,139 +122,133 @@ For more information, see [Agents](/oss/python/langchain/agents).
 
 The `prompt` parameter has been renamed to [`system_prompt`](https://reference.langchain.com/python/langchain/agents/#langchain.agents.create_agent\(system_prompt\)):
 
-<CodeGroup>
-  ```python v1 (new) theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  from langchain.agents import create_agent
+```python v1 (new) theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+from langchain.agents import create_agent
 
-  agent = create_agent(
-      model="claude-sonnet-4-6",
-      tools=[check_weather],
-      system_prompt="You are a helpful assistant"  # [!code highlight]
-  )
-  ```
+agent = create_agent(
+    model="claude-sonnet-4-6",
+    tools=[check_weather],
+    system_prompt="You are a helpful assistant"  # [!code highlight]
+)
+```
 
-  ```python v0 (old) theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  from langgraph.prebuilt import create_react_agent
+```python v0 (old) theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+from langgraph.prebuilt import create_react_agent
 
-  agent = create_react_agent(
-      model="claude-sonnet-4-6",
-      tools=[check_weather],
-      prompt="You are a helpful assistant"  # [!code highlight]
-  )
-  ```
-</CodeGroup>
+agent = create_react_agent(
+    model="claude-sonnet-4-6",
+    tools=[check_weather],
+    prompt="You are a helpful assistant"  # [!code highlight]
+)
+```
 
 #### `SystemMessage` to string
 
 If using [`SystemMessage`](https://reference.langchain.com/python/langchain-core/messages/system/SystemMessage) objects in the system prompt, extract the string content:
 
-<CodeGroup>
-  ```python v1 (new) theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  from langchain.agents import create_agent
+```python v1 (new) theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+from langchain.agents import create_agent
 
-  agent = create_agent(
-      model="claude-sonnet-4-6",
-      tools=[check_weather],
-      system_prompt="You are a helpful assistant"  # [!code highlight]
-  )
-  ```
+agent = create_agent(
+    model="claude-sonnet-4-6",
+    tools=[check_weather],
+    system_prompt="You are a helpful assistant"  # [!code highlight]
+)
+```
 
-  ```python v0 (old) theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  from langchain.messages import SystemMessage
-  from langgraph.prebuilt import create_react_agent
+```python v0 (old) theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+from langchain.messages import SystemMessage
+from langgraph.prebuilt import create_react_agent
 
-  agent = create_react_agent(
-      model="claude-sonnet-4-6",
-      tools=[check_weather],
-      prompt=SystemMessage(content="You are a helpful assistant")  # [!code highlight]
-  )
-  ```
-</CodeGroup>
+agent = create_react_agent(
+    model="claude-sonnet-4-6",
+    tools=[check_weather],
+    prompt=SystemMessage(content="You are a helpful assistant")  # [!code highlight]
+)
+```
 
 #### Dynamic prompts
 
 Dynamic prompts are a core context engineering pattern—they adapt what you tell the model based on the current conversation state. To do this, use the [`@dynamic_prompt`](https://reference.langchain.com/python/langchain/agents/middleware/types/dynamic_prompt) decorator:
 
-<CodeGroup>
-  ```python v1 (new) theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  from dataclasses import dataclass
+```python v1 (new) theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+from dataclasses import dataclass
 
-  from langchain.agents import create_agent
-  from langchain.agents.middleware import dynamic_prompt, ModelRequest
-  from langgraph.runtime import Runtime
+from langchain.agents import create_agent
+from langchain.agents.middleware import dynamic_prompt, ModelRequest
+from langgraph.runtime import Runtime
 
 
-  @dataclass
-  class Context:  # [!code highlight]
-      user_role: str = "user"
+@dataclass
+class Context:  # [!code highlight]
+    user_role: str = "user"
 
-  @dynamic_prompt  # [!code highlight]
-  def dynamic_prompt(request: ModelRequest) -> str:  # [!code highlight]
-      user_role = request.runtime.context.user_role
-      base_prompt = "You are a helpful assistant."
+@dynamic_prompt  # [!code highlight]
+def dynamic_prompt(request: ModelRequest) -> str:  # [!code highlight]
+    user_role = request.runtime.context.user_role
+    base_prompt = "You are a helpful assistant."
 
-      if user_role == "expert":
-          prompt = (
-              f"{base_prompt} Provide detailed technical responses."
-          )
-      elif user_role == "beginner":
-          prompt = (
-              f"{base_prompt} Explain concepts simply and avoid jargon."
-          )
-      else:
-          prompt = base_prompt
+    if user_role == "expert":
+        prompt = (
+            f"{base_prompt} Provide detailed technical responses."
+        )
+    elif user_role == "beginner":
+        prompt = (
+            f"{base_prompt} Explain concepts simply and avoid jargon."
+        )
+    else:
+        prompt = base_prompt
 
-      return prompt  # [!code highlight]
+    return prompt  # [!code highlight]
 
-  agent = create_agent(
-      model="gpt-5.5",
-      tools=tools,
-      middleware=[dynamic_prompt],  # [!code highlight]
-      context_schema=Context
-  )
+agent = create_agent(
+    model="gpt-5.5",
+    tools=tools,
+    middleware=[dynamic_prompt],  # [!code highlight]
+    context_schema=Context
+)
 
-  # Use with context
-  agent.invoke(
-      {"messages": [{"role": "user", "content": "Explain async programming"}]},
-      context=Context(user_role="expert")
-  )
-  ```
+# Use with context
+agent.invoke(
+    {"messages": [{"role": "user", "content": "Explain async programming"}]},
+    context=Context(user_role="expert")
+)
+```
 
-  ```python v0 (old) theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  from dataclasses import dataclass
+```python v0 (old) theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+from dataclasses import dataclass
 
-  from langgraph.prebuilt import create_react_agent, AgentState
-  from langgraph.runtime import get_runtime
+from langgraph.prebuilt import create_react_agent, AgentState
+from langgraph.runtime import get_runtime
 
-  @dataclass
-  class Context:
-      user_role: str
+@dataclass
+class Context:
+    user_role: str
 
-  def dynamic_prompt(state: AgentState) -> str:
-      runtime = get_runtime(Context)  # [!code highlight]
-      user_role = runtime.context.user_role
-      base_prompt = "You are a helpful assistant."
+def dynamic_prompt(state: AgentState) -> str:
+    runtime = get_runtime(Context)  # [!code highlight]
+    user_role = runtime.context.user_role
+    base_prompt = "You are a helpful assistant."
 
-      if user_role == "expert":
-          return f"{base_prompt} Provide detailed technical responses."
-      elif user_role == "beginner":
-          return f"{base_prompt} Explain concepts simply and avoid jargon."
-      return base_prompt
+    if user_role == "expert":
+        return f"{base_prompt} Provide detailed technical responses."
+    elif user_role == "beginner":
+        return f"{base_prompt} Explain concepts simply and avoid jargon."
+    return base_prompt
 
-  agent = create_react_agent(
-      model="gpt-5.5",
-      tools=tools,
-      prompt=dynamic_prompt,
-      context_schema=Context
-  )
+agent = create_react_agent(
+    model="gpt-5.5",
+    tools=tools,
+    prompt=dynamic_prompt,
+    context_schema=Context
+)
 
-  # Use with context
-  agent.invoke(
-      {"messages": [{"role": "user", "content": "Explain async programming"}]},
-      context=Context(user_role="expert")
-  )
-  ```
-</CodeGroup>
+# Use with context
+agent.invoke(
+    {"messages": [{"role": "user", "content": "Explain async programming"}]},
+    context=Context(user_role="expert")
+)
+```
 
 ### Pre-model hook
 
@@ -276,37 +264,35 @@ Common use cases include:
 
 v1 now has summarization middleware as a built in option:
 
-<CodeGroup>
-  ```python v1 (new) theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  from langchain.agents import create_agent
-  from langchain.agents.middleware import SummarizationMiddleware
+```python v1 (new) theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+from langchain.agents import create_agent
+from langchain.agents.middleware import SummarizationMiddleware
 
-  agent = create_agent(
-      model="claude-sonnet-4-6",
-      tools=tools,
-      middleware=[
-          SummarizationMiddleware(  # [!code highlight]
-              model="claude-sonnet-4-6",  # [!code highlight]
-              trigger={"tokens": 1000}  # [!code highlight]
-          )  # [!code highlight]
-      ]  # [!code highlight]
-  )
-  ```
+agent = create_agent(
+    model="claude-sonnet-4-6",
+    tools=tools,
+    middleware=[
+        SummarizationMiddleware(  # [!code highlight]
+            model="claude-sonnet-4-6",  # [!code highlight]
+            trigger={"tokens": 1000}  # [!code highlight]
+        )  # [!code highlight]
+    ]  # [!code highlight]
+)
+```
 
-  ```python v0 (old) theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  from langgraph.prebuilt import create_react_agent, AgentState
+```python v0 (old) theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+from langgraph.prebuilt import create_react_agent, AgentState
 
-  def custom_summarization_function(state: AgentState):
-      """Custom logic for message summarization."""
-      ...
+def custom_summarization_function(state: AgentState):
+    """Custom logic for message summarization."""
+    ...
 
-  agent = create_react_agent(
-      model="claude-sonnet-4-6",
-      tools=tools,
-      pre_model_hook=custom_summarization_function
-  )
-  ```
-</CodeGroup>
+agent = create_react_agent(
+    model="claude-sonnet-4-6",
+    tools=tools,
+    pre_model_hook=custom_summarization_function
+)
+```
 
 ### Post-model hook
 
@@ -321,42 +307,40 @@ Common use cases include:
 
 v1 has a built in middleware for human in the loop approval for tool calls:
 
-<CodeGroup>
-  ```python v1 (new) theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  from langchain.agents import create_agent
-  from langchain.agents.middleware import HumanInTheLoopMiddleware
+```python v1 (new) theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+from langchain.agents import create_agent
+from langchain.agents.middleware import HumanInTheLoopMiddleware
 
-  agent = create_agent(
-      model="claude-sonnet-4-6",
-      tools=[read_email, send_email],
-      middleware=[
-          HumanInTheLoopMiddleware(
-              interrupt_on={
-                  "send_email": {
-                      "description": "Please review this email before sending",
-                      "allowed_decisions": ["approve", "reject"]
-                  }
-              }
-          )
-      ]
-  )
-  ```
+agent = create_agent(
+    model="claude-sonnet-4-6",
+    tools=[read_email, send_email],
+    middleware=[
+        HumanInTheLoopMiddleware(
+            interrupt_on={
+                "send_email": {
+                    "description": "Please review this email before sending",
+                    "allowed_decisions": ["approve", "reject"]
+                }
+            }
+        )
+    ]
+)
+```
 
-  ```python v0 (old) theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  from langgraph.prebuilt import create_react_agent
-  from langgraph.prebuilt import AgentState
+```python v0 (old) theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+from langgraph.prebuilt import create_react_agent
+from langgraph.prebuilt import AgentState
 
-  def custom_human_in_the_loop_hook(state: AgentState):
-      """Custom logic for human in the loop approval."""
-      ...
+def custom_human_in_the_loop_hook(state: AgentState):
+    """Custom logic for human in the loop approval."""
+    ...
 
-  agent = create_react_agent(
-      model="claude-sonnet-4-6",
-      tools=[read_email, send_email],
-      post_model_hook=custom_human_in_the_loop_hook
-  )
-  ```
-</CodeGroup>
+agent = create_react_agent(
+    model="claude-sonnet-4-6",
+    tools=[read_email, send_email],
+    post_model_hook=custom_human_in_the_loop_hook
+)
+```
 
 ### Custom state
 
@@ -365,63 +349,61 @@ Custom state extends the default agent state with additional fields. You can def
 1. **Via [`state_schema`](https://reference.langchain.com/python/langchain/middleware/#langchain.agents.middleware.AgentMiddleware.state_schema) on [`create_agent`](https://reference.langchain.com/python/langchain/agents/factory/create_agent)** - Best for state used in tools
 2. **Via middleware** - Best for state managed by specific middleware hooks and tools attached to said middleware
 
-<Note>
-  Defining custom state via middleware is preferred over defining it via [`state_schema`](https://reference.langchain.com/python/langchain/middleware/#langchain.agents.middleware.AgentMiddleware.state_schema) on [`create_agent`](https://reference.langchain.com/python/langchain/agents/factory/create_agent) because it allows you to keep state extensions conceptually scoped to the relevant middleware and tools.
-
-  `state_schema` is still supported for backwards compatibility on `create_agent`.
-</Note>
+> [!NOTE]
+>
+> Defining custom state via middleware is preferred over defining it via [`state_schema`](https://reference.langchain.com/python/langchain/middleware/#langchain.agents.middleware.AgentMiddleware.state_schema) on [`create_agent`](https://reference.langchain.com/python/langchain/agents/factory/create_agent) because it allows you to keep state extensions conceptually scoped to the relevant middleware and tools.
+>
+> `state_schema` is still supported for backwards compatibility on `create_agent`.
 
 #### Defining state via `state_schema`
 
 Use the [`state_schema`](https://reference.langchain.com/python/langchain/middleware/#langchain.agents.middleware.AgentMiddleware.state_schema) parameter when your custom state needs to be accessed by tools:
 
-<CodeGroup>
-  ```python v1 (new) theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  from langchain.tools import tool, ToolRuntime
-  from langchain.agents import create_agent, AgentState  # [!code highlight]
+```python v1 (new) theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+from langchain.tools import tool, ToolRuntime
+from langchain.agents import create_agent, AgentState  # [!code highlight]
 
 
-  # Define custom state extending AgentState
-  class CustomState(AgentState):
-      user_name: str
+# Define custom state extending AgentState
+class CustomState(AgentState):
+    user_name: str
 
-  @tool  # [!code highlight]
-  def greet(
-      runtime: ToolRuntime[None, CustomState]
-  ) -> str:
-      """Use this to greet the user by name."""
-      user_name = runtime.state.get("user_name", "Unknown")  # [!code highlight]
-      return f"Hello {user_name}!"
+@tool  # [!code highlight]
+def greet(
+    runtime: ToolRuntime[None, CustomState]
+) -> str:
+    """Use this to greet the user by name."""
+    user_name = runtime.state.get("user_name", "Unknown")  # [!code highlight]
+    return f"Hello {user_name}!"
 
-  agent = create_agent(  # [!code highlight]
-      model="claude-sonnet-4-6",
-      tools=[greet],
-      state_schema=CustomState  # [!code highlight]
-  )
-  ```
+agent = create_agent(  # [!code highlight]
+    model="claude-sonnet-4-6",
+    tools=[greet],
+    state_schema=CustomState  # [!code highlight]
+)
+```
 
-  ```python v0 (old) theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  from typing import Annotated
-  from langgraph.prebuilt import InjectedState, create_react_agent
-  from langgraph.prebuilt.chat_agent_executor import AgentState
+```python v0 (old) theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+from typing import Annotated
+from langgraph.prebuilt import InjectedState, create_react_agent
+from langgraph.prebuilt.chat_agent_executor import AgentState
 
-  class CustomState(AgentState):
-      user_name: str
+class CustomState(AgentState):
+    user_name: str
 
-  def greet(
-      state: Annotated[CustomState, InjectedState]
-  ) -> str:
-      """Use this to greet the user by name."""
-      user_name = state["user_name"]
-      return f"Hello {user_name}!"
+def greet(
+    state: Annotated[CustomState, InjectedState]
+) -> str:
+    """Use this to greet the user by name."""
+    user_name = state["user_name"]
+    return f"Hello {user_name}!"
 
-  agent = create_react_agent(
-      model="claude-sonnet-4-6",
-      tools=[greet],
-      state_schema=CustomState
-  )
-  ```
-</CodeGroup>
+agent = create_react_agent(
+    model="claude-sonnet-4-6",
+    tools=[greet],
+    state_schema=CustomState
+)
+```
 
 #### Defining state via middleware
 
@@ -461,41 +443,39 @@ See the [middleware documentation](/oss/python/langchain/middleware#custom-state
 
 [`create_agent`](https://reference.langchain.com/python/langchain/agents/factory/create_agent) only supports `TypedDict` for state schemas. Pydantic models and dataclasses are no longer supported.
 
-<CodeGroup>
-  ```python v1 (new) theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  from langchain.agents import AgentState, create_agent
+```python v1 (new) theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+from langchain.agents import AgentState, create_agent
 
-  # AgentState is a TypedDict
-  class CustomAgentState(AgentState):  # [!code highlight]
-      user_id: str
+# AgentState is a TypedDict
+class CustomAgentState(AgentState):  # [!code highlight]
+    user_id: str
 
-  agent = create_agent(
-      model="claude-sonnet-4-6",
-      tools=tools,
-      state_schema=CustomAgentState  # [!code highlight]
-  )
-  ```
+agent = create_agent(
+    model="claude-sonnet-4-6",
+    tools=tools,
+    state_schema=CustomAgentState  # [!code highlight]
+)
+```
 
-  ```python v0 (old) theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  from typing_extensions import Annotated
+```python v0 (old) theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+from typing_extensions import Annotated
 
-  from pydantic import BaseModel
-  from langgraph.graph import StateGraph
-  from langgraph.graph.messages import add_messages
-  from langchain.messages import AnyMessage
+from pydantic import BaseModel
+from langgraph.graph import StateGraph
+from langgraph.graph.messages import add_messages
+from langchain.messages import AnyMessage
 
 
-  class AgentState(BaseModel):  # [!code highlight]
-      messages: Annotated[list[AnyMessage], add_messages]
-      user_id: str
+class AgentState(BaseModel):  # [!code highlight]
+    messages: Annotated[list[AnyMessage], add_messages]
+    user_id: str
 
-  agent = create_react_agent(
-      model="claude-sonnet-4-6",
-      tools=tools,
-      state_schema=AgentState
-  )
-  ```
-</CodeGroup>
+agent = create_react_agent(
+    model="claude-sonnet-4-6",
+    tools=tools,
+    state_schema=AgentState
+)
+```
 
 Simply inherit from `langchain.agents.AgentState` instead of `BaseModel` or decorating with `dataclass`.
 If you need to perform validation, handle it in middleware hooks instead.
@@ -508,57 +488,55 @@ This functionality has been ported to the middleware interface in v1.
 
 #### Dynamic model selection
 
-<CodeGroup>
-  ```python v1 (new) theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  from langchain.agents import create_agent
-  from langchain.agents.middleware import (
-      AgentMiddleware, ModelRequest
-  )
-  from langchain.agents.middleware.types import ModelResponse
-  from langchain_openai import ChatOpenAI
-  from typing import Callable
+```python v1 (new) theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+from langchain.agents import create_agent
+from langchain.agents.middleware import (
+    AgentMiddleware, ModelRequest
+)
+from langchain.agents.middleware.types import ModelResponse
+from langchain_openai import ChatOpenAI
+from typing import Callable
 
-  basic_model = ChatOpenAI(model="gpt-5-nano")
-  advanced_model = ChatOpenAI(model="gpt-5.5")
+basic_model = ChatOpenAI(model="gpt-5-nano")
+advanced_model = ChatOpenAI(model="gpt-5.5")
 
-  class DynamicModelMiddleware(AgentMiddleware):
+class DynamicModelMiddleware(AgentMiddleware):
 
-      def wrap_model_call(self, request: ModelRequest, handler: Callable[[ModelRequest], ModelResponse]) -> ModelResponse:
-          if len(request.state.messages) > self.messages_threshold:
-              model = advanced_model
-          else:
-              model = basic_model
-          return handler(request.override(model=model))
+    def wrap_model_call(self, request: ModelRequest, handler: Callable[[ModelRequest], ModelResponse]) -> ModelResponse:
+        if len(request.state.messages) > self.messages_threshold:
+            model = advanced_model
+        else:
+            model = basic_model
+        return handler(request.override(model=model))
 
-      def __init__(self, messages_threshold: int) -> None:
-          self.messages_threshold = messages_threshold
+    def __init__(self, messages_threshold: int) -> None:
+        self.messages_threshold = messages_threshold
 
-  agent = create_agent(
-      model=basic_model,
-      tools=tools,
-      middleware=[DynamicModelMiddleware(messages_threshold=10)]
-  )
-  ```
+agent = create_agent(
+    model=basic_model,
+    tools=tools,
+    middleware=[DynamicModelMiddleware(messages_threshold=10)]
+)
+```
 
-  ```python v0 (old) theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  from langgraph.prebuilt import create_react_agent, AgentState
-  from langchain_openai import ChatOpenAI
+```python v0 (old) theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+from langgraph.prebuilt import create_react_agent, AgentState
+from langchain_openai import ChatOpenAI
 
-  basic_model = ChatOpenAI(model="gpt-5-nano")
-  advanced_model = ChatOpenAI(model="gpt-5.5")
+basic_model = ChatOpenAI(model="gpt-5-nano")
+advanced_model = ChatOpenAI(model="gpt-5.5")
 
-  def select_model(state: AgentState) -> BaseChatModel:
-      # use a more advanced model for longer conversations
-      if len(state.messages) > 10:
-          return advanced_model
-      return basic_model
+def select_model(state: AgentState) -> BaseChatModel:
+    # use a more advanced model for longer conversations
+    if len(state.messages) > 10:
+        return advanced_model
+    return basic_model
 
-  agent = create_react_agent(
-      model=select_model,
-      tools=tools,
-  )
-  ```
-</CodeGroup>
+agent = create_react_agent(
+    model=select_model,
+    tools=tools,
+)
+```
 
 #### Pre-bound models
 
@@ -573,9 +551,9 @@ agent = create_agent(model_with_tools, tools=[])
 agent = create_agent("gpt-5.4-mini", tools=[some_tool])
 ```
 
-<Note>
-  Dynamic model functions can return pre-bound models if structured output is *not* used.
-</Note>
+> [!NOTE]
+>
+> Dynamic model functions can return pre-bound models if structured output is *not* used.
 
 ### Tools
 
@@ -587,82 +565,78 @@ The [`tools`](https://reference.langchain.com/python/langchain/agents/factory/cr
 
 The argument will no longer accept [`ToolNode`](https://reference.langchain.com/python/langgraph/agents/#langgraph.prebuilt.tool_node.ToolNode) instances.
 
-<CodeGroup>
-  ```python v1 (new) theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  from langchain.agents import create_agent
+```python v1 (new) theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+from langchain.agents import create_agent
 
-  agent = create_agent(
-      model="claude-sonnet-4-6",
-      tools=[check_weather, search_web]
-  )
-  ```
+agent = create_agent(
+    model="claude-sonnet-4-6",
+    tools=[check_weather, search_web]
+)
+```
 
-  ```python v0 (old) theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  from langgraph.prebuilt import create_react_agent, ToolNode
+```python v0 (old) theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+from langgraph.prebuilt import create_react_agent, ToolNode
 
 
-  agent = create_react_agent(
-      model="claude-sonnet-4-6",
-      tools=ToolNode([check_weather, search_web]) # [!code highlight]
-  )
-  ```
-</CodeGroup>
+agent = create_react_agent(
+    model="claude-sonnet-4-6",
+    tools=ToolNode([check_weather, search_web]) # [!code highlight]
+)
+```
 
 #### Handling tool errors
 
 You can now configure the handling of tool errors with middleware implementing the `wrap_tool_call` method.
 
-<CodeGroup>
-  ```python v1 (new) theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  from langchain.agents import create_agent
-  from langchain.agents.middleware import wrap_tool_call
-  from langchain.messages import ToolMessage
+```python v1 (new) theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+from langchain.agents import create_agent
+from langchain.agents.middleware import wrap_tool_call
+from langchain.messages import ToolMessage
 
 
-  @wrap_tool_call
-  def handle_tool_errors(request, handler):
-      """Handle tool execution errors with custom messages."""
-      try:
-          return handler(request)
-      except Exception as e:
-          # Only handle errors that occur during tool execution due to invalid inputs
-          # that pass schema validation but fail at runtime (e.g., invalid SQL syntax).
-          # Do NOT handle:
-          # - Network failures (use tool retry middleware instead)
-          # - Incorrect tool implementation errors (should bubble up)
-          # - Schema mismatch errors (already auto-handled by the framework)
-          #
-          # Return a custom error message to the model
-          return ToolMessage(
-              content=f"Tool error: Please check your input and try again. ({str(e)})",
-              tool_call_id=request.tool_call["id"]
-          )
+@wrap_tool_call
+def handle_tool_errors(request, handler):
+    """Handle tool execution errors with custom messages."""
+    try:
+        return handler(request)
+    except Exception as e:
+        # Only handle errors that occur during tool execution due to invalid inputs
+        # that pass schema validation but fail at runtime (e.g., invalid SQL syntax).
+        # Do NOT handle:
+        # - Network failures (use tool retry middleware instead)
+        # - Incorrect tool implementation errors (should bubble up)
+        # - Schema mismatch errors (already auto-handled by the framework)
+        #
+        # Return a custom error message to the model
+        return ToolMessage(
+            content=f"Tool error: Please check your input and try again. ({str(e)})",
+            tool_call_id=request.tool_call["id"]
+        )
 
-  agent = create_agent(
-      model="claude-sonnet-4-6",
-      tools=[check_weather, search_web],
-      middleware=[handle_tool_errors]
-  )
-  ```
+agent = create_agent(
+    model="claude-sonnet-4-6",
+    tools=[check_weather, search_web],
+    middleware=[handle_tool_errors]
+)
+```
 
-  ```python v0 (old) theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  from langgraph.prebuilt import create_react_agent, ToolNode
-  from langchain.messages import ToolMessage
+```python v0 (old) theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+from langgraph.prebuilt import create_react_agent, ToolNode
+from langchain.messages import ToolMessage
 
 
-  def handle_tool_error(error: Exception) -> str:
-      """Custom error handler function."""
-      return f"Tool error: Please check your input and try again. ({str(error)})"
+def handle_tool_error(error: Exception) -> str:
+    """Custom error handler function."""
+    return f"Tool error: Please check your input and try again. ({str(error)})"
 
-  agent = create_react_agent(
-      model="claude-sonnet-4-6",
-      tools=ToolNode(
-          [check_weather, search_web],
-          handle_tool_errors=handle_tool_error  # [!code highlight]
-      )
-  )
-  ```
-</CodeGroup>
+agent = create_react_agent(
+    model="claude-sonnet-4-6",
+    tools=ToolNode(
+        [check_weather, search_web],
+        handle_tool_errors=handle_tool_error  # [!code highlight]
+    )
+)
+```
 
 ### Structured output
 
@@ -678,51 +652,49 @@ In v1, there are two new structured output strategies:
 * `ToolStrategy` uses artificial tool calling to generate structured output
 * `ProviderStrategy` uses provider-native structured output generation
 
-<CodeGroup>
-  ```python v1 (new) theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  from langchain.agents import create_agent
-  from langchain.agents.structured_output import ToolStrategy, ProviderStrategy
-  from pydantic import BaseModel
+```python v1 (new) theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+from langchain.agents import create_agent
+from langchain.agents.structured_output import ToolStrategy, ProviderStrategy
+from pydantic import BaseModel
 
 
-  class OutputSchema(BaseModel):
-      summary: str
-      sentiment: str
+class OutputSchema(BaseModel):
+    summary: str
+    sentiment: str
 
-  # Using ToolStrategy
-  agent = create_agent(
-      model="gpt-5.4-mini",
-      tools=tools,
-      # explicitly using tool strategy
-      response_format=ToolStrategy(OutputSchema)  # [!code highlight]
-  )
-  ```
+# Using ToolStrategy
+agent = create_agent(
+    model="gpt-5.4-mini",
+    tools=tools,
+    # explicitly using tool strategy
+    response_format=ToolStrategy(OutputSchema)  # [!code highlight]
+)
+```
 
-  ```python v0 (old) theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  from langgraph.prebuilt import create_react_agent
-  from pydantic import BaseModel
+```python v0 (old) theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+from langgraph.prebuilt import create_react_agent
+from pydantic import BaseModel
 
-  class OutputSchema(BaseModel):
-      summary: str
-      sentiment: str
+class OutputSchema(BaseModel):
+    summary: str
+    sentiment: str
 
-  agent = create_react_agent(
-      model="gpt-5.4-mini",
-      tools=tools,
-      # using tool strategy by default with no option for provider strategy
-      response_format=OutputSchema  # [!code highlight]
-  )
+agent = create_react_agent(
+    model="gpt-5.4-mini",
+    tools=tools,
+    # using tool strategy by default with no option for provider strategy
+    response_format=OutputSchema  # [!code highlight]
+)
 
-  # OR
+# OR
 
-  agent = create_react_agent(
-      model="gpt-5.4-mini",
-      tools=tools,
-      # using a custom prompt to instruct the model to generate the output schema
-      response_format=("please generate ...", OutputSchema)  # [!code highlight]
-  )
-  ```
-</CodeGroup>
+agent = create_react_agent(
+    model="gpt-5.4-mini",
+    tools=tools,
+    # using a custom prompt to instruct the model to generate the output schema
+    response_format=("please generate ...", OutputSchema)  # [!code highlight]
+)
+```
 
 #### Prompted output removed
 
@@ -742,52 +714,50 @@ When you invoke an agent, it's often the case that you want to pass two types of
 
 In v1, static context is supported by setting the `context` parameter to `invoke` and `stream`.
 
-<CodeGroup>
-  ```python v1 (new) theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  from dataclasses import dataclass
+```python v1 (new) theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+from dataclasses import dataclass
 
-  from langchain.agents import create_agent
-
-
-  @dataclass
-  class Context:
-      user_id: str
-      session_id: str
-
-  agent = create_agent(
-      model=model,
-      tools=tools,
-      context_schema=Context  # [!code highlight]
-  )
-
-  result = agent.invoke(
-      {"messages": [{"role": "user", "content": "Hello"}]},
-      context=Context(user_id="123", session_id="abc")  # [!code highlight]
-  )
-  ```
-
-  ```python v0 (old) theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  from langgraph.prebuilt import create_react_agent
+from langchain.agents import create_agent
 
 
-  agent = create_react_agent(model, tools)
+@dataclass
+class Context:
+    user_id: str
+    session_id: str
 
-  # Pass context via configurable
-  result = agent.invoke(
-      {"messages": [{"role": "user", "content": "Hello"}]},
-      config={  # [!code highlight]
-          "configurable": {  # [!code highlight]
-              "user_id": "123",  # [!code highlight]
-              "session_id": "abc"  # [!code highlight]
-          }  # [!code highlight]
-      }  # [!code highlight]
-  )
-  ```
-</CodeGroup>
+agent = create_agent(
+    model=model,
+    tools=tools,
+    context_schema=Context  # [!code highlight]
+)
 
-<Note>
-  The old `config["configurable"]` pattern still works for backward compatibility, but using the new `context` parameter is recommended for new applications or applications migrating to v1.
-</Note>
+result = agent.invoke(
+    {"messages": [{"role": "user", "content": "Hello"}]},
+    context=Context(user_id="123", session_id="abc")  # [!code highlight]
+)
+```
+
+```python v0 (old) theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+from langgraph.prebuilt import create_react_agent
+
+
+agent = create_react_agent(model, tools)
+
+# Pass context via configurable
+result = agent.invoke(
+    {"messages": [{"role": "user", "content": "Hello"}]},
+    config={  # [!code highlight]
+        "configurable": {  # [!code highlight]
+            "user_id": "123",  # [!code highlight]
+            "session_id": "abc"  # [!code highlight]
+        }  # [!code highlight]
+    }  # [!code highlight]
+)
+```
+
+> [!NOTE]
+>
+> The old `config["configurable"]` pattern still works for backward compatibility, but using the new `context` parameter is recommended for new applications or applications migrating to v1.
 
 ***
 
@@ -803,57 +773,53 @@ In v1, messages gain provider-agnostic standard content blocks. Access them via 
 
 ### Read standardized content
 
-<CodeGroup>
-  ```python v1 (new) theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  from langchain.chat_models import init_chat_model
+```python v1 (new) theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+from langchain.chat_models import init_chat_model
 
-  model = init_chat_model("gpt-5-nano")
-  response = model.invoke("Explain AI")
+model = init_chat_model("gpt-5-nano")
+response = model.invoke("Explain AI")
 
-  for block in response.content_blocks:
-      if block["type"] == "reasoning":
-          print(block.get("reasoning"))
-      elif block["type"] == "text":
-          print(block.get("text"))
-  ```
+for block in response.content_blocks:
+    if block["type"] == "reasoning":
+        print(block.get("reasoning"))
+    elif block["type"] == "text":
+        print(block.get("text"))
+```
 
-  ```python v0 (old) theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  # Provider-native formats vary; you needed per-provider handling
-  response = model.invoke("Explain AI")
-  for item in response.content:
-      if item.get("type") == "reasoning":
-          ...  # OpenAI-style reasoning
-      elif item.get("type") == "thinking":
-          ...  # Anthropic-style thinking
-      elif item.get("type") == "text":
-          ...  # Text
-  ```
-</CodeGroup>
+```python v0 (old) theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+# Provider-native formats vary; you needed per-provider handling
+response = model.invoke("Explain AI")
+for item in response.content:
+    if item.get("type") == "reasoning":
+        ...  # OpenAI-style reasoning
+    elif item.get("type") == "thinking":
+        ...  # Anthropic-style thinking
+    elif item.get("type") == "text":
+        ...  # Text
+```
 
 ### Create multimodal messages
 
-<CodeGroup>
-  ```python v1 (new) theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  from langchain.messages import HumanMessage
+```python v1 (new) theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+from langchain.messages import HumanMessage
 
-  message = HumanMessage(content_blocks=[
-      {"type": "text", "text": "Describe this image."},
-      {"type": "image", "url": "https://example.com/image.jpg"},
-  ])
-  res = model.invoke([message])
-  ```
+message = HumanMessage(content_blocks=[
+    {"type": "text", "text": "Describe this image."},
+    {"type": "image", "url": "https://example.com/image.jpg"},
+])
+res = model.invoke([message])
+```
 
-  ```python v0 (old) theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  from langchain.messages import HumanMessage
+```python v0 (old) theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+from langchain.messages import HumanMessage
 
-  message = HumanMessage(content=[
-      # Provider-native structure
-      {"type": "text", "text": "Describe this image."},
-      {"type": "image_url", "image_url": {"url": "https://example.com/image.jpg"}},
-  ])
-  res = model.invoke([message])
-  ```
-</CodeGroup>
+message = HumanMessage(content=[
+    # Provider-native structure
+    {"type": "text", "text": "Describe this image."},
+    {"type": "image_url", "image_url": {"url": "https://example.com/image.jpg"}},
+])
+res = model.invoke([message])
+```
 
 ### Example block shapes
 
@@ -878,24 +844,22 @@ See the content blocks [reference](/oss/python/langchain/messages#content-block-
 
 Standard content blocks are **not serialized** into the `content` attribute by default. If you need to access standard content blocks in the `content` attribute (e.g., when sending messages to a client), you can opt-in to serializing them into `content`.
 
-<CodeGroup>
-  ```bash Environment variable theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  export LC_OUTPUT_VERSION=v1
-  ```
+```bash Environment variable theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+export LC_OUTPUT_VERSION=v1
+```
 
-  ```python Initialization parameter theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  from langchain.chat_models import init_chat_model
+```python Initialization parameter theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+from langchain.chat_models import init_chat_model
 
-  model = init_chat_model(
-      "gpt-5-nano",
-      output_version="v1",
-  )
-  ```
-</CodeGroup>
+model = init_chat_model(
+    "gpt-5-nano",
+    output_version="v1",
+)
+```
 
-<Note>
-  Learn more: [Messages](/oss/python/langchain/messages#message-content), [Standard content blocks](/oss/python/langchain/messages#standard-content-blocks), and [Multimodal](/oss/python/langchain/messages#multimodal).
-</Note>
+> [!NOTE]
+>
+> Learn more: [Messages](/oss/python/langchain/messages#message-content), [Standard content blocks](/oss/python/langchain/messages#standard-content-blocks), and [Multimodal](/oss/python/langchain/messages#multimodal).
 
 ***
 
@@ -909,19 +873,17 @@ All LangChain packages now require **Python 3.10 or higher**. Python 3.9 reaches
 
 The return type signature for chat model invocation has been fixed from [`BaseMessage`](https://reference.langchain.com/python/langchain-core/messages/base/BaseMessage) to [`AIMessage`](https://reference.langchain.com/python/langchain-core/messages/ai/AIMessage). Custom chat models implementing [`bind_tools`](https://reference.langchain.com/python/langchain-core/language_models/chat_models/BaseChatModel/bind_tools) should update their return signature:
 
-<CodeGroup>
-  ```python v1 (new) theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  def bind_tools(
-          ...
-      ) -> Runnable[LanguageModelInput, AIMessage]:
-  ```
+```python v1 (new) theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+def bind_tools(
+        ...
+    ) -> Runnable[LanguageModelInput, AIMessage]:
+```
 
-  ```python v0 (old) theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  def bind_tools(
-          ...
-      ) -> Runnable[LanguageModelInput, BaseMessage]:
-  ```
-</CodeGroup>
+```python v0 (old) theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+def bind_tools(
+        ...
+    ) -> Runnable[LanguageModelInput, BaseMessage]:
+```
 
 ### Default message format for OpenAI responses API
 
@@ -979,12 +941,6 @@ Old docs are archived for reference:
 
 ***
 
-<div>
-  <Callout icon="terminal-2">
-    [Connect these docs](/use-these-docs) to your agent of choice via MCP for real-time answers.
-  </Callout>
+[Connect these docs](/use-these-docs) to your agent of choice via MCP for real-time answers.
 
-  <Callout icon="edit">
-    [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/oss/python/migrate/langchain-v1.mdx) or [file an issue](https://github.com/langchain-ai/docs/issues/new/choose).
-  </Callout>
-</div>
+[Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/oss/python/migrate/langchain-v1.mdx) or [file an issue](https://github.com/langchain-ai/docs/issues/new/choose).

@@ -81,29 +81,29 @@ await agent.invoke(
 
 ## Log to a project
 
-<Accordion title="Statically">
-  You can set a custom project name for your entire application by setting the `LANGSMITH_PROJECT` environment variable:
+> **Statically**
+>
+> You can set a custom project name for your entire application by setting the `LANGSMITH_PROJECT` environment variable:
+>
+> ```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> export LANGSMITH_PROJECT=my-agent-project
+> ```
 
-  ```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  export LANGSMITH_PROJECT=my-agent-project
-  ```
-</Accordion>
-
-<Accordion title="Dynamically">
-  You can set the project name programmatically for specific operations:
-
-  ```ts theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  import { LangChainTracer } from "@langchain/core/tracers/tracer_langchain";
-
-  const tracer = new LangChainTracer({ projectName: "email-agent-test" });
-  await agent.invoke(
-    {
-      messages: [{role: "user", content: "Send a test email to alice@example.com"}]
-    },
-    { callbacks: [tracer] }
-  );
-  ```
-</Accordion>
+> **Dynamically**
+>
+> You can set the project name programmatically for specific operations:
+>
+> ```ts theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> import { LangChainTracer } from "@langchain/core/tracers/tracer_langchain";
+>
+> const tracer = new LangChainTracer({ projectName: "email-agent-test" });
+> await agent.invoke(
+>   {
+>     messages: [{role: "user", content: "Send a test email to alice@example.com"}]
+>   },
+>   { callbacks: [tracer] }
+> );
+> ```
 
 ## Add metadata to traces
 
@@ -131,18 +131,12 @@ await agent.invoke(
 
 This custom metadata and tags will be attached to the trace in LangSmith.
 
-<Tip>
-  To learn more about how to use traces to debug, evaluate, and monitor your agents, see the [LangSmith documentation](/langsmith/observability).
-</Tip>
+> [!TIP]
+>
+> To learn more about how to use traces to debug, evaluate, and monitor your agents, see the [LangSmith documentation](/langsmith/observability).
 
 ***
 
-<div>
-  <Callout icon="terminal-2">
-    [Connect these docs](/use-these-docs) to your agent of choice via MCP for real-time answers.
-  </Callout>
+[Connect these docs](/use-these-docs) to your agent of choice via MCP for real-time answers.
 
-  <Callout icon="edit">
-    [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/oss/langchain/observability.mdx) or [file an issue](https://github.com/langchain-ai/docs/issues/new/choose).
-  </Callout>
-</div>
+[Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/oss/langchain/observability.mdx) or [file an issue](https://github.com/langchain-ai/docs/issues/new/choose).

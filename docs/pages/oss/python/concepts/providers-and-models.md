@@ -75,19 +75,17 @@ For a full list of provider packages, see the [integrations page](/oss/python/in
 
 Each provider supports specific model names that you pass when initializing a chat model. There are two ways to specify a model:
 
-<CodeGroup>
-  ```python Provider prefix format theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  from langchain.chat_models import init_chat_model
+```python Provider prefix format theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+from langchain.chat_models import init_chat_model
 
-  model = init_chat_model("openai:gpt-5.5")
-  ```
+model = init_chat_model("openai:gpt-5.5")
+```
 
-  ```python Direct class instantiation theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  from langchain_openai import ChatOpenAI
+```python Direct class instantiation theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+from langchain_openai import ChatOpenAI
 
-  model = ChatOpenAI(model="gpt-5.5")
-  ```
-</CodeGroup>
+model = ChatOpenAI(model="gpt-5.5")
+```
 
 When using [`init_chat_model`](https://reference.langchain.com/python/langchain/chat_models/base/init_chat_model) with the `provider:model` format, LangChain automatically resolves the provider and loads the correct integration package. You can also omit the provider prefix if the model name is unambiguous (e.g., `"gpt-5.5"` resolves to OpenAI).
 
@@ -154,38 +152,30 @@ model = ChatOpenAI(
 )
 ```
 
-<Warning>
-  `ChatOpenAI` targets [official OpenAI API specifications](https://github.com/openai/openai-openapi) only. Non-standard response fields from third-party providers are not extracted or preserved. Use a dedicated provider package or router when you need access to non-standard features.
-</Warning>
+> [!WARNING]
+>
+> `ChatOpenAI` targets [official OpenAI API specifications](https://github.com/openai/openai-openapi) only. Non-standard response fields from third-party providers are not extracted or preserved. Use a dedicated provider package or router when you need access to non-standard features.
 
 ## Next steps
 
-<CardGroup>
-  <Card title="Models guide" icon="cpu" href="/oss/python/langchain/models">
-    Learn how to use models: invoke, stream, batch, tool calling, and more.
-  </Card>
+> **[Models guide](/oss/python/langchain/models)**
+>
+> Learn how to use models: invoke, stream, batch, tool calling, and more.
 
-  <Card title="Chat model integrations" icon="message" href="/oss/python/integrations/chat">
-    Browse all chat model integrations and their capabilities.
-  </Card>
+> **[Chat model integrations](/oss/python/integrations/chat)**
+>
+> Browse all chat model integrations and their capabilities.
 
-  <Card title="All providers" icon="grid-dots" href="/oss/python/integrations/providers/overview">
-    See the full list of provider packages and integrations.
-  </Card>
+> **[All providers](/oss/python/integrations/providers/overview)**
+>
+> See the full list of provider packages and integrations.
 
-  <Card title="Agents" icon="robot" href="/oss/python/langchain/agents">
-    Build agents that use models as their reasoning engine.
-  </Card>
-</CardGroup>
+> **[Agents](/oss/python/langchain/agents)**
+>
+> Build agents that use models as their reasoning engine.
 
 ***
 
-<div>
-  <Callout icon="terminal-2">
-    [Connect these docs](/use-these-docs) to your agent of choice via MCP for real-time answers.
-  </Callout>
+[Connect these docs](/use-these-docs) to your agent of choice via MCP for real-time answers.
 
-  <Callout icon="edit">
-    [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/oss/concepts/providers-and-models.mdx) or [file an issue](https://github.com/langchain-ai/docs/issues/new/choose).
-  </Callout>
-</div>
+[Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/oss/concepts/providers-and-models.mdx) or [file an issue](https://github.com/langchain-ai/docs/issues/new/choose).

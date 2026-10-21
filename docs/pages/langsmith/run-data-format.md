@@ -113,26 +113,24 @@ The `run_type` field identifies the kind of operation a span represents. LangSmi
 
 Set [`run_type`](https://reference.langchain.com/python/langsmith/schemas/RunBase/run_type) when instrumenting with [`@traceable`](/langsmith/annotate-code#use-%40traceable-%2F-traceable) or [`RunTree`](/langsmith/annotate-code#use-the-runtree-api):
 
-<CodeGroup>
-  ```python Python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  from langsmith import traceable
+```python Python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+from langsmith import traceable
 
-  @traceable(run_type="tool")
-  def my_tool(query: str) -> str:
-      ...
-  ```
+@traceable(run_type="tool")
+def my_tool(query: str) -> str:
+    ...
+```
 
-  ```typescript TypeScript theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  import { traceable } from "langsmith/traceable";
+```typescript TypeScript theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+import { traceable } from "langsmith/traceable";
 
-  const myTool = traceable(
-    async (query: string): Promise<string> => {
-      // ...
-    },
-    { run_type: "tool" }
-  );
-  ```
-</CodeGroup>
+const myTool = traceable(
+  async (query: string): Promise<string> => {
+    // ...
+  },
+  { run_type: "tool" }
+);
+```
 
 Some run types have specialized trace views in the LangSmith UI:
 
@@ -178,12 +176,6 @@ Note a few invariants:
 
 ***
 
-<div>
-  <Callout icon="terminal-2">
-    [Connect these docs](/use-these-docs) to your agent of choice via MCP for real-time answers.
-  </Callout>
+[Connect these docs](/use-these-docs) to your agent of choice via MCP for real-time answers.
 
-  <Callout icon="edit">
-    [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/run-data-format.mdx) or [file an issue](https://github.com/langchain-ai/docs/issues/new/choose).
-  </Callout>
-</div>
+[Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/run-data-format.mdx) or [file an issue](https://github.com/langchain-ai/docs/issues/new/choose).

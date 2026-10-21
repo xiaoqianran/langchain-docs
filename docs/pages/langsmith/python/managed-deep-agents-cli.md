@@ -8,9 +8,9 @@ The `mda` CLI compiles and deploys code-first [Managed Deep Agents](/langsmith/p
 
 It is included with the `managed-deepagents` Python package.
 
-<Note>
-  Managed Deep Agents is in **public [beta](/langsmith/release-stages)** on [LangSmith Cloud](/langsmith/cloud).
-</Note>
+> [!NOTE]
+>
+> Managed Deep Agents is in **public [beta](/langsmith/release-stages)** on [LangSmith Cloud](/langsmith/cloud).
 
 For the fastest end-to-end path, see the [quickstart](/langsmith/python/managed-deep-agents-quickstart). For workflow guidance, see [Identity](/langsmith/python/managed-deep-agents-identity), [Memory](/langsmith/python/managed-deep-agents-memory), [Evals](/langsmith/python/managed-deep-agents-evals), [Custom tools](/langsmith/python/managed-deep-agents-tools), [Connections](/langsmith/python/managed-deep-agents-connections), [Custom middleware](/langsmith/python/managed-deep-agents-middleware), [Sandboxes](/langsmith/python/managed-deep-agents-sandboxes), [Channels](/langsmith/python/managed-deep-agents-channels), [Schedules](/langsmith/python/managed-deep-agents-schedules), and [Deploy an agent](/langsmith/python/managed-deep-agents-deploy).
 
@@ -314,12 +314,6 @@ uv run mda delete
 
 ***
 
-<div>
-  <Callout icon="terminal-2">
-    [Connect these docs](/use-these-docs) to your agent of choice via MCP for real-time answers.
-  </Callout>
+[Connect these docs](/use-these-docs) to your agent of choice via MCP for real-time answers.
 
-  <Callout icon="edit">
-    [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/managed-deep-agents-cli.mdx) or [file an issue](https://github.com/langchain-ai/docs/issues/new/choose).
-  </Callout>
-</div>
+[Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/managed-deep-agents-cli.mdx) or [file an issue](https://github.com/langchain-ai/docs/issues/new/choose).

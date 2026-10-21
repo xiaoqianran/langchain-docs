@@ -34,15 +34,15 @@ Ensure you have the following tools/items ready.
 
    * Download the [trace script](https://github.com/langchain-ai/helm/blob/main/charts/langsmith/scripts/delete_trace_by_id.sh)
 
-<Warning>
-  **Batch size limits**
-
-  This script issues `DELETE` mutations against multiple ClickHouse tables per batch. Large deletions can cause service disruption.
-
-  * **Maximum 10,000 traces per run**: split larger files and process sequentially.
-  * **Wait between batches**: allow time for deletions to complete before starting the next batch.
-  * Use the `--sync` flag for sequential (slower but safer) deletion.
-</Warning>
+> [!WARNING]
+>
+> **Batch size limits**
+>
+> This script issues `DELETE` mutations against multiple ClickHouse tables per batch. Large deletions can cause service disruption.
+>
+> * **Maximum 10,000 traces per run**: split larger files and process sequentially.
+> * **Wait between batches**: allow time for deletions to complete before starting the next batch.
+> * Use the `--sync` flag for sequential (slower but safer) deletion.
 
 ### Running the deletion script for a single trace
 
@@ -100,12 +100,6 @@ If you experience issues after a large deletion, contact [support](https://suppo
 
 ***
 
-<div>
-  <Callout icon="terminal-2">
-    [Connect these docs](/use-these-docs) to your agent of choice via MCP for real-time answers.
-  </Callout>
+[Connect these docs](/use-these-docs) to your agent of choice via MCP for real-time answers.
 
-  <Callout icon="edit">
-    [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/script-delete-traces.mdx) or [file an issue](https://github.com/langchain-ai/docs/issues/new/choose).
-  </Callout>
-</div>
+[Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/script-delete-traces.mdx) or [file an issue](https://github.com/langchain-ai/docs/issues/new/choose).

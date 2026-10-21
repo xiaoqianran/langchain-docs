@@ -44,13 +44,9 @@ graph LR
   class O deep;
 ```
 
-<div>
-  <span>More control</span>
+More control
 
-  <div />
-
-  <span>More autonomy</span>
-</div>
+More autonomy
 
 Moving left to right, predictability and per-capability engineering cost both fall,
 while the agent's expressive range grows. Accessibility and visual consistency are
@@ -116,28 +112,20 @@ transcript.
 
 ## Explore the spectrum
 
-<CardGroup>
-  <Card title="Controlled" icon="components" href="/oss/javascript/langchain/frontend/controlled-generative-ui">
-    Author the components; the agent picks which to render and what data to pass.
-  </Card>
+> **[Controlled](/oss/javascript/langchain/frontend/controlled-generative-ui)**
+>
+> Author the components; the agent picks which to render and what data to pass.
 
-  <Card title="Declarative" icon="schema" href="/oss/javascript/langchain/frontend/declarative-generative-ui">
-    The agent emits a spec; the frontend composes from a registered catalog.
-  </Card>
+> **[Declarative](/oss/javascript/langchain/frontend/declarative-generative-ui)**
+>
+> The agent emits a spec; the frontend composes from a registered catalog.
 
-  <Card title="Open-ended" icon="world" href="/oss/javascript/langchain/frontend/open-ended-generative-ui">
-    Render UI created elsewhere, such as sandboxed MCP Apps.
-  </Card>
-</CardGroup>
+> **[Open-ended](/oss/javascript/langchain/frontend/open-ended-generative-ui)**
+>
+> Render UI created elsewhere, such as sandboxed MCP Apps.
 
 ***
 
-<div>
-  <Callout icon="terminal-2">
-    [Connect these docs](/use-these-docs) to your agent of choice via MCP for real-time answers.
-  </Callout>
+[Connect these docs](/use-these-docs) to your agent of choice via MCP for real-time answers.
 
-  <Callout icon="edit">
-    [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/oss/langchain/frontend/generative-ui-overview.mdx) or [file an issue](https://github.com/langchain-ai/docs/issues/new/choose).
-  </Callout>
-</div>
+[Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/oss/langchain/frontend/generative-ui-overview.mdx) or [file an issue](https://github.com/langchain-ai/docs/issues/new/choose).

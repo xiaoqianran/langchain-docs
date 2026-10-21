@@ -6,7 +6,7 @@
 
 监控批量导出状态、管理正在运行的导出以及排除故障。
 
-获得 [created an export job](/langsmith/data-export#2-create-an-export-job) 后，您可以使用此页面上的 API 来跟踪其进度、检查各个运行并在需要时停止它。本页还介绍了 LangSmith 如何自动处理失败，以及在用尽重试后导出失败时该怎么办。
+获得 [created an export job](/langsmith/data-export#2-create-an-export-job) 后，您可以使用此页面上的 API 来跟踪其进度、检查各个运行，并在需要时停止它。本页还介绍了 LangSmith 如何自动处理失败，以及在用尽重试后导出失败时该怎么办。
 
 此页面涵盖：
 
@@ -16,11 +16,11 @@
 * [Failure modes and retry policy](#failure-modes-and-retry-policy)，包括自动重试行为、故障场景、状态生命周期、并发限制和进度跟踪。
 * [Troubleshooting failed exports](#troubleshooting-failed-exports)。
 
-<Note>
-  **对于自托管、GCP EU、GCP APAC 和 AWS US SaaS**
-
-  更新以下自托管安装、GCP EU (`eu.api.smith.langchain.com`)、GCP APAC (`apac.api.smith.langchain.com`) 或 AWS US (`aws.api.smith.langchain.com`) 请求中的 LangSmith URL。
-</Note>
+> [!注意]
+>
+> **对于自托管、GCP EU、GCP APAC 和 AWS US SaaS**
+>
+> 更新以下自托管安装、GCP EU (`eu.api.smith.langchain.com`)、GCP APAC (`apac.api.smith.langchain.com`) 或 AWS US (`aws.api.smith.langchain.com`) 请求中的 LangSmith URL。
 
 ## 监控导出状态
 
@@ -98,20 +98,20 @@ LangSmith 批量导出自动处理瞬时故障和基础设施问题，以确保�
 * **最大重试次数**：每次运行 20 次重试（可能会发生变化）。
 * **重试延迟**：两次尝试之间间隔 30 秒（固定，无指数退避）。
 * **运行超时**：每次运行最多 4 小时。
-* **整体工作流程超时**：整个导出为 72 小时。
+* **总体工作流程超时**：整个导出为 72 小时。
 
 ### 失败场景|故障类型|原因 |自动重试？ |需要采取行动|
 | - | - | - | - |
 | **基础设施中断** | [Deployments](/langsmith/deployment)，服务器重启，worker崩溃 |是的，自动重新排队并进行剩余的重试。 |没有，作业会自动恢复。 |
-| **运行超时** |单次运行超过4小时限制 |是的，最多重试 20 次（可能会发生变化）。 |如果持续存在，缩小日期范围，请添加过滤器，或[limit the exported fields](/langsmith/data-export#limit-exported-fields)。 |
+| **运行超时** |单次运行超过4小时限制|是的，最多重试 20 次（可能会发生变化）。 |如果持续存在，缩小日期范围，请添加过滤器，或[limit the exported fields](/langsmith/data-export#limit-exported-fields)。 |
 | **工作流程超时** |全程出口超过72小时 |没有 |缩小导出范围（日期范围、过滤器）或分成较小的导出。 |
 | **存储/目的地错误** | [Invalid credentials](/langsmith/data-export-destinations#credentials-configuration)、[missing bucket](/langsmith/data-export-destinations#configuration-fields)、[permission issues](/langsmith/data-export-destinations#permissions-required) |没有 |修复目标配置并创建新的导出。 |
 | **目的地已删除** |出口过程中铲斗被移除 |没有 |重新创建目标并重新启动导出。 |
 | **终端处理错误** |数据序列化问题，资源耗尽 |是的，最多重试 20 次（可能会发生变化）。 |检查运行错误详细信息；可能需要调查。 |
 
-<Note>
-  任何单次运行失败（在所有重试都用尽之后）都会导致整个导出失败。
-</Note>
+> [!注意]
+>
+> 任何单次运行失败（在所有重试都用尽之后）都会导致整个导出失败。
 
 ### 导出状态生命周期
 
@@ -137,9 +137,9 @@ LangSmith 批量导出自动处理瞬时故障和基础设施问题，以确保�
 
 #### 自托管：调整批量导出并发性和负载大小
 
-在 [LangSmith Self-hosted](/langsmith/self-hosted) 上，并发限制是默认值。要在批量导出期间调整 Pod 内存使用情况，请在 `langsmith-backend` 服务上配置以下环境变量：|环境变量 |默认 |描述 |
+在 [LangSmith Self-hosted](/langsmith/self-hosted) 上，并发限制是默认值。要在批量导出期间调整 Pod 内存使用情况，请在 `langsmith-backend` 服务上配置以下环境变量：|环境变量 |默认|描述 |
 | - | - | - |
-| `BULK_EXPORT_MAX_CONCURRENT_RUNS` | `5` |每个调度阶段在单个导出中并行排队的分区运行的最大数量。处理大型日期分区时减少以限制峰值内存。 |
+| `BULK_EXPORT_MAX_CONCURRENT_RUNS` | `5` |每个调度阶段在单个导出中并行排队的分区运行的最大数量。处理大型日期分区时减少内存以限制峰值内存。 |
 | `DATA_EXPORT_RUN_LIMIT` | `500` |在导出窗口中分页时，从每个查询的运行存储中获取的页面大小（最大行数）。 |
 | `DATA_EXPORT_MAX_BATCH_PAYLOAD_SIZE_KB` | `100000` (100 MB) |在导出运行期间刷新批次之前的最大累积负载大小 (KB)。减少以降低每个批次的内存占用量。 |
 
@@ -178,12 +178,8 @@ DATA_EXPORT_MAX_BATCH_PAYLOAD_SIZE_KB: "512"
 
 对于与存储相关的错误，您可以在重试导出之前使用 AWS CLI 或 gsutil 测试目标配置。
 
-***<div>
-  <Callout icon="terminal-2">
-    [Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
-  </Callout>
+***
 
-  <Callout icon="edit">
-    [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/data-export-monitor.mdx) 或 [file an issue](https://github.com/langchain-ai/docs/issues/new/choose)。
-  </Callout>
-</div>
+[Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
+
+[Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/data-export-monitor.mdx) 或 [file an issue](https://github.com/langchain-ai/docs/issues/new/choose)。

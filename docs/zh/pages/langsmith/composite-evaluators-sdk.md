@@ -8,11 +8,13 @@
 
 本指南介绍了如何设置使用多个评估器的评估，并使用 [LangSmith SDK](https://reference.langchain.com/python/langsmith/observability/sdk) 将其分数与自定义聚合函数相结合。
 
-<Note> 需要langsmith>=0.4.29 </Note>
+> [!注意]
+>
+> 需要朗史密斯>=0.4.29
 
-<Tip>
-  要在LangSmith UI 中创建复合赋值器，请参阅[How to create a composite evaluator (UI)](/langsmith/composite-evaluators-ui)。
-</Tip>
+> [!提示]
+>
+> 要在LangSmith UI 中创建复合赋值器，请参阅[How to create a composite evaluator (UI)](/langsmith/composite-evaluators-ui)。
 
 ## 1. 在数据集上配置评估器
 
@@ -203,10 +205,6 @@ for example_with_runs in results["examples_with_runs"]:
 
 ***
 
-<div>
-  <Callout icon="terminal-2">
-    [Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
-  </Callout><Callout icon="edit">
-    [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/composite-evaluators-sdk.mdx) 或 [file an issue](https://github.com/langchain-ai/docs/issues/new/choose)。
-  </Callout>
-</div>
+[Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
+
+[Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/composite-evaluators-sdk.mdx) 或 [file an issue](https://github.com/langchain-ai/docs/issues/new/choose)。

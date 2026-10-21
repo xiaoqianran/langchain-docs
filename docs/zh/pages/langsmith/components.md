@@ -27,16 +27,10 @@ flowchart
 * [Studio](/langsmith/studio)：专门用于可视化、交互和调试的IDE。连接到本地代理服务器以开发和测试您的图形。
 * [Python/JS SDK](/langsmith/reference)：Python/JS SDK 提供了一种编程方式来与应用程序中部署的图形和代理进行交互。
 * [RemoteGraph](/langsmith/use-remote-graph)：允许您与已部署的图进行交互，就像它在本地运行一样。
-* [Control Plane](/langsmith/control-plane)：用于创建、更新和管理代理服务器部署的 UI 和 API。* [Data Plane](/langsmith/data-plane)：执行图形的运行时层，包括代理服务器、其支持服务（PostgreSQL、Redis 等）以及协调控制平面状态的侦听器。
+* [Control Plane](/langsmith/control-plane)：用于创建、更新和管理代理服务器部署的 UI 和 API。* [Data Plane](/langsmith/data-plane): The runtime layer that executes your graphs, including Agent Servers, their backing services (PostgreSQL, Redis, etc.), and the listener that reconciles state from the control plane.
 
 ***
 
-<div>
-  <Callout icon="terminal-2">
-    [Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
-  </Callout>
+[Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
 
-  <Callout icon="edit">
-    [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/components.mdx) 或 [file an issue](https://github.com/langchain-ai/docs/issues/new/choose)。
-  </Callout>
-</div>
+[Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/components.mdx) 或 [file an issue](https://github.com/langchain-ai/docs/issues/new/choose)。

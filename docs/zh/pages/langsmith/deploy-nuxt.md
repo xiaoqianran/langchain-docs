@@ -8,94 +8,82 @@
 
 以下页面详细介绍了一个在 [Nuxt 4](https://nuxt.com) 项目内部署 LangChain **深度代理** 的示例应用程序：流式聊天 UI、子代理详细信息视图、线程历史记录和推理令牌流，所有这些都由实现为 Nitro 路由处理程序 (HTTP + SSE) 的 [Agent Streaming Protocol](https://github.com/langchain-ai/agent-protocol/tree/main/streaming) 支持。没有单独的后端进程。
 
-来源：部署说明书中的[⟦T5⟧](https://github.com/langchain-ai/deployment-cookbook/tree/main/js-nuxt)。
+来源：部署手册中的[⟦T5⟧](https://github.com/langchain-ai/deployment-cookbook/tree/main/js-nuxt)。
 
 ## 部署
 
-<Tabs>
-  <Tab title="Vercel">
-    <Steps>
-      <Step title="Import the repository">
-        单击下面的 **使用 Vercel 部署**，或手动导入 [⟦T6⟧](https://github.com/langchain-ai/deployment-cookbook)。
+**韦尔塞尔**
 
-        <a href="https://vercel.com/new/clone?repository-url=https%3A%2F%2Fgithub.com%2Flangchain-ai%2Fdeployment-cookbook&root-directory=js-nuxt&env=OPENAI_API_KEY&envDescription=OpenAI%20API%20key%20for%20the%20agent%20and%20its%20subagents">
-          <img alt="Deploy with Vercel" />
-        </a>
-      </Step>
+**1.导入存储库**
 
-      <Step title="Configure the project">
-        将**根目录**设置为`js-nuxt`，并在项目设置中添加`OPENAI_API_KEY`。
-      </Step>
+单击下面的 **使用 Vercel 部署**，或手动导入 [⟦T6⟧](https://github.com/langchain-ai/deployment-cookbook)。
 
-      <Step title="Deploy">
-        部署项目。 Nuxt 自动检测 Vercel 并为代理流协议 API 构建 Nitro 服务器路由。
-      </Step>
-    </Steps>
-  </Tab>
+[⟦T115⟧](https://vercel.com/new/clone?repository-url=https%3A%2F%2Fgithub.com%2Flangchain-ai%2Fdeployment-cookbook\&root-directory=js-nuxt\&env=OPENAI_API_KEY\&envDescription=OpenAI%20API%20key%20for%20the%20agent%20and%20its%20subagents)
 
-  <Tab title="Netlify">
-    <Steps>
-      <Step title="Import the repository">
-        单击下面的 **部署到 Netlify**，或手动导入 [⟦T9⟧](https://github.com/langchain-ai/deployment-cookbook)。
+**2.配置项目**
 
-        <a href="https://app.netlify.com/start/deploy?repository=https://github.com/langchain-ai/deployment-cookbook&base=js-nuxt">
-          <img alt="Deploy to Netlify" />
-        </a>
-      </Step><Step title="Configure the project">
-        将**基目录**设置为`js-nuxt`。 Netlify 从该子目录运行 Nuxt 构建。
-      </Step>
+将**根目录**设置为`js-nuxt`，并在项目设置中添加`OPENAI_API_KEY`。
 
-      <Step title="Set environment variables">
-        在第一次构建完成之前，在 Netlify 部署设置中添加 `OPENAI_API_KEY`。
-      </Step>
-    </Steps>
-  </Tab>
+**3.部署**
 
-  <Tab title="Node">
-    <Steps>
-      <Step title="Build for production">
-        ```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-        cd js-nuxt
-        cp .env.example .env   # set OPENAI_API_KEY for local dev
-        pnpm install
-        pnpm build
-        ```
-      </Step>
+部署项目。 Nuxt 自动检测 Vercel 并为代理流协议 API 构建 Nitro 服务器路由。
 
-      <Step title="Set environment variables">
-        在主机上导出`OPENAI_API_KEY`。 Nitro 在运行时从环境中读取它。
+**网络化**
 
-        （可选）通过添加 [⟦T13⟧](https://github.com/langchain-ai/deployment-cookbook/blob/main/js-nuxt/.env.example) 中的变量来启用 LangSmith 跟踪。
-      </Step>
+**1.导入存储库**
 
-      <Step title="Start the Nitro server">
-        ```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-        node .output/server/index.mjs
-        ```
+单击下面的 **部署到 Netlify**，或手动导入 [⟦T9⟧](https://github.com/langchain-ai/deployment-cookbook)。
 
-        在任何流程管理器或容器编排器后面运行，以保持 Node.js 流程处于活动状态。
-      </Step>
-    </Steps>
-  </Tab>
-</Tabs>
+[⟦T116⟧](https://app.netlify.com/start/deploy?repository=https://github.com/langchain-ai/deployment-cookbook\&base=js-nuxt)
 
-<Tip>
-  `@langchain/vue` 从流中发现子代理并为每个子代理呈现一个可点击的芯片。选择一个会打开一个范围聊天视图，该视图通过 `useMessages` 绑定到该子代理的命名空间 `messages` 和 `tools` 通道。推理摘要流入可折叠的“思考”块，该块在流式传输时自动展开。
-</Tip>
+**2.配置项目**
+
+将**基目录**设置为`js-nuxt`。 Netlify 从该子目录运行 Nuxt 构建。
+
+**3.设置环境变量**
+
+在第一次构建完成之前，在 Netlify 部署设置中添加 `OPENAI_API_KEY`。
+
+**节点****1.为生产而构建**
+
+```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+cd js-nuxt
+cp .env.example .env   # set OPENAI_API_KEY for local dev
+pnpm install
+pnpm build
+```
+
+**2.设置环境变量**
+
+在主机上导出`OPENAI_API_KEY`。 Nitro 在运行时从环境中读取它。
+
+（可选）通过添加 [⟦T13⟧](https://github.com/langchain-ai/deployment-cookbook/blob/main/js-nuxt/.env.example) 中的变量来启用 LangSmith 跟踪。
+
+**3.启动 Nitro 服务器**
+
+```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+node .output/server/index.mjs
+```
+
+在任何流程管理器或容器编排器后面运行，以保持 Node.js 流程处于活动状态。
+
+> [!提示]
+>
+> `@langchain/vue` 从流中发现子代理并为每个子代理呈现一个可点击的芯片。选择一个会打开一个范围聊天视图，该视图通过 `useMessages` 绑定到该子代理的命名空间 `messages` 和 `tools` 通道。推理摘要流入可折叠的“思考”块，该块在流式传输时自动展开。
 
 ## 所需的 API 端点
 
 该应用程序在`/api/threads/...`下公开代理流协议。 Nitro 路线处理程序住在`server/api/threads/`。
 
-### 最低（流媒体聊天）这三个端点足以与 `@langchain/vue` 的 `HttpAgentServerAdapter` 运行单线程流式聊天：
+### 最低（流媒体聊天）
+
+这三个端点足以与 `@langchain/vue` 的 `HttpAgentServerAdapter` 运行单线程流式聊天：
 
 |方法|路径|目的|
 | - | - | - |
 | `POST` | `/api/threads/:threadId/commands` |接受协议命令（`run.start`，...）并启动代理运行 |
 | `POST` | `/api/threads/:threadId/stream` |运行的 SSE 协议事件流 |
-| `GET` / `POST` | `/api/threads/:threadId/state` |读取并引导检查点线程状态 |
-
-客户端使用 `GET /state`（以及 404 上的 `POST /state`）引导线程，因此在发送第一条消息之前不会发生 404 水合。
+| `GET` / `POST` | `/api/threads/:threadId/state` |读取并引导检查点线程状态 |客户端使用 `GET /state`（以及 404 上的 `POST /state`）引导线程，因此在发送第一条消息之前不会发生 404 水合。
 
 ### 可选（线程侧边栏）
 
@@ -157,7 +145,7 @@ flowchart TB
 | - | - |
 |前端 | `app/` 中的 Vue 组件（针对 SSE 封装在 `<ClientOnly>` 中）|
 | API层| `server/api/threads/` 中的 Nitro 路线处理程序 |
-|运行时 | Node.js（Nitro 预设取决于部署目标）|
+|运行时| Node.js（Nitro 预设取决于部署目标）|
 |上交所回放 |进程本地 `LocalThreadSession` (`server/utils/session.ts`) |
 |代理运行 |相同的硝基工艺；事件缓冲在 LangGraph `StreamChannel` |
 |线程存储 |内存中 `MemorySaver` 检查指针 (`server/agent/index.ts`) |
@@ -169,9 +157,9 @@ flowchart TB
 
 该代理开箱即用，使用内存中 `MemorySaver` 检查指针 (`server/agent/index.ts`) 和进程本地会话映射 (`server/utils/runtime.ts`)。这适用于本地开发和单实例服务器，但在无服务器或多实例主机上，对话状态在冷启动或副本中**不持久**。
 
-对于生产，换入[durable checkpointer](/oss/python/langgraph/checkpointers#checkpointer-libraries)：
+对于生产，换入 [durable checkpointer](/oss/python/langgraph/checkpointers#checkpointer-libraries)：
 
-|套餐 |后端 |
+|套餐 |后端|
 | - | - |
 | [⟦T58⟧](https://www.npmjs.com/package/@langchain/langgraph-checkpoint-redis) | Redis (`RedisSaver`) |
 | [⟦T60⟧](https://www.npmjs.com/package/@langchain/langgraph-checkpoint-postgres) | Postgres (`PostgresSaver`) |
@@ -199,28 +187,26 @@ pnpm typecheck  # vue-tsc over the project
 
 ## 项目布局
 
-<AccordionGroup>
-  <Accordion title="Project structure">
-    * `server/agent/` — 深度代理 (`createDeepAgent`)，带有 `researcher` 和 `math-whiz` 子代理、模拟工具和 `stripReasoningReplay` 中间件。
-    * `server/utils/` — 协议服务器逻辑：`session.ts`（SSE 运行）、`threads.ts`（检查指针支持的状态）、`serialize.ts`、`runtime.ts`。
-    * `server/api/threads/` — 上述协议端点的 Nitro 路由处理程序。
-    * `app/components/` — 使用 `@langchain/vue` 的 Vue 聊天 UI（`ChatApp`、`Chat`、`ThreadHistory`、`SubagentList`、`MessageReasoning`、…）。
-    * `app/utils/threads.ts` — 服务器驱动的线程助手和 LangGraph SDK 引导程序。
-  </Accordion><Accordion title="Backend details">
-    * `server/agent/index.ts` — 协调器通过 Responses API 使用推理模型；使用工具的子代理使用聊天完成（以避免通过检查点重放推理项）。
-    * `server/agent/middleware.ts` — 重建来自 `content` + `tool_calls` 的先前辅助消息，因此过时的推理 ID 永远不会重播到响应 API。
-    * `server/utils/session.ts` — `LocalThreadSession` 缓冲协议事件并通过 `matchesSubscription` 通过 SSE 输出匹配帧。
-    * `server/api/threads/index.get.ts` — `GET /api/threads`，检查指针支持的线程列表。
-    * `server/api/threads/[threadId]/…` — `commands`、`stream`、`state` (GET/POST)、`history` 和 `DELETE` 的处理程序。
-  </Accordion>
+> **项目结构**
+>
+> * `server/agent/` — 深度代理 (`createDeepAgent`)，带有 `researcher` 和 `math-whiz` 子代理、模拟工具和 `stripReasoningReplay` 中间件。
+> * `server/utils/` — 协议服务器逻辑：`session.ts`（SSE 运行）、`threads.ts`（检查指针支持的状态）、`serialize.ts`、`runtime.ts`。
+> * `server/api/threads/` — 上述协议端点的 Nitro 路由处理程序。
+> * `app/components/` — 使用 `@langchain/vue` 的 Vue 聊天 UI（`ChatApp`、`Chat`、`ThreadHistory`、`SubagentList`、`MessageReasoning`、...）。
+> * `app/utils/threads.ts` — 服务器驱动的线程助手和 LangGraph SDK 引导程序。> **后端详细信息**
+>
+> * `server/agent/index.ts` — 协调器通过 Responses API 使用推理模型；使用工具的子代理使用聊天完成（以避免通过检查点重放推理项）。
+> * `server/agent/middleware.ts` — 重建来自 `content` + `tool_calls` 的先前辅助消息，因此过时的推理 ID 永远不会重播到响应 API。
+> * `server/utils/session.ts` — `LocalThreadSession` 缓冲协议事件并通过 `matchesSubscription` 通过 SSE 输出匹配帧。
+> * `server/api/threads/index.get.ts` — `GET /api/threads`，检查指针支持的线程列表。
+> * `server/api/threads/[threadId]/…` — `commands`、`stream`、`state` (GET/POST)、`history` 和 `DELETE` 的处理程序。
 
-  <Accordion title="Frontend details">
-    * `app/components/ChatThread.vue` — 构建 `HttpAgentServerAdapter` 并调用 `provideStream({ transport, threadId })`。
-    * `app/components/Chat.vue` — 带有作曲家和每个子代理详细信息视图（带有面包屑）的消息视图。
-    * `app/components/SubagentList.vue` / `SubagentDetail.vue` — 内联子代理卡和作用域子代理聊天（`useMessages` 绑定到命名空间）。
-    * `app/components/MessageReasoning.vue` — 用于推理总结的可折叠“思考”块。
-  </Accordion>
-</AccordionGroup>
+> **前端详细信息**
+>
+> * `app/components/ChatThread.vue` — 构建 `HttpAgentServerAdapter` 并调用 `provideStream({ transport, threadId })`。
+> * `app/components/Chat.vue` — 带有编辑器的消息视图和每个子代理的详细信息视图（带有面包屑）。
+> * `app/components/SubagentList.vue` / `SubagentDetail.vue` — 内联子代理卡和作用域子代理聊天（`useMessages` 绑定到命名空间）。
+> * `app/components/MessageReasoning.vue` — 用于推理总结的可折叠“思考”块。
 
 ## 另请参阅
 
@@ -232,12 +218,6 @@ pnpm typecheck  # vue-tsc over the project
 
 ***
 
-<div>
-  <Callout icon="terminal-2">
-    [Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
-  </Callout>
+[Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
 
-  <Callout icon="edit">
-    [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/deploy-nuxt.mdx) 或 [file an issue](https://github.com/langchain-ai/docs/issues/new/choose)。
-  </Callout>
-</div>
+[Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/deploy-nuxt.mdx) 或 [file an issue](https://github.com/langchain-ai/docs/issues/new/choose)。

@@ -8,15 +8,13 @@ Build custom middleware by implementing hooks that run at specific points in the
 
 Middleware provides two styles of hooks to intercept agent execution:
 
-<CardGroup>
-  <Card title="Node-style hooks" icon="share" href="#node-style-hooks">
-    Run sequentially at specific execution points.
-  </Card>
+> **[Node-style hooks](#node-style-hooks)**
+>
+> Run sequentially at specific execution points.
 
-  <Card title="Wrap-style hooks" icon="container" href="#wrap-style-hooks">
-    Run around each model or tool call.
-  </Card>
-</CardGroup>
+> **[Wrap-style hooks](#wrap-style-hooks)**
+>
+> Run around each model or tool call.
 
 ### Node-style hooks
 
@@ -42,58 +40,56 @@ Choose the hooks your middleware needs. You can choose between node-style hooks 
 
 **Example:**
 
-<Tabs>
-  <Tab title="Decorator">
-    ```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-    from langchain.agents.middleware import before_model, after_model, AgentState
-    from langchain.messages import AIMessage
-    from langgraph.runtime import Runtime
-    from typing import Any
+**Decorator**
+
+```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+from langchain.agents.middleware import before_model, after_model, AgentState
+from langchain.messages import AIMessage
+from langgraph.runtime import Runtime
+from typing import Any
 
 
-    @before_model(can_jump_to=["end"])
-    def check_message_limit(state: AgentState, runtime: Runtime) -> dict[str, Any] | None:
-        if len(state["messages"]) >= 50:
+@before_model(can_jump_to=["end"])
+def check_message_limit(state: AgentState, runtime: Runtime) -> dict[str, Any] | None:
+    if len(state["messages"]) >= 50:
+        return {
+            "messages": [AIMessage("Conversation limit reached.")],
+            "jump_to": "end"
+        }
+    return None
+
+@after_model
+def log_response(state: AgentState, runtime: Runtime) -> dict[str, Any] | None:
+    print(f"Model returned: {state['messages'][-1].content}")
+    return None
+```
+
+**Class**
+
+```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+from langchain.agents.middleware import AgentMiddleware, AgentState, hook_config
+from langchain.messages import AIMessage
+from langgraph.runtime import Runtime
+from typing import Any
+
+class MessageLimitMiddleware(AgentMiddleware):
+    def __init__(self, max_messages: int = 50):
+        super().__init__()
+        self.max_messages = max_messages
+
+    @hook_config(can_jump_to=["end"])
+    def before_model(self, state: AgentState, runtime: Runtime) -> dict[str, Any] | None:
+        if len(state["messages"]) >= self.max_messages:
             return {
                 "messages": [AIMessage("Conversation limit reached.")],
                 "jump_to": "end"
             }
         return None
 
-    @after_model
-    def log_response(state: AgentState, runtime: Runtime) -> dict[str, Any] | None:
+    def after_model(self, state: AgentState, runtime: Runtime) -> dict[str, Any] | None:
         print(f"Model returned: {state['messages'][-1].content}")
         return None
-    ```
-  </Tab>
-
-  <Tab title="Class">
-    ```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-    from langchain.agents.middleware import AgentMiddleware, AgentState, hook_config
-    from langchain.messages import AIMessage
-    from langgraph.runtime import Runtime
-    from typing import Any
-
-    class MessageLimitMiddleware(AgentMiddleware):
-        def __init__(self, max_messages: int = 50):
-            super().__init__()
-            self.max_messages = max_messages
-
-        @hook_config(can_jump_to=["end"])
-        def before_model(self, state: AgentState, runtime: Runtime) -> dict[str, Any] | None:
-            if len(state["messages"]) >= self.max_messages:
-                return {
-                    "messages": [AIMessage("Conversation limit reached.")],
-                    "jump_to": "end"
-                }
-            return None
-
-        def after_model(self, state: AgentState, runtime: Runtime) -> dict[str, Any] | None:
-            print(f"Model returned: {state['messages'][-1].content}")
-            return None
-    ```
-  </Tab>
-</Tabs>
+```
 
 ### Wrap-style hooks
 
@@ -108,53 +104,51 @@ You decide if the handler is called zero times (short-circuit), once (normal flo
 
 **Example:**
 
-<Tabs>
-  <Tab title="Decorator">
-    ```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-    from langchain.agents.middleware import wrap_model_call, ModelRequest, ModelResponse
-    from typing import Callable
+**Decorator**
+
+```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+from langchain.agents.middleware import wrap_model_call, ModelRequest, ModelResponse
+from typing import Callable
 
 
-    @wrap_model_call
-    def retry_model(
+@wrap_model_call
+def retry_model(
+    request: ModelRequest,
+    handler: Callable[[ModelRequest], ModelResponse],
+) -> ModelResponse:
+    for attempt in range(3):
+        try:
+            return handler(request)
+        except Exception as e:
+            if attempt == 2:
+                raise
+            print(f"Retry {attempt + 1}/3 after error: {e}")
+```
+
+**Class**
+
+```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+from langchain.agents.middleware import AgentMiddleware, ModelRequest, ModelResponse
+from typing import Callable
+
+class RetryMiddleware(AgentMiddleware):
+    def __init__(self, max_retries: int = 3):
+        super().__init__()
+        self.max_retries = max_retries
+
+    def wrap_model_call(
+        self,
         request: ModelRequest,
         handler: Callable[[ModelRequest], ModelResponse],
     ) -> ModelResponse:
-        for attempt in range(3):
+        for attempt in range(self.max_retries):
             try:
                 return handler(request)
             except Exception as e:
-                if attempt == 2:
+                if attempt == self.max_retries - 1:
                     raise
-                print(f"Retry {attempt + 1}/3 after error: {e}")
-    ```
-  </Tab>
-
-  <Tab title="Class">
-    ```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-    from langchain.agents.middleware import AgentMiddleware, ModelRequest, ModelResponse
-    from typing import Callable
-
-    class RetryMiddleware(AgentMiddleware):
-        def __init__(self, max_retries: int = 3):
-            super().__init__()
-            self.max_retries = max_retries
-
-        def wrap_model_call(
-            self,
-            request: ModelRequest,
-            handler: Callable[[ModelRequest], ModelResponse],
-        ) -> ModelResponse:
-            for attempt in range(self.max_retries):
-                try:
-                    return handler(request)
-                except Exception as e:
-                    if attempt == self.max_retries - 1:
-                        raise
-                    print(f"Retry {attempt + 1}/{self.max_retries} after error: {e}")
-    ```
-  </Tab>
-</Tabs>
+                print(f"Retry {attempt + 1}/{self.max_retries} after error: {e}")
+```
 
 ## State updates
 
@@ -292,15 +286,13 @@ class InnerMiddleware(AgentMiddleware):
 
 You can create middleware in two ways:
 
-<CardGroup>
-  <Card title="Decorator-based middleware" icon="at" href="#decorator-based-middleware">
-    Quick and simple for single-hook middleware. Use decorators to wrap individual functions.
-  </Card>
+> **[Decorator-based middleware](#decorator-based-middleware)**
+>
+> Quick and simple for single-hook middleware. Use decorators to wrap individual functions.
 
-  <Card title="Class-based middleware" icon="braces" href="#class-based-middleware">
-    More powerful for complex middleware with multiple hooks or configuration.
-  </Card>
-</CardGroup>
+> **[Class-based middleware](#class-based-middleware)**
+>
+> More powerful for complex middleware with multiple hooks or configuration.
 
 ### Decorator-based middleware
 
@@ -445,96 +437,96 @@ If your middleware needs to track state across hooks, middleware can extend the 
 
 * **Make conditional decisions**: Use accumulated state to determine whether to continue execution, jump to different nodes, or modify behavior dynamically
 
-<Tabs>
-  <Tab title="Decorator">
-    ```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-    from langchain.agents import create_agent
-    from langchain.messages import HumanMessage
-    from langchain.agents.middleware import AgentState, before_model, after_model
-    from typing_extensions import NotRequired
-    from typing import Any
-    from langgraph.runtime import Runtime
+**Decorator**
+
+```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+from langchain.agents import create_agent
+from langchain.messages import HumanMessage
+from langchain.agents.middleware import AgentState, before_model, after_model
+from typing_extensions import NotRequired
+from typing import Any
+from langgraph.runtime import Runtime
 
 
-    class CustomState(AgentState):
-        model_call_count: NotRequired[int]
-        user_id: NotRequired[str]
+class CustomState(AgentState):
+    model_call_count: NotRequired[int]
+    user_id: NotRequired[str]
 
 
-    @before_model(state_schema=CustomState, can_jump_to=["end"])
-    def check_call_limit(state: CustomState, runtime: Runtime) -> dict[str, Any] | None:
+@before_model(state_schema=CustomState, can_jump_to=["end"])
+def check_call_limit(state: CustomState, runtime: Runtime) -> dict[str, Any] | None:
+    count = state.get("model_call_count", 0)
+    if count > 10:
+        return {"jump_to": "end"}
+    return None
+
+
+@after_model(state_schema=CustomState)
+def increment_counter(state: CustomState, runtime: Runtime) -> dict[str, Any] | None:
+    return {"model_call_count": state.get("model_call_count", 0) + 1}
+
+
+agent = create_agent(
+    model="gpt-5.5",
+    middleware=[check_call_limit, increment_counter],
+    tools=[],
+)
+
+# Invoke with custom state
+result = agent.invoke({
+    "messages": [HumanMessage("Hello")],
+    "model_call_count": 0,
+    "user_id": "user-123",
+})
+```
+
+**Class**
+
+```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+from langchain.agents import create_agent
+from langchain.messages import HumanMessage
+from langchain.agents.middleware import AgentState, AgentMiddleware
+from typing_extensions import NotRequired
+from typing import Any
+
+
+class CustomState(AgentState):
+    model_call_count: NotRequired[int]
+    user_id: NotRequired[str]
+
+
+class CallCounterMiddleware(AgentMiddleware[CustomState]):
+    state_schema = CustomState
+
+    def before_model(self, state: CustomState, runtime) -> dict[str, Any] | None:
         count = state.get("model_call_count", 0)
         if count > 10:
             return {"jump_to": "end"}
         return None
 
-
-    @after_model(state_schema=CustomState)
-    def increment_counter(state: CustomState, runtime: Runtime) -> dict[str, Any] | None:
+    def after_model(self, state: CustomState, runtime) -> dict[str, Any] | None:
         return {"model_call_count": state.get("model_call_count", 0) + 1}
 
 
-    agent = create_agent(
-        model="gpt-5.5",
-        middleware=[check_call_limit, increment_counter],
-        tools=[],
-    )
+agent = create_agent(
+    model="gpt-5.5",
+    middleware=[CallCounterMiddleware()],
+    tools=[],
+)
 
-    # Invoke with custom state
-    result = agent.invoke({
-        "messages": [HumanMessage("Hello")],
-        "model_call_count": 0,
-        "user_id": "user-123",
-    })
-    ```
-  </Tab>
-
-  <Tab title="Class">
-    ```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-    from langchain.agents import create_agent
-    from langchain.messages import HumanMessage
-    from langchain.agents.middleware import AgentState, AgentMiddleware
-    from typing_extensions import NotRequired
-    from typing import Any
-
-
-    class CustomState(AgentState):
-        model_call_count: NotRequired[int]
-        user_id: NotRequired[str]
-
-
-    class CallCounterMiddleware(AgentMiddleware[CustomState]):
-        state_schema = CustomState
-
-        def before_model(self, state: CustomState, runtime) -> dict[str, Any] | None:
-            count = state.get("model_call_count", 0)
-            if count > 10:
-                return {"jump_to": "end"}
-            return None
-
-        def after_model(self, state: CustomState, runtime) -> dict[str, Any] | None:
-            return {"model_call_count": state.get("model_call_count", 0) + 1}
-
-
-    agent = create_agent(
-        model="gpt-5.5",
-        middleware=[CallCounterMiddleware()],
-        tools=[],
-    )
-
-    # Invoke with custom state
-    result = agent.invoke({
-        "messages": [HumanMessage("Hello")],
-        "model_call_count": 0,
-        "user_id": "user-123",
-    })
-    ```
-  </Tab>
-</Tabs>
+# Invoke with custom state
+result = agent.invoke({
+    "messages": [HumanMessage("Hello")],
+    "model_call_count": 0,
+    "user_id": "user-123",
+})
+```
 
 ## Custom stream transformers
 
-<Note>Middleware-registered transformers require `langchain>=1.3.2`.</Note>
+> [!NOTE]
+>
+> Middleware-registered transformers require `langchain>=1.3.2`.
 
 Middleware can register stream transformer factories that project events from the live agent stream onto typed extension channels. This is useful for surfacing counters, side-channel artifacts, partial outputs, or wire-level redaction without coupling to the framework's built-in projections.
 
@@ -572,35 +564,35 @@ agent = create_agent(
 )
 ```
 
-<Accordion title="Execution flow">
-  **Before hooks run in order:**
-
-  1. `middleware1.before_agent()`
-  2. `middleware2.before_agent()`
-  3. `middleware3.before_agent()`
-
-  **Agent loop starts**
-
-  4. `middleware1.before_model()`
-  5. `middleware2.before_model()`
-  6. `middleware3.before_model()`
-
-  **Wrap hooks nest like function calls:**
-
-  7. `middleware1.wrap_model_call()` → `middleware2.wrap_model_call()` → `middleware3.wrap_model_call()` → model
-
-  **After hooks run in reverse order:**
-
-  8. `middleware3.after_model()`
-  9. `middleware2.after_model()`
-  10. `middleware1.after_model()`
-
-  **Agent loop ends**
-
-  11. `middleware3.after_agent()`
-  12. `middleware2.after_agent()`
-  13. `middleware1.after_agent()`
-</Accordion>
+> **Execution flow**
+>
+> **Before hooks run in order:**
+>
+> 1. `middleware1.before_agent()`
+> 2. `middleware2.before_agent()`
+> 3. `middleware3.before_agent()`
+>
+> **Agent loop starts**
+>
+> 4. `middleware1.before_model()`
+> 5. `middleware2.before_model()`
+> 6. `middleware3.before_model()`
+>
+> **Wrap hooks nest like function calls:**
+>
+> 7. `middleware1.wrap_model_call()` → `middleware2.wrap_model_call()` → `middleware3.wrap_model_call()` → model
+>
+> **After hooks run in reverse order:**
+>
+> 8. `middleware3.after_model()`
+> 9. `middleware2.after_model()`
+> 10. `middleware1.after_model()`
+>
+> **Agent loop ends**
+>
+> 11. `middleware3.after_agent()`
+> 12. `middleware2.after_agent()`
+> 13. `middleware1.after_agent()`
 
 **Key rules:**
 
@@ -618,18 +610,38 @@ To exit early from middleware, return a dictionary with `jump_to`:
 * `'tools'`: Jump to the tools node
 * `'model'`: Jump to the model node (or the first `before_model` hook)
 
-<Tabs>
-  <Tab title="Decorator">
-    ```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-    from langchain.agents.middleware import after_model, hook_config, AgentState
-    from langchain.messages import AIMessage
-    from langgraph.runtime import Runtime
-    from typing import Any
+**Decorator**
+
+```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+from langchain.agents.middleware import after_model, hook_config, AgentState
+from langchain.messages import AIMessage
+from langgraph.runtime import Runtime
+from typing import Any
 
 
-    @after_model
+@after_model
+@hook_config(can_jump_to=["end"])
+def check_for_blocked(state: AgentState, runtime: Runtime) -> dict[str, Any] | None:
+    last_message = state["messages"][-1]
+    if "BLOCKED" in last_message.content:
+        return {
+            "messages": [AIMessage("I cannot respond to that request.")],
+            "jump_to": "end"
+        }
+    return None
+```
+
+**Class**
+
+```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+from langchain.agents.middleware import AgentMiddleware, hook_config, AgentState
+from langchain.messages import AIMessage
+from langgraph.runtime import Runtime
+from typing import Any
+
+class BlockedContentMiddleware(AgentMiddleware):
     @hook_config(can_jump_to=["end"])
-    def check_for_blocked(state: AgentState, runtime: Runtime) -> dict[str, Any] | None:
+    def after_model(self, state: AgentState, runtime: Runtime) -> dict[str, Any] | None:
         last_message = state["messages"][-1]
         if "BLOCKED" in last_message.content:
             return {
@@ -637,33 +649,13 @@ To exit early from middleware, return a dictionary with `jump_to`:
                 "jump_to": "end"
             }
         return None
-    ```
-  </Tab>
-
-  <Tab title="Class">
-    ```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-    from langchain.agents.middleware import AgentMiddleware, hook_config, AgentState
-    from langchain.messages import AIMessage
-    from langgraph.runtime import Runtime
-    from typing import Any
-
-    class BlockedContentMiddleware(AgentMiddleware):
-        @hook_config(can_jump_to=["end"])
-        def after_model(self, state: AgentState, runtime: Runtime) -> dict[str, Any] | None:
-            last_message = state["messages"][-1]
-            if "BLOCKED" in last_message.content:
-                return {
-                    "messages": [AIMessage("I cannot respond to that request.")],
-                    "jump_to": "end"
-                }
-            return None
-    ```
-  </Tab>
-</Tabs>
+```
 
 ## Configure tracing
 
-<Note>Requires `langchain>=1.3.15`.</Note>
+> [!NOTE]
+>
+> Requires `langchain>=1.3.15`.
 
 Middleware hook spans trace their inputs and outputs by default. Set a `trace_policy` to shape what they record. `TracePolicy` accepts callables such as `process_inputs` and `process_outputs` that transform the traced value; `omit_payload` drops it entirely. This can be useful as an optimization when the full message history is uninformative to the function of the middleware.
 
@@ -706,17 +698,38 @@ Dynamically modify the system prompt at runtime to inject context, user-specific
 
 Use the `system_message` field on `ModelRequest` to read and modify the system prompt. It contains a [`SystemMessage`](https://reference.langchain.com/python/langchain-core/messages/system/SystemMessage) object (even if the agent was created with a string `system_prompt`).
 
-<Tabs>
-  <Tab title="Decorator">
-    ```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-    from collections.abc import Callable
+**Decorator**
 
-    from langchain.agents.middleware import ModelRequest, ModelResponse, wrap_model_call
-    from langchain.messages import SystemMessage
+```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+from collections.abc import Callable
+
+from langchain.agents.middleware import ModelRequest, ModelResponse, wrap_model_call
+from langchain.messages import SystemMessage
 
 
-    @wrap_model_call
-    def add_context(
+@wrap_model_call
+def add_context(
+    request: ModelRequest,
+    handler: Callable[[ModelRequest], ModelResponse],
+) -> ModelResponse:
+    new_content = list(request.system_message.content_blocks) + [
+        {"type": "text", "text": "Additional context."}
+    ]
+    new_system_message = SystemMessage(content=new_content)
+    return handler(request.override(system_message=new_system_message))
+```
+
+**Class**
+
+```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+from collections.abc import Callable
+
+from langchain.agents.middleware import AgentMiddleware, ModelRequest, ModelResponse
+
+
+class ContextMiddleware(AgentMiddleware):
+    def wrap_model_call(
+        self,
         request: ModelRequest,
         handler: Callable[[ModelRequest], ModelResponse],
     ) -> ModelResponse:
@@ -725,54 +738,56 @@ Use the `system_message` field on `ModelRequest` to read and modify the system p
         ]
         new_system_message = SystemMessage(content=new_content)
         return handler(request.override(system_message=new_system_message))
-    ```
-  </Tab>
+```
 
-  <Tab title="Class">
-    ```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-    from collections.abc import Callable
-
-    from langchain.agents.middleware import AgentMiddleware, ModelRequest, ModelResponse
-
-
-    class ContextMiddleware(AgentMiddleware):
-        def wrap_model_call(
-            self,
-            request: ModelRequest,
-            handler: Callable[[ModelRequest], ModelResponse],
-        ) -> ModelResponse:
-            new_content = list(request.system_message.content_blocks) + [
-                {"type": "text", "text": "Additional context."}
-            ]
-            new_system_message = SystemMessage(content=new_content)
-            return handler(request.override(system_message=new_system_message))
-    ```
-  </Tab>
-</Tabs>
-
-<Note>
-  * `ModelRequest.system_message` is always a [`SystemMessage`](https://reference.langchain.com/python/langchain-core/messages/system/SystemMessage) object, even if the agent was created with `system_prompt="string"`
-  * Use `SystemMessage.content_blocks` to access content as a list of blocks, regardless of whether the original content was a string or list
-  * When modifying system messages, use `content_blocks` and append new blocks to preserve existing structure
-  * You can pass [`SystemMessage`](https://reference.langchain.com/python/langchain-core/messages/system/SystemMessage) objects directly to `create_agent`'s `system_prompt` parameter for advanced use cases like cache control
-</Note>
+> [!NOTE]
+>
+> * `ModelRequest.system_message` is always a [`SystemMessage`](https://reference.langchain.com/python/langchain-core/messages/system/SystemMessage) object, even if the agent was created with `system_prompt="string"`
+> * Use `SystemMessage.content_blocks` to access content as a list of blocks, regardless of whether the original content was a string or list
+> * When modifying system messages, use `content_blocks` and append new blocks to preserve existing structure
+> * You can pass [`SystemMessage`](https://reference.langchain.com/python/langchain-core/messages/system/SystemMessage) objects directly to `create_agent`'s `system_prompt` parameter for advanced use cases like cache control
 
 ### Dynamic model selection
 
-<Tabs>
-  <Tab title="Decorator">
-    ```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-    from collections.abc import Callable
+**Decorator**
 
-    from langchain.agents.middleware import ModelRequest, ModelResponse, wrap_model_call
-    from langchain.chat_models import init_chat_model
+```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+from collections.abc import Callable
 
-    complex_model = init_chat_model("claude-sonnet-4-6")
-    simple_model = init_chat_model("claude-haiku-4-5-20251001")
+from langchain.agents.middleware import ModelRequest, ModelResponse, wrap_model_call
+from langchain.chat_models import init_chat_model
+
+complex_model = init_chat_model("claude-sonnet-4-6")
+simple_model = init_chat_model("claude-haiku-4-5-20251001")
 
 
-    @wrap_model_call
-    def dynamic_model(
+@wrap_model_call
+def dynamic_model(
+    request: ModelRequest,
+    handler: Callable[[ModelRequest], ModelResponse],
+) -> ModelResponse:
+    if len(request.messages) > 10:
+        model = complex_model
+    else:
+        model = simple_model
+    return handler(request.override(model=model))
+```
+
+**Class**
+
+```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+from collections.abc import Callable
+
+from langchain.agents.middleware import AgentMiddleware, ModelRequest, ModelResponse
+from langchain.chat_models import init_chat_model
+
+complex_model = init_chat_model("claude-sonnet-4-6")
+simple_model = init_chat_model("claude-haiku-4-5-20251001")
+
+
+class DynamicModelMiddleware(AgentMiddleware):
+    def wrap_model_call(
+        self,
         request: ModelRequest,
         handler: Callable[[ModelRequest], ModelResponse],
     ) -> ModelResponse:
@@ -781,34 +796,7 @@ Use the `system_message` field on `ModelRequest` to read and modify the system p
         else:
             model = simple_model
         return handler(request.override(model=model))
-    ```
-  </Tab>
-
-  <Tab title="Class">
-    ```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-    from collections.abc import Callable
-
-    from langchain.agents.middleware import AgentMiddleware, ModelRequest, ModelResponse
-    from langchain.chat_models import init_chat_model
-
-    complex_model = init_chat_model("claude-sonnet-4-6")
-    simple_model = init_chat_model("claude-haiku-4-5-20251001")
-
-
-    class DynamicModelMiddleware(AgentMiddleware):
-        def wrap_model_call(
-            self,
-            request: ModelRequest,
-            handler: Callable[[ModelRequest], ModelResponse],
-        ) -> ModelResponse:
-            if len(request.messages) > 10:
-                model = complex_model
-            else:
-                model = simple_model
-            return handler(request.override(model=model))
-    ```
-  </Tab>
-</Tabs>
+```
 
 ### Dynamically selecting tools
 
@@ -820,16 +808,42 @@ Select relevant tools at runtime to improve performance and accuracy. This secti
 * **Better accuracy** - Models choose correctly from fewer options
 * **Permission control** - Dynamically filter tools based on user access
 
-<Tabs>
-  <Tab title="Decorator">
-    ```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-    from langchain.agents import create_agent
-    from langchain.agents.middleware import wrap_model_call, ModelRequest, ModelResponse
-    from typing import Callable
+**Decorator**
+
+```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+from langchain.agents import create_agent
+from langchain.agents.middleware import wrap_model_call, ModelRequest, ModelResponse
+from typing import Callable
 
 
-    @wrap_model_call
-    def select_tools(
+@wrap_model_call
+def select_tools(
+    request: ModelRequest,
+    handler: Callable[[ModelRequest], ModelResponse],
+) -> ModelResponse:
+    """Middleware to select relevant tools based on state/context."""
+    # Select a small, relevant subset of tools based on state/context
+    relevant_tools = select_relevant_tools(request.state, request.runtime)
+    return handler(request.override(tools=relevant_tools))
+
+agent = create_agent(
+    model="gpt-5.5",
+    tools=all_tools,  # All available tools need to be registered upfront
+    middleware=[select_tools],
+)
+```
+
+**Class**
+
+```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+from langchain.agents import create_agent
+from langchain.agents.middleware import AgentMiddleware, ModelRequest, ModelResponse
+from typing import Callable
+
+
+class ToolSelectorMiddleware(AgentMiddleware):
+    def wrap_model_call(
+        self,
         request: ModelRequest,
         handler: Callable[[ModelRequest], ModelResponse],
     ) -> ModelResponse:
@@ -838,56 +852,56 @@ Select relevant tools at runtime to improve performance and accuracy. This secti
         relevant_tools = select_relevant_tools(request.state, request.runtime)
         return handler(request.override(tools=relevant_tools))
 
-    agent = create_agent(
-        model="gpt-5.5",
-        tools=all_tools,  # All available tools need to be registered upfront
-        middleware=[select_tools],
-    )
-    ```
-  </Tab>
-
-  <Tab title="Class">
-    ```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-    from langchain.agents import create_agent
-    from langchain.agents.middleware import AgentMiddleware, ModelRequest, ModelResponse
-    from typing import Callable
-
-
-    class ToolSelectorMiddleware(AgentMiddleware):
-        def wrap_model_call(
-            self,
-            request: ModelRequest,
-            handler: Callable[[ModelRequest], ModelResponse],
-        ) -> ModelResponse:
-            """Middleware to select relevant tools based on state/context."""
-            # Select a small, relevant subset of tools based on state/context
-            relevant_tools = select_relevant_tools(request.state, request.runtime)
-            return handler(request.override(tools=relevant_tools))
-
-    agent = create_agent(
-        model="gpt-5.5",
-        tools=all_tools,  # All available tools need to be registered upfront
-        middleware=[ToolSelectorMiddleware()],
-    )
-    ```
-  </Tab>
-</Tabs>
+agent = create_agent(
+    model="gpt-5.5",
+    tools=all_tools,  # All available tools need to be registered upfront
+    middleware=[ToolSelectorMiddleware()],
+)
+```
 
 ### Tool call monitoring
 
-<Tabs>
-  <Tab title="Decorator">
-    ```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-    from collections.abc import Callable
+**Decorator**
 
-    from langchain.agents.middleware import wrap_tool_call
-    from langchain.messages import ToolMessage
-    from langchain.tools.tool_node import ToolCallRequest
-    from langgraph.types import Command
+```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+from collections.abc import Callable
+
+from langchain.agents.middleware import wrap_tool_call
+from langchain.messages import ToolMessage
+from langchain.tools.tool_node import ToolCallRequest
+from langgraph.types import Command
 
 
-    @wrap_tool_call
-    def monitor_tool(
+@wrap_tool_call
+def monitor_tool(
+    request: ToolCallRequest,
+    handler: Callable[[ToolCallRequest], ToolMessage | Command],
+) -> ToolMessage | Command:
+    print(f"Executing tool: {request.tool_call['name']}")
+    print(f"Arguments: {request.tool_call['args']}")
+    try:
+        result = handler(request)
+        print("Tool completed successfully")
+        return result
+    except Exception as e:
+        print(f"Tool failed: {e}")
+        raise
+```
+
+**Class**
+
+```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+from collections.abc import Callable
+
+from langchain.agents.middleware import AgentMiddleware
+from langchain.messages import ToolMessage
+from langchain.tools.tool_node import ToolCallRequest
+from langgraph.types import Command
+
+
+class ToolMonitoringMiddleware(AgentMiddleware):
+    def wrap_tool_call(
+        self,
         request: ToolCallRequest,
         handler: Callable[[ToolCallRequest], ToolMessage | Command],
     ) -> ToolMessage | Command:
@@ -900,52 +914,50 @@ Select relevant tools at runtime to improve performance and accuracy. This secti
         except Exception as e:
             print(f"Tool failed: {e}")
             raise
-    ```
-  </Tab>
-
-  <Tab title="Class">
-    ```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-    from collections.abc import Callable
-
-    from langchain.agents.middleware import AgentMiddleware
-    from langchain.messages import ToolMessage
-    from langchain.tools.tool_node import ToolCallRequest
-    from langgraph.types import Command
-
-
-    class ToolMonitoringMiddleware(AgentMiddleware):
-        def wrap_tool_call(
-            self,
-            request: ToolCallRequest,
-            handler: Callable[[ToolCallRequest], ToolMessage | Command],
-        ) -> ToolMessage | Command:
-            print(f"Executing tool: {request.tool_call['name']}")
-            print(f"Arguments: {request.tool_call['args']}")
-            try:
-                result = handler(request)
-                print("Tool completed successfully")
-                return result
-            except Exception as e:
-                print(f"Tool failed: {e}")
-                raise
-    ```
-  </Tab>
-</Tabs>
+```
 
 ### Prompt caching (Anthropic)
 
 When working with Anthropic models, use structured content blocks with cache control directives to cache large system prompts:
 
-<Tabs>
-  <Tab title="Decorator">
-    ```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-    from langchain.agents.middleware import wrap_model_call, ModelRequest, ModelResponse
-    from langchain.messages import SystemMessage
-    from typing import Callable
+**Decorator**
+
+```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+from langchain.agents.middleware import wrap_model_call, ModelRequest, ModelResponse
+from langchain.messages import SystemMessage
+from typing import Callable
 
 
-    @wrap_model_call
-    def add_cached_context(
+@wrap_model_call
+def add_cached_context(
+    request: ModelRequest,
+    handler: Callable[[ModelRequest], ModelResponse],
+) -> ModelResponse:
+    # Always work with content blocks
+    new_content = list(request.system_message.content_blocks) + [
+        {
+            "type": "text",
+            "text": "Here is a large document to analyze:\n\n<document>...</document>",
+            # content up until this point is cached
+            "cache_control": {"type": "ephemeral"}
+        }
+    ]
+
+    new_system_message = SystemMessage(content=new_content)
+    return handler(request.override(system_message=new_system_message))
+```
+
+**Class**
+
+```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+from langchain.agents.middleware import AgentMiddleware, ModelRequest, ModelResponse
+from langchain.messages import SystemMessage
+from typing import Callable
+
+
+class CachedContextMiddleware(AgentMiddleware):
+    def wrap_model_call(
+        self,
         request: ModelRequest,
         handler: Callable[[ModelRequest], ModelResponse],
     ) -> ModelResponse:
@@ -954,43 +966,13 @@ When working with Anthropic models, use structured content blocks with cache con
             {
                 "type": "text",
                 "text": "Here is a large document to analyze:\n\n<document>...</document>",
-                # content up until this point is cached
-                "cache_control": {"type": "ephemeral"}
+                "cache_control": {"type": "ephemeral"}  # This content will be cached
             }
         ]
 
         new_system_message = SystemMessage(content=new_content)
         return handler(request.override(system_message=new_system_message))
-    ```
-  </Tab>
-
-  <Tab title="Class">
-    ```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-    from langchain.agents.middleware import AgentMiddleware, ModelRequest, ModelResponse
-    from langchain.messages import SystemMessage
-    from typing import Callable
-
-
-    class CachedContextMiddleware(AgentMiddleware):
-        def wrap_model_call(
-            self,
-            request: ModelRequest,
-            handler: Callable[[ModelRequest], ModelResponse],
-        ) -> ModelResponse:
-            # Always work with content blocks
-            new_content = list(request.system_message.content_blocks) + [
-                {
-                    "type": "text",
-                    "text": "Here is a large document to analyze:\n\n<document>...</document>",
-                    "cache_control": {"type": "ephemeral"}  # This content will be cached
-                }
-            ]
-
-            new_system_message = SystemMessage(content=new_content)
-            return handler(request.override(system_message=new_system_message))
-    ```
-  </Tab>
-</Tabs>
+```
 
 **Notes:**
 
@@ -1009,12 +991,6 @@ When working with Anthropic models, use structured content blocks with cache con
 
 ***
 
-<div>
-  <Callout icon="terminal-2">
-    [Connect these docs](/use-these-docs) to your agent of choice via MCP for real-time answers.
-  </Callout>
+[Connect these docs](/use-these-docs) to your agent of choice via MCP for real-time answers.
 
-  <Callout icon="edit">
-    [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/oss/langchain/middleware/custom.mdx) or [file an issue](https://github.com/langchain-ai/docs/issues/new/choose).
-  </Callout>
-</div>
+[Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/oss/langchain/middleware/custom.mdx) or [file an issue](https://github.com/langchain-ai/docs/issues/new/choose).

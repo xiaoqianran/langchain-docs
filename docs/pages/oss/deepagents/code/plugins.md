@@ -6,9 +6,9 @@ Install plugins from marketplaces or package skills, MCP servers, hooks, and Pyt
 
 Plugins extend dcode with reusable [skills](/oss/deepagents/code/memory-and-skills), [MCP servers](/oss/deepagents/code/mcp-tools), [hooks](/oss/deepagents/code/hooks), and [Python extensions](/oss/deepagents/code/extensions). Marketplaces provide catalogs for discovering and installing plugins across projects or teams. dcode supports Claude- and Codex-style plugin manifests and marketplace catalogs, as described in [Create a plugin](#create-a-plugin) and [Create a marketplace](#create-a-marketplace).
 
-<Warning>
-  Install plugins and marketplaces only from sources you trust. An enabled plugin can add instructions and run MCP servers, hook commands, or Python extensions with your user permissions.
-</Warning>
+> [!WARNING]
+>
+> Install plugins and marketplaces only from sources you trust. An enabled plugin can add instructions and run MCP servers, hook commands, or Python extensions with your user permissions.
 
 ## Manage plugins interactively
 
@@ -172,9 +172,9 @@ Place a hook document at `hooks/hooks.json`, declare a relative `hooks` path, or
 
 ### Add Python extensions
 
-<Note>
-  Python extensions require `DEEPAGENTS_CODE_EXPERIMENTAL=1`.
-</Note>
+> [!NOTE]
+>
+> Python extensions require `DEEPAGENTS_CODE_EXPERIMENTAL=1`.
 
 Declare one Python entry file or a list under the Deep Agents Code namespace in the plugin manifest:
 
@@ -264,12 +264,6 @@ dcode plugin install code-review@acme-tools
 
 ***
 
-<div>
-  <Callout icon="terminal-2">
-    [Connect these docs](/use-these-docs) to your agent of choice via MCP for real-time answers.
-  </Callout>
+[Connect these docs](/use-these-docs) to your agent of choice via MCP for real-time answers.
 
-  <Callout icon="edit">
-    [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/oss/deepagents/code/plugins.mdx) or [file an issue](https://github.com/langchain-ai/docs/issues/new/choose).
-  </Callout>
-</div>
+[Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/oss/deepagents/code/plugins.mdx) or [file an issue](https://github.com/langchain-ai/docs/issues/new/choose).

@@ -4,9 +4,9 @@
 
 Reach services on your private network from LangSmith through an outbound-only connector, without exposing them to the public internet.
 
-<Note>
-  Tunnels are in [alpha](/langsmith/release-stages). To request access for your organization, [contact our sales team](https://www.langchain.com/contact-sales).
-</Note>
+> [!NOTE]
+>
+> Tunnels are in [alpha](/langsmith/release-stages). To request access for your organization, [contact our sales team](https://www.langchain.com/contact-sales).
 
 A tunnel lets LangSmith reach a service that runs on your private network, such as a model endpoint or an MCP server, without opening that service to the internet. You run a small connector inside your network. The connector opens an outbound connection to LangSmith, and LangSmith sends requests for your service over that connection.
 
@@ -24,94 +24,90 @@ Tunnels are available on [LangSmith Cloud](/langsmith/cloud) in every region. Th
 
 To create a tunnel, you need the [Organization Admin or Organization Operator](/langsmith/rbac#organization-roles) role. You also need a place inside your network to run the connector: a Kubernetes cluster or a Docker host that can reach your services and make outbound HTTPS connections.
 
-<Steps>
-  <Step title="Open Tunnels settings" icon="settings">
-    In LangSmith, go to **Settings**, then select **Tunnels** under **Infrastructure**.
+**1. Open Tunnels settings**
 
-    <img alt="Tunnels settings page with no tunnels and a Create tunnel button" />
-  </Step>
+In LangSmith, go to **Settings**, then select **Tunnels** under **Infrastructure**.
 
-  <Step title="Create the tunnel" icon="plus">
-    Select **Create tunnel**. Enter a name and an optional description, then select **Create tunnel**.
+![Tunnels settings page with no tunnels and a Create tunnel button](https://mintcdn.com/langchain-5e9cc07a/zroKByT8uOSRQ7j4/langsmith/images/tunnels-empty.png?fit=max\&auto=format\&n=zroKByT8uOSRQ7j4\&q=85\&s=5e7a6d33e54cb555f8652a1d4ac6e733)
 
-    <img alt="Create tunnel dialog with a name and a description filled in" />
-  </Step>
+**2. Create the tunnel**
 
-  <Step title="Copy the connector configuration" icon="copy">
-    The new tunnel shows **Waiting for connector**. Its **Connector Configuration** section shows the tunnel ID and the settings the connector needs, as environment variables or as a YAML file. Copy them, and replace the example targets with your own (see [Targets](#targets)).
+Select **Create tunnel**. Enter a name and an optional description, then select **Create tunnel**.
 
-    <img alt="Tunnel details showing Waiting for connector, the tunnel ID, and the connector configuration as environment variables" />
-  </Step>
+![Create tunnel dialog with a name and a description filled in](https://mintcdn.com/langchain-5e9cc07a/zroKByT8uOSRQ7j4/langsmith/images/tunnels-create-dialog.png?fit=max\&auto=format\&n=zroKByT8uOSRQ7j4\&q=85\&s=e6fe6129c82295b0f446963a3a761a6d)
 
-  <Step title="Create an API key for the connector" icon="key">
-    In **Settings** > **API Keys**, [create an organization-scoped service key](/langsmith/create-account-api-key) with the Organization Admin or Organization Operator role. The connector uses this key to connect to LangSmith. Store it where your connector can read it, and do not commit it to source control.
-  </Step>
+**3. Copy the connector configuration**
 
-  <Step title="Run the connector" icon="terminal">
-    Run the connector inside your network. If your organization is not in the GCP US region, set the endpoint to your region's API URL:
+The new tunnel shows **Waiting for connector**. Its **Connector Configuration** section shows the tunnel ID and the settings the connector needs, as environment variables or as a YAML file. Copy them, and replace the example targets with your own (see [Targets](#targets)).
 
-    | Region | Endpoint |
-    | - | - |
-    | GCP US | `https://api.smith.langchain.com` (default) |
-    | GCP EU | `https://eu.api.smith.langchain.com` |
-    | GCP APAC | `https://apac.api.smith.langchain.com` |
-    | AWS US | `https://aws.api.smith.langchain.com` |
+![Tunnel details showing Waiting for connector, the tunnel ID, and the connector configuration as environment variables](https://mintcdn.com/langchain-5e9cc07a/zroKByT8uOSRQ7j4/langsmith/images/tunnels-connector-config.png?fit=max\&auto=format\&n=zroKByT8uOSRQ7j4\&q=85\&s=ed5ea182a8ed537402e80d72f37fa4af)
 
-    <Tabs>
-      <Tab title="Kubernetes (Helm)">
-        Store the API key in a Secret, then install the [`langsmith-connector` chart](https://github.com/langchain-ai/helm/tree/main/charts/langsmith-connector):
+**4. Create an API key for the connector**
 
-        ```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-        kubectl create namespace langsmith-connector
-        kubectl -n langsmith-connector create secret generic langsmith-connector-key \
-          --from-literal=langsmith_api_key=<api key>
+In **Settings** > **API Keys**, [create an organization-scoped service key](/langsmith/create-account-api-key) with the Organization Admin or Organization Operator role. The connector uses this key to connect to LangSmith. Store it where your connector can read it, and do not commit it to source control.
 
-        helm repo add langchain https://langchain-ai.github.io/helm/
-        helm repo update
-        helm install langsmith-connector langchain/langsmith-connector \
-          --namespace langsmith-connector \
-          --set config.connectionId=<tunnel id> \
-          --set config.existingSecretName=langsmith-connector-key \
-          --set config.targets.litellm=http://litellm.internal:4000
-        ```
+**5. Run the connector**
 
-        Add `--set config.endpoint=<endpoint>` for a region other than GCP US. The chart mounts the key as a file and the connector reads it again on every reconnect, so you can rotate the key in the Secret without restarting the connector.
+Run the connector inside your network. If your organization is not in the GCP US region, set the endpoint to your region's API URL:
 
-        Run a single replica. One connector already keeps two redundant connections to LangSmith.
-      </Tab>
+| Region | Endpoint |
+| - | - |
+| GCP US | `https://api.smith.langchain.com` (default) |
+| GCP EU | `https://eu.api.smith.langchain.com` |
+| GCP APAC | `https://apac.api.smith.langchain.com` |
+| AWS US | `https://aws.api.smith.langchain.com` |
 
-      <Tab title="Docker">
-        ```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-        docker run -d --name langsmith-connector --restart unless-stopped \
-          -e LANGSMITH_CONNECTION_ID=<tunnel id> \
-          -e LANGSMITH_API_KEY=<api key> \
-          -e LANGSMITH_CONNECTOR_TARGETS="litellm=http://litellm.internal:4000" \
-          langchain/langsmith-connector:0.2.0
-        ```
+**Kubernetes (Helm)**
 
-        Add `-e LANGSMITH_ENDPOINT=<endpoint>` for a region other than GCP US. To read the key from a file instead, set `LANGSMITH_API_KEY_FILE` to its path.
-      </Tab>
-    </Tabs>
+Store the API key in a Secret, then install the [`langsmith-connector` chart](https://github.com/langchain-ai/helm/tree/main/charts/langsmith-connector):
 
-    The connector honors `HTTPS_PROXY` if your network requires an outbound proxy. Set `LOG_LEVEL=debug` to log every request it forwards. With Helm, set it through `connector.deployment.extraEnv`.
-  </Step>
+```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+kubectl create namespace langsmith-connector
+kubectl -n langsmith-connector create secret generic langsmith-connector-key \
+  --from-literal=langsmith_api_key=<api key>
 
-  <Step title="Check that the tunnel is connected" icon="circle-check">
-    Within a few seconds of the connector starting, the tunnel shows **Connected** and lists each target the connector serves, with its tunnel URL.
+helm repo add langchain https://langchain-ai.github.io/helm/
+helm repo update
+helm install langsmith-connector langchain/langsmith-connector \
+  --namespace langsmith-connector \
+  --set config.connectionId=<tunnel id> \
+  --set config.existingSecretName=langsmith-connector-key \
+  --set config.targets.litellm=http://litellm.internal:4000
+```
 
-    <img alt="Tunnel details showing Connected and two available HTTP targets, each with a tunnel URL and a copy button" />
+Add `--set config.endpoint=<endpoint>` for a region other than GCP US. The chart mounts the key as a file and the connector reads it again on every reconnect, so you can rotate the key in the Secret without restarting the connector.
 
-    To check a target from your own machine, send a request to its tunnel URL with an API key for the organization:
+Run a single replica. One connector already keeps two redundant connections to LangSmith.
 
-    ```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-    curl -H "X-Api-Key: $LANGSMITH_API_KEY" https://<handle>.tunnels.smith.langchain.com/
-    ```
+**Docker**
 
-    The response comes from your service. A request without a valid API key returns `403` with `connection access denied`.
+```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+docker run -d --name langsmith-connector --restart unless-stopped \
+  -e LANGSMITH_CONNECTION_ID=<tunnel id> \
+  -e LANGSMITH_API_KEY=<api key> \
+  -e LANGSMITH_CONNECTOR_TARGETS="litellm=http://litellm.internal:4000" \
+  langchain/langsmith-connector:0.2.0
+```
 
-    If the tunnel stays at **Waiting for connector**, check the connector's logs. Each time the connector fails to connect, it logs a warning with the reason and retries. Common causes are an API key without the Organization Admin or Organization Operator role, a wrong tunnel ID, or a disabled tunnel.
-  </Step>
-</Steps>
+Add `-e LANGSMITH_ENDPOINT=<endpoint>` for a region other than GCP US. To read the key from a file instead, set `LANGSMITH_API_KEY_FILE` to its path.
+
+The connector honors `HTTPS_PROXY` if your network requires an outbound proxy. Set `LOG_LEVEL=debug` to log every request it forwards. With Helm, set it through `connector.deployment.extraEnv`.
+
+**6. Check that the tunnel is connected**
+
+Within a few seconds of the connector starting, the tunnel shows **Connected** and lists each target the connector serves, with its tunnel URL.
+
+![Tunnel details showing Connected and two available HTTP targets, each with a tunnel URL and a copy button](https://mintcdn.com/langchain-5e9cc07a/zroKByT8uOSRQ7j4/langsmith/images/tunnels-connected.png?fit=max\&auto=format\&n=zroKByT8uOSRQ7j4\&q=85\&s=07630d1a827360d71bac1e4e7f3f4889)
+
+To check a target from your own machine, send a request to its tunnel URL with an API key for the organization:
+
+```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+curl -H "X-Api-Key: $LANGSMITH_API_KEY" https://<handle>.tunnels.smith.langchain.com/
+```
+
+The response comes from your service. A request without a valid API key returns `403` with `connection access denied`.
+
+If the tunnel stays at **Waiting for connector**, check the connector's logs. Each time the connector fails to connect, it logs a warning with the reason and retries. Common causes are an API key without the Organization Admin or Organization Operator role, a wrong tunnel ID, or a disabled tunnel.
 
 ### Targets
 
@@ -180,12 +176,6 @@ To stop LangSmith from reaching your services, disable or delete the tunnel in *
 
 ***
 
-<div>
-  <Callout icon="terminal-2">
-    [Connect these docs](/use-these-docs) to your agent of choice via MCP for real-time answers.
-  </Callout>
+[Connect these docs](/use-these-docs) to your agent of choice via MCP for real-time answers.
 
-  <Callout icon="edit">
-    [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/tunnels.mdx) or [file an issue](https://github.com/langchain-ai/docs/issues/new/choose).
-  </Callout>
-</div>
+[Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/tunnels.mdx) or [file an issue](https://github.com/langchain-ai/docs/issues/new/choose).

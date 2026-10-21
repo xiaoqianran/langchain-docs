@@ -29,9 +29,9 @@
 pip install "deployments-wrap-sdk[google-adk]"
 ```
 
-<Note>
-  PyPI 发行版名称为`deployments-wrap-sdk`，但 Python 导入路径为`saf_sdk`。两者都指同一个包。
-</Note>
+> [!注意]
+>
+> PyPI 发行版名称为 `deployments-wrap-sdk`，但 Python 导入路径为 `saf_sdk`。两者都指同一个包。
 
 ## 快速入门这个最小的示例构建了一个代理，该代理返回输入作为其响应，并且不需要模型 API 密钥。该代理绕过 LLM 调用，以便您可以在连接真实模型之前验证部署是否正常工作。
 
@@ -92,15 +92,15 @@ agent = wrap(
 * **身份验证**：如果启用代理服务器[authentication](/langsmith/auth)，则经过身份验证的用户 ID 将变为 ADK 的`user_id`。否则用户 ID 为`"anonymous"`。
 
 ### 不支持* **多模式输入**：包装器仅将 `messages[-1].content` 作为单个文本部分转发。入站图像、文件、音频或内联二进制块不会传递到 ADK 运行程序。
-* **每轮多条新消息**：只有`messages`中的最后一项被视为新用户消息。对话历史记录是从 ADK 会话状态重建的，而不是从 LangGraph 消息列表重建的。
+* **每轮多条新消息**：只有`messages`中的最后一项被视为新用户消息。对话历史记录是根据 ADK 会话状态而不是从LangGraph消息列表重建的。
 * **双向/直播**：包装器硬编码`RunConfig(streaming_mode=StreamingMode.SSE)`。 ADK的`Runner.run_live()`以及用于音频或语音代理的双向流模式不会被调用，因此无法通过`wrap()`部署实时音频和语音代理。
-* **非文本输出部分**：仅从 ADK 事件收集 `part.text` 值。代理生成的内联图像、音频或文件不会显示在图表的 `messages` 输出中。
+* **非文本输出部分**：仅从 ADK 事件收集 `part.text` 值。代理生成的内联图像、音频或文件不会显示在图表的 `messages` 输出上。
 * **中间事件作为消息**：响应作为包含串联文本的 `AIMessage` 发出。工具调用、工具结果和中间子代理轮次不会在图表的 `messages` 字段中作为单独的项目公开。请改为在 [LangSmith traces](/langsmith/observability) 中检查它们。* **替代 ADK 会话服务**：`runner.session_service` 必须是 `LangsmithSessionService`。 ADK 的 `InMemorySessionService`、`DatabaseSessionService` 和 `VertexAiSessionService` 会被 `TypeError` 拒绝，因为会话状态保存在 LangGraph 检查点中。
 * **本机LangGraph中断**：包装器不公开LangGraph的`interrupt`或`Command(resume=...)`机制。基于 `LongRunningFunctionTool` 构建的人机交互流程遵循 ADK 自己的模式：该工具返回诸如 `pending_approval` 之类的状态，代理回复，后续轮流解决待处理的呼叫。
 
 ## 项目布局
 
-一个可部署的项目需要三个文件：
+A deployable project needs three files:
 
 ```
 my-adk-agent/
@@ -122,7 +122,7 @@ my-adk-agent/
 }
 ```
 
-`pyproject.toml` 声明依赖项：
+`pyproject.toml` declares dependencies:
 
 ```toml pyproject.toml theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 [project]
@@ -148,7 +148,7 @@ pip install -e .
 langgraph dev
 ```
 
-这为位于 `http://127.0.0.1:2024` 的客服人员提供服务，并打开 [LangSmith Studio](/langsmith/studio)，以便您可以与客服人员聊天。直接使用`curl`发送请求：
+这为位于 `http://127.0.0.1:2024` 的客服人员提供服务，并打开 [LangSmith Studio](/langsmith/studio)，以便您可以与客服人员聊天。 Send a request directly with `curl`:
 
 ```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 # Create a thread
@@ -172,7 +172,7 @@ curl -s -X POST "http://127.0.0.1:2024/threads/$THREAD/runs/wait" \
 langgraph deploy --name my-adk-agent
 ```
 
-环境配置、部署类型、修订管理请参考[Deploy to cloud](/langsmith/deploy-to-cloud)。对于自托管设置，请参阅[Self-hosted deployments](/langsmith/self-hosted)。
+环境配置、部署类型、修订管理请参考[Deploy to cloud](/langsmith/deploy-to-cloud)。 For self-hosted setups, refer to [Self-hosted deployments](/langsmith/self-hosted).
 
 ## 启用跟踪每当启用 LangSmith 跟踪时，`wrap()` 都会自动调用 `langsmith.integrations.google_adk.configure_google_adk()`，因此您需要做的就是在部署上设置环境变量：
 
@@ -185,15 +185,15 @@ GOOGLE_API_KEY=your-google-api-key
 
 [Traces](/langsmith/observability) 在[LangSmith UI](https://smith.langchain.com?utm_source=docs\&utm_medium=cta\&utm_campaign=langsmith-signup\&utm_content=langsmith-deploy-google-adk) 中显示代理调用、工具调用和 LLM 交互。有关底层跟踪集成的更多信息，请参阅[Trace Google ADK applications](/langsmith/trace-with-google-adk)。
 
-## API 参考
+## API reference
 
 ### `wrap(runner)`
 
 包装已配置的 `google.adk.runners.Runner` 并返回 LangGraph `Pregel` 图表，该图表可以从模块导出并由代理服务器提供服务。
 
-|论证|类型 |描述 |
+| Argument |类型 |描述 |
 | - | - | - |
-| `runner` | `google.adk.runners.Runner` |配置好的 ADK 运行器。它的 `session_service` **必须** 是 `LangsmithSessionService`。 |
+| `runner` | `google.adk.runners.Runner` | A configured ADK Runner. Its `session_service` **must** be a `LangsmithSessionService`. |
 
 **返回：** 一个名为 `runner.app_name` 的 `Pregel` 图。
 
@@ -205,7 +205,7 @@ GOOGLE_API_KEY=your-google-api-key
 
 由代理服务器的检查点存储支持的`google.adk.sessions.BaseSessionService`实现。包装器自动管理会话生命周期。它在线程的第一轮创建一个会话，在后续轮次中从检查点加载它，并在运行完成时写回更新的会话。
 
-根据 `Runner` 使用新实例：```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+Use a fresh instance per `Runner`:```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 session_service = LangsmithSessionService()
 ```
 
@@ -215,7 +215,7 @@ session_service = LangsmithSessionService()
 
 包装代理的默认输入架构。
 
-|领域 |类型 |描述 |
+|领域|类型 |描述 |
 | - | - | - |
 | `messages` | `list[AnyMessage]` | （必填）对话消息；包装器将 `messages[-1].content` 作为新用户消息发送到 ADK 运行器。 |
 | `state_delta` | `dict[str, Any] \| None` | （可选）传递到 `runner.run_async(state_delta=...)` 以改变本轮的 ADK 会话状态。 |
@@ -224,7 +224,7 @@ session_service = LangsmithSessionService()
 
 包装代理的默认输出架构。
 
-|领域 |类型 |描述 |
+|领域|类型 |描述 |
 | - | - | - |
 | `messages` | `list[AnyMessage]` |代理的响应消息，通过 LangGraph 的 `add_messages` 减速器附加到线程。 |
 
@@ -234,19 +234,13 @@ session_service = LangsmithSessionService()
 
 当跑步到达时：1. 包装图从运行配置中读取 `thread_id` 并将其用作 ADK `session_id`。如果启用[authentication](/langsmith/auth)，则经过身份验证的用户的id将成为ADK`user_id`；否则用户 ID 为`"anonymous"`。
 2. 包装器将之前的会话（如果有）从LangGraph 检查点加载到`LangsmithSessionService`，然后要求运行器处理最新消息。
-3. 运行器发出 ADK 事件。包装器通过LangGraph的异步回调管理器转发部分令牌事件，以便它们通过`stream_mode="messages"`流出，并收集响应消息的最终文本。
+3. 运行器发出 ADK 事件。包装器通过 LangGraph 的异步回调管理器转发部分令牌事件，以便它们通过 `stream_mode="messages"` 流出，并收集响应消息的最终文本。
 4. 运行完成后，包装器序列化 ADK 会话并通过 `entrypoint.final(save=...)` 将其保存到检查点。同一线程上的下一次运行将从该状态恢复。
 
 这意味着 ADK 自己的会话/状态语义被端到端保留，同时部署获得标准代理服务器功能：持久运行、流式传输、多线程持久性和跟踪。
 
 ***
 
-<div>
-  <Callout icon="terminal-2">
-    [Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
-  </Callout>
+[Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
 
-  <Callout icon="edit">
-    [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/deploy-google-adk.mdx) 或 [file an issue](https://github.com/langchain-ai/docs/issues/new/choose)。
-  </Callout>
-</div>
+[Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/deploy-google-adk.mdx) 或 [file an issue](https://github.com/langchain-ai/docs/issues/new/choose)。

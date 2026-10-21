@@ -34,9 +34,9 @@ To promote a commit:
 2. A deployment modal opens, showing which commit is currently assigned to that environment and will be replaced.
 3. Confirm the promotion. The environment pointer updates immediately.
 
-<Note>
-  Promoting a commit to Production does not remove it from Staging. If a commit is in Staging and you promote it to Production, it remains in Staging as well.
-</Note>
+> [!NOTE]
+>
+> Promoting a commit to Production does not remove it from Staging. If a commit is in Staging and you promote it to Production, it remains in Staging as well.
 
 ### Roll back an environment
 
@@ -52,13 +52,13 @@ Each environment maintains an ordered history of which commits were assigned to 
 
 Each tag references exactly one commit, though you can reassign a tag to point to a different commit.
 
-<Note>
-  **Reserved tags:** The `staging` and `production` tags are reserved for environment management and are not enabled in the freeform tag picker. Use the [promotion flow](#promote-a-commit) to assign commits to these environments.
-</Note>
+> [!NOTE]
+>
+> **Reserved tags:** The `staging` and `production` tags are reserved for environment management and are not enabled in the freeform tag picker. Use the [promotion flow](#promote-a-commit) to assign commits to these environments.
 
-<Note>
-  **Not to be confused with resource tags**: Commit tags are specific to prompt versioning and reference individual commits in a prompt's history. [Resource tags](/langsmith/set-up-resource-tags) are key-value pairs used to organize workspace resources like projects, datasets, and prompts. While both can use similar naming conventions (like `prod` or `staging`), commit tags control **which version** of a prompt runs, while resource tags help you **organize and filter** resources across your workspace.
-</Note>
+> [!NOTE]
+>
+> **Not to be confused with resource tags**: Commit tags are specific to prompt versioning and reference individual commits in a prompt's history. [Resource tags](/langsmith/set-up-resource-tags) are key-value pairs used to organize workspace resources like projects, datasets, and prompts. While both can use similar naming conventions (like `prod` or `staging`), commit tags control **which version** of a prompt runs, while resource tags help you **organize and filter** resources across your workspace.
 
 ### Create a tag
 
@@ -102,13 +102,13 @@ LangSmith automatically adds the prompt creator as an owner.
 ### Configure access and permissions
 
 1. Open the prompt in the LangSmith UI.
-2. Click the <Icon icon="dots-vertical" /> **More** icon in the upper-right corner and select **Access and Permissions**.
+2. Click the  **More** icon in the upper-right corner and select **Access and Permissions**.
 3. Select **Owners only** mode.
 4. Add or remove users from the owners group.
 
-<Warning>
-  If you save changes that remove yourself as an owner, you will lose the ability to manage owners or switch the prompt back to workspace authorized users mode. Only another owner can restore your access.
-</Warning>
+> [!WARNING]
+>
+> If you save changes that remove yourself as an owner, you will lose the ability to manage owners or switch the prompt back to workspace authorized users mode. Only another owner can restore your access.
 
 When **Owners only** mode is active, only an owner can disable it or add or remove other owners.
 
@@ -128,9 +128,9 @@ Navigate to the **Prompts** section in the left-hand sidebar or from the applica
 
 Add a webhook URL and any required headers.
 
-<Note>
-  You can only configure one webhook per workspace. If you want to configure multiple per workspace or set up a different webhook for each prompt, let us know in the [LangChain Forum](https://forum.langchain.com/).
-</Note>
+> [!NOTE]
+>
+> You can only configure one webhook per workspace. If you want to configure multiple per workspace or set up a different webhook for each prompt, let us know in the [LangChain Forum](https://forum.langchain.com/).
 
 To test out your webhook, click the **Send test notification** button. This will send a test notification to the webhook URL you provided with a sample payload.
 
@@ -151,7 +151,7 @@ Commit to a prompt to trigger the webhook you've configured.
 
 If you do this in the Playground, you'll be prompted to deselect the webhooks you'd like to avoid triggering.
 
-<img alt="Commit Playground" />
+![Commit Playground](https://mintcdn.com/langchain-5e9cc07a/jxELuvrYOtmqoWuD/langsmith/images/commit-playground.png?fit=max\&auto=format\&n=jxELuvrYOtmqoWuD\&q=85\&s=e66f27045c1207d84d3477e04009c013)
 
 #### Using the API
 
@@ -161,9 +161,9 @@ If you commit via the API, you can specify to skip triggering the webhook by set
 
 LangSmith's public prompt hub is a collection of prompts that have been created by the LangChain community that you can use for reference.
 
-<Note>
-  Note that prompts are user-generated and unverified. LangChain does not review or endorse public prompts, use these at your own risk. Use of Prompt Hub is subject to our [Terms of Service](https://www.langchain.com/terms-of-service).
-</Note>
+> [!NOTE]
+>
+> Note that prompts are user-generated and unverified. LangChain does not review or endorse public prompts, use these at your own risk. Use of Prompt Hub is subject to our [Terms of Service](https://www.langchain.com/terms-of-service).
 
 Navigate to the **Prompts** section of the left-hand sidebar and click on **Browse all Public Prompts in the LangChain Hub**.
 
@@ -171,16 +171,10 @@ Here you'll find all of the publicly listed prompts in the LangChain Hub. You ca
 
 To view prompts tied to your workspace, navigate to **Prompts** in the sidebar.
 
-<img alt="Prompts tab" />
+![Prompts tab](https://mintcdn.com/langchain-5e9cc07a/H9jA2WRyA-MV4-H0/langsmith/images/prompts-tab.png?fit=max\&auto=format\&n=H9jA2WRyA-MV4-H0\&q=85\&s=d689013c2158309249c547086e145783)
 
 ***
 
-<div>
-  <Callout icon="terminal-2">
-    [Connect these docs](/use-these-docs) to your agent of choice via MCP for real-time answers.
-  </Callout>
+[Connect these docs](/use-these-docs) to your agent of choice via MCP for real-time answers.
 
-  <Callout icon="edit">
-    [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/manage-prompts.mdx) or [file an issue](https://github.com/langchain-ai/docs/issues/new/choose).
-  </Callout>
-</div>
+[Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/manage-prompts.mdx) or [file an issue](https://github.com/langchain-ai/docs/issues/new/choose).

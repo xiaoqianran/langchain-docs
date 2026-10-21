@@ -10,11 +10,9 @@ checkpoint, view the exact state the agent held, and **resume execution from
 that point** to explore alternative paths. It's a debugger, an undo button, and
 an audit log all in one.
 
-<PatternEmbed />
-
-<Note>
-  This feature requires the [LangGraph Agent Server](/oss/javascript/langgraph/local-server). Run your agent locally with `langgraph dev` or [deploy it to LangSmith](/langsmith/deployment) to use this pattern.
-</Note>
+> [!NOTE]
+>
+> This feature requires the [LangGraph Agent Server](/oss/javascript/langgraph/local-server). Run your agent locally with `langgraph dev` or [deploy it to LangSmith](/langsmith/deployment) to use this pattern.
 
 ## How checkpoints work
 
@@ -36,178 +34,176 @@ Create the stream for your agent, then fetch checkpoint history explicitly from
 the LangGraph client for the active thread. Resuming from a checkpoint uses
 `forkFrom: { checkpointId }`.
 
-<Info>
-  The code examples use `useStream<typeof myAgent>` for type-safe stream state. See Type inference for [Python](/oss/python/langchain/frontend/overview#type-inference) or [JavaScript](/oss/javascript/langchain/frontend/overview#type-inference) backends.
-</Info>
+> [!NOTE]
+>
+> The code examples use `useStream<typeof myAgent>` for type-safe stream state. See Type inference for [Python](/oss/python/langchain/frontend/overview#type-inference) or [JavaScript](/oss/javascript/langchain/frontend/overview#type-inference) backends.
 
-<CodeGroup>
-  ```tsx React theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  import { useStream } from "@langchain/react";
-  import { useEffect, useState } from "react";
+```tsx React theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+import { useStream } from "@langchain/react";
+import { useEffect, useState } from "react";
 
-  const AGENT_URL = "http://localhost:2024";
+const AGENT_URL = "http://localhost:2024";
 
-  export function TimeTravelChat() {
-    const [threadId, setThreadId] = useState<string | null>(null);
-    const [history, setHistory] = useState<ThreadState[]>([]);
-    const stream = useStream<typeof myAgent>({
-      apiUrl: AGENT_URL,
-      assistantId: "time_travel",
-      threadId,
-      onThreadId: setThreadId,
-    });
-
-    useEffect(() => {
-      if (!threadId || stream.isLoading) return;
-      stream.client.threads.getHistory(threadId).then(setHistory);
-    }, [stream.client, threadId, stream.isLoading]);
-
-    function resumeFrom(cp: ThreadState) {
-      stream.submit({}, {
-        forkFrom: { checkpointId: cp.checkpoint.checkpoint_id },
-      });
-    }
-
-    return (
-      <div className="flex h-screen">
-        <ChatPanel messages={stream.messages} />
-        <TimelineSidebar history={history} onSelect={resumeFrom} />
-      </div>
-    );
-  }
-  ```
-
-  ```vue Vue theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  <script setup lang="ts">
-  import { useStream } from "@langchain/vue";
-  import { ref, watch } from "vue";
-
-  const AGENT_URL = "http://localhost:2024";
-  const threadId = ref<string | null>(null);
-  const history = ref<ThreadState[]>([]);
-
+export function TimeTravelChat() {
+  const [threadId, setThreadId] = useState<string | null>(null);
+  const [history, setHistory] = useState<ThreadState[]>([]);
   const stream = useStream<typeof myAgent>({
     apiUrl: AGENT_URL,
     assistantId: "time_travel",
     threadId,
-    onThreadId: (id) => (threadId.value = id),
+    onThreadId: setThreadId,
   });
 
-  watch(
-    [threadId, stream.isLoading],
-    async ([id, isLoading]) => {
-      if (isLoading) return;
-      history.value = id
-        ? ((await stream.client.threads.getHistory(id)) as ThreadState[])
-        : [];
-    },
-    { immediate: true },
-  );
+  useEffect(() => {
+    if (!threadId || stream.isLoading) return;
+    stream.client.threads.getHistory(threadId).then(setHistory);
+  }, [stream.client, threadId, stream.isLoading]);
 
   function resumeFrom(cp: ThreadState) {
     stream.submit({}, {
       forkFrom: { checkpointId: cp.checkpoint.checkpoint_id },
     });
   }
-  </script>
 
-  <template>
-    <div class="flex h-screen">
-      <ChatPanel :messages="stream.messages.value" />
-      <TimelineSidebar :history="history" @select="resumeFrom" />
+  return (
+    <div className="flex h-screen">
+      <ChatPanel messages={stream.messages} />
+      <TimelineSidebar history={history} onSelect={resumeFrom} />
     </div>
-  </template>
-  ```
+  );
+}
+```
 
-  ```svelte Svelte theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  <script lang="ts">
-    import { useStream } from "@langchain/svelte";
+```vue Vue theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+<script setup lang="ts">
+import { useStream } from "@langchain/vue";
+import { ref, watch } from "vue";
 
-    const AGENT_URL = "http://localhost:2024";
-    let threadId = $state<string | null>(null);
-    let history = $state<ThreadState[]>([]);
+const AGENT_URL = "http://localhost:2024";
+const threadId = ref<string | null>(null);
+const history = ref<ThreadState[]>([]);
 
-    const stream = useStream<typeof myAgent>({
-      apiUrl: AGENT_URL,
-      assistantId: "time_travel",
-      threadId: () => threadId,
-      onThreadId: (id) => (threadId = id),
-    });
+const stream = useStream<typeof myAgent>({
+  apiUrl: AGENT_URL,
+  assistantId: "time_travel",
+  threadId,
+  onThreadId: (id) => (threadId.value = id),
+});
 
-    $effect(() => {
-      if (!threadId) {
-        history = [];
-        return;
-      }
-      if (stream.isLoading) return;
-      stream.client.threads.getHistory(threadId).then((states) => {
-        history = states as ThreadState[];
-      });
-    });
+watch(
+  [threadId, stream.isLoading],
+  async ([id, isLoading]) => {
+    if (isLoading) return;
+    history.value = id
+      ? ((await stream.client.threads.getHistory(id)) as ThreadState[])
+      : [];
+  },
+  { immediate: true },
+);
 
-    function resumeFrom(cp: ThreadState) {
-      stream.submit({}, {
-        forkFrom: { checkpointId: cp.checkpoint.checkpoint_id },
-      });
-    }
-  </script>
+function resumeFrom(cp: ThreadState) {
+  stream.submit({}, {
+    forkFrom: { checkpointId: cp.checkpoint.checkpoint_id },
+  });
+}
+</script>
 
+<template>
   <div class="flex h-screen">
-    <ChatPanel messages={stream.messages} />
-    <TimelineSidebar {history} onSelect={resumeFrom} />
+    <ChatPanel :messages="stream.messages.value" />
+    <TimelineSidebar :history="history" @select="resumeFrom" />
   </div>
-  ```
+</template>
+```
 
-  ```ts Angular theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  import { Component, effect, signal } from "@angular/core";
-  import { injectStream } from "@langchain/angular";
+```svelte Svelte theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+<script lang="ts">
+  import { useStream } from "@langchain/svelte";
 
   const AGENT_URL = "http://localhost:2024";
+  let threadId = $state<string | null>(null);
+  let history = $state<ThreadState[]>([]);
 
-  @Component({
-    selector: "app-time-travel-chat",
-    template: `
-      <div class="flex h-screen">
-        <app-chat-panel [messages]="stream.messages()" />
-        <app-timeline-sidebar
-          [history]="history()"
-          (select)="resumeFrom($event)"
-        />
-      </div>
-    `,
-  })
-  export class TimeTravelChatComponent {
-    threadId = signal<string | null>(null);
-    history = signal<ThreadState[]>([]);
+  const stream = useStream<typeof myAgent>({
+    apiUrl: AGENT_URL,
+    assistantId: "time_travel",
+    threadId: () => threadId,
+    onThreadId: (id) => (threadId = id),
+  });
 
-    stream = injectStream<typeof myAgent>({
-      apiUrl: AGENT_URL,
-      assistantId: "time_travel",
-      threadId: this.threadId,
-      onThreadId: (id) => this.threadId.set(id),
+  $effect(() => {
+    if (!threadId) {
+      history = [];
+      return;
+    }
+    if (stream.isLoading) return;
+    stream.client.threads.getHistory(threadId).then((states) => {
+      history = states as ThreadState[];
     });
+  });
 
-    constructor() {
-      effect(() => {
-        if (this.stream.isLoading()) return;
-        void this.refreshHistory(this.threadId());
-      });
-    }
-
-    async refreshHistory(id: string | null) {
-      this.history.set(id
-        ? ((await this.stream.client.threads.getHistory(id)) as ThreadState[])
-        : []);
-    }
-
-    resumeFrom(cp: ThreadState) {
-      this.stream.submit({}, {
-        forkFrom: { checkpointId: cp.checkpoint.checkpoint_id },
-      });
-    }
+  function resumeFrom(cp: ThreadState) {
+    stream.submit({}, {
+      forkFrom: { checkpointId: cp.checkpoint.checkpoint_id },
+    });
   }
-  ```
-</CodeGroup>
+</script>
+
+<div class="flex h-screen">
+  <ChatPanel messages={stream.messages} />
+  <TimelineSidebar {history} onSelect={resumeFrom} />
+</div>
+```
+
+```ts Angular theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+import { Component, effect, signal } from "@angular/core";
+import { injectStream } from "@langchain/angular";
+
+const AGENT_URL = "http://localhost:2024";
+
+@Component({
+  selector: "app-time-travel-chat",
+  template: `
+    <div class="flex h-screen">
+      <app-chat-panel [messages]="stream.messages()" />
+      <app-timeline-sidebar
+        [history]="history()"
+        (select)="resumeFrom($event)"
+      />
+    </div>
+  `,
+})
+export class TimeTravelChatComponent {
+  threadId = signal<string | null>(null);
+  history = signal<ThreadState[]>([]);
+
+  stream = injectStream<typeof myAgent>({
+    apiUrl: AGENT_URL,
+    assistantId: "time_travel",
+    threadId: this.threadId,
+    onThreadId: (id) => this.threadId.set(id),
+  });
+
+  constructor() {
+    effect(() => {
+      if (this.stream.isLoading()) return;
+      void this.refreshHistory(this.threadId());
+    });
+  }
+
+  async refreshHistory(id: string | null) {
+    this.history.set(id
+      ? ((await this.stream.client.threads.getHistory(id)) as ThreadState[])
+      : []);
+  }
+
+  resumeFrom(cp: ThreadState) {
+    this.stream.submit({}, {
+      forkFrom: { checkpointId: cp.checkpoint.checkpoint_id },
+    });
+  }
+}
+```
 
 ## Building a checkpoint timeline
 
@@ -306,12 +302,12 @@ function CheckpointInspector({ checkpoint }: { checkpoint: ThreadState }) {
 }
 ```
 
-<Tip>
-  For production UIs, consider using a proper JSON viewer component with
-  collapsible nodes instead of raw `JSON.stringify`. Libraries like
-  `react-json-view` or `react-json-tree` give users a much better exploration
-  experience.
-</Tip>
+> [!TIP]
+>
+> For production UIs, consider using a proper JSON viewer component with
+> collapsible nodes instead of raw `JSON.stringify`. Libraries like
+> `react-json-view` or `react-json-tree` give users a much better exploration
+> experience.
 
 ## Resuming from a checkpoint
 
@@ -335,11 +331,11 @@ The existing messages after the selected checkpoint are replaced by the new
 execution path. This effectively creates a **branch** in the conversation
 timeline.
 
-<Note>
-  Resuming from a checkpoint does not delete the original timeline. The previous
-  checkpoints remain available in the history. This means users can always go back
-  and try a different path without losing any prior work.
-</Note>
+> [!NOTE]
+>
+> Resuming from a checkpoint does not delete the original timeline. The previous
+> checkpoints remain available in the history. This means users can always go back
+> and try a different path without losing any prior work.
 
 ## The SplitView layout
 
@@ -438,12 +434,12 @@ Time travel is invaluable across many scenarios:
 * **Teaching**: walk through an agent's execution step by step to explain how
   multi-step reasoning works
 
-<Info>
-  Time travel is especially powerful when combined with
-  [human-in-the-loop](/oss/javascript/langchain/frontend/human-in-the-loop) patterns. If a human reviewer
-  rejects an agent's action at an interrupt, they can resume from the checkpoint
-  before the action was taken and provide corrective input.
-</Info>
+> [!NOTE]
+>
+> Time travel is especially powerful when combined with
+> [human-in-the-loop](/oss/javascript/langchain/frontend/human-in-the-loop) patterns. If a human reviewer
+> rejects an agent's action at an interrupt, they can resume from the checkpoint
+> before the action was taken and provide corrective input.
 
 ## Handling interrupts in the timeline
 
@@ -507,12 +503,6 @@ function TimelineEntry({
 
 ***
 
-<div>
-  <Callout icon="terminal-2">
-    [Connect these docs](/use-these-docs) to your agent of choice via MCP for real-time answers.
-  </Callout>
+[Connect these docs](/use-these-docs) to your agent of choice via MCP for real-time answers.
 
-  <Callout icon="edit">
-    [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/oss/langchain/frontend/time-travel.mdx) or [file an issue](https://github.com/langchain-ai/docs/issues/new/choose).
-  </Callout>
-</div>
+[Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/oss/langchain/frontend/time-travel.mdx) or [file an issue](https://github.com/langchain-ai/docs/issues/new/choose).

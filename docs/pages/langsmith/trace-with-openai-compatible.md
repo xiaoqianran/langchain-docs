@@ -15,19 +15,19 @@ Use `wrap_openai` / `wrapOpenAI` for direct API calls. Use [`@traceable`](https:
 | Traces | The API call | The function wrapping it |
 | Metadata | Client-level only (Python); client-level or per-call (TypeScript) | Per-call via [`langsmith_extra`](https://reference.langchain.com/python/langsmith/run_helpers/SupportsLangsmithExtra) |
 
-<Note>To trace OpenAI directly, refer to [Trace OpenAI applications](/langsmith/trace-openai).</Note>
+> [!NOTE]
+>
+> To trace OpenAI directly, refer to [Trace OpenAI applications](/langsmith/trace-openai).
 
 ## Setup
 
-<CodeGroup>
-  ```bash Python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  pip install langsmith openai
-  ```
+```bash Python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+pip install langsmith openai
+```
 
-  ```bash npm theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  npm install langsmith openai
-  ```
-</CodeGroup>
+```bash npm theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+npm install langsmith openai
+```
 
 ```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 export LANGSMITH_API_KEY=<your-api-key>
@@ -36,95 +36,91 @@ export LANGSMITH_TRACING=true
 
 ## Trace API calls
 
-<CodeGroup>
-  ```python Python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  import os
+```python Python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+import os
 
-  import openai
-  from langsmith import wrappers
+import openai
+from langsmith import wrappers
 
-  client = wrappers.wrap_openai(
-      openai.OpenAI(
-          base_url="https://<provider-base-url>/v1",
-          api_key=os.environ["PROVIDER_API_KEY"],
-      )
-  )
+client = wrappers.wrap_openai(
+    openai.OpenAI(
+        base_url="https://<provider-base-url>/v1",
+        api_key=os.environ["PROVIDER_API_KEY"],
+    )
+)
 
-  completion = client.chat.completions.create(
-      model="<provider-model-name>",
-      messages=[{"role": "user", "content": "Hello!"}],
-  )
-  print(completion.choices[0].message.content)
-  ```
+completion = client.chat.completions.create(
+    model="<provider-model-name>",
+    messages=[{"role": "user", "content": "Hello!"}],
+)
+print(completion.choices[0].message.content)
+```
 
-  ```typescript TypeScript theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  import OpenAI from "openai";
-  import { wrapOpenAI } from "langsmith/wrappers/openai";
+```typescript TypeScript theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+import OpenAI from "openai";
+import { wrapOpenAI } from "langsmith/wrappers/openai";
 
-  const client = wrapOpenAI(
-    new OpenAI({
-      baseURL: "https://<provider-base-url>/v1",
-      apiKey: process.env.PROVIDER_API_KEY!,
-    })
-  );
+const client = wrapOpenAI(
+  new OpenAI({
+    baseURL: "https://<provider-base-url>/v1",
+    apiKey: process.env.PROVIDER_API_KEY!,
+  })
+);
 
-  const completion = await client.chat.completions.create({
-    model: "<provider-model-name>",
-    messages: [{ role: "user", content: "Hello!" }],
-  });
-  console.log(completion.choices[0].message.content);
-  ```
-</CodeGroup>
+const completion = await client.chat.completions.create({
+  model: "<provider-model-name>",
+  messages: [{ role: "user", content: "Hello!" }],
+});
+console.log(completion.choices[0].message.content);
+```
 
 ## Add metadata
 
-<Tabs>
-  <Tab title="Python">
-    Pass `tracing_extra` when wrapping the client. The metadata applies to all calls made with that client.
+**Python**
 
-    ```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-    import os
+Pass `tracing_extra` when wrapping the client. The metadata applies to all calls made with that client.
 
-    import openai
+```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+import os
 
-    from langsmith import wrappers
+import openai
 
-    client = wrappers.wrap_openai(
-        openai.OpenAI(
-            base_url="https://<provider-base-url>/v1",
-            api_key=os.environ["PROVIDER_API_KEY"],
-        ),
-        tracing_extra={"metadata": {"environment": "production"}},
-    )
-    ```
-  </Tab>
+from langsmith import wrappers
 
-  <Tab title="TypeScript">
-    Pass options as the second argument to `wrapOpenAI` for client-level metadata, or pass [`langsmithExtra`](https://reference.langchain.com/javascript/modules/langsmith.html) per call.
+client = wrappers.wrap_openai(
+    openai.OpenAI(
+        base_url="https://<provider-base-url>/v1",
+        api_key=os.environ["PROVIDER_API_KEY"],
+    ),
+    tracing_extra={"metadata": {"environment": "production"}},
+)
+```
 
-    ```typescript theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-    import OpenAI from "openai";
-    import { wrapOpenAI } from "langsmith/wrappers/openai";
+**TypeScript**
 
-    const client = wrapOpenAI(
-      new OpenAI({
-        baseURL: "https://<provider-base-url>/v1",
-        apiKey: process.env.PROVIDER_API_KEY!,
-      }),
-      { metadata: { environment: "production" } }
-    );
+Pass options as the second argument to `wrapOpenAI` for client-level metadata, or pass [`langsmithExtra`](https://reference.langchain.com/javascript/modules/langsmith.html) per call.
 
-    // Per-call metadata
-    const completion = await client.chat.completions.create(
-      {
-        model: "<provider-model-name>",
-        messages: [{ role: "user", content: "Hello!" }],
-      },
-      { langsmithExtra: { metadata: { request_id: "abc123" } } }
-    );
-    ```
-  </Tab>
-</Tabs>
+```typescript theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+import OpenAI from "openai";
+import { wrapOpenAI } from "langsmith/wrappers/openai";
+
+const client = wrapOpenAI(
+  new OpenAI({
+    baseURL: "https://<provider-base-url>/v1",
+    apiKey: process.env.PROVIDER_API_KEY!,
+  }),
+  { metadata: { environment: "production" } }
+);
+
+// Per-call metadata
+const completion = await client.chat.completions.create(
+  {
+    model: "<provider-model-name>",
+    messages: [{ role: "user", content: "Hello!" }],
+  },
+  { langsmithExtra: { metadata: { request_id: "abc123" } } }
+);
+```
 
 ## Related guides
 
@@ -135,12 +131,6 @@ Some providers have dedicated setup guides that use `@traceable` or a native cal
 
 ***
 
-<div>
-  <Callout icon="terminal-2">
-    [Connect these docs](/use-these-docs) to your agent of choice via MCP for real-time answers.
-  </Callout>
+[Connect these docs](/use-these-docs) to your agent of choice via MCP for real-time answers.
 
-  <Callout icon="edit">
-    [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/trace-with-openai-compatible.mdx) or [file an issue](https://github.com/langchain-ai/docs/issues/new/choose).
-  </Callout>
-</div>
+[Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/trace-with-openai-compatible.mdx) or [file an issue](https://github.com/langchain-ai/docs/issues/new/choose).

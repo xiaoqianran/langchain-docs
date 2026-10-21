@@ -6,9 +6,9 @@ Add built-in or custom middleware to a managed deep agent.
 
 Middleware adds behavior around model calls, tool calls, and the agent lifecycle. Like [custom tools](/langsmith/javascript/managed-deep-agents-tools), MDA does not discover middleware automatically. Import it and pass it to the agent definition.
 
-<Note>
-  Managed Deep Agents is in **public [beta](/langsmith/release-stages)** on [LangSmith Cloud](/langsmith/cloud).
-</Note>
+> [!NOTE]
+>
+> Managed Deep Agents is in **public [beta](/langsmith/release-stages)** on [LangSmith Cloud](/langsmith/cloud).
 
 Put custom middleware under `middleware/`, import it into the agent entry, and pass it to the agent definition:
 
@@ -27,59 +27,57 @@ The managed runtime still owns `backend`, `store`, `checkpointer`, `memory`, `sk
 
 Use middleware to redact PII, enforce call limits, retry failures, fall back between models, select models dynamically, or log and inspect tool calls.
 
-<Steps>
-  <Step title="Use prebuilt middleware">
-    You can use LangChain [prebuilt middleware](/oss/javascript/langchain/middleware/built-in) directly in the agent definition:
+**1. Use prebuilt middleware**
 
-    ```ts agent.ts theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-    import { defineDeepAgent } from "managed-deepagents";
-    import { modelCallLimitMiddleware, piiMiddleware } from "langchain";
+You can use LangChain [prebuilt middleware](/oss/javascript/langchain/middleware/built-in) directly in the agent definition:
 
-    export const agent = defineDeepAgent({
-      name: "support-agent",
-      model: "openai:gpt-5.5",
-      middleware: [
-        piiMiddleware("email", { strategy: "redact", applyToInput: true }),
-        modelCallLimitMiddleware({ runLimit: 50 }),
-      ],
-    });
-    ```
-  </Step>
+```ts agent.ts theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+import { defineDeepAgent } from "managed-deepagents";
+import { modelCallLimitMiddleware, piiMiddleware } from "langchain";
 
-  <Step title="Define custom middleware (Optional)">
-    For a more advanced option, define [custom middleware](/oss/javascript/langchain/middleware/custom) in a local module.
+export const agent = defineDeepAgent({
+  name: "support-agent",
+  model: "openai:gpt-5.5",
+  middleware: [
+    piiMiddleware("email", { strategy: "redact", applyToInput: true }),
+    modelCallLimitMiddleware({ runLimit: 50 }),
+  ],
+});
+```
 
-    ```ts middleware/audit.ts theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-    import { createMiddleware } from "langchain";
+**2. Define custom middleware (Optional)**
 
-    export const logToolCalls = createMiddleware({
-      name: "LogToolCalls",
-      wrapToolCall: async (request, handler) => {
-        console.log(`Calling tool: ${request.toolCall.name}`);
-        const result = await handler(request);
-        console.log(`Finished tool: ${request.toolCall.name}`);
-        return result;
-      },
-    });
-    ```
+For a more advanced option, define [custom middleware](/oss/javascript/langchain/middleware/custom) in a local module.
 
-    Import the middleware into the project-root agent entry and pass it in the `middleware` list:
+```ts middleware/audit.ts theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+import { createMiddleware } from "langchain";
 
-    ```ts agent.ts theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-    import { defineDeepAgent } from "managed-deepagents";
+export const logToolCalls = createMiddleware({
+  name: "LogToolCalls",
+  wrapToolCall: async (request, handler) => {
+    console.log(`Calling tool: ${request.toolCall.name}`);
+    const result = await handler(request);
+    console.log(`Finished tool: ${request.toolCall.name}`);
+    return result;
+  },
+});
+```
 
-    import { logToolCalls } from "./middleware/audit";
+Import the middleware into the project-root agent entry and pass it in the `middleware` list:
 
-    export const agent = defineDeepAgent({
-      name: "support-agent",
-      model: "openai:gpt-5.5",
-      middleware: [logToolCalls],
-    });
-    ```
+```ts agent.ts theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+import { defineDeepAgent } from "managed-deepagents";
 
-    Your middleware imports should work the same way they do in a normal local TypeScript project.
-  </Step>
-</Steps>
+import { logToolCalls } from "./middleware/audit";
+
+export const agent = defineDeepAgent({
+  name: "support-agent",
+  model: "openai:gpt-5.5",
+  middleware: [logToolCalls],
+});
+```
+
+Your middleware imports should work the same way they do in a normal local TypeScript project.
 
 ## Use runtime context
 
@@ -107,12 +105,6 @@ For more information, see [Project structure](/langsmith/javascript/managed-deep
 
 ***
 
-<div>
-  <Callout icon="terminal-2">
-    [Connect these docs](/use-these-docs) to your agent of choice via MCP for real-time answers.
-  </Callout>
+[Connect these docs](/use-these-docs) to your agent of choice via MCP for real-time answers.
 
-  <Callout icon="edit">
-    [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/managed-deep-agents-middleware.mdx) or [file an issue](https://github.com/langchain-ai/docs/issues/new/choose).
-  </Callout>
-</div>
+[Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/managed-deep-agents-middleware.mdx) or [file an issue](https://github.com/langchain-ai/docs/issues/new/choose).

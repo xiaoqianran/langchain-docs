@@ -6,9 +6,9 @@ Define custom Deep Agents Code subagents as AGENTS.md files with YAML frontmatte
 
 Define custom synchronous [subagents](/oss/python/deepagents/subagents) as markdown files so Deep Agents Code can delegate specialized tasks to them.
 
-<Note>
-  Async subagents are not available to end-users in Deep Agents Code at this time.
-</Note>
+> [!NOTE]
+>
+> Async subagents are not available to end-users in Deep Agents Code at this time.
 
 Each subagent lives in its own folder with an `AGENTS.md` file:
 
@@ -31,9 +31,9 @@ export DEEPAGENTS_CODE_FORKED_SUBAGENTS=false
 
 The frontmatter requires `name` and `description` (same as the [`SubAgent` dictionary spec](/oss/python/deepagents/subagents#subagent-dictionary-based)). The markdown body becomes the subagent's `system_prompt`. In addition to the base spec, `AGENTS.md` files support an optional `model` frontmatter field that overrides the main agent's model for this subagent. Use the `provider:model-name` format (e.g., `anthropic:claude-opus-4-8`, `openai:gpt-5.5`). Omit it to inherit the main agent's model.
 
-<Note>
-  Other `SubAgent` fields (`tools`, `middleware`, `interrupt_on`, `skills`) are currently not configurable via `AGENTS.md` frontmatter—custom subagents defined this way inherit the main agent's tools. Use the SDK directly for full control.
-</Note>
+> [!NOTE]
+>
+> Other `SubAgent` fields (`tools`, `middleware`, `interrupt_on`, `skills`) are currently not configurable via `AGENTS.md` frontmatter—custom subagents defined this way inherit the main agent's tools. Use the SDK directly for full control.
 
 ## File format
 
@@ -61,9 +61,7 @@ To trigger dynamic subagents, ask for a "workflow". Instead of doing the work it
 
 As subagents spawn, `dcode` shows them live in the dynamic subagents panel, grouped into phases by dispatch.
 
-<Frame>
-  <img alt="The dcode dynamic subagents panel showing spawned subagents grouped into phases by dispatch" />
-</Frame>
+![The dcode dynamic subagents panel showing spawned subagents grouped into phases by dispatch](https://mintcdn.com/langchain-5e9cc07a/mcM5dSw40KzBUENf/oss/images/deepagents/dcode-dynamic-subagents-panel.png?fit=max\&auto=format\&n=mcM5dSw40KzBUENf\&q=85\&s=bc20632b54e21fecfc5ff4f8d169a2c7)
 
 You can also use dynamic subagents in the coding agent of your choice over [ACP](/oss/python/deepagents/acp) (for example, Zed).
 
@@ -85,12 +83,6 @@ This overrides the built-in general-purpose subagent, routing all delegated task
 
 ***
 
-<div>
-  <Callout icon="terminal-2">
-    [Connect these docs](/use-these-docs) to your agent of choice via MCP for real-time answers.
-  </Callout>
+[Connect these docs](/use-these-docs) to your agent of choice via MCP for real-time answers.
 
-  <Callout icon="edit">
-    [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/oss/deepagents/code/subagents.mdx) or [file an issue](https://github.com/langchain-ai/docs/issues/new/choose).
-  </Callout>
-</div>
+[Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/oss/deepagents/code/subagents.mdx) or [file an issue](https://github.com/langchain-ai/docs/issues/new/choose).

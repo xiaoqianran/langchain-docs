@@ -10,44 +10,34 @@ Governance also extends to what agents do at runtime: [spend and data-protection
 
 ## Explore
 
-<CardGroup>
-  <Card title="Organization administration" href="/langsmith/administration-overview" icon="users-group">
-    Organizations, workspaces, applications, billing, and usage.
-  </Card>
+> **[Organization administration](/langsmith/administration-overview)**
+>
+> Organizations, workspaces, applications, billing, and usage.
 
-  <Card title="Users & access control" href="/langsmith/user-management" icon="lock">
-    Manage users, roles (RBAC), attribute-based access (ABAC), and authentication.
-  </Card>
+> **[Users & access control](/langsmith/user-management)**
+>
+> Manage users, roles (RBAC), attribute-based access (ABAC), and authentication.
 
-  <Card title="Tools" href="/langsmith/chat" icon="tool">
-    Administrative tools and the LangSmith CLI.
-  </Card>
+> **[Tools](/langsmith/chat)**
+>
+> Administrative tools and the LangSmith CLI.
 
-  <Card title="Auditing & compliance" href="/langsmith/audit-logs" icon="shield-check">
-    Audit logs, data storage and privacy, and compliance controls.
-  </Card>
-</CardGroup>
+> **[Auditing & compliance](/langsmith/audit-logs)**
+>
+> Audit logs, data storage and privacy, and compliance controls.
 
 ## Related
 
-<CardGroup>
-  <Card title="Account setup" href="/langsmith/admin" icon="user-cog">
-    Create an account, manage API keys, configure profiles, and review pricing tiers.
-  </Card>
+> **[Account setup](/langsmith/admin)**
+>
+> Create an account, manage API keys, configure profiles, and review pricing tiers.
 
-  <Card title="LLM Gateway" href="/langsmith/llm-gateway" icon="route">
-    Proxy LLM calls to enforce spend limits, redact sensitive data, and centrally manage provider credentials.
-  </Card>
-</CardGroup>
+> **[LLM Gateway](/langsmith/llm-gateway)**
+>
+> Proxy LLM calls to enforce spend limits, redact sensitive data, and centrally manage provider credentials.
 
 ***
 
-<div>
-  <Callout icon="terminal-2">
-    [Connect these docs](/use-these-docs) to your agent of choice via MCP for real-time answers.
-  </Callout>
+[Connect these docs](/use-these-docs) to your agent of choice via MCP for real-time answers.
 
-  <Callout icon="edit">
-    [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/govern-overview.mdx) or [file an issue](https://github.com/langchain-ai/docs/issues/new/choose).
-  </Callout>
-</div>
+[Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/govern-overview.mdx) or [file an issue](https://github.com/langchain-ai/docs/issues/new/choose).

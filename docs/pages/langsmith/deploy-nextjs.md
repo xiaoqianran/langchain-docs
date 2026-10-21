@@ -10,23 +10,19 @@ Source: [`js-next`](https://github.com/langchain-ai/deployment-cookbook/tree/mai
 
 ## Deploy to Vercel
 
-<Steps>
-  <Step title="Import the repository">
-    Click **Deploy with Vercel** below, or import [`langchain-ai/deployment-cookbook`](https://github.com/langchain-ai/deployment-cookbook) manually.
+**1. Import the repository**
 
-    <a href="https://vercel.com/new/clone?repository-url=https%3A%2F%2Fgithub.com%2Flangchain-ai%2Fdeployment-cookbook&root-directory=js-next&env=OPENAI_API_KEY&envDescription=OpenAI%20API%20key%20for%20the%20agent%20and%20its%20subagents">
-      <img alt="Deploy with Vercel" />
-    </a>
-  </Step>
+Click **Deploy with Vercel** below, or import [`langchain-ai/deployment-cookbook`](https://github.com/langchain-ai/deployment-cookbook) manually.
 
-  <Step title="Configure the project">
-    Set **Root Directory** to `js-next` and add `OPENAI_API_KEY` in project settings.
-  </Step>
+[![Deploy with Vercel](https://vercel.com/button)](https://vercel.com/new/clone?repository-url=https%3A%2F%2Fgithub.com%2Flangchain-ai%2Fdeployment-cookbook\&root-directory=js-next\&env=OPENAI_API_KEY\&envDescription=OpenAI%20API%20key%20for%20the%20agent%20and%20its%20subagents)
 
-  <Step title="Deploy">
-    Deploy the project. Route handlers already set `runtime = "nodejs"` and the SSE route sets `dynamic = "force-dynamic"`, which Vercel needs for streaming.
-  </Step>
-</Steps>
+**2. Configure the project**
+
+Set **Root Directory** to `js-next` and add `OPENAI_API_KEY` in project settings.
+
+**3. Deploy**
+
+Deploy the project. Route handlers already set `runtime = "nodejs"` and the SSE route sets `dynamic = "force-dynamic"`, which Vercel needs for streaming.
 
 Optionally enable LangSmith tracing by adding the variables from [`.env.example`](https://github.com/langchain-ai/deployment-cookbook/blob/main/js-next/.env.example).
 
@@ -167,12 +163,6 @@ pnpm lint    # eslint
 
 ***
 
-<div>
-  <Callout icon="terminal-2">
-    [Connect these docs](/use-these-docs) to your agent of choice via MCP for real-time answers.
-  </Callout>
+[Connect these docs](/use-these-docs) to your agent of choice via MCP for real-time answers.
 
-  <Callout icon="edit">
-    [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/deploy-nextjs.mdx) or [file an issue](https://github.com/langchain-ai/docs/issues/new/choose).
-  </Callout>
-</div>
+[Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/deploy-nextjs.mdx) or [file an issue](https://github.com/langchain-ai/docs/issues/new/choose).

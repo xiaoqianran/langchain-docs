@@ -4,25 +4,30 @@
 
 Integrate with text splitters using LangChain.
 
-<CodeGroup>
-  ```bash pip theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  pip install -U langchain-text-splitters
-  ```
+```bash pip theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+pip install -U langchain-text-splitters
+```
 
-  ```bash uv theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  uv add langchain-text-splitters
-  ```
-</CodeGroup>
+```bash uv theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+uv add langchain-text-splitters
+```
 
 **Text splitters** break large docs into smaller chunks that will be retrievable individually and fit within model context window limit.
 
 There are several strategies for splitting documents, each with its own advantages.
 
-<PythonIntegrationComponentMap />
+Integration components
+Arrows show a typical retrieval flow. The highlighted component is the one this page covers.
 
-<Tip>
-  For most use cases, start with the [`RecursiveCharacterTextSplitter`](/oss/python/integrations/splitters/recursive_text_splitter). It provides a solid balance between keeping context intact and managing chunk size. This default strategy works well out of the box, and you should only consider adjusting it if you need to fine-tune performance for your specific application.
-</Tip>
+### Typical retrieval flow
+
+### Agent capabilities
+
+### Execution and state
+
+> [!TIP]
+>
+> For most use cases, start with the [`RecursiveCharacterTextSplitter`](/oss/python/integrations/splitters/recursive_text_splitter). It provides a solid balance between keeping context intact and managing chunk size. This default strategy works well out of the box, and you should only consider adjusting it if you need to fine-tune performance for your specific application.
 
 ## Text structure-based
 
@@ -98,12 +103,6 @@ Examples of structure-based splitting:
 
 ***
 
-<div>
-  <Callout icon="terminal-2">
-    [Connect these docs](/use-these-docs) to your agent of choice via MCP for real-time answers.
-  </Callout>
+[Connect these docs](/use-these-docs) to your agent of choice via MCP for real-time answers.
 
-  <Callout icon="edit">
-    [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/oss/integrations/splitters/index.mdx) or [file an issue](https://github.com/langchain-ai/docs/issues/new/choose).
-  </Callout>
-</div>
+[Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/oss/integrations/splitters/index.mdx) or [file an issue](https://github.com/langchain-ai/docs/issues/new/choose).

@@ -12,23 +12,19 @@
 
 ## 部署到 Vercel
 
-<Steps>
-  <Step title="Import the repository">
-    单击下面的 **使用 Vercel 部署**，或手动导入 [⟦T5⟧](https://github.com/langchain-ai/deployment-cookbook)。
+**1.导入存储库**
 
-    <a href="https://vercel.com/new/clone?repository-url=https%3A%2F%2Fgithub.com%2Flangchain-ai%2Fdeployment-cookbook&root-directory=js-next&env=OPENAI_API_KEY&envDescription=OpenAI%20API%20key%20for%20the%20agent%20and%20its%20subagents">
-      <img alt="Deploy with Vercel" />
-    </a>
-  </Step>
+单击下面的 **使用 Vercel 部署**，或手动导入 [⟦T5⟧](https://github.com/langchain-ai/deployment-cookbook)。
 
-  <Step title="Configure the project">
-    将**根目录**设置为`js-next`，并在项目设置中添加`OPENAI_API_KEY`。
-  </Step>
+[⟦T73⟧](https://vercel.com/new/clone?repository-url=https%3A%2F%2Fgithub.com%2Flangchain-ai%2Fdeployment-cookbook\&root-directory=js-next\&env=OPENAI_API_KEY\&envDescription=OpenAI%20API%20key%20for%20the%20agent%20and%20its%20subagents)
 
-  <Step title="Deploy">
-    部署项目。路由处理程序已设置 `runtime = "nodejs"`，SSE 路由设置 `dynamic = "force-dynamic"`，这是 Vercel 进行流处理所需的。
-  </Step>
-</Steps>
+**2.配置项目**
+
+将**根目录**设置为`js-next`，并在项目设置中添加`OPENAI_API_KEY`。
+
+**3.部署**
+
+部署项目。路由处理程序已设置 `runtime = "nodejs"`，SSE 路由设置 `dynamic = "force-dynamic"`，这是 Vercel 进行流处理所需的。
 
 （可选）通过添加 [⟦T10⟧](https://github.com/langchain-ai/deployment-cookbook/blob/main/js-next/.env.example) 中的变量来启用 LangSmith 跟踪。
 
@@ -104,9 +100,9 @@ flowchart TB
 
 ## 生产坚持该代理开箱即用，使用内存中 `MemorySaver` 检查指针 (`lib/agent/index.ts`) 和进程本地会话映射 (`lib/server/registry.ts`)。这适用于本地开发和单实例服务器，但在 Vercel（无服务器、多个副本）上，对话状态在冷启动或实例中**不持久**。
 
-对于生产，请换入 [durable checkpointer](/oss/python/langgraph/checkpointers#checkpointer-libraries)：
+对于生产，请更换 [durable checkpointer](/oss/python/langgraph/checkpointers#checkpointer-libraries)：
 
-|套餐 |后端 |
+|套餐 |后端|
 | - | - |
 | [⟦T42⟧](https://www.npmjs.com/package/@langchain/langgraph-checkpoint-redis) | Redis (`RedisSaver`) |
 | [⟦T44⟧](https://www.npmjs.com/package/@langchain/langgraph-checkpoint-postgres) | Postgres (`PostgresSaver`) |
@@ -163,12 +159,6 @@ pnpm lint    # eslint
 
 ***
 
-<div>
-  <Callout icon="terminal-2">
-    [Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
-  </Callout>
+[Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
 
-  <Callout icon="edit">
-    [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/deploy-nextjs.mdx) 或 [file an issue](https://github.com/langchain-ai/docs/issues/new/choose)。
-  </Callout>
-</div>
+[Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/deploy-nextjs.mdx) 或 [file an issue](https://github.com/langchain-ai/docs/issues/new/choose)。

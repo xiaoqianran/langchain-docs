@@ -6,9 +6,9 @@ Test and deploy a Managed Deep Agent with the mda CLI.
 
 Deploying a Managed Deep Agent compiles a code-first project into a managed LangGraph app, syncs deploy-owned context to [Context Hub](/langsmith/python/managed-deep-agents-context-hub), uploads the compiled source, and triggers a LangSmith hosted deployment build. The result is an [Agent Server](/langsmith/agent-server-overview) deployment, including the Agent Server API and [MCP endpoint](/langsmith/python/managed-deep-agents-mcp-endpoint).
 
-<Note>
-  Managed Deep Agents is in **public [beta](/langsmith/release-stages)** on [LangSmith Cloud](/langsmith/cloud).
-</Note>
+> [!NOTE]
+>
+> Managed Deep Agents is in **public [beta](/langsmith/release-stages)** on [LangSmith Cloud](/langsmith/cloud).
 
 This page covers secrets routing and deploy options. To test the agent before deploying, see [Develop locally with LangSmith Studio](/langsmith/python/managed-deep-agents-local-development). For command flags, the deploy step list, and troubleshooting, see the [CLI reference](/langsmith/python/managed-deep-agents-cli).
 
@@ -49,9 +49,9 @@ Credentials must belong to the target region. Set `LANGSMITH_ENDPOINT` before th
 
 For more information on regions, see the [Regions FAQ](/langsmith/regions-faq).
 
-<Note>
-  LangSmith managed tools are available in GCP US only.
-</Note>
+> [!NOTE]
+>
+> LangSmith managed tools are available in GCP US only.
 
 ## Deploy to LangSmith
 
@@ -61,16 +61,16 @@ Deploy the local project:
 uv run mda deploy
 ```
 
-<Tip>
-  `mda deploy` routes local project inputs to different managed surfaces:
-
-  ```text theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  instructions.md + skills/**  -> Context Hub deploy-owned context
-  .env                         -> deploy auth + non-reserved hosted secrets, not archived
-  project source files         -> .mda/build source archive -> hosted deployment
-  schedules/**                 -> LangSmith cron jobs after the deployment is live
-  ```
-</Tip>
+> [!TIP]
+>
+> `mda deploy` routes local project inputs to different managed surfaces:
+>
+> ```text theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> instructions.md + skills/**  -> Context Hub deploy-owned context
+> .env                         -> deploy auth + non-reserved hosted secrets, not archived
+> project source files         -> .mda/build source archive -> hosted deployment
+> schedules/**                 -> LangSmith cron jobs after the deployment is live
+> ```
 
 Set the deployment name explicitly when the directory name is not the name you want:
 
@@ -96,9 +96,9 @@ On success, the CLI prints the LangSmith deployment dashboard URL. For the full 
 
 ## Set the Python version
 
-<Note>
-  Configuring the Python version requires `managed-deepagents>=0.8.0`.
-</Note>
+> [!NOTE]
+>
+> Configuring the Python version requires `managed-deepagents>=0.8.0`.
 
 MDA builds the deployment image on Python 3.11, 3.12, 3.13, or 3.14, and by default selects the newest that `requires-python` allows. To pin a version, add the optional `[tool.mda]` table to `pyproject.toml`:
 
@@ -152,40 +152,32 @@ If a deployment reaches `BUILD_FAILED` or `DEPLOY_FAILED`, open the printed depl
 
 ## Next steps
 
-<CardGroup>
-  <Card title="Agent Server" icon="server" href="/langsmith/agent-server-overview">
-    Explore the runtime that hosts the deployment.
-  </Card>
+> **[Agent Server](/langsmith/agent-server-overview)**
+>
+> Explore the runtime that hosts the deployment.
 
-  <Card title="MCP endpoint" icon="plug" href="/langsmith/python/managed-deep-agents-mcp-endpoint">
-    Expose the deployed agent as a tool to MCP clients.
-  </Card>
+> **[MCP endpoint](/langsmith/python/managed-deep-agents-mcp-endpoint)**
+>
+> Expose the deployed agent as a tool to MCP clients.
 
-  <Card title="Identity" icon="fingerprint" href="/langsmith/python/managed-deep-agents-identity">
-    Authenticate callers and provide private threads.
-  </Card>
+> **[Identity](/langsmith/python/managed-deep-agents-identity)**
+>
+> Authenticate callers and provide private threads.
 
-  <Card title="Schedules" icon="calendar" href="/langsmith/python/managed-deep-agents-schedules">
-    Run agents on managed cron schedules.
-  </Card>
+> **[Schedules](/langsmith/python/managed-deep-agents-schedules)**
+>
+> Run agents on managed cron schedules.
 
-  <Card title="Custom tools" icon="tool" href="/langsmith/python/managed-deep-agents-tools">
-    Add authored LangChain tools to the agent definition.
-  </Card>
+> **[Custom tools](/langsmith/python/managed-deep-agents-tools)**
+>
+> Add authored LangChain tools to the agent definition.
 
-  <Card title="CLI reference" icon="terminal" href="/langsmith/python/managed-deep-agents-cli">
-    Look up every `mda` command and flag.
-  </Card>
-</CardGroup>
+> **[CLI reference](/langsmith/python/managed-deep-agents-cli)**
+>
+> Look up every `mda` command and flag.
 
 ***
 
-<div>
-  <Callout icon="terminal-2">
-    [Connect these docs](/use-these-docs) to your agent of choice via MCP for real-time answers.
-  </Callout>
+[Connect these docs](/use-these-docs) to your agent of choice via MCP for real-time answers.
 
-  <Callout icon="edit">
-    [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/managed-deep-agents-deploy.mdx) or [file an issue](https://github.com/langchain-ai/docs/issues/new/choose).
-  </Callout>
-</div>
+[Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/managed-deep-agents-deploy.mdx) or [file an issue](https://github.com/langchain-ai/docs/issues/new/choose).

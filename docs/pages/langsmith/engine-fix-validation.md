@@ -4,9 +4,9 @@
 
 Confirm that a LangSmith Engine issue reproduces on your deployment, and that Engine's fix resolves it, by replaying the issue's traces.
 
-<Note>
-  Fix validation is in private [beta](/langsmith/release-stages#beta). It is available only on LangSmith Cloud, for organizations where it has been enabled. It supports only agents running on [LangSmith Cloud deployments](/langsmith/deploy-to-cloud), not externally hosted agents. To request access, [join the waitlist](https://www.langchain.com/langsmith-engine-v2-new-feature-access).
-</Note>
+> [!NOTE]
+>
+> Fix validation is in private [beta](/langsmith/release-stages#beta). It is available only on LangSmith Cloud, for organizations where it has been enabled. It supports only agents running on [LangSmith Cloud deployments](/langsmith/deploy-to-cloud), not externally hosted agents. To request access, [join the waitlist](https://www.langchain.com/langsmith-engine-v2-new-feature-access).
 
 Engine validates issues and fixes by running your agent:
 
@@ -38,9 +38,9 @@ If your deployment authenticates callers itself, give Engine the headers it expe
 
 Header values are encrypted and write-only: LangSmith shows only their names, so replacing them means entering every value again. Headers that LangSmith manages itself cannot be overridden. To go back to the default, click **Use platform authentication**.
 
-<Note>
-  Custom headers only decide whether your deployment accepts the request. They do not tell your agent that a run is a validation replay, which is a separate signal described in [Make replayed runs side-effect free](#make-replayed-runs-side-effect-free).
-</Note>
+> [!NOTE]
+>
+> Custom headers only decide whether your deployment accepts the request. They do not tell your agent that a run is a validation replay, which is a separate signal described in [Make replayed runs side-effect free](#make-replayed-runs-side-effect-free).
 
 ## Set up fix verification
 
@@ -58,11 +58,11 @@ To have Engine verify its own fixes against a preview deployment:
 
 With this setup, Engine applies the preview label, waits for LangSmith to build a temporary deployment from the proposed fix, replays the validation against it, and shows the verdict and replay traces on the issue.
 
-<Warning>
-  Validation sends the inputs from an issue's traces to the baseline deployment, and to the preview deployment when it verifies a fix. Each replay creates a thread and a run on that deployment, and your agent can call its tools while it responds.
-
-  [Preview deployments inherit the baseline deployment's secrets](/langsmith/preview-builds#manage-secrets) when LangSmith creates them. Confirm that every inherited secret is appropriate for temporary deployments before enabling fix verification. Changes to the baseline's secrets do not propagate to previews that already exist.
-</Warning>
+> [!WARNING]
+>
+> Validation sends the inputs from an issue's traces to the baseline deployment, and to the preview deployment when it verifies a fix. Each replay creates a thread and a run on that deployment, and your agent can call its tools while it responds.
+>
+> [Preview deployments inherit the baseline deployment's secrets](/langsmith/preview-builds#manage-secrets) when LangSmith creates them. Confirm that every inherited secret is appropriate for temporary deployments before enabling fix verification. Changes to the baseline's secrets do not propagate to previews that already exist.
 
 ## Prepare a deployment to test against
 
@@ -78,121 +78,121 @@ Engine sets `config.configurable.__engine_validation_replay__ = true` on every r
 
 Use the marker to skip or block tools whose effects leave your agent, such as sending email or messages, charging customers, filing tickets, writing to production data stores, scheduling work, and calling partner APIs.
 
-<Accordion title="Copy-paste allowlist middleware">
-  Add the following middleware to your agent project:
-
-  ```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  from __future__ import annotations
-
-  from collections.abc import Awaitable, Callable, Collection, Mapping
-  from typing import Any, cast
-
-  from langchain.agents.middleware import AgentMiddleware
-  from langchain.messages import ToolMessage
-  from langchain.tools.tool_node import ToolCallRequest
-  from langchain_core.runnables import RunnableConfig
-  from langgraph.types import Command
-
-  ENGINE_VALIDATION_CONFIG_KEY = "__engine_validation_replay__"
-  LANGGRAPH_AUTH_USER_ID_CONFIG_KEY = "langgraph_auth_user_id"
-
-
-  def _configurable(config: RunnableConfig | None) -> Mapping[str, object]:
-      configurable = (config or {}).get("configurable")
-      return configurable if isinstance(configurable, Mapping) else {}
-
-
-  def is_engine_validation(config: RunnableConfig | None) -> bool:
-      """Return whether the caller requested reduced-privilege validation mode."""
-      return _configurable(config).get(ENGINE_VALIDATION_CONFIG_KEY) is True
-
-
-  def is_trusted_engine_validation(
-      config: RunnableConfig | None,
-      *,
-      expected_user_id: str,
-  ) -> bool:
-      """Verify the validation marker and authenticated Engine identity."""
-      configurable = _configurable(config)
-      return (
-          bool(expected_user_id)
-          and configurable.get(ENGINE_VALIDATION_CONFIG_KEY) is True
-          and configurable.get(LANGGRAPH_AUTH_USER_ID_CONFIG_KEY) == expected_user_id
-      )
-
-
-  def _request_config(request: ToolCallRequest) -> RunnableConfig | None:
-      runtime = getattr(request, "runtime", None)
-      config = getattr(runtime, "config", None)
-      return cast(RunnableConfig, config) if isinstance(config, dict) else None
-
-
-  class EngineValidationSafetyMiddleware(AgentMiddleware):
-      """Allow only explicitly safe tools during Engine validation."""
-
-      def __init__(self, *, safe_tools: Collection[str]) -> None:
-          self._safe_tools = frozenset(safe_tools)
-
-      def _rejection(self, request: ToolCallRequest) -> ToolMessage | None:
-          if not is_engine_validation(_request_config(request)):
-              return None
-          call = request.tool_call
-          name = call.get("name") or "tool"
-          if name in self._safe_tools:
-              return None
-          return ToolMessage(
-              content=f"{name} is blocked during Engine validation.",
-              tool_call_id=call["id"],
-              name=name,
-              status="error",
-          )
-
-      def wrap_tool_call(
-          self,
-          request: ToolCallRequest,
-          handler: Callable[[ToolCallRequest], ToolMessage | Command[Any]],
-      ) -> ToolMessage | Command[Any]:
-          rejection = self._rejection(request)
-          return rejection if rejection is not None else handler(request)
-
-      async def awrap_tool_call(
-          self,
-          request: ToolCallRequest,
-          handler: Callable[
-              [ToolCallRequest],
-              Awaitable[ToolMessage | Command[Any]],
-          ],
-      ) -> ToolMessage | Command[Any]:
-          rejection = self._rejection(request)
-          return rejection if rejection is not None else await handler(request)
-  ```
-
-  Register it on every run and allow only tools that are read-only and isolated:
-
-  ```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  from langchain.agents import create_agent
-
-  from engine_validation import EngineValidationSafetyMiddleware
-
-  agent = create_agent(
-      model=model,
-      tools=[search_catalog, lookup_order, send_message],
-      middleware=[
-          EngineValidationSafetyMiddleware(
-              safe_tools={"search_catalog", "lookup_order"},
-          )
-      ],
-  )
-  ```
-
-  Without the replay marker, the middleware passes tool calls through unchanged. During validation, it invokes only tools in `safe_tools` and returns an error `ToolMessage` for every other tool. An empty allowlist blocks all tools.
-</Accordion>
+> **Copy-paste allowlist middleware**
+>
+> Add the following middleware to your agent project:
+>
+> ```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> from __future__ import annotations
+>
+> from collections.abc import Awaitable, Callable, Collection, Mapping
+> from typing import Any, cast
+>
+> from langchain.agents.middleware import AgentMiddleware
+> from langchain.messages import ToolMessage
+> from langchain.tools.tool_node import ToolCallRequest
+> from langchain_core.runnables import RunnableConfig
+> from langgraph.types import Command
+>
+> ENGINE_VALIDATION_CONFIG_KEY = "__engine_validation_replay__"
+> LANGGRAPH_AUTH_USER_ID_CONFIG_KEY = "langgraph_auth_user_id"
+>
+>
+> def _configurable(config: RunnableConfig | None) -> Mapping[str, object]:
+>     configurable = (config or {}).get("configurable")
+>     return configurable if isinstance(configurable, Mapping) else {}
+>
+>
+> def is_engine_validation(config: RunnableConfig | None) -> bool:
+>     """Return whether the caller requested reduced-privilege validation mode."""
+>     return _configurable(config).get(ENGINE_VALIDATION_CONFIG_KEY) is True
+>
+>
+> def is_trusted_engine_validation(
+>     config: RunnableConfig | None,
+>     *,
+>     expected_user_id: str,
+> ) -> bool:
+>     """Verify the validation marker and authenticated Engine identity."""
+>     configurable = _configurable(config)
+>     return (
+>         bool(expected_user_id)
+>         and configurable.get(ENGINE_VALIDATION_CONFIG_KEY) is True
+>         and configurable.get(LANGGRAPH_AUTH_USER_ID_CONFIG_KEY) == expected_user_id
+>     )
+>
+>
+> def _request_config(request: ToolCallRequest) -> RunnableConfig | None:
+>     runtime = getattr(request, "runtime", None)
+>     config = getattr(runtime, "config", None)
+>     return cast(RunnableConfig, config) if isinstance(config, dict) else None
+>
+>
+> class EngineValidationSafetyMiddleware(AgentMiddleware):
+>     """Allow only explicitly safe tools during Engine validation."""
+>
+>     def __init__(self, *, safe_tools: Collection[str]) -> None:
+>         self._safe_tools = frozenset(safe_tools)
+>
+>     def _rejection(self, request: ToolCallRequest) -> ToolMessage | None:
+>         if not is_engine_validation(_request_config(request)):
+>             return None
+>         call = request.tool_call
+>         name = call.get("name") or "tool"
+>         if name in self._safe_tools:
+>             return None
+>         return ToolMessage(
+>             content=f"{name} is blocked during Engine validation.",
+>             tool_call_id=call["id"],
+>             name=name,
+>             status="error",
+>         )
+>
+>     def wrap_tool_call(
+>         self,
+>         request: ToolCallRequest,
+>         handler: Callable[[ToolCallRequest], ToolMessage | Command[Any]],
+>     ) -> ToolMessage | Command[Any]:
+>         rejection = self._rejection(request)
+>         return rejection if rejection is not None else handler(request)
+>
+>     async def awrap_tool_call(
+>         self,
+>         request: ToolCallRequest,
+>         handler: Callable[
+>             [ToolCallRequest],
+>             Awaitable[ToolMessage | Command[Any]],
+>         ],
+>     ) -> ToolMessage | Command[Any]:
+>         rejection = self._rejection(request)
+>         return rejection if rejection is not None else await handler(request)
+> ```
+>
+> Register it on every run and allow only tools that are read-only and isolated:
+>
+> ```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> from langchain.agents import create_agent
+>
+> from engine_validation import EngineValidationSafetyMiddleware
+>
+> agent = create_agent(
+>     model=model,
+>     tools=[search_catalog, lookup_order, send_message],
+>     middleware=[
+>         EngineValidationSafetyMiddleware(
+>             safe_tools={"search_catalog", "lookup_order"},
+>         )
+>     ],
+> )
+> ```
+>
+> Without the replay marker, the middleware passes tool calls through unchanged. During validation, it invokes only tools in `safe_tools` and returns an error `ToolMessage` for every other tool. An empty allowlist blocks all tools.
 
 Only allow tools that are read-only and isolated. Do not allow tools that send messages, deliver notifications, schedule or queue work, persist data, or write to external systems.
 
-<Warning>
-  Treat the marker and source header as untrusted hints that can only reduce what a run may do. Anything that can reach your deployment can set them, so never use them to grant access, skip authentication, or widen permissions.
-</Warning>
+> [!WARNING]
+>
+> Treat the marker and source header as untrusted hints that can only reduce what a run may do. Anything that can reach your deployment can set them, so never use them to grant access, skip authentication, or widen permissions.
 
 #### Verify trusted Engine context
 
@@ -266,9 +266,9 @@ The verification result answers whether Engine's fix resolved it:
 | **Not fixed** | The issue still occurred, so Engine revises the fix and tries again. |
 | **Inconclusive**, **Timed out**, or **Error** | Engine could not establish a verdict for this attempt. |
 
-<Warning>
-  **Inconclusive** means Engine could not gather trustworthy evidence, not that the issue is absent or fixed. Treat it as a signal to re-test rather than as a passing result.
-</Warning>
+> [!WARNING]
+>
+> **Inconclusive** means Engine could not gather trustworthy evidence, not that the issue is absent or fixed. Treat it as a signal to re-test rather than as a passing result.
 
 ## Review validation experiments
 
@@ -312,12 +312,6 @@ After correcting the deployment or its settings, open the issue and click **Test
 
 ***
 
-<div>
-  <Callout icon="terminal-2">
-    [Connect these docs](/use-these-docs) to your agent of choice via MCP for real-time answers.
-  </Callout>
+[Connect these docs](/use-these-docs) to your agent of choice via MCP for real-time answers.
 
-  <Callout icon="edit">
-    [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/engine-fix-validation.mdx) or [file an issue](https://github.com/langchain-ai/docs/issues/new/choose).
-  </Callout>
-</div>
+[Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/engine-fix-validation.mdx) or [file an issue](https://github.com/langchain-ai/docs/issues/new/choose).

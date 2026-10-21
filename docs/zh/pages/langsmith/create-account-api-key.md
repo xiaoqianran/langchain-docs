@@ -8,7 +8,7 @@
 
 ## API 密钥
 
-LangSmith支持三种不同权限和生命周期的API密钥：
+LangSmith 支持三种不同权限和生命周期的 API 密钥：
 
 * [**Personal Access Tokens (PATs)**](/langsmith/administration-overview#personal-access-tokens-pats)继承创建它们的用户的权限。将 PAT 用于个人脚本或工具。
 * [**Tracing keys**](#tracing-keys) 在选定的工作区中提交跟踪，而无需访问存储的跟踪或管理操作。
@@ -18,27 +18,25 @@ LangSmith支持三种不同权限和生命周期的API密钥：
 
 要在 UI 中创建 PAT 或服务密钥：
 
-<Steps>
-  <Step title="Open API Keys settings" icon="settings">
-    导航至 [**Settings** page](https://smith.langchain.com/settings) 并选择 **API Keys** 部分。
-  </Step>
+**1.打开 API 密钥设置**
 
-  <Step title="Configure the key type" icon="key">
-    对于服务密钥，请在组织范围的密钥和工作区范围的密钥之间进行选择。如果密钥是工作区范围的，则必须指定工作区。
+导航至 [**Settings** page](https://smith.langchain.com/settings) 并选择 **API Keys** 部分。
 
-    [Enterprise](/langsmith/pricing-plans) 用户还可以 [assign specific workspace roles](/langsmith/administration-overview#workspace-roles-rbac) 服务密钥，这可以独立于任何用户调整其权限。
-  </Step><Step title="Set expiration" icon="calendar">
-    设置密钥的过期时间。密钥在选择的天数后将变得不可用，或者永远不可用（如果选择了）。
-  </Step>
+**2.配置密钥类型**
 
-  <Step title="Create the key" icon="circle-check">
-    单击 **创建 API 密钥。** LangSmith 只会显示 API 密钥一次，因此请务必复制它并将其存储在安全的地方。
-  </Step>
-</Steps>
+对于服务密钥，请在组织范围的密钥和工作区范围的密钥之间进行选择。如果密钥是工作区范围的，则必须指定工作区。
 
-<Tip>
-  [Enterprise](/langsmith/pricing-plans) 组织管理员可以在现有服务密钥上编辑 [role](/langsmith/administration-overview#workspace-roles-rbac)，而无需轮换密钥。在 [**Settings** page](https://smith.langchain.com/settings) **API 密钥** 部分，切换到 **服务** 选项卡，然后单击任意服务密钥行以打开编辑对话框。更新工作区角色（对于组织范围的键，更新组织角色）并单击 **保存**。密钥字符串本身没有改变。
-</Tip>
+[Enterprise](/langsmith/pricing-plans) 用户还可以 [assign specific workspace roles](/langsmith/administration-overview#workspace-roles-rbac) 服务密钥，这可以独立于任何用户调整其权限。
+
+**3.设置过期**设置密钥的过期时间。密钥在选择的天数后将变得不可用，或者永远不可用（如果选择了）。
+
+**4.创建密钥**
+
+单击 **创建 API 密钥。** LangSmith 只会显示 API 密钥一次，因此请务必复制它并将其存储在安全的地方。
+
+> [!提示]
+>
+> [Enterprise](/langsmith/pricing-plans) 组织管理员可以在现有服务密钥上编辑 [role](/langsmith/administration-overview#workspace-roles-rbac)，而无需轮换密钥。在 [**Settings** page](https://smith.langchain.com/settings) **API 密钥** 部分，切换到 **服务** 选项卡，然后单击任意服务密钥行以打开编辑对话框。更新工作区角色（对于组织范围的键，更新组织角色），然后单击 **保存**。密钥字符串本身没有改变。
 
 ## 停用或删除个人访问令牌
 
@@ -54,7 +52,7 @@ LangSmith支持三种不同权限和生命周期的API密钥：
 
 要停用或删除 PAT：
 
-1. 转到 [**Settings**](https://smith.langchain.com/settings) > **API 密钥** 并打开 **个人** 选项卡。
+1. 转到 [**Settings**](https://smith.langchain.com/settings) > **API 密钥**，然后打开 **个人** 选项卡。
 2. 在**我的密钥**下找到令牌。要管理其他成员的令牌，请切换到**所有成员**。
 3. 在 **操作** 列中，选择 **停用密钥** 或 **删除密钥**。每个操作都会打开自己的确认对话框。
 4. 输入对话框中显示的令牌描述。对于没有描述的令牌，请键入 **Key** 列中的短密钥。
@@ -115,25 +113,21 @@ LangSmith支持三种不同权限和生命周期的API密钥：
 
 安装适合您的语言的 SDK：
 
-<Tabs>
-  <Tab title="Python">
-    <CodeGroup>
-      ```bash pip theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-      pip install langsmith
-      ```
+**Python**
 
-      ```bash uv theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-      uv add langsmith
-      ```
-    </CodeGroup>
-  </Tab>
+```bash pip theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+pip install langsmith
+```
 
-  <Tab title="TypeScript">
-    ```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-    npm install langsmith
-    ```
-  </Tab>
-</Tabs>
+```bash uv theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+uv add langsmith
+```
+
+**打字稿**
+
+```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+npm install langsmith
+```
 
 有关完整详细信息，请参阅 [Python SDK](/langsmith/smith-python-sdk) 或 [JS/TS SDK](/langsmith/smith-js-ts-sdk) 参考。
 
@@ -152,44 +146,58 @@ export LANGSMITH_TRACING=true
     <thead>
       <tr>
         <th>地区</th>
+
+        <th>
+          网址
+        </th>
       </tr>
     </thead>
 
     <tbody>
       <tr>
         <td>GCP 美国</td>
+
+        <td>
+          `https://api.smith.langchain.com`
+        </td>
       </tr>
 
       <tr>
         <td>GCP 欧盟</td>
+
+        <td>
+          `https://eu.api.smith.langchain.com`
+        </td>
       </tr>
 
       <tr>
         <td>GCP 亚太地区</td>
+
+        <td>
+          `https://apac.api.smith.langchain.com`
+        </td>
       </tr>
 
       <tr>
         <td>AWS 美国</td>
+
+        <td>
+          `https://aws.api.smith.langchain.com`
+        </td>
       </tr>
     </tbody>
   </table>
 
 * 仅当您的 API 密钥范围为多个 [workspace](/langsmith/administration-overview#workspaces) 时，才需要 `LANGSMITH_WORKSPACE_ID`。在 **常规** 下的 [**Settings** page](https://smith.langchain.com/settings) 上找到您的工作区 ID：
 
-  `LANGSMITH_WORKSPACE_ID=<Workspace ID>`
-
-要跨本地 shell 或远程运行时重用端点、API 密钥和工作区设置，请参阅[Profile configuration](/langsmith/profile-configuration)。
+  `LANGSMITH_WORKSPACE_ID=<Workspace ID>`要跨本地 shell 或远程运行时重用端点、API 密钥和工作区设置，请参阅[Profile configuration](/langsmith/profile-configuration)。
 
 ## 在 SDK 之外使用 API 密钥
 
 参见[instructions for managing your organization via API](/langsmith/manage-organization-by-api)。
 
-***<div>
-  <Callout icon="terminal-2">
-    [Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
-  </Callout>
+***
 
-  <Callout icon="edit">
-    [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/create-account-api-key.mdx) 或 [file an issue](https://github.com/langchain-ai/docs/issues/new/choose)。
-  </Callout>
-</div>
+[Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
+
+[Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/create-account-api-key.mdx) 或 [file an issue](https://github.com/langchain-ai/docs/issues/new/choose)。

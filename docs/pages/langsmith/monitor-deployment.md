@@ -10,52 +10,50 @@ Monitor a Cloud deployment with build logs, Agent Server logs, and runtime metri
 
 Each revision includes build logs and server logs.
 
-<Tabs>
-  <Tab title="LangSmith UI">
-    From the **Deployments** view:
+**LangSmith UI**
 
-    1. Select a deployment.
-    2. In the **Revisions** table, select a revision. The details panel opens with the **Build** tab selected.
-    3. Review the build logs.
-    4. Select the **Server** tab to view server logs. Server logs become available after LangSmith deploys the revision.
-    5. Adjust the date and time range as needed. The default range is **Last 7 days**.
-  </Tab>
+From the **Deployments** view:
 
-  <Tab title="LangGraph CLI">
-    To view server logs, run:
+1. Select a deployment.
+2. In the **Revisions** table, select a revision. The details panel opens with the **Build** tab selected.
+3. Review the build logs.
+4. Select the **Server** tab to view server logs. Server logs become available after LangSmith deploys the revision.
+5. Adjust the date and time range as needed. The default range is **Last 7 days**.
 
-    ```shell theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-    langgraph deploy logs
-    ```
+**LangGraph CLI**
 
-    To view build logs, run:
+To view server logs, run:
 
-    ```shell theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-    langgraph deploy logs --type build
-    ```
+```shell theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+langgraph deploy logs
+```
 
-    To stream new logs, run:
+To view build logs, run:
 
-    ```shell theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-    langgraph deploy logs --follow
-    ```
+```shell theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+langgraph deploy logs --type build
+```
 
-    Filter logs by time range, log level, or search string:
+To stream new logs, run:
 
-    ```shell theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-    langgraph deploy logs --start-time 2026-03-01T00:00:00Z --level ERROR
-    ```
+```shell theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+langgraph deploy logs --follow
+```
 
-    To select a deployment, pass its name or ID:
+Filter logs by time range, log level, or search string:
 
-    ```shell theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-    langgraph deploy logs --name my-agent
-    langgraph deploy logs --deployment-id <DEPLOYMENT_ID>
-    ```
+```shell theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+langgraph deploy logs --start-time 2026-03-01T00:00:00Z --level ERROR
+```
 
-    For all options, see the [`deploy logs` CLI reference](/langsmith/cli#deploy-logs).
-  </Tab>
-</Tabs>
+To select a deployment, pass its name or ID:
+
+```shell theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+langgraph deploy logs --name my-agent
+langgraph deploy logs --deployment-id <DEPLOYMENT_ID>
+```
+
+For all options, see the [`deploy logs` CLI reference](/langsmith/cli#deploy-logs).
 
 ## Forward server logs to Datadog
 
@@ -82,12 +80,6 @@ To view deployment metrics:
 
 ***
 
-<div>
-  <Callout icon="terminal-2">
-    [Connect these docs](/use-these-docs) to your agent of choice via MCP for real-time answers.
-  </Callout>
+[Connect these docs](/use-these-docs) to your agent of choice via MCP for real-time answers.
 
-  <Callout icon="edit">
-    [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/monitor-deployment.mdx) or [file an issue](https://github.com/langchain-ai/docs/issues/new/choose).
-  </Callout>
-</div>
+[Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/monitor-deployment.mdx) or [file an issue](https://github.com/langchain-ai/docs/issues/new/choose).

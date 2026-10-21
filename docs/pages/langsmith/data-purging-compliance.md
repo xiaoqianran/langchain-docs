@@ -15,78 +15,76 @@ For detailed information about data retention configuration and management, plea
 
 ## Customize extended retention policy
 
-<Note>
-  This feature is available for [Enterprise](/langsmith/pricing-plans) plan customers. For [self-hosted](/langsmith/self-hosted) Enterprise customers, refer to the [workspace-level configuration section](#workspace-level-extended-retention-for-self-hosted).
-</Note>
+> [!NOTE]
+>
+> This feature is available for [Enterprise](/langsmith/pricing-plans) plan customers. For [self-hosted](/langsmith/self-hosted) Enterprise customers, refer to the [workspace-level configuration section](#workspace-level-extended-retention-for-self-hosted).
 
 [Enterprise](/langsmith/pricing-plans) customers can customize the extended data retention period for traces at the [workspace](/langsmith/administration-overview#workspaces) level to meet specific compliance requirements. Beginning September 14, 2026, the maximum long-lived trace retention period for SaaS customers is 180 days. You can adjust the retention period below this maximum based on your organization's needs. Changes to the retention period apply to new traces only.
 
-<Note>
-  Changes to the retention period apply to new traces only. Existing traces are not affected.
-</Note>
+> [!NOTE]
+>
+> Changes to the retention period apply to new traces only. Existing traces are not affected.
 
 ### Configure extended retention
 
 Organization Admins and Operators (`organization:manage`) can configure retention for any workspace. Workspace Admins can configure their own workspace (`workspaces:manage`). For a full permissions reference, see [Organization and workspace operations](/langsmith/organization-workspace-operations).
 
-<Tabs>
-  <Tab title="UI">
-    In the [LangSmith UI](https://smith.langchain.com?utm_source=docs\&utm_medium=cta\&utm_campaign=langsmith-signup\&utm_content=langsmith-data-purging-compliance):
+**UI**
 
-    1. Navigate to **Settings** at the bottom of the page.
-    2. Select **Usage configuration** from the left-hand menu.
-    3. Find the workspace in the list that you would like to configure.
-    4. Click on the value under the **Data retention policy** column for that workspace.
-    5. On the **workspace usage configurations** modal, customize the extended policy using the dropdown for **Extended - All traces are retained for** option. Available durations for SaaS customers are: 30d, 60d, 90d, 120d, 150d, and 180d (maximum as of September 14, 2026). Self-hosted deployments are not subject to this cap.
-    6. Select **Save**.
-  </Tab>
+In the [LangSmith UI](https://smith.langchain.com?utm_source=docs\&utm_medium=cta\&utm_campaign=langsmith-signup\&utm_content=langsmith-data-purging-compliance):
 
-  <Tab title="API">
-    To read current settings:
+1. Navigate to **Settings** at the bottom of the page.
+2. Select **Usage configuration** from the left-hand menu.
+3. Find the workspace in the list that you would like to configure.
+4. Click on the value under the **Data retention policy** column for that workspace.
+5. On the **workspace usage configurations** modal, customize the extended policy using the dropdown for **Extended - All traces are retained for** option. Available durations for SaaS customers are: 30d, 60d, 90d, 120d, 150d, and 180d (maximum as of September 14, 2026). Self-hosted deployments are not subject to this cap.
+6. Select **Save**.
 
-    **Organization level** (`organization:manage`)
+**API**
 
-    ```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-    curl -X GET "https://api.smith.langchain.com/api/v1/orgs/ttl-settings" \
-      -H "x-api-key: YOUR_API_KEY"
-    ```
+To read current settings:
 
-    **Workspace level** (`workspaces:manage`)
+**Organization level** (`organization:manage`)
 
-    ```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-    curl -X GET "https://api.smith.langchain.com/api/v1/ttl-settings" \
-      -H "x-api-key: YOUR_API_KEY"
-    ```
+```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+curl -X GET "https://api.smith.langchain.com/api/v1/orgs/ttl-settings" \
+  -H "x-api-key: YOUR_API_KEY"
+```
 
-    To update the retention period, set `resource_type` to `"run"` for traces and `ttl_days` to your desired duration. Available durations for SaaS customers are: 30, 60, 90, 120, 150, and 180 days (maximum as of September 14, 2026).
+**Workspace level** (`workspaces:manage`)
 
-    **Organization level** (`organization:manage`)
+```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+curl -X GET "https://api.smith.langchain.com/api/v1/ttl-settings" \
+  -H "x-api-key: YOUR_API_KEY"
+```
 
-    ```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-    curl -X PUT "https://api.smith.langchain.com/api/v1/orgs/ttl-settings" \
-      -H "x-api-key: YOUR_API_KEY" \
-      -H "Content-Type: application/json" \
-      -d '{"resource_type": "run", "ttl_days": 90}'
-    ```
+To update the retention period, set `resource_type` to `"run"` for traces and `ttl_days` to your desired duration. Available durations for SaaS customers are: 30, 60, 90, 120, 150, and 180 days (maximum as of September 14, 2026).
 
-    **Workspace level** (`workspaces:manage`)
+**Organization level** (`organization:manage`)
 
-    ```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-    curl -X PUT "https://api.smith.langchain.com/api/v1/ttl-settings" \
-      -H "x-api-key: YOUR_API_KEY" \
-      -H "Content-Type: application/json" \
-      -d '{"resource_type": "run", "ttl_days": 90}'
-    ```
-  </Tab>
-</Tabs>
+```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+curl -X PUT "https://api.smith.langchain.com/api/v1/orgs/ttl-settings" \
+  -H "x-api-key: YOUR_API_KEY" \
+  -H "Content-Type: application/json" \
+  -d '{"resource_type": "run", "ttl_days": 90}'
+```
+
+**Workspace level** (`workspaces:manage`)
+
+```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+curl -X PUT "https://api.smith.langchain.com/api/v1/ttl-settings" \
+  -H "x-api-key: YOUR_API_KEY" \
+  -H "Content-Type: application/json" \
+  -d '{"resource_type": "run", "ttl_days": 90}'
+```
 
 ### Workspace-level extended retention for self-hosted
 
 Self-hosted [Enterprise](/langsmith/pricing-plans) customers can also use workspace-level extended retention configuration instead of system-wide TTL settings. This provides more granular control over data retention for different workspaces without requiring environment variable changes.
 
-<Warning>
-  If you use blob storage, you **must** add a lifecycle rule for each custom retention period you configure. For example, setting a workspace to 90-day retention means blob data is written to the `ttl_90d/` prefix, which requires a matching lifecycle rule to be cleaned up automatically. See [blob storage TTL configuration](/langsmith/self-host-blob-storage#custom-workspace-level-retention-prefixes) for details and examples.
-</Warning>
+> [!WARNING]
+>
+> If you use blob storage, you **must** add a lifecycle rule for each custom retention period you configure. For example, setting a workspace to 90-day retention means blob data is written to the `ttl_90d/` prefix, which requires a matching lifecycle rule to be cleaned up automatically. See [blob storage TTL configuration](/langsmith/self-host-blob-storage#custom-workspace-level-retention-prefixes) for details and examples.
 
 To configure this for self-hosted deployments, refer to the [self-hosted TTL documentation](/langsmith/self-host-ttl) for the legacy system-wide approach or contact [support](https://support.langchain.com).
 
@@ -99,9 +97,9 @@ You can use the API to complete trace deletes. The API supports two methods for 
 
 For more details, refer to the [API spec](/langsmith/smith-api/run/delete-runs).
 
-<Warning>
-  All trace deletions will delete related entities like feedbacks, aggregations, and stats across all data storages.
-</Warning>
+> [!WARNING]
+>
+> All trace deletions will delete related entities like feedbacks, aggregations, and stats across all data storages.
 
 ### Deletion timeline
 
@@ -111,9 +109,9 @@ Trace deletions are processed during non-peak usage times and are not instant. L
 
 To delete specific traces by their trace IDs from a single session:
 
-<Note>
-  The `session_id` is the project ID for the trace you are trying to delete. You can find it on the tracing project page in the LangSmith UI.
-</Note>
+> [!NOTE]
+>
+> The `session_id` is the project ID for the trace you are trying to delete. You can find it on the tracing project page in the LangSmith UI.
 
 ```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 curl -X POST "https://api.smith.langchain.com/api/v1/runs/delete" \
@@ -129,9 +127,9 @@ curl -X POST "https://api.smith.langchain.com/api/v1/runs/delete" \
 
 You can delete dataset examples self-serve via our API, which supports both soft and hard deletion methods depending on your data retention needs.
 
-<Warning>
-  Hard deletes will permanently remove inputs, outputs, and metadata from ALL versions of the specified examples across the entire dataset history.
-</Warning>
+> [!WARNING]
+>
+> Hard deletes will permanently remove inputs, outputs, and metadata from ALL versions of the specified examples across the entire dataset history.
 
 ### Deleting examples is a two-step process
 
@@ -193,12 +191,6 @@ curl -X POST "https://api.smith.langchain.com/v1/platform/datasets/examples/dele
 
 ***
 
-<div>
-  <Callout icon="terminal-2">
-    [Connect these docs](/use-these-docs) to your agent of choice via MCP for real-time answers.
-  </Callout>
+[Connect these docs](/use-these-docs) to your agent of choice via MCP for real-time answers.
 
-  <Callout icon="edit">
-    [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/data-purging-compliance.mdx) or [file an issue](https://github.com/langchain-ai/docs/issues/new/choose).
-  </Callout>
-</div>
+[Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/data-purging-compliance.mdx) or [file an issue](https://github.com/langchain-ai/docs/issues/new/choose).

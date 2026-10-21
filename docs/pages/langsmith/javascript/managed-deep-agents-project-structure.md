@@ -6,9 +6,9 @@ Understand the project layout for Managed Deep Agents.
 
 A Managed Deep Agents project is a normal TypeScript package with one required root agent entry. Other paths are either ordinary modules you import, or files and directories that MDA discovers to enable managed capabilities.
 
-<Note>
-  Managed Deep Agents is in **public [beta](/langsmith/release-stages)** on [LangSmith Cloud](/langsmith/cloud).
-</Note>
+> [!NOTE]
+>
+> Managed Deep Agents is in **public [beta](/langsmith/release-stages)** on [LangSmith Cloud](/langsmith/cloud).
 
 ## Project layout
 
@@ -77,15 +77,13 @@ The layout above shows the common `.ts` names. TypeScript managed declarations a
 
 The build copies only the project directory. To use a package from a sibling directory, declare it as a local dependency:
 
-<CodeGroup>
-  ```bash npm theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  npm install ../shared
-  ```
+```bash npm theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+npm install ../shared
+```
 
-  ```bash pnpm theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  pnpm add ../shared
-  ```
-</CodeGroup>
+```bash pnpm theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+pnpm add ../shared
+```
 
 ```ts theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 import { helper } from "@acme/shared";
@@ -104,24 +102,16 @@ MDA copies the package into the build. `mda dev` reloads when you edit it, and `
 
 ## Next steps
 
-<CardGroup>
-  <Card title="Quickstart" icon="rocket" href="/langsmith/javascript/managed-deep-agents-quickstart">
-    Create and deploy your first Managed Deep Agent with the `mda` CLI.
-  </Card>
+> **[Quickstart](/langsmith/javascript/managed-deep-agents-quickstart)**
+>
+> Create and deploy your first Managed Deep Agent with the `mda` CLI.
 
-  <Card title="Tutorial" icon="book" href="/langsmith/javascript/managed-deep-agents-tutorial">
-    Add durable memory and a daily schedule to the quickstart research assistant.
-  </Card>
-</CardGroup>
+> **[Tutorial](/langsmith/javascript/managed-deep-agents-tutorial)**
+>
+> Add durable memory and a daily schedule to the quickstart research assistant.
 
 ***
 
-<div>
-  <Callout icon="terminal-2">
-    [Connect these docs](/use-these-docs) to your agent of choice via MCP for real-time answers.
-  </Callout>
+[Connect these docs](/use-these-docs) to your agent of choice via MCP for real-time answers.
 
-  <Callout icon="edit">
-    [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/managed-deep-agents-project-structure.mdx) or [file an issue](https://github.com/langchain-ai/docs/issues/new/choose).
-  </Callout>
-</div>
+[Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/managed-deep-agents-project-structure.mdx) or [file an issue](https://github.com/langchain-ai/docs/issues/new/choose).

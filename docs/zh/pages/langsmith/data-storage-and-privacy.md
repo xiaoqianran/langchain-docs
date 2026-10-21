@@ -20,9 +20,9 @@ LangGraph **CLI** 是用于构建和运行 LangGraph 应用程序的命令行界
 
 运行代理服务器（在内存中或在 Docker 中）时，可以启用 LangSmith 跟踪，以促进更快的调试，并在生产中提供图形状态和 LLM 提示的可观察性。您始终可以通过在服务器的运行时环境中设置 `LANGSMITH_TRACING=false` 来禁用跟踪。
 
-<Note>
-  为了进行更精细的控制，您可以使用[conditional tracing](/langsmith/conditional-tracing)根据运行时条件（例如客户端要求或数据敏感性）有选择地启用或禁用跟踪。
-</Note>
+> [!注意]
+>
+> 要进行更精细的控制，您可以使用 [conditional tracing](/langsmith/conditional-tracing) 根据运行时条件（例如客户端要求或数据敏感性）有选择地启用或禁用跟踪。
 
 ### 内存开发服务器`langgraph dev` 将 [in-memory development server](/langsmith/local-dev-testing) 作为单个 Python 进程运行，专为快速开发和测试而设计。它将所有检查点和内存数据保存到磁盘当前工作目录中的`.langgraph_api`目录中。除了 [CLI](#cli) 部分中描述的遥测数据之外，除非您启用了跟踪或您的图形代码显式联系外部服务，否则不会有任何数据离开机器。
 
@@ -34,7 +34,7 @@ LangGraph **CLI** 是用于构建和运行 LangGraph 应用程序的命令行界
 
 ## 工作室
 
-[Studio](/langsmith/studio) 是用于与代理服务器交互的图形界面。它不会保留任何私人数据（您发送到服务器的数据不会发送到LangSmith）。虽然 Studio 界面在 [smith.langchain.com](https://smith.langchain.com?utm_source=docs\&utm_medium=cta\&utm_campaign=langsmith-signup\&utm_content=langsmith-data-storage-and-privacy) 上提供服务，但它在您的浏览器中运行并直接连接到本地代理服务器，因此不需要将数据发送到 LangSmith。
+[Studio](/langsmith/studio) 是一个用于与代理服务器交互的图形界面。它不会保留任何私人数据（您发送到服务器的数据不会发送到LangSmith）。虽然 Studio 界面在 [smith.langchain.com](https://smith.langchain.com?utm_source=docs\&utm_medium=cta\&utm_campaign=langsmith-signup\&utm_content=langsmith-data-storage-and-privacy) 上提供服务，但它在您的浏览器中运行并直接连接到本地代理服务器，因此不需要将数据发送到 LangSmith。
 
 如果您已登录，LangSmith 会收集一些使用情况分析，以帮助改善调试用户体验。这包括：
 
@@ -47,7 +47,7 @@ LangGraph **CLI** 是用于构建和运行 LangGraph 应用程序的命令行界
 
 总之，您可以通过关闭 CLI 分析和禁用跟踪来选择退出服务器端遥测。
 
-|变量|目的|默认 |
+|变量|目的|默认|
 | - | - | - |
 | `LANGGRAPH_CLI_NO_ANALYTICS=1` |禁用 CLI 分析 |启用分析 |
 | `LANGSMITH_API_KEY` |启用 LangSmith 跟踪 |跟踪已禁用 |
@@ -55,12 +55,6 @@ LangGraph **CLI** 是用于构建和运行 LangGraph 应用程序的命令行界
 
 ***
 
-<div>
-  <Callout icon="terminal-2">
-    [Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
-  </Callout>
+[Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
 
-  <Callout icon="edit">
-    [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/data-storage-and-privacy.mdx) 或 [file an issue](https://github.com/langchain-ai/docs/issues/new/choose)。
-  </Callout>
-</div>
+[Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/data-storage-and-privacy.mdx) 或 [file an issue](https://github.com/langchain-ai/docs/issues/new/choose)。

@@ -18,143 +18,137 @@ Supports filters (`trace_filter`, `tree_filter`) and field projection (`selects`
 
 #### Method name
 
-<Tabs>
-  <Tab title="Python">
-    | Before | After |
-    | - | - |
-    | `client.list_runs(is_root=True)` (generic) | `client.traces.query()` |
+**Python**
 
-    <Note>
-      `client.traces.query()` is now async. Call it with `await`.
-    </Note>
+| Before | After |
+| - | - |
+| `client.list_runs(is_root=True)` (generic) | `client.traces.query()` |
 
-    See the [reference](https://reference.langchain.com/python/langsmith/_openapi_client/resources/traces/TracesResource/query) for the full parameter and field list.
-  </Tab>
+> [!NOTE]
+>
+> `client.traces.query()` is now async. Call it with `await`.
 
-  <Tab title="TypeScript">
-    | Before | After |
-    | - | - |
-    | `client.listRuns({ isRoot: true })` (generic) | `client.traces.query()` |
+See the [reference](https://reference.langchain.com/python/langsmith/_openapi_client/resources/traces/TracesResource/query) for the full parameter and field list.
 
-    See the [reference](https://reference.langchain.com/javascript/langsmith/_openapi_client/Langsmith/Traces/query) for the full parameter and field list.
-  </Tab>
+**TypeScript**
 
-  <Tab title="Java">
-    | Before | After |
-    | - | - |
-    | `client.runs().query()` (generic, `isRoot(true)`) | `client.traces().query()` |
+| Before | After |
+| - | - |
+| `client.listRuns({ isRoot: true })` (generic) | `client.traces.query()` |
 
-    See the [reference](https://javadoc.io/doc/com.langchain.smith/langsmith-java/latest/com/langchain/smith/services/blocking/TraceService.html) for the full parameter list.
-  </Tab>
+See the [reference](https://reference.langchain.com/javascript/langsmith/_openapi_client/Langsmith/Traces/query) for the full parameter and field list.
 
-  <Tab title="Go">
-    | Before | After |
-    | - | - |
-    | `client.Runs.Query()` (generic, `IsRoot: true`) | `client.Traces.Query()` |
+**Java**
 
-    See the [reference](https://pkg.go.dev/github.com/langchain-ai/langsmith-go#TraceService.QueryAutoPaging) for the full parameter list.
-  </Tab>
+| Before | After |
+| - | - |
+| `client.runs().query()` (generic, `isRoot(true)`) | `client.traces().query()` |
 
-  <Tab title="cURL">
-    | Before | After |
-    | - | - |
-    | `POST /api/v1/runs/query` (`is_root=true`) | `POST /api/v2/traces/query` |
-  </Tab>
-</Tabs>
+See the [reference](https://javadoc.io/doc/com.langchain.smith/langsmith-java/latest/com/langchain/smith/services/blocking/TraceService.html) for the full parameter list.
+
+**Go**
+
+| Before | After |
+| - | - |
+| `client.Runs.Query()` (generic, `IsRoot: true`) | `client.Traces.Query()` |
+
+See the [reference](https://pkg.go.dev/github.com/langchain-ai/langsmith-go#TraceService.QueryAutoPaging) for the full parameter list.
+
+**cURL**
+
+| Before | After |
+| - | - |
+| `POST /api/v1/runs/query` (`is_root=true`) | `POST /api/v2/traces/query` |
 
 #### Query parameters
 
-<Tabs>
-  <Tab title="Python">
-    * `session` (a list of project UUIDs) becomes `project_id`, a single UUID; `traces.query` scopes to exactly one project per call.
-    * `is_root` is removed: `traces.query` is always scoped to root runs implicitly.
-    * The generic `filter` (evaluated against any run) has no direct equivalent; use `trace_filter` or `tree_filter` instead.
-    * `trace_filter` and `tree_filter` carry over unchanged; both already existed on `list_runs`.
-    * `trace_ids` is new: a fast-path restriction to a known set of trace UUIDs, more efficient at scale than an equivalent `trace_filter`.
-    * `start_time` (no default) becomes `min_start_time`, which defaults to 24 hours ago when omitted.
-    * `max_start_time` is new, defaulting to the request time; `list_runs`'s `end_time` filtered by a run's own end timestamp, not a scan-window bound.
-    * `select` is renamed `selects`; entries route to `trace_aggregates` (`total_tokens`, `total_cost`, `first_token_time`) or `root_run` (everything else).
-  </Tab>
+**Python**
 
-  <Tab title="TypeScript">
-    * `session` (a list of project UUIDs) becomes `project_id`, a single UUID; `traces.query` scopes to exactly one project per call.
-    * `isRoot` is removed: `traces.query` is always scoped to root runs implicitly.
-    * The generic `filter` (evaluated against any run) has no direct equivalent; use `trace_filter` or `tree_filter` instead.
-    * `traceFilter` and `treeFilter` carry over as `trace_filter`/`tree_filter`; both already existed on `listRuns`. Note the v1 method took camelCase options (`traceFilter`); the v2 resource method takes the wire-format `snake_case` keys directly.
-    * `trace_ids` is new: a fast-path restriction to a known set of trace UUIDs, more efficient at scale than an equivalent `trace_filter`.
-    * `startTime` (no default) becomes `min_start_time`, which defaults to 24 hours ago when omitted.
-    * `max_start_time` is new, defaulting to the request time; `listRuns`'s `endTime` filtered by a run's own end timestamp, not a scan-window bound.
-    * `select` is renamed `selects`; entries route to `trace_aggregates` (`total_tokens`, `total_cost`, `first_token_time`) or `root_run` (everything else).
-  </Tab>
+* `session` (a list of project UUIDs) becomes `project_id`, a single UUID; `traces.query` scopes to exactly one project per call.
+* `is_root` is removed: `traces.query` is always scoped to root runs implicitly.
+* The generic `filter` (evaluated against any run) has no direct equivalent; use `trace_filter` or `tree_filter` instead.
+* `trace_filter` and `tree_filter` carry over unchanged; both already existed on `list_runs`.
+* `trace_ids` is new: a fast-path restriction to a known set of trace UUIDs, more efficient at scale than an equivalent `trace_filter`.
+* `start_time` (no default) becomes `min_start_time`, which defaults to 24 hours ago when omitted.
+* `max_start_time` is new, defaulting to the request time; `list_runs`'s `end_time` filtered by a run's own end timestamp, not a scan-window bound.
+* `select` is renamed `selects`; entries route to `trace_aggregates` (`total_tokens`, `total_cost`, `first_token_time`) or `root_run` (everything else).
 
-  <Tab title="Java">
-    * `session` (`List<String>` of project UUIDs) becomes `projectId`, a single UUID; `traces().query()` scopes to exactly one project per call.
-    * `isRoot` is removed: `traces().query()` is always scoped to root runs implicitly.
-    * The generic `filter` (evaluated against any run) has no direct equivalent; use `traceFilter` or `treeFilter` instead.
-    * `traceFilter` and `treeFilter` carry over unchanged; both already existed on `RunQueryParams`.
-    * `traceIds` is new: a fast-path restriction to a known set of trace UUIDs, more efficient at scale than an equivalent `traceFilter`.
-    * `startTime` (no default) becomes `minStartTime`, which defaults to 24 hours ago when omitted.
-    * `maxStartTime` is new, defaulting to the request time; `RunQueryParams`'s `endTime` filtered by a run's own end timestamp, not a scan-window bound.
-    * `select` is renamed `selects`; entries route to `traceAggregates` (`totalTokens`, `totalCost`, `firstTokenTime`) or `rootRun` (everything else).
-  </Tab>
+**TypeScript**
 
-  <Tab title="Go">
-    * `Session` (`[]string` of project UUIDs) becomes `ProjectID`, a single UUID; `Traces.Query()` scopes to exactly one project per call.
-    * `IsRoot` is removed: `Traces.Query()` is always scoped to root runs implicitly.
-    * The generic `Filter` (evaluated against any run) has no direct equivalent; use `TraceFilter` or `TreeFilter` instead.
-    * `TraceFilter` and `TreeFilter` carry over unchanged; both already existed on `RunQueryParams`.
-    * `TraceIDs` is new: a fast-path restriction to a known set of trace UUIDs, more efficient at scale than an equivalent `TraceFilter`.
-    * `StartTime` (no default) becomes `MinStartTime`, which defaults to 24 hours ago when omitted.
-    * `MaxStartTime` is new, defaulting to the request time; `RunQueryParams`'s `EndTime` filtered by a run's own end timestamp, not a scan-window bound.
-    * `Select` is renamed `Selects`; entries route to `TraceAggregates` (`TotalTokens`, `TotalCost`, `FirstTokenTime`) or `RootRun` (everything else).
-  </Tab>
+* `session` (a list of project UUIDs) becomes `project_id`, a single UUID; `traces.query` scopes to exactly one project per call.
+* `isRoot` is removed: `traces.query` is always scoped to root runs implicitly.
+* The generic `filter` (evaluated against any run) has no direct equivalent; use `trace_filter` or `tree_filter` instead.
+* `traceFilter` and `treeFilter` carry over as `trace_filter`/`tree_filter`; both already existed on `listRuns`. Note the v1 method took camelCase options (`traceFilter`); the v2 resource method takes the wire-format `snake_case` keys directly.
+* `trace_ids` is new: a fast-path restriction to a known set of trace UUIDs, more efficient at scale than an equivalent `trace_filter`.
+* `startTime` (no default) becomes `min_start_time`, which defaults to 24 hours ago when omitted.
+* `max_start_time` is new, defaulting to the request time; `listRuns`'s `endTime` filtered by a run's own end timestamp, not a scan-window bound.
+* `select` is renamed `selects`; entries route to `trace_aggregates` (`total_tokens`, `total_cost`, `first_token_time`) or `root_run` (everything else).
 
-  <Tab title="cURL">
-    * `session` (a list of project UUIDs) becomes `project_id`, a single UUID.
-    * `is_root` is removed: the endpoint is always scoped to root runs implicitly.
-    * The generic `filter` has no direct equivalent; use `trace_filter` or `tree_filter` instead. Both already existed on `POST /api/v1/runs/query`.
-    * `trace_ids` is new: a fast-path restriction to a known set of trace UUIDs.
-    * `start_time` (no default) becomes `min_start_time`, which defaults to 24 hours ago when omitted.
-    * `max_start_time` is new, defaulting to the request time.
-    * `select` is renamed `selects`.
-  </Tab>
-</Tabs>
+**Java**
+
+* `session` (`List<String>` of project UUIDs) becomes `projectId`, a single UUID; `traces().query()` scopes to exactly one project per call.
+* `isRoot` is removed: `traces().query()` is always scoped to root runs implicitly.
+* The generic `filter` (evaluated against any run) has no direct equivalent; use `traceFilter` or `treeFilter` instead.
+* `traceFilter` and `treeFilter` carry over unchanged; both already existed on `RunQueryParams`.
+* `traceIds` is new: a fast-path restriction to a known set of trace UUIDs, more efficient at scale than an equivalent `traceFilter`.
+* `startTime` (no default) becomes `minStartTime`, which defaults to 24 hours ago when omitted.
+* `maxStartTime` is new, defaulting to the request time; `RunQueryParams`'s `endTime` filtered by a run's own end timestamp, not a scan-window bound.
+* `select` is renamed `selects`; entries route to `traceAggregates` (`totalTokens`, `totalCost`, `firstTokenTime`) or `rootRun` (everything else).
+
+**Go**
+
+* `Session` (`[]string` of project UUIDs) becomes `ProjectID`, a single UUID; `Traces.Query()` scopes to exactly one project per call.
+* `IsRoot` is removed: `Traces.Query()` is always scoped to root runs implicitly.
+* The generic `Filter` (evaluated against any run) has no direct equivalent; use `TraceFilter` or `TreeFilter` instead.
+* `TraceFilter` and `TreeFilter` carry over unchanged; both already existed on `RunQueryParams`.
+* `TraceIDs` is new: a fast-path restriction to a known set of trace UUIDs, more efficient at scale than an equivalent `TraceFilter`.
+* `StartTime` (no default) becomes `MinStartTime`, which defaults to 24 hours ago when omitted.
+* `MaxStartTime` is new, defaulting to the request time; `RunQueryParams`'s `EndTime` filtered by a run's own end timestamp, not a scan-window bound.
+* `Select` is renamed `Selects`; entries route to `TraceAggregates` (`TotalTokens`, `TotalCost`, `FirstTokenTime`) or `RootRun` (everything else).
+
+**cURL**
+
+* `session` (a list of project UUIDs) becomes `project_id`, a single UUID.
+* `is_root` is removed: the endpoint is always scoped to root runs implicitly.
+* The generic `filter` has no direct equivalent; use `trace_filter` or `tree_filter` instead. Both already existed on `POST /api/v1/runs/query`.
+* `trace_ids` is new: a fast-path restriction to a known set of trace UUIDs.
+* `start_time` (no default) becomes `min_start_time`, which defaults to 24 hours ago when omitted.
+* `max_start_time` is new, defaulting to the request time.
+* `select` is renamed `selects`.
 
 #### Response fields
 
-<Tabs>
-  <Tab title="Python">
-    * `root_run` carries the same `Run` shape as Runs: query (`id`, `name`, `run_type`, `status`, and so on), gated by `selects`.
-    * `total_tokens`/`total_cost` move off `root_run` onto `trace_aggregates`, summed across every run in the trace instead of just the root run. `trace_aggregates` is omitted entirely from the response when no aggregate field was selected.
-    * `trace_aggregates.first_token_time` is new
-  </Tab>
+**Python**
 
-  <Tab title="TypeScript">
-    * `root_run` carries the same `Run` shape as Runs: query (`id`, `name`, `run_type`, `status`, and so on), gated by `selects`.
-    * `total_tokens`/`total_cost` move off `root_run` onto `trace_aggregates`, summed across every run in the trace instead of just the root run. `trace_aggregates` is omitted entirely from the response when no aggregate field was selected.
-    * `trace_aggregates.first_token_time` is new
-  </Tab>
+* `root_run` carries the same `Run` shape as Runs: query (`id`, `name`, `run_type`, `status`, and so on), gated by `selects`.
+* `total_tokens`/`total_cost` move off `root_run` onto `trace_aggregates`, summed across every run in the trace instead of just the root run. `trace_aggregates` is omitted entirely from the response when no aggregate field was selected.
+* `trace_aggregates.first_token_time` is new
 
-  <Tab title="Java">
-    * `rootRun()` carries the same `RunSchema` shape as Runs: query (`totalTokens()`, `name()`, `runType()`, `status()`, and so on), gated by `selects`.
-    * `totalTokens()`/`totalCost()` move off `rootRun()` onto `traceAggregates()`, summed across every run in the trace instead of just the root run.
-    * `traceAggregates().firstTokenTime()` is new
-  </Tab>
+**TypeScript**
 
-  <Tab title="Go">
-    * `RootRun` carries the same `Run` shape as Runs: query, gated by `Selects`.
-    * `TotalTokens`/`TotalCost` move off `RootRun` onto `TraceAggregates`, summed across every run in the trace instead of just the root run. Check for an absent `TraceAggregates` via `trace.TraceAggregates.JSON.RawJSON() == ""`, since it is a value type, not a pointer.
-    * `TraceAggregates.FirstTokenTime` is new
-  </Tab>
+* `root_run` carries the same `Run` shape as Runs: query (`id`, `name`, `run_type`, `status`, and so on), gated by `selects`.
+* `total_tokens`/`total_cost` move off `root_run` onto `trace_aggregates`, summed across every run in the trace instead of just the root run. `trace_aggregates` is omitted entirely from the response when no aggregate field was selected.
+* `trace_aggregates.first_token_time` is new
 
-  <Tab title="cURL">
-    JSON response fields use `snake_case`, matching the bullets below.
+**Java**
 
-    * `root_run` carries the same shape as Runs: query, gated by `selects`.
-    * `total_tokens`/`total_cost` move off `root_run` onto `trace_aggregates`, summed across every run in the trace instead of just the root run.
-    * `trace_aggregates.first_token_time` is new
-  </Tab>
-</Tabs>
+* `rootRun()` carries the same `RunSchema` shape as Runs: query (`totalTokens()`, `name()`, `runType()`, `status()`, and so on), gated by `selects`.
+* `totalTokens()`/`totalCost()` move off `rootRun()` onto `traceAggregates()`, summed across every run in the trace instead of just the root run.
+* `traceAggregates().firstTokenTime()` is new
+
+**Go**
+
+* `RootRun` carries the same `Run` shape as Runs: query, gated by `Selects`.
+* `TotalTokens`/`TotalCost` move off `RootRun` onto `TraceAggregates`, summed across every run in the trace instead of just the root run. Check for an absent `TraceAggregates` via `trace.TraceAggregates.JSON.RawJSON() == ""`, since it is a value type, not a pointer.
+* `TraceAggregates.FirstTokenTime` is new
+
+**cURL**
+
+JSON response fields use `snake_case`, matching the bullets below.
+
+* `root_run` carries the same shape as Runs: query, gated by `selects`.
+* `total_tokens`/`total_cost` move off `root_run` onto `trace_aggregates`, summed across every run in the trace instead of just the root run.
+* `trace_aggregates.first_token_time` is new
 
 ### Examples
 
@@ -162,963 +156,929 @@ Supports filters (`trace_filter`, `tree_filter`) and field projection (`selects`
 
 Fetch every trace (root run) in a project, replacing `list_runs(is_root=True)`.
 
-<Tabs>
-  <Tab title="Python">
-    <Tabs>
-      <Tab title="Before">
-        ```python Before theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-        from langsmith import Client
+**Python**
 
-        client = Client()
-        project = client.read_project(project_name="default")
+**Before**
 
-        root_runs = list(client.list_runs(project_id=project.id, is_root=True, limit=5))
-        for root_run in root_runs:
-            print(root_run.trace_id, root_run.name)
-        ```
-      </Tab>
+```python Before theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+from langsmith import Client
 
-      <Tab title="After">
-        ```python After theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-        import asyncio
-        from datetime import datetime, timedelta, timezone
+client = Client()
+project = client.read_project(project_name="default")
 
-        from langsmith import Client
+root_runs = list(client.list_runs(project_id=project.id, is_root=True, limit=5))
+for root_run in root_runs:
+    print(root_run.trace_id, root_run.name)
+```
 
+**After**
 
-        async def main():
-            client = Client()
-            project = await client.aread_project(project_name="default")
-            count = 0
-            async for trace in client.traces.query(
-                project_id=str(project.id),
-                min_start_time=datetime.now(timezone.utc) - timedelta(days=30),
-                max_start_time=datetime.now(timezone.utc),
-                selects=["NAME"],
-            ):
-                print(trace.root_run.trace_id, trace.root_run.name)
-                count += 1
-                if count >= 5:
-                    break
+```python After theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+import asyncio
+from datetime import datetime, timedelta, timezone
+
+from langsmith import Client
 
 
-        asyncio.run(main())
-        ```
-      </Tab>
-    </Tabs>
-  </Tab>
+async def main():
+    client = Client()
+    project = await client.aread_project(project_name="default")
+    count = 0
+    async for trace in client.traces.query(
+        project_id=str(project.id),
+        min_start_time=datetime.now(timezone.utc) - timedelta(days=30),
+        max_start_time=datetime.now(timezone.utc),
+        selects=["NAME"],
+    ):
+        print(trace.root_run.trace_id, trace.root_run.name)
+        count += 1
+        if count >= 5:
+            break
 
-  <Tab title="TypeScript">
-    <Tabs>
-      <Tab title="Before">
-        ```ts Before theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-        import { Client } from "langsmith";
 
-        const client = new Client();
-        const project = await client.readProject({ projectName: "default" });
+asyncio.run(main())
+```
 
-        for await (const run of client.listRuns({ projectId: project.id, isRoot: true, limit: 5 })) {
-          console.log(run.trace_id, run.name);
-        }
-        ```
-      </Tab>
+**TypeScript**
 
-      <Tab title="After">
-        ```ts After theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-        import { Client } from "langsmith";
+**Before**
 
-        const client = new Client();
-        const project = await client.readProject({ projectName: "default" });
-        let count = 0;
-        for await (const trace of client.traces.query({
-          project_id: project.id,
-          min_start_time: new Date(Date.now() - 30 * 24 * 60 * 60 * 1000).toISOString(),
-          max_start_time: new Date().toISOString(),
-          selects: ["NAME"],
-        })) {
-          console.log(trace.root_run?.trace_id, trace.root_run?.name);
-          count += 1;
-          if (count >= 5) break;
-        }
-        ```
-      </Tab>
-    </Tabs>
-  </Tab>
+```ts Before theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+import { Client } from "langsmith";
 
-  <Tab title="Java">
-    <Tabs>
-      <Tab title="Before">
-        ```kotlin Before theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-        import com.langchain.smith.client.LangsmithClient
-        import com.langchain.smith.client.okhttp.LangsmithOkHttpClient
-        import com.langchain.smith.models.runs.RunQueryParams
-        import com.langchain.smith.models.sessions.SessionListParams
+const client = new Client();
+const project = await client.readProject({ projectName: "default" });
 
-        val client: LangsmithClient = LangsmithOkHttpClient.fromEnv()
+for await (const run of client.listRuns({ projectId: project.id, isRoot: true, limit: 5 })) {
+  console.log(run.trace_id, run.name);
+}
+```
 
-        val project = client.sessions().list(
-            SessionListParams.builder().name("default").limit(1L).build()
-        ).items().first()
+**After**
 
-        val rootRuns = client.runs().query(
-            RunQueryParams.builder()
-                .addSession(project.id())
-                .isRoot(true)
-                .limit(5L)
-                .build()
-        ).runs()
-        for (run in rootRuns) {
-            println("${run.traceId()} ${run.name()}")
-        }
-        ```
-      </Tab>
+```ts After theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+import { Client } from "langsmith";
 
-      <Tab title="After">
-        ```kotlin After theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-        import java.time.OffsetDateTime
+const client = new Client();
+const project = await client.readProject({ projectName: "default" });
+let count = 0;
+for await (const trace of client.traces.query({
+  project_id: project.id,
+  min_start_time: new Date(Date.now() - 30 * 24 * 60 * 60 * 1000).toISOString(),
+  max_start_time: new Date().toISOString(),
+  selects: ["NAME"],
+})) {
+  console.log(trace.root_run?.trace_id, trace.root_run?.name);
+  count += 1;
+  if (count >= 5) break;
+}
+```
 
-        import com.langchain.smith.client.LangsmithClient
-        import com.langchain.smith.client.okhttp.LangsmithOkHttpClient
-        import com.langchain.smith.models.runs.RunSelectField
-        import com.langchain.smith.models.sessions.SessionListParams
-        import com.langchain.smith.models.traces.TraceQueryParams
-        import kotlin.jvm.optionals.getOrNull
+**Java**
 
-        val client: LangsmithClient = LangsmithOkHttpClient.fromEnv()
+**Before**
 
-        val project = client.sessions().list(
-            SessionListParams.builder().name("default").limit(1L).build()
-        ).items().first()
+```kotlin Before theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+import com.langchain.smith.client.LangsmithClient
+import com.langchain.smith.client.okhttp.LangsmithOkHttpClient
+import com.langchain.smith.models.runs.RunQueryParams
+import com.langchain.smith.models.sessions.SessionListParams
 
-        val traces = client.traces().query(
-            TraceQueryParams.builder()
-                .projectId(project.id())
-                .minStartTime(OffsetDateTime.now().minusMonths(1))
-                .maxStartTime(OffsetDateTime.now())
-                .addSelect(RunSelectField.NAME)
-                .build()
-        ).items().take(5)
-        for (trace in traces) {
-            println("${trace.rootRun().get().traceId().getOrNull()} ${trace.rootRun().get().name().getOrNull()}")
-        }
-        ```
-      </Tab>
-    </Tabs>
-  </Tab>
+val client: LangsmithClient = LangsmithOkHttpClient.fromEnv()
 
-  <Tab title="Go">
-    <Tabs>
-      <Tab title="Before">
-        ```go Before theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-        package main
+val project = client.sessions().list(
+    SessionListParams.builder().name("default").limit(1L).build()
+).items().first()
 
-        import (
-        	"context"
-        	"fmt"
+val rootRuns = client.runs().query(
+    RunQueryParams.builder()
+        .addSession(project.id())
+        .isRoot(true)
+        .limit(5L)
+        .build()
+).runs()
+for (run in rootRuns) {
+    println("${run.traceId()} ${run.name()}")
+}
+```
 
-        	"github.com/langchain-ai/langsmith-go"
-        )
+**After**
 
-        func main() {
-        	ctx := context.Background()
-        	client := langsmith.NewClient()
+```kotlin After theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+import java.time.OffsetDateTime
 
-        	sessions, err := client.Sessions.List(ctx, langsmith.SessionListParams{
-        		Name:  langsmith.F("default"),
-        		Limit: langsmith.F(int64(1)),
-        	})
-        	if err != nil {
-        		panic(err.Error())
-        	}
-        	projectID := sessions.Items[0].ID
+import com.langchain.smith.client.LangsmithClient
+import com.langchain.smith.client.okhttp.LangsmithOkHttpClient
+import com.langchain.smith.models.runs.RunSelectField
+import com.langchain.smith.models.sessions.SessionListParams
+import com.langchain.smith.models.traces.TraceQueryParams
+import kotlin.jvm.optionals.getOrNull
 
-        	rootRuns, err := client.Runs.Query(ctx, langsmith.RunQueryParams{
-        		Session: langsmith.F([]string{projectID}),
-        		IsRoot:  langsmith.F(true),
-        		Limit:   langsmith.F(int64(5)),
-        	})
-        	if err != nil {
-        		panic(err.Error())
-        	}
-        	for _, run := range rootRuns.Runs {
-        		fmt.Println(run.TraceID, run.Name)
-        	}
-        }
-        ```
-      </Tab>
+val client: LangsmithClient = LangsmithOkHttpClient.fromEnv()
 
-      <Tab title="After">
-        ```go After theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-        package main
+val project = client.sessions().list(
+    SessionListParams.builder().name("default").limit(1L).build()
+).items().first()
 
-        import (
-        	"context"
-        	"fmt"
-        	"time"
+val traces = client.traces().query(
+    TraceQueryParams.builder()
+        .projectId(project.id())
+        .minStartTime(OffsetDateTime.now().minusMonths(1))
+        .maxStartTime(OffsetDateTime.now())
+        .addSelect(RunSelectField.NAME)
+        .build()
+).items().take(5)
+for (trace in traces) {
+    println("${trace.rootRun().get().traceId().getOrNull()} ${trace.rootRun().get().name().getOrNull()}")
+}
+```
 
-        	"github.com/langchain-ai/langsmith-go"
-        )
+**Go**
 
-        func main() {
-        	ctx := context.Background()
-        	client := langsmith.NewClient()
+**Before**
 
-        	sessions, err := client.Sessions.List(ctx, langsmith.SessionListParams{
-        		Name:  langsmith.F("default"),
-        		Limit: langsmith.F(int64(1)),
-        	})
-        	if err != nil {
-        		panic(err.Error())
-        	}
-        	projectID := sessions.Items[0].ID
+```go Before theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+package main
 
-        	maxStart := time.Now().UTC()
-        	minStart := maxStart.AddDate(0, -1, 0)
+import (
+	"context"
+	"fmt"
 
-        	iter := client.Traces.QueryAutoPaging(ctx, langsmith.TraceQueryParams{
-        		ProjectID:    langsmith.F(projectID),
-        		MinStartTime: langsmith.F(minStart),
-        		MaxStartTime: langsmith.F(maxStart),
-        		Selects:      langsmith.F([]langsmith.RunSelectField{langsmith.RunSelectFieldName}),
-        	})
-        	count := 0
-        	for iter.Next() {
-        		trace := iter.Current()
-        		fmt.Println(trace.RootRun.TraceID, trace.RootRun.Name)
-        		count++
-        		if count >= 5 {
-        			break
-        		}
-        	}
-        	if err := iter.Err(); err != nil {
-        		panic(err.Error())
-        	}
-        }
-        ```
-      </Tab>
-    </Tabs>
-  </Tab>
+	"github.com/langchain-ai/langsmith-go"
+)
 
-  <Tab title="cURL">
-    <Tabs>
-      <Tab title="Before">
-        ```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-        PROJECT_ID=$(curl -s "https://api.smith.langchain.com/api/v1/sessions?name=default&limit=1" \
-          -H "x-api-key: $LANGSMITH_API_KEY" | jq -r '.[0].id')
+func main() {
+	ctx := context.Background()
+	client := langsmith.NewClient()
 
-        curl -s -X POST "https://api.smith.langchain.com/api/v1/runs/query" \
-          -H "x-api-key: $LANGSMITH_API_KEY" \
-          -H "Content-Type: application/json" \
-          -d "$(jq -n --arg pid "$PROJECT_ID" '{"session": [$pid], "is_root": true, "limit": 5}')" \
-          | jq '(.runs // []) | map({trace_id: .trace_id, name: .name})'
-        ```
-      </Tab>
+	sessions, err := client.Sessions.List(ctx, langsmith.SessionListParams{
+		Name:  langsmith.F("default"),
+		Limit: langsmith.F(int64(1)),
+	})
+	if err != nil {
+		panic(err.Error())
+	}
+	projectID := sessions.Items[0].ID
 
-      <Tab title="After">
-        ```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-        PROJECT_ID=$(curl -s "https://api.smith.langchain.com/api/v1/sessions?name=default&limit=1" \
-          -H "x-api-key: $LANGSMITH_API_KEY" | jq -r '.[0].id')
+	rootRuns, err := client.Runs.Query(ctx, langsmith.RunQueryParams{
+		Session: langsmith.F([]string{projectID}),
+		IsRoot:  langsmith.F(true),
+		Limit:   langsmith.F(int64(5)),
+	})
+	if err != nil {
+		panic(err.Error())
+	}
+	for _, run := range rootRuns.Runs {
+		fmt.Println(run.TraceID, run.Name)
+	}
+}
+```
 
-        MAX_START=$(date -u +%Y-%m-%dT%H:%M:%SZ)
-        MIN_START=$(date -u -d '-1 month' +%Y-%m-%dT%H:%M:%SZ 2>/dev/null || date -u -v-1m +%Y-%m-%dT%H:%M:%SZ)
-        curl -X POST "https://api.smith.langchain.com/api/v2/traces/query" \
-          -H "x-api-key: $LANGSMITH_API_KEY" \
-          -H "Content-Type: application/json" \
-          -d "$(jq -n --arg pid "$PROJECT_ID" --arg min "$MIN_START" --arg max "$MAX_START" '{
-            "project_id": $pid,
-            "min_start_time": $min,
-            "max_start_time": $max,
-            "page_size": 5,
-            "selects": ["NAME"]
-          }')" | jq '.items | map({trace_id: .root_run.trace_id, name: .root_run.name})'
-        ```
-      </Tab>
-    </Tabs>
-  </Tab>
-</Tabs>
+**After**
+
+```go After theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+package main
+
+import (
+	"context"
+	"fmt"
+	"time"
+
+	"github.com/langchain-ai/langsmith-go"
+)
+
+func main() {
+	ctx := context.Background()
+	client := langsmith.NewClient()
+
+	sessions, err := client.Sessions.List(ctx, langsmith.SessionListParams{
+		Name:  langsmith.F("default"),
+		Limit: langsmith.F(int64(1)),
+	})
+	if err != nil {
+		panic(err.Error())
+	}
+	projectID := sessions.Items[0].ID
+
+	maxStart := time.Now().UTC()
+	minStart := maxStart.AddDate(0, -1, 0)
+
+	iter := client.Traces.QueryAutoPaging(ctx, langsmith.TraceQueryParams{
+		ProjectID:    langsmith.F(projectID),
+		MinStartTime: langsmith.F(minStart),
+		MaxStartTime: langsmith.F(maxStart),
+		Selects:      langsmith.F([]langsmith.RunSelectField{langsmith.RunSelectFieldName}),
+	})
+	count := 0
+	for iter.Next() {
+		trace := iter.Current()
+		fmt.Println(trace.RootRun.TraceID, trace.RootRun.Name)
+		count++
+		if count >= 5 {
+			break
+		}
+	}
+	if err := iter.Err(); err != nil {
+		panic(err.Error())
+	}
+}
+```
+
+**cURL**
+
+**Before**
+
+```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+PROJECT_ID=$(curl -s "https://api.smith.langchain.com/api/v1/sessions?name=default&limit=1" \
+  -H "x-api-key: $LANGSMITH_API_KEY" | jq -r '.[0].id')
+
+curl -s -X POST "https://api.smith.langchain.com/api/v1/runs/query" \
+  -H "x-api-key: $LANGSMITH_API_KEY" \
+  -H "Content-Type: application/json" \
+  -d "$(jq -n --arg pid "$PROJECT_ID" '{"session": [$pid], "is_root": true, "limit": 5}')" \
+  | jq '(.runs // []) | map({trace_id: .trace_id, name: .name})'
+```
+
+**After**
+
+```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+PROJECT_ID=$(curl -s "https://api.smith.langchain.com/api/v1/sessions?name=default&limit=1" \
+  -H "x-api-key: $LANGSMITH_API_KEY" | jq -r '.[0].id')
+
+MAX_START=$(date -u +%Y-%m-%dT%H:%M:%SZ)
+MIN_START=$(date -u -d '-1 month' +%Y-%m-%dT%H:%M:%SZ 2>/dev/null || date -u -v-1m +%Y-%m-%dT%H:%M:%SZ)
+curl -X POST "https://api.smith.langchain.com/api/v2/traces/query" \
+  -H "x-api-key: $LANGSMITH_API_KEY" \
+  -H "Content-Type: application/json" \
+  -d "$(jq -n --arg pid "$PROJECT_ID" --arg min "$MIN_START" --arg max "$MAX_START" '{
+    "project_id": $pid,
+    "min_start_time": $min,
+    "max_start_time": $max,
+    "page_size": 5,
+    "selects": ["NAME"]
+  }')" | jq '.items | map({trace_id: .root_run.trace_id, name: .root_run.name})'
+```
 
 #### Get a trace's total tokens and cost
 
 Read a trace's token and cost totals from `trace_aggregates` instead of the root run, where v1 kept them.
 
-<Tabs>
-  <Tab title="Python">
-    <Tabs>
-      <Tab title="Before">
-        ```python Before theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-        from langsmith import Client
+**Python**
 
-        client = Client()
-        project = client.read_project(project_name="default")
+**Before**
 
-        root_runs = list(client.list_runs(project_id=project.id, is_root=True, limit=5))
+```python Before theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+from langsmith import Client
 
-        for root_run in root_runs:
-            print(root_run.trace_id, root_run.total_tokens, root_run.total_cost)
-        ```
-      </Tab>
+client = Client()
+project = client.read_project(project_name="default")
 
-      <Tab title="After">
-        ```python After theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-        import asyncio
-        from datetime import datetime, timedelta, timezone
+root_runs = list(client.list_runs(project_id=project.id, is_root=True, limit=5))
 
-        from langsmith import Client
+for root_run in root_runs:
+    print(root_run.trace_id, root_run.total_tokens, root_run.total_cost)
+```
 
+**After**
 
-        async def main():
-            client = Client()
-            project = await client.aread_project(project_name="default")
-            count = 0
-            async for trace in client.traces.query(
-                project_id=str(project.id),
-                min_start_time=datetime.now(timezone.utc) - timedelta(days=30),
-                max_start_time=datetime.now(timezone.utc),
-                selects=["NAME", "TOTAL_TOKENS", "TOTAL_COST"],
-            ):
-                count += 1
-                if trace.trace_aggregates is not None:
-                    print(
-                        trace.root_run.name,
-                        trace.trace_aggregates.total_tokens,
-                        trace.trace_aggregates.total_cost,
-                    )
-                if count >= 5:
-                    break
+```python After theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+import asyncio
+from datetime import datetime, timedelta, timezone
+
+from langsmith import Client
 
 
-        asyncio.run(main())
-        ```
-      </Tab>
-    </Tabs>
-  </Tab>
+async def main():
+    client = Client()
+    project = await client.aread_project(project_name="default")
+    count = 0
+    async for trace in client.traces.query(
+        project_id=str(project.id),
+        min_start_time=datetime.now(timezone.utc) - timedelta(days=30),
+        max_start_time=datetime.now(timezone.utc),
+        selects=["NAME", "TOTAL_TOKENS", "TOTAL_COST"],
+    ):
+        count += 1
+        if trace.trace_aggregates is not None:
+            print(
+                trace.root_run.name,
+                trace.trace_aggregates.total_tokens,
+                trace.trace_aggregates.total_cost,
+            )
+        if count >= 5:
+            break
 
-  <Tab title="TypeScript">
-    <Tabs>
-      <Tab title="Before">
-        ```ts Before theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-        import { Client } from "langsmith";
 
-        const client = new Client();
-        const project = await client.readProject({ projectName: "default" });
+asyncio.run(main())
+```
 
-        for await (const rootRun of client.listRuns({ projectId: project.id, isRoot: true, limit: 5 })) {
-          console.log(rootRun.trace_id, rootRun.total_tokens, rootRun.total_cost);
-        }
-        ```
-      </Tab>
+**TypeScript**
 
-      <Tab title="After">
-        ```ts After theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-        import { Client } from "langsmith";
+**Before**
 
-        const client = new Client();
-        const project = await client.readProject({ projectName: "default" });
-        let count = 0;
-        for await (const trace of client.traces.query({
-          project_id: project.id,
-          min_start_time: new Date(Date.now() - 30 * 24 * 60 * 60 * 1000).toISOString(),
-          max_start_time: new Date().toISOString(),
-          selects: ["NAME", "TOTAL_TOKENS", "TOTAL_COST"],
-        })) {
-          count += 1;
-          if (trace.trace_aggregates) {
-            console.log(trace.root_run?.name, trace.trace_aggregates.total_tokens, trace.trace_aggregates.total_cost);
-          }
-          if (count >= 5) break;
-        }
-        ```
-      </Tab>
-    </Tabs>
-  </Tab>
+```ts Before theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+import { Client } from "langsmith";
 
-  <Tab title="Java">
-    <Note>The Before example reads `totalTokens` only. `totalCost` is omitted because reading it on the v1 `RunSchema` type triggers a known deserialization bug in the current Java binding (it expects a string, the API returns a number).</Note>
+const client = new Client();
+const project = await client.readProject({ projectName: "default" });
 
-    <Tabs>
-      <Tab title="Before">
-        ```kotlin Before theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-        import com.langchain.smith.client.LangsmithClient
-        import com.langchain.smith.client.okhttp.LangsmithOkHttpClient
-        import com.langchain.smith.models.runs.RunQueryParams
-        import com.langchain.smith.models.sessions.SessionListParams
-        import kotlin.jvm.optionals.getOrNull
+for await (const rootRun of client.listRuns({ projectId: project.id, isRoot: true, limit: 5 })) {
+  console.log(rootRun.trace_id, rootRun.total_tokens, rootRun.total_cost);
+}
+```
 
-        val client: LangsmithClient = LangsmithOkHttpClient.fromEnv()
+**After**
 
-        val project = client.sessions().list(
-            SessionListParams.builder().name("default").limit(1L).build()
-        ).items().first()
+```ts After theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+import { Client } from "langsmith";
 
-        val rootRuns = client.runs().query(
-            RunQueryParams.builder()
-                .addSession(project.id())
-                .isRoot(true)
-                .limit(5L)
-                .build()
-        ).runs()
+const client = new Client();
+const project = await client.readProject({ projectName: "default" });
+let count = 0;
+for await (const trace of client.traces.query({
+  project_id: project.id,
+  min_start_time: new Date(Date.now() - 30 * 24 * 60 * 60 * 1000).toISOString(),
+  max_start_time: new Date().toISOString(),
+  selects: ["NAME", "TOTAL_TOKENS", "TOTAL_COST"],
+})) {
+  count += 1;
+  if (trace.trace_aggregates) {
+    console.log(trace.root_run?.name, trace.trace_aggregates.total_tokens, trace.trace_aggregates.total_cost);
+  }
+  if (count >= 5) break;
+}
+```
 
-        // totalCost() is omitted here — RunSchema.totalCost() has a known
-        // deserialization bug in the v1 Java binding.
-        for (rootRun in rootRuns) {
-            println("${rootRun.traceId()} ${rootRun.totalTokens().getOrNull()}")
-        }
-        ```
-      </Tab>
+**Java**
 
-      <Tab title="After">
-        ```kotlin After theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-        import java.time.OffsetDateTime
+> [!NOTE]
+>
+> The Before example reads `totalTokens` only. `totalCost` is omitted because reading it on the v1 `RunSchema` type triggers a known deserialization bug in the current Java binding (it expects a string, the API returns a number).
 
-        import com.langchain.smith.client.LangsmithClient
-        import com.langchain.smith.client.okhttp.LangsmithOkHttpClient
-        import com.langchain.smith.models.runs.RunSelectField
-        import com.langchain.smith.models.sessions.SessionListParams
-        import com.langchain.smith.models.traces.TraceQueryParams
-        import kotlin.jvm.optionals.getOrNull
+**Before**
 
-        val client: LangsmithClient = LangsmithOkHttpClient.fromEnv()
+```kotlin Before theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+import com.langchain.smith.client.LangsmithClient
+import com.langchain.smith.client.okhttp.LangsmithOkHttpClient
+import com.langchain.smith.models.runs.RunQueryParams
+import com.langchain.smith.models.sessions.SessionListParams
+import kotlin.jvm.optionals.getOrNull
 
-        val project = client.sessions().list(
-            SessionListParams.builder().name("default").limit(1L).build()
-        ).items().first()
+val client: LangsmithClient = LangsmithOkHttpClient.fromEnv()
 
-        val traces = client.traces().query(
-            TraceQueryParams.builder()
-                .projectId(project.id())
-                .minStartTime(OffsetDateTime.now().minusMonths(1))
-                .maxStartTime(OffsetDateTime.now())
-                .addSelect(RunSelectField.NAME)
-                .addSelect(RunSelectField.TOTAL_TOKENS)
-                .addSelect(RunSelectField.TOTAL_COST)
-                .build()
-        ).items()
+val project = client.sessions().list(
+    SessionListParams.builder().name("default").limit(1L).build()
+).items().first()
 
-        var count = 0
-        for (trace in traces) {
-            count++
-            val aggregates = trace.traceAggregates().getOrNull()
-            if (aggregates != null) {
-                println("${trace.rootRun().get().name().getOrNull()} ${aggregates.totalTokens().getOrNull()} ${aggregates.totalCost().getOrNull()}")
-            }
-            if (count >= 5) break
-        }
-        ```
-      </Tab>
-    </Tabs>
-  </Tab>
+val rootRuns = client.runs().query(
+    RunQueryParams.builder()
+        .addSession(project.id())
+        .isRoot(true)
+        .limit(5L)
+        .build()
+).runs()
 
-  <Tab title="Go">
-    <Tabs>
-      <Tab title="Before">
-        ```go Before theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-        package main
+// totalCost() is omitted here — RunSchema.totalCost() has a known
+// deserialization bug in the v1 Java binding.
+for (rootRun in rootRuns) {
+    println("${rootRun.traceId()} ${rootRun.totalTokens().getOrNull()}")
+}
+```
 
-        import (
-        	"context"
-        	"fmt"
+**After**
 
-        	"github.com/langchain-ai/langsmith-go"
-        )
+```kotlin After theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+import java.time.OffsetDateTime
 
-        func main() {
-        	ctx := context.Background()
-        	client := langsmith.NewClient()
+import com.langchain.smith.client.LangsmithClient
+import com.langchain.smith.client.okhttp.LangsmithOkHttpClient
+import com.langchain.smith.models.runs.RunSelectField
+import com.langchain.smith.models.sessions.SessionListParams
+import com.langchain.smith.models.traces.TraceQueryParams
+import kotlin.jvm.optionals.getOrNull
 
-        	sessions, err := client.Sessions.List(ctx, langsmith.SessionListParams{
-        		Name:  langsmith.F("default"),
-        		Limit: langsmith.F(int64(1)),
-        	})
-        	if err != nil {
-        		panic(err.Error())
-        	}
-        	projectID := sessions.Items[0].ID
+val client: LangsmithClient = LangsmithOkHttpClient.fromEnv()
 
-        	rootRuns, err := client.Runs.Query(ctx, langsmith.RunQueryParams{
-        		Session: langsmith.F([]string{projectID}),
-        		IsRoot:  langsmith.F(true),
-        		Limit:   langsmith.F(int64(5)),
-        	})
-        	if err != nil {
-        		panic(err.Error())
-        	}
+val project = client.sessions().list(
+    SessionListParams.builder().name("default").limit(1L).build()
+).items().first()
 
-        	for _, rootRun := range rootRuns.Runs {
-        		fmt.Println(rootRun.TraceID, rootRun.TotalTokens, rootRun.TotalCost)
-        	}
-        }
-        ```
-      </Tab>
+val traces = client.traces().query(
+    TraceQueryParams.builder()
+        .projectId(project.id())
+        .minStartTime(OffsetDateTime.now().minusMonths(1))
+        .maxStartTime(OffsetDateTime.now())
+        .addSelect(RunSelectField.NAME)
+        .addSelect(RunSelectField.TOTAL_TOKENS)
+        .addSelect(RunSelectField.TOTAL_COST)
+        .build()
+).items()
 
-      <Tab title="After">
-        ```go After theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-        package main
+var count = 0
+for (trace in traces) {
+    count++
+    val aggregates = trace.traceAggregates().getOrNull()
+    if (aggregates != null) {
+        println("${trace.rootRun().get().name().getOrNull()} ${aggregates.totalTokens().getOrNull()} ${aggregates.totalCost().getOrNull()}")
+    }
+    if (count >= 5) break
+}
+```
 
-        import (
-        	"context"
-        	"fmt"
-        	"time"
+**Go**
 
-        	"github.com/langchain-ai/langsmith-go"
-        )
+**Before**
 
-        func main() {
-        	ctx := context.Background()
-        	client := langsmith.NewClient()
+```go Before theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+package main
 
-        	sessions, err := client.Sessions.List(ctx, langsmith.SessionListParams{
-        		Name:  langsmith.F("default"),
-        		Limit: langsmith.F(int64(1)),
-        	})
-        	if err != nil {
-        		panic(err.Error())
-        	}
-        	projectID := sessions.Items[0].ID
+import (
+	"context"
+	"fmt"
 
-        	maxStart := time.Now().UTC()
-        	minStart := maxStart.AddDate(0, -1, 0)
+	"github.com/langchain-ai/langsmith-go"
+)
 
-        	iter := client.Traces.QueryAutoPaging(ctx, langsmith.TraceQueryParams{
-        		ProjectID:    langsmith.F(projectID),
-        		MinStartTime: langsmith.F(minStart),
-        		MaxStartTime: langsmith.F(maxStart),
-        		Selects: langsmith.F([]langsmith.RunSelectField{
-        			langsmith.RunSelectFieldName,
-        			langsmith.RunSelectFieldTotalTokens,
-        			langsmith.RunSelectFieldTotalCost,
-        		}),
-        	})
-        	count := 0
-        	for iter.Next() {
-        		trace := iter.Current()
-        		count++
-        		if trace.TraceAggregates.JSON.RawJSON() != "" {
-        			fmt.Println(trace.RootRun.Name, trace.TraceAggregates.TotalTokens, trace.TraceAggregates.TotalCost)
-        		}
-        		if count >= 5 {
-        			break
-        		}
-        	}
-        	if err := iter.Err(); err != nil {
-        		panic(err.Error())
-        	}
-        }
-        ```
-      </Tab>
-    </Tabs>
-  </Tab>
+func main() {
+	ctx := context.Background()
+	client := langsmith.NewClient()
 
-  <Tab title="cURL">
-    <Tabs>
-      <Tab title="Before">
-        ```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-        PROJECT_ID=$(curl -s "https://api.smith.langchain.com/api/v1/sessions?name=default&limit=1" \
-          -H "x-api-key: $LANGSMITH_API_KEY" | jq -r '.[0].id')
+	sessions, err := client.Sessions.List(ctx, langsmith.SessionListParams{
+		Name:  langsmith.F("default"),
+		Limit: langsmith.F(int64(1)),
+	})
+	if err != nil {
+		panic(err.Error())
+	}
+	projectID := sessions.Items[0].ID
 
-        START_TIME=$(date -u -d '-1 month' +%Y-%m-%dT%H:%M:%SZ 2>/dev/null || date -u -v-1m +%Y-%m-%dT%H:%M:%SZ)
-        RESP=$(curl -s -X POST "https://api.smith.langchain.com/api/v1/runs/query" \
-          -H "x-api-key: $LANGSMITH_API_KEY" \
-          -H "Content-Type: application/json" \
-          -d "$(jq -n --arg pid "$PROJECT_ID" --arg start "$START_TIME" '{"session": [$pid], "is_root": true, "limit": 5, "start_time": $start}')")
-        echo "$RESP" | jq '(.runs // [])[] | {trace_id, total_tokens, total_cost}'
-        ```
-      </Tab>
+	rootRuns, err := client.Runs.Query(ctx, langsmith.RunQueryParams{
+		Session: langsmith.F([]string{projectID}),
+		IsRoot:  langsmith.F(true),
+		Limit:   langsmith.F(int64(5)),
+	})
+	if err != nil {
+		panic(err.Error())
+	}
 
-      <Tab title="After">
-        ```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-        PROJECT_ID=$(curl -s "https://api.smith.langchain.com/api/v1/sessions?name=default&limit=1" \
-          -H "x-api-key: $LANGSMITH_API_KEY" | jq -r '.[0].id')
+	for _, rootRun := range rootRuns.Runs {
+		fmt.Println(rootRun.TraceID, rootRun.TotalTokens, rootRun.TotalCost)
+	}
+}
+```
 
-        MAX_START=$(date -u +%Y-%m-%dT%H:%M:%SZ)
-        MIN_START=$(date -u -d '-1 month' +%Y-%m-%dT%H:%M:%SZ 2>/dev/null || date -u -v-1m +%Y-%m-%dT%H:%M:%SZ)
-        curl -X POST "https://api.smith.langchain.com/api/v2/traces/query" \
-          -H "x-api-key: $LANGSMITH_API_KEY" \
-          -H "Content-Type: application/json" \
-          -d "$(jq -n --arg pid "$PROJECT_ID" --arg min "$MIN_START" --arg max "$MAX_START" '{
-            "project_id": $pid,
-            "min_start_time": $min,
-            "max_start_time": $max,
-            "page_size": 5,
-            "selects": ["NAME", "TOTAL_TOKENS", "TOTAL_COST"]
-          }')"
-        ```
-      </Tab>
-    </Tabs>
-  </Tab>
-</Tabs>
+**After**
+
+```go After theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+package main
+
+import (
+	"context"
+	"fmt"
+	"time"
+
+	"github.com/langchain-ai/langsmith-go"
+)
+
+func main() {
+	ctx := context.Background()
+	client := langsmith.NewClient()
+
+	sessions, err := client.Sessions.List(ctx, langsmith.SessionListParams{
+		Name:  langsmith.F("default"),
+		Limit: langsmith.F(int64(1)),
+	})
+	if err != nil {
+		panic(err.Error())
+	}
+	projectID := sessions.Items[0].ID
+
+	maxStart := time.Now().UTC()
+	minStart := maxStart.AddDate(0, -1, 0)
+
+	iter := client.Traces.QueryAutoPaging(ctx, langsmith.TraceQueryParams{
+		ProjectID:    langsmith.F(projectID),
+		MinStartTime: langsmith.F(minStart),
+		MaxStartTime: langsmith.F(maxStart),
+		Selects: langsmith.F([]langsmith.RunSelectField{
+			langsmith.RunSelectFieldName,
+			langsmith.RunSelectFieldTotalTokens,
+			langsmith.RunSelectFieldTotalCost,
+		}),
+	})
+	count := 0
+	for iter.Next() {
+		trace := iter.Current()
+		count++
+		if trace.TraceAggregates.JSON.RawJSON() != "" {
+			fmt.Println(trace.RootRun.Name, trace.TraceAggregates.TotalTokens, trace.TraceAggregates.TotalCost)
+		}
+		if count >= 5 {
+			break
+		}
+	}
+	if err := iter.Err(); err != nil {
+		panic(err.Error())
+	}
+}
+```
+
+**cURL**
+
+**Before**
+
+```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+PROJECT_ID=$(curl -s "https://api.smith.langchain.com/api/v1/sessions?name=default&limit=1" \
+  -H "x-api-key: $LANGSMITH_API_KEY" | jq -r '.[0].id')
+
+START_TIME=$(date -u -d '-1 month' +%Y-%m-%dT%H:%M:%SZ 2>/dev/null || date -u -v-1m +%Y-%m-%dT%H:%M:%SZ)
+RESP=$(curl -s -X POST "https://api.smith.langchain.com/api/v1/runs/query" \
+  -H "x-api-key: $LANGSMITH_API_KEY" \
+  -H "Content-Type: application/json" \
+  -d "$(jq -n --arg pid "$PROJECT_ID" --arg start "$START_TIME" '{"session": [$pid], "is_root": true, "limit": 5, "start_time": $start}')")
+echo "$RESP" | jq '(.runs // [])[] | {trace_id, total_tokens, total_cost}'
+```
+
+**After**
+
+```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+PROJECT_ID=$(curl -s "https://api.smith.langchain.com/api/v1/sessions?name=default&limit=1" \
+  -H "x-api-key: $LANGSMITH_API_KEY" | jq -r '.[0].id')
+
+MAX_START=$(date -u +%Y-%m-%dT%H:%M:%SZ)
+MIN_START=$(date -u -d '-1 month' +%Y-%m-%dT%H:%M:%SZ 2>/dev/null || date -u -v-1m +%Y-%m-%dT%H:%M:%SZ)
+curl -X POST "https://api.smith.langchain.com/api/v2/traces/query" \
+  -H "x-api-key: $LANGSMITH_API_KEY" \
+  -H "Content-Type: application/json" \
+  -d "$(jq -n --arg pid "$PROJECT_ID" --arg min "$MIN_START" --arg max "$MAX_START" '{
+    "project_id": $pid,
+    "min_start_time": $min,
+    "max_start_time": $max,
+    "page_size": 5,
+    "selects": ["NAME", "TOTAL_TOKENS", "TOTAL_COST"]
+  }')"
+```
 
 #### Find traces by status, or fetch traces by ID
 
 Filter traces by status (for example, errored) with `trace_filter`, or skip filtering and fetch known traces directly and faster with `trace_ids`.
 
-<Tabs>
-  <Tab title="Python">
-    <Tabs>
-      <Tab title="Before">
-        ```python Before theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-        from langsmith import Client
+**Python**
 
-        client = Client()
-        project = client.read_project(project_name="default")
+**Before**
 
-        # v1 has no root-run-only filter concept — is_root plus a regular filter is
-        # the closest equivalent, still scanning every run to match.
-        error_traces = client.list_runs(
-            project_id=project.id,
-            is_root=True,
-            filter='eq(status, "error")',
-            limit=5,
-        )
-        for run in error_traces:
-            print(run.trace_id)
-        ```
-      </Tab>
+```python Before theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+from langsmith import Client
 
-      <Tab title="After">
-        ```python After theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-        import asyncio
-        from datetime import datetime, timedelta, timezone
+client = Client()
+project = client.read_project(project_name="default")
 
-        from langsmith import Client
+# v1 has no root-run-only filter concept — is_root plus a regular filter is
+# the closest equivalent, still scanning every run to match.
+error_traces = client.list_runs(
+    project_id=project.id,
+    is_root=True,
+    filter='eq(status, "error")',
+    limit=5,
+)
+for run in error_traces:
+    print(run.trace_id)
+```
 
+**After**
 
-        async def main():
-            client = Client()
-            project = await client.aread_project(project_name="default")
+```python After theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+import asyncio
+from datetime import datetime, timedelta, timezone
 
-            # trace_filter is implicitly root-run-only — no is_root needed.
-            count = 0
-            async for trace in client.traces.query(
-                project_id=str(project.id),
-                min_start_time=datetime.now(timezone.utc) - timedelta(days=30),
-                max_start_time=datetime.now(timezone.utc),
-                trace_filter='eq(status, "error")',
-            ):
-                print(trace.root_run.trace_id)
-                count += 1
-                if count >= 5:
-                    break
-
-            # trace_ids is a fast-path when you already know which traces you want.
-            trace_id = "<trace-id>"
-            async for trace in client.traces.query(
-                project_id=str(project.id),
-                min_start_time=datetime.now(timezone.utc) - timedelta(days=30),
-                max_start_time=datetime.now(timezone.utc),
-                trace_ids=[trace_id],
-            ):
-                print(trace.root_run.trace_id)
+from langsmith import Client
 
 
-        asyncio.run(main())
-        ```
-      </Tab>
-    </Tabs>
-  </Tab>
+async def main():
+    client = Client()
+    project = await client.aread_project(project_name="default")
 
-  <Tab title="TypeScript">
-    <Tabs>
-      <Tab title="Before">
-        ```ts Before theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-        import { Client } from "langsmith";
+    # trace_filter is implicitly root-run-only — no is_root needed.
+    count = 0
+    async for trace in client.traces.query(
+        project_id=str(project.id),
+        min_start_time=datetime.now(timezone.utc) - timedelta(days=30),
+        max_start_time=datetime.now(timezone.utc),
+        trace_filter='eq(status, "error")',
+    ):
+        print(trace.root_run.trace_id)
+        count += 1
+        if count >= 5:
+            break
 
-        const client = new Client();
-        const project = await client.readProject({ projectName: "default" });
+    # trace_ids is a fast-path when you already know which traces you want.
+    trace_id = "<trace-id>"
+    async for trace in client.traces.query(
+        project_id=str(project.id),
+        min_start_time=datetime.now(timezone.utc) - timedelta(days=30),
+        max_start_time=datetime.now(timezone.utc),
+        trace_ids=[trace_id],
+    ):
+        print(trace.root_run.trace_id)
 
-        // v1 has no root-run-only filter concept — isRoot plus a regular filter is
-        // the closest equivalent, still scanning every run to match.
-        for await (const run of client.listRuns({
-          projectId: project.id,
-          isRoot: true,
-          filter: 'eq(status, "error")',
-          limit: 5,
-        })) {
-          console.log(run.trace_id);
-        }
-        ```
-      </Tab>
 
-      <Tab title="After">
-        ```ts After theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-        import { Client } from "langsmith";
+asyncio.run(main())
+```
 
-        const client = new Client();
-        const project = await client.readProject({ projectName: "default" });
+**TypeScript**
 
-        // trace_filter is implicitly root-run-only — no is_root needed.
-        let count = 0;
-        for await (const trace of client.traces.query({
-          project_id: project.id,
-          min_start_time: new Date(Date.now() - 30 * 24 * 60 * 60 * 1000).toISOString(),
-          max_start_time: new Date().toISOString(),
-          trace_filter: 'eq(status, "error")',
-        })) {
-          console.log(trace.root_run?.trace_id);
-          count += 1;
-          if (count >= 5) break;
-        }
+**Before**
 
-        // trace_ids is a fast-path when you already know which traces you want.
-        let traceId = "<trace-id>";
-        for await (const trace of client.traces.query({
-          project_id: project.id,
-          min_start_time: new Date(Date.now() - 30 * 24 * 60 * 60 * 1000).toISOString(),
-          max_start_time: new Date().toISOString(),
-          trace_ids: [traceId],
-        })) {
-          console.log(trace.root_run?.trace_id);
-        }
-        ```
-      </Tab>
-    </Tabs>
-  </Tab>
+```ts Before theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+import { Client } from "langsmith";
 
-  <Tab title="Java">
-    <Tabs>
-      <Tab title="Before">
-        ```kotlin Before theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-        import com.langchain.smith.client.LangsmithClient
-        import com.langchain.smith.client.okhttp.LangsmithOkHttpClient
-        import com.langchain.smith.models.runs.RunQueryParams
-        import com.langchain.smith.models.sessions.SessionListParams
+const client = new Client();
+const project = await client.readProject({ projectName: "default" });
 
-        val client: LangsmithClient = LangsmithOkHttpClient.fromEnv()
+// v1 has no root-run-only filter concept — isRoot plus a regular filter is
+// the closest equivalent, still scanning every run to match.
+for await (const run of client.listRuns({
+  projectId: project.id,
+  isRoot: true,
+  filter: 'eq(status, "error")',
+  limit: 5,
+})) {
+  console.log(run.trace_id);
+}
+```
 
-        val project = client.sessions().list(
-            SessionListParams.builder().name("default").limit(1L).build()
-        ).items().first()
+**After**
 
-        // v1 has no root-run-only filter concept — isRoot plus a regular filter is
-        // the closest equivalent, still scanning every run to match.
-        val runs = client.runs().query(
-            RunQueryParams.builder()
-                .addSession(project.id())
-                .isRoot(true)
-                .filter("eq(status, \"error\")")
-                .limit(5L)
-                .build()
-        ).runs()
-        for (run in runs) {
-            println(run.traceId())
-        }
-        ```
-      </Tab>
+```ts After theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+import { Client } from "langsmith";
 
-      <Tab title="After">
-        ```kotlin After theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-        import java.time.OffsetDateTime
+const client = new Client();
+const project = await client.readProject({ projectName: "default" });
 
-        import com.langchain.smith.client.LangsmithClient
-        import com.langchain.smith.client.okhttp.LangsmithOkHttpClient
-        import com.langchain.smith.models.sessions.SessionListParams
-        import com.langchain.smith.models.traces.TraceQueryParams
+// trace_filter is implicitly root-run-only — no is_root needed.
+let count = 0;
+for await (const trace of client.traces.query({
+  project_id: project.id,
+  min_start_time: new Date(Date.now() - 30 * 24 * 60 * 60 * 1000).toISOString(),
+  max_start_time: new Date().toISOString(),
+  trace_filter: 'eq(status, "error")',
+})) {
+  console.log(trace.root_run?.trace_id);
+  count += 1;
+  if (count >= 5) break;
+}
 
-        val client: LangsmithClient = LangsmithOkHttpClient.fromEnv()
+// trace_ids is a fast-path when you already know which traces you want.
+let traceId = "<trace-id>";
+for await (const trace of client.traces.query({
+  project_id: project.id,
+  min_start_time: new Date(Date.now() - 30 * 24 * 60 * 60 * 1000).toISOString(),
+  max_start_time: new Date().toISOString(),
+  trace_ids: [traceId],
+})) {
+  console.log(trace.root_run?.trace_id);
+}
+```
 
-        val project = client.sessions().list(
-            SessionListParams.builder().name("default").limit(1L).build()
-        ).items().first()
+**Java**
 
-        val maxStart = OffsetDateTime.now()
-        val minStart = maxStart.minusMonths(1)
+**Before**
 
-        // trace_filter is implicitly root-run-only — no is_root needed.
-        val errorTraces = client.traces().query(
-            TraceQueryParams.builder()
-                .projectId(project.id())
-                .minStartTime(minStart)
-                .maxStartTime(maxStart)
-                .traceFilter("eq(status, \"error\")")
-                .build()
-        ).items().take(5)
-        for (trace in errorTraces) {
-            println(trace.rootRun().get().traceId().get())
-        }
+```kotlin Before theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+import com.langchain.smith.client.LangsmithClient
+import com.langchain.smith.client.okhttp.LangsmithOkHttpClient
+import com.langchain.smith.models.runs.RunQueryParams
+import com.langchain.smith.models.sessions.SessionListParams
 
-        // traceIds is a fast-path when you already know which traces you want.
-        var traceId = "<trace-id>"
-        val knownTraces = client.traces().query(
-            TraceQueryParams.builder()
-                .projectId(project.id())
-                .minStartTime(minStart)
-                .maxStartTime(maxStart)
-                .traceIds(listOf(traceId))
-                .build()
-        ).items()
-        for (trace in knownTraces) {
-            println(trace.rootRun().get().traceId().get())
-        }
-        ```
-      </Tab>
-    </Tabs>
-  </Tab>
+val client: LangsmithClient = LangsmithOkHttpClient.fromEnv()
 
-  <Tab title="Go">
-    <Tabs>
-      <Tab title="Before">
-        ```go Before theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-        package main
+val project = client.sessions().list(
+    SessionListParams.builder().name("default").limit(1L).build()
+).items().first()
 
-        import (
-        	"context"
-        	"fmt"
+// v1 has no root-run-only filter concept — isRoot plus a regular filter is
+// the closest equivalent, still scanning every run to match.
+val runs = client.runs().query(
+    RunQueryParams.builder()
+        .addSession(project.id())
+        .isRoot(true)
+        .filter("eq(status, \"error\")")
+        .limit(5L)
+        .build()
+).runs()
+for (run in runs) {
+    println(run.traceId())
+}
+```
 
-        	"github.com/langchain-ai/langsmith-go"
-        )
+**After**
 
-        func main() {
-        	ctx := context.Background()
-        	client := langsmith.NewClient()
+```kotlin After theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+import java.time.OffsetDateTime
 
-        	sessions, err := client.Sessions.List(ctx, langsmith.SessionListParams{
-        		Name:  langsmith.F("default"),
-        		Limit: langsmith.F(int64(1)),
-        	})
-        	if err != nil {
-        		panic(err.Error())
-        	}
-        	projectID := sessions.Items[0].ID
+import com.langchain.smith.client.LangsmithClient
+import com.langchain.smith.client.okhttp.LangsmithOkHttpClient
+import com.langchain.smith.models.sessions.SessionListParams
+import com.langchain.smith.models.traces.TraceQueryParams
 
-        	// v1 has no root-run-only filter concept — IsRoot plus a regular filter is
-        	// the closest equivalent, still scanning every run to match.
-        	runs, err := client.Runs.Query(ctx, langsmith.RunQueryParams{
-        		Session: langsmith.F([]string{projectID}),
-        		IsRoot:  langsmith.F(true),
-        		Filter:  langsmith.F(`eq(status, "error")`),
-        		Limit:   langsmith.F(int64(5)),
-        	})
-        	if err != nil {
-        		panic(err.Error())
-        	}
-        	for _, run := range runs.Runs {
-        		fmt.Println(run.TraceID)
-        	}
-        }
-        ```
-      </Tab>
+val client: LangsmithClient = LangsmithOkHttpClient.fromEnv()
 
-      <Tab title="After">
-        ```go After theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-        package main
+val project = client.sessions().list(
+    SessionListParams.builder().name("default").limit(1L).build()
+).items().first()
 
-        import (
-        	"context"
-        	"fmt"
-        	"time"
+val maxStart = OffsetDateTime.now()
+val minStart = maxStart.minusMonths(1)
 
-        	"github.com/langchain-ai/langsmith-go"
-        )
+// trace_filter is implicitly root-run-only — no is_root needed.
+val errorTraces = client.traces().query(
+    TraceQueryParams.builder()
+        .projectId(project.id())
+        .minStartTime(minStart)
+        .maxStartTime(maxStart)
+        .traceFilter("eq(status, \"error\")")
+        .build()
+).items().take(5)
+for (trace in errorTraces) {
+    println(trace.rootRun().get().traceId().get())
+}
 
-        func main() {
-        	ctx := context.Background()
-        	client := langsmith.NewClient()
+// traceIds is a fast-path when you already know which traces you want.
+var traceId = "<trace-id>"
+val knownTraces = client.traces().query(
+    TraceQueryParams.builder()
+        .projectId(project.id())
+        .minStartTime(minStart)
+        .maxStartTime(maxStart)
+        .traceIds(listOf(traceId))
+        .build()
+).items()
+for (trace in knownTraces) {
+    println(trace.rootRun().get().traceId().get())
+}
+```
 
-        	sessions, err := client.Sessions.List(ctx, langsmith.SessionListParams{
-        		Name:  langsmith.F("default"),
-        		Limit: langsmith.F(int64(1)),
-        	})
-        	if err != nil {
-        		panic(err.Error())
-        	}
-        	projectID := sessions.Items[0].ID
+**Go**
 
-        	maxStart := time.Now().UTC()
-        	minStart := maxStart.AddDate(0, -1, 0)
+**Before**
 
-        	// trace_filter is implicitly root-run-only — no is_root needed.
-        	iter := client.Traces.QueryAutoPaging(ctx, langsmith.TraceQueryParams{
-        		ProjectID:    langsmith.F(projectID),
-        		MinStartTime: langsmith.F(minStart),
-        		MaxStartTime: langsmith.F(maxStart),
-        		TraceFilter:  langsmith.F(`eq(status, "error")`),
-        	})
-        	count := 0
-        	for iter.Next() {
-        		trace := iter.Current()
-        		fmt.Println(trace.RootRun.TraceID)
-        		count++
-        		if count >= 5 {
-        			break
-        		}
-        	}
-        	if err := iter.Err(); err != nil {
-        		panic(err.Error())
-        	}
+```go Before theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+package main
 
-        	// trace_ids is a fast-path when you already know which traces you want.
-        	traceID := "<trace-id>"
-        	knownIter := client.Traces.QueryAutoPaging(ctx, langsmith.TraceQueryParams{
-        		ProjectID:    langsmith.F(projectID),
-        		MinStartTime: langsmith.F(minStart),
-        		MaxStartTime: langsmith.F(maxStart),
-        		TraceIDs:     langsmith.F([]string{traceID}),
-        	})
-        	for knownIter.Next() {
-        		trace := knownIter.Current()
-        		fmt.Println(trace.RootRun.TraceID)
-        	}
-        	if err := knownIter.Err(); err != nil {
-        		panic(err.Error())
-        	}
-        }
-        ```
-      </Tab>
-    </Tabs>
-  </Tab>
+import (
+	"context"
+	"fmt"
 
-  <Tab title="cURL">
-    <Tabs>
-      <Tab title="Before">
-        ```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-        PROJECT_ID=$(curl -s "https://api.smith.langchain.com/api/v1/sessions?name=default&limit=1" \
-          -H "x-api-key: $LANGSMITH_API_KEY" | jq -r '.[0].id')
+	"github.com/langchain-ai/langsmith-go"
+)
 
-        # v1 has no root-run-only filter concept — is_root plus a regular filter is
-        # the closest equivalent, still scanning every run to match.
-        curl -s -X POST "https://api.smith.langchain.com/api/v1/runs/query" \
-          -H "x-api-key: $LANGSMITH_API_KEY" \
-          -H "Content-Type: application/json" \
-          -d "$(jq -n --arg pid "$PROJECT_ID" '{"session": [$pid], "is_root": true, "filter": "eq(status, \"error\")", "limit": 5}')" \
-          | jq '(.runs // []) | map(.trace_id)'
-        ```
-      </Tab>
+func main() {
+	ctx := context.Background()
+	client := langsmith.NewClient()
 
-      <Tab title="After">
-        ```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-        PROJECT_ID=$(curl -s "https://api.smith.langchain.com/api/v1/sessions?name=default&limit=1" \
-          -H "x-api-key: $LANGSMITH_API_KEY" | jq -r '.[0].id')
+	sessions, err := client.Sessions.List(ctx, langsmith.SessionListParams{
+		Name:  langsmith.F("default"),
+		Limit: langsmith.F(int64(1)),
+	})
+	if err != nil {
+		panic(err.Error())
+	}
+	projectID := sessions.Items[0].ID
 
-        MAX_START=$(date -u +%Y-%m-%dT%H:%M:%SZ)
-        MIN_START=$(date -u -d '-1 month' +%Y-%m-%dT%H:%M:%SZ 2>/dev/null || date -u -v-1m +%Y-%m-%dT%H:%M:%SZ)
+	// v1 has no root-run-only filter concept — IsRoot plus a regular filter is
+	// the closest equivalent, still scanning every run to match.
+	runs, err := client.Runs.Query(ctx, langsmith.RunQueryParams{
+		Session: langsmith.F([]string{projectID}),
+		IsRoot:  langsmith.F(true),
+		Filter:  langsmith.F(`eq(status, "error")`),
+		Limit:   langsmith.F(int64(5)),
+	})
+	if err != nil {
+		panic(err.Error())
+	}
+	for _, run := range runs.Runs {
+		fmt.Println(run.TraceID)
+	}
+}
+```
 
-        # trace_filter is implicitly root-run-only — no is_root needed.
-        curl -s -X POST "https://api.smith.langchain.com/api/v2/traces/query" \
-          -H "x-api-key: $LANGSMITH_API_KEY" \
-          -H "Content-Type: application/json" \
-          -d "$(jq -n --arg pid "$PROJECT_ID" --arg min "$MIN_START" --arg max "$MAX_START" '{
-            "project_id": $pid,
-            "min_start_time": $min,
-            "max_start_time": $max,
-            "page_size": 5,
-            "trace_filter": "eq(status, \"error\")"
-          }')" | jq '.items | map(.root_run.trace_id)'
+**After**
 
-        # trace_ids is a fast-path when you already know which traces you want.
-        TRACE_ID="<trace-id>"
-        curl -s -X POST "https://api.smith.langchain.com/api/v2/traces/query" \
-          -H "x-api-key: $LANGSMITH_API_KEY" \
-          -H "Content-Type: application/json" \
-          -d "$(jq -n --arg pid "$PROJECT_ID" --arg min "$MIN_START" --arg max "$MAX_START" --arg tid "$TRACE_ID" '{
-            "project_id": $pid,
-            "min_start_time": $min,
-            "max_start_time": $max,
-            "trace_ids": [$tid]
-          }')" | jq '.items | map(.root_run.trace_id)'
-        ```
-      </Tab>
-    </Tabs>
-  </Tab>
-</Tabs>
+```go After theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+package main
+
+import (
+	"context"
+	"fmt"
+	"time"
+
+	"github.com/langchain-ai/langsmith-go"
+)
+
+func main() {
+	ctx := context.Background()
+	client := langsmith.NewClient()
+
+	sessions, err := client.Sessions.List(ctx, langsmith.SessionListParams{
+		Name:  langsmith.F("default"),
+		Limit: langsmith.F(int64(1)),
+	})
+	if err != nil {
+		panic(err.Error())
+	}
+	projectID := sessions.Items[0].ID
+
+	maxStart := time.Now().UTC()
+	minStart := maxStart.AddDate(0, -1, 0)
+
+	// trace_filter is implicitly root-run-only — no is_root needed.
+	iter := client.Traces.QueryAutoPaging(ctx, langsmith.TraceQueryParams{
+		ProjectID:    langsmith.F(projectID),
+		MinStartTime: langsmith.F(minStart),
+		MaxStartTime: langsmith.F(maxStart),
+		TraceFilter:  langsmith.F(`eq(status, "error")`),
+	})
+	count := 0
+	for iter.Next() {
+		trace := iter.Current()
+		fmt.Println(trace.RootRun.TraceID)
+		count++
+		if count >= 5 {
+			break
+		}
+	}
+	if err := iter.Err(); err != nil {
+		panic(err.Error())
+	}
+
+	// trace_ids is a fast-path when you already know which traces you want.
+	traceID := "<trace-id>"
+	knownIter := client.Traces.QueryAutoPaging(ctx, langsmith.TraceQueryParams{
+		ProjectID:    langsmith.F(projectID),
+		MinStartTime: langsmith.F(minStart),
+		MaxStartTime: langsmith.F(maxStart),
+		TraceIDs:     langsmith.F([]string{traceID}),
+	})
+	for knownIter.Next() {
+		trace := knownIter.Current()
+		fmt.Println(trace.RootRun.TraceID)
+	}
+	if err := knownIter.Err(); err != nil {
+		panic(err.Error())
+	}
+}
+```
+
+**cURL**
+
+**Before**
+
+```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+PROJECT_ID=$(curl -s "https://api.smith.langchain.com/api/v1/sessions?name=default&limit=1" \
+  -H "x-api-key: $LANGSMITH_API_KEY" | jq -r '.[0].id')
+
+# v1 has no root-run-only filter concept — is_root plus a regular filter is
+# the closest equivalent, still scanning every run to match.
+curl -s -X POST "https://api.smith.langchain.com/api/v1/runs/query" \
+  -H "x-api-key: $LANGSMITH_API_KEY" \
+  -H "Content-Type: application/json" \
+  -d "$(jq -n --arg pid "$PROJECT_ID" '{"session": [$pid], "is_root": true, "filter": "eq(status, \"error\")", "limit": 5}')" \
+  | jq '(.runs // []) | map(.trace_id)'
+```
+
+**After**
+
+```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+PROJECT_ID=$(curl -s "https://api.smith.langchain.com/api/v1/sessions?name=default&limit=1" \
+  -H "x-api-key: $LANGSMITH_API_KEY" | jq -r '.[0].id')
+
+MAX_START=$(date -u +%Y-%m-%dT%H:%M:%SZ)
+MIN_START=$(date -u -d '-1 month' +%Y-%m-%dT%H:%M:%SZ 2>/dev/null || date -u -v-1m +%Y-%m-%dT%H:%M:%SZ)
+
+# trace_filter is implicitly root-run-only — no is_root needed.
+curl -s -X POST "https://api.smith.langchain.com/api/v2/traces/query" \
+  -H "x-api-key: $LANGSMITH_API_KEY" \
+  -H "Content-Type: application/json" \
+  -d "$(jq -n --arg pid "$PROJECT_ID" --arg min "$MIN_START" --arg max "$MAX_START" '{
+    "project_id": $pid,
+    "min_start_time": $min,
+    "max_start_time": $max,
+    "page_size": 5,
+    "trace_filter": "eq(status, \"error\")"
+  }')" | jq '.items | map(.root_run.trace_id)'
+
+# trace_ids is a fast-path when you already know which traces you want.
+TRACE_ID="<trace-id>"
+curl -s -X POST "https://api.smith.langchain.com/api/v2/traces/query" \
+  -H "x-api-key: $LANGSMITH_API_KEY" \
+  -H "Content-Type: application/json" \
+  -d "$(jq -n --arg pid "$PROJECT_ID" --arg min "$MIN_START" --arg max "$MAX_START" --arg tid "$TRACE_ID" '{
+    "project_id": $pid,
+    "min_start_time": $min,
+    "max_start_time": $max,
+    "trace_ids": [$tid]
+  }')" | jq '.items | map(.root_run.trace_id)'
+```
 
 ## Traces: list runs
 
@@ -1128,117 +1088,111 @@ Returns runs for a trace ID within min/max start time. Optional `filter`; repeat
 
 #### Method name
 
-<Tabs>
-  <Tab title="Python">
-    | Before | After |
-    | - | - |
-    | `client.list_runs(trace_id=...)` (generic) | `client.traces.list_runs()` |
+**Python**
 
-    <Note>
-      `client.traces.list_runs()` is now async. Call it with `await`.
-    </Note>
+| Before | After |
+| - | - |
+| `client.list_runs(trace_id=...)` (generic) | `client.traces.list_runs()` |
 
-    See the [reference](https://reference.langchain.com/python/langsmith/_openapi_client/resources/traces/TracesResource/list_runs) for the full parameter and field list.
-  </Tab>
+> [!NOTE]
+>
+> `client.traces.list_runs()` is now async. Call it with `await`.
 
-  <Tab title="TypeScript">
-    | Before | After |
-    | - | - |
-    | `client.listRuns({ traceId })` (generic) | `client.traces.listRuns()` |
+See the [reference](https://reference.langchain.com/python/langsmith/_openapi_client/resources/traces/TracesResource/list_runs) for the full parameter and field list.
 
-    See the [reference](https://reference.langchain.com/javascript/langsmith/_openapi_client/Langsmith/Traces/listRuns) for the full parameter and field list.
-  </Tab>
+**TypeScript**
 
-  <Tab title="Java">
-    | Before | After |
-    | - | - |
-    | `client.runs().query()` (generic, `.trace(traceId)`) | `client.traces().listRuns()` |
+| Before | After |
+| - | - |
+| `client.listRuns({ traceId })` (generic) | `client.traces.listRuns()` |
 
-    See the [reference](https://javadoc.io/doc/com.langchain.smith/langsmith-java/latest/com/langchain/smith/services/blocking/TraceService.html) for the full parameter list.
-  </Tab>
+See the [reference](https://reference.langchain.com/javascript/langsmith/_openapi_client/Langsmith/Traces/listRuns) for the full parameter and field list.
 
-  <Tab title="Go">
-    | Before | After |
-    | - | - |
-    | `client.Runs.Query()` (generic, `Trace: traceID`) | `client.Traces.ListRuns()` |
+**Java**
 
-    See the [reference](https://pkg.go.dev/github.com/langchain-ai/langsmith-go#TraceService.ListRuns) for the full parameter list.
-  </Tab>
+| Before | After |
+| - | - |
+| `client.runs().query()` (generic, `.trace(traceId)`) | `client.traces().listRuns()` |
 
-  <Tab title="cURL">
-    | Before | After |
-    | - | - |
-    | `POST /api/v1/runs/query` (`trace` field) | `GET /api/v2/traces/{trace_id}/runs` |
-  </Tab>
-</Tabs>
+See the [reference](https://javadoc.io/doc/com.langchain.smith/langsmith-java/latest/com/langchain/smith/services/blocking/TraceService.html) for the full parameter list.
+
+**Go**
+
+| Before | After |
+| - | - |
+| `client.Runs.Query()` (generic, `Trace: traceID`) | `client.Traces.ListRuns()` |
+
+See the [reference](https://pkg.go.dev/github.com/langchain-ai/langsmith-go#TraceService.ListRuns) for the full parameter list.
+
+**cURL**
+
+| Before | After |
+| - | - |
+| `POST /api/v1/runs/query` (`trace` field) | `GET /api/v2/traces/{trace_id}/runs` |
 
 #### Query parameters
 
-<Tabs>
-  <Tab title="Python">
-    * `trace_id`/`trace` moves from a query param to a path param.
-    * `project_id` is new and **required** (the SmithDB partition key); `list_runs(trace_id=...)` did not need it.
-    * `filter` is unchanged.
-    * `min_start_time`/`max_start_time` are new. Unlike `traces.query`, neither has a default: omit both and runs are not filtered by time at all. They are individually optional but must be passed together if either is set.
-    * `select` is renamed `selects`, using the same 44-value enum as `traces.query`.
-  </Tab>
+**Python**
 
-  <Tab title="TypeScript">
-    * `traceId`/`trace` moves from a query param to a path param.
-    * `project_id` is new and **required** (the SmithDB partition key); `listRuns({ traceId })` did not need it.
-    * `filter` is unchanged.
-    * `min_start_time`/`max_start_time` are new. Unlike `traces.query`, neither has a default: omit both and runs are not filtered by time at all. They are individually optional but must be passed together if either is set.
-    * `select` is renamed `selects`, using the same 44-value enum as `traces.query`.
-  </Tab>
+* `trace_id`/`trace` moves from a query param to a path param.
+* `project_id` is new and **required** (the SmithDB partition key); `list_runs(trace_id=...)` did not need it.
+* `filter` is unchanged.
+* `min_start_time`/`max_start_time` are new. Unlike `traces.query`, neither has a default: omit both and runs are not filtered by time at all. They are individually optional but must be passed together if either is set.
+* `select` is renamed `selects`, using the same 44-value enum as `traces.query`.
 
-  <Tab title="Java">
-    * `traceId` moves from a query param (`.trace(traceId)`) to a positional path param.
-    * `projectId` is new and **required** (the SmithDB partition key); the generic `runs().query()` did not need it.
-    * `filter` is unchanged.
-    * `minStartTime`/`maxStartTime` are new. Unlike `traces().query()`, neither has a default: omit both and runs are not filtered by time at all. They are individually optional but must be passed together if either is set.
-    * `select` is renamed `selects` (44-value enum).
-  </Tab>
+**TypeScript**
 
-  <Tab title="Go">
-    * `traceID` moves from a query param (`Trace: traceID`) to a positional path param.
-    * `ProjectID` is new and **required** (the SmithDB partition key); the generic `Runs.Query()` did not need it.
-    * `Filter` is unchanged.
-    * `MinStartTime`/`MaxStartTime` are new. Unlike `Traces.Query()`, neither has a default: omit both and runs are not filtered by time at all. They are individually optional but must be passed together if either is set.
-    * `Select` is renamed `Selects`.
-  </Tab>
+* `traceId`/`trace` moves from a query param to a path param.
+* `project_id` is new and **required** (the SmithDB partition key); `listRuns({ traceId })` did not need it.
+* `filter` is unchanged.
+* `min_start_time`/`max_start_time` are new. Unlike `traces.query`, neither has a default: omit both and runs are not filtered by time at all. They are individually optional but must be passed together if either is set.
+* `select` is renamed `selects`, using the same 44-value enum as `traces.query`.
 
-  <Tab title="cURL">
-    * `trace` moves from a body field to a path segment, `{trace_id}`.
-    * `project_id` is new and **required** (the SmithDB partition key); `POST /api/v1/runs/query` did not need it.
-    * `filter` is unchanged.
-    * `min_start_time`/`max_start_time` are new. Unlike `traces.query`, neither has a default: omit both and runs are not filtered by time at all. They are individually optional but must be passed together if either is set.
-    * `select` is renamed `selects`.
-  </Tab>
-</Tabs>
+**Java**
+
+* `traceId` moves from a query param (`.trace(traceId)`) to a positional path param.
+* `projectId` is new and **required** (the SmithDB partition key); the generic `runs().query()` did not need it.
+* `filter` is unchanged.
+* `minStartTime`/`maxStartTime` are new. Unlike `traces().query()`, neither has a default: omit both and runs are not filtered by time at all. They are individually optional but must be passed together if either is set.
+* `select` is renamed `selects` (44-value enum).
+
+**Go**
+
+* `traceID` moves from a query param (`Trace: traceID`) to a positional path param.
+* `ProjectID` is new and **required** (the SmithDB partition key); the generic `Runs.Query()` did not need it.
+* `Filter` is unchanged.
+* `MinStartTime`/`MaxStartTime` are new. Unlike `Traces.Query()`, neither has a default: omit both and runs are not filtered by time at all. They are individually optional but must be passed together if either is set.
+* `Select` is renamed `Selects`.
+
+**cURL**
+
+* `trace` moves from a body field to a path segment, `{trace_id}`.
+* `project_id` is new and **required** (the SmithDB partition key); `POST /api/v1/runs/query` did not need it.
+* `filter` is unchanged.
+* `min_start_time`/`max_start_time` are new. Unlike `traces.query`, neither has a default: omit both and runs are not filtered by time at all. They are individually optional but must be passed together if either is set.
+* `select` is renamed `selects`.
 
 #### Response fields
 
-<Tabs>
-  <Tab title="Python">
-    The response has a single `items` field: a list of `Run` objects in `start_time` order, same shape as the [Runs: query](/langsmith/smithdb-sdk-migration-query-runs) response.
-  </Tab>
+**Python**
 
-  <Tab title="TypeScript">
-    The response has a single `items` field: an array of `Run` objects in `start_time` order, same shape as the [Runs: query](/langsmith/smithdb-sdk-migration-query-runs) response.
-  </Tab>
+The response has a single `items` field: a list of `Run` objects in `start_time` order, same shape as the [Runs: query](/langsmith/smithdb-sdk-migration-query-runs) response.
 
-  <Tab title="Java">
-    The response has a single `items()` method, returning `Optional<List<Run>>`: the trace's runs in `start_time` order, same shape as the [Runs: query](/langsmith/smithdb-sdk-migration-query-runs) response.
-  </Tab>
+**TypeScript**
 
-  <Tab title="Go">
-    The response has a single `Items` field, typed `[]Run`: the trace's runs in `start_time` order, same shape as the [Runs: query](/langsmith/smithdb-sdk-migration-query-runs) response.
-  </Tab>
+The response has a single `items` field: an array of `Run` objects in `start_time` order, same shape as the [Runs: query](/langsmith/smithdb-sdk-migration-query-runs) response.
 
-  <Tab title="cURL">
-    The JSON response has a single `items` array field: the trace's runs in `start_time` order, same shape as the [Runs: query](/langsmith/smithdb-sdk-migration-query-runs) response.
-  </Tab>
-</Tabs>
+**Java**
+
+The response has a single `items()` method, returning `Optional<List<Run>>`: the trace's runs in `start_time` order, same shape as the [Runs: query](/langsmith/smithdb-sdk-migration-query-runs) response.
+
+**Go**
+
+The response has a single `Items` field, typed `[]Run`: the trace's runs in `start_time` order, same shape as the [Runs: query](/langsmith/smithdb-sdk-migration-query-runs) response.
+
+**cURL**
+
+The JSON response has a single `items` array field: the trace's runs in `start_time` order, same shape as the [Runs: query](/langsmith/smithdb-sdk-migration-query-runs) response.
 
 ### Examples
 
@@ -1246,534 +1200,510 @@ Returns runs for a trace ID within min/max start time. Optional `filter`; repeat
 
 Fetch all the runs that belong to one trace, given its trace ID.
 
-<Tabs>
-  <Tab title="Python">
-    <Tabs>
-      <Tab title="Before">
-        ```python Before theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-        from langsmith import Client
+**Python**
 
-        client = Client()
-        project = client.read_project(project_name="default")
-        trace_id = "<trace-id>"
-        runs = list(client.list_runs(project_id=project.id, trace_id=trace_id))
-        for run in runs:
-            print(run.name, run.run_type, run.status)
-        ```
-      </Tab>
+**Before**
 
-      <Tab title="After">
-        ```python After theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-        import asyncio
-        from datetime import datetime, timedelta, timezone
+```python Before theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+from langsmith import Client
 
-        from langsmith import Client
+client = Client()
+project = client.read_project(project_name="default")
+trace_id = "<trace-id>"
+runs = list(client.list_runs(project_id=project.id, trace_id=trace_id))
+for run in runs:
+    print(run.name, run.run_type, run.status)
+```
 
+**After**
 
-        async def main():
-            client = Client()
-            project = await client.aread_project(project_name="default")
-            trace_id = "<trace-id>"
-            response = await client.traces.list_runs(
-                trace_id,
-                project_id=str(project.id),
-                selects=["NAME", "RUN_TYPE", "STATUS"],
-            )
-            for run in response.items:
-                print(run.name, run.run_type, run.status)
+```python After theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+import asyncio
+from datetime import datetime, timedelta, timezone
+
+from langsmith import Client
 
 
-        asyncio.run(main())
-        ```
-      </Tab>
-    </Tabs>
-  </Tab>
+async def main():
+    client = Client()
+    project = await client.aread_project(project_name="default")
+    trace_id = "<trace-id>"
+    response = await client.traces.list_runs(
+        trace_id,
+        project_id=str(project.id),
+        selects=["NAME", "RUN_TYPE", "STATUS"],
+    )
+    for run in response.items:
+        print(run.name, run.run_type, run.status)
 
-  <Tab title="TypeScript">
-    <Tabs>
-      <Tab title="Before">
-        ```ts Before theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-        import { Client } from "langsmith";
 
-        const client = new Client();
-        const project = await client.readProject({ projectName: "default" });
-        let traceId = "<trace-id>";
-        const runs = [];
-        for await (const run of client.listRuns({ projectId: project.id, traceId })) {
-          runs.push(run);
-        }
-        for (const run of runs) {
-          console.log(run.name, run.run_type, run.status);
-        }
-        ```
-      </Tab>
+asyncio.run(main())
+```
 
-      <Tab title="After">
-        ```ts After theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-        import { Client } from "langsmith";
+**TypeScript**
 
-        const client = new Client();
-        const project = await client.readProject({ projectName: "default" });
-        let traceId = "<trace-id>";
-        const response = await client.traces.listRuns(traceId, {
-          project_id: project.id,
-          selects: ["NAME", "RUN_TYPE", "STATUS"],
-        });
-        for (const run of response.items ?? []) {
-          console.log(run.name, run.run_type, run.status);
-        }
-        ```
-      </Tab>
-    </Tabs>
-  </Tab>
+**Before**
 
-  <Tab title="Java">
-    <Tabs>
-      <Tab title="Before">
-        ```kotlin Before theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-        import com.langchain.smith.client.LangsmithClient
-        import com.langchain.smith.client.okhttp.LangsmithOkHttpClient
-        import com.langchain.smith.models.runs.RunQueryParams
-        import com.langchain.smith.models.sessions.SessionListParams
+```ts Before theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+import { Client } from "langsmith";
 
-        val client: LangsmithClient = LangsmithOkHttpClient.fromEnv()
+const client = new Client();
+const project = await client.readProject({ projectName: "default" });
+let traceId = "<trace-id>";
+const runs = [];
+for await (const run of client.listRuns({ projectId: project.id, traceId })) {
+  runs.push(run);
+}
+for (const run of runs) {
+  console.log(run.name, run.run_type, run.status);
+}
+```
 
-        val project = client.sessions().list(
-            SessionListParams.builder().name("default").limit(1L).build()
-        ).items().first()
+**After**
 
-        var traceId = "<trace-id>"
+```ts After theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+import { Client } from "langsmith";
 
-        val runs = client.runs().query(
-            RunQueryParams.builder()
-                .addSession(project.id())
-                .trace(traceId)
-                .build()
-        ).runs()
-        for (run in runs) {
-            println("${run.name()} ${run.runType()} ${run.status()}")
-        }
-        ```
-      </Tab>
+const client = new Client();
+const project = await client.readProject({ projectName: "default" });
+let traceId = "<trace-id>";
+const response = await client.traces.listRuns(traceId, {
+  project_id: project.id,
+  selects: ["NAME", "RUN_TYPE", "STATUS"],
+});
+for (const run of response.items ?? []) {
+  console.log(run.name, run.run_type, run.status);
+}
+```
 
-      <Tab title="After">
-        ```kotlin After theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-        import java.time.OffsetDateTime
+**Java**
 
-        import com.langchain.smith.client.LangsmithClient
-        import com.langchain.smith.client.okhttp.LangsmithOkHttpClient
-        import com.langchain.smith.models.sessions.SessionListParams
-        import com.langchain.smith.models.traces.TraceListRunsParams
-        import com.langchain.smith.models.traces.TraceQueryParams
-        import kotlin.jvm.optionals.getOrNull
+**Before**
 
-        val client: LangsmithClient = LangsmithOkHttpClient.fromEnv()
+```kotlin Before theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+import com.langchain.smith.client.LangsmithClient
+import com.langchain.smith.client.okhttp.LangsmithOkHttpClient
+import com.langchain.smith.models.runs.RunQueryParams
+import com.langchain.smith.models.sessions.SessionListParams
 
-        val project = client.sessions().list(
-            SessionListParams.builder().name("default").limit(1L).build()
-        ).items().first()
+val client: LangsmithClient = LangsmithOkHttpClient.fromEnv()
 
-        var traceId = "<trace-id>"
+val project = client.sessions().list(
+    SessionListParams.builder().name("default").limit(1L).build()
+).items().first()
 
-        val response = client.traces().listRuns(
-            traceId,
-            TraceListRunsParams.builder()
-                .projectId(project.id())
-                .addSelect(TraceListRunsParams.Select.NAME)
-                .addSelect(TraceListRunsParams.Select.RUN_TYPE)
-                .addSelect(TraceListRunsParams.Select.STATUS)
-                .build()
-        )
-        for (run in response.items().getOrNull() ?: emptyList()) {
-            println("${run.name().getOrNull()} ${run.runType().getOrNull()} ${run.status().getOrNull()}")
-        }
-        ```
-      </Tab>
-    </Tabs>
-  </Tab>
+var traceId = "<trace-id>"
 
-  <Tab title="Go">
-    <Tabs>
-      <Tab title="Before">
-        ```go Before theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-        package main
+val runs = client.runs().query(
+    RunQueryParams.builder()
+        .addSession(project.id())
+        .trace(traceId)
+        .build()
+).runs()
+for (run in runs) {
+    println("${run.name()} ${run.runType()} ${run.status()}")
+}
+```
 
-        import (
-        	"context"
-        	"fmt"
+**After**
 
-        	"github.com/langchain-ai/langsmith-go"
-        )
+```kotlin After theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+import java.time.OffsetDateTime
 
-        func main() {
-        	ctx := context.Background()
-        	client := langsmith.NewClient()
+import com.langchain.smith.client.LangsmithClient
+import com.langchain.smith.client.okhttp.LangsmithOkHttpClient
+import com.langchain.smith.models.sessions.SessionListParams
+import com.langchain.smith.models.traces.TraceListRunsParams
+import com.langchain.smith.models.traces.TraceQueryParams
+import kotlin.jvm.optionals.getOrNull
 
-        	sessions, err := client.Sessions.List(ctx, langsmith.SessionListParams{
-        		Name:  langsmith.F("default"),
-        		Limit: langsmith.F(int64(1)),
-        	})
-        	if err != nil {
-        		panic(err.Error())
-        	}
-        	projectID := sessions.Items[0].ID
-        	traceID := "<trace-id>"
+val client: LangsmithClient = LangsmithOkHttpClient.fromEnv()
 
-        	runs, err := client.Runs.Query(ctx, langsmith.RunQueryParams{
-        		Session: langsmith.F([]string{projectID}),
-        		Trace:   langsmith.F(traceID),
-        	})
-        	if err != nil {
-        		panic(err.Error())
-        	}
-        	for _, run := range runs.Runs {
-        		fmt.Println(run.Name, run.RunType, run.Status)
-        	}
-        }
-        ```
-      </Tab>
+val project = client.sessions().list(
+    SessionListParams.builder().name("default").limit(1L).build()
+).items().first()
 
-      <Tab title="After">
-        ```go After theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-        package main
+var traceId = "<trace-id>"
 
-        import (
-        	"context"
-        	"fmt"
-        	"time"
+val response = client.traces().listRuns(
+    traceId,
+    TraceListRunsParams.builder()
+        .projectId(project.id())
+        .addSelect(TraceListRunsParams.Select.NAME)
+        .addSelect(TraceListRunsParams.Select.RUN_TYPE)
+        .addSelect(TraceListRunsParams.Select.STATUS)
+        .build()
+)
+for (run in response.items().getOrNull() ?: emptyList()) {
+    println("${run.name().getOrNull()} ${run.runType().getOrNull()} ${run.status().getOrNull()}")
+}
+```
 
-        	"github.com/langchain-ai/langsmith-go"
-        )
+**Go**
 
-        func main() {
-        	ctx := context.Background()
-        	client := langsmith.NewClient()
+**Before**
 
-        	sessions, err := client.Sessions.List(ctx, langsmith.SessionListParams{
-        		Name:  langsmith.F("default"),
-        		Limit: langsmith.F(int64(1)),
-        	})
-        	if err != nil {
-        		panic(err.Error())
-        	}
-        	projectID := sessions.Items[0].ID
-        	traceID := "<trace-id>"
+```go Before theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+package main
 
-        	response, err := client.Traces.ListRuns(ctx, traceID, langsmith.TraceListRunsParams{
-        		ProjectID: langsmith.F(projectID),
-        		Selects: langsmith.F([]langsmith.TraceListRunsParamsSelect{
-        			langsmith.TraceListRunsParamsSelectName,
-        			langsmith.TraceListRunsParamsSelectRunType,
-        			langsmith.TraceListRunsParamsSelectStatus,
-        		}),
-        	})
-        	if err != nil {
-        		panic(err.Error())
-        	}
-        	for _, run := range response.Items {
-        		fmt.Println(run.Name, run.RunType, run.Status)
-        	}
-        }
-        ```
-      </Tab>
-    </Tabs>
-  </Tab>
+import (
+	"context"
+	"fmt"
 
-  <Tab title="cURL">
-    <Tabs>
-      <Tab title="Before">
-        ```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-        PROJECT_ID=$(curl -s "https://api.smith.langchain.com/api/v1/sessions?name=default&limit=1" \
-          -H "x-api-key: $LANGSMITH_API_KEY" | jq -r '.[0].id')
-        TRACE_ID="<trace-id>"
+	"github.com/langchain-ai/langsmith-go"
+)
 
-        curl -s -X POST "https://api.smith.langchain.com/api/v1/runs/query" \
-          -H "x-api-key: $LANGSMITH_API_KEY" \
-          -H "Content-Type: application/json" \
-          -d "$(jq -n --arg pid "$PROJECT_ID" --arg tid "$TRACE_ID" '{"session": [$pid], "trace": $tid}')" \
-          | jq '.runs // []'
-        ```
-      </Tab>
+func main() {
+	ctx := context.Background()
+	client := langsmith.NewClient()
 
-      <Tab title="After">
-        ```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-        PROJECT_ID=$(curl -s "https://api.smith.langchain.com/api/v1/sessions?name=default&limit=1" \
-          -H "x-api-key: $LANGSMITH_API_KEY" | jq -r '.[0].id')
-        TRACE_ID="<trace-id>"
+	sessions, err := client.Sessions.List(ctx, langsmith.SessionListParams{
+		Name:  langsmith.F("default"),
+		Limit: langsmith.F(int64(1)),
+	})
+	if err != nil {
+		panic(err.Error())
+	}
+	projectID := sessions.Items[0].ID
+	traceID := "<trace-id>"
 
-        curl -G "https://api.smith.langchain.com/api/v2/traces/$TRACE_ID/runs" \
-          -H "x-api-key: $LANGSMITH_API_KEY" \
-          --data-urlencode "project_id=$PROJECT_ID" \
-          --data-urlencode "selects=NAME" \
-          --data-urlencode "selects=RUN_TYPE" \
-          --data-urlencode "selects=STATUS"
-        ```
-      </Tab>
-    </Tabs>
-  </Tab>
-</Tabs>
+	runs, err := client.Runs.Query(ctx, langsmith.RunQueryParams{
+		Session: langsmith.F([]string{projectID}),
+		Trace:   langsmith.F(traceID),
+	})
+	if err != nil {
+		panic(err.Error())
+	}
+	for _, run := range runs.Runs {
+		fmt.Println(run.Name, run.RunType, run.Status)
+	}
+}
+```
+
+**After**
+
+```go After theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+package main
+
+import (
+	"context"
+	"fmt"
+	"time"
+
+	"github.com/langchain-ai/langsmith-go"
+)
+
+func main() {
+	ctx := context.Background()
+	client := langsmith.NewClient()
+
+	sessions, err := client.Sessions.List(ctx, langsmith.SessionListParams{
+		Name:  langsmith.F("default"),
+		Limit: langsmith.F(int64(1)),
+	})
+	if err != nil {
+		panic(err.Error())
+	}
+	projectID := sessions.Items[0].ID
+	traceID := "<trace-id>"
+
+	response, err := client.Traces.ListRuns(ctx, traceID, langsmith.TraceListRunsParams{
+		ProjectID: langsmith.F(projectID),
+		Selects: langsmith.F([]langsmith.TraceListRunsParamsSelect{
+			langsmith.TraceListRunsParamsSelectName,
+			langsmith.TraceListRunsParamsSelectRunType,
+			langsmith.TraceListRunsParamsSelectStatus,
+		}),
+	})
+	if err != nil {
+		panic(err.Error())
+	}
+	for _, run := range response.Items {
+		fmt.Println(run.Name, run.RunType, run.Status)
+	}
+}
+```
+
+**cURL**
+
+**Before**
+
+```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+PROJECT_ID=$(curl -s "https://api.smith.langchain.com/api/v1/sessions?name=default&limit=1" \
+  -H "x-api-key: $LANGSMITH_API_KEY" | jq -r '.[0].id')
+TRACE_ID="<trace-id>"
+
+curl -s -X POST "https://api.smith.langchain.com/api/v1/runs/query" \
+  -H "x-api-key: $LANGSMITH_API_KEY" \
+  -H "Content-Type: application/json" \
+  -d "$(jq -n --arg pid "$PROJECT_ID" --arg tid "$TRACE_ID" '{"session": [$pid], "trace": $tid}')" \
+  | jq '.runs // []'
+```
+
+**After**
+
+```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+PROJECT_ID=$(curl -s "https://api.smith.langchain.com/api/v1/sessions?name=default&limit=1" \
+  -H "x-api-key: $LANGSMITH_API_KEY" | jq -r '.[0].id')
+TRACE_ID="<trace-id>"
+
+curl -G "https://api.smith.langchain.com/api/v2/traces/$TRACE_ID/runs" \
+  -H "x-api-key: $LANGSMITH_API_KEY" \
+  --data-urlencode "project_id=$PROJECT_ID" \
+  --data-urlencode "selects=NAME" \
+  --data-urlencode "selects=RUN_TYPE" \
+  --data-urlencode "selects=STATUS"
+```
 
 #### Get only the LLM calls in a trace
 
 Narrow a trace's runs down to a specific run type, for example just the LLM calls.
 
-<Tabs>
-  <Tab title="Python">
-    <Tabs>
-      <Tab title="Before">
-        ```python Before theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-        from langsmith import Client
+**Python**
 
-        client = Client()
-        project = client.read_project(project_name="default")
-        trace_id = "<trace-id>"
-        llm_runs = list(
-            client.list_runs(
-                project_id=project.id,
-                trace_id=trace_id,
-                filter='eq(run_type, "llm")',
-            )
-        )
-        ```
-      </Tab>
+**Before**
 
-      <Tab title="After">
-        ```python After theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-        import asyncio
-        from datetime import datetime, timedelta, timezone
+```python Before theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+from langsmith import Client
 
-        from langsmith import Client
+client = Client()
+project = client.read_project(project_name="default")
+trace_id = "<trace-id>"
+llm_runs = list(
+    client.list_runs(
+        project_id=project.id,
+        trace_id=trace_id,
+        filter='eq(run_type, "llm")',
+    )
+)
+```
 
+**After**
 
-        async def main():
-            client = Client()
-            project = await client.aread_project(project_name="default")
-            trace_id = "<trace-id>"
-            response = await client.traces.list_runs(
-                trace_id,
-                project_id=str(project.id),
-                filter='eq(run_type, "llm")',
-                selects=["NAME", "STATUS"],
-            )
-            llm_runs = response.items
+```python After theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+import asyncio
+from datetime import datetime, timedelta, timezone
+
+from langsmith import Client
 
 
-        asyncio.run(main())
-        ```
-      </Tab>
-    </Tabs>
-  </Tab>
+async def main():
+    client = Client()
+    project = await client.aread_project(project_name="default")
+    trace_id = "<trace-id>"
+    response = await client.traces.list_runs(
+        trace_id,
+        project_id=str(project.id),
+        filter='eq(run_type, "llm")',
+        selects=["NAME", "STATUS"],
+    )
+    llm_runs = response.items
 
-  <Tab title="TypeScript">
-    <Tabs>
-      <Tab title="Before">
-        ```ts Before theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-        import { Client } from "langsmith";
 
-        const client = new Client();
-        const project = await client.readProject({ projectName: "default" });
-        let traceId = "<trace-id>";
-        const llmRuns = [];
-        for await (const run of client.listRuns({
-          projectId: project.id,
-          traceId,
-          filter: 'eq(run_type, "llm")',
-        })) {
-          llmRuns.push(run);
-        }
-        ```
-      </Tab>
+asyncio.run(main())
+```
 
-      <Tab title="After">
-        ```ts After theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-        import { Client } from "langsmith";
+**TypeScript**
 
-        const client = new Client();
-        const project = await client.readProject({ projectName: "default" });
-        let traceId = "<trace-id>";
-        const response = await client.traces.listRuns(traceId, {
-          project_id: project.id,
-          filter: 'eq(run_type, "llm")',
-          selects: ["NAME", "STATUS"],
-        });
-        const llmRuns = response.items ?? [];
-        ```
-      </Tab>
-    </Tabs>
-  </Tab>
+**Before**
 
-  <Tab title="Java">
-    <Tabs>
-      <Tab title="Before">
-        ```kotlin Before theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-        import com.langchain.smith.client.LangsmithClient
-        import com.langchain.smith.client.okhttp.LangsmithOkHttpClient
-        import com.langchain.smith.models.runs.RunQueryParams
-        import com.langchain.smith.models.sessions.SessionListParams
+```ts Before theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+import { Client } from "langsmith";
 
-        val client: LangsmithClient = LangsmithOkHttpClient.fromEnv()
+const client = new Client();
+const project = await client.readProject({ projectName: "default" });
+let traceId = "<trace-id>";
+const llmRuns = [];
+for await (const run of client.listRuns({
+  projectId: project.id,
+  traceId,
+  filter: 'eq(run_type, "llm")',
+})) {
+  llmRuns.push(run);
+}
+```
 
-        val project = client.sessions().list(
-            SessionListParams.builder().name("default").limit(1L).build()
-        ).items().first()
+**After**
 
-        var traceId = "<trace-id>"
+```ts After theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+import { Client } from "langsmith";
 
-        client.runs().query(
-            RunQueryParams.builder()
-                .addSession(project.id())
-                .trace(traceId)
-                .filter("eq(run_type, \"llm\")")
-                .build()
-        ).runs()
-        ```
-      </Tab>
+const client = new Client();
+const project = await client.readProject({ projectName: "default" });
+let traceId = "<trace-id>";
+const response = await client.traces.listRuns(traceId, {
+  project_id: project.id,
+  filter: 'eq(run_type, "llm")',
+  selects: ["NAME", "STATUS"],
+});
+const llmRuns = response.items ?? [];
+```
 
-      <Tab title="After">
-        ```kotlin After theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-        import java.time.OffsetDateTime
+**Java**
 
-        import com.langchain.smith.client.LangsmithClient
-        import com.langchain.smith.client.okhttp.LangsmithOkHttpClient
-        import com.langchain.smith.models.sessions.SessionListParams
-        import com.langchain.smith.models.traces.TraceListRunsParams
-        import com.langchain.smith.models.traces.TraceQueryParams
+**Before**
 
-        val client: LangsmithClient = LangsmithOkHttpClient.fromEnv()
+```kotlin Before theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+import com.langchain.smith.client.LangsmithClient
+import com.langchain.smith.client.okhttp.LangsmithOkHttpClient
+import com.langchain.smith.models.runs.RunQueryParams
+import com.langchain.smith.models.sessions.SessionListParams
 
-        val project = client.sessions().list(
-            SessionListParams.builder().name("default").limit(1L).build()
-        ).items().first()
+val client: LangsmithClient = LangsmithOkHttpClient.fromEnv()
 
-        var traceId = "<trace-id>"
+val project = client.sessions().list(
+    SessionListParams.builder().name("default").limit(1L).build()
+).items().first()
 
-        client.traces().listRuns(
-            traceId,
-            TraceListRunsParams.builder()
-                .projectId(project.id())
-                .filter("eq(run_type, \"llm\")")
-                .addSelect(TraceListRunsParams.Select.NAME)
-                .addSelect(TraceListRunsParams.Select.STATUS)
-                .build()
-        )
-        ```
-      </Tab>
-    </Tabs>
-  </Tab>
+var traceId = "<trace-id>"
 
-  <Tab title="Go">
-    <Tabs>
-      <Tab title="Before">
-        ```go Before theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-        package main
+client.runs().query(
+    RunQueryParams.builder()
+        .addSession(project.id())
+        .trace(traceId)
+        .filter("eq(run_type, \"llm\")")
+        .build()
+).runs()
+```
 
-        import (
-        	"context"
+**After**
 
-        	"github.com/langchain-ai/langsmith-go"
-        )
+```kotlin After theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+import java.time.OffsetDateTime
 
-        func main() {
-        	ctx := context.Background()
-        	client := langsmith.NewClient()
+import com.langchain.smith.client.LangsmithClient
+import com.langchain.smith.client.okhttp.LangsmithOkHttpClient
+import com.langchain.smith.models.sessions.SessionListParams
+import com.langchain.smith.models.traces.TraceListRunsParams
+import com.langchain.smith.models.traces.TraceQueryParams
 
-        	sessions, err := client.Sessions.List(ctx, langsmith.SessionListParams{
-        		Name:  langsmith.F("default"),
-        		Limit: langsmith.F(int64(1)),
-        	})
-        	if err != nil {
-        		panic(err.Error())
-        	}
-        	projectID := sessions.Items[0].ID
-        	traceID := "<trace-id>"
+val client: LangsmithClient = LangsmithOkHttpClient.fromEnv()
 
-        	_, err = client.Runs.Query(ctx, langsmith.RunQueryParams{
-        		Session: langsmith.F([]string{projectID}),
-        		Trace:   langsmith.F(traceID),
-        		Filter:  langsmith.F(`eq(run_type, "llm")`),
-        	})
-        	if err != nil {
-        		panic(err.Error())
-        	}
-        }
-        ```
-      </Tab>
+val project = client.sessions().list(
+    SessionListParams.builder().name("default").limit(1L).build()
+).items().first()
 
-      <Tab title="After">
-        ```go After theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-        package main
+var traceId = "<trace-id>"
 
-        import (
-        	"context"
-        	"time"
+client.traces().listRuns(
+    traceId,
+    TraceListRunsParams.builder()
+        .projectId(project.id())
+        .filter("eq(run_type, \"llm\")")
+        .addSelect(TraceListRunsParams.Select.NAME)
+        .addSelect(TraceListRunsParams.Select.STATUS)
+        .build()
+)
+```
 
-        	"github.com/langchain-ai/langsmith-go"
-        )
+**Go**
 
-        func main() {
-        	ctx := context.Background()
-        	client := langsmith.NewClient()
+**Before**
 
-        	sessions, err := client.Sessions.List(ctx, langsmith.SessionListParams{
-        		Name:  langsmith.F("default"),
-        		Limit: langsmith.F(int64(1)),
-        	})
-        	if err != nil {
-        		panic(err.Error())
-        	}
-        	projectID := sessions.Items[0].ID
-        	traceID := "<trace-id>"
+```go Before theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+package main
 
-        	_, err = client.Traces.ListRuns(ctx, traceID, langsmith.TraceListRunsParams{
-        		ProjectID: langsmith.F(projectID),
-        		Filter:    langsmith.F(`eq(run_type, "llm")`),
-        		Selects: langsmith.F([]langsmith.TraceListRunsParamsSelect{
-        			langsmith.TraceListRunsParamsSelectName,
-        			langsmith.TraceListRunsParamsSelectStatus,
-        		}),
-        	})
-        	if err != nil {
-        		panic(err.Error())
-        	}
-        }
-        ```
-      </Tab>
-    </Tabs>
-  </Tab>
+import (
+	"context"
 
-  <Tab title="cURL">
-    <Tabs>
-      <Tab title="Before">
-        ```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-        PROJECT_ID=$(curl -s "https://api.smith.langchain.com/api/v1/sessions?name=default&limit=1" \
-          -H "x-api-key: $LANGSMITH_API_KEY" | jq -r '.[0].id')
-        TRACE_ID="<trace-id>"
+	"github.com/langchain-ai/langsmith-go"
+)
 
-        curl -s -X POST "https://api.smith.langchain.com/api/v1/runs/query" \
-          -H "x-api-key: $LANGSMITH_API_KEY" \
-          -H "Content-Type: application/json" \
-          -d "$(jq -n --arg pid "$PROJECT_ID" --arg tid "$TRACE_ID" '{"session": [$pid], "trace": $tid, "filter": "eq(run_type, \"llm\")"}')" \
-          | jq '.runs // []'
-        ```
-      </Tab>
+func main() {
+	ctx := context.Background()
+	client := langsmith.NewClient()
 
-      <Tab title="After">
-        ```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-        PROJECT_ID=$(curl -s "https://api.smith.langchain.com/api/v1/sessions?name=default&limit=1" \
-          -H "x-api-key: $LANGSMITH_API_KEY" | jq -r '.[0].id')
-        TRACE_ID="<trace-id>"
+	sessions, err := client.Sessions.List(ctx, langsmith.SessionListParams{
+		Name:  langsmith.F("default"),
+		Limit: langsmith.F(int64(1)),
+	})
+	if err != nil {
+		panic(err.Error())
+	}
+	projectID := sessions.Items[0].ID
+	traceID := "<trace-id>"
 
-        curl -G "https://api.smith.langchain.com/api/v2/traces/$TRACE_ID/runs" \
-          -H "x-api-key: $LANGSMITH_API_KEY" \
-          --data-urlencode "project_id=$PROJECT_ID" \
-          --data-urlencode "filter=eq(run_type, \"llm\")" \
-          --data-urlencode "selects=NAME" \
-          --data-urlencode "selects=STATUS"
-        ```
-      </Tab>
-    </Tabs>
-  </Tab>
-</Tabs>
+	_, err = client.Runs.Query(ctx, langsmith.RunQueryParams{
+		Session: langsmith.F([]string{projectID}),
+		Trace:   langsmith.F(traceID),
+		Filter:  langsmith.F(`eq(run_type, "llm")`),
+	})
+	if err != nil {
+		panic(err.Error())
+	}
+}
+```
+
+**After**
+
+```go After theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+package main
+
+import (
+	"context"
+	"time"
+
+	"github.com/langchain-ai/langsmith-go"
+)
+
+func main() {
+	ctx := context.Background()
+	client := langsmith.NewClient()
+
+	sessions, err := client.Sessions.List(ctx, langsmith.SessionListParams{
+		Name:  langsmith.F("default"),
+		Limit: langsmith.F(int64(1)),
+	})
+	if err != nil {
+		panic(err.Error())
+	}
+	projectID := sessions.Items[0].ID
+	traceID := "<trace-id>"
+
+	_, err = client.Traces.ListRuns(ctx, traceID, langsmith.TraceListRunsParams{
+		ProjectID: langsmith.F(projectID),
+		Filter:    langsmith.F(`eq(run_type, "llm")`),
+		Selects: langsmith.F([]langsmith.TraceListRunsParamsSelect{
+			langsmith.TraceListRunsParamsSelectName,
+			langsmith.TraceListRunsParamsSelectStatus,
+		}),
+	})
+	if err != nil {
+		panic(err.Error())
+	}
+}
+```
+
+**cURL**
+
+**Before**
+
+```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+PROJECT_ID=$(curl -s "https://api.smith.langchain.com/api/v1/sessions?name=default&limit=1" \
+  -H "x-api-key: $LANGSMITH_API_KEY" | jq -r '.[0].id')
+TRACE_ID="<trace-id>"
+
+curl -s -X POST "https://api.smith.langchain.com/api/v1/runs/query" \
+  -H "x-api-key: $LANGSMITH_API_KEY" \
+  -H "Content-Type: application/json" \
+  -d "$(jq -n --arg pid "$PROJECT_ID" --arg tid "$TRACE_ID" '{"session": [$pid], "trace": $tid, "filter": "eq(run_type, \"llm\")"}')" \
+  | jq '.runs // []'
+```
+
+**After**
+
+```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+PROJECT_ID=$(curl -s "https://api.smith.langchain.com/api/v1/sessions?name=default&limit=1" \
+  -H "x-api-key: $LANGSMITH_API_KEY" | jq -r '.[0].id')
+TRACE_ID="<trace-id>"
+
+curl -G "https://api.smith.langchain.com/api/v2/traces/$TRACE_ID/runs" \
+  -H "x-api-key: $LANGSMITH_API_KEY" \
+  --data-urlencode "project_id=$PROJECT_ID" \
+  --data-urlencode "filter=eq(run_type, \"llm\")" \
+  --data-urlencode "selects=NAME" \
+  --data-urlencode "selects=STATUS"
+```
 
 ## See also
 
@@ -1783,12 +1713,6 @@ Narrow a trace's runs down to a specific run type, for example just the LLM call
 
 ***
 
-<div>
-  <Callout icon="terminal-2">
-    [Connect these docs](/use-these-docs) to your agent of choice via MCP for real-time answers.
-  </Callout>
+[Connect these docs](/use-these-docs) to your agent of choice via MCP for real-time answers.
 
-  <Callout icon="edit">
-    [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/smithdb-sdk-migration-traces.mdx) or [file an issue](https://github.com/langchain-ai/docs/issues/new/choose).
-  </Callout>
-</div>
+[Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/smithdb-sdk-migration-traces.mdx) or [file an issue](https://github.com/langchain-ai/docs/issues/new/choose).

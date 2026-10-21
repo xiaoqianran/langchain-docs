@@ -72,205 +72,205 @@ const agent = createAgent({
 });
 ```
 
-<Accordion title="Strict match">
-  The `strict` mode ensures trajectories contain identical messages in the same order with the same tool calls, though it allows for differences in message content. This is useful when you need to enforce a specific sequence of operations, such as requiring a policy lookup before authorizing an action.
+> **Strict match**
+>
+> The `strict` mode ensures trajectories contain identical messages in the same order with the same tool calls, though it allows for differences in message content. This is useful when you need to enforce a specific sequence of operations, such as requiring a policy lookup before authorizing an action.
+>
+> ```ts theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> const evaluator = createTrajectoryMatchEvaluator({  // [!code highlight]
+>   trajectoryMatchMode: "strict",  // [!code highlight]
+> });  // [!code highlight]
+>
+> async function testWeatherToolCalledStrict() {
+>   const result = await agent.invoke({
+>     messages: [new HumanMessage("What's the weather in San Francisco?")]
+>   });
+>
+>   const referenceTrajectory = [
+>     new HumanMessage("What's the weather in San Francisco?"),
+>     new AIMessage({
+>       content: "",
+>       tool_calls: [
+>         { id: "call_1", name: "get_weather", args: { city: "San Francisco" } }
+>       ]
+>     }),
+>     new ToolMessage({
+>       content: "It's 75 degrees and sunny in San Francisco.",
+>       tool_call_id: "call_1"
+>     }),
+>     new AIMessage("The weather in San Francisco is 75 degrees and sunny."),
+>   ];
+>
+>   const evaluation = await evaluator({
+>     outputs: result.messages,
+>     referenceOutputs: referenceTrajectory
+>   });
+>   expect(evaluation.score).toBe(true);
+> }
+> ```
 
-  ```ts theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  const evaluator = createTrajectoryMatchEvaluator({  // [!code highlight]
-    trajectoryMatchMode: "strict",  // [!code highlight]
-  });  // [!code highlight]
+> **Unordered match**
+>
+> The `unordered` mode allows the same tool calls in any order. This is helpful when you want to verify that specific information was retrieved but don't care about the sequence. For example, an agent that checks both weather and events for a city with different tool calls.
+>
+> ```ts theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> const getEvents = tool(
+>   async ({ city }: { city: string }) => {
+>     return `Concert at the park in ${city} tonight.`;
+>   },
+>   {
+>     name: "get_events",
+>     description: "Get events happening in a city.",
+>     schema: z.object({ city: z.string() }),
+>   }
+> );
+>
+> const agent = createAgent({
+>   model: "claude-sonnet-4-6",
+>   tools: [getWeather, getEvents],
+> });
+>
+> const evaluator = createTrajectoryMatchEvaluator({  // [!code highlight]
+>   trajectoryMatchMode: "unordered",  // [!code highlight]
+> });  // [!code highlight]
+>
+> async function testMultipleToolsAnyOrder() {
+>   const result = await agent.invoke({
+>     messages: [new HumanMessage("What's happening in SF today?")]
+>   });
+>
+>   const referenceTrajectory = [
+>     new HumanMessage("What's happening in SF today?"),
+>     new AIMessage({
+>       content: "",
+>       tool_calls: [
+>         { id: "call_1", name: "get_events", args: { city: "SF" } },
+>         { id: "call_2", name: "get_weather", args: { city: "SF" } },
+>       ]
+>     }),
+>     new ToolMessage({
+>       content: "Concert at the park in SF tonight.",
+>       tool_call_id: "call_1"
+>     }),
+>     new ToolMessage({
+>       content: "It's 75 degrees and sunny in SF.",
+>       tool_call_id: "call_2"
+>     }),
+>     new AIMessage("Today in SF: 75 degrees and sunny with a concert at the park tonight."),
+>   ];
+>
+>   const evaluation = await evaluator({
+>     outputs: result.messages,
+>     referenceOutputs: referenceTrajectory,
+>   });
+>   expect(evaluation.score).toBe(true);
+> }
+> ```
 
-  async function testWeatherToolCalledStrict() {
-    const result = await agent.invoke({
-      messages: [new HumanMessage("What's the weather in San Francisco?")]
-    });
+> **Subset and superset match**
+>
+> The `superset` and `subset` modes match partial trajectories. The `superset` mode verifies that the agent called at least the tools in the reference trajectory, allowing additional tool calls. The `subset` mode ensures the agent did not call any tools beyond those in the reference.
+>
+> ```ts theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> const getDetailedForecast = tool(
+>   async ({ city }: { city: string }) => {
+>     return `Detailed forecast for ${city}: sunny all week.`;
+>   },
+>   {
+>     name: "get_detailed_forecast",
+>     description: "Get detailed weather forecast for a city.",
+>     schema: z.object({ city: z.string() }),
+>   }
+> );
+>
+> const agent = createAgent({
+>   model: "claude-sonnet-4-6",
+>   tools: [getWeather, getDetailedForecast],
+> });
+>
+> const evaluator = createTrajectoryMatchEvaluator({  // [!code highlight]
+>   trajectoryMatchMode: "superset",  // [!code highlight]
+> });  // [!code highlight]
+>
+> async function testAgentCallsRequiredToolsPlusExtra() {
+>   const result = await agent.invoke({
+>     messages: [new HumanMessage("What's the weather in Boston?")]
+>   });
+>
+>   const referenceTrajectory = [
+>     new HumanMessage("What's the weather in Boston?"),
+>     new AIMessage({
+>       content: "",
+>       tool_calls: [
+>         { id: "call_1", name: "get_weather", args: { city: "Boston" } },
+>       ]
+>     }),
+>     new ToolMessage({
+>       content: "It's 75 degrees and sunny in Boston.",
+>       tool_call_id: "call_1"
+>     }),
+>     new AIMessage("The weather in Boston is 75 degrees and sunny."),
+>   ];
+>
+>   const evaluation = await evaluator({
+>     outputs: result.messages,
+>     referenceOutputs: referenceTrajectory,
+>   });
+>   expect(evaluation.score).toBe(true);
+> }
+> ```
 
-    const referenceTrajectory = [
-      new HumanMessage("What's the weather in San Francisco?"),
-      new AIMessage({
-        content: "",
-        tool_calls: [
-          { id: "call_1", name: "get_weather", args: { city: "San Francisco" } }
-        ]
-      }),
-      new ToolMessage({
-        content: "It's 75 degrees and sunny in San Francisco.",
-        tool_call_id: "call_1"
-      }),
-      new AIMessage("The weather in San Francisco is 75 degrees and sunny."),
-    ];
-
-    const evaluation = await evaluator({
-      outputs: result.messages,
-      referenceOutputs: referenceTrajectory
-    });
-    expect(evaluation.score).toBe(true);
-  }
-  ```
-</Accordion>
-
-<Accordion title="Unordered match">
-  The `unordered` mode allows the same tool calls in any order. This is helpful when you want to verify that specific information was retrieved but don't care about the sequence. For example, an agent that checks both weather and events for a city with different tool calls.
-
-  ```ts theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  const getEvents = tool(
-    async ({ city }: { city: string }) => {
-      return `Concert at the park in ${city} tonight.`;
-    },
-    {
-      name: "get_events",
-      description: "Get events happening in a city.",
-      schema: z.object({ city: z.string() }),
-    }
-  );
-
-  const agent = createAgent({
-    model: "claude-sonnet-4-6",
-    tools: [getWeather, getEvents],
-  });
-
-  const evaluator = createTrajectoryMatchEvaluator({  // [!code highlight]
-    trajectoryMatchMode: "unordered",  // [!code highlight]
-  });  // [!code highlight]
-
-  async function testMultipleToolsAnyOrder() {
-    const result = await agent.invoke({
-      messages: [new HumanMessage("What's happening in SF today?")]
-    });
-
-    const referenceTrajectory = [
-      new HumanMessage("What's happening in SF today?"),
-      new AIMessage({
-        content: "",
-        tool_calls: [
-          { id: "call_1", name: "get_events", args: { city: "SF" } },
-          { id: "call_2", name: "get_weather", args: { city: "SF" } },
-        ]
-      }),
-      new ToolMessage({
-        content: "Concert at the park in SF tonight.",
-        tool_call_id: "call_1"
-      }),
-      new ToolMessage({
-        content: "It's 75 degrees and sunny in SF.",
-        tool_call_id: "call_2"
-      }),
-      new AIMessage("Today in SF: 75 degrees and sunny with a concert at the park tonight."),
-    ];
-
-    const evaluation = await evaluator({
-      outputs: result.messages,
-      referenceOutputs: referenceTrajectory,
-    });
-    expect(evaluation.score).toBe(true);
-  }
-  ```
-</Accordion>
-
-<Accordion title="Subset and superset match">
-  The `superset` and `subset` modes match partial trajectories. The `superset` mode verifies that the agent called at least the tools in the reference trajectory, allowing additional tool calls. The `subset` mode ensures the agent did not call any tools beyond those in the reference.
-
-  ```ts theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  const getDetailedForecast = tool(
-    async ({ city }: { city: string }) => {
-      return `Detailed forecast for ${city}: sunny all week.`;
-    },
-    {
-      name: "get_detailed_forecast",
-      description: "Get detailed weather forecast for a city.",
-      schema: z.object({ city: z.string() }),
-    }
-  );
-
-  const agent = createAgent({
-    model: "claude-sonnet-4-6",
-    tools: [getWeather, getDetailedForecast],
-  });
-
-  const evaluator = createTrajectoryMatchEvaluator({  // [!code highlight]
-    trajectoryMatchMode: "superset",  // [!code highlight]
-  });  // [!code highlight]
-
-  async function testAgentCallsRequiredToolsPlusExtra() {
-    const result = await agent.invoke({
-      messages: [new HumanMessage("What's the weather in Boston?")]
-    });
-
-    const referenceTrajectory = [
-      new HumanMessage("What's the weather in Boston?"),
-      new AIMessage({
-        content: "",
-        tool_calls: [
-          { id: "call_1", name: "get_weather", args: { city: "Boston" } },
-        ]
-      }),
-      new ToolMessage({
-        content: "It's 75 degrees and sunny in Boston.",
-        tool_call_id: "call_1"
-      }),
-      new AIMessage("The weather in Boston is 75 degrees and sunny."),
-    ];
-
-    const evaluation = await evaluator({
-      outputs: result.messages,
-      referenceOutputs: referenceTrajectory,
-    });
-    expect(evaluation.score).toBe(true);
-  }
-  ```
-</Accordion>
-
-<Info>
-  You can also set the `toolArgsMatchMode` property and/or `toolArgsMatchOverrides` to customize how the evaluator considers equality between tool calls in the actual trajectory vs. the reference. By default, only tool calls with the same arguments to the same tool are considered equal. Visit the [repository](https://github.com/langchain-ai/agentevals?tab=readme-ov-file#tool-args-match-modes) for more details.
-</Info>
+> [!NOTE]
+>
+> You can also set the `toolArgsMatchMode` property and/or `toolArgsMatchOverrides` to customize how the evaluator considers equality between tool calls in the actual trajectory vs. the reference. By default, only tool calls with the same arguments to the same tool are considered equal. Visit the [repository](https://github.com/langchain-ai/agentevals?tab=readme-ov-file#tool-args-match-modes) for more details.
 
 ## LLM-as-judge evaluator
 
 You can use an LLM to evaluate the agent's execution path with the `createTrajectoryLLMAsJudge` function. Unlike trajectory match evaluators, it doesn't require a reference trajectory, but one can be provided if available.
 
-<Accordion title="Without reference trajectory">
-  ```ts theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  import { createTrajectoryLLMAsJudge, TRAJECTORY_ACCURACY_PROMPT } from "agentevals";
+> **Without reference trajectory**
+>
+> ```ts theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> import { createTrajectoryLLMAsJudge, TRAJECTORY_ACCURACY_PROMPT } from "agentevals";
+>
+> const evaluator = createTrajectoryLLMAsJudge({  // [!code highlight]
+>   model: "openai:o3-mini",  // [!code highlight]
+>   prompt: TRAJECTORY_ACCURACY_PROMPT,  // [!code highlight]
+> });  // [!code highlight]
+>
+> async function testTrajectoryQuality() {
+>   const result = await agent.invoke({
+>     messages: [new HumanMessage("What's the weather in Seattle?")]
+>   });
+>
+>   const evaluation = await evaluator({
+>     outputs: result.messages,
+>   });
+>   expect(evaluation.score).toBe(true);
+> }
+> ```
 
-  const evaluator = createTrajectoryLLMAsJudge({  // [!code highlight]
-    model: "openai:o3-mini",  // [!code highlight]
-    prompt: TRAJECTORY_ACCURACY_PROMPT,  // [!code highlight]
-  });  // [!code highlight]
+> **With reference trajectory**
+>
+> If you have a reference trajectory, use the prebuilt `TRAJECTORY_ACCURACY_PROMPT_WITH_REFERENCE` prompt:
+>
+> ```ts theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> import { createTrajectoryLLMAsJudge, TRAJECTORY_ACCURACY_PROMPT_WITH_REFERENCE } from "agentevals";
+>
+> const evaluator = createTrajectoryLLMAsJudge({
+>   model: "openai:o3-mini",
+>   prompt: TRAJECTORY_ACCURACY_PROMPT_WITH_REFERENCE,
+> });
+>
+> const evaluation = await evaluator({
+>   outputs: result.messages,
+>   referenceOutputs: referenceTrajectory,
+> });
+> ```
 
-  async function testTrajectoryQuality() {
-    const result = await agent.invoke({
-      messages: [new HumanMessage("What's the weather in Seattle?")]
-    });
-
-    const evaluation = await evaluator({
-      outputs: result.messages,
-    });
-    expect(evaluation.score).toBe(true);
-  }
-  ```
-</Accordion>
-
-<Accordion title="With reference trajectory">
-  If you have a reference trajectory, use the prebuilt `TRAJECTORY_ACCURACY_PROMPT_WITH_REFERENCE` prompt:
-
-  ```ts theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  import { createTrajectoryLLMAsJudge, TRAJECTORY_ACCURACY_PROMPT_WITH_REFERENCE } from "agentevals";
-
-  const evaluator = createTrajectoryLLMAsJudge({
-    model: "openai:o3-mini",
-    prompt: TRAJECTORY_ACCURACY_PROMPT_WITH_REFERENCE,
-  });
-
-  const evaluation = await evaluator({
-    outputs: result.messages,
-    referenceOutputs: referenceTrajectory,
-  });
-  ```
-</Accordion>
-
-<Info>
-  For more configurability over how the LLM evaluates the trajectory, visit the [repository](https://github.com/langchain-ai/agentevals?tab=readme-ov-file#trajectory-llm-as-judge).
-</Info>
+> [!NOTE]
+>
+> For more configurability over how the LLM evaluates the trajectory, visit the [repository](https://github.com/langchain-ai/agentevals?tab=readme-ov-file#trajectory-llm-as-judge).
 
 ## Run evals in LangSmith
 
@@ -283,108 +283,102 @@ export LANGSMITH_TRACING="true"
 
 LangSmith offers two main approaches for running evaluations: [Vitest/Jest](/langsmith/vitest-jest) integration and the `evaluate` function.
 
-<Accordion title="Use vitest/jest integration">
-  ```ts theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  import * as ls from "langsmith/vitest";
-  // import * as ls from "langsmith/jest";
+> **Use vitest/jest integration**
+>
+> ```ts theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> import * as ls from "langsmith/vitest";
+> // import * as ls from "langsmith/jest";
+>
+> import { createTrajectoryLLMAsJudge, TRAJECTORY_ACCURACY_PROMPT } from "agentevals";
+>
+> const trajectoryEvaluator = createTrajectoryLLMAsJudge({
+>   model: "openai:o3-mini",
+>   prompt: TRAJECTORY_ACCURACY_PROMPT,
+> });
+>
+> ls.describe("trajectory accuracy", () => {
+>   ls.test("accurate trajectory", {
+>     inputs: {
+>       messages: [
+>         { role: "user", content: "What is the weather in SF?" }
+>       ]
+>     },
+>     referenceOutputs: {
+>       messages: [
+>         new HumanMessage("What is the weather in SF?"),
+>         new AIMessage({
+>           content: "",
+>           tool_calls: [
+>             { id: "call_1", name: "get_weather", args: { city: "SF" } }
+>           ]
+>         }),
+>         new ToolMessage({
+>           content: "It's 75 degrees and sunny in SF.",
+>           tool_call_id: "call_1"
+>         }),
+>         new AIMessage("The weather in SF is 75 degrees and sunny."),
+>       ],
+>     },
+>   }, async ({ inputs, referenceOutputs }) => {
+>     const result = await agent.invoke({
+>       messages: [new HumanMessage("What is the weather in SF?")]
+>     });
+>
+>     ls.logOutputs({ messages: result.messages });
+>
+>     await trajectoryEvaluator({
+>       inputs,
+>       outputs: result.messages,
+>       referenceOutputs,
+>     });
+>   });
+> });
+> ```
+>
+> Run the evaluation with your test runner:
+>
+> ```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> vitest run test_trajectory.eval.ts
+> # or
+> jest test_trajectory.eval.ts
+> ```
 
-  import { createTrajectoryLLMAsJudge, TRAJECTORY_ACCURACY_PROMPT } from "agentevals";
+> **Use the evaluate function**
+>
+> Create a [LangSmith dataset](/langsmith/manage-datasets) and use the `evaluate` function. The dataset must have the following schema:
+>
+> * **input**: `{"messages": [...]}` input messages to call the agent with.
+> * **output**: `{"messages": [...]}` expected message history in the agent output. For trajectory evaluation, you can choose to keep only assistant messages.
+>
+> ```ts theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> import { evaluate } from "langsmith/evaluation";
+> import { createTrajectoryLLMAsJudge, TRAJECTORY_ACCURACY_PROMPT } from "agentevals";
+>
+> const trajectoryEvaluator = createTrajectoryLLMAsJudge({
+>   model: "openai:o3-mini",
+>   prompt: TRAJECTORY_ACCURACY_PROMPT,
+> });
+>
+> async function runAgent(inputs: any) {
+>   const result = await agent.invoke(inputs);
+>   return result.messages;
+> }
+>
+> await evaluate(
+>   runAgent,
+>   {
+>     data: "your_dataset_name",
+>     evaluators: [trajectoryEvaluator],
+>   }
+> );
+> ```
 
-  const trajectoryEvaluator = createTrajectoryLLMAsJudge({
-    model: "openai:o3-mini",
-    prompt: TRAJECTORY_ACCURACY_PROMPT,
-  });
-
-  ls.describe("trajectory accuracy", () => {
-    ls.test("accurate trajectory", {
-      inputs: {
-        messages: [
-          { role: "user", content: "What is the weather in SF?" }
-        ]
-      },
-      referenceOutputs: {
-        messages: [
-          new HumanMessage("What is the weather in SF?"),
-          new AIMessage({
-            content: "",
-            tool_calls: [
-              { id: "call_1", name: "get_weather", args: { city: "SF" } }
-            ]
-          }),
-          new ToolMessage({
-            content: "It's 75 degrees and sunny in SF.",
-            tool_call_id: "call_1"
-          }),
-          new AIMessage("The weather in SF is 75 degrees and sunny."),
-        ],
-      },
-    }, async ({ inputs, referenceOutputs }) => {
-      const result = await agent.invoke({
-        messages: [new HumanMessage("What is the weather in SF?")]
-      });
-
-      ls.logOutputs({ messages: result.messages });
-
-      await trajectoryEvaluator({
-        inputs,
-        outputs: result.messages,
-        referenceOutputs,
-      });
-    });
-  });
-  ```
-
-  Run the evaluation with your test runner:
-
-  ```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  vitest run test_trajectory.eval.ts
-  # or
-  jest test_trajectory.eval.ts
-  ```
-</Accordion>
-
-<Accordion title="Use the evaluate function">
-  Create a [LangSmith dataset](/langsmith/manage-datasets) and use the `evaluate` function. The dataset must have the following schema:
-
-  * **input**: `{"messages": [...]}` input messages to call the agent with.
-  * **output**: `{"messages": [...]}` expected message history in the agent output. For trajectory evaluation, you can choose to keep only assistant messages.
-
-  ```ts theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  import { evaluate } from "langsmith/evaluation";
-  import { createTrajectoryLLMAsJudge, TRAJECTORY_ACCURACY_PROMPT } from "agentevals";
-
-  const trajectoryEvaluator = createTrajectoryLLMAsJudge({
-    model: "openai:o3-mini",
-    prompt: TRAJECTORY_ACCURACY_PROMPT,
-  });
-
-  async function runAgent(inputs: any) {
-    const result = await agent.invoke(inputs);
-    return result.messages;
-  }
-
-  await evaluate(
-    runAgent,
-    {
-      data: "your_dataset_name",
-      evaluators: [trajectoryEvaluator],
-    }
-  );
-  ```
-</Accordion>
-
-<Tip>
-  To learn more about evaluating your agent, see the [LangSmith docs](/langsmith/vitest-jest).
-</Tip>
+> [!TIP]
+>
+> To learn more about evaluating your agent, see the [LangSmith docs](/langsmith/vitest-jest).
 
 ***
 
-<div>
-  <Callout icon="terminal-2">
-    [Connect these docs](/use-these-docs) to your agent of choice via MCP for real-time answers.
-  </Callout>
+[Connect these docs](/use-these-docs) to your agent of choice via MCP for real-time answers.
 
-  <Callout icon="edit">
-    [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/oss/langchain/test/evals.mdx) or [file an issue](https://github.com/langchain-ai/docs/issues/new/choose).
-  </Callout>
-</div>
+[Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/oss/langchain/test/evals.mdx) or [file an issue](https://github.com/langchain-ai/docs/issues/new/choose).

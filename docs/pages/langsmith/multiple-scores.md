@@ -30,39 +30,37 @@ Example:
 * Python: Requires `langsmith>=0.2.0`
 * TypeScript: Support for multiple scores is available in `langsmith@0.1.32` and higher
 
-<CodeGroup>
-  ```python Python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  def multiple_scores(outputs: dict, reference_outputs: dict) -> list[dict]:
-      # Replace with real evaluation logic.
-      precision = 0.8
-      recall = 0.9
-      f1 = 0.85
-      return [
-          {"key": "precision", "score": precision},
-          {"key": "recall", "score": recall},
-          {"key": "f1", "score": f1},
-      ]
-  ```
+```python Python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+def multiple_scores(outputs: dict, reference_outputs: dict) -> list[dict]:
+    # Replace with real evaluation logic.
+    precision = 0.8
+    recall = 0.9
+    f1 = 0.85
+    return [
+        {"key": "precision", "score": precision},
+        {"key": "recall", "score": recall},
+        {"key": "f1", "score": f1},
+    ]
+```
 
-  ```typescript TypeScript theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  import type { Run, Example } from "langsmith/schemas";
+```typescript TypeScript theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+import type { Run, Example } from "langsmith/schemas";
 
-  function multipleScores(rootRun: Run, example: Example) {
-    // Your evaluation logic here
-    return {
-        results: [
-            { key: "precision", score: 0.8 },
-            { key: "recall", score: 0.9 },
-            { key: "f1", score: 0.85 },
-        ],
-    };
-  }
-  ```
-</CodeGroup>
+function multipleScores(rootRun: Run, example: Example) {
+  // Your evaluation logic here
+  return {
+      results: [
+          { key: "precision", score: 0.8 },
+          { key: "recall", score: 0.9 },
+          { key: "f1", score: 0.85 },
+      ],
+  };
+}
+```
 
 Rows from the resulting experiment will display each of the scores.
 
-<img alt="multiple_scores.png" />
+![multiple\_scores.png](https://mintcdn.com/langchain-5e9cc07a/4kN8yiLrZX_amfFn/langsmith/images/multiple-scores.png?fit=max\&auto=format\&n=4kN8yiLrZX_amfFn\&q=85\&s=7f0a67189b7202a46d5e093cce9ea283)
 
 ## Related
 
@@ -70,12 +68,6 @@ Rows from the resulting experiment will display each of the scores.
 
 ***
 
-<div>
-  <Callout icon="terminal-2">
-    [Connect these docs](/use-these-docs) to your agent of choice via MCP for real-time answers.
-  </Callout>
+[Connect these docs](/use-these-docs) to your agent of choice via MCP for real-time answers.
 
-  <Callout icon="edit">
-    [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/multiple-scores.mdx) or [file an issue](https://github.com/langchain-ai/docs/issues/new/choose).
-  </Callout>
-</div>
+[Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/multiple-scores.mdx) or [file an issue](https://github.com/langchain-ai/docs/issues/new/choose).

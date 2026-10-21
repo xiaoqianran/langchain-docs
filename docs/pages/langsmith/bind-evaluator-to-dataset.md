@@ -17,9 +17,9 @@ LangSmith supports two ways to grade experiments created via the SDK:
    * **Attach an existing evaluator**: Select an evaluator already in your workspace to reuse it.
    * **Create from a template**: Start from a ready-made evaluator.
 
-<Note>
-  When you configure an evaluator for a dataset, it will only affect the experiment runs that are created after the evaluator is configured. It will not affect the evaluation of experiment runs that were created before the evaluator was configured.
-</Note>
+> [!NOTE]
+>
+> When you configure an evaluator for a dataset, it will only affect the experiment runs that are created after the evaluator is configured. It will not affect the evaluation of experiment runs that were created before the evaluator was configured.
 
 ## LLM-as-a-judge evaluators
 
@@ -42,34 +42,32 @@ For custom code evaluators bound to a dataset, the evaluator function takes in t
 
 The code below shows an example of a simple evaluator function that checks that the outputs exactly equal the reference outputs.
 
-<CodeGroup>
-  ```python Python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  import numpy as np
+```python Python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+import numpy as np
 
-  def perform_eval(run, example):
-      # run is a Run object
-      # example is an Example object
-      output = run['outputs']['output']
-      ref_output = example['outputs']['outputs']
-      output_match = np.array_equal(output, ref_output)
+def perform_eval(run, example):
+    # run is a Run object
+    # example is an Example object
+    output = run['outputs']['output']
+    ref_output = example['outputs']['outputs']
+    output_match = np.array_equal(output, ref_output)
 
-      return { "exact_match": output_match }
-  ```
+    return { "exact_match": output_match }
+```
 
-  ```javascript JavaScript theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  function perform_eval(run, example) {
-      // run is a Run object
-      // example is an Example object
-      const output = run.outputs.output;
-      const refOutput = example.outputs.outputs;
+```javascript JavaScript theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+function perform_eval(run, example) {
+    // run is a Run object
+    // example is an Example object
+    const output = run.outputs.output;
+    const refOutput = example.outputs.outputs;
 
-      // Deep equality check for arrays/objects
-      const outputMatch = JSON.stringify(output) === JSON.stringify(refOutput);
+    // Deep equality check for arrays/objects
+    const outputMatch = JSON.stringify(output) === JSON.stringify(refOutput);
 
-      return { "exact_match": outputMatch };
-  }
-  ```
-</CodeGroup>
+    return { "exact_match": outputMatch };
+}
+```
 
 ## Next steps
 
@@ -78,12 +76,6 @@ The code below shows an example of a simple evaluator function that checks that 
 
 ***
 
-<div>
-  <Callout icon="terminal-2">
-    [Connect these docs](/use-these-docs) to your agent of choice via MCP for real-time answers.
-  </Callout>
+[Connect these docs](/use-these-docs) to your agent of choice via MCP for real-time answers.
 
-  <Callout icon="edit">
-    [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/bind-evaluator-to-dataset.mdx) or [file an issue](https://github.com/langchain-ai/docs/issues/new/choose).
-  </Callout>
-</div>
+[Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/bind-evaluator-to-dataset.mdx) or [file an issue](https://github.com/langchain-ai/docs/issues/new/choose).

@@ -17,72 +17,70 @@ LangSmith 提供自动数据保留功能，以帮助合规性和存储管理。�
 
 ## 自定义延长保留策略
 
-<Note>
-  此功能适用于[Enterprise](/langsmith/pricing-plans)计划客户。对于[self-hosted](/langsmith/self-hosted)企业客户，请参阅[workspace-level configuration section](#workspace-level-extended-retention-for-self-hosted)。
-</Note>[Enterprise](/langsmith/pricing-plans) 客户可以为[workspace](/langsmith/administration-overview#workspaces) 级别的跟踪自定义延长数据保留期限，以满足特定的合规性要求。从 2026 年 9 月 14 日开始，SaaS 客户的最长长期跟踪保留期为 180 天。您可以根据组织的需要将保留期调整为低于此最大值。对保留期的更改仅适用于新跟踪。
+> [!注意]
+>
+> 此功能适用于[Enterprise](/langsmith/pricing-plans)计划客户。对于[self-hosted](/langsmith/self-hosted)企业客户，请参阅[workspace-level configuration section](#workspace-level-extended-retention-for-self-hosted)。[Enterprise](/langsmith/pricing-plans) 客户可以自定义[workspace](/langsmith/administration-overview#workspaces) 级别跟踪的延长数据保留期限，以满足特定的合规性要求。从 2026 年 9 月 14 日开始，SaaS 客户的最长长期跟踪保留期为 180 天。您可以根据组织的需要将保留期调整为低于此最大值。对保留期的更改仅适用于新跟踪。
 
-<Note>
-  对保留期的更改仅适用于新跟踪。现有痕迹不受影响。
-</Note>
+> [!注意]
+>
+> 对保留期的更改仅适用于新跟踪。现有痕迹不受影响。
 
 ### 配置延长保留
 
 组织管理员和操作员 (`organization:manage`) 可以为任何工作区配置保留。工作区管理员可以配置自己的工作区 (`workspaces:manage`)。有关完整权限参考，请参阅[Organization and workspace operations](/langsmith/organization-workspace-operations)。
 
-<Tabs>
-  <Tab title="UI">
-    在[LangSmith UI](https://smith.langchain.com?utm_source=docs\&utm_medium=cta\&utm_campaign=langsmith-signup\&utm_content=langsmith-data-purging-compliance)中：1. 导航至页面底部的**设置**。
-    2. 从左侧菜单中选择**使用配置**。
-    3. 在列表中找到您要配置的工作区。
-    4. 单击该工作区的“**数据保留策略**”列下的值。
-    5. 在 **工作空间使用配置** 模式中，使用 **扩展 - 保留所有跟踪** 选项的下拉菜单自定义扩展策略。 SaaS 客户的可用持续时间为：30 天、60 天、90 天、120 天、150 天和 180 天（截至 2026 年 9 月 14 日的最长期限）。自托管部署不受此上限限制。
-    6. 选择**保存**。
-  </Tab>
+**用户界面**
 
-  <Tab title="API">
-    要读取当前设置：
+在[LangSmith UI](https://smith.langchain.com?utm_source=docs\&utm_medium=cta\&utm_campaign=langsmith-signup\&utm_content=langsmith-data-purging-compliance)中：1. 导航至页面底部的**设置**。
+2. 从左侧菜单中选择**使用配置**。
+3. 在列表中找到您要配置的工作区。
+4. 单击该工作区的“**数据保留策略**”列下的值。
+5. 在 **工作空间使用配置** 模式中，使用 **扩展 - 保留所有跟踪** 选项的下拉菜单自定义扩展策略。 SaaS 客户的可用持续时间为：30 天、60 天、90 天、120 天、150 天和 180 天（截至 2026 年 9 月 14 日的最长期限）。自托管部署不受此上限限制。
+6. 选择**保存**。
 
-    **组织级别** (`organization:manage`)
+**API**
 
-    ```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-    curl -X GET "https://api.smith.langchain.com/api/v1/orgs/ttl-settings" \
-      -H "x-api-key: YOUR_API_KEY"
-    ```
+要读取当前设置：
 
-    **工作区级别** (`workspaces:manage`)
+**组织级别** (`organization:manage`)
 
-    ```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-    curl -X GET "https://api.smith.langchain.com/api/v1/ttl-settings" \
-      -H "x-api-key: YOUR_API_KEY"
-    ```
+```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+curl -X GET "https://api.smith.langchain.com/api/v1/orgs/ttl-settings" \
+  -H "x-api-key: YOUR_API_KEY"
+```
 
-    要更新保留期，请将跟踪的 `resource_type` 设置为 `"run"`，并将 `ttl_days` 设置为所需的持续时间。 SaaS 客户的可用期限为：30、60、90、120、150 和 180 天（最长截至 2026 年 9 月 14 日）。
+**工作区级别** (`workspaces:manage`)
 
-    **组织级别** (`organization:manage`)
+```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+curl -X GET "https://api.smith.langchain.com/api/v1/ttl-settings" \
+  -H "x-api-key: YOUR_API_KEY"
+```
 
-    ```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-    curl -X PUT "https://api.smith.langchain.com/api/v1/orgs/ttl-settings" \
-      -H "x-api-key: YOUR_API_KEY" \
-      -H "Content-Type: application/json" \
-      -d '{"resource_type": "run", "ttl_days": 90}'
-    ```
+要更新保留期，请将跟踪的 `resource_type` 设置为 `"run"`，并将 `ttl_days` 设置为所需的持续时间。 SaaS 客户的可用期限为：30、60、90、120、150 和 180 天（最长截至 2026 年 9 月 14 日）。
 
-    **工作区级别** (`workspaces:manage`)
+**组织级别** (`organization:manage`)
 
-    ```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-    curl -X PUT "https://api.smith.langchain.com/api/v1/ttl-settings" \
-      -H "x-api-key: YOUR_API_KEY" \
-      -H "Content-Type: application/json" \
-      -d '{"resource_type": "run", "ttl_days": 90}'
-    ```
-  </Tab>
-</Tabs>
+```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+curl -X PUT "https://api.smith.langchain.com/api/v1/orgs/ttl-settings" \
+  -H "x-api-key: YOUR_API_KEY" \
+  -H "Content-Type: application/json" \
+  -d '{"resource_type": "run", "ttl_days": 90}'
+```
+
+**工作区级别** (`workspaces:manage`)
+
+```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+curl -X PUT "https://api.smith.langchain.com/api/v1/ttl-settings" \
+  -H "x-api-key: YOUR_API_KEY" \
+  -H "Content-Type: application/json" \
+  -d '{"resource_type": "run", "ttl_days": 90}'
+```
 
 ### 自托管的工作区级别延长保留自托管 [Enterprise](/langsmith/pricing-plans) 客户还可以使用工作区级别的扩展保留配置，而不是系统范围的 TTL 设置。这可以对不同工作区的数据保留进行更精细的控制，而无需更改环境变量。
 
-<Warning>
-  如果您使用 Blob 存储，则**必须**为您配置的每个自定义保留期添加生命周期规则。例如，将工作区设置为 90 天保留意味着 Blob 数据将写入 `ttl_90d/` 前缀，这需要自动清理匹配的生命周期规则。有关详细信息和示例，请参阅[blob storage TTL configuration](/langsmith/self-host-blob-storage#custom-workspace-level-retention-prefixes)。
-</Warning>
+> [!警告]
+>
+> 如果您使用 Blob 存储，则**必须**为您配置的每个自定义保留期添加生命周期规则。例如，将工作区设置为 90 天保留意味着 Blob 数据将写入 `ttl_90d/` 前缀，这需要自动清理匹配的生命周期规则。有关详细信息和示例，请参阅[blob storage TTL configuration](/langsmith/self-host-blob-storage#custom-workspace-level-retention-prefixes)。
 
 要为自托管部署配置此功能，请参阅[self-hosted TTL documentation](/langsmith/self-host-ttl)了解旧系统范围的方法或联系[support](https://support.langchain.com)。
 
@@ -93,9 +91,9 @@ LangSmith 提供自动数据保留功能，以帮助合规性和存储管理。�
 1. **通过跟踪 ID 和会话 ID**：通过提供跟踪 ID 及其相应会话 ID 的列表来删除特定跟踪（每个请求最多 1000 个跟踪）
 2. **按元数据**：删除工作区中与任何指定元数据键值对匹配的跟踪
 
-更多详情请参阅[API spec](/langsmith/smith-api/run/delete-runs)。<Warning>
-  所有跟踪删除都将删除所有数据存储中的相关实体，例如反馈、聚合和统计信息。
-</Warning>
+更多详情请参阅[API spec](/langsmith/smith-api/run/delete-runs)。> [!警告]
+>
+> 所有跟踪删除都将删除所有数据存储中的反馈、聚合和统计等相关实体。
 
 ### 删除时间线
 
@@ -105,9 +103,9 @@ LangSmith 提供自动数据保留功能，以帮助合规性和存储管理。�
 
 要根据跟踪 ID 从单个会话中删除特定跟踪：
 
-<Note>
-  `session_id` 是您尝试删除的跟踪的项目 ID。您可以在LangSmith UI 的跟踪项目页面上找到它。
-</Note>
+> [!注意]
+>
+> `session_id` 是您尝试删除的跟踪的项目 ID。您可以在 LangSmith UI 的跟踪项目页面上找到它。
 
 ```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 curl -X POST "https://api.smith.langchain.com/api/v1/runs/delete" \
@@ -123,9 +121,9 @@ curl -X POST "https://api.smith.langchain.com/api/v1/runs/delete" \
 
 您可以通过我们的 API 自助删除数据集示例，该 API 根据您的数据保留需求支持软删除和硬删除方法。
 
-<Warning>
-  硬删除将从整个数据集历史记录中指定示例的所有版本中永久删除输入、输出和元数据。
-</Warning>
+> [!警告]
+>
+> 硬删除将从整个数据集历史记录中指定示例的所有版本中永久删除输入、输出和元数据。
 
 ### 删除示例分为两步
 
@@ -133,9 +131,9 @@ curl -X POST "https://api.smith.langchain.com/api/v1/runs/delete" \
 
 #### 1. 通过元数据搜索示例
 
-查找工作区中所有数据集具有匹配元数据的所有示例。
+查找工作区中所有数据集具有匹配元数据的所有示例。[GET /examples](/langsmith/smith-api/examples/read-examples)
 
-[GET /examples](/langsmith/smith-api/examples/read-examples)* `as_of` 必须明确指定为时间戳。仅返回 `as_of` 日期之前创建的示例
+* `as_of` 必须明确指定为时间戳。仅返回 `as_of` 日期之前创建的示例
 
 ```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 curl -X GET "https://api.smith.langchain.com/api/v1/examples?as_of=2024-01-01T00:00:00Z" \
@@ -185,12 +183,6 @@ curl -X POST "https://api.smith.langchain.com/v1/platform/datasets/examples/dele
 
 ***
 
-<div>
-  <Callout icon="terminal-2">
-    [Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
-  </Callout>
+[Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时答案。
 
-  <Callout icon="edit">
-    [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/data-purging-compliance.mdx) 或 [file an issue](https://github.com/langchain-ai/docs/issues/new/choose)。
-  </Callout>
-</div>
+[Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/data-purging-compliance.mdx) 或 [file an issue](https://github.com/langchain-ai/docs/issues/new/choose)。

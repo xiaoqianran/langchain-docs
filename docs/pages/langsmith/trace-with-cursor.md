@@ -26,9 +26,9 @@ Install the plugin directly from the GitHub repository in Cursor's settings:
 
 This is the recommended path: it installs the hooks with no clone or build step, since the repository ships a precompiled bundle.
 
-<Warning>
-  Fully restart Cursor after installing so it reloads `hooks.json`.
-</Warning>
+> [!WARNING]
+>
+> Fully restart Cursor after installing so it reloads `hooks.json`.
 
 ### Alternative: install from a local clone
 
@@ -160,13 +160,13 @@ The plugin listens to Cursor hooks and assembles one trace per agent turn:
 * **Attachments**: image and file attachments recovered from Cursor's local database and rendered inline on the user message. Set `attachments` to `false` to skip this step.
 * **Subagents**: each subagent appears as a nested chain run with its own tool calls underneath, linked to the parent turn.
 
-<Note>
-  The plugin does not compute cost locally. Because `ls_model_name` is normalized to a canonical id and `usage_metadata` carries the token breakdown, LangSmith's server-side model price table renders cost in the UI. Auto mode reports `default`, which LangSmith cannot price.
-</Note>
+> [!NOTE]
+>
+> The plugin does not compute cost locally. Because `ls_model_name` is normalized to a canonical id and `usage_metadata` carries the token breakdown, LangSmith's server-side model price table renders cost in the UI. Auto mode reports `default`, which LangSmith cannot price.
 
-<Warning>
-  The plugin uploads Cursor conversation data, including prompts, model responses, tool inputs and outputs, and recovered attachments. Do not enable tracing for sessions that contain data you do not want stored in LangSmith.
-</Warning>
+> [!WARNING]
+>
+> The plugin uploads Cursor conversation data, including prompts, model responses, tool inputs and outputs, and recovered attachments. Do not enable tracing for sessions that contain data you do not want stored in LangSmith.
 
 ### Trace metadata
 
@@ -213,12 +213,6 @@ If traces do not appear in LangSmith:
 
 ***
 
-<div>
-  <Callout icon="terminal-2">
-    [Connect these docs](/use-these-docs) to your agent of choice via MCP for real-time answers.
-  </Callout>
+[Connect these docs](/use-these-docs) to your agent of choice via MCP for real-time answers.
 
-  <Callout icon="edit">
-    [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/trace-with-cursor.mdx) or [file an issue](https://github.com/langchain-ai/docs/issues/new/choose).
-  </Callout>
-</div>
+[Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/trace-with-cursor.mdx) or [file an issue](https://github.com/langchain-ai/docs/issues/new/choose).

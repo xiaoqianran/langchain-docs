@@ -98,42 +98,40 @@ Tracing to multiple [replicas](/langsmith/log-traces-to-project) is useful for:
 * Tracing to multiple workspaces with different API keys.
 * Adding extra metadata to specific replica destinations.
 
-<Tabs>
-  <Tab title="Config file (recommended)">
-    In `<project>/.codex/langsmith.json` or `~/.codex/langsmith.json`:
+**Config file (recommended)**
 
-    ```json theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+In `<project>/.codex/langsmith.json` or `~/.codex/langsmith.json`:
+
+```json theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+{
+  "enabled": true,
+  "replicas": [
     {
-      "enabled": true,
-      "replicas": [
-        {
-          "apiUrl": "https://api.smith.langchain.com",
-          "apiKey": "lsv2_pt_workspace_a",
-          "projectName": "project-prod"
-        },
-        {
-          "apiUrl": "https://api.smith.langchain.com",
-          "apiKey": "lsv2_pt_workspace_b",
-          "projectName": "project-staging",
-          "updates": { "metadata": { "environment": "staging" } }
-        }
-      ]
+      "apiUrl": "https://api.smith.langchain.com",
+      "apiKey": "lsv2_pt_workspace_a",
+      "projectName": "project-prod"
+    },
+    {
+      "apiUrl": "https://api.smith.langchain.com",
+      "apiKey": "lsv2_pt_workspace_b",
+      "projectName": "project-staging",
+      "updates": { "metadata": { "environment": "staging" } }
     }
-    ```
-  </Tab>
+  ]
+}
+```
 
-  <Tab title="Shell environment variable">
-    ```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-    export LANGSMITH_CODEX_RUNS_ENDPOINTS='[{"apiUrl":"https://api.smith.langchain.com","apiKey":"lsv2_pt_workspace_a","projectName":"project-prod"},{"apiUrl":"https://api.smith.langchain.com","apiKey":"lsv2_pt_workspace_b","projectName":"project-staging","updates":{"metadata":{"environment":"staging"}}}]'
-    ```
+**Shell environment variable**
 
-    To generate the escaped JSON string, use:
+```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+export LANGSMITH_CODEX_RUNS_ENDPOINTS='[{"apiUrl":"https://api.smith.langchain.com","apiKey":"lsv2_pt_workspace_a","projectName":"project-prod"},{"apiUrl":"https://api.smith.langchain.com","apiKey":"lsv2_pt_workspace_b","projectName":"project-staging","updates":{"metadata":{"environment":"staging"}}}]'
+```
 
-    ```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-    echo '[{"apiUrl":"...","apiKey":"...","projectName":"..."}]' | jq -c .
-    ```
-  </Tab>
-</Tabs>
+To generate the escaped JSON string, use:
+
+```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+echo '[{"apiUrl":"...","apiKey":"...","projectName":"..."}]' | jq -c .
+```
 
 Each replica object supports the following fields:
 
@@ -187,9 +185,9 @@ Interrupted turns where the user cancels mid-response are still uploaded once th
 
 Open the configured LangSmith project and complete a Codex turn. By default traces appear in the `codex` project. The plugin uploads completed Codex transcript data, including messages, tool call inputs and outputs, model metadata, token usage, and subagent thread structure.
 
-<Warning>
-  The plugin uploads full Codex transcript data to LangSmith. Do not enable tracing for sessions that contain data you do not want stored in LangSmith.
-</Warning>
+> [!WARNING]
+>
+> The plugin uploads full Codex transcript data to LangSmith. Do not enable tracing for sessions that contain data you do not want stored in LangSmith.
 
 ## Troubleshooting
 
@@ -203,12 +201,6 @@ If traces do not appear in LangSmith:
 
 ***
 
-<div>
-  <Callout icon="terminal-2">
-    [Connect these docs](/use-these-docs) to your agent of choice via MCP for real-time answers.
-  </Callout>
+[Connect these docs](/use-these-docs) to your agent of choice via MCP for real-time answers.
 
-  <Callout icon="edit">
-    [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/trace-with-codex.mdx) or [file an issue](https://github.com/langchain-ai/docs/issues/new/choose).
-  </Callout>
-</div>
+[Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/trace-with-codex.mdx) or [file an issue](https://github.com/langchain-ai/docs/issues/new/choose).

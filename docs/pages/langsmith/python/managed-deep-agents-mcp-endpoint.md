@@ -8,9 +8,9 @@ Managed Deep Agents deployments run on [LangSmith Agent Server](/langsmith/agent
 
 This page covers how to find the Managed Deep Agents URL and authenticate. For protocol behavior and generic Agent Server client setup, see [MCP endpoint in Agent Server](/langsmith/server-mcp).
 
-<Note>
-  Managed Deep Agents is in **public [beta](/langsmith/release-stages)** on [LangSmith Cloud](/langsmith/cloud).
-</Note>
+> [!NOTE]
+>
+> Managed Deep Agents is in **public [beta](/langsmith/release-stages)** on [LangSmith Cloud](/langsmith/cloud).
 
 The endpoint is the outbound direction. An [MCP connector](/langsmith/python/managed-deep-agents-mcp-connectors) points the other way: it adds tools from a remote MCP server to your agent. A deployment can use both.
 
@@ -47,13 +47,13 @@ Authentication failures return one of three responses:
 
 The local server started by `mda dev` requires no credential. It grants every caller an unscoped local service principal, so any client on the machine can call `/mcp` and every other route. Only a deployment enforces the header.
 
-<Warning>
-  Anyone holding the LangSmith API key can reach the deployment, and an MCP client stores the header in its own configuration. Treat a key added to a client config as a shared secret for the whole workspace.
-</Warning>
+> [!WARNING]
+>
+> Anyone holding the LangSmith API key can reach the deployment, and an MCP client stores the header in its own configuration. Treat a key added to a client config as a shared secret for the whole workspace.
 
-<Note>
-  Supabase identity expects an access token that a person obtains by signing in to your app. An MCP client that stores only static headers cannot mint one, so use the LangSmith API-key default for deployments that MCP clients call.
-</Note>
+> [!NOTE]
+>
+> Supabase identity expects an access token that a person obtains by signing in to your app. An MCP client that stores only static headers cannot mint one, so use the LangSmith API-key default for deployments that MCP clients call.
 
 ## Understand what the agent exposes
 
@@ -142,32 +142,24 @@ To retain knowledge across calls, [opt in to durable memory](/langsmith/python/m
 
 ## Next steps
 
-<CardGroup>
-  <Card title="Agent Server" icon="server" href="/langsmith/agent-server-overview">
-    Explore the runtime that hosts every Managed Deep Agents deployment.
-  </Card>
+> **[Agent Server](/langsmith/agent-server-overview)**
+>
+> Explore the runtime that hosts every Managed Deep Agents deployment.
 
-  <Card title="Agent Server MCP" icon="protocol" href="/langsmith/server-mcp">
-    Read the Agent Server MCP protocol reference.
-  </Card>
+> **[Agent Server MCP](/langsmith/server-mcp)**
+>
+> Read the Agent Server MCP protocol reference.
 
-  <Card title="MCP connectors" icon="plug" href="/langsmith/python/managed-deep-agents-mcp-connectors">
-    Add tools from remote MCP servers to the agent.
-  </Card>
+> **[MCP connectors](/langsmith/python/managed-deep-agents-mcp-connectors)**
+>
+> Add tools from remote MCP servers to the agent.
 
-  <Card title="Identity" icon="fingerprint" href="/langsmith/python/managed-deep-agents-identity">
-    Authenticate callers to the deployment.
-  </Card>
-</CardGroup>
+> **[Identity](/langsmith/python/managed-deep-agents-identity)**
+>
+> Authenticate callers to the deployment.
 
 ***
 
-<div>
-  <Callout icon="terminal-2">
-    [Connect these docs](/use-these-docs) to your agent of choice via MCP for real-time answers.
-  </Callout>
+[Connect these docs](/use-these-docs) to your agent of choice via MCP for real-time answers.
 
-  <Callout icon="edit">
-    [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/managed-deep-agents-mcp-endpoint.mdx) or [file an issue](https://github.com/langchain-ai/docs/issues/new/choose).
-  </Callout>
-</div>
+[Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/managed-deep-agents-mcp-endpoint.mdx) or [file an issue](https://github.com/langchain-ai/docs/issues/new/choose).

@@ -16,7 +16,7 @@ Playground 允许您使用自己的自定义模型。您可以部署一个模型
 
 使用不同的参数配置模型通常很有用。这些可能包括温度、型号\_名称、最大\_令牌等。
 
-要使您的模型在 Playground 中可配置，您需要将可配置字段添加到模型服务器。这些字段可用于更改 Playground 中的模型参数。
+要使模型在 Playground 中可配置，您需要将可配置字段添加到模型服务器。这些字段可用于更改 Playground 中的模型参数。
 
 您可以通过在 `config.py` 文件中实现 `with_configurable_fields` 函数来添加可配置字段。你可以
 
@@ -35,20 +35,14 @@ def with_configurable_fields(self) -> Runnable:
 
 输入`URL`。 Playground 将自动检测可用端点和可配置字段。然后，您可以使用所需的参数调用模型。
 
-<img alt="ChatCustomModel in Playground" />
+![ChatCustomModel in Playground](https://mintcdn.com/langchain-5e9cc07a/H9jA2WRyA-MV4-H0/langsmith/images/playground-custom-model.png?fit=max\&auto=format\&n=H9jA2WRyA-MV4-H0\&q=85\&s=7a2889af5f55cc73661033837a50fad6)
 
 如果一切设置正确，您应该在 Playground 中看到模型的响应以及 `with_configurable_fields` 中指定的可配置字段。
 
-欲了解更多信息，请参阅[how to store your model configuration for later use](/langsmith/managing-model-configurations)。
+有关更多信息，请参阅[how to store your model configuration for later use](/langsmith/managing-model-configurations)。
 
 ***
 
-<div>
-  <Callout icon="terminal-2">
-    [Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
-  </Callout>
+[Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
 
-  <Callout icon="edit">
-    [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/custom-endpoint.mdx) 或 [file an issue](https://github.com/langchain-ai/docs/issues/new/choose)。
-  </Callout>
-</div>
+[Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/custom-endpoint.mdx) 或 [file an issue](https://github.com/langchain-ai/docs/issues/new/choose)。

@@ -21,9 +21,9 @@ graph TB
     Coder --> |check| Supervisor
 ```
 
-<Note>
-  Async subagents communicate with any server that implements the [Agent Protocol](https://github.com/langchain-ai/agent-protocol). You can use [LangSmith Deployments](/langsmith/deployment), or self-host any Agent Protocol-compatible server. Each subagent runs independently of the supervisor, which controls them through the SDK to launch, check, update, and cancel.
-</Note>
+> [!NOTE]
+>
+> Async subagents communicate with any server that implements the [Agent Protocol](https://github.com/langchain-ai/agent-protocol). You can use [LangSmith Deployments](/langsmith/deployment), or self-host any Agent Protocol-compatible server. Each subagent runs independently of the supervisor, which controls them through the SDK to launch, check, update, and cancel.
 
 ## When to use async subagents
 
@@ -135,9 +135,9 @@ If a subagent paused for input or approval, **check** and **list** report it as 
 
 When running on an [Agent Protocol](https://github.com/langchain-ai/agent-protocol) server, subagents automatically update the supervisor as they complete. If using a [single deployment](#single-deployment) for the supervisor and subagents, subagents will wake the supervisor if it is idle; otherwise it receives the update at the start of its next run.
 
-<Note>
-  Task notifications require `deepagents>=0.7.26`. They are in [**beta**](/oss/python/versioning); APIs and behavior may change between releases.
-</Note>
+> [!NOTE]
+>
+> Task notifications require `deepagents>=0.7.26`. They are in [**beta**](/oss/python/versioning); APIs and behavior may change between releases.
 
 Notifications are returned to the supervisor as a `HumanMessage`. They can include images and other multimodal media. The message carries a [`TaskEvent`](https://reference.langchain.com/python/deepagents/middleware/async_subagents/TaskEvent) (`task_id`, `agent_name`, `status`, `run_id`) in `additional_kwargs["deepagents_notification"]`, so your app can show notifications differently from user messages:
 
@@ -149,9 +149,9 @@ for message in state["messages"]:
 
 ## Handle subagents waiting for input
 
-<Note>
-  The `waiting` status requires `deepagents>=0.7.26`. It is in [**beta**](/oss/python/versioning); APIs and behavior may change between releases.
-</Note>
+> [!NOTE]
+>
+> The `waiting` status requires `deepagents>=0.7.26`. It is in [**beta**](/oss/python/versioning); APIs and behavior may change between releases.
 
 When a subagent pauses for input or approval with `interrupt()` or [human-in-the-loop](/oss/python/deepagents/human-in-the-loop), the **check** and **list** tools report it as `waiting` with its pending interrupts. The supervisor cannot answer or approve on the user's behalf. The request is for the user.
 
@@ -182,9 +182,9 @@ Each tracked task records the task ID, agent name, thread ID, run ID, status, an
 
 ### Find a supervisor's subagent threads
 
-<Note>
-  Thread tagging requires `deepagents>=0.7.26`. It is in [**beta**](/oss/python/versioning); APIs and behavior may change between releases.
-</Note>
+> [!NOTE]
+>
+> Thread tagging requires `deepagents>=0.7.26`. It is in [**beta**](/oss/python/versioning); APIs and behavior may change between releases.
 
 `start_async_task` creates each subagent thread with `metadata={"parent_thread_id": ...}`, the supervisor's thread ID. Use it to find a supervisor's subagent threads, or to read the supervisor's thread in a subagent's graph factory:
 
@@ -251,9 +251,9 @@ The `mode` field on each [`AsyncSubAgent`](https://reference.langchain.com/pytho
 
 ### Fork mode
 
-<Warning>
-  `mode="fork"` is available in Python only. It is experimental and may change in a future release.
-</Warning>
+> [!WARNING]
+>
+> `mode="fork"` is available in Python only. It is experimental and may change in a future release.
 
 Set `mode="fork"` on any `AsyncSubAgent` spec:
 
@@ -320,27 +320,25 @@ langgraph dev --n-jobs-per-worker 10
 
 The supervisor uses descriptions to decide which subagent to launch. Be specific and action-oriented:
 
-<CodeGroup>
-  ```python Good theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  from deepagents import AsyncSubAgent
+```python Good theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+from deepagents import AsyncSubAgent
 
-  AsyncSubAgent(
-      name="researcher",
-      description="Conducts in-depth research using web search. Use for questions requiring multiple searches and synthesis.",
-      graph_id="researcher",
-  )
-  ```
+AsyncSubAgent(
+    name="researcher",
+    description="Conducts in-depth research using web search. Use for questions requiring multiple searches and synthesis.",
+    graph_id="researcher",
+)
+```
 
-  ```python Bad theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  from deepagents import AsyncSubAgent
+```python Bad theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+from deepagents import AsyncSubAgent
 
-  AsyncSubAgent(
-      name="helper",
-      description="helps with stuff",
-      graph_id="helper",
-  )
-  ```
-</CodeGroup>
+AsyncSubAgent(
+    name="helper",
+    description="helps with stuff",
+    graph_id="helper",
+)
+```
 
 ### Trace with thread IDs
 
@@ -391,12 +389,6 @@ The [async-deep-agents](https://github.com/langchain-ai/async-deep-agents) repos
 
 ***
 
-<div>
-  <Callout icon="terminal-2">
-    [Connect these docs](/use-these-docs) to your agent of choice via MCP for real-time answers.
-  </Callout>
+[Connect these docs](/use-these-docs) to your agent of choice via MCP for real-time answers.
 
-  <Callout icon="edit">
-    [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/oss/deepagents/async-subagents.mdx) or [file an issue](https://github.com/langchain-ai/docs/issues/new/choose).
-  </Callout>
-</div>
+[Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/oss/deepagents/async-subagents.mdx) or [file an issue](https://github.com/langchain-ai/docs/issues/new/choose).

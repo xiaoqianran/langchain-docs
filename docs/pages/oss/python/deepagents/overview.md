@@ -21,192 +21,186 @@ See [Core capabilities](#core-capabilities) for a full breakdown of each compone
 
 ## Try it
 
-<PatternEmbed />
-
 ## Quickstart
 
-<CodeGroup>
-  ```python Google theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  from deepagents import create_deep_agent
+```python Google theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+from deepagents import create_deep_agent
 
 
-  def get_weather(city: str) -> str:
-      """Get weather for a given city."""
-      return f"It's always sunny in {city}!"
+def get_weather(city: str) -> str:
+    """Get weather for a given city."""
+    return f"It's always sunny in {city}!"
 
 
-  agent = create_deep_agent(
-      model="google_genai:gemini-3.6-flash",
-      tools=[get_weather],
-      system_prompt="You are a helpful assistant",
-  )
+agent = create_deep_agent(
+    model="google_genai:gemini-3.6-flash",
+    tools=[get_weather],
+    system_prompt="You are a helpful assistant",
+)
 
-  # Run the agent
-  agent.invoke(
-      {"messages": [{"role": "user", "content": "what is the weather in sf"}]}
-  )
-  ```
+# Run the agent
+agent.invoke(
+    {"messages": [{"role": "user", "content": "what is the weather in sf"}]}
+)
+```
 
-  ```python OpenAI theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  from deepagents import create_deep_agent
-
-
-  def get_weather(city: str) -> str:
-      """Get weather for a given city."""
-      return f"It's always sunny in {city}!"
+```python OpenAI theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+from deepagents import create_deep_agent
 
 
-  agent = create_deep_agent(
-      model="openai:gpt-5.5",
-      tools=[get_weather],
-      system_prompt="You are a helpful assistant",
-  )
-
-  # Run the agent
-  agent.invoke(
-      {"messages": [{"role": "user", "content": "what is the weather in sf"}]}
-  )
-  ```
-
-  ```python Anthropic theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  from deepagents import create_deep_agent
+def get_weather(city: str) -> str:
+    """Get weather for a given city."""
+    return f"It's always sunny in {city}!"
 
 
-  def get_weather(city: str) -> str:
-      """Get weather for a given city."""
-      return f"It's always sunny in {city}!"
+agent = create_deep_agent(
+    model="openai:gpt-5.5",
+    tools=[get_weather],
+    system_prompt="You are a helpful assistant",
+)
+
+# Run the agent
+agent.invoke(
+    {"messages": [{"role": "user", "content": "what is the weather in sf"}]}
+)
+```
+
+```python Anthropic theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+from deepagents import create_deep_agent
 
 
-  agent = create_deep_agent(
-      model="anthropic:claude-sonnet-5",
-      tools=[get_weather],
-      system_prompt="You are a helpful assistant",
-  )
-
-  # Run the agent
-  agent.invoke(
-      {"messages": [{"role": "user", "content": "what is the weather in sf"}]}
-  )
-  ```
-
-  ```python OpenRouter theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  from deepagents import create_deep_agent
+def get_weather(city: str) -> str:
+    """Get weather for a given city."""
+    return f"It's always sunny in {city}!"
 
 
-  def get_weather(city: str) -> str:
-      """Get weather for a given city."""
-      return f"It's always sunny in {city}!"
+agent = create_deep_agent(
+    model="anthropic:claude-sonnet-5",
+    tools=[get_weather],
+    system_prompt="You are a helpful assistant",
+)
+
+# Run the agent
+agent.invoke(
+    {"messages": [{"role": "user", "content": "what is the weather in sf"}]}
+)
+```
+
+```python OpenRouter theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+from deepagents import create_deep_agent
 
 
-  agent = create_deep_agent(
-      model="openrouter:z-ai/glm-5.2",
-      tools=[get_weather],
-      system_prompt="You are a helpful assistant",
-  )
-
-  # Run the agent
-  agent.invoke(
-      {"messages": [{"role": "user", "content": "what is the weather in sf"}]}
-  )
-  ```
-
-  ```python Fireworks theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  from deepagents import create_deep_agent
+def get_weather(city: str) -> str:
+    """Get weather for a given city."""
+    return f"It's always sunny in {city}!"
 
 
-  def get_weather(city: str) -> str:
-      """Get weather for a given city."""
-      return f"It's always sunny in {city}!"
+agent = create_deep_agent(
+    model="openrouter:z-ai/glm-5.2",
+    tools=[get_weather],
+    system_prompt="You are a helpful assistant",
+)
+
+# Run the agent
+agent.invoke(
+    {"messages": [{"role": "user", "content": "what is the weather in sf"}]}
+)
+```
+
+```python Fireworks theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+from deepagents import create_deep_agent
 
 
-  agent = create_deep_agent(
-      model="fireworks:accounts/fireworks/models/glm-5p2",
-      tools=[get_weather],
-      system_prompt="You are a helpful assistant",
-  )
-
-  # Run the agent
-  agent.invoke(
-      {"messages": [{"role": "user", "content": "what is the weather in sf"}]}
-  )
-  ```
-
-  ```python Baseten theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  from deepagents import create_deep_agent
+def get_weather(city: str) -> str:
+    """Get weather for a given city."""
+    return f"It's always sunny in {city}!"
 
 
-  def get_weather(city: str) -> str:
-      """Get weather for a given city."""
-      return f"It's always sunny in {city}!"
+agent = create_deep_agent(
+    model="fireworks:accounts/fireworks/models/glm-5p2",
+    tools=[get_weather],
+    system_prompt="You are a helpful assistant",
+)
+
+# Run the agent
+agent.invoke(
+    {"messages": [{"role": "user", "content": "what is the weather in sf"}]}
+)
+```
+
+```python Baseten theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+from deepagents import create_deep_agent
 
 
-  agent = create_deep_agent(
-      model="baseten:zai-org/GLM-5.2",
-      tools=[get_weather],
-      system_prompt="You are a helpful assistant",
-  )
-
-  # Run the agent
-  agent.invoke(
-      {"messages": [{"role": "user", "content": "what is the weather in sf"}]}
-  )
-  ```
-
-  ```python Ollama theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  from deepagents import create_deep_agent
+def get_weather(city: str) -> str:
+    """Get weather for a given city."""
+    return f"It's always sunny in {city}!"
 
 
-  def get_weather(city: str) -> str:
-      """Get weather for a given city."""
-      return f"It's always sunny in {city}!"
+agent = create_deep_agent(
+    model="baseten:zai-org/GLM-5.2",
+    tools=[get_weather],
+    system_prompt="You are a helpful assistant",
+)
+
+# Run the agent
+agent.invoke(
+    {"messages": [{"role": "user", "content": "what is the weather in sf"}]}
+)
+```
+
+```python Ollama theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+from deepagents import create_deep_agent
 
 
-  agent = create_deep_agent(
-      model="ollama:north-mini-code-1.0",
-      tools=[get_weather],
-      system_prompt="You are a helpful assistant",
-  )
+def get_weather(city: str) -> str:
+    """Get weather for a given city."""
+    return f"It's always sunny in {city}!"
 
-  # Run the agent
-  agent.invoke(
-      {"messages": [{"role": "user", "content": "what is the weather in sf"}]}
-  )
-  ```
-</CodeGroup>
 
-<Card title="View example trace" icon="chart-line" href="https://smith.langchain.com/public/44780f65-3414-46eb-8239-944c6ee5454f/r">
-  Open a public LangSmith run for this example.
-</Card>
+agent = create_deep_agent(
+    model="ollama:north-mini-code-1.0",
+    tools=[get_weather],
+    system_prompt="You are a helpful assistant",
+)
+
+# Run the agent
+agent.invoke(
+    {"messages": [{"role": "user", "content": "what is the weather in sf"}]}
+)
+```
+
+> **[View example trace](https://smith.langchain.com/public/44780f65-3414-46eb-8239-944c6ee5454f/r)**
+>
+> Open a public LangSmith run for this example.
 
 See the [Quickstart](/oss/python/deepagents/quickstart/) and [Customization guide](/oss/python/deepagents/customization/) to get started building your own agents and applications with Deep Agents.
 
-<Tip>
-  Trace requests, debug agent behavior, and evaluate outputs with [LangSmith](https://smith.langchain.com?utm_source=docs\&utm_medium=cta\&utm_campaign=langsmith-signup\&utm_content=oss-deepagents-overview). Follow the [observability quickstart](/langsmith/observability-quickstart) to get set up. When ready for production, see [Going to production](/oss/python/deepagents/going-to-production) for LangSmith deployment options.
-</Tip>
+> [!TIP]
+>
+> Trace requests, debug agent behavior, and evaluate outputs with [LangSmith](https://smith.langchain.com?utm_source=docs\&utm_medium=cta\&utm_campaign=langsmith-signup\&utm_content=oss-deepagents-overview). Follow the [observability quickstart](/langsmith/observability-quickstart) to get set up. When ready for production, see [Going to production](/oss/python/deepagents/going-to-production) for LangSmith deployment options.
 
 ## Core capabilities
 
-<img alt="Agent harness capabilities by category" />
+![Agent harness capabilities by category](https://mintcdn.com/langchain-5e9cc07a/jtty0O--UJOKG0nK/oss/images/agent_harness_capabilities.svg?fit=max\&auto=format\&n=jtty0O--UJOKG0nK\&q=85\&s=0ff671d72badd0844826660dfcb04391)
 
 Deep Agents is an ["agent harness"](/oss/python/concepts/products#agent-harnesses-like-the-deep-agents-sdk). It is the same core tool calling loop as other agent frameworks, but with built-in capabilities that make agents reliable for real tasks:
 
-<CardGroup>
-  <Card title="Execution environment" icon="bolt" href="#execution-environment">
-    Tools, virtual filesystem, optional sandbox, and REPL (interpreter)
-  </Card>
+> **[Execution environment](#execution-environment)**
+>
+> Tools, virtual filesystem, optional sandbox, and REPL (interpreter)
 
-  <Card title="Context management" icon="database" href="#context-management">
-    Skills, memory, summarization, context offloading, and prompt caching
-  </Card>
+> **[Context management](#context-management)**
+>
+> Skills, memory, summarization, context offloading, and prompt caching
 
-  <Card title="Delegation" icon="sitemap" href="#delegation">
-    Subagent spawning and optional task planning
-  </Card>
+> **[Delegation](#delegation)**
+>
+> Subagent spawning and optional task planning
 
-  <Card title="Steering" icon="user" href="#steering">
-    Human-in-the-loop approval and interrupts
-  </Card>
-</CardGroup>
+> **[Steering](#steering)**
+>
+> Human-in-the-loop approval and interrupts
 
 [`deepagents`](https://pypi.org/project/deepagents/) is a standalone library built on top of [LangChain](/oss/python/langchain/)'s core building blocks for agents. It uses the [LangGraph](/oss/python/langgraph/) runtime for durable execution, streaming, human-in-the-loop, and other features.
 
@@ -258,60 +252,62 @@ The backends support the following file system operations:
 | `grep` | Search file contents with multiple output modes (files only, content with context, or counts) |
 | `execute` | Run shell commands in the environment (available with [sandbox backends](/oss/python/deepagents/sandboxes) only) |
 
-<Note>The `delete` tool requires `deepagents>=0.7`. Backends that do not support deletion have the tool automatically hidden from the model.</Note>
+> [!NOTE]
+>
+> The `delete` tool requires `deepagents>=0.7`. Backends that do not support deletion have the tool automatically hidden from the model.
 
-<Accordion title="Supported multimodal file extensions">
-  | Type | Extensions |
-  | - | - |
-  | [Image](/oss/python/langchain/messages#multimodal) | `.png`, `.jpg`, `.jpeg`, `.gif`, `.webp`, `.heic`, `.heif` |
-  | [Video](/oss/python/langchain/messages#multimodal) | `.mp4`, `.mpeg`, `.mov`, `.avi`, `.flv`, `.mpg`, `.webm`, `.wmv`, `.3gpp` |
-  | [Audio](/oss/python/langchain/messages#multimodal) | `.wav`, `.mp3`, `.aiff`, `.aac`, `.ogg`, `.flac` |
-  | [File](/oss/python/langchain/messages#multimodal) | `.pdf`, `.ppt`, `.pptx` |
-</Accordion>
+> **Supported multimodal file extensions**
+>
+> | Type | Extensions |
+> | - | - |
+> | [Image](/oss/python/langchain/messages#multimodal) | `.png`, `.jpg`, `.jpeg`, `.gif`, `.webp`, `.heic`, `.heif` |
+> | [Video](/oss/python/langchain/messages#multimodal) | `.mp4`, `.mpeg`, `.mov`, `.avi`, `.flv`, `.mpg`, `.webm`, `.wmv`, `.3gpp` |
+> | [Audio](/oss/python/langchain/messages#multimodal) | `.wav`, `.mp3`, `.aiff`, `.aac`, `.ogg`, `.flac` |
+> | [File](/oss/python/langchain/messages#multimodal) | `.pdf`, `.ppt`, `.pptx` |
 
-<Accordion title="Running without the default filesystem tools" icon="ban">
-  To hide the filesystem tools listed above from the model, register a [harness profile](/oss/python/deepagents/profiles#harness-profiles) with `excluded_tools`:
+> **Running without the default filesystem tools**
+>
+> To hide the filesystem tools listed above from the model, register a [harness profile](/oss/python/deepagents/profiles#harness-profiles) with `excluded_tools`:
+>
+> ```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> from deepagents import HarnessProfile, register_harness_profile
+>
+> register_harness_profile(
+>     "anthropic:claude-sonnet-4-6",
+>     HarnessProfile(
+>         excluded_tools=frozenset(
+>             {"ls", "read_file", "write_file", "edit_file", "delete", "glob", "grep"}
+>         ),
+>     ),
+> )
+> ```
+>
+> Removing [`FilesystemMiddleware`](https://reference.langchain.com/python/deepagents/middleware/filesystem/FilesystemMiddleware) itself via `excluded_middleware` is intentionally rejected—it is required scaffolding in the [Deep Agents stack](/oss/python/deepagents/customization#deep-agents-stack). Use `excluded_tools` to hide only the model-visible tool surface and leave the middleware in place. To remove the `task` tool, see [Running without subagents](/oss/python/deepagents/subagents#running-without-subagents).
 
-  ```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  from deepagents import HarnessProfile, register_harness_profile
-
-  register_harness_profile(
-      "anthropic:claude-sonnet-4-6",
-      HarnessProfile(
-          excluded_tools=frozenset(
-              {"ls", "read_file", "write_file", "edit_file", "delete", "glob", "grep"}
-          ),
-      ),
-  )
-  ```
-
-  Removing [`FilesystemMiddleware`](https://reference.langchain.com/python/deepagents/middleware/filesystem/FilesystemMiddleware) itself via `excluded_middleware` is intentionally rejected—it is required scaffolding in the [Deep Agents stack](/oss/python/deepagents/customization#deep-agents-stack). Use `excluded_tools` to hide only the model-visible tool surface and leave the middleware in place. To remove the `task` tool, see [Running without subagents](/oss/python/deepagents/subagents#running-without-subagents).
-</Accordion>
-
-<Accordion title="Restricting filesystem tools" icon="filter">
-  <Note>
-    The `tools` allowlist on `FilesystemMiddleware` requires `deepagents>=0.7`.
-  </Note>
-
-  To expose only a subset of the filesystem tools listed above, instead of hiding them all, pass a `tools` allowlist to [`FilesystemMiddleware`](https://reference.langchain.com/python/deepagents/middleware/filesystem/FilesystemMiddleware) and provide the instance through `middleware=`. Any built-in filesystem tool left out of the list is removed from the model's tool list.
-
-  ```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  from deepagents import create_deep_agent
-  from deepagents.middleware import FilesystemMiddleware
-
-  # Read-only agent: write_file, edit_file, delete, and execute are never shown
-  agent = create_deep_agent(
-      model="claude-sonnet-4-6",
-      middleware=[
-          FilesystemMiddleware(backend=backend, tools=["read_file", "ls", "glob", "grep"]),
-      ],
-  )
-  ```
-
-  `read_file` must always be included in the list—omitting it raises `ValueError` when the agent is created. The `execute` and `delete` tools are also dropped from the tool surface whenever the configured backend doesn't support them, whether or not you include them in `tools`. Custom tools you add through `create_deep_agent`'s own `tools=` argument are never affected by this allowlist.
-
-  Passing your own [`FilesystemMiddleware`](https://reference.langchain.com/python/deepagents/middleware/filesystem/FilesystemMiddleware) instance this way replaces the default one for the main agent and the general-purpose subagent inherits the same restriction. See [Override a default middleware instance](/oss/python/deepagents/customization#override-a-default-middleware-instance) for more information. Declarative subagents don't inherit it: include a `FilesystemMiddleware(tools=...)` instance in that subagent's own `middleware` field to restrict it independently.
-</Accordion>
+> **Restricting filesystem tools**
+>
+> > [!NOTE]
+> >
+> > The `tools` allowlist on `FilesystemMiddleware` requires `deepagents>=0.7`.
+>
+> To expose only a subset of the filesystem tools listed above, instead of hiding them all, pass a `tools` allowlist to [`FilesystemMiddleware`](https://reference.langchain.com/python/deepagents/middleware/filesystem/FilesystemMiddleware) and provide the instance through `middleware=`. Any built-in filesystem tool left out of the list is removed from the model's tool list.
+>
+> ```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> from deepagents import create_deep_agent
+> from deepagents.middleware import FilesystemMiddleware
+>
+> # Read-only agent: write_file, edit_file, delete, and execute are never shown
+> agent = create_deep_agent(
+>     model="claude-sonnet-4-6",
+>     middleware=[
+>         FilesystemMiddleware(backend=backend, tools=["read_file", "ls", "glob", "grep"]),
+>     ],
+> )
+> ```
+>
+> `read_file` must always be included in the list—omitting it raises `ValueError` when the agent is created. The `execute` and `delete` tools are also dropped from the tool surface whenever the configured backend doesn't support them, whether or not you include them in `tools`. Custom tools you add through `create_deep_agent`'s own `tools=` argument are never affected by this allowlist.
+>
+> Passing your own [`FilesystemMiddleware`](https://reference.langchain.com/python/deepagents/middleware/filesystem/FilesystemMiddleware) instance this way replaces the default one for the main agent and the general-purpose subagent inherits the same restriction. See [Override a default middleware instance](/oss/python/deepagents/customization#override-a-default-middleware-instance) for more information. Declarative subagents don't inherit it: include a `FilesystemMiddleware(tools=...)` instance in that subagent's own `middleware` field to restrict it independently.
 
 The virtual filesystem is used by several other harness capabilities such as skills, memory, code execution, and context management.
 You can also use the file system when building custom tools and middleware for Deep Agents.
@@ -426,77 +422,75 @@ Planning is often useful for:
 
 Pass [`TodoListMiddleware`](https://reference.langchain.com/python/langchain/agents/middleware/todo/TodoListMiddleware) to the middleware parameter to give the agent a `write_todos` tool for maintaining a structured task list during execution.
 
-<CodeGroup>
-  ```python Google theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  from deepagents import create_deep_agent
-  from langchain.agents.middleware import TodoListMiddleware
+```python Google theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+from deepagents import create_deep_agent
+from langchain.agents.middleware import TodoListMiddleware
 
-  agent = create_deep_agent(
-      model="google_genai:gemini-3.6-flash",
-      middleware=[TodoListMiddleware()],
-  )
-  ```
+agent = create_deep_agent(
+    model="google_genai:gemini-3.6-flash",
+    middleware=[TodoListMiddleware()],
+)
+```
 
-  ```python OpenAI theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  from deepagents import create_deep_agent
-  from langchain.agents.middleware import TodoListMiddleware
+```python OpenAI theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+from deepagents import create_deep_agent
+from langchain.agents.middleware import TodoListMiddleware
 
-  agent = create_deep_agent(
-      model="openai:gpt-5.5",
-      middleware=[TodoListMiddleware()],
-  )
-  ```
+agent = create_deep_agent(
+    model="openai:gpt-5.5",
+    middleware=[TodoListMiddleware()],
+)
+```
 
-  ```python Anthropic theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  from deepagents import create_deep_agent
-  from langchain.agents.middleware import TodoListMiddleware
+```python Anthropic theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+from deepagents import create_deep_agent
+from langchain.agents.middleware import TodoListMiddleware
 
-  agent = create_deep_agent(
-      model="anthropic:claude-sonnet-5",
-      middleware=[TodoListMiddleware()],
-  )
-  ```
+agent = create_deep_agent(
+    model="anthropic:claude-sonnet-5",
+    middleware=[TodoListMiddleware()],
+)
+```
 
-  ```python OpenRouter theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  from deepagents import create_deep_agent
-  from langchain.agents.middleware import TodoListMiddleware
+```python OpenRouter theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+from deepagents import create_deep_agent
+from langchain.agents.middleware import TodoListMiddleware
 
-  agent = create_deep_agent(
-      model="openrouter:z-ai/glm-5.2",
-      middleware=[TodoListMiddleware()],
-  )
-  ```
+agent = create_deep_agent(
+    model="openrouter:z-ai/glm-5.2",
+    middleware=[TodoListMiddleware()],
+)
+```
 
-  ```python Fireworks theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  from deepagents import create_deep_agent
-  from langchain.agents.middleware import TodoListMiddleware
+```python Fireworks theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+from deepagents import create_deep_agent
+from langchain.agents.middleware import TodoListMiddleware
 
-  agent = create_deep_agent(
-      model="fireworks:accounts/fireworks/models/glm-5p2",
-      middleware=[TodoListMiddleware()],
-  )
-  ```
+agent = create_deep_agent(
+    model="fireworks:accounts/fireworks/models/glm-5p2",
+    middleware=[TodoListMiddleware()],
+)
+```
 
-  ```python Baseten theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  from deepagents import create_deep_agent
-  from langchain.agents.middleware import TodoListMiddleware
+```python Baseten theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+from deepagents import create_deep_agent
+from langchain.agents.middleware import TodoListMiddleware
 
-  agent = create_deep_agent(
-      model="baseten:zai-org/GLM-5.2",
-      middleware=[TodoListMiddleware()],
-  )
-  ```
+agent = create_deep_agent(
+    model="baseten:zai-org/GLM-5.2",
+    middleware=[TodoListMiddleware()],
+)
+```
 
-  ```python Ollama theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  from deepagents import create_deep_agent
-  from langchain.agents.middleware import TodoListMiddleware
+```python Ollama theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+from deepagents import create_deep_agent
+from langchain.agents.middleware import TodoListMiddleware
 
-  agent = create_deep_agent(
-      model="ollama:north-mini-code-1.0",
-      middleware=[TodoListMiddleware()],
-  )
-  ```
-</CodeGroup>
+agent = create_deep_agent(
+    model="ollama:north-mini-code-1.0",
+    middleware=[TodoListMiddleware()],
+)
+```
 
 Tasks support status tracking (`'pending'`, `'in_progress'`, `'completed'`) and are persisted in agent state. This gives agents a lightweight planning layer for organizing long-running and multi-step work.
 
@@ -534,36 +528,28 @@ For more information, see [Human-in-the-loop](/oss/python/deepagents/human-in-th
 
 ## Get started
 
-<CardGroup>
-  <Card title="Quickstart" icon="rocket" href="/oss/python/deepagents/quickstart">
-    Build your first deep agent
-  </Card>
+> **[Quickstart](/oss/python/deepagents/quickstart)**
+>
+> Build your first deep agent
 
-  <Card title="Customization" icon="adjustments" href="/oss/python/deepagents/customization">
-    Learn about customization options
-  </Card>
+> **[Customization](/oss/python/deepagents/customization)**
+>
+> Learn about customization options
 
-  <Card title="Code" icon="terminal" href="/oss/deepagents/code/overview">
-    Use Deep Agents Code
-  </Card>
+> **[Code](/oss/deepagents/code/overview)**
+>
+> Use Deep Agents Code
 
-  <Card title="ACP" icon="plug-connected" href="/oss/python/deepagents/acp">
-    Use deep agents in code editors with ACP
-  </Card>
+> **[ACP](/oss/python/deepagents/acp)**
+>
+> Use deep agents in code editors with ACP
 
-  <Card title="Reference" icon="external-link" href="https://reference.langchain.com/python/deepagents/">
-    See the `deepagents` API reference
-  </Card>
-</CardGroup>
+> **[Reference](https://reference.langchain.com/python/deepagents/)**
+>
+> See the `deepagents` API reference
 
 ***
 
-<div>
-  <Callout icon="terminal-2">
-    [Connect these docs](/use-these-docs) to your agent of choice via MCP for real-time answers.
-  </Callout>
+[Connect these docs](/use-these-docs) to your agent of choice via MCP for real-time answers.
 
-  <Callout icon="edit">
-    [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/oss/deepagents/overview.mdx) or [file an issue](https://github.com/langchain-ai/docs/issues/new/choose).
-  </Callout>
-</div>
+[Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/oss/deepagents/overview.mdx) or [file an issue](https://github.com/langchain-ai/docs/issues/new/choose).

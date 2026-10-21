@@ -10,37 +10,33 @@
 
 ## 开始吧
 
-<Steps>
-  <Step title="Create an account" icon="user-plus">
-    在[smith.langchain.com](https://smith.langchain.com?utm_source=docs\&utm_medium=cta\&utm_campaign=langsmith-signup\&utm_content=snippets-langsmith-account-api-key-quickstart)注册（无需信用卡）。
-    您可以使用 **Google**、**GitHub** 或 **电子邮件** 登录。
-  </Step>
+**1.创建帐户**
 
-  <Step title="Create an API key" icon="key">
-    转到您的 [Settings page](https://smith.langchain.com/settings) > **API 密钥** > **创建 API 密钥**。
-    复制密钥并安全保存。
-  </Step>
-</Steps>
+在[smith.langchain.com](https://smith.langchain.com?utm_source=docs\&utm_medium=cta\&utm_campaign=langsmith-signup\&utm_content=snippets-langsmith-account-api-key-quickstart)注册（无需信用卡）。
+您可以使用 **Google**、**GitHub** 或 **电子邮件** 登录。
+
+**2.创建 API 密钥**
+
+转到您的 [Settings page](https://smith.langchain.com/settings) > **API 密钥** > **创建 API 密钥**。
+复制密钥并安全保存。
 
 ## 探索
 
-<CardGroup>
-  <Card title="Profile configuration" icon="user-cog" href="/langsmith/profile-configuration">
-    配置您的个人帐户设置和首选项。
-  </Card>
+> **[Profile configuration](/langsmith/profile-configuration)**
+>
+> 配置您的个人帐户设置和首选项。
 
-  <Card title="Integrations" icon="plug" href="/langsmith/get-started-integrations">
-    将 LangSmith 连接到您现有的工具和服务。
-  </Card>
+> **[Integrations](/langsmith/get-started-integrations)**
+>
+> 将 LangSmith 连接到您现有的工具和服务。
 
-  <Card title="Pricing plans" icon="credit-card" href="/langsmith/pricing-plans">
-    比较计划并为您的团队选择合适的级别。
-  </Card>
+> **[Pricing plans](/langsmith/pricing-plans)**
+>
+> 比较计划并为您的团队选择合适的级别。
 
-  <Card title="Enterprise" icon="building" href="/langsmith/enterprise">
-    企业能力、支持和入门。
-  </Card>
-</CardGroup>
+> **[Enterprise](/langsmith/enterprise)**
+>
+> 企业能力、支持和入门。
 
 ## 相关
 
@@ -48,12 +44,6 @@
 
 ***
 
-<div>
-  <Callout icon="terminal-2">
-    [Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时答案。
-  </Callout>
+[Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
 
-  <Callout icon="edit">
-    [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/admin.mdx) 或 [file an issue](https://github.com/langchain-ai/docs/issues/new/choose)。
-  </Callout>
-</div>
+[Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/admin.mdx) 或 [file an issue](https://github.com/langchain-ai/docs/issues/new/choose)。

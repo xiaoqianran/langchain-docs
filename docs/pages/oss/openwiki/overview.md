@@ -34,64 +34,54 @@ Bare `openwiki --init` and `openwiki --update` run in code mode. Use `openwiki p
 
 ## Capabilities
 
-<CardGroup>
-  <Card title="Repository wikis" icon="folder-code" href="/oss/openwiki/code-mode">
-    Generate Markdown docs under `openwiki/`, then wire them into `AGENTS.md` (and `CLAUDE.md` when present) so coding agents can find them.
-  </Card>
+> **[Repository wikis](/oss/openwiki/code-mode)**
+>
+> Generate Markdown docs under `openwiki/`, then wire them into `AGENTS.md` (and `CLAUDE.md` when present) so coding agents can find them.
 
-  <Card title="Coding-agent integrations" icon="robot" href="/oss/openwiki/integrations">
-    Run OpenWiki inside Codex, Claude Code, OpenCode, Cursor, IBM Bob, Kiro, Oh My Pi, Antigravity, or Pi.
-  </Card>
+> **[Coding-agent integrations](/oss/openwiki/integrations)**
+>
+> Run OpenWiki inside Codex, Claude Code, OpenCode, Cursor, IBM Bob, Kiro, Oh My Pi, Antigravity, or Pi.
 
-  <Card title="Search and link" icon="search" href="/oss/openwiki/search-and-link">
-    Query wiki pages over MCP and group related repository wikis into workspaces.
-  </Card>
+> **[Search and link](/oss/openwiki/search-and-link)**
+>
+> Query wiki pages over MCP and group related repository wikis into workspaces.
 
-  <Card title="Personal brain" icon="brain" href="/oss/openwiki/personal-mode">
-    Build a local wiki from git repos, Custom MCP, Gmail, Notion, web search, Hacker News, and X/Twitter.
-  </Card>
+> **[Personal brain](/oss/openwiki/personal-mode)**
+>
+> Build a local wiki from git repos, Custom MCP, Gmail, Notion, web search, Hacker News, and X/Twitter.
 
-  <Card title="Grounded Claims" icon="link" href="/oss/openwiki/code-mode#grounded-claims">
-    Track material facts back to versioned source evidence and refresh pages when that evidence changes.
-  </Card>
+> **[Grounded Claims](/oss/openwiki/code-mode#grounded-claims)**
+>
+> Track material facts back to versioned source evidence and refresh pages when that evidence changes.
 
-  <Card title="Automatic updates" icon="clock" href="/oss/openwiki/automate-updates">
-    Refresh docs from GitHub Actions, GitLab CI, or Bitbucket Pipelines and open a PR when content changes.
-  </Card>
+> **[Automatic updates](/oss/openwiki/automate-updates)**
+>
+> Refresh docs from GitHub Actions, GitLab CI, or Bitbucket Pipelines and open a PR when content changes.
 
-  <Card title="Model providers" icon="cpu" href="/oss/openwiki/providers">
-    Use OpenAI, Anthropic, Gemini, Bedrock, OpenRouter, GitHub Copilot, IBM Bob, and other providers out of the box.
-  </Card>
+> **[Model providers](/oss/openwiki/providers)**
+>
+> Use OpenAI, Anthropic, Gemini, Bedrock, OpenRouter, GitHub Copilot, IBM Bob, and other providers out of the box.
 
-  <Card title="Open Knowledge Format" icon="file-text" href="/oss/openwiki/code-mode#open-knowledge-format">
-    Emit OKF v0.2 Markdown bundles with front matter, indexes, and linked concepts.
-  </Card>
+> **[Open Knowledge Format](/oss/openwiki/code-mode#open-knowledge-format)**
+>
+> Emit OKF v0.2 Markdown bundles with front matter, indexes, and linked concepts.
 
-  <Card title="LangSmith tracing" icon="chart-dots" href="/oss/openwiki/quickstart#trace-with-langsmith">
-    Trace documentation runs with LangSmith.
-  </Card>
-</CardGroup>
+> **[LangSmith tracing](/oss/openwiki/quickstart#trace-with-langsmith)**
+>
+> Trace documentation runs with LangSmith.
 
 ## Next steps
 
-<CardGroup>
-  <Card title="Quickstart" icon="player-play" href="/oss/openwiki/quickstart">
-    Install OpenWiki, configure a provider, and generate your first wiki.
-  </Card>
+> **[Quickstart](/oss/openwiki/quickstart)**
+>
+> Install OpenWiki, configure a provider, and generate your first wiki.
 
-  <Card title="CLI reference" icon="terminal" href="/oss/openwiki/cli-reference">
-    Review commands, flags, and connector subcommands.
-  </Card>
-</CardGroup>
+> **[CLI reference](/oss/openwiki/cli-reference)**
+>
+> Review commands, flags, and connector subcommands.
 
 ***
 
-<div>
-  <Callout icon="terminal-2">
-    [Connect these docs](/use-these-docs) to your agent of choice via MCP for real-time answers.
-  </Callout>
+[Connect these docs](/use-these-docs) to your agent of choice via MCP for real-time answers.
 
-  <Callout icon="edit">
-    [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/oss/openwiki/overview.mdx) or [file an issue](https://github.com/langchain-ai/docs/issues/new/choose).
-  </Callout>
-</div>
+[Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/oss/openwiki/overview.mdx) or [file an issue](https://github.com/langchain-ai/docs/issues/new/choose).

@@ -15,19 +15,19 @@ A **knowledge base** is a repository of documents or structured data used during
 
 If you need a custom knowledge base, you can use LangChain’s document loaders and vector stores to build one from your own data.
 
-<Note>
-  If you already have a knowledge base (for example a SQL database, a document database, a CRM, or an internal documentation system), you do **not** need to rebuild it. You can:
-
-  * Connect it as a **tool** for an agent in Agentic RAG.
-  * Query it and supply the retrieved content as context to the LLM [(2-Step RAG)](#2-step-rag).
-</Note>
+> [!NOTE]
+>
+> If you already have a knowledge base (for example a SQL database, a document database, a CRM, or an internal documentation system), you do **not** need to rebuild it. You can:
+>
+> * Connect it as a **tool** for an agent in Agentic RAG.
+> * Query it and supply the retrieved content as context to the LLM [(2-Step RAG)](#2-step-rag).
 
 For more information, see the following tutorial to build a searchable knowledge base and minimal RAG workflow:
 
-<Card title="Tutorial: Semantic search" icon="database" href="/oss/javascript/langchain/knowledge-base">
-  Learn how to create a searchable knowledge base from your own data using LangChain’s document loaders, embeddings, and vector stores.
-  In this tutorial, you’ll build a search engine over a PDF, enabling retrieval of passages relevant to a query. You’ll also implement a minimal RAG workflow on top of this engine to see how external knowledge can be integrated into LLM reasoning.
-</Card>
+> **[Tutorial: Semantic search](/oss/javascript/langchain/knowledge-base)**
+>
+> Learn how to create a searchable knowledge base from your own data using LangChain’s document loaders, embeddings, and vector stores.
+> In this tutorial, you’ll build a search engine over a PDF, enabling retrieval of passages relevant to a query. You’ll also implement a minimal RAG workflow on top of this engine to see how external knowledge can be integrated into LLM reasoning.
 
 ### From retrieval to RAG
 
@@ -71,23 +71,21 @@ Each component is modular: you can swap loaders, splitters, embeddings, or vecto
 
 ### Building blocks
 
-<Columns>
-  <Card title="Document loaders" icon="file-import" href="/oss/javascript/integrations/document_loaders">
-    Ingest data from external sources (Google Drive, Slack, Notion, etc.), returning standardized [`Document`](https://reference.langchain.com/javascript/langchain-core/documents/Document) objects.
-  </Card>
+> **[Document loaders](/oss/javascript/integrations/document_loaders)**
+>
+> Ingest data from external sources (Google Drive, Slack, Notion, etc.), returning standardized [`Document`](https://reference.langchain.com/javascript/langchain-core/documents/Document) objects.
 
-  <Card title="Embedding models" icon="sitemap" href="/oss/javascript/integrations/embeddings">
-    An embedding model turns text into a vector of numbers so that texts with similar meaning land close together in that vector space.
-  </Card>
+> **[Embedding models](/oss/javascript/integrations/embeddings)**
+>
+> An embedding model turns text into a vector of numbers so that texts with similar meaning land close together in that vector space.
 
-  <Card title="Vector stores" icon="database" href="/oss/javascript/integrations/vectorstores/">
-    Specialized databases for storing and searching embeddings.
-  </Card>
+> **[Vector stores](/oss/javascript/integrations/vectorstores/)**
+>
+> Specialized databases for storing and searching embeddings.
 
-  <Card title="Retrievers" icon="binoculars" href="/oss/javascript/integrations/retrievers/">
-    A retriever is an interface that returns documents given an unstructured query.
-  </Card>
-</Columns>
+> **[Retrievers](/oss/javascript/integrations/retrievers/)**
+>
+> A retriever is an interface that returns documents given an unstructured query.
 
 ## RAG architectures
 
@@ -99,9 +97,9 @@ RAG can be implemented in multiple ways, depending on your system's needs. We ou
 | **Agentic RAG** | An LLM-powered agent decides *when* and *how* to retrieve during reasoning | ❌ Low | ✅ High | ⏳ Variable | Research assistants with access to multiple tools |
 | **Hybrid** | Combines characteristics of both approaches with validation steps | ⚖️ Medium | ⚖️ Medium | ⏳ Variable | Domain-specific Q\&A with quality validation |
 
-<Info>
-  **Latency**: Latency is generally more **predictable** in **2-Step RAG**, as the maximum number of LLM calls is known and capped. This predictability assumes that LLM inference time is the dominant factor. However, real-world latency may also be affected by the performance of retrieval steps, such as API response times, network delays, or database queries, which can vary based on the tools and infrastructure in use.
-</Info>
+> [!NOTE]
+>
+> **Latency**: Latency is generally more **predictable** in **2-Step RAG**, as the maximum number of LLM calls is known and capped. This predictability assumes that LLM inference time is the dominant factor. However, real-world latency may also be affected by the performance of retrieval steps, such as API response times, network delays, or database queries, which can vary based on the tools and infrastructure in use.
 
 ### 2-step RAG
 
@@ -122,25 +120,21 @@ graph TB
     class B,C process
 ```
 
-<br />
+> **[Tutorial: Semantic search](/oss/javascript/langchain/knowledge-base)**
+>
+> Build a searchable knowledge base with document loaders, embeddings, and vector stores, then run a minimal retrieve-then-generate RAG workflow on top of it.
 
-<CardGroup>
-  <Card title="Tutorial: Semantic search" icon="database" href="/oss/javascript/langchain/knowledge-base">
-    Build a searchable knowledge base with document loaders, embeddings, and vector stores, then run a minimal retrieve-then-generate RAG workflow on top of it.
-  </Card>
-
-  <Card title="Tutorial: Evaluate a RAG application" icon="clipboard-check" href="/langsmith/evaluate-rag-tutorial">
-    Build a simple retrieve-then-generate RAG app and measure answer correctness, relevance, groundedness, and retrieval quality with LangSmith.
-  </Card>
-</CardGroup>
+> **[Tutorial: Evaluate a RAG application](/langsmith/evaluate-rag-tutorial)**
+>
+> Build a simple retrieve-then-generate RAG app and measure answer correctness, relevance, groundedness, and retrieval quality with LangSmith.
 
 ### Agentic RAG
 
 **Agentic Retrieval-Augmented Generation (RAG)** combines the strengths of Retrieval-Augmented Generation with agent-based reasoning. Instead of retrieving documents before answering, an agent (powered by an LLM) reasons step-by-step and decides **when** and **how** to retrieve information during the interaction.
 
-<Tip>
-  The only thing an agent needs to enable RAG behavior is access to one or more **tools** that can fetch external knowledge, such as documentation loaders, web APIs, or database queries.
-</Tip>
+> [!TIP]
+>
+> The only thing an agent needs to enable RAG behavior is access to one or more **tools** that can fetch external knowledge, such as documentation loaders, web APIs, or database queries.
 
 ```mermaid actions={true} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 %%{init: {'flowchart': {'nodeSpacing': 12, 'rankSpacing': 18, 'padding': 4}, 'themeVariables': {'fontSize': '12px'}}}%%
@@ -181,87 +175,87 @@ const agent = createAgent({
 });
 ```
 
-<Expandable title="Extended example: Agentic RAG for LangGraph's llms.txt">
-  This example implements an **Agentic RAG system** to assist users in querying LangGraph documentation. The agent begins by loading [llms.txt](https://llmstxt.org/), which lists available documentation URLs, and can then dynamically use a `fetch_documentation` tool to retrieve and process the relevant content based on the user’s question.
+**Extended example: Agentic RAG for LangGraph's llms.txt**
 
-  ```typescript theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  import { tool, createAgent, HumanMessage } from "langchain";
-  import * as z from "zod";
+This example implements an **Agentic RAG system** to assist users in querying LangGraph documentation. The agent begins by loading [llms.txt](https://llmstxt.org/), which lists available documentation URLs, and can then dynamically use a `fetch_documentation` tool to retrieve and process the relevant content based on the user’s question.
 
-  const ALLOWED_DOMAINS = ["https://langchain-ai.github.io/"];
-  const LLMS_TXT = "https://langchain-ai.github.io/langgraph/llms.txt";
+```typescript theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+import { tool, createAgent, HumanMessage } from "langchain";
+import * as z from "zod";
 
-  const fetchDocumentation = tool(
-    async (input) => {  // [!code highlight]
-      if (!ALLOWED_DOMAINS.some((domain) => input.url.startsWith(domain))) {
-        return `Error: URL not allowed. Must start with one of: ${ALLOWED_DOMAINS.join(", ")}`;
-      }
-      const response = await fetch(input.url);
-      if (!response.ok) {
-        throw new Error(`HTTP error! status: ${response.status}`);
-      }
-      return response.text();
-    },
-    {
-      name: "fetch_documentation",
-      description: "Fetch and convert documentation from a URL",
-      schema: z.object({
-        url: z.string().describe("The URL of the documentation to fetch"),
-      }),
+const ALLOWED_DOMAINS = ["https://langchain-ai.github.io/"];
+const LLMS_TXT = "https://langchain-ai.github.io/langgraph/llms.txt";
+
+const fetchDocumentation = tool(
+  async (input) => {  // [!code highlight]
+    if (!ALLOWED_DOMAINS.some((domain) => input.url.startsWith(domain))) {
+      return `Error: URL not allowed. Must start with one of: ${ALLOWED_DOMAINS.join(", ")}`;
     }
-  );
+    const response = await fetch(input.url);
+    if (!response.ok) {
+      throw new Error(`HTTP error! status: ${response.status}`);
+    }
+    return response.text();
+  },
+  {
+    name: "fetch_documentation",
+    description: "Fetch and convert documentation from a URL",
+    schema: z.object({
+      url: z.string().describe("The URL of the documentation to fetch"),
+    }),
+  }
+);
 
-  const llmsTxtResponse = await fetch(LLMS_TXT);
-  const llmsTxtContent = await llmsTxtResponse.text();
+const llmsTxtResponse = await fetch(LLMS_TXT);
+const llmsTxtContent = await llmsTxtResponse.text();
 
-  const systemPrompt = `
-  You are an expert TypeScript developer and technical assistant.
-  Your primary role is to help users with questions about LangGraph and related tools.
+const systemPrompt = `
+You are an expert TypeScript developer and technical assistant.
+Your primary role is to help users with questions about LangGraph and related tools.
 
-  Instructions:
+Instructions:
 
-  1. If a user asks a question you're unsure about—or one that likely involves API usage,
-     behavior, or configuration—you MUST use the \`fetch_documentation\` tool to consult the relevant docs.
-  2. When citing documentation, summarize clearly and include relevant context from the content.
-  3. Do not use any URLs outside of the allowed domain.
-  4. If a documentation fetch fails, tell the user and proceed with your best expert understanding.
+1. If a user asks a question you're unsure about—or one that likely involves API usage,
+   behavior, or configuration—you MUST use the \`fetch_documentation\` tool to consult the relevant docs.
+2. When citing documentation, summarize clearly and include relevant context from the content.
+3. Do not use any URLs outside of the allowed domain.
+4. If a documentation fetch fails, tell the user and proceed with your best expert understanding.
 
-  You can access official documentation from the following approved sources:
+You can access official documentation from the following approved sources:
 
-  ${llmsTxtContent}
+${llmsTxtContent}
 
-  You MUST consult the documentation to get up to date documentation
-  before answering a user's question about LangGraph.
+You MUST consult the documentation to get up to date documentation
+before answering a user's question about LangGraph.
 
-  Your answers should be clear, concise, and technically accurate.
-  `;
+Your answers should be clear, concise, and technically accurate.
+`;
 
-  const tools = [fetchDocumentation];
+const tools = [fetchDocumentation];
 
-  const agent = createAgent({
-    model: "claude-sonnet-4-6"
-    tools,  // [!code highlight]
-    systemPrompt,  // [!code highlight]
-    name: "Agentic RAG",
-  });
+const agent = createAgent({
+  model: "claude-sonnet-4-6"
+  tools,  // [!code highlight]
+  systemPrompt,  // [!code highlight]
+  name: "Agentic RAG",
+});
 
-  const response = await agent.invoke({
-    messages: [
-      new HumanMessage(
-        "Write a short example of a langgraph agent using the " +
-        "prebuilt create react agent. the agent should be able " +
-        "to look up stock pricing information."
-      ),
-    ],
-  });
+const response = await agent.invoke({
+  messages: [
+    new HumanMessage(
+      "Write a short example of a langgraph agent using the " +
+      "prebuilt create react agent. the agent should be able " +
+      "to look up stock pricing information."
+    ),
+  ],
+});
 
-  console.log(response.messages.at(-1)?.content);
-  ```
-</Expandable>
+console.log(response.messages.at(-1)?.content);
+```
 
-<Card title="Tutorial: RAG with Deep Agents" icon="robot" href="/oss/javascript/deepagents/rag">
-  Build a documentation Q\&A agent that retrieves relevant chunks at query time, offloads them to the filesystem, and delegates analysis to subagents.
-</Card>
+> **[Tutorial: RAG with Deep Agents](/oss/javascript/deepagents/rag)**
+>
+> Build a documentation Q\&A agent that retrieves relevant chunks at query time, offloads them to the filesystem, and delegates analysis to subagents.
 
 ### Hybrid RAG
 
@@ -306,18 +300,12 @@ This architecture is suitable for:
 * Systems that require validation or quality control steps
 * Workflows involving multiple sources or iterative refinement
 
-<Card title="Tutorial: Agentic RAG with Self-Correction" icon="robot" href="/oss/javascript/langgraph/agentic-rag">
-  An example of **Hybrid RAG** that combines agentic reasoning with retrieval and self-correction.
-</Card>
+> **[Tutorial: Agentic RAG with Self-Correction](/oss/javascript/langgraph/agentic-rag)**
+>
+> An example of **Hybrid RAG** that combines agentic reasoning with retrieval and self-correction.
 
 ***
 
-<div>
-  <Callout icon="terminal-2">
-    [Connect these docs](/use-these-docs) to your agent of choice via MCP for real-time answers.
-  </Callout>
+[Connect these docs](/use-these-docs) to your agent of choice via MCP for real-time answers.
 
-  <Callout icon="edit">
-    [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/oss/deepagents/retrieval.mdx) or [file an issue](https://github.com/langchain-ai/docs/issues/new/choose).
-  </Callout>
-</div>
+[Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/oss/deepagents/retrieval.mdx) or [file an issue](https://github.com/langchain-ai/docs/issues/new/choose).

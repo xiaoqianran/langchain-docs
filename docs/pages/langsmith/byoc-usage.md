@@ -16,7 +16,7 @@ A BYOC deployment adds one level to the standard LangSmith [resource hierarchy](
 * **Data plane**: Belongs to an organization and represents physical separation of data. An organization can have several data planes, each in its own AWS account and region.
 * **Workspace**: Belongs to exactly one data plane, which you select when you create the workspace. Traces, datasets, experiments, and other application data live in a workspace.
 
-<img alt="Nesting diagram of a BYOC deployment. An organization contains two data planes, each labeled as physical separation. The first is in us-east-1 and the second is in eu-west-1. Each data plane holds one workspace per team, and every workspace is labeled as logical separation within its data plane." />
+![Nesting diagram of a BYOC deployment. An organization contains two data planes, each labeled as physical separation. The first is in us-east-1 and the second is in eu-west-1. Each data plane holds one workspace per team, and every workspace is labeled as logical separation within its data plane.](https://mintcdn.com/langchain-5e9cc07a/5dqOg-xwCbWrjM9p/langsmith/images/byoc-org-structure.png?fit=max\&auto=format\&n=5dqOg-xwCbWrjM9p\&q=85\&s=7cf4860e09578a0aad32f16c1eef9ee0)
 
 Use data planes for physical separation of data, and workspaces for logical separation within a data plane. Common ways to divide data planes are:
 
@@ -30,9 +30,9 @@ Below the data plane, workspaces and applications work the same as on Cloud or s
 
 Each data plane has a base URL. Navigate to **Settings > Data Planes** to see each of your data planes, its state, and its API URL.
 
-<Warning>
-  Data planes are provisioned with a private endpoint by default, so you need private connectivity to reach the base URL, such as Tailscale, AWS PrivateLink, or VPC peering.
-</Warning>
+> [!WARNING]
+>
+> Data planes are provisioned with a private endpoint by default, so you need private connectivity to reach the base URL, such as Tailscale, AWS PrivateLink, or VPC peering.
 
 ## Trace to a data plane
 
@@ -44,9 +44,9 @@ export LANGSMITH_API_KEY="<your-api-key>"
 export LANGSMITH_ENDPOINT="https://<data_plane_host>"
 ```
 
-<Warning>
-  Create `LANGSMITH_API_KEY` from a workspace inside the target data plane. Traces are tenant-scoped, so an API key from a workspace on a different data plane, including a Cloud workspace, is rejected.
-</Warning>
+> [!WARNING]
+>
+> Create `LANGSMITH_API_KEY` from a workspace inside the target data plane. Traces are tenant-scoped, so an API key from a workspace on a different data plane, including a Cloud workspace, is rejected.
 
 For a complete, runnable example, follow the [Observability quickstart](/langsmith/observability-quickstart) and substitute the environment variables above.
 
@@ -134,12 +134,6 @@ def handle_request(tenant_id: str, query: str):
 
 ***
 
-<div>
-  <Callout icon="terminal-2">
-    [Connect these docs](/use-these-docs) to your agent of choice via MCP for real-time answers.
-  </Callout>
+[Connect these docs](/use-these-docs) to your agent of choice via MCP for real-time answers.
 
-  <Callout icon="edit">
-    [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/byoc-usage.mdx) or [file an issue](https://github.com/langchain-ai/docs/issues/new/choose).
-  </Callout>
-</div>
+[Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/byoc-usage.mdx) or [file an issue](https://github.com/langchain-ai/docs/issues/new/choose).

@@ -12,9 +12,7 @@ This guide builds on [Sandbox architecture](/langsmith/self-host-sandbox-archite
 
 The built-in host autoscaler runs on an elected `sandbox-host`. Hosts publish their committed vCPU and sandbox counts through Kubernetes Leases. The leader uses that information to adjust the Deployment's replica count.
 
-<Frame>
-  <SandboxDiagram name="autoscaling" />
-</Frame>
+**autoscaling**
 
 The host autoscaler does not use an HPA, KEDA, or a Prometheus adapter. Do not configure another controller to manage the same Deployment's replica count.
 
@@ -44,9 +42,7 @@ The 70% target is not a per-host capacity limit. Placement can exceed it while t
 
 The replica target can rise before nodes and hosts become ready. Headroom covers some of that delay; it does not make node provisioning instantaneous.
 
-<Frame>
-  <SandboxDiagram name="scaling-behavior" />
-</Frame>
+**scaling-behavior**
 
 Choose `minReplicas` and `headroomHosts` for the burst you need to absorb while a node starts. Keep at least two hosts for a pool that must continue accepting work during a one-host rollout. Measure node startup, host readiness, and sandbox creation latency under representative load.
 
@@ -89,9 +85,9 @@ The following example applies the same 70% target and one headroom host to 500 r
 
 Check memory separately. For example, 500 sandboxes configured with 2 GiB each request 1,000 GiB of guest memory, before host and filesystem overhead.
 
-<Warning>
-  Host autoscaling uses committed CPU, not memory pressure. A CPU-sized pool can still run out of memory. Budget for guest memory, the host daemon, JuiceFS, caches, and Kubernetes overhead.
-</Warning>
+> [!WARNING]
+>
+> Host autoscaling uses committed CPU, not memory pressure. A CPU-sized pool can still run out of memory. Budget for guest memory, the host daemon, JuiceFS, caches, and Kubernetes overhead.
 
 The host pod's memory request must reflect the workloads it contains. A small request for the daemon alone does not reserve memory for its microVMs. Review `sandboxes.sandboxHost.deployment.resources` against node allocatable memory and measured peak use.
 
@@ -119,12 +115,6 @@ A cache can survive a pod replacement on the same node, but not replacement of t
 
 ***
 
-<div>
-  <Callout icon="terminal-2">
-    [Connect these docs](/use-these-docs) to your agent of choice via MCP for real-time answers.
-  </Callout>
+[Connect these docs](/use-these-docs) to your agent of choice via MCP for real-time answers.
 
-  <Callout icon="edit">
-    [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/self-host-sandbox-scaling.mdx) or [file an issue](https://github.com/langchain-ai/docs/issues/new/choose).
-  </Callout>
-</div>
+[Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/self-host-sandbox-scaling.mdx) or [file an issue](https://github.com/langchain-ai/docs/issues/new/choose).

@@ -4,9 +4,9 @@
 
 One-time organization setup to enable the LLM Gateway and grant user access.
 
-<Note>
-  The LLM Gateway is in [beta](/langsmith/release-stages).
-</Note>
+> [!NOTE]
+>
+> The LLM Gateway is in [beta](/langsmith/release-stages).
 
 One-time setup to enable the LLM Gateway for your LangSmith [organization](/langsmith/administration-overview#organizations). [Organization admins](/langsmith/rbac#organization-admin) should complete this before individual users can route calls through the gateway.
 
@@ -39,9 +39,9 @@ Go to **Settings > Integrations > Provider Secrets** and add the keys for the pr
 
 Add only the providers your organization uses. The gateway returns an error if a user calls a provider whose credentials have not been added.
 
-<Tip>
-  Azure Foundry also supports Microsoft Entra ID service principal authentication, for resources that disable API keys. For setup steps, see [Provider authentication](/langsmith/llm-gateway-provider-authentication#configure-azure-foundry).
-</Tip>
+> [!TIP]
+>
+> Azure Foundry also supports Microsoft Entra ID service principal authentication, for resources that disable API keys. For setup steps, see [Provider authentication](/langsmith/llm-gateway-provider-authentication#configure-azure-foundry).
 
 ## 2. Configure gateway access for users
 
@@ -97,12 +97,6 @@ For bring-your-own-key providers, ask a user to run the [verification cURL from 
 
 ***
 
-<div>
-  <Callout icon="terminal-2">
-    [Connect these docs](/use-these-docs) to your agent of choice via MCP for real-time answers.
-  </Callout>
+[Connect these docs](/use-these-docs) to your agent of choice via MCP for real-time answers.
 
-  <Callout icon="edit">
-    [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/llm-gateway-admin-setup.mdx) or [file an issue](https://github.com/langchain-ai/docs/issues/new/choose).
-  </Callout>
-</div>
+[Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/llm-gateway-admin-setup.mdx) or [file an issue](https://github.com/langchain-ai/docs/issues/new/choose).

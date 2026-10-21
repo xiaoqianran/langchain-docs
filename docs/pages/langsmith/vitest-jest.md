@@ -4,7 +4,7 @@
 
 LangSmith provides integrations with [Vitest](https://vitest.dev/) and [Jest](https://jestjs.io/) that allow JavaScript and TypeScript developers to define their [datasets](/langsmith/evaluation-concepts#datasets) and evaluate using familiar syntax.
 
-<img alt="Jest/Vitest reporter output" />
+![Jest/Vitest reporter output](https://mintcdn.com/langchain-5e9cc07a/4kN8yiLrZX_amfFn/langsmith/images/jest-vitest-reporter-output.png?fit=max\&auto=format\&n=4kN8yiLrZX_amfFn\&q=85\&s=94fd2a6f61c9dc386002fadbab7024a8)
 
 Compared to the [`evaluate()`](https://reference.langchain.com/javascript/langsmith/evaluation/evaluate) evaluation flow, the Vitest or Jest testing frameworks are useful when:
 
@@ -12,13 +12,13 @@ Compared to the [`evaluate()`](https://reference.langchain.com/javascript/langsm
 * **You want to assert binary expectations**: Track assertions in LangSmith and raise assertion errors locally (e.g. in CI pipelines). Testing tools help when both evaluating system outputs and asserting basic properties about them.
 * **You want to take advantage of mocks, watch mode, local results, or other features of the Vitest/Jest ecosystems**.
 
-<Info>
-  Requires JS/TS SDK version `langsmith>=0.3.1`.
-</Info>
+> [!NOTE]
+>
+> Requires JS/TS SDK version `langsmith>=0.3.1`.
 
-<Info>
-  The Python SDK has an analogous [pytest integration](/langsmith/pytest).
-</Info>
+> [!NOTE]
+>
+> The Python SDK has an analogous [pytest integration](/langsmith/pytest).
 
 ## Setup
 
@@ -30,35 +30,31 @@ This ensures that the custom test reporter and other LangSmith touchpoints do no
 
 Install the required development dependencies if you have not already:
 
-<CodeGroup>
-  ```bash yarn theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  yarn add -D vitest dotenv
-  ```
+```bash yarn theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+yarn add -D vitest dotenv
+```
 
-  ```bash npm theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  npm install -D vitest dotenv
-  ```
+```bash npm theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+npm install -D vitest dotenv
+```
 
-  ```bash pnpm theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  pnpm add -D vitest dotenv
-  ```
-</CodeGroup>
+```bash pnpm theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+pnpm add -D vitest dotenv
+```
 
 The following examples also require `openai` (and `langsmith`) as a dependency:
 
-<CodeGroup>
-  ```bash yarn theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  yarn add langsmith openai
-  ```
+```bash yarn theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+yarn add langsmith openai
+```
 
-  ```bash npm theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  npm install langsmith openai
-  ```
+```bash npm theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+npm install langsmith openai
+```
 
-  ```bash pnpm theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  pnpm add langsmith openai
-  ```
-</CodeGroup>
+```bash pnpm theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+pnpm add langsmith openai
+```
 
 Then, create a separate `ls.vitest.config.ts` file with the following base config:
 
@@ -80,9 +76,9 @@ export default defineConfig({
 * `setupFiles` runs `dotenv` to load environment variables before running your evals
 * `testTimeout` sets a global default timeout for each test. Because LLM calls can be slow, we increase this from the Vitest default
 
-<Warning>
-  JSDom environments are not supported at this time. You should either omit the `"environment"` field from your config or set it to `"node"`.
-</Warning>
+> [!WARNING]
+>
+> JSDom environments are not supported at this time. You should either omit the `"environment"` field from your config or set it to `"node"`.
 
 Finally, add the following to the `scripts` field in your `package.json` to run Vitest with the config you just created:
 
@@ -107,39 +103,35 @@ Note that this script disables Vitest's default watch mode for running evals sin
 
 Install the required development dependencies if you have not already:
 
-<CodeGroup>
-  ```bash yarn theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  yarn add -D jest dotenv
-  ```
+```bash yarn theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+yarn add -D jest dotenv
+```
 
-  ```bash npm theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  npm install -D jest dotenv
-  ```
+```bash npm theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+npm install -D jest dotenv
+```
 
-  ```bash pnpm theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  pnpm add -D jest dotenv
-  ```
-</CodeGroup>
+```bash pnpm theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+pnpm add -D jest dotenv
+```
 
 The examples below also require `openai` (and `langsmith`) as a dependency:
 
-<CodeGroup>
-  ```bash yarn theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  yarn add langsmith openai
-  ```
+```bash yarn theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+yarn add langsmith openai
+```
 
-  ```bash npm theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  npm install langsmith openai
-  ```
+```bash npm theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+npm install langsmith openai
+```
 
-  ```bash pnpm theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  pnpm add langsmith openai
-  ```
-</CodeGroup>
+```bash pnpm theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+pnpm add langsmith openai
+```
 
-<Info>
-  The following setup instructions are for basic JS files and CJS. To add support for TypeScript and ESM, see Jest's official docs or use [Vitest](#vitest).
-</Info>
+> [!NOTE]
+>
+> The following setup instructions are for basic JS files and CJS. To add support for TypeScript and ESM, see Jest's official docs or use [Vitest](#vitest).
 
 Then, create a separate config file named `ls.jest.config.cjs`:
 
@@ -157,9 +149,9 @@ module.exports = {
 * `setupFiles` runs `dotenv` to load environment variables before running your evals
 * `testTimeout` sets a global default timeout for each test. Because LLM calls can be slow, we increase this from the Jest default
 
-<Warning>
-  JSDom environments are not supported at this time. You should either omit the `"testEnvironment"` field from your config or set it to `"node"`.
-</Warning>
+> [!WARNING]
+>
+> JSDom environments are not supported at this time. You should either omit the `"testEnvironment"` field from your config or set it to `"node"`.
 
 Finally, add the following to the `scripts` field in your `package.json` to run Jest with the config you just created:
 
@@ -182,7 +174,7 @@ Finally, add the following to the `scripts` field in your `package.json` to run 
 
 You can now define evals as tests using familiar Vitest/Jest syntax, with a few caveats:
 
-* You should import `describe` and `test` from the [`langsmith/jest`](https://reference.langchain.com/javascript/modules/langsmith.jest.html) or [`langsmith/vitest`](https://reference.langchain.com/javascript/modules/langsmith.vitest.html) entrypoint.
+* You should import `describe` and `test` from the [`langsmith/jest`](https://reference.langchain.com/javascript/langsmith/jest) or [`langsmith/vitest`](https://reference.langchain.com/javascript/langsmith/lib/vitest) entrypoint.
 * You must wrap your test cases in a `describe` block.
 * When declaring tests, the signature is slightly different—there is an extra argument containing example inputs and expected outputs.
 
@@ -237,14 +229,14 @@ ls.describe("generate sql demo", () => {
 });
 ```
 
-You can think of each [ls.test](https://reference.langchain.com/javascript/modules/langsmith.vitest.html#test) case as corresponding to a dataset example, and [`ls.describe()`](https://reference.langchain.com/javascript/modules/langsmith.vitest.html#describe) as defining a LangSmith dataset. If you have LangSmith [tracing environment variables](#setup) set when you run the test suite, the SDK does the following:
+You can think of each [ls.test](https://reference.langchain.com/javascript/langsmith/lib/vitest/test) case as corresponding to a dataset example, and [`ls.describe()`](https://reference.langchain.com/javascript/langsmith/lib/vitest/describe) as defining a LangSmith dataset. If you have LangSmith [tracing environment variables](#setup) set when you run the test suite, the SDK does the following:
 
 * Creates a [dataset](/langsmith/evaluation-concepts#datasets) with the same name as the name passed to `ls.describe()` in LangSmith if it does not exist.
 * Creates an [example](/langsmith/evaluation-concepts#datasets) in the dataset for each input and expected output passed into a test case if a matching one does not already exist.
 * Creates a new [experiment](/langsmith/evaluation-concepts#experiment) with one result for each test case.
 * Collects the pass/fail rate under the `pass` feedback key for each test case.
 
-When you run this test it will have a default `pass` boolean feedback key based on the test case passing / failing. It will also track any outputs that you log with [`ls.logOutputs()`](https://reference.langchain.com/javascript/modules/langsmith.vitest.html#logOutputs) or return from the test function as "actual" result values from your app for the experiment.
+When you run this test it will have a default `pass` boolean feedback key based on the test case passing / failing. It will also track any outputs that you log with [`ls.logOutputs()`](https://reference.langchain.com/javascript/langsmith/lib/vitest/logOutputs) or return from the test function as "actual" result values from your app for the experiment.
 
 Create a `.env` file with your `OPENAI_API_KEY` and LangSmith credentials if you don't already have one:
 
@@ -256,19 +248,17 @@ LANGSMITH_TRACING="true"
 
 Now use the `eval` script we set up in the previous step to run the test:
 
-<CodeGroup>
-  ```bash yarn theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  yarn run eval
-  ```
+```bash yarn theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+yarn run eval
+```
 
-  ```bash npm theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  npm run eval
-  ```
+```bash npm theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+npm run eval
+```
 
-  ```bash pnpm theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  pnpm run eval
-  ```
-</CodeGroup>
+```bash pnpm theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+pnpm run eval
+```
 
 And your declared test should run!
 
@@ -276,11 +266,11 @@ Once it finishes, if you've set your LangSmith environment variables, you should
 
 Here's what an experiment against that test suite looks like:
 
-<img alt="Experiment" />
+![Experiment](https://mintcdn.com/langchain-5e9cc07a/ImHGLQW1HnQYwnJV/langsmith/images/simple-vitest.png?fit=max\&auto=format\&n=ImHGLQW1HnQYwnJV\&q=85\&s=9cde688950dd2fc454a8514b02ed7268)
 
 ## Trace feedback
 
-By default LangSmith collects the pass/fail rate under the `pass` feedback key for each test case. You can add additional feedback with either [`ls.logFeedback()`](https://reference.langchain.com/javascript/modules/langsmith.vitest.html#logFeedback) or [`ls.wrapEvaluator()`](https://reference.langchain.com/javascript/modules/langsmith.vitest.html#wrapEvaluator). To do so, try the following as your `sql.eval.ts` file (or `sql.eval.js` if you are using Jest without TypeScript):
+By default LangSmith collects the pass/fail rate under the `pass` feedback key for each test case. You can add additional feedback with either [`ls.logFeedback()`](https://reference.langchain.com/javascript/langsmith/lib/vitest/logFeedback) or [`ls.wrapEvaluator()`](https://reference.langchain.com/javascript/langsmith/lib/vitest/wrapEvaluator). To do so, try the following as your `sql.eval.ts` file (or `sql.eval.js` if you are using Jest without TypeScript):
 
 ```typescript theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 import * as ls from "langsmith/vitest";
@@ -387,13 +377,13 @@ ls.describe("generate sql demo", () => {
 });
 ```
 
-Note the use of [`ls.wrapEvaluator()`](https://reference.langchain.com/javascript/modules/langsmith.vitest.html#wrapEvaluator) around the `myEvaluator` function. This makes it so that the LLM-as-judge call is traced separately from the rest of the test case to avoid clutter, and conveniently creates feedback if the return value from the wrapped function matches `{ key: string; score: number | boolean }`. In this case, instead of showing up in the main test case run, the evaluator trace will instead show up in a trace associated with the `correctness` feedback key.
+Note the use of [`ls.wrapEvaluator()`](https://reference.langchain.com/javascript/langsmith/lib/vitest/wrapEvaluator) around the `myEvaluator` function. This makes it so that the LLM-as-judge call is traced separately from the rest of the test case to avoid clutter, and conveniently creates feedback if the return value from the wrapped function matches `{ key: string; score: number | boolean }`. In this case, instead of showing up in the main test case run, the evaluator trace will instead show up in a trace associated with the `correctness` feedback key.
 
 You can see the evaluator runs in LangSmith by clicking their corresponding feedback chips in the UI.
 
 ## Running multiple examples against a test case
 
-You can run the same test case over multiple examples and parameterize your tests using [`ls.test.each()`](https://reference.langchain.com/javascript/modules/langsmith.vitest.html#test). This is useful when you want to evaluate your app the same way against different inputs:
+You can run the same test case over multiple examples and parameterize your tests using [`ls.test.each()`](https://reference.langchain.com/javascript/langsmith/lib/vitest/test). This is useful when you want to evaluate your app the same way against different inputs:
 
 ```typescript theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 import * as ls from "langsmith/vitest";
@@ -430,9 +420,9 @@ If you have tracking enabled, each example in the local dataset will be synced t
 
 Instead of defining [examples](/langsmith/evaluation-concepts#examples) inline, you can run tests against an existing dataset in LangSmith:
 
-* Use [`client.listExamples()`](https://reference.langchain.com/javascript/classes/langsmith.client.Client.html#listexamples) to fetch examples from a dataset that already exists in LangSmith.
+* Use [`client.listExamples()`](https://reference.langchain.com/javascript/langsmith/index/Client/listExamples) to fetch examples from a dataset that already exists in LangSmith.
 * Collect the examples into an array (e.g., `testExamples`) by iterating through the async generator.
-* Pass the array to [`ls.test.each()`](https://reference.langchain.com/javascript/modules/langsmith.vitest.html#test) to run your test logic against each example from the dataset.
+* Pass the array to [`ls.test.each()`](https://reference.langchain.com/javascript/langsmith/lib/vitest/test) to run your test logic against each example from the dataset.
 
 ```typescript {3,30-43,47} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 import * as ls from "langsmith/vitest";
@@ -495,7 +485,7 @@ ls.describe(
 
 ## Log outputs
 
-Every time we run a test we're syncing it to a dataset example and tracing it as a run. To trace final outputs for the run, you can use [`ls.logOutputs()`](https://reference.langchain.com/javascript/modules/langsmith.vitest.html#logOutputs) like this:
+Every time we run a test we're syncing it to a dataset example and tracing it as a run. To trace final outputs for the run, you can use [`ls.logOutputs()`](https://reference.langchain.com/javascript/langsmith/lib/vitest/logOutputs) like this:
 
 ```typescript theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 import * as ls from "langsmith/vitest";
@@ -616,12 +606,6 @@ The tests will run as normal, but the experiment logs will not be sent to LangSm
 
 ***
 
-<div>
-  <Callout icon="terminal-2">
-    [Connect these docs](/use-these-docs) to your agent of choice via MCP for real-time answers.
-  </Callout>
+[Connect these docs](/use-these-docs) to your agent of choice via MCP for real-time answers.
 
-  <Callout icon="edit">
-    [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/vitest-jest.mdx) or [file an issue](https://github.com/langchain-ai/docs/issues/new/choose).
-  </Callout>
-</div>
+[Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/vitest-jest.mdx) or [file an issue](https://github.com/langchain-ai/docs/issues/new/choose).

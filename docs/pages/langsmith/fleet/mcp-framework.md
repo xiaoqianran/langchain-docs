@@ -7,11 +7,11 @@ The LangSmith Tool Server is a standalone MCP framework for building and deployi
 * [Create custom tools](#create-a-custom-toolkit) that integrate with LangSmith's [Agent Auth](/langsmith/agent-auth) for OAuth authentication
 * [Build an MCP gateway](#use-as-an-mcp-gateway) for agents you're building yourself (outside of Fleet)
 
-<Note>
-  If you're using [Fleet](/langsmith/fleet/index), you don't need to interact with the Tool Server directly. Fleet provides [built-in tools](/langsmith/fleet/tools) and supports [remote MCP servers](/langsmith/fleet/remote-mcp-servers) without requiring Tool Server setup.
-
-  However, you can configure the associated tool server instance as an MCP server, which will allow you to use your custom MCP servers in your agent.
-</Note>
+> [!NOTE]
+>
+> If you're using [Fleet](/langsmith/fleet/index), you don't need to interact with the Tool Server directly. Fleet provides [built-in tools](/langsmith/fleet/tools) and supports [remote MCP servers](/langsmith/fleet/remote-mcp-servers) without requiring Tool Server setup.
+>
+> However, you can configure the associated tool server instance as an MCP server, which will allow you to use your custom MCP servers in your agent.
 
 Download the [PyPI package](https://pypi.org/project/langsmith-tool-server/) to get started.
 
@@ -183,12 +183,6 @@ The handler runs on every request and must return a dict with `identity` (and op
 
 ***
 
-<div>
-  <Callout icon="terminal-2">
-    [Connect these docs](/use-these-docs) to your agent of choice via MCP for real-time answers.
-  </Callout>
+[Connect these docs](/use-these-docs) to your agent of choice via MCP for real-time answers.
 
-  <Callout icon="edit">
-    [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/fleet/mcp-framework.mdx) or [file an issue](https://github.com/langchain-ai/docs/issues/new/choose).
-  </Callout>
-</div>
+[Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/fleet/mcp-framework.mdx) or [file an issue](https://github.com/langchain-ai/docs/issues/new/choose).

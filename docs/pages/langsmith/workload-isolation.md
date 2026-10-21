@@ -13,15 +13,15 @@ This page explains two common approaches to organizing workspaces based on your 
 * [Team-centric workspaces](#team-centric-workspaces): Single workspace per team (recommended for most customers)
 * [Collaborative workspaces](#collaborative-workspaces): Multiple teams per workspace
 
-<Tip>
-  For details on setting up organizations and workspaces, refer to [Set up hierarchy](/langsmith/set-up-hierarchy).
-</Tip>
+> [!TIP]
+>
+> For details on setting up organizations and workspaces, refer to [Set up hierarchy](/langsmith/set-up-hierarchy).
 
 ## Team-centric workspaces
 
-<Warning>
-  This is the default model and recommended choice for most customers.
-</Warning>
+> [!WARNING]
+>
+> This is the default model and recommended choice for most customers.
 
 This model (single workspace per team) uses a single organization as the top-level boundary. Within the organization, multiple workspaces are used to isolate different teams or business units. Each workspace represents a logical boundary for a specific team and governs which data and resources that team can access. Within a workspace, teams group the resources that support the same application by agent or by application, depending on the workspace.
 
@@ -125,12 +125,6 @@ graph LR
 
 ***
 
-<div>
-  <Callout icon="terminal-2">
-    [Connect these docs](/use-these-docs) to your agent of choice via MCP for real-time answers.
-  </Callout>
+[Connect these docs](/use-these-docs) to your agent of choice via MCP for real-time answers.
 
-  <Callout icon="edit">
-    [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/workload-isolation.mdx) or [file an issue](https://github.com/langchain-ai/docs/issues/new/choose).
-  </Callout>
-</div>
+[Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/workload-isolation.mdx) or [file an issue](https://github.com/langchain-ai/docs/issues/new/choose).

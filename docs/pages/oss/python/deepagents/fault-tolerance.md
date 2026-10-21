@@ -21,121 +21,119 @@ Different errors need different handling strategies:
 
 The sections below cover each strategy with code examples.
 
-<Tabs>
-  <Tab title="Transient errors" icon="rotate">
-    Add retry middleware to automatically retry network issues and rate limits. Model calls and tool calls each have their own retry middleware with exponential backoff:
+**Transient errors**
 
-    ```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-    from langchain.agents import create_agent
-    from langchain.agents.middleware import ModelRetryMiddleware, ToolRetryMiddleware
+Add retry middleware to automatically retry network issues and rate limits. Model calls and tool calls each have their own retry middleware with exponential backoff:
 
-    agent = create_agent(
-        model="google_genai:gemini-3.6-flash",
-        tools=[search_tool, fetch_url_tool],
-        middleware=[
-            ModelRetryMiddleware(max_retries=3, backoff_factor=2.0, initial_delay=1.0),
-            ToolRetryMiddleware(
-                max_retries=2,
-                tools=["search", "fetch_url"],
-                retry_on=(TimeoutError, ConnectionError),
-            ),
-        ],
-    )
-    ```
-  </Tab>
+```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+from langchain.agents import create_agent
+from langchain.agents.middleware import ModelRetryMiddleware, ToolRetryMiddleware
 
-  <Tab title="LLM-recoverable" icon="brain">
-    Use [ToolErrorMiddleware](https://reference.langchain.com/python/langchain/agents/middleware/tool_error/ToolErrorMiddleware) to catch tool exceptions and convert them into error `ToolMessage`s so the LLM can see what went wrong and try again:
+agent = create_agent(
+    model="google_genai:gemini-3.6-flash",
+    tools=[search_tool, fetch_url_tool],
+    middleware=[
+        ModelRetryMiddleware(max_retries=3, backoff_factor=2.0, initial_delay=1.0),
+        ToolRetryMiddleware(
+            max_retries=2,
+            tools=["search", "fetch_url"],
+            retry_on=(TimeoutError, ConnectionError),
+        ),
+    ],
+)
+```
 
-    <Note>
-      `ToolErrorMiddleware` requires `langchain>=1.3.14`.
-    </Note>
+**LLM-recoverable**
 
-    ```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-    from langchain.agents import create_agent
-    from langchain.agents.middleware import ToolErrorMiddleware
+Use [ToolErrorMiddleware](https://reference.langchain.com/python/langchain/agents/middleware/tool_error/ToolErrorMiddleware) to catch tool exceptions and convert them into error `ToolMessage`s so the LLM can see what went wrong and try again:
 
+> [!NOTE]
+>
+> `ToolErrorMiddleware` requires `langchain>=1.3.14`.
 
-    def on_error(exc: Exception, request: ToolCallRequest) -> str | None:
-        if isinstance(exc, ValueError):
-            return f"Tool `{request.tool_call['name']}` failed: {type(exc).__name__}. Fix the input and retry."
-        # propagate everything else
+```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+from langchain.agents import create_agent
+from langchain.agents.middleware import ToolErrorMiddleware
 
 
-    agent = create_agent(
-        model="google_genai:gemini-3.6-flash",
-        tools=[search_tool],
-        middleware=[ToolErrorMiddleware(on_error)],
-    )
-    ```
-  </Tab>
+def on_error(exc: Exception, request: ToolCallRequest) -> str | None:
+    if isinstance(exc, ValueError):
+        return f"Tool `{request.tool_call['name']}` failed: {type(exc).__name__}. Fix the input and retry."
+    # propagate everything else
 
-  <Tab title="User-fixable" icon="user">
-    Pause and collect information from the user when needed (like account IDs, order numbers, or clarifications). Use `interrupt_on` to pause the agent before specific tool calls:
 
-    ```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-    from deepagents import create_deep_agent
+agent = create_agent(
+    model="google_genai:gemini-3.6-flash",
+    tools=[search_tool],
+    middleware=[ToolErrorMiddleware(on_error)],
+)
+```
 
-    agent = create_deep_agent(
-        model="google_genai:gemini-3.6-flash",
-        tools=[send_email_tool, delete_record_tool],
-        interrupt_on={
-            "send_email": True,
-            "delete_record": True,
-        },
-    )
-    ```
+**User-fixable**
 
-    For the full human-in-the-loop guide, see [Human-in-the-loop](/oss/python/deepagents/human-in-the-loop).
-  </Tab>
+Pause and collect information from the user when needed (like account IDs, order numbers, or clarifications). Use `interrupt_on` to pause the agent before specific tool calls:
 
-  <Tab title="Provider outage" icon="arrows-exchange">
-    If your primary model provider goes down entirely, use [ModelFallbackMiddleware](https://reference.langchain.com/python/langchain/agents/middleware/model_fallback/ModelFallbackMiddleware) to switch to an alternative model:
+```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+from deepagents import create_deep_agent
 
-    ```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-    from langchain.agents import create_agent
-    from langchain.agents.middleware import ModelFallbackMiddleware
+agent = create_deep_agent(
+    model="google_genai:gemini-3.6-flash",
+    tools=[send_email_tool, delete_record_tool],
+    interrupt_on={
+        "send_email": True,
+        "delete_record": True,
+    },
+)
+```
 
-    agent = create_agent(
-        model="google_genai:gemini-3.6-flash",
-        tools=[search_tool],
-        middleware=[
-            ModelFallbackMiddleware("gpt-5.5"),
-        ],
-    )
-    ```
-  </Tab>
+For the full human-in-the-loop guide, see [Human-in-the-loop](/oss/python/deepagents/human-in-the-loop).
 
-  <Tab title="Excessive calls" icon="gauge">
-    Without limits, a confused agent can burn through your LLM API budget in minutes by looping on the same tool call or making hundreds of model calls. Set caps on both model calls and tool executions per run:
+**Provider outage**
 
-    ```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-    from langchain.agents import create_agent
-    from langchain.agents.middleware import ModelCallLimitMiddleware, ToolCallLimitMiddleware
+If your primary model provider goes down entirely, use [ModelFallbackMiddleware](https://reference.langchain.com/python/langchain/agents/middleware/model_fallback/ModelFallbackMiddleware) to switch to an alternative model:
 
-    agent = create_agent(
-        model="google_genai:gemini-3.6-flash",
-        tools=[search_tool],
-        middleware=[
-            ModelCallLimitMiddleware(run_limit=50),
-            ToolCallLimitMiddleware(run_limit=200),
-        ],
-    )
-    ```
-  </Tab>
+```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+from langchain.agents import create_agent
+from langchain.agents.middleware import ModelFallbackMiddleware
 
-  <Tab title="Unexpected" icon="alert-triangle">
-    Let them bubble up for debugging. Do not catch what you cannot handle. [ToolErrorMiddleware](https://reference.langchain.com/python/langchain/agents/middleware/tool_error/ToolErrorMiddleware) only surfaces exceptions you explicitly return content for; everything else propagates unchanged:
+agent = create_agent(
+    model="google_genai:gemini-3.6-flash",
+    tools=[search_tool],
+    middleware=[
+        ModelFallbackMiddleware("gpt-5.5"),
+    ],
+)
+```
 
-    ```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-    def on_error(exc: Exception, request: ToolCallRequest) -> str | None:
-        if isinstance(exc, (ValueError, KeyError)):
-            # Surface known, recoverable errors to the model
-            return f"Tool `{request.tool_call['name']}` failed: {type(exc).__name__}."
-        # Everything else (unexpected errors) propagates and halts the run
-    ```
-  </Tab>
-</Tabs>
+**Excessive calls**
+
+Without limits, a confused agent can burn through your LLM API budget in minutes by looping on the same tool call or making hundreds of model calls. Set caps on both model calls and tool executions per run:
+
+```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+from langchain.agents import create_agent
+from langchain.agents.middleware import ModelCallLimitMiddleware, ToolCallLimitMiddleware
+
+agent = create_agent(
+    model="google_genai:gemini-3.6-flash",
+    tools=[search_tool],
+    middleware=[
+        ModelCallLimitMiddleware(run_limit=50),
+        ToolCallLimitMiddleware(run_limit=200),
+    ],
+)
+```
+
+**Unexpected**
+
+Let them bubble up for debugging. Do not catch what you cannot handle. [ToolErrorMiddleware](https://reference.langchain.com/python/langchain/agents/middleware/tool_error/ToolErrorMiddleware) only surfaces exceptions you explicitly return content for; everything else propagates unchanged:
+
+```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+def on_error(exc: Exception, request: ToolCallRequest) -> str | None:
+    if isinstance(exc, (ValueError, KeyError)):
+        # Surface known, recoverable errors to the model
+        return f"Tool `{request.tool_call['name']}` failed: {type(exc).__name__}."
+    # Everything else (unexpected errors) propagates and halts the run
+```
 
 ## Rate limiting
 
@@ -209,9 +207,9 @@ agent = create_deep_agent(
 
 Scope [ToolRetryMiddleware](https://reference.langchain.com/python/langchain/agents/middleware/tool_retry/ToolRetryMiddleware) to specific tools rather than retrying everything. A filesystem `read_file` that fails will not benefit from a retry, but a web search that times out probably will. See [ModelRetryMiddleware](https://reference.langchain.com/python/langchain/agents/middleware/model_retry/ModelRetryMiddleware) for the full configuration.
 
-<Note>
-  Major integration packages raise standard exception types ([ModelAuthenticationError](https://reference.langchain.com/python/langchain-core/exceptions/ModelAuthenticationError), [ModelRateLimitError](https://reference.langchain.com/python/langchain-core/exceptions/ModelRateLimitError), [ModelTimeoutError](https://reference.langchain.com/python/langchain-core/exceptions/ModelTimeoutError), and others) that carry an `is_retryable` flag the retry middleware respects by default. See [Model exceptions](/oss/python/langchain/models#model-exceptions) for the full list.
-</Note>
+> [!NOTE]
+>
+> Major integration packages raise standard exception types ([ModelAuthenticationError](https://reference.langchain.com/python/langchain-core/exceptions/ModelAuthenticationError), [ModelRateLimitError](https://reference.langchain.com/python/langchain-core/exceptions/ModelRateLimitError), [ModelTimeoutError](https://reference.langchain.com/python/langchain-core/exceptions/ModelTimeoutError), and others) that carry an `is_retryable` flag the retry middleware respects by default. See [Model exceptions](/oss/python/langchain/models#model-exceptions) for the full list.
 
 ## Fallbacks
 
@@ -236,9 +234,9 @@ See [ModelFallbackMiddleware](https://reference.langchain.com/python/langchain/a
 
 When a tool raises an exception during execution, the agent run halts by default. Use [ToolErrorMiddleware](https://reference.langchain.com/python/langchain/agents/middleware/tool_error/ToolErrorMiddleware) to catch specific exceptions and convert them into error ToolMessages that the model can see and recover from, instead of crashing the run.
 
-<Note>
-  `ToolErrorMiddleware` requires `langchain>=1.3.14`.
-</Note>
+> [!NOTE]
+>
+> `ToolErrorMiddleware` requires `langchain>=1.3.14`.
 
 ```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 from deepagents import create_deep_agent
@@ -261,12 +259,6 @@ For the full configuration options and usage patterns, including async handlers 
 
 ***
 
-<div>
-  <Callout icon="terminal-2">
-    [Connect these docs](/use-these-docs) to your agent of choice via MCP for real-time answers.
-  </Callout>
+[Connect these docs](/use-these-docs) to your agent of choice via MCP for real-time answers.
 
-  <Callout icon="edit">
-    [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/oss/deepagents/fault-tolerance.mdx) or [file an issue](https://github.com/langchain-ai/docs/issues/new/choose).
-  </Callout>
-</div>
+[Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/oss/deepagents/fault-tolerance.mdx) or [file an issue](https://github.com/langchain-ai/docs/issues/new/choose).

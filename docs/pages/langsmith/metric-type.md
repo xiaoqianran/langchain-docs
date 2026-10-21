@@ -19,39 +19,37 @@ Here are some examples:
 * Python: Requires `langsmith>=0.2.0`
 * TypeScript: Support for multiple scores is available in `langsmith@0.1.32` and higher
 
-<CodeGroup>
-  ```python Python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  def numerical_metric(inputs: dict, outputs: dict, reference_outputs: dict) -> float:
-      # Evaluation logic...
-      return 0.8
-      # Equivalently
-      # return {"score": 0.8}
-      # Or
-      # return {"key": "numerical_metric", "score": 0.8}
+```python Python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+def numerical_metric(inputs: dict, outputs: dict, reference_outputs: dict) -> float:
+    # Evaluation logic...
+    return 0.8
+    # Equivalently
+    # return {"score": 0.8}
+    # Or
+    # return {"key": "numerical_metric", "score": 0.8}
 
-  def categorical_metric(inputs: dict, outputs: dict, reference_outputs: dict) -> str:
-      # Evaluation logic...
-      return "english"
-      # Equivalently
-      # return {"key": "categorical_metric", "score": "english"}
-      # Or
-      # return {"score": "english"}
-  ```
+def categorical_metric(inputs: dict, outputs: dict, reference_outputs: dict) -> str:
+    # Evaluation logic...
+    return "english"
+    # Equivalently
+    # return {"key": "categorical_metric", "score": "english"}
+    # Or
+    # return {"score": "english"}
+```
 
-  ```typescript TypeScript theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  import type { Run, Example } from "langsmith/schemas";
+```typescript TypeScript theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+import type { Run, Example } from "langsmith/schemas";
 
-  function numericalMetric(run: Run, example: Example) {
-    // Your evaluation logic here
-    return { key: "numerical_metric", score: 0.8};
-  }
+function numericalMetric(run: Run, example: Example) {
+  // Your evaluation logic here
+  return { key: "numerical_metric", score: 0.8};
+}
 
-  function categoricalMetric(run: Run, example: Example) {
-    // Your evaluation logic here
-    return { key: "categorical_metric", value: "english"};
-  }
-  ```
-</CodeGroup>
+function categoricalMetric(run: Run, example: Example) {
+  // Your evaluation logic here
+  return { key: "categorical_metric", value: "english"};
+}
+```
 
 ## Related
 
@@ -59,12 +57,6 @@ Here are some examples:
 
 ***
 
-<div>
-  <Callout icon="terminal-2">
-    [Connect these docs](/use-these-docs) to your agent of choice via MCP for real-time answers.
-  </Callout>
+[Connect these docs](/use-these-docs) to your agent of choice via MCP for real-time answers.
 
-  <Callout icon="edit">
-    [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/metric-type.mdx) or [file an issue](https://github.com/langchain-ai/docs/issues/new/choose).
-  </Callout>
-</div>
+[Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/metric-type.mdx) or [file an issue](https://github.com/langchain-ai/docs/issues/new/choose).

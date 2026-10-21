@@ -14,113 +14,107 @@ Below are examples for Python and TypeScript.
 
 Starting from an **existing** LangSmith application, add the following custom route code to your app file. If you are starting from scratch, you can create a new app from a template using the CLI.
 
-<Tabs>
-  <Tab title="Python">
-    ```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-    langgraph new --template=new-langgraph-project-python my_new_project
-    ```
+**Python**
 
-    Once you have a LangGraph project, add the following app code:
+```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+langgraph new --template=new-langgraph-project-python my_new_project
+```
 
-    ```python {highlight={4}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-    # ./src/agent/webapp.py
-    from fastapi import FastAPI
+Once you have a LangGraph project, add the following app code:
 
-    app = FastAPI()
+```python {highlight={4}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+# ./src/agent/webapp.py
+from fastapi import FastAPI
+
+app = FastAPI()
 
 
-    @app.get("/hello")
-    def read_root():
-        return {"Hello": "World"}
-    ```
-  </Tab>
+@app.get("/hello")
+def read_root():
+    return {"Hello": "World"}
+```
 
-  <Tab title="TypeScript">
-    ```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-    yarn create langgraph
-    npm install hono
-    ```
+**TypeScript**
 
-    Once you have a LangGraph project, add the following app code:
+```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+yarn create langgraph
+npm install hono
+```
 
-    ```typescript theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-    // ./src/custom-routes.ts
-    import { Hono } from "hono";
+Once you have a LangGraph project, add the following app code:
 
-    export const app = new Hono()
-      .get("/custom/hello", (c) => {
-        return c.json({ hello: "world" });
-      })
-      .post("/custom/webhook", async (c) => {
-        const body = await c.req.json();
-        return c.json({ received: true, payload: body });
-      });
-    ```
+```typescript theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+// ./src/custom-routes.ts
+import { Hono } from "hono";
 
-    The `hono` package must be available in your project dependencies.
-  </Tab>
-</Tabs>
+export const app = new Hono()
+  .get("/custom/hello", (c) => {
+    return c.json({ hello: "world" });
+  })
+  .post("/custom/webhook", async (c) => {
+    const body = await c.req.json();
+    return c.json({ received: true, payload: body });
+  });
+```
+
+The `hono` package must be available in your project dependencies.
 
 ## Configure `langgraph.json`
 
 Add the following to your `langgraph.json` configuration file. Make sure the path points to the app instance you created in the [previous section](#create-app).
 
-<Tabs>
-  <Tab title="Python">
-    ```json theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-    {
-      "dependencies": ["."],
-      "graphs": {
-        "agent": "./src/agent/graph.py:graph"
-      },
-      "env": ".env",
-      "http": {
-        "app": "./src/agent/webapp.py:app"
-      }
-      // Other configuration options like auth, store, etc.
-    }
-    ```
-  </Tab>
+**Python**
 
-  <Tab title="TypeScript">
-    ```json theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-    {
-      "node_version": "20",
-      "dependencies": ["."],
-      "graphs": { "agent": "./src/agent.ts:graph" },
-      "http": { "app": "./src/custom-routes.ts:app" },
-      "env": ".env"
-    }
-    ```
-  </Tab>
-</Tabs>
+```json theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+{
+  "dependencies": ["."],
+  "graphs": {
+    "agent": "./src/agent/graph.py:graph"
+  },
+  "env": ".env",
+  "http": {
+    "app": "./src/agent/webapp.py:app"
+  }
+  // Other configuration options like auth, store, etc.
+}
+```
+
+**TypeScript**
+
+```json theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+{
+  "node_version": "20",
+  "dependencies": ["."],
+  "graphs": { "agent": "./src/agent.ts:graph" },
+  "http": { "app": "./src/custom-routes.ts:app" },
+  "env": ".env"
+}
+```
 
 ## Start server
 
 Test the server out locally:
 
-<Tabs>
-  <Tab title="Python">
-    ```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-    langgraph dev --no-browser
-    ```
-  </Tab>
+**Python**
 
-  <Tab title="TypeScript">
-    ```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-    npx @langchain/langgraph-cli@latest dev --no-browser
-    ```
-  </Tab>
-</Tabs>
+```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+langgraph dev --no-browser
+```
+
+**TypeScript**
+
+```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+npx @langchain/langgraph-cli@latest dev --no-browser
+```
 
 If you navigate to `localhost:2024/hello` in your browser (`2024` is the default development port), you should see the `/hello` endpoint returning a JSON response. For the TypeScript example, navigate to `localhost:2024/custom/hello`.
 
 The TypeScript `http.app` configuration works in both local development with `langgraph dev` and Docker with `langgraph up`.
 
-<Note>
-  **Shadowing default endpoints**
-  The routes you create in the app are given priority over the system defaults, meaning you can shadow and redefine the behavior of any default endpoint.
-</Note>
+> [!NOTE]
+>
+> **Shadowing default endpoints**
+> The routes you create in the app are given priority over the system defaults, meaning you can shadow and redefine the behavior of any default endpoint.
 
 ## Deploying
 
@@ -132,12 +126,6 @@ Now that you've added a custom route to your deployment, you can use this same t
 
 ***
 
-<div>
-  <Callout icon="terminal-2">
-    [Connect these docs](/use-these-docs) to your agent of choice via MCP for real-time answers.
-  </Callout>
+[Connect these docs](/use-these-docs) to your agent of choice via MCP for real-time answers.
 
-  <Callout icon="edit">
-    [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/custom-routes.mdx) or [file an issue](https://github.com/langchain-ai/docs/issues/new/choose).
-  </Callout>
-</div>
+[Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/custom-routes.mdx) or [file an issue](https://github.com/langchain-ai/docs/issues/new/choose).

@@ -14,12 +14,12 @@ This will help you getting started with `ChatGoogle` [chat models](/oss/javascri
 For detailed documentation of all `ChatGoogle` features and configurations head to the
 [API reference](https://reference.langchain.com/javascript/langchain-google/index/ChatGoogle).
 
-<Tip>
-  `@langchain/google` is the recommended package for all new Google Gemini integrations.
-  It replaces the older [`@langchain/google-genai`](/oss/javascript/integrations/chat/google_generative_ai)
-  and [`@langchain/google-vertexai`](/oss/javascript/integrations/chat/google_vertex_ai) packages.
-  See [legacy packages](/oss/javascript/integrations/providers/google#legacy-packages) for migration details.
-</Tip>
+> [!TIP]
+>
+> `@langchain/google` is the recommended package for all new Google Gemini integrations.
+> It replaces the older [`@langchain/google-genai`](/oss/javascript/integrations/chat/google_generative_ai)
+> and [`@langchain/google-vertexai`](/oss/javascript/integrations/chat/google_vertex_ai) packages.
+> See [legacy packages](/oss/javascript/integrations/providers/google#legacy-packages) for migration details.
 
 ## Overview
 
@@ -153,33 +153,29 @@ your [LangSmith](/langsmith/observability) API key by uncommenting below:
 
 The LangChain `ChatGoogle` integration lives in the `@langchain/google` package:
 
-<CodeGroup>
-  ```bash npm theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  npm install @langchain/google @langchain/core
-  ```
+```bash npm theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+npm install @langchain/google @langchain/core
+```
 
-  ```bash yarn theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  yarn add @langchain/google @langchain/core
-  ```
+```bash yarn theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+yarn add @langchain/google @langchain/core
+```
 
-  ```bash pnpm theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  pnpm add @langchain/google @langchain/core
-  ```
-</CodeGroup>
+```bash pnpm theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+pnpm add @langchain/google @langchain/core
+```
 
 ## Instantiation
 
 The import path differs depending on whether you are running in a Node.js environment or a Web/Edge environment.
 
-<CodeGroup>
-  ```typescript Node.js theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  import { ChatGoogle } from "@langchain/google/node";
-  ```
+```typescript Node.js theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+import { ChatGoogle } from "@langchain/google/node";
+```
 
-  ```typescript Web/Edge theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  import { ChatGoogle } from "@langchain/google";
-  ```
-</CodeGroup>
+```typescript Web/Edge theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+import { ChatGoogle } from "@langchain/google";
+```
 
 The model will automatically determine whether to use the Google AI API or Gemini Enterprise Agent Platform based on your configuration:
 
@@ -371,10 +367,10 @@ console.log(res.tool_calls);
 
 Gemini offers several built-in tools for code execution and grounding.
 
-<Warning>
-  You cannot mix these "Specialty Tools" (Code Execution, Google Search, etc.)
-  with standard LangChain tools (like the weather tool above) in the same request.
-</Warning>
+> [!WARNING]
+>
+> You cannot mix these "Specialty Tools" (Code Execution, Google Search, etc.)
+> with standard LangChain tools (like the weather tool above) in the same request.
 
 #### Code execution
 
@@ -400,9 +396,9 @@ console.log(res.contentBlocks);
 You can use the `googleSearch` tool to ground responses with Google Search.
 This is useful for questions about current events or specific facts.
 
-<Note>
-  The `googleSearchRetrieval` tool is maintained for backwards compatibility, but `googleSearch` is preferred.
-</Note>
+> [!NOTE]
+>
+> The `googleSearchRetrieval` tool is maintained for backwards compatibility, but `googleSearch` is preferred.
 
 ```typescript theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 import { ChatGoogle } from "@langchain/google";
@@ -612,11 +608,11 @@ reasoningBlocks.forEach((block) => {
 console.log("Answer:", res.text);
 ```
 
-<Note>
-  Thought blocks also include a `reasoningContentBlock` field. This contains the `ContentBlock` based on
-  the underlying part sent by Gemini. While this is typically a text block, for multimodal models like
-  Nano Banana Pro, it could be an image or other media block.
-</Note>
+> [!NOTE]
+>
+> Thought blocks also include a `reasoningContentBlock` field. This contains the `ContentBlock` based on
+> the underlying part sent by Gemini. While this is typically a text block, for multimodal models like
+> Nano Banana Pro, it could be an image or other media block.
 
 ## Image Generation with Nano Banana and Nano Banana Pro
 
@@ -754,12 +750,6 @@ For detailed documentation of all `ChatGoogle` features and configurations head 
 
 ***
 
-<div>
-  <Callout icon="terminal-2">
-    [Connect these docs](/use-these-docs) to your agent of choice via MCP for real-time answers.
-  </Callout>
+[Connect these docs](/use-these-docs) to your agent of choice via MCP for real-time answers.
 
-  <Callout icon="edit">
-    [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/oss/javascript/integrations/chat/google.mdx) or [file an issue](https://github.com/langchain-ai/docs/issues/new/choose).
-  </Callout>
-</div>
+[Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/oss/javascript/integrations/chat/google.mdx) or [file an issue](https://github.com/langchain-ai/docs/issues/new/choose).

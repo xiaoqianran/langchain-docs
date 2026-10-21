@@ -12,17 +12,17 @@ By default, LangSmith will pull images from our public Docker registry. However,
 
 ## Mirroring the images
 
-<Note>
-  **Fewer images from LangSmith 0.16.21 (chart `0.16.0-rc.17`) onward.** The platform backend, playground, host backend, and the Fleet tool and trigger servers now all run from the single `langsmith-backend` image, so you no longer need to mirror `langsmith-go-backend`, `langsmith-playground`, `hosted-langserve-backend`, `agent-builder-tool-server`, or `agent-builder-trigger-server` (or their `-fips` variants). The corresponding `values.yaml` keys: `platformBackendImage`, `playgroundImage`, `hostBackendImage`, `fleetToolServerImage`, and `fleetTriggerServerImage`, have been removed from the chart; any values you still set for them are ignored.
-
-  If you are installing an **earlier** version, keep mirroring those images and setting those keys as before.
-</Note>
+> [!NOTE]
+>
+> **Fewer images from LangSmith 0.16.21 (chart `0.16.0-rc.17`) onward.** The platform backend, playground, host backend, and the Fleet tool and trigger servers now all run from the single `langsmith-backend` image, so you no longer need to mirror `langsmith-go-backend`, `langsmith-playground`, `hosted-langserve-backend`, `agent-builder-tool-server`, or `agent-builder-trigger-server` (or their `-fips` variants). The corresponding `values.yaml` keys: `platformBackendImage`, `playgroundImage`, `hostBackendImage`, `fleetToolServerImage`, and `fleetTriggerServerImage`, have been removed from the chart; any values you still set for them are ignored.
+>
+> If you are installing an **earlier** version, keep mirroring those images and setting those keys as before.
 
 The [LangSmith Helm chart repository](https://github.com/langchain-ai/helm/blob/main/charts/langsmith/scripts/mirror_langsmith_images.sh) includes a script that mirrors the images.
 
-<Warning>
-  The script does not yet reflect the image consolidation in LangSmith 0.16.21. It still pulls `langsmith-go-backend`, `langsmith-playground`, `hosted-langserve-backend`, `agent-builder-tool-server`, and `agent-builder-trigger-server`, which are not published for 0.16.21 and later, so it exits at the first missing image. It also defaults the operator image to `0.1.37`, while chart 0.17.0 uses `0.1.60`. For 0.16.21 and later, mirror the images manually as described below.
-</Warning>
+> [!WARNING]
+>
+> The script does not yet reflect the image consolidation in LangSmith 0.16.21. It still pulls `langsmith-go-backend`, `langsmith-playground`, `hosted-langserve-backend`, `agent-builder-tool-server`, and `agent-builder-trigger-server`, which are not published for 0.16.21 and later, so it exits at the first missing image. It also defaults the operator image to `0.1.37`, while chart 0.17.0 uses `0.1.60`. For 0.16.21 and later, mirror the images manually as described below.
 
 To use the script, you will need to run the script with the following command specifying your registry and platform:
 
@@ -183,9 +183,9 @@ images:
     tag: "0.17.29"
 ```
 
-<Note>
-  Do not use `langsmith-clio`. If you are upgrading an existing installation that points to this retired Insights-only image, replace the image repository. The repository name must end in `langsmith-insights-engine`; the chart validates this requirement.
-</Note>
+> [!NOTE]
+>
+> Do not use `langsmith-clio`. If you are upgrading an existing installation that points to this retired Insights-only image, replace the image repository. The repository name must end in `langsmith-insights-engine`; the chart validates this requirement.
 
 Image mirroring does not remove Engine's LangSmith Intelligence egress requirement, so fully air-gapped installations cannot run Engine. See [LangSmith Intelligence for Engine](/langsmith/self-host-egress#langsmith-intelligence-for-engine).
 
@@ -289,9 +289,9 @@ Once configured, you will need to update your LangSmith installation. You can fo
 
 ## Verifying image signatures
 
-<Note>
-  Image signatures are available **starting with v15** (LangSmith app version `0.15.x` and later). Earlier releases on the `v14-stable` and older channels are not signed and cannot be verified with the steps below.
-</Note>
+> [!NOTE]
+>
+> Image signatures are available **starting with v15** (LangSmith app version `0.15.x` and later). Earlier releases on the `v14-stable` and older channels are not signed and cannot be verified with the steps below.
 
 Stable-channel LangSmith images on `docker.io/langchain/*` are signed at release time using keyless [Sigstore/Cosign](https://docs.sigstore.dev/cosign/overview/) from the release workflow. The signing identity is bound to a specific GitHub Actions workflow, run, and commit, so the signature attests that the image is authentic and that the stable-branch release pipeline produced it running in `langchain-ai/langchainplus`. You can verify a signature before pulling or mirroring an image, and again after mirroring to confirm the digest you mirrored matches the signed one.
 
@@ -369,18 +369,12 @@ cosign verify-attestation \
 
 You can pass the resulting `langsmith-backend.cdx.json` directly to scanners such as [Grype](https://github.com/anchore/grype) (`grype sbom:langsmith-backend.cdx.json`) or [Trivy](https://trivy.dev/) (`trivy sbom langsmith-backend.cdx.json`).
 
-<Note>
-  Extracting the SBOM through `cosign verify-attestation`, rather than `cosign download attestation`, ensures you only ever consume an SBOM whose signature and signing identity have been verified.
-</Note>
+> [!NOTE]
+>
+> Extracting the SBOM through `cosign verify-attestation`, rather than `cosign download attestation`, ensures you only ever consume an SBOM whose signature and signing identity have been verified.
 
 ***
 
-<div>
-  <Callout icon="terminal-2">
-    [Connect these docs](/use-these-docs) to your agent of choice via MCP for real-time answers.
-  </Callout>
+[Connect these docs](/use-these-docs) to your agent of choice via MCP for real-time answers.
 
-  <Callout icon="edit">
-    [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/self-host-mirroring-images.mdx) or [file an issue](https://github.com/langchain-ai/docs/issues/new/choose).
-  </Callout>
-</div>
+[Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/self-host-mirroring-images.mdx) or [file an issue](https://github.com/langchain-ai/docs/issues/new/choose).

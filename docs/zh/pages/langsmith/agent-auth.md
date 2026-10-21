@@ -6,87 +6,81 @@
 
 使用 OAuth 2.0 凭证和代理身份验证，启用代理对任何系统的安全访问。
 
-<Note>Agent Auth 处于 **[beta](/langsmith/release-stages)** 状态并正在积极开发中。要提供反馈或使用此功能，请联系 [LangChain team](https://forum.langchain.com/c/help/langsmith/).</Note>
+> [!注意]
+>
+> Agent Auth 处于 **[beta](/langsmith/release-stages)** 状态并正在积极开发中。要提供反馈或使用此功能，请联系[LangChain team](https://forum.langchain.com/c/help/langsmith/)。
 
 ## 安装
 
-<Tabs>
-  <Tab title="Python">
-    <CodeGroup>
-      ```bash pip theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-      pip install langchain-auth
-      ```
+**Python**
 
-      ```bash uv theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-      uv add langchain-auth
-      ```
-    </CodeGroup>
-  </Tab>
+```bash pip theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+pip install langchain-auth
+```
 
-  <Tab title="JavaScript">
-    ```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-    npm install @langchain/auth
-    ```
-  </Tab>
-</Tabs>
+```bash uv theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+uv add langchain-auth
+```
+
+**JavaScript**
+
+```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+npm install @langchain/auth
+```
 
 ## 快速入门
 
 ### 1.初始化客户端
 
-<Tabs>
-  <Tab title="Python">
-    ```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-    from langchain_auth import Client
+**Python**
 
-    client = Client(api_key="your-langsmith-api-key")
-    ```
-  </Tab>
+```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+from langchain_auth import Client
 
-  <Tab title="JavaScript">
-    ```javascript theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-    import { Client } from '@langchain/auth';
+client = Client(api_key="your-langsmith-api-key")
+```
 
-    const client = new Client({ apiKey: 'your-langsmith-api-key' });
-    ```
-  </Tab>
-</Tabs>
+**JavaScript**
+
+```javascript theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+import { Client } from '@langchain/auth';
+
+const client = new Client({ apiKey: 'your-langsmith-api-key' });
+```
 
 #### 自托管配置
 
 对于自托管 LangSmith 实例，请使用实例上的 `/api-host` 路径指定 API URL。
 
-<Tabs>
-  <Tab title="Environment Variable">
-    ```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-    export LANGSMITH_API_URL="https://your-langsmith-instance.com/api-host"
-    ```
+**环境变量**
 
-    然后正常初始化客户端：
+```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+export LANGSMITH_API_URL="https://your-langsmith-instance.com/api-host"
+```
 
-    ```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-    client = Client(api_key="your-langsmith-api-key")
-    ```
-  </Tab>
+然后正常初始化客户端：
 
-  <Tab title="Explicit Configuration (Python)">
-    ```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-    client = Client(
-        api_key="your-langsmith-api-key",
-        api_url="https://your-langsmith-instance.com/api-host"
-    )
-    ```
-  </Tab>
+```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+client = Client(api_key="your-langsmith-api-key")
+```
 
-  <Tab title="Explicit Configuration (JavaScript)">
-    ```javascript theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-    const client = new Client({
-        apiKey: 'your-langsmith-api-key',
-        apiUrl: 'https://your-langsmith-instance.com/api-host'
-    });
-    ```
-  </Tab>
-</Tabs>
+**显式配置 (Python)**
+
+```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+client = Client(
+    api_key="your-langsmith-api-key",
+    api_url="https://your-langsmith-instance.com/api-host"
+)
+```
+
+**显式配置 (JavaScript)**
+
+```javascript theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+const client = new Client({
+    apiKey: 'your-langsmith-api-key',
+    apiUrl: 'https://your-langsmith-instance.com/api-host'
+});
+```
 
 ### 2. 设置 OAuth 提供程序
 
@@ -98,59 +92,55 @@
 
 3. 在 OAuth 提供程序中设置回调 URL：
 
-<Tabs>
-  <Tab title="LangSmith Cloud">
-    ```
-    https://smith.langchain.com/host-oauth-callback/{provider_id}
-    ```例如，如果您的提供商\_id 是“github-local-dev”，请使用：
+**LangSmith云**
 
-    ```
-    https://smith.langchain.com/host-oauth-callback/github-local-dev
-    ```
-  </Tab>
+```
+https://smith.langchain.com/host-oauth-callback/{provider_id}
+```
 
-  <Tab title="Self-hosted">
-    ```
-    https://{your-langsmith-instance}/host-oauth-callback/{provider_id}
-    ```
+例如，如果您的提供商\_id 是“github-local-dev”，请使用：
 
-    例如，如果您的实例是 `langsmith.example.com` 并且provider\_id 是“github”，请使用：
+```
+https://smith.langchain.com/host-oauth-callback/github-local-dev
+```**自托管**
 
-    ```
-    https://langsmith.example.com/host-oauth-callback/github
-    ```
-  </Tab>
-</Tabs>
+```
+https://{your-langsmith-instance}/host-oauth-callback/{provider_id}
+```
+
+例如，如果您的实例是 `langsmith.example.com` 并且provider\_id 是“github”，请使用：
+
+```
+https://langsmith.example.com/host-oauth-callback/github
+```
 
 4. 将 `client.create_oauth_provider()` 与 OAuth 应用程序中的凭据结合使用：
 
-<Tabs>
-  <Tab title="Python">
-    ```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-    new_provider = await client.create_oauth_provider(
-        provider_id="{provider_id}",  # Provide any unique ID
-        name="{provider_display_name}",  # Provide any display name
-        client_id="{your_client_id}",
-        client_secret="{your_client_secret}",
-        auth_url="{auth_url_of_your_provider}",
-        token_url="{token_url_of_your_provider}",
-    )
-    ```
-  </Tab>
+**Python**
 
-  <Tab title="JavaScript">
-    ```javascript theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-    const newProvider = await client.createOAuthProvider({
-        providerId: '{provider_id}',  // Provide any unique ID
-        name: '{provider_display_name}',  // Provide any display name
-        clientId: '{your_client_id}',
-        clientSecret: '{your_client_secret}',
-        authUrl: '{auth_url_of_your_provider}',
-        tokenUrl: '{token_url_of_your_provider}',
-    });
-    ```
-  </Tab>
-</Tabs>
+```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+new_provider = await client.create_oauth_provider(
+    provider_id="{provider_id}",  # Provide any unique ID
+    name="{provider_display_name}",  # Provide any display name
+    client_id="{your_client_id}",
+    client_secret="{your_client_secret}",
+    auth_url="{auth_url_of_your_provider}",
+    token_url="{token_url_of_your_provider}",
+)
+```
+
+**JavaScript**
+
+```javascript theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+const newProvider = await client.createOAuthProvider({
+    providerId: '{provider_id}',  // Provide any unique ID
+    name: '{provider_display_name}',  // Provide any display name
+    clientId: '{your_client_id}',
+    clientSecret: '{your_client_secret}',
+    authUrl: '{auth_url_of_your_provider}',
+    tokenUrl: '{token_url_of_your_provider}',
+});
+```
 
 ### 3. 通过代理进行身份验证
 
@@ -178,68 +168,62 @@ auth_result = await client.authenticate(
 
 执行过程中，如果需要认证，SDK会抛出[interrupt](/langsmith/add-human-in-the-loop)。代理执行暂停并向用户显示 OAuth URL：
 
-<Frame>
-  <img />
-</Frame>
+![](https://mintcdn.com/langchain-5e9cc07a/Xbr8HuVd9jPi6qTU/images/langgraph-auth-interrupt.png?fit=max\&auto=format\&n=Xbr8HuVd9jPi6qTU\&q=85\&s=94f84dd7ec822ca69f9a27b4458dca9f)
 
 用户完成 OAuth 身份验证并且我们收到提供商的回调后，他们将看到身份验证成功页面。
 
-<Frame>
-  <img />
-</Frame>
+![](https://mintcdn.com/langchain-5e9cc07a/Xbr8HuVd9jPi6qTU/images/github-auth-success.png?fit=max\&auto=format\&n=Xbr8HuVd9jPi6qTU\&q=85\&s=72e6492f074507bc8888804066205fcb)
 
 然后，代理从中断处恢复执行，并且令牌可用于任何 API 调用。我们存储和刷新 OAuth 令牌，以便用户或代理将来使用该服务时不需要 OAuth 流程。
 
 ```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 token = auth_result.token
-```#### LangGraph 上下文之外
+```
+
+#### LangGraph 上下文之外
 
 向带外 OAuth 流的用户提供 `auth_url`。
 
-<Tabs>
-  <Tab title="Python">
-    ```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-    auth_result = await client.authenticate(
-        provider="{provider_id}",
-        scopes=["scopeA"],
-        user_id="your_user_id"
-    )
+**Python**
 
-    if auth_result.status == "pending":
-        print(f"Complete OAuth at: {auth_result.url}")
-        # Wait for user to complete OAuth
-        completed_auth = await client.wait_for_completion(auth_result.auth_id)
-        print("Authentication completed!")
-    else:
-        token = auth_result.token
-        print(f"Already authenticated, token: {token}")
-    ```
-  </Tab>
+```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+auth_result = await client.authenticate(
+    provider="{provider_id}",
+    scopes=["scopeA"],
+    user_id="your_user_id"
+)
 
-  <Tab title="JavaScript">
-    ```javascript theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-    const authResult = await client.authenticate({
-        provider: '{provider_id}',
-        scopes: ['scopeA'],
-        userId: 'your_user_id'
-    });
+if auth_result.status == "pending":
+    print(f"Complete OAuth at: {auth_result.url}")
+    # Wait for user to complete OAuth
+    completed_auth = await client.wait_for_completion(auth_result.auth_id)
+    print("Authentication completed!")
+else:
+    token = auth_result.token
+    print(f"Already authenticated, token: {token}")
+```
 
-    if (authResult.status === 'pending') {
-        console.log(`Complete OAuth at: ${authResult.authUrl}`);
-        // Wait for user to complete OAuth
-        const completedAuth = await client.waitForCompletion(authResult.authId);
-        console.log('Authentication completed!');
-    } else {
-        const token = authResult.token;
-        console.log(`Already authenticated, token: ${token}`);
-    }
-    ```
-  </Tab>
-</Tabs>
+**JavaScript**
 
-## 故障排除
+```javascript theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+const authResult = await client.authenticate({
+    provider: '{provider_id}',
+    scopes: ['scopeA'],
+    userId: 'your_user_id'
+});
 
-### 自托管：405 方法不允许
+if (authResult.status === 'pending') {
+    console.log(`Complete OAuth at: ${authResult.authUrl}`);
+    // Wait for user to complete OAuth
+    const completedAuth = await client.waitForCompletion(authResult.authId);
+    console.log('Authentication completed!');
+} else {
+    const token = authResult.token;
+    console.log(`Already authenticated, token: ${token}`);
+}
+```
+
+## 故障排除### 自托管：405 方法不允许
 
 如果您收到 `405 Method Not Allowed` 错误，请确保 `LANGSMITH_API_URL` 指向 `/api-host` 路径：
 
@@ -257,12 +241,6 @@ https://your-instance.com/host-oauth-callback/{provider_id}
 
 ***
 
-<div>
-  <Callout icon="terminal-2">
-    [Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时答案。
-  </Callout>
+[Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
 
-  <Callout icon="edit">
-    [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/agent-auth.mdx) 或 [file an issue](https://github.com/langchain-ai/docs/issues/new/choose)。
-  </Callout>
-</div>
+[Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/agent-auth.mdx) 或 [file an issue](https://github.com/langchain-ai/docs/issues/new/choose)。

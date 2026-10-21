@@ -4,9 +4,9 @@
 
 # 如何运行成对评估
 
-<Info>
-  概念：[Pairwise evaluations](/langsmith/evaluation-concepts#pairwise)
-</Info>
+> [!注意]
+>
+> 概念：[Pairwise evaluations](/langsmith/evaluation-concepts#pairwise)
 
 LangSmith 支持以比较方式评估**现有**实验。您可以对多个实验的输出进行相互比较，而不是一次评估一个输出。在本指南中，您将使用 [⟦T2⟧](https://docs.smith.langchain.com/reference/python/evaluation/langsmith.evaluation._runner.evaluate) 以及 [define an evaluator](#define-a-pairwise-evaluator) 和 [run a pairwise evaluation](#run-a-pairwise-evaluation) 的两个现有实验。最后，您将使用 LangSmith UI 到 [view the pairwise experiments](#view-pairwise-experiments)。
 
@@ -15,9 +15,9 @@ LangSmith 支持以比较方式评估**现有**实验。您可以对多个实验
 * 如果您尚未创建要比较的实验，请查看 [quick start](/langsmith/evaluation-quickstart) 或 [how-to guide](/langsmith/evaluate-llm-application) 开始评估。
 * 本指南需要 `langsmith>=0.2.0`（Python）或 `langsmith>=0.2.9`（JS）。
 
-<Info>
-  您还可以将 [⟦T5⟧](https://docs.smith.langchain.com/reference/python/evaluation/langsmith.evaluation._runner.evaluate_comparative) 与两个以上的现有实验一起使用。
-</Info>
+> [!注意]
+>
+> 您还可以将 [⟦T5⟧](https://docs.smith.langchain.com/reference/python/evaluation/langsmith.evaluation._runner.evaluate_comparative) 与两个以上的现有实验一起使用。
 
 ## `evaluate()` 比较参数
 
@@ -47,7 +47,7 @@ LangSmith 支持以比较方式评估**现有**实验。您可以对多个实验
 * `inputs: dict`：与数据集中单个示例相对应的输入字典。
 * `outputs: list[dict]`：给定输入的每个实验产生的字典输出的两项列表。
 * `reference_outputs` / `referenceOutputs: dict`：与示例关联的参考输出的字典（如果有）。
-* `runs: list[Run]`：由给定示例的两个实验生成的完整[Run](/langsmith/run-data-format)对象的两项列表。如果您需要访问有关每次运行的中间步骤或元数据，请使用此选项。
+* `runs: list[Run]`：由给定示例的两个实验生成的完整 [Run](/langsmith/run-data-format) 对象的两项列表。如果您需要访问有关每次运行的中间步骤或元数据，请使用此选项。
 * `example: Example`：完整数据集[Example](/langsmith/example-data-format)，包括示例输入、输出（如果可用）和元数据（如果可用）。
 
 对于大多数用例，您只需要 `inputs`、`outputs` 和 `reference_outputs` / `referenceOutputs`。仅当您需要应用程序实际输入和输出之外的一些额外跟踪或示例元数据时，`runs` 和 `example` 才有用。
@@ -72,174 +72,166 @@ Python 和 JS/TS
 
 以下示例使用[a prompt](https://smith.langchain.com/hub/langchain-ai/pairwise-evaluation-2)，要求法学硕士决定两个人工智能助理响应之间哪个更好。它使用结构化输出来解析 AI 的响应：0、1 或 2。
 
-<Info>
-  在下面的 Python 示例中，我们从 [LangChain Hub](/langsmith/manage-prompts#public-prompt-hub) 中提取 [this structured prompt](https://smith.langchain.com/hub/langchain-ai/pairwise-evaluation-2) 并将其与 LangChain 聊天模型包装器一起使用。
-
-  **使用LangChain完全是可选的。** 为了说明这一点，TypeScript 示例直接使用OpenAI SDK。
-</Info>
+> [!注意]
+>
+> 在下面的 Python 示例中，我们从 [LangChain Hub](/langsmith/manage-prompts#public-prompt-hub) 中提取 [this structured prompt](https://smith.langchain.com/hub/langchain-ai/pairwise-evaluation-2) 并将其与 LangChain 聊天模型包装器一起使用。
+>
+> **LangChain 的使用完全是可选的。** 为了说明这一点，TypeScript 示例直接使用 OpenAI SDK。
 
 * Python：需要`langsmith>=0.2.0`
 * TypeScript：需要`langsmith>=0.2.9`
 
-<CodeGroup>
-  ```python Python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  from langchain_classic import hub
-  from langchain.chat_models import init_chat_model
-  from langsmith import evaluate
+```python Python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+from langchain_classic import hub
+from langchain.chat_models import init_chat_model
+from langsmith import evaluate
 
-  # See the prompt: https://smith.langchain.com/hub/langchain-ai/pairwise-evaluation-2
-  prompt = hub.pull("langchain-ai/pairwise-evaluation-2")
-  model = init_chat_model("gpt-5.5")
-  chain = prompt | model
+# See the prompt: https://smith.langchain.com/hub/langchain-ai/pairwise-evaluation-2
+prompt = hub.pull("langchain-ai/pairwise-evaluation-2")
+model = init_chat_model("gpt-5.5")
+chain = prompt | model
 
-  def ranked_preference(inputs: dict, outputs: list[dict]) -> list:
-      # Assumes example inputs have a 'question' key and experiment
-      # outputs have an 'answer' key.
-      response = chain.invoke({
-          "question": inputs["question"],
-          "answer_a": outputs[0].get("answer", "N/A"),
-          "answer_b": outputs[1].get("answer", "N/A"),
-      })
-      if response["Preference"] == 1:
-          scores = [1, 0]
-      elif response["Preference"] == 2:
-          scores = [0, 1]
-      else:
-          scores = [0, 0]
-      return scores
+def ranked_preference(inputs: dict, outputs: list[dict]) -> list:
+    # Assumes example inputs have a 'question' key and experiment
+    # outputs have an 'answer' key.
+    response = chain.invoke({
+        "question": inputs["question"],
+        "answer_a": outputs[0].get("answer", "N/A"),
+        "answer_b": outputs[1].get("answer", "N/A"),
+    })
+    if response["Preference"] == 1:
+        scores = [1, 0]
+    elif response["Preference"] == 2:
+        scores = [0, 1]
+    else:
+        scores = [0, 0]
+    return scores
 
-  evaluate(
-      ("experiment-1", "experiment-2"),  # Replace with the names/IDs of your experiments
-      evaluators=[ranked_preference],
-      randomize_order=True,
-      max_concurrency=4,
-  )
-  ```
+evaluate(
+    ("experiment-1", "experiment-2"),  # Replace with the names/IDs of your experiments
+    evaluators=[ranked_preference],
+    randomize_order=True,
+    max_concurrency=4,
+)
+```
 
-  ```typescript TypeScript theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  import { evaluate} from "langsmith/evaluation";
-  import { Run } from "langsmith/schemas";
-  import { wrapOpenAI } from "langsmith/wrappers";
-  import OpenAI from "openai";
-  import { z } from "zod";
+```typescript TypeScript theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+import { evaluate} from "langsmith/evaluation";
+import { Run } from "langsmith/schemas";
+import { wrapOpenAI } from "langsmith/wrappers";
+import OpenAI from "openai";
+import { z } from "zod";
 
-  const openai = wrapOpenAI(new OpenAI());
+const openai = wrapOpenAI(new OpenAI());
 
-  async function rankedPreference({
-    inputs,
-    runs,
-  }: {
-    inputs: Record<string, any>;
-    runs: Run[];
-  }) {
-    const scores: Record<string, number> = {};
-    const [runA, runB] = runs;
-    if (!runA || !runB) throw new Error("Expected at least two runs");
+async function rankedPreference({
+  inputs,
+  runs,
+}: {
+  inputs: Record<string, any>;
+  runs: Run[];
+}) {
+  const scores: Record<string, number> = {};
+  const [runA, runB] = runs;
+  if (!runA || !runB) throw new Error("Expected at least two runs");
 
-    const payload = {
-      question: inputs.question,
-      answer_a: runA?.outputs?.output ?? "N/A",
-      answer_b: runB?.outputs?.output ?? "N/A",
-    };
+  const payload = {
+    question: inputs.question,
+    answer_a: runA?.outputs?.output ?? "N/A",
+    answer_b: runB?.outputs?.output ?? "N/A",
+  };
 
-    const output = await openai.chat.completions.create({
-      model: "gpt-5.5",
-      messages: [
-        {
-          role: "system",
-          content: [
-            "Please act as an impartial judge and evaluate the quality of the responses provided by two AI assistants to the user question displayed below.",
-            "You should choose the assistant that follows the user's instructions and answers the user's question better.",
-            "Your evaluation should consider factors such as the helpfulness, relevance, accuracy, depth, creativity, and level of detail of their responses.",
-            "Begin your evaluation by comparing the two responses and provide a short explanation.",
-            "Avoid any position biases and ensure that the order in which the responses were presented does not influence your decision.",
-            "Do not allow the length of the responses to influence your evaluation. Do not favor certain names of the assistants. Be as objective as possible.",
-          ].join(" "),
-        },
-        {
-          role: "user",
-          content: [
-            `[User Question] ${payload.question}`,
-            `[The Start of Assistant A's Answer] ${payload.answer_a} [The End of Assistant A's Answer]`,
-            `The Start of Assistant B's Answer] ${payload.answer_b} [The End of Assistant B's Answer]`,
-          ].join("\n\n"),
-        },
-      ],
-      tool_choice: {
-        type: "function",
-        function: { name: "Score" },
+  const output = await openai.chat.completions.create({
+    model: "gpt-5.5",
+    messages: [
+      {
+        role: "system",
+        content: [
+          "Please act as an impartial judge and evaluate the quality of the responses provided by two AI assistants to the user question displayed below.",
+          "You should choose the assistant that follows the user's instructions and answers the user's question better.",
+          "Your evaluation should consider factors such as the helpfulness, relevance, accuracy, depth, creativity, and level of detail of their responses.",
+          "Begin your evaluation by comparing the two responses and provide a short explanation.",
+          "Avoid any position biases and ensure that the order in which the responses were presented does not influence your decision.",
+          "Do not allow the length of the responses to influence your evaluation. Do not favor certain names of the assistants. Be as objective as possible.",
+        ].join(" "),
       },
-      tools: [
-        {
-          type: "function",
-          function: {
-            name: "Score",
-            description: [
-              `After providing your explanation, output your final verdict by strictly following this format:`,
-              `Output "1" if Assistant A answer is better based upon the factors above.`,
-              `Output "2" if Assistant B answer is better based upon the factors above.`,
-              `Output "0" if it is a tie.`,
-            ].join(" "),
-            parameters: {
-              type: "object",
-              properties: {
-                Preference: {
-                  type: "integer",
-                  description: "Which assistant answer is preferred?",
-                },
+      {
+        role: "user",
+        content: [
+          `[User Question] ${payload.question}`,
+          `[The Start of Assistant A's Answer] ${payload.answer_a} [The End of Assistant A's Answer]`,
+          `The Start of Assistant B's Answer] ${payload.answer_b} [The End of Assistant B's Answer]`,
+        ].join("\n\n"),
+      },
+    ],
+    tool_choice: {
+      type: "function",
+      function: { name: "Score" },
+    },
+    tools: [
+      {
+        type: "function",
+        function: {
+          name: "Score",
+          description: [
+            `After providing your explanation, output your final verdict by strictly following this format:`,
+            `Output "1" if Assistant A answer is better based upon the factors above.`,
+            `Output "2" if Assistant B answer is better based upon the factors above.`,
+            `Output "0" if it is a tie.`,
+          ].join(" "),
+          parameters: {
+            type: "object",
+            properties: {
+              Preference: {
+                type: "integer",
+                description: "Which assistant answer is preferred?",
               },
             },
           },
         },
-      ],
-    });
+      },
+    ],
+  });
 
-    const { Preference } = z
-      .object({ Preference: z.number() })
-      .parse(
-        JSON.parse(output.choices[0].message.tool_calls[0].function.arguments)
-      );
+  const { Preference } = z
+    .object({ Preference: z.number() })
+    .parse(
+      JSON.parse(output.choices[0].message.tool_calls[0].function.arguments)
+    );
 
-    if (Preference === 1) {
-      scores[runA.id] = 1;
-      scores[runB.id] = 0;
-    } else if (Preference === 2) {
-      scores[runA.id] = 0;
-      scores[runB.id] = 1;
-    } else {
-      scores[runA.id] = 0;
-      scores[runB.id] = 0;
-    }
-
-    return { key: "ranked_preference", scores };
+  if (Preference === 1) {
+    scores[runA.id] = 1;
+    scores[runB.id] = 0;
+  } else if (Preference === 2) {
+    scores[runA.id] = 0;
+    scores[runB.id] = 1;
+  } else {
+    scores[runA.id] = 0;
+    scores[runB.id] = 0;
   }
 
-  await evaluate(["earnest-name-40", "reflecting-pump-91"], {
-    evaluators: [rankedPreference],
-  });
-  ```
-</CodeGroup>
+  return { key: "ranked_preference", scores };
+}
 
-## 查看成对实验从数据集页面导航到“配对实验”选项卡：
+await evaluate(["earnest-name-40", "reflecting-pump-91"], {
+  evaluators: [rankedPreference],
+});
+```
 
-<img alt="Pairwise Experiments Tab" />
+## 查看成对实验
 
-单击您想要检查的成对实验，您将进入比较视图：
+从数据集页面导航到“配对实验”选项卡：
 
-<img alt="Pairwise Comparison View" />
+![Pairwise Experiments Tab](https://mintcdn.com/langchain-5e9cc07a/H9jA2WRyA-MV4-H0/langsmith/images/pairwise-from-dataset.png?fit=max\&auto=format\&n=H9jA2WRyA-MV4-H0\&q=85\&s=dddf35fd971055d0d94ae4184c91dea3)单击您想要检查的成对实验，您将进入比较视图：
+
+![Pairwise Comparison View](https://mintcdn.com/langchain-5e9cc07a/H9jA2WRyA-MV4-H0/langsmith/images/pairwise-comparison-view.png?fit=max\&auto=format\&n=H9jA2WRyA-MV4-H0\&q=85\&s=8afa7467faf707c0bb5ede23b007beda)
 
 您可以通过单击表标题中的“拇指向上”/“拇指向下”按钮来筛选第一个实验更好的运行，反之亦然：
 
-<img alt="Pairwise Filtering" />
+![Pairwise Filtering](https://mintcdn.com/langchain-5e9cc07a/0B2PFrFBMRWNccee/langsmith/images/filter-pairwise.png?fit=max\&auto=format\&n=0B2PFrFBMRWNccee\&q=85\&s=677c48099cee9848d2119c154c7b0d88)
 
 ***
 
-<div>
-  <Callout icon="terminal-2">
-    [Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
-  </Callout>
+[Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
 
-  <Callout icon="edit">
-    [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/evaluate-pairwise.mdx) 或 [file an issue](https://github.com/langchain-ai/docs/issues/new/choose)。
-  </Callout>
-</div>
+[Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/evaluate-pairwise.mdx) 或 [file an issue](https://github.com/langchain-ai/docs/issues/new/choose)。

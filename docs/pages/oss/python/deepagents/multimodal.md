@@ -30,14 +30,14 @@ For block types, provider-specific requirements, and additional examples (PDF, a
 
 The harness `read_file` tool returns [standard content blocks](/oss/python/langchain/messages#standard-content-blocks) for supported multimodal files instead of plain text. The agent can inspect images, documents, and media stored in its [filesystem](/oss/python/deepagents/overview#virtual-filesystem-access) when the selected model supports the corresponding modality. Check the provider's documentation for your model's supported MIME types.
 
-<Accordion title="Supported multimodal file extensions">
-  | Type | Extensions |
-  | - | - |
-  | [Image](/oss/python/langchain/messages#multimodal) | `.png`, `.jpg`, `.jpeg`, `.gif`, `.webp`, `.heic`, `.heif` |
-  | [Video](/oss/python/langchain/messages#multimodal) | `.mp4`, `.mpeg`, `.mov`, `.avi`, `.flv`, `.mpg`, `.webm`, `.wmv`, `.3gpp` |
-  | [Audio](/oss/python/langchain/messages#multimodal) | `.wav`, `.mp3`, `.aiff`, `.aac`, `.ogg`, `.flac` |
-  | [File](/oss/python/langchain/messages#multimodal) | `.pdf`, `.ppt`, `.pptx` |
-</Accordion>
+> **Supported multimodal file extensions**
+>
+> | Type | Extensions |
+> | - | - |
+> | [Image](/oss/python/langchain/messages#multimodal) | `.png`, `.jpg`, `.jpeg`, `.gif`, `.webp`, `.heic`, `.heif` |
+> | [Video](/oss/python/langchain/messages#multimodal) | `.mp4`, `.mpeg`, `.mov`, `.avi`, `.flv`, `.mpg`, `.webm`, `.wmv`, `.3gpp` |
+> | [Audio](/oss/python/langchain/messages#multimodal) | `.wav`, `.mp3`, `.aiff`, `.aac`, `.ogg`, `.flac` |
+> | [File](/oss/python/langchain/messages#multimodal) | `.pdf`, `.ppt`, `.pptx` |
 
 ## Custom tool outputs
 
@@ -60,9 +60,9 @@ The return value is converted to a `ToolMessage` the model reads on the next tur
 
 For return-type options, serialization behavior, and MCP examples, see [Multimodal content](/oss/python/langchain/mcp/tools#multimodal-content).
 
-<Tip>
-  When a tool produces images or other large binary data, save the artifact to a [backend](/oss/python/deepagents/backends) and return a concise text description plus a path or URL. This keeps message history smaller and works better with [context compression](/oss/python/deepagents/context-engineering#context-compression).
-</Tip>
+> [!TIP]
+>
+> When a tool produces images or other large binary data, save the artifact to a [backend](/oss/python/deepagents/backends) and return a concise text description plus a path or URL. This keeps message history smaller and works better with [context compression](/oss/python/deepagents/context-engineering#context-compression).
 
 ## Context compression and multimodal content
 
@@ -113,12 +113,6 @@ See [Context compression](/oss/python/deepagents/context-engineering#context-com
 
 ***
 
-<div>
-  <Callout icon="terminal-2">
-    [Connect these docs](/use-these-docs) to your agent of choice via MCP for real-time answers.
-  </Callout>
+[Connect these docs](/use-these-docs) to your agent of choice via MCP for real-time answers.
 
-  <Callout icon="edit">
-    [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/oss/deepagents/multimodal.mdx) or [file an issue](https://github.com/langchain-ai/docs/issues/new/choose).
-  </Callout>
-</div>
+[Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/oss/deepagents/multimodal.mdx) or [file an issue](https://github.com/langchain-ai/docs/issues/new/choose).

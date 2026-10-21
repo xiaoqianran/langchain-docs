@@ -11,74 +11,70 @@ For complete working examples, see:
 * [Python monorepo example](https://github.com/langchain-ai/python-langraph-monorepo-example)
 * [JS monorepo example](https://github.com/langchain-ai/js-langgraph-monorepo-example)
 
-<CodeGroup>
-  ```plaintext Python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  my-monorepo/
-  ├── shared-utils/           # Shared Python package
-  │   ├── __init__.py
-  │   ├── common.py
-  │   └── pyproject.toml      # Or setup.py
-  ├── agents/
-  │   └── customer-support/   # Agent directory
-  │       ├── agent/
-  │       │   ├── __init__.py
-  │       │   └── graph.py
-  │       ├── langgraph.json  # Config file in agent directory
-  │       ├── .env
-  │       └── pyproject.toml  # Agent dependencies
-  └── other-service/
-      └── ...
-  ```
+```plaintext Python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+my-monorepo/
+├── shared-utils/           # Shared Python package
+│   ├── __init__.py
+│   ├── common.py
+│   └── pyproject.toml      # Or setup.py
+├── agents/
+│   └── customer-support/   # Agent directory
+│       ├── agent/
+│       │   ├── __init__.py
+│       │   └── graph.py
+│       ├── langgraph.json  # Config file in agent directory
+│       ├── .env
+│       └── pyproject.toml  # Agent dependencies
+└── other-service/
+    └── ...
+```
 
-  ```plaintext JS theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  my-monorepo/
-  ├── package.json            # Root package.json with workspaces
-  ├── shared-utils/           # Shared TypeScript package
-  │   ├── package.json
-  │   ├── src/
-  │   │   └── index.ts
-  │   └── tsconfig.json
-  ├── agents/
-  │   └── customer-support/   # Agent directory
-  │       ├── src/
-  │       │   └── agent.ts
-  │       ├── langgraph.json  # Config file in agent directory
-  │       ├── package.json    # Agent dependencies
-  │       ├── .env
-  │       └── tsconfig.json
-  └── other-service/
-      └── ...
-  ```
-</CodeGroup>
+```plaintext JS theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+my-monorepo/
+├── package.json            # Root package.json with workspaces
+├── shared-utils/           # Shared TypeScript package
+│   ├── package.json
+│   ├── src/
+│   │   └── index.ts
+│   └── tsconfig.json
+├── agents/
+│   └── customer-support/   # Agent directory
+│       ├── src/
+│       │   └── agent.ts
+│       ├── langgraph.json  # Config file in agent directory
+│       ├── package.json    # Agent dependencies
+│       ├── .env
+│       └── tsconfig.json
+└── other-service/
+    └── ...
+```
 
 ## LangGraph.json configuration
 
 Place the langgraph.json file in your agent’s directory (not in the monorepo root). Ensure the file follows the required structure:
 
-<CodeGroup>
-  ```json Python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  {
-    "dependencies": [
-      ".",                    # Current agent package
-      "../../shared-utils"    # Relative path to shared package
-    ],
-    "graphs": {
-      "customer_support": "./agent/graph.py:graph"
-    },
-    "env": ".env"
-  }
-  ```
+```json Python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+{
+  "dependencies": [
+    ".",                    # Current agent package
+    "../../shared-utils"    # Relative path to shared package
+  ],
+  "graphs": {
+    "customer_support": "./agent/graph.py:graph"
+  },
+  "env": ".env"
+}
+```
 
-  ```json JS theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  {
-    "node_version": "20",
-    "graphs": {
-      "customer_support": "./src/agent.ts:graph"
-    },
-    "env": ".env"
-  }
-  ```
-</CodeGroup>
+```json JS theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+{
+  "node_version": "20",
+  "graphs": {
+    "customer_support": "./src/agent.ts:graph"
+  },
+  "env": ".env"
+}
+```
 
 The Python implementation automatically handles packages in parent directories by:
 
@@ -107,17 +103,15 @@ Example `package.json` in the agent directory:
 
 Run `langgraph build`:
 
-<CodeGroup>
-  ```bash Python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  cd agents/customer-support
-  langgraph build -t my-customer-support-agent
-  ```
+```bash Python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+cd agents/customer-support
+langgraph build -t my-customer-support-agent
+```
 
-  ```bash JS theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  # Run from the root of the monorepo
-  langgraph build -t my-customer-support-agent -c agents/customer-support/langgraph.json
-  ```
-</CodeGroup>
+```bash JS theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+# Run from the root of the monorepo
+langgraph build -t my-customer-support-agent -c agents/customer-support/langgraph.json
+```
 
 The Python build process:
 
@@ -147,12 +141,6 @@ The JavaScript build process:
 
 ***
 
-<div>
-  <Callout icon="terminal-2">
-    [Connect these docs](/use-these-docs) to your agent of choice via MCP for real-time answers.
-  </Callout>
+[Connect these docs](/use-these-docs) to your agent of choice via MCP for real-time answers.
 
-  <Callout icon="edit">
-    [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/monorepo-support.mdx) or [file an issue](https://github.com/langchain-ai/docs/issues/new/choose).
-  </Callout>
-</div>
+[Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/monorepo-support.mdx) or [file an issue](https://github.com/langchain-ai/docs/issues/new/choose).

@@ -28,19 +28,17 @@ We will cover the following concepts:
 
 This tutorial requires the `langchain` package:
 
-<CodeGroup>
-  ```bash npm theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  npm install langchain
-  ```
+```bash npm theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+npm install langchain
+```
 
-  ```bash yarn theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  yarn add langchain
-  ```
+```bash yarn theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+yarn add langchain
+```
 
-  ```bash pnpm theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  pnpm add langchain
-  ```
-</CodeGroup>
+```bash pnpm theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+pnpm add langchain
+```
 
 For more details, see our [Installation guide](/oss/javascript/langchain/install).
 
@@ -48,236 +46,212 @@ For more details, see our [Installation guide](/oss/javascript/langchain/install
 
 Set up [LangSmith](https://smith.langchain.com?utm_source=docs\&utm_medium=cta\&utm_campaign=langsmith-signup\&utm_content=oss-langchain-multi-agent-subagents-personal-assistant) to inspect what is happening inside your agent. Then set the following environment variables:
 
-<CodeGroup>
-  ```bash Shell theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  export LANGSMITH_TRACING="true"
-  export LANGSMITH_API_KEY="..."
-  ```
+```bash Shell theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+export LANGSMITH_TRACING="true"
+export LANGSMITH_API_KEY="..."
+```
 
-  ```typescript TypeScript theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  process.env.LANGSMITH_TRACING = "true";
-  process.env.LANGSMITH_API_KEY = "...";
-  ```
-</CodeGroup>
+```typescript TypeScript theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+process.env.LANGSMITH_TRACING = "true";
+process.env.LANGSMITH_API_KEY = "...";
+```
 
 ### Components
 
 We will need to select a chat model from LangChain's suite of integrations:
 
-<Tabs>
-  <Tab title="OpenAI">
-    👉 Read the [OpenAI chat model integration docs](/oss/javascript/integrations/chat/openai/)
+**OpenAI**
 
-    <CodeGroup>
-      ```bash npm theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-      npm install @langchain/openai
-      ```
+👉 Read the [OpenAI chat model integration docs](/oss/javascript/integrations/chat/openai/)
 
-      ```bash pnpm theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-      pnpm install @langchain/openai
-      ```
+```bash npm theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+npm install @langchain/openai
+```
 
-      ```bash yarn theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-      yarn add @langchain/openai
-      ```
+```bash pnpm theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+pnpm install @langchain/openai
+```
 
-      ```bash bun theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-      bun add @langchain/openai
-      ```
-    </CodeGroup>
+```bash yarn theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+yarn add @langchain/openai
+```
 
-    <CodeGroup>
-      ```typescript initChatModel theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-      import { initChatModel } from "langchain";
+```bash bun theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+bun add @langchain/openai
+```
 
-      process.env.OPENAI_API_KEY = "your-api-key";
+```typescript initChatModel theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+import { initChatModel } from "langchain";
 
-      const model = await initChatModel("gpt-5.5");
-      ```
+process.env.OPENAI_API_KEY = "your-api-key";
 
-      ```typescript Model Class theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-      import { ChatOpenAI } from "@langchain/openai";
+const model = await initChatModel("gpt-5.5");
+```
 
-      const model = new ChatOpenAI({
-        model: "gpt-5.5",
-        apiKey: "your-api-key"
-      });
-      ```
-    </CodeGroup>
-  </Tab>
+```typescript Model Class theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+import { ChatOpenAI } from "@langchain/openai";
 
-  <Tab title="Anthropic">
-    👉 Read the [Anthropic chat model integration docs](/oss/javascript/integrations/chat/anthropic/)
+const model = new ChatOpenAI({
+  model: "gpt-5.5",
+  apiKey: "your-api-key"
+});
+```
 
-    <CodeGroup>
-      ```bash npm theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-      npm install @langchain/anthropic
-      ```
+**Anthropic**
 
-      ```bash pnpm theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-      pnpm install @langchain/anthropic
-      ```
+👉 Read the [Anthropic chat model integration docs](/oss/javascript/integrations/chat/anthropic/)
 
-      ```bash yarn theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-      yarn add @langchain/anthropic
-      ```
+```bash npm theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+npm install @langchain/anthropic
+```
 
-      ```bash pnpm theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-      pnpm add @langchain/anthropic
-      ```
-    </CodeGroup>
+```bash pnpm theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+pnpm install @langchain/anthropic
+```
 
-    <CodeGroup>
-      ```typescript initChatModel theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-      import { initChatModel } from "langchain";
+```bash yarn theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+yarn add @langchain/anthropic
+```
 
-      process.env.ANTHROPIC_API_KEY = "your-api-key";
+```bash pnpm theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+pnpm add @langchain/anthropic
+```
 
-      const model = await initChatModel("claude-sonnet-4-6");
-      ```
+```typescript initChatModel theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+import { initChatModel } from "langchain";
 
-      ```typescript Model Class theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-      import { ChatAnthropic } from "@langchain/anthropic";
+process.env.ANTHROPIC_API_KEY = "your-api-key";
 
-      const model = new ChatAnthropic({
-        model: "claude-sonnet-4-6",
-        apiKey: "your-api-key"
-      });
-      ```
-    </CodeGroup>
-  </Tab>
+const model = await initChatModel("claude-sonnet-4-6");
+```
 
-  <Tab title="Azure">
-    👉 Read the [Azure chat model integration docs](/oss/javascript/integrations/chat/azure/)
+```typescript Model Class theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+import { ChatAnthropic } from "@langchain/anthropic";
 
-    <CodeGroup>
-      ```bash npm theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-      npm install @langchain/azure
-      ```
+const model = new ChatAnthropic({
+  model: "claude-sonnet-4-6",
+  apiKey: "your-api-key"
+});
+```
 
-      ```bash pnpm theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-      pnpm install @langchain/azure
-      ```
+**Azure**
 
-      ```bash yarn theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-      yarn add @langchain/azure
-      ```
+👉 Read the [Azure chat model integration docs](/oss/javascript/integrations/chat/azure/)
 
-      ```bash bun theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-      bun add @langchain/azure
-      ```
-    </CodeGroup>
+```bash npm theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+npm install @langchain/azure
+```
 
-    <CodeGroup>
-      ```typescript initChatModel theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-      import { initChatModel } from "langchain";
+```bash pnpm theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+pnpm install @langchain/azure
+```
 
-      process.env.AZURE_OPENAI_API_KEY = "your-api-key";
-      process.env.AZURE_OPENAI_ENDPOINT = "your-endpoint";
-      process.env.OPENAI_API_VERSION = "your-api-version";
+```bash yarn theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+yarn add @langchain/azure
+```
 
-      const model = await initChatModel("azure_openai:gpt-5.5");
-      ```
+```bash bun theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+bun add @langchain/azure
+```
 
-      ```typescript Model Class theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-      import { AzureChatOpenAI } from "@langchain/openai";
+```typescript initChatModel theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+import { initChatModel } from "langchain";
 
-      const model = new AzureChatOpenAI({
-        model: "gpt-5.5",
-        azureOpenAIApiKey: "your-api-key",
-        azureOpenAIApiEndpoint: "your-endpoint",
-        azureOpenAIApiVersion: "your-api-version"
-      });
-      ```
-    </CodeGroup>
-  </Tab>
+process.env.AZURE_OPENAI_API_KEY = "your-api-key";
+process.env.AZURE_OPENAI_ENDPOINT = "your-endpoint";
+process.env.OPENAI_API_VERSION = "your-api-version";
 
-  <Tab title="Google Gemini">
-    👉 Read the [ChatGoogle chat model integration docs](/oss/javascript/integrations/chat/google)
+const model = await initChatModel("azure_openai:gpt-5.5");
+```
 
-    <CodeGroup>
-      ```bash npm theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-      npm install @langchain/google
-      ```
+```typescript Model Class theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+import { AzureChatOpenAI } from "@langchain/openai";
 
-      ```bash pnpm theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-      pnpm install @langchain/google
-      ```
+const model = new AzureChatOpenAI({
+  model: "gpt-5.5",
+  azureOpenAIApiKey: "your-api-key",
+  azureOpenAIApiEndpoint: "your-endpoint",
+  azureOpenAIApiVersion: "your-api-version"
+});
+```
 
-      ```bash yarn theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-      yarn add @langchain/google
-      ```
+**Google Gemini**
 
-      ```bash bun theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-      bun add @langchain/google
-      ```
-    </CodeGroup>
+👉 Read the [ChatGoogle chat model integration docs](/oss/javascript/integrations/chat/google)
 
-    <CodeGroup>
-      ```typescript initChatModel theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-      import { initChatModel } from "langchain";
+```bash npm theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+npm install @langchain/google
+```
 
-      process.env.GOOGLE_API_KEY = "your-api-key";
+```bash pnpm theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+pnpm install @langchain/google
+```
 
-      const model = await initChatModel("google:gemini-3.7-flash");
-      ```
+```bash yarn theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+yarn add @langchain/google
+```
 
-      ```typescript Model Class theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-      import { ChatGoogle } from "@langchain/google/node";
+```bash bun theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+bun add @langchain/google
+```
 
-      const model = new ChatGoogle({
-        model: "gemini-3.7-flash",
-        apiKey: "your-api-key"
-      });
-      ```
-    </CodeGroup>
-  </Tab>
+```typescript initChatModel theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+import { initChatModel } from "langchain";
 
-  <Tab title="Bedrock Converse">
-    👉 Read the [AWS Bedrock chat model integration docs](/oss/javascript/integrations/chat/bedrock_converse/)
+process.env.GOOGLE_API_KEY = "your-api-key";
 
-    <CodeGroup>
-      ```bash npm theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-      npm install @langchain/aws
-      ```
+const model = await initChatModel("google:gemini-3.7-flash");
+```
 
-      ```bash pnpm theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-      pnpm install @langchain/aws
-      ```
+```typescript Model Class theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+import { ChatGoogle } from "@langchain/google/node";
 
-      ```bash yarn theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-      yarn add @langchain/aws
-      ```
+const model = new ChatGoogle({
+  model: "gemini-3.7-flash",
+  apiKey: "your-api-key"
+});
+```
 
-      ```bash bun theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-      bun add @langchain/aws
-      ```
-    </CodeGroup>
+**Bedrock Converse**
 
-    <CodeGroup>
-      ```typescript initChatModel theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-      import { initChatModel } from "langchain";
+👉 Read the [AWS Bedrock chat model integration docs](/oss/javascript/integrations/chat/bedrock_converse/)
 
-      // Follow the steps here to configure your credentials:
-      // https://docs.aws.amazon.com/bedrock/latest/userguide/getting-started.html
+```bash npm theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+npm install @langchain/aws
+```
 
-      const model = await initChatModel("bedrock:gpt-5.5");
-      ```
+```bash pnpm theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+pnpm install @langchain/aws
+```
 
-      ```typescript Model Class theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-      import { ChatBedrockConverse } from "@langchain/aws";
+```bash yarn theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+yarn add @langchain/aws
+```
 
-      // Follow the steps here to configure your credentials:
-      // https://docs.aws.amazon.com/bedrock/latest/userguide/getting-started.html
+```bash bun theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+bun add @langchain/aws
+```
 
-      const model = new ChatBedrockConverse({
-        model: "gpt-5.5",
-        region: "us-east-2"
-      });
-      ```
-    </CodeGroup>
-  </Tab>
-</Tabs>
+```typescript initChatModel theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+import { initChatModel } from "langchain";
+
+// Follow the steps here to configure your credentials:
+// https://docs.aws.amazon.com/bedrock/latest/userguide/getting-started.html
+
+const model = await initChatModel("bedrock:gpt-5.5");
+```
+
+```typescript Model Class theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+import { ChatBedrockConverse } from "@langchain/aws";
+
+// Follow the steps here to configure your credentials:
+// https://docs.aws.amazon.com/bedrock/latest/userguide/getting-started.html
+
+const model = new ChatBedrockConverse({
+  model: "gpt-5.5",
+  region: "us-east-2"
+});
+```
 
 ## 1. Define tools
 
@@ -634,9 +608,9 @@ The team standup with Alice and Bob is scheduled for tomorrow at 9:00 AM. If you
 
 The supervisor identifies this as a calendar task, calls `schedule_event`, and the calendar agent handles date parsing and event creation.
 
-<Tip>
-  For full transparency into the information flow, including prompts and responses for each chat model call, check out the [LangSmith trace](https://smith.langchain.com/public/91a9a95f-fba9-4e84-aff0-371861ad2f4a/r) for the above run.
-</Tip>
+> [!TIP]
+>
+> For full transparency into the information flow, including prompts and responses for each chat model call, check out the [LangSmith trace](https://smith.langchain.com/public/91a9a95f-fba9-4e84-aff0-371861ad2f4a/r) for the above run.
 
 ### Example 2: Complex multi-domain request
 
@@ -697,232 +671,232 @@ Let me know if you'd like to add more details to the meeting or include addition
 
 The supervisor recognizes this requires both calendar and email actions, calls `schedule_event` for the meeting, then calls `manage_email` for the reminder. Each sub-agent completes its task, and the supervisor synthesizes both results into a coherent response.
 
-<Note>
-  The supervisor dispatches tasks to subagents sequentially by default. Each tool call completes before the next one starts. However, many LLMs will issue multiple tool calls in a single response (as shown in the trace above, where both `schedule_event` and `manage_email` are called together), which the runtime executes in parallel. You can also configure explicit parallel dispatch. See the [`create_supervisor` reference docs](https://reference.langchain.com/python/langgraph-supervisor/supervisor/create_supervisor) for details.
-</Note>
+> [!NOTE]
+>
+> The supervisor dispatches tasks to subagents sequentially by default. Each tool call completes before the next one starts. However, many LLMs will issue multiple tool calls in a single response (as shown in the trace above, where both `schedule_event` and `manage_email` are called together), which the runtime executes in parallel. You can also configure explicit parallel dispatch. See the [`create_supervisor` reference docs](https://reference.langchain.com/python/langgraph-supervisor/supervisor/create_supervisor) for details.
 
-<Tip>
-  Refer to the [LangSmith trace](https://smith.langchain.com/public/95cd00a3-d1f9-4dba-9731-7bf733fb6a3c/r) to see the detailed information flow for the above run, including individual chat model prompts and responses.
-</Tip>
+> [!TIP]
+>
+> Refer to the [LangSmith trace](https://smith.langchain.com/public/95cd00a3-d1f9-4dba-9731-7bf733fb6a3c/r) to see the detailed information flow for the above run, including individual chat model prompts and responses.
 
 ### Complete working example
 
 Here's everything together in a runnable script:
 
-<Expandable title="View complete code">
-  ```typescript theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  /**
-   * Personal Assistant Supervisor Example
-   *
-   * This example demonstrates the tool calling pattern for multi-agent systems.
-   * A supervisor agent coordinates specialized sub-agents (calendar and email)
-   * that are wrapped as tools.
-   */
+**View complete code**
 
-  import { tool, createAgent } from "langchain";
-  import { ChatAnthropic } from "@langchain/anthropic";
-  import { z } from "zod";
+```typescript theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+/**
+ * Personal Assistant Supervisor Example
+ *
+ * This example demonstrates the tool calling pattern for multi-agent systems.
+ * A supervisor agent coordinates specialized sub-agents (calendar and email)
+ * that are wrapped as tools.
+ */
 
-  // ============================================================================
-  // Step 1: Define low-level API tools (stubbed)
-  // ============================================================================
+import { tool, createAgent } from "langchain";
+import { ChatAnthropic } from "@langchain/anthropic";
+import { z } from "zod";
 
-  const createCalendarEvent = tool(
-    async ({ title, startTime, endTime, attendees, location }) => {
-      // Stub: In practice, this would call Google Calendar API, Outlook API, etc.
-      return `Event created: ${title} from ${startTime} to ${endTime} with ${attendees.length} attendees`;
-    },
-    {
-      name: "create_calendar_event",
-      description: "Create a calendar event. Requires exact ISO datetime format.",
-      schema: z.object({
-        title: z.string(),
-        startTime: z.string().describe("ISO format: '2024-01-15T14:00:00'"),
-        endTime: z.string().describe("ISO format: '2024-01-15T15:00:00'"),
-        attendees: z.array(z.string()).describe("email addresses"),
-        location: z.string().optional().default(""),
-      }),
-    }
-  );
+// ============================================================================
+// Step 1: Define low-level API tools (stubbed)
+// ============================================================================
 
-  const sendEmail = tool(
-    async ({ to, subject, body, cc }) => {
-      // Stub: In practice, this would call SendGrid, Gmail API, etc.
-      return `Email sent to ${to.join(", ")} - Subject: ${subject}`;
-    },
-    {
-      name: "send_email",
-      description:
-        "Send an email via email API. Requires properly formatted addresses.",
-      schema: z.object({
-        to: z.array(z.string()).describe("email addresses"),
-        subject: z.string(),
-        body: z.string(),
-        cc: z.array(z.string()).optional().default([]),
-      }),
-    }
-  );
+const createCalendarEvent = tool(
+  async ({ title, startTime, endTime, attendees, location }) => {
+    // Stub: In practice, this would call Google Calendar API, Outlook API, etc.
+    return `Event created: ${title} from ${startTime} to ${endTime} with ${attendees.length} attendees`;
+  },
+  {
+    name: "create_calendar_event",
+    description: "Create a calendar event. Requires exact ISO datetime format.",
+    schema: z.object({
+      title: z.string(),
+      startTime: z.string().describe("ISO format: '2024-01-15T14:00:00'"),
+      endTime: z.string().describe("ISO format: '2024-01-15T15:00:00'"),
+      attendees: z.array(z.string()).describe("email addresses"),
+      location: z.string().optional().default(""),
+    }),
+  }
+);
 
-  const getAvailableTimeSlots = tool(
-    async ({ attendees, date, durationMinutes }) => {
-      // Stub: In practice, this would query calendar APIs
-      return ["09:00", "14:00", "16:00"];
-    },
-    {
-      name: "get_available_time_slots",
-      description:
-        "Check calendar availability for given attendees on a specific date.",
-      schema: z.object({
-        attendees: z.array(z.string()),
-        date: z.string().describe("ISO format: '2024-01-15'"),
-        durationMinutes: z.number(),
-      }),
-    }
-  );
+const sendEmail = tool(
+  async ({ to, subject, body, cc }) => {
+    // Stub: In practice, this would call SendGrid, Gmail API, etc.
+    return `Email sent to ${to.join(", ")} - Subject: ${subject}`;
+  },
+  {
+    name: "send_email",
+    description:
+      "Send an email via email API. Requires properly formatted addresses.",
+    schema: z.object({
+      to: z.array(z.string()).describe("email addresses"),
+      subject: z.string(),
+      body: z.string(),
+      cc: z.array(z.string()).optional().default([]),
+    }),
+  }
+);
 
-  // ============================================================================
-  // Step 2: Create specialized sub-agents
-  // ============================================================================
+const getAvailableTimeSlots = tool(
+  async ({ attendees, date, durationMinutes }) => {
+    // Stub: In practice, this would query calendar APIs
+    return ["09:00", "14:00", "16:00"];
+  },
+  {
+    name: "get_available_time_slots",
+    description:
+      "Check calendar availability for given attendees on a specific date.",
+    schema: z.object({
+      attendees: z.array(z.string()),
+      date: z.string().describe("ISO format: '2024-01-15'"),
+      durationMinutes: z.number(),
+    }),
+  }
+);
 
-  const llm = new ChatAnthropic({
-    model: "gpt-5.5",
-  });
+// ============================================================================
+// Step 2: Create specialized sub-agents
+// ============================================================================
 
-  const now = new Date();
-  const today = [
-    now.getFullYear(),
-    String(now.getMonth() + 1).padStart(2, "0"),
-    String(now.getDate()).padStart(2, "0"),
-  ].join("-");
+const llm = new ChatAnthropic({
+  model: "gpt-5.5",
+});
 
-  const calendarAgent = createAgent({
-    model: llm,
-    tools: [createCalendarEvent, getAvailableTimeSlots],
-    systemPrompt: `
-  Today's date is ${today}.
-  You are a calendar scheduling assistant.
-  Parse natural language scheduling requests (e.g., 'next Tuesday at 2pm')
-  into proper ISO datetime formats.
-  Use get_available_time_slots to check availability when needed.
-  If there is no suitable time slot, stop and confirm unavailability in your response.
-  Use create_calendar_event to schedule events.
-  Always confirm what was scheduled in your final response.
+const now = new Date();
+const today = [
+  now.getFullYear(),
+  String(now.getMonth() + 1).padStart(2, "0"),
+  String(now.getDate()).padStart(2, "0"),
+].join("-");
+
+const calendarAgent = createAgent({
+  model: llm,
+  tools: [createCalendarEvent, getAvailableTimeSlots],
+  systemPrompt: `
+Today's date is ${today}.
+You are a calendar scheduling assistant.
+Parse natural language scheduling requests (e.g., 'next Tuesday at 2pm')
+into proper ISO datetime formats.
+Use get_available_time_slots to check availability when needed.
+If there is no suitable time slot, stop and confirm unavailability in your response.
+Use create_calendar_event to schedule events.
+Always confirm what was scheduled in your final response.
+  `.trim(),
+});
+
+const emailAgent = createAgent({
+  model: llm,
+  tools: [sendEmail],
+  systemPrompt: `
+You are an email assistant.
+Compose professional emails based on natural language requests.
+Extract recipient information and craft appropriate subject lines and body text.
+Use send_email to send the message.
+Always confirm what was sent in your final response.
+  `.trim(),
+});
+
+// ============================================================================
+// Step 3: Wrap sub-agents as tools for the supervisor
+// ============================================================================
+
+const scheduleEvent = tool(
+  async ({ request }) => {
+    const result = await calendarAgent.invoke({
+      messages: [{ role: "user", content: request }],
+    });
+    const lastMessage = result.messages[result.messages.length - 1];
+    return lastMessage.text;
+  },
+  {
+    name: "schedule_event",
+    description: `
+Schedule calendar events using natural language.
+
+Use this when the user wants to create, modify, or check calendar appointments.
+Handles date/time parsing, availability checking, and event creation.
+
+Input: Natural language scheduling request (e.g., 'meeting with design team next Tuesday at 2pm')
     `.trim(),
-  });
+    schema: z.object({
+      request: z.string().describe("Natural language scheduling request"),
+    }),
+  }
+);
 
-  const emailAgent = createAgent({
-    model: llm,
-    tools: [sendEmail],
-    systemPrompt: `
-  You are an email assistant.
-  Compose professional emails based on natural language requests.
-  Extract recipient information and craft appropriate subject lines and body text.
-  Use send_email to send the message.
-  Always confirm what was sent in your final response.
+const manageEmail = tool(
+  async ({ request }) => {
+    const result = await emailAgent.invoke({
+      messages: [{ role: "user", content: request }],
+    });
+    const lastMessage = result.messages[result.messages.length - 1];
+    return lastMessage.text;
+  },
+  {
+    name: "manage_email",
+    description: `
+Send emails using natural language.
+
+Use this when the user wants to send notifications, reminders, or any email communication.
+Handles recipient extraction, subject generation, and email composition.
+
+Input: Natural language email request (e.g., 'send them a reminder about the meeting')
     `.trim(),
-  });
+    schema: z.object({
+      request: z.string().describe("Natural language email request"),
+    }),
+  }
+);
 
-  // ============================================================================
-  // Step 3: Wrap sub-agents as tools for the supervisor
-  // ============================================================================
+// ============================================================================
+// Step 4: Create the supervisor agent
+// ============================================================================
 
-  const scheduleEvent = tool(
-    async ({ request }) => {
-      const result = await calendarAgent.invoke({
-        messages: [{ role: "user", content: request }],
-      });
-      const lastMessage = result.messages[result.messages.length - 1];
-      return lastMessage.text;
-    },
-    {
-      name: "schedule_event",
-      description: `
-  Schedule calendar events using natural language.
+const supervisorAgent = createAgent({
+  model: llm,
+  tools: [scheduleEvent, manageEmail],
+  systemPrompt: `
+You are a helpful personal assistant.
+You can schedule calendar events and send emails.
+Break down user requests into appropriate tool calls and coordinate the results.
+When a request involves multiple actions, use multiple tools in sequence.
+  `.trim(),
+});
 
-  Use this when the user wants to create, modify, or check calendar appointments.
-  Handles date/time parsing, availability checking, and event creation.
+// ============================================================================
+// Step 5: Use the supervisor
+// ============================================================================
 
-  Input: Natural language scheduling request (e.g., 'meeting with design team next Tuesday at 2pm')
-      `.trim(),
-      schema: z.object({
-        request: z.string().describe("Natural language scheduling request"),
-      }),
-    }
-  );
+// Example: User request requiring both calendar and email coordination
+const userRequest =
+  "Schedule a meeting with the design team next Tuesday at 2pm for 1 hour, " +
+  "and send them an email reminder about reviewing the new mockups.";
 
-  const manageEmail = tool(
-    async ({ request }) => {
-      const result = await emailAgent.invoke({
-        messages: [{ role: "user", content: request }],
-      });
-      const lastMessage = result.messages[result.messages.length - 1];
-      return lastMessage.text;
-    },
-    {
-      name: "manage_email",
-      description: `
-  Send emails using natural language.
+console.log("User Request:", userRequest);
+console.log(`\n${"=".repeat(80)}\n`);
 
-  Use this when the user wants to send notifications, reminders, or any email communication.
-  Handles recipient extraction, subject generation, and email composition.
+const stream = await supervisorAgent.streamEvents(
+  { messages: [{ role: "user", content: userRequest }] },
+  { version: "v3" }
+);
 
-  Input: Natural language email request (e.g., 'send them a reminder about the meeting')
-      `.trim(),
-      schema: z.object({
-        request: z.string().describe("Natural language email request"),
-      }),
-    }
-  );
-
-  // ============================================================================
-  // Step 4: Create the supervisor agent
-  // ============================================================================
-
-  const supervisorAgent = createAgent({
-    model: llm,
-    tools: [scheduleEvent, manageEmail],
-    systemPrompt: `
-  You are a helpful personal assistant.
-  You can schedule calendar events and send emails.
-  Break down user requests into appropriate tool calls and coordinate the results.
-  When a request involves multiple actions, use multiple tools in sequence.
-    `.trim(),
-  });
-
-  // ============================================================================
-  // Step 5: Use the supervisor
-  // ============================================================================
-
-  // Example: User request requiring both calendar and email coordination
-  const userRequest =
-    "Schedule a meeting with the design team next Tuesday at 2pm for 1 hour, " +
-    "and send them an email reminder about reviewing the new mockups.";
-
-  console.log("User Request:", userRequest);
-  console.log(`\n${"=".repeat(80)}\n`);
-
-  const stream = await supervisorAgent.streamEvents(
-    { messages: [{ role: "user", content: userRequest }] },
-    { version: "v3" }
-  );
-
-  await Promise.all([
-    (async () => {
-      for await (const message of stream.messages) {
-        for await (const token of message.text) {
-          process.stdout.write(token);
-        }
+await Promise.all([
+  (async () => {
+    for await (const message of stream.messages) {
+      for await (const token of message.text) {
+        process.stdout.write(token);
       }
-    })(),
-    (async () => {
-      for await (const call of stream.toolCalls) {
-        console.log(`\nTool call: ${call.name}(${JSON.stringify(call.input)})`);
-        console.log(`Tool result: ${await call.output}`);
-      }
-    })(),
-  ]);
-  ```
-</Expandable>
+    }
+  })(),
+  (async () => {
+    for await (const call of stream.toolCalls) {
+      console.log(`\nTool call: ${call.name}(${JSON.stringify(call.input)})`);
+      console.log(`Tool result: ${await call.output}`);
+    }
+  })(),
+]);
+```
 
 ### Understanding the architecture
 
@@ -1164,9 +1138,9 @@ ${request}
 
 This allows sub-agents to see the full conversation context, which can be useful for resolving ambiguities like "schedule it for the same time tomorrow" (referencing a previous conversation).
 
-<Tip>
-  You can see the full context received by the sub agent in the [chat model call](https://smith.langchain.com/public/c7d54882-afb8-4039-9c5a-4112d0f458b0/r/6803571e-af78-4c68-904a-ecf55771084d) of the LangSmith trace.
-</Tip>
+> [!TIP]
+>
+> You can see the full context received by the sub agent in the [chat model call](https://smith.langchain.com/public/c7d54882-afb8-4039-9c5a-4112d0f458b0/r/6803571e-af78-4c68-904a-ecf55771084d) of the LangSmith trace.
 
 ### Control what supervisor receives
 
@@ -1203,21 +1177,21 @@ const scheduleEvent = tool(
 
 **Important:** Make sure sub-agent prompts emphasize that their final message should contain all relevant information. A common failure mode is sub-agents that perform tool calls but don't include the results in their final response.
 
-<Tip>
-  For a complete working example that demonstrates the full supervisor pattern with human-in-the-loop review and advanced information flow control, check out [`supervisor_complete.ts`](https://github.com/langchain-ai/langchainjs/blob/main/examples/src/createAgent/supervisor.ts) in the LangChain.js examples.
-</Tip>
+> [!TIP]
+>
+> For a complete working example that demonstrates the full supervisor pattern with human-in-the-loop review and advanced information flow control, check out [`supervisor_complete.ts`](https://github.com/langchain-ai/langchainjs/blob/main/examples/src/createAgent/supervisor.ts) in the LangChain.js examples.
 
 ## 8. Key takeaways
 
 The supervisor pattern creates layers of abstraction where each layer has a clear responsibility. When designing a supervisor system, start with clear domain boundaries and give each sub-agent focused tools and prompts. Write clear tool descriptions for the supervisor, test each layer independently before integration, and control information flow based on your specific needs.
 
-<Tip>
-  **When to use the supervisor pattern**
-
-  Use the supervisor pattern when you have multiple distinct domains (calendar, email, CRM, database), each domain has multiple tools or complex logic, you want centralized workflow control, and sub-agents don't need to converse directly with users.
-
-  For simpler cases with just a few tools, use a single agent. When agents need to have conversations with users, use [handoffs](/oss/javascript/langchain/multi-agent/handoffs) instead. For peer-to-peer collaboration between agents, consider other multi-agent patterns.
-</Tip>
+> [!TIP]
+>
+> **When to use the supervisor pattern**
+>
+> Use the supervisor pattern when you have multiple distinct domains (calendar, email, CRM, database), each domain has multiple tools or complex logic, you want centralized workflow control, and sub-agents don't need to converse directly with users.
+>
+> For simpler cases with just a few tools, use a single agent. When agents need to have conversations with users, use [handoffs](/oss/javascript/langchain/multi-agent/handoffs) instead. For peer-to-peer collaboration between agents, consider other multi-agent patterns.
 
 ## Next steps
 
@@ -1225,12 +1199,6 @@ Learn about [handoffs](/oss/javascript/langchain/multi-agent/handoffs) for agent
 
 ***
 
-<div>
-  <Callout icon="terminal-2">
-    [Connect these docs](/use-these-docs) to your agent of choice via MCP for real-time answers.
-  </Callout>
+[Connect these docs](/use-these-docs) to your agent of choice via MCP for real-time answers.
 
-  <Callout icon="edit">
-    [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/oss/langchain/multi-agent/subagents-personal-assistant.mdx) or [file an issue](https://github.com/langchain-ai/docs/issues/new/choose).
-  </Callout>
-</div>
+[Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/oss/langchain/multi-agent/subagents-personal-assistant.mdx) or [file an issue](https://github.com/langchain-ai/docs/issues/new/choose).

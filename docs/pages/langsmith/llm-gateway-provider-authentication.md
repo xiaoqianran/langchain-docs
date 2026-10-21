@@ -4,9 +4,9 @@
 
 Configure identity-based authentication between the LLM Gateway and model providers that support more than an API key.
 
-<Note>
-  The LLM Gateway is in [beta](/langsmith/release-stages).
-</Note>
+> [!NOTE]
+>
+> The LLM Gateway is in [beta](/langsmith/release-stages).
 
 The gateway authenticates to each model provider with credentials stored in your workspace's Provider Secrets. Most providers need only an API key, which you add in [Admin setup](/langsmith/llm-gateway-admin-setup#1-add-provider-secrets). Some providers also support identity-based authentication, which lets you use the gateway when your organization disables provider API keys.
 
@@ -73,12 +73,6 @@ If Azure returns `PermissionDenied`, confirm that the `Foundry User` role is ass
 
 ***
 
-<div>
-  <Callout icon="terminal-2">
-    [Connect these docs](/use-these-docs) to your agent of choice via MCP for real-time answers.
-  </Callout>
+[Connect these docs](/use-these-docs) to your agent of choice via MCP for real-time answers.
 
-  <Callout icon="edit">
-    [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/llm-gateway-provider-authentication.mdx) or [file an issue](https://github.com/langchain-ai/docs/issues/new/choose).
-  </Callout>
-</div>
+[Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/llm-gateway-provider-authentication.mdx) or [file an issue](https://github.com/langchain-ai/docs/issues/new/choose).

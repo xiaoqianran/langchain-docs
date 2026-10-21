@@ -8,7 +8,14 @@ Checkpointers enable [persistence](/oss/python/langgraph/persistence) in LangGra
 
 To implement your own checkpointer for a custom storage backend, see [Build a custom checkpointer](/oss/python/langgraph/checkpointers#build-a-custom-checkpointer).
 
-<PythonIntegrationComponentMap />
+Integration components
+Arrows show a typical retrieval flow. The highlighted component is the one this page covers.
+
+### Typical retrieval flow
+
+### Agent capabilities
+
+### Execution and state
 
 | Backend | Package | Source |
 | - | - | - |
@@ -33,12 +40,6 @@ To implement your own checkpointer for a custom storage backend, see [Build a cu
 
 ***
 
-<div>
-  <Callout icon="terminal-2">
-    [Connect these docs](/use-these-docs) to your agent of choice via MCP for real-time answers.
-  </Callout>
+[Connect these docs](/use-these-docs) to your agent of choice via MCP for real-time answers.
 
-  <Callout icon="edit">
-    [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/oss/python/integrations/checkpointers/index.mdx) or [file an issue](https://github.com/langchain-ai/docs/issues/new/choose).
-  </Callout>
-</div>
+[Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/oss/python/integrations/checkpointers/index.mdx) or [file an issue](https://github.com/langchain-ai/docs/issues/new/choose).

@@ -31,11 +31,11 @@ Deep Agents Code drafts acceptance criteria for review before starting the task.
 
 How draft criteria are handled depends on your [approval mode](/oss/deepagents/code/approval-modes):
 
-<Accordion title="Review behavior by approval mode">
-  * **Manual**: Always opens the inline review.
-  * **Auto**: Opens the review by default. Set `goals.auto_accept_criteria = true` in `~/.deepagents/config.toml` to apply generated criteria automatically.
-  * **YOLO**: Applies generated criteria without review.
-</Accordion>
+> **Review behavior by approval mode**
+>
+> * **Manual**: Always opens the inline review.
+> * **Auto**: Opens the review by default. Set `goals.auto_accept_criteria = true` in `~/.deepagents/config.toml` to apply generated criteria automatically.
+> * **YOLO**: Applies generated criteria without review.
 
 After the criteria are accepted, the goal stays active across turns until it is paused, completed, blocked, or cleared.
 
@@ -69,18 +69,16 @@ Each follow-up turn is graded against the goal's acceptance criteria until the w
 
 * When a goal's completion is approved, Deep Agents Code clears the goal
 
-<AccordionGroup>
-  <Accordion title="Goal command reference">
-    - `/goal <objective>`: Draft acceptance criteria from a plain-language objective and review them before work begins.
-    - `/goal amend <feedback>`: Propose coordinated updates to the objective and criteria for review.
-    - `/goal pause`: Save the goal without letting it drive work or grading.
-    - `/goal resume`: Reactivate a paused goal and continue from the existing conversation.
-    - `/goal show`: Inspect the current goal, its status, and its criteria.
-    - `/goal clear`: Remove the active goal.
-    - `/goal model [provider:model|clear]`: Set or clear the model that grades the goal.
-    - `/goal max-iterations <N|clear>`: Set or clear the maximum grading iterations for the goal.
-  </Accordion>
-</AccordionGroup>
+> **Goal command reference**
+>
+> * `/goal <objective>`: Draft acceptance criteria from a plain-language objective and review them before work begins.
+> * `/goal amend <feedback>`: Propose coordinated updates to the objective and criteria for review.
+> * `/goal pause`: Save the goal without letting it drive work or grading.
+> * `/goal resume`: Reactivate a paused goal and continue from the existing conversation.
+> * `/goal show`: Inspect the current goal, its status, and its criteria.
+> * `/goal clear`: Remove the active goal.
+> * `/goal model [provider:model|clear]`: Set or clear the model that grades the goal.
+> * `/goal max-iterations <N|clear>`: Set or clear the maximum grading iterations for the goal.
 
 ## Use a rubric
 
@@ -94,31 +92,29 @@ Use `/rubric` when you already know the acceptance criteria and want them to act
 
 A sticky rubric applies to future turns until cleared. A next-turn rubric applies only to the next submitted task.
 
-<AccordionGroup>
-  <Accordion title="Rubric command reference">
-    * `/rubric show`: Inspect the active rubric.
-    * `/rubric clear`: Remove the active rubric.
-    * `/rubric model <provider:model>`: Set the model that grades rubric results.
-  </Accordion>
+> **Rubric command reference**
+>
+> * `/rubric show`: Inspect the active rubric.
+> * `/rubric clear`: Remove the active rubric.
+> * `/rubric model <provider:model>`: Set the model that grades rubric results.
 
-  <Accordion title="Use rubrics in non-interactive mode">
-    Non-interactive runs cannot pause for goal review. Use `--rubric` for tasks where criteria are already known:
-
-    ```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-    dcode -n "implement OAuth refresh handling" --rubric "tests pass; no unrelated files changed"
-    dcode -n "implement OAuth refresh handling" --rubric @acceptance.md
-    ```
-
-    You can also set the grader model and maximum grading iterations:
-
-    ```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-    dcode -n "implement OAuth refresh handling" \
-      --rubric "tests pass; no unrelated files changed" \
-      --rubric-model openai:gpt-5.5 \
-      --rubric-max-iterations 3
-    ```
-  </Accordion>
-</AccordionGroup>
+> **Use rubrics in non-interactive mode**
+>
+> Non-interactive runs cannot pause for goal review. Use `--rubric` for tasks where criteria are already known:
+>
+> ```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> dcode -n "implement OAuth refresh handling" --rubric "tests pass; no unrelated files changed"
+> dcode -n "implement OAuth refresh handling" --rubric @acceptance.md
+> ```
+>
+> You can also set the grader model and maximum grading iterations:
+>
+> ```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> dcode -n "implement OAuth refresh handling" \
+>   --rubric "tests pass; no unrelated files changed" \
+>   --rubric-model openai:gpt-5.5 \
+>   --rubric-max-iterations 3
+> ```
 
 ## See also
 
@@ -127,12 +123,6 @@ A sticky rubric applies to future turns until cleared. A next-turn rubric applie
 
 ***
 
-<div>
-  <Callout icon="terminal-2">
-    [Connect these docs](/use-these-docs) to your agent of choice via MCP for real-time answers.
-  </Callout>
+[Connect these docs](/use-these-docs) to your agent of choice via MCP for real-time answers.
 
-  <Callout icon="edit">
-    [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/oss/deepagents/code/goals-and-rubrics.mdx) or [file an issue](https://github.com/langchain-ai/docs/issues/new/choose).
-  </Callout>
-</div>
+[Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/oss/deepagents/code/goals-and-rubrics.mdx) or [file an issue](https://github.com/langchain-ai/docs/issues/new/choose).

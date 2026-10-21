@@ -4,52 +4,57 @@
 
 # LangSmith 聊天
 
-Use Chat in LangSmith to analyze traces, threads, prompts, and evaluations.
+使用LangSmith中的聊天来分析跟踪、线程、提示和评估。
 
-**LangSmith Chat** (formerly Polly) is built directly into your LangSmith [workspace](/langsmith/administration-overview#workspaces) to help you analyze and understand your application data.
+**LangSmith Chat**（以前称为 Polly）直接内置于您的 LangSmith [workspace](/langsmith/administration-overview#workspaces) 中，以帮助您分析和理解您的应用程序数据。
 
 聊天可帮助您从跟踪、对话线程和提示中获得洞察，而无需手动挖掘数据。通过提出自然语言问题，您可以快速了解代理性能、调试问题并分析用户情绪。
 
-<img alt="LangSmith Chat icon" /> Chat appears in the right-hand bottom corner of the following locations within [LangSmith UI](https://smith.langchain.com?utm_source=docs\&utm_medium=cta\&utm_campaign=langsmith-signup\&utm_content=langsmith-chat):
+![LangSmith Chat icon](https://mintcdn.com/langchain-5e9cc07a/NVEcSyCXgAhfub1c/images/brand/polly-icon.png?fit=max\&auto=format\&n=NVEcSyCXgAhfub1c\&q=85\&s=d58c4caab502fcaa02864b5a8f833604) 聊天出现在 [LangSmith UI](https://smith.langchain.com?utm_source=docs\&utm_medium=cta\&utm_campaign=langsmith-signup\&utm_content=langsmith-chat) 内以下位置的右下角：
 
-<br /><br />**可观察性和调试：**
+\
+\
+**可观察性和调试：**
 
 * [Projects](#projects)：浏览和过滤整个项目的运行。
-* [Trace pages](#trace-pages): Analyze individual runs and execution traces.
-* [Thread views](#thread-views): Understand conversation threads and user interactions.
+* [Trace pages](#trace-pages)：分析各个运行和执行跟踪。
+* [Thread views](#thread-views)：了解对话线程和用户交互。
 * [Engine](#engine)：调查检测到的问题及其链接的痕迹。
 
 **及时工程：**
 
 * [Playground](#playground)：编辑优化提示。
-* [Prompt Hub pages](#prompt-hub-pages): Explore and understand shared prompts.
+* [Prompt Hub pages](#prompt-hub-pages)：探索并理解共享提示。
 
 **评估与测试：**
 
 * [Dataset Experiments](#dataset-experiments)：分析实验结果并比较运行。
-* [Dataset Examples](#dataset-examples): Browse and understand dataset structure.
+* [Dataset Examples](#dataset-examples)：浏览并了解数据集结构。
 * [Annotation Queues](#annotation-queues)：审查运行并做出明智的注释决策。
-* [Evaluators](#evaluators): Build and refine evaluators with AI assistance.<img alt="Chat in the sidebar on a dataset view." />
+* [Evaluators](#evaluators)：在人工智能辅助下构建和完善评估器。
 
-<img alt="Chat in the sidebar on a dataset view." />
-
-## 开始吧
+![Chat in the sidebar on a dataset view.](https://mintcdn.com/langchain-5e9cc07a/Cd9j6FYj16b1asiM/langsmith/images/polly-datasets-light.png?fit=max\&auto=format\&n=Cd9j6FYj16b1asiM\&q=85\&s=771a678928374d181e5d9d5e33d16cb0)## 开始吧
 
 在开始使用 Chat 之前，您需要为您使用的模型添加 API 密钥：
 
 在 [LangSmith UI](https://smith.langchain.com?utm_source=docs\&utm_medium=cta\&utm_campaign=langsmith-signup\&utm_content=snippets-langsmith-set-workspace-secrets) 中，确保您的 API 密钥设置为 [workspace secret](/langsmith/set-up-hierarchy#configure-workspace-settings)。
 
-1. 导航至 <Icon icon="settings" /> **设置**，然后移至 **秘密** 选项卡。
-2. 选择 **添加密钥** 并输入密钥环境变量（例如`OPENAI_API_KEY` 或 `ANTHROPIC_API_KEY`）以及您的 API 密钥作为 **值**。
-3. 选择**保存机密**。
+添加工作区机密需要管理工作区中机密的权限。如果您没有，请要求工作区管理员为您添加密钥或授予您访问权限。
 
-<Note> 在 LangSmith UI 中添加工作区密钥时，请确保密钥与模型提供程序期望的环境变量名称匹配。</Note>
+要添加工作区机密：
 
-<Note>如果您的提供商使用 OAuth2 `client_credentials` 进行身份验证，请改为在模型配置上配置凭据。在这种情况下，不需要工作空间机密。参见[OAuth client credentials](/langsmith/model-configurations#oauth-client-credentials)。</Note>
+1. 导航到 **设置** > **集成** > **提供商机密**。
+2. 选择 **+ 秘密**。
+3. 在**提供商**下，选择您的模型提供商。 LangSmith 使用提供者期望的环境变量命名机密，例如 `OPENAI_API_KEY`。在该字段中输入您的秘密。
 
-<Note>
-  聊天从 LangSmith 的出口 IP 地址调用模型提供者。如果您的模型提供商（或其前面的代理）通过 IP 限制流量，请将 [Allowlist IP addresses](/langsmith/cloud-platform-features#allowlist-ip-addresses) 中列出的 LangSmith 出口 IP 列入白名单。
-</Note>
+   如果您的提供商未列出，请将**自定义**保留为提供商。输入您的提供商期望的环境变量名称作为 **Key**，并输入您的 API 密钥作为 **Value**。
+4. 选择**保存**。
+
+> [!注意]
+>
+> 如果您的提供商使用 OAuth2 `client_credentials` 进行身份验证，请改为在模型配置上配置凭据。在这种情况下，不需要工作空间机密。参见[OAuth client credentials](/langsmith/model-configurations#oauth-client-credentials)。> [!注意]
+>
+> 从 LangSmith 的出口 IP 地址聊天调用模型提供者。如果您的模型提供商（或其前面的代理）通过 IP 限制流量，请将 [Allowlist IP addresses](/langsmith/cloud-platform-features#allowlist-ip-addresses) 中列出的 LangSmith 出口 IP 列入白名单。
 
 ### 支持的型号
 
@@ -63,7 +68,9 @@ Chat 支持以下开箱即用的模型提供程序：
 * 米斯特拉尔
 * xAI
 * 深度搜索
-* 烟花人工智能您还可以通过启用该配置上的 **在聊天中可用** 切换来使用您在 [Playground Settings](/langsmith/prompt-engineering-concepts#playground) 中配置的任何自定义模型。工作区管理员管理哪些自定义模型可用。
+* 烟花人工智能
+
+您还可以通过启用该配置上的 **在聊天中可用** 切换来使用您在 [Playground Settings](/langsmith/prompt-engineering-concepts#playground) 中配置的任何自定义模型。工作区管理员管理哪些自定义模型可用。
 
 ### 键盘快捷键
 
@@ -85,11 +92,11 @@ Chat 支持以下开箱即用的模型提供程序：
 *“将失败的运行添加到我的测试数据集中”
 *“本周有多少次运行出错？”
 
-### 跟踪页面
+### 跟踪页面在单个[trace](/langsmith/observability-concepts#traces)上，Chat分析[run](/langsmith/observability-concepts#runs)数据和执行轨迹。 Chat 检查完整的跟踪上下文，包括 [run metadata](/langsmith/observability-concepts#metadata)、输入、输出、中间步骤和配置，以帮助您了解发生的情况并确定需要改进的领域。
 
-在单个[trace](/langsmith/observability-concepts#traces)上，Chat分析[run](/langsmith/observability-concepts#runs)数据和执行轨迹。 Chat 检查完整的跟踪上下文，包括 [run metadata](/langsmith/observability-concepts#metadata)、输入、输出、中间步骤和配置，以帮助您了解发生的情况并确定需要改进的领域。
+**问题示例：**
 
-**问题示例：***“代理有什么可以做得更好的地方吗？”
+*“代理有什么可以做得更好的地方吗？”
 *“为什么这次运行失败了？”
 *“在这个跟踪中什么花费了最多的时间？”
 *“总结一下这段跟踪中发生了什么”
@@ -109,9 +116,7 @@ Chat 支持以下开箱即用的模型提供程序：
 
 在 [Engine](/langsmith/engine-issues) 页面上，打开聊天以调查检测到的问题及其链接的跟踪。聊天可以帮助您了解所选问题，或回答多个引擎问题的问题。例如：
 
-**问题示例：**
-
-*“出了什么问题？”
+**问题示例：***“出了什么问题？”
 *“为什么会被标记？”
 *“解释建议的修复”
 *“我最紧迫的问题是什么？”
@@ -119,29 +124,31 @@ Chat 支持以下开箱即用的模型提供程序：
 
 ## 快速工程
 
-### 游乐场在[Playground](/langsmith/prompt-engineering-concepts#playground)中，Chat可以帮助您编辑和优化您的[prompts](/langsmith/prompt-engineering-concepts#prompts-in-langsmith)。使用**优化提示**、**生成工具**或**生成输出架构**等自动化选项，或为 Chat 提供编辑提示的自定义说明。聊天可以直接修改 Playground 状态——更新消息、工具、输出模式和示例——这样您就可以通过对话方式迭代提示。
+### 游乐场
+
+在[Playground](/langsmith/prompt-engineering-concepts#playground)中，Chat可以帮助您编辑和优化您的[prompts](/langsmith/prompt-engineering-concepts#prompts-in-langsmith)。使用**优化提示**、**生成工具**或**生成输出架构**等自动化选项，或为 Chat 提供编辑提示的自定义说明。聊天可以直接修改 Playground 状态——更新消息、工具、输出模式和示例——这样您就可以通过对话方式迭代提示。
 
 **问题示例：**
 
-* "Make it respond in Italian"
-* "Add more context about the user's role"
-* "Make the tone more professional"
+*“让它用意大利语回应”
+*“添加更多有关用户角色的上下文”
+*“让语气更专业”
 *“简化说明”
 
-### Prompt Hub pages
+### 提示中心页面
 
-在 [LangSmith Hub](/langsmith/prompt-engineering-concepts#prompts-in-langsmith) 中查看提示时，聊天可帮助您了解提示的结构、消息、工具和配置。这对于探索和学习共享提示非常有用。
+在[LangSmith Hub](/langsmith/prompt-engineering-concepts#prompts-in-langsmith)中查看提示时，聊天可帮助您了解提示的结构、消息、工具和配置。这对于探索和学习共享提示非常有用。
 
 **问题示例：**
 
-* "What does this prompt do?"
-* "What tools does this prompt use?"
-* "Explain the structure of this prompt"
+*“这个提示有什么作用？”
+*“这个提示使用什么工具？”
+*“解释一下这个提示的结构”
 * “此提示中的关键说明是什么？”
 
-## Evaluation
+## 评价
 
-### Dataset Experiments在 **实验** 选项卡下的 **数据集** 页面上，Chat 分析实验结果并帮助您比较不同实验的运行情况。聊天可以识别模式、总结性能并帮助您了解哪些方法最有效。
+### 数据集实验在 **实验** 选项卡下的 **数据集** 页面上，Chat 分析实验结果并帮助您比较不同实验的运行情况。聊天可以识别模式、总结性能并帮助您了解哪些方法最有效。
 
 **问题示例：**
 
@@ -152,7 +159,7 @@ Chat 支持以下开箱即用的模型提供程序：
 
 ### 数据集示例
 
-在**示例**选项卡下的**数据集**页面上，Chat 可帮助您了解数据集结构、浏览示例并识别数据模式。这对于了解您正在使用的数据以及准备实验数据集非常有用。
+在**示例**选项卡下的**数据集**页面上，Chat 可帮助您了解数据集结构、浏览示例并识别数据模式。这对于了解您正在使用哪些数据以及准备实验数据集非常有用。
 
 **问题示例：**
 
@@ -185,32 +192,24 @@ Chat 支持以下开箱即用的模型提供程序：
 
 详细了解 Chat 可帮助您探索的功能：
 
-<CardGroup>
-  <Card title="Observability" icon="search" href="/langsmith/observability">
-    了解有关跟踪和监控您的 LLM 申请的更多信息
-  </Card>
+> **[Observability](/langsmith/observability)**
+>
+> 了解有关跟踪和监控您的 LLM 申请的更多信息
 
-  <Card title="Threads" icon="messages" href="/langsmith/threads">
-    了解线程在 LangSmith 中的工作原理
-  </Card>
+> **[Threads](/langsmith/threads)**
+>
+> 了解LangSmith中线程的工作原理
 
-  <Card title="Prompt Engineering" icon="wand" href="/langsmith/prompt-context-hub#prompts">
-    在 Playground 中创建并迭代提示
-  </Card>
+> **[Prompt Engineering](/langsmith/prompt-context-hub#prompts)**
+>
+> 在 Playground 中创建并迭代提示
 
-  <Card title="Evaluation" icon="clipboard-check" href="/langsmith/evaluation">
-    系统地评估和测试您的应用程序
-  </Card>
-</CardGroup>
+> **[Evaluation](/langsmith/evaluation)**
+>
+> 系统地评估和测试您的应用程序
 
 ***
 
-<div>
-  <Callout icon="terminal-2">
-    [Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时答案。
-  </Callout>
+[Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
 
-  <Callout icon="edit">
-    [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/chat.mdx) 或 [file an issue](https://github.com/langchain-ai/docs/issues/new/choose)。
-  </Callout>
-</div>
+[Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/chat.mdx) 或 [file an issue](https://github.com/langchain-ai/docs/issues/new/choose)。

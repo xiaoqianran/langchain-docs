@@ -4,9 +4,9 @@
 
 Understand what the LLM Gateway does to each request, how upstream credentials are resolved, and where the gateway is available.
 
-<Note>
-  The LLM Gateway is in [beta](/langsmith/release-stages).
-</Note>
+> [!NOTE]
+>
+> The LLM Gateway is in [beta](/langsmith/release-stages).
 
 The LLM Gateway sits between your application and the model providers your workspace has configured. It authenticates the caller, selects an upstream route, applies governance policies, translates between API formats, and traces the result.
 
@@ -74,9 +74,9 @@ On BYOC, replace the gateway hostname with your [data plane endpoint](/langsmith
 
 Authenticate with an API key scoped to a workspace in that data plane, passed either as an `Authorization: Bearer` token or as the provider API key. Provider secrets, model IDs, policies, and tracing behave the same as on Cloud.
 
-<Warning>
-  Data planes are provisioned with a private endpoint by default, so you need private connectivity to reach the base URL, such as Tailscale, AWS PrivateLink, or VPC peering.
-</Warning>
+> [!WARNING]
+>
+> Data planes are provisioned with a private endpoint by default, so you need private connectivity to reach the base URL, such as Tailscale, AWS PrivateLink, or VPC peering.
 
 ### Use a self-hosted installation
 
@@ -99,12 +99,6 @@ Authenticate with an API key scoped to a workspace in your installation, passed 
 
 ***
 
-<div>
-  <Callout icon="terminal-2">
-    [Connect these docs](/use-these-docs) to your agent of choice via MCP for real-time answers.
-  </Callout>
+[Connect these docs](/use-these-docs) to your agent of choice via MCP for real-time answers.
 
-  <Callout icon="edit">
-    [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/llm-gateway-how-it-works.mdx) or [file an issue](https://github.com/langchain-ai/docs/issues/new/choose).
-  </Callout>
-</div>
+[Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/llm-gateway-how-it-works.mdx) or [file an issue](https://github.com/langchain-ai/docs/issues/new/choose).

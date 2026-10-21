@@ -10,29 +10,27 @@ Source: [`js-sveltekit`](https://github.com/langchain-ai/deployment-cookbook/tre
 
 ## Deploy to Cloudflare
 
-<Steps>
-  <Step title="Install and build">
-    ```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-    cd js-sveltekit
-    cp .env.example .env   # set OPENAI_API_KEY for local dev
-    pnpm install
-    pnpm build
-    ```
-  </Step>
+**1. Install and build**
 
-  <Step title="Configure secrets">
-    ```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-    npx wrangler login
-    npx wrangler secret put OPENAI_API_KEY
-    ```
-  </Step>
+```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+cd js-sveltekit
+cp .env.example .env   # set OPENAI_API_KEY for local dev
+pnpm install
+pnpm build
+```
 
-  <Step title="Deploy">
-    ```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-    pnpm run deploy
-    ```
-  </Step>
-</Steps>
+**2. Configure secrets**
+
+```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+npx wrangler login
+npx wrangler secret put OPENAI_API_KEY
+```
+
+**3. Deploy**
+
+```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+pnpm run deploy
+```
 
 `svelte.config.js` uses `adapter-cloudflare()`. `wrangler.jsonc` points Wrangler at `.svelte-kit/cloudflare/_worker.js` and serves assets from `.svelte-kit/cloudflare`, matching the SvelteKit Cloudflare adapter docs. The build script appends the `ThreadSession` Durable Object export to that generated Worker entry because Durable Object classes must be exported by the Worker module.
 
@@ -107,19 +105,17 @@ npx wrangler dev .svelte-kit/cloudflare/_worker.js
 
 ## Project layout
 
-<AccordionGroup>
-  <Accordion title="Project structure">
-    * `src/lib/server/agent/` — deep agent (`createDeepAgent`) with `researcher` and `math-whiz` subagents and mock tools.
-    * `src/lib/server/durable-objects/thread-session.ts` — per-thread Durable Object event log for SSE replay.
-    * `src/lib/server/protocol/` — Agent Streaming Protocol helpers: checkpointer-backed state/history, run publishing, serialization, and registry.
-    * `src/routes/api/threads/` — SvelteKit route handlers for the protocol endpoints.
-    * `src/lib/chat/threads-client.ts` — browser thread bootstrap and sidebar helpers.
-    * `src/lib/components/` — Svelte chat UI using `@langchain/svelte`.
-    * `svelte.config.js` — SvelteKit configured with `@sveltejs/adapter-cloudflare`.
-    * `scripts/export-durable-objects.mjs` — postbuild patch that re-exports the Durable Object class from the generated Worker entry.
-    * `wrangler.jsonc` — Cloudflare Workers Static Assets and Durable Object config.
-  </Accordion>
-</AccordionGroup>
+> **Project structure**
+>
+> * `src/lib/server/agent/` — deep agent (`createDeepAgent`) with `researcher` and `math-whiz` subagents and mock tools.
+> * `src/lib/server/durable-objects/thread-session.ts` — per-thread Durable Object event log for SSE replay.
+> * `src/lib/server/protocol/` — Agent Streaming Protocol helpers: checkpointer-backed state/history, run publishing, serialization, and registry.
+> * `src/routes/api/threads/` — SvelteKit route handlers for the protocol endpoints.
+> * `src/lib/chat/threads-client.ts` — browser thread bootstrap and sidebar helpers.
+> * `src/lib/components/` — Svelte chat UI using `@langchain/svelte`.
+> * `svelte.config.js` — SvelteKit configured with `@sveltejs/adapter-cloudflare`.
+> * `scripts/export-durable-objects.mjs` — postbuild patch that re-exports the Durable Object class from the generated Worker entry.
+> * `wrangler.jsonc` — Cloudflare Workers Static Assets and Durable Object config.
 
 ## See also
 
@@ -130,12 +126,6 @@ npx wrangler dev .svelte-kit/cloudflare/_worker.js
 
 ***
 
-<div>
-  <Callout icon="terminal-2">
-    [Connect these docs](/use-these-docs) to your agent of choice via MCP for real-time answers.
-  </Callout>
+[Connect these docs](/use-these-docs) to your agent of choice via MCP for real-time answers.
 
-  <Callout icon="edit">
-    [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/deploy-sveltekit.mdx) or [file an issue](https://github.com/langchain-ai/docs/issues/new/choose).
-  </Callout>
-</div>
+[Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/deploy-sveltekit.mdx) or [file an issue](https://github.com/langchain-ai/docs/issues/new/choose).

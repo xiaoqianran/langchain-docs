@@ -6,27 +6,23 @@ Host and manage LangSmith infrastructure for observability, evaluation, and prom
 
 Set up **LangSmith** for [observability](/langsmith/observability), [evaluation](/langsmith/evaluation), and [prompt engineering](/langsmith/prompt-context-hub#prompts). LangSmith offers Cloud, Bring Your Own Cloud (BYOC), and Self-hosted options. Choose the option that matches where your data has to live and who runs the infrastructure.
 
-<Note>
-  If you also want to deploy agents in production, you can use [**LangSmith Deployment**](/langsmith/deployment) with Cloud, BYOC, or Self-hosted.
-</Note>
+> [!NOTE]
+>
+> If you also want to deploy agents in production, you can use [**LangSmith Deployment**](/langsmith/deployment) with Cloud, BYOC, or Self-hosted.
 
-<CardGroup>
-  <Card title="Cloud" href="/langsmith/cloud" icon="cloud">
-    Fully managed observability, evaluation, and prompt engineering.
-  </Card>
+> **[Cloud](/langsmith/cloud)**
+>
+> Fully managed observability, evaluation, and prompt engineering.
 
-  <Card title="BYOC" href="/langsmith/byoc" icon="cloud-cog">
-    Full control over your data, while LangChain manages the infrastructure.
-  </Card>
+> **[BYOC](/langsmith/byoc)**
+>
+> Full control over your data, while LangChain manages the infrastructure.
 
-  <Card title="Self-hosted" href="/langsmith/self-hosted" icon="server">
-    Full control with observability, evaluation, and prompt engineering in your infrastructure.
-  </Card>
-</CardGroup>
+> **[Self-hosted](/langsmith/self-hosted)**
+>
+> Full control with observability, evaluation, and prompt engineering in your infrastructure.
 
-<Callout>
-  Self-hosted and BYOC are available on the [Enterprise plan](/langsmith/pricing-plans). [Get a demo](https://www.langchain.com/contact-sales) to learn more.
-</Callout>
+Self-hosted and BYOC are available on the [Enterprise plan](/langsmith/pricing-plans). [Get a demo](https://www.langchain.com/contact-sales) to learn more.
 
 ## Compare Cloud, BYOC, and Self-hosted
 
@@ -49,28 +45,20 @@ Cloud, BYOC, and Self-hosted support [LangSmith Deployment](/langsmith/deploymen
 
 ## Related
 
-<CardGroup>
-  <Card title="Account setup" href="/langsmith/admin" icon="user-cog">
-    Create an account, manage API keys, and choose a pricing tier.
-  </Card>
+> **[Account setup](/langsmith/admin)**
+>
+> Create an account, manage API keys, and choose a pricing tier.
 
-  <Card title="Plans and pricing" href="https://www.langchain.com/pricing" icon="credit-card">
-    Compare LangSmith plans and tiers.
-  </Card>
+> **[Plans and pricing](https://www.langchain.com/pricing)**
+>
+> Compare LangSmith plans and tiers.
 
-  <Card title="Observability" href="/langsmith/observability" icon="chart-line">
-    Trace and monitor your LLM applications.
-  </Card>
-</CardGroup>
+> **[Observability](/langsmith/observability)**
+>
+> Trace and monitor your LLM applications.
 
 ***
 
-<div>
-  <Callout icon="terminal-2">
-    [Connect these docs](/use-these-docs) to your agent of choice via MCP for real-time answers.
-  </Callout>
+[Connect these docs](/use-these-docs) to your agent of choice via MCP for real-time answers.
 
-  <Callout icon="edit">
-    [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/platform-setup.mdx) or [file an issue](https://github.com/langchain-ai/docs/issues/new/choose).
-  </Callout>
-</div>
+[Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/platform-setup.mdx) or [file an issue](https://github.com/langchain-ai/docs/issues/new/choose).

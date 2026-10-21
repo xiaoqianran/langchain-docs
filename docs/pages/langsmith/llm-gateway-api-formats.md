@@ -4,9 +4,9 @@
 
 Use OpenAI Chat Completions, Anthropic Messages, or OpenAI Responses requests to call models across providers through the LLM Gateway.
 
-<Note>
-  The LLM Gateway is in [beta](/langsmith/release-stages).
-</Note>
+> [!NOTE]
+>
+> The LLM Gateway is in [beta](/langsmith/release-stages).
 
 The standard LLM Gateway API supports three request and response formats. Choose the format your application already uses, then call bring-your-own-key (BYOK) or Gateway Credits models through the same endpoint.
 
@@ -28,126 +28,120 @@ For BYOK models, set `model` to `<provider>/<model>`, such as `openai/gpt-5.4-mi
 
 Point an OpenAI-compatible client at `https://gateway.smith.langchain.com/v1`. For the full request and response schema, see the [OpenAI Chat Completions API](https://platform.openai.com/docs/api-reference/chat).
 
-<CodeGroup>
-  ```bash cURL theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  curl https://gateway.smith.langchain.com/v1/chat/completions \
-      -H "Authorization: Bearer $LANGSMITH_API_KEY" \
-      -H "Content-Type: application/json" \
-      -d '{"model":"anthropic/claude-opus-5","messages":[{"role":"user","content":"Hello!"}]}'
-  ```
+```bash cURL theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+curl https://gateway.smith.langchain.com/v1/chat/completions \
+    -H "Authorization: Bearer $LANGSMITH_API_KEY" \
+    -H "Content-Type: application/json" \
+    -d '{"model":"anthropic/claude-opus-5","messages":[{"role":"user","content":"Hello!"}]}'
+```
 
-  ```python Python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  import os
+```python Python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+import os
 
-  from openai import OpenAI
+from openai import OpenAI
 
-  client = OpenAI(
-      base_url="https://gateway.smith.langchain.com/v1",
-      api_key=os.environ["LANGSMITH_API_KEY"],
-  )
-  response = client.chat.completions.create(
-      model="anthropic/claude-opus-5",
-      messages=[{"role": "user", "content": "Hello!"}],
-  )
-  ```
+client = OpenAI(
+    base_url="https://gateway.smith.langchain.com/v1",
+    api_key=os.environ["LANGSMITH_API_KEY"],
+)
+response = client.chat.completions.create(
+    model="anthropic/claude-opus-5",
+    messages=[{"role": "user", "content": "Hello!"}],
+)
+```
 
-  ```typescript TypeScript theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  import OpenAI from "openai";
+```typescript TypeScript theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+import OpenAI from "openai";
 
-  const client = new OpenAI({
-    baseURL: "https://gateway.smith.langchain.com/v1",
-    apiKey: process.env.LANGSMITH_API_KEY,
-  });
-  const response = await client.chat.completions.create({
-    model: "anthropic/claude-opus-5",
-    messages: [{ role: "user", content: "Hello!" }],
-  });
-  ```
-</CodeGroup>
+const client = new OpenAI({
+  baseURL: "https://gateway.smith.langchain.com/v1",
+  apiKey: process.env.LANGSMITH_API_KEY,
+});
+const response = await client.chat.completions.create({
+  model: "anthropic/claude-opus-5",
+  messages: [{ role: "user", content: "Hello!" }],
+});
+```
 
 ## Use Messages
 
 Point an Anthropic client at `https://gateway.smith.langchain.com`. For the full request and response schema, see the [Anthropic Messages API](https://docs.anthropic.com/en/api/messages).
 
-<CodeGroup>
-  ```bash cURL theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  curl https://gateway.smith.langchain.com/v1/messages \
-      -H "Authorization: Bearer $LANGSMITH_API_KEY" \
-      -H "Content-Type: application/json" \
-      -d '{"model":"openai/gpt-5.4-mini","max_tokens":1024,"messages":[{"role":"user","content":"Hello!"}]}'
-  ```
+```bash cURL theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+curl https://gateway.smith.langchain.com/v1/messages \
+    -H "Authorization: Bearer $LANGSMITH_API_KEY" \
+    -H "Content-Type: application/json" \
+    -d '{"model":"openai/gpt-5.4-mini","max_tokens":1024,"messages":[{"role":"user","content":"Hello!"}]}'
+```
 
-  ```python Python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  import os
+```python Python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+import os
 
-  import anthropic
+import anthropic
 
-  client = anthropic.Anthropic(
-      base_url="https://gateway.smith.langchain.com",
-      api_key=os.environ["LANGSMITH_API_KEY"],
-  )
-  message = client.messages.create(
-      model="openai/gpt-5.4-mini",
-      max_tokens=1024,
-      messages=[{"role": "user", "content": "Hello!"}],
-  )
-  ```
+client = anthropic.Anthropic(
+    base_url="https://gateway.smith.langchain.com",
+    api_key=os.environ["LANGSMITH_API_KEY"],
+)
+message = client.messages.create(
+    model="openai/gpt-5.4-mini",
+    max_tokens=1024,
+    messages=[{"role": "user", "content": "Hello!"}],
+)
+```
 
-  ```typescript TypeScript theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  import Anthropic from "@anthropic-ai/sdk";
+```typescript TypeScript theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+import Anthropic from "@anthropic-ai/sdk";
 
-  const client = new Anthropic({
-    baseURL: "https://gateway.smith.langchain.com",
-    apiKey: process.env.LANGSMITH_API_KEY,
-  });
-  const message = await client.messages.create({
-    model: "openai/gpt-5.4-mini",
-    max_tokens: 1024,
-    messages: [{ role: "user", content: "Hello!" }],
-  });
-  ```
-</CodeGroup>
+const client = new Anthropic({
+  baseURL: "https://gateway.smith.langchain.com",
+  apiKey: process.env.LANGSMITH_API_KEY,
+});
+const message = await client.messages.create({
+  model: "openai/gpt-5.4-mini",
+  max_tokens: 1024,
+  messages: [{ role: "user", content: "Hello!" }],
+});
+```
 
 ## Use Responses
 
 Point an OpenAI-compatible client at `https://gateway.smith.langchain.com/v1`. For the full request and response schema, see the [OpenAI Responses API](https://platform.openai.com/docs/api-reference/responses).
 
-<CodeGroup>
-  ```bash cURL theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  curl https://gateway.smith.langchain.com/v1/responses \
-      -H "Authorization: Bearer $LANGSMITH_API_KEY" \
-      -H "Content-Type: application/json" \
-      -d '{"model":"anthropic/claude-opus-5","input":"Hello!"}'
-  ```
+```bash cURL theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+curl https://gateway.smith.langchain.com/v1/responses \
+    -H "Authorization: Bearer $LANGSMITH_API_KEY" \
+    -H "Content-Type: application/json" \
+    -d '{"model":"anthropic/claude-opus-5","input":"Hello!"}'
+```
 
-  ```python Python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  import os
+```python Python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+import os
 
-  from openai import OpenAI
+from openai import OpenAI
 
-  client = OpenAI(
-      base_url="https://gateway.smith.langchain.com/v1",
-      api_key=os.environ["LANGSMITH_API_KEY"],
-  )
-  response = client.responses.create(
-      model="anthropic/claude-opus-5",
-      input="Hello!",
-  )
-  ```
+client = OpenAI(
+    base_url="https://gateway.smith.langchain.com/v1",
+    api_key=os.environ["LANGSMITH_API_KEY"],
+)
+response = client.responses.create(
+    model="anthropic/claude-opus-5",
+    input="Hello!",
+)
+```
 
-  ```typescript TypeScript theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  import OpenAI from "openai";
+```typescript TypeScript theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+import OpenAI from "openai";
 
-  const client = new OpenAI({
-    baseURL: "https://gateway.smith.langchain.com/v1",
-    apiKey: process.env.LANGSMITH_API_KEY,
-  });
-  const response = await client.responses.create({
-    model: "anthropic/claude-opus-5",
-    input: "Hello!",
-  });
-  ```
-</CodeGroup>
+const client = new OpenAI({
+  baseURL: "https://gateway.smith.langchain.com/v1",
+  apiKey: process.env.LANGSMITH_API_KEY,
+});
+const response = await client.responses.create({
+  model: "anthropic/claude-opus-5",
+  input: "Hello!",
+});
+```
 
 ## Enable prompt caching
 
@@ -155,57 +149,55 @@ OpenAI models (Chat Completions and Responses) support implicit prompt caching a
 
 Anthropic models and some older OpenAI models require explicit opt-in to prompt caching. Pass provider-specific fields in your request body when calling these models through any standard gateway endpoint.
 
-<Note>
-  Explicit caching support is a temporary measure while a gateway-level caching policy is being developed. The following fields are passed through to the upstream provider.
-</Note>
+> [!NOTE]
+>
+> Explicit caching support is a temporary measure while a gateway-level caching policy is being developed. The following fields are passed through to the upstream provider.
 
 ### Anthropic models
 
 Include `prompt_cache_options` with a `ttl` value:
 
-<CodeGroup>
-  ```bash cURL theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  curl https://gateway.smith.langchain.com/v1/responses \
-      -H "Authorization: Bearer $LANGSMITH_API_KEY" \
-      -H "Content-Type: application/json" \
-      -d '{
-        "model": "anthropic/claude-opus-5",
-        "input": "Hello!",
-        "prompt_cache_options": {"ttl": "30m"}
-      }'
-  ```
+```bash cURL theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+curl https://gateway.smith.langchain.com/v1/responses \
+    -H "Authorization: Bearer $LANGSMITH_API_KEY" \
+    -H "Content-Type: application/json" \
+    -d '{
+      "model": "anthropic/claude-opus-5",
+      "input": "Hello!",
+      "prompt_cache_options": {"ttl": "30m"}
+    }'
+```
 
-  ```python Python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  import os
+```python Python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+import os
 
-  from openai import OpenAI
+from openai import OpenAI
 
-  client = OpenAI(
-      base_url="https://gateway.smith.langchain.com/v1",
-      api_key=os.environ["LANGSMITH_API_KEY"],
-  )
-  response = client.responses.create(
-      model="anthropic/claude-opus-5",
-      input="Hello!",
-      extra_body={"prompt_cache_options": {"ttl": "30m"}},
-  )
-  ```
+client = OpenAI(
+    base_url="https://gateway.smith.langchain.com/v1",
+    api_key=os.environ["LANGSMITH_API_KEY"],
+)
+response = client.responses.create(
+    model="anthropic/claude-opus-5",
+    input="Hello!",
+    extra_body={"prompt_cache_options": {"ttl": "30m"}},
+)
+```
 
-  ```typescript TypeScript theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  import OpenAI from "openai";
+```typescript TypeScript theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+import OpenAI from "openai";
 
-  const client = new OpenAI({
-    baseURL: "https://gateway.smith.langchain.com/v1",
-    apiKey: process.env.LANGSMITH_API_KEY,
-  });
-  const response = await client.responses.create({
-    model: "anthropic/claude-opus-5",
-    input: "Hello!",
-    // @ts-ignore — provider-specific field
-    prompt_cache_options: { ttl: "30m" },
-  });
-  ```
-</CodeGroup>
+const client = new OpenAI({
+  baseURL: "https://gateway.smith.langchain.com/v1",
+  apiKey: process.env.LANGSMITH_API_KEY,
+});
+const response = await client.responses.create({
+  model: "anthropic/claude-opus-5",
+  input: "Hello!",
+  // @ts-ignore — provider-specific field
+  prompt_cache_options: { ttl: "30m" },
+});
+```
 
 The same field works with the Chat Completions endpoint:
 
@@ -304,12 +296,6 @@ For setup-specific resolutions, see the [Quickstart](/langsmith/llm-gateway-quic
 
 ***
 
-<div>
-  <Callout icon="terminal-2">
-    [Connect these docs](/use-these-docs) to your agent of choice via MCP for real-time answers.
-  </Callout>
+[Connect these docs](/use-these-docs) to your agent of choice via MCP for real-time answers.
 
-  <Callout icon="edit">
-    [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/llm-gateway-api-formats.mdx) or [file an issue](https://github.com/langchain-ai/docs/issues/new/choose).
-  </Callout>
-</div>
+[Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/llm-gateway-api-formats.mdx) or [file an issue](https://github.com/langchain-ai/docs/issues/new/choose).

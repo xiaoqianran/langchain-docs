@@ -4,25 +4,23 @@
 
 [DeepSeek](https://deepseek.com/) provides high-performance, OpenAI-compatible language models including `deepseek-chat` (for general conversations) and `deepseek-reasoner` (for advanced reasoning tasks). Using LangSmith allows you to debug, monitor, and evaluate your LLM applications by capturing structured traces of inputs, outputs, and metadata.
 
-This guide shows you how to integrate DeepSeek with LangSmith in both Python and TypeScript, using LangSmith's [`@traceable`](https://reference.langchain.com/python/langsmith/run_helpers/traceable) (Python) and [`traceable(...)`](https://reference.langchain.com/javascript/modules/langsmith.html) (TypeScript) utilities to log LLM calls automatically.
+This guide shows you how to integrate DeepSeek with LangSmith in both Python and TypeScript, using LangSmith's [`@traceable`](https://reference.langchain.com/python/langsmith/run_helpers/traceable) (Python) and [`traceable(...)`](https://reference.langchain.com/javascript/langsmith) (TypeScript) utilities to log LLM calls automatically.
 
 ## Installation
 
 Install [OpenAI](https://platform.openai.com/docs/libraries) and LangSmith:
 
-<CodeGroup>
-  ```bash pip theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  pip install openai langsmith
-  ```
+```bash pip theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+pip install openai langsmith
+```
 
-  ```bash uv theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  uv add openai langsmith
-  ```
+```bash uv theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+uv add openai langsmith
+```
 
-  ```bash npm theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  npm install openai langsmith dotenv
-  ```
-</CodeGroup>
+```bash npm theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+npm install openai langsmith dotenv
+```
 
 DeepSeek provides an [OpenAI-compatible API](https://api-docs.deepseek.com/), which means you can use the OpenAI SDK to interact with DeepSeek models. The only difference is that you configure the client to point to DeepSeek's base URL (`https://api.deepseek.com/v1`) instead of OpenAI's endpoint.
 
@@ -46,93 +44,91 @@ export DEEPSEEK_API_KEY="your-deepseek-api-key"
 
 1. Instrument the DeepSeek API call with LangSmith. In your script, create an OpenAI client configured to use DeepSeek's API endpoint and wrap a call in a traced function:
 
-   <CodeGroup>
-     ```python Python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-     import os
-     from openai import OpenAI
-     from langsmith import traceable
+   ```python Python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+   import os
+   from openai import OpenAI
+   from langsmith import traceable
 
-     # Create a client pointing to DeepSeek
-     client = OpenAI(
-         api_key=os.environ["DEEPSEEK_API_KEY"],
-         base_url="https://api.deepseek.com/v1"
-     )
+   # Create a client pointing to DeepSeek
+   client = OpenAI(
+       api_key=os.environ["DEEPSEEK_API_KEY"],
+       base_url="https://api.deepseek.com/v1"
+   )
 
-     @traceable(
-         run_type="llm",
-         name="DeepSeek Chat Completion",
-         metadata={"ls_provider": "deepseek", "ls_model_name": "deepseek-chat"},
-     )
-     def call_deepseek(messages: list[dict]):
-         response = client.chat.completions.create(
-             model="deepseek-chat",
-             messages=messages
-         )
-         return response.choices[0].message
+   @traceable(
+       run_type="llm",
+       name="DeepSeek Chat Completion",
+       metadata={"ls_provider": "deepseek", "ls_model_name": "deepseek-chat"},
+   )
+   def call_deepseek(messages: list[dict]):
+       response = client.chat.completions.create(
+           model="deepseek-chat",
+           messages=messages
+       )
+       return response.choices[0].message
 
-     if __name__ == "__main__":
-         messages = [
-             {"role": "system", "content": "You are a helpful assistant that translates English to French."},
-             {"role": "user", "content": "I love programming."}
-         ]
-         result = call_deepseek(messages=messages)
-         print("Model reply:", result.content)
-     ```
+   if __name__ == "__main__":
+       messages = [
+           {"role": "system", "content": "You are a helpful assistant that translates English to French."},
+           {"role": "user", "content": "I love programming."}
+       ]
+       result = call_deepseek(messages=messages)
+       print("Model reply:", result.content)
+   ```
 
-     ```typescript TypeScript theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-     import { config } from "dotenv";
-     import OpenAI from "openai";
-     import { traceable } from "langsmith/traceable";
+   ```typescript TypeScript theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+   import { config } from "dotenv";
+   import OpenAI from "openai";
+   import { traceable } from "langsmith/traceable";
 
-     config(); // Load env vars from .env
+   config(); // Load env vars from .env
 
-     const openai = new OpenAI({
-     apiKey: process.env.DEEPSEEK_API_KEY,
-     baseURL: "https://api.deepseek.com/v1"
-     });
+   const openai = new OpenAI({
+   apiKey: process.env.DEEPSEEK_API_KEY,
+   baseURL: "https://api.deepseek.com/v1"
+   });
 
-     type ChatMessage = {
-     role: "system" | "user" | "assistant";
-     content: string;
-     };
+   type ChatMessage = {
+   role: "system" | "user" | "assistant";
+   content: string;
+   };
 
-     const callDeepSeek = traceable(
-     async (messages: ChatMessage[]) => {
-         const response = await openai.chat.completions.create({
-         model: "deepseek-chat",
-         messages
-         });
+   const callDeepSeek = traceable(
+   async (messages: ChatMessage[]) => {
+       const response = await openai.chat.completions.create({
+       model: "deepseek-chat",
+       messages
+       });
 
-         return response.choices[0].message;
-     },
-     {
-         name: "DeepSeek Chat Completion",
-         run_type: "llm",
-         metadata: {
-         ls_provider: "deepseek",
-         ls_model_name: "deepseek-chat"
-         }
-     }
-     );
+       return response.choices[0].message;
+   },
+   {
+       name: "DeepSeek Chat Completion",
+       run_type: "llm",
+       metadata: {
+       ls_provider: "deepseek",
+       ls_model_name: "deepseek-chat"
+       }
+   }
+   );
 
-     (async () => {
-     const messages: ChatMessage[] = [
-         {
-         role: "system",
-         content: "You are a helpful assistant that translates English to French."
-         },
-         {
-         role: "user",
-         content: "I love programming."
-         }
-     ];
+   (async () => {
+   const messages: ChatMessage[] = [
+       {
+       role: "system",
+       content: "You are a helpful assistant that translates English to French."
+       },
+       {
+       role: "user",
+       content: "I love programming."
+       }
+   ];
 
-     const result = await callDeepSeek(messages);
-     console.log("Model reply:", result.content);
-     })();
+   const result = await callDeepSeek(messages);
+   console.log("Model reply:", result.content);
+   })();
 
-     ```
-   </CodeGroup>
+   ```
 
    In this example, you use the OpenAI SDK to interact with [DeepSeek's API](https://api-docs.deepseek.com/). The OpenAI client is configured with `base_url="https://api.deepseek.com/v1"` to route requests to DeepSeek's endpoint while maintaining OpenAI-compatible syntax.
 
@@ -150,15 +146,13 @@ export DEEPSEEK_API_KEY="your-deepseek-api-key"
 
 2. Execute your script to generate a trace:
 
-   <CodeGroup>
-     ```bash Python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-     python deepseek_trace.py
-     ```
+   ```bash Python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+   python deepseek_trace.py
+   ```
 
-     ```bash TypeScript theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-     node deepseek_trace.js
-     ```
-   </CodeGroup>
+   ```bash TypeScript theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+   node deepseek_trace.js
+   ```
 
    The function call will reach out to DeepSeek's API, and because of the `@traceable`/`traceable` wrapper, LangSmith will log this call's inputs and outputs as a new trace. You'll find the model's response printed to the console, and a corresponding run appear in the [LangSmith UI](https://smith.langchain.com?utm_source=docs\&utm_medium=cta\&utm_campaign=langsmith-signup\&utm_content=langsmith-trace-deepseek).
 
@@ -185,12 +179,6 @@ Once enabled, costs appear directly in the LangSmith UI alongside each traced De
 
 ***
 
-<div>
-  <Callout icon="terminal-2">
-    [Connect these docs](/use-these-docs) to your agent of choice via MCP for real-time answers.
-  </Callout>
+[Connect these docs](/use-these-docs) to your agent of choice via MCP for real-time answers.
 
-  <Callout icon="edit">
-    [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/trace-deepseek.mdx) or [file an issue](https://github.com/langchain-ai/docs/issues/new/choose).
-  </Callout>
-</div>
+[Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/trace-deepseek.mdx) or [file an issue](https://github.com/langchain-ai/docs/issues/new/choose).

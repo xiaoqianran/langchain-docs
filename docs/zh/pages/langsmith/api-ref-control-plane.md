@@ -8,7 +8,7 @@
 
 控制平面 API 是 [LangSmith Deployment](/langsmith/deployment) 的一部分。借助控制平面 API，您可以以编程方式创建、管理和自动化您的 [Agent Server](/langsmith/agent-server) 部署，例如，作为自定义 CI/CD 工作流程的一部分。
 
-在侧边栏的 **控制平面 API** 部分中浏览完整的 API 参考，或参阅端点组：
+浏览侧边栏 **控制平面 API** 部分中的完整 API 参考，或参阅端点组：
 
 * [Integrations (v1)](/api-reference/integrations-v1/list-github-integrations)：GitHub 集成和存储库列表
 * [Deployments (v2)](/api-reference/deployments-v2)：创建、管理和更新代理服务器部署
@@ -23,27 +23,47 @@
   <thead>
     <tr>
       <th>地区</th>
+
+      <th>
+        网址
+      </th>
     </tr>
   </thead>
 
   <tbody>
     <tr>
       <td>GCP 美国</td>
+
+      <td>
+        `https://api.host.langchain.com`
+      </td>
     </tr>
 
     <tr>
       <td>GCP 欧盟</td>
+
+      <td>
+        `https://eu.api.host.langchain.com`
+      </td>
     </tr>
 
     <tr>
       <td>GCP 亚太地区</td>
+
+      <td>
+        `https://apac.api.host.langchain.com`
+      </td>
     </tr>
 
     <tr>
-      <td>AWS 美国</td>
+      <td>AWS 美国</td><td>
+        `https://aws.api.host.langchain.com`
+      </td>
     </tr>
   </tbody>
-</table>**注意**：LangSmith的自托管部署将为控制平面提供一个自定义主机。控制平面API可以通过路径`/api-host`访问。例如，`http(s)://<host>/api-host/v2/deployments`。更多详情请参见[the self-host usage guide](/langsmith/self-host-usage#configuring-the-application-you-want-to-use-with-langsmith)。
+</table>
+
+**注意**：LangSmith 的自托管部署将为控制平面提供一个自定义主机。控制平面API可以通过路径`/api-host`访问。例如，`http(s)://<host>/api-host/v2/deployments`。更多详情请参见[the self-host usage guide](/langsmith/self-host-usage#configuring-the-application-you-want-to-use-with-langsmith)。
 
 ## 身份验证
 
@@ -71,9 +91,9 @@ curl --request GET \
 
 ## 资源规范
 
-`resource_spec` 对象设置部署的 API 服务器、队列工作线程、Redis 和 PostgreSQL 的 CPU、内存和副本计数。 [Deployments (v2)](/api-reference/deployments-v2)参考文献中的字段描述列出了每个字段。以下行为适用于跨领域：* **`PATCH` 替换整个对象**：包含 `resource_spec` 的 `PATCH` 替换存储的 `resource_spec` 并且不与其合并。您省略的字段将回退到部署类型的默认值，而不是之前的值。每个 `PATCH` 发送完整的 `resource_spec`。
+`resource_spec` 对象设置部署的 API 服务器、队列工作线程、Redis 和 PostgreSQL 的 CPU、内存和副本计数。 [Deployments (v2)](/api-reference/deployments-v2)参考文献中的字段描述列出了每个字段。以下行为适用于跨领域：* **`PATCH` 替换整个对象**：包含 `resource_spec` 的 `PATCH` 替换存储的 `resource_spec` 并且不与其合并。您省略的字段将回退到部署类型的默认值，而不是之前的值。每`PATCH`发送完整的`resource_spec`。
 * **默认限制为请求的 2 倍**：如果您设置 CPU 或内存请求并忽略其限制，则限制默认为请求的 2 倍。 Redis 内存限制是例外：`redis_memory_limit_mb` 默认为 `redis_memory_mb`。在自托管数据平面上，CPU 限制还设置 [autoscaling target](/langsmith/data-plane#autoscaling)。
-* **CPU 值四舍五入到小数点后 1 位**：舍入使用浮点运算，因此某些值会向下舍入。例如，`0.25` 存储为`0.2`。
+* **CPU 值四舍五入到小数点后 1 位**：四舍五入使用浮点运算，因此某些值会向下舍入。例如，`0.25` 存储为`0.2`。
 * **Redis 内存有自己的范围**：`redis_memory_mb` 和 `redis_memory_limit_mb` 接受 512 到 16384（128 的倍数）。API 在验证器中强制执行此范围，因此它不会出现在 OpenAPI 架构中。
 
 对于自托管部署，数据平面中的侦听器使用其自己版本的规则再次验证`resource_spec`。返回 `200` 的 `PATCH` 仍然可能在旧侦听器上部署时失败。参见[Listener version requirements](/langsmith/self-hosted-platform-features#listener-version-requirements)。
@@ -293,12 +313,6 @@ if __name__ == "__main__":
 
 ***
 
-<div>
-  <Callout icon="terminal-2">
-    [Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
-  </Callout>
+[Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
 
-  <Callout icon="edit">
-    [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/api-ref-control-plane.mdx) 或 [file an issue](https://github.com/langchain-ai/docs/issues/new/choose)。
-  </Callout>
-</div>
+[Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/api-ref-control-plane.mdx) 或 [file an issue](https://github.com/langchain-ai/docs/issues/new/choose)。

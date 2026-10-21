@@ -7,421 +7,417 @@ Connect Deep Agents to custom functions, APIs, databases, and any MCP server
 Deep Agents can call any tool you define, any [LangChain tool](https://python.langchain.com/docs/concepts/tools/), and tools from any [MCP server](#mcp-tools).
 Pass them to `create_deep_agent` via the `tools=` parameter alongside the [built-in harness tools](/oss/javascript/deepagents/overview#execution-environment) for file management and subagent spawning.
 
-<CodeGroup>
-  ```ts Google theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  import { createDeepAgent } from "deepagents";
+```ts Google theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+import { createDeepAgent } from "deepagents";
 
 
-  const agent = await createDeepAgent({
-    model: "google:gemini-3.6-flash",
-    tools: [search, fetchUrl, runQuery],
-  });
-  ```
+const agent = await createDeepAgent({
+  model: "google:gemini-3.6-flash",
+  tools: [search, fetchUrl, runQuery],
+});
+```
 
-  ```ts OpenAI theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  import { createDeepAgent } from "deepagents";
-
-
-  const agent = await createDeepAgent({
-    model: "openai:gpt-5.5",
-    tools: [search, fetchUrl, runQuery],
-  });
-  ```
-
-  ```ts Anthropic theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  import { createDeepAgent } from "deepagents";
+```ts OpenAI theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+import { createDeepAgent } from "deepagents";
 
 
-  const agent = await createDeepAgent({
-    model: "anthropic:claude-sonnet-5",
-    tools: [search, fetchUrl, runQuery],
-  });
-  ```
+const agent = await createDeepAgent({
+  model: "openai:gpt-5.5",
+  tools: [search, fetchUrl, runQuery],
+});
+```
 
-  ```ts OpenRouter theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  import { createDeepAgent } from "deepagents";
-
-
-  const agent = await createDeepAgent({
-    model: "openrouter:z-ai/glm-5.2",
-    tools: [search, fetchUrl, runQuery],
-  });
-  ```
-
-  ```ts Fireworks theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  import { createDeepAgent } from "deepagents";
+```ts Anthropic theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+import { createDeepAgent } from "deepagents";
 
 
-  const agent = await createDeepAgent({
-    model: "fireworks:accounts/fireworks/models/glm-5p2",
-    tools: [search, fetchUrl, runQuery],
-  });
-  ```
+const agent = await createDeepAgent({
+  model: "anthropic:claude-sonnet-5",
+  tools: [search, fetchUrl, runQuery],
+});
+```
 
-  ```ts Baseten theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  import { createDeepAgent } from "deepagents";
-
-
-  const agent = await createDeepAgent({
-    model: "baseten:zai-org/GLM-5.2",
-    tools: [search, fetchUrl, runQuery],
-  });
-  ```
-
-  ```ts Ollama theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  import { createDeepAgent } from "deepagents";
+```ts OpenRouter theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+import { createDeepAgent } from "deepagents";
 
 
-  const agent = await createDeepAgent({
-    model: "ollama:north-mini-code-1.0",
-    tools: [search, fetchUrl, runQuery],
-  });
-  ```
-</CodeGroup>
+const agent = await createDeepAgent({
+  model: "openrouter:z-ai/glm-5.2",
+  tools: [search, fetchUrl, runQuery],
+});
+```
+
+```ts Fireworks theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+import { createDeepAgent } from "deepagents";
+
+
+const agent = await createDeepAgent({
+  model: "fireworks:accounts/fireworks/models/glm-5p2",
+  tools: [search, fetchUrl, runQuery],
+});
+```
+
+```ts Baseten theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+import { createDeepAgent } from "deepagents";
+
+
+const agent = await createDeepAgent({
+  model: "baseten:zai-org/GLM-5.2",
+  tools: [search, fetchUrl, runQuery],
+});
+```
+
+```ts Ollama theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+import { createDeepAgent } from "deepagents";
+
+
+const agent = await createDeepAgent({
+  model: "ollama:north-mini-code-1.0",
+  tools: [search, fetchUrl, runQuery],
+});
+```
 
 ## Custom tools
 
 Pass any callable, such as plain functions, LangChain `@tool`-decorated functions, or tool dicts—directly to `tools=`.
 Deep Agents infers the tool schema from the function signature and docstring, so you don't need to define a separate schema in most cases.
 
-<CodeGroup>
-  ```ts Google theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  import { tool } from "langchain";
-  import { TavilySearch } from "@langchain/tavily";
-  import { createDeepAgent } from "deepagents";
-  import { z } from "zod";
+```ts Google theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+import { tool } from "langchain";
+import { TavilySearch } from "@langchain/tavily";
+import { createDeepAgent } from "deepagents";
+import { z } from "zod";
 
-  const internetSearch = tool(
-    async ({
-      query,
-      maxResults = 5,
-      topic = "general",
-      includeRawContent = false,
-    }: {
-      query: string;
-      maxResults?: number;
-      topic?: "general" | "news" | "finance";
-      includeRawContent?: boolean;
-    }) => {
-      const tavilySearch = new TavilySearch({
-        maxResults,
-        tavilyApiKey: process.env.TAVILY_API_KEY,
-        includeRawContent,
-        topic,
-      });
-      return await tavilySearch._call({ query });
-    },
-    {
-      name: "internet_search",
-      description: "Run a web search",
-      schema: z.object({
-        query: z.string().describe("The search query"),
-        maxResults: z.number().optional().default(5),
-        topic: z
-          .enum(["general", "news", "finance"])
-          .optional()
-          .default("general"),
-        includeRawContent: z.boolean().optional().default(false),
-      }),
-    },
-  );
+const internetSearch = tool(
+  async ({
+    query,
+    maxResults = 5,
+    topic = "general",
+    includeRawContent = false,
+  }: {
+    query: string;
+    maxResults?: number;
+    topic?: "general" | "news" | "finance";
+    includeRawContent?: boolean;
+  }) => {
+    const tavilySearch = new TavilySearch({
+      maxResults,
+      tavilyApiKey: process.env.TAVILY_API_KEY,
+      includeRawContent,
+      topic,
+    });
+    return await tavilySearch._call({ query });
+  },
+  {
+    name: "internet_search",
+    description: "Run a web search",
+    schema: z.object({
+      query: z.string().describe("The search query"),
+      maxResults: z.number().optional().default(5),
+      topic: z
+        .enum(["general", "news", "finance"])
+        .optional()
+        .default("general"),
+      includeRawContent: z.boolean().optional().default(false),
+    }),
+  },
+);
 
-  const agent = createDeepAgent({
-    model: "google:gemini-3.6-flash",
-    tools: [internetSearch],
-  });
-  ```
+const agent = createDeepAgent({
+  model: "google:gemini-3.6-flash",
+  tools: [internetSearch],
+});
+```
 
-  ```ts OpenAI theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  import { tool } from "langchain";
-  import { TavilySearch } from "@langchain/tavily";
-  import { createDeepAgent } from "deepagents";
-  import { z } from "zod";
+```ts OpenAI theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+import { tool } from "langchain";
+import { TavilySearch } from "@langchain/tavily";
+import { createDeepAgent } from "deepagents";
+import { z } from "zod";
 
-  const internetSearch = tool(
-    async ({
-      query,
-      maxResults = 5,
-      topic = "general",
-      includeRawContent = false,
-    }: {
-      query: string;
-      maxResults?: number;
-      topic?: "general" | "news" | "finance";
-      includeRawContent?: boolean;
-    }) => {
-      const tavilySearch = new TavilySearch({
-        maxResults,
-        tavilyApiKey: process.env.TAVILY_API_KEY,
-        includeRawContent,
-        topic,
-      });
-      return await tavilySearch._call({ query });
-    },
-    {
-      name: "internet_search",
-      description: "Run a web search",
-      schema: z.object({
-        query: z.string().describe("The search query"),
-        maxResults: z.number().optional().default(5),
-        topic: z
-          .enum(["general", "news", "finance"])
-          .optional()
-          .default("general"),
-        includeRawContent: z.boolean().optional().default(false),
-      }),
-    },
-  );
+const internetSearch = tool(
+  async ({
+    query,
+    maxResults = 5,
+    topic = "general",
+    includeRawContent = false,
+  }: {
+    query: string;
+    maxResults?: number;
+    topic?: "general" | "news" | "finance";
+    includeRawContent?: boolean;
+  }) => {
+    const tavilySearch = new TavilySearch({
+      maxResults,
+      tavilyApiKey: process.env.TAVILY_API_KEY,
+      includeRawContent,
+      topic,
+    });
+    return await tavilySearch._call({ query });
+  },
+  {
+    name: "internet_search",
+    description: "Run a web search",
+    schema: z.object({
+      query: z.string().describe("The search query"),
+      maxResults: z.number().optional().default(5),
+      topic: z
+        .enum(["general", "news", "finance"])
+        .optional()
+        .default("general"),
+      includeRawContent: z.boolean().optional().default(false),
+    }),
+  },
+);
 
-  const agent = createDeepAgent({
-    model: "openai:gpt-5.5",
-    tools: [internetSearch],
-  });
-  ```
+const agent = createDeepAgent({
+  model: "openai:gpt-5.5",
+  tools: [internetSearch],
+});
+```
 
-  ```ts Anthropic theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  import { tool } from "langchain";
-  import { TavilySearch } from "@langchain/tavily";
-  import { createDeepAgent } from "deepagents";
-  import { z } from "zod";
+```ts Anthropic theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+import { tool } from "langchain";
+import { TavilySearch } from "@langchain/tavily";
+import { createDeepAgent } from "deepagents";
+import { z } from "zod";
 
-  const internetSearch = tool(
-    async ({
-      query,
-      maxResults = 5,
-      topic = "general",
-      includeRawContent = false,
-    }: {
-      query: string;
-      maxResults?: number;
-      topic?: "general" | "news" | "finance";
-      includeRawContent?: boolean;
-    }) => {
-      const tavilySearch = new TavilySearch({
-        maxResults,
-        tavilyApiKey: process.env.TAVILY_API_KEY,
-        includeRawContent,
-        topic,
-      });
-      return await tavilySearch._call({ query });
-    },
-    {
-      name: "internet_search",
-      description: "Run a web search",
-      schema: z.object({
-        query: z.string().describe("The search query"),
-        maxResults: z.number().optional().default(5),
-        topic: z
-          .enum(["general", "news", "finance"])
-          .optional()
-          .default("general"),
-        includeRawContent: z.boolean().optional().default(false),
-      }),
-    },
-  );
+const internetSearch = tool(
+  async ({
+    query,
+    maxResults = 5,
+    topic = "general",
+    includeRawContent = false,
+  }: {
+    query: string;
+    maxResults?: number;
+    topic?: "general" | "news" | "finance";
+    includeRawContent?: boolean;
+  }) => {
+    const tavilySearch = new TavilySearch({
+      maxResults,
+      tavilyApiKey: process.env.TAVILY_API_KEY,
+      includeRawContent,
+      topic,
+    });
+    return await tavilySearch._call({ query });
+  },
+  {
+    name: "internet_search",
+    description: "Run a web search",
+    schema: z.object({
+      query: z.string().describe("The search query"),
+      maxResults: z.number().optional().default(5),
+      topic: z
+        .enum(["general", "news", "finance"])
+        .optional()
+        .default("general"),
+      includeRawContent: z.boolean().optional().default(false),
+    }),
+  },
+);
 
-  const agent = createDeepAgent({
-    model: "anthropic:claude-sonnet-5",
-    tools: [internetSearch],
-  });
-  ```
+const agent = createDeepAgent({
+  model: "anthropic:claude-sonnet-5",
+  tools: [internetSearch],
+});
+```
 
-  ```ts OpenRouter theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  import { tool } from "langchain";
-  import { TavilySearch } from "@langchain/tavily";
-  import { createDeepAgent } from "deepagents";
-  import { z } from "zod";
+```ts OpenRouter theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+import { tool } from "langchain";
+import { TavilySearch } from "@langchain/tavily";
+import { createDeepAgent } from "deepagents";
+import { z } from "zod";
 
-  const internetSearch = tool(
-    async ({
-      query,
-      maxResults = 5,
-      topic = "general",
-      includeRawContent = false,
-    }: {
-      query: string;
-      maxResults?: number;
-      topic?: "general" | "news" | "finance";
-      includeRawContent?: boolean;
-    }) => {
-      const tavilySearch = new TavilySearch({
-        maxResults,
-        tavilyApiKey: process.env.TAVILY_API_KEY,
-        includeRawContent,
-        topic,
-      });
-      return await tavilySearch._call({ query });
-    },
-    {
-      name: "internet_search",
-      description: "Run a web search",
-      schema: z.object({
-        query: z.string().describe("The search query"),
-        maxResults: z.number().optional().default(5),
-        topic: z
-          .enum(["general", "news", "finance"])
-          .optional()
-          .default("general"),
-        includeRawContent: z.boolean().optional().default(false),
-      }),
-    },
-  );
+const internetSearch = tool(
+  async ({
+    query,
+    maxResults = 5,
+    topic = "general",
+    includeRawContent = false,
+  }: {
+    query: string;
+    maxResults?: number;
+    topic?: "general" | "news" | "finance";
+    includeRawContent?: boolean;
+  }) => {
+    const tavilySearch = new TavilySearch({
+      maxResults,
+      tavilyApiKey: process.env.TAVILY_API_KEY,
+      includeRawContent,
+      topic,
+    });
+    return await tavilySearch._call({ query });
+  },
+  {
+    name: "internet_search",
+    description: "Run a web search",
+    schema: z.object({
+      query: z.string().describe("The search query"),
+      maxResults: z.number().optional().default(5),
+      topic: z
+        .enum(["general", "news", "finance"])
+        .optional()
+        .default("general"),
+      includeRawContent: z.boolean().optional().default(false),
+    }),
+  },
+);
 
-  const agent = createDeepAgent({
-    model: "openrouter:z-ai/glm-5.2",
-    tools: [internetSearch],
-  });
-  ```
+const agent = createDeepAgent({
+  model: "openrouter:z-ai/glm-5.2",
+  tools: [internetSearch],
+});
+```
 
-  ```ts Fireworks theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  import { tool } from "langchain";
-  import { TavilySearch } from "@langchain/tavily";
-  import { createDeepAgent } from "deepagents";
-  import { z } from "zod";
+```ts Fireworks theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+import { tool } from "langchain";
+import { TavilySearch } from "@langchain/tavily";
+import { createDeepAgent } from "deepagents";
+import { z } from "zod";
 
-  const internetSearch = tool(
-    async ({
-      query,
-      maxResults = 5,
-      topic = "general",
-      includeRawContent = false,
-    }: {
-      query: string;
-      maxResults?: number;
-      topic?: "general" | "news" | "finance";
-      includeRawContent?: boolean;
-    }) => {
-      const tavilySearch = new TavilySearch({
-        maxResults,
-        tavilyApiKey: process.env.TAVILY_API_KEY,
-        includeRawContent,
-        topic,
-      });
-      return await tavilySearch._call({ query });
-    },
-    {
-      name: "internet_search",
-      description: "Run a web search",
-      schema: z.object({
-        query: z.string().describe("The search query"),
-        maxResults: z.number().optional().default(5),
-        topic: z
-          .enum(["general", "news", "finance"])
-          .optional()
-          .default("general"),
-        includeRawContent: z.boolean().optional().default(false),
-      }),
-    },
-  );
+const internetSearch = tool(
+  async ({
+    query,
+    maxResults = 5,
+    topic = "general",
+    includeRawContent = false,
+  }: {
+    query: string;
+    maxResults?: number;
+    topic?: "general" | "news" | "finance";
+    includeRawContent?: boolean;
+  }) => {
+    const tavilySearch = new TavilySearch({
+      maxResults,
+      tavilyApiKey: process.env.TAVILY_API_KEY,
+      includeRawContent,
+      topic,
+    });
+    return await tavilySearch._call({ query });
+  },
+  {
+    name: "internet_search",
+    description: "Run a web search",
+    schema: z.object({
+      query: z.string().describe("The search query"),
+      maxResults: z.number().optional().default(5),
+      topic: z
+        .enum(["general", "news", "finance"])
+        .optional()
+        .default("general"),
+      includeRawContent: z.boolean().optional().default(false),
+    }),
+  },
+);
 
-  const agent = createDeepAgent({
-    model: "fireworks:accounts/fireworks/models/glm-5p2",
-    tools: [internetSearch],
-  });
-  ```
+const agent = createDeepAgent({
+  model: "fireworks:accounts/fireworks/models/glm-5p2",
+  tools: [internetSearch],
+});
+```
 
-  ```ts Baseten theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  import { tool } from "langchain";
-  import { TavilySearch } from "@langchain/tavily";
-  import { createDeepAgent } from "deepagents";
-  import { z } from "zod";
+```ts Baseten theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+import { tool } from "langchain";
+import { TavilySearch } from "@langchain/tavily";
+import { createDeepAgent } from "deepagents";
+import { z } from "zod";
 
-  const internetSearch = tool(
-    async ({
-      query,
-      maxResults = 5,
-      topic = "general",
-      includeRawContent = false,
-    }: {
-      query: string;
-      maxResults?: number;
-      topic?: "general" | "news" | "finance";
-      includeRawContent?: boolean;
-    }) => {
-      const tavilySearch = new TavilySearch({
-        maxResults,
-        tavilyApiKey: process.env.TAVILY_API_KEY,
-        includeRawContent,
-        topic,
-      });
-      return await tavilySearch._call({ query });
-    },
-    {
-      name: "internet_search",
-      description: "Run a web search",
-      schema: z.object({
-        query: z.string().describe("The search query"),
-        maxResults: z.number().optional().default(5),
-        topic: z
-          .enum(["general", "news", "finance"])
-          .optional()
-          .default("general"),
-        includeRawContent: z.boolean().optional().default(false),
-      }),
-    },
-  );
+const internetSearch = tool(
+  async ({
+    query,
+    maxResults = 5,
+    topic = "general",
+    includeRawContent = false,
+  }: {
+    query: string;
+    maxResults?: number;
+    topic?: "general" | "news" | "finance";
+    includeRawContent?: boolean;
+  }) => {
+    const tavilySearch = new TavilySearch({
+      maxResults,
+      tavilyApiKey: process.env.TAVILY_API_KEY,
+      includeRawContent,
+      topic,
+    });
+    return await tavilySearch._call({ query });
+  },
+  {
+    name: "internet_search",
+    description: "Run a web search",
+    schema: z.object({
+      query: z.string().describe("The search query"),
+      maxResults: z.number().optional().default(5),
+      topic: z
+        .enum(["general", "news", "finance"])
+        .optional()
+        .default("general"),
+      includeRawContent: z.boolean().optional().default(false),
+    }),
+  },
+);
 
-  const agent = createDeepAgent({
-    model: "baseten:zai-org/GLM-5.2",
-    tools: [internetSearch],
-  });
-  ```
+const agent = createDeepAgent({
+  model: "baseten:zai-org/GLM-5.2",
+  tools: [internetSearch],
+});
+```
 
-  ```ts Ollama theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  import { tool } from "langchain";
-  import { TavilySearch } from "@langchain/tavily";
-  import { createDeepAgent } from "deepagents";
-  import { z } from "zod";
+```ts Ollama theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+import { tool } from "langchain";
+import { TavilySearch } from "@langchain/tavily";
+import { createDeepAgent } from "deepagents";
+import { z } from "zod";
 
-  const internetSearch = tool(
-    async ({
-      query,
-      maxResults = 5,
-      topic = "general",
-      includeRawContent = false,
-    }: {
-      query: string;
-      maxResults?: number;
-      topic?: "general" | "news" | "finance";
-      includeRawContent?: boolean;
-    }) => {
-      const tavilySearch = new TavilySearch({
-        maxResults,
-        tavilyApiKey: process.env.TAVILY_API_KEY,
-        includeRawContent,
-        topic,
-      });
-      return await tavilySearch._call({ query });
-    },
-    {
-      name: "internet_search",
-      description: "Run a web search",
-      schema: z.object({
-        query: z.string().describe("The search query"),
-        maxResults: z.number().optional().default(5),
-        topic: z
-          .enum(["general", "news", "finance"])
-          .optional()
-          .default("general"),
-        includeRawContent: z.boolean().optional().default(false),
-      }),
-    },
-  );
+const internetSearch = tool(
+  async ({
+    query,
+    maxResults = 5,
+    topic = "general",
+    includeRawContent = false,
+  }: {
+    query: string;
+    maxResults?: number;
+    topic?: "general" | "news" | "finance";
+    includeRawContent?: boolean;
+  }) => {
+    const tavilySearch = new TavilySearch({
+      maxResults,
+      tavilyApiKey: process.env.TAVILY_API_KEY,
+      includeRawContent,
+      topic,
+    });
+    return await tavilySearch._call({ query });
+  },
+  {
+    name: "internet_search",
+    description: "Run a web search",
+    schema: z.object({
+      query: z.string().describe("The search query"),
+      maxResults: z.number().optional().default(5),
+      topic: z
+        .enum(["general", "news", "finance"])
+        .optional()
+        .default("general"),
+      includeRawContent: z.boolean().optional().default(false),
+    }),
+  },
+);
 
-  const agent = createDeepAgent({
-    model: "ollama:north-mini-code-1.0",
-    tools: [internetSearch],
-  });
-  ```
-</CodeGroup>
+const agent = createDeepAgent({
+  model: "ollama:north-mini-code-1.0",
+  tools: [internetSearch],
+});
+```
 
 For full details on defining and using LangChain tools (tool dicts, `StructuredTool`, return types, error handling, and more), see [Tools](/oss/javascript/langchain/tools).
 
 ## MCP tools
 
-<Note>
-  Deep Agents fully support [Model Context Protocol (MCP)](/oss/javascript/langchain/mcp), the open standard for connecting agents to external services. Load tools from any MCP server and pass them directly to `create_deep_agent`.
-</Note>
+> [!NOTE]
+>
+> Deep Agents fully support [Model Context Protocol (MCP)](/oss/javascript/langchain/mcp), the open standard for connecting agents to external services. Load tools from any MCP server and pass them directly to `create_deep_agent`.
 
 MCP is an open protocol that lets agents connect to a growing ecosystem of servers—databases, APIs, file systems, browsers, and more—through a standard interface. Instead of writing custom integration code for each service, you point Deep Agents at an MCP server and it gets all the tools that server exposes.
 
@@ -431,175 +427,173 @@ Install `@langchain/mcp-adapters` to connect to MCP servers:
 npm install @langchain/mcp-adapters
 ```
 
-<CodeGroup>
-  ```ts Google theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  import { createDeepAgent } from "deepagents";
+```ts Google theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+import { createDeepAgent } from "deepagents";
 
-  const { MultiServerMCPClient } = await import("@langchain/mcp-adapters");
+const { MultiServerMCPClient } = await import("@langchain/mcp-adapters");
 
-  const client = new MultiServerMCPClient({
-    my_server: {
-      transport: "http",
-      url: "http://localhost:8000/mcp",
-    },
-  });
+const client = new MultiServerMCPClient({
+  my_server: {
+    transport: "http",
+    url: "http://localhost:8000/mcp",
+  },
+});
 
-  const tools = await client.getTools();
+const tools = await client.getTools();
 
-  const agent = await createDeepAgent({
-    model: "google:gemini-3.6-flash",
-    tools,
-  });
+const agent = await createDeepAgent({
+  model: "google:gemini-3.6-flash",
+  tools,
+});
 
-  const result = await agent.invoke({
-    messages: [{ role: "user", content: "Use the MCP server to help me." }],
-  });
-  ```
+const result = await agent.invoke({
+  messages: [{ role: "user", content: "Use the MCP server to help me." }],
+});
+```
 
-  ```ts OpenAI theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  import { createDeepAgent } from "deepagents";
+```ts OpenAI theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+import { createDeepAgent } from "deepagents";
 
-  const { MultiServerMCPClient } = await import("@langchain/mcp-adapters");
+const { MultiServerMCPClient } = await import("@langchain/mcp-adapters");
 
-  const client = new MultiServerMCPClient({
-    my_server: {
-      transport: "http",
-      url: "http://localhost:8000/mcp",
-    },
-  });
+const client = new MultiServerMCPClient({
+  my_server: {
+    transport: "http",
+    url: "http://localhost:8000/mcp",
+  },
+});
 
-  const tools = await client.getTools();
+const tools = await client.getTools();
 
-  const agent = await createDeepAgent({
-    model: "openai:gpt-5.5",
-    tools,
-  });
+const agent = await createDeepAgent({
+  model: "openai:gpt-5.5",
+  tools,
+});
 
-  const result = await agent.invoke({
-    messages: [{ role: "user", content: "Use the MCP server to help me." }],
-  });
-  ```
+const result = await agent.invoke({
+  messages: [{ role: "user", content: "Use the MCP server to help me." }],
+});
+```
 
-  ```ts Anthropic theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  import { createDeepAgent } from "deepagents";
+```ts Anthropic theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+import { createDeepAgent } from "deepagents";
 
-  const { MultiServerMCPClient } = await import("@langchain/mcp-adapters");
+const { MultiServerMCPClient } = await import("@langchain/mcp-adapters");
 
-  const client = new MultiServerMCPClient({
-    my_server: {
-      transport: "http",
-      url: "http://localhost:8000/mcp",
-    },
-  });
+const client = new MultiServerMCPClient({
+  my_server: {
+    transport: "http",
+    url: "http://localhost:8000/mcp",
+  },
+});
 
-  const tools = await client.getTools();
+const tools = await client.getTools();
 
-  const agent = await createDeepAgent({
-    model: "anthropic:claude-sonnet-5",
-    tools,
-  });
+const agent = await createDeepAgent({
+  model: "anthropic:claude-sonnet-5",
+  tools,
+});
 
-  const result = await agent.invoke({
-    messages: [{ role: "user", content: "Use the MCP server to help me." }],
-  });
-  ```
+const result = await agent.invoke({
+  messages: [{ role: "user", content: "Use the MCP server to help me." }],
+});
+```
 
-  ```ts OpenRouter theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  import { createDeepAgent } from "deepagents";
+```ts OpenRouter theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+import { createDeepAgent } from "deepagents";
 
-  const { MultiServerMCPClient } = await import("@langchain/mcp-adapters");
+const { MultiServerMCPClient } = await import("@langchain/mcp-adapters");
 
-  const client = new MultiServerMCPClient({
-    my_server: {
-      transport: "http",
-      url: "http://localhost:8000/mcp",
-    },
-  });
+const client = new MultiServerMCPClient({
+  my_server: {
+    transport: "http",
+    url: "http://localhost:8000/mcp",
+  },
+});
 
-  const tools = await client.getTools();
+const tools = await client.getTools();
 
-  const agent = await createDeepAgent({
-    model: "openrouter:z-ai/glm-5.2",
-    tools,
-  });
+const agent = await createDeepAgent({
+  model: "openrouter:z-ai/glm-5.2",
+  tools,
+});
 
-  const result = await agent.invoke({
-    messages: [{ role: "user", content: "Use the MCP server to help me." }],
-  });
-  ```
+const result = await agent.invoke({
+  messages: [{ role: "user", content: "Use the MCP server to help me." }],
+});
+```
 
-  ```ts Fireworks theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  import { createDeepAgent } from "deepagents";
+```ts Fireworks theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+import { createDeepAgent } from "deepagents";
 
-  const { MultiServerMCPClient } = await import("@langchain/mcp-adapters");
+const { MultiServerMCPClient } = await import("@langchain/mcp-adapters");
 
-  const client = new MultiServerMCPClient({
-    my_server: {
-      transport: "http",
-      url: "http://localhost:8000/mcp",
-    },
-  });
+const client = new MultiServerMCPClient({
+  my_server: {
+    transport: "http",
+    url: "http://localhost:8000/mcp",
+  },
+});
 
-  const tools = await client.getTools();
+const tools = await client.getTools();
 
-  const agent = await createDeepAgent({
-    model: "fireworks:accounts/fireworks/models/glm-5p2",
-    tools,
-  });
+const agent = await createDeepAgent({
+  model: "fireworks:accounts/fireworks/models/glm-5p2",
+  tools,
+});
 
-  const result = await agent.invoke({
-    messages: [{ role: "user", content: "Use the MCP server to help me." }],
-  });
-  ```
+const result = await agent.invoke({
+  messages: [{ role: "user", content: "Use the MCP server to help me." }],
+});
+```
 
-  ```ts Baseten theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  import { createDeepAgent } from "deepagents";
+```ts Baseten theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+import { createDeepAgent } from "deepagents";
 
-  const { MultiServerMCPClient } = await import("@langchain/mcp-adapters");
+const { MultiServerMCPClient } = await import("@langchain/mcp-adapters");
 
-  const client = new MultiServerMCPClient({
-    my_server: {
-      transport: "http",
-      url: "http://localhost:8000/mcp",
-    },
-  });
+const client = new MultiServerMCPClient({
+  my_server: {
+    transport: "http",
+    url: "http://localhost:8000/mcp",
+  },
+});
 
-  const tools = await client.getTools();
+const tools = await client.getTools();
 
-  const agent = await createDeepAgent({
-    model: "baseten:zai-org/GLM-5.2",
-    tools,
-  });
+const agent = await createDeepAgent({
+  model: "baseten:zai-org/GLM-5.2",
+  tools,
+});
 
-  const result = await agent.invoke({
-    messages: [{ role: "user", content: "Use the MCP server to help me." }],
-  });
-  ```
+const result = await agent.invoke({
+  messages: [{ role: "user", content: "Use the MCP server to help me." }],
+});
+```
 
-  ```ts Ollama theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  import { createDeepAgent } from "deepagents";
+```ts Ollama theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+import { createDeepAgent } from "deepagents";
 
-  const { MultiServerMCPClient } = await import("@langchain/mcp-adapters");
+const { MultiServerMCPClient } = await import("@langchain/mcp-adapters");
 
-  const client = new MultiServerMCPClient({
-    my_server: {
-      transport: "http",
-      url: "http://localhost:8000/mcp",
-    },
-  });
+const client = new MultiServerMCPClient({
+  my_server: {
+    transport: "http",
+    url: "http://localhost:8000/mcp",
+  },
+});
 
-  const tools = await client.getTools();
+const tools = await client.getTools();
 
-  const agent = await createDeepAgent({
-    model: "ollama:north-mini-code-1.0",
-    tools,
-  });
+const agent = await createDeepAgent({
+  model: "ollama:north-mini-code-1.0",
+  tools,
+});
 
-  const result = await agent.invoke({
-    messages: [{ role: "user", content: "Use the MCP server to help me." }],
-  });
-  ```
-</CodeGroup>
+const result = await agent.invoke({
+  messages: [{ role: "user", content: "Use the MCP server to help me." }],
+});
+```
 
 For detailed configuration options—including stdio servers, OAuth authentication, tool filtering, and stateful sessions—see the full [MCP guide](/oss/javascript/langchain/mcp).
 
@@ -630,12 +624,6 @@ Return a string for text-only results, or an ordered list of content blocks for 
 
 ***
 
-<div>
-  <Callout icon="terminal-2">
-    [Connect these docs](/use-these-docs) to your agent of choice via MCP for real-time answers.
-  </Callout>
+[Connect these docs](/use-these-docs) to your agent of choice via MCP for real-time answers.
 
-  <Callout icon="edit">
-    [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/oss/deepagents/tools.mdx) or [file an issue](https://github.com/langchain-ai/docs/issues/new/choose).
-  </Callout>
-</div>
+[Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/oss/deepagents/tools.mdx) or [file an issue](https://github.com/langchain-ai/docs/issues/new/choose).

@@ -10,33 +10,29 @@ Browse available middleware for different providers or contribute your own to th
 
 Middleware enables context engineering, harness customization, and runtime safety controls. It is a useful extension point in LangChain and we love highlighting what the community builds with it:
 
-<CardGroup>
-  <Card title="Add an official integration" icon="package" href="/oss/javascript/contributing/implement-langchain#middleware">
-    Follow the contributing guide to build and publish a middleware package.
-  </Card>
+> **[Add an official integration](/oss/javascript/contributing/implement-langchain#middleware)**
+>
+> Follow the contributing guide to build and publish a middleware package.
 
-  <Card title="Share a community middleware" icon="users" href="https://github.com/langchain-ai/docs">
-    Open a PR to the docs repo to add your middleware to the table below.
-  </Card>
-</CardGroup>
+> **[Share a community middleware](https://github.com/langchain-ai/docs)**
+>
+> Open a PR to the docs repo to add your middleware to the table below.
 
 ## Official integrations
 
-<div>
-  | Provider | Middleware available | Source | Downloads |
-  | :- | :- | :- | :- |
-  | [`AWS middleware`](/oss/javascript/integrations/middleware/aws) | Prompt caching | [`langchain-ai/langchain-aws`](https://github.com/langchain-ai/langchain-aws) | <span><a href="https://www.npmjs.com/package/@langchain/aws">  <img alt="Downloads per month" /></a></span> |
-  | [`BrydgeMiddleware`](https://github.com/contactkontey-dotcom/langchain-brydge#readme) | Supervises an agent's tool calls with BRYDGE and checks the destination system's own records to report whether each action happened as permitted. | [`contactkontey-dotcom/langchain-brydge`](https://github.com/contactkontey-dotcom/langchain-brydge) | <span><a href="https://www.npmjs.com/package/brydge-langchain">  <img alt="Downloads per month" /></a></span> |
-  | [`RecallMiddleware`](https://recallmem.dev/guides/langchain) | Long-term memory for create\_agent agents: adds what Recall learned about the user to the system prompt and records each exchange. | [`recallmem/recall`](https://github.com/recallmem/recall) | <span><a href="https://www.npmjs.com/package/@recall-memory/sdk">  <img alt="Downloads per month" /></a></span> |
-  | [`RecallChatMessageHistory`](https://recallmem.dev/guides/langchain) | Chat message history stored in a Recall session, so Recall also learns about the user from it. | [`recallmem/recall`](https://github.com/recallmem/recall) | <span><a href="https://www.npmjs.com/package/@recall-memory/langchain">  <img alt="Downloads per month" /></a></span> |
-  | [`Anthropic`](/oss/javascript/integrations/middleware/anthropic) | Prompt caching | [`langchain-ai/langchainjs`](https://github.com/langchain-ai/langchainjs/tree/main/libs/langchain/src/agents/middleware/provider/anthropic) | <span>N/A</span> |
-</div>
+| Provider | Middleware available | Source | Downloads |
+| :- | :- | :- | :- |
+| [`AWS middleware`](/oss/javascript/integrations/middleware/aws) | Prompt caching | [`langchain-ai/langchain-aws`](https://github.com/langchain-ai/langchain-aws) | [  ![Downloads per month](https://img.shields.io/npm/dm/@langchain/aws?style=flat-square\&label=%20&)](https://www.npmjs.com/package/@langchain/aws) |
+| [`BrydgeMiddleware`](https://github.com/contactkontey-dotcom/langchain-brydge#readme) | Supervises an agent's tool calls with BRYDGE and checks the destination system's own records to report whether each action happened as permitted. | [`contactkontey-dotcom/langchain-brydge`](https://github.com/contactkontey-dotcom/langchain-brydge) | [  ![Downloads per month](https://img.shields.io/npm/dm/brydge-langchain?style=flat-square\&label=%20&)](https://www.npmjs.com/package/brydge-langchain) |
+| [`RecallMiddleware`](https://recallmem.dev/guides/langchain) | Long-term memory for create\_agent agents: adds what Recall learned about the user to the system prompt and records each exchange. | [`recallmem/recall`](https://github.com/recallmem/recall) | [  ![Downloads per month](https://img.shields.io/npm/dm/@recall-memory/sdk?style=flat-square\&label=%20&)](https://www.npmjs.com/package/@recall-memory/sdk) |
+| [`RecallChatMessageHistory`](https://recallmem.dev/guides/langchain) | Chat message history stored in a Recall session, so Recall also learns about the user from it. | [`recallmem/recall`](https://github.com/recallmem/recall) | [  ![Downloads per month](https://img.shields.io/npm/dm/@recall-memory/langchain?style=flat-square\&label=%20&)](https://www.npmjs.com/package/@recall-memory/langchain) |
+| [`Anthropic`](/oss/javascript/integrations/middleware/anthropic) | Prompt caching | [`langchain-ai/langchainjs`](https://github.com/langchain-ai/langchainjs/tree/main/libs/langchain/src/agents/middleware/provider/anthropic) | N/A |
 
 ## Community integrations
 
-<Note>
-  The community maintains these middleware integrations. They are contributed on an open-source basis and are not managed or maintained by LangChain.
-</Note>
+> [!NOTE]
+>
+> The community maintains these middleware integrations. They are contributed on an open-source basis and are not managed or maintained by LangChain.
 
 | Middleware | Description | Source |
 | - | - | - |
@@ -47,12 +43,6 @@ Have a middleware to share? [Open a PR](https://github.com/langchain-ai/docs) to
 
 ***
 
-<div>
-  <Callout icon="terminal-2">
-    [Connect these docs](/use-these-docs) to your agent of choice via MCP for real-time answers.
-  </Callout>
+[Connect these docs](/use-these-docs) to your agent of choice via MCP for real-time answers.
 
-  <Callout icon="edit">
-    [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/oss/javascript/integrations/middleware/index.mdx) or [file an issue](https://github.com/langchain-ai/docs/issues/new/choose).
-  </Callout>
-</div>
+[Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/oss/javascript/integrations/middleware/index.mdx) or [file an issue](https://github.com/langchain-ai/docs/issues/new/choose).

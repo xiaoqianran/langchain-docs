@@ -4,9 +4,9 @@
 
 Track and review administrative actions across your LangSmith organization for security, compliance, and operational visibility.
 
-<Note>
-  Audit logs are available on [**Enterprise** plans](/langsmith/pricing-plans). If you're interested in upgrading to Enterprise, [contact our sales team](https://www.langchain.com/contact-sales).
-</Note>
+> [!NOTE]
+>
+> Audit logs are available on [**Enterprise** plans](/langsmith/pricing-plans). If you're interested in upgrading to Enterprise, [contact our sales team](https://www.langchain.com/contact-sales).
 
 LangSmith audit logs provide a tamper-resistant record of administrative and configuration actions taken within your organization. They help you answer questions like:
 
@@ -64,9 +64,9 @@ Once you've upgraded, use one of the following options to enable audit logs:
   DEFAULT_ORG_FEATURE_CAN_USE_AUDIT_LOGS: "true"
   ```
 
-  <Note>
-    This environment variable has no effect on personal organizations.
-  </Note>
+  > [!NOTE]
+  >
+  > This environment variable has no effect on personal organizations.
 
 For more details on self-hosted releases, see the [self-hosted changelog](/langsmith/self-hosted-changelog).
 
@@ -157,47 +157,45 @@ To forward audit log events to an external SIEM or logging platform, you can run
 
 The following list provides the [self-hosted](/langsmith/self-hosted) Helm chart version in which each operation was introduced. Operations are available on all later versions. This section applies to [self-hosted](/langsmith/self-hosted) deployments only; on LangSmith [cloud](/langsmith/cloud), all listed operations are available.
 
-<Note>
-  Operations introduced in `0.15.0-rc.*` release candidates are available in the `0.15.0` stable release and later. For channel details, refer to [Release policy](/langsmith/release-versions).
-</Note>
+> [!NOTE]
+>
+> Operations introduced in `0.15.0-rc.*` release candidates are available in the `0.15.0` stable release and later. For channel details, refer to [Release policy](/langsmith/release-versions).
 
-<AccordionGroup>
-  <Accordion title="0.12.33">
-    `add_member_to_workspace`, `add_members_to_workspace_batch`, `cancel_bulk_export`, `create_api_key`, `create_bulk_export`, `create_bulk_export_destination`, `create_personal_access_token`, `create_service_key`, `create_tag_key`, `create_tag_value`, `create_tagging`, `create_workspace`, `delete_api_key`, `delete_personal_access_token`, `delete_service_key`, `delete_tag_key`, `delete_tag_value`, `delete_tagging`, `delete_usage_limit`, `delete_workspace`, `delete_workspace_member`, `delete_workspace_pending_member`, `set_tenant_handle`, `unshare_entities`, `update_organization_info`, `update_tag_key`, `update_tag_value`, `update_ttl_settings`, `update_usage_limit`, `update_workspace`, `update_workspace_member`, `update_workspace_secrets`
-  </Accordion>
+> **0.12.33**
+>
+> `add_member_to_workspace`, `add_members_to_workspace_batch`, `cancel_bulk_export`, `create_api_key`, `create_bulk_export`, `create_bulk_export_destination`, `create_personal_access_token`, `create_service_key`, `create_tag_key`, `create_tag_value`, `create_tagging`, `create_workspace`, `delete_api_key`, `delete_personal_access_token`, `delete_service_key`, `delete_tag_key`, `delete_tag_value`, `delete_tagging`, `delete_usage_limit`, `delete_workspace`, `delete_workspace_member`, `delete_workspace_pending_member`, `set_tenant_handle`, `unshare_entities`, `update_organization_info`, `update_tag_key`, `update_tag_value`, `update_ttl_settings`, `update_usage_limit`, `update_workspace`, `update_workspace_member`, `update_workspace_secrets`
 
-  <Accordion title="0.12.34">
-    `add_basic_auth_users_to_org`, `clone_chart_section`, `confirm_payment_checkout_session`, `create_chart`, `create_chart_section`, `create_deployment`, `create_model_price_map`, `create_org_chart`, `create_org_chart_section`, `create_payment_account_link`, `create_payment_checkout_session`, `create_payment_setup_intent`, `create_role`, `create_sso_settings`, `delete_chart`, `delete_chart_section`, `delete_deployment`, `delete_model_price_map`, `delete_org_chart`, `delete_org_chart_section`, `delete_org_member`, `delete_org_pending_member`, `delete_role`, `delete_sso_settings`, `invite_user_to_org`, `invite_users_to_org_batch`, `update_basic_auth_user`, `update_business_info`, `update_chart`, `update_chart_section`, `update_default_sso_provision_organization`, `update_deployment`, `update_login_methods`, `update_model_price_map`, `update_org_chart`, `update_org_chart_section`, `update_org_member`, `update_payment_method`, `update_payment_plan`, `update_role`, `update_sso_settings`
-  </Accordion>
+> **0.12.34**
+>
+> `add_basic_auth_users_to_org`, `clone_chart_section`, `confirm_payment_checkout_session`, `create_chart`, `create_chart_section`, `create_deployment`, `create_model_price_map`, `create_org_chart`, `create_org_chart_section`, `create_payment_account_link`, `create_payment_checkout_session`, `create_payment_setup_intent`, `create_role`, `create_sso_settings`, `delete_chart`, `delete_chart_section`, `delete_deployment`, `delete_model_price_map`, `delete_org_chart`, `delete_org_chart_section`, `delete_org_member`, `delete_org_pending_member`, `delete_role`, `delete_sso_settings`, `invite_user_to_org`, `invite_users_to_org_batch`, `update_basic_auth_user`, `update_business_info`, `update_chart`, `update_chart_section`, `update_default_sso_provision_organization`, `update_deployment`, `update_login_methods`, `update_model_price_map`, `update_org_chart`, `update_org_chart_section`, `update_org_member`, `update_payment_method`, `update_payment_plan`, `update_role`, `update_sso_settings`
 
-  <Accordion title="0.13.3">
-    `update_bulk_export_destination`
-  </Accordion>
+> **0.13.3**
+>
+> `update_bulk_export_destination`
 
-  <Accordion title="0.13.32">
-    `clone_dataset`, `create_comparative_experiment`, `create_csv_dataset`, `create_dataset`, `create_example`, `create_examples`, `create_experiment_via_upload`, `create_playground_experiment`, `create_prompt_webhook`, `delete_comparative_experiment`, `delete_dataset`, `delete_datasets`, `delete_example`, `delete_examples`, `delete_prompt_webhook`, `delete_tracer_session`, `delete_tracer_sessions`, `read_bulk_export_destination`, `share_dataset`, `test_prompt_webhook`, `unshare_dataset`, `update_dataset`, `update_dataset_splits`, `update_dataset_version`, `update_example`, `update_examples`, `update_prompt_webhook`, `update_tracer_session`
-  </Accordion>
+> **0.13.32**
+>
+> `clone_dataset`, `create_comparative_experiment`, `create_csv_dataset`, `create_dataset`, `create_example`, `create_examples`, `create_experiment_via_upload`, `create_playground_experiment`, `create_prompt_webhook`, `delete_comparative_experiment`, `delete_dataset`, `delete_datasets`, `delete_example`, `delete_examples`, `delete_prompt_webhook`, `delete_tracer_session`, `delete_tracer_sessions`, `read_bulk_export_destination`, `share_dataset`, `test_prompt_webhook`, `unshare_dataset`, `update_dataset`, `update_dataset_splits`, `update_dataset_version`, `update_example`, `update_examples`, `update_prompt_webhook`, `update_tracer_session`
 
-  <Accordion title="0.13.37">
-    `attach_access_policies`, `create_access_policy`, `create_scim_group`, `create_scim_token`, `create_scim_user`, `delete_access_policy`, `delete_scim_group`, `delete_scim_token`, `delete_scim_user`, `list_access_policies`, `read_access_policy`, `read_role_access_policies`, `update_scim_group`, `update_scim_token`, `update_scim_user`
-  </Accordion>
+> **0.13.37**
+>
+> `attach_access_policies`, `create_access_policy`, `create_scim_group`, `create_scim_token`, `create_scim_user`, `delete_access_policy`, `delete_scim_group`, `delete_scim_token`, `delete_scim_user`, `list_access_policies`, `read_access_policy`, `read_role_access_policies`, `update_scim_group`, `update_scim_token`, `update_scim_user`
 
-  <Accordion title="0.15.0-rc.1">
-    `add_annotation_queue_reviewer`, `add_runs_to_annotation_queue`, `batch_query_trace_messages`, `bulk_delete_evaluators`, `claim_pending_organization_invite`, `claim_pending_workspace_invite`, `confirm_sso_user_email`, `count_examples`, `create_alert_rule`, `create_annotation_queue`, `create_annotation_queue_run_status`, `create_commit`, `create_directory_commit`, `create_evaluator`, `create_experiment_view_override`, `create_feedback_config`, `create_feedback_formula`, `create_filter_view`, `create_fleet_usage_limit`, `create_fleet_webhook`, `create_forge_configuration`, `create_gateway_policy`, `create_hub_environment`, `create_insights_job`, `create_insights_job_config`, `create_mcp_server`, `create_mcp_vendor_settings`, `create_onboarding_state`, `create_organization`, `create_playground_settings`, `create_prompt_canvas_quick_action`, `create_sandbox_proxy_profile`, `create_service_account`, `create_tenant`, `create_tool`, `delete_alert_rule`, `delete_annotation_queue`, `delete_annotation_queue_run`, `delete_annotation_queue_runs`, `delete_annotation_queues`, `delete_directory`, `delete_evaluator`, `delete_experiment_view_override`, `delete_feature_default_model`, `delete_feature_disabled_model`, `delete_feedback_config`, `delete_feedback_formula`, `delete_filter_view`, `delete_fleet_usage_limit`, `delete_fleet_webhook`, `delete_forge_configuration`, `delete_gateway_policy`, `delete_hub_environment`, `delete_insights_job`, `delete_insights_job_config`, `delete_mcp_server`, `delete_mcp_vendor_settings`, `delete_pending_organization_invite`, `delete_pending_workspace_invite`, `delete_playground_settings`, `delete_prompt_canvas_quick_action`, `delete_runs`, `delete_sandbox_proxy_profile`, `delete_service_account`, `delete_tool`, `diff_dataset_versions`, `download_dataset`, `evaluate_experiment`, `execute_custom_code`, `export_annotation_queue`, `export_granular_usage_csv`, `export_usage_backfill_csv`, `generate_dataset`, `generate_insights_job_config`, `generate_runs_query`, `generate_shared_dataset_query`, `get_annotation_queue`, `get_annotation_queue_archived_size`, `get_annotation_queue_run`, `get_annotation_queue_runs`, `get_annotation_queue_size`, `get_annotation_queue_total_size`, `get_annotation_queues_for_run`, `get_audit_logs`, `get_bulk_export`, `get_bulk_export_run`, `get_bulk_export_runs`, `get_bulk_export_runs_filtered`, `get_company_info`, `get_dataset_comparison_view`, `get_dataset_version`, `get_dataset_versions`, `get_example`, `get_experiment_view_override`, `get_experiment_view_overrides`, `get_feedback_formula`, `get_filter_view`, `get_granular_usage`, `get_insights_job`, `get_insights_job_runs`, `get_login_methods`, `get_mcp_tools`, `get_onboarding_state`, `get_org_dashboard`, `get_org_usage`, `get_org_usage_limits`, `get_organization_billing_info`, `get_organization_info`, `get_pairwise_queue`, `get_run_cluster`, `get_shared_examples_count`, `get_shared_tokens`, `get_sso_settings`, `get_sso_settings_current`, `get_tag_key`, `get_tag_value`, `get_usage_limits`, `get_workspace_stats`, `get_workspace_usage_limits_info`, `invalidate_mcp_tools_cache`, `list_annotation_queues`, `list_bulk_export_destinations`, `list_bulk_exports`, `list_chart_sections`, `list_examples`, `list_feedback_configs`, `list_feedback_formulas`, `list_filter_views`, `list_insights_job_configs`, `list_insights_jobs`, `list_org_members`, `list_org_personal_access_tokens`, `list_org_service_keys`, `list_organization_roles`, `list_organizations`, `list_pairwise_entries`, `list_pairwise_queues`, `list_pending_organization_invites`, `list_pending_workspace_invites`, `list_permissions`, `list_service_accounts`, `list_tag_keys`, `list_tag_values`, `list_taggings`, `list_tags`, `list_tags_for_resource`, `list_workspace_members`, `list_workspaces`, `login`, `mcp_proxy`, `mcp_proxy_get`, `populate_annotation_queue`, `query_run`, `query_runs`, `query_thread_traces`, `query_threads`, `query_trace`, `query_trace_messages`, `read_chart`, `read_chart_preview`, `read_chart_section`, `read_charts`, `read_dataset_delta`, `read_dataset_share_state`, `read_example`, `read_examples`, `read_feedback`, `read_feedbacks`, `read_model_price_map`, `read_run`, `read_runs`, `read_shared_delta`, `read_shared_delta_stream`, `read_tracing_dashboard`, `register_mcp_server_oauth`, `remove_annotation_queue_reviewer`, `rename_filter_view`, `resolve_annotation_queue_run`, `send_sso_email_confirmation`, `stream_dataset_comparison_view`, `stream_feedback_delta`, `submit_nps_response`, `sync_examples`, `test_alert_rule`, `test_fleet_webhook`, `trigger_forge_configuration`, `update_alert_rule`, `update_annotation_queue`, `update_annotation_queue_run`, `update_evaluator`, `update_experiment_view_override`, `update_feedback_config`, `update_feedback_formula`, `update_filter_view`, `update_fleet_usage_limit`, `update_fleet_webhook`, `update_forge_configuration`, `update_gateway_policy`, `update_hub_environment`, `update_insights_job`, `update_insights_job_config`, `update_mcp_server`, `update_mcp_vendor_settings`, `update_onboarding_state`, `update_playground_settings`, `update_prompt_canvas_quick_action`, `update_sandbox_proxy_profile`, `update_self_hosted_customer`, `update_self_hosted_license`, `update_tool`, `upsert_feature_default_model`, `upsert_feature_disabled_model`, `validate_example`, `validate_examples`
-  </Accordion>
+> **0.15.0-rc.1**
+>
+> `add_annotation_queue_reviewer`, `add_runs_to_annotation_queue`, `batch_query_trace_messages`, `bulk_delete_evaluators`, `claim_pending_organization_invite`, `claim_pending_workspace_invite`, `confirm_sso_user_email`, `count_examples`, `create_alert_rule`, `create_annotation_queue`, `create_annotation_queue_run_status`, `create_commit`, `create_directory_commit`, `create_evaluator`, `create_experiment_view_override`, `create_feedback_config`, `create_feedback_formula`, `create_filter_view`, `create_fleet_usage_limit`, `create_fleet_webhook`, `create_forge_configuration`, `create_gateway_policy`, `create_hub_environment`, `create_insights_job`, `create_insights_job_config`, `create_mcp_server`, `create_mcp_vendor_settings`, `create_onboarding_state`, `create_organization`, `create_playground_settings`, `create_prompt_canvas_quick_action`, `create_sandbox_proxy_profile`, `create_service_account`, `create_tenant`, `create_tool`, `delete_alert_rule`, `delete_annotation_queue`, `delete_annotation_queue_run`, `delete_annotation_queue_runs`, `delete_annotation_queues`, `delete_directory`, `delete_evaluator`, `delete_experiment_view_override`, `delete_feature_default_model`, `delete_feature_disabled_model`, `delete_feedback_config`, `delete_feedback_formula`, `delete_filter_view`, `delete_fleet_usage_limit`, `delete_fleet_webhook`, `delete_forge_configuration`, `delete_gateway_policy`, `delete_hub_environment`, `delete_insights_job`, `delete_insights_job_config`, `delete_mcp_server`, `delete_mcp_vendor_settings`, `delete_pending_organization_invite`, `delete_pending_workspace_invite`, `delete_playground_settings`, `delete_prompt_canvas_quick_action`, `delete_runs`, `delete_sandbox_proxy_profile`, `delete_service_account`, `delete_tool`, `diff_dataset_versions`, `download_dataset`, `evaluate_experiment`, `execute_custom_code`, `export_annotation_queue`, `export_granular_usage_csv`, `export_usage_backfill_csv`, `generate_dataset`, `generate_insights_job_config`, `generate_runs_query`, `generate_shared_dataset_query`, `get_annotation_queue`, `get_annotation_queue_archived_size`, `get_annotation_queue_run`, `get_annotation_queue_runs`, `get_annotation_queue_size`, `get_annotation_queue_total_size`, `get_annotation_queues_for_run`, `get_audit_logs`, `get_bulk_export`, `get_bulk_export_run`, `get_bulk_export_runs`, `get_bulk_export_runs_filtered`, `get_company_info`, `get_dataset_comparison_view`, `get_dataset_version`, `get_dataset_versions`, `get_example`, `get_experiment_view_override`, `get_experiment_view_overrides`, `get_feedback_formula`, `get_filter_view`, `get_granular_usage`, `get_insights_job`, `get_insights_job_runs`, `get_login_methods`, `get_mcp_tools`, `get_onboarding_state`, `get_org_dashboard`, `get_org_usage`, `get_org_usage_limits`, `get_organization_billing_info`, `get_organization_info`, `get_pairwise_queue`, `get_run_cluster`, `get_shared_examples_count`, `get_shared_tokens`, `get_sso_settings`, `get_sso_settings_current`, `get_tag_key`, `get_tag_value`, `get_usage_limits`, `get_workspace_stats`, `get_workspace_usage_limits_info`, `invalidate_mcp_tools_cache`, `list_annotation_queues`, `list_bulk_export_destinations`, `list_bulk_exports`, `list_chart_sections`, `list_examples`, `list_feedback_configs`, `list_feedback_formulas`, `list_filter_views`, `list_insights_job_configs`, `list_insights_jobs`, `list_org_members`, `list_org_personal_access_tokens`, `list_org_service_keys`, `list_organization_roles`, `list_organizations`, `list_pairwise_entries`, `list_pairwise_queues`, `list_pending_organization_invites`, `list_pending_workspace_invites`, `list_permissions`, `list_service_accounts`, `list_tag_keys`, `list_tag_values`, `list_taggings`, `list_tags`, `list_tags_for_resource`, `list_workspace_members`, `list_workspaces`, `login`, `mcp_proxy`, `mcp_proxy_get`, `populate_annotation_queue`, `query_run`, `query_runs`, `query_thread_traces`, `query_threads`, `query_trace`, `query_trace_messages`, `read_chart`, `read_chart_preview`, `read_chart_section`, `read_charts`, `read_dataset_delta`, `read_dataset_share_state`, `read_example`, `read_examples`, `read_feedback`, `read_feedbacks`, `read_model_price_map`, `read_run`, `read_runs`, `read_shared_delta`, `read_shared_delta_stream`, `read_tracing_dashboard`, `register_mcp_server_oauth`, `remove_annotation_queue_reviewer`, `rename_filter_view`, `resolve_annotation_queue_run`, `send_sso_email_confirmation`, `stream_dataset_comparison_view`, `stream_feedback_delta`, `submit_nps_response`, `sync_examples`, `test_alert_rule`, `test_fleet_webhook`, `trigger_forge_configuration`, `update_alert_rule`, `update_annotation_queue`, `update_annotation_queue_run`, `update_evaluator`, `update_experiment_view_override`, `update_feedback_config`, `update_feedback_formula`, `update_filter_view`, `update_fleet_usage_limit`, `update_fleet_webhook`, `update_forge_configuration`, `update_gateway_policy`, `update_hub_environment`, `update_insights_job`, `update_insights_job_config`, `update_mcp_server`, `update_mcp_vendor_settings`, `update_onboarding_state`, `update_playground_settings`, `update_prompt_canvas_quick_action`, `update_sandbox_proxy_profile`, `update_self_hosted_customer`, `update_self_hosted_license`, `update_tool`, `upsert_feature_default_model`, `upsert_feature_disabled_model`, `validate_example`, `validate_examples`
 
-  <Accordion title="0.15.0">
-    `create_provisioned_saas_org`, `create_self_hosted_customer`, `invite_provisioned_org_member`, `mint_self_hosted_license`
-  </Accordion>
+> **0.15.0**
+>
+> `create_provisioned_saas_org`, `create_self_hosted_customer`, `invite_provisioned_org_member`, `mint_self_hosted_license`
 
-  <Accordion title="0.16.0">
-    `export_granular_usage_deployments_csv`, `export_granular_usage_traces_csv`, `get_granular_usage_deployments`, `get_granular_usage_traces`, `update_service_key`
-  </Accordion>
+> **0.16.0**
+>
+> `export_granular_usage_deployments_csv`, `export_granular_usage_traces_csv`, `get_granular_usage_deployments`, `get_granular_usage_traces`, `update_service_key`
 
-  <Accordion title="0.17.0">
-    `create_agent`, `create_agent_runtime_binding`, `delete_agent`, `list_all_org_personal_access_tokens`, `revoke_personal_access_token`, `update_agent`
-  </Accordion>
-</AccordionGroup>
+> **0.17.0**
+>
+> `create_agent`, `create_agent_runtime_binding`, `delete_agent`, `list_all_org_personal_access_tokens`, `revoke_personal_access_token`, `update_agent`
 
 `create_agent_environment` is not yet available in a stable self-hosted release.
 
@@ -205,44 +203,36 @@ In 0.16.0, the traces and deployments operations replace `get_granular_usage` an
 
 ## FAQ
 
-<AccordionGroup>
-  <Accordion title="Who can view audit logs?">
-    Users with the [**Organization Admin**](/langsmith/rbac#organization-admin) or [**Organization Operator**](/langsmith/rbac#organization-operator) role (which grant the `organization:manage` permission) can access audit logs. Workspace-level roles do not provide audit log access.
-  </Accordion>
+> **Who can view audit logs?**
+>
+> Users with the [**Organization Admin**](/langsmith/rbac#organization-admin) or [**Organization Operator**](/langsmith/rbac#organization-operator) role (which grant the `organization:manage` permission) can access audit logs. Workspace-level roles do not provide audit log access.
 
-  <Accordion title="Are audit logs available on the Plus or Developer plan?">
-    No. Audit logs are an Enterprise feature. See [pricing](https://www.langchain.com/pricing-langsmith) for plan details.
-  </Accordion>
+> **Are audit logs available on the Plus or Developer plan?**
+>
+> No. Audit logs are an Enterprise feature. See [pricing](https://www.langchain.com/pricing-langsmith) for plan details.
 
-  <Accordion title="Is there a UI for viewing audit logs?">
-    Yes. See [View audit logs in the UI](#view-audit-logs-in-the-ui). Audit logs are also available via the [API](#query-audit-logs-via-api).
-  </Accordion>
+> **Is there a UI for viewing audit logs?**
+>
+> Yes. See [View audit logs in the UI](#view-audit-logs-in-the-ui). Audit logs are also available via the [API](#query-audit-logs-via-api).
 
-  <Accordion title="Are read operations logged?">
-    Audit logs currently primarily focused on write operations. Support for more read operations may be added in the future.
-  </Accordion>
+> **Are read operations logged?**
+>
+> Audit logs currently primarily focused on write operations. Support for more read operations may be added in the future.
 
-  <Accordion title="Will more operations be tracked in the future?">
-    Yes. The set of tracked operations expands over time. The [tracked operations reference](#tracked-operations-reference) always reflects the current set of supported operations.
-  </Accordion>
+> **Will more operations be tracked in the future?**
+>
+> Yes. The set of tracked operations expands over time. The [tracked operations reference](#tracked-operations-reference) always reflects the current set of supported operations.
 
-  <Accordion title="Can I get audit logs in a format other than OCSF?">
-    The API returns events exclusively in OCSF format. The `unmapped.original_audit_log` field within each event contains the raw LangSmith audit log record if you need the data in a different shape.
-  </Accordion>
+> **Can I get audit logs in a format other than OCSF?**
+>
+> The API returns events exclusively in OCSF format. The `unmapped.original_audit_log` field within each event contains the raw LangSmith audit log record if you need the data in a different shape.
 
-  <Accordion title="What is OCSF?">
-    The [Open Cybersecurity Schema Framework (OCSF)](https://schema.ocsf.io/) is an open standard for security event data. LangSmith returns audit log events as OCSF v1.7.0 API Activity (Class 6003) objects.
-  </Accordion>
-</AccordionGroup>
+> **What is OCSF?**
+>
+> The [Open Cybersecurity Schema Framework (OCSF)](https://schema.ocsf.io/) is an open standard for security event data. LangSmith returns audit log events as OCSF v1.7.0 API Activity (Class 6003) objects.
 
 ***
 
-<div>
-  <Callout icon="terminal-2">
-    [Connect these docs](/use-these-docs) to your agent of choice via MCP for real-time answers.
-  </Callout>
+[Connect these docs](/use-these-docs) to your agent of choice via MCP for real-time answers.
 
-  <Callout icon="edit">
-    [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/audit-logs.mdx) or [file an issue](https://github.com/langchain-ai/docs/issues/new/choose).
-  </Callout>
-</div>
+[Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/audit-logs.mdx) or [file an issue](https://github.com/langchain-ai/docs/issues/new/choose).

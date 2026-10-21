@@ -41,7 +41,7 @@ LangSmith 为每个事件发送 JSON `POST` 请求。自定义标头无法覆盖
 |网址 |可公开访问的 HTTPS 端点 |
 |内容类型 | `application/json` |
 |签名| `X-LangSmith-Signature` 标头，使用 webhook 的签名密钥进行签名 |
-|超时 |每次尝试 20 秒 |
+|超时|每次尝试 20 秒 |
 |尝试|最多 4 次尝试：1 次初始尝试，最多 3 次重试 |
 |重试条件|传输失败、HTTP `408`、`425`、`429` 和 `5xx` 响应 |
 |永久回复 |其他 `4xx` 响应不会重试 |
@@ -59,61 +59,59 @@ sha256=<lowercase hex HMAC-SHA256 digest>
 
 使用 Webhook 的签名密钥在精确的原始请求正文字节上计算 HMAC-SHA256 摘要。在解析JSON之前验证签名，并在恒定时间内比较完整的标头值。在验证之前解析和重新序列化主体可能会更改其字节并使签名无效。
 
-<CodeGroup>
-  ```python Python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  import hashlib
-  import hmac
-  from typing import Optional
+```python Python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+import hashlib
+import hmac
+from typing import Optional
 
 
-  def verify_langsmith_signature(
-      *,
-      body: bytes,
-      signing_secret: str,
-      signature_header: Optional[str],
-  ) -> bool:
-      if not signature_header or not signature_header.startswith("sha256="):
-          return False
+def verify_langsmith_signature(
+    *,
+    body: bytes,
+    signing_secret: str,
+    signature_header: Optional[str],
+) -> bool:
+    if not signature_header or not signature_header.startswith("sha256="):
+        return False
 
-      expected = "sha256=" + hmac.new(
-          signing_secret.encode("utf-8"),
-          body,
-          hashlib.sha256,
-      ).hexdigest()
+    expected = "sha256=" + hmac.new(
+        signing_secret.encode("utf-8"),
+        body,
+        hashlib.sha256,
+    ).hexdigest()
 
-      return hmac.compare_digest(expected, signature_header)
-  ```
+    return hmac.compare_digest(expected, signature_header)
+```
 
-  ```typescript TypeScript theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  import { createHmac, timingSafeEqual } from "node:crypto";
+```typescript TypeScript theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+import { createHmac, timingSafeEqual } from "node:crypto";
 
-  export function verifyLangSmithSignature({
-    body,
-    signingSecret,
-    signatureHeader,
-  }: {
-    body: Buffer;
-    signingSecret: string;
-    signatureHeader: string | undefined;
-  }) {
-    if (!signatureHeader?.startsWith("sha256=")) {
-      return false;
-    }
-
-    const expected = `sha256=${createHmac("sha256", signingSecret)
-      .update(body)
-      .digest("hex")}`;
-
-    const expectedBytes = Buffer.from(expected);
-    const actualBytes = Buffer.from(signatureHeader);
-
-    return (
-      expectedBytes.length === actualBytes.length &&
-      timingSafeEqual(expectedBytes, actualBytes)
-    );
+export function verifyLangSmithSignature({
+  body,
+  signingSecret,
+  signatureHeader,
+}: {
+  body: Buffer;
+  signingSecret: string;
+  signatureHeader: string | undefined;
+}) {
+  if (!signatureHeader?.startsWith("sha256=")) {
+    return false;
   }
-  ```
-</CodeGroup>
+
+  const expected = `sha256=${createHmac("sha256", signingSecret)
+    .update(body)
+    .digest("hex")}`;
+
+  const expectedBytes = Buffer.from(expected);
+  const actualBytes = Buffer.from(signatureHeader);
+
+  return (
+    expectedBytes.length === actualBytes.length &&
+    timingSafeEqual(expectedBytes, actualBytes)
+  );
+}
+```
 
 ## 活动信封外部 `id`、`type`、`created` 和 `data` 信封被冻结。事件类型上的 `.v1` 后缀版本为 `data.commit` 架构。
 
@@ -142,7 +140,7 @@ sha256=<lowercase hex HMAC-SHA256 digest>
 }
 ```
 
-|领域 |类型 |描述 |
+|领域|类型 |描述 |
 | - | - | - |
 | `id` | UUID |唯一的事件标识符在重试后保持稳定。用它来删除重复事件。 |
 | `type` |字符串|确切的事件类型。目前`context_hub.commit.created.v1`。 |
@@ -153,13 +151,13 @@ sha256=<lowercase hex HMAC-SHA256 digest>
 
 `data.commit` 对象描述触发事件的 Context Hub 提交。
 
-|领域 |类型 |描述 |
+|领域|类型 |描述 |
 | - | - | - |
 | `repo_id` | UUID | Context Hub 存储库 ID。 |
 | `repo_handle` |字符串|存储库句柄。 |
 | `repo_type` |字符串|存储库类型：`agent` 或 `skill`。 |
 | `commit_hash` |字符串|新提交的哈希值。 |
-| `parent_commit_hash` |字符串|父提交的哈希值。初始提交或不可用时省略。 |
+| `parent_commit_hash` |字符串|父提交的哈希值。首次提交或不可用时省略。 |
 | `created_at` |字符串|创建提交时的 RFC 3339 时间戳。 |
 | `created_by` |字符串| LangSmith 创建提交的用户 ID。不可用时省略。 |
 | `url` |字符串| LangSmith UI 中提交的深层链接。 |
@@ -167,7 +165,7 @@ sha256=<lowercase hex HMAC-SHA256 digest>
 
 每个条目都总结了一条更改的路径。它不包含文件内容。
 
-|领域 |类型 |描述 |
+|领域|类型 |描述 |
 | - | - | - |
 | `path` |字符串|路径被提交更改。 |
 | `action` |字符串|更改类型：`added`、`modified` 或 `removed`。 |
@@ -192,12 +190,6 @@ if (event.type === "context_hub.commit.created.v1") {
 
 ***
 
-<div>
-  <Callout icon="terminal-2">
-    [Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
-  </Callout>
+[Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
 
-  <Callout icon="edit">
-    [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/context-hub-webhooks.mdx) 或 [file an issue](https://github.com/langchain-ai/docs/issues/new/choose)。
-  </Callout>
-</div>
+[Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/context-hub-webhooks.mdx) 或 [file an issue](https://github.com/langchain-ai/docs/issues/new/choose)。

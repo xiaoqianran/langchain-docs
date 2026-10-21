@@ -17,34 +17,26 @@ Refer to the vector store [integration docs](/oss/javascript/integrations/vector
 
 ## All retrievers
 
-<div>
-  | Retriever | Self-host | Cloud offering | Package | Downloads |
-  | :- | :- | :- | :- | :- |
-  | [`AWSKendraRetriever`](/oss/javascript/integrations/retrievers/kendra-retriever) | <span /> | <span /> | [`@langchain/aws`](https://www.npmjs.com/package/@langchain/aws) | <span><a href="https://www.npmjs.com/package/@langchain/aws">  <img alt="Downloads per month" /></a></span> |
-  | [`Knowledge bases for Amazon Bedrock`](/oss/javascript/integrations/retrievers/bedrock-knowledge-bases) | <span /> | <span /> | [`@langchain/aws`](https://www.npmjs.com/package/@langchain/aws) | <span><a href="https://www.npmjs.com/package/@langchain/aws">  <img alt="Downloads per month" /></a></span> |
-  | [`ExaRetriever`](/oss/javascript/integrations/retrievers/exa) | <span /> | <span /> | [`@langchain/exa`](https://www.npmjs.com/package/@langchain/exa) | <span><a href="https://www.npmjs.com/package/@langchain/exa">  <img alt="Downloads per month" /></a></span> |
-  | [`PerplexitySearchRetriever`](/oss/javascript/integrations/retrievers/perplexity_search) | <span /> | <span /> | [`@langchain/perplexity`](https://www.npmjs.com/package/@langchain/perplexity) | <span><a href="https://www.npmjs.com/package/@langchain/perplexity">  <img alt="Downloads per month" /></a></span> |
-  | [`AlchemystRetriever`](https://getalchemystai.com/docs) | <span /> | <span /> | [`@alchemystai/langchain-js`](https://www.npmjs.com/package/@alchemystai/langchain-js) | <span><a href="https://www.npmjs.com/package/@alchemystai/langchain-js">  <img alt="Downloads per month" /></a></span> |
-  | [`RecallRetriever`](https://recallmem.dev/guides/langchain) | <span>✅</span> | <span>✅</span> | [`@recall-memory/langchain`](https://www.npmjs.com/package/@recall-memory/langchain) | <span><a href="https://www.npmjs.com/package/@recall-memory/langchain">  <img alt="Downloads per month" /></a></span> |
-  | [`FoxNoseRetriever`](https://github.com/FoxNoseTech/langchain-foxnose-js#readme) | <span>❌</span> | <span>✅</span> | [`@foxnose/langchain`](https://www.npmjs.com/package/@foxnose/langchain) | <span><a href="https://www.npmjs.com/package/@foxnose/langchain">  <img alt="Downloads per month" /></a></span> |
-  | [`SourceyRetriever`](/oss/javascript/integrations/retrievers/sourcey) | <span /> | <span /> | [`langchain-sourcey`](https://www.npmjs.com/package/langchain-sourcey) | <span><a href="https://www.npmjs.com/package/langchain-sourcey">  <img alt="Downloads per month" /></a></span> |
-  | [`Hyde`](/oss/javascript/integrations/retrievers/hyde) | <span /> | <span /> | | <span>N/A</span> |
-  | [`Self Querying with SAP HANA Cloud Vector Engine`](/oss/javascript/integrations/retrievers/self_query/hanavector_self_query) | <span /> | <span /> | | <span>N/A</span> |
-  | [`Time-weighted`](/oss/javascript/integrations/retrievers/time-weighted-retriever) | <span /> | <span /> | | <span>N/A</span> |
-</div>
+| Retriever | Self-host | Cloud offering | Package | Downloads |
+| :- | :- | :- | :- | :- |
+| [`AWSKendraRetriever`](/oss/javascript/integrations/retrievers/kendra-retriever) | | | [`@langchain/aws`](https://www.npmjs.com/package/@langchain/aws) | [  ![Downloads per month](https://img.shields.io/npm/dm/@langchain/aws?style=flat-square\&label=%20&)](https://www.npmjs.com/package/@langchain/aws) |
+| [`Knowledge bases for Amazon Bedrock`](/oss/javascript/integrations/retrievers/bedrock-knowledge-bases) | | | [`@langchain/aws`](https://www.npmjs.com/package/@langchain/aws) | [  ![Downloads per month](https://img.shields.io/npm/dm/@langchain/aws?style=flat-square\&label=%20&)](https://www.npmjs.com/package/@langchain/aws) |
+| [`ExaRetriever`](/oss/javascript/integrations/retrievers/exa) | | | [`@langchain/exa`](https://www.npmjs.com/package/@langchain/exa) | [  ![Downloads per month](https://img.shields.io/npm/dm/@langchain/exa?style=flat-square\&label=%20&)](https://www.npmjs.com/package/@langchain/exa) |
+| [`PerplexitySearchRetriever`](/oss/javascript/integrations/retrievers/perplexity_search) | | | [`@langchain/perplexity`](https://www.npmjs.com/package/@langchain/perplexity) | [  ![Downloads per month](https://img.shields.io/npm/dm/@langchain/perplexity?style=flat-square\&label=%20&)](https://www.npmjs.com/package/@langchain/perplexity) |
+| [`AlchemystRetriever`](https://getalchemystai.com/docs) | | | [`@alchemystai/langchain-js`](https://www.npmjs.com/package/@alchemystai/langchain-js) | [  ![Downloads per month](https://img.shields.io/npm/dm/@alchemystai/langchain-js?style=flat-square\&label=%20&)](https://www.npmjs.com/package/@alchemystai/langchain-js) |
+| [`RecallRetriever`](https://recallmem.dev/guides/langchain) | ✅ | ✅ | [`@recall-memory/langchain`](https://www.npmjs.com/package/@recall-memory/langchain) | [  ![Downloads per month](https://img.shields.io/npm/dm/@recall-memory/langchain?style=flat-square\&label=%20&)](https://www.npmjs.com/package/@recall-memory/langchain) |
+| [`FoxNoseRetriever`](https://github.com/FoxNoseTech/langchain-foxnose-js#readme) | ❌ | ✅ | [`@foxnose/langchain`](https://www.npmjs.com/package/@foxnose/langchain) | [  ![Downloads per month](https://img.shields.io/npm/dm/@foxnose/langchain?style=flat-square\&label=%20&)](https://www.npmjs.com/package/@foxnose/langchain) |
+| [`SourceyRetriever`](/oss/javascript/integrations/retrievers/sourcey) | | | [`langchain-sourcey`](https://www.npmjs.com/package/langchain-sourcey) | [  ![Downloads per month](https://img.shields.io/npm/dm/langchain-sourcey?style=flat-square\&label=%20&)](https://www.npmjs.com/package/langchain-sourcey) |
+| [`Hyde`](/oss/javascript/integrations/retrievers/hyde) | | | | N/A |
+| [`Self Querying with SAP HANA Cloud Vector Engine`](/oss/javascript/integrations/retrievers/self_query/hanavector_self_query) | | | | N/A |
+| [`Time-weighted`](/oss/javascript/integrations/retrievers/time-weighted-retriever) | | | | N/A |
 
-<Info>
-  If you'd like to contribute an integration, see [Contributing integrations](/oss/javascript/contributing#add-a-new-integration).
-</Info>
+> [!NOTE]
+>
+> If you'd like to contribute an integration, see [Contributing integrations](/oss/javascript/contributing#add-a-new-integration).
 
 ***
 
-<div>
-  <Callout icon="terminal-2">
-    [Connect these docs](/use-these-docs) to your agent of choice via MCP for real-time answers.
-  </Callout>
+[Connect these docs](/use-these-docs) to your agent of choice via MCP for real-time answers.
 
-  <Callout icon="edit">
-    [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/oss/javascript/integrations/retrievers/index.mdx) or [file an issue](https://github.com/langchain-ai/docs/issues/new/choose).
-  </Callout>
-</div>
+[Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/oss/javascript/integrations/retrievers/index.mdx) or [file an issue](https://github.com/langchain-ai/docs/issues/new/choose).

@@ -10,10 +10,10 @@
 
 下面是使用 FastAPI 的示例。
 
-<Note>
-  “仅限Python”
-  我们目前仅支持使用 `langgraph-api>=0.0.26` 进行 Python 部署中的自定义中间件。
-</Note>
+> [!注意]
+>
+>“仅限Python”
+> 目前，我们仅支持使用 `langgraph-api>=0.0.26` 进行 Python 部署中的自定义中间件。
 
 ## 创建应用程序
 
@@ -99,12 +99,6 @@ langgraph dev --no-browser
 
 ***
 
-<div>
-  <Callout icon="terminal-2">
-    [Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
-  </Callout>
+[Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
 
-  <Callout icon="edit">
-    [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/custom-middleware.mdx) 或 [file an issue](https://github.com/langchain-ai/docs/issues/new/choose)。
-  </Callout>
-</div>
+[Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/custom-middleware.mdx) 或 [file an issue](https://github.com/langchain-ai/docs/issues/new/choose)。

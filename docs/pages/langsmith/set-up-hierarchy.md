@@ -8,15 +8,15 @@ This page describes setting up and managing your LangSmith [*organization*](/lan
 * [Set up a workspace](#set-up-a-workspace): Set up and configure workspaces to organize your LangSmith resources, manage workspace members, and configure settings for team collaboration.
 * [Set up agents and applications](#set-up-agents-and-applications): Group resources within a workspace to further organize them, and take advantage of ABAC permissioning.
 
-<Check>
-  You may find it helpful to refer to the [overview on LangSmith resource hierarchy](/langsmith/administration-overview) before you read this setup page.
-</Check>
+> [!TIP]
+>
+> You may find it helpful to refer to the [overview on LangSmith resource hierarchy](/langsmith/administration-overview) before you read this setup page.
 
 ## Set up an organization
 
-<Note>
-  If you're interested in managing your organization and workspaces programmatically, refer to [Manage organizations using the API](/langsmith/manage-organization-by-api).
-</Note>
+> [!NOTE]
+>
+> If you're interested in managing your organization and workspaces programmatically, refer to [Manage organizations using the API](/langsmith/manage-organization-by-api).
 
 ### Create an organization
 
@@ -49,9 +49,9 @@ Organization-scoped roles are used to determine access to organization settings.
 * **Organization Admin** grants full access to manage all organization configuration, users, billing, and workspaces. Any Organization Admin has `Admin` access to all workspaces in an organization.
 * **Organization User** may read organization information, but cannot execute any write actions at the organization level. You can add an Organization User to a subset of workspaces and assigned workspace roles as usual (if [RBAC](/langsmith/rbac) is enabled), which specify permissions at the workspace level.
 
-<Info>
-  The [Organization User](/langsmith/rbac#organization-user) and [Organization Viewer](/langsmith/rbac#organization-viewer) roles are only available in organizations on [Plus and Enterprise plans](https://langchain.com/pricing). In Developer organizations (single workspace), all users are assigned the [Organization Admin](/langsmith/rbac#organization-admin) role by default. Custom organization-scoped roles are not available.
-</Info>
+> [!NOTE]
+>
+> The [Organization User](/langsmith/rbac#organization-user) and [Organization Viewer](/langsmith/rbac#organization-viewer) roles are only available in organizations on [Plus and Enterprise plans](https://langchain.com/pricing). In Developer organizations (single workspace), all users are assigned the [Organization Admin](/langsmith/rbac#organization-admin) role by default. Custom organization-scoped roles are not available.
 
 For a full list of permissions associated with each role, refer to the [Administration overview](/langsmith/administration-overview#organization-roles) page.
 
@@ -68,36 +68,29 @@ To create a new workspace, navigate to the [**Settings** page](https://smith.lan
 
 Once you have created your workspace, you can manage its members and other configuration by selecting the workspace on the **Settings** page.
 
-<Note>
-  Different plans have different limits placed on the number of workspaces that you can use in an organization. For more information, refer to the [pricing page](https://www.langchain.com/pricing-langsmith).
-</Note>
+> [!NOTE]
+>
+> Different plans have different limits placed on the number of workspaces that you can use in an organization. For more information, refer to the [pricing page](https://www.langchain.com/pricing-langsmith).
 
 ### Manage users
 
-<Info>
-  Only [workspace admins](/langsmith/rbac#workspace-admin) can manage workspace membership and, if RBAC is enabled, change a user's workspace role.
-</Info>
+> [!NOTE]
+>
+> Only [workspace admins](/langsmith/rbac#workspace-admin) can manage workspace membership and, if RBAC is enabled, change a user's workspace role.
 
 For users that are already members of an organization, a workspace admin may add them to a workspace in the **Workspace members** tab on the [**Workspaces settings** page](https://smith.langchain.com/settings/workspaces). Users may also be invited directly to one or more workspaces when they are invited to an organization.
 
 ### Configure workspace settings
 
-Workspace configuration exists in the [**Workspaces settings** page](https://smith.langchain.com/settings/workspaces) tab. Select the workspace to configure and then the desired configuration sub-tab.
-Configuration options include:
+Workspace settings are on the [**Settings** page](https://smith.langchain.com/settings/workspaces) for the selected workspace. Options include the ability to configure members, [model configurations](/langsmith/model-configurations), [shared URLs](/langsmith/manage-trace), and resource tags for [grouping resources](#set-up-agents-and-applications).
 
-* **Workspace members**
-* **API keys**
-* **Secrets**
-* **Feedback config**
-* **Models**
-* **Rules**
-* **Shared URLs**
+Workspace secrets store the API keys that LangSmith uses to call model providers and tools. Add them under  **Settings** > **Integrations** > **Provider secrets**.
 
 ### Delete a workspace
 
-<Warning>
-  Deleting a workspace will permanently delete the workspace and all associated data. This action cannot be undone.
-</Warning>
+> [!WARNING]
+>
+> Deleting a workspace will permanently delete the workspace and all associated data. This action cannot be undone.
 
 You can delete a workspace through the [LangSmith UI](https://smith.langchain.com?utm_source=docs\&utm_medium=cta\&utm_campaign=langsmith-signup\&utm_content=langsmith-set-up-hierarchy) or via [API](/langsmith/smith-api/workspaces/delete-workspace). You must be a [workspace admin](/langsmith/rbac#workspace-admin) in order to delete a workspace.
 
@@ -105,7 +98,7 @@ In the LangSmith UI:
 
 1. Navigate to **Settings**.
 2. Select the workspace you want to delete.
-3. Click the delete icon <Icon icon="trash" /> in the top-right corner of the screen.
+3. Click the delete icon  in the top-right corner of the screen.
 
 ## Set up agents and applications
 
@@ -117,12 +110,6 @@ To view every resource in the workspace rather than one group's, select **All ag
 
 ***
 
-<div>
-  <Callout icon="terminal-2">
-    [Connect these docs](/use-these-docs) to your agent of choice via MCP for real-time answers.
-  </Callout>
+[Connect these docs](/use-these-docs) to your agent of choice via MCP for real-time answers.
 
-  <Callout icon="edit">
-    [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/set-up-hierarchy.mdx) or [file an issue](https://github.com/langchain-ai/docs/issues/new/choose).
-  </Callout>
-</div>
+[Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/set-up-hierarchy.mdx) or [file an issue](https://github.com/langchain-ai/docs/issues/new/choose).

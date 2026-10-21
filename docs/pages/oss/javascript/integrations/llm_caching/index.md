@@ -8,22 +8,14 @@ Integrate with caches using LangChain JavaScript.
 
 Below are some integrations that allow you to cache results of individual LLM calls using different caches with different strategies.
 
-<div>
-  | Integration | Downloads |
-  | :- | :- |
-  | [`Azure Cosmos DB NoSQL semantic`](/oss/javascript/integrations/llm_caching/azure_cosmosdb_nosql) | <span><a href="https://www.npmjs.com/package/@langchain/azure-cosmosdb">  <img alt="Downloads per month" /></a></span> |
-  | [`BetterDB Agent Cache`](https://www.betterdb.com/ai) | <span><a href="https://www.npmjs.com/package/@betterdb/agent-cache">  <img alt="Downloads per month" /></a></span> |
-  | [`BetterDB Semantic Cache`](https://www.betterdb.com/ai) | <span><a href="https://www.npmjs.com/package/@betterdb/semantic-cache">  <img alt="Downloads per month" /></a></span> |
-</div>
+| Integration | Downloads |
+| :- | :- |
+| [`Azure Cosmos DB NoSQL semantic`](/oss/javascript/integrations/llm_caching/azure_cosmosdb_nosql) | [  ![Downloads per month](https://img.shields.io/npm/dm/@langchain/azure-cosmosdb?style=flat-square\&label=%20&)](https://www.npmjs.com/package/@langchain/azure-cosmosdb) |
+| [`BetterDB Agent Cache`](https://www.betterdb.com/ai) | [  ![Downloads per month](https://img.shields.io/npm/dm/@betterdb/agent-cache?style=flat-square\&label=%20&)](https://www.npmjs.com/package/@betterdb/agent-cache) |
+| [`BetterDB Semantic Cache`](https://www.betterdb.com/ai) | [  ![Downloads per month](https://img.shields.io/npm/dm/@betterdb/semantic-cache?style=flat-square\&label=%20&)](https://www.npmjs.com/package/@betterdb/semantic-cache) |
 
 ***
 
-<div>
-  <Callout icon="terminal-2">
-    [Connect these docs](/use-these-docs) to your agent of choice via MCP for real-time answers.
-  </Callout>
+[Connect these docs](/use-these-docs) to your agent of choice via MCP for real-time answers.
 
-  <Callout icon="edit">
-    [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/oss/javascript/integrations/llm_caching/index.mdx) or [file an issue](https://github.com/langchain-ai/docs/issues/new/choose).
-  </Callout>
-</div>
+[Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/oss/javascript/integrations/llm_caching/index.mdx) or [file an issue](https://github.com/langchain-ai/docs/issues/new/choose).

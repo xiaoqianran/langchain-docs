@@ -55,67 +55,67 @@ Define your [configuration](/oss/python/langgraph/use-graph-api#add-runtime-conf
   )
   ```
 
-<Accordion title="Full example configuration">
-  ```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  ## Using Pydantic
-  from pydantic import BaseModel, Field
-  from typing import Annotated, Literal
-
-  class Configuration(BaseModel):
-      """The configuration for the agent."""
-
-      system_prompt: str = Field(
-          default="You are a helpful AI assistant.",
-          description="The system prompt to use for the agent's interactions. "
-          "This prompt sets the context and behavior for the agent.",
-          json_schema_extra={
-              "langgraph_nodes": ["call_model"],
-              "langgraph_type": "prompt",
-          },
-      )
-
-      model: Annotated[
-          Literal[
-              "anthropic/claude-sonnet-4-6",
-              "anthropic/claude-haiku-4-5-20251001",
-              "openai/gpt-5.5",
-              "openai/gpt-5.4-mini",
-          ],
-          {"__template_metadata__": {"kind": "llm"}},
-      ] = Field(
-          default="openai/gpt-5.4-mini",
-          description="The name of the language model to use for the agent's main interactions. "
-          "Should be in the form: provider/model-name.",
-          json_schema_extra={"langgraph_nodes": ["call_model"]},
-      )
-
-  ## Using Dataclasses
-  from dataclasses import dataclass, field
-
-  @dataclass(kw_only=True)
-  class Configuration:
-      """The configuration for the agent."""
-
-      system_prompt: str = field(
-          default="You are a helpful AI assistant.",
-          metadata={
-              "description": "The system prompt to use for the agent's interactions. "
-              "This prompt sets the context and behavior for the agent.",
-              "json_schema_extra": {"langgraph_nodes": ["call_model"]},
-          },
-      )
-
-      model: Annotated[str, {"__template_metadata__": {"kind": "llm"}}] = field(
-          default="anthropic/claude-sonnet-4-6",
-          metadata={
-              "description": "The name of the language model to use for the agent's main interactions. "
-              "Should be in the form: provider/model-name.",
-              "json_schema_extra": {"langgraph_nodes": ["call_model"]},
-          },
-      )
-
-  ```
-</Accordion>
+> **Full example configuration**
+>
+> ```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> ## Using Pydantic
+> from pydantic import BaseModel, Field
+> from typing import Annotated, Literal
+>
+> class Configuration(BaseModel):
+>     """The configuration for the agent."""
+>
+>     system_prompt: str = Field(
+>         default="You are a helpful AI assistant.",
+>         description="The system prompt to use for the agent's interactions. "
+>         "This prompt sets the context and behavior for the agent.",
+>         json_schema_extra={
+>             "langgraph_nodes": ["call_model"],
+>             "langgraph_type": "prompt",
+>         },
+>     )
+>
+>     model: Annotated[
+>         Literal[
+>             "anthropic/claude-sonnet-4-6",
+>             "anthropic/claude-haiku-4-5-20251001",
+>             "openai/gpt-5.5",
+>             "openai/gpt-5.4-mini",
+>         ],
+>         {"__template_metadata__": {"kind": "llm"}},
+>     ] = Field(
+>         default="openai/gpt-5.4-mini",
+>         description="The name of the language model to use for the agent's main interactions. "
+>         "Should be in the form: provider/model-name.",
+>         json_schema_extra={"langgraph_nodes": ["call_model"]},
+>     )
+>
+> ## Using Dataclasses
+> from dataclasses import dataclass, field
+>
+> @dataclass(kw_only=True)
+> class Configuration:
+>     """The configuration for the agent."""
+>
+>     system_prompt: str = field(
+>         default="You are a helpful AI assistant.",
+>         metadata={
+>             "description": "The system prompt to use for the agent's interactions. "
+>             "This prompt sets the context and behavior for the agent.",
+>             "json_schema_extra": {"langgraph_nodes": ["call_model"]},
+>         },
+>     )
+>
+>     model: Annotated[str, {"__template_metadata__": {"kind": "llm"}}] = field(
+>         default="anthropic/claude-sonnet-4-6",
+>         metadata={
+>             "description": "The name of the language model to use for the agent's main interactions. "
+>             "Should be in the form: provider/model-name.",
+>             "json_schema_extra": {"langgraph_nodes": ["call_model"]},
+>         },
+>     )
+>
+> ```
 
 #### Editing prompts in the UI
 
@@ -150,14 +150,14 @@ Before running an experiment, ensure you have the following:
   * An application deployed on [LangSmith](/langsmith/deployment).
   * A locally running application started via the [langgraph-cli](/langsmith/local-dev-testing).
 
-<Note>
-  Studio experiments follow the same [data retention](/langsmith/usage-and-billing#data-retention) rules as other experiments. By default, traces have base tier retention (14 days). However, traces will automatically upgrade to extended tier retention (180 days as of September 14, 2026) if feedback is added to them. Feedback can be added in one of two ways:
-
-  * The [dataset has evaluators configured](/langsmith/bind-evaluator-to-dataset).
-  * [Feedback](/langsmith/observability-concepts#feedback) is manually added to a trace.
-
-  This auto-upgrade increases both the retention period and the cost of the trace. For more details, refer to [Data retention auto-upgrades](/langsmith/usage-and-billing#how-it-works).
-</Note>
+> [!NOTE]
+>
+> Studio experiments follow the same [data retention](/langsmith/usage-and-billing#data-retention) rules as other experiments. By default, traces have base tier retention (14 days). However, traces will automatically upgrade to extended tier retention (180 days as of September 14, 2026) if feedback is added to them. Feedback can be added in one of two ways:
+>
+> * The [dataset has evaluators configured](/langsmith/bind-evaluator-to-dataset).
+> * [Feedback](/langsmith/observability-concepts#feedback) is manually added to a trace.
+>
+> This auto-upgrade increases both the retention period and the cost of the trace. For more details, refer to [Data retention auto-upgrades](/langsmith/usage-and-billing#how-it-works).
 
 ### Experiment setup
 
@@ -186,13 +186,13 @@ This section explains how to test a local agent against remote traces from LangS
 * A LangSmith traced thread
 * A [locally running agent](/langsmith/local-dev-testing).
 
-<Info>
-  **Local agent requirements**
-
-  * langgraph>=0.3.18
-  * langgraph-api>=0.0.32
-  * Contains the same set of nodes present in the remote trace
-</Info>
+> [!NOTE]
+>
+> **Local agent requirements**
+>
+> * langgraph>=0.3.18
+> * langgraph-api>=0.0.32
+> * Contains the same set of nodes present in the remote trace
 
 #### Clone thread
 
@@ -219,12 +219,6 @@ For more details, refer to [How to evaluate an application's intermediate steps]
 
 ***
 
-<div>
-  <Callout icon="terminal-2">
-    [Connect these docs](/use-these-docs) to your agent of choice via MCP for real-time answers.
-  </Callout>
+[Connect these docs](/use-these-docs) to your agent of choice via MCP for real-time answers.
 
-  <Callout icon="edit">
-    [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/observability-studio.mdx) or [file an issue](https://github.com/langchain-ai/docs/issues/new/choose).
-  </Callout>
-</div>
+[Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/observability-studio.mdx) or [file an issue](https://github.com/langchain-ai/docs/issues/new/choose).

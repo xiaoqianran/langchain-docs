@@ -6,9 +6,9 @@ Automatically trace Claude Managed Agent sessions and events with LangSmith.
 
 [Claude Managed Agents](https://platform.claude.com/docs/en/managed-agents/overview) are Anthropic's hosted, cloud-based agents that run in managed environments. LangSmith supports tracing Claude Managed Agent sessions via the `wrapAnthropic` wrapper, giving you visibility into session events and message flows.
 
-<Note>
-  Claude Managed Agents tracing is currently supported in **TypeScript only**.
-</Note>
+> [!NOTE]
+>
+> Claude Managed Agents tracing is currently supported in **TypeScript only**.
 
 ## Installation
 
@@ -90,11 +90,11 @@ for await (const event of stream) {
 }
 ```
 
-<Note>
-  Full tracing of subagents in Anthropic's multi-agent architecture requires
-  tapping into a separate event stream and is not yet supported. Only top-level
-  session events are traced.
-</Note>
+> [!NOTE]
+>
+> Full tracing of subagents in Anthropic's multi-agent architecture requires
+> tapping into a separate event stream and is not yet supported. Only top-level
+> session events are traced.
 
 ## Next steps
 
@@ -104,12 +104,6 @@ for await (const event of stream) {
 
 ***
 
-<div>
-  <Callout icon="terminal-2">
-    [Connect these docs](/use-these-docs) to your agent of choice via MCP for real-time answers.
-  </Callout>
+[Connect these docs](/use-these-docs) to your agent of choice via MCP for real-time answers.
 
-  <Callout icon="edit">
-    [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/trace-with-claude-managed-agents.mdx) or [file an issue](https://github.com/langchain-ai/docs/issues/new/choose).
-  </Callout>
-</div>
+[Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/trace-with-claude-managed-agents.mdx) or [file an issue](https://github.com/langchain-ai/docs/issues/new/choose).

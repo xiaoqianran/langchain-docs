@@ -2,15 +2,15 @@
 
 # Trace Pipecat applications
 
-<Note>
-  This integration is in beta, so its API may change.
-</Note>
+> [!NOTE]
+>
+> This integration is in beta, so its API may change.
 
 Trace your [Pipecat](https://pipecat.ai/) voice agents to LangSmith with the LangSmith Pipecat integration. For high-level conventions, see [Voice tracing fundamentals](/langsmith/trace-voice-fundamentals).
 
-<Note>
-  The Pipecat integration requires `langsmith[pipecat]>=0.9.7`.
-</Note>
+> [!NOTE]
+>
+> The Pipecat integration requires `langsmith[pipecat]>=0.9.7`.
 
 The integration hooks into the spans Pipecat already emits and maps them onto LangSmith's tracing format, so each conversation becomes a single LangSmith trace, with a span per pipeline stage (STT, LLM, TTS). This covers both the STT/LLM/TTS cascade and speech-to-speech (realtime) models. Realtime models (for example, `OpenAIRealtimeLLMService`) need one extra call to capture the user's transcript. See [When using Pipecat with a realtime model](#when-using-pipecat-with-a-realtime-model).
 
@@ -18,15 +18,13 @@ The integration hooks into the spans Pipecat already emits and maps them onto La
 
 Install the integration along with the Pipecat service extras your pipeline uses:
 
-<CodeGroup>
-  ```bash pip theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  pip install "langsmith[pipecat]" "pipecat-ai[openai,local,tracing]"
-  ```
+```bash pip theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+pip install "langsmith[pipecat]" "pipecat-ai[openai,local,tracing]"
+```
 
-  ```bash uv theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  uv add "langsmith[pipecat]" "pipecat-ai[openai,local,tracing]"
-  ```
-</CodeGroup>
+```bash uv theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+uv add "langsmith[pipecat]" "pipecat-ai[openai,local,tracing]"
+```
 
 ## Set environment variables
 
@@ -59,9 +57,9 @@ task = PipelineTask(
 )
 ```
 
-<Note>
-  Set `enable_tracing=True`, `enable_turn_tracking=True`, and `enable_metrics=True`. Turn tracking is required for tracing, and metrics drive the latency and token data on each span.
-</Note>
+> [!NOTE]
+>
+> Set `enable_tracing=True`, `enable_turn_tracking=True`, and `enable_metrics=True`. Turn tracking is required for tracing, and metrics drive the latency and token data on each span.
 
 ### Use a LangGraph or LangChain agent as the LLM
 
@@ -97,9 +95,9 @@ With a speech-to-speech (realtime) model there is no separate speech-to-text sta
 
 Call `instrument_user_aggregator` once, right after building the context aggregator, so the SDK subscribes to that callback for you and pairs each transcript with its turn. It correlates by the id you pass to `set_thread_id`, so set that first and pass the same id:
 
-<Note>
-  `instrument_user_aggregator` requires `langsmith[pipecat]>=0.10.6`.
-</Note>
+> [!NOTE]
+>
+> `instrument_user_aggregator` requires `langsmith[pipecat]>=0.10.6`.
 
 ```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 from langsmith.integrations.pipecat import configure_pipecat, set_thread_id
@@ -175,24 +173,16 @@ The integration attaches the recording to the conversation root when it ends. Fo
 
 ## Next steps
 
-<CardGroup>
-  <Card title="Voice fundamentals" icon="waveform" href="/langsmith/trace-voice-fundamentals">
-    Core conventions for tracing voice agents.
-  </Card>
+> **[Voice fundamentals](/langsmith/trace-voice-fundamentals)**
+>
+> Core conventions for tracing voice agents.
 
-  <Card title="Upload files with traces" icon="paperclip" href="/langsmith/upload-files-with-traces">
-    Attach the conversation audio recording to your trace.
-  </Card>
-</CardGroup>
+> **[Upload files with traces](/langsmith/upload-files-with-traces)**
+>
+> Attach the conversation audio recording to your trace.
 
 ***
 
-<div>
-  <Callout icon="terminal-2">
-    [Connect these docs](/use-these-docs) to your agent of choice via MCP for real-time answers.
-  </Callout>
+[Connect these docs](/use-these-docs) to your agent of choice via MCP for real-time answers.
 
-  <Callout icon="edit">
-    [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/trace-with-pipecat.mdx) or [file an issue](https://github.com/langchain-ai/docs/issues/new/choose).
-  </Callout>
-</div>
+[Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/trace-with-pipecat.mdx) or [file an issue](https://github.com/langchain-ai/docs/issues/new/choose).

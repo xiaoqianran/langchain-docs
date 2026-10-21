@@ -239,9 +239,9 @@ terraform refresh
 
 ## Teardown
 
-<Warning>
-  Teardown permanently deletes the Cloud SQL instances. Cloud SQL takes no final snapshot on delete: its automated backups, on-demand backups, and point-in-time recovery logs are deleted with the instance. To keep the data, export it to a bucket outside this deployment before step 1. Skip the export for a disposable test stack.
-</Warning>
+> [!WARNING]
+>
+> Teardown permanently deletes the Cloud SQL instances. Cloud SQL takes no final snapshot on delete: its automated backups, on-demand backups, and point-in-time recovery logs are deleted with the instance. To keep the data, export it to a bucket outside this deployment before step 1. Skip the export for a disposable test stack.
 
 ```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 # Export the LangSmith database. Repeat for the SmithDB metastore with
@@ -294,12 +294,6 @@ Deletion protection also applies at the Cloud SQL API level, so the targeted app
 
 ***
 
-<div>
-  <Callout icon="terminal-2">
-    [Connect these docs](/use-these-docs) to your agent of choice via MCP for real-time answers.
-  </Callout>
+[Connect these docs](/use-these-docs) to your agent of choice via MCP for real-time answers.
 
-  <Callout icon="edit">
-    [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/self-host-terraform-gcp-quick-reference.mdx) or [file an issue](https://github.com/langchain-ai/docs/issues/new/choose).
-  </Callout>
-</div>
+[Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/self-host-terraform-gcp-quick-reference.mdx) or [file an issue](https://github.com/langchain-ai/docs/issues/new/choose).

@@ -39,23 +39,21 @@ A very common way to deal with rate limit errors is retrying with exponential ba
 
 If you're using `langchain` components you can add retries to all model calls with the `.with_retry(...)` / `.withRetry()` method:
 
-<CodeGroup>
-  ```python Python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  from langchain import init_chat_model
+```python Python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+from langchain import init_chat_model
 
-  model_with_retry = init_chat_model("gpt-5.4-mini").with_retry(stop_after_attempt=6)
-  ```
+model_with_retry = init_chat_model("gpt-5.4-mini").with_retry(stop_after_attempt=6)
+```
 
-  ```typescript TypeScript theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  import { initChatModel } from "langchain";
+```typescript TypeScript theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+import { initChatModel } from "langchain";
 
-  const model = await initChatModel("gpt-5.5", {
-      modelProvider: "openai",
-  });
+const model = await initChatModel("gpt-5.5", {
+    modelProvider: "openai",
+});
 
-  const modelWithRetry = model.withRetry({ stopAfterAttept: 2 });
-  ```
-</CodeGroup>
+const modelWithRetry = model.withRetry({ stopAfterAttept: 2 });
+```
 
 See the `langchain` [Python](https://reference.langchain.com/python/langchain_core/language_models/#langchain_core.language_models.BaseChatModel.with_retry) and [JS](https://reference.langchain.com/javascript/langchain-core/language_models/chat_models/BaseChatModel/withRetry) API references for more.
 
@@ -67,34 +65,26 @@ If you're not using `langchain` you can use other libraries like `tenacity` (Pyt
 
 Limiting the number of concurrent calls you're making to your application and evaluators is another way to decrease the frequency of model calls you're making, and in that way avoid rate limit errors. `max_concurrency` can be set directly on the [evaluate()](https://docs.smith.langchain.com/reference/python/evaluation/langsmith.evaluation._runner.evaluate) / [aevaluate()](https://docs.smith.langchain.com/reference/python/evaluation/langsmith.evaluation._arunner.aevaluate) functions. This parallelizes evaluation by effectively splitting the dataset across threads.
 
-<CodeGroup>
-  ```python Python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  from langsmith import aevaluate
+```python Python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+from langsmith import aevaluate
 
-  results = await aevaluate(
-      ...
-      max_concurrency=4,
-  )
-  ```
+results = await aevaluate(
+    ...
+    max_concurrency=4,
+)
+```
 
-  ```typescript TypeScript theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  import { evaluate } from "langsmith/evaluation";
+```typescript TypeScript theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+import { evaluate } from "langsmith/evaluation";
 
-  await evaluate(..., {
-    ...,
-    maxConcurrency: 4,
-  });
-  ```
-</CodeGroup>
+await evaluate(..., {
+  ...,
+  maxConcurrency: 4,
+});
+```
 
 ***
 
-<div>
-  <Callout icon="terminal-2">
-    [Connect these docs](/use-these-docs) to your agent of choice via MCP for real-time answers.
-  </Callout>
+[Connect these docs](/use-these-docs) to your agent of choice via MCP for real-time answers.
 
-  <Callout icon="edit">
-    [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/handle-model-rate-limiting.mdx) or [file an issue](https://github.com/langchain-ai/docs/issues/new/choose).
-  </Callout>
-</div>
+[Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/handle-model-rate-limiting.mdx) or [file an issue](https://github.com/langchain-ai/docs/issues/new/choose).

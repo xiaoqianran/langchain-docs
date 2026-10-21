@@ -8,13 +8,13 @@ When deploying agents to LangSmith, the server provides a built-in Postgres-back
 
 You provide a path to an async context manager that yields a `BaseCheckpointSaver` instance, and the server manages its lifecycle automatically.
 
-<Warning>
-  Custom checkpointers are in **alpha**. This feature may experience breaking changes in minor version updates.
-</Warning>
+> [!WARNING]
+>
+> Custom checkpointers are in **alpha**. This feature may experience breaking changes in minor version updates.
 
-<Tip>
-  To use MongoDB instead of PostgreSQL for checkpoint storage, see [Configure checkpointer backend](/langsmith/configure-checkpointer). This page is for implementing a fully custom storage backend.
-</Tip>
+> [!TIP]
+>
+> To use MongoDB instead of PostgreSQL for checkpoint storage, see [Configure checkpointer backend](/langsmith/configure-checkpointer). This page is for implementing a fully custom storage backend.
 
 ## Define the checkpointer
 
@@ -167,12 +167,6 @@ You can deploy this app as-is to LangSmith or to your self-hosted platform.
 
 ***
 
-<div>
-  <Callout icon="terminal-2">
-    [Connect these docs](/use-these-docs) to your agent of choice via MCP for real-time answers.
-  </Callout>
+[Connect these docs](/use-these-docs) to your agent of choice via MCP for real-time answers.
 
-  <Callout icon="edit">
-    [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/custom-checkpointer.mdx) or [file an issue](https://github.com/langchain-ai/docs/issues/new/choose).
-  </Callout>
-</div>
+[Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/custom-checkpointer.mdx) or [file an issue](https://github.com/langchain-ai/docs/issues/new/choose).

@@ -2,13 +2,13 @@
 
 # Deploy an observability stack for your LangSmith deployment
 
-<Danger>
-  **Deprecated**: The LangSmith Observability Helm chart is deprecated. We no longer maintain or provide support for it. The documentation below is preserved for reference only.
-</Danger>
+> [!CAUTION]
+>
+> **Deprecated**: The LangSmith Observability Helm chart is deprecated. We no longer maintain or provide support for it. The documentation below is preserved for reference only.
 
-<Warning>
-  **This section is only applicable for Kubernetes deployments.**
-</Warning>
+> [!WARNING]
+>
+> **This section is only applicable for Kubernetes deployments.**
 
 LangSmith applications expose telemetry data that can be sent to the backend of your choice. If you don’t already have an observability stack, or prefer to keep LangSmith telemetry separate from your main application, you can use the LangSmith Observability Helm chart to deploy a basic observability stack.
 
@@ -44,9 +44,9 @@ langsmith-observability-kube-state-metrics-b58bb8db4-bm4g5        1/1     Runnin
 
 # Section 2: Full observability stack
 
-<Warning>
-  **This is not a production observability stack. Use this to gain quick insight into logs, metrics and traces for your deployment. This is only made to handle a few dozen GB of data per day.**
-</Warning>
+> [!WARNING]
+>
+> **This is not a production observability stack. Use this to gain quick insight into logs, metrics and traces for your deployment. This is only made to handle a few dozen GB of data per day.**
 
 This section will show you how to deploy the end-to-end observability stack for LangSmith, using the [Helm Chart](https://github.com/langchain-ai/helm/tree/main/charts/langsmith-observability).
 
@@ -98,9 +98,9 @@ The following instructions will bring up OTel collectors, the LGTM stack, Grafan
 3. Find the latest version of the chart by running `helm search repo langchain/langsmith-observability --versions`.
 4. Grab the latest version number, and run `helm install langsmith-observability langchain/langsmith-observability --values langsmith_obs_config.yaml --version <version> -n <namespace> --wait --debug`
 
-<Note>
-  **You can selectively collect logs, metrics or traces by modifying the boolean values under `otelCollector` in your config file. You can also selectively bring up each respective piece of the backend (Loki, Mimir, Tempo).**
-</Note>
+> [!NOTE]
+>
+> **You can selectively collect logs, metrics or traces by modifying the boolean values under `otelCollector` in your config file. You can also selectively bring up each respective piece of the backend (Loki, Mimir, Tempo).**
 
 You should see the following if the install went through:
 
@@ -132,10 +132,10 @@ observability:
     endpoint: "http://${GATEWAY_COLLECTOR_SERVICE_NAME}.${LANGSMITH_OBS_NAMESPACE}.svc.cluster.local:4318/v1/traces"
 ```
 
-<Info>
-  1. To get `${LANGSMITH_OTEL_CRD_NAME}`, you can run `kubectl get opentelemetrycollectors -n ${LANGSMITH_OBS_NAMESPACE}` and select the name of the one with MODE = `sidecar`
-  2. To get `${GATEWAY_COLLECTOR_SERVICE_NAME}` name, run `kubectl get services -n ${LANGSMITH_OBS_NAMESPACE}` and select the one with Ports 4317/4318 AND a ClusterIP set. It should be something like `langsmith-observability-collector-gateway-collector`
-</Info>
+> [!NOTE]
+>
+> 1. To get `${LANGSMITH_OTEL_CRD_NAME}`, you can run `kubectl get opentelemetrycollectors -n ${LANGSMITH_OBS_NAMESPACE}` and select the name of the one with MODE = `sidecar`
+> 2. To get `${GATEWAY_COLLECTOR_SERVICE_NAME}` name, run `kubectl get services -n ${LANGSMITH_OBS_NAMESPACE}` and select the one with Ports 4317/4318 AND a ClusterIP set. It should be something like `langsmith-observability-collector-gateway-collector`
 
 Now run `helm upgrade langsmith langchain/langsmith --values langsmith_config.yaml --version <version> -n <langsmith-namespace> --wait --debug`, replacing `<version>` with the chart version you already run. Without `--version`, Helm upgrades to the latest chart, which can move the installation to a new major version.
 
@@ -157,16 +157,10 @@ Then port-forward into the `langsmith-observability-grafana` container at port 3
 
 Once in Grafana, you can use the UI to monitor logs, metrics and traces. Grafana also comes pre-packaged with sets of dashboards for monitoring the main components of your deployment.
 
-<img alt="LangSmith Grafana Dashboards" />
+![LangSmith Grafana Dashboards](https://mintcdn.com/langchain-5e9cc07a/4kN8yiLrZX_amfFn/langsmith/images/langsmith-grafana-dashboards.png?fit=max\&auto=format\&n=4kN8yiLrZX_amfFn\&q=85\&s=ee47243826737bab23944e01536dec71)
 
 ***
 
-<div>
-  <Callout icon="terminal-2">
-    [Connect these docs](/use-these-docs) to your agent of choice via MCP for real-time answers.
-  </Callout>
+[Connect these docs](/use-these-docs) to your agent of choice via MCP for real-time answers.
 
-  <Callout icon="edit">
-    [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/observability-stack.mdx) or [file an issue](https://github.com/langchain-ai/docs/issues/new/choose).
-  </Callout>
-</div>
+[Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/observability-stack.mdx) or [file an issue](https://github.com/langchain-ai/docs/issues/new/choose).

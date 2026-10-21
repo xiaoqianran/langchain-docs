@@ -4,9 +4,9 @@
 
 Run LangSmith in your own Kubernetes cluster, with Insights and Chat enabled by default and optional features such as Sandboxes, Engine, Fleet, LLM Gateway, and LangSmith Deployment.
 
-<Note>
-  Self-hosted LangSmith is an add-on to the Enterprise plan designed for LangChain's largest, most security-conscious customers. For more details, refer to [Pricing](https://www.langchain.com/pricing). [Contact our sales team](https://www.langchain.com/contact-sales) if you want a license key to trial LangSmith in your environment.
-</Note>
+> [!NOTE]
+>
+> Self-hosted LangSmith is an add-on to the Enterprise plan designed for LangChain's largest, most security-conscious customers. For more details, refer to [Pricing](https://www.langchain.com/pricing). [Contact our sales team](https://www.langchain.com/contact-sales) if you want a license key to trial LangSmith in your environment.
 
 Self-hosted LangSmith runs the LangSmith platform in your own infrastructure so that trace and operational data stay in your environment. The base installation includes [observability](/langsmith/observability), [evaluation](/langsmith/evaluation), [prompt engineering](/langsmith/prompt-context-hub#prompts), [Insights](/langsmith/insights), and [Chat](/langsmith/chat). You can add [Sandboxes](/langsmith/sandboxes), [Engine](/langsmith/engine), [Fleet](/langsmith/fleet/index), [LLM Gateway](/langsmith/llm-gateway), and [LangSmith Deployment](/langsmith/deployment) when your use case requires them.
 
@@ -26,9 +26,7 @@ Self-hosted LangSmith runs the LangSmith platform in your own infrastructure so 
 
 A self-hosted LangSmith instance runs a set of application services backed by several storage services.
 
-<img alt="LangSmith architecture showing services and datastores" />
-
-<img alt="LangSmith architecture showing services and datastores" />
+![LangSmith architecture showing services and datastores](https://mintcdn.com/langchain-5e9cc07a/rqYqeBEA_2oeiw17/langsmith/images/cloud-arch-light.png?fit=max\&auto=format\&n=rqYqeBEA_2oeiw17\&q=85\&s=0790cbdf4fe131c74d1e60bb120834e3)
 
 To access the LangSmith UI and send API requests, expose the [LangSmith frontend](#services) service. Depending on your installation method, this can be a load balancer or a port exposed on the host machine.
 
@@ -47,17 +45,17 @@ For architecture patterns and best practices on each cloud provider, see the [AW
 
 ### Storage services
 
-<Note>
-  LangSmith bundles all storage services by default. You can configure it to use external versions of all storage services. For production, use external storage services.
-</Note>
+> [!NOTE]
+>
+> LangSmith bundles all storage services by default. You can configure it to use external versions of all storage services. For production, use external storage services.
 
 | Service | Description |
 | - | - |
-|  **ClickHouse** | [ClickHouse](https://clickhouse.com/docs/en/intro) is a high-performance, column-oriented SQL database management system (DBMS) for online analytical processing (OLAP).<br /><br />LangSmith uses ClickHouse as the primary data store for traces and feedback (high-volume data).<br /><br />💡 [Connect to external ClickHouse](/langsmith/self-host-external-clickhouse) |
-|  **SmithDB** | SmithDB is an optional columnar datastore built for agent trace data: deeply nested spans, multi-modal content, and spans that stay open for hours.<br /><br />SmithDB is available on LangSmith 0.17 and later.<br /><br />💡 [Enable SmithDB](/langsmith/self-host-smithdb) |
-|  **PostgreSQL** | [PostgreSQL](https://www.postgresql.org/about/) is a powerful, open source object-relational database system that uses and extends the SQL language combined with many features that safely store and scale the most complicated data workloads.<br /><br />LangSmith uses PostgreSQL as the primary data store for transactional workloads and operational data (almost everything besides traces and feedback).<br /><br />💡 [Connect to external PostgreSQL](/langsmith/self-host-external-postgres) - AWS RDS, GCP Cloud SQL, Azure Database |
-|  **Redis / Valkey** | [Redis](https://github.com/redis/redis) is a powerful in-memory key-value database that persists on disk. By holding data in memory, Redis offers high performance for operations like caching.<br /><br />LangSmith uses Redis to back queuing and caching operations. [Valkey](https://valkey.io/) is also officially supported as a drop-in replacement for Redis.<br /><br />💡 [Connect to external Redis or Valkey](/langsmith/self-host-external-redis) - AWS ElastiCache, GCP Memorystore, Azure Cache |
-|  **Blob storage** | LangSmith supports several blob storage providers, including [AWS S3](https://aws.amazon.com/s3/), [Azure Blob Storage](https://azure.microsoft.com/en-us/services/storage/blobs/), and [Google Cloud Storage](https://cloud.google.com/storage).<br /><br />LangSmith uses blob storage to store large files, such as trace artifacts, feedback attachments, and other large data objects. Blob storage is optional, but highly recommended for production deployments.<br /><br />💡 [Enable blob storage](/langsmith/self-host-blob-storage) - AWS S3, GCP GCS, Azure Blob |
+|  **ClickHouse** | [ClickHouse](https://clickhouse.com/docs/en/intro) is a high-performance, column-oriented SQL database management system (DBMS) for online analytical processing (OLAP). LangSmith uses ClickHouse as the primary data store for traces and feedback (high-volume data). 💡 [Connect to external ClickHouse](/langsmith/self-host-external-clickhouse) |
+|  **SmithDB** | SmithDB is an optional columnar datastore built for agent trace data: deeply nested spans, multi-modal content, and spans that stay open for hours. SmithDB is available on LangSmith 0.17 and later. 💡 [Enable SmithDB](/langsmith/self-host-smithdb) |
+|  **PostgreSQL** | [PostgreSQL](https://www.postgresql.org/about/) is a powerful, open source object-relational database system that uses and extends the SQL language combined with many features that safely store and scale the most complicated data workloads. LangSmith uses PostgreSQL as the primary data store for transactional workloads and operational data (almost everything besides traces and feedback). 💡 [Connect to external PostgreSQL](/langsmith/self-host-external-postgres) - AWS RDS, GCP Cloud SQL, Azure Database |
+|  **Redis / Valkey** | [Redis](https://github.com/redis/redis) is a powerful in-memory key-value database that persists on disk. By holding data in memory, Redis offers high performance for operations like caching. LangSmith uses Redis to back queuing and caching operations. [Valkey](https://valkey.io/) is also officially supported as a drop-in replacement for Redis. 💡 [Connect to external Redis or Valkey](/langsmith/self-host-external-redis) - AWS ElastiCache, GCP Memorystore, Azure Cache |
+|  **Blob storage** | LangSmith supports several blob storage providers, including [AWS S3](https://aws.amazon.com/s3/), [Azure Blob Storage](https://azure.microsoft.com/en-us/services/storage/blobs/), and [Google Cloud Storage](https://cloud.google.com/storage). LangSmith uses blob storage to store large files, such as trace artifacts, feedback attachments, and other large data objects. Blob storage is optional, but highly recommended for production deployments. 💡 [Enable blob storage](/langsmith/self-host-blob-storage) - AWS S3, GCP GCS, Azure Blob |
 
 ## Installation procedures
 
@@ -65,26 +63,18 @@ This page is an overview. The installation itself happens in the [Kubernetes ins
 
 To go from this page to a running instance:
 
-<Steps>
-  <Step title="Install the base platform">
-    Follow [Self-host LangSmith on Kubernetes](/langsmith/kubernetes) from start to finish. It covers prerequisites, Helm configuration, Insights and Chat encryption keys, deployment, and verification. When you complete it, you'll have a running LangSmith instance with observability, evaluation, prompt engineering, Insights, and Chat.
+**1. Install the base platform**
 
-    Before you start, review the [minimum versions for self-hosting dependencies](/langsmith/self-host-dependency-versions). To provision the cluster, datastores, and Helm release together, use [Deploy with Terraform](/langsmith/self-host-terraform) instead of the Helm-only guide.
-  </Step>
+Follow [Self-host LangSmith on Kubernetes](/langsmith/kubernetes) from start to finish. It covers prerequisites, Helm configuration, Insights and Chat encryption keys, deployment, and verification. When you complete it, you'll have a running LangSmith instance with observability, evaluation, prompt engineering, Insights, and Chat.
 
-  <Step title="(Optional) Add features">
-    After the base platform is running, enable the optional features your use case requires from the [Features](#features) table. See [Configure additional self-hosted features](/langsmith/self-host-additional-features). Skip this step if the base installation covers your use case.
-  </Step>
-</Steps>
+Before you start, review the [minimum versions for self-hosting dependencies](/langsmith/self-host-dependency-versions). To provision the cluster, datastores, and Helm release together, use [Deploy with Terraform](/langsmith/self-host-terraform) instead of the Helm-only guide.
+
+**2. (Optional) Add features**
+
+After the base platform is running, enable the optional features your use case requires from the [Features](#features) table. See [Configure additional self-hosted features](/langsmith/self-host-additional-features). Skip this step if the base installation covers your use case.
 
 ***
 
-<div>
-  <Callout icon="terminal-2">
-    [Connect these docs](/use-these-docs) to your agent of choice via MCP for real-time answers.
-  </Callout>
+[Connect these docs](/use-these-docs) to your agent of choice via MCP for real-time answers.
 
-  <Callout icon="edit">
-    [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/self-hosted.mdx) or [file an issue](https://github.com/langchain-ai/docs/issues/new/choose).
-  </Callout>
-</div>
+[Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/self-hosted.mdx) or [file an issue](https://github.com/langchain-ai/docs/issues/new/choose).

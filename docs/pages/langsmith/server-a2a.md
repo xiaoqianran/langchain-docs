@@ -23,14 +23,14 @@ existing v0.3 clients keep working. The agent card declares one interface:
 ]
 ```
 
-<Warning>
-  The method name you send also selects the enum case in the response. A v1.0 name returns
-  SCREAMING\_SNAKE\_CASE (`TASK_STATE_WORKING`, `ROLE_AGENT`); a v0.3 name returns lowercase
-  (`working`, `agent`). Pick one family per client and stay on it.
-
-  The envelope varies by method, not by family: `SendMessage` wraps the task in `result.task`, while
-  `GetTask` and all v0.3 methods return it directly on `result`. `ListTasks` returns `result.tasks`.
-</Warning>
+> [!WARNING]
+>
+> The method name you send also selects the enum case in the response. A v1.0 name returns
+> SCREAMING\_SNAKE\_CASE (`TASK_STATE_WORKING`, `ROLE_AGENT`); a v0.3 name returns lowercase
+> (`working`, `agent`). Pick one family per client and stay on it.
+>
+> The envelope varies by method, not by family: `SendMessage` wraps the task in `result.task`, while
+> `GetTask` and all v0.3 methods return it directly on `result`. `ListTasks` returns `result.tasks`.
 
 ## Supported methods
 
@@ -153,11 +153,11 @@ An unrecognized value returns `-32602` with `historyScope must be 'context' or '
 key such as `historyscope` is not an error — it is ignored, and you silently get full-context
 history, so check the spelling if filtering appears not to work.
 
-<Warning>
-  Do not resend a `taskId` from a completed task. Each new turn starts a new task inside the same
-  context — send the `contextId` alone. A message naming a terminal task is rejected with `-32004`,
-  and a `taskId` minted by another agent is rejected with `-32001`.
-</Warning>
+> [!WARNING]
+>
+> Do not resend a `taskId` from a completed task. Each new turn starts a new task inside the same
+> context — send the `contextId` alone. A message naming a terminal task is rejected with `-32004`,
+> and a `taskId` minted by another agent is rejected with `-32001`.
 
 ### Interrupts
 
@@ -562,19 +562,19 @@ The flow works as follows:
 2. The client passes the `contextId` in all subsequent messages to maintain conversation continuity.
 3. Agent Server maps the `contextId` to `thread_id` in LangSmith [metadata](/langsmith/add-metadata-tags), so all turns appear in the same thread.
 
-<Warning>
-  The `contextId` is used directly as the LangGraph `thread_id`, so it must be a UUID. Echo back the
-  one the server returned rather than minting your own identifier. A `contextId` such as
-  `session-42` is rejected with `-32602` and the message `Failed to create run: Invalid thread ID`.
-</Warning>
+> [!WARNING]
+>
+> The `contextId` is used directly as the LangGraph `thread_id`, so it must be a UUID. Echo back the
+> one the server returned rather than minting your own identifier. A `contextId` such as
+> `session-42` is rejected with `-32602` and the message `Failed to create run: Invalid thread ID`.
 
 ### Tracing across multiple agents
 
 When agents from different frameworks communicate over A2A, `contextId` is what unifies their traces. Reuse the `contextId` returned by the first agent on every later request, to that agent and to the others.
 
-<Warning>
-  Agent Server does not read a top-level `metadata` field on the JSON-RPC payload. There is no way for a client to set the LangGraph `thread_id` directly — it is always the `contextId`. Sending `metadata.thread_id` to an Agent Server deployment has no effect.
-</Warning>
+> [!WARNING]
+>
+> Agent Server does not read a top-level `metadata` field on the JSON-RPC payload. There is no way for a client to set the LangGraph `thread_id` directly — it is always the `contextId`. Sending `metadata.thread_id` to an Agent Server deployment has no effect.
 
 The following code snippet demonstrates the key concepts. For a complete runnable implementation with two agents, refer to the [Google ADK + LangChain example](https://github.com/langchain-samples/A2A-google-adk/blob/main/test_agent_conversation.py).
 
@@ -703,9 +703,9 @@ async def set_thread_id_middleware(request: Request, call_next):
 
 Register your agent routes on `app` after this middleware.
 
-<Note>
-  Set `LANGSMITH_API_KEY` and optionally `LANGSMITH_PROJECT` in your environment to enable tracing. All agents in the conversation should use the same project so their traces are visible together.
-</Note>
+> [!NOTE]
+>
+> Set `LANGSMITH_API_KEY` and optionally `LANGSMITH_PROJECT` in your environment to enable tracing. All agents in the conversation should use the same project so their traces are visible together.
 
 ### View traces in LangSmith
 
@@ -755,11 +755,11 @@ RFC 2119 level and works against any A2A endpoint, including yours.
 ./run_tck.py --sut-host https://your-deployment/a2a/{assistant_id} --transport jsonrpc
 ```
 
-<Note>
-  The TCK drives some scenarios through `messageId` prefixes such as `tck-input-required`, described
-  in its `docs/SUT_REQUIREMENTS.md`. A graph that does not implement those prefixes will report those
-  requirements as skipped rather than failed.
-</Note>
+> [!NOTE]
+>
+> The TCK drives some scenarios through `messageId` prefixes such as `tck-input-required`, described
+> in its `docs/SUT_REQUIREMENTS.md`. A graph that does not implement those prefixes will report those
+> requirements as skipped rather than failed.
 
 ### What Agent Server currently fails
 
@@ -797,12 +797,6 @@ To disable the A2A endpoint, set `disable_a2a` to `true` in your `langgraph.json
 
 ***
 
-<div>
-  <Callout icon="terminal-2">
-    [Connect these docs](/use-these-docs) to your agent of choice via MCP for real-time answers.
-  </Callout>
+[Connect these docs](/use-these-docs) to your agent of choice via MCP for real-time answers.
 
-  <Callout icon="edit">
-    [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/server-a2a.mdx) or [file an issue](https://github.com/langchain-ai/docs/issues/new/choose).
-  </Callout>
-</div>
+[Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/server-a2a.mdx) or [file an issue](https://github.com/langchain-ai/docs/issues/new/choose).

@@ -47,17 +47,15 @@ Before you start this tutorial, ensure you have:
 
 Install the required dependencies. Start in your `custom-auth` directory and ensure you have the `langgraph-cli` installed:
 
-<CodeGroup>
-  ```bash pip theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  cd custom-auth
-  pip install -U "langgraph-cli[inmem]"
-  ```
+```bash pip theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+cd custom-auth
+pip install -U "langgraph-cli[inmem]"
+```
 
-  ```bash uv theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  cd custom-auth
-  uv add "langgraph-cli[inmem]"
-  ```
-</CodeGroup>
+```bash uv theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+cd custom-auth
+uv add "langgraph-cli[inmem]"
+```
 
 ## 2. Set up the authentication provider
 
@@ -286,12 +284,6 @@ Now that you have production authentication, consider:
 
 ***
 
-<div>
-  <Callout icon="terminal-2">
-    [Connect these docs](/use-these-docs) to your agent of choice via MCP for real-time answers.
-  </Callout>
+[Connect these docs](/use-these-docs) to your agent of choice via MCP for real-time answers.
 
-  <Callout icon="edit">
-    [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/add-auth-server.mdx) or [file an issue](https://github.com/langchain-ai/docs/issues/new/choose).
-  </Callout>
-</div>
+[Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/add-auth-server.mdx) or [file an issue](https://github.com/langchain-ai/docs/issues/new/choose).

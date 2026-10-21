@@ -18,13 +18,11 @@ This approach is useful when you want:
 
 [CopilotKit for LangGraph](https://docs.copilotkit.ai/langgraph) also documents [generative UI](https://docs.copilotkit.ai/langgraph/generative-ui), [human in the loop](https://docs.copilotkit.ai/langgraph/human-in-the-loop) (HITL), and [shared state](https://docs.copilotkit.ai/langgraph/shared-state) on top of the same middleware and clients.
 
-<Info>
-  For CopilotKit-specific APIs, UI patterns, and runtime configuration, see the
-  [CopilotKit docs](https://docs.copilotkit.ai/langgraph). For a Deep Agent walkthrough, see
-  [Deep Agents and CopilotKit](https://docs.copilotkit.ai/langgraph/deep-agents) in the CopilotKit docs.
-</Info>
-
-<ExampleEmbed />
+> [!NOTE]
+>
+> For CopilotKit-specific APIs, UI patterns, and runtime configuration, see the
+> [CopilotKit docs](https://docs.copilotkit.ai/langgraph). For a Deep Agent walkthrough, see
+> [Deep Agents and CopilotKit](https://docs.copilotkit.ai/langgraph/deep-agents) in the CopilotKit docs.
 
 ## How it works
 
@@ -88,15 +86,13 @@ uv add copilotkit ag-ui-langgraph fastapi uvicorn
 
 The middleware package sits alongside the Deep Agents stack. Install it with your [chat model](/oss/python/integrations/chat) package (this example uses OpenAI):
 
-<CodeGroup>
-  ```python pip theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  pip install -U deepagents copilotkit langchain-openai
-  ```
+```python pip theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+pip install -U deepagents copilotkit langchain-openai
+```
 
-  ```python uv theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  uv add deepagents copilotkit langchain-openai
-  ```
-</CodeGroup>
+```python uv theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+uv add deepagents copilotkit langchain-openai
+```
 
 The CopilotKit runtime that the frontend calls is a Node package, so the Python setup also needs a small Node server. The pins below are a known-good pair. If you upgrade `@copilotkit/runtime`, install the `@ag-ui/client` version that release lists as a dependency so the `HttpAgent` type matches:
 
@@ -472,13 +468,13 @@ This renderer pattern is what makes the integration feel native:
 
 The same agent that powers your in-app copilot can also run as a bot in Slack and other messaging platforms. [CopilotKit Channels](https://docs.copilotkit.ai/channels) connects your LangChain agent to a messaging platform through a managed CopilotKit Intelligence connection: Intelligence holds the platform credentials and message delivery, while your process runs the agent.
 
-<Note>
-  Channels require `@copilotkit/channels` 0.6.1 and `@copilotkit/runtime` 1.65.0, installed together as a tested pair, and Node.js 22 or later on a long-running host. The LangChain deployment the channel connects to can be Python or TypeScript.
-</Note>
+> [!NOTE]
+>
+> Channels require `@copilotkit/channels` 0.6.1 and `@copilotkit/runtime` 1.65.0, installed together as a tested pair, and Node.js 22 or later on a long-running host. The LangChain deployment the channel connects to can be Python or TypeScript.
 
-<Info>
-  This page shows how Channels fit together with a LangChain agent. For the full Slack walkthrough with a LangGraph backend, see [Connect and run your agent in Slack](https://docs.copilotkit.ai/slack/langgraph-typescript/connect). For other agent backends and platform coverage, see the [Channels overview](https://docs.copilotkit.ai/channels).
-</Info>
+> [!NOTE]
+>
+> This page shows how Channels fit together with a LangChain agent. For the full Slack walkthrough with a LangGraph backend, see [Connect and run your agent in Slack](https://docs.copilotkit.ai/slack/langgraph-typescript/connect). For other agent backends and platform coverage, see the [Channels overview](https://docs.copilotkit.ai/channels).
 
 ### How it fits together
 
@@ -496,22 +492,20 @@ Platform credentials never enter the agent process. Create a managed Channel in 
 
 Install the tested SDK pair, then the TypeScript tooling:
 
-<CodeGroup>
-  ```bash npm theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  npm install --save-exact @copilotkit/channels@0.6.1 @copilotkit/runtime@1.65.0
-  npm install -D tsx typescript @types/node
-  ```
+```bash npm theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+npm install --save-exact @copilotkit/channels@0.6.1 @copilotkit/runtime@1.65.0
+npm install -D tsx typescript @types/node
+```
 
-  ```bash pnpm theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  pnpm add --save-exact @copilotkit/channels@0.6.1 @copilotkit/runtime@1.65.0
-  pnpm add -D tsx typescript @types/node
-  ```
+```bash pnpm theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+pnpm add --save-exact @copilotkit/channels@0.6.1 @copilotkit/runtime@1.65.0
+pnpm add -D tsx typescript @types/node
+```
 
-  ```bash yarn theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  yarn add --exact @copilotkit/channels@0.6.1 @copilotkit/runtime@1.65.0
-  yarn add -D tsx typescript @types/node
-  ```
-</CodeGroup>
+```bash yarn theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+yarn add --exact @copilotkit/channels@0.6.1 @copilotkit/runtime@1.65.0
+yarn add -D tsx typescript @types/node
+```
 
 Use a NodeNext TypeScript configuration:
 
@@ -665,12 +659,6 @@ Managed Slack is generally available. Managed Teams is a controlled integration 
 
 ***
 
-<div>
-  <Callout icon="terminal-2">
-    [Connect these docs](/use-these-docs) to your agent of choice via MCP for real-time answers.
-  </Callout>
+[Connect these docs](/use-these-docs) to your agent of choice via MCP for real-time answers.
 
-  <Callout icon="edit">
-    [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/oss/langchain/frontend/integrations/copilotkit.mdx) or [file an issue](https://github.com/langchain-ai/docs/issues/new/choose).
-  </Callout>
-</div>
+[Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/oss/langchain/frontend/integrations/copilotkit.mdx) or [file an issue](https://github.com/langchain-ai/docs/issues/new/choose).

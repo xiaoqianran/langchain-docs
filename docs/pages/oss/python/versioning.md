@@ -48,39 +48,37 @@ Certain APIs are explicitly marked as "internal" in a couple of ways:
 
 ## Release cycles
 
-<AccordionGroup>
-  <Accordion title="Major releases">
-    Major releases (e.g., `1.0.0` → `2.0.0`) may include:
+> **Major releases**
+>
+> Major releases (e.g., `1.0.0` → `2.0.0`) may include:
+>
+> * Breaking API changes
+> * Removal of deprecated features
+> * Significant architectural improvements
+>
+> We provide:
+>
+> * Detailed migration guides
+> * Automated migration tools when possible
+> * Extended support period for the previous major version
 
-    * Breaking API changes
-    * Removal of deprecated features
-    * Significant architectural improvements
+> **Minor releases**
+>
+> Minor releases (e.g., `1.0.0` → `1.1.0`) include:
+>
+> * New features and capabilities
+> * Performance improvements
+> * New optional parameters
+> * Backward-compatible enhancements
 
-    We provide:
-
-    * Detailed migration guides
-    * Automated migration tools when possible
-    * Extended support period for the previous major version
-  </Accordion>
-
-  <Accordion title="Minor releases">
-    Minor releases (e.g., `1.0.0` → `1.1.0`) include:
-
-    * New features and capabilities
-    * Performance improvements
-    * New optional parameters
-    * Backward-compatible enhancements
-  </Accordion>
-
-  <Accordion title="Patch releases">
-    Patch releases (e.g., `1.0.0` → `1.0.1`) include:
-
-    * Bug fixes
-    * Security updates
-    * Documentation improvements
-    * Performance optimizations without API changes
-  </Accordion>
-</AccordionGroup>
+> **Patch releases**
+>
+> Patch releases (e.g., `1.0.0` → `1.0.1`) include:
+>
+> * Bug fixes
+> * Security updates
+> * Documentation improvements
+> * Performance optimizations without API changes
 
 ## Version support policy
 
@@ -107,45 +105,41 @@ For detailed information about release status and support timelines, see the [Re
 
 To check your installed version:
 
-<CodeGroup>
-  ```python LangChain theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  import langchain_core
-  print(langchain_core.__version__)
-  ```
+```python LangChain theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+import langchain_core
+print(langchain_core.__version__)
+```
 
-  ```python LangGraph theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  import langgraph
-  print(langgraph.__version__)
-  ```
-</CodeGroup>
+```python LangGraph theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+import langgraph
+print(langgraph.__version__)
+```
 
 ## Upgrade
 
-<CodeGroup>
-  ```bash LangChain theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  # Upgrade to the latest version
-  pip install -U langchain-core langchain
+```bash LangChain theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+# Upgrade to the latest version
+pip install -U langchain-core langchain
 
-  # Upgrade to a specific version
-  pip install langchain-core==1.0.0
-  ```
+# Upgrade to a specific version
+pip install langchain-core==1.0.0
+```
 
-  ```bash LangGraph theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  # Upgrade to the latest version
-  pip install -U langgraph
+```bash LangGraph theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+# Upgrade to the latest version
+pip install -U langgraph
 
-  # Upgrade to a specific version
-  pip install langgraph==1.0.0
-  ```
+# Upgrade to a specific version
+pip install langgraph==1.0.0
+```
 
-  ```bash Deep Agents theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  # Upgrade to the latest version
-  pip install -U deepagents
+```bash Deep Agents theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+# Upgrade to the latest version
+pip install -U deepagents
 
-  # Upgrade to a specific version
-  pip install deepagents==0.1.0
-  ```
-</CodeGroup>
+# Upgrade to a specific version
+pip install deepagents==0.1.0
+```
 
 ## Pre-release versions
 
@@ -161,12 +155,6 @@ We occasionally release alpha and beta versions for early testing:
 
 ***
 
-<div>
-  <Callout icon="terminal-2">
-    [Connect these docs](/use-these-docs) to your agent of choice via MCP for real-time answers.
-  </Callout>
+[Connect these docs](/use-these-docs) to your agent of choice via MCP for real-time answers.
 
-  <Callout icon="edit">
-    [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/oss/versioning.mdx) or [file an issue](https://github.com/langchain-ai/docs/issues/new/choose).
-  </Callout>
-</div>
+[Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/oss/versioning.mdx) or [file an issue](https://github.com/langchain-ai/docs/issues/new/choose).

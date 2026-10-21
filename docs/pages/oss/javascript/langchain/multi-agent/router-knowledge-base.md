@@ -48,9 +48,9 @@ We will cover the following concepts:
 * [StateGraph](/oss/javascript/langgraph/graph-api) for workflow orchestration
 * [Send API](/oss/javascript/langgraph/graph-api#send) for parallel execution
 
-<Tip>
-  **Router vs. Subagents**: The [subagents pattern](/oss/javascript/langchain/multi-agent/subagents) can also route to multiple agents. Use the router pattern when you need specialized preprocessing, custom routing logic, or want explicit control over parallel execution. Use the subagents pattern when you want the LLM to decide which agents to call dynamically.
-</Tip>
+> [!TIP]
+>
+> **Router vs. Subagents**: The [subagents pattern](/oss/javascript/langchain/multi-agent/subagents) can also route to multiple agents. Use the router pattern when you need specialized preprocessing, custom routing logic, or want explicit control over parallel execution. Use the subagents pattern when you want the LLM to decide which agents to call dynamically.
 
 ## Setup
 
@@ -58,19 +58,17 @@ We will cover the following concepts:
 
 This tutorial requires the `langchain` and `langgraph` packages:
 
-<CodeGroup>
-  ```bash npm theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  npm install langchain @langchain/langgraph
-  ```
+```bash npm theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+npm install langchain @langchain/langgraph
+```
 
-  ```bash yarn theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  yarn add langchain @langchain/langgraph
-  ```
+```bash yarn theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+yarn add langchain @langchain/langgraph
+```
 
-  ```bash pnpm theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  pnpm add langchain @langchain/langgraph
-  ```
-</CodeGroup>
+```bash pnpm theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+pnpm add langchain @langchain/langgraph
+```
 
 For more details, see our [Installation guide](/oss/javascript/langchain/install).
 
@@ -78,236 +76,212 @@ For more details, see our [Installation guide](/oss/javascript/langchain/install
 
 Set up [LangSmith](https://smith.langchain.com?utm_source=docs\&utm_medium=cta\&utm_campaign=langsmith-signup\&utm_content=oss-langchain-multi-agent-router-knowledge-base) to inspect what is happening inside your agent. Then set the following environment variables:
 
-<CodeGroup>
-  ```bash Shell theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  export LANGSMITH_TRACING="true"
-  export LANGSMITH_API_KEY="..."
-  ```
+```bash Shell theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+export LANGSMITH_TRACING="true"
+export LANGSMITH_API_KEY="..."
+```
 
-  ```typescript TypeScript theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  process.env.LANGSMITH_TRACING = "true";
-  process.env.LANGSMITH_API_KEY = "...";
-  ```
-</CodeGroup>
+```typescript TypeScript theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+process.env.LANGSMITH_TRACING = "true";
+process.env.LANGSMITH_API_KEY = "...";
+```
 
 ### Select an LLM
 
 Select a chat model from LangChain's suite of integrations:
 
-<Tabs>
-  <Tab title="OpenAI">
-    👉 Read the [OpenAI chat model integration docs](/oss/javascript/integrations/chat/openai/)
+**OpenAI**
 
-    <CodeGroup>
-      ```bash npm theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-      npm install @langchain/openai
-      ```
+👉 Read the [OpenAI chat model integration docs](/oss/javascript/integrations/chat/openai/)
 
-      ```bash pnpm theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-      pnpm install @langchain/openai
-      ```
+```bash npm theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+npm install @langchain/openai
+```
 
-      ```bash yarn theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-      yarn add @langchain/openai
-      ```
+```bash pnpm theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+pnpm install @langchain/openai
+```
 
-      ```bash bun theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-      bun add @langchain/openai
-      ```
-    </CodeGroup>
+```bash yarn theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+yarn add @langchain/openai
+```
 
-    <CodeGroup>
-      ```typescript initChatModel theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-      import { initChatModel } from "langchain";
+```bash bun theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+bun add @langchain/openai
+```
 
-      process.env.OPENAI_API_KEY = "your-api-key";
+```typescript initChatModel theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+import { initChatModel } from "langchain";
 
-      const model = await initChatModel("gpt-5.5");
-      ```
+process.env.OPENAI_API_KEY = "your-api-key";
 
-      ```typescript Model Class theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-      import { ChatOpenAI } from "@langchain/openai";
+const model = await initChatModel("gpt-5.5");
+```
 
-      const model = new ChatOpenAI({
-        model: "gpt-5.5",
-        apiKey: "your-api-key"
-      });
-      ```
-    </CodeGroup>
-  </Tab>
+```typescript Model Class theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+import { ChatOpenAI } from "@langchain/openai";
 
-  <Tab title="Anthropic">
-    👉 Read the [Anthropic chat model integration docs](/oss/javascript/integrations/chat/anthropic/)
+const model = new ChatOpenAI({
+  model: "gpt-5.5",
+  apiKey: "your-api-key"
+});
+```
 
-    <CodeGroup>
-      ```bash npm theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-      npm install @langchain/anthropic
-      ```
+**Anthropic**
 
-      ```bash pnpm theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-      pnpm install @langchain/anthropic
-      ```
+👉 Read the [Anthropic chat model integration docs](/oss/javascript/integrations/chat/anthropic/)
 
-      ```bash yarn theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-      yarn add @langchain/anthropic
-      ```
+```bash npm theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+npm install @langchain/anthropic
+```
 
-      ```bash pnpm theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-      pnpm add @langchain/anthropic
-      ```
-    </CodeGroup>
+```bash pnpm theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+pnpm install @langchain/anthropic
+```
 
-    <CodeGroup>
-      ```typescript initChatModel theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-      import { initChatModel } from "langchain";
+```bash yarn theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+yarn add @langchain/anthropic
+```
 
-      process.env.ANTHROPIC_API_KEY = "your-api-key";
+```bash pnpm theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+pnpm add @langchain/anthropic
+```
 
-      const model = await initChatModel("claude-sonnet-4-6");
-      ```
+```typescript initChatModel theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+import { initChatModel } from "langchain";
 
-      ```typescript Model Class theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-      import { ChatAnthropic } from "@langchain/anthropic";
+process.env.ANTHROPIC_API_KEY = "your-api-key";
 
-      const model = new ChatAnthropic({
-        model: "claude-sonnet-4-6",
-        apiKey: "your-api-key"
-      });
-      ```
-    </CodeGroup>
-  </Tab>
+const model = await initChatModel("claude-sonnet-4-6");
+```
 
-  <Tab title="Azure">
-    👉 Read the [Azure chat model integration docs](/oss/javascript/integrations/chat/azure/)
+```typescript Model Class theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+import { ChatAnthropic } from "@langchain/anthropic";
 
-    <CodeGroup>
-      ```bash npm theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-      npm install @langchain/azure
-      ```
+const model = new ChatAnthropic({
+  model: "claude-sonnet-4-6",
+  apiKey: "your-api-key"
+});
+```
 
-      ```bash pnpm theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-      pnpm install @langchain/azure
-      ```
+**Azure**
 
-      ```bash yarn theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-      yarn add @langchain/azure
-      ```
+👉 Read the [Azure chat model integration docs](/oss/javascript/integrations/chat/azure/)
 
-      ```bash bun theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-      bun add @langchain/azure
-      ```
-    </CodeGroup>
+```bash npm theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+npm install @langchain/azure
+```
 
-    <CodeGroup>
-      ```typescript initChatModel theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-      import { initChatModel } from "langchain";
+```bash pnpm theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+pnpm install @langchain/azure
+```
 
-      process.env.AZURE_OPENAI_API_KEY = "your-api-key";
-      process.env.AZURE_OPENAI_ENDPOINT = "your-endpoint";
-      process.env.OPENAI_API_VERSION = "your-api-version";
+```bash yarn theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+yarn add @langchain/azure
+```
 
-      const model = await initChatModel("azure_openai:gpt-5.5");
-      ```
+```bash bun theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+bun add @langchain/azure
+```
 
-      ```typescript Model Class theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-      import { AzureChatOpenAI } from "@langchain/openai";
+```typescript initChatModel theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+import { initChatModel } from "langchain";
 
-      const model = new AzureChatOpenAI({
-        model: "gpt-5.5",
-        azureOpenAIApiKey: "your-api-key",
-        azureOpenAIApiEndpoint: "your-endpoint",
-        azureOpenAIApiVersion: "your-api-version"
-      });
-      ```
-    </CodeGroup>
-  </Tab>
+process.env.AZURE_OPENAI_API_KEY = "your-api-key";
+process.env.AZURE_OPENAI_ENDPOINT = "your-endpoint";
+process.env.OPENAI_API_VERSION = "your-api-version";
 
-  <Tab title="Google Gemini">
-    👉 Read the [ChatGoogle chat model integration docs](/oss/javascript/integrations/chat/google)
+const model = await initChatModel("azure_openai:gpt-5.5");
+```
 
-    <CodeGroup>
-      ```bash npm theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-      npm install @langchain/google
-      ```
+```typescript Model Class theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+import { AzureChatOpenAI } from "@langchain/openai";
 
-      ```bash pnpm theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-      pnpm install @langchain/google
-      ```
+const model = new AzureChatOpenAI({
+  model: "gpt-5.5",
+  azureOpenAIApiKey: "your-api-key",
+  azureOpenAIApiEndpoint: "your-endpoint",
+  azureOpenAIApiVersion: "your-api-version"
+});
+```
 
-      ```bash yarn theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-      yarn add @langchain/google
-      ```
+**Google Gemini**
 
-      ```bash bun theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-      bun add @langchain/google
-      ```
-    </CodeGroup>
+👉 Read the [ChatGoogle chat model integration docs](/oss/javascript/integrations/chat/google)
 
-    <CodeGroup>
-      ```typescript initChatModel theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-      import { initChatModel } from "langchain";
+```bash npm theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+npm install @langchain/google
+```
 
-      process.env.GOOGLE_API_KEY = "your-api-key";
+```bash pnpm theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+pnpm install @langchain/google
+```
 
-      const model = await initChatModel("google:gemini-3.7-flash");
-      ```
+```bash yarn theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+yarn add @langchain/google
+```
 
-      ```typescript Model Class theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-      import { ChatGoogle } from "@langchain/google/node";
+```bash bun theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+bun add @langchain/google
+```
 
-      const model = new ChatGoogle({
-        model: "gemini-3.7-flash",
-        apiKey: "your-api-key"
-      });
-      ```
-    </CodeGroup>
-  </Tab>
+```typescript initChatModel theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+import { initChatModel } from "langchain";
 
-  <Tab title="Bedrock Converse">
-    👉 Read the [AWS Bedrock chat model integration docs](/oss/javascript/integrations/chat/bedrock_converse/)
+process.env.GOOGLE_API_KEY = "your-api-key";
 
-    <CodeGroup>
-      ```bash npm theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-      npm install @langchain/aws
-      ```
+const model = await initChatModel("google:gemini-3.7-flash");
+```
 
-      ```bash pnpm theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-      pnpm install @langchain/aws
-      ```
+```typescript Model Class theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+import { ChatGoogle } from "@langchain/google/node";
 
-      ```bash yarn theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-      yarn add @langchain/aws
-      ```
+const model = new ChatGoogle({
+  model: "gemini-3.7-flash",
+  apiKey: "your-api-key"
+});
+```
 
-      ```bash bun theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-      bun add @langchain/aws
-      ```
-    </CodeGroup>
+**Bedrock Converse**
 
-    <CodeGroup>
-      ```typescript initChatModel theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-      import { initChatModel } from "langchain";
+👉 Read the [AWS Bedrock chat model integration docs](/oss/javascript/integrations/chat/bedrock_converse/)
 
-      // Follow the steps here to configure your credentials:
-      // https://docs.aws.amazon.com/bedrock/latest/userguide/getting-started.html
+```bash npm theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+npm install @langchain/aws
+```
 
-      const model = await initChatModel("bedrock:gpt-5.5");
-      ```
+```bash pnpm theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+pnpm install @langchain/aws
+```
 
-      ```typescript Model Class theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-      import { ChatBedrockConverse } from "@langchain/aws";
+```bash yarn theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+yarn add @langchain/aws
+```
 
-      // Follow the steps here to configure your credentials:
-      // https://docs.aws.amazon.com/bedrock/latest/userguide/getting-started.html
+```bash bun theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+bun add @langchain/aws
+```
 
-      const model = new ChatBedrockConverse({
-        model: "gpt-5.5",
-        region: "us-east-2"
-      });
-      ```
-    </CodeGroup>
-  </Tab>
-</Tabs>
+```typescript initChatModel theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+import { initChatModel } from "langchain";
+
+// Follow the steps here to configure your credentials:
+// https://docs.aws.amazon.com/bedrock/latest/userguide/getting-started.html
+
+const model = await initChatModel("bedrock:gpt-5.5");
+```
+
+```typescript Model Class theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+import { ChatBedrockConverse } from "@langchain/aws";
+
+// Follow the steps here to configure your credentials:
+// https://docs.aws.amazon.com/bedrock/latest/userguide/getting-started.html
+
+const model = new ChatBedrockConverse({
+  model: "gpt-5.5",
+  region: "us-east-2"
+});
+```
 
 ## 1. Define state
 
@@ -713,307 +687,307 @@ After all agents complete, the `synthesize_results` function iterates over the c
 * References the original query to ensure the answer addresses what the user asked
 * Combines information from all sources without redundancy
 
-<Note>
-  **Partial results**: In this tutorial, all selected agents must complete before synthesis.
-</Note>
+> [!NOTE]
+>
+> **Partial results**: In this tutorial, all selected agents must complete before synthesis.
 
 ## 8. Complete working example
 
 Here's everything together in a runnable script:
 
-<Expandable title="View complete code">
-  ```typescript theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  /**
-   * Multi-Source Knowledge Router Example
-   *
-   * This example demonstrates the router pattern for multi-agent systems.
-   * A router classifies queries, routes them to specialized agents in parallel,
-   * and synthesizes results into a combined response.
-   */
-  import { z } from "zod/v4";
-  import { tool } from "langchain";
-  import { StateGraph, START, END, Send, StateSchema, ReducedValue } from "@langchain/langgraph";
+**View complete code**
 
-  const AgentOutput = z.object({
-    source: z.string(),
-    result: z.string(),
-  });
+```typescript theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+/**
+ * Multi-Source Knowledge Router Example
+ *
+ * This example demonstrates the router pattern for multi-agent systems.
+ * A router classifies queries, routes them to specialized agents in parallel,
+ * and synthesizes results into a combined response.
+ */
+import { z } from "zod/v4";
+import { tool } from "langchain";
+import { StateGraph, START, END, Send, StateSchema, ReducedValue } from "@langchain/langgraph";
 
-  const RouterState = new StateSchema({
-    query: z.string(),
-    classifications: z.array(
+const AgentOutput = z.object({
+  source: z.string(),
+  result: z.string(),
+});
+
+const RouterState = new StateSchema({
+  query: z.string(),
+  classifications: z.array(
+    z.object({
+      source: z.enum(["github", "notion", "slack"]),
+      query: z.string(),
+    })
+  ),
+  results: new ReducedValue(
+    z.array(AgentOutput).default(() => []),
+    { reducer: (current, update) => current.concat(update) }
+  ),
+  finalAnswer: z.string(),
+});
+
+const searchCode = tool(
+  async ({ query, repo }) => {
+    return `Found code matching '${query}' in ${repo || "main"}: authentication middleware in src/auth.py`;
+  },
+  {
+    name: "search_code",
+    description: "Search code in GitHub repositories.",
+    schema: z.object({
+      query: z.string(),
+      repo: z.string().optional().default("main"),
+    }),
+  }
+);
+
+const searchIssues = tool(
+  async ({ query }) => {
+    return `Found 3 issues matching '${query}': #142 (API auth docs), #89 (OAuth flow), #203 (token refresh)`;
+  },
+  {
+    name: "search_issues",
+    description: "Search GitHub issues and pull requests.",
+    schema: z.object({
+      query: z.string(),
+    }),
+  }
+);
+
+const searchPrs = tool(
+  async ({ query }) => {
+    return `PR #156 added JWT authentication, PR #178 updated OAuth scopes`;
+  },
+  {
+    name: "search_prs",
+    description: "Search pull requests for implementation details.",
+    schema: z.object({
+      query: z.string(),
+    }),
+  }
+);
+
+const searchNotion = tool(
+  async ({ query }) => {
+    return `Found documentation: 'API Authentication Guide' - covers OAuth2 flow, API keys, and JWT tokens`;
+  },
+  {
+    name: "search_notion",
+    description: "Search Notion workspace for documentation.",
+    schema: z.object({
+      query: z.string(),
+    }),
+  }
+);
+
+const getPage = tool(
+  async ({ pageId }) => {
+    return `Page content: Step-by-step authentication setup instructions`;
+  },
+  {
+    name: "get_page",
+    description: "Get a specific Notion page by ID.",
+    schema: z.object({
+      pageId: z.string(),
+    }),
+  }
+);
+
+const searchSlack = tool(
+  async ({ query }) => {
+    return `Found discussion in #engineering: 'Use Bearer tokens for API auth, see docs for refresh flow'`;
+  },
+  {
+    name: "search_slack",
+    description: "Search Slack messages and threads.",
+    schema: z.object({
+      query: z.string(),
+    }),
+  }
+);
+
+const getThread = tool(
+  async ({ threadId }) => {
+    return `Thread discusses best practices for API key rotation`;
+  },
+  {
+    name: "get_thread",
+    description: "Get a specific Slack thread.",
+    schema: z.object({
+      threadId: z.string(),
+    }),
+  }
+);
+
+import { createAgent } from "langchain";
+import { ChatOpenAI } from "@langchain/openai";
+
+const llm = new ChatOpenAI({ model: "gpt-5.5" });
+
+const githubAgent = createAgent({
+  model: llm,
+  tools: [searchCode, searchIssues, searchPrs],
+  systemPrompt: `
+You are a GitHub expert. Answer questions about code,
+API references, and implementation details by searching
+repositories, issues, and pull requests.
+  `.trim(),
+});
+
+const notionAgent = createAgent({
+  model: llm,
+  tools: [searchNotion, getPage],
+  systemPrompt: `
+You are a Notion expert. Answer questions about internal
+processes, policies, and team documentation by searching
+the organization's Notion workspace.
+  `.trim(),
+});
+
+const slackAgent = createAgent({
+  model: llm,
+  tools: [searchSlack, getThread],
+  systemPrompt: `
+You are a Slack expert. Answer questions by searching
+relevant threads and discussions where team members have
+shared knowledge and solutions.
+  `.trim(),
+});
+
+const routerLlm = new ChatOpenAI({ model: "gpt-5.4-mini" });
+
+// Define structured output schema for the classifier
+const ClassificationResultSchema = z.object({
+  // [!code highlight]
+  classifications: z
+    .array(
       z.object({
         source: z.enum(["github", "notion", "slack"]),
         query: z.string(),
       })
-    ),
-    results: new ReducedValue(
-      z.array(AgentOutput).default(() => []),
-      { reducer: (current, update) => current.concat(update) }
-    ),
-    finalAnswer: z.string(),
+    )
+    .describe("List of agents to invoke with their targeted sub-questions"),
+});
+
+async function classifyQuery(state: typeof RouterState.State) {
+  const structuredLlm = routerLlm.withStructuredOutput(
+    ClassificationResultSchema
+  ); // [!code highlight]
+
+  const result = await structuredLlm.invoke([
+    {
+      role: "system",
+      content: `Analyze this query and determine which knowledge bases to consult.
+For each relevant source, generate a targeted sub-question optimized for that source.
+
+Available sources:
+- github: Code, API references, implementation details, issues, pull requests
+- notion: Internal documentation, processes, policies, team wikis
+- slack: Team discussions, informal knowledge sharing, recent conversations
+
+Return ONLY the sources that are relevant to the query. Each source should have
+a targeted sub-question optimized for that specific knowledge domain.
+
+Example for "How do I authenticate API requests?":
+- github: "What authentication code exists? Search for auth middleware, JWT handling"
+- notion: "What authentication documentation exists? Look for API auth guides"
+(slack omitted because it's not relevant for this technical question)`,
+    },
+    { role: "user", content: state.query },
+  ]);
+
+  return { classifications: result.classifications };
+}
+
+function routeToAgents(state: typeof RouterState.State): Send[] {
+  return state.classifications.map(
+    (c) => new Send(c.source, { query: c.query }) // [!code highlight]
+  );
+}
+
+async function queryGithub(state: typeof RouterState.State) {
+  const result = await githubAgent.invoke({
+    messages: [{ role: "user", content: state.query }], // [!code highlight]
   });
+  return {
+    results: [{ source: "github", result: result.messages.at(-1)?.content }],
+  };
+}
 
-  const searchCode = tool(
-    async ({ query, repo }) => {
-      return `Found code matching '${query}' in ${repo || "main"}: authentication middleware in src/auth.py`;
-    },
-    {
-      name: "search_code",
-      description: "Search code in GitHub repositories.",
-      schema: z.object({
-        query: z.string(),
-        repo: z.string().optional().default("main"),
-      }),
-    }
-  );
-
-  const searchIssues = tool(
-    async ({ query }) => {
-      return `Found 3 issues matching '${query}': #142 (API auth docs), #89 (OAuth flow), #203 (token refresh)`;
-    },
-    {
-      name: "search_issues",
-      description: "Search GitHub issues and pull requests.",
-      schema: z.object({
-        query: z.string(),
-      }),
-    }
-  );
-
-  const searchPrs = tool(
-    async ({ query }) => {
-      return `PR #156 added JWT authentication, PR #178 updated OAuth scopes`;
-    },
-    {
-      name: "search_prs",
-      description: "Search pull requests for implementation details.",
-      schema: z.object({
-        query: z.string(),
-      }),
-    }
-  );
-
-  const searchNotion = tool(
-    async ({ query }) => {
-      return `Found documentation: 'API Authentication Guide' - covers OAuth2 flow, API keys, and JWT tokens`;
-    },
-    {
-      name: "search_notion",
-      description: "Search Notion workspace for documentation.",
-      schema: z.object({
-        query: z.string(),
-      }),
-    }
-  );
-
-  const getPage = tool(
-    async ({ pageId }) => {
-      return `Page content: Step-by-step authentication setup instructions`;
-    },
-    {
-      name: "get_page",
-      description: "Get a specific Notion page by ID.",
-      schema: z.object({
-        pageId: z.string(),
-      }),
-    }
-  );
-
-  const searchSlack = tool(
-    async ({ query }) => {
-      return `Found discussion in #engineering: 'Use Bearer tokens for API auth, see docs for refresh flow'`;
-    },
-    {
-      name: "search_slack",
-      description: "Search Slack messages and threads.",
-      schema: z.object({
-        query: z.string(),
-      }),
-    }
-  );
-
-  const getThread = tool(
-    async ({ threadId }) => {
-      return `Thread discusses best practices for API key rotation`;
-    },
-    {
-      name: "get_thread",
-      description: "Get a specific Slack thread.",
-      schema: z.object({
-        threadId: z.string(),
-      }),
-    }
-  );
-
-  import { createAgent } from "langchain";
-  import { ChatOpenAI } from "@langchain/openai";
-
-  const llm = new ChatOpenAI({ model: "gpt-5.5" });
-
-  const githubAgent = createAgent({
-    model: llm,
-    tools: [searchCode, searchIssues, searchPrs],
-    systemPrompt: `
-  You are a GitHub expert. Answer questions about code,
-  API references, and implementation details by searching
-  repositories, issues, and pull requests.
-    `.trim(),
+async function queryNotion(state: typeof RouterState.State) {
+  const result = await notionAgent.invoke({
+    messages: [{ role: "user", content: state.query }], // [!code highlight]
   });
+  return {
+    results: [{ source: "notion", result: result.messages.at(-1)?.content }],
+  };
+}
 
-  const notionAgent = createAgent({
-    model: llm,
-    tools: [searchNotion, getPage],
-    systemPrompt: `
-  You are a Notion expert. Answer questions about internal
-  processes, policies, and team documentation by searching
-  the organization's Notion workspace.
-    `.trim(),
+async function querySlack(state: typeof RouterState.State) {
+  const result = await slackAgent.invoke({
+    messages: [{ role: "user", content: state.query }], // [!code highlight]
   });
+  return {
+    results: [{ source: "slack", result: result.messages.at(-1)?.content }],
+  };
+}
 
-  const slackAgent = createAgent({
-    model: llm,
-    tools: [searchSlack, getThread],
-    systemPrompt: `
-  You are a Slack expert. Answer questions by searching
-  relevant threads and discussions where team members have
-  shared knowledge and solutions.
-    `.trim(),
-  });
-
-  const routerLlm = new ChatOpenAI({ model: "gpt-5.4-mini" });
-
-  // Define structured output schema for the classifier
-  const ClassificationResultSchema = z.object({
-    // [!code highlight]
-    classifications: z
-      .array(
-        z.object({
-          source: z.enum(["github", "notion", "slack"]),
-          query: z.string(),
-        })
-      )
-      .describe("List of agents to invoke with their targeted sub-questions"),
-  });
-
-  async function classifyQuery(state: typeof RouterState.State) {
-    const structuredLlm = routerLlm.withStructuredOutput(
-      ClassificationResultSchema
-    ); // [!code highlight]
-
-    const result = await structuredLlm.invoke([
-      {
-        role: "system",
-        content: `Analyze this query and determine which knowledge bases to consult.
-  For each relevant source, generate a targeted sub-question optimized for that source.
-
-  Available sources:
-  - github: Code, API references, implementation details, issues, pull requests
-  - notion: Internal documentation, processes, policies, team wikis
-  - slack: Team discussions, informal knowledge sharing, recent conversations
-
-  Return ONLY the sources that are relevant to the query. Each source should have
-  a targeted sub-question optimized for that specific knowledge domain.
-
-  Example for "How do I authenticate API requests?":
-  - github: "What authentication code exists? Search for auth middleware, JWT handling"
-  - notion: "What authentication documentation exists? Look for API auth guides"
-  (slack omitted because it's not relevant for this technical question)`,
-      },
-      { role: "user", content: state.query },
-    ]);
-
-    return { classifications: result.classifications };
+async function synthesizeResults(state: typeof RouterState.State) {
+  if (state.results.length === 0) {
+    return { finalAnswer: "No results found from any knowledge source." };
   }
 
-  function routeToAgents(state: typeof RouterState.State): Send[] {
-    return state.classifications.map(
-      (c) => new Send(c.source, { query: c.query }) // [!code highlight]
-    );
-  }
+  // Format results for synthesis
+  const formatted = state.results.map(
+    (r) =>
+      `**From ${r.source.charAt(0).toUpperCase() + r.source.slice(1)}:**\n${r.result}`
+  );
 
-  async function queryGithub(state: typeof RouterState.State) {
-    const result = await githubAgent.invoke({
-      messages: [{ role: "user", content: state.query }], // [!code highlight]
-    });
-    return {
-      results: [{ source: "github", result: result.messages.at(-1)?.content }],
-    };
-  }
+  const synthesisResponse = await routerLlm.invoke([
+    {
+      role: "system",
+      content: `Synthesize these search results to answer the original question: "${state.query}"
 
-  async function queryNotion(state: typeof RouterState.State) {
-    const result = await notionAgent.invoke({
-      messages: [{ role: "user", content: state.query }], // [!code highlight]
-    });
-    return {
-      results: [{ source: "notion", result: result.messages.at(-1)?.content }],
-    };
-  }
+- Combine information from multiple sources without redundancy
+- Highlight the most relevant and actionable information
+- Note any discrepancies between sources
+- Keep the response concise and well-organized`,
+    },
+    { role: "user", content: formatted.join("\n\n") },
+  ]);
 
-  async function querySlack(state: typeof RouterState.State) {
-    const result = await slackAgent.invoke({
-      messages: [{ role: "user", content: state.query }], // [!code highlight]
-    });
-    return {
-      results: [{ source: "slack", result: result.messages.at(-1)?.content }],
-    };
-  }
+  return { finalAnswer: synthesisResponse.content };
+}
 
-  async function synthesizeResults(state: typeof RouterState.State) {
-    if (state.results.length === 0) {
-      return { finalAnswer: "No results found from any knowledge source." };
-    }
+const workflow = new StateGraph(RouterState)
+  .addNode("classify", classifyQuery)
+  .addNode("github", queryGithub)
+  .addNode("notion", queryNotion)
+  .addNode("slack", querySlack)
+  .addNode("synthesize", synthesizeResults)
+  .addEdge(START, "classify")
+  .addConditionalEdges("classify", routeToAgents, ["github", "notion", "slack"])
+  .addEdge("github", "synthesize")
+  .addEdge("notion", "synthesize")
+  .addEdge("slack", "synthesize")
+  .addEdge("synthesize", END)
+  .compile();
 
-    // Format results for synthesis
-    const formatted = state.results.map(
-      (r) =>
-        `**From ${r.source.charAt(0).toUpperCase() + r.source.slice(1)}:**\n${r.result}`
-    );
+const result = await workflow.invoke({
+  query: "How do I authenticate API requests?",
+});
 
-    const synthesisResponse = await routerLlm.invoke([
-      {
-        role: "system",
-        content: `Synthesize these search results to answer the original question: "${state.query}"
-
-  - Combine information from multiple sources without redundancy
-  - Highlight the most relevant and actionable information
-  - Note any discrepancies between sources
-  - Keep the response concise and well-organized`,
-      },
-      { role: "user", content: formatted.join("\n\n") },
-    ]);
-
-    return { finalAnswer: synthesisResponse.content };
-  }
-
-  const workflow = new StateGraph(RouterState)
-    .addNode("classify", classifyQuery)
-    .addNode("github", queryGithub)
-    .addNode("notion", queryNotion)
-    .addNode("slack", querySlack)
-    .addNode("synthesize", synthesizeResults)
-    .addEdge(START, "classify")
-    .addConditionalEdges("classify", routeToAgents, ["github", "notion", "slack"])
-    .addEdge("github", "synthesize")
-    .addEdge("notion", "synthesize")
-    .addEdge("slack", "synthesize")
-    .addEdge("synthesize", END)
-    .compile();
-
-  const result = await workflow.invoke({
-    query: "How do I authenticate API requests?",
-  });
-
-  console.log("Original query:", result.query);
-  console.log("\nClassifications:");
-  for (const c of result.classifications) {
-    console.log(`  ${c.source}: ${c.query}`);
-  }
-  console.log(`\n${"=".repeat(60)}\n`);
-  console.log("Final Answer:");
-  console.log(result.finalAnswer);
-  ```
-</Expandable>
+console.log("Original query:", result.query);
+console.log("\nClassifications:");
+for (const c of result.classifications) {
+  console.log(`  ${c.source}: ${c.query}`);
+}
+console.log(`\n${"=".repeat(60)}\n`);
+console.log("Final Answer:");
+console.log(result.finalAnswer);
+```
 
 ## 9. Advanced: Stateful routers
 
@@ -1081,17 +1055,17 @@ conversationalAgentResult = await conversationalAgent.invoke(
 console.log(conversationalAgentResult.messages.at(-1)?.content);
 ```
 
-<Tip>
-  The tool wrapper approach is recommended for most use cases. It provides clean separation: the router handles multi-source querying, while the conversational agent handles context and memory.
-</Tip>
+> [!TIP]
+>
+> The tool wrapper approach is recommended for most use cases. It provides clean separation: the router handles multi-source querying, while the conversational agent handles context and memory.
 
 ### Full persistence approach
 
 If you need the router itself to maintain state—for example, to use previous search results in routing decisions—use [persistence](/oss/javascript/langchain/short-term-memory) to store message history at the router level.
 
-<Warning>
-  **Stateful routers add complexity.** When routing to different agents across turns, conversations may feel inconsistent if agents have different tones or prompts. Consider the [handoffs pattern](/oss/javascript/langchain/multi-agent/handoffs) or [subagents pattern](/oss/javascript/langchain/multi-agent/subagents) instead—both provide clearer semantics for multi-turn conversations with different agents.
-</Warning>
+> [!WARNING]
+>
+> **Stateful routers add complexity.** When routing to different agents across turns, conversations may feel inconsistent if agents have different tones or prompts. Consider the [handoffs pattern](/oss/javascript/langchain/multi-agent/handoffs) or [subagents pattern](/oss/javascript/langchain/multi-agent/subagents) instead—both provide clearer semantics for multi-turn conversations with different agents.
 
 ## 10. Key takeaways
 
@@ -1103,13 +1077,13 @@ The router pattern excels when you have:
 
 The pattern has three phases: **decompose** (analyze the query and generate targeted sub-questions), **route** (execute queries in parallel), and **synthesize** (combine results).
 
-<Tip>
-  **When to use the router pattern**
-
-  Use the router pattern when you have multiple independent knowledge sources, need low-latency parallel queries, and want explicit control over routing logic.
-
-  For simpler cases with dynamic tool selection, consider the [subagents pattern](/oss/javascript/langchain/multi-agent/subagents). For workflows where agents need to converse with users sequentially, consider [handoffs](/oss/javascript/langchain/multi-agent/handoffs).
-</Tip>
+> [!TIP]
+>
+> **When to use the router pattern**
+>
+> Use the router pattern when you have multiple independent knowledge sources, need low-latency parallel queries, and want explicit control over routing logic.
+>
+> For simpler cases with dynamic tool selection, consider the [subagents pattern](/oss/javascript/langchain/multi-agent/subagents). For workflows where agents need to converse with users sequentially, consider [handoffs](/oss/javascript/langchain/multi-agent/handoffs).
 
 ## Next steps
 
@@ -1120,12 +1094,6 @@ The pattern has three phases: **decompose** (analyze the query and generate targ
 
 ***
 
-<div>
-  <Callout icon="terminal-2">
-    [Connect these docs](/use-these-docs) to your agent of choice via MCP for real-time answers.
-  </Callout>
+[Connect these docs](/use-these-docs) to your agent of choice via MCP for real-time answers.
 
-  <Callout icon="edit">
-    [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/oss/langchain/multi-agent/router-knowledge-base.mdx) or [file an issue](https://github.com/langchain-ai/docs/issues/new/choose).
-  </Callout>
-</div>
+[Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/oss/langchain/multi-agent/router-knowledge-base.mdx) or [file an issue](https://github.com/langchain-ai/docs/issues/new/choose).

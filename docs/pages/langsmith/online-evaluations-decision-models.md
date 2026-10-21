@@ -6,9 +6,9 @@ Evaluate production traces in LangSmith with Jev as the judge, and record each q
 
 [Online evaluations](/langsmith/evaluation-concepts#online-evaluations) provide real-time feedback on your production traces. An online evaluator can use a decision model, such as Jev, as the judge in place of an LLM. To use an LLM as the judge, see [Set up LLM-as-a-judge online evaluators](/langsmith/online-evaluations-llm-as-judge).
 
-<Note>
-  When an online evaluator runs on any run within a trace, LangSmith upgrades the trace to [extended data retention](/langsmith/usage-and-billing#data-retention-auto-upgrades). This upgrade affects trace pricing.
-</Note>
+> [!NOTE]
+>
+> When an online evaluator runs on any run within a trace, LangSmith upgrades the trace to [extended data retention](/langsmith/usage-and-billing#data-retention-auto-upgrades). This upgrade affects trace pricing.
 
 ## Decision models
 
@@ -22,9 +22,9 @@ LangSmith supports Jev decision models for evaluators, on both tracing projects 
 | - | - | - |
 | [Jev](/langsmith/llm-gateway-decision-models#use-typesafe-jev) | **TypeSafe** | Requires a TypeSafe API key stored as a workspace secret. Defaults to `TYPESAFE_API_KEY`. |
 
-<Note>
-  You can create decision model evaluators only in the LangSmith UI. The LangSmith SDKs do not support creating them yet. To call a decision model directly from code, see [Decision models in the LLM Gateway](/langsmith/llm-gateway-decision-models).
-</Note>
+> [!NOTE]
+>
+> You can create decision model evaluators only in the LangSmith UI. The LangSmith SDKs do not support creating them yet. To call a decision model directly from code, see [Decision models in the LLM Gateway](/langsmith/llm-gateway-decision-models).
 
 ### Question types
 
@@ -77,12 +77,6 @@ The evaluator checks each new run or thread that matches its filter. Each questi
 
 ***
 
-<div>
-  <Callout icon="terminal-2">
-    [Connect these docs](/use-these-docs) to your agent of choice via MCP for real-time answers.
-  </Callout>
+[Connect these docs](/use-these-docs) to your agent of choice via MCP for real-time answers.
 
-  <Callout icon="edit">
-    [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/online-evaluations-decision-models.mdx) or [file an issue](https://github.com/langchain-ai/docs/issues/new/choose).
-  </Callout>
-</div>
+[Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/online-evaluations-decision-models.mdx) or [file an issue](https://github.com/langchain-ai/docs/issues/new/choose).

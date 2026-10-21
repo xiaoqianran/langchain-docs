@@ -130,9 +130,9 @@ def test_final_response(weather_model):
     assert "Tokyo" in result["messages"][-1].text
 ```
 
-<Note>
-  `GenericFakeChatModel` reads responses from an iterator, and an exhausted iterator cannot be reused. Keep the fixture at the default `function` scope, which builds a fresh model for each test. A `module` or `session` scope shares one iterator, so later tests fail once it runs out.
-</Note>
+> [!NOTE]
+>
+> `GenericFakeChatModel` reads responses from an iterator, and an exhausted iterator cannot be reused. Keep the fixture at the default `function` scope, which builds a fresh model for each test. A `module` or `session` scope shares one iterator, so later tests fail once it runs out.
 
 ## InMemorySaver checkpointer
 
@@ -168,12 +168,6 @@ Learn how to test your agent with real model provider APIs in [Integration testi
 
 ***
 
-<div>
-  <Callout icon="terminal-2">
-    [Connect these docs](/use-these-docs) to your agent of choice via MCP for real-time answers.
-  </Callout>
+[Connect these docs](/use-these-docs) to your agent of choice via MCP for real-time answers.
 
-  <Callout icon="edit">
-    [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/oss/langchain/test/unit-testing.mdx) or [file an issue](https://github.com/langchain-ai/docs/issues/new/choose).
-  </Callout>
-</div>
+[Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/oss/langchain/test/unit-testing.mdx) or [file an issue](https://github.com/langchain-ai/docs/issues/new/choose).

@@ -10,9 +10,9 @@ Fleet gives you the control layer for scaling agents across your organization: t
 
 Fleet combines workspace role permissions with agent sharing. Your role determines which actions you can perform. Agent ownership and sharing determine which agents you can access.
 
-<Note>
-  Custom roles are an Enterprise feature. The permissions below apply when Fleet RBAC is enabled for your workspace. For self-hosted v0.17, Fleet RBAC requires LangSmith 0.17.44 or a later v0.17 patch and the [deployment flag](#enable-fleet-rbac-on-self-hosted).
-</Note>
+> [!NOTE]
+>
+> Custom roles are an Enterprise feature. The permissions below apply when Fleet RBAC is enabled for your workspace. For self-hosted v0.17, Fleet RBAC requires LangSmith 0.17.44 or a later v0.17 patch and the [deployment flag](#enable-fleet-rbac-on-self-hosted).
 
 ### Configure a Fleet role
 
@@ -20,11 +20,11 @@ To let users use and manage Fleet, create a [custom workspace role](/langsmith/r
 
 | Area | Permissions | Needed for |
 | - | - | - |
-| Workspace | <span>`workspaces:read`</span> | Access the workspace. |
-| Agents | <span>`fleet-agents:read`<br />`fleet-agents:invoke`<br />`fleet-agents:create`<br />`fleet-agents:update`<br />`fleet-agents:delete`</span> | View, run, create, edit, clone, and delete agents. Manage agent connections. |
-| Skills | <span>`fleet-skills:read`<br />`fleet-skills:create`<br />`fleet-skills:update`<br />`fleet-skills:delete`</span> | Browse, create, edit, and delete workspace skills. |
-| MCP servers | <span>`mcp-servers:read`<br />`mcp-servers:invoke`<br />`mcp-servers:create`<br />`mcp-servers:update`<br />`mcp-servers:delete`</span> | Use tools and install, update, or remove workspace integrations. |
-| Deployments | <span>`deployments:read`<br />`deployments:create`<br />`deployments:update`<br />`deployments:delete`</span> | Configure OAuth providers and manage connected accounts through the current Fleet UI. |
+| Workspace | `workspaces:read` | Access the workspace. |
+| Agents | `fleet-agents:read` `fleet-agents:invoke` `fleet-agents:create` `fleet-agents:update` `fleet-agents:delete` | View, run, create, edit, clone, and delete agents. Manage agent connections. |
+| Skills | `fleet-skills:read` `fleet-skills:create` `fleet-skills:update` `fleet-skills:delete` | Browse, create, edit, and delete workspace skills. |
+| MCP servers | `mcp-servers:read` `mcp-servers:invoke` `mcp-servers:create` `mcp-servers:update` `mcp-servers:delete` | Use tools and install, update, or remove workspace integrations. |
+| Deployments | `deployments:read` `deployments:create` `deployments:update` `deployments:delete` | Configure OAuth providers and manage connected accounts through the current Fleet UI. |
 
 Grant each permission explicitly. Create, update, delete, and invoke permissions do not include read permission. Existing agent and skill ownership and sharing checks still apply.
 
@@ -56,9 +56,9 @@ For setup instructions, see [Change access to the agent](/langsmith/fleet/manage
 
 Fully self-hosted LangSmith installations enable Fleet role-based access control (RBAC) with a deployment flag. Cloud and hybrid (BYOC) deployments do not need this step.
 
-<Note>
-  Fleet RBAC on self-hosted requires LangSmith 0.17.44 or a later v0.17 patch.
-</Note>
+> [!NOTE]
+>
+> Fleet RBAC on self-hosted requires LangSmith 0.17.44 or a later v0.17 patch.
 
 To enable Fleet RBAC:
 
@@ -97,9 +97,9 @@ Fleet provides layered access control for tools, covering both **custom MCP serv
 * **[Attribute-based access control (ABAC)](#attribute-based-access-control)**: Adds per-resource granularity on top of RBAC.
 * **[Workspace integration policy](#workspace-integration-policy)**: Provides an admin-controlled enable/disable gate for built-in integrations.
 
-<Note>
-  Tool access control is an Enterprise feature. If you are interested in this feature, [contact our sales team](https://www.langchain.com/contact-sales).
-</Note>
+> [!NOTE]
+>
+> Tool access control is an Enterprise feature. If you are interested in this feature, [contact our sales team](https://www.langchain.com/contact-sales).
 
 ### Role-based permissions
 
@@ -115,27 +115,25 @@ The following permissions are available for MCP servers and integrations:
 | `mcp-servers:update` | Modify MCP server configurations |
 | `mcp-servers:delete` | Remove MCP server configurations |
 
-<Note>
-  A role with `mcp-servers:read` and `mcp-servers:invoke` can see and use all MCP servers and integrations in the workspace.
-</Note>
+> [!NOTE]
+>
+> A role with `mcp-servers:read` and `mcp-servers:invoke` can see and use all MCP servers and integrations in the workspace.
 
 For more on RBAC, see [Role-based access control](/langsmith/rbac).
 
 #### Create a role with tool permissions
 
-<Steps>
-  <Step title="Open role settings">
-    Navigate to **Settings > Roles** and click **Create role**.
-  </Step>
+**1. Open role settings**
 
-  <Step title="Configure MCP Servers permissions">
-    Expand the **MCP Servers** section and select the permissions to include. For example, grant `Read` and `Invoke` for users who need to use tools but not manage server configurations.
-  </Step>
+Navigate to **Settings > Roles** and click **Create role**.
 
-  <Step title="Assign the role">
-    Assign the role to users in the workspace in **Settings > Members**.
-  </Step>
-</Steps>
+**2. Configure MCP Servers permissions**
+
+Expand the **MCP Servers** section and select the permissions to include. For example, grant `Read` and `Invoke` for users who need to use tools but not manage server configurations.
+
+**3. Assign the role**
+
+Assign the role to users in the workspace in **Settings > Members**.
 
 ### Attribute-based access control
 
@@ -148,9 +146,9 @@ ABAC operates on two resource types for tools:
 | `mcp_server` | Custom MCP servers added to the workspace |
 | `fleet_integration` | Built-in integrations (Gmail, Slack, GitHub, etc.) |
 
-<Note>
-  A role with no `mcp-servers:*` RBAC permissions can still be granted access to specific tagged resources (e.g. only Notion and Gmail) via an ABAC allow policy. Conversely, a role with broad RBAC access can be restricted from specific resources via an ABAC deny policy.
-</Note>
+> [!NOTE]
+>
+> A role with no `mcp-servers:*` RBAC permissions can still be granted access to specific tagged resources (e.g. only Notion and Gmail) via an ABAC allow policy. Conversely, a role with broad RBAC access can be restricted from specific resources via an ABAC deny policy.
 
 For details on policy structure, operators, and managing policies via the API, see [Attribute-based access control](/langsmith/abac).
 
@@ -160,9 +158,9 @@ Built-in integrations have an additional control layer: a workspace-level enable
 
 If an integration is disabled at the workspace level, no user can access it regardless of their role or ABAC policies.
 
-<Note>
-  The Access control page is only visible to admin users (requires `workspaces:manage` permission).
-</Note>
+> [!NOTE]
+>
+> The Access control page is only visible to admin users (requires `workspaces:manage` permission).
 
 ### Policy evaluation order
 
@@ -201,12 +199,6 @@ For setup instructions, see [Human-in-the-loop](/langsmith/fleet/essentials#huma
 
 ***
 
-<div>
-  <Callout icon="terminal-2">
-    [Connect these docs](/use-these-docs) to your agent of choice via MCP for real-time answers.
-  </Callout>
+[Connect these docs](/use-these-docs) to your agent of choice via MCP for real-time answers.
 
-  <Callout icon="edit">
-    [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/fleet/access-and-oversight.mdx) or [file an issue](https://github.com/langchain-ai/docs/issues/new/choose).
-  </Callout>
-</div>
+[Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/fleet/access-and-oversight.mdx) or [file an issue](https://github.com/langchain-ai/docs/issues/new/choose).

@@ -19,15 +19,15 @@ This page explains how to:
 
 * [Comply with the backend protocol](#protocol-reference)
 
-<Tip>
-  When you deploy on [LangSmith Deployment](/langsmith/deployment), a store is provisioned automatically. Use [LangSmith](/langsmith/observability) tracing to debug file paths, permission denials, and cross-thread storage. Follow the [observability quickstart](/langsmith/observability-quickstart) to get set up.
+> [!TIP]
+>
+> When you deploy on [LangSmith Deployment](/langsmith/deployment), a store is provisioned automatically. Use [LangSmith](/langsmith/observability) tracing to debug file paths, permission denials, and cross-thread storage. Follow the [observability quickstart](/langsmith/observability-quickstart) to get set up.
+>
+> We recommend you also set up [LangSmith Engine](/langsmith/engine), which monitors your traces, detects issues, and proposes fixes.
 
-  We recommend you also set up [LangSmith Engine](/langsmith/engine), which monitors your traces, detects issues, and proposes fixes.
-</Tip>
-
-<Tip>
-  To generate a durable repository wiki that agents can read through filesystem tools, see [OpenWiki](/oss/openwiki/overview).
-</Tip>
+> [!TIP]
+>
+> To generate a durable repository wiki that agents can read through filesystem tools, see [OpenWiki](/oss/openwiki/overview).
 
 ## Quickstart
 
@@ -35,12 +35,12 @@ Here are a few prebuilt filesystem backends that you can quickly use with your d
 
 | Built-in backend | Description |
 | - | - |
-| [Default](#statebackend) | `agent = create_deep_agent(model="google_genai:gemini-3.6-flash")` <br /> Thread-scoped. The default filesystem backend for an agent is stored in `langgraph` state. Files persist across turns within a thread (via your checkpointer) and are not shared across threads. |
-| [Local filesystem persistence](#filesystembackend-local-disk) | `agent = create_deep_agent(model="google_genai:gemini-3.6-flash", backend=FilesystemBackend(root_dir="/Users/nh/Desktop/"))` <br />This gives the deep agent access to your local machine's filesystem. You can specify the root directory that the agent has access to. Note that any provided `root_dir` must be an absolute path. Typically, wrap in a [CompositeBackend](#compositebackend-router) to keep internal agent data (offloaded tool results, conversation history) separate from your project files. |
-| [Durable store (LangGraph store)](#storebackend-langgraph-store) | `agent = create_deep_agent(model="google_genai:gemini-3.6-flash", backend=StoreBackend())` <br />This gives the agent access to long-term storage that is *persisted across threads*. This is great for storing longer term memories or instructions that are applicable to the agent over multiple executions. |
-| [Context Hub](#contexthubbackend) | `agent = create_deep_agent(model="google_genai:gemini-3.6-flash", backend=ContextHubBackend("my-agent"))` <br />Stores files durably in a LangSmith Hub repo, without provisioning a separate LangGraph store. |
-| [Sandbox](/oss/python/deepagents/sandboxes) | `agent = create_deep_agent(model="google_genai:gemini-3.6-flash", backend=sandbox)` <br />Execute code in isolated environments. Sandboxes provide filesystem tools plus the `execute` tool for running shell commands. Choose from LangSmith, AgentCore, Daytona, or other [sandbox integrations](/oss/python/integrations/sandboxes). |
-| [Local shell](#localshellbackend-local-shell) | `agent = create_deep_agent(model="google_genai:gemini-3.6-flash", backend=LocalShellBackend(root_dir=".", env={"PATH": "/usr/bin:/bin"}))` <br />Filesystem and shell execution directly on the host. No isolation—use only in controlled development environments. See [security considerations](#localshellbackend-local-shell) below. |
+| [Default](#statebackend) | `agent = create_deep_agent(model="google_genai:gemini-3.6-flash")`  Thread-scoped. The default filesystem backend for an agent is stored in `langgraph` state. Files persist across turns within a thread (via your checkpointer) and are not shared across threads. |
+| [Local filesystem persistence](#filesystembackend-local-disk) | `agent = create_deep_agent(model="google_genai:gemini-3.6-flash", backend=FilesystemBackend(root_dir="/Users/nh/Desktop/"))` This gives the deep agent access to your local machine's filesystem. You can specify the root directory that the agent has access to. Note that any provided `root_dir` must be an absolute path. Typically, wrap in a [CompositeBackend](#compositebackend-router) to keep internal agent data (offloaded tool results, conversation history) separate from your project files. |
+| [Durable store (LangGraph store)](#storebackend-langgraph-store) | `agent = create_deep_agent(model="google_genai:gemini-3.6-flash", backend=StoreBackend())` This gives the agent access to long-term storage that is *persisted across threads*. This is great for storing longer term memories or instructions that are applicable to the agent over multiple executions. |
+| [Context Hub](#contexthubbackend) | `agent = create_deep_agent(model="google_genai:gemini-3.6-flash", backend=ContextHubBackend("my-agent"))` Stores files durably in a LangSmith Hub repo, without provisioning a separate LangGraph store. |
+| [Sandbox](/oss/python/deepagents/sandboxes) | `agent = create_deep_agent(model="google_genai:gemini-3.6-flash", backend=sandbox)` Execute code in isolated environments. Sandboxes provide filesystem tools plus the `execute` tool for running shell commands. Choose from LangSmith, AgentCore, Daytona, or other [sandbox integrations](/oss/python/integrations/sandboxes). |
+| [Local shell](#localshellbackend-local-shell) | `agent = create_deep_agent(model="google_genai:gemini-3.6-flash", backend=LocalShellBackend(root_dir=".", env={"PATH": "/usr/bin:/bin"}))` Filesystem and shell execution directly on the host. No isolation—use only in controlled development environments. See [security considerations](#localshellbackend-local-shell) below. |
 | [Composite](#compositebackend-router) | Thread-scoped by default, `/memories/` persisted across threads. The Composite backend is maximally flexible. You can specify different routes in the filesystem to point towards different backends. See Composite routing below for a ready-to-paste example. |
 
 ```mermaid theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
@@ -80,114 +80,112 @@ graph TB
 
 ### StateBackend
 
-<CodeGroup>
-  ```python Google theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  from deepagents import create_deep_agent
-  from deepagents.backends import StateBackend
+```python Google theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+from deepagents import create_deep_agent
+from deepagents.backends import StateBackend
 
-  # By default we provide a StateBackend
-  agent = create_deep_agent(model="google_genai:gemini-3.6-flash")
+# By default we provide a StateBackend
+agent = create_deep_agent(model="google_genai:gemini-3.6-flash")
 
-  # Under the hood, it looks like
-  agent2 = create_deep_agent(
-      model="google_genai:gemini-3.6-flash",
-      backend=StateBackend(),
-  )
-  ```
+# Under the hood, it looks like
+agent2 = create_deep_agent(
+    model="google_genai:gemini-3.6-flash",
+    backend=StateBackend(),
+)
+```
 
-  ```python OpenAI theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  from deepagents import create_deep_agent
-  from deepagents.backends import StateBackend
+```python OpenAI theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+from deepagents import create_deep_agent
+from deepagents.backends import StateBackend
 
-  # By default we provide a StateBackend
-  agent = create_deep_agent(model="openai:gpt-5.5")
+# By default we provide a StateBackend
+agent = create_deep_agent(model="openai:gpt-5.5")
 
-  # Under the hood, it looks like
-  agent2 = create_deep_agent(
-      model="openai:gpt-5.5",
-      backend=StateBackend(),
-  )
-  ```
+# Under the hood, it looks like
+agent2 = create_deep_agent(
+    model="openai:gpt-5.5",
+    backend=StateBackend(),
+)
+```
 
-  ```python Anthropic theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  from deepagents import create_deep_agent
-  from deepagents.backends import StateBackend
+```python Anthropic theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+from deepagents import create_deep_agent
+from deepagents.backends import StateBackend
 
-  # By default we provide a StateBackend
-  agent = create_deep_agent(model="anthropic:claude-sonnet-5")
+# By default we provide a StateBackend
+agent = create_deep_agent(model="anthropic:claude-sonnet-5")
 
-  # Under the hood, it looks like
-  agent2 = create_deep_agent(
-      model="anthropic:claude-sonnet-5",
-      backend=StateBackend(),
-  )
-  ```
+# Under the hood, it looks like
+agent2 = create_deep_agent(
+    model="anthropic:claude-sonnet-5",
+    backend=StateBackend(),
+)
+```
 
-  ```python OpenRouter theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  from deepagents import create_deep_agent
-  from deepagents.backends import StateBackend
+```python OpenRouter theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+from deepagents import create_deep_agent
+from deepagents.backends import StateBackend
 
-  # By default we provide a StateBackend
-  agent = create_deep_agent(model="openrouter:z-ai/glm-5.2")
+# By default we provide a StateBackend
+agent = create_deep_agent(model="openrouter:z-ai/glm-5.2")
 
-  # Under the hood, it looks like
-  agent2 = create_deep_agent(
-      model="openrouter:z-ai/glm-5.2",
-      backend=StateBackend(),
-  )
-  ```
+# Under the hood, it looks like
+agent2 = create_deep_agent(
+    model="openrouter:z-ai/glm-5.2",
+    backend=StateBackend(),
+)
+```
 
-  ```python Fireworks theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  from deepagents import create_deep_agent
-  from deepagents.backends import StateBackend
+```python Fireworks theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+from deepagents import create_deep_agent
+from deepagents.backends import StateBackend
 
-  # By default we provide a StateBackend
-  agent = create_deep_agent(model="fireworks:accounts/fireworks/models/glm-5p2")
+# By default we provide a StateBackend
+agent = create_deep_agent(model="fireworks:accounts/fireworks/models/glm-5p2")
 
-  # Under the hood, it looks like
-  agent2 = create_deep_agent(
-      model="fireworks:accounts/fireworks/models/glm-5p2",
-      backend=StateBackend(),
-  )
-  ```
+# Under the hood, it looks like
+agent2 = create_deep_agent(
+    model="fireworks:accounts/fireworks/models/glm-5p2",
+    backend=StateBackend(),
+)
+```
 
-  ```python Baseten theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  from deepagents import create_deep_agent
-  from deepagents.backends import StateBackend
+```python Baseten theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+from deepagents import create_deep_agent
+from deepagents.backends import StateBackend
 
-  # By default we provide a StateBackend
-  agent = create_deep_agent(model="baseten:zai-org/GLM-5.2")
+# By default we provide a StateBackend
+agent = create_deep_agent(model="baseten:zai-org/GLM-5.2")
 
-  # Under the hood, it looks like
-  agent2 = create_deep_agent(
-      model="baseten:zai-org/GLM-5.2",
-      backend=StateBackend(),
-  )
-  ```
+# Under the hood, it looks like
+agent2 = create_deep_agent(
+    model="baseten:zai-org/GLM-5.2",
+    backend=StateBackend(),
+)
+```
 
-  ```python Ollama theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  from deepagents import create_deep_agent
-  from deepagents.backends import StateBackend
+```python Ollama theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+from deepagents import create_deep_agent
+from deepagents.backends import StateBackend
 
-  # By default we provide a StateBackend
-  agent = create_deep_agent(model="ollama:north-mini-code-1.0")
+# By default we provide a StateBackend
+agent = create_deep_agent(model="ollama:north-mini-code-1.0")
 
-  # Under the hood, it looks like
-  agent2 = create_deep_agent(
-      model="ollama:north-mini-code-1.0",
-      backend=StateBackend(),
-  )
-  ```
-</CodeGroup>
+# Under the hood, it looks like
+agent2 = create_deep_agent(
+    model="ollama:north-mini-code-1.0",
+    backend=StateBackend(),
+)
+```
 
 **How it works:**
 
 * Stores files in LangGraph agent state for the current thread via [`StateBackend`](https://reference.langchain.com/python/deepagents/backends/state/StateBackend).
 * Persists across multiple agent turns on the same thread via checkpoints. Files are not shared across threads.
 
-<Warning>
-  Designed to be used from within a graph. Calling backend methods (e.g., `state_backend.upload_files(...)`) outside of a graph run won't take effect until the graph executes.
-</Warning>
+> [!WARNING]
+>
+> Designed to be used from within a graph. Calling backend methods (e.g., `state_backend.upload_files(...)`) outside of a graph run won't take effect until the graph executes.
 
 **Best for:**
 
@@ -201,106 +199,104 @@ even after that subagent's execution is complete. Those files will continue to b
 
 [`FilesystemBackend`](https://reference.langchain.com/python/deepagents/backends/filesystem/FilesystemBackend) reads and writes real files under a configurable root directory.
 
-<Warning>
-  This backend grants agents direct filesystem read/write access.
-  Use with caution and only in appropriate environments.
+> [!WARNING]
+>
+> This backend grants agents direct filesystem read/write access.
+> Use with caution and only in appropriate environments.
+>
+> **Appropriate use cases:**
+>
+> * Local development CLIs (coding assistants, development tools)
+> * CI/CD pipelines (see security considerations below)
+>
+> **Inappropriate use cases:**
+>
+> * Web servers or HTTP APIs - use `StateBackend`, `StoreBackend`, or a [sandbox backend](/oss/python/deepagents/sandboxes) instead
+>
+> **Security risks:**
+>
+> * Agents can read any accessible file, including secrets (API keys, credentials, `.env` files)
+> * Combined with network tools, secrets may be exfiltrated via SSRF attacks
+> * File modifications are permanent and irreversible
+>
+> **Recommended safeguards:**
+>
+> 1. Enable [Human-in-the-Loop (HITL) middleware](/oss/python/deepagents/human-in-the-loop) to review sensitive operations.
+> 2. Exclude secrets from accessible filesystem paths (especially in CI/CD).
+> 3. Use a [sandbox backend](/oss/python/deepagents/sandboxes) for production environments requiring filesystem interaction.
+> 4. **Always** use `virtual_mode=True` with `root_dir` to enable path-based access restrictions (blocks `..`, `~`, and absolute paths outside root).
+>
+>    Note that the default (`virtual_mode=False`) provides no security even with `root_dir` set.
 
-  **Appropriate use cases:**
+```python Google theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+from deepagents import create_deep_agent
+from deepagents.backends import FilesystemBackend
 
-  * Local development CLIs (coding assistants, development tools)
-  * CI/CD pipelines (see security considerations below)
+agent = create_deep_agent(
+    model="google_genai:gemini-3.6-flash",
+    backend=FilesystemBackend(root_dir=".", virtual_mode=True),
+)
+```
 
-  **Inappropriate use cases:**
+```python OpenAI theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+from deepagents import create_deep_agent
+from deepagents.backends import FilesystemBackend
 
-  * Web servers or HTTP APIs - use `StateBackend`, `StoreBackend`, or a [sandbox backend](/oss/python/deepagents/sandboxes) instead
+agent = create_deep_agent(
+    model="openai:gpt-5.5",
+    backend=FilesystemBackend(root_dir=".", virtual_mode=True),
+)
+```
 
-  **Security risks:**
+```python Anthropic theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+from deepagents import create_deep_agent
+from deepagents.backends import FilesystemBackend
 
-  * Agents can read any accessible file, including secrets (API keys, credentials, `.env` files)
-  * Combined with network tools, secrets may be exfiltrated via SSRF attacks
-  * File modifications are permanent and irreversible
+agent = create_deep_agent(
+    model="anthropic:claude-sonnet-5",
+    backend=FilesystemBackend(root_dir=".", virtual_mode=True),
+)
+```
 
-  **Recommended safeguards:**
+```python OpenRouter theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+from deepagents import create_deep_agent
+from deepagents.backends import FilesystemBackend
 
-  1. Enable [Human-in-the-Loop (HITL) middleware](/oss/python/deepagents/human-in-the-loop) to review sensitive operations.
-  2. Exclude secrets from accessible filesystem paths (especially in CI/CD).
-  3. Use a [sandbox backend](/oss/python/deepagents/sandboxes) for production environments requiring filesystem interaction.
-  4. **Always** use `virtual_mode=True` with `root_dir` to enable path-based access restrictions (blocks `..`, `~`, and absolute paths outside root).
+agent = create_deep_agent(
+    model="openrouter:z-ai/glm-5.2",
+    backend=FilesystemBackend(root_dir=".", virtual_mode=True),
+)
+```
 
-     Note that the default (`virtual_mode=False`) provides no security even with `root_dir` set.
-</Warning>
+```python Fireworks theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+from deepagents import create_deep_agent
+from deepagents.backends import FilesystemBackend
 
-<CodeGroup>
-  ```python Google theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  from deepagents import create_deep_agent
-  from deepagents.backends import FilesystemBackend
+agent = create_deep_agent(
+    model="fireworks:accounts/fireworks/models/glm-5p2",
+    backend=FilesystemBackend(root_dir=".", virtual_mode=True),
+)
+```
 
-  agent = create_deep_agent(
-      model="google_genai:gemini-3.6-flash",
-      backend=FilesystemBackend(root_dir=".", virtual_mode=True),
-  )
-  ```
+```python Baseten theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+from deepagents import create_deep_agent
+from deepagents.backends import FilesystemBackend
 
-  ```python OpenAI theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  from deepagents import create_deep_agent
-  from deepagents.backends import FilesystemBackend
+agent = create_deep_agent(
+    model="baseten:zai-org/GLM-5.2",
+    backend=FilesystemBackend(root_dir=".", virtual_mode=True),
+)
+```
 
-  agent = create_deep_agent(
-      model="openai:gpt-5.5",
-      backend=FilesystemBackend(root_dir=".", virtual_mode=True),
-  )
-  ```
+```python Ollama theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+from deepagents import create_deep_agent
+from deepagents.backends import FilesystemBackend
 
-  ```python Anthropic theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  from deepagents import create_deep_agent
-  from deepagents.backends import FilesystemBackend
-
-  agent = create_deep_agent(
-      model="anthropic:claude-sonnet-5",
-      backend=FilesystemBackend(root_dir=".", virtual_mode=True),
-  )
-  ```
-
-  ```python OpenRouter theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  from deepagents import create_deep_agent
-  from deepagents.backends import FilesystemBackend
-
-  agent = create_deep_agent(
-      model="openrouter:z-ai/glm-5.2",
-      backend=FilesystemBackend(root_dir=".", virtual_mode=True),
-  )
-  ```
-
-  ```python Fireworks theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  from deepagents import create_deep_agent
-  from deepagents.backends import FilesystemBackend
-
-  agent = create_deep_agent(
-      model="fireworks:accounts/fireworks/models/glm-5p2",
-      backend=FilesystemBackend(root_dir=".", virtual_mode=True),
-  )
-  ```
-
-  ```python Baseten theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  from deepagents import create_deep_agent
-  from deepagents.backends import FilesystemBackend
-
-  agent = create_deep_agent(
-      model="baseten:zai-org/GLM-5.2",
-      backend=FilesystemBackend(root_dir=".", virtual_mode=True),
-  )
-  ```
-
-  ```python Ollama theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  from deepagents import create_deep_agent
-  from deepagents.backends import FilesystemBackend
-
-  agent = create_deep_agent(
-      model="ollama:north-mini-code-1.0",
-      backend=FilesystemBackend(root_dir=".", virtual_mode=True),
-  )
-  ```
-</CodeGroup>
+agent = create_deep_agent(
+    model="ollama:north-mini-code-1.0",
+    backend=FilesystemBackend(root_dir=".", virtual_mode=True),
+)
+```
 
 **How it works:**
 
@@ -316,134 +312,132 @@ even after that subagent's execution is complete. Those files will continue to b
 
 For a durable repository wiki that agents can read with these filesystem tools (from `openwiki/`), see [OpenWiki](/oss/openwiki/overview).
 
-<Tip>
-  **Wrap `FilesystemBackend` in a `CompositeBackend`** for most use cases. Deep Agents automatically write internal data to the backend, including offloaded large tool results (under `/large_tool_results/`) and conversation history (under `/conversation_history/`). When you use `FilesystemBackend` alone, these internal files are written to real disk under `root_dir`, mixing agent artifacts with your project files.
-
-  Use a `CompositeBackend` to route your project directory to `FilesystemBackend` while keeping internal paths in ephemeral `StateBackend` storage:
-
-  ```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  from deepagents import create_deep_agent
-  from deepagents.backends import CompositeBackend, StateBackend, FilesystemBackend
-
-  agent = create_deep_agent(
-      backend=CompositeBackend(
-          default=StateBackend(),
-          routes={
-              "/workspace/": FilesystemBackend(root_dir="/path/to/project", virtual_mode=True),
-          },
-      )
-  )
-  ```
-
-  This way, agent reads and writes under `/workspace/` go to real disk, while offloaded tool results and other internal data stay in ephemeral state. See [Route to different backends](#route-to-different-backends) for more routing patterns.
-</Tip>
+> [!TIP]
+>
+> **Wrap `FilesystemBackend` in a `CompositeBackend`** for most use cases. Deep Agents automatically write internal data to the backend, including offloaded large tool results (under `/large_tool_results/`) and conversation history (under `/conversation_history/`). When you use `FilesystemBackend` alone, these internal files are written to real disk under `root_dir`, mixing agent artifacts with your project files.
+>
+> Use a `CompositeBackend` to route your project directory to `FilesystemBackend` while keeping internal paths in ephemeral `StateBackend` storage:
+>
+> ```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> from deepagents import create_deep_agent
+> from deepagents.backends import CompositeBackend, StateBackend, FilesystemBackend
+>
+> agent = create_deep_agent(
+>     backend=CompositeBackend(
+>         default=StateBackend(),
+>         routes={
+>             "/workspace/": FilesystemBackend(root_dir="/path/to/project", virtual_mode=True),
+>         },
+>     )
+> )
+> ```
+>
+> This way, agent reads and writes under `/workspace/` go to real disk, while offloaded tool results and other internal data stay in ephemeral state. See [Route to different backends](#route-to-different-backends) for more routing patterns.
 
 ### LocalShellBackend (local shell)
 
-<Warning>
-  This backend grants agents direct filesystem read/write access **and** unrestricted shell execution on your host.
-  Use with extreme caution and only in appropriate environments.
+> [!WARNING]
+>
+> This backend grants agents direct filesystem read/write access **and** unrestricted shell execution on your host.
+> Use with extreme caution and only in appropriate environments.
+>
+> **Appropriate use cases:**
+>
+> * Local development CLIs (coding assistants, development tools)
+> * Personal development environments where you trust the agent's code
+> * CI/CD pipelines with proper secret management
+>
+> **Inappropriate use cases:**
+>
+> * Production environments (such as web servers, APIs, multi-tenant systems)
+> * Processing untrusted user input or executing untrusted code
+>
+> **Security risks:**
+>
+> * Agents can execute **arbitrary shell commands** with your user's permissions
+> * Agents can read any accessible file, including secrets (API keys, credentials, `.env` files)
+> * Secrets may be exposed
+> * File modifications and command execution are **permanent and irreversible**
+> * Commands run directly on your host system
+> * Commands can consume unlimited CPU, memory, disk
+>
+> **Recommended safeguards:**
+>
+> 1. Enable [Human-in-the-Loop (HITL) middleware](/oss/python/deepagents/human-in-the-loop) to review and approve operations before execution. This is **strongly recommended**.
+> 2. Run in dedicated development environments only. Never use on shared or production systems.
+> 3. Use a [sandbox backend](/oss/python/deepagents/sandboxes) for production environments requiring shell execution.
+>
+> **Note:** `virtual_mode=True` provides no security with shell access enabled, since commands can access any path on the system.
 
-  **Appropriate use cases:**
+```python Google theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+from deepagents import create_deep_agent
+from deepagents.backends import LocalShellBackend
 
-  * Local development CLIs (coding assistants, development tools)
-  * Personal development environments where you trust the agent's code
-  * CI/CD pipelines with proper secret management
+agent = create_deep_agent(
+    model="google_genai:gemini-3.6-flash",
+    backend=LocalShellBackend(root_dir=".", virtual_mode=True, env={"PATH": "/usr/bin:/bin"}),
+)
+```
 
-  **Inappropriate use cases:**
+```python OpenAI theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+from deepagents import create_deep_agent
+from deepagents.backends import LocalShellBackend
 
-  * Production environments (such as web servers, APIs, multi-tenant systems)
-  * Processing untrusted user input or executing untrusted code
+agent = create_deep_agent(
+    model="openai:gpt-5.5",
+    backend=LocalShellBackend(root_dir=".", virtual_mode=True, env={"PATH": "/usr/bin:/bin"}),
+)
+```
 
-  **Security risks:**
+```python Anthropic theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+from deepagents import create_deep_agent
+from deepagents.backends import LocalShellBackend
 
-  * Agents can execute **arbitrary shell commands** with your user's permissions
-  * Agents can read any accessible file, including secrets (API keys, credentials, `.env` files)
-  * Secrets may be exposed
-  * File modifications and command execution are **permanent and irreversible**
-  * Commands run directly on your host system
-  * Commands can consume unlimited CPU, memory, disk
+agent = create_deep_agent(
+    model="anthropic:claude-sonnet-5",
+    backend=LocalShellBackend(root_dir=".", virtual_mode=True, env={"PATH": "/usr/bin:/bin"}),
+)
+```
 
-  **Recommended safeguards:**
+```python OpenRouter theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+from deepagents import create_deep_agent
+from deepagents.backends import LocalShellBackend
 
-  1. Enable [Human-in-the-Loop (HITL) middleware](/oss/python/deepagents/human-in-the-loop) to review and approve operations before execution. This is **strongly recommended**.
-  2. Run in dedicated development environments only. Never use on shared or production systems.
-  3. Use a [sandbox backend](/oss/python/deepagents/sandboxes) for production environments requiring shell execution.
+agent = create_deep_agent(
+    model="openrouter:z-ai/glm-5.2",
+    backend=LocalShellBackend(root_dir=".", virtual_mode=True, env={"PATH": "/usr/bin:/bin"}),
+)
+```
 
-  **Note:** `virtual_mode=True` provides no security with shell access enabled, since commands can access any path on the system.
-</Warning>
+```python Fireworks theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+from deepagents import create_deep_agent
+from deepagents.backends import LocalShellBackend
 
-<CodeGroup>
-  ```python Google theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  from deepagents import create_deep_agent
-  from deepagents.backends import LocalShellBackend
+agent = create_deep_agent(
+    model="fireworks:accounts/fireworks/models/glm-5p2",
+    backend=LocalShellBackend(root_dir=".", virtual_mode=True, env={"PATH": "/usr/bin:/bin"}),
+)
+```
 
-  agent = create_deep_agent(
-      model="google_genai:gemini-3.6-flash",
-      backend=LocalShellBackend(root_dir=".", virtual_mode=True, env={"PATH": "/usr/bin:/bin"}),
-  )
-  ```
+```python Baseten theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+from deepagents import create_deep_agent
+from deepagents.backends import LocalShellBackend
 
-  ```python OpenAI theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  from deepagents import create_deep_agent
-  from deepagents.backends import LocalShellBackend
+agent = create_deep_agent(
+    model="baseten:zai-org/GLM-5.2",
+    backend=LocalShellBackend(root_dir=".", virtual_mode=True, env={"PATH": "/usr/bin:/bin"}),
+)
+```
 
-  agent = create_deep_agent(
-      model="openai:gpt-5.5",
-      backend=LocalShellBackend(root_dir=".", virtual_mode=True, env={"PATH": "/usr/bin:/bin"}),
-  )
-  ```
+```python Ollama theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+from deepagents import create_deep_agent
+from deepagents.backends import LocalShellBackend
 
-  ```python Anthropic theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  from deepagents import create_deep_agent
-  from deepagents.backends import LocalShellBackend
-
-  agent = create_deep_agent(
-      model="anthropic:claude-sonnet-5",
-      backend=LocalShellBackend(root_dir=".", virtual_mode=True, env={"PATH": "/usr/bin:/bin"}),
-  )
-  ```
-
-  ```python OpenRouter theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  from deepagents import create_deep_agent
-  from deepagents.backends import LocalShellBackend
-
-  agent = create_deep_agent(
-      model="openrouter:z-ai/glm-5.2",
-      backend=LocalShellBackend(root_dir=".", virtual_mode=True, env={"PATH": "/usr/bin:/bin"}),
-  )
-  ```
-
-  ```python Fireworks theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  from deepagents import create_deep_agent
-  from deepagents.backends import LocalShellBackend
-
-  agent = create_deep_agent(
-      model="fireworks:accounts/fireworks/models/glm-5p2",
-      backend=LocalShellBackend(root_dir=".", virtual_mode=True, env={"PATH": "/usr/bin:/bin"}),
-  )
-  ```
-
-  ```python Baseten theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  from deepagents import create_deep_agent
-  from deepagents.backends import LocalShellBackend
-
-  agent = create_deep_agent(
-      model="baseten:zai-org/GLM-5.2",
-      backend=LocalShellBackend(root_dir=".", virtual_mode=True, env={"PATH": "/usr/bin:/bin"}),
-  )
-  ```
-
-  ```python Ollama theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  from deepagents import create_deep_agent
-  from deepagents.backends import LocalShellBackend
-
-  agent = create_deep_agent(
-      model="ollama:north-mini-code-1.0",
-      backend=LocalShellBackend(root_dir=".", virtual_mode=True, env={"PATH": "/usr/bin:/bin"}),
-  )
-  ```
-</CodeGroup>
+agent = create_deep_agent(
+    model="ollama:north-mini-code-1.0",
+    backend=LocalShellBackend(root_dir=".", virtual_mode=True, env={"PATH": "/usr/bin:/bin"}),
+)
+```
 
 **How it works:**
 
@@ -459,113 +453,111 @@ For a durable repository wiki that agents can read with these filesystem tools (
 
 ### StoreBackend (LangGraph store)
 
-<CodeGroup>
-  ```python Google theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  from deepagents import create_deep_agent
-  from deepagents.backends import StoreBackend
-  from langgraph.store.memory import InMemoryStore
+```python Google theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+from deepagents import create_deep_agent
+from deepagents.backends import StoreBackend
+from langgraph.store.memory import InMemoryStore
 
-  agent = create_deep_agent(
-      model="google_genai:gemini-3.6-flash",
-      backend=StoreBackend(
-          namespace=lambda rt: (rt.server_info.user.identity,),
-      ),
-      store=InMemoryStore(),  # Good for local dev; omit for LangSmith Deployment
-  )
-  ```
+agent = create_deep_agent(
+    model="google_genai:gemini-3.6-flash",
+    backend=StoreBackend(
+        namespace=lambda rt: (rt.server_info.user.identity,),
+    ),
+    store=InMemoryStore(),  # Good for local dev; omit for LangSmith Deployment
+)
+```
 
-  ```python OpenAI theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  from deepagents import create_deep_agent
-  from deepagents.backends import StoreBackend
-  from langgraph.store.memory import InMemoryStore
+```python OpenAI theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+from deepagents import create_deep_agent
+from deepagents.backends import StoreBackend
+from langgraph.store.memory import InMemoryStore
 
-  agent = create_deep_agent(
-      model="openai:gpt-5.5",
-      backend=StoreBackend(
-          namespace=lambda rt: (rt.server_info.user.identity,),
-      ),
-      store=InMemoryStore(),  # Good for local dev; omit for LangSmith Deployment
-  )
-  ```
+agent = create_deep_agent(
+    model="openai:gpt-5.5",
+    backend=StoreBackend(
+        namespace=lambda rt: (rt.server_info.user.identity,),
+    ),
+    store=InMemoryStore(),  # Good for local dev; omit for LangSmith Deployment
+)
+```
 
-  ```python Anthropic theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  from deepagents import create_deep_agent
-  from deepagents.backends import StoreBackend
-  from langgraph.store.memory import InMemoryStore
+```python Anthropic theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+from deepagents import create_deep_agent
+from deepagents.backends import StoreBackend
+from langgraph.store.memory import InMemoryStore
 
-  agent = create_deep_agent(
-      model="anthropic:claude-sonnet-5",
-      backend=StoreBackend(
-          namespace=lambda rt: (rt.server_info.user.identity,),
-      ),
-      store=InMemoryStore(),  # Good for local dev; omit for LangSmith Deployment
-  )
-  ```
+agent = create_deep_agent(
+    model="anthropic:claude-sonnet-5",
+    backend=StoreBackend(
+        namespace=lambda rt: (rt.server_info.user.identity,),
+    ),
+    store=InMemoryStore(),  # Good for local dev; omit for LangSmith Deployment
+)
+```
 
-  ```python OpenRouter theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  from deepagents import create_deep_agent
-  from deepagents.backends import StoreBackend
-  from langgraph.store.memory import InMemoryStore
+```python OpenRouter theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+from deepagents import create_deep_agent
+from deepagents.backends import StoreBackend
+from langgraph.store.memory import InMemoryStore
 
-  agent = create_deep_agent(
-      model="openrouter:z-ai/glm-5.2",
-      backend=StoreBackend(
-          namespace=lambda rt: (rt.server_info.user.identity,),
-      ),
-      store=InMemoryStore(),  # Good for local dev; omit for LangSmith Deployment
-  )
-  ```
+agent = create_deep_agent(
+    model="openrouter:z-ai/glm-5.2",
+    backend=StoreBackend(
+        namespace=lambda rt: (rt.server_info.user.identity,),
+    ),
+    store=InMemoryStore(),  # Good for local dev; omit for LangSmith Deployment
+)
+```
 
-  ```python Fireworks theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  from deepagents import create_deep_agent
-  from deepagents.backends import StoreBackend
-  from langgraph.store.memory import InMemoryStore
+```python Fireworks theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+from deepagents import create_deep_agent
+from deepagents.backends import StoreBackend
+from langgraph.store.memory import InMemoryStore
 
-  agent = create_deep_agent(
-      model="fireworks:accounts/fireworks/models/glm-5p2",
-      backend=StoreBackend(
-          namespace=lambda rt: (rt.server_info.user.identity,),
-      ),
-      store=InMemoryStore(),  # Good for local dev; omit for LangSmith Deployment
-  )
-  ```
+agent = create_deep_agent(
+    model="fireworks:accounts/fireworks/models/glm-5p2",
+    backend=StoreBackend(
+        namespace=lambda rt: (rt.server_info.user.identity,),
+    ),
+    store=InMemoryStore(),  # Good for local dev; omit for LangSmith Deployment
+)
+```
 
-  ```python Baseten theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  from deepagents import create_deep_agent
-  from deepagents.backends import StoreBackend
-  from langgraph.store.memory import InMemoryStore
+```python Baseten theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+from deepagents import create_deep_agent
+from deepagents.backends import StoreBackend
+from langgraph.store.memory import InMemoryStore
 
-  agent = create_deep_agent(
-      model="baseten:zai-org/GLM-5.2",
-      backend=StoreBackend(
-          namespace=lambda rt: (rt.server_info.user.identity,),
-      ),
-      store=InMemoryStore(),  # Good for local dev; omit for LangSmith Deployment
-  )
-  ```
+agent = create_deep_agent(
+    model="baseten:zai-org/GLM-5.2",
+    backend=StoreBackend(
+        namespace=lambda rt: (rt.server_info.user.identity,),
+    ),
+    store=InMemoryStore(),  # Good for local dev; omit for LangSmith Deployment
+)
+```
 
-  ```python Ollama theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  from deepagents import create_deep_agent
-  from deepagents.backends import StoreBackend
-  from langgraph.store.memory import InMemoryStore
+```python Ollama theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+from deepagents import create_deep_agent
+from deepagents.backends import StoreBackend
+from langgraph.store.memory import InMemoryStore
 
-  agent = create_deep_agent(
-      model="ollama:north-mini-code-1.0",
-      backend=StoreBackend(
-          namespace=lambda rt: (rt.server_info.user.identity,),
-      ),
-      store=InMemoryStore(),  # Good for local dev; omit for LangSmith Deployment
-  )
-  ```
-</CodeGroup>
+agent = create_deep_agent(
+    model="ollama:north-mini-code-1.0",
+    backend=StoreBackend(
+        namespace=lambda rt: (rt.server_info.user.identity,),
+    ),
+    store=InMemoryStore(),  # Good for local dev; omit for LangSmith Deployment
+)
+```
 
-<Note>
-  When deploying to [LangSmith Deployment](/langsmith/deployment), omit the `store` parameter. The platform automatically provisions a store for your agent.
-</Note>
+> [!NOTE]
+>
+> When deploying to [LangSmith Deployment](/langsmith/deployment), omit the `store` parameter. The platform automatically provisions a store for your agent.
 
-<Tip>
-  The `namespace` parameter controls data isolation. For multi-user deployments, always set a [namespace factory](/oss/python/deepagents/backends#namespace-factories) to isolate data per user or tenant.
-</Tip>
+> [!TIP]
+>
+> The `namespace` parameter controls data isolation. For multi-user deployments, always set a [namespace factory](/oss/python/deepagents/backends#namespace-factories) to isolate data per user or tenant.
 
 **How it works:**
 
@@ -592,9 +584,9 @@ The `Runtime` provides:
 * `rt.server_info`—Server-specific metadata when running on LangGraph Server (assistant ID, graph ID, authenticated user)
 * `rt.execution_info`—Execution identity information (thread ID, run ID, checkpoint ID)
 
-<Note>
-  The `Runtime` argument is available in `deepagents>=0.5.2`. Earlier 0.5.x releases passed a `BackendContext` instead—see [migrating from `BackendContext`](#migrating-from-backendcontext) below. `rt.server_info` and `rt.execution_info` require `deepagents>=0.5.0`.
-</Note>
+> [!NOTE]
+>
+> The `Runtime` argument is available in `deepagents>=0.5.2`. Earlier 0.5.x releases passed a `BackendContext` instead—see [migrating from `BackendContext`](#migrating-from-backendcontext) below. `rt.server_info` and `rt.execution_info` require `deepagents>=0.5.0`.
 
 **Common namespace patterns:**
 
@@ -625,19 +617,19 @@ You can combine multiple components to create more specific scopes—for example
 
 Namespace components must contain only alphanumeric characters, hyphens, underscores, dots, `@`, `+`, colons, and tildes. Wildcards (`*`, `?`) are rejected to prevent glob injection.
 
-<Warning>
-  The `namespace` parameter will be **required** in v0.5.0. Always set it explicitly for new code.
-</Warning>
+> [!WARNING]
+>
+> The `namespace` parameter will be **required** in v0.5.0. Always set it explicitly for new code.
 
-<Note>
-  When no namespace factory is provided, the legacy default uses the `assistant_id` from LangGraph config metadata. This means all users of the same [assistant](/langsmith/assistants) share the same storage. For multi-user [going to production](/oss/python/deepagents/going-to-production), always provide a namespace factory.
-</Note>
+> [!NOTE]
+>
+> When no namespace factory is provided, the legacy default uses the `assistant_id` from LangGraph config metadata. This means all users of the same [assistant](/langsmith/assistants) share the same storage. For multi-user [going to production](/oss/python/deepagents/going-to-production), always provide a namespace factory.
 
 ### ContextHubBackend
 
-<Note>
-  **Before you begin:** `ContextHubBackend` requires a Context Hub repo set up in LangSmith. Read the [Context Hub concepts](/langsmith/context-engineering-concepts) page first if you're unfamiliar with agent repos and skill repos.
-</Note>
+> [!NOTE]
+>
+> **Before you begin:** `ContextHubBackend` requires a Context Hub repo set up in LangSmith. Read the [Context Hub concepts](/langsmith/context-engineering-concepts) page first if you're unfamiliar with agent repos and skill repos.
 
 `ContextHubBackend` stores your agent's filesystem in a LangSmith Context Hub repo. It can use a standalone repo or an agent repo that links out to skill repos.
 
@@ -645,83 +637,81 @@ Namespace components must contain only alphanumeric characters, hyphens, undersc
 
 This means your agent's context is intentionally spread across repos: one repo per agent, separate repos per skill. That separation lets skills be versioned, shared, and reused across multiple agents independently. If this feels fragmented, see [Linked repos](/langsmith/context-engineering-concepts#linked-repos) for the rationale.
 
-<CodeGroup>
-  ```python Google theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  from deepagents import create_deep_agent
-  from deepagents.backends import ContextHubBackend
+```python Google theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+from deepagents import create_deep_agent
+from deepagents.backends import ContextHubBackend
 
-  agent = create_deep_agent(
-      model="google_genai:gemini-3.6-flash",
-      backend=ContextHubBackend("my-agent"),
-  )
-  ```
+agent = create_deep_agent(
+    model="google_genai:gemini-3.6-flash",
+    backend=ContextHubBackend("my-agent"),
+)
+```
 
-  ```python OpenAI theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  from deepagents import create_deep_agent
-  from deepagents.backends import ContextHubBackend
+```python OpenAI theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+from deepagents import create_deep_agent
+from deepagents.backends import ContextHubBackend
 
-  agent = create_deep_agent(
-      model="openai:gpt-5.5",
-      backend=ContextHubBackend("my-agent"),
-  )
-  ```
+agent = create_deep_agent(
+    model="openai:gpt-5.5",
+    backend=ContextHubBackend("my-agent"),
+)
+```
 
-  ```python Anthropic theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  from deepagents import create_deep_agent
-  from deepagents.backends import ContextHubBackend
+```python Anthropic theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+from deepagents import create_deep_agent
+from deepagents.backends import ContextHubBackend
 
-  agent = create_deep_agent(
-      model="anthropic:claude-sonnet-5",
-      backend=ContextHubBackend("my-agent"),
-  )
-  ```
+agent = create_deep_agent(
+    model="anthropic:claude-sonnet-5",
+    backend=ContextHubBackend("my-agent"),
+)
+```
 
-  ```python OpenRouter theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  from deepagents import create_deep_agent
-  from deepagents.backends import ContextHubBackend
+```python OpenRouter theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+from deepagents import create_deep_agent
+from deepagents.backends import ContextHubBackend
 
-  agent = create_deep_agent(
-      model="openrouter:z-ai/glm-5.2",
-      backend=ContextHubBackend("my-agent"),
-  )
-  ```
+agent = create_deep_agent(
+    model="openrouter:z-ai/glm-5.2",
+    backend=ContextHubBackend("my-agent"),
+)
+```
 
-  ```python Fireworks theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  from deepagents import create_deep_agent
-  from deepagents.backends import ContextHubBackend
+```python Fireworks theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+from deepagents import create_deep_agent
+from deepagents.backends import ContextHubBackend
 
-  agent = create_deep_agent(
-      model="fireworks:accounts/fireworks/models/glm-5p2",
-      backend=ContextHubBackend("my-agent"),
-  )
-  ```
+agent = create_deep_agent(
+    model="fireworks:accounts/fireworks/models/glm-5p2",
+    backend=ContextHubBackend("my-agent"),
+)
+```
 
-  ```python Baseten theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  from deepagents import create_deep_agent
-  from deepagents.backends import ContextHubBackend
+```python Baseten theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+from deepagents import create_deep_agent
+from deepagents.backends import ContextHubBackend
 
-  agent = create_deep_agent(
-      model="baseten:zai-org/GLM-5.2",
-      backend=ContextHubBackend("my-agent"),
-  )
-  ```
+agent = create_deep_agent(
+    model="baseten:zai-org/GLM-5.2",
+    backend=ContextHubBackend("my-agent"),
+)
+```
 
-  ```python Ollama theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  from deepagents import create_deep_agent
-  from deepagents.backends import ContextHubBackend
+```python Ollama theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+from deepagents import create_deep_agent
+from deepagents.backends import ContextHubBackend
 
-  agent = create_deep_agent(
-      model="ollama:north-mini-code-1.0",
-      backend=ContextHubBackend("my-agent"),
-  )
-  ```
-</CodeGroup>
+agent = create_deep_agent(
+    model="ollama:north-mini-code-1.0",
+    backend=ContextHubBackend("my-agent"),
+)
+```
 
 Construct it with a repo identifier in `owner/name` or `name` format.
 
-<Note>
-  Set `LANGSMITH_API_KEY` before using `ContextHubBackend`.
-</Note>
+> [!NOTE]
+>
+> Set `LANGSMITH_API_KEY` before using `ContextHubBackend`.
 
 **How it works:**
 
@@ -742,126 +732,124 @@ Construct it with a repo identifier in `owner/name` or `name` format.
 
 ### CompositeBackend (router)
 
-<CodeGroup>
-  ```python Google theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  from deepagents import create_deep_agent
-  from deepagents.backends import CompositeBackend, StateBackend, StoreBackend
-  from langgraph.store.memory import InMemoryStore
+```python Google theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+from deepagents import create_deep_agent
+from deepagents.backends import CompositeBackend, StateBackend, StoreBackend
+from langgraph.store.memory import InMemoryStore
 
-  agent = create_deep_agent(
-      model="google_genai:gemini-3.6-flash",
-      backend=CompositeBackend(
-          default=StateBackend(),
-          routes={
-              "/memories/": StoreBackend(namespace=lambda _rt: ("memories",)),
-          },
-      ),
-      store=InMemoryStore(),  # Store passed to create_deep_agent, not backend
-  )
-  ```
+agent = create_deep_agent(
+    model="google_genai:gemini-3.6-flash",
+    backend=CompositeBackend(
+        default=StateBackend(),
+        routes={
+            "/memories/": StoreBackend(namespace=lambda _rt: ("memories",)),
+        },
+    ),
+    store=InMemoryStore(),  # Store passed to create_deep_agent, not backend
+)
+```
 
-  ```python OpenAI theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  from deepagents import create_deep_agent
-  from deepagents.backends import CompositeBackend, StateBackend, StoreBackend
-  from langgraph.store.memory import InMemoryStore
+```python OpenAI theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+from deepagents import create_deep_agent
+from deepagents.backends import CompositeBackend, StateBackend, StoreBackend
+from langgraph.store.memory import InMemoryStore
 
-  agent = create_deep_agent(
-      model="openai:gpt-5.5",
-      backend=CompositeBackend(
-          default=StateBackend(),
-          routes={
-              "/memories/": StoreBackend(namespace=lambda _rt: ("memories",)),
-          },
-      ),
-      store=InMemoryStore(),  # Store passed to create_deep_agent, not backend
-  )
-  ```
+agent = create_deep_agent(
+    model="openai:gpt-5.5",
+    backend=CompositeBackend(
+        default=StateBackend(),
+        routes={
+            "/memories/": StoreBackend(namespace=lambda _rt: ("memories",)),
+        },
+    ),
+    store=InMemoryStore(),  # Store passed to create_deep_agent, not backend
+)
+```
 
-  ```python Anthropic theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  from deepagents import create_deep_agent
-  from deepagents.backends import CompositeBackend, StateBackend, StoreBackend
-  from langgraph.store.memory import InMemoryStore
+```python Anthropic theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+from deepagents import create_deep_agent
+from deepagents.backends import CompositeBackend, StateBackend, StoreBackend
+from langgraph.store.memory import InMemoryStore
 
-  agent = create_deep_agent(
-      model="anthropic:claude-sonnet-5",
-      backend=CompositeBackend(
-          default=StateBackend(),
-          routes={
-              "/memories/": StoreBackend(namespace=lambda _rt: ("memories",)),
-          },
-      ),
-      store=InMemoryStore(),  # Store passed to create_deep_agent, not backend
-  )
-  ```
+agent = create_deep_agent(
+    model="anthropic:claude-sonnet-5",
+    backend=CompositeBackend(
+        default=StateBackend(),
+        routes={
+            "/memories/": StoreBackend(namespace=lambda _rt: ("memories",)),
+        },
+    ),
+    store=InMemoryStore(),  # Store passed to create_deep_agent, not backend
+)
+```
 
-  ```python OpenRouter theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  from deepagents import create_deep_agent
-  from deepagents.backends import CompositeBackend, StateBackend, StoreBackend
-  from langgraph.store.memory import InMemoryStore
+```python OpenRouter theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+from deepagents import create_deep_agent
+from deepagents.backends import CompositeBackend, StateBackend, StoreBackend
+from langgraph.store.memory import InMemoryStore
 
-  agent = create_deep_agent(
-      model="openrouter:z-ai/glm-5.2",
-      backend=CompositeBackend(
-          default=StateBackend(),
-          routes={
-              "/memories/": StoreBackend(namespace=lambda _rt: ("memories",)),
-          },
-      ),
-      store=InMemoryStore(),  # Store passed to create_deep_agent, not backend
-  )
-  ```
+agent = create_deep_agent(
+    model="openrouter:z-ai/glm-5.2",
+    backend=CompositeBackend(
+        default=StateBackend(),
+        routes={
+            "/memories/": StoreBackend(namespace=lambda _rt: ("memories",)),
+        },
+    ),
+    store=InMemoryStore(),  # Store passed to create_deep_agent, not backend
+)
+```
 
-  ```python Fireworks theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  from deepagents import create_deep_agent
-  from deepagents.backends import CompositeBackend, StateBackend, StoreBackend
-  from langgraph.store.memory import InMemoryStore
+```python Fireworks theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+from deepagents import create_deep_agent
+from deepagents.backends import CompositeBackend, StateBackend, StoreBackend
+from langgraph.store.memory import InMemoryStore
 
-  agent = create_deep_agent(
-      model="fireworks:accounts/fireworks/models/glm-5p2",
-      backend=CompositeBackend(
-          default=StateBackend(),
-          routes={
-              "/memories/": StoreBackend(namespace=lambda _rt: ("memories",)),
-          },
-      ),
-      store=InMemoryStore(),  # Store passed to create_deep_agent, not backend
-  )
-  ```
+agent = create_deep_agent(
+    model="fireworks:accounts/fireworks/models/glm-5p2",
+    backend=CompositeBackend(
+        default=StateBackend(),
+        routes={
+            "/memories/": StoreBackend(namespace=lambda _rt: ("memories",)),
+        },
+    ),
+    store=InMemoryStore(),  # Store passed to create_deep_agent, not backend
+)
+```
 
-  ```python Baseten theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  from deepagents import create_deep_agent
-  from deepagents.backends import CompositeBackend, StateBackend, StoreBackend
-  from langgraph.store.memory import InMemoryStore
+```python Baseten theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+from deepagents import create_deep_agent
+from deepagents.backends import CompositeBackend, StateBackend, StoreBackend
+from langgraph.store.memory import InMemoryStore
 
-  agent = create_deep_agent(
-      model="baseten:zai-org/GLM-5.2",
-      backend=CompositeBackend(
-          default=StateBackend(),
-          routes={
-              "/memories/": StoreBackend(namespace=lambda _rt: ("memories",)),
-          },
-      ),
-      store=InMemoryStore(),  # Store passed to create_deep_agent, not backend
-  )
-  ```
+agent = create_deep_agent(
+    model="baseten:zai-org/GLM-5.2",
+    backend=CompositeBackend(
+        default=StateBackend(),
+        routes={
+            "/memories/": StoreBackend(namespace=lambda _rt: ("memories",)),
+        },
+    ),
+    store=InMemoryStore(),  # Store passed to create_deep_agent, not backend
+)
+```
 
-  ```python Ollama theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  from deepagents import create_deep_agent
-  from deepagents.backends import CompositeBackend, StateBackend, StoreBackend
-  from langgraph.store.memory import InMemoryStore
+```python Ollama theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+from deepagents import create_deep_agent
+from deepagents.backends import CompositeBackend, StateBackend, StoreBackend
+from langgraph.store.memory import InMemoryStore
 
-  agent = create_deep_agent(
-      model="ollama:north-mini-code-1.0",
-      backend=CompositeBackend(
-          default=StateBackend(),
-          routes={
-              "/memories/": StoreBackend(namespace=lambda _rt: ("memories",)),
-          },
-      ),
-      store=InMemoryStore(),  # Store passed to create_deep_agent, not backend
-  )
-  ```
-</CodeGroup>
+agent = create_deep_agent(
+    model="ollama:north-mini-code-1.0",
+    backend=CompositeBackend(
+        default=StateBackend(),
+        routes={
+            "/memories/": StoreBackend(namespace=lambda _rt: ("memories",)),
+        },
+    ),
+    store=InMemoryStore(),  # Store passed to create_deep_agent, not backend
+)
+```
 
 **How it works:**
 
@@ -915,9 +903,9 @@ Notes:
 
 Binary content offloading stores inline media in the backend instead of keeping base64 payloads in message history. This reduces checkpoint size for agents that read binary files or receive inline media in user messages. Offloading is opt-in and disabled by default.
 
-<Note>
-  Binary content offloading requires `deepagents>=0.7.21`.
-</Note>
+> [!NOTE]
+>
+> Binary content offloading requires `deepagents>=0.7.21`.
 
 Set `offload_binary_content=True` on `FilesystemMiddleware` and pass it in the `middleware` list to `create_deep_agent`. Use the same backend for the agent and the middleware.
 
@@ -927,9 +915,9 @@ Message history keeps content-addressed references. Before each model call, the 
 
 Use a backend that stores blobs outside graph state, such as a sandbox or `FilesystemBackend`. Offloading has no effect when the blob path routes to `StateBackend`, including through `CompositeBackend`. If you keep `StateBackend` as the default backend, route the blob directory to external storage.
 
-<Note>
-  Inline media in user messages is replaced at the next model call. The original input payload still appears in earlier checkpoints. Keep the blob storage available when resuming a thread so the middleware can restore its media.
-</Note>
+> [!NOTE]
+>
+> Inline media in user messages is replaced at the next model call. The original input payload still appears in earlier checkpoints. Keep the blob storage available when resuming a thread so the middleware can restore its media.
 
 ## Custom backends
 
@@ -953,47 +941,47 @@ To also support the `execute` tool (running shell commands), implement [`Sandbox
 
 Always return structured result types with an `error` field for failure cases. Do not raise exceptions.
 
-<Accordion title="Example: S3-style backend skeleton">
-  This skeleton maps filesystem paths to object keys. Fill in each method with your storage client's list, read, search, upload, and read-modify-write operations.
-
-  ```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  from deepagents.backends.protocol import (
-      BackendProtocol,
-      EditResult,
-      GlobResult,
-      GrepResult,
-      LsResult,
-      ReadResult,
-      WriteResult,
-  )
-
-  class S3Backend(BackendProtocol):
-      def __init__(self, bucket: str, prefix: str = ""):
-          self.bucket = bucket
-          self.prefix = prefix.rstrip("/")
-
-      def _key(self, path: str) -> str:
-          return f"{self.prefix}{path}"
-
-      def ls(self, path: str) -> LsResult:
-          ...
-
-      def read(self, file_path: str, offset: int = 0, limit: int = 2000) -> ReadResult:
-          ...
-
-      def grep(self, pattern: str, path: str | None = None, glob: str | None = None) -> GrepResult:
-          ...
-
-      def glob(self, pattern: str, path: str | None = None) -> GlobResult:
-          ...
-
-      def write(self, file_path: str, content: str) -> WriteResult:
-          ...
-
-      def edit(self, file_path: str, old_string: str, new_string: str, replace_all: bool = False) -> EditResult:
-          ...
-  ```
-</Accordion>
+> **Example: S3-style backend skeleton**
+>
+> This skeleton maps filesystem paths to object keys. Fill in each method with your storage client's list, read, search, upload, and read-modify-write operations.
+>
+> ```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> from deepagents.backends.protocol import (
+>     BackendProtocol,
+>     EditResult,
+>     GlobResult,
+>     GrepResult,
+>     LsResult,
+>     ReadResult,
+>     WriteResult,
+> )
+>
+> class S3Backend(BackendProtocol):
+>     def __init__(self, bucket: str, prefix: str = ""):
+>         self.bucket = bucket
+>         self.prefix = prefix.rstrip("/")
+>
+>     def _key(self, path: str) -> str:
+>         return f"{self.prefix}{path}"
+>
+>     def ls(self, path: str) -> LsResult:
+>         ...
+>
+>     def read(self, file_path: str, offset: int = 0, limit: int = 2000) -> ReadResult:
+>         ...
+>
+>     def grep(self, pattern: str, path: str | None = None, glob: str | None = None) -> GrepResult:
+>         ...
+>
+>     def glob(self, pattern: str, path: str | None = None) -> GlobResult:
+>         ...
+>
+>     def write(self, file_path: str, content: str) -> WriteResult:
+>         ...
+>
+>     def edit(self, file_path: str, old_string: str, new_string: str, replace_all: bool = False) -> EditResult:
+>         ...
+> ```
 
 ## Permissions
 
@@ -1089,9 +1077,9 @@ class PolicyWrapper(BackendProtocol):
 
 ## Migrate from backend factories
 
-<Warning>
-  The backend factory pattern is **deprecated** as of `deepagents` 0.5.0. Pass pre-constructed backend instances directly instead of factory functions.
-</Warning>
+> [!WARNING]
+>
+> The backend factory pattern is **deprecated** as of `deepagents` 0.5.0. Pass pre-constructed backend instances directly instead of factory functions.
 
 Previously, backends like `StateBackend` and `StoreBackend` required a factory function that received a runtime object, because they needed runtime context (state, store) to operate. Backends now resolve this context internally via LangGraph's `get_config()`, `get_store()`, and `get_runtime()` helpers, so you can pass instances directly.
 
@@ -1115,9 +1103,9 @@ Previously, backends like `StateBackend` and `StoreBackend` required a factory f
 | `files_update` field on `WriteResult` and `EditResult` | State writes are now handled internally by the backend |
 | `Command` wrapping in middleware write/edit tools | Tools return plain strings; no `Command(update=...)` needed |
 
-<Note>
-  The factory pattern still works at runtime and emits a deprecation warning. Update your code to use direct instances before the next major version.
-</Note>
+> [!NOTE]
+>
+> The factory pattern still works at runtime and emits a deprecation warning. Update your code to use direct instances before the next major version.
 
 ### Migration example
 
@@ -1206,12 +1194,6 @@ Supporting types:
 
 ***
 
-<div>
-  <Callout icon="terminal-2">
-    [Connect these docs](/use-these-docs) to your agent of choice via MCP for real-time answers.
-  </Callout>
+[Connect these docs](/use-these-docs) to your agent of choice via MCP for real-time answers.
 
-  <Callout icon="edit">
-    [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/oss/deepagents/backends.mdx) or [file an issue](https://github.com/langchain-ai/docs/issues/new/choose).
-  </Callout>
-</div>
+[Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/oss/deepagents/backends.mdx) or [file an issue](https://github.com/langchain-ai/docs/issues/new/choose).

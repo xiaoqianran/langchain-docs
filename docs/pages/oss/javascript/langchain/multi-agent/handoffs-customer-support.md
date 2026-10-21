@@ -56,19 +56,17 @@ flowchart TD
 
 This tutorial requires the `langchain` package:
 
-<CodeGroup>
-  ```bash npm theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  npm install langchain
-  ```
+```bash npm theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+npm install langchain
+```
 
-  ```bash yarn theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  yarn add langchain
-  ```
+```bash yarn theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+yarn add langchain
+```
 
-  ```bash pnpm theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  pnpm add langchain
-  ```
-</CodeGroup>
+```bash pnpm theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+pnpm add langchain
+```
 
 For more details, see our [Installation guide](/oss/javascript/langchain/install).
 
@@ -76,236 +74,212 @@ For more details, see our [Installation guide](/oss/javascript/langchain/install
 
 Set up [LangSmith](https://smith.langchain.com?utm_source=docs\&utm_medium=cta\&utm_campaign=langsmith-signup\&utm_content=oss-langchain-multi-agent-handoffs-customer-support) to inspect what is happening inside your agent. Then set the following environment variables:
 
-<CodeGroup>
-  ```bash Shell theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  export LANGSMITH_TRACING="true"
-  export LANGSMITH_API_KEY="..."
-  ```
+```bash Shell theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+export LANGSMITH_TRACING="true"
+export LANGSMITH_API_KEY="..."
+```
 
-  ```typescript TypeScript theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  process.env.LANGSMITH_TRACING = "true";
-  process.env.LANGSMITH_API_KEY = "...";
-  ```
-</CodeGroup>
+```typescript TypeScript theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+process.env.LANGSMITH_TRACING = "true";
+process.env.LANGSMITH_API_KEY = "...";
+```
 
 ### Select an LLM
 
 Select a chat model from LangChain's suite of integrations:
 
-<Tabs>
-  <Tab title="OpenAI">
-    👉 Read the [OpenAI chat model integration docs](/oss/javascript/integrations/chat/openai/)
+**OpenAI**
 
-    <CodeGroup>
-      ```bash npm theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-      npm install @langchain/openai
-      ```
+👉 Read the [OpenAI chat model integration docs](/oss/javascript/integrations/chat/openai/)
 
-      ```bash pnpm theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-      pnpm install @langchain/openai
-      ```
+```bash npm theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+npm install @langchain/openai
+```
 
-      ```bash yarn theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-      yarn add @langchain/openai
-      ```
+```bash pnpm theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+pnpm install @langchain/openai
+```
 
-      ```bash bun theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-      bun add @langchain/openai
-      ```
-    </CodeGroup>
+```bash yarn theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+yarn add @langchain/openai
+```
 
-    <CodeGroup>
-      ```typescript initChatModel theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-      import { initChatModel } from "langchain";
+```bash bun theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+bun add @langchain/openai
+```
 
-      process.env.OPENAI_API_KEY = "your-api-key";
+```typescript initChatModel theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+import { initChatModel } from "langchain";
 
-      const model = await initChatModel("gpt-5.5");
-      ```
+process.env.OPENAI_API_KEY = "your-api-key";
 
-      ```typescript Model Class theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-      import { ChatOpenAI } from "@langchain/openai";
+const model = await initChatModel("gpt-5.5");
+```
 
-      const model = new ChatOpenAI({
-        model: "gpt-5.5",
-        apiKey: "your-api-key"
-      });
-      ```
-    </CodeGroup>
-  </Tab>
+```typescript Model Class theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+import { ChatOpenAI } from "@langchain/openai";
 
-  <Tab title="Anthropic">
-    👉 Read the [Anthropic chat model integration docs](/oss/javascript/integrations/chat/anthropic/)
+const model = new ChatOpenAI({
+  model: "gpt-5.5",
+  apiKey: "your-api-key"
+});
+```
 
-    <CodeGroup>
-      ```bash npm theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-      npm install @langchain/anthropic
-      ```
+**Anthropic**
 
-      ```bash pnpm theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-      pnpm install @langchain/anthropic
-      ```
+👉 Read the [Anthropic chat model integration docs](/oss/javascript/integrations/chat/anthropic/)
 
-      ```bash yarn theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-      yarn add @langchain/anthropic
-      ```
+```bash npm theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+npm install @langchain/anthropic
+```
 
-      ```bash pnpm theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-      pnpm add @langchain/anthropic
-      ```
-    </CodeGroup>
+```bash pnpm theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+pnpm install @langchain/anthropic
+```
 
-    <CodeGroup>
-      ```typescript initChatModel theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-      import { initChatModel } from "langchain";
+```bash yarn theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+yarn add @langchain/anthropic
+```
 
-      process.env.ANTHROPIC_API_KEY = "your-api-key";
+```bash pnpm theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+pnpm add @langchain/anthropic
+```
 
-      const model = await initChatModel("claude-sonnet-4-6");
-      ```
+```typescript initChatModel theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+import { initChatModel } from "langchain";
 
-      ```typescript Model Class theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-      import { ChatAnthropic } from "@langchain/anthropic";
+process.env.ANTHROPIC_API_KEY = "your-api-key";
 
-      const model = new ChatAnthropic({
-        model: "claude-sonnet-4-6",
-        apiKey: "your-api-key"
-      });
-      ```
-    </CodeGroup>
-  </Tab>
+const model = await initChatModel("claude-sonnet-4-6");
+```
 
-  <Tab title="Azure">
-    👉 Read the [Azure chat model integration docs](/oss/javascript/integrations/chat/azure/)
+```typescript Model Class theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+import { ChatAnthropic } from "@langchain/anthropic";
 
-    <CodeGroup>
-      ```bash npm theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-      npm install @langchain/azure
-      ```
+const model = new ChatAnthropic({
+  model: "claude-sonnet-4-6",
+  apiKey: "your-api-key"
+});
+```
 
-      ```bash pnpm theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-      pnpm install @langchain/azure
-      ```
+**Azure**
 
-      ```bash yarn theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-      yarn add @langchain/azure
-      ```
+👉 Read the [Azure chat model integration docs](/oss/javascript/integrations/chat/azure/)
 
-      ```bash bun theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-      bun add @langchain/azure
-      ```
-    </CodeGroup>
+```bash npm theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+npm install @langchain/azure
+```
 
-    <CodeGroup>
-      ```typescript initChatModel theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-      import { initChatModel } from "langchain";
+```bash pnpm theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+pnpm install @langchain/azure
+```
 
-      process.env.AZURE_OPENAI_API_KEY = "your-api-key";
-      process.env.AZURE_OPENAI_ENDPOINT = "your-endpoint";
-      process.env.OPENAI_API_VERSION = "your-api-version";
+```bash yarn theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+yarn add @langchain/azure
+```
 
-      const model = await initChatModel("azure_openai:gpt-5.5");
-      ```
+```bash bun theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+bun add @langchain/azure
+```
 
-      ```typescript Model Class theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-      import { AzureChatOpenAI } from "@langchain/openai";
+```typescript initChatModel theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+import { initChatModel } from "langchain";
 
-      const model = new AzureChatOpenAI({
-        model: "gpt-5.5",
-        azureOpenAIApiKey: "your-api-key",
-        azureOpenAIApiEndpoint: "your-endpoint",
-        azureOpenAIApiVersion: "your-api-version"
-      });
-      ```
-    </CodeGroup>
-  </Tab>
+process.env.AZURE_OPENAI_API_KEY = "your-api-key";
+process.env.AZURE_OPENAI_ENDPOINT = "your-endpoint";
+process.env.OPENAI_API_VERSION = "your-api-version";
 
-  <Tab title="Google Gemini">
-    👉 Read the [ChatGoogle chat model integration docs](/oss/javascript/integrations/chat/google)
+const model = await initChatModel("azure_openai:gpt-5.5");
+```
 
-    <CodeGroup>
-      ```bash npm theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-      npm install @langchain/google
-      ```
+```typescript Model Class theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+import { AzureChatOpenAI } from "@langchain/openai";
 
-      ```bash pnpm theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-      pnpm install @langchain/google
-      ```
+const model = new AzureChatOpenAI({
+  model: "gpt-5.5",
+  azureOpenAIApiKey: "your-api-key",
+  azureOpenAIApiEndpoint: "your-endpoint",
+  azureOpenAIApiVersion: "your-api-version"
+});
+```
 
-      ```bash yarn theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-      yarn add @langchain/google
-      ```
+**Google Gemini**
 
-      ```bash bun theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-      bun add @langchain/google
-      ```
-    </CodeGroup>
+👉 Read the [ChatGoogle chat model integration docs](/oss/javascript/integrations/chat/google)
 
-    <CodeGroup>
-      ```typescript initChatModel theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-      import { initChatModel } from "langchain";
+```bash npm theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+npm install @langchain/google
+```
 
-      process.env.GOOGLE_API_KEY = "your-api-key";
+```bash pnpm theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+pnpm install @langchain/google
+```
 
-      const model = await initChatModel("google:gemini-3.7-flash");
-      ```
+```bash yarn theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+yarn add @langchain/google
+```
 
-      ```typescript Model Class theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-      import { ChatGoogle } from "@langchain/google/node";
+```bash bun theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+bun add @langchain/google
+```
 
-      const model = new ChatGoogle({
-        model: "gemini-3.7-flash",
-        apiKey: "your-api-key"
-      });
-      ```
-    </CodeGroup>
-  </Tab>
+```typescript initChatModel theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+import { initChatModel } from "langchain";
 
-  <Tab title="Bedrock Converse">
-    👉 Read the [AWS Bedrock chat model integration docs](/oss/javascript/integrations/chat/bedrock_converse/)
+process.env.GOOGLE_API_KEY = "your-api-key";
 
-    <CodeGroup>
-      ```bash npm theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-      npm install @langchain/aws
-      ```
+const model = await initChatModel("google:gemini-3.7-flash");
+```
 
-      ```bash pnpm theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-      pnpm install @langchain/aws
-      ```
+```typescript Model Class theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+import { ChatGoogle } from "@langchain/google/node";
 
-      ```bash yarn theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-      yarn add @langchain/aws
-      ```
+const model = new ChatGoogle({
+  model: "gemini-3.7-flash",
+  apiKey: "your-api-key"
+});
+```
 
-      ```bash bun theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-      bun add @langchain/aws
-      ```
-    </CodeGroup>
+**Bedrock Converse**
 
-    <CodeGroup>
-      ```typescript initChatModel theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-      import { initChatModel } from "langchain";
+👉 Read the [AWS Bedrock chat model integration docs](/oss/javascript/integrations/chat/bedrock_converse/)
 
-      // Follow the steps here to configure your credentials:
-      // https://docs.aws.amazon.com/bedrock/latest/userguide/getting-started.html
+```bash npm theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+npm install @langchain/aws
+```
 
-      const model = await initChatModel("bedrock:gpt-5.5");
-      ```
+```bash pnpm theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+pnpm install @langchain/aws
+```
 
-      ```typescript Model Class theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-      import { ChatBedrockConverse } from "@langchain/aws";
+```bash yarn theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+yarn add @langchain/aws
+```
 
-      // Follow the steps here to configure your credentials:
-      // https://docs.aws.amazon.com/bedrock/latest/userguide/getting-started.html
+```bash bun theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+bun add @langchain/aws
+```
 
-      const model = new ChatBedrockConverse({
-        model: "gpt-5.5",
-        region: "us-east-2"
-      });
-      ```
-    </CodeGroup>
-  </Tab>
-</Tabs>
+```typescript initChatModel theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+import { initChatModel } from "langchain";
+
+// Follow the steps here to configure your credentials:
+// https://docs.aws.amazon.com/bedrock/latest/userguide/getting-started.html
+
+const model = await initChatModel("bedrock:gpt-5.5");
+```
+
+```typescript Model Class theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+import { ChatBedrockConverse } from "@langchain/aws";
+
+// Follow the steps here to configure your credentials:
+// https://docs.aws.amazon.com/bedrock/latest/userguide/getting-started.html
+
+const model = new ChatBedrockConverse({
+  model: "gpt-5.5",
+  region: "us-east-2"
+});
+```
 
 ## 1. Define custom state
 
@@ -425,46 +399,46 @@ Notice how `record_warranty_status` and `record_issue_type` return `Command` obj
 
 Define prompts and tools for each step. First, define the prompts for each step:
 
-<Accordion title="View complete prompt definitions">
-  ```typescript theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  // Define prompts as constants for easy reference
-  const WARRANTY_COLLECTOR_PROMPT = `You are a customer support agent helping with device issues.
-
-  CURRENT STAGE: Warranty verification
-
-  At this step, you need to:
-  1. Greet the customer warmly
-  2. Ask if their device is under warranty
-  3. Use record_warranty_status to record their response and move to the next step
-
-  Be conversational and friendly. Don't ask multiple questions at once.`;
-
-  const ISSUE_CLASSIFIER_PROMPT = `You are a customer support agent helping with device issues.
-
-  CURRENT STAGE: Issue classification
-  CUSTOMER INFO: Warranty status is {warranty_status}
-
-  At this step, you need to:
-  1. Ask the customer to describe their issue
-  2. Determine if it's a hardware issue (physical damage, broken parts) or software issue (app crashes, performance)
-  3. Use record_issue_type to record the classification and move to the next step
-
-  If unclear, ask clarifying questions before classifying.`;
-
-  const RESOLUTION_SPECIALIST_PROMPT = `You are a customer support agent helping with device issues.
-
-  CURRENT STAGE: Resolution
-  CUSTOMER INFO: Warranty status is {warranty_status}, issue type is {issue_type}
-
-  At this step, you need to:
-  1. For SOFTWARE issues: provide troubleshooting steps using provide_solution
-  2. For HARDWARE issues:
-     - If IN WARRANTY: explain warranty repair process using provide_solution
-     - If OUT OF WARRANTY: escalate_to_human for paid repair options
-
-  Be specific and helpful in your solutions.`;
-  ```
-</Accordion>
+> **View complete prompt definitions**
+>
+> ```typescript theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> // Define prompts as constants for easy reference
+> const WARRANTY_COLLECTOR_PROMPT = `You are a customer support agent helping with device issues.
+>
+> CURRENT STAGE: Warranty verification
+>
+> At this step, you need to:
+> 1. Greet the customer warmly
+> 2. Ask if their device is under warranty
+> 3. Use record_warranty_status to record their response and move to the next step
+>
+> Be conversational and friendly. Don't ask multiple questions at once.`;
+>
+> const ISSUE_CLASSIFIER_PROMPT = `You are a customer support agent helping with device issues.
+>
+> CURRENT STAGE: Issue classification
+> CUSTOMER INFO: Warranty status is {warranty_status}
+>
+> At this step, you need to:
+> 1. Ask the customer to describe their issue
+> 2. Determine if it's a hardware issue (physical damage, broken parts) or software issue (app crashes, performance)
+> 3. Use record_issue_type to record the classification and move to the next step
+>
+> If unclear, ask clarifying questions before classifying.`;
+>
+> const RESOLUTION_SPECIALIST_PROMPT = `You are a customer support agent helping with device issues.
+>
+> CURRENT STAGE: Resolution
+> CUSTOMER INFO: Warranty status is {warranty_status}, issue type is {issue_type}
+>
+> At this step, you need to:
+> 1. For SOFTWARE issues: provide troubleshooting steps using provide_solution
+> 2. For HARDWARE issues:
+>    - If IN WARRANTY: explain warranty repair process using provide_solution
+>    - If OUT OF WARRANTY: escalate_to_human for paid repair options
+>
+> Be specific and helpful in your solutions.`;
+> ```
 
 Then map step names to their configurations using a dictionary:
 
@@ -579,9 +553,9 @@ const agent = createAgent({
 });
 ```
 
-<Note>
-  **Why a checkpointer?** The checkpointer maintains state across conversation turns. Without it, the `current_step` state would be lost between user messages, breaking the workflow.
-</Note>
+> [!NOTE]
+>
+> **Why a checkpointer?** The checkpointer maintains state across conversation turns. Without it, the `current_step` state would be lost between user messages, breaking the workflow.
 
 ## 6. Test the workflow
 
@@ -730,9 +704,9 @@ See the [short-term memory guide](/oss/javascript/langchain/short-term-memory) f
 
 Some workflows need to allow users to return to previous steps to correct information (e.g., changing warranty status or issue classification). However, not all transitions make sense—for example, you typically can't go back once a refund has been processed. For this support workflow, we'll add tools to return to the warranty verification and issue classification steps.
 
-<Tip>
-  If your workflow requires arbitrary transitions between most steps, consider whether you need a structured workflow at all. This pattern works best when steps follow a clear sequential progression with occasional backwards transitions for corrections.
-</Tip>
+> [!TIP]
+>
+> If your workflow requires arbitrary transitions between most steps, consider whether you need a structured workflow at all. This pattern works best when steps follow a clear sequential progression with occasional backwards transitions for corrections.
 
 Add "go back" tools to the resolution step:
 
@@ -805,272 +779,272 @@ const result = await agent.invoke(
 
 Here's everything together in a runnable script:
 
-<Expandable title="Complete code">
-  ```typescript theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  import { createMiddleware, createAgent } from "langchain";
+**Complete code**
 
-  import { z } from "zod";
-  import { tool, ToolMessage, type ToolRuntime, HumanMessage } from "langchain";
-  import { Command, MemorySaver, StateSchema } from "@langchain/langgraph";
-  import { ChatOpenAI } from "@langchain/openai";
-  import { uuid7 } from "langsmith";
+```typescript theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+import { createMiddleware, createAgent } from "langchain";
 
-  // Define the possible workflow steps
-  const SupportStepSchema = z.enum([
-    "warranty_collector",
-    "issue_classifier",
-    "resolution_specialist",
-  ]);
-  const WarrantyStatusSchema = z.enum(["in_warranty", "out_of_warranty"]);
-  const IssueTypeSchema = z.enum(["hardware", "software"]);
+import { z } from "zod";
+import { tool, ToolMessage, type ToolRuntime, HumanMessage } from "langchain";
+import { Command, MemorySaver, StateSchema } from "@langchain/langgraph";
+import { ChatOpenAI } from "@langchain/openai";
+import { uuid7 } from "langsmith";
 
-  // State for customer support workflow
-  const SupportState = new StateSchema({
-    currentStep: SupportStepSchema.optional(),
-    warrantyStatus: WarrantyStatusSchema.optional(),
-    issueType: IssueTypeSchema.optional(),
-  });
+// Define the possible workflow steps
+const SupportStepSchema = z.enum([
+  "warranty_collector",
+  "issue_classifier",
+  "resolution_specialist",
+]);
+const WarrantyStatusSchema = z.enum(["in_warranty", "out_of_warranty"]);
+const IssueTypeSchema = z.enum(["hardware", "software"]);
 
-  const recordWarrantyStatus = tool(
-    async (input, config: ToolRuntime<typeof SupportState.State>) => {
-      return new Command({
+// State for customer support workflow
+const SupportState = new StateSchema({
+  currentStep: SupportStepSchema.optional(),
+  warrantyStatus: WarrantyStatusSchema.optional(),
+  issueType: IssueTypeSchema.optional(),
+});
 
-        update: {
+const recordWarrantyStatus = tool(
+  async (input, config: ToolRuntime<typeof SupportState.State>) => {
+    return new Command({
 
-          messages: [
-            new ToolMessage({
-              content: `Warranty status recorded as: ${input.status}`,
-              tool_call_id: config.toolCallId,
-            }),
-          ],
-          warrantyStatus: input.status,
-          currentStep: "issue_classifier",
-        },
-      });
-    },
-    {
-      name: "record_warranty_status",
-      description:
-        "Record the customer's warranty status and transition to issue classification.",
-      schema: z.object({
-        status: WarrantyStatusSchema,
-      }),
-    }
-  );
+      update: {
 
-  const recordIssueType = tool(
-    async (input, config: ToolRuntime<typeof SupportState.State>) => {
-      return new Command({
+        messages: [
+          new ToolMessage({
+            content: `Warranty status recorded as: ${input.status}`,
+            tool_call_id: config.toolCallId,
+          }),
+        ],
+        warrantyStatus: input.status,
+        currentStep: "issue_classifier",
+      },
+    });
+  },
+  {
+    name: "record_warranty_status",
+    description:
+      "Record the customer's warranty status and transition to issue classification.",
+    schema: z.object({
+      status: WarrantyStatusSchema,
+    }),
+  }
+);
 
-        update: {
+const recordIssueType = tool(
+  async (input, config: ToolRuntime<typeof SupportState.State>) => {
+    return new Command({
 
-          messages: [
-            new ToolMessage({
-              content: `Issue type recorded as: ${input.issueType}`,
-              tool_call_id: config.toolCallId,
-            }),
-          ],
-          issueType: input.issueType,
-          currentStep: "resolution_specialist",
-        },
-      });
-    },
-    {
-      name: "record_issue_type",
-      description:
-        "Record the type of issue and transition to resolution specialist.",
-      schema: z.object({
-        issueType: IssueTypeSchema,
-      }),
-    }
-  );
+      update: {
 
-  const escalateToHuman = tool(
-    async (input) => {
-      // In a real system, this would create a ticket, notify staff, etc.
-      return `Escalating to human support. Reason: ${input.reason}`;
-    },
-    {
-      name: "escalate_to_human",
-      description: "Escalate the case to a human support specialist.",
-      schema: z.object({
-        reason: z.string(),
-      }),
-    }
-  );
+        messages: [
+          new ToolMessage({
+            content: `Issue type recorded as: ${input.issueType}`,
+            tool_call_id: config.toolCallId,
+          }),
+        ],
+        issueType: input.issueType,
+        currentStep: "resolution_specialist",
+      },
+    });
+  },
+  {
+    name: "record_issue_type",
+    description:
+      "Record the type of issue and transition to resolution specialist.",
+    schema: z.object({
+      issueType: IssueTypeSchema,
+    }),
+  }
+);
 
-  const provideSolution = tool(
-    async (input) => {
-      return `Solution provided: ${input.solution}`;
-    },
-    {
-      name: "provide_solution",
-      description: "Provide a solution to the customer's issue.",
-      schema: z.object({
-        solution: z.string(),
-      }),
-    }
-  );
+const escalateToHuman = tool(
+  async (input) => {
+    // In a real system, this would create a ticket, notify staff, etc.
+    return `Escalating to human support. Reason: ${input.reason}`;
+  },
+  {
+    name: "escalate_to_human",
+    description: "Escalate the case to a human support specialist.",
+    schema: z.object({
+      reason: z.string(),
+    }),
+  }
+);
 
-  // Define prompts as constants for easy reference
-  const WARRANTY_COLLECTOR_PROMPT = `You are a customer support agent helping with device issues.
+const provideSolution = tool(
+  async (input) => {
+    return `Solution provided: ${input.solution}`;
+  },
+  {
+    name: "provide_solution",
+    description: "Provide a solution to the customer's issue.",
+    schema: z.object({
+      solution: z.string(),
+    }),
+  }
+);
 
-  CURRENT STAGE: Warranty verification
+// Define prompts as constants for easy reference
+const WARRANTY_COLLECTOR_PROMPT = `You are a customer support agent helping with device issues.
 
-  At this step, you need to:
-  1. Greet the customer warmly
-  2. Ask if their device is under warranty
-  3. Use record_warranty_status to record their response and move to the next step
+CURRENT STAGE: Warranty verification
 
-  Be conversational and friendly. Don't ask multiple questions at once.`;
+At this step, you need to:
+1. Greet the customer warmly
+2. Ask if their device is under warranty
+3. Use record_warranty_status to record their response and move to the next step
 
-  const ISSUE_CLASSIFIER_PROMPT = `You are a customer support agent helping with device issues.
+Be conversational and friendly. Don't ask multiple questions at once.`;
 
-  CURRENT STAGE: Issue classification
-  CUSTOMER INFO: Warranty status is {warranty_status}
+const ISSUE_CLASSIFIER_PROMPT = `You are a customer support agent helping with device issues.
 
-  At this step, you need to:
-  1. Ask the customer to describe their issue
-  2. Determine if it's a hardware issue (physical damage, broken parts) or software issue (app crashes, performance)
-  3. Use record_issue_type to record the classification and move to the next step
+CURRENT STAGE: Issue classification
+CUSTOMER INFO: Warranty status is {warranty_status}
 
-  If unclear, ask clarifying questions before classifying.`;
+At this step, you need to:
+1. Ask the customer to describe their issue
+2. Determine if it's a hardware issue (physical damage, broken parts) or software issue (app crashes, performance)
+3. Use record_issue_type to record the classification and move to the next step
 
-  const RESOLUTION_SPECIALIST_PROMPT = `You are a customer support agent helping with device issues.
+If unclear, ask clarifying questions before classifying.`;
 
-  CURRENT STAGE: Resolution
-  CUSTOMER INFO: Warranty status is {warranty_status}, issue type is {issue_type}
+const RESOLUTION_SPECIALIST_PROMPT = `You are a customer support agent helping with device issues.
 
-  At this step, you need to:
-  1. For SOFTWARE issues: provide troubleshooting steps using provide_solution
-  2. For HARDWARE issues:
-     - If IN WARRANTY: explain warranty repair process using provide_solution
-     - If OUT OF WARRANTY: escalate_to_human for paid repair options
+CURRENT STAGE: Resolution
+CUSTOMER INFO: Warranty status is {warranty_status}, issue type is {issue_type}
 
-  Be specific and helpful in your solutions.`;
+At this step, you need to:
+1. For SOFTWARE issues: provide troubleshooting steps using provide_solution
+2. For HARDWARE issues:
+   - If IN WARRANTY: explain warranty repair process using provide_solution
+   - If OUT OF WARRANTY: escalate_to_human for paid repair options
 
-  // Step configuration: maps step name to (prompt, tools, required_state)
-  const STEP_CONFIG = {
-    warranty_collector: {
-      prompt: WARRANTY_COLLECTOR_PROMPT,
-      tools: [recordWarrantyStatus],
-      requires: [],
-    },
-    issue_classifier: {
-      prompt: ISSUE_CLASSIFIER_PROMPT,
-      tools: [recordIssueType],
-      requires: ["warrantyStatus"],
-    },
-    resolution_specialist: {
-      prompt: RESOLUTION_SPECIALIST_PROMPT,
-      tools: [provideSolution, escalateToHuman],
-      requires: ["warrantyStatus", "issueType"],
-    },
-  } as const;
+Be specific and helpful in your solutions.`;
 
-  const applyStepMiddleware = createMiddleware({
-    name: "applyStep",
-    stateSchema: SupportState,
-    wrapModelCall: async (request, handler) => {
-      // Get current step (defaults to warranty_collector for first interaction)
-      const currentStep = request.state.currentStep ?? "warranty_collector";
+// Step configuration: maps step name to (prompt, tools, required_state)
+const STEP_CONFIG = {
+  warranty_collector: {
+    prompt: WARRANTY_COLLECTOR_PROMPT,
+    tools: [recordWarrantyStatus],
+    requires: [],
+  },
+  issue_classifier: {
+    prompt: ISSUE_CLASSIFIER_PROMPT,
+    tools: [recordIssueType],
+    requires: ["warrantyStatus"],
+  },
+  resolution_specialist: {
+    prompt: RESOLUTION_SPECIALIST_PROMPT,
+    tools: [provideSolution, escalateToHuman],
+    requires: ["warrantyStatus", "issueType"],
+  },
+} as const;
 
-      // Look up step configuration
-      const stepConfig = STEP_CONFIG[currentStep];
+const applyStepMiddleware = createMiddleware({
+  name: "applyStep",
+  stateSchema: SupportState,
+  wrapModelCall: async (request, handler) => {
+    // Get current step (defaults to warranty_collector for first interaction)
+    const currentStep = request.state.currentStep ?? "warranty_collector";
 
-      // Validate required state exists
-      for (const key of stepConfig.requires) {
-        if (request.state[key] === undefined) {
-          throw new Error(`${key} must be set before reaching ${currentStep}`);
-        }
+    // Look up step configuration
+    const stepConfig = STEP_CONFIG[currentStep];
+
+    // Validate required state exists
+    for (const key of stepConfig.requires) {
+      if (request.state[key] === undefined) {
+        throw new Error(`${key} must be set before reaching ${currentStep}`);
       }
+    }
 
-      // Format prompt with state values (supports {warrantyStatus}, {issueType}, etc.)
-      let systemPrompt: string = stepConfig.prompt;
-      for (const [key, value] of Object.entries(request.state)) {
-        systemPrompt = systemPrompt.replace(`{${key}}`, String(value ?? ""));
-      }
+    // Format prompt with state values (supports {warrantyStatus}, {issueType}, etc.)
+    let systemPrompt: string = stepConfig.prompt;
+    for (const [key, value] of Object.entries(request.state)) {
+      systemPrompt = systemPrompt.replace(`{${key}}`, String(value ?? ""));
+    }
 
-      // Inject system prompt and step-specific tools
-      return handler({
-        ...request,
-        systemPrompt,
-        tools: [...stepConfig.tools],
-      });
-    },
-  });
+    // Inject system prompt and step-specific tools
+    return handler({
+      ...request,
+      systemPrompt,
+      tools: [...stepConfig.tools],
+    });
+  },
+});
 
-  // Collect all tools from all step configurations
-  const allTools = [
-    recordWarrantyStatus,
-    recordIssueType,
-    provideSolution,
-    escalateToHuman,
-  ];
+// Collect all tools from all step configurations
+const allTools = [
+  recordWarrantyStatus,
+  recordIssueType,
+  provideSolution,
+  escalateToHuman,
+];
 
-  const model = new ChatOpenAI({
-    model: "gpt-5.4-mini",
-  });
+const model = new ChatOpenAI({
+  model: "gpt-5.4-mini",
+});
 
-  // Create the agent with step-based configuration
-  const agent = createAgent({
-    model,
-    tools: allTools,
-    middleware: [applyStepMiddleware],
-    checkpointer: new MemorySaver(),
-  });
+// Create the agent with step-based configuration
+const agent = createAgent({
+  model,
+  tools: allTools,
+  middleware: [applyStepMiddleware],
+  checkpointer: new MemorySaver(),
+});
 
-  // Configuration for this conversation thread
-  const threadId = uuid7();
-  const config = { configurable: { thread_id: threadId } };
+// Configuration for this conversation thread
+const threadId = uuid7();
+const config = { configurable: { thread_id: threadId } };
 
-  // Turn 1: Initial message - starts with warranty_collector step
-  console.log("=== Turn 1: Warranty Collection ===");
-  let result = await agent.invoke(
-    { messages: [new HumanMessage("Hi, my phone screen is cracked")] },
-    config
-  );
-  for (const msg of result.messages) {
-    console.log(msg.content);
-  }
+// Turn 1: Initial message - starts with warranty_collector step
+console.log("=== Turn 1: Warranty Collection ===");
+let result = await agent.invoke(
+  { messages: [new HumanMessage("Hi, my phone screen is cracked")] },
+  config
+);
+for (const msg of result.messages) {
+  console.log(msg.content);
+}
 
-  // Turn 2: User responds about warranty
-  console.log("\n=== Turn 2: Warranty Response ===");
-  result = await agent.invoke(
-    { messages: [new HumanMessage("Yes, it's still under warranty")] },
-    config
-  );
-  for (const msg of result.messages) {
-    console.log(msg.content);
-  }
-  console.log(`Current step: ${result.currentStep}`);
+// Turn 2: User responds about warranty
+console.log("\n=== Turn 2: Warranty Response ===");
+result = await agent.invoke(
+  { messages: [new HumanMessage("Yes, it's still under warranty")] },
+  config
+);
+for (const msg of result.messages) {
+  console.log(msg.content);
+}
+console.log(`Current step: ${result.currentStep}`);
 
-  // Turn 3: User describes the issue
-  console.log("\n=== Turn 3: Issue Description ===");
-  result = await agent.invoke(
-    {
-      messages: [
-        new HumanMessage("The screen is physically cracked from dropping it"),
-      ],
-    },
-    config
-  );
-  for (const msg of result.messages) {
-    console.log(msg.content);
-  }
-  console.log(`Current step: ${result.currentStep}`);
+// Turn 3: User describes the issue
+console.log("\n=== Turn 3: Issue Description ===");
+result = await agent.invoke(
+  {
+    messages: [
+      new HumanMessage("The screen is physically cracked from dropping it"),
+    ],
+  },
+  config
+);
+for (const msg of result.messages) {
+  console.log(msg.content);
+}
+console.log(`Current step: ${result.currentStep}`);
 
-  // Turn 4: Resolution
-  console.log("\n=== Turn 4: Resolution ===");
-  result = await agent.invoke(
-    { messages: [new HumanMessage("What should I do?")] },
-    config
-  );
-  for (const msg of result.messages) {
-    console.log(msg.content);
-  }
-  ```
-</Expandable>
+// Turn 4: Resolution
+console.log("\n=== Turn 4: Resolution ===");
+result = await agent.invoke(
+  { messages: [new HumanMessage("What should I do?")] },
+  config
+);
+for (const msg of result.messages) {
+  console.log(msg.content);
+}
+```
 
 ## Next steps
 
@@ -1081,12 +1055,6 @@ Here's everything together in a runnable script:
 
 ***
 
-<div>
-  <Callout icon="terminal-2">
-    [Connect these docs](/use-these-docs) to your agent of choice via MCP for real-time answers.
-  </Callout>
+[Connect these docs](/use-these-docs) to your agent of choice via MCP for real-time answers.
 
-  <Callout icon="edit">
-    [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/oss/langchain/multi-agent/handoffs-customer-support.mdx) or [file an issue](https://github.com/langchain-ai/docs/issues/new/choose).
-  </Callout>
-</div>
+[Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/oss/langchain/multi-agent/handoffs-customer-support.mdx) or [file an issue](https://github.com/langchain-ai/docs/issues/new/choose).

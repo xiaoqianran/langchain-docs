@@ -2,11 +2,11 @@
 
 # Delete workspaces
 
-<Note>
-  Deleting a workspace is supported **nativley in LangSmith Self-Hosted v0.10**. View [instructions for deleting a workspace](/langsmith/set-up-hierarchy#delete-a-workspace).
-
-  Follow the guide below for Self-Hosted versions before v0.10.
-</Note>
+> [!NOTE]
+>
+> Deleting a workspace is supported **nativley in LangSmith Self-Hosted v0.10**. View [instructions for deleting a workspace](/langsmith/set-up-hierarchy#delete-a-workspace).
+>
+> Follow the guide below for Self-Hosted versions before v0.10.
 
 The LangSmith UI does not currently support the deletion of an individual workspace from an organization. This, however, can be accomplished by directly removing all traces from all materialized views in ClickHouse (except the runs\_history views) and the runs and feedbacks tables and then removing the Workspace from the Postgres tenants table.
 
@@ -79,12 +79,6 @@ If you visit the LangSmith UI, you should now see workspace is deleted.
 
 ***
 
-<div>
-  <Callout icon="terminal-2">
-    [Connect these docs](/use-these-docs) to your agent of choice via MCP for real-time answers.
-  </Callout>
+[Connect these docs](/use-these-docs) to your agent of choice via MCP for real-time answers.
 
-  <Callout icon="edit">
-    [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/script-delete-a-workspace.mdx) or [file an issue](https://github.com/langchain-ai/docs/issues/new/choose).
-  </Callout>
-</div>
+[Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/script-delete-a-workspace.mdx) or [file an issue](https://github.com/langchain-ai/docs/issues/new/choose).

@@ -8,52 +8,50 @@ Add a control plane and data plane to deploy and manage agents on self-hosted La
 
 Deployment is optional for observability and evaluation. Complete the [Kubernetes installation](/langsmith/kubernetes) first. For other optional features, see [Configure additional features](/langsmith/self-host-additional-features). For Agent Servers without a control plane, see [Standalone servers](/langsmith/deploy-standalone-server).
 
-<Info>
-  LangSmith Deployment requires an [Enterprise](https://langchain.com/pricing) plan.
-</Info>
+> [!NOTE]
+>
+> LangSmith Deployment requires an [Enterprise](https://langchain.com/pricing) plan.
 
 ## Prerequisites
 
-<Steps>
-  <Step title="Install the base LangSmith platform">
-    Follow the [Kubernetes installation guide](/langsmith/kubernetes) to install the base LangSmith platform before continuing.
-  </Step>
+**1. Install the base LangSmith platform**
 
-  <Step title="Install KEDA">
-    Run the following commands to install `KEDA` on your cluster:
+Follow the [Kubernetes installation guide](/langsmith/kubernetes) to install the base LangSmith platform before continuing.
 
-    ```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-    helm repo add kedacore https://kedacore.github.io/charts
-    helm upgrade --install keda kedacore/keda --namespace keda --create-namespace
-    ```
+**2. Install KEDA**
 
-    <Info>
-      KEDA automatically scales the deployment system based on queue size.
-    </Info>
-  </Step>
+Run the following commands to install `KEDA` on your cluster:
 
-  <Step title="Configure an ingress">
-    Configure an ingress, gateway, or Istio for your LangSmith instance. All agents will be deployed as Kubernetes services behind this ingress. See [Set up an ingress](/langsmith/self-host-ingress). You must provide a `hostname` in your [`langsmith_config.yaml`](/langsmith/kubernetes#configure-your-helm-charts).
-  </Step>
+```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+helm repo add kedacore https://kedacore.github.io/charts
+helm upgrade --install keda kedacore/keda --namespace keda --create-namespace
+```
 
-  <Step title="Verify cluster capacity">
-    Ensure your cluster has available capacity for multiple deployments. A cluster autoscaler is recommended.
-  </Step>
+> [!NOTE]
+>
+> KEDA automatically scales the deployment system based on queue size.
 
-  <Step title="Verify storage">
-    Ensure a valid dynamic PV provisioner or PVs are available on your cluster.
+**3. Configure an ingress**
 
-    ```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-    kubectl get storageclass
-    ```
+Configure an ingress, gateway, or Istio for your LangSmith instance. All agents will be deployed as Kubernetes services behind this ingress. See [Set up an ingress](/langsmith/self-host-ingress). You must provide a `hostname` in your [`langsmith_config.yaml`](/langsmith/kubernetes#configure-your-helm-charts).
 
-    At least one StorageClass should have a `PROVISIONER` value (not `kubernetes.io/no-provisioner`) and be marked `(default)`, or you must configure one before proceeding.
-  </Step>
+**4. Verify cluster capacity**
 
-  <Step title="Verify egress">
-    Ensure egress to `https://beacon.langchain.com` is available. See the [egress documentation](/langsmith/self-host-egress).
-  </Step>
-</Steps>
+Ensure your cluster has available capacity for multiple deployments. A cluster autoscaler is recommended.
+
+**5. Verify storage**
+
+Ensure a valid dynamic PV provisioner or PVs are available on your cluster.
+
+```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+kubectl get storageclass
+```
+
+At least one StorageClass should have a `PROVISIONER` value (not `kubernetes.io/no-provisioner`) and be marked `(default)`, or you must configure one before proceeding.
+
+**6. Verify egress**
+
+Ensure egress to `https://beacon.langchain.com` is available. See the [egress documentation](/langsmith/self-host-egress).
 
 ## Enable LangSmith Deployment
 
@@ -70,275 +68,263 @@ Enabling LangSmith Deployment provisions the following resources in your cluster
 
 To enable LangSmith Deployment, update your [`langsmith_config.yaml`](/langsmith/kubernetes#configure-your-helm-charts):
 
-<Steps>
-  <Step title="Enable deployment in your config">
-    In your `langsmith_config.yaml`, enable the `deployment` option. You must also have a valid ingress configured.
+**1. Enable deployment in your config**
 
-    ```yaml theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-    config:
-      deployment:
-        enabled: true
-    ```
+In your `langsmith_config.yaml`, enable the `deployment` option. You must also have a valid ingress configured.
 
-    <Note>
-      As of v0.12.0, the `langgraphPlatform` option is deprecated. Use `config.deployment` for any version after v0.12.0.
-    </Note>
-  </Step>
+```yaml theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+config:
+  deployment:
+    enabled: true
+```
 
-  <Step title="(Optional) Configure image mirroring">
-    If you need to mirror images to a private registry, configure the `hostBackendImage` and `operatorImage` options in your [`langsmith_config.yaml`](/langsmith/kubernetes#configure-your-helm-charts). Use the image tags specified in the [latest LangSmith Helm chart release](https://github.com/langchain-ai/helm/releases).
+> [!NOTE]
+>
+> As of v0.12.0, the `langgraphPlatform` option is deprecated. Use `config.deployment` for any version after v0.12.0.
 
-    ```yaml theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-    hostBackendImage:
-      repository: "docker.io/langchain/hosted-langserve-backend"
-      pullPolicy: IfNotPresent
-    operatorImage:
-      repository: "docker.io/langchain/langgraph-operator"
-      pullPolicy: IfNotPresent
-    ```
-  </Step>
+**2. (Optional) Configure image mirroring**
 
-  <Step title="(Optional) Configure base agent templates">
-    Override the [base agent templates in `values.yaml`](https://github.com/langchain-ai/helm/blob/main/charts/langsmith/values.yaml#L1428) if you need to customize how the operator creates agent Kubernetes resources. The most common use case is adding `imagePullSecrets` to authenticate with a private container registry. See [Configure authentication for private registries](#configure-authentication-for-private-registries) for details.
-  </Step>
+If you need to mirror images to a private registry, configure the `hostBackendImage` and `operatorImage` options in your [`langsmith_config.yaml`](/langsmith/kubernetes#configure-your-helm-charts). Use the image tags specified in the [latest LangSmith Helm chart release](https://github.com/langchain-ai/helm/releases).
 
-  <Step title="Apply the changes">
-    Run the following command to apply the changes. This command is used throughout this guide whenever you are asked to apply changes. Replace `<version>` and `<namespace>` with your values:
+```yaml theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+hostBackendImage:
+  repository: "docker.io/langchain/hosted-langserve-backend"
+  pullPolicy: IfNotPresent
+operatorImage:
+  repository: "docker.io/langchain/langgraph-operator"
+  pullPolicy: IfNotPresent
+```
 
-    ```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-    helm upgrade -i langsmith langchain/langsmith --values langsmith_config.yaml --version <version> -n <namespace> --wait --debug
-    ```
+**3. (Optional) Configure base agent templates**
 
-    Verify that the new pods are running before continuing:
+Override the [base agent templates in `values.yaml`](https://github.com/langchain-ai/helm/blob/main/charts/langsmith/values.yaml#L1428) if you need to customize how the operator creates agent Kubernetes resources. The most common use case is adding `imagePullSecrets` to authenticate with a private container registry. See [Configure authentication for private registries](#configure-authentication-for-private-registries) for details.
 
-    ```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-    kubectl get pods -n <namespace>
-    ```
+**4. Apply the changes**
 
-    Your instance is now ready to create deployments.
-  </Step>
-</Steps>
+Run the following command to apply the changes. This command is used throughout this guide whenever you are asked to apply changes. Replace `<version>` and `<namespace>` with your values:
+
+```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+helm upgrade -i langsmith langchain/langsmith --values langsmith_config.yaml --version <version> -n <namespace> --wait --debug
+```
+
+Verify that the new pods are running before continuing:
+
+```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+kubectl get pods -n <namespace>
+```
+
+Your instance is now ready to create deployments.
 
 ## Optional configuration
 
 ### Configure additional data planes
 
-<Warning>
-  **Not recommended; deprecation planned.** Configuring additional data planes through the control plane is not a recommended approach and will be deprecated in a future release. Instead, deploy [standalone Agent Servers](/langsmith/deploy-standalone-server) and configure them to trace to your self-hosted LangSmith instance.
-</Warning>
+> [!WARNING]
+>
+> **Not recommended; deprecation planned.** Configuring additional data planes through the control plane is not a recommended approach and will be deprecated in a future release. Instead, deploy [standalone Agent Servers](/langsmith/deploy-standalone-server) and configure them to trace to your self-hosted LangSmith instance.
 
 In addition to the data plane created above, you can create more data planes in different Kubernetes clusters or in the same cluster under a different namespace. There are different ways to achieve this, so implement the solution that works best for your use case.
 
 #### Prerequisites
 
-<Steps>
-  <Step title="Review cluster organization">
-    Read through the cluster organization guide in the [hybrid (legacy) documentation](/langsmith/hybrid-legacy#listeners) to understand how to organize this for your use case.
-  </Step>
+**1. Review cluster organization**
 
-  <Step title="Verify hybrid prerequisites">
-    Verify the prerequisites in the [hybrid section](/langsmith/hybrid-legacy#prerequisites) for the new cluster. In step 5 of the [prerequisites](/langsmith/hybrid-legacy#prerequisites), configure egress to your [self-hosted LangSmith instance](/langsmith/self-host-usage#configuring-the-application-you-want-to-use-with-langsmith) instead of `https://api.host.langchain.com` and `https://api.smith.langchain.com`.
-  </Step>
+Read through the cluster organization guide in the [hybrid (legacy) documentation](/langsmith/hybrid-legacy#listeners) to understand how to organize this for your use case.
 
-  <Step title="Enable the feature in Postgres">
-    Run the following against your LangSmith Postgres instance to enable this feature. Note the workspace ID for later steps.
+**2. Verify hybrid prerequisites**
 
-    ```sql theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-    update organizations set config = config || '{"enable_lgp_listeners_page": true}' where id = '<org id here>';
-    update tenants set config = config || '{"langgraph_remote_reconciler_enabled": true}' where id = '<workspace id here>';
-    ```
-  </Step>
-</Steps>
+Verify the prerequisites in the [hybrid section](/langsmith/hybrid-legacy#prerequisites) for the new cluster. In step 5 of the [prerequisites](/langsmith/hybrid-legacy#prerequisites), configure egress to your [self-hosted LangSmith instance](/langsmith/self-host-usage#configuring-the-application-you-want-to-use-with-langsmith) instead of `https://api.host.langchain.com` and `https://api.smith.langchain.com`.
+
+**3. Enable the feature in Postgres**
+
+Run the following against your LangSmith Postgres instance to enable this feature. Note the workspace ID for later steps.
+
+```sql theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+update organizations set config = config || '{"enable_lgp_listeners_page": true}' where id = '<org id here>';
+update tenants set config = config || '{"langgraph_remote_reconciler_enabled": true}' where id = '<workspace id here>';
+```
 
 #### Deploy to a different cluster
 
-<Steps>
-  <Step title="Follow the hybrid setup guide">
-    Follow steps 2 to 6 in the [hybrid setup guide](/langsmith/hybrid-legacy#setup). Set `config.langsmithWorkspaceId` to the workspace ID from the previous step.
-  </Step>
+**1. Follow the hybrid setup guide**
 
-  <Step title="(Optional) Add more data planes to the same cluster">
-    To add more than one data plane to the same cluster, follow the instructions for [configuring additional data planes in the same cluster](/langsmith/hybrid-legacy#configuring-additional-data-planes-in-the-same-cluster).
-  </Step>
-</Steps>
+Follow steps 2 to 6 in the [hybrid setup guide](/langsmith/hybrid-legacy#setup). Set `config.langsmithWorkspaceId` to the workspace ID from the previous step.
+
+**2. (Optional) Add more data planes to the same cluster**
+
+To add more than one data plane to the same cluster, follow the instructions for [configuring additional data planes in the same cluster](/langsmith/hybrid-legacy#configuring-additional-data-planes-in-the-same-cluster).
 
 #### Deploy to a different namespace in the same cluster
 
-<Steps>
-  <Step title="Update your config">
-    In your [`langsmith_config.yaml`](/langsmith/kubernetes#configure-your-helm-charts), make the following modifications:
+**1. Update your config**
 
-    * Set `operator.watchNamespaces` to the current namespace your self-hosted LangSmith instance is running in. This prevents conflicts with the operator added by the new data plane.
-    * Use the [Gateway API](/langsmith/self-host-ingress#option-2%3A-gateway-api) or an [Istio Gateway](/langsmith/self-host-ingress#option-3%3A-istio-gateway). Adjust your `langsmith_config.yaml` accordingly.
-  </Step>
+In your [`langsmith_config.yaml`](/langsmith/kubernetes#configure-your-helm-charts), make the following modifications:
 
-  <Step title="Apply the changes">
-    ```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-    helm upgrade -i langsmith langchain/langsmith --values langsmith_config.yaml --version <version> -n <namespace> --wait --debug
-    ```
-  </Step>
+* Set `operator.watchNamespaces` to the current namespace your self-hosted LangSmith instance is running in. This prevents conflicts with the operator added by the new data plane.
+* Use the [Gateway API](/langsmith/self-host-ingress#option-2%3A-gateway-api) or an [Istio Gateway](/langsmith/self-host-ingress#option-3%3A-istio-gateway). Adjust your `langsmith_config.yaml` accordingly.
 
-  <Step title="Follow the hybrid setup guide">
-    Follow steps 2 to 6 in the [hybrid setup guide](/langsmith/hybrid-legacy#setup). Set `config.langsmithWorkspaceId` to the workspace ID from the previous step. Set `config.watchNamespaces` to a different namespace than the one used by the existing data plane.
-  </Step>
+**2. Apply the changes**
 
-  <Step title="(Optional) Configure log access">
-    Configure access for the control plane to read Agent Server deployment logs from the new namespace. See [Read Agent Server logs from other namespaces](#read-agent-server-logs-from-other-namespaces).
-  </Step>
-</Steps>
+```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+helm upgrade -i langsmith langchain/langsmith --values langsmith_config.yaml --version <version> -n <namespace> --wait --debug
+```
+
+**3. Follow the hybrid setup guide**
+
+Follow steps 2 to 6 in the [hybrid setup guide](/langsmith/hybrid-legacy#setup). Set `config.langsmithWorkspaceId` to the workspace ID from the previous step. Set `config.watchNamespaces` to a different namespace than the one used by the existing data plane.
+
+**4. (Optional) Configure log access**
+
+Configure access for the control plane to read Agent Server deployment logs from the new namespace. See [Read Agent Server logs from other namespaces](#read-agent-server-logs-from-other-namespaces).
 
 ### Configure authentication for private registries
 
 If your [Agent Server deployments](/langsmith/agent-server) will use images from private container registries (for example, AWS ECR, Azure ACR, or GCP Artifact Registry), configure image pull secrets. This configuration applies to all deployments automatically, allowing them to authenticate with your private registry.
 
-<Steps>
-  <Step title="Create a Kubernetes image pull secret">
-    ```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-    kubectl create secret docker-registry langsmith-registry-secret \
-        --docker-server=myregistry.com \
-        --docker-username=your-username \
-        --docker-password=your-password \
-        --docker-email=your-email@example.com \
-        -n langsmith
-    ```
+**1. Create a Kubernetes image pull secret**
 
-    Replace the values with your registry credentials:
+```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+kubectl create secret docker-registry langsmith-registry-secret \
+    --docker-server=myregistry.com \
+    --docker-username=your-username \
+    --docker-password=your-password \
+    --docker-email=your-email@example.com \
+    -n langsmith
+```
 
-    * `myregistry.com`: Your registry URL
-    * `your-username`: Your registry username
-    * `your-password`: Your registry password or access token
-    * `langsmith`: The Kubernetes namespace where LangSmith is installed
-  </Step>
+Replace the values with your registry credentials:
 
-  <Step title="Configure the deployment template in your langsmith_config.yaml">
-    To enable agent server deployments to use the private registry secret, add `imagePullSecrets` to the operator's deployment template:
+* `myregistry.com`: Your registry URL
+* `your-username`: Your registry username
+* `your-password`: Your registry password or access token
+* `langsmith`: The Kubernetes namespace where LangSmith is installed
 
-    ```yaml {21-22} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-    operator:
-      templates:
-        deployment: |
-          apiVersion: apps/v1
-          kind: Deployment
+**2. Configure the deployment template in your langsmith\_config.yaml**
+
+To enable agent server deployments to use the private registry secret, add `imagePullSecrets` to the operator's deployment template:
+
+```yaml {21-22} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+operator:
+  templates:
+    deployment: |
+      apiVersion: apps/v1
+      kind: Deployment
+      metadata:
+        name: ${name}
+        namespace: ${namespace}
+      spec:
+        replicas: ${replicas}
+        revisionHistoryLimit: 10
+        selector:
+          matchLabels:
+            app: ${name}
+        template:
           metadata:
-            name: ${name}
-            namespace: ${namespace}
+            labels:
+              app: ${name}
           spec:
-            replicas: ${replicas}
-            revisionHistoryLimit: 10
-            selector:
-              matchLabels:
-                app: ${name}
-            template:
-              metadata:
-                labels:
-                  app: ${name}
-              spec:
-                enableServiceLinks: false
-                imagePullSecrets:
-                - name: langsmith-registry-secret
-                containers:
-                - name: api-server
-                  image: ${image}
-                  ports:
-                  - name: api-server
-                    containerPort: 8000
-                    protocol: TCP
-                  livenessProbe:
-                    httpGet:
-                      path: /ok
-                      port: 8000
-                    periodSeconds: 15
-                    timeoutSeconds: 5
-                    failureThreshold: 6
-                  readinessProbe:
-                    httpGet:
-                      path: /ok
-                      port: 8000
-                    periodSeconds: 15
-                    timeoutSeconds: 5
-                    failureThreshold: 6
-    ```
-  </Step>
+            enableServiceLinks: false
+            imagePullSecrets:
+            - name: langsmith-registry-secret
+            containers:
+            - name: api-server
+              image: ${image}
+              ports:
+              - name: api-server
+                containerPort: 8000
+                protocol: TCP
+              livenessProbe:
+                httpGet:
+                  path: /ok
+                  port: 8000
+                periodSeconds: 15
+                timeoutSeconds: 5
+                failureThreshold: 6
+              readinessProbe:
+                httpGet:
+                  path: /ok
+                  port: 8000
+                periodSeconds: 15
+                timeoutSeconds: 5
+                failureThreshold: 6
+```
 
-  <Step title="Apply the changes">
-    ```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-    helm upgrade -i langsmith langchain/langsmith --values langsmith_config.yaml --version <version> -n <namespace> --wait --debug
-    ```
+**3. Apply the changes**
 
-    All user deployments created through the LangSmith UI will inherit these registry credentials.
-  </Step>
-</Steps>
+```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+helm upgrade -i langsmith langchain/langsmith --values langsmith_config.yaml --version <version> -n <namespace> --wait --debug
+```
+
+All user deployments created through the LangSmith UI will inherit these registry credentials.
 
 For registry-specific authentication methods, refer to the [Kubernetes documentation on pulling images from private registries](https://kubernetes.io/docs/tasks/configure-pod-container/pull-image-private-registry/).
 
 ### Read Agent Server logs from other namespaces
 
-<Warning>
-  Retrieving server logs is not supported for self-hosted deployments where the control plane (`host-backend`) and data plane (`listener`) are deployed in different Kubernetes clusters.
-</Warning>
+> [!WARNING]
+>
+> Retrieving server logs is not supported for self-hosted deployments where the control plane (`host-backend`) and data plane (`listener`) are deployed in different Kubernetes clusters.
 
 For deployments where the control plane and data plane are in the same cluster, ensure the control plane Kubernetes deployment (`host-backend`) has permission to `get`, `list`, and `watch` Kubernetes `deployments`, `pods`, `replicasets`, and `logs` from the namespace where the Agent Server deployment exists. There are different ways to achieve this. The following example uses Kubernetes RBAC, but use the approach that best fits your use case:
 
-<Steps>
-  <Step title="Create a Role with the required permissions">
-    Create a `Role` in the Agent Server namespace. Replace `<data_plane_namespace>`:
+**1. Create a Role with the required permissions**
 
-    ```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-    kubectl apply -n <data_plane_namespace> -f - <<EOF
-    apiVersion: rbac.authorization.k8s.io/v1
-    kind: Role
-    metadata:
-      name: read-agent-server-logs-role
-    rules:
-    - apiGroups: [""]
-      resources: ["pods"]
-      verbs: ["get","list","watch"]
-    - apiGroups: [""]
-      resources: ["pods/log"]
-      verbs: ["get","watch"]
-    - apiGroups: ["apps"]
-      resources: ["deployments"]
-      verbs: ["get","list","watch"]
-    - apiGroups: ["apps"]
-      resources: ["replicasets"]
-      verbs: ["get","list","watch"]
-    EOF
-    ```
-  </Step>
+Create a `Role` in the Agent Server namespace. Replace `<data_plane_namespace>`:
 
-  <Step title="Get the control plane ServiceAccount">
-    Replace `<control_plane_namespace>`:
+```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+kubectl apply -n <data_plane_namespace> -f - <<EOF
+apiVersion: rbac.authorization.k8s.io/v1
+kind: Role
+metadata:
+  name: read-agent-server-logs-role
+rules:
+- apiGroups: [""]
+  resources: ["pods"]
+  verbs: ["get","list","watch"]
+- apiGroups: [""]
+  resources: ["pods/log"]
+  verbs: ["get","watch"]
+- apiGroups: ["apps"]
+  resources: ["deployments"]
+  verbs: ["get","list","watch"]
+- apiGroups: ["apps"]
+  resources: ["replicasets"]
+  verbs: ["get","list","watch"]
+EOF
+```
 
-    ```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-    kubectl get serviceaccounts -n <control_plane_namespace> | grep host-backend
-    ```
-  </Step>
+**2. Get the control plane ServiceAccount**
 
-  <Step title="Bind the Role to the control plane ServiceAccount">
-    Replace `<data_plane_namespace>`, `<control_plane_namespace>`, and `<control_plane_service_account>`:
+Replace `<control_plane_namespace>`:
 
-    ```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-    kubectl apply -n <data_plane_namespace> -f - <<EOF
-    apiVersion: rbac.authorization.k8s.io/v1
-    kind: RoleBinding
-    metadata:
-      name: read-agent-server-logs-role-binding
-    subjects:
-    - kind: ServiceAccount
-      name: <control_plane_service_account>
-      namespace: <control_plane_namespace>
-    roleRef:
-      apiGroup: rbac.authorization.k8s.io
-      kind: Role
-      name: read-agent-server-logs-role
-    EOF
-    ```
-  </Step>
-</Steps>
+```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+kubectl get serviceaccounts -n <control_plane_namespace> | grep host-backend
+```
 
-<Note>
-  In this example, the Role and RoleBinding are defined in the same Kubernetes namespace as the Agent Server deployment. You can assign any name to the Role and RoleBinding and customize them as needed.
-</Note>
+**3. Bind the Role to the control plane ServiceAccount**
+
+Replace `<data_plane_namespace>`, `<control_plane_namespace>`, and `<control_plane_service_account>`:
+
+```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+kubectl apply -n <data_plane_namespace> -f - <<EOF
+apiVersion: rbac.authorization.k8s.io/v1
+kind: RoleBinding
+metadata:
+  name: read-agent-server-logs-role-binding
+subjects:
+- kind: ServiceAccount
+  name: <control_plane_service_account>
+  namespace: <control_plane_namespace>
+roleRef:
+  apiGroup: rbac.authorization.k8s.io
+  kind: Role
+  name: read-agent-server-logs-role
+EOF
+```
+
+> [!NOTE]
+>
+> In this example, the Role and RoleBinding are defined in the same Kubernetes namespace as the Agent Server deployment. You can assign any name to the Role and RoleBinding and customize them as needed.
 
 ## Next steps
 
@@ -346,12 +332,6 @@ Once LangSmith Deployment is enabled, see [Deploy with control plane](/langsmith
 
 ***
 
-<div>
-  <Callout icon="terminal-2">
-    [Connect these docs](/use-these-docs) to your agent of choice via MCP for real-time answers.
-  </Callout>
+[Connect these docs](/use-these-docs) to your agent of choice via MCP for real-time answers.
 
-  <Callout icon="edit">
-    [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/enable-self-hosted-deployment.mdx) or [file an issue](https://github.com/langchain-ai/docs/issues/new/choose).
-  </Callout>
-</div>
+[Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/enable-self-hosted-deployment.mdx) or [file an issue](https://github.com/langchain-ai/docs/issues/new/choose).

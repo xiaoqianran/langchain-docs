@@ -6,9 +6,9 @@ Authenticate MCP connections with bearer tokens, OAuth 2.1, or per-user credenti
 
 Most remote MCP servers require authentication. Each HTTP or SSE server under `servers` takes its own `authProvider` and `headers`, and `MCPAdapter` hands the provider object to the MCP SDK transport as-is and sends the headers with each request. Stdio servers take neither. Use a [header or token provider](#bearer-token) for credentials your app manages, or an [OAuth client provider](#oauth-authentication) for OAuth 2.1. When each run should reach the server as its caller, use [per-user authentication](#per-user-authentication).
 
-<Note>
-  This page requires `@langchain/mcp-adapters` 2.0 or later. If you are upgrading from 1.x, see the [migration guide](/oss/javascript/migrate/langchain-mcp-adapters#authentication).
-</Note>
+> [!NOTE]
+>
+> This page requires `@langchain/mcp-adapters` 2.0 or later. If you are upgrading from 1.x, see the [migration guide](/oss/javascript/migrate/langchain-mcp-adapters#authentication).
 
 ## Bearer token
 
@@ -67,102 +67,102 @@ The `createMcpSession()` helper below connects these steps:
 2. In your callback route, call `completeLogin()` on the same session. It checks the caller and consumes the pending `state` before exchanging the code.
 3. Use the returned tools. After the exchange, the helper retries discovery with the saved tokens.
 
-<Accordion title="Session helper">
-  This example keeps pending login state in one Node.js process. For multiple processes or restarts, use shared storage with an expiry. Check the state, user, session, and server, and consume the record in one atomic operation. The SDK does not validate `state`.
-
-  ```typescript theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  import { randomUUID } from "node:crypto";
-  import {
-    MCPAdapter,
-    MCPClientError,
-    UnauthorizedError,
-    type OAuthClientProvider,
-  } from "@langchain/mcp-adapters";
-  import { StreamableHTTPClientTransport } from "@modelcontextprotocol/client";
-
-  function createMcpSession(
-    serverUrl: string,
-    userId: string,
-    sessionId: string,
-    authProvider: OAuthClientProvider,
-  ) {
-    let pendingState: string | undefined;
-    let authorizationUrl: URL | undefined;
-
-    authProvider.state = () => (pendingState = randomUUID());
-    authProvider.redirectToAuthorization = (url) => {
-      authorizationUrl = url;
-    };
-
-    const adapter = new MCPAdapter({
-      servers: { crm: { url: serverUrl, authProvider } },
-    });
-
-    function causedByUnauthorized(error: unknown): boolean {
-      // Discovery wraps UnauthorizedError in MCPClientError, and wraps it
-      // again when an HTTP connection falls back to SSE. Walk a few hops.
-      let current: unknown = error;
-      for (let depth = 0; depth <= 3; depth += 1) {
-        if (UnauthorizedError.isInstance(current)) return true;
-        if (!(current instanceof Error)) return false;
-        current = current.cause;
-      }
-      return false;
-    }
-
-    async function listTools() {
-      // Reuse the pending login instead of starting another redirect.
-      if (authorizationUrl) return { authorizationUrl };
-      try {
-        return { tools: await adapter.listTools() };
-      } catch (error) {
-        if (
-          MCPClientError.isInstance(error) &&
-          causedByUnauthorized(error) &&
-          authorizationUrl
-        ) {
-          return { authorizationUrl };
-        }
-        throw error;
-      }
-    }
-
-    async function completeLogin(
-      callbackUrl: URL,
-      callbackUserId: string,
-      callbackSessionId: string,
-    ) {
-      const params = callbackUrl.searchParams;
-      if (
-        callbackUserId !== userId ||
-        callbackSessionId !== sessionId ||
-        !pendingState ||
-        params.get("state") !== pendingState
-      ) {
-        throw new Error("Invalid OAuth callback");
-      }
-      // No await between checking and consuming state: only one callback wins.
-      pendingState = undefined;
-
-      const transport = new StreamableHTTPClientTransport(new URL(serverUrl), {
-        authProvider,
-      });
-      try {
-        await transport.finishAuth(params);
-      } catch {
-        // SDK errors can contain text supplied by the authorization server.
-        throw new Error("OAuth login failed");
-      } finally {
-        authorizationUrl = undefined;
-        await transport.close();
-      }
-      return listTools();
-    }
-
-    return { listTools, completeLogin, close: () => adapter.close() };
-  }
-  ```
-</Accordion>
+> **Session helper**
+>
+> This example keeps pending login state in one Node.js process. For multiple processes or restarts, use shared storage with an expiry. Check the state, user, session, and server, and consume the record in one atomic operation. The SDK does not validate `state`.
+>
+> ```typescript theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> import { randomUUID } from "node:crypto";
+> import {
+>   MCPAdapter,
+>   MCPClientError,
+>   UnauthorizedError,
+>   type OAuthClientProvider,
+> } from "@langchain/mcp-adapters";
+> import { StreamableHTTPClientTransport } from "@modelcontextprotocol/client";
+>
+> function createMcpSession(
+>   serverUrl: string,
+>   userId: string,
+>   sessionId: string,
+>   authProvider: OAuthClientProvider,
+> ) {
+>   let pendingState: string | undefined;
+>   let authorizationUrl: URL | undefined;
+>
+>   authProvider.state = () => (pendingState = randomUUID());
+>   authProvider.redirectToAuthorization = (url) => {
+>     authorizationUrl = url;
+>   };
+>
+>   const adapter = new MCPAdapter({
+>     servers: { crm: { url: serverUrl, authProvider } },
+>   });
+>
+>   function causedByUnauthorized(error: unknown): boolean {
+>     // Discovery wraps UnauthorizedError in MCPClientError, and wraps it
+>     // again when an HTTP connection falls back to SSE. Walk a few hops.
+>     let current: unknown = error;
+>     for (let depth = 0; depth <= 3; depth += 1) {
+>       if (UnauthorizedError.isInstance(current)) return true;
+>       if (!(current instanceof Error)) return false;
+>       current = current.cause;
+>     }
+>     return false;
+>   }
+>
+>   async function listTools() {
+>     // Reuse the pending login instead of starting another redirect.
+>     if (authorizationUrl) return { authorizationUrl };
+>     try {
+>       return { tools: await adapter.listTools() };
+>     } catch (error) {
+>       if (
+>         MCPClientError.isInstance(error) &&
+>         causedByUnauthorized(error) &&
+>         authorizationUrl
+>       ) {
+>         return { authorizationUrl };
+>       }
+>       throw error;
+>     }
+>   }
+>
+>   async function completeLogin(
+>     callbackUrl: URL,
+>     callbackUserId: string,
+>     callbackSessionId: string,
+>   ) {
+>     const params = callbackUrl.searchParams;
+>     if (
+>       callbackUserId !== userId ||
+>       callbackSessionId !== sessionId ||
+>       !pendingState ||
+>       params.get("state") !== pendingState
+>     ) {
+>       throw new Error("Invalid OAuth callback");
+>     }
+>     // No await between checking and consuming state: only one callback wins.
+>     pendingState = undefined;
+>
+>     const transport = new StreamableHTTPClientTransport(new URL(serverUrl), {
+>       authProvider,
+>     });
+>     try {
+>       await transport.finishAuth(params);
+>     } catch {
+>       // SDK errors can contain text supplied by the authorization server.
+>       throw new Error("OAuth login failed");
+>     } finally {
+>       authorizationUrl = undefined;
+>       await transport.close();
+>     }
+>     return listTools();
+>   }
+>
+>   return { listTools, completeLogin, close: () => adapter.close() };
+> }
+> ```
 
 To start discovery, pass your provider and the authenticated caller's identity:
 
@@ -283,12 +283,6 @@ Resolve the user from the incoming request, for example with a [custom auth hand
 
 ***
 
-<div>
-  <Callout icon="terminal-2">
-    [Connect these docs](/use-these-docs) to your agent of choice via MCP for real-time answers.
-  </Callout>
+[Connect these docs](/use-these-docs) to your agent of choice via MCP for real-time answers.
 
-  <Callout icon="edit">
-    [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/oss/langchain/mcp/auth.mdx) or [file an issue](https://github.com/langchain-ai/docs/issues/new/choose).
-  </Callout>
-</div>
+[Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/oss/langchain/mcp/auth.mdx) or [file an issue](https://github.com/langchain-ai/docs/issues/new/choose).
