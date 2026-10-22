@@ -111,9 +111,9 @@ ls_client.create_feedback(
 
 第一个将获取所有具有积极反馈的运行，并将它们自动添加到数据集中。这背后的逻辑是，任何具有积极反馈的运行都可以作为未来迭代的好例子。让我们创建一个名为 `classifier-github-issues` 的数据集来添加此数据。
 
-<img alt="Optimization Negative" />第二个将对所有运行进行更正，并使用 Webhook 将它们添加到数据集。创建此 webhook 时，我们将选择“使用更正”选项。此选项将使得当从运行创建数据集时，它将使用校正，而不是使用运行的输出作为数据点的真实输出。
+![Optimization Negative](https://mintcdn.com/langchain-5e9cc07a/E8FdemkcQxROovD9/langsmith/images/class-optimization-neg.png?fit=max\&auto=format\&n=E8FdemkcQxROovD9\&q=85\&s=e36c57f7e0e224ff1ea29bcfbe9891fc)第二个将对所有运行进行更正，并使用 Webhook 将它们添加到数据集。创建此 webhook 时，我们将选择“使用更正”选项。此选项将使得当从运行创建数据集时，它将使用校正，而不是使用运行的输出作为数据点的真实输出。
 
-<img alt="Optimization Positive" />
+![Optimization Positive](https://mintcdn.com/langchain-5e9cc07a/E8FdemkcQxROovD9/langsmith/images/class-optimization-pos.png?fit=max\&auto=format\&n=E8FdemkcQxROovD9\&q=85\&s=6485ca961ed1c29d33f25f75f90ba939)
 
 ## 更新应用程序
 
@@ -264,10 +264,6 @@ def topic_classifier(
 
 ***
 
-<div>
-  <Callout icon="terminal-2">
-    [Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
-  </Callout><Callout icon="edit">
-    [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/optimize-classifier.mdx) 或 [file an issue](https://github.com/langchain-ai/docs/issues/new/choose)。
-  </Callout>
-</div>
+[Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
+
+[Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/optimize-classifier.mdx) 或 [file an issue](https://github.com/langchain-ai/docs/issues/new/choose)。

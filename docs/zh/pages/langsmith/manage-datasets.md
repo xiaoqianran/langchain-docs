@@ -13,9 +13,9 @@ LangSmith 提供用于管理和使用 [*datasets*](/langsmith/evaluation-concept
 
 您还将学习如何从 [experiments](/langsmith/evaluation-concepts#experiment) [export filtered traces](#export-filtered-traces-from-experiment-to-dataset) 返回数据集以进行进一步分析和迭代。
 
-<Tip>
-  [LangSmith Engine](/langsmith/engine-issues#add-offline-examples) 可以根据您的生产轨迹自动生成真实数据集示例。
-</Tip>
+> [!提示]
+>
+> [LangSmith Engine](/langsmith/engine-issues#add-offline-examples) 可以根据您的生产轨迹自动生成真实数据集示例。
 
 ## 数据集版本
 
@@ -23,19 +23,19 @@ LangSmith 提供用于管理和使用 [*datasets*](/langsmith/evaluation-concept
 
 ### 创建数据集的新版本
 
-每当您在数据集中添加、更新或删除示例时，都会创建数据集的新 [version](/langsmith/evaluation-concepts#dataset-organization)。这使您可以跟踪数据集随时间的变化并了解数据集的演变情况。
+每当您在数据集中添加、更新或删除示例时，都会创建数据集的新[version](/langsmith/evaluation-concepts#dataset-organization)。这使您可以跟踪数据集随时间的变化并了解数据集的演变情况。
 
 默认情况下，版本由更改的时间戳定义。当您在 **示例** 选项卡中单击数据集的特定版本（按时间戳）时，您将找到数据集在该时间点的状态。
 
-<img alt="Version Datasets" />请注意，在查看数据集的过去版本时，示例是只读的。您还将看到此版本的数据集和最新版本的数据集之间的操作。
+![Version Datasets](https://mintcdn.com/langchain-5e9cc07a/1RIJxfRpkszanJLL/langsmith/images/version-dataset.png?fit=max\&auto=format\&n=1RIJxfRpkszanJLL\&q=85\&s=da312a60576f449797be71e24229ea31)请注意，在查看数据集的过去版本时，示例是只读的。您还将看到此版本的数据集和最新版本的数据集之间的操作。
 
-<Note>
-  默认情况下，数据集的最新版本显示在 **示例** 选项卡中，所有版本的实验都显示在 **测试** 选项卡中。
-</Note>
+> [!注意]
+>
+> 默认情况下，数据集的最新版本显示在 **Examples** 选项卡中，所有版本的实验都显示在 **Tests** 选项卡中。
 
 在**测试**选项卡中，您将找到在不同版本的数据集上运行的测试结果。
 
-<img alt="Version Datasets" />
+![Version Datasets](https://mintcdn.com/langchain-5e9cc07a/1RIJxfRpkszanJLL/langsmith/images/version-dataset-tests.png?fit=max\&auto=format\&n=1RIJxfRpkszanJLL\&q=85\&s=42c5ac800ef7282fa65013f6de02e45a)
 
 ### 标记版本
 
@@ -45,7 +45,7 @@ LangSmith 提供用于管理和使用 [*datasets*](/langsmith/evaluation-concept
 
 您可以通过单击 **示例** 选项卡中的 **+ 标记此版本**，在 UI 中标记数据集的版本。
 
-<img alt="Tagging Datasets" />
+![Tagging Datasets](https://mintcdn.com/langchain-5e9cc07a/ImHGLQW1HnQYwnJV/langsmith/images/tag-this-version.png?fit=max\&auto=format\&n=ImHGLQW1HnQYwnJV\&q=85\&s=c3f7a97c92eb645f7b0888f4e35ffd48)
 
 您还可以使用 SDK 标记数据集的版本。以下是如何使用 [Python SDK](https://docs.smith.langchain.com/reference/python/reference) 标记数据集版本的示例：
 
@@ -64,71 +64,69 @@ client.update_dataset_tag(
 
 要对数据集的特定标记版本运行评估，请参阅[Evaluate on a specific dataset version section](#evaluate-on-a-specific-dataset-version)。
 
-## 对特定数据集版本进行评估<Check>
-  在阅读本节之前，您可能会发现参考以下内容会有所帮助：
-
-  * [Version a dataset](#version-a-dataset)。
-  * [Fetching examples](/langsmith/manage-datasets-programmatically#fetch-examples)。
-</Check>
+## 对特定数据集版本进行评估> [!提示]
+>
+> 在阅读本节之前，您可能会发现参考以下内容会有所帮助：
+>
+> * [Version a dataset](#version-a-dataset)。
+> * [Fetching examples](/langsmith/manage-datasets-programmatically#fetch-examples)。
 
 ### 使用`list_examples`
 
 您可以使用 `evaluate` / `aevaluate` 传递可迭代的示例来对数据集的特定版本进行评估。使用 `list_examples` / `listExamples` 使用 `as_of` / `asOf` 从特定版本标记中获取示例，并将其传递到 `data` 参数中。
 
-<CodeGroup>
-  ```python Python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  from langsmith import Client
+```python Python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+from langsmith import Client
 
-  ls_client = Client()
+ls_client = Client()
 
-  # Assumes actual outputs have a 'class' key.
-  # Assumes example outputs have a 'label' key.
-  def correct(outputs: dict, reference_outputs: dict) -> bool:
-    return outputs["class"] == reference_outputs["label"]
+# Assumes actual outputs have a 'class' key.
+# Assumes example outputs have a 'label' key.
+def correct(outputs: dict, reference_outputs: dict) -> bool:
+  return outputs["class"] == reference_outputs["label"]
 
-  results = ls_client.evaluate(
-      lambda inputs: {"class": "Not toxic"},
-      # Pass in filtered data here:
-      data=ls_client.list_examples(
-        dataset_name="Toxic Queries",
-        as_of="latest",  # specify version here
-      ),
-      evaluators=[correct],
-  )
-  ```
+results = ls_client.evaluate(
+    lambda inputs: {"class": "Not toxic"},
+    # Pass in filtered data here:
+    data=ls_client.list_examples(
+      dataset_name="Toxic Queries",
+      as_of="latest",  # specify version here
+    ),
+    evaluators=[correct],
+)
+```
 
-  ```typescript TypeScript theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  import { evaluate } from "langsmith/evaluation";
+```typescript TypeScript theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+import { evaluate } from "langsmith/evaluation";
 
-  await evaluate((inputs) => labelText(inputs["input"]), {
-    data: langsmith.listExamples({
-      datasetName: datasetName,
-      asOf: "latest",
-    }),
-    evaluators: [correctLabel],
-  });
-  ```
+await evaluate((inputs) => labelText(inputs["input"]), {
+  data: langsmith.listExamples({
+    datasetName: datasetName,
+    asOf: "latest",
+  }),
+  evaluators: [correctLabel],
+});
+```
 
-  ```java Java theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  import com.langchain.smith.models.examples.ExampleListParams;
+```java Java theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+import com.langchain.smith.models.examples.ExampleListParams;
 
-  ExampleListParams listParams = ExampleListParams.builder()
-      .datasetId(datasetId)
-      .asOf("latest")
-  var examples = client.examples().list(listParams);
-  ```
-</CodeGroup>
+ExampleListParams listParams = ExampleListParams.builder()
+    .datasetId(datasetId)
+    .asOf("latest")
+var examples = client.examples().list(listParams);
+```
 
 在 [Create and manage datasets programmatically](/langsmith/manage-datasets-programmatically#fetch-datasets) 页面上了解有关如何获取数据集视图的更多信息。
 
 ## 对数据集的分割/过滤视图进行评估
 
-<Check>
-  在阅读本节之前，您可能会发现参考以下内容会有所帮助：
-
-  * [Fetching examples](/langsmith/manage-datasets-programmatically#fetch-examples)。
-  * [Creating and managing dataset splits](/langsmith/manage-datasets-in-application#create-and-manage-dataset-splits)。
-</Check>
+> [!提示]
+>
+> 在阅读本节之前，您可能会发现参考以下内容会有所帮助：
+>
+> * [Fetching examples](/langsmith/manage-datasets-programmatically#fetch-examples)。
+> * [Creating and managing dataset splits](/langsmith/manage-datasets-in-application#create-and-manage-dataset-splits)。
 
 ### 评估数据集的过滤视图
 
@@ -136,115 +134,111 @@ client.update_dataset_tag(
 
 一种常见的工作流程是获取具有特定元数据键值对的示例。
 
-<CodeGroup>
-  ```python Python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  from langsmith import evaluate
+```python Python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+from langsmith import evaluate
 
-  results = evaluate(
-      lambda inputs: label_text(inputs["text"]),
-      data=client.list_examples(dataset_name=dataset_name, metadata={"desired_key": "desired_value"}),
-      evaluators=[correct_label],
-      experiment_prefix="Toxic Queries",
-  )
-  ```
+results = evaluate(
+    lambda inputs: label_text(inputs["text"]),
+    data=client.list_examples(dataset_name=dataset_name, metadata={"desired_key": "desired_value"}),
+    evaluators=[correct_label],
+    experiment_prefix="Toxic Queries",
+)
+```
 
-  ```typescript TypeScript theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  import { evaluate } from "langsmith/evaluation";
+```typescript TypeScript theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+import { evaluate } from "langsmith/evaluation";
 
-  await evaluate((inputs) => labelText(inputs["input"]), {
-    data: langsmith.listExamples({
-      datasetName: datasetName,
-      metadata: {"desired_key": "desired_value"},
-    }),
-    evaluators: [correctLabel],
-    experimentPrefix: "Toxic Queries",
-  });
-  ```
+await evaluate((inputs) => labelText(inputs["input"]), {
+  data: langsmith.listExamples({
+    datasetName: datasetName,
+    metadata: {"desired_key": "desired_value"},
+  }),
+  evaluators: [correctLabel],
+  experimentPrefix: "Toxic Queries",
+});
+```
 
-  ```java Java theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  import com.langchain.smith.models.examples.ExampleListParams;
+```java Java theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+import com.langchain.smith.models.examples.ExampleListParams;
 
-  ExampleListParams listParams = ExampleListParams.builder()
-      .datasetId(datasetId)
-      .metadata("{\"desired_key\":\"desired_value\"}")
-      .build();
-  var examples = client.examples().list(listParams);
-  ```
-</CodeGroup>
+ExampleListParams listParams = ExampleListParams.builder()
+    .datasetId(datasetId)
+    .metadata("{\"desired_key\":\"desired_value\"}")
+    .build();
+var examples = client.examples().list(listParams);
+```
 
-更多过滤功能请参考这篇[how-to guide](/langsmith/manage-datasets-programmatically#list-examples-by-structured-filter)。
+更多过滤功能可以参考这个[how-to guide](/langsmith/manage-datasets-programmatically#list-examples-by-structured-filter)。
 
 ### 评估数据集分割
 
 您可以使用 `list_examples` / `listExamples` 方法对数据集的一个或多个 [splits](/langsmith/evaluation-concepts#dataset-organization) 进行评估。 `splits` 参数获取您想要评估的分割列表。
 
-<CodeGroup>
-  ```python Python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  from langsmith import evaluate
+```python Python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+from langsmith import evaluate
 
-  results = evaluate(
-      lambda inputs: label_text(inputs["text"]),
-      data=client.list_examples(dataset_name=dataset_name, splits=["test", "training"]),
-      evaluators=[correct_label],
-      experiment_prefix="Toxic Queries",
-  )
-  ``````typescript TypeScript theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  import { evaluate } from "langsmith/evaluation";
+results = evaluate(
+    lambda inputs: label_text(inputs["text"]),
+    data=client.list_examples(dataset_name=dataset_name, splits=["test", "training"]),
+    evaluators=[correct_label],
+    experiment_prefix="Toxic Queries",
+)
+```
 
-  await evaluate((inputs) => labelText(inputs["input"]), {
-    data: langsmith.listExamples({
-      datasetName: datasetName,
-      splits: ["test", "training"],
-    }),
-    evaluators: [correctLabel],
-    experimentPrefix: "Toxic Queries",
-  });
-  ```
+```typescript TypeScript theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+import { evaluate } from "langsmith/evaluation";
 
-  ```java Java theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  import com.langchain.smith.models.examples.ExampleListParams;
-  import java.util.Arrays;
-  import java.util.List;
+await evaluate((inputs) => labelText(inputs["input"]), {
+  data: langsmith.listExamples({
+    datasetName: datasetName,
+    splits: ["test", "training"],
+  }),
+  evaluators: [correctLabel],
+  experimentPrefix: "Toxic Queries",
+});
+```
 
-  List<String> splits = Arrays.asList("test", "training");
+```java Java theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+import com.langchain.smith.models.examples.ExampleListParams;
+import java.util.Arrays;
+import java.util.List;
 
-  ExampleListParams listParams = ExampleListParams.builder()
-      .datasetId(datasetId)
-      .splits(splits)
-      .build();
-  var examples = client.examples().list(listParams);
-  ```
-</CodeGroup>
+List<String> splits = Arrays.asList("test", "training");
 
-有关获取数据集视图的更多详细信息，请参阅[fetching datasets](/langsmith/manage-datasets-programmatically#fetch-datasets)上的指南。
+ExampleListParams listParams = ExampleListParams.builder()
+    .datasetId(datasetId)
+    .splits(splits)
+    .build();
+var examples = client.examples().list(listParams);
+```有关获取数据集视图的更多详细信息，请参阅[fetching datasets](/langsmith/manage-datasets-programmatically#fetch-datasets)上的指南。
 
-## 共享数据集
+## Share a dataset
 
 ### 公开分享数据集
 
-<Warning>
-  公开共享数据集将使任何有链接的人都可以访问**数据集示例、实验和相关运行以及对此数据集的反馈**，即使他们没有 LangSmith 帐户。确保您没有共享敏感信息。
-
-  此功能仅在LangSmith云托管版本中可用。
-</Warning>
+> [!警告]
+>
+> 公开共享数据集将使任何有链接的人都可以访问**数据集示例、实验和相关运行以及对此数据集的反馈**，即使他们没有 LangSmith 帐户。确保您没有共享敏感信息。
+>
+> 此功能仅在LangSmith云托管版本中可用。
 
 从 **数据集和实验** 选项卡中，选择一个数据集，单击 **⋮**（页面右上角），然后单击 **共享数据集**。这将打开一个对话框，您可以在其中复制数据集的链接。
 
-<img alt="Share Dataset" />
+![Share Dataset](https://mintcdn.com/langchain-5e9cc07a/ImHGLQW1HnQYwnJV/langsmith/images/share-dataset.gif?s=3788767dadf1c265968fe61d96bacc2d)
 
-### 取消共享数据集
+### Unshare a dataset
 
-1. 单击任何公开共享数据集右上角的“**公共**”，然后单击对话框中的“**取消共享**”，以单击“**取消共享**”。 <img alt="Unshare Dataset" />
+1. 单击任何公开共享数据集右上角的“**公共**”，然后单击对话框中的“**取消共享**”，以单击“**取消共享**”。 ![Unshare Dataset](https://mintcdn.com/langchain-5e9cc07a/1RIJxfRpkszanJLL/langsmith/images/unshare-dataset.png?fit=max\&auto=format\&n=1RIJxfRpkszanJLL\&q=85\&s=98e1807ba9f9a510f56a435b7f81287c)
 
 2. 通过单击 **设置** -> **共享 URL** 或 [this link](https://smith.langchain.com/settings/shared)，导航到组织的公开共享数据集列表，然后单击要取消共享的数据集旁边的 **取消共享**。
 
-<img alt="Unshare Trace List" />
+![Unshare Trace List](https://mintcdn.com/langchain-5e9cc07a/1RIJxfRpkszanJLL/langsmith/images/unshare-trace-list.png?fit=max\&auto=format\&n=1RIJxfRpkszanJLL\&q=85\&s=8a7762947b85af17b36f2c71857badf7)
 
-## 导出数据集您可以从 LangSmith UI 将 LangSmith 数据集导出为 CSV、JSONL 或 [OpenAI's fine tuning format](https://platform.openai.com/docs/guides/fine-tuning#example-format)。要在轨迹数据集上微调模型而不导出它，请使用 [Smithtune](/langsmith/smithtune)。
+## Export a dataset您可以从 LangSmith UI 将 LangSmith 数据集导出为 CSV、JSONL 或 [OpenAI's fine tuning format](https://platform.openai.com/docs/guides/fine-tuning#example-format)。要在轨迹数据集上微调模型而不导出它，请使用 [Smithtune](/langsmith/smithtune)。
 
 从 **数据集和实验** 选项卡中，选择一个数据集，单击 **⋮**（页面右上角），然后单击 **下载数据集**。
 
-<img alt="Export Dataset Button" />
+![Export Dataset Button](https://mintcdn.com/langchain-5e9cc07a/0B2PFrFBMRWNccee/langsmith/images/export-dataset-button.gif?s=e71b7c55d70528df0a8985b8884f7597)
 
 ## 将过滤后的痕迹从实验导出到数据集
 
@@ -252,28 +246,22 @@ client.update_dataset_tag(
 
 ### 查看实验痕迹
 
-<img alt="Export filtered traces" />
+![Export filtered traces](https://mintcdn.com/langchain-5e9cc07a/0B2PFrFBMRWNccee/langsmith/images/export-filtered-trace-to-dataset.png?fit=max\&auto=format\&n=0B2PFrFBMRWNccee\&q=85\&s=d05263ae403f7f04e8a00ab956313c01)
 
 为此，首先单击实验名称旁边的箭头。这将引导您进入包含实验生成的痕迹的项目。
 
-<img alt="Export filtered traces" />
+![Export filtered traces](https://mintcdn.com/langchain-5e9cc07a/0B2PFrFBMRWNccee/langsmith/images/experiment-tracing-project.png?fit=max\&auto=format\&n=0B2PFrFBMRWNccee\&q=85\&s=6ef0c958b5af1f2fe113b8717e698584)
 
 从那里，您可以根据您的评估标准过滤痕迹。在此示例中，我们将过滤准确度得分大于 0.5 的所有跟踪。
 
-<img alt="Export filtered traces" />
+![Export filtered traces](https://mintcdn.com/langchain-5e9cc07a/0B2PFrFBMRWNccee/langsmith/images/filtered-traces-from-experiment.png?fit=max\&auto=format\&n=0B2PFrFBMRWNccee\&q=85\&s=0a0edc120c230511d10285f80248dab0)
 
 在项目上应用过滤器后，我们可以多选运行以添加到数据集，然后单击“**添加到数据集**”。
 
-<img alt="Export filtered traces" />
+![Export filtered traces](https://mintcdn.com/langchain-5e9cc07a/Xbr8HuVd9jPi6qTU/langsmith/images/add-filtered-traces-to-dataset.png?fit=max\&auto=format\&n=Xbr8HuVd9jPi6qTU\&q=85\&s=d2488fe04acef624c3528ad01c5bedaa)
 
 ***
 
-<div>
-  <Callout icon="terminal-2">
-    [Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
-  </Callout>
+[Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
 
-  <Callout icon="edit">
-    [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/manage-datasets.mdx) 或 [file an issue](https://github.com/langchain-ai/docs/issues/new/choose)。
-  </Callout>
-</div>
+[Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/manage-datasets.mdx) 或 [file an issue](https://github.com/langchain-ai/docs/issues/new/choose)。

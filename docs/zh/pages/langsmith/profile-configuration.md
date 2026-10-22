@@ -10,9 +10,9 @@ LangSmith SDK 配置文件允许您将 [API keys](/langsmith/create-account-api-
 
 当您经常在 [LangSmith Cloud regions](/langsmith/cloud#regional-storage)、自托管实例或 [workspaces](/langsmith/administration-overview#workspaces) 之间切换时，或者当您希望远程运行时从已安装的文件加载相同的 SDK 配置时，请使用配置文件。
 
-<Warning>
-  配置文件可以包含 API 密钥和 OAuth 刷新令牌。不要将它们提交到源代码管理、将它们烘焙到容器映像中或在日志中打印它们。像其他凭证一样小心地存储和安装它们。
-</Warning>
+> [!警告]
+>
+> 配置文件可以包含 API 密钥和 OAuth 刷新令牌。不要将它们提交到源代码控制、将它们烘焙到容器映像中或在日志中打印它们。像其他凭证一样小心地存储和安装它们。
 
 ## 最低版本
 
@@ -45,7 +45,7 @@ export LANGSMITH_CONFIG_FILE=/path/to/langsmith-config.json
 
 使用 `profiles` 对象创建 `~/.langsmith/config.json`。每个配置文件可以定义：
 
-|领域 |描述 |
+|领域|描述 |
 | - | - |
 | `api_url` | LangSmith API 端点。使用与 `LANGSMITH_ENDPOINT` 相同的值。 |
 | `api_key` | LangSmith API 密钥。参见[Create an account and API key](/langsmith/create-account-api-key)。 |
@@ -123,7 +123,7 @@ langsmith profile create eu \
 
 常用配置文件命令：
 
-|命令 |描述 |
+|命令|描述 |
 | - | - |
 | `langsmith profile list` |列出已保存的配置文件。别名：`langsmith profile ls`。 |
 | `langsmith profile show <name>` |显示已保存的配置文件。秘密值在输出中被编辑。 |
@@ -139,9 +139,9 @@ langsmith --format json profile list
 
 ## 使用`langsmith auth login`进行身份验证
 
-运行 `langsmith auth login` 使用 OAuth 进行身份验证，而不是手动创建 API 密钥配置文件。该命令启动基于浏览器的设备授权流程，将 OAuth 令牌存储在所选配置文件中，并将该配置文件设置为当前配置文件。<Note>
-  `langsmith auth login` 还适用于来自 LangSmith CLI `v0.2.46` 及更高版本的自托管实例，前提是部署位于 LangSmith `0.16` 或更高版本并启用了 OAuth 授权服务器。当在 Helm 图表中设置 `config.hostname` 并配置签名 JWKS（`config.signingJwks` 或`config.existingSecretName` 中的密钥 `langsmith_signing_jwks`）时，OAuth 授权服务器会自动启用。在早期部署中，或者如果未配置签名 JWKS，请改为创建 API 密钥配置文件。
-</Note>
+运行 `langsmith auth login` 使用 OAuth 进行身份验证，而不是手动创建 API 密钥配置文件。该命令启动基于浏览器的设备授权流程，将 OAuth 令牌存储在所选配置文件中，并将该配置文件设置为当前配置文件。> [!注意]
+>
+> `langsmith auth login` 也适用于来自 LangSmith CLI `v0.2.46` 及更高版本的自托管实例，前提是部署位于 LangSmith `0.16` 或更高版本并启用了 OAuth 授权服务器。当在 Helm 图表中设置 `config.hostname` 并配置签名 JWKS（`config.signingJwks` 或`config.existingSecretName` 中的密钥 `langsmith_signing_jwks`）时，OAuth 授权服务器会自动启用。在早期部署中，或者如果未配置签名 JWKS，请改为创建 API 密钥配置文件。
 
 ```shell theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 langsmith auth login
@@ -188,7 +188,7 @@ langsmith auth login \
 
 显式客户端构造函数参数和环境变量优先于配置文件值。
 
-|设置 |优先级 |
+|设置|优先级|
 | - | - |
 |端点 |构造函数 `api_url` 或 `apiUrl`，然后是 `LANGSMITH_ENDPOINT`，然后是配置文件 `api_url`，然后是默认的 LangSmith 云端点。 |
 |认证|构造函数 API 密钥，然后是 `LANGSMITH_API_KEY`，然后是配置文件 OAuth 访问令牌，然后是配置文件 `api_key`。 |
@@ -196,43 +196,39 @@ langsmith auth login \
 
 旧的 `LANGCHAIN_API_KEY`、`LANGCHAIN_ENDPOINT` 和 `LANGCHAIN_WORKSPACE_ID` 别名仍然有效，但更喜欢新配置的 `LANGSMITH_*` 名称。
 
-如果配置文件同时包含 `oauth.access_token` 和 `api_key`，则 SDK 首先使用 OAuth 访问令牌。如果存在 OAuth 刷新令牌并且访问令牌已过期或接近过期，SDK 可以刷新令牌并将更新的令牌字段写回配置文件。<Note>
-  如果将配置文件安装为只读，OAuth 令牌刷新无法保留更新的令牌。只读安装适用于 API 密钥配置文件。仅当您有意依赖 OAuth 令牌刷新时才使用可写挂载。
-</Note>
+如果配置文件同时包含 `oauth.access_token` 和 `api_key`，则 SDK 首先使用 OAuth 访问令牌。如果存在 OAuth 刷新令牌并且访问令牌已过期或接近过期，SDK 可以刷新令牌并将更新的令牌字段写回配置文件。> [!注意]
+>
+> 如果将配置文件安装为只读，OAuth 令牌刷新无法保留更新的令牌。只读安装适用于 API 密钥配置文件。仅当您有意依赖 OAuth 令牌刷新时才使用可写挂载。
 
 ## 在代码中使用配置文件
 
 当配置文件存在时，正常创建客户端：
 
-<CodeGroup>
-  ```python Python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  from langsmith import Client
+```python Python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+from langsmith import Client
 
-  client = Client()
-  ```
+client = Client()
+```
 
-  ```typescript TypeScript theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  import { Client } from "langsmith";
+```typescript TypeScript theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+import { Client } from "langsmith";
 
-  const client = new Client();
-  ```
-</CodeGroup>
+const client = new Client();
+```
 
 要覆盖代码中的配置文件，请显式传递值：
 
-<CodeGroup>
-  ```python Python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  from langsmith import Client
+```python Python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+from langsmith import Client
 
-  client = Client(api_key="<LANGSMITH_API_KEY>")
-  ```
+client = Client(api_key="<LANGSMITH_API_KEY>")
+```
 
-  ```typescript TypeScript theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  import { Client } from "langsmith";
+```typescript TypeScript theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+import { Client } from "langsmith";
 
-  const client = new Client({ apiKey: "<LANGSMITH_API_KEY>" });
-  ```
-</CodeGroup>
+const client = new Client({ apiKey: "<LANGSMITH_API_KEY>" });
+```
 
 ## 在远程运行时挂载配置文件
 
@@ -313,12 +309,6 @@ export LANGSMITH_PROFILE=prod
 
 ***
 
-<div>
-  <Callout icon="terminal-2">
-    [Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
-  </Callout>
+[Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
 
-  <Callout icon="edit">
-    [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/profile-configuration.mdx) 或 [file an issue](https://github.com/langchain-ai/docs/issues/new/choose)。
-  </Callout>
-</div>
+[Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/profile-configuration.mdx) 或 [file an issue](https://github.com/langchain-ai/docs/issues/new/choose)。

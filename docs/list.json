@@ -1,12 +1,12 @@
 {
-  "fetchedAt": "2026-10-21T14:12:48.018Z",
+  "fetchedAt": "2026-10-22T14:11:58.418Z",
   "method": "llms-full-split",
   "sources": {
     "llmsTxt": "https://docs.langchain.com/llms.txt",
     "llmsFull": "https://docs.langchain.com/llms-full.txt"
   },
   "tocLinks": 14,
-  "ok": 1670,
+  "ok": 1671,
   "failed": 0,
   "tracks": {
     "api-reference": {
@@ -19,7 +19,7 @@
     },
     "langsmith": {
       "name": "LangSmith",
-      "count": 483
+      "count": 484
     },
     "agent-server-api": {
       "name": "Agent Server API",
@@ -1204,7 +1204,7 @@
       "track": "agent-server-api",
       "trackName": "Agent Server API",
       "group": "threads",
-      "bytes": 125
+      "bytes": 199
     },
     {
       "rel": "langsmith/agent-server-api/threads/get-thread-history-post.md",
@@ -1213,7 +1213,7 @@
       "track": "agent-server-api",
       "trackName": "Agent Server API",
       "group": "threads",
-      "bytes": 131
+      "bytes": 205
     },
     {
       "rel": "langsmith/agent-server-api/threads/get-thread-state.md",
@@ -1303,7 +1303,7 @@
       "track": "langsmith",
       "trackName": "LangSmith",
       "group": "agent-server-changelog",
-      "bytes": 148834
+      "bytes": 155764
     },
     {
       "rel": "langsmith/agent-server-distributed-tracing.md",
@@ -1537,7 +1537,7 @@
       "track": "langsmith",
       "trackName": "LangSmith",
       "group": "bind-evaluator-to-dataset",
-      "bytes": 5108
+      "bytes": 5019
     },
     {
       "rel": "langsmith/build-an-agent.md",
@@ -1555,7 +1555,7 @@
       "track": "langsmith",
       "trackName": "LangSmith",
       "group": "byoc",
-      "bytes": 5579
+      "bytes": 5709
     },
     {
       "rel": "langsmith/byoc-architecture.md",
@@ -1564,7 +1564,7 @@
       "track": "langsmith",
       "trackName": "LangSmith",
       "group": "byoc-architecture",
-      "bytes": 8457
+      "bytes": 8791
     },
     {
       "rel": "langsmith/byoc-billing.md",
@@ -1573,7 +1573,7 @@
       "track": "langsmith",
       "trackName": "LangSmith",
       "group": "byoc-billing",
-      "bytes": 5133
+      "bytes": 5313
     },
     {
       "rel": "langsmith/byoc-byoiam.md",
@@ -1582,7 +1582,7 @@
       "track": "langsmith",
       "trackName": "LangSmith",
       "group": "byoc-byoiam",
-      "bytes": 4775
+      "bytes": 8406
     },
     {
       "rel": "langsmith/byoc-byovpc.md",
@@ -1600,7 +1600,7 @@
       "track": "langsmith",
       "trackName": "LangSmith",
       "group": "byoc-data-plane-cost",
-      "bytes": 4448
+      "bytes": 4415
     },
     {
       "rel": "langsmith/byoc-faq.md",
@@ -1609,7 +1609,7 @@
       "track": "langsmith",
       "trackName": "LangSmith",
       "group": "byoc-faq",
-      "bytes": 17219
+      "bytes": 17321
     },
     {
       "rel": "langsmith/byoc-migration.md",
@@ -1636,7 +1636,7 @@
       "track": "langsmith",
       "trackName": "LangSmith",
       "group": "byoc-operations",
-      "bytes": 5091
+      "bytes": 5146
     },
     {
       "rel": "langsmith/byoc-shared-responsibility.md",
@@ -1772,6 +1772,15 @@
       "trackName": "LangSmith",
       "group": "compare-experiment-results",
       "bytes": 7044
+    },
+    {
+      "rel": "langsmith/compatible-decision-model-provider.md",
+      "title": "Connect to a compatible decision model provider",
+      "url": "https://docs.langchain.com/langsmith/compatible-decision-model-provider",
+      "track": "langsmith",
+      "trackName": "LangSmith",
+      "group": "compatible-decision-model-provider",
+      "bytes": 4585
     },
     {
       "rel": "langsmith/components.md",
@@ -2158,7 +2167,7 @@
       "track": "langsmith",
       "trackName": "LangSmith",
       "group": "decision-model-evaluator",
-      "bytes": 5676
+      "bytes": 7080
     },
     {
       "rel": "langsmith/define-target-function.md",
@@ -2248,7 +2257,7 @@
       "track": "langsmith",
       "trackName": "LangSmith",
       "group": "deploy-standalone-server",
-      "bytes": 13029
+      "bytes": 13224
     },
     {
       "rel": "langsmith/deploy-sveltekit.md",
@@ -2698,7 +2707,7 @@
       "track": "langsmith",
       "trackName": "LangSmith",
       "group": "evaluation-types",
-      "bytes": 10956
+      "bytes": 10942
     },
     {
       "rel": "langsmith/evaluator-spend.md",
@@ -2716,7 +2725,7 @@
       "track": "langsmith",
       "trackName": "LangSmith",
       "group": "evaluators",
-      "bytes": 16811
+      "bytes": 16723
     },
     {
       "rel": "langsmith/example-data-format.md",
@@ -3490,7 +3499,7 @@
       "track": "langsmith",
       "trackName": "LangSmith",
       "group": "llm-as-judge",
-      "bytes": 5445
+      "bytes": 5431
     },
     {
       "rel": "langsmith/llm-as-judge-sdk.md",
@@ -3742,7 +3751,7 @@
       "track": "langsmith",
       "trackName": "LangSmith",
       "group": "log-traces-to-agent",
-      "bytes": 12262
+      "bytes": 11876
     },
     {
       "rel": "langsmith/log-traces-to-project.md",
@@ -4057,7 +4066,7 @@
       "track": "langsmith",
       "trackName": "LangSmith",
       "group": "online-evaluations-decision-models",
-      "bytes": 6151
+      "bytes": 7286
     },
     {
       "rel": "langsmith/online-evaluations-llm-as-judge.md",
@@ -4066,7 +4075,7 @@
       "track": "langsmith",
       "trackName": "LangSmith",
       "group": "online-evaluations-llm-as-judge",
-      "bytes": 9066
+      "bytes": 9052
     },
     {
       "rel": "langsmith/online-evaluations-multi-turn.md",
@@ -4120,7 +4129,7 @@
       "track": "langsmith",
       "trackName": "LangSmith",
       "group": "otel-gateway-trace-redaction",
-      "bytes": 8079
+      "bytes": 8064
     },
     {
       "rel": "langsmith/platform-setup.md",
@@ -4579,7 +4588,7 @@
       "track": "langsmith",
       "trackName": "LangSmith",
       "group": "resolve-an-agent",
-      "bytes": 11831
+      "bytes": 11787
     },
     {
       "rel": "langsmith/resource-auth.md",
@@ -4966,7 +4975,7 @@
       "track": "langsmith",
       "trackName": "LangSmith",
       "group": "self-host-mirroring-images",
-      "bytes": 20319
+      "bytes": 22221
     },
     {
       "rel": "langsmith/self-host-observability-dashboards.md",
@@ -4994,6 +5003,15 @@
       "trackName": "LangSmith",
       "group": "self-host-playground-environment-settings",
       "bytes": 4656
+    },
+    {
+      "rel": "langsmith/self-host-restricted-network-build.md",
+      "title": "Set up a build machine on a restricted network",
+      "url": "https://docs.langchain.com/langsmith/self-host-restricted-network-build",
+      "track": "langsmith",
+      "trackName": "LangSmith",
+      "group": "self-host-restricted-network-build",
+      "bytes": 17805
     },
     {
       "rel": "langsmith/self-host-sandbox-architecture.md",
@@ -5290,7 +5308,7 @@
       "track": "langsmith",
       "trackName": "LangSmith",
       "group": "self-host-ttl",
-      "bytes": 7255
+      "bytes": 8578
     },
     {
       "rel": "langsmith/self-host-ui-customization.md",
@@ -11104,7 +11122,7 @@
       "track": "langsmith",
       "trackName": "LangSmith",
       "group": "trace-with-opentelemetry",
-      "bytes": 41650
+      "bytes": 41635
     },
     {
       "rel": "langsmith/trace-with-pi.md",
@@ -11249,15 +11267,6 @@
       "trackName": "LangSmith",
       "group": "tunnels",
       "bytes": 12091
-    },
-    {
-      "rel": "langsmith/typesafe-compatible-model.md",
-      "title": "Connect to a TypeSafe-compatible model provider",
-      "url": "https://docs.langchain.com/langsmith/typesafe-compatible-model",
-      "track": "langsmith",
-      "trackName": "LangSmith",
-      "group": "typesafe-compatible-model",
-      "bytes": 3508
     },
     {
       "rel": "langsmith/upload-existing-experiments.md",
@@ -13867,7 +13876,7 @@
       "track": "oss-python",
       "trackName": "OSS · Python",
       "group": "integrations",
-      "bytes": 25836
+      "bytes": 26046
     },
     {
       "rel": "oss/python/integrations/embeddings/index.md",
@@ -13903,7 +13912,7 @@
       "track": "oss-python",
       "trackName": "OSS · Python",
       "group": "integrations",
-      "bytes": 86295
+      "bytes": 86730
     },
     {
       "rel": "oss/python/integrations/providers/anthropic.md",
@@ -14047,7 +14056,7 @@
       "track": "oss-python",
       "trackName": "OSS · Python",
       "group": "integrations",
-      "bytes": 50407
+      "bytes": 50431
     },
     {
       "rel": "oss/python/langchain/agents.md",

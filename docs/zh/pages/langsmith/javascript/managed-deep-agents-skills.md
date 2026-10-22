@@ -8,9 +8,9 @@
 
 技能将特定于任务的过程和支持文件打包到可重用的目录中。 MDA 会自动发现它们。仅当任务与 frontmatter 中的描述匹配时，代理才会加载技能的完整内容。
 
-<Note>
-  托管 Deep Agents 于 [LangSmith Cloud](/langsmith/cloud) **公开 [beta](/langsmith/release-stages)**。
-</Note>
+> [!注意]
+>
+> 托管 Deep Agents 于 [LangSmith Cloud](/langsmith/cloud) **公开 [beta](/langsmith/release-stages)**。
 
 将每个技能放在项目根目录下的`skills/`下：
 
@@ -28,44 +28,42 @@ my-agent/
 
 仅当任务与 frontmatter 中的描述相匹配时，才应使用代理应遵循的程序技能：
 
-<Steps>
-  <Step title="Create a skill directory">
-    每个技能目录都需要一个 `SKILL.md` 文件，其中包含 `name` 和 `description` frontmatter：
+**1.创建技能目录**
 
-    ```markdown skills/research/SKILL.md theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-    ---
-    name: research
-    description: Gather and synthesize context before answering complex questions.
-    ---
+每个技能目录都需要一个 `SKILL.md` 文件，其中包含 `name` 和 `description` frontmatter：
 
-    # Research
+```markdown skills/research/SKILL.md theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+---
+name: research
+description: Gather and synthesize context before answering complex questions.
+---
 
-    Use this skill when a task needs more than a direct answer.
+# Research
 
-    1. Identify what information is missing.
-    2. Use `query_db` to look up relevant records.
-    3. Summarize findings before responding to the user.
-    ```
+Use this skill when a task needs more than a direct answer.
 
-    有关技能创作模式和完整格式，请参阅[Skills](/oss/javascript/deepagents/skills)。
+1. Identify what information is missing.
+2. Use `query_db` to look up relevant records.
+3. Summarize findings before responding to the user.
+```
 
-    要了解渐进式披露，请参阅[How the agent uses skills](#how-the-agent-uses-skills)。
-  </Step>
+有关技能创作模式和完整格式，请参阅[Skills](/oss/javascript/deepagents/skills)。
 
-  <Step title="Add supporting files (Optional)">
-    技能目录还可以包含支持脚本、参考文件和模板。从 `SKILL.md` 引用这些文件，以便代理知道何时使用它们：
+要了解渐进式披露，请参阅[How the agent uses skills](#how-the-agent-uses-skills)。
 
-    ```text theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-    skills/
-      research/
-        SKILL.md
-        templates/
-          report.md
-        scripts/
-          fetch_sources.ts
-    ```
-  </Step>
-</Steps>
+**2.添加支持文件（可选）**
+
+技能目录还可以包含支持脚本、参考文件和模板。从 `SKILL.md` 引用这些文件，以便代理知道何时使用它们：
+
+```text theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+skills/
+  research/
+    SKILL.md
+    templates/
+      report.md
+    scripts/
+      fetch_sources.ts
+```
 
 ## 代理如何使用技能启动时，代理会看到每个技能的 `name` 和 `description`。当任务与技能描述相匹配时，代理会读取完整的`SKILL.md`并遵循其说明。仅在需要时加载支持文件。
 
@@ -86,19 +84,13 @@ my-agent/
 |概念 |角色 |加载时间 |
 | - | - | - |
 | **[Instructions](/langsmith/javascript/managed-deep-agents-instructions)** |永远在线的系统提示 |每次跑步 |
-| **技能** |特定任务的程序 |当代理选择他们时 |
+| **技能** |特定任务的程序 |当代理选择他们时|
 | **[Memory](/langsmith/javascript/managed-deep-agents-memory)** |代理可以更新的知识 |当启用持久内存时 |
 
 有关更多信息，请参阅[Project structure](/langsmith/javascript/managed-deep-agents-project-structure)。
 
 ***
 
-<div>
-  <Callout icon="terminal-2">
-    [Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
-  </Callout>
+[Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
 
-  <Callout icon="edit">
-    [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/managed-deep-agents-skills.mdx) 或 [file an issue](https://github.com/langchain-ai/docs/issues/new/choose)。
-  </Callout>
-</div>
+[Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/managed-deep-agents-skills.mdx) 或 [file an issue](https://github.com/langchain-ai/docs/issues/new/choose)。

@@ -11,11 +11,11 @@
 使用技能可以帮助：
 
 * 通过仅提供与当前任务相关的上下文来节省令牌的使用。
-* 防止座席在系统提示中出现过多上下文，这可能会导致幻觉和错误响应。
+* 防止座席在系统提示中出现过多上下文，这可能导致出现幻觉和错误响应。
 
-<Info>
-  舰队技能建立在[Deep Agents](/oss/python/deepagents/skills)之上，并遵循[Agent Skills specification](https://agentskills.io/specification)。有关技能结构、`SKILL.md` 格式和创作最佳实践的详细信息，请参阅[Deep Agents skills documentation](/oss/python/deepagents/skills)。
-</Info>
+> [!注意]
+>
+> 舰队技能以[Deep Agents](/oss/python/deepagents/skills)为基础，并遵循[Agent Skills specification](https://agentskills.io/specification)。有关技能结构、`SKILL.md` 格式和创作最佳实践的详细信息，请参阅[Deep Agents skills documentation](/oss/python/deepagents/skills)。
 
 ## 私人技能与共享技能
 
@@ -39,39 +39,33 @@
 * **使用人工智能**：使用自然语言描述技能，代理将为您创建它。您还可以添加其他资源。任何其他文件都必须在 `SKILL.md` 中引用，以便代理了解它们。
 * **手动**：使用 `SKILL.md` 文件创建技能。
 
-<Note>
-  默认情况下，技能对其所属的代理来说是**私有的**，并存储在代理的长期记忆中。你可以[share a skill with the workspace](#share-a-skill)。
-</Note>
+> [!注意]
+>
+> 默认情况下，技能对其所属的代理来说是**私有的**，并存储在代理的长期记忆中。你可以[share a skill with the workspace](#share-a-skill)。
 
-<Tabs>
-  <Tab title="With AI">
-    在[Fleet](https://smith.langchain.com/agents?utm_source=docs\&utm_medium=cta\&utm_campaign=langsmith-signup\&utm_content=langsmith-fleet-skills)中，选择一个代理并提示其创建技能：
+**使用人工智能**
 
-    <Prompt description="Create a skill that helps the agent use the web to research a topic.">
-      创建一项技能来帮助代理使用网络来研究主题。当被要求研究主题、人物、公司、技术、事件或任何需要从网络收集和综合信息的问题时使用。涵盖新闻查找、竞争分析、背景研究和事实调查任务。对于大多数查询，首选 `tavily_web_search`。
-    </Prompt>
+在[Fleet](https://smith.langchain.com/agents?utm_source=docs\&utm_medium=cta\&utm_campaign=langsmith-signup\&utm_content=langsmith-fleet-skills)中，选择一个代理并提示其创建技能：
 
-    您还可以随时将之前的对话变成可重复使用的技能。完成任务后，要求代理捕获工作流程：
+创建一项技能来帮助代理使用网络来研究主题。当被要求研究主题、人物、公司、技术、事件或任何需要从网络收集和综合信息的问题时使用。涵盖新闻查找、竞争分析、背景研究和事实调查任务。对于大多数查询，首选 `tavily_web_search`。
 
-    <Prompt description="Turn this conversation into a reusable skill.">
-      将我们刚才所做的变成一项技能，以便您将来可以重复。
-    </Prompt>
-  </Tab><Tab title="From a template">
-    1. 导航至[**Fleet > Skills**](https://smith.langchain.com/agents/skills)。
-    2. 浏览可用模板并选择一个添加到您的代理中。
-  </Tab>
+您还可以随时将之前的对话变成可重复使用的技能。完成任务后，要求代理捕获工作流程：
 
-  <Tab title="Manually">
-    1. 在[Fleet](https://smith.langchain.com/agents?utm_source=docs\&utm_medium=cta\&utm_campaign=langsmith-signup\&utm_content=langsmith-fleet-skills)中选择代理。
-    2. 在侧边栏中，展开**知识**抽屉。
-    3. 在 **技能** 部分中，单击 **+ 添加技能**。
-    4. 输入技能名称、描述和说明。
-  </Tab>
-</Tabs>
+将我们刚才所做的变成一项技能，以便您将来可以重复。
 
-<Tip>
-  当您创建新代理时，如果代理可以从中受益，Fleet 会自动生成相关技能。这些技能默认是私有的。您可以从代理侧边栏[share them to your workspace](#share-a-skill)。
-</Tip>
+**来自模板**
+
+1. 导航至[**Fleet > Skills**](https://smith.langchain.com/agents/skills)。
+2. 浏览可用模板并选择一个添加到您的代理中。
+
+**手动**1. 在[Fleet](https://smith.langchain.com/agents?utm_source=docs\&utm_medium=cta\&utm_campaign=langsmith-signup\&utm_content=langsmith-fleet-skills)中选择代理。
+2. 在侧边栏中，展开**知识**抽屉。
+3. 在 **技能** 部分中，单击 **+ 添加技能**。
+4. 输入技能名称、描述和说明。
+
+> [!提示]
+>
+> 当您创建新特工时，如果特工可以从中受益，Fleet 会自动生成相关技能。这些技能默认是私有的。您可以从代理侧边栏[share them to your workspace](#share-a-skill)。
 
 ## 修复重复出现的错误
 
@@ -79,22 +73,20 @@
 
 当代理错误地处理任务时，纠正它，然后要求它捕获修复：
 
-<Prompt description="Capture this fix as a skill.">
-  将这种纠正变成一种技能，这样你就可以始终以这种方式处理它。
-</Prompt>
+将这种修正变成一种技能，这样你就总是能以这种方式处理它。
 
 代理创建一个`SKILL.md`编码正确的行为。在未来的会话中，它会在处理该任务之前读取技能，而不是从头开始推理。
 
-## 编辑私人技能1. 在[Fleet](https://smith.langchain.com/agents?utm_source=docs\&utm_medium=cta\&utm_campaign=langsmith-signup\&utm_content=langsmith-fleet-skills)中选择代理。
+## 编辑私人技能
+
+1. 在[Fleet](https://smith.langchain.com/agents?utm_source=docs\&utm_medium=cta\&utm_campaign=langsmith-signup\&utm_content=langsmith-fleet-skills)中选择代理。
 2. 在侧边栏中，展开**知识**抽屉。
 3. 在 **技能** 部分中，选择要编辑的技能。
-4. 更新技能名称、描述或说明。
+4. 更新技能名称、描述或说明。## 编辑共享技能
 
-## 编辑共享技能
-
-<Note>
-  只有创建共享技能的用户才能编辑它。
-</Note>
+> [!注意]
+>
+> 只有创建共享技能的用户才能编辑它。
 
 1. 导航至[**Fleet > Skills**](https://smith.langchain.com/agents/skills)。
 2. 选择要编辑的技能。
@@ -106,13 +98,13 @@
 1. 在[Fleet](https://smith.langchain.com/agents?utm_source=docs\&utm_medium=cta\&utm_campaign=langsmith-signup\&utm_content=langsmith-fleet-skills)中选择代理。
 2. 在侧边栏中，展开**知识**抽屉。
 3. 在 **技能** 部分中，选择要共享的技能。
-4. 点击<Icon icon="share" /> **分享**。
+4. 单击**共享**。
 
 分享后，该技能会出现在[**Skills**](https://smith.langchain.com/agents/skills)页面上。您可以从代理侧边栏向工作区中的任何代理添加共享技能，通用聊天会自动选择它们。
 
-<Note>
-  只有共享技能的创建者才能编辑或删除它。
-</Note>
+> [!注意]
+>
+> 只有共享技能的创建者才能编辑或删除它。
 
 ## 删除私有技能
 
@@ -120,17 +112,17 @@
 
 1. 在[Fleet](https://smith.langchain.com/agents?utm_source=docs\&utm_medium=cta\&utm_campaign=langsmith-signup\&utm_content=langsmith-fleet-skills)中选择代理。
 2. 在侧边栏中，展开**知识**抽屉。
-3. 在 **技能** 部分中，单击要删除的技能的 <Icon icon="trash" /> 图标。
+3. 在 **技能** 部分中，单击要删除的技能的图标。
 
-## 删除共享技能只有创建共享技能的用户才能删除它。
+## 删除共享技能
 
-<Warning>
-  删除技能会将其从工作区以及使用它的所有客服人员中删除。此操作无法撤消。
-</Warning>
+只有创建共享技能的用户才能删除它。
 
-1. 导航至[**Fleet > Skills**](https://smith.langchain.com/agents/skills)。
+> [!警告]
+>
+> 删除技能会将其从工作区以及使用它的所有客服人员中删除。此操作无法撤消。1. 导航至[**Fleet > Skills**](https://smith.langchain.com/agents/skills)。
 2. 选择要删除的技能。
-3. 点击<Icon icon="trash" /> **删除技能**图标。
+3. 单击**删除技能**图标。
 
 ## 在本地发展中使用舰队技能
 
@@ -164,12 +156,6 @@ web-research/
 
 ***
 
-<div>
-  <Callout icon="terminal-2">
-    [Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
-  </Callout>
+[Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
 
-  <Callout icon="edit">
-    [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/fleet/skills.mdx) 或 [file an issue](https://github.com/langchain-ai/docs/issues/new/choose)。
-  </Callout>
-</div>
+[Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/fleet/skills.mdx) 或 [file an issue](https://github.com/langchain-ai/docs/issues/new/choose)。

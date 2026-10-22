@@ -6,9 +6,9 @@
 
 限制用户、工作区或 API 密钥在滚动时间窗口内可以通过 LLM 网关发送的请求或令牌的数量。
 
-<Note>
-  LLM 网关位于[beta](/langsmith/release-stages)。
-</Note>
+> [!注意]
+>
+> LLM 网关位于[beta](/langsmith/release-stages)。
 
 速率限制策略限制主体在短滚动时间窗口内可以通过[LLM Gateway](/langsmith/llm-gateway)消耗多少**请求**或**令牌**。网关实时强制执行限制，并阻止任何将主题推过它的请求，返回带有 `Retry-After` 标头的 `429` 响应：
 
@@ -26,8 +26,8 @@ Retry-After: 42
 针对每个传入请求评估速率限制策略。您可以将策略设置为默认值（对所有用户应用一揽子速率限制、[workspaces](/langsmith/administration-overview#workspaces) 或 [API keys](/langsmith/create-account-api-key)）或将其设置为细粒度策略（单个限制或对一组主题的限制）。|主题 |它限制了什么 |示例|
 | - | - | - |
 | **用户** |来自单个用户或用户组的请求或令牌（从 API 密钥的身份解析）| “单个开发者每分钟发送的请求数不能超过 100 个”|
-| **工作区** |单个工作区或工作区组中的请求或令牌 | “研发工作空间每小时不能超过 1,000,000 个代币” |
-| **API 密钥** |来自单个 API 密钥或一组 API 密钥的请求或令牌 | “客户支持代理密钥每分钟共享 200 个请求的限制” |
+| **工作区** |单个工作区或工作区组内的请求或令牌 | “研发工作空间每小时不能超过 1,000,000 个代币”|
+| **API 密钥** |来自单个 API 密钥或一组 API 密钥的请求或令牌 | “客户支持代理密钥每分钟共享 200 个请求的限制”|
 
 ### 默认值与细化策略
 
@@ -38,13 +38,13 @@ Retry-After: 42
 
 ### 独立执行
 
-每个主题都单独跟踪和执行。一名用户达到其限制不会影响其他用户。
+每个主题都单独跟踪和执行。一名用户达到限制不会影响其他用户。
 
 ## 限制单个速率限制策略可以**同时实施多个限制**。例如，一项策略可以同时强制执行“每分钟 100 个请求”和“每小时 1,000,000 个令牌”。
 
 每个限制包含三个字段：
 
-|领域 |允许值 |
+|领域|允许值 |
 | - | - |
 | **公制** | `requests` 或 `tokens`（提供商报告的代币总数）|
 | **窗口** | `minute` 或 `hour` |
@@ -57,9 +57,9 @@ Retry-After: 42
 
 ## 创建速率限制策略
 
-<Warning>
-  创建和管理策略需要`organization:manage`权限。有关完整权限细分，请参阅[Traces, Engine, and access control](/langsmith/llm-gateway-access)。
-</Warning>
+> [!警告]
+>
+> 创建和管理策略需要 `organization:manage` 权限。有关完整权限细分，请参阅[Traces, Engine, and access control](/langsmith/llm-gateway-access)。
 
 1. 转至 **LLM 网关**。
 2. 单击**创建策略**。
@@ -78,12 +78,6 @@ Retry-After: 42
 
 ***
 
-<div>
-  <Callout icon="terminal-2">
-    [Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
-  </Callout>
+[Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
 
-  <Callout icon="edit">
-    [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/llm-gateway-rate-limit-policies.mdx) 或 [file an issue](https://github.com/langchain-ai/docs/issues/new/choose)。
-  </Callout>
-</div>
+[Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/llm-gateway-rate-limit-policies.mdx) 或 [file an issue](https://github.com/langchain-ai/docs/issues/new/choose)。

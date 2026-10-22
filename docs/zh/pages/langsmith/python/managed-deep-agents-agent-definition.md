@@ -8,9 +8,9 @@
 
 代理定义选择托管深度代理的模型和核心功能。
 
-<Note>
-  托管Deep Agents于[LangSmith Cloud](/langsmith/cloud)**公开[beta](/langsmith/release-stages)**。
-</Note>
+> [!注意]
+>
+> 托管 Deep Agents 于 [LangSmith Cloud](/langsmith/cloud) **公开 [beta](/langsmith/release-stages)**。
 
 代理条目位于项目根目录：
 
@@ -23,53 +23,51 @@ my-agent/
 
 要定义代理，请使用`define_deep_agent`：
 
-<CodeGroup>
-  ```python OpenAI theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  from managed_deepagents import define_deep_agent
+```python OpenAI theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+from managed_deepagents import define_deep_agent
 
-  agent = define_deep_agent(
-      name="research-assistant",
-      model="openai:gpt-5.5",
-  )
-  ```
+agent = define_deep_agent(
+    name="research-assistant",
+    model="openai:gpt-5.5",
+)
+```
 
-  ```python Anthropic theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  from managed_deepagents import define_deep_agent
+```python Anthropic theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+from managed_deepagents import define_deep_agent
 
-  agent = define_deep_agent(
-      name="research-assistant",
-      model="anthropic:claude-sonnet-4-6",
-  )
-  ```
+agent = define_deep_agent(
+    name="research-assistant",
+    model="anthropic:claude-sonnet-4-6",
+)
+```
 
-  ```python Google Gemini theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  from managed_deepagents import define_deep_agent
+```python Google Gemini theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+from managed_deepagents import define_deep_agent
 
-  agent = define_deep_agent(
-      name="research-assistant",
-      model="google_genai:gemini-3.6-flash",
-  )
-  ```
+agent = define_deep_agent(
+    name="research-assistant",
+    model="google_genai:gemini-3.6-flash",
+)
+```
 
-  ```python Microsoft Foundry theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  # Install the required dependency: uv add langchain-azure-ai
-  import os
+```python Microsoft Foundry theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+# Install the required dependency: uv add langchain-azure-ai
+import os
 
-  from langchain_azure_ai.chat_models import AzureAIOpenAIApiChatModel
-  from managed_deepagents import define_deep_agent
+from langchain_azure_ai.chat_models import AzureAIOpenAIApiChatModel
+from managed_deepagents import define_deep_agent
 
-  model = AzureAIOpenAIApiChatModel(
-      endpoint=os.environ["AZURE_AI_OPENAI_ENDPOINT"],
-      credential=os.environ["AZURE_OPENAI_API_KEY"],
-      model=os.environ["AZURE_OPENAI_DEPLOYMENT_NAME"],
-  )
+model = AzureAIOpenAIApiChatModel(
+    endpoint=os.environ["AZURE_AI_OPENAI_ENDPOINT"],
+    credential=os.environ["AZURE_OPENAI_API_KEY"],
+    model=os.environ["AZURE_OPENAI_DEPLOYMENT_NAME"],
+)
 
-  agent = define_deep_agent(
-      name="research-assistant",
-      model=model,
-  )
-  ```
-</CodeGroup>
+agent = define_deep_agent(
+    name="research-assistant",
+    model=model,
+)
+```
 
 通过项目文件而不是代理定义来配置系统提示、技能、内存、沙箱、身份、通道和计划。参见[Project structure](/langsmith/python/managed-deep-agents-project-structure)。要为每次运行选择系统提示符、技能、MCP 服务器或沙箱，请参阅[Select configuration per run](#select-configuration-per-run)。
 
@@ -77,15 +75,15 @@ my-agent/
 
 ＃＃ 参数|参数|它有什么作用 |
 | - | - |
-| `name=` |必需的。传递以字母开头且仅包含字母、数字、下划线或连字符的静态字符串，例如 `"research-assistant"`.<br /><br /> 托管 Deep Agents 使用该名称作为代理的图形 ID 和默认的 LangSmith 部署名称，客户端在调用时将其作为 `assistant_id` 传递调用部署。您可以使用 `mda deploy --name` 覆盖部署名称，而无需更改代理定义。 |
-| `model=` |设置代理使用的聊天模型。最简单的选项是 `provider:model` 字符串。将提供商的 API 密钥添加到 `.env`，以便模型在本地和部署中运行。<br /><br /> 当您需要在代码中配置模型参数时，请传递 LangChain 聊天模型实例。有关型号选项和支持的提供程序，请参阅[Models](/oss/python/deepagents/models)。<br /><br /> 要连接到 LLM Gateway，请参阅[Use LLM Gateway](#use-llm-gateway)。 |
-| `tools=` |添加代理可以调用​​的工具。传递`tools`列表中的工具，以便代理可以调用​​应用程序逻辑或外部服务。<br /><br />在本地模块中定义工具，将它们导入到代理条目中，并将它们添加到定义中。参见[Custom tools](/langsmith/python/managed-deep-agents-tools)。要从远程 MCP 服务器添加工具而不将其导入代理条目，请使用 [MCP connectors](/langsmith/python/managed-deep-agents-mcp-connectors)。 || `middleware=` |添加有关模型调用、工具调用和代理生命周期的行为。传递`middleware`列表中的中间件。中间件按列表顺序运行。参见[Custom middleware](/langsmith/python/managed-deep-agents-middleware)。 |
+| `name=` |必需的。传递以字母开头且仅包含字母、数字、下划线或连字符的静态字符串，例如 `"research-assistant"`。  托管 Deep Agents 使用该名称作为代理的图形 ID 和默认的 LangSmith 部署名称，客户端在调用部署时将其作为 `assistant_id` 传递。您可以使用 `mda deploy --name` 覆盖部署名称，而无需更改代理定义。 |
+| `model=` |设置代理使用的聊天模型。最简单的选项是 `provider:model` 字符串。将提供商的 API 密钥添加到 `.env`，以便模型在本地和部署中运行。  当您需要在代码中配置模型参数时，请传递LangChain聊天模型实例。有关型号选项和支持的提供程序，请参阅[Models](/oss/python/deepagents/models)。  要连接到 LLM Gateway，请参阅[Use LLM Gateway](#use-llm-gateway)。 |
+| `tools=` |添加代理可以调用​​的工具。传递`tools`列表中的工具，以便代理可以调用​​应用程序逻辑或外部服务。  在本地模块中定义工具，将它们导入到代理条目中，并将它们添加到定义中。参见[Custom tools](/langsmith/python/managed-deep-agents-tools)。要从远程 MCP 服务器添加工具而不将其导入代理条目，请使用 [MCP connectors](/langsmith/python/managed-deep-agents-mcp-connectors)。 || `middleware=` |添加有关模型调用、工具调用和代理生命周期的行为。传递`middleware`列表中的中间件。中间件按列表顺序运行。参见[Custom middleware](/langsmith/python/managed-deep-agents-middleware)。 |
 | `subagents=` |为委派的任务定义专门的代理。当代理应委派专门或上下文繁重的工作时，传递子代理定义。每个子代理可以有自己的提示、模型和工具。参见[Subagents](/oss/python/deepagents/subagents)。 |
 | `permissions=` |控制文件系统工具的路径级访问。传递文件系统权限规则来控制代理的内置文件系统工具可以读取或写入哪些路径。当项目声明[sandbox](/langsmith/python/managed-deep-agents-sandboxes)时清除，因为权限规则禁用了沙箱`execute`工具。参见[Permissions](/oss/python/deepagents/permissions)。 |
 | `interrupt_on=` |在选定的工具需要人工批准之前暂停。将 `interrupt_on` 设置为在选定工具调用之前暂停，以便人们可以在调用运行之前批准、编辑或拒绝调用。参见[Human-in-the-loop](/langsmith/python/managed-deep-agents-tools#human-in-the-loop)。 |
 | `response_format=` |设置代理必须返回与架构匹配的数据而不是不受约束的文本响应的时间。参见[Structured output](/oss/python/langchain/structured-output)。 |
 
-## 选择每次运行的配置要为每次运行选择代理的配置，请将函数导出为 `agent` 而不是定义。然后，一种部署可以适应不同的用户、任务或存储库。该函数是一个图工厂，与 LangGraph 用于 [rebuild a graph at runtime](/langsmith/graph-rebuild) 的模式相同：它接收运行时并返回定义。
+## 选择每次运行的配置要为每次运行选择代理的配置，请将函数导出为 `agent` 而不是定义。然后，一种部署可以适应不同的用户、任务或存储库。该函数是一个图形工厂，与 LangGraph 用于 [rebuild a graph at runtime](/langsmith/graph-rebuild) 的模式相同：它接收运行时并返回定义。
 
 此示例选择运行所处理的存储库的说明和技能。它假设该项目有`skills/python-service/`和`skills/typescript-web/`，每个都有一个[⟦T32⟧](/langsmith/python/managed-deep-agents-skills)。
 
@@ -133,7 +131,7 @@ await client.runs.create(
 
 ### 选择托管资源
 
-工厂还可以选择静态代理从项目文件中读取的资源。省略字段会保留项目的配置。提供一个值来替换该运行：|领域 |省略|已选择 |已清除 |
+工厂还可以选择静态代理从项目文件中读取的资源。省略字段会保留项目的配置。提供一个值来替换该运行：|领域|省略|已选择 |已清除 |
 | - | - | - | - |
 | `instructions` |使用`instructions.md`。 |使用提供的提示。 | `""` 删除编写的指令。 |
 | `skills` |展示所有项目技能。 |仅公开选定的技能。 | `[]`没有暴露任何技能。 |
@@ -176,7 +174,7 @@ def agent(runtime: ManagedServerRuntime[AppContext]):
 
 ### 保持工厂可重复
 
-托管 Deep Agents 在每次运行开始时调用工厂，并在运行恢复或重试时再次调用。代理服务器还调用它来读取架构和状态。请遵循以下规则：* **无副作用**：为相同的上下文返回相同的定义。不要创建记录、调用外部 API 或更改工厂中的共享状态。
+托管 Deep Agents 在每次运行开始时调用工厂，并在运行恢复或重试时再次调用。代理服务器还调用它来读取模式和状态。请遵循以下规则：* **无副作用**：为相同的上下文返回相同的定义。不要创建记录、调用外部 API 或更改工厂中的共享状态。
 * **稳定中断**：保留可以在每个配置中中断运行的中间件。当运行恢复时，引发中断的中间件必须仍然存在。
 * **内联名称**：将 `name` 设置为内联字符串。 `mda build` 无需调用工厂即可读取它，并将其用作图 ID 和默认部署名称。
 * **模型依赖项**：为工厂可以返回的每个模型安装集成包。构建不会检测到它们。
@@ -198,9 +196,9 @@ agent = define_deep_agent(
 )
 ```
 
-<Note>
-  网关模型 ID 在提供者和模型之间使用斜杠 (`langsmith:provider/model-name`)。直接调用提供者的模型字符串使用冒号 (`provider:model-name`)。
-</Note>网关按型号 ID 路由每个请求。 `moonshotai/kimi-k3` 是LangChain 托管模型，因此它不需要提供者密钥并利用 [Gateway Credits](/langsmith/llm-gateway-credits)。以您的工作区已配置的提供商开头的模型 ID（例如 `anthropic/claude-opus-5`）使用该 [provider secret](/langsmith/llm-gateway-admin-setup#1-add-provider-secrets) 并向您自己的提供商帐户计费。
+> [!注意]
+>
+> 网关型号 ID 在提供商和型号之间使用斜线 (`langsmith:provider/model-name`)。直接调用提供者的模型字符串使用冒号 (`provider:model-name`)。网关按型号 ID 路由每个请求。 `moonshotai/kimi-k3` 是LangChain 托管模型，因此它不需要提供商机密并利用 [Gateway Credits](/langsmith/llm-gateway-credits)。以您的工作区已配置的提供商开头的模型 ID（例如 `anthropic/claude-opus-5`）使用该 [provider secret](/langsmith/llm-gateway-admin-setup#1-add-provider-secrets) 并向您自己的提供商帐户计费。
 
 欲了解更多信息，请参阅[LLM Gateway](/langsmith/llm-gateway)。
 
@@ -212,12 +210,6 @@ mda init my-agent --gateway
 
 ***
 
-<div>
-  <Callout icon="terminal-2">
-    [Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
-  </Callout>
+[Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
 
-  <Callout icon="edit">
-    [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/managed-deep-agents-agent-definition.mdx) 或 [file an issue](https://github.com/langchain-ai/docs/issues/new/choose)。
-  </Callout>
-</div>
+[Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/managed-deep-agents-agent-definition.mdx) 或 [file an issue](https://github.com/langchain-ai/docs/issues/new/choose)。

@@ -8,9 +8,9 @@
 
 指令定义永远在线的代理行为。它们构成了座席系统提示的核心。
 
-<Note>
-  托管 Deep Agents 于 [LangSmith Cloud](/langsmith/cloud) **公开 [beta](/langsmith/release-stages)**。
-</Note>
+> [!注意]
+>
+> 托管 Deep Agents 于 [LangSmith Cloud](/langsmith/cloud) **公开 [beta](/langsmith/release-stages)**。
 
 将代理指令放入项目根目录下的 `instructions.md` 中：
 
@@ -47,19 +47,13 @@ MDA 在每次运行时将指令插入代理的系统提示符中。
 ## 何时使用说明|概念 |角色 |加载时间 |
 | - | - | - |
 | **说明** |永远在线的系统提示 |每次跑步 |
-| **[Skills](/langsmith/javascript/managed-deep-agents-skills)** |特定任务的程序 |当代理选择他们时 |
+| **[Skills](/langsmith/javascript/managed-deep-agents-skills)** |特定任务的程序 |当代理选择他们时|
 | **[Memory](/langsmith/javascript/managed-deep-agents-memory)** |代理可以更新的知识 |当启用持久内存时 |
 
 有关更多信息，请参阅[Project structure](/langsmith/javascript/managed-deep-agents-project-structure)。
 
 ***
 
-<div>
-  <Callout icon="terminal-2">
-    [Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
-  </Callout>
+[Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
 
-  <Callout icon="edit">
-    [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/managed-deep-agents-instructions.mdx) 或 [file an issue](https://github.com/langchain-ai/docs/issues/new/choose)。
-  </Callout>
-</div>
+[Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/managed-deep-agents-instructions.mdx) 或 [file an issue](https://github.com/langchain-ai/docs/issues/new/choose)。

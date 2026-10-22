@@ -8,7 +8,9 @@
 
 代码评估器允许您直接在 LangSmith 中用 Python 或 JavaScript 编写评估器。通常用于验证数据的结构或统计属性。
 
-<Note>当在线评估器在跟踪内的任何运行上运行时，跟踪将自动升级到[extended data retention](/langsmith/usage-and-billing#data-retention-auto-upgrades)。此升级将影响跟踪定价，但可确保保留满足您的评估标准的跟踪（通常是对分析最有价值的跟踪）以供调查。 </Note>
+> [!注意]
+>
+> 当在线评估器在跟踪内的任何运行上运行时，跟踪将自动升级到[extended data retention](/langsmith/usage-and-billing#data-retention-auto-upgrades)。此升级将影响跟踪定价，但可确保保留满足您的评估标准的跟踪（通常是对分析最有价值的跟踪）以供调查。
 
 ## 查看在线评估器
 
@@ -32,9 +34,9 @@
 
 评估器使用过滤器构建器，其字段和运算符与[Filter traces (ClickHouse)](/langsmith/filter-traces-in-application)中描述的相同。要处理来自早期评估器的反馈，请过滤此评估器的反馈键，然后从 `run["feedback"]` 读取分数，或从 [include extended stats](/langsmith/evaluators#include-extended-stats) 读取`run["feedback_stats"]` 分数。例如，当`answer_usefulness`反馈存在时，使用`eq(feedback_key, "answer_usefulness")`运行。过滤器基于反馈键，而不是生成它的评估器，因此来自具有该键的任何源的反馈都会触发代码评估器。欲了解更多信息，请参阅[Chain evaluators](/langsmith/evaluators#chain-evaluators)。
 
-<Tip>
-  当您为评估器创建过滤器时，检查运行通常很有帮助。打开评估器配置面板后，您可以检查运行并向其应用过滤器。您应用于运行表的任何过滤器都将自动反映在评估器的过滤器中。
-</Tip>
+> [!提示]
+>
+> 当您为评估器创建过滤器时，检查运行通常很有帮助。打开评估器配置面板后，您可以检查运行并向其应用过滤器。您应用于运行表的任何过滤器都将自动反映在评估器的过滤器中。
 
 ### 4.（可选）配置采样率
 
@@ -50,21 +52,21 @@
 
 ## 写出你的评估函数
 
-<Note>
-  **代码评估器限制。**
-
-  **允许的库**：您可以导入所有标准库函数，以及以下公共包：
-
-  ```
-  numpy (v2.2.2): "numpy"
-  pandas (v1.5.2): "pandas"
-  jsonschema (v4.21.1): "jsonschema"
-  scipy (v1.14.1): "scipy"
-  sklearn (v1.26.4): "scikit-learn"
-  ```
-
-  **网络访问**：您无法从代码评估器访问互联网。
-</Note>
+> [!注意]
+>
+> **代码评估器限制。**
+>
+> **允许的库**：您可以导入所有标准库函数，以及以下公共包：
+>
+> ```
+> numpy (v2.2.2): "numpy"
+> pandas (v1.5.2): "pandas"
+> jsonschema (v4.21.1): "jsonschema"
+> scipy (v1.14.1): "scipy"
+> sklearn (v1.26.4): "scikit-learn"
+> ```
+>
+> **网络访问**：您无法从代码评估器访问互联网。
 
 代码评估器必须内联编写。我们建议在 LangSmith 中设置代码评估器之前在本地进行测试。
 
@@ -78,57 +80,55 @@
 
 以下示例显示了一个函数，该函数验证实验中的每次运行是否具有已知的 JSON 字段：
 
-<CodeGroup>
-  ```python Python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  import json
+```python Python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+import json
 
-  def perform_eval(run):
-    output_to_validate = run['outputs']
-    is_valid_json = 0
+def perform_eval(run):
+  output_to_validate = run['outputs']
+  is_valid_json = 0
 
-    # assert you can serialize/deserialize as json
-    try:
-      json.loads(json.dumps(output_to_validate))
-    except Exception as e:
-      return { "formatted": False }
+  # assert you can serialize/deserialize as json
+  try:
+    json.loads(json.dumps(output_to_validate))
+  except Exception as e:
+    return { "formatted": False }
 
-    # assert output facts exist
-    if "facts" not in output_to_validate:
-      return { "formatted": False }
+  # assert output facts exist
+  if "facts" not in output_to_validate:
+    return { "formatted": False }
 
-    # assert required fields exist
-    if "years_mentioned" not in output_to_validate["facts"]:
-      return { "formatted": False }
+  # assert required fields exist
+  if "years_mentioned" not in output_to_validate["facts"]:
+    return { "formatted": False }
 
-    return {"formatted": True}
-  ```
+  return {"formatted": True}
+```
 
-  ```javascript JavaScript theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  function perform_eval(run) {
-      const outputToValidate = run.outputs;
+```javascript JavaScript theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+function perform_eval(run) {
+    const outputToValidate = run.outputs;
 
-      // Assert you can serialize/deserialize as json
-      try {
-          JSON.stringify(outputToValidate);
-          JSON.parse(JSON.stringify(outputToValidate));
-      } catch (e) {
-          return { "formatted": false };
-      }
+    // Assert you can serialize/deserialize as json
+    try {
+        JSON.stringify(outputToValidate);
+        JSON.parse(JSON.stringify(outputToValidate));
+    } catch (e) {
+        return { "formatted": false };
+    }
 
-      // Assert output facts exist
-      if (!("facts" in outputToValidate)) {
-          return { "formatted": false };
-      }
+    // Assert output facts exist
+    if (!("facts" in outputToValidate)) {
+        return { "formatted": false };
+    }
 
-      // Assert required fields exist
-      if (!outputToValidate["facts"].hasOwnProperty("years_mentioned")) {
-          return { "formatted": false };
-      }
+    // Assert required fields exist
+    if (!outputToValidate["facts"].hasOwnProperty("years_mentioned")) {
+        return { "formatted": false };
+    }
 
-      return { "formatted": true };
-  }
-  ```
-</CodeGroup>
+    return { "formatted": true };
+}
+```
 
 ## 测试并保存您的评估函数
 
@@ -140,12 +140,6 @@
 
 ***
 
-<div>
-  <Callout icon="terminal-2">
-    [Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
-  </Callout>
+[Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
 
-  <Callout icon="edit">
-    [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/online-evaluations-code.mdx) 或 [file an issue](https://github.com/langchain-ai/docs/issues/new/choose)。
-  </Callout>
-</div>
+[Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/online-evaluations-code.mdx) 或 [file an issue](https://github.com/langchain-ai/docs/issues/new/choose)。

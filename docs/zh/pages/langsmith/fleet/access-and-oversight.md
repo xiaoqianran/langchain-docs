@@ -12,19 +12,19 @@ Fleet 为您提供了在整个组织中扩展代理的控制层：分层权限�
 
 Fleet 将工作区角色权限与代理共享相结合。您的角色决定了您可以执行哪些操作。代理所有权和共享决定您可以访问哪些代理。
 
-<Note>
-  自定义角色是一项企业功能。当为您的工作区启用队列 RBAC 时，以下权限适用。对于自托管 v0.17，Fleet RBAC 需要 LangSmith 0.17.44 或更高版本的 v0.17 补丁以及 [deployment flag](#enable-fleet-rbac-on-self-hosted)。
-</Note>
+> [!注意]
+>
+> 自定义角色是一项企业功能。当为您的工作区启用队列 RBAC 时，以下权限适用。对于自托管 v0.17，Fleet RBAC 需要 LangSmith 0.17.44 或更高版本的 v0.17 补丁以及 [deployment flag](#enable-fleet-rbac-on-self-hosted)。
 
 ### 配置舰队角色
 
-要让用户使用和管理 Fleet，请创建具有以下权限的 [custom workspace role](/langsmith/rbac#custom-roles)：|面积 |权限 |需要 |
+要让用户使用和管理 Fleet，请创建具有以下权限的 [custom workspace role](/langsmith/rbac#custom-roles)：|面积 |权限|需要 |
 | - | - | - |
-|工作空间 | <span>`workspaces:read`</span> |访问工作区。 |
-|代理| <span>`fleet-agents:read`<br />`fleet-agents:invoke`<br />`fleet-agents:create`<br />`fleet-agents:update`<br />`fleet-agents:delete`</span> |查看、运行、创建、编辑、克隆和删除代理。管理代理连接。 |
-|技能 | <span>`fleet-skills:read`<br />`fleet-skills:create`<br />`fleet-skills:update`<br />`fleet-skills:delete`</span> |浏览、创建、编辑和删除工作区技能。 |
-| MCP 服务器 | <span>`mcp-servers:read`<br />`mcp-servers:invoke`<br />`mcp-servers:create`<br />`mcp-servers:update`<br />`mcp-servers:delete`</span> |使用工具并安装、更新或删除工作区集成。 |
-|部署| <span>`deployments:read`<br />`deployments:create`<br />`deployments:update`<br />`deployments:delete`</span> |通过当前的舰队 UI 配置 OAuth 提供商并管理连接的帐户。 |
+|工作空间 | `workspaces:read` |访问工作区。 |
+|代理| `fleet-agents:read` `fleet-agents:invoke` `fleet-agents:create` `fleet-agents:update` `fleet-agents:delete` |查看、运行、创建、编辑、克隆和删除代理。管理代理连接。 |
+|技能 | `fleet-skills:read` `fleet-skills:create` `fleet-skills:update` `fleet-skills:delete` |浏览、创建、编辑和删除工作区技能。 |
+| MCP 服务器 | `mcp-servers:read` `mcp-servers:invoke` `mcp-servers:create` `mcp-servers:update` `mcp-servers:delete` |使用工具并安装、更新或删除工作区集成。 |
+|部署| `deployments:read` `deployments:create` `deployments:update` `deployments:delete` |通过当前的舰队 UI 配置 OAuth 提供商并管理连接的帐户。 |
 
 明确授予每项权限。创建、更新、删除和调用权限不包括读取权限。现有的代理和技能所有权以及共享检查仍然适用。
 
@@ -52,14 +52,14 @@ Fleet 在两个维度上对每个代理提供精细控制：**谁可以访问**�
 
 ### 在自托管上启用队列 RBAC
 
-完全自托管 LangSmith 安装可通过部署标志启用基于角色的队列访问控制 (RBAC)。云和混合 (BYOC) 部署不需要此步骤。<Note>
-  自托管上的队列 RBAC 需要 LangSmith 0.17.44 或更高版本的 v0.17 补丁。
-</Note>
+完全自托管的 LangSmith 安装可通过部署标志启用基于角色的队列访问控制 (RBAC)。云和混合 (BYOC) 部署不需要此步骤。> [!注意]
+>
+> 自托管上的队列 RBAC 需要 LangSmith 0.17.44 或更高版本的 v0.17 补丁。
 
 要启用队列 RBAC：
 
 1. 将所有服务升级至所需的LangSmith版本。
-2. 创建或更新具有舰队权限的[custom roles](#configure-a-fleet-role)，并将其分配给用户。升级不会向现有角色添加队列权限。
+2. 创建或更新具有舰队权限的[custom roles](#configure-a-fleet-role)，并将其分配给用户。升级不会向现有角色添加舰队权限。
 3. 将标志添加到您的 Helm 值中，保留现有的 `extraEnv` 条目：
 
    ```yaml theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
@@ -91,9 +91,9 @@ Fleet 为工具提供分层访问控制，涵盖**自定义 MCP 服务器**（�
 * **[Attribute-based access control (ABAC)](#attribute-based-access-control)**：在 RBAC 之上添加每个资源的粒度。
 * **[Workspace integration policy](#workspace-integration-policy)**：为内置集成提供管理员控制的启用/禁用门。
 
-<Note>
-  工具访问控制是一项企业功能。如果您对此功能感兴趣，[contact our sales team](https://www.langchain.com/contact-sales)。
-</Note>
+> [!注意]
+>
+> 工具访问控制是一项企业功能。如果您对此功能感兴趣，[contact our sales team](https://www.langchain.com/contact-sales)。
 
 ### 基于角色的权限基于角色的访问控制 (RBAC) 根据用户的角色授予或拒绝对工作区中所有 MCP 服务器和集成的访问权限。在 **设置 > 角色** 中配置角色。
 
@@ -107,29 +107,27 @@ Fleet 为工具提供分层访问控制，涵盖**自定义 MCP 服务器**（�
 | `mcp-servers:update` |修改MCP服务器配置|
 | `mcp-servers:delete` |删除 MCP 服务器配置 |
 
-<Note>
-  具有 `mcp-servers:read` 和 `mcp-servers:invoke` 的角色可以查看和使用工作区中的所有 MCP 服务器和集成。
-</Note>
+> [!注意]
+>
+> 具有 `mcp-servers:read` 和 `mcp-servers:invoke` 的角色可以查看和使用工作区中的所有 MCP 服务器和集成。
 
 有关 RBAC 的更多信息，请参阅[Role-based access control](/langsmith/rbac)。
 
 #### 创建具有工具权限的角色
 
-<Steps>
-  <Step title="Open role settings">
-    导航到 **设置 > 角色**，然后单击 **创建角色**。
-  </Step>
+**1.打开角色设置**
 
-  <Step title="Configure MCP Servers permissions">
-    展开 **MCP 服务器** 部分并选择要包含的权限。例如，为需要使用工具但不需要管理服务器配置的用户授予`Read`和`Invoke`。
-  </Step>
+导航到 **设置 > 角色**，然后单击 **创建角色**。
 
-  <Step title="Assign the role">
-    在 **设置 > 成员** 中将角色分配给工作区中的用户。
-  </Step>
-</Steps>
+**2.配置 MCP 服务器权限**
 
-### 基于属性的访问控制基于属性的访问控制 (ABAC) 在 RBAC 之上添加了资源级粒度。管理员可以标记各个 MCP 服务器或集成，并创建基于这些标签授予或限制访问权限的策略。
+展开 **MCP 服务器** 部分并选择要包含的权限。例如，为需要使用工具但不需要管理服务器配置的用户授予`Read`和`Invoke`。
+
+**3.分配角色**
+
+在 **设置 > 成员** 中将角色分配给工作区中的用户。
+
+### 基于属性的访问控制基于属性的访问控制 (ABAC) 在 RBAC 之上添加了资源级粒度。管理员可以标记单个 MCP 服务器或集成，并创建基于这些标记授予或限制访问权限的策略。
 
 ABAC 使用两种工具资源类型：
 
@@ -138,9 +136,9 @@ ABAC 使用两种工具资源类型：
 | `mcp_server` |添加到工作区的自定义 MCP 服务器 |
 | `fleet_integration` |内置集成（Gmail、Slack、GitHub 等）|
 
-<Note>
-  没有 `mcp-servers:*` RBAC 权限的角色仍然可以通过 ABAC 允许策略被授予对特定标记资源（例如仅 Notion 和 Gmail）的访问权限。相反，可以通过 ABAC 拒绝策略限制具有广泛 RBAC 访问权限的角色使用特定资源。
-</Note>
+> [!注意]
+>
+> 没有 `mcp-servers:*` RBAC 权限的角色仍然可以通过 ABAC 允许策略被授予对特定标记资源（例如仅 Notion 和 Gmail）的访问权限。相反，可以通过 ABAC 拒绝策略限制具有广泛 RBAC 访问权限的角色使用特定资源。
 
 有关策略结构、运算符以及通过 API 管理策略的详细信息，请参阅[Attribute-based access control](/langsmith/abac)。
 
@@ -148,9 +146,9 @@ ABAC 使用两种工具资源类型：
 
 内置集成有一个额外的控制层：从 **设置 > 集成 > 访问控制** 管理的工作区级别启用/禁用切换。这充当管理员控制的基线，在每用户 RBAC 和 ABAC 之前运行。
 
-如果在工作区级别禁用集成，则任何用户都无法访问它，无论其角色或 ABAC 策略如何。<Note>
-  访问控制页面仅对管理员用户可见（需要 `workspaces:manage` 权限）。
-</Note>
+如果在工作区级别禁用集成，则任何用户都无法访问它，无论其角色或 ABAC 策略如何。> [!注意]
+>
+> 访问控制页面仅对管理员用户可见（需要 `workspaces:manage` 权限）。
 
 ### 政策评估顺序
 
@@ -187,12 +185,6 @@ Fleet 中的代理操作以结构化[LangSmith trace](/langsmith/observability) 
 
 ***
 
-<div>
-  <Callout icon="terminal-2">
-    [Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
-  </Callout>
+[Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
 
-  <Callout icon="edit">
-    [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/fleet/access-and-oversight.mdx) 或 [file an issue](https://github.com/langchain-ai/docs/issues/new/choose)。
-  </Callout>
-</div>
+[Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/fleet/access-and-oversight.mdx) 或 [file an issue](https://github.com/langchain-ai/docs/issues/new/choose)。

@@ -21,18 +21,18 @@
 
 ## 功能访问
 
-**功能访问**表独立控制每个LangSmith功能的提供者和模型可用性。| **功能** | **选型经验** |
+**功能访问**表独立控制每个LangSmith功能的提供程序和模型可用性。| **功能** | **选型经验** |
 | - | - |
 |游乐场|完整的模型控制——查看和调整所有参数。无内置模型；依赖于工作区配置。 |
 |评估者|完整的模型控制——查看和调整所有参数。无内置模型；依赖于工作区配置。 |
 |舰队|默认情况下从精选列表中进行选择。您还可以添加自定义工作区配置。 |
 |聊天 |默认情况下从精选列表中进行选择。您还可以添加自定义工作区配置。 |
-|见解（思考）|用于深度分析的模型。默认情况下，从包含提供商建议的精选列表中进行选择。您还可以添加自定义工作区配置。 |
+|见解（思考）|用于深度分析的模型。默认情况下，从包含提供商推荐的精选列表中进行选择。您还可以添加自定义工作区配置。 |
 |见解（总结）|用于轻量级汇总的模型。默认情况下，从包含提供商推荐的精选列表中进行选择。您还可以添加自定义工作区配置。 |
 
-所有功能都支持自定义工作区配置，因此您可以使用任何提供程序或模型，甚至对于默认显示精选列表的功能也是如此。<Note>
-  **见解** 使用两行，一行用于分析，一行用于总结。如果您为任一行选择不兼容的提供程序或不推荐的型号，UI 会显示警告。
-</Note>
+所有功能都支持自定义工作区配置，因此您可以使用任何提供程序或模型，甚至对于默认显示精选列表的功能也是如此。> [!注意]
+>
+> **Insights** 使用两行，一行用于分析，一行用于总结。如果您为任一行选择不兼容的提供程序或不推荐的型号，UI 会显示警告。
 
 ### 配置功能访问
 
@@ -44,14 +44,14 @@
 4. 单击“**可用型号**”并选择用户可以选择的型号。
 5. 使用**默认模型**下拉列表设置用户打开该功能时预选的模型。
 
-<Note>
-  在 **设置** > **模型提供程序** 中为整个组织禁用的提供程序在此表中显示为锁定，并且无法按工作区重新启用。参见[Organization-wide provider control](#organization-wide-provider-control)。
-</Note>
+> [!注意]
+>
+> 在 **设置** > **模型提供程序** 中为整个组织禁用的提供程序在此表中显示为锁定，并且无法按工作区重新启用。参见[Organization-wide provider control](#organization-wide-provider-control)。
 
 ## 组织范围内的提供商控制
 
 提供商的可用性在两个层面上进行控制：* **组织**（组织管理员）：为**整个组织**打开或关闭提供程序 - 每个 [workspace](/langsmith/administration-overview#workspaces) 和每个功能。在 **设置** > **模型提供商** 中管理。
-* **工作空间**（工作空间管理员）：上面的[Feature Access](#feature-access)表，它控制单个工作空间内**每个功能**的提供者和模型可用性。
+* **工作区**（工作区管理员）：上面的[Feature Access](#feature-access)表，它控制单个工作区中**每个功能**的提供者和模型可用性。
 
 组织级别优先。为组织禁用的提供程序在每个工作区和每个功能中都不可用，并且在每个工作区的功能访问表中显示为**锁定** - 工作区管理员可以看到它，但无法重新启用它。工作空间仅在组织允许的提供商中进行选择。
 
@@ -62,11 +62,11 @@
 1. 导航至**设置**下的[Model providers](https://smith.langchain.com/settings/model-providers)页面。
 2. 关闭某个提供程序以在整个组织中禁用它，或打开以重新启用它。
 
-## 组织范围的模型配置
-
-<Note>
-  组织范围的模型配置仅适用于 LangSmith [Self-hosted](/langsmith/self-hosted) 和 [Cloud Enterprise](/langsmith/pricing-plans)。在自托管安装中，组织范围的模型配置需要 Helm 图表版本 `0.17.0-rc.42` 或更高版本以及应用程序版本 `0.17.28rc1` 或更高版本。
-</Note>
+## 组织范围的模型配置> [!注意]
+>
+> 组织范围的模型配置仅适用于 LangSmith [Self-hosted](/langsmith/self-hosted) 和 [Cloud Enterprise](/langsmith/pricing-plans)。
+>
+> 在自托管安装中，组织范围的模型配置需要 Helm 图表版本 `0.17.0-rc.42` 或更高版本以及应用程序版本 `0.17.28rc1` 或更高版本。
 
 [Organization admins](/langsmith/rbac#organization-admin) 可以在组织级别创建模型配置，因此组织中的每个 [workspace](/langsmith/administration-overview#workspaces) 都可以使用单个配置，而无需在每个工作区重复它。
 
@@ -115,24 +115,24 @@
 
 ### 编辑配置
 
-1. 在 **配置** 表中，单击配置旁边的溢出菜单 <Icon icon="dots-vertical" />。
+1. 在 **配置** 表中，单击配置旁边的溢出菜单。
 2. 选择**编辑**。
 3. 更新配置并单击**保存**。### 删除配置
 
-1. 在 **配置** 表中，单击配置旁边的溢出菜单 <Icon icon="dots-vertical" />。
-2. 选择<Icon icon="trash" /> **删除**并确认。
+1. 在 **配置** 表中，单击配置旁边的溢出菜单。
+2. 选择**删除**并确认。
 
 ## OAuth 客户端凭据
 
-<Note>
-  OAuth 客户端凭据可在运行版本 `0.16.0-rc.6` 或更高版本的 LangSmith [Cloud](/langsmith/cloud) 和 [Self-hosted](/langsmith/self-hosted) 部署上使用。
-</Note>
+> [!注意]
+>
+> OAuth 客户端凭据可在运行版本 `0.16.0-rc.6` 或更高版本的 LangSmith [Cloud](/langsmith/cloud) 和 [Self-hosted](/langsmith/self-hosted) 部署上使用。
 
 当模型配置位于 OAuth2 网关后面时，您可以将 OAuth `client_credentials` 直接存储在配置上，而不是分发静态 API 密钥。 LangSmith 在请求时将这些凭证交换为短期持有者令牌，将其作为 `Authorization: Bearer <token>` 附加到出站 LLM 调用上，并在令牌过期之前刷新令牌。这是一种按配置的自助服务替代方案，可替代通过 [LLM auth proxy](/langsmith/llm-auth-proxy-self-hosted) 路由工作空间；每个配置两者都是互斥的。OAuth 客户端凭据可在每个支持自定义模型配置的 [plan](/langsmith/pricing-plans) 上使用。 **使用自定义 OAuth** 切换适用于不记名令牌提供商（OpenAI、Anthropic、OpenAI 兼容端点等），并且不支持使用本机云身份进行身份验证的 Bedrock、Gemini Enterprise Agent Platform 或 Google GenAI。 **LangServe（已弃用）** 预设的切换也是隐藏的。
 
 ### 在模型配置上配置 OAuth
 
-配置 OAuth 需要 [Workspace Admin](/langsmith/rbac#workspace-admin) 角色，或具有 `workspaces:manage-model-configs` 权限的 [custom role](/langsmith/rbac#custom-roles)。没有它的成员会看到 OAuth 字段被禁用，并带有隐藏的秘密提示。在[LangSmith UI](https://smith.langchain.com?utm_source=docs\&utm_medium=cta\&utm_campaign=langsmith-signup\&utm_content=langsmith-model-configurations)中：1. 导航到 **设置** > **模型配置**，然后单击 **+ 创建** 或通过溢出菜单 <Icon icon="dots-vertical" /> > **编辑** 打开现有行。
+配置 OAuth 需要 [Workspace Admin](/langsmith/rbac#workspace-admin) 角色，或具有 `workspaces:manage-model-configs` 权限的 [custom role](/langsmith/rbac#custom-roles)。没有它的成员会看到 OAuth 字段被禁用，并带有隐藏的秘密提示。在[LangSmith UI](https://smith.langchain.com?utm_source=docs\&utm_medium=cta\&utm_campaign=langsmith-signup\&utm_content=langsmith-model-configurations)中：1. 导航到 **设置** > **模型配置**，然后单击 **+ 创建** 或通过溢出菜单 > **编辑** 打开现有行。
 2. 选择兼容的提供商并照常配置模型参数。
 3. 打开**使用自定义 OAuth**。
 4. 填写 OAuth 字段：
@@ -144,9 +144,7 @@
    * **额外标头**：随令牌请求一起发送的附加标头。诸如`Authorization`之类的保留标头在保存时会被拒绝。
 5. 单击**保存**。
 
-<img alt="Model configuration Create modal in LangSmith Settings with Use Custom OAuth toggled on, showing Token URL, Client ID, masked Client Secret, and Token Endpoint Auth Method set to HTTP Basic." />
-
-<img alt="Model configuration Create modal in LangSmith Settings with Use Custom OAuth toggled on, showing Token URL, Client ID, masked Client Secret, and Token Endpoint Auth Method set to HTTP Basic." />
+![Model configuration Create modal in LangSmith Settings with Use Custom OAuth toggled on, showing Token URL, Client ID, masked Client Secret, and Token Endpoint Auth Method set to HTTP Basic.](https://mintcdn.com/langchain-5e9cc07a/8fWMAwmd5vok0QuC/langsmith/images/model-config-oauth-create-light.png?fit=max\&auto=format\&n=8fWMAwmd5vok0QuC\&q=85\&s=28ae7c822f8a52653b8820ceffe59b72)
 
 ### 编辑语义
 
@@ -205,28 +203,22 @@ sequenceDiagram
 
 ### 常见问题解答
 
-<Accordion title="Can a single set of OAuth credentials be shared across workspaces?">
-  不会。OAuth 凭据存储在模型配置中，该模型配置是工作区范围内的。每个工作区都会输入自己的凭据，即使这些凭据指向同一 IdP 客户端也是如此。
-</Accordion><Accordion title="Why is my OAuth-enabled configuration suddenly using a static workspace key?">
-  如果代理无法创建承载（IdP 无法访问、凭据无效、在请求准备和执行之间删除配置），则请求将回退到提供程序的静态工作区 API 密钥。重新打开模型配置并验证令牌 URL 是否可访问、客户端 ID 和密钥是否最新以及令牌端点身份验证方法是否与您的 IdP 期望的相匹配。
-</Accordion>
+> **可以跨工作区共享一组 OAuth 凭据吗？**
+>
+> 否。OAuth 凭据存储在模型配置中，该模型配置是工作区范围内的。每个工作区都会输入自己的凭据，即使这些凭据指向同一 IdP 客户端也是如此。> **为什么我的启用 OAuth 的配置突然使用静态工作区密钥？**
+>
+> 如果代理无法创建承载（IdP 无法访问、凭据无效、在请求准备和执行之间删除配置），则请求将回退到提供程序的静态工作区 API 密钥。重新打开模型配置并验证令牌 URL 是否可访问、客户端 ID 和密钥是否最新以及令牌端点身份验证方法是否与您的 IdP 期望的相匹配。
 
-<Accordion title="How do I rotate the client secret?">
-  编辑模型配置并在 **Client Secret** 字段中重新输入密钥。保存时会覆盖以前的秘密。 Redis 缓存的承载会继续工作，直到其 TTL 过期，之后代理会使用轮换的密钥创建一个新的承载。
-</Accordion>
+> **如何轮换客户端密钥？**
+>
+> 编辑模型配置并在 **客户端密钥** 字段中重新输入密钥。保存时会覆盖以前的秘密。 Redis 缓存的承载会继续工作，直到其 TTL 过期，之后代理会使用轮换的密钥创建一个新的承载。
 
-<Accordion title="Can OAuth and the LLM auth proxy be used together?">
-  是的。路由是按配置进行的。启用 OAuth 的配置使用 OAuth；当在组织级别启用代理时，没有它的配置将落入 LLM 身份验证代理。单个多模型作业可以混合两个流程。
-</Accordion>
+> **OAuth 和 LLM 身份验证代理可以一起使用吗？**
+>
+> 是的。路由是按配置进行的。启用 OAuth 的配置使用 OAuth；当在组织级别启用代理时，没有它的配置将落入 LLM 身份验证代理。单个多模型作业可以混合两个流程。
 
 ***
 
-<div>
-  <Callout icon="terminal-2">
-    [Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
-  </Callout>
+[Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
 
-  <Callout icon="edit">
-    [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/model-configurations.mdx) 或 [file an issue](https://github.com/langchain-ai/docs/issues/new/choose)。
-  </Callout>
-</div>
+[Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/model-configurations.mdx) 或 [file an issue](https://github.com/langchain-ai/docs/issues/new/choose)。

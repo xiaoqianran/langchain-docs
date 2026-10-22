@@ -41,23 +41,21 @@ def evaluator(inputs: dict, outputs: dict, reference_outputs: dict) -> dict:
 
 如果您使用 `langchain` 组件，您可以使用 `.with_retry(...)` / `.withRetry()` 方法向所有模型调用添加重试：
 
-<CodeGroup>
-  ```python Python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  from langchain import init_chat_model
+```python Python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+from langchain import init_chat_model
 
-  model_with_retry = init_chat_model("gpt-5.4-mini").with_retry(stop_after_attempt=6)
-  ```
+model_with_retry = init_chat_model("gpt-5.4-mini").with_retry(stop_after_attempt=6)
+```
 
-  ```typescript TypeScript theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  import { initChatModel } from "langchain";
+```typescript TypeScript theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+import { initChatModel } from "langchain";
 
-  const model = await initChatModel("gpt-5.5", {
-      modelProvider: "openai",
-  });
+const model = await initChatModel("gpt-5.5", {
+    modelProvider: "openai",
+});
 
-  const modelWithRetry = model.withRetry({ stopAfterAttept: 2 });
-  ```
-</CodeGroup>
+const modelWithRetry = model.withRetry({ stopAfterAttept: 2 });
+```
 
 有关更多信息，请参阅 `langchain` [Python](https://reference.langchain.com/python/langchain_core/language_models/#langchain_core.language_models.BaseChatModel.with_retry) 和 [JS](https://reference.langchain.com/javascript/langchain-core/language_models/chat_models/BaseChatModel/withRetry) API 参考。
 
@@ -65,36 +63,28 @@ def evaluator(inputs: dict, outputs: dict, reference_outputs: dict) -> dict:
 
 ## 限制`max_concurrency`
 
-限制对应用程序和评估器进行的并发调用的数量是降低模型调用频率的另一种方法，从而避免速率限制错误。 `max_concurrency`可以直接在[evaluate()](https://docs.smith.langchain.com/reference/python/evaluation/langsmith.evaluation._runner.evaluate) / [aevaluate()](https://docs.smith.langchain.com/reference/python/evaluation/langsmith.evaluation._arunner.aevaluate)功能上设置。这通过有效地将数据集跨线程分割来并行化评估。
+限制对应用程序和评估器进行的并发调用的数量是降低模型调用频率的另一种方法，从而避免速率限制错误。 `max_concurrency` 可直接在[evaluate()](https://docs.smith.langchain.com/reference/python/evaluation/langsmith.evaluation._runner.evaluate) / [aevaluate()](https://docs.smith.langchain.com/reference/python/evaluation/langsmith.evaluation._arunner.aevaluate) 功能上设置。这通过有效地将数据集跨线程分割来并行化评估。
 
-<CodeGroup>
-  ```python Python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  from langsmith import aevaluate
+```python Python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+from langsmith import aevaluate
 
-  results = await aevaluate(
-      ...
-      max_concurrency=4,
-  )
-  ```
+results = await aevaluate(
+    ...
+    max_concurrency=4,
+)
+```
 
-  ```typescript TypeScript theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  import { evaluate } from "langsmith/evaluation";
+```typescript TypeScript theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+import { evaluate } from "langsmith/evaluation";
 
-  await evaluate(..., {
-    ...,
-    maxConcurrency: 4,
-  });
-  ```
-</CodeGroup>
+await evaluate(..., {
+  ...,
+  maxConcurrency: 4,
+});
+```
 
 ***
 
-<div>
-  <Callout icon="terminal-2">
-    [Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
-  </Callout>
+[Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
 
-  <Callout icon="edit">
-    [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/handle-model-rate-limiting.mdx) 或 [file an issue](https://github.com/langchain-ai/docs/issues/new/choose)。
-  </Callout>
-</div>
+[Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/handle-model-rate-limiting.mdx) 或 [file an issue](https://github.com/langchain-ai/docs/issues/new/choose)。

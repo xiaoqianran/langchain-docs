@@ -4,13 +4,13 @@
 
 # 托管Deep Agents项目结构
 
-了解托管Deep Agents的项目布局。
+了解托管 Deep Agents 的项目布局。
 
 托管 Deep Agents 项目是一个普通的 Python 包，具有​​一个必需的根代理条目。其他路径要么是您导入的普通模块，要么是 MDA 发现的用于启用托管功能的文件和目录。
 
-<Note>
-  托管Deep Agents于[LangSmith Cloud](/langsmith/cloud)**公开[beta](/langsmith/release-stages)**。
-</Note>
+> [!注意]
+>
+> 托管 Deep Agents 于 [LangSmith Cloud](/langsmith/cloud) **公开 [beta](/langsmith/release-stages)**。
 
 ## 项目布局
 
@@ -69,7 +69,7 @@ my-agent/
 
 * **依赖关系和秘密**：在`pyproject.toml`中声明依赖关系，这也设置了[deployment Python version](/langsmith/python/managed-deep-agents-deploy#set-the-python-version)。 MDA 在本地加载 `.env` 并将非保留值作为部署机密转发。保留的平台变量和`.env`文件不包含在构建存档中。欲了解更多信息，请参阅[Deploy a Managed Deep Agent](/langsmith/python/managed-deep-agents-deploy)。
 
-* **评估**：托管 Deep Agents [evals](/langsmith/python/managed-deep-agents-evals) 是 Harbor 评估。运行 `mda evals init -i` 并使用编码代理和 `eval-engineering` 技能开发任务。生成的运行时文件保留在 `.mda/evals/` 下，并且不包含在已部署的代理版本中。
+* **评估**：托管 Deep Agents [evals](/langsmith/python/managed-deep-agents-evals) 是 Harbor 评估。运行 `mda evals init -i` 并使用编码代理和 `eval-engineering` 技能开发任务。生成的运行时文件保留在 `.mda/evals/` 下，并且不包含在已部署的代理构建中。
 
 ## 共享项目外部的代码
 
@@ -97,24 +97,16 @@ build-backend = "hatchling.build"
 
 MDA 将包复制到构建中。 `mda dev` 会在您编辑时重新加载，并且 `mda deploy` 会传送它。
 
-## 后续步骤<CardGroup>
-  <Card title="Quickstart" icon="rocket" href="/langsmith/python/managed-deep-agents-quickstart">
-    使用 `mda` CLI 创建并部署您的第一个托管深度代理。
-  </Card>
+## 后续步骤> **[Quickstart](/langsmith/python/managed-deep-agents-quickstart)**
+>
+> 使用 `mda` CLI 创建并部署您的第一个托管深度代理。
 
-  <Card title="Tutorial" icon="book" href="/langsmith/python/managed-deep-agents-tutorial">
-    为快速入门研究助手添加持久记忆和每日日程安排。
-  </Card>
-</CardGroup>
+> **[Tutorial](/langsmith/python/managed-deep-agents-tutorial)**
+>
+> 将持久记忆和每日日程添加到快速入门研究助手中。
 
 ***
 
-<div>
-  <Callout icon="terminal-2">
-    [Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
-  </Callout>
+[Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
 
-  <Callout icon="edit">
-    [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/managed-deep-agents-project-structure.mdx) 或 [file an issue](https://github.com/langchain-ai/docs/issues/new/choose)。
-  </Callout>
-</div>
+[Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/managed-deep-agents-project-structure.mdx) 或 [file an issue](https://github.com/langchain-ai/docs/issues/new/choose)。

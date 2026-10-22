@@ -4,11 +4,11 @@
 
 # LangSmith-管理的ClickHouse
 
-<Check>
-  在继续阅读本指南之前，请先阅读 [LangSmith architectural overview](/langsmith/self-hosted) 和 [guide on connecting to external ClickHouse](/langsmith/self-host-external-clickhouse)。
-</Check>
+> [!提示]
+>
+> 在继续阅读本指南之前，请先阅读 [LangSmith architectural overview](/langsmith/self-hosted) 和 [guide on connecting to external ClickHouse](/langsmith/self-host-external-clickhouse)。
 
-LangSmith使用ClickHouse作为**痕迹**和**反馈**的主要存储引擎。为了更轻松地管理和扩展，建议将自托管 LangSmith 实例连接到外部 ClickHouse 实例。 LangSmith 管理的 ClickHouse 是一个选项，允许您使用由 LangSmith 团队监控和维护的完全托管的 ClickHouse 实例。
+LangSmith使用ClickHouse作为**痕迹**和**反馈**的主要存储引擎。为了更轻松地管理和扩展，建议将自托管 LangSmith 实例连接到外部 ClickHouse 实例。 LangSmith 托管的 ClickHouse 是一个选项，允许您使用由 LangSmith 团队监控和维护的完全托管的 ClickHouse 实例。
 
 ## 架构概述
 
@@ -18,9 +18,7 @@ LangSmith使用ClickHouse作为**痕迹**和**反馈**的主要存储引擎。�
 
 整体架构如下：
 
-<img alt="LangSmith managed ClickHouse architecture." />
-
-<img alt="LangSmith managed ClickHouse architecture." />
+![LangSmith managed ClickHouse architecture.](https://mintcdn.com/langchain-5e9cc07a/JOyLr_spVEW0t2KF/langsmith/images/managed-clickhouse-light.png?fit=max\&auto=format\&n=JOyLr_spVEW0t2KF\&q=85\&s=26fae5c3f413c15302ea0c00bebf8e93)
 
 ## 要求* **您必须使用受支持的 blob 存储选项。** 请阅读 [blob storage guide](/langsmith/self-host-blob-storage) 了解更多信息。
 * 要使用私有端点，请确保您的 VPC 位于支持的 ClickHouse Cloud [region](https://clickhouse.com/docs/en/cloud/reference/supported-regions) 中。否则，您将需要使用我们将通过防火墙规则保护的公共端点。您的 VPC 需要有 NAT 网关，以便我们将您的流量列入白名单。
@@ -29,7 +27,7 @@ LangSmith使用ClickHouse作为**痕迹**和**反馈**的主要存储引擎。�
 
 ## TLS 证书
 
-LangSmith 管理的 ClickHouse 提供由 Let's Encrypt 颁发的证书。该链是服务器证书、Let's Encrypt 中间体和 ISRG Root X1 根。
+LangSmith 管理的 ClickHouse 提供由 Let's Encrypt 颁发的证书。该链是服务器证书、Let's Encrypt 中间证书和 ISRG Root X1 根。
 
 如果您的 LangSmith Pod 信任系统 CA 存储，则无需执行任何操作。 ISRG Root X1 已在其中。如果您使用 `config.customCa` 安装自己的 CA 捆绑包，请将 ISRG Root X1 添加到该捆绑包。信任根证书，而不是服务器证书：服务器证书大约每 90 天重新颁发一次，中间证书会不时更改，而根证书的有效期到 2035 年。仅包含服务器证书或中间证书的捆绑包将在下一次轮换时停止工作，并且首先失败的是升级期间的 ClickHouse 迁移作业。参见[Configure custom TLS certificates](/langsmith/self-host-custom-tls-certificates#mount-internal-cas-for-tls)。
 
@@ -44,9 +42,9 @@ ClickHouse 存储**运行**和**反馈**数据，具体来说：
 
 LangChain 将敏感应用程序数据定义为运行的 `inputs`、`outputs`、`errors`、`manifests`、`extras` 和 `events`，因为这些字段可能包含 LLM 提示和完成。通过LangSmith管理的ClickHouse，这些敏感字段存储在云中的云对象存储（S3或GCS）中，而其余运行数据存储在ClickHouse中，确保敏感信息永远不会离开您的VPC。
 
-### 存储的反馈数据字段<Note>
-  由于所有反馈数据都存储在 ClickHouse 中，因此请勿在反馈（分数和注释/评论）或[Stored run data fields](#stored-run-data-fields)中提到的任何其他运行字段中发送敏感信息。
-</Note>
+### 存储的反馈数据字段> [!注意]
+>
+> 由于所有反馈数据都存储在 ClickHouse 中，因此请勿在反馈（分数和注释/评论）或[Stored run data fields](#stored-run-data-fields)中提到的任何其他运行字段中发送敏感信息。
 
 使用 LangSmith 管理的 ClickHouse 设置，**所有反馈数据字段都存储在 ClickHouse 中**：
 
@@ -73,9 +71,9 @@ LangChain 将敏感应用程序数据定义为运行的 `inputs`、`outputs`、`
 
 运行数据字段在托管 ClickHouse 数据库和云对象存储（例如 S3 或 GCS）之间划分。
 
-<Note>
-  对于存储在对象存储中的运行字段，ClickHouse 中仅保留引用或指针。例如，`inputs`和`outputs`内容被卸载到S3/GCS，ClickHouse记录在`inputs_s3_urls`和`outputs_s3_urls`字段中存储相应的S3 URL。
-</Note>
+> [!注意]
+>
+> 对于存储在对象存储中的运行字段，ClickHouse 中仅保留引用或指针。例如，`inputs`和`outputs`内容被卸载到S3/GCS，ClickHouse记录在`inputs_s3_urls`和`outputs_s3_urls`字段中存储相应的S3 URL。
 
 该表详细介绍了每个运行字段及其存储位置：|领域|储存地点 |
 | - | - |
@@ -89,33 +87,33 @@ LangChain 将敏感应用程序数据定义为运行的 `inputs`、`outputs`、`
 | `error` | **对象存储** |
 | `outputs` | **对象存储** |
 | `events` | **对象存储** |
-| `tags` |点击屋 |
-| `trace_id` |点击屋 |
+| `tags` |点击屋|
+| `trace_id` |点击屋|
 | `dotted_order` |点击屋 |
 | `status` |点击屋 |
-| `child_run_ids` |点击屋 |
+| `child_run_ids` |点击屋|
 | `direct_child_run_ids` |点击屋 |
-| `parent_run_ids` |点击屋 |
+| `parent_run_ids` |点击屋|
 | `feedback_stats` |点击屋 |
-| `reference_example_id` |点击屋 |
-| `total_tokens` |点击屋 |
-| `prompt_tokens` |点击屋 |
-| `completion_tokens` |点击屋 |
-| `total_cost` |点击屋 |
-| `prompt_cost` |点击屋 |
-| `completion_cost` |点击屋 |
-| `first_token_time` |点击屋 |
+| `reference_example_id` |点击屋|
+| `total_tokens` |点击屋|
+| `prompt_tokens` |点击屋|
+| `completion_tokens` |点击屋|
+| `total_cost` |点击屋|
+| `prompt_cost` |点击屋|
+| `completion_cost` |点击屋|
+| `first_token_time` |点击屋|
 | `session_id` |点击屋 |
 | `in_dataset` |点击屋 |
-| `parent_run_id` |点击屋 |
+| `parent_run_id` |点击屋|
 | `execution_order`（已弃用）|点击屋 |
 | `serialized` |点击屋 |
-| `manifest_id`（已弃用）|点击屋 |
-| `manifest_s3_id` |点击屋 |
+| `manifest_id`（已弃用）|点击屋|
+| `manifest_s3_id` |点击屋|
 | `inputs_s3_urls` |点击屋 |
 | `outputs_s3_urls` |点击屋 |
-| `price_model_id` |点击屋 |
-| `app_path` |点击屋 |
+| `price_model_id` |点击屋|
+| `app_path` |点击屋|
 | `last_queued_at` |点击屋 |
 | `share_token` |点击屋 |
 
@@ -123,10 +121,6 @@ LangChain 将敏感应用程序数据定义为运行的 `inputs`、`outputs`、`
 
 ***
 
-<div>
-  <Callout icon="terminal-2">
-    [Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
-  </Callout><Callout icon="edit">
-    [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/langsmith-managed-clickhouse.mdx) 或 [file an issue](https://github.com/langchain-ai/docs/issues/new/choose)。
-  </Callout>
-</div>
+[Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
+
+[Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/langsmith-managed-clickhouse.mdx) 或 [file an issue](https://github.com/langchain-ai/docs/issues/new/choose)。

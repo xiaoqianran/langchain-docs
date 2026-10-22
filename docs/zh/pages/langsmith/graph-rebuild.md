@@ -8,9 +8,9 @@
 
 您可能需要使用不同的配置重建图表以进行新的运行。例如，您可能希望根据用户的凭据加载不同的工具。本指南展示了如何使用 `ServerRuntime` 执行此操作。
 
-<Note>
-  在大多数情况下，最好通过调节各个节点内的配置来处理自定义，而不是动态更改整个图形结构。这使得测试和管理变得更加容易。
-</Note>
+> [!注意]
+>
+> 在大多数情况下，最好通过调节各个节点内的配置来处理自定义，而不是动态更改整个图形结构。这使得测试和管理变得更加容易。
 
 ## 先决条件
 
@@ -61,11 +61,11 @@ agent = graph_workflow.compile()
 
 ### 重建
 
-要在每次新运行时重建图形，请提供一个返回（或生成）图形的**工厂函数**。工厂可以选择接受`ServerRuntime`参数或`RunnableConfig`。服务器检查函数的类型注释以确定要注入的参数，因此请确保包含正确的类型提示。服务器的队列工作人员将在需要处理运行时随时调用您的工厂函数。某些其他端点也会调用该函数来更新状态、读取状态或获取辅助模式。 `ServerRuntime` 告诉您哪个上下文触发了调用。
+要在每次新运行时重建图形，请提供一个返回（或生成）图形的**工厂函数**。工厂可以选择接受`ServerRuntime`参数或`RunnableConfig`。服务器检查函数的类型注释以确定要注入哪些参数，因此请确保包含正确的类型提示。服务器的队列工作人员将在需要处理运行时随时调用您的工厂函数。某些其他端点也会调用该函数来更新状态、读取状态或获取辅助模式。 `ServerRuntime` 告诉您哪个上下文触发了调用。
 
-<Note>
-  `ServerRuntime` 位于 [beta](/langsmith/release-stages) 中，并且可能在未来版本中发生变化。
-</Note>
+> [!注意]
+>
+> `ServerRuntime` 位于 [beta](/langsmith/release-stages) 中，并且可能在未来版本中发生变化。
 
 #### 简单工厂
 
@@ -157,7 +157,7 @@ async def make_graph(runtime: ServerRuntime):
 
 您的工厂函数接收一个具有以下属性的 `ServerRuntime` 实例：
 
-|属性|类型 |描述 |
+|属性 |类型 |描述 |
 | - | - | - |
 | `access_context` | `str` |为什么工厂被称为：`"threads.create_run"`、`"threads.update"`、`"threads.read"`或`"assistants.read"`。 |
 | `user` | `BaseUser \| None` |经过身份验证的用户，如果未配置 [custom auth](/langsmith/custom-auth)，则为 `None`。 |
@@ -187,12 +187,6 @@ async def make_graph(runtime: ServerRuntime):
 
 ***
 
-<div>
-  <Callout icon="terminal-2">
-    [Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
-  </Callout>
+[Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
 
-  <Callout icon="edit">
-    [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/graph-rebuild.mdx) 或 [file an issue](https://github.com/langchain-ai/docs/issues/new/choose)。
-  </Callout>
-</div>
+[Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/graph-rebuild.mdx) 或 [file an issue](https://github.com/langchain-ai/docs/issues/new/choose)。

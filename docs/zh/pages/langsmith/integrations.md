@@ -8,320 +8,238 @@
 
 ## 法学硕士提供者
 
-<div>
-  <a href="/langsmith/trace-bedrock">
-    <img alt="" />
+![](https://mintcdn.com/langchain-5e9cc07a/ZPKed1feKJ8F6LVo/images/providers/light/bedrock.svg?fit=max\&auto=format\&n=ZPKed1feKJ8F6LVo\&q=85\&s=d6fc326f6c429075add5a742c87d12b1)
 
-    <img alt="" />
+亚马逊基岩
 
-    <span>亚马逊基岩</span>
-  </a>
+[Open](/langsmith/trace-bedrock)
 
-  <a href="/langsmith/trace-anthropic">
-    <img alt="" />
+![](https://mintcdn.com/langchain-5e9cc07a/ZPKed1feKJ8F6LVo/images/providers/light/anthropic.svg?fit=max\&auto=format\&n=ZPKed1feKJ8F6LVo\&q=85\&s=f681e2a9025c2e1104d4260c6b27d638)
 
-    <img alt="" />
+Anthropic
 
-    <span>Anthropic</span>
-  </a>
+[Open](/langsmith/trace-anthropic)
 
-  <a href="/langsmith/trace-deepseek">
-    <img alt="" />
+![](https://mintcdn.com/langchain-5e9cc07a/ZPKed1feKJ8F6LVo/images/providers/light/deepseek.svg?fit=max\&auto=format\&n=ZPKed1feKJ8F6LVo\&q=85\&s=5a11e956e2ba24fd746aebd929ee1a5e)
 
-    <img alt="" />
+深度搜索
 
-    <span>DeepSeek</span>
-  </a>
+[Open](/langsmith/trace-deepseek)
 
-  <a href="/langsmith/trace-with-google-gemini">
-    <img alt="" />
+![](https://mintcdn.com/langchain-5e9cc07a/ZPKed1feKJ8F6LVo/images/providers/light/gemini.svg?fit=max\&auto=format\&n=ZPKed1feKJ8F6LVo\&q=85\&s=486f57c43a26c9661700c37d0f575c05)
 
-    <img alt="" />
+谷歌双子座
 
-    <span>谷歌双子座</span>
-  </a>
+[Open](/langsmith/trace-with-google-gemini)
 
-  <a href="/langsmith/trace-litellm">
-    <img alt="" />
+![](https://mintcdn.com/langchain-5e9cc07a/TiT87b4RAoWyIOkQ/images/providers/light/litellm.svg?fit=max\&auto=format\&n=TiT87b4RAoWyIOkQ\&q=85\&s=3c70d2b1a246ead959c54869ecf39a74)
 
-    <img alt="" />
+莱特法学硕士
 
-    <span>LiteLLM</span>
-  </a>
+[Open](/langsmith/trace-litellm)
 
-  <a href="/langsmith/trace-with-mistral">
-    <img alt="" />
+![](https://mintcdn.com/langchain-5e9cc07a/ZPKed1feKJ8F6LVo/images/providers/light/mistral.svg?fit=max\&auto=format\&n=ZPKed1feKJ8F6LVo\&q=85\&s=2b060bfbf269ab1b7f41f3a835f7a0b6)
 
-    <img alt="" />
+米斯特拉尔
 
-    <span>米斯特拉尔</span>
-  </a>
+[Open](/langsmith/trace-with-mistral)
 
-  <a href="/langsmith/trace-openai">
-    <img alt="" />
+![](https://mintcdn.com/langchain-5e9cc07a/ZPKed1feKJ8F6LVo/images/providers/light/openai.svg?fit=max\&auto=format\&n=ZPKed1feKJ8F6LVo\&q=85\&s=fb29ba01edf0644930f3eda68ab6c0c2)
 
-    <img alt="" />
+OpenAI
 
-    <span>OpenAI</span>
-  </a>
+[Open](/langsmith/trace-openai)
 
-  <a href="/langsmith/trace-with-openai-compatible">
-    <img alt="" />
+![](https://mintcdn.com/langchain-5e9cc07a/ZPKed1feKJ8F6LVo/images/providers/light/openai.svg?fit=max\&auto=format\&n=ZPKed1feKJ8F6LVo\&q=85\&s=fb29ba01edf0644930f3eda68ab6c0c2)
 
-    <img alt="" />
+OpenAI兼容API
 
-    <span>OpenAI兼容API</span>
-  </a>
-</div>
+[Open](/langsmith/trace-with-openai-compatible)
 
-<Callout icon="arrows-transfer-down">
-  **使用LangChain？** LangChain为100+LLM提供者提供了统一的接口，允许您通过设置环境变量来切换模型。 [Initialize a model](/oss/python/langchain/models#initialize-a-model)和LangSmith将自动跟踪您的申请。
-</Callout>
+**使用LangChain？** LangChain为100+LLM提供者提供了统一的接口，允许您通过设置环境变量来切换模型。 [Initialize a model](/oss/python/langchain/models#initialize-a-model)和LangSmith将自动跟踪您的申请。
 
 ## 代理框架
 
-<div>
-  <a href="/langsmith/trace-with-autogen">
-    <img alt="" />
+![](https://mintcdn.com/langchain-5e9cc07a/ZPKed1feKJ8F6LVo/images/providers/light/autogen.svg?fit=max\&auto=format\&n=ZPKed1feKJ8F6LVo\&q=85\&s=4000da450d02b72ba1115c3dcdc2fde4)
 
-    <img alt="" />
+自动生成器
 
-    <span>AutoGen</span>
-  </a>
+[Open](/langsmith/trace-with-autogen)
 
-  <a href="/langsmith/trace-claude-agent-sdk">
-    <img alt="" />
+![](https://mintcdn.com/langchain-5e9cc07a/ZPKed1feKJ8F6LVo/images/providers/light/claude.svg?fit=max\&auto=format\&n=ZPKed1feKJ8F6LVo\&q=85\&s=d3cae2da0f353a45594f57b7f2382aba)
 
-    <img alt="" />
+克劳德代理SDK
 
-    <span>克劳德代理SDK</span>
-  </a>
+[Open](/langsmith/trace-claude-agent-sdk)
 
-  <a href="/langsmith/trace-with-claude-managed-agents">
-    <img alt="" />
+![](https://mintcdn.com/langchain-5e9cc07a/ZPKed1feKJ8F6LVo/images/providers/light/claude.svg?fit=max\&auto=format\&n=ZPKed1feKJ8F6LVo\&q=85\&s=d3cae2da0f353a45594f57b7f2382aba)
 
-    <img alt="" />
+克劳德管理代理
 
-    <span>克劳德管理代理</span>
-  </a><a href="/langsmith/trace-with-crewai">
-    <img alt="" />
+[Open](/langsmith/trace-with-claude-managed-agents)
 
-    <img alt="" />
+![](https://mintcdn.com/langchain-5e9cc07a/ZPKed1feKJ8F6LVo/images/providers/light/crewai.svg?fit=max\&auto=format\&n=ZPKed1feKJ8F6LVo\&q=85\&s=5f262e7fa86dc071770356a652ddee8f)
 
-    <span>CrewAI</span>
-  </a>
+船员人工智能
 
-  <a href="/langsmith/trace-deep-agents">
-    <img alt="" />
+[Open](/langsmith/trace-with-crewai)
 
-    <span>Deep Agents</span>
-  </a>
+![](https://mintcdn.com/langchain-5e9cc07a/8njVp3mXF3LrAS1d/images/brand/docs-favicon.png?fit=max\&auto=format\&n=8njVp3mXF3LrAS1d\&q=85\&s=a61c2b4666f558992e1fd44750b08465)
 
-  <a href="/langsmith/trace-with-google-adk">
-    <img alt="" />
+Deep Agents
 
-    <img alt="" />
+[Open](/langsmith/trace-deep-agents)
 
-    <span>谷歌ADK</span>
-  </a>
+![](https://mintcdn.com/langchain-5e9cc07a/ZPKed1feKJ8F6LVo/images/providers/light/googleadk.svg?fit=max\&auto=format\&n=ZPKed1feKJ8F6LVo\&q=85\&s=b89f56d14d3d07aed99317fe34b20828)
 
-  <a href="/langsmith/trace-with-langchain">
-    <img alt="" />
+谷歌ADK
 
-    <span>LangChain</span>
-  </a>
+[Open](/langsmith/trace-with-google-adk)
 
-  <a href="/langsmith/trace-with-langgraph">
-    <img alt="" />
+![](https://mintcdn.com/langchain-5e9cc07a/8njVp3mXF3LrAS1d/images/brand/docs-favicon.png?fit=max\&auto=format\&n=8njVp3mXF3LrAS1d\&q=85\&s=a61c2b4666f558992e1fd44750b08465)
 
-    <span>LangGraph</span>
-  </a>
+LangChain
 
-  <a href="/langsmith/trace-with-mastra">
-    <img alt="" />
+[Open](/langsmith/trace-with-langchain)
 
-    <img alt="" />
+![](https://mintcdn.com/langchain-5e9cc07a/8njVp3mXF3LrAS1d/images/brand/docs-favicon.png?fit=max\&auto=format\&n=8njVp3mXF3LrAS1d\&q=85\&s=a61c2b4666f558992e1fd44750b08465)
 
-    <span>马斯特拉</span>
-  </a>
+LangGraph
 
-  <a href="/langsmith/trace-with-microsoft-agent-framework">
-    <img alt="" />
+[Open](/langsmith/trace-with-langgraph)
 
-    <img alt="" />
+![](https://mintcdn.com/langchain-5e9cc07a/ZPKed1feKJ8F6LVo/images/providers/light/mastra.svg?fit=max\&auto=format\&n=ZPKed1feKJ8F6LVo\&q=85\&s=4a14d6600d2b99a511b09271f9a5b57e)
 
-    <span>微软代理框架</span>
-  </a>
+马斯特拉
 
-  <a href="/langsmith/trace-with-openai-agents-sdk">
-    <img alt="" />
+[Open](/langsmith/trace-with-mastra)
 
-    <img alt="" />
+![](https://mintcdn.com/langchain-5e9cc07a/ZPKed1feKJ8F6LVo/images/providers/light/microsoft.svg?fit=max\&auto=format\&n=ZPKed1feKJ8F6LVo\&q=85\&s=9189910834f230f7f94115d88e7ec4bf)
 
-    <span>OpenAI代理商</span>
-  </a>
+微软代理框架
 
-  <a href="/langsmith/trace-with-opentelemetry">
-    <img alt="" />
+[Open](/langsmith/trace-with-microsoft-agent-framework)
 
-    <img alt="" />
+![](https://mintcdn.com/langchain-5e9cc07a/ZPKed1feKJ8F6LVo/images/providers/light/openai.svg?fit=max\&auto=format\&n=ZPKed1feKJ8F6LVo\&q=85\&s=fb29ba01edf0644930f3eda68ab6c0c2)
 
-    <span>开放遥测</span>
-  </a>
+OpenAI 代理
 
-  <a href="/langsmith/trace-with-pydantic-ai">
-    <img alt="" />
+[Open](/langsmith/trace-with-openai-agents-sdk)
 
-    <img alt="" />
+![](https://mintcdn.com/langchain-5e9cc07a/ZPKed1feKJ8F6LVo/images/providers/light/opentelemetry.svg?fit=max\&auto=format\&n=ZPKed1feKJ8F6LVo\&q=85\&s=84b763868676d132f14cc4055525c34d)
 
-    <span>PydanticAI</span>
-  </a>
+开放式遥测
 
-  <a href="/langsmith/trace-with-semantic-kernel">
-    <img alt="" />
+[Open](/langsmith/trace-with-opentelemetry)
 
-    <img alt="" />
+![](https://mintcdn.com/langchain-5e9cc07a/z7oQGiHwXv52HwOy/images/providers/light/pydanticai.svg?fit=max\&auto=format\&n=z7oQGiHwXv52HwOy\&q=85\&s=0c399e2c9d65c77eeb5644d3d7f2dca5)
 
-    <span>语义内核</span>
-  </a>
+派丹蒂克人工智能
 
-  <a href="/langsmith/trace-with-strands-agents">
-    <img alt="" />
+[Open](/langsmith/trace-with-pydantic-ai)
 
-    <img alt="" />
+![](https://mintcdn.com/langchain-5e9cc07a/ZPKed1feKJ8F6LVo/images/providers/light/microsoft.svg?fit=max\&auto=format\&n=ZPKed1feKJ8F6LVo\&q=85\&s=9189910834f230f7f94115d88e7ec4bf)
 
-    <span>股线代理</span>
-  </a>
+语义内核
 
-  <a href="/langsmith/trace-with-vercel-ai-sdk">
-    <img alt="" />
+[Open](/langsmith/trace-with-semantic-kernel)
 
-    <img alt="" />
+![](https://mintcdn.com/langchain-5e9cc07a/ZPKed1feKJ8F6LVo/images/providers/light/bedrock.svg?fit=max\&auto=format\&n=ZPKed1feKJ8F6LVo\&q=85\&s=d6fc326f6c429075add5a742c87d12b1)
 
-    <span>Vercel AI SDK</span>
-  </a>
-</div>
+股线代理
+
+[Open](/langsmith/trace-with-strands-agents)
+
+![](https://mintcdn.com/langchain-5e9cc07a/z7oQGiHwXv52HwOy/images/providers/light/vercel.svg?fit=max\&auto=format\&n=z7oQGiHwXv52HwOy\&q=85\&s=76a0a441ec1730cb68635a19a2a29032)
+
+Vercel人工智能SDK
+
+[Open](/langsmith/trace-with-vercel-ai-sdk)
 
 ## 语音人工智能框架
 
-<div>
-  <a href="/langsmith/trace-openai-realtime">
-    <img alt="" />
+![](https://mintcdn.com/langchain-5e9cc07a/ZPKed1feKJ8F6LVo/images/providers/light/openai.svg?fit=max\&auto=format\&n=ZPKed1feKJ8F6LVo\&q=85\&s=fb29ba01edf0644930f3eda68ab6c0c2)
 
-    <img alt="" />
+OpenAI 实时
 
-    <span>OpenAI实时</span>
-  </a>
+[Open](/langsmith/trace-openai-realtime)
 
-  <a href="/langsmith/trace-gemini-live">
-    <img alt="" />
+![](https://mintcdn.com/langchain-5e9cc07a/ZPKed1feKJ8F6LVo/images/providers/light/gemini.svg?fit=max\&auto=format\&n=ZPKed1feKJ8F6LVo\&q=85\&s=486f57c43a26c9661700c37d0f575c05)
 
-    <img alt="" />
+双子座现场
 
-    <span>双子座直播</span>
-  </a>
+[Open](/langsmith/trace-gemini-live)
 
-  <a href="/langsmith/trace-with-livekit">
-    <img alt="" />
+![](https://mintcdn.com/langchain-5e9cc07a/ZPKed1feKJ8F6LVo/images/providers/light/livekit.svg?fit=max\&auto=format\&n=ZPKed1feKJ8F6LVo\&q=85\&s=e8c6fd5de3893374c7b2b57c68f97de8)
 
-    <img alt="" />
+直播套件
 
-    <span>Livekit</span>
-  </a>
+[Open](/langsmith/trace-with-livekit)
 
-  <a href="/langsmith/trace-with-pipecat">
-    <img alt="" />
+![](https://mintcdn.com/langchain-5e9cc07a/ZPKed1feKJ8F6LVo/images/providers/light/pipecat.svg?fit=max\&auto=format\&n=ZPKed1feKJ8F6LVo\&q=85\&s=91517611a27adb6cde1a46a81c76233d)
 
-    <img alt="" />
+管道猫[Open](/langsmith/trace-with-pipecat)
 
-    <span>管道猫</span>
-  </a>
-</div>## 开发者工具
+## 开发者工具
 
-<div>
-  <a href="/langsmith/trace-claude-code">
-    <img alt="" />
+![](https://mintcdn.com/langchain-5e9cc07a/ZPKed1feKJ8F6LVo/images/providers/light/claude.svg?fit=max\&auto=format\&n=ZPKed1feKJ8F6LVo\&q=85\&s=d3cae2da0f353a45594f57b7f2382aba)
 
-    <img alt="" />
+克劳德·科德
 
-    <span>克劳德代码</span>
-  </a>
+[Open](/langsmith/trace-claude-code)
 
-  <a href="/langsmith/trace-with-codex">
-    <img alt="" />
+![](https://mintcdn.com/langchain-5e9cc07a/ZPKed1feKJ8F6LVo/images/providers/light/openai.svg?fit=max\&auto=format\&n=ZPKed1feKJ8F6LVo\&q=85\&s=fb29ba01edf0644930f3eda68ab6c0c2)
 
-    <img alt="" />
+OpenAI 法典
 
-    <span>OpenAI法典</span>
-  </a>
+[Open](/langsmith/trace-with-codex)
 
-  <a href="/langsmith/trace-with-opencode">
-    <img alt="" />
+![](https://mintcdn.com/langchain-5e9cc07a/oO5HjFJbtRKTB5uq/images/providers/light/opencode.svg?fit=max\&auto=format\&n=oO5HjFJbtRKTB5uq\&q=85\&s=25a9d6bd2ec68f699ff7d461b2922dad)
 
-    <img alt="" />
+开放代码
 
-    <span>开放代码</span>
-  </a>
+[Open](/langsmith/trace-with-opencode)
 
-  <a href="/langsmith/trace-with-cursor">
-    <img alt="" />
+![](https://mintcdn.com/langchain-5e9cc07a/zsHfIJsc-kEYhUz3/images/providers/light/cursor.svg?fit=max\&auto=format\&n=zsHfIJsc-kEYhUz3\&q=85\&s=9f47067f77df66b7d003ad613ea8d7a6)
 
-    <img alt="" />
+光标
 
-    <span>光标</span>
-  </a>
+[Open](/langsmith/trace-with-cursor)
 
-  <a href="/langsmith/trace-with-instructor">
-    <img alt="" />
+![](https://mintcdn.com/langchain-5e9cc07a/ZPKed1feKJ8F6LVo/images/providers/light/instructor.svg?fit=max\&auto=format\&n=ZPKed1feKJ8F6LVo\&q=85\&s=d9e2a38d8afcb3f166057e835d4717a7)
 
-    <img alt="" />
+导师
 
-    <span>讲师</span>
-  </a>
+[Open](/langsmith/trace-with-instructor)
 
-  <a href="/langsmith/trace-with-n8n">
-    <img alt="" />
+![](https://mintcdn.com/langchain-5e9cc07a/r98TU0ib_rpHFZca/images/providers/light/n8n.svg?fit=max\&auto=format\&n=r98TU0ib_rpHFZca\&q=85\&s=4fa6a6e73885330613947815c52d1499)
 
-    <img alt="" />
+n8n
 
-    <span>n8n</span>
-  </a>
+[Open](/langsmith/trace-with-n8n)
 
-  <a href="/langsmith/trace-with-pi">
-    <img alt="" />
+![](https://mintcdn.com/langchain-5e9cc07a/4TrOZZ3BK2K-YJOg/images/providers/light/pi.svg?fit=max\&auto=format\&n=4TrOZZ3BK2K-YJOg\&q=85\&s=a7b450733e32c31c1052067940c4ad48)
 
-    <img alt="" />
+圆周率
 
-    <span>Pi</span>
-  </a>
+[Open](/langsmith/trace-with-pi)
 
-  <a href="/langsmith/trace-with-temporal">
-    <img alt="" />
+![](https://mintcdn.com/langchain-5e9cc07a/z7oQGiHwXv52HwOy/images/providers/light/temporal.svg?fit=max\&auto=format\&n=z7oQGiHwXv52HwOy\&q=85\&s=3c34b851e1be36297688e71ece797843)
 
-    <img alt="" />
+颞叶
 
-    <span>颞叶</span>
-  </a>
+[Open](/langsmith/trace-with-temporal)
 
-  <a href="/langsmith/trace-with-vscode-copilot">
-    <img alt="" />
+![](https://mintcdn.com/langchain-5e9cc07a/VoDejLXW9qn9e7mU/images/providers/light/vscode.svg?fit=max\&auto=format\&n=VoDejLXW9qn9e7mU\&q=85\&s=15987426cb92b1921d8d41f902df02ac)
 
-    <img alt="" />
+VS 代码副驾驶
 
-    <span>VS 代码副驾驶</span>
-  </a>
-</div>
+[Open](/langsmith/trace-with-vscode-copilot)
 
 这些编码代理集成遵循共享的[metadata contract](/langsmith/coding-agent-metadata-contract)，该[metadata contract](/langsmith/coding-agent-metadata-contract)标准化了它们发出的跟踪字段。
 
 ***
 
-<div>
-  <Callout icon="terminal-2">
-    [Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
-  </Callout>
+[Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
 
-  <Callout icon="edit">
-    [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/integrations.mdx) 或 [file an issue](https://github.com/langchain-ai/docs/issues/new/choose)。
-  </Callout>
-</div>
+[Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/integrations.mdx) 或 [file an issue](https://github.com/langchain-ai/docs/issues/new/choose)。

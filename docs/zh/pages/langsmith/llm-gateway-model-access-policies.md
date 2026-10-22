@@ -6,11 +6,11 @@
 
 控制您的组织、工作区、用户或 API 密钥可通过 LLM 网关访问哪些模型提供程序和模型。
 
-<Note>
-  LLM 网关位于[beta](/langsmith/release-stages)。
-</Note>
+> [!注意]
+>
+> LLM 网关位于[beta](/langsmith/release-stages)。
 
-模型访问策略定义了通过[LLM Gateway](/langsmith/llm-gateway)允许哪些提供者和模型。网关会阻止对策略不包含的提供者或模型的请求，并返回 `403` 响应。如果没有适用的策略，则所有提供商和模型均可用。
+模型访问策略定义通过[LLM Gateway](/langsmith/llm-gateway)允许哪些提供者和模型。网关会阻止对策略不包含的提供者或模型的请求，并返回 `403` 响应。如果没有适用的策略，则所有提供商和模型均可用。
 
 ## 策略配置
 
@@ -38,9 +38,9 @@
 
 ## 创建模型访问策略
 
-<Warning>
-  创建和管理策略需要 `organization:manage` 权限。有关完整权限细分，请参阅[Traces, Engine, and access control](/langsmith/llm-gateway-access)。
-</Warning>
+> [!警告]
+>
+> 创建和管理策略需要 `organization:manage` 权限。有关完整权限细分，请参阅[Traces, Engine, and access control](/langsmith/llm-gateway-access)。
 
 1. 转至 **LLM Gateway** 并选择 **模型访问**。
 2. 单击**创建模型访问**。
@@ -58,12 +58,6 @@
 * [Per-customer policies](/langsmith/llm-gateway-header-policies)：通过自定义请求标头拆分策略，以便每个最终客户获得自己的限额。
 * [Data protection](/langsmith/llm-gateway-data-protection)：添加数据保护策略。
 
-***<div>
-  <Callout icon="terminal-2">
-    [Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
-  </Callout>
+***[Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
 
-  <Callout icon="edit">
-    [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/llm-gateway-model-access-policies.mdx) 或 [file an issue](https://github.com/langchain-ai/docs/issues/new/choose)。
-  </Callout>
-</div>
+[Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/llm-gateway-model-access-policies.mdx) 或 [file an issue](https://github.com/langchain-ai/docs/issues/new/choose)。

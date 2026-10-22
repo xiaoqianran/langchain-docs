@@ -8,9 +8,9 @@
 
 代理身份控制代理在与应用程序和服务交互时使用的[credentials](/langsmith/fleet/workspace-admin)。
 
-<Warning>
-  代理身份一旦设置，就无法更改。
-</Warning>
+> [!警告]
+>
+> 代理身份一旦设置，就无法更改。
 
 ## 固定凭证（“Claws”）
 
@@ -39,18 +39,12 @@
 设置代理身份：
 
 1. 在[LangSmith UI](https://smith.langchain.com?utm_source=docs\&utm_medium=cta\&utm_campaign=langsmith-signup\&utm_content=langsmith-fleet-agent-identity)中，导航到要编辑的代理。
-2. 点击右上角<Icon icon="pencil" /> **编辑**。
+2. 单击右上角的“**编辑**”。
 3. 单击“**设置身份**”并选择您要使用的身份。
 4. 单击“**保存**”。
 
 ***
 
-<div>
-  <Callout icon="terminal-2">
-    [Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
-  </Callout>
+[Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
 
-  <Callout icon="edit">
-    [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/fleet/agent-identity.mdx) 或 [file an issue](https://github.com/langchain-ai/docs/issues/new/choose)。
-  </Callout>
-</div>
+[Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/fleet/agent-identity.mdx) 或 [file an issue](https://github.com/langchain-ai/docs/issues/new/choose)。

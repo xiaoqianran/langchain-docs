@@ -7,7 +7,7 @@
 LangSmith [Studio](/langsmith/studio) 提供了用于检查、调试和改进应用程序执行之外的工具。通过使用跟踪、数据集和提示，您可以详细了解应用程序的行为方式、衡量其性能并优化其输出：
 
 * [Iterate on prompts](#iterate-on-prompts)：直接或通过 Playground 修改图形节点内的提示。
-* [Run experiments over a dataset](#run-experiments-over-a-dataset)：在LangSmith数据集上执行助手以评分和比较结果。
+* [Run experiments over a dataset](#run-experiments-over-a-dataset)：在 LangSmith 数据集上执行助手以评分和比较结果。
 * [Debug LangSmith traces](#debug-langsmith-traces)：将跟踪的运行导入 Studio 并可选择将它们克隆到本地代理中。
 * [Add a node to a dataset](#add-node-to-dataset)：将部分线程历史记录转换为数据集示例以进行评估或进一步分析。
 
@@ -55,67 +55,67 @@ Studio 允许您直接从图形界面编辑各个节点内使用的提示。
   )
   ```
 
-<Accordion title="Full example configuration">
-  ```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  ## Using Pydantic
-  from pydantic import BaseModel, Field
-  from typing import Annotated, Literal
-
-  class Configuration(BaseModel):
-      """The configuration for the agent."""
-
-      system_prompt: str = Field(
-          default="You are a helpful AI assistant.",
-          description="The system prompt to use for the agent's interactions. "
-          "This prompt sets the context and behavior for the agent.",
-          json_schema_extra={
-              "langgraph_nodes": ["call_model"],
-              "langgraph_type": "prompt",
-          },
-      )
-
-      model: Annotated[
-          Literal[
-              "anthropic/claude-sonnet-4-6",
-              "anthropic/claude-haiku-4-5-20251001",
-              "openai/gpt-5.5",
-              "openai/gpt-5.4-mini",
-          ],
-          {"__template_metadata__": {"kind": "llm"}},
-      ] = Field(
-          default="openai/gpt-5.4-mini",
-          description="The name of the language model to use for the agent's main interactions. "
-          "Should be in the form: provider/model-name.",
-          json_schema_extra={"langgraph_nodes": ["call_model"]},
-      )
-
-  ## Using Dataclasses
-  from dataclasses import dataclass, field
-
-  @dataclass(kw_only=True)
-  class Configuration:
-      """The configuration for the agent."""
-
-      system_prompt: str = field(
-          default="You are a helpful AI assistant.",
-          metadata={
-              "description": "The system prompt to use for the agent's interactions. "
-              "This prompt sets the context and behavior for the agent.",
-              "json_schema_extra": {"langgraph_nodes": ["call_model"]},
-          },
-      )
-
-      model: Annotated[str, {"__template_metadata__": {"kind": "llm"}}] = field(
-          default="anthropic/claude-sonnet-4-6",
-          metadata={
-              "description": "The name of the language model to use for the agent's main interactions. "
-              "Should be in the form: provider/model-name.",
-              "json_schema_extra": {"langgraph_nodes": ["call_model"]},
-          },
-      )
-
-  ```
-</Accordion>
+> **完整示例配置**
+>
+> ```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> ## Using Pydantic
+> from pydantic import BaseModel, Field
+> from typing import Annotated, Literal
+>
+> class Configuration(BaseModel):
+>     """The configuration for the agent."""
+>
+>     system_prompt: str = Field(
+>         default="You are a helpful AI assistant.",
+>         description="The system prompt to use for the agent's interactions. "
+>         "This prompt sets the context and behavior for the agent.",
+>         json_schema_extra={
+>             "langgraph_nodes": ["call_model"],
+>             "langgraph_type": "prompt",
+>         },
+>     )
+>
+>     model: Annotated[
+>         Literal[
+>             "anthropic/claude-sonnet-4-6",
+>             "anthropic/claude-haiku-4-5-20251001",
+>             "openai/gpt-5.5",
+>             "openai/gpt-5.4-mini",
+>         ],
+>         {"__template_metadata__": {"kind": "llm"}},
+>     ] = Field(
+>         default="openai/gpt-5.4-mini",
+>         description="The name of the language model to use for the agent's main interactions. "
+>         "Should be in the form: provider/model-name.",
+>         json_schema_extra={"langgraph_nodes": ["call_model"]},
+>     )
+>
+> ## Using Dataclasses
+> from dataclasses import dataclass, field
+>
+> @dataclass(kw_only=True)
+> class Configuration:
+>     """The configuration for the agent."""
+>
+>     system_prompt: str = field(
+>         default="You are a helpful AI assistant.",
+>         metadata={
+>             "description": "The system prompt to use for the agent's interactions. "
+>             "This prompt sets the context and behavior for the agent.",
+>             "json_schema_extra": {"langgraph_nodes": ["call_model"]},
+>         },
+>     )
+>
+>     model: Annotated[str, {"__template_metadata__": {"kind": "llm"}}] = field(
+>         default="anthropic/claude-sonnet-4-6",
+>         metadata={
+>             "description": "The name of the language model to use for the agent's main interactions. "
+>             "Should be in the form: provider/model-name.",
+>             "json_schema_extra": {"langgraph_nodes": ["call_model"]},
+>         },
+>     )
+>
+> ```
 
 #### 在 UI 中编辑提示
 
@@ -140,20 +140,20 @@ Studio 允许您通过针对预定义的 LangSmith [dataset](/langsmith/evaluati
 
 ### 先决条件
 
-在运行实验之前，请确保您具备以下条件：* **LangSmith 数据集**：您的数据集应包含您想要测试的输入，以及可选的用于比较的参考输出。输入架构必须与助手所需的输入架构相匹配。有关模式的更多信息，请参阅[graph API schema documentation](/oss/python/langgraph/graph-api#schema)。有关创建数据集的更多信息，请参阅[How to Manage Datasets](/langsmith/manage-datasets-in-application#create-a-dataset-and-add-examples)。
+在运行实验之前，请确保您具备以下条件：* **A LangSmith 数据集**：您的数据集应包含您想要测试的输入，以及可选的用于比较的参考输出。输入架构必须与助手所需的输入架构相匹配。有关模式的更多信息，请参阅[graph API schema documentation](/oss/python/langgraph/graph-api#schema)。有关创建数据集的更多信息，请参阅[How to Manage Datasets](/langsmith/manage-datasets-in-application#create-a-dataset-and-add-examples)。
 * **（可选）评估器**：您可以将评估器（例如，LLM-as-a-Judge、启发式或自定义函数）附加到 LangSmith 中的数据集。这些将在图表处理完所有输入后自动运行。
 * **正在运行的应用程序**：可以针对以下对象运行实验：
   * 部署在[LangSmith](/langsmith/deployment)上的应用程序。
   * 通过[langgraph-cli](/langsmith/local-dev-testing)启动本地运行的应用程序。
 
-<Note>
-  工作室实验遵循与其他实验相同的 [data retention](/langsmith/usage-and-billing#data-retention) 规则。默认情况下，跟踪具有基本层保留期（14 天）。但是，如果向跟踪添加反馈，跟踪将自动升级到延长级别保留（截至 2026 年 9 月 14 日为 180 天）。可以通过以下两种方式之一添加反馈：
-
-  * [dataset has evaluators configured](/langsmith/bind-evaluator-to-dataset)。
-  * [Feedback](/langsmith/observability-concepts#feedback) 手动添加到轨迹中。
-
-  这种自动升级会增加跟踪的保留期和成本。更多详情请参考[Data retention auto-upgrades](/langsmith/usage-and-billing#how-it-works)。
-</Note>
+> [!注意]
+>
+> 工作室实验遵循与其他实验相同的 [data retention](/langsmith/usage-and-billing#data-retention) 规则。默认情况下，跟踪具有基本层保留期（14 天）。但是，如果向跟踪添加反馈，跟踪将自动升级到延长级别保留（截至 2026 年 9 月 14 日为 180 天）。可以通过以下两种方式之一添加反馈：
+>
+> * [dataset has evaluators configured](/langsmith/bind-evaluator-to-dataset)。
+> * [Feedback](/langsmith/observability-concepts#feedback) 手动添加到迹线中。
+>
+> 此自动升级会增加跟踪的保留期和成本。更多详情请参考[Data retention auto-upgrades](/langsmith/usage-and-billing#how-it-works)。
 
 ### 实验设置1. 启动实验。单击 Studio 页面右上角的 **运行实验** 按钮。
 2. 选择您的数据集。在出现的模式中，选择要用于实验的数据集（或特定的数据集拆分），然后单击 **开始**。
@@ -178,13 +178,13 @@ Studio 允许您通过针对预定义的 LangSmith [dataset](/langsmith/evaluati
 * LangSmith 追踪螺纹
 * A [locally running agent](/langsmith/local-dev-testing)。
 
-<Info>
-  **当地代理要求**
-
-  * 语言图>=0.3.18
-  * langgraph-api>=0.0.32
-  * 包含远程跟踪中存在的同一组节点
-</Info>
+> [!注意]
+>
+> **当地代理要求**
+>
+> * 语言图>=0.3.18
+> * langgraph-api>=0.0.32
+> * 包含远程跟踪中存在的同一组节点
 
 #### 克隆线程
 
@@ -198,7 +198,7 @@ Studio 允许您通过针对预定义的 LangSmith [dataset](/langsmith/evaluati
 
 ## 将节点添加到数据集
 
-将线程日志中的节点中的 [examples](/langsmith/evaluation-concepts#examples) 添加到 [LangSmith datasets](/langsmith/manage-datasets)。这对于评估代理的各个步骤很有用。1. 选择一个线程。
+从线程日志中的节点将[examples](/langsmith/evaluation-concepts#examples)添加到[LangSmith datasets](/langsmith/manage-datasets)。这对于评估代理的各个步骤很有用。1. 选择一个线程。
 2. 单击“**添加到数据集**”。
 3. 选择要添加到数据集的输入/输出的节点。
 4. 对于每个选定的节点，选择要在其中创建示例的目标数据集。默认情况下，将选择特定助手和节点的数据集。如果此数据集尚不存在，则会创建它。
@@ -209,12 +209,6 @@ Studio 允许您通过针对预定义的 LangSmith [dataset](/langsmith/evaluati
 
 ***
 
-<div>
-  <Callout icon="terminal-2">
-    [Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
-  </Callout>
+[Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
 
-  <Callout icon="edit">
-    [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/observability-studio.mdx) 或 [file an issue](https://github.com/langchain-ai/docs/issues/new/choose)。
-  </Callout>
-</div>
+[Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/observability-studio.mdx) 或 [file an issue](https://github.com/langchain-ai/docs/issues/new/choose)。

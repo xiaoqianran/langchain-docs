@@ -74,6 +74,10 @@ Browse the complete collection of integrations available for Python. LangChain P
 >
 > Signed, independently verifiable action records for agent tool calls, chained planned to confirmed.
 
+> **[Agent Pulse](https://www.agentspulse.ai/docs/langchain)**
+>
+> Agent Pulse prices model, tool, and failed calls in LangChain and LangGraph runs per user, request, and agent, and budgets can stop calls before they are sent.
+
 > **[agentstate](https://skamalj.github.io/agentstate-reducer/)**
 >
 > DynamoDB, Cosmos DB and Firestore checkpointers with bounded history and a long-term memory hook, plus semantic-search stores.
@@ -421,6 +425,10 @@ Browse the complete collection of integrations available for Python. LangChain P
 > **[Cognee](https://docs.cognee.ai/)**
 >
 > Memory layer for AI applications and agents.
+
+> **[CommentScraperLoader](https://comment-scraper.com/langchain)**
+>
+> Loads local JSON exports of Reddit and Hacker News threads made with the Comment Scraper browser extension, one Document per comment.
 
 > **[comply54](https://comply54.io/langchain)**
 >

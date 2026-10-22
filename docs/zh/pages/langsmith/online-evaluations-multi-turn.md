@@ -6,7 +6,9 @@
 
 多轮在线评估器允许您评估人类和代理之间的整个对话，而不仅仅是个人交流。他们测量线程中所有回合的端到端交互质量。
 
-<Tip>要使用LangChain管理的线程级判断而不配置模型、API密钥或提示，请参阅[LangChain Tuned Evaluators](/langsmith/tuned-evaluators)。</Tip>
+> [!提示]
+>
+> 要使用LangChain管理的线程级判断而不配置模型、API密钥或提示，请参阅[LangChain Tuned Evaluators](/langsmith/tuned-evaluators)。
 
 您可以使用多轮评估来衡量：
 
@@ -14,13 +16,15 @@
 2.语义结果：实际发生了什么，任务是否成功。
 3. 轨迹：对话如何展开，包括工具调用的轨迹。
 
-<Note>多轮在线评估器可以默认延长跟踪保留时间。您可以在配置评估器时选择退出，以便跟踪保留项目的配置保留层。如果另一个操作显式延长保留时间或项目已使用延长保留时间，跟踪仍会升级。有关逐步选择退出的说明，请参阅[Manage evaluator trace retention](/langsmith/evaluators#manage-evaluator-trace-retention)。详情请参阅[data retention auto-upgrades](/langsmith/usage-and-billing#data-retention-auto-upgrades).</Note>
+> [!注意]
+>
+> 默认情况下，多轮在线评估器可以延长跟踪保留时间。您可以在配置评估器时选择退出，以便跟踪保留项目的配置保留层。如果另一个操作显式延长保留时间或项目已使用延长保留时间，跟踪仍会升级。有关逐步选择退出的说明，请参阅[Manage evaluator trace retention](/langsmith/evaluators#manage-evaluator-trace-retention)。详情请参见[data retention auto-upgrades](/langsmith/usage-and-billing#data-retention-auto-upgrades)。
 
 ## 它是如何工作的
 
 多轮在线评估器遵循以下评估生命周期：1. **跟踪摄取**：对话中的每个轮次都作为单独的运行进行跟踪，并使用共享线程 ID 与线程关联。
 2. **空闲时间检测**：摄取线程中的最后一个跟踪后，LangSmith 等待配置的空闲时间过去。此空闲期表示对话已完成并准备好进行评估。
-3. **消息组装**：LangSmith从线程中的每个跟踪收集`messages`并将它们组装成单个对话历史记录。如果每个跟踪仅包含最新消息，则 LangSmith 将各轮消息缝合在一起。如果每个跟踪包含完整的历史记录，LangSmith 会直接使用它。由于线程中的连续跟踪经常重新发送先前的历史记录，因此 LangSmith 会删除重叠消息，因此每个消息仅出现一次。结果是 OpenAI 聊天格式 (`{"role": ..., "content": ...}`) 的单个消息列表，这就是提示中的 `all_messages` 变量解析的内容。
+3. **消息组装**：LangSmith从线程中的每个跟踪中收集`messages`并将它们组装成单个对话历史记录。如果每个跟踪仅包含最新消息，则 LangSmith 将各轮消息缝合在一起。如果每个跟踪包含完整的历史记录，LangSmith 会直接使用它。由于线程中的连续跟踪经常重新发送先前的历史记录，因此 LangSmith 会删除重叠消息，因此每个消息仅出现一次。结果是 OpenAI 聊天格式 (`{"role": ..., "content": ...}`) 的单个消息列表，这就是提示中的 `all_messages` 变量解析的内容。
 4. **LLM 作为法官评估**：组装的对话将传递到您配置的 LLM 作为法官提示。评估者根据您的标准对整个线程进行评分：语义意图、结果或轨迹。5. **反馈记录**：评估者使用您配置的与线程关联的反馈键将反馈写入LangSmith。
 
 此生命周期意味着多轮评估器每个完成的线程运行一次，而不是每个跟踪运行一次。如果您想要每条轨迹评估，请使用[run-level online evaluators](/langsmith/online-evaluations-llm-as-judge)。
@@ -32,13 +36,13 @@
   * 如果每个跟踪的顶级输入和输出仅包含对话中的最新消息，LangSmith将自动将跨轮的消息组合成一个线程。
   * 如果每个跟踪的顶级输入和输出包含完整的对话历史记录，LangSmith将直接使用它。
 
-<Note>
-  如果您的跟踪不遵循上述格式，线程级评估器将无法工作。您需要更新跟踪到 LangSmith 的方式，以确保每个跟踪的顶级输入和输出包含 `messages` 列表。
+> [!注意]
+>
+> 如果您的跟踪不遵循上述格式，线程级别评估器将无法工作。您需要更新跟踪到 LangSmith 的方式，以确保每个跟踪的顶级输入和输出包含 `messages` 列表。
+>
+> 请参阅[troubleshooting](/langsmith/online-evaluations-multi-turn#troubleshooting)部分了解更多信息。
 
-  请参阅[troubleshooting](/langsmith/online-evaluations-multi-turn#troubleshooting)部分了解更多信息。
-</Note>
-
-## 配置1. 导航到 **跟踪** 页面并选择跟踪项目或代理环境。
+＃＃ 配置1. 导航到 **跟踪** 页面并选择跟踪项目或代理环境。
 
 2. 单击“**评估器**”选项卡，然后单击“**+ 评估器**”。在“从头开始创建”下选择“LLM 作为法官评估者”。在“**源**”下，选择“**线程**”。
 
@@ -52,15 +56,15 @@
 
    第一次配置线程级评估器时，您可以定义空闲时间，即线程中最后一次跟踪之后、线程被视为完成并准备好评估之前的时间量。该值应反映应用程序中用户交互的预期长度。空闲时间默认为 10 分钟，且不能设置低于 2 分钟。
 
-   <Note>
-     空闲时间是项目级别的设置。它适用于项目中的每个线程级评估器以及每个项目类型为 **Threads** 的 [automation rule](/langsmith/rules#set-the-thread-idle-time)。
-   </Note><Tip>
-     首次测试评估器时，请使用较短的空闲时间，以便您可以快速看到结果，但最少需要 2 分钟。验证后，增加它以匹配用户交互的预期长度。
-   </Tip>
+   > [!注意]
+   >
+   > 空闲时间是项目级设置。它适用于项目中的每个线程级评估器以及每个项目类型为 **Threads** 的 [automation rule](/langsmith/rules#set-the-thread-idle-time)。> [!提示]
+   >
+   > 首次测试评估器时，请使用较短的空闲时间，以便您可以快速看到结果，但最少需要 2 分钟。验证后，增加它以匹配用户交互的预期长度。
 
 6. **配置您的模型。**
 
-   选择您想要用于评估器的提供商和模型。线程往往会变长，因此您应该使用具有较高上下文窗口的模型，以避免遇到限制。例如，OpenAI 的 GPT-5.4 mini 或 Gemini 2.5 Flash 都是不错的选择，因为它们都具有 1M+ 令牌上下文窗口。
+   选择您想要用于评估器的提供商和模型。线程往往会变长，因此您应该使用具有较高上下文窗口的模型，以避免遇到限制。例如，OpenAI 的 GPT-5.4 mini 或 Gemini 2.5 Flash 都是不错的选择，因为它们都有 1M+ 令牌上下文窗口。
 
 7. **配置您的 LLM 法官提示。**
 
@@ -72,9 +76,9 @@
 
    配置反馈键的名称、要收集的反馈的格式，并可选择启用反馈推理。
 
-   <Warning>
-     **不建议**对线程级求值器和运行级求值器使用相同的反馈键，因为很难区分两者。
-   </Warning>
+   > [!警告]
+   >
+   > **不建议**对线程级求值器和运行级求值器使用相同的反馈键，因为很难区分两者。
 
 9. **保存您的评估器。**
 
@@ -82,20 +86,20 @@
 
 ## 评估轨迹`trajectory` 是线程求值器可以使用的变量之一，与 `all_messages`、`human_ai_pairs` 和 `first_human_last_ai` 一起使用。它解析为对话的[trajectory](/langsmith/observability-concepts#trajectories)：从开始到结束的扁平、有序的消息列表，包括工具调用及其结果。用它来对代理所采取的路径进行评分，例如它是否选择了正确的工具，遵循其计划，并没有浪费步骤到达目的地。
 
-<Note>
-  在 [LangSmith Cloud](/langsmith/cloud) 上，`trajectory` 变量仅在 GCP 美国区域 ([smith.langchain.com](https://smith.langchain.com?utm_source=docs\&utm_medium=cta\&utm_campaign=langsmith-signup\&utm_content=langsmith-online-evaluations-multi-turn)) 中可用。它不适用于 GCP EU、GCP APAC 或 AWS 美国区域，也不适用于 [BYOC](/langsmith/byoc) 部署。
-
-  在 [switch queries to SmithDB](/langsmith/self-host-smithdb-install#step-6-switch-queries-to-smithdb) 之后，[Self-hosted](/langsmith/self-hosted) 安装支持 LangSmith v0.17 或更高版本上的 `trajectory` 变量。参见[SmithDB feature availability](/langsmith/self-host-smithdb-features)。
-</Note>
+> [!注意]
+>
+> 在 [LangSmith Cloud](/langsmith/cloud) 上，`trajectory` 变量仅在 GCP 美国区域 ([smith.langchain.com](https://smith.langchain.com?utm_source=docs\&utm_medium=cta\&utm_campaign=langsmith-signup\&utm_content=langsmith-online-evaluations-multi-turn)) 中可用。它不适用于 GCP EU、GCP APAC 或 AWS 美国区域，也不适用于 [BYOC](/langsmith/byoc) 部署。
+>
+> 在 [switch queries to SmithDB](/langsmith/self-host-smithdb-install#step-6-switch-queries-to-smithdb) 之后，[Self-hosted](/langsmith/self-hosted) 安装支持 LangSmith v0.17 或更高版本上的 `trajectory` 变量。参见[SmithDB feature availability](/langsmith/self-host-smithdb-features)。
 
 变量因法官收到的内容而异：* **`all_messages`、`human_ai_pairs` 和 `first_human_last_ai`** 解析为根据线程中每个根运行的输入和输出组装的对话。子运行中发生的工作（例如中间模型调用、工具调用和工具结果）不包括在内，除非根运行自己的输入或输出包含它。 human\_ai\_pairs 和first\_ human\_last\_ai 进一步缩小到仅用户和助理消息。
 * **`trajectory`** 解析为根据每个轨迹内的模型和工具调用构建的轨迹。其他视图忽略的工具调用和工具结果将被保留。
 
 对于每个变量解析为的消息形状，请参阅[Thread message variables](/langsmith/prompt-template-format#thread-message-variables)。
 
-<Warning>
-  轨迹通常比任何其他视图都大，因为它包含根运行和子运行。选择具有高上下文窗口的模型，如[Configuration](#configuration)的步骤 6 中所述，并期望每次评估使用更高的令牌。
-</Warning>
+> [!警告]
+>
+> 轨迹通常比任何其他视图都大，因为它包含根运行和子运行。选择具有高上下文窗口的模型，如[Configuration](#configuration)的步骤 6 中所述，并期望每次评估使用更高的令牌。
 
 ### 使用轨迹变量
 
@@ -108,9 +112,9 @@
 
 有关您可以改编的完整提示，请参阅[Example with trajectory context](/langsmith/prompt-template-format#example-with-trajectory-context)。
 
-<Warning>
-  当您创建评估器时，选择是固定的。要在 `trajectory` 和其他线程变量之间移动现有赋值器，请将其删除并创建一个新变量。
-</Warning>
+> [!警告]
+>
+> 创建评估器时，选择是固定的。要在 `trajectory` 和其他线程变量之间移动现有赋值器，请将其删除并创建一个新变量。
 
 ### 设置和约束
 
@@ -140,7 +144,7 @@
 
 **检查评估者的状态**
 
-You can check when your evaluator was last run by heading to the **Evaluators** tab within a tracing project or agent environment and clicking the **Logs** button for the evaluator you created to view its run history.
+您可以通过前往跟踪项目或代理环境中的 **Evaluators** 选项卡并单击您创建的评估器的 **Logs** 按钮来查看其运行历史记录，从而检查评估器上次运行的时间。
 
 **检查发送给评估者的数据**
 
@@ -148,12 +152,6 @@ You can check when your evaluator was last run by heading to the **Evaluators** 
 
 ***
 
-<div>
-  <Callout icon="terminal-2">
-    [Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
-  </Callout>
+[Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时答案。
 
-  <Callout icon="edit">
-    [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/online-evaluations-multi-turn.mdx) 或 [file an issue](https://github.com/langchain-ai/docs/issues/new/choose)。
-  </Callout>
-</div>
+[Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/online-evaluations-multi-turn.mdx) 或 [file an issue](https://github.com/langchain-ai/docs/issues/new/choose)。

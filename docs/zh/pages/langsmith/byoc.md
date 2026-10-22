@@ -47,7 +47,7 @@ BYOC 在 AWS 上全面可用 (GA)。计划于 2026 年下半年支持更多云�
 * **[LLM Gateway](/langsmith/llm-gateway)**：使用一个 LangSmith API 密钥跨提供商调用模型，并集中实施支出、速率限制和数据保护策略。
 * **[LangSmith MCP](/langsmith/langsmith-remote-mcp)**：将MCP兼容的客户端连接到LangSmith查询数据。
 * **[Fleet](/langsmith/fleet/index)**：从模板、连接器和通道构建并运行无代码代理。
-* **[SmithDB](/langsmith/smithdb-sdk-migration)**：专门构建的跟踪数据可观察性后端，持久保存到您帐户中的 S3。* **[Engine](/langsmith/engine)**：自动检测、诊断和解决生产跟踪中发现的重复出现的问题。在 BYOC 上，Engine 在您自己的模型提供程序上运行其模型，并且您可以在 LangSmith UI 中配置 GitHub 应用程序和 Slack 应用程序。参见[Engine on BYOC](/langsmith/engine-self-hosted#engine-on-byoc)。
+* **[SmithDB](/langsmith/smithdb-sdk-migration)**：专门构建的跟踪数据可观察性后端，持久保存到您帐户中的 S3。 2026 年 10 月 21 日或之后创建的数据平面仅运行 SmithDB。 ClickHouse 已弃用，支持在 LangSmith v0.19 结束。* **[Engine](/langsmith/engine)**：自动检测、诊断和解决生产跟踪中发现的重复出现的问题。在 BYOC 上，Engine 在您自己的模型提供程序上运行其模型，并且您可以在 LangSmith UI 中配置 GitHub 应用程序和 Slack 应用程序。参见[Engine on BYOC](/langsmith/engine-self-hosted#engine-on-byoc)。
 
 以下功能已计划但尚未支持：
 

@@ -6,9 +6,9 @@
 
 配置 Claude Code、Codex、Gemini CLI 和 Deep Agents Code 以通过 LLM 网关路由 LLM 呼叫。
 
-<Note>
-  LLM 网关位于[beta](/langsmith/release-stages)。
-</Note>
+> [!注意]
+>
+> LLM 网关位于[beta](/langsmith/release-stages)。
 
 配置编码代理以使用标准 LLM 网关端点来实现集中成本控制、可观察性和审计跟踪。网关对每个呼叫者进行身份验证、按模型 ID 进行路由、执行策略并跟踪每个呼叫。
 
@@ -29,7 +29,7 @@ export LANGSMITH_API_KEY="lsv2_..._....cbed3e"
 ## 克劳德代码 CLI
 
 Claude Code 支持两种独立的身份验证方法。配置前选择一项：* **工作区提供者秘密**：组织通过存储在工作区秘密中的提供者密钥来管理计费和策略。将此方法用于组织管理的使用。
-* **Claude 订阅 OAuth**：Anthropic 对用户的个人 Claude Plus 或 Max 订阅（而不是工作区提供者密钥）的 LLM 调用进行计费，而 LangSmith 仍然强制执行网关权限、策略和跟踪。当开发人员拥有自己的订阅时，请使用此方法。
+* **Claude 订阅 OAuth**：Anthropic 对用户的个人 Claude Plus 或 Max 订阅而不是工作区提供者密钥的 LLM 调用进行计费，而 LangSmith 仍然强制执行网关权限、策略和跟踪。当开发人员拥有自己的订阅时，请使用此方法。
 
 ### 使用工作区提供者机密
 
@@ -39,103 +39,97 @@ Claude Code 支持两种独立的身份验证方法。配置前选择一项：* 
 
 #### 仅使用 Anthropic 型号
 
-将 `ANTHROPIC_BASE_URL` 设置为 Anthropic 格式的网关端点。网关从端点推断 `anthropic/` 提供商前缀。<Tabs>
-  <Tab title="Settings file (recommended)">
-    `--settings` 文件中声明的变量优先于 shell 中已导出的任何内容，因此网关 URL 和 API 密钥保证覆盖环境中可能已设置的任何环境 `ANTHROPIC_*` 值（例如，从全局 shell 配置文件或其他工具）。
+将 `ANTHROPIC_BASE_URL` 设置为 Anthropic 格式的网关端点。网关从端点推断 `anthropic/` 提供商前缀。
 
-    ```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-    touch ~/.claude/langsmith_gateway.settings.json
-    echo '{"env": {"ANTHROPIC_BASE_URL": "https://gateway.smith.langchain.com/anthropic/","ANTHROPIC_API_KEY": "YOUR_LANGSMITH_KEY_HERE"}}' > ~/.claude/langsmith_gateway.settings.json
-    claude --settings ~/.claude/langsmith_gateway.settings.json
-    ```
+**设置文件（推荐）**`--settings` 文件中声明的变量优先于 shell 中已导出的任何内容，因此网关 URL 和 API 密钥保证覆盖环境中可能已设置的任何环境 `ANTHROPIC_*` 值（例如，从全局 shell 配置文件或其他工具）。
 
-    将 `YOUR_LANGSMITH_KEY_HERE` 替换为您的 LangSmith API 密钥。
-  </Tab>
+```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+touch ~/.claude/langsmith_gateway.settings.json
+echo '{"env": {"ANTHROPIC_BASE_URL": "https://gateway.smith.langchain.com/anthropic/","ANTHROPIC_API_KEY": "YOUR_LANGSMITH_KEY_HERE"}}' > ~/.claude/langsmith_gateway.settings.json
+claude --settings ~/.claude/langsmith_gateway.settings.json
+```
 
-  <Tab title="Environment variables">
-    ```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-    export ANTHROPIC_BASE_URL="https://gateway.smith.langchain.com/anthropic/"
-    export ANTHROPIC_API_KEY="$LANGSMITH_API_KEY"
+将 `YOUR_LANGSMITH_KEY_HERE` 替换为您的 LangSmith API 密钥。
 
-    claude
-    ```
-  </Tab>
-</Tabs>
+**环境变量**
+
+```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+export ANTHROPIC_BASE_URL="https://gateway.smith.langchain.com/anthropic/"
+export ANTHROPIC_API_KEY="$LANGSMITH_API_KEY"
+
+claude
+```
 
 #### 跨提供商路由模型层
 
 将 `ANTHROPIC_BASE_URL` 设置为网关根，然后将每个 Claude 模型层映射到提供商前缀的网关模型 ID。
 
-<Tabs>
-  <Tab title="Settings file (recommended)">
-    `--settings` 文件中声明的变量优先于 shell 中已导出的任何内容，因此网关 URL、API 密钥和模型映射保证覆盖任何环境 `ANTHROPIC_*` 值。
+**设置文件（推荐）**
 
-    ```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-    touch ~/.claude/langsmith_gateway.settings.json
-    echo '{"env": {"ANTHROPIC_BASE_URL": "https://gateway.smith.langchain.com","ANTHROPIC_API_KEY": "YOUR_LANGSMITH_KEY_HERE","ANTHROPIC_DEFAULT_OPUS_MODEL": "anthropic/claude-opus-5","ANTHROPIC_DEFAULT_SONNET_MODEL": "openai/gpt-5.6-terra","ANTHROPIC_DEFAULT_HAIKU_MODEL": "fireworks/accounts/fireworks/models/glm-5p2"}}' > ~/.claude/langsmith_gateway.settings.json
-    claude --settings ~/.claude/langsmith_gateway.settings.json
-    ```
+`--settings` 文件中声明的变量优先于 shell 中已导出的任何内容，因此网关 URL、API 密钥和模型映射保证覆盖任何环境 `ANTHROPIC_*` 值。
 
-    将 `YOUR_LANGSMITH_KEY_HERE` 替换为您的 LangSmith API 密钥。
-  </Tab>
+```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+touch ~/.claude/langsmith_gateway.settings.json
+echo '{"env": {"ANTHROPIC_BASE_URL": "https://gateway.smith.langchain.com","ANTHROPIC_API_KEY": "YOUR_LANGSMITH_KEY_HERE","ANTHROPIC_DEFAULT_OPUS_MODEL": "anthropic/claude-opus-5","ANTHROPIC_DEFAULT_SONNET_MODEL": "openai/gpt-5.6-terra","ANTHROPIC_DEFAULT_HAIKU_MODEL": "fireworks/accounts/fireworks/models/glm-5p2"}}' > ~/.claude/langsmith_gateway.settings.json
+claude --settings ~/.claude/langsmith_gateway.settings.json
+```
 
-  <Tab title="Environment variables">
-    ```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-    export ANTHROPIC_BASE_URL="https://gateway.smith.langchain.com"
-    export ANTHROPIC_API_KEY="$LANGSMITH_API_KEY"
-    export ANTHROPIC_DEFAULT_OPUS_MODEL="anthropic/claude-opus-5"
-    export ANTHROPIC_DEFAULT_SONNET_MODEL="openai/gpt-5.6-terra"
-    export ANTHROPIC_DEFAULT_HAIKU_MODEL="fireworks/accounts/fireworks/models/glm-5p2"
+将 `YOUR_LANGSMITH_KEY_HERE` 替换为您的 LangSmith API 密钥。
 
-    claude
-    ```
-  </Tab>
-</Tabs>
+**环境变量**
+
+```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+export ANTHROPIC_BASE_URL="https://gateway.smith.langchain.com"
+export ANTHROPIC_API_KEY="$LANGSMITH_API_KEY"
+export ANTHROPIC_DEFAULT_OPUS_MODEL="anthropic/claude-opus-5"
+export ANTHROPIC_DEFAULT_SONNET_MODEL="openai/gpt-5.6-terra"
+export ANTHROPIC_DEFAULT_HAIKU_MODEL="fireworks/accounts/fireworks/models/glm-5p2"
+
+claude
+```
 
 型号 ID 是示例。将每个层映射到工作区机密中配置的或通过 [Gateway Credits](/langsmith/llm-gateway-credits) 提供的任何模型；网关处理跨提供商的请求转换。详情请参见[API formats](/langsmith/llm-gateway-api-formats#understand-translation-behavior)。
 
-### 使用 Claude 订阅 OAuth<Note>
-  Claude 订阅 OAuth 需要有效的 Claude Code Plus 或 Max 订阅。如果您使用工作区 Anthropic API 密钥，请改用 [workspace provider secret](#use-a-workspace-provider-secret) 方法。
-</Note>
+### 使用 Claude 订阅 OAuth> [!注意]
+>
+> Claude 订阅 OAuth 需要有效的 Claude Code Plus 或 Max 订阅。如果您使用工作区 Anthropic API 密钥，请改用 [workspace provider secret](#use-a-workspace-provider-secret) 方法。
 
 Claude Code Plus 和 Max 用户可以通过网关发送其保存的 Anthropic OAuth 凭证。此模式不需要工作区提供者机密中的`ANTHROPIC_API_KEY`。
 
 使用您的订阅登录 Claude Code，然后配置网关。
 
-<Tabs>
-  <Tab title="Settings file (recommended)">
-    在 `--settings` 文件中声明的变量优先于 shell 中已导出的任何内容，因此网关 URL 和自定义标头保证覆盖任何环境 `ANTHROPIC_*` 值。设置文件还将您的 LangSmith API 密钥保留在 shell 历史记录和点文件之外。
+**设置文件（推荐）**
 
-    ```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-    touch ~/.claude/langsmith_gateway.settings.json
-    echo '{"env": {"ANTHROPIC_BASE_URL": "https://gateway.smith.langchain.com/anthropic","ANTHROPIC_CUSTOM_HEADERS": "X-Api-Key: YOUR_LANGSMITH_KEY_HERE"}}' > ~/.claude/langsmith_gateway.settings.json
-    claude --settings ~/.claude/langsmith_gateway.settings.json
-    ```
+在 `--settings` 文件中声明的变量优先于 shell 中已导出的任何内容，因此网关 URL 和自定义标头保证覆盖任何环境 `ANTHROPIC_*` 值。设置文件还将您的 LangSmith API 密钥保留在 shell 历史记录和点文件之外。
 
-    将 `YOUR_LANGSMITH_KEY_HERE` 替换为您的 LangSmith API 密钥。
-  </Tab>
+```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+touch ~/.claude/langsmith_gateway.settings.json
+echo '{"env": {"ANTHROPIC_BASE_URL": "https://gateway.smith.langchain.com/anthropic","ANTHROPIC_CUSTOM_HEADERS": "X-Api-Key: YOUR_LANGSMITH_KEY_HERE"}}' > ~/.claude/langsmith_gateway.settings.json
+claude --settings ~/.claude/langsmith_gateway.settings.json
+```
 
-  <Tab title="Environment variables">
-    ```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-    export ANTHROPIC_BASE_URL="https://gateway.smith.langchain.com/anthropic"
-    export ANTHROPIC_CUSTOM_HEADERS="X-Api-Key: $LANGSMITH_API_KEY"
+将 `YOUR_LANGSMITH_KEY_HERE` 替换为您的 LangSmith API 密钥。
 
-    claude
-    ```
+**环境变量**
 
-    将 `ANTHROPIC_CUSTOM_HEADERS` 值视为秘密：它嵌入了您的 LangSmith API 密钥，因此请将其排除在 shell 历史记录、点文件和共享配置之外。
-  </Tab>
-</Tabs>
+```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+export ANTHROPIC_BASE_URL="https://gateway.smith.langchain.com/anthropic"
+export ANTHROPIC_CUSTOM_HEADERS="X-Api-Key: $LANGSMITH_API_KEY"
+
+claude
+```
+
+将 `ANTHROPIC_CUSTOM_HEADERS` 值视为秘密：它嵌入了您的 LangSmith API 密钥，因此请将其排除在 shell 历史记录、点文件和共享配置之外。
 
 Claude Code 使用并刷新其保存的登录中的 OAuth 凭据，包括 `anthropic-beta` 标头中所需的 OAuth 功能。LangSmith API 密钥对网关请求进行身份验证，并始终遵守网关权限和策略。网关将 OAuth 承载转发到 Anthropic，因此 Anthropic 将对用户的 Claude 订阅而不是工作区提供者密钥的呼叫进行计费。要确认呼叫路由通过网关，请检查`gateway` 跟踪项目中是否出现跟踪，如[Verify the setup](#verify-the-setup) 中所述。
 
-<Warning>
-  对于此模式，请保留 `ANTHROPIC_AUTH_TOKEN` 和 `ANTHROPIC_API_KEY` 未设置。任一变量均优先于已保存的订阅登录名。
-</Warning>
+> [!警告]
+>
+> 在此模式下，保留 `ANTHROPIC_AUTH_TOKEN` 和 `ANTHROPIC_API_KEY` 未设置。任一变量均优先于已保存的订阅登录名。
 
-<Warning>
-  配置网关时，Claude Desktop 插件会中断。
-</Warning>
+> [!警告]
+>
+> 配置网关时，克劳德桌面插件会中断。
 
 ## Codex CLI
 
@@ -161,9 +155,9 @@ codex
 
 要改用自带密钥模型，请将 `model` 替换为其提供商前缀 ID，例如 `openai/gpt-5.4-mini`。
 
-<Warning>
-  配置网关时 Codex Desktop 插件会中断。 TOML 配置强制通过网关进行身份验证，因此OpenAI 不再直接处理插件身份验证。
-</Warning>
+> [!警告]
+>
+> 配置网关时，Codex Desktop 插件会中断。 TOML 配置强制通过网关进行身份验证，因此OpenAI 不再直接处理插件身份验证。
 
 ## Gemini CLIGemini CLI 发送 Google 的本机生成内容请求，标准端点不会公开该请求。按照[Direct model access](/langsmith/llm-gateway-direct-model-access#configure-provider-sdks)配置`/gemini`路由，然后运行：
 
@@ -217,7 +211,7 @@ dcode --model openai:moonshotai/kimi-k3
 ## 验证设置配置编码代理后，进行测试呼叫并确认：
 
 1. 呼叫成功，座席收到响应。
-2. LangSmith 工作区中的`gateway` 跟踪项目中会出现一条跟踪。
+2. LangSmith 工作区的`gateway` 跟踪项目中会出现一条跟踪。
 
 如果调用失败并显示 `403`，请检查您的 API 密钥的角色是否包含 `gateway:invoke` 和 `workspaces:read`。如果自带密钥调用失败并出现 `400` 提及缺少提供程序密钥，请要求组织管理员将提供程序的密钥添加到工作区机密中。
 
@@ -230,12 +224,6 @@ dcode --model openai:moonshotai/kimi-k3
 
 ***
 
-<div>
-  <Callout icon="terminal-2">
-    [Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
-  </Callout>
+[Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
 
-  <Callout icon="edit">
-    [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/llm-gateway-coding-agents.mdx) 或 [file an issue](https://github.com/langchain-ai/docs/issues/new/choose)。
-  </Callout>
-</div>
+[Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/llm-gateway-coding-agents.mdx) 或 [file an issue](https://github.com/langchain-ai/docs/issues/new/choose)。

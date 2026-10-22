@@ -6,13 +6,13 @@
 
 为拉取请求创建临时预览部署，以在合并之前测试代理服务器更改。
 
-预览版本为拉取请求创建临时**预览部署**。在将代理服务器更改合并到运行父部署的分支之前，请使用预览部署单独测试代理服务器更改。
+预览版本为拉取请求创建临时**预览部署**。在将代理服务器更改合并到运行父部署的分支之前，请使用预览部署来单独测试代理服务器更改。
 
 当拉取请求触发预览构建时，LangSmith将从源分支构建最新提交作为预览部署的第一个修订。对该分支的每次后续提交都会触发新的修订。
 
-<Note>
-  预览版本处于公开测试版状态，仅在 LangSmith Cloud 上可用于通过 GitHub 集成创建的部署。
-</Note>
+> [!注意]
+>
+> 预览版本处于公开测试版状态，仅在 LangSmith Cloud 上可用于通过 GitHub 集成创建的部署。
 
 ## 启用预览版本
 
@@ -45,12 +45,6 @@ LangSmith 在预览部署的空闲 TTL 到期时删除该部署。您也可以�
 
 ***
 
-<div>
-  <Callout icon="terminal-2">
-    [Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时答案。
-  </Callout>
+[Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
 
-  <Callout icon="edit">
-    [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/preview-builds.mdx) 或 [file an issue](https://github.com/langchain-ai/docs/issues/new/choose)。
-  </Callout>
-</div>
+[Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/preview-builds.mdx) 或 [file an issue](https://github.com/langchain-ai/docs/issues/new/choose)。

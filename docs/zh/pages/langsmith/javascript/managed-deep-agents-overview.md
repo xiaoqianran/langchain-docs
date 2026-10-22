@@ -4,13 +4,13 @@
 
 # 托管Deep Agents
 
-将代理构建为文件目录，同时 LangSmith 运行工具和运行时。
+将代理构建为文件目录，同时 LangSmith 运行线束和运行时。
 
 托管 Deep Agents (MDA) 是构建和部署生产代理的最简单方法。您专注于您的代理人所做的事情。 MDA 运行它。无需运行服务器，也无需连接基础设施。
 
 您编写代理的智能：它的指令、它可以调用的工具、它遵循的技能，然后您选择驱动它的模型。 MDA 提供了以下所有内容：
 
-* **Deep Agents 工具**：代理循环，用于规划、调用工具、管理文件系统以及委托给子代理。参见[Deep Agents](/oss/javascript/deepagents/overview)。
+* **The Deep Agents harness**: The agent loop that plans, calls tools, manages a filesystem, and delegates to subagents.参见[Deep Agents](/oss/javascript/deepagents/overview)。
 * **托管运行时**：每个部署都在 [LangSmith Agent Server](/langsmith/agent-server-overview) 上运行。您无需亲自操作服务器即可获得代理服务器 API、线程、运行、流式传输和 [MCP endpoint](/langsmith/javascript/managed-deep-agents-mcp-endpoint)。
 
 ```mermaid actions={false} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
@@ -71,38 +71,30 @@ flowchart LR
 托管Deep Agents在代理周围添加了一层。上面的沙箱、持久内存、通道和时间表是项目文件中的声明，而不是您构建和操作的服务。 [Connections](/langsmith/javascript/managed-deep-agents-connections) 运行 OAuth，因此最终用户可以授权他们自己的帐户，而不是您为每个帐户配置凭据。 LangSmith 将结果托管在 [Agent Server](/langsmith/agent-server-overview) 上。在代码中，差异较小：谁编译代理。
 
 * [createDeepAgent](https://reference.langchain.com/javascript/deepagents/agent/createDeepAgent) 返回编译后的代理。你运行它，并且拥有它周围的后端、存储、检查点和服务器。
-* `defineDeepAgent` 返回一个定义。 `mda` CLI 将其交给托管运行时，后者提供这些片段以及内存、技能和系统提示符，然后使用 [createDeepAgent](https://reference.langchain.com/javascript/deepagents/agent/createDeepAgent) 编译代理。因此，`defineDeepAgent`采用相同的选项减去托管选项，再加上所需的静态`name`。每个`define*`函数都是这样工作的：声明代理需要什么，并将生命周期留给运行时。
+* `defineDeepAgent` 返回一个定义。 `mda` CLI 将其交给托管运行时，后者提供这些片段以及内存、技能和系统提示符，然后使用 [createDeepAgent](https://reference.langchain.com/javascript/deepagents/agent/createDeepAgent) 编译代理。因此，`defineDeepAgent`采用相同的选项减去托管选项，再加上所需的静态`name`。每个 `define*` 函数都是这样工作的：声明代理需要什么，并将生命周期留给运行时。
 
 当您自己运行代理或需要自己的 [backend](/oss/javascript/deepagents/backends)、存储或检查点时，请留在 Deep Agents。有关两者的并排比较以及转换已构建的代理的步骤，请参阅[Move from Deep Agents](/langsmith/javascript/managed-deep-agents-migrate)。
 
 ## 后续步骤
 
-<CardGroup>
-  <Card title="Quickstart" icon="rocket" href="/langsmith/javascript/managed-deep-agents-quickstart">
-    使用 `mda` CLI 创建并部署您的第一个托管深度代理。
-  </Card>
+> **[Quickstart](/langsmith/javascript/managed-deep-agents-quickstart)**
+>
+> 使用 `mda` CLI 创建并部署您的第一个托管深度代理。
 
-  <Card title="Tutorial" icon="book" href="/langsmith/javascript/managed-deep-agents-tutorial">
-    添加自定义搜索工具、持久内存和每日日程安排。
-  </Card>
+> **[Tutorial](/langsmith/javascript/managed-deep-agents-tutorial)**
+>
+> 添加自定义搜索工具、持久内存和每日日程安排。
 
-  <Card title="Agent Server" icon="server" href="/langsmith/agent-server-overview">
-    探索托管托管 Deep Agents 部署的运行时。
-  </Card>
+> **[Agent Server](/langsmith/agent-server-overview)**
+>
+> 探索托管托管 Deep Agents 部署的运行时。
 
-  <Card title="MCP endpoint" icon="plug" href="/langsmith/javascript/managed-deep-agents-mcp-endpoint">
-    从 Claude Code 或其他 MCP 客户端调用已部署的代理作为工具。
-  </Card>
-</CardGroup>
+> **[MCP endpoint](/langsmith/javascript/managed-deep-agents-mcp-endpoint)**
+>
+> 从 Claude Code 或其他 MCP 客户端调用已部署的代理作为工具。
 
 ***
 
-<div>
-  <Callout icon="terminal-2">
-    [Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
-  </Callout>
+[Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
 
-  <Callout icon="edit">
-    [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/managed-deep-agents-overview.mdx) 或 [file an issue](https://github.com/langchain-ai/docs/issues/new/choose)。
-  </Callout>
-</div>
+[Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/managed-deep-agents-overview.mdx) 或 [file an issue](https://github.com/langchain-ai/docs/issues/new/choose)。

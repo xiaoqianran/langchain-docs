@@ -8,27 +8,25 @@
 
 使用 LangSmith [Python](/langsmith/smith-python-sdk) 和 [TypeScript](/langsmith/smith-js-ts-sdk) SDK 以编程方式管理 [Context Hub](/langsmith/use-the-context-hub) 中的 **代理存储库** 和 **技能存储库**。 [Push](#push-an-agent) CI 的新版本，[pull](#pull-an-agent) 最新版本或运行时固定的提交，将上下文注入到代理中，并使用其他方法来 [check existence](#check-whether-a-repo-exists)、[list and search](#list-agents-and-skills) 存储库和 [delete](#delete-an-agent-or-skill) 您不再需要的内容。
 
-<Note>
-  Context Hub 方法需要 `langsmith>=0.7.35` (Python) 和 `langsmith>=0.5.23` (TypeScript)。
-</Note>
+> [!注意]
+>
+> Context Hub 方法需要 `langsmith>=0.7.35` (Python) 和 `langsmith>=0.5.23` (TypeScript)。
 
 ## 设置
 
 1.安装包：
 
-   <CodeGroup>
-     ```bash pip theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-     pip install -U langsmith
-     ```
+   ```bash pip theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+   pip install -U langsmith
+   ```
 
-     ```bash uv theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-     uv add langsmith
-     ```
+   ```bash uv theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+   uv add langsmith
+   ```
 
-     ```bash TypeScript theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-     yarn add langsmith
-     ```
-   </CodeGroup>
+   ```bash TypeScript theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+   yarn add langsmith
+   ```
 
 2.配置环境变量。如果您的环境中已设置 [⟦T22⟧](/langsmith/create-account-api-key)，请跳过此步骤。否则，请在LangSmith中的**设置 > API 密钥 > 创建 API 密钥**中创建一个，然后将其设置为环境变量：
 
@@ -36,9 +34,9 @@
    export LANGSMITH_API_KEY="lsv2_..."
    ```
 
-<Note>
-  **Python 异步：** 本页显示的所有方法也可在 `AsyncClient`（从 `langsmith` 导入）上使用，具有相同的签名 - 每次调用只需 `await`。 TypeScript SDK 默认是异步的；没有单独的异步客户端。
-</Note>
+> [!注意]
+>
+> **Python 异步：** 本页显示的所有方法也可在 `AsyncClient`（从 `langsmith` 导入）上使用，具有相同的签名 — 每次调用只需 `await`。 TypeScript SDK 默认是异步的；没有单独的异步客户端。
 
 ## 推送代理创建新的代理存储库或提交现有代理存储库的新版本。如果
 该存储库尚不存在，它是使用您提供的元数据创建的
@@ -47,90 +45,86 @@
 
 该方法返回一个指向 [LangSmith UI](https://smith.langchain.com?utm_source=docs\&utm_medium=cta\&utm_campaign=langsmith-signup\&utm_content=langsmith-manage-contexts-sdk) 中新提交的 URL：
 
-<CodeGroup>
-  ```python Python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  from langsmith import Client
-  from langsmith.schemas import FileEntry
+```python Python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+from langsmith import Client
+from langsmith.schemas import FileEntry
 
-  client = Client()
+client = Client()
 
-  url = client.push_agent(
-      "email-assistant",
-      files={
-          "AGENTS.md": FileEntry(
-              content="You are an email triage assistant.",
-          ),
-          "tools.json": FileEntry(content='{"tools": []}'),
-      },
-      description="Triages and drafts replies to incoming email.",
-      tags=["email", "productivity"],
-      is_public=False,
-  )
-  print(url)
-  ```
-
-  ```typescript TypeScript theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  import { Client } from "langsmith";
-
-  const client = new Client();
-
-  const url = await client.pushAgent("email-assistant", {
-    files: {
-      "AGENTS.md": {
-        type: "file",
-        content: "You are an email triage assistant.",
-      },
-      "tools.json": { type: "file", content: '{"tools": []}' },
+url = client.push_agent(
+    "email-assistant",
+    files={
+        "AGENTS.md": FileEntry(
+            content="You are an email triage assistant.",
+        ),
+        "tools.json": FileEntry(content='{"tools": []}'),
     },
-    description: "Triages and drafts replies to incoming email.",
-    tags: ["email", "productivity"],
-    isPublic: false,
-  });
-  console.log(url);
-  ```
-</CodeGroup>
+    description="Triages and drafts replies to incoming email.",
+    tags=["email", "productivity"],
+    is_public=False,
+)
+print(url)
+```
+
+```typescript TypeScript theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+import { Client } from "langsmith";
+
+const client = new Client();
+
+const url = await client.pushAgent("email-assistant", {
+  files: {
+    "AGENTS.md": {
+      type: "file",
+      content: "You are an email triage assistant.",
+    },
+    "tools.json": { type: "file", content: '{"tools": []}' },
+  },
+  description: "Triages and drafts replies to incoming email.",
+  tags: ["email", "productivity"],
+  isPublic: false,
+});
+console.log(url);
+```
 
 ## 推送一个技能
 
 与`push_agent`相同的表面，但致力于技能回购。使用
 这是其他代理可以依赖的可重用功能：
 
-<CodeGroup>
-  ```python Python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  from langsmith import Client
-  from langsmith.schemas import FileEntry
+```python Python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+from langsmith import Client
+from langsmith.schemas import FileEntry
 
-  client = Client()
+client = Client()
 
-  url = client.push_skill(
-      "deep-research",
-      files={
-          "SKILL.md": FileEntry(content="Conduct deep multi-step research."),
-      },
-      description="Multi-step web research with citations.",
-      tags=["research"],
-  )
-  print(url)
-  ```
-
-  ```typescript TypeScript theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  import { Client } from "langsmith";
-
-  const client = new Client();
-
-  const url = await client.pushSkill("deep-research", {
-    files: {
-      "SKILL.md": {
-        type: "file",
-        content: "Conduct deep multi-step research.",
-      },
+url = client.push_skill(
+    "deep-research",
+    files={
+        "SKILL.md": FileEntry(content="Conduct deep multi-step research."),
     },
-    description: "Multi-step web research with citations.",
-    tags: ["research"],
-  });
-  console.log(url);
-  ```
-</CodeGroup>
+    description="Multi-step web research with citations.",
+    tags=["research"],
+)
+print(url)
+```
+
+```typescript TypeScript theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+import { Client } from "langsmith";
+
+const client = new Client();
+
+const url = await client.pushSkill("deep-research", {
+  files: {
+    "SKILL.md": {
+      type: "file",
+      content: "Conduct deep multi-step research.",
+    },
+  },
+  description: "Multi-step web research with citations.",
+  tags: ["research"],
+});
+console.log(url);
+```
 
 ### 链接到其他存储库
 
@@ -140,45 +134,43 @@
 
 如果您省略 `commit_id`，则当您推送此提交时，LangSmith 会链接到该存储库的最新提交。如果链接的存储库稍后更新，LangSmith 会将该更新传播到引用它的父存储库。
 
-<CodeGroup>
-  ```python Python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  from langsmith import Client
-  from langsmith.schemas import AgentEntry, FileEntry, SkillEntry
+```python Python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+from langsmith import Client
+from langsmith.schemas import AgentEntry, FileEntry, SkillEntry
 
-  client = Client()
+client = Client()
 
-  url = client.push_agent(
-      "email-assistant",
-      files={
-          "AGENTS.md": FileEntry(content="You are an email triage assistant."),
-          # Link to the deep-research skill repo. Omit commit_id to always
-          # resolve to the latest version, or pin it for reproducibility.
-          "skills/research": SkillEntry(repo_handle="deep-research"),
-          # Link to another agent repo.
-          "agents/scheduler": AgentEntry(repo_handle="calendar-agent"),
-      },
-  )
-  print(url)
-  ```
-
-  ```typescript TypeScript theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  import { Client } from "langsmith";
-
-  const client = new Client();
-
-  const url = await client.pushAgent("email-assistant", {
-    files: {
-      "AGENTS.md": { type: "file", content: "You are an email triage assistant." },
-      // Link to the deep-research skill repo. Omit commit_id to always
-      // resolve to the latest version, or pin it for reproducibility.
-      "skills/research": { type: "skill", repo_handle: "deep-research" },
-      // Link to another agent repo.
-      "agents/scheduler": { type: "agent", repo_handle: "calendar-agent" },
+url = client.push_agent(
+    "email-assistant",
+    files={
+        "AGENTS.md": FileEntry(content="You are an email triage assistant."),
+        # Link to the deep-research skill repo. Omit commit_id to always
+        # resolve to the latest version, or pin it for reproducibility.
+        "skills/research": SkillEntry(repo_handle="deep-research"),
+        # Link to another agent repo.
+        "agents/scheduler": AgentEntry(repo_handle="calendar-agent"),
     },
-  });
-  console.log(url);
-  ```
-</CodeGroup>
+)
+print(url)
+```
+
+```typescript TypeScript theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+import { Client } from "langsmith";
+
+const client = new Client();
+
+const url = await client.pushAgent("email-assistant", {
+  files: {
+    "AGENTS.md": { type: "file", content: "You are an email triage assistant." },
+    // Link to the deep-research skill repo. Omit commit_id to always
+    // resolve to the latest version, or pin it for reproducibility.
+    "skills/research": { type: "skill", repo_handle: "deep-research" },
+    // Link to another agent repo.
+    "agents/scheduler": { type: "agent", repo_handle: "calendar-agent" },
+  },
+});
+console.log(url);
+```
 
 ## 推送参数
 
@@ -194,79 +186,75 @@
 
 ## 拉一个代理
 
-拉取代理存储库的快照。默认返回最新提交；通过 `version` 传递提交哈希或标签（或将其嵌入到标识符中作为 `owner/name:version`）以拉取特定版本：
+拉取代理存储库的快照。默认返回最新提交；通过 `version` 传递提交哈希或标签（或将其嵌入到标识符中作为 `owner/name:version`）以拉取特定版本：> [!注意]
+>
+> **标识符格式**：`identifier`参数接受三种形式：
+>
+> * `name`：针对当前工作区所有者进行解析。
+> * `owner/name`：完全合格。
+> * `owner/name:version`：固定到特定的提交哈希或标签。
+>
+> 可选的 `version` 参数会覆盖嵌入在
+> 标识符。如果两者均未提供，则返回最新提交。
 
-<Note>
-  **标识符格式**：`identifier`参数接受三种形式：
+```python Python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+from langsmith import Client
 
-  * `name`：针对当前工作区所有者进行解析。
-  * `owner/name`：完全合格。
-  * `owner/name:version`：固定到特定的提交哈希或标签。可选的 `version` 参数会覆盖嵌入的任何版本
-  标识符。如果两者均未提供，则返回最新提交。
-</Note>
+client = Client()
 
-<CodeGroup>
-  ```python Python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  from langsmith import Client
+agent = client.pull_agent("email-assistant")
+print(agent.commit_hash)
+print(list(agent.files))
 
-  client = Client()
+# Pull a specific commit.
+pinned = client.pull_agent("email-assistant", version="7ca95573")
 
-  agent = client.pull_agent("email-assistant")
-  print(agent.commit_hash)
-  print(list(agent.files))
+# Pull a tagged commit (for example, the production tag).
+prod = client.pull_agent("email-assistant:production")
+```
 
-  # Pull a specific commit.
-  pinned = client.pull_agent("email-assistant", version="7ca95573")
+```typescript TypeScript theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+import { Client } from "langsmith";
 
-  # Pull a tagged commit (for example, the production tag).
-  prod = client.pull_agent("email-assistant:production")
-  ```
+const client = new Client();
 
-  ```typescript TypeScript theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  import { Client } from "langsmith";
+const agent = await client.pullAgent("email-assistant");
+console.log(agent.commit_hash);
+console.log(Object.keys(agent.files));
 
-  const client = new Client();
+// Pull a specific commit.
+const pinned = await client.pullAgent("email-assistant", {
+  version: "7ca95573",
+});
 
-  const agent = await client.pullAgent("email-assistant");
-  console.log(agent.commit_hash);
-  console.log(Object.keys(agent.files));
-
-  // Pull a specific commit.
-  const pinned = await client.pullAgent("email-assistant", {
-    version: "7ca95573",
-  });
-
-  // Pull a tagged commit.
-  const prod = await client.pullAgent("email-assistant:production");
-  ```
-</CodeGroup>
+// Pull a tagged commit.
+const prod = await client.pullAgent("email-assistant:production");
+```
 
 ## 拉一个技能
 
 提取技能存储库的快照。与 `pull_agent` 工作方式相同，但返回 `SkillContext`：
 
-<CodeGroup>
-  ```python Python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  from langsmith import Client
+```python Python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+from langsmith import Client
 
-  client = Client()
+client = Client()
 
-  skill = client.pull_skill("deep-research")
-  print(skill.files["SKILL.md"].content)
-  ```
+skill = client.pull_skill("deep-research")
+print(skill.files["SKILL.md"].content)
+```
 
-  ```typescript TypeScript theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  import { Client } from "langsmith";
+```typescript TypeScript theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+import { Client } from "langsmith";
 
-  const client = new Client();
+const client = new Client();
 
-  const skill = await client.pullSkill("deep-research");
-  const skillFile = skill.files["SKILL.md"];
-  if (skillFile.type === "file") {
-    console.log(skillFile.content);
-  }
-  ```
-</CodeGroup>
+const skill = await client.pullSkill("deep-research");
+const skillFile = skill.files["SKILL.md"];
+if (skillFile.type === "file") {
+  console.log(skillFile.content);
+}
+```
 
 ## 拉取参数
 
@@ -284,67 +272,63 @@
 使用这些方法检查您的代理或技能存储库中是否存在
 推或拉之前的工作空间：
 
-<CodeGroup>
-  ```python Python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  from langsmith import Client
+```python Python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+from langsmith import Client
 
-  client = Client()
+client = Client()
 
-  if client.agent_exists("email-assistant"):
-      print("agent already exists")
+if client.agent_exists("email-assistant"):
+    print("agent already exists")
 
-  if not client.skill_exists("deep-research"):
-      print("skill not found")
-  ```
+if not client.skill_exists("deep-research"):
+    print("skill not found")
+```
 
-  ```typescript TypeScript theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  import { Client } from "langsmith";
+```typescript TypeScript theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+import { Client } from "langsmith";
 
-  const client = new Client();
+const client = new Client();
 
-  if (await client.agentExists("email-assistant")) {
-    console.log("agent already exists");
-  }
+if (await client.agentExists("email-assistant")) {
+  console.log("agent already exists");
+}
 
-  if (!(await client.skillExists("deep-research"))) {
-    console.log("skill not found");
-  }
-  ```
-</CodeGroup>
+if (!(await client.skillExists("deep-research"))) {
+  console.log("skill not found");
+}
+```
 
 ## 列出代理和技能
 
 列出任一类型的存储库，并带有用于可见性、存档状态和搜索查询的可选过滤器：
 
-<CodeGroup>
-  ```python Python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  from langsmith import Client
+```python Python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+from langsmith import Client
 
-  client = Client()
+client = Client()
 
-  # Python returns a paginated response.
-  result = client.list_agents(limit=20, query="email")
-  for repo in result.repos:
-      print(repo.repo_handle)
+# Python returns a paginated response.
+result = client.list_agents(limit=20, query="email")
+for repo in result.repos:
+    print(repo.repo_handle)
 
-  skills = client.list_skills(is_public=True)
-  ```
+skills = client.list_skills(is_public=True)
+```
 
-  ```typescript TypeScript theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  import { Client } from "langsmith";
+```typescript TypeScript theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+import { Client } from "langsmith";
 
-  const client = new Client();
+const client = new Client();
 
-  // TypeScript yields one repo at a time, auto-paginating.
-  for await (const repo of client.listAgents({ query: "email" })) {
-    console.log(repo.repo_handle);
-  }
+// TypeScript yields one repo at a time, auto-paginating.
+for await (const repo of client.listAgents({ query: "email" })) {
+  console.log(repo.repo_handle);
+}
 
-  for await (const skill of client.listSkills({ isPublic: true })) {
-    console.log(skill.repo_handle);
-  }
-  ```
-</CodeGroup>|参数|类型 |描述 |
+for await (const skill of client.listSkills({ isPublic: true })) {
+  console.log(skill.repo_handle);
+}
+```|参数|类型 |描述 |
 | - | - | - |
 | `limit` | `int`（仅限 Python）|每页返回的最大存储库数量。默认为 100。
 | `offset` | `int`（仅限 Python）|要跳过的存储库数量。默认为 0。
@@ -352,50 +336,42 @@
 | `is_archived` / `isArchived` | `boolean`（可选）|按存档状态过滤。默认为`False`。 |
 | `query` | `string`（可选）|跨存储库句柄、所有者句柄、描述和标签进行搜索查询。 |
 
-<Note>
-  Python 的 `list_agents` / `list_skills` 返回带有显式分页响应对象
-  `limit` 和 `offset` 用于手动分页。 TypeScript 的 `listAgents` / `listSkills`
-  返回一个 `AsyncIterableIterator` ，它会自动处理分页
-  消耗它。
-</Note>
+> [!注意]
+>
+> Python 的 `list_agents` / `list_skills` 返回带有显式分页响应对象
+> `limit` 和 `offset` 用于手动分页。 TypeScript 的 `listAgents` / `listSkills`
+> 返回一个 `AsyncIterableIterator` ，它可以根据您的需要自动处理分页
+> 消耗它。
 
 ## 删除代理或技能
 
-<Warning>
-  此操作是永久性的且无法撤消。也删除存储库
-  删除其拥有的子文件存储库。
-</Warning>
+> [!警告]
+>
+> 此操作是永久性的且无法撤消。也删除存储库
+> 删除其拥有的子文件存储库。
 
 从您的工作区删除代理或技能存储库：
 
-<CodeGroup>
-  ```python Python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  from langsmith import Client
+```python Python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+from langsmith import Client
 
-  client = Client()
+client = Client()
 
-  client.delete_agent("email-assistant")
-  client.delete_skill("deep-research")
-  ```
+client.delete_agent("email-assistant")
+client.delete_skill("deep-research")
+```
 
-  ```typescript TypeScript theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  import { Client } from "langsmith";
+```typescript TypeScript theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+import { Client } from "langsmith";
 
-  const client = new Client();
+const client = new Client();
 
-  await client.deleteAgent("email-assistant");
-  await client.deleteSkill("deep-research");
-  ```
-</CodeGroup>
+await client.deleteAgent("email-assistant");
+await client.deleteSkill("deep-research");
+```
 
 ***
 
-<div>
-  <Callout icon="terminal-2">
-    [Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
-  </Callout>
+[Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
 
-  <Callout icon="edit">
-    [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/manage-contexts-sdk.mdx) 或 [file an issue](https://github.com/langchain-ai/docs/issues/new/choose)。
-  </Callout>
-</div>
+[Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/manage-contexts-sdk.mdx) 或 [file an issue](https://github.com/langchain-ai/docs/issues/new/choose)。

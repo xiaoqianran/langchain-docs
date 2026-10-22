@@ -8,9 +8,9 @@ LangSmith 部署中的各种服务以日志、指标和跟踪的形式发出遥�
 
 本页介绍如何配置 [OTel Collector](https://opentelemetry.io/docs/collector/configuration/) 以从 LangSmith 收集遥测数据。请注意，下面讨论的所有概念都可以转换为其他收集器，例如[Fluentd](https://www.fluentd.org/)或[FluentBit](https://fluentbit.io/)。
 
-<Warning>
-  **本节仅适用于 Kubernetes 部署。**
-</Warning>
+> [!警告]
+>
+> **本节仅适用于 Kubernetes 部署。**
 
 # 接收器
 
@@ -55,9 +55,9 @@ volumeMounts:
     readOnly: true
 ```
 
-<Info>
-  **此配置需要对给定命名空间中的 pod 具有“get”、“list”和“watch”权限。**
-</Info>
+> [!注意]
+>
+> **此配置需要对给定命名空间中的 pod 具有“get”、“list”和“watch”权限。**
 
 ## 指标可以使用 Prometheus 端点来抓取指标。单实例***Gateway***收集器可用于避免在获取指标时重复查询。以下配置会抓取所有默认命名的 LangSmith 服务：
 
@@ -92,9 +92,9 @@ prometheus:
             target_label: instance
 ```
 
-<Info>
-  **此配置需要对给定命名空间中的 pod、服务和端点具有“get”、“list”和“watch”权限。**
-</Info>
+> [!注意]
+>
+> **此配置需要对给定命名空间中的 pod、服务和端点具有“get”、“list”和“watch”权限。**
 
 ### 痕迹
 
@@ -115,7 +115,7 @@ otlp:
 
 使用 OTel 收集器时建议使用以下处理器：
 
-* [Batch Processor](https://github.com/open-telemetry/opentelemetry-collector/blob/main/processor/batchprocessor/README.md)：在发送给出口商之前将数据分组。
+* [Batch Processor](https://github.com/open-telemetry/opentelemetry-collector/blob/main/processor/batchprocessor/README.md)：将数据分组，然后发送给出口商。
 * [Memory Limiter](https://github.com/open-telemetry/opentelemetry-collector/blob/main/processor/memorylimiterprocessor/README.md)：防止收集器使用过多内存而崩溃。当超过软限制时，收集器将停止接受新数据。
 * [Kubernetes Attributes Processor](https://github.com/open-telemetry/opentelemetry-collector-contrib/tree/main/processor/k8sattributesprocessor)：将 pod 名称等 Kubernetes 元数据添加到遥测数据中。
 
@@ -130,9 +130,9 @@ otlphttp/metrics:
   endpoint: <your_metrics_endpoint>
 otlphttp/traces:
   endpoint: <your_traces_endpoint>
-```<Note>
-  **OTel Collector 还支持直接导出到 [Datadog](https://docs.datadoghq.com/opentelemetry/setup/collector_exporter) 端点。**
-</Note>
+```> [!注意]
+>
+> **OTel Collector 还支持直接导出到 [Datadog](https://docs.datadoghq.com/opentelemetry/setup/collector_exporter) 端点。**
 
 # 收集器配置示例：日志 sidecar
 
@@ -262,12 +262,6 @@ config:
 
 ***
 
-<div>
-  <Callout icon="terminal-2">
-    [Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
-  </Callout>
+[Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
 
-  <Callout icon="edit">
-    [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/langsmith-collector.mdx) 或 [file an issue](https://github.com/langchain-ai/docs/issues/new/choose)。
-  </Callout>
-</div>
+[Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/langsmith-collector.mdx) 或 [file an issue](https://github.com/langchain-ai/docs/issues/new/choose)。

@@ -15,9 +15,9 @@
 
 离线评估在部署之前在精选数据集上测试应用程序。通过对具有参考输出的示例进行评估，团队可以在向用户公开更改之前比较版本、验证功能并建立信心。
 
-使用 LangSmith SDK（[Python](https://reference.langchain.com/python/langsmith/observability/sdk/) 或 [TypeScript](https://reference.langchain.com/javascript/modules/langsmith.html)）在客户端运行离线评估，或通过 [Playground](/langsmith/prompt-engineering-concepts#playground) 或 [binding evaluators to a dataset](/langsmith/bind-evaluator-to-dataset) 在服务器端运行离线评估。
+使用LangSmith SDK（[Python](https://reference.langchain.com/python/langsmith/observability/sdk/)或[TypeScript](https://reference.langchain.com/javascript/langsmith)）在客户端运行离线评估，或通过[Playground](/langsmith/prompt-engineering-concepts#playground)或[binding evaluators to a dataset](/langsmith/bind-evaluator-to-dataset)在服务器端运行离线评估。
 
-<img alt="Offline" />
+![Offline](https://mintcdn.com/langchain-5e9cc07a/4kN8yiLrZX_amfFn/langsmith/images/offline.png?fit=max\&auto=format\&n=4kN8yiLrZX_amfFn\&q=85\&s=879e4ee3616cecd7cff39879cfc6ec7b)
 
 ### 基准测试*基准测试*在精选数据集上比较多个应用程序版本，以确定最佳执行者。此过程涉及创建代表性输入的数据集、定义性能指标以及测试每个版本。
 
@@ -38,7 +38,7 @@
 
 LangSmith 的比较视图突出显示了相对于基线的回归（红色）和改进（绿色），从而可以快速识别变化。
 
-<img alt="Comparison view" />
+![Comparison view](https://mintcdn.com/langchain-5e9cc07a/Tdk8epB4BZgbugRX/langsmith/images/comparison-diff-view-light.png?fit=max\&auto=format\&n=Tdk8epB4BZgbugRX\&q=85\&s=2ddb234fd3779b443b9e41f7addeef21)
 
 ### 回测
 
@@ -46,7 +46,7 @@ LangSmith 的比较视图突出显示了相对于基线的回归（红色）和�
 
 这种方法通常用于评估新模型版本。例如，当新模型可用时，在最近的生产运行中对其进行测试，并将结果与​​实际生产结果进行比较。
 
-### 成对评估*成对评估*通过确定相对质量而不是分配绝对分数来比较两个版本的输出。对于某些任务，[determining "version A is better than B"](https://www.oreilly.com/radar/what-we-learned-from-a-year-of-building-with-llms-part-i/)比独立评分每个版本更容易。
+### 成对评估*成对评估*通过确定相对质量而不是分配绝对分数来比较两个版本的输出。对于某些任务，[determining "version A is better than B"](https://www.oreilly.com/radar/what-we-learned-from-a-year-of-building-with-llms-part-i/)比单独为每个版本评分更容易。
 
 事实证明，这种方法对于法学硕士作为法官对主观任务的评估特别有用。例如，在总结时，确定“哪一个总结更清晰、更简洁？”通常比分配数字清晰度分数更简单。
 
@@ -58,7 +58,7 @@ LangSmith 的比较视图突出显示了相对于基线的回归（红色）和�
 
 在线评估器通常在服务器端运行。 LangSmith 支持自定义 [LLM-as-judge evaluators](/langsmith/llm-as-judge) 和代码评估器。 [LangChain Tuned Evaluators](/langsmith/tuned-evaluators)提供由LangChain管理的专业评委。
 
-<img alt="Online" />
+![Online](https://mintcdn.com/langchain-5e9cc07a/4kN8yiLrZX_amfFn/langsmith/images/online.png?fit=max\&auto=format\&n=4kN8yiLrZX_amfFn\&q=85\&s=8d6c1b932e5487c4c01d84ae4f984240)
 
 ### 实时监控当用户与系统交互时，持续监控应用程序质量。在线评估会根据生产流量自动运行，为每次交互提供即时反馈。这样可以在质量下降、异常模式或意外行为影响大量用户群体之前对其进行检测。
 
@@ -86,7 +86,7 @@ LangSmith 的比较视图突出显示了相对于基线的回归（红色）和�
 
 ### 决策模型评估器
 
-使用决策模型（例如 Jev）来回答有关输出的键入问题。每个问题都会返回一个概率、一个选定的选项或一个分数，并成为其自己的反馈键，因此您无需编写提示或输出模式。
+使用决策模型来回答有关输出的键入问题。每个问题都会返回一个概率、一个选定的选项或一个分数，并成为其自己的反馈键，因此您无需编写提示或输出模式。
 
 配置决策模型评估器：
 
@@ -135,10 +135,6 @@ SDK 尚不支持决策模型评估器。
 
 ***
 
-<div>
-  <Callout icon="terminal-2">
-    [Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
-  </Callout><Callout icon="edit">
-    [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/evaluation-types.mdx) 或 [file an issue](https://github.com/langchain-ai/docs/issues/new/choose)。
-  </Callout>
-</div>
+[Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
+
+[Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/evaluation-types.mdx) 或 [file an issue](https://github.com/langchain-ai/docs/issues/new/choose)。

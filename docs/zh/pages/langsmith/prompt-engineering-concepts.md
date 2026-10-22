@@ -18,13 +18,13 @@
 
 ## 提示类型
 
-有两种不同类型的提示格式：`chat`风格提示和`completion`风格提示。**聊天提示**是消息列表，每条消息都有一个角色（例如 `system`、`user` 或 `assistant`）。这是当前大多数模型API支持的提示样式，也是推荐的格式。
+有两种不同类型的提示格式：`chat`风格提示和`completion`风格提示。**聊天提示**是消息列表，每条消息都有一个角色（例如 `system`、`user` 或 `assistant`）。这是当前大多数模型 API 支持的提示样式，也是推荐的格式。
 
 **完成提示**是单个字符串。这是一种较旧的提示样式，主要是为了向后兼容而维护的。
 
-<Note>
-  除非您有特定原因使用完成提示，否则请对新项目使用聊天提示。聊天提示为多轮对话提供了更好的结构，并且得到了现代法学硕士的更好支持。
-</Note>
+> [!注意]
+>
+> 除非您有特定原因使用完成提示，否则请对新项目使用聊天提示。聊天提示为多轮对话提供了更好的结构，并且得到了现代法学硕士的更好支持。
 
 ## 提示与提示模板
 
@@ -66,17 +66,15 @@
    Can I get a refund for this hat?
    ```
 
-<Tip>
-  在 [Prompt template format](/langsmith/create-a-prompt#template-format) 指南中了解有关模板变量语法和格式选项的更多信息。
-</Tip>
+> [!提示]
+>
+> 在 [Prompt template format](/langsmith/create-a-prompt#template-format) 指南中了解有关模板变量语法和格式选项的更多信息。
 
 ## LangSmith 中的提示
 
 您可以在LangSmith中存储和版本提示模板。这些模板可以在 Playground 中进行测试，使用提交和标签进行版本控制，然后将其拉入您的应用程序代码中。
 
-<Callout type="info" icon="player-play">
-  打开 [Playground](https://smith.langchain.com/playground) 创建并测试您的第一个提示模板。有关步骤，请参阅[Create a prompt](/langsmith/create-a-prompt)。
-</Callout>
+打开 [Playground](https://smith.langchain.com/playground) 创建并测试您的第一个提示模板。具体步骤请参阅[Create a prompt](/langsmith/create-a-prompt)。
 
 以下部分描述了提示模板的关键方面。
 
@@ -84,9 +82,9 @@
 
 您可以使用 [f-string](https://realpython.com/python-f-strings/) 或 [mustache](https://mustache.github.io/mustache.5.html) 格式使用输入变量来格式化提示模板。
 
-有关如何在 Playground 中使用这些格式的详细信息，请参阅[Template format](/langsmith/create-a-prompt#template-format)。<Check>
-  [Playground](https://smith.langchain.com/playground)使用`f-string`作为默认模板格式，但您可以在提示设置/模板格式部分切换为`mustache`格式。 `mustache` 为您提供有关条件变量、循环和嵌套键的更大灵活性。对于条件变量，您需要在“输入”部分手动添加 json 变量。阅读[the documentation](https://mustache.github.io/mustache.5.html)
-</Check>
+有关如何在 Playground 中使用这些格式的详细信息，请参阅[Template format](/langsmith/create-a-prompt#template-format)。> [!提示]
+>
+> [Playground](https://smith.langchain.com/playground)默认使用`f-string`模板格式，但您可以在提示设置/模板格式部分切换为`mustache`格式。 `mustache` 为您提供有关条件变量、循环和嵌套键的更大灵活性。对于条件变量，您需要在“输入”部分手动添加 json 变量。阅读[the documentation](https://mustache.github.io/mustache.5.html)
 
 ### 工具
 
@@ -96,11 +94,11 @@
 
 结构化输出是大多数最先进的法学硕士的一个特征，其中它们不生成原始文本作为输出，而是坚持指定的模式。这可能会或可能不会在引擎盖下使用[Tools](#tools)。
 
-<Check>
-  结构化输出与工具类似，但在几个关键方面有所不同。使用工具，LLM可以选择调用哪个工具（或者可以选择不调用任何工具）；通过结构化输出，法学硕士**始终**以这种格式做出响应。使用工具，LLM可以选择**多个**工具；对于结构化输出，仅生成一个响应。
-</Check>
+> [!提示]
+>
+> 结构化输出与工具类似，但在几个关键方面有所不同。使用工具，LLM可以选择调用哪个工具（或者可以选择不调用任何工具）；通过结构化输出，法学硕士**始终**以这种格式做出响应。使用工具，LLM可以选择**多个**工具；对于结构化输出，仅生成一个响应。
 
-### 型号或者，您可以将模型配置与提示模板一起存储。这包括模型名称和任何其他参数（温度等）。
+＃＃＃ 模型或者，您可以将模型配置与提示模板一起存储。这包括模型名称和任何其他参数（温度等）。
 
 ## 提示版本控制
 
@@ -125,9 +123,9 @@
 * **版本控制**：标记提示的稳定版本，例如 `v1`、`v2`，它允许您在代码中引用特定版本并跟踪随时间的变化。
 * **协作**：将版本标记为可供审核，这使您能够与协作者共享特定版本并获得反馈。
 
-<Note>
-  **不要与资源标签混淆**：提交标签引用特定的提示版本。 [Resource tags](/langsmith/set-up-resource-tags) 是用于组织工作区资源的键值对。
-</Note>
+> [!注意]
+>
+> **不要与资源标签混淆**：提交标签引用特定的提示版本。 [Resource tags](/langsmith/set-up-resource-tags) 是用于组织工作区资源的键值对。
 
 有关创建和管理提交标签的详细信息，请参阅[Manage prompts](/langsmith/manage-prompts#commit-tags)。
 
@@ -143,32 +141,24 @@ Playground 提供了一个用于迭代和测试提示的界面。您可以从侧
 * 更改可用的工具
 * 输入输入变量以运行提示模板
 * 通过模型运行提示
-* 观察输出<Callout type="info" icon="feather">
-  使用 Playground 中的 **[Chat](/langsmith/chat)** 来优化提示、生成工具并在 AI 辅助下创建输出模式。
-</Callout>
+* 观察输出使用 Playground 中的 **[Chat](/langsmith/chat)** 来优化提示、生成工具并在 AI 辅助下创建输出模式。
 
 ## 测试多个提示
 
 您可以向 Playground 添加多个提示来比较输出并评估性能：
 
-<img alt="Add prompt to Playground" />
+![Add prompt to Playground](https://mintcdn.com/langchain-5e9cc07a/E8FdemkcQxROovD9/langsmith/images/add-prompt-to-playground.gif?s=1c6f0c32b45a3f480b16d704c09570fc)
 
 ## 对数据集进行测试
 
 要测试数据集，请从右上角选择数据集，然后单击“开始”。您可以配置是否传输结果以及测试的重复次数。
 
-<img alt="Test over dataset in Playground" />
+![Test over dataset in Playground](https://mintcdn.com/langchain-5e9cc07a/ImHGLQW1HnQYwnJV/langsmith/images/test-over-dataset-in-playground.gif?s=aaf0f90a0c61934a928f81d5e11e2c35)
 
 点击“查看实验”按钮可以查看详细的测试结果。
 
 ***
 
-<div>
-  <Callout icon="terminal-2">
-    [Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
-  </Callout>
+[Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
 
-  <Callout icon="edit">
-    [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/prompt-engineering-concepts.mdx) 或 [file an issue](https://github.com/langchain-ai/docs/issues/new/choose)。
-  </Callout>
-</div>
+[Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/prompt-engineering-concepts.mdx) 或 [file an issue](https://github.com/langchain-ai/docs/issues/new/choose)。

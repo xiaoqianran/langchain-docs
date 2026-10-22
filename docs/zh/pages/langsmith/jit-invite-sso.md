@@ -4,7 +4,7 @@
 
 # 管理 SSO 组织中的用户访问
 
-LangSmith 提供灵活的控件来管理用户在使用 [Single Sign-On (SSO) authentication](/langsmith/authentication-methods) 时如何加入您的 [organization](/langsmith/administration-overview#organizations)。您可以独立启用或禁用即时 (JIT) 配置和用户邀请，以满足您组织的安全和入职要求。
+LangSmith 提供灵活的控制来管理用户在使用 [Single Sign-On (SSO) authentication](/langsmith/authentication-methods) 时如何加入您的 [organization](/langsmith/administration-overview#organizations)。您可以独立启用或禁用即时 (JIT) 配置和用户邀请，以满足您组织的安全和入职要求。
 
 启用 SSO 后，您有两个独立的设置：[JIT provisioning](#jit-provisioning) 在用户通过 SSO 登录时自动添加用户，而 [invites](#invites) 允许管理员在用户访问组织之前手动邀请用户。 [Configure these settings](#configuration-scenarios) 以任意组合来控制您的用户入门工作流程。
 
@@ -22,50 +22,48 @@ LangSmith 提供灵活的控件来管理用户在使用 [Single Sign-On (SSO) au
 
 ### 更新设置
 
-您可以在 LangSmith UI 或使用 LangSmith API 更新这些设置：
+您可以在 LangSmith UI 中或使用 LangSmith API 更新这些设置：
 
-<Tabs>
-  <Tab title="UI" icon="layout">
-    在[LangSmith UI](https://smith.langchain.com?utm_source=docs\&utm_medium=cta\&utm_campaign=langsmith-signup\&utm_content=langsmith-jit-invite-sso)中：
+**用户界面**
 
-    1. 导航到 **设置** > **组织** > **访问和安全** > **常规**。
-    2. 根据需要切换 **启用 JIT 配置** 和 **允许邀请**。
-    3. **设置** > **SSO 配置**中的[Configure SSO default workspaces and roles](#configure-default-sso-settings)。
-  </Tab>
+在[LangSmith UI](https://smith.langchain.com?utm_source=docs\&utm_medium=cta\&utm_campaign=langsmith-signup\&utm_content=langsmith-jit-invite-sso)中：
 
-  <Tab title="API" icon="code">
-    使用 [Update organization info](/langsmith/smith-api/orgs/update-current-organization-info) 端点以编程方式更新组织设置：
+1. 导航到 **设置** > **组织** > **访问和安全** > **常规**。
+2. 根据需要切换 **启用 JIT 配置** 和 **允许邀请**。
+3. **设置** > **SSO 配置**中的[Configure SSO default workspaces and roles](#configure-default-sso-settings)。
 
-    ```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-    curl -X PATCH https://api.smith.langchain.com/api/v1/organizations/current/info \
-      -H "Authorization: Bearer $LANGSMITH_API_KEY" \
-      -H "Content-Type: application/json" \
-      -d '{
-        "jit_provisioning_enabled": true,
-        "invites_enabled": true
-      }'
-    ```
+**API**
 
-    响应包括更新的当前组织配置：
+使用 [Update organization info](/langsmith/smith-api/orgs/update-current-organization-info) 端点以编程方式更新组织设置：
 
-    ```json theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-    {
-      "id": "org-uuid",
-      "display_name": "My Organization",
-      "jit_provisioning_enabled": true,
-      "invites_enabled": true,
-      "sso_login_slug": "my-org",
-      ...
-    }
-    ```
-  </Tab>
-</Tabs>
+```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+curl -X PATCH https://api.smith.langchain.com/api/v1/organizations/current/info \
+  -H "Authorization: Bearer $LANGSMITH_API_KEY" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "jit_provisioning_enabled": true,
+    "invites_enabled": true
+  }'
+```
 
-<Note>
-  如果您使用 [LangSmith self-hosted](/langsmith/self-hosted)，请考虑以下事项：* JIT 配置和邀请设置仅适用于默认组织（由 `default_sso_provision=true` 标识）。其他组织必须在自托管中使用邀请。
-  * 环境变量`SELF_HOSTED_JIT_PROVISIONING_ENABLED`可以全局覆盖JIT配置设置。当设置为 `false` 时，所有组织都会禁用 JIT 配置，无论其各自的设置如何。
-  * 有关其他自托管用户管理自定义，请参阅[Customize user management](/langsmith/self-host-user-management)。
-</Note>
+响应包括更新的当前组织配置：
+
+```json theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+{
+  "id": "org-uuid",
+  "display_name": "My Organization",
+  "jit_provisioning_enabled": true,
+  "invites_enabled": true,
+  "sso_login_slug": "my-org",
+  ...
+}
+```> [!注意]
+>
+> 如果您使用 [LangSmith self-hosted](/langsmith/self-hosted)，请考虑以下事项：
+>
+> * JIT 配置和邀请设置仅适用于默认组织（由 `default_sso_provision=true` 标识）。其他组织必须在自托管中使用邀请。
+> * 环境变量`SELF_HOSTED_JIT_PROVISIONING_ENABLED`可以全局覆盖JIT配置设置。当设置为 `false` 时，所有组织都会禁用 JIT 配置，无论其各自的设置如何。
+> * 有关其他自托管用户管理自定义，请参阅[Customize user management](/langsmith/self-host-user-management)。
 
 ## 用户访问如何工作
 
@@ -88,9 +86,9 @@ LangSmith 提供灵活的控件来管理用户在使用 [Single Sign-On (SSO) au
    └─ NO → Deny access (user must be added via SCIM or by administrator)
    ```
 
-<Note>
-  当 JIT 配置和邀请都启用时，**邀请优先**。如果用户有待处理的邀请，则会添加邀请的内容，而不是默认的 SSO 设置。
-</Note>
+> [!注意]
+>
+> 当 JIT 配置和邀请均启用时，**邀请优先**。如果用户有待处理的邀请，则会添加邀请的内容，而不是默认的 SSO 设置。
 
 ## 配置场景
 
@@ -193,9 +191,9 @@ User billy@company.com signs in via SSO:
 
 如果您的组织使用[SCIM](/langsmith/user-management#set-up-scim-for-your-organization)（跨域身份管理系统），则可以通过您的身份提供商自动配置和管理用户。 SCIM 提供了一种与 JIT 和邀请设置一起工作的附加用户管理机制。
 
-<Note>
-  SCIM 组成员身份会覆盖手动分配的角色或通过 JIT 配置分配的角色。如果您使用 SCIM，请考虑禁用 JIT 配置以避免冲突。
-</Note>
+> [!注意]
+>
+> SCIM 组成员身份会覆盖手动分配的角色或通过 JIT 配置分配的角色。如果您使用 SCIM，请考虑禁用 JIT 配置以避免冲突。
 
 ## SSO 组同步
 
@@ -217,12 +215,6 @@ User billy@company.com signs in via SSO:
 
 ***
 
-<div>
-  <Callout icon="terminal-2">
-    [Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
-  </Callout>
+[Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
 
-  <Callout icon="edit">
-    [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/jit-invite-sso.mdx) 或 [file an issue](https://github.com/langchain-ai/docs/issues/new/choose)。
-  </Callout>
-</div>
+[Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/jit-invite-sso.mdx) 或 [file an issue](https://github.com/langchain-ai/docs/issues/new/choose)。

@@ -4,18 +4,18 @@
 
 # 法学硕士网关
 
-使用一个LangSmith API 密钥访问跨提供商的模型，同时跟踪调用并执行支出和数据保护策略。
+使用一个 LangSmith API 密钥访问跨提供商的模型，同时跟踪调用并执行支出和数据保护策略。
 
 使用一个[LangSmith API key](/langsmith/create-account-api-key)跨配置的提供者调用模型。通过更改模型 ID 来切换提供商，而 LLM 网关则跟踪每个模型调用并应用集中式治理策略。
 
-<Note>
-  **测试版：** LLM Gateway 位于 [beta](/langsmith/release-stages)。
-</Note>
+> [!注意]
+>
+> **测试版：** LLM Gateway 位于 [beta](/langsmith/release-stages)。
 
 ## 网关提供什么
 
-* **一键，多个提供程序：** 开发人员使用 LangSmith API 密钥进行身份验证，而不是在本地存储提供程序密钥。
-* **一种请求格式，多种模型：** 将聊天完成、消息或响应与跨配置的提供者的模型一起使用。
+* **一键，多个提供商：** 开发人员使用 LangSmith API 密钥进行身份验证，而不是在本地存储提供商密钥。
+* **一种请求格式，多种模型：** 将聊天完成、消息或响应与跨配置的提供程序的模型一起使用。
 * **内置可观察性：** 每个网关调用都显示为 [LangSmith trace](/langsmith/llm-gateway-access)。
 * **中央治理：** 应用 [spend limits](/langsmith/llm-gateway-spend-policies)、[rate limits](/langsmith/llm-gateway-rate-limit-policies) 和 [data policies](/langsmith/llm-gateway-data-policy)。
 
@@ -36,7 +36,7 @@ curl https://gateway.smith.langchain.com/v1/chat/completions \
 
 选择您的应用程序已使用的请求格式。该格式不限制您可以调用哪个已配置的提供商。
 
-| API格式|端点 |
+| API格式 |端点 |
 | - | - |
 | OpenAI 聊天完成 | `POST /v1/chat/completions` |
 | Anthropic 留言 | `POST /v1/messages` |
@@ -50,39 +50,31 @@ curl https://gateway.smith.langchain.com/v1/chat/completions \
 
 ## 选择凭证的管理方式
 
-|选项 |上游凭证|设置和计费|
+|选项|上游凭证|设置和计费|
 | - | - | - |
 |带上您自己的提供商帐户 |管理员将提供者密钥存储在工作区[Provider Secrets](/langsmith/llm-gateway-admin-setup#1-add-provider-secrets)中。 |提供商将使用费用记入您的提供商帐户。 |
 | [Gateway Credits](/langsmith/llm-gateway-credits) | LangChain 拥有上游凭证。 |不需要提供商秘密。调用费用将计入您的 LangSmith 帐户。 |
 
 ## 走得更远
 
-<CardGroup>
-  <Card title="Quickstart" icon="rocket" href="/langsmith/llm-gateway-quickstart">
-    使用 cURL、Python 或 TypeScript 发出请求，然后查看其跟踪。
-  </Card>
+> **[Quickstart](/langsmith/llm-gateway-quickstart)**
+>
+> 使用 cURL、Python 或 TypeScript 发出请求，然后查看其跟踪。
 
-  <Card title="Administrator setup" icon="settings" href="/langsmith/llm-gateway-admin-setup">
-    启用网关、添加提供商凭据并授予开发人员访问权限。
-  </Card>
-</CardGroup>
+> **[Administrator setup](/langsmith/llm-gateway-admin-setup)**
+>
+> 启用网关、添加提供商凭据并授予开发人员访问权限。
 
-<Tip>
-  需要使用带有存储在提示中心的提示的网关吗？请参阅[Prompt Hub with the gateway](/langsmith/manage-prompts-programmatically#use-with-the-langsmith-gateway)，了解如何使用两个环境变量通过网关路由 Prompt Hub 模型调用。
-
-  需要提供者本机请求和响应行为吗？使用[Direct model access](/langsmith/llm-gateway-direct-model-access)绕过标准化层。这是标准 API 的高级替代方案。
-
-  如有其他问题，请联系[LangChain support](https://support.langchain.com)。
-</Tip>
+> [!提示]
+>
+> 需要使用带有存储在提示中心的提示的网关吗？请参阅[Prompt Hub with the gateway](/langsmith/manage-prompts-programmatically#use-with-the-langsmith-gateway)，了解如何使用两个环境变量通过网关路由 Prompt Hub 模型调用。
+>
+> 需要提供者本机请求和响应行为？使用[Direct model access](/langsmith/llm-gateway-direct-model-access)绕过标准化层。这是标准 API 的高级替代方案。
+>
+> 如有其他问题，请联系[LangChain support](https://support.langchain.com)。
 
 ***
 
-<div>
-  <Callout icon="terminal-2">
-    [Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
-  </Callout>
+[Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
 
-  <Callout icon="edit">
-    [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/llm-gateway.mdx) 或 [file an issue](https://github.com/langchain-ai/docs/issues/new/choose)。
-  </Callout>
-</div>
+[Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/llm-gateway.mdx) 或 [file an issue](https://github.com/langchain-ai/docs/issues/new/choose)。

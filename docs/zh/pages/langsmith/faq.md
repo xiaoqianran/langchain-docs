@@ -6,7 +6,7 @@
 
 ### *我无法在 UI 中创建 API 密钥或管理用户，出了什么问题？*
 
-* 您可能在未设置 SSO 的情况下部署了 LangSmith。 LangSmith 需要 SSO 来管理用户和 API 密钥。您可以在 [configuration section.](/langsmith/self-host-sso) 中找到有关设置 SSO 的更多信息
+* 您可能已经部署了LangSmith，但没有设置 SSO。 LangSmith 需要 SSO 来管理用户和 API 密钥。您可以在 [configuration section.](/langsmith/self-host-sso) 中找到有关设置 SSO 的更多信息
 
 ### *负载平衡/入口如何工作*？
 
@@ -49,7 +49,7 @@
 
 ### SAML SSO 常见问题解答#### *如何更改 SAML SSO 用户的电子邮件地址？*
 
-一些身份提供商通过电子邮件更改保留原始 `User ID`，而其他身份提供商则不这样做，因此我们建议您按照以下步骤操作以避免 LangSmith 中的重复用户：
+一些身份提供商通过电子邮件更改保留原始 `User ID`，而其他身份提供商则不这样做，因此我们建议您按照以下步骤操作，以避免 LangSmith 中的重复用户：
 
 1. 从组织中删除用户（参见[manage users](/langsmith/set-up-hierarchy#manage-users)）
 2. 更改 IdP 中的电子邮件地址
@@ -117,13 +117,13 @@ LangGraph 是一个有状态的编排框架，可为代理工作流程带来更�
 |描述 |代理应用程序的状态编排框架|用于部署 LangGraph 应用程序的可扩展基础架构 |
 | SDK | Python 和 JavaScript | Python 和 JavaScript |
 | HTTP API |无 |是 - 对于检索和更新状态或长期记忆，或创建可配置的助手很有用 |
-|流媒体|基本 |逐个令牌消息的专用模式 |
+|流媒体 |基本 |逐个令牌消息的专用模式 |
 |检查点 |社区贡献 |开箱即用的支持 |
 |持久层|自我管理|具有高效存储的托管 Postgres |
-|部署|自我管理| • 云<br /> • 免费自托管<br /> • 企业（付费自托管） |
+|部署|自我管理| • 云 • 免费自托管 • 企业（付费自托管） |
 |可扩展性|自我管理|任务队列和服务器的自动扩展|
-|容错|自我管理|自动重试 |
-|并发控制|简单的线程 |支持双短信 |
+|容错 |自我管理|自动重试 |
+|并发控制|简单的线程 |支持双短信|
 |日程安排|无 | Cron 调度 |
 |监控|无 |与 LangSmith 集成以实现可观察性 |
 | IDE集成|工作室 |工作室 |
@@ -134,28 +134,22 @@ LangGraph 是一个有状态的编排框架，可为代理工作流程带来更�
 
 欲了解更多信息，请参阅我们的[LangSmith pricing page](https://www.langchain.com/pricing)。
 
-### LangGraph 是否适用于不支持工具调用的法学硕士？是的！您可以将 LangGraph 与任何法学硕士一起使用。我们使用支持工具调用的 LLM 的主要原因是，这通常是让 LLM 决定要做什么的最方便的方式。如果您的 LLM 不支持工具调用，您仍然可以使用它 - 您只需要编写一些逻辑即可将原始 LLM 字符串响应转换为有关要做什么的决定。
+### LangGraph可以与不支持工具调用的LLM一起使用吗？是的！您可以将 LangGraph 与任何法学硕士一起使用。我们使用支持工具调用的 LLM 的主要原因是，这通常是让 LLM 决定要做什么的最方便的方式。如果您的 LLM 不支持工具调用，您仍然可以使用它 - 您只需要编写一些逻辑即可将原始 LLM 字符串响应转换为有关要做什么的决定。
 
 ### LangGraph 可以与 OSS LLM 一起使用吗？
 
-是的！ LangGraph 与法学硕士的幕后用途完全矛盾。我们在大多数教程中使用封闭式 LLM 的主要原因是它们无缝支持工具调用，而 OSS LLM 通常不支持。但工具调用不是必需的（参见[Does LangGraph work with LLMs that don't support tool calling?](#does-langgraph-work-with-llms-that-dont-support-tool-calling)），因此您完全可以将LangGraph与OSS LLM一起使用。
+是的！ LangGraph is totally ambivalent to what LLMs are used under the hood. The main reason we use closed LLMs in most of the tutorials is that they seamlessly support tool calling, while OSS LLMs often don't. But tool calling is not necessary (see [Does LangGraph work with LLMs that don't support tool calling?](#does-langgraph-work-with-llms-that-dont-support-tool-calling)) so you can totally use LangGraph with OSS LLMs.
 
-### 不登录LangSmith可以使用Studio吗？
+### Can I use Studio without logging in to LangSmith?
 
 是的！您可以使用[development version of Agent Server](/langsmith/local-dev-testing)在本地运行后端。
-这将连接到作为 LangSmith 一部分托管的 Studio 前端。
-如果您设置环境变量`LANGSMITH_TRACING=false`，则不会将任何跟踪发送到LangSmith。
+This will connect to the Studio frontend hosted as part of LangSmith.
+If you set an environment variable of `LANGSMITH_TRACING=false`, then no traces will be sent to LangSmith.
 
 ### 什么是部署运行？部署运行是对通过 LangSmith 部署部署的 LangGraph 代理的一次端到端调用。节点和子图不单独计费。对其他 LangGraph 代理的调用（通过 RemoteGraph 或 LangGraph SDK 或直接 API）将根据托管被调用代理的部署单独收费。人机交互中断在恢复时会创建单独的部署运行。
 
 ***
 
-<div>
-  <Callout icon="terminal-2">
-    [Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
-  </Callout>
+[Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
 
-  <Callout icon="edit">
-    [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/faq.mdx) 或 [file an issue](https://github.com/langchain-ai/docs/issues/new/choose)。
-  </Callout>
-</div>
+[Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/faq.mdx) 或 [file an issue](https://github.com/langchain-ai/docs/issues/new/choose)。

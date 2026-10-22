@@ -12,7 +12,7 @@ LangChain 在配置后操作您的数据平面，包括升级、扩展、监控�
 
 LangChain 随着负载变化缩放数据平面，因此您无需调整大小或调整它：
 
-* **Stateless LangSmith services**: Scaled horizontally by a horizontal pod autoscaler, with Karpenter provisioning and removing node capacity as pod demand changes.
+* **无状态LangSmith服务**：通过水平 Pod 自动缩放器进行水平缩放，随着 Pod 需求的变化，通过 Karpenter 进行配置和删除节点容量。
 * **数据库**：LangChain 大小和比例 RDS 和 ElastiCache。
 
 ## 高可用性
@@ -29,31 +29,31 @@ LangChain 随着负载变化缩放数据平面，因此您无需调整大小或�
 
 ## LangSmith 升级LangChain 每天都会升级数据平面中的 LangSmith 版本。升级是滚动的、逐个副本的，因此不会出现整个服务停机。
 
-Two mechanisms keep upgrades free of downtime:
+有两种机制可确保升级不停机：
 
 * **水平 Pod 自动缩放**：LangSmith 服务运行多个副本，由水平 Pod 自动缩放器调整大小，因此一次替换几个 Pod，而其余副本继续提供流量。
 * **Pod 中断预算**：Pod 中断预算限制了一次可以有多少个服务副本不可用，因此滚动更新和节点消耗都不会导致服务低于保持可用所需的容量。
 
-## Supporting service upgrades
+## 支持服务升级
 
-Istio、KEDA 和 ClickHouse Operator 等后台服务定期升级。这些升级是非侵入式的，预计不会出现服务中断。
+Istio 和 KEDA 等后台服务定期升级。仍然运行 ClickHouse 的数据平面也会收到 ClickHouse 运营商升级。这些升级是非侵入式的，预计不会出现服务中断。
 
-## Kubernetes cluster upgrades
+## Kubernetes 集群升级
 
-托管数据平面的 EKS 集群需要定期升级，以保持安全性、兼容性和对新功能的访问。 LangChain 在 AWS 支持终止日期之前主动执行这些升级，并与您协调窗口。
+托管数据平面的 EKS 集群需要定期升级，以保持安全性、兼容性和对新功能的访问。 LangChain 在 AWS 支持终止日期之前主动执行这些升级，并与您协调窗口。集群升级分为两种：
 
-Cluster upgrades fall into two types:* **控制平面升级**：涵盖 Kubernetes API 服务器以及 AWS 与之一起管理的组件。这些对于您的工作负载是透明的，并且不会重新启动 Pod。
-* **节点组升级**：使用 make-before-break 语义将节点一一滚动。在更新的版本上配置新节点，pod 移动到它们上，迁移完成后旧节点将被终止。 Pod 中断预算适用于排水，因此每项服务都保持可用，尽管您可能会在各个 Pod 重新启动时看到短暂的连接重置。 No data is lost.
+* **控制平面升级**：涵盖 Kubernetes API 服务器以及 AWS 与之一起管理的组件。这些对于您的工作负载是透明的，并且不会重新启动 Pod。
+* **节点组升级**：使用 make-before-break 语义将节点一一滚动。在更新的版本上配置新节点，pod 移动到它们上，迁移完成后旧节点将被终止。 Pod 中断预算适用于排水，因此每项服务都保持可用，尽管您可能会在各个 Pod 重新启动时看到短暂的连接重置。没有数据丢失。
 
-## Maintenance windows
+## 维护窗口
 
 任何可能导致停机的维护或升级（例如重新启动 RDS 或 ElastiCache）都发生在 LangChain 提前与您协调的计划维护时段内。
 
-## Observability
+## 可观察性
 
 您可以将可观察性工具部署到集群中，例如 Datadog 代理或 OpenTelemetry 收集器，以及您自己的安全监控代理，只要它们不干扰 LangSmith 工作负载即可。
 
-LangSmith 服务发出日志、指标和跟踪的方式与自托管相同，因此适用相同的配置。 See [Export LangSmith telemetry to your observability backend](/langsmith/export-backend).
+LangSmith 服务发出日志、指标和跟踪的方式与自托管相同，因此适用相同的配置。参见[Export LangSmith telemetry to your observability backend](/langsmith/export-backend)。
 
 ## 故障排除LangChain 团队无法长期访问您的数据，只能管理您的数据平面的基础设施。当故障排除需要访问数据时，有两种路径：
 

@@ -22,24 +22,24 @@ LangSmith 支持两种类型的评估，它们在开发工作流程中具有不�
 
 ### 线下评价
 
-<Icon icon="flask" /> 使用离线评估进行**部署前测试**：
+ 使用离线评估进行**部署前测试**：
 
 * **基准测试**：比较多个版本以找到最佳表现者。
 * **回归测试**：确保新版本不会降低质量。
 * **单元测试**：验证各个组件的正确性。
 * **回测**：根据历史数据测试新版本。
 
-离线评估目标是[*datasets*](#datasets)中的[*examples*](#examples)：精心策划的测试用例，其中包含定义“好”外观的参考输出。
+离线评估目标是[*datasets*](#datasets)的[*examples*](#examples)：精心策划的测试用例，带有定义“好”的参考输出。
 
 ### 在线评价
 
-<Icon icon="radar" /> 使用在线评估进行**生产监控**：
+ 使用在线评估进行**生产监控**：
 
 * **实时监控**：持续跟踪实时流量的质量。
 * **异常检测**：标记异常模式或边缘情况。
 * **生产反馈**：确定要添加到离线数据集的问题。
 
-在线评估目标为[tracing](/langsmith/observability-quickstart)的[*runs*](#runs)和[*threads*](#threads)：没有参考输出的真实生产轨迹。目标的这种差异决定了您可以评估的内容：离线评估可以根据预期答案检查正确性，而在线评估则侧重于质量模式、安全性和现实世界的行为。
+在线评估目标是[tracing](/langsmith/observability-quickstart)的[*runs*](#runs)和[*threads*](#threads)：没有参考输出的真实生产轨迹。目标的这种差异决定了您可以评估的内容：离线评估可以根据预期答案检查正确性，而在线评估则侧重于质量模式、安全性和现实世界的行为。
 
 ## 评估生命周期
 
@@ -81,7 +81,7 @@ graph LR
 
 ### 3.持续改进在迭代反馈循环中一起使用两种评估类型。在线评估暴露问题，这些问题成为离线测试用例，离线评估验证修复，在线评估确认生产改进。
 
-## 核心评价目标
+## 核心评估目标
 
 评估在不同的目标上运行，具体取决于它们是离线还是在线。
 
@@ -93,9 +93,7 @@ graph LR
 
 数据集是用于评估应用程序的“示例集合”。一个例子是测试输入、参考输出对。
 
-<img alt="List of datasets on the Examples tab in the LangSmith UI." />
-
-<img alt="List of datasets on the Examples tab in the LangSmith UI." />
+![List of datasets on the Examples tab in the LangSmith UI.](https://mintcdn.com/langchain-5e9cc07a/VoZdM8AAAwg3DXcJ/langsmith/images/datasets-light.png?fit=max\&auto=format\&n=VoZdM8AAAwg3DXcJ\&q=85\&s=63d27de8050bedc78eb18ccc0d1cad35)
 
 #### 示例
 
@@ -105,17 +103,15 @@ graph LR
 * **参考输出**（可选）：参考输出字典。这些不会传递到您的应用程序，它们仅在评估器中使用。
 * **元数据**（可选）：附加信息的字典，可用于创建数据集的过滤视图。
 
-<img alt="Example in the LangSmith UI." />
-
-<img alt="Example in the LangSmith UI." />
+![Example in the LangSmith UI.](https://mintcdn.com/langchain-5e9cc07a/FQbj5E6QVw8CM9M2/langsmith/images/example-light.png?fit=max\&auto=format\&n=FQbj5E6QVw8CM9M2\&q=85\&s=f6d052b31a7f05ad79ed6e7911dfce32)
 
 了解更多关于[managing datasets](/langsmith/manage-datasets)的信息。
 
 ＃＃＃＃ 实验*实验*表示在数据集上评估特定应用程序版本的结果。每个实验都会捕获数据集中每个示例的输出、评估者分数和执行跟踪。
 
-<img alt="Experiment view" />
+![Experiment view](https://mintcdn.com/langchain-5e9cc07a/0B2PFrFBMRWNccee/langsmith/images/experiment-view.png?fit=max\&auto=format\&n=0B2PFrFBMRWNccee\&q=85\&s=89c78822157136d0e28e9a110dbdbfd5)
 
-通常在给定的数据集上运行多个实验来测试不同的应用程序配置（例如，不同的提示或 LLM）。 LangSmith 显示与数据集相关的所有实验，并支持并排[comparing multiple experiments](/langsmith/compare-experiment-results)。
+通常在给定的数据集上运行多个实验来测试不同的应用程序配置（例如，不同的提示或 LLM）。 LangSmith 显示与数据集关联的所有实验，并支持并排[comparing multiple experiments](/langsmith/compare-experiment-results)。
 
 学习[how to analyze experiment results](/langsmith/analyze-an-experiment)。
 
@@ -186,9 +182,9 @@ LangSmith支持多种评估方法：
 
 **注释队列**
 
-[Annotation queues](/langsmith/annotation-queues) 简化人类跑步反馈的结构化收集。它们通过提供具有规定规则、团队协作功能和进度跟踪的有组织的工作流程来补充[inline annotation](/langsmith/annotate-traces-inline)。
+[Annotation queues](/langsmith/annotation-queues) 简化人类跑步反馈的结构化收集。它们通过提供有规定的规则、团队协作功能和进度跟踪的有组织的工作流程来补充[inline annotation](/langsmith/annotate-traces-inline)。
 
-LangSmith支持两种队列类型：* **单次运行队列**：根据自定义评分标准项目一次检查一次运行。对于分类问题或从生产跟踪构建数据集很有用。单次运行队列还支持[assertions](/langsmith/assertions)，这是一种自由形式的接受标准，离线评估器可以根据该标准对未来的运行进行评分。
+LangSmith支持两种队列类型：* **单次运行队列**：根据自定义评分标准项目一次检查一次运行。对于分类问题或从生产跟踪构建数据集很有用。单次运行队列还支持[assertions](/langsmith/assertions)，这是一种自由形式的接受标准，离线评估者可以根据该标准对未来的运行进行评分。
 * **成对队列**：并排比较两次运行以确定哪个更好。专为实验之间的快速 A/B 比较而设计。
 
 主要功能包括每次运行配置多个审阅者、启用预留以防止冲突以及将带注释的运行直接导出到数据集以供将来评估。
@@ -277,7 +273,7 @@ LangSmith支持针对不同开发和部署阶段的多种评估方法。了解�
 
 拆分与元数据不同：使用拆分进行高级组织分组以进行评估，使用元数据来获取每个示例的信息，例如标签和出处。
 
-在机器学习中，最佳实践是每个示例恰好属于一个分割。 LangSmith 允许示例属于多个分割，这在示例适合多个评估类别时非常有用。
+在机器学习中，最佳实践是每个示例恰好属于一个分割。 LangSmith 允许示例属于多个拆分，这在示例适合多个评估类别时非常有用。
 
 了解如何[create and manage dataset splits](/langsmith/manage-datasets-in-application#create-and-manage-dataset-splits)。
 
@@ -311,7 +307,7 @@ LangSmith支持针对不同开发和部署阶段的多种评估方法。了解�
 | - | - | - |
 | **运行于** |数据集（示例）|跟踪项目（运行/线程）|
 | **数据访问** |输入、输出、参考输出 |仅输入、输出 |
-| **何时使用** |部署前、开发期间 |生产、部署后|
+| **何时使用** |部署前、开发期间|生产、部署后|
 | **主要用例** |基准测试、单元测试、回归测试、回溯测试 |实时监控、生产反馈、异常检测 |
 | **评估时间** |对策划的测试集进行批处理 |实时或近乎实时的实时交通状况 |
 | **安装位置** |评估选项卡（SDK、UI、Playground）| [Observability tab](/langsmith/online-evaluations-llm-as-judge)（自动规则）|
@@ -319,12 +315,6 @@ LangSmith支持针对不同开发和部署阶段的多种评估方法。了解�
 
 ***
 
-<div>
-  <Callout icon="terminal-2">
-    [Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
-  </Callout>
+[Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
 
-  <Callout icon="edit">
-    [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/evaluation-concepts.mdx) 或 [file an issue](https://github.com/langchain-ai/docs/issues/new/choose)。
-  </Callout>
-</div>
+[Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/evaluation-concepts.mdx) 或 [file an issue](https://github.com/langchain-ai/docs/issues/new/choose)。

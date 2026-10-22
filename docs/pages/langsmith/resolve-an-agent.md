@@ -11,7 +11,7 @@ Find the tracing project of an agent, experiment, or evaluator by resolving it t
 
 > [!NOTE]
 >
-> Resolving an agent is in [beta](/langsmith/release-stages). It needs LangSmith 0.18.7rc1 or later, and is not supported on BYOC data planes yet. The examples need the following SDK versions:
+> Resolving an agent needs LangSmith 0.18.7rc1 or later, and is not supported on BYOC data planes yet. The examples need the following SDK versions:
 >
 > * **Python**: `langsmith>=0.14.9`
 > * **TypeScript**: `langsmith@>=0.10.13`

@@ -8,7 +8,7 @@ Logging traces to an agent names the [agent](/langsmith/agents) and the [environ
 
 > [!NOTE]
 >
-> Sending traces to an agent is in [beta](/langsmith/release-stages) and applies only to agent-based workspaces. The [arguments that take an agent](#using-code) can change without notice. It is supported in:
+> Sending traces to an agent applies only to agent-based workspaces. It is supported in:
 >
 > * The Python SDK from `langsmith>=0.14.9`
 > * The TypeScript SDK from `langsmith>=0.10.9`
@@ -207,7 +207,7 @@ Sending traces to an agent and to a project do not combine. What happens depends
 
 ## Troubleshooting
 
-If your workspace does not accept runs sent to an agent, LangSmith rejects them with a `403` and the message `agent addressing is not enabled for this workspace`. It rejects the whole request that carries them, so it records none of the runs in that request. A workspace that accepted such runs can also stop accepting them. First check that your API key still belongs to the agent-based workspace, because LangSmith rejects runs sent to an agent with a key from a project-based workspace. If the key is not the problem, contact support via [support.langchain.com](https://support.langchain.com).
+On self-hosted LangSmith, where agent-based workspaces are not available, LangSmith rejects runs sent to an agent with a `403` and the message `agent addressing is not enabled for this workspace`. It rejects the whole request that carries them, so it records none of the runs in that request. See [Prerequisites](#prerequisites).
 
 ## See also
 

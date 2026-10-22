@@ -6,9 +6,9 @@
 
 使用 Helm 在 Kubernetes 集群中安装自托管 LangSmith 及其依赖项，包括 Insights 和 Chat。
 
-<Info>
-  自托管 LangSmith 是企业计划的附加组件，专为 LangChain 最大、最具安全意识的客户而设计。更多详情请参阅[Pricing](https://www.langchain.com/pricing)。 [Contact our sales team](https://www.langchain.com/contact-sales) 如果您想要许可证密钥在您的环境中试用LangSmith。
-</Info>
+> [!注意]
+>
+> 自托管 LangSmith 是企业计划的附加组件，专为 LangChain 最大、最具安全意识的客户而设计。更多详情请参阅[Pricing](https://www.langchain.com/pricing)。 [Contact our sales team](https://www.langchain.com/contact-sales) 如果您想要许可证密钥在您的环境中试用LangSmith。
 
 本指南介绍如何在 Kubernetes 集群中设置 LangSmith。您使用 Helm 安装 LangSmith 及其依赖项。
 
@@ -18,15 +18,15 @@
 * **后端服务**：队列、游乐场和 ACE。
 * **数据存储**：PostgreSQL、Redis、ClickHouse 和可选的 blob 存储。
 
-LangSmith 可在任何符合要求的 Kubernetes 集群上运行。它已经在以下发行版上进行了测试：
+LangSmith 可以在任何符合要求的 Kubernetes 集群上运行。它已经在以下发行版上进行了测试：
 
 * 谷歌 Kubernetes 引擎 (GKE)
 * 亚马逊弹性 Kubernetes 服务 (EKS)
 * Azure Kubernetes 服务 (AKS)
 * OpenShift 4.14 或更高版本
-* Minikube 和 Kind（用于开发目的）<Tip>
-  **更喜欢基础设施即代码？** [Deploy with Terraform](/langsmith/self-host-terraform) 将 AWS、Azure 和 GCP 的集群配置、秘密连接和 Helm 版本捆绑到一个工作流程中。本指南涵盖了针对您已管理的任何一致性集群的仅 Helm 路径。
-</Tip>
+* Minikube 和 Kind（用于开发目的）> [!提示]
+>
+> **更喜欢基础设施即代码？** [Deploy with Terraform](/langsmith/self-host-terraform) 将 AWS、Azure 和 GCP 的集群配置、秘密布线和 Helm 版本捆绑到一个工作流程中。本指南涵盖了针对您已管理的任何一致性集群的仅 Helm 路径。
 
 ## 先决条件
 
@@ -67,7 +67,7 @@ LangSmith 可在任何符合要求的 Kubernetes 集群上运行。它已经在�
 2. 集群上可用的有效动态 PV 配置程序或 PV（仅当您在集群内运行数据存储时才需要）。* 为了实现持久性，LangSmith 尝试为集群中运行的任何数据存储配置卷。
    * 如果您在集群中使用 PV，请在生产环境中设置备份。
    * **使用 SSD 支持的存储类别以获得更好的性能。 LangChain 建议 7000 IOPS 和 1000 MiB/s 吞吐量。**
-   * 在 EKS 上，您可能需要安装和配置 `ebs-csi-driver` 进行动态配置。请参阅[EBS CSI Driver documentation](https://docs.aws.amazon.com/eks/latest/userguide/ebs-csi.html)了解更多信息。
+   * 在 EKS 上，您可能需要安装和配置 `ebs-csi-driver` 进行动态配置。更多信息请参阅[EBS CSI Driver documentation](https://docs.aws.amazon.com/eks/latest/userguide/ebs-csi.html)。
 
    要验证，请运行：
 
@@ -82,15 +82,15 @@ LangSmith 可在任何符合要求的 Kubernetes 集群上运行。它已经在�
    gp2 (default)   ebs.csi.eks.amazonaws.com   Delete          WaitForFirstConsumer   true                   161d
    ```
 
-   <Note>
-     使用支持卷扩展的存储类别。跟踪可能需要大量磁盘空间，并且您的卷可能需要随着时间的推移调整大小。
-   </Note>
+   > [!注意]
+   >
+   > 使用支持卷扩展的存储类别。跟踪可能需要大量磁盘空间，并且您的卷可能需要随着时间的推移调整大小。
 
    有关存储类别的更多信息，请参阅[Kubernetes documentation](https://kubernetes.io/docs/concepts/storage/storage-classes/)。
 
-<Note>
-  从 0.14.0 开始，LangSmith 服务默认监听 IPv4 和 IPv6。对于仅 IPv4、仅 IPv6 或双堆栈集群，无需进行任何额外配置。
-</Note>
+> [!注意]
+>
+> 从 0.14.0 开始，LangSmith 服务默认监听 IPv4 和 IPv6。对于仅 IPv4、仅 IPv6 或双堆栈集群，无需进行任何额外配置。
 
 ### 网络访问* **许可证验证**：除非您在离线（气隙）模式下运行，否则 LangSmith 需要出口到 `https://beacon.langchain.com` 进行许可证验证和使用情况报告。详情请参阅[Egress](/langsmith/self-host-egress)。
 * **模型提供商访问**：见解和聊天需要 [provider credentials and model configurations](/langsmith/model-configurations)。如果您的集群无法访问 Internet，请在安装之前确认它可以访问哪些模型提供程序端点。
@@ -113,19 +113,19 @@ LangSmith 使用 PostgreSQL 数据库、Redis 缓存和 ClickHouse 数据库来�
    * 如果您是 Kubernetes 或 Helm 新手，请从 [LangSmith Helm chart examples](https://github.com/langchain-ai/helm/tree/main/charts/langsmith/examples) 之一开始。
    * 有关配置选项的完整列表，请参阅[LangSmith Helm chart ⟦T23⟧](https://github.com/langchain-ai/helm/tree/main/charts/langsmith/values.yaml)。
 
-   <Warning>
-     仅覆盖 `langsmith_config.yaml` 中所需的设置。不要复制整个`values.yaml`。保持最小配置可确保您继续从 Helm 图表继承新的默认值和升级。
-   </Warning>
+   > [!警告]
+   >
+   > 仅覆盖 `langsmith_config.yaml` 中所需的设置。不要复制整个`values.yaml`。保持最小配置可确保您继续从 Helm 图表继承新的默认值和升级。
 
-   <Tip>
-     如果您的集群强制执行非根或只读容器策略，请从 [read-only Helm configuration example](https://github.com/langchain-ai/helm/blob/main/charts/langsmith/examples/read_only_config.yaml) 开始。 LangSmith 容器不需要 root 权限。该示例展示了如何为需要临时存储的服务设置 `runAsNonRoot`、服务 UID 和 GID、`fsGroup`、`RuntimeDefault` seccomp 配置文件、删除功能、禁用权限升级以及可写 `emptyDir` 挂载。
-   </Tip>
+   > [!提示]
+   >
+   > 如果您的集群强制执行非根或只读容器策略，请从 [read-only Helm configuration example](https://github.com/langchain-ai/helm/blob/main/charts/langsmith/examples/read_only_config.yaml) 开始。 LangSmith 容器不需要 root 权限。该示例展示了如何为需要临时存储的服务设置 `runAsNonRoot`、服务 UID 和 GID、`fsGroup`、`RuntimeDefault` seccomp 配置文件、删除功能、禁用权限升级以及可写 `emptyDir` 挂载。
 
 2. 使用 [prerequisites](#keys-and-secrets) 中的密钥和机密设置以下最低配置选项（使用基本身份验证）：
 
-   <Warning>
-     设置`apiKeySalt`一次，不要更改。该值用于对所有静态 API 密钥进行哈希处理。轮换它会使组织中的每个现有 API 密钥永久失效，从而要求所有用户重新生成其密钥。
-   </Warning>
+   > [!警告]
+   >
+   > 设置`apiKeySalt`一次，请勿更改。该值用于对所有静态 API 密钥进行哈希处理。轮换它会使组织中的每个现有 API 密钥永久失效，从而要求所有用户重新生成其密钥。
 
    ```yaml theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
    config:
@@ -155,9 +155,9 @@ LangSmith 使用 PostgreSQL 数据库、Redis 缓存和 ClickHouse 数据库来�
 
 JWKS 包含私钥。将其存储在 Kubernetes Secret 中并在升级过程中保持稳定。 LangSmith 派生公钥并从 `/.well-known/jwks.json` 提供公钥，因此 LLM 身份验证代理等客户端可以在不接收私钥的情况下验证令牌。
 
-<Note>
-  本节中的 Helm 配置需要 LangSmith 图表版本 0.16.0 或更高版本。
-</Note>
+> [!注意]
+>
+> 本节中的 Helm 配置需要 LangSmith 图表版本 0.16.0 或更高版本。
 
 使用 [step CLI](https://smallstep.com/docs/step-cli/installation/) 或您的内部密钥管理流程生成 Ed25519 密钥。 RSA 密钥被拒绝。
 
@@ -194,9 +194,9 @@ SIGNING_JWKS=$(jq -c '{keys: [.]}' "$TMPDIR_KEYS/priv.json")
 
   `config.existingSecretName` 替换了整个 LangSmith 安装的图表管理 Secret。不要将其指向仅限 JWKS 的 Secret。保留所有现有密钥，包括 `langsmith_license_key` 和 `api_key_salt`。完整的 Secret 结构请参见[Use an existing Secret for your installation](/langsmith/self-host-using-an-existing-secret)。
 
-<Warning>
-  从图表版本 0.16.0 开始，图表拥有 `LANGSMITH_SIGNING_JWKS`。从早期图表版本升级时，请从 `commonEnv` 和 `platformBackend.deployment.extraEnv` 中删除此环境变量。将其设置在那里会导致重复的环境变量错误。如果您之前从单独的 Secret（例如 `langsmith-signing-jwks`）加载它，请将值移动到图表配置中并删除该引用。通过`config.signingJwks`或`config.existingSecretName`中的`langsmith_signing_jwks`键进行配置。
-</Warning>
+> [!警告]
+>
+> 从图表版本 0.16.0 开始，图表拥有 `LANGSMITH_SIGNING_JWKS`。从早期图表版本升级时，请从 `commonEnv` 和 `platformBackend.deployment.extraEnv` 中删除此环境变量。将其设置在那里会导致重复的环境变量错误。如果您之前从单独的 Secret（例如 `langsmith-signing-jwks`）加载它，请将值移动到图表配置中并删除该引用。通过`config.signingJwks`或`config.existingSecretName`中的`langsmith_signing_jwks`键进行配置。
 
 配置 JWKS 后应用 Helm 版本。如果您更新外部管理的 Secret 而不更改 Helm 值，请重新启动平台后端 pod，以便它们加载新的环境变量。从您的 LangSmith 安装请求公共 JWKS 以验证配置：
 
@@ -218,9 +218,9 @@ curl https://<your-langsmith-host>/.well-known/jwks.json
         langsmith-eks-2vauP7wf 21:07:46 No resources found in default namespace.
       ```
 
-   <Note>
-     如果您使用的命名空间不是默认命名空间，请使用 `-n <namespace>` 标志在 `helm` 和 `kubectl` 命令中指定命名空间。
-   </Note>
+   > [!注意]
+   >
+   > 如果您使用的命名空间不是默认命名空间，请使用 `-n <namespace>` 标志在 `helm` 和 `kubectl` 命令中指定命名空间。
 
 2. 确保您已添加 LangChain Helm 存储库（如果您使用本地图表，请跳过此步骤）。
 
@@ -244,13 +244,13 @@ curl https://<your-langsmith-host>/.well-known/jwks.json
 4.运行`helm upgrade -i langsmith langchain/langsmith --values langsmith_config.yaml --version <version> -n <namespace> --wait --debug`
 
    * 将 `<namespace>` 替换为您想要部署 LangSmith 的命名空间。
-   * 将 `<version>` 替换为上一步中您要安装的 LangSmith 版本。大多数用户应该安装可用的最新版本。<Note>
-     最新的稳定图表在 v17 线上（`0.17.x`）。为 v16 行写入的值可能无法在 v17 上呈现。如果您要升级现有的 v16 安装而不是安装新安装，请先按照 [Upgrade from v16 to v17](/langsmith/self-host-upgrades#upgrade-from-v16-to-v17) 操作。
-   </Note>
+   * 将 `<version>` 替换为上一步中您要安装的 LangSmith 版本。大多数用户应该安装可用的最新版本。> [!注意]
+   >
+   > 最新稳定图表在v17线上（`0.17.x`）。为 v16 行写入的值可能无法在 v17 上呈现。如果您要升级现有的 v16 安装而不是安装新安装，请先按照 [Upgrade from v16 to v17](/langsmith/self-host-upgrades#upgrade-from-v16-to-v17) 操作。
 
-   <Note>
-     在运行此命令之前，使用 `-n <namespace>` 指定的命名空间必须已经存在。如果不存在，请先使用 `kubectl create namespace <namespace>` 创建它，或者将 `--create-namespace` 标志添加到上面的 helm 命令中。
-   </Note>
+   > [!注意]
+   >
+   > 在运行此命令之前，使用`-n <namespace>`指定的命名空间必须已经存在。如果不存在，请先使用 `kubectl create namespace <namespace>` 创建它，或者将 `--create-namespace` 标志添加到上面的 helm 命令中。
 
    当 `helm install` 命令成功完成时，您应该看到类似于以下内容的输出：
 
@@ -314,7 +314,7 @@ curl https://<your-langsmith-host>/.well-known/jwks.json
 
    LangSmith UI 应可见且可操作。
 
-   <img alt="Langsmith ui" />
+   ![Langsmith ui](https://mintcdn.com/langchain-5e9cc07a/4kN8yiLrZX_amfFn/langsmith/images/langsmith-ui.png?fit=max\&auto=format\&n=4kN8yiLrZX_amfFn\&q=85\&s=5310f686e7b9eebaaee4fe2a152a8675)
 
 ## 后续步骤完成本指南后，您的 LangSmith 实例应该正在运行，但可能尚未完全配置。
 
@@ -335,12 +335,6 @@ curl https://<your-langsmith-host>/.well-known/jwks.json
 
 ***
 
-<div>
-  <Callout icon="terminal-2">
-    [Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时答案。
-  </Callout>
+[Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
 
-  <Callout icon="edit">
-    [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/kubernetes.mdx) 或 [file an issue](https://github.com/langchain-ai/docs/issues/new/choose)。
-  </Callout>
-</div>
+[Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/kubernetes.mdx) 或 [file an issue](https://github.com/langchain-ai/docs/issues/new/choose)。

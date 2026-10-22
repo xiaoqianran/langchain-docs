@@ -4,7 +4,7 @@
 
 # Monorepo 支持
 
-LangSmith 支持从 monorepo 设置部署代理，其中您的代理代码可能依赖于存储库中其他位置的共享包。本指南展示了如何构建 monorepo 并配置 `langgraph.json` 文件以使用共享依赖项。
+LangSmith 支持从 monorepo 设置部署代理，其中您的代理代码可能依赖于位于存储库中其他位置的共享包。本指南展示了如何构建 monorepo 并配置 `langgraph.json` 文件以使用共享依赖项。
 
 ## 存储库结构
 
@@ -13,74 +13,70 @@ LangSmith 支持从 monorepo 设置部署代理，其中您的代理代码可能
 * [Python monorepo example](https://github.com/langchain-ai/python-langraph-monorepo-example)
 * [JS monorepo example](https://github.com/langchain-ai/js-langgraph-monorepo-example)
 
-<CodeGroup>
-  ```plaintext Python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  my-monorepo/
-  ├── shared-utils/           # Shared Python package
-  │   ├── __init__.py
-  │   ├── common.py
-  │   └── pyproject.toml      # Or setup.py
-  ├── agents/
-  │   └── customer-support/   # Agent directory
-  │       ├── agent/
-  │       │   ├── __init__.py
-  │       │   └── graph.py
-  │       ├── langgraph.json  # Config file in agent directory
-  │       ├── .env
-  │       └── pyproject.toml  # Agent dependencies
-  └── other-service/
-      └── ...
-  ```
+```plaintext Python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+my-monorepo/
+├── shared-utils/           # Shared Python package
+│   ├── __init__.py
+│   ├── common.py
+│   └── pyproject.toml      # Or setup.py
+├── agents/
+│   └── customer-support/   # Agent directory
+│       ├── agent/
+│       │   ├── __init__.py
+│       │   └── graph.py
+│       ├── langgraph.json  # Config file in agent directory
+│       ├── .env
+│       └── pyproject.toml  # Agent dependencies
+└── other-service/
+    └── ...
+```
 
-  ```plaintext JS theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  my-monorepo/
-  ├── package.json            # Root package.json with workspaces
-  ├── shared-utils/           # Shared TypeScript package
-  │   ├── package.json
-  │   ├── src/
-  │   │   └── index.ts
-  │   └── tsconfig.json
-  ├── agents/
-  │   └── customer-support/   # Agent directory
-  │       ├── src/
-  │       │   └── agent.ts
-  │       ├── langgraph.json  # Config file in agent directory
-  │       ├── package.json    # Agent dependencies
-  │       ├── .env
-  │       └── tsconfig.json
-  └── other-service/
-      └── ...
-  ```
-</CodeGroup>
+```plaintext JS theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+my-monorepo/
+├── package.json            # Root package.json with workspaces
+├── shared-utils/           # Shared TypeScript package
+│   ├── package.json
+│   ├── src/
+│   │   └── index.ts
+│   └── tsconfig.json
+├── agents/
+│   └── customer-support/   # Agent directory
+│       ├── src/
+│       │   └── agent.ts
+│       ├── langgraph.json  # Config file in agent directory
+│       ├── package.json    # Agent dependencies
+│       ├── .env
+│       └── tsconfig.json
+└── other-service/
+    └── ...
+```
 
 ## LangGraph.json 配置
 
 将 langgraph.json 文件放在代理的目录中（而不是 monorepo 根目录中）。确保文件遵循所需的结构：
 
-<CodeGroup>
-  ```json Python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  {
-    "dependencies": [
-      ".",                    # Current agent package
-      "../../shared-utils"    # Relative path to shared package
-    ],
-    "graphs": {
-      "customer_support": "./agent/graph.py:graph"
-    },
-    "env": ".env"
-  }
-  ```
+```json Python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+{
+  "dependencies": [
+    ".",                    # Current agent package
+    "../../shared-utils"    # Relative path to shared package
+  ],
+  "graphs": {
+    "customer_support": "./agent/graph.py:graph"
+  },
+  "env": ".env"
+}
+```
 
-  ```json JS theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  {
-    "node_version": "20",
-    "graphs": {
-      "customer_support": "./src/agent.ts:graph"
-    },
-    "env": ".env"
-  }
-  ```
-</CodeGroup>
+```json JS theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+{
+  "node_version": "20",
+  "graphs": {
+    "customer_support": "./src/agent.ts:graph"
+  },
+  "env": ".env"
+}
+```
 
 Python 实现通过以下方式自动处理父目录中的包：
 
@@ -109,17 +105,15 @@ Python 实现通过以下方式自动处理父目录中的包：
 
 运行`langgraph build`：
 
-<CodeGroup>
-  ```bash Python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  cd agents/customer-support
-  langgraph build -t my-customer-support-agent
-  ```
+```bash Python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+cd agents/customer-support
+langgraph build -t my-customer-support-agent
+```
 
-  ```bash JS theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  # Run from the root of the monorepo
-  langgraph build -t my-customer-support-agent -c agents/customer-support/langgraph.json
-  ```
-</CodeGroup>
+```bash JS theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+# Run from the root of the monorepo
+langgraph build -t my-customer-support-agent -c agents/customer-support/langgraph.json
+```
 
 Python 构建过程：1.自动检测相对依赖路径。
 2. 将共享包复制到 Docker 构建上下文中。
@@ -145,12 +139,6 @@ JavaScript 构建过程：
 
 ***
 
-<div>
-  <Callout icon="terminal-2">
-    [Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
-  </Callout>
+[Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
 
-  <Callout icon="edit">
-    [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/monorepo-support.mdx) 或 [file an issue](https://github.com/langchain-ai/docs/issues/new/choose)。
-  </Callout>
-</div>
+[Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/monorepo-support.mdx) 或 [file an issue](https://github.com/langchain-ai/docs/issues/new/choose)。

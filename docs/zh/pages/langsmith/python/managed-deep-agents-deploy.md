@@ -8,9 +8,9 @@
 
 部署托管深度代理会将代码优先项目编译为托管 LangGraph 应用程序，将部署拥有的上下文同步到 [Context Hub](/langsmith/python/managed-deep-agents-context-hub)，上传已编译的源代码，并触发 LangSmith 托管部署构建。结果是[Agent Server](/langsmith/agent-server-overview)部署，包括代理服务器API和[MCP endpoint](/langsmith/python/managed-deep-agents-mcp-endpoint)。
 
-<Note>
-  托管Deep Agents于[LangSmith Cloud](/langsmith/cloud)**公开[beta](/langsmith/release-stages)**。
-</Note>
+> [!注意]
+>
+> 托管 Deep Agents 于 [LangSmith Cloud](/langsmith/cloud) **公开 [beta](/langsmith/release-stages)**。
 
 本页介绍秘密路由和部署选项。要在部署之前测试代理，请参阅[Develop locally with LangSmith Studio](/langsmith/python/managed-deep-agents-local-development)。有关命令标志、部署步骤列表和故障排除，请参阅 [CLI reference](/langsmith/python/managed-deep-agents-cli)。
 
@@ -32,7 +32,7 @@
 
 在首次部署之前，在项目的 `.env` 或 shell 环境中设置 `LANGSMITH_ENDPOINT`：
 
-|地区 |端点|部署支持 |
+|地区 |端点 |部署支持 |
 | - | - | - |
 | GCP 美国 (`smith.langchain.com`) | `https://api.smith.langchain.com` |支持 |
 | GCP 欧盟 (`eu.smith.langchain.com`) | `https://eu.api.smith.langchain.com` |支持 |
@@ -49,9 +49,9 @@ LANGSMITH_ENDPOINT=https://eu.api.smith.langchain.com
 
 有关区域的更多信息，请参阅[Regions FAQ](/langsmith/regions-faq)。
 
-<Note>
-  LangSmith 托管工具仅在 GCP US 中可用。
-</Note>
+> [!注意]
+>
+> LangSmith 托管工具仅在 GCP US 中可用。
 
 ## 部署到LangSmith
 
@@ -61,16 +61,16 @@ LANGSMITH_ENDPOINT=https://eu.api.smith.langchain.com
 uv run mda deploy
 ```
 
-<Tip>
-  `mda deploy` 将本地项目输入路由到不同的托管表面：
-
-  ```text theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  instructions.md + skills/**  -> Context Hub deploy-owned context
-  .env                         -> deploy auth + non-reserved hosted secrets, not archived
-  project source files         -> .mda/build source archive -> hosted deployment
-  schedules/**                 -> LangSmith cron jobs after the deployment is live
-  ```
-</Tip>
+> [!提示]
+>
+> `mda deploy` 将本地项目输入路由到不同的托管表面：
+>
+> ```text theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> instructions.md + skills/**  -> Context Hub deploy-owned context
+> .env                         -> deploy auth + non-reserved hosted secrets, not archived
+> project source files         -> .mda/build source archive -> hosted deployment
+> schedules/**                 -> LangSmith cron jobs after the deployment is live
+> ```
 
 当目录名称不是您想要的名称时，显式设置部署名称：
 
@@ -94,9 +94,9 @@ uv run mda deploy --no-wait
 
 ## 设置Python版本
 
-<Note>
-  配置Python版本需要`managed-deepagents>=0.8.0`。
-</Note>
+> [!注意]
+>
+> 配置Python版本需要`managed-deepagents>=0.8.0`。
 
 MDA 在 Python 3.11、3.12、3.13 或 3.14 上构建部署映像，并默认选择 `requires-python` 允许的最新版本。要固定版本，请将可选的 `[tool.mda]` 表添加到 `pyproject.toml`：
 
@@ -146,40 +146,32 @@ MDA_INGRESS_SECRET=<MDA_INGRESS_SECRET>
 
 ## 后续步骤
 
-<CardGroup>
-  <Card title="Agent Server" icon="server" href="/langsmith/agent-server-overview">
-    探索托管部署的运行时。
-  </Card>
+> **[Agent Server](/langsmith/agent-server-overview)**
+>
+> 探索托管部署的运行时。
 
-  <Card title="MCP endpoint" icon="plug" href="/langsmith/python/managed-deep-agents-mcp-endpoint">
-    将部署的代理作为工具公开给 MCP 客户端。
-  </Card>
+> **[MCP endpoint](/langsmith/python/managed-deep-agents-mcp-endpoint)**
+>
+> 将部署的代理作为工具公开给 MCP 客户端。
 
-  <Card title="Identity" icon="fingerprint" href="/langsmith/python/managed-deep-agents-identity">
-    对调用者进行身份验证并提供私有线程。
-  </Card>
+> **[Identity](/langsmith/python/managed-deep-agents-identity)**
+>
+> 对调用者进行身份验证并提供私有线程。
 
-  <Card title="Schedules" icon="calendar" href="/langsmith/python/managed-deep-agents-schedules">
-    根据托管 cron 计划运行代理。
-  </Card>
+> **[Schedules](/langsmith/python/managed-deep-agents-schedules)**
+>
+> 根据托管 cron 计划运行代理。
 
-  <Card title="Custom tools" icon="tool" href="/langsmith/python/managed-deep-agents-tools">
-    将创作的 LangChain 工具添加到代理定义中。
-  </Card>
+> **[Custom tools](/langsmith/python/managed-deep-agents-tools)**
+>
+> 将创作的 LangChain 工具添加到代理定义中。
 
-  <Card title="CLI reference" icon="terminal" href="/langsmith/python/managed-deep-agents-cli">
-    查找每个`mda`命令和标志。
-  </Card>
-</CardGroup>
+> **[CLI reference](/langsmith/python/managed-deep-agents-cli)**
+>
+> 查找每个 `mda` 命令和标志。
 
 ***
 
-<div>
-  <Callout icon="terminal-2">
-    [Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
-  </Callout>
+[Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
 
-  <Callout icon="edit">
-    [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/managed-deep-agents-deploy.mdx) 或 [file an issue](https://github.com/langchain-ai/docs/issues/new/choose)。
-  </Callout>
-</div>
+[Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/managed-deep-agents-deploy.mdx) 或 [file an issue](https://github.com/langchain-ai/docs/issues/new/choose)。

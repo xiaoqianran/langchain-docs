@@ -8,9 +8,9 @@
 
 托管 Deep Agents 在 [LangSmith Context Hub](/langsmith/use-the-context-hub) 中存储部署拥有的指令和技能以及可选的持久内存。这种拆分使您可以在不重建应用程序代码的情况下更改代理行为，同时项目仍然是持久指导和技能更新的真实来源。
 
-<Note>
-  托管Deep Agents于[LangSmith Cloud](/langsmith/cloud)**公开[beta](/langsmith/release-stages)**。
-</Note>
+> [!注意]
+>
+> 托管 Deep Agents 于 [LangSmith Cloud](/langsmith/cloud) **公开 [beta](/langsmith/release-stages)**。
 
 ## Context Hub 中包含哪些内容
 
@@ -18,7 +18,7 @@
 | - | - | - | - |
 |系统提示| [⟦T3⟧](/langsmith/python/managed-deep-agents-instructions) |是的 |没有 |
 |技能 | [⟦T4⟧](/langsmith/python/managed-deep-agents-skills) |是的 |没有 |
-|持久记忆|可选的[⟦T5⟧](/langsmith/python/managed-deep-agents-memory)声明 |启用树；不覆盖现有内存 |是的，在`/memories/agent/` |
+|持久记忆|可选的[⟦T5⟧](/langsmith/python/managed-deep-agents-memory)声明|启用树；不覆盖现有内存 |是的，在`/memories/agent/` |
 
 工具、中间件、MCP 连接器、通道、计划、沙箱和代理定义随已编译的部署一起提供。它们未同步到 Context Hub。
 
@@ -94,12 +94,6 @@
 
 ***
 
-<div>
-  <Callout icon="terminal-2">
-    [Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
-  </Callout>
+[Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
 
-  <Callout icon="edit">
-    [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/managed-deep-agents-context-hub.mdx) 或 [file an issue](https://github.com/langchain-ai/docs/issues/new/choose)。
-  </Callout>
-</div>
+[Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/managed-deep-agents-context-hub.mdx) 或 [file an issue](https://github.com/langchain-ai/docs/issues/new/choose)。

@@ -6,9 +6,9 @@
 
 当主模型速率限制、错误或返回另一个配置的状态代码时，自动重试备份模型的请求。
 
-<Note>
-  LLM 网关位于[beta](/langsmith/release-stages)。
-</Note>
+> [!注意]
+>
+> LLM Gateway 位于[beta](/langsmith/release-stages)。
 
 当主模型返回配置错误（例如速率限制或提供程序中断）时，模型回退会针对一个或多个备份模型重试请求。在 LangSmith 中定义一次后备顺序，然后继续在应用程序中使用标准 LLM 网关端点和模型 ID。
 
@@ -17,7 +17,7 @@
 后备链具有：
 
 * **主模型**：请求失败时触发链的提供者和模型。
-* **一到五个后备**：直接提供者模型的有序列表或保存的[model configurations](/langsmith/model-configurations)。
+* **一到五个后备**：直接提供者模型的有序列表或已保存的[model configurations](/langsmith/model-configurations)。
 * **触发器**：将请求移至下一个模型的上游 HTTP 状态代码。例如，使用 `429` 进行速率限制，或使用 `500`、`502`、`503` 和 `504` 进行提供商错误。
 
 对于每个请求，网关：1. 调用由请求的提供者前缀模型 ID 选择的主模型。
@@ -31,9 +31,9 @@
 
 ## 创建后备链
 
-<Warning>
-  创建和管理后备链需要`organization:manage`权限。有关完整权限细分，请参阅[Access control](/langsmith/llm-gateway-access)。
-</Warning>
+> [!警告]
+>
+> 创建和管理后备链需要 `organization:manage` 权限。有关完整权限细分，请参阅[Access control](/langsmith/llm-gateway-access)。
 
 创建后备链：1. 转到 **LLM Gateway** 并选择 **模型回退** 选项卡。
 2. 单击**创建后备链**。
@@ -49,21 +49,19 @@
 
 使用主提供商前缀的模型 ID 调用标准 LLM 网关端点。您不需要特定于路由的 URL 或其他请求字段：
 
-<CodeGroup>
-  ```bash Cloud theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  curl https://gateway.smith.langchain.com/v1/chat/completions \
-      -H "Authorization: Bearer $LANGSMITH_API_KEY" \
-      -H "Content-Type: application/json" \
-      -d '{"model":"anthropic/claude-opus-5","messages":[{"role":"user","content":"Hello!"}]}'
-  ```
+```bash Cloud theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+curl https://gateway.smith.langchain.com/v1/chat/completions \
+    -H "Authorization: Bearer $LANGSMITH_API_KEY" \
+    -H "Content-Type: application/json" \
+    -d '{"model":"anthropic/claude-opus-5","messages":[{"role":"user","content":"Hello!"}]}'
+```
 
-  ```bash BYOC theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  curl https://<data_plane_host>/gateway/v1/chat/completions \
-      -H "Authorization: Bearer $LANGSMITH_API_KEY" \
-      -H "Content-Type: application/json" \
-      -d '{"model":"anthropic/claude-opus-5","messages":[{"role":"user","content":"Hello!"}]}'
-  ```
-</CodeGroup>
+```bash BYOC theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+curl https://<data_plane_host>/gateway/v1/chat/completions \
+    -H "Authorization: Bearer $LANGSMITH_API_KEY" \
+    -H "Content-Type: application/json" \
+    -d '{"model":"anthropic/claude-opus-5","messages":[{"role":"user","content":"Hello!"}]}'
+```
 
 网关应用在 API 密钥工作区中为 `anthropic/claude-opus-5` 配置的后备链。如果没有链匹配，网关将返回主要模型的响应，而不尝试回退。## 设置提示的后备
 
@@ -79,7 +77,7 @@
 
 3. 操场上的[Create a prompt](/langsmith/create-a-prompt)。打开**模型配置**，选择**LangSmith网关**作为**提供商**，并在**模型**字段中输入`custom/<my_config_name>`。将 `<my_config_name>` 替换为保存的配置名称，不带尖括号。即使该值未列出，您也可以键入该值。单击**应用**。
 
-   在型号字段中输入<img alt="Model Configuration dialog with LangSmith Gateway selected as the provider and custom/<my_config_name>。" />
+   ![Model Configuration dialog with LangSmith Gateway selected as the provider and custom/\<my\_config\_name> entered in the Model field.](https://mintcdn.com/langchain-5e9cc07a/fF0qKKSfCv3bTXzB/images/llm-gateway-prompt-model-configuration.png?fit=max\&auto=format\&n=fF0qKKSfCv3bTXzB\&q=85\&s=6d628cfacd6bfbee2162ba9c69207940)
 
 4. **保存**提示，然后[pull it with its model](/langsmith/manage-prompts-programmatically#pull-a-prompt)。在Python中，调用`client.pull_prompt`时设置`include_model=True`，以便包含保存的网关模型配置。使用保存的模型调用拉取的提示，以通过网关发送请求并应用配置的后备链。仅拉取提示模板，不包含模型配置。
 
@@ -102,12 +100,6 @@
 
 ***
 
-<div>
-  <Callout icon="terminal-2">
-    [Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
-  </Callout>
+[Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
 
-  <Callout icon="edit">
-    [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/llm-gateway-fallbacks.mdx) 或 [file an issue](https://github.com/langchain-ai/docs/issues/new/choose)。
-  </Callout>
-</div>
+[Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/llm-gateway-fallbacks.mdx) 或 [file an issue](https://github.com/langchain-ai/docs/issues/new/choose)。

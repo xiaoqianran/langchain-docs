@@ -8,27 +8,23 @@
 
 要在工作区中的 [agents](/langsmith/agents) 之间移动，请使用顶部栏中的代理切换器。选择一个代理以仅查看该代理的计数、图表和跟踪列表。
 
-<Note>
-  [LangSmith Cloud](/langsmith/cloud) 上提供基于代理的工作区。它们在 [self-hosted](/langsmith/self-hosted) LangSmith 上不可用。要检查您的工作区是否基于代理，请查看左上角的控件。在基于代理的工作区中，它是一个为您的工作区命名的工作区切换器。在[project-based](/langsmith/observability-concepts#tracing-projects)工作区中，它显示LangSmith徽标。
-</Note>
+> [!注意]
+>
+> [LangSmith Cloud](/langsmith/cloud) 上提供基于代理的工作区。它们在 [self-hosted](/langsmith/self-hosted) LangSmith 上不可用。要检查您的工作区是否基于代理，请查看左上角的控件。在基于代理的工作区中，它是一个为您的工作区命名的工作区切换器。在[project-based](/langsmith/observability-concepts#tracing-projects)工作区中，它显示LangSmith徽标。
 
-<img alt="An agent's Overview, with the agent switcher in the top bar naming the agent, the ID field below it, and the metrics row for the last 7 days across all environments." />
-
-<img alt="An agent's Overview, with the agent switcher in the top bar naming the agent, the ID field below it, and the metrics row for the last 7 days across all environments." />
+![An agent's Overview, with the agent switcher in the top bar naming the agent, the ID field below it, and the metrics row for the last 7 days across all environments.](https://mintcdn.com/langchain-5e9cc07a/J7ZKUnuaUY3KEDGH/langsmith/images/agent-switcher-closed-light.png?fit=max\&auto=format\&n=J7ZKUnuaUY3KEDGH\&q=85\&s=d706de1809cf475248ca264d2f68d943)
 
 ## 在代理之间切换
 
 代理切换器位于顶部栏的左侧，位于工作区切换器和面板折叠切换器之后。它显示**所有代理**或您所在代理的名称。在概述以外的部分中，面包屑会跟随在其后面并命名该部分。
 
-<img alt="The agent switcher open, with a search box above a list of agents and a check mark beside the selected one." />
-
-<img alt="The agent switcher open, with a search box above a list of agents and a check mark beside the selected one." />其背后的地址是`/o/<workspaceId>/a/<agentIdentifier>/...`。工作区槽采用 UUID，代理槽采用代理的 [identifier](/langsmith/agents#identifiers-and-display-names)。代理槽中的连字符表示所有代理，因此 `/a/-` 是 **所有代理** 视图，`/a/<agentIdentifier>` 是单个代理。可以从地址栏设置任一状态，这就是如何直接链接到两个视图之一。
+![The agent switcher open, with a search box above a list of agents and a check mark beside the selected one.](https://mintcdn.com/langchain-5e9cc07a/0GS5eCN4HA5fQwNT/langsmith/images/agent-switcher-open-light.png?fit=max\&auto=format\&n=0GS5eCN4HA5fQwNT\&q=85\&s=0b42353f60159bf455491f6d0a85845c)其背后的地址是`/o/<workspaceId>/a/<agentIdentifier>/...`。工作区槽采用 UUID，代理槽采用代理的 [identifier](/langsmith/agents#identifiers-and-display-names)。代理槽中的连字符表示所有代理，因此 `/a/-` 是 **所有代理** 视图，`/a/<agentIdentifier>` 是单个代理。可以从地址栏设置任一状态，这就是如何直接链接到两个视图之一。
 
 ## 所有代理和单代理视图
 
 切换器在两个视图之间移动：
 
-* **所有座席**：座席列表，工作区中每个座席都有一张卡片。在空的工作区中，它显示一个入门屏幕，其中描述了 [**New Agent** panel](/langsmith/create-an-agent#start-from-the-new-agent-panel) 中的选项，并通过单个 **开始** 按钮打开该面板。
+* **所有座席**：座席列表，工作区中每个座席都有一张卡片。在空的工作区中，它显示一个入门屏幕，其中描述了 [**New Agent** panel](/langsmith/create-an-agent#start-from-the-new-agent-panel) 中的选项，并通过单个 **入门** 按钮打开该面板。
 * **单个代理**：该代理的概述。
 
 左侧导航在两个视图中列出了相同的项目，但其第一行显示为代理列表上的“所有代理”和代理内的“概述”。有两点不同：
@@ -48,7 +44,7 @@
 
 ## 阅读代理概述
 
-当您选择代理时，LangSmith 打开其概览。
+当您选择代理时，LangSmith 打开其概述。
 
 切换器显示客服人员的显示名称。标有 **ID** 的字段（旁边有一个复制按钮）保存标识符，这也是地址栏携带的值。 **ID**字段缩短了中间的一个长标识符。当您需要该值进行跟踪时，请使用 **ID** 旁边的复制按钮。 [Agent addressing](/langsmith/log-traces-to-agent) 采用标识符，而不是显示名称。对于哪个值是哪个，请参阅[Identifiers and display names](/langsmith/agents#identifiers-and-display-names)。
 
@@ -70,12 +66,6 @@
 
 ***
 
-<div>
-  <Callout icon="terminal-2">
-    [Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
-  </Callout>
+[Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
 
-  <Callout icon="edit">
-    [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/navigate-agents.mdx) 或 [file an issue](https://github.com/langchain-ai/docs/issues/new/choose)。
-  </Callout>
-</div>
+[Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/navigate-agents.mdx) 或 [file an issue](https://github.com/langchain-ai/docs/issues/new/choose)。

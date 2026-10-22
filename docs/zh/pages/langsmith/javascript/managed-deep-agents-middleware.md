@@ -8,9 +8,9 @@
 
 中间件添加了围绕模型调用、工具调用和代理生命周期的行为。与[custom tools](/langsmith/javascript/managed-deep-agents-tools)一样，MDA 不会自动发现中间件。导入它并将其传递给代理定义。
 
-<Note>
-  托管 Deep Agents 于 [LangSmith Cloud](/langsmith/cloud) **公开 [beta](/langsmith/release-stages)**。
-</Note>
+> [!注意]
+>
+> 托管 Deep Agents 于 [LangSmith Cloud](/langsmith/cloud) **公开 [beta](/langsmith/release-stages)**。
 
 将自定义中间件放在`middleware/`下，将其导入到代理条目中，并将其传递给代理定义：
 
@@ -29,57 +29,55 @@ my-agent/
 
 使用中间件来编辑 PII、强制调用限制、重试失败、在模型之间回退、动态选择模型或记录和检查工具调用。
 
-<Steps>
-  <Step title="Use prebuilt middleware">
-    您可以直接在代理定义中使用 LangChain [prebuilt middleware](/oss/javascript/langchain/middleware/built-in)：
+**1.使用预构建的中间件**
 
-    ```ts agent.ts theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-    import { defineDeepAgent } from "managed-deepagents";
-    import { modelCallLimitMiddleware, piiMiddleware } from "langchain";
+您可以直接在代理定义中使用 LangChain [prebuilt middleware](/oss/javascript/langchain/middleware/built-in)：
 
-    export const agent = defineDeepAgent({
-      name: "support-agent",
-      model: "openai:gpt-5.5",
-      middleware: [
-        piiMiddleware("email", { strategy: "redact", applyToInput: true }),
-        modelCallLimitMiddleware({ runLimit: 50 }),
-      ],
-    });
-    ```
-  </Step>
+```ts agent.ts theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+import { defineDeepAgent } from "managed-deepagents";
+import { modelCallLimitMiddleware, piiMiddleware } from "langchain";
 
-  <Step title="Define custom middleware (Optional)">
-    对于更高级的选项，请在本地模块中定义 [custom middleware](/oss/javascript/langchain/middleware/custom)。
+export const agent = defineDeepAgent({
+  name: "support-agent",
+  model: "openai:gpt-5.5",
+  middleware: [
+    piiMiddleware("email", { strategy: "redact", applyToInput: true }),
+    modelCallLimitMiddleware({ runLimit: 50 }),
+  ],
+});
+```
 
-    ```ts middleware/audit.ts theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-    import { createMiddleware } from "langchain";
+**2.定义自定义中间件（可选）**
 
-    export const logToolCalls = createMiddleware({
-      name: "LogToolCalls",
-      wrapToolCall: async (request, handler) => {
-        console.log(`Calling tool: ${request.toolCall.name}`);
-        const result = await handler(request);
-        console.log(`Finished tool: ${request.toolCall.name}`);
-        return result;
-      },
-    });
-    ```
+对于更高级的选项，请在本地模块中定义 [custom middleware](/oss/javascript/langchain/middleware/custom)。
 
-    将中间件导入项目根代理条目并将其传递到`middleware`列表中：
+```ts middleware/audit.ts theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+import { createMiddleware } from "langchain";
 
-    ```ts agent.ts theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-    import { defineDeepAgent } from "managed-deepagents";
+export const logToolCalls = createMiddleware({
+  name: "LogToolCalls",
+  wrapToolCall: async (request, handler) => {
+    console.log(`Calling tool: ${request.toolCall.name}`);
+    const result = await handler(request);
+    console.log(`Finished tool: ${request.toolCall.name}`);
+    return result;
+  },
+});
+```
 
-    import { logToolCalls } from "./middleware/audit";
+将中间件导入项目根代理条目并将其传递到`middleware`列表中：
 
-    export const agent = defineDeepAgent({
-      name: "support-agent",
-      model: "openai:gpt-5.5",
-      middleware: [logToolCalls],
-    });
-    ```您的中间件导入的工作方式应该与普通本地 TypeScript 项目中的工作方式相同。
-  </Step>
-</Steps>
+```ts agent.ts theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+import { defineDeepAgent } from "managed-deepagents";
+
+import { logToolCalls } from "./middleware/audit";
+
+export const agent = defineDeepAgent({
+  name: "support-agent",
+  model: "openai:gpt-5.5",
+  middleware: [logToolCalls],
+});
+```您的中间件导入的工作方式应该与普通本地 TypeScript 项目中的工作方式相同。
 
 ## 使用运行时上下文
 
@@ -87,7 +85,7 @@ my-agent/
 
 例如，请参阅[Custom middleware](/oss/javascript/langchain/middleware/custom)。
 
-Managed Deep Agents 添加的调用方、通道和沙箱字段，请参阅[Runtime](/langsmith/javascript/managed-deep-agents-runtime)。
+Managed Deep Agents 添加的调用者、通道和沙箱字段，请参阅[Runtime](/langsmith/javascript/managed-deep-agents-runtime)。
 
 要从中间件挂钩读取或写入线程沙箱中的文件，请使用`runtime.backend`。参见[Read and write sandbox files from code](/langsmith/javascript/managed-deep-agents-sandboxes#read-and-write-sandbox-files-from-code)。
 
@@ -107,10 +105,6 @@ Managed Deep Agents 添加的调用方、通道和沙箱字段，请参阅[Runti
 
 ***
 
-<div>
-  <Callout icon="terminal-2">
-    [Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
-  </Callout><Callout icon="edit">
-    [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/managed-deep-agents-middleware.mdx) 或 [file an issue](https://github.com/langchain-ai/docs/issues/new/choose)。
-  </Callout>
-</div>
+[Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
+
+[Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/managed-deep-agents-middleware.mdx) 或 [file an issue](https://github.com/langchain-ai/docs/issues/new/choose)。

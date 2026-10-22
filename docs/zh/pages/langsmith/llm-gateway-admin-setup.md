@@ -6,9 +6,9 @@
 
 一次性组织设置以启用 LLM 网关并授予用户访问权限。
 
-<Note>
-  LLM 网关位于[beta](/langsmith/release-stages)。
-</Note>
+> [!注意]
+>
+> LLM 网关位于[beta](/langsmith/release-stages)。
 
 一次性设置为您的 LangSmith [organization](/langsmith/administration-overview#organizations) 启用 LLM 网关。 [Organization admins](/langsmith/rbac#organization-admin) 应在个人用户可以通过网关路由呼叫之前完成此操作。
 
@@ -35,13 +35,13 @@
 | `GOOGLE_API_KEY` |谷歌双子座 |
 | `OPENAI_API_KEY` | OpenAI |
 | `SCALEDOWN_API_KEY` |缩小|
-| `VERTEX_SERVICE_ACCOUNT_JSON` | Gemini企业代理平台 |
+| `VERTEX_SERVICE_ACCOUNT_JSON` | Gemini企业代理平台|
 
 仅添加您的组织使用的提供商。如果用户调用尚未添加凭据的提供商，网关将返回错误。
 
-<Tip>
-  Azure Foundry 还支持 Microsoft Entra ID 服务主体身份验证，适用于禁用 API 密钥的资源。设置步骤请参见[Provider authentication](/langsmith/llm-gateway-provider-authentication#configure-azure-foundry)。
-</Tip>
+> [!提示]
+>
+> Azure Foundry 还支持 Microsoft Entra ID 服务主体身份验证，适用于禁用 API 密钥的资源。设置步骤请参见[Provider authentication](/langsmith/llm-gateway-provider-authentication#configure-azure-foundry)。
 
 ## 2.配置用户的网关访问
 
@@ -93,12 +93,6 @@
 
 ***
 
-<div>
-  <Callout icon="terminal-2">
-    [Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
-  </Callout>
+[Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
 
-  <Callout icon="edit">
-    [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/llm-gateway-admin-setup.mdx) 或 [file an issue](https://github.com/langchain-ai/docs/issues/new/choose)。
-  </Callout>
-</div>
+[Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/llm-gateway-admin-setup.mdx) 或 [file an issue](https://github.com/langchain-ai/docs/issues/new/choose)。

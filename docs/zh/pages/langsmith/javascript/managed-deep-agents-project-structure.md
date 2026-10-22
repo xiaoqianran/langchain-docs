@@ -8,9 +8,9 @@
 
 托管 Deep Agents 项目是一个普通的 TypeScript 包，具有​​一个必需的根代理条目。其他路径要么是您导入的普通模块，要么是 MDA 发现的用于启用托管功能的文件和目录。
 
-<Note>
-  托管 Deep Agents 于 [LangSmith Cloud](/langsmith/cloud) **公开 [beta](/langsmith/release-stages)**。
-</Note>
+> [!注意]
+>
+> 托管 Deep Agents 于 [LangSmith Cloud](/langsmith/cloud) **公开 [beta](/langsmith/release-stages)**。
 
 ## 项目布局
 
@@ -77,15 +77,13 @@ my-agent/
 
 构建仅复制项目目录。要使用同级目录中的包，请将其声明为本地依赖项：
 
-<CodeGroup>
-  ```bash npm theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  npm install ../shared
-  ```
+```bash npm theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+npm install ../shared
+```
 
-  ```bash pnpm theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  pnpm add ../shared
-  ```
-</CodeGroup>
+```bash pnpm theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+pnpm add ../shared
+```
 
 ```ts theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 import { helper } from "@acme/shared";
@@ -102,24 +100,16 @@ MDA 将包复制到构建中。 `mda dev` 会在您编辑时重新加载，并�
 
 ## 后续步骤
 
-<CardGroup>
-  <Card title="Quickstart" icon="rocket" href="/langsmith/javascript/managed-deep-agents-quickstart">
-    使用 `mda` CLI 创建并部署您的第一个托管深度代理。
-  </Card>
+> **[Quickstart](/langsmith/javascript/managed-deep-agents-quickstart)**
+>
+> 使用 `mda` CLI 创建并部署您的第一个托管深度代理。
 
-  <Card title="Tutorial" icon="book" href="/langsmith/javascript/managed-deep-agents-tutorial">
-    为快速入门研究助手添加持久记忆和每日日程安排。
-  </Card>
-</CardGroup>
+> **[Tutorial](/langsmith/javascript/managed-deep-agents-tutorial)**
+>
+> 将持久记忆和每日日程添加到快速入门研究助手中。
 
 ***
 
-<div>
-  <Callout icon="terminal-2">
-    [Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
-  </Callout>
+[Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
 
-  <Callout icon="edit">
-    [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/managed-deep-agents-project-structure.mdx) 或 [file an issue](https://github.com/langchain-ai/docs/issues/new/choose)。
-  </Callout>
-</div>
+[Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/managed-deep-agents-project-structure.mdx) 或 [file an issue](https://github.com/langchain-ai/docs/issues/new/choose)。

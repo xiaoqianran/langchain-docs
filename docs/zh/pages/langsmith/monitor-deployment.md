@@ -12,56 +12,54 @@
 
 每个修订版都包含构建日志和服务器日志。
 
-<Tabs>
-  <Tab title="LangSmith UI">
-    从**部署**视图：
+**LangSmith用户界面**
 
-    1. 选择部署。
-    2. 在 **修订版** 表中，选择一个修订版。详细信息面板打开，并选择 **Build** 选项卡。
-    3. 查看构建日志。
-    4. 选择“**服务器**”选项卡以查看服务器日志。 LangSmith 部署修订版后，服务器日志变得可用。
-    5. 根据需要调整日期和时间范围。默认范围是**过去 7 天**。
-  </Tab>
+从**部署**视图：
 
-  <Tab title="LangGraph CLI">
-    要查看服务器日志，请运行：
+1. 选择部署。
+2. 在 **修订版** 表中，选择一个修订版。详细信息面板打开，并选择 **Build** 选项卡。
+3. 查看构建日志。
+4. 选择“**服务器**”选项卡以查看服务器日志。服务器日志在LangSmith部署修订版后可用。
+5. 根据需要调整日期和时间范围。默认范围是**过去 7 天**。
 
-    ```shell theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-    langgraph deploy logs
-    ```
+**LangGraph CLI**
 
-    要查看构建日志，请运行：
+要查看服务器日志，请运行：
 
-    ```shell theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-    langgraph deploy logs --type build
-    ```
+```shell theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+langgraph deploy logs
+```
 
-    要流式传输新日志，请运行：
+要查看构建日志，请运行：
 
-    ```shell theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-    langgraph deploy logs --follow
-    ```
+```shell theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+langgraph deploy logs --type build
+```
 
-    按时间范围、日志级别或搜索字符串过滤日志：
+要流式传输新日志，请运行：
 
-    ```shell theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-    langgraph deploy logs --start-time 2026-03-01T00:00:00Z --level ERROR
-    ```
+```shell theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+langgraph deploy logs --follow
+```
 
-    要选择部署，请传递其名称或 ID：
+按时间范围、日志级别或搜索字符串过滤日志：
 
-    ```shell theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-    langgraph deploy logs --name my-agent
-    langgraph deploy logs --deployment-id <DEPLOYMENT_ID>
-    ```
+```shell theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+langgraph deploy logs --start-time 2026-03-01T00:00:00Z --level ERROR
+```
 
-    对于所有选项，请参阅[⟦T5⟧ CLI reference](/langsmith/cli#deploy-logs)。
-  </Tab>
-</Tabs>
+要选择部署，请传递其名称或 ID：
 
-## 将服务器日志转发到 Datadog要将代理服务器日志转发到 Datadog，请在部署上配置以下环境变量或机密：
+```shell theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+langgraph deploy logs --name my-agent
+langgraph deploy logs --deployment-id <DEPLOYMENT_ID>
+```
 
-* **`DD_API_KEY`**：您的[Datadog API key](https://docs.datadoghq.com/account_management/api-app-keys/)。
+对于所有选项，请参阅[⟦T5⟧ CLI reference](/langsmith/cli#deploy-logs)。
+
+## 将服务器日志转发到 Datadog
+
+要将代理服务器日志转发到 Datadog，请在部署上配置以下环境变量或密钥：* **`DD_API_KEY`**：您的[Datadog API key](https://docs.datadoghq.com/account_management/api-app-keys/)。
 * **`DD_LOGS_ENABLED=true`**：启用日志转发。
 
 要将日志与跟踪关联起来，还需设置 `DD_LOGS_INJECTION=true`。有关所有支持的 Datadog 变量，请参阅[Supported Datadog environment variables](/langsmith/env-var#dd_api_key)。
@@ -82,12 +80,6 @@
 
 ***
 
-<div>
-  <Callout icon="terminal-2">
-    [Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
-  </Callout>
+[Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
 
-  <Callout icon="edit">
-    [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/monitor-deployment.mdx) 或 [file an issue](https://github.com/langchain-ai/docs/issues/new/choose)。
-  </Callout>
-</div>
+[Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/monitor-deployment.mdx) 或 [file an issue](https://github.com/langchain-ai/docs/issues/new/choose)。

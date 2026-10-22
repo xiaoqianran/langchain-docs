@@ -6,23 +6,23 @@
 
 每周限制法学硕士在评估员上的支出，并在组织范围内默认或按评估员覆盖，以保持评估员成本可预测。
 
-限制每位评估员每周的 LLM 支出，以防止单个评估员超出您的预算。 LangSmith 跟踪本周迄今为止的评估者支出，并于周一上午 12 点（世界标准时间）重置。它让 [organization admins](/langsmith/rbac#organization-admin) 为每个评估者的 [attached projects and datasets](/langsmith/evaluation-concepts#attaching-an-evaluator-to-a-tracing-project-or-dataset) 设置每周上限。该上限可以是单个组织范围内的默认值，也可以是特定附加项目或数据集上的自定义覆盖。
+限制每位评估员每周的 LLM 支出，以防止单个评估员超出您的预算。 LangSmith 跟踪本周至今的评估者支出，并于周一上午 12 点（世界标准时间）重置。它让 [organization admins](/langsmith/rbac#organization-admin) 为每个评估者的 [attached projects and datasets](/langsmith/evaluation-concepts#attaching-an-evaluator-to-a-tracing-project-or-dataset) 设置每周上限。该上限可以是单个组织范围内的默认值，也可以是特定附加项目或数据集上的自定义覆盖。
 
 本指南向您展示如何查看和配置每周评估者支出上限。
 
-<Tip>
-  LangSmith还提供[per-trace and per-model cost tracking](/langsmith/cost-tracking)和[tracing usage limits](/langsmith/administration-overview#usage-limits)用于成本控制。
-</Tip>
+> [!提示]
+>
+> LangSmith还提供[per-trace and per-model cost tracking](/langsmith/cost-tracking)和[tracing usage limits](/langsmith/administration-overview#usage-limits)用于成本控制。
 
-<Warning>
-  设置支出限额适用于 OpenAI、Anthropic 和 Gemini 型号。支出限制仅针对在 LangSmith 中具有 [pricing configured](/langsmith/cost-tracking#create-a-new-or-modify-an-existing-model-price-entry) 的受支持模型上执行。在依赖限制之前验证模型定价。一旦设置限制，不支持的模型就不能在评估器中使用。
-</Warning>
+> [!警告]
+>
+> 设置支出限额适用于 OpenAI、Anthropic 和 Gemini 型号。支出限制仅针对在 LangSmith 中具有 [pricing configured](/langsmith/cost-tracking#create-a-new-or-modify-an-existing-model-price-entry) 的受支持模型上执行。在依赖限制之前验证模型定价。一旦设置限制，不支持的模型就不能在评估器中使用。
 
-<Note>
-  用户界面将本周至今的窗口标记为**本周**。
-</Note>
+> [!注意]
+>
+> 用户界面将本周至今的窗口标记为**本周**。
 
-## 执法如何运作LangSmith 记录每次评估器运行完成后的支出，然后汇总从世界标准时间周一上午 12 点到当前时刻的支出。当总数达到有效限制时，LangSmith 暂停附加项目或数据集上的评估器。在最终确定之前，运行中的运行可能会使总数略高于上限，因此支出可能会短暂超出一小部分。
+## 执法如何运作LangSmith 记录每次评估器运行完成后的支出，然后对从周一上午 12 点（世界标准时间）到当前时刻的支出进行求和。当总数达到有效限制时，LangSmith 暂停附加项目或数据集上的评估器。在最终确定之前，运行中的运行可能会使总数略高于上限，因此支出可能会短暂超出一小部分。
 
 代理和跟踪不受影响。只有评估者才会停止生成分数，直到支出限额重置或限额为[manually increased](#override-the-default-for-an-attached-project-or-dataset)。
 
@@ -34,15 +34,13 @@
 | [Evaluators table](#evaluators-table)（消费、消费状态）| **左侧边栏中的评估者** |所有工作区成员 |
 | [Projects & Datasets tab](#projects-%26-datasets-tab-on-an-evaluator) |打开评估器，**项目和数据集**（基于代理的工作区中的**环境和数据集**）|所有工作区成员 |
 | [Organization default spend limit](#set-an-organization-default-spend-limit) |组织 **设置** > **使用配置** |需要`organization:manage`查看和编辑|
-| [Per-evaluator override](#override-the-default-for-an-attached-project-or-dataset) |编辑评估器 > **高级** > **支出限额** |所有会员均可查看，需要`organization:manage`编辑|<CardGroup>
-  <Card title="Set your first limit" icon="settings" href="#set-an-organization-default-spend-limit">
-    打开组织**设置**并定义一个每周上限，该上限适用于组织中所有工作区中每个项目和数据集的所有评估器附件。
-  </Card>
+| [Per-evaluator override](#override-the-default-for-an-attached-project-or-dataset) |编辑评估器 > **高级** > **支出限额** |所有会员均可查看，需要`organization:manage`编辑|> **[Set your first limit](#set-an-organization-default-spend-limit)**
+>
+> 打开组织 **设置** 并定义一个每周上限，该上限适用于组织中所有工作区中每个项目和数据集的所有评估器附件。
 
-  <Card title="Override for one project or dataset" icon="edit" href="#override-the-default-for-an-attached-project-or-dataset">
-    自定义附加到评估器的特定项目或数据集的限制。
-  </Card>
-</CardGroup>
+> **[Override for one project or dataset](#override-the-default-for-an-attached-project-or-dataset)**
+>
+> 自定义附加到评估器的特定项目或数据集的限制。
 
 ## 查看评估者支出
 
@@ -54,7 +52,7 @@
 
 * **每日评估支出**：每天支出的堆积条形图。在 **评估器** 和 **项目/数据集** 细分之间切换。
 * **本周评估者支出**：所有评估者的美元支出总额，与上周相比有所变化。
-* **本周评估者跟踪**：所有评估者的总跟踪计数，与前一周相比有所变化。
+* **本周评估者跟踪**：所有评估者的总跟踪计数，与上周相比有所变化。
 * **每周评估者支出限制监控**：根据 `$ spent / $ limit` 按项目或数据集进度条排序最高支出者列表。标题显示已达到限制（**限制达到**）或**即将达到限制**的项目或数据集的数量。使用页眉中的 **上一周** 和 **下周** 控件来移动每周视图。
 
 跟踪项目、代理环境或数据集视图有一个 **Evaluators** 选项卡，该选项卡反映了范围内的这些小部件，例如，**此跟踪项目的每日评估者支出**。
@@ -82,7 +80,9 @@
 
 组织管理员设置一个每周上限，该上限适用于组织中每个工作区中每个评估者附加的项目和数据集。每个组织都有一个默认值，而不是每个工作区都有一个默认值。
 
-<Note>设置和编辑组织默认值需要`organization:manage`[permission](/langsmith/rbac)。</Note>
+> [!注意]
+>
+> 设置和编辑组织默认值需要`organization:manage`[permission](/langsmith/rbac)。
 
 1. 打开组织**设置**并导航至**使用配置**。
 2. 对于**评估者支出限额**，输入美元金额。单位是`/ week`。留空表示没有限制。
@@ -123,7 +123,7 @@
 
 ## 故障排除
 
-**创建评估器时出现问题**：设置限制后，评估器必须使用受支持的模型（OpenAI、Anthropic 或 Gemini），并在 [Model pricing](/langsmith/cost-tracking#create-a-new-or-modify-an-existing-model-price-entry) 中输入定价。**LangSmith 支出与我的 LLM 提供商发票不匹配**：LangSmith 根据 [Model pricing](/langsmith/cost-tracking#create-a-new-or-modify-an-existing-model-price-entry) 中配置的每个模型费率计算支出，而不是根据提供商的账单。如果您的提供商应用您未添加到 LangSmith 的折扣、定制合同或型号变体，则预计会出现差异。
+**创建评估器时遇到问题**：设置限制后，评估器必须使用受支持的模型（OpenAI、Anthropic 或 Gemini），并在 [Model pricing](/langsmith/cost-tracking#create-a-new-or-modify-an-existing-model-price-entry) 中输入定价。**LangSmith 支出与我的 LLM 提供商发票不匹配**：LangSmith 根据 [Model pricing](/langsmith/cost-tracking#create-a-new-or-modify-an-existing-model-price-entry) 中配置的每个模型费率计算支出，而不是根据提供商的账单。如果您的提供商应用您未添加到 LangSmith 的折扣、定制合同或型号变体，则预计会出现差异。
 
 ## 相关资源
 
@@ -135,12 +135,6 @@
 
 ***
 
-<div>
-  <Callout icon="terminal-2">
-    [Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时答案。
-  </Callout>
+[Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
 
-  <Callout icon="edit">
-    [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/evaluator-spend.mdx) 或 [file an issue](https://github.com/langchain-ai/docs/issues/new/choose)。
-  </Callout>
-</div>
+[Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/evaluator-spend.mdx) 或 [file an issue](https://github.com/langchain-ai/docs/issues/new/choose)。

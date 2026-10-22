@@ -13,13 +13,9 @@
 要访问**提示设置**：
 
 1. 导航至左侧边栏中的 **Playground**。
-2. 在 **提示** 标题下，选择型号名称旁边的齿轮 <Icon icon="settings" /> 图标，这将启动 **提示设置** 窗口。
+2. 在 **提示** 标题下，选择型号名称旁边的齿轮图标，这将启动 **提示设置** 窗口。
 
-   <div>
-     <img alt="Model Configuration window in the LangSmith UI, settings for Provider, Model, Temperature, Max Output Tokens, Top P, Presence Penalty, Frequency Penalty, Reasoning Effort, etc." />
-
-     <img alt="Model Configuration window in the LangSmith UI, settings for Provider, Model, Temperature, Max Output Tokens, Top P, Presence Penalty, Frequency Penalty, Reasoning Effort, etc." />
-   </div>
+   ![Model Configuration window in the LangSmith UI, settings for Provider, Model, Temperature, Max Output Tokens, Top P, Presence Penalty, Frequency Penalty, Reasoning Effort, etc.](https://mintcdn.com/langchain-5e9cc07a/6r3GRtwWCl4ozaHW/langsmith/images/model-config-light.png?fit=max\&auto=format\&n=6r3GRtwWCl4ozaHW\&q=85\&s=6c0f7d7012b1e5295fe545149f955e6b)
 
 ## 模型配置
 
@@ -29,11 +25,11 @@
 2. 单击顶栏中的 **另存为** 按钮。
 3. 输入配置的名称和可选说明并确认。
 4. 现在您已保存配置，组织中的 [workspace](/langsmith/administration-overview#workspaces) 中的任何人都可以访问它。所有保存的配置都可以在 **模型配置** 下拉列表中找到。
-5. 创建保存的配置后，您可以将其设置为默认配置，因此您创建的任何新提示都将自动使用此配置。要将配置设置为默认配置，请单击下拉列表中型号名称旁边的 **设置为默认** <Icon icon="pinned" /> 图标。
+5. 创建保存的配置后，您可以将其设置为默认配置，因此您创建的任何新提示都将自动使用此配置。要将配置设置为默认配置，请单击下拉列表中型号名称旁边的 **设置为默认** 图标。
 
-<Note>
-  仅当配置保存为预设后，OAuth 客户端凭据字段才会出现在此弹出窗口中。要将 OAuth 附加到一次性配置，请先将其保存为预设（请参阅[OAuth client credentials](/langsmith/model-configurations#oauth-client-credentials)）。
-</Note>
+> [!注意]
+>
+> 仅当配置保存为预设后，OAuth 客户端凭据字段才会出现在此弹出窗口中。要将 OAuth 附加到一次性配置，请先将其保存为预设（请参阅[OAuth client credentials](/langsmith/model-configurations#oauth-client-credentials)）。
 
 ### 编辑配置
 
@@ -41,7 +37,7 @@
 2. 根据需要更新当前配置的参数，然后单击顶部的 **保存** 按钮。
 
 ### 删除配置1. 选择您要删除的配置。
-2. 点击垃圾桶<Icon icon="trash" />图标将其删除。
+2. 单击垃圾桶图标将其删除。
 
 ### 额外参数
 
@@ -61,16 +57,14 @@
    TypeError: AsyncCompletions.create() got an unexpected keyword argument 'max_concurrency'
    ```
 
-   如果您收到有关不必要参数的错误（在使用 [LangChain JS](/oss/python/langchain/overview) 进行运行跟踪时更常见），您可以使用此字段删除额外的参数。
+   如果您收到有关不必要参数的错误（在使用 [LangChain JS](/oss/python/langchain/overview) 进行运行跟踪时更常见），您可以使用此字段删除多余的参数。
 
 ## 工具设置
 
 [*Tools*](/langsmith/prompt-engineering-concepts#tools) 使您的法学硕士能够执行诸如搜索网络、查找信息等任务。在“工具设置”选项卡中，您可以管理 LLM 使用和访问您在提示中定义的工具的方式，包括：* **并行工具调用**：在适当的时候并行调用多个工具。这允许模型同时从不同来源收集信息。 （取决于并行执行的模型支持。）
-* **工具选择**：选择模型可以访问的工具。更多详情请参阅[Use tools in a prompt](/langsmith/use-tools)。
+* **工具选择**：选择模型可以访问的工具。更多详情请参考[Use tools in a prompt](/langsmith/use-tools)。
 
-<Callout icon="tool">
-  要管理工作区中可用的工具，包括跨提示启用、禁用和编辑工具，请参阅[Manage tools with the registry](/langsmith/use-tools#manage-tools-with-the-registry)。
-</Callout>
+要管理工作区中可用的工具，包括跨提示启用、禁用和编辑工具，请参阅[Manage tools with the registry](/langsmith/use-tools#manage-tools-with-the-registry)。
 
 ## 提示格式化
 
@@ -81,12 +75,6 @@
 
 ***
 
-<div>
-  <Callout icon="terminal-2">
-    [Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
-  </Callout>
+[Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
 
-  <Callout icon="edit">
-    [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/managing-model-configurations.mdx) 或 [file an issue](https://github.com/langchain-ai/docs/issues/new/choose)。
-  </Callout>
-</div>
+[Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/managing-model-configurations.mdx) 或 [file an issue](https://github.com/langchain-ai/docs/issues/new/choose)。

@@ -8,7 +8,7 @@
 
 决策模型对文本进行分类或评分，并返回结构化答案，而不是生成的聊天消息。通过[LLM Gateway](/langsmith/llm-gateway)致电他们。每个模型都使用自己的 API：
 
-|型号|应用程序接口 |端点|证书 |
+|型号|应用程序接口 |端点 |证书 |
 | - | - | - | - |
 | [TypeSafe (Jev)](#use-typesafe-jev) |系统一| `/v1/systemone` | `TYPESAFE_API_KEY` 提供商秘密 |
 | [OpenAI decision models](#use-openai-decision-models) | OpenAI 决定 | `/openai/v1/decisions` | `OPENAI_API_KEY` 提供商秘密 |
@@ -31,79 +31,77 @@ TypeSafe (Jev) 使用 System One API。在 `state` 中传递要评估的文本�
 
 `typesafe/` 前缀通过工作区的 TypeSafe 提供程序密钥路由请求。传递您的 LangSmith API 密钥，而不是 TypeSafe API 密钥，作为 SDK 的 `api_key` 或 `apiKey`。对 SDK 使用不带 `/v1` 的网关基本 URL：
 
-<Tabs>
-  <Tab title="Python">
-    安装 TypeSafe SDK：
+**Python**
 
-    ```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-    pip install typesafe-sdk
-    ```
+安装 TypeSafe SDK：
 
-    ```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-    import os
+```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+pip install typesafe-sdk
+```
 
-    from typesafe_sdk import Noul, TypeSafeClient
+```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+import os
 
-    client = TypeSafeClient(
-        api_key=os.environ["LANGSMITH_API_KEY"],
-        base_url="https://gateway.smith.langchain.com",
-    )
+from typesafe_sdk import Noul, TypeSafeClient
 
-    response = client.system_one(
-        state="Hello!",
-        model="typesafe/jev-1.13.0",
-        questions={
-            "is_helpful": Noul(
-                instructions="Does this explain what an LLM gateway does?"
-            ),
-        },
-    )
-    ```
-  </Tab>
+client = TypeSafeClient(
+    api_key=os.environ["LANGSMITH_API_KEY"],
+    base_url="https://gateway.smith.langchain.com",
+)
 
-  <Tab title="JavaScript">
-    安装 TypeSafe SDK：
+response = client.system_one(
+    state="Hello!",
+    model="typesafe/jev-1.13.0",
+    questions={
+        "is_helpful": Noul(
+            instructions="Does this explain what an LLM gateway does?"
+        ),
+    },
+)
+```
 
-    ```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-    npm install @typesafe-ai/sdk
-    ```
+**JavaScript**
 
-    ```javascript theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-    import { noul, TypeSafeClient } from "@typesafe-ai/sdk";
+安装 TypeSafe SDK：
 
-    const client = new TypeSafeClient({
-      apiKey: process.env.LANGSMITH_API_KEY,
-      baseURL: "https://gateway.smith.langchain.com",
-    });
+```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+npm install @typesafe-ai/sdk
+```
 
-    const response = await client.systemOne({
-      state: "Hello!",
-      model: "typesafe/jev-1.13.0",
-      questions: {
-        is_helpful: noul("Does this explain what an LLM gateway does?"),
-      },
-    });
-    ```
-  </Tab>
+```javascript theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+import { noul, TypeSafeClient } from "@typesafe-ai/sdk";
 
-  <Tab title="cURL">
-    ```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-    curl https://gateway.smith.langchain.com/v1/systemone \
-        -H "Authorization: Bearer $LANGSMITH_API_KEY" \
-        -H "Content-Type: application/json" \
-        -d '{
-          "state": "Hello!",
-          "model": "typesafe/jev-1.13.0",
-          "questions": {
-            "is_helpful": {
-              "type": "noul",
-              "instructions": "Does this explain what an LLM gateway does?"
-            }
-          }
-        }'
-    ```
-  </Tab>
-</Tabs>
+const client = new TypeSafeClient({
+  apiKey: process.env.LANGSMITH_API_KEY,
+  baseURL: "https://gateway.smith.langchain.com",
+});
+
+const response = await client.systemOne({
+  state: "Hello!",
+  model: "typesafe/jev-1.13.0",
+  questions: {
+    is_helpful: noul("Does this explain what an LLM gateway does?"),
+  },
+});
+```
+
+**卷曲**
+
+```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+curl https://gateway.smith.langchain.com/v1/systemone \
+    -H "Authorization: Bearer $LANGSMITH_API_KEY" \
+    -H "Content-Type: application/json" \
+    -d '{
+      "state": "Hello!",
+      "model": "typesafe/jev-1.13.0",
+      "questions": {
+        "is_helpful": {
+          "type": "noul",
+          "instructions": "Does this explain what an LLM gateway does?"
+        }
+      }
+    }'
+```
 
 ## 使用OpenAI决策模型
 
@@ -162,12 +160,6 @@ curl https://gateway.smith.langchain.com/openai/v1/decisions \
 
 ***
 
-<div>
-  <Callout icon="terminal-2">
-    [Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
-  </Callout>
+[Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
 
-  <Callout icon="edit">
-    [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/llm-gateway-decision-models.mdx) 或 [file an issue](https://github.com/langchain-ai/docs/issues/new/choose)。
-  </Callout>
-</div>
+[Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/llm-gateway-decision-models.mdx) 或 [file an issue](https://github.com/langchain-ai/docs/issues/new/choose)。

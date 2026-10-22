@@ -8,9 +8,9 @@
 
 代理工厂、工具和中间件挂钩各自接收一个运行时。它是本机 LangChain 或 LangGraph 运行时，添加了三个托管字段。上下文、状态和存储的工作方式与 [LangChain](/oss/python/langchain/runtime) 中的工作方式相同，并且您的类型检查器会看到您自己的上下文类型。
 
-<Note>
-  托管 Deep Agents 于 [LangSmith Cloud](/langsmith/cloud) **公开 [beta](/langsmith/release-stages)**。
-</Note>
+> [!注意]
+>
+> 托管 Deep Agents 于 [LangSmith Cloud](/langsmith/cloud) **公开 [beta](/langsmith/release-stages)**。
 
 ## 了解运行时类型
 
@@ -20,7 +20,7 @@
 | - | - | - |
 |代理工厂| `ManagedServerRuntime[Context]` | `ServerRuntime` 从 `langgraph_sdk.runtime` |
 |工具| `ManagedToolRuntime[Context, State]` | `ToolRuntime` 从 `langchain.tools` |
-|中间件钩子 | `ManagedRuntime[Context]` | `Runtime` 从 `langgraph.runtime` |
+|中间件钩子| `ManagedRuntime[Context]` | `Runtime` 从 `langgraph.runtime` |
 
 类型参数遵循本机顺序，因此 `ManagedToolRuntime` 首先获取上下文，然后获取状态。这两个参数都是可选的。 `ManagedDeepAgentRuntime` 是`ManagedToolRuntime` 的别名。
 
@@ -32,7 +32,7 @@
 
 上下文、调用者和通道传递来自不同的来源并具有不同的信任级别。运行时将它们保存在单独的字段中：
 
-* **Context** 来自 API 调用的 `context` 参数。 LangGraph 根据您的上下文架构对其进行验证。用它来选择行为，而不是授予访问权限。
+* **Context** 来自 API 调用的 `context` 参数。 LangGraph 根据您的上下文模式验证它。用它来选择行为，而不是授予访问权限。
 * **服务器信息**来自[identity](/langsmith/python/managed-deep-agents-identity)，它通过经过验证的令牌解析调用者。托管Deep Agents剥离客户端通过`configurable`发送的身份密钥，因此使用此字段进行授权。
 * **通道** 来自托管的 [channel](/langsmith/python/managed-deep-agents-channels) 入口，它在运行开始之前验证交付。直接 API 调用上下文中的 `channel` 键不会创建 `runtime.channel`。
 
@@ -57,7 +57,7 @@ await client.runs.create(
 
 代理工厂收到`ManagedServerRuntime`：本地[⟦T32⟧](/langsmith/graph-rebuild)加上`channel`和`backend`。要编写工厂，请参阅[Select configuration per run](/langsmith/python/managed-deep-agents-agent-definition#select-configuration-per-run)。
 
-代理服务器还调用工厂来读取架构和状态。 `access_context` 命名操作。 [⟦T36⟧](/langsmith/graph-rebuild#access-contexts) 是 `None` 在 `threads.create_run` 之外，因此从 `execution_runtime.context` 读取运行上下文。每次调用返回相同的图形结构和模式。
+代理服务器还调用工厂来读取模式和状态。 `access_context` 命名操作。 [⟦T36⟧](/langsmith/graph-rebuild#access-contexts) 是 `None` 在 `threads.create_run` 之外，因此从 `execution_runtime.context` 读取运行上下文。每次调用返回相同的图形结构和模式。
 
 `channel` 可用，因此工厂可以选择每个通道的配置。 `backend`始终是`None`，因为工厂选择了沙箱。原生 `user`、`store` 和 `ensure_user()` 仍然可用。
 
@@ -161,12 +161,6 @@ def log_caller(state: AgentState, runtime: Runtime[AppContext]) -> None:
 
 ***
 
-<div>
-  <Callout icon="terminal-2">
-    [Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
-  </Callout>
+[Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
 
-  <Callout icon="edit">
-    [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/managed-deep-agents-runtime.mdx) 或 [file an issue](https://github.com/langchain-ai/docs/issues/new/choose)。
-  </Callout>
-</div>
+[Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/managed-deep-agents-runtime.mdx) 或 [file an issue](https://github.com/langchain-ai/docs/issues/new/choose)。

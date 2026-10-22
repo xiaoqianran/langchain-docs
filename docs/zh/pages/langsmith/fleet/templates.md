@@ -8,9 +8,9 @@
 
 LangSmith Fleet 包含[starter templates](https://www.langchain.com/templates)，可帮助您快速创建代理。模板包括针对常见用例的预定义指令、[tools](/langsmith/fleet/tools)和[channels](/langsmith/fleet/essentials#channels)（如果适用）。您可以按原样使用模板，也可以作为自定义的基准。
 
-<Tip>
-  如果您是 Fleet 新手，请从分步 [quickstart](/langsmith/fleet/quickstart) 开始，使用模板构建您的第一个代理。
-</Tip>
+> [!提示]
+>
+> 如果您是 Fleet 新手，请从分步 [quickstart](/langsmith/fleet/quickstart) 开始，使用模板构建您的第一个代理。
 
 ## 特点
 
@@ -32,26 +32,18 @@ LangSmith Fleet 包含[starter templates](https://www.langchain.com/templates)�
 
 ## 可用模板
 
-<CardGroup>
-  <Card title="Executive Assistant" icon="mail">
-    管理您的收件箱、日历和每日简报。
-  </Card>
+> **行政助理**
+>
+> 管理您的收件箱、日历和每日简报。
 
-  <Card title="Software Engineer" icon="code">
-    在沙箱中从 Slack、Linear 和 GitHub 发送代码。
-  </Card>
-</CardGroup><Info>
-  可用的模板可能会随着时间的推移而改变。要获取最新的集合，请打开 Fleet 或 [templates gallery](https://www.langchain.com/templates) 中的 **模板**。
-</Info>
+> **软件工程师**
+>
+> 在沙箱中从 Slack、Linear 和 GitHub 发送代码。> [!注意]
+>
+> 可用的模板可能会随着时间的推移而改变。要获取最新的集合，请打开 Fleet 或 [templates gallery](https://www.langchain.com/templates) 中的 **模板**。
 
 ***
 
-<div>
-  <Callout icon="terminal-2">
-    [Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
-  </Callout>
+[Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
 
-  <Callout icon="edit">
-    [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/fleet/templates.mdx) 或 [file an issue](https://github.com/langchain-ai/docs/issues/new/choose)。
-  </Callout>
-</div>
+[Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/fleet/templates.mdx) 或 [file an issue](https://github.com/langchain-ai/docs/issues/new/choose)。

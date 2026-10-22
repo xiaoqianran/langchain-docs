@@ -6,13 +6,13 @@
 
 本操作指南将引导您了解为多轮对话设置 Playground 的各种方法，这将允许您针对较长的消息线程测试不同的工具配置和系统提示。
 
-<img alt="Multiturn diagram" />
+![Multiturn diagram](https://mintcdn.com/langchain-5e9cc07a/4kN8yiLrZX_amfFn/langsmith/images/multiturn-diagram.png?fit=max\&auto=format\&n=4kN8yiLrZX_amfFn\&q=85\&s=8d468f069fe0ee6eac2e95c8942990aa)
 
 ## 来自现有运行
 
-首先，确保您有正确的 [traced](/langsmith/observability) 多轮对话，然后导航到您的跟踪项目。进入跟踪项目后，只需打开运行，选择 LLM 调用，然后在 Playground 中打开它，如下所示：
+首先，确保您有适当的 [traced](/langsmith/observability) 多轮对话，然后导航到您的跟踪项目。进入跟踪项目后，只需打开运行，选择 LLM 调用，然后在 Playground 中打开它，如下所示：
 
-<img alt="Multiturn from run" />
+![Multiturn from run](https://mintcdn.com/langchain-5e9cc07a/4kN8yiLrZX_amfFn/langsmith/images/multiturn-from-run.gif?s=b4918bc6c6fac9c71859d962495db053)
 
 然后，您可以编辑系统提示，调整工具和/或输出模式，并观察多轮对话的输出如何变化。
 
@@ -24,17 +24,17 @@
 
 然后，将消息列表变量添加到提示中，确保其名称与包含消息列表的输入中的键相同：
 
-<img alt="Multiturn from dataset" />当您运行提示时，每个示例中的消息将作为列表添加到“消息列表”变量的位置。
+![Multiturn from dataset](https://mintcdn.com/langchain-5e9cc07a/4kN8yiLrZX_amfFn/langsmith/images/multiturn-from-dataset.gif?s=42e2f11a348f50a7d2a0c8b6630c57e9)当您运行提示时，每个示例中的消息将作为列表添加到“消息列表”变量的位置。
 
 ## 手动
 
 有两种方法可以手动创建多轮对话。第一种方法是简单地将消息附加到提示中：
 
-<img alt="Multiturn manual" />
+![Multiturn manual](https://mintcdn.com/langchain-5e9cc07a/4kN8yiLrZX_amfFn/langsmith/images/multiturn-manual.gif?s=1278a29854a66ee3dec92cc6f5059da0)
 
 这对于快速迭代很有帮助，但由于多轮对话是硬编码的，因此很僵化。相反，如果您希望提示适用于任何多轮对话，您可以添加“消息列表”变量并在其中添加多轮对话：
 
-<img alt="Multiturn manual list" />
+![Multiturn manual list](https://mintcdn.com/langchain-5e9cc07a/4kN8yiLrZX_amfFn/langsmith/images/multiturn-manual-list.gif?s=12458af5558482bdfe40855c3117c02b)
 
 这允许您只需调整系统提示或工具，同时允许任何多轮对话代替 `Messages List` 变量，从而允许您在各种运行中重复使用此提示。
 
@@ -46,12 +46,6 @@
 
 ***
 
-<div>
-  <Callout icon="terminal-2">
-    [Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
-  </Callout>
+[Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
 
-  <Callout icon="edit">
-    [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/multiple-messages.mdx) 或 [file an issue](https://github.com/langchain-ai/docs/issues/new/choose)。
-  </Callout>
-</div>
+[Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/multiple-messages.mdx) 或 [file an issue](https://github.com/langchain-ai/docs/issues/new/choose)。

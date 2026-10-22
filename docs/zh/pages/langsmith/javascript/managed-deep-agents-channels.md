@@ -4,17 +4,17 @@
 
 # 将托管Deep Agents连接到通道
 
-将托管Deep Agents连接到可以启动运行并接收响应的外部消息传递服务。
+Connect Managed Deep Agents to external messaging services that can start runs and receive responses.
 
-通道使托管深度代理可在外部消息传递服务中使用。来自服务的消息可以启动代理运行，并且代理的最终响应通过同一服务返回。
+A channel makes a managed deep agent available in an external messaging service. Messages from the service can start agent runs, and the agent's final responses return through the same service.
 
-<Note>
-  托管 Deep Agents 于 [LangSmith Cloud](/langsmith/cloud) **公开 [beta](/langsmith/release-stages)**。
-</Note>
+> [!注意]
+>
+> Managed Deep Agents is in **public [beta](/langsmith/release-stages)** on [LangSmith Cloud](/langsmith/cloud).
 
 ## 项目结构
 
-通道声明位于项目级 `channels/` 目录中：
+Channel declarations live in the project-level `channels/` directory:
 
 ```text theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 my-agent/
@@ -23,17 +23,17 @@ my-agent/
     slack.ts
 ```
 
-## 了解渠道
+## Understand channels
 
-通道结合了外部消息传递集成的三个部分：
+A channel combines three parts of an external messaging integration:
 
-* **入站事件**：验证并标准化提供程序事件，然后启动代理运行。
-* **出站消息传送**：将代理的响应发送回原始对话。
-* **配置**：创建并配置将服务连接到已部署代理的提供者资源。
+* **Inbound events**: Verify and normalize provider events, then start an agent run.
+* **Outbound messaging**: Send the agent's response back to the originating conversation.
+* **Provisioning**: Create and configure the provider resources that connect the service to the deployed agent.
 
-在托管Deep Agents中，通道将已部署的代理连接到消息传递提供程序。
+In Managed Deep Agents, a channel connects a deployed agent to a messaging provider.
 
-托管运行时处理通道生命周期：
+The managed runtime handles the channel lifecycle:
 
 ```mermaid theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 flowchart LR
@@ -75,29 +75,21 @@ flowchart LR
 
 ## 支持的频道
 
-<CardGroup>
-  <Card title="Slack" icon="brand-slack" href="/langsmith/javascript/managed-deep-agents-channels-slack">
-    从 Slack 提及、直接消息和线程回复开始运行。
-  </Card>
+> **[Slack](/langsmith/javascript/managed-deep-agents-channels-slack)**
+>
+> 从 Slack 提及、直接消息和话题回复开始运行。
 
-  <Card title="HTTP" icon="webhook" href="/langsmith/javascript/managed-deep-agents-channels-http">
-    从任何可以发送 JSON Webhook 的服务开始运行。
-  </Card>
-</CardGroup>
+> **[HTTP](/langsmith/javascript/managed-deep-agents-channels-http)**
+>
+> 从任何可以发送 JSON Webhook 的服务开始运行。
 
 ## 另请参阅* [Identity](/langsmith/javascript/managed-deep-agents-identity)：对调用者进行身份验证，范围通道运行到已解析的用户。
-* [Schedules](/langsmith/javascript/managed-deep-agents-schedules)：通过配置的通道交付预定的结果。
+* [Schedules](/langsmith/javascript/managed-deep-agents-schedules): deliver scheduled results through a configured channel.
 * [Deploy an agent](/langsmith/javascript/managed-deep-agents-deploy)：部署项目更改并配置机密。
 * [CLI reference](/langsmith/javascript/managed-deep-agents-cli)：查看频道项目文件约定。
 
 ***
 
-<div>
-  <Callout icon="terminal-2">
-    [Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
-  </Callout>
+[Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
 
-  <Callout icon="edit">
-    [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/managed-deep-agents-channels.mdx) 或 [file an issue](https://github.com/langchain-ai/docs/issues/new/choose)。
-  </Callout>
-</div>
+[Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/managed-deep-agents-channels.mdx) 或 [file an issue](https://github.com/langchain-ai/docs/issues/new/choose)。

@@ -14,115 +14,109 @@
 * 您想要在电子邮件、Slack 消息或其他外部渠道中嵌入反馈链接。
 * 您需要将反馈收集与后端分离。
 
-<Note>
-  如果您使用 [Agent Server](/langsmith/agent-server)，则当您在运行请求中包含 `feedback_keys` 时，会自动生成预签名反馈 URL。对于该工作流程，请参阅[Collect user feedback for Agent Server runs](/langsmith/agent-server-feedback)。
-</Note>
+> [!注意]
+>
+> 如果您使用 [Agent Server](/langsmith/agent-server)，则当您在运行请求中包含 `feedback_keys` 时，会自动生成预签名反馈 URL。对于该工作流程，请参阅[Collect user feedback for Agent Server runs](/langsmith/agent-server-feedback)。
 
 ## 创建一个预签名的反馈令牌
 
-使用 [⟦T14⟧](https://reference.langchain.com/python/langsmith/client/Client/create_presigned_feedback_token) / [⟦T15⟧](https://reference.langchain.com/javascript/classes/langsmith.client.Client.html#createpresignedfeedbacktoken) 为特定运行和反馈密钥生成令牌。返回的对象包含一个`url`，客户端可以调用它来提交反馈：
+使用 [⟦T14⟧](https://reference.langchain.com/python/langsmith/client/Client/create_presigned_feedback_token) / [⟦T15⟧](https://reference.langchain.com/javascript/classes/langsmith.client.Client.html#createpresignedfeedbacktoken) 为特定运行和反馈密钥生成令牌。返回的对象包含一个 `url` ，客户端可以调用它来提交反馈：
 
-<CodeGroup>
-  ```python Python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  from langsmith import Client
+```python Python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+from langsmith import Client
 
-  client = Client()
+client = Client()
 
-  run_id = "<run_id>"
+run_id = "<run_id>"
 
-  token = client.create_presigned_feedback_token(
-      run_id,
-      feedback_key="user_score",
-  )
+token = client.create_presigned_feedback_token(
+    run_id,
+    feedback_key="user_score",
+)
 
-  print(token.url)
-  # https://api.smith.langchain.com/api/v1/feedback/tokens/<token_id>
-  ```
+print(token.url)
+# https://api.smith.langchain.com/api/v1/feedback/tokens/<token_id>
+```
 
-  ```typescript TypeScript theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  import { Client } from "langsmith";
+```typescript TypeScript theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+import { Client } from "langsmith";
 
-  const client = new Client();
+const client = new Client();
 
-  const runId = "<run_id>";
+const runId = "<run_id>";
 
-  const token = await client.createPresignedFeedbackToken(runId, "user_score");
+const token = await client.createPresignedFeedbackToken(runId, "user_score");
 
-  console.log(token.url);
-  // https://api.smith.langchain.com/api/v1/feedback/tokens/<token_id>
-  ```
-</CodeGroup>
+console.log(token.url);
+// https://api.smith.langchain.com/api/v1/feedback/tokens/<token_id>
+```
 
 ### 设置令牌过期时间默认情况下，令牌会在 3 小时后过期。传递 `expiration` 以使用 `timedelta`（相对）或 `datetime`（绝对）进行自定义：
 
-<CodeGroup>
-  ```python Python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  import datetime
-  from langsmith import Client
+```python Python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+import datetime
+from langsmith import Client
 
-  client = Client()
+client = Client()
 
-  run_id = "<run_id>"
+run_id = "<run_id>"
 
-  token = client.create_presigned_feedback_token(
-      run_id,
-      feedback_key="user_score",
-      expiration=datetime.timedelta(hours=24),
-  )
-  ```
+token = client.create_presigned_feedback_token(
+    run_id,
+    feedback_key="user_score",
+    expiration=datetime.timedelta(hours=24),
+)
+```
 
-  ```typescript TypeScript theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  import { Client } from "langsmith";
+```typescript TypeScript theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+import { Client } from "langsmith";
 
-  const client = new Client();
+const client = new Client();
 
-  const runId = "<run_id>";
+const runId = "<run_id>";
 
-  const token = await client.createPresignedFeedbackToken(runId, "user_score", {
-    expiration: { hours: 24 },
-  });
-  ```
-</CodeGroup>
+const token = await client.createPresignedFeedbackToken(runId, "user_score", {
+  expiration: { hours: 24 },
+});
+```
 
 ### 约束反馈值
 
 通过 `feedback_config` 来限制客户端可以提交的值。这对于执行特定的反馈模式非常有用（例如，赞成/反对、1-5 颗星或分类标签）：
 
-<CodeGroup>
-  ```python Python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  from langsmith import Client
+```python Python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+from langsmith import Client
 
-  client = Client()
+client = Client()
 
-  run_id = "<run_id>"
+run_id = "<run_id>"
 
-  token = client.create_presigned_feedback_token(
-      run_id,
-      feedback_key="user_score",
-      feedback_config={
-          "type": "continuous",
-          "min": 0,
-          "max": 1,
-      },
-  )
-  ```
-
-  ```typescript TypeScript theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  import { Client } from "langsmith";
-
-  const client = new Client();
-
-  const runId = "<run_id>";
-
-  const token = await client.createPresignedFeedbackToken(runId, "user_score", {
-    feedbackConfig: {
-      type: "continuous",
-      min: 0,
-      max: 1,
+token = client.create_presigned_feedback_token(
+    run_id,
+    feedback_key="user_score",
+    feedback_config={
+        "type": "continuous",
+        "min": 0,
+        "max": 1,
     },
-  });
-  ```
-</CodeGroup>
+)
+```
+
+```typescript TypeScript theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+import { Client } from "langsmith";
+
+const client = new Client();
+
+const runId = "<run_id>";
+
+const token = await client.createPresignedFeedbackToken(runId, "user_score", {
+  feedbackConfig: {
+    type: "continuous",
+    min: 0,
+    max: 1,
+  },
+});
+```
 
 ### 批量创建令牌（仅限Python）
 
@@ -175,60 +169,56 @@ curl --request GET \
 
 您还可以使用 SDK 提交来自预签名令牌的反馈，这对于您从其他服务接收令牌 URL 的服务器端工作流程非常有用。
 
-<CodeGroup>
-  ```python Python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  from langsmith import Client
+```python Python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+from langsmith import Client
 
-  client = Client()
+client = Client()
 
-  client.create_feedback_from_token(
-      "<token_or_url>",
-      score=1,
-      comment="This response was helpful!",
-  )
-  ```
+client.create_feedback_from_token(
+    "<token_or_url>",
+    score=1,
+    comment="This response was helpful!",
+)
+```
 
-  ```typescript TypeScript theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  // Use a direct HTTP request to the presigned URL
-  await fetch(tokenUrl, {
-    method: "POST",
-    headers: { "Content-Type": "application/json" },
-    body: JSON.stringify({
-      score: 1,
-      comment: "This response was helpful!",
-    }),
-  });
-  ```
-</CodeGroup>
+```typescript TypeScript theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+// Use a direct HTTP request to the presigned URL
+await fetch(tokenUrl, {
+  method: "POST",
+  headers: { "Content-Type": "application/json" },
+  body: JSON.stringify({
+    score: 1,
+    comment: "This response was helpful!",
+  }),
+});
+```
 
 ## 列出现有代币
 
 使用 `list_presigned_feedback_tokens` / `listPresignedFeedbackTokens` 检索运行的所有预签名反馈令牌。
 
-<CodeGroup>
-  ```python Python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  from langsmith import Client
+```python Python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+from langsmith import Client
 
-  client = Client()
+client = Client()
 
-  run_id = "<run_id>"
+run_id = "<run_id>"
 
-  for token in client.list_presigned_feedback_tokens(run_id):
-      print(f"ID: {token.id}, URL: {token.url}, Expires: {token.expires_at}")
-  ```
+for token in client.list_presigned_feedback_tokens(run_id):
+    print(f"ID: {token.id}, URL: {token.url}, Expires: {token.expires_at}")
+```
 
-  ```typescript TypeScript theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  import { Client } from "langsmith";
+```typescript TypeScript theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+import { Client } from "langsmith";
 
-  const client = new Client();
+const client = new Client();
 
-  const runId = "<run_id>";
+const runId = "<run_id>";
 
-  for await (const token of client.listPresignedFeedbackTokens(runId)) {
-    console.log(`URL: ${token.url}, Expires: ${token.expires_at}`);
-  }
-  ```
-</CodeGroup>
+for await (const token of client.listPresignedFeedbackTokens(runId)) {
+  console.log(`URL: ${token.url}, Expires: ${token.expires_at}`);
+}
+```
 
 ## 相关
 
@@ -237,12 +227,6 @@ curl --request GET \
 
 ***
 
-<div>
-  <Callout icon="terminal-2">
-    [Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
-  </Callout>
+[Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
 
-  <Callout icon="edit">
-    [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/presigned-feedback-tokens.mdx) 或 [file an issue](https://github.com/langchain-ai/docs/issues/new/choose)。
-  </Callout>
-</div>
+[Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/presigned-feedback-tokens.mdx) 或 [file an issue](https://github.com/langchain-ai/docs/issues/new/choose)。

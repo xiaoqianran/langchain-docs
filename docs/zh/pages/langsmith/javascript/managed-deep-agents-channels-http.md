@@ -10,19 +10,17 @@ HTTP 通道将托管深度代理转变为任何外部服务都可以调用的 HT
 
 您提供两个回调：一个对请求进行身份验证，另一个将其转换为消息，命名调用者及其所属的对话。托管Deep Agents 拥有可信切换、代理运行和回复。对于提供商管理的替代方案，请参阅[Slack](/langsmith/javascript/managed-deep-agents-channels-slack)。
 
-<Note>
-  托管Deep Agents于[LangSmith Cloud](/langsmith/cloud)**公开[beta](/langsmith/release-stages)**。
-</Note>
+> [!注意]
+>
+> 托管 Deep Agents 于 [LangSmith Cloud](/langsmith/cloud) **公开 [beta](/langsmith/release-stages)**。
 
-<Note>
-  HTTP 通道需要 `managed-deepagents>=0.8.0`。
-</Note>
+> [!注意]
+>
+> HTTP 通道需要 `managed-deepagents>=0.8.0`。
 
 `verify`、`parse` 和可选的 `post` 位于外部服务和代理运行之间：
 
-<img alt="Three-row flow diagram. In the external service row, an inbound event arrives as a provider webhook, and a reply is delivered to the user by the provider. In your code row, verify checks the signature, parse extracts content and a thread ID and returns a message, and post sends the reply to the target. In the Managed Deep Agents row, the agent run executes on the thread and hands its response to post." />
-
-<img alt="Three-row flow diagram. In the external service row, an inbound event arrives as a provider webhook, and a reply is delivered to the user by the provider. In your code row, verify checks the signature, parse extracts content and a thread ID and returns a message, and post sends the reply to the target. In the Managed Deep Agents row, the agent run executes on the thread and hands its response to post." />
+![Three-row flow diagram. In the external service row, an inbound event arrives as a provider webhook, and a reply is delivered to the user by the provider. In your code row, verify checks the signature, parse extracts content and a thread ID and returns a message, and post sends the reply to the target. In the Managed Deep Agents row, the agent run executes on the thread and hands its response to post.](https://mintcdn.com/langchain-5e9cc07a/wGNSNd-dDeMyJxte/langsmith/images/http-channel-flow-light.png?fit=max\&auto=format\&n=wGNSNd-dDeMyJxte\&q=85\&s=fe9d50b87d5630b839dd1513ab508017)
 
 ## 项目结构
 
@@ -37,170 +35,168 @@ my-agent/
 
 文件名成为通道名称和端点路径。一个项目可以声明多个HTTP通道，并且名称必须是唯一的。完整的项目布局请参见[Project structure](/langsmith/javascript/managed-deep-agents-project-structure)。## 添加 HTTP 通道
 
-<Steps>
-  <Step title="Declare the channel">
-    ```ts channels/orders.ts theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-    import { channels } from "managed-deepagents";
+**1.声明通道**
 
-    import { parse, verify } from "../lib/orders.js";
+```ts channels/orders.ts theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+import { channels } from "managed-deepagents";
 
-    export const channel = channels.http({
-      provider: "orders",
-      verify,
-      parse,
-    });
-    ```
+import { parse, verify } from "../lib/orders.js";
 
-    `provider` 为外部服务命名，它与通道名称分开。托管 Deep Agents 将其与调用者 ID 一起发送到代理身份验证，解析运行可能使用其凭据的 [principal](/langsmith/javascript/managed-deep-agents-identity)。因此，提供者对呼叫者 ID 进行命名空间。
+export const channel = channels.http({
+  provider: "orders",
+  verify,
+  parse,
+});
+```
 
-    跨提供相同服务的渠道共享一个提供商。两个 Shopify 渠道（`channels/orders` 和 `channels/refunds`）均声明 `provider: "shopify"`，将同一 Shopify 用户解析为一个委托人。即使呼叫者 ID 相同，声明 `provider: "slack"` 的通道也会解析为不同的主体。
+`provider` 为外部服务命名，它与通道名称分开。托管 Deep Agents 将其与调用者 ID 一起发送到代理身份验证，解析运行可能使用其凭据的 [principal](/langsmith/javascript/managed-deep-agents-identity)。因此，提供者对呼叫者 ID 进行命名空间。
 
-    声明通道会注册提供者，因此任何非空名称都有效。
-  </Step>
+跨提供相同服务的渠道共享一个提供商。两个 Shopify 渠道（`channels/orders` 和 `channels/refunds`）均声明 `provider: "shopify"`，将同一 Shopify 用户解析为一个委托人。即使呼叫者 ID 相同，声明 `provider: "slack"` 的通道也会解析为不同的主体。
 
-  <Step title="Verify the request">
-    托管Deep Agents 首先调用`verify`。返回`true`继续`parse`，或`false`以`401`拒绝请求。 `verify` 可能会返回一个承诺。
+声明通道会注册提供者，因此任何非空名称都有效。
 
-    `verify` 接收带有 `request` 和原始 `rawBody` 字节的 `HttpChannelRequest`。根据字节检查签名，而不是根据重新序列化的主体检查签名：
+**2.验证请求**
 
-    ```ts lib/orders.ts theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-    import { createHmac, timingSafeEqual } from "node:crypto";
-    import type { HttpChannelRequest } from "managed-deepagents";
+托管Deep Agents 首先调用`verify`。返回`true`继续`parse`，或`false`以`401`拒绝请求。 `verify` 可能会返回一个承诺。
 
-    export function verify({ request, rawBody }: HttpChannelRequest): boolean {
-      const secret = process.env.ORDERS_WEBHOOK_SECRET;
-      if (!secret) return false;
-      const expected = Buffer.from(
-        `sha256=${createHmac("sha256", secret).update(rawBody).digest("hex")}`,
-      );
-      const received = Buffer.from(request.headers.get("x-orders-signature") ?? "");
-      return (
-        received.length === expected.length && timingSafeEqual(received, expected)
-      );
+`verify` 接收带有 `request` 和原始 `rawBody` 字节的 `HttpChannelRequest`。根据字节检查签名，而不是根据重新序列化的主体检查签名：
+
+```ts lib/orders.ts theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+import { createHmac, timingSafeEqual } from "node:crypto";
+import type { HttpChannelRequest } from "managed-deepagents";
+
+export function verify({ request, rawBody }: HttpChannelRequest): boolean {
+  const secret = process.env.ORDERS_WEBHOOK_SECRET;
+  if (!secret) return false;
+  const expected = Buffer.from(
+    `sha256=${createHmac("sha256", secret).update(rawBody).digest("hex")}`,
+  );
+  const received = Buffer.from(request.headers.get("x-orders-signature") ?? "");
+  return (
+    received.length === expected.length && timingSafeEqual(received, expected)
+  );
+}
+```> [!警告]
+>
+> 终端无平台认证。通道事件路由在适配器内部进行身份验证，而不是通过托管 Deep Agents 入口进行身份验证。这使得 `verify` 成为公共互联网和代理运行之间的唯一障碍。始终检查签名或共享秘密，切勿无条件接受请求。
+
+使用 [deployment secret](/langsmith/javascript/managed-deep-agents-deploy) 作为签名密钥。引发的 `verify` 回调会拒绝带有 `500` 的请求。
+
+从环境中解析通道凭据，而不是使用 `connections.get`，这需要运行。有关代理工具在运行期间使用的凭据，请参阅[Manage connections](/langsmith/javascript/managed-deep-agents-connections)。
+
+**3.将请求解析为消息**
+
+`parse` 将已验证的请求转换为启动运行的消息，或忽略该事件。它接收与 `verify` 相同的 `HttpChannelRequest`，因此请求标头在这里也可用，并且它可能是异步的。返回两个形状之一：
+
+* `{ type: "message", message: {...} }` 开始跑步。
+* `{ type: "ignore" }` 跳过该事件。
+
+两者都接受可选的 `response` 和标准的 `Response`。
+
+该消息携带四个必填字段：* **`userId`**：外部服务中调用者的 ID，作为字符串，从已验证的事件解析。代理身份验证将其映射到运行可能使用其凭据的主体，因此它是从经过验证的数据而不是从未经身份验证的字段派生的。使用 `String()` 转换数字提供商 ID。
+* **`threadId`**：要运行的对话，作为 UUID。 Managed Deep Agents 将其小写并将其映射到持久代理线程，因此相同的值会继续相同的对话。
+* **`target`**：一个 JSON 值，用于标识提供程序中的回复目标。这与代理线程 UUID 是分开的。即使通道仅开始运行，也应包含它。
+* **`content`**：消息文本，或LangChain内容块的数组。
+
+> [!警告]
+>
+> `threadId` 必须是 UUID。托管 Deep Agents 拒绝使用 `400` 的任何其他值，因此在返回之前将外部会话 ID 映射到 UUID。
+
+将 `parse` 添加到包含 `verify` 的 `lib/orders` 文件中。将两个示例的导入合并到文件顶部，仅保留 `HttpChannelRequest` 的一个导入：
+
+```ts lib/orders.ts theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+import type {
+  HttpChannelParseResult,
+  HttpChannelRequest,
+} from "managed-deepagents";
+import { orderThreadId } from "./ids.js";
+
+export async function parse({
+  request,
+}: HttpChannelRequest): Promise<HttpChannelParseResult> {
+  const event = await request.json();
+  if (event.type !== "order.comment") {
+    return { type: "ignore" };
+  }
+  return {
+    type: "message",
+    message: {
+      userId: String(event.actor.id),
+      threadId: orderThreadId(String(event.order.id)),
+      content: event.comment.body,
+      target: String(event.order.id),
+    },
+    rawEvent: event,
+  };
+}
+```
+
+在`lib/ids.ts`中定义助手。使用固定的命名空间，以便相同的顺序始终映射到相同的 UUID：
+
+```ts lib/ids.ts theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+import { createHash } from "node:crypto";
+
+const ORDERS_NAMESPACE = Buffer.from("6f0c9a3e8f1a4f5e9c2b7d4e1a2b3c4d", "hex");
+
+export function orderThreadId(orderId: string): string {
+  const bytes = createHash("sha1")
+    .update(ORDERS_NAMESPACE)
+    .update(orderId, "utf8")
+    .digest()
+    .subarray(0, 16);
+  bytes[6] = (bytes[6]! & 0x0f) | 0x50;
+  bytes[8] = (bytes[8]! & 0x3f) | 0x80;
+  const hex = bytes.toString("hex");
+  return `${hex.slice(0, 8)}-${hex.slice(8, 12)}-${hex.slice(12, 16)}-${hex.slice(16, 20)}-${hex.slice(20)}`;
+}
+```返回一个`response`来控制提供者接收的内容。托管 Deep Agents 在接受运行后发送消息，并立即发送忽略事件。使用它来回答提供商的验证挑战而无需开始运行：
+
+```ts theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+return {
+  type: "ignore",
+  response: Response.json({ challenge: event.challenge }),
+};
+```
+
+**4.通过帖子发送回复**
+
+添加异步 `post` 回调以将代理的最终响应传递给外部服务。对于仅开始运行的通道，请忽略它。
+
+`post` 接收一个包含已验证的 `target` 的输入和一条消息。自动回复使用 `type: "content"` 和 `content` 字段。显式本机消息使用 `type: "native"` 和 `native` 字段。返回发布的消息`id`和可选的`url`。
+
+这些示例支持内容消息并拒绝本机消息。 `target`是`parse`返回的订单ID。
+
+```ts channels/orders.ts theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+import { channels } from "managed-deepagents";
+
+import { parse, verify } from "../lib/orders.js";
+
+export const channel = channels.http({
+  provider: "orders",
+  verify,
+  parse,
+  async post(input) {
+    if (input.type !== "content") {
+      throw new Error("This adapter supports content messages only");
     }
-    ```<Warning>
-      终端没有平台认证。通道事件路由在适配器内部进行身份验证，而不是通过托管 Deep Agents 入口进行身份验证。这使得 `verify` 成为公共互联网和代理运行之间的唯一障碍。始终检查签名或共享秘密，切勿无条件接受请求。
-    </Warning>
-
-    使用 [deployment secret](/langsmith/javascript/managed-deep-agents-deploy) 作为签名密钥。引发的 `verify` 回调会拒绝带有 `500` 的请求。
-
-    从环境中解析通道凭据，而不是使用 `connections.get`，这需要运行。有关代理工具在运行期间使用的凭据，请参阅[Manage connections](/langsmith/javascript/managed-deep-agents-connections)。
-  </Step>
-
-  <Step title="Parse the request into a message">
-    `parse` 将已验证的请求转换为启动运行的消息，或忽略该事件。它接收与 `verify` 相同的 `HttpChannelRequest`，因此请求标头在这里也可用，并且它可能是异步的。返回两个形状之一：
-
-    * `{ type: "message", message: {...} }` 开始跑步。
-    * `{ type: "ignore" }` 跳过该事件。
-
-    两者都接受可选的 `response` 和标准的 `Response`。
-
-    该消息携带四个必填字段：* **`userId`**：外部服务中调用者的 ID，作为字符串，从已验证的事件解析。代理身份验证将其映射到运行可能使用其凭据的主体，因此它是从经过验证的数据而不是从未经身份验证的字段派生的。使用 `String()` 转换数字提供商 ID。
-    * **`threadId`**：要运行的对话，作为 UUID。 Managed Deep Agents 将其小写并将其映射到持久代理线程，因此相同的值会继续相同的对话。
-    * **`target`**：一个 JSON 值，用于标识提供程序中的回复目标。这与代理线程 UUID 是分开的。即使通道仅开始运行，也应包含它。
-    * **`content`**：消息文本，或LangChain内容块的数组。
-
-    <Warning>
-      `threadId` 必须是 UUID。托管 Deep Agents 拒绝使用 `400` 的任何其他值，因此在返回之前将外部会话 ID 映射到 UUID。
-    </Warning>
-
-    将 `parse` 添加到包含 `verify` 的 `lib/orders` 文件中。将两个示例的导入合并到文件顶部，仅保留 `HttpChannelRequest` 的一个导入：
-
-    ```ts lib/orders.ts theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-    import type {
-      HttpChannelParseResult,
-      HttpChannelRequest,
-    } from "managed-deepagents";
-    import { orderThreadId } from "./ids.js";
-
-    export async function parse({
-      request,
-    }: HttpChannelRequest): Promise<HttpChannelParseResult> {
-      const event = await request.json();
-      if (event.type !== "order.comment") {
-        return { type: "ignore" };
-      }
-      return {
-        type: "message",
-        message: {
-          userId: String(event.actor.id),
-          threadId: orderThreadId(String(event.order.id)),
-          content: event.comment.body,
-          target: String(event.order.id),
-        },
-        rawEvent: event,
-      };
-    }
-    ```
-
-    在`lib/ids.ts`中定义助手。使用固定的命名空间，以便相同的顺序始终映射到相同的 UUID：
-
-    ```ts lib/ids.ts theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-    import { createHash } from "node:crypto";
-
-    const ORDERS_NAMESPACE = Buffer.from("6f0c9a3e8f1a4f5e9c2b7d4e1a2b3c4d", "hex");
-
-    export function orderThreadId(orderId: string): string {
-      const bytes = createHash("sha1")
-        .update(ORDERS_NAMESPACE)
-        .update(orderId, "utf8")
-        .digest()
-        .subarray(0, 16);
-      bytes[6] = (bytes[6]! & 0x0f) | 0x50;
-      bytes[8] = (bytes[8]! & 0x3f) | 0x80;
-      const hex = bytes.toString("hex");
-      return `${hex.slice(0, 8)}-${hex.slice(8, 12)}-${hex.slice(12, 16)}-${hex.slice(16, 20)}-${hex.slice(20)}`;
-    }
-    ```返回一个`response`来控制提供者接收的内容。托管 Deep Agents 在接受运行后发送消息，并立即发送忽略事件。使用它来回答提供商的验证挑战而无需开始运行：
-
-    ```ts theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-    return {
-      type: "ignore",
-      response: Response.json({ challenge: event.challenge }),
-    };
-    ```
-  </Step>
-
-  <Step title="Send replies with post">
-    添加异步 `post` 回调以将代理的最终响应传递给外部服务。对于仅开始运行的通道，请忽略它。
-
-    `post` 接收一个包含已验证的 `target` 的输入和一条消息。自动回复使用 `type: "content"` 和 `content` 字段。显式本机消息使用 `type: "native"` 和 `native` 字段。返回发布的消息`id`和可选的`url`。
-
-    这些示例支持内容消息并拒绝本机消息。 `target`是`parse`返回的订单ID。
-
-    ```ts channels/orders.ts theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-    import { channels } from "managed-deepagents";
-
-    import { parse, verify } from "../lib/orders.js";
-
-    export const channel = channels.http({
-      provider: "orders",
-      verify,
-      parse,
-      async post(input) {
-        if (input.type !== "content") {
-          throw new Error("This adapter supports content messages only");
-        }
-        const response = await fetch("https://orders.example.com/api/comments", {
-          method: "POST",
-          headers: {
-            authorization: `Bearer ${process.env.ORDERS_API_TOKEN}`,
-            "content-type": "application/json",
-          },
-          body: JSON.stringify({ orderId: input.target, body: input.content }),
-        });
-        if (!response.ok) throw new Error("Order reply failed");
-        const posted = await response.json();
-        return { id: String(posted.id) };
+    const response = await fetch("https://orders.example.com/api/comments", {
+      method: "POST",
+      headers: {
+        authorization: `Bearer ${process.env.ORDERS_API_TOKEN}`,
+        "content-type": "application/json",
       },
+      body: JSON.stringify({ orderId: input.target, body: input.content }),
     });
-    ```
+    if (!response.ok) throw new Error("Order reply failed");
+    const posted = await response.json();
+    return { id: String(posted.id) };
+  },
+});
+```
 
-    托管 Deep Agents 在运行完成后发布回复，与提供者已收到的响应分开。有两种情况不会产生回复：在 [interrupt](/langsmith/javascript/managed-deep-agents-tools#respond-to-an-interrupt) 上暂停的运行，以及代理本身已传递最终消息的运行。失败的 `post` 会记录为传送失败。添加可选的异步 `onError(error, target)` 回调来处理运行或交付失败。它取代了默认的错误回复。它接收经过验证的回复目标。
-  </Step>
-</Steps>
+托管 Deep Agents 在运行完成后发布回复，与提供者已收到的响应分开。有两种情况不会产生回复：在 [interrupt](/langsmith/javascript/managed-deep-agents-tools#respond-to-an-interrupt) 上暂停的运行，以及代理本身已传递最终消息的运行。失败的 `post` 会记录为传送失败。
 
-## 调用端点
+添加可选的异步 `onError(error, target)` 回调来处理运行或交付失败。它取代了默认的错误回复。它接收经过验证的回复目标。## 调用端点
 
 部署的 HTTP 通道接受通道名称的请求，而不是提供者名称：
 
@@ -224,13 +220,13 @@ POST https://<deployment-url>/channels/<name>/events
 | `401` | `{"error": "invalid channel signature"}` | `verify` 拒绝了请求。 |
 | `500` | `{"error": "channel verification failed"}` | `verify` 升高。 |
 | `500` | `{"error": "channel runtime is not configured"}` |托管运行时缺少所需的配置。 |
-| `500` | `{"error": "channel run could not be started"}` |代理运行无法启动。 |`202` 表示运行已被接受，而不是已完成。如果已配置，代理的答复稍后会通过 `post` 到达。
+| `500` | `{"error": "channel run could not be started"}` |代理运行无法启动。 |
+
+`202` 表示运行已被接受，而不是已完成。如果已配置，代理的答复稍后会通过 `post` 到达。
 
 ## 读取代理中的事件
 
-工具和中间件从[⟦T99⟧](/langsmith/javascript/managed-deep-agents-runtime#channel)读取交付。对于解析器示例，`runtime.channel.provider` 是 `"orders"`。
-
-从 `parse` 返回 `rawEvent` 以在 `runtime.channel.rawEvent` 公开 JSON 提供程序数据。如果省略，`runtime.channel.rawEvent` 为`undefined`。
+工具和中间件从[⟦T99⟧](/langsmith/javascript/managed-deep-agents-runtime#channel)读取交付。对于解析器示例，`runtime.channel.provider` 是 `"orders"`。从 `parse` 返回 `rawEvent` 以在 `runtime.channel.rawEvent` 公开 JSON 提供程序数据。如果省略，`runtime.channel.rawEvent` 为`undefined`。
 
 回复`target`保持私密。代码无法从`runtime.channel`读取它。
 
@@ -240,35 +236,29 @@ POST https://<deployment-url>/channels/<name>/events
 
 HTTP 通道不需要提供商授权，因此部署是标准命令。 Managed Deep Agents 从声明中挂载端点。
 
-<CodeGroup>
-  ```bash npm theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  npx mda deploy
-  ```
+```bash npm theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+npx mda deploy
+```
 
-  ```bash pnpm theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  pnpm exec mda deploy
-  ```
+```bash pnpm theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+pnpm exec mda deploy
+```
 
-  ```bash bun theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  bunx mda deploy
-  ```
-</CodeGroup>
+```bash bun theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+bunx mda deploy
+```
 
 将签名密钥和任何回复凭据放入项目 `.env` 中，以便 `mda deploy` 将它们作为部署机密转发。然后向外部服务注册 `https://<deployment-url>/channels/<name>/events` 作为其 webhook 目标。
 
-## 另请参阅* [Channels overview](/langsmith/javascript/managed-deep-agents-channels)：了解通道如何将消息服务连接到代理。
+## 另请参阅
+
+* [Channels overview](/langsmith/javascript/managed-deep-agents-channels)：了解通道如何将消息服务连接到代理。
 * [Slack](/langsmith/javascript/managed-deep-agents-channels-slack)：改用提供商管理的 Slack 通道。
 * [Identity](/langsmith/javascript/managed-deep-agents-identity)：对调用者进行身份验证，范围通道运行到已解析的用户。
 * [Deploy an agent](/langsmith/javascript/managed-deep-agents-deploy)：配置和部署托管深度代理。
 
 ***
 
-<div>
-  <Callout icon="terminal-2">
-    [Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
-  </Callout>
+[Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
 
-  <Callout icon="edit">
-    [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/managed-deep-agents-channels-http.mdx) 或 [file an issue](https://github.com/langchain-ai/docs/issues/new/choose)。
-  </Callout>
-</div>
+[Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/managed-deep-agents-channels-http.mdx) 或 [file an issue](https://github.com/langchain-ai/docs/issues/new/choose)。

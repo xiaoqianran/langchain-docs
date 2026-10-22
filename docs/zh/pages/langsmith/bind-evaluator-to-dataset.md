@@ -7,7 +7,7 @@
 LangSmith 支持两种对通过 SDK 创建的实验进行评分的方法：
 
 * **以编程方式**，通过在代码中指定评估器（有关详细信息，请参阅[How to evaluate an LLM application](/langsmith/evaluate-llm-application)）
-* 通过 **将评估器绑定到 UI 中的数据集**。除了您通过 SDK 设置的任何评估器之外，这还将自动对创建的任何新实验运行评估器。 This is useful when you're iterating on your application (target function), and have a standard set of evaluators you want to run for all experiments.
+* 通过 **将评估器绑定到 UI 中的数据集**。除了您通过 SDK 设置的任何评估器之外，这还将自动对创建的任何新实验运行评估器。当您迭代应用程序（目标函数）并且拥有一组要为所有实验运行的标准评估器时，这非常有用。
 
 ## 在数据集上配置评估器
 
@@ -15,7 +15,7 @@ LangSmith 支持两种对通过 SDK 创建的实验进行评分的方法：
 2. 单击**评估者**选项卡。
 3. 单击**+ 评估器** 打开**配置评估器** 面板。
 4. 选择以下选项之一：
-   * **Create from scratch**: Build a new [LLM-as-a-Judge](/langsmith/llm-as-judge), [Code](/langsmith/online-evaluations-code), or [Composite](/langsmith/composite-evaluators-ui) evaluator, or select **From labeled data** to create an LLM-as-a-judge evaluator [aligned to human feedback](/langsmith/improve-judge-evaluator-feedback).要使用 [decision model](/langsmith/decision-model-evaluator) 作为法官，请选择 **LLM-as-a-Judge Evaluator**，然后选择决策模型。
+   * **从头开始创建**：构建新的 [LLM-as-a-Judge](/langsmith/llm-as-judge)、[Decision Model](/langsmith/decision-model-evaluator)、[Code](/langsmith/online-evaluations-code) 或 [Composite](/langsmith/composite-evaluators-ui) 评估器，或选择 **从标记数据** 创建 LLM 作为法官评估器 [aligned to human feedback](/langsmith/improve-judge-evaluator-feedback)。
    * **附加现有评估器**：选择工作区中已有的评估器以重用它。
    * **从模板创建**：从现成的评估器开始。> [!注意]
 >

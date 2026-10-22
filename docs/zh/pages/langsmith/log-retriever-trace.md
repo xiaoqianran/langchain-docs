@@ -8,9 +8,9 @@ LangSmith 中的日志检索步骤可跟踪 RAG 管道的文档级可见性。
 
 许多法学硕士应用程序从向量数据库、知识图或其他索引中检索文档，作为检索增强生成 (RAG) 管道的一部分。 LangSmith 为检索器步骤提供专用渲染，这使得检查检索到的文档和诊断检索问题变得更加容易。
 
-<Note>
-  这些步骤是**可选的**。如果您跳过它们，您的检索器数据仍将被记录，但LangSmith不会以检索器特定的格式呈现它。
-</Note>
+> [!注意]
+>
+> 这些步骤是**可选**。如果您跳过它们，您的检索器数据仍将被记录，但LangSmith不会以检索器特定的格式呈现它。
 
 要启用检索器特定的渲染，请完成以下两个步骤。
 
@@ -30,7 +30,7 @@ def retrieve_docs(query):
 
 ## 以预期格式返回文档
 
-从检索器函数返回字典 (Python) 或对象 (TypeScript) 列表。列表中的每个项目代表一个检索到的文档，并且必须包含以下字段：|领域 |类型 |描述 |
+从检索器函数返回字典 (Python) 或对象 (TypeScript) 列表。列表中的每个项目代表一个检索到的文档，并且必须包含以下字段：|领域|类型 |描述 |
 | - | - | - |
 | `page_content` |字符串|检索到的文档的文本内容。 |
 | `type` |字符串|必须始终是`"Document"`。 |
@@ -38,60 +38,58 @@ def retrieve_docs(query):
 
 以下示例显示了应用了这两个要求的完整检索器实现：
 
-<CodeGroup>
-  ```python Python wrap theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  from langsmith import traceable
+```python Python wrap theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+from langsmith import traceable
 
-  def _convert_docs(results):
-      return [
-          {
-              "page_content": r,
-              "type": "Document",
-              "metadata": {"foo": "bar"}
-          }
-          for r in results
-      ]
+def _convert_docs(results):
+    return [
+        {
+            "page_content": r,
+            "type": "Document",
+            "metadata": {"foo": "bar"}
+        }
+        for r in results
+    ]
 
-  @traceable(run_type="retriever")
-  def retrieve_docs(query):
-      # Returning hardcoded placeholder documents.
-      # In production, replace with a real vector database or document index.
-      contents = ["Document contents 1", "Document contents 2", "Document contents 3"]
-      return _convert_docs(contents)
+@traceable(run_type="retriever")
+def retrieve_docs(query):
+    # Returning hardcoded placeholder documents.
+    # In production, replace with a real vector database or document index.
+    contents = ["Document contents 1", "Document contents 2", "Document contents 3"]
+    return _convert_docs(contents)
 
-  retrieve_docs("User query")
-  ```
+retrieve_docs("User query")
+```
 
-  ```typescript TypeScript wrap theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  import { traceable } from "langsmith/traceable";
+```typescript TypeScript wrap theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+import { traceable } from "langsmith/traceable";
 
-  interface Document {
-      page_content: string;
-      type: string;
-      metadata: { foo: string };
-  }
+interface Document {
+    page_content: string;
+    type: string;
+    metadata: { foo: string };
+}
 
-  function convertDocs(results: string[]): Document[] {
-      return results.map((r) => ({
-          page_content: r,
-          type: "Document",
-          metadata: { foo: "bar" }
-      }));
-  }
+function convertDocs(results: string[]): Document[] {
+    return results.map((r) => ({
+        page_content: r,
+        type: "Document",
+        metadata: { foo: "bar" }
+    }));
+}
 
-  const retrieveDocs = traceable((query: string): Document[] => {
-      // Returning hardcoded placeholder documents.
-      // In production, replace with a real vector database or document index.
-      const contents = ["Document contents 1", "Document contents 2", "Document contents 3"];
-      return convertDocs(contents);
-  }, {
-      name: "retrieveDocs",
-      run_type: "retriever"
-  });
+const retrieveDocs = traceable((query: string): Document[] => {
+    // Returning hardcoded placeholder documents.
+    // In production, replace with a real vector database or document index.
+    const contents = ["Document contents 1", "Document contents 2", "Document contents 3"];
+    return convertDocs(contents);
+}, {
+    name: "retrieveDocs",
+    run_type: "retriever"
+});
 
-  await retrieveDocs("User query");
-  ```
-</CodeGroup>
+await retrieveDocs("User query");
+```
 
 在 LangSmith UI 中，您将找到每个检索到的文档及其内容和元数据。
 
@@ -102,12 +100,6 @@ def retrieve_docs(query):
 
 ***
 
-<div>
-  <Callout icon="terminal-2">
-    [Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
-  </Callout>
+[Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
 
-  <Callout icon="edit">
-    [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/log-retriever-trace.mdx) 或 [file an issue](https://github.com/langchain-ai/docs/issues/new/choose)。
-  </Callout>
-</div>
+[Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/log-retriever-trace.mdx) 或 [file an issue](https://github.com/langchain-ai/docs/issues/new/choose)。

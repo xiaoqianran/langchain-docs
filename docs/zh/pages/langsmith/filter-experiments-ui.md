@@ -8,7 +8,7 @@ LangSmith 可让您通过反馈分数和元数据过滤以前的实验，以便�
 
 ## 背景：将元数据添加到您的实验中
 
-当您在 SDK 中运行实验时，您可以附加元数据，以便更轻松地在 UI 中进行筛选。如果您知道在运行实验时想要深入到哪些轴，这会很有帮助。
+当您在 SDK 中运行实验时，您可以附加元数据，以便更轻松地在 UI 中进行过滤。如果您知道在运行实验时想要深入到哪些轴，这会很有帮助。
 
 在我们的示例中，我们将围绕所使用的模型、模型提供程序和提示的已知 ID 将元数据附加到我们的实验中：
 
@@ -66,26 +66,20 @@ for model_type, model in models.items():
 
 在 UI 中，我们可以看到默认运行的所有实验。
 
-<img alt="Filter all experiments" />
+![Filter all experiments](https://mintcdn.com/langchain-5e9cc07a/0B2PFrFBMRWNccee/langsmith/images/filter-all-experiments.png?fit=max\&auto=format\&n=0B2PFrFBMRWNccee\&q=85\&s=0cb5b29f405286dadb8b6491709eb789)
 
 比如说，如果我们偏爱 openai 模型，我们可以轻松过滤并首先查看 openai 模型中的分数：
 
-<img alt="Filter openai" />
+![Filter openai](https://mintcdn.com/langchain-5e9cc07a/0B2PFrFBMRWNccee/langsmith/images/filter-openai.png?fit=max\&auto=format\&n=0B2PFrFBMRWNccee\&q=85\&s=e3a0c42e4eb37cae68d367dec75d0df1)
 
 我们可以堆叠过滤器，使我们能够过滤掉正确性上的低分，以确保我们只比较相关的实验：
 
-<img alt="Filter feedback" />
+![Filter feedback](https://mintcdn.com/langchain-5e9cc07a/0B2PFrFBMRWNccee/langsmith/images/filter-feedback.png?fit=max\&auto=format\&n=0B2PFrFBMRWNccee\&q=85\&s=c0e223bbe637a03a4c251896a5662f52)
 
 最后，我们可以清除和重置过滤器。例如，如果我们看到明显有 `singleminded` 提示的获胜者，我们可以更改过滤设置以查看是否有任何其他模型提供者的模型也适用于它：
 
-<img alt="Filter singleminded" />
+![Filter singleminded](https://mintcdn.com/langchain-5e9cc07a/0B2PFrFBMRWNccee/langsmith/images/filter-singleminded.png?fit=max\&auto=format\&n=0B2PFrFBMRWNccee\&q=85\&s=7a30d214745fcddc022e3c715267dfd2)
 
-***<div>
-  <Callout icon="terminal-2">
-    [Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时答案。
-  </Callout>
+***[Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
 
-  <Callout icon="edit">
-    [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/filter-experiments-ui.mdx) 或 [file an issue](https://github.com/langchain-ai/docs/issues/new/choose)。
-  </Callout>
-</div>
+[Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/filter-experiments-ui.mdx) 或 [file an issue](https://github.com/langchain-ai/docs/issues/new/choose)。

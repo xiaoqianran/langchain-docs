@@ -31,9 +31,9 @@
 
 要下载代理的文件，请打开代理，展开侧边栏中的“**高级设置**”抽屉，然后在“**开发人员**”下单击“**下载 ZIP**”。这会将代理配置导出为 ZIP 文件。
 
-## 更改代理的访问权限
+## 更改对代理的访问权限
 
-代理可以是创建者私有的、与特定人员共享的，或者与整个 LangSmith 工作区共享的。|特色|私人代理| [Workspace agents](#workspace-scoped-agent-details) |
+代理可以是创建者私有的、与特定人员共享的，或者与整个 LangSmith 工作区共享的。|特色 |私人代理| [Workspace agents](#workspace-scoped-agent-details) |
 | - | - | - |
 | **所有权和访问权** |仅对创建者可见 |对同一 LangSmith 工作区中的任何人都可见 |
 | **OAuth 身份验证** | OAuth 凭证的范围仅限于创建者 | OAuth 凭证的范围仅限于每个用户；新用户克隆工作区代理必须使用选定的工具重新进行身份验证
@@ -51,9 +51,9 @@
 
 您的代理可以记住之前对话中的信息，并使用它在未来的对话中做出更好的决策。代理通过使用 `write_file` 和 `edit_file` 工具调用将文件写入 **memories 文件夹** 来保留内存。默认情况下，您的代理在保存到记忆文件夹之前需要批准。启用此设置后，代理会暂停并等待您在队列 UI 中接受、编辑或拒绝每个内存更新，然后再继续。
 
-<Tip>
-  如果您的代理按照 [schedule](/langsmith/fleet/schedules#add-a-schedule) 或其他自动计划运行，请禁用内存批准要求。否则，代理将暂停涉及内存更新的每个计划运行，并无限期等待手动批准。
-</Tip>
+> [!提示]
+>
+> 如果您的代理按照 [schedule](/langsmith/fleet/schedules#add-a-schedule) 或其他自动计划运行，请禁用内存批准要求。否则，代理将在涉及内存更新的每个计划运行中暂停，并无限期地等待手动批准。
 
 ### 禁用内存更新所需的批准
 
@@ -80,9 +80,9 @@
 2. 在侧边栏中，展开 **Channels** 抽屉。
 3. 单击**暂停频道**按钮。
 
-<Tip>
-  要恢复，请单击 **恢复频道** 按钮。
-</Tip>
+> [!提示]
+>
+> 要恢复，请单击 **恢复频道** 按钮。
 
 ## 删除代理
 
@@ -91,20 +91,14 @@
 1. 在[LangSmith UI](https://smith.langchain.com?utm_source=docs\&utm_medium=cta\&utm_campaign=langsmith-signup\&utm_content=langsmith-fleet-manage-agent-settings)中，打开您的代理。
 2. 在边栏中，展开**高级设置**抽屉。
 3. 在 **危险区域** 部分中，单击 **删除代理**。
-4. 要确认删除，请单击“**删除**”按钮。
+4. 要确认删除，请单击 **删除** 按钮。
 
-<Warning>
-  此操作无法撤消。它将永久删除代理、链接到代理的所有线程，并取消链接任何附加的通道。
-</Warning>
+> [!警告]
+>
+> 此操作无法撤消。它将永久删除代理、链接到代理的所有线程，并取消链接任何附加通道。
 
 ***
 
-<div>
-  <Callout icon="terminal-2">
-    [Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
-  </Callout>
+[Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
 
-  <Callout icon="edit">
-    [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/fleet/manage-agent-settings.mdx) 或 [file an issue](https://github.com/langchain-ai/docs/issues/new/choose)。
-  </Callout>
-</div>
+[Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/fleet/manage-agent-settings.mdx) 或 [file an issue](https://github.com/langchain-ai/docs/issues/new/choose)。

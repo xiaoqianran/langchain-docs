@@ -1,78 +1,66 @@
-<!-- langchain-docs: translation failed; English fallback -->
+<!-- langchain-docs: machine-translated zh-CN from English source -->
 
 <!-- langchain-docs: Custom model configurations | https://docs.langchain.com/langsmith/llm-gateway-model-configurations -->
 
-# Custom model configurations
+# 自定义模型配置
 
-Call saved model configurations through the LLM Gateway to reach custom endpoints and use them in fallback chains.
+通过 LLM 网关调用保存的模型配置以到达自定义端点并在后备链中使用它们。
 
-<Note>
-  The LLM Gateway is in [beta](/langsmith/release-stages).
-</Note>
+> [!注意]
+>
+> LLM 网关位于[beta](/langsmith/release-stages)。
 
-[Model configurations](/langsmith/model-configurations) are named, reusable definitions that pair a provider and model with credentials and settings. The LLM Gateway can route a request through a saved configuration when you set the model ID to `custom/<name>`. Use a configuration to reach an endpoint that a provider-prefixed model ID cannot address, such as a custom OpenAI-compatible endpoint.
+[Model configurations](/langsmith/model-configurations) 是命名的、可重用的定义，将提供者和模型与凭证和设置配对。当您将模型 ID 设置为 `custom/<name>` 时，LLM 网关可以通过保存的配置路由请求。使用配置到达提供者前缀模型 ID 无法寻址的端点，例如自定义 OpenAI 兼容端点。
 
-## Understand what the gateway uses
+## 了解网关的用途
 
-A bring-your-own-key gateway call normally targets a model with a provider-prefixed ID such as `openai/gpt-5.4-mini`. When the model ID is `custom/<name>`, the gateway reads the following from the saved configuration instead:
+自带密钥网关调用通常针对具有提供商前缀 ID（例如 `openai/gpt-5.4-mini`）的模型。当型号 ID 为 `custom/<name>` 时，网关会从保存的配置中读取以下内容：
 
-* **Provider and model**: The gateway sends the configuration's model name upstream, replacing the `custom/<name>` value in the request body.
-* **API key secret**: The gateway authenticates to the provider with the workspace secret named in the configuration.
-* **Connection settings**: The base URL, the OpenAI provider API (Chat Completions or Responses), and the Vertex AI project and location, where the provider uses them.
+* **提供者和模型**：网关向上游发送配置的模型名称，替换请求正文中的 `custom/<name>` 值。
+* **API 密钥秘密**：网关使用配置中指定的工作区秘密向提供者进行身份验证。
+* **连接设置**：基本 URL、OpenAI 提供商 API（聊天完成或响应）以及提供商使用它们的 Vertex AI 项目和位置。网关忽略配置中保存的生成参数，例如温度、最高 P 和最大输出令牌。相反，请在每个 API 请求中传递这些内容。
 
-The gateway ignores generation parameters saved on the configuration, such as temperature, top P, and max output tokens. Pass these in each API request instead.
+工作区管理员在 **设置** > **模型配置** 下创建配置。步骤请参见[Create a configuration](/langsmith/model-configurations#create-a-configuration)。
 
-Workspace admins create configurations under **Settings** > **Model configurations**. For the steps, see [Create a configuration](/langsmith/model-configurations#create-a-configuration).
+## 通过网关调用配置
 
-## Call a configuration through the gateway
+在任何标准网关请求中使用 `custom/<name>` 作为模型 ID，将 `<name>` 替换为配置的确切名称，如 **设置** > **模型配置** 中所示：
 
-Use `custom/<name>` as the model ID in any standard gateway request, replacing `<name>` with the configuration's exact name as shown in **Settings** > **Model configurations**:
+```bash Cloud theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+curl https://gateway.smith.langchain.com/v1/responses \
+    -H "Authorization: Bearer $LANGSMITH_API_KEY" \
+    -H "Content-Type: application/json" \
+    -d '{"model":"custom/my-openai-config","input":"Hello!"}'
+```
 
-<CodeGroup>
-  ```bash Cloud theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  curl https://gateway.smith.langchain.com/v1/responses \
-      -H "Authorization: Bearer $LANGSMITH_API_KEY" \
-      -H "Content-Type: application/json" \
-      -d '{"model":"custom/my-openai-config","input":"Hello!"}'
-  ```
+```bash BYOC theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+curl https://<data_plane_host>/gateway/v1/responses \
+    -H "Authorization: Bearer $LANGSMITH_API_KEY" \
+    -H "Content-Type: application/json" \
+    -d '{"model":"custom/my-openai-config","input":"Hello!"}'
+```
 
-  ```bash BYOC theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  curl https://<data_plane_host>/gateway/v1/responses \
-      -H "Authorization: Bearer $LANGSMITH_API_KEY" \
-      -H "Content-Type: application/json" \
-      -d '{"model":"custom/my-openai-config","input":"Hello!"}'
-  ```
-</CodeGroup>
+网关在 API 密钥的工作区中按名称查找配置，包括 [organization-scoped configurations](/langsmith/model-configurations#organization-scoped-model-configurations)，将请求路由到配置的提供程序和端点，并在客户端使用的 [API format](/langsmith/llm-gateway-api-formats) 中返回响应。
 
-The gateway looks up the configuration by name in the API key's workspace, including [organization-scoped configurations](/langsmith/model-configurations#organization-scoped-model-configurations), routes the request to the configured provider and endpoint, and returns the response in the [API format](/langsmith/llm-gateway-api-formats) the client used.
+保存的配置不会出现在`GET /v1/models`列表中，因此请直接与开发人员共享配置名称。
 
-Saved configurations do not appear in the `GET /v1/models` list, so share configuration names with developers directly.
+如果 [model access policy](/langsmith/llm-gateway-model-access-policies#allow-saved-model-configurations) 适用于请求，则策略必须允许保存的模型配置，否则网关将返回 `403` 响应。
 
-If a [model access policy](/langsmith/llm-gateway-model-access-policies#allow-saved-model-configurations) applies to the request, the policy must allow saved model configurations, or the gateway returns a `403` response.
+## 在后备链中使用配置
 
-## Use a configuration in a fallback chain
+[fallback chain](/langsmith/llm-gateway-fallbacks) 可以在两个地方使用保存的配置：* **作为主要模型**：选择配置作为链的主要模型。然后，对`custom/<name>`的请求将故障转移到链的备份模型。
+* **作为后备候选**：添加配置作为备份模型之一。然后，对链的主要模型 ID 的请求可以故障转移到配置的端点。
 
-A [fallback chain](/langsmith/llm-gateway-fallbacks) can use a saved configuration in two places:
+要为 Playground 提示提供其自己的后备行为，请将提示的模型设置为 `custom/<name>` 并将一条链附加到该配置。步骤请参见[Set fallbacks for a prompt](/langsmith/llm-gateway-fallbacks#set-fallbacks-for-a-prompt)。
 
-* **As the primary model**: Select the configuration as the chain's primary model. Requests to `custom/<name>` then fail over to the chain's backup models.
-* **As a fallback candidate**: Add the configuration as one of the backup models. Requests to the chain's primary model ID can then fail over to the configuration's endpoint.
+## 另请参阅
 
-To give a Playground prompt its own fallback behavior, set the prompt's model to `custom/<name>` and attach a chain to that configuration. For the steps, see [Set fallbacks for a prompt](/langsmith/llm-gateway-fallbacks#set-fallbacks-for-a-prompt).
-
-## See also
-
-* [Manage model configurations](/langsmith/model-configurations): create, edit, and delete configurations; configure OAuth client credentials; manage organization-scoped configurations.
-* [Model fallbacks](/langsmith/llm-gateway-fallbacks): retry failed requests against backup models and configurations.
-* [API formats](/langsmith/llm-gateway-api-formats): supported request and response formats, model ID syntax, and translation behavior.
+* [Manage model configurations](/langsmith/model-configurations)：创建、编辑、删除配置；配置 OAuth 客户端凭据；管理组织范围的配置。
+* [Model fallbacks](/langsmith/llm-gateway-fallbacks)：针对备份模型和配置重试失败的请求。
+* [API formats](/langsmith/llm-gateway-api-formats)：支持的请求和响应格式、模型ID语法和翻译行为。
 
 ***
 
-<div>
-  <Callout icon="terminal-2">
-    [Connect these docs](/use-these-docs) to your agent of choice via MCP for real-time answers.
-  </Callout>
+[Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
 
-  <Callout icon="edit">
-    [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/llm-gateway-model-configurations.mdx) or [file an issue](https://github.com/langchain-ai/docs/issues/new/choose).
-  </Callout>
-</div>
+[Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/llm-gateway-model-configurations.mdx) 或 [file an issue](https://github.com/langchain-ai/docs/issues/new/choose)。

@@ -46,30 +46,30 @@
 > * **版本升级和支持**：维护任务定义并应用版本更新。 LangChain 测试并发布支持的 Helm 图表版本更新。
 
 ## 先决条件1. 使用[LangGraph CLI](/langsmith/cli)至[test your application locally](/langsmith/local-dev-testing)。
-2. 使用[LangGraph CLI](/langsmith/cli)构建Docker镜像（即`langgraph build`）。
+2. 使用[LangGraph CLI](/langsmith/cli)构建Docker镜像（即`langgraph build`）。要在没有公共互联网访问的网络上构建，请参阅[Set up a build machine on a restricted network](/langsmith/self-host-restricted-network-build)。
 3. 数据平面部署需要以下环境变量。
-4. `REDIS_URI`：Redis 实例的连接详细信息。 Redis 将用作发布-订阅代理，以实现后台运行的流式实时输出。 `REDIS_URI` 的值必须是有效的 [Redis connection URI](https://redis.readthedocs.io/en/stable/connections.html#redis.Redis.from_url)。
+   * `REDIS_URI`：Redis 实例的连接详细信息。 Redis 将用作发布-订阅代理，以实现后台运行的流式实时输出。 `REDIS_URI` 的值必须是有效的 [Redis connection URI](https://redis.readthedocs.io/en/stable/connections.html#redis.Redis.from_url)。
 
-   > [!注意]
-   >
-   > **共享 Redis 实例**
-   > 多个自托管部署可以共享同一个 Redis 实例。例如，对于`Deployment A`，`REDIS_URI`可以设置为`redis://<hostname_1>:<port>/1`，对于`Deployment B`，`REDIS_URI`可以设置为`redis://<hostname_1>:<port>/2`。
-   >
-   > `1` 和`2` 是同一实例内不同的数据库编号，但`<hostname_1>` 是共享的。 **相同的数据库编号不能用于单独的部署**。
-5. `DATABASE_URI`：Postgres 连接详细信息。 Postgres 将用于存储助手、线程、运行、持久线程状态和长期内存，并使用“恰好一次”语义管理后台任务队列的状态。 `DATABASE_URI` 的值必须是有效的 [Postgres connection URI](https://www.postgresql.org/docs/current/libpq-connect.html#LIBPQ-CONNSTRING-URIS)。> [!注意]
-   >
-   > **共享 Postgres 实例**
-   > 多个自托管部署可以共享同一个 Postgres 实例。例如，对于`Deployment A`，`DATABASE_URI`可以设置为`postgres://<user>:<password>@/<database_name_1>?host=<hostname_1>`，对于`Deployment B`，`DATABASE_URI`可以设置为`postgres://<user>:<password>@/<database_name_2>?host=<hostname_1>`。
-   >
-   > `<database_name_1>` 和 `database_name_2` 是同一实例中的不同数据库，但 `<hostname_1>` 是共享的。 **同一数据库不能用于单独的部署**。
+     > [!注意]
+     >
+     > **共享 Redis 实例**
+     > 多个自托管部署可以共享同一个 Redis 实例。例如，对于`Deployment A`，`REDIS_URI`可以设置为`redis://<hostname_1>:<port>/1`，对于`Deployment B`，`REDIS_URI`可以设置为`redis://<hostname_1>:<port>/2`。
+     >
+     > `1` 和`2` 是同一实例内不同的数据库编号，但`<hostname_1>` 是共享的。 **相同的数据库编号不能用于单独的部署**。
+   * `DATABASE_URI`：Postgres 连接详细信息。 Postgres 将用于存储助手、线程、运行、持久线程状态和长期内存，并使用“恰好一次”语义管理后台任务队列的状态。 `DATABASE_URI` 的值必须是有效的 [Postgres connection URI](https://www.postgresql.org/docs/current/libpq-connect.html#LIBPQ-CONNSTRING-URIS)。> [!注意]
+     >
+     > **共享 Postgres 实例**
+     > 多个自托管部署可以共享同一个 Postgres 实例。例如，对于`Deployment A`，`DATABASE_URI`可以设置为`postgres://<user>:<password>@/<database_name_1>?host=<hostname_1>`，对于`Deployment B`，`DATABASE_URI`可以设置为`postgres://<user>:<password>@/<database_name_2>?host=<hostname_1>`。
+     >
+     > `<database_name_1>` 和 `database_name_2` 是同一实例中的不同数据库，但 `<hostname_1>` 是共享的。 **同一数据库不能用于单独的部署**。
 
-   > [!提示]
-   >
-   > 您可以选择将检查点数据存储在 MongoDB 而不是 PostgreSQL 中。所有其他服务器数据仍然需要 PostgreSQL。详情请参阅[Configure checkpointer backend](/langsmith/configure-checkpointer)。
-6. `LANGSMITH_API_KEY`：LangSmith API 密钥。
-7. `LANGGRAPH_CLOUD_LICENSE_KEY`：LangSmith 许可证密钥。这将用于在服务器启动时进行一次身份验证。
-8. `LANGSMITH_ENDPOINT`：要将跟踪发送到 [self-hosted LangSmith](/langsmith/self-hosted) 实例，请将 `LANGSMITH_ENDPOINT` 设置为自托管 LangSmith 实例的主机名。
-9. 从您的网络出口到`https://beacon.langchain.com`。如果不在气隙模式下运行，则这是许可证验证和使用报告所必需的。更多详情请参阅[Egress documentation](/langsmith/self-host-egress)。> [!注意]
+     > [!提示]
+     >
+     > 您可以选择将检查点数据存储在 MongoDB 而不是 PostgreSQL 中。所有其他服务器数据仍然需要 PostgreSQL。详情请参阅[Configure checkpointer backend](/langsmith/configure-checkpointer)。
+   * `LANGSMITH_API_KEY`：LangSmith API 密钥。
+   * `LANGGRAPH_CLOUD_LICENSE_KEY`：LangSmith 许可证密钥。这将用于在服务器启动时进行一次身份验证。
+   * `LANGSMITH_ENDPOINT`：要将跟踪发送到 [self-hosted LangSmith](/langsmith/self-hosted) 实例，请将 `LANGSMITH_ENDPOINT` 设置为自托管 LangSmith 实例的主机名。
+4. 从您的网络出口到`https://beacon.langchain.com`。如果不在气隙模式下运行，则这是许可证验证和使用报告所必需的。更多详情请参阅[Egress documentation](/langsmith/self-host-egress)。> [!注意]
 >
 > 从 0.14.0 开始，代理服务器服务默认侦听 IPv4 和 IPv6。双栈集群无需额外配置。要侦听单个地址系列，请将 `LANGGRAPH_SERVER_HOST` 设置为 `0.0.0.0`（仅适用于 IPv4）或 `::`（仅适用于 IPv6）。参见[Self-hosted Agent Server environment variables](/langsmith/env-var-self-hosted)。
 

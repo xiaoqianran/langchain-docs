@@ -8,15 +8,15 @@
 
 本指南向您展示如何使用 [LangSmith UI](https://smith.langchain.com?utm_source=docs\&utm_medium=cta\&utm_campaign=langsmith-signup\&utm_content=langsmith-llm-as-judge) 为 [offline evaluation](/langsmith/evaluation-concepts#offline-evaluations) 定义 [LLM-as-a-judge evaluator](/langsmith/evaluation-concepts#llm-as-judge)。
 
-<Note>
-  本指南使用 LangSmith UI。您还可以使用 SDK 以编程方式创建一个 LLM 作为法官评估器，它出现在 LangSmith UI 中，与此处创建的评估器相同。参考[Manage evaluators with the SDK](/langsmith/manage-evaluators-sdk)。
+> [!注意]
+>
+> 本指南使用 LangSmith UI。您还可以使用 SDK 以编程方式创建一个 LLM 作为法官评估器，它出现在 LangSmith UI 中，与此处创建的评估器相同。参考[Manage evaluators with the SDK](/langsmith/manage-evaluators-sdk)。
+>
+> 要对生产轨迹进行实时评估，请参阅[setting up online evaluations](/langsmith/online-evaluations-llm-as-judge)。
 
-  要对生产轨迹进行实时评估，请参阅[setting up online evaluations](/langsmith/online-evaluations-llm-as-judge)。
-</Note>
-
-<Tip>
-  如果您的数据集示例是使用 [assertions written in an annotation queue](/langsmith/assertions) 构建的，LLM 作为法官评估者可以读取 `example.outputs["assertions"]` 并根据您应用程序的输出对每个数据集进行评分。
-</Tip>
+> [!提示]
+>
+> 如果您的数据集示例是使用 [assertions written in an annotation queue](/langsmith/assertions) 构建的，LLM 作为法官评估者可以读取 `example.outputs["assertions"]` 并根据您应用程序的输出对每个数据集进行评分。
 
 ## 步骤 1. 创建评估器
 
@@ -45,7 +45,7 @@
 
 从提供的选项中选择所需的型号。
 
-要使用决策模型（例如 Jev）作为判断者，请参阅[How to define a decision model evaluator](/langsmith/decision-model-evaluator)。
+使用决策模型作为判断，参见[How to define a decision model evaluator](/langsmith/decision-model-evaluator)。
 
 ### 映射变量
 
@@ -59,7 +59,7 @@
 
 ### 通过少量示例改进您的评估器
 
-为了更好地使 LLM 作为法官评估者符合人类偏好，LangSmith 允许您收集评估者分数的 [human corrections](/langsmith/create-few-shot-evaluators#make-corrections)。启用此选择后，更正将作为少数示例自动插入到提示中。
+为了更好地将 LLM 作为法官的评估者与人类偏好保持一致，LangSmith 允许您收集评估者分数的 [human corrections](/langsmith/create-few-shot-evaluators#make-corrections)。启用此选择后，更正将作为少数示例自动插入到提示中。
 
 学习[how to set up few-shot examples and make corrections](/langsmith/create-few-shot-evaluators)。
 
@@ -83,12 +83,6 @@
 
 ***
 
-<div>
-  <Callout icon="terminal-2">
-    [Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
-  </Callout>
+[Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
 
-  <Callout icon="edit">
-    [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/llm-as-judge.mdx) 或 [file an issue](https://github.com/langchain-ai/docs/issues/new/choose)。
-  </Callout>
-</div>
+[Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/llm-as-judge.mdx) 或 [file an issue](https://github.com/langchain-ai/docs/issues/new/choose)。

@@ -10,19 +10,19 @@ LangSmith中的[Evaluators](/langsmith/evaluation-concepts#evaluators)是[worksp
 
 评估者所关注的内容取决于您的工作空间的组织方式。
 
-<Note>
-  **基于代理的工作区。** 如果您的工作区按 [agent and environment](/langsmith/agents) 组织跟踪，则本部分适用。要进行检查，请查看左上角的控件：它为您的工作区命名。如果它显示 LangSmith 徽标，并且侧边栏具有带有应用程序选择器的 **应用程序** 部分，则您的工作区是基于项目的。跳过本节并阅读[Tracing projects](/langsmith/observability-concepts#tracing-projects)。
-</Note>
+> [!注意]
+>
+> **基于代理的工作区。** 如果您的工作区按 [agent and environment](/langsmith/agents) 组织跟踪，则本部分适用。要进行检查，请查看左上角的控件：它为您的工作区命名。如果它显示 LangSmith 徽标，并且侧边栏具有带有应用程序选择器的 **应用程序** 部分，则您的工作区是基于项目的。跳过本节并阅读[Tracing projects](/langsmith/observability-concepts#tracing-projects)。
 
-评估器附加到 [agent](/langsmith/agents) 的 [environment](/langsmith/agent-environments#environment-names)。将其单独附加到 **生产** 以对生产流量进行评分，而无需对本地运行进行评分。<Note>
-  **基于项目的工作区。** 如果您的工作区按 [tracing project](/langsmith/observability-concepts#tracing-projects) 组织跟踪，则本部分适用。要进行检查，请查看左上角的控件。在基于项目的工作区中，它显示 LangSmith 徽标，侧边栏有一个带有应用程序选择器的 **Application** 部分。如果控件显示您的工作区名称，则您的工作区是基于代理的。跳过本节并阅读[Agents](/langsmith/agents)。
-</Note>
+评估器附加到 [agent](/langsmith/agents) 的 [environment](/langsmith/agent-environments#environment-names)。将其单独附加到 **生产** 以对生产流量进行评分，而无需对本地运行进行评分。> [!注意]
+>
+> **基于项目的工作区。** 如果您的工作区按 [tracing project](/langsmith/observability-concepts#tracing-projects) 组织跟踪，则本部分适用。要进行检查，请查看左上角的控件。在基于项目的工作区中，它显示 LangSmith 徽标，侧边栏有一个带有应用程序选择器的 **Application** 部分。如果控件显示您的工作区名称，则您的工作区是基于代理的。跳过本节并阅读[Agents](/langsmith/agents)。
 
 评估器附加到[tracing project](/langsmith/observability-concepts#tracing-projects)。
 
-<Tip>
-  评估器分数是 [LangSmith Engine](/langsmith/engine) 的高优先级信号：在选择要分析的内容时，它会拉出低分跟踪，因此将评估器附加到项目会加剧引擎在那里发现的问题。
-</Tip>
+> [!提示]
+>
+> 评估器分数是 [LangSmith Engine](/langsmith/engine) 的高优先级信号：在选择要分析的内容时，它会拉出低分跟踪，因此将评估器附加到项目会加剧引擎在那里发现的问题。
 
 ## 查看评估者
 
@@ -49,7 +49,7 @@ LangSmith中的[Evaluators](/langsmith/evaluation-concepts#evaluators)是[worksp
 1. 在[LangSmith UI](https://smith.langchain.com?utm_source=docs\&utm_medium=cta\&utm_campaign=langsmith-signup\&utm_content=langsmith-evaluators)中，选择左侧边栏中的**评估器**。
 2. 单击 **+ Evaluator** 打开新的评估器面板。
 3. 该面板可让您：
-   * **从头开始创建**：构建新的 [LLM-as-a-Judge](/langsmith/llm-as-judge) 或 [Code](/langsmith/online-evaluations-code) 评估器。要使用 [decision model](/langsmith/decision-model-evaluator) 作为法官，请选择 **LLM-as-a-Judge Evaluator**，然后选择决策模型。
+   * **从头开始创建**：构建新的 [LLM-as-a-Judge](/langsmith/llm-as-judge)、[Decision Model](/langsmith/decision-model-evaluator) 或 [Code](/langsmith/online-evaluations-code) 评估器。
    * **添加LangChain Tuned Evaluator**：将[specialized judge managed by LangChain](/langsmith/tuned-evaluators)附加到兼容的跟踪项目，而无需配置提示、模型或API密钥。
    * **从模板创建**：从现成的评估器（也称为预构建评估器）开始，以实现常见的评估模式。 **推荐**部分首先显示流行的模板，然后是按以下类别组织的模板：|类别 |描述 |
      | - | - |
@@ -57,7 +57,7 @@ LangSmith中的[Evaluators](/langsmith/evaluation-concepts#evaluators)是[worksp
      |安全|评估内容的安全性和适度性。 |
      |品质 |测量输出质量和准确性。 |
      |对话 |评估对话质量和用户体验。 |
-     |轨迹|评估代理工具的使用和决策路径。 |
+     |轨迹 |评估代理工具的使用和决策路径。 |
      |图像评估|评估图像内容质量和安全性。 |
      |语音评估|评估语音和音频交互质量。 |
 
@@ -69,50 +69,48 @@ LangSmith中的[Evaluators](/langsmith/evaluation-concepts#evaluators)是[worksp
 
 SDK尚不支持[decision model evaluators](/langsmith/decision-model-evaluator)。要创建一个，请使用 UI。
 
-<Note>
-  通过 SDK 管理评估器需要 `langsmith>=0.9.8`（Python、PyPI）或 `langsmith>=0.7.16`（TypeScript、npm）。
-</Note>
+> [!注意]
+>
+> 通过 SDK 管理评估器需要 `langsmith>=0.9.8`（Python、PyPI）或 `langsmith>=0.7.16`（TypeScript、npm）。
 
-<CodeGroup>
-  ```python Python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  import asyncio
+```python Python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+import asyncio
 
-  from langsmith import Client
-
-
-  async def main():
-      client = Client()
-
-      created = await client.evaluators.create(
-          name="Correctness evaluator",
-          type="code",
-          code_evaluator={
-              "code": "def perform_eval(run, example):\n    return {'score': 1}",
-              "language": "python",
-          },
-      )
-      print("Created evaluator:", created.evaluator.id)
+from langsmith import Client
 
 
-  asyncio.run(main())
-  ```
+async def main():
+    client = Client()
 
-  ```typescript TypeScript theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  import { Client } from "langsmith";
+    created = await client.evaluators.create(
+        name="Correctness evaluator",
+        type="code",
+        code_evaluator={
+            "code": "def perform_eval(run, example):\n    return {'score': 1}",
+            "language": "python",
+        },
+    )
+    print("Created evaluator:", created.evaluator.id)
 
-  const client = new Client();
 
-  const created = await client.evaluators.create({
-    name: "Correctness evaluator",
-    type: "code",
-    code_evaluator: {
-      code: "def perform_eval(run, example):\n    return {'score': 1}",
-      language: "python",
-    },
-  });
-  console.log("Created evaluator:", created.evaluator?.id);
-  ```
-</CodeGroup>要创建 LLM 作为法官评估器并检索、更新、列出或删除评估器，请参阅[Manage evaluators with the SDK](/langsmith/manage-evaluators-sdk)。
+asyncio.run(main())
+```
+
+```typescript TypeScript theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+import { Client } from "langsmith";
+
+const client = new Client();
+
+const created = await client.evaluators.create({
+  name: "Correctness evaluator",
+  type: "code",
+  code_evaluator: {
+    code: "def perform_eval(run, example):\n    return {'score': 1}",
+    language: "python",
+  },
+});
+console.log("Created evaluator:", created.evaluator?.id);
+```要创建 LLM 作为法官评估器并检索、更新、列出或删除评估器，请参阅[Manage evaluators with the SDK](/langsmith/manage-evaluators-sdk)。
 
 ## 查看评估者详细信息
 
@@ -125,7 +123,7 @@ SDK尚不支持[decision model evaluators](/langsmith/decision-model-evaluator)�
 
 ## 编辑评估器
 
-打开评估器。在 **概述** 选项卡中，单击 **编辑评估器** <Icon icon="pencil" /> 图标以打开 **配置评估器** 面板。更新评估器的配置。单击**保存**。
+打开评估器。在 **概述** 选项卡中，单击 **编辑评估器** 图标以打开 **配置评估器** 面板。更新评估器的配置。单击**保存**。
 
 由于评估器是共享的，因此更改适用于其附加的每个跟踪容器和数据集。
 
@@ -141,7 +139,7 @@ SDK尚不支持[decision model evaluators](/langsmith/decision-model-evaluator)�
 
 该更改适用于保存评估器后评分的轨迹。现有的评分跟踪保留其当前的保留级别。
 
-上面描述的 **扩展跟踪保留** 切换适用于跟踪级别和线程级别（多轮）在线评估器。有关多轮评估器的更多信息，请参阅[Set up multi-turn online evaluators](/langsmith/online-evaluations-multi-turn)。## 包括扩展统计数据
+上述的 **扩展跟踪保留** 切换适用于跟踪级和线程级（多轮）在线评估器。有关多轮评估器的更多信息，请参阅[Set up multi-turn online evaluators](/langsmith/online-evaluations-multi-turn)。## 包括扩展统计数据
 
 使用 **在 [run-level evaluator](/langsmith/online-evaluations-llm-as-judge) 中包含扩展统计数据（反馈、成本、令牌）** 来评估运行中的反馈统计数据、令牌使用情况或成本数据。 `feedback_stats`字段包含反馈统计信息，包括每个反馈键的数量和平均值。此选项不适用于[multi-turn (thread-level) evaluators](/langsmith/online-evaluations-multi-turn)。
 
@@ -162,7 +160,7 @@ LangSmith 为启用此选项的评估者获取附加数据。仅当您的评估�
 
 将第二个评估器链接到第一个评估器上：
 
-1. 创建或打开第二个求值器并展开其过滤器。有关更多信息，请参阅 [Apply a filter to runs that trigger the evaluator](/langsmith/online-evaluations-llm-as-judge#apply-a-filter-to-runs-that-trigger-the-evaluator)（适用于 LLM 作为法官评估者）或 [Create a filter](/langsmith/online-evaluations-code#3-create-a-filter)（适用于代码评估者）。
+1. 创建或打开第二个求值器并展开其过滤器。有关更多信息，请参阅 [Apply a filter to runs that trigger the evaluator](/langsmith/online-evaluations-llm-as-judge#apply-a-filter-to-runs-that-trigger-the-evaluator)（对于 LLM 作为法官评估者）或 [Create a filter](/langsmith/online-evaluations-code#3-create-a-filter)（对于代码评估者）。
 
 2. 过滤第一个评估者的反馈键。过滤器匹配密钥而不是生成密钥的评估器，因此来自具有该密钥的任何源的反馈都会触发第二个评估器，包括[user feedback](/langsmith/attach-user-feedback)。使用只有第一个评估者生成的密钥。
    * 要在每次运行时触发第一个评估者评分，请仅对键进行过滤：
@@ -186,7 +184,7 @@ LangSmith 为启用此选项的评估者获取附加数据。仅当您的评估�
 第二个评估器如何读取第一个评估器的分数取决于其类型：
 
 * **LLM 作为法官评估者**：[Include extended stats](#include-extended-stats)，然后将提示变量映射到 `run.feedback_stats.<feedback_key>.avg`。例如，将 `{{correctness_average}}` 映射到 `run.feedback_stats.correctness.avg`。
-* **代码评估器**：读取`run["feedback"]`中的[feedback record](/langsmith/feedback-data-format)，其`key`是第一个评估器的反馈键，并使用其`score`。 `run["feedback"]` 在评估器进程的每批运行中最多保留 100 条反馈记录，并且最旧的记录首先被删除，因此当批次包含许多反馈记录时，分数可能会丢失。要可靠地读取分数，请包括扩展统计数据并从 `run["feedback_stats"]["<feedback_key>"]["avg"]` 读取平均值。`avg` 字段对运行中具有该键的每个反馈记录进行平均，因此仅当运行有一个具有该键的记录时，它才等于第一个评估者的分数。具有相同键的另一条记录（例如用户反馈）会更改平均值。
+* **代码评估器**：读取`run["feedback"]`中的[feedback record](/langsmith/feedback-data-format)，其`key`是第一个评估器的反馈键，并使用其`score`。 `run["feedback"]` 在评估器进程的每批运行中最多保留 100 条反馈记录，并且最旧的记录首先被删除，因此当批次包含许多反馈记录时，分数可能会丢失。要可靠地读取分数，请包括扩展统计数据并从 `run["feedback_stats"]["<feedback_key>"]["avg"]` 读取平均值。`avg` 字段对运行中具有该键的每个反馈记录进行平均，因此仅当运行有一个具有该键的记录时，它才等于第一个评估者的分数。具有相同键的另一记录（例如用户反馈）会改变平均值。
 
 ## 删除评估器
 
@@ -199,12 +197,6 @@ LangSmith 为启用此选项的评估者获取附加数据。仅当您的评估�
 
 ***
 
-<div>
-  <Callout icon="terminal-2">
-    [Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
-  </Callout>
+[Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
 
-  <Callout icon="edit">
-    [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/evaluators.mdx) 或 [file an issue](https://github.com/langchain-ai/docs/issues/new/choose)。
-  </Callout>
-</div>
+[Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/evaluators.mdx) 或 [file an issue](https://github.com/langchain-ai/docs/issues/new/choose)。

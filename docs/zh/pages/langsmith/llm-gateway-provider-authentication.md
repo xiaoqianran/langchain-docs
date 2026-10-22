@@ -6,9 +6,9 @@
 
 在 LLM 网关和支持 API 密钥以上的模型提供者之间配置基于身份的身份验证。
 
-<Note>
-  LLM Gateway 位于[beta](/langsmith/release-stages)。
-</Note>
+> [!注意]
+>
+> LLM Gateway 位于[beta](/langsmith/release-stages)。
 
 网关使用工作区的提供者密钥中存储的凭据对每个模型提供者进行身份验证。大多数提供商只需要一个 API 密钥，您可以在 [Admin setup](/langsmith/llm-gateway-admin-setup#1-add-provider-secrets) 中添加该密钥。一些提供商还支持基于身份的身份验证，这使您可以在组织禁用提供商 API 密钥时使用网关。
 
@@ -69,12 +69,6 @@ curl https://gateway.smith.langchain.com/azure/v1/chat/completions \
 * [Direct model access](/langsmith/llm-gateway-direct-model-access)：通过提供商特定的网关路径调用提供商 API。
 * [Self-hosted LLM Gateway](/langsmith/llm-gateway-self-hosted)：在自托管LangSmith上启用网关。
 
-***<div>
-  <Callout icon="terminal-2">
-    [Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
-  </Callout>
+***
 
-  <Callout icon="edit">
-    [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/llm-gateway-provider-authentication.mdx) 或 [file an issue](https://github.com/langchain-ai/docs/issues/new/choose)。
-  </Callout>
-</div>
+[Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。[Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/llm-gateway-provider-authentication.mdx) 或 [file an issue](https://github.com/langchain-ai/docs/issues/new/choose)。

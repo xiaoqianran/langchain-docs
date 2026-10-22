@@ -5,4 +5,4 @@
 # 获取线程历史记录
 
 /langsmith/agent-server-openapi.json 获取 /threads/{thread_id}/history
-获取线程的所有过去状态。
+获取线程的所有过去状态。可以返回少于 `limit` 个状态；带有 `before` 的页面以进一步阅读。

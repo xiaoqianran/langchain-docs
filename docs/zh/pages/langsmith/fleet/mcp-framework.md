@@ -9,11 +9,11 @@ LangSmith 工具服务器是一个独立的 MCP 框架，用于构建和部署�
 * [Create custom tools](#create-a-custom-toolkit) 与 LangSmith 的 [Agent Auth](/langsmith/agent-auth) 集成以进行 OAuth 身份验证
 * [Build an MCP gateway](#use-as-an-mcp-gateway) 适用于您自己构建的代理（在舰队之外）
 
-<Note>
-  如果您使用[Fleet](/langsmith/fleet/index)，则无需直接与工具服务器交互。 Fleet 提供[built-in tools](/langsmith/fleet/tools) 并支持[remote MCP servers](/langsmith/fleet/remote-mcp-servers)，无需安装工具服务器。
-
-  但是，您可以将关联的工具服务器实例配置为 MCP 服务器，这将允许您在代理中使用自定义 MCP 服务器。
-</Note>
+> [!注意]
+>
+> 如果您使用[Fleet](/langsmith/fleet/index)，则无需直接与工具服务器交互。 Fleet 提供[built-in tools](/langsmith/fleet/tools) 并支持[remote MCP servers](/langsmith/fleet/remote-mcp-servers)，无需安装工具服务器。
+>
+> 但是，您可以将关联的工具服务器实例配置为 MCP 服务器，这将允许您在代理中使用自定义 MCP 服务器。
 
 下载 [PyPI package](https://pypi.org/project/langsmith-tool-server/) 开始使用。
 
@@ -99,7 +99,7 @@ async def main():
 asyncio.run(main())
 ```
 
-## 用作 MCP 网关LangSmith 工具服务器可以充当 MCP 网关，将多个 MCP 服务器中的工具聚合到单个端点。在 `toolkit.toml` 中配置 MCP 服务器：
+## 用作 MCP 网关LangSmith 工具服务器可以充当 MCP 网关，将来自多个 MCP 服务器的工具聚合到单个端点。在 `toolkit.toml` 中配置 MCP 服务器：
 
 ```toml theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 [toolkit]
@@ -181,12 +181,6 @@ async def authenticate(authorization: str = None) -> dict:
 
 该处理程序针对每个请求运行，并且必须返回带有 `identity`（以及可选的 `permissions`）的字典。
 
-***<div>
-  <Callout icon="terminal-2">
-    [Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
-  </Callout>
+***[Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
 
-  <Callout icon="edit">
-    [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/fleet/mcp-framework.mdx) 或 [file an issue](https://github.com/langchain-ai/docs/issues/new/choose)。
-  </Callout>
-</div>
+[Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/fleet/mcp-framework.mdx) 或 [file an issue](https://github.com/langchain-ai/docs/issues/new/choose)。

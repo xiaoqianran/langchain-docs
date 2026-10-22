@@ -6,9 +6,9 @@
 
 通过自定义请求标头拆分网关支出上限和速率限制，以便每个最终客户在单个 API 密钥下获得自己的限制。
 
-<Note>
-  LLM 网关位于[beta](/langsmith/release-stages)。
-</Note>
+> [!注意]
+>
+> LLM 网关位于[beta](/langsmith/release-stages)。
 
 [spend policy](/langsmith/llm-gateway-spend-policies) 可以通过自定义请求标头分隔默认限制，因此每个标头值都会获得独立的限制。 Spend 和 [rate limit policies](/langsmith/llm-gateway-rate-limit-policies) 也可以匹配一个特定的标头值。使用这些选项来限制您自己的最终客户、租户或团队，而无需为每个人单独发布 [LangSmith API key](/langsmith/create-account-api-key)。
 
@@ -20,13 +20,13 @@
 
 网关本身标记呼叫者身份并忽略客户端尝试覆盖它。解析为 `organization_id`、`workspace_id`、`workspace_handle`、`user_id`、`user_email`、`api_key_id`、`api_key_short`、`auth_mode`、`user_agent`、`applied_policy_ids` 的标头，或`applied_policy_names` 以及任何规范化名称以 `gateway` 开头的标头都将被丢弃。
 
-<Warning>
-  网关信任传入请求中的 `X-Gateway-*` 标头。对最终用户进行身份验证后，在您自己的后端设置标头，并且不要将网关 API 密钥分发给最终用户。控制密钥和标头的调用者可以选择要使用的限制。
-</Warning>
+> [!警告]
+>
+> 网关信任传入请求中的 `X-Gateway-*` 标头。对最终用户进行身份验证后，在您自己的后端设置标头，并且不要将网关 API 密钥分发给最终用户。控制密钥和标头的调用者可以选择要使用的限制。
 
-<Warning>
-  创建和管理策略需要`organization:manage`权限。有关完整权限细分，请参阅[Traces, Engine, and access control](/langsmith/llm-gateway-access)。
-</Warning>
+> [!警告]
+>
+> 创建和管理策略需要 `organization:manage` 权限。有关完整权限细分，请参阅[Traces, Engine, and access control](/langsmith/llm-gateway-access)。
 
 ## 按标题分隔默认支出限额默认支出限额对主题维度的每个成员应用相同的上限。通过标头分隔它，将该上限独立地应用于每个主题和标头值对，而不需要为每个值制定策略。
 
@@ -43,7 +43,7 @@
 3. 选择 **工作空间**、**用户** 或 **API 密钥**，然后选择默认情况下将限制应用于该类型的每个主题的选项。
 4. 选择**通过自定义标头单独限制**。
 5. 输入 **标头名称**，不带 `X-Gateway-` 前缀。例如，为 `X-Gateway-Customer-Id` 请求标头输入 `Customer-Id`。
-6. 设置支出限额，然后单击**创建支出限额**。策略表显示用于分隔默认限制的标头。您还可以编辑现有的默认支出限额以添加、更改或删除标题。
+6. 设置支出限额，然后单击“**创建支出限额**”。策略表显示用于分隔默认限制的标头。您还可以编辑现有的默认支出限额以添加、更改或删除标题。
 
 当不同的标头值需要不同的限制时，请使用显式策略。
 
@@ -75,88 +75,84 @@
 
 将标头附加到后端代表最终客户发出的每个请求：
 
-<CodeGroup>
-  ```bash curl theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  curl https://gateway.smith.langchain.com/openai/v1/chat/completions \
-      -H "Authorization: Bearer $LANGSMITH_API_KEY" \
-      -H "Content-Type: application/json" \
-      -H "X-Gateway-Customer-Id: acme" \
-      -d '{"model":"gpt-5.4-mini","messages":[{"role":"user","content":"ping"}]}'
-  ```
+```bash curl theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+curl https://gateway.smith.langchain.com/openai/v1/chat/completions \
+    -H "Authorization: Bearer $LANGSMITH_API_KEY" \
+    -H "Content-Type: application/json" \
+    -H "X-Gateway-Customer-Id: acme" \
+    -d '{"model":"gpt-5.4-mini","messages":[{"role":"user","content":"ping"}]}'
+```
 
-  ```python OpenAI SDK theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  import os
+```python OpenAI SDK theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+import os
 
-  from openai import OpenAI
+from openai import OpenAI
 
-  client = OpenAI(
-      base_url=os.environ["OPENAI_BASE_URL"],
-      api_key=os.environ["LANGSMITH_API_KEY"],
-  )
-  customer_id = "acme"
-  response = client.chat.completions.create(
-      model="gpt-5.4-mini",
-      messages=[{"role": "user", "content": "ping"}],
-      extra_headers={"X-Gateway-Customer-Id": customer_id},
-  )
-  print(response.choices[0].message.content)
-  ```
-</CodeGroup>
+client = OpenAI(
+    base_url=os.environ["OPENAI_BASE_URL"],
+    api_key=os.environ["LANGSMITH_API_KEY"],
+)
+customer_id = "acme"
+response = client.chat.completions.create(
+    model="gpt-5.4-mini",
+    messages=[{"role": "user", "content": "ping"}],
+    extra_headers={"X-Gateway-Customer-Id": customer_id},
+)
+print(response.choices[0].message.content)
+```
 
-<Note>
-  如果您的 LangSmith 账户位于区域实例上，请使用相应的 [regional gateway](/langsmith/llm-gateway-how-it-works#use-a-regional-gateway)。
-</Note>
+> [!注意]
+>
+> 如果您的 LangSmith 账户位于区域实例上，请使用相应的 [regional gateway](/langsmith/llm-gateway-how-it-works#use-a-regional-gateway)。
 
 ### 步骤 2. 为一位客户创建上限
 
 通过 [LangSmith REST API](/langsmith/smith-api-ref) 为每个最终客户创建一项支出政策：
 
-<CodeGroup>
-  ```bash curl theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  curl -X POST "https://api.smith.langchain.com/v1/platform/gateway-policies" \
-      -H "X-Api-Key: $LANGSMITH_API_KEY" \
-      -H "Content-Type: application/json" \
-      -d '{
-            "name": "customer-acme-monthly-cap",
-            "policy_type": "spend_cap",
-            "action": "block",
-            "subject_matchers": [
-              {"key": "workspace_id", "value": "0b1c2d3e-4f56-7890-abcd-ef1234567890"},
-              {"key": "customer_id", "value": "acme"}
-            ],
-            "config": {"window": "monthly", "limit_usd": 250}
-          }'
-  ```
-
-  ```python Python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  import os
-
-  import httpx
-
-  response = httpx.post(
-      "https://api.smith.langchain.com/v1/platform/gateway-policies",
-      headers={"X-Api-Key": os.environ["LANGSMITH_API_KEY"]},
-      json={
+```bash curl theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+curl -X POST "https://api.smith.langchain.com/v1/platform/gateway-policies" \
+    -H "X-Api-Key: $LANGSMITH_API_KEY" \
+    -H "Content-Type: application/json" \
+    -d '{
           "name": "customer-acme-monthly-cap",
           "policy_type": "spend_cap",
           "action": "block",
           "subject_matchers": [
-              {"key": "workspace_id", "value": "0b1c2d3e-4f56-7890-abcd-ef1234567890"},
-              {"key": "customer_id", "value": "acme"},
+            {"key": "workspace_id", "value": "0b1c2d3e-4f56-7890-abcd-ef1234567890"},
+            {"key": "customer_id", "value": "acme"}
           ],
-          "config": {"window": "monthly", "limit_usd": 250},
-      },
-      timeout=30.0,
-  )
-  response.raise_for_status()
-  ```
-</CodeGroup>
+          "config": {"window": "monthly", "limit_usd": 250}
+        }'
+```
+
+```python Python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+import os
+
+import httpx
+
+response = httpx.post(
+    "https://api.smith.langchain.com/v1/platform/gateway-policies",
+    headers={"X-Api-Key": os.environ["LANGSMITH_API_KEY"]},
+    json={
+        "name": "customer-acme-monthly-cap",
+        "policy_type": "spend_cap",
+        "action": "block",
+        "subject_matchers": [
+            {"key": "workspace_id", "value": "0b1c2d3e-4f56-7890-abcd-ef1234567890"},
+            {"key": "customer_id", "value": "acme"},
+        ],
+        "config": {"window": "monthly", "limit_usd": 250},
+    },
+    timeout=30.0,
+)
+response.raise_for_status()
+```
 
 匹配器键是规范化名称`customer_id`，而不是标头名称`X-Gateway-Customer-Id`。该策略属于拥有 API 密钥的组织。
 
-发布 `subject_matchers` 已存在的策略会更新该策略，而不是添加重复项，因此可以安全地重复此调用。### 步骤 3. 将政策与您的客户列表同步
+发布 `subject_matchers` 已存在的策略会更新该策略，而不是添加重复项，因此可以安全地重复此调用。
 
-由于每个最终客户都需要自己的策略，因此请使策略设置与您的客户列表保持一致。以下脚本为每个当前客户创建或更新上限，然后删除已消失客户的上限：
+### 步骤 3. 将政策与您的客户列表同步由于每个最终客户都需要自己的策略，因此请使策略设置与您的客户列表保持一致。以下脚本为每个当前客户创建或更新上限，然后删除已消失客户的上限：
 
 ```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 import os
@@ -275,9 +271,9 @@ curl -X POST "https://api.smith.langchain.com/v1/platform/gateway-policies" \
             ]
           }
         }'
-```[step 3](#step-3-sync-policies-with-your-customer-list) 中的同步脚本适用于具有相同两个替换的速率限制。支出上限和费率限制是不同的系列，因此最终客户可以在同一标头值上分别持有其中一项。
+```
 
-## 后续步骤
+[step 3](#step-3-sync-policies-with-your-customer-list) 中的同步脚本适用于具有相同两个替换的速率限制。支出上限和费率限制是不同的系列，因此最终客户可以在同一标头值上分别持有其中一项。## 后续步骤
 
 * [Spend policies](/langsmith/llm-gateway-spend-policies)：为组织、工作区、用户和 API 密钥设置成本上限。
 * [Rate limit policies](/langsmith/llm-gateway-rate-limit-policies)：在滚动窗口中限制请求和令牌。
@@ -285,12 +281,6 @@ curl -X POST "https://api.smith.langchain.com/v1/platform/gateway-policies" \
 
 ***
 
-<div>
-  <Callout icon="terminal-2">
-    [Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
-  </Callout>
+[Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
 
-  <Callout icon="edit">
-    [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/llm-gateway-header-policies.mdx) 或 [file an issue](https://github.com/langchain-ai/docs/issues/new/choose)。
-  </Callout>
-</div>
+[Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/llm-gateway-header-policies.mdx) 或 [file an issue](https://github.com/langchain-ai/docs/issues/new/choose)。

@@ -10,9 +10,9 @@ Slack 通道允许人们通过应用程序提及、直接消息和活动 Slack �
 
 托管 Deep Agents 创建并配置将 Slack 连接到已部署代理的资源。向代理项目添加通道声明，然后部署。
 
-<Note>
-  托管Deep Agents于[LangSmith Cloud](/langsmith/cloud)**公开[beta](/langsmith/release-stages)**。
-</Note>
+> [!注意]
+>
+> 托管 Deep Agents 于 [LangSmith Cloud](/langsmith/cloud) **公开 [beta](/langsmith/release-stages)**。
 
 ## 项目结构
 
@@ -49,21 +49,21 @@ channel = channels.slack()
 
 ## 配置代理在 Slack 中的外观
 
-编辑通道声明以控制代理在 Slack 中的显示方式。<ParamField type="string">
-  Slack 中的代理名称。名称必须包含 1-35 个字符，并且可以包含字母、数字、空格、下划线、破折号和句点。它不能以空格或破折号开头或结尾。
-</ParamField>
+编辑通道声明以控制代理在 Slack 中的显示方式。
 
-<ParamField type="string">
-  对代理所做工作的描述。描述最多可包含 139 个字符。
-</ParamField>
+**姓名** `string`Slack 中的代理名称。名称必须包含 1-35 个字符，并且可以包含字母、数字、空格、下划线、破折号和句点。它不能以空格或破折号开头或结尾。
 
-<ParamField type="string">
-  Slack 中显示的代理图标的路径，相对于 `channels/` 目录。图标必须是 512 x 512 像素的 PNG 文件，大小不超过 1 MB。如果省略此参数，托管Deep Agents将为您生成一个图标。
-</ParamField>
+**描述** `string`
 
-<ParamField type="string">
-  代理图标后面的背景颜色为六位十六进制颜色，例如`#1d4ed8`。
-</ParamField>
+对代理所做工作的描述。描述最多可包含 139 个字符。
+
+**图标** `string`
+
+Slack 中显示的代理图标的路径，相对于 `channels/` 目录。图标必须是 512 x 512 像素的 PNG 文件，大小不超过 1 MB。如果省略此参数，Managed Deep Agents 将为您生成一个图标。
+
+**背景\_颜色** `string`
+
+代理图标后面的背景颜色为六位十六进制颜色，例如`#1d4ed8`。
 
 例如，在通道声明旁边放置一个图标：
 
@@ -88,13 +88,13 @@ channel = channels.slack(
 
 ### 配置哪些消息开始运行
 
-<ParamField type="bool">
-  是否每个新的通道消息都可以启动代理运行。当`False`时，通道消息仅在提及代理时才开始运行；直接消息仍然开始运行。
-</ParamField>
+**触发\_on\_all\_messages** `bool`（默认值：False）
 
-<ParamField type="bool">
-  来自其他 Slack 机器人的消息是否可以启动代理运行。
-</ParamField>
+是否每个新的通道消息都可以启动代理运行。当`False`时，通道消息仅在提及代理时才开始运行；直接消息仍然开始运行。
+
+**允许\_bot\_triggers** `bool`（默认值：False）
+
+来自其他 Slack 机器人的消息是否可以启动代理运行。
 
 ## 对开始运行的消息做出反应当运行收到入站消息时，代理会使用表情符号对其做出反应，因此
 发件人知道在代理有任何话要说之前就已经看到它。反应
@@ -103,11 +103,11 @@ channel = channels.slack(
 默认情况下，每条消息都会获得相同的表情符号。传递一个函数来选择一个
 留言：
 
-<ParamField type="bool | str | Callable">
-  通过 `False` 关闭反应，使用该表情符号的 Slack 表情符号简称
-  相反，或者是一个可调用的 `{"text": ...}` 并返回一个短名称。的
-  可调用可以是同步的或异步的。
-</ParamField>
+**反应** `bool | str | Callable`（默认：“眼睛”）
+
+通过 `False` 关闭反应，使用该表情符号的 Slack 表情符号简称
+相反，或者是一个可调用的 `{"text": ...}` 并返回一个短名称。的
+可调用可以是同步的或异步的。
 
 ```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 from managed_deepagents import channels
@@ -119,13 +119,13 @@ channel = channels.slack(name="Support Bot", reactions=choose_emoji)
 ```
 
 返回一个不带冒号的 Slack 短名称。 Slack 没有这个名字
-recognize 被选择但从未出现，因此反应完全缺失。一个
+识别已被选择但从未出现，因此反应完全缺失。一个
 抛出、花费超过五秒或返回的选择器
-其他任何内容都会回退到默认表情符号，并且运行将以任何方式继续。
+其他任何内容都会回到默认表情符号，并且运行会继续。
 
 ### 选择具有决策模型的表情符号
 
-[decision model](/langsmith/llm-gateway-decision-models) 得分为一组固定值
+[decision model](/langsmith/llm-gateway-decision-models) 获得一组固定的分数
 选项和答案用其中一个键，所以反应反映了
 消息说，没有回复可供解析。答案总是其中之一
 您提供的选项。 `TypeSafeClassifier`
@@ -187,29 +187,27 @@ channel = channels.slack(name="Support Bot", reactions=choose_emoji)
 
 在部署期间，托管 Deep Agents 通过通道声明在 Slack 中配置您的代理。
 
-<Steps>
-  <Step title="Deploy your agent">
-    从项目根目录运行部署命令：
+**1.部署您的代理**
 
-    ```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-    uv run mda deploy
-    ```
+从项目根目录运行部署命令：
 
-    Managed Deep Agents 部署代理并设置它需要出现在 Slack 中的资源。
-  </Step>
+```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+uv run mda deploy
+```
 
-  <Step title="Authorize Slack if prompted">
-    如果您之前未授权 LangSmith，CLI 将显示 HTTPS 授权链接。打开链接，选择 Slack 工作区，然后批准请求的访问权限。
+Managed Deep Agents 部署代理并设置它需要出现在 Slack 中的资源。
 
-    返回终端并按 Enter。 CLI 再次检查授权并继续配置。如果 Slack 工作区需要管理员批准，请在继续之前完成该批准。
-  </Step><Step title="Use the agent in Slack">
-    首次部署后，您的代理会在 Slack 中向您发送一条直接消息。回复消息以启动代理运行。最终响应出现在 Slack 对话中。
-  </Step>
-</Steps>
+**2.如果出现提示，请授权 Slack**
 
-<Note>
-  Slack 中的人机交互请求仅支持 `approve` 和 `reject` [decision types](/langsmith/python/managed-deep-agents-tools#human-in-the-loop)。
-</Note>
+如果您之前未授权 LangSmith，CLI 将显示 HTTPS 授权链接。打开链接，选择 Slack 工作区，然后批准请求的访问权限。
+
+返回终端并按 Enter。 CLI 再次检查授权并继续配置。如果 Slack 工作区需要管理员批准，请在继续之前完成该批准。
+
+**3.在 Slack 中使用代理**首次部署后，您的代理会在 Slack 中向您发送一条直接消息。回复消息以启动代理运行。最终响应出现在 Slack 对话中。
+
+> [!注意]
+>
+> Slack 中的人机交互请求仅支持 `approve` 和 `reject` [decision types](/langsmith/python/managed-deep-agents-tools#human-in-the-loop)。
 
 如果 Slack 已获得授权，部署将在没有授权提示的情况下完成。
 
@@ -219,9 +217,9 @@ channel = channels.slack(name="Support Bot", reactions=choose_emoji)
 
 Slack 通道可以双向移动文件。在`/workspace/attachments/`下的代理沙箱中上传土地，代理通过使用`/workspace`下的路径调用`attach_file`发回文件。声明一个 Slack 通道和一个 [sandbox](/langsmith/python/managed-deep-agents-sandboxes) 就是整个设置。
 
-<Note>
-  Slack 文件传输需要 `managed-deepagents>=0.8.0` 和沙箱。如果没有沙箱，则不会保存传入文件，并且不会向模型提供 `attach_file`。
-</Note>托管 Deep Agents 在运行之前暂存传入消息上的文件，以及之前在同一 Slack 线程中共享的文件。代理读取路径的附件状态消息，然后使用其沙箱工具打开文件。该状态和文件内容被标记为数据，而不是指令。
+> [!注意]
+>
+> Slack 文件传输需要 `managed-deepagents>=0.8.0` 和沙箱。如果没有沙箱，则不会保存传入文件，并且不会向模型提供 `attach_file`。托管 Deep Agents 在运行之前暂存传入消息上的文件，以及之前在同一 Slack 线程中共享的文件。代理读取路径的附件状态消息，然后使用其沙箱工具打开文件。该状态和文件内容被标记为数据，而不是指令。
 
 附件永远不是自动的，因此当文件属于回复时，请在代理的 [instructions](/langsmith/python/managed-deep-agents-instructions) 中注明：
 
@@ -250,12 +248,6 @@ then call `attach_file` with that path so the file arrives in Slack.
 
 ***
 
-<div>
-  <Callout icon="terminal-2">
-    [Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
-  </Callout>
+[Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
 
-  <Callout icon="edit">
-    [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/managed-deep-agents-channels-slack.mdx) 或 [file an issue](https://github.com/langchain-ai/docs/issues/new/choose)。
-  </Callout>
-</div>
+[Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/managed-deep-agents-channels-slack.mdx) 或 [file an issue](https://github.com/langchain-ai/docs/issues/new/choose)。

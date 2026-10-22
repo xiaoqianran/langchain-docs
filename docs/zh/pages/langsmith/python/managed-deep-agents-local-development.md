@@ -8,9 +8,9 @@
 
 `mda dev` 编译托管 Deep Agents 项目并在本地代理服务器上运行它。它会打开 [LangSmith Studio](/langsmith/studio)，以便您可以在部署之前与代理交互并检查其行为。
 
-<Note>
-  托管Deep Agents于[LangSmith Cloud](/langsmith/cloud)**公开[beta](/langsmith/release-stages)**。
-</Note>
+> [!注意]
+>
+> 托管 Deep Agents 于 [LangSmith Cloud](/langsmith/cloud) **公开 [beta](/langsmith/release-stages)**。
 
 ## 启动本地工作室
 
@@ -61,12 +61,6 @@ CLI 打印本地服务器和 Studio URL 并在浏览器中打开 Studio。在 St
 
 ***
 
-<div>
-  <Callout icon="terminal-2">
-    [Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
-  </Callout>
+[Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
 
-  <Callout icon="edit">
-    [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/managed-deep-agents-local-development.mdx) 或 [file an issue](https://github.com/langchain-ai/docs/issues/new/choose)。
-  </Callout>
-</div>
+[Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/managed-deep-agents-local-development.mdx) 或 [file an issue](https://github.com/langchain-ai/docs/issues/new/choose)。

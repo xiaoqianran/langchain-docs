@@ -4,9 +4,9 @@
 
 # 将 LangSmith 遥测数据导出到您的可观测性后端
 
-<Warning>
-  **本节仅适用于 Kubernetes 部署。**
-</Warning>
+> [!警告]
+>
+> **本节仅适用于 Kubernetes 部署。**
 
 自托管 LangSmith 实例以日志、指标和跟踪的形式生成遥测数据。本节将向您展示如何访问该数据并将其导出到可观察性收集器或后端。
 
@@ -48,9 +48,9 @@
 
 前端服务在以下端点公开其 Nginx 指标：`langsmith-frontend.langsmith.svc.cluster.local:80/nginx_status`。你可以自己刮它们，或者拿出一个[Prometheus Nginx exporter](https://github.com/prometheus-community/helm-charts/tree/main/charts/prometheus-nginx-exporter)。
 
-<Warning>
-  **以下部分仅适用于集群内数据库。如果您使用外部数据库，则需要配置公开和获取指标。**
-</Warning>
+> [!警告]
+>
+> **以下部分仅适用于集群内数据库。如果您使用外部数据库，则需要配置公开和获取指标。**
 
 ### Postgres + Redis
 
@@ -76,12 +76,6 @@ config:
 
 ***
 
-<div>
-  <Callout icon="terminal-2">
-    [Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
-  </Callout>
+[Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
 
-  <Callout icon="edit">
-    [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/export-backend.mdx) 或 [file an issue](https://github.com/langchain-ai/docs/issues/new/choose)。
-  </Callout>
-</div>
+[Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/export-backend.mdx) 或 [file an issue](https://github.com/langchain-ai/docs/issues/new/choose)。

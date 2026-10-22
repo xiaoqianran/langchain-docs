@@ -4,22 +4,22 @@
 
 # 管理跟踪
 
-公开共享跟踪，并从 LangSmith 中的“详细信息”视图查看服务器日志。
+公开共享跟踪，并从 LangSmith 中的详细信息视图查看服务器日志。
 
 您可以将 [share a trace publicly](#share-a-trace) 和 [view the server logs](#view-server-logs) 与跟踪执行相关联。
 
 ## 分享痕迹
 
-<Warning>
-  **公开共享跟踪将使任何知道该链接的人都可以访问它。确保您没有共享敏感信息。**
-
-  如果您的 [self-hosted](/langsmith/self-hosted) LangSmith 部署位于 VPC 内，则只有在您的 VPC 内经过身份验证的成员才能访问公共链接。为了增强安全性，我们建议使用只有有权访问您的网络的用户才能访问的私有 URL 配置您的实例。
-</Warning>
+> [!警告]
+>
+> **公开共享跟踪将使任何知道该链接的人都可以访问它。确保您没有共享敏感信息。**
+>
+> 如果您的 [self-hosted](/langsmith/self-hosted) LangSmith 部署位于 VPC 内，则只有在您的 VPC 内经过身份验证的成员才能访问公共链接。为了增强安全性，我们建议使用只有有权访问您的网络的用户才能访问的私有 URL 配置您的实例。
 
 公开共享跟踪：
 
-1. 打开[UI](https://smith.langchain.com?utm_source=docs\&utm_medium=cta\&utm_campaign=langsmith-signup\&utm_content=langsmith-manage-trace) 中的任意迹线。
-2. 单击“详细信息”视图顶部的“更多<Icon icon="dots-vertical" />”菜单中的“**共享**”按钮。
+1. 打开[UI](https://smith.langchain.com?utm_source=docs\&utm_medium=cta\&utm_campaign=langsmith-signup\&utm_content=langsmith-manage-trace)中的任意迹线。
+2. 单击“详细信息”视图顶部的“更多”菜单中的“**共享**”按钮。
 3. 在出现的对话框中，复制公共链接。
 
 即使没有 LangSmith 帐户，任何有链接的人都可以访问共享跟踪。他们可以查看跟踪但不能编辑它。
@@ -29,9 +29,9 @@
 
 ## 查看服务器日志
 
-<Note>
-  查看服务器日志以进行跟踪仅适用于 [Cloud SaaS](/langsmith/cloud) 和 [fully self-hosted](/langsmith/self-hosted) 部署选项。
-</Note>
+> [!注意]
+>
+> 查看服务器日志以进行跟踪仅适用于 [Cloud SaaS](/langsmith/cloud) 和 [fully self-hosted](/langsmith/self-hosted) 部署选项。
 
 查看 LangSmith 中运行生成的跟踪时，您可以直接从“详细信息”视图访问关联的服务器日志。
 
@@ -53,7 +53,7 @@
     logger.info("Your log message");
     ```当您从“详细信息”视图导航时，**过滤器**框将自动预填充您刚刚查看的跟踪中的跟踪 ID，因此您可以快速过滤日志以仅查看与特定跟踪执行相关的日志。
 
-<img alt="Deployment server logs filters" />
+![Deployment server logs filters](https://mintcdn.com/langchain-5e9cc07a/4kN8yiLrZX_amfFn/langsmith/images/lgp-server-logs-filters.png?fit=max\&auto=format\&n=4kN8yiLrZX_amfFn\&q=85\&s=cb6f3c15ca3c8d462ee10c5fd190c73e)
 
 ## 删除痕迹
 
@@ -77,12 +77,6 @@
 
 ***
 
-<div>
-  <Callout icon="terminal-2">
-    [Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
-  </Callout>
+[Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
 
-  <Callout icon="edit">
-    [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/manage-trace.mdx) 或 [file an issue](https://github.com/langchain-ai/docs/issues/new/choose)。
-  </Callout>
-</div>
+[Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/manage-trace.mdx) 或 [file an issue](https://github.com/langchain-ai/docs/issues/new/choose)。

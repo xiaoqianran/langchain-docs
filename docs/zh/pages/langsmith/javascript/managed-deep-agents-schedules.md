@@ -8,9 +8,9 @@
 
 托管 Deep Agents 可以按 cron 计划运行代理。当您部署项目时，`mda deploy` 在部署上线后将每个计划配置为 LangSmith cron。
 
-<Note>
-  托管 Deep Agents 于 [LangSmith Cloud](/langsmith/cloud) **公开 [beta](/langsmith/release-stages)**。
-</Note>
+> [!注意]
+>
+> 托管 Deep Agents 于 [LangSmith Cloud](/langsmith/cloud) **公开 [beta](/langsmith/release-stages)**。
 
 ## 项目结构
 
@@ -59,7 +59,7 @@ export const schedule = defineSchedule({
 });
 ```
 
-`cron` 必须是标准的五字段 cron 表达式：分钟、小时、月份中的某一天、月份和星期几。如果省略 `timezone`，LangSmith crons 将使用 UTC。
+`cron` 必须是标准的五字段 cron 表达式：分钟、小时、月份中的某一天、月份和星期几。如果省略 `timezone`，则 LangSmith crons 使用 UTC。
 
 ## 选择线程行为默认情况下，调度使用临时线程。托管 Deep Agents 为每次运行创建一个新线程，并要求 LangSmith 在运行完成后删除该临时线程。
 
@@ -77,9 +77,9 @@ export const schedule = defineSchedule({
 
 在调度声明中使用该线程 ID。
 
-<Note>
-  以下示例需要[durable memory](/langsmith/javascript/managed-deep-agents-memory)。
-</Note>
+> [!注意]
+>
+> 以下示例需要[durable memory](/langsmith/javascript/managed-deep-agents-memory)。
 
 ```ts schedules/nightly-memory.ts theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 import { defineSchedule } from "managed-deepagents";
@@ -93,11 +93,11 @@ export const schedule = defineSchedule({
 
 ## 将结果发送到 Slack
 
-设置 `deliverTo` 以通过配置的 [Slack channel](/langsmith/javascript/managed-deep-agents-channels-slack) 发布最终响应。
+设置 `deliverTo` 通过配置的 [Slack channel](/langsmith/javascript/managed-deep-agents-channels-slack) 发布最终响应。
 
-使用 Slack 通道 ID，因为计划运行没有原始线程。<Note>
-  计划交付需要 `managed-deepagents` 0.4.0 或更高版本。
-</Note>
+使用 Slack 通道 ID，因为计划运行没有原始线程。> [!注意]
+>
+> 计划交付需要`managed-deepagents` 0.4.0 或更高版本。
 
 ```ts schedules/monday-greeting.ts theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 import { defineSchedule } from "managed-deepagents";
@@ -137,17 +137,17 @@ TypeScript 开发服务器不运行 cron 作业。 `mda dev` 在启动时列出�
 
 使用[⟦T22⟧](/langsmith/javascript/managed-deep-agents-cli#develop-locally)在本地测试项目，然后使用[⟦T23⟧](/langsmith/javascript/managed-deep-agents-deploy)进行部署。在LangSmith中打开部署跟踪以检查模型调用、工具调用、错误和延迟。当部署达到 `DEPLOYED` 时，`mda deploy` 会删除早期 `schedules/` 声明创建的 cron 作业，并为当前声明创建 cron 作业。删除本地计划文件并重新部署会删除相应的托管 cron。在运行时创建的计划不受影响。
 
-<Warning>
-  如果您使用 `--no-wait` 进行部署，CLI 会在部署达到 `DEPLOYED` 之前触发远程构建并退出，因此它不会在该调用期间协调计划。添加、更改或删除计划时，运行 `mda deploy`，而不运行 `--no-wait`。
-</Warning>
+> [!警告]
+>
+> 如果使用 `--no-wait` 进行部署，CLI 会在部署达到 `DEPLOYED` 之前触发远程构建并退出，因此它不会在该调用期间协调计划。添加、更改或删除计划时，运行 `mda deploy`，而不运行 `--no-wait`。
 
 ## 在运行时创建计划
 
-<Note>
-  运行时计划需要 `managed-deepagents` 0.9.0 或更高版本。
-</Note>
+> [!注意]
+>
+> 运行时计划需要 `managed-deepagents` 0.9.0 或更高版本。
 
-`schedules/` 中的声明在部署时已修复。 `runtime.schedules` 在代理运行时创建计划，因此代理可以设置重复性或一次性工作来响应对话。它在工具和[middleware](/langsmith/javascript/managed-deep-agents-middleware)接收的运行时上可用，并且它充当当前运行的调用者。每个计划都属于当前用户或代理。
+`schedules/` 中的声明在部署时已修复。 `runtime.schedules` 在代理运行时创建计划，因此代理可以设置重复性或一次性工作来响应对话。它在工具和 [middleware](/langsmith/javascript/managed-deep-agents-middleware) 接收的运行时上可用，并且它充当当前运行的调用者。每个计划都属于当前用户或代理。
 
 代理只能通过您编写的工具来访问此 API。公开代理需要的呼叫，并忽略不应该接通的呼叫。当工具在 [channel](/langsmith/javascript/managed-deep-agents-channels) 运行期间创建计划（例如 Slack 对话）时，计划将继承该通道。每次运行都会将其最终答案发回给它。新线程发布新的 Slack 消息，当前线程在现有 Slack 线程中回复。
 
@@ -215,43 +215,43 @@ export const followUpLater = tool(
 );
 ```
 
-一次性计划默认为当前线程，因此它的运行将继续创建它的对话并在同一 Slack 线程中进行回复。
+一次性计划默认为当前线程，因此它的运行会继续创建它的对话并在同一个 Slack 线程中进行回复。
 
 ### 创建选项
 
-<ParamField type="object">
-  `{ type: "user" }` 选择当前运行的经过身份验证的人员，并且计划以该人员身份运行。可选的 `id` 必须与该人匹配。 `{ type: "agent" }` 选择代理拥有的计划，这些计划作为代理的服务身份运行。
-</ParamField>
+**所有者** `object` *必填*
 
-<ParamField type="string">
-  用于循环计划的五字段 cron 表达式。请准确给出 `cron` 和 `at` 之一。
-</ParamField>
+`{ type: "user" }` 选择当前运行的经过身份验证的人员，并且计划以该人员身份运行。可选的 `id` 必须与该人匹配。 `{ type: "agent" }` 选择代理拥有的计划，这些计划作为代理的服务身份运行。
 
-<ParamField type="Date | string">
-  `Date`，或以 `Z` 或 UTC 偏移量结尾的 ISO 8601 时间戳。该计划运行一次。运行时将其四舍五入到下一整分钟。它必须是至少一分钟，最多 365 天的未来。
-</ParamField>
+**计划** `string`
 
-<ParamField type="string">
-  `cron` 的 IANA 时区，例如 `America/Los_Angeles`。不要用`at`通过。
-</ParamField>
+用于循环计划的五字段 cron 表达式。请准确给出 `cron` 和 `at` 之一。
 
-<ParamField type="string">
-  每次运行都会收到作为用户消息的提示。请准确给出 `prompt` 和 `input` 之一。
-</ParamField>
+**在** `Date | string`
 
-<ParamField type="object | object[]">
-  每次运行的结构化LangGraph输入。
-</ParamField><ParamField type="boolean">
-  `true` 在新线程上开始每次运行。 `false` 继续当前线程。默认为 `true` 与 `cron` 以及 `false` 与 `at`。
-</ParamField>
+`Date`，或以 `Z` 或 UTC 偏移量结尾的 ISO 8601 时间戳。该计划运行一次。运行时将其四舍五入到下一整分钟。它必须是至少一分钟、最多 365 天的未来。
 
-<ParamField type="boolean">
-  创建计划而不运行它。
-</ParamField>
+**时区** `string`（默认：UTC）
 
-<ParamField type="object">
-  JSON 元数据供您自己使用。以`mda_`开头的键被保留。
-</ParamField>
+`cron` 的 IANA 时区，例如 `America/Los_Angeles`。不要用`at`通过。
+
+**提示** `string`
+
+每次运行都会收到作为用户消息的提示。请准确给出 `prompt` 和 `input` 之一。
+
+**输入** `object | object[]`
+
+每次运行的结构化LangGraph输入。**新线程** `boolean`
+
+`true` 在新线程上开始每次运行。 `false` 继续当前线程。默认为 `true` 与 `cron` 以及 `false` 与 `at`。
+
+**暂停** `boolean`（默认值：false）
+
+创建计划而不运行它。
+
+**元数据** `object`
+
+JSON 元数据供您自己使用。以`mda_`开头的键被保留。
 
 ### 管理日程
 
@@ -270,16 +270,16 @@ await runtime.schedules!.delete(item.id, { owner });
 
 ### 时间表限制
 
-每个所有者的每个代理最多可以有 20 个运行时计划。暂停的计划计数。过期的一次性时间表和`schedules/`中的时间表不计算在内。超过限制的创建或更新失败，并显示 `Schedule limit reached`。要更改限制，请在部署环境中设置以下变量：
+每个所有者的每个代理最多可以有 20 个运行时计划。暂停的计划计数。过期的一次性时间表和`schedules/`中的时间表不计算在内。超过限制的创建或更新失败并显示 `Schedule limit reached`。要更改限制，请在部署环境中设置以下变量：
 
 |变量|限制 |
 | - | - |
 | `MDA_MAX_AGENT_SCHEDULES` |船期表归代理商所有|
 | `MDA_MAX_USER_SCHEDULES` |每个用户拥有的时间表 |
 
-<Note>
-  时间表限制需要`managed-deepagents>=0.9.3`。
-</Note>
+> [!注意]
+>
+> 时间表限制需要`managed-deepagents>=0.9.3`。
 
 ## 日程安排疑难解答
 
@@ -301,22 +301,14 @@ await runtime.schedules!.delete(item.id, { owner });
 
 ## 后续步骤
 
-<CardGroup>
-  <Card title="Deploy an agent" icon="upload" href="/langsmith/javascript/managed-deep-agents-deploy">
-    部署并协调计划更改。
-  </Card>
+> **[Deploy an agent](/langsmith/javascript/managed-deep-agents-deploy)**
+>
+> 部署并协调日程变更。
 
-  <Card title="CLI reference" icon="terminal" href="/langsmith/javascript/managed-deep-agents-cli">
-    查找 `mda deploy` 标志和故障排除。
-  </Card>
-</CardGroup>
+> **[CLI reference](/langsmith/javascript/managed-deep-agents-cli)**
+>
+> 查找 `mda deploy` 标志和故障排除。
 
-***<div>
-  <Callout icon="terminal-2">
-    [Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
-  </Callout>
+***
 
-  <Callout icon="edit">
-    [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/managed-deep-agents-schedules.mdx) 或 [file an issue](https://github.com/langchain-ai/docs/issues/new/choose)。
-  </Callout>
-</div>
+[Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。[Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/managed-deep-agents-schedules.mdx) 或 [file an issue](https://github.com/langchain-ai/docs/issues/new/choose)。

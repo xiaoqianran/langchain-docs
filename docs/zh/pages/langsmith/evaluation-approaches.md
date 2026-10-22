@@ -8,19 +8,19 @@
 
 ## 代理
 
-[LLM-powered autonomous agents](https://lilianweng.github.io/posts/2023-06-23-agent/) 结合了三个组件（1）工具调用，（2）内存，以及（3）规划。代理[use tool calling](https://docs.langchain.com/oss/python/langchain/tools)具有计划（例如，通常通过提示）和记忆（例如，通常是短期消息历史记录）来生成响应。 [Tool calling](https://docs.langchain.com/oss/python/langchain/tools) 允许模型通过生成两件事来响应给定的提示：(1) 要调用的工具和 (2) 所需的输入参数。
+[LLM-powered autonomous agents](https://lilianweng.github.io/posts/2023-06-23-agent/) 结合了三个组件（1）工具调用、（2）内存和（3）规划。代理[use tool calling](https://docs.langchain.com/oss/python/langchain/tools)具有计划（例如，通常通过提示）和记忆（例如，通常是短期消息历史记录）来生成响应。 [Tool calling](https://docs.langchain.com/oss/python/langchain/tools) 允许模型通过生成两件事来响应给定的提示：(1) 要调用的工具和 (2) 所需的输入参数。
 
-<img alt="Tool use" />
+![Tool use](https://mintcdn.com/langchain-5e9cc07a/ImHGLQW1HnQYwnJV/langsmith/images/tool-use.png?fit=max\&auto=format\&n=ImHGLQW1HnQYwnJV\&q=85\&s=a1c10f940f40ad89c90de8fae3607c1f)
 
-下面是[LangGraph](https://langchain-ai.github.io/langgraph/tutorials/introduction/)中的工具调用代理。 The `assistant node` is an LLM that determines whether to invoke a tool based upon the input. `tool condition` 查看`assistant node` 是否选择了工具，如果是，则路由至 `tool node`。 `tool node` 执行该工具并将输出作为工具消息返回给`assistant node`。只要`assistant node`选择了一个工具，这个循环就会继续。如果未选择任何工具，则代理将直接返回 LLM 响应。
+下面是[LangGraph](https://langchain-ai.github.io/langgraph/tutorials/introduction/)中的工具调用代理。 `assistant node` 是一个 LLM，它根据输入确定是否调用工具。 `tool condition` 查看`assistant node` 是否选择了工具，如果是，则路由至 `tool node`。 `tool node` 执行该工具并将输出作为工具消息返回给`assistant node`。只要`assistant node`选择了一个工具，这个循环就会继续。如果未选择任何工具，则代理将直接返回 LLM 响应。
 
-<img alt="Agent" />
+![Agent](https://mintcdn.com/langchain-5e9cc07a/4kN8yiLrZX_amfFn/langsmith/images/langgraph-agent.png?fit=max\&auto=format\&n=4kN8yiLrZX_amfFn\&q=85\&s=37f3c09958c1e2543f633c59cc89df36)
 
 这设置了用户经常感兴趣的三种一般类型的代理评估：* `Final Response`：评估代理的最终响应。
 * `Single step`：单独评估任何代理步骤（例如，它是否选择了适当的工具）。
 * `Trajectory`：评估智能体是否采取了预期的路径（例如，工具调用）来得出最终答案。
 
-<img alt="Agent-eval" />
+![Agent-eval](https://mintcdn.com/langchain-5e9cc07a/E8FdemkcQxROovD9/langsmith/images/agent-eval.png?fit=max\&auto=format\&n=E8FdemkcQxROovD9\&q=85\&s=5fe3c96402623ed8a61118f22a6426b6)
 
 以下各节介绍了这些是什么、每个组件所需的组件（输入、输出、评估器）以及何时应考虑这一点。常见用例通常使用多种或所有这些类型的评估；它们并不相互排斥。
 
@@ -54,7 +54,7 @@
 
 这里的评估器是对所采取的步骤的某种函数。评估“精确”轨迹可以使用单个二进制分数来确认序列中每个工具名称的精确匹配。这很简单，但有一些缺陷。有时可能有多个正确路径。该评估也没有捕捉到偏离一步的轨迹与完全错误的轨迹之间的区别。
 
-为了解决这些缺陷，评估指标可以集中于所采取的“不正确”步骤的数量，这可以更好地解释接近的轨迹与明显偏离的轨迹。评估指标还可以关注是否以任何顺序调用所有预期工具。然而，这些方法都没有评估工具的输入；他们只关注所选的工具。为了解决这个问题，另一种评估技术是将完整代理的轨迹（以及参考轨迹）作为一组消息（例如，所有 LLM 响应和工具调用）传递给作为法官的 LLM。这可以评估代理的完整行为，但它是编译时最具挑战性的参考。这就是使用像 LangGraph 这样的框架可以提供帮助的地方。另一个缺点是评估指标可能有点难以提出。
+为了解决这些缺陷，评估指标可以集中于所采取的“不正确”步骤的数量，这可以更好地解释接近的轨迹与明显偏离的轨迹。评估指标还可以关注是否以任何顺序调用所有预期工具。然而，这些方法都没有评估工具的输入；他们只关注所选的工具。为了解决这个问题，另一种评估技术是将完整代理的轨迹（以及参考轨迹）作为一组消息（例如，所有 LLM 响应和工具调用）传递给作为法官的 LLM。这可以评估智能体的完整行为，但它是编译时最具挑战性的参考。这就是使用像 LangGraph 这样的框架可以提供帮助的地方。另一个缺点是评估指标可能有点难以提出。
 
 ## 评估 RAG 应用程序
 
@@ -69,7 +69,7 @@
 
 ### 选择评估者法学硕士作为法官评估员非常适合 RAG，因为他们可以对文本之间的事实准确性和一致性进行评分。
 
-<img alt="rag-types.png" />
+![rag-types.png](https://mintcdn.com/langchain-5e9cc07a/Fr2lazPB4XVeEA7l/langsmith/images/rag-types.png?fit=max\&auto=format\&n=Fr2lazPB4XVeEA7l\&q=85\&s=1252b1369be04ddb4c480af277443ac2)
 
 您可以使用两种评估器：
 
@@ -112,18 +112,12 @@
 
 |使用案例|详情 |需要参考输出 | LLM作为法官？ |成对相关 |
 | - | - | - | - | - |
-|准确度|标准清晰度 |是的 |没有 |没有 |
-|精密|标准清晰度 |是的 |没有 |没有 |
-|回忆|标准清晰度 |是的 |没有 |没有 |
+|准确度|标准清晰度|是的 |没有 |没有 |
+|精密|标准清晰度|是的 |没有 |没有 |
+|回忆|标准清晰度|是的 |没有 |没有 |
 
 ***
 
-<div>
-  <Callout icon="terminal-2">
-    [Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
-  </Callout>
+[Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
 
-  <Callout icon="edit">
-    [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/evaluation-approaches.mdx) 或 [file an issue](https://github.com/langchain-ai/docs/issues/new/choose)。
-  </Callout>
-</div>
+[Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/evaluation-approaches.mdx) 或 [file an issue](https://github.com/langchain-ai/docs/issues/new/choose)。

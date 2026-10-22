@@ -8,12 +8,12 @@
 
 过滤将 [trace container](/langsmith/observability-concepts#trace-containers) 中的 [runs](/langsmith/observability-concepts#runs) 缩小到需要注意的范围，例如出错的对话、缓慢的工具调用或以低反馈分数运行的对话。在搜索栏中编写查询，然后选择与查询匹配的 [trace](/langsmith/observability-concepts#traces) 或 [thread](/langsmith/observability-concepts#threads) 层次结构中运行的查询。
 
-<Note>
-  追踪项目有两种过滤体验。检查项目的顶部，看看哪一个适合您：
-
-  * **左侧带有范围选择器的单个搜索栏**：请参阅[Filter traces](/langsmith/filter-traces)。
-  * **构建滤波器芯片的添加滤波器按钮**：参考[Filter traces (ClickHouse)](/langsmith/filter-traces-in-application)。
-</Note>
+> [!注意]
+>
+> 追踪项目有两种过滤体验。检查项目的顶部，看看哪一个适合您：
+>
+> * **左侧带有范围选择器的单个搜索栏**：请参阅[Filter traces](/langsmith/filter-traces)。
+> * **构建滤波器芯片的添加滤波器按钮**：参考[Filter traces (ClickHouse)](/langsmith/filter-traces-in-application)。
 
 此页面涵盖：
 
@@ -26,46 +26,42 @@
 * [Filtering the runs inside a trace](#filter-the-runs-in-a-trace)
 * [Searching with AI](#search-with-ai) 采用自然语言而不是字段值（测试版）
 * [What full-text search indexes](#full-text-search-indexing)
-* [Troubleshooting a query](#troubleshoot-a-query)
+* [Troubleshooting a query](#troubleshoot-a-query)要以编程方式查询运行，请参阅[Query traces using the SDK](/langsmith/export-traces)。 SDK 和 REST API 使用单独的结构化查询语言，记录在 [Trace query syntax](/langsmith/trace-query-syntax) 中。要将搜索栏查询翻译成该语言，请参阅 [UI-to-API operator map](/langsmith/trace-query-syntax#ui-to-api-operator-map)。
 
-要以编程方式查询运行，请参阅[Query traces using the SDK](/langsmith/export-traces)。 SDK 和 REST API 使用单独的结构化查询语言，记录在 [Trace query syntax](/langsmith/trace-query-syntax) 中。
+## 构建查询
 
-## 构建查询查询由子句组成，每个子句将一个字段与一个运算符和一个值配对：
+查询由子句组成，每个子句将一个字段与一个运算符和一个值配对：
 
 ```text theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 status:error
 ```
 
-<img alt="The search bar of a tracing project, with the scope selector reading 'in root run' and a status:error clause. The suggestion list below it is open, with AI search, marked Beta and described as Search in plain language, highlighted at the top, followed by fields grouped under Run attributes, Content, and Identity. Navigate, Select, and Docs hints run along the bottom of the list" />
-
-<img alt="The search bar of a tracing project, with the scope selector reading 'in root run' and a status:error clause. The suggestion list below it is open, with AI search, marked Beta and described as Search in plain language, highlighted at the top, followed by fields grouped under Run attributes, Content, and Identity. Navigate, Select, and Docs hints run along the bottom of the list" />
+![The search bar of a tracing project, with the scope selector reading 'in root run' and a status:error clause. The suggestion list below it is open, with AI search, marked Beta and described as Search in plain language, highlighted at the top, followed by fields grouped under Run attributes, Content, and Identity. Navigate, Select, and Docs hints run along the bottom of the list](https://mintcdn.com/langchain-5e9cc07a/MoWOdSpeRhP-SZId/langsmith/images/filter-search-bar-light.png?fit=max\&auto=format\&n=MoWOdSpeRhP-SZId\&q=85\&s=bf265b28335ab17802f0a5d1a25d8e0a)
 
 要构建查询，请单击搜索栏并开始输入：
 
-<Steps>
-  <Step title="Choose a field">
-    输入字段名称或从建议列表中选择一个。建议按类别分组，**最近**列出之前运行的查询。使用箭头键在列表中移动，然后按 `Enter` 进行选择。
+**1.选择一个字段**
 
-    如果您的组织可以使用 AI 搜索，**AI 搜索** 将显示在建议列表的顶部。参见[Search with AI](#search-with-ai)。
-  </Step>
+输入字段名称或从建议列表中选择一个。建议按类别分组，**最近**列出之前运行的查询。使用箭头键在列表中移动，然后按 `Enter` 进行选择。
 
-  <Step title="Choose an operator">
-    输入 `:` 查看该字段支持的运算符，每个运算符都有一个示例。
-  </Step>
+如果您的组织可以使用 AI 搜索，**AI 搜索** 将显示在建议列表的顶部。请参阅[Search with AI](#search-with-ai)。
 
-  <Step title="Enter a value">
-    对于值LangSmith索引的字段，例如运行名称和标签，建议列表提供项目中最常见的值。
-  </Step>
-</Steps>
+**2.选择运营商**
 
-每个完成的条款都成为酒吧中的一个筹码。单击芯片进行编辑，或单击其删除图标将其删除。继续在一个芯片后输入以添加另一个子句。
+输入 `:` 查看该字段支持的运算符，每个运算符都有一个示例。
 
-搜索栏外部的两个控件也会影响结果：* **时间范围控制**与查询一起应用。结果必须在时间范围内并且与查询匹配。
+**3.输入一个值**
+
+对于值LangSmith索引的字段，例如运行名称和标签，建议列表提供项目中最常见的值。
+
+每个完成的条款都成为酒吧中的一个筹码。单击芯片以对其进行编辑，或单击其删除图标以将其删除。继续在一个芯片后输入以添加另一个子句。搜索栏外部的两个控件也会影响结果：
+
+* **时间范围控制**与查询一起应用。结果必须在时间范围内并且与查询匹配。
 * **线程、跟踪和运行选择** 设置表中每一行代表的内容，并且还确定查询可以使用哪个 [scopes](#choose-what-a-filter-matches)。
 
-<Note>
-  搜索栏使用本页描述的语法，这不是 SDK 和 REST API 接受的结构化查询语言。有关该语言，请参阅[Trace query syntax](/langsmith/trace-query-syntax)。
-</Note>
+> [!注意]
+>
+> 搜索栏使用本页描述的语法，这不是 SDK 和 REST API 接受的结构化查询语言。有关该语言，请参阅[Trace query syntax](/langsmith/trace-query-syntax)。
 
 ## 选择过滤器匹配的内容
 
@@ -80,21 +76,19 @@ status:error
 
 范围下拉列表根据示例跟踪预览每个选项，因此您可以在选择之前查看它涵盖哪些运行：
 
-<img alt="The scope dropdown open on the Threads selection, offering Any run, Root run, and Thread with a one-line description of each, then AI search, marked Beta and described as Search in plain language. Beside the options is a preview of a sample thread showing three agent turns with the LLM and tool runs nested inside the second turn" />
+![The scope dropdown open on the Threads selection, offering Any run, Root run, and Thread with a one-line description of each, then AI search, marked Beta and described as Search in plain language. Beside the options is a preview of a sample thread showing three agent turns with the LLM and tool runs nested inside the second turn](https://mintcdn.com/langchain-5e9cc07a/MoWOdSpeRhP-SZId/langsmith/images/filter-scope-selector-light.png?fit=max\&auto=format\&n=MoWOdSpeRhP-SZId\&q=85\&s=90263b9d15737238bb49ef8cf986547f)提供的范围以及默认选择的范围取决于表选择：
 
-<img alt="The scope dropdown open on the Threads selection, offering Any run, Root run, and Thread with a one-line description of each, then AI search, marked Beta and described as Search in plain language. Beside the options is a preview of a sample thread showing three agent turns with the LLM and tool runs nested inside the second turn" />提供的范围以及默认选择的范围取决于表选择：
-
-|餐桌选择|默认范围|可用范围 |
+|餐桌选择|默认范围 |可用范围 |
 | - | - | - |
 | **话题** |任意运行 |线程、根运行、任意运行 |
 | **痕迹** |根运行|根运行，任意运行 |
-| **运行** |单跑|单次运行、根运行、任意运行|
+| **运行** |单跑 |单次运行、根运行、任意运行 |
 
 如果您的组织可以使用 AI 搜索，范围选择器还提供 **AI 搜索**，它通过简单语言描述而不是查询语法来匹配结果。请参阅[Search with AI](#search-with-ai)。
 
 ### 合并范围
 
-要一次过滤多个范围，请单击最后一行末尾的 <Icon icon="plus" /> **添加过滤范围** 图标。这将添加一行及其自己的范围选择器和搜索栏，标记为 **AND**。行与 `AND` 组合，因此线程、跟踪或运行必须满足表中出现的每一行。每个范围最多包含一行，因此 **Threads** 和 **Runs** 选择接受三个过滤器行，而 **Traces** 接受两个过滤器行。如果您的组织可以使用 AI 搜索，您还可以添加一个 AI 搜索行，该行以相同的方式与筛选器行组合。请参阅[Combine AI search with filters](#combine-ai-search-with-filters)。一旦使用每个可用范围（包括 AI 搜索），就会禁用“添加过滤器范围”。要删除行，请单击其旁边的“**删除过滤器**”。
+要一次过滤多个范围，请单击最后一行末尾的 **添加过滤范围** 图标。这将添加一行及其自己的范围选择器和搜索栏，标记为 **AND**。行与 `AND` 组合，因此线程、跟踪或运行必须满足表中出现的每一行。每个范围最多包含一行，因此 **Threads** 和 **Runs** 选择接受三个过滤器行，而 **Traces** 接受两个过滤器行。如果您的组织可以使用 AI 搜索，您还可以添加一个 AI 搜索行，该行以相同的方式与筛选器行组合。请参阅[Combine AI search with filters](#combine-ai-search-with-filters)。一旦使用每个可用范围（包括 AI 搜索），就会禁用“添加过滤器范围”。要删除行，请单击其旁边的“**删除过滤器**”。
 
 例如，在 **Threads** 视图中，查找长度超过 20 圈且包含失败的工具调用的线程：
 
@@ -103,9 +97,7 @@ status:error
 |主题 | `turn_count:>20` |
 |任意运行 | `run_type:tool AND status:error` |
 
-<img alt="Two filter rows in the search bar. The first is scoped to 'in thread' with a turn_count greater than 20 clause. The second, labeled AND, is scoped to 'in any run' with run_type tool AND status error, and ends with the Add AI search and Add filter scope icons. Below the bar, the Threads selection is active" />
-
-<img alt="Two filter rows in the search bar. The first is scoped to 'in thread' with a turn_count greater than 20 clause. The second, labeled AND, is scoped to 'in any run' with run_type tool AND status error, and ends with the Add AI search and Add filter scope icons. Below the bar, the Threads selection is active" />
+![Two filter rows in the search bar. The first is scoped to 'in thread' with a turn\_count greater than 20 clause. The second, labeled AND, is scoped to 'in any run' with run\_type tool AND status error, and ends with the Add AI search and Add filter scope icons. Below the bar, the Threads selection is active](https://mintcdn.com/langchain-5e9cc07a/MoWOdSpeRhP-SZId/langsmith/images/filter-multiple-scopes-light.png?fit=max\&auto=format\&n=MoWOdSpeRhP-SZId\&q=85\&s=9ba96eba5232495b7233fed5fbca4b55)
 
 ### 表选择不能使用的范围
 
@@ -120,7 +112,7 @@ status:error
 |是 | `field:value` |值的精确匹配。 |
 |不是| `-field:value` |除了完全匹配之外的一切。 |
 |比赛| `field:~value` |该领域的全文搜索。引用该值以搜索短语。 |
-|不匹配| `-field:~value` |全文搜索不匹配的所有内容。 |
+|不匹配 | `-field:~value` |全文搜索不匹配的所有内容。 |
 |通配符| `field:value*` |一种模式，其中 `*` 代表任意字符序列。 |
 |存在 | `field:*` |记录设置字段的位置。 |
 |不存在 | `-field:*` |记录未设置该字段的情况。 |
@@ -160,7 +152,7 @@ tags:"env:prod"
 
 在运行范围中，包含空格的不带引号的值分为两个子句，因此 `name:docs agent` 匹配名称为 `docs` 且索引内容包含 `agent` 的运行。
 
-### 不命名字段的搜索在 **单次运行**、**根运行** 和 **任何运行** 范围中，一个裸术语搜索每个 [indexed field](#full-text-search-indexing)：
+### 不命名字段的搜索在 **单次运行**、**根运行** 和 **任何运行** 范围中，裸术语搜索每个 [indexed field](#full-text-search-indexing)：
 
 ```text theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 "capital of France"
@@ -178,7 +170,7 @@ tags:"env:prod"
 
 **运行属性**
 
-|领域 |描述 |
+|领域|描述 |
 | - | - |
 | `name` |运行名称。支持通配符。 |
 | `status` |运行状态：`pending`、`success`、`error` 或 `interrupted`。 |
@@ -187,7 +179,7 @@ tags:"env:prod"
 
 **内容**
 
-|领域 |描述 |
+|领域|描述 |
 | - | - |
 | `input` |运行输入。使用 `~` 搜索文本，或使用 `input.<key>` 匹配 JSON 键。 |
 | `output` |运行输出。使用 `~` 搜索文本，或使用 `output.<key>` 匹配 JSON 键。 |
@@ -195,14 +187,14 @@ tags:"env:prod"
 | `error` |错误文本。使用`~`搜索文本。 |
 | `attachments` |附件名称。 |
 
-**身份**|领域 |描述 |
+**身份**|领域|描述 |
 | - | - |
 | `id`、`trace_id`、`thread_id`、`parent_run_id` |按 ID 匹配特定运行、跟踪、线程或父运行。 |
-| `ls_user_id` |运行归属于 LangSmith 用户。 |
+| `ls_user_id` |运行所属的 LangSmith 用户。 |
 
 **性能**
 
-|领域 |描述 |
+|领域|描述 |
 | - | - |
 | `latency` |运行持续时间（以秒为单位）。 |
 | `first_token_time` |当第一个代币产生时。 |
@@ -213,7 +205,7 @@ tags:"env:prod"
 
 **反馈**
 
-|领域 |描述 |
+|领域|描述 |
 | - | - |
 | `feedback` |跑步反馈。请参阅[Filter on feedback](#filter-on-feedback)。 |
 
@@ -221,7 +213,7 @@ tags:"env:prod"
 
 ### 线程字段
 
-**Thread** 范围对整个线程的属性进行过滤，因此它支持一组不同的字段。建议列表标记组**线程属性**。|领域 |描述 |
+**Thread** 范围对整个线程的属性进行过滤，因此它支持一组不同的字段。建议列表标记组**线程属性**。|领域|描述 |
 | - | - |
 | `thread_id` |线程 ID。 |
 | `turn_count` |旋入螺纹。 |
@@ -233,9 +225,9 @@ tags:"env:prod"
 | `total_cost` |整个线程的成本。 |
 | `prompt_token_details`、`completion_token_details`、`prompt_cost_details`、`completion_cost_details` |整个线程的令牌和成本细分。 |
 
-<Note>
-  `name`、`status` 和 `input` 等运行字段在 **Thread** 范围中不可用。要按线程包含的运行的属性过滤线程，请在 **任何运行** 范围中添加第二个过滤器行。请参阅[Combine scopes](#combine-scopes)。
-</Note>
+> [!注意]
+>
+> `name`、`status` 和 `input` 等运行字段在 **Thread** 范围内不可用。要按线程包含的运行的属性过滤线程，请在 **任何运行** 范围中添加第二个过滤器行。请参阅[Combine scopes](#combine-scopes)。
 
 ### 匹配 JSON 键
 
@@ -317,9 +309,7 @@ total_cost:>0.5
 
 每个组标题显示其有多少值处于活动状态。使用 **反馈** 组中的搜索框查找反馈键。
 
-<img alt="The Shortcuts panel to the left of the runs table, with Status, Run Name, Run Type, and Tag groups. The error value is checked, the Status group header reads '1 active', and the search bar above holds the matching status:error clause" />
-
-<img alt="The Shortcuts panel to the left of the runs table, with Status, Run Name, Run Type, and Tag groups. The error value is checked, the Status group header reads '1 active', and the search bar above holds the matching status:error clause" />
+![The Shortcuts panel to the left of the runs table, with Status, Run Name, Run Type, and Tag groups. The error value is checked, the Status group header reads '1 active', and the search bar above holds the matching status:error clause](https://mintcdn.com/langchain-5e9cc07a/ehnk1iZnpoz5HhfY/langsmith/images/filter-shortcuts-panel-light.png?fit=max\&auto=format\&n=ehnk1iZnpoz5HhfY\&q=85\&s=30bd1a16e36e4b87c5c1cebdf41e9944)
 
 要为表格提供更多空间，请单击“**隐藏快捷方式**”，然后单击“**显示快捷方式**”以恢复面板。右侧的**统计**面板以同样的方式折叠，带有**隐藏统计信息**和**显示统计信息**。
 
@@ -333,7 +323,7 @@ total_cost:>0.5
 
 然后，该视图将显示在 **视图** 下拉列表中与 **默认视图** 一起。每个条目都会列出其过滤器使用的范围，一目了然地显示它是否适用于当前的表选择。
 
-要更新已保存的视图，请选择它，更改查询，然后单击“**保存视图**”。要重命名或删除视图，请在 **视图** 下拉列表中单击该视图旁边的 <Icon icon="dots-vertical" /> 图标。
+要更新已保存的视图，请选择它，更改查询，然后单击“**保存视图**”。要重命名或删除视图，请在 **视图** 下拉列表中单击该视图旁边的图标。
 
 要放弃未保存的更改并返回到所选视图，请单击 **重置**。
 
@@ -345,62 +335,60 @@ total_cost:>0.5
 
 在开放跟踪内进行过滤会突出显示匹配的运行，这就是您在大型跟踪中找到重要运行的方法。打开线程或跟踪以到达[Details view](/langsmith/view-traces#details-view)，然后使用运行列表上方的**过滤运行**。匹配的运行会在适当的位置突出显示，并且跟踪的其余部分在它们周围保持可见，因此匹配会保留解释它的上下文。在 **任何运行** 范围中应用的过滤器会自动延续，因此从表中打开线程或跟踪会突出显示与其匹配的运行。
 
-<img alt="The Details view of a thread. The Turns pane on the left holds a filter reading input contains list, and the runs matching it are highlighted within the surrounding trace tree, which stays fully visible. The selected run is shown on the right" />
-
-<img alt="The Details view of a thread. The Turns pane on the left holds a filter reading input contains list, and the runs matching it are highlighted within the surrounding trace tree, which stays fully visible. The selected run is shown on the right" />
+![The Details view of a thread. The Turns pane on the left holds a filter reading input contains list, and the runs matching it are highlighted within the surrounding trace tree, which stays fully visible. The selected run is shown on the right](https://mintcdn.com/langchain-5e9cc07a/ehnk1iZnpoz5HhfY/langsmith/images/filter-trace-highlighting-light.png?fit=max\&auto=format\&n=ehnk1iZnpoz5HhfY\&q=85\&s=1638cfd18a0072c77491bb83a9afef53)
 
 此搜索栏接受与项目页面上的 **单次运行** 范围相同的字段和语法。它没有范围选择器，因为它始终与开放跟踪中的各个运行相匹配。要删除过滤器，请单击过滤器框中的清除图标。
 
-应用过滤器时，运行列表上方<Icon icon="settings" />图标后面的**可见性**选项、**最相关**和**显示全部**将被禁用。
-
-<div />
+应用过滤器时，运行列表上方图标后面的**可见性**选项、**最相关**和**显示全部**将被禁用。
 
 ## 使用人工智能搜索
 
-人工智能搜索通过对话中发生的情况（以自然语言描述）来查找线索、痕迹和运行。它回答了[query syntax](#query-syntax)无法表达的问题，因为它们取决于消息的含义而不是字段值。例如：* 跟踪代理未完成任务的位置。
+人工智能搜索通过对话中发生的情况（以自然语言描述）来查找线索、痕迹和运行。它回答了[query syntax](#query-syntax)无法表达的问题，因为它们取决于消息的含义而不是字段值。例如：
+
+* 跟踪代理未完成任务的位置。
 * 跟踪用户似乎感到沮丧的地方。
 * 跟踪代理引用有关其实现的内部详细信息的位置。
-* 关于特定主题的跟踪。
-
-<Note>
-  AI 搜索在 [beta](/langsmith/release-stages) 中提供，在 GCP 美国、欧盟和亚太地区的 [LangSmith Cloud](/langsmith/cloud) 上可用。一旦组织管理员启用它，它就可以在**线程**、**跟踪**和**运行**选项中工作。请参阅[Enable AI search](#enable-ai-search)。
-</Note>
+* 关于特定主题的跟踪。> [!注意]
+>
+> 在 GCP 美国、欧盟和亚太地区，AI 搜索可在 [beta](/langsmith/release-stages) 中使用，并可在 [LangSmith Cloud](/langsmith/cloud) 中使用。一旦组织管理员启用它，它就可以在**线程**、**跟踪**和**运行**选项中工作。参见[Enable AI search](#enable-ai-search)。
 
 使用 AI 进行搜索：
 
 1. 通过以下方式之一添加 AI 搜索行：
 
-   * 单击筛选器行中的<Icon icon="sparkles" /> **添加 AI 搜索** 图标。
+   * 单击筛选器行中的 **添加 AI 搜索** 图标。
    * 选择搜索栏建议列表顶部的 **AI 搜索**。
    * 打开[scope selector](#choose-what-a-filter-matches)，选择**人工智能搜索**。
 
    如果过滤器行为空，AI 搜索行将替换它。否则，LangSmith 在其下方添加 AI 搜索行。
 2. 用通俗易懂的语言描述您想要的结果。虽然该字段为空，但其下方的提示提供了示例，例如 `customer is frustrated`。选择示例即可填充字段而无需搜索，因此您可以先对其进行编辑。
-3. 按`Enter`，或点击<Icon icon="arrow-up" /> **搜索**按钮。
+3. 按`Enter`，或点击**搜索**按钮。
 
-输入新的描述不会清除表格，因此当前结果保持可见，直到您再次搜索。AI 搜索结果包括“置信度”列，以百分比形式显示每个线程、跟踪或运行与描述的匹配程度。没有分数的结果显示破折号。
+输入新的描述不会清除表格，因此当前结果保持可见，直到您再次搜索。
 
-### 查看结果匹配的原因
+AI 搜索结果包括 **置信度** 列，以百分比形式显示每个线程、跟踪或运行与描述的匹配程度。没有分数的结果显示破折号。
 
-当您从 AI 搜索结果中打开线程、跟踪或运行时，LangSmith 会在[Trajectory view](/langsmith/view-traces#trajectory-view) 中与描述匹配的消息处打开它，以便您可以了解其匹配的原因。线程在第一个匹配的跟踪处打开。查看比赛需要查看运行输入和输出的权限。
+### 查看结果匹配的原因当您从 AI 搜索结果中打开线程、跟踪或运行时，LangSmith 会在[Trajectory view](/langsmith/view-traces#trajectory-view) 中与描述匹配的消息中打开它，以便您可以了解其匹配的原因。线程在第一个匹配的跟踪处打开。查看比赛需要查看运行输入和输出的权限。
 
 视图顶部的工具栏显示描述、结果的匹配置信度和 **M 的证据 N**。 LangSmith 突出显示每条匹配的消息并将其标记为 **M 的证据 N**。该计数仅包括 LangSmith 可以在对话中找到的匹配项。无法找到的匹配项，例如轨迹视图未显示的消息或对话中重复的文本，不会显示。
 
-使用工具栏中的向上和向下箭头在比赛之间移动，使用 <Icon icon="x" /> 图标离开证据模式。
+使用工具栏中的向上和向下箭头在匹配项之间移动，并使用 图标离开证据模式。
 
-### 将人工智能搜索与过滤器相结合AI 搜索行使用 `AND` 与其他过滤器行组合，因此结果必须与描述和每个 [filter row](#combine-scopes) 匹配。搜索栏一次容纳一个 AI 搜索行。描述最多可达 2,000 字节。
+### 将人工智能搜索与过滤器相结合
 
-当 AI 搜索行位于搜索栏中时，对其他过滤器行、时间范围和表选择的更改会在您搜索时一起应用，而不是在编辑时应用。要返回到自动应用的过滤器，请单击该行上的 **删除 AI 搜索**。将 AI 搜索行更改为另一个范围会清除其描述，因为描述不是过滤器语法。
+AI 搜索行使用 `AND` 与其他过滤器行组合，因此结果必须与描述和每个 [filter row](#combine-scopes) 匹配。搜索栏一次容纳一个 AI 搜索行。描述最多可达 2,000 字节。当 AI 搜索行位于搜索栏中时，对其他过滤器行、时间范围和表选择的更改会在您搜索时一起应用，而不是在编辑时应用。要返回到自动应用的过滤器，请单击该行上的 **删除 AI 搜索**。将 AI 搜索行更改为另一个范围会清除其描述，因为描述不是过滤器语法。
 
-### 人工智能搜索限制* **保存的视图**：包含AI搜索的过滤器无法保存为[view](#save-a-filter)。删除 AI 搜索行以保存剩余的筛选器。选择已保存的视图会删除 AI 搜索行。
+### 人工智能搜索限制
+
+* **保存的视图**：包含AI搜索的过滤器无法保存为[view](#save-a-filter)。删除 AI 搜索行以保存剩余的筛选器。选择已保存的视图会删除 AI 搜索行。
 * **链接**：AI 搜索描述不存储在页面 URL 中，因此复制的链接不包含它。
 * **最近**：包含 AI 搜索的过滤器不会出现在搜索栏建议列表中的 **最近** 下。
 * **统计**： **统计** 面板显示 **不可用于 AI 搜索的统计**，而 **快捷方式** 面板隐藏值计数。要删除 AI 搜索行并恢复统计信息，请单击 **统计** 面板中的 **清除 AI 过滤器**。
 * **速率限制**：每个工作区的 AI 搜索请求速率受到限制。
 
-### AI 搜索匹配什么
+### AI 搜索匹配什么AI 搜索在 [trajectory](/langsmith/observability-concepts#trajectories) 上运行：LangSmith 根据跟踪构建的人类、AI 和工具消息的有序列表。它将您的描述与每个轨迹进行匹配，然后返回关联轨迹匹配的线程、跟踪或运行。
 
-人工智能搜索在[trajectory](/langsmith/observability-concepts#trajectories)上运行：LangSmith根据跟踪构建的人类、人工智能和工具消息的有序列表。它将您的描述与每个轨迹进行匹配，然后返回关联轨迹匹配的线程、跟踪或运行。由于 AI 搜索仅读取轨迹，因此它无法匹配轨迹不包含的任何内容，例如运行状态、运行名称、元数据、标签或跟踪结构。要过滤这些，[write a query in the search bar](#build-a-query)，例如`status:error`或`name:docs_agent`，而不是用简单的语言描述它们。
+由于 AI 搜索仅读取轨迹，因此它无法匹配轨迹不包含的任何内容，例如运行状态、运行名称、元数据、标签或跟踪结构。要过滤这些，[write a query in the search bar](#build-a-query)，例如`status:error`或`name:docs_agent`，而不是用简单的语言描述它们。
 
 人工智能搜索读取主要代理的对话。它不读取子代理、中间件或压缩消息的内容，因此它无法将描述与它们内部发生的情况进行匹配。
 
@@ -408,11 +396,11 @@ total_cost:>0.5
 
 ### 启用人工智能搜索
 
-在组织管理员启用人工智能搜索之前，人工智能搜索将处于关闭状态。它在 LangChain 托管推理上运行，因此不需要模型提供程序 API 密钥。启用它适用于组织的每个成员。
+在组织管理员启用人工智能搜索之前，人工智能搜索将处于关闭状态。它在 LangChain 托管推理上运行，因此不需要模型提供程序 API 密钥。启用它适用于组织的每个成员。启用 AI 搜索确认您有权允许将组织的跟踪数据传输到美国并在美国进行处理（包括通过[LangChain's subprocessors](https://trust.langchain.com/subprocessors)），并且您了解托管和数据驻留的影响。
 
-启用 AI 搜索确认您有权允许将组织的跟踪数据传输到美国并在美国进行处理（包括通过[LangChain's subprocessors](https://trust.langchain.com/subprocessors)），并且您了解托管和数据驻留的影响。<Warning>
-  请勿使用 AI 搜索受保护的健康信息 (PHI)。目前，您的组织与 LangChain 签署的任何业务伙伴协议 (BAA) 均不涵盖人工智能搜索。
-</Warning>
+> [!警告]
+>
+> 请勿使用 AI 搜索受保护的健康信息 (PHI)。目前，您的组织与 LangChain 签署的任何业务伙伴协议 (BAA) 均不涵盖人工智能搜索。
 
 从组织设置启用 AI 搜索需要组织管理员权限。要启用它：
 
@@ -435,7 +423,7 @@ total_cost:>0.5
 * **令牌长度**：搜索令牌的长度为 2 到 44 个 ASCII 文本字符。超出该范围的字符串不会被索引，并且非 ASCII 文本是按其占用的空间而不是字符数来衡量的。
 * **排除的内容**：URL、图像数据 URL、纯数字标记以及常见停用词（例如“the”和“of”）不会被索引。
 
-这些限制仅管理搜索索引。运行数据被完整存储，因此索引遗漏的值在跟踪本身中仍然可见。元数据和关键路径单独索引。键路径过滤不受全文令牌限制的约束，并且 LangSmith 目前未发布单独的限制。诸如 `input.<key>` 或 `metadata.<key>` 之类的过滤器会在特定路径中查找值，因此它仍然可以匹配全文索引省略的值。参见[Match a JSON key](#match-a-json-key)。
+这些限制仅管理搜索索引。运行数据被完整存储，因此索引遗漏的值在跟踪本身中仍然可见。元数据和关键路径单独索引。键路径过滤不受全文令牌限制的约束，并且 LangSmith 目前未发布单独的限制。诸如 `input.<key>` 或 `metadata.<key>` 之类的过滤器会在特定路径中查找值，因此它仍然可以匹配全文索引省略的值。请参阅[Match a JSON key](#match-a-json-key)。
 
 ## 查询故障排除
 
@@ -444,7 +432,7 @@ total_cost:>0.5
 **查询有效，但没有匹配任何内容。** 按顺序完成这些操作：1. **检查时间范围。** 它与查询一起应用，因此如果匹配运行落在窗口之外，正确的过滤器仍然不会返回任何内容。
 2. **检查范围。** 针对错误的层次结构级别测试的子句是最常见的原因。在 **Root run** 范围内过滤 `run_type:llm` 上的跟踪仅匹配其条目运行是 LLM 调用的跟踪，这很少是您想要的。将该行切换到 **任意运行**。
 3. **检查“未应用”标志。** 当前表选择不支持的范围内的行将被保留，但不会应用。
-4. **检查该值是否已编入索引。** 全文搜索会跳过 URL、停用词、纯数字标记以及非常短或非常长的标记。而是使用 [JSON key](#match-a-json-key) 进行过滤，它不受这些限制的约束。
+4. **检查该值是否已编入索引。** 全文搜索会跳过 URL、停用词、纯数字标记以及非常短或非常长的标记。相反，过滤[JSON key](#match-a-json-key)，不受这些限制。
 
 ## 另请参阅
 
@@ -456,12 +444,6 @@ total_cost:>0.5
 
 ***
 
-<div>
-  <Callout icon="terminal-2">
-    [Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
-  </Callout>
+[Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
 
-  <Callout icon="edit">
-    [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/filter-traces.mdx) 或 [file an issue](https://github.com/langchain-ai/docs/issues/new/choose)。
-  </Callout>
-</div>
+[Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/filter-traces.mdx) 或 [file an issue](https://github.com/langchain-ai/docs/issues/new/choose)。

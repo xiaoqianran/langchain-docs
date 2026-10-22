@@ -3,4 +3,4 @@
 # Get Thread History Post
 
 /langsmith/agent-server-openapi.json post /threads/{thread_id}/history
-Get all past states for a thread.
+Get all past states for a thread. Can return fewer than `limit` states; page with `before` to read further.

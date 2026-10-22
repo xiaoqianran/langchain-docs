@@ -19,179 +19,175 @@
 
 最常见的用例是启用自定义模型包装器的成本跟踪。为此，您需要提供两个关键信息：提供商名称 (`ls_provider`) 和模型名称 (`ls_model_name`)。这些一起工作以匹配 LangSmith 的定价数据库。
 
-<CodeGroup>
-  ```python Python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  from langsmith import traceable
+```python Python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+from langsmith import traceable
 
-  @traceable(
-      run_type="llm",
-      metadata={
-          "ls_provider": "my_provider",
-          "ls_model_name": "my_custom_model"
-      }
-  )
-  def my_custom_llm(prompt: str):
-      return call_custom_api(prompt)
-  ```
-
-  ```typescript TypeScript theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  import { traceable } from "langsmith/traceable";
-
-  const myCustomLlm = traceable(
-    async (prompt: string) => {
-      return callCustomApi(prompt);
-    },
-    {
-      run_type: "llm",
-      metadata: {
-        ls_provider: "my_provider",
-        ls_model_name: "my_custom_model"
-      }
+@traceable(
+    run_type="llm",
+    metadata={
+        "ls_provider": "my_provider",
+        "ls_model_name": "my_custom_model"
     }
-  );
-  ```
+)
+def my_custom_llm(prompt: str):
+    return call_custom_api(prompt)
+```
 
-  ```java Java theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  import com.langchain.smith.tracing.RunType;
-  import com.langchain.smith.tracing.TraceConfig;
-  import com.langchain.smith.tracing.Tracing;
-  import java.util.HashMap;
-  import java.util.Map;
-  import java.util.function.Function;
+```typescript TypeScript theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+import { traceable } from "langsmith/traceable";
 
-  Map<String, Object> metadata = new HashMap<>();
-  metadata.put("ls_provider", "my_provider");
-  metadata.put("ls_model_name", "my_custom_model");
+const myCustomLlm = traceable(
+  async (prompt: string) => {
+    return callCustomApi(prompt);
+  },
+  {
+    run_type: "llm",
+    metadata: {
+      ls_provider: "my_provider",
+      ls_model_name: "my_custom_model"
+    }
+  }
+);
+```
 
-  Function<String, String> myCustomLlm =
-      Tracing.traceFunction(
-          prompt -> callCustomApi(prompt),
-          TraceConfig.builder()
-              .runType(RunType.LLM)
-              .metadata(metadata)
-              .build());
-  ```
+```java Java theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+import com.langchain.smith.tracing.RunType;
+import com.langchain.smith.tracing.TraceConfig;
+import com.langchain.smith.tracing.Tracing;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.function.Function;
 
-  ```kotlin Kotlin theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  import com.langchain.smith.tracing.RunType
-  import com.langchain.smith.tracing.TraceConfig
-  import com.langchain.smith.tracing.traceable
+Map<String, Object> metadata = new HashMap<>();
+metadata.put("ls_provider", "my_provider");
+metadata.put("ls_model_name", "my_custom_model");
 
-  val myCustomLlm =
-      traceable(
-          { prompt: String -> callCustomApi(prompt) },
-          TraceConfig.builder()
-              .runType(RunType.LLM)
-              .metadata(
-                  mapOf(
-                      "ls_provider" to "my_provider",
-                      "ls_model_name" to "my_custom_model",
-                  ),
-              )
-              .build(),
-      )
-  ```
-</CodeGroup>
+Function<String, String> myCustomLlm =
+    Tracing.traceFunction(
+        prompt -> callCustomApi(prompt),
+        TraceConfig.builder()
+            .runType(RunType.LLM)
+            .metadata(metadata)
+            .build());
+```
 
-这个最小的设置告诉LangSmith您正在使用什么模型，如果定价数据库中存在该模型或者您有[configured custom pricing](/langsmith/cost-tracking#llm-calls-automatically-track-costs-based-on-token-counts)，则可以自动计算成本。为了进行更全面的跟踪，您可以包含其他配置参数。这在 [running experiments](/langsmith/evaluation-quickstart) 或比较不同模型设置时特别有用：
+```kotlin Kotlin theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+import com.langchain.smith.tracing.RunType
+import com.langchain.smith.tracing.TraceConfig
+import com.langchain.smith.tracing.traceable
 
-<CodeGroup>
-  ```python Python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  @traceable(
-      run_type="llm",
-      metadata={
-          "ls_provider": "openai",
-          "ls_model_name": "gpt-5.5",
-          "ls_temperature": 0.7,
-          "ls_max_tokens": 4096,
-          "ls_stop": ["END"],
-          "ls_invocation_params": {
-              "top_p": 0.9,
-              "frequency_penalty": 0.5
-          }
-      }
-  )
-  def my_configured_llm(messages: list):
-      return call_llm(messages)
-  ```
+val myCustomLlm =
+    traceable(
+        { prompt: String -> callCustomApi(prompt) },
+        TraceConfig.builder()
+            .runType(RunType.LLM)
+            .metadata(
+                mapOf(
+                    "ls_provider" to "my_provider",
+                    "ls_model_name" to "my_custom_model",
+                ),
+            )
+            .build(),
+    )
+```
 
-  ```typescript TypeScript theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  const myConfiguredLlm = traceable(
-    async (messages: Array<any>) => {
-      return callLlm(messages);
-    },
-    {
-      run_type: "llm",
-      metadata: {
-        ls_provider: "openai",
-        ls_model_name: "gpt-5.5",
-        ls_temperature: 0.7,
-        ls_max_tokens: 4096,
-        ls_stop: ["END"],
-        ls_invocation_params: {
-          top_p: 0.9,
-          frequency_penalty: 0.5
+这个最小的设置告诉 LangSmith 您正在使用什么模型，如果该模型存在于定价数据库中或者您有 [configured custom pricing](/langsmith/cost-tracking#llm-calls-automatically-track-costs-based-on-token-counts)，则可以自动计算成本。
+
+为了进行更全面的跟踪，您可以包含其他配置参数。这在 [running experiments](/langsmith/evaluation-quickstart) 或比较不同模型设置时特别有用：
+
+```python Python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+@traceable(
+    run_type="llm",
+    metadata={
+        "ls_provider": "openai",
+        "ls_model_name": "gpt-5.5",
+        "ls_temperature": 0.7,
+        "ls_max_tokens": 4096,
+        "ls_stop": ["END"],
+        "ls_invocation_params": {
+            "top_p": 0.9,
+            "frequency_penalty": 0.5
         }
+    }
+)
+def my_configured_llm(messages: list):
+    return call_llm(messages)
+``````typescript TypeScript theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+const myConfiguredLlm = traceable(
+  async (messages: Array<any>) => {
+    return callLlm(messages);
+  },
+  {
+    run_type: "llm",
+    metadata: {
+      ls_provider: "openai",
+      ls_model_name: "gpt-5.5",
+      ls_temperature: 0.7,
+      ls_max_tokens: 4096,
+      ls_stop: ["END"],
+      ls_invocation_params: {
+        top_p: 0.9,
+        frequency_penalty: 0.5
       }
     }
-  );
-  ```
+  }
+);
+```
 
-  ```java Java theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  import com.langchain.smith.tracing.RunType;
-  import com.langchain.smith.tracing.TraceConfig;
-  import com.langchain.smith.tracing.Tracing;
-  import java.util.Collections;
-  import java.util.HashMap;
-  import java.util.List;
-  import java.util.Map;
-  import java.util.function.Function;
+```java Java theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+import com.langchain.smith.tracing.RunType;
+import com.langchain.smith.tracing.TraceConfig;
+import com.langchain.smith.tracing.Tracing;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.function.Function;
 
-  Map<String, Object> metadata = new HashMap<>();
-  metadata.put("ls_provider", "openai");
-  metadata.put("ls_model_name", "gpt-5.5");
-  metadata.put("ls_temperature", 0.7);
-  metadata.put("ls_max_tokens", 4096);
-  metadata.put("ls_stop", Collections.singletonList("END"));
+Map<String, Object> metadata = new HashMap<>();
+metadata.put("ls_provider", "openai");
+metadata.put("ls_model_name", "gpt-5.5");
+metadata.put("ls_temperature", 0.7);
+metadata.put("ls_max_tokens", 4096);
+metadata.put("ls_stop", Collections.singletonList("END"));
 
-  Map<String, Object> invocationParams = new HashMap<>();
-  invocationParams.put("top_p", 0.9);
-  invocationParams.put("frequency_penalty", 0.5);
-  metadata.put("ls_invocation_params", invocationParams);
+Map<String, Object> invocationParams = new HashMap<>();
+invocationParams.put("top_p", 0.9);
+invocationParams.put("frequency_penalty", 0.5);
+metadata.put("ls_invocation_params", invocationParams);
 
-  Function<List<Map<String, String>>, String> myConfiguredLlm =
-      Tracing.traceFunction(
-          messages -> callLlm(messages),
-          TraceConfig.builder()
-              .runType(RunType.LLM)
-              .metadata(metadata)
-              .build());
-  ```
+Function<List<Map<String, String>>, String> myConfiguredLlm =
+    Tracing.traceFunction(
+        messages -> callLlm(messages),
+        TraceConfig.builder()
+            .runType(RunType.LLM)
+            .metadata(metadata)
+            .build());
+```
 
-  ```kotlin Kotlin theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  val myConfiguredLlm =
-      traceable(
-          { messages: List<Map<String, String>> -> callLlm(messages) },
-          TraceConfig.builder()
-              .runType(RunType.LLM)
-              .metadata(
-                  mapOf(
-                      "ls_provider" to "openai",
-                      "ls_model_name" to "gpt-5.5",
-                      "ls_temperature" to 0.7,
-                      "ls_max_tokens" to 4096,
-                      "ls_stop" to listOf("END"),
-                      "ls_invocation_params" to
-                          mapOf(
-                              "top_p" to 0.9,
-                              "frequency_penalty" to 0.5,
-                          ),
-                  ),
-              )
-              .build(),
-      )
-  ```
-</CodeGroup>
+```kotlin Kotlin theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+val myConfiguredLlm =
+    traceable(
+        { messages: List<Map<String, String>> -> callLlm(messages) },
+        TraceConfig.builder()
+            .runType(RunType.LLM)
+            .metadata(
+                mapOf(
+                    "ls_provider" to "openai",
+                    "ls_model_name" to "gpt-5.5",
+                    "ls_temperature" to 0.7,
+                    "ls_max_tokens" to 4096,
+                    "ls_stop" to listOf("END"),
+                    "ls_invocation_params" to
+                        mapOf(
+                            "top_p" to 0.9,
+                            "frequency_penalty" to 0.5,
+                        ),
+                ),
+            )
+            .build(),
+    )
+```
 
 通过此设置，您可以稍后按温度过滤迹线，比较不同最大令牌设置的运行，或分析哪些配置参数产生最佳结果。除了成本跟踪所需的 `ls_provider` 和 `ls_model_name` 对之外，所有这些参数都是可选的。
 
@@ -206,16 +202,16 @@
 | [⟦T33⟧](#ls_temperature) | `number` |没有 |使用的温度参数|
 | [⟦T35⟧](#ls_max_tokens) | `number` |没有 |使用的最大令牌参数 |
 | [⟦T37⟧](#ls_stop) | `string[]` |没有 |使用的停止序列 |
-| [⟦T39⟧](#ls_invocation_params) | `object` |没有 |附加调用参数|
+| [⟦T39⟧](#ls_invocation_params) | `object` |没有 |附加调用参数 |
 | [⟦T41⟧](#ls_agent_type) | `string` |没有 |控制代理运行在轨迹视图中的显示方式：`"root"`、`"subagent"` 或 `"middleware"` |
 | [⟦T46⟧](#ls_message_view_exclude) | `boolean` |没有 |从轨迹视图中隐藏运行 |
-| [⟦T48⟧](#ls_is_error_interrupt) | `boolean` |没有 |当设置为 `true` 时，将错误运行标记为中断 |\* `ls_provider` 和 `ls_model_name` 必须一起提供以进行成本跟踪
+| [⟦T48⟧](#ls_is_error_interrupt) | `boolean` |没有 |当设置为 `true` 时，将错误运行标记为中断 |
 
-### 系统生成的参数
+\* `ls_provider` 和 `ls_model_name` 必须一起提供以进行成本跟踪
 
-|参数|类型 |描述 |
+### 系统生成的参数|参数|类型 |描述 |
 | - | - | - |
-| [⟦T53⟧](#ls_run_depth) | `integer` |跟踪树中的深度（0=根，1=子等）- 自动计算 |
+| [⟦T53⟧](#ls_run_depth) | `integer` |跟踪树的深度（0=根，1=子，等等）- 自动计算 |
 | [⟦T55⟧](#ls_method) | `string` |使用的跟踪方法（例如“可跟踪”）- 由 SDK 设置 |
 
 ### 实验参数
@@ -537,7 +533,7 @@ metadata_key = 'ls_run_depth' AND metadata_value = 0
 
 * **类型：** 任何（取决于示例元数据）
 * **图案：** `ls_example_{original_key}`
-* **设置方式：** LangSmith 实验系统（自动）**它的作用：**
+* **设置方式：** LangSmith实验系统（自动）**它的作用：**
 运行 [experiments on datasets](/langsmith/evaluation-quickstart) 时，示例中的元数据会自动添加 `ls_example_` 前缀并添加到跟踪中。
 
 **特殊参数：**
@@ -568,7 +564,7 @@ metadata_key = 'ls_run_depth' AND metadata_value = 0
 ### `ls_experiment_id`
 
 * **类型：** `string` (UUID)
-* **设置方式：** LangSmith实验系统（自动）
+* **设定者：** LangSmith 实验系统（自动）
 
 **它的作用：**
 实验运行的唯一标识符。
@@ -639,79 +635,77 @@ metadata_key = 'ls_run_depth' AND metadata_value = 0
 
 将 [⟦T159⟧](https://docs.smith.langchain.com/reference/python/client/langsmith.client.Client) 类与 [⟦T160⟧](https://docs.smith.langchain.com/reference/python/client/langsmith.client.Client#langsmith.client.Client.list_runs) 方法 (Python) 或 [⟦T161⟧](https://docs.smith.langchain.com/reference/js/classes/client.Client#listruns) 方法 (TypeScript) 结合使用，根据元数据值查询跟踪。 [filter syntax](/langsmith/trace-query-syntax) 支持相等检查、比较和逻辑运算符。
 
-<CodeGroup>
-  ```python Python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  from langsmith import Client
+```python Python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+from langsmith import Client
 
-  client = Client()
+client = Client()
 
-  # Filter runs by provider
-  runs = client.list_runs(
-      project_name="my-app",
-      filter='metadata_key = "ls_provider" AND metadata_value = "openai"'
-  )
+# Filter runs by provider
+runs = client.list_runs(
+    project_name="my-app",
+    filter='metadata_key = "ls_provider" AND metadata_value = "openai"'
+)
 
-  # Filter by specific model
-  runs = client.list_runs(
-      project_name="my-app",
-      filter='metadata_key = "ls_model_name" AND metadata_value = "gpt-5.5"'
-  )
+# Filter by specific model
+runs = client.list_runs(
+    project_name="my-app",
+    filter='metadata_key = "ls_model_name" AND metadata_value = "gpt-5.5"'
+)
 
-  # Filter root runs only (top-level traces)
-  runs = client.list_runs(
-      project_name="my-app",
-      filter='metadata_key = "ls_run_depth" AND metadata_value = 0'
-  )
+# Filter root runs only (top-level traces)
+runs = client.list_runs(
+    project_name="my-app",
+    filter='metadata_key = "ls_run_depth" AND metadata_value = 0'
+)
 
-  # Filter by temperature threshold
-  runs = client.list_runs(
-      project_name="my-app",
-      filter='metadata_key = "ls_temperature" AND metadata_value > 0.5'
-  )
-  ```
+# Filter by temperature threshold
+runs = client.list_runs(
+    project_name="my-app",
+    filter='metadata_key = "ls_temperature" AND metadata_value > 0.5'
+)
+```
 
-  ```typescript TypeScript theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  import { Client } from "langsmith";
+```typescript TypeScript theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+import { Client } from "langsmith";
 
-  const client = new Client();
+const client = new Client();
 
-  // Filter runs by provider
-  const runsByProvider: any[] = [];
-  for await (const run of client.listRuns({
-    projectName: "my-app",
-    filter: 'metadata_key = "ls_provider" AND metadata_value = "openai"'
-  })) {
-    runsByProvider.push(run);
-  }
+// Filter runs by provider
+const runsByProvider: any[] = [];
+for await (const run of client.listRuns({
+  projectName: "my-app",
+  filter: 'metadata_key = "ls_provider" AND metadata_value = "openai"'
+})) {
+  runsByProvider.push(run);
+}
 
-  // Filter by specific model
-  const runsByModel: any[] = [];
-  for await (const run of client.listRuns({
-    projectName: "my-app",
-    filter: 'metadata_key = "ls_model_name" AND metadata_value = "gpt-5.5"'
-  })) {
-    runsByModel.push(run);
-  }
+// Filter by specific model
+const runsByModel: any[] = [];
+for await (const run of client.listRuns({
+  projectName: "my-app",
+  filter: 'metadata_key = "ls_model_name" AND metadata_value = "gpt-5.5"'
+})) {
+  runsByModel.push(run);
+}
 
-  // Filter root runs only (top-level traces)
-  const rootRuns: any[] = [];
-  for await (const run of client.listRuns({
-    projectName: "my-app",
-    filter: 'metadata_key = "ls_run_depth" AND metadata_value = 0'
-  })) {
-    rootRuns.push(run);
-  }
+// Filter root runs only (top-level traces)
+const rootRuns: any[] = [];
+for await (const run of client.listRuns({
+  projectName: "my-app",
+  filter: 'metadata_key = "ls_run_depth" AND metadata_value = 0'
+})) {
+  rootRuns.push(run);
+}
 
-  // Filter by temperature threshold
-  const highTempRuns: any[] = [];
-  for await (const run of client.listRuns({
-    projectName: "my-app",
-    filter: 'metadata_key = "ls_temperature" AND metadata_value > 0.5'
-  })) {
-    highTempRuns.push(run);
-  }
-  ```
-</CodeGroup>
+// Filter by temperature threshold
+const highTempRuns: any[] = [];
+for await (const run of client.listRuns({
+  projectName: "my-app",
+  filter: 'metadata_key = "ls_temperature" AND metadata_value > 0.5'
+})) {
+  highTempRuns.push(run);
+}
+```
 
 这些示例显示了常见的过滤模式：* **按提供商或型号过滤**以分析特定型号的使用模式或成本
 * **按运行深度过滤**，仅获取根跟踪（深度 0）或特定嵌套级别的子运行
@@ -738,12 +732,6 @@ metadata_key = 'ls_run_depth' AND metadata_value = 0
 
 ***
 
-<div>
-  <Callout icon="terminal-2">
-    [Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
-  </Callout>
+[Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
 
-  <Callout icon="edit">
-    [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/ls-metadata-parameters.mdx) 或 [file an issue](https://github.com/langchain-ai/docs/issues/new/choose)。
-  </Callout>
-</div>
+[Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/ls-metadata-parameters.mdx) 或 [file an issue](https://github.com/langchain-ai/docs/issues/new/choose)。

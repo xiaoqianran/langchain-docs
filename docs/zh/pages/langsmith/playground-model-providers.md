@@ -8,101 +8,75 @@
 
 使用此页面获取可用提供程序及其配置选项的列表：
 
-<div>
-  <a href="#amazon-bedrock">
-    <img alt="" />
+![](https://mintcdn.com/langchain-5e9cc07a/ZPKed1feKJ8F6LVo/images/providers/light/bedrock.svg?fit=max\&auto=format\&n=ZPKed1feKJ8F6LVo\&q=85\&s=d6fc326f6c429075add5a742c87d12b1)
 
-    <img alt="" />
+亚马逊基岩
 
-    <span>亚马逊基岩</span>
-  </a>
+[Open](#amazon-bedrock)
 
-  <a href="#anthropic">
-    <img alt="" />
+![](https://mintcdn.com/langchain-5e9cc07a/ZPKed1feKJ8F6LVo/images/providers/light/anthropic.svg?fit=max\&auto=format\&n=ZPKed1feKJ8F6LVo\&q=85\&s=f681e2a9025c2e1104d4260c6b27d638)
 
-    <img alt="" />
+Anthropic
 
-    <span>Anthropic</span>
-  </a>
+[Open](#anthropic)
 
-  <a href="#azure-openai">
-    <img alt="" />
+![](https://mintcdn.com/langchain-5e9cc07a/ZPKed1feKJ8F6LVo/images/providers/light/microsoft.svg?fit=max\&auto=format\&n=ZPKed1feKJ8F6LVo\&q=85\&s=9189910834f230f7f94115d88e7ec4bf)
 
-    <img alt="" />
+天蓝色OpenAI
 
-    <span>天蓝色OpenAI</span>
-  </a>
+[Open](#azure-openai)
 
-  <a href="#deepseek">
-    <img alt="" />
+![](https://mintcdn.com/langchain-5e9cc07a/ZPKed1feKJ8F6LVo/images/providers/light/deepseek.svg?fit=max\&auto=format\&n=ZPKed1feKJ8F6LVo\&q=85\&s=5a11e956e2ba24fd746aebd929ee1a5e)
 
-    <img alt="" />
+深度搜索
 
-    <span>DeepSeek</span>
-  </a>
+[Open](#deepseek)
 
-  <a href="#fireworks">
-    <img alt="" />
+![](https://mintcdn.com/langchain-5e9cc07a/ZPKed1feKJ8F6LVo/images/providers/light/fireworks.svg?fit=max\&auto=format\&n=ZPKed1feKJ8F6LVo\&q=85\&s=a0b3bbc0a57a2753099203eb71ed191b)
 
-    <img alt="" />
+烟花
 
-    <span>烟花</span>
-  </a>
+[Open](#fireworks)
 
-  <a href="#google-gemini">
-    <img alt="" />
+![](https://mintcdn.com/langchain-5e9cc07a/ZPKed1feKJ8F6LVo/images/providers/light/gemini.svg?fit=max\&auto=format\&n=ZPKed1feKJ8F6LVo\&q=85\&s=486f57c43a26c9661700c37d0f575c05)
 
-    <img alt="" />
+谷歌双子座
 
-    <span>谷歌双子座</span>
-  </a>
+[Open](#google-gemini)
 
-  <a href="#gemini-enterprise-agent-platform">
-    <img alt="" />
+![](https://mintcdn.com/langchain-5e9cc07a/ZPKed1feKJ8F6LVo/images/providers/light/gemini.svg?fit=max\&auto=format\&n=ZPKed1feKJ8F6LVo\&q=85\&s=486f57c43a26c9661700c37d0f575c05)
 
-    <img alt="" />
+Gemini企业代理平台
 
-    <span>Gemini企业代理平台</span>
-  </a>
+[Open](#gemini-enterprise-agent-platform)
 
-  <a href="#groq">
-    <img alt="" />
+![](https://mintcdn.com/langchain-5e9cc07a/ZPKed1feKJ8F6LVo/images/providers/light/groq.svg?fit=max\&auto=format\&n=ZPKed1feKJ8F6LVo\&q=85\&s=3f3d47f8a0619a4b2a81ecf11743caf1)
 
-    <img alt="" />
+格罗克
 
-    <span>Groq</span>
-  </a>
+[Open](#groq)
 
-  <a href="#mistral-ai">
-    <img alt="" />
+![](https://mintcdn.com/langchain-5e9cc07a/ZPKed1feKJ8F6LVo/images/providers/light/mistral.svg?fit=max\&auto=format\&n=ZPKed1feKJ8F6LVo\&q=85\&s=2b060bfbf269ab1b7f41f3a835f7a0b6)
 
-    <img alt="" />
+米斯特拉尔人工智能
 
-    <span>米斯特拉尔AI</span>
-  </a>
+[Open](#mistral-ai)
 
-  <a href="#openai">
-    <img alt="" />
+![](https://mintcdn.com/langchain-5e9cc07a/ZPKed1feKJ8F6LVo/images/providers/light/openai.svg?fit=max\&auto=format\&n=ZPKed1feKJ8F6LVo\&q=85\&s=fb29ba01edf0644930f3eda68ab6c0c2)
 
-    <img alt="" />
+OpenAI
 
-    <span>OpenAI</span>
-  </a>
+[Open](#openai)
 
-  <a href="#openai-compatible-endpoint">
-    <Icon icon="link" />
+[OpenAI compatible endpoint](#openai-compatible-endpoint)
 
-    <span>OpenAI兼容端点</span>
-  </a>
+![](https://mintcdn.com/langchain-5e9cc07a/z7oQGiHwXv52HwOy/images/providers/light/xai.svg?fit=max\&auto=format\&n=z7oQGiHwXv52HwOy\&q=85\&s=9e2e1244434658c80b07b419d4af6db9)
 
-  <a href="#xai">
-    <img alt="" />
+西艾
 
-    <img alt="" />
+[Open](#xai)
 
-    <span>XAI</span>
-  </a>
-</div>有关创建和管理模型配置的详细信息，请参阅[Configure prompt settings](/langsmith/managing-model-configurations)页面。
+有关创建和管理模型配置的详细信息，请参阅[Configure prompt settings](/langsmith/managing-model-configurations)页面。
 
 ## 亚马逊基岩
 
@@ -114,11 +88,9 @@ Amazon Bedrock 支持三种身份验证方法。 **IAM 可信实体是推荐的�
 
 #### IAM 可信实体（推荐）
 
-<Note>
-  **不适用于 [self-hosted LangSmith](/langsmith/self-hosted) 或 [BYOC](/langsmith/byoc)。** 请改用访问密钥或 Bedrock API 密钥。
-</Note>
-
-通过 IAM 可信实体身份验证，您可以在 AWS 账户中创建 IAM 角色并允许 LangSmith 代入该角色。 LangSmith 中不存储访问密钥。相反，LangSmith 使用 [AWS STS](https://docs.aws.amazon.com/STS/latest/APIReference/welcome.html) 承担每个请求的角色。
+> [!注意]
+>
+> **不适用于 [self-hosted LangSmith](/langsmith/self-hosted) 或 [BYOC](/langsmith/byoc)。** 请改用访问密钥或 Bedrock API 密钥。通过 IAM 可信实体身份验证，您可以在 AWS 账户中创建 IAM 角色并允许 LangSmith 代入该角色。 LangSmith 中不存储访问密钥。相反，LangSmith 使用 [AWS STS](https://docs.aws.amazon.com/STS/latest/APIReference/welcome.html) 承担每个请求的角色。
 
 要进行此设置：
 
@@ -145,11 +117,13 @@ Amazon Bedrock 支持三种身份验证方法。 **IAM 可信实体是推荐的�
 }
 ```
 
-<Tip>
-  您可以在[LangSmith workspace settings](https://smith.langchain.com/settings)中找到您的工作区ID。
-</Tip>3. 在 LangSmith Playground 中，通过单击 **Key** 图标打开 Bedrock 提供程序的机密配置（模型配置下拉列表本身不提供 IAM 受信任实体选项）。然后展开 **IAM 受信任实体** 部分并输入您创建的角色的 ARN。
+> [!提示]
+>
+> 您可以在[LangSmith workspace settings](https://smith.langchain.com/settings)中找到您的工作区ID。
 
-   <img alt="Bedrock secrets and API keys configuration with the IAM Trusted Entity section" />
+3. 在 LangSmith Playground 中，通过单击 **Key** 图标打开 Bedrock 提供程序的机密配置（模型配置下拉列表本身不提供 IAM 受信任实体选项）。然后展开 **IAM 受信任实体** 部分并输入您创建的角色的 ARN。
+
+   ![Bedrock secrets and API keys configuration with the IAM Trusted Entity section](https://mintcdn.com/langchain-5e9cc07a/5xyMbImu-yvQUeiG/images/langsmith/bedrock-secrets-config.png?fit=max\&auto=format\&n=5xyMbImu-yvQUeiG\&q=85\&s=5ba03ea30f7bba78bc51d0fa8e273878)
 
 有关信任策略的更多详细信息，请参阅[AWS documentation](https://aws.amazon.com/blogs/security/how-to-use-trust-policies-with-iam-roles/)。
 
@@ -157,20 +131,21 @@ Amazon Bedrock 支持三种身份验证方法。 **IAM 可信实体是推荐的�
 
 或者，您可以使用 AWS 访问密钥（`AWS_ACCESS_KEY_ID` 和 `AWS_SECRET_ACCESS_KEY`）进行身份验证。在 Playground 的基岩提供程序配置中输入这些内容。此方法设置更简单，但安全性较低，因为它需要存储长期凭据。
 
-#### 基岩 API 密钥
-
-Bedrock API 密钥使用不记名令牌而不是 AWS 凭证对请求进行身份验证。配置 Bedrock API 密钥：
+#### 基岩 API 密钥Bedrock API 密钥使用不记名令牌而不是 AWS 凭证对请求进行身份验证。配置 Bedrock API 密钥：
 
 1. Amazon Bedrock 控制台中的[Generate an API key](https://docs.aws.amazon.com/bedrock/latest/userguide/api-keys.html)。
-2. 在 LangSmith 中，转到 **设置** > **提供商密钥**，添加新密钥，然后选择 **Amazon Bedrock** 作为提供商。
-3. 选择**身份验证**下的**不记名令牌**。
-4. 输入 API 密钥`AWS_BEARER_TOKEN_BEDROCK`。
-5. （可选）设置`AWS_BEDROCK_REGION`。默认为`us-east-1`。
-6. 选择**保存**。
+2. 在 LangSmith 中，导航至 **设置** > **集成** > **提供商机密**，然后选择 **+ 机密**。
+3. 在 **提供商** 下，选择 **Amazon Bedrock**。
+4. 在 **身份验证** 下，选择 **不记名令牌**。
+5. 输入 API 密钥`AWS_BEARER_TOKEN_BEDROCK`。
+6. （可选）设置`AWS_BEDROCK_REGION`。默认为`us-east-1`。
+7. 选择**保存**。
 
 ### 可用型号
 
-AWS Bedrock 提供对来自多个提供商的基础模型的访问：* **Anthropic：** 克劳德模型。
+AWS Bedrock 提供对来自多个提供商的基础模型的访问：
+
+* **Anthropic：** 克劳德型号。
 * **亚马逊：** 泰坦型号。
 * **连贯：** 命令模型。
 * **元：** 骆驼模型。
@@ -192,9 +167,7 @@ AWS Bedrock 提供对来自多个提供商的基础模型的访问：* **Anthrop
 | - | - | - |
 | **温度** | 0.0 - 1.0 |响应随机性 |
 | **最大代币** | 1+ |最大响应长度|
-| **顶P** | 0.0 - 1.0 |细胞核取样 |
-
-#### AWS 特定设置
+| **顶P** | 0.0 - 1.0 |细胞核取样 |#### AWS 特定设置
 
 * **区域：** 用于模型部署的 AWS 区域。
 
@@ -211,34 +184,34 @@ AWS Bedrock 提供对来自多个提供商的基础模型的访问：* **Anthrop
 
 ### 可用型号
 
-Anthropic 在 Claude 一代中提供了三层型号：
+Anthropic 提供 Claude 一代的三层型号：
 
 * **作品：** 最高的智力和能力。
 * **十四行诗：** 平衡性能和成本。
 * **俳句：** 快速且经济高效。
 
-最近的克劳德模型支持扩展思维能力来显示推理过程。有关当前可用型号的列表，请参阅[Anthropic documentation](https://docs.anthropic.com/claude/docs/models-overview)。
+最近的克劳德模型支持扩展思维能力来显示推理过程。
+
+有关当前可用型号的列表，请参阅[Anthropic documentation](https://docs.anthropic.com/claude/docs/models-overview)。
 
 ### 配置参数
 
-|参数|范围 |默认 |描述 |
+|参数|范围 |默认|描述 |
 | - | - | - | - |
 | **温度** | 0.0 - 1.0 |可选|随机性控制（取消选中以使用模型默认值）|
 | **最大输出代币** | 1+ | 1024 | 1024最大响应长度|
 | **顶P** | 0.0 - 1.0 |可选|细胞核采样（取消选中模型默认值）|
 | **前 K** | 1+ |可选|限制前 K 个代币（取消选中模型默认值）|
 
-<Note>
-  温度、Top P 和 Top K 是可选的。未选中时，Claude 使用其内部默认值。
-</Note>
+> [!注意]
+>
+> 温度、Top P 和 Top K 可选。未选中时，Claude 使用其内部默认值。
 
-#### 延伸思考
-
-适用于受支持的 Claude 型号。使模型能够在响应之前显示推理，类似于OpenAI的o系列。
+#### 延伸思考适用于受支持的 Claude 型号。使模型能够在响应之前显示推理，类似于OpenAI的o系列。
 
 |参数|范围 |描述 |
 | - | - | - |
-| **启用扩展思维** |切换|显示/隐藏思维过程 |
+| **启用扩展思维** |切换 |显示/隐藏思维过程 |
 | **预算代币** | 1+ |思考的最大令牌数（默认值：1024）|
 
 启用后，响应包括：
@@ -250,7 +223,9 @@ Anthropic 在 Claude 一代中提供了三层型号：
 
 * **基本 URL：** 覆盖自定义部署的 API 端点。
 
-### 工具调用* **支持的工具选择：** `auto`、`any`（至少需要一种工具）。
+### 工具调用
+
+* **支持的工具选择：** `auto`、`any`（至少需要一种工具）。
 * **并行执行：** 否（仅顺序执行）。
 
 ## 天蓝色OpenAI
@@ -263,15 +238,13 @@ Anthropic 在 Claude 一代中提供了三层型号：
 
 在 Azure OpenAI 提供程序配置中，输入端点、部署名称、API 版本和 API 密钥。
 
-#### 自托管 LangSmith 的工作负载标识
+#### 自托管 LangSmith 的工作负载身份
 
-<Note>
-  Azure OpenAI 工作负载标识需要在 Azure Kubernetes 服务 (AKS) 上自托管 LangSmith `0.16.58` 或更高版本。
-</Note>
+> [!注意]
+>
+> Azure OpenAI 工作负载身份需要在 Azure Kubernetes 服务 (AKS) 上自托管 LangSmith `0.16.58` 或更高版本。
 
-使用 [AKS workload identity](https://learn.microsoft.com/en-us/azure/aks/workload-identity-overview) 进行身份验证，无需存储 API 密钥：
-
-1. 在 AKS 群集上启用 OIDC 颁发者和工作负载身份。
+使用 [AKS workload identity](https://learn.microsoft.com/en-us/azure/aks/workload-identity-overview) 进行身份验证，无需存储 API 密钥：1. 在 AKS 群集上启用 OIDC 颁发者和工作负载身份。
 2. 创建或选择用户分配的托管身份。
 3. 将 [federated identity credential](https://learn.microsoft.com/en-us/azure/aks/workload-identity-deploy-cluster#create-the-federated-identity-credential) 添加到托管身份。使用 AKS OIDC 发行者和受众 `api://AzureADTokenExchange`。将其主题设置为`system:serviceaccount:<namespace>:<playground-service-account-name>`。
 4. 为托管身份分配最低权限 `Cognitive Services OpenAI User` 角色。将角色范围限定为 Azure OpenAI 资源。参见[Azure OpenAI role-based access control](https://learn.microsoft.com/en-us/azure/ai-services/openai/how-to/role-based-access-control)。
@@ -287,15 +260,15 @@ playground:
       azure.workload.identity/use: "true"
 ```
 
-在 Azure OpenAI 提供程序配置中，输入端点、部署名称和 API 版本。将 API 密钥留空。当未提供显式 API 密钥或令牌提供程序时，LangSmith 自动使用 Playground 工作负载身份。它获取用于 Playground 调用和评估器批量调用的短期令牌。显式凭据优先于工作负载身份。
+在 Azure OpenAI 提供程序配置中，输入端点、部署名称和 API 版本。将 API 密钥留空。
+
+当未提供显式 API 密钥或令牌提供程序时，LangSmith 自动使用 Playground 工作负载身份。它获取用于 Playground 调用和评估器批量调用的短期令牌。显式凭据优先于工作负载身份。
 
 工作负载身份令牌仅限于端口 `443` 上的 HTTPS Azure AI 和 Azure OpenAI 端点。每个配置必须使用一个受支持的 Azure 云：公共云、美国政府云或中国云。 LangSmith 拒绝混合 Azure 云的无效端点和配置。
 
 有关更广泛的 AKS 部署指南，请参阅 [Self-host LangSmith on Azure](/langsmith/azure-self-hosted)。
 
-### 可用型号
-
-Azure OpenAI 提供与 OpenAI 相同的型号系列：
+### 可用型号Azure OpenAI 提供与 OpenAI 相同的型号系列：
 
 * **GPT 系列：** 通用聊天模型。
 * **o 系列：** 以推理为中心的模型。
@@ -309,14 +282,16 @@ Azure OpenAI 提供与 OpenAI 相同的型号系列：
 
 Azure OpenAI 支持与 OpenAI 相同的参数：
 
-#### 标准参数|参数|范围 |描述 |
+#### 标准参数
+
+|参数|范围 |描述 |
 | - | - | - |
 | **温度** | 0.0 - 2.0 |控制随机性。较低=更专注，较高=更具创造力。 |
 | **最大输出代币** | 1+ |响应的最大长度 |
 | **顶P** | 0.0 - 1.0 |细胞核采样阈值。温度的替代品。 |
 | **在场处罚** | -2.0 - 2.0 |惩罚新主题（正面）或鼓励它们（负面）|
 | **频率惩罚** | -2.0 - 2.0 |惩罚重复（积极）或允许重复（消极）|
-| **种子** |整数|对于可重复的输出 |
+| **种子** |整数 |对于可重复的输出 |
 
 #### 高级参数
 
@@ -324,12 +299,12 @@ Azure OpenAI 支持与 OpenAI 相同的参数：
 
 **服务等级：** 适用于较新的型号。
 
-**其他参数：**
-
-* **JSON 模式：** 强制有效的 JSON 响应。
+**其他参数：*** **JSON 模式：** 强制有效的 JSON 响应。
 * **并行工具调用：** 同时执行多个工具。
 
-#### Azure 特定功能* **部署管理：** 模型在使用前必须进行部署。
+#### Azure 特定功能
+
+* **部署管理：** 模型在使用前必须进行部署。
 * **区域可用性：** 选择 Azure 区域作为数据驻留。
 * **内容过滤：** 内置内容审核和安全功能。
 * **托管身份：** Azure AD 身份验证支持。
@@ -360,13 +335,13 @@ DeepSeek 提供通用模型、推理优化模型（R 系列）和编码专用模
 | **在场处罚** | -2.0 - 2.0 | |
 | **频率惩罚** | -2.0 - 2.0 | |
 
-## 烟花
+＃＃ 烟花在使用此型号之前，请确保您拥有[Fireworks API key](https://fireworks.ai/api-keys)。
 
-在使用此型号之前，请确保您拥有[Fireworks API key](https://fireworks.ai/api-keys)。
+### 可用型号
 
-### 可用型号Fireworks 为流行的开源模型和微调变体提供高速推理，包括：
+Fireworks 为流行的开源模型和微调变体提供高速推理，包括：
 
-* **Llama：** Meta 的 Llama 模型有各种尺寸。
+* **Llama：** Meta 的 Llama 模型有多种尺寸。
 * **Mixtral：** Mistral 的专家混合模型。
 * **Qwen:** 阿里巴巴的多语言模型。
 * **DeepSeek：** DeepSeek 模型。
@@ -417,7 +392,7 @@ Google 提供针对不同用例进行优化的多个级别（Ultra、Pro、Flash
 
 #### 服务帐户 JSON 密钥
 
-您可以通过在 LangSmith 中存储服务帐户 JSON 密钥来进行身份验证。此 JSON 文件包含具有 Gemini Enterprise Agent Platform 访问权限的服务帐户的凭据。
+您可以通过在 LangSmith 中存储服务帐户 JSON 密钥进行身份验证。此 JSON 文件包含具有 Gemini Enterprise Agent Platform 访问权限的服务帐户的凭据。
 
 **第 1 步：创建服务帐户**
 
@@ -449,11 +424,11 @@ Google 提供针对不同用例进行优化的多个级别（Ultra、Pro、Flash
 
 在 LangSmith Playground 中，打开 Gemini Enterprise Agent Platform 提供程序配置，并将下载的 JSON 密钥文件的 **全部内容** 粘贴到 **服务帐户 JSON** 字段中。
 
-<Warning>
-  将您的服务帐户 JSON 密钥视为密码。不要共享它或将其提交给源代码管理。如果密钥被泄露，请立即从 [Google Cloud Console](https://console.cloud.google.com/iam-admin/serviceaccounts) 撤销它并创建一个新密钥。
-</Warning>
+> [!警告]
+>
+> 将您的服务帐户 JSON 密钥视为密码。不要共享它或将其提交给源代码管理。如果密钥被泄露，请立即从 [Google Cloud Console](https://console.cloud.google.com/iam-admin/serviceaccounts) 撤销它并创建一个新密钥。
 
-#### 自托管 LangSmith 的工作负载身份
+#### 自托管 LangSmith 的工作负载标识
 
 GKE 上的自托管 LangSmith 可以使用工作负载联合身份验证和应用程序默认凭证 (ADC)，而不是 JSON 密钥。这种无钥匙替代方案支持 Playground、Chat（Helm 中的`polly`）和 Insights。请参阅[Authenticate Vertex AI with GKE workload identity](/langsmith/self-host-gke-vertex-ai-workload-identity)来配置每个工作负载身份。
 
@@ -546,7 +521,7 @@ OpenAI 提供多种具有不同功能和价位的型号系列：
 | **顶P** | 0.0 - 1.0 |细胞核采样阈值。温度的替代品。 |
 | **在场处罚** | -2.0 - 2.0 |惩罚新主题（正面）或鼓励它们（负面）|
 | **频率惩罚** | -2.0 - 2.0 |惩罚重复（积极）或允许重复（消极）|
-| **种子** |整数|对于可重复的输出 |
+| **种子** |整数 |对于可重复的输出 |
 
 高级：
 
@@ -563,15 +538,15 @@ OpenAI 提供多种具有不同功能和价位的型号系列：
 | `high` |深度推理|
 | `xhigh` |超深层推理（如果模型支持）|
 
-<Note>
-  当推理\_effort 处于活动状态时（不是`none`），温度、top\_p 和惩罚会自动禁用。
-</Note>**服务等级**：适用于较新的型号。
+> [!注意]
+>
+> 当推理\_effort 处于活动状态时（不是`none`），温度、top\_p 和惩罚会自动禁用。**服务等级**：适用于较新的型号。
 
 控制请求优先级和处理分配。
 
 |价值|描述 |
 | - | - |
-| `auto` |系统根据负载决定（默认）|
+| `auto` |系统根据负载决定（默认） |
 | `default` |标准处理队列 |
 | `flex` |成本更低、延迟可变（如果型号支持）|
 | `priority` |高优先级队列，延迟更低，成本更高 |
@@ -705,28 +680,20 @@ xAI 为不同的用例提供多种尺寸的 Grok 模型。
 
 * **范围：** 0 - 500 RPS
 * **目的：** 尊重 API 速率限制，控制成本
-* **默认值：** 因提供商而异在运行实验或评估时设置此项以避免达到速率限制。
+* **默认值：** 因提供商而异在运行实验或评估时设置此值以避免达到速率限制。
 
 ## 后续步骤
 
-<CardGroup>
-  <Card title="Configure prompt settings" icon="settings" href="/langsmith/managing-model-configurations">
-    了解如何在 Playground 中创建和管理模型配置。
-  </Card>
+> **[Configure prompt settings](/langsmith/managing-model-configurations)**
+>
+> 了解如何在 Playground 中创建和管理模型配置。
 
-  <Card title="Create a prompt" icon="edit" href="/langsmith/create-a-prompt">
-    开始与您选择的模型提供商构建提示。
-  </Card>
-</CardGroup>
+> **[Create a prompt](/langsmith/create-a-prompt)**
+>
+> 开始与您选择的模型提供商一起构建提示。
 
 ***
 
-<div>
-  <Callout icon="terminal-2">
-    [Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
-  </Callout>
+[Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
 
-  <Callout icon="edit">
-    [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/playground-model-providers.mdx) 或 [file an issue](https://github.com/langchain-ai/docs/issues/new/choose)。
-  </Callout>
-</div>
+[Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/playground-model-providers.mdx) 或 [file an issue](https://github.com/langchain-ai/docs/issues/new/choose)。

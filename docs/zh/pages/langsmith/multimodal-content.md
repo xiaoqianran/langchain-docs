@@ -15,25 +15,25 @@ Playground 支持两种将多模式内容合并到提示中的方法：
    * 测试模型如何处理不同的输入
    * 创建适用于不同内容的可重复使用的提示
 
-<Note>
-  并非所有模型都支持多模式内容。在 Playground 中使用多模式功能之前，请确保您选择的模型支持您要使用的文件类型。
-</Note>
+> [!注意]
+>
+> 并非所有型号都支持多模式内容。在 Playground 中使用多模式功能之前，请确保您选择的模型支持您要使用的文件类型。
 
 ## 内嵌内容单击消息中要添加多模式内容的文件图标。在 `Upload content` 选项卡下，您可以上传文件并将其内嵌在提示中。
 
-<img alt="Upload inline multimodal content" />
+![Upload inline multimodal content](https://mintcdn.com/langchain-5e9cc07a/1RIJxfRpkszanJLL/langsmith/images/upload-inline-multimodal-content.png?fit=max\&auto=format\&n=1RIJxfRpkszanJLL\&q=85\&s=b93d2a6731d26d3ff58a3d0d6d909159)
 
 ## 模板变量
 
 单击消息中要添加多模式内容的文件图标。在 `Template variables` 选项卡下，您可以为特定附件类型创建模板变量。目前仅支持图像、PDF 和音频文件（.wav、.mp3）。
 
-<img alt="Template variable multimodal content" />
+![Template variable multimodal content](https://mintcdn.com/langchain-5e9cc07a/ImHGLQW1HnQYwnJV/langsmith/images/template-variable-multimodal-content.png?fit=max\&auto=format\&n=ImHGLQW1HnQYwnJV\&q=85\&s=e69596dd9fe7d16252c7054bf9efcdf0)
 
 ## 填充模板变量
 
 添加模板变量后，您可以使用屏幕右侧的面板为其提供内容。只需单击 `+` 按钮即可上传或选择将用于填充模板变量的内容。
 
-<img alt="Manual prompt multimodal" />
+![Manual prompt multimodal](https://mintcdn.com/langchain-5e9cc07a/4kN8yiLrZX_amfFn/langsmith/images/manual-prompt-multimodal.png?fit=max\&auto=format\&n=4kN8yiLrZX_amfFn\&q=85\&s=5983e91ca9f596918c9068f8d7450d8d)
 
 ## 运行评估
 
@@ -41,12 +41,6 @@ Playground 支持两种将多模式内容合并到提示中的方法：
 
 ***
 
-<div>
-  <Callout icon="terminal-2">
-    [Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
-  </Callout>
+[Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
 
-  <Callout icon="edit">
-    [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/multimodal-content.mdx) 或 [file an issue](https://github.com/langchain-ai/docs/issues/new/choose)。
-  </Callout>
-</div>
+[Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/multimodal-content.mdx) 或 [file an issue](https://github.com/langchain-ai/docs/issues/new/choose)。

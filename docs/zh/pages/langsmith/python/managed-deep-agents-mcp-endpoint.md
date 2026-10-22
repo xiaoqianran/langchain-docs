@@ -10,9 +10,9 @@
 
 本页面介绍如何查找托管 Deep Agents URL 并进行身份验证。有关协议行为和通用代理服务器客户端设置，请参阅[MCP endpoint in Agent Server](/langsmith/server-mcp)。
 
-<Note>
-  托管 Deep Agents 于 [LangSmith Cloud](/langsmith/cloud) **公开 [beta](/langsmith/release-stages)**。
-</Note>
+> [!注意]
+>
+> 托管 Deep Agents 于 [LangSmith Cloud](/langsmith/cloud) **公开 [beta](/langsmith/release-stages)**。
 
 终点为出方向。 [MCP connector](/langsmith/python/managed-deep-agents-mcp-connectors) 指出了另一种方式：它将远程 MCP 服务器中的工具添加到您的代理中。部署可以同时使用两者。
 
@@ -47,11 +47,11 @@
 
 由`mda dev`启动的本地服务器不需要凭据。它为每个调用者授予一个无范围的本地服务主体，因此计算机上的任何客户端都可以调用 `/mcp` 和所有其他路由。只有部署才会强制执行标头。
 
-<Warning>
-  任何持有 LangSmith API 密钥的人都可以进行部署，并且 MCP 客户端将标头存储在自己的配置中。将添加到客户端配置的密钥视为整个工作区的共享密钥。
-</Warning><Note>
-  Supabase 身份需要一个访问令牌，该令牌是人们通过登录您的应用程序获得的。仅存储静态标头的 MCP 客户端无法创建静态标头，因此请对 MCP 客户端调用的部署使用默认的 LangSmith API 密钥。
-</Note>
+> [!警告]
+>
+> 任何持有 LangSmith API 密钥的人都可以进行部署，并且 MCP 客户端将标头存储在自己的配置中。将添加到客户端配置的密钥视为整个工作区的共享密钥。> [!注意]
+>
+> Supabase 身份需要一个访问令牌，该令牌是人们通过登录您的应用程序获得的。仅存储静态标头的 MCP 客户端无法创建静态标头，因此请使用 LangSmith API 密钥默认值进行 MCP 客户端调用的部署。
 
 ## 了解代理暴露的内容
 
@@ -136,32 +136,24 @@ async with MCPAdapter(
 
 ## 后续步骤
 
-<CardGroup>
-  <Card title="Agent Server" icon="server" href="/langsmith/agent-server-overview">
-    探索托管每个托管 Deep Agents 部署的运行时。
-  </Card>
+> **[Agent Server](/langsmith/agent-server-overview)**
+>
+> 探索托管每个托管 Deep Agents 部署的运行时。
 
-  <Card title="Agent Server MCP" icon="protocol" href="/langsmith/server-mcp">
-    阅读代理服务器 MCP 协议参考。
-  </Card>
+> **[Agent Server MCP](/langsmith/server-mcp)**
+>
+> 阅读代理服务器 MCP 协议参考。
 
-  <Card title="MCP connectors" icon="plug" href="/langsmith/python/managed-deep-agents-mcp-connectors">
-    将工具从远程 MCP 服务器添加到代理。
-  </Card>
+> **[MCP connectors](/langsmith/python/managed-deep-agents-mcp-connectors)**
+>
+> 将工具从远程 MCP 服务器添加到代理。
 
-  <Card title="Identity" icon="fingerprint" href="/langsmith/python/managed-deep-agents-identity">
-    对部署的调用者进行身份验证。
-  </Card>
-</CardGroup>
+> **[Identity](/langsmith/python/managed-deep-agents-identity)**
+>
+> 对部署的调用者进行身份验证。
 
 ***
 
-<div>
-  <Callout icon="terminal-2">
-    [Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
-  </Callout>
+[Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
 
-  <Callout icon="edit">
-    [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/managed-deep-agents-mcp-endpoint.mdx) 或 [file an issue](https://github.com/langchain-ai/docs/issues/new/choose)。
-  </Callout>
-</div>
+[Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/managed-deep-agents-mcp-endpoint.mdx) 或 [file an issue](https://github.com/langchain-ai/docs/issues/new/choose)。

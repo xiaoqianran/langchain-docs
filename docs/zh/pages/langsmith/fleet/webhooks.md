@@ -8,14 +8,12 @@
 
 触发后，Webhook 会将代理配置和文件的完整包发送到指定端点。
 
-<Callout icon="lock">
-  **安全说明：**
+**安全说明：**
 
-  * Webhook URL 必须使用 HTTPS。
-  * 自定义标头（例如 API 密钥）以加密方式存储。
-  * 发布商身份包含在审计跟踪中。
-  * Webhooks 仅对代理所有者可见。
-</Callout>
+* Webhook URL 必须使用 HTTPS。
+* 自定义标头（例如 API 密钥）以加密方式存储。
+* 发布商身份包含在审计跟踪中。
+* Webhooks 仅对代理所有者可见。
 
 ## 添加网络钩子
 
@@ -50,7 +48,7 @@
 
 Webhook 负载是一个包含以下字段的 JSON 对象：
 
-|领域 |描述 |
+|领域|描述 |
 | - | - |
 | `action` | Webhook 的名称。 |
 | `input` |来自自定义表单字段的值（如果没有自定义字段则为空对象）。 |
@@ -136,36 +134,34 @@ Webhook 负载是一个包含以下字段的 JSON 对象：
 
 `config.json`文件和`tools.json`文件的结构如下：
 
-<Tabs>
-  <Tab title="⟦T23⟧">
-    ```json theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-    {
-      "name": "My Agent",
-      "description": "Agent description",
-      "visibility_scope": "tenant",
-      "triggers_paused": false
-    }
-    ```
-  </Tab>
+**`config.json`**
 
-  <Tab title="⟦T24⟧">
-    ```json theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```json theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+{
+  "name": "My Agent",
+  "description": "Agent description",
+  "visibility_scope": "tenant",
+  "triggers_paused": false
+}
+```
+
+**`tools.json`**
+
+```json theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+{
+  "tools": [
     {
-      "tools": [
-        {
-          "name": "tavily_web_search",
-          "mcp_server_url": "http://localhost:8084",
-          "mcp_server_name": "Fleet",
-          "display_name": "tavily_web_search"
-        }
-      ],
-      "interrupt_config": {
-        "http://localhost:8084::tavily_web_search::Fleet": false
-      }
+      "name": "tavily_web_search",
+      "mcp_server_url": "http://localhost:8084",
+      "mcp_server_name": "Fleet",
+      "display_name": "tavily_web_search"
     }
-    ```
-  </Tab>
-</Tabs>
+  ],
+  "interrupt_config": {
+    "http://localhost:8084::tavily_web_search::Fleet": false
+  }
+}
+```
 
 ### 自定义输入字段
 
@@ -254,12 +250,6 @@ HTTPServer(("", 8000), WebhookHandler).serve_forever()
 
 ***
 
-<div>
-  <Callout icon="terminal-2">
-    [Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
-  </Callout>
+[Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
 
-  <Callout icon="edit">
-    [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/fleet/webhooks.mdx) 或 [file an issue](https://github.com/langchain-ai/docs/issues/new/choose)。
-  </Callout>
-</div>
+[Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/fleet/webhooks.mdx) 或 [file an issue](https://github.com/langchain-ai/docs/issues/new/choose)。

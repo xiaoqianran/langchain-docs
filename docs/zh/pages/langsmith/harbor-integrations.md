@@ -8,7 +8,7 @@
 
 使用 LangSmith 从一个地方运行、跟踪、比较和成本代理评估，并以 [Harbor](https://harborframework.com/docs) 作为执行层。 Harbor 是一个用于在沙盒环境中评估和优化代理和语言模型的框架，由 [Terminal-Bench](https://www.tbench.ai) 的创建者开发。它在独立的容器中运行每个试验，因此您可以同时跨多个环境并行评估和部署。
 
-LangSmith 在三个点上与 Harbor 集成：
+LangSmith在三个点上与Harbor集成：
 
 * **LangSmith评估**：将每个Harbor作业记录到LangSmith作为`--plugin langsmith`的实验。
 * **Deep Agents**：使用 `--agent langgraph` 作为 Harbor 代理运行 LangGraph 或 Deep Agents 应用程序。
@@ -30,7 +30,7 @@ LangSmith 在三个点上与 Harbor 集成：
 pip install "harbor[langsmith]"
 ```
 
-### 验证Harbor 使用您的 LangSmith 凭证进行身份验证。设置API密钥和该密钥所属的端点：
+### 验证Harbor 使用您的 LangSmith 凭据进行身份验证。设置 API 密钥以及该密钥所属的端点：
 
 ```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 export LANGSMITH_API_KEY="<LANGSMITH_API_KEY>"
@@ -62,9 +62,9 @@ harbor run -d "terminal-bench@2.0" \
 
 ## LangSmith 评价
 
-LangSmith插件将每个Harbor作业记录到LangSmith，因此您可以在数据集和实验下查看和比较结果。该插件适用于任何 Harbor 代理，而不仅仅是 Deep Agents。使用`--plugin langsmith`启用它。 [Quickstart](#quickstart)展示了基本的调用，本节介绍了插件记录的内容以及如何配置它。选择一个可追踪到 LangSmith 的代理，以在实验过程中捕获完整的代理跟踪。如果代理未跟踪到LangSmith，插件仍会创建数据集和带有结果和反馈的实验，而无需代理跟踪。
+LangSmith插件将每个Harbor作业记录到LangSmith，因此您可以在数据集和实验下查看和比较结果。该插件适用于任何 Harbor 代理，而不仅仅是 Deep Agents。使用`--plugin langsmith`启用它。 [Quickstart](#quickstart)展示了基本的调用，本节介绍了插件记录的内容以及如何配置它。Choose an agent that traces to LangSmith to capture full agent traces alongside the experiment.如果代理未跟踪到LangSmith，插件仍会创建数据集和带有结果和反馈的实验，而无需代理跟踪。
 
-当您需要消除歧义时，传递完整的导入路径而不是简短的插件名称：
+Pass the full import path instead of the short plugin name when you need to disambiguate it:
 
 ```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 harbor run ... --plugin harbor_langsmith:LangSmithPlugin
@@ -74,10 +74,10 @@ harbor run ... --plugin harbor_langsmith:LangSmithPlugin
 
 ### 查看插件记录了什么
 
-当作业运行时，插件通过 API 写入 LangSmith：
+As the job runs, the plugin writes to LangSmith over the API:
 
-* **数据集**：从作业同步参考数据集。默认名称来自数据集或任务，例如`terminal-bench@2.0`。每个任务都成为一个示例，其输入是任务名称、指令和任务 ID。
-* **实验**：为每个作业创建一个实验，名为 `<name>-<job-id-prefix>`，链接到参考数据集。
+* **Dataset**: Syncs a reference dataset from the job. The default name comes from the dataset or task, for example `terminal-bench@2.0`. Each task becomes an example whose inputs are the task name, the instruction, and the task ID.
+* **Experiment**: Creates one experiment per job, named `<name>-<job-id-prefix>`, linked to the reference dataset.
 * **运行**：为每个试验创建一个根运行，其中包含任务名称、指令、代理和模型的输入，以及环境、代理和验证阶段的子运行。
 * **反馈**：为每个验证者奖励密钥附加一个反馈分数，例如`reward`，以及当试验引发异常时的`harbor_error`反馈。* **输出**：记录每次试运行的`tokens`（`input`、`cache`、`output`）下的令牌计数和`cost_usd`下的运行成本。
 
@@ -120,7 +120,7 @@ harbor run \
 
 任务是一个具有固定布局的目录：`task.toml`用于配置，`instruction.md`用于提示，`environment/`用于构建沙箱的Dockerfile，`tests/`用于写入奖励的验证者。数据集是许多这样的任务目录。
 
-任务或数据集可以是本地的或远程的：将 Harbor 指向您自己的任务目录文件夹，或者从 Harbor 的注册表中提取一个。
+任务或数据集可以是本地的或远程的：将 Harbor 指向您自己的任务目录文件夹，或从 Harbor 的注册表中提取一个。
 
 三个输入选择作业运行的任务：* **`-t org/name[@ref]`**：来自注册表的单个任务。远程任务通过注册表查找来获取，然后在固定提交处克隆到`~/.cache/harbor/tasks`。
 * **`-d name@version`**：一个完整​​的基准数据集，其中有很多任务。每个任务都从注册表中解析并克隆到缓存中。
@@ -153,7 +153,7 @@ terminal-bench/
 
 ### 配置代理
 
-使用 `--ak` 传递代理 kwargs：* **`--agent langgraph`**：选择LangGraph代理。
+使用 `--ak` 传递代理 kwargs：* **`--agent langgraph`**：选择LangGraph 代理。
 * **`--model <provider:model>`**：要运行的模型。没有默认值，因此该值是必需的。代理使用 [init\_chat\_model](https://reference.langchain.com/python/langchain/chat_models/base/init_chat_model) 解析它，因此它必须可由安装的 `langchain-*` 提供程序以 `provider:model` 格式解析，例如 `anthropic:claude-opus-4-8`。 `provider/model` 值标准化为 `provider:model`。该模型来自 `configurable['model']` 或 `HARBOR_MODEL` 环境变量，无法解析或缺失的值会引发 `ValueError`。
 * **`--ak project_path=<dir>`**：包含`langgraph.json`的本地目录。
 * **`--ak graph=<name>`**：运行`langgraph.json`中的哪个图。
@@ -210,20 +210,20 @@ graph = create_deep_agent(model="fireworks:accounts/fireworks/models/glm-5p2")
 
 ### 在沙箱内运行代理
 
-Harbor 在试用容器内运行整个代理。<Accordion title="Single-trial lifecycle">
-  1. **解析和准备**：`harbor run`将标志解析为作业配置。作业工厂解析并缓存任务，验证环境资源限制，并在任何试运行之前解析指标。缓存仅适用于远程任务，因此`-p`本地任务被就地读取。
-  2. **扇出**：Harbor 从`n_attempts × tasks × agents` 开始构建试验列表，然后同时运行试验直至`-n` 限制，并进行`-r` 重试。并行性是每次试验的结果，因此不同的任务、代理和尝试一起运行，每个任务、代理和尝试都在自己的沙箱中运行。
-  3. **创建Trial**：Trial加载缓存任务，从`project_path`、`graph`、`model`构建LangGraph代理，并在不启动的情况下构建环境。
-  4. **启动环境**：环境启动并启动容器。对于 Docker 环境，这会构建或重用映像并运行容器。
-  5. **安装代理**：Harbor在容器中创建虚拟环境，上传`project_path`，pip在容器内安装`langgraph.json`依赖。
-  6. **运行并验证**：Harbor通过LangGraph运行器运行容器内的图，然后运行`tests/test.sh`，将奖励写入`/logs/verifier/reward.txt`。7. **Finalize**：Harbor停止并删除容器并写入试用结果。该作业将所有试验结果聚合为一项作业结果。
-</Accordion>
+Harbor 在试用容器内运行整个代理。> **单次试验生命周期**
+>
+> 1. **解析和准备**：`harbor run`将标志解析为作业配置。作业工厂解析并缓存任务，验证环境资源限制，并在任何试运行之前解析指标。缓存仅适用于远程任务，因此`-p`本地任务被就地读取。
+> 2. **扇出**：Harbor 从`n_attempts × tasks × agents` 开始构建试验列表，然后同时运行试验直至`-n` 限制，并重试`-r`。并行性是每次试验的结果，因此不同的任务、代理和尝试一起运行，每个任务、代理和尝试都在自己的沙箱中运行。
+> 3. **创建Trial**：Trial加载缓存任务，从`project_path`、`graph`、`model`构建LangGraph代理，并在不启动的情况下构建环境。
+> 4. **启动环境**：环境启动并启动容器。对于 Docker 环境，这会构建或重用映像并运行容器。
+> 5. **安装代理**：Harbor在容器中创建虚拟环境，上传`project_path`，pip在容器内安装`langgraph.json`依赖。> 6. **运行并验证**：Harbor通过LangGraph运行器运行容器内的图，然后运行`tests/test.sh`，将奖励写入`/logs/verifier/reward.txt`。
+> 7. **Finalize**：Harbor停止并删除容器并写入试用结果。该作业将所有试验结果聚合为一项作业结果。
 
 有关构建Deep Agents的更多信息，请参阅[Deep Agents documentation](/oss/python/deepagents/overview)。
 
 ## 沙箱
 
-`langsmith` Harbor 环境在LangSmith 沙箱上运行每个试验。使用 `--env langsmith` 选择它，以便与其他沙箱提供商一起在 LangSmith 基础设施上执行 Harbor 作业。每个试验都有自己的沙箱，Harbor 在试验结束后将其删除。
+`langsmith` Harbor 环境在LangSmith 沙箱上运行每个试验。使用 `--env langsmith` 选择它，以与其他沙箱提供商一起在 LangSmith 基础设施上执行 Harbor 作业。每个试验都有自己的沙箱，Harbor 在试验结束后将其删除。
 
 ### 运行评估
 
@@ -241,11 +241,11 @@ Harbor 每次试验都会创建一个 LangSmith 沙箱，并在其中运行代�
 
 ### 配置沙箱环境
 
-LangSmith 环境从文件系统快照启动每个沙箱。在您的 Harbor 任务中提供以下内容之一：
-
-* **预建图像**：在`task.toml`中设置`[environment].docker_image`。 Harbor 重用该映像或从该映像创建快照。
+LangSmith 环境从文件系统快照启动每个沙箱。在您的 Harbor 任务中提供以下内容之一：* **预建图像**：在`task.toml`中设置`[environment].docker_image`。 Harbor 重用该映像或从该映像创建快照。
 * **现有快照**：传递 `environment.kwargs.snapshot_name` 从您已创建的 [snapshot](/langsmith/sandbox-snapshots) 启动。
-* **Dockerfile**：包含 `environment/Dockerfile`。 Harbor 使用 [build-from-Dockerfile flow](/langsmith/sandbox-snapshots#build-a-snapshot-from-a-dockerfile) 从中构建快照，并使用任务 `environment/` 目录作为构建上下文。使用环境 kwargs 调整沙箱生命周期，通过 `--ek` 在命令行上传递：
+* **Dockerfile**：包含 `environment/Dockerfile`。 Harbor 使用 [build-from-Dockerfile flow](/langsmith/sandbox-snapshots#build-a-snapshot-from-a-dockerfile) 从中构建快照，并使用任务 `environment/` 目录作为构建上下文。
+
+使用环境 kwargs 调整沙箱生命周期，通过 `--ek` 在命令行上传递：
 
 ```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 harbor run -d "<org/name>" \
@@ -276,12 +276,6 @@ harbor run -d "<org/name>" \
 
 ***
 
-<div>
-  <Callout icon="terminal-2">
-    [Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
-  </Callout>
+[Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
 
-  <Callout icon="edit">
-    [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/harbor-integrations.mdx) 或 [file an issue](https://github.com/langchain-ai/docs/issues/new/choose)。
-  </Callout>
-</div>
+[Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/harbor-integrations.mdx) 或 [file an issue](https://github.com/langchain-ai/docs/issues/new/choose)。

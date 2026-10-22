@@ -8,7 +8,9 @@
 
 [**Composite evaluators**](/langsmith/composite-evaluators-ui) 是将多个评估者分数合并为单个 [score](/langsmith/evaluation-concepts#evaluator-outputs) 的方法。当您想要评估应用程序的多个方面并将结果合并为单个结果时，这非常有用。
 
-<Note>当在线评估器在跟踪内的任何运行上运行时，跟踪将自动升级到[extended data retention](/langsmith/usage-and-billing#data-retention-auto-upgrades)。此升级将影响跟踪定价，但可确保保留满足您的评估标准的跟踪（通常是对分析最有价值的跟踪）以供调查。 </Note>
+> [!注意]
+>
+> 当在线评估器在跟踪内的任何运行上运行时，跟踪将自动升级到[extended data retention](/langsmith/usage-and-billing#data-retention-auto-upgrades)。此升级将影响跟踪定价，但可确保保留满足您的评估标准的跟踪（通常是对分析最有价值的跟踪）以供调查。
 
 ## 查看在线评估器
 
@@ -25,14 +27,16 @@
 ### 2. 配置复合求值器
 
 1. 指定您的评估员。
-2. 选择一种聚合方法，**平均** 或 **求和**。
+2. 选择聚合方法：**平均** 或 **总和**。
    * **平均**： Σ(体重\*分数) / Σ(体重)。
    * **总和**：Σ(体重\*分数)。
 3. 添加您想要包含在综合乐谱中的反馈键。
 4. 添加反馈键的权重。默认情况下，每个反馈键的权重是相等的。调整权重以增加或减少最终分数中特定反馈键的重要性。
 5. 单击**创建**以保存评估器。
 
-<Tip> 如果您需要调整综合分数的权重，可以在创建评估器后更新它们。对于配置了评估器的所有运行，所得分数将被更新。 </Tip>
+> [!提示]
+>
+> 如果您需要调整综合分数的权重，可以在创建评估器后更新它们。对于配置了评估器的所有运行，所得分数将被更新。
 
 ### 3. 查看综合评估器结果综合分数作为**反馈**附加到运行中，类似于单个评估者的反馈。
 
@@ -42,16 +46,12 @@
 * [Filter for runs](/langsmith/filter-traces) 具有综合分数，或综合分数满足特定阈值。
 * [Create a chart](/langsmith/dashboards#custom-dashboards) 可视化综合分数随时间变化的趋势。
 
-<Note> 如果运行时未配置任何组成评估器，则不会计算该运行的综合分数。 </Note>
+> [!注意]
+>
+> 如果运行时未配置任何组成评估器，则不会计算该运行的综合分数。
 
 ***
 
-<div>
-  <Callout icon="terminal-2">
-    [Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
-  </Callout>
+[Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
 
-  <Callout icon="edit">
-    [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/online-evaluations-composite.mdx) 或 [file an issue](https://github.com/langchain-ai/docs/issues/new/choose)。
-  </Callout>
-</div>
+[Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/online-evaluations-composite.mdx) 或 [file an issue](https://github.com/langchain-ai/docs/issues/new/choose)。

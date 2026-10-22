@@ -15,9 +15,9 @@
 * **主动外展**：起草每周状态更新、后续提醒或定期报告。
 * **数据监控**：按设定的节奏检查仪表板、指标或源，并显示任何值得注意的内容。
 
-<Tip>
-  要根据事件（例如 Slack 消息或电子邮件）启动代理，请改用 [channels](/langsmith/fleet/channels)。
-</Tip>
+> [!提示]
+>
+> 要根据事件（例如 Slack 消息或电子邮件）启动代理，请改用 [channels](/langsmith/fleet/channels)。
 
 ## 添加时间表
 
@@ -27,9 +27,9 @@
 
 2. 选择计划运行的时间。
 
-   <Note>
-     时间表采用 UTC 时间。配置计划时将所需的执行时间转换为 UTC。
-   </Note>
+   > [!注意]
+   >
+   > 时间表采用 UTC 时间。配置计划时将所需的执行时间转换为 UTC。
 
 3. （可选）添加 **提示**。通过自定义提示，您可以告诉代理在每次计划运行时要做什么。例如：*“总结过去 24 小时内我未读的电子邮件，并将摘要发布到 Slack 中的#team-updates。”
    *“检查您的内存文件并合并所有冗余或过时的条目。”
@@ -40,12 +40,6 @@
 
 ***
 
-<div>
-  <Callout icon="terminal-2">
-    [Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
-  </Callout>
+[Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
 
-  <Callout icon="edit">
-    [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/fleet/schedules.mdx) 或 [file an issue](https://github.com/langchain-ai/docs/issues/new/choose)。
-  </Callout>
-</div>
+[Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/fleet/schedules.mdx) 或 [file an issue](https://github.com/langchain-ai/docs/issues/new/choose)。

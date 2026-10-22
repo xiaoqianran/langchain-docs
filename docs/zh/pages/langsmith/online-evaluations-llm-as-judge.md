@@ -6,9 +6,11 @@
 
 [Online evaluations](/langsmith/evaluation-concepts#online-evaluations) 提供您生产轨迹的实时反馈。这对于持续监控应用程序的性能非常有用，以识别问题、衡量改进并确保长期稳定的质量。
 
-**[LLM-as-a-judge](/langsmith/evaluation-concepts#llm-as-judge)** 评估者使用 LLM 来评估痕迹，作为类人判断的可扩展替代品。本指南涵盖了评估单次运行的**运行级别**评估器。要评估整个对话线程，请参阅[multi-turn online evaluators](/langsmith/online-evaluations-multi-turn)。
+**[LLM-as-a-judge](/langsmith/evaluation-concepts#llm-as-judge)** 评估者使用法学硕士来评估痕迹，作为类人判断的可扩展替代品。本指南涵盖了评估单次运行的**运行级别**评估器。要评估整个对话线程，请参阅[multi-turn online evaluators](/langsmith/online-evaluations-multi-turn)。
 
-<Note>当在线评估器在跟踪内的任何运行上运行时，跟踪将自动升级到[extended data retention](/langsmith/usage-and-billing#data-retention-auto-upgrades)。此升级将影响跟踪定价，但可确保保留满足您的评估标准的跟踪（通常是对分析最有价值的跟踪）以供调查。 </Note>
+> [!注意]
+>
+> 当在线评估器在跟踪内的任何运行上运行时，跟踪将自动升级到[extended data retention](/langsmith/usage-and-billing#data-retention-auto-upgrades)。此升级将影响跟踪定价，但可确保保留满足您的评估标准的跟踪（通常是对分析最有价值的跟踪）以供调查。
 
 ## 查看在线评估器
 
@@ -32,13 +34,13 @@
 * 与特定元数据片段匹配的运行（例如，如果您使用 `plan_type` 记录跟踪并且只想对来自企业客户的跟踪运行评估）。请参阅[adding metadata to your traces](/langsmith/add-metadata-tags)了解更多信息。
 * 在其他评估者的分数满足条件（例如 `correctness` 分数低于 `0.5`）时运行。请参阅[Chain evaluators](/langsmith/evaluators#chain-evaluators)了解更多信息。
 
-评估器使用过滤器构建器，其字段和运算符与[Filter traces (ClickHouse)](/langsmith/filter-traces-in-application)中描述的相同。<Tip>
-  当您为评估器创建过滤器时，检查运行通常很有帮助。打开评估器配置面板后，您可以检查运行并向其应用过滤器。您应用于运行表的任何过滤器都将自动反映在评估器的过滤器中。
-</Tip>
+评估器使用过滤器构建器，其字段和运算符与[Filter traces (ClickHouse)](/langsmith/filter-traces-in-application)中描述的相同。> [!提示]
+>
+> 当您为评估器创建过滤器时，检查运行通常很有帮助。打开评估器配置面板后，您可以检查运行并向其应用过滤器。您应用于运行表的任何过滤器都将自动反映在评估器的过滤器中。
 
-<Tip>
-  如果您在此项目上还有一个 Webhook 自动化规则，并且希望 Webhook 负载包含此评估程序的分数，请向 Webhook 规则添加反馈过滤器，而不是依赖规则排序。例如，对 `eq(feedback_key, "answer_usefulness")` 进行过滤，以便仅在分数存在后才触发 Webhook。详情请参阅[Ensuring evaluations complete before the webhook fires](/langsmith/webhooks#ensuring-evaluations-complete-before-the-webhook-fires)。
-</Tip>
+> [!提示]
+>
+> 如果您在此项目上还有一个 Webhook 自动化规则，并且希望 Webhook 有效负载包含此评估者的分数，请向 Webhook 规则添加反馈过滤器，而不是依赖规则排序。例如，对 `eq(feedback_key, "answer_usefulness")` 进行过滤，以便仅在分数存在后才触发 Webhook。详情请参阅[Ensuring evaluations complete before the webhook fires](/langsmith/webhooks#ensuring-evaluations-complete-before-the-webhook-fires)。
 
 ## 配置采样率
 
@@ -48,15 +50,15 @@
 
 要将规则应用于过去的运行或线程，请在 **配置评估器** 面板中：1. 在**源**中，选择**运行**或**线程**。
 2. 展开**高级**。
-3. 切换到 **应用到从日期开始的过去运行** 或 **应用到从日期开始的过去线程**，然后输入日期。
+3. 切换到**应用于日期以来的过去运行**或**应用到日期以来的过去线程**，然后输入日期。
 
 您只能在创建规则时回填。
 
-当您回填 [thread-level evaluation rule](/langsmith/online-evaluations-multi-turn) 时，LangSmith 会查找在您选择的开始日期和创建规则的时间之间具有匹配跟踪活动的线程，然后应用规则的过滤器。一旦每个选定的线程空闲，LangSmith 评估其根运行历史并将反馈附加到线程中的代表性跟踪。回填完成后，规则保持活动状态，并通过正常的实时流程继续评估新的匹配线程。
+当您回填 [thread-level evaluation rule](/langsmith/online-evaluations-multi-turn) 时，LangSmith 会查找在您选择的开始日期和创建规则的时间之间具有匹配跟踪活动的线程，然后应用规则的过滤器。一旦每个选定的线程空闲，LangSmith 就会评估其根运行历史记录并将反馈附加到线程中的代表性跟踪。回填完成后，规则保持活动状态，并通过正常的实时流程继续评估新的匹配线程。
 
-<Note>
-  回填作为后台作业进行处理，因此您不会立即看到结果。
-</Note>
+> [!注意]
+>
+> 回填作为后台作业进行处理，因此您不会立即看到结果。
 
 为了跟踪回填的进度，您可以通过前往跟踪项目或代理环境中的 **Evaluators** 选项卡并单击您创建的评估器的日志按钮来查看评估器的日志。在线评估器日志类似于[automation rule logs](/langsmith/rules#view-logs-for-your-automations)。1. 添加评估者姓名。
 2. （可选）过滤您想要应用评估器的运行或配置采样率。
@@ -74,7 +76,7 @@
 
 ## 使用决策模型作为判断
 
-您可以使用决策模型（例如 Jev）作为法官来代替法学硕士。您定义的每个问题都会返回一个键入的答案，例如概率、选定的选项或分数，并且 LangSmith 将每个问题记录在其自己的反馈键下。参见[Set up decision model online evaluators](/langsmith/online-evaluations-decision-models)。
+您可以使用决策模型代替法学硕士作为判断。您定义的每个问题都会返回一个键入的答案，例如概率、选定的选项或分数，并且 LangSmith 将每个问题记录在其自己的反馈键下。参见[Set up decision model online evaluators](/langsmith/online-evaluations-decision-models)。
 
 ## 将多模式内容映射到评估器如果您的跟踪包含图像、音频或文档等多模式内容，您可以将此内容包含在评估器提示中。有两种方法：
 
@@ -86,9 +88,7 @@
      * 如果要包含特定附件，可以使用建议的变量名称，例如`{{attachment.file_name}}`，这会将附件列表中带有`file_name`的文件映射到将其传递给评估器。
      * 如果要包含所有附件，请使用 `{{attachments}`}\` 变量。
 
-  <img alt="Edit evaluator modal with an image attachment selected for the input." />
-
-  <img alt="Edit evaluator modal with an image attachment selected for the input." />然后，评估者可以在评估跟踪时访问这些附件。这对于需要执行以下操作的评估人员非常有用：
+  ![Edit evaluator modal with an image attachment selected for the input.](https://mintcdn.com/langchain-5e9cc07a/PCte2XqN2om94BaK/langsmith/images/variable-multimodal-content-light.png?fit=max\&auto=format\&n=PCte2XqN2om94BaK\&q=85\&s=4f96e959ec461208c43add7c5c02b8b0)然后，评估者可以在评估跟踪时访问这些附件。这对于需要执行以下操作的评估人员非常有用：
 
 * 验证图像描述是否与跟踪中的实际图像匹配。
 * 检查转录是否准确反映了音频输入。
@@ -96,12 +96,6 @@
 
 ***
 
-<div>
-  <Callout icon="terminal-2">
-    [Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
-  </Callout>
+[Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
 
-  <Callout icon="edit">
-    [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/online-evaluations-llm-as-judge.mdx) 或 [file an issue](https://github.com/langchain-ai/docs/issues/new/choose)。
-  </Callout>
-</div>
+[Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/online-evaluations-llm-as-judge.mdx) 或 [file an issue](https://github.com/langchain-ai/docs/issues/new/choose)。

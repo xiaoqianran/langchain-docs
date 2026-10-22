@@ -771,6 +771,12 @@
           "rel": "langsmith/compare-experiment-results.md"
         }
       ],
+      "compatible-decision-model-provider": [
+        {
+          "title": "Connect to a compatible decision model provider",
+          "rel": "langsmith/compatible-decision-model-provider.md"
+        }
+      ],
       "components": [
         {
           "title": "LangSmith Deployment components",
@@ -2439,6 +2445,12 @@
           "rel": "langsmith/self-host-playground-environment-settings.md"
         }
       ],
+      "self-host-restricted-network-build": [
+        {
+          "title": "Set up a build machine on a restricted network",
+          "rel": "langsmith/self-host-restricted-network-build.md"
+        }
+      ],
       "self-host-sandbox-architecture": [
         {
           "title": "Self-hosted Sandbox architecture",
@@ -3181,12 +3193,6 @@
         {
           "title": "Tunnels",
           "rel": "langsmith/tunnels.md"
-        }
-      ],
-      "typesafe-compatible-model": [
-        {
-          "title": "Connect to a TypeSafe-compatible model provider",
-          "rel": "langsmith/typesafe-compatible-model.md"
         }
       ],
       "upload-existing-experiments": [

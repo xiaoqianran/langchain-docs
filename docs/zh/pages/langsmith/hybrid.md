@@ -6,9 +6,9 @@
 
 LangSmith 部署设置，您可以在基础架构中自托管代理服务器并将跟踪发送到 LangSmith 云或自托管 LangSmith 实例。
 
-Hybrid 是[LangSmith Deployment](/langsmith/deployment) 的平台设置，它**在生产中部署和运行代理**。
+Hybrid 是[LangSmith Deployment](/langsmith/deployment) 的平台设置，**在生产中部署和运行代理**。
 
-在混合平台设置中，您在自己的基础设施中自行托管 [Agent Servers](/langsmith/agent-server) 并将其跟踪发送到 LangSmith，其中 LangSmith 可以是 [self-hosted](/langsmith/self-hosted) 实例或 [LangSmith Cloud](/langsmith/cloud)。
+在混合平台设置中，您可以在自己的基础设施中自行托管[Agent Servers](/langsmith/agent-server)，并将其跟踪发送到LangSmith，其中LangSmith可以是[self-hosted](/langsmith/self-hosted)实例或[LangSmith Cloud](/langsmith/cloud)。
 
 此设置使您可以控制代理工作负载的运行位置，同时让您选择最适合您的可观察性和合规性要求的[LangSmith platform option](/langsmith/platform-setup)。
 
@@ -16,12 +16,12 @@ Hybrid 是[LangSmith Deployment](/langsmith/deployment) 的平台设置，它**�
 
 |组件|它在哪里运行 |谁来管理|
 | - | - | - |
-| <Tooltip>代理服务器</Tooltip> <br />适用于[LangSmith Deployment](/langsmith/deployment) |您的基础设施|你|
-| LangSmith <br />(追踪、评估、提示) |在您的基础设施中自托管，或LangSmith SaaS |您（自托管）或LangSmith (SaaS) |
+| [LangSmith Deployment](/langsmith/deployment) 的代理服务器（运行应用程序的服务器。） |您的基础设施|你|
+| LangSmith（追踪、评估、提示）|在您的基础设施中自托管，或 LangSmith SaaS |您（自托管）或LangSmith (SaaS) |
 
-<Note>
-  Hybrid 是一个用于 LangSmith 部署（代理服务）的平台设置。要仅为可观察性、评估和提示工程设置LangSmith，请参阅[Set up LangSmith](/langsmith/platform-setup)。
-</Note>
+> [!注意]
+>
+> Hybrid 是LangSmith 部署（代理服务）的平台设置。要仅为可观察性、评估和提示工程设置LangSmith，请参阅[Set up LangSmith](/langsmith/platform-setup)。
 
 ## 工作流程
 
@@ -41,24 +41,44 @@ Hybrid 是[LangSmith Deployment](/langsmith/deployment) 的平台设置，它**�
     <thead>
       <tr>
         <th>地区</th>
+
+        <th>
+          网址
+        </th>
       </tr>
     </thead>
 
     <tbody>
       <tr>
         <td>GCP 美国</td>
+
+        <td>
+          `https://api.smith.langchain.com`
+        </td>
       </tr>
 
       <tr>
         <td>GCP 欧盟</td>
+
+        <td>
+          `https://eu.api.smith.langchain.com`
+        </td>
       </tr>
 
       <tr>
         <td>GCP 亚太地区</td>
+
+        <td>
+          `https://apac.api.smith.langchain.com`
+        </td>
       </tr>
 
       <tr>
         <td>AWS 美国</td>
+
+        <td>
+          `https://aws.api.smith.langchain.com`
+        </td>
       </tr>
     </tbody>
   </table>
@@ -69,12 +89,6 @@ Hybrid 是[LangSmith Deployment](/langsmith/deployment) 的平台设置，它**�
 
 ***
 
-<div>
-  <Callout icon="terminal-2">
-    [Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
-  </Callout>
+[Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
 
-  <Callout icon="edit">
-    [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/hybrid.mdx) 或 [file an issue](https://github.com/langchain-ai/docs/issues/new/choose)。
-  </Callout>
-</div>
+[Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/hybrid.mdx) 或 [file an issue](https://github.com/langchain-ai/docs/issues/new/choose)。

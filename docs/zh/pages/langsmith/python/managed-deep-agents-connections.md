@@ -10,7 +10,7 @@
 
 连接让您：
 
-* **将凭据保留在项目之外**：`mda deploy` 收集 `.env` 值作为每次部署的部署机密。连接值仍保留在工作区中。
+* **将凭据保留在项目之外**：`mda deploy` 在每次部署时收集 `.env` 值作为部署机密。连接值仍保留在工作区中。
 * **为每个呼叫者提供自己的身份**：用户拥有的连接可以解析发出请求的人的凭据，因此代理可以读取该人的文档并以他们的名义进行操作。环境变量为每个人保留一个值。
 * **跳过 OAuth 管道**：托管 Deep Agents 运行授权往返，因此项目不需要回调路由、令牌存储或同意屏幕。这些流由您的托管深度代理自动处理。* **跨代理重复使用一个 slug**：连接属于工作区，因此多个部署可以解析相同的 slug。每个部署都在该 slug 下保存自己的凭据：从每个项目根运行 `mda connections create <slug>` 一次。轮换部署的值会在下次运行时生效，无需重新部署。
 
@@ -28,15 +28,15 @@ api_key = await connections.get("organization-tavily", {"type": "agent"})
 
 本页的其余部分介绍了围绕这些步骤的两个选择：谁拥有凭证以及服务如何进行身份验证。
 
-<Note>
-  托管 Deep Agents 于 [LangSmith Cloud](/langsmith/cloud) **公开 [beta](/langsmith/release-stages)**。
-</Note>
+> [!注意]
+>
+> 托管 Deep Agents 于 [LangSmith Cloud](/langsmith/cloud) **公开 [beta](/langsmith/release-stages)**。
 
 ## 选择凭证所有者
 
 每个 `connections.get(...)` 调用名称都拥有它解析的凭证：
 
-|业主|决定 |使用时 |
+|业主|决定|使用时 |
 | - | - | - |
 | `agent` |属于部署的一份凭证。每个呼叫者都使用它。 |每个呼叫者都需要相同的功能：使用 Tavily（共享知识库）进行网络搜索，或发布到一个团队频道。 |
 | `user` |呼叫者自己的凭据。每个人都授权自己的帐户。 |代理充当提出问题的人：搜索只有他们可以看到的 Notion 页面、以他们的名义提交问题或以他们的身份发送电子邮件。 |```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
@@ -54,7 +54,7 @@ notion_token = await connections.get("engineering-notion", {"type": "user"})
 
 ### 识别来电者
 
-用户拥有的连接根据托管Deep Agents附加到运行的调用者身份进行解析。该身份的来源取决于代理的调用方式：|表面|来电者身份 |
+用户拥有的连接根据托管Deep Agents附加到运行的调用者身份进行解析。该身份的来源取决于代理的调用方式：|表面|来电者身份|
 | - | - |
 | [Slack channel](/langsmith/python/managed-deep-agents-channels-slack) |发送消息的 Slack 用户。 |
 | LangSmith 工作室 |已登录的 LangSmith 用户。 |
@@ -64,9 +64,9 @@ notion_token = await connections.get("engineering-notion", {"type": "user"})
 
 代码永远不会将用户 ID 传递给 `connections.get(...)`。运行时解析调用者并返回该人的凭据。
 
-<Note>
-  Slack 和 Studio 为调用者完成授权往返。对自定义渠道的一流支持正在开发中。要立即针对呼叫者身份构建自定义前端，请参阅 [Handle the authorization interrupt](#handle-the-authorization-interrupt) 并联系 [LangChain team](https://forum.langchain.com/c/help/langsmith/)。
-</Note>
+> [!注意]
+>
+> Slack 和 Studio 为调用者完成授权往返。对自定义渠道的一流支持正在开发中。要立即针对呼叫者身份构建自定义前端，请参阅 [Handle the authorization interrupt](#handle-the-authorization-interrupt) 并联系 [LangChain team](https://forum.langchain.com/c/help/langsmith/)。
 
 ## 选择创建模式
 
@@ -196,9 +196,9 @@ uv run mda connections catalog
 
 没有默认范围的服务需要`--scope`。
 
-<Accordion title="Some services run separate OAuth apps for their API and their MCP server">
-  观念就是其中之一。 `--oauth notion-api` 针对 Notion 的 REST API 注册应用程序，并且该应用程序未授权 Notion 的 MCP 服务器。要使用 MCP 服务器，请创建一个 [MCP OAuth connection](#create-an-mcp-oauth-connection)。当服务同时提供这两种服务时，请检查提供商的文档。
-</Accordion>GitHub 需要 OAuth 客户端 ID 和客户端密钥。设置`GITHUB_CLIENT_SECRET`，然后创建连接。将 `********` 替换为客户端 ID：
+> **某些服务为其 API 和 MCP 服务器运行单独的 OAuth 应用程序**
+>
+> 观念就是其中之一。 `--oauth notion-api` 针对 Notion 的 REST API 注册应用程序，并且该应用程序未授权 Notion 的 MCP 服务器。要使用 MCP 服务器，请创建一个 [MCP OAuth connection](#create-an-mcp-oauth-connection)。当服务同时提供这两种服务时，请检查提供商的文档。GitHub 需要 OAuth 客户端 ID 和客户端密钥。设置`GITHUB_CLIENT_SECRET`，然后创建连接。将 `********` 替换为客户端 ID：
 
 ```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 uv run mda connections create frontend-github \
@@ -207,7 +207,7 @@ uv run mda connections create frontend-github \
   --secret-from-env GITHUB_CLIENT_SECRET
 ```
 
-创建时，CLI 会打印重定向 URI 以向提供者注册。在调用者授权之前，在提供商的应用程序设置页面上注册该 URI。 URI 遵循您的 LangSmith 主机，例如生产环境中的 `https://api.smith.langchain.com/v1/agent-auth/oauth/callback`。
+创建时，CLI 会打印重定向 URI 以向提供程序注册。在调用者授权之前，在提供商的应用程序设置页面上注册该 URI。 URI 遵循您的 LangSmith 主机，例如生产环境中的 `https://api.smith.langchain.com/v1/agent-auth/oauth/callback`。
 
 可选标志：
 
@@ -279,7 +279,7 @@ uv run mda connections create support-linear \
   --authorize
 ```
 
-CLI 为您登录的帐户启动授权流程，并存储部署的结果授权。运行时代码将其解析为代理拥有的凭据：
+CLI 为您登录的帐户启动授权流程，并存储部署的结果授权。运行时代码将其解析为代理拥有的凭证：
 
 ```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 access_token = await connections.get("support-linear", {"type": "agent"})
@@ -287,17 +287,17 @@ access_token = await connections.get("support-linear", {"type": "agent"})
 
 `--authorize` 仅适用于 OAuth 连接。将其与 `--oauth`、自定义端点或 `--mcp` 结合使用。从项目目录运行它，因为授权属于该项目的部署。当每个呼叫者都应充当一个共享帐户而不是他们自己时，请使用代理拥有的 OAuth 帐户。向问答代理授予读取权限的公司 Notion 帐户就是一个例子。
 
-<Tip>
-  授权您的团队拥有的专用帐户，而不是您自己的帐户。您登录的帐户将成为客服人员对每个呼叫者采取的每项操作背后的身份。使用个人帐户会产生三项费用：
-
-  * 代理获得您对该提供商的完全访问权限。
-  * 提供商的审核日志显示您的姓名以及代理所做的事情。
-  * 当您自己的访问权限发生更改时，代理将停止工作。
-
-  通过这种方式获得的资助会与授权它的帐户（即使是专用帐户）保持联系。密码重置、撤销会话或停用帐户会结束授予，因此将该帐户视为生产基础设施。
-
-  为专用帐户提供代理所需的最窄 `--scope` 值。设置 `--allowed-scope` 以限制任何后续授权可以请求的内容。
-</Tip>
+> [!提示]
+>
+> 授权您的团队拥有的专用帐户，而不是您自己的帐户。您登录的帐户将成为客服人员对每个呼叫者采取的每项操作背后的身份。使用个人帐户会产生三项费用：
+>
+> * 代理获得您对该提供商的完全访问权限。
+> * 提供商的审核日志显示您的姓名以及代理所做的事情。
+> * 当您自己的访问权限更改时，代理将停止工作。
+>
+> 以这种方式发放的赠款与授权它的帐户（即使是专用帐户）保持联系。密码重置、撤销会话或停用帐户会结束授予，因此将该帐户视为生产基础设施。
+>
+> 为专用帐户提供代理所需的最窄 `--scope` 值。设置 `--allowed-scope` 以限制任何后续授权可以请求的内容。
 
 ### 在自定义工具中访问 OAuth 令牌
 
@@ -394,7 +394,7 @@ uv run mda connections create engineering-notion --mcp https://mcp.notion.com/mc
 }
 ```一个中断会列出每一项缺失的授权。在恢复之前处理每个条目。带有 `"kind": "secret"` 的条目代表用户拥有的 API 密钥，而不是 OAuth 授权。 Slack 和 Studio 不收集这些。欲了解更多信息，请参阅[Review current limitations](#review-current-limitations)。
 
-|领域 |礼物给 |意义|
+|领域|礼物给 |意义|
 | - | - | - |
 | `type` |永远 |鉴别器。必须是`credential_authorization_required`。 |
 | `message` |永远 |人类可读的摘要显示在待决拨款上方。 |
@@ -410,77 +410,112 @@ uv run mda connections create engineering-notion --mcp https://mcp.notion.com/mc
 
 检测 `stream.interrupt` 上的凭证门负载，渲染连接卡，然后在存储每个授权后使用 `stream.respond` 恢复：
 
-<CodeGroup>
-  ```tsx React theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  import { useStream } from "@langchain/react";
+```tsx React theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+import { useStream } from "@langchain/react";
 
-  type CredentialAuthorizationRequired = {
-    type: "credential_authorization_required";
-    message?: string;
-    credentials: Array<{
-      slug: string;
-      kind: "oauth2" | "secret";
-      connect_url?: string;
-      auth_id?: string;
-    }>;
-  };
+type CredentialAuthorizationRequired = {
+  type: "credential_authorization_required";
+  message?: string;
+  credentials: Array<{
+    slug: string;
+    kind: "oauth2" | "secret";
+    connect_url?: string;
+    auth_id?: string;
+  }>;
+};
 
-  function isCredentialAuthorization(
-    value: unknown
-  ): value is CredentialAuthorizationRequired {
-    return (
-      typeof value === "object" &&
-      value !== null &&
-      "type" in value &&
-      value.type === "credential_authorization_required"
-    );
-  }
+function isCredentialAuthorization(
+  value: unknown
+): value is CredentialAuthorizationRequired {
+  return (
+    typeof value === "object" &&
+    value !== null &&
+    "type" in value &&
+    value.type === "credential_authorization_required"
+  );
+}
 
-  export function Chat() {
-    const stream = useStream({
-      apiUrl: "https://your-deployment.example",
-      assistantId: "agent",
-    });
+export function Chat() {
+  const stream = useStream({
+    apiUrl: "https://your-deployment.example",
+    assistantId: "agent",
+  });
 
-    const payload = stream.interrupt?.value;
-    const credentialAuth = isCredentialAuthorization(payload) ? payload : null;
+  const payload = stream.interrupt?.value;
+  const credentialAuth = isCredentialAuthorization(payload) ? payload : null;
 
-    return (
-      <div>
-        {/* messages … */}
-        {credentialAuth && (
-          <ConnectCard
-            payload={credentialAuth}
-            onComplete={async (connectedSlugs) => {
-              await stream.respond(
-                {
-                  type: "credential_authorization_completed",
-                  connected_slugs: connectedSlugs,
-                },
-                { interruptId: stream.interrupt?.id }
-              );
-            }}
-          />
-        )}
-      </div>
-    );
-  }
-  ```
+  return (
+    <div>
+      {/* messages … */}
+      {credentialAuth && (
+        <ConnectCard
+          payload={credentialAuth}
+          onComplete={async (connectedSlugs) => {
+            await stream.respond(
+              {
+                type: "credential_authorization_completed",
+                connected_slugs: connectedSlugs,
+              },
+              { interruptId: stream.interrupt?.id }
+            );
+          }}
+        />
+      )}
+    </div>
+  );
+}
+```
 
-  ```vue Vue theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  <script setup lang="ts">
-  import { computed } from "vue";
-  import { useStream } from "@langchain/vue";
+```vue Vue theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+<script setup lang="ts">
+import { computed } from "vue";
+import { useStream } from "@langchain/vue";
+
+const stream = useStream({
+  apiUrl: "https://your-deployment.example",
+  assistantId: "agent",
+});
+
+const credentialAuth = computed(() => {
+  const value = stream.interrupt.value?.value;
+  return value?.type === "credential_authorization_required" ? value : null;
+});
+
+async function onComplete(connectedSlugs: string[]) {
+  await stream.respond(
+    {
+      type: "credential_authorization_completed",
+      connected_slugs: connectedSlugs,
+    },
+    { interruptId: stream.interrupt.value?.id }
+  );
+}
+</script>
+
+<template>
+  <div>
+    <!-- messages … -->
+    <ConnectCard
+      v-if="credentialAuth"
+      :payload="credentialAuth"
+      @complete="onComplete"
+    />
+  </div>
+</template>
+```
+
+```svelte Svelte theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+<script lang="ts">
+  import { useStream } from "@langchain/svelte";
 
   const stream = useStream({
     apiUrl: "https://your-deployment.example",
     assistantId: "agent",
   });
 
-  const credentialAuth = computed(() => {
-    const value = stream.interrupt.value?.value;
-    return value?.type === "credential_authorization_required" ? value : null;
-  });
+  $: payload = stream.interrupt?.value;
+  $: credentialAuth =
+    payload?.type === "credential_authorization_required" ? payload : null;
 
   async function onComplete(connectedSlugs: string[]) {
     await stream.respond(
@@ -488,98 +523,61 @@ uv run mda connections create engineering-notion --mcp https://mcp.notion.com/mc
         type: "credential_authorization_completed",
         connected_slugs: connectedSlugs,
       },
-      { interruptId: stream.interrupt.value?.id }
+      { interruptId: stream.interrupt?.id }
     );
   }
-  </script>
+</script>
 
-  <template>
-    <div>
-      <!-- messages … -->
-      <ConnectCard
-        v-if="credentialAuth"
-        :payload="credentialAuth"
-        @complete="onComplete"
-      />
-    </div>
-  </template>
-  ```
+<div>
+  <!-- messages … -->
+  {#if credentialAuth}
+    <ConnectCard payload={credentialAuth} onComplete={onComplete} />
+  {/if}
+</div>
+```
 
-  ```svelte Svelte theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  <script lang="ts">
-    import { useStream } from "@langchain/svelte";
+```ts Angular theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+import { Component, computed } from "@angular/core";
+import { injectStream } from "@langchain/angular";
 
-    const stream = useStream({
-      apiUrl: "https://your-deployment.example",
-      assistantId: "agent",
-    });
-
-    $: payload = stream.interrupt?.value;
-    $: credentialAuth =
-      payload?.type === "credential_authorization_required" ? payload : null;
-
-    async function onComplete(connectedSlugs: string[]) {
-      await stream.respond(
-        {
-          type: "credential_authorization_completed",
-          connected_slugs: connectedSlugs,
-        },
-        { interruptId: stream.interrupt?.id }
-      );
-    }
-  </script>
-
-  <div>
+@Component({
+  selector: "app-chat",
+  template: `
     <!-- messages … -->
-    {#if credentialAuth}
-      <ConnectCard payload={credentialAuth} onComplete={onComplete} />
-    {/if}
-  </div>
-  ```
-
-  ```ts Angular theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  import { Component, computed } from "@angular/core";
-  import { injectStream } from "@langchain/angular";
-
-  @Component({
-    selector: "app-chat",
-    template: `
-      <!-- messages … -->
-      @if (credentialAuth(); as auth) {
-        <app-connect-card
-          [payload]="auth"
-          (complete)="onComplete($event)"
-        />
-      }
-    `,
-  })
-  export class ChatComponent {
-    stream = injectStream({
-      apiUrl: "https://your-deployment.example",
-      assistantId: "agent",
-    });
-
-    credentialAuth = computed(() => {
-      const value = this.stream.interrupt()?.value;
-      return value?.type === "credential_authorization_required" ? value : null;
-    });
-
-    async onComplete(connectedSlugs: string[]) {
-      await this.stream.respond(
-        {
-          type: "credential_authorization_completed",
-          connected_slugs: connectedSlugs,
-        },
-        { interruptId: this.stream.interrupt()?.id }
-      );
+    @if (credentialAuth(); as auth) {
+      <app-connect-card
+        [payload]="auth"
+        (complete)="onComplete($event)"
+      />
     }
+  `,
+})
+export class ChatComponent {
+  stream = injectStream({
+    apiUrl: "https://your-deployment.example",
+    assistantId: "agent",
+  });
+
+  credentialAuth = computed(() => {
+    const value = this.stream.interrupt()?.value;
+    return value?.type === "credential_authorization_required" ? value : null;
+  });
+
+  async onComplete(connectedSlugs: string[]) {
+    await this.stream.respond(
+      {
+        type: "credential_authorization_completed",
+        connected_slugs: connectedSlugs,
+      },
+      { interruptId: this.stream.interrupt()?.id }
+    );
   }
-  ```
-</CodeGroup>
+}
+```
 
-一般中断生命周期（`stream.interrupt`、恢复、检查点）请参见[Human-in-the-loop](/oss/python/langchain/frontend/human-in-the-loop)。### 处理 OAuth 授权 (`kind: "oauth2"`)
+一般中断生命周期（`stream.interrupt`、恢复、检查点）请参见[Human-in-the-loop](/oss/python/langchain/frontend/human-in-the-loop)。
 
-对于每个 OAuth 条目：
+### 处理 OAuth 授权 (`kind: "oauth2"`)对于每个 OAuth 条目：
 
 1. 显示 `slug` 和打开 `connect_url` 的连接控件（仅限 HTTPS；拒绝带有嵌入凭据的 URL）。
 2. 长轮询代理身份验证，直到会话完成：
@@ -609,11 +607,9 @@ GET /v1/agent-auth/oauth-authorization-sessions/{auth_id}?wait_seconds=25
 
 当代理通过 Slack 通道运行时，Slack 会呈现包含 HTTPS `connect_url` 的 OAuth 条目。调用者打开链接，完成同意，Slack 恢复运行，因此没有人需要打开 LangSmith 来连接服务。
 
-<Frame>
-  **屏幕截图占位符：** 此处添加 Slack OAuth 授权提示屏幕截图。
-</Frame>
+**屏幕截图占位符：** 此处添加 Slack OAuth 授权提示屏幕截图。
 
-## 检查并删除连接使用 `list` 或 `get` 检查连接元数据。 `list` 显示工作区中的每个连接，而不仅仅是该项目使用的连接：
+## 检查并删除连接Use `list` or `get` to inspect connection metadata. `list` shows every connection in the workspace, not only the ones this project uses:
 
 ```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 uv run mda connections list
@@ -621,41 +617,41 @@ uv run mda connections get organization-tavily
 uv run mda connections delete organization-tavily
 ```
 
-将 `--json` 传递给 `list` 或 `get` 以获取机器可读的输出。将 `--yes` 传递给 `delete` 以跳过确认提示。
+Pass `--json` to `list` or `get` for machine-readable output. Pass `--yes` to `delete` to skip the confirmation prompt.
 
 ## 本地开发
 
-对于`mda dev`，代理拥有的不透明连接读取`MDA_DEV_<SLUG>`。 CLI 将 slug 转换为大写并用下划线替换连字符。例如，`organization-tavily` 读取为 `MDA_DEV_ORGANIZATION_TAVILY`。
+For `mda dev`, an agent-owned opaque connection reads `MDA_DEV_<SLUG>`. CLI 将 slug 转换为大写并用下划线替换连字符。例如，`organization-tavily` 读取为 `MDA_DEV_ORGANIZATION_TAVILY`。
 
-用户拥有的连接需要经过身份验证的调用者和代理身份验证。部署代理以端到端地执行[authorization interrupt](#handle-the-authorization-interrupt)。
+用户拥有的连接需要经过身份验证的调用者和代理身份验证。 Deploy the agent to exercise the [authorization interrupt](#handle-the-authorization-interrupt) end to end.
 
 ## 查看当前限制
 
-连接是托管 Deep Agents 公共测试版的一部分。当前版本存在以下差距：* **用户拥有的 API 密钥**：用户拥有的连接拥有 OAuth 授权。 Slack 和 Studio 不会收集每个调用者的 API 密钥，并且 CLI 不会为其创建一个空槽。请改用代理拥有的密钥，或在自定义前端中收集密钥，如下节所述。
-* **自定义渠道**：Slack 和 Studio 解析呼叫者身份并完成呼叫者的授权。自定义前端处理 [authorization interrupt](#handle-the-authorization-interrupt) 本身。
+Connections are part of the Managed Deep Agents public beta.当前版本存在以下差距：* **用户拥有的 API 密钥**：用户拥有的连接拥有 OAuth 授权。 Slack 和 Studio 不会收集每个调用者的 API 密钥，并且 CLI 不会为其创建一个空槽。请改用代理拥有的密钥，或在自定义前端中收集密钥，如下节所述。
+* **自定义通道**：Slack 和 Studio 解析呼叫者身份并完成呼叫者的授权。自定义前端处理 [authorization interrupt](#handle-the-authorization-interrupt) 本身。
 * **工作区 UI**：LangSmith 不在 UI 中列出连接。使用 `mda connections list` 和 `mda connections get` 作为连接元数据。
-* **授予可见性**：`mda connections list` 是工作区范围的，不会报告哪些部署在 slug 下持有凭证。运行失败并显示 `no agent connection is set for slug '<slug>'` 意味着此部署不拥有其凭证，即使 `list` 显示段头也是如此。从项目根目录运行`mda connections create <slug>`来创建一个。
-
-<Accordion title="Store a user-owned API key through Agent Auth">
-  带有`"kind": "secret"`的中断入口没有`connect_url`。要在自定义前端中收集一个，请提示输入隐藏输入的值，然后根据现有连接 slug 创建凭据：
-
-  ```http theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  POST /v1/agent-auth/connections
-  ```
-
-  ```json theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  {
-    "slug": "organization-tavily",
-    "display_name": "organization-tavily",
-    "credential": {
-      "kind": "secret",
-      "owner_type": "user",
-      "owner_id": "<caller-identity-id>",
-      "value": "<api-key>"
-    }
-  }
-  ```代理身份验证重用该 slug 的现有连接并附加调用者的秘密。秘密材料是只写的。成功创建后，将该 slug 标记为已连接并恢复运行。有关更多信息，请参阅[Set up Agent Auth](/langsmith/agent-auth)。
-</Accordion>
+* **授予可见性**：`mda connections list` 是工作区范围的，不会报告哪些部署在 slug 下持有凭证。运行失败并显示 `no agent connection is set for slug '<slug>'` 意味着此部署不拥有其凭证，即使 `list` 显示段头也是如此。从项目根目录运行`mda connections create <slug>`来创建一个。> **通过代理身份验证存储用户拥有的 API 密钥**
+>
+> 具有`"kind": "secret"` 的中断入口没有`connect_url`。要在自定义前端中收集一个，请提示输入隐藏输入的值，然后根据现有连接 slug 创建凭据：
+>
+> ```http theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> POST /v1/agent-auth/connections
+> ```
+>
+> ```json theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> {
+>   "slug": "organization-tavily",
+>   "display_name": "organization-tavily",
+>   "credential": {
+>     "kind": "secret",
+>     "owner_type": "user",
+>     "owner_id": "<caller-identity-id>",
+>     "value": "<api-key>"
+>   }
+> }
+> ```
+>
+> 代理身份验证重用该 slug 的现有连接并附加调用者的秘密。秘密材料是只写的。成功创建后，将该 slug 标记为已连接并恢复运行。有关更多信息，请参阅[Set up Agent Auth](/langsmith/agent-auth)。
 
 ## 另请参阅
 
@@ -669,12 +665,6 @@ uv run mda connections delete organization-tavily
 
 ***
 
-<div>
-  <Callout icon="terminal-2">
-    [Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
-  </Callout>
+[Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
 
-  <Callout icon="edit">
-    [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/managed-deep-agents-connections.mdx) 或 [file an issue](https://github.com/langchain-ai/docs/issues/new/choose)。
-  </Callout>
-</div>
+[Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/managed-deep-agents-connections.mdx) 或 [file an issue](https://github.com/langchain-ai/docs/issues/new/choose)。

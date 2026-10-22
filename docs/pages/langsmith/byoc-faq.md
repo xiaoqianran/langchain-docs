@@ -241,7 +241,8 @@ Answers to common questions about LangSmith BYOC, covering data residency, acces
 > Backups run in your own account:
 >
 > * **RDS**: Backups are taken daily.
-> * **ClickHouse**: Backups are taken daily and stored in an S3 bucket.
+> * **SmithDB**: Object storage in S3 holds the durable trace data.
+> * **ClickHouse**: On data planes that still run it, backups are taken daily and stored in an S3 bucket.
 > * **ElastiCache**: No backups are taken, because the data is ephemeral.
 
 > **Does LangChain offer an uptime SLA for BYOC data planes?**

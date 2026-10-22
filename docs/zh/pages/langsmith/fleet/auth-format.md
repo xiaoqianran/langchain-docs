@@ -4,7 +4,7 @@
 
 # Auth-aware 工具响应
 
-格式化工具响应以触发 OAuth 流程并自动恢复执行。
+格式化工具响应以触发 OAuth 流并自动恢复执行。
 
 有些[tools](/langsmith/fleet/tools)需要用户授权（例如Google、Slack、GitHub）。 LangSmith Fleet 包含中间件，用于检测工具何时需要授权并暂停运行，并向用户明确提示。用户完成身份验证后，会自动重试相同的工具调用。
 
@@ -28,16 +28,10 @@
 
 如果您希望自定义工具重用相同的身份验证所需的中断 + UI，请确保您的工具返回相同形状的 JSON。
 
-<Note>
-  仅返回此 JSON 作为工具的输出。避免包含额外的文本或内容。队列解析响应以触发身份验证流程。
-</Note>
+> [!注意]
+>
+> 仅返回此 JSON 作为工具的输出。避免包含额外的文本或内容。队列解析响应以触发身份验证流程。
 
-***<div>
-  <Callout icon="terminal-2">
-    [Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
-  </Callout>
+***[Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
 
-  <Callout icon="edit">
-    [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/fleet/auth-format.mdx) 或 [file an issue](https://github.com/langchain-ai/docs/issues/new/choose)。
-  </Callout>
-</div>
+[Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/fleet/auth-format.mdx) 或 [file an issue](https://github.com/langchain-ai/docs/issues/new/choose)。

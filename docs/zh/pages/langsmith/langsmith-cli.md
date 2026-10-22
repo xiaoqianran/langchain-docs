@@ -10,32 +10,30 @@ LangSmith CLI 是一个用于查询和管理 LangSmith 数据的命令行工具�
 
 ## 安装
 
-<CodeGroup>
-  ```bash macOS / Linux (recommended) theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  curl -fsSL https://cli.langsmith.com/install.sh | sh
-  ```
+```bash macOS / Linux (recommended) theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+curl -fsSL https://cli.langsmith.com/install.sh | sh
+```
 
-  ```powershell Windows theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  irm https://cli.langsmith.com/install.ps1 | iex
-  ```
+```powershell Windows theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+irm https://cli.langsmith.com/install.ps1 | iex
+```
 
-  ```bash Homebrew theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  brew install langchain-ai/tap/langsmith-cli
-  ```
+```bash Homebrew theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+brew install langchain-ai/tap/langsmith-cli
+```
 
-  ```powershell Scoop theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  scoop install langsmith-cli
-  ```
+```powershell Scoop theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+scoop install langsmith-cli
+```
 
-  ```bash GitHub Releases theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  # Download the latest binary for your platform:
-  # https://github.com/langchain-ai/langsmith-cli/releases
-  ```
+```bash GitHub Releases theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+# Download the latest binary for your platform:
+# https://github.com/langchain-ai/langsmith-cli/releases
+```
 
-  ```bash Go install theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  go install github.com/langchain-ai/langsmith-cli/cmd/langsmith@latest
-  ```
-</CodeGroup>
+```bash Go install theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+go install github.com/langchain-ai/langsmith-cli/cmd/langsmith@latest
+```
 
 随时升级：
 
@@ -45,17 +43,17 @@ langsmith self-update
 
 使用 `--dry-run` 标志即可预览更新而无需安装。
 
-<Note>
-  查询 [SmithDB](/langsmith/smithdb-sdk-migration) 支持的部署需要 LangSmith CLI `v0.2.44` 或更高版本。
-</Note>
+> [!注意]
+>
+> 查询 [SmithDB](/langsmith/smithdb-sdk-migration) 支持的部署需要 LangSmith CLI `v0.2.44` 或更高版本。
 
 ## 验证
 
 `langsmith auth login` 需要 LangSmith CLI `v0.2.30` 或更高版本。 `langsmith profile` 命令需要 LangSmith CLI `v0.2.26` 或更高版本。
 
-推荐的本地设置是使用 OAuth 进行身份验证：<Note>
-  `langsmith auth login` 还适用于来自 LangSmith CLI `v0.2.46` 及更新版本的自托管实例，前提是部署位于 LangSmith `0.16` 或更高版本上并启用了 OAuth 授权服务器（需要配置签名 JWKS）。参见[Self-hosted instances](#self-hosted-instances)。在早期部署中，或者没有签名 JWKS，请使用 API 密钥进行身份验证或创建 API 密钥配置文件。
-</Note>
+推荐的本地设置是使用 OAuth 进行身份验证：> [!注意]
+>
+> `langsmith auth login` 也适用于来自 LangSmith CLI `v0.2.46` 及更新版本的自托管实例，前提是部署位于 LangSmith `0.16` 或更高版本上并启用了 OAuth 授权服务器（需要配置签名 JWKS）。参见[Self-hosted instances](#self-hosted-instances)。在早期部署中，或者没有签名 JWKS，请使用 API 密钥进行身份验证或创建 API 密钥配置文件。
 
 ```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 langsmith auth login
@@ -113,45 +111,43 @@ langsmith --api-key lsv2_... trace list --project my-app
 
 ### 自托管实例
 
-使用 `--api-url` 或 `LANGSMITH_ENDPOINT` 将 CLI 指向您的实例。支持基于浏览器的登录和 API 密钥。<Tabs>
-  <Tab title="OAuth">
-    需要 LangSmith CLI `v0.2.46` 或更高版本，并在 LangSmith `0.16` 或更高版本上部署，并启用 OAuth 授权服务器。该图表在`/api`下公开了OAuth授权服务器，但这些端点在您[configure a signing JWKS](/langsmith/kubernetes#configure-a-signing-jwks)之前保持惰性。
+使用 `--api-url` 或 `LANGSMITH_ENDPOINT` 将 CLI 指向您的实例。支持基于浏览器的登录和 API 密钥。
 
-    当在 Helm 图表中设置 `config.hostname` 并配置签名 JWKS（通过 `config.signingJwks` 或 `config.existingSecretName` 中的密钥 `langsmith_signing_jwks`）时，OAuth 授权服务器会自动启用。如果没有签名 JWKS，OAuth 端点将处于非活动状态，并且 CLI 将收到 `404` — 请改用 API 密钥选项卡。
+**OAuth**需要 LangSmith CLI `v0.2.46` 或更高版本，并在 LangSmith `0.16` 或更高版本上部署，并启用 OAuth 授权服务器。该图表在`/api`下公开了OAuth授权服务器，但这些端点在您[configure a signing JWKS](/langsmith/kubernetes#configure-a-signing-jwks)之前保持惰性。
 
-    ```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-    langsmith auth login --api-url https://langsmith.example.com --profile self-hosted
-    ```
+当在 Helm 图表中设置 `config.hostname` 并配置签名 JWKS（通过 `config.signingJwks` 或 `config.existingSecretName` 中的密钥 `langsmith_signing_jwks`）时，OAuth 授权服务器会自动启用。如果没有签名 JWKS，OAuth 端点将处于非活动状态，并且 CLI 将收到 `404` — 请改用 API 密钥选项卡。
 
-    传递您实例的基本 URL。 CLI 读取部署的授权服务器元数据以查找 OAuth 端点，因此 `https://langsmith.example.com` 和 `https://langsmith.example.com/api` 都可以工作。
+```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+langsmith auth login --api-url https://langsmith.example.com --profile self-hosted
+```
 
-    令牌存储在命名配置文件下，因此后面的命令只需要`--profile`：
+传递您实例的基本 URL。 CLI 读取部署的授权服务器元数据以查找 OAuth 端点，因此 `https://langsmith.example.com` 和 `https://langsmith.example.com/api` 都可以工作。
 
-    ```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-    langsmith --profile self-hosted project list
-    ```
-  </Tab>
+令牌存储在命名配置文件下，因此后面的命令只需要`--profile`：
 
-  <Tab title="API key">
-    适用于每个 LangSmith 版本。
+```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+langsmith --profile self-hosted project list
+```
 
-    ```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-    export LANGSMITH_ENDPOINT="https://langsmith.example.com"
-    export LANGSMITH_API_KEY="lsv2_..."
+**API 密钥**
 
-    langsmith project list
-    ```
+适用于每个 LangSmith 版本。
 
-    要将端点和密钥另存为可重复使用的配置文件：
+```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+export LANGSMITH_ENDPOINT="https://langsmith.example.com"
+export LANGSMITH_API_KEY="lsv2_..."
 
-    ```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-    LANGSMITH_API_KEY="lsv2_..." langsmith profile create self-hosted \
-      --api-url https://langsmith.example.com --set-current
-    ```
-  </Tab>
-</Tabs><Warning>
-  `LANGSMITH_ENDPOINT` 优先于配置文件的 `api_url`。如果在您的 shell 中进行了设置，则您选择的每个配置文件都会解析到该端点 - 这是在自托管配置文件处于活动状态时命令意外到达 LangSmith 云的常见原因。使用配置文件时取消设置它，或显式传递 `--api-url`。
-</Warning>
+langsmith project list
+```
+
+要将端点和密钥另存为可重复使用的配置文件：
+
+```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+LANGSMITH_API_KEY="lsv2_..." langsmith profile create self-hosted \
+  --api-url https://langsmith.example.com --set-current
+```> [!警告]
+>
+> `LANGSMITH_ENDPOINT` 优先于配置文件的 `api_url`。如果在您的 shell 中进行了设置，则您选择的每个配置文件都会解析到该端点 - 这是在自托管配置文件处于活动状态时命令意外到达 LangSmith 云的常见原因。使用配置文件时取消设置它，或显式传递 `--api-url`。
 
 ## 快速入门
 
@@ -313,9 +309,9 @@ langsmith experiment get my-experiment-2024-01-15
 
 `insights` 命令创建、运行和读取 [Insights](/langsmith/insights) 报告，这些报告将项目的跟踪分为不同类别，以显示使用模式和故障模式。每个 `insights` 命令都需要 `--project`、`--project-id` 或 `LANGSMITH_PROJECT` 环境变量。
 
-<Note>
-  `insights create`、`insights run` 和 `insights config` 需要 LangSmith CLI v0.2.60 或更高版本。
-</Note>
+> [!注意]
+>
+> `insights create`、`insights run` 和 `insights config` 需要 LangSmith CLI v0.2.60 或更高版本。
 
 要创建报告，请在 JSON 文件中定义它：
 
@@ -370,7 +366,7 @@ langsmith insights config delete <config-id> --project my-app --yes
 
 ### 管理自定义应用程序
 
-`langsmith apps` 命令脚手架，在本地运行并发布 [custom apps](/langsmith/custom-apps)，在 LangSmith 内运行的 UI 并调用 LangSmith API。
+`langsmith apps` 命令脚手架，在本地运行，并发布 [custom apps](/langsmith/custom-apps)，在 LangSmith 内运行的 UI 并调用 LangSmith API。
 
 完整的命令列表请参见[CLI reference](/langsmith/custom-apps#cli-reference)。
 
@@ -410,7 +406,7 @@ langsmith api sessions -H "Accept: text/csv"
 
 关键标志：
 
-|旗帜|短|默认 |描述 |
+|旗帜|短|默认|描述 |
 | - | - | - | - |
 | `--method` | `-X` | `GET` | HTTP 方法 |
 | `--field` | `-F` | — |输入 JSON 字段为 `key=value`。可重复。使用 `@<path>` 或 `@-` 作为文件/标准输入值。 |
@@ -452,12 +448,6 @@ langsmith api sessions -H "Accept: text/csv"
 
 ***
 
-<div>
-  <Callout icon="terminal-2">
-    [Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
-  </Callout>
+[Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
 
-  <Callout icon="edit">
-    [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/langsmith-cli.mdx) 或 [file an issue](https://github.com/langchain-ai/docs/issues/new/choose)。
-  </Callout>
-</div>
+[Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/langsmith-cli.mdx) 或 [file an issue](https://github.com/langchain-ai/docs/issues/new/choose)。

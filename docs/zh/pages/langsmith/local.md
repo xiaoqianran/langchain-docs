@@ -10,9 +10,9 @@
 
 这将像往常一样运行您的应用程序和评估器并返回相同的输出，但不会将任何内容记录到LangSmith。这不仅包括实验结果，还包括应用和评估者痕迹。
 
-<Note>
-  如果您想将结果上传到LangSmith，但还需要在脚本中处理它们（用于质量门、自定义聚合等），请参阅[Read experiment results locally](/langsmith/read-local-experiment-results)。
-</Note>
+> [!注意]
+>
+> 如果您想将结果上传到LangSmith，但还需要在脚本中处理它们（用于质量门、自定义聚合等），请参阅[Read experiment results locally](/langsmith/read-local-experiment-results)。
 
 ## 示例
 
@@ -76,12 +76,6 @@ df[["inputs.question", "outputs.answer", "reference.answer", "feedback.is_concis
 
 ***
 
-<div>
-  <Callout icon="terminal-2">
-    [Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
-  </Callout>
+[Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
 
-  <Callout icon="edit">
-    [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/local.mdx) 或 [file an issue](https://github.com/langchain-ai/docs/issues/new/choose)。
-  </Callout>
-</div>
+[Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/local.mdx) 或 [file an issue](https://github.com/langchain-ai/docs/issues/new/choose)。

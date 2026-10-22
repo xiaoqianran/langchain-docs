@@ -6,19 +6,19 @@
 
 使用 OpenAI 聊天完成、Anthropic 消息或 OpenAI 响应请求通过 LLM 网关跨提供商调用模型。
 
-<Note>
-  LLM 网关位于[beta](/langsmith/release-stages)。
-</Note>
+> [!注意]
+>
+> LLM 网关位于[beta](/langsmith/release-stages)。
 
 标准LLM网关API支持三种请求和响应格式。选择您的应用程序已使用的格式，然后通过同一端点调用自带密钥 (BYOK) 或 Gateway Credits 模型。
 
 ## 比较API格式
 
-| API格式|基本网址 |提示端点|兼容客户端|
+| API格式 |基本网址 |提示端点 |兼容客户端|
 | - | - | - | - |
 | OpenAI 聊天完成 | `https://gateway.smith.langchain.com/v1` | `POST /chat/completions` | OpenAI 兼容聊天完成客户端 |
 | Anthropic 留言 | `https://gateway.smith.langchain.com` | `POST /v1/messages` | Anthropic 给客户发消息 |
-| OpenAI 回应 | `https://gateway.smith.langchain.com/v1` | `POST /responses` | OpenAI 兼容响应客户端 |
+| OpenAI 回应 | `https://gateway.smith.langchain.com/v1` | `POST /responses` | OpenAI兼容响应客户端 |
 
 所有格式均使用工作区范围的 LangSmith API 密钥进行身份验证。将其作为提供商 API 密钥或`Authorization: Bearer` 令牌传递。
 
@@ -28,126 +28,120 @@
 
 ## 使用聊天完成将OpenAI兼容客户端指向`https://gateway.smith.langchain.com/v1`。有关完整的请求和响应架构，请参阅[OpenAI Chat Completions API](https://platform.openai.com/docs/api-reference/chat)。
 
-<CodeGroup>
-  ```bash cURL theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  curl https://gateway.smith.langchain.com/v1/chat/completions \
-      -H "Authorization: Bearer $LANGSMITH_API_KEY" \
-      -H "Content-Type: application/json" \
-      -d '{"model":"anthropic/claude-opus-5","messages":[{"role":"user","content":"Hello!"}]}'
-  ```
+```bash cURL theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+curl https://gateway.smith.langchain.com/v1/chat/completions \
+    -H "Authorization: Bearer $LANGSMITH_API_KEY" \
+    -H "Content-Type: application/json" \
+    -d '{"model":"anthropic/claude-opus-5","messages":[{"role":"user","content":"Hello!"}]}'
+```
 
-  ```python Python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  import os
+```python Python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+import os
 
-  from openai import OpenAI
+from openai import OpenAI
 
-  client = OpenAI(
-      base_url="https://gateway.smith.langchain.com/v1",
-      api_key=os.environ["LANGSMITH_API_KEY"],
-  )
-  response = client.chat.completions.create(
-      model="anthropic/claude-opus-5",
-      messages=[{"role": "user", "content": "Hello!"}],
-  )
-  ```
+client = OpenAI(
+    base_url="https://gateway.smith.langchain.com/v1",
+    api_key=os.environ["LANGSMITH_API_KEY"],
+)
+response = client.chat.completions.create(
+    model="anthropic/claude-opus-5",
+    messages=[{"role": "user", "content": "Hello!"}],
+)
+```
 
-  ```typescript TypeScript theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  import OpenAI from "openai";
+```typescript TypeScript theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+import OpenAI from "openai";
 
-  const client = new OpenAI({
-    baseURL: "https://gateway.smith.langchain.com/v1",
-    apiKey: process.env.LANGSMITH_API_KEY,
-  });
-  const response = await client.chat.completions.create({
-    model: "anthropic/claude-opus-5",
-    messages: [{ role: "user", content: "Hello!" }],
-  });
-  ```
-</CodeGroup>
+const client = new OpenAI({
+  baseURL: "https://gateway.smith.langchain.com/v1",
+  apiKey: process.env.LANGSMITH_API_KEY,
+});
+const response = await client.chat.completions.create({
+  model: "anthropic/claude-opus-5",
+  messages: [{ role: "user", content: "Hello!" }],
+});
+```
 
 ## 使用消息
 
 将Anthropic客户端指向`https://gateway.smith.langchain.com`。有关完整的请求和响应架构，请参阅[Anthropic Messages API](https://docs.anthropic.com/en/api/messages)。
 
-<CodeGroup>
-  ```bash cURL theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  curl https://gateway.smith.langchain.com/v1/messages \
-      -H "Authorization: Bearer $LANGSMITH_API_KEY" \
-      -H "Content-Type: application/json" \
-      -d '{"model":"openai/gpt-5.4-mini","max_tokens":1024,"messages":[{"role":"user","content":"Hello!"}]}'
-  ```
+```bash cURL theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+curl https://gateway.smith.langchain.com/v1/messages \
+    -H "Authorization: Bearer $LANGSMITH_API_KEY" \
+    -H "Content-Type: application/json" \
+    -d '{"model":"openai/gpt-5.4-mini","max_tokens":1024,"messages":[{"role":"user","content":"Hello!"}]}'
+```
 
-  ```python Python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  import os
+```python Python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+import os
 
-  import anthropic
+import anthropic
 
-  client = anthropic.Anthropic(
-      base_url="https://gateway.smith.langchain.com",
-      api_key=os.environ["LANGSMITH_API_KEY"],
-  )
-  message = client.messages.create(
-      model="openai/gpt-5.4-mini",
-      max_tokens=1024,
-      messages=[{"role": "user", "content": "Hello!"}],
-  )
-  ```
+client = anthropic.Anthropic(
+    base_url="https://gateway.smith.langchain.com",
+    api_key=os.environ["LANGSMITH_API_KEY"],
+)
+message = client.messages.create(
+    model="openai/gpt-5.4-mini",
+    max_tokens=1024,
+    messages=[{"role": "user", "content": "Hello!"}],
+)
+```
 
-  ```typescript TypeScript theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  import Anthropic from "@anthropic-ai/sdk";
+```typescript TypeScript theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+import Anthropic from "@anthropic-ai/sdk";
 
-  const client = new Anthropic({
-    baseURL: "https://gateway.smith.langchain.com",
-    apiKey: process.env.LANGSMITH_API_KEY,
-  });
-  const message = await client.messages.create({
-    model: "openai/gpt-5.4-mini",
-    max_tokens: 1024,
-    messages: [{ role: "user", content: "Hello!" }],
-  });
-  ```
-</CodeGroup>
+const client = new Anthropic({
+  baseURL: "https://gateway.smith.langchain.com",
+  apiKey: process.env.LANGSMITH_API_KEY,
+});
+const message = await client.messages.create({
+  model: "openai/gpt-5.4-mini",
+  max_tokens: 1024,
+  messages: [{ role: "user", content: "Hello!" }],
+});
+```
 
 ## 使用响应
 
 将OpenAI兼容客户端指向`https://gateway.smith.langchain.com/v1`。有关完整的请求和响应架构，请参阅[OpenAI Responses API](https://platform.openai.com/docs/api-reference/responses)。
 
-<CodeGroup>
-  ```bash cURL theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  curl https://gateway.smith.langchain.com/v1/responses \
-      -H "Authorization: Bearer $LANGSMITH_API_KEY" \
-      -H "Content-Type: application/json" \
-      -d '{"model":"anthropic/claude-opus-5","input":"Hello!"}'
-  ```
+```bash cURL theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+curl https://gateway.smith.langchain.com/v1/responses \
+    -H "Authorization: Bearer $LANGSMITH_API_KEY" \
+    -H "Content-Type: application/json" \
+    -d '{"model":"anthropic/claude-opus-5","input":"Hello!"}'
+```
 
-  ```python Python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  import os
+```python Python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+import os
 
-  from openai import OpenAI
+from openai import OpenAI
 
-  client = OpenAI(
-      base_url="https://gateway.smith.langchain.com/v1",
-      api_key=os.environ["LANGSMITH_API_KEY"],
-  )
-  response = client.responses.create(
-      model="anthropic/claude-opus-5",
-      input="Hello!",
-  )
-  ```
+client = OpenAI(
+    base_url="https://gateway.smith.langchain.com/v1",
+    api_key=os.environ["LANGSMITH_API_KEY"],
+)
+response = client.responses.create(
+    model="anthropic/claude-opus-5",
+    input="Hello!",
+)
+```
 
-  ```typescript TypeScript theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  import OpenAI from "openai";
+```typescript TypeScript theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+import OpenAI from "openai";
 
-  const client = new OpenAI({
-    baseURL: "https://gateway.smith.langchain.com/v1",
-    apiKey: process.env.LANGSMITH_API_KEY,
-  });
-  const response = await client.responses.create({
-    model: "anthropic/claude-opus-5",
-    input: "Hello!",
-  });
-  ```
-</CodeGroup>
+const client = new OpenAI({
+  baseURL: "https://gateway.smith.langchain.com/v1",
+  apiKey: process.env.LANGSMITH_API_KEY,
+});
+const response = await client.responses.create({
+  model: "anthropic/claude-opus-5",
+  input: "Hello!",
+});
+```
 
 ## 启用提示缓存
 
@@ -155,57 +149,55 @@ OpenAI 模型（聊天完成和响应）自动支持隐式提示缓存，无需�
 
 Anthropic 型号和一些较旧的 OpenAI 型号需要显式选择加入以提示缓存。通过任何标准网关端点调用这些模型时，在请求正文中传递特定于提供商的字段。
 
-<Note>
-  显式缓存支持是一种临时措施，正在制定网关级缓存策略。以下字段将传递到上游提供商。
-</Note>
+> [!注意]
+>
+> 显式缓存支持是一项临时措施，正在制定网关级缓存策略。以下字段将传递到上游提供商。
 
 ### Anthropic 型号
 
 包含 `prompt_cache_options` 和 `ttl` 值：
 
-<CodeGroup>
-  ```bash cURL theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  curl https://gateway.smith.langchain.com/v1/responses \
-      -H "Authorization: Bearer $LANGSMITH_API_KEY" \
-      -H "Content-Type: application/json" \
-      -d '{
-        "model": "anthropic/claude-opus-5",
-        "input": "Hello!",
-        "prompt_cache_options": {"ttl": "30m"}
-      }'
-  ```
+```bash cURL theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+curl https://gateway.smith.langchain.com/v1/responses \
+    -H "Authorization: Bearer $LANGSMITH_API_KEY" \
+    -H "Content-Type: application/json" \
+    -d '{
+      "model": "anthropic/claude-opus-5",
+      "input": "Hello!",
+      "prompt_cache_options": {"ttl": "30m"}
+    }'
+```
 
-  ```python Python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  import os
+```python Python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+import os
 
-  from openai import OpenAI
+from openai import OpenAI
 
-  client = OpenAI(
-      base_url="https://gateway.smith.langchain.com/v1",
-      api_key=os.environ["LANGSMITH_API_KEY"],
-  )
-  response = client.responses.create(
-      model="anthropic/claude-opus-5",
-      input="Hello!",
-      extra_body={"prompt_cache_options": {"ttl": "30m"}},
-  )
-  ```
+client = OpenAI(
+    base_url="https://gateway.smith.langchain.com/v1",
+    api_key=os.environ["LANGSMITH_API_KEY"],
+)
+response = client.responses.create(
+    model="anthropic/claude-opus-5",
+    input="Hello!",
+    extra_body={"prompt_cache_options": {"ttl": "30m"}},
+)
+```
 
-  ```typescript TypeScript theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  import OpenAI from "openai";
+```typescript TypeScript theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+import OpenAI from "openai";
 
-  const client = new OpenAI({
-    baseURL: "https://gateway.smith.langchain.com/v1",
-    apiKey: process.env.LANGSMITH_API_KEY,
-  });
-  const response = await client.responses.create({
-    model: "anthropic/claude-opus-5",
-    input: "Hello!",
-    // @ts-ignore — provider-specific field
-    prompt_cache_options: { ttl: "30m" },
-  });
-  ```
-</CodeGroup>
+const client = new OpenAI({
+  baseURL: "https://gateway.smith.langchain.com/v1",
+  apiKey: process.env.LANGSMITH_API_KEY,
+});
+const response = await client.responses.create({
+  model: "anthropic/claude-opus-5",
+  input: "Hello!",
+  // @ts-ignore — provider-specific field
+  prompt_cache_options: { ttl: "30m" },
+});
+```
 
 相同的字段适用于聊天完成端点：
 
@@ -220,7 +212,7 @@ curl https://gateway.smith.langchain.com/v1/chat/completions \
     }'
 ```
 
-### 较旧的OpenAI型号一些较旧的 OpenAI 型号支持通过 `prompt_cache_retention` 显式缓存控制。对于大多数型号，将其设置为`"in_memory"`。特别对于 `gpt-5.5`，请使用 `"24h"`：
+### 老款OpenAI型号一些较旧的 OpenAI 型号支持通过 `prompt_cache_retention` 显式缓存控制。对于大多数型号，将其设置为`"in_memory"`。特别对于 `gpt-5.5`，请使用 `"24h"`：
 
 ```bash cURL (most older models) theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 curl https://gateway.smith.langchain.com/v1/responses \
@@ -252,7 +244,7 @@ curl https://gateway.smith.langchain.com/v1/responses \
 
 * 当提供商本身支持所选格式时，网关将保留该格式。
 * 否则，网关将请求转换为提供商支持的格式，并将响应转换回来，包括流式响应。
-* 翻译可以拒绝无法以目标提供者格式表示的字段。当需要提供者本机行为时使用[Direct model access](/langsmith/llm-gateway-direct-model-access)。
+* 翻译可以拒绝无法以目标提供者格式表示的字段。当需要提供者本机行为时，使用[Direct model access](/langsmith/llm-gateway-direct-model-access)。
 
 无论格式如何，每个请求都会解析相同的提供者机密、策略和跟踪配置。
 
@@ -298,12 +290,6 @@ curl https://gateway.smith.langchain.com/v1/models \
 * [Direct model access](/langsmith/llm-gateway-direct-model-access)：绕过格式转换并使用提供商原生 API。
 * [Model fallbacks](/langsmith/llm-gateway-fallbacks)：针对备份模型重试请求。
 
-***<div>
-  <Callout icon="terminal-2">
-    [Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
-  </Callout>
+***[Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
 
-  <Callout icon="edit">
-    [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/llm-gateway-api-formats.mdx) 或 [file an issue](https://github.com/langchain-ai/docs/issues/new/choose)。
-  </Callout>
-</div>
+[Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/llm-gateway-api-formats.mdx) 或 [file an issue](https://github.com/langchain-ai/docs/issues/new/choose)。

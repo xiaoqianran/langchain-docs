@@ -8,9 +8,9 @@
 
 中间件添加了围绕模型调用、工具调用和代理生命周期的行为。与[custom tools](/langsmith/python/managed-deep-agents-tools)一样，MDA 不会自动发现中间件。导入它并将其传递给代理定义。
 
-<Note>
-  托管Deep Agents于[LangSmith Cloud](/langsmith/cloud)**公开[beta](/langsmith/release-stages)**。
-</Note>
+> [!注意]
+>
+> 托管 Deep Agents 于 [LangSmith Cloud](/langsmith/cloud) **公开 [beta](/langsmith/release-stages)**。
 
 将自定义中间件放在`middleware/`下，将其导入到代理条目中，并将其传递给代理定义：
 
@@ -29,81 +29,79 @@ my-agent/
 
 使用中间件来编辑 PII、强制调用限制、重试失败、在模型之间回退、动态选择模型或记录和检查工具调用。
 
-<Steps>
-  <Step title="Use prebuilt middleware">
-    您可以直接在代理定义中使用 LangChain [prebuilt middleware](/oss/python/langchain/middleware/built-in)：
+**1.使用预构建的中间件**
 
-    ```python agent.py theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-    from langchain.agents.middleware import ModelCallLimitMiddleware, PIIMiddleware
-    from managed_deepagents import define_deep_agent
+您可以直接在代理定义中使用 LangChain [prebuilt middleware](/oss/python/langchain/middleware/built-in)：
 
-    agent = define_deep_agent(
-        name="support-agent",
-        model="openai:gpt-5.5",
-        middleware=[
-            PIIMiddleware("email", strategy="redact", apply_to_input=True),
-            ModelCallLimitMiddleware(run_limit=50),
-        ],
-    )
-    ```
-  </Step>
+```python agent.py theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+from langchain.agents.middleware import ModelCallLimitMiddleware, PIIMiddleware
+from managed_deepagents import define_deep_agent
 
-  <Step title="Define custom middleware (Optional)">
-    对于更高级的选项，请在本地模块中定义 [custom middleware](/oss/python/langchain/middleware/custom)。<Note>
-      中间件是一个共享的LangChain原语。托管 Deep Agents 始终使用 `ainvoke` 和 `astream` 调用代理，因此自定义中间件必须使用异步挂钩。当您使用 `invoke` 或 `stream` 调用 [Deep Agents](/oss/python/deepagents/overview) 时，同步挂钩仍然可用。
-    </Note>
+agent = define_deep_agent(
+    name="support-agent",
+    model="openai:gpt-5.5",
+    middleware=[
+        PIIMiddleware("email", strategy="redact", apply_to_input=True),
+        ModelCallLimitMiddleware(run_limit=50),
+    ],
+)
+```
 
-    ```python middleware/audit.py theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-    from collections.abc import Awaitable, Callable
+**2.定义自定义中间件（可选）**
 
-    from langchain.agents.middleware import wrap_tool_call
-    from langchain.messages import ToolMessage
-    from langchain.tools.tool_node import ToolCallRequest
-    from langgraph.types import Command
+对于更高级的选项，请在本地模块中定义 [custom middleware](/oss/python/langchain/middleware/custom)。> [!注意]
+>
+> 中间件是一个共享的LangChain原语。 Managed Deep Agents always invoke the agent with `ainvoke` and `astream`, so custom middleware must use async hooks. Synchronous hooks remain available when you call [Deep Agents](/oss/python/deepagents/overview) with `invoke` or `stream`.
+
+```python middleware/audit.py theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+from collections.abc import Awaitable, Callable
+
+from langchain.agents.middleware import wrap_tool_call
+from langchain.messages import ToolMessage
+from langchain.tools.tool_node import ToolCallRequest
+from langgraph.types import Command
 
 
-    @wrap_tool_call
-    async def log_tool_calls(
-        request: ToolCallRequest,
-        handler: Callable[[ToolCallRequest], Awaitable[ToolMessage | Command]],
-    ) -> ToolMessage | Command:
-        print(f"Calling tool: {request.tool_call['name']}")
-        result = await handler(request)
-        print(f"Finished tool: {request.tool_call['name']}")
-        return result
-    ```
+@wrap_tool_call
+async def log_tool_calls(
+    request: ToolCallRequest,
+    handler: Callable[[ToolCallRequest], Awaitable[ToolMessage | Command]],
+) -> ToolMessage | Command:
+    print(f"Calling tool: {request.tool_call['name']}")
+    result = await handler(request)
+    print(f"Finished tool: {request.tool_call['name']}")
+    return result
+```
 
-    将中间件导入到项目根代理条目中，并将其传递到`middleware`列表中：
+Import the middleware into the project-root agent entry and pass it in the `middleware` list:
 
-    ```python agent.py theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-    from managed_deepagents import define_deep_agent
+```python agent.py theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+from managed_deepagents import define_deep_agent
 
-    from middleware.audit import log_tool_calls
+from middleware.audit import log_tool_calls
 
-    agent = define_deep_agent(
-        name="support-agent",
-        model="openai:gpt-5.5",
-        middleware=[log_tool_calls],
-    )
-    ```
+agent = define_deep_agent(
+    name="support-agent",
+    model="openai:gpt-5.5",
+    middleware=[log_tool_calls],
+)
+```
 
-    您的中间件导入的工作方式应该与在普通本地 Python 项目中的工作方式相同。
-  </Step>
-</Steps>
+Your middleware imports should work the same way they do in a normal local Python project.
 
 ## 使用运行时上下文
 
-中间件可以通过正常的 LangChain 运行时 API 读取每次运行的上下文。使用用户 ID、组织 ID、功能标志、请求元数据或默认情况下不应成为模型提示一部分的凭据的上下文。
+Middleware can read per-run context through the normal LangChain runtime APIs.使用用户 ID、组织 ID、功能标志、请求元数据或默认情况下不应成为模型提示一部分的凭据的上下文。
 
 例如，请参阅[Custom middleware](/oss/python/langchain/middleware/custom)。
 
-Managed Deep Agents 添加的调用者、通道和沙箱字段，请参阅[Runtime](/langsmith/python/managed-deep-agents-runtime)。
+For the caller, channel, and sandbox fields that Managed Deep Agents adds, see [Runtime](/langsmith/python/managed-deep-agents-runtime).
 
-要从中间件挂钩读取或写入线程沙箱中的文件，请使用`runtime.backend`。参见[Read and write sandbox files from code](/langsmith/python/managed-deep-agents-sandboxes#read-and-write-sandbox-files-from-code)。
+To read or write files in the thread's sandbox from a middleware hook, use `runtime.backend`.参见[Read and write sandbox files from code](/langsmith/python/managed-deep-agents-sandboxes#read-and-write-sandbox-files-from-code)。
 
 ## 部署
 
-`mda dev`和`mda deploy`将项目文件复制到已编译的版本中，包括`middleware/`下的模块。中间件未同步到 Context Hub；它附带代理代码。
+`mda dev` and `mda deploy` copy project files into the compiled build, including modules under `middleware/`.中间件未同步到 Context Hub；它附带代理代码。
 
 ## 何时使用中间件|概念 |亲切 |它如何到达代理|
 | - | - | - |
@@ -115,12 +113,6 @@ Managed Deep Agents 添加的调用者、通道和沙箱字段，请参阅[Runti
 
 ***
 
-<div>
-  <Callout icon="terminal-2">
-    [Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
-  </Callout>
+[Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
 
-  <Callout icon="edit">
-    [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/managed-deep-agents-middleware.mdx) 或 [file an issue](https://github.com/langchain-ai/docs/issues/new/choose)。
-  </Callout>
-</div>
+[Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/managed-deep-agents-middleware.mdx) 或 [file an issue](https://github.com/langchain-ai/docs/issues/new/choose)。

@@ -33,9 +33,9 @@ LangSmith 以两种方式之一组织工作空间。 *基于项目的工作区*�
 
 LangSmith 云上的新组织获得基于代理的工作区。在现有组织中，LangChain 迁移工作区，并且迁移会保留现有跟踪项目，如[What changes](#what-changes) 中所述。您无需采取任何行动。
 
-<Note>
-  此页面描述了更改，而不是其时间表。时间未公布。
-</Note>
+> [!注意]
+>
+> 此页面描述的是更改，而不是其时间表。时间未公布。
 
 ## 另请参阅
 
@@ -44,12 +44,6 @@ LangSmith 云上的新组织获得基于代理的工作区。在现有组织中�
 * [Workload isolation](/langsmith/workload-isolation)
 * [Administration overview](/langsmith/administration-overview#agents-and-applications)
 
-***<div>
-  <Callout icon="terminal-2">
-    [Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
-  </Callout>
+***[Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
 
-  <Callout icon="edit">
-    [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/migrate-to-agent-based-workspaces.mdx) 或 [file an issue](https://github.com/langchain-ai/docs/issues/new/choose)。
-  </Callout>
-</div>
+[Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/migrate-to-agent-based-workspaces.mdx) 或 [file an issue](https://github.com/langchain-ai/docs/issues/new/choose)。

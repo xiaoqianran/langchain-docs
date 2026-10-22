@@ -8,9 +8,9 @@
 
 沙箱为托管深度代理提供了一个隔离的文件系统和 shell，用于处理文件、运行代码和执行命令。
 
-<Note>
-  托管 Deep Agents 于 [LangSmith Cloud](/langsmith/cloud) **公开 [beta](/langsmith/release-stages)**。
-</Note>
+> [!注意]
+>
+> 托管 Deep Agents 于 [LangSmith Cloud](/langsmith/cloud) **公开 [beta](/langsmith/release-stages)**。
 
 将沙箱声明放在`sandbox/`下。仅当您想要配置快照时才添加 `sandbox/setup.sh`：
 
@@ -28,7 +28,7 @@ my-agent/
 
 当代理需要写入文件、运行代码或执行 shell 命令时，请使用沙箱。
 
-`mda init` 搭建沙箱声明。托管 Deep Agents 仅当 `sandbox/` 目录存在时才启用沙箱。
+`mda init` 搭建沙箱声明。托管 Deep Agents 仅在 `sandbox/` 目录存在时启用沙箱。
 
 `mda init` 不会创建 `setup.sh`。如果快照要安装包、克隆树或以其他方式更改映像，请自行添加该文件。
 
@@ -45,7 +45,7 @@ export const sandbox = defineSandbox({
 });
 ```
 
-|选项 |默认|描述 |
+|选项|默认|描述 |
 | - | - | - |
 | `idleTtlSeconds` | `600` |沙箱及其内容被删除之前不活动的秒数。删除是不可恢复的。 |
 | `defaultTimeout` | `600` |每个命令允许的秒数。 |## 配置沙箱代理
@@ -123,7 +123,7 @@ mkdir -p /workspace
 
 ## 选择烘焙底料在没有烘焙基础的情况下，LangSmith的默认沙箱模板是起点。要从其他内容开始，请准确设置其中之一：
 
-|选项 |使用|
+|选项|使用|
 | - | - |
 | `snapshotName` | LangSmith 快照名称。允许使用标签。 |
 | `snapshotId` | LangSmith 快照 ID。 |
@@ -155,7 +155,7 @@ export const sandbox = defineSandbox({
 });
 ```
 
-将`GHCR_TOKEN`放入项目`.env`或流程环境中。烘焙后，托管Deep Agents 不会将该值转发到正在运行的代理服务器。
+将`GHCR_TOKEN`放入项目`.env`或流程环境中。烘焙后，托管 Deep Agents 不会将该值转发到正在运行的代理服务器。
 
 ## 代理如何使用沙箱
 
@@ -165,9 +165,9 @@ export const sandbox = defineSandbox({
 
 [Authored tools](/langsmith/javascript/managed-deep-agents-tools)和[middleware](/langsmith/javascript/managed-deep-agents-middleware)通过`runtime.backend`到达沙箱文件系统。当您自己的代码需要文件时使用它，而不是提示代理为您获取文件。
 
-<Note>
-  `runtime.backend` 需要 `managed-deepagents>=0.8.0`。
-</Note>注释 `runtime` 参数以接收类型表面：
+> [!注意]
+>
+> `runtime.backend` 需要 `managed-deepagents>=0.8.0`。注释 `runtime` 参数以接收类型表面：
 
 ```ts tools/report.ts theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 import { tool } from "langchain";
@@ -262,7 +262,7 @@ if (uploaded.error) {
 
 ### 限制
 
-`runtime.backend` 仅涵盖沙盒。它没有到 [Context Hub](/langsmith/javascript/managed-deep-agents-context-hub) 的路由，因此无法通过它到达 [skills](/langsmith/javascript/managed-deep-agents-skills)、[instructions](/langsmith/javascript/managed-deep-agents-instructions) 和 [memory](/langsmith/javascript/managed-deep-agents-memory)。
+`runtime.backend` 仅涵盖沙箱。它没有到 [Context Hub](/langsmith/javascript/managed-deep-agents-context-hub) 的路由，因此无法通过它到达 [skills](/langsmith/javascript/managed-deep-agents-skills)、[instructions](/langsmith/javascript/managed-deep-agents-instructions) 和 [memory](/langsmith/javascript/managed-deep-agents-memory)。
 
 如果没有沙箱，`runtime.backend`就是`undefined`。在每次调用之前对其进行保护，因为项目可以在工具发布后删除`sandbox/`。
 
@@ -288,12 +288,6 @@ if (uploaded.error) {
 
 ***
 
-<div>
-  <Callout icon="terminal-2">
-    [Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
-  </Callout>
+[Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
 
-  <Callout icon="edit">
-    [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/managed-deep-agents-sandboxes.mdx) 或 [file an issue](https://github.com/langchain-ai/docs/issues/new/choose)。
-  </Callout>
-</div>
+[Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/managed-deep-agents-sandboxes.mdx) 或 [file an issue](https://github.com/langchain-ai/docs/issues/new/choose)。

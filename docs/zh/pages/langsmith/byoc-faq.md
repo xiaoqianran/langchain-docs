@@ -131,13 +131,13 @@
 >
 > 痕迹等敏感数据不会离开您的帐户。它仅从数据平面到达请求它的最终用户。参见[Data traffic](/langsmith/byoc-architecture#data-traffic)。> **流量是否通过公共互联网传输？**
 >
-> No.
+> 没有。
 >
 > * **控制平面到数据平面**：所有通信都通过 AWS PrivateLink 双向传输。
 > * **S3**：流量通过 VPC 终端节点传输，使用 HTTPS 加密。
 > * **容器镜像**：通过 VPC 终端节点从 LangChain 账户拉取。
 >
-> See [Connectivity](/langsmith/byoc-architecture#connectivity).
+> 参见[Connectivity](/langsmith/byoc-architecture#connectivity)。
 
 > **我可以限制来自数据平面的出站网络流量吗？**
 >
@@ -156,19 +156,19 @@
 >
 > 不是今天。容器映像是通过 VPC 终端节点从 LangChain AWS 账户中提取的。对私有注册中心的支持已列入路线图。> **控制平面如何到达我的 Kubernetes API 服务器？**
 >
-> Over AWS PrivateLink.管理路径仅公开集群的 Kubernetes API 服务器，LangChain 用于安装和协调 LangSmith 组件。
+> 通过 AWS PrivateLink。管理路径仅公开集群的 Kubernetes API 服务器，LangChain 用于安装和协调 LangSmith 组件。
 >
-> EKS 集群是私有的：API 服务器端点没有公共访问权限，工作节点没有公共 IP 地址。无法通过该连接访问您的数据，并且 LangChain 无法通过公共互联网访问您的环境。 See [Connectivity](/langsmith/byoc-architecture#connectivity).
+> EKS 集群是私有的：API 服务器端点没有公共访问权限，工作节点没有公共 IP 地址。无法通过该连接访问您的数据，并且 LangChain 无法通过公共互联网访问您的环境。参见[Connectivity](/langsmith/byoc-architecture#connectivity)。
 
 > **如果我的数据平面位于美国境外，控制平面在哪里运行？**
 >
-> 无论您将数据平面放置在何处，控制平面都以`us-east-2` 运行。如果您在美国境外配置数据平面，您的敏感应用程序数据将保留在该地区，而控制平面元数据将保留在美国。 See [Regions and cloud providers](/langsmith/byoc#regions-and-cloud-providers).
+> 无论您将数据平面放置在何处，控制平面都以`us-east-2` 运行。如果您在美国境外配置数据平面，您的敏感应用程序数据将保留在该地区，而控制平面元数据将保留在美国。参见[Regions and cloud providers](/langsmith/byoc#regions-and-cloud-providers)。
 
 ## 数据平面和工作空间
 
 > **组织、数据平面和工作空间如何关联？**
 >
-> 数据平面属于一个组织，工作空间只属于一个数据平面。使用数据平面进行数据的物理分离，使用工作空间进行数据平面内的逻辑分离。 See [Organizations, data planes, and workspaces](/langsmith/byoc-usage#organizations-data-planes-and-workspaces).> **Can I run more than one data plane?**
+> 数据平面属于一个组织，工作空间只属于一个数据平面。使用数据平面进行数据的物理分离，使用工作空间进行数据平面内的逻辑分离。参见[Organizations, data planes, and workspaces](/langsmith/byoc-usage#organizations-data-planes-and-workspaces)。> **我可以运行多个数据平面吗？**
 >
 > 是的。一个组织可以拥有多个数据平面，每个数据平面都位于自己的 AWS 账户和区域中。
 >
@@ -184,42 +184,43 @@
 >
 > LangChain 运行控制平面并通过委派的最小权限访问管理数据平面基础设施。您拥有 AWS 账户、网络连接、数据平面中的数据以及账户内的安全监控。
 >
-> 有关平台和基础设施、数据和安全以及运营和支持的完整划分，请参阅[BYOC shared responsibility model](/langsmith/byoc-shared-responsibility)。> **Who upgrades LangSmith, and how often?**
+> 有关平台和基础设施、数据和安全以及运营和支持的完整划分，请参阅[BYOC shared responsibility model](/langsmith/byoc-shared-responsibility)。> **谁升级LangSmith，多久升级一次？**
 >
 > LangChain 每周升级一次数据平面中的 LangSmith 版本。升级是滚动进行的，因此不会出现整个服务停机的情况。 Istio 和 KEDA 等支持服务定期升级，LangChain 管理所有 EKS 集群升级。
 >
-> Support for release channels is coming soon.参见[Operations](/langsmith/byoc-operations)。
+> 对发布渠道的支持即将推出。参见[Operations](/langsmith/byoc-operations)。
 
-> **What about Kubernetes upgrades?**
+> **Kubernetes 升级怎么样？**
 >
 > LangChain 在 AWS 支持终止日期之前主动拥有并执行 EKS 升级，并与您协调窗口。
 >
-> Control plane upgrades are transparent.节点组升级使用 make-before-break 语义逐个滚动节点，因此您可能会在 Pod 重新启动时看到短暂的连接重置，但不会丢失数据。参见[Kubernetes cluster upgrades](/langsmith/byoc-operations#kubernetes-cluster-upgrades)。
+> 控制平面升级是透明的。节点组升级使用 make-before-break 语义逐个滚动节点，因此您可能会在 Pod 重新启动时看到短暂的连接重置，但不会丢失数据。参见[Kubernetes cluster upgrades](/langsmith/byoc-operations#kubernetes-cluster-upgrades)。
 
-> **Do upgrades cause downtime?**
+> **升级会导致停机吗？**
 >
 > 不会。服务运行由水平 Pod 自动缩放器调整大小的多个副本，并且 Pod 中断预算限制了同时不可用的副本数量，因此滚动更新和节点耗尽都不会导致服务低于其所需的容量。
 >
-> 可能导致停机的维护（例如重新启动 RDS 或 ElastiCache）发生在LangChain 提前与您协调的计划维护时段内。> **Who monitors the data plane?**
+> 可能导致停机的维护（例如重新启动 RDS 或 ElastiCache）发生在LangChain 提前与您协调的计划维护时段内。> **谁监控数据平面？**
 >
-> LangChain operates the data plane after provisioning, including monitoring for uptime and error recovery, scaling, upgrades, and security patching.由于部署在您自己的帐户中运行，因此您已经操作的云控制也适用于它。
+> LangChain 在配置后操作数据平面，包括监控正常运行时间和错误恢复、扩展、升级和安全修补。由于部署在您自己的帐户中运行，因此您已经操作的云控制也适用于它。
 
 > **我可以为 LangSmith BYOC 设置自己的可观测性吗？**
 >
-> 是的。 You can install observability tooling such as collectors and agents into the EKS cluster, as long as it does not interfere with the operation of LangSmith.
+> 是的。您可以在EKS集群中安装收集器、代理等可观测性工具，只要不干扰LangSmith的运行即可。
 >
 > LangSmith 服务发出日志、指标和跟踪的方式与自托管相同，因此适用相同的配置。参见[Export LangSmith telemetry to your observability backend](/langsmith/export-backend)。
 
 > **如何处理高可用性和灾难恢复？**
 >
-> 默认情况下，数据平面已配置为实现高可用性，跨单个区域内的多个可用区运行。 All stateful components are backed up.
+> 默认情况下，数据平面已配置为实现高可用性，跨单个区域内的多个可用区运行。所有有状态组件均已备份。
 >
 > 数据平面不跨区域，因此整个区域丢失的恢复依赖于这些备份。参见[High availability](/langsmith/byoc-operations#high-availability)。> **如何处理备份？**
 >
 > 备份在您自己的帐户中运行：
 >
 > * **RDS**：每天进行备份。
-> * **ClickHouse**：每天进行备份并存储在 S3 存储桶中。
+> * **SmithDB**：S3 中的对象存储保存持久跟踪数据。
+> * **ClickHouse**：在仍然运行它的数据平面上，每天进行备份并存储在 S3 存储桶中。
 > * **ElastiCache**：不进行备份，因为数据是短暂的。
 
 > **LangChain 是否为 BYOC 数据平面提供正常运行时间 SLA？**
@@ -228,9 +229,7 @@
 >
 > LangChain 仍然监控数据平面的正常运行时间和错误恢复、扩展它并应用升级和安全补丁。参见[Operations](/langsmith/byoc-operations)。
 
-## 成本
-
-> **我可以使用 BYOC 支付什么费用？**
+＃＃ 成本> **我可以使用 BYOC 支付什么费用？**
 >
 > 两份单独的账单：
 >
@@ -239,7 +238,9 @@
 >
 > LangChain 提供与 AWS Marketplace 的集成。
 
-## 特性和迁移> **哪些 LangSmith 功能适用于 BYOC？**
+## 特性和迁移
+
+> **哪些 LangSmith 功能适用于 BYOC？**
 >
 > 请参阅 [Available features](/langsmith/byoc#available-features) 了解当前支持的功能列表。
 

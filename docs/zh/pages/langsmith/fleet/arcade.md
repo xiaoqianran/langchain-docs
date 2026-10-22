@@ -2,7 +2,7 @@
 
 <!-- langchain-docs: Arcade integration | https://docs.langchain.com/langsmith/fleet/arcade -->
 
-# 街机整合
+# 街机集成
 
 将您的工作区连接到 Arcade，让客服人员能够访问 GitHub、Gmail、Slack 等第三方工具。
 
@@ -19,41 +19,37 @@
 
 只有[workspace admins](/langsmith/rbac#workspace-admin)可以配置Arcade集成，包括添加或删除MCP网关。配置完成后，工作区中的所有用户都可以使用集成。
 
-<Steps>
-  <Step title="Open the Integrations tab">
-    导航至[**Fleet** > **Integrations**](https://smith.langchain.com/agents/tools)。在左侧菜单中的“**应用程序**”下，单击“**街机**”。
-  </Step><Step title="Connect your Arcade account">
-    单击 **连接** 通过 OAuth 向 Arcade 进行身份验证。这会将您的 Arcade 帐户链接到工作区。
-  </Step>
+**1.打开集成选项卡**导航至[**Fleet** > **Integrations**](https://smith.langchain.com/agents/tools)。在左侧菜单中的“**应用程序**”下，单击“**街机**”。
 
-  <Step title="Select an organization and project">
-    为工作区选择 Arcade **组织** 和 **项目**。工作区中安装的所有 MCP 网关均来自该项目。
-  </Step>
+**2.连接您的 Arcade 帐户**
 
-  <Step title="Install MCP gateways">
-    浏览 Arcade 项目中的可用网关，然后单击 **添加到工作区** 以安装它们。已安装的网关显示为可供工作区中的所有代理使用的 MCP 服务器。
-  </Step>
-</Steps>
+单击 **连接** 通过 OAuth 向 Arcade 进行身份验证。这会将您的 Arcade 帐户链接到工作区。
+
+**3.选择组织和项目**
+
+为工作区选择 Arcade **组织** 和 **项目**。工作区中安装的所有 MCP 网关均来自该项目。
+
+**4.安装 MCP 网关**
+
+浏览 Arcade 项目中的可用网关，然后单击 **添加到工作区** 以安装它们。已安装的网关显示为可供工作区中的所有代理使用的 MCP 服务器。
 
 ## 作为工作区成员连接
 
 管理员配置 Arcade 后，其他用户必须连接自己的 Arcade 帐户才能使用这些工具。每个用户都单独进行身份验证，以便工具调用使用他们自己的凭据，而不是管理员的凭据。
 
-<Steps>
-  <Step title="Get an invitation to the Arcade project">
-    请工作区管理员邀请您加入他们的 Arcade 组织和项目。您必须是同一项目的成员才能访问其网关。
-  </Step>
+**1.获得 Arcade 项目的邀请**
 
-  <Step title="Connect your account">
-    导航至[**Fleet** > **Integrations**](https://smith.langchain.com/agents/tools)。在左侧菜单中的 **Apps** 下，单击 **Arcade**，然后单击 **Connect** 通过 OAuth 进行身份验证。
-  </Step><Step title="Browse available tools">
-    连接后，会自动出现管理员安装的MCP服务器。您可以从代理编辑器将这些工具添加到代理中。
-  </Step>
-</Steps>
+请工作区管理员邀请您加入他们的 Arcade 组织和项目。您必须是同一项目的成员才能访问其网关。
 
-<Note>
-  工作区成员无法更改 Arcade 组织或项目。只有管​​理员可以修改工作区级别的配置。
-</Note>
+**2.连接您的帐户**
+
+导航至[**Fleet** > **Integrations**](https://smith.langchain.com/agents/tools)。在左侧菜单中的 **Apps** 下，单击 **Arcade**，然后单击 **Connect** 通过 OAuth 进行身份验证。**3.浏览可用工具**
+
+连接后，管理员安装的MCP服务器会自动出现。您可以从代理编辑器将这些工具添加到代理中。
+
+> [!注意]
+>
+> 工作区成员无法更改 Arcade 组织或项目。只有管​​理员可以修改工作区级别的配置。
 
 ## 与代理一起使用 Arcade 工具
 
@@ -69,21 +65,19 @@
 
 管理员可以随时更新工作区级别的 Arcade 组织和项目。
 
-<Warning>
-  更改组织或项目**将从工作区中删除所有已安装的 MCP 服务器**。之后您将需要从新项目重新安装网关。
-</Warning>
+> [!警告]
+>
+> 更改组织或项目**将从工作区中删除所有已安装的 MCP 服务器**。之后您将需要从新项目重新安装网关。
 
-<Steps>
-  <Step title="Open configuration">
-    导航至[**Fleet** > **Integrations**](https://smith.langchain.com/agents/tools)。在左侧菜单中的“**应用程序**”下，单击“**街机**”。单击设置图标以打开 **Arcade 工作区配置** 对话框。
-  </Step><Step title="Select new organization and project">
-    从下拉列表中选择新的组织和项目。
-  </Step>
+**1.开放配置**
 
-  <Step title="Confirm the change">
-    单击**保存更改**。如果更改删除了现有的 MCP 服务器，请在后续对话框中确认。所有以前安装的网关都将被删除，您可以从更新的项目中安装新的网关。
-  </Step>
-</Steps>
+导航至[**Fleet** > **Integrations**](https://smith.langchain.com/agents/tools)。在左侧菜单中的“**应用程序**”下，单击“**街机**”。单击设置图标以打开 **Arcade 工作区配置** 对话框。**2.选择新的组织和项目**
+
+从下拉列表中选择新的组织和项目。
+
+**3.确认更改**
+
+单击**保存更改**。如果更改删除了现有的 MCP 服务器，请在后续对话框中确认。所有以前安装的网关都将被删除，您可以从更新的项目中安装新的网关。
 
 ## 断开与 Arcade 的连接
 
@@ -93,28 +87,20 @@
 
 ## 后续步骤
 
-<CardGroup>
-  <Card title="Add more tools" icon="puzzle" href="/langsmith/fleet/tools">
-    将附加服务连接到您的代理
-  </Card>
+> **[Add more tools](/langsmith/fleet/tools)**
+>
+> 将附加服务连接到您的代理
 
-  <Card title="Remote MCP servers" icon="server" href="/langsmith/fleet/remote-mcp-servers">
-    将自定义 MCP 服务器连接到您的工作区
-  </Card>
+> **[Remote MCP servers](/langsmith/fleet/remote-mcp-servers)**
+>
+> 将自定义 MCP 服务器连接到您的工作区
 
-  <Card title="Manage agent settings" icon="settings" href="/langsmith/fleet/manage-agent-settings">
-    配置代理行为和权限
-  </Card>
-</CardGroup>
+> **[Manage agent settings](/langsmith/fleet/manage-agent-settings)**
+>
+> 配置代理行为和权限
 
 ***
 
-<div>
-  <Callout icon="terminal-2">
-    [Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
-  </Callout>
+[Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
 
-  <Callout icon="edit">
-    [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/fleet/arcade.mdx) 或 [file an issue](https://github.com/langchain-ai/docs/issues/new/choose)。
-  </Callout>
-</div>
+[Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/fleet/arcade.mdx) 或 [file an issue](https://github.com/langchain-ai/docs/issues/new/choose)。

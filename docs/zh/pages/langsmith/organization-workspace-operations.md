@@ -12,15 +12,15 @@
 * 所需的特定权限字符串。
 * 有关部分访问或特殊情况的注释。
 
-<Info>
-  有关LangSmith的RBAC体系、角色定义和权限概念的概述，请参阅[Role-based access control](/langsmith/rbac)。
-</Info>
+> [!注意]
+>
+> LangSmith的RBAC体系、角色定义和权限概念的概述，请参考[Role-based access control](/langsmith/rbac)。
 
-## 内容|组织层面的运营 |工作区级操作 |
+＃＃ 内容|组织层面的运营 |工作区级操作 |
 | - | - |
-| **核心管理：**<br />• [Organization settings](#organization-settings)：组织信息和配置<br />• [Workspaces](#workspaces)：工作空间管理<br />• [Organization members](#organization-members)：成员管理<br />• [Roles and permissions](#roles-and-permissions)：自定义角色 | **核心资源：**<br />• [Projects](#projects)：组织跟踪和运行<br />• [Runs](#runs)：单独的执行跟踪<br />• [Datasets](#datasets)：用于评估的测试数据集<br />• [Examples](#examples)：单独的数据集示例<br />• [Experiments](#experiments)：比较实验|
-| **安全和身份验证：**<br />• [SSO and authentication](#sso-and-authentication)：单点登录设置<br />• [SCIM](#scim)：身份配置<br />• [Access policies](#access-policies)：基于属性的访问控制| **监控和分析：**<br />• [Rules](#rules)：自动运行规则<br />• [Alerts](#alerts)：监控警报规则<br />• [Feedback](#feedback)：输出的分数和标签<br />• [Annotation Queues](#annotation-queues)：人工审核队列<br />• [Charts](#charts)：自定义可视化|
-| **计费和帐户：**<br />• [Billing and payments](#billing-and-payments)：订阅管理<br />• [API keys](#api-keys)：组织级别密钥 | **开发与配置：**<br />• [Prompts](#prompts)：提示模板（LangChain Hub）<br />• [Custom apps](#custom-apps)：用户编写的迷你Web应用<br />• [Deployments](#deployments)：部署配置<br />• [MCP Servers](#mcp-servers)：模型上下文协议服务器<br />• [Fleet](#fleet)：队列管理操作|| **分析：**<br />• [Charts and dashboards](#organization-charts-and-dashboards)：组织级别可视化<br />• [Usage and analytics](#usage-and-analytics)：使用情况跟踪和 TTL 设置 | **工作区管理：**<br />• [Model price map](#model-price-map)：每个代币模型价格<br />• [Workspace settings](#workspace-settings-and-management)：成员、设置<br />• [Tags](#tags)​​：元数据标记系统<br />• [Bulk Exports](#bulk-exports)：数据导出操作|
+| **核心管理：** • [Organization settings](#organization-settings)：组织信息和配置 • [Workspaces](#workspaces)：工作区管理 • [Organization members](#organization-members)：成员管理 • [Roles and permissions](#roles-and-permissions)：自定义角色 | **核心资源：** • [Projects](#projects)：组织跟踪和运行 • [Runs](#runs)：单独执行跟踪 • [Datasets](#datasets)：用于评估的测试数据集 • [Examples](#examples)：单独数据集示例 • [Experiments](#experiments)：比较实验 |
+| **安全和身份验证：** • [SSO and authentication](#sso-and-authentication)：单点登录设置 • [SCIM](#scim)：身份配置 • [Access policies](#access-policies)：基于属性的访问控制 | **监控和分析：** • [Rules](#rules)：自动运行规则 • [Alerts](#alerts)：监控警报规则 • [Feedback](#feedback)：输出分数和标签 • [Annotation Queues](#annotation-queues)：人工审核队列 • [Charts](#charts)：自定义可视化 |
+| **计费和帐户：** • [Billing and payments](#billing-and-payments)：订阅管理 • [API keys](#api-keys)：组织级别密钥 | **开发和配置：** • [Prompts](#prompts)：提示模板（LangChain 集线器） • [Custom apps](#custom-apps)：用户编写的迷你 Web 应用程序 • [Deployments](#deployments)：部署配置 • [MCP Servers](#mcp-servers)：模型上下文协议服务器 • [Fleet](#fleet)：队列管理操作 || **分析：** • [Charts and dashboards](#organization-charts-and-dashboards)：组织级别可视化 • [Usage and analytics](#usage-and-analytics)：使用情况跟踪和 TTL 设置 | **工作区管理：** • [Model price map](#model-price-map)：每个代币模型价格 • [Workspace settings](#workspace-settings-and-management)：成员、设置 • [Tags](#tags)​​：元数据标记系统 • [Bulk Exports](#bulk-exports)：数据导出操作 |
 
 **附加信息：**
 
@@ -35,9 +35,9 @@
 
 ## 组织级运营
 
-<Info>
-  组织级操作由组织角色控制，与 RBAC 功能分开。请参阅 [Role-based access control](/langsmith/rbac#organization-roles) 指南了解更多信息。
-</Info>
+> [!注意]
+>
+> 组织级操作由组织角色控制，与 RBAC 功能分开。请参阅 [Role-based access control](/langsmith/rbac#organization-roles) 指南了解更多信息。
 
 ### 组织设置|运营|组织管理员 |组织运营商|组织用户 |组织查看器 |所需权限 |
 | - | :-: | :-: | :-: | :-: | - |
@@ -116,8 +116,8 @@
 |创建 Stripe 设置意图 | ✓ | ✓ | ✗ | ✗ | `organization:manage` |
 |处理付款方式创建 | ✓ | ✓ | ✗ | ✗ | `organization:manage` |
 |更改付款计划 | ✓ | ✓ | ✗ | ✗ | `organization:manage` |
-|创建 Stripe 结帐会话 | ✓ | ✓ | ✗ | ✗ | `organization:manage` |
-|确认结帐完成 | ✓ | ✓ | ✗ | ✗ | `organization:manage` |
+|创建 Stripe 结账会话 | ✓ | ✓ | ✗ | ✗ | `organization:manage` |
+|确认结账完成 | ✓ | ✓ | ✗ | ✗ | `organization:manage` |
 |创建 Stripe 帐户链接 | ✓ | ✓ | ✗ | ✗ | `organization:manage` |
 
 ### API 密钥
@@ -134,9 +134,9 @@
 |创建个人访问令牌 (PAT) | ✓ | ✓ | ✓ | ✗ | `organization:pats:create` ||停用、重新激活或删除自己的个人访问令牌 (PAT) | ✓ | ✓ | ✓ | ✗ | `organization:read` |
 |停用、重新激活或删除其他成员的个人访问令牌 (PAT) | ✓ | ✓ | ✗ | ✗ | `organization:pats:manage` |
 
-<Note>
-  \* 组织操作员和组织用户只能在其角色授予 `workspaces:manage-keys` 的工作区（例如工作区管理员角色）中创建或删除工作区范围的服务密钥。创建组织范围的服务密钥需要组织管理员角色。
-</Note>
+> [!注意]
+>
+> \* 组织操作员和组织用户只能在其角色授予 `workspaces:manage-keys` 的工作区（例如工作区管理员角色）中创建或删除工作区范围的服务密钥。创建组织范围的服务密钥需要组织管理员角色。
 
 ### 组织结构图和仪表板
 
@@ -160,16 +160,16 @@
 | [View granular billable usage](/langsmith/granular-usage) | ✓ | ✓ | ✓ | `organization:read` | |
 | [Export granular usage as CSV](/langsmith/granular-usage#csv-export) | ✓ | ✓ | ✓ | `organization:read` | |
 |查看工作区跟踪保留设置 | ✓ | ✓ | ✓ | ✓ | `organization:read` |
-|设置工作区默认跟踪层（基本/扩展）| ✓ | ✓ | ✗ | ✗ | `organization:manage` |
+|设置工作区默认跟踪层（基本/扩展） | ✓ | ✓ | ✗ | ✗ | `organization:manage` |
 |设置工作区延长保留期限（企业） | ✓ | ✓ | ✗ | ✗ | `organization:manage` |
 
 ## 工作区级别的操作
 
 这些操作由[workspace-level roles and permissions](/langsmith/rbac#workspace-roles)控制。
 
-<Tip>
-  要了解每个角色的含义及其总体能力，请参阅[Role-based access control](/langsmith/rbac)指南。
-</Tip>
+> [!提示]
+>
+> 要了解每个角色的含义及其整体能力，请参阅[Role-based access control](/langsmith/rbac)指南。
 
 ### 追踪键
 
@@ -200,10 +200,10 @@
 |更新过滤器视图 | ✓ | ✓ | ✗ | `projects:update` |
 |删除筛选视图 | ✓ | ✗ | ✗ | `projects:delete` |
 |删除项目 | ✓ | ✗ | ✗ | `projects:delete` |
-|删除多个项目| ✓ | ✗ | ✗ | `projects:delete` |
+|删除多个项目 | ✓ | ✗ | ✗ | `projects:delete` |
 |获取洞察职位 | ✓ | ✓ | ✓ | `projects:read` |
 |获得具体的工作见解 | ✓ | ✓ | ✓ | `projects:read` |
-|创建洞察工作 | ✓ | ✓ | ✓ | `projects:read` + `rules:create` ||更新洞察工作 | ✓ | ✓ | ✗ | `projects:update` |
+|创建洞察工作| ✓ | ✓ | ✓ | `projects:read` + `rules:create` ||更新洞察工作 | ✓ | ✓ | ✗ | `projects:update` |
 |删除见解作业 | ✓ | ✗ | ✗ | `projects:delete` |
 |获取作业配置见解 | ✓ | ✓ | ✓ | `rules:read` |
 |创建见解作业配置 | ✓ | ✓ | ✗ | `rules:create` |
@@ -213,13 +213,13 @@
 |从见解作业中获取运行集群 | ✓ | ✓ | ✓ | `projects:read` |
 |从见解作业获取运行 | ✓ | ✓ | ✓ | `projects:read` |
 
-<Note>
-  \* `projects:increase-trace-tier` 和 `projects:decrease-trace-tier` 是独立的，可以在自定义角色中单独授予。例如，您可以允许角色减少保留率，但不允许其增加保留率。如果用户缺乏这两种权限，则保留设置 UI 将完全隐藏。如果只有一个，则 UI 将部分启用（禁用不允许的方向）。
-</Note>
+> [!注意]
+>
+> \* `projects:increase-trace-tier` 和 `projects:decrease-trace-tier` 是独立的，可以在自定义角色中单独授予。例如，您可以允许角色减少保留率，但不允许其增加保留率。如果用户缺乏这两种权限，则保留设置 UI 将完全隐藏。如果只有一个，则 UI 部分启用（禁止的方向被禁用）。
 
-<Note>
-  创建保存的过滤器视图会修改现有项目并需要`projects:update`。比较实验创建需要`experiments:run`。仅授予`projects:create`的自定义角色需要相应的权限才能执行这些操作。跟踪键不支持这两种操作。
-</Note>
+> [!注意]
+>
+> 创建保存的过滤器视图会修改现有项目并需要 `projects:update`。比较实验创建需要`experiments:run`。仅授予`projects:create`的自定义角色需要相应的权限才能执行这些操作。跟踪键不支持这两种操作。
 
 ### 运行
 
@@ -255,7 +255,7 @@
 |查看规则日志 | ✓ | ✓ | ✓ | `rules:read` |
 |获取最后应用的规则 | ✓ | ✓ | ✓ | `rules:read` |
 |手动触发规则 | ✓ | ✓ | ✗ | `rules:update` |
-|触发多个规则| ✓ | ✓ | ✗ | `rules:update` |
+|触发多个规则 | ✓ | ✓ | ✗ | `rules:update` |
 |配置每个操作的数据保留 | ✓ | ✗ | ✗ | `rules:configure-retention` |
 
 ### 警报
@@ -295,7 +295,7 @@
 |公开分享数据集 | ✓ | ✗ | ✗ | `datasets:share` |
 |取消共享数据集 | ✓ | ✗ | ✗ | `datasets:share` |
 |获取索引信息 | ✓ | ✓ | ✓ | `datasets:read` |
-|索引数据集 | ✓ | ✓ | ✗ | `datasets:update` |
+|索引数据集| ✓ | ✓ | ✗ | `datasets:update` |
 |同步数据集索引 | ✓ | ✓ | ✗ | `datasets:update` ||删除数据集索引 | ✓ | ✓ | ✗ | `datasets:update` |
 |搜索数据集 | ✓ | ✓ | ✓ | `datasets:read` |
 |生成综合示例 | ✓ | ✓ | ✗ | `datasets:update` |
@@ -305,16 +305,16 @@
 |运行游乐场实验（流）| ✓ | ⚠ | ✗ | `prompts:read` + `datasets:read` + `projects:create` |
 |运行工作室实验 | ✓ | ⚠ | ✗ | `datasets:read` + `projects:create` |
 
-<Note>
-  工作区编辑者具有部分访问权限，因为他们无法创建项目，这限制了他们创建新实验的能力。
-</Note>
+> [!注意]
+>
+> 工作区编辑者具有部分访问权限，因为他们无法创建项目，这限制了他们创建新实验的能力。
 
 ### 示例
 
 数据集中的单个示例。|运营|工作区管理员 |工作区编辑器 |工作区查看器 |所需权限 |
 | - | :-: | :-: | :-: | - |
 |数个例子 | ✓ | ✓ | ✓ | `datasets:read` |
-|查看具体示例| ✓ | ✓ | ✓ | `datasets:read` |
+|查看具体示例 | ✓ | ✓ | ✓ | `datasets:read` |
 |列出示例 | ✓ | ✓ | ✓ | `datasets:read` |
 |创建一个新示例 | ✓ | ✓ | ✗ | `datasets:update` |
 |创建示例（批量）| ✓ | ✓ | ✗ | `datasets:update` |
@@ -330,9 +330,9 @@
 |验证单个示例 | ✓ | ✓ | ✓ | `datasets:read` |
 |验证示例（批量）| ✓ | ✓ | ✓ | `datasets:read` |
 
-<Note>
-  从现有运行创建示例还需要在每个源运行的项目上使用`runs:read`。仅当您有该项目的 `runs:read-inputs` 和 `runs:read-outputs` 时，才会复制运行的输入和输出。
-</Note>
+> [!注意]
+>
+> 从现有运行创建示例还需要在每个源运行的项目上使用 `runs:read`。仅当您有该项目的 `runs:read-inputs` 和 `runs:read-outputs` 时，才会复制运行的输入和输出。
 
 ### 实验
 
@@ -351,15 +351,17 @@
 |更新实验视图覆盖 | ✓ | ✓ | ✗ | `datasets:update` |
 |删除实验视图覆盖 | ✓ | ✓ | ✗ | `datasets:update` |
 
-<Note>
-  工作区编辑者具有部分访问权限，因为他们无法创建项目，这限制了他们创建新实验的能力。
-</Note>
+> [!注意]
+>
+> 工作区编辑者具有部分访问权限，因为他们无法创建项目，这限制了他们创建新实验的能力。
 
 ### 反馈
 
 LLM 输出的分数、标签和更正。
 
-<Note>反馈公式运算已弃用，取而代之的是[composite evaluators](/langsmith/composite-evaluators-ui)，并计划于 2026 年 8 月 20 日删除。</Note>|运营|工作区管理员 |工作区编辑器 |工作区查看器 |所需权限 |
+> [!注意]
+>
+> 反馈公式运算已弃用，取而代之的是[composite evaluators](/langsmith/composite-evaluators-ui)，并计划于 2026 年 8 月 20 日删除。|运营|工作区管理员 |工作区编辑器 |工作区查看器 |所需权限 |
 | - | :-: | :-: | :-: | - |
 |列出反馈公式（已弃用）| ✓ | ✓ | ✓ | `feedback:read` |
 |获取反馈公式（已弃用）| ✓ | ✓ | ✓ | `feedback:read` |
@@ -388,7 +390,7 @@ LLM 输出的人工审核队列。|运营|工作区管理员 |工作区编辑器
 |获取注释队列 | ✓ | ✓ | ✓ | `annotation-queues:read` |
 |创建注释队列 | ✓ | ✓ | ✗ | `annotation-queues:create` |
 |更新注释队列 | ✓ | ✓ | ✗ | `annotation-queues:update` |
-|删除注释队列| ✓ | ✗ | ✗ | `annotation-queues:delete` |
+|删除注释队列 | ✓ | ✗ | ✗ | `annotation-queues:delete` |
 |填充注释队列 | ✓ | ✓ | ✗ | `annotation-queues:update` |
 |从队列中获取运行 | ✓ | ✓ | ✓ | `annotation-queues:read` |
 |从队列中获取运行（按索引）| ✓ | ✓ | ✓ | `annotation-queues:read` |
@@ -436,7 +438,7 @@ LangChain Hub 中的提示模板和链。|运营|工作区管理员 |工作区�
 |获取所有标签 | ✓ | ✓ | ✓ | `prompts:read` |
 |创建标签 | ✓ | ✓ | ✗ | `prompts:tag` |
 |更新标签 | ✓ | ✓ | ✗ | `prompts:tag` |
-|删除标签 | ✓ | ✓ | ✗ | `prompts:tag` |
+|删除标签| ✓ | ✓ | ✗ | `prompts:tag` |
 |查看活动 | ✓ | ✓ | ✓ | `prompts:read` |
 |列出评论 | ✓ | ✓ | ✓ | `prompts:read` |
 |创建评论 | ✓ | ✓ | ✗ | `prompts:read` |
@@ -447,14 +449,14 @@ LangChain Hub 中的提示模板和链。|运营|工作区管理员 |工作区�
 |创建优化作业 | ✓ | ✓ | ✗ | `prompts:create` |
 |更新优化作业 | ✓ | ✓ | ✗ | `prompts:update` |
 |删除优化作业 | ✓ | ✓ | ✗ | `prompts:delete` ||调用提示画布 | ✓ | ✓ | ✗ | `prompts:update` |
-|列出快速行动| ✓ | ✓ | ✓ | `prompts:read` |
+|列出快速行动 | ✓ | ✓ | ✓ | `prompts:read` |
 |创建快速行动 | ✓ | ✓ | ✓ | `prompts:read` |
-|删除快速行动 | ✓ | ✓ | ✓ | `prompts:read` |
+|删除快速行动| ✓ | ✓ | ✓ | `prompts:read` |
 |更新快动作| ✓ | ✓ | ✓ | `prompts:read` |
 
-<Note>
-  某些提示操作支持共享提示的公共访问。
-</Note>
+> [!注意]
+>
+> 某些提示操作支持共享提示的公共访问。
 
 ### 图表
 
@@ -495,9 +497,9 @@ LangChain Hub 中的提示模板和链。|运营|工作区管理员 |工作区�
 |更新型号价格条目 | ✓ | ✓ | ✗ | `model-price-map:update` |
 |删除型号价格条目 | ✓ | ✓ | ✗ | `model-price-map:delete` |
 
-<Note>
-  这些权限取代了 `runs:read` 和 `runs:create` 检查之前限制的模型价格。内置角色保留他们拥有的访问权限。此更改后创建的自定义角色需要显式授予 `model-price-map` 权限；它们在自定义角色编辑器中显示为自己的复选框。
-</Note>
+> [!注意]
+>
+> 这些权限取代了 `runs:read` 和 `runs:create` 检查之前限制的型号价格。内置角色保留他们拥有的访问权限。此更改后创建的自定义角色需要显式授予 `model-price-map` 权限；它们在自定义角色编辑器中显示为自己的复选框。
 
 ### 工作区设置和管理|运营|工作区管理员 |工作区编辑器 |工作区查看器 |所需权限 |
 | - | :-: | :-: | :-: | - |
@@ -540,11 +542,11 @@ LangChain Hub 中的提示模板和链。|运营|工作区管理员 |工作区�
 
 ### 批量导出|运营|工作区管理员 |工作区编辑器 |工作区查看器 |所需权限 |
 | - | :-: | :-: | :-: | - |
-|批量出口清单 | ✓ | ✓ | ✓ | `bulk-exports:read` |
+|批量出口清单| ✓ | ✓ | ✓ | `bulk-exports:read` |
 |获取批量导出 | ✓ | ✓ | ✓ | `bulk-exports:read` |
 |获取批量导出运行 | ✓ | ✓ | ✓ | `bulk-exports:read` |
 |获取批量导出运行 | ✓ | ✓ | ✓ | `bulk-exports:read` |
-|创建批量导出| ✓ | ✗ | ✗ | `bulk-exports:manage` |
+|创建批量导出 | ✓ | ✗ | ✗ | `bulk-exports:manage` |
 |取消批量导出 | ✓ | ✗ | ✗ | `bulk-exports:manage` |
 |获取批量出口目的地 | ✓ | ✓ | ✓ | `bulk-exports:read` |
 |获取批量出口目的地 | ✓ | ✓ | ✓ | `bulk-exports:read` |
@@ -552,9 +554,9 @@ LangChain Hub 中的提示模板和链。|运营|工作区管理员 |工作区�
 |更新批量导出目的地 | ✓ | ✗ | ✗ | `bulk-exports:manage` |
 |获取过滤的导出运行 | ✓ | ✓ | ✓ | `bulk-exports:read` |
 
-<Tip>
-  `bulk-exports:read` 和 `bulk-exports:manage` 是专用权限，允许您通过 [custom role](/langsmith/rbac#custom-roles) 授予导出访问权限，而无需授予更广泛的 `workspaces:manage` 范围。这对于需要导出跟踪但不能管理工作区、成员或机密的安全团队服务密钥非常有用。
-</Tip>
+> [!提示]
+>
+> `bulk-exports:read` 和 `bulk-exports:manage` 是专用权限，允许您通过 [custom role](/langsmith/rbac#custom-roles) 授予导出访问权限，而无需授予更广泛的 `workspaces:manage` 范围。这对于需要导出跟踪但不能管理工作区、成员或机密的安全团队服务密钥非常有用。
 
 ### MCP 服务器
 
@@ -562,7 +564,7 @@ LangChain Hub 中的提示模板和链。|运营|工作区管理员 |工作区�
 | - | :-: | :-: | :-: | - |
 |列出 MCP 服务器 | ✓ | ✓ | ✓ | `workspaces:read` |
 |获取 MCP 服务器 | ✓ | ✓ | ✓ | `workspaces:read` |
-|创建MCP服务器| ✓ | ✓ | ✓ | `workspaces:read` |
+|创建MCP服务器 | ✓ | ✓ | ✓ | `workspaces:read` |
 |更新MCP服务器| ✓ | ✓ | ✓ | `workspaces:read` |
 |删除 MCP 服务器 | ✓ | ✓ | ✓ | `workspaces:read` |
 
@@ -572,31 +574,31 @@ LangChain Hub 中的提示模板和链。|运营|工作区管理员 |工作区�
 
 |运营|工作区管理员 |工作区编辑器 |工作区查看器 |所需权限 |
 | - | :-: | :-: | :-: | - |
-| View Fleet admin section (usage, spend) | ✓ | ✗ | ✗ | `fleet:read-admin-config` |
-| Manage Fleet spend limits | ✓ | ✗ | ✗ | `fleet:write-admin-config` |
+|查看车队管理部分（使用情况、支出）| ✓ | ✗ | ✗ | `fleet:read-admin-config` |
+|管理车队支出限额 | ✓ | ✗ | ✗ | `fleet:write-admin-config` |
 
 ## 用户级操作
 
 这些操作可供所有经过身份验证的用户使用，不需要特定的工作区或组织权限：
 
 * 查看自己的用户资料
-* Update own user profile
-* List organizations for user
-* Create new organization
-* 列出待处理的工作区邀请
+* 更新自己的用户资料
+* 列出用户的组织
+* 创建新组织
+* 列出待处理的工作空间邀请
 * 删除待处理的工作区邀请
 * 领取待处理的工作区邀请
-* List pending organization invites
-* Delete pending organization invite
+* 列出待处理的组织邀请
+* 删除待处理的组织邀请
 * 领取待定组织邀请
 
-## Permission inheritance
+## 权限继承
 
-### Organization to workspace* [Organization Admin](/langsmith/rbac#organization-admin) 自动拥有所有工作区的完全权限。
+### 组织到工作区* [Organization Admin](/langsmith/rbac#organization-admin) 自动拥有所有工作区的完全权限。
 * [Organization Operator](/langsmith/rbac#organization-operator) 仅在显式添加到具有工作区级别角色的工作区（或他们创建的工作区）时才获得工作区访问权限。
 * [Organization User](/langsmith/rbac#organization-user) 和 [Organization Viewer](/langsmith/rbac#organization-viewer) 仅在显式添加到具有工作区级别角色的工作区时才获得工作区访问权限。
 
-详细的角色定义请参考[Organization roles](/langsmith/rbac#organization-roles)和[Workspace roles](/langsmith/rbac#workspace-roles)。
+详细的角色定义请参见[Organization roles](/langsmith/rbac#organization-roles)和[Workspace roles](/langsmith/rbac#workspace-roles)。
 
 ### 工作区角色独立性
 
@@ -605,12 +607,6 @@ LangChain Hub 中的提示模板和链。|运营|工作区管理员 |工作区�
 
 ***
 
-<div>
-  <Callout icon="terminal-2">
-    [Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
-  </Callout>
+[Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
 
-  <Callout icon="edit">
-    [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/organization-workspace-operations.mdx) 或 [file an issue](https://github.com/langchain-ai/docs/issues/new/choose)。
-  </Callout>
-</div>
+[Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/organization-workspace-operations.mdx) 或 [file an issue](https://github.com/langchain-ai/docs/issues/new/choose)。

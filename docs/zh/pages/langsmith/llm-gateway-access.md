@@ -6,15 +6,15 @@
 
 了解网关跟踪的位置以及谁可以查看和配置什么。
 
-<Note>
-  LLM 网关位于[beta](/langsmith/release-stages)。
-</Note>
+> [!注意]
+>
+> LLM 网关位于[beta](/langsmith/release-stages)。
 
-通过 LLM 网关的每个调用都会追溯到 LangSmith，并且政策违规会在 [LangSmith Engine](/langsmith/engine) 中出现以进行分类。
+通过 LLM 网关的每个调用都会追溯到 LangSmith，并且策略违规会在 [LangSmith Engine](/langsmith/engine) 中出现以进行分类。
 
-<Note>
-  网关跟踪记录每个呼叫的元数据（令牌计数、策略结果、呼叫者身份）。默认情况下**不**记录输入和输出内容，并且没有内容的跟踪**不会根据您的 LangSmith 跟踪配额计费**。内容日志记录以及相关的计费仅在您使用 [data policy](/langsmith/llm-gateway-data-policy) 显式启用时才适用。
-</Note>
+> [!注意]
+>
+> 网关跟踪记录每个呼叫的元数据（令牌计数、策略结果、呼叫者身份）。默认情况下**不**记录输入和输出内容，并且没有内容的跟踪**不会根据您的 LangSmith 跟踪配额计费**。内容日志记录和关联的计费仅在您使用 [data policy](/langsmith/llm-gateway-data-policy) 显式启用时才适用。
 
 ## 网关痕迹出现的位置
 
@@ -62,7 +62,7 @@
 |查看网关痕迹 | `projects:read` + `runs:read` | `WORKSPACE_ADMIN`、`WORKSPACE_USER`、`WORKSPACE_VIEWER` |
 |查看审核日志 | `organization:manage` |组织管理员 |
 
-内置 `WORKSPACE_USER` 和 `WORKSPACE_VIEWER` 角色**不**包括 `gateway:invoke` 并且无法编辑。要在没有完整工作区管理权限的情况下授予网关访问权限，请使用 `gateway:invoke` 和 `workspaces:read` 创建自定义工作区角色（需要启用 RBAC 的计划）。有关说明，请参阅[Admin setup](/langsmith/llm-gateway-admin-setup)。
+内置 `WORKSPACE_USER` 和 `WORKSPACE_VIEWER` 角色**不**包含 `gateway:invoke` 并且无法编辑。要在没有完整工作区管理权限的情况下授予网关访问权限，请使用 `gateway:invoke` 和 `workspaces:read` 创建自定义工作区角色（需要启用 RBAC 的计划）。有关说明，请参阅[Admin setup](/langsmith/llm-gateway-admin-setup)。
 
 ### API 密钥范围
 
@@ -92,12 +92,6 @@
 
 ***
 
-<div>
-  <Callout icon="terminal-2">
-    [Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
-  </Callout>
+[Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时答案。
 
-  <Callout icon="edit">
-    [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/llm-gateway-access.mdx) 或 [file an issue](https://github.com/langchain-ai/docs/issues/new/choose)。
-  </Callout>
-</div>
+[Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/llm-gateway-access.mdx) 或 [file an issue](https://github.com/langchain-ai/docs/issues/new/choose)。

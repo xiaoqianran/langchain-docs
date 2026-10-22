@@ -4,7 +4,7 @@
 
 # 将 Teams 与代理集成
 
-通过自带 Azure Bot 将LangSmith Fleet 连接到 Microsoft Teams，让代理与 Teams 中的用户进行通信。
+通过自带 Azure Bot 将 LangSmith Fleet 连接到 Microsoft Teams，让代理与 Teams 中的用户进行通信。
 
 借助 LangSmith Fleet，您可以通过注册自定义 Azure 机器人将代理连接到 Microsoft Teams。连接后，您的代理可以：
 
@@ -12,9 +12,9 @@
 * 使用 Bot 框架在 Teams 对话中直接回复。
 * 通过 Microsoft Graph API 工具访问 Teams 频道和消息。
 
-<Note>
-  在频道对话中，机器人仅在明确提及时才会做出响应。在私聊和群聊中，机器人会回复所有消息。
-</Note>
+> [!注意]
+>
+> 在频道对话中，机器人仅在明确提及时做出响应。在私信和群聊中，机器人会回复所有消息。
 
 ## 先决条件
 
@@ -24,83 +24,77 @@
 
 ## 创建一个 Azure 机器人
 
-在注册 Fleet 之前，您需要创建 Azure Bot 资源并获取其凭据。<Steps>
-  <Step title="Create an Azure Bot resource">
-    1. 前往[Azure Portal](https://portal.azure.com)。
-    2. 搜索 **Azure Bot** 并单击 **创建**。
-    3. 填写必填字段：
-       * **机器人句柄**：您的机器人的唯一标识符。
-       * **订阅**：选择您的 Azure 订阅。
-       * **资源组**：创建一个新资源组或选择一个现有资源组。
-       * **应用程序类型**：选择**多租户**。
-       * **创建类型**：选择**创建新的 Microsoft App ID**。
-    4. 单击“**查看 + 创建**”，然后单击“**创建**”。
-  </Step>
+在注册 Fleet 之前，您需要创建 Azure Bot 资源并获取其凭据。
 
-  <Step title="Get your app credentials">
-    资源创建后：
+**1.创建 Azure Bot 资源**1. 前往[Azure Portal](https://portal.azure.com)。
+2. 搜索 **Azure Bot** 并单击 **创建**。
+3. 填写必填字段：
+   * **机器人句柄**：您的机器人的唯一标识符。
+   * **订阅**：选择您的 Azure 订阅。
+   * **资源组**：创建一个新资源组或选择一个现有资源组。
+   * **应用程序类型**：选择**多租户**。
+   * **创建类型**：选择**创建新的 Microsoft App ID**。
+4. 单击“**查看 + 创建**”，然后单击“**创建**”。
 
-    1. 导航到您的机器人资源，然后单击左侧边栏中的 **配置**。
-    2. 复制 **Microsoft 应用程序 ID**。稍后您将需要这个。
-    3. 单击应用程序 ID 旁边的**管理密码**。
-    4. 单击“**新客户端密钥**”，添加描述，然后单击“**添加**”。
-    5. 立即复制新密钥的**值** — 它仅显示一次。
+**2.获取您的应用程序凭据**
 
-    <Warning>
-      创建后立即复制客户端密钥值。您稍后无法检索它。如果您丢失了它，则必须创建一个新的。
-    </Warning>
-  </Step><Step title="Configure the messaging endpoint">
-    在 Fleet 中注册机器人后，您将设置消息传递端点。暂时跳过此字段 - 稍后您将返回到此步骤。
-  </Step>
-</Steps>
+资源创建后：
 
-## 在 Fleet 中注册机器人
+1. 导航到您的机器人资源，然后单击左侧边栏中的 **配置**。
+2. 复制 **Microsoft 应用程序 ID**。稍后您将需要这个。
+3. 单击应用程序 ID 旁边的**管理密码**。
+4. 单击“**新客户端密钥**”，添加描述，然后单击“**添加**”。
+5. 立即复制新密钥的**值** — 它仅显示一次。
 
-<Steps>
-  <Step title="Open the integrations page">
-    1. 导航至[LangSmith UI](https://smith.langchain.com?utm_source=docs\&utm_medium=cta\&utm_campaign=langsmith-signup\&utm_content=langsmith-fleet-teams-app)中的**舰队**。
-    2. 转到**集成**页面。
-    3. 单击“**添加 Teams 应用程序**”。
-  </Step>
+> [!警告]
+>
+> 创建后立即复制客户端密钥值。您稍后无法检索它。如果您丢失了它，则必须创建一个新的。
 
-  <Step title="Enter your credentials">
-    填写以下字段：
+**3.配置消息传递端点**
 
-    * **应用程序名称**：机器人在 Fleet 中的显示名称。
-    * **Azure 应用程序 ID**：来自 Azure Bot 资源的 Microsoft 应用程序 ID。
-    * **Azure 应用程序密码**：您之前复制的客户端密钥值。
-    * **Azure 租户 ID**（可选）：您的 Azure AD 租户 ID。保留多租户机器人的默认值。
+在 Fleet 中注册机器人后，您将设置消息传递端点。暂时跳过此字段 - 稍后您将返回到此步骤。
 
-    单击 **创建** 以注册机器人。
-  </Step>
+## 在 Fleet 中注册机器人**1.打开集成页面**
 
-  <Step title="Copy the webhook URL">
-    注册后，Fleet 会显示 **webhook URL**。复制此 URL — 您需要它来完成 Azure Bot 配置。
-  </Step>
+1. 导航至[LangSmith UI](https://smith.langchain.com?utm_source=docs\&utm_medium=cta\&utm_campaign=langsmith-signup\&utm_content=langsmith-fleet-teams-app)中的**舰队**。
+2. 转到**集成**页面。
+3. 单击“**添加 Teams 应用程序**”。
 
-  <Step title="Set the messaging endpoint in Azure">
-    1. 返回 [Azure Portal](https://portal.azure.com) 中的 Azure Bot 资源。
-    2. 转到**配置**。
-    3. 将 Fleet 中的 Webhook URL 粘贴到 **消息传送端点** 字段。
-    4. 单击“**应用**”。
-  </Step>
-</Steps>
+**2.输入您的凭据**
 
-## 将机器人添加到 Teams<Steps>
-  <Step title="Open the Teams channel">
-    1. 在 Azure 门户中，转到您的机器人资源。
-    2. 单击左侧边栏中的**频道**。
-    3. 选择 **Microsoft Teams** 并单击 **应用**。
-    4. 同意服务条款。
-  </Step>
+填写以下字段：
 
-  <Step title="Install the bot in Teams">
-    1. 在 Teams 中，单击左侧边栏中的“**应用程序**”。
-    2. 单击“**管理您的应用程序**”，然后单击“**上传应用程序**”。
-    3. 上传引用您的 Azure 应用 ID 的 [Teams app manifest](https://learn.microsoft.com/en-us/microsoftteams/platform/resources/schema/manifest-schema)，或使用 Azure 机器人通道页面中的 **在 Teams 中打开** 链接。
-    4. 将机器人添加到所需的团队或聊天中。
-  </Step>
-</Steps>
+* **应用程序名称**：机器人在 Fleet 中的显示名称。
+* **Azure 应用程序 ID**：来自 Azure Bot 资源的 Microsoft 应用程序 ID。
+* **Azure 应用程序密码**：您之前复制的客户端密钥值。
+* **Azure 租户 ID**（可选）：您的 Azure AD 租户 ID。保留多租户机器人的默认值。
+
+单击 **创建** 以注册机器人。
+
+**3.复制 Webhook URL**
+
+注册后，Fleet 会显示 **webhook URL**。复制此 URL — 您需要它来完成 Azure Bot 配置。
+
+**4.在 Azure 中设置消息传递端点**
+
+1. 返回 [Azure Portal](https://portal.azure.com) 中的 Azure Bot 资源。
+2. 转到**配置**。
+3. 将 Fleet 中的 Webhook URL 粘贴到 **消息传送端点** 字段。
+4. 单击“**应用**”。
+
+## 将机器人添加到 Teams
+
+**1.打开团队频道**
+
+1. 在 Azure 门户中，转到您的机器人资源。
+2. 单击左侧边栏中的**频道**。
+3. 选择 **Microsoft Teams** 并单击 **应用**。
+4. 同意服务条款。
+
+**2.在 Teams 中安装机器人**1. 在 Teams 中，单击左侧边栏中的“**应用程序**”。
+2. 单击“**管理您的应用程序**”，然后单击“**上传应用程序**”。
+3. 上传引用您的 Azure 应用 ID 的 [Teams app manifest](https://learn.microsoft.com/en-us/microsoftteams/platform/resources/schema/manifest-schema)，或使用 Azure 机器人通道页面中的 **在 Teams 中打开** 链接。
+4. 将机器人添加到所需的团队或聊天中。
 
 ## 将机器人链接到代理
 
@@ -119,13 +113,13 @@
 3. 选择**团队**。
 4. 从下拉菜单中，选择要链接的 Teams 应用程序。
 
-## 添加团队工具工具可让您的代理在 Teams 中采取操作。要响应消息并与 Teams 交互，请添加相关工具。
+## 添加团队工具
 
-<Tip>
-  您还可以要求您的代理自行添加这些工具。在代理聊天中，尝试：“添加 Teams 工具，以便可以回复消息。”
-</Tip>
+工具可让您的代理在 Teams 中采取操作。要响应消息并与 Teams 交互，请添加相关工具。
 
-1. 在边栏中，展开 **连接** 抽屉并单击 **添加连接**。
+> [!提示]
+>
+> 您还可以要求您的代理自行添加这些工具。在代理聊天中，尝试：“添加 Teams 工具，以便可以回复消息。”1. 在边栏中，展开 **连接** 抽屉并单击 **添加连接**。
 2.搜索“Teams”并添加您需要的工具：
    * **teams\_bot\_send\_proactive\_message**：将消息发送回 Teams 对话
    * **microsoft\_teams\_list\_my\_teams**：列出经过身份验证的用户所属的团队
@@ -134,20 +128,20 @@
    * **microsoft\_teams\_read\_channel\_messages**：从频道读取最近的消息
 3. 如果出现提示，请单击“**连接**”以授权 Microsoft Graph 工具。
 
-<Note>
-  `teams_bot_send_proactive_message` 工具使用 Bot Framework 凭据，不需要单独的 OAuth 授权。其他 Teams 工具使用 Microsoft Graph API，可能需要 OAuth 同意。
-</Note>
+> [!注意]
+>
+> `teams_bot_send_proactive_message` 工具使用 Bot Framework 凭据，不需要单独的 OAuth 授权。其他 Teams 工具使用 Microsoft Graph API，可能需要 OAuth 同意。
 
-## 配置代理行为（可选）您的代理需要知道如何处理传入的 Teams 消息。通过直接在代理聊天中提示来更新其说明：
+## 配置代理行为（可选）
+
+您的代理需要知道如何处理传入的 Teams 消息。通过直接在代理聊天中提示来更新其说明：
 
 ```
 Update your instructions to handle the Teams Trigger and Teams Tools
 for bidirectional communication
 ```
 
-根据您的用例调整说明 - 例如，您可能希望代理仅响应某些类型的问题，或者在回复之前从特定来源提取信息。
-
-## 故障排除
+根据您的用例调整说明 - 例如，您可能希望代理仅响应某些类型的问题，或者在回复之前从特定来源提取信息。## 故障排除
 
 ### 代理没有回应
 
@@ -163,33 +157,27 @@ for bidirectional communication
 * 确保客户端密钥尚未过期。如果需要，在 Azure 中创建新密钥。
 * 检查 Azure 中的机器人类型是否设置为 **多租户**。
 
-### 机器人可以在直接消息中工作，但不能在渠道中工作* 机器人必须在频道对话中明确**@提及**。
+### 机器人可以在直接消息中工作，但不能在渠道中工作
+
+* 机器人必须在频道对话中明确**@提及**。
 * 确保机器人已加入团队并有读取频道消息的权限。
 
 ## 后续步骤
 
-<CardGroup>
-  <Card title="Add more tools" icon="puzzle" href="/langsmith/fleet/tools">
-    将附加服务连接到您的代理
-  </Card>
+> **[Add more tools](/langsmith/fleet/tools)**
+>
+> 将附加服务连接到您的代理
 
-  <Card title="Add more channels" icon="bolt" href="/langsmith/fleet/channels">
-    设置电子邮件、时间表或 Webhook 渠道
-  </Card>
+> **[Add more channels](/langsmith/fleet/channels)**
+>
+> 设置电子邮件、时间表或 Webhook 渠道
 
-  <Card title="Use templates" icon="layout-grid" href="/langsmith/fleet/templates">
-    从预构建的代理模板开始
-  </Card>
-</CardGroup>
+> **[Use templates](/langsmith/fleet/templates)**
+>
+> 从预构建的代理模板开始
 
 ***
 
-<div>
-  <Callout icon="terminal-2">
-    [Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
-  </Callout>
+[Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
 
-  <Callout icon="edit">
-    [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/fleet/teams-app.mdx) 或 [file an issue](https://github.com/langchain-ai/docs/issues/new/choose)。
-  </Callout>
-</div>
+[Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/fleet/teams-app.mdx) 或 [file an issue](https://github.com/langchain-ai/docs/issues/new/choose)。

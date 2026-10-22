@@ -8,27 +8,23 @@
 
 为 [observability](/langsmith/observability)、[evaluation](/langsmith/evaluation) 和 [prompt engineering](/langsmith/prompt-context-hub#prompts) 设置 **LangSmith**。 LangSmith 提供云、自带云 (BYOC) 和自托管选项。选择与您的数据存放位置以及基础设施运行人员相匹配的选项。
 
-<Note>
-  如果您还想在生产中部署代理，则可以将 [**LangSmith Deployment**](/langsmith/deployment) 与云、BYOC 或自托管结合使用。
-</Note>
+> [!注意]
+>
+> 如果您还想在生产中部署代理，则可以将 [**LangSmith Deployment**](/langsmith/deployment) 与云、BYOC 或自托管结合使用。
 
-<CardGroup>
-  <Card title="Cloud" href="/langsmith/cloud" icon="cloud">
-    全面管理的可观察性、评估和即时工程。
-  </Card>
+> **[Cloud](/langsmith/cloud)**
+>
+> 全面管理的可观察性、评估和及时工程。
 
-  <Card title="BYOC" href="/langsmith/byoc" icon="cloud-cog">
-    完全控制您的数据，同时 LangChain 管理基础设施。
-  </Card>
+> **[BYOC](/langsmith/byoc)**
+>
+> 完全控制您的数据，同时 LangChain 管理基础设施。
 
-  <Card title="Self-hosted" href="/langsmith/self-hosted" icon="server">
-    通过可观察性、评估和及时工程来完全控制您的基础设施。
-  </Card>
-</CardGroup>
+> **[Self-hosted](/langsmith/self-hosted)**
+>
+> 完全控制基础设施中的可观察性、评估和及时工程。
 
-<Callout>
-  [Enterprise plan](/langsmith/pricing-plans) 上提供自托管和 BYOC。 [Get a demo](https://www.langchain.com/contact-sales) 了解更多。
-</Callout>
+[Enterprise plan](/langsmith/pricing-plans) 上提供自托管和 BYOC。 [Get a demo](https://www.langchain.com/contact-sales) 了解更多。
 
 ## 比较云、BYOC 和自托管|特色 | **云** | **自带设备** | **自托管** |
 | - | - | - | - |
@@ -47,28 +43,20 @@
 
 ## 相关
 
-<CardGroup>
-  <Card title="Account setup" href="/langsmith/admin" icon="user-cog">
-    创建帐户、管理 API 密钥并选择定价层。
-  </Card>
+> **[Account setup](/langsmith/admin)**
+>
+> 创建帐户、管理 API 密钥并选择定价层。
 
-  <Card title="Plans and pricing" href="https://www.langchain.com/pricing" icon="credit-card">
-    比较 LangSmith 计划和等级。
-  </Card>
+> **[Plans and pricing](https://www.langchain.com/pricing)**
+>
+> 比较 LangSmith 计划和等级。
 
-  <Card title="Observability" href="/langsmith/observability" icon="chart-line">
-    跟踪和监控您的 LLM 申请。
-  </Card>
-</CardGroup>
+> **[Observability](/langsmith/observability)**
+>
+> 跟踪和监控您的法学硕士申请。
 
 ***
 
-<div>
-  <Callout icon="terminal-2">
-    [Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
-  </Callout>
+[Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
 
-  <Callout icon="edit">
-    [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/platform-setup.mdx) 或 [file an issue](https://github.com/langchain-ai/docs/issues/new/choose)。
-  </Callout>
-</div>
+[Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/platform-setup.mdx) 或 [file an issue](https://github.com/langchain-ai/docs/issues/new/choose)。

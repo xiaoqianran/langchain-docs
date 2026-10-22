@@ -10,9 +10,9 @@
 
 要从远程 MCP 服务器加载工具，请参阅[Connect to MCP servers](/langsmith/javascript/managed-deep-agents-mcp-connectors)。
 
-<Note>
-  托管 Deep Agents 于 [LangSmith Cloud](/langsmith/cloud) **公开 [beta](/langsmith/release-stages)**。
-</Note>
+> [!注意]
+>
+> 托管 Deep Agents 于 [LangSmith Cloud](/langsmith/cloud) **公开 [beta](/langsmith/release-stages)**。
 
 将编写的工具放在`tools/`下，将它们导入到代理条目中，并将它们传递给代理定义：
 
@@ -33,78 +33,76 @@ MCP 连接器也在 `tools/` 下声明，因此 `tools/mcp.ts` 文件名是为�
 
 使用编写的工具来处理业务逻辑、私有 API、数据库访问以及属于代理项目的其他代码。
 
-<Steps>
-  <Step title="Define a tool module">
-    ```ts tools/customer.ts theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-    import { tool } from "langchain";
-    import { z } from "zod";
+**1.定义工具模块**
 
-    export const lookupCustomer = tool(
-      async ({ customerId }) => `Customer ${customerId} is on the enterprise plan.`,
-      {
-        name: "lookup_customer",
-        description: "Look up a customer record by ID.",
-        schema: z.object({
-          customerId: z.string().describe("Customer ID from the CRM."),
-        }),
-      },
-    );
-    ```
+```ts tools/customer.ts theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+import { tool } from "langchain";
+import { z } from "zod";
 
-    使用清晰、独特的工具名称以避免冲突。有关LangChain工具定义的更多信息，请参阅[Tools](/oss/javascript/langchain/tools)。
-  </Step>
+export const lookupCustomer = tool(
+  async ({ customerId }) => `Customer ${customerId} is on the enterprise plan.`,
+  {
+    name: "lookup_customer",
+    description: "Look up a customer record by ID.",
+    schema: z.object({
+      customerId: z.string().describe("Customer ID from the CRM."),
+    }),
+  },
+);
+```
 
-  <Step title="Attach the tool to the agent">
-    将工具导入到项目根代理条目中并将其传递到`tools`列表中：
+使用清晰、独特的工具名称以避免冲突。有关LangChain工具定义的更多信息，请参阅[Tools](/oss/javascript/langchain/tools)。
 
-    ```ts agent.ts theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-    import { defineDeepAgent } from "managed-deepagents";
+**2.将工具附加到代理**
 
-    import { lookupCustomer } from "./tools/customer";
+将工具导入到项目根代理条目中并将其传递到`tools`列表中：
 
-    export const agent = defineDeepAgent({
-      name: "support-agent",
-      model: "openai:gpt-5.5",
-      tools: [lookupCustomer],
-    });
-    ```您的导入工作方式应该与在普通本地 TypeScript 项目中的工作方式相同。
-  </Step>
+```ts agent.ts theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+import { defineDeepAgent } from "managed-deepagents";
 
-  <Step title="Add human-in-the-loop (Optional)">
-    在敏感工具调用之前暂停代理，以便人们可以批准、编辑或拒绝它们。
+import { lookupCustomer } from "./tools/customer";
 
-    在代理定义中设置`interruptOn`，并可以选择设置`permissions`来控制工具和文件系统访问：
+export const agent = defineDeepAgent({
+  name: "support-agent",
+  model: "openai:gpt-5.5",
+  tools: [lookupCustomer],
+});
+```您的导入工作方式应该与在普通本地 TypeScript 项目中的工作方式相同。
 
-    ```ts agent.ts theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-    import { defineDeepAgent } from "managed-deepagents";
+**3.添加人机交互（可选）**
 
-    import { lookupCustomer } from "./tools/customer";
+在敏感工具调用之前暂停代理，以便人们可以批准、编辑或拒绝它们。
 
-    export const agent = defineDeepAgent({
-      name: "support-agent",
-      model: "openai:gpt-5.5",
-      tools: [lookupCustomer],
-      interruptOn: {
-        lookup_customer: true,
-      },
-    });
-    ```
+在代理定义中设置`interruptOn`，并可以选择设置`permissions`来控制工具和文件系统访问：
 
-    `interruptOn` 字段应用与 LangChain 的 [human-in-the-loop middleware](/oss/javascript/langchain/guardrails#human-in-the-loop) 相同的中断行为。
+```ts agent.ts theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+import { defineDeepAgent } from "managed-deepagents";
 
-    有关决策类型（批准、编辑、拒绝）、条件中断和权限规则，请参阅 Deep Agents [Human-in-the-loop](/oss/javascript/deepagents/human-in-the-loop) 和 [Permissions](/oss/javascript/deepagents/permissions) 指南。
+import { lookupCustomer } from "./tools/customer";
 
-    要恢复暂停的运行，请参阅[Respond to an interrupt](#respond-to-an-interrupt)。
+export const agent = defineDeepAgent({
+  name: "support-agent",
+  model: "openai:gpt-5.5",
+  tools: [lookupCustomer],
+  interruptOn: {
+    lookup_customer: true,
+  },
+});
+```
 
-    要在 Slack 中暂停您自己的工具帖子的表单，请参阅 [Agent-owned interrupts](/langsmith/javascript/managed-deep-agents-agent-owned-interrupts)。
-  </Step>
-</Steps>
+`interruptOn` 字段应用与 LangChain 的 [human-in-the-loop middleware](/oss/javascript/langchain/guardrails#human-in-the-loop) 相同的中断行为。
+
+有关决策类型（批准、编辑、拒绝）、条件中断和权限规则，请参阅 Deep Agents [Human-in-the-loop](/oss/javascript/deepagents/human-in-the-loop) 和 [Permissions](/oss/javascript/deepagents/permissions) 指南。
+
+要恢复暂停的运行，请参阅[Respond to an interrupt](#respond-to-an-interrupt)。
+
+要在 Slack 中暂停您自己的工具帖子的表单，请参阅 [Agent-owned interrupts](/langsmith/javascript/managed-deep-agents-agent-owned-interrupts)。
 
 ## 使用秘密和上下文
 
 工具可以从环境变量中读取部署机密。将`mda dev`的本地值放入`.env`； `mda deploy` 将非保留的 `.env` 值作为托管部署机密转发。
 
-对于每次运行的值，例如请求元数据或功能标志，请使用工具的正常 LangChain 运行时上下文模式。参见[how to access context from within your tools](/oss/javascript/langchain/tools#access-context)。
+对于每次运行的值（例如请求元数据或功能标志），请使用工具的正常 LangChain 运行时上下文模式。参见[how to access context from within your tools](/oss/javascript/langchain/tools#access-context)。
 
 ## 部署
 
@@ -135,18 +133,12 @@ MCP 连接器也在 `tools/` 下声明，因此 `tools/mcp.ts` 文件名是为�
 
 ## 访问运行时上下文对于每次运行的值（例如请求元数据或功能标志），请使用工具的正常 LangChain 运行时上下文模式。参见[how to access context from within your tools](/oss/javascript/langchain/tools#access-context)。
 
-Managed Deep Agents 添加的调用者、通道和沙箱字段，请参阅[Runtime](/langsmith/javascript/managed-deep-agents-runtime)。
+Managed Deep Agents 添加的调用方、通道和沙箱字段，请参阅[Runtime](/langsmith/javascript/managed-deep-agents-runtime)。
 
 要从工具读取或写入线程沙箱中的文件，请使用 `runtime.backend`。参见[Read and write sandbox files from code](/langsmith/javascript/managed-deep-agents-sandboxes#read-and-write-sandbox-files-from-code)。
 
 ***
 
-<div>
-  <Callout icon="terminal-2">
-    [Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
-  </Callout>
+[Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
 
-  <Callout icon="edit">
-    [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/managed-deep-agents-tools.mdx) 或 [file an issue](https://github.com/langchain-ai/docs/issues/new/choose)。
-  </Callout>
-</div>
+[Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/managed-deep-agents-tools.mdx) 或 [file an issue](https://github.com/langchain-ai/docs/issues/new/choose)。

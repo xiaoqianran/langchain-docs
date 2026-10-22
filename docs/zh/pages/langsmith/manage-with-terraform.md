@@ -8,16 +8,16 @@
 
 官方的[LangSmith Terraform provider](https://registry.terraform.io/providers/langchain-ai/langsmith/latest)允许您以代码形式管理LangSmith组织和工作区资源：工作区、自定义角色、组织和工作区成员、资源标签、访问策略、评估器、运行规则和警报规则。它是 [managing your organization using the API](/langsmith/manage-organization-by-api) 的基础设施即代码对应物。
 
-<Note>
-  管理资源标签和访问策略需要 LangSmith Terraform 提供程序 v0.0.6 或更高版本。
-</Note>
+> [!注意]
+>
+> 管理资源标签和访问策略需要 LangSmith Terraform 提供程序 v0.0.6 或更高版本。
 
-<Check>
-  在深入研究之前，阅读以下内容可能会有所帮助：
-
-  * [Conceptual guide on organizations and workspaces](/langsmith/administration-overview)
-  * [Organization setup how-to](/langsmith/set-up-hierarchy#set-up-an-organization)
-</Check>
+> [!提示]
+>
+> 在深入研究之前，阅读以下内容可能会有所帮助：
+>
+> * [Conceptual guide on organizations and workspaces](/langsmith/administration-overview)
+> * [Organization setup how-to](/langsmith/set-up-hierarchy#set-up-an-organization)
 
 ## 安装和配置
 
@@ -47,15 +47,15 @@ provider "langsmith" {
 
 ## 身份验证
 
-提供商解析凭据的方式与LangSmith SDK 和 CLI 相同。优先选择环境变量或配置文件而不是硬编码 `api_key`：
+提供程序解析凭据的方式与 LangSmith SDK 和 CLI 相同。优先选择环境变量或配置文件而不是硬编码 `api_key`：
 
 * **环境**—`LANGSMITH_API_KEY`、`LANGSMITH_ENDPOINT`（API URL）、`LANGSMITH_WORKSPACE_ID`。
 * **配置文件** — 设置 `profile`（或 `LANGSMITH_PROFILE`）以使用 LangSmith CLI 配置文件。
 * **提供者参数**—`api_key`、`api_url`、`workspace_id`、`profile`。在 LangSmith 设置中创建 API 密钥或 [service key](/langsmith/administration-overview#service-keys)。请参阅[Authentication methods](/langsmith/authentication-methods)了解可用的密钥类型。
 
-<Warning>
-  组织范围的操作（例如创建工作区、邀请组织成员和管理访问策略）需要具有组织管理员权限的**组织范围的服务密钥。将 `workspace_id` （或 `LANGSMITH_WORKSPACE_ID`）设置为目标工作区范围内的资源，例如工作区成员身份、资源标签、评估器和运行规则。
-</Warning>
+> [!警告]
+>
+> 组织范围内的操作，例如创建工作区、邀请组织成员和管理访问策略，需要具有组织管理员权限的**组织范围服务密钥**。将 `workspace_id` （或 `LANGSMITH_WORKSPACE_ID`）设置为目标工作区范围内的资源，例如工作区成员身份、资源标签、评估器和运行规则。
 
 ## 示例
 
@@ -203,18 +203,12 @@ resource "langsmith_alert_rule" "error_rate" {
 
 资源和数据源的完整列表（包含每个参数和属性）均在 Terraform 注册表上发布并保持同步：
 
-<Card title="LangSmith provider on the Terraform Registry" icon="brand-terraform" href="https://registry.terraform.io/providers/langchain-ai/langsmith/latest/docs">
-  浏览所有资源和数据源的完整参考。
-</Card>
+> **[LangSmith provider on the Terraform Registry](https://registry.terraform.io/providers/langchain-ai/langsmith/latest/docs)**
+>
+> 浏览所有资源和数据源的完整参考。
 
 ***
 
-<div>
-  <Callout icon="terminal-2">
-    [Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
-  </Callout>
+[Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
 
-  <Callout icon="edit">
-    [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/manage-with-terraform.mdx) 或 [file an issue](https://github.com/langchain-ai/docs/issues/new/choose)。
-  </Callout>
-</div>
+[Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/manage-with-terraform.mdx) 或 [file an issue](https://github.com/langchain-ai/docs/issues/new/choose)。

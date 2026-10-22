@@ -8,9 +8,9 @@
 
 通道使托管深度代理可在外部消息传递服务中使用。来自服务的消息可以启动代理运行，并且代理的最终响应通过同一服务返回。
 
-<Note>
-  托管 Deep Agents 于 [LangSmith Cloud](/langsmith/cloud) **公开 [beta](/langsmith/release-stages)**。
-</Note>
+> [!注意]
+>
+> 托管 Deep Agents 于 [LangSmith Cloud](/langsmith/cloud) **公开 [beta](/langsmith/release-stages)**。
 
 ## 项目结构
 
@@ -75,15 +75,13 @@ flowchart LR
 
 ## 支持的频道
 
-<CardGroup>
-  <Card title="Slack" icon="brand-slack" href="/langsmith/python/managed-deep-agents-channels-slack">
-    从 Slack 提及、直接消息和线程回复开始运行。
-  </Card>
+> **[Slack](/langsmith/python/managed-deep-agents-channels-slack)**
+>
+> 从 Slack 提及、直接消息和话题回复开始运行。
 
-  <Card title="HTTP" icon="webhook" href="/langsmith/python/managed-deep-agents-channels-http">
-    从任何可以发送 JSON Webhook 的服务开始运行。
-  </Card>
-</CardGroup>
+> **[HTTP](/langsmith/python/managed-deep-agents-channels-http)**
+>
+> 从任何可以发送 JSON Webhook 的服务开始运行。
 
 ## 另请参阅* [Identity](/langsmith/python/managed-deep-agents-identity)：对调用者进行身份验证，范围通道运行到已解析的用户。
 * [Schedules](/langsmith/python/managed-deep-agents-schedules)：通过配置的通道交付预定的结果。
@@ -92,12 +90,6 @@ flowchart LR
 
 ***
 
-<div>
-  <Callout icon="terminal-2">
-    [Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
-  </Callout>
+[Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
 
-  <Callout icon="edit">
-    [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/managed-deep-agents-channels.mdx) 或 [file an issue](https://github.com/langchain-ai/docs/issues/new/choose)。
-  </Callout>
-</div>
+[Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/managed-deep-agents-channels.mdx) 或 [file an issue](https://github.com/langchain-ai/docs/issues/new/choose)。

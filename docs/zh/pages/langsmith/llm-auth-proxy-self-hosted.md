@@ -10,9 +10,9 @@ LLM 身份验证代理可让您的组织对来自 LangSmith 的所有模型调�
 
 LLM 身份验证代理是一个基于 [Envoy](https://www.envoyproxy.io/) 的组件，在您的环境中运行，位于 LangSmith 和您的上游 LLM 提供商或网关（例如 OpenAI、Anthropic 或内部 LLM 网关（如 LiteLLM））之间。 LangSmith 使用短期 JWT（JSON Web 令牌）对每个请求进行签名。代理验证 JWT，可选择注入提供者凭据或转换请求和响应正文，然后将请求转发到上游。 [SaaS](/langsmith/cloud) 和 [self-hosted](/langsmith/self-hosted) LangSmith 客户均可使用。
 
-<Info>
-  LLM 身份验证代理需要 LangSmith 企业计划。详情请参阅[Pricing](https://www.langchain.com/pricing)或[contact our sales team](https://www.langchain.com/contact-sales)。
-</Info>
+> [!注意]
+>
+> LLM 身份验证代理需要 LangSmith 企业计划。详情请参阅[Pricing](https://www.langchain.com/pricing)或[contact our sales team](https://www.langchain.com/contact-sales)。
 
 当您需要执行以下操作时，请使用 LLM 身份验证代理：* 针对您自己的提供商网关验证 [Playground](/langsmith/custom-endpoint#use-the-model-in-the-playground) 或 [LLM-as-judge evaluation](/langsmith/evaluation) 请求。
 * 注入特定于提供商的 API 密钥或身份验证标头，而不会将其暴露给最终用户。
@@ -29,21 +29,19 @@ LLM 身份验证代理是一个基于 [Envoy](https://www.envoyproxy.io/) 的组
 3. 可以选择调用[⟦T17⟧](https://www.envoyproxy.io/docs/envoy/latest/configuration/http/http_filters/ext_proc_filter)转换器，它可以重写请求和响应正文（例如，在OpenAI格式和自定义网关格式之间进行转换）
 4. 将带有自定义标头（静态或动态）的请求转发给上游提供商`ext_authz` 服务和转换器都是客户部署的组件，在您的环境中与代理一起运行。可以启用其中一个或两者 [depending on your use case](#when-to-use-ext_proc-vs-ext_authz)。
 
-<img alt="Architecture diagram showing LangSmith issuing a signed JWT to the self-hosted auth proxy, which validates the JWT, applies customer-defined auth, and forwards the request to the upstream model provider." />
-
-<img alt="Architecture diagram showing LangSmith issuing a signed JWT to the self-hosted auth proxy, which validates the JWT, applies customer-defined auth, and forwards the request to the upstream model provider." />
+![Architecture diagram showing LangSmith issuing a signed JWT to the self-hosted auth proxy, which validates the JWT, applies customer-defined auth, and forwards the request to the upstream model provider.](https://mintcdn.com/langchain-5e9cc07a/P0dgApy5uvIpggEa/langsmith/images/llm-auth-proxy-architecture-light.png?fit=max\&auto=format\&n=P0dgApy5uvIpggEa\&q=85\&s=2358bba74cb9be8ca92a5f6028937ee1)
 
 ## 先决条件
 
-* LangSmith 企业计划（SaaS 或版本 0.13.33+ 上的自托管）
+* LangSmith 企业计划（SaaS 或自托管版本 0.13.33+）
 * 带有 Helm 3 的 Kubernetes 集群
 * Envoy v1.37 或更高版本（Helm 图表默认为`envoyproxy/envoy:v1.37-latest`）
 * 您的上游 LLM 提供商或网关的 URL（代理将请求转发到的目的地）
 
-<Note>
-  身份验证代理当前支持 [Playground](/langsmith/prompt-engineering-concepts)、[Evals](/langsmith/evaluation)、[Fleet](/langsmith/fleet)、[Chat](/langsmith/chat) 和 [Insights](/langsmith/insights) 功能。
-  Playground 和 Evals 在 v0.13.33+ 中可用。聊天和见解在 v0.13.39+ 中可用。
-</Note>
+> [!注意]
+>
+> 身份验证代理目前支持 [Playground](/langsmith/prompt-engineering-concepts)、[Evals](/langsmith/evaluation)、[Fleet](/langsmith/fleet)、[Chat](/langsmith/chat) 和 [Insights](/langsmith/insights) 功能。
+> Playground 和 Evals 在 v0.13.33+ 中可用。聊天和见解在 v0.13.39+ 中可用。
 
 ## 1. 配置 JWT 签名（仅限自托管 LangSmith）
 
@@ -60,53 +58,49 @@ config:
 
 ## 2. 为您的组织启用 LLM Auth 代理
 
-<Tabs>
-  <Tab title="Self-hosted">
-    **选项 A：** 为特定组织启用：
+**自托管**
 
-    在 LangSmith UI 中，导航到 **设置** 页面，复制左上角 **组织** 旁边的组织 ID。
+**选项 A：** 为特定组织启用：
 
-    针对您的 LangSmith PostgreSQL 数据库运行以下命令：
+在 LangSmith UI 中，导航至 **设置** 页面，复制左上角 **组织** 旁边的组织 ID。
 
-    ```sql theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-    UPDATE organizations
-    SET config = config || '{"can_use_llm_auth_proxy": true}'
-    WHERE id = '<organization_id>';
-    ```
+针对您的 LangSmith PostgreSQL 数据库运行以下命令：
 
-    **选项 B：** 为安装中的所有组织启用：
+```sql theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+UPDATE organizations
+SET config = config || '{"can_use_llm_auth_proxy": true}'
+WHERE id = '<organization_id>';
+```
 
-    将以下内容添加到 [LangSmith ⟦T27⟧](https://github.com/langchain-ai/helm/blob/main/charts/langsmith/values.yaml) 中的 `commonEnv`：
+**选项 B：** 为安装中的所有组织启用：
 
-    ```yaml theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-    commonEnv:
-      - name: DEFAULT_ORG_FEATURE_CAN_USE_LLM_AUTH_PROXY
-        value: "true"
-    ```
+将以下内容添加到 [LangSmith ⟦T27⟧](https://github.com/langchain-ai/helm/blob/main/charts/langsmith/values.yaml) 中的 `commonEnv`：
 
-    <Note>
-      此设置对个人组织没有影响。
-    </Note>
-  </Tab>
+```yaml theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+commonEnv:
+  - name: DEFAULT_ORG_FEATURE_CAN_USE_LLM_AUTH_PROXY
+    value: "true"
+```
 
-  <Tab title="SaaS">
-    通过 [Support Portal](https://support.langchain.com) 联系技术支持，为您的组织启用 LLM Auth 代理。
-  </Tab>
-</Tabs>
+> [!注意]
+>
+> 此设置对个人组织没有影响。
+
+**软件即服务**
+
+通过 [Support Portal](https://support.langchain.com) 联系技术支持，为您的组织启用 LLM Auth 代理。
 
 ## 3. 在LangSmith中配置组织设置
 
 在 LangSmith UI 中，导航至 **设置** > **常规**，配置以下内容：1. **JWT 受众：** 代理将验证的 `aud` 声明值（例如，`example-audience`）。这必须与 [Step 4](#4-install-the-auth-proxy-helm-chart) 中的身份验证代理图表中的 `jwtAudiences` 匹配。
-2. **Enable LLM auth proxy:** toggle on for your organization.
-3. **Allowed URLs:** control which destination URLs the proxy is permitted to forward JWTs to.这可以防止将凭证转发到非预期主机。选择以下三个选项之一：
+2. **启用 LLM 身份验证代理：** 为您的组织打开。
+3. **允许的 URL：** 控制允许代理将 JWT 转发到哪些目标 URL。这可以防止将凭证转发到非预期主机。选择以下三个选项之一：
 
-   * **Allow all** (default): permits JWT forwarding to any upstream URL.相当于没有限制。
+   * **全部允许**（默认）：允许 JWT 转发到任何上游 URL。相当于没有限制。
    * **全部阻止：** 阻止 JWT 转发到所有 URL。
-   * **Custom:** specify an explicit list of allowed URL patterns. Empty strings and bare `*` are not accepted. The control is disabled when the LLM auth proxy toggle is off.
+   * **自定义：** 指定允许的 URL 模式的明确列表。不接受空字符串和裸露的`*`。当 LLM 身份验证代理开关关闭时，该控件将被禁用。
 
-   <img alt="LLM Auth Proxy settings in LangSmith showing the Enable LLM auth proxy checkbox, JWT audience field, and Allowed URLs radio buttons with Allow all selected." />
-
-   <img alt="LLM Auth Proxy settings in LangSmith showing the Enable LLM auth proxy checkbox, JWT audience field, and Allowed URLs radio buttons with Allow all selected." />
+   ![LLM Auth Proxy settings in LangSmith showing the Enable LLM auth proxy checkbox, JWT audience field, and Allowed URLs radio buttons with Allow all selected.](https://mintcdn.com/langchain-5e9cc07a/bbAQLTZm05DckBS2/langsmith/images/llm-auth-proxy-settings-light.png?fit=max\&auto=format\&n=bbAQLTZm05DckBS2\&q=85\&s=b9bbd4314eeb945ca236a2c6dec2d221)
 
 ## 4.安装身份验证代理Helm图表
 
@@ -117,7 +111,7 @@ helm repo add langchain https://langchain-ai.github.io/helm/
 helm repo update
 ```
 
-Create a `values.yaml` with the upstream URL and JWT validation settings. JWKS 配置有两个选项：* **`jwksUri`（推荐）：** 指向您的 LangSmith 实例的 `/.well-known/jwks.json` 端点。 Envoy 自动获取并缓存公钥，支持无缝密钥轮换。
+使用上游 URL 和 JWT 验证设置创建 `values.yaml`。 JWKS 配置有两个选项：* **`jwksUri`（推荐）：** 指向您的 LangSmith 实例的 `/.well-known/jwks.json` 端点。 Envoy 自动获取并缓存公钥，支持无缝密钥轮换。
 * **`jwksJson`（内联）：** 将 JWKS JSON 直接粘贴到 `values.yaml` 中。将此用于测试或气隙环境，其中身份验证代理无法访问 LangSmith 的出站网络。需要更新图表才能轮换密钥。仅包含公钥组件；省略 `d` 字段（私钥）。
 
 如果两者都设置了，`jwksUri`优先。
@@ -180,127 +174,127 @@ authProxy:
 
 下面的示例是一个最小的 Python `ext_authz` 服务，用于执行 OAuth2 客户端凭据令牌交换。对于每个请求，它都会返回一个带有新访问令牌的缓存的 `Authorization` 标头，并在过期之前从配置的令牌端点刷新它。有关完整示例，请参阅图表存储库中的[e2e/oauth/](https://github.com/langchain-ai/helm/tree/main/charts/langsmith-auth-proxy/e2e/oauth)。
 
-<Accordion title="ext-authz-oauth.py">
-  ```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  """ext_authz service that performs an OAuth2 client-credentials token exchange.
+> **ext-authz-oauth.py**
+>
+> ```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> """ext_authz service that performs an OAuth2 client-credentials token exchange.
+>
+> Runs as a sidecar (or standalone service) alongside the main auth-proxy component.
+> On each ext_authz check request it returns a cached OAuth access token,
+> refreshing it from the configured token endpoint when expired.
+>
+> Environment variables:
+>   OAUTH_TOKEN_URL    – Token endpoint (e.g. https://login.example.com/oauth/token)
+>   OAUTH_CLIENT_ID    – Client ID for the credentials grant
+>   OAUTH_CLIENT_SECRET– Client secret for the credentials grant
+>   OAUTH_SCOPE        – (optional) Space-separated scopes to request
+>   LISTEN_PORT        – (optional) Port to listen on, default 10002
+> """
+>
+> from http.server import HTTPServer, BaseHTTPRequestHandler
+> import json
+> import os
+> import sys
+> import threading
+> import time
+> import urllib.request
+> import urllib.parse
+>
+> # ---------------------------------------------------------------------------
+> # Configuration
+> # ---------------------------------------------------------------------------
+> TOKEN_URL = os.environ["OAUTH_TOKEN_URL"]
+> CLIENT_ID = os.environ["OAUTH_CLIENT_ID"]
+> CLIENT_SECRET = os.environ["OAUTH_CLIENT_SECRET"]
+> SCOPE = os.environ.get("OAUTH_SCOPE", "")
+> LISTEN_PORT = int(os.environ.get("LISTEN_PORT", "10002"))
+>
+> # Refresh the token this many seconds before it actually expires.
+> EXPIRY_BUFFER_SECONDS = 30
+>
+> # ---------------------------------------------------------------------------
+> # Token cache (thread-safe)
+> # ---------------------------------------------------------------------------
+> _lock = threading.Lock()
+> _cached_token: str | None = None
+> _token_expiry: float = 0  # epoch seconds
+>
+>
+> def _fetch_token() -> tuple[str, float]:
+>     """Perform a client_credentials grant and return (access_token, expiry_epoch)."""
+>     data = urllib.parse.urlencode({
+>         "grant_type": "client_credentials",
+>         "client_id": CLIENT_ID,
+>         "client_secret": CLIENT_SECRET,
+>         **({"scope": SCOPE} if SCOPE else {}),
+>     }).encode()
+>
+>     req = urllib.request.Request(
+>         TOKEN_URL,
+>         data=data,
+>         headers={"Content-Type": "application/x-www-form-urlencoded"},
+>         method="POST",
+>     )
+>     with urllib.request.urlopen(req, timeout=10) as resp:
+>         body = json.loads(resp.read())
+>
+>     access_token = body["access_token"]
+>     expires_in = int(body.get("expires_in", 3600))
+>     expiry = time.time() + expires_in - EXPIRY_BUFFER_SECONDS
+>     return access_token, expiry
+>
+>
+> def get_token() -> str:
+>     """Return a valid access token, refreshing if necessary."""
+>     global _cached_token, _token_expiry
+>     with _lock:
+>         if _cached_token and time.time() < _token_expiry:
+>             return _cached_token
+>     # Fetch outside the lock so other requests aren't blocked on I/O.
+>     token, expiry = _fetch_token()
+>     with _lock:
+>         _cached_token = token
+>         _token_expiry = expiry
+>     print(f"Refreshed OAuth token (expires in {int(expiry - time.time())}s)", flush=True)
+>     return token
+>
+>
+> # ---------------------------------------------------------------------------
+> # ext_authz HTTP handler
+> # ---------------------------------------------------------------------------
+> class Handler(BaseHTTPRequestHandler):
+>     def do_any(self):
+>         try:
+>             token = get_token()
+>         except Exception as exc:
+>             print(f"OAuth token fetch failed: {exc}", flush=True)
+>             self.send_response(500)
+>             self.send_header("Content-Type", "text/plain")
+>             self.end_headers()
+>             self.wfile.write(b"OAuth token exchange failed")
+>             return
+>
+>         self.send_response(200)
+>         # Replace the header name as needed - this header will be forwarded to the upstream LLM provider / gateway.
+>         self.send_header("Authorization", f"Bearer {token}")
+>         self.end_headers()
+>
+>     # Handle every method Envoy might send for ext_authz checks.
+>     do_GET = do_POST = do_PUT = do_DELETE = do_PATCH = do_HEAD = do_OPTIONS = do_any
+>
+>     def log_message(self, format, *args):
+>         # Quieter logs — only print errors.
+>         pass
+>
+>
+> if __name__ == "__main__":
+>     server = HTTPServer(("0.0.0.0", LISTEN_PORT), Handler)
+>     print(f"ext-authz-oauth listening on :{LISTEN_PORT}", flush=True)
+>     print(f"  token_url={TOKEN_URL} client_id=<redacted>", flush=True)
+>     server.serve_forever()
+> ```有关`extAuthz`参数的完整列表，请参阅[Helm chart README](https://github.com/langchain-ai/helm/tree/main/charts/langsmith-auth-proxy#readme)。
 
-  Runs as a sidecar (or standalone service) alongside the main auth-proxy component.
-  On each ext_authz check request it returns a cached OAuth access token,
-  refreshing it from the configured token endpoint when expired.
-
-  Environment variables:
-    OAUTH_TOKEN_URL    – Token endpoint (e.g. https://login.example.com/oauth/token)
-    OAUTH_CLIENT_ID    – Client ID for the credentials grant
-    OAUTH_CLIENT_SECRET– Client secret for the credentials grant
-    OAUTH_SCOPE        – (optional) Space-separated scopes to request
-    LISTEN_PORT        – (optional) Port to listen on, default 10002
-  """
-
-  from http.server import HTTPServer, BaseHTTPRequestHandler
-  import json
-  import os
-  import sys
-  import threading
-  import time
-  import urllib.request
-  import urllib.parse
-
-  # ---------------------------------------------------------------------------
-  # Configuration
-  # ---------------------------------------------------------------------------
-  TOKEN_URL = os.environ["OAUTH_TOKEN_URL"]
-  CLIENT_ID = os.environ["OAUTH_CLIENT_ID"]
-  CLIENT_SECRET = os.environ["OAUTH_CLIENT_SECRET"]
-  SCOPE = os.environ.get("OAUTH_SCOPE", "")
-  LISTEN_PORT = int(os.environ.get("LISTEN_PORT", "10002"))
-
-  # Refresh the token this many seconds before it actually expires.
-  EXPIRY_BUFFER_SECONDS = 30
-
-  # ---------------------------------------------------------------------------
-  # Token cache (thread-safe)
-  # ---------------------------------------------------------------------------
-  _lock = threading.Lock()
-  _cached_token: str | None = None
-  _token_expiry: float = 0  # epoch seconds
-
-
-  def _fetch_token() -> tuple[str, float]:
-      """Perform a client_credentials grant and return (access_token, expiry_epoch)."""
-      data = urllib.parse.urlencode({
-          "grant_type": "client_credentials",
-          "client_id": CLIENT_ID,
-          "client_secret": CLIENT_SECRET,
-          **({"scope": SCOPE} if SCOPE else {}),
-      }).encode()
-
-      req = urllib.request.Request(
-          TOKEN_URL,
-          data=data,
-          headers={"Content-Type": "application/x-www-form-urlencoded"},
-          method="POST",
-      )
-      with urllib.request.urlopen(req, timeout=10) as resp:
-          body = json.loads(resp.read())
-
-      access_token = body["access_token"]
-      expires_in = int(body.get("expires_in", 3600))
-      expiry = time.time() + expires_in - EXPIRY_BUFFER_SECONDS
-      return access_token, expiry
-
-
-  def get_token() -> str:
-      """Return a valid access token, refreshing if necessary."""
-      global _cached_token, _token_expiry
-      with _lock:
-          if _cached_token and time.time() < _token_expiry:
-              return _cached_token
-      # Fetch outside the lock so other requests aren't blocked on I/O.
-      token, expiry = _fetch_token()
-      with _lock:
-          _cached_token = token
-          _token_expiry = expiry
-      print(f"Refreshed OAuth token (expires in {int(expiry - time.time())}s)", flush=True)
-      return token
-
-
-  # ---------------------------------------------------------------------------
-  # ext_authz HTTP handler
-  # ---------------------------------------------------------------------------
-  class Handler(BaseHTTPRequestHandler):
-      def do_any(self):
-          try:
-              token = get_token()
-          except Exception as exc:
-              print(f"OAuth token fetch failed: {exc}", flush=True)
-              self.send_response(500)
-              self.send_header("Content-Type", "text/plain")
-              self.end_headers()
-              self.wfile.write(b"OAuth token exchange failed")
-              return
-
-          self.send_response(200)
-          # Replace the header name as needed - this header will be forwarded to the upstream LLM provider / gateway.
-          self.send_header("Authorization", f"Bearer {token}")
-          self.end_headers()
-
-      # Handle every method Envoy might send for ext_authz checks.
-      do_GET = do_POST = do_PUT = do_DELETE = do_PATCH = do_HEAD = do_OPTIONS = do_any
-
-      def log_message(self, format, *args):
-          # Quieter logs — only print errors.
-          pass
-
-
-  if __name__ == "__main__":
-      server = HTTPServer(("0.0.0.0", LISTEN_PORT), Handler)
-      print(f"ext-authz-oauth listening on :{LISTEN_PORT}", flush=True)
-      print(f"  token_url={TOKEN_URL} client_id=<redacted>", flush=True)
-      server.serve_forever()
-  ```
-</Accordion>
-
-有关`extAuthz`参数的完整列表，请参阅[Helm chart README](https://github.com/langchain-ai/helm/tree/main/charts/langsmith-auth-proxy#readme)。## 编写一个`ext_proc`变压器
+## 编写一个`ext_proc`变压器
 
 当您需要重写请求或响应正文时，请使用`ext_proc`，例如，在OpenAI格式和自定义网关格式之间进行转换，或者将其他字段注入请求负载中。这使用 Envoy 的 [⟦T67⟧ filter](https://www.envoyproxy.io/docs/envoy/latest/configuration/http/http_filters/ext_proc_filter)。
 
@@ -308,12 +302,12 @@ authProxy:
 
 ### 何时使用`ext_proc` vs `ext_authz`
 
-| Capability | `ext_authz` | `ext_proc` |
+|能力| `ext_authz` | `ext_proc` |
 | - | - | - |
 |修改请求头 |是的 |是的 |
 |修改响应头 |没有 |是的 |
 |修改请求正文 |没有 |是的 |
-| Modify response body |没有 |是的 |
+|修改响应正文 |没有 |是的 |
 |协议| HTTP | gRPC |
 
 如果您只需要注入身份验证标头（例如 API 密钥），请使用 `ext_authz`。如果需要重写主体，请使用`ext_proc`。两者可以同时启用。
@@ -332,13 +326,13 @@ authProxy:
       requestBodyMode: "BUFFERED"
       responseHeaderMode: "SKIP"
       responseBodyMode: "NONE"
-```
+```设置 `failureModeAllow: true` 以在变压器不可用时允许请求通过。默认（`false`）拒绝请求。
 
-设置 `failureModeAllow: true` 以在变压器不可用时允许请求通过。默认（`false`）拒绝请求。### 处理模式
+### 处理模式
 
 通过 `processingMode` 控制将哪些相发送到变压器。仅启用您需要的阶段，因为禁用未使用的阶段会减少延迟。
 
-|领域 |选项|描述 |
+|领域|选项|描述 |
 | - | - | - |
 | `requestHeaderMode` | `SEND`、`SKIP`、`DEFAULT` |是否转发请求头。 |
 | `responseHeaderMode` | `SEND`、`SKIP`、`DEFAULT` |是否转发响应头。 |
@@ -349,15 +343,15 @@ authProxy:
 
 * 使用`BUFFERED`进行请求正文重写：在发送之前缓冲完整的正文，最简单的 JSON 重写。
 * 使用 `STREAMED` 进行流式 LLM 响应正文重写：在块到达时发送块，延迟较低，但实现起来更复杂。
-* 使用`NONE`完全跳过一个阶段。
-
-<Warning>
-  改变主体时，您的 `ext_proc` 服务还必须更新 `content-length` 标头，以通过 `HeaderMutation` 匹配新的主体大小。 Envoy 拒绝 `content-length` 与突变体不匹配的响应。
-</Warning>
+* 使用`NONE`完全跳过一个阶段。> [!警告]
+>
+> 当改变主体时，您的 `ext_proc` 服务还必须更新 `content-length` 标头，以通过 `HeaderMutation` 匹配新的主体大小。 Envoy 拒绝 `content-length` 与突变体不匹配的响应。
 
 ### 请求流程
 
-启用 `ext_proc` 进行标头注入和正文重写的示例：```
+启用 `ext_proc` 进行标头注入和正文重写的示例：
+
+```
 curl -H "X-LangSmith-LLM-Auth: <JWT>" -d '{"model":"gpt-5.5",...}'
   -> Envoy(:10000)
   -> built-in Envoy JWT filter (validate sig, iss, aud)
@@ -371,244 +365,244 @@ curl -H "X-LangSmith-LLM-Auth: <JWT>" -d '{"model":"gpt-5.5",...}'
 
 下面的示例将一个最小的 Go 转换器部署为 Kubernetes 部署。它从请求标头中读取 JWT，注入 `Authorization` 标头，并将请求正文从 OpenAI 格式重写为自定义格式。
 
-<Accordion title="transformer-configmap.yaml">
-  ```yaml theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  apiVersion: v1
-  kind: ConfigMap
-  metadata:
-    name: transformer-source
-  data:
-    main.go: |
-      package main
+> **transformer-configmap.yaml**
+>
+> ```yaml theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> apiVersion: v1
+> kind: ConfigMap
+> metadata:
+>   name: transformer-source
+> data:
+>   main.go: |
+>     package main
+>
+>     import (
+>         "encoding/json"
+>         "fmt"
+>         "io"
+>         "log"
+>         "net"
+>         "strings"
+>
+>         core "github.com/envoyproxy/go-control-plane/envoy/config/core/v3"
+>         ext_proc "github.com/envoyproxy/go-control-plane/envoy/service/ext_proc/v3"
+>         "google.golang.org/grpc"
+>     )
+>
+>     type server struct {
+>         ext_proc.UnimplementedExternalProcessorServer
+>     }
+>
+>     func (s *server) Process(stream ext_proc.ExternalProcessor_ProcessServer) error {
+>         for {
+>             req, err := stream.Recv()
+>             if err == io.EOF {
+>                 return nil
+>             }
+>             if err != nil {
+>                 return err
+>             }
+>
+>             var resp *ext_proc.ProcessingResponse
+>             switch v := req.Request.(type) {
+>             case *ext_proc.ProcessingRequest_RequestHeaders:
+>                 resp = handleRequestHeaders(v.RequestHeaders)
+>             case *ext_proc.ProcessingRequest_RequestBody:
+>                 resp = handleRequestBody(v.RequestBody)
+>             default:
+>                 resp = &ext_proc.ProcessingResponse{}
+>             }
+>
+>             if err := stream.Send(resp); err != nil {
+>                 return err
+>             }
+>         }
+>     }
+>
+>     func handleRequestHeaders(headers *ext_proc.HttpHeaders) *ext_proc.ProcessingResponse {
+>         var jwtValue string
+>         for _, h := range headers.Headers.Headers {
+>             if strings.EqualFold(h.Key, "x-langsmith-llm-auth") {
+>                 if len(h.RawValue) > 0 {
+>                     jwtValue = string(h.RawValue)
+>                 } else {
+>                     jwtValue = h.Value
+>                 }
+>                 break
+>             }
+>         }
+>
+>         resp := &ext_proc.ProcessingResponse{
+>             Response: &ext_proc.ProcessingResponse_RequestHeaders{
+>                 RequestHeaders: &ext_proc.HeadersResponse{},
+>             },
+>         }
+>
+>         if jwtValue != "" {
+>             // TODO: Replace with your auth logic, e.g. exchange JWT for a
+>             // provider-specific token, call a secrets manager, etc.
+>             providerKey := "Bearer your-provider-key"
+>
+>             headerResp := resp.GetRequestHeaders()
+>             headerResp.Response = &ext_proc.CommonResponse{
+>                 HeaderMutation: &ext_proc.HeaderMutation{
+>                     SetHeaders: []*core.HeaderValueOption{
+>                         {
+>                             Header: &core.HeaderValue{
+>                                 Key:      "Authorization",
+>                                 RawValue: []byte(providerKey),
+>                             },
+>                         },
+>                     },
+>                 },
+>             }
+>         }
+>         return resp
+>     }
+>
+>     func handleRequestBody(body *ext_proc.HttpBody) *ext_proc.ProcessingResponse {
+>         resp := &ext_proc.ProcessingResponse{
+>             Response: &ext_proc.ProcessingResponse_RequestBody{
+>                 RequestBody: &ext_proc.BodyResponse{},
+>             },
+>         }
+>
+>         var original map[string]interface{}
+>         if err := json.Unmarshal(body.Body, &original); err != nil {
+>             log.Printf("Body parse failed, passing through: %v", err)
+>             return resp
+>         }
+>
+>         // TODO: Replace with your transformation logic.
+>         // This example wraps the OpenAI-format body in a custom envelope.
+>         transformed := map[string]interface{}{
+>             "custom_model":    original["model"],
+>             "custom_messages": original["messages"],
+>             "metadata":        map[string]string{"source": "langsmith"},
+>         }
+>
+>         newBody, err := json.Marshal(transformed)
+>         if err != nil {
+>             log.Printf("Body marshal failed, passing through: %v", err)
+>             return resp
+>         }
+>
+>         // IMPORTANT: update content-length to match the new body size.
+>         bodyResp := resp.GetRequestBody()
+>         bodyResp.Response = &ext_proc.CommonResponse{
+>             Status: ext_proc.CommonResponse_CONTINUE_AND_REPLACE,
+>             HeaderMutation: &ext_proc.HeaderMutation{
+>                 SetHeaders: []*core.HeaderValueOption{
+>                     {
+>                         Header: &core.HeaderValue{
+>                             Key:      "content-length",
+>                             RawValue: []byte(fmt.Sprintf("%d", len(newBody))),
+>                         },
+>                     },
+>                 },
+>             },
+>             BodyMutation: &ext_proc.BodyMutation{
+>                 Mutation: &ext_proc.BodyMutation_Body{
+>                     Body: newBody,
+>                 },
+>             },
+>         }
+>         return resp
+>     }
+>
+>     func main() {
+>         lis, err := net.Listen("tcp", ":50051")
+>         if err != nil {
+>             log.Fatalf("failed to listen: %v", err)
+>         }
+>         s := grpc.NewServer()
+>         ext_proc.RegisterExternalProcessorServer(s, &server{})
+>         log.Println("transformer listening on :50051")
+>         if err := s.Serve(lis); err != nil {
+>             log.Fatalf("failed to serve: %v", err)
+>         }
+>     }
+>   go.mod: |
+>     module transformer
+>
+>     go 1.23
+>
+>     require (
+>         github.com/envoyproxy/go-control-plane/envoy v1.32.4
+>         google.golang.org/grpc v1.72.1
+>     )
+> ```
 
-      import (
-          "encoding/json"
-          "fmt"
-          "io"
-          "log"
-          "net"
-          "strings"
+> **变压器部署.yaml**
+>
+> ```yaml theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> apiVersion: apps/v1
+> kind: Deployment
+> metadata:
+>   name: transformer
+>   labels:
+>     app: transformer
+> spec:
+>   replicas: 1
+>   selector:
+>     matchLabels:
+>       app: transformer
+>   template:
+>     metadata:
+>       labels:
+>         app: transformer
+>     spec:
+>       initContainers:
+>         - name: build
+>           image: golang:1.23
+>           command: ["sh", "-c"]
+>           args:
+>             - |
+>               cp /src/main.go /src/go.mod /build/ &&
+>               cd /build &&
+>               go mod tidy &&
+>               CGO_ENABLED=0 go build -o /build/transformer ./main.go
+>           volumeMounts:
+>             - name: source
+>               mountPath: /src
+>               readOnly: true
+>             - name: binary
+>               mountPath: /build
+>       containers:
+>         - name: transformer
+>           image: gcr.io/distroless/static-debian12:nonroot
+>           command: ["/app/transformer"]
+>           ports:
+>             - containerPort: 50051
+>           volumeMounts:
+>             - name: binary
+>               mountPath: /app
+>               readOnly: true
+>       volumes:
+>         - name: source
+>           configMap:
+>             name: transformer-source
+>         - name: binary
+>           emptyDir: {}
+> ---
+> apiVersion: v1
+> kind: Service
+> metadata:
+>   name: transformer
+>   labels:
+>     app: transformer
+> spec:
+>   selector:
+>     app: transformer
+>   ports:
+>     - port: 50051
+>       targetPort: 50051
+>       protocol: TCP
+> ```
 
-          core "github.com/envoyproxy/go-control-plane/envoy/config/core/v3"
-          ext_proc "github.com/envoyproxy/go-control-plane/envoy/service/ext_proc/v3"
-          "google.golang.org/grpc"
-      )
-
-      type server struct {
-          ext_proc.UnimplementedExternalProcessorServer
-      }
-
-      func (s *server) Process(stream ext_proc.ExternalProcessor_ProcessServer) error {
-          for {
-              req, err := stream.Recv()
-              if err == io.EOF {
-                  return nil
-              }
-              if err != nil {
-                  return err
-              }
-
-              var resp *ext_proc.ProcessingResponse
-              switch v := req.Request.(type) {
-              case *ext_proc.ProcessingRequest_RequestHeaders:
-                  resp = handleRequestHeaders(v.RequestHeaders)
-              case *ext_proc.ProcessingRequest_RequestBody:
-                  resp = handleRequestBody(v.RequestBody)
-              default:
-                  resp = &ext_proc.ProcessingResponse{}
-              }
-
-              if err := stream.Send(resp); err != nil {
-                  return err
-              }
-          }
-      }
-
-      func handleRequestHeaders(headers *ext_proc.HttpHeaders) *ext_proc.ProcessingResponse {
-          var jwtValue string
-          for _, h := range headers.Headers.Headers {
-              if strings.EqualFold(h.Key, "x-langsmith-llm-auth") {
-                  if len(h.RawValue) > 0 {
-                      jwtValue = string(h.RawValue)
-                  } else {
-                      jwtValue = h.Value
-                  }
-                  break
-              }
-          }
-
-          resp := &ext_proc.ProcessingResponse{
-              Response: &ext_proc.ProcessingResponse_RequestHeaders{
-                  RequestHeaders: &ext_proc.HeadersResponse{},
-              },
-          }
-
-          if jwtValue != "" {
-              // TODO: Replace with your auth logic, e.g. exchange JWT for a
-              // provider-specific token, call a secrets manager, etc.
-              providerKey := "Bearer your-provider-key"
-
-              headerResp := resp.GetRequestHeaders()
-              headerResp.Response = &ext_proc.CommonResponse{
-                  HeaderMutation: &ext_proc.HeaderMutation{
-                      SetHeaders: []*core.HeaderValueOption{
-                          {
-                              Header: &core.HeaderValue{
-                                  Key:      "Authorization",
-                                  RawValue: []byte(providerKey),
-                              },
-                          },
-                      },
-                  },
-              }
-          }
-          return resp
-      }
-
-      func handleRequestBody(body *ext_proc.HttpBody) *ext_proc.ProcessingResponse {
-          resp := &ext_proc.ProcessingResponse{
-              Response: &ext_proc.ProcessingResponse_RequestBody{
-                  RequestBody: &ext_proc.BodyResponse{},
-              },
-          }
-
-          var original map[string]interface{}
-          if err := json.Unmarshal(body.Body, &original); err != nil {
-              log.Printf("Body parse failed, passing through: %v", err)
-              return resp
-          }
-
-          // TODO: Replace with your transformation logic.
-          // This example wraps the OpenAI-format body in a custom envelope.
-          transformed := map[string]interface{}{
-              "custom_model":    original["model"],
-              "custom_messages": original["messages"],
-              "metadata":        map[string]string{"source": "langsmith"},
-          }
-
-          newBody, err := json.Marshal(transformed)
-          if err != nil {
-              log.Printf("Body marshal failed, passing through: %v", err)
-              return resp
-          }
-
-          // IMPORTANT: update content-length to match the new body size.
-          bodyResp := resp.GetRequestBody()
-          bodyResp.Response = &ext_proc.CommonResponse{
-              Status: ext_proc.CommonResponse_CONTINUE_AND_REPLACE,
-              HeaderMutation: &ext_proc.HeaderMutation{
-                  SetHeaders: []*core.HeaderValueOption{
-                      {
-                          Header: &core.HeaderValue{
-                              Key:      "content-length",
-                              RawValue: []byte(fmt.Sprintf("%d", len(newBody))),
-                          },
-                      },
-                  },
-              },
-              BodyMutation: &ext_proc.BodyMutation{
-                  Mutation: &ext_proc.BodyMutation_Body{
-                      Body: newBody,
-                  },
-              },
-          }
-          return resp
-      }
-
-      func main() {
-          lis, err := net.Listen("tcp", ":50051")
-          if err != nil {
-              log.Fatalf("failed to listen: %v", err)
-          }
-          s := grpc.NewServer()
-          ext_proc.RegisterExternalProcessorServer(s, &server{})
-          log.Println("transformer listening on :50051")
-          if err := s.Serve(lis); err != nil {
-              log.Fatalf("failed to serve: %v", err)
-          }
-      }
-    go.mod: |
-      module transformer
-
-      go 1.23
-
-      require (
-          github.com/envoyproxy/go-control-plane/envoy v1.32.4
-          google.golang.org/grpc v1.72.1
-      )
-  ```
-</Accordion>
-
-<Accordion title="transformer-deployment.yaml">
-  ```yaml theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  apiVersion: apps/v1
-  kind: Deployment
-  metadata:
-    name: transformer
-    labels:
-      app: transformer
-  spec:
-    replicas: 1
-    selector:
-      matchLabels:
-        app: transformer
-    template:
-      metadata:
-        labels:
-          app: transformer
-      spec:
-        initContainers:
-          - name: build
-            image: golang:1.23
-            command: ["sh", "-c"]
-            args:
-              - |
-                cp /src/main.go /src/go.mod /build/ &&
-                cd /build &&
-                go mod tidy &&
-                CGO_ENABLED=0 go build -o /build/transformer ./main.go
-            volumeMounts:
-              - name: source
-                mountPath: /src
-                readOnly: true
-              - name: binary
-                mountPath: /build
-        containers:
-          - name: transformer
-            image: gcr.io/distroless/static-debian12:nonroot
-            command: ["/app/transformer"]
-            ports:
-              - containerPort: 50051
-            volumeMounts:
-              - name: binary
-                mountPath: /app
-                readOnly: true
-        volumes:
-          - name: source
-            configMap:
-              name: transformer-source
-          - name: binary
-            emptyDir: {}
-  ---
-  apiVersion: v1
-  kind: Service
-  metadata:
-    name: transformer
-    labels:
-      app: transformer
-  spec:
-    selector:
-      app: transformer
-    ports:
-      - port: 50051
-        targetPort: 50051
-        protocol: TCP
-  ```
-</Accordion>
-
-<Note>
-  对于生产，请预先构建容器映像，而不是在 init 容器中进行编译。有关多阶段构建示例，请参阅 [Helm chart repository](https://github.com/langchain-ai/helm/tree/main/charts/langsmith-auth-proxy) 中的 `e2e/transformer/Dockerfile`。
-</Note>
+> [!注意]
+>
+> 对于生产，预先构建容器映像，而不是在 init 容器中进行编译。有关多阶段构建示例，请参阅 [Helm chart repository](https://github.com/langchain-ai/helm/tree/main/charts/langsmith-auth-proxy) 中的 `e2e/transformer/Dockerfile`。
 
 ## 附加配置
 
@@ -627,11 +621,11 @@ authProxy:
       - ".internal.corp"
 ```
 
-### 在没有公共入口的情况下部署
+### 在没有公共入口的情况下部署当身份验证代理没有公共入口并且只能通过内部 Kubernetes 网络访问时，必须将 LangSmith 服务配置为允许对私有 IP 地址的出站请求。如果没有这些设置，内置 SSRF 保护将阻止对私有 IP 的请求。
 
-当身份验证代理没有公共入口并且只能通过内部 Kubernetes 网络访问时，必须将 LangSmith 服务配置为允许对私有 IP 地址的出站请求。如果没有这些设置，内置 SSRF 保护将阻止对私有 IP 的请求。
+将以下环境变量添加到您的[LangSmith ⟦T119⟧](https://github.com/langchain-ai/helm/blob/main/charts/langsmith/values.yaml)：
 
-将以下环境变量添加到您的[LangSmith ⟦T119⟧](https://github.com/langchain-ai/helm/blob/main/charts/langsmith/values.yaml)：* **`SSRF_ALLOW_K8S_INTERNAL`** — 所有进行 LLM 调用的服务都需要。对于支持它的服务，将此添加到 `commonEnv`；对于不支持 `commonEnv` 的服务，将其添加到每个服务的 `extraEnv`。
+* **`SSRF_ALLOW_K8S_INTERNAL`** — 所有进行 LLM 调用的服务都需要。对于支持它的服务，将此添加到 `commonEnv`；对于不支持 `commonEnv` 的服务，将其添加到每个服务的 `extraEnv`。
 * **`SSRF_ALLOW_PRIVATE_IPS_PLAYGROUND`** — 仅在 `playground` 服务上需要。将其添加到`playground.deployment.extraEnv`。
 
 ```yaml theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
@@ -656,9 +650,9 @@ playground:
 
 有关入口、自动缩放、资源限制和其他配置选项，请参阅[Helm chart README](https://github.com/langchain-ai/helm/tree/main/charts/langsmith-auth-proxy#readme)。
 
-<Tip>
-  为了提高生产可靠性，请将 `authProxy.autoscaling.hpa.minReplicas` 至少设置为 `3`。
-</Tip>
+> [!提示]
+>
+> 为了生产可靠性，将 `authProxy.autoscaling.hpa.minReplicas` 至少设置为 `3`。
 
 ## 完整配置示例
 
@@ -721,38 +715,38 @@ LangSmith 使用 **Ed25519 (EdDSA)** 签署 JWT。公钥由 `/.well-known/jwks.j
 | `request_id` |请求相关 ID |
 | `ls_user_id` | LangSmith 用户 ID（每当请求有关联用户时就会出现）|
 
-<Warning>
-  使用`ls_user_id`来识别最终用户。在代理运行时，`sub`是助手的ID，`actor_type`是`agent-builder`，因此两者都无法识别该人。
-</Warning>
+> [!警告]
+>
+> 使用 `ls_user_id` 识别最终用户。在代理运行时，`sub`是助手的ID，`actor_type`是`agent-builder`，因此两者都无法识别该人。
 
 JWT 将传递到 `x-langsmith-llm-auth` 请求标头中的 `ext_authz` 或转换器服务。
 
 ## 常见问题解答
 
-<Accordion title="Does the auth proxy support corporate proxies?">
-  是的。通过`values.yaml`中的`httpProxy`部分配置HTTP代理。详情请参阅[HTTP proxy](#http-proxy)。
-</Accordion>
+> **身份验证代理是否支持公司代理？**
+>
+> 是的。通过`values.yaml`中的`httpProxy`部分配置HTTP代理。详情请参阅[HTTP proxy](#http-proxy)。> **身份验证代理是否支持自定义证书？**
+>
+> 是的，对于自定义 CA 证书，通过 `customCa`；对于相互 TLS，通过 `mtls`。
 
-<Accordion title="Does the auth proxy support custom certificates?">
-  是的，通过 `customCa` 实现自定义 CA 证书，通过 `mtls` 实现相互 TLS。
-</Accordion><Accordion title="Can a single auth proxy route to multiple upstream LLM gateways?">
-  不会。身份验证代理有一个 `upstream` 字段。
-</Accordion>
+> **单个身份验证代理可以路由到多个上游 LLM 网关吗？**
+>
+> 否。身份验证代理有一个 `upstream` 字段。
 
-<Accordion title="Can the auth proxy serve multiple organizations?">
-  是的。多个组织可以通过LangSmith中的模型配置指向同一个身份验证代理实例。
-</Accordion>
+> **身份验证代理可以为多个组织提供服务吗？**
+>
+> 是的。多个组织可以通过LangSmith中的模型配置指向同一个身份验证代理实例。
 
-<Accordion title="Can the LangSmith to auth proxy connection use HTTP instead of HTTPS?">
-  是的，但仅限于自托管，我们通常建议将身份验证代理放置在专用入口后面，以便通信使用 HTTPS。要允许 HTTP，请将 `LLM_AUTH_PROXY_ACCEPT_HTTP` 添加到 `commonEnv` 并在 [LangSmith ⟦T170⟧](https://github.com/langchain-ai/helm/blob/main/charts/langsmith/values.yaml) 中添加 `playground.deployment.extraEnv`。
-  要启用到 [Chat and Insights](/langsmith/self-host-insights-chat) 身份验证代理的 HTTP 流量，请在相应的 `extraEnv` 部分中设置此环境变量：`config.polly.agent.extraEnv`（用于 Chat，以前称为 Polly）和 `config.insights.agent.extraEnv`。
-</Accordion>
+> **LangSmith 身份验证代理连接可以使用 HTTP 而不是 HTTPS 吗？**
+>
+> 是的，但仅限于自托管，我们通常建议将身份验证代理放置在专用入口后面，以便通信使用 HTTPS。要允许 HTTP，请将 `LLM_AUTH_PROXY_ACCEPT_HTTP` 添加到 `commonEnv` 并在 [LangSmith ⟦T170⟧](https://github.com/langchain-ai/helm/blob/main/charts/langsmith/values.yaml) 中添加 `playground.deployment.extraEnv`。
+> 要启用到 [Chat and Insights](/langsmith/self-host-insights-chat) 身份验证代理的 HTTP 流量，请在相应的 `extraEnv` 部分中设置此环境变量：`config.polly.agent.extraEnv`（用于 Chat，以前称为 Polly）和 `config.insights.agent.extraEnv`。
 
-<Accordion title="Does the auth proxy work without a public ingress?">
-  是的。当身份验证代理只能通过内部 Kubernetes 网络（无公共入口）访问时，请将 `SSRF_ALLOW_K8S_INTERNAL` 添加到进行 LLM 调用的所有服务，并将 `SSRF_ALLOW_K8S_INTERNAL` 和 `SSRF_ALLOW_PRIVATE_IPS_PLAYGROUND` 添加到 `playground` 服务。有关配置详细信息，请参阅[Deploy without a public ingress](#deploy-without-a-public-ingress)。
-</Accordion><Accordion title="When should I use the LLM auth proxy versus OAuth client credentials on a model configuration?">
-  当身份验证需要 OAuth2 `client_credentials` 之外的自定义逻辑时，请使用 LLM 身份验证代理。例如，将 LangSmith JWT 交换为提供商特定的令牌、注入 GCP 或 AWS 身份，或者重写请求和响应正文。当每个工作区或团队需要针对自定义网关对其自己的 OAuth2 `client_credentials` 进行自助控制时，请使用 [OAuth client credentials on a model configuration](/langsmith/model-configurations#oauth-client-credentials)。两者可以在同一组织中共存；路由是按配置进行的。
-</Accordion>
+> **身份验证代理是否可以在没有公共入口的情况下工作？**
+>
+> 是的。当身份验证代理只能通过内部 Kubernetes 网络（无公共入口）访问时，请将 `SSRF_ALLOW_K8S_INTERNAL` 添加到进行 LLM 调用的所有服务，并将 `SSRF_ALLOW_K8S_INTERNAL` 和 `SSRF_ALLOW_PRIVATE_IPS_PLAYGROUND` 添加到 `playground` 服务。有关配置详细信息，请参阅[Deploy without a public ingress](#deploy-without-a-public-ingress)。> **何时应该在模型配置上使用 LLM 身份验证代理而不是 OAuth 客户端凭据？**
+>
+> 当身份验证需要 OAuth2 `client_credentials` 之外的自定义逻辑时，请使用 LLM 身份验证代理。例如，将 LangSmith JWT 交换为提供商特定的令牌、注入 GCP 或 AWS 身份，或者重写请求和响应正文。当每个工作区或团队需要针对自定义网关对其自己的 OAuth2 `client_credentials` 进行自助控制时，请使用 [OAuth client credentials on a model configuration](/langsmith/model-configurations#oauth-client-credentials)。两者可以在同一组织中共存；路由是按配置进行的。
 
 ## Helm 图表参考
 
@@ -760,12 +754,6 @@ JWT 将传递到 `x-langsmith-llm-auth` 请求标头中的 `ext_authz` 或转换
 
 ***
 
-<div>
-  <Callout icon="terminal-2">
-    [Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
-  </Callout>
+[Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
 
-  <Callout icon="edit">
-    [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/llm-auth-proxy-self-hosted.mdx) 或 [file an issue](https://github.com/langchain-ai/docs/issues/new/choose)。
-  </Callout>
-</div>
+[Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/llm-auth-proxy-self-hosted.mdx) 或 [file an issue](https://github.com/langchain-ai/docs/issues/new/choose)。

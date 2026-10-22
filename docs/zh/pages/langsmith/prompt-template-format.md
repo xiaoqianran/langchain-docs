@@ -6,9 +6,9 @@
 
 本页介绍 [Playground](/langsmith/prompt-engineering-concepts#playground)、[prompt hub](/langsmith/manage-prompts#public-prompt-hub) 和 [evaluators](/langsmith/evaluation-concepts#evaluators) 支持的 [prompt template](/langsmith/prompt-engineering-concepts#prompts-vs-prompt-templates) 格式。提示模板允许您使用在运行时填充的动态占位符创建可重用的提示。
 
-<Tip>
-  有关提示工程和提示模板的一般概述，请参阅[Concepts](/langsmith/prompt-engineering-concepts#prompts-vs-prompt-templates)页面。
-</Tip>
+> [!提示]
+>
+> 有关提示工程和提示模板的一般概述，请参阅[Concepts](/langsmith/prompt-engineering-concepts#prompts-vs-prompt-templates) 页面。
 
 LangSmith 支持两种提示模板格式，适用于不同的复杂程度：
 
@@ -19,13 +19,11 @@ LangSmith 支持两种提示模板格式，适用于不同的复杂程度：
 
 [F-string syntax](#f-string-syntax) 非常适合简单的提示。 [Mustache](#mustache-syntax)提供了处理复杂数据结构和逻辑的功能，这对于评估者和高级用例很有帮助。
 
-您可以在[UI](https://smith.langchain.com?utm_source=docs\&utm_medium=cta\&utm_campaign=langsmith-signup\&utm_content=langsmith-prompt-template-format)中切换格式。 LangSmith 将在可能的情况下自动转换为 [convert your template](#conversion-between-formats)，尽管某些 Mustache 功能（如循环和条件）无法转换为 f 字符串格式。
+您可以在[UI](https://smith.langchain.com?utm_source=docs\&utm_medium=cta\&utm_campaign=langsmith-signup\&utm_content=langsmith-prompt-template-format)中切换格式。 LangSmith 在可能的情况下会自动转换为 [convert your template](#conversion-between-formats)，尽管某些 Mustache 功能（如循环和条件）无法转换为 f 字符串格式。
 
-<Callout icon="test-pipe">
-  使用 [Playground](https://smith.langchain.com/playground) 测试本页上的示例。在 Playground 中的提示设置<Icon icon="settings" />菜单下切换**提示格式**。
-</Callout>## F 字符串语法
+使用 [Playground](https://smith.langchain.com/playground) 测试本页上的示例。在 Playground 中的提示设置菜单下切换 **提示格式**。
 
-F 字符串模板使用带有单花括号 `{variable}` 的 Python 风格格式。 LangSmith 使用 Python 的 [f-string syntax](https://realpython.com/python-f-strings/) 的 [simplified subset](#limitations)：它仅支持基本变量替换，而不支持全部 Python 表达式和格式选项。当您有一个平面数据结构并且只需要在提示中插入值时，f 字符串是理想的选择。
+## F 字符串语法F 字符串模板使用带有单花括号 `{variable}` 的 Python 风格格式。 LangSmith 使用 Python 的 [f-string syntax](https://realpython.com/python-f-strings/) 的 [simplified subset](#limitations)：它仅支持基本变量替换，不支持全部 Python 表达式和格式选项。当您有一个平面数据结构并且只需要在提示中插入值时，f 字符串是理想的选择。
 
 ### 基本变量
 
@@ -67,7 +65,7 @@ Hello, Ashley!
 Your topic is: LangSmith
 ```
 
-如果您的输入具有像 `{"user": {"name": "Ashley"}}` 这样的嵌套对象，则您**无法**使用 f 字符串格式的 `{user.name}` 访问嵌套值。该点将被视为变量名称的一部分（字面意思是寻找名为 `"user.name"` 的键），而不是作为路径分隔符。对于嵌套访问，请使用 [mustache format](#mustache-syntax) 代替。
+如果您的输入具有像 `{"user": {"name": "Ashley"}}` 这样的嵌套对象，则您**无法**使用 f 字符串格式的 `{user.name}` 访问嵌套值。该点将被视为变量名称的一部分（字面意思是查找名为 `"user.name"` 的键），而不是路径分隔符。对于嵌套访问，请使用 [mustache format](#mustache-syntax) 代替。
 
 ### 文字大括号有时您需要在输出中包含实际的花括号（例如，在 JSON 示例或代码片段中）。为此，**双括号**：
 
@@ -130,9 +128,9 @@ Hello, {{name}}! Welcome to {{company}}.
 Hello, Ashley! Welcome to LangChain.
 ```
 
-<Note>
-  `{{!-- ... --}}` 是小胡子注释，不会出现在输出中。请参阅[Comments](#comments)部分。
-</Note>
+> [!注意]
+>
+> `{{!-- ... --}}` 是小胡子注释，不会出现在输出中。请参阅[Comments](#comments)部分。
 
 ### 嵌套对象访问
 
@@ -239,9 +237,9 @@ Company: TechCorp
     - Billy (Engineer)
   Department: Sales
     - Carol (Sales Manager)
-```<Tip>
-  您可以根据需要创建尽可能深的结构，但在模板化之前考虑展平非常深的结构以提高可读性。此方法对于嵌套类别、具有元数据的对话线程或任何分层数据表示非常有用。
-</Tip>
+```> [!提示]
+>
+> 您可以根据需要创建尽可能深的结构，但在模板化之前考虑展平非常深的结构以提高可读性。此方法对于嵌套类别、具有元数据的对话线程或任何分层数据表示非常有用。
 
 ### 嵌套循环
 
@@ -496,9 +494,9 @@ Second message: {{all_messages.1}}
 * **`first_human_last_ai`**：只是最初的问题（`first_human`）和最终答案（`last_ai`）。用它来检查人工智能是否最终回答了原来的问题，忽略了中间的对话。
 * **`trajectory`**：会话中的每条消息都是一个平面的、去重复的列表，包括工具调用和工具结果。每条消息都有一个`role`、`human`、`ai`、`system`或`tool`，以及一个`content`字段，其中包含字符串或内容块列表，例如`text`、`reasoning`和`tool_call`。用它来评估代理所采取的路径。
 
-<Note>
-  `trajectory` 与线程变量互斥。提示使用 `trajectory` 或 `all_messages`、`human_ai_pairs` 和 `first_human_last_ai`。有关如何强制执行该规则以及如何在线程求值器中使用`trajectory`，请参阅[Evaluate trajectories](/langsmith/online-evaluations-multi-turn#evaluate-trajectories)。
-</Note>
+> [!注意]
+>
+> `trajectory` 与线程变量互斥。提示使用 `trajectory` 或 `all_messages`、`human_ai_pairs` 和 `first_human_last_ai`。有关如何强制执行该规则以及如何在线程求值器中使用`trajectory`，请参阅[Evaluate trajectories](/langsmith/online-evaluations-multi-turn#evaluate-trajectories)。
 
 ### 线程上下文示例
 
@@ -629,7 +627,7 @@ Text: This is amazing!
 Sentiment:
 ```在 LangSmith UI 中配置您的少数示例，以匹配您用于实际任务的格式。这种一致性有助于法学硕士正确概括。占位符方法将提示结构与示例数据分开，使两者更易于维护。
 
-## Conversion between formats
+## 格式之间的转换
 
 **F 字符串到小胡子**始终适用于基本变量。格式说明符已转换，但格式已删除。
 
@@ -641,7 +639,7 @@ Sentiment:
 * **倒置部分：** `{{^value}}...{{/value}}` f 字符串中没有等效项。
 * **评论：** `{{! comment }}` f 字符串中没有等效项。
 
-如果您尝试使用这些功能转换胡子模板，LangSmith将拒绝转换或仅转换简单部分，从而破坏模板的功能。 Always preview after conversion.
+如果您尝试使用这些功能转换胡子模板，LangSmith将拒绝转换或仅转换简单部分，从而破坏模板的功能。转换后始终预览。
 
 ## 其他资源* **[LangSmith Prompt Engineering Concepts](https://docs.langchain.com/langsmith/prompt-engineering-concepts)**：关于有效提示策略的更高级别指导。
 * **[Mustache Manual](https://mustache.github.io/mustache.5.html)**：具有所有功能的完整胡须规格。
@@ -649,12 +647,6 @@ Sentiment:
 
 ***
 
-<div>
-  <Callout icon="terminal-2">
-    [Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
-  </Callout>
+[Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
 
-  <Callout icon="edit">
-    [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/prompt-template-format.mdx) 或 [file an issue](https://github.com/langchain-ai/docs/issues/new/choose)。
-  </Callout>
-</div>
+[Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/prompt-template-format.mdx) 或 [file an issue](https://github.com/langchain-ai/docs/issues/new/choose)。

@@ -6,15 +6,15 @@
 
 了解 LLM 网关对每个请求执行的操作、如何解析上游凭据以及网关在何处可用。
 
-<Note>
-  LLM 网关位于[beta](/langsmith/release-stages)。
-</Note>
+> [!注意]
+>
+> LLM 网关位于[beta](/langsmith/release-stages)。
 
 LLM Gateway 位于您的应用程序和工作区已配置的模型提供程序之间。它对调用者进行身份验证、选择上游路由、应用治理策略、在 API 格式之间进行转换并跟踪结果。
 
 ## 网关提供什么
 
-* **一键，多个提供程序：** 开发人员使用 LangSmith API 密钥进行身份验证，而不是在本地存储提供程序密钥。
+* **一键，多个提供商：** 开发人员使用 LangSmith API 密钥进行身份验证，而不是在本地存储提供商密钥。
 * **一种请求格式，多种模型：** 将聊天完成、消息或响应与跨配置的提供程序的模型一起使用。
 * **内置可观察性：** 每个网关调用都出现在网关跟踪项目中，可见性由[Traces and access control](/langsmith/llm-gateway-access)控制。
 * **中央治理：** 应用 [spend limits](/langsmith/llm-gateway-spend-policies)、[rate limits](/langsmith/llm-gateway-rate-limit-policies) 和 [data policies](/langsmith/llm-gateway-data-policy)。
@@ -34,7 +34,7 @@ LLM Gateway 位于您的应用程序和工作区已配置的模型提供程序�
 
 ## 选择凭证的管理方式网关为每个调用解析上游凭证。工作区可以使用自己的提供商帐户、网关积分或两者：
 
-|选项 |上游凭证|设置和计费|
+|选项|上游凭证|设置和计费|
 | - | - | - |
 |带上您自己的提供商帐户 |管理员将提供者密钥存储在工作区[Provider Secrets](/langsmith/llm-gateway-admin-setup#1-add-provider-secrets)中。 |提供商将使用费用记入您的提供商帐户。 |
 | [Gateway Credits](/langsmith/llm-gateway-credits) | LangChain 拥有上游凭证。 |不需要提供商秘密。调用费用将计入您的 LangSmith 帐户。 |
@@ -43,7 +43,7 @@ LLM Gateway 位于您的应用程序和工作区已配置的模型提供程序�
 
 网关运行于：
 
-* 每个LangSmith区域都有LangSmith云
+* LangSmith 每个LangSmith区域都有云
 * [BYOC](/langsmith/byoc)，它在您的数据平面内运行，以便模型请求及其跟踪保留在您的 VPC 中
 *[Self-hosted](/langsmith/self-hosted)LangSmith
 
@@ -70,9 +70,9 @@ LLM Gateway 位于您的应用程序和工作区已配置的模型提供程序�
 
 使用作用范围为该数据平面中工作区的 API 密钥进行身份验证，以 `Authorization: Bearer` 令牌或提供者 API 密钥的形式传递。提供者机密、模型 ID、策略和跟踪的行为与云上相同。
 
-<Warning>
-  默认情况下，数据平面配置有专用终端节点，因此您需要专用连接才能到达基本 URL，例如 Tailscale、AWS PrivateLink 或 VPC 对等互连。
-</Warning>
+> [!警告]
+>
+> 默认情况下，数据平面配置有专用终端节点，因此您需要专用连接才能到达基本 URL，例如 Tailscale、AWS PrivateLink 或 VPC 对等互连。
 
 ### 使用自托管安装
 
@@ -93,12 +93,6 @@ LLM Gateway 位于您的应用程序和工作区已配置的模型提供程序�
 
 ***
 
-<div>
-  <Callout icon="terminal-2">
-    [Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
-  </Callout>
+[Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
 
-  <Callout icon="edit">
-    [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/llm-gateway-how-it-works.mdx) 或 [file an issue](https://github.com/langchain-ai/docs/issues/new/choose)。
-  </Callout>
-</div>
+[Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/llm-gateway-how-it-works.mdx) 或 [file an issue](https://github.com/langchain-ai/docs/issues/new/choose)。

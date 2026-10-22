@@ -4,15 +4,15 @@
 
 # 由 Parallel 提供支持的内置搜索
 
-将由 Parallel 支持的 Web 搜索添加到托管 Deep Agents，无需单独的帐户或 API 密钥。
+将由 Parallel 支持的网络搜索添加到托管 Deep Agents，无需单独的帐户或 API 密钥。
 
 [Managed Deep Agents](/langsmith/javascript/managed-deep-agents-overview) 包括由 [Parallel](https://parallel.ai) 提供支持的内置网络搜索。让您的代理能够访问网络上的最新信息以帮助回答问题。
 
 LangSmith 管理搜索基础设施，因此您无需托管服务或创建单独的并行帐户或 API 密钥即可添加搜索。该集成提供零数据保留。
 
-<Note>
-  内置搜索仅适用于 LangSmith Plus 和 Startup 计划。内测期间免费使用。
-</Note>
+> [!注意]
+>
+> 内置搜索仅适用于 LangSmith Plus 和 Startup 计划。内测期间免费使用。
 
 ## 开始之前
 
@@ -42,41 +42,39 @@ LANGSMITH_API_KEY=YOUR_LANGSMITH_API_KEY
 
 ### 步骤 3. 配置搜索服务器
 
-如果文件已经定义了`mcp`，请将`Parallel`添加到现有的`servers`映射中。仅定义一次`mcp`。<Tabs>
-  <Tab title="Python">
-    将`Parallel`添加到`tools/mcp.py`中的`servers`地图。
+如果文件已经定义了`mcp`，请将`Parallel`添加到现有的`servers`映射中。仅定义一次`mcp`。
 
-    ```python tools/mcp.py theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-    from managed_deepagents import define_mcp
+**Python**
 
-    mcp = define_mcp(
-        servers={
-            "Parallel": {
-                "transport": "http",
-                "url": "https://api.smith.langchain.com/v1/managed-tools/servers/parallel/mcp",
-            },
-        },
-    )
-    ```
-  </Tab>
+将`Parallel`添加到`tools/mcp.py`中的`servers`地图。```python tools/mcp.py theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+from managed_deepagents import define_mcp
 
-  <Tab title="TypeScript">
-    将`Parallel`添加到`tools/mcp.ts`中的`servers`地图。
-
-    ```typescript tools/mcp.ts theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-    import { defineMcp } from "managed-deepagents";
-
-    export const mcp = defineMcp({
-      servers: {
+mcp = define_mcp(
+    servers={
         "Parallel": {
-          transport: "http",
-          url: "https://api.smith.langchain.com/v1/managed-tools/servers/parallel/mcp",
+            "transport": "http",
+            "url": "https://api.smith.langchain.com/v1/managed-tools/servers/parallel/mcp",
         },
-      },
-    });
-    ```
-  </Tab>
-</Tabs>
+    },
+)
+```
+
+**打字稿**
+
+将`Parallel`添加到`tools/mcp.ts`中的`servers`地图。
+
+```typescript tools/mcp.ts theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+import { defineMcp } from "managed-deepagents";
+
+export const mcp = defineMcp({
+  servers: {
+    "Parallel": {
+      transport: "http",
+      url: "https://api.smith.langchain.com/v1/managed-tools/servers/parallel/mcp",
+    },
+  },
+});
+```
 
 您的代理现在可以将并行搜索与其其他工具一起使用。
 
@@ -91,12 +89,6 @@ LANGSMITH_API_KEY=YOUR_LANGSMITH_API_KEY
 
 ***
 
-<div>
-  <Callout icon="terminal-2">
-    [Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
-  </Callout>
+[Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
 
-  <Callout icon="edit">
-    [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/managed-deep-agents-search.mdx) 或 [file an issue](https://github.com/langchain-ai/docs/issues/new/choose)。
-  </Callout>
-</div>
+[Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/managed-deep-agents-search.mdx) 或 [file an issue](https://github.com/langchain-ai/docs/issues/new/choose)。

@@ -6,25 +6,25 @@
 
 使用 Gateway Credits 无需提供者密钥即可访问模型，只需使用 LangSmith 进行身份验证。
 
-<Note>
-  LLM 网关位于[beta](/langsmith/release-stages)。
-</Note>
+> [!注意]
+>
+> LLM 网关位于[beta](/langsmith/release-stages)。
 
 **Gateway Credits** 让您可以通过标准 LLM Gateway API 调用 LangChain 托管模型，而无需设置提供商帐户或密钥。仅使用您的 [LangSmith API key](/langsmith/create-account-api-key) 进行身份验证。不需要[provider secret](/langsmith/llm-gateway-admin-setup#1-add-provider-secrets)。
 
 网关根据其模型 ID 路由每个请求。诸如 `moonshotai/kimi-k3` 之类的托管模型 slug 使用 Gateway Credits。以配置的自带密钥提供程序（例如 `anthropic/claude-opus-5`）开头的模型 ID 会改用该提供程序的密钥。
 
-<Card title="Base URL" icon="link">
-  将任何受支持的客户端指向标准网关 API：
-
-  ```text theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  https://gateway.smith.langchain.com/v1
-  ```
-
-  使用您的 LangSmith API 密钥作为不记名令牌进行身份验证。
-
-  有关区域基本 URL，请参阅 [Regional gateways](/langsmith/llm-gateway-how-it-works#use-a-regional-gateway)。
-</Card>
+> **基本网址**
+>
+> 将任何受支持的客户端指向标准网关 API：
+>
+> ```text theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> https://gateway.smith.langchain.com/v1
+> ```
+>
+> 使用您的 LangSmith API 密钥作为不记名令牌进行身份验证。
+>
+> 对于区域基本 URL，请参阅 [Regional gateways](/langsmith/llm-gateway-how-it-works#use-a-regional-gateway)。
 
 ## 可用型号
 
@@ -53,44 +53,42 @@ curl https://gateway.smith.langchain.com/v1/models \
 
 将与 OpenAI 兼容的客户端指向 `https://gateway.smith.langchain.com/v1`，使用您的 LangSmith API 密钥进行身份验证，并将 `model` 设置为托管模型 ID。
 
-<CodeGroup>
-  ```bash cURL theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  curl https://gateway.smith.langchain.com/v1/chat/completions \
-      -H "Authorization: Bearer $LANGSMITH_API_KEY" \
-      -H "Content-Type: application/json" \
-      -d '{"model":"moonshotai/kimi-k3","messages":[{"role":"user","content":"ping"}]}'
-  ```
+```bash cURL theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+curl https://gateway.smith.langchain.com/v1/chat/completions \
+    -H "Authorization: Bearer $LANGSMITH_API_KEY" \
+    -H "Content-Type: application/json" \
+    -d '{"model":"moonshotai/kimi-k3","messages":[{"role":"user","content":"ping"}]}'
+```
 
-  ```python OpenAI SDK theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  import os
+```python OpenAI SDK theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+import os
 
-  from openai import OpenAI
+from openai import OpenAI
 
-  client = OpenAI(
-      base_url="https://gateway.smith.langchain.com/v1",
-      api_key=os.environ["LANGSMITH_API_KEY"],
-  )
-  response = client.chat.completions.create(
-      model="moonshotai/kimi-k3",
-      messages=[{"role": "user", "content": "ping"}],
-  )
-  print(response.choices[0].message.content)
-  ```
+client = OpenAI(
+    base_url="https://gateway.smith.langchain.com/v1",
+    api_key=os.environ["LANGSMITH_API_KEY"],
+)
+response = client.chat.completions.create(
+    model="moonshotai/kimi-k3",
+    messages=[{"role": "user", "content": "ping"}],
+)
+print(response.choices[0].message.content)
+```
 
-  ```python LangChain theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  import os
+```python LangChain theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+import os
 
-  from langchain.chat_models import init_chat_model
+from langchain.chat_models import init_chat_model
 
-  model = init_chat_model(
-      model="moonshotai/kimi-k3",
-      model_provider="openai",
-      base_url="https://gateway.smith.langchain.com/v1",
-      api_key=os.environ["LANGSMITH_API_KEY"],
-  )
-  print(model.invoke("ping").content)
-  ```
-</CodeGroup>
+model = init_chat_model(
+    model="moonshotai/kimi-k3",
+    model_provider="openai",
+    base_url="https://gateway.smith.langchain.com/v1",
+    api_key=os.environ["LANGSMITH_API_KEY"],
+)
+print(model.invoke("ping").content)
+```
 
 ## 支持的端点
 
@@ -115,19 +113,13 @@ curl https://gateway.smith.langchain.com/v1/models \
 
 ## 后续步骤
 
-* [Quickstart](/langsmith/llm-gateway-quickstart)：进行第一个网关代理呼叫。
+* [Quickstart](/langsmith/llm-gateway-quickstart)：进行您的第一个网关代理呼叫。
 * [API formats](/langsmith/llm-gateway-api-formats)：通过聊天完成、消息或响应调用模型。
 * [Spend policies](/langsmith/llm-gateway-spend-policies)：为 Gateway Credit 使用添加成本限制。
 * [Direct model access](/langsmith/llm-gateway-direct-model-access)：使用提供商原生 API 和模型 ID。
 
 ***
 
-<div>
-  <Callout icon="terminal-2">
-    [Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
-  </Callout>
+[Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
 
-  <Callout icon="edit">
-    [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/llm-gateway-credits.mdx) 或 [file an issue](https://github.com/langchain-ai/docs/issues/new/choose)。
-  </Callout>
-</div>
+[Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/llm-gateway-credits.mdx) 或 [file an issue](https://github.com/langchain-ai/docs/issues/new/choose)。

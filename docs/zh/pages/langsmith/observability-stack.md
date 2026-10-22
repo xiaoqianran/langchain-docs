@@ -4,13 +4,13 @@
 
 # 为您的 LangSmith 部署部署可观察性堆栈
 
-<Danger>
-  **已弃用**：LangSmith 可观测性 Helm 图表已弃用。我们不再维护或提供支持。以下文档仅供参考。
-</Danger>
+> [!警告]
+>
+> **已弃用**：LangSmith 可观测性 Helm 图表已弃用。我们不再维护或提供支持。以下文档仅供参考。
 
-<Warning>
-  **本节仅适用于 Kubernetes 部署。**
-</Warning>
+> [!警告]
+>
+> **本节仅适用于 Kubernetes 部署。**
 
 LangSmith 应用程序公开可以发送到您选择的后端的遥测数据。如果您还没有可观察性堆栈，或者更喜欢将 LangSmith 遥测与主应用程序分开，则可以使用 LangSmith 可观察性 Helm 图表来部署基本的可观察性堆栈。
 
@@ -44,11 +44,11 @@ langsmith-observability-kube-state-metrics-b58bb8db4-bm4g5        1/1     Runnin
 
 # 第 2 部分：完整的可观察性堆栈
 
-<Warning>
-  **这不是生产可观察性堆栈。使用它可以快速了解部署的日志、指标和跟踪。这仅用于每天处理几十 GB 的数据。**
-</Warning>
+> [!警告]
+>
+> **这不是生产可观察性堆栈。使用它可以快速了解部署的日志、指标和跟踪。这仅用于每天处理几十 GB 的数据。**
 
-本节将向您展示如何使用 [Helm Chart](https://github.com/langchain-ai/helm/tree/main/charts/langsmith-observability) 部署LangSmith的端到端可观测性堆栈。
+本节将向您展示如何使用 [Helm Chart](https://github.com/langchain-ai/helm/tree/main/charts/langsmith-observability) 部署 LangSmith 的端到端可观测性堆栈。
 
 该图表是围绕 Grafana 的开源 LGTM Stack 构建的。它包括：
 
@@ -94,9 +94,9 @@ helm repo add open-telemetry https://open-telemetry.github.io/opentelemetry-helm
 1.创建一个名为`langsmith_obs_config.yaml`的本地文件
 2. 将此 [file](https://github.com/langchain-ai/helm/blob/main/charts/langsmith-observability/examples/e2e-stack.yaml) 中的值复制到 `langsmith_obs_config.yaml` 中，确保修改这些值以匹配您的 LangSmith 部署。
 3. 通过运行`helm search repo langchain/langsmith-observability --versions`查找最新版本的图表。
-4.获取最新版本号，然后运行`helm install langsmith-observability langchain/langsmith-observability --values langsmith_obs_config.yaml --version <version> -n <namespace> --wait --debug`<Note>
-  **您可以通过修改配置文件中`otelCollector`下的布尔值来选择性地收集日志、指标或跟踪。您还可以有选择地调出后端的各个部分（Loki、Mimir、Tempo）。**
-</Note>
+4.获取最新版本号，然后运行`helm install langsmith-observability langchain/langsmith-observability --values langsmith_obs_config.yaml --version <version> -n <namespace> --wait --debug`> [!注意]
+>
+> **您可以通过修改配置文件中`otelCollector`下的布尔值来选择性地收集日志、指标或跟踪。您还可以有选择地调出后端的各个部分（Loki、Mimir、Tempo）。**
 
 如果安装成功，您应该看到以下内容：
 
@@ -128,10 +128,10 @@ observability:
     endpoint: "http://${GATEWAY_COLLECTOR_SERVICE_NAME}.${LANGSMITH_OBS_NAMESPACE}.svc.cluster.local:4318/v1/traces"
 ```
 
-<Info>
-  1. 要获取`${LANGSMITH_OTEL_CRD_NAME}`，您可以运行`kubectl get opentelemetrycollectors -n ${LANGSMITH_OBS_NAMESPACE}`并选择MODE = `sidecar`的名称
-  2. 要获取 `${GATEWAY_COLLECTOR_SERVICE_NAME}` 名称，请运行 `kubectl get services -n ${LANGSMITH_OBS_NAMESPACE}` 并选择具有端口 4317/4318 和 ClusterIP 集的名称。应该是类似`langsmith-observability-collector-gateway-collector`的东西
-</Info>
+> [!注意]
+>
+> 1. 要获取`${LANGSMITH_OTEL_CRD_NAME}`，可以运行`kubectl get opentelemetrycollectors -n ${LANGSMITH_OBS_NAMESPACE}`，然后选择MODE = `sidecar`的名称
+> 2. 要获取 `${GATEWAY_COLLECTOR_SERVICE_NAME}` 名称，请运行 `kubectl get services -n ${LANGSMITH_OBS_NAMESPACE}` 并选择具有端口 4317/4318 和 ClusterIP 集的名称。应该是类似`langsmith-observability-collector-gateway-collector`的东西
 
 现在运行 `helm upgrade langsmith langchain/langsmith --values langsmith_config.yaml --version <version> -n <langsmith-namespace> --wait --debug`，将 `<version>` 替换为您已经运行的图表版本。如果没有 `--version`，Helm 会升级到最新的图表，这可以将安装移动到新的主要版本。
 
@@ -151,16 +151,10 @@ kubectl get secret langsmith-observability-grafana -n <langsmith_observability_n
 
 进入 Grafana 后，您可以使用 UI 来监控日志、指标和跟踪。 Grafana 还预先打包了一组仪表板，用于监控部署的主要组件。
 
-<img alt="LangSmith Grafana Dashboards" />
+![LangSmith Grafana Dashboards](https://mintcdn.com/langchain-5e9cc07a/4kN8yiLrZX_amfFn/langsmith/images/langsmith-grafana-dashboards.png?fit=max\&auto=format\&n=4kN8yiLrZX_amfFn\&q=85\&s=ee47243826737bab23944e01536dec71)
 
 ***
 
-<div>
-  <Callout icon="terminal-2">
-    [Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
-  </Callout>
+[Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
 
-  <Callout icon="edit">
-    [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/observability-stack.mdx) 或 [file an issue](https://github.com/langchain-ai/docs/issues/new/choose)。
-  </Callout>
-</div>
+[Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/observability-stack.mdx) 或 [file an issue](https://github.com/langchain-ai/docs/issues/new/choose)。

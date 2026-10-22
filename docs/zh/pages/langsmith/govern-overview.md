@@ -12,44 +12,34 @@
 
 ## 探索
 
-<CardGroup>
-  <Card title="Organization administration" href="/langsmith/administration-overview" icon="users-group">
-    组织、工作区、应用程序、计费和使用情况。
-  </Card>
+> **[Organization administration](/langsmith/administration-overview)**
+>
+> 组织、工作区、应用程序、计费和使用情况。
 
-  <Card title="Users & access control" href="/langsmith/user-management" icon="lock">
-    管理用户、角色 (RBAC)、基于属性的访问 (ABAC) 和身份验证。
-  </Card>
+> **[Users & access control](/langsmith/user-management)**
+>
+> 管理用户、角色 (RBAC)、基于属性的访问 (ABAC) 和身份验证。
 
-  <Card title="Tools" href="/langsmith/chat" icon="tool">
-    管理工具和 LangSmith CLI。
-  </Card>
+> **[Tools](/langsmith/chat)**
+>
+> 管理工具和 LangSmith CLI。
 
-  <Card title="Auditing & compliance" href="/langsmith/audit-logs" icon="shield-check">
-    审核日志、数据存储和隐私以及合规性控制。
-  </Card>
-</CardGroup>
+> **[Auditing & compliance](/langsmith/audit-logs)**
+>
+> 审核日志、数据存储和隐私以及合规性控制。
 
 ## 相关
 
-<CardGroup>
-  <Card title="Account setup" href="/langsmith/admin" icon="user-cog">
-    创建帐户、管理 API 密钥、配置配置文件并查看定价等级。
-  </Card>
+> **[Account setup](/langsmith/admin)**
+>
+> 创建帐户、管理 API 密钥、配置配置文件并查看定价等级。
 
-  <Card title="LLM Gateway" href="/langsmith/llm-gateway" icon="route">
-    代理 LLM 调用以强制执行支出限制、编辑敏感数据并集中管理提供商凭据。
-  </Card>
-</CardGroup>
+> **[LLM Gateway](/langsmith/llm-gateway)**
+>
+> 代理 LLM 调用以强制执行支出限制、编辑敏感数据并集中管理提供者凭证。
 
 ***
 
-<div>
-  <Callout icon="terminal-2">
-    [Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时答案。
-  </Callout>
+[Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
 
-  <Callout icon="edit">
-    [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/govern-overview.mdx) 或 [file an issue](https://github.com/langchain-ai/docs/issues/new/choose)。
-  </Callout>
-</div>
+[Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/govern-overview.mdx) 或 [file an issue](https://github.com/langchain-ai/docs/issues/new/choose)。
