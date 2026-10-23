@@ -12,7 +12,7 @@
 
 ## 开始之前* 在开始之前通过 [Support Portal](https://support.langchain.com/) 联系 LangChain，以便团队可以审查您的基础设施计划。
 * 在开始之前设置[SmithDB observability](/langsmith/self-host-smithdb-observability)。以下步骤使用指标来验证每个阶段。
-* 从 Kubernetes 上正在运行的 LangSmith 安装开始。对于LangSmith 0.17 上的新安装，请参阅[Install without ClickHouse](#install-without-clickhouse)。
+* 从 Kubernetes 上运行的 LangSmith 安装开始。对于LangSmith 0.17 上的新安装，请参阅[Install without ClickHouse](#install-without-clickhouse)。
 * 一次升级一个主要版本，直到安装满足 [cloud support](/langsmith/self-host-smithdb#cloud-support) 最低要求：AWS (EKS) 和 GCP (GKE) 上使用 Helm 图表 `0.16.14` 或更高版本的 LangSmith 0.16，或 Azure (AKS) 上的 LangSmith 0.17。沿[upgrade guide](/langsmith/self-host-upgrades)行驶。
 * 保留当前安装的 Helm 值。本指南向其中添加 SmithDB 配置。
 * 确认您可以直接或通过 GitOps 工作流程将 LangSmith Helm 版本应用到集群。
@@ -33,74 +33,72 @@
 
 在此步骤结束时，SmithDB Helm 值的共享基础设施部分可能如下所示。保持 SmithDB 禁用直到第 3 步。
 
-从 [Cache storage](/langsmith/self-host-smithdb-infrastructure#cache-storage) 添加适合您的版本的缓存值。在 LangSmith 0.17 通常是一行，`smithdb.cache.storageClassName`。任一版本上的本地 SSD 还需要此处显示的节点选择器和容忍度。
+从 [Cache storage](/langsmith/self-host-smithdb-infrastructure#cache-storage) 添加适合您的版本的缓存值。在 LangSmith 0.17 上，通常是一行，`smithdb.cache.storageClassName`。任一版本上的本地 SSD 还需要此处显示的节点选择器和容忍度。
 
-<Accordion title="SmithDB infrastructure Helm values">
-  ```yaml theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  smithdb:
-    serviceAccount:
-      annotations:
-        IDENTITY_ANNOTATION_KEY: IDENTITY_ANNOTATION_VALUE
-
-    config:
-      existingSecretName: smithdb-metastore
-      metastore:
-        hostSecretKey: smithdb_metastore_db_host
-        databaseSecretKey: smithdb_metastore_db_name
-        usernameSecretKey: smithdb_metastore_db_username
-        passwordSecretKey: smithdb_metastore_db_password
-        port: "5432"
-        useSsl: true
-      objectStore:
-        type: OBJECT_STORE_TYPE
-        bucket: BUCKET_NAME
-  ```
-
-  将身份和对象存储占位符替换为您的提供商的值。对于 Azure，还要向每个 SmithDB 工作负载添加 `azure.workload.identity/use: "true"` 标签。参见[Configure Blob Storage access](/langsmith/self-host-smithdb-infrastructure#configure-blob-storage-access)。
-
-  <CodeGroup>
-    ```yaml AWS theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-    smithdb:
-      serviceAccount:
-        annotations:
-          eks.amazonaws.com/role-arn: arn:aws:iam::ACCOUNT_ID:role/ROLE_NAME
-
-      config:
-        objectStore:
-          type: s3
-          bucket: BUCKET_NAME
-          s3:
-            region: AWS_REGION
-    ```
-
-    ```yaml GCP theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-    smithdb:
-      serviceAccount:
-        annotations:
-          iam.gke.io/gcp-service-account: GSA_NAME@PROJECT_ID.iam.gserviceaccount.com
-
-      config:
-        objectStore:
-          type: gcs
-          bucket: BUCKET_NAME
-    ```
-
-    ```yaml Azure theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-    smithdb:
-      serviceAccount:
-        annotations:
-          azure.workload.identity/client-id: CLIENT_ID
-
-      config:
-        objectStore:
-          type: azure
-          bucket: CONTAINER_NAME
-          azure:
-            accountName: STORAGE_ACCOUNT_NAME
-            accessKeySecretKey: ""
-    ```
-  </CodeGroup>
-</Accordion>
+> **SmithDB 基础设施 Helm 价值观**
+>
+> ```yaml theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> smithdb:
+>   serviceAccount:
+>     annotations:
+>       IDENTITY_ANNOTATION_KEY: IDENTITY_ANNOTATION_VALUE
+>
+>   config:
+>     existingSecretName: smithdb-metastore
+>     metastore:
+>       hostSecretKey: smithdb_metastore_db_host
+>       databaseSecretKey: smithdb_metastore_db_name
+>       usernameSecretKey: smithdb_metastore_db_username
+>       passwordSecretKey: smithdb_metastore_db_password
+>       port: "5432"
+>       useSsl: true
+>     objectStore:
+>       type: OBJECT_STORE_TYPE
+>       bucket: BUCKET_NAME
+> ```
+>
+> 将身份和对象存储占位符替换为您的提供商的值。对于 Azure，还要向每个 SmithDB 工作负载添加 `azure.workload.identity/use: "true"` 标签。参见[Configure Blob Storage access](/langsmith/self-host-smithdb-infrastructure#configure-blob-storage-access)。
+>
+> ```yaml AWS theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> smithdb:
+>   serviceAccount:
+>     annotations:
+>       eks.amazonaws.com/role-arn: arn:aws:iam::ACCOUNT_ID:role/ROLE_NAME
+>
+>   config:
+>     objectStore:
+>       type: s3
+>       bucket: BUCKET_NAME
+>       s3:
+>         region: AWS_REGION
+> ```
+>
+> ```yaml GCP theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> smithdb:
+>   serviceAccount:
+>     annotations:
+>       iam.gke.io/gcp-service-account: GSA_NAME@PROJECT_ID.iam.gserviceaccount.com
+>
+>   config:
+>     objectStore:
+>       type: gcs
+>       bucket: BUCKET_NAME
+> ```
+>
+> ```yaml Azure theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> smithdb:
+>   serviceAccount:
+>     annotations:
+>       azure.workload.identity/client-id: CLIENT_ID
+>
+>   config:
+>     objectStore:
+>       type: azure
+>       bucket: CONTAINER_NAME
+>       azure:
+>         accountName: STORAGE_ACCOUNT_NAME
+>         accessKeySecretKey: ""
+> ```
 
 ### 步骤2.升级到所需的LangSmith版本SmithDB 需要 [Cloud support](/langsmith/self-host-smithdb#cloud-support) 中列出的 LangSmith 版本。在启用 SmithDB 之前升级到它。保留现有的 ClickHouse 配置并禁用 SmithDB：
 
@@ -172,7 +170,7 @@ curl -s https://LANGSMITH_HOST/api/v1/info | jq '.instance_flags | {sdb_ingestio
 一旦双重摄取稳定，请决定是否需要通过 SmithDB 支持的查询访问 ClickHouse 历史记录：
 
 * **迁移**：按照[Migrate ClickHouse history to SmithDB](/langsmith/self-host-smithdb-migrate)，然后返回此处进行查询割接。
-* **将其留在 ClickHouse**：跳过迁移。现有数据保留在 ClickHouse 中，但在割接后无法通过LangSmith 查询，除非查询被引导回 ClickHouse。
+* **将其留在 ClickHouse**：跳过迁移。现有数据保留在 ClickHouse 中，但在割接后无法通过LangSmith 查询，除非查询定向回 ClickHouse。
 
 ### 步骤 6. 将查询切换到 SmithDB在双摄取正常且任何 ClickHouse 迁移完成后，启用 SmithDB 支持的查询：
 
@@ -195,9 +193,9 @@ curl -s https://LANGSMITH_HOST/api/v1/info | jq '.instance_flags | {sdb_ingestio
 
 然后在 LangSmith UI 和 API 中验证跟踪、项目、过滤器和时间范围，并继续监控摄取和查询错误。
 
-<Warning>
-  不要在 LangSmith 0.16 上禁用或删除 ClickHouse。在 0.17 上，从现有安装中停用 ClickHouse 是一个单独的过程；考虑之前请通过[Support Portal](https://support.langchain.com/)联系LangChain。
-</Warning>
+> [!警告]
+>
+> 不要在 LangSmith 0.16 上禁用或删除 ClickHouse。在 0.17 上，从现有安装中停用 ClickHouse 是一个单独的过程；考虑之前请通过[Support Portal](https://support.langchain.com/)联系LangChain。
 
 ## 不使用 ClickHouse 安装
 
@@ -225,12 +223,6 @@ smithdb:
 
 ***
 
-<div>
-  <Callout icon="terminal-2">
-    [Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
-  </Callout>
+[Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
 
-  <Callout icon="edit">
-    [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/self-host-smithdb-install.mdx) 或 [file an issue](https://github.com/langchain-ai/docs/issues/new/choose)。
-  </Callout>
-</div>
+[Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/self-host-smithdb-install.mdx) 或 [file an issue](https://github.com/langchain-ai/docs/issues/new/choose)。

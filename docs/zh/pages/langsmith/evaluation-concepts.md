@@ -140,7 +140,7 @@ graph LR
 
 使用以下任一方式运行评估器：* [Evaluators](/langsmith/evaluators) 页面，将它们附加到跟踪项目、代理环境或数据集
 * [Playground](/langsmith/prompt-engineering-concepts#playground)
-* LangSmith SDK（[Python](https://docs.smith.langchain.com/reference/python/reference) 和 [TypeScript](https://docs.smith.langchain.com/reference/js)）
+* LangSmith SDK（[Python](https://reference.langchain.com/python/langsmith) 和 [TypeScript](https://reference.langchain.com/javascript/langsmith)）
 * [Rules](/langsmith/rules)，在跟踪项目、代理环境或数据集上自动运行它们
 
 ### 将评估器附加到跟踪项目或数据集

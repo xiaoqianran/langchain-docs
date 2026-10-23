@@ -63,7 +63,7 @@ const modelWithRetry = model.withRetry({ stopAfterAttept: 2 });
 
 ## 限制`max_concurrency`
 
-限制对应用程序和评估器进行的并发调用的数量是降低模型调用频率的另一种方法，从而避免速率限制错误。 `max_concurrency` 可直接在[evaluate()](https://docs.smith.langchain.com/reference/python/evaluation/langsmith.evaluation._runner.evaluate) / [aevaluate()](https://docs.smith.langchain.com/reference/python/evaluation/langsmith.evaluation._arunner.aevaluate) 功能上设置。这通过有效地将数据集跨线程分割来并行化评估。
+限制对应用程序和评估器进行的并发调用的数量是降低模型调用频率的另一种方法，从而避免速率限制错误。 `max_concurrency` 可直接在[evaluate()](https://reference.langchain.com/python/langsmith/evaluation/_runner/evaluate) / [aevaluate()](https://reference.langchain.com/python/langsmith/evaluation/_arunner/aevaluate) 功能上设置。这通过有效地将数据集跨线程分割来并行化评估。
 
 ```python Python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 from langsmith import aevaluate

@@ -22,11 +22,11 @@ AWS EKS 上自托管的 LangSmith 的平台层、服务、IRSA 角色、网络�
 
 AWS 上的LangSmith 分两个阶段部署，并带有一个可选附加组件。基础设施阶段提供云基础。应用阶段安装LangSmithHelm图表。 LangSmith 部署附加组件是可选的，并添加主机后端、侦听器和操作员服务，用于从 UI 管理 LangGraph 应用程序。
 
-<img alt="LangSmith on AWS service layout" />|舞台|层 |添加了什么 |
+![LangSmith on AWS service layout](https://mintcdn.com/langchain-5e9cc07a/D6uoP5M0BV8YGC-1/images/self-hosted-terraform/aws-architecture.png?fit=max\&auto=format\&n=D6uoP5M0BV8YGC-1\&q=85\&s=b5c82e77df6510b1c3d0d8589ffc4ae7)|舞台|层 |添加了什么 |
 | - | - | - |
 |基础设施| AWS 基础设施 | VPC + 私有/公有子网 + 单个 NAT 网关、EKS 集群 + 托管节点组 + 集群自动缩放程序、RDS PostgreSQL、ElastiCache Redis、S3 存储桶 + VPC 网关端点、ALB + ALB 控制器 + EBS CSI 驱动程序 + 指标服务器、k8s-bootstrap（默认情况下为 KEDA、ESO、Envoy 网关）。可选：网络防火墙、WAF、CloudTrail、ALB 访问日志、SmithDB、沙箱。 |
-|应用 | LangSmith应用|后端、前端、playground、队列、ace-backend、clickhouse。存储：RDS PostgreSQL（元数据）+ S3（通过 VPC 端点跟踪 blob）。入口：Terraform ALB 转发到 Envoy Gateway（默认）、Istio 或 NGINX。通过`enable_envoy_gateway = false`，ALB 控制器为 Ingress 提供自己的 ALB。 |
-|附加组件 (`enable_deployments = true`) | LangSmith 部署|主机后端、侦听器、操作员。每个部署的图：api-server、queue、redis、postgres（操作员管理）。需要 KEDA（通过 k8s-bootstrap 与基础设施一起安装）。 |
+|应用 | LangSmith 应用 |后端、前端、playground、队列、ace-backend、clickhouse。存储：RDS PostgreSQL（元数据）+ S3（通过 VPC 端点跟踪 blob）。入口：Terraform ALB 转发到 Envoy Gateway（默认）、Istio 或 NGINX。通过`enable_envoy_gateway = false`，ALB 控制器为 Ingress 提供自己的 ALB。 |
+|附加组件 (`enable_deployments = true`) | LangSmith 部署 |主机后端、侦听器、操作员。每个部署的图：api-server、queue、redis、postgres（操作员管理）。需要 KEDA（通过 k8s-bootstrap 与基础设施一起安装）。 |
 
 ## 组件到存储的映射|组件|存储后端 |访问方式 |
 | - | - | - |
@@ -49,11 +49,11 @@ AWS 上的LangSmith 分两个阶段部署，并带有一个可选附加组件。
 | `langsmith-ace-backend` |异步计算（数据集运行、评估、后台作业）|无 | 1 至 5 |没有 | Postgres、Redis |
 | `langsmith-clickhouse` |列式存储（跟踪范围、运行元数据、评估结果）|无 | StatefulSet，单个副本 |没有 | EBS GP3 PVC |
 
-<Warning>
-  集群内 ClickHouse 仅是 dev/POC（单个 pod，无复制，无备份）。对于生产使用[LangChain Managed ClickHouse](/langsmith/langsmith-managed-clickhouse)或自我管理的外部集群。
-</Warning><Note>
-  [SmithDB](https://www.langchain.com/blog/introducing-smithdb?utm_source=docs) 是 LangSmith 专门构建的可观测性后端，从 Chart v16 开始可用于自托管（请参阅 [self-hosted support](/langsmith/smithdb-sdk-migration#about-self-hosted)）。 AWS 模块默认配置 ClickHouse。设置 `enable_smithdb = true` 还提供 SmithDB 的依赖项：专用元存储 RDS PostgreSQL 实例（默认为 `smithdb_metastore_source = "create"`）、S3 对象存储存储桶、IRSA 角色以及用于 NVMe 实例存储节点的 Karpenter NodePools。 ClickHouse 在图表 v16 和 v17 上保持启用状态。请参阅部署指南中的[SmithDB](/langsmith/self-host-terraform-aws-deploy#smithdb)。
-</Note>
+> [!警告]
+>
+> 集群内 ClickHouse 仅适用于 dev/POC（单个 pod，无复制，无备份）。对于生产使用[LangChain Managed ClickHouse](/langsmith/langsmith-managed-clickhouse)或自我管理的外部集群。> [!注意]
+>
+> [SmithDB](https://www.langchain.com/blog/introducing-smithdb?utm_source=docs) 是 LangSmith 专门构建的可观测性后端，从 Chart v16 开始可用于自托管（请参阅 [self-hosted support](/langsmith/smithdb-sdk-migration#about-self-hosted)）。 AWS 模块默认配置 ClickHouse。设置 `enable_smithdb = true` 还提供 SmithDB 的依赖项：专用元存储 RDS PostgreSQL 实例（默认为 `smithdb_metastore_source = "create"`）、S3 对象存储存储桶、IRSA 角色以及用于 NVMe 实例存储节点的 Karpenter NodePools。 ClickHouse 在图表 v16 和 v17 上保持启用状态。请参阅部署指南中的[SmithDB](/langsmith/self-host-terraform-aws-deploy#smithdb)。
 
 ### 一次性工作
 
@@ -109,7 +109,7 @@ Helm 图表在安装和升级时运行三个作业：
 
 ## 集群基础设施
 
-两个 Terraform 模块安装LangSmith 所依赖的集群级服务。 `eks` 模块通过 `eks-blueprints-addons` 安装 AWS 集成控制器，并将 EBS CSI 驱动程序作为 EKS 附加组件安装； `k8s-bootstrap` 模块安装工作负载依赖项和入口网关（请参阅[Ingress options](#ingress-options)）：|服务 |安装者 |命名空间|爱尔兰税务局 |目的|
+两个 Terraform 模块安装LangSmith 所依赖的集群级服务。 `eks` 模块通过 `eks-blueprints-addons` 安装 AWS 集成控制器，并将 EBS CSI 驱动程序作为 EKS 附加组件安装； `k8s-bootstrap` 模块安装工作负载依赖项和入口网关（请参阅[Ingress options](#ingress-options)）：|服务 |安装者 |命名空间 |爱尔兰税务局 |目的|
 | - | - | - | - | - |
 | `aws-load-balancer-controller` | `eks` | `kube-system` |是的 |通过 `TargetGroupBinding` 向 Terraform 管理的 ALB 注册 pod，并在 ALB Ingress 模式下从 Kubernetes Ingress 对象配置 ALB。 |
 | `cluster-autoscaler` | `eks` | `kube-system` |是的 |根据 Pod 调度压力扩展 EC2 节点组。 |
@@ -223,7 +223,7 @@ Pod 到 Pod、Pod 到 RDS 以及 Pod 到 ElastiCache 流量使用本地 VPC 路�
 
 模块附带四个互斥的入口选项。 Terraform 管理的 ALB 面向 Envoy Gateway、NGINX 和 Istio。在 ALB 入口模式下，AWS 负载均衡器控制器会配置自己的 ALB，而 Terraform ALB 将不被使用。该选择决定是否支持拆分数据平面（单独命名空间中的代理 Pod）。
 
-|选项|变量|分裂|交通路线|何时使用 |
+|选项 |变量|分裂|交通路线|何时使用 |
 | - | - | - | - | - |
 |特使网关 | *默认*（`enable_envoy_gateway` 未设置）|是的 | `ALB → TGB → Envoy pods:10080 → HTTPRoute → services` |默认。跨命名空间 HTTPRoute 路由和分割数据平面。 |
 | ALB 入口 (AWS LBC) | `enable_envoy_gateway = false` |没有 | `ALB (controller-managed, target type ip) → frontend pods` |需要普通 Kubernetes Ingress 的单命名空间部署。 |
@@ -254,7 +254,7 @@ ALB 目标组转发到端口 10080 上的 Envoy 代理 Pod。不需要值覆盖�
 
 |模式|行为 |兼容网关 |
 | - | - | - |
-| `none` |仅 HTTP，无证书 |任何 |
+| `none` |仅 HTTP，无证书 |任何|
 | `acm` | HTTPS:443，带有 HTTP 到 HTTPS 重定向。 ACM 证书，自动配置或 BYO。 |任何（TLS 在 ALB 处终止）|
 | `letsencrypt` |通过 cert-manager 和 Let's Encrypt 实现 HTTPS，使用通过 ALB 解决的 HTTP-01 质询 |仅 ALB 入口 |
 
@@ -307,16 +307,16 @@ vpc ─► firewall (optional, create_firewall = true)
 
 ### 选择加入安全模块
 
-|模块|变量|默认 |目的|
+|模块|变量|默认|目的|
 | - | - | - | - |
 |网络防火墙| `create_firewall` | `false` |基于 FQDN 的出口过滤。仅允许`firewall_allowed_fqdns`（TLS SNI + HTTP 主机）中的域。需要`create_vpc = true`。成本 ≈ `$0.40/hr/endpoint + $0.065/GB processed`。 |
 | ALB 访问日志 | `alb_access_logs_enabled` | `false` |流量分析与合规 |
-|云踪 | `create_cloudtrail` | `false` | API 调用记录。如果组织跟踪已存在，则跳过。 |
+|云踪| `create_cloudtrail` | `false` | API 调用记录。如果组织跟踪已存在，则跳过。 |
 | WAF | `create_waf` | `false` | WAFv2 Web ACL：OWASP Top 10、IP 声誉、已知不良输入 |
 
 ## 默认资源大小
 
-|资源 |默认 | vCPU |内存|
+|资源 |默认| vCPU |内存|
 | - | - | - | - |
 | EKS节点| `m5.4xlarge` | 16 | 16 64GB|
 | RDS PostgreSQL | `db.t3.large` | 2 | 8GB|
@@ -334,7 +334,7 @@ vpc ─► firewall (optional, create_firewall = true)
 | 3 | `name_prefix`长度|最多 15 个字符。诸如 `dz-nginx-tst`（12 个字符）之类的名称是有效的。 |
 | 4 | Istio 端口 | Istio 1.23 或更高版本的 ingressgateway 通过 `NET_BIND_SERVICE` 侦听端口 80，而不是端口 8080。ALB TGB 运行状况检查和安全组规则必须以端口 80 为目标。
 | 5 | NGINX TGB 端口 | NGINX ingress-nginx 控制器 Pod 侦听端口 80。TargetGroupBinding 目标类型为 `ip`。 |
-| 6 | Envoy 网关端口 | Envoy 代理 Pod 侦听端口 10080（网关的端口 80 加上 Envoy 的非 root 端口 10000）。 ALB目标组和节点安全组规则使用10080； TargetGroupBinding 引用端口 80 上的 Envoy `ClusterIP` 服务，目标类型为 `ip`。 || 7 |销毁订单 |在 `make destroy` 之前运行 `make uninstall`。有关完整序列，包括删除保护应用和清空跟踪存储桶，请参阅[Teardown](/langsmith/self-host-terraform-aws-quick-reference#teardown)。不要预删除命名空间：Helm 无法干净地卸载到终止命名空间，因此 `helm_release` 资源超时。 |
+| 6 | Envoy 网关端口 | Envoy 代理 Pod 侦听端口 10080（网关的端口 80 加上 Envoy 的非 root 端口 10000 偏移量）。 ALB目标组和节点安全组规则使用10080； TargetGroupBinding 引用端口 80 上的 Envoy `ClusterIP` 服务，目标类型为 `ip`。 || 7 |销毁订单 |在 `make destroy` 之前运行 `make uninstall`。有关完整序列，包括删除保护应用和清空跟踪存储桶，请参阅[Teardown](/langsmith/self-host-terraform-aws-quick-reference#teardown)。不要预删除命名空间：Helm 无法干净地卸载到终止命名空间，因此 `helm_release` 资源超时。 |
 | 8 |卡住终止名称空间 | KEDA 的陈旧`external.metrics.k8s.io/v1beta1` API 组导致`NamespaceDeletionDiscoveryFailure`。修复：清除命名空间的`spec.finalizers`，并使用`kubectl replace --raw "/api/v1/namespaces/<ns>/finalize" -f -`将结果提交到finalize子资源，然后重新运行`make destroy`。 |
 
 ## 验证命令
@@ -371,12 +371,6 @@ kubectl run s3-test --rm -it --image=amazon/aws-cli -n langsmith \
 
 ***
 
-<div>
-  <Callout icon="terminal-2">
-    [Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时答案。
-  </Callout>
+[Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
 
-  <Callout icon="edit">
-    [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/self-host-terraform-aws-architecture.mdx) 或 [file an issue](https://github.com/langchain-ai/docs/issues/new/choose)。
-  </Callout>
-</div>
+[Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/self-host-terraform-aws-architecture.mdx) 或 [file an issue](https://github.com/langchain-ai/docs/issues/new/choose)。

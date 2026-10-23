@@ -99,7 +99,7 @@ LangSmith 将每个 [run](/langsmith/observability-concepts) 存储为结构化�
 
 ## 运行类型`run_type` 字段标识跨度代表的操作类型。 LangSmith 使用它在跟踪 UI 中应用适当的渲染并启用特定于类型的功能。
 
-|运行类型 |描述 |
+|运行类型|描述 |
 | - | - |
 | `chain` |步骤的序列或组合。 |
 | `llm` |对语言模型的调用。 |
@@ -111,26 +111,24 @@ LangSmith 将每个 [run](/langsmith/observability-concepts) 存储为结构化�
 
 使用 [⟦T68⟧](/langsmith/annotate-code#use-%40traceable-%2F-traceable) 或 [⟦T69⟧](/langsmith/annotate-code#use-the-runtree-api) 进行检测时设置 [⟦T67⟧](https://reference.langchain.com/python/langsmith/schemas/RunBase/run_type)：
 
-<CodeGroup>
-  ```python Python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  from langsmith import traceable
+```python Python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+from langsmith import traceable
 
-  @traceable(run_type="tool")
-  def my_tool(query: str) -> str:
-      ...
-  ```
+@traceable(run_type="tool")
+def my_tool(query: str) -> str:
+    ...
+```
 
-  ```typescript TypeScript theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  import { traceable } from "langsmith/traceable";
+```typescript TypeScript theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+import { traceable } from "langsmith/traceable";
 
-  const myTool = traceable(
-    async (query: string): Promise<string> => {
-      // ...
-    },
-    { run_type: "tool" }
-  );
-  ```
-</CodeGroup>
+const myTool = traceable(
+  async (query: string): Promise<string> => {
+    // ...
+  },
+  { run_type: "tool" }
+);
+```
 
 某些运行类型在 LangSmith UI 中具有专门的跟踪视图：
 
@@ -174,12 +172,6 @@ grandchild	run_id=0ec6b845-18b9-4aa1-8f1b-6ba3f9fdefd6	trace_id=0e01bf50-474d-45
 
 ***
 
-<div>
-  <Callout icon="terminal-2">
-    [Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
-  </Callout>
+[Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
 
-  <Callout icon="edit">
-    [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/run-data-format.mdx) 或 [file an issue](https://github.com/langchain-ai/docs/issues/new/choose)。
-  </Callout>
-</div>
+[Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/run-data-format.mdx) 或 [file an issue](https://github.com/langchain-ai/docs/issues/new/choose)。

@@ -4,9 +4,9 @@
 
 # 用于计费和操作遥测的出口
 
-<Info>
-  此页面仅适用于未在离线（气隙）模式下运行的客户，并假设您使用的是服务版本 0.9.0 或更高版本的自托管 LangSmith 实例。
-</Info>
+> [!注意]
+>
+> 此页面仅适用于未在离线（气隙）模式下运行的客户，并假设您使用的是服务版本 0.9.0 或更高版本的自托管 LangSmith 实例。
 
 自托管 LangSmith 将平台数据存储在您的环境中。除非您在离线模式下运行，否则LangSmith需要出口到`https://beacon.langchain.com`以实现以下目的：
 
@@ -14,19 +14,19 @@
 * **操作遥测**：用于支持诊断的日志、指标和跟踪（可选，可以禁用）
 * **使用情况遥测**：用于产品洞察的匿名使用情况快照（可选，可以禁用）
 
-<Warning>
-  **需要到 `https://beacon.langchain.com` 的出口。** 如果需要，请参阅 [allowlisting IP section](/langsmith/cloud#allowlisting-ip-addresses) 了解静态 IP 地址。
-</Warning>
+> [!警告]
+>
+> **需要到 `https://beacon.langchain.com` 的出口。** 如果需要，请参阅 [allowlisting IP section](/langsmith/cloud#allowlisting-ip-addresses) 了解静态 IP 地址。
 
-<Note>
-  如果您启用 [Engine](/langsmith/engine-self-hosted)，内容将转到 LangSmith Intelligence 或您自己的模型提供商。对于您自己的提供商，LangChain 仅通过配置的报告端点接收使用情况元数据。请参阅[LangSmith Intelligence for Engine](#langsmith-intelligence-for-engine)了解所需目的地。
-</Note>
+> [!注意]
+>
+> 如果您启用 [Engine](/langsmith/engine-self-hosted)，内容将转到 LangSmith Intelligence 或您自己的模型提供商。对于您自己的提供商，LangChain 仅通过配置的报告端点接收使用情况元数据。请参阅[LangSmith Intelligence for Engine](#langsmith-intelligence-for-engine)了解所需目的地。
 
 ## 计费遥测对于未在离线模式下运行的自托管 LangSmith 实例，**需要**计费遥测。这包括许可证验证和订阅/使用报告。
 
-<Info>
-  计费遥测**无法禁用**。如果您需要在没有任何出口的情况下运行，请了解离线（气隙）许可证的[contact our sales team](https://www.langchain.com/contact-sales)。
-</Info>
+> [!注意]
+>
+> 计费遥测**无法禁用**。如果您需要在没有任何出口的情况下运行，请了解离线（气隙）许可证的[contact our sales team](https://www.langchain.com/contact-sales)。
 
 ### 它的作用
 
@@ -99,15 +99,15 @@
 
 ## 操作遥测
 
-从版本 **0.11** 开始，LangSmith 部署默认发送操作遥测数据。此遥测可帮助LangChain团队为自托管实例提供主动支持和更快的故障排除。<Info>
-  操作遥测与计费遥测**分开。您可以在计费遥测保持活动状态时禁用操作遥测。
-</Info>
+从版本 **0.11** 开始，LangSmith 部署默认发送操作遥测数据。此遥测可帮助LangChain团队为自托管实例提供主动支持和更快的故障排除。> [!注意]
+>
+> 操作遥测与计费遥测**分开。您可以在计费遥测保持活动状态时禁用操作遥测。
 
 ### 它的作用
 
 * 实现主动支持并更快地排除自托管实例的故障
 * 协助性能调整
-* 帮助根据实际使用模式确定改进的优先顺序
+* 帮助根据现实世界的使用模式确定改进的优先顺序
 
 ### 我们收集什么
 
@@ -116,9 +116,9 @@
 * **操作跟踪**：高延迟或失败请求的计时和错误信息（这些**不是**客户跟踪 - 它们是有关 LangSmith 实例本身功能的跟踪）
 * **日志消息**：仅警告和错误日志消息
 
-<Info>
-  我们不会收集实际的有效负载内容、数据库记录或任何可以识别您的最终用户或客户的数据。所有遥测数据都与组织和部署相关联，但从未与个人用户标识。我们**不以任何形式收集 PII**（个人身份信息）。
-</Info>
+> [!注意]
+>
+> 我们不会收集实际的有效负载内容、数据库记录或任何可以识别您的最终用户或客户的数据。所有遥测数据都与组织和部署相关联，但从未与个人用户标识。我们**不以任何形式收集 PII**（个人身份信息）。
 
 ### 如何禁用您可以通过在 `langsmith_config.yaml` 文件中设置以下值来禁用操作遥测：
 
@@ -132,9 +132,9 @@ config:
 
 您还可以通过仅将特定值设置为 `false` 来禁用各个遥测类型。
 
-<Warning>
-  禁用操作遥测会停止导出本节中描述的日志、指标和跟踪。它**不会**禁用计费遥测（许可证验证和订阅/使用报告）。
-</Warning>
+> [!警告]
+>
+> 禁用操作遥测会停止导出本节中描述的日志、指标和跟踪。它**不会**禁用计费遥测（许可证验证和订阅/使用报告）。
 
 ### 负载示例
 
@@ -312,7 +312,7 @@ config:
 
 #### 操作日志消息
 
-我们仅从自托管 LangSmith 实例导出错误日志消息。这使得 LangChain 团队能够排除应用程序错误，而无需与您的团队来回沟通。
+我们仅从自托管 LangSmith 实例导出错误日志消息。这使得LangChain团队能够排除应用程序错误，而无需与您的团队来回沟通。
 
 **端点：** `POST beacon.langchain.com/v1/beacon/v1/logs`
 
@@ -396,15 +396,15 @@ config:
 
 ## 使用遥测
 
-使用情况遥测收集 LangSmith 实例使用指标的匿名快照。这些数据有助于 LangChain 了解平台采用模式并为产品开发决策提供信息。<Info>
-  使用情况遥测**默认启用**并且可以禁用。与计费遥测不同，您可以完全控制这些快照是否发送到LangChain。
-</Info>
+使用情况遥测收集 LangSmith 实例使用指标的匿名快照。这些数据有助于 LangChain 了解平台采用模式并为产品开发决策提供信息。> [!注意]
+>
+> 使用情况遥测**默认启用**并且可以禁用。与计费遥测不同，您可以完全控制这些快照是否发送到LangChain。
 
 ### 它的作用
 
 * 定期捕获聚合使用指标
 * 提供对功能采用和平台增长的深入了解
-* 帮助LangChain根据实际使用情况确定改进和新功能的优先级
+* 帮助LangChain根据实际使用情况确定改进和新功能的优先顺序
 
 ### 我们收集什么
 
@@ -413,9 +413,9 @@ config:
 * **用户**：过去 30 天内的注册用户总数和活跃 PAT（个人访问令牌）数量
 * **时间戳**：快照的时间范围（从/到 UTC 时间戳）
 
-<Info>
-  所有指标均为**仅聚合计数**。不会收集任何单独的资源数据、标识符或使用模式。我们不会收集任何可以识别您的最终用户或客户的信息。
-</Info>
+> [!注意]
+>
+> 所有指标均为 **仅聚合计数**。不会收集任何单独的资源数据、标识符或使用模式。我们不会收集任何可以识别您的最终用户或客户的信息。
 
 ### 负载示例
 
@@ -454,11 +454,11 @@ PHONE_HOME_USAGE_REPORTING_ENABLED: false
 
 将此添加到 Helm 配置的 `commonEnv` 部分，以永久禁用使用情况遥测报告。
 
-<Warning>
-  禁用使用遥测不会影响计费或操作遥测。许可证验证和订阅/使用报告将继续正常运行。
-</Warning>
+> [!警告]
+>
+> 禁用使用遥测不会影响计费或操作遥测。许可证验证和订阅/使用报告将继续正常运行。
 
-## 引擎的 GitHub
+## GitHub for Engine
 
 当您[connect GitHub to Engine](/langsmith/engine-self-hosted-github)时，允许从LangSmith服务和沙箱主机到您的GitHub实例的出站HTTPS。 GitHub 还必须到达 LangSmith 的 webhook URL，以便在合并后自动 PR 链接和问题完成。
 
@@ -468,12 +468,12 @@ PHONE_HOME_USAGE_REPORTING_ENABLED: false
 
 [Engine](/langsmith/engine-self-hosted) 向 LangSmith Intelligence (LSI) 报告使用情况，后者也可以运行其模型。如果您使用自己的模型提供程序，LSI 仅接收使用情况元数据。 [Air-gapped installations](/langsmith/engine-self-hosted#air-gapped-installations) 不连接LSI。
 
-允许出站 HTTPS 到在 `engine.intelligenceBaseUrl` 中为您的 [model-provider choice](/langsmith/engine-self-hosted#choose-how-engine-runs-its-models) 配置的端点：* **LangSmith 智能：** `beacon.aws.langchain.com`。为了将此流量保留在专用网络上，[connect with AWS PrivateLink](/langsmith/engine-self-hosted-model-providers#connect-with-aws-privatelink)。
+允许出站 HTTPS 到在 `engine.intelligenceBaseUrl` 中为您的 [model-provider choice](/langsmith/engine-self-hosted#choose-how-engine-runs-its-models) 配置的端点：* **LangSmith 智能：** `beacon.aws.langchain.com`。要将此流量保留在专用网络上，[connect with AWS PrivateLink](/langsmith/engine-self-hosted-model-providers#connect-with-aws-privatelink)。
 * **您自己的模型提供商：** `beacon.langchain.com`，此页面已经需要的同一主机，用于使用情况报告。还允许到每个提供商的 API 端点的出站 HTTPS。
 
-<Warning>
-  将每个目的地添加为特定的允许列表条目，而不是打开常规出站访问。对 LangSmith Intelligence 的请求使用在 LangSmith 许可证验证期间获得的短期许可证 JWT 进行身份验证。
-</Warning>
+> [!警告]
+>
+> 将每个目的地添加为特定的允许列表条目，而不是打开常规出站访问。对 LangSmith Intelligence 的请求使用在 LangSmith 许可证验证期间获得的短期许可证 JWT 进行身份验证。
 
 ### 它的作用
 
@@ -489,9 +489,9 @@ LangSmith Intelligence 保留以下元数据用于使用归因和计费：
 * 用于归因使用情况的帐户、工作区和项目标识符。
 * 用于计费的模型和令牌使用元数据。有关完整的数据流和模型提供商承诺，请参阅[Engine on Self-hosted](/langsmith/engine-self-hosted)。
 
-<Info>
-  离线（气隙）自托管可以在您自己的模型提供商上运行引擎。参见[Air-gapped installations](/langsmith/engine-self-hosted#air-gapped-installations)。
-</Info>
+> [!注意]
+>
+> 离线（气隙）自托管可以在您自己的模型提供商上运行引擎。参见[Air-gapped installations](/langsmith/engine-self-hosted#air-gapped-installations)。
 
 ## 我们的承诺
 
@@ -499,12 +499,6 @@ LangSmith Intelligence 保留以下元数据用于使用归因和计费：
 
 ***
 
-<div>
-  <Callout icon="terminal-2">
-    [Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
-  </Callout>
+[Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
 
-  <Callout icon="edit">
-    [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/self-host-egress.mdx) 或 [file an issue](https://github.com/langchain-ai/docs/issues/new/choose)。
-  </Callout>
-</div>
+[Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/self-host-egress.mdx) 或 [file an issue](https://github.com/langchain-ai/docs/issues/new/choose)。

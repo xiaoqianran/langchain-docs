@@ -6,7 +6,7 @@
 
 在本教程中，您将扩展 [the chatbot created in the last tutorial](/langsmith/set-up-custom-auth) 为每个用户提供自己的私人对话。您将添加 [resource-level access control](/langsmith/auth#single-owner-resources)，以便用户只能看到自己的线程。
 
-<img alt="Authorization flow: after authentication, an authorization handler tags each resource with owner=user id and returns a filter so users only see their own threads." />
+![Authorization flow: after authentication, an authorization handler tags each resource with owner=user id and returns a filter so users only see their own threads.](https://mintcdn.com/langchain-5e9cc07a/IMK8wJkjSpMCGODD/langsmith/images/authorization.png?fit=max\&auto=format\&n=IMK8wJkjSpMCGODD\&q=85\&s=8daa07dd8efb13d7f9d7aa35117b2138)
 
 ## 先决条件
 
@@ -107,7 +107,7 @@ async def add_owner(
     return filters
 ```
 
-处理程序接收两个参数：1. `ctx` ([AuthContext](https://reference.langchain.com/python/langgraph-sdk/auth/types/AuthContext))：包含有关当前`user`、用户的`permissions`、`resource`（“线程”、“crons”、“助手”）和正在使用的`action`（“创建”、“读取”、“更新”、“删除”、 “搜索”、“创建\_运行”）
+处理程序接收两个参数：1. `ctx` ([AuthContext](https://reference.langchain.com/python/langgraph-sdk/auth/types/AuthContext))：包含当前`user`、用户的`permissions`、`resource`（“线程”、“crons”、“助手”）和正在使用的`action`（“创建”、“读取”、“更新”、“删除”、 “搜索”、“创建\_运行”）
 2. `value` (`dict`)：正在创建或访问的数据。该字典的内容取决于正在访问的资源和操作。有关如何获得更严格范围的访问控制的信息，请参阅下面的[adding scoped authorization handlers](#scoped-authorization)。
 
 请注意，简单处理程序做了两件事：
@@ -312,18 +312,12 @@ For more information check: https://developer.mozilla.org/en-US/docs/Web/HTTP/St
 
 现在您可以控制对资源的访问，您可能想要：
 
-1. 继续[Connect an authentication provider](/langsmith/add-auth-server)添加真实用户帐户。
+1. 前往[Connect an authentication provider](/langsmith/add-auth-server)添加真实用户帐户。
 2. 了解更多关于[authorization patterns](/langsmith/auth#authorization)的信息。
 3. 本教程中使用的接口和方法的详细信息请查看[API reference](https://reference.langchain.com/python/langgraph-sdk/auth/Auth)。
 
 ***
 
-<div>
-  <Callout icon="terminal-2">
-    [Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
-  </Callout>
+[Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
 
-  <Callout icon="edit">
-    [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/resource-auth.mdx) 或 [file an issue](https://github.com/langchain-ai/docs/issues/new/choose)。
-  </Callout>
-</div>
+[Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/resource-auth.mdx) 或 [file an issue](https://github.com/langchain-ai/docs/issues/new/choose)。

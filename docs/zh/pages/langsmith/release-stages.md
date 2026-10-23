@@ -13,7 +13,7 @@ LangSmith 通过三个发布阶段提供功能：alpha、beta 和普遍可用 (G
 |舞台|可用性 |变化|自托管/BYOC |支持|
 | - | - | - | - | - |
 | [Alpha](#alpha) |仅限设计合作伙伴|预期发生重大变化；该功能可能会发生重大变化或永远不会发货 |不保证 |没有正式的 SLA |
-| [Beta](#beta) |公共或私人团体|界面或行为仍可能发生变化；预计几个月内正式上市 |通常在测试期间添加 |积极维护； SLA 因功能而异 |
+| [Beta](#beta) |公共或私人团体 |界面或行为仍可能发生变化；预计几个月内正式上市 |通常在测试期间添加 |积极维护； SLA 因功能而异 |
 | [GA](#generally-available-ga) |公共|稳定的;重大更改需要弃用期 |支持 |全力支持 |
 
 ## 阿尔法Alpha 是最早的发布阶段，用于在更广泛的发布之前用少量受众验证功能。
@@ -57,12 +57,6 @@ GA 功能稳定并完全支持生产使用。
 
 ***
 
-<div>
-  <Callout icon="terminal-2">
-    [Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
-  </Callout>
+[Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
 
-  <Callout icon="edit">
-    [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/release-stages.mdx) 或 [file an issue](https://github.com/langchain-ai/docs/issues/new/choose)。
-  </Callout>
-</div>
+[Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/release-stages.mdx) 或 [file an issue](https://github.com/langchain-ai/docs/issues/new/choose)。

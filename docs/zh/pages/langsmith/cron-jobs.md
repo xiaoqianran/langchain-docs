@@ -16,7 +16,7 @@ LangSmith 部署支持 cron 作业，它按照用户定义的计划运行。用�
 
 请注意，这每次都会向线程发送相同的输入。
 
-LangSmith 部署 API 提供了多个用于创建和管理 cron 作业的端点。更多详情请参阅[API reference](https://langchain-ai.github.io/langgraph/cloud/reference/api/api_ref/)。有时您不想根据用户交互来运行图表，而是希望安排图表按计划运行 - 例如，如果您希望图表为您的团队撰写并发送每周的待办事项电子邮件。 LangSmith 部署允许您执行此操作，而无需使用 `Crons` 客户端编写自己的脚本。要调度图形作业，您需要传递[cron expression](https://crontab.cronhub.io/)来通知客户端何时要运行图形。 `Cron` 作业在后台运行，不会干扰图的正常调用。
+LangSmith 部署 API 提供了多个用于创建和管理 cron 作业的端点。更多详情请参阅[API reference](/langsmith/server-api-ref)。有时您不想根据用户交互来运行图表，而是希望安排图表按计划运行 - 例如，如果您希望图表为您的团队撰写并发送每周的待办事项电子邮件。 LangSmith 部署允许您执行此操作，而无需使用 `Crons` 客户端编写自己的脚本。要调度图形作业，您需要传递[cron expression](https://crontab.cronhub.io/)来通知客户端何时要运行图形。 `Cron` 作业在后台运行，不会干扰图的正常调用。
 
 > [!注意]
 >

@@ -12,7 +12,7 @@
 
 ![Tool use](https://mintcdn.com/langchain-5e9cc07a/ImHGLQW1HnQYwnJV/langsmith/images/tool-use.png?fit=max\&auto=format\&n=ImHGLQW1HnQYwnJV\&q=85\&s=a1c10f940f40ad89c90de8fae3607c1f)
 
-下面是[LangGraph](https://langchain-ai.github.io/langgraph/tutorials/introduction/)中的工具调用代理。 `assistant node` 是一个 LLM，它根据输入确定是否调用工具。 `tool condition` 查看`assistant node` 是否选择了工具，如果是，则路由至 `tool node`。 `tool node` 执行该工具并将输出作为工具消息返回给`assistant node`。只要`assistant node`选择了一个工具，这个循环就会继续。如果未选择任何工具，则代理将直接返回 LLM 响应。
+下面是[LangGraph](/oss/python/langgraph/quickstart)中的工具调用代理。 `assistant node` 是一个 LLM，它根据输入确定是否调用工具。 `tool condition` 查看`assistant node` 是否选择了工具，如果是，则路由至 `tool node`。 `tool node` 执行该工具并将输出作为工具消息返回给`assistant node`。只要`assistant node`选择了一个工具，这个循环就会继续。如果未选择任何工具，则代理将直接返回 LLM 响应。
 
 ![Agent](https://mintcdn.com/langchain-5e9cc07a/4kN8yiLrZX_amfFn/langsmith/images/langgraph-agent.png?fit=max\&auto=format\&n=4kN8yiLrZX_amfFn\&q=85\&s=37f3c09958c1e2543f633c59cc89df36)
 

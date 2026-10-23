@@ -4,7 +4,7 @@
 
 # 删除痕迹
 
-LangSmith UI 目前不支持删除单个跟踪。但是，这可以通过直接从 ClickHouse 中的所有物化视图（runs\_history 视图除外）以及运行和反馈表本身中删除跟踪来实现。
+LangSmith UI 目前不支持删除单个轨迹。但是，这可以通过直接从 ClickHouse 中的所有物化视图（runs\_history 视图除外）以及运行和反馈表本身中删除跟踪来实现。
 
 该命令可以使用跟踪 ID 作为参数来运行，也可以使用跟踪 ID 列表文件来运行。
 
@@ -34,15 +34,15 @@ LangSmith UI 目前不支持删除单个跟踪。但是，这可以通过直接�
 
 4. 删除痕迹的脚本
 
-   * 下载[trace script](https://github.com/langchain-ai/helm/blob/main/charts/langsmith/scripts/delete_trace_by_id.sh)
-
-<Warning>
-  **批量大小限制**此脚本针对每批多个 ClickHouse 表发出 `DELETE` 突变。大量删除可能会导致服务中断。
-
-  * **每次运行最多 10,000 个跟踪**：分割较大的文件并按顺序处理。
-  * **在批次之间等待**：在开始下一批之前留出时间完成删除。
-  * 使用 `--sync` 标志进行顺序（较慢但更安全）删除。
-</Warning>
+   * 下载[trace script](https://github.com/langchain-ai/helm/blob/main/charts/langsmith/scripts/delete_trace_by_id.sh)> [!警告]
+>
+> **批量大小限制**
+>
+> 此脚本针对每批多个 ClickHouse 表发出 `DELETE` 突变。大量删除可能会导致服务中断。
+>
+> * **每次运行最多 10,000 个跟踪**：分割较大的文件并按顺序处理。
+> * **在批次之间等待**：在开始下一批之前留出时间完成删除。
+> * 使用 `--sync` 标志进行顺序（较慢但更安全）删除。
 
 ### 运行单个跟踪的删除脚本
 
@@ -76,9 +76,9 @@ sh delete_trace_by_id.sh "clickhouse://default:password@localhost:8123/default" 
 
 如果您访问 LangSmith UI，您现在应该看到所有指定的跟踪已被删除。
 
-## 故障排除
+## 故障排除### “找不到跟踪 ID”错误
 
-### “找不到跟踪 ID”错误如果您收到一条错误消息，指出无法找到跟踪 ID，请将 `--ssl` 标志添加到您的命令中。如果没有此标志，脚本可能无法正确连接到 ClickHouse，从而导致错误的“未找到跟踪 ID”错误。
+如果您收到一条错误消息，指出无法找到跟踪 ID，请将 `--ssl` 标志添加到您的命令中。如果没有此标志，脚本可能无法正确连接到 ClickHouse，从而导致错误的“未找到跟踪 ID”错误。
 
 带 SSL 标志的示例：
 
@@ -98,12 +98,6 @@ sh delete_trace_by_id.sh "clickhouse://default:password@localhost:8123/default" 
 
 ***
 
-<div>
-  <Callout icon="terminal-2">
-    [Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
-  </Callout>
+[Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
 
-  <Callout icon="edit">
-    [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/script-delete-traces.mdx) 或 [file an issue](https://github.com/langchain-ai/docs/issues/new/choose)。
-  </Callout>
-</div>
+[Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/script-delete-traces.mdx) 或 [file an issue](https://github.com/langchain-ai/docs/issues/new/choose)。

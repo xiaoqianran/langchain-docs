@@ -121,7 +121,7 @@ langsmith sandbox update my-vm --proxy-config @proxy.json
 
 资源更改将在沙箱下次启动时生效。代理配置更改立即生效。
 
-### 代理配置在 `create` 或 `update` 上使用 `--proxy-config @proxy.json` 配置沙盒身份验证代理。更喜欢使用工作区机密进行凭据注入，而不是将原始机密放置在本地文件中。
+### 代理配置在 `create` 或 `update` 上使用 `--proxy-config @proxy.json` 配置沙箱身份验证代理。更喜欢使用工作区机密进行凭据注入，而不是将原始机密放置在本地文件中。
 
 ```json theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 {
@@ -159,7 +159,7 @@ langsmith sandbox exec my-vm -- ls -la /
 langsmith sandbox exec my-vm -- cat /etc/os-release
 ```
 
-`--`之后的所有内容都会作为命令发送到沙箱。 CLI 将 stdout 打印到 stdout，将 stderr 打印到 stderr，并使用沙箱命令的退出代码退出。
+`--`之后的所有内容都会作为命令发送到沙箱。 CLI 将 stdout 打印到 stdout，将 stderr 打印到 stderr，并以沙箱命令的退出代码退出。
 
 ## 打开交互式控制台
 
@@ -186,7 +186,7 @@ langsmith sandbox console my-vm --forward-ssh-agent
 langsmith sandbox generate-download-url my-vm --path /app/report.csv
 ```
 
-如果没有`--expires-in-seconds`，链接永远不会过期。添加 `--content-type` 和 `--content-disposition inline` 让浏览器呈现文件而不是下载文件。之后不要修改文件：链接固定到路径，而不是内容的快照，因此以后的写入可能会也可能不会反映在链接所服务的内容中。参见[Sandbox download links](/langsmith/sandbox-download-links)。## 隧道 TCP 端口
+如果没有`--expires-in-seconds`，链接永远不会过期。添加 `--content-type` 和 `--content-disposition inline` 让浏览器渲染文件而不是下载它。之后不要修改文件：链接固定到路径，而不是内容的快照，因此以后的写入可能会也可能不会反映在链接所服务的内容中。参见[Sandbox download links](/langsmith/sandbox-download-links)。## 隧道 TCP 端口
 
 当您需要转发到沙箱内侦听的服务的本地 TCP 端口时，请使用`sandbox tunnel`。这对于需要 `localhost` 的数据库、语言服务器、自定义协议或本地工具非常有用。
 
@@ -219,9 +219,9 @@ langsmith sandbox tunnel \
   --remote-port 5432
 ```
 
-<Tip>
-  对于您想要在浏览器中打开或与团队成员共享的 HTTP 应用程序，请使用 [Sandbox service URLs](/langsmith/sandbox-service-urls)。使用原始 TCP 协议或本地开发工具的隧道。
-</Tip>
+> [!提示]
+>
+> 对于您想要在浏览器中打开或与队友共享的 HTTP 应用程序，请使用 [Sandbox service URLs](/langsmith/sandbox-service-urls)。使用原始 TCP 协议或本地开发工具的隧道。
 
 ## 设置 SSH 访问
 
@@ -240,13 +240,13 @@ langsmith sandbox ssh-setup my-vm --identity ~/.ssh/id_ed25519.pub
 ssh sandbox-my-vm
 ```
 
-沙盒映像必须在端口 `22` 上运行 `sshd`。如果 `sshd` 未运行，`ssh-setup` 会发出警告，并且 SSH 连接将无法工作，直到您在沙箱内启动它。<Warning>
-  `ssh-setup`修改本地SSH配置并编写调用`langsmith sandbox tunnel`的`ProxyCommand`。根据 CLI 的身份验证方式，生成的块可能包含凭据或对凭据的引用。仅在受信任的计算机上运行它，并且不要提交或共享生成的 SSH 配置块。
-</Warning>
+沙盒映像必须在端口 `22` 上运行 `sshd`。如果 `sshd` 未运行，`ssh-setup` 会发出警告，并且 SSH 连接将无法工作，直到您在沙箱内启动它。> [!警告]
+>
+> `ssh-setup` 修改本地 SSH 配置并编写调用 `langsmith sandbox tunnel` 的 `ProxyCommand`。根据 CLI 的身份验证方式，生成的块可能包含凭据或对凭据的引用。仅在受信任的计算机上运行它，并且不要提交或共享生成的 SSH 配置块。
 
 ## 命令参考
 
-|命令 |描述 |
+|命令|描述 |
 | - | - |
 | `langsmith sandbox snapshot list` |列出快照。 |
 | `langsmith sandbox snapshot build <name> --docker-image <image>` |从 Docker 镜像构建快照。 |
@@ -265,12 +265,6 @@ ssh sandbox-my-vm
 | `langsmith sandbox tunnel <name> --remote-port <port>` |将本地 TCP 端口转发到沙箱端口。 |
 | `langsmith sandbox ssh-setup <name>` |通过`sandbox tunnel --stdio`配置本地SSH访问。 |
 
-***<div>
-  <Callout icon="terminal-2">
-    [Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时答案。
-  </Callout>
+***[Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
 
-  <Callout icon="edit">
-    [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/sandbox-cli.mdx) 或 [file an issue](https://github.com/langchain-ai/docs/issues/new/choose)。
-  </Callout>
-</div>
+[Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/sandbox-cli.mdx) 或 [file an issue](https://github.com/langchain-ai/docs/issues/new/choose)。

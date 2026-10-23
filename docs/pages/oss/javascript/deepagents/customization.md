@@ -3653,10 +3653,11 @@ const agent = await createDeepAgent({
 Deep Agents support [structured output](/oss/javascript/langchain/structured-output).
 
 You can set a desired structured output schema by passing it as the `responseFormat` argument to the call to `createDeepAgent()`.
+Wrap the schema in a strategy such as `toolStrategy()` or `providerStrategy()` from `langchain`.
 When the model generates the structured data, it's captured, validated, and returned in the 'structuredResponse' key of the agent's state.
 
 ```ts theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-import { tool } from "langchain";
+import { tool, toolStrategy } from "langchain";
 import { TavilySearch } from "@langchain/tavily";
 import { createDeepAgent } from "deepagents";
 import { z } from "zod";
@@ -3708,7 +3709,7 @@ const weatherReportSchema = z.object({
 });
 
 const agent = await createDeepAgent({
-  responseFormat: weatherReportSchema,
+  responseFormat: toolStrategy(weatherReportSchema),
   tools: [internetSearch],
 });
 

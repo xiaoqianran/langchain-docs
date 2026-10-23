@@ -8,7 +8,7 @@
 
 自托管 `sandbox-host` 可以通过您的公司转发代理从沙箱发送每个出站连接，而不是直接拨打目的地。当您的网络仅允许通过代理的出站流量，或者当您的安全团队需要所有沙盒流量来传递代理的访问策略和日志记录时，请使用此选项。
 
-有关沙盒流量如何离开 microVM，请参阅[Sandbox architecture](/langsmith/self-host-sandbox-architecture)。安装请参见[Enable Sandboxes](/langsmith/enable-self-hosted-sandboxes)。
+有关沙箱流量如何离开 microVM，请参阅[Sandbox architecture](/langsmith/self-host-sandbox-architecture)。安装请参见[Enable Sandboxes](/langsmith/enable-self-hosted-sandboxes)。
 
 ## 了解代理出口的工作原理
 
@@ -18,8 +18,8 @@
 主办方也适用以下规则：
 
 * **无直接回退**：当转发代理拒绝请求或无法打开隧道时，请求或连接失败。主机从不直接重试。
-* **绕过列表**：主机直接拨打`noProxy`中的目的地，并进行相同的沙箱访问检查。
-* **LangSmith API**：主机直接将 HTTPS 请求从沙箱拨至您的 LangSmith 安装的 API，而不是通过转发代理。
+* **绕过列表**：主机直接拨打`noProxy`中的目的地，并进行相同的沙盒访问检查。
+* **LangSmith API**：主机直接从沙盒向您的 LangSmith 安装的 API 拨打 HTTPS 请求，而不是通过转发代理。
 
 代理发生在沙箱外部的主机上。沙箱内的代码看不到转发代理地址，并且不需要设置`HTTP_PROXY`或`HTTPS_PROXY`。
 
@@ -34,57 +34,53 @@
 
 ## 配置代理
 
-要通过转发代理路由沙箱出口：<Steps>
-  <Step title="Add the proxy settings to your values">
-    在 LangSmith Helm 值中设置 `sandboxes.authProxy.httpProxy`：
+要通过转发代理路由沙箱出口：**1.将代理设置添加到您的值**
 
-    ```yaml theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-    sandboxes:
-      authProxy:
-        httpProxy:
-          url: http://proxy.corp.internal:3128
-          noProxy:
-            - .corp.internal
-    ```
+在 LangSmith Helm 值中设置 `sandboxes.authProxy.httpProxy`：
 
-    * **`url`**：当与代理本身的连接使用 TLS 时，代理 URL、`http://host:port` 或 `https://host:port`。主机可以是主机名、IP 地址或集群内服务名称。留空即可直接发送出口。该图表将 URL 存储在 LangSmith 应用程序 Secret 中，因为它可以携带凭据（请参阅下一步）。当您设置 `config.existingSecretName` 时，将 `url` 留空，并将 URL 添加到密钥 `sandbox_egress_proxy_url` 下的该 Secret。
-    * **`noProxy`**：主机直接拨号而不是通过代理拨打的目的地，与`NO_PROXY`环境变量匹配相同。诸如 `corp.internal` 之类的条目与该主机及其子域匹配，带有前导点（如 `.corp.internal` ）的条目仅匹配子域，而 `*` 则匹配每个主机。条目还可以是 IP 地址、CIDR 范围（例如 `10.0.0.0/8` 或 `host:port` 对）。
+```yaml theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+sandboxes:
+  authProxy:
+    httpProxy:
+      url: http://proxy.corp.internal:3128
+      noProxy:
+        - .corp.internal
+```
 
-    当 `url` 不是没有路径的 `http://` 或 `https://` URL 时，或者当您将 `url` 与 `config.existingSecretName` 或 `config.disableSecretCreation` 一起设置时，图表将无法渲染。在 LangSmith 0.17.36 或更高版本上，`sandbox-host` 还会在启动时检查代理地址：环回或云元数据地址会使用 `sandbox host config invalid` 停止 pod，而不是使每个沙箱创建失败。
-  </Step><Step title="(Optional) Authenticate to the proxy">
-    当代理需要用户名和密码时，将它们添加到 URL 中：
+* **`url`**：当与代理本身的连接使用 TLS 时，代理 URL、`http://host:port` 或 `https://host:port`。主机可以是主机名、IP 地址或集群内服务名称。留空即可直接发送出口。该图表将 URL 存储在 LangSmith 应用程序 Secret 中，因为它可以携带凭据（请参阅下一步）。当您设置 `config.existingSecretName` 时，将 `url` 留空，并将 URL 添加到密钥 `sandbox_egress_proxy_url` 下的该 Secret。
+* **`noProxy`**：主机直接拨号而不是通过代理拨打的目的地，与`NO_PROXY`环境变量匹配相同。诸如 `corp.internal` 之类的条目与该主机及其子域匹配，带有前导点（如 `.corp.internal` ）的条目仅匹配子域，而 `*` 则匹配每个主机。条目还可以是 IP 地址、CIDR 范围（例如 `10.0.0.0/8` 或 `host:port` 对）。当 `url` 不是没有路径的 `http://` 或 `https://` URL 时，或者当您将 `url` 与 `config.existingSecretName` 或 `config.disableSecretCreation` 一起设置时，图表将无法渲染。在 LangSmith 0.17.36 或更高版本上，`sandbox-host` 还会在启动时检查代理地址：环回或云元数据地址会使用 `sandbox host config invalid` 停止 pod，而不是使每个沙箱创建失败。
 
-    ```text theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-    http://svc-sandboxes:p%40ssw0rd@proxy.corp.internal:3128
-    ```
+**2. （可选）向代理进行身份验证**
 
-    对用户名和密码中的保留字符进行百分比编码，例如`@`为`%40`、`:`为`%3A`、`/`为`%2F`。将 URL 设置为值中的 `url`，或设置为 `config.existingSecretName` 中的 `sandbox_egress_proxy_url` 键。
+当代理需要用户名和密码时，将它们添加到 URL 中：
 
-    `sandbox-host` 在每个 `CONNECT` 和普通 HTTP 代理请求上将凭证作为基本 `Proxy-Authorization` 标头发送到代理。沙箱永远不会看到它们：主机打开隧道，并丢弃沙箱中的代码发送的任何 `Proxy-Authorization` 标头。基本凭据未加密，因此当沙箱节点和代理之间的网络不可信时，请使用`https`代理 URL。
+```text theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+http://svc-sandboxes:p%40ssw0rd@proxy.corp.internal:3128
+```
 
-    当代理拒绝凭据时，来自沙箱的连接将失败，并且`sandbox-host`日志显示`upstream proxy CONNECT rejected: 407`。轮换密码后，更新 Secret 并重新启动 `sandbox-host` 部署；它仅在启动时读取 URL。
-  </Step>
+对用户名和密码中的保留字符进行百分比编码，例如`@`为`%40`、`:`为`%3A`、`/`为`%2F`。将 URL 设置为值中的 `url`，或设置为 `config.existingSecretName` 中的 `sandbox_egress_proxy_url` 键。
 
-  <Step title="(Optional) Trust a private CA for an HTTPS proxy">
-    当代理 URL 使用 `https` 并且私有 CA 颁发代理的证书时，请将该 CA 添加到 `config.customCa` 中的捆绑包中。除了系统根之外，`sandbox-host` Pod 还与其他 LangSmith 服务信任相同的捆绑包。参见[Mount internal CAs for TLS](/langsmith/self-host-custom-tls-certificates#mount-internal-cas-for-tls)。
-  </Step><Step title="Apply the change">
-    升级 Helm 版本。更改这些设置会滚动 `sandbox-host` 部署，因此每个主机在重新启动之前都会耗尽其正在运行的沙箱。参见[Understand a rolling upgrade](/langsmith/self-host-sandbox-operations#understand-a-rolling-upgrade)。
-  </Step>
+`sandbox-host` 在每个 `CONNECT` 和普通 HTTP 代理请求上将凭证作为基本 `Proxy-Authorization` 标头发送到代理。沙箱永远不会看到它们：主机打开隧道，并丢弃沙箱中的代码发送的任何 `Proxy-Authorization` 标头。基本凭据未加密，因此当沙箱节点和代理之间的网络不可信时，请使用`https`代理 URL。当代理拒绝凭据时，来自沙箱的连接将失败，并且`sandbox-host`日志显示`upstream proxy CONNECT rejected: 407`。轮换密码后，更新 Secret 并重新启动 `sandbox-host` 部署；它仅在启动时读取 URL。
 
-  <Step title="Verify egress">
-    创建一个沙箱并从其中请求公共 URL：
+**3. （可选）信任 HTTPS 代理的私有 CA**
 
-    ```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-    curl -sS -o /dev/null -w '%{http_code}\n' https://www.langchain.com/
-    ```
+当代理 URL 使用 `https` 并且私有 CA 颁发代理的证书时，请将该 CA 添加到 `config.customCa` 中的捆绑包中。除了系统根之外，`sandbox-host` Pod 还与其他 LangSmith 服务信任相同的捆绑包。参见[Mount internal CAs for TLS](/langsmith/self-host-custom-tls-certificates#mount-internal-cas-for-tls)。
 
-    该命令打印 `200`，并且您的转发代理会记录来自沙盒节点的 `CONNECT www.langchain.com:443` 请求。对 `http://` URL 的请求将在代理日志中显示为 `GET http://...` 请求。
-  </Step>
-</Steps>
+**4.应用更改**
 
-## 直接到达私有服务
+升级 Helm 版本。更改这些设置会滚动 `sandbox-host` 部署，因此每个主机在重新启动之前都会耗尽其正在运行的沙箱。参见[Understand a rolling upgrade](/langsmith/self-host-sandbox-operations#understand-a-rolling-upgrade)。
 
-默认情况下，`sandbox-host`拒绝连接到私有地址，因此即使`noProxy`直接发送连接，沙箱也无法到达内部服务。在自托管安装中，当沙箱的 `allow_list` 允许目标通过时，沙箱就会到达私有地址：主机名、glob（例如 `*.corp.internal`）或正则表达式。文字 IP 地址需要 IP 或 CIDR 条目。具有 `deny_list` 或没有 `access_control` 的沙箱永远不会到达私有地址。参见[Allow and deny lists](/langsmith/sandbox-auth-proxy#allow-and-deny-lists)。
+**5.验证出口**
+
+创建一个沙箱并从其中请求公共 URL：
+
+```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+curl -sS -o /dev/null -w '%{http_code}\n' https://www.langchain.com/
+```
+
+该命令打印 `200`，并且您的转发代理会记录来自沙盒节点的 `CONNECT www.langchain.com:443` 请求。对 `http://` URL 的请求将在代理日志中显示为 `GET http://...` 请求。
+
+## 直接到达私有服务默认情况下，`sandbox-host`拒绝连接到私有地址，因此即使`noProxy`直接发送连接，沙箱也无法到达内部服务。在自托管安装中，当沙箱的 `allow_list` 允许目标通过时，沙箱就会到达私有地址：主机名、glob（例如 `*.corp.internal`）或正则表达式。文字 IP 地址需要 IP 或 CIDR 条目。具有 `deny_list` 或没有 `access_control` 的沙箱永远不会到达私有地址。参见[Allow and deny lists](/langsmith/sandbox-auth-proxy#allow-and-deny-lists)。
 
 例如，一个需要 Git 和内网数据库的沙盒，加上通过正向代理的公共 HTTP 和 HTTPS，就使用这个 `proxy_config`：
 
@@ -94,21 +90,21 @@
     "allow_list": ["*:80", "*:443", "git.corp.internal", "db.corp.internal:5432"]
   }
 }
-```主机在解析主机名后检查其连接的地址。即使列出了环回和云元数据地址，仍会被阻止。这不需要 Helm 设置。
+```
 
-沙箱还可以通过其 Kubernetes 名称访问集群中的服务，例如当其 `allow_list` 命名时，为 `api.team.svc.cluster.local`。您的转发代理无法解析集群名称，因此在使用集群名称时将 `.svc.cluster.local` 添加到 `noProxy`。
+主机在解析主机名后检查其连接的地址。即使列出了环回和云元数据地址，仍会被阻止。这不需要 Helm 设置。
 
-<Warning>
-  每个匹配的条目都很重要，包括 `*` 和 `*:443`。在自托管安装中，`allow_list`（例如`["*:80", "*:443"]`）也会在这些端口上打开私有目标。任何可以创建或更新沙箱的人都可以将私有地址列入白名单，包括集群内的地址，因此相应地限制谁可以创建沙箱。
-</Warning>
+沙箱还可以通过其 Kubernetes 名称访问集群中的服务，例如当其 `allow_list` 命名时，为 `api.team.svc.cluster.local`。您的转发代理无法解析集群名称，因此在使用集群名称时将 `.svc.cluster.local` 添加到 `noProxy`。> [!警告]
+>
+> 每个匹配的条目都很重要，包括 `*` 和 `*:443`。在自托管安装中，`allow_list`（例如`["*:80", "*:443"]`）也会在这些端口上打开私有目标。任何可以创建或更新沙箱的人都可以将私有地址列入白名单，包括集群内的地址，因此相应地限制谁可以创建沙箱。
 
 ## 保护代理
 
-解析目标主机名的是转发代理，而不是主机。主机根据沙盒访问列表检查主机名，并且默认情况下会阻止字面上的私有、环回和云元数据 IP 地址，但它看不到代理将主机名解析到的地址。如果代理允许，请求解析为内部地址的主机名的沙箱将到达该地址。配置代理的访问策略以阻止沙箱不得到达的目的地，例如内部网络和云元数据端点。
+解析目标主机名的是转发代理，而不是主机。主机根据沙盒访问列表检查主机名，并且默认情况下会阻止字面上的私有、环回和云元数据 IP 地址，但它看不到代理将主机名解析到的地址。如果代理允许，请求解析为内部地址的主机名的沙箱将到达该地址。
 
-## 了解限制
+配置代理的访问策略以阻止沙箱不得到达的目的地，例如内部网络和云元数据端点。
 
-* **私有服务需要连接**：转发代理仅到达代理本身可以到达的目的地。它不提供 VPN 或网络对等私有服务。
+## 了解限制* **私有服务需要连接**：转发代理仅到达代理本身可以到达的目的地。它不提供 VPN 或网络对等私有服务。
 * **TLS 检查代理**：当代理在隧道内解密并重新加密 HTTPS 时，客户端会看到来自检查 CA 的证书。对于身份验证代理规则匹配的主机，`sandbox-host` 是该客户端，因此将 CA 添加到 `config.customCa`。对于其他主机，沙盒中的程序是客户端，因此将 CA 添加到沙盒映像的信任存储中。或者，免除沙盒流量的检查。
 
 ## 另请参阅
@@ -120,12 +116,6 @@
 
 ***
 
-<div>
-  <Callout icon="terminal-2">
-    [Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
-  </Callout>
+[Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
 
-  <Callout icon="edit">
-    [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/self-host-sandbox-egress-proxy.mdx) 或 [file an issue](https://github.com/langchain-ai/docs/issues/new/choose)。
-  </Callout>
-</div>
+[Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/self-host-sandbox-egress-proxy.mdx) or [file an issue](https://github.com/langchain-ai/docs/issues/new/choose).

@@ -25,9 +25,9 @@ my-app/
 └── pyproject.toml # dependencies for your project
 ```
 
-<Tip>
-  LangSmith部署支持部署[LangGraph](/oss/python/langgraph/overview)*图*。然而，图的*节点*的实现可以包含任意代码。这意味着任何框架都可以在节点内实现并部署在LangSmith部署上。这使您可以在不使用额外的 LangGraph OSS API 的情况下实现核心应用程序逻辑，同时仍使用LangSmith进行[deployment](/langsmith/deployment)、缩放和[observability](/langsmith/observability)。详情请参阅[Use any framework with LangSmith Deployment](/langsmith/application-structure#use-any-framework-with-langsmith-deployment)。
-</Tip>
+> [!提示]
+>
+> LangSmith 部署支持部署[LangGraph](/oss/python/langgraph/overview) *图*。然而，图的*节点*的实现可以包含任意代码。这意味着任何框架都可以在节点内实现并部署在LangSmith部署上。这使您可以在不使用额外的 LangGraph OSS API 的情况下实现核心应用程序逻辑，同时仍使用LangSmith进行[deployment](/langsmith/deployment)、缩放和[observability](/langsmith/observability)。详情请参阅[Use any framework with LangSmith Deployment](/langsmith/application-structure#use-any-framework-with-langsmith-deployment)。
 
 您还可以设置：
 
@@ -119,12 +119,12 @@ my-app/
 └── pyproject.toml
 ```
 
-<Tip>
-  默认情况下，LangSmith遵循`uv`/`pip`的行为，除非明确允许，否则**不**安装预发布版本。如果想使用预发行版，您有以下选择：
-
-  * 对于 `pyproject.toml`：将 `allow-prereleases = true` 添加到您的 `[tool.uv]` 部分。
-  * 使用 `requirements.txt` 或 `setup.py`：您必须显式指定每个预发布依赖项，包括传递依赖项。例如，如果您声明 `a==0.0.1a1` 和 `a` 依赖于 `b==0.0.1a1`，那么您还必须在依赖项中显式包含 `b==0.0.1a1`。
-</Tip>
+> [!提示]
+>
+> 默认情况下，LangSmith 遵循 `uv`/`pip` 的行为，除非明确允许，否则**不**安装预发行版本。如果想使用预发行版，您有以下选择：
+>
+> * 使用 `pyproject.toml`：将 `allow-prereleases = true` 添加到您的 `[tool.uv]` 部分。
+> * 使用 `requirements.txt` 或 `setup.py`：您必须显式指定每个预发布依赖项，包括传递依赖项。例如，如果您声明 `a==0.0.1a1` 和 `a` 依赖于 `b==0.0.1a1`，那么您还必须在依赖项中显式包含 `b==0.0.1a1`。
 
 ## 定义图实现你的图表。图形可以在单个文件或多个文件中定义。记下要包含在应用程序中的每个 [CompiledStateGraph](https://reference.langchain.com/python/langgraph/graph/state/CompiledStateGraph) 的变量名称。稍后创建 [configuration file](/langsmith/cli#configuration-file) 时将使用变量名称。
 
@@ -194,10 +194,10 @@ my-app/
 
 请注意，`CompiledGraph`的变量名称出现在顶级`graphs`键中每个子键值的末尾（即`:<variable_name>`）。
 
-<Warning>
-  **配置文件位置**
-  配置文件必须放置在与包含编译图和关联依赖项的 Python 文件同一级别或更高级别的目录中。
-</Warning>
+> [!警告]
+>
+> **配置文件位置**
+> 配置文件必须放置在与包含编译图和关联依赖项的 Python 文件同一级别或更高级别的目录中。
 
 示例文件目录：
 
@@ -222,10 +222,6 @@ my-app/
 
 ***
 
-<div>
-  <Callout icon="terminal-2">
-    [Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
-  </Callout><Callout icon="edit">
-    [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/setup-pyproject.mdx) 或 [file an issue](https://github.com/langchain-ai/docs/issues/new/choose)。
-  </Callout>
-</div>
+[Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时答案。
+
+[Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/setup-pyproject.mdx) 或 [file an issue](https://github.com/langchain-ai/docs/issues/new/choose)。

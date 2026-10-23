@@ -57,7 +57,11 @@ For LangSmith Intelligence in other clouds or regions, [contact our sales team](
 
 ![Architecture diagram of self-hosted LangSmith in your VPC connected to LangSmith Intelligence and Bedrock in LangChain's AWS environment.](https://mintcdn.com/langchain-5e9cc07a/ry58UzmmALISsnzO/langsmith/images/engine-self-hosted-aws.png?fit=max\&auto=format\&n=ry58UzmmALISsnzO\&q=85\&s=ae209b16e4cf2ad7199e7ea6bb333f84)
 
+LangSmith Intelligence: Engine runs in your VPC; LSI and Bedrock run in LangChain's AWS environment.
+
 ![Architecture diagram of self-hosted LangSmith in your VPC sending model inference to your model providers and usage metadata to LangChain's cloud.](https://mintcdn.com/langchain-5e9cc07a/YV2_h1H0dQOJtIWY/langsmith/images/engine-self-hosted-byok.png?fit=max\&auto=format\&n=YV2_h1H0dQOJtIWY\&q=85\&s=772a34376f553f8a07ce36f96a4b0f81)
+
+Your own model providers: Engine runs in your VPC and calls your providers directly, and only usage metadata goes to LangChain.
 
 ### LangSmith Intelligence
 

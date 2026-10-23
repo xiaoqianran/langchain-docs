@@ -13,9 +13,9 @@
 
 ## 为 TLS 安装内部 CA
 
-<Note>
-  您必须使用 Helm Chart 0.11.9 或更高版本来使用以下配置挂载内部 CA。
-</Note>
+> [!注意]
+>
+> 您必须使用 Helm Chart 0.11.9 或更高版本才能使用以下配置挂载内部 CA。
 
 使用此方法通过LangSmith（Playground 模型调用和[database/external service connections](/langsmith/self-hosted#storage-services)）使内部/公共 CA 在系统范围内受信任。
 
@@ -51,18 +51,18 @@
        customTls: true # Only enable if you want TLS for Postgres.
    ```
 4. 确保使用 TLS 支持的连接字符串：
-   * <b>Postgres</b>：在末尾添加`?sslmode=verify-full&sslrootcert=system`。
-   * <b>Redis</b>：使用`rediss://`代替`redis://`作为前缀。
+   * **Postgres**：将 `?sslmode=verify-full&sslrootcert=system` 添加到末尾。
+   * **Redis**：使用`rediss://`代替`redis://`作为前缀。
 
-## 对模型提供者使用自定义 TLS 证书
-
-<Note>
-  此功能目前仅适用于以下模型提供商：
-
-  * 天蓝色OpenAI
-  * OpenAI
-  * 自定义（我们的自定义模型服务器）。更多信息请参阅[custom model server documentation](/langsmith/custom-endpoint)。这些 TLS 设置适用于所选模型提供程序的所有调用（包括在线评估）。当提供程序需要相互 TLS（客户端证书/密钥）或当您必须覆盖对提供程序调用的特定 CA 的信任时，请使用它们。它们补充了上面配置的内部 CA 捆绑包。
-</Note>
+## 对模型提供者使用自定义 TLS 证书> [!注意]
+>
+> 此功能目前仅适用于以下型号提供商：
+>
+> * 天蓝色OpenAI
+> * OpenAI
+> * 自定义（我们的自定义模型服务器）。更多信息请参阅[custom model server documentation](/langsmith/custom-endpoint)。
+>
+> 这些 TLS 设置适用于所选模型提供程序的所有调用（包括在线评估）。当提供程序需要相互 TLS（客户端证书/密钥）或当您必须覆盖对提供程序调用的特定 CA 的信任时，请使用它们。它们补充了上面配置的内部 CA 捆绑包。
 
 您可以使用自定义 TLS 证书连接到 Playground 中的模型提供程序。如果您使用自签名证书、来自自定义证书颁发机构的证书或相互 TLS 身份验证，这非常有用。
 
@@ -74,12 +74,6 @@
 
 ***
 
-<div>
-  <Callout icon="terminal-2">
-    [Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
-  </Callout>
+[Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
 
-  <Callout icon="edit">
-    [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/self-host-custom-tls-certificates.mdx) 或 [file an issue](https://github.com/langchain-ai/docs/issues/new/choose)。
-  </Callout>
-</div>
+[Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/self-host-custom-tls-certificates.mdx) 或 [file an issue](https://github.com/langchain-ai/docs/issues/new/choose)。

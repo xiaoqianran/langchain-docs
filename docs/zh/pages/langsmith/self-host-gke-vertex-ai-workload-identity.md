@@ -14,9 +14,9 @@ GKE 工作负载身份联合允许这些自托管 LangSmith 服务调用 Vertex 
 
 每个工作负载都使用其 Kubernetes 服务帐户 (KSA) 通过应用程序默认凭证 (ADC) 模拟 Google 服务帐户 (GSA)。
 
-<Note>
-  Chat 和 Insights 的无密钥身份验证需要 Helm 图表版本 0.17.0 或更高版本以及 LangSmith 应用程序版本 0.17.29 或更高版本。
-</Note>
+> [!注意]
+>
+> Chat 和 Insights 的无密钥身份验证需要 Helm 图表版本 0.17.0 或更高版本以及 LangSmith 应用程序版本 0.17.29 或更高版本。
 
 配置无密钥身份验证：
 
@@ -98,12 +98,6 @@ GKE 工作负载身份联合允许这些自托管 LangSmith 服务调用 Vertex 
 
 ***
 
-<div>
-  <Callout icon="terminal-2">
-    [Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
-  </Callout>
+[Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
 
-  <Callout icon="edit">
-    [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/self-host-gke-vertex-ai-workload-identity.mdx) 或 [file an issue](https://github.com/langchain-ai/docs/issues/new/choose)。
-  </Callout>
-</div>
+[Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/self-host-gke-vertex-ai-workload-identity.mdx) 或 [file an issue](https://github.com/langchain-ai/docs/issues/new/choose)。

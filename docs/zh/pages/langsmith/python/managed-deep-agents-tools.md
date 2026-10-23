@@ -10,9 +10,9 @@
 
 要从远程 MCP 服务器加载工具，请参阅[Connect to MCP servers](/langsmith/python/managed-deep-agents-mcp-connectors)。
 
-<Note>
-  托管 Deep Agents 于 [LangSmith Cloud](/langsmith/cloud) **公开 [beta](/langsmith/release-stages)**。
-</Note>
+> [!注意]
+>
+> 托管 Deep Agents 于 [LangSmith Cloud](/langsmith/cloud) **公开 [beta](/langsmith/release-stages)**。
 
 将编写的工具放在`tools/`下，将它们导入到代理条目中，并将它们传递给代理定义：
 
@@ -33,68 +33,66 @@ MCP 连接器也在 `tools/` 下声明，因此 `tools/mcp.py` 文件名是为�
 
 使用编写的工具来处理业务逻辑、私有 API、数据库访问以及属于代理项目的其他代码。
 
-<Steps>
-  <Step title="Define a tool module">
-    ```python tools/customer.py theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-    from langchain.tools import tool
+**1.定义工具模块**
+
+```python tools/customer.py theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+from langchain.tools import tool
 
 
-    @tool(parse_docstring=True)
-    def lookup_customer(customer_id: str) -> str:
-        """Look up a customer record by ID.
+@tool(parse_docstring=True)
+def lookup_customer(customer_id: str) -> str:
+    """Look up a customer record by ID.
 
-        Args:
-            customer_id: Customer ID from the CRM.
-        """
-        return f"Customer {customer_id} is on the enterprise plan."
-    ```
+    Args:
+        customer_id: Customer ID from the CRM.
+    """
+    return f"Customer {customer_id} is on the enterprise plan."
+```
 
-    使用清晰、独特的工具名称以避免冲突。有关LangChain工具定义的更多信息，请参阅[Tools](/oss/python/langchain/tools)。
-  </Step>
+使用清晰、独特的工具名称以避免冲突。有关LangChain工具定义的更多信息，请参阅[Tools](/oss/python/langchain/tools)。
 
-  <Step title="Attach the tool to the agent">
-    将工具导入到项目根代理条目中并将其传递到`tools`列表中：
+**2.将工具附加到代理**
 
-    ```python agent.py theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-    from managed_deepagents import define_deep_agent
+将工具导入到项目根代理条目中并将其传递到`tools`列表中：
 
-    from tools.customer import lookup_customer
+```python agent.py theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+from managed_deepagents import define_deep_agent
 
-    agent = define_deep_agent(
-        name="support-agent",
-        model="openai:gpt-5.5",
-        tools=[lookup_customer],
-    )
-    ```您的导入工作方式应该与在普通本地 Python 项目中的工作方式相同。
-  </Step>
+from tools.customer import lookup_customer
 
-  <Step title="Add human-in-the-loop (Optional)">
-    在敏感工具调用之前暂停代理，以便人们可以批准、编辑或拒绝它们。
+agent = define_deep_agent(
+    name="support-agent",
+    model="openai:gpt-5.5",
+    tools=[lookup_customer],
+)
+```您的导入工作方式应该与在普通本地 Python 项目中的工作方式相同。
 
-    在代理定义中设置`interrupt_on`，并可以选择设置`permissions`来控制工具和文件系统访问：
+**3.添加人机交互（可选）**
 
-    ```python agent.py theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-    from managed_deepagents import define_deep_agent
+在敏感工具调用之前暂停代理，以便人们可以批准、编辑或拒绝它们。
 
-    from tools.customer import lookup_customer
+在代理定义中设置`interrupt_on`，并可以选择设置`permissions`来控制工具和文件系统访问：
 
-    agent = define_deep_agent(
-        name="support-agent",
-        model="openai:gpt-5.5",
-        tools=[lookup_customer],
-        interrupt_on={"lookup_customer": True},
-    )
-    ```
+```python agent.py theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+from managed_deepagents import define_deep_agent
 
-    `interrupt_on` 字段应用与 LangChain 的 [human-in-the-loop middleware](/oss/python/langchain/guardrails#human-in-the-loop) 相同的中断行为。
+from tools.customer import lookup_customer
 
-    有关决策类型（批准、编辑、拒绝）、条件中断和权限规则，请参阅 Deep Agents [Human-in-the-loop](/oss/python/deepagents/human-in-the-loop) 和 [Permissions](/oss/python/deepagents/permissions) 指南。
+agent = define_deep_agent(
+    name="support-agent",
+    model="openai:gpt-5.5",
+    tools=[lookup_customer],
+    interrupt_on={"lookup_customer": True},
+)
+```
 
-    要恢复暂停的运行，请参阅[Respond to an interrupt](#respond-to-an-interrupt)。
+`interrupt_on` 字段应用与 LangChain 的 [human-in-the-loop middleware](/oss/python/langchain/guardrails#human-in-the-loop) 相同的中断行为。
 
-    要在 Slack 中暂停您自己的工具帖子的表单，请参阅 [Agent-owned interrupts](/langsmith/python/managed-deep-agents-agent-owned-interrupts)。
-  </Step>
-</Steps>
+有关决策类型（批准、编辑、拒绝）、条件中断和权限规则，请参阅 Deep Agents [Human-in-the-loop](/oss/python/deepagents/human-in-the-loop) 和 [Permissions](/oss/python/deepagents/permissions) 指南。
+
+要恢复暂停的运行，请参阅[Respond to an interrupt](#respond-to-an-interrupt)。
+
+要在 Slack 中暂停您自己的工具帖子的表单，请参阅 [Agent-owned interrupts](/langsmith/python/managed-deep-agents-agent-owned-interrupts)。
 
 ## 使用秘密和上下文
 
@@ -106,7 +104,7 @@ MCP 连接器也在 `tools/` 下声明，因此 `tools/mcp.py` 文件名是为�
 
 `mda dev`和`mda deploy`将项目文件复制到已编译的版本中，包括`tools/`下的模块。工具未同步到 Context Hub；他们附带代理代码。
 
-## 何时使用工具|概念 |亲切 |它如何到达代理|
+## 何时使用工具|概念|亲切 |它如何到达代理|
 | - | - | - |
 | **工具** |申请代码 |导入并传入代理定义 |
 | **[MCP connectors](/langsmith/python/managed-deep-agents-mcp-connectors)** |托管配置|在MCP模块中`tools/`下声明；没有导入到代理条目|
@@ -136,12 +134,6 @@ Managed Deep Agents 添加的调用者、通道和沙箱字段，请参阅[Runti
 
 ***
 
-<div>
-  <Callout icon="terminal-2">
-    [Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
-  </Callout>
+[Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
 
-  <Callout icon="edit">
-    [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/managed-deep-agents-tools.mdx) 或 [file an issue](https://github.com/langchain-ai/docs/issues/new/choose)。
-  </Callout>
-</div>
+[Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/managed-deep-agents-tools.mdx) 或 [file an issue](https://github.com/langchain-ai/docs/issues/new/choose)。

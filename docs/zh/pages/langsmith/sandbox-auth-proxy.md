@@ -8,24 +8,24 @@
 
 身份验证代理允许沙箱代码调用外部 API（OpenAI、Anthropic、GitHub 等），而无需硬编码凭据。在沙箱上配置时，在沙箱外部运行的出口代理会使用您的工作区机密或您在代理配置中提供的只写凭据自动将身份验证标头注入到匹配的出站请求中。
 
-<Warning>
-  在创建引用它们的沙箱之前，您必须在 LangSmith [workspace](/langsmith/administration-overview#workspaces) 设置中配置您的机密（例如 `OPENAI_API_KEY`）。
-</Warning>
+> [!警告]
+>
+> 在创建引用它们的沙箱之前，您必须在 LangSmith [workspace](/langsmith/administration-overview#workspaces) 设置中配置您的机密（例如 `OPENAI_API_KEY`）。
 
 ## 委托LangSmith访问
 
-访问委托允许沙箱代码调用 LangSmith API，而无需沙箱内的 API 密钥。身份验证代理将请求的凭据注入到您的 LangSmith API 主机。
+访问委托允许沙箱代码调用 LangSmith API，而无需沙箱内的 API 密钥。身份验证代理将请求凭据注入到您的 LangSmith API 主机。
 
 使用 `POST /v2/sandboxes/boxes` 创建沙箱时，在顶级请求正文中设置 `access_delegation`：
 
 * **`INHERIT`**：设置`{"mode": "INHERIT"}`继承调用者当前的可委派权限。不包括`permissions`。
-* **`EXPLICIT`**：设置`{"mode": "EXPLICIT", "permissions": ["sandboxes:read"]}`以限制对您拥有的特定权限的访问。该列表必须非空。这两种模式仍然受到调用者对每个请求的当前权限的限制。工作空间和组织管理权限无法委派。工作区服务密钥还可以委派访问权限；缩小其角色范围会缩小沙箱的访问范围，而删除密钥则会撤销它。
+* **`EXPLICIT`**：设置`{"mode": "EXPLICIT", "permissions": ["sandboxes:read"]}`以限制对您拥有的特定权限的访问。该列表必须非空。两种模式仍然受到调用者对每个请求的当前权限的限制。工作空间和组织管理权限无法委派。工作区服务密钥还可以委派访问权限；缩小其角色范围会缩小沙箱的访问范围，而删除密钥则会撤销它。
 
 在沙箱内，调用 HTTPS LangSmith API 端点，而无需提供您自己的凭据。在委派授权下运行的沙箱无法授予对另一个沙箱的访问权限。
 
 ## 出口和网络访问控制
 
-注入凭据的相同`proxy_config`还控制沙箱可以到达的目的地。沙盒主机上的每个连接都强制执行访问控制，因此对 `access_control` 的更改会立即生效。
+注入凭证的相同`proxy_config`还控制沙箱可以到达的目的地。沙箱主机上的每个连接都强制执行访问控制，因此对 `access_control` 的更改会立即生效。
 
 ### 出口如何工作* **访问控制适用于每个出站 TCP 连接**，无论是否为 HTTP。
 * **到与规则或回调匹配的主机的 HTTPS 由代理解密**，以便它可以注入标头；沙箱信任代理的 CA。到不匹配的主机的 HTTPS 和每个非 HTTP 连接（包括 PostgreSQL、SSH 和 Redis）均保持不变。端口 80 和 443 保留用于 HTTP 和 TLS；任一端口上的非 HTTP 协议都不起作用。
@@ -57,13 +57,13 @@
 | `allow_list` | **默认拒绝。** 在任何协议上都只能访问列出的目的地。列出沙箱所需的每个主机，包括您的 `rules` 和 `callbacks` 目标的 HTTP(S) 主机。 |
 | `deny_list` | **默认允许主机名。** 基于主机名的 HTTP、HTTPS 和原始 TCP 保持可访问，除非匹配条目阻止它们。即使目标 IP 与拒绝列表条目不匹配，也无法在拒绝列表模式下使用直接 IP 连接。 |
 
-<Note>
-  要启用原始 TCP 到文字公共 IP 地址，请使用允许列表模式并允许每个端口或特定端口上的 IP，例如 `8.8.8.8` 或 `8.8.8.8:53`。包含 CIDR 还允许该范围内的每个端口。主机名、glob 和正则表达式条目不会授权连接到文字 IP 地址的应用程序。
-</Note>
+> [!注意]
+>
+> 要启用原始 TCP 到文字公共 IP 地址，请使用允许列表模式并允许每个端口或特定端口上的 IP，例如 `8.8.8.8` 或 `8.8.8.8:53`。包含 CIDR 还允许该范围内的每个端口。主机名、glob 和正则表达式条目不会授权连接到文字 IP 地址的应用程序。
 
-访问控制条目针对 HTTP、HTTPS 和与主机名的原始 TCP 连接进行评估。使用端口后缀将条目限制为一个端口。直接 IP 连接需要允许列表模式和显式 IP 或 CIDR 条目。<Warning>
-  `deny_list` 仅阻止您列出的主机名。 `{"deny_list": ["example.com"]}` 在每个端口上阻止 `example.com`，并让每个其他端口上的所有其他主机名都可访问，包括 DNS、SSH 和数据库端口。要在各处关闭原始 TCP，请使用 `allow_list`，例如 `["*:80", "*:443"]`。
-</Warning>
+评估 HTTP、HTTPS 和与主机名的原始 TCP 连接的访问​​控制条目。使用端口后缀将条目限制为一个端口。直接 IP 连接需要允许列表模式和显式 IP 或 CIDR 条目。> [!警告]
+>
+> A `deny_list` 仅阻止您列出的主机名。 `{"deny_list": ["example.com"]}` 在每个端口上阻止 `example.com`，并让每个其他端口上的所有其他主机名都可访问，包括 DNS、SSH 和数据库端口。要在各处关闭原始 TCP，请使用 `allow_list`，例如 `["*:80", "*:443"]`。
 
 ### 模式语法
 
@@ -82,7 +82,7 @@
 
 ### 组织级限制出站
 
-受限制的出站限制了与LangSmith管理的主机和端口白名单的沙箱连接。默认情况下，它适用于非企业组织以及有要求的组织。获得批准豁免的组织可以使用不受限制的出口。允许列表支持常见的开发任务，包括安装包、访问源存储库和调用模型 API。它包括 PyPI、npm、GitHub、OpenAI、Anthropic 和 LangSmith，主要通过端口 443 上的 HTTPS。选定的包存储库还允许端口 80 上的 HTTP。
+受限制的出站限制了与LangSmith管理的主机和端口允许列表的沙箱连接。默认情况下，它适用于非企业组织以及有要求的组织。获得批准豁免的组织可以使用不受限制的出口。允许列表支持常见的开发任务，包括安装包、访问源存储库和调用模型 API。它包括 PyPI、npm、GitHub、OpenAI、Anthropic 和 LangSmith，主要通过端口 443 上的 HTTPS。选定的包存储库还允许端口 80 上的 HTTP。
 
 当为您的组织启用限制出站时，LangSmith 会阻止此允许列表之外的目的地。组织策略替换调用者提供的 `access_control` 设置并禁用 `no_proxy` 绕过。将目标添加到沙箱的 `allow_list` 或为其配置凭据不会授予超出组织策略的访问权限。
 
@@ -119,56 +119,54 @@ curl -X POST "$LANGSMITH_ENDPOINT/v2/sandboxes/boxes" \
   }'
 ```
 
-与`db.example.com:5432`的连接在 TCP 层传递，不会被拦截，因此 PostgreSQL 有线协议以及 TLS、主机密钥检查以及其上的任何其他端到端协议都保持不变。<Note>
-  创建沙箱会启动它，并在报告 `ready` 后返回，因此无需添加等待步骤。如果您稍后需要重新检查，`GET /api/v2/sandboxes/boxes/{name}/status` 会报告当前状态。
-</Note>
+与`db.example.com:5432`的连接在 TCP 层传递，不会被拦截，因此 PostgreSQL 有线协议以及 TLS、主机密钥检查以及其上的任何其他端到端协议都保持不变。> [!注意]
+>
+> 创建沙箱会启动它，并在报告 `ready` 后返回，因此无需添加等待步骤。如果您稍后需要重新检查，`GET /api/v2/sandboxes/boxes/{name}/status` 会报告当前状态。
 
 ### 通过SDK配置
 
-<CodeGroup>
-  ```python Python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  from langsmith.sandbox import SandboxClient
+```python Python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+from langsmith.sandbox import SandboxClient
 
-  client = SandboxClient()
+client = SandboxClient()
 
-  client.create_sandbox(
-      name="db-sandbox",
-      proxy_config={
-          "access_control": {
-              "allow_list": ["db.example.com:5432", "api.openai.com:443"]
-          }
-      },
-  )
-  ```
-
-  ```ts TypeScript theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  import { SandboxClient } from "langsmith/sandbox";
-
-  const client = new SandboxClient();
-
-  await client.createSandbox({
-    name: "db-sandbox",
-    proxyConfig: {
-      access_control: {
-        allow_list: ["db.example.com:5432", "api.openai.com:443"],
-      },
+client.create_sandbox(
+    name="db-sandbox",
+    proxy_config={
+        "access_control": {
+            "allow_list": ["db.example.com:5432", "api.openai.com:443"]
+        }
     },
-  });
-  ```
-</CodeGroup>
+)
+```
+
+```ts TypeScript theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+import { SandboxClient } from "langsmith/sandbox";
+
+const client = new SandboxClient();
+
+await client.createSandbox({
+  name: "db-sandbox",
+  proxyConfig: {
+    access_control: {
+      allow_list: ["db.example.com:5432", "api.openai.com:443"],
+    },
+  },
+});
+```
 
 ## 配置授权代理规则
 
 创建沙箱时添加`proxy_config`，或通过修补其`proxy_config`来更新现有沙箱。 `proxy_config` 具有：
 
-|领域 |描述 |
+|领域|描述 |
 | - | - |
 | `rules` |标头注入和提供者身份验证规则。启用的标头规则按列表顺序匹配首场比赛获胜； `aws` 和 `gcp` 规则与其提供商的主机相匹配，无论位置如何 |
 | `callbacks` |动态凭证查找；参见[Callback credential example](#callback-credential-example)|
 | `access_control` | `allow_list`或`deny_list`；参见[Allow and deny lists](#allow-and-deny-lists)|
 | `description` |可选，最多 1024 个字符。此配置让沙箱能够达到什么目的，以交给代理|
 
-每条规则指定：|领域 |描述 |
+每条规则指定：|领域|描述 |
 | - | - |
 | `name` |必需的。规则的标识符 |
 | `type` |省略标头注入； `aws` 或 `gcp` 用于提供商身份验证 |
@@ -217,9 +215,9 @@ curl -X POST "$LANGSMITH_ENDPOINT/v2/sandboxes/boxes" \
 
 当沙箱代码需要使用 AWS 开发工具包或 CLI 调用 AWS 服务时，请使用 AWS 身份验证规则。代理将真实的 AWS 凭证保留在沙箱之外，然后使用 AWS SigV4 将出站 HTTPS 请求签署到 `*.amazonaws.com` 终端节点。当代理代码需要检查 S3 对象、调用 Bedrock 或使用另一个 AWS 终端节点而不暴露沙箱文件、环境变量、shell 历史记录或日志中的长期 AWS 访问密钥时，这非常有用。沙箱接收占位符 `AWS_ACCESS_KEY_ID` 和 `AWS_SECRET_ACCESS_KEY` 值（加上 `AWS_EC2_METADATA_DISABLED=true` 和 `AWS_CA_BUNDLE`），因此 SDK 凭证检测可以正常工作，而代理会用真实的 SigV4 签名替换请求携带的任何内容。仅对`service.region.amazonaws.com`主机、S3虚拟托管和路径式主机以及一些全局端点（例如`iam`、`sts`和`s3`）进行签名；发送到匹配的 AWS 主机的纯文本 HTTP 会被拒绝，并显示 `403`。
 
-<Warning>
-  不要将真实的 AWS 访问密钥设置为沙箱环境变量。将它们配置为 `workspace_secret` 或 `opaque` 代理值。明文 AWS 凭证值被拒绝。
-</Warning>
+> [!警告]
+>
+> 不要将真实的 AWS 访问密钥设置为沙箱环境变量。将它们配置为 `workspace_secret` 或 `opaque` 代理值。明文 AWS 凭证值被拒绝。
 
 AWS 身份验证规则与标头注入规则不同：
 
@@ -258,99 +256,95 @@ curl -X POST "$LANGSMITH_ENDPOINT/v2/sandboxes/boxes" \
 
 ### 通过 SDK 配置 AWS 身份验证
 
-<CodeGroup>
-  ```python Python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  from langsmith.sandbox import (
-      SandboxClient,
-      aws_auth,
-      proxy_config,
-      workspace_secret,
-  )
-
-  client = SandboxClient()
-
-  client.create_sandbox(
-      name="aws-sandbox",
-      proxy_config=proxy_config(
-          rules=[
-              aws_auth(
-                  access_key_id=workspace_secret("AWS_ACCESS_KEY_ID"),
-                  secret_access_key=workspace_secret("AWS_SECRET_ACCESS_KEY"),
-              )
-          ]
-      ),
-  )
-  ```
-
-  ```ts TypeScript theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  import {
+```python Python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+from langsmith.sandbox import (
     SandboxClient,
-    awsAuth,
-    proxyConfig,
-    workspaceSecret,
-  } from "langsmith/sandbox";
+    aws_auth,
+    proxy_config,
+    workspace_secret,
+)
 
-  const client = new SandboxClient();
+client = SandboxClient()
 
-  await client.createSandbox({
-    name: "aws-sandbox",
-    proxyConfig: proxyConfig({
-      rules: [
-        awsAuth({
-          accessKeyId: workspaceSecret("AWS_ACCESS_KEY_ID"),
-          secretAccessKey: workspaceSecret("AWS_SECRET_ACCESS_KEY"),
-        }),
-      ],
-    }),
-  });
-  ```
-</CodeGroup>沙箱准备就绪后，在沙箱内正常使用 AWS 开发工具包或 CLI。开发工具包或 CLI 发现占位符 AWS 环境变量，并且代理将真实的 SigV4 签名应用于出站 AWS 请求。代理不设置区域：通过沙箱的`env_vars`或规则的`env_vars`设置`AWS_REGION`，否则大多数SDK和CLI调用在到达代理之前会失败。
+client.create_sandbox(
+    name="aws-sandbox",
+    proxy_config=proxy_config(
+        rules=[
+            aws_auth(
+                access_key_id=workspace_secret("AWS_ACCESS_KEY_ID"),
+                secret_access_key=workspace_secret("AWS_SECRET_ACCESS_KEY"),
+            )
+        ]
+    ),
+)
+```
 
-<Note>
-  静态 AWS 身份验证接受访问密钥 ID 和秘密访问密钥，但不接受调用者提供的会话令牌。启用了 AWS 代理角色身份验证的部署还支持 IAM 角色，如下所述。
-</Note>
+```ts TypeScript theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+import {
+  SandboxClient,
+  awsAuth,
+  proxyConfig,
+  workspaceSecret,
+} from "langsmith/sandbox";
+
+const client = new SandboxClient();
+
+await client.createSandbox({
+  name: "aws-sandbox",
+  proxyConfig: proxyConfig({
+    rules: [
+      awsAuth({
+        accessKeyId: workspaceSecret("AWS_ACCESS_KEY_ID"),
+        secretAccessKey: workspaceSecret("AWS_SECRET_ACCESS_KEY"),
+      }),
+    ],
+  }),
+});
+```沙箱准备就绪后，在沙箱内正常使用 AWS 开发工具包或 CLI。开发工具包或 CLI 发现占位符 AWS 环境变量，并且代理将真实的 SigV4 签名应用于出站 AWS 请求。代理不设置区域：通过沙箱的`env_vars`或规则的`env_vars`设置`AWS_REGION`，否则大多数SDK和CLI调用在到达代理之前会失败。
+
+> [!注意]
+>
+> 静态 AWS 身份验证接受访问密钥 ID 和秘密访问密钥，但不接受调用者提供的会话令牌。启用了 AWS 代理角色身份验证的部署还支持 IAM 角色，如下所述。
 
 ### 使用 IAM 角色进行身份验证
 
 AWS 代理角色让 LangSmith 承担客户 IAM 角色，并使用可更新的临时凭证签署支持的 AWS HTTPS 请求。无论有或没有[S3 mounts](/langsmith/sandbox-mounts#authenticate-with-an-iam-role)，它都可以工作，而不会将真实的凭据暴露给沙箱代码。此选项需要对 AWS 代理角色身份验证的部署支持。 ECR 注册表角色身份验证是一项单独的功能。在 **创建沙箱 > 网络** 中，启用 AWS 身份验证并选择 **AWS IAM 角色**。该表单显示客户角色必须信任的确切 LangSmith 主体和工作区外部 ID。按照链接的设置说明配置信任和权限策略，然后在 **AWS 角色 ARN** 中输入客户角色。
 
-<Note>
-  下面的 SDK 示例需要支持 Python 中的 `aws_auth(role_arn=...)` 或 TypeScript 中的 `awsAuth({ roleArn })` 的版本。仅后端支持不会将这些帮助程序添加到较旧的 SDK 版本中。
-</Note>
+> [!注意]
+>
+> 下面的 SDK 示例需要支持 Python 中的 `aws_auth(role_arn=...)` 或 TypeScript 中的 `awsAuth({ roleArn })` 的版本。仅后端支持不会将这些帮助程序添加到较旧的 SDK 版本中。
 
-要配置不带挂载的角色，请将其传递到代理配置中：
+要配置没有挂载的角色，请将其传递到代理配置中：
 
-<CodeGroup>
-  ```python Python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  from langsmith.sandbox import SandboxClient, aws_auth, proxy_config
+```python Python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+from langsmith.sandbox import SandboxClient, aws_auth, proxy_config
 
-  client = SandboxClient()
+client = SandboxClient()
 
-  sandbox = client.create_sandbox(
-      name="aws-role-sandbox",
-      proxy_config=proxy_config(
-          rules=[
-              aws_auth(role_arn="arn:aws:iam::123456789012:role/LangSmithSandbox")
-          ]
-      ),
-  )
-  ```
+sandbox = client.create_sandbox(
+    name="aws-role-sandbox",
+    proxy_config=proxy_config(
+        rules=[
+            aws_auth(role_arn="arn:aws:iam::123456789012:role/LangSmithSandbox")
+        ]
+    ),
+)
+```
 
-  ```ts TypeScript theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  import { SandboxClient, awsAuth, proxyConfig } from "langsmith/sandbox";
+```ts TypeScript theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+import { SandboxClient, awsAuth, proxyConfig } from "langsmith/sandbox";
 
-  const client = new SandboxClient();
+const client = new SandboxClient();
 
-  const sandbox = await client.createSandbox({
-    name: "aws-role-sandbox",
-    proxyConfig: proxyConfig({
-      rules: [
-        awsAuth({ roleArn: "arn:aws:iam::123456789012:role/LangSmithSandbox" }),
-      ],
-    }),
-  });
-  ```
-</CodeGroup>
+const sandbox = await client.createSandbox({
+  name: "aws-role-sandbox",
+  proxyConfig: proxyConfig({
+    rules: [
+      awsAuth({ roleArn: "arn:aws:iam::123456789012:role/LangSmithSandbox" }),
+    ],
+  }),
+});
+```
 
 对于 HTTP API，提供 `aws.role_arn` 而不是静态凭证字段：
 
@@ -383,9 +377,9 @@ LangSmith 按需更新临时凭证并在停止/启动后重新获取它们。如
 
 当沙箱代码需要使用 Google SDK 或 CLI 调用 Google API 时，请使用 GCP 身份验证规则。代理将服务帐户 JSON 保留在沙箱之外，然后对 `googleapis.com` 及其子域的出站 HTTPS 请求进行身份验证。当代理代码需要检查 GCS 对象或调用另一个 Google API 而不在沙箱文件、环境变量、shell 历史记录或日志中公开服务帐户 JSON 时，这非常有用。沙箱接收占位符 `CLOUDSDK_AUTH_ACCESS_TOKEN`（加上 `CLOUDSDK_CORE_CUSTOM_CA_CERTS_FILE`），因此 `gcloud` 运行，而代理会使用从配置的服务帐户创建的令牌替换请求携带的任何授权。通过应用程序默认凭据发现凭据的 Google 客户端库不会读取这些变量，因此无法找到凭据；仅支持`gcloud`和直接HTTPS调用。
 
-<Warning>
-  不要将真实服务帐户 JSON 设置为沙箱环境变量。将其配置为 `workspace_secret` 或 `opaque` 代理值。明文 GCP 凭证值被拒绝。
-</Warning>
+> [!警告]
+>
+> 不要将真实服务帐户 JSON 设置为沙箱环境变量。将其配置为 `workspace_secret` 或 `opaque` 代理值。明文 GCP 凭证值被拒绝。
 
 GCP 身份验证规则与标头注入规则不同：* 将`type`设置为`gcp`。
 * 将凭据放在`gcp.service_account_json`下。
@@ -424,53 +418,51 @@ curl -X POST "$LANGSMITH_ENDPOINT/v2/sandboxes/boxes" \
 
 ### 通过 SDK 配置 GCP 身份验证
 
-<CodeGroup>
-  ```python Python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  from langsmith.sandbox import (
-      SandboxClient,
-      gcp_auth,
-      proxy_config,
-      workspace_secret,
-  )
-
-  client = SandboxClient()
-
-  client.create_sandbox(
-      name="gcp-sandbox",
-      proxy_config=proxy_config(
-          rules=[
-              gcp_auth(
-                  service_account_json=workspace_secret("GCP_SERVICE_ACCOUNT_JSON"),
-                  scopes=["https://www.googleapis.com/auth/devstorage.read_only"],
-              )
-          ]
-      ),
-  )
-  ```
-
-  ```ts TypeScript theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  import {
+```python Python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+from langsmith.sandbox import (
     SandboxClient,
-    gcpAuth,
-    proxyConfig,
-    workspaceSecret,
-  } from "langsmith/sandbox";
+    gcp_auth,
+    proxy_config,
+    workspace_secret,
+)
 
-  const client = new SandboxClient();
+client = SandboxClient()
 
-  await client.createSandbox({
-    name: "gcp-sandbox",
-    proxyConfig: proxyConfig({
-      rules: [
-        gcpAuth({
-          serviceAccountJson: workspaceSecret("GCP_SERVICE_ACCOUNT_JSON"),
-          scopes: ["https://www.googleapis.com/auth/devstorage.read_only"],
-        }),
-      ],
-    }),
-  });
-  ```
-</CodeGroup>
+client.create_sandbox(
+    name="gcp-sandbox",
+    proxy_config=proxy_config(
+        rules=[
+            gcp_auth(
+                service_account_json=workspace_secret("GCP_SERVICE_ACCOUNT_JSON"),
+                scopes=["https://www.googleapis.com/auth/devstorage.read_only"],
+            )
+        ]
+    ),
+)
+```
+
+```ts TypeScript theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+import {
+  SandboxClient,
+  gcpAuth,
+  proxyConfig,
+  workspaceSecret,
+} from "langsmith/sandbox";
+
+const client = new SandboxClient();
+
+await client.createSandbox({
+  name: "gcp-sandbox",
+  proxyConfig: proxyConfig({
+    rules: [
+      gcpAuth({
+        serviceAccountJson: workspaceSecret("GCP_SERVICE_ACCOUNT_JSON"),
+        scopes: ["https://www.googleapis.com/auth/devstorage.read_only"],
+      }),
+    ],
+  }),
+});
+```
 
 沙箱准备就绪后，使用`gcloud`或直接HTTPS调用`googleapis.com`正常在沙箱内的主机。代理应用真正的 GCP 身份验证，而不在沙箱内公开服务帐户 JSON。
 
@@ -504,7 +496,9 @@ curl -X POST "$LANGSMITH_ENDPOINT/v2/sandboxes/boxes" \
 
 对`api.openai.com`的请求现在由代理进行身份验证；沙箱中没有存储真正的密钥。拒绝在没有 API 密钥的情况下启动的 SDK 仍然需要一个占位符 - 使用规则的 `env_vars` 设置一个占位符，如 [GitHub example](#github-example) 中所示。
 
-## 多个API示例添加多个规则以同时对多个服务进行身份验证：
+## 多个API示例
+
+添加多个规则以同时对多个服务进行身份验证：
 
 ```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 curl -X POST "$LANGSMITH_ENDPOINT/v2/sandboxes/boxes" \
@@ -556,9 +550,7 @@ curl -X POST "$LANGSMITH_ENDPOINT/v2/sandboxes/boxes" \
       ]
     }
   }'
-```
-
-## GitHub 示例
+```## GitHub 示例
 
 [Open SWE](https://github.com/langchain-ai/open-swe/blob/main/agent/integrations/langsmith.py) 通过在沙箱外创建短期 GitHub 应用程序安装令牌来验证 GitHub 访问，然后使用只写 `opaque` 代理规则修补沙箱。这使得短暂的 GitHub 访问令牌远离沙箱文件系统和部署环境变量。
 
@@ -624,9 +616,9 @@ def configure_github_proxy(sandbox_name: str, github_token: str) -> None:
 
 创建或重新附加到沙箱后调用`configure_github_proxy`。 GitHub 应用程序安装令牌会过期，因此每当您重新使用沙箱进行新运行时，请刷新代理配置。
 
-<Warning>
-  `PATCH` 替换储存的 `proxy_config` 批发。如果沙箱还使用`access_control`或`callbacks`，请将它们包含在每次更新中，否则它们将被删除。您留空的不透明标头值将从当前配置中继承。
-</Warning>
+> [!警告]
+>
+> `PATCH` 替换储存的 `proxy_config` 批发。如果沙箱还使用`access_control`或`callbacks`，请将它们包含在每次更新中，否则它们将被删除。您留空的不透明标头值将从当前配置中继承。
 
 `github-api` 规则将 `GH_TOKEN` 设置为非秘密占位符，这满足 `gh` CLI 的本地凭证检查。然后命令在没有每个命令前缀的情况下运行：
 
@@ -634,67 +626,65 @@ def configure_github_proxy(sandbox_name: str, github_token: str) -> None:
 gh repo view langchain-ai/langchain
 gh pr list --repo langchain-ai/langchain
 gh repo clone langchain-ai/langchain
-```占位符永远不会离开沙箱。代理将真实的 `Authorization` 标头注入出站请求中。
+```
 
-## 通过SDK配置
+占位符永远不会离开沙箱。代理将真实的 `Authorization` 标头注入出站请求中。## 通过SDK配置
 
-<CodeGroup>
-  ```python Python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  from langsmith.sandbox import SandboxClient
+```python Python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+from langsmith.sandbox import SandboxClient
 
-  client = SandboxClient()
+client = SandboxClient()
 
-  client.create_sandbox(
-      name="openai-sandbox",
-      proxy_config={
-          "rules": [
-              {
-                  "name": "openai-api",
-                  "match_hosts": ["api.openai.com"],
-                  "headers": [
-                      {
-                          "name": "Authorization",
-                          "type": "workspace_secret",
-                          "value": "Bearer {OPENAI_API_KEY}",
-                      }
-                  ],
-              }
-          ]
-      },
-  )
-  ```
-
-  ```ts TypeScript theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  import { SandboxClient } from "langsmith/sandbox";
-
-  const client = new SandboxClient();
-
-  await client.createSandbox({
-    name: "openai-sandbox",
-    proxyConfig: {
-      rules: [
-        {
-          name: "openai-api",
-          match_hosts: ["api.openai.com"],
-          headers: [
+client.create_sandbox(
+    name="openai-sandbox",
+    proxy_config={
+        "rules": [
             {
-              name: "Authorization",
-              type: "workspace_secret",
-              value: "Bearer {OPENAI_API_KEY}",
-            },
-          ],
-        },
-      ],
+                "name": "openai-api",
+                "match_hosts": ["api.openai.com"],
+                "headers": [
+                    {
+                        "name": "Authorization",
+                        "type": "workspace_secret",
+                        "value": "Bearer {OPENAI_API_KEY}",
+                    }
+                ],
+            }
+        ]
     },
-  });
-  ```
-</CodeGroup>
+)
+```
+
+```ts TypeScript theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+import { SandboxClient } from "langsmith/sandbox";
+
+const client = new SandboxClient();
+
+await client.createSandbox({
+  name: "openai-sandbox",
+  proxyConfig: {
+    rules: [
+      {
+        name: "openai-api",
+        match_hosts: ["api.openai.com"],
+        headers: [
+          {
+            name: "Authorization",
+            type: "workspace_secret",
+            value: "Bearer {OPENAI_API_KEY}",
+          },
+        ],
+      },
+    ],
+  },
+});
+```
 
 ## 回调凭证示例
 
 应用代理配置时，静态 `workspace_secret` 规则会从您的工作区中提取凭据，而 `opaque` 规则可让您的应用程序修补短期凭据，例如 [GitHub token example](#github-example)。对于必须由您自己的服务在代理时解析的凭据，请使用 **回调**。代理 POST 到您提供的 URL，您的端点返回要注入的标头，代理缓存结果。
 
-回调与`proxy_config`下的规则一起配置：|领域 |描述 |
+回调与`proxy_config`下的规则一起配置：|领域|描述 |
 | - | - |
 | `match_hosts` |要拦截的主机（与规则相同的语法；支持像`*.github.com`这样的通配符）。 |
 | `url` |您的回调端点。必须是解析为公共地址的 `http://` 或 `https://` URL；私有、环回、Kubernetes 内部和云元数据目标被拒绝。 |
@@ -749,7 +739,7 @@ X-LangSmith-Signature-JWT: <signature>
 | `exp` |发出后五分钟；拒绝过期令牌 |
 | `body_sha256` |原始请求正文的十六进制 SHA-256 |
 
-根据 JWKS 验证签名，检查上述每项声明，对您收到的正文进行哈希处理，并将其与 `body_sha256` 进行比较。然后信任身体中的`identity`。
+根据 JWKS 验证签名，检查上面的每项声明，对您收到的正文进行哈希处理，并将其与 `body_sha256` 进行比较。然后信任身体中的`identity`。
 
 ### 示例
 
@@ -783,68 +773,60 @@ curl -X POST "$LANGSMITH_ENDPOINT/v2/sandboxes/boxes" \
 
 ### 通过SDK配置
 
-<CodeGroup>
-  ```python Python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  from langsmith.sandbox import SandboxClient
+```python Python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+from langsmith.sandbox import SandboxClient
 
-  client = SandboxClient()
+client = SandboxClient()
 
-  client.create_sandbox(
-      name="callback-sandbox",
-      proxy_config={
-          "callbacks": [
-              {
-                  "match_hosts": ["api.github.com", "*.githubusercontent.com"],
-                  "url": "https://auth.your-app.example.com/sandbox-credentials",
-                  "request_headers": [
-                      {
-                          "name": "X-Integrator-Secret",
-                          "type": "opaque",
-                          "value": "<shared-secret-your-endpoint-verifies>",
-                      }
-                  ],
-                  "ttl_seconds": 300,
-              }
-          ]
-      },
-  )
-  ```
-
-  ```ts TypeScript theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  import { SandboxClient } from "langsmith/sandbox";
-
-  const client = new SandboxClient();
-
-  await client.createSandbox({
-    name: "callback-sandbox",
-    proxyConfig: {
-      callbacks: [
-        {
-          match_hosts: ["api.github.com", "*.githubusercontent.com"],
-          url: "https://auth.your-app.example.com/sandbox-credentials",
-          request_headers: [
+client.create_sandbox(
+    name="callback-sandbox",
+    proxy_config={
+        "callbacks": [
             {
-              name: "X-Integrator-Secret",
-              type: "opaque",
-              value: "<shared-secret-your-endpoint-verifies>",
-            },
-          ],
-          ttl_seconds: 300,
-        },
-      ],
+                "match_hosts": ["api.github.com", "*.githubusercontent.com"],
+                "url": "https://auth.your-app.example.com/sandbox-credentials",
+                "request_headers": [
+                    {
+                        "name": "X-Integrator-Secret",
+                        "type": "opaque",
+                        "value": "<shared-secret-your-endpoint-verifies>",
+                    }
+                ],
+                "ttl_seconds": 300,
+            }
+        ]
     },
-  });
-  ```
-</CodeGroup>
+)
+```
+
+```ts TypeScript theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+import { SandboxClient } from "langsmith/sandbox";
+
+const client = new SandboxClient();
+
+await client.createSandbox({
+  name: "callback-sandbox",
+  proxyConfig: {
+    callbacks: [
+      {
+        match_hosts: ["api.github.com", "*.githubusercontent.com"],
+        url: "https://auth.your-app.example.com/sandbox-credentials",
+        request_headers: [
+          {
+            name: "X-Integrator-Secret",
+            type: "opaque",
+            value: "<shared-secret-your-endpoint-verifies>",
+          },
+        ],
+        ttl_seconds: 300,
+      },
+    ],
+  },
+});
+```
 
 ***
 
-<div>
-  <Callout icon="terminal-2">
-    [Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时答案。
-  </Callout>
+[Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时答案。
 
-  <Callout icon="edit">
-    [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/sandbox-auth-proxy.mdx) 或 [file an issue](https://github.com/langchain-ai/docs/issues/new/choose)。
-  </Callout>
-</div>
+[Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/sandbox-auth-proxy.mdx) 或 [file an issue](https://github.com/langchain-ai/docs/issues/new/choose)。

@@ -81,9 +81,11 @@ flowchart LR
 
 > **[HTTP](/langsmith/python/managed-deep-agents-channels-http)**
 >
-> 从任何可以发送 JSON Webhook 的服务开始运行。
+> 从任何可以发送 JSON Webhook 的服务开始运行。HTTP 适配器也可以存在于社区维护的包中。请参阅 [Share a channel adapter as a package](/langsmith/python/managed-deep-agents-channels-http#share-a-channel-adapter-as-a-package) 发布用户导入到其通道声明中的可重用提供商代码。
 
-## 另请参阅* [Identity](/langsmith/python/managed-deep-agents-identity)：对调用者进行身份验证，范围通道运行到已解析的用户。
+## 另请参阅
+
+* [Identity](/langsmith/python/managed-deep-agents-identity)：对调用者进行身份验证，范围通道运行到已解析的用户。
 * [Schedules](/langsmith/python/managed-deep-agents-schedules)：通过配置的通道交付预定的结果。
 * [Deploy an agent](/langsmith/python/managed-deep-agents-deploy)：部署项目更改并配置机密。
 * [CLI reference](/langsmith/python/managed-deep-agents-cli)：查看频道项目文件约定。

@@ -523,7 +523,7 @@ async function correctnessEvaluator(run: {
 * [Evaluation concepts](/langsmith/evaluation-concepts) 提供了LangSmith 中评估关键术语的描述。
 * [OpenEvals README](https://github.com/langchain-ai/openevals) 查看所有可用的预构建评估器以及如何自定义它们。
 * [Define custom evaluators](/langsmith/code-evaluator-ui)。
-* [Python](https://docs.smith.langchain.com/reference/python/reference)或[TypeScript](https://docs.smith.langchain.com/reference/js) SDK参考，对每个类和函数进行全面描述。
+* [Python](https://reference.langchain.com/python/langsmith)或[TypeScript](https://reference.langchain.com/javascript/langsmith) SDK参考，对每个类和函数进行全面描述。
 
 ***
 

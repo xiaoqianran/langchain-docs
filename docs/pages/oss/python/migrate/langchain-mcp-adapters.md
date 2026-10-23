@@ -8,6 +8,8 @@ MCP support now ships inside LangChain in the `langchain.mcp` namespace, built o
 
 For the full feature documentation, see [Model Context Protocol (MCP)](/oss/python/langchain/mcp).
 
+Migrate from langchain-mcp-adapters to langchain.mcp
+
 Migrate this codebase from the standalone `langchain-mcp-adapters` package to the built-in `langchain.mcp` namespace.
 
 ## Step 1: Read the guide

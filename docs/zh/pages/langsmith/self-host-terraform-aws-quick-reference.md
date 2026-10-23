@@ -188,7 +188,7 @@ sizing_profile = "default"           # chart defaults (no sizing file)
 | `make test-e2e` |针对当前集群的端到端网关测试（ALB 或 Envoy Gateway）。 |
 | `make test-permutations` |在当前集群上按顺序进行排列测试。使用 `ARGS="1 2 5"` 作为子集。 |
 | `make test-parallel` |跨隔离集群并行排列测试。您的集群未受影响。 |
-| `make test-quickstart` |测试 `make quickstart` Route 53 选择和更新模式默认值。不进行 AWS 调用。 |
+| `make test-quickstart` |测试 `make quickstart` Route 53 选择和更新模式默认值。 Makes no AWS calls. |
 
 ## kubectl
 
@@ -266,7 +266,7 @@ aws ssm get-parameters-by-path --path "/langsmith/<name_prefix>-<environment>/" 
 aws iam get-role --role-name <irsa-role-name>
 ```
 
-## 地形
+## Terraform
 
 从 `modules/aws/` 运行这些：
 
@@ -282,11 +282,11 @@ make tf ARGS="output -raw bucket_name"
 make tf ARGS="state list"
 ```
 
-## 拆解
+## Teardown
 
-<Warning>
-  拆卸会永久删除 LangSmith 数据。步骤 1 删除 ClickHouse 卷，步骤 4 删除 S3 中的每个跟踪对象，步骤 6 删除 SSM 参数。这些参数包括 API 密钥盐、JWT 密钥和加密密钥，这些参数永远不能更改。从 `-final` RDS 快照恢复的数据库需要它们：如果没有原始盐和密钥，现有 API 密钥将停止工作，并且无法读取加密数据。如果保留快照，请在 `make purge-secrets` 之前将 SSM 参数导出到安全位置。
-</Warning>
+> [!警告]
+>
+> 拆卸会永久删除 LangSmith 数据。步骤 1 删除 ClickHouse 卷，步骤 4 删除 S3 中的每个跟踪对象，步骤 6 删除 SSM 参数。这些参数包括 API 密钥盐、JWT 密钥和加密密钥，这些参数永远不能更改。从 `-final` RDS 快照恢复的数据库需要它们：如果没有原始盐和密钥，现有 API 密钥将停止工作，并且无法读取加密数据。如果保留快照，请在 `make purge-secrets` 之前将 SSM 参数导出到安全位置。
 
 ```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 cd terraform/modules/aws
@@ -322,12 +322,6 @@ RDS 拍摄名为 `<identifier>-final` 的最终快照，除非 `postgres_skip_fi
 
 ***
 
-<div>
-  <Callout icon="terminal-2">
-    [Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
-  </Callout>
+[Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
 
-  <Callout icon="edit">
-    [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/self-host-terraform-aws-quick-reference.mdx) 或 [file an issue](https://github.com/langchain-ai/docs/issues/new/choose)。
-  </Callout>
-</div>
+[Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/self-host-terraform-aws-quick-reference.mdx) 或 [file an issue](https://github.com/langchain-ai/docs/issues/new/choose)。

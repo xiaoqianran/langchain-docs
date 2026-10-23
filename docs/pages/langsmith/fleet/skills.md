@@ -49,9 +49,13 @@ You can create a skill two ways:
 
 In [Fleet](https://smith.langchain.com/agents?utm_source=docs\&utm_medium=cta\&utm_campaign=langsmith-signup\&utm_content=langsmith-fleet-skills), select an agent and prompt it to create a skill:
 
+Create a skill that helps the agent use the web to research a topic.
+
 Create a skill that helps the agent use the web to research a topic. Use when asked to research a topic, person, company, technology, event, or any question that requires gathering and synthesizing information from the web. Covers news lookups, competitive analysis, background research, and fact-finding tasks. Prefer `tavily_web_search` for most queries.
 
 You can also turn a previous conversation into a reusable skill at any time. After completing a task, ask the agent to capture the workflow:
+
+Turn this conversation into a reusable skill.
 
 Turn what we just did into a skill so you can repeat it in the future.
 
@@ -76,6 +80,8 @@ Turn what we just did into a skill so you can repeat it in the future.
 The default response to an agent mistake is to correct it in the moment. A skill changes this: it gives the agent explicit rules to follow every time it encounters that class of task, so the same mistake cannot happen again.
 
 When an agent handles a task incorrectly, correct it, then ask it to capture the fix:
+
+Capture this fix as a skill.
 
 Turn this correction into a skill so you always handle it this way.
 

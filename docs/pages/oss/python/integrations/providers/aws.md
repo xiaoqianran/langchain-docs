@@ -344,8 +344,6 @@ pip install boto3 nltk
 uv add boto3 nltk
 ```
 
-See a [usage example](https://python.langchain.com/v0.1/docs/guides/productionization/safety/amazon_comprehend_chain/).
-
 > [!WARNING]
 >
 > The `langchain-experimental` package is no longer maintained. Examples that import from `langchain_experimental` may be outdated or broken. Use with caution.

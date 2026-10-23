@@ -81,6 +81,8 @@ The handoff asks the selected coding agent to install the `eval-engineering` ski
 
 Ask the coding agent to follow the skill's review flow and use the Managed Deep Agents task layout:
 
+Develop Harbor evals with the eval-engineering skill
+
 Use the eval-engineering skill to develop Harbor evals for this Managed
 Deep Agent. Inspect the project and existing evals first. Draft the Task
 Spec and wait for my review before implementing the approved task directly

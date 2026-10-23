@@ -4,9 +4,9 @@
 
 # 使用模型提供者的环境变量
 
-<Note>
-  此功能仅适用于 Helm 图表版本 0.10.27（应用程序版本 0.10.74）及更高版本。
-</Note>
+> [!注意]
+>
+> 此功能仅适用于 Helm 图表版本 0.10.27（应用程序版本 0.10.74）及更高版本。
 
 许多模型提供程序支持通过环境变量设置凭据和其他配置选项。这对于您希望避免在代码或配置文件中硬编码敏感信息的自托管部署非常有用。在 LangSmith 中，大多数模型交互都是通过 `playground` 服务完成的，该服务允许您直接在 pod 本身上配置许多环境变量。这对于避免在 UI 中设置凭据很有用。
 
@@ -82,26 +82,18 @@ playground:
 
 对于 EKS 集群，您可以使用 AWS IRSA（服务账户的 IAM 角色）授予 `playground` 服务账户对 AWS 资源的访问权限，而无需存储凭证。使用您的 IAM 角色 ARN 注释服务账户：
 
-<CodeGroup>
-  ```yaml Helm theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  playground:
-    serviceAccount:
-      create: true  # Enable if not exists
-      annotations:
-        eks.amazonaws.com/role-arn: arn:aws:iam::<account>:role/LangSmith-Playground-Role
-  ```
-</CodeGroup>
+```yaml Helm theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+playground:
+  serviceAccount:
+    create: true  # Enable if not exists
+    annotations:
+      eks.amazonaws.com/role-arn: arn:aws:iam::<account>:role/LangSmith-Playground-Role
+```
 
-<Note>
-  确保您的 AWS IAM 角色拥有游乐场服务需要访问的 AWS 资源的必要权限。
-</Note>
+> [!注意]
+>
+> 确保您的 AWS IAM 角色拥有游乐场服务需要访问的 AWS 资源的必要权限。
 
-***<div>
-  <Callout icon="terminal-2">
-    [Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
-  </Callout>
+***[Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
 
-  <Callout icon="edit">
-    [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/self-host-playground-environment-settings.mdx) 或 [file an issue](https://github.com/langchain-ai/docs/issues/new/choose)。
-  </Callout>
-</div>
+[Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/self-host-playground-environment-settings.mdx) 或 [file an issue](https://github.com/langchain-ai/docs/issues/new/choose)。

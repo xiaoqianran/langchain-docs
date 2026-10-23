@@ -18,20 +18,20 @@ LangSmith 使用 ClickHouse 作为跟踪和反馈的主要数据存储。默认�
   * [Google Cloud Marketplace](https://console.cloud.google.com/marketplace/product/clickhouse-public/clickhouse-cloud)
   * [AWS Marketplace](https://aws.amazon.com/marketplace/seller-profile?id=adb43736-8b95-4d49-8009-3693cbee8578)
 
-* 在您的云提供商的虚拟机上<Note>
-  使用前两个选项（LangSmith 管理的 ClickHouse 或 ClickHouse Cloud）将在 VPC 外部配置 Clickhouse 服务。但是，这两个选项都支持私有端点，这意味着您可以将流量定向到 ClickHouse 服务，而无需将其暴露到公共互联网（例如通过 AWS PrivateLink 或 GCP Private Service Connect）。
-
-  此外，敏感信息可以配置为不存储在 Clickhouse 中。请通过[support.langchain.com](https://support.langchain.com)联系支持人员以获取更多信息。
-</Note>
+* 在您的云提供商的虚拟机上> [!注意]
+>
+> 使用前两个选项（LangSmith 管理的 ClickHouse 或 ClickHouse Cloud）将在您的 VPC 外部配置 Clickhouse 服务。但是，这两个选项都支持私有端点，这意味着您可以将流量定向到 ClickHouse 服务，而无需将其暴露到公共互联网（例如通过 AWS PrivateLink 或 GCP Private Service Connect）。
+>
+> 此外，敏感信息可以配置为不存储在 Clickhouse 中。请通过[support.langchain.com](https://support.langchain.com)联系支持人员以获取更多信息。
 
 ## 要求
 
 * 一个预配置的 ClickHouse 实例，您的 LangSmith 应用程序将对其进行网络访问（请参阅上面的选项）。
 * 对 ClickHouse 数据库具有管理员访问权限的用户。该用户将用于创建必要的表、索引和视图。
 * 我们支持独立的 ClickHouse 和外部管理的集群部署。对于集群部署，请确保所有节点都运行相同的版本。请注意，捆绑的 ClickHouse 安装不支持集群设置。
-* 我们仅支持 ClickHouse 23.9 或更高版本。使用 ClickHouse 24.2 或更高版本需要 LangSmith v0.6 或更高版本。<Warning>
-  将 ClickHouse 降级到早期版本可能会导致系统表数据损坏并导致严重停机。如果您需要有关 ClickHouse 版本更改的帮助或在升级后遇到问题，请在尝试降级之前通过 [support.langchain.com](https://support.langchain.com) 联系支持人员。
-</Warning>
+* 我们仅支持 ClickHouse 23.9 或更高版本。使用 ClickHouse 24.2 或更高版本需要 LangSmith v0.6 或更高版本。> [!警告]
+>
+> 将 ClickHouse 降级到早期版本可能会导致系统表数据损坏并导致严重停机。如果您需要有关 ClickHouse 版本更改的帮助或在升级后遇到问题，请在尝试降级之前通过 [support.langchain.com](https://support.langchain.com) 联系支持人员。
 
 * 我们依赖于在 ClickHouse 实例上设置的一些配置参数。这些详细信息如下：
 
@@ -50,15 +50,15 @@ LangSmith 使用 ClickHouse 作为跟踪和反馈的主要数据存储。默认�
 </profiles>
 ```
 
-<Warning>
-  我们的系统已经过调整，可以使用上述配置参数。更改这些参数可能会导致意外行为。
-</Warning>
+> [!警告]
+>
+> 我们的系统已经过调整，可以使用上述配置参数。更改这些参数可能会导致意外行为。
 
 ## HA 复制 Clickhouse 集群
 
-<Warning>
-  默认情况下，上述设置过程仅适用于单节点 Clickhouse 集群。
-</Warning>
+> [!警告]
+>
+> 默认情况下，上述设置过程仅适用于单节点 Clickhouse 集群。
 
 如果您想使用多节点 Clickhouse 集群进行 HA，我们可以通过额外的所需配置来支持这一点。此设置可以使用具有多个节点的 Clickhouse 集群，其中数据通过 Zookeeper 或 Clickhouse Keeper 复制。有关 Clickhouse 复制的更多信息，请参阅[Clickhouse Data Replication Docs](https://clickhouse.com/docs/architecture/replication)。
 
@@ -67,18 +67,18 @@ LangSmith 使用 ClickHouse 作为跟踪和反馈的主要数据存储。默认�
 * 如果除了 HA 之外，您还想在 Clickhouse 节点之间进行负载平衡（以分配读取或写入），我们建议使用负载平衡器或 DNS 负载平衡在 Clickhouse 服务器之间进行循环。
 * **注意**：在首次启动 LangSmith 并运行 Clickhouse 迁移之前，您需要启用 `cluster` 设置。这是一项要求，因为表引擎需要创建为 `Replicated` 表引擎而不是非复制引擎类型。
 
-在启用 `cluster` 的情况下运行迁移时，迁移将创建 `Replicated` 表引擎风格。这意味着数据将在集群中的服务器之间复制。这是主-主设置，任何服务器都可以处理读取、写入或合并。<Note>
-  有关复制 ClickHouse 集群的示例设置，请参阅示例下的 LangSmith Helm 图表存储库中的 [replicated ClickHouse section](https://github.com/langchain-ai/helm/blob/main/charts/langsmith/examples/replicated-clickhouse/README.md)。
-</Note>
+在启用 `cluster` 的情况下运行迁移时，迁移将创建 `Replicated` 表引擎风格。这意味着数据将在集群中的服务器之间复制。这是主-主设置，任何服务器都可以处理读取、写入或合并。> [!注意]
+>
+> 有关复制 ClickHouse 集群的示例设置，请参阅示例下的 LangSmith Helm 图表存储库中的 [replicated ClickHouse section](https://github.com/langchain-ai/helm/blob/main/charts/langsmith/examples/replicated-clickhouse/README.md)。
 
 ## LangSmith-管理的ClickHouse
 
 * 如果使用LangSmith管理的ClickHouse，您需要在LangSmith VPC和ClickHouse VPC之间建立VPC对等连接。请通过[support.langchain.com](https://support.langchain.com)联系支持人员以获取更多信息。
 * 您还需要设置 Blob 存储。您可以在 [Blob Storage documentation](/langsmith/self-host-blob-storage) 中阅读有关 Blob 存储的更多信息。
 
-<Note>
-  由 LangSmith 管理的 ClickHouse 安装使用 SharedMerge 引擎，该引擎会自动对它们进行集群并将计算与存储分开。
-</Note>
+> [!注意]
+>
+> 由 LangSmith 管理的 ClickHouse 安装使用 SharedMerge 引擎，该引擎会自动对它们进行集群并将计算与存储分开。
 
 欲了解更多信息，请参阅[managed ClickHouse](/langsmith/langsmith-managed-clickhouse)页面。
 
@@ -90,20 +90,20 @@ LangSmith 使用 ClickHouse 作为跟踪和反馈的主要数据存储。默认�
 * **数据库**：LangSmith应使用的ClickHouse数据库的名称
 * **用户名**：用于连接 ClickHouse 数据库的用户名
 * **密码**：用于连接 ClickHouse 数据库的密码
-* **集群（可选）**：如果使用外部 Clickhouse 集群，则为 ClickHouse 集群的名称。设置后，LangSmith 将在集群上运行迁移并跨实例复制数据。
-
-<Warning>
-  集群部署的重要注意事项：
-
-  * 必须在新架构上配置集群设置 - 现有的独立 ClickHouse 实例无法转换为集群模式。
-
-  * 仅外部管理的 ClickHouse 部署支持集群。它与捆绑的 ClickHouse 安装不兼容，因为这些安装不包括所需的 ZooKeeper 配置。
-
-  * 当使用集群部署时，LangSmith会自动：* 在集群中的所有节点上运行数据库迁移
-    * 配置表以进行跨集群的数据复制
-
-  请注意，虽然数据跨节点复制，但LangSmith不配置分布式表或处理查询路由 - 查询将定向到指定主机。如果需要，您将需要在基础设施级别处理任何负载平衡或查询分配。
-</Warning>
+* **集群（可选）**：如果使用外部 Clickhouse 集群，则为 ClickHouse 集群的名称。设置后，LangSmith 将在集群上运行迁移并跨实例复制数据。> [!警告]
+>
+> 集群部署的重要注意事项：
+>
+> * 必须在新架构上配置集群设置 - 现有的独立 ClickHouse 实例无法转换为集群模式。
+>
+> * 仅外部管理的 ClickHouse 部署支持集群。它与捆绑的 ClickHouse 安装不兼容，因为这些安装不包括所需的 ZooKeeper 配置。
+>
+> * 当使用集群部署时，LangSmith会自动：
+>
+> * 在集群中的所有节点上运行数据库迁移
+> * 配置表以进行跨集群的数据复制
+>
+> 请注意，当数据跨节点复制时，LangSmith 不会配置分布式表或处理查询路由 - 查询将定向到指定主机。如果需要，您将需要在基础设施级别处理任何负载平衡或查询分配。
 
 ## 配置
 
@@ -121,9 +121,7 @@ clickhouse:
     database: "default"
     tls: false
     cluster: "my_cluster_name"  # Optional: Set this if using an external Clickhouse cluster
-```
-
-配置完成后，您应该能够重新安装 LangSmith 实例。如果一切配置正确，您的 LangSmith 实例现在应该使用外部 ClickHouse 数据库。
+```配置完成后，您应该能够重新安装 LangSmith 实例。如果一切配置正确，您的 LangSmith 实例现在应该使用外部 ClickHouse 数据库。
 
 ## TLS 与 ClickHouse
 
@@ -131,98 +129,94 @@ clickhouse:
 
 ### 服务器 TLS（单向）
 
-要为 ClickHouse 连接启用 TLS：* 在您的配置中设置`tls: true`（或将`tlsSecretKey`与外部秘密一起使用）。
+要为 ClickHouse 连接启用 TLS：
+
+* 在您的配置中设置`tls: true`（或将`tlsSecretKey`与外部秘密一起使用）。
 * 使用适当的 TLS 端口（通常为 HTTP 连接使用 `8443`，为本机 TCP 连接使用 `9440`）。
-* 如果使用内部 CA，请使用 `config.customCa.secretName` 和 `config.customCa.secretKey` 提供 CA 捆绑包。
+* 如果使用内部 CA，请使用 `config.customCa.secretName` 和 `config.customCa.secretKey` 提供 CA 捆绑包。> [!警告]
+>
+> 仅当您的 ClickHouse 服务器使用内部或私有 CA 时才挂载自定义 CA。公众信任的 CA 不需要此配置。
+>
+> 如果您确实设置了 `config.customCa`，则该捆绑包将成为 ClickHouse 迁移作业的唯一信任存储。该作业使用`curl`检查ClickHouse，它读取`SSL_CERT_FILE`并忽略系统CA存储。后端 Pod 使用 Python，两者都信任。因此，缺少根的捆绑包可以使应用程序正常运行，而每次升级都会失败并显示 `Timeout reached. ClickHouse is not ready.` 并且没有更多详细信息。包括 ClickHouse 服务器链接到的每个根，而不仅仅是内部根。对于LangSmith管理的ClickHouse，这意味着ISRG Root X1（参见[TLS certificates](/langsmith/langsmith-managed-clickhouse#tls-certificates)）。
 
-<Warning>
-  仅当您的 ClickHouse 服务器使用内部或私有 CA 时才挂载自定义 CA。公众信任的 CA 不需要此配置。
+```yaml Helm (server TLS) theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+config:
+  customCa:
+    secretName: "langsmith-custom-ca"  # Secret containing your CA bundle
+    secretKey: "ca.crt"    # Key in the Secret with the CA bundle
+clickhouse:
+  external:
+    enabled: true
+    host: "your-clickhouse-host.example.com"
+    port: "8443"
+    nativePort: "9440"
+    user: "default"
+    password: "password"
+    database: "default"
+    tls: true
+```
 
-  如果您确实设置了 `config.customCa`，则该捆绑包将成为 ClickHouse 迁移作业的唯一信任存储。该作业使用`curl`检查ClickHouse，它读取`SSL_CERT_FILE`并忽略系统CA存储。后端 Pod 使用 Python，两者都信任。因此，缺少根的捆绑包可以使应用程序正常运行，而每次升级都会失败并显示 `Timeout reached. ClickHouse is not ready.` 并且没有更多详细信息。包括 ClickHouse 服务器链接到的每个根，而不仅仅是内部根。对于LangSmith管理的ClickHouse，这意味着ISRG Root X1（参见[TLS certificates](/langsmith/langsmith-managed-clickhouse#tls-certificates)）。
-</Warning>
-
-<CodeGroup>
-  ```yaml Helm (server TLS) theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  config:
-    customCa:
-      secretName: "langsmith-custom-ca"  # Secret containing your CA bundle
-      secretKey: "ca.crt"    # Key in the Secret with the CA bundle
-  clickhouse:
-    external:
-      enabled: true
-      host: "your-clickhouse-host.example.com"
-      port: "8443"
-      nativePort: "9440"
-      user: "default"
-      password: "password"
-      database: "default"
-      tls: true
-  ```
-
-  ```yaml Kubernetes Secret (CA bundle) theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  apiVersion: v1
-  kind: Secret
-  metadata:
-    name: langsmith-custom-ca
-  type: Opaque
-  stringData:
-    ca.crt: |
-      -----BEGIN CERTIFICATE-----
-      <ROOT_OR_INTERMEDIATE_CA_CERT_CHAIN>
-      -----END CERTIFICATE-----
-  ```
-</CodeGroup>
+```yaml Kubernetes Secret (CA bundle) theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+apiVersion: v1
+kind: Secret
+metadata:
+  name: langsmith-custom-ca
+type: Opaque
+stringData:
+  ca.crt: |
+    -----BEGIN CERTIFICATE-----
+    <ROOT_OR_INTERMEDIATE_CA_CERT_CHAIN>
+    -----END CERTIFICATE-----
+```
 
 ### 具有客户端身份验证的双向 TLS (mTLS)
 
-从 LangSmith helm Chart 版本 **0.12.29** 开始，我们支持 ClickHouse 客户端的 mTLS。对于 mTLS 中的服务器端身份验证，除了以下客户端证书配置之外，还可以使用 [Server TLS steps](#server-tls-one-way)（自定义 CA）。如果您的 ClickHouse 服务器需要客户端证书身份验证：
+从 LangSmith helm Chart 版本 **0.12.29** 开始，我们支持 ClickHouse 客户端的 mTLS。对于 mTLS 中的服务器端身份验证，除了以下客户端证书配置之外，还可以使用 [Server TLS steps](#server-tls-one-way)（自定义 CA）。
+
+如果您的 ClickHouse 服务器需要客户端证书身份验证：
 
 * 提供包含您的客户端证书和密钥的 Secret。
 * 通过`clickhouse.external.clientCert.secretName`引用它，并用`certSecretKey`和`keySecretKey`指定键。
 
-<CodeGroup>
-  ```yaml Helm (client auth) theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  clickhouse:
-    external:
-      enabled: true
-      host: "your-clickhouse-host.example.com"
-      port: "8443"
-      nativePort: "9440"
-      user: "default"
-      password: "password"
-      database: "default"
-      tls: true
-      clientCert:
-        secretName: "clickhouse-client-cert"
-        certSecretKey: "tls.crt"
-        keySecretKey: "tls.key"
-  ```
+```yaml Helm (client auth) theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+clickhouse:
+  external:
+    enabled: true
+    host: "your-clickhouse-host.example.com"
+    port: "8443"
+    nativePort: "9440"
+    user: "default"
+    password: "password"
+    database: "default"
+    tls: true
+    clientCert:
+      secretName: "clickhouse-client-cert"
+      certSecretKey: "tls.crt"
+      keySecretKey: "tls.key"
+```
 
-  ```yaml Kubernetes Secret (client cert/key) theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  apiVersion: v1
-  kind: Secret
-  metadata:
-    name: clickhouse-client-cert
-  type: Opaque
-  stringData:
-    tls.crt: |
-      -----BEGIN CERTIFICATE-----
-      <CLIENT_CERT>
-      -----END CERTIFICATE-----
-    tls.key: |
-      -----BEGIN PRIVATE KEY-----
-      <CLIENT_KEY>
-      -----END PRIVATE KEY-----
-  ```
-</CodeGroup>
+```yaml Kubernetes Secret (client cert/key) theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+apiVersion: v1
+kind: Secret
+metadata:
+  name: clickhouse-client-cert
+type: Opaque
+stringData:
+  tls.crt: |
+    -----BEGIN CERTIFICATE-----
+    <CLIENT_CERT>
+    -----END CERTIFICATE-----
+  tls.key: |
+    -----BEGIN PRIVATE KEY-----
+    <CLIENT_KEY>
+    -----END PRIVATE KEY-----
+```
 
-#### 使用 TLS 迁移
+#### 使用 TLS 迁移迁移作业使用与应用程序相同的 TLS 和客户端证书配置，并通过 `clickhouse.external.nativePort` 上的本机协议进行连接。启用 TLS 后，将 `nativePort` 设置为 ClickHouse 本机 TLS 端口（默认为`9440`）。不需要单独的非 TLS 本机端口。
 
-迁移作业使用与应用程序相同的 TLS 和客户端证书配置，并通过 `clickhouse.external.nativePort` 上的本机协议进行连接。启用 TLS 后，将 `nativePort` 设置为 ClickHouse 原生 TLS 端口（默认为`9440`）。不需要单独的非 TLS 本机端口。
-
-<Warning>
-  将 `nativePort` 保留在 `9000` 和 `tls: true` 会导致迁移作业失败，因为它会尝试针对明文端口进行 TLS 握手。
-</Warning>
+> [!警告]
+>
+> 将 `nativePort` 保留在 `9000` 和 `tls: true` 会导致迁移作业失败，因为它会尝试针对明文端口进行 TLS 握手。
 
 #### 证书卷的 Pod 安全上下文
 
@@ -239,16 +233,12 @@ commonPodSecurityContext:
   fsGroup: 1000
 ```
 
-**选项 2：添加到单个 pod 安全上下文**如果您需要更精细的控制，请将 `fsGroup` 单独添加到每个 pod 的安全上下文。请参阅 [mTLS configuration example](https://github.com/langchain-ai/helm/blob/main/charts/langsmith/examples/mtls_config.yaml) 以获得完整参考。
+**选项 2：添加到单个 pod 安全上下文**
+
+如果您需要更精细的控制，请将 `fsGroup` 单独添加到每个 pod 的安全上下文。请参阅 [mTLS configuration example](https://github.com/langchain-ai/helm/blob/main/charts/langsmith/examples/mtls_config.yaml) 以获得完整参考。
 
 ***
 
-<div>
-  <Callout icon="terminal-2">
-    [Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
-  </Callout>
+[Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
 
-  <Callout icon="edit">
-    [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/self-host-external-clickhouse.mdx) 或 [file an issue](https://github.com/langchain-ai/docs/issues/new/choose)。
-  </Callout>
-</div>
+[Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/self-host-external-clickhouse.mdx) 或 [file an issue](https://github.com/langchain-ai/docs/issues/new/choose)。

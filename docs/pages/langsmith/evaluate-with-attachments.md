@@ -101,7 +101,7 @@ Changes are not saved until you click submit.
 
 ## 1. Create examples with attachments
 
-To upload examples with attachments using the SDK, use the [create\_examples](https://docs.smith.langchain.com/reference/python/client/langsmith.client.Client#langsmith.client.Client.create_examples) / [update\_examples](https://docs.smith.langchain.com/reference/python/client/langsmith.client.Client#langsmith.client.Client.update_examples) Python methods or the [uploadExamplesMultipart](https://docs.smith.langchain.com/reference/js/classes/client.Client#uploadexamplesmultipart) / [updateExamplesMultipart](https://docs.smith.langchain.com/reference/js/classes/client.Client#updateexamplesmultipart) TypeScript methods.
+To upload examples with attachments using the SDK, use the [create\_examples](https://reference.langchain.com/python/langsmith/client/Client/create_examples) / [update\_examples](https://reference.langchain.com/python/langsmith/client/Client/update_examples) Python methods or the [uploadExamplesMultipart](https://reference.langchain.com/javascript/langsmith/client/Client/uploadExamplesMultipart) / [updateExamplesMultipart](https://reference.langchain.com/javascript/langsmith/client/Client/updateExamplesMultipart) TypeScript methods.
 
 #### Python
 

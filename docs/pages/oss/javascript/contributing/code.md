@@ -236,6 +236,8 @@ Security checklist:
 >
 > * Install the [LangChain Docs MCP servers](/use-these-docs) to give your agent access to up-to-date LangChain documentation and examples.
 >
+>   Connect LangChain docs MCP servers
+>
 >   Connect both LangChain documentation MCP servers to my coding agent so it can look up current LangChain, LangGraph, and LangSmith docs and API reference.
 >
 >   Servers to add:
@@ -252,6 +254,8 @@ Security checklist:
 >
 >   Do not invent alternate MCP URLs. After configuring, confirm both servers are listed and reachable.
 > * Install [LangChain Skills](https://github.com/langchain-ai/langchain-skills) to improve your agent's performance on LangChain ecosystem tasks, then click the **Copy page** button on the top right of this page and paste the raw content into your agent to have it set up your environment automatically.
+>
+>   Install LangChain Skills
 >
 >   Install LangChain Skills for my coding agent so it can perform better on LangChain, LangGraph, and Deep Agents tasks.
 >

@@ -106,7 +106,7 @@ LangSmith 允许基于团队的快速迭代。 [Workspace](/langsmith/administra
 
 使用特定于语言的构造函数和push方法：
 
-* Python: [⟦T17⟧](https://reference.langchain.com/python/langchain-core/prompts/chat/ChatPromptTemplate) → [⟦T18⟧](https://docs.smith.langchain.com/reference/python/client/langsmith.client.Client#langsmith.client.Client.push_prompt)
+* Python: [⟦T17⟧](https://reference.langchain.com/python/langchain-core/prompts/chat/ChatPromptTemplate) → [⟦T18⟧](https://reference.langchain.com/python/langsmith/client/Client/push_prompt)
 * 打字稿：[⟦T19⟧](https://reference.langchain.com/javascript/langchain-core/prompts/ChatPromptTemplate) → [⟦T20⟧](https://reference.langchain.com/javascript/langsmith/client/Client/pushPrompt)
 
 1. 将以下代码添加到`create_prompt`文件中：

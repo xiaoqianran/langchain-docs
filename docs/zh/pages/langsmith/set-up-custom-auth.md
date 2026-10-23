@@ -17,45 +17,41 @@
 * [**Authentication & Access Control**](/langsmith/auth)
 * [**LangSmith**](/langsmith/observability)
 
-<Note>
-  自定义身份验证仅适用于 LangSmith SaaS 部署或企业自托管部署。
-</Note>
+> [!注意]
+>
+> 自定义身份验证仅适用于 LangSmith SaaS 部署或企业自托管部署。
 
 ## 1. 创建您的应用程序
 
 使用 LangGraph 入门模板创建一个新的聊天机器人：
 
-<CodeGroup>
-  ```bash pip theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  pip install -U "langgraph-cli[inmem]"
-  langgraph new --template=new-langgraph-project-python custom-auth
-  cd custom-auth
-  ```
+```bash pip theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+pip install -U "langgraph-cli[inmem]"
+langgraph new --template=new-langgraph-project-python custom-auth
+cd custom-auth
+```
 
-  ```bash uv theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  uv add "langgraph-cli[inmem]"
-  langgraph new --template=new-langgraph-project-python custom-auth
-  cd custom-auth
-  ```
-</CodeGroup>
+```bash uv theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+uv add "langgraph-cli[inmem]"
+langgraph new --template=new-langgraph-project-python custom-auth
+cd custom-auth
+```
 
 该模板为我们提供了一个占位符 LangGraph 应用程序。通过安装本地依赖项并运行开发服务器来尝试一下：
 
-<CodeGroup>
-  ```bash pip theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  pip install -e .
-  langgraph dev
-  ```
+```bash pip theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+pip install -e .
+langgraph dev
+```
 
-  ```bash uv theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  uv add .
-  langgraph dev
-  ```
+```bash uv theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+uv add .
+langgraph dev
+```
 
-  ```bash npm theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  npx @langchain/langgraph-cli dev
-  ```
-</CodeGroup>
+```bash npm theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+npx @langchain/langgraph-cli dev
+```
 
 服务器将启动并在浏览器中打开[Studio](/langsmith/studio)：
 
@@ -70,13 +66,13 @@
 
 如果您要在公共互联网上自行托管此内容，则任何人都可以访问它。
 
-<img alt="No authentication: the dev server is publicly reachable, anyone can access the bot if exposed to the internet." />
+![No authentication: the dev server is publicly reachable, anyone can access the bot if exposed to the internet.](https://mintcdn.com/langchain-5e9cc07a/N1xJUsnxxRqnrjxV/langsmith/images/no-auth.png?fit=max\&auto=format\&n=N1xJUsnxxRqnrjxV\&q=85\&s=3ca2c9a8d65891ef71abfb7ad0aae7d3)
 
 ## 2.添加认证现在您已经有了一个基本的 LangGraph 应用程序，请为其添加身份验证。
 
-<Note>
-  在本教程中，您将从硬编码令牌开始进行示例。您将在第三个教程中获得“生产就绪”的身份验证方案。
-</Note>
+> [!注意]
+>
+> 在本教程中，您将从硬编码令牌开始进行示例。您将在第三个教程中获得“生产就绪”的身份验证方案。
 
 [Auth](https://reference.langchain.com/python/langgraph-sdk/auth/Auth) 对象允许您注册一个身份验证函数，LangSmith 部署将在每个请求上运行该函数。该函数接收每个请求并决定是接受还是拒绝。
 
@@ -153,15 +149,15 @@ langgraph dev --no-browser
 }
 ```要在 Studio 外部接受 LangSmith API 密钥 (`x-api-key`) 以及自定义处理程序，请设置 `allow_langsmith_api_keys: true`。带有 `Authorization` 标头的请求仍然使用自定义身份验证。所有其他请求都使用 LangSmith auth。设置 `x-auth-scheme: langsmith` 标头以强制进行 LangSmith 身份验证，即使存在 `Authorization` 也是如此。经过 LangSmith 身份验证的调用者将 `ctx.user.identity` 公开为 LangSmith 用户 ID（或缺失），并将 `ctx.permissions` 公开为 `["authenticated"]`。自定义 `@auth.on` 处理程序仍然运行，因此如果两个路径应共享资源规则，请将它们设计为接受该形状。此选项需要取消设置`disable_studio_auth`或`false`。
 
-<Note>
-  `allow_langsmith_api_keys` 需要代理服务器`0.14.0rc2` 或更高版本。
-</Note>
+> [!注意]
+>
+> `allow_langsmith_api_keys` 需要代理服务器`0.14.0rc2` 或更高版本。
 
 ## 4. 与您的机器人聊天
 
 现在，只有在请求标头中提供有效令牌的情况下，您才应该能够访问机器人。但是，用户仍然能够访问彼此的资源，直到您在本教程的下一部分中添加 [resource authorization handlers](/langsmith/auth#resource-specific-handlers)。
 
-<img alt="Auth gate passes requests with a valid token, but no per-resource filters are applied yet—so users share visibility until authorization handlers are added in the next step." />
+![Auth gate passes requests with a valid token, but no per-resource filters are applied yet—so users share visibility until authorization handlers are added in the next step.](https://mintcdn.com/langchain-5e9cc07a/IMK8wJkjSpMCGODD/langsmith/images/authentication.png?fit=max\&auto=format\&n=IMK8wJkjSpMCGODD\&q=85\&s=3ccfa86789baea630b8f418e9eb5b648)
 
 在文件或笔记本中运行以下代码：
 
@@ -217,12 +213,6 @@ if __name__ == "__main__":
 
 ***
 
-<div>
-  <Callout icon="terminal-2">
-    [Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
-  </Callout>
+[Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
 
-  <Callout icon="edit">
-    [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/set-up-custom-auth.mdx) 或 [file an issue](https://github.com/langchain-ai/docs/issues/new/choose)。
-  </Callout>
-</div>
+[Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/set-up-custom-auth.mdx) 或 [file an issue](https://github.com/langchain-ai/docs/issues/new/choose)。

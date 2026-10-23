@@ -4,9 +4,9 @@
 
 # 查看整个组织的跟踪计数
 
-<Note>
-  此功能在 Helm Chart 0.9.5 及更高版本中可用。
-</Note>
+> [!注意]
+>
+> 此功能在 Helm Chart 0.9.5 及更高版本上可用。
 
 LangSmith 自动生成并同步自托管安装的组织使用图表。
 
@@ -47,12 +47,6 @@ sh run_support_query_pg.sh "postgres://postgres:postgres@localhost:5432/postgres
 
 有关运行支持查询的更多详细信息，请参阅 [Run support queries against PostgreSQL](/langsmith/script-running-pg-support-queries) 指南。
 
-***<div>
-  <Callout icon="terminal-2">
-    [Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
-  </Callout>
+***
 
-  <Callout icon="edit">
-    [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/self-host-organization-charts.mdx) 或 [file an issue](https://github.com/langchain-ai/docs/issues/new/choose)。
-  </Callout>
-</div>
+[Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。[Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/self-host-organization-charts.mdx) 或 [file an issue](https://github.com/langchain-ai/docs/issues/new/choose)。

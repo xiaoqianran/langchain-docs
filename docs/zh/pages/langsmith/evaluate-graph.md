@@ -6,7 +6,7 @@
 
 > [!注意]
 >
-> [langgraph](https://langchain-ai.github.io/langgraph/)
+> [langgraph](/oss/python/langgraph/overview)
 
 `langgraph` 是一个用于使用 LLM 构建有状态、多参与者应用程序的库，用于创建代理和多代理工作流程。评估 `langgraph` 图可能具有挑战性，因为单个调用可能涉及许多 LLM 调用，并且进行哪些 LLM 调用可能取决于先前调用的输出。在本指南中，我们将重点关注如何将图和图节点传递给 `evaluate()` / `aevaluate()` 的机制。如需了解构建代理时的评估技术和最佳实践，请前往[LangSmith evaluation docs](/langsmith/evaluation)。
 

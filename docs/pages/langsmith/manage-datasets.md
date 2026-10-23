@@ -47,7 +47,7 @@ You can tag a version of your dataset in the UI by clicking on **+ Tag this vers
 
 ![Tagging Datasets](https://mintcdn.com/langchain-5e9cc07a/ImHGLQW1HnQYwnJV/langsmith/images/tag-this-version.png?fit=max\&auto=format\&n=ImHGLQW1HnQYwnJV\&q=85\&s=c3f7a97c92eb645f7b0888f4e35ffd48)
 
-You can also tag versions of your dataset using the SDK. Here's an example of how to tag a version of a dataset using the [Python SDK](https://docs.smith.langchain.com/reference/python/reference):
+You can also tag versions of your dataset using the SDK. Here's an example of how to tag a version of a dataset using the [Python SDK](https://reference.langchain.com/python/langsmith):
 
 ```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 from langsmith import Client

@@ -2,7 +2,7 @@
 
 <!-- langchain-docs: Configure SmithDB observability | https://docs.langchain.com/langsmith/self-host-smithdb-observability -->
 
-# 配置SmithDB可观测性
+# 配置SmithDB可观察性
 
 抓取 SmithDB 应用程序指标并将日志和跟踪导出到现有的可观察性堆栈。
 
@@ -12,61 +12,61 @@ SmithDB 组件公开应用程序指标，并可以将日志和跟踪导出到现
 
 每个 SmithDB 组件都在其 HTTP 端口上的固定 `/metrics` 路径上公开应用程序指标。配置监控堆栈以通过向每个组件添加抓取注释来发现 Pod：
 
-<Accordion title="Sample Prometheus configuration">
-  ```yaml theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  smithdb:
-    query:
-      deployment:
-        annotations:
-          prometheus.io/scrape: "true"
-          prometheus.io/path: "/metrics"
-          prometheus.io/port: "8060"
-    ingestion:
-      deployment:
-        annotations:
-          prometheus.io/scrape: "true"
-          prometheus.io/path: "/metrics"
-          prometheus.io/port: "8050"
-    compaction:
-      deployment:
-        annotations:
-          prometheus.io/scrape: "true"
-          prometheus.io/path: "/metrics"
-          prometheus.io/port: "8070"
-    compactionWorker:
-      deployment:
-        annotations:
-          prometheus.io/scrape: "true"
-          prometheus.io/path: "/metrics"
-          prometheus.io/port: "9000"
-    clusterManager:
-      deployment:
-        annotations:
-          prometheus.io/scrape: "true"
-          prometheus.io/path: "/metrics"
-          prometheus.io/port: "8090"
-    migration:
-      job:
-        annotations:
-          prometheus.io/scrape: "true"
-          prometheus.io/path: "/metrics"
-          prometheus.io/port: "9040"
-  ```
-
-  在LangSmith 0.16 上，在`smithdb.migration.deployment.annotations`下设置迁移注释。
-
-  使用`smithdb.topology: single`，仅注释单个 Pod 和抓取端口`8060`：
-
-  ```yaml theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  smithdb:
-    single:
-      deployment:
-        annotations:
-          prometheus.io/scrape: "true"
-          prometheus.io/path: "/metrics"
-          prometheus.io/port: "8060"
-  ```
-</Accordion>
+> **普罗米修斯配置示例**
+>
+> ```yaml theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> smithdb:
+>   query:
+>     deployment:
+>       annotations:
+>         prometheus.io/scrape: "true"
+>         prometheus.io/path: "/metrics"
+>         prometheus.io/port: "8060"
+>   ingestion:
+>     deployment:
+>       annotations:
+>         prometheus.io/scrape: "true"
+>         prometheus.io/path: "/metrics"
+>         prometheus.io/port: "8050"
+>   compaction:
+>     deployment:
+>       annotations:
+>         prometheus.io/scrape: "true"
+>         prometheus.io/path: "/metrics"
+>         prometheus.io/port: "8070"
+>   compactionWorker:
+>     deployment:
+>       annotations:
+>         prometheus.io/scrape: "true"
+>         prometheus.io/path: "/metrics"
+>         prometheus.io/port: "9000"
+>   clusterManager:
+>     deployment:
+>       annotations:
+>         prometheus.io/scrape: "true"
+>         prometheus.io/path: "/metrics"
+>         prometheus.io/port: "8090"
+>   migration:
+>     job:
+>       annotations:
+>         prometheus.io/scrape: "true"
+>         prometheus.io/path: "/metrics"
+>         prometheus.io/port: "9040"
+> ```
+>
+> 在LangSmith 0.16 上，在`smithdb.migration.deployment.annotations`下设置迁移注释。
+>
+> 使用`smithdb.topology: unified`，仅注释统一的Pod和抓取端口`8060`：
+>
+> ```yaml theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> smithdb:
+>   unified:
+>     deployment:
+>       annotations:
+>         prometheus.io/scrape: "true"
+>         prometheus.io/path: "/metrics"
+>         prometheus.io/port: "8060"
+> ```
 
 这些是普罗米修斯风格的注释。拥有自己的发现格式的提供商（例如 Datadog）需要将该格式应用于相同的端口和路径。使用现有基础设施监控来监控 PostgreSQL 元存储、Kubernetes 节点和云服务。
 
@@ -87,12 +87,6 @@ smithdb:
 
 ***
 
-<div>
-  <Callout icon="terminal-2">
-    [Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
-  </Callout>
+[Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
 
-  <Callout icon="edit">
-    [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/self-host-smithdb-observability.mdx) 或 [file an issue](https://github.com/langchain-ai/docs/issues/new/choose)。
-  </Callout>
-</div>
+[Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/self-host-smithdb-observability.mdx) 或 [file an issue](https://github.com/langchain-ai/docs/issues/new/choose)。

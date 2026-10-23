@@ -24,6 +24,8 @@ The host Deployment uses required pod anti-affinity to place at most one host po
 
 **architecture**
 
+The platform backend manages sandbox placement and traffic. Hosts run microVMs; shared storage keeps persistent state independent of a node.
+
 ### Understand component failure impact
 
 Each component has a different failure scope. Distinguish temporary unavailability from loss of its stored data when planning recovery.
@@ -48,6 +50,8 @@ One elected host observes pool health and runs the [host autoscaler](/langsmith/
 A host pod runs the sandbox daemon and Firecracker processes. In deployments with a host-owned JuiceFS mount, it also runs the JuiceFS client. The daemon connects to the agent inside each guest through `vsock`.
 
 **node**
+
+One Kubernetes pod contains multiple microVMs. The host needs KVM access; guest memory and node-local caches consume the node's resources.
 
 The host uses host networking on port `19190`. The platform backend connects to the host's node address; clients use the LangSmith API or [service URLs](/langsmith/sandbox-service-urls), not the host listener directly. Keep host listeners on private networks.
 

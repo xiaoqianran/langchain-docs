@@ -14,13 +14,13 @@
 
 内置主机自动缩放器在选定的 `sandbox-host` 上运行。主机通过 Kubernetes 租赁发布其承诺的 vCPU 和沙箱数量。领导者使用该信息来调整部署的副本数量。
 
-<Frame>
-  <SandboxDiagram name="autoscaling" />
-</Frame>
+**自动缩放**
 
-主机自动缩放程序不使用 HPA、KEDA 或 Prometheus 适配器。不要配置另一个控制器来管理同一部署的副本计数。
+LangSmith 请求主机 Pod。您的基础设施提供节点。在其主机准备就绪之前，所需的副本无法使用容量。
 
-新的主机 Pod 需要一个合格的节点，而不需要另一个主机 Pod。当没有可用的时，它会保持`Pending`，直到节点自动缩放器增加容量。为支持 KVM 的专用节点池配置自动缩放程序，包括兼容标签、污点和实例要求。在正常缩减期间，主机自动缩放器保留稳定窗口的最近峰值目标。然后，它会为每个窗口最多删除一台主机。 Pod 删除成本有利于负载较少的主机。删除正在运行的主机[drains its sandboxes](/langsmith/self-host-sandbox-operations#follow-a-host-drain)；这不是一个无干扰的操作。
+主机自动缩放程序不使用 HPA、KEDA 或 Prometheus 适配器。不要配置另一个控制器来管理同一部署的副本计数。新的主机 Pod 需要一个合格的节点，而不需要另一个主机 Pod。当没有可用的时，它会保持`Pending`，直到节点自动缩放器增加容量。为支持 KVM 的专用节点池配置该自动缩放程序，包括兼容标签、污点和实例要求。
+
+在正常缩减期间，主机自动缩放器保留稳定窗口的最近峰值目标。然后，它会为每个窗口最多删除一台主机。 Pod 删除成本有利于负载较少的主机。删除正在运行的主机[drains its sandboxes](/langsmith/self-host-sandbox-operations#follow-a-host-drain)；这不是一个无干扰的操作。
 
 ## 计算主机目标
 
@@ -30,21 +30,21 @@
 desired hosts = ceil(committed vCPU / (host vCPU × target fraction)) + headroom hosts
 ```
 
-自动定标器将结果限制为 `minReplicas` 和 `maxReplicas`。如果没有主机容量信号，则从最小值开始。使用同构池：计算假设每个主机的 CPU 容量相同。
+自动定标器将结果限制为 `minReplicas` 和 `maxReplicas`。如果没有主机容量信号，则从最小值开始。使用同质池：计算假设每个主机的 CPU 容量相同。
 
 例如，对于 16 个 vCPU 主机、70% 目标和一台余量主机：
 
 * **每主机目标**：`16 × 0.70 = 11.2` 已提交的 vCPU。
 * **工作负载**：60 个沙箱请求 0.5 个 vCPU，每个沙箱提交 30 个 vCPU。
-* **池目标**：`ceil(30 / 11.2) + 1 = 4` 主机，受配置的限制限制。
+* **池目标**：`ceil(30 / 11.2) + 1 = 4` 主机，受配置的限制限制。70% 目标不是每个主机的容量限制。当池扩展或达到最大值时，放置位置可能会超过它。
 
-70% 目标不是每个主机的容量限制。当池扩展或达到最大值时，放置位置可能会超过它。
+### 爆发计划
 
-### 爆发计划副本目标可以在节点和主机准备就绪之前上升。动态余量可以弥补部分延迟；它不会使节点配置即时进行。
+副本目标可以在节点和主机准备就绪之前上升。动态余量可以弥补部分延迟；它不会使节点配置即时进行。
 
-<Frame>
-  <SandboxDiagram name="scaling-behavior" />
-</Frame>
+**缩放行为**
+
+说明性扩展行为，而不是延迟基准。根据需求扩大规模；缩减规模等待稳定窗口到来并逐渐进行。
 
 为节点启动时需要吸收的突发选择`minReplicas`和`headroomHosts`。为池保留至少两台主机，这些主机必须在一台主机推出期间继续接受工作。测量代表性负载下的节点启动、主机就绪情况和沙箱创建延迟。
 
@@ -83,9 +83,9 @@ desired hosts = ceil(committed vCPU / (host vCPU × target fraction)) + headroom
 
 单独检查内存。例如，500 个配置了 2 GiB 的沙箱，每个沙箱请求 1,000 GiB 的来宾内存（不包括主机和文件系统开销）。
 
-<Warning>
-  主机自动缩放使用已提交的 CPU，而不是内存压力。 CPU 大小的池仍然可能会耗尽内存。来宾内存、主机守护进程、JuiceFS、缓存和 Kubernetes 开销的预算。
-</Warning>主机 Pod 的内存请求必须反映其包含的工作负载。仅对守护进程的一个小请求不会为其 microVM 保留内存。对照节点可分配内存和测量的峰值使用情况查看`sandboxes.sandboxHost.deployment.resources`。
+> [!警告]
+>
+> 主机自动缩放使用承诺的 CPU，而不是内存压力。 CPU 大小的池仍然可能会耗尽内存。来宾内存、主机守护进程、JuiceFS、缓存和 Kubernetes 开销的预算。主机 Pod 的内存请求必须反映其包含的工作负载。仅对守护进程的一个小请求不会为其 microVM 保留内存。对照节点可分配内存和测量的峰值使用情况查看`sandboxes.sandboxHost.deployment.resources`。
 
 ## 平衡节点大小和缓存容量
 
@@ -109,12 +109,6 @@ desired hosts = ceil(committed vCPU / (host vCPU × target fraction)) + headroom
 
 ***
 
-<div>
-  <Callout icon="terminal-2">
-    [Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
-  </Callout>
+[Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
 
-  <Callout icon="edit">
-    [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/self-host-sandbox-scaling.mdx) 或 [file an issue](https://github.com/langchain-ai/docs/issues/new/choose)。
-  </Callout>
-</div>
+[Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/self-host-sandbox-scaling.mdx) 或 [file an issue](https://github.com/langchain-ai/docs/issues/new/choose)。

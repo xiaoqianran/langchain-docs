@@ -10,11 +10,9 @@ LangSmith 允许您直接在 UI 中运行评估。 [**Playground**](/langsmith/p
 
 要从 Studio 运行评估，请参阅 [run experiments over a dataset in Studio](/langsmith/observability-studio#run-experiments-over-a-dataset)。如果您更喜欢在代码中运行实验，请参阅[run an evaluation using the SDK](/langsmith/evaluate-llm-application)。
 
-<img alt="Playground experiment" />
+![Playground experiment](https://mintcdn.com/langchain-5e9cc07a/H9jA2WRyA-MV4-H0/langsmith/images/playground-experiment.gif?s=05ec3d2b1aa6590c443a033924fc6141)
 
-<Callout type="info" icon="feather">
-  Playground 中提供 **[Chat](/langsmith/chat)**，可帮助您在运行评估之前优化提示。
-</Callout>
+Playground 中提供 **[Chat](/langsmith/chat)**，可帮助您在运行评估之前优化提示。
 
 ## 在 Playground 中创建一个实验
 
@@ -29,7 +27,7 @@ LangSmith 允许您直接在 UI 中运行评估。 [**Playground**](/langsmith/p
 
 5. **通过单击“**查看完整实验**”查看完整结果**。这将带您进入实验详细信息页面，您可以在其中查看实验结果。
 
-实验运行时，实验表中的 **进度** 列和实验视图中的进度栏​​会实时跟踪完成情况，包括已完成和评估的运行次数。欲了解更多信息，请参阅[Track experiment progress](/langsmith/analyze-an-experiment#track-experiment-progress)。
+实验运行时，实验表中的 **进度** 列和实验视图中的进度栏​​会实时跟踪完成情况，包括已完成和评估的运行次数。有关更多信息，请参阅[Track experiment progress](/langsmith/analyze-an-experiment#track-experiment-progress)。
 
 ## 将评估分数添加到实验中
 
@@ -39,12 +37,6 @@ LangSmith 允许您直接在 UI 中运行评估。 [**Playground**](/langsmith/p
 
 ***
 
-<div>
-  <Callout icon="terminal-2">
-    [Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
-  </Callout>
+[Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
 
-  <Callout icon="edit">
-    [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/run-evaluation-from-playground.mdx) 或 [file an issue](https://github.com/langchain-ai/docs/issues/new/choose)。
-  </Callout>
-</div>
+[Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/run-evaluation-from-playground.mdx) 或 [file an issue](https://github.com/langchain-ai/docs/issues/new/choose)。

@@ -32,6 +32,8 @@ npx skills add langchain-ai/langchain-skills --skill managed-deep-agents --yes
 
 或者将此提示粘贴到您的编码代理中：
 
+使用快速入门构建托管深度代理
+
 按照托管 Deep Agents 快速入门，在此工作目录中创建并部署托管深度代理。
 
 ## 第 1 步：阅读指南
@@ -263,7 +265,7 @@ What were the main announcements from the latest LangChain release?
 uv run mda deploy
 ```托管 Deep Agents 打包项目并将其作为托管部署在 [LangSmith Agent Server](/langsmith/agent-server) 上运行。部署完成后，CLI 会打印部署仪表板 URL。
 
-打开该网址。您应该看到部署处于就绪状态。发送上一步中的相同研究问题，并通过搜索工具调用确认托管代理返回答案。 For deployment options and secrets handling, see [Deploy a Managed Deep Agent](/langsmith/python/managed-deep-agents-deploy). To inspect the agent's execution after it runs, use [LangSmith observability](/langsmith/observability-quickstart).
+打开该网址。您应该看到部署处于就绪状态。发送上一步中的相同研究问题，并通过搜索工具调用确认托管代理返回答案。有关部署选项和机密处理的信息，请参阅[Deploy a Managed Deep Agent](/langsmith/python/managed-deep-agents-deploy)。要在代理运行后检查代理的执行情况，请使用[LangSmith observability](/langsmith/observability-quickstart)。
 
 ## 后续步骤
 
@@ -273,7 +275,7 @@ uv run mda deploy
 
 > **[Custom tools](/langsmith/python/managed-deep-agents-tools)**
 >
-> Add authored LangChain tools from your project.
+> 从您的项目中添加创作的 LangChain 工具。
 
 > **[Connections](/langsmith/python/managed-deep-agents-connections)**
 >

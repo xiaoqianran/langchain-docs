@@ -10,11 +10,11 @@
 >
 > [Evaluations](/langsmith/evaluation-concepts#evaluation-lifecycle) | [Evaluators](/langsmith/evaluation-concepts#evaluators) | [Datasets](/langsmith/evaluation-concepts#datasets)
 
-在本指南中，我们将介绍如何使用 LangSmith SDK 中的 [evaluate()](https://docs.smith.langchain.com/reference/python/evaluation/langsmith.evaluation._runner.evaluate) 方法评估应用程序。
+在本指南中，我们将介绍如何使用 LangSmith SDK 中的 [evaluate()](https://reference.langchain.com/python/langsmith/evaluation/_runner/evaluate) 方法评估应用程序。
 
 > [!提示]
 >
-> 对于 Python 中的大型评估作业，我们建议使用 [aevaluate()](https://docs.smith.langchain.com/reference/python/evaluation/langsmith.evaluation._arunner.aevaluate)，即 [evaluate()](https://docs.smith.langchain.com/reference/python/evaluation/langsmith.evaluation._runner.evaluate) 的异步版本。在阅读 [running an evaluation asynchronously](/langsmith/evaluation-async) 的操作指南之前，仍然值得先阅读本指南，因为两者具有相同的界面。
+> 对于 Python 中的大型评估作业，我们建议使用 [aevaluate()](https://reference.langchain.com/python/langsmith/evaluation/_arunner/aevaluate)，即 [evaluate()](https://reference.langchain.com/python/langsmith/evaluation/_runner/evaluate) 的异步版本。在阅读 [running an evaluation asynchronously](/langsmith/evaluation-async) 的操作指南之前，仍然值得先阅读本指南，因为两者具有相同的界面。
 >
 > 在 JS/TS 中，evaluate() 已经是异步的，因此不需要单独的方法。
 >
@@ -195,7 +195,7 @@ function correct({
 
 ## 运行评估
 
-我们将使用 [evaluate()](https://docs.smith.langchain.com/reference/python/evaluation/langsmith.evaluation._runner.evaluate) / [aevaluate()](https://docs.smith.langchain.com/reference/python/evaluation/langsmith.evaluation._arunner.aevaluate) 方法来运行评估。
+我们将使用 [evaluate()](https://reference.langchain.com/python/langsmith/evaluation/_runner/evaluate) / [aevaluate()](https://reference.langchain.com/python/langsmith/evaluation/_arunner/aevaluate) 方法来运行评估。
 
 关键论点是：* 一个目标函数，它接受输入字典并返回输出字典。每个 [Example](/langsmith/example-data-format) 的 `example.inputs` 字段是传递给目标函数的内容。在这种情况下，我们的 `toxicity_classifier` 已经设置为接受示例输入，因此我们可以直接使用它。
 * `data` - 要评估的 LangSmith 数据集的名称或 UUID，或示例的迭代器。

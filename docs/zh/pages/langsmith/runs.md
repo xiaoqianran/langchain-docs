@@ -70,32 +70,24 @@ flowchart TB
 
 ## 在本节中
 
-<CardGroup>
-  <Card title="Kick off background runs" icon="player-play" href="/langsmith/background-run">
-    异步运行代理并轮询结果。
-  </Card>
+> **[Kick off background runs](/langsmith/background-run)**
+>
+> 异步运行代理并轮询结果。
 
-  <Card title="Run multiple agents on the same thread" icon="messages" href="/langsmith/same-thread">
-    在共享线程上使用多个助手来组合代理功能。
-  </Card>
+> **[Run multiple agents on the same thread](/langsmith/same-thread)**
+>
+> 在共享线程上使用多个助手来组合代理功能。
 
-  <Card title="Stateless runs" icon="player-skip-forward" href="/langsmith/stateless-runs">
-    当不需要对话历史记录时，执行运行时不会保留状态。
-  </Card>
+> **[Stateless runs](/langsmith/stateless-runs)**
+>
+> 当不需要对话历史记录时，执行运行而不保留状态。
 
-  <Card title="Cancel a run" icon="player-stop" href="/langsmith/cancel-run">
-    通过 API 取消单次运行或多次运行。
-  </Card>
-</CardGroup>
+> **[Cancel a run](/langsmith/cancel-run)**
+>
+> 通过 API 取消单次运行或多次运行。
 
 ***
 
-<div>
-  <Callout icon="terminal-2">
-    [Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
-  </Callout>
+[Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
 
-  <Callout icon="edit">
-    [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/runs.mdx) 或 [file an issue](https://github.com/langchain-ai/docs/issues/new/choose)。
-  </Callout>
-</div>
+[Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/runs.mdx) 或 [file an issue](https://github.com/langchain-ai/docs/issues/new/choose)。

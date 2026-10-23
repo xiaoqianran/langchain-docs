@@ -33,9 +33,9 @@
 
    * 使用OpenAI的text-embedding-3-small模型来生成嵌入。
    * 将嵌入维度设置为 1536（与模型的输出匹配）。
-   * 索引存储数据中的所有字段（`["$"]` 表示索引所有内容，或指定特定字段，如`["text", "metadata.title"]`）。<Note>
-     每个部署都支持单个嵌入模型。 LangSmith不支持配置多个嵌入模型，因为这会导致`/store`端点不明确并导致混合索引问题。
-   </Note>
+   * 索引存储数据中的所有字段（`["$"]` 表示索引所有内容，或指定特定字段，如`["text", "metadata.title"]`）。> [!注意]
+   >
+   > 每个部署都支持单个嵌入模型。 LangSmith不支持配置多个嵌入模型，因为这会导致`/store`端点不明确并导致混合索引问题。
 
 2. 要使用字符串嵌入格式，请确保您的依赖项包含`langchain >= 0.3.8`：
 
@@ -81,9 +81,9 @@ results[0].score     # 0.92 (similarity score, present when semantic search is c
 
 ### 改变你的嵌入模型
 
-<Warning>
-  更改嵌入模型或维度需要重新嵌入所有现有数据。没有用于此目的的自动迁移工具。如果您需要切换型号，请相应计划。
-</Warning>
+> [!警告]
+>
+> 更改嵌入模型或维度需要重新嵌入所有现有数据。没有用于此目的的自动迁移工具。如果您需要切换型号，请相应计划。
 
 ## 自定义嵌入
 
@@ -152,12 +152,6 @@ results["items"][0]["score"]     # 0.92 (similarity score)
 
 ***
 
-<div>
-  <Callout icon="terminal-2">
-    [Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
-  </Callout>
+[Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
 
-  <Callout icon="edit">
-    [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/semantic-search.mdx) 或 [file an issue](https://github.com/langchain-ai/docs/issues/new/choose)。
-  </Callout>
-</div>
+[Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/semantic-search.mdx) 或 [file an issue](https://github.com/langchain-ai/docs/issues/new/choose)。

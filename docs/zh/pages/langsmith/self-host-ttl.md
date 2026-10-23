@@ -6,9 +6,9 @@
 
 LangSmith 自托管支持自动 TTL 和跟踪数据保留。使用它来遵守数据隐私法规或通过自动清理旧痕迹来减少存储。运行规则和其他限定操作也可以自动延长跟踪的保留期。
 
-<Note>
-  **自托管 [Enterprise](/langsmith/pricing-plans) 客户：** 您可以通过 UI 在工作区级别配置扩展数据保留。不需要更改环境变量。参见[Customize extended retention policy](/langsmith/data-purging-compliance#customize-extended-retention-policy)。仍然支持此页面上的系统范围 TTL 配置。
-</Note>
+> [!注意]
+>
+> **自托管 [Enterprise](/langsmith/pricing-plans) 客户：** 您可以通过 UI 在工作区级别配置扩展数据保留。不需要更改环境变量。参见[Customize extended retention policy](/langsmith/data-purging-compliance#customize-extended-retention-policy)。仍然支持此页面上的系统范围 TTL 配置。
 
 ## TTL配置优先级
 
@@ -46,9 +46,9 @@ config:
 
 从版本 0.11 开始，cron 作业在周末运行，以删除 ClickHouse 内置 TTL 机制可能尚未清理的过期数据。
 
-<Warning>
-  此作业使用**突变** (`ALTER TABLE DELETE`)，这是昂贵的操作，可能会影响 ClickHouse 性能。仅在非高峰时段（夜间和周末）运行它们。使用 **1 个并发活动** 突变（默认）进行测试不会导致 CPU、内存或延迟显着增加。
-</Warning>
+> [!警告]
+>
+> 此作业使用**突变** (`ALTER TABLE DELETE`)，这是昂贵的操作，可能会影响 ClickHouse 性能。仅在非高峰时段（夜间和周末）运行它们。使用 **1 个并发活动** 突变（默认）进行测试不会导致 CPU、内存或延迟显着增加。
 
 ### 默认时间表
 
@@ -83,9 +83,9 @@ queue:
       # UTC: Saturday 8pm/10pm
       - name: "CLICKHOUSE_TTL_CLEANUP_CRON_WEEKEND_EVENING"
         value: "0 20,22 * * 6"
-```<Tip>
-  要使用单个 cron 计划，请将 `CLICKHOUSE_TTL_CLEANUP_CRON_WEEKEND_EVENING` 和 `CLICKHOUSE_TTL_CLEANUP_CRON_WEEKEND_MORNING` 设置为相同的值。作业锁定可防止重叠执行。
-</Tip>
+```> [!提示]
+>
+> 要使用单个 cron 计划，请将 `CLICKHOUSE_TTL_CLEANUP_CRON_WEEKEND_EVENING` 和 `CLICKHOUSE_TTL_CLEANUP_CRON_WEEKEND_MORNING` 设置为相同的值。作业锁定可防止重叠执行。
 
 ### 配置每个部分的最小过期行数
 
@@ -131,9 +131,9 @@ queue:
         value: "1"
 ```
 
-<Warning>
-  更多并发 `DELETE` 操作会显着减慢插入和读取速度。仅当您可以容忍较慢的插入和读取延迟时才增加此值，并在执行后监视系统。
-</Warning>
+> [!警告]
+>
+> 更多并发 `DELETE` 操作会显着减慢插入和读取速度。仅当您可以容忍较慢的插入和读取延迟时才增加此值，并在执行后监视系统。
 
 ### 紧急情况：停止运行突变
 
@@ -162,14 +162,29 @@ queue:
 
 如果存在备份，请将其复制到外部存储（例如 S3），然后清除目录。磁盘空间应在几分钟内开始释放。
 
+## 跟踪过期后保留运行统计信息
+
+跟踪过期后，LangSmith 会保留其运行统计信息，例如运行计数、延迟和错误率，直到延长的 (`longlived`) 保留期过去。然后LangSmith删除剩余的存储数据，那些运行统计数据不再可用。 LangSmith如何解析`longlived`周期，请参见[TTL configuration precedence](#ttl-configuration-precedence)。
+
+> [!注意]
+>
+> 这适用于 LangSmith 0.18 上的 [SmithDB](/langsmith/self-host-smithdb) 安装（Helm 图表 `0.18.0` 或更高版本）。
+
+要使运行统计数据保持更长时间，请将 `SMITHDB_COMPACTION__EXPIRY_CYCLE__RETENTION_CLEANUP_BUFFER` 设置为持续时间，例如 `30d` 或 `720h`。 LangSmith 等待了这么长时间，过了 `longlived` 时间段后才删除数据。默认为`0s`。例如，使用默认的 400 天 `longlived` 周期和 `30d` 缓冲区，运行统计信息在 LangSmith 收到跟踪后至少 430 天内保持可用。
+
+```yaml Helm theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+smithdb:
+  compaction:
+    deployment:
+      extraEnv:
+        - name: SMITHDB_COMPACTION__EXPIRY_CYCLE__RETENTION_CLEANUP_BUFFER
+          value: "30d"
+```
+
+如果 SmithDB 作为单个 Pod 运行，请改为在 `smithdb.single.deployment.extraEnv` 下设置变量。
+
 ***
 
-<div>
-  <Callout icon="terminal-2">
-    [Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时答案。
-  </Callout>
+[Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
 
-  <Callout icon="edit">
-    [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/self-host-ttl.mdx) 或 [file an issue](https://github.com/langchain-ai/docs/issues/new/choose)。
-  </Callout>
-</div>
+[Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/self-host-ttl.mdx) 或 [file an issue](https://github.com/langchain-ai/docs/issues/new/choose)。

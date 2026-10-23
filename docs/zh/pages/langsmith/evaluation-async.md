@@ -8,7 +8,7 @@
 >
 > [Evaluations](/langsmith/evaluation-concepts#evaluation-lifecycle) | [Evaluators](/langsmith/evaluation-concepts#evaluators) | [Datasets](/langsmith/evaluation-concepts#datasets) | [Experiments](/langsmith/evaluation-concepts#experiment)
 
-我们可以使用 [aevaluate()](https://docs.smith.langchain.com/reference/python/evaluation/langsmith.evaluation._arunner.aevaluate) 通过 SDK 异步运行评估，它接受与 [evaluate()](https://docs.smith.langchain.com/reference/python/evaluation/langsmith.evaluation._runner.evaluate) 相同的所有参数，但期望应用程序函数是异步的。要了解更多信息，请参阅[how to use the ⟦T1⟧ function](/langsmith/evaluate-llm-application)。
+我们可以使用 [aevaluate()](https://reference.langchain.com/python/langsmith/evaluation/_arunner/aevaluate) 通过 SDK 异步运行评估，它接受与 [evaluate()](https://reference.langchain.com/python/langsmith/evaluation/_runner/evaluate) 相同的所有参数，但期望应用程序函数是异步的。要了解更多信息，请参阅[how to use the ⟦T1⟧ function](/langsmith/evaluate-llm-application)。
 
 > [!注意]
 >

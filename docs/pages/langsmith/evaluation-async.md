@@ -6,7 +6,7 @@
 >
 > [Evaluations](/langsmith/evaluation-concepts#evaluation-lifecycle) | [Evaluators](/langsmith/evaluation-concepts#evaluators) | [Datasets](/langsmith/evaluation-concepts#datasets) | [Experiments](/langsmith/evaluation-concepts#experiment)
 
-We can run evaluations asynchronously via the SDK using [aevaluate()](https://docs.smith.langchain.com/reference/python/evaluation/langsmith.evaluation._arunner.aevaluate), which accepts all of the same arguments as [evaluate()](https://docs.smith.langchain.com/reference/python/evaluation/langsmith.evaluation._runner.evaluate) but expects the application function to be asynchronous. To learn more, see [how to use the `evaluate()` function](/langsmith/evaluate-llm-application).
+We can run evaluations asynchronously via the SDK using [aevaluate()](https://reference.langchain.com/python/langsmith/evaluation/_arunner/aevaluate), which accepts all of the same arguments as [evaluate()](https://reference.langchain.com/python/langsmith/evaluation/_runner/evaluate) but expects the application function to be asynchronous. To learn more, see [how to use the `evaluate()` function](/langsmith/evaluate-llm-application).
 
 > [!NOTE]
 >

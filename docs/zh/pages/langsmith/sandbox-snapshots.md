@@ -10,7 +10,7 @@
 
 您还可以从正在运行的沙箱捕获快照 - 安装包、写入数据文件或配置状态，然后对结果进行快照并将其重新用作新的起点。
 
-<img alt="Sandboxes snapshots page" />
+![Sandboxes snapshots page](https://mintcdn.com/langchain-5e9cc07a/5nd3ca6haxRbnJZj/images/langsmith/sandboxes/sb-snapshots.png?fit=max\&auto=format\&n=5nd3ca6haxRbnJZj\&q=85\&s=6f56db23342150d156d0c6d783a1ead7)
 
 ## 了解默认快照
 
@@ -26,9 +26,9 @@
 
 单独扫描 `sandbox-host` 容器映像不会检查此压缩工件内的文件。要验证默认快照，请单独提取并扫描嵌入式文件系统。
 
-<Note>
-  此过程验证默认快照文件系统。 LangSmith 在沙箱启动时单独提供其他所需的运行时组件；它们不是快照的一部分。
-</Note>
+> [!注意]
+>
+> 此过程验证默认快照文件系统。 LangSmith 在沙箱启动时单独提供其他所需的运行时组件；它们不是快照的一部分。
 
 要独立检查默认快照，请使用 Helm 版本配置的确切 `sandbox-host` 容器映像。如果您镜像镜像，请使用您的私人注册表中的`images.sandboxHostImage`中的参考。
 
@@ -78,35 +78,33 @@ debugfs \
 
 ## 从容器镜像构建快照通过指向任何容器映像来构建快照。该调用会阻塞，直到快照准备好为止（默认超时为 60 秒；对于大图像，请提高超时时间）。
 
-<CodeGroup>
-  ```python Python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  from langsmith.sandbox import SandboxClient
+```python Python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+from langsmith.sandbox import SandboxClient
 
-  client = SandboxClient()
+client = SandboxClient()
 
-  snapshot = client.create_snapshot(
-      "python",
-      docker_image="python:3.12-slim",
-      fs_capacity_bytes=1 * 1024**3,  # 1 GiB
-  )
-
-  print(snapshot.id)
-  ```
-
-  ```ts TypeScript theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  import { SandboxClient } from "langsmith/sandbox";
-
-  const client = new SandboxClient();
-
-  const snapshot = await client.createSnapshot(
+snapshot = client.create_snapshot(
     "python",
-    "python:3.12-slim",
-    1_073_741_824, // 1 GiB
-  );
+    docker_image="python:3.12-slim",
+    fs_capacity_bytes=1 * 1024**3,  # 1 GiB
+)
 
-  console.log(snapshot.id);
-  ```
-</CodeGroup>
+print(snapshot.id)
+```
+
+```ts TypeScript theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+import { SandboxClient } from "langsmith/sandbox";
+
+const client = new SandboxClient();
+
+const snapshot = await client.createSnapshot(
+  "python",
+  "python:3.12-slim",
+  1_073_741_824, // 1 GiB
+);
+
+console.log(snapshot.id);
+```
 
 ### 验证从容器镜像构建的快照
 
@@ -116,7 +114,7 @@ LangSmith 从您提供的容器映像中的文件系统构建自定义快照。�
 2. 检查并扫描该精确图像。
 3. 创建快照时，使用与 `docker_image` 相同的摘要限定引用。
 
-LangSmith在沙箱启动时单独提供其所需的运行时工具。它们不会添加到您提供的容器映像中或包含在自定义快照中。
+LangSmith 在沙箱启动时单独提供其所需的运行时工具。它们不会添加到您提供的容器映像中或包含在自定义快照中。
 
 ### 私有注册表
 
@@ -124,7 +122,7 @@ LangSmith在沙箱启动时单独提供其所需的运行时工具。它们不�
 
 #### 查找存储库和标签
 
-在 LangSmith UI 中，**Container Image URI** 字段建议来自 Docker Hub 或所选私有注册表的存储库和标签。搜索行为取决于注册表提供商和身份验证方法：|来源 |存储库发现 |标签发现 |
+在 LangSmith UI 中，**容器映像 URI** 字段建议来自 Docker Hub 或所选私有注册表的存储库和标签。搜索行为取决于注册表提供商和身份验证方法：|来源 |存储库发现 |标签发现 |
 | - | - | - |
 | Docker Hub，没有保存注册表 |在 Docker 官方镜像中搜索裸镜像名称或指定的 Docker Hub 命名空间 |选择或输入存储库后搜索标签 |
 | Docker 注册表 |当注册表支持时搜索注册表目录 |选择或输入存储库后搜索标签 |
@@ -138,45 +136,43 @@ LangSmith在沙箱启动时单独提供其所需的运行时工具。它们不�
 
 用户名和密码身份验证适用于所有受支持的私有注册表提供商。对于 ECR，密码是 ECR 授权令牌，并在 12 小时后过期。当令牌过期时更新保存的注册表凭据。
 
-<CodeGroup>
-  ```python Python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  import os
+```python Python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+import os
 
-  registry = client.registries.create(
-      name="internal",
-      url="registry.example.com",
-      username="me",
-      password=os.environ["REGISTRY_PASSWORD"],
-  )
+registry = client.registries.create(
+    name="internal",
+    url="registry.example.com",
+    username="me",
+    password=os.environ["REGISTRY_PASSWORD"],
+)
 
-  snapshot = client.create_snapshot(
-      "internal-python",
-      docker_image="registry.example.com/internal/python:3.12",
-      fs_capacity_bytes=2 * 1024**3,
-      registry_id=registry.id,
-      timeout=600,
-  )
-  ```
-
-  ```ts TypeScript theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  const registry = await client.registries.create({
-    name: "internal",
-    url: "registry.example.com",
-    username: "me",
-    password: process.env.REGISTRY_PASSWORD,
-  });
-
-  const snapshot = await client.createSnapshot(
+snapshot = client.create_snapshot(
     "internal-python",
-    "registry.example.com/internal/python:3.12",
-    2_147_483_648,
-    {
-      registryId: registry.id,
-      timeout: 600,
-    },
-  );
-  ```
-</CodeGroup>
+    docker_image="registry.example.com/internal/python:3.12",
+    fs_capacity_bytes=2 * 1024**3,
+    registry_id=registry.id,
+    timeout=600,
+)
+```
+
+```ts TypeScript theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+const registry = await client.registries.create({
+  name: "internal",
+  url: "registry.example.com",
+  username: "me",
+  password: process.env.REGISTRY_PASSWORD,
+});
+
+const snapshot = await client.createSnapshot(
+  "internal-python",
+  "registry.example.com/internal/python:3.12",
+  2_147_483_648,
+  {
+    registryId: registry.id,
+    timeout: 600,
+  },
+);
+```
 
 使用 `client.registries.list()`、`client.registries.retrieve(name)`、`client.registries.update(name, ...)` 和 `client.registries.delete(name)` 列出、检查、更新和删除注册表。
 
@@ -184,11 +180,15 @@ LangSmith在沙箱启动时单独提供其所需的运行时工具。它们不�
 
 AWS IAM 角色身份验证可避免将过期的 ECR 授权令牌存储在 LangSmith 中。它支持商业AWS分区中的私有ECR注册表。公共 ECR、AWS GovCloud、AWS China 和自定义 ECR 兼容域继续使用用户名和密码身份验证。
 
-<Note>
-  仅当您的 LangSmith 部署支持时，**AWS IAM 角色**身份验证方法才会出现。如果该选项不可用，请使用用户名和密码身份验证。
-</Note>注册 ECR 角色：
+> [!注意]
+>
+> 仅当您的 LangSmith 部署支持时，才会显示 **AWS IAM 角色** 身份验证方法。如果该选项不可用，请使用用户名和密码身份验证。> [!注意]
+>
+> **BYOC 部署：** AWS IAM 角色身份验证适用于 [BYOC](/langsmith/byoc) AWS 数据平面，无需额外设置。请按照以下步骤操作。如果您的数据平面使用[bring your own IAM](/langsmith/byoc-byoiam)，请先应用最新版本的[⟦T56⟧ Terraform module](https://github.com/langchain-ai/terraform/tree/main/modules/byoc/aws/byoiam)。它授予工作负载角色权限来承担您的 ECR 角色。
 
-1. 在 LangSmith 中，打开 **沙盒 > 注册表**，选择 **注册私有注册表**，然后以 `<aws-account-id>.dkr.ecr.<aws-region>.amazonaws.com` 的形式输入您的注册表 URL。
+注册 ECR 角色：
+
+1. 在 LangSmith 中，打开 **沙盒 > 注册表**，选择 **注册私有注册表**，然后以 `<aws-account-id>.dkr.ecr.<aws-region>.amazonaws.com` 形式输入您的注册表 URL。
 2. 在**身份验证方法**下选择**AWS IAM 角色**。复制 LangSmith 显示的 AWS 主体 ARN 和工作区 ID。 LangSmith 使用工作空间 ID 作为 `sts:ExternalId`。
 3. 在 AWS 中，创建 IAM 角色或使用信任策略更新现有角色，该信任策略使用 LangSmith 中显示的确切值：
 
@@ -212,7 +212,19 @@ AWS IAM 角色身份验证可避免将过期的 ECR 授权令牌存储在 LangSm
 }
 ```
 
-4. 授予角色发现并拉取所需 ECR 映像的权限。以下策略授予对一个 AWS 账户和区域中每个存储库的访问权限。替换占位符，或将存储库资源缩小到LangSmith可以使用的存储库：
+> [!注意]
+>
+> **BYOC 部署：** BYOC 数据平面在承担角色时会传递会话标签，因此信任策略还必须允许 `sts:TagSession`。将其添加为不带 `sts:ExternalId` 条件的单独语句。否则 AWS 会拒绝角色假设：
+>
+> ```json theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> {
+>   "Effect": "Allow",
+>   "Principal": {
+>     "AWS": "<principal-arn-shown-in-langsmith>"
+>   },
+>   "Action": "sts:TagSession"
+> }
+> ```4. 授予角色发现并拉取所需 ECR 映像的权限。以下策略授予对一个 AWS 账户和区域中每个存储库的访问权限。替换占位符，或将存储库资源缩小到LangSmith可以使用的存储库：
 
 ```json theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 {
@@ -240,217 +252,203 @@ AWS IAM 角色身份验证可避免将过期的 ECR 授权令牌存储在 LangSm
 }
 ```
 
-5. 对于托管 LangSmith，将 `LangSmithSandboxECR=true` 标签添加到 IAM 角色。
+5. 对于托管 LangSmith 和 BYOC，将 `LangSmithSandboxECR=true` 标签添加到 IAM 角色。
 6. 返回LangSmith，在**AWS角色ARN**中输入角色ARN，然后注册私有注册表。
 
-LangSmith 分别承担存储库发现、标签发现和每个快照构建尝试的角色。它为延迟的作业和重试获取新的 ECR 授权令牌，并且不会保留临时 AWS 凭证或生成的 ECR 令牌。对于自托管部署，管理员必须设置 `SANDBOX_ECR_AWS_ROLE_PRINCIPAL_ARN` 并为平台后端和快照工作人员提供兼容的 AWS SDK 凭证源。不设置该设置会隐藏 AWS IAM 角色身份验证并保留用户名和密码身份验证。
+LangSmith 分别承担存储库发现、标签发现和每个快照构建尝试的角色。它为延迟的作业和重试获取新的 ECR 授权令牌，并且不会保留临时 AWS 凭证或生成的 ECR 令牌。
 
-## 从 Dockerfile 构建快照
+对于自托管部署，管理员必须设置 `SANDBOX_ECR_AWS_ROLE_PRINCIPAL_ARN` 并为平台后端和快照工作人员提供兼容的 AWS SDK 凭证源。不设置该设置会隐藏 AWS IAM 角色身份验证并保留用户名和密码身份验证。
 
-当您有本地 `Dockerfile` 但不想先将映像发布到注册表时，请直接从 `Dockerfile` 及其构建上下文构建快照。 LangSmith 启动一个临时构建器沙箱，上传上下文，使用 [BuildKit](https://docs.docker.com/build/buildkit/) 在其中运行构建，并将生成的图像捕获为快照。构建完成后，构建器沙箱将自动拆除。
+## 从 Dockerfile 构建快照当您有本地 `Dockerfile` 但不想先将映像发布到注册表时，请直接从 `Dockerfile` 及其构建上下文构建快照。 LangSmith 启动一个临时构建器沙箱，上传上下文，使用 [BuildKit](https://docs.docker.com/build/buildkit/) 在其中运行构建，并将生成的图像捕获为快照。构建完成后，构建器沙箱将自动拆除。
 
 该调用会阻塞，直到快照准备好为止（默认超时为 60 秒；对于大型或缓慢的构建，请提高该超时值）。 `fs_capacity_bytes` 必须足够大以容纳构建上下文、中间层和最终图像。
 
-<CodeGroup>
-  ```python Python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  from langsmith.sandbox import SandboxClient
+```python Python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+from langsmith.sandbox import SandboxClient
 
-  client = SandboxClient()
+client = SandboxClient()
 
-  snapshot = client.create_snapshot_from_dockerfile(
-      "my-app",
-      dockerfile="Dockerfile",
-      fs_capacity_bytes=2 * 1024**3,  # 2 GiB
-      context=".",  # build context directory (default: current directory)
-  )
-
-  print(snapshot.id)
-  ```
-
-  ```ts TypeScript theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  import { SandboxClient } from "langsmith/sandbox";
-
-  const client = new SandboxClient();
-
-  const snapshot = await client.createSnapshotFromDockerfile(
+snapshot = client.create_snapshot_from_dockerfile(
     "my-app",
-    "Dockerfile",
-    2_147_483_648, // 2 GiB
-    { context: "." },
-  );
+    dockerfile="Dockerfile",
+    fs_capacity_bytes=2 * 1024**3,  # 2 GiB
+    context=".",  # build context directory (default: current directory)
+)
 
-  console.log(snapshot.id);
-  ```
-</CodeGroup>
+print(snapshot.id)
+```
 
-<Note>
-  `dockerfile` 相对于 `context` 进行解析，除非您传递绝对路径，并且它必须位于上下文目录内。 `.git` 目录会自动从上传的上下文中排除。
-</Note>
+```ts TypeScript theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+import { SandboxClient } from "langsmith/sandbox";
 
-### 构建参数和目标阶段通过 `build_args` / `buildArgs` 设置 Docker `ARG` 值，并通过 `target` 在多阶段构建的特定阶段停止。
+const client = new SandboxClient();
 
-<CodeGroup>
-  ```python Python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  snapshot = client.create_snapshot_from_dockerfile(
-      "my-app",
-      dockerfile="Dockerfile",
-      fs_capacity_bytes=2 * 1024**3,
-      build_args={"PYTHON_VERSION": "3.12", "ENV": "prod"},
-      target="runtime",
-  )
-  ```
+const snapshot = await client.createSnapshotFromDockerfile(
+  "my-app",
+  "Dockerfile",
+  2_147_483_648, // 2 GiB
+  { context: "." },
+);
 
-  ```ts TypeScript theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  const snapshot = await client.createSnapshotFromDockerfile(
+console.log(snapshot.id);
+```
+
+> [!注意]
+>
+> `dockerfile` 相对于 `context` 进行解析，除非您传递绝对路径，并且它必须位于上下文目录内。 `.git` 目录会自动从上传的上下文中排除。
+
+### 构建参数和目标阶段
+
+通过 `build_args` / `buildArgs` 设置 Docker `ARG` 值，并通过 `target` 在多阶段构建的特定阶段停止。
+
+```python Python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+snapshot = client.create_snapshot_from_dockerfile(
     "my-app",
-    "Dockerfile",
-    2_147_483_648,
-    {
-      buildArgs: { PYTHON_VERSION: "3.12", ENV: "prod" },
-      target: "runtime",
-    },
-  );
-  ```
-</CodeGroup>
+    dockerfile="Dockerfile",
+    fs_capacity_bytes=2 * 1024**3,
+    build_args={"PYTHON_VERSION": "3.12", "ENV": "prod"},
+    target="runtime",
+)
+```
+
+```ts TypeScript theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+const snapshot = await client.createSnapshotFromDockerfile(
+  "my-app",
+  "Dockerfile",
+  2_147_483_648,
+  {
+    buildArgs: { PYTHON_VERSION: "3.12", ENV: "prod" },
+    target: "runtime",
+  },
+);
+```
 
 ### 流式传输构建日志
 
 将回调传递给 `on_build_log` / `onBuildLog` 以在构建运行时接收其 stdout 和 stderr，这对于显示进度或调试失败的构建很有用。
 
-<CodeGroup>
-  ```python Python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  snapshot = client.create_snapshot_from_dockerfile(
-      "my-app",
-      dockerfile="Dockerfile",
-      fs_capacity_bytes=2 * 1024**3,
-      on_build_log=lambda line: print(line, end=""),
-  )
-  ```
-
-  ```ts TypeScript theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  const snapshot = await client.createSnapshotFromDockerfile(
+```python Python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+snapshot = client.create_snapshot_from_dockerfile(
     "my-app",
-    "Dockerfile",
-    2_147_483_648,
-    { onBuildLog: (line) => process.stdout.write(line) },
-  );
-  ```
-</CodeGroup>
+    dockerfile="Dockerfile",
+    fs_capacity_bytes=2 * 1024**3,
+    on_build_log=lambda line: print(line, end=""),
+)
+```
 
-### 加速冷构建
+```ts TypeScript theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+const snapshot = await client.createSnapshotFromDockerfile(
+  "my-app",
+  "Dockerfile",
+  2_147_483_648,
+  { onBuildLog: (line) => process.stdout.write(line) },
+);
+```
 
-`vcpus` / `vCpus` 和 `mem_bytes` / `memBytes` 调整临时构建器沙箱的大小。该构建运行 BuildKit 以及其中的本机快照程序的层副本，这些副本会争夺构建器的默认 0.5 vCPU，因此为构建器提供更多 CPU 可以大幅缩短冷构建的挂起时间。内存以每个 vCPU 4 GiB 与 CPU 绑定，并且必须保持在该目标的 50% 以内，因此 2-vCPU 构建器接受 4 到 12 GiB。省略记忆，它遵循比例。
+### 加速冷构建`vcpus` / `vCpus` 和 `mem_bytes` / `memBytes` 调整临时构建器沙箱的大小。该构建运行 BuildKit 以及其中的本机快照程序的层副本，这些副本会争夺构建器的默认 0.5 vCPU，因此为构建器提供更多 CPU 可以大幅缩短冷构建的挂起时间。内存以每个 vCPU 4 GiB 与 CPU 绑定，并且必须保持在该目标的 50% 以内，因此 2-vCPU 构建器接受 4 到 12 GiB。省略记忆，它遵循比例。
 
-<CodeGroup>
-  ```python Python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  snapshot = client.create_snapshot_from_dockerfile(
-      "my-app",
-      dockerfile="Dockerfile",
-      fs_capacity_bytes=2 * 1024**3,
-      vcpus=2,
-      mem_bytes=8 * 1024**3,  # 8 GiB
-      timeout=600,
-  )
-  ```
-
-  ```ts TypeScript theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  const snapshot = await client.createSnapshotFromDockerfile(
+```python Python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+snapshot = client.create_snapshot_from_dockerfile(
     "my-app",
-    "Dockerfile",
-    2_147_483_648,
-    {
-      vCpus: 2,
-      memBytes: 8_589_934_592, // 8 GiB
-      timeout: 600,
-    },
-  );
-  ```
-</CodeGroup>
+    dockerfile="Dockerfile",
+    fs_capacity_bytes=2 * 1024**3,
+    vcpus=2,
+    mem_bytes=8 * 1024**3,  # 8 GiB
+    timeout=600,
+)
+```
 
-<Tip>
-  同步 `SandboxClient` 和 `AsyncSandboxClient` 都在异步客户端上使用相同的参数 — `await client.create_snapshot_from_dockerfile(...)` 公开此方法。
-</Tip>
+```ts TypeScript theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+const snapshot = await client.createSnapshotFromDockerfile(
+  "my-app",
+  "Dockerfile",
+  2_147_483_648,
+  {
+    vCpus: 2,
+    memBytes: 8_589_934_592, // 8 GiB
+    timeout: 600,
+  },
+);
+```
 
-## 从正在运行的沙箱捕获快照从现有快照启动沙箱，安装软件包或准备数据，然后捕获结果作为新快照。返回的快照将其 `source_sandbox_id` 设置为从中捕获它的沙箱，并且可以用作任何后续 `create_sandbox` 调用的 `snapshot_id`。
+> [!提示]
+>
+> 同步 `SandboxClient` 和 `AsyncSandboxClient` 都在异步客户端上使用相同的参数 — `await client.create_snapshot_from_dockerfile(...)` 公开此方法。
 
-<CodeGroup>
-  ```python Python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  sb = client.create_sandbox(snapshot_id=base_snapshot_id, name="setup-box")
-  sb.run("pip install numpy pandas scikit-learn", timeout=180)
-  sb.write("/opt/config.yaml", "model: gpt-5\n")
+## 从正在运行的沙箱捕获快照
 
-  # Capture the current filesystem as a new snapshot
-  snapshot = sb.capture_snapshot("ml-ready")
-  print(snapshot.id, snapshot.source_sandbox_id)
+从现有快照启动沙箱，安装软件包或准备数据，然后捕获结果作为新快照。返回的快照将其 `source_sandbox_id` 设置为从中捕获它的沙箱，并且可以用作任何后续 `create_sandbox` 调用的 `snapshot_id`。
 
-  sb.delete()
+```python Python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+sb = client.create_sandbox(snapshot_id=base_snapshot_id, name="setup-box")
+sb.run("pip install numpy pandas scikit-learn", timeout=180)
+sb.write("/opt/config.yaml", "model: gpt-5\n")
 
-  # Boot fresh sandboxes pre-loaded with those dependencies
-  with client.sandbox(snapshot_id=snapshot.id) as sb:
-      sb.run("python -c 'import numpy; print(numpy.__version__)'")
-      assert sb.read("/opt/config.yaml") == b"model: gpt-5\n"
-  ```
+# Capture the current filesystem as a new snapshot
+snapshot = sb.capture_snapshot("ml-ready")
+print(snapshot.id, snapshot.source_sandbox_id)
 
-  ```ts TypeScript theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  const running = await client.createSandbox(baseSnapshotId, { name: "setup-box" });
-  await running.run("pip install numpy pandas scikit-learn", { timeout: 180 });
-  await running.write("/opt/config.yaml", "model: gpt-5\n");
+sb.delete()
 
-  const snapshot = await running.captureSnapshot("ml-ready");
-  console.log(snapshot.id, snapshot.source_sandbox_id);
+# Boot fresh sandboxes pre-loaded with those dependencies
+with client.sandbox(snapshot_id=snapshot.id) as sb:
+    sb.run("python -c 'import numpy; print(numpy.__version__)'")
+    assert sb.read("/opt/config.yaml") == b"model: gpt-5\n"
+```
 
-  await running.delete();
+```ts TypeScript theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+const running = await client.createSandbox(baseSnapshotId, { name: "setup-box" });
+await running.run("pip install numpy pandas scikit-learn", { timeout: 180 });
+await running.write("/opt/config.yaml", "model: gpt-5\n");
 
-  const sandbox = await client.createSandbox(snapshot.id);
-  try {
-    await sandbox.run("python -c 'import numpy; print(numpy.__version__)'");
-    const cfg = await sandbox.read("/opt/config.yaml");
-    console.log(new TextDecoder().decode(cfg));
-  } finally {
-    await sandbox.delete();
-  }
-  ```
-</CodeGroup>
+const snapshot = await running.captureSnapshot("ml-ready");
+console.log(snapshot.id, snapshot.source_sandbox_id);
 
-<Note>
-  默认情况下，捕获仅保留**文件系统**。已安装的软件包（在`/usr/local`、`/root`、`/opt`、主目录等下）和写入这些位置的文件将被保留，就像`/tmp`一样。只有 `/dev/shm` 是 tmpfs，因此其他所有内容都位于沙箱的磁盘上。正在运行的进程、打开的套接字和内存中的状态都不会被保留：启动新的沙箱并再次启动您需要的进程，或者[capture memory too](#resume-from-memory)。
-</Note>
+await running.delete();
 
-<Tip>
-  您可以通过**名称**而不是 ID 从快照启动沙箱 - 当您知道捕获的人类可读标签时会很方便：
+const sandbox = await client.createSandbox(snapshot.id);
+try {
+  await sandbox.run("python -c 'import numpy; print(numpy.__version__)'");
+  const cfg = await sandbox.read("/opt/config.yaml");
+  console.log(new TextDecoder().decode(cfg));
+} finally {
+  await sandbox.delete();
+}
+```> [!注意]
+>
+> 默认情况下，捕获仅保留**文件系统**。已安装的软件包（在`/usr/local`、`/root`、`/opt`、主目录等下）和写入这些位置的文件将被保留，就像`/tmp`一样。只有 `/dev/shm` 是 tmpfs，因此其他所有内容都位于沙箱的磁盘上。正在运行的进程、打开的套接字和内存中的状态都不会被保留：启动新的沙箱并再次启动您需要的进程，或者[capture memory too](#resume-from-memory)。
 
-  <CodeGroup>
-    ```python Python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-    sb = client.create_sandbox(snapshot_name="ml-ready")
-    ```
-
-    ```ts TypeScript theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-    const sb = await client.createSandbox({ snapshotName: "ml-ready" });
-    ```
-  </CodeGroup>
-
-  最多传递 `snapshot_id` / `snapshot_name` 之一（或 TypeScript 中的 `snapshotId` / `snapshotName`）。省略两者以使用默认运行时。
-</Tip>
+> [!提示]
+>
+> 您可以通过**名称**而不是 ID 从快照启动沙箱 - 当您知道捕获的人类可读标签时会很方便：
+>
+> ```python Python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> sb = client.create_sandbox(snapshot_name="ml-ready")
+> ```
+>
+> ```ts TypeScript theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> const sb = await client.createSandbox({ snapshotName: "ml-ready" });
+> ```
+>
+> 最多传递 `snapshot_id` / `snapshot_name` 之一（或 TypeScript 中的 `snapshotId` / `snapshotName`）。省略两者以使用默认运行时。
 
 ### 调整捕捉时间
 
 `capture_snapshot` 会阻塞，直到新快照准备就绪。如果您的文件系统很大或者存储后端很慢，请提高 `timeout` kwarg （默认 60 秒）。
 
-<CodeGroup>
-  ```python Python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  snapshot = sb.capture_snapshot("ml-ready-v2", timeout=600)
-  ``````ts TypeScript theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  const snapshot = await sb.captureSnapshot("ml-ready-v2", { timeout: 600 });
-  ```
-</CodeGroup>
+```python Python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+snapshot = sb.capture_snapshot("ml-ready-v2", timeout=600)
+```
+
+```ts TypeScript theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+const snapshot = await sb.captureSnapshot("ml-ready-v2", { timeout: 600 });
+```
 
 ### 从内存中恢复
 
-快照可以携带沙箱的 RAM 及其文件系统。从其中之一启动，沙箱将从中断处恢复，其进程仍在运行，而不是冷启动。将此用于预热缓慢的环境，例如加载的模型或启动的数据库。
-
-<Note>
-  内存快照仅可通过 REST API 获取。 `langsmith.sandbox` Python 和 TypeScript 客户端尚未公开这些字段。
-</Note>
+快照可以携带沙箱的 RAM 及其文件系统。从其中之一启动，沙箱将从中断处恢复，其进程仍在运行，而不是冷启动。将此用于预热缓慢的环境，例如加载的模型或启动的数据库。> [!注意]
+>
+> 内存快照仅可通过 REST API 获取。 `langsmith.sandbox` Python 和 TypeScript 客户端尚未公开这些字段。
 
 通过在捕获上设置 `include_memory` 来捕获内存：
 
@@ -462,11 +460,13 @@ curl -X POST \
   -d '{"name": "warm-model", "include_memory": true}'
 ```
 
-当内存被捕获时，响应报告`memory_snapshot_size_bytes`。 `include_memory`需要一个正在运行或停止的沙箱，并且它不能与`checkpoint`或`docker_image`结合使用。
+当内存被捕获时，响应报告`memory_snapshot_size_bytes`。 `include_memory` 需要一个正在运行或停止的沙箱，并且它不能与 `checkpoint` 或 `docker_image` 结合使用。
 
 一些沙箱在无法携带内存映像的覆盖文件系统运行时上运行。捕获一个会返回`include_memory is not supported for overlay-rootfs sandboxes`。 LangSmith 分配该运行时，因此它不是您为每个沙箱选择的东西。
 
-create 上的两个字段控制另一半：|领域 |它有什么作用 |
+create 上的两个字段控制另一半：
+
+|领域|它有什么作用 |
 | - | - |
 | `restore_memory` |当快照有它时忽略它以从内存中恢复，而在没有它时冷启动。 `true` 需要内存，如果快照没有内存，则请求失败。 `false` 始终冷启动。 |
 | `preserve_memory_on_stop` | `true` 在自愿停止（空闲超时或显式停止）时暂停 RAM，以便沙箱在下次唤醒时从中断处恢复，而不是冷启动。默认为`false`，仅保留文件系统。无论哪种方式，由基础设施维护触发的重新启动都会保留内存。 |
@@ -481,77 +481,71 @@ curl -X POST "$LANGSMITH_ENDPOINT/api/v2/sandboxes/boxes" \
     "restore_memory": true,
     "preserve_memory_on_stop": true
   }'
-```
-
-仅当使用 `preserve_memory_on_stop` 创建沙箱时，才能从 **停止的** 沙箱捕获内存。如果没有它，停止会丢弃 RAM，并且没有任何内容可捕获。
+```仅当使用 `preserve_memory_on_stop` 创建沙箱时，才能从 **停止的** 沙箱捕获内存。如果没有它，停止会丢弃 RAM，并且没有任何内容可捕获。
 
 ## 列出、获取和删除快照
 
-<CodeGroup>
-  ```python Python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  # List all snapshots in the workspace
-  snapshots = client.list_snapshots()
-  for s in snapshots:
-      print(s.id, s.name, s.status)
+```python Python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+# List all snapshots in the workspace
+snapshots = client.list_snapshots()
+for s in snapshots:
+    print(s.id, s.name, s.status)
 
-  # Fetch a single snapshot by ID
-  snapshot = client.get_snapshot("550e8400-e29b-41d4-a716-446655440000")
+# Fetch a single snapshot by ID
+snapshot = client.get_snapshot("550e8400-e29b-41d4-a716-446655440000")
 
-  # Delete a snapshot (fails if any sandbox still references it)
-  client.delete_snapshot(snapshot.id)
-  ```
+# Delete a snapshot (fails if any sandbox still references it)
+client.delete_snapshot(snapshot.id)
+```
 
-  ```ts TypeScript theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  const snapshots = await client.listSnapshots();
-  for (const s of snapshots) {
-    console.log(s.id, s.name, s.status);
-  }
+```ts TypeScript theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+const snapshots = await client.listSnapshots();
+for (const s of snapshots) {
+  console.log(s.id, s.name, s.status);
+}
 
-  const snapshot = await client.getSnapshot("550e8400-e29b-41d4-a716-446655440000");
+const snapshot = await client.getSnapshot("550e8400-e29b-41d4-a716-446655440000");
 
-  await client.deleteSnapshot(snapshot.id);
-  ```
-</CodeGroup>
+await client.deleteSnapshot(snapshot.id);
+```
 
-<Note>
-  `list_snapshots` / `listSnapshots` 在服务器端分页（默认页面大小 50，最大 500）并接受可选过滤器：`name_contains` / `nameContains`（名称中不区分大小写的子字符串）、`limit` (1–500) 和 `offset` (≥ 0）。通过前进 `offset` 翻页结果。
+> [!注意]
+>
+> `list_snapshots` / `listSnapshots` 在服务器端分页（默认页面大小 50，最大 500）并接受可选过滤器：`name_contains` / `nameContains`（名称中不区分大小写的子字符串）、`limit` (1–500) 和 `offset` (≥ 0）。通过前进 `offset` 翻页结果。
+>
+> ```python Python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> page = client.list_snapshots(name_contains="ml", limit=100)
+> ```
+>
+> ```ts TypeScript theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> const page = await client.listSnapshots({ nameContains: "ml", limit: 100 });
+> ```
 
-  <CodeGroup>
-    ```python Python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-    page = client.list_snapshots(name_contains="ml", limit=100)
-    ```
+## 停止沙箱
 
-    ```ts TypeScript theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-    const page = await client.listSnapshots({ nameContains: "ml", limit: 100 });
-    ```
-  </CodeGroup>
-</Note>
+停止的沙箱会保留其文件系统，下一个请求会自动唤醒它。您不需要自己启动它：发送您想要运行的命令，沙箱就会回来为其提供服务。
 
-## 停止沙箱停止的沙箱会保留其文件系统，下一个请求会自动唤醒它。您不需要自己启动它：发送您想要运行的命令，沙箱就会回来为其提供服务。
+```python Python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+sb = client.create_sandbox(snapshot_id=snapshot.id, name="my-vm")
+sb.run("echo 'hello' > /tmp/state.txt")
 
-<CodeGroup>
-  ```python Python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  sb = client.create_sandbox(snapshot_id=snapshot.id, name="my-vm")
-  sb.run("echo 'hello' > /tmp/state.txt")
+# Stop early to release resources. The idle timeout does this for you.
+sb.stop()
 
-  # Stop early to release resources. The idle timeout does this for you.
-  sb.stop()
+# No start call: this wakes the sandbox and runs once it is up.
+result = sb.run("cat /tmp/state.txt")
+assert result.stdout.strip() == "hello"
+```
 
-  # No start call: this wakes the sandbox and runs once it is up.
-  result = sb.run("cat /tmp/state.txt")
-  assert result.stdout.strip() == "hello"
-  ```
+```ts TypeScript theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+const sb = await client.createSandbox(snapshot.id, { name: "my-vm" });
+await sb.run("echo 'hello' > /tmp/state.txt");
 
-  ```ts TypeScript theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  const sb = await client.createSandbox(snapshot.id, { name: "my-vm" });
-  await sb.run("echo 'hello' > /tmp/state.txt");
+await sb.stop();
 
-  await sb.stop();
-
-  const result = await sb.run("cat /tmp/state.txt");
-  console.log(result.stdout.trim()); // "hello"
-  ```
-</CodeGroup>
+const result = await sb.run("cat /tmp/state.txt");
+console.log(result.stdout.trim()); // "hello"
+```
 
 停止后的第一个请求会支付启动成本，因此它比后面的请求慢。使用 `preserve_memory_on_stop` 到 [resume from memory](#resume-from-memory) 创建沙箱，而不是冷启动。
 
@@ -563,12 +557,6 @@ curl -X POST "$LANGSMITH_ENDPOINT/api/v2/sandboxes/boxes" \
 
 ***
 
-<div>
-  <Callout icon="terminal-2">
-    [Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
-  </Callout>
+[Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
 
-  <Callout icon="edit">
-    [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/sandbox-snapshots.mdx) 或[file an issue](https://github.com/langchain-ai/docs/issues/new/choose)。
-  </Callout>
-</div>
+[Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/sandbox-snapshots.mdx) 或 [file an issue](https://github.com/langchain-ai/docs/issues/new/choose)。

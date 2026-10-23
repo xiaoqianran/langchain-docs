@@ -31,6 +31,8 @@ Given the constant rate of change in the field, LangChain has also evolved over 
 
 **2022-10-24**
 
+v0.0.1
+
 A month before ChatGPT, **LangChain was launched as a Python package**. It consisted of two main components:
 
 * LLM abstractions
@@ -76,6 +78,8 @@ The main issue with building agents is getting them to be reliable, and LangSmit
 
 **2024-01**
 
+v0.1.0
+
 **LangChain releases 0.1.0**, its first non-0.0.x.
 
 The industry matured from prototypes to production, and as such, LangChain increased its focus on stability.
@@ -108,6 +112,8 @@ Models started to accept files, images, videos, and more. We updated the `langch
 
 **2025-10-20**
 
+v1.0.0
+
 **LangChain releases 1.0** with two major changes:
 
 1. Complete revamp of all chains and agents in `langchain`. All chains and agents are now replaced with only one high level abstraction: an agent abstraction built on top of LangGraph. This was the high-level abstraction that was originally created in LangGraph, but just moved to LangChain.
@@ -117,6 +123,8 @@ Models started to accept files, images, videos, and more. We updated the `langch
 2. A standard message content format: Model APIs evolved from returning messages with a simple content string to more complex output types - reasoning blocks, citations, server-side tool calls, etc. LangChain evolved its message formats to standardize these across providers.
 
 **2026-03-15**
+
+v0.5.3
 
 **Deep Agents is released** as an open-source agent harness built on LangGraph.
 

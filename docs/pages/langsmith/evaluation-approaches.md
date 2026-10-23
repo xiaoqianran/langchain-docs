@@ -10,7 +10,7 @@ Below, we will discuss evaluation of a few popular types of LLM applications.
 
 ![Tool use](https://mintcdn.com/langchain-5e9cc07a/ImHGLQW1HnQYwnJV/langsmith/images/tool-use.png?fit=max\&auto=format\&n=ImHGLQW1HnQYwnJV\&q=85\&s=a1c10f940f40ad89c90de8fae3607c1f)
 
-Below is a tool-calling agent in [LangGraph](https://langchain-ai.github.io/langgraph/tutorials/introduction/). The `assistant node` is an LLM that determines whether to invoke a tool based upon the input. The `tool condition` sees if a tool was selected by the `assistant node` and, if so, routes to the `tool node`. The `tool node` executes the tool and returns the output as a tool message to the `assistant node`. This loop continues as long as the `assistant node` selects a tool. If no tool is selected, then the agent directly returns the LLM response.
+Below is a tool-calling agent in [LangGraph](/oss/python/langgraph/quickstart). The `assistant node` is an LLM that determines whether to invoke a tool based upon the input. The `tool condition` sees if a tool was selected by the `assistant node` and, if so, routes to the `tool node`. The `tool node` executes the tool and returns the output as a tool message to the `assistant node`. This loop continues as long as the `assistant node` selects a tool. If no tool is selected, then the agent directly returns the LLM response.
 
 ![Agent](https://mintcdn.com/langchain-5e9cc07a/4kN8yiLrZX_amfFn/langsmith/images/langgraph-agent.png?fit=max\&auto=format\&n=4kN8yiLrZX_amfFn\&q=85\&s=37f3c09958c1e2543f633c59cc89df36)
 

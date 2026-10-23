@@ -254,7 +254,7 @@ read the [**streaming guide**](/oss/python/langgraph/streaming) section for more
 
 Example of using the streaming API to stream value chunks from a workflow run.
 
-```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 config = {"configurable": {"thread_id": str(uuid7())}}
 
 stream = main.stream_events({"x": 5}, config=config, version="v3")
@@ -787,7 +787,7 @@ An example of a simple chatbot using the functional API and the [`InMemorySaver`
 The bot is able to remember the previous conversation and continue from where it left off.
 
 ```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-from langchain.messages import BaseMessage
+from langchain_core.messages import BaseMessage
 from langgraph.graph import add_messages
 from langgraph.func import entrypoint, task
 from langgraph.checkpoint.memory import InMemorySaver

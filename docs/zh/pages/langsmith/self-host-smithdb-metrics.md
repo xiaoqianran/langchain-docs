@@ -6,15 +6,15 @@
 
 每个 SmithDB 组件需要关注的指标、它们测量的内容以及如何读取它们。
 
-SmithDB 组件在每个 pod 的 HTTP 端口上的 `/metrics` 处公开 Prometheus 指标。本页列出了每个组件值得关注的指标以及如何阅读它们。有关抓取和导出配置，请参阅[Configure SmithDB observability](/langsmith/self-host-smithdb-observability)。
+SmithDB 组件在每个 Pod 的 HTTP 端口上的 `/metrics` 处公开 Prometheus 指标。本页列出了每个组件值得关注的指标以及如何阅读它们。有关抓取和导出配置，请参阅[Configure SmithDB observability](/langsmith/self-host-smithdb-observability)。
 
 名称与`/metrics` 上显示的名称相同。如果您的收集器添加了命名空间或前缀，请进行相应调整。
 
 有关选项卡式 Datadog 和 Grafana 仪表板及其收集要求，请参阅 [Monitor self-hosted LangSmith with Datadog or Grafana](/langsmith/self-host-observability-dashboards)。对于没有本机选项卡的 Grafana 安装，[standalone SmithDB dashboard](https://github.com/langchain-ai/helm/blob/main/charts/langsmith/examples/langsmith-observability/components/smithdb/grafana.json) 使用经典格式。
 
-<Note>
-  本页涵盖 SmithDB 发出的指标。 OOM 终止、容器重新启动、CPU 和内存超出限制以及缓存磁盘使用等 Kubernetes 信号值得警惕，但来自您的基础设施监控，而不是来自 SmithDB。
-</Note>
+> [!注意]
+>
+> 本页涵盖 SmithDB 发出的指标。 OOM 终止、容器重新启动、CPU 和内存超出限制以及缓存磁盘使用等 Kubernetes 信号值得警惕，但来自您的基础设施监控，而不是来自 SmithDB。
 
 ## 基线指标
 
@@ -90,12 +90,8 @@ SmithDB 组件在每个 pod 的 HTTP 端口上的 `/metrics` 处公开 Prometheu
 | `langsmith_ingestion_worker_to_store_latency_seconds` |直方图|单独存储写入时间。将 SmithDB 与队列延迟隔离。 |
 | `langsmith_asynq_ingestion_queue_pending` |仪表|任务在 LangSmith 摄取队列中等待，然后工作人员将其拾取。持续增长意味着队列无法跟上 SmithDB 上游的到达速度。 |
 
-***<div>
-  <Callout icon="terminal-2">
-    [Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
-  </Callout>
+***
 
-  <Callout icon="edit">
-    [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/self-host-smithdb-metrics.mdx) 或 [file an issue](https://github.com/langchain-ai/docs/issues/new/choose)。
-  </Callout>
-</div>
+[Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
+
+[Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/self-host-smithdb-metrics.mdx) 或 [file an issue](https://github.com/langchain-ai/docs/issues/new/choose)。

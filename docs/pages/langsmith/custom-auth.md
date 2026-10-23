@@ -142,7 +142,7 @@ def my_node(state, config):
 
 ### Authorizing a user for Studio
 
-By default, if you add custom authorization on your resources, this will also apply to interactions made from [Studio](/langsmith/studio). If you want, you can handle logged-in Studio users differently by checking [is\_studio\_user()](https://langchain-ai.github.io/langgraph/cloud/reference/sdk/python_sdk_ref/#langgraph_sdk.auth.types.StudioUser).
+By default, if you add custom authorization on your resources, this will also apply to interactions made from [Studio](/langsmith/studio). If you want, you can handle logged-in Studio users differently by checking [is\_studio\_user()](https://reference.langchain.com/python/langgraph-sdk/auth/types/StudioUser).
 
 > [!NOTE]
 >

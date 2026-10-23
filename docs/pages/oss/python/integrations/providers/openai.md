@@ -38,7 +38,7 @@ This page covers all LangChain integrations with [OpenAI](https://en.wikipedia.o
 >
 > Wrapper for (legacy) OpenAI text completion models hosted on Azure.
 
-> **[OpenAIModerationChain](https://python.langchain.com/v0.1/docs/guides/productionization/safety/moderation)**
+> **[OpenAIModerationMiddleware](/oss/python/integrations/middleware/openai#content-moderation)**
 >
 > Detect text that could be hateful, violent, etc.
 

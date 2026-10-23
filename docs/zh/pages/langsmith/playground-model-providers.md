@@ -4,6 +4,8 @@
 
 # 模型提供者
 
+为 LangSmith Playground 和 LLM-as-a-judge 评估器配置模型提供程序。
+
 [Playground](/langsmith/prompt-engineering-concepts#playground) 支持多种模型提供商。您可以选择提供商，配置您的首选设置，然后保存这些配置以在多个提示中重复使用。
 
 使用此页面获取可用提供程序及其配置选项的列表：
@@ -25,6 +27,12 @@ Anthropic
 天蓝色OpenAI
 
 [Open](#azure-openai)
+
+![](https://mintcdn.com/langchain-5e9cc07a/DZppvehciQnv8nQN/images/providers/light/databricks.svg?fit=max\&auto=format\&n=DZppvehciQnv8nQN\&q=85\&s=7b12c7b8a9564bf7e804f523c2365cc3)
+
+数据块
+
+[Open](#databricks)
 
 ![](https://mintcdn.com/langchain-5e9cc07a/ZPKed1feKJ8F6LVo/images/providers/light/deepseek.svg?fit=max\&auto=format\&n=ZPKed1feKJ8F6LVo\&q=85\&s=5a11e956e2ba24fd746aebd929ee1a5e)
 
@@ -86,11 +94,11 @@ OpenAI
 
 Amazon Bedrock 支持三种身份验证方法。 **IAM 可信实体是推荐的方法**，因为它避免与 LangSmith 共享长期的 AWS 访问密钥。
 
-#### IAM 可信实体（推荐）
-
-> [!注意]
+#### IAM 可信实体（推荐）> [!注意]
 >
-> **不适用于 [self-hosted LangSmith](/langsmith/self-hosted) 或 [BYOC](/langsmith/byoc)。** 请改用访问密钥或 Bedrock API 密钥。通过 IAM 可信实体身份验证，您可以在 AWS 账户中创建 IAM 角色并允许 LangSmith 代入该角色。 LangSmith 中不存储访问密钥。相反，LangSmith 使用 [AWS STS](https://docs.aws.amazon.com/STS/latest/APIReference/welcome.html) 承担每个请求的角色。
+> **不适用于 [self-hosted LangSmith](/langsmith/self-hosted) 或 [BYOC](/langsmith/byoc)。** 请改用访问密钥或 Bedrock API 密钥。
+
+通过 IAM 可信实体身份验证，您可以在 AWS 账户中创建 IAM 角色并允许 LangSmith 代入该角色。 LangSmith 中不存储访问密钥。相反，LangSmith 使用[AWS STS](https://docs.aws.amazon.com/STS/latest/APIReference/welcome.html) 来承担每个请求的角色。
 
 要进行此设置：
 
@@ -127,11 +135,11 @@ Amazon Bedrock 支持三种身份验证方法。 **IAM 可信实体是推荐的�
 
 有关信任策略的更多详细信息，请参阅[AWS documentation](https://aws.amazon.com/blogs/security/how-to-use-trust-policies-with-iam-roles/)。
 
-#### 访问键
+#### 访问键或者，您可以使用 AWS 访问密钥（`AWS_ACCESS_KEY_ID` 和 `AWS_SECRET_ACCESS_KEY`）进行身份验证。在 Playground 的基岩提供程序配置中输入这些内容。此方法设置更简单，但安全性较低，因为它需要存储长期凭据。
 
-或者，您可以使用 AWS 访问密钥（`AWS_ACCESS_KEY_ID` 和 `AWS_SECRET_ACCESS_KEY`）进行身份验证。在 Playground 的基岩提供程序配置中输入这些内容。此方法设置更简单，但安全性较低，因为它需要存储长期凭据。
+#### 基岩 API 密钥
 
-#### 基岩 API 密钥Bedrock API 密钥使用不记名令牌而不是 AWS 凭证对请求进行身份验证。配置 Bedrock API 密钥：
+Bedrock API 密钥使用不记名令牌而不是 AWS 凭证对请求进行身份验证。配置 Bedrock API 密钥：
 
 1. Amazon Bedrock 控制台中的[Generate an API key](https://docs.aws.amazon.com/bedrock/latest/userguide/api-keys.html)。
 2. 在 LangSmith 中，导航至 **设置** > **集成** > **提供商机密**，然后选择 **+ 机密**。
@@ -145,7 +153,7 @@ Amazon Bedrock 支持三种身份验证方法。 **IAM 可信实体是推荐的�
 
 AWS Bedrock 提供对来自多个提供商的基础模型的访问：
 
-* **Anthropic：** 克劳德型号。
+* **Anthropic：** 克劳德模型。
 * **亚马逊：** 泰坦型号。
 * **连贯：** 命令模型。
 * **元：** 骆驼模型。
@@ -157,9 +165,7 @@ AWS Bedrock 提供对来自多个提供商的基础模型的访问：
 
 参数取决于底层模型提供者：
 
-#### 适用于 Anthropic 型号
-
-使用 Anthropic 配置（请参阅下面的 [Anthropic](#anthropic) 部分）。
+#### 适用于 Anthropic 型号使用 Anthropic 配置（请参阅下面的 [Anthropic](#anthropic) 部分）。
 
 #### 对于亚马逊泰坦
 
@@ -167,7 +173,9 @@ AWS Bedrock 提供对来自多个提供商的基础模型的访问：
 | - | - | - |
 | **温度** | 0.0 - 1.0 |响应随机性 |
 | **最大代币** | 1+ |最大响应长度|
-| **顶P** | 0.0 - 1.0 |细胞核取样 |#### AWS 特定设置
+| **顶P** | 0.0 - 1.0 |细胞核取样 |
+
+#### AWS 特定设置
 
 * **区域：** 用于模型部署的 AWS 区域。
 
@@ -194,9 +202,7 @@ Anthropic 提供 Claude 一代的三层型号：
 
 有关当前可用型号的列表，请参阅[Anthropic documentation](https://docs.anthropic.com/claude/docs/models-overview)。
 
-### 配置参数
-
-|参数|范围 |默认|描述 |
+### 配置参数|参数|范围 |默认|描述 |
 | - | - | - | - |
 | **温度** | 0.0 - 1.0 |可选|随机性控制（取消选中以使用模型默认值）|
 | **最大输出代币** | 1+ | 1024 | 1024最大响应长度|
@@ -207,11 +213,13 @@ Anthropic 提供 Claude 一代的三层型号：
 >
 > 温度、Top P 和 Top K 可选。未选中时，Claude 使用其内部默认值。
 
-#### 延伸思考适用于受支持的 Claude 型号。使模型能够在响应之前显示推理，类似于OpenAI的o系列。
+#### 延伸思考
+
+适用于受支持的 Claude 型号。使模型能够在响应之前显示推理，类似于OpenAI的o系列。
 
 |参数|范围 |描述 |
 | - | - | - |
-| **启用扩展思维** |切换 |显示/隐藏思维过程 |
+| **启用扩展思维** |切换|显示/隐藏思维过程 |
 | **预算代币** | 1+ |思考的最大令牌数（默认值：1024）|
 
 启用后，响应包括：
@@ -228,9 +236,7 @@ Anthropic 提供 Claude 一代的三层型号：
 * **支持的工具选择：** `auto`、`any`（至少需要一种工具）。
 * **并行执行：** 否（仅顺序执行）。
 
-## 天蓝色OpenAI
-
-在使用此模型之前，请创建一个[Azure OpenAI resource and model deployment](https://learn.microsoft.com/en-us/azure/ai-services/openai/quickstart)。
+## 天蓝色OpenAI在使用此模型之前，请创建一个[Azure OpenAI resource and model deployment](https://learn.microsoft.com/en-us/azure/ai-services/openai/quickstart)。
 
 ### 身份验证
 
@@ -238,13 +244,15 @@ Anthropic 提供 Claude 一代的三层型号：
 
 在 Azure OpenAI 提供程序配置中，输入端点、部署名称、API 版本和 API 密钥。
 
-#### 自托管 LangSmith 的工作负载身份
+#### 自托管 LangSmith 的工作负载标识
 
 > [!注意]
 >
 > Azure OpenAI 工作负载身份需要在 Azure Kubernetes 服务 (AKS) 上自托管 LangSmith `0.16.58` 或更高版本。
 
-使用 [AKS workload identity](https://learn.microsoft.com/en-us/azure/aks/workload-identity-overview) 进行身份验证，无需存储 API 密钥：1. 在 AKS 群集上启用 OIDC 颁发者和工作负载身份。
+使用 [AKS workload identity](https://learn.microsoft.com/en-us/azure/aks/workload-identity-overview) 进行身份验证，无需存储 API 密钥：
+
+1. 在 AKS 群集上启用 OIDC 颁发者和工作负载身份。
 2. 创建或选择用户分配的托管身份。
 3. 将 [federated identity credential](https://learn.microsoft.com/en-us/azure/aks/workload-identity-deploy-cluster#create-the-federated-identity-credential) 添加到托管身份。使用 AKS OIDC 发行者和受众 `api://AzureADTokenExchange`。将其主题设置为`system:serviceaccount:<namespace>:<playground-service-account-name>`。
 4. 为托管身份分配最低权限 `Cognitive Services OpenAI User` 角色。将角色范围限定为 Azure OpenAI 资源。参见[Azure OpenAI role-based access control](https://learn.microsoft.com/en-us/azure/ai-services/openai/how-to/role-based-access-control)。
@@ -260,15 +268,15 @@ playground:
       azure.workload.identity/use: "true"
 ```
 
-在 Azure OpenAI 提供程序配置中，输入端点、部署名称和 API 版本。将 API 密钥留空。
-
-当未提供显式 API 密钥或令牌提供程序时，LangSmith 自动使用 Playground 工作负载身份。它获取用于 Playground 调用和评估器批量调用的短期令牌。显式凭据优先于工作负载身份。
+在 Azure OpenAI 提供程序配置中，输入端点、部署名称和 API 版本。将 API 密钥留空。当未提供显式 API 密钥或令牌提供程序时，LangSmith 自动使用 Playground 工作负载身份。它获取用于 Playground 调用和评估器批量调用的短期令牌。显式凭据优先于工作负载身份。
 
 工作负载身份令牌仅限于端口 `443` 上的 HTTPS Azure AI 和 Azure OpenAI 端点。每个配置必须使用一个受支持的 Azure 云：公共云、美国政府云或中国云。 LangSmith 拒绝混合 Azure 云的无效端点和配置。
 
 有关更广泛的 AKS 部署指南，请参阅 [Self-host LangSmith on Azure](/langsmith/azure-self-hosted)。
 
-### 可用型号Azure OpenAI 提供与 OpenAI 相同的型号系列：
+### 可用型号
+
+Azure OpenAI 提供与 OpenAI 相同的型号系列：
 
 * **GPT 系列：** 通用聊天模型。
 * **o 系列：** 以推理为中心的模型。
@@ -282,9 +290,7 @@ playground:
 
 Azure OpenAI 支持与 OpenAI 相同的参数：
 
-#### 标准参数
-
-|参数|范围 |描述 |
+#### 标准参数|参数|范围 |描述 |
 | - | - | - |
 | **温度** | 0.0 - 2.0 |控制随机性。较低=更专注，较高=更具创造力。 |
 | **最大输出代币** | 1+ |响应的最大长度 |
@@ -299,12 +305,12 @@ Azure OpenAI 支持与 OpenAI 相同的参数：
 
 **服务等级：** 适用于较新的型号。
 
-**其他参数：*** **JSON 模式：** 强制有效的 JSON 响应。
+**其他参数：**
+
+* **JSON 模式：** 强制有效的 JSON 响应。
 * **并行工具调用：** 同时执行多个工具。
 
-#### Azure 特定功能
-
-* **部署管理：** 模型在使用前必须进行部署。
+#### Azure 特定功能* **部署管理：** 模型在使用前必须进行部署。
 * **区域可用性：** 选择 Azure 区域作为数据驻留。
 * **内容过滤：** 内置内容审核和安全功能。
 * **托管身份：** Azure AD 身份验证支持。
@@ -314,6 +320,31 @@ Azure OpenAI 支持与 OpenAI 相同的参数：
 
 * **支持的工具选择：** `auto`、`required`、`none` 或特定工具名称。
 * **并行执行：** 是的。
+
+## 数据块
+
+在使用此模型之前，请确保您有一个 Databricks 工作区和一个 [access token](https://docs.databricks.com/aws/en/dev-tools/auth/pat)。
+
+### 可用型号
+
+Databricks 提供的基础模型包括 Claude、GPT、Gemini 和 Llama。
+
+有关当前可用型号的列表，请参阅[Databricks' model documentation](https://docs.databricks.com/aws/en/machine-learning/foundation-model-apis/supported-models)。
+
+### 配置参数|参数|价值|描述 |
+| - | - | - |
+| **Databricks 工作区 URL** | HTTPS 网址 |您的工作区根 URL，没有 API 路径。 |
+| **Databricks API 路线** |请参阅下面的选项 |用于查询您的端点的 API。 |
+| **最大输出代币** | 1+ |令牌中的最大响应长度。 |
+| **停止序列** |字符串列表 |模型停止生成的序列。 |
+| **超时** |秒|请求超时。 |
+| **最大重试次数** |整数 |失败请求的最大重试次数。 |
+
+选择与您的端点匹配的API路由：
+
+* **模型服务端点**：查询 Databricks 模型服务端点。
+* **AI网关（MLflow API）**：通过MLflow API查询AI网关。
+* **AI网关（原生OpenAI API）**：通过其原生OpenAI兼容API查询AI网关。
 
 ## 深度搜索
 
@@ -325,9 +356,7 @@ DeepSeek 提供通用模型、推理优化模型（R 系列）和编码专用模
 
 有关当前可用型号的列表，请参阅[DeepSeek's documentation](https://platform.deepseek.com/api-docs/)。
 
-### 配置参数
-
-|参数|范围 |描述 |
+### 配置参数|参数|范围 |描述 |
 | - | - | - |
 | **温度** | 0.0 - 2.0 |响应随机性 |
 | **最大代币** | 1+ |最大响应长度|
@@ -335,7 +364,9 @@ DeepSeek 提供通用模型、推理优化模型（R 系列）和编码专用模
 | **在场处罚** | -2.0 - 2.0 | |
 | **频率惩罚** | -2.0 - 2.0 | |
 
-＃＃ 烟花在使用此型号之前，请确保您拥有[Fireworks API key](https://fireworks.ai/api-keys)。
+## 烟花
+
+在使用此型号之前，请确保您拥有[Fireworks API key](https://fireworks.ai/api-keys)。
 
 ### 可用型号
 
@@ -366,13 +397,13 @@ Fireworks 为流行的开源模型和微调变体提供高速推理，包括：
 
 在使用此型号之前，请确保您拥有[Google AI API key](https://aistudio.google.com/app/apikey)。
 
-### 可用型号
-
-Google 提供针对不同用例进行优化的多个级别（Ultra、Pro、Flash）的 Gemini 模型。
+### 可用型号Google 提供针对不同用例进行优化的多个级别（Ultra、Pro、Flash）的 Gemini 模型。
 
 有关当前可用型号的列表，请参阅[Google's Gemini documentation](https://ai.google.dev/models/gemini)。
 
-### 配置参数|参数|范围 |描述 |
+### 配置参数
+
+|参数|范围 |描述 |
 | - | - | - |
 | **温度** | 0.0 - 2.0 |响应随机性 |
 | **最大输出代币** | 1+ |最大响应长度|
@@ -392,7 +423,7 @@ Google 提供针对不同用例进行优化的多个级别（Ultra、Pro、Flash
 
 #### 服务帐户 JSON 密钥
 
-您可以通过在 LangSmith 中存储服务帐户 JSON 密钥进行身份验证。此 JSON 文件包含具有 Gemini Enterprise Agent Platform 访问权限的服务帐户的凭据。
+您可以通过在 LangSmith 中存储服务帐户 JSON 密钥来进行身份验证。此 JSON 文件包含具有 Gemini Enterprise Agent Platform 访问权限的服务帐户的凭据。
 
 **第 1 步：创建服务帐户**
 
@@ -401,11 +432,11 @@ Google 提供针对不同用例进行优化的多个级别（Ultra、Pro、Flash
 3. 为其命名（例如，`langsmith-vertex-ai`），然后单击“**创建并继续**”。
 4. 分配角色 **Vertex AI User** (`roles/aiplatform.user`) 并单击 **完成**。
 
-**第 2 步：下载 JSON 密钥**
-
-1. 单击您刚刚创建的服务帐户。
+**第 2 步：下载 JSON 密钥**1. 单击您刚刚创建的服务帐户。
 2. 转至 **密钥** 选项卡，然后单击 **添加密钥 > 创建新密钥**。
-3. 选择 **JSON** 并单击 **创建**。 `.json` 文件将下载到您的计算机上。下载的文件如下所示：
+3. 选择 **JSON** 并单击 **创建**。 `.json` 文件将下载到您的计算机上。
+
+下载的文件如下所示：
 
 ```json theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 {
@@ -428,17 +459,17 @@ Google 提供针对不同用例进行优化的多个级别（Ultra、Pro、Flash
 >
 > 将您的服务帐户 JSON 密钥视为密码。不要共享它或将其提交给源代码管理。如果密钥被泄露，请立即从 [Google Cloud Console](https://console.cloud.google.com/iam-admin/serviceaccounts) 撤销它并创建一个新密钥。
 
-#### 自托管 LangSmith 的工作负载标识
+#### 自托管 LangSmith 的工作负载身份
 
 GKE 上的自托管 LangSmith 可以使用工作负载联合身份验证和应用程序默认凭证 (ADC)，而不是 JSON 密钥。这种无钥匙替代方案支持 Playground、Chat（Helm 中的`polly`）和 Insights。请参阅[Authenticate Vertex AI with GKE workload identity](/langsmith/self-host-gke-vertex-ai-workload-identity)来配置每个工作负载身份。
 
 ### 可用型号
 
-Google 提供针对不同用例进行优化的多层 Gemini 模型（Ultra、Pro、Flash），以及通过 Gemini Enterprise Agent Platform 提供的其他模型。
+Google 提供针对不同用例进行优化的多层 Gemini 模型（Ultra、Pro、Flash），以及通过 Gemini Enterprise Agent Platform 提供的其他模型。有关当前可用型号的列表，请参阅[Gemini Enterprise Agent Platform documentation](https://docs.cloud.google.com/gemini-enterprise-agent-platform/models/google-models)。
 
-有关当前可用型号的列表，请参阅[Gemini Enterprise Agent Platform documentation](https://docs.cloud.google.com/gemini-enterprise-agent-platform/models/google-models)。
+### 配置参数
 
-### 配置参数|参数|范围 |描述 |
+|参数|范围 |描述 |
 | - | - | - |
 | **温度** | 0.0 - 2.0 |响应随机性 |
 | **最大输出代币** | 1+ |最大响应长度|
@@ -477,11 +508,11 @@ Groq 为流行的开源模型（包括 Llama、Mixtral 和 Gemma 变体）提供
 * **支持的工具选择：** `auto`、`required`、`none`。
 * **并行执行：** 是的。
 
-## 米斯特拉尔人工智能
+## 米斯特拉尔人工智能在使用此型号之前，请确保您拥有[Mistral AI API key](https://console.mistral.ai/api-keys/)。
 
-在使用此型号之前，请确保您拥有[Mistral AI API key](https://console.mistral.ai/api-keys/)。
+### 可用型号
 
-### 可用型号Mistral 提供针对不同性能和成本要求进行优化的多层（大、中、小）型号。
+Mistral 提供针对不同性能和成本要求进行优化的多层（大、中、小）型号。
 
 有关当前可用型号的列表，请参阅[Mistral's documentation](https://docs.mistral.ai/platform/endpoints/)。
 

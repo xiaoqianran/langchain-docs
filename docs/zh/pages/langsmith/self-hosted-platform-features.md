@@ -14,9 +14,9 @@
 
 多个部署可以共享同一个 PostgreSQL 实例。例如，对于`Deployment A`，`POSTGRES_URI_CUSTOM`可以设置为`postgres://<user>:<password>@/<database_name_1>?host=<hostname_1>`，对于`Deployment B`，`POSTGRES_URI_CUSTOM`可以设置为`postgres://<user>:<password>@/<database_name_2>?host=<hostname_1>`。 `<database_name_1>`和`<database_name_2>`是同一实例中的不同数据库，但`<hostname_1>`是共享的。 **同一数据库不能用于单独的部署**。
 
-## 自定义Redis
+## 自定义 Redis
 
-可以使用自定义 Redis 实例来代替控制平面自动创建的实例。指定 [⟦T10⟧](/langsmith/env-var-self-hosted) 环境变量以使用自定义 Redis 实例。要使用云工作负载身份而不是静态密码进行身份验证，请参阅[Configure IAM authentication for data stores](/langsmith/configure-iam-auth)。多个部署可以共享同一个 Redis 实例。例如，对于`Deployment A`，`REDIS_URI_CUSTOM`可以设置为`redis://<hostname_1>:<port>/1`，对于`Deployment B`，`REDIS_URI_CUSTOM`可以设置为`redis://<hostname_1>:<port>/2`。 `1` 和 `2` 是同一实例内的不同数据库编号，但`<hostname_1>` 是共享的。 **相同的数据库编号不能用于单独的部署**。
+可以使用自定义 Redis 实例来代替控制平面自动创建的实例。指定 [⟦T10⟧](/langsmith/env-var-self-hosted) 环境变量以使用自定义 Redis 实例。要使用云工作负载身份而不是静态密码进行身份验证，请参阅[Configure IAM authentication for data stores](/langsmith/configure-iam-auth)。多个部署可以共享同一个 Redis 实例。例如，对于`Deployment A`，`REDIS_URI_CUSTOM`可以设置为`redis://<hostname_1>:<port>/1`，对于`Deployment B`，`REDIS_URI_CUSTOM`可以设置为`redis://<hostname_1>:<port>/2`。 `1`和`2`是同一实例内不同的数据库编号，但`<hostname_1>`是共享的。 **相同的数据库编号不能用于单独的部署**。
 
 Redis Cluster 仅支持数据库`0`，因此部署无法通过数据库编号共享Redis Cluster。要跨部署共享一台 Redis 服务器，请使用独立的 Redis 实例，并为每个部署使用单独的数据库编号。
 
@@ -32,8 +32,8 @@ Redis Cluster 仅支持数据库`0`，因此部署无法通过数据库编号共
 
 以下 `resource_spec` 字段取决于侦听器版本：
 
-|领域 |最低监听版本 |
-| :- | :- |
+|领域|最低监听版本 |
+| :-| :-|
 |小数 `cpu` 和 `queue_cpu` 值（例如，`0.5`）|晚于 0.12.x。 Listener 0.12.x 拒绝小数值。 |
 | `redis_cpu` 和 `redis_cpu_limit` | 0.13.22 或更高版本。早期的听众会忽略这些字段。 |
 | `redis_memory_mb`低于`2048`| 0.13.27 或更高版本。早期听众至少需要`2048`。 |
@@ -52,12 +52,6 @@ Redis Cluster 仅支持数据库`0`，因此部署无法通过数据库编号共
 
 ***
 
-<div>
-  <Callout icon="terminal-2">
-    [Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
-  </Callout>
+[Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
 
-  <Callout icon="edit">
-    [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/self-hosted-platform-features.mdx) 或 [file an issue](https://github.com/langchain-ai/docs/issues/new/choose)。
-  </Callout>
-</div>
+[Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/self-hosted-platform-features.mdx) 或 [file an issue](https://github.com/langchain-ai/docs/issues/new/choose)。

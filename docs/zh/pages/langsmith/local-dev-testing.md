@@ -88,9 +88,9 @@ flowchart LR
 > ```
 >
 >> [!提示]
->>
+> >
 >> **附加模板**\\
->>
+> >
 >> 如果您在未指定模板的情况下使用[⟦T47⟧](/langsmith/cli)，您将看到一个交互式菜单，允许您从可用模板列表中进行选择。
 >
 > **2。安装依赖项**
@@ -489,7 +489,7 @@ VPN 连接、防火墙规则或公司代理设置可能会影响本地 Docker �
 **探索功能：**
 
 * **[Studio](/langsmith/studio)**：使用 Studio UI 可视化、交互和调试您的应用程序。尝试一下[Studio quickstart](/langsmith/quick-start-studio)。
-* **API 参考**：[LangSmith Deployment API](https://langchain-ai.github.io/langgraph/cloud/reference/api/api_ref/)、[Python SDK](/langsmith/langgraph-python-sdk)、[JS/TS SDK](/langsmith/langgraph-js-ts-sdk)
+* **API 参考**：[LangSmith Deployment API](/langsmith/server-api-ref)、[Python SDK](/langsmith/langgraph-python-sdk)、[JS/TS SDK](/langsmith/langgraph-js-ts-sdk)
 
 ## 相关资源
 

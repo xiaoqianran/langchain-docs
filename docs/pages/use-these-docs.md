@@ -16,6 +16,8 @@ This includes our `llms.txt`, MCP server connection, and other quick access opti
 
 ## Use our MCP servers
 
+Connect LangChain docs MCP servers
+
 Connect both LangChain documentation MCP servers to my coding agent so it can look up current LangChain, LangGraph, and LangSmith docs and API reference.
 
 Servers to add:

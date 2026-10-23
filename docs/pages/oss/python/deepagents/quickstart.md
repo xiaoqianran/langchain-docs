@@ -6,6 +6,8 @@ Build your first deep agent in minutes
 
 This guide walks you through creating your first deep agent with file system tools and subagent capabilities. You will build a research agent that can conduct research and write reports.
 
+Build the Deep Agents research quickstart
+
 Build a Deep Agents research agent in this working directory by following the Deep Agents quickstart.
 
 ## Step 1: Read the guide
@@ -44,6 +46,8 @@ Follow the quickstart steps in order:
 >
 > * Install the [LangChain Docs MCP servers](/use-these-docs) to give your agent access to up-to-date LangChain documentation and examples.
 >
+>   Connect LangChain docs MCP servers
+>
 >   Connect both LangChain documentation MCP servers to my coding agent so it can look up current LangChain, LangGraph, and LangSmith docs and API reference.
 >
 >   Servers to add:
@@ -60,6 +64,8 @@ Follow the quickstart steps in order:
 >
 >   Do not invent alternate MCP URLs. After configuring, confirm both servers are listed and reachable.
 > * Install [LangChain Skills](https://github.com/langchain-ai/langchain-skills) to improve your agent's performance on LangChain ecosystem tasks.
+>
+>   Install LangChain Skills
 >
 >   Install LangChain Skills for my coding agent so it can perform better on LangChain, LangGraph, and Deep Agents tasks.
 >

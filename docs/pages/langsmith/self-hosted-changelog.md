@@ -6,6 +6,37 @@
 
 [Self-hosted LangSmith](/langsmith/self-hosted) is an add-on to the Enterprise plan designed for our largest, most security-conscious customers. For more details, refer to [Pricing](https://www.langchain.com/pricing). [Contact our sales team](https://www.langchain.com/contact-sales) if you want a license key to trial LangSmith in your environment.
 
+**2026-10-22**
+
+## langsmith-0.16.46
+
+**LangSmith version:** `0.16.74`
+
+* Internal improvements and maintenance updates
+
+**Download the Helm chart:** [`langsmith-0.16.46.tgz`](https://github.com/langchain-ai/helm/releases/download/langsmith-0.16.46/langsmith-0.16.46.tgz)
+
+**2026-10-21**
+
+## langsmith-0.18.0-rc.40
+
+**LangSmith version:** `0.18.14rc1`
+
+* This release packages the same LangSmith application version as langsmith-0.18.0-rc.37. Refer to the [langsmith-0.18.0-rc.37](#langsmith-0-18-0-rc-37) release notes below.
+
+**Download the Helm chart:** [`langsmith-0.18.0-rc.40.tgz`](https://github.com/langchain-ai/helm/releases/download/langsmith-0.18.0-rc.40/langsmith-0.18.0-rc.40.tgz)
+
+**2026-10-21**
+
+## langsmith-0.17.22
+
+**LangSmith version:** `0.17.49`
+
+* When `GO_INGESTION_CONCURRENCY_PER_CPU` is unset, each ingest-queue pod runs 8 tasks per CPU in its CPU limit, capped at the node's CPU count. If your ingest-queue pods have less than 1 CPU, raise their CPU limit to the chart's 2-CPU limit or set `GO_INGESTION_CONCURRENCY_PER_CPU=1`.
+* Engine runs that use your own model providers no longer stop partway through with an `Invalid signature in thinking block` error. Engine also keeps more of a run's history before summarizing it.
+
+**Download the Helm chart:** [`langsmith-0.17.22.tgz`](https://github.com/langchain-ai/helm/releases/download/langsmith-0.17.22/langsmith-0.17.22.tgz)
+
 **2026-10-21**
 
 ## langsmith-0.17.21

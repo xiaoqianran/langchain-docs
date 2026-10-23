@@ -4,16 +4,16 @@
 
 # 在无服务器环境中跟踪 JS 函数
 
-<Note>
-  本节与使用 LangSmith JS SDK 0.2.0 及更高版本的用户相关。如果您在无服务器环境中使用 LangChain.js 或 LangGraph.js 进行跟踪，请参阅 [this guide](https://js.langchain.com/docs/how_to/callbacks_serverless)。
-</Note>
+> [!注意]
+>
+> 本节与使用 LangSmith JS SDK 0.2.0 及更高版本的用户相关。如果您在无服务器环境中使用 LangChain.js 或 LangGraph.js 进行跟踪，请参阅 [this guide](/langsmith/trace-with-langchain#ensure-all-traces-are-submitted-before-exiting)。
 
 跟踪 JavaScript 函数时，LangSmith 默认情况下会在后台跟踪运行，以避免增加延迟。在执行上下文可能突然终止的无服务器环境中，确保在函数完成之前正确刷新所有跟踪数据非常重要。
 
 为了确保发生这种情况，您可以：
 
 * 将名为 `LANGSMITH_TRACING_BACKGROUND` 的环境变量设置为 `"false"`。这将导致您的跟踪函数在返回之前等待跟踪完成。
-  * 请注意，它的命名与 LangChain.js 中的 [environment variable](https://js.langchain.com/docs/how_to/callbacks_serverless) 不同，因为 LangSmith 可以在没有 LangChain 的情况下使用。
+  * 请注意，它的命名与 LangChain.js 中的 [environment variable](/langsmith/trace-with-langchain#ensure-all-traces-are-submitted-before-exiting) 不同，因为 LangSmith 可以在没有 LangChain 的情况下使用。
 * 将自定义客户端传递到跟踪的运行和 `await` `client.awaitPendingTraceBatches();` 方法中。
 
 以下是使用 `awaitPendingTraceBatches` 与 [⟦T8⟧](/langsmith/annotate-code) 方法的示例：
@@ -65,12 +65,6 @@ try {
 
 ***
 
-<div>
-  <Callout icon="terminal-2">
-    [Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
-  </Callout>
+[Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
 
-  <Callout icon="edit">
-    [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/serverless-environments.mdx) 或 [file an issue](https://github.com/langchain-ai/docs/issues/new/choose)。
-  </Callout>
-</div>
+[Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/serverless-environments.mdx) 或 [file an issue](https://github.com/langchain-ai/docs/issues/new/choose)。

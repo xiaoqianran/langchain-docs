@@ -4,6 +4,8 @@
 
 Upgrade from @langchain/mcp-adapters 1.x to 2.0, covering renamed APIs, stricter configuration, authentication, elicitation, and tool result changes.
 
+Migrate from @langchain/mcp-adapters 1.x to 2.0.
+
 Migrate this codebase from `@langchain/mcp-adapters` 1.x to 2.0 and update its peer dependencies.
 
 Fetch and read the full migration guide at [https://docs.langchain.com/oss/javascript/migrate/langchain-mcp-adapters.md](https://docs.langchain.com/oss/javascript/migrate/langchain-mcp-adapters.md) as the source of truth. Search this codebase and apply all relevant migration changes, including dependency and test updates. Run the relevant checks, then summarize the changes and flag anything that requires a manual decision or could not be verified. If you cannot access the guide, ask for its contents before proceeding.

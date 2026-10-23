@@ -350,7 +350,7 @@ total_cost:>0.5
 * 跟踪代理引用有关其实现的内部详细信息的位置。
 * 关于特定主题的跟踪。> [!注意]
 >
-> 在 GCP 美国、欧盟和亚太地区，AI 搜索可在 [beta](/langsmith/release-stages) 中使用，并可在 [LangSmith Cloud](/langsmith/cloud) 中使用。一旦组织管理员启用它，它就可以在**线程**、**跟踪**和**运行**选项中工作。参见[Enable AI search](#enable-ai-search)。
+> AI 搜索位于 [beta](/langsmith/release-stages) 中，并且可在所有 [LangSmith Cloud](/langsmith/cloud) SaaS 实例上使用。一旦组织管理员启用它，它就可以在**线程**、**跟踪**和**运行**选项中工作。参见[Enable AI search](#enable-ai-search)。
 
 使用 AI 进行搜索：
 

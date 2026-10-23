@@ -6,9 +6,9 @@
 
 基本身份验证允许用户使用电子邮件和密码登录LangSmith[Self-hosted](/langsmith/self-hosted)，而无需配置外部身份提供商。 [Organization Admins](/langsmith/rbac#organization-admin)直接从LangSmith管理用户，因此身份验证运行独立，不依赖于[OAuth or SSO](/langsmith/self-host-sso)。
 
-<Tip>
-  有关LangSmith自托管中支持的身份验证方法的说明，请参阅[Authentication methods](/langsmith/authentication-methods#self-hosted)页面。
-</Tip>
+> [!提示]
+>
+> 有关LangSmith 自托管中支持的身份验证方法的说明，请参阅[Authentication methods](/langsmith/authentication-methods#self-hosted) 页面。
 
 ## 注意事项
 
@@ -25,9 +25,9 @@
 
 ## 从无身份验证迁移
 
-<Note>
-  仅[versions 0.7 and later](/langsmith/self-hosted-changelog)支持。
-</Note>
+> [!注意]
+>
+> 仅在 [versions 0.7 and later](/langsmith/self-hosted-changelog) 中受支持。
 
 从 [None](/langsmith/authentication-methods#none) 身份验证模式迁移到基本身份验证会保留您现有的跟踪、数据集和其他资源。 LangSmith 将单个“默认”用户替换为根据您在 [configuration file](#configuration) 中设置的基本身份验证凭据创建的用户。预先存在的工作区保留其 ID (`00000000-0000-0000-0000-000000000000`)，因此现有资源仍与其绑定。除了用户交换之外，迁移后的安装的行为与全新的基本身份验证安装相同。
 
@@ -35,9 +35,9 @@
 
 ## 配置
 
-<Note>
-  更改 JWT 密码将会注销您的用户。
-</Note>通过将以下块添加到您的 LangSmith Helm 值来启用基本身份验证。首次安装时，LangSmith 使用这些值为 `Default` 组织创建初始组织管理员用户：
+> [!注意]
+>
+> 更改 JWT 密码将会注销您的用户。通过将以下块添加到您的 LangSmith Helm 值来启用基本身份验证。首次安装时，LangSmith 使用这些值为 `Default` 组织创建初始组织管理员用户：
 
 ```yaml Helm theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 config:
@@ -53,12 +53,6 @@ config:
 
 ***
 
-<div>
-  <Callout icon="terminal-2">
-    [Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
-  </Callout>
+[Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
 
-  <Callout icon="edit">
-    [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/self-host-basic-auth.mdx) 或 [file an issue](https://github.com/langchain-ai/docs/issues/new/choose)。
-  </Callout>
-</div>
+[Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/self-host-basic-auth.mdx) 或 [file an issue](https://github.com/langchain-ai/docs/issues/new/choose)。

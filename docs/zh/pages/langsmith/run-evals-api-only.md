@@ -270,7 +270,7 @@ for run in runs:
 
 ## 进行配对实验
 
-接下来，我们将演示如何进行配对实验。在成对实验中，您可以相互比较两个示例。
+接下来，我们将演示如何进行配对实验。在成对实验中，您将两个示例相互比较。
 
 欲了解更多信息，请查看[How to run a pairwise evaluation](/langsmith/evaluate-pairwise)。
 
@@ -353,12 +353,6 @@ for example_id, runs in example_id_to_runs_map.items():
 
 ***
 
-<div>
-  <Callout icon="terminal-2">
-    [Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
-  </Callout>
+[Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
 
-  <Callout icon="edit">
-    [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/run-evals-api-only.mdx) 或 [file an issue](https://github.com/langchain-ai/docs/issues/new/choose)。
-  </Callout>
-</div>
+[Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/run-evals-api-only.mdx) 或 [file an issue](https://github.com/langchain-ai/docs/issues/new/choose)。

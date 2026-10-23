@@ -13,11 +13,11 @@
 * 将评估器分数较低的所有跟踪发布到您的 webhook 端点。
 * 升级所有有错误的跟踪，以延长数据保留时间。
 
-<Info>
-  要配置在线评估，请访问[online evaluations](/langsmith/online-evaluations-llm-as-judge)页面。
-</Info><Note>
-  当为该规则启用保留扩展时，自动化规则可以将匹配跟踪升级到[extended data retention](/langsmith/usage-and-billing#data-retention-auto-upgrades)。此升级会影响跟踪定价，但可确保保留满足自动化标准的跟踪（通常是对分析最有价值的跟踪）以供调查。每种动作类型都有自己的默认值，详细信息请参阅[action-level retention settings](#create-a-rule)。对于完全保留模型，请参阅[data retention auto-upgrades](/langsmith/usage-and-billing#data-retention-auto-upgrades)。
-</Note>
+> [!注意]
+>
+> 要配置在线评估，请访问[online evaluations](/langsmith/online-evaluations-llm-as-judge)页面。> [!注意]
+>
+> 当为该规则启用保留扩展时，自动化规则可以将匹配跟踪升级到 [extended data retention](/langsmith/usage-and-billing#data-retention-auto-upgrades)。此升级会影响跟踪定价，但可确保保留满足自动化标准的跟踪（通常是对分析最有价值的跟踪）以供调查。每种动作类型都有自己的默认值，详细信息请参阅[action-level retention settings](#create-a-rule)。对于完全保留模型，请参阅[data retention auto-upgrades](/langsmith/usage-and-billing#data-retention-auto-upgrades)。
 
 ## 自动化规则如何执行
 
@@ -35,15 +35,15 @@
 
 如果您的工作流程要求一条规则生成的数据在另一条规则触发时出现（例如，您希望 Webhook 包含评估分数），请使用下游规则上的过滤器来显式创建该依赖项。例如，请参阅[Ensuring evaluations complete before the webhook fires](/langsmith/webhooks#ensuring-evaluations-complete-before-the-webhook-fires)。
 
-## 将项目类型设置为运行或线程**项目类型**控件确定规则匹配的内容。将其设置为 **Runs**，规则会在每个匹配运行到达时对其进行评估。将其设置为**线程**，规则将等待对话完成，然后将其操作应用于整个线程一次。当您要查看或导出的单元是完整对话而不是单个回合时，请选择 **话题**。
+## 将项目类型设置为运行或线程**项目类型**控件确定规则匹配的内容。将其设置为 **Runs**，规则会在每个匹配运行到达时对其进行评估。将其设置为**线程**，规则将等待对话完成，然后将其操作一次应用于整个线程。当您要查看或导出的单元是完整对话而不是单个回合时，请选择 **话题**。
 
-线程规则需要一个跟踪项目或代理环境，将跟踪分组到线程中。欲了解更多信息，请参阅[Configure threads](/langsmith/threads)。
+线程规则需要一个跟踪项目或代理环境，将跟踪分组为线程。欲了解更多信息，请参阅[Configure threads](/langsmith/threads)。
 
 ### 配置线程规则
 
 选择 **Threads** 会更改规则形式的三个部分：
 
-* **线程过滤器**：过滤器构建器将 **跟踪计数** 和 **线程 ID** 添加到可用字段。根据 **跟踪计数** 进行过滤，将规则范围限定为给定长度的对话。其他字段评估线程中的每个跟踪而不是整个线程，因此当任何跟踪匹配时，线程就匹配。例如，**Status** 上的筛选器会选择包含错误跟踪的每个线程，而不仅仅是上次跟踪出错的线程。
+* **线程过滤器**：过滤器构建器将 **跟踪计数** 和 **线程 ID** 添加到可用字段。根据 **跟踪计数** 进行过滤，将规则范围限定为给定长度的对话。其他字段评估线程中的每个跟踪而不是整个线程，因此当任何跟踪匹配时，线程就匹配。例如，**状态** 上的筛选器会选择包含错误跟踪的每个线程，而不仅仅是上次跟踪出错的线程。
 * **操作**：表单提供**添加到注释队列**、**添加到数据集**或**触发 Webhooks**。
 
 三个线程操作的行为如下：* **添加到注释队列**：将线程作为线程项添加到队列中。主题项目显示对话记录并仅支持标题反馈。关于运行项和线程项的区别，请参阅[annotation queue capability table](/langsmith/annotation-queues#single-run-annotation-queues)。
@@ -71,7 +71,7 @@
 
 ## 创建规则
 
-1. 在[UI](https://smith.langchain.com?utm_source=docs\&utm_medium=cta\&utm_campaign=langsmith-signup\&utm_content=langsmith-rules)中，导航至侧边栏中的**跟踪**，然后选择跟踪项目或代理环境。单击跟踪项目页面右上角的 **+ New**，然后单击 **New Automation**。
+1. 在 [UI](https://smith.langchain.com?utm_source=docs\&utm_medium=cta\&utm_campaign=langsmith-signup\&utm_content=langsmith-rules) 中，导航至侧边栏中的 **跟踪**，然后选择跟踪项目或代理环境。单击跟踪项目页面右上角的 **+ New**，然后单击 **New Automation**。
 
 2. 命名您的规则。3. 选择**项目类型**，**运行**或**线程**。项目类型决定哪些过滤器字段和操作可用，因此请在配置之前进行设置。欲了解更多信息，请参阅[Set the item type to runs or threads](#set-the-item-type-to-runs-or-threads)。
 
@@ -81,43 +81,37 @@
 
 6. （可选）通过切换 **应用到过去的运行** 并输入 **回填自** 日期，将规则应用于过去的运行。这只有在创建规则时才有可能。
 
-   <Note>
-     回填作为后台作业进行处理，因此您不会立即看到结果。为了跟踪回填进度，您可以[view logs for your automations](#view-logs-for-your-automations)。
-   </Note>
+   > [!注意]
+   >
+   > 回填作为后台作业进行处理，因此您不会立即看到结果。为了跟踪回填进度，您可以[view logs for your automations](#view-logs-for-your-automations)。
 
 7. 选择规则执行的操作。 **运行** 项目类型的规则支持下面的每个操作。具有**线程**项目类型的规则仅支持**添加到注释队列**、**添加到数据集**和**触发 Webhooks**。* **添加到注释队列**：将匹配的运行或跟踪添加到 [annotation queue](/langsmith/annotation-queues) 作为运行项。相反，话题规则将整个对话添加为话题项。如需手动添加螺纹，请参阅[Assign runs and threads](/langsmith/annotation-queues#assign-runs-and-threads-to-a-single-run-queue)。
    * **添加到数据集**：运行规则将跟踪的输入和输出添加到[dataset](/langsmith/evaluation-concepts#datasets)。线程规则为每个匹配线程创建一个示例。每个示例都包含该线程的完整对话。
    * **触发 Webhooks**：将匹配的项目发布到规则上配置的每个 [webhook](/langsmith/webhooks) URL。
-   * **延长数据保留**：延长使用基本保留 [(refer to the data retention docs for more details)](/langsmith/usage-and-billing#data-retention) 的匹配跟踪的数据保留期限。
+   * **延长数据保留**：延长使用基本保留 [(refer to the data retention docs for more details)](/langsmith/usage-and-billing#data-retention) 的匹配跟踪的数据保留期限。> [!注意]
+     >
+     > 每个操作都有一个独立的**扩展数据保留**开关，用于控制是否将匹配跟踪升级为扩展保留。两种项目类型的默认值相同：
+     >
+     > * **添加到数据集**：选择加入（默认值：关闭）。启用切换以升级匹配的跟踪。
+     > * **添加到注释队列**：选择退出（默认：打开）。禁用切换以跳过升级匹配跟踪。
+     > * **触发 Webhooks**：选择加入（默认值：关闭）。启用切换以升级匹配的跟踪。
+     > * **扩展数据保留** 操作和在线/代码评估器：不变；始终升级匹配的痕迹。
+     >
+     > 对于线程规则，启用的切换会升级匹配线程中的每个跟踪。欲了解更多信息，请参阅[Extend data retention for a thread](#extend-data-retention-for-a-thread)。
+     >
+     > 每个操作的保留切换是仅限管理员控制，由 [⟦T2⟧](/langsmith/organization-workspace-operations#rules) 权限控制。非管理工作区成员会看到切换已禁用并且无法更改它们，但仍然可以创建和编辑规则而不影响保留设置。完全保留模型请参考[data retention auto-upgrades](/langsmith/usage-and-billing#data-retention-auto-upgrades)。
 
-     <Note>
-       每个操作都有一个独立的**扩展数据保留**开关，用于控制匹配的跟踪是否升级为扩展保留。两种项目类型的默认值相同：* **添加到数据集**：选择加入（默认值：关闭）。启用切换以升级匹配的跟踪。
-       * **添加到注释队列**：选择退出（默认：打开）。禁用切换以跳过升级匹配跟踪。
-       * **触发 Webhooks**：选择加入（默认值：关闭）。启用切换以升级匹配的跟踪。
-       * **扩展数据保留** 操作和在线/代码评估器：不变；始终升级匹配的痕迹。
+## 查看自动化日志日志可以让您确信您的规则正在按预期运行。您可以通过导航到跟踪项目或代理环境中的“自动化”选项卡并单击您创建的规则的“日志”按钮来查看自动化的日志。
 
-       对于线程规则，启用的切换会升级匹配线程中的每个跟踪。欲了解更多信息，请参阅[Extend data retention for a thread](#extend-data-retention-for-a-thread)。
+日志选项卡允许您：
 
-       每个操作的保留切换是仅限管理员控制，由 [⟦T2⟧](/langsmith/organization-workspace-operations#rules) 权限控制。非管理工作区成员会看到切换已禁用并且无法更改它们，但仍然可以创建和编辑规则而不影响保留设置。完全保留模型请参考[data retention auto-upgrades](/langsmith/usage-and-billing#data-retention-auto-upgrades)。
-     </Note>
-
-## 查看自动化日志
-
-日志可以让您确信您的规则正在按预期运行。您可以通过导航到跟踪项目或代理环境中的“自动化”选项卡并单击您创建的规则的“日志”按钮来查看自动化的日志。
-
-日志选项卡允许您：* 查看指定时间段内指定规则处理的所有运行。
+* 查看指定时间段内指定规则处理的所有运行。
 * 如果特定规则执行触发了错误，您可以将鼠标悬停在错误图标上查看错误消息。
 * 您可以通过过滤规则的创建时间戳来监控回填作业的进度。这是因为回填从规则创建时开始。
 * 使用 **查看运行** 按钮检查自动化规则应用到的运行。对于将运行作为示例添加到数据集的规则，您可以查看生成的示例。
 
 ***
 
-<div>
-  <Callout icon="terminal-2">
-    [Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
-  </Callout>
+[Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
 
-  <Callout icon="edit">
-    [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/rules.mdx) 或 [file an issue](https://github.com/langchain-ai/docs/issues/new/choose)。
-  </Callout>
-</div>
+[Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/rules.mdx) 或 [file an issue](https://github.com/langchain-ai/docs/issues/new/choose)。

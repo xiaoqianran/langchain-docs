@@ -48,16 +48,10 @@ sh get_query_stats.sh <clickhouse_url> --output path/to/file.csv
 sh get_query_stats.sh "clickhouse://default:password@localhost:8123/default" --output query_stats.csv
 ```
 
-运行此命令后，您应该看到一个包含 LangSmith 查询统计信息的文件 query\_stats.csv。
+运行此命令后，您应该会看到一个包含 LangSmith 查询统计信息的文件 query\_stats.csv。
 
 ***
 
-<div>
-  <Callout icon="terminal-2">
-    [Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
-  </Callout>
+[Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
 
-  <Callout icon="edit">
-    [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/script-generate-query-stats.mdx) 或 [file an issue](https://github.com/langchain-ai/docs/issues/new/choose)。
-  </Callout>
-</div>
+[Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/script-generate-query-stats.mdx) 或 [file an issue](https://github.com/langchain-ai/docs/issues/new/choose)。

@@ -16,7 +16,7 @@ This guide shows you how to define an [LLM-as-a-judge evaluator](/langsmith/eval
 
 ## Create your own LLM-as-a-judge evaluator
 
-For complete control of evaluator logic, create your own LLM-as-a-judge evaluator and run it using the LangSmith SDK ([Python](https://docs.smith.langchain.com/reference/python/reference) / [TypeScript](https://docs.smith.langchain.com/reference/js)).
+For complete control of evaluator logic, create your own LLM-as-a-judge evaluator and run it using the LangSmith SDK ([Python](https://reference.langchain.com/python/langsmith) / [TypeScript](https://reference.langchain.com/javascript/langsmith)).
 
 Requires `langsmith>=0.2.0`
 

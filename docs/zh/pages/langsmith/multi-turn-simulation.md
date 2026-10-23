@@ -189,8 +189,8 @@ console.log(result);
 >
 > 请参阅以下指南，了解如何使用 LangSmith 与测试框架的集成来设置评估：
 >
-> * [⟦T37⟧](https://docs.smith.langchain.com/langsmith/pytest)
-> * [⟦T38⟧ or ⟦T39⟧](https://docs.smith.langchain.com/langsmith/vitest-jest)
+> * [⟦T37⟧](/langsmith/pytest)
+> * [⟦T38⟧ or ⟦T39⟧](/langsmith/vitest-jest)
 
 如果您使用 [LangSmith test framework integrations](/langsmith/pytest) 之一，则可以在运行模拟时将 OpenEvals 求值器数组作为 `trajectory_evaluators` 参数传递。这些评估器将在模拟结束时运行，将最终的聊天消息列表作为`outputs` kwarg。因此，您通过的`trajectory_evaluator`必须接受这个kwarg。
 

@@ -10,6 +10,8 @@ Add MCP servers by adding a `.mcp.json` config file to your project for project-
 
 Paste this prompt into your coding agent to connect the servers, or follow the steps below for Deep Agents Code specifically. For other editors, see [Use docs programmatically](/use-these-docs).
 
+Connect LangChain docs MCP servers
+
 Connect both LangChain documentation MCP servers to my coding agent so it can look up current LangChain, LangGraph, and LangSmith docs and API reference.
 
 Servers to add:

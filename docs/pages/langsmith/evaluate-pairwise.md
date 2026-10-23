@@ -6,7 +6,7 @@
 >
 > Concept: [Pairwise evaluations](/langsmith/evaluation-concepts#pairwise)
 
-LangSmith supports evaluating **existing** experiments in a comparative manner. Instead of evaluating one output at a time, you can score the output from multiple experiments against each other. In this guide, you'll use [`evaluate()`](https://docs.smith.langchain.com/reference/python/evaluation/langsmith.evaluation._runner.evaluate) with two existing experiments to [define an evaluator](#define-a-pairwise-evaluator) and [run a pairwise evaluation](#run-a-pairwise-evaluation). Finally, you'll use the LangSmith UI to [view the pairwise experiments](#view-pairwise-experiments).
+LangSmith supports evaluating **existing** experiments in a comparative manner. Instead of evaluating one output at a time, you can score the output from multiple experiments against each other. In this guide, you'll use [`evaluate()`](https://reference.langchain.com/python/langsmith/evaluation/_runner/evaluate) with two existing experiments to [define an evaluator](#define-a-pairwise-evaluator) and [run a pairwise evaluation](#run-a-pairwise-evaluation). Finally, you'll use the LangSmith UI to [view the pairwise experiments](#view-pairwise-experiments).
 
 ## Prerequisites
 
@@ -15,7 +15,7 @@ LangSmith supports evaluating **existing** experiments in a comparative manner. 
 
 > [!NOTE]
 >
-> You can also use [`evaluate_comparative()`](https://docs.smith.langchain.com/reference/python/evaluation/langsmith.evaluation._runner.evaluate_comparative) with more than two existing experiments.
+> You can also use [`evaluate_comparative()`](https://reference.langchain.com/python/langsmith/evaluation/_runner/evaluate_comparative) with more than two existing experiments.
 
 ## `evaluate()` comparative args
 

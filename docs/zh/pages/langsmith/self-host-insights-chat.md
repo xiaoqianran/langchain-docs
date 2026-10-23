@@ -8,9 +8,9 @@
 
 [Insights](/langsmith/insights) 分析痕迹，[Chat](/langsmith/chat)（以前称为 Polly）帮助您处理 LangSmith 数据。两者都是基本安装的一部分，并且在 Helm Chart 0.15.1 或更高版本中默认启用。它们不需要任何 [additional features](/langsmith/self-host-additional-features)，例如沙箱、队列或 LangSmith 部署。
 
-<Note>
-  对于 0.15.1 之前的图表，默认情况下不启用 Insights 和 Chat。使用固定图表支持的配置，或在遵循本指南之前进行升级。
-</Note>
+> [!注意]
+>
+> 对于 0.15.1 之前的图表，默认情况下不启用 Insights 和 Chat。使用固定图表支持的配置，或在遵循本指南之前进行升级。
 
 每个功能都需要自己的 Fernet 加密密钥和模型访问权限。如果您遵循[Kubernetes installation guide](/langsmith/kubernetes)，则您已经在`langsmith_config.yaml`中设置了密钥。继续[Configure model access](#configure-model-access)。
 
@@ -69,12 +69,6 @@ helm upgrade -i langsmith langchain/langsmith --values langsmith_config.yaml --v
 
 ***
 
-<div>
-  <Callout icon="terminal-2">
-    [Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
-  </Callout>
+[Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
 
-  <Callout icon="edit">
-    [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/self-host-insights-chat.mdx) 或 [file an issue](https://github.com/langchain-ai/docs/issues/new/choose)。
-  </Callout>
-</div>
+[Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/self-host-insights-chat.mdx) 或 [file an issue](https://github.com/langchain-ai/docs/issues/new/choose)。

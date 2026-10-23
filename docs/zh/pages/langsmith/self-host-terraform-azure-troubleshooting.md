@@ -8,9 +8,9 @@
 
 本页面记录了使用 [Azure Terraform modules](https://github.com/langchain-ai/terraform/tree/main/modules/azure) 配置的 LangSmith 部署的常见问题、修复和诊断命令。
 
-<Tip>
-  升级之前，请查看 [LangSmith self-hosted changelog](/langsmith/self-hosted-changelog) 的重大更改和所需的变量更新。在运行任何 `kubectl` 命令之前运行 `make kubeconfig`。它获取集群凭据，并在 Microsoft Entra ID 集群上将其转换为 `kubelogin`。
-</Tip>
+> [!提示]
+>
+> 升级之前，请查看 [LangSmith self-hosted changelog](/langsmith/self-hosted-changelog) 的重大更改和所需的变量更新。在运行任何 `kubectl` 命令之前运行 `make kubeconfig`。它获取集群凭据，并在 Microsoft Entra ID 集群上将其转换为 `kubelogin`。
 
 有关本页中使用的 `kubectl`、`helm` 和 `az` 调用的复制粘贴参考，请跳至 [Diagnostic commands](#diagnostic-commands)。
 
@@ -88,9 +88,9 @@ az vm list-usage --location eastus --query "[?contains(name.value,'DSv5')]" -o t
 
 **或者，如果 DSv5 配额耗尽，则切换虚拟机系列：** 设置 `default_node_pool_vm_size = "Standard_D8s_v3"` 并将 `Standard_D16s_v3` 用于 `additional_node_pools` 中的 `large` 池。相同的 vCPU 和 RAM，不同的配额池。一旦配额到达，就返回到 v5。不要回退到 Azure 已停用的 DSv2（`Standard_DS4_v2`、`Standard_DS5_v2`）。
 
-<Note>
-  `max_pods` 在现有节点池上是不可变的。将其设置在第一个`terraform apply`之前。
-</Note>
+> [!注意]
+>
+> `max_pods` 在现有节点池上是不可变的。将其设置在第一个`terraform apply`之前。
 
 ### `LocationIsOfferRestricted`：Postgres 灵活服务器在该区域被阻止
 
@@ -196,7 +196,7 @@ make apply
 
 对于`postgres-admin-password`，导入到`module.keyvault.azurerm_key_vault_secret.postgres_admin_password[0]`。为了让 Terraform 完全远离金库的秘密，请设置 `keyvault_manage_secrets = false` 并让 `make seed-secrets` 写入所有内容。在已应用的部署中，首先从状态中删除这两个密钥，或者 Terraform 将从保管库中删除它们。
 
-### 现有 Key Vault：应用创建角色分配，然后失败并显示机密 403
+### 现有 Key Vault：应用创建角色分配，然后失败并显示 403 密钥
 
 **症状：** 对于 `create_keyvault = false`，应用会超过 `azurerm_role_assignment`，并在第一个 `azurerm_key_vault_secret` 和 `StatusCode=403` 上失败。 `make seed-secrets` 同样失败。
 
@@ -282,7 +282,7 @@ kubectl delete certificate langsmith-tls -n langsmith
 1. **网关标签错误。** 具有 `ingressClassName: istio` 的 Kubernetes Ingress 目标是具有标签 `istio: ingressgateway` 的 pod。 AKS 托管外部网关使用 `istio: aks-istio-ingressgateway-external`。
 2. **TLS 密钥位于错误的命名空间中。** Istio SDS 从网关 pod 命名空间 (`aks-istio-ingress`) 读取，而不是应用程序命名空间 (`langsmith`)。
 
-**修复：** `make deploy` 在当前脚本中自动处理两者。如果手动部署，请创建一个以 `istio: aks-istio-ingressgateway-external` 为目标的 Istio `Gateway`，将 `langsmith-tls` 同步到 `aks-istio-ingress` 命名空间，并创建到 LangSmith 前端的 `VirtualService` 路由。有关完整的 YAML，请参阅 [TROUBLESHOOTING.md source](https://github.com/langchain-ai/terraform/blob/main/modules/azure/TROUBLESHOOTING.md)。
+**修复：** `make deploy` 在当前脚本中自动处理两者。如果手动部署，请创建一个针对 `istio: aks-istio-ingressgateway-external` 的 Istio `Gateway`，将 `langsmith-tls` 同步到 `aks-istio-ingress` 命名空间，并创建到 LangSmith 前端的 `VirtualService` 路由。有关完整的 YAML，请参阅 [TROUBLESHOOTING.md source](https://github.com/langchain-ai/terraform/blob/main/modules/azure/TROUBLESHOOTING.md)。
 
 ### `letsencrypt-prod` ClusterIssuer 缺失**症状：** `kubectl describe certificate langsmith-tls -n langsmith` 显示`clusterissuers.cert-manager.io "letsencrypt-prod" not found`。
 
@@ -513,7 +513,7 @@ az group delete --name langsmith-rg-<name_prefix> --yes --no-wait
 az group show --name langsmith-rg-<name_prefix> 2>&1 | grep -E "provisioningState|ResourceGroupNotFound"
 ```对于 `unique_resource_names = true`，资源组为 `ls-rg-<name_prefix>`。不要在`create_resource_group = false`时删除该组，因为该模块没有创建它。
 
-如果您之后重复使用相同的 `name_prefix`，Azure 可能会在下一个 `terraform apply` 上恢复软删除的 Key Vault。使用`keyvault_purge_protection = false`，先将其清除。找到它的名称`az keyvault list-deleted -o table`，然后运行`az keyvault purge --name <vault> --location <region>`。
+如果您随后重复使用相同的 `name_prefix`，Azure 可能会在下一个 `terraform apply` 上恢复软删除的 Key Vault。使用`keyvault_purge_protection = false`，先将其清除。找到它的名称`az keyvault list-deleted -o table`，然后运行`az keyvault purge --name <vault> --location <region>`。
 
 ### `terraform destroy` 在 VNet/子网删除时停止
 
@@ -544,9 +544,9 @@ kubectl delete job langsmith-agent-bootstrap -n langsmith --ignore-not-found
 
 **修复：** 在`terraform.tfvars`中设置`sizing_profile = "production-large"`，这会为侦听器提供`4Gi`，然后运行`make init-values`和`make deploy`。要保留您的个人资料，请在 `helm/values/langsmith-values-sizing-<profile>.yaml` 中加注 `listener.deployment.resources.limits.memory` 并运行 `make deploy`。 `make init-values` 再次复制大小文件，因此每次运行后重复编辑。
 
-<Note>
-  该图表显示集装箱限制为`listener.deployment.resources`，而不是统一的`listener.resources`。任何覆盖文件中的 `listener.resources` 值都会被静默忽略。
-</Note>
+> [!注意]
+>
+> 图表上显示集装箱限制为 `listener.deployment.resources`，而不是统一的 `listener.resources`。任何覆盖文件中的 `listener.resources` 值都会被静默忽略。
 
 ### 过时的 HPA 将 `listener` 或 `host-backend` 扩展到最大副本数
 
@@ -718,12 +718,6 @@ make status-quick   # skip the Key Vault, kubeconfig, Kubernetes, and Helm check
 
 ***
 
-<div>
-  <Callout icon="terminal-2">
-    [Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
-  </Callout>
+[Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
 
-  <Callout icon="edit">
-    [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/self-host-terraform-azure-troubleshooting.mdx) 或[file an issue](https://github.com/langchain-ai/docs/issues/new/choose)。
-  </Callout>
-</div>
+[Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/self-host-terraform-azure-troubleshooting.mdx) 或[file an issue](https://github.com/langchain-ai/docs/issues/new/choose)。

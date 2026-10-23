@@ -47,7 +47,7 @@ LangSmith 提供用于管理和使用 [*datasets*](/langsmith/evaluation-concept
 
 ![Tagging Datasets](https://mintcdn.com/langchain-5e9cc07a/ImHGLQW1HnQYwnJV/langsmith/images/tag-this-version.png?fit=max\&auto=format\&n=ImHGLQW1HnQYwnJV\&q=85\&s=c3f7a97c92eb645f7b0888f4e35ffd48)
 
-您还可以使用 SDK 标记数据集的版本。以下是如何使用 [Python SDK](https://docs.smith.langchain.com/reference/python/reference) 标记数据集版本的示例：
+您还可以使用 SDK 标记数据集的版本。以下是如何使用 [Python SDK](https://reference.langchain.com/python/langsmith) 标记数据集版本的示例：
 
 ```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 from langsmith import Client
@@ -212,7 +212,7 @@ ExampleListParams listParams = ExampleListParams.builder()
 var examples = client.examples().list(listParams);
 ```有关获取数据集视图的更多详细信息，请参阅[fetching datasets](/langsmith/manage-datasets-programmatically#fetch-datasets)上的指南。
 
-## Share a dataset
+## 共享数据集
 
 ### 公开分享数据集
 
@@ -226,7 +226,7 @@ var examples = client.examples().list(listParams);
 
 ![Share Dataset](https://mintcdn.com/langchain-5e9cc07a/ImHGLQW1HnQYwnJV/langsmith/images/share-dataset.gif?s=3788767dadf1c265968fe61d96bacc2d)
 
-### Unshare a dataset
+### 取消共享数据集
 
 1. 单击任何公开共享数据集右上角的“**公共**”，然后单击对话框中的“**取消共享**”，以单击“**取消共享**”。 ![Unshare Dataset](https://mintcdn.com/langchain-5e9cc07a/1RIJxfRpkszanJLL/langsmith/images/unshare-dataset.png?fit=max\&auto=format\&n=1RIJxfRpkszanJLL\&q=85\&s=98e1807ba9f9a510f56a435b7f81287c)
 
@@ -234,7 +234,7 @@ var examples = client.examples().list(listParams);
 
 ![Unshare Trace List](https://mintcdn.com/langchain-5e9cc07a/1RIJxfRpkszanJLL/langsmith/images/unshare-trace-list.png?fit=max\&auto=format\&n=1RIJxfRpkszanJLL\&q=85\&s=8a7762947b85af17b36f2c71857badf7)
 
-## Export a dataset您可以从 LangSmith UI 将 LangSmith 数据集导出为 CSV、JSONL 或 [OpenAI's fine tuning format](https://platform.openai.com/docs/guides/fine-tuning#example-format)。要在轨迹数据集上微调模型而不导出它，请使用 [Smithtune](/langsmith/smithtune)。
+## 导出数据集您可以从 LangSmith UI 将 LangSmith 数据集导出为 CSV、JSONL 或 [OpenAI's fine tuning format](https://platform.openai.com/docs/guides/fine-tuning#example-format)。要在轨迹数据集上微调模型而不导出它，请使用 [Smithtune](/langsmith/smithtune)。
 
 从 **数据集和实验** 选项卡中，选择一个数据集，单击 **⋮**（页面右上角），然后单击 **下载数据集**。
 

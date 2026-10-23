@@ -113,6 +113,12 @@ for call in stream.tool_calls:
     print(call.output, call.error)
 ```
 
+Each chunk from `message.tool_calls` is a `tool_call_chunk` that holds the call's `id`, its `name`, and only the new part of its `args`. A call's chunks concatenate into its full arguments, and `message.tool_calls.get()` returns the parsed tool calls.
+
+> [!NOTE]
+>
+> Chunks that hold only the new part of the arguments require `langchain-core>=1.6.13`. In earlier versions, each chunk holds all of the arguments so far.
+
 ## Streaming sub-agents
 
 When a `create_agent` call invokes another named `create_agent` (via a wrapping tool, typically), the inner agent's events flow at a nested namespace. The `name=` you pass to `create_agent` identifies that inner agent in the stream, so you can filter and label per agent.

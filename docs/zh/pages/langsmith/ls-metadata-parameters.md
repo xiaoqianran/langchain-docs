@@ -633,7 +633,7 @@ metadata_key = 'ls_run_depth' AND metadata_value = 0
 
 ### 使用 API
 
-将 [⟦T159⟧](https://docs.smith.langchain.com/reference/python/client/langsmith.client.Client) 类与 [⟦T160⟧](https://docs.smith.langchain.com/reference/python/client/langsmith.client.Client#langsmith.client.Client.list_runs) 方法 (Python) 或 [⟦T161⟧](https://docs.smith.langchain.com/reference/js/classes/client.Client#listruns) 方法 (TypeScript) 结合使用，根据元数据值查询跟踪。 [filter syntax](/langsmith/trace-query-syntax) 支持相等检查、比较和逻辑运算符。
+将 [⟦T159⟧](https://reference.langchain.com/python/langsmith/client/Client) 类与 [⟦T160⟧](https://reference.langchain.com/python/langsmith/client/Client/list_runs) 方法 (Python) 或 [⟦T161⟧](https://reference.langchain.com/javascript/langsmith/client/Client/listRuns) 方法 (TypeScript) 结合使用，根据元数据值查询跟踪。 [filter syntax](/langsmith/trace-query-syntax) 支持相等检查、比较和逻辑运算符。
 
 ```python Python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 from langsmith import Client

@@ -1,88 +1,82 @@
-<!-- langchain-docs: translation failed; English fallback -->
+<!-- langchain-docs: machine-translated zh-CN from English source -->
 
 <!-- langchain-docs: Troubleshoot SmithDB | https://docs.langchain.com/langsmith/self-host-smithdb-troubleshooting -->
 
-# Troubleshoot SmithDB
+# SmithDB 故障排除
 
-Diagnose SmithDB failures, gather troubleshooting context, or disable and reset a SmithDB deployment on self-hosted LangSmith.
+诊断 SmithDB 故障、收集故障排除上下文或禁用并重置自托管 LangSmith 上的 SmithDB 部署。
 
-<Note>
-  Keep ClickHouse configured and available throughout everything on this page. If no documented issue matches, contact LangChain through the [Support Portal](https://support.langchain.com/).
-</Note>
+> [!注意]
+>
+> 在此页面上的所有内容中保持 ClickHouse 配置并可用。如果没有匹配记录的问题，请通过 [Support Portal](https://support.langchain.com/) 联系 LangChain。
 
-Use this page to diagnose SmithDB installation and migration failures, gather context before you escalate, or back SmithDB out of a deployment: return traffic to ClickHouse, disable the SmithDB services, and optionally remove SmithDB data.
+使用此页面可以诊断 SmithDB 安装和迁移失败，在升级之前收集上下文，或将 SmithDB 退出部署：将流量返回到 ClickHouse，禁用 SmithDB 服务，并可选择删除 SmithDB 数据。
 
-## General best practices
+## 一般最佳实践
 
-* Stop at the current installation or migration stage until you understand the issue.
-* Record the LangSmith and Helm chart versions and the most recent configuration change.
-* Preserve failed Jobs, TaskDB, and relevant logs before deleting or recreating resources.
-* Do not delete the SmithDB metastore or object-storage data while troubleshooting.
+* 停止在当前安装或迁移阶段，直到您了解问题为止。
+* 记录LangSmith和Helm图表版本以及最近的配置更改。
+* 在删除或重新创建资源之前保留失败的作业、TaskDB 和相关日志。
+* 故障排除时请勿删除 SmithDB 元存储或对象存储数据。
 
-## Supporting infrastructure
+## 支持基础设施
 
-Most SmithDB installation failures trace back to one of the following. For the configuration each depends on, see [Prepare SmithDB supporting infrastructure](/langsmith/self-host-smithdb-infrastructure).
-
-**Pods stay `Pending`.** On a network-attached cache, the claim cannot bind. Check the claim and the pod events for StorageClass, zone, or quota errors:
+大多数 SmithDB 安装失败可追溯到以下原因之一。对于每个依赖的配置，请参阅[Prepare SmithDB supporting infrastructure](/langsmith/self-host-smithdb-infrastructure)。**Pod 保持 `Pending`。** 在网络连接的缓存上，声明无法绑定。检查声明和 Pod 事件中是否有 StorageClass、区域或配额错误：
 
 ```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 kubectl get pvc -n NAMESPACE
 kubectl describe pod -n NAMESPACE POD_NAME | grep -A5 Events
 ```
 
-For local SSD, compare the pod's `ephemeral-storage` request with node allocatable capacity:
+对于本地 SSD，将 pod 的 `ephemeral-storage` 请求与节点可分配容量进行比较：
 
 ```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 kubectl get node NODE_NAME -o jsonpath='{.status.allocatable.ephemeral-storage}{"\n"}'
 ```
 
-Either provision larger nodes or select a smaller tier. A node also needs headroom above the pod request for images, logs, and Kubernetes reservations. If you moved to network-attached caches on 0.17 and pods still request node storage, an `ephemeral-storage` override from an older values file is still in place; remove it. The migration Job requests node storage regardless of cache type.
+要么配置更大的节点，要么选择更小的层。节点还需要高于 pod 请求的空间，以用于图像、日志和 Kubernetes 预留。如果您在 0.17 上迁移到网络附加缓存并且 Pod 仍然请求节点存储，则来自旧值文件的 `ephemeral-storage` 覆盖仍然存在；删除它。无论缓存类型如何，迁移作业都会请求节点存储。
 
-**Object-store access is denied.** The workload identity binding does not match the ServiceAccount SmithDB actually runs as. The trust policy must name the release namespace and the ServiceAccount name, which defaults to `HELM_RELEASE-smithdb`. Confirm what the pod is using:
+**对象存储访问被拒绝。** 工作负载身份绑定与 SmithDB 实际运行的 ServiceAccount 不匹配。信任策略必须命名发布命名空​​间和ServiceAccount名称，默认为`HELM_RELEASE-smithdb`。确认 pod 使用的是什么：
 
 ```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 kubectl get pod -n NAMESPACE POD_NAME -o jsonpath='{.spec.serviceAccountName}{"\n"}'
 ```
 
-With `create: false`, `name` is required. Otherwise pods fall back to the `default` ServiceAccount and the binding never applies.
+对于`create: false`，需要`name`。否则，pod 会回退到 `default` ServiceAccount，并且绑定永远不会应用。**元存储拒绝连接。** 检查数据库是否可从集群访问，`useSsl` 是否与服务器所需的内容匹配，以及 `smithdb.config.metastore` 中指定的密钥是否与密钥中实际存在的密钥匹配。
 
-**The metastore refuses connections.** Check that the database is reachable from the cluster, that `useSsl` matches what the server requires, and that the Secret keys named in `smithdb.config.metastore` match the keys actually present in the Secret.
+**摄取或查询失败，并出现 `Unavailable` 错误。** HTTP 代理或服务网格会阻止与 SmithDB pod IP 的连接。 `ingest-queue` 日志显示诸如 `closing SmithDB ingestion stream failed: rpc error: code = Unavailable` 之类的错误。允许[Pod network access](/langsmith/self-host-smithdb-infrastructure#pod-network-access)中描述的连接。然后重新启动`platform-backend`、`ingest-queue`、`queue`和SmithDB查询，因为更改之前打开的连接不断失败。
 
-**Cache I/O is slow.** On local SSD, the `emptyDir` is backed by the boot disk rather than the SSD. On a network-attached disk, the volume is under-provisioned: confirm the StorageClass sets at least 7000 IOPS and 1000 MiB/s. Check which device backs the cache filesystem inside a running pod:
+**缓存 I/O 速度慢。** 在本地 SSD 上，`emptyDir` 由启动磁盘而不是 SSD 支持。在网络连接的磁盘上，卷配置不足：确认 StorageClass 设置至少 7000 IOPS 和 1000 MiB/s。检查哪个设备支持正在运行的 pod 内的缓存文件系统：
 
 ```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 kubectl exec -n NAMESPACE POD_NAME -- df -h /data
 ```
 
-For local SSD, the filesystem should use the local NVMe device, such as `/dev/md0` or `/dev/nvme1n1`. For network disks, confirm `/data` mounts the provisioned claim.
+对于本地 SSD，文件系统应使用本地 NVMe 设备，例如 `/dev/md0` 或 `/dev/nvme1n1`。对于网络磁盘，确认`/data`挂载了配置的声明。
 
-## Migration Job failures
+## 迁移作业失败
 
-The migration Job defaults to `backoffLimit: 3`, allowing retries before Kubernetes marks it failed.
+迁移作业默认为`backoffLimit: 3`，允许在 Kubernetes 将其标记为失败之前重试。如果作业因配置不足而失败，请调整 `smithdb.migration.job.parallelism` 和 `smithdb.migration.job.resources`（`smithdb.migration.deployment.resources` on LangSmith 0.16）。保留TaskDB，仅删除迁移作业，然后运行正常的Helm升级。删除活动作业可能会因正在进行的写入而留下少量未跟踪的对象存储数据。重新创建的作业将恢复 TaskDB 中跟踪的进度。
 
-If the Job failed from under-provisioning, adjust both `smithdb.migration.job.parallelism` and `smithdb.migration.job.resources` (`smithdb.migration.deployment.resources` on LangSmith 0.16). Preserve TaskDB, delete only the migration Job, and run the normal Helm upgrade. Deleting an active Job may leave a small amount of untracked object-storage data from in-flight writes. The recreated Job resumes progress tracked in TaskDB.
+> [!警告]
+>
+> 重置 SmithDB 元存储或对象存储时，也重置 TaskDB。禁用 SmithDB 时，默认情况下会删除图表管理的 TaskDB PVC。手动清除外部或保留的 TaskDB，否则过时的迁移状态可能会导致工作被跳过。
 
-<Warning>
-  When resetting the SmithDB metastore or object store, reset TaskDB too. The chart-managed TaskDB PVC is deleted by default when SmithDB is disabled. Clear an external or retained TaskDB manually, or stale migration state can cause work to be skipped.
-</Warning>
+> [!警告]
+>
+> 对于验证失败、原因不明或配置不足以外的问题，请停止并升级。保持查询禁用并启用迁移。保留失败的作业、TaskDB、SmithDB 元存储和对象存储。通过[Support Portal](https://support.langchain.com/)联系LangChain。
 
-<Warning>
-  For validation failures, unclear causes, or issues other than under-provisioning, stop and escalate. Keep queries disabled and migration enabled. Preserve the failed Job, TaskDB, SmithDB metastore, and object storage. Contact LangChain through the [Support Portal](https://support.langchain.com/).
-</Warning>
+## 禁用或重置 SmithDB
 
-## Disable or reset SmithDB
+使用此部分将 LangSmith 流量路由回 ClickHouse 并禁用 SmithDB 服务。安装割接顺序请参见[Install LangSmith with SmithDB](/langsmith/self-host-smithdb-install)。> [!警告]
+>
+> 如果历史迁移处于活动状态或者必须保留其进度，请在禁用 SmithDB 之前停止。禁用迁移会删除图表管理的 TaskDB 资源，默认情况下还会删除其 PVC。如果您需要保留迁移进度，请通过 [Support Portal](https://support.langchain.com/) 联系 LangChain。
 
-Use this section to route LangSmith traffic back to ClickHouse and disable the SmithDB services. For the installation and cutover sequence, see [Install LangSmith with SmithDB](/langsmith/self-host-smithdb-install).
+如果您稍后重新启用 SmithDB 摄取，则需要运行另一次迁移以使其恢复与 ClickHouse 同步。
 
-<Warning>
-  If a historical migration is active or its progress must be preserved, stop before disabling SmithDB. Disabling migration removes chart-managed TaskDB resources and, by default, its PVC. Contact LangChain through the [Support Portal](https://support.langchain.com/) if you need to preserve migration progress.
-</Warning>
+### 步骤 1. 将流量路由回 ClickHouse
 
-If you re-enable SmithDB ingestion later, you need to run another migration to bring it back in sync with ClickHouse.
-
-### Step 1. Route traffic back to ClickHouse
-
-Keep the SmithDB services enabled, but disable query, ingestion, and migration:
+保持 SmithDB 服务启用，但禁用查询、提取和迁移：
 
 ```yaml theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 smithdb:
@@ -96,11 +90,11 @@ smithdb:
       enabled: false
 ```
 
-Apply the chart through your normal deployment workflow and wait for the rollout to complete. This routes all query and ingestion traffic back to ClickHouse before any SmithDB workloads are removed.
+通过正常的部署工作流程应用图表并等待部署完成。在删除任何 SmithDB 工作负载之前，这会将所有查询和摄取流量路由回 ClickHouse。
 
-### Step 2. Disable SmithDB services
+### 步骤 2. 禁用 SmithDB 服务
 
-After the first Helm update completes, disable SmithDB services while leaving the integration flags off:
+第一次 Helm 更新完成后，禁用 SmithDB 服务，同时关闭集成标志：
 
 ```yaml theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 smithdb:
@@ -114,24 +108,16 @@ smithdb:
       enabled: false
 ```
 
-Apply the chart again. Separating traffic cutover from workload removal avoids requests racing with SmithDB shutdown.
+再次应用图表。将流量切换与工作负载移除分开，可以避免请求与 SmithDB 关闭竞争。
 
-### Step 3. (Optional) Remove SmithDB data
+### 步骤 3.（可选）删除 SmithDB 数据> [!警告]
+>
+> 这种清理具有破坏性。仅在禁用 SmithDB 服务并且您不再需要数据来重新启用、诊断或恢复后才能继续。
 
-<Danger>
-  This cleanup is destructive. Continue only after the SmithDB services are disabled and you no longer need the data for re-enablement, diagnosis, or recovery.
-</Danger>
-
-Optionally remove the dedicated SmithDB object-storage data and PostgreSQL metastore. Re-enabling SmithDB after this cleanup requires recreating its supporting infrastructure and re-migrating data from ClickHouse.
+（可选）删除专用的 SmithDB 对象存储数据和 PostgreSQL 元存储。清理后重新启用 SmithDB 需要重新创建其支持基础设施并从 ClickHouse 重新迁移数据。
 
 ***
 
-<div>
-  <Callout icon="terminal-2">
-    [Connect these docs](/use-these-docs) to your agent of choice via MCP for real-time answers.
-  </Callout>
+[Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
 
-  <Callout icon="edit">
-    [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/self-host-smithdb-troubleshooting.mdx) or [file an issue](https://github.com/langchain-ai/docs/issues/new/choose).
-  </Callout>
-</div>
+[Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/self-host-smithdb-troubleshooting.mdx) 或 [file an issue](https://github.com/langchain-ai/docs/issues/new/choose)。

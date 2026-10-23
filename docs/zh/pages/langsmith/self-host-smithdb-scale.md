@@ -6,30 +6,30 @@
 
 选择经过测试的 SmithDB 资源层以及 Kubernetes 工作负载和 PostgreSQL 元存储的大小。
 
-<Note>
-  对于非 SmithDB LangSmith 服务，请参阅 [Configure LangSmith for scale](/langsmith/self-host-scale)。
-</Note>
+> [!注意]
+>
+> 对于非 SmithDB LangSmith 服务，请参阅 [Configure LangSmith for scale](/langsmith/self-host-scale)。
 
 使用这些经过测试的层作为 SmithDB 的起始配置。在调整容量之前将 SmithDB 连接到监控堆栈，以便您可以观察每次更改的效果。参见[Configure SmithDB observability](/langsmith/self-host-smithdb-observability)。
 
 ## 选择部署模式
 
-<Note>
-  `smithdb.topology` 需要 Helm 图表 `0.18.0` 或更高版本。
-</Note>
+> [!注意]
+>
+> `smithdb.topology` 需要 Helm 图表 `0.18.0` 或更高版本。
 
-将`smithdb.topology`设置为`single`或`cluster`，并在需要时在`cluster`之上启用专用查询服务：
+将`smithdb.topology`设置为`unified`或`cluster`，并在需要时在`cluster`之上启用专用查询服务：
 
 |模式|运行什么 |用它来 |
 | - | - | - |
-| `single` |一个运行摄取、查询和压缩的`smithdb all` Pod |测试环境和小批量安装 |
+| `unified` |一个运行摄取、查询和压缩的`smithdb all` Pod |测试环境和小批量安装 |
 | `cluster`（默认）|单独的摄取、查询和压缩工作负载，由集群管理器协调 |生产装置|
 | `cluster` 与 [dedicated query services](#dedicated-query-services) |集群模式加上用于运行统计、运行规则或突变的单独服务 |生产安装中一种查询负载会减慢其他查询负载 |
 
 ```yaml theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 smithdb:
-  topology: single
-```单模式 Pod 运行一个副本，其大小由 [single tiers](#single-tiers) 决定。当 Pod 重新启动或从节点故障中恢复时，查询会失败。 LangSmith 在 Redis 中对传入跟踪进行排队，并在 Pod 再次运行时写入它们，因此摄取会被延迟而不是被丢弃。 PodDisruptionBudget 可防止节点耗尽驱逐 pod。
+  topology: unified
+```统一模式运行一个 `smithdb all` 副本，大小由 [unified tiers](#unified-tiers) 决定。当 Pod 重新启动或从节点故障中恢复时，查询会失败。 LangSmith 在 Redis 中对传入跟踪进行排队，并在 Pod 再次运行时写入它们，因此摄取会被延迟而不是被丢弃。 PodDisruptionBudget 可防止节点耗尽驱逐 pod。
 
 ### 专用查询服务
 
@@ -51,15 +51,15 @@ smithdb:
 
 应用每个副本资源和所选层的起始副本计数。如果工作负载后来超出了该起点，您可以水平扩展 SmithDB 计算。
 
-<Note>
-  默认情况下启用 SmithDB 查询、摄取和压缩工作器 HPA。它们需要 Kubernetes Metrics Server 或其他 `metrics.k8s.io` 提供商。使用 `kubectl get --raw /apis/metrics.k8s.io/v1beta1` 验证可用性。
-</Note>
+> [!注意]
+>
+> SmithDB 查询、摄取和压缩工作 HPA 默认启用。它们需要 Kubernetes Metrics Server 或其他 `metrics.k8s.io` 提供商。使用 `kubectl get --raw /apis/metrics.k8s.io/v1beta1` 验证可用性。
 
 ### 使用 KEDA 进行扩展
 
-<Note>
-  SmithDB 压缩工作器的 KEDA 扩展需要 Helm 图表 `0.17.0` 或更高版本。
-</Note>
+> [!注意]
+>
+> SmithDB 压缩工作器的 KEDA 扩展需要 Helm 图表 `0.17.0` 或更高版本。
 
 SmithDB 压缩工作线程可以通过[KEDA](https://keda.sh/)而不是基于 CPU 的 HPA 来扩展队列深度。这适合突发压缩积压，即队列深度先于 CPU 增加的情况。 LangSmith 对自己的队列使用相同的 KEDA 安装；请参阅[KEDA autoscaling for LangSmith queues](/langsmith/self-host-scale#keda-autoscaling-for-langsmith-queues)来安装和配置它。
 
@@ -79,21 +79,21 @@ smithdb:
 
 ## 基线层在集群模式下，每一层为每个组件设置每个副本的资源：
 
-|组件|小<br />10 摄取/10 查询 QPS |中<br />100 摄取/40 查询 QPS |大<br />1000次摄取/100次查询QPS |
+|组件|小型 10 摄取/10 查询 QPS |中 100 次摄取/40 次查询 QPS |大型1000次摄取/100次查询QPS |
 | - | - | - | - |
-|食入| 1 个副本<br />4 CPU<br />8 Gi 内存<br />100 Gi 缓存 | 1 个副本<br />16 CPU<br />32 Gi 内存<br />100 Gi 缓存 | 2 个副本<br />56 CPU<br />150 Gi 内存<br />1000 Gi 缓存 |
-|查询 | 1 个副本<br />4 CPU<br />8 Gi 内存<br />200 Gi 缓存 | 1 个副本<br />28 CPU<br />48 Gi 内存<br />200 Gi 缓存 | 4个副本<br />28 CPU<br />50 Gi内存<br />1000 Gi缓存 |
-|压实| 1 个副本<br />2 CPU<br />4 Gi 内存 | 1 个副本<br />4 CPU<br />8 Gi 内存 | 1 个副本<br />8 CPU<br />16 Gi 内存 |
-|压实工| 1 个副本<br />8 CPU<br />16 Gi 内存<br />100 Gi 缓存 | 1 个副本<br />16 CPU<br />32 Gi 内存<br />100 Gi 缓存 | 4个副本<br />28 CPU<br />50 Gi内存<br />300 Gi缓存 |
-|集群管理器| 1个副本<br />250m CPU<br />256 Mi内存 | 1个副本<br />250m CPU<br />256 Mi内存 | 1 个副本<br />2 CPU<br />2 Gi 内存 |
+|食入| 1 个副本 4 个 CPU 8 Gi 内存 100 Gi 缓存 | 1 个副本 16 CPU 32 Gi 内存 100 Gi 缓存 | 2 个副本 56 个 CPU 150 Gi 内存 1000 Gi 缓存 |
+|查询 | 1 个副本 4 个 CPU 8 Gi 内存 200 Gi 缓存 | 1 个副本 28 个 CPU 48 Gi 内存 200 Gi 缓存 | 4 个副本 28 个 CPU 50 Gi 内存 1000 Gi 缓存 |
+|压实| 1 个副本 2 个 CPU 4 Gi 内存 | 1 个副本 4 CPU 8 Gi 内存 | 1 个副本 8 CPU 16 Gi 内存 |
+|压实工| 1 个副本 8 个 CPU 16 Gi 内存 100 Gi 缓存 | 1 个副本 16 CPU 32 Gi 内存 100 Gi 缓存 | 4 个副本 28 个 CPU 50 Gi 内存 300 Gi 缓存 |
+|集群管理器| 1 副本 250m CPU 256 Mi 内存 | 1 副本 250m CPU 256 Mi 内存 | 1 个副本 2 个 CPU 2 Gi 内存 |
 
-### 单层
+### 统一层级
 
-在单一模式下，`smithdb.resourceTier` 调整一个 SmithDB pod 的大小：|组件|小|中等|大|
+在统一模式下，`smithdb.resourceTier`调整SmithDB pod的大小：
+
+|组件|小|中等|大|
 | - | - | - | - |
-|单| 1 个副本<br />4 CPU<br />16 Gi 内存<br />100 Gi 缓存 | 1 个副本<br />16 CPU<br />64 Gi 内存<br />300 Gi 缓存 | 1 个副本<br />32 CPU<br />128 Gi 内存<br />1000 Gi 缓存 |
-
-要覆盖层的 CPU 和内存，请设置 `smithdb.single.deployment.resources`。当工作负载超过大型层时，切换到集群模式。
+|统一| 1 个副本 4 个 CPU 16 Gi 内存 100 Gi 缓存 | 1 个副本 16 个 CPU 64 Gi 内存 300 Gi 缓存 | 1 个副本 32 个 CPU 128 Gi 内存 1000 Gi 缓存 |要覆盖层的 CPU 和内存，请设置 `smithdb.unified.deployment.resources`。当工作负载超过大型层时，切换到集群模式。
 
 ## 使用 Helm 配置资源
 
@@ -110,53 +110,51 @@ smithdb:
 
 有关当前值和图表详细信息，请参阅[SmithDB resource tiers](https://github.com/langchain-ai/helm/tree/main/charts/langsmith#smithdb-resource-tiers)。
 
-<Accordion title="Example explicit resource configuration">
-  此示例覆盖中等层大小的查询组件。
-
-  <Tabs>
-    <Tab title="LangSmith 0.17">
-      缓存声明保持在层大小。这些值不需要节点存储。
-
-      ```yaml theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-      smithdb:
-        resourceTier: medium
-        query:
-          deployment:
-            resources:
-              requests:
-                cpu: "28"
-                memory: "48Gi"
-              limits:
-                cpu: "28"
-                memory: "48Gi"
-      ```
-    </Tab>
-
-    <Tab title="LangSmith 0.16">
-      存储限制还调整了默认 `emptyDir` 的大小。```yaml theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-      smithdb:
-        resourceTier: medium
-        query:
-          deployment:
-            resources:
-              requests:
-                cpu: "28"
-                memory: "48Gi"
-                ephemeral-storage: "200Gi"
-              limits:
-                cpu: "28"
-                memory: "48Gi"
-                ephemeral-storage: "200Gi"
-      ```
-    </Tab>
-  </Tabs>
-</Accordion>
+> **显式资源配置示例**
+>
+> 此示例覆盖中等层大小的查询组件。
+>
+> **LangSmith 0.17**
+>
+> 缓存声明保持在层大小。这些值不需要节点存储。
+>
+> ```yaml theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> smithdb:
+>   resourceTier: medium
+>   query:
+>     deployment:
+>       resources:
+>         requests:
+>           cpu: "28"
+>           memory: "48Gi"
+>         limits:
+>           cpu: "28"
+>           memory: "48Gi"
+> ```
+>
+> **LangSmith 0.16**
+>
+> 存储限制还调整默认 `emptyDir` 的大小。
+>
+> ```yaml theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> smithdb:
+>   resourceTier: medium
+>   query:
+>     deployment:
+>       resources:
+>         requests:
+>           cpu: "28"
+>           memory: "48Gi"
+>           ephemeral-storage: "200Gi"
+>         limits:
+>           cpu: "28"
+>           memory: "48Gi"
+>           ephemeral-storage: "200Gi"
+> ```
 
 ## 元存储容量
 
-基准层仅涵盖 SmithDB Kubernetes 工作负载。它们不包括 PostgreSQL 元存储。使用专用元存储的以下起点：
-
-|等级 | vCPU |内存|
+基准层仅涵盖 SmithDB Kubernetes 工作负载。它们不包括 PostgreSQL 元存储。使用专用元存储的以下起点：|等级 | vCPU |内存|
 | - | - | - |
 |小| 2 | 16 GiB |
 |中等| 4 | 32 GiB |
@@ -166,12 +164,6 @@ smithdb:
 
 ***
 
-<div>
-  <Callout icon="terminal-2">
-    [Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
-  </Callout>
+[Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
 
-  <Callout icon="edit">
-    [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/self-host-smithdb-scale.mdx) 或 [file an issue](https://github.com/langchain-ai/docs/issues/new/choose)。
-  </Callout>
-</div>
+[Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/self-host-smithdb-scale.mdx) 或 [file an issue](https://github.com/langchain-ai/docs/issues/new/choose)。

@@ -770,6 +770,8 @@ When the agent runs through the Slack channel, Slack renders OAuth entries that 
 
 **Screenshot placeholder:** Add the Slack OAuth authorization prompt screenshot here.
 
+Slack OAuth authorization prompt
+
 ## Inspect and delete connections
 
 Use `list` or `get` to inspect connection metadata. `list` shows every connection in the workspace, not only the ones this project uses:

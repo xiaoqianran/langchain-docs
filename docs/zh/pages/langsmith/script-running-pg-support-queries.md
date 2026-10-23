@@ -66,17 +66,17 @@ UI 和 API 导出涵盖所有工作区和组织，用于：
 * LangSmith发动机
 * LangSmith LLM 网关
 
-<Note>
-  UI 和 API 导出需要以下两项：
-
-  * `organization:manage` 许可。
-  * 来电者的电子邮件必须在`USAGE_EXPORT_ADMIN_EMAILS`中列出，或者`ORG_ADMINS_INSTALLATION_USAGE_EXPORT_ENABLED`必须设置为`true`。
-
-  ```env theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  USAGE_EXPORT_ADMIN_EMAILS='["admin@example.com", "admin2@example.com"]'
-  ORG_ADMINS_INSTALLATION_USAGE_EXPORT_ENABLED=true
-  ```
-</Note>
+> [!注意]
+>
+> UI 和 API 导出需要以下两项：
+>
+> * `organization:manage` 权限。
+> * 来电者的电子邮件必须在`USAGE_EXPORT_ADMIN_EMAILS` 中列出，或者`ORG_ADMINS_INSTALLATION_USAGE_EXPORT_ENABLED` 必须设置为`true`。
+>
+> ```env theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> USAGE_EXPORT_ADMIN_EMAILS='["admin@example.com", "admin2@example.com"]'
+> ORG_ADMINS_INSTALLATION_USAGE_EXPORT_ENABLED=true
+> ```
 
 ### 从 UI 导出（推荐）
 
@@ -130,12 +130,6 @@ sh run_support_query_pg.sh <postgres_url> \
 
 ***
 
-<div>
-  <Callout icon="terminal-2">
-    [Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
-  </Callout>
+[Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
 
-  <Callout icon="edit">
-    [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/script-running-pg-support-queries.mdx) 或 [file an issue](https://github.com/langchain-ai/docs/issues/new/choose)。
-  </Callout>
-</div>
+[Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/script-running-pg-support-queries.mdx) 或 [file an issue](https://github.com/langchain-ai/docs/issues/new/choose)。

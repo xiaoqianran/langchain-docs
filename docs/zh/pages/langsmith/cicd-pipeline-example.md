@@ -294,7 +294,7 @@ docker push my-agent:latest
 
 更多详情请参阅[LangGraph CLI build documentation](/langsmith/cli#build)。
 
-### 连接到您部署的代理* **[LangGraph SDK](https://langchain-ai.github.io/langgraph/cloud/reference/sdk/python_sdk_ref/#langgraph-sdk-python)**：使用LangGraph SDK 进行编程集成。
+### 连接到您部署的代理* **[LangGraph SDK](/langsmith/langgraph-python-sdk)**：使用LangGraph SDK 进行编程集成。
 * **[RemoteGraph](/langsmith/use-remote-graph)**：使用 RemoteGraph 进行远程图连接（以在其他图中使用您的图）。
 * **[REST API](/langsmith/server-api-ref)**：与部署的代理使用基于 HTTP 的交互。
 * **[Studio](/langsmith/studio)**：访问可视化界面进行测试和调试。

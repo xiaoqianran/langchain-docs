@@ -83,6 +83,8 @@ A channel receives messages that start agent runs and delivers responses. An [MC
 >
 > Start runs from any service that can send a JSON webhook.
 
+An HTTP adapter can also live in a community-maintained package. See [Share a channel adapter as a package](/langsmith/python/managed-deep-agents-channels-http#share-a-channel-adapter-as-a-package) to publish reusable provider code that users import into their channel declarations.
+
 ## See also
 
 * [Identity](/langsmith/python/managed-deep-agents-identity): authenticate callers and scope channel runs to the resolved user.

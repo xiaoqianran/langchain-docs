@@ -8,7 +8,7 @@
 
 针对使用 [Azure Terraform modules](https://github.com/langchain-ai/terraform/tree/main/modules/azure) 预配的 Azure LangSmith 部署进行日常操作的命令备忘单。所有 `make` 目标都从 `modules/azure/` 运行。运行 `make help` 以获得内联摘要。
 
-有关完整的部署演练，请参阅[Azure deployment guide](/langsmith/self-host-terraform-azure-deploy)。
+有关完整的部署演练，请参阅 [Azure deployment guide](/langsmith/self-host-terraform-azure-deploy)。
 
 ## 部署概述
 
@@ -107,9 +107,9 @@ enable_gateway_pii_redaction = false  # Presidio PII redaction (requires enable_
 enable_sso_oidc      = false          # OIDC SSO; enable only after logging in as the org admin with basic auth
 ```
 
-<Warning>
-  LangSmith 部署附加组件首先需要 `default_node_pool_min_count = 5`。操作员生成的 pod 需要节点净空；如果没有它，特工吊舱将无限期地停留在 `Pending` 中。
-</Warning>
+> [!警告]
+>
+> LangSmith 部署插件首先需要 `default_node_pool_min_count = 5`。操作员生成的 pod 需要节点净空；如果没有它，特工吊舱将无限期地停留在 `Pending` 中。
 
 ## 尺寸配置文件
 
@@ -239,18 +239,12 @@ make clean       # removes local secrets, config, helm values, and tfstate files
 
 `make destroy-force` 和 `make clean-force` 运行相同的步骤，没有确认提示。
 
-<Warning>
-  `make clean-force` 还回答保护仍跟踪资源的状态文件的提示，然后删除 `terraform.tfstate`。对于默认的本地后端，该文件是唯一的状态，因此在 `make destroy` 成功之前运行它会孤立 Azure 资源。仅在成功 `make destroy` 后运行 `make clean-force`。
-</Warning>
+> [!警告]
+>
+> `make clean-force` 还回答保护仍跟踪资源的状态文件的提示，然后删除 `terraform.tfstate`。对于默认的本地后端，该文件是唯一的状态，因此在 `make destroy` 成功之前运行它会孤立 Azure 资源。仅在成功 `make destroy` 后运行 `make clean-force`。
 
 ***
 
-<div>
-  <Callout icon="terminal-2">
-    [Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
-  </Callout>
+[Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
 
-  <Callout icon="edit">
-    [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/self-host-terraform-azure-quick-reference.mdx) 或 [file an issue](https://github.com/langchain-ai/docs/issues/new/choose)。
-  </Callout>
-</div>
+[Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/self-host-terraform-azure-quick-reference.mdx) 或 [file an issue](https://github.com/langchain-ai/docs/issues/new/choose)。

@@ -10,7 +10,7 @@
 
 从[LangSmith homepage](https://smith.langchain.com?utm_source=docs\&utm_medium=cta\&utm_campaign=langsmith-signup\&utm_content=langsmith-sandboxes)，选择**沙箱**来管理所有沙箱资源。
 
-<img alt="Sandboxes overview page" />
+![Sandboxes overview page](https://mintcdn.com/langchain-5e9cc07a/5nd3ca6haxRbnJZj/images/langsmith/sandboxes/sb-overview.png?fit=max\&auto=format\&n=5nd3ca6haxRbnJZj\&q=85\&s=6c2848ea69c0a99cbdd0930ceb91daa5)
 
 ## 环境可用性
 
@@ -22,9 +22,9 @@
 | AWS 美国 (`aws.smith.langchain.com`) |一般可用 |
 | [BYOC](/langsmith/byoc)（您的数据平面 URL）|一般可用 |
 
-<Warning>
-  在 BYOC 上，使用属于 BYOC 工作区的 API 密钥。
-</Warning>
+> [!警告]
+>
+> 在 BYOC 上，使用属于 BYOC 工作区的 API 密钥。
 
 对于自托管 LangSmith 部署，请参阅 [Enable Sandboxes on self-hosted deployments](/langsmith/enable-self-hosted-sandboxes)。基础设施模型、扩展和升级请参见[Self-hosted Sandbox architecture](/langsmith/self-host-sandbox-architecture)。
 
@@ -36,19 +36,17 @@
 
 ### 1.安装SDK
 
-<CodeGroup>
-  ```bash Python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  # uv
-  uv add langsmith
+```bash Python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+# uv
+uv add langsmith
 
-  # pip
-  pip install langsmith
-  ```
+# pip
+pip install langsmith
+```
 
-  ```bash TypeScript theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  npm install langsmith
-  ```
-</CodeGroup>
+```bash TypeScript theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+npm install langsmith
+```
 
 ### 2.设置您的API密钥
 
@@ -58,31 +56,29 @@ export LANGSMITH_API_KEY="<your-api-key>"
 
 ### 3. 创建并运行沙箱
 
-<CodeGroup>
-  ```python Python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  from langsmith.sandbox import SandboxClient
+```python Python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+from langsmith.sandbox import SandboxClient
 
-  client = SandboxClient()
+client = SandboxClient()
 
-  with client.sandbox() as sb:
-      result = sb.run("python3 -c 'print(2 + 2)'")
-      print(result.stdout)  # "4\n"
-  ```
+with client.sandbox() as sb:
+    result = sb.run("python3 -c 'print(2 + 2)'")
+    print(result.stdout)  # "4\n"
+```
 
-  ```ts TypeScript theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  import { SandboxClient } from "langsmith/sandbox";
+```ts TypeScript theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+import { SandboxClient } from "langsmith/sandbox";
 
-  const client = new SandboxClient();
-  const sandbox = await client.createSandbox();
-  const result = await sandbox.run("node -e 'console.log(2 + 2)'");
-  console.log(result.stdout); // "4\n"
-  await sandbox.delete();
-  ```
-</CodeGroup>
+const client = new SandboxClient();
+const sandbox = await client.createSandbox();
+const result = await sandbox.run("node -e 'console.log(2 + 2)'");
+console.log(result.stdout); // "4\n"
+await sandbox.delete();
+```
 
-<Tip>
-  更喜欢命令行？ [Sandbox CLI](/langsmith/sandbox-cli) 允许您创建沙箱、运行命令和打开交互式 shell，而无需编写任何代码。
-</Tip>
+> [!提示]
+>
+> 更喜欢命令行？ [Sandbox CLI](/langsmith/sandbox-cli) 允许您创建沙箱、运行命令和打开交互式 shell，而无需编写任何代码。
 
 ### 4. 与代理一起使用沙箱
 
@@ -92,50 +88,42 @@ export LANGSMITH_API_KEY="<your-api-key>"
 
 ## 资源
 
-<CardGroup>
-  <Card title="Snapshots" icon="camera" href="/langsmith/sandbox-snapshots">
-    从 Docker 映像构建文件系统映像或捕获正在运行的沙箱，然后从中启动沙箱。
-  </Card>
+> **[Snapshots](/langsmith/sandbox-snapshots)**
+>
+> 从 Docker 映像构建文件系统映像或捕获正在运行的沙箱，然后从中启动沙箱。
 
-  <Card title="Service URLs" icon="globe" href="/langsmith/sandbox-service-urls">
-    通过经过身份验证的 URL 访问在沙箱内运行的 HTTP 服务。
-  </Card>
+> **[Service URLs](/langsmith/sandbox-service-urls)**
+>
+> 通过经过身份验证的 URL 访问在沙箱内运行的 HTTP 服务。
 
-  <Card title="Auth proxy" icon="shield-lock" href="/langsmith/sandbox-auth-proxy">
-    将凭证注入出站 API 请求，无需硬编码机密。
-  </Card>
+> **[Auth proxy](/langsmith/sandbox-auth-proxy)**
+>
+> 将凭证注入出站 API 请求，无需硬编码机密。
 
-  <Card title="Mounts" icon="folder" href="/langsmith/sandbox-mounts">
-    将 S3 存储桶、GCS 存储桶和公共 Git 存储库附加到沙箱文件系统。
-  </Card>
+> **[Mounts](/langsmith/sandbox-mounts)**
+>
+> 将 S3 存储桶、GCS 存储桶和公共 Git 存储库附加到沙箱文件系统。
 
-  <Card title="Permissions" icon="user-key" href="/langsmith/sandbox-permissions">
-    控制哪些工作区成员可以在创建沙箱后与其进行交互。
-  </Card>
+> **[Permissions](/langsmith/sandbox-permissions)**
+>
+> 控制哪些工作区成员可以在创建沙箱后与其进行交互。
 
-  <Card title="CLI" icon="terminal-2" href="/langsmith/sandbox-cli">
-    从命令行构建快照、管理沙箱、打开控制台和隧道 TCP 端口。
-  </Card>
+> **[CLI](/langsmith/sandbox-cli)**
+>
+> 从命令行构建快照、管理沙箱、打开控制台和隧道 TCP 端口。
 
-  <Card title="SDK usage" icon="code" href="/langsmith/sandbox-sdk">
-    使用 Python 或 TypeScript SDK 以编程方式创建和管理沙箱。
-  </Card>
+> **[SDK usage](/langsmith/sandbox-sdk)**
+>
+> 使用 Python 或 TypeScript SDK 以编程方式创建和管理沙箱。
 
-  <Card title="Self-hosted setup" icon="server" href="/langsmith/enable-self-hosted-sandboxes">
-    使用 Helm 或 Terraform 在自托管 LangSmith 部署上启用沙箱。
-  </Card><Card title="Harbor" icon="flask" href="/langsmith/harbor-integrations#sandboxes">
-    在 LangSmith 沙盒上运行 Harbor 评估和部署。
-  </Card>
-</CardGroup>
+> **[Self-hosted setup](/langsmith/enable-self-hosted-sandboxes)**
+>
+> 使用 Helm 或 Terraform 在自托管 LangSmith 部署上启用沙箱。> **[Harbor](/langsmith/harbor-integrations#sandboxes)**
+>
+> 在 LangSmith 沙盒上运行 Harbor 评估和部署。
 
 ***
 
-<div>
-  <Callout icon="terminal-2">
-    [Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
-  </Callout>
+[Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
 
-  <Callout icon="edit">
-    [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/sandboxes.mdx) 或 [file an issue](https://github.com/langchain-ai/docs/issues/new/choose)。
-  </Callout>
-</div>
+[Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/sandboxes.mdx) 或 [file an issue](https://github.com/langchain-ai/docs/issues/new/choose)。

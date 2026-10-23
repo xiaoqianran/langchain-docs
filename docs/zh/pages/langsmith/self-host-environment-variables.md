@@ -76,9 +76,9 @@ Duplicate keys detected: [MY_ENV_VAR]
 
 要解决此问题，请从 `commonEnv` 或服务的 `extraEnv` 中删除重复项，以便每个变量名称在每个服务中只出现一次。
 
-<Warning>
-  图表管理的变量（由 Helm 图表内部设置）计入重复检测。如果图表已管理该变量，请勿将变量名称添加到 `commonEnv` 或 `extraEnv`。查看 [chart values file](https://github.com/langchain-ai/helm/blob/main/charts/langsmith/values.yaml) 查看图表默认设置的变量。
-</Warning>
+> [!警告]
+>
+> 图表管理的变量（由 Helm 图表内部设置）计入重复检测。如果图表已管理该变量，请勿将变量名称添加到 `commonEnv` 或 `extraEnv`。查看 [chart values file](https://github.com/langchain-ai/helm/blob/main/charts/langsmith/values.yaml) 查看图表默认设置的变量。
 
 ## 示例：在大多数服务上设置一个变量，但在一个服务上覆盖它要对大多数服务使用通用值，同时为特定服务覆盖它，请在 `commonEnv` 中设置它，并将覆盖添加到该服务的 `extraEnv`。由于 `playground` 和 `aceBackend` 不接收 `commonEnv`，因此您必须始终通过这些服务自己的 `extraEnv` 设置变量。
 
@@ -102,7 +102,7 @@ playground:
 
 ### 减少批量运行持久性日志记录
 
-默认情况下，LangSmith 会通过基于 Go 的摄取队列为其保留的每批运行记录一条成功消息。在处理大量跟踪的部署中，这可能会产生过多的日志噪音。
+默认情况下，LangSmith 会通过基于 Go 的摄取队列为每批运行记录一条成功消息。在处理大量跟踪的部署中，这可能会产生过多的日志噪音。
 
 `FF_PERSIST_BATCHED_RUNS_SUCCESS_LOGGING`默认为`true`，当`ingestQueue.enabled`为`true`（默认）时，通过`commonEnv`注入到所有服务中。要禁用这些成功日志消息，请在 `commonEnv` 中覆盖它：
 
@@ -112,9 +112,9 @@ commonEnv:
     value: "false"
 ```
 
-<Note>
-  将此标志设置为 `false` 仅抑制每批次成功消息。错误仍然被记录。
-</Note>
+> [!注意]
+>
+> 将此标志设置为 `false` 仅抑制每批次成功消息。错误仍然被记录。
 
 ## 相关页面
 
@@ -124,12 +124,6 @@ commonEnv:
 
 ***
 
-<div>
-  <Callout icon="terminal-2">
-    [Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
-  </Callout>
+[Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
 
-  <Callout icon="edit">
-    [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/self-host-environment-variables.mdx) 或 [file an issue](https://github.com/langchain-ai/docs/issues/new/choose)。
-  </Callout>
-</div>
+[Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/self-host-environment-variables.mdx) 或 [file an issue](https://github.com/langchain-ai/docs/issues/new/choose)。

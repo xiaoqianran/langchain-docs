@@ -704,6 +704,8 @@ The agent successfully analyzes the data and shares a comprehensive report with 
 
 ![Sales analysis results in Slack](https://mintcdn.com/langchain-5e9cc07a/7KAsBk-8tguhrRJ6/images/data_analysis_slack_response.png?fit=max\&auto=format\&n=7KAsBk-8tguhrRJ6\&q=85\&s=b0a89738510117d55b35fc7a10265053)
 
+Agent-generated analysis report and visualization dashboard delivered to Slack
+
 > [!TIP]
 >
 > You can download artifacts directly from the backend without using external tools:

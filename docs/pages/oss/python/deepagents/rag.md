@@ -293,7 +293,6 @@ Create `agent.py`:
 import requests
 from langchain_core.documents import Document
 from langchain_core.vectorstores import InMemoryVectorStore
-from langchain_openai import OpenAIEmbeddings
 from langchain_text_splitters import RecursiveCharacterTextSplitter
 
 DOCS_BASE = "https://docs.langchain.com"

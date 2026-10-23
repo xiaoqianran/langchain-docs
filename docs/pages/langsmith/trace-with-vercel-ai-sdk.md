@@ -267,7 +267,7 @@ When tracing in serverless environments, wait for all runs to flush before your 
 
 **AI SDK v7**
 
-Pass a LangSmith [`Client`](https://docs.smith.langchain.com/reference/js/classes/client.Client) instance to `LangSmithTelemetry`, then call `await client.awaitPendingTraceBatches()`. Make sure to also pass it into any `traceable` wrappers you create:
+Pass a LangSmith [`Client`](https://reference.langchain.com/javascript/langsmith/client/Client) instance to `LangSmithTelemetry`, then call `await client.awaitPendingTraceBatches()`. Make sure to also pass it into any `traceable` wrappers you create:
 
 ```typescript theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 import { openai } from "@ai-sdk/openai";
@@ -322,7 +322,7 @@ try {
 
 **AI SDK v5 and v6**
 
-Pass a LangSmith [`Client`](https://docs.smith.langchain.com/reference/js/classes/client.Client) instance to `wrapAISDK` and any `traceable` wrappers you create, then call `await client.awaitPendingTraceBatches()`:
+Pass a LangSmith [`Client`](https://reference.langchain.com/javascript/langsmith/client/Client) instance to `wrapAISDK` and any `traceable` wrappers you create, then call `await client.awaitPendingTraceBatches()`:
 
 ```typescript theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 import { openai } from "@ai-sdk/openai";

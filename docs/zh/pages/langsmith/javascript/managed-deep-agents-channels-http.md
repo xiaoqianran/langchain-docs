@@ -59,7 +59,7 @@ export const channel = channels.http({
 
 托管Deep Agents 首先调用`verify`。返回`true`继续`parse`，或`false`以`401`拒绝请求。 `verify` 可能会返回一个承诺。
 
-`verify` 接收带有 `request` 和原始 `rawBody` 字节的 `HttpChannelRequest`。根据字节检查签名，而不是根据重新序列化的主体检查签名：
+`verify` 接收带有 `request` 的 `HttpChannelRequest` 和原始 `rawBody` 字节。根据字节检查签名，而不是根据重新序列化的主体检查签名：
 
 ```ts lib/orders.ts theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 import { createHmac, timingSafeEqual } from "node:crypto";
@@ -194,7 +194,7 @@ export const channel = channels.http({
 });
 ```
 
-托管 Deep Agents 在运行完成后发布回复，与提供者已收到的响应分开。有两种情况不会产生回复：在 [interrupt](/langsmith/javascript/managed-deep-agents-tools#respond-to-an-interrupt) 上暂停的运行，以及代理本身已传递最终消息的运行。失败的 `post` 会记录为传送失败。
+托管 Deep Agents 在运行完成后发布回复，与提供者已收到的响应分开。有两种情况不会产生回复：在 [interrupt](/langsmith/javascript/managed-deep-agents-tools#respond-to-an-interrupt) 上暂停的运行，以及代理本身已传递最终消息的运行。失败的 `post` 会被记录为传送失败。
 
 添加可选的异步 `onError(error, target)` 回调来处理运行或交付失败。它取代了默认的错误回复。它接收经过验证的回复目标。## 调用端点
 
@@ -226,7 +226,7 @@ POST https://<deployment-url>/channels/<name>/events
 
 ## 读取代理中的事件
 
-工具和中间件从[⟦T99⟧](/langsmith/javascript/managed-deep-agents-runtime#channel)读取交付。对于解析器示例，`runtime.channel.provider` 是 `"orders"`。从 `parse` 返回 `rawEvent` 以在 `runtime.channel.rawEvent` 公开 JSON 提供程序数据。如果省略，`runtime.channel.rawEvent` 为`undefined`。
+工具和中间件从[⟦T101⟧](/langsmith/javascript/managed-deep-agents-runtime#channel)读取交付。对于解析器示例，`runtime.channel.provider` 是 `"orders"`。从 `parse` 返回 `rawEvent` 以在 `runtime.channel.rawEvent` 公开 JSON 提供程序数据。如果省略，`runtime.channel.rawEvent` 为`undefined`。
 
 回复`target`保持私密。代码无法从`runtime.channel`读取它。
 
@@ -249,6 +249,55 @@ bunx mda deploy
 ```
 
 将签名密钥和任何回复凭据放入项目 `.env` 中，以便 `mda deploy` 将它们作为部署机密转发。然后向外部服务注册 `https://<deployment-url>/channels/<name>/events` 作为其 webhook 目标。
+
+## 将通道适配器作为包共享
+
+可重用通道适配器是创建 HTTP 通道的包。单独发布特定于提供程序的代码，以便其他项目可以安装它，而无需复制回调或更改托管 Deep Agents SDK。
+
+该包拥有请求验证、事件解析和可选的回复传递。托管Deep Agents仍然拥有代理运行和可信切换。
+
+### 打包适配器要打包本指南中的订单适配器，请将 `verify`、`parse`、`post` 及其助手移至包中。在环境变量中保密，而不是在已发布的源代码中保密。导出返回 HTTP 通道声明的工厂：
+
+将 `managed-deepagents` 声明为 `package.json` 中的 `peerDependencies` 条目，以便应用程序提供 SDK。仅从公共 `managed-deepagents` 入口点导入。工厂返回`HttpChannel`。键入 `verify`、`parse` 和 `post` 时，请使用 `HttpChannelAdapter` 以及请求、解析结果和后输入类型。
+
+将回调放入 `src/orders.ts` 并从包入口点导出工厂：
+
+```ts src/index.ts theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+import { channels, type HttpChannel } from "managed-deepagents";
+
+import { parse, post, verify } from "./orders.js";
+
+export function ordersChannel(): HttpChannel {
+  return channels.http({
+    provider: "orders",
+    verify,
+    parse,
+    post,
+  });
+}
+```
+
+发布已编译的 JavaScript 和 TypeScript 声明，并将包入口点指向这些文件。请勿将 `managed-deepagents` 的单独副本捆绑到适配器中。
+
+在包元数据中声明支持的 `managed-deepagents` 版本。在发布之前对这些版本进行测试。
+
+### 在项目中使用该包
+
+`mda-orders` 是示例包名称，而不是已发布的集成。要将其安装为应用程序依赖项并在 `channels/` 下声明一个通道：
+
+```ts channels/orders.ts theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+import { ordersChannel } from "mda-orders";
+
+export const channel = ordersChannel();
+```
+
+通道文件名`channels/orders.ts`决定端点：`/channels/orders/events`。保持 `provider` 值 `"orders"` 在各个版本中保持稳定，因为它命名了调用者身份。
+
+### 在发布之前
+
+测试有效和无效签名、忽略的事件、对话到线程的映射以及回复传递。记录所需的环境变量、支持的事件类型以及任何提供程序限制。发布适配器不会添加托管提供程序配置。记录如何创建提供程序应用程序、配置凭据和注册 Webhook。
+
+有关部署机密和 Webhook 注册的信息，请参阅 [Deploy the agent](#deploy-the-agent)。
 
 ## 另请参阅
 

@@ -2,37 +2,35 @@
 
 <!-- langchain-docs: LangSmith skills | https://docs.langchain.com/langsmith/skills -->
 
-#LangSmith技能
+# LangSmith技能
 
 使用代理技能来处理来自编码代理的 LangSmith 跟踪、数据集和评估器。
 
 代理技能是可重复使用的按需功能，捆绑指令和可选的帮助程序脚本。本页总结了面向 LangSmith 的技能，您可以添加到兼容的编码代理中以查询跟踪、生成数据集和定义评估器。要直接从终端使用相同的LangSmith数据，请使用[LangSmith CLI](/langsmith/langsmith-cli)。
 
-<Note>
-  这些技能遵循代理技能规范并维护在[⟦T5⟧ GitHub repository](https://github.com/langchain-ai/langsmith-skills)中。您可以将 `SKILL.md` 和任何引用的 `scripts/` 复制到代理的技能目录中。下面的安装程序仅安装LangSmith技能（跟踪、数据集、评估器）。
-</Note>
+> [!注意]
+>
+> 这些技能遵循代理技能规范并在[⟦T5⟧ GitHub repository](https://github.com/langchain-ai/langsmith-skills) 中维护。您可以将 `SKILL.md` 和任何引用的 `scripts/` 复制到代理的技能目录中。下面的安装程序仅安装LangSmith技能（跟踪、数据集、评估器）。
 
 ## 快速安装
 
 使用 `npx skills` 仅安装 LangSmith 技能（跟踪、数据集、评估器）：
 
-<CodeGroup>
-  ```bash Local (current project) theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  npx skills add langchain-ai/langsmith-skills --skill '*' --yes
-  ```
+```bash Local (current project) theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+npx skills add langchain-ai/langsmith-skills --skill '*' --yes
+```
 
-  ```bash Global (all projects) theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  npx skills add langchain-ai/langsmith-skills --skill '*' --yes --global
-  ```
+```bash Global (all projects) theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+npx skills add langchain-ai/langsmith-skills --skill '*' --yes --global
+```
 
-  ```bash Link to a specific agent (e.g., Claude Code) theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  npx skills add langchain-ai/langsmith-skills --agent claude-code --skill '*' --yes --global
-  ```
-</CodeGroup>
+```bash Link to a specific agent (e.g., Claude Code) theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+npx skills add langchain-ai/langsmith-skills --agent claude-code --skill '*' --yes --global
+```
 
-<Tip>
-  要更新，请重新运行该命令。如果目标技能文件夹已存在，请先将其删除（例如`rm -rf ~/.claude/skills/langsmith-*`）。
-</Tip>
+> [!提示]
+>
+> 要更新，请重新运行命令。如果目标技能文件夹已存在，请先将其删除（例如`rm -rf ~/.claude/skills/langsmith-*`）。
 
 ## 配置环境
 
@@ -84,12 +82,6 @@ cd langsmith-skills
 * langsmith-dataset — 数据集（生成/上传）
 * langsmith-evaluator — 评估器（创建/附加）
 
-***<div>
-  <Callout icon="terminal-2">
-    [Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
-  </Callout>
+***[Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
 
-  <Callout icon="edit">
-    [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/skills.mdx) 或 [file an issue](https://github.com/langchain-ai/docs/issues/new/choose)。
-  </Callout>
-</div>
+[Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/skills.mdx) 或 [file an issue](https://github.com/langchain-ai/docs/issues/new/choose)。

@@ -13,11 +13,11 @@
 
 本指南向您展示如何迭代和处理 [⟦T5⟧](https://reference.langchain.com/python/langsmith/client/Client/evaluate) 返回的 [⟦T4⟧](https://reference.langchain.com/python/langsmith/schemas/ExperimentResults) 对象的 [experiment](/langsmith/evaluation-concepts#experiment) 结果。
 
-<Note>
-  本页面重点介绍以编程方式处理结果，同时仍将结果上传到LangSmith。
-
-  如果您想在本地运行评估**而不**将任何内容记录到LangSmith（用于快速测试或验证），请参阅使用`upload_results=False`的[Run an evaluation locally](/langsmith/local)。
-</Note>
+> [!注意]
+>
+> 本页面重点介绍以编程方式处理结果，同时仍将结果上传到LangSmith。
+>
+> 如果您想在本地运行评估**而不**将任何内容记录到LangSmith（用于快速测试或验证），请参阅使用`upload_results=False`的[Run an evaluation locally](/langsmith/local)。
 
 ## 迭代评估结果
 
@@ -172,12 +172,6 @@ for result in results:
 
 ***
 
-<div>
-  <Callout icon="terminal-2">
-    [Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
-  </Callout>
+[Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
 
-  <Callout icon="edit">
-    [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/read-local-experiment-results.mdx) 或 [file an issue](https://github.com/langchain-ai/docs/issues/new/choose)。
-  </Callout>
-</div>
+[Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/read-local-experiment-results.mdx) 或 [file an issue](https://github.com/langchain-ai/docs/issues/new/choose)。

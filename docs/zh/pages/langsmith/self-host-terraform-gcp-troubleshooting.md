@@ -8,9 +8,9 @@
 
 本页面记录了使用 [GCP Terraform modules](https://github.com/langchain-ai/terraform/tree/main/modules/gcp) 配置的 LangSmith 部署的常见问题、修复和诊断命令。
 
-<Tip>
-  升级之前，请查看 [LangSmith self-hosted changelog](/langsmith/self-hosted-changelog) 以了解重大更改和所需的变量更新。在运行任何 `kubectl` 命令之前运行 `gcloud container clusters get-credentials <cluster-name> --region <region> --project <project-id>`。
-</Tip>
+> [!提示]
+>
+> 升级之前，请查看 [LangSmith self-hosted changelog](/langsmith/self-hosted-changelog) 以了解重大更改和所需的变量更新。在运行任何 `kubectl` 命令之前运行 `gcloud container clusters get-credentials <cluster-name> --region <region> --project <project-id>`。
 
 有关本页中使用的 `kubectl`、`helm` 和 `gcloud` 调用的复制粘贴参考，请跳至 [Diagnostic commands](#diagnostic-commands)。
 
@@ -57,9 +57,9 @@ terraform apply
 Error: Get "https://<cluster-endpoint>/api/v1/namespaces": dial tcp: connection refused
 ```
 
-**原因：** GKE 控制平面需要 10 到 15 分钟才能完全运行。 Terraform 等待 `RUNNING` 然后添加 90 秒的缓冲区。缓慢项目上的冷启动 API 激活可能会超出窗口。**修复：** 等待`RUNNING`，然后重新运行：
+**原因：** GKE 控制平面需要 10 到 15 分钟才能完全运行。 Terraform 等待 `RUNNING` 然后添加 90 秒的缓冲区。缓慢项目上的冷启动 API 激活可能会超出窗口。
 
-```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+**修复：** 等待`RUNNING`，然后重新运行：```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 gcloud container clusters describe <cluster-name> \
   --region <region> --project <project-id> --format="value(status)"
 
@@ -298,7 +298,7 @@ kubectl annotate serviceaccount langsmith-ksa -n langsmith \
   iam.gke.io/gcp-service-account="$WI" --overwrite
 ```
 
-### Deploy 拒绝图表 0.16 沙盒值
+### Deploy 拒绝图表 0.16 沙箱值
 
 **症状**
 
@@ -348,7 +348,7 @@ ERROR: enable_smithdb = true but smithdb_helm_values or the resolved metastore T
        outputs are missing. The state is older than this module. Run 'make apply'.
 ```
 
-**原因：** Terraform 状态早于图表 0.17 模块，该模块添加了 SmithDB 大小调整和元存储输出。**修复：**运行`make apply`，然后运行`make init-values`。
+**原因：** Terraform 状态早于图表 0.17 模块，该模块添加了 SmithDB 大小调整和元存储输出。**Fix:** Run `make apply`, then `make init-values`.
 
 ### 部署拒绝，因为 SmithDB 回填作业已更改
 
@@ -363,7 +363,7 @@ ERROR: the existing <job-name> Job does not match what this deploy renders,
 
 **修复：** 使用错误打印的命令删除作业，然后再次运行`make deploy`。回填将其进度保留在任务数据库中，因此新作业将继续而不是重新开始。
 
-### JuiceFS 格式化作业失败
+### JuiceFS format Job fails
 
 **症状**
 
@@ -387,7 +387,7 @@ ERROR: the existing <job-name> Job does not match what this deploy renders,
    kubectl logs -n langsmith -l app.kubernetes.io/component=juicefs-format
    ```
 
-2. 删除失败的Job并重新部署。当清单未更改时，Helm 不会重新运行失败的作业，因此必须首先删除该作业：```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+2. Delete the failed Job and deploy again.当清单未更改时，Helm 不会重新运行失败的作业，因此必须首先删除该作业：```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
    kubectl delete job -n langsmith -l app.kubernetes.io/component=juicefs-format
    make deploy
    ```
@@ -400,9 +400,9 @@ ERROR: the existing <job-name> Job does not match what this deploy renders,
 Error: UPGRADE FAILED: another operation (install/upgrade/rollback) is in progress
 ```
 
-**原因：** 之前的`helm upgrade`被中断（在`--wait`期间按Ctrl+C）。 Helm 将释放锁定。
+**Cause:** A previous `helm upgrade` was interrupted (Ctrl+C during `--wait`). Helm 将释放锁定。
 
-**修复：** `deploy.sh` 检测并自动恢复此状态。如果手动运行：
+**Fix:** `deploy.sh` detects and auto-recovers this state. If running manually:
 
 ```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 helm rollback langsmith -n langsmith --wait --timeout 5m
@@ -418,7 +418,7 @@ ERROR: PERMISSION_DENIED: Permission 'secretmanager.versions.access'
   denied on resource 'projects/.../secrets/...'
 ```
 
-**原因：** 要么`secretmanager.googleapis.com`未启用，要么操作员账户缺少`roles/secretmanager.admin`。
+**Cause:** Either `secretmanager.googleapis.com` is not enabled, or the operator account lacks `roles/secretmanager.admin`.
 
 **修复**
 
@@ -430,13 +430,13 @@ gcloud projects add-iam-policy-binding <project-id> \
   --role="roles/secretmanager.admin"
 ```
 
-您添加的将 Secret Manager 读取为 LangSmith 服务帐户的工作负载在升级到 `main` 或 `v0.17.x` 标签后将失去访问权限，因为项目范围的 `roles/secretmanager.secretAccessor` 授权现已选择加入。授予对特定机密的访问权限，或设置`grant_project_secret_accessor = true`并运行`make apply`。
+您添加的将 Secret Manager 读取为 LangSmith 服务帐户的工作负载在升级到 `main` 或 `v0.17.x` 标签后将失去访问权限，因为项目范围的 `roles/secretmanager.secretAccessor` 授权现已选择加入。 Grant access on the specific secrets, or set `grant_project_secret_accessor = true` and run `make apply`.
 
 ### `langsmith-postgres-credentials` 或 `langsmith-redis-credentials` 秘密缺失
 
-**症状：** Pod 在部署后立即崩溃并出现数据库连接错误，或者 `kubectl get secrets -n langsmith` 未列出 `langsmith-postgres-credentials` / `langsmith-redis-credentials`。
+**Symptom:** Pods crash with database connection errors immediately after deploy, or `kubectl get secrets -n langsmith` does not list `langsmith-postgres-credentials` / `langsmith-redis-credentials`.
 
-**原因：** 当 `postgres_source` 或 `redis_source` 为 `external` 时，`k8s-bootstrap` 模块创建这些 Secret。如果 `terraform apply` 未运行、中途失败或命名空间被带外删除，则它们不存在。
+**Cause:** The `k8s-bootstrap` module creates these Secrets when `postgres_source` or `redis_source` is `external`. They are absent if `terraform apply` was not run, failed partway through, or the namespace was deleted out-of-band.
 
 **修复**
 
@@ -500,7 +500,7 @@ kubectl get lgp -n langsmith
 kubectl get crd | grep langchain
 ```
 
-### 工作负载身份和 IAM
+### Workload Identity and IAM
 
 ```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 kubectl get serviceaccount langsmith-backend -n langsmith \
@@ -515,7 +515,7 @@ gsutil iam get gs://$BUCKET
 gcloud iam service-accounts list --project <project-id> --filter="displayName:langsmith"
 ```
 
-### 秘密和引导程序
+### Secrets and bootstrap
 
 ```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 kubectl get secrets -n langsmith
@@ -548,12 +548,6 @@ echo "=== Helm ===" && helm status langsmith -n langsmith 2>/dev/null | grep -E 
 
 ***
 
-<div>
-  <Callout icon="terminal-2">
-    [Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
-  </Callout>
+[Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
 
-  <Callout icon="edit">
-    [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/self-host-terraform-gcp-troubleshooting.mdx) 或 [file an issue](https://github.com/langchain-ai/docs/issues/new/choose)。
-  </Callout>
-</div>
+[Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/self-host-terraform-gcp-troubleshooting.mdx) or [file an issue](https://github.com/langchain-ai/docs/issues/new/choose).

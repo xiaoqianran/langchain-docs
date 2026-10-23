@@ -2,6 +2,8 @@
 
 # Model providers
 
+Configure model providers for the LangSmith Playground and LLM-as-a-judge evaluators.
+
 The [Playground](/langsmith/prompt-engineering-concepts#playground) supports a wide range of model providers. You can select a provider, configure your preferred settings, and save these configurations to reuse across multiple prompts.
 
 Use this page for a list of the available providers and their configuration options:
@@ -23,6 +25,12 @@ Anthropic
 Azure OpenAI
 
 [Open](#azure-openai)
+
+![](https://mintcdn.com/langchain-5e9cc07a/DZppvehciQnv8nQN/images/providers/light/databricks.svg?fit=max\&auto=format\&n=DZppvehciQnv8nQN\&q=85\&s=7b12c7b8a9564bf7e804f523c2365cc3)
+
+Databricks
+
+[Open](#databricks)
 
 ![](https://mintcdn.com/langchain-5e9cc07a/ZPKed1feKJ8F6LVo/images/providers/light/deepseek.svg?fit=max\&auto=format\&n=ZPKed1feKJ8F6LVo\&q=85\&s=5a11e956e2ba24fd746aebd929ee1a5e)
 
@@ -326,6 +334,33 @@ Azure OpenAI supports the same parameters as OpenAI:
 
 * **Supported Tool Choices:** `auto`, `required`, `none`, or specific tool name.
 * **Parallel Execution:** Yes.
+
+## Databricks
+
+Before you use this model, ensure you have a Databricks workspace and an [access token](https://docs.databricks.com/aws/en/dev-tools/auth/pat).
+
+### Available models
+
+Databricks provides foundation models including Claude, GPT, Gemini, and Llama.
+
+For the current list of available models, refer to [Databricks' model documentation](https://docs.databricks.com/aws/en/machine-learning/foundation-model-apis/supported-models).
+
+### Configuration parameters
+
+| Parameter | Value | Description |
+| - | - | - |
+| **Databricks workspace URL** | HTTPS URL | Your workspace root URL, without an API path. |
+| **Databricks API route** | See options below | API used to query your endpoint. |
+| **Max Output Tokens** | 1+ | Maximum response length in tokens. |
+| **Stop Sequences** | List of strings | Sequences where the model stops generating. |
+| **Timeout** | Seconds | Request timeout. |
+| **Max Retries** | Integer | Maximum number of retries on failed requests. |
+
+Choose the API route that matches your endpoint:
+
+* **Model Serving endpoints**: Query a Databricks Model Serving endpoint.
+* **AI Gateway (MLflow API)**: Query AI Gateway through the MLflow API.
+* **AI Gateway (native OpenAI API)**: Query AI Gateway through its native OpenAI-compatible API.
 
 ## DeepSeek
 

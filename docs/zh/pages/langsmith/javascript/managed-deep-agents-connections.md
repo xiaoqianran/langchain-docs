@@ -2,16 +2,16 @@
 
 <!-- langchain-docs: Manage connections | https://docs.langchain.com/langsmith/javascript/managed-deep-agents-connections -->
 
-# Manage connections
+# 管理连接
 
-Store API keys and OAuth grants so Managed Deep Agents can authenticate with external services at runtime.
+存储 API 密钥和 OAuth 授权，以便托管Deep Agents 可以在运行时使用外部服务进行身份验证。
 
-A connection links a managed deep agent to an external service such as GitHub, Notion, or Tavily. The credential lives in your LangSmith workspace.在编写的工具或 MCP 服务器定义中使用 `connections.get(...)` 在运行时解析它。
+连接将托管深度代理链接到外部服务，例如 GitHub、Notion 或 Tavily。该凭证位于您的 LangSmith 工作区中。在编写的工具或 MCP 服务器定义中使用 `connections.get(...)` 在运行时解析它。
 
-Connections let you:
+连接让您：
 
-* **Keep credentials out of your project**: `mda deploy` collects `.env` values as deployment secrets on every deploy.连接值仍保留在工作区中。
-* **为每个呼叫者提供自己的身份**：用户拥有的连接可以解析发出请求的人的凭据，因此代理可以读取该人的文档并以他们的名义进行操作。 An environment variable holds one value for everyone.
+* **将凭据保留在项目之外**：`mda deploy` 在每次部署时收集 `.env` 值作为部署机密。连接值仍保留在工作区中。
+* **为每个呼叫者提供自己的身份**：用户拥有的连接可以解析发出请求的人的凭据，因此代理可以读取该人的文档并以他们的名义进行操作。环境变量为每个人保留一个值。
 * **跳过 OAuth 管道**：托管 Deep Agents 运行授权往返，因此项目不需要回调路由、令牌存储或同意屏幕。这些流由您的托管深度代理自动处理。* **跨代理重复使用一个 slug**：连接属于工作区，因此多个部署可以解析相同的 slug。每个部署都在该 slug 下保存自己的凭据：从每个项目根运行 `mda connections create <slug>` 一次。轮换部署的值会在下次运行时生效，无需重新部署。
 
 将凭证存储在 LangSmith 中以便在托管 Deep Agents 中使用需要一个命令：
@@ -72,7 +72,7 @@ const notionToken = await connections.get("engineering-notion", { type: "user" }
 | - | - | - | - |
 | **不透明的秘密** |该服务使用固定的 API 密钥或其他静态秘密。 | `--secret-from-env`、`--secret-from-file`、stdin 或交互式提示 |代理|
 | **通用 OAuth** |您注册自己的 OAuth 应用程序 (BYOT)，例如使用 GitHub 或 Google。 |目录中的 `--oauth <service>`，或自定义提供商的 `--authorize-url` 和 `--token-url` |每个呼叫者或带有[⟦T69⟧](#authorize-an-agent-owned-oauth-account)或[client credentials](#create-a-client-credentials-connection)的座席|
-| **MCP OAuth** | MCP 服务器通告 OAuth 并自动注册客户端。 | `--mcp <url>`，或者当项目已经声明用户拥有的 MCP 服务器时单独使用 slug | Each caller, or the agent with [⟦T71⟧](#authorize-an-agent-owned-oauth-account) |
+| **MCP OAuth** | MCP 服务器通告 OAuth 并自动注册客户端。 | `--mcp <url>`，或者当项目已经声明用户拥有的 MCP 服务器时单独使用 slug |每个呼叫者或具有 [⟦T71⟧](#authorize-an-agent-owned-oauth-account) 的代理 |
 
 例如：
 
@@ -112,7 +112,7 @@ bunx mda connections create frontend-github --oauth github \
 bunx mda connections create engineering-notion --mcp https://mcp.notion.com/mcp
 ```
 
-Do not mix modes in one command.例如，`--mcp`不能与`--oauth`、自定义端点、`--client-id`或秘密值组合。
+不要在一个命令中混合使用模式。例如，`--mcp`不能与`--oauth`、自定义端点、`--client-id`或秘密值组合。
 
 ### 命名连接
 
@@ -123,7 +123,7 @@ mda connections create frontend-github --oauth github
 #                      ^ your slug      ^ catalog provider
 ```
 
-Slugs are unique within a workspace.使用小写字母、数字和单个连字符，并选择一个可标识连接指向哪个帐户的名称，例如 `organization-tavily` 或 `engineering-notion`。## 创建一个不透明的秘密
+Slug 在工作空间中是唯一的。使用小写字母、数字和单个连字符，并选择一个可标识连接指向哪个帐户的名称，例如 `organization-tavily` 或 `engineering-notion`。## 创建一个不透明的秘密
 
 为代理存储固定的秘密。从环境变量、文件、标准输入或提示中读取值。此模式适合自定义工具的 API 密钥，例如 Tavily 搜索密钥。使用 CLI 创建的不透明机密由代理拥有。
 
@@ -740,6 +740,8 @@ GET /v1/agent-auth/oauth-authorization-sessions/{auth_id}?wait_seconds=25
 当代理通过 Slack 通道运行时，Slack 会呈现包含 HTTPS `connect_url` 的 OAuth 条目。调用者打开链接，完成同意，Slack 恢复运行，因此没有人需要打开 LangSmith 来连接服务。
 
 **屏幕截图占位符：** 此处添加 Slack OAuth 授权提示屏幕截图。
+
+Slack OAuth授权提示
 
 ## 检查并删除连接使用 `list` 或 `get` 检查连接元数据。 `list` 显示工作区中的每个连接，而不仅仅是该项目使用的连接：
 

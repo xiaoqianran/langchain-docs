@@ -140,7 +140,7 @@ def my_node(state, config):
 >
 > 从安全秘密存储中获取用户凭据。不建议以图状态存储秘密。
 
-### 授权用户使用 Studio默认情况下，如果您在资源上添加自定义授权，这也将适用于通过 [Studio](/langsmith/studio) 进行的交互。如果需要，您可以通过检查[is\_studio\_user()](https://langchain-ai.github.io/langgraph/cloud/reference/sdk/python_sdk_ref/#langgraph_sdk.auth.types.StudioUser)以不同方式处理登录的 Studio 用户。
+### 授权用户使用 Studio默认情况下，如果您在资源上添加自定义授权，这也将适用于通过 [Studio](/langsmith/studio) 进行的交互。如果需要，您可以通过检查[is\_studio\_user()](https://reference.langchain.com/python/langgraph-sdk/auth/types/StudioUser)以不同方式处理登录的 Studio 用户。
 
 > [!注意]
 >

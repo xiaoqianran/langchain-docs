@@ -6,36 +6,34 @@
 
 LangSmith [Self-Hosted](/langsmith/self-hosted) 通过 OAuth2.0 和 OIDC 提供 SSO，它将身份验证委托给您的身份提供商 (IdP) 以管理对 LangSmith 的访问。
 
-LangSmith 实现支持任何符合 OIDC 的提供商。配置完成后，您将看到一个登录屏幕，提示**通过 SSO 登录**。
+LangSmith 实现支持任何符合 OIDC 的提供程序。配置完成后，您将看到一个登录屏幕，提示**通过 SSO 登录**。
 
-默认情况下，LangSmith自托管支持`Authorization Code`流和`Client Secret`。在此版本的流程中，您的客户端密钥安全地存储在LangSmith（而不是在前端）中，并用于身份验证和建立身份验证会话。
+默认情况下，LangSmith自托管支持`Authorization Code`流和`Client Secret`。在此版本的流程中，您的客户端密钥安全地存储在 LangSmith 中（而不是在前端），并用于身份验证和建立身份验证会话。
 
-<div />
-
-## 注意事项* 您可以将[⟦T14⟧ auth](/langsmith/self-host-basic-auth)安装升级到`oauth`模式，但不能将[⟦T16⟧ auth](/langsmith/authentication-methods#none)安装升级。
-  * 通过删除 [⟦T18⟧ auth configuration parameters](/langsmith/self-host-basic-auth#configuration) 并添加 [OAuth with client secret configuration parameters](#configuration) 来升级 `basic` 身份验证安装。然后，用户可以**仅**通过 OAuth 登录。要在升级后保持访问权限，**您必须有权使用之前通过基本身份验证登录的电子邮件地址通过 OAuth 登录。**
+## 注意事项* 您可以将[⟦T15⟧ auth](/langsmith/self-host-basic-auth)安装升级到`oauth`模式，但不能将[⟦T17⟧ auth](/langsmith/authentication-methods#none)安装升级。
+  * 通过删除 [⟦T19⟧ auth configuration parameters](/langsmith/self-host-basic-auth#configuration) 并添加 [OAuth with client secret configuration parameters](#configuration) 来升级 `basic` 身份验证安装。然后，用户可以**仅**通过 OAuth 登录。要在升级后保持访问权限，**您必须有权使用之前通过基本身份验证登录的电子邮件地址通过 OAuth 登录。**
 * LangSmith **不** 支持：
   * 在自托管中从 SSO 迁移到`basic` 身份验证模式。
-  * 从具有客户端密钥的 OAuth 模式转变为不具有客户端密钥的 OAuth 模式，反之亦然。
+  * 从使用客户端密钥的 OAuth 迁移到使用 PKCE 的 OAuth。要从 PKCE 迁移到客户端密钥，请参阅 [Migrate from PKCE to client secret](#migrate-from-pkce-to-client-secret)。
   * 同时拥有 `basic` auth 和 OAuth。确保在启用 OAuth 时禁用 `basic` 身份验证配置。
 
 ## 先决条件
 
-您必须具备以下条件才能完成[Provider setup](#provider-setup)：
+您必须具备以下条件才能完成 [Provider setup](#provider-setup)：
 
 * [Self-hosted](/langsmith/self-hosted) 和[Enterprise plan](/langsmith/pricing-plans)。
 * 支持具有 `Client Secret` 的 `Authorization Code` 流的 IdP。
 * 支持使用外部发现/颁发者 URL 的 IdP。 LangSmith 使用它来获取 IdP 所需的路由和密钥。
 * `OIDC`、`email` 和 `profile` 范围。 LangSmith 使用这些为您的用户获取必要的用户信息和电子邮件。
 
-<Note>
-  仅`https` 支持LangSmith SSO。
-</Note>
+> [!注意]
+>
+> 仅通过 `https` 支持LangSmith SSO。
 
-## 配置* 您需要将 IdP 中的回调 URL 设置为 `https://<host>/api/v1/oauth/custom-oidc/callback`，其中 `host` 是您为 LangSmith 实例配置的域或 IP。您的 IdP 将在用户通过身份验证后重定向用户。
+＃＃ 配置* 您需要将 IdP 中的回调 URL 设置为 `https://<host>/api/v1/oauth/custom-oidc/callback`，其中 `host` 是您为 LangSmith 实例配置的域或 IP。您的 IdP 将在用户通过身份验证后重定向用户。
 * 要在注销时终止 IdP 会话（因此用户必须重新进行身份验证），请在 IdP 中将您的 LangSmith URL（例如 `https://<host>`）注册为 **注销后重定向 URI**（有时称为“注销重定向 URI”），然后通过 Helm 中的 `commonEnv` 在您的环境中设置 `OAUTH_IDP_LOGOUT_ENABLED=true`。
 * 您需要在 `values.yaml` 文件中提供 `oauthClientId`、`oauthClientSecret`、`hostname` 和 `oauthIssuerUrl`。您将在此处配置 LangSmith 实例。
-* 如果您尚未**使用客户端密钥配置 OAuth，或者如果您只有个人组织，则必须提供一个电子邮件地址以分配为新配置的 SSO 组织的 `initialOrgAdminEmail`。如果您从 [basic auth](/langsmith/self-host-basic-auth) 升级，LangSmith 将改用您现有的组织。
+* 如果您尚未**使用客户端密钥配置 OAuth，或者您只有个人组织，则必须提供一个电子邮件地址以分配为新配置的 SSO 组织的 `initialOrgAdminEmail`。如果您从 [basic auth](/langsmith/self-host-basic-auth) 升级，LangSmith 将改用您现有的组织。
 
 ```yaml Helm theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 config:
@@ -54,9 +52,9 @@ config:
 
 ### Microsoft Entra ID IdP 设置
 
-使用 OAuth2.0 和 OIDC 将 Microsoft Entra ID 配置为单点登录提供程序。有关更多信息，请参阅 Microsoft 的 [OpenID Connect documentation](https://learn.microsoft.com/en-us/entra/identity-platform/v2-protocols-oidc)。<Note>
-  在 Microsoft Entra ID 中注册应用程序需要租户中具有 `Application Administrator` 或 `Cloud Application Administrator` 角色或更高级别的角色。
-</Note>
+使用 OAuth2.0 和 OIDC 将 Microsoft Entra ID 配置为单点登录提供程序。有关更多信息，请参阅 Microsoft 的 [OpenID Connect documentation](https://learn.microsoft.com/en-us/entra/identity-platform/v2-protocols-oidc)。> [!注意]
+>
+> 在 Microsoft Entra ID 中注册应用程序需要租户中具有 `Application Administrator` 或 `Cloud Application Administrator` 角色或更高级别的角色。
 
 #### 步骤 1. 注册应用程序
 
@@ -70,14 +68,14 @@ config:
 
 * **应用程序（客户端）ID**：用作`oauthClientId`。
 * **目录（租户）ID**：用于构造发行者 URL。
-* **OIDC 发行人 URL**：`https://login.microsoftonline.com/<tenant-id>/v2.0`，用作`oauthIssuerUrl`。
+* **OIDC 发行人 URL**：`https://login.microsoftonline.com/<tenant-id>/v2.0`，用作 `oauthIssuerUrl`。
 
-<Warning>
-  在 `oauthIssuerUrl` 中包含 `/v2.0` 后缀。如果没有它，登录仍然有效，但[SSO Groups Sync](#sso-groups-sync)不会分配角色。
-</Warning>
+> [!警告]
+>
+> 在 `oauthIssuerUrl` 中包含 `/v2.0` 后缀。没有它，登录仍然有效，但[SSO Groups Sync](#sso-groups-sync)不会分配角色。
 
 #### 步骤 2. 创建客户端密钥1. 在应用程序注册中，转到 **证书和机密** > **客户端机密** > **新客户端机密**。
-2. 输入描述，选择到期时间，然后单击“**添加**”。
+2. 输入描述，选择过期时间，然后单击 **添加**。
 3. 立即复制秘密**值**。 Microsoft Entra ID 在您离开页面后隐藏此值。将其用作`oauthClientSecret`。
 
 在配置 Helm 之前，将客户端 ID、客户端密钥和颁发者 URL 存储在密钥存储中。
@@ -110,17 +108,17 @@ config:
 
 有关`initialOrgAdminEmail`的详细信息，请参阅[general configuration section](#configuration)。
 
-<Note>
-  默认情况下，Microsoft Entra ID 的 `oid` 声明用作 OIDC `sub` 声明。详情请参阅[Override sub claim](#override-sub-claim)。
-</Note>
+> [!注意]
+>
+> 默认情况下，Microsoft Entra ID 的 `oid` 声明用作 OIDC `sub` 声明。详情请参阅[Override sub claim](#override-sub-claim)。
 
 要在登录时从 Microsoft Entra ID 组分配组织和工作区角色，请参阅[SSO Groups Sync](#sso-groups-sync)。
 
 ### Google 工作区 IdP 设置您可以使用 [OAuth2.0 and OIDC](https://developers.google.com/identity/openid-connect/openid-connect) 将 Google Workspace 作为单点登录 (SSO) 提供商，而无需 PKCE。
 
-<Note>
-  您必须拥有组织的 Google Cloud Platform (GCP) 帐户的管理员级别访问权限才能创建新项目，或者拥有为现有项目创建和配置 OAuth 2.0 凭据的权限。我们建议您创建一个新项目来管理访问，因为每个 GCP 项目都有一个 OAuth 同意屏幕。
-</Note>
+> [!注意]
+>
+> 您必须拥有组织的 Google Cloud Platform (GCP) 帐户的管理员级别访问权限才能创建新项目，或者拥有为现有项目创建和配置 OAuth 2.0 凭据的权限。我们建议您创建一个新项目来管理访问，因为每个 GCP 项目都有一个 OAuth 同意屏幕。
 
 1.新建一个GCP项目，参见Google文档主题[creating and managing projects](https://cloud.google.com/resource-manager/docs/creating-managing-projects)
 
@@ -132,7 +130,7 @@ config:
 
 5. 在 `Authorized Javascript origins` 中输入您的 LangSmith 实例的域名，例如`https://langsmith.yourdomain.com`
 
-6. 在`Authorized redirect URIs`中输入LangSmith实例的域，后跟`/api/v1/oauth/custom-oidc/callback`，例如`https://langsmith.yourdomain.com/api/v1/oauth/custom-oidc/callback`
+6. 在 `Authorized redirect URIs` 中输入 LangSmith 实例的域，后跟 `/api/v1/oauth/custom-oidc/callback`，例如`https://langsmith.yourdomain.com/api/v1/oauth/custom-oidc/callback`
 
 7. 单击 `Create`，然后下载 JSON 或复制 `Client ID`（以 `.apps.googleusercontent.com` 结尾）和 `Client secret` 保存在安全的地方。 **如果需要，您稍后可以访问这些**。
 
@@ -142,7 +140,7 @@ config:
 
 9. （可选）控制组织内的哪些人有权访问 LangSmith：[https://admin.google.com/ac/owl/list?tab=configuredApps](https://admin.google.com/ac/owl/list?tab=configuredApps)。有关更多详细信息，请参阅[Google's documentation](https://support.google.com/a/answer/7281227?hl=en\&fl=1\&sjid=9554153972856467090-NA)。
 
-10. 配置 LangSmith 使用此 OAuth 应用程序。例如，以下是用于 Kubernetes 配置的 `config` 值：
+10. 配置 LangSmith 使用此 OAuth 应用程序。例如，以下是将用于 Kubernetes 配置的 `config` 值：
 
     1. `oauthClientId`: `Client ID`（以`.apps.googleusercontent.com`结尾）
     2.`oauthClientSecret`：`Client secret`
@@ -162,15 +160,15 @@ config:
 #### 配置步骤
 
 有关更多信息，请参阅 Okta 的 [documentation](https://help.okta.com/en-us/content/topics/apps/apps_app_integration_wizard_oidc.htm)。
-如果您有任何疑问或问题，请通过[support.langchain.com](https://support.langchain.com)联系支持人员。<div>
-  <b>通过 Okta 集成网络（推荐）</b>
-</div>
+如果您有任何疑问或问题，请通过[support.langchain.com](https://support.langchain.com)联系支持人员。**通过 Okta 集成网络（推荐）**
 
-<Info>有关 SCIM 设置的详细信息，请参阅[Set up SCIM for your organization](/langsmith/user-management#set-up-scim-for-your-organization)。</Info>
+> [!注意]
+>
+> 有关 SCIM 设置的详细信息，请参阅[Set up SCIM for your organization](/langsmith/user-management#set-up-scim-for-your-organization)。
 
-<Note>
-  为了将 SCIM 与 Okta 一起使用，需要使用此配置方法。
-</Note>
+> [!注意]
+>
+> 为了将 SCIM 与 Okta 结合使用，需要使用此配置方法。
 
 1. 登录[Okta](https://login.okta.com/)。
 2. 在右上角，选择“管理”。从管理区域看不到该按钮。
@@ -190,7 +188,7 @@ config:
     *`Update application username on`：`Create and update`。
     * `Allow users to securely see their password`：保留**不选中**。
 13. 单击“**保存**”。
-14. 配置LangSmith以使用此OAuth应用程序（有关`initialOrgAdminEmail`的详细信息请参阅[general configuration section](#configuration)）：
+14. 配置LangSmith以使用此OAuth应用程序（有关`initialOrgAdminEmail`的详细信息，请参阅[general configuration section](#configuration)）：
 
 ```yaml Helm theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 config:
@@ -205,13 +203,13 @@ config:
     oauthScopes: "email,profile,openid"
 ```
 
-<Info>有关 SCIM 设置的详细信息，请参阅[Set up SCIM for your organization](/langsmith/user-management#set-up-scim-for-your-organization)。</Info><div>
-  <b>通过自定义应用程序集成</b>
-</div>
+> [!注意]
+>
+> 有关 SCIM 设置的详细信息，请参阅[Set up SCIM for your organization](/langsmith/user-management#set-up-scim-for-your-organization)。
 
-<Warning>
-  SCIM 与此配置方法不兼容。请参阅[**Via Okta Integration Network**](#via-okta-integration-network)。
-</Warning>
+**通过自定义应用程序集成**> [!警告]
+>
+> SCIM 与此配置方法不兼容。请参阅[**Via Okta Integration Network**](#via-okta-integration-network)。
 
 1. 以管理员身份登录 Okta，然后转到 **Okta 管理控制台**。
 2. 在 **应用程序** > **应用程序** 下，单击 **创建应用程序集成**。
@@ -223,12 +221,12 @@ config:
 8. 在 **Trusted Origins > Base URIs** 下添加带有协议的 langsmith URL，例如 `https://langsmith.yourdomain.com`。
 9. 在**分配 > 受控访问**下选择所需的选项：
    * 允许组织中的每个人访问。
-   * 限制对选定组的访问。* 暂时跳过小组作业。
-10. 单击“**保存**”。
-11. 在 **登录 > OpenID Connect ID 令牌** 下，将 **颁发者** 设置为 **Okta URL**。
+   * 限制对选定组的访问。
+   * 暂时跳过小组作业。
+10. 单击“**保存**”。11. 在 **登录 > OpenID Connect ID 令牌** 下，将 **颁发者** 设置为 **Okta URL**。
 12. （可选）在**常规 > 登录**下，将 **登录发起者** 设置为 `Either Okta or App` 以启用 IdP 发起的登录。
 13.（推荐）在**常规 > 登录 > 电子邮件验证体验**下，使用 LangSmith URL 填写 **回调 URI**，例如 `https://langsmith.yourdomain.com`。
-14. 配置LangSmith以使用此OAuth应用程序（有关`initialOrgAdminEmail`的详细信息请参阅[general configuration section](#configuration)）：
+14. 配置LangSmith以使用此OAuth应用程序（有关`initialOrgAdminEmail`的详细信息，请参阅[general configuration section](#configuration)）：
 
 ```yaml Helm theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 config:
@@ -251,16 +249,16 @@ config:
 
 ### 会话长度控制
 
-<Note>
-  本节中的所有环境变量均适用于 `platform-backend` 服务，可以使用 Helm 中的 `platformBackend.deployment.extraEnv` 添加。
-</Note>* 默认情况下，会话长度由身份提供者返回的身份令牌的过期时间控制
+> [!注意]
+>
+> 本节中的所有环境变量均适用于 `platform-backend` 服务，可以使用 Helm 中的 `platformBackend.deployment.extraEnv` 添加。* By default, session length is controlled by the expiration of the identity token returned by the identity provider
 * 大多数设置应使用刷新令牌来启用会话长度扩展，超出身份令牌过期时间直至`OAUTH_SESSION_MAX_SEC`，这可能需要通过在 Helm 中添加`oauthScopes` 来包含`offline_access` 范围
-* `OAUTH_SESSION_MAX_SEC`（默认 1 天）最多可覆盖一周 (`604800`)
-* 对于不支持刷新令牌的身份提供者设置，设置 `OAUTH_OVERRIDE_TOKEN_EXPIRY="true"` 将采用 `OAUTH_SESSION_MAX_SEC` 作为会话长度，忽略身份令牌过期时间
+* `OAUTH_SESSION_MAX_SEC` (default 1 day) can be overridden to a maximum of one week (`604800`)
+* 对于不支持刷新令牌的身份提供商设置，设置 `OAUTH_OVERRIDE_TOKEN_EXPIRY="true"` 将采用 `OAUTH_SESSION_MAX_SEC` 作为会话长度，忽略身份令牌过期时间
 
-### 严格身份提供者的范围编码
+### Scope encoding for strict identity providers
 
-默认情况下，LangSmith 将授权请求中`oauthScopes` 之间的空格编码为`+`（`application/x-www-form-urlencoded` 约定）。大多数身份提供商都接受这一点，但有些身份提供商（例如 CA SiteMinder）不会将 `+` 解码为空格，并拒绝登录并显示 `invalid_scope` 错误。如果您的 IdP 出于此原因拒绝多范围登录，请在 Helm 中设置 `urlEncodeScopeSpaces: true` 将空格编码为 `%20`，这是所有符合 OIDC 的提供商接受的编码。这仅适用于具有 OAuth 客户端密钥的 `authType: mixed`，并且默认为关闭。
+By default, LangSmith encodes the spaces between `oauthScopes` in the authorization request as `+` (the `application/x-www-form-urlencoded` convention).大多数身份提供商都接受这一点，但有些身份提供商（例如 CA SiteMinder）不会将 `+` 解码为空格，并拒绝登录并显示 `invalid_scope` 错误。如果您的 IdP 出于此原因拒绝多范围登录，请在 Helm 中设置 `urlEncodeScopeSpaces: true` 将空格编码为 `%20`，这是所有符合 OIDC 的提供商接受的编码。 This applies only to `authType: mixed` with an OAuth client secret, and defaults to off.
 
 ```yaml Helm theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 config:
@@ -294,15 +292,15 @@ ISSUER_SUB_CLAIM_OVERRIDES='{"https://login.microsoftonline.com/": "oid", "https
 
 ### SSO 组同步
 
-<Note>
-  自托管上的 SSO 组同步需要 LangSmith 图表版本 **0.15.0-rc.3**（应用程序版本 **0.15.2rc1**）或更高版本。
-</Note>[SSO Groups Sync](/langsmith/user-management#sso-groups-sync-alternative) 让 LangSmith 从 OIDC 令牌上的组成员资格声明中分配组织和工作区角色，作为 [SCIM](/langsmith/user-management#set-up-scim-for-your-organization) 的更简单替代方案。在自托管上，您必须将 IdP 配置为将组包含在 OIDC ID 令牌中，然后 LangSmith 才能读取它们。
+> [!注意]
+>
+> 自托管上的 SSO 组同步需要 LangSmith 图表版本 **0.15.0-rc.3**（应用程序版本 **0.15.2rc1**）或更高版本。[SSO Groups Sync](/langsmith/user-management#sso-groups-sync-alternative) 让 LangSmith 从 OIDC 令牌上的组成员身份声明中分配组织和工作区角色，作为 [SCIM](/langsmith/user-management#set-up-scim-for-your-organization) 的更简单替代方案。在自托管上，您必须将 IdP 配置为将组包含在 OIDC ID 令牌中，然后 LangSmith 才能读取它们。
 
 **IdP 端配置（因提供商而异）：**
 
-1. 配置您的 IdP 应用程序以在 OIDC ID 令牌中发出组成员资格声明。源属性和生成的声明名称因 IdP 而异。常见示例包括 `groups`、`roles` 或自定义声明名称。 LangSmith 不规定源属性。
+1. 配置您的 IdP 应用程序以在 OIDC ID 令牌中发出组成员身份声明。源属性和生成的声明名称因 IdP 而异。常见示例包括 `groups`、`roles` 或自定义声明名称。 LangSmith 不规定源属性。
 2. 根据您的 IdP，您可能需要向 `oauthScopes` 添加额外范围（通常为 `groups`）才能接收声明。检查 IdP 的文档，了解所需的范围以及在令牌中包含组成员身份所需的任何其他配置。
-3. 群组名称必须遵循[SCIM naming convention](/langsmith/user-management#group-naming-convention)（例如`LS:Organization Admin`、`LS:Organization User:prod:Editor`）。分隔符通过 [⟦T152⟧](/langsmith/user-management#configure-custom-separator) 与 SCIM 共享。
+3. 群组名称必须遵循[SCIM naming convention](/langsmith/user-management#group-naming-convention)（例如`LS:Organization Admin`、`LS:Organization User:prod:Editor`）。分隔符通过 [⟦T153⟧](/langsmith/user-management#configure-custom-separator) 与 SCIM 共享。
 
 **头盔配置：**
 
@@ -324,48 +322,46 @@ config:
 
 每个提供商的 SSO 组同步设置存储在 SSO 提供商记录中，并通过 [LangSmith UI](https://smith.langchain.com?utm_source=docs\&utm_medium=cta\&utm_campaign=langsmith-signup\&utm_content=langsmith-self-host-sso) 或 [API](/langsmith/reference)（而不是通过 Helm 值）进行切换。
 
-<Tabs>
-  <Tab title="UI">
-    您的 IdP 发出组声明后，从 UI 配置 SSO 组同步：转至 **设置** > **SSO 配置**，然后滚动到 **SSO 组同步** 部分。 **组声明字段**中配置的声明名称必须与您的 IdP 发出的声明匹配。
-  </Tab>
+**用户界面**
 
-  <Tab title="API">
-    要通过 API 配置 SSO 组同步，首先使用 `GET` 当前 SSO 设置来检索提供程序 `id`，然后使用该 `id` `PATCH`：
+您的 IdP 发出组声明后，从 UI 配置 SSO 组同步：转至 **设置** > **SSO 配置**，然后滚动到 **SSO 组同步** 部分。 **组声明字段**中配置的声明名称必须与您的 IdP 发出的声明匹配。
 
-    ```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-    # 1. Fetch the current SSO settings (and the id required for PATCH)
-    curl -s "$SELF_HOSTED_LANGSMITH_ENDPOINT/api/v1/orgs/current/sso-settings" \
-      -H "X-Api-Key: $LANGSMITH_API_KEY" | jq .
+**API**
 
-    # 2. PATCH using the id returned above
-    curl -s -X PATCH "$SELF_HOSTED_LANGSMITH_ENDPOINT/api/v1/orgs/current/sso-settings/<id>" \
-      -H "X-Api-Key: $LANGSMITH_API_KEY" \
-      -H "Content-Type: application/json" \
-      -d '{
-        "sso_groups_enabled": true,
-        "sso_groups_claim_field": "groups",
-        "sso_groups_required": true,
-        "sso_groups_role_sync_enabled": true
-      }' | jq .
-    ```
+要通过 API 配置 SSO 组同步，首先使用 `GET` 当前 SSO 设置来检索提供程序 `id`，然后使用该 `id` `PATCH`：
 
-    <Warning>
-      `DELETE` 也可在此资源上找到，但此处未介绍。如果组织启用了**仅通过 SSO 登录**，或者没有配置其他身份验证提供程序（例如社交登录），`DELETE` 会完全删除 SSO 提供程序并锁定登录。
-    </Warning>
-  </Tab>
-</Tabs>
+```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+# 1. Fetch the current SSO settings (and the id required for PATCH)
+curl -s "$SELF_HOSTED_LANGSMITH_ENDPOINT/api/v1/orgs/current/sso-settings" \
+  -H "X-Api-Key: $LANGSMITH_API_KEY" | jq .
 
-#### 从 Microsoft Entra ID 发出组声明对于自托管的 OIDC，请通过应用程序注册清单添加组声明。跳过 **令牌配置** > **添加组声明** 流程，该流程不支持纯云安全组的显示名称。
+# 2. PATCH using the id returned above
+curl -s -X PATCH "$SELF_HOSTED_LANGSMITH_ENDPOINT/api/v1/orgs/current/sso-settings/<id>" \
+  -H "X-Api-Key: $LANGSMITH_API_KEY" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "sso_groups_enabled": true,
+    "sso_groups_claim_field": "groups",
+    "sso_groups_required": true,
+    "sso_groups_role_sync_enabled": true
+  }' | jq .
+```
 
-<Warning>
-  将顶级 `groupMembershipClaims` 属性设置为 `"ApplicationGroup"`。其他价值观以难以诊断的方式改变行为：
+> [!警告]
+>
+> `DELETE` 也可在此资源上找到，但此处未介绍。如果组织启用了**仅通过 SSO 登录**，或者没有配置其他身份验证提供程序（例如社交登录），`DELETE` 会完全删除 SSO 提供程序并锁定登录。
 
-  * 缺失或`"None"`：令牌中没有出现组。
-  * `"SecurityGroup"` 或 `"All"`：出现组，但 `cloud_displayname` 值被静默忽略，并且令牌包含组对象 ID 而不是名称。
-  * `"ApplicationGroup"`：组解析为显示名称，但仅限于在 **用户和组** 下明确分配给企业应用程序的组。
+#### 从 Microsoft Entra ID 发出组声明
 
-  仅单租户应用程序支持 `cloud_displayname` 值。
-</Warning>
+对于自托管的 OIDC，请通过应用程序注册清单添加组声明。跳过 **令牌配置** > **添加组声明** 流程，该流程不支持纯云安全组的显示名称。> [!警告]
+>
+> 将顶级 `groupMembershipClaims` 属性设置为 `"ApplicationGroup"`。其他价值观以难以诊断的方式改变行为：
+>
+> * 缺失或`"None"`：令牌中没有出现组。
+> * `"SecurityGroup"` 或 `"All"`：出现组，但 `cloud_displayname` 值被静默忽略，并且令牌包含组对象 ID 而不是名称。
+> * `"ApplicationGroup"`：组解析为显示名称，但仅限于在 **用户和组** 下明确分配给企业应用程序的组。
+>
+> 仅单租户应用程序支持`cloud_displayname` 值。
 
 在 **应用程序注册** > 您的应用程序 > **清单**中，将以下内容合并到清单中，保留任何现有的 `optionalClaims.idToken` 条目，例如 `email`：
 
@@ -393,13 +389,13 @@ config:
 
 然后，在 **企业应用程序** > 您的应用程序 > **用户和组** 中，分配映射到 LangSmith 角色的每个组。未分配给企业应用程序的组不会出现在令牌中。
 
-#### 为 SSO 组同步创建 Microsoft Entra ID 组用于 SSO 组同步的组必须遵循主用户管理页面上记录的 [group naming convention](/langsmith/user-management#group-naming-convention)（例如 `LS:Organization Admins`、`LS:Organization User:Production:Editor`）。组名称区分大小写，并且必须完全符合约定。
+#### 为 SSO 组同步创建 Microsoft Entra ID 组
 
-要在 Microsoft Entra ID 中创建组：
+用于 SSO 组同步的组必须遵循主用户管理页面上记录的 [group naming convention](/langsmith/user-management#group-naming-convention)（例如，`LS:Organization Admins`、`LS:Organization User:Production:Editor`）。组名称区分大小写，并且必须完全符合约定。
 
-1. 在 Microsoft Entra 管理中心中，转到 **组** > **新组**。
+要在 Microsoft Entra ID 中创建组：1. 在 Microsoft Entra 管理中心中，转到 **组** > **新组**。
 2. 将**组类型**设置为`Security`。
-3. 设置**会员类型**为`Assigned`（不支持动态会员）。
+3. 将**会员类型**设置为`Assigned`（不支持动态会员）。
 4. 将 **组名称** 设置为与命名约定匹配的值。
 5. 添加成员，然后单击“**创建**”。
 
@@ -420,23 +416,54 @@ config:
     "LS:Organization User:Production:Editor"
   ]
 }
-```如果声明包含 UUID 而不是名称，请重新访问清单中的 `groupMembershipClaims` 值，并确认将组分配给 **用户和组** 下的企业应用程序。
+```
 
-如果组声明正确但 LangSmith 未分配角色，请检查令牌的 `iss` 声明。它必须匹配 `oauthIssuerUrl`，对于 Microsoft Entra ID 来说是 `https://login.microsoftonline.com/<tenant-id>/v2.0`。当它们不匹配时，`platform-backend` 日志显示`SSO groups gate skipped: no saml_providers row matched issuer`。 `https://sts.windows.net/<tenant-id>/` 的 `iss` 表示 `oauthIssuerUrl` 缺少 `/v2.0` 后缀。按照 [Step 1. Register the application](#step-1-register-the-application) 中的说明添加后缀。
+如果声明包含 UUID 而不是名称，请重新访问清单中的 `groupMembershipClaims` 值，并确认将组分配给 **用户和组** 下的企业应用程序。如果组声明正确但 LangSmith 未分配角色，请检查令牌的 `iss` 声明。它必须匹配 `oauthIssuerUrl`，对于 Microsoft Entra ID 来说是 `https://login.microsoftonline.com/<tenant-id>/v2.0`。当它们不匹配时，`platform-backend` 日志显示`SSO groups gate skipped: no saml_providers row matched issuer`。 `https://sts.windows.net/<tenant-id>/` 的 `iss` 表示 `oauthIssuerUrl` 缺少 `/v2.0` 后缀。按照 [Step 1. Register the application](#step-1-register-the-application) 中的说明添加后缀。
 
 ## PKCE 流程（已弃用）
 
-我们建议使用 [⟦T188⟧](#provider-setup) 运行。但是，如果您的 IdP 不支持此功能，您可以使用 `Authorization Code with PKCE` 流。
+我们建议使用 [⟦T189⟧](#provider-setup) 运行。但是，如果您的 IdP 不支持此功能，您可以使用 `Authorization Code with PKCE` 流。
 
-<Warning>
-  PKCE 工作流程**自 v16** 起已弃用**，并将**在 v17** 中完全删除。将提供从 PKCE 到带有客户端密钥的 OAuth 的迁移路径。我们建议尽快迁移到[client secret flow](#provider-setup)。
-</Warning>
+> [!警告]
+>
+> PKCE 工作流程**自 v16** 起已弃用，并计划在未来版本中删除。尽快[Migrate to the client secret flow](#migrate-from-pkce-to-client-secret)。
+
+### 从 PKCE 迁移到客户端密钥
+
+您可以将使用 PKCE 的安装切换到当前图表版本上带有客户端密钥的 OAuth。只要用户使用相同的电子邮件地址登录，他们就可以保留自己的帐户、组织和工作区成员资格以及 API 密钥。
+
+迁移：
+
+1. 升级到 Helm Chart 0.17.23 (LangSmith 0.17.51) 或更高版本。早期版本可以锁定 IdP `sub` 声明为其电子邮件地址的用户。2. 在您的 IdP 中，将现有应用程序配置为机密（Web）客户端：
+   * 创建客户端机密。
+   * 添加 `https://<host>/api/v1/oauth/custom-oidc/callback` 作为重定向 URI。客户端秘密流程需要`https`。
+
+3. 更新您的`values.yaml`。保持相同的`oauthClientId`和`oauthIssuerUrl`，设置`authType: mixed`，并添加客户端密钥和`hostname`：
+
+   ```yaml Helm theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+   config:
+     authType: mixed
+     hostname: https://langsmith.example.com
+     oauth:
+       enabled: true
+       oauthClientId: <YOUR CLIENT ID>
+       oauthClientSecret: <YOUR CLIENT SECRET>
+       oauthIssuerUrl: <YOUR DISCOVERY URL>
+   ```
+
+4. 运行`helm upgrade` **不更改图表版本**。用户必须重新登录。
+
+5. 确认用户可以登录，然后将LangSmith升级为单独的`helm upgrade`。
+
+> [!注意]
+>
+> 切换到客户端密钥并在单独的 `helm upgrade` 运行中升级图表版本。 Helm 在应用新配置之前运行升级作业，因此组合运行可能会失败。
 
 ### 要求
 
-<Note>
-  此流程**不需要**需要`Client Secret`。
-</Note>
+> [!注意]
+>
+> 此流程**不需要**需要`Client Secret`。
 
 将 OAuth SSO 与 LangSmith 结合使用有几个要求：* 您的 IdP 必须支持 `Authorization Code with PKCE` [flow](https://www.oauth.com/oauth2-servers/pkce)（例如，Google 不支持此流程，但请参阅 [above](#with-client-secret-recommended) 了解 Google 支持的替代配置）。这通常在您的 OAuth 提供程序中显示为配置“单页应用程序 (SPA)”
 * 您的 IdP 必须支持使用外部发现/颁发者 URL。我们将使用它来获取您的 IdP 所需的路由和密钥。
@@ -454,12 +481,6 @@ config:
 
 ***
 
-<div>
-  <Callout icon="terminal-2">
-    [Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
-  </Callout>
+[Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
 
-  <Callout icon="edit">
-    [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/self-host-sso.mdx) 或 [file an issue](https://github.com/langchain-ai/docs/issues/new/choose)。
-  </Callout>
-</div>
+[Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/self-host-sso.mdx) 或 [file an issue](https://github.com/langchain-ai/docs/issues/new/choose)。

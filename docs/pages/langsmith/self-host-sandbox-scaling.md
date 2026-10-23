@@ -14,6 +14,8 @@ The built-in host autoscaler runs on an elected `sandbox-host`. Hosts publish th
 
 **autoscaling**
 
+LangSmith requests host pods. Your infrastructure supplies nodes. A desired replica is not usable capacity until its host is ready.
+
 The host autoscaler does not use an HPA, KEDA, or a Prometheus adapter. Do not configure another controller to manage the same Deployment's replica count.
 
 A new host pod needs an eligible node without another host pod. When none is available, it stays `Pending` until your node autoscaler adds capacity. Configure that autoscaler for the dedicated KVM-capable node pool, including compatible labels, taints, and instance requirements.
@@ -43,6 +45,8 @@ The 70% target is not a per-host capacity limit. Placement can exceed it while t
 The replica target can rise before nodes and hosts become ready. Headroom covers some of that delay; it does not make node provisioning instantaneous.
 
 **scaling-behavior**
+
+Illustrative scaling behavior, not a latency benchmark. Scale-up follows demand; scale-down waits through the stabilization window and proceeds gradually.
 
 Choose `minReplicas` and `headroomHosts` for the burst you need to absorb while a node starts. Keep at least two hosts for a pool that must continue accepting work during a one-host rollout. Measure node startup, host readiness, and sandbox creation latency under representative load.
 

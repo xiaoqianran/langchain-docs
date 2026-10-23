@@ -170,9 +170,13 @@ auth_result = await client.authenticate(
 
 ![](https://mintcdn.com/langchain-5e9cc07a/Xbr8HuVd9jPi6qTU/images/langgraph-auth-interrupt.png?fit=max\&auto=format\&n=Xbr8HuVd9jPi6qTU\&q=85\&s=94f84dd7ec822ca69f9a27b4458dca9f)
 
+Studio 中断显示 OAuth URL
+
 用户完成 OAuth 身份验证并且我们收到提供商的回调后，他们将看到身份验证成功页面。
 
 ![](https://mintcdn.com/langchain-5e9cc07a/Xbr8HuVd9jPi6qTU/images/github-auth-success.png?fit=max\&auto=format\&n=Xbr8HuVd9jPi6qTU\&q=85\&s=72e6492f074507bc8888804066205fcb)
+
+GitHub OAuth 成功页面
 
 然后，代理从中断处恢复执行，并且令牌可用于任何 API 调用。我们存储和刷新 OAuth 令牌，以便用户或代理将来使用该服务时不需要 OAuth 流程。
 
@@ -182,9 +186,7 @@ token = auth_result.token
 
 #### LangGraph 上下文之外
 
-向带外 OAuth 流的用户提供 `auth_url`。
-
-**Python**
+向带外 OAuth 流的用户提供 `auth_url`。**Python**
 
 ```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 auth_result = await client.authenticate(
@@ -223,7 +225,9 @@ if (authResult.status === 'pending') {
 }
 ```
 
-## 故障排除### 自托管：405 方法不允许
+## 故障排除
+
+### 自托管：405 方法不允许
 
 如果您收到 `405 Method Not Allowed` 错误，请确保 `LANGSMITH_API_URL` 指向 `/api-host` 路径：
 

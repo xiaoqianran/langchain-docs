@@ -8,17 +8,17 @@
 
 * [Set up an organization](#set-up-an-organization)：创建和管理团队协作的组织，包括用户管理和角色分配。
 * [Set up a workspace](#set-up-a-workspace)：设置和配置工作区以组织您的 LangSmith 资源、管理工作区成员以及配置团队协作设置。
-* [Set up agents and applications](#set-up-agents-and-applications)：对工作空间内的资源进行分组以进一步组织它们，并利用 ABAC 许可。
+* [Set up agents and applications](#set-up-agents-and-applications)：对工作区中的资源进行分组以进一步组织它们，并利用 ABAC 许可。
 
-<Check>
-  在阅读此设置页面之前，您可能会发现参考[overview on LangSmith resource hierarchy](/langsmith/administration-overview)很有帮助。
-</Check>
+> [!提示]
+>
+> 在阅读此设置页面之前，您可能会发现参考[overview on LangSmith resource hierarchy](/langsmith/administration-overview)很有帮助。
 
 ## 成立组织
 
-<Note>
-  如果您有兴趣以编程方式管理您的组织和工作区，请参阅[Manage organizations using the API](/langsmith/manage-organization-by-api)。
-</Note>
+> [!注意]
+>
+> 如果您有兴趣以编程方式管理您的组织和工作区，请参阅[Manage organizations using the API](/langsmith/manage-organization-by-api)。
 
 ### 创建一个组织
 
@@ -47,9 +47,9 @@
 组织范围的角色用于确定对组织设置的访问权限。所选角色也会对工作区成员资格产生影响：* **组织管理员** 授予管理所有组织配置、用户、计费和工作区的完全访问权限。任何组织管理员都拥有对组织中所有工作区的 `Admin` 访问权限。
 * **组织用户**可以读取组织信息，但无法在组织级别执行任何写入操作。您可以像往常一样将组织用户添加到工作区子集并分配工作区角色（如果启用了[RBAC](/langsmith/rbac)），这指定了工作区级别的权限。
 
-<Info>
-  [Organization User](/langsmith/rbac#organization-user) 和 [Organization Viewer](/langsmith/rbac#organization-viewer) 角色仅在[Plus and Enterprise plans](https://langchain.com/pricing) 上的组织中可用。在开发者组织（单个工作区）中，默认情况下为所有用户分配 [Organization Admin](/langsmith/rbac#organization-admin) 角色。自定义组织范围的角色不可用。
-</Info>
+> [!注意]
+>
+> [Organization User](/langsmith/rbac#organization-user) 和 [Organization Viewer](/langsmith/rbac#organization-viewer) 角色仅在[Plus and Enterprise plans](https://langchain.com/pricing) 上的组织中可用。在开发者组织（单个工作区）中，默认情况下为所有用户分配 [Organization Admin](/langsmith/rbac#organization-admin) 角色。自定义组织范围的角色不可用。
 
 有关与每个角色关联的权限的完整列表，请参阅 [Administration overview](/langsmith/administration-overview#organization-roles) 页面。
 
@@ -62,59 +62,46 @@
 
 要创建新工作区，请导航至共享组织中的 [**Settings** page](https://smith.langchain.com/settings) **工作区** 选项卡，然后单击 **添加工作区**。
 
-创建工作区后，您可以通过在 **设置** 页面上选择工作区来管理其成员和其他配置。<Note>
-  不同的计划对组织中可以使用的工作空间数量有不同的限制。欲了解更多信息，请参阅[pricing page](https://www.langchain.com/pricing-langsmith)。
-</Note>
+创建工作区后，您可以通过在 **设置** 页面上选择工作区来管理其成员和其他配置。> [!注意]
+>
+> 不同的计划对您可以在组织中使用的工作空间数量有不同的限制。欲了解更多信息，请参阅[pricing page](https://www.langchain.com/pricing-langsmith)。
 
 ### 管理用户
 
-<Info>
-  只有 [workspace admins](/langsmith/rbac#workspace-admin) 可以管理工作区成员资格，并且如果启用 RBAC，则可以更改用户的工作区角色。
-</Info>
+> [!注意]
+>
+> 只有 [workspace admins](/langsmith/rbac#workspace-admin) 可以管理工作区成员资格，并且如果启用 RBAC，则可以更改用户的工作区角色。
 
 对于已经是组织成员的用户，工作区管理员可以将其添加到 [**Workspaces settings** page](https://smith.langchain.com/settings/workspaces) 上的 **工作区成员** 选项卡中的工作区。当用户被邀请加入某个组织时，也可能会被直接邀请到一个或多个工作区。
 
 ### 配置工作区设置
 
-工作区配置位于 [**Workspaces settings** page](https://smith.langchain.com/settings/workspaces) 选项卡中。选择要配置的工作区，然后选择所需的配置子选项卡。
-配置选项包括：
+工作空间设置位于所选工作空间的 [**Settings** page](https://smith.langchain.com/settings/workspaces) 上。选项包括配置成员、[model configurations](/langsmith/model-configurations)、[shared URLs](/langsmith/manage-trace)以及[grouping resources](#set-up-agents-and-applications)的资源标签的功能。
 
-* **工作区成员**
-* **API 密钥**
-* **秘密**
-* **反馈配置**
-* **型号**
-* **规则**
-* **共享 URL**
+工作区机密存储 LangSmith 用于调用模型提供程序和工具的 API 密钥。将它们添加到 **设置** > **集成** > **提供商机密** 下。
 
 ### 删除工作区
 
-<Warning>
-  删除工作区将永久删除该工作区和所有关联数据。此操作无法撤消。
-</Warning>
+> [!警告]
+>
+> 删除工作区将永久删除该工作区和所有关联数据。此操作无法撤消。
 
 您可以通过[LangSmith UI](https://smith.langchain.com?utm_source=docs\&utm_medium=cta\&utm_campaign=langsmith-signup\&utm_content=langsmith-set-up-hierarchy)或[API](/langsmith/smith-api/workspaces/delete-workspace)删除工作空间。您必须是[workspace admin](/langsmith/rbac#workspace-admin)才能删除工作区。
 
-在 LangSmith 用户界面中：1. 导航至**设置**。
+在LangSmith用户界面中：1. 导航至**设置**。
 2. 选择要删除的工作区。
-3. 单击屏幕右上角的删除图标<Icon icon="trash" />。
+3. 单击屏幕右上角的删除图标。
 
 ## 设置代理和应用程序
 
 在工作区中，您可以将资源（例如跟踪项目和数据集）进一步分组。工作空间可以有零个或多个这样的组。
 
-该组的名称取决于您的工作区使用的信息架构，左上角的控件会告诉您您所在的组。基于代理的工作区将其称为[agent](/langsmith/agents)，并从顶部栏中的代理选择器中选择它。基于项目的工作区将其称为应用程序，并从侧边栏中的 **应用程序** 选择器中选择它。
+该组的名称取决于您的工作区使用的信息架构，左上角的控件会告诉您您所在的组。基于代理的工作区将其称为 [agent](/langsmith/agents) 并从顶部栏中的代理选择器中选择它。基于项目的工作区将其称为应用程序，并从侧边栏中的 **应用程序** 选择器中选择它。
 
 要查看工作区中的每个资源而不是一组资源，请在代理选择器中选择“**所有代理**”，或在应用程序选择器中选择“**所有应用程序**”。您可以通过将资源添加到 **设置** 页面上 **资源标签** 下的 `Application` 标签来将资源标记到多个应用程序。
 
 ***
 
-<div>
-  <Callout icon="terminal-2">
-    [Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
-  </Callout>
+[Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
 
-  <Callout icon="edit">
-    [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/set-up-hierarchy.mdx) 或 [file an issue](https://github.com/langchain-ai/docs/issues/new/choose)。
-  </Callout>
-</div>
+[Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/set-up-hierarchy.mdx) 或 [file an issue](https://github.com/langchain-ai/docs/issues/new/choose)。

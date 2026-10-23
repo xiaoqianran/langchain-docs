@@ -367,7 +367,7 @@ output = {
 
 ## 将自定义 I/O 格式转换为 LangSmith 兼容格式
 
-如果您使用自定义输入或输出格式，则可以使用 [⟦T94⟧ decorator](https://docs.smith.langchain.com/reference/python/run_helpers/langsmith.run_helpers.traceable) (Python) 或 [⟦T95⟧ function](https://docs.smith.langchain.com/reference/js/functions/traceable.traceable) (TS) 上的 `process_inputs`/`processInputs` 和 `process_outputs`/`processOutputs` 函数将其转换为 LangSmith 兼容格式。`process_inputs`/`processInputs` 和 `process_outputs`/`processOutputs` 接受允许您在将特定跟踪的输入和输出记录到 LangSmith 之前对其进行转换的函数。他们可以访问跟踪的输入和输出，并且可以返回包含处理后的数据的新字典。
+如果您使用自定义输入或输出格式，则可以使用 [⟦T94⟧ decorator](https://reference.langchain.com/python/langsmith/run_helpers/traceable) (Python) 或 [⟦T95⟧ function](https://reference.langchain.com/javascript/langsmith/traceable/traceable) (TS) 上的 `process_inputs`/`processInputs` 和 `process_outputs`/`processOutputs` 函数将其转换为 LangSmith 兼容格式。`process_inputs`/`processInputs` 和 `process_outputs`/`processOutputs` 接受允许您在将特定跟踪的输入和输出记录到 LangSmith 之前对其进行转换的函数。他们可以访问跟踪的输入和输出，并且可以返回包含处理后的数据的新字典。
 
 以下是如何使用 `process_inputs` 和 `process_outputs` 将自定义 I/O 格式转换为 LangSmith 兼容格式的样板示例：
 

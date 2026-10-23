@@ -8,7 +8,7 @@
 >
 > 概念：[Pairwise evaluations](/langsmith/evaluation-concepts#pairwise)
 
-LangSmith 支持以比较方式评估**现有**实验。您可以对多个实验的输出进行相互比较，而不是一次评估一个输出。在本指南中，您将使用 [⟦T2⟧](https://docs.smith.langchain.com/reference/python/evaluation/langsmith.evaluation._runner.evaluate) 以及 [define an evaluator](#define-a-pairwise-evaluator) 和 [run a pairwise evaluation](#run-a-pairwise-evaluation) 的两个现有实验。最后，您将使用 LangSmith UI 到 [view the pairwise experiments](#view-pairwise-experiments)。
+LangSmith 支持以比较方式评估**现有**实验。您可以对多个实验的输出进行相互比较，而不是一次评估一个输出。在本指南中，您将使用 [⟦T2⟧](https://reference.langchain.com/python/langsmith/evaluation/_runner/evaluate) 以及 [define an evaluator](#define-a-pairwise-evaluator) 和 [run a pairwise evaluation](#run-a-pairwise-evaluation) 的两个现有实验。最后，您将使用 LangSmith UI 到 [view the pairwise experiments](#view-pairwise-experiments)。
 
 ## 先决条件
 
@@ -17,7 +17,7 @@ LangSmith 支持以比较方式评估**现有**实验。您可以对多个实验
 
 > [!注意]
 >
-> 您还可以将 [⟦T5⟧](https://docs.smith.langchain.com/reference/python/evaluation/langsmith.evaluation._runner.evaluate_comparative) 与两个以上的现有实验一起使用。
+> 您还可以将 [⟦T5⟧](https://reference.langchain.com/python/langsmith/evaluation/_runner/evaluate_comparative) 与两个以上的现有实验一起使用。
 
 ## `evaluate()` 比较参数
 

@@ -71,7 +71,9 @@ my-agent/
 
 切换要求选定的编码代理安装`eval-engineering`技能并将其用于项目。如果您已添加该技能，请继续该会话。
 
-要求编码代理遵循技能的审核流程并使用托管 Deep Agents 任务布局：使用评估工程技能为此托管开发 Harbor 评估
+要求编码代理遵循技能的审核流程并使用托管 Deep Agents 任务布局：
+
+使用评估工程技能开发 Harbor 评估使用评估工程技能为此托管开发 Harbor 评估
 深度代理。首先检查项目和现有评估。起草任务
 规范并等待我的审核，然后再直接实施批准的任务
 在 evals/\<task>/ 下。
@@ -96,9 +98,9 @@ evals/
         └── <verifier>
 ```
 
-`Task.md` is the human-reviewed spec. `instruction.md` tells the agent what to do. Harbor构建任务环境，运行托管代理，然后运行`tests/test.sh`。验证者将数字奖励写入`/logs/verifier/reward.txt`或将数字指标写入`/logs/verifier/reward.json`。
+`Task.md` 是经过人工审核的规范。 `instruction.md` 告诉代理要做什么。 Harbor构建任务环境，运行托管代理，然后运行`tests/test.sh`。验证者将数字奖励写入`/logs/verifier/reward.txt`或将数字指标写入`/logs/verifier/reward.json`。
 
-For the full task format, see the [Harbor task documentation](https://www.harborframework.com/docs/tasks).
+完整的任务格式请参见[Harbor task documentation](https://www.harborframework.com/docs/tasks)。
 
 **4.运行评估**
 

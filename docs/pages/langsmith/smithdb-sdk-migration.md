@@ -73,6 +73,8 @@ The before and after change for each method is documented on the page for its ar
 
 This guide is written to be fetched and applied directly by an AI coding agent. Copy the following prompt into your agent to migrate your codebase to the SmithDB-backed methods.
 
+Migrate LangSmith SDK usage to SmithDB methods
+
 Migrate this codebase's LangSmith SDK usage to the new SmithDB-backed methods.
 
 Fetch [https://docs.langchain.com/langsmith/smithdb-sdk-migration.md](https://docs.langchain.com/langsmith/smithdb-sdk-migration.md) first. It

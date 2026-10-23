@@ -6,6 +6,8 @@ Build your first agent in minutes
 
 This quickstart shows you how to create a fully functional AI agent in just a few minutes.
 
+Build the LangChain quickstart agent
+
 Build a basic LangChain agent in this working directory by following the LangChain quickstart.
 
 ## Step 1: Read the guide
@@ -43,6 +45,8 @@ Ask the user if they want tracing. If yes, ask them to set `LANGSMITH_TRACING=tr
 >
 > * Install the [LangChain Docs MCP servers](/use-these-docs) to give your agent access to up-to-date LangChain documentation and examples.
 >
+>   Connect LangChain docs MCP servers
+>
 >   Connect both LangChain documentation MCP servers to my coding agent so it can look up current LangChain, LangGraph, and LangSmith docs and API reference.
 >
 >   Servers to add:
@@ -59,6 +63,8 @@ Ask the user if they want tracing. If yes, ask them to set `LANGSMITH_TRACING=tr
 >
 >   Do not invent alternate MCP URLs. After configuring, confirm both servers are listed and reachable.
 > * Install [LangChain Skills](https://github.com/langchain-ai/langchain-skills) to improve your agent's performance on LangChain ecosystem tasks.
+>
+>   Install LangChain Skills
 >
 >   Install LangChain Skills for my coding agent so it can perform better on LangChain, LangGraph, and Deep Agents tasks.
 >

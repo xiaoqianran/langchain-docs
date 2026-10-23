@@ -25,7 +25,7 @@
 * [Filtering within the Details view](#filter-runs-in-the-details-view)
 * [Advanced filters](#advanced-filters) 用于过滤根或子运行属性
 
-如果您通过 [API](/langsmith/smith-api/run/query-runs) 或 [SDK](https://docs.smith.langchain.com/reference/python/client/langsmith.client.Client#langsmith.client.Client.list_runs) 以编程方式导出数据进行分析，请参阅 [exporting traces guide](/langsmith/export-traces)。
+如果您通过 [API](/langsmith/smith-api/run/query-runs) 或 [SDK](https://reference.langchain.com/python/langsmith/client/Client/list_runs) 以编程方式导出数据进行分析，请参阅 [exporting traces guide](/langsmith/export-traces)。
 
 ## 创建并应用过滤器
 
@@ -222,7 +222,7 @@ LangSmith 会将其分解为以下一组可搜索的键值对：
 
 ## 复制过滤器
 
-您可以复制构建的过滤器以与同事共享，稍后重复使用，或者在 [API](/langsmith/smith-api/run/query-runs) 或 [SDK](https://docs.smith.langchain.com/reference/python/client/langsmith.client.Client#langsmith.client.Client.list_runs) 中以编程方式运行查询。
+您可以复制构建的过滤器以与同事共享，稍后重复使用，或者在 [API](/langsmith/smith-api/run/query-runs) 或 [SDK](https://reference.langchain.com/python/langsmith/client/Client/list_runs) 中以编程方式运行查询。
 
 复制过滤器：
 

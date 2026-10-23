@@ -18,7 +18,7 @@
 
 ## 创建您自己的法学硕士法官评估员
 
-为了完全控制评估器逻辑，请创建您自己的 LLM 作为法官评估器并使用 LangSmith SDK ([Python](https://docs.smith.langchain.com/reference/python/reference) / [TypeScript](https://docs.smith.langchain.com/reference/js)) 运行它。
+为了完全控制评估器逻辑，请创建您自己的 LLM 作为法官评估器并使用 LangSmith SDK ([Python](https://reference.langchain.com/python/langsmith) / [TypeScript](https://reference.langchain.com/javascript/langsmith)) 运行它。
 
 需要`langsmith>=0.2.0`
 

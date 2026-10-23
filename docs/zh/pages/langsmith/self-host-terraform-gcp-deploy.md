@@ -6,7 +6,7 @@
 
 使用 LangChain Terraform 模块在 GCP GKE 上配置自托管 LangSmith 的端到端演练。
 
-与公共 [Terraform modules](https://github.com/langchain-ai/terraform/tree/main/modules/gcp) 一起将 LangSmith 部署到 GCP。通过将部署管理为代码，您可以跨项目版本控制、检查和重现 LangSmith 环境，而无需点击 Google Cloud 控制台。
+与公共 [Terraform modules](https://github.com/langchain-ai/terraform/tree/main/modules/gcp) 一起将 LangSmith 部署到 GCP。通过将部署管理为代码，您可以跨项目版本控制、检查和重现 LangSmith 环境，而无需通过 Google Cloud 控制台进行点击。
 
 安装分两个阶段运行：
 
@@ -125,9 +125,9 @@ gcloud auth application-default login
 
 ## 快速入门
 
-<Tip>
-  有关 `make` 目标、所需变量和常见约束的简明备忘单，请参阅 [GCP quick reference](/langsmith/self-host-terraform-gcp-quick-reference)。
-</Tip>
+> [!提示]
+>
+> 有关 `make` 目标、所需变量和常见约束的简明备忘单，请参阅 [GCP quick reference](/langsmith/self-host-terraform-gcp-quick-reference)。
 
 要获得从零到正在运行的 LangSmith 实例的最快路径，请按顺序运行这些命令。他们部署了 Helm Chart 0.17。要部署图表 0.16，请参阅[Clone and configure](#clone-and-configure)。
 
@@ -172,7 +172,7 @@ kubectl get gateway -n envoy-gateway-system \
 Terraform 提供以下 GCP 资源：|资源 |目的|
 | - | - |
 | VPC+子网+云NAT |集群和托管服务的专用网络|
-|私人服务连接 | Cloud SQL 和 Memorystore 私有 IP 的 VPC 对等互连 |
+|私人服务连接| Cloud SQL 和 Memorystore 私有 IP 的 VPC 对等互连 |
 | GKE 集群（标准或 Autopilot）| Kubernetes 计算、启用 Workload Identity |
 |云 SQL PostgreSQL | LangSmith 运营数据、HA备用、私有IP |
 |内存存储Redis |队列和缓存、STANDARD\_HA 层、私有 IP |
@@ -189,16 +189,16 @@ cd terraform/modules/gcp
 
 所有后续命令都从`modules/gcp/`运行。运行 `make help` 以获得完整的目标列表。
 
-<Note>
-  `main` 分支和 `v0.17.x` 发布标签部署 Helm Chart 0.17，本指南对它们进行了介绍。 `v0.16.x`标签部署图表0.16。要留在图表 0.16，请列出标签并查看最新的 `v0.16.x` 标签：
-
-  ```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  git tag -l 'v0.16.*' --sort=-v:refname | head -1
-  git checkout <tag>
-  ```
-
-  以“图表 0.16”开头的注释描述了 0.16 线的不同之处。要将现有部署移至图表 0.17，请参阅 [Upgrade from chart 0.16](#upgrade-from-chart-0-16)。
-</Note>
+> [!注意]
+>
+> `main` 分支和 `v0.17.x` 发布标签部署 Helm Chart 0.17，本指南对它们进行了介绍。 `v0.16.x`标签部署图表0.16。要停留在图表 0.16 上，请列出标签并查看最新的 `v0.16.x` 标签：
+>
+> ```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> git tag -l 'v0.16.*' --sort=-v:refname | head -1
+> git checkout <tag>
+> ```
+>
+> 以“图表 0.16”开头的注释描述了 0.16 线的不同之处。要将现有部署移至图表 0.17，请参阅 [Upgrade from chart 0.16](#upgrade-from-chart-0-16)。
 
 使用交互式向导生成 `terraform.tfvars`：
 
@@ -237,9 +237,9 @@ enable_langsmith_deployment = true
 
 不要将许可证密钥和密码放在`terraform.tfvars` 之外。 `setup-env.sh` 将它们存储在 Secret Manager 中并将其导出为 `TF_VAR_*` 变量。请参阅每个输入变量的[GCP variables reference](/langsmith/self-host-terraform-gcp-variables)。
 
-<Tip>
-  在应用之前配置远程状态后端。将`infra/backend.tf.example`复制到`infra/backend.tf`并将其指向您控制的GCS存储桶。本地状态很脆弱，在目录重组期间可能会丢失。
-</Tip>
+> [!提示]
+>
+> 在应用之前配置远程状态后端。将`infra/backend.tf.example`复制到`infra/backend.tf`并将其指向您控制的GCS存储桶。本地状态很脆弱，在目录重组期间可能会丢失。
 
 ### 将机密加载到机密管理器中
 
@@ -259,9 +259,9 @@ make preflight
 
 ### 申请
 
-<Note>
-  在干净的项目上配置 GCP 云基础需要 25 到 35 分钟。不要中断应用。
-</Note>
+> [!注意]
+>
+> 在干净的项目上配置 GCP 云基础需要 25 到 35 分钟。不要中断应用。
 
 ```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 make init
@@ -302,7 +302,7 @@ cert-manager、KEDA 和 LangSmith 命名空间机密都应该就位。
 
 使用两个受支持的部署路径之一：
 
-|路径|命令 |何时使用 |
+|路径|命令|何时使用 |
 | - | - | - |
 | [Script-driven Helm deploy *(recommended)*](#script-driven-helm-deploy-recommended) | `make init-values && make deploy` |交互式输出、kubeconfig 刷新、预检检查。最适合首次部署和第二天重新部署。 |
 | [Manual Helm install](#manual-helm-install) | `helm upgrade --install langsmith langchain/langsmith ...` |直接使用`helm`，无需包装脚本。最适合拥有现有 Helm 工具的团队。 |
@@ -320,11 +320,11 @@ make deploy
 
 `make deploy` 运行 `helm/scripts/deploy.sh`，刷新 kubeconfig，运行预检检查，根据 `TF_VAR_*` 值和 `LANGSMITH_ADMIN_EMAIL` 构建 `langsmith-config` Kubernetes Secret，应用分层值文件，然后运行 ​​`helm upgrade --install`。
 
-<Note>
-  部署脚本默认安装 Helm 图表版本 `~0.17.0` 并拒绝 0.17 行之外的版本。要固定特定的 0.17 版本，请在 `terraform.tfvars` 中设置 `langsmith_helm_chart_version` 或导出 `CHART_VERSION`。
-
-  在图表 0.16 上，默认为 `~0.16.0`，脚本拒绝 0.16 线之外的版本。
-</Note>
+> [!注意]
+>
+> 部署脚本默认安装 Helm 图表版本 `~0.17.0` 并拒绝 0.17 行之外的版本。要固定特定的 0.17 版本，请在 `terraform.tfvars` 中设置 `langsmith_helm_chart_version` 或导出 `CHART_VERSION`。
+>
+> 在图表 0.16 上，默认为 `~0.16.0`，脚本拒绝 0.16 线以外的版本。
 
 图表安装和 Pod 准备就绪预计需要 8 到 12 分钟。
 
@@ -371,9 +371,9 @@ helm upgrade --install langsmith langchain/langsmith \
   --wait --timeout 15m
 ```
 
-<Note>
-  要使用 S3 兼容的 Blob 存储而不是 Workload Identity，请添加 `--set config.blobStorage.engine=S3` 并使用 `--set config.blobStorage.accessKey=<key>` 和 `--set config.blobStorage.accessKeySecret=<secret>` 传递 HMAC 密钥。在 **云存储** > **设置** > **互操作性** 下创建 HMAC 密钥。
-</Note>
+> [!注意]
+>
+> 要使用 S3 兼容的 Blob 存储而不是 Workload Identity，请添加 `--set config.blobStorage.engine=S3` 并使用 `--set config.blobStorage.accessKey=<key>` 和 `--set config.blobStorage.accessKeySecret=<secret>` 传递 HMAC 密钥。在 **云存储** > **设置** > **互操作性** 下创建 HMAC 密钥。
 
 ### 验证并配置 DNS
 
@@ -429,9 +429,9 @@ langsmith-queue-xxx                1/1  Running    0
 * SmithDB 和沙箱。
 * 当 Postgres 或 Redis 位于外部时，Fleet、独立 Polly 和独立 Insights。
 
-<Note>
-  本节中的附加组件需要 Helm 图表版本 0.16.0 或更高版本。
-</Note>
+> [!注意]
+>
+> 本节中的附加组件需要 Helm 图表版本 0.16.0 或更高版本。
 
 ### LangSmith 部署
 
@@ -465,21 +465,21 @@ kubectl get pods -n langsmith | grep -E "host-backend|listener|operator"
 kubectl get lgp -n langsmith
 kubectl get crd | grep langchain
 kubectl get pods -n keda
-```<Warning>
-  `config.deployment.url` 必须包含 `https://`。如果没有协议，操作员生成的代理将无限期地陷入`DEPLOYING`。
-</Warning>
+```> [!警告]
+>
+> `config.deployment.url` 必须包含 `https://`。如果没有协议，操作员生成的代理将无限期地陷入`DEPLOYING`。
 
 ### 舰队
 
-<Note>
-  Fleet 是以前称为 Agent Builder 的功能的当前形式，作为独立服务部署。
-</Note>
+> [!注意]
+>
+> Fleet 是以前称为 Agent Builder 的功能的当前形式，作为独立服务部署。
 
 您可以通过`enable_fleet`启用舰队。与已弃用的 `enable_agent_builder` 路径不同，它不需要 LangSmith 部署。借助外部 Postgres 和 Redis，Terraform 在 Cloud SQL 上配置专用的 `langsmith_fleet` 数据库，并创建指向现有 Cloud SQL 和 Memorystore 实例的 `langsmith-fleet-postgres` 和 `langsmith-fleet-redis` 密钥。队列重用`langsmith_agent_builder_encryption_key`，因此从`enable_agent_builder` 迁移会保留相同的密钥和数据。
 
-<Note>
-  舰队需要您的许可证中的 Agent Builder 或舰队权利。
-</Note>
+> [!注意]
+>
+> 舰队需要您的许可证中的 Agent Builder 或舰队权利。
 
 ```hcl theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 # infra/terraform.tfvars
@@ -500,15 +500,15 @@ make deploy       # roll out the standalone-fleet-* services
 kubectl get pods -n langsmith | grep standalone-fleet
 ```
 
-<Warning>
-  请勿同时启用 `enable_fleet` 和 `enable_agent_builder`。部署脚本拒绝组合，因为 Fleet 替换了旧的 Agent Builder 路径。
-</Warning>
+> [!警告]
+>
+> 请勿同时启用 `enable_fleet` 和 `enable_agent_builder`。部署脚本拒绝组合，因为 Fleet 替换了旧的 Agent Builder 路径。
 
 ### 代理生成器（已弃用）
 
-<Note>
-  在 GCP 上，`enable_agent_builder` 已弃用，取而代之的是 [Fleet](#fleet) (`enable_fleet`)。使用 Fleet 进行新部署。本节记录了现有安装的旧路径。
-</Note>先决条件：LangSmith 部署正常。添加 Agent Builder UI 及其工具和触发器服务器。 Helm Chart 0.16 删除了捆绑的代理引导作业，因此此路径不再注册代理运行时，并且当您在没有 Fleet 的情况下启用它时，部署脚本会发出警告。
+> [!注意]
+>
+> 在 GCP 上，`enable_agent_builder` 已弃用，取而代之的是 [Fleet](#fleet) (`enable_fleet`)。使用 Fleet 进行新部署。本节记录了现有安装的旧路径。先决条件：LangSmith 部署正常。添加 Agent Builder UI 及其工具和触发器服务器。 Helm Chart 0.16 删除了捆绑的代理引导作业，因此此路径不再注册代理运行时，并且当您在没有 Fleet 的情况下启用它时，部署脚本会发出警告。
 
 ```hcl theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 # infra/terraform.tfvars
@@ -552,11 +552,11 @@ kubectl get pods -n langsmith | grep -E "insights|polly"
 kubectl get pods -n langsmith -w
 ```
 
-<Warning>
-  首次启用后，`langsmith_insights_encryption_key` 和 `langsmith_polly_encryption_key` 不得更改。旋转将永久破坏现有的加密数据。
-</Warning>
+> [!警告]
+>
+> 首次启用后，`langsmith_insights_encryption_key` 和 `langsmith_polly_encryption_key` 不得更改。旋转将永久破坏现有的加密数据。
 
-### 史密斯数据库SmithDB 是列式存储和查询引擎，在 LangSmith​​ 版本中与 ClickHouse 一起运行。 `enable_smithdb` 提供专用的 Cloud SQL 元存储 (PostgreSQL 18)、GCS 对象存储存储桶、Workload Identity 服务帐户以及缓存和计算节点池。 SmithDB 需要 GKE 标准； Terraform 在 Autopilot 上拒绝它。
+### 史密斯数据库SmithDB 是列式存储和查询引擎，在 LangSmith 版本中与 ClickHouse 一起运行。 `enable_smithdb` provisions a dedicated Cloud SQL metastore (PostgreSQL 18), a GCS object-store bucket, a Workload Identity service account, and cache and compute node pools. SmithDB 需要 GKE 标准； Terraform 在 Autopilot 上拒绝它。
 
 部署有两个变量：
 
@@ -578,15 +578,15 @@ make deploy
 
 生成的 `langsmith-values-smithdb-sizing.yaml` 设置 SmithDB 资源、缓存卷和节点放置。不要将它们设置在`langsmith-values-smithdb.yaml`中。要稍后更改大小或缓存，请运行`make smithdb-configure SIZING=<size> [CACHE=<local-ssd|network-disk>]`，然后运行`make deploy-all`。
 
-LangSmith 然后分阶段转移到 SmithDB。 ClickHouse 始终保持启用状态。 `make smithdb-phase` 在`terraform.tfvars` 设置阶段标志。每个阶段后运行`make deploy-all`，只有在前一个阶段健康后才进入下一个阶段：1. `make smithdb-phase PHASE=dual-write` 设置`smithdb_ingestion_enabled = true`，它将新写入路由到 SmithDB 以及 ClickHouse。 `make quickstart`在此阶段开始新安装。
+LangSmith 然后分阶段转移到 SmithDB。 ClickHouse 始终保持启用状态。 `make smithdb-phase` 在`terraform.tfvars` 设置阶段标志。每个阶段后运行`make deploy-all`，只有在前一个阶段健康后才进入下一个阶段：1. `make smithdb-phase PHASE=dual-write` 设置`smithdb_ingestion_enabled = true`，它将新写入路由到 SmithDB 以及 ClickHouse。 `make quickstart` starts new installs in this stage.
 2. `make smithdb-phase PHASE=backfill`还设置了`smithdb_migration_enabled = true`，从ClickHouse回填历史数据。要选择回填开始的位置，请添加 `START_TIME=<RFC 3339 timestamp>`。
-3. `make smithdb-phase PHASE=cutover` 设置`smithdb_query_enabled = true` 并关闭回填，因此 UI 和 API 读取来自 SmithDB。在回填完成之前，目标拒绝切换。无需等待回填，请添加 `FORCE=true`。
+3. `make smithdb-phase PHASE=cutover` 设置`smithdb_query_enabled = true` 并关闭回填，因此 UI 和 API 读取来自 SmithDB。在回填完成之前，目标拒绝切换。 With no backfill to wait for, add `FORCE=true`.
 
 `make smithdb-status` 报告当前阶段、大小、pod、作业和回填进度。
 
-当回填运行时，每个图表版本更改都需要在下一次部署之前删除回填作业。 `make deploy` 停止并打印 `kubectl delete job` 命令。回填进度会保留，因此新作业将继续而不是重新开始。<Note>
-  在图0.16中，SmithDB始终使用本地SSD和计算节点池，并且`smithdb_sizing`、`smithdb_cache_storage`和`make smithdb-*`目标不存在。手动设置`terraform.tfvars`中的三个阶段标志，并在每次更改后运行`make deploy-all`。回填阶段需要其 `make apply` 步骤：Terraform 授予 SmithDB 服务帐户对跟踪存储桶的读取权限，并仅在 `smithdb_migration_enabled = true` 时提高命名空间配额。回填阶段需要 Helm Chart 0.16.6 或更高版本。
-</Note>
+While the backfill runs, every chart version change requires deleting the backfill Job before the next deploy. `make deploy` 停止并打印 `kubectl delete job` 命令。 Backfill progress is kept, so the new Job resumes rather than starting over.> [!注意]
+>
+> 在图表 0.16 上，SmithDB 始终使用本地 SSD 和计算节点池，并且`smithdb_sizing`、`smithdb_cache_storage` 和`make smithdb-*` 目标不存在。手动设置`terraform.tfvars`中的三个阶段标志，并在每次更改后运行`make deploy-all`。回填阶段需要其 `make apply` 步骤：Terraform 授予 SmithDB 服务帐户对跟踪存储桶的读取权限，并仅在 `smithdb_migration_enabled = true` 时提高命名空间配额。回填阶段需要 Helm Chart 0.16.6 或更高版本。
 
 验证：
 
@@ -610,29 +610,29 @@ make init-values
 make deploy
 ```
 
-如果您的 Helm 版本名称不是 `langsmith`，请将 `platform_backend_component_label` 设置为 `<release-name>-platform-backend`，以便沙箱主机可以到达平台后端。
+If your Helm release name is not `langsmith`, set `platform_backend_component_label` to `<release-name>-platform-backend` so the sandbox host can reach the platform backend.
 
-部署脚本根据图表的应用程序版本设置沙箱主机图像标签，因此图像始终与图表匹配。<Note>
-  在chart 0.16中，沙箱通过chart安装的JuiceFS CSI驱动挂载JuiceFS，`terraform.tfvars`中需要`sandbox_host_image_tag`。图 0.17 忽略了该变量。
-</Note>
+部署脚本根据图表的应用程序版本设置沙箱主机图像标签，因此图像始终与图表匹配。> [!注意]
+>
+> 在chart 0.16上，沙箱通过chart安装的JuiceFS CSI驱动挂载JuiceFS，`terraform.tfvars`中需要`sandbox_host_image_tag`。 Chart 0.17 ignores that variable.
 
-### 附加组件预期的 pod
+### Expected pods by add-on
 
 **LangSmith 部署添加：** `langsmith-host-backend`、`langsmith-listener`、`langsmith-operator`。
 
 **机队新增：** `langsmith-standalone-fleet-api-server`、`langsmith-standalone-fleet-queue`、`langsmith-fleet-tool-server`、`langsmith-fleet-trigger-server`。
 
-**Agent Builder 添加：** `langsmith-fleet-tool-server`、`langsmith-fleet-trigger-server`。
+**Agent Builder adds:** `langsmith-fleet-tool-server`, `langsmith-fleet-trigger-server`.
 
 **Insights 和 Polly 添加：** `langsmith-standalone-insights-api-server`、`langsmith-standalone-polly-api-server` 及其队列工作负载。使用 `enable_insights` 或 `enable_polly` 而不是独立标志，每个标志还运行集群内 `-postgres` 和 `-redis` StatefulSet。
 
 **SmithDB 添加：** `langsmith-smithdb-cluster-manager`、`langsmith-smithdb-ingestion`、`langsmith-smithdb-query`、`langsmith-smithdb-compaction`、`langsmith-smithdb-compaction-worker`。
 
-## 从图表 0.16 升级
+## Upgrade from chart 0.16
 
-<Warning>
-  升级前备份数据库。不支持从图表 0.17 降级至 0.16。
-</Warning>
+> [!警告]
+>
+> Back up the databases before you upgrade.不支持从图表 0.17 降级至 0.16。
 
 要将部署从 `v0.16.x` 标签移至图表 0.17：
 
@@ -652,13 +652,13 @@ make deploy
    cp helm/values/examples/langsmith-values-smithdb.yaml helm/values/langsmith-values-smithdb.yaml
    ```
 
-5. 运行`make apply`。对于`ingress_type = "envoy"`（默认），它还将 Envoy Gateway 升级到 v1.9.2。规划维护窗口：控制平面必须运行 Kubernetes 1.33 到 1.36，Envoy 代理重新启动一次，并且打开时间超过 60 秒的连接会丢弃。启用 SmithDB 后，`make init-values` 会失败，直到 Terraform 状态包含 0.17 模块输出。
+5. Run `make apply`.对于`ingress_type = "envoy"`（默认），它还将 Envoy Gateway 升级到 v1.9.2。规划维护窗口：控制平面必须运行 Kubernetes 1.33 到 1.36，Envoy 代理重新启动一次，并且打开时间超过 60 秒的连接会丢弃。启用 SmithDB 后，`make init-values` 会失败，直到 Terraform 状态包含 0.17 模块输出。
 
-6. 运行 `make init-values` 重新生成没有图表 0.16 `sandboxes.juicefs.csi` 块的沙箱值。7. 运行`make deploy`。启用沙箱后，部署会停止，而沙箱卷仍通过 JuiceFS CSI 驱动程序挂载，并打印沙箱主机工作负载和 JuiceFS 声明的 `kubectl delete` 命令。运行它们，等到只剩下 `juicefs-csi-*` Pod，然后再次运行 `make deploy`。运行沙箱停止，但它们的数据保留在对象存储和 Redis 中，图 0.17 挂载相同的 JuiceFS 卷。
+6. 运行 `make init-values` 重新生成没有图表 0.16 `sandboxes.juicefs.csi` 块的沙箱值。7. 运行`make deploy`。 With Sandboxes enabled, the deploy stops while sandbox volumes are still mounted through the JuiceFS CSI driver, and prints the `kubectl delete` commands for the sandbox-host workload and JuiceFS claims.运行它们，等到只剩下 `juicefs-csi-*` Pod，然后再次运行 `make deploy`。运行沙箱停止，但它们的数据保留在对象存储和 Redis 中，图 0.17 挂载相同的 JuiceFS 卷。
 
-8. 如果您在步骤 2 中固定了 `sandbox_host_machine_type`，请移除该引脚并再次运行 `make apply`。 GKE 会为新机器类型重新创建每个沙箱主机节点，并且正在运行的沙箱会停止。
+8. 如果您在步骤 2 中固定了 `sandbox_host_machine_type`，请移除该引脚并再次运行 `make apply`。 GKE 为新机器类型重新创建每个沙箱主机节点，并且正在运行的沙箱停止。
 
-如果您在自己的值中启用了 Engine，图表 0.17 还需要 `engine.usageSigningSecret`（至少 32 个字符），或者 `config.existingSecretName` 命名的 Secret 中的 `engine_usage_signing_secret` 键。
+If you enabled Engine in your own values, chart 0.17 also requires `engine.usageSigningSecret` (at least 32 characters), or an `engine_usage_signing_secret` key in the Secret that `config.existingSecretName` names.
 
 0.17 模块还停止授予 LangSmith 服务帐户项目范围的 Secret Manager 访问权限。如果您添加的工作负载将 Secret Manager 读取为该服务帐户，请设置 `grant_project_secret_accessor = true` 或授予对特定机密的访问权限。
 
@@ -679,12 +679,6 @@ make deploy
 
 ***
 
-<div>
-  <Callout icon="terminal-2">
-    [Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
-  </Callout>
+[Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
 
-  <Callout icon="edit">
-    [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/self-host-terraform-gcp-deploy.mdx) 或 [file an issue](https://github.com/langchain-ai/docs/issues/new/choose)。
-  </Callout>
-</div>
+[Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/self-host-terraform-gcp-deploy.mdx) 或 [file an issue](https://github.com/langchain-ai/docs/issues/new/choose)。

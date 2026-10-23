@@ -12,9 +12,9 @@
 2. 将运行输入转换为数据集，并将运行输出记录为针对该数据集的初始实验。
 3. 在新数据集上执行新系统并比较实验结果。
 
-此过程将为您提供一个新的代表性输入数据集，您可以对其进行版本控制并用于对模型进行回溯测试。<Info>
-  通常，您不会获得明确的“基本事实”答案。在这种情况下，您可以手动标记输出或使用不依赖参考数据的评估器。如果您的应用程序允许捕获真实标签，例如允许用户留下反馈，我们强烈建议您这样做。
-</Info>
+此过程将为您提供一个新的代表性输入数据集，您可以对其进行版本控制并用于对模型进行回溯测试。> [!注意]
+>
+> 通常，您不会获得明确的“基本事实”答案。在这种情况下，您可以手动标记输出或使用不依赖参考数据的评估器。如果您的应用程序允许捕获真实标签，例如允许用户留下反馈，我们强烈建议您这样做。
 
 ## 设置
 
@@ -22,19 +22,17 @@
 
 安装并设置环境变量。本指南需要`langsmith>=0.2.4`。
 
-<Info>
-  为了方便起见，我们将在本教程中使用 LangChain OSS 框架，但所示的 LangSmith 功能与框架无关。
-</Info>
+> [!注意]
+>
+> 为了方便起见，我们将在本教程中使用 LangChain OSS 框架，但所示的 LangSmith 功能与框架无关。
 
-<CodeGroup>
-  ```bash pip theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  pip install -U langsmith langchain langchain-anthropic langchainhub emoji
-  ```
+```bash pip theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+pip install -U langsmith langchain langchain-anthropic langchainhub emoji
+```
 
-  ```bash uv theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  uv add langsmith langchain langchain-anthropic langchainhub emoji
-  ```
-</CodeGroup>
+```bash uv theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+uv add langsmith langchain langchain-anthropic langchainhub emoji
+```
 
 ```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 import getpass
@@ -176,7 +174,7 @@ convert_runs_to_test(
 
 完成此步骤后，您应该在 LangSmith 项目中看到一个名为“Tweetwriting Task-backtesting TODAYS DATE”的新数据集，其中包含一个如下实验：
 
-<img alt="Baseline experiment" />
+![Baseline experiment](https://mintcdn.com/langchain-5e9cc07a/E8FdemkcQxROovD9/langsmith/images/baseline-experiment.png?fit=max\&auto=format\&n=E8FdemkcQxROovD9\&q=85\&s=73b60a75d6b33f2830f5ed68464c586b)
 
 ## 新系统基准测试
 
@@ -260,30 +258,24 @@ candidate_results = await client.aevaluate(
 
 运行这两个实验后，您可以在数据集中查看它们：
 
-<img alt="Dataset page" />
+![Dataset page](https://mintcdn.com/langchain-5e9cc07a/aKRoUGXX6ygp4DlC/langsmith/images/dataset-page.png?fit=max\&auto=format\&n=aKRoUGXX6ygp4DlC\&q=85\&s=1c5d4f1cf212e2c38917319c7bbf7f99)
 
 结果揭示了两个模型之间有趣的权衡：
 
-1. GPT-4o 在遵循格式规则方面表现出改进的性能，始终包括所需数量的表情符号
+1. GPT-4o 在遵循格式规则方面表现出改进的性能，始终包括所请求的表情符号数量
 2. 然而，GPT-4o 在提供的搜索结果方面不太可靠
 
-为了说明接地问题：在 [this example run](https://smith.langchain.com/public/be060e19-0bc0-4798-94f5-c3d35719a5f6/r/07d43e7a-8632-479d-ae28-c7eac6e54da4) 中，GPT-4o 包含了有关 Abu Bakr Muhammad ibn Zakariyyā al-Rāzī 的医学贡献的事实，但搜索结果中没有出现这些事实。这展示了它如何从其内部知识中提取而不是严格使用所提供的信息。
+为了说明接地问题：在 [this example run](https://smith.langchain.com/public/be060e19-0bc0-4798-94f5-c3d35719a5f6/r/07d43e7a-8632-479d-ae28-c7eac6e54da4) 中，GPT-4o 包含了有关 Abu Bakr Muhammad ibn Zakariyyā al-Rāzī 的医学贡献的事实，但这些事实未出现在搜索结果中。这展示了它如何从其内部知识中提取而不是严格使用所提供的信息。
 
 这次回溯测试表明，虽然 GPT-4o 通常被认为是一个功能更强大的模型，但简单地升级到它并不能改善我们的推文撰写者。为了有效地使用 GPT-4o，我们需要：* 完善我们的提示，更加强调仅使用提供的信息
 * 或者修改我们的系统架构以更好地约束模型的输出
 
 这种见解证明了回溯测试的价值 - 它帮助我们在部署之前识别潜在问题。
 
-<img alt="Tutorial comparison view" />
+![Tutorial comparison view](https://mintcdn.com/langchain-5e9cc07a/1RIJxfRpkszanJLL/langsmith/images/tutorial-comparison-view.png?fit=max\&auto=format\&n=1RIJxfRpkszanJLL\&q=85\&s=a8ab311399f3d0e69554a62f939fd475)
 
 ***
 
-<div>
-  <Callout icon="terminal-2">
-    [Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
-  </Callout>
+[Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
 
-  <Callout icon="edit">
-    [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/run-backtests-new-agent.mdx) 或 [file an issue](https://github.com/langchain-ai/docs/issues/new/choose)。
-  </Callout>
-</div>
+[Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/run-backtests-new-agent.mdx) 或 [file an issue](https://github.com/langchain-ai/docs/issues/new/choose)。

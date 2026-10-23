@@ -21,7 +21,7 @@
 * 查看部署指标，例如 CPU 和内存使用情况。
 * 删除部署。
 
-控制平面 UI 嵌入在 [LangSmith](https://docs.smith.langchain.com) 中。
+控制平面 UI 嵌入在 [LangSmith](https://smith.langchain.com?utm_source=docs\&utm_medium=cta\&utm_campaign=langsmith-signup\&utm_content=langsmith-control-plane) 中。
 
 ## 控制平面API
 

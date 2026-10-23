@@ -22,7 +22,7 @@
 
 预览旨在用于测试和登台环境中的评估。 LangSmith 不建议在生产中运行预览。
 
-## 发布节奏|频道|节奏|
+## 发布节奏|频道|节奏 |
 | - | - |
 |预览 |已发布镜像 LangSmith SaaS 发布节奏 |
 |稳定：新专业（`v0.X.0`）|大约每 6 周一次（每季度两次）|
@@ -32,7 +32,7 @@
 
 | |预览 |稳定补丁|下一个专业 |
 | - | :-: | :-: | :-: |
-|新功能|是的 |没有|是的 |
+|新功能 |是的 |没有|是的 |
 |错误修复 |是的 |仅关键 |是的 |
 |安全补丁|是的 |是的 |是的 |
 |数据迁移和回填|是的 |没有|是的 |
@@ -55,7 +55,7 @@
 
 * 稳定的图表版本是`0.X.Y`，其中`X`是主要版本，`Y`随着每个补丁版本的发布而递增。
 * 预览图表版本为 `0.X.0-rc.N`，其中 `N` 随着每个候选版本而递增。
-* 两个数字独立前进。图表补丁编号和 LangSmith 补丁编号预计不会匹配。
+* 两个数字独立前进。图表补丁编号和LangSmith补丁编号预计不会匹配。
 
 用于发布列车的`vX`简写（`v16`、`v17`）指的是主要版本，因此`v17`表示图表版本`0.17.Y`。
 
@@ -85,12 +85,6 @@ LangSmith 支持当前稳定主要版本（`N`）和之前的稳定主要版本�
 
 ***
 
-<div>
-  <Callout icon="terminal-2">
-    [Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
-  </Callout>
+[Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
 
-  <Callout icon="edit">
-    [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/release-versions.mdx) 或 [file an issue](https://github.com/langchain-ai/docs/issues/new/choose)。
-  </Callout>
-</div>
+[Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/release-versions.mdx) 或 [file an issue](https://github.com/langchain-ai/docs/issues/new/choose)。

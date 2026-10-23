@@ -170,9 +170,13 @@ During execution, if authentication is required, the SDK will throw an [interrup
 
 ![](https://mintcdn.com/langchain-5e9cc07a/Xbr8HuVd9jPi6qTU/images/langgraph-auth-interrupt.png?fit=max\&auto=format\&n=Xbr8HuVd9jPi6qTU\&q=85\&s=94f84dd7ec822ca69f9a27b4458dca9f)
 
+Studio interrupt showing OAuth URL
+
 After the user completes OAuth authentication and we receive the callback from the provider, they will see the auth success page.
 
 ![](https://mintcdn.com/langchain-5e9cc07a/Xbr8HuVd9jPi6qTU/images/github-auth-success.png?fit=max\&auto=format\&n=Xbr8HuVd9jPi6qTU\&q=85\&s=72e6492f074507bc8888804066205fcb)
+
+GitHub OAuth success page
 
 The agent then resumes execution from the point it left off at, and the token can be used for any API calls. We store and refresh OAuth tokens so that future uses of the service by either the user or agent do not require an OAuth flow.
 

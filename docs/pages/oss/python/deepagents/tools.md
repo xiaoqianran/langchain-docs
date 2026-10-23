@@ -4,7 +4,7 @@
 
 Connect Deep Agents to custom functions, APIs, databases, and any MCP server
 
-Deep Agents can call any tool you define, any [LangChain tool](https://python.langchain.com/docs/concepts/tools/), and tools from any [MCP server](#mcp-tools).
+Deep Agents can call any tool you define, any [LangChain tool](/oss/python/langchain/tools), and tools from any [MCP server](#mcp-tools).
 Pass them to `create_deep_agent` via the `tools=` parameter alongside the [built-in harness tools](/oss/python/deepagents/overview#execution-environment) for file management and subagent spawning.
 
 ```python Google theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}

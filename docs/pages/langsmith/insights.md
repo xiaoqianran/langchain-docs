@@ -93,11 +93,15 @@ Once your job has completed, you can navigate to the **Insights** tab where you'
 
 ![](https://mintcdn.com/langchain-5e9cc07a/lC4dVnXBXgUXGkP0/langsmith/images/insights-job-results.png?fit=max\&auto=format\&n=lC4dVnXBXgUXGkP0\&q=85\&s=1a95e426b2984bcf417f92d1c4d739b6)
 
+Insights Reports for a single tracing project
+
 Click into your job to see traces organized into a set of auto-generated categories.
 
 You can drill down through categories and subcategories to view the underlying traces, feedback, and run statistics.
 
 ![](https://mintcdn.com/langchain-5e9cc07a/4-kFQm9_42J5OnwH/langsmith/images/insights-nav.gif?s=6a22bfd0d94262b7aa78468a8379ea0f)
+
+Common topics of conversations with the [https://chat.langchain.com](https://chat.langchain.com) chatbot
 
 ### Executive summary
 

@@ -308,7 +308,7 @@ See the [LangGraph CLI build documentation](/langsmith/cli#build) for more detai
 
 ### Connect to your deployed Agent
 
-* &#x20;**[LangGraph SDK](https://langchain-ai.github.io/langgraph/cloud/reference/sdk/python_sdk_ref/#langgraph-sdk-python)**: Use the LangGraph SDK for programmatic integration.
+* &#x20;**[LangGraph SDK](/langsmith/langgraph-python-sdk)**: Use the LangGraph SDK for programmatic integration.
 * &#x20;**[RemoteGraph](/langsmith/use-remote-graph)**: Connect using RemoteGraph for remote graph connections (to use your graph in other graphs).
 * &#x20;**[REST API](/langsmith/server-api-ref)**: Use HTTP-based interactions with your deployed agent.
 * &#x20;**[Studio](/langsmith/studio)**: Access the visual interface for testing and debugging.

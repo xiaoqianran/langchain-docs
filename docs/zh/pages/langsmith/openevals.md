@@ -30,7 +30,7 @@ yarn add openevals @langchain/core
 export OPENAI_API_KEY="your_openai_api_key"
 ```
 
-我们还将使用 LangSmith 的 [pytest](/langsmith/pytest) 集成（针对 Python）和 [Vitest/Jest](/langsmith/vitest-jest)（针对 TypeScript）来运行我们的评估。 `openevals`还与[⟦T10⟧](https://docs.smith.langchain.com/reference/python/evaluation/langsmith.evaluation._runner.evaluate)方法无缝集成。请参阅 [appropriate guides](/langsmith/pytest) 了解设置说明。
+我们还将使用 LangSmith 的 [pytest](/langsmith/pytest) 集成（针对 Python）和 [Vitest/Jest](/langsmith/vitest-jest)（针对 TypeScript）来运行我们的评估。 `openevals`还与[⟦T10⟧](https://reference.langchain.com/python/langsmith/evaluation/_runner/evaluate)方法无缝集成。请参阅 [appropriate guides](/langsmith/pytest) 了解设置说明。
 
 ## 运行评估器
 

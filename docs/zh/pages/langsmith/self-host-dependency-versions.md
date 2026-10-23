@@ -8,9 +8,9 @@
 
 此页面列出了自托管 LangSmith 使用的数据库、工具和基础设施的最低支持版本。在部署或升级之前安装满足或超过最低要求的版本。不支持使用低于最低版本的版本，并且可能会导致安装或运行时失败。
 
-<Tip>
-  如果您使用的是托管服务（例如 Amazon RDS、Google Cloud SQL 或 Azure 数据库），请选择此处列出的最低版本或更高版本。有关连接和身份验证的详细信息，请参阅链接的“外部服务”页面。
-</Tip>
+> [!提示]
+>
+> 如果您使用的是托管服务（例如 Amazon RDS、Google Cloud SQL 或 Azure 数据库），请选择此处列出的最低版本或更高版本。有关连接和身份验证的详细信息，请参阅链接的“外部服务”页面。
 
 ## 数据存储|依赖|最低版本 |笔记|
 | - | - | - |
@@ -19,9 +19,9 @@
 | [Valkey](/langsmith/self-host-external-redis) | 8 |官方支持作为 Redis 的直接替代品。独立模式和集群模式均受支持。 |
 | [ClickHouse](/langsmith/self-host-external-clickhouse) | [LangSmith Helm chart](https://github.com/langchain-ai/helm/releases) 或更高 | 中指定的版本存储痕迹和反馈。 ClickHouse 24.2 或更高版本需要 LangSmith v0.6 或更高版本。不支持降级。 |
 
-<Warning>
-  **Redis \< 6.2 and PostgreSQL \< 14 are not supported.** A LangSmith installation pointed at an older Redis or PostgreSQL instance may fail to start or behave unpredictably. Upgrade your datastore before installing or upgrading LangSmith.
-</Warning>
+> [!警告]
+>
+> **不支持 Redis \< 6.2 和 PostgreSQL \< 14。** 指向旧版 Redis 或 PostgreSQL 实例的 LangSmith 安装可能无法启动或行为不可预测。在安装或升级 LangSmith 之前升级您的数据存储。
 
 ## 计算和编排|依赖|最低版本 |笔记|
 | - | - | - |
@@ -46,12 +46,6 @@
 
 ***
 
-<div>
-  <Callout icon="terminal-2">
-    [Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
-  </Callout>
+[Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
 
-  <Callout icon="edit">
-    [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/self-host-dependency-versions.mdx) 或 [file an issue](https://github.com/langchain-ai/docs/issues/new/choose)。
-  </Callout>
-</div>
+[Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/self-host-dependency-versions.mdx) 或 [file an issue](https://github.com/langchain-ai/docs/issues/new/choose)。

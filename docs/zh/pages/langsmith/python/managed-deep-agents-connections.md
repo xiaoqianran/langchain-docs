@@ -609,7 +609,9 @@ GET /v1/agent-auth/oauth-authorization-sessions/{auth_id}?wait_seconds=25
 
 **屏幕截图占位符：** 此处添加 Slack OAuth 授权提示屏幕截图。
 
-## 检查并删除连接Use `list` or `get` to inspect connection metadata. `list` shows every connection in the workspace, not only the ones this project uses:
+Slack OAuth授权提示
+
+## 检查并删除连接使用 `list` 或 `get` 检查连接元数据。 `list` 显示工作区中的每个连接，而不仅仅是该项目使用的连接：
 
 ```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 uv run mda connections list
@@ -617,17 +619,17 @@ uv run mda connections get organization-tavily
 uv run mda connections delete organization-tavily
 ```
 
-Pass `--json` to `list` or `get` for machine-readable output. Pass `--yes` to `delete` to skip the confirmation prompt.
+将 `--json` 传递给 `list` 或 `get` 以获取机器可读的输出。将 `--yes` 传递给 `delete` 以跳过确认提示。
 
 ## 本地开发
 
-For `mda dev`, an agent-owned opaque connection reads `MDA_DEV_<SLUG>`. CLI 将 slug 转换为大写并用下划线替换连字符。例如，`organization-tavily` 读取为 `MDA_DEV_ORGANIZATION_TAVILY`。
+对于`mda dev`，代理拥有的不透明连接读取`MDA_DEV_<SLUG>`。 CLI 将 slug 转换为大写并用下划线替换连字符。例如，`organization-tavily` 读取为 `MDA_DEV_ORGANIZATION_TAVILY`。
 
-用户拥有的连接需要经过身份验证的调用者和代理身份验证。 Deploy the agent to exercise the [authorization interrupt](#handle-the-authorization-interrupt) end to end.
+用户拥有的连接需要经过身份验证的调用者和代理身份验证。部署代理以端到端地执行[authorization interrupt](#handle-the-authorization-interrupt)。
 
 ## 查看当前限制
 
-Connections are part of the Managed Deep Agents public beta.当前版本存在以下差距：* **用户拥有的 API 密钥**：用户拥有的连接拥有 OAuth 授权。 Slack 和 Studio 不会收集每个调用者的 API 密钥，并且 CLI 不会为其创建一个空槽。请改用代理拥有的密钥，或在自定义前端中收集密钥，如下节所述。
+连接是托管 Deep Agents 公共测试版的一部分。当前版本存在以下差距：* **用户拥有的 API 密钥**：用户拥有的连接拥有 OAuth 授权。 Slack 和 Studio 不会收集每个调用者的 API 密钥，并且 CLI 不会为其创建一个空槽。请改用代理拥有的密钥，或在自定义前端中收集密钥，如下节所述。
 * **自定义通道**：Slack 和 Studio 解析呼叫者身份并完成呼叫者的授权。自定义前端处理 [authorization interrupt](#handle-the-authorization-interrupt) 本身。
 * **工作区 UI**：LangSmith 不在 UI 中列出连接。使用 `mda connections list` 和 `mda connections get` 作为连接元数据。
 * **授予可见性**：`mda connections list` 是工作区范围的，不会报告哪些部署在 slug 下持有凭证。运行失败并显示 `no agent connection is set for slug '<slug>'` 意味着此部署不拥有其凭证，即使 `list` 显示段头也是如此。从项目根目录运行`mda connections create <slug>`来创建一个。> **通过代理身份验证存储用户拥有的 API 密钥**

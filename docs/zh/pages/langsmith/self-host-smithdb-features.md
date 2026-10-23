@@ -8,9 +8,9 @@ LangSmith 在查询 ClickHouse 的自托管安装上不可用的功能，以及�
 
 某些 LangSmith 功能仅从 [SmithDB](/langsmith/self-host-smithdb) 读取跟踪数据。在仍查询 ClickHouse 的自托管安装中，这些功能将被隐藏、禁用或回退到较旧的体验。使用此页面查看通过将查询移至 SmithDB 可以获得哪些好处，以及如果未将查询移至 SmithDB，哪些内容仍然有效。
 
-<Note>
-  ClickHouse 支持于 LangSmith v0.19 结束。升级时间请参见[self-hosted changelog](/langsmith/self-hosted-changelog)。
-</Note>
+> [!注意]
+>
+> ClickHouse 支持于 LangSmith v0.19 结束。升级时间请参见[self-hosted changelog](/langsmith/self-hosted-changelog)。
 
 ## 检查查询是否使用SmithDB
 
@@ -36,7 +36,7 @@ SmithDB 是必要的，但并不总是足够的。功能还可能取决于您的
 |大痕迹行动 |用于大型跟踪的分页跟踪树，将整个跟踪下载为 JSON，并从跟踪详细信息页面删除整个跟踪。 |查看跟踪、下载各个运行以及现有的删除工作流程。 |
 | [LLM Gateway usage](/langsmith/llm-gateway-monitoring) | **使用情况**仪表板：支出摘要、图表、细分、过滤器和深入分析。 |网关路由和[policies](/langsmith/llm-gateway-spend-policies)。 |
 |代理微量 |业务代表概览卡上的跟踪计数迷你图和业务代表概览上的跟踪量图表。 |代理部署、管理和其他代理统计。 |
-| [Feedback in bulk exports](/langsmith/data-export#limit-exported-fields) |导出`feedbacks`字段，其中包含反馈键和评论。 |其他各个领域的批量出口。 |
+| [Feedback in bulk exports](/langsmith/data-export#limit-exported-fields) |导出`feedbacks`字段，其中包含反馈键和注释。 |其他各个领域的批量出口。 |
 
 跟踪、线程列表、数据集和实验可在任一数据存储上运行。
 
@@ -49,10 +49,6 @@ SmithDB 是必要的，但并不总是足够的。功能还可能取决于您的
 
 ***
 
-<div>
-  <Callout icon="terminal-2">
-    [Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
-  </Callout><Callout icon="edit">
-    [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/self-host-smithdb-features.mdx) 或 [file an issue](https://github.com/langchain-ai/docs/issues/new/choose)。
-  </Callout>
-</div>
+[Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
+
+[Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/self-host-smithdb-features.mdx) 或 [file an issue](https://github.com/langchain-ai/docs/issues/new/choose)。

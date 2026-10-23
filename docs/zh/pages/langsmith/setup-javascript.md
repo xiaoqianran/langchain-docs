@@ -23,9 +23,9 @@ my-app/
 └── langgraph.json # configuration file for LangGraph
 ```
 
-<Tip>
-  LangSmith部署支持部署[LangGraph](/oss/python/langgraph/overview)*图*。然而，图的*节点*的实现可以包含任意代码。这意味着任何框架都可以在节点内实现并部署在LangSmith部署上。这使您可以在不使用额外的 LangGraph OSS API 的情况下实现核心应用程序逻辑，同时仍使用LangSmith进行[deployment](/langsmith/deployment)、缩放和[observability](/langsmith/observability)。更多详情请参考[Use any framework with LangSmith Deployment](/langsmith/application-structure#use-any-framework-with-langsmith-deployment)。
-</Tip>
+> [!提示]
+>
+> LangSmith 部署支持部署[LangGraph](/oss/python/langgraph/overview) *图*。然而，图的*节点*的实现可以包含任意代码。这意味着任何框架都可以在节点内实现并部署在LangSmith部署上。这使您可以在不使用额外的 LangGraph OSS API 的情况下实现核心应用程序逻辑，同时仍使用LangSmith进行[deployment](/langsmith/deployment)、缩放和[observability](/langsmith/observability)。更多详情请参考[Use any framework with LangSmith Deployment](/langsmith/application-structure#use-any-framework-with-langsmith-deployment)。
 
 每个步骤之后，都会提供一个示例文件目录来演示如何组织代码。
 
@@ -133,7 +133,7 @@ function routeModelOutput(state: typeof MessagesAnnotation.State) {
 }
 
 // Define a new graph.
-// See https://langchain-ai.github.io/langgraphjs/how-tos/define-state/#getting-started for
+// See https://docs.langchain.com/oss/javascript/langgraph/graph-api#state for
 // more on defining custom graph states.
 const workflow = new StateGraph(MessagesAnnotation)
   // Define the two nodes we will cycle between
@@ -194,10 +194,10 @@ my-app/
 }
 ```
 
-请注意，`CompiledGraph`的变量名称出现在顶级`graphs`键中每个子键值的末尾（即`:<variable_name>`）。<Info>
-  **配置位置**
-  配置文件必须放置在与包含编译图和关联依赖项的 TypeScript 文件同一级别或更高级别的目录中。
-</Info>
+请注意，`CompiledGraph`的变量名称出现在顶级`graphs`键中每个子键值的末尾（即`:<variable_name>`）。> [!注意]
+>
+> **配置位置**
+> 配置文件必须放置在与包含编译图和关联依赖项的 TypeScript 文件同一级别或更高级别的目录中。
 
 ## 下一步
 
@@ -205,12 +205,6 @@ my-app/
 
 ***
 
-<div>
-  <Callout icon="terminal-2">
-    [Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时答案。
-  </Callout>
+[Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
 
-  <Callout icon="edit">
-    [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/setup-javascript.mdx) 或 [file an issue](https://github.com/langchain-ai/docs/issues/new/choose)。
-  </Callout>
-</div>
+[Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/setup-javascript.mdx) 或 [file an issue](https://github.com/langchain-ai/docs/issues/new/choose)。

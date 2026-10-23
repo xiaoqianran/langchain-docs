@@ -95,7 +95,7 @@ LangSmith UI 允许您在评估多模式模型时在提示中包含附件：
 
 ## 1. 创建带有附件的示例
 
-要使用 SDK 上传带有附件的示例，请使用 [create\_examples](https://docs.smith.langchain.com/reference/python/client/langsmith.client.Client#langsmith.client.Client.create_examples) / [update\_examples](https://docs.smith.langchain.com/reference/python/client/langsmith.client.Client#langsmith.client.Client.update_examples) Python 方法或 [uploadExamplesMultipart](https://docs.smith.langchain.com/reference/js/classes/client.Client#uploadexamplesmultipart) / [updateExamplesMultipart](https://docs.smith.langchain.com/reference/js/classes/client.Client#updateexamplesmultipart) TypeScript 方法。
+要使用 SDK 上传带有附件的示例，请使用 [create\_examples](https://reference.langchain.com/python/langsmith/client/Client/create_examples) / [update\_examples](https://reference.langchain.com/python/langsmith/client/Client/update_examples) Python 方法或 [uploadExamplesMultipart](https://reference.langchain.com/javascript/langsmith/client/Client/uploadExamplesMultipart) / [updateExamplesMultipart](https://reference.langchain.com/javascript/langsmith/client/Client/updateExamplesMultipart) TypeScript 方法。
 
 ####Python
 

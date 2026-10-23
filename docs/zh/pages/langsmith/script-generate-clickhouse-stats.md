@@ -6,7 +6,7 @@
 
 作为对 LangSmith 自托管实例进行故障排除的一部分，LangChain 团队可能会要求您生成 Clickhouse 统计信息，这将帮助我们了解内存和 CPU 消耗以及连接并发性。
 
-此命令将生成一个可与 LangChain 团队共享的 CSV。
+此命令将生成可与 LangChain 团队共享的 CSV。
 
 ### 先决条件
 
@@ -52,12 +52,6 @@ sh get_clickhouse_stats.sh "clickhouse://default:password@localhost:8123/default
 
 ***
 
-<div>
-  <Callout icon="terminal-2">
-    [Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
-  </Callout>
+[Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
 
-  <Callout icon="edit">
-    [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/script-generate-clickhouse-stats.mdx) 或 [file an issue](https://github.com/langchain-ai/docs/issues/new/choose)。
-  </Callout>
-</div>
+[Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/script-generate-clickhouse-stats.mdx) 或 [file an issue](https://github.com/langchain-ai/docs/issues/new/choose)。

@@ -843,7 +843,7 @@ graph TD
 
 ### Configure a forked subagent
 
-Set `mode: "fork"` on a [`SubAgent`](https://reference.langchain.com/javascript/deepagents/middleware/SubAgent) (the default is `mode: "isolated"`). All [`SubAgent`](https://reference.langchain.com/javascript/deepagents/middleware/SubAgent) fields are available:
+Set `mode: "fork"` on a [`SubAgent`](https://reference.langchain.com/javascript/deepagents/middleware/SubAgent) (the default is `mode: "isolated"`). You can configure these [`SubAgent`](https://reference.langchain.com/javascript/deepagents/middleware/SubAgent) fields:
 `name`, `description`, `tools`, `model`, `middleware`, `interruptOn`, `permissions`, and `responseFormat`.
 
 The fork inherits the parent's skills; setting `skills` is not supported.

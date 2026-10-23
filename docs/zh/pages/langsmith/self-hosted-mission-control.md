@@ -159,125 +159,123 @@ printf '%s\n' 'your-password' | ./install-script.sh secret -u admin --password-s
 
 当不允许安装程序脚本时使用此路径。这些步骤仅使用正常的 `kubectl`、`helm` 和 `curl` 命令。
 
-<Steps>
-  <Step title="Add the Helm repo and get the values file">
-    添加 LangChain Helm 存储库：
+**1.添加 Helm 存储库并获取值文件**
 
-    ```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-    helm repo add langchain https://langchain-ai.github.io/helm
-    helm repo update langchain
-    ```
+添加 LangChain Helm 存储库：
 
-    下载客户价值文件：
+```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+helm repo add langchain https://langchain-ai.github.io/helm
+helm repo update langchain
+```
 
-    ```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-    curl -fsSL https://raw.githubusercontent.com/langchain-ai/helm/main/charts/mission-control/values.yaml -o values.yaml
-    ```
+下载客户价值文件：
 
-    安装前查看`values.yaml`。保留`config.auth.enabled: true`用于生产。
+```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+curl -fsSL https://raw.githubusercontent.com/langchain-ai/helm/main/charts/mission-control/values.yaml -o values.yaml
+```
 
-    如果您的平台需要非根容器，Mission Control 可以作为 UID `1001` 运行。安装前将其添加到`values.yaml`：
+安装前查看`values.yaml`。保留`config.auth.enabled: true`用于生产。
 
-    ```yaml theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-    backend:
-      podSecurityContext:
-        runAsNonRoot: true
-        runAsUser: 1001
-        runAsGroup: 1001
-        fsGroup: 1001
-      securityContext:
-        allowPrivilegeEscalation: false
-        capabilities:
-          drop:
-            - ALL
-      extraEnv:
-        - name: HOME
-          value: /tmp
-        - name: HELM_CACHE_HOME
-          value: /tmp/.cache/helm
-        - name: HELM_CONFIG_HOME
-          value: /tmp/.config/helm
-        - name: HELM_DATA_HOME
-          value: /tmp/.local/share/helm
+如果您的平台需要非根容器，Mission Control 可以作为 UID `1001` 运行。安装前将其添加到`values.yaml`：
 
-    frontend:
-      podSecurityContext:
-        runAsNonRoot: true
-        runAsUser: 1001
-        runAsGroup: 1001
-      securityContext:
-        allowPrivilegeEscalation: false
-        capabilities:
-          drop:
-            - ALL
-    ```
-  </Step>
+```yaml theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+backend:
+  podSecurityContext:
+    runAsNonRoot: true
+    runAsUser: 1001
+    runAsGroup: 1001
+    fsGroup: 1001
+  securityContext:
+    allowPrivilegeEscalation: false
+    capabilities:
+      drop:
+        - ALL
+  extraEnv:
+    - name: HOME
+      value: /tmp
+    - name: HELM_CACHE_HOME
+      value: /tmp/.cache/helm
+    - name: HELM_CONFIG_HOME
+      value: /tmp/.config/helm
+    - name: HELM_DATA_HOME
+      value: /tmp/.local/share/helm
 
-  <Step title="Create the namespace">
-    ```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-    kubectl create namespace langsmith --dry-run=client -o yaml | kubectl apply -f -
-    ```
-  </Step>
+frontend:
+  podSecurityContext:
+    runAsNonRoot: true
+    runAsUser: 1001
+    runAsGroup: 1001
+  securityContext:
+    allowPrivilegeEscalation: false
+    capabilities:
+      drop:
+        - ALL
+```
 
-  <Step title="Create the auth credentials Secret">
-    凭证存储在 Kubernetes Secret 中。它们不是写给`values.yaml`的。
+**2.创建命名空间**
 
-    ```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-    read -r -p "Username: " MC_USER
-    read -r -s -p "Password: " MC_PASS; echo
+```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+kubectl create namespace langsmith --dry-run=client -o yaml | kubectl apply -f -
+```
 
-    kubectl create secret generic mission-control-auth \
-      --namespace=langsmith \
-      --from-literal=username="$MC_USER" \
-      --from-literal=password="$MC_PASS" \
-      --dry-run=client -o yaml | kubectl apply -f -
-    ```
+**3.创建身份验证凭据 Secret**
 
-    对于多副本后端部署，在同一个 Secret 中包含共享 JWT 签名密钥，并在 `values.yaml` 中设置 `config.auth.jwtSecretKey: jwtSecret`：
+凭证存储在 Kubernetes Secret 中。它们不是写给`values.yaml`的。
 
-    ```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-    JWT_SECRET="$(openssl rand -base64 32)"
+```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+read -r -p "Username: " MC_USER
+read -r -s -p "Password: " MC_PASS; echo
 
-    kubectl create secret generic mission-control-auth \
-      --namespace=langsmith \
-      --from-literal=username="$MC_USER" \
-      --from-literal=password="$MC_PASS" \
-      --from-literal=jwtSecret="$JWT_SECRET" \
-      --dry-run=client -o yaml | kubectl apply -f -
-    ```
-  </Step>
+kubectl create secret generic mission-control-auth \
+  --namespace=langsmith \
+  --from-literal=username="$MC_USER" \
+  --from-literal=password="$MC_PASS" \
+  --dry-run=client -o yaml | kubectl apply -f -
+```
 
-  <Step title="Install with Helm">
-    ```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-    helm upgrade --install mission-control langchain/mission-control \
-      --namespace langsmith \
-      --create-namespace \
-      --values values.yaml \
-      --rollback-on-failure
-    ```
+对于多副本后端部署，在同一个 Secret 中包含共享 JWT 签名密钥，并在 `values.yaml` 中设置 `config.auth.jwtSecretKey: jwtSecret`：
 
-    等待两个工作负载准备就绪（后端作为 StatefulSet 运行，前端作为 Deployment 运行）：
+```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+JWT_SECRET="$(openssl rand -base64 32)"
 
-    ```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-    kubectl rollout status statefulset/mission-control-backend -n langsmith
-    kubectl rollout status deployment/mission-control-frontend -n langsmith
-    ```
+kubectl create secret generic mission-control-auth \
+  --namespace=langsmith \
+  --from-literal=username="$MC_USER" \
+  --from-literal=password="$MC_PASS" \
+  --from-literal=jwtSecret="$JWT_SECRET" \
+  --dry-run=client -o yaml | kubectl apply -f -
+```
 
-    您还可以直接检查 pod：
+**4.使用 Helm 安装**
 
-    ```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-    kubectl get pods -n langsmith
-    ```
-  </Step>
+```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+helm upgrade --install mission-control langchain/mission-control \
+  --namespace langsmith \
+  --create-namespace \
+  --values values.yaml \
+  --rollback-on-failure
+```
 
-  <Step title="Access the UI">
-    ```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-    kubectl port-forward svc/mission-control-frontend 3000:3000 -n langsmith
-    ```
+等待两个工作负载准备就绪（后端作为 StatefulSet 运行，前端作为 Deployment 运行）：
 
-    打开 [http://localhost:3000](http://localhost:3000/) 并使用步骤 3 中的凭据登录。
-  </Step>
-</Steps>
+```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+kubectl rollout status statefulset/mission-control-backend -n langsmith
+kubectl rollout status deployment/mission-control-frontend -n langsmith
+```
+
+您还可以直接检查 pod：
+
+```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+kubectl get pods -n langsmith
+```
+
+**5.访问用户界面**
+
+```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+kubectl port-forward svc/mission-control-frontend 3000:3000 -n langsmith
+```
+
+打开 [http://localhost:3000](http://localhost:3000/) 并使用步骤 3 中的凭据登录。
 
 ## 升级下载最新的公共值文件，合并您需要的任何本地更改，然后运行：
 
@@ -339,7 +337,7 @@ kubectl delete secret -n langsmith \
 |豆荚停留 `Pending` |使用`kubectl describe pod -n langsmith <pod>`检查命名空间`ResourceQuota`、节点容量和PVC/存储类事件。 |
 |图像拉取错误 |确认集群可以拉取`langchain/mission-control-backend:latest`和`langchain/mission-control-frontend:latest`。 |
 |登录失败 |确认 `mission-control-auth` 存在于同一命名空间中，并且具有 `username` 和 `password` 键。 |
-|浏览器无法连接|确认 port-forward 命令仍在运行，并且没有其他本地进程正在使用端口 `3000`。 |
+|浏览器无法连接 |确认 port-forward 命令仍在运行，并且没有其他本地进程正在使用端口 `3000`。 |
 
 ### 权限参考
 
@@ -366,18 +364,12 @@ Helm 图表创建一个名为 `mission-control` 的 `ServiceAccount`、`ClusterR
 | `config.features.adopt` |秘密、配置映射、服务帐户、部署、状态集 |补丁|
 | `config.auth.enabled` |秘密（`mission-control-auth`，设置令牌），后端状态集 |创建、更新、删除、修补 |
 | `config.features.valuesOverride` |秘密(`mission-control-values-overrides`) |创建、更新、删除 |
-| `config.features.deploy` |工作负载、网络、RBAC、CRD、Helm 发布秘密 |创建、更新、修补、删除|
+| `config.features.deploy` |工作负载、网络、RBAC、CRD、Helm 发布秘密 |创建、更新、修补、删除 |
 
 将`values.yaml`中的功能标志设置为`false`以删除相应的写入动词。禁用所有功能标志后，任务控制实际上是只读的，除了 `config.auth.enabled: true` 时的身份验证设置权限之外。
 
 ***
 
-<div>
-  <Callout icon="terminal-2">
-    [Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
-  </Callout>
+[Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
 
-  <Callout icon="edit">
-    [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/self-hosted-mission-control.mdx) 或 [file an issue](https://github.com/langchain-ai/docs/issues/new/choose)。
-  </Callout>
-</div>
+[Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/self-hosted-mission-control.mdx) 或 [file an issue](https://github.com/langchain-ai/docs/issues/new/choose)。

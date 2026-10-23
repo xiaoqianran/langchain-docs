@@ -2,6 +2,8 @@
 
 # LangChain v1 migration guide
 
+Migrate a codebase to LangChain v1.
+
 Migrate this codebase to LangChain v1 (requires `langchain>=1.0.0`, `langchain-core>=1.0.0`, and Python 3.10+).
 
 Key changes:
@@ -904,7 +906,7 @@ Existing functionality outside the focus of standard interfaces and agents has b
 
 ### Removal of deprecated APIs
 
-Methods, functions, and other objects that were already deprecated and slated for removal in 1.0 have been deleted. Check the [deprecation notices](https://python.langchain.com/docs/versions/migrating_chains) from previous versions for replacement APIs.
+Methods, functions, and other objects that were already deprecated and slated for removal in 1.0 have been deleted.
 
 ### Text property
 

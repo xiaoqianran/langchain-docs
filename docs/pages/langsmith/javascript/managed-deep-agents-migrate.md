@@ -43,6 +43,8 @@ Most agents move without changes beyond the entry file. Four cases need a decisi
 
 If none of these apply, the agent logic transfers as written.
 
+Convert a Deep Agents project into a Managed Deep Agents project.
+
 Convert this codebase from a self-hosted Deep Agents agent into a Managed Deep Agents (MDA) project.
 
 ## Step 1: Read the guide

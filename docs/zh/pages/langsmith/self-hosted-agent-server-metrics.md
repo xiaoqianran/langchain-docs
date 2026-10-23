@@ -15,7 +15,7 @@
 代理服务器将指标分为两组：
 
 * **部署 UI 指标**：默认情况下，出现在 LangSmith 部署 UI 中，并在代理服务器 Prometheus 抓取端点（`GET /metrics`、`format=prometheus`）上公开。
-* **内部指标**：LangChain操作员使用的操作和调试指标。配置后发送至 Datadog。在 Prometheus 上，内部指标仅在您选择加入时才会显示。|后端 |公制集 |启用 |
+* **内部指标**：LangChain 操作员使用的操作和调试指标。配置后发送至 Datadog。在 Prometheus 上，内部指标仅在您选择加入时才会出现。|后端 |公制集|启用 |
 | - | - | - |
 | **普罗米修斯**（刮`GET /metrics`）|默认情况下的部署 UI 指标。设置 `EXPOSE_INTERNAL_METRICS_PROMETHEUS=true` 也可以在同一端点上公开内部指标。 |安装 OTel Prometheus 导出器后可用 |
 | **Datadog**（OTLP 推送）|仅内部指标 |设置`LSD_DD_API_KEY`（或`CUSTOM_LSD_DD_API_KEY`）。指标推送到`https://{LSD_DD_ENDPOINT}/v1/metrics`（默认端点：`otlp.us5.datadoghq.com`）。 |
@@ -85,7 +85,7 @@ Datadog 仅接收内部指标。继续在 Prometheus 或 Grafana 中抓取 `/met
 
 |名称 |类型 |等级 |描述 |
 | - | - | - | - |
-| `lg_api_reencrypt_writeback_succeeded_counter` |专柜|信息|延迟重新加密替换成功的写回。 |
+| `lg_api_reencrypt_writeback_succeeded_counter` |专柜|信息|惰性重新加密替换写回成功。 |
 | `lg_api_reencrypt_writeback_cas_skipped_counter` |专柜|信息|替换写回被跳过，因为并发更新更改了存储的值。 |
 | `lg_api_reencrypt_writeback_failed_counter` |专柜|信息|替换失败的写回。读取仍返回解密数据。 |
 
@@ -134,12 +134,6 @@ Datadog 仅接收内部指标。继续在 Prometheus 或 Grafana 中抓取 `/met
 
 ***
 
-<div>
-  <Callout icon="terminal-2">
-    [Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
-  </Callout>
+[Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
 
-  <Callout icon="edit">
-    [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/self-hosted-agent-server-metrics.mdx) 或 [file an issue](https://github.com/langchain-ai/docs/issues/new/choose)。
-  </Callout>
-</div>
+[Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/self-hosted-agent-server-metrics.mdx) 或 [file an issue](https://github.com/langchain-ai/docs/issues/new/choose)。

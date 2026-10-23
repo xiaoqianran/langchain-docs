@@ -1,156 +1,142 @@
-<!-- langchain-docs: translation failed; English fallback -->
+<!-- langchain-docs: machine-translated zh-CN from English source -->
 
 <!-- langchain-docs: Migrate ClickHouse history to SmithDB | https://docs.langchain.com/langsmith/self-host-smithdb-migrate -->
 
-# Migrate ClickHouse history to SmithDB
+# 将 ClickHouse 历史记录迁移到 SmithDB
 
-Run the historical ClickHouse-to-SmithDB migration for a self-hosted LangSmith installation.
+为自托管 LangSmith 安装运行历史 ClickHouse 到 SmithDB 迁移。
 
-Run this migration when ClickHouse history must be queryable through SmithDB. If it does not need to be, skip this page and continue with query cutover.
+当必须可通过 SmithDB 查询 ClickHouse 历史记录时运行此迁移。如果不需要，请跳过此页面并继续查询切换。
 
-<Note>
-  Complete stages 1 through 4 of [Install LangSmith with SmithDB](/langsmith/self-host-smithdb-install) before starting this guide. Return there for **Switch queries to SmithDB** after migration cleanup.
-</Note>
+> [!注意]
+>
+> 在开始本指南之前，完成 [Install LangSmith with SmithDB](/langsmith/self-host-smithdb-install) 的第 1 至 4 阶段。返回那里**迁移清理后将查询切换到 SmithDB**。
 
-## How migration works
+## 迁移如何进行
 
-The migration Job reads runs from ClickHouse, writes them to SmithDB object storage, validates the result, and promotes each batch to the SmithDB metastore. TaskDB, a separate PostgreSQL database used only during migration, lets migration pods share work, recover from interruptions, and resume without starting over. It is distinct from both LangSmith PostgreSQL and the SmithDB metastore.
+迁移作业从 ClickHouse 读取运行，将它们写入 SmithDB 对象存储，验证结果，并将每个批次提升到 SmithDB 元存储。 TaskDB 是一个仅在迁移期间使用的独立 PostgreSQL 数据库，它允许迁移 Pod 共享工作、从中断中恢复以及无需重新开始即可恢复。它不同于 LangSmith PostgreSQL 和 SmithDB 元存储。
 
-## Scope and prerequisites
+## 范围和先决条件
 
-Before starting:
+开始之前：
 
-* Keep the existing ClickHouse configuration enabled and unchanged.
-* Confirm SmithDB services and dual ingestion are healthy, and that new writes continue to reach ClickHouse.
+* 保持现有ClickHouse配置启用且不变。
+* 确认 SmithDB 服务和双摄取运行正常，并且新写入继续到达 ClickHouse。
 
-## Plan migration capacity
+## 规划迁移容量
 
-### Size migration workers
+### 大小迁移工人
 
-Scale migration with these Helm controls:
+使用这些 Helm 控件扩展迁移：* **`smithdb.migration.job.parallelism`**：可以同时运行的迁移Job Pod的数量。
+* **`smithdb.migration.job.resources`**：分配给每个迁移 Pod 的 CPU、内存和临时存储。在 LangSmith 0.16 上，该密钥是 `smithdb.migration.deployment.resources`。
 
-* **`smithdb.migration.job.parallelism`**: The number of migration Job pods that may run concurrently.
-* **`smithdb.migration.job.resources`**: The CPU, memory, and ephemeral storage allocated to each migration pod. On LangSmith 0.16 this key is `smithdb.migration.deployment.resources`.
-
-Use this formula as a rule of thumb:
+使用此公式作为经验法则：
 
 ```text theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 estimated allocated vCPUs = historical run count / 5,000,000 / target duration in days
 ```
 
-Start from the chart default of 8 vCPU and 32 GiB per migration pod, and treat 32 GiB as a practical minimum rather than a function of CPU. Migrating 100 million runs in one day therefore suggests about 20 allocated vCPUs across the Job pods, for example three pods at the default size. This estimates total CPU, not pod count or per-pod resources. Actual requirements vary by data and environment.
+从图表默认的每个迁移 Pod 8 个 vCPU 和 32 GiB 开始，并将 32 GiB 视为实际最小值，而不是 CPU 的函数。因此，一天内迁移 1 亿次运行建议在作业 Pod 之间分配大约 20 个 vCPU，例如默认大小的 3 个 Pod。这会估计总 CPU，而不是 Pod 计数或每个 Pod 资源。实际要求因数据和环境而异。
 
-You can run a single worker, and TaskDB persists its progress, but substantial histories may take impractically long that way. Choose parallelism and per-pod resources together based on estimated vCPUs and available capacity, and set both in the values block under [Enable migration](#enable-migration).
+您可以运行单个工作线程，TaskDB 会保留其进度，但这样的大量历史记录可能会花费不切实际的时间。根据估计的 vCPU 和可用容量一起选择并行度和每个 Pod 资源，并在 [Enable migration](#enable-migration) 下的值块中设置两者。
 
-### Scale TaskDB
+### 扩展TaskDB
 
-Monitor TaskDB CPU, memory, and active connections as parallelism increases, and raise `smithdb.migration.taskdb.postgres.statefulSet.resources` as needed. Do not use the main LangSmith PostgreSQL database or the SmithDB metastore as TaskDB.
+随着并行度的增加，监视 TaskDB CPU、内存和活动连接，并根据需要提高 `smithdb.migration.taskdb.postgres.statefulSet.resources`。不要使用主 LangSmith PostgreSQL 数据库或 SmithDB 元存储作为 TaskDB。
 
-## Enable migration
+## 启用迁移对于图表管理的 TaskDB，请在 LangSmith 命名空间中创建一个 Secret，并在 `postgres_password` 下生成强密码。切勿将其存储在 Helm 值或源代码管理中。参见[Use an existing secret for your installation](/langsmith/self-host-using-an-existing-secret)。对于外部 PostgreSQL，请改用图表的外部 TaskDB 设置。
 
-For chart-managed TaskDB, create a Secret in the LangSmith namespace with a strong generated password under `postgres_password`. Never store it in Helm values or source control. See [Use an existing secret for your installation](/langsmith/self-host-using-an-existing-secret). For external PostgreSQL, use the chart's external TaskDB settings instead.
+引用 TaskDB Secret 并启用迁移。下面的块将每个迁移设置收集在一个位置：`langsmith`标志和TaskDB Secret是必需的，其余的是图表默认值，仅在扩展时更改。
 
-Reference the TaskDB Secret and enable migration. The block below collects every migration setting in one place: the `langsmith` flags and the TaskDB Secret are required, and the rest are chart defaults to change only when scaling.
+> **迁移 Helm 值示例**
+>
+> ```yaml LangSmith 0.17 theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> smithdb:
+>   enabled: true
+>   langsmith:
+>     ingestion:
+>       enabled: true    # required: keep dual ingestion on
+>     migration:
+>       enabled: true    # required: runs the migration Job and TaskDB
+>     query:
+>       enabled: false   # required: keep queries on ClickHouse until migration completes
+>   migration:
+>     job:
+>       parallelism: 1   # default: raise to run more migration pods
+>       resources:       # default per pod: 32Gi is a practical minimum
+>         requests:
+>           cpu: "8"
+>           memory: "32Gi"
+>           ephemeral-storage: "100Gi"
+>         limits:
+>           cpu: "8"
+>           memory: "32Gi"
+>           ephemeral-storage: "100Gi"
+>     taskdb:
+>       postgres:
+>         auth:
+>           existingSecretName: "smithdb-migration-taskdb"   # required for chart-managed TaskDB
+>           passwordSecretKey: "postgres_password"
+>         maxConnectionsPerMigrationPod: 10   # default: server limit is (parallelism + 1) × this
+>         statefulSet:
+>           resources:   # default: raise for high parallelism
+>             requests:
+>               cpu: "2"
+>               memory: "4Gi"
+>             limits:
+>               cpu: "4"
+>               memory: "8Gi"
+> ```
+>
+> ```yaml LangSmith 0.16 theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> smithdb:
+>   enabled: true
+>   langsmith:
+>     ingestion:
+>       enabled: true    # required: keep dual ingestion on
+>     migration:
+>       enabled: true    # required: runs the migration Job and TaskDB
+>     query:
+>       enabled: false   # required: keep queries on ClickHouse until migration completes
+>   migration:
+>     job:
+>       parallelism: 1   # default: raise to run more migration pods
+>     deployment:
+>       resources:       # default per pod: 32Gi is a practical minimum
+>         requests:
+>           cpu: "8"
+>           memory: "32Gi"
+>           ephemeral-storage: "100Gi"
+>         limits:
+>           cpu: "8"
+>           memory: "32Gi"
+>           ephemeral-storage: "100Gi"
+>     taskdb:
+>       postgres:
+>         auth:
+>           existingSecretName: "smithdb-migration-taskdb"   # required for chart-managed TaskDB
+>           passwordSecretKey: "postgres_password"
+>         maxConnectionsPerMigrationPod: 10   # default: server limit is (parallelism + 1) × this
+>         statefulSet:
+>           resources:   # default: raise for high parallelism
+>             requests:
+>               cpu: "2"
+>               memory: "4Gi"
+>             limits:
+>               cpu: "4"
+>               memory: "8Gi"
+> ```
 
-<Accordion title="Sample migration Helm values">
-  <CodeGroup>
-    ```yaml LangSmith 0.17 theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-    smithdb:
-      enabled: true
-      langsmith:
-        ingestion:
-          enabled: true    # required: keep dual ingestion on
-        migration:
-          enabled: true    # required: runs the migration Job and TaskDB
-        query:
-          enabled: false   # required: keep queries on ClickHouse until migration completes
-      migration:
-        job:
-          parallelism: 1   # default: raise to run more migration pods
-          resources:       # default per pod: 32Gi is a practical minimum
-            requests:
-              cpu: "8"
-              memory: "32Gi"
-              ephemeral-storage: "100Gi"
-            limits:
-              cpu: "8"
-              memory: "32Gi"
-              ephemeral-storage: "100Gi"
-        taskdb:
-          postgres:
-            auth:
-              existingSecretName: "smithdb-migration-taskdb"   # required for chart-managed TaskDB
-              passwordSecretKey: "postgres_password"
-            maxConnectionsPerMigrationPod: 10   # default: server limit is (parallelism + 1) × this
-            statefulSet:
-              resources:   # default: raise for high parallelism
-                requests:
-                  cpu: "2"
-                  memory: "4Gi"
-                limits:
-                  cpu: "4"
-                  memory: "8Gi"
-    ```
+通过正常工作流程应用图表。它创建 TaskDB 和一个运行完成并退出的一次性迁移作业。
 
-    ```yaml LangSmith 0.16 theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-    smithdb:
-      enabled: true
-      langsmith:
-        ingestion:
-          enabled: true    # required: keep dual ingestion on
-        migration:
-          enabled: true    # required: runs the migration Job and TaskDB
-        query:
-          enabled: false   # required: keep queries on ClickHouse until migration completes
-      migration:
-        job:
-          parallelism: 1   # default: raise to run more migration pods
-        deployment:
-          resources:       # default per pod: 32Gi is a practical minimum
-            requests:
-              cpu: "8"
-              memory: "32Gi"
-              ephemeral-storage: "100Gi"
-            limits:
-              cpu: "8"
-              memory: "32Gi"
-              ephemeral-storage: "100Gi"
-        taskdb:
-          postgres:
-            auth:
-              existingSecretName: "smithdb-migration-taskdb"   # required for chart-managed TaskDB
-              passwordSecretKey: "postgres_password"
-            maxConnectionsPerMigrationPod: 10   # default: server limit is (parallelism + 1) × this
-            statefulSet:
-              resources:   # default: raise for high parallelism
-                requests:
-                  cpu: "2"
-                  memory: "4Gi"
-                limits:
-                  cpu: "4"
-                  memory: "8Gi"
-    ```
-  </CodeGroup>
-</Accordion>
+## 等待完成
 
-Apply the chart through your normal workflow. It creates TaskDB and a one-shot migration Job that runs to completion and exits.
+保持 SmithDB 支持的查询处于禁用状态，直到历史迁移作业报告 Kubernetes 状况`Complete`。
 
-## Wait for completion
+完成的迁移作业默认保留 7 天，以便您可以检查其日志。日志仅用于诊断； `Complete`条件是迁移完成的信号。仅在诊断需要时才保留 TaskDB。如果Job失败，保留它和TaskDB，然后参见[Migration Job failures](/langsmith/self-host-smithdb-troubleshooting#migration-job-failures)。
 
-Keep SmithDB-backed queries disabled until the historical migration Job reports Kubernetes condition `Complete`.
+返回 [Install LangSmith with SmithDB](/langsmith/self-host-smithdb-install#step-6-switch-queries-to-smithdb) 并完成 **将查询切换到 SmithDB** 步骤。
 
-Finished migration Jobs remain for seven days by default so you can inspect their logs. The logs are diagnostic only; the `Complete` condition is the signal that migration finished. Retain TaskDB only if needed for diagnosis. If the Job fails, preserve it and TaskDB, then see [Migration Job failures](/langsmith/self-host-smithdb-troubleshooting#migration-job-failures).
+***[Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
 
-Return to [Install LangSmith with SmithDB](/langsmith/self-host-smithdb-install#step-6-switch-queries-to-smithdb) and complete the **Switch queries to SmithDB** step.
-
-***
-
-<div>
-  <Callout icon="terminal-2">
-    [Connect these docs](/use-these-docs) to your agent of choice via MCP for real-time answers.
-  </Callout>
-
-  <Callout icon="edit">
-    [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/self-host-smithdb-migrate.mdx) or [file an issue](https://github.com/langchain-ai/docs/issues/new/choose).
-  </Callout>
-</div>
+[Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/self-host-smithdb-migrate.mdx) 或 [file an issue](https://github.com/langchain-ai/docs/issues/new/choose)。

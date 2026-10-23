@@ -16,6 +16,8 @@ The host Deployment uses `maxSurge: 0` and `maxUnavailable: 1`. Kubernetes termi
 
 **rollout**
 
+A healthy four-host pool has three ready hosts during each replacement. The timeline is illustrative; drain and startup durations depend on the workload and storage.
+
 A normal rollout temporarily removes one host's capacity. With a single-host pool, requests to create a sandbox fail until the replacement host is ready. Existing unready hosts or infrastructure failures can reduce capacity further; `maxUnavailable` is not a guarantee against unrelated outages.
 
 For host-owned JuiceFS mounts, startup includes mounting the filesystem and checking storage access before opening the host listener. A replacement that cannot access storage blocks progress instead of accepting sandbox traffic.

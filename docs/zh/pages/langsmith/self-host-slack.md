@@ -4,7 +4,7 @@
 
 # 将自托管和 BYOC LangSmith 连接到 Slack
 
-Configure your own Slack app for Engine and alert notifications on self-hosted LangSmith or a BYOC data plane.
+在自托管 LangSmith 或 BYOC 数据平面上配置您自己的 Slack 应用程序以获取引擎和警报通知。
 
 LangSmith 通过您创建的 Slack 应用程序将 [Engine notifications](/langsmith/engine-notifications) 和 [alert notifications](/langsmith/alerts) 发送到 Slack。每个自托管安装或 BYOC 数据平面完成一次此设置。然后，用户使用该应用程序[connect a Slack workspace](#connect-a-slack-workspace)，无需自行提供应用程序凭据。
 
@@ -13,11 +13,11 @@ LangSmith 通过您创建的 Slack 应用程序将 [Engine notifications](/langs
 
 ## 在 BYOC 上创建您的 Slack 应用程序
 
-On a BYOC data plane, you create the Slack app and save its credentials in your organization settings.您无需设置环境变量或 Helm 值。 The app and its workspace connections apply only to the selected data plane. Other data planes and LangSmith Cloud are unaffected.
+在 BYOC 数据平面上，您创建 Slack 应用程序并将其凭据保存在组织设置中。您无需设置环境变量或 Helm 值。该应用程序及其工作区连接仅适用于选定的数据平面。其他数据平面和LangSmith云不受影响。
 
-Configuring the app requires the `organization:manage` permission in the organization that owns the data plane.
+配置应用程序需要拥有数据平面的组织中的`organization:manage`权限。
 
-配置应用程序：1. 在 LangSmith 中，转到 **设置** > **常规设置** > **Slack**，然后选择您的数据平面。
+To configure the app:1. 在 LangSmith 中，转到 **设置** > **常规设置** > **Slack**，然后选择您的数据平面。
 2. 单击**配置 Slack 应用程序**。 **设置 Slack 应用程序** 对话框打开。
 3. 检查**回调 URL**。默认为`https://<data-plane-host>/v1/platform/slack/callback`。如果您的数据平面使用自定义入口，请在复制清单之前更新 URL。 URL 必须使用 HTTPS 并且没有查询字符串或片段。
 4. 单击“**复制 Slack 应用程序清单**”，然后单击“**在 Slack 中创建应用程序**”。在 Slack 中，选择 **创建新应用程序** > **从清单**，将清单粘贴到 **JSON** 选项卡中，然后创建并安装应用程序。清单已包含您的回调 URL。
@@ -31,9 +31,9 @@ LangSmith 加密存储凭据并且不会再次显示它们。要稍后更改它�
 
 如果您的实例上未配置 Slack，请联系您的运营商。此通知显示在组织设置中以及每个引擎项目的 **通知** 设置下的 **Slack** 选项卡中。操作员遵循以下设置说明。
 
-<Note>
-  此连接需要 LangSmith 自托管 v0.17 或更高版本。
-</Note>
+> [!注意]
+>
+> 此连接需要 LangSmith 自托管 v0.17 或更高版本。
 
 开始之前，请确保您拥有：* **部署访问权限：** 配置和重新启动 LangSmith 平台后端的权限。对于 Kubernetes，访问 LangSmith 运行的命名空间。
 * **Slack 访问权限：** 在 Slack 工作区中创建和安装接收通知的应用程序的权限。如果您的工作区限制应用程序安装，请获得管理员批准。
@@ -82,7 +82,7 @@ LangSmith 加密存储凭据并且不会再次显示它们。要稍后更改它�
 }
 ```
 
-清单包含配置，而不是凭据。 Slack 在创建后生成应用程序凭据。它配置自托管 LangSmith 请求的五个机器人范围：* **`chat:write`**：发送通知消息。
+清单包含配置，而不是凭据。 Slack 在创建后生成应用程序凭据。它配置自托管LangSmith请求的五个机器人范围：* **`chat:write`**：发送通知消息。
 * **`channels:read`**：在频道选择器中列出公共频道。
 * **`channels:join`**：如果需要，在发送通知时加入选定的公共频道。
 * **`groups:read`**：列出机器人已被邀请的私人频道。
@@ -172,7 +172,7 @@ Slack 将浏览器重定向到您的回调。 Slack 不需要对您的部署进�
 
 ## 连接 Slack 工作区
 
-Slack 工作区连接属于您的 LangSmith 组织，因此您可以跨项目重复使用它：1. 打开您的 LangSmith 实例并转至 **设置** > 您组织的 **常规** 设置。
+Slack 工作区连接属于您的 LangSmith 组织，因此您可以跨项目重复使用它：1. 打开您的 LangSmith 实例并转到 **设置** > 您组织的 **常规** 设置。
 2. 在 **Slack** 下，单击 **连接 Slack**。配置引擎或警报通知时，您还可以从通道选择器进行连接。
 3. 选择 Slack 工作区，检查应用程序请求的权限，然后单击 **允许**。如果需要，请完成管理员批准。
 4. 确认浏览器返回到您的 LangSmith 实例，并且工作区显示为 **已连接**。在通知设置中选择该工作区和频道。对于私人频道，请先邀请您配置的 Slack 应用程序加入频道，然后刷新选择器。如果需要，LangSmith 在首次传递消息时加入选定的公共频道。
@@ -194,11 +194,11 @@ Slack 通知将部署外部的内容发送到选定的工作区。引擎消息�
 * **Slack 配置不可用：** UI 无法加载后端的配置。重新加载页面并让您的操作员检查后端；此消息并不意味着应用程序凭据不存在。
 * **后端 Pod 无法启动：** 检查 `slack-app-credentials` 是否与 LangSmith 存在于同一命名空间中，并且同时包含 `client-id` 和 `client-secret`。
 * **Slack 拒绝应用程序凭据：** 从同一 Slack 应用程序复制客户端 ID 和客户端密钥。更新部署 Secret，重新启动平台后端，然后再次启动 **Connect Slack**。
-* **授权无法启动：** 确认应用程序具有机器人用户、所有列出的范围以及在选定工作区中安装的权限。
+* **授权无法启动：** 确认应用程序具有机器人用户、所有列出的范围以及在所选工作区中安装的权限。
 * **Slack 报告重定向不匹配：** 确保 `LANGSMITH_SLACK_REDIRECT_URI` 与保存的 Slack 重定向 URL 匹配，包括方案、主机、端口和路径。* **返回后授权失败：**再次启动**连接Slack**。授权状态将在 10 分钟后过期。检查浏览器对回调的访问、后端对 Slack 的访问以及配置的应用程序凭据。保持令牌轮换禁用。
 * **私人频道不存在：** 将您配置的 Slack 应用程序邀请到该频道，然后刷新选择器。
 * **消息未到达：** 确认 Slack Web API 访问、匹配 API 和工作人员上的加密密钥以及目标的事件和严重性过滤器。如果有人从 Slack 中删除了该应用程序，请重新连接工作区。
-* **链接打开了错误的主机：** 更正部署的面向浏览器的 URL 配置。
+* **链接打开错误的主机：** 更正部署的面向浏览器的 URL 配置。
 
 ## 另请参阅
 
@@ -209,12 +209,6 @@ Slack 通知将部署外部的内容发送到选定的工作区。引擎消息�
 
 ***
 
-<div>
-  <Callout icon="terminal-2">
-    [Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
-  </Callout>
+[Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
 
-  <Callout icon="edit">
-    [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/self-host-slack.mdx) 或 [file an issue](https://github.com/langchain-ai/docs/issues/new/choose)。
-  </Callout>
-</div>
+[Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/self-host-slack.mdx) 或 [file an issue](https://github.com/langchain-ai/docs/issues/new/choose)。

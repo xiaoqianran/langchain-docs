@@ -17,7 +17,7 @@
 | LangSmith底座|前端、后端、摄取、队列、ClickHouse | `make init-values && make deploy` |
 |舰队附加组件（独立）| Standalone-fleet-\* API 服务器、工具服务器、触发服务器、队列 | `make apply && make init-values && make deploy` |
 | LangSmith 部署插件 |主机后端、侦听器、操作员 | `make init-values && make deploy` |
-| Agent Builder 附加组件（已弃用） |工具服务器、触发服务器| `make init-values && make deploy` |
+| Agent Builder 附加组件（已弃用）|工具服务器、触发服务器| `make init-values && make deploy` |
 |见解 + Polly 附加组件 |洞察分析，Polly 评估代理 | `make init-values && make deploy` |
 | SmithDB 附加组件 | Metastore、对象存储桶、节点池、SmithDB 服务 | `make apply && make init-values && make deploy` ||沙盒附加组件 |沙盒主机节点池、JuiceFS 元数据 Redis | `make apply && make init-values && make deploy` |
 
@@ -83,7 +83,7 @@ make deploy-all                                      # apply the change: apply, 
 
 `make smithdb-configure` 和 `make smithdb-phase` 仅编辑 `terraform.tfvars`，`make deploy-all` 应用更改。大小更改可以替换 SmithDB 节点池。离开`backfill`阶段会删除回填Job及其任务数据库； `make smithdb-phase PHASE=cutover` 拒绝，直到每个回填行都被提升，但早期阶段没有这样的检查。
 
-有关 SmithDB 推出阶段，请参阅部署指南中的[SmithDB](/langsmith/self-host-terraform-gcp-deploy#smithdb)。
+有关 SmithDB 的推出阶段，请参阅部署指南中的[SmithDB](/langsmith/self-host-terraform-gcp-deploy#smithdb)。
 
 ## 附加组件
 
@@ -237,9 +237,9 @@ terraform refresh
 
 ## 拆解
 
-<Warning>
-  拆卸会永久删除 Cloud SQL 实例。 Cloud SQL 在删除时不会拍摄最终快照：其自动备份、按需备份和时间点恢复日志将随实例一起删除。要保留数据，请在步骤 1 之前将其导出到此部署之外的存储桶。跳过一次性测试堆栈的导出。
-</Warning>
+> [!警告]
+>
+> 拆卸会永久删除 Cloud SQL 实例。 Cloud SQL 在删除时不会拍摄最终快照：其自动备份、按需备份和时间点恢复日志将随实例一起删除。要保留数据，请在步骤 1 之前将其导出到此部署之外的存储桶。跳过一次性测试堆栈的导出。
 
 ```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 # Export the LangSmith database. Repeat for the SmithDB metastore with
@@ -290,12 +290,6 @@ smithdb_bucket_force_destroy = true
 
 删除保护也适用于 Cloud SQL API 级别，因此步骤 4 中的目标应用必须在 `make destroy` 之前运行，即使保护已关闭。如果您从未启用过 SmithDB，请删除 `module.smithdb` 目标。要同时删除集群内数据库的永久磁盘，请在步骤 2 中运行 `DELETE_DATA_PVCS=true make uninstall`。
 
-***<div>
-  <Callout icon="terminal-2">
-    [Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
-  </Callout>
+***[Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
 
-  <Callout icon="edit">
-    [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/self-host-terraform-gcp-quick-reference.mdx) 或 [file an issue](https://github.com/langchain-ai/docs/issues/new/choose)。
-  </Callout>
-</div>
+[Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/self-host-terraform-gcp-quick-reference.mdx) 或 [file an issue](https://github.com/langchain-ai/docs/issues/new/choose)。

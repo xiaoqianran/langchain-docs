@@ -71,7 +71,7 @@ If you do not meet either criterion, the automation adds an **external listing**
 
 > **[File an Integration listing issue](https://github.com/langchain-ai/docs/issues/new?template=06-integration-submission.yml)**
 >
-> Use the fixed form fields for display name, language, component, package name, docs URL, and a short provider description.
+> Use the fixed form fields for display name, language, component, package name, docs URL, and a short provider description (max 160 characters).
 
 The automation fills [`scripts/data/integration_external_docs.yaml`](https://github.com/langchain-ai/docs/blob/main/scripts/data/integration_external_docs.yaml) and related listing surfaces from your issue.
 

@@ -30,6 +30,8 @@ npx skills add langchain-ai/langchain-skills --skill managed-deep-agents --yes
 
 Or paste this prompt into your coding agent:
 
+Build a Managed Deep Agent with the quickstart
+
 Create and deploy a Managed Deep Agent in this working directory by following the Managed Deep Agents quickstart.
 
 ## Step 1: Read the guide

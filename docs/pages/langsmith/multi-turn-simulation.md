@@ -193,8 +193,8 @@ You can use the results of multi-turn simulations as part of a LangSmith experim
 >
 > See the following guides to learn how to set up evals using LangSmith's integrations with test frameworks:
 >
-> * [`pytest`](https://docs.smith.langchain.com/langsmith/pytest)
-> * [`Vitest` or `Jest`](https://docs.smith.langchain.com/langsmith/vitest-jest)
+> * [`pytest`](/langsmith/pytest)
+> * [`Vitest` or `Jest`](/langsmith/vitest-jest)
 
 If you are using one of the [LangSmith test framework integrations](/langsmith/pytest), you can pass in an array of OpenEvals evaluators as a `trajectory_evaluators` param when running the simulation. These evaluators will run at the end of the simulation, taking the final list of chat messages as an `outputs` kwarg. Your passed `trajectory_evaluator` must therefore accept this kwarg.
 

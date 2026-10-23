@@ -75,9 +75,9 @@ config:
    curl -sI https://<your-langsmith-host>/logos/acme.svg
    ````image/svg+xml` 的 `content-type` 确认徽标已就位。丢失的文件会返回 HTTP 200 以及应用程序的 HTML，而不是 404，因此请检查内容类型而不是状态代码。
 
-<Note>
-  当您的值已设置 `frontend.deployment.volumes` 或 `frontend.deployment.volumeMounts` 时，请附加到这些列表。替换它们会删除其他设置所依赖的安装。
-</Note>
+> [!注意]
+>
+> 当您的值已设置 `frontend.deployment.volumes` 或 `frontend.deployment.volumeMounts` 时，请附加到这些列表。替换它们会删除其他设置所依赖的安装。
 
 当您在基本路径下提供 LangSmith 时，请将其包含在值中：`/<base-path>/logos/acme.svg`。有关 Helm 值的完整列表，请参阅 [Environment variables](/langsmith/self-host-environment-variables)。
 
@@ -87,9 +87,9 @@ config:
 
 设置后，整个 UI 中的所有错误和支持消息都将显示您的自定义文本，而不是默认的 LangChain 支持电子邮件。
 
-<Note>
-  自定义消息仅呈现为**纯文本**。 HTML 标签不会被解释，并将显示为文字文本。
-</Note>
+> [!注意]
+>
+> 自定义消息仅呈现为**纯文本**。 HTML 标签不会被解释，并将显示为文字文本。
 
 ```yaml Helm theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 config:
@@ -100,12 +100,6 @@ config:
 
 ***
 
-<div>
-  <Callout icon="terminal-2">
-    [Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
-  </Callout>
+[Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
 
-  <Callout icon="edit">
-    [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/self-host-ui-customization.mdx) 或 [file an issue](https://github.com/langchain-ai/docs/issues/new/choose)。
-  </Callout>
-</div>
+[Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/self-host-ui-customization.mdx) 或 [file an issue](https://github.com/langchain-ai/docs/issues/new/choose)。

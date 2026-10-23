@@ -216,12 +216,12 @@ The following table shows tools that generate video, image, or audio assets:
 | [`Oracle AI vector search generate summary`](/oss/python/integrations/tools/oracleai) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-oracledb/month)](https://pypi.org/project/langchain-oracledb/) |
 | [`Exa search`](/oss/python/integrations/tools/exa_search) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-exa/month)](https://pypi.org/project/langchain-exa/) |
 | [`Azure container apps dynamic sessions`](/oss/python/integrations/tools/azure_dynamic_sessions) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-azure-dynamic-sessions/month)](https://pypi.org/project/langchain-azure-dynamic-sessions/) |
-| [`Scalekit`](https://docs.scalekit.com/agentkit/quickstart/) | [  ![Downloads per month](https://static.pepy.tech/badge/scalekit-sdk-python/month)](https://pypi.org/project/scalekit-sdk-python/) |
 | [`Parallel extract`](/oss/python/integrations/tools/parallel_extract) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-parallel/month)](https://pypi.org/project/langchain-parallel/) |
 | [`Parallel FindAll`](/oss/python/integrations/tools/parallel_findall) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-parallel/month)](https://pypi.org/project/langchain-parallel/) |
 | [`Parallel Monitor`](/oss/python/integrations/tools/parallel_monitor) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-parallel/month)](https://pypi.org/project/langchain-parallel/) |
 | [`Parallel search`](/oss/python/integrations/tools/parallel_search) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-parallel/month)](https://pypi.org/project/langchain-parallel/) |
 | [`Parallel Task API`](/oss/python/integrations/tools/parallel_task) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-parallel/month)](https://pypi.org/project/langchain-parallel/) |
+| [`Scalekit`](https://docs.scalekit.com/agentkit/quickstart/) | [  ![Downloads per month](https://static.pepy.tech/badge/scalekit-sdk-python/month)](https://pypi.org/project/scalekit-sdk-python/) |
 | [`Upstage groundedness check`](/oss/python/integrations/tools/upstage_groundedness_check) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-upstage/month)](https://pypi.org/project/langchain-upstage/) |
 | [`ApifyActorsTool`](https://docs.apify.com/integrations/langchain) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-apify/month)](https://pypi.org/project/langchain-apify/) |
 | [`Memory`](https://github.com/skynetcmd/m3-memory/blob/main/docs/integrations/LANGCHAIN.md) | [  ![Downloads per month](https://static.pepy.tech/badge/m3-memory/month)](https://pypi.org/project/m3-memory/) |
@@ -230,9 +230,9 @@ The following table shows tools that generate video, image, or audio assets:
 | [`StripeAgentToolkit`](/oss/python/integrations/tools/stripe) | [  ![Downloads per month](https://static.pepy.tech/badge/stripe-agent-toolkit/month)](https://pypi.org/project/stripe-agent-toolkit/) |
 | [`MemgraphToolkit`](https://github.com/memgraph/langchain-memgraph) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-memgraph/month)](https://pypi.org/project/langchain-memgraph/) |
 | [`FoliantPaymentTool`](https://github.com/gazoy/langchain-foliant#readme) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-foliant/month)](https://pypi.org/project/langchain-foliant/) |
+| [`Google drive`](/oss/python/integrations/tools/google_drive) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-googledrive/month)](https://pypi.org/project/langchain-googledrive/) |
 | [`MadeOnSol`](https://madeonsol.com/api-docs) | [  ![Downloads per month](https://static.pepy.tech/badge/madeonsol-x402/month)](https://pypi.org/project/madeonsol-x402/) |
 | [`BowmarkToolkit`](https://bowmark.ai/docs/langchain) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-bowmark/month)](https://pypi.org/project/langchain-bowmark/) |
-| [`Google drive`](/oss/python/integrations/tools/google_drive) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-googledrive/month)](https://pypi.org/project/langchain-googledrive/) |
 | [`Mcp toolbox for databases`](/oss/python/integrations/tools/mcp_toolbox) | [  ![Downloads per month](https://static.pepy.tech/badge/toolbox-langchain/month)](https://pypi.org/project/toolbox-langchain/) |
 | [`SmartScraperTool`](https://github.com/ScrapeGraphAI/langchain-scrapegraph) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-scrapegraph/month)](https://pypi.org/project/langchain-scrapegraph/) |
 | [`AdeuToolkit`](https://adeu.ai) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-adeu/month)](https://pypi.org/project/langchain-adeu/) |
@@ -243,47 +243,55 @@ The following table shows tools that generate video, image, or audio assets:
 | [`Brightdatawebscraperapi`](https://docs.brightdata.com/datasets/scrapers/overview) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-brightdata/month)](https://pypi.org/project/langchain-brightdata/) |
 | [`Compass defi toolkit`](https://pypi.org/project/langchain-compass/) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-compass/month)](https://pypi.org/project/langchain-compass/) |
 | [`Fizzl`](https://fizzl.eu/agents/python/) | [  ![Downloads per month](https://static.pepy.tech/badge/fizzl/month)](https://pypi.org/project/fizzl/) |
-| [`LinkupSearchTool`](https://github.com/LinkupPlatform/langchain-linkup) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-linkup/month)](https://pypi.org/project/langchain-linkup/) |
 | [`PexafyToolkit`](https://docs.pexafy.com/langchain) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-pexafy/month)](https://pypi.org/project/langchain-pexafy/) |
 | [`Taiga`](https://github.com/Shikenso-Analytics/langchain-taiga) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-taiga/month)](https://pypi.org/project/langchain-taiga/) |
 | [`AtomicMailToolkit`](https://docs.atomicmail.ai/langchain) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-atomicmail/month)](https://pypi.org/project/langchain-atomicmail/) |
 | [`Cdp agentkit toolkit`](/oss/python/integrations/tools/cdp_agentkit) | [  ![Downloads per month](https://static.pepy.tech/badge/coinbase-agentkit-langchain/month)](https://pypi.org/project/coinbase-agentkit-langchain/) |
 | [`DecodoSearchTool`](https://github.com/Decodo/langchain/tree/master/libs/partners/decodo) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-decodo/month)](https://pypi.org/project/langchain-decodo/) |
 | [`DecodoWebScrapeTool`](https://github.com/Decodo/langchain/tree/master/libs/partners/decodo) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-decodo/month)](https://pypi.org/project/langchain-decodo/) |
+| [`DexPaprikaToolkit`](https://docs.dexpaprika.com) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-dexpaprika/month)](https://pypi.org/project/langchain-dexpaprika/) |
 | [`Firecrawl`](https://docs.firecrawl.dev) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-firecrawl/month)](https://pypi.org/project/langchain-firecrawl/) |
 | [`HindsightTools`](https://docs.hindsight.vectorize.io/sdks/integrations/langgraph) | [  ![Downloads per month](https://static.pepy.tech/badge/hindsight-langgraph/month)](https://pypi.org/project/hindsight-langgraph/) |
+| [`LinkupSearchTool`](https://github.com/LinkupPlatform/langchain-linkup) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-linkup/month)](https://pypi.org/project/langchain-linkup/) |
 | [`ReplyLayerToolkit`](https://replylayer.ai/docs/guides/langchain) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-replylayer/month)](https://pypi.org/project/langchain-replylayer/) |
 | [`Scavio`](https://scavio.dev/docs/langchain) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-scavio/month)](https://pypi.org/project/langchain-scavio/) |
-| [`SerpexSearchResults`](https://serpex.dev/docs) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-serpex-python/month)](https://pypi.org/project/langchain-serpex-python/) |
 | [`Ads4gpts`](https://github.com/ADS4GPTs/ads4gpts) | [  ![Downloads per month](https://static.pepy.tech/badge/ads4gpts-langchain/month)](https://pypi.org/project/ads4gpts-langchain/) |
 | [`AlexEvidenceVerifier`](https://pypi.org/project/langchain-alex/) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-alex/month)](https://pypi.org/project/langchain-alex/) |
 | [`Algenta`](https://github.com/thyn-ai/algenta-integrations/tree/main/python/langchain-algenta#readme) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-algenta/month)](https://pypi.org/project/langchain-algenta/) |
+| [`Anakin`](https://anakin.io/docs/documentation) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-anakin/month)](https://pypi.org/project/langchain-anakin/) |
 | [`cloro`](https://cloro.dev/docs/) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-cloro/month)](https://pypi.org/project/langchain-cloro/) |
-| [`DexPaprikaToolkit`](https://docs.dexpaprika.com) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-dexpaprika/month)](https://pypi.org/project/langchain-dexpaprika/) |
 | [`DnsDoctorToolkit`](https://github.com/dnsdoctor/langchain-dnsdoctor) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-dnsdoctor/month)](https://pypi.org/project/langchain-dnsdoctor/) |
 | [`e2a`](https://e2a.dev) | [  ![Downloads per month](https://static.pepy.tech/badge/e2a/month)](https://pypi.org/project/e2a/) |
 | [`FlashDataToolkit`](https://github.com/flashdata-dev/langchain-flashdata#readme) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-flashdata/month)](https://pypi.org/project/langchain-flashdata/) |
 | [`GoodMemToolkit`](https://docs.goodmem.ai) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-goodmem/month)](https://pypi.org/project/langchain-goodmem/) |
+| [`GraphTool`](https://dev.writer.com/home/introduction) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-writer/month)](https://pypi.org/project/langchain-writer/) |
+| [`HirePulse company data tools`](https://github.com/edtool79-collab/hirepulse-open-source#langchain-and-crewai-gateway-tools-030) | [  ![Downloads per month](https://static.pepy.tech/badge/hirepulse-tools/month)](https://pypi.org/project/hirepulse-tools/) |
 | [`NimbleExtractTool`](https://docs.nimbleway.com/integrations/connectors/langchain) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-nimble/month)](https://pypi.org/project/langchain-nimble/) |
 | [`NimbleSearchTool`](https://docs.nimbleway.com/integrations/connectors/langchain) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-nimble/month)](https://pypi.org/project/langchain-nimble/) |
+| [`Prolog`](https://langchain-prolog.readthedocs.io/en/stable/) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-prolog/month)](https://pypi.org/project/langchain-prolog/) |
+| [`Send21Toolkit`](https://pypi.org/project/langchain-send21/) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-send21/month)](https://pypi.org/project/langchain-send21/) |
+| [`SerpexSearchResults`](https://serpex.dev/docs) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-serpex-python/month)](https://pypi.org/project/langchain-serpex-python/) |
+| [`SwarmMemoToolkit`](https://pypi.org/project/langchain-swarmmemo/) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-swarmmemo/month)](https://pypi.org/project/langchain-swarmmemo/) |
+| [`Synap`](https://www.maximem.ai/) | [  ![Downloads per month](https://static.pepy.tech/badge/maximem-synap-langchain/month)](https://pypi.org/project/maximem-synap-langchain/) |
 | [`TanodToolkit`](https://github.com/tanod-labs/integrations/tree/main/langchain) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-tanod/month)](https://pypi.org/project/langchain-tanod/) |
 | [`ToolGuardLayer`](https://github.com/sriram7737/pramagent) | [  ![Downloads per month](https://static.pepy.tech/badge/pramagent/month)](https://pypi.org/project/pramagent/) |
 | [`UrlpipeToolkit`](https://urlpipe.dev/integrations/langchain) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-urlpipe/month)](https://pypi.org/project/langchain-urlpipe/) |
 | [`You.com search`](https://you.com/docs/integrations/langchain) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-youdotcom/month)](https://pypi.org/project/langchain-youdotcom/) |
-| [`Anakin`](https://anakin.io/docs/documentation) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-anakin/month)](https://pypi.org/project/langchain-anakin/) |
-| [`ZeroGPUToolkit`](https://docs.zerogpu.ai) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-zerogpu/month)](https://pypi.org/project/langchain-zerogpu/) |
 | [`ThorDataSearchTool`](https://github.com/Thordata/langchain-thordata) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-thordata/month)](https://pypi.org/project/langchain-thordata/) |
-| [`Prolog`](https://langchain-prolog.readthedocs.io/en/stable/) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-prolog/month)](https://pypi.org/project/langchain-prolog/) |
-| [`Send21Toolkit`](https://pypi.org/project/langchain-send21/) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-send21/month)](https://pypi.org/project/langchain-send21/) |
-| [`SwarmMemoToolkit`](https://pypi.org/project/langchain-swarmmemo/) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-swarmmemo/month)](https://pypi.org/project/langchain-swarmmemo/) |
 | [`VerdixAddressRiskTool`](https://github.com/verdixapi/langchain-verdix#readme) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-verdix/month)](https://pypi.org/project/langchain-verdix/) |
-| [`GateCoreToolkit`](https://gatecoreai.com/docs/) | [  ![Downloads per month](https://static.pepy.tech/badge/gatecore-langchain/month)](https://pypi.org/project/gatecore-langchain/) |
-| [`Synap`](https://www.maximem.ai/) | [  ![Downloads per month](https://static.pepy.tech/badge/maximem-synap-langchain/month)](https://pypi.org/project/maximem-synap-langchain/) |
-| [`HirePulse company data tools`](https://github.com/edtool79-collab/hirepulse-open-source#langchain-and-crewai-gateway-tools-030) | [  ![Downloads per month](https://static.pepy.tech/badge/hirepulse-tools/month)](https://pypi.org/project/hirepulse-tools/) |
 | [`SerpKiteSearch`](https://serpkite.com/integrations/langchain) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-serpkite/month)](https://pypi.org/project/langchain-serpkite/) |
-| [`Opedd`](https://opedd.com/for-ai-agents) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-opedd/month)](https://pypi.org/project/langchain-opedd/) |
+| [`GateCoreToolkit`](https://gatecoreai.com/docs/) | [  ![Downloads per month](https://static.pepy.tech/badge/gatecore-langchain/month)](https://pypi.org/project/gatecore-langchain/) |
 | [`MachineLibraryToolkit`](https://github.com/SpaceFrontiers/machinelibrary-integrations/tree/main/python/langchain-machinelibrary) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-machinelibrary/month)](https://pypi.org/project/langchain-machinelibrary/) |
+| [`AgentGuardTool`](https://github.com/datumline/datumline-agent-guard#langchain) | [  ![Downloads per month](https://static.pepy.tech/badge/datumline-agent-guard/month)](https://pypi.org/project/datumline-agent-guard/) |
+| [`EconDashToolkit`](https://github.com/econdash/econdash-python/blob/main/packages/langchain-econdash/README.md) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-econdash/month)](https://pypi.org/project/langchain-econdash/) |
+| [`CatchAllTools`](https://www.newscatcherapi.com/docs/web-search-api/integrations/langchain) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-catchall/month)](https://pypi.org/project/langchain-catchall/) |
+| [`FinancialEvidenceToolkit`](https://github.com/beepboop2025/langchain-financial-evidence#readme) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-financial-evidence/month)](https://pypi.org/project/langchain-financial-evidence/) |
+| [`Opedd`](https://opedd.com/for-ai-agents) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-opedd/month)](https://pypi.org/project/langchain-opedd/) |
 | [`Pushary`](https://pushary.com/docs/agents/build/langgraph?utm_source=langchain\&utm_medium=integration-directory\&utm_campaign=pushary-langgraph-py) | [  ![Downloads per month](https://static.pepy.tech/badge/pushary-langgraph/month)](https://pypi.org/project/pushary-langgraph/) |
+| [`MinnsDBMemory`](https://github.com/Minns-ai/langgraph-minnsdb#readme) | [  ![Downloads per month](https://static.pepy.tech/badge/langgraph-minnsdb/month)](https://pypi.org/project/langgraph-minnsdb/) |
+| [`WaveSpeedImageGeneration`](https://github.com/WaveSpeedAI/langchain-wavespeed) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-wavespeed/month)](https://pypi.org/project/langchain-wavespeed/) |
+| [`WaveSpeedRunModel`](https://github.com/WaveSpeedAI/langchain-wavespeed) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-wavespeed/month)](https://pypi.org/project/langchain-wavespeed/) |
+| [`WaveSpeedVideoGeneration`](https://github.com/WaveSpeedAI/langchain-wavespeed) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-wavespeed/month)](https://pypi.org/project/langchain-wavespeed/) |
 | [`DiffbotAskTool`](https://github.com/diffbot/langchain-diffbot) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-diffbot/month)](https://pypi.org/project/langchain-diffbot/) |
 | [`DiffbotDQLProbeTool`](https://github.com/diffbot/langchain-diffbot) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-diffbot/month)](https://pypi.org/project/langchain-diffbot/) |
 | [`DiffbotEntitiesTool`](https://github.com/diffbot/langchain-diffbot) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-diffbot/month)](https://pypi.org/project/langchain-diffbot/) |
@@ -291,234 +299,230 @@ The following table shows tools that generate video, image, or audio assets:
 | [`DiffbotKnowledgeGraphTool`](https://github.com/diffbot/langchain-diffbot) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-diffbot/month)](https://pypi.org/project/langchain-diffbot/) |
 | [`DiffbotOntologyTool`](https://github.com/diffbot/langchain-diffbot) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-diffbot/month)](https://pypi.org/project/langchain-diffbot/) |
 | [`DiffbotWebSearchTool`](https://github.com/diffbot/langchain-diffbot) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-diffbot/month)](https://pypi.org/project/langchain-diffbot/) |
-| [`CatchAllTools`](https://www.newscatcherapi.com/docs/web-search-api/integrations/langchain) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-catchall/month)](https://pypi.org/project/langchain-catchall/) |
 | [`Salesforce`](https://github.com/colesmcintosh/langchain-salesforce) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-salesforce/month)](https://pypi.org/project/langchain-salesforce/) |
-| [`Ampersend`](https://docs.ampersend.ai) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-ampersend/month)](https://pypi.org/project/langchain-ampersend/) |
-| [`Manifest`](https://omfang.io/manifest-docs) | [  ![Downloads per month](https://static.pepy.tech/badge/manifest-api/month)](https://pypi.org/project/manifest-api/) |
-| [`MinnsDBMemory`](https://github.com/Minns-ai/langgraph-minnsdb#readme) | [  ![Downloads per month](https://static.pepy.tech/badge/langgraph-minnsdb/month)](https://pypi.org/project/langgraph-minnsdb/) |
-| [`Lians`](https://www.lians.ai) | [  ![Downloads per month](https://static.pepy.tech/badge/lians-sdk/month)](https://pypi.org/project/lians-sdk/) |
-| [`WaveSpeedImageGeneration`](https://github.com/WaveSpeedAI/langchain-wavespeed) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-wavespeed/month)](https://pypi.org/project/langchain-wavespeed/) |
-| [`WaveSpeedRunModel`](https://github.com/WaveSpeedAI/langchain-wavespeed) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-wavespeed/month)](https://pypi.org/project/langchain-wavespeed/) |
-| [`WaveSpeedVideoGeneration`](https://github.com/WaveSpeedAI/langchain-wavespeed) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-wavespeed/month)](https://pypi.org/project/langchain-wavespeed/) |
-| [`TwittrAPIToolkit`](https://github.com/twittrapi/langchain-twittrapi#readme) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-twittrapi/month)](https://pypi.org/project/langchain-twittrapi/) |
 | [`OpenpathSearch`](https://openpath.sh/docs/langchain) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-openpath/month)](https://pypi.org/project/langchain-openpath/) |
-| [`Robocorp toolkit`](https://github.com/robocorp/robocorp) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-robocorp/month)](https://pypi.org/project/langchain-robocorp/) |
-| [`SnapRender`](https://snap-render.com) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-snaprender/month)](https://pypi.org/project/langchain-snaprender/) |
-| [`Fmp data`](https://github.com/MehdiZare/langchain-fmp-data) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-fmp-data/month)](https://pypi.org/project/langchain-fmp-data/) |
+| [`TwittrAPIToolkit`](https://github.com/twittrapi/langchain-twittrapi#readme) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-twittrapi/month)](https://pypi.org/project/langchain-twittrapi/) |
+| [`Manifest`](https://omfang.io/manifest-docs) | [  ![Downloads per month](https://static.pepy.tech/badge/manifest-api/month)](https://pypi.org/project/manifest-api/) |
 | [`AgentSearchTool`](https://agentsearchhq.com/blog/add-web-search-to-langchain-agent?utm_source=langchain-docs\&utm_medium=integration-listing\&utm_campaign=promo-oct26) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-agentsearch/month)](https://pypi.org/project/langchain-agentsearch/) |
+| [`ZeroGPUToolkit`](https://docs.zerogpu.ai) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-zerogpu/month)](https://pypi.org/project/langchain-zerogpu/) |
+| [`Ampersend`](https://docs.ampersend.ai) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-ampersend/month)](https://pypi.org/project/langchain-ampersend/) |
+| [`Robocorp toolkit`](https://github.com/robocorp/robocorp) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-robocorp/month)](https://pypi.org/project/langchain-robocorp/) |
+| [`Lians`](https://www.lians.ai) | [  ![Downloads per month](https://static.pepy.tech/badge/lians-sdk/month)](https://pypi.org/project/lians-sdk/) |
+| [`Fmp data`](https://github.com/MehdiZare/langchain-fmp-data) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-fmp-data/month)](https://pypi.org/project/langchain-fmp-data/) |
+| [`SnapRender`](https://snap-render.com) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-snaprender/month)](https://pypi.org/project/langchain-snaprender/) |
 | [`Hyperbrowser browser agent`](https://www.hyperbrowser.ai/docs/home) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-hyperbrowser/month)](https://pypi.org/project/langchain-hyperbrowser/) |
 | [`Hyperbrowser web scraping`](https://www.hyperbrowser.ai/docs/home) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-hyperbrowser/month)](https://pypi.org/project/langchain-hyperbrowser/) |
-| [`Mixpeek`](https://mixpeek.com/docs/agent-integrations/langchain) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-mixpeek/month)](https://pypi.org/project/langchain-mixpeek/) |
-| [`AsyntaiToolkit`](https://asyntai.com/documentation/integrations/langchain/) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-asyntai/month)](https://pypi.org/project/langchain-asyntai/) |
-| [`MnkiGuardedTool`](https://mnki.com/docs/integrations#frameworks) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-mnki/month)](https://pypi.org/project/langchain-mnki/) |
-| [`Hydrafetch`](https://docs.hydrafetch.com) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-hydrafetch/month)](https://pypi.org/project/langchain-hydrafetch/) |
+| [`GPTImageToolkit`](https://github.com/AceDataCloud/LangChain/tree/main/packages/gpt-image) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-gpt-image-acedatacloud/month)](https://pypi.org/project/langchain-gpt-image-acedatacloud/) |
+| [`ContextFetchSearch`](https://github.com/lachy3433/langchain-contextfetch#readme) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-contextfetch/month)](https://pypi.org/project/langchain-contextfetch/) |
 | [`ClearsignedVerifyTool`](https://clearsigned.com/integrations#langchain) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-clearsigned/month)](https://pypi.org/project/langchain-clearsigned/) |
+| [`HappyHorseToolkit`](https://github.com/AceDataCloud/LangChain/tree/main/packages/happyhorse) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-happyhorse-acedatacloud/month)](https://pypi.org/project/langchain-happyhorse-acedatacloud/) |
+| [`Hydrafetch`](https://docs.hydrafetch.com) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-hydrafetch/month)](https://pypi.org/project/langchain-hydrafetch/) |
+| [`NanoBananaToolkit`](https://github.com/AceDataCloud/LangChain/tree/main/packages/nano-banana) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-nano-banana-acedatacloud/month)](https://pypi.org/project/langchain-nano-banana-acedatacloud/) |
 | [`Search1API Toolkit`](https://www.search1api.com/docs/integrations/langchain) | [  ![Downloads per month](https://static.pepy.tech/badge/search1api-langchain/month)](https://pypi.org/project/search1api-langchain/) |
-| [`Synmerco`](https://synmerco.com/docs) | [  ![Downloads per month](https://static.pepy.tech/badge/synmerco-langchain/month)](https://pypi.org/project/synmerco-langchain/) |
-| [`FeedMyAgentToolkit`](https://github.com/makash/feedmyagent-skill/tree/main/integrations/langchain) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-feedmyagent/month)](https://pypi.org/project/langchain-feedmyagent/) |
 | [`UploadPostToolkit`](https://docs.upload-post.com/guides/langchain) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-upload-post/month)](https://pypi.org/project/langchain-upload-post/) |
 | [`GetYouTubeTranscriptTool`](https://github.com/tubeagentkit/langchain-getyoutubetranscript#readme) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-getyoutubetranscript/month)](https://pypi.org/project/langchain-getyoutubetranscript/) |
+| [`FeedMyAgentToolkit`](https://github.com/makash/feedmyagent-skill/tree/main/integrations/langchain) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-feedmyagent/month)](https://pypi.org/project/langchain-feedmyagent/) |
+| [`Mixpeek`](https://mixpeek.com/docs/agent-integrations/langchain) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-mixpeek/month)](https://pypi.org/project/langchain-mixpeek/) |
+| [`Synmerco`](https://synmerco.com/docs) | [  ![Downloads per month](https://static.pepy.tech/badge/synmerco-langchain/month)](https://pypi.org/project/synmerco-langchain/) |
+| [`KavelImageGenerator`](https://kavel.readthedocs.io/en/latest/integrations/langchain/) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-kavel/month)](https://pypi.org/project/langchain-kavel/) |
 | [`BlopusFetch`](https://blopus.ai/docs/) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-blopus/month)](https://pypi.org/project/langchain-blopus/) |
 | [`BlopusSearch`](https://blopus.ai/docs/) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-blopus/month)](https://pypi.org/project/langchain-blopus/) |
-| [`UniswapV2Toolkit`](https://github.com/Conrad-sudo/langchain-uniswap-v2) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-uniswap-v2/month)](https://pypi.org/project/langchain-uniswap-v2/) |
-| [`SkimReader`](https://skim402.com/docs) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-skim/month)](https://pypi.org/project/langchain-skim/) |
-| [`KavelImageGenerator`](https://kavel.readthedocs.io/en/latest/integrations/langchain/) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-kavel/month)](https://pypi.org/project/langchain-kavel/) |
-| [`OptionsAhoy`](https://optionsahoy.com/for-agents) | [  ![Downloads per month](https://static.pepy.tech/badge/optionsahoy-langchain/month)](https://pypi.org/project/optionsahoy-langchain/) |
-| [`GPTImageToolkit`](https://github.com/AceDataCloud/LangChain/tree/main/packages/gpt-image) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-gpt-image-acedatacloud/month)](https://pypi.org/project/langchain-gpt-image-acedatacloud/) |
-| [`HappyHorseToolkit`](https://github.com/AceDataCloud/LangChain/tree/main/packages/happyhorse) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-happyhorse-acedatacloud/month)](https://pypi.org/project/langchain-happyhorse-acedatacloud/) |
-| [`Discord`](/oss/python/integrations/tools/discord) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-discord/month)](https://pypi.org/project/langchain-discord/) |
-| [`DomPrunerFetchTool`](https://github.com/dong7812/dompruner-py) | [  ![Downloads per month](https://static.pepy.tech/badge/dompruner/month)](https://pypi.org/project/dompruner/) |
-| [`Valyucontext`](https://docs.valyu.ai/home) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-valyu/month)](https://pypi.org/project/langchain-valyu/) |
 | [`MartToolkit`](https://github.com/Mart-API/langchain-mart#readme) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-mart/month)](https://pypi.org/project/langchain-mart/) |
-| [`NanoBananaToolkit`](https://github.com/AceDataCloud/LangChain/tree/main/packages/nano-banana) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-nano-banana-acedatacloud/month)](https://pypi.org/project/langchain-nano-banana-acedatacloud/) |
-| [`SkillLiteTool`](https://github.com/EXboys/langchain-skilllite) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-skilllite/month)](https://pypi.org/project/langchain-skilllite/) |
+| [`MnkiGuardedTool`](https://mnki.com/docs/integrations#frameworks) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-mnki/month)](https://pypi.org/project/langchain-mnki/) |
+| [`DomPrunerFetchTool`](https://github.com/dong7812/dompruner-py) | [  ![Downloads per month](https://static.pepy.tech/badge/dompruner/month)](https://pypi.org/project/dompruner/) |
 | [`PinkToolkit`](https://pinkwallet.com/agentic/connect/langchain/) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-pink/month)](https://pypi.org/project/langchain-pink/) |
-| [`AidressToolkit`](https://aidress.ai) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-aidress/month)](https://pypi.org/project/langchain-aidress/) |
-| [`VeidaImageGenerator`](https://veida.readthedocs.io/en/latest/integrations/langchain/) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-veida/month)](https://pypi.org/project/langchain-veida/) |
-| [`Anchor browser`](https://docs.anchorbrowser.io/introduction) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-anchorbrowser/month)](https://pypi.org/project/langchain-anchorbrowser/) |
-| [`1Claw`](https://docs.1claw.xyz/docs/integrations/langchain) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-1claw/month)](https://pypi.org/project/langchain-1claw/) |
+| [`Discord`](/oss/python/integrations/tools/discord) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-discord/month)](https://pypi.org/project/langchain-discord/) |
+| [`SkimReader`](https://skim402.com/docs) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-skim/month)](https://pypi.org/project/langchain-skim/) |
+| [`UniswapV2Toolkit`](https://github.com/Conrad-sudo/langchain-uniswap-v2) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-uniswap-v2/month)](https://pypi.org/project/langchain-uniswap-v2/) |
 | [`FoddaContextRetriever`](https://github.com/fodda-ai/langchain-fodda#readme) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-fodda/month)](https://pypi.org/project/langchain-fodda/) |
-| [`scoutwyze_rank`](https://github.com/scoutwyze-max/scoutwyze-compute/blob/main/examples/README.md) | [  ![Downloads per month](https://static.pepy.tech/badge/scoutwyze-compute/month)](https://pypi.org/project/scoutwyze-compute/) |
-| [`ReserpSearchTool`](https://reserp.ai/docs) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-reserp/month)](https://pypi.org/project/langchain-reserp/) |
-| [`MrScraperToolkit`](https://docs.mrscraper.com) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-mrscraper/month)](https://pypi.org/project/langchain-mrscraper/) |
-| [`ERC20Toolkit`](https://github.com/Conrad-sudo/langchain-erc20) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-erc20/month)](https://pypi.org/project/langchain-erc20/) |
+| [`Valyucontext`](https://docs.valyu.ai/home) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-valyu/month)](https://pypi.org/project/langchain-valyu/) |
+| [`OptionsAhoy`](https://optionsahoy.com/for-agents) | [  ![Downloads per month](https://static.pepy.tech/badge/optionsahoy-langchain/month)](https://pypi.org/project/optionsahoy-langchain/) |
+| [`VeidaImageGenerator`](https://veida.readthedocs.io/en/latest/integrations/langchain/) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-veida/month)](https://pypi.org/project/langchain-veida/) |
 | [`TanvoToolkit`](https://github.com/tanvoai/langchain-tanvo#readme) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-tanvo/month)](https://pypi.org/project/langchain-tanvo/) |
-| [`ContextFetchSearch`](https://github.com/lachy3433/langchain-contextfetch#readme) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-contextfetch/month)](https://pypi.org/project/langchain-contextfetch/) |
-| [`DaytonaDataAnalysisTool`](https://github.com/daytonaio/daytona) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-daytona-data-analysis/month)](https://pypi.org/project/langchain-daytona-data-analysis/) |
-| [`PaySafe`](https://paysafe-agent.com) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-paysafe/month)](https://pypi.org/project/langchain-paysafe/) |
-| [`SuperColony`](https://github.com/TheSuperColony/langchain-supercolony) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-supercolony/month)](https://pypi.org/project/langchain-supercolony/) |
+| [`WayzaToolkit`](https://github.com/wayza-protocol/wayza-js/tree/main/packages/langchain-wayza) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-wayza/month)](https://pypi.org/project/langchain-wayza/) |
+| [`SkillLiteTool`](https://github.com/EXboys/langchain-skilllite) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-skilllite/month)](https://pypi.org/project/langchain-skilllite/) |
+| [`scoutwyze_rank`](https://github.com/scoutwyze-max/scoutwyze-compute/blob/main/examples/README.md) | [  ![Downloads per month](https://static.pepy.tech/badge/scoutwyze-compute/month)](https://pypi.org/project/scoutwyze-compute/) |
+| [`MrScraperToolkit`](https://docs.mrscraper.com) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-mrscraper/month)](https://pypi.org/project/langchain-mrscraper/) |
+| [`DDG Agent Services`](https://pypi.org/project/ddg-langchain/) | [  ![Downloads per month](https://static.pepy.tech/badge/ddg-langchain/month)](https://pypi.org/project/ddg-langchain/) |
+| [`ERC20Toolkit`](https://github.com/Conrad-sudo/langchain-erc20) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-erc20/month)](https://pypi.org/project/langchain-erc20/) |
+| [`ReserpSearchTool`](https://reserp.ai/docs) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-reserp/month)](https://pypi.org/project/langchain-reserp/) |
+| [`MeshArcScrape`](https://mesharc.dev/docs/langchain) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-mesharc/month)](https://pypi.org/project/langchain-mesharc/) |
+| [`MeshArcSearch`](https://mesharc.dev/docs/langchain) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-mesharc/month)](https://pypi.org/project/langchain-mesharc/) |
+| [`1Claw`](https://docs.1claw.xyz/docs/integrations/langchain) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-1claw/month)](https://pypi.org/project/langchain-1claw/) |
+| [`AidressToolkit`](https://aidress.ai) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-aidress/month)](https://pypi.org/project/langchain-aidress/) |
+| [`Anchor browser`](https://docs.anchorbrowser.io/introduction) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-anchorbrowser/month)](https://pypi.org/project/langchain-anchorbrowser/) |
+| [`Pidgeon Toolkit`](https://pidgeon.ai/docs/langchain) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-pidgeon/month)](https://pypi.org/project/langchain-pidgeon/) |
+| [`OpenAlexSearch`](https://github.com/ourresearch/langchain-openalex#readme) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-openalex/month)](https://pypi.org/project/langchain-openalex/) |
 | [`GAIP`](https://pypi.org/project/langchain-gaip/) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-gaip/month)](https://pypi.org/project/langchain-gaip/) |
+| [`agentsvc`](https://agentsvc.io/docs/langchain) | [  ![Downloads per month](https://static.pepy.tech/badge/agentsvc/month)](https://pypi.org/project/agentsvc/) |
+| [`GraciousQuotes`](https://graciousquotes.com/developers/langchain/) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-graciousquotes/month)](https://pypi.org/project/langchain-graciousquotes/) |
+| [`GNewsSearch`](https://docs.gnews.io/langchain) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-gnews/month)](https://pypi.org/project/langchain-gnews/) |
+| [`GNewsTopHeadlines`](https://docs.gnews.io/langchain) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-gnews/month)](https://pypi.org/project/langchain-gnews/) |
+| [`PaySafe`](https://paysafe-agent.com) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-paysafe/month)](https://pypi.org/project/langchain-paysafe/) |
+| [`EmakiVideoGenerator`](https://emaki.readthedocs.io/en/latest/integrations/langchain/) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-emaki/month)](https://pypi.org/project/langchain-emaki/) |
+| [`Capsule`](https://github.com/mavdol/langchain-capsule) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-capsule/month)](https://pypi.org/project/langchain-capsule/) |
+| [`PrintFriendlyReadPage`](https://github.com/printfriendly/langchain-printfriendly#readme) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-printfriendly/month)](https://pypi.org/project/langchain-printfriendly/) |
+| [`SuperColony`](https://github.com/TheSuperColony/langchain-supercolony) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-supercolony/month)](https://pypi.org/project/langchain-supercolony/) |
+| [`Oxylabs`](https://github.com/oxylabs/langchain-oxylabs) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-oxylabs/month)](https://pypi.org/project/langchain-oxylabs/) |
+| [`DaytonaDataAnalysisTool`](https://github.com/daytonaio/daytona) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-daytona-data-analysis/month)](https://pypi.org/project/langchain-daytona-data-analysis/) |
+| [`TokPortalToolkit`](https://github.com/tokportal/langchain-tokportal) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-tokportal/month)](https://pypi.org/project/langchain-tokportal/) |
+| [`PolarisSearchTool`](https://github.com/Veroq-ai/polaris-sdks/tree/main/python/langchain_polaris) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-polaris/month)](https://pypi.org/project/langchain-polaris/) |
+| [`SerpApi Search Tools`](https://serpapi.github.io/serpapi-search-tools-python/docs/sdk-examples/langchain.html) | [  ![Downloads per month](https://static.pepy.tech/badge/serpapi-search-tools/month)](https://pypi.org/project/serpapi-search-tools/) |
+| [`MemoryRouter`](https://docs.memoryrouter.ai/langchain) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-memoryrouter/month)](https://pypi.org/project/langchain-memoryrouter/) |
 | [`AlfrescoToolkit`](https://github.com/OpenDMA/langchain-opendma/blob/main/docs/Toolkit.md#alfrescotoolkit) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-opendma/month)](https://pypi.org/project/langchain-opendma/) |
 | [`DocumentumToolkit`](https://github.com/OpenDMA/langchain-opendma/blob/main/docs/Toolkit.md#documentumtoolkit) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-opendma/month)](https://pypi.org/project/langchain-opendma/) |
 | [`FileNetP8Toolkit`](https://github.com/OpenDMA/langchain-opendma/blob/main/docs/Toolkit.md#filenetp8toolkit) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-opendma/month)](https://pypi.org/project/langchain-opendma/) |
 | [`OnBaseToolkit`](https://github.com/OpenDMA/langchain-opendma/blob/main/docs/Toolkit.md#onbasetoolkit) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-opendma/month)](https://pypi.org/project/langchain-opendma/) |
 | [`OpenDMAToolkit`](https://github.com/OpenDMA/langchain-opendma/blob/main/docs/Toolkit.md) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-opendma/month)](https://pypi.org/project/langchain-opendma/) |
-| [`Oxylabs`](https://github.com/oxylabs/langchain-oxylabs) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-oxylabs/month)](https://pypi.org/project/langchain-oxylabs/) |
-| [`TalorDataSerpTool`](https://docs.talordata.com/serp-api/integration/sdk-integration/how-to-set-up-talordata-with-langchain) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-talordata/month)](https://pypi.org/project/langchain-talordata/) |
-| [`TokPortalToolkit`](https://github.com/tokportal/langchain-tokportal) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-tokportal/month)](https://pypi.org/project/langchain-tokportal/) |
-| [`Dappier`](https://docs.dappier.com/) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-dappier/month)](https://pypi.org/project/langchain-dappier/) |
 | [`generate_latam_financial_data`](https://github.com/jmendozapuche/langchain-latam-synth) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-latam-synth/month)](https://pypi.org/project/langchain-latam-synth/) |
-| [`GNewsSearch`](https://docs.gnews.io/langchain) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-gnews/month)](https://pypi.org/project/langchain-gnews/) |
-| [`GNewsTopHeadlines`](https://docs.gnews.io/langchain) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-gnews/month)](https://pypi.org/project/langchain-gnews/) |
-| [`WayzaToolkit`](https://github.com/wayza-protocol/wayza-js/tree/main/packages/langchain-wayza) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-wayza/month)](https://pypi.org/project/langchain-wayza/) |
-| [`Capsule`](https://github.com/mavdol/langchain-capsule) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-capsule/month)](https://pypi.org/project/langchain-capsule/) |
+| [`TalorDataSerpTool`](https://docs.talordata.com/serp-api/integration/sdk-integration/how-to-set-up-talordata-with-langchain) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-talordata/month)](https://pypi.org/project/langchain-talordata/) |
 | [`Cosmergon`](https://cosmergon.com) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-cosmergon/month)](https://pypi.org/project/langchain-cosmergon/) |
-| [`PolarisSearchTool`](https://github.com/Veroq-ai/polaris-sdks/tree/main/python/langchain_polaris) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-polaris/month)](https://pypi.org/project/langchain-polaris/) |
-| [`EmakiVideoGenerator`](https://emaki.readthedocs.io/en/latest/integrations/langchain/) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-emaki/month)](https://pypi.org/project/langchain-emaki/) |
-| [`agentsvc`](https://agentsvc.io/docs/langchain) | [  ![Downloads per month](https://static.pepy.tech/badge/agentsvc/month)](https://pypi.org/project/agentsvc/) |
-| [`ICTFaxToolkit`](https://www.ictinnovations.com/) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-ictfax/month)](https://pypi.org/project/langchain-ictfax/) |
-| [`MeshArcScrape`](https://mesharc.dev/docs/langchain) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-mesharc/month)](https://pypi.org/project/langchain-mesharc/) |
-| [`MeshArcSearch`](https://mesharc.dev/docs/langchain) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-mesharc/month)](https://pypi.org/project/langchain-mesharc/) |
-| [`SerpApi Search Tools`](https://serpapi.github.io/serpapi-search-tools-python/docs/sdk-examples/langchain.html) | [  ![Downloads per month](https://static.pepy.tech/badge/serpapi-search-tools/month)](https://pypi.org/project/serpapi-search-tools/) |
-| [`EconDashToolkit`](https://github.com/econdash/econdash-python/blob/main/packages/langchain-econdash/README.md) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-econdash/month)](https://pypi.org/project/langchain-econdash/) |
-| [`MemoryRouter`](https://docs.memoryrouter.ai/langchain) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-memoryrouter/month)](https://pypi.org/project/langchain-memoryrouter/) |
+| [`Dappier`](https://docs.dappier.com/) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-dappier/month)](https://pypi.org/project/langchain-dappier/) |
+| [`ProxmintFetchTool`](https://proxmint.com/docs/langchain) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-proxmint/month)](https://pypi.org/project/langchain-proxmint/) |
+| [`Precleared`](https://precleared.dev/docs/langchain) | [  ![Downloads per month](https://static.pepy.tech/badge/precleared/month)](https://pypi.org/project/precleared/) |
 | [`Tableau`](/oss/python/integrations/tools/tableau) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-tableau/month)](https://pypi.org/project/langchain-tableau/) |
+| [`ICTFaxToolkit`](https://www.ictinnovations.com/) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-ictfax/month)](https://pypi.org/project/langchain-ictfax/) |
 | [`AxioraToolkit`](https://axiora.dev/docs) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-axiora/month)](https://pypi.org/project/langchain-axiora/) |
-| [`DDG Agent Services`](https://pypi.org/project/ddg-langchain/) | [  ![Downloads per month](https://static.pepy.tech/badge/ddg-langchain/month)](https://pypi.org/project/ddg-langchain/) |
 | [`GreenCalculusToolkit`](https://greencalculus.com/guides/emission-factors-langchain/) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-greencalculus/month)](https://pypi.org/project/langchain-greencalculus/) |
 | [`RelayShield`](https://api.relayshield.net/developers) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-relayshield/month)](https://pypi.org/project/langchain-relayshield/) |
 | [`KeenableSearch`](https://docs.keenable.ai) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-keenable/month)](https://pypi.org/project/langchain-keenable/) |
+| [`ERC8004Toolkit`](https://github.com/Conrad-sudo/langchain-erc8004) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-erc8004/month)](https://pypi.org/project/langchain-erc8004/) |
+| [`PlivoToolkit`](https://github.com/plivo-dev/langchain-plivo-tools) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-plivo-tools/month)](https://pypi.org/project/langchain-plivo-tools/) |
 | [`SerpdiveSearch`](https://serpdive.com/docs) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-serpdive/month)](https://pypi.org/project/langchain-serpdive/) |
-| [`SpidraScrape`](https://docs.spidra.io) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-spidra/month)](https://pypi.org/project/langchain-spidra/) |
+| [`YutoriBrowsingTool`](https://docs.yutori.com) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-yutori/month)](https://pypi.org/project/langchain-yutori/) |
+| [`Vectara`](https://github.com/vectara/langchain-vectara) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-vectara/month)](https://pypi.org/project/langchain-vectara/) |
+| [`AnyAPIToolkit`](https://github.com/getanyapi-com/integrations/tree/main/langchain-anyapi) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-anyapi/month)](https://pypi.org/project/langchain-anyapi/) |
 | [`AlphaAIInsiderNews`](https://alphai.io/developers) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-alphai/month)](https://pypi.org/project/langchain-alphai/) |
 | [`AlphaAIInsiderSummary`](https://alphai.io/developers) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-alphai/month)](https://pypi.org/project/langchain-alphai/) |
 | [`AlphaAINewsSearch`](https://alphai.io/developers) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-alphai/month)](https://pypi.org/project/langchain-alphai/) |
 | [`AlphaAITickerSentiment`](https://alphai.io/developers) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-alphai/month)](https://pypi.org/project/langchain-alphai/) |
-| [`AnyAPIToolkit`](https://github.com/getanyapi-com/integrations/tree/main/langchain-anyapi) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-anyapi/month)](https://pypi.org/project/langchain-anyapi/) |
 | [`LexMexTool`](https://lex-mex.xyz) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-lexmex/month)](https://pypi.org/project/langchain-lexmex/) |
-| [`OpenAlexSearch`](https://github.com/ourresearch/langchain-openalex#readme) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-openalex/month)](https://pypi.org/project/langchain-openalex/) |
+| [`SpiceDB Permission Tools`](https://github.com/authzed/langchain-spicedb) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-spicedb/month)](https://pypi.org/project/langchain-spicedb/) |
+| [`SpidraScrape`](https://docs.spidra.io) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-spidra/month)](https://pypi.org/project/langchain-spidra/) |
 | [`StraleToolkit`](https://strale.dev/docs) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-strale/month)](https://pypi.org/project/langchain-strale/) |
-| [`X402PaymentTool`](https://www.agentrails.io/docs) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-x402/month)](https://pypi.org/project/langchain-x402/) |
-| [`PrintFriendlyReadPage`](https://github.com/printfriendly/langchain-printfriendly#readme) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-printfriendly/month)](https://pypi.org/project/langchain-printfriendly/) |
+| [`AsyntaiToolkit`](https://asyntai.com/documentation/integrations/langchain/) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-asyntai/month)](https://pypi.org/project/langchain-asyntai/) |
+| [`SailSQLToolkit`](https://docs.lakesail.com/sail/main/guide/integrations/langchain/) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-sail/month)](https://pypi.org/project/langchain-sail/) |
 | [`ScraperAPI`](https://docs.scraperapi.com/) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-scraperapi/month)](https://pypi.org/project/langchain-scraperapi/) |
+| [`X402PaymentTool`](https://www.agentrails.io/docs) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-x402/month)](https://pypi.org/project/langchain-x402/) |
+| [`URLCheck`](https://preclick.ai/) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-urlcheck/month)](https://pypi.org/project/langchain-urlcheck/) |
+| [`SeedanceToolkit`](https://github.com/AceDataCloud/LangChain/tree/main/packages/seedance) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-seedance-acedatacloud/month)](https://pypi.org/project/langchain-seedance-acedatacloud/) |
+| [`GandrText2SpeechTool`](https://gandr.ai/docs) | [  ![Downloads per month](https://static.pepy.tech/badge/gandr-langchain/month)](https://pypi.org/project/gandr-langchain/) |
+| [`Agentql`](https://docs.agentql.com/home) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-agentql/month)](https://pypi.org/project/langchain-agentql/) |
 | [`AmazonProductTool`](https://www.scrapingbee.com/documentation/langchain/) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-scrapingbee/month)](https://pypi.org/project/langchain-scrapingbee/) |
 | [`AmazonSearchTool`](https://www.scrapingbee.com/documentation/langchain/) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-scrapingbee/month)](https://pypi.org/project/langchain-scrapingbee/) |
 | [`ChatGPTTool`](https://www.scrapingbee.com/documentation/langchain/) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-scrapingbee/month)](https://pypi.org/project/langchain-scrapingbee/) |
 | [`CheckUsageTool`](https://www.scrapingbee.com/documentation/langchain/) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-scrapingbee/month)](https://pypi.org/project/langchain-scrapingbee/) |
 | [`GoogleSearchTool`](https://www.scrapingbee.com/documentation/langchain/) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-scrapingbee/month)](https://pypi.org/project/langchain-scrapingbee/) |
 | [`ScrapeUrlTool`](https://www.scrapingbee.com/documentation/langchain/) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-scrapingbee/month)](https://pypi.org/project/langchain-scrapingbee/) |
+| [`Valthera`](https://github.com/valthera/langchain-valthera) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-valthera/month)](https://pypi.org/project/langchain-valthera/) |
 | [`WalmartProductTool`](https://www.scrapingbee.com/documentation/langchain/) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-scrapingbee/month)](https://pypi.org/project/langchain-scrapingbee/) |
 | [`WalmartSearchTool`](https://www.scrapingbee.com/documentation/langchain/) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-scrapingbee/month)](https://pypi.org/project/langchain-scrapingbee/) |
 | [`YouTubeMetadataTool`](https://www.scrapingbee.com/documentation/langchain/) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-scrapingbee/month)](https://pypi.org/project/langchain-scrapingbee/) |
 | [`YouTubeSearchTool`](https://www.scrapingbee.com/documentation/langchain/) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-scrapingbee/month)](https://pypi.org/project/langchain-scrapingbee/) |
-| [`ProxmintFetchTool`](https://proxmint.com/docs/langchain) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-proxmint/month)](https://pypi.org/project/langchain-proxmint/) |
-| [`PlivoToolkit`](https://github.com/plivo-dev/langchain-plivo-tools) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-plivo-tools/month)](https://pypi.org/project/langchain-plivo-tools/) |
-| [`ERC8004Toolkit`](https://github.com/Conrad-sudo/langchain-erc8004) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-erc8004/month)](https://pypi.org/project/langchain-erc8004/) |
-| [`Valthera`](https://github.com/valthera/langchain-valthera) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-valthera/month)](https://pypi.org/project/langchain-valthera/) |
-| [`Vectara`](https://github.com/vectara/langchain-vectara) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-vectara/month)](https://pypi.org/project/langchain-vectara/) |
-| [`Lumify Sports Intelligence`](https://lumify.ai/docs/ai) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-lumify/month)](https://pypi.org/project/langchain-lumify/) |
-| [`Xpoz`](https://www.xpoz.ai/docs) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-xpoz/month)](https://pypi.org/project/langchain-xpoz/) |
-| [`YutoriBrowsingTool`](https://docs.yutori.com) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-yutori/month)](https://pypi.org/project/langchain-yutori/) |
 | [`Naver search`](https://github.com/e7217/langchain-naver-community) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-naver-community/month)](https://pypi.org/project/langchain-naver-community/) |
+| [`ProxyHatFetchTool`](https://docs.proxyhat.com) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-proxyhat/month)](https://pypi.org/project/langchain-proxyhat/) |
+| [`Xpoz`](https://www.xpoz.ai/docs) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-xpoz/month)](https://pypi.org/project/langchain-xpoz/) |
+| [`Tonic Textual`](https://textual.tonic.ai) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-textual/month)](https://pypi.org/project/langchain-textual/) |
+| [`Lumify Sports Intelligence`](https://lumify.ai/docs/ai) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-lumify/month)](https://pypi.org/project/langchain-lumify/) |
+| [`NodeProxyMarkdownTool`](https://github.com/pgalyen1987/NodeProxy/tree/main/integrations) | [  ![Downloads per month](https://static.pepy.tech/badge/nodeproxy-tools/month)](https://pypi.org/project/nodeproxy-tools/) |
+| [`pr402`](https://docs.ipay.sh) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-pr402/month)](https://pypi.org/project/langchain-pr402/) |
+| [`LiveTennisToolkit`](https://docs.livetennisapi.com) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-livetennis/month)](https://pypi.org/project/langchain-livetennis/) |
+| [`Querit`](https://querit.com/docs) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-querit/month)](https://pypi.org/project/langchain-querit/) |
+| [`WebzNewsSearch`](https://docs.webz.io/docs/webz/news-search-api-mcp) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-webz/month)](https://pypi.org/project/langchain-webz/) |
 | [`GaugeCatalog`](https://github.com/CHANGCHINFU/langchain-truthbear) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-truthbear/month)](https://pypi.org/project/langchain-truthbear/) |
 | [`GaugeCoverage`](https://github.com/CHANGCHINFU/langchain-truthbear) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-truthbear/month)](https://pypi.org/project/langchain-truthbear/) |
 | [`GaugeRecord`](https://github.com/CHANGCHINFU/langchain-truthbear) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-truthbear/month)](https://pypi.org/project/langchain-truthbear/) |
-| [`Precleared`](https://precleared.dev/docs/langchain) | [  ![Downloads per month](https://static.pepy.tech/badge/precleared/month)](https://pypi.org/project/precleared/) |
-| [`SpiceDB Permission Tools`](https://github.com/authzed/langchain-spicedb) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-spicedb/month)](https://pypi.org/project/langchain-spicedb/) |
 | [`TruthBearPreview`](https://github.com/CHANGCHINFU/langchain-truthbear) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-truthbear/month)](https://pypi.org/project/langchain-truthbear/) |
+| [`CareJobsToolkit`](https://github.com/yumaheymans/langchain-carejobs#readme) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-carejobs/month)](https://pypi.org/project/langchain-carejobs/) |
 | [`Jenkins`](https://github.com/Amitgb14/langchain_jenkins) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-jenkins/month)](https://pypi.org/project/langchain-jenkins/) |
-| [`GandrText2SpeechTool`](https://gandr.ai/docs) | [  ![Downloads per month](https://static.pepy.tech/badge/gandr-langchain/month)](https://pypi.org/project/gandr-langchain/) |
-| [`LyrenthReadTool`](https://lyrenth.com/docs/integrations) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-lyrenth/month)](https://pypi.org/project/langchain-lyrenth/) |
-| [`WebzNewsSearch`](https://docs.webz.io/docs/webz/news-search-api-mcp) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-webz/month)](https://pypi.org/project/langchain-webz/) |
-| [`NodeProxyMarkdownTool`](https://github.com/pgalyen1987/NodeProxy/tree/main/integrations) | [  ![Downloads per month](https://static.pepy.tech/badge/nodeproxy-tools/month)](https://pypi.org/project/nodeproxy-tools/) |
 | [`iFlow Search`](https://platform.iflow.cn/) | [  ![Downloads per month](https://static.pepy.tech/badge/iflow-search-langchain/month)](https://pypi.org/project/iflow-search-langchain/) |
-| [`SailSQLToolkit`](https://docs.lakesail.com/sail/main/guide/integrations/langchain/) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-sail/month)](https://pypi.org/project/langchain-sail/) |
-| [`Querit`](https://querit.com/docs) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-querit/month)](https://pypi.org/project/langchain-querit/) |
-| [`CrustAPISearch`](https://crustapi.com/docs) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-crustapi/month)](https://pypi.org/project/langchain-crustapi/) |
-| [`Agentql`](https://docs.agentql.com/home) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-agentql/month)](https://pypi.org/project/langchain-agentql/) |
-| [`ProxyHatFetchTool`](https://docs.proxyhat.com) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-proxyhat/month)](https://pypi.org/project/langchain-proxyhat/) |
-| [`Permit`](https://github.com/permitio/langchain-permit) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-permit/month)](https://pypi.org/project/langchain-permit/) |
-| [`pr402`](https://docs.ipay.sh) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-pr402/month)](https://pypi.org/project/langchain-pr402/) |
-| [`OpenGradientToolkit`](https://docs.opengradient.ai/) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-opengradient/month)](https://pypi.org/project/langchain-opengradient/) |
-| [`AgentFetch`](https://www.agentfetch.dev) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-agentfetch/month)](https://pypi.org/project/langchain-agentfetch/) |
-| [`W2A`](https://w2a-protocol.org/) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-w2a/month)](https://pypi.org/project/langchain-w2a/) |
-| [`Tonic Textual`](https://textual.tonic.ai) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-textual/month)](https://pypi.org/project/langchain-textual/) |
-| [`URLCheck`](https://preclick.ai/) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-urlcheck/month)](https://pypi.org/project/langchain-urlcheck/) |
-| [`DeweyResearchTool`](https://github.com/meetdewey/langchain-dewey) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-dewey/month)](https://pypi.org/project/langchain-dewey/) |
-| [`AgentGuardTool`](https://github.com/datumline/datumline-agent-guard#langchain) | [  ![Downloads per month](https://static.pepy.tech/badge/datumline-agent-guard/month)](https://pypi.org/project/datumline-agent-guard/) |
-| [`FootballChartsToolkit`](https://www.football-charts.com/developers) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-footballcharts/month)](https://pypi.org/project/langchain-footballcharts/) |
-| [`ApprovalRequiredTool`](https://useagentgate.com/docs) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-agentgate/month)](https://pypi.org/project/langchain-agentgate/) |
+| [`LayrcakeToolkit`](https://github.com/Layrcake-dev/langchain-layrcake#readme) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-layrcake/month)](https://pypi.org/project/langchain-layrcake/) |
 | [`RustChainToolkit`](https://github.com/Scottcjn/langchain-rustchain) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-rustchain-tools/month)](https://pypi.org/project/langchain-rustchain-tools/) |
-| [`SearchApiSearch`](https://www.searchapi.io/docs/google) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-searchapi/month)](https://pypi.org/project/langchain-searchapi/) |
+| [`LyrenthReadTool`](https://lyrenth.com/docs/integrations) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-lyrenth/month)](https://pypi.org/project/langchain-lyrenth/) |
+| [`Permit`](https://github.com/permitio/langchain-permit) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-permit/month)](https://pypi.org/project/langchain-permit/) |
+| [`DeweyResearchTool`](https://github.com/meetdewey/langchain-dewey) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-dewey/month)](https://pypi.org/project/langchain-dewey/) |
+| [`Stardog`](https://github.com/stardog-union/stardog-langchain) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-stardog/month)](https://pypi.org/project/langchain-stardog/) |
+| [`FootballChartsToolkit`](https://www.football-charts.com/developers) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-footballcharts/month)](https://pypi.org/project/langchain-footballcharts/) |
+| [`CrustAPISearch`](https://crustapi.com/docs) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-crustapi/month)](https://pypi.org/project/langchain-crustapi/) |
+| [`OpenGradientToolkit`](https://docs.opengradient.ai/) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-opengradient/month)](https://pypi.org/project/langchain-opengradient/) |
+| [`W2A`](https://w2a-protocol.org/) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-w2a/month)](https://pypi.org/project/langchain-w2a/) |
+| [`AgentFetch`](https://www.agentfetch.dev) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-agentfetch/month)](https://pypi.org/project/langchain-agentfetch/) |
+| [`Claw Messenger`](https://www.clawmessenger.com/blog/langchain-imessage-integration) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-claw-messenger/month)](https://pypi.org/project/langchain-claw-messenger/) |
+| [`SidClawToolkit`](https://docs.sidclaw.com/docs/integrations/langchain) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-sidclaw/month)](https://pypi.org/project/langchain-sidclaw/) |
+| [`WebExtract`](https://webextract.dev/docs/langchain) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-webextract/month)](https://pypi.org/project/langchain-webextract/) |
+| [`ContextToolkit`](https://docs.context.dev) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-context/month)](https://pypi.org/project/langchain-context/) |
 | [`Ausca`](https://github.com/auscahq/ausca/tree/main/python/langchain-ausca) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-ausca/month)](https://pypi.org/project/langchain-ausca/) |
+| [`TendemTools`](https://github.com/Toloka/tendem-mcp/tree/main/integrations/langchain-tendem#readme) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-tendem/month)](https://pypi.org/project/langchain-tendem/) |
+| [`ApprovalRequiredTool`](https://useagentgate.com/docs) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-agentgate/month)](https://pypi.org/project/langchain-agentgate/) |
 | [`KerqTrustTool`](https://kerq.dev/docs) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-kerq/month)](https://pypi.org/project/langchain-kerq/) |
 | [`ModexiaToolkit`](https://modexia.software/docs) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-modexia/month)](https://pypi.org/project/langchain-modexia/) |
-| [`AgenticEmailToolkit`](https://agenticemail.dev/docs) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-agenticemail/month)](https://pypi.org/project/langchain-agenticemail/) |
-| [`Stardog`](https://github.com/stardog-union/stardog-langchain) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-stardog/month)](https://pypi.org/project/langchain-stardog/) |
-| [`FinancialEvidenceToolkit`](https://github.com/beepboop2025/langchain-financial-evidence#readme) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-financial-evidence/month)](https://pypi.org/project/langchain-financial-evidence/) |
-| [`QuanticData`](https://quanticdata.io/docs/) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-quanticdata/month)](https://pypi.org/project/langchain-quanticdata/) |
-| [`OctenSearchResults`](https://docs.octen.ai) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-octen/month)](https://pypi.org/project/langchain-octen/) |
 | [`PinchworkDelegateTaskTool`](https://pinchwork.dev) | [  ![Downloads per month](https://static.pepy.tech/badge/pinchwork/month)](https://pypi.org/project/pinchwork/) |
+| [`NiaToolkit`](https://github.com/nozomio-labs/nia-langchain) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-nia/month)](https://pypi.org/project/langchain-nia/) |
+| [`SearchApiSearch`](https://www.searchapi.io/docs/google) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-searchapi/month)](https://pypi.org/project/langchain-searchapi/) |
+| [`ILoveVideoEditorTool`](https://ilovevideoeditor.com/docs/api-guide) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-ilovevideoeditor/month)](https://pypi.org/project/langchain-ilovevideoeditor/) |
+| [`SunoToolkit`](https://github.com/AceDataCloud/LangChain/tree/main/packages/suno) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-suno-acedatacloud/month)](https://pypi.org/project/langchain-suno-acedatacloud/) |
+| [`MagicHourToolkit`](https://docs.magichour.ai) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-magic-hour/month)](https://pypi.org/project/langchain-magic-hour/) |
+| [`OctenSearchResults`](https://docs.octen.ai) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-octen/month)](https://pypi.org/project/langchain-octen/) |
+| [`QuanticData`](https://quanticdata.io/docs/) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-quanticdata/month)](https://pypi.org/project/langchain-quanticdata/) |
+| [`Tilores`](https://github.com/tilotech/tilores-langchain) | [  ![Downloads per month](https://static.pepy.tech/badge/tilores-langchain/month)](https://pypi.org/project/tilores-langchain/) |
+| [`AgenticEmailToolkit`](https://agenticemail.dev/docs) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-agenticemail/month)](https://pypi.org/project/langchain-agenticemail/) |
+| [`FlipCoinToolkit`](https://github.com/flipcoin-fun/flipcoin-langchain) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-flipcoin/month)](https://pypi.org/project/langchain-flipcoin/) |
+| [`ICTExamToolkit`](https://www.ictlms.net) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-ictexam/month)](https://pypi.org/project/langchain-ictexam/) |
+| [`SibflyGroundMotion`](https://sibfly.com) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-sibfly/month)](https://pypi.org/project/langchain-sibfly/) |
+| [`Synoppy`](https://synoppy.com/docs) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-synoppy/month)](https://pypi.org/project/langchain-synoppy/) |
+| [`Simplepages`](https://simplepages.ai/mcp) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-simplepages/month)](https://pypi.org/project/langchain-simplepages/) |
+| [`TableJourneyToolkit`](https://tablejourney.com/agents/#langchain) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-tablejourney/month)](https://pypi.org/project/langchain-tablejourney/) |
+| [`SignatrustGenerateReceiptTool`](https://signatrust.net/docs/api) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-signatrust/month)](https://pypi.org/project/langchain-signatrust/) |
+| [`AproxPayProxyGetTool`](https://github.com/aproxpay/langchain-aproxpay) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-aproxpay/month)](https://pypi.org/project/langchain-aproxpay/) |
 | [`CrawleoCrawler`](https://crawleo.dev/integrations/langchain) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-crawleo/month)](https://pypi.org/project/langchain-crawleo/) |
 | [`CrawleoSearch`](https://crawleo.dev/integrations/langchain) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-crawleo/month)](https://pypi.org/project/langchain-crawleo/) |
-| [`Synoppy`](https://synoppy.com/docs) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-synoppy/month)](https://pypi.org/project/langchain-synoppy/) |
-| [`FidacyActionFirewall`](https://github.com/fidacy/fidacy-open) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-fidacy/month)](https://pypi.org/project/langchain-fidacy/) |
-| [`ICTExamToolkit`](https://www.ictlms.net) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-ictexam/month)](https://pypi.org/project/langchain-ictexam/) |
-| [`SidClawToolkit`](https://docs.sidclaw.com/docs/integrations/langchain) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-sidclaw/month)](https://pypi.org/project/langchain-sidclaw/) |
-| [`Claw Messenger`](https://www.clawmessenger.com/blog/langchain-imessage-integration) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-claw-messenger/month)](https://pypi.org/project/langchain-claw-messenger/) |
-| [`MagicHourToolkit`](https://docs.magichour.ai) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-magic-hour/month)](https://pypi.org/project/langchain-magic-hour/) |
-| [`CambToolkit`](https://docs.camb.ai/introduction) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-camb/month)](https://pypi.org/project/langchain-camb/) |
-| [`TendemTools`](https://github.com/Toloka/tendem-mcp/tree/main/integrations/langchain-tendem#readme) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-tendem/month)](https://pypi.org/project/langchain-tendem/) |
-| [`ICTContactToolkit`](https://www.ictcontact.com) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-ictcontact/month)](https://pypi.org/project/langchain-ictcontact/) |
-| [`Privy`](/oss/python/integrations/tools/privy) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-privy/month)](https://pypi.org/project/langchain-privy/) |
+| [`GoodSender Toolkit`](https://goodsender.com/docs) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-goodsender/month)](https://pypi.org/project/langchain-goodsender/) |
+| [`HashlockToolkit`](https://docs.hashlock.markets/) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-hashlock/month)](https://pypi.org/project/langchain-hashlock/) |
 | [`ICTPBXToolkit`](https://ictpbx.com) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-ictpbx/month)](https://pypi.org/project/langchain-ictpbx/) |
-| [`NiaToolkit`](https://github.com/nozomio-labs/nia-langchain) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-nia/month)](https://pypi.org/project/langchain-nia/) |
-| [`ILoveVideoEditorTool`](https://ilovevideoeditor.com/docs/api-guide) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-ilovevideoeditor/month)](https://pypi.org/project/langchain-ilovevideoeditor/) |
-| [`Instanode`](https://instanode.dev/docs) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-instanode/month)](https://pypi.org/project/langchain-instanode/) |
-| [`Simplepages`](https://simplepages.ai/mcp) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-simplepages/month)](https://pypi.org/project/langchain-simplepages/) |
-| [`AgentMail Toolkit`](https://docs.agentmail.to/welcome) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-agentmail/month)](https://pypi.org/project/langchain-agentmail/) |
+| [`Privy`](/oss/python/integrations/tools/privy) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-privy/month)](https://pypi.org/project/langchain-privy/) |
 | [`BiddaComplianceTool`](https://bidda.com/developers) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-bidda/month)](https://pypi.org/project/langchain-bidda/) |
-| [`ContextToolkit`](https://docs.context.dev) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-context/month)](https://pypi.org/project/langchain-context/) |
+| [`FidacyActionFirewall`](https://github.com/fidacy/fidacy-open) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-fidacy/month)](https://pypi.org/project/langchain-fidacy/) |
+| [`CambToolkit`](https://docs.camb.ai/introduction) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-camb/month)](https://pypi.org/project/langchain-camb/) |
+| [`KeiroSearchTool`](https://github.com/Keirolabs-API/langchain-keiro) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-keiro/month)](https://pypi.org/project/langchain-keiro/) |
+| [`VeriflyEmailVerifier`](https://verifly.email/docs) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-verifly/month)](https://pypi.org/project/langchain-verifly/) |
+| [`ICTContactToolkit`](https://www.ictcontact.com) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-ictcontact/month)](https://pypi.org/project/langchain-ictcontact/) |
+| [`Drasi`](https://github.com/drasi-project/langchain-drasi) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-drasi/month)](https://pypi.org/project/langchain-drasi/) |
+| [`Toolstem`](https://toolstem.com) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-toolstem/month)](https://pypi.org/project/langchain-toolstem/) |
+| [`MuAPI`](https://muapi.ai/docs/introduction) | [  ![Downloads per month](https://static.pepy.tech/badge/muapi-langchain/month)](https://pypi.org/project/muapi-langchain/) |
 | [`FlowSpeechTextToSpeechTool`](https://flowspeech.io/docs) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-flowspeech/month)](https://pypi.org/project/langchain-flowspeech/) |
+| [`Instanode`](https://instanode.dev/docs) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-instanode/month)](https://pypi.org/project/langchain-instanode/) |
+| [`AgentMail Toolkit`](https://docs.agentmail.to/welcome) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-agentmail/month)](https://pypi.org/project/langchain-agentmail/) |
+| [`Bodo DataFrames`](https://docs.bodo.ai/) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-bodo/month)](https://pypi.org/project/langchain-bodo/) |
+| [`AgentPhone Toolkit`](https://docs.agentphone.ai/welcome) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-agentphone/month)](https://pypi.org/project/langchain-agentphone/) |
 | [`WebContactsTool`](https://github.com/JosejuX/rapidapi-metadata-extractor/tree/main/langchain-webmetadata-extractor) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-webmetadata-extractor/month)](https://pypi.org/project/langchain-webmetadata-extractor/) |
 | [`WebMarkdownTool`](https://github.com/JosejuX/rapidapi-metadata-extractor/tree/main/langchain-webmetadata-extractor) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-webmetadata-extractor/month)](https://pypi.org/project/langchain-webmetadata-extractor/) |
 | [`WebMetadataExtractTool`](https://github.com/JosejuX/rapidapi-metadata-extractor/tree/main/langchain-webmetadata-extractor) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-webmetadata-extractor/month)](https://pypi.org/project/langchain-webmetadata-extractor/) |
 | [`WebSEOAuditTool`](https://github.com/JosejuX/rapidapi-metadata-extractor/tree/main/langchain-webmetadata-extractor) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-webmetadata-extractor/month)](https://pypi.org/project/langchain-webmetadata-extractor/) |
-| [`AproxPayProxyGetTool`](https://github.com/aproxpay/langchain-aproxpay) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-aproxpay/month)](https://pypi.org/project/langchain-aproxpay/) |
-| [`SibflyGroundMotion`](https://sibfly.com) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-sibfly/month)](https://pypi.org/project/langchain-sibfly/) |
-| [`KeiroSearchTool`](https://github.com/Keirolabs-API/langchain-keiro) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-keiro/month)](https://pypi.org/project/langchain-keiro/) |
-| [`VeriflyEmailVerifier`](https://verifly.email/docs) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-verifly/month)](https://pypi.org/project/langchain-verifly/) |
-| [`AIIdentityToolkit`](https://ai-identity.co/docs) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-ai-identity/month)](https://pypi.org/project/langchain-ai-identity/) |
-| [`Bodo DataFrames`](https://docs.bodo.ai/) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-bodo/month)](https://pypi.org/project/langchain-bodo/) |
-| [`AgentLineToolkit`](https://docs.agentline.cloud/introduction) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-agentline/month)](https://pypi.org/project/langchain-agentline/) |
-| [`AgentPhone Toolkit`](https://docs.agentphone.ai/welcome) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-agentphone/month)](https://pypi.org/project/langchain-agentphone/) |
-| [`FlipCoinToolkit`](https://github.com/flipcoin-fun/flipcoin-langchain) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-flipcoin/month)](https://pypi.org/project/langchain-flipcoin/) |
-| [`MuAPI`](https://muapi.ai/docs/introduction) | [  ![Downloads per month](https://static.pepy.tech/badge/muapi-langchain/month)](https://pypi.org/project/muapi-langchain/) |
-| [`Tilores`](https://github.com/tilotech/tilores-langchain) | [  ![Downloads per month](https://static.pepy.tech/badge/tilores-langchain/month)](https://pypi.org/project/tilores-langchain/) |
-| [`CekiToolkit`](https://ceki.me) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-ceki/month)](https://pypi.org/project/langchain-ceki/) |
-| [`GoodSender Toolkit`](https://goodsender.com/docs) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-goodsender/month)](https://pypi.org/project/langchain-goodsender/) |
-| [`IgptAsk`](https://docs.igpt.ai/docs/sdks/langchain#igpt-ask) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-igpt/month)](https://pypi.org/project/langchain-igpt/) |
-| [`IgptSearch`](https://docs.igpt.ai/docs/sdks/langchain#igpt-search) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-igpt/month)](https://pypi.org/project/langchain-igpt/) |
 | [`Synap DocuAnalyzer`](https://github.com/synapsoft-DA/langchain-synapsoft) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-synapsoft/month)](https://pypi.org/project/langchain-synapsoft/) |
 | [`UnstructuredTransformToolkit`](/oss/python/integrations/tools/unstructured_transform) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-unstructured-transform/month)](https://pypi.org/project/langchain-unstructured-transform/) |
-| [`SignatrustGenerateReceiptTool`](https://signatrust.net/docs/api) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-signatrust/month)](https://pypi.org/project/langchain-signatrust/) |
-| [`SeedanceToolkit`](https://github.com/AceDataCloud/LangChain/tree/main/packages/seedance) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-seedance-acedatacloud/month)](https://pypi.org/project/langchain-seedance-acedatacloud/) |
-| [`Delegare`](https://docs.delegare.dev/introduction) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-delegare/month)](https://pypi.org/project/langchain-delegare/) |
+| [`CekiToolkit`](https://ceki.me) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-ceki/month)](https://pypi.org/project/langchain-ceki/) |
+| [`IgptAsk`](https://docs.igpt.ai/docs/sdks/langchain#igpt-ask) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-igpt/month)](https://pypi.org/project/langchain-igpt/) |
+| [`IgptSearch`](https://docs.igpt.ai/docs/sdks/langchain#igpt-search) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-igpt/month)](https://pypi.org/project/langchain-igpt/) |
 | [`ProxyClaw`](https://proxyclaw.ai/docs) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-proxyclaw/month)](https://pypi.org/project/langchain-proxyclaw/) |
-| [`UniRate`](https://unirateapi.com) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-unirate/month)](https://pypi.org/project/langchain-unirate/) |
+| [`AgentLineToolkit`](https://docs.agentline.cloud/introduction) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-agentline/month)](https://pypi.org/project/langchain-agentline/) |
+| [`AIIdentityToolkit`](https://ai-identity.co/docs) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-ai-identity/month)](https://pypi.org/project/langchain-ai-identity/) |
 | [`ScrapelessCrawlerScrapeTool`](https://github.com/scrapeless-ai/langchain-scrapeless) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-scrapeless/month)](https://pypi.org/project/langchain-scrapeless/) |
 | [`ScrapelessDeepSerpGoogleSearchTool`](https://github.com/scrapeless-ai/langchain-scrapeless) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-scrapeless/month)](https://pypi.org/project/langchain-scrapeless/) |
 | [`ScrapelessUniversalScrapingTool`](https://github.com/scrapeless-ai/langchain-scrapeless) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-scrapeless/month)](https://pypi.org/project/langchain-scrapeless/) |
+| [`Delegare`](https://docs.delegare.dev/introduction) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-delegare/month)](https://pypi.org/project/langchain-delegare/) |
+| [`Geekflare`](https://docs.geekflare.com/integrations/langchain) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-geekflare/month)](https://pypi.org/project/langchain-geekflare/) |
+| [`UniRate`](https://unirateapi.com) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-unirate/month)](https://pypi.org/project/langchain-unirate/) |
 | [`Blindfold`](https://docs.blindfold.dev) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-blindfold/month)](https://pypi.org/project/langchain-blindfold/) |
-| [`Drasi`](https://github.com/drasi-project/langchain-drasi) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-drasi/month)](https://pypi.org/project/langchain-drasi/) |
-| [`Toolstem`](https://toolstem.com) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-toolstem/month)](https://pypi.org/project/langchain-toolstem/) |
 | [`AgentRAMTools`](https://agentram.dev/langchain-agent-memory-tutorial.html) | [  ![Downloads per month](https://static.pepy.tech/badge/langgraph-agentram/month)](https://pypi.org/project/langgraph-agentram/) |
 | [`GracefulFailTool`](https://selfheal.dev/docs) | [  ![Downloads per month](https://static.pepy.tech/badge/graceful-fail/month)](https://pypi.org/project/graceful-fail/) |
-| [`GraciousQuotes`](https://graciousquotes.com/developers/langchain/) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-graciousquotes/month)](https://pypi.org/project/langchain-graciousquotes/) |
 | [`Hlido`](https://hlido.eu/docs/) | [  ![Downloads per month](https://static.pepy.tech/badge/hlido-trust/month)](https://pypi.org/project/hlido-trust/) |
 | [`TempGuru`](https://tempguru.co/ai-agents) | [  ![Downloads per month](https://static.pepy.tech/badge/tempguru/month)](https://pypi.org/project/tempguru/) |
 | [`DynamicFeed`](https://dynamicfeed.ai/integrations) | [  ![Downloads per month](https://static.pepy.tech/badge/dynamicfeed-tools/month)](https://pypi.org/project/dynamicfeed-tools/) |
-| [`SunoToolkit`](https://github.com/AceDataCloud/LangChain/tree/main/packages/suno) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-suno-acedatacloud/month)](https://pypi.org/project/langchain-suno-acedatacloud/) |
-| [`GraphTool`](https://dev.writer.com/home/introduction) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-writer/month)](https://pypi.org/project/langchain-writer/) |
-| [`LiveTennisToolkit`](https://docs.livetennisapi.com) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-livetennis/month)](https://pypi.org/project/langchain-livetennis/) |
-| [`HashlockToolkit`](https://docs.hashlock.markets/) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-hashlock/month)](https://pypi.org/project/langchain-hashlock/) |
 | [`AgentLair`](https://agentlair.dev/docs) | N/A |
 | [`Browserless`](https://browserless.io) | N/A |
-| [`CareJobsToolkit`](https://github.com/yumaheymans/langchain-carejobs#readme) | N/A |
 | [`HuangtingFlux`](https://huangtingflux.com/integrations/langchain) | N/A |
-| [`LayrcakeToolkit`](https://github.com/Layrcake-dev/langchain-layrcake#readme) | N/A |
+| [`LfgAlarmToolkit`](https://github.com/lfg-gm/langchain-lfg#readme) | N/A |
 | [`Stagehand`](/oss/python/integrations/tools/stagehand) | N/A |
-| [`WebExtract`](https://webextract.dev/docs/langchain) | N/A |
 
 > [!NOTE]
 >

@@ -2,6 +2,8 @@
 
 # LangChain v1 migration guide
 
+Migrate a codebase to LangChain v1.
+
 Migrate this codebase to LangChain v1 (requires `langchain` and `@langchain/core` at v1, and Node.js 22+).
 
 Key changes:

@@ -6,6 +6,27 @@ Log of updates and improvements to our Python packages
 
 **Subscribe**: Our changelog includes an [RSS feed](https://docs.langchain.com/oss/python/releases/changelog/rss.xml) that can integrate with [Slack](https://slack.com/help/articles/218688467-Add-RSS-feeds-to-Slack), [email](https://zapier.com/apps/email/integrations/rss/1441/send-new-rss-feed-entries-via-email), Discord bots like [Readybot](https://readybot.io/) or [RSS Feeds to Discord Bot](https://rss.app/en/bots/rssfeeds-discord-bot), and other subscription tools.
 
+**Oct 22, 2026**
+
+## `langchain-core` v1.7.0
+
+In [event streaming](/oss/python/langchain/event-streaming), tool-call arguments now stream as `tool-call-delta` events. Each event carries only the new part of the arguments, as `text-delta` does for text. Earlier versions sent `block-delta` events that repeated all of the arguments so far.
+
+### Upgrade clients before the server
+
+Clients older than the versions below do not handle `tool-call-delta`. For example, earlier versions of `@langchain/react` can stop updating a `useMessages` view. The [Agent Server](/langsmith/agent-server) passes events through unchanged, so the `langchain-core` version on the server decides which events clients receive.
+
+1. Upgrade every client that reads the stream:
+   * In JavaScript, upgrade `@langchain/react`, `@langchain/vue`, `@langchain/svelte`, or `@langchain/angular` to 1.2.6 or later.
+   * In Python, upgrade `langchain-core` to 1.6.13 or later. `langgraph-sdk` uses it to read the stream.
+2. Upgrade `langchain-core` on the server to 1.7.0 or later, together with `langchain` 1.4.7 or later.
+
+`langchain` and `deepagents` accept any `langchain-core` 1.x, so upgrading either one can pull in 1.7.0. To hold the server back until you upgrade every client, pin `langchain-core<1.7.0`.
+
+### Breaking changes
+
+Starting in `langchain-core` 1.6.13, iterating `message.tool_calls` yields only the new part of each tool call's arguments, with the call's `id` and `name`. Earlier versions yielded all of the arguments so far. A call's chunks concatenate into its full arguments, and `message.tool_calls.get()` still returns the parsed tool calls.
+
 **Oct 14, 2026**
 
 ## `langchain` v1.4.6
@@ -77,6 +98,8 @@ A leaner, more configurable harness by default. On a default-agent turn, input t
 * **Output format changes**: Empty `ls` / `glob` output is now `No files found` instead of `[]`, and `read_file` no longer renders a fixed-width `cat -n`-style gutter — update any parsers of raw tool output. ([#4561](https://github.com/langchain-ai/deepagents/pull/4561))
 
 Copy the following prompt into your AI coding assistant to migrate a codebase for these breaking changes:
+
+Migrate a deepagents codebase from v0.6.x to v0.7.
 
 Migrate this codebase from `deepagents` v0.6.x to v0.7 to account for the following breaking changes:
 

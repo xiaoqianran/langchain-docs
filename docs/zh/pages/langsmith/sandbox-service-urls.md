@@ -8,7 +8,7 @@
 
 服务 URL 允许您访问沙箱内运行的 HTTP 服务（REST API、Streamlit 应用程序、Jupyter 笔记本、API 文档），无需隧道、端口转发或 CLI 工具。每个沙箱 + 端口组合都有自己的 URL，您可以在浏览器中打开该 URL、从代码中调用或与团队成员共享。
 
-<img alt="Service URLs view" />
+![Service URLs view](https://mintcdn.com/langchain-5e9cc07a/JxIMPFSEbdqv0n3F/images/langsmith/sandboxes/sb-service-feature.png?fit=max\&auto=format\&n=JxIMPFSEbdqv0n3F\&q=85\&s=17f16908ceed5efff1dcf8620e7aea4a)
 
 ## 快速开始
 
@@ -47,7 +47,7 @@ with client.sandbox() as sb:
 1. 打开沙箱详情页面。
 2. 找到**开放服务**小部件。
 3. 输入端口号（例如 `3000`）。
-4. 单击“**打开**”在新选项卡中启动，或“**共享链接**”复制可发送给团队成员的 URL。任何知道该链接的人都可以访问该服务，即使没有 LangSmith 帐户。令牌过期后，从 UI 生成新链接。
+4. 单击“**打开**”在新选项卡中启动，或“**共享链接**”复制可发送给团队成员的 URL。即使没有 LangSmith 帐户，任何知道该链接的人都可以访问该服务。令牌过期后，从 UI 生成新链接。
 
 ## 从 SDK 中打开服务
 
@@ -65,9 +65,9 @@ svc = client.service("my-sandbox", port=3000)
 svc = sb.service(port=3000, expires_in_seconds=3600)
 ```
 
-<Note>
-  在请求服务 URL 之前，该服务必须正在运行并侦听指定端口。该 URL 仅路由流量，不会为您启动服务。
-</Note>
+> [!注意]
+>
+> 在请求服务 URL 之前，服务必须正在运行并侦听指定端口。该 URL 仅路由流量，不会为您启动服务。
 
 ### 提出请求
 
@@ -189,7 +189,7 @@ def create_item(item: dict):
 | **访问自** |浏览器、脚本、CI，随处可见 |仅限本地机器 |
 | **分享** |复制网址并发送 |不可分享 |
 | **多页网络应用程序** |全面支持（子域路由） |全面支持（本地端口）|
-| **非 HTTP 服务** |不支持 |全力支持|
+| **非 HTTP 服务** |不支持 |全力支持 |
 
 将**服务 URL** 用于您想要从浏览器访问或与其他人共享的 HTTP 服务。对于非 HTTP 协议（​​如 `psql` 或 `redis-cli`）或需要仅本地访问时，请使用 **[TCP tunnels](/langsmith/sandbox-sdk#tcp-tunnels-python)**。
 
@@ -197,18 +197,12 @@ def create_item(item: dict):
 
 ## 故障排除|错误|原因 |修复 |
 | - | - | - |
-| **“服务链接已过期”** |超过令牌生命周期 |从 LangSmith 再次打开服务或致电 `sb.service()` 获取新的 URL |
+| **“服务链接已过期”** |超过令牌生命周期 |从 LangSmith 再次打开服务或调用 `sb.service()` 获取新的 URL |
 | **“服务无法访问”** |没有任何东西正在监听该端口 |验证服务器是否在沙箱内运行 |
 | **“需要身份验证”** |标头或 cookie 中没有令牌 |使用`browser_url`进行浏览器访问或设置`X-Langsmith-Sandbox-Service-Token`标头 |
 
 ***
 
-<div>
-  <Callout icon="terminal-2">
-    [Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
-  </Callout>
+[Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
 
-  <Callout icon="edit">
-    [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/sandbox-service-urls.mdx) 或 [file an issue](https://github.com/langchain-ai/docs/issues/new/choose)。
-  </Callout>
-</div>
+[Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/sandbox-service-urls.mdx) 或 [file an issue](https://github.com/langchain-ai/docs/issues/new/choose)。

@@ -48,11 +48,11 @@ Browse the complete collection of integrations available for Python. LangChain P
 
 > **[AlexEvidenceVerifier](https://pypi.org/project/langchain-alex/)**
 >
-> Verify signed ALEX Evidence Packages inside LangChain and LangGraph workflows against an external trust anchor. The integration exposes a structured LangChain tool and a LangGraph node that fail closed on unsupported schemas, signature failures, incomplete evidence, or inconsistent outcomes.
+> Verify signed ALEX Evidence Packages in LangChain and LangGraph workflows against an external trust anchor, failing closed on errors.
 
 > **[Algenta](https://github.com/thyn-ai/algenta-integrations/tree/main/python/langchain-algenta#readme)**
 >
-> Governed tool execution for LangChain agents: `create_algenta_tools` exposes a self-hosted Algenta decision engine's MCP tool surface as `BaseTool`s with profile-based filtering (`observe`/`govern`/`execute`/`full`), typed execution receipts, and synchronous policy-gate denials on real-world execution.
+> Governed tool execution for LangChain agents: exposes a self-hosted Algenta decision engine as BaseTools with policy-gated execution.
 
 > **[AlphaAI](https://alphai.io/developers)**
 >
@@ -128,7 +128,7 @@ Browse the complete collection of integrations available for Python. LangChain P
 
 > **[AgentSearch](https://agentsearchhq.com/blog/add-web-search-to-langchain-agent?utm_source=langchain-docs\&utm_medium=integration-listing\&utm_campaign=promo-oct26)**
 >
-> Live web search for agents, free by default with no API key (daily allowance), plus pay-per-call Extract (URL to markdown) and Render (headless browser for JS pages).
+> Live web search for agents, free by default with no API key, plus pay-per-call Extract and Render for full pages and JS sites.
 
 > **[AgentGuardTool](https://github.com/datumline/datumline-agent-guard#langchain)**
 >
@@ -172,7 +172,7 @@ Browse the complete collection of integrations available for Python. LangChain P
 
 > **[AMUVectorStore](https://github.com/sangaraju1988/amu-pgvector#readme)**
 >
-> Vector store backed by PostgreSQL + pgvector where Postgres row-level security gates retrieval on a cached result's derivation lineage, not just its content or access tags.
+> PostgreSQL + pgvector store where row-level security gates retrieval on a cached result's derivation lineage, not only content tags.
 
 > **[Ampersend](https://docs.ampersend.ai)**
 >
@@ -264,7 +264,7 @@ Browse the complete collection of integrations available for Python. LangChain P
 
 > **[Asyntai](https://asyntai.com/documentation/integrations/langchain/)**
 >
-> Asyntai is a hosted AI chat agent for websites; langchain-asyntai provides tools to query a site's indexed pages and product feed, to add pages and notes to its knowledge base, and to read its leads and chat transcripts.
+> Tools for a hosted website chat agent: query indexed pages and product feeds, update the knowledge base, and read leads and chats.
 
 > **[Atomic Mail](https://docs.atomicmail.ai/langchain)**
 >
@@ -332,7 +332,7 @@ Browse the complete collection of integrations available for Python. LangChain P
 
 > **[BowmarkToolkit](https://bowmark.ai/docs/langchain)**
 >
-> Two tools for live websites: one reads Bowmark's typed function library for a task or site, the other runs a short script against it and returns structured data.
+> Tools for live websites: read Bowmark's typed function library for a task or site, or run a short script for structured data.
 
 > **[Box](/oss/python/integrations/providers/box)**
 >
@@ -392,7 +392,7 @@ Browse the complete collection of integrations available for Python. LangChain P
 
 > **[Clearsigned](https://clearsigned.com/integrations#langchain)**
 >
-> Tool that verifies a factual claim against live web evidence and returns SUPPORTED, REFUTED or UNVERIFIABLE with a calibrated confidence, per-source stances, and an Ed25519-signed receipt verified offline; paid per call over x402.
+> Verifies a factual claim against live web evidence and returns a stance, confidence, and an offline-verifiable signed receipt.
 
 > **[cloro](https://cloro.dev/docs)**
 >
@@ -404,7 +404,7 @@ Browse the complete collection of integrations available for Python. LangChain P
 
 > **[CTRLRun](https://docs.ctrlrun.dev/guides/langchain-middleware)**
 >
-> Execution safety for AI agents. Middleware that checks every tool call against a policy before it runs, holds the consequential ones for a human, and leaves a receipt.
+> Execution-safety middleware that checks each tool call against a policy, holds consequential ones for a human, and leaves a receipt.
 
 > **[Cloudflare](https://developers.cloudflare.com/workers-ai/)**
 >
@@ -512,7 +512,7 @@ Browse the complete collection of integrations available for Python. LangChain P
 
 > **[DDG Agent Services](https://pypi.org/project/ddg-langchain/)**
 >
-> Pay-per-call x402 APIs for AI agents (web search, price feeds, and site audits) settled in USDC on Base with no account or API key; the ddg-langchain package wraps them as LangChain tools.
+> Pay-per-call x402 APIs for agents (web search, price feeds, site audits) settled in USDC on Base, wrapped as LangChain tools.
 
 > **[Databricks](/oss/python/integrations/providers/databricks)**
 >
@@ -604,7 +604,7 @@ Browse the complete collection of integrations available for Python. LangChain P
 
 > **[DynamicToolSelectorMiddleware](https://github.com/RauhanAhmed/langchain-dynamic-tools-middleware)**
 >
-> Drop-in agent middleware providing sub-100ms hybrid dense and sparse vector tool retrieval over zvec. Eliminates prompt token overhead by >80% and outperforms LLM-based tool selection on Berkeley Function Calling Leaderboard (BFCL) benchmarks.
+> Agent middleware for sub-100ms hybrid dense and sparse vector tool retrieval over zvec, cutting prompt token overhead from tool lists.
 
 > **[E2B](https://e2b.dev/docs)**
 >
@@ -628,7 +628,7 @@ Browse the complete collection of integrations available for Python. LangChain P
 
 > **[EmpirioLabs AI](https://docs.empiriolabs.ai)**
 >
-> Frontier open models through one OpenAI-compatible API.
+> Specialized AI model hosting for open, proprietary, and custom stacks through one OpenAI-compatible API, plus GPU Cloud and hosted agents.
 
 > **[EnConvert](https://github.com/enconvert/langchain-enconvert)**
 >
@@ -644,7 +644,7 @@ Browse the complete collection of integrations available for Python. LangChain P
 
 > **[ERC-8004](https://github.com/Conrad-sudo/langchain-erc8004)**
 >
-> Verify an ERC-8004 agent's on-chain identity against the registration file it publishes, read reputation feedback attributed to named reviewers, and prepare registry writes as execution plans.
+> Verify an ERC-8004 agent's on-chain identity and reputation feedback, and prepare registry writes as execution plans.
 
 > **[Exa Search](/oss/python/integrations/providers/exa_search)**
 >
@@ -672,7 +672,7 @@ Browse the complete collection of integrations available for Python. LangChain P
 
 > **[FeedMyAgent](https://github.com/makash/feedmyagent-skill/tree/main/integrations/langchain)**
 >
-> Technology intelligence feed for AI agents: security advisories, tech-stack changes and compliance deadlines, classified hourly; anonymous reads, optional API key for posting.
+> Technology intelligence feed for AI agents: security advisories, tech-stack changes, and compliance deadlines, classified hourly.
 
 > **[FiGuard](https://docs.figuard.io)**
 >
@@ -680,7 +680,7 @@ Browse the complete collection of integrations available for Python. LangChain P
 
 > **[Fizzl](https://fizzl.eu/agents/python/)**
 >
-> Safety checks for agents that pay: a transaction or signature before signing, a token before buying, a wallet's open approvals, and an x402 or MPP paid API before paying, as LangChain StructuredTools.
+> Safety checks for agents that pay: review transactions, tokens, wallet approvals, and paid APIs before signing or buying.
 
 > **[FlashDataToolkit](https://github.com/rocosen/langchain-flashdata#readme)**
 >
@@ -704,7 +704,7 @@ Browse the complete collection of integrations available for Python. LangChain P
 
 > **[Foliant](https://github.com/gazoy/langchain-foliant#readme)**
 >
-> Payment tool and budget middleware for agents that pay x402 endpoints through Foliant payment channels and pools, with one on-chain settlement per session and a delegated spending budget per agent and per crew.
+> Payment tool and budget middleware for agents paying x402 endpoints through Foliant channels, with per-agent spending budgets.
 
 > **[Football Charts](https://www.football-charts.com/developers)**
 >
@@ -716,7 +716,7 @@ Browse the complete collection of integrations available for Python. LangChain P
 
 > **[GAIP](https://pypi.org/project/langchain-gaip/)**
 >
-> GAIP's free tools for LangChain: check whether an AI agent, MCP server or API works or has changed, explain a failed call and its fix, follow a server for dated changes, and check that cited pages contain the quoted text. No API key.
+> Free LangChain tools to check whether an agent, MCP server, or API works, explain failures, follow changes, and verify cited quotes.
 
 > **[Galaxia](https://smabbler.gitbook.io/smabbler/api-rag/smabblers-api-rag)**
 >
@@ -733,6 +733,10 @@ Browse the complete collection of integrations available for Python. LangChain P
 > **[Gel](https://github.com/geldata/langchain-gel)**
 >
 > Knowledge extraction and NLP platform.
+
+> **[Geekflare](https://docs.geekflare.com/integrations/langchain)**
+>
+> Web search with Google SERP results, page scraping, screenshots, URL-to-PDF, brand data, and website diagnostics via the Geekflare API.
 
 > **[GetYouTubeTranscript](https://github.com/tubeagentkit/langchain-getyoutubetranscript#readme)**
 >
@@ -756,7 +760,7 @@ Browse the complete collection of integrations available for Python. LangChain P
 
 > **[GoAT](https://pypi.org/project/langgraph-goat/)**
 >
-> langgraph-goat records candidate plans, scores, and why each was chosen or rejected as a LangGraph agent plans, then renders a natural-language explanation for debugging and end-user transparency.
+> Records candidate plans, scores, and rejection reasons as a LangGraph agent plans, then explains the decision in plain language.
 
 > **[GPT Image by Ace Data Cloud](https://github.com/AceDataCloud/LangChain/tree/main/packages/gpt-image)**
 >
@@ -788,7 +792,7 @@ Browse the complete collection of integrations available for Python. LangChain P
 
 > **[GreenCalculus](https://greencalculus.com/guides/emission-factors-langchain/)**
 >
-> Greenhouse-gas emission factors from public publishers (DEFRA, US EPA, ADEME, IPCC and others), returned with the publisher's exact source cell, licence and data version.
+> Greenhouse-gas emission factors from public publishers (DEFRA, US EPA, ADEME, IPCC), with exact source cell, licence, and data version.
 
 > **[GreenNode](https://greennode.ai/)**
 >
@@ -864,7 +868,7 @@ Browse the complete collection of integrations available for Python. LangChain P
 
 > **[HirePulse](https://github.com/edtool79-collab/hirepulse-open-source#langchain-and-crewai-gateway-tools-030)**
 >
-> StructuredTools for public company hiring signals, website technologies, company jobs, Google Ads transparency, company profiles and bulk lookup quotes from the HirePulse gateway.
+> StructuredTools for public hiring signals, website technologies, jobs, Google Ads transparency, profiles, and bulk lookup quotes.
 
 > **[Hubris](https://hubris.pw/docs/integrations/langchain)**
 >
@@ -916,7 +920,7 @@ Browse the complete collection of integrations available for Python. LangChain P
 
 > **[Inferrail](https://github.com/domondi1/inferrail/blob/main/docs/recipes/agent-run-budget.md?ref=langchain-docs#langchain)**
 >
-> Self-hosted OpenAI-compatible gateway that enforces a dollar budget per agent run via request headers on `ChatOpenAI`, refusing over-budget calls with HTTP 402 before the provider.
+> Self-hosted OpenAI-compatible gateway that enforces a dollar budget per agent run, refusing over-budget calls with HTTP 402.
 
 > **[Infinispan](https://github.com/infinispan/langchain-infinispan/blob/main/libs/infinispan/README.md)**
 >
@@ -1050,6 +1054,10 @@ Browse the complete collection of integrations available for Python. LangChain P
 >
 > Spanish-language Mexican federal law Q\&A with cited articles for LangChain agents.
 
+> **[LFG Alarm](https://github.com/lfg-gm/langchain-lfg#readme)**
+>
+> Tools that set, list and delete alarms that ring on a phone, and ring a phone now, through LFG Alarm.
+
 > **[Lindorm](https://help.aliyun.com/document_detail/174640.html)**
 >
 > Alibaba Cloud's multi-model database service.
@@ -1140,7 +1148,7 @@ Browse the complete collection of integrations available for Python. LangChain P
 
 > **[MemoryRouter](https://docs.memoryrouter.ai/langchain)**
 >
-> Persistent, user-scoped memory for LangChain and LangGraph agents: retain and recall tools, recall/retain graph nodes, and a BaseStore backed by MemoryRouter vaults.
+> Persistent, user-scoped memory for LangChain and LangGraph agents with retain/recall tools, graph nodes, and a BaseStore.
 
 > **[Memstate AI](https://memstate.ai/docs/integrations/langchain)**
 >
@@ -1188,7 +1196,7 @@ Browse the complete collection of integrations available for Python. LangChain P
 
 > **[mnki (Agent Trust)](https://mnki.com/docs/integrations#frameworks)**
 >
-> mnki (Agent Trust) verifies each LangChain or LangGraph tool call against the agent's delegated authority before it runs and records a signed evidence list per decision.
+> Verifies each LangChain or LangGraph tool call against the agent's delegated authority and records a signed evidence list per decision.
 
 > **[MLflow Tracking](/oss/python/integrations/providers/mlflow_tracking)**
 >
@@ -1244,7 +1252,7 @@ Browse the complete collection of integrations available for Python. LangChain P
 
 > **[Ned Watch](https://ned.watch/integrations/langgraph)**
 >
-> Callback handler for Ned Watch: a LangGraph or LangChain run checks in when it finishes and reports a failure if it raises, so a signed webhook fires when runs stop happening or overrun.
+> Callback handler that checks in when a LangGraph or LangChain run finishes so a signed webhook fires on missing or overrun runs.
 
 > **[Neo4j](/oss/python/integrations/providers/neo4j)**
 >
@@ -1340,7 +1348,7 @@ Browse the complete collection of integrations available for Python. LangChain P
 
 > **[OpenAlexSearch](https://github.com/ourresearch/langchain-openalex#readme)**
 >
-> OpenAlex is a free, open index of scholarly works (papers, books, datasets, preprints) with their authors, sources and citations; the package provides a search tool, a lookup-by-DOI tool and a retriever.
+> Search and lookup tools over OpenAlex, a free index of scholarly works, authors, sources, and citations, plus a retriever.
 
 > **[OpenBox](https://docs.openbox.ai/getting-started/langgraph)**
 >
@@ -1440,7 +1448,11 @@ Browse the complete collection of integrations available for Python. LangChain P
 
 > **[Pexafy](https://docs.pexafy.com/langchain)**
 >
-> Pexafy is a semantic search API over free stock photos from Unsplash, Pexels, Pixabay and six more libraries, returning each photo with its license and credit line.
+> Semantic search over free stock photos from Unsplash, Pexels, Pixabay, and more, returning each photo with license and credit.
+
+> **[Pidgeon Toolkit](https://pidgeon.ai/docs/langchain)**
+>
+> Pidgeon Toolkit gives agents mail inbox tools to create addresses, read and search messages, wait for verification codes, send, reply, and hand off threads.
 
 > **[PIIGhost](https://athroniaeth.github.io/piighost/getting-started/langchain/)**
 >
@@ -1564,7 +1576,7 @@ Browse the complete collection of integrations available for Python. LangChain P
 
 > **[Pushary](https://pushary.com/docs/agents/build/langgraph?utm_source=langchain\&utm_medium=integration-directory\&utm_campaign=pushary-langgraph-py)**
 >
-> Phone approvals for LangGraph and LangChain agents. The ask\_human tool or pushary\_interrupt() asks your user on their phone, and the graph resumes with their Approve or Deny. If nobody answers, the action does not run.
+> Phone approvals for LangGraph and LangChain agents: ask on the user's phone and resume on Approve or Deny; no answer means no action.
 
 > **[PyMuPDF4LLM](https://github.com/lakinduboteju/langchain-pymupdf4llm)**
 >
@@ -1700,7 +1712,7 @@ Browse the complete collection of integrations available for Python. LangChain P
 
 > **[Scavio](https://scavio.dev/docs/langchain)**
 >
-> Real-time search API for AI agents across the web, commerce, video, social, jobs, real estate, travel, app stores, ad libraries, and public filings, plus clean text extraction from any URL.
+> Real-time search for AI agents across the web, commerce, video, social, jobs, and more, plus clean text extraction from any URL.
 
 > **[ScaleDown](https://github.com/scaledown-team/langchain-scaledown/blob/main/README.md)**
 >
@@ -1708,7 +1720,7 @@ Browse the complete collection of integrations available for Python. LangChain P
 
 > **[SchemagateRetriever](https://ashishsinha1602.github.io/schemagate/langchain/)**
 >
-> Retriever that selects schema objects for a SQL agent and returns only the tables the calling principal is permitted to read, for Postgres, Oracle, MySQL and SQL Server
+> Retriever that returns only SQL schema tables the calling principal may read, for Postgres, Oracle, MySQL, and SQL Server.
 
 > **[ScrapeGraph](https://github.com/ScrapeGraphAI/langchain-scrapegraph)**
 >
@@ -1918,6 +1930,10 @@ Browse the complete collection of integrations available for Python. LangChain P
 >
 > Data visualization and business intelligence.
 
+> **[TableJourney](https://tablejourney.com/agents/#langchain)**
+>
+> Tools for verified places to eat, food festivals with dates, and bookable food tours and stays in 224 cities, from TableJourney's public MCP server.
+
 > **[Taiga](https://github.com/Shikenso-Analytics/langchain-taiga)**
 >
 > Project management platform for agile teams.
@@ -1928,7 +1944,7 @@ Browse the complete collection of integrations available for Python. LangChain P
 
 > **[TanodToolkit](https://github.com/tanod-labs/integrations/tree/main/langchain)**
 >
-> Pay-per-call tools for agents (x402, USDC on Base) for smart-contract scans, address risk and sanctions checks, on-chain reads, web, DNS and data utilities, with a small free daily tier.
+> Pay-per-call tools (x402, USDC on Base) for contract scans, address risk, on-chain reads, and web or DNS utilities.
 
 > **[TanvoToolkit](https://github.com/tanvoai/langchain-tanvo#readme)**
 >
@@ -1952,7 +1968,7 @@ Browse the complete collection of integrations available for Python. LangChain P
 
 > **[Tenuo](https://tenuo.ai/langchain)**
 >
-> Task-scoped authorization for LangChain agents that limits each task to the tools, argument values and time it needs, enforced before execution, with delegated agents receiving a subset of the parent's permissions.
+> Task-scoped authorization for LangChain agents that limits tools, arguments, and time before execution, including delegated subsets.
 
 > **[TensorLake](/oss/python/integrations/providers/tensorlake)**
 >
@@ -2032,7 +2048,7 @@ Browse the complete collection of integrations available for Python. LangChain P
 
 > **[TracekitMiddleware](https://github.com/Cygnux-Labs/Tracekit/blob/main/docs/integrations/langchain.md)**
 >
-> Tracekit asks a separate signer to allow, deny or hold each agent tool call for a person before it runs, and records every call and result in a signed, hash-chained log that can be verified offline.
+> Asks a signer to allow, deny, or hold each tool call before it runs, and records a signed, offline-verifiable hash-chained log.
 
 > **[TrueFoundry](/oss/python/integrations/providers/truefoundry)**
 >
@@ -2145,6 +2161,10 @@ Browse the complete collection of integrations available for Python. LangChain P
 > **[Vectorize](https://docs.vectorize.io/rag-pipelines/retrieval-endpoint#access-tokens)**
 >
 > Vector database and semantic search.
+
+> **[VeqenCallbackHandler](https://github.com/Keyveve/veqen-sdks/tree/main/integrations/langchain#readme)**
+>
+> Veqen records token usage and estimated AI costs by customer and feature, with local budget checks before model calls.
 
 > **[Vequil](https://github.com/nxd914/vequil)**
 >
@@ -2272,7 +2292,7 @@ Browse the complete collection of integrations available for Python. LangChain P
 
 > **[ZeroGPU](https://docs.zerogpu.ai)**
 >
-> Ultra-fast, compute-efficient inference provider for apps and agents: purpose-built small and nano models on an edge network, with zero GPU infrastructure, serverless, and auto-scaling built in.
+> Inference provider for apps and agents: purpose-built small and nano models on an edge network, serverless, with no GPU infrastructure.
 
 > **[ZeusDB](https://docs.zeusdb.com)**
 >

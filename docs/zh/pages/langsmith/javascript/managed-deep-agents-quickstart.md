@@ -32,6 +32,8 @@ npx skills add langchain-ai/langchain-skills --skill managed-deep-agents --yes
 
 或者将此提示粘贴到您的编码代理中：
 
+使用快速入门构建托管深度代理
+
 按照托管 Deep Agents 快速入门，在此工作目录中创建并部署托管深度代理。
 
 ## 第 1 步：阅读指南

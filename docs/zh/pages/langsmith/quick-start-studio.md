@@ -30,24 +30,22 @@ Studio 可通过 **部署** 导航在 [LangSmith UI](https://smith.langchain.com
 
 1. 安装[LangGraph CLI](/langsmith/cli)：
 
-   <CodeGroup>
-     ```bash pip theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-     pip install -U "langgraph-cli[inmem]"
-     langgraph dev
-     ```
+   ```bash pip theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+   pip install -U "langgraph-cli[inmem]"
+   langgraph dev
+   ```
 
-     ```bash uv theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-     uv add "langgraph-cli[inmem]"
-     langgraph dev
-     ```
+   ```bash uv theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+   uv add "langgraph-cli[inmem]"
+   langgraph dev
+   ```
 
-     ```bash npm theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-     npx @langchain/langgraph-cli dev
-     ```
-   </CodeGroup><Warning>
-     **浏览器兼容性**
-     Safari 阻止 `localhost` 与 Studio 的连接。要解决此问题，请使用 `--tunnel` 运行命令以通过安全隧道访问 Studio。您需要通过单击 Studio UI 中的 **连接到本地服务器** 来手动将隧道 URL 添加到允许的源。步骤请参阅[troubleshooting guide](/langsmith/troubleshooting-studio#safari-connection-issues)。
-   </Warning>
+   ```bash npm theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+   npx @langchain/langgraph-cli dev
+   ```> [!警告]
+   >
+   > **浏览器兼容性**
+   > Safari 阻止 `localhost` 与 Studio 的连接。要解决此问题，请使用 `--tunnel` 运行命令以通过安全隧道访问 Studio。您需要通过单击 Studio UI 中的 **连接到本地服务器** 来手动将隧道 URL 添加到允许的源。步骤请参阅[troubleshooting guide](/langsmith/troubleshooting-studio#safari-connection-issues)。
 
    这将在本地启动代理服务器，并在内存中运行。服务器将以监视模式运行，侦听代码更改并自动重新启动。阅读此[reference](/langsmith/cli#dev)，了解启动 API 服务器的所有选项。
 
@@ -76,51 +74,47 @@ Studio 可通过 **部署** 导航在 [LangSmith UI](https://smith.langchain.com
 
 要使用断点和变量检查进行逐步调试，请运行以下命令：
 
-<CodeGroup>
-  ```bash pip theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  # Install debugpy package
-  pip install debugpy
-  # Start server with debugging enabled
-  langgraph dev --debug-port 5678
-  ```
+```bash pip theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+# Install debugpy package
+pip install debugpy
+# Start server with debugging enabled
+langgraph dev --debug-port 5678
+```
 
-  ```bash uv theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  # Install debugpy package
-  uv add debugpy
-  # Start server with debugging enabled
-  langgraph dev --debug-port 5678
-  ```
-</CodeGroup>
+```bash uv theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+# Install debugpy package
+uv add debugpy
+# Start server with debugging enabled
+langgraph dev --debug-port 5678
+```
 
-然后附加您首选的调试器：<Tabs>
-  <Tab title="VS Code">
-    将此配置添加到`launch.json`：
+然后附加您首选的调试器：
 
-    ```json theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-    {
-        "name": "Attach to LangGraph",
-        "type": "debugpy",
-        "request": "attach",
-        "connect": {
-          "host": "0.0.0.0",
-          "port": 5678
-        }
+**VS 代码**将此配置添加到`launch.json`：
+
+```json theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+{
+    "name": "Attach to LangGraph",
+    "type": "debugpy",
+    "request": "attach",
+    "connect": {
+      "host": "0.0.0.0",
+      "port": 5678
     }
-    ```
-  </Tab>
+}
+```
 
-  <Tab title="PyCharm">
-    1. 转到“运行”>“编辑配置”
-    2.点击+并选择“Python调试服务器”
-    3.设置IDE主机名：`localhost`
-    4. 设置端口：`5678`（或者您在上一步中选择的端口号）
-    5.点击“确定”开始调试
-  </Tab>
-</Tabs>
+**PyCharm**
 
-<Tip>
-  有关入门问题，请参阅[troubleshooting guide](/langsmith/troubleshooting-studio)。
-</Tip>
+1. 转到“运行”>“编辑配置”
+2.点击+并选择“Python调试服务器”
+3.设置IDE主机名：`localhost`
+4. 设置端口：`5678`（或者您在上一步中选择的端口号）
+5.点击“确定”开始调试
+
+> [!提示]
+>
+> 有关入门问题，请参阅[troubleshooting guide](/langsmith/troubleshooting-studio)。
 
 ## 后续步骤
 
@@ -135,12 +129,6 @@ Studio 可通过 **部署** 导航在 [LangSmith UI](https://smith.langchain.com
 
 ***
 
-<div>
-  <Callout icon="terminal-2">
-    [Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
-  </Callout>
+[Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
 
-  <Callout icon="edit">
-    [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/quick-start-studio.mdx) 或 [file an issue](https://github.com/langchain-ai/docs/issues/new/choose)。
-  </Callout>
-</div>
+[Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/quick-start-studio.mdx) 或 [file an issue](https://github.com/langchain-ai/docs/issues/new/choose)。

@@ -8,9 +8,9 @@
 
 沙箱为托管深度代理提供了一个隔离的文件系统和 shell，用于处理文件、运行代码和执行命令。
 
-<Note>
-  托管 Deep Agents 于 [LangSmith Cloud](/langsmith/cloud) **公开 [beta](/langsmith/release-stages)**。
-</Note>
+> [!注意]
+>
+> 托管 Deep Agents 于 [LangSmith Cloud](/langsmith/cloud) **公开 [beta](/langsmith/release-stages)**。
 
 将沙箱声明放在`sandbox/`下。仅当您想要配置快照时才添加 `sandbox/setup.sh`：
 
@@ -165,9 +165,9 @@ sandbox = define_sandbox(
 
 [Authored tools](/langsmith/python/managed-deep-agents-tools)和[middleware](/langsmith/python/managed-deep-agents-middleware)通过`runtime.backend`到达沙箱文件系统。当您自己的代码需要文件时使用它，而不是提示代理为您获取文件。
 
-<Note>
-  `runtime.backend` 需要 `managed-deepagents>=0.8.0`。
-</Note>注释 `runtime` 参数以接收类型表面：
+> [!注意]
+>
+> `runtime.backend` 需要 `managed-deepagents>=0.8.0`。注释 `runtime` 参数以接收类型表面：
 
 ```python tools/report.py theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 from langchain.tools import tool
@@ -272,12 +272,6 @@ if uploaded[0].error:
 
 ***
 
-<div>
-  <Callout icon="terminal-2">
-    [Connect these docs](/use-these-docs) to your agent of choice via MCP for real-time answers.
-  </Callout>
+[Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
 
-  <Callout icon="edit">
-    [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/managed-deep-agents-sandboxes.mdx) 或 [file an issue](https://github.com/langchain-ai/docs/issues/new/choose)。
-  </Callout>
-</div>
+[Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/managed-deep-agents-sandboxes.mdx) 或 [file an issue](https://github.com/langchain-ai/docs/issues/new/choose)。

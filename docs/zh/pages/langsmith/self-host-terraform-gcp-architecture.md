@@ -6,14 +6,14 @@
 
 GKE 上自托管的 LangSmith 的平台层、服务、工作负载身份、网络和模块依赖项。
 
-了解 [GCP Terraform modules](https://github.com/langchain-ai/terraform/tree/main/modules/gcp) 的配置以及各部分如何组合在一起，以便您可以在运行 `make apply` 之前调整、保护和自定义 LangSmith 部署。
+了解 [GCP Terraform modules](https://github.com/langchain-ai/terraform/tree/main/modules/gcp) 的配置以及各个部分如何组合在一起，以便您可以在运行 `make apply` 之前调整、保护和自定义 LangSmith 部署。
 
 在规划部署或对现有部署进行故障排除时，请使用此页面作为参考。它涵盖：
 
 * 平台层和部署层（轻型与生产）。
 * 模块描述和依赖关系。
 * 网络、工作负载身份和流量。
-* 附加组件：LangSmith 部署、舰队、见解、Polly、SmithDB 和沙箱。
+* 附加组件：LangSmith 部署、舰队、Insights、Polly、SmithDB 和沙箱。
 * GCP 托管服务和 Secret Manager 集成。
 
 如果您准备好安装，请从[deployment walkthrough](/langsmith/self-host-terraform-gcp-deploy)开始。
@@ -22,19 +22,19 @@ GKE 上自托管的 LangSmith 的平台层、服务、工作负载身份、网�
 
 GCP 上的LangSmith 最多可分为五个阶段进行部署。每个阶段都会在前一个阶段的基础上添加一个功能层。所有层共享相同的 GKE 集群和 `langsmith` 命名空间。
 
-<img alt="LangSmith on GCP deployment stages and service layout" />|舞台|层 |添加了什么 |
+![LangSmith on GCP deployment stages and service layout](https://mintcdn.com/langchain-5e9cc07a/D6uoP5M0BV8YGC-1/images/self-hosted-terraform/gcp-architecture.png?fit=max\&auto=format\&n=D6uoP5M0BV8YGC-1\&q=85\&s=195d16f6a26452c58eb3d749e36774da)|舞台|层 |添加了什么 |
 | - | - | - |
 | 1 | GCP 基础设施 | VPC、GKE、Cloud SQL、Memorystore、GCS、K8s 引导程序、证书管理器、KEDA、Envoy 网关 |
 | 2 | LangSmith底座|前端、后端、平台后端、队列、ace 后端、clickhouse、游乐场 |
-| 3 | LangSmith 部署|主机后端、侦听器、操作员 + 每个部署的 pod |
+| 3 | LangSmith 部署 |主机后端、侦听器、操作员 + 每个部署的 pod |
 | 4 |舰队|独立舰队 API 服务器、独立舰队队列、舰队工具服务器、舰队触发服务器 |
 | 5 |见解+波莉|见解分析（ClickHouse 支持）、Polly 评估代理 |
 
 SmithDB (`enable_smithdb`) 和沙箱 (`enable_sandboxes`) 是这些阶段之外的可选附加组件。每个都将自己的节点池和托管服务添加到同一集群和命名空间。
 
-<Note>
-  Fleet 是以前称为 Agent Builder 的功能的当前形式。使用`enable_fleet`启用它。与已弃用的 `enable_agent_builder` 路径不同，它不需要 LangSmith 部署层。这两个标志是互斥的并且共享相同的加密密钥。请参阅部署指南中的[Enable add-ons](/langsmith/self-host-terraform-gcp-deploy#enable-add-ons)。
-</Note>
+> [!注意]
+>
+> Fleet 是以前称为 Agent Builder 的功能的当前形式。使用`enable_fleet`启用它。与已弃用的 `enable_agent_builder` 路径不同，它不需要 LangSmith 部署层。这两个标志是互斥的并且共享相同的加密密钥。请参阅部署指南中的[Enable add-ons](/langsmith/self-host-terraform-gcp-deploy#enable-add-ons)。
 
 ## 模块说明|模块|路径|目的|
 | - | - | - |
@@ -114,11 +114,11 @@ GCS Bucket (Workload Identity, no static keys)
 | `langsmith-ace-backend` |异步计算（数据集运行、评估、后台作业）| — | 1 至 5 |没有 | Postgres、Redis |
 | `langsmith-clickhouse` |列式存储（跟踪范围、运行元数据、评估结果）| — | StatefulSet，单个副本 |没有 | 500Gi `premium-rwo` PVC |
 
-<Warning>
-  集群内 ClickHouse 仅是 dev/POC（单个 pod，无复制，无备份）。对于生产，请使用 [LangChain Managed ClickHouse](/langsmith/langsmith-managed-clickhouse) 或自我管理的外部集群。
-</Warning><Note>
-  [SmithDB](https://www.langchain.com/blog/introducing-smithdb?utm_source=docs) 是 LangSmith 专门构建的可观测性后端，从自托管版本 0.16.0 开始可用于自托管（请参阅 [self-hosted support](/langsmith/smithdb-sdk-migration#about-self-hosted)）。设置 `enable_smithdb = true` 以配置其元存储、对象存储存储桶和节点池。 SmithDB 与 ClickHouse 一起运行，因此前面部分中的 ClickHouse 指南仍然适用。分阶段部署请参阅部署指南中的[SmithDB](/langsmith/self-host-terraform-gcp-deploy#smithdb)。
-</Note>
+> [!警告]
+>
+> 集群内 ClickHouse 仅适用于 dev/POC（单个 pod，无复制，无备份）。对于生产，请使用 [LangChain Managed ClickHouse](/langsmith/langsmith-managed-clickhouse) 或自我管理的外部集群。> [!注意]
+>
+> [SmithDB](https://www.langchain.com/blog/introducing-smithdb?utm_source=docs) 是 LangSmith 专门构建的可观测性后端，从自托管版本 0.16.0 开始可用于自托管（请参阅 [self-hosted support](/langsmith/smithdb-sdk-migration#about-self-hosted)）。设置 `enable_smithdb = true` 以配置其元存储、对象存储存储桶和节点池。 SmithDB 与 ClickHouse 一起运行，因此前面部分中的 ClickHouse 指南仍然适用。分阶段部署请参阅部署指南中的[SmithDB](/langsmith/self-host-terraform-gcp-deploy#smithdb)。
 
 ### 一次性工作
 
@@ -147,7 +147,7 @@ GCS Bucket (Workload Identity, no static keys)
 * 保存组织、用户、项目、API 密钥、设置。
 * Terraform 将连接 URL 直接写入 `langsmith-postgres-credentials` Kubernetes Secret。
 
-### 内存存储Redis
+### 内存存储 Redis
 
 * 默认 5 GB、STANDARD\_HA 层、私有 IP、端口 6379。
 * 跟踪摄取队列、发布/订阅、短期缓存。
@@ -166,15 +166,15 @@ GCS Bucket (Workload Identity, no static keys)
 * 可选的 `secrets` 模块 (`enable_secret_manager_module = true`) 添加一个单独的 JSON 包，其中包含生成的 LangSmith 密钥以及 Postgres 和 Redis 密码。
 * Kubernetes Secrets 由 Terraform 和部署脚本编写，不从 Secret Manager 同步。参见[Secret Manager integration](#secret-manager-integration)。
 
-## 集群基础设施|服务 |命名空间|安装者 |需要 |
+## 集群基础设施|服务 |命名空间 |安装者 |需要 |
 | - | - | - | - |
 |特使网关 | `envoy-gateway-system` | `ingress`模块（`install_ingress = true`，默认）|所有入口 |
 |科达| `keda` | `k8s-bootstrap` 模块时 `enable_langsmith_deployment = true` | LangSmith 部署附加组件及更高版本 |
 |证书经理 | `cert-manager` |当 `tls_certificate_source = "letsencrypt"` 或 `install_cert_manager = true` 时，`k8s-bootstrap` 模块 |让我们加密 TLS |
 
-<Note>
-  `Gateway`资源由Terraform管理； `HTTPRoute` 由 Helm 管理。不要手动删除网关资源。删除网关时，GCP 会释放外部 IP，然后在重新创建时发出新 IP。
-</Note>
+> [!注意]
+>
+> `Gateway`资源由Terraform管理； `HTTPRoute` 由 Helm 管理。不要手动删除网关资源。删除网关时，GCP 会释放外部 IP，然后在重新创建时发出新 IP。
 
 ## 工作负载身份
 
@@ -209,7 +209,7 @@ GSA 由`iam` 模块定义并输出为`workload_identity_annotation`。 `init-val
 |子网| `10.0.0.0/20` | GKE 节点 |
 |豆荚 | `10.4.0.0/14` | GKE Pod IP（次要范围）|
 |服务 | `10.8.0.0/20` | GKE ClusterIP 服务（次要范围）|
-|私人服务连接 | `/16` 由 Google 分配 | Cloud SQL、Memorystore 私有 IP |
+|私人服务连接| `/16` 由 Google 分配 | Cloud SQL、Memorystore 私有 IP |
 
 Cloud SQL 和 Memorystore 只能通过私有 IP 访问。每当 `postgres_source = "external"`、`redis_source = "external"`、`enable_sandboxes = true` 或 SmithDB 创建自己的元存储（`enable_smithdb = true` 和 `smithdb_metastore_source = "create"`）时，网络模块都会建立私有服务连接（VPC 对等到 Google 的托管网络）。
 
@@ -315,12 +315,6 @@ kubectl run gcs-test --rm -it --image=google/cloud-sdk -n langsmith -- \
 
 ***
 
-<div>
-  <Callout icon="terminal-2">
-    [Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
-  </Callout>
+[Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
 
-  <Callout icon="edit">
-    [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/self-host-terraform-gcp-architecture.mdx) 或 [file an issue](https://github.com/langchain-ai/docs/issues/new/choose)。
-  </Callout>
-</div>
+[Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/self-host-terraform-gcp-architecture.mdx) 或 [file an issue](https://github.com/langchain-ai/docs/issues/new/choose)。
