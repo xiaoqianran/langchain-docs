@@ -6,23 +6,23 @@
 
 LangSmith 提供与 [Vitest](https://vitest.dev/) 和 [Jest](https://jestjs.io/) 的集成，允许 JavaScript 和 TypeScript 开发人员定义其 [datasets](/langsmith/evaluation-concepts#datasets) 并使用熟悉的语法进行评估。
 
-<img alt="Jest/Vitest reporter output" />
+![Jest/Vitest reporter output](https://mintcdn.com/langchain-5e9cc07a/4kN8yiLrZX_amfFn/langsmith/images/jest-vitest-reporter-output.png?fit=max\&auto=format\&n=4kN8yiLrZX_amfFn\&q=85\&s=94fd2a6f61c9dc386002fadbab7024a8)
 
 与 [⟦T28⟧](https://reference.langchain.com/javascript/langsmith/evaluation/evaluate) 评估流程相比，Vitest 或 Jest 测试框架在以下情况下非常有用：
 
 * **每个示例需要不同的评估逻辑**：标准评估流程假设所有数据集示例中的应用程序和评估器执行一致。对于更复杂的系统或更全面的评估，特定的系统子集可能需要使用特定的输入类型和指标进行评估。这些异构评估更容易编写为一起跟踪的不同测试用例套件。
-* **您想要断言二进制期望**：跟踪 LangSmith 中的断言并在本地引发断言错误（例如在 CI 管道中）。测试工具有助于评估系统输出并断言其基本属性。
+* **您想要断言二进制期望**：跟踪 LangSmith 中的断言并在本地引发断言错误（例如在 CI 管道中）。测试工具有助于评估系统输出并断言它们的基本属性。
 * **您想要利用模拟、观看模式、本地结果或 Vitest/Jest 生态系统的其他功能**。
 
-<Info>
-  需要 JS/TS SDK 版本`langsmith>=0.3.1`。
-</Info>
+> [!注意]
+>
+> 需要 JS/TS SDK 版本`langsmith>=0.3.1`。
 
-<Info>
-  Python SDK 有一个类似的 [pytest integration](/langsmith/pytest)。
-</Info>
+> [!注意]
+>
+> Python SDK 有一个类似的 [pytest integration](/langsmith/pytest)。
 
-## 设置按如下方式设置集成。请注意，虽然您可以使用现有的测试配置文件将 LangSmith 评估与其他单元测试（作为标准 `*.test.ts` 文件）一起添加，但以下示例还将设置一个单独的测试配置文件和命令来运行评估。它将假设您以 `.eval.ts` 结束测试文件。
+＃＃ 设置按如下方式设置集成。请注意，虽然您可以使用现有的测试配置文件将 LangSmith 评估与其他单元测试（作为标准 `*.test.ts` 文件）一起添加，但以下示例还将设置一个单独的测试配置文件和命令来运行评估。它将假设您以 `.eval.ts` 结束测试文件。
 
 这可确保自定义测试报告器和其他LangSmith接触点不会修改您现有的测试输出。
 
@@ -30,35 +30,31 @@ LangSmith 提供与 [Vitest](https://vitest.dev/) 和 [Jest](https://jestjs.io/)
 
 如果尚未安装所需的开发依赖项，请安装：
 
-<CodeGroup>
-  ```bash yarn theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  yarn add -D vitest dotenv
-  ```
+```bash yarn theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+yarn add -D vitest dotenv
+```
 
-  ```bash npm theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  npm install -D vitest dotenv
-  ```
+```bash npm theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+npm install -D vitest dotenv
+```
 
-  ```bash pnpm theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  pnpm add -D vitest dotenv
-  ```
-</CodeGroup>
+```bash pnpm theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+pnpm add -D vitest dotenv
+```
 
 以下示例还需要 `openai` （和 `langsmith`）作为依赖项：
 
-<CodeGroup>
-  ```bash yarn theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  yarn add langsmith openai
-  ```
+```bash yarn theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+yarn add langsmith openai
+```
 
-  ```bash npm theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  npm install langsmith openai
-  ```
+```bash npm theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+npm install langsmith openai
+```
 
-  ```bash pnpm theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  pnpm add langsmith openai
-  ```
-</CodeGroup>
+```bash pnpm theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+pnpm add langsmith openai
+```
 
 然后，使用以下基本配置创建一个单独的 `ls.vitest.config.ts` 文件：
 
@@ -78,9 +74,9 @@ export default defineConfig({
 * `include` 确保项目中仅运行以 `eval.ts` 的某些变体结尾的文件
 * `reporters` 负责很好地格式化你的输出，如上所示
 * `setupFiles` 运行 `dotenv` 在运行评估之前加载环境变量
-* `testTimeout`为每个测试设置全局默认超时。由于 LLM 调用可能很慢，因此我们在 Vitest 默认值的基础上增加了此值<Warning>
-  目前不支持 JSDom 环境。您应该从配置中省略 `"environment"` 字段或将其设置为 `"node"`。
-</Warning>
+* `testTimeout`为每个测试设置全局默认超时。由于 LLM 调用可能很慢，因此我们在 Vitest 默认值的基础上增加了此值> [!警告]
+>
+> 目前不支持 JSDom 环境。您应该从配置中省略 `"environment"` 字段或将其设置为 `"node"`。
 
 最后，将以下内容添加到 `package.json` 中的 `scripts` 字段，以使用您刚刚创建的配置运行 Vitest：
 
@@ -105,39 +101,35 @@ export default defineConfig({
 
 如果尚未安装所需的开发依赖项，请安装：
 
-<CodeGroup>
-  ```bash yarn theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  yarn add -D jest dotenv
-  ```
+```bash yarn theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+yarn add -D jest dotenv
+```
 
-  ```bash npm theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  npm install -D jest dotenv
-  ```
+```bash npm theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+npm install -D jest dotenv
+```
 
-  ```bash pnpm theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  pnpm add -D jest dotenv
-  ```
-</CodeGroup>
+```bash pnpm theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+pnpm add -D jest dotenv
+```
 
 下面的示例还需要 `openai` （和 `langsmith`）作为依赖项：
 
-<CodeGroup>
-  ```bash yarn theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  yarn add langsmith openai
-  ```
+```bash yarn theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+yarn add langsmith openai
+```
 
-  ```bash npm theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  npm install langsmith openai
-  ```
+```bash npm theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+npm install langsmith openai
+```
 
-  ```bash pnpm theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  pnpm add langsmith openai
-  ```
-</CodeGroup>
+```bash pnpm theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+pnpm add langsmith openai
+```
 
-<Info>
-  以下设置说明适用于基本 JS 文件和 CJS。要添加对 TypeScript 和 ESM 的支持，请参阅 Jest 的官方文档或使用 [Vitest](#vitest)。
-</Info>
+> [!注意]
+>
+> 以下设置说明适用于基本 JS 文件和 CJS。要添加对 TypeScript 和 ESM 的支持，请参阅 Jest 的官方文档或使用 [Vitest](#vitest)。
 
 然后，创建一个名为 `ls.jest.config.cjs` 的单独配置文件：
 
@@ -148,14 +140,14 @@ module.exports = {
   setupFiles: ["dotenv/config"],
   testTimeout: 30000,
 };
-```* `testMatch` 确保项目中仅运行以 `eval.js` 的某些变体结尾的文件
+```
+
+* `testMatch` 确保项目中仅运行以 `eval.js` 的某些变体结尾的文件
 * `reporters` 负责很好地格式化你的输出，如上所示
 * `setupFiles` 在运行评估之前运行 `dotenv` 加载环境变量
-* `testTimeout`为每个测试设置一个全局默认超时。由于 LLM 调用可能会很慢，因此我们在 Jest 默认值的基础上增加了此值
-
-<Warning>
-  目前不支持 JSDom 环境。您应该从配置中省略 `"testEnvironment"` 字段或将其设置为 `"node"`。
-</Warning>
+* `testTimeout`为每个测试设置一个全局默认超时。由于 LLM 调用可能会很慢，因此我们在 Jest 默认值的基础上增加了此值> [!警告]
+>
+> 目前不支持 JSDom 环境。您应该从配置中省略 `"testEnvironment"` 字段或将其设置为 `"node"`。
 
 最后，将以下内容添加到 `package.json` 中的 `scripts` 字段，以使用您刚刚创建的配置运行 Jest：
 
@@ -178,7 +170,7 @@ module.exports = {
 
 您现在可以使用熟悉的 Vitest/Jest 语法将 eval 定义为测试，但有一些注意事项：
 
-* 您应该从 [⟦T60⟧](https://reference.langchain.com/javascript/modules/langsmith.jest.html) 或 [⟦T61⟧](https://reference.langchain.com/javascript/modules/langsmith.vitest.html) 入口点导入 `describe` 和 `test`。
+* 您应该从 [⟦T60⟧](https://reference.langchain.com/javascript/langsmith/jest) 或 [⟦T61⟧](https://reference.langchain.com/javascript/langsmith/lib/vitest) 入口点导入 `describe` 和 `test`。
 * 您必须将测试用例包装在 `describe` 块中。
 * 声明测试时，签名略有不同 - 有一个额外的参数，其中包含示例输入和预期输出。
 
@@ -231,14 +223,14 @@ ls.describe("generate sql demo", () => {
     }
   );
 });
-```您可以将每个 [ls.test](https://reference.langchain.com/javascript/modules/langsmith.vitest.html#test) 案例视为对应于一个数据集示例，并将 [⟦T65⟧](https://reference.langchain.com/javascript/modules/langsmith.vitest.html#describe) 视为定义 LangSmith 数据集。如果您在运行测试套件时设置了 LangSmith [tracing environment variables](#setup)，则 SDK 会执行以下操作：
+```
 
-* 创建一个与LangSmith中传递给`ls.describe()`同名的[dataset](/langsmith/evaluation-concepts#datasets)（如果不存在）。
+您可以将每个 [ls.test](https://reference.langchain.com/javascript/langsmith/lib/vitest/test) 案例视为对应于一个数据集示例，并将 [⟦T65⟧](https://reference.langchain.com/javascript/langsmith/lib/vitest/describe) 视为定义 LangSmith 数据集。如果您在运行测试套件时设置了 LangSmith [tracing environment variables](#setup)，则 SDK 会执行以下操作：* 如果不存在，则创建一个与传递给LangSmith中的`ls.describe()`同名的[dataset](/langsmith/evaluation-concepts#datasets)。
 * 如果尚不存在匹配的输入，则在数据集中为传递到测试用例的每个输入和预期输出创建一个[example](/langsmith/evaluation-concepts#datasets)。
 * 创建一个新的[experiment](/langsmith/evaluation-concepts#experiment)，每个测试用例都有一个结果。
 * 收集每个测试用例在`pass`反馈键下的通过/失败率。
 
-当您运行此测试时，它将有一个基于测试用例通过/失败的默认`pass`布尔反馈键。它还将跟踪您使用 [⟦T69⟧](https://reference.langchain.com/javascript/modules/langsmith.vitest.html#logOutputs) 记录的任何输出或从测试函数返回的任何输出，作为实验应用程序的“实际”结果值。
+当您运行此测试时，它将有一个基于测试用例通过/失败的默认`pass`布尔反馈键。它还将跟踪您使用 [⟦T69⟧](https://reference.langchain.com/javascript/langsmith/lib/vitest/logOutputs) 记录的任何输出或从测试函数返回的任何输出，作为实验应用程序的“实际”结果值。
 
 如果您还没有 `OPENAI_API_KEY` 和 LangSmith 凭据，请创建一个 `.env` 文件：
 
@@ -250,29 +242,27 @@ LANGSMITH_TRACING="true"
 
 现在使用我们在上一步中设置的 `eval` 脚本来运行测试：
 
-<CodeGroup>
-  ```bash yarn theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  yarn run eval
-  ```
+```bash yarn theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+yarn run eval
+```
 
-  ```bash npm theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  npm run eval
-  ```
+```bash npm theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+npm run eval
+```
 
-  ```bash pnpm theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  pnpm run eval
-  ```
-</CodeGroup>
+```bash pnpm theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+pnpm run eval
+```
 
-并且您声明的测试应该运行！完成后，如果您设置了 LangSmith 环境变量，您应该会看到一个链接，将您引导至在 LangSmith 中创建的实验以及测试结果。
+并且您声明的测试应该运行！
+
+完成后，如果您设置了 LangSmith 环境变量，您应该会看到一个链接，将您引导至在 LangSmith 中创建的实验以及测试结果。
 
 针对该测试套件的实验如下所示：
 
-<img alt="Experiment" />
+![Experiment](https://mintcdn.com/langchain-5e9cc07a/ImHGLQW1HnQYwnJV/langsmith/images/simple-vitest.png?fit=max\&auto=format\&n=ImHGLQW1HnQYwnJV\&q=85\&s=9cde688950dd2fc454a8514b02ed7268)
 
-## 跟踪反馈
-
-默认情况下，LangSmith收集每个测试用例的`pass`反馈键下的通过/失败率。您可以使用 [⟦T74⟧](https://reference.langchain.com/javascript/modules/langsmith.vitest.html#logFeedback) 或 [⟦T75⟧](https://reference.langchain.com/javascript/modules/langsmith.vitest.html#wrapEvaluator) 添加其他反馈。为此，请尝试将以下内容作为您的 `sql.eval.ts` 文件（如果您使用的是不带 TypeScript 的 Jest，则为 `sql.eval.js`）：
+## 跟踪反馈默认情况下，LangSmith收集每个测试用例的`pass`反馈键下的通过/失败率。您可以使用 [⟦T74⟧](https://reference.langchain.com/javascript/langsmith/lib/vitest/logFeedback) 或 [⟦T75⟧](https://reference.langchain.com/javascript/langsmith/lib/vitest/wrapEvaluator) 添加其他反馈。为此，请尝试将以下内容作为您的 `sql.eval.ts` 文件（如果您使用的是不带 TypeScript 的 Jest，则为 `sql.eval.js`）：
 
 ```typescript theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 import * as ls from "langsmith/vitest";
@@ -379,11 +369,13 @@ ls.describe("generate sql demo", () => {
 });
 ```
 
-请注意在 `myEvaluator` 函数周围使用 [⟦T78⟧](https://reference.langchain.com/javascript/modules/langsmith.vitest.html#wrapEvaluator)。这使得 LLM-as-judge 调用与测试用例的其余部分分开跟踪，以避免混乱，并且如果包装函数的返回值与 `{ key: string; score: number | boolean }` 匹配，则可以方便地创建反馈。在这种情况下，评估器跟踪将显示在与 `correctness` 反馈键关联的跟踪中，而不是显示在主测试用例运行中。
+请注意在 `myEvaluator` 函数周围使用 [⟦T78⟧](https://reference.langchain.com/javascript/langsmith/lib/vitest/wrapEvaluator)。这使得 LLM-as-judge 调用与测试用例的其余部分分开跟踪，以避免混乱，并且如果包装函数的返回值与 `{ key: string; score: number | boolean }` 匹配，则可以方便地创建反馈。在这种情况下，评估器跟踪将显示在与 `correctness` 反馈键关联的跟踪中，而不是显示在主测试用例运行中。
 
 您可以通过单击 UI 中相应的反馈选项来查看评估器在 LangSmith 中运行。
 
-## 针对一个测试用例运行多个示例您可以在多个示例上运行相同的测试用例，并使用 [⟦T82⟧](https://reference.langchain.com/javascript/modules/langsmith.vitest.html#test) 参数化您的测试。当您想要针对不同的输入以相同的方式评估您的应用程序时，这非常有用：
+## 针对一个测试用例运行多个示例
+
+您可以在多个示例上运行相同的测试用例，并使用 [⟦T82⟧](https://reference.langchain.com/javascript/langsmith/lib/vitest/test) 参数化您的测试。当您想要针对不同的输入以相同的方式评估您的应用程序时，这非常有用：
 
 ```typescript theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 import * as ls from "langsmith/vitest";
@@ -416,13 +408,11 @@ ls.describe("generate sql demo", () => {
 
 如果您启用了跟踪，则本地数据集中的每个示例都将同步到 LangSmith 中创建的示例。
 
-## 使用现有数据集（仅限 Vitest）
+## 使用现有数据集（仅限 Vitest）您可以针对 LangSmith 中的现有数据集运行测试，而不是内联定义 [examples](/langsmith/evaluation-concepts#examples)：
 
-您可以针对 LangSmith 中的现有数据集运行测试，而不是内联定义 [examples](/langsmith/evaluation-concepts#examples)：
-
-* 使用[⟦T83⟧](https://reference.langchain.com/javascript/classes/langsmith.client.Client.html#listexamples)从LangSmith中已存在的数据集中获取示例。
+* 使用[⟦T83⟧](https://reference.langchain.com/javascript/langsmith/index/Client/listExamples)从LangSmith中已存在的数据集中获取示例。
 * 通过迭代异步生成器将示例收集到数组中（例如，`testExamples`）。
-* 将数组传递给[⟦T85⟧](https://reference.langchain.com/javascript/modules/langsmith.vitest.html#test)，以针对数据集中的每个示例运行测试逻辑。
+* 将数组传递给[⟦T85⟧](https://reference.langchain.com/javascript/langsmith/lib/vitest/test)，以针对数据集中的每个示例运行测试逻辑。
 
 ```typescript {3,30-43,47} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 import * as ls from "langsmith/vitest";
@@ -485,7 +475,7 @@ ls.describe(
 
 ## 日志输出
 
-每次运行测试时，我们都会将其同步到数据集示例并将其作为运行进行跟踪。要跟踪运行的最终输出，您可以像这样使用 [⟦T86⟧](https://reference.langchain.com/javascript/modules/langsmith.vitest.html#logOutputs)：
+每次运行测试时，我们都会将其同步到数据集示例并将其作为运行进行跟踪。要跟踪运行的最终输出，您可以像这样使用 [⟦T86⟧](https://reference.langchain.com/javascript/langsmith/lib/vitest/logOutputs)：
 
 ```typescript theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 import * as ls from "langsmith/vitest";
@@ -529,7 +519,9 @@ ls.describe("generate sql demo", () => {
 
 但请记住，如果您这样做，如果您的测试由于失败的断言或其他错误而无法完成，您的输出将不会出现。
 
-## 跟踪中间调用LangSmith 将自动跟踪测试用例执行过程中发生的任何可跟踪的中间调用。
+## 跟踪中间调用
+
+LangSmith 将自动跟踪测试用例执行过程中发生的任何可跟踪的中间调用。
 
 ## 关注或跳过测试
 
@@ -563,9 +555,7 @@ ls.describe("generate sql demo", () => {
 });
 ```
 
-## 配置测试套件
-
-您可以使用元数据或自定义客户端等值来配置测试套件，方法是将额外参数传递给 `ls.describe()` 以获得完整套件，或将 `config` 字段传递到 `ls.test()` 进行单独测试：
+## 配置测试套件您可以使用元数据或自定义客户端等值来配置测试套件，方法是将额外参数传递给 `ls.describe()` 以获得完整套件，或将 `config` 字段传递到 `ls.test()` 进行单独测试：
 
 ```typescript theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 ls.describe("test suite name", () => {
@@ -594,7 +584,7 @@ ls.describe("test suite name", () => {
 
 测试套件还将自动从`process.env.ENVIRONMENT`、`process.env.NODE_ENV`和`process.env.LANGSMITH_ENVIRONMENT`中提取环境变量，并将它们设置为创建的实验的元数据。然后，您可以在 LangSmith 的 UI 中按元数据过滤实验。
 
-有关配置选项的完整列表，请参阅[the API refs](https://docs.smith.langchain.com/reference/js/functions/vitest.describe)。
+有关配置选项的完整列表，请参阅[the API refs](https://reference.langchain.com/javascript/langsmith/lib/vitest/describe)。
 
 ## 试运行模式
 
@@ -604,12 +594,6 @@ ls.describe("test suite name", () => {
 
 ***
 
-<div>
-  <Callout icon="terminal-2">
-    [Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
-  </Callout>
+[Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
 
-  <Callout icon="edit">
-    [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/vitest-jest.mdx) 或 [file an issue](https://github.com/langchain-ai/docs/issues/new/choose)。
-  </Callout>
-</div>
+[Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/vitest-jest.mdx) 或 [file an issue](https://github.com/langchain-ai/docs/issues/new/choose)。

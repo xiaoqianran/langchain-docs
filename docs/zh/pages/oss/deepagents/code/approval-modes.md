@@ -23,164 +23,156 @@
 | **自动** |自动批准日常行动；要求模型审查任何不确定的事情；在多次否认或失败后，又回到你身边|
 | **YOLO** |运行门控操作，根本无需审查 |
 
-<Warning>
-  Auto 是本地编码代理的授权启发式方法。它不是沙箱遏制、操作系统边界或模型生成的操作安全的保证。
-</Warning>
+> [!警告]
+>
+> Auto 是本地编码代理的授权启发式方法。它不是沙箱遏制、操作系统边界或模型生成的操作安全的保证。
 
 ## 启用自动自动仅适用于交互式、非沙盒会话。
 
-<Steps>
-  <Step title="Launch with Auto" icon="terminal">
-    ```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-    dcode -y
-    ```
+**1.使用自动启动**
 
-    或者在`~/.deepagents/config.toml`中将其设置为默认值：
+```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+dcode -y
+```
 
-    ```toml theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-    [startup]
-    mode = "auto"
-    ```
+或者在`~/.deepagents/config.toml`中将其设置为默认值：
 
-    您还可以使用 `Shift+Tab` 循环至自动中途。
-  </Step>
-</Steps>
+```toml theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+[startup]
+mode = "auto"
+```
+
+您还可以使用 `Shift+Tab` 循环至自动中途。
 
 ## 启用 YOLO
 
 YOLO 运行门控操作，无需任何审查。仅当您接受代理无需询问即可采取任何操作时才使用它。
 
-<Steps>
-  <Step title="Launch with YOLO" icon="terminal">
-    ```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-    dcode --yolo
-    ```
+**1.与 YOLO 一起启动**
 
-    出现提示时接受一次性风险确认。该确认信息存储在本地，因此您在以后启动时不会再次看到它。
+```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+dcode --yolo
+```
 
-    或者在`~/.deepagents/config.toml`中将其设置为默认值：
+出现提示时接受一次性风险确认。该确认信息存储在本地，因此您在以后启动时不会再次看到它。
 
-    ```toml theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-    [startup]
-    mode = "yolo"
-    ```
-  </Step>
-</Steps>
+或者在`~/.deepagents/config.toml`中将其设置为默认值：
+
+```toml theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+[startup]
+mode = "yolo"
+```
 
 按`Shift+Tab`循环YOLO→手动→自动→YOLO。设置[⟦T24⟧](/oss/deepagents/code/config-file#startup-approval-mode)以从循环中省略YOLO。
 
 ## 自动工作原理
 
 自动保留与手动相同的门控操作规则，但更改了审查这些操作的方式。它使用两个阶段：1. **例行操作自动运行。** 对源文件（如 `src/parser.py`）或只读 Git 命令（如`git status`）的写入将在没有提示的情况下继续进行。像`.github/workflows/ci.yml`这样的敏感目标或像`git commit`这样的变异命令会进入下一阶段。
-2. **模型审查其余部分。** 对于任何不明显例行的事情，主动模型会检查该操作是否与您请求的结果相匹配。即使您没有指定每个实现细节，也可以继续执行获得该结果所需的合理步骤。高风险效果（例如将本地内容发送到未配置的目的地）仍然需要显式授权。如果模型拒绝呼叫，代理会收到错误结果并可以修改其计划。
+2. **模型审查其余部分。** 对于任何不明显例行公事的事情，主动模型会检查该操作是否与您请求的结果相匹配。即使您没有指定每个实现细节，也可以继续执行获得该结果所需的合理步骤。高风险效果（例如将本地内容发送到未配置的目的地）仍然需要显式授权。如果模型拒绝呼叫，代理会收到错误结果并可以修改其计划。
 
 重复拒绝或分类器失败后，自动停止并向您显示下一批的正常批准提示，然后在自动模式下继续。
 
-<Accordion title="Auto decision flow" icon="flow">
-  ```mermaid theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  flowchart TD
-      A[Model proposes tool calls] --> B{Covered by the approval policy?}
-      B -->|No| X[Existing tool behavior is unchanged]
-      B -->|Yes| S{Still in Auto, with readable history?}
-      S -->|No| J[Open the approval UI]
-      S -->|Yes| C{Narrow deterministic allow?}
-      C -->|Yes| R[Execute without a classifier call]
-      C -->|No| D[Build one structured decision batch]
-      D --> H{Already reviewed, or earlier denials or failures require human review?}
-      H -->|Yes| J
-      H -->|No| E[Active model reviews effects against the user request]
-      E -->|Allow| R
-      E -->|Deny| Q{Total-denial threshold reached?}
-      Q -->|No| F[Return a sanitized error result]
-      Q -->|Yes| J
-      E -->|Unavailable or invalid| G[Return a compact unavailable result]
-      F --> I[Agent can revise its plan]
-      G --> I
-      J -->|Approve| R
-      J -->|Reject| K[Return a rejection result]
-      J -->|Switch to Manual| L[Persist Manual, then review the full gated batch]
-      R --> M[Reconcile the result and continue]
-      K --> M
-      I --> M
-      L --> M
-
-      classDef trigger fill:#F6FFDB,stroke:#6E8900,stroke-width:2px,color:#2E3900
-      classDef process fill:#E5F4FF,stroke:#006DDD,stroke-width:2px,color:#030710
-      classDef decision fill:#FDF3FF,stroke:#7E65AE,stroke-width:2px,color:#504B5F
-      classDef output fill:#EBD0F0,stroke:#885270,stroke-width:2px,color:#441E33
-      classDef alert fill:#F8E8E6,stroke:#B27D75,stroke-width:2px,color:#634643
-
-      class A trigger
-      class B,S,C,H,Q decision
-      class J output
-      class X,R,M process
-      class D,E,I,L process
-      class F,G,K alert
-  ```
-</Accordion>
+> **自动决策流程**
+>
+> ```mermaid theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> flowchart TD
+>     A[Model proposes tool calls] --> B{Covered by the approval policy?}
+>     B -->|No| X[Existing tool behavior is unchanged]
+>     B -->|Yes| S{Still in Auto, with readable history?}
+>     S -->|No| J[Open the approval UI]
+>     S -->|Yes| C{Narrow deterministic allow?}
+>     C -->|Yes| R[Execute without a classifier call]
+>     C -->|No| D[Build one structured decision batch]
+>     D --> H{Already reviewed, or earlier denials or failures require human review?}
+>     H -->|Yes| J
+>     H -->|No| E[Active model reviews effects against the user request]
+>     E -->|Allow| R
+>     E -->|Deny| Q{Total-denial threshold reached?}
+>     Q -->|No| F[Return a sanitized error result]
+>     Q -->|Yes| J
+>     E -->|Unavailable or invalid| G[Return a compact unavailable result]
+>     F --> I[Agent can revise its plan]
+>     G --> I
+>     J -->|Approve| R
+>     J -->|Reject| K[Return a rejection result]
+>     J -->|Switch to Manual| L[Persist Manual, then review the full gated batch]
+>     R --> M[Reconcile the result and continue]
+>     K --> M
+>     I --> M
+>     L --> M
+>
+>     classDef trigger fill:#F6FFDB,stroke:#6E8900,stroke-width:2px,color:#2E3900
+>     classDef process fill:#E5F4FF,stroke:#006DDD,stroke-width:2px,color:#030710
+>     classDef decision fill:#FDF3FF,stroke:#7E65AE,stroke-width:2px,color:#504B5F
+>     classDef output fill:#EBD0F0,stroke:#885270,stroke-width:2px,color:#441E33
+>     classDef alert fill:#F8E8E6,stroke:#B27D75,stroke-width:2px,color:#634643
+>
+>     class A trigger
+>     class B,S,C,H,Q decision
+>     class J output
+>     class X,R,M process
+>     class D,E,I,L process
+>     class F,G,K alert
+> ```
 
 ### 选择分类器模型
 
-当您不配置自动分类器时，Deep Agents代码会根据主模型的提供程序选择较低延迟的默认值：
-
-|主要型号提供商 |默认分类器 |
+当您不配置自动分类器时，Deep Agents代码会根据主模型的提供程序选择较低延迟的默认值：|主要型号提供商 |默认分类器 |
 | - | - |
-| Anthropic | `anthropic:claude-sonnet-5` |
+| Anthropic | `anthropic:claude-sonnet-5-5` |
 |谷歌人工智能 | `google_genai:gemini-3.8-flash` |
 |谷歌顶点人工智能 | `google_vertexai:gemini-3.8-flash` |
 | OpenAI | `openai:gpt-5.6-luna` |
-| OpenAI 法典 | `openai_codex:gpt-5.6-luna` |对于其他提供者，分类器使用主代理模型。您可以选择不同的模型来控制自动审核期间的成本和延迟。
+| OpenAI 法典 | `openai_codex:gpt-5.6-luna` |
+
+对于其他提供者，分类器使用主代理模型。您可以选择不同的模型来控制自动审核期间的成本和延迟。
 
 通过以下任意来源设置分类器模型：
 
-<Tabs>
-  <Tab title="TUI command">
-    运行 `/auto model` 打开交互式模型选择器并为当前会话选择分类器模型。要直接指定模型，请将其作为参数传递：
+**TUI 命令**
 
-    ```txt theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-    /auto model openai:gpt-5.6-luna
-    /auto model clear
-    ```
+运行 `/auto model` 打开交互式模型选择器并为当前会话选择分类器模型。要直接指定模型，请将其作为参数传递：
 
-    使用`/auto model clear`返回继承主模型。
-  </Tab>
+```txt theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+/auto model openai:gpt-5.6-luna
+/auto model clear
+```
 
-  <Tab title="CLI flag">
-    ```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-    dcode -y --auto-classifier-model openai:gpt-5.6-luna
-    ```
+使用`/auto model clear`返回继承主模型。
 
-    `--auto-classifier-model` 仅在交互式 TUI 会话中接受。
-  </Tab>
+**CLI 标志**
 
-  <Tab title="Environment variable">
-    ```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-    export DEEPAGENTS_CODE_AUTO_CLASSIFIER_MODEL="openai:gpt-5.6-luna"
-    ```
+```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+dcode -y --auto-classifier-model openai:gpt-5.6-luna
+```
 
-    <Warning>
-      **项目`.env`**无法设置`DEEPAGENTS_CODE_AUTO_CLASSIFIER_MODEL`。只有 shell 导出、`~/.deepagents/.env`、CLI 标志和 `/auto model` 有效。
-    </Warning>
-  </Tab>
+`--auto-classifier-model` 仅在交互式 TUI 会话中接受。
 
-  <Tab title="config.toml">
-    ```toml title="~/.deepagents/config.toml" theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-    [models]
-    auto_classifier = "openai:gpt-5.6-luna"
-    ```
-  </Tab>
-</Tabs>
+**环境变量**
 
-<br />
+```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+export DEEPAGENTS_CODE_AUTO_CLASSIFIER_MODEL="openai:gpt-5.6-luna"
+```
 
-<Accordion title="Precedence order">
-  1. **`/auto model` TUI 命令**：对当前会话立即生效。
-  2. **`--auto-classifier-model` 标志**：在启动时设置分类器（仅限交互式 TUI 会话）。
-  3. **`DEEPAGENTS_CODE_AUTO_CLASSIFIER_MODEL`环境变量**：启动时应用。
-  4. **`[models].auto_classifier` in `config.toml`**：您的持久默认值。
-  5. **提供程序默认值**：当主模型使用受支持的提供程序时，使用上面列出的较低延迟模型。
-  6. **继承**：对没有内置默认值的提供者使用主代理模型。未设置的值会传递到下一个源。使用 `/auto model clear` 或空 CLI 标志显式清除分类器会选择主代理模型而不是提供程序默认模型。
-</Accordion>
+> [!警告]
+>
+> **项目`.env`**无法设置`DEEPAGENTS_CODE_AUTO_CLASSIFIER_MODEL`。只有 shell 导出、`~/.deepagents/.env`、CLI 标志和 `/auto model` 有效。
+
+**配置.toml**
+
+```toml title="~/.deepagents/config.toml" theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+[models]
+auto_classifier = "openai:gpt-5.6-luna"
+```> **优先顺序**
+>
+> 1. **`/auto model` TUI 命令**：对当前会话立即生效。
+> 2. **`--auto-classifier-model` 标志**：在启动时设置分类器（仅限交互式 TUI 会话）。
+> 3. **`DEEPAGENTS_CODE_AUTO_CLASSIFIER_MODEL`环境变量**：启动时应用。
+> 4. **`[models].auto_classifier` in `config.toml`**：您的持久默认值。
+> 5. **提供程序默认**：当主模型使用受支持的提供程序时，使用上面列出的较低延迟模型。
+> 6. **继承**：对没有内置默认值的提供者使用主代理模型。
+>
+> 未设置的值会传递到下一个源。使用 `/auto model clear` 或空 CLI 标志显式清除分类器会选择主代理模型而不是提供程序默认模型。
 
 当自动打开并在 `/auto model` 输出中时，TUI 会显示正在检查的模型。
 
@@ -210,12 +202,6 @@ Auto 和 YOLO 是交互模式功能。自动仅适用于交互式、非沙盒会
 
 ***
 
-<div>
-  <Callout icon="terminal-2">
-    [Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
-  </Callout>
+[Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
 
-  <Callout icon="edit">
-    [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/oss/deepagents/code/approval-modes.mdx) 或 [file an issue](https://github.com/langchain-ai/docs/issues/new/choose)。
-  </Callout>
-</div>
+[Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/oss/deepagents/code/approval-modes.mdx) 或 [file an issue](https://github.com/langchain-ai/docs/issues/new/choose)。

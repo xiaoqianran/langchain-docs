@@ -10,15 +10,13 @@ LangSmith 可以使用其内置的 OpenTelemetry 仪器捕获 [Microsoft Agent F
 
 安装所需的软件包：
 
-<CodeGroup>
-  ```bash pip theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  pip install agent-framework opentelemetry-exporter-otlp-proto-http
-  ```
+```bash pip theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+pip install agent-framework opentelemetry-exporter-otlp-proto-http
+```
 
-  ```bash uv theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  uv add agent-framework opentelemetry-exporter-otlp-proto-http
-  ```
-</CodeGroup>
+```bash uv theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+uv add agent-framework opentelemetry-exporter-otlp-proto-http
+```
 
 ## 设置
 
@@ -44,9 +42,9 @@ from agent_framework.observability import configure_otel_providers
 configure_otel_providers(enable_sensitive_data=True)
 ```
 
-<Note>
-  设置 `enable_sensitive_data=True` 允许捕获跟踪中的输入和输出内容。如果您想从跟踪中排除敏感数据，请设置为 `False`。
-</Note>
+> [!注意]
+>
+> 设置 `enable_sensitive_data=True` 允许捕获迹线中的输入和输出内容。如果您想从跟踪中排除敏感数据，请设置为 `False`。
 
 ### 3. 创建并运行您的代理
 
@@ -71,12 +69,6 @@ print(result.text)
 
 ***
 
-<div>
-  <Callout icon="terminal-2">
-    [Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
-  </Callout>
+[Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
 
-  <Callout icon="edit">
-    [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/trace-with-microsoft-agent-framework.mdx) 或 [file an issue](https://github.com/langchain-ai/docs/issues/new/choose)。
-  </Callout>
-</div>
+[Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/trace-with-microsoft-agent-framework.mdx) 或 [file an issue](https://github.com/langchain-ai/docs/issues/new/choose)。

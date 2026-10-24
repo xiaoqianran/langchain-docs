@@ -11,16 +11,16 @@
    * **动态上下文**：随着应用程序运行而演变的可变数据（例如，对话历史记录、中间结果、工具调用观察）
 2. 按**生命周期**：
    * **运行时上下文**：数据范围仅限于单次运行或调用
-   * **跨对话上下文**：在多个对话或会话中持续存在的数据
+   * **跨对话上下文**：在多个对话或会话中持续存在的数据> [!提示]
+>
+> 运行时上下文是指本地上下文：代码运行所需的数据和依赖项。它**不**指的是：
+>
+> * LLM 上下文，即传递到 LLM 提示符中的数据。
+> * “上下文窗口”，这是可以传递给LLM的最大令牌数。
+>
+> 运行时上下文是您通过代理线程传输数据的方式。您可以将值（例如数据库连接、用户会话或配置）附加到上下文，并在工具和中间件内访问它们，而不是将事物存储在全局状态中。这使事物保持无状态、可测试和可重用。例如，您可以在运行时上下文中使用用户元数据来获取用户首选项并将其输入到上下文窗口中。
 
-<Tip>
-  运行时上下文是指本地上下文：代码运行所需的数据和依赖项。它**不**指的是：
-
-  * LLM 上下文，即传递到 LLM 提示符中的数据。
-  * “上下文窗口”，即可以传递给LLM的最大令牌数。运行时上下文是您通过代理线程化数据的方式。您可以将值（例如数据库连接、用户会话或配置）附加到上下文，并在工具和中间件内访问它们，而不是将事物存储在全局状态中。这使事物保持无状态、可测试和可重用。例如，您可以在运行时上下文中使用用户元数据来获取用户首选项并将其输入到上下文窗口中。
-</Tip>
-
-LangGraph提供了三种管理上下文的方式，结合了可变性和生命周期维度：
+LangGraph提供了三种管理上下文的方法，结合了可变性和生命周期维度：
 
 |上下文类型 |描述 |可变性 |终身|
 | - | - | - | - |
@@ -28,9 +28,7 @@ LangGraph提供了三种管理上下文的方式，结合了可变性和生命�
 | [**Dynamic runtime context (state)**](#dynamic-runtime-context) |在单次运行期间演变的可变数据 |动态 |单跑 |
 | [**Dynamic cross-conversation context (store)**](#dynamic-cross-conversation-context) |跨对话共享持久数据|动态 |交叉对话 |
 
-## 配置
-
-配置用于不可变数据，例如用户元数据或 API 密钥。当您的值在运行中不会更改时，请使用此选项。
+## 配置配置用于不可变数据，例如用户元数据或 API 密钥。当您的值在运行中不会更改时，请使用此选项。
 
 使用名为 **“configurable”** 的键指定配置，该键是为此目的而保留的。
 
@@ -41,75 +39,75 @@ await graph.invoke(
 );
 ```
 
-## 动态运行时上下文**动态运行时上下文**表示可以在单次运行期间演变的可变数据，并通过 LangGraph 状态对象进行管理。这包括对话历史记录、中间结果以及从工具或 LLM 输出得出的值。在LangGraph中，状态对象在运行期间充当[short-term memory](/oss/javascript/concepts/memory)。
+## 动态运行时上下文
 
-<Tabs>
-  <Tab title="In an agent">
-    示例展示了如何将状态合并到代理**提示**中。
+**动态运行时上下文**表示可以在单次运行期间演变的可变数据，并通过 LangGraph 状态对象进行管理。这包括对话历史记录、中间结果以及从工具或 LLM 输出得出的值。在LangGraph中，状态对象在运行期间充当[short-term memory](/oss/javascript/concepts/memory)。
 
-    状态也可以通过代理的**工具**访问，它可以根据需要读取或更新状态。详情请参阅[tool calling guide](/oss/javascript/langchain/tools#access-context)。
+**在代理**
 
-    ```typescript theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-    import { createAgent, createMiddleware } from "langchain";
-    import type { AgentState } from "langchain";
-    import * as z from "zod";
+示例展示了如何将状态合并到代理**提示**中。
 
-    const CustomState = z.object({ // [!code highlight]
-      userName: z.string(),
-    });
+状态也可以通过代理的**工具**访问，它可以根据需要读取或更新状态。详情请参阅[tool calling guide](/oss/javascript/langchain/tools#access-context)。
 
-    const personalizedPrompt = createMiddleware({ // [!code highlight]
-      name: "PersonalizedPrompt",
-      stateSchema: CustomState,
-      wrapModelCall: (request, handler) => {
-        const userName = request.state.userName || "User";
-        const systemPrompt = `You are a helpful assistant. User's name is ${userName}`;
-        return handler({ ...request, systemPrompt });
-      },
-    });
+```typescript theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+import { createAgent, createMiddleware } from "langchain";
+import type { AgentState } from "langchain";
+import * as z from "zod";
 
-    const agent = createAgent({  // [!code highlight]
-      model: "claude-sonnet-4-6",
-      tools: [/* your tools here */],
-      middleware: [personalizedPrompt] as const, // [!code highlight]
-    });
+const CustomState = z.object({ // [!code highlight]
+  userName: z.string(),
+});
 
-    await agent.invoke({
-      messages: [{ role: "user", content: "hi!" }],
-      userName: "John Smith",
-    });
-    ```
-  </Tab>
+const personalizedPrompt = createMiddleware({ // [!code highlight]
+  name: "PersonalizedPrompt",
+  stateSchema: CustomState,
+  wrapModelCall: (request, handler) => {
+    const userName = request.state.userName || "User";
+    const systemPrompt = `You are a helpful assistant. User's name is ${userName}`;
+    return handler({ ...request, systemPrompt });
+  },
+});
 
-  <Tab title="In a workflow">
-    ```typescript theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-    import { z } from "zod/v4";
-    import { StateGraph, StateSchema, MessagesValue, START } from "@langchain/langgraph";
+const agent = createAgent({  // [!code highlight]
+  model: "claude-sonnet-4-6",
+  tools: [/* your tools here */],
+  middleware: [personalizedPrompt] as const, // [!code highlight]
+});
 
-    const CustomState = new StateSchema({  // [!code highlight]
-      messages: MessagesValue,
-      extraField: z.number(),
-    });
+await agent.invoke({
+  messages: [{ role: "user", content: "hi!" }],
+  userName: "John Smith",
+});
+```
 
-    const builder = new StateGraph(CustomState)
-      .addNode("node", async (state) => {  // [!code highlight]
-        const messages = state.messages;
-        // ...
-        return {  // [!code highlight]
-          extraField: state.extraField + 1,
-        };
-      })
-      .addEdge(START, "node");
+**在工作流程中**
 
-    const graph = builder.compile();
-    ```
-  </Tab>
-</Tabs>
+```typescript theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+import { z } from "zod/v4";
+import { StateGraph, StateSchema, MessagesValue, START } from "@langchain/langgraph";
 
-<Tip>
-  **打开内存**
-  有关如何启用内存的更多详细信息，请参阅[memory guide](/oss/javascript/langgraph/add-memory)。这是一个强大的功能，允许您在多次调用中保留代理的状态。否则，状态的范围仅限于单次运行。
-</Tip>
+const CustomState = new StateSchema({  // [!code highlight]
+  messages: MessagesValue,
+  extraField: z.number(),
+});
+
+const builder = new StateGraph(CustomState)
+  .addNode("node", async (state) => {  // [!code highlight]
+    const messages = state.messages;
+    // ...
+    return {  // [!code highlight]
+      extraField: state.extraField + 1,
+    };
+  })
+  .addEdge(START, "node");
+
+const graph = builder.compile();
+```
+
+> [!提示]
+>
+> **打开内存**
+> 有关如何启用内存的更多详细信息，请参阅[memory guide](/oss/javascript/langgraph/add-memory)。这是一个强大的功能，允许您在多次调用中保留代理的状态。否则，状态的范围仅限于单次运行。
 
 ## 动态交叉对话上下文**动态交叉对话上下文**表示跨越多个对话或会话的持久、可变数据，并通过 LangGraph 存储进行管理。这包括用户个人资料、偏好和历史交互。 LangGraph 存储在多次运行中充当 [long-term memory](/oss/javascript/concepts/memory#long-term-memory)。这可用于读取或更新持久事实（例如，用户配置文件、偏好、先前的交互）。
 
@@ -121,12 +119,6 @@ await graph.invoke(
 
 ***
 
-<div>
-  <Callout icon="terminal-2">
-    [Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
-  </Callout>
+[Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
 
-  <Callout icon="edit">
-    [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/oss/concepts/context.mdx) 或 [file an issue](https://github.com/langchain-ai/docs/issues/new/choose)。
-  </Callout>
-</div>
+[Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/oss/concepts/context.mdx) 或 [file an issue](https://github.com/langchain-ai/docs/issues/new/choose)。

@@ -10,15 +10,13 @@ LangSmith 可以使用 OpenTelemetry 仪器捕获 [CrewAI](https://github.com/cr
 
 使用您首选的包管理器安装所需的包：
 
-<CodeGroup>
-  ```bash pip theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  pip install langsmith crewai opentelemetry-instrumentation-crewai opentelemetry-instrumentation-openai
-  ```
+```bash pip theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+pip install langsmith crewai opentelemetry-instrumentation-crewai opentelemetry-instrumentation-openai
+```
 
-  ```bash uv theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  uv add langsmith crewai opentelemetry-instrumentation-crewai opentelemetry-instrumentation-openai
-  ```
-</CodeGroup>
+```bash uv theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+uv add langsmith crewai opentelemetry-instrumentation-crewai opentelemetry-instrumentation-openai
+```
 
 ## 设置
 
@@ -161,12 +159,6 @@ OpenAIInstrumentor().instrument(tracer_provider=tracer_provider)
 
 ***
 
-<div>
-  <Callout icon="terminal-2">
-    [Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
-  </Callout>
+[Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
 
-  <Callout icon="edit">
-    [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/trace-with-crewai.mdx) 或 [file an issue](https://github.com/langchain-ai/docs/issues/new/choose)。
-  </Callout>
-</div>
+[Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/trace-with-crewai.mdx) 或 [file an issue](https://github.com/langchain-ai/docs/issues/new/choose)。

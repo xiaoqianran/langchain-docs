@@ -4,21 +4,19 @@
 
 # 跟踪语义内核应用程序
 
-LangSmith 可以使用其内置的 OpenTelemetry 支持捕获 [Semantic Kernel](https://learn.microsoft.com/en-us/semantic-kernel/overview/) 生成的跟踪。本指南向您展示如何自动从语义内核应用程序捕获跟踪并将其发送到LangSmith进行监控和分析。
+LangSmith 可以使用其内置的 OpenTelemetry 支持捕获 [Semantic Kernel](https://learn.microsoft.com/en-us/semantic-kernel/overview/) 生成的跟踪。本指南向您展示如何自动从语义内核应用程序捕获跟踪并将其发送到 LangSmith 进行监控和分析。
 
 ## 安装
 
 使用您首选的包管理器安装所需的包：
 
-<CodeGroup>
-  ```bash pip theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  pip install langsmith semantic-kernel opentelemetry-instrumentation-openai
-  ```
+```bash pip theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+pip install langsmith semantic-kernel opentelemetry-instrumentation-openai
+```
 
-  ```bash uv theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  uv add langsmith semantic-kernel opentelemetry-instrumentation-openai
-  ```
-</CodeGroup>
+```bash uv theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+uv add langsmith semantic-kernel opentelemetry-instrumentation-openai
+```
 
 ## 设置
 
@@ -47,9 +45,9 @@ configure(project_name="semantic-kernel-demo")
 OpenAIInstrumentor().instrument()
 ```
 
-<Note>
-  您不需要设置任何 OpenTelemetry 环境变量或手动配置导出器 — `configure()` 会自动处理一切。
-</Note>
+> [!注意]
+>
+> 您不需要设置任何 OpenTelemetry 环境变量或手动配置导出器 — `configure()` 会自动处理一切。
 
 ### 3. 创建并运行您的语义内核应用程序
 
@@ -140,16 +138,16 @@ async def analyze_with_metadata(code: str):
 
 ### 与其他乐器结合
 
-您可以将语义内核跟踪与其他 OpenTelemetry 仪器结合起来：```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+您可以将语义内核跟踪与其他 OpenTelemetry 仪器结合起来：
+
+```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 from opentelemetry.instrumentation.openai import OpenAIInstrumentor
 from opentelemetry.instrumentation.httpx import HTTPXClientInstrumentor
 
 # Initialize multiple instrumentors
 OpenAIInstrumentor().instrument()
 HTTPXClientInstrumentor().instrument()
-```
-
-## 资源
+```## 资源
 
 * [Semantic Kernel documentation](https://learn.microsoft.com/en-us/semantic-kernel/overview/)
 * [Semantic Kernel observability guide](https://learn.microsoft.com/en-us/semantic-kernel/concepts/enterprise-readiness/observability/)
@@ -157,12 +155,6 @@ HTTPXClientInstrumentor().instrument()
 
 ***
 
-<div>
-  <Callout icon="terminal-2">
-    [Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
-  </Callout>
+[Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
 
-  <Callout icon="edit">
-    [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/trace-with-semantic-kernel.mdx) 或 [file an issue](https://github.com/langchain-ai/docs/issues/new/choose)。
-  </Callout>
-</div>
+[Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/trace-with-semantic-kernel.mdx) 或 [file an issue](https://github.com/langchain-ai/docs/issues/new/choose)。

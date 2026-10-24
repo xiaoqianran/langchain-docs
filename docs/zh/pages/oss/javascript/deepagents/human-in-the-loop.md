@@ -125,9 +125,9 @@ const agent = createDeepAgent({
 
 当人类拒绝提议的行动时使用`reject`。
 
-<Tip>
-  **编辑**工具参数时，请保守地进行更改。对原始参数的重大修改可能会导致模型重新评估其方法，并可能多次执行该工具或采取意外的操作。
-</Tip>
+> [!提示]
+>
+> **编辑**工具参数时，请保守地进行更改。对原始参数的重大修改可能会导致模型重新评估其方法，并可能多次执行该工具或采取意外的操作。
 
 您可以自定义每个工具可用的决策：
 
@@ -201,9 +201,9 @@ console.log(result.messages[result.messages.length - 1].content);
 
 对于实时 UI，请使用 `.stream()` 而不是 `.invoke()` 在处理 HITL 中断时显示令牌和工具调用进度。中断在 `updates` 流中显示为 `__interrupt__` 条目。流完成后，收集人工决策并通过使用 `Command(resume=...)` 再次流式传输来恢复。
 
-<Note>
-  对于典型的 `interrupt_on` HITL 暂停，以平坦的 `{"decisions": [...]}` 有效负载恢复，其形状与 `.invoke()` 相同。当多个中断同时挂起时（例如，并行分支），请将每个中断 ID 映射到其恢复值。参见[Handling multiple interrupts](/oss/javascript/langgraph/interrupts#handling-multiple-interrupts)。
-</Note>
+> [!注意]
+>
+> 对于典型的 `interrupt_on` HITL 暂停，以平坦的 `{"decisions": [...]}` 有效负载恢复，其形状与 `.invoke()` 相同。当多个中断同时挂起时（例如，并行分支），请将每个中断 ID 映射到其恢复值。参见[Handling multiple interrupts](/oss/javascript/langgraph/interrupts#handling-multiple-interrupts)。
 
 ```typescript theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 import { v7 as uuid7 } from "uuid";
@@ -264,9 +264,9 @@ while (true) {
 process.stdout.write("\n");
 ```
 
-<Tip>
-  结合 `"messages"` 和 `"updates"` 流模式，向用户显示实时 LLM 令牌，同时仍然捕获 HITL 中断。 `"messages"`模式流令牌； `"updates"` 模式提供中断负载。
-</Tip>
+> [!提示]
+>
+> 组合 `"messages"` 和 `"updates"` 流模式，向用户显示实时 LLM 令牌，同时仍捕获 HITL 中断。 `"messages"`模式流令牌； `"updates"` 模式提供中断负载。
 
 ## 多个工具调用当代理调用需要批准的多个工具时，所有中断都会在单个中断中批量处理。您必须按顺序为每一项做出决定。
 
@@ -376,7 +376,7 @@ const agent = createDeepAgent({
 });
 ```
 
-当子代理触发中断时，处理是相同的 - 检查结果中的 `__interrupt__` 并使用 `Command` 恢复。流式传输时，子代理中断也会作为父 `updates` 流中的 `__interrupt__` 条目出现。您不需要 `subgraphs=True` 来进行中断传送。如果您还想流式传输子代理令牌和进度事件，请启用`subgraphs=True`。完整图案请参见[Handle interrupts with streaming](#handle-interrupts-with-streaming)。
+当子代理触发中断时，处理是相同的 - 检查结果中的 `__interrupt__` 并使用 `Command` 恢复。流式传输时，子代理中断也会作为父 `updates` 流中的 `__interrupt__` 条目出现。您不需要 `subgraphs=True` 来进行中断传递。如果您还想流式传输子代理令牌和进度事件，请启用 `subgraphs=True`。完整图案请参见[Handle interrupts with streaming](#handle-interrupts-with-streaming)。
 
 ### 工具调用中的中断
 
@@ -515,12 +515,6 @@ Execution completed!
 
 ***
 
-<div>
-  <Callout icon="terminal-2">
-    [Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
-  </Callout>
+[Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
 
-  <Callout icon="edit">
-    [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/oss/deepagents/human-in-the-loop.mdx) 或 [file an issue](https://github.com/langchain-ai/docs/issues/new/choose)。
-  </Callout>
-</div>
+[Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/oss/deepagents/human-in-the-loop.mdx) 或 [file an issue](https://github.com/langchain-ai/docs/issues/new/choose)。

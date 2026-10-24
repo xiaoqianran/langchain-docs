@@ -13,9 +13,9 @@
 * **每次调用**：每个需要审核的工具调用暂停一次。
 * **批量**：每个模型回合一次暂停，涵盖该回合中的每个工具调用。批处理模式是当前的默认模式。
 
-<Note>
-  每次调用模式需要`langchain>=1.5.18`。 Deep Agents使用批处理模式。
-</Note>
+> [!注意]
+>
+> 每次通话模式需要`langchain>=1.5.18`。 Deep Agents使用批处理模式。
 
 ## 遵循从暂停到恢复的批准
 
@@ -128,7 +128,7 @@ new Command({
 | **每轮中断** |每个门控工具调用一个 |一整回合 |
 | **轮流取消门控呼叫** |马上跑|等待审核|
 | **答案** |每个中断一个决定，由中断 ID 控制 |按位置匹配的决策列表 |
-| **最适合** |新代理、每次呼叫一张审批卡或一条消息、根据架构构建的表单 |批准 UI 已显示为 `actionRequests` |
+| **最适合** |新代理、每次呼叫一张批准卡或一条消息、根据架构构建的表单 |批准 UI 已显示为 `actionRequests` |
 
 对新代理使用每次呼叫模式。 LangChain 计划在下一个主要版本中将其设为默认值。
 
@@ -144,12 +144,6 @@ new Command({
 
 ***
 
-<div>
-  <Callout icon="terminal-2">
-    [Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
-  </Callout>
+[Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
 
-  <Callout icon="edit">
-    [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/oss/concepts/human-in-the-loop.mdx) 或 [file an issue](https://github.com/langchain-ai/docs/issues/new/choose)。
-  </Callout>
-</div>
+[Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/oss/concepts/human-in-the-loop.mdx) 或 [file an issue](https://github.com/langchain-ai/docs/issues/new/choose)。

@@ -39,7 +39,7 @@ await stream.output;
 
 每个子代理流都公开与父运行相同类型的投影，例如消息、工具调用、嵌套子代理和最终输出。对于一般的父运行流模型，请参见[LangChain Event Streaming](/oss/javascript/langchain/event-streaming)。TypeScript 使用驼峰命名法投影名称，例如 `toolCalls` 和 `taskInput`。每个子代理流可以公开 `.messages`、`.toolCalls`、`.values`、`.subagents` 和 `.output`。
 
-|领域 |描述 |
+|领域|描述 |
 | - | - |
 | `name` |子代理名称，取自协调器在其 `task` 调用中选择的 `subagent_type`。 |
 | `messages` |子代理发出的消息。 |
@@ -84,9 +84,9 @@ await Promise.all(watchers);
 console.log({ running, completed, failed });
 ```
 
-<Card title="View example trace" icon="chart-line" href="https://smith.langchain.com/public/af4407a9-dadd-4090-8e7b-f77e85f0d65a/r">
-  为此示例打开公共 LangSmith 运行。
-</Card>
+> **[View example trace](https://smith.langchain.com/public/af4407a9-dadd-4090-8e7b-f77e85f0d65a/r)**
+>
+> 为此示例打开公共 LangSmith 运行。
 
 ## 流消息
 
@@ -137,9 +137,9 @@ for await (const subagent of stream.subagents) {
     }
   }
 }
-```<Card title="View example trace" icon="chart-line" href="https://smith.langchain.com/public/036480ea-6f7d-4459-ad25-e04f3f13308b/r">
-  为此示例打开公共 LangSmith 运行。
-</Card>
+```> **[View example trace](https://smith.langchain.com/public/036480ea-6f7d-4459-ad25-e04f3f13308b/r)**
+>
+> 为此示例打开公共 LangSmith 运行。
 
 ## 流式嵌套工作
 
@@ -171,9 +171,9 @@ for await (const subagent of stream.subagents) {
 }
 ```
 
-<Card title="View example trace" icon="chart-line" href="https://smith.langchain.com/public/a698b0c5-8151-43b6-aee4-aeac1a6926e7/r">
-  为此示例打开公共 LangSmith 运行。
-</Card>
+> **[View example trace](https://smith.langchain.com/public/a698b0c5-8151-43b6-aee4-aeac1a6926e7/r)**
+>
+> 为此示例打开公共 LangSmith 运行。
 
 ## 并发消费
 
@@ -202,9 +202,9 @@ await Promise.all([
 ]);
 ```
 
-<Card title="View example trace" icon="chart-line" href="https://smith.langchain.com/public/a3643504-3b56-47f4-ac30-2e6597dc7e04/r">
-  为此示例打开公共 LangSmith 运行。
-</Card>
+> **[View example trace](https://smith.langchain.com/public/a3643504-3b56-47f4-ac30-2e6597dc7e04/r)**
+>
+> 为此示例打开公共 LangSmith 运行。
 
 当您需要协调器和所有子代理之间的准确到达顺序时，请迭代原始协议事件并使用 `namespace` 来识别源：
 
@@ -230,9 +230,9 @@ for await (const event of stream) {
 }
 ```
 
-<Card title="View example trace" icon="chart-line" href="https://smith.langchain.com/public/851be40f-46b1-424d-a13f-705a955db1a8/r">
-  为此示例打开公共 LangSmith 运行。
-</Card>
+> **[View example trace](https://smith.langchain.com/public/851be40f-46b1-424d-a13f-705a955db1a8/r)**
+>
+> 为此示例打开公共 LangSmith 运行。
 
 ## 子代理与子图
 
@@ -244,12 +244,6 @@ for await (const event of stream) {
 * [Subagent frontend streaming](/oss/javascript/deepagents/frontend/subagent-streaming) 显示将协调器消息与子代理卡分开的 UI 模式。
 * [LangGraph Event Streaming](/oss/javascript/langgraph/event-streaming)涵盖了底层的图流模型。
 
-***<div>
-  <Callout icon="terminal-2">
-    [Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
-  </Callout>
+***[Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
 
-  <Callout icon="edit">
-    [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/oss/deepagents/event-streaming.mdx) 或 [file an issue](https://github.com/langchain-ai/docs/issues/new/choose)。
-  </Callout>
-</div>
+[Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/oss/deepagents/event-streaming.mdx) 或 [file an issue](https://github.com/langchain-ai/docs/issues/new/choose)。

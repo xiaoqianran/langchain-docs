@@ -9,27 +9,25 @@
 [Agent Client Protocol (ACP)](https://agentclientprotocol.com/get-started/introduction) 标准化编码代理和代码编辑器或 IDE 之间的通信。
 通过 ACP 协议，您可以将自定义深度代理与任何 ACP 兼容的客户端结合使用，从而允许您的代码编辑器提供项目上下文并接收丰富的更新。
 
-<Note>
-  ACP 专为代理编辑器集成而设计。如果您希望代理调用外部服务器托管的工具，请参阅[Model Context Protocol (MCP)](/oss/javascript/langchain/mcp/)。
-</Note>
+> [!注意]
+>
+> ACP 专为代理编辑器集成而设计。如果您希望代理调用外部服务器托管的工具，请参阅[Model Context Protocol (MCP)](/oss/javascript/langchain/mcp/)。
 
 ## 快速入门
 
 安装ACP集成包：
 
-<CodeGroup>
-  ```bash npm theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  npm install deepagents-acp
-  ```
+```bash npm theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+npm install deepagents-acp
+```
 
-  ```bash yarn theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  yarn add deepagents-acp
-  ```
+```bash yarn theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+yarn add deepagents-acp
+```
 
-  ```bash pnpm theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  pnpm add deepagents-acp
-  ```
-</CodeGroup>
+```bash pnpm theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+pnpm add deepagents-acp
+```
 
 然后通过 ACP 暴露深层代理。
 
@@ -53,9 +51,9 @@ await startServer({
 npx deepagents-acp
 ```
 
-<Card title="Deep Agents ACP on npm" icon="brand-npm" href="https://www.npmjs.com/package/deepagents-acp">
-  `deepagents-acp` 包提供 CLI 和编程 API，用于通过 ACP 公开深度代理。
-</Card>
+> **[Deep Agents ACP on npm](https://www.npmjs.com/package/deepagents-acp)**
+>
+> `deepagents-acp` 包提供 CLI 和编程 API，用于通过 ACP 公开深度代理。
 
 ## 客户
 
@@ -66,7 +64,7 @@ npx deepagents-acp
 
 ### 泽德
 
-通过将深度代理添加到 Zed 设置中，向 [Zed](https://zed.dev/docs/ai/external-agents) 注册您的深度代理（Linux 上为 `~/.config/zed/settings.json`，macOS 上为 `~/Library/Application Support/Zed/settings.json`）：
+通过将深度代理添加到 Zed 设置中，向 [Zed](https://zed.dev/docs/ai/external-agents) 注册深度代理（在 Linux 上为 `~/.config/zed/settings.json`，在 macOS 上为 `~/Library/Application Support/Zed/settings.json`）：
 
 **设置简单（无需代码）：**
 
@@ -199,203 +197,201 @@ await startServer({
 
 要完全控制，请直接使用 `DeepAgentsServer` 类：
 
-<CodeGroup>
-  ```ts Google theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  import { DeepAgentsServer } from "deepagents-acp";
+```ts Google theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+import { DeepAgentsServer } from "deepagents-acp";
 
-  const server = new DeepAgentsServer({
-    agents: [
-      {
-        name: "code-agent",
-        description: "Full-featured coding assistant",
-        model: "google:gemini-3.6-flash",
-        skills: ["./skills/"],
-        memory: ["./.deepagents/AGENTS.md"],
-      },
-      {
-        name: "reviewer",
-        description: "Code review specialist",
-        systemPrompt: "You are a code review expert...",
-      },
-    ],
-    serverName: "my-deepagents-acp",
-    serverVersion: "1.0.0",
-    workspaceRoot: process.cwd(),
-    debug: true,
-  });
+const server = new DeepAgentsServer({
+  agents: [
+    {
+      name: "code-agent",
+      description: "Full-featured coding assistant",
+      model: "google:gemini-3.6-flash",
+      skills: ["./skills/"],
+      memory: ["./.deepagents/AGENTS.md"],
+    },
+    {
+      name: "reviewer",
+      description: "Code review specialist",
+      systemPrompt: "You are a code review expert...",
+    },
+  ],
+  serverName: "my-deepagents-acp",
+  serverVersion: "1.0.0",
+  workspaceRoot: process.cwd(),
+  debug: true,
+});
 
-  await server.start();
-  ```
+await server.start();
+```
 
-  ```ts OpenAI theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  import { DeepAgentsServer } from "deepagents-acp";
+```ts OpenAI theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+import { DeepAgentsServer } from "deepagents-acp";
 
-  const server = new DeepAgentsServer({
-    agents: [
-      {
-        name: "code-agent",
-        description: "Full-featured coding assistant",
-        model: "openai:gpt-5.5",
-        skills: ["./skills/"],
-        memory: ["./.deepagents/AGENTS.md"],
-      },
-      {
-        name: "reviewer",
-        description: "Code review specialist",
-        systemPrompt: "You are a code review expert...",
-      },
-    ],
-    serverName: "my-deepagents-acp",
-    serverVersion: "1.0.0",
-    workspaceRoot: process.cwd(),
-    debug: true,
-  });
+const server = new DeepAgentsServer({
+  agents: [
+    {
+      name: "code-agent",
+      description: "Full-featured coding assistant",
+      model: "openai:gpt-5.5",
+      skills: ["./skills/"],
+      memory: ["./.deepagents/AGENTS.md"],
+    },
+    {
+      name: "reviewer",
+      description: "Code review specialist",
+      systemPrompt: "You are a code review expert...",
+    },
+  ],
+  serverName: "my-deepagents-acp",
+  serverVersion: "1.0.0",
+  workspaceRoot: process.cwd(),
+  debug: true,
+});
 
-  await server.start();
-  ```
+await server.start();
+```
 
-  ```ts Anthropic theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  import { DeepAgentsServer } from "deepagents-acp";
+```ts Anthropic theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+import { DeepAgentsServer } from "deepagents-acp";
 
-  const server = new DeepAgentsServer({
-    agents: [
-      {
-        name: "code-agent",
-        description: "Full-featured coding assistant",
-        model: "anthropic:claude-sonnet-5",
-        skills: ["./skills/"],
-        memory: ["./.deepagents/AGENTS.md"],
-      },
-      {
-        name: "reviewer",
-        description: "Code review specialist",
-        systemPrompt: "You are a code review expert...",
-      },
-    ],
-    serverName: "my-deepagents-acp",
-    serverVersion: "1.0.0",
-    workspaceRoot: process.cwd(),
-    debug: true,
-  });
+const server = new DeepAgentsServer({
+  agents: [
+    {
+      name: "code-agent",
+      description: "Full-featured coding assistant",
+      model: "anthropic:claude-sonnet-5",
+      skills: ["./skills/"],
+      memory: ["./.deepagents/AGENTS.md"],
+    },
+    {
+      name: "reviewer",
+      description: "Code review specialist",
+      systemPrompt: "You are a code review expert...",
+    },
+  ],
+  serverName: "my-deepagents-acp",
+  serverVersion: "1.0.0",
+  workspaceRoot: process.cwd(),
+  debug: true,
+});
 
-  await server.start();
-  ```
+await server.start();
+```
 
-  ```ts OpenRouter theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  import { DeepAgentsServer } from "deepagents-acp";
+```ts OpenRouter theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+import { DeepAgentsServer } from "deepagents-acp";
 
-  const server = new DeepAgentsServer({
-    agents: [
-      {
-        name: "code-agent",
-        description: "Full-featured coding assistant",
-        model: "openrouter:z-ai/glm-5.2",
-        skills: ["./skills/"],
-        memory: ["./.deepagents/AGENTS.md"],
-      },
-      {
-        name: "reviewer",
-        description: "Code review specialist",
-        systemPrompt: "You are a code review expert...",
-      },
-    ],
-    serverName: "my-deepagents-acp",
-    serverVersion: "1.0.0",
-    workspaceRoot: process.cwd(),
-    debug: true,
-  });
+const server = new DeepAgentsServer({
+  agents: [
+    {
+      name: "code-agent",
+      description: "Full-featured coding assistant",
+      model: "openrouter:z-ai/glm-5.2",
+      skills: ["./skills/"],
+      memory: ["./.deepagents/AGENTS.md"],
+    },
+    {
+      name: "reviewer",
+      description: "Code review specialist",
+      systemPrompt: "You are a code review expert...",
+    },
+  ],
+  serverName: "my-deepagents-acp",
+  serverVersion: "1.0.0",
+  workspaceRoot: process.cwd(),
+  debug: true,
+});
 
-  await server.start();
-  ```
+await server.start();
+```
 
-  ```ts Fireworks theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  import { DeepAgentsServer } from "deepagents-acp";
+```ts Fireworks theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+import { DeepAgentsServer } from "deepagents-acp";
 
-  const server = new DeepAgentsServer({
-    agents: [
-      {
-        name: "code-agent",
-        description: "Full-featured coding assistant",
-        model: "fireworks:accounts/fireworks/models/glm-5p2",
-        skills: ["./skills/"],
-        memory: ["./.deepagents/AGENTS.md"],
-      },
-      {
-        name: "reviewer",
-        description: "Code review specialist",
-        systemPrompt: "You are a code review expert...",
-      },
-    ],
-    serverName: "my-deepagents-acp",
-    serverVersion: "1.0.0",
-    workspaceRoot: process.cwd(),
-    debug: true,
-  });
+const server = new DeepAgentsServer({
+  agents: [
+    {
+      name: "code-agent",
+      description: "Full-featured coding assistant",
+      model: "fireworks:accounts/fireworks/models/glm-5p2",
+      skills: ["./skills/"],
+      memory: ["./.deepagents/AGENTS.md"],
+    },
+    {
+      name: "reviewer",
+      description: "Code review specialist",
+      systemPrompt: "You are a code review expert...",
+    },
+  ],
+  serverName: "my-deepagents-acp",
+  serverVersion: "1.0.0",
+  workspaceRoot: process.cwd(),
+  debug: true,
+});
 
-  await server.start();
-  ```
+await server.start();
+```
 
-  ```ts Baseten theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  import { DeepAgentsServer } from "deepagents-acp";
+```ts Baseten theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+import { DeepAgentsServer } from "deepagents-acp";
 
-  const server = new DeepAgentsServer({
-    agents: [
-      {
-        name: "code-agent",
-        description: "Full-featured coding assistant",
-        model: "baseten:zai-org/GLM-5.2",
-        skills: ["./skills/"],
-        memory: ["./.deepagents/AGENTS.md"],
-      },
-      {
-        name: "reviewer",
-        description: "Code review specialist",
-        systemPrompt: "You are a code review expert...",
-      },
-    ],
-    serverName: "my-deepagents-acp",
-    serverVersion: "1.0.0",
-    workspaceRoot: process.cwd(),
-    debug: true,
-  });
+const server = new DeepAgentsServer({
+  agents: [
+    {
+      name: "code-agent",
+      description: "Full-featured coding assistant",
+      model: "baseten:zai-org/GLM-5.2",
+      skills: ["./skills/"],
+      memory: ["./.deepagents/AGENTS.md"],
+    },
+    {
+      name: "reviewer",
+      description: "Code review specialist",
+      systemPrompt: "You are a code review expert...",
+    },
+  ],
+  serverName: "my-deepagents-acp",
+  serverVersion: "1.0.0",
+  workspaceRoot: process.cwd(),
+  debug: true,
+});
 
-  await server.start();
-  ```
+await server.start();
+```
 
-  ```ts Ollama theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  import { DeepAgentsServer } from "deepagents-acp";
+```ts Ollama theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+import { DeepAgentsServer } from "deepagents-acp";
 
-  const server = new DeepAgentsServer({
-    agents: [
-      {
-        name: "code-agent",
-        description: "Full-featured coding assistant",
-        model: "ollama:north-mini-code-1.0",
-        skills: ["./skills/"],
-        memory: ["./.deepagents/AGENTS.md"],
-      },
-      {
-        name: "reviewer",
-        description: "Code review specialist",
-        systemPrompt: "You are a code review expert...",
-      },
-    ],
-    serverName: "my-deepagents-acp",
-    serverVersion: "1.0.0",
-    workspaceRoot: process.cwd(),
-    debug: true,
-  });
+const server = new DeepAgentsServer({
+  agents: [
+    {
+      name: "code-agent",
+      description: "Full-featured coding assistant",
+      model: "ollama:north-mini-code-1.0",
+      skills: ["./skills/"],
+      memory: ["./.deepagents/AGENTS.md"],
+    },
+    {
+      name: "reviewer",
+      description: "Code review specialist",
+      systemPrompt: "You are a code review expert...",
+    },
+  ],
+  serverName: "my-deepagents-acp",
+  serverVersion: "1.0.0",
+  workspaceRoot: process.cwd(),
+  debug: true,
+});
 
-  await server.start();
-  ```
-</CodeGroup>
+await server.start();
+```
 
-#### 服务器选项|选项 |类型 |默认 |描述 |
+#### 服务器选项|选项 |类型 |默认|描述 |
 | - | - | - | - |
 | `agents` | `DeepAgentConfig \| DeepAgentConfig[]` |必填|代理配置 |
 | `serverName` | `string` | `"deepagents-acp"` | ACP | 的服务器名称
-| `serverVersion` | `string` | `"0.0.1"` |服务器版|
-| `workspaceRoot` | `string` | `process.cwd()` |工作区根目录|
+| `serverVersion` | `string` | `"0.0.1"` |服务器版 |
+| `workspaceRoot` | `string` | `process.cwd()` |工作区根目录 |
 | `debug` | `boolean` | `false` |启用调试日志记录 |
 
 #### 代理配置
@@ -405,14 +401,14 @@ await startServer({
 | `name` | `string` |唯一的代理名称（必填）|
 | `description` | `string` |代理说明 |
 | `model` | `string` | LLM模型（默认：`"claude-sonnet-4-5-20250929"`）|
-| `tools` | `StructuredTool[]` |定制LangChain工具|
+| `tools` | `StructuredTool[]` |自定义LangChain工具|
 | `systemPrompt` | `string` |自定义系统提示|
 | `middleware` | `AgentMiddleware[]` |自定义中间件附加到 [Deep Agents stack](/oss/javascript/deepagents/customization#deep-agents-stack) |
 | `backend` | `AnyBackendProtocol` |文件系统后端 |
 | `skills` | `string[]` |技能来源路径|
 | `memory` | `string[]` |内存源路径(AGENTS.md) |
 | `interruptOn` | `Record<string, boolean \| InterruptOnConfig>` |需要用户批准的工具 (HITL) |
-| `commands` | `Array<{ name, description, input? }>` |自定义斜杠命令 |
+| `commands` | `Array<{ name, description, input? }>` |自定义斜杠命令|
 
 ## 定制
 
@@ -429,9 +425,9 @@ const server = new DeepAgentsServer({
     { name: "reviewer", description: "Code reviews" },
   ],
 });
-```<Note>
-  某些 ACP 客户端（例如 Zed）当前不公开用于在代理之间进行选择的 UI。在这种情况下，请考虑运行单独的服务器实例，每个实例使用一个代理。
-</Note>
+```> [!注意]
+>
+> 某些 ACP 客户端（如 Zed）当前不公开用于在代理之间进行选择的 UI。在这种情况下，请考虑运行单独的服务器实例，每个实例使用一个代理。
 
 ### 斜线命令
 
@@ -537,21 +533,15 @@ await startServer({
 });
 ```
 
-<Info>
-  有关协议详细信息和编辑器支持，请参阅上游 ACP 文档：
-
-  * 简介：[https://agentclientprotocol.com/get-started/introduction](https://agentclientprotocol.com/get-started/introduction)
-  * 客户/编辑：[https://agentclientprotocol.com/get-started/clients](https://agentclientprotocol.com/get-started/clients)
-</Info>
+> [!注意]
+>
+> 有关协议详细信息和编辑器支持，请参阅上游 ACP 文档：
+>
+> * 简介：[https://agentclientprotocol.com/get-started/introduction](https://agentclientprotocol.com/get-started/introduction)
+> * 客户/编辑：[https://agentclientprotocol.com/get-started/clients](https://agentclientprotocol.com/get-started/clients)
 
 ***
 
-<div>
-  <Callout icon="terminal-2">
-    [Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
-  </Callout>
+[Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
 
-  <Callout icon="edit">
-    [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/oss/deepagents/acp.mdx) 或 [file an issue](https://github.com/langchain-ai/docs/issues/new/choose)。
-  </Callout>
-</div>
+[Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/oss/deepagents/acp.mdx) 或 [file an issue](https://github.com/langchain-ai/docs/issues/new/choose)。

@@ -4,7 +4,7 @@
 
 # 跟踪光标会话
 
-在LangSmith中捕获光标代理转动、工具调用、模型元数据、令牌使用、附件和子代理。
+在 LangSmith 中捕获光标代理转动、工具调用、模型元数据、令牌使用、附件和子代理。
 
 使用 [Cursor hooks](https://cursor.com/docs/agent/hooks) 跟踪 LangSmith 中的 [Cursor](https://cursor.com/) 代理会话。每个回合都成为一个跟踪，每个光标对话分组为一个线程，它捕获提示、模型响应、工具调用、令牌使用和子代理活动。使用跟踪来调试代理行为、审核工具调用、跟踪每轮令牌花费以及比较游标运行。
 
@@ -15,7 +15,7 @@
 在设置跟踪之前，请确保您拥有：
 
 * 已安装[Cursor](https://cursor.com/)。
-* [Node.js](https://nodejs.org/) 22.13 或更高版本。这些钩子使用内置的 `node:sqlite` 模块从 Cursor 的本地数据库恢复附件。
+* [Node.js](https://nodejs.org/) 22.13 或更高版本。这些挂钩使用内置的 `node:sqlite` 模块从 Cursor 的本地数据库恢复附件。
 * A [LangSmith API key](/langsmith/create-account-api-key)。
 
 ## 安装并启用插件
@@ -28,9 +28,9 @@
 
 这是推荐的路径：它安装钩子而无需克隆或构建步骤，因为存储库附带了预编译的包。
 
-<Warning>
-  安装后完全重新启动 Cursor，以便重新加载 `hooks.json`。
-</Warning>### 替代方案：从本地克隆安装
+> [!警告]
+>
+> 安装后完全重新启动 Cursor，以便重新加载 `hooks.json`。### 替代方案：从本地克隆安装
 
 从 [⟦T12⟧](https://github.com/langchain-ai/langsmith-cursor-plugins) 的本地克隆安装挂钩。这为所有 Cursor 项目写入 `~/.cursor/hooks.json`：
 
@@ -101,7 +101,7 @@ tail -f ~/.cursor/langsmith-hook.log
 }
 ```
 
-|领域 |环境变量|默认|描述 |
+|领域|环境变量 |默认|描述 |
 | - | - | - | - |
 | `enabled` | `TRACE_TO_LANGSMITH` | `false` |设置为 `true` 以启用跟踪。 |
 | `api_key` | `LANGSMITH_CURSOR_API_KEY`、`LANGSMITH_API_KEY` | - | LangSmith API 密钥。 |
@@ -110,7 +110,7 @@ tail -f ~/.cursor/langsmith-hook.log
 | `metadata` | `LANGSMITH_CURSOR_METADATA`、`LANGSMITH_METADATA` | - |对象合并到根跟踪元数据中。 |
 | `replicas` | `LANGSMITH_CURSOR_RUNS_ENDPOINTS`、`LANGSMITH_RUNS_ENDPOINTS` | - |将跟踪复制到的其他 LangSmith 目的地。 |
 | `redact` | `LANGSMITH_CURSOR_REDACT`、`LANGSMITH_REDACT` | `true` |设置为 `false` 以禁用 [secret redaction](#secret-redaction)。 |
-| `redact_extra_rules` | `LANGSMITH_CURSOR_REDACT_EXTRA`、`LANGSMITH_REDACT_EXTRA` | - |在内置规则之后应用额外的 `{ pattern, replace }` 规则。 |
+| `redact_extra_rules` | `LANGSMITH_CURSOR_REDACT_EXTRA`、`LANGSMITH_REDACT_EXTRA` | - |在内置规则之后应用额外的`{ pattern, replace }`规则。 |
 | `attachments` | `LANGSMITH_CURSOR_ATTACHMENTS` | `true` |设置为 `false` 以跳过使用 Cursor 本地数据库中的图像和文件附件字节进行丰富的轮次。 |
 | `cursor_db_path` | `LANGSMITH_CURSOR_DB_PATH` |平台默认|覆盖用于附件的光标`state.vscdb`路径。 |
 
@@ -118,7 +118,7 @@ tail -f ~/.cursor/langsmith-hook.log
 
 ## 秘密编辑
 
-该插件会编辑从运行输入、输出、错误和元数据中检测到的秘密，然后将其上传到LangSmith。默认情况下，密文处于启用状态。上传之前，编辑会在您的计算机上运行，​​因此未编辑的内容永远不会到达 LangSmith。副本目标接收相同的编辑有效负载。
+该插件会编辑从运行输入、输出、错误和元数据中检测到的秘密，然后将其上传到LangSmith。默认情况下，密文处于启用状态。上传前，编辑会在您的计算机上运行，​​因此未编辑的内容永远不会到达 LangSmith。副本目标接收相同的编辑有效负载。
 
 检测涵盖提供商 API 密钥前缀、JSON Web 令牌和 PEM 私钥块。它还涵盖上下文形状，例如 `API_KEY=<value>`、`Authorization` 标头以及嵌入 URL 中的密码。每场比赛都替换为`[SECRET_DETECTED]`。规则列表参见[Redact secrets from traces](/langsmith/redact-secrets#rules-in-the-preset)。
 
@@ -150,11 +150,11 @@ tail -f ~/.cursor/langsmith-hook.log
 * **附件**：从 Cursor 的本地数据库恢复并内联呈现在用户消息上的图像和文件附件。将 `attachments` 设置为 `false` 可跳过此步骤。
 * **子代理**：每个子代理显示为嵌套链运行，其下方有自己的工具调用，链接到父回合。
 
-<Note>
-  该插件不会在本地计算成本。由于 `ls_model_name` 已标准化为规范 ID，并且 `usage_metadata` 包含代币细分，因此 LangSmith 的服务器端模型价格表会在 UI 中呈现成本。自动模式报告`default`，LangSmith无法定价。
-</Note><Warning>
-  该插件上传 Cursor 对话数据，包括提示、模型响应、工具输入和输出以及恢复的附件。不要对包含您不希望存储在 LangSmith 中的数据的会话启用跟踪。
-</Warning>
+> [!注意]
+>
+> 该插件不会在本地计算成本。由于 `ls_model_name` 已标准化为规范 ID，并且 `usage_metadata` 包含代币细分，因此 LangSmith 的服务器端模型价格表会在 UI 中呈现成本。自动模式报告`default`，LangSmith无法定价。> [!警告]
+>
+> 该插件上传光标对话数据，包括提示、模型响应、工具输入和输出以及恢复的附件。不要对包含您不希望存储在 LangSmith 中的数据的会话启用跟踪。
 
 ### 跟踪元数据
 
@@ -199,12 +199,6 @@ Cursor Turn N (chain)
 
 ***
 
-<div>
-  <Callout icon="terminal-2">
-    [Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
-  </Callout>
+[Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
 
-  <Callout icon="edit">
-    [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/trace-with-cursor.mdx) 或 [file an issue](https://github.com/langchain-ai/docs/issues/new/choose)。
-  </Callout>
-</div>
+[Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/trace-with-cursor.mdx) 或 [file an issue](https://github.com/langchain-ai/docs/issues/new/choose)。

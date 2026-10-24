@@ -8,9 +8,9 @@
 
 插件使用可重用的 [skills](/oss/deepagents/code/memory-and-skills)、[MCP servers](/oss/deepagents/code/mcp-tools)、[hooks](/oss/deepagents/code/hooks) 和 [Python extensions](/oss/deepagents/code/extensions) 扩展 dcode。市场提供用于跨项目或团队发现和安装插件的目录。 dcode 支持 Claude 和 Codex 风格的插件清单和市场目录，如 [Create a plugin](#create-a-plugin) 和 [Create a marketplace](#create-a-marketplace) 中所述。
 
-<Warning>
-  仅从您信任的来源安装插件和市场。启用的插件可以添加指令并使用您的用户权限运行 MCP 服务器、挂钩命令或 Python 扩展。
-</Warning>
+> [!警告]
+>
+> 仅从您信任的来源安装插件和市场。启用的插件可以添加指令并使用您的用户权限运行 MCP 服务器、挂钩命令或 Python 扩展。
 
 ## 交互式管理插件
 
@@ -23,7 +23,7 @@
 3. 从市场安装插件。
 4. 运行 `/reload` 激活新安装的插件技能、MCP 服务器和挂钩，而无需重新启动会话。具有 [Python extensions](/oss/deepagents/code/extensions) 的插件需要 `/restart` 来重建代理图。
 
-插件管理器还允许您启用、禁用和卸载已安装的插件。禁用插件会保留其安装状态，但在运行 `/reload` 或启动新会话后排除其技能、MCP 服务器和挂钩。 Python 扩展在当前图表中保持加载状态，直到您运行 `/restart` 或启动新会话。
+插件管理器还允许您启用、禁用和卸载已安装的插件。禁用插件会保留其安装状态，但会在运行 `/reload` 或启动新会话后排除其技能、MCP 服务器和挂钩。 Python 扩展在当前图表中保持加载状态，直到您运行 `/restart` 或启动新会话。
 
 删除市场会卸载其插件并删除托管缓存数据。当市场来自本地目录或文件时，Deep Agents 代码会保留原始来源。运行 `/reload` 或启动新会话以将删除应用到活动会话。
 
@@ -81,7 +81,7 @@ dcode plugin marketplace remove acme-tools
 
 启用的插件还可以贡献 MCP 服务器。 Deep Agents 当插件加载时，代码会将这些服务器与常规 MCP 配置合并。使用 `/mcp` 检查可用的服务器和工具。
 
-插件挂钩使用与用户和项目挂钩相同的生命周期事件和处理程序格式。插件管理器列出了每个插件声明的事件。启用插件是其钩子的唯一同意门：工作区信任适用于项目钩子，而不是插件钩子。
+插件挂钩使用与用户和项目挂钩相同的生命周期事件和处理程序格式。插件管理器列出了每个插件声明的事件。启用插件是其挂钩的唯一同意门：工作区信任适用于项目挂钩，而不是插件挂钩。
 
 ## 创建一个插件
 
@@ -99,7 +99,7 @@ my-plugin/
 └── .mcp.json
 ```
 
-Deep Agents 代码还可以识别`.codex-plugin/plugin.json`。当组件使用其默认位置时，清单是可选的。如果插件仅包含一项技能，您可以将`SKILL.md`放置在插件根目录中，而不是创建`skills/`。
+Deep Agents 代码还可以识别`.codex-plugin/plugin.json`。当组件使用其默认位置时，清单是可选的。如果插件仅包含一项技能，您可以将`SKILL.md`放在插件根目录中，而不是创建`skills/`。
 
 ### 定义插件清单如果存在，`.claude-plugin/plugin.json` 或`.codex-plugin/plugin.json` 必须包含`name`。您还可以声明版本和自定义组件路径：
 
@@ -164,9 +164,9 @@ skills/
 
 ### 添加Python扩展
 
-<Note>
-  Python 扩展需要 `DEEPAGENTS_CODE_EXPERIMENTAL=1`。
-</Note>
+> [!注意]
+>
+> Python 扩展需要 `DEEPAGENTS_CODE_EXPERIMENTAL=1`。
 
 在插件清单中的Deep Agents代码命名空间下声明一个Python入口文件或一个列表：
 
@@ -207,9 +207,9 @@ skills/
 }
 ```
 
-每个插件条目都需要一个`name`和`source`。它还可以包括 `description` 和 `author`。本地源路径必须以 `./` 开头，并位于市场根目录内。当所有本地插件共享不同的基目录时，设置`metadata.pluginRoot`。市场条目还可以使用外部 Git 源：
+每个插件条目都需要一个`name`和`source`。它还可以包括 `description` 和 `author`。本地源路径必须以 `./` 开头，并位于市场根目录内。当所有本地插件共享不同的基目录时，设置`metadata.pluginRoot`。
 
-```json theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+市场条目还可以使用外部 Git 源：```json theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 {
   "name": "acme-tools",
   "plugins": [
@@ -254,12 +254,6 @@ dcode plugin install code-review@acme-tools
 
 ***
 
-<div>
-  <Callout icon="terminal-2">
-    [Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
-  </Callout>
+[Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
 
-  <Callout icon="edit">
-    [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/oss/deepagents/code/plugins.mdx) 或 [file an issue](https://github.com/langchain-ai/docs/issues/new/choose)。
-  </Callout>
-</div>
+[Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/oss/deepagents/code/plugins.mdx) 或 [file an issue](https://github.com/langchain-ai/docs/issues/new/choose)。

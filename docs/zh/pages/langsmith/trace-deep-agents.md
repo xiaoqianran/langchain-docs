@@ -12,15 +12,13 @@
 
 在 Python 环境中安装 `deepagents`：
 
-<CodeGroup>
-  ```bash pip theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  pip install deepagents
-  ```
+```bash pip theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+pip install deepagents
+```
 
-  ```bash uv theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  uv add deepagents
-  ```
-</CodeGroup>
+```bash uv theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+uv add deepagents
+```
 
 `deepagents` 要求：
 
@@ -28,11 +26,11 @@
 * 支持工具调用的LLM（例如OpenAI或Anthropic模型）。
 * 用于追踪，[LangSmith account and API key](/langsmith/create-account-api-key)（免费注册）。
 
-<Note>
-  您不需要安装`langsmith` Python 包来跟踪Deep Agents。 `deepagents` 构建于 LangGraph 之上，其中包括本机 LangSmith 跟踪支持。只要设置了 LangSmith 环境变量，就会自动发送跟踪。
-
-  仅当您需要 [programmatic control over tracing](#customize-langsmith-tracing) 时才需要 `langsmith` 包（例如，使用 `tracing_context`、添加自定义元数据或从 Python 查询运行）。
-</Note>
+> [!注意]
+>
+> 您不需要安装`langsmith` Python 包来跟踪Deep Agents。 `deepagents` 构建于 LangGraph 之上，其中包括本机 LangSmith 跟踪支持。只要设置了 LangSmith 环境变量，就会自动发送跟踪。
+>
+> 仅当您需要 [programmatic control over tracing](#customize-langsmith-tracing) 时才需要 `langsmith` 包（例如，使用 `tracing_context`、添加自定义元数据或从 Python 查询运行）。
 
 ## 设置
 
@@ -151,7 +149,7 @@ print(result)
 
 ### 按子代理过滤
 
-在子代理生成的每次运行中，Deep Agents 自动将子代理的 `name` 写入到 `lc_agent_name` 元数据键。使用它可以将所有运行与 LangSmith 中的特定子代理隔离，这对于调试、监视或比较子代理行为非常有用。
+在子代理生成的每次运行中，Deep Agents 自动将子代理的 `name` 写入到 `lc_agent_name` 元数据键。使用它可以将所有运行与LangSmith中的特定子代理隔离，这对于调试、监视或比较子代理行为非常有用。
 
 **在LangSmith UI 中过滤：**
 
@@ -160,7 +158,7 @@ print(result)
 3. 单击“**添加过滤器**”并选择“**元数据**”。
 4. 将 **Key** 设置为 `lc_agent_name`，将 **Value** 设置为子代理名称，例如 `coordinator`。
 
-<img alt="LangSmith Runs view with a metadata filter on lc_agent_name set to coordinator" />
+![LangSmith Runs view with a metadata filter on lc\_agent\_name set to coordinator](https://mintcdn.com/langchain-5e9cc07a/t_yuR4Fo_XGdcWGH/langsmith/images/deepagents-lc-agent-name-filter.png?fit=max\&auto=format\&n=t_yuR4Fo_XGdcWGH\&q=85\&s=ffc65c0b9b5292fce5f0589b8f2478ce)
 
 将过滤器保存为命名视图以便快速重用。有关过滤器选项的完整参考，请参阅[Filter traces](/langsmith/filter-traces)。
 
@@ -191,15 +189,13 @@ for run in runs:
 * 添加自定义标签或元数据以在用户界面中进行过滤。
 * 在运行时覆盖项目名称。
 
-<CodeGroup>
-  ```bash pip theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  pip install langsmith
-  ```
+```bash pip theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+pip install langsmith
+```
 
-  ```bash uv theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  uv add langsmith
-  ```
-</CodeGroup>
+```bash uv theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+uv add langsmith
+```
 
 此示例调用同一深度代理两次：
 
@@ -317,7 +313,7 @@ with ls.tracing_context(
 ```
 
 `tracing_context` 块启用跟踪，并配置如何在 LangSmith 中记录和组织跟踪：* `enabled=True` 明确启用块持续时间内的跟踪，即使 `LANGSMITH_TRACING` 未设置或设置为 `false`。
-* `project_name="deepagents-demo"` 将跟踪从此块路由到指定的 [LangSmith project](/langsmith/log-traces-to-project)。这会覆盖上下文中创建的运行的`LANGSMITH_PROJECT`。
+* `project_name="deepagents-demo"` 将跟踪从此块路由到指定的[LangSmith project](/langsmith/log-traces-to-project)。这会覆盖上下文中创建的运行的`LANGSMITH_PROJECT`。
 * `tags=[...]` 将标签附加到跟踪的运行。 [Tags](/langsmith/add-metadata-tags)出现在[LangSmith UI](https://smith.langchain.com?utm_source=docs\&utm_medium=cta\&utm_campaign=langsmith-signup\&utm_content=langsmith-trace-deep-agents)中，您可以使用它来过滤和分组轨迹。
 * `metadata={...}` 附加任意结构化元数据（例如，环境、实验名称或功能标志）。
 
@@ -325,12 +321,6 @@ with ls.tracing_context(
 
 ***
 
-<div>
-  <Callout icon="terminal-2">
-    [Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
-  </Callout>
+[Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
 
-  <Callout icon="edit">
-    [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/trace-deep-agents.mdx) 或 [file an issue](https://github.com/langchain-ai/docs/issues/new/choose)。
-  </Callout>
-</div>
+[Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/trace-deep-agents.mdx) 或 [file an issue](https://github.com/langchain-ai/docs/issues/new/choose)。

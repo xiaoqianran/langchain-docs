@@ -13,9 +13,9 @@
   * **[Claude SDKs](#use-the-claude-sdks)**：Claude SDK 发出 OpenTelemetry (OTel) 范围，OTel 导出器库将它们发送到 LangSmith。
   * **[LangSmith SDK wrapper](#use-the-langsmith-sdk-wrapper)**：您使用 LangSmith SDK（Python 或 TypeScript）包装 Anthropic 客户端。您可以将其余代码的跟踪与 `@traceable` 跨度合并到单个跟踪中。
 
-<Note>
-  来自 Claude 平台和 Claude SDK 的跟踪处于公开测试阶段。
-</Note>
+> [!注意]
+>
+> 来自 Claude 平台和 Claude SDK 的跟踪处于公开测试阶段。
 
 ## 来自 Claude 平台的追踪Claude 平台导出您的 [Claude Managed Agents](https://platform.claude.com/docs/en/managed-agents/overview) 会话和 [Messages API](https://platform.claude.com/docs/en/api/messages) 请求的 OTel 跟踪记录。它将它们发送到*目的地*，即您在 Claude 控制台中注册的 OTel 端点。您可以添加 LangSmith 作为目标并查看这些跟踪，而无需更改应用程序代码。有关目的地和交付的详细信息，请参阅Anthropic文档中的[Use OpenTelemetry with the Claude API](https://platform.claude.com/docs/en/manage-claude/opentelemetry/api)。
 
@@ -57,7 +57,7 @@
 ### 解决交付问题如果 Claude 控制台 [OpenTelemetry settings page](https://platform.claude.com/settings/telemetry-destinations) 上的 **Delivery** 列显示 **Failing**，请将指针悬停在其上方以查看最后一个错误：
 
 * **HTTP 401**：目标不发送 API 密钥。
-* **HTTP 403**：API 密钥错误，或者已过期或被删除。对于没有工作区 ID 的组织范围服务密钥，LangSmith 还会返回 403。
+* **HTTP 403**：API 密钥错误，或者已过期或已删除。对于没有工作区 ID 的组织范围服务密钥，LangSmith 还会返回 403。
 * **HTTP 404**：端点 URL 错误。编辑目标并检查 **OTLP 端点 URL** 以 `/otel` 结尾（`/api/v1/otel` 对于自托管 LangSmith）并且不包含 `/v1/traces`。
 
 对于其他错误，请参阅Anthropic文档中的[Delivery errors](https://platform.claude.com/docs/en/manage-claude/opentelemetry/api#delivery-errors)。
@@ -87,7 +87,7 @@
 
    * `x-api-key`：您的 LangSmith API 密钥。
    * `Langsmith-Project`：（可选）要将跟踪发送到的跟踪项目的名称。如果没有此标头，跟踪将转到 `default` 项目。
-   * `X-Tenant-Id`：（可选）要将跟踪发送到的 LangSmith 工作区的 ID。如果没有此标头，跟踪将转到 API 密钥所属的工作区。组织范围的服务密钥需要它。
+   * `X-Tenant-Id`：（可选）要将跟踪发送到的LangSmith工作区的 ID。如果没有此标头，跟踪将转到 API 密钥所属的工作区。组织范围的服务密钥需要它。
 
    例如，使用标准 OTel 环境变量：
 
@@ -99,84 +99,76 @@
 
 ### 使用LangSmith SDK 包装器
 
-Python ([⟦T23⟧](https://reference.langchain.com/python/langsmith/wrappers/_anthropic/wrap_anthropic)) 和 TypeScript ([⟦T24⟧](https://reference.langchain.com/javascript/functions/langsmith.wrappers_anthropic.wrapAnthropic.html)) 中的 Anthropic 包装器方法包装您的 Anthropic 客户端以自动记录跟踪。通过包装器，LangSmith以可读格式呈现消息，包括工具调用和多模式内容块。该包装器与 `@traceable` 装饰器 (Python) 或 `traceable` 函数 (TypeScript) 一起工作，因此您可以使用包装器跟踪 Anthropic 调用，并使用装饰器或函数跟踪应用程序的其他部分。
+Python ([⟦T23⟧](https://reference.langchain.com/python/langsmith/wrappers/_anthropic/wrap_anthropic)) 和 TypeScript ([⟦T24⟧](https://reference.langchain.com/javascript/langsmith/wrappers/anthropic/wrapAnthropic)) 中的 Anthropic 包装器方法包装您的 Anthropic 客户端以自动记录跟踪。通过包装器，LangSmith以可读格式呈现消息，包括工具调用和多模式内容块。该包装器与 `@traceable` 装饰器 (Python) 或 `traceable` 函数 (TypeScript) 一起工作，因此您可以使用包装器跟踪 Anthropic 调用，并使用装饰器或函数跟踪应用程序的其他部分。> [!注意]
+>
+> 将 `LANGSMITH_TRACING` 环境变量设置为 `'true'`，以将跟踪记录到 LangSmith，即使您使用 `wrap_anthropic` 或 `wrapAnthropic` 也是如此。这使您可以在不更改代码的情况下打开和关闭跟踪。
+>
+> 还将 `LANGSMITH_API_KEY` 环境变量设置为您的 API 密钥。要创建密钥，请参阅[Create an account and API key](/langsmith/create-account-api-key)。
+>
+> 如果您的 LangSmith API 密钥链接到多个工作区，请设置 `LANGSMITH_WORKSPACE_ID` 环境变量以指定要使用的工作区。
+>
+> 默认情况下，LangSmith 将跟踪记录到名为 `default` 的项目。要将跟踪记录到不同的项目，请参阅[Log traces to a specific project](/langsmith/log-traces-to-project)。
 
-<Note>
-  将 `LANGSMITH_TRACING` 环境变量设置为 `'true'`，以将跟踪记录到 LangSmith，即使您使用 `wrap_anthropic` 或 `wrapAnthropic` 也是如此。这使您可以在不更改代码的情况下打开和关闭跟踪。
+```python Python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+import anthropic
+from langsmith import traceable
+from langsmith.wrappers import wrap_anthropic
 
-  还将 `LANGSMITH_API_KEY` 环境变量设置为您的 API 密钥。要创建密钥，请参阅[Create an account and API key](/langsmith/create-account-api-key)。
+client = wrap_anthropic(anthropic.Anthropic())
 
-  如果您的 LangSmith API 密钥链接到多个工作区，请设置 `LANGSMITH_WORKSPACE_ID` 环境变量以指定要使用的工作区。默认情况下，LangSmith 将跟踪记录到名为 `default` 的项目。要将跟踪记录到不同的项目，请参阅[Log traces to a specific project](/langsmith/log-traces-to-project)。
-</Note>
+@traceable(run_type="tool", name="Retrieve Context")
+def my_tool(question: str) -> str:
+  return "During this morning's meeting, we solved all world conflict."
 
-<CodeGroup>
-  ```python Python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  import anthropic
-  from langsmith import traceable
-  from langsmith.wrappers import wrap_anthropic
+@traceable(name="Chat Pipeline")
+def chat_pipeline(question: str):
+  context = my_tool(question)
+  messages = [
+      { "role": "user", "content": f"Question: {question}\nContext: {context}"}
+  ]
+  message = client.messages.create(
+      model="claude-sonnet-5-5",
+      messages=messages,
+      max_tokens=1024,
+      system="You are a helpful assistant. Please respond to the user's request only based on the given context."
+  )
+  return message
 
-  client = wrap_anthropic(anthropic.Anthropic())
+chat_pipeline("Can you summarize this morning's meetings?")
+```
 
-  @traceable(run_type="tool", name="Retrieve Context")
-  def my_tool(question: str) -> str:
-    return "During this morning's meeting, we solved all world conflict."
+```typescript TypeScript theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+import Anthropic from "@anthropic-ai/sdk";
+import { traceable } from "langsmith/traceable";
+import { wrapAnthropic } from "langsmith/wrappers/anthropic";
 
-  @traceable(name="Chat Pipeline")
-  def chat_pipeline(question: str):
-    context = my_tool(question)
-    messages = [
-        { "role": "user", "content": f"Question: {question}\nContext: {context}"}
-    ]
-    message = client.messages.create(
-        model="claude-sonnet-5-5",
-        messages=messages,
-        max_tokens=1024,
-        system="You are a helpful assistant. Please respond to the user's request only based on the given context."
-    )
-    return message
+const client = wrapAnthropic(new Anthropic());
 
-  chat_pipeline("Can you summarize this morning's meetings?")
-  ```
+const myTool = traceable(async (question: string) => {
+  return "During this morning's meeting, we solved all world conflict.";
+}, { name: "Retrieve Context", run_type: "tool" });
 
-  ```typescript TypeScript theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  import Anthropic from "@anthropic-ai/sdk";
-  import { traceable } from "langsmith/traceable";
-  import { wrapAnthropic } from "langsmith/wrappers/anthropic";
+const chatPipeline = traceable(async (question: string) => {
+  const context = await myTool(question);
+  const messages = [
+      { role: "user", content: `Question: ${question}\nContext: ${context}` }
+  ];
+  const message = await client.messages.create({
+      model: "claude-sonnet-5-5",
+      messages: messages,
+      max_tokens: 1024,
+      system: "You are a helpful assistant. Please respond to the user's request only based on the given context."
+  });
+  return message;
+}, { name: "Chat Pipeline" });
 
-  const client = wrapAnthropic(new Anthropic());
-
-  const myTool = traceable(async (question: string) => {
-    return "During this morning's meeting, we solved all world conflict.";
-  }, { name: "Retrieve Context", run_type: "tool" });
-
-  const chatPipeline = traceable(async (question: string) => {
-    const context = await myTool(question);
-    const messages = [
-        { role: "user", content: `Question: ${question}\nContext: ${context}` }
-    ];
-    const message = await client.messages.create({
-        model: "claude-sonnet-5-5",
-        messages: messages,
-        max_tokens: 1024,
-        system: "You are a helpful assistant. Please respond to the user's request only based on the given context."
-    });
-    return message;
-  }, { name: "Chat Pipeline" });
-
-  await chatPipeline("Can you summarize this morning's meetings?");
-  ```
-</CodeGroup>
+await chatPipeline("Can you summarize this morning's meetings?");
+```
 
 要使用 TypeScript `wrapAnthropic` 包装器跟踪 [Claude Managed Agents](https://platform.claude.com/docs/en/managed-agents/overview) 会话，请参阅 [Trace Claude Managed Agents](/langsmith/trace-with-claude-managed-agents)。
 
 ***
 
-<div>
-  <Callout icon="terminal-2">
-    [Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
-  </Callout>
+[Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
 
-  <Callout icon="edit">
-    [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/trace-anthropic.mdx) 或 [file an issue](https://github.com/langchain-ai/docs/issues/new/choose)。
-  </Callout>
-</div>
+[Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/trace-anthropic.mdx) 或 [file an issue](https://github.com/langchain-ai/docs/issues/new/choose)。

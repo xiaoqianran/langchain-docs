@@ -10,257 +10,245 @@ OpenAI Agents SDK 可让您构建由 OpenAI 模型支持的代理应用程序。
 
 使用LangSmith跟踪OpenAI Agents SDK运行，包括代理步骤、模型调用、工具调用和切换。
 
-<Tabs>
-  <Tab title="Python">
-    ## 安装
+**Python**
 
-    <Info>
-      需要 Python SDK 版本`langsmith>=0.3.15`。
-    </Info>
+## 安装
 
-    安装 LangSmith 和 OpenAI 代理支持：
+> [!注意]
+>
+> 需要 Python SDK 版本`langsmith>=0.3.15`。
 
-    <CodeGroup>
-      ```bash pip theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-      pip install "langsmith[openai-agents]"
-      ```
+安装 LangSmith 和 OpenAI 代理支持：
 
-      ```bash uv theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-      uv add "langsmith[openai-agents]"
-      ```
-    </CodeGroup>
+```bash pip theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+pip install "langsmith[openai-agents]"
+```
 
-    这将安装 LangSmith 库和 OpenAI Agents SDK。
+```bash uv theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+uv add "langsmith[openai-agents]"
+```
 
-    ## 环境配置
+这将安装 LangSmith 库和 OpenAI Agents SDK。
 
-    ```bash Shell theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-    export LANGSMITH_API_KEY=<your-api-key>
-    export OPENAI_API_KEY=<your-openai-api-key>
+## 环境配置
 
-    # Optional: set a project for your traces
-    export LANGSMITH_PROJECT=<your-project-name>
+```bash Shell theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+export LANGSMITH_API_KEY=<your-api-key>
+export OPENAI_API_KEY=<your-openai-api-key>
 
-    # For LangSmith API keys linked to multiple workspaces, set the LANGSMITH_WORKSPACE_ID environment variable to specify which workspace to use.
-    export LANGSMITH_WORKSPACE_ID=<your-workspace-id>
-    ```
+# Optional: set a project for your traces
+export LANGSMITH_PROJECT=<your-project-name>
 
-    ## 快速开始
+# For LangSmith API keys linked to multiple workspaces, set the LANGSMITH_WORKSPACE_ID environment variable to specify which workspace to use.
+export LANGSMITH_WORKSPACE_ID=<your-workspace-id>
+```
 
-    使用 `OpenAIAgentsTracingProcessor` 类将 LangSmith 跟踪与 OpenAI Agents SDK 集成。
+## 快速开始
 
-    ```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-    import asyncio
+使用 `OpenAIAgentsTracingProcessor` 类将 LangSmith 跟踪与 OpenAI Agents SDK 集成。
 
-    from agents import Agent, Runner, set_trace_processors
-    from langsmith.integrations.openai_agents_sdk import OpenAIAgentsTracingProcessor
+```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+import asyncio
+
+from agents import Agent, Runner, set_trace_processors
+from langsmith.integrations.openai_agents_sdk import OpenAIAgentsTracingProcessor
 
 
-    async def main():
-        agent = Agent(
-            name="Captain Obvious",
-            instructions="You are Captain Obvious, the world's most literal technical support agent.",
-        )
+async def main():
+    agent = Agent(
+        name="Captain Obvious",
+        instructions="You are Captain Obvious, the world's most literal technical support agent.",
+    )
 
-        question = "Why is my code failing when I try to divide by zero? I keep getting this error message."
-        result = await Runner.run(agent, question)
-        print(result.final_output)
+    question = "Why is my code failing when I try to divide by zero? I keep getting this error message."
+    result = await Runner.run(agent, question)
+    print(result.final_output)
 
 
-    if __name__ == "__main__":
-        set_trace_processors([OpenAIAgentsTracingProcessor()])
-        asyncio.run(main())
-    ```
+if __name__ == "__main__":
+    set_trace_processors([OpenAIAgentsTracingProcessor()])
+    asyncio.run(main())
+```
 
-    代理的执行流程（包括跨度及其详细信息）记录到LangSmith。
-  </Tab>
+代理的执行流程（包括跨度及其详细信息）记录到LangSmith。
 
-  <Tab title="JavaScript">
-    ## 安装
+**JavaScript**
 
-    <Info>
-      需要 JS SDK 版本`langsmith>=0.5.25`。
-    </Info>
+## 安装
 
-    安装 LangSmith 和 OpenAI Agents SDK：
+> [!注意]
+>
+> 需要 JS SDK 版本`langsmith>=0.5.25`。
 
-    <CodeGroup>
-      ```bash npm theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-      npm install langsmith @openai/agents zod
-      ```
+安装 LangSmith 和 OpenAI Agents SDK：
 
-      ```bash yarn theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-      yarn add langsmith @openai/agents zod
-      ```
+```bash npm theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+npm install langsmith @openai/agents zod
+```
 
-      ```bash pnpm theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-      pnpm add langsmith @openai/agents zod
-      ```
-    </CodeGroup>
+```bash yarn theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+yarn add langsmith @openai/agents zod
+```
 
-    ## 环境配置
+```bash pnpm theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+pnpm add langsmith @openai/agents zod
+```
 
-    ```bash Shell theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-    export LANGSMITH_API_KEY=<your-api-key>
-    export OPENAI_API_KEY=<your-openai-api-key>
+## 环境配置
 
-    # Optional: set a project for your traces
-    export LANGSMITH_PROJECT=<your-project-name>
+```bash Shell theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+export LANGSMITH_API_KEY=<your-api-key>
+export OPENAI_API_KEY=<your-openai-api-key>
 
-    # For LangSmith API keys linked to multiple workspaces, set the LANGSMITH_WORKSPACE_ID environment variable to specify which workspace to use.
-    export LANGSMITH_WORKSPACE_ID=<your-workspace-id>
-    ```<Note>
-      安装 `OpenAIAgentsTracingProcessor` 是明确选择加入跟踪。即使未设置 `LANGSMITH_TRACING`，处理器也会发布跟踪，并且代理工具内的嵌套 `traceable` 调用会继承活动跟踪上下文。
-    </Note>
+# Optional: set a project for your traces
+export LANGSMITH_PROJECT=<your-project-name>
 
-    ## 快速开始
+# For LangSmith API keys linked to multiple workspaces, set the LANGSMITH_WORKSPACE_ID environment variable to specify which workspace to use.
+export LANGSMITH_WORKSPACE_ID=<your-workspace-id>
+```
 
-    在运行代理之前，请使用 OpenAI Agents SDK 注册 `OpenAIAgentsTracingProcessor`。
+> [!注意]
+>
+> 安装 `OpenAIAgentsTracingProcessor` 是明确选择加入跟踪。即使未设置 `LANGSMITH_TRACING`，处理器也会发布跟踪，并且代理工具内的嵌套 `traceable` 调用会继承活动跟踪上下文。
 
-    ```typescript theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-    import { Agent, run, setTraceProcessors, tool } from "@openai/agents";
-    import { z } from "zod";
+## 快速开始
 
-    import { OpenAIAgentsTracingProcessor } from "langsmith/wrappers/openai_agents";
+在运行代理之前，请使用 OpenAI Agents SDK 注册 `OpenAIAgentsTracingProcessor`。
 
-    setTraceProcessors([new OpenAIAgentsTracingProcessor()]);
+```typescript theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+import { Agent, run, setTraceProcessors, tool } from "@openai/agents";
+import { z } from "zod";
 
-    const getWeather = tool({
-      name: "get_weather",
-      description: "Get the current weather for a city",
-      parameters: z.object({
-        city: z.string().describe("The city to get weather for"),
-      }),
-      execute: async ({ city }: { city: string }) => {
-        return `The weather in ${city} is sunny.`;
-      },
-    });
+import { OpenAIAgentsTracingProcessor } from "langsmith/wrappers/openai_agents";
 
-    const agent = new Agent({
-      name: "WeatherAgent",
-      instructions: "You are a helpful assistant. Use the get_weather tool when asked about weather.",
-      model: "gpt-6-luna",
-      tools: [getWeather],
-    });
+setTraceProcessors([new OpenAIAgentsTracingProcessor()]);
 
-    const result = await run(agent, "What's the weather in San Francisco?");
-    console.log(result.finalOutput);
-    ```
+const getWeather = tool({
+  name: "get_weather",
+  description: "Get the current weather for a city",
+  parameters: z.object({
+    city: z.string().describe("The city to get weather for"),
+  }),
+  execute: async ({ city }: { city: string }) => {
+    return `The weather in ${city} is sunny.`;
+  },
+});
 
-    生成的跟踪包含根代理运行、响应范围和嵌套工具调用范围。
+const agent = new Agent({
+  name: "WeatherAgent",
+  instructions: "You are a helpful assistant. Use the get_weather tool when asked about weather.",
+  model: "gpt-6-luna",
+  tools: [getWeather],
+});
 
-    ## 配置处理器
+const result = await run(agent, "What's the weather in San Francisco?");
+console.log(result.finalOutput);
+```生成的跟踪包含根代理运行、响应范围和嵌套工具调用范围。
 
-    将选项传递给处理器以设置 LangSmith 客户端、项目、标签、元数据或根跟踪名称。
+## 配置处理器
 
-    ```typescript theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-    import { Agent, run, setTraceProcessors } from "@openai/agents";
+将选项传递给处理器以设置 LangSmith 客户端、项目、标签、元数据或根跟踪名称。
 
-    import { Client } from "langsmith";
-    import { OpenAIAgentsTracingProcessor } from "langsmith/wrappers/openai_agents";
+```typescript theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+import { Agent, run, setTraceProcessors } from "@openai/agents";
 
-    const client = new Client();
-    const processor = new OpenAIAgentsTracingProcessor({
-      client,
-      projectName: "openai-agents-demo",
-      name: "Support agent workflow",
-      tags: ["openai-agents"],
-      metadata: {
-        environment: "development",
-      },
-    });
+import { Client } from "langsmith";
+import { OpenAIAgentsTracingProcessor } from "langsmith/wrappers/openai_agents";
 
-    setTraceProcessors([processor]);
+const client = new Client();
+const processor = new OpenAIAgentsTracingProcessor({
+  client,
+  projectName: "openai-agents-demo",
+  name: "Support agent workflow",
+  tags: ["openai-agents"],
+  metadata: {
+    environment: "development",
+  },
+});
 
-    const agent = new Agent({
-      name: "SupportAgent",
-      instructions: "You are a concise support agent.",
-      model: "gpt-6-luna",
-    });
+setTraceProcessors([processor]);
 
-    const result = await run(agent, "Help me reset my password.");
-    console.log(result.finalOutput);
-    ```
+const agent = new Agent({
+  name: "SupportAgent",
+  instructions: "You are a concise support agent.",
+  model: "gpt-6-luna",
+});
 
-    ## 在工具中嵌套 `traceable` 调用
+const result = await run(agent, "Help me reset my password.");
+console.log(result.finalOutput);
+```
 
-    您可以在 OpenAI Agents SDK 工具处理程序中使用 `traceable`。 LangSmith 将这些运行嵌套在活动工具范围下。
+## 在工具中嵌套 `traceable` 调用
 
-    ```typescript theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-    import { Agent, run, setTraceProcessors, tool } from "@openai/agents";
-    import { z } from "zod";
+您可以在 OpenAI Agents SDK 工具处理程序中使用 `traceable`。 LangSmith 将这些运行嵌套在活动工具范围下。
 
-    import { traceable } from "langsmith/traceable";
-    import { OpenAIAgentsTracingProcessor } from "langsmith/wrappers/openai_agents";
+```typescript theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+import { Agent, run, setTraceProcessors, tool } from "@openai/agents";
+import { z } from "zod";
 
-    setTraceProcessors([new OpenAIAgentsTracingProcessor()]);
+import { traceable } from "langsmith/traceable";
+import { OpenAIAgentsTracingProcessor } from "langsmith/wrappers/openai_agents";
 
-    const lookupOrder = traceable(
-      async (orderId: string) => {
-        return { orderId, status: "shipped" };
-      },
-      { name: "lookup_order" }
-    );
+setTraceProcessors([new OpenAIAgentsTracingProcessor()]);
 
-    const orderStatus = tool({
-      name: "order_status",
-      description: "Look up the status of an order",
-      parameters: z.object({
-        orderId: z.string().describe("The order ID to look up"),
-      }),
-      execute: async ({ orderId }: { orderId: string }) => {
-        return JSON.stringify(await lookupOrder(orderId));
-      },
-    });
+const lookupOrder = traceable(
+  async (orderId: string) => {
+    return { orderId, status: "shipped" };
+  },
+  { name: "lookup_order" }
+);
 
-    const agent = new Agent({
-      name: "OrdersAgent",
-      instructions: "Use the order_status tool to answer order questions.",
-      model: "gpt-6-luna",
-      tools: [orderStatus],
-    });
+const orderStatus = tool({
+  name: "order_status",
+  description: "Look up the status of an order",
+  parameters: z.object({
+    orderId: z.string().describe("The order ID to look up"),
+  }),
+  execute: async ({ orderId }: { orderId: string }) => {
+    return JSON.stringify(await lookupOrder(orderId));
+  },
+});
 
-    await run(agent, "Where is order 123?");
-    ```
+const agent = new Agent({
+  name: "OrdersAgent",
+  instructions: "Use the order_status tool to answer order questions.",
+  model: "gpt-6-luna",
+  tools: [orderStatus],
+});
 
-    ## 无服务器环境中的刷新跟踪
+await run(agent, "Where is order 123?");
+```
 
-    在无服务器环境中进行跟踪时，请在进程退出之前刷新挂起的跟踪。
+## 无服务器环境中的刷新跟踪
 
-    ```typescript theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-    import { Agent, run, setTraceProcessors } from "@openai/agents";
+在无服务器环境中进行跟踪时，请在进程退出之前刷新挂起的跟踪。
 
-    import { Client } from "langsmith";
-    import { OpenAIAgentsTracingProcessor } from "langsmith/wrappers/openai_agents";
+```typescript theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+import { Agent, run, setTraceProcessors } from "@openai/agents";
 
-    const client = new Client();
-    const processor = new OpenAIAgentsTracingProcessor({ client });
-    setTraceProcessors([processor]);
+import { Client } from "langsmith";
+import { OpenAIAgentsTracingProcessor } from "langsmith/wrappers/openai_agents";
 
-    try {
-      const agent = new Agent({
-        name: "SupportAgent",
-        instructions: "You are a concise support agent.",
-        model: "gpt-6-luna",
-      });
+const client = new Client();
+const processor = new OpenAIAgentsTracingProcessor({ client });
+setTraceProcessors([processor]);
 
-      const result = await run(agent, "Help me reset my password.");
-      console.log(result.finalOutput);
-    } finally {
-      await processor.forceFlush();
-    }
-    ```
-  </Tab>
-</Tabs>
+try {
+  const agent = new Agent({
+    name: "SupportAgent",
+    instructions: "You are a concise support agent.",
+    model: "gpt-6-luna",
+  });
+
+  const result = await run(agent, "Help me reset my password.");
+  console.log(result.finalOutput);
+} finally {
+  await processor.forceFlush();
+}
+```
 
 ***
 
-<div>
-  <Callout icon="terminal-2">
-    [Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
-  </Callout>
+[Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
 
-  <Callout icon="edit">
-    [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/trace-with-openai-agents-sdk.mdx) 或 [file an issue](https://github.com/langchain-ai/docs/issues/new/choose)。
-  </Callout>
-</div>
+[Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/trace-with-openai-agents-sdk.mdx) 或 [file an issue](https://github.com/langchain-ai/docs/issues/new/choose)。

@@ -4,11 +4,9 @@
 
 Inspect, navigate, and resume from any checkpoint in the conversation history
 
-Every state change in a LangGraph agent creates a **checkpoint**, a complete
-snapshot of the agent's state at that moment. Time travel lets you inspect any
-checkpoint, view the exact state the agent held, and **resume execution from
-that point** to explore alternative paths. It's a debugger, an undo button, and
-an audit log all in one.
+A [checkpoint](/oss/javascript/langgraph/persistence#checkpoints) is a saved snapshot of a
+LangGraph agent's state. Time travel lets you inspect a checkpoint and continue
+execution from that saved state to explore alternative paths.
 
 > [!NOTE]
 >
@@ -16,23 +14,27 @@ an audit log all in one.
 
 ## How checkpoints work
 
-LangGraph persists agent state after every node execution. Each persisted state
+LangGraph persists agent state at super-step boundaries. Nodes that run in
+parallel in the same super-step share a checkpoint boundary. Each persisted state
 is a [ThreadState](https://reference.langchain.com/javascript/langchain-langgraph-sdk/index/ThreadState) object that captures:
 
-* **checkpoint**: metadata identifying this specific snapshot (ID, timestamp)
-* **values**: the full agent state at this point (messages, custom keys)
-* **tasks**: the graph nodes that were scheduled to run next
-* **next**: the names of upcoming nodes in the execution plan
+* **checkpoint**: The checkpoint identifier, including its ID and namespace.
+* **created\_at**: The snapshot creation time.
+* **parent\_checkpoint**: The previous checkpoint in this path.
+* **values**: The full agent state at this point (messages, custom keys).
+* **tasks**: The graph nodes that were scheduled to run next.
+* **next**: The names of upcoming nodes in the execution plan.
 
-This creates a linear timeline of every decision the agent made, every tool it
-called, and every response it produced. Your UI can render this timeline and let
-users jump to any point.
+History can contain multiple execution paths, not one linear conversation.
+`getHistory()` returns checkpoints newest first, with a default limit of 10.
+Use `parent_checkpoint` to follow ancestry rather than treating adjacent entries
+as parent and child. The examples below display the returned page of history.
 
 ## Setting up `useStream`
 
 Create the stream for your agent, then fetch checkpoint history explicitly from
 the LangGraph client for the active thread. Resuming from a checkpoint uses
-`forkFrom: { checkpointId }`.
+`forkFrom: checkpointId`.
 
 > [!NOTE]
 >
@@ -60,8 +62,9 @@ export function TimeTravelChat() {
   }, [stream.client, threadId, stream.isLoading]);
 
   function resumeFrom(cp: ThreadState) {
-    stream.submit({}, {
-      forkFrom: { checkpointId: cp.checkpoint.checkpoint_id },
+    if (!cp.checkpoint.checkpoint_id) return;
+    stream.submit(undefined, {
+      forkFrom: cp.checkpoint.checkpoint_id,
     });
   }
 
@@ -102,8 +105,9 @@ watch(
 );
 
 function resumeFrom(cp: ThreadState) {
-  stream.submit({}, {
-    forkFrom: { checkpointId: cp.checkpoint.checkpoint_id },
+  if (!cp.checkpoint.checkpoint_id) return;
+  stream.submit(undefined, {
+    forkFrom: cp.checkpoint.checkpoint_id,
   });
 }
 </script>
@@ -143,8 +147,9 @@ function resumeFrom(cp: ThreadState) {
   });
 
   function resumeFrom(cp: ThreadState) {
-    stream.submit({}, {
-      forkFrom: { checkpointId: cp.checkpoint.checkpoint_id },
+    if (!cp.checkpoint.checkpoint_id) return;
+    stream.submit(undefined, {
+      forkFrom: cp.checkpoint.checkpoint_id,
     });
   }
 </script>
@@ -198,8 +203,9 @@ export class TimeTravelChatComponent {
   }
 
   resumeFrom(cp: ThreadState) {
-    this.stream.submit({}, {
-      forkFrom: { checkpointId: cp.checkpoint.checkpoint_id },
+    if (!cp.checkpoint.checkpoint_id) return;
+    this.stream.submit(undefined, {
+      forkFrom: cp.checkpoint.checkpoint_id,
     });
   }
 }
@@ -208,7 +214,9 @@ export class TimeTravelChatComponent {
 ## Building a checkpoint timeline
 
 The timeline sidebar shows every checkpoint as a clickable entry. Each entry
-displays the node that ran and how many messages existed at that point:
+displays the scheduled nodes and how many messages existed at that point.
+`tasks` describes work for the next step, not the nodes that produced the
+checkpoint. Use `next` to label all scheduled nodes, including parallel work:
 
 ```tsx theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 function TimelineSidebar({
@@ -225,7 +233,7 @@ function TimelineSidebar({
       </h2>
       <div className="space-y-2">
         {history.map((cp, i) => {
-          const taskName = cp.tasks?.[0]?.name ?? "unknown";
+          const nextNodes = cp.next?.join(", ") || "Complete";
           const msgCount = (cp.values?.messages as unknown[])?.length ?? 0;
 
           return (
@@ -237,9 +245,9 @@ function TimelineSidebar({
             >
               <div className="flex items-center justify-between">
                 <span className="text-xs text-gray-400">#{i + 1}</span>
-                <NodeBadge name={taskName} />
+                <NodeBadge name={nextNodes} />
               </div>
-              <p className="mt-1 text-sm font-medium">{taskName}</p>
+              <p className="mt-1 text-sm font-medium">Next: {nextNodes}</p>
               <p className="text-xs text-gray-500">
                 {msgCount} message{msgCount !== 1 ? "s" : ""}
               </p>
@@ -265,7 +273,7 @@ function CheckpointInspector({ checkpoint }: { checkpoint: ThreadState }) {
     <div className="rounded-lg border bg-white p-4">
       <div className="flex items-center justify-between">
         <h3 className="font-semibold">
-          Checkpoint {checkpoint.checkpoint.checkpoint_id.slice(0, 8)}...
+          Checkpoint {checkpoint.checkpoint.checkpoint_id?.slice(0, 8)}...
         </h3>
         <button
           onClick={() => setExpanded(!expanded)}
@@ -276,10 +284,6 @@ function CheckpointInspector({ checkpoint }: { checkpoint: ThreadState }) {
       </div>
 
       <div className="mt-2 space-y-1 text-sm">
-        <p>
-          <strong>Node:</strong>{" "}
-          {checkpoint.tasks?.[0]?.name ?? "—"}
-        </p>
         <p>
           <strong>Next:</strong>{" "}
           {checkpoint.next?.join(", ") || "—"}
@@ -312,30 +316,29 @@ function CheckpointInspector({ checkpoint }: { checkpoint: ThreadState }) {
 ## Resuming from a checkpoint
 
 The core of time travel is the ability to **resume execution from any prior
-checkpoint**. When a user selects a checkpoint, call `submit` with `null` input
-and pass the checkpoint ID:
+checkpoint**. When a user selects a checkpoint, call `submit` with `undefined`
+input and pass the checkpoint ID as `forkFrom`:
 
 ```ts theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-stream.submit({}, {
-  forkFrom: { checkpointId: selectedCheckpoint.checkpoint.checkpoint_id },
-});
+const checkpointId = selectedCheckpoint.checkpoint.checkpoint_id;
+if (checkpointId) {
+  stream.submit(undefined, { forkFrom: checkpointId });
+}
 ```
 
-This tells LangGraph to:
+The SDK sends `undefined` or `null` input as `null`, which continues from the
+selected checkpoint without supplying new input. An empty object (`{}`) is new
+input, not the same continuation signal. If the checkpoint has no next nodes,
+there is no pending work to replay.
 
-1. Roll back to the selected checkpoint's state
-2. Re-execute the graph from that point forward
-3. Stream the new results to the client
+The new run creates another path in the same thread. The UI displays that path;
+the original checkpoints remain available in history.
 
-The existing messages after the selected checkpoint are replaced by the new
-execution path. This effectively creates a **branch** in the conversation
-timeline.
-
-> [!NOTE]
+> [!WARNING]
 >
-> Resuming from a checkpoint does not delete the original timeline. The previous
-> checkpoints remain available in the history. This means users can always go back
-> and try a different path without losing any prior work.
+> Replaying a checkpoint can execute downstream tools and API calls again.
+> It does not reverse earlier external effects, such as sent messages or database
+> writes. Check those effects before replaying a run.
 
 ## The SplitView layout
 
@@ -384,11 +387,12 @@ function TimeTravelLayout() {
           history={history}
           selected={selectedCheckpoint}
           onSelect={setSelectedCheckpoint}
-          onResume={(cp) =>
-            stream.submit({}, {
-              forkFrom: { checkpointId: cp.checkpoint.checkpoint_id },
-            })
-          }
+          onResume={(cp) => {
+            if (!cp.checkpoint.checkpoint_id) return;
+            stream.submit(undefined, {
+              forkFrom: cp.checkpoint.checkpoint_id,
+            });
+          }}
         />
         {selectedCheckpoint && (
           <CheckpointInspector checkpoint={selectedCheckpoint} />
@@ -408,7 +412,7 @@ function formatCheckpoints(history: ThreadState[]) {
   return history.map((cp, index) => ({
     index,
     id: cp.checkpoint?.checkpoint_id,
-    taskName: cp.tasks?.[0]?.name ?? "unknown",
+    nextLabel: cp.next?.join(", ") || "Complete",
     messageCount: (cp.values?.messages as unknown[])?.length ?? 0,
     hasInterrupts: cp.tasks?.some((t) => t.interrupts?.length) ?? false,
     nextNodes: cp.next ?? [],
@@ -425,8 +429,8 @@ Time travel is invaluable across many scenarios:
 
 * **Debugging agent behavior**: step through the agent's decisions to
   understand why it chose a particular path
-* **Undoing actions**: if the agent took a wrong turn, resume from an earlier
-  checkpoint and try again
+* **Trying another path**: continue from an earlier saved state without
+  deleting the original checkpoints
 * **Exploring alternatives**: fork from a mid-conversation checkpoint to see
   how different inputs change the outcome
 * **Auditing**: review the complete history of an agent's actions for
@@ -476,7 +480,7 @@ function TimelineEntry({
         )}
       </div>
       <p className="mt-1 text-sm font-medium">
-        {checkpoint.tasks?.[0]?.name ?? "—"}
+        Next: {checkpoint.next?.join(", ") || "Complete"}
       </p>
     </div>
   );
@@ -487,11 +491,10 @@ function TimelineEntry({
 
 * **Load history lazily**: for threads with hundreds of checkpoints, paginate
   or load only the most recent N entries to keep the UI responsive.
-* **Show meaningful labels**: display node names and message counts instead of
-  raw checkpoint IDs. Users need context, not UUIDs.
-* **Confirm before resuming**: resuming from an old checkpoint replaces the
-  current execution path. Show a confirmation dialog so users don't
-  accidentally lose the current conversation state.
+* **Show meaningful labels**: display scheduled next nodes and message counts
+  instead of raw checkpoint IDs. Users need context, not UUIDs.
+* **Confirm before resuming**: show a confirmation dialog before starting
+  another path, especially when downstream nodes have external effects.
 * **Highlight the current checkpoint**: make it visually obvious which
   checkpoint corresponds to the current state of the conversation.
 * **Support keyboard navigation**: power users will want to step through

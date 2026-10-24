@@ -2,7 +2,7 @@
 
 <!-- langchain-docs: Customize Deep Agents | https://docs.langchain.com/oss/javascript/deepagents/customization -->
 
-# 定制Deep Agents
+# 自定义Deep Agents
 
 了解如何使用系统提示、工具、子代理等自定义 Deep Agents
 
@@ -10,786 +10,760 @@
 
 `createDeepAgent` 附带预组装的工具：默认情况下文件系统、摘要、子代理和提示缓存。下面的参数可让您定义代理的角色，将其连接到您的数据和工具，并使用附加中间件扩展 [Deep Agents stack](#deep-agents-stack)。
 
-<CodeGroup>
-  ```ts Google theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  import { createDeepAgent } from "deepagents";
+```ts Google theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+import { createDeepAgent } from "deepagents";
 
-  const agent = await createDeepAgent({
-    model: "google:gemini-3.6-flash",
-    systemPrompt: "You are a helpful assistant.",
-    tools: [search, fetchUrl],
-    memory: ["./AGENTS.md"],
-    skills: ["./skills/"],
-  });
-  ```
+const agent = await createDeepAgent({
+  model: "google:gemini-3.6-flash",
+  systemPrompt: "You are a helpful assistant.",
+  tools: [search, fetchUrl],
+  memory: ["./AGENTS.md"],
+  skills: ["./skills/"],
+});
+```
 
-  ```ts OpenAI theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  import { createDeepAgent } from "deepagents";
+```ts OpenAI theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+import { createDeepAgent } from "deepagents";
 
-  const agent = await createDeepAgent({
-    model: "openai:gpt-5.5",
-    systemPrompt: "You are a helpful assistant.",
-    tools: [search, fetchUrl],
-    memory: ["./AGENTS.md"],
-    skills: ["./skills/"],
-  });
-  ```
+const agent = await createDeepAgent({
+  model: "openai:gpt-5.5",
+  systemPrompt: "You are a helpful assistant.",
+  tools: [search, fetchUrl],
+  memory: ["./AGENTS.md"],
+  skills: ["./skills/"],
+});
+```
 
-  ```ts Anthropic theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  import { createDeepAgent } from "deepagents";
+```ts Anthropic theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+import { createDeepAgent } from "deepagents";
 
-  const agent = await createDeepAgent({
-    model: "anthropic:claude-sonnet-5",
-    systemPrompt: "You are a helpful assistant.",
-    tools: [search, fetchUrl],
-    memory: ["./AGENTS.md"],
-    skills: ["./skills/"],
-  });
-  ```
+const agent = await createDeepAgent({
+  model: "anthropic:claude-sonnet-5",
+  systemPrompt: "You are a helpful assistant.",
+  tools: [search, fetchUrl],
+  memory: ["./AGENTS.md"],
+  skills: ["./skills/"],
+});
+```
 
-  ```ts OpenRouter theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  import { createDeepAgent } from "deepagents";
+```ts OpenRouter theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+import { createDeepAgent } from "deepagents";
 
-  const agent = await createDeepAgent({
-    model: "openrouter:z-ai/glm-5.2",
-    systemPrompt: "You are a helpful assistant.",
-    tools: [search, fetchUrl],
-    memory: ["./AGENTS.md"],
-    skills: ["./skills/"],
-  });
-  ```
+const agent = await createDeepAgent({
+  model: "openrouter:z-ai/glm-5.2",
+  systemPrompt: "You are a helpful assistant.",
+  tools: [search, fetchUrl],
+  memory: ["./AGENTS.md"],
+  skills: ["./skills/"],
+});
+```
 
-  ```ts Fireworks theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  import { createDeepAgent } from "deepagents";
+```ts Fireworks theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+import { createDeepAgent } from "deepagents";
 
-  const agent = await createDeepAgent({
-    model: "fireworks:accounts/fireworks/models/glm-5p2",
-    systemPrompt: "You are a helpful assistant.",
-    tools: [search, fetchUrl],
-    memory: ["./AGENTS.md"],
-    skills: ["./skills/"],
-  });
-  ```
+const agent = await createDeepAgent({
+  model: "fireworks:accounts/fireworks/models/glm-5p2",
+  systemPrompt: "You are a helpful assistant.",
+  tools: [search, fetchUrl],
+  memory: ["./AGENTS.md"],
+  skills: ["./skills/"],
+});
+```
 
-  ```ts Baseten theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  import { createDeepAgent } from "deepagents";
+```ts Baseten theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+import { createDeepAgent } from "deepagents";
 
-  const agent = await createDeepAgent({
-    model: "baseten:zai-org/GLM-5.2",
-    systemPrompt: "You are a helpful assistant.",
-    tools: [search, fetchUrl],
-    memory: ["./AGENTS.md"],
-    skills: ["./skills/"],
-  });
-  ```
+const agent = await createDeepAgent({
+  model: "baseten:zai-org/GLM-5.2",
+  systemPrompt: "You are a helpful assistant.",
+  tools: [search, fetchUrl],
+  memory: ["./AGENTS.md"],
+  skills: ["./skills/"],
+});
+```
 
-  ```ts Ollama theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  import { createDeepAgent } from "deepagents";
+```ts Ollama theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+import { createDeepAgent } from "deepagents";
 
-  const agent = await createDeepAgent({
-    model: "ollama:north-mini-code-1.0",
-    systemPrompt: "You are a helpful assistant.",
-    tools: [search, fetchUrl],
-    memory: ["./AGENTS.md"],
-    skills: ["./skills/"],
-  });
-  ```
-</CodeGroup>|参数|它有什么作用 |
+const agent = await createDeepAgent({
+  model: "ollama:north-mini-code-1.0",
+  systemPrompt: "You are a helpful assistant.",
+  tools: [search, fetchUrl],
+  memory: ["./AGENTS.md"],
+  skills: ["./skills/"],
+});
+```|参数|它有什么作用 |
 | - | - |
 | `model` |使用哪种型号 |
 | `systemPrompt` |代理定制说明 |
 | `tools` |代理可以调用​​的领域工具 |
 | `memory` |启动时加载的 AGENTS.md 文件 |
 | `skills` |按需知识的技能目录 |
-| `backend` |文件系统后端（默认为 StateBackend） |
+| `backend` |文件系统后端（默认为 StateBackend）|
 | `permissions` |文件系统的路径级访问控制|
 | `subagents` |用于委派任务的自定义子代理 |
 | `middleware` |附加到 [Deep Agents stack](#deep-agents-stack) | 的额外中间件
 | `interruptOn` |在工具请求人工批准之前暂停 |
 | `responseFormat` |结构化输出模式|
-| [⟦T158⟧](/oss/javascript/deepagents/context-engineering#runtime-context) |每次运行的运行时上下文架构（用户 ID、API 密钥、功能标志）|
-
-有关完整参数列表，请参阅 [⟦T159⟧](https://reference.langchain.com/javascript/deepagents/types/CreateDeepAgentParams) API 参考。 To compose a fully custom harness from scratch, see [Configure the harness](/oss/javascript/langchain/agents#configure-the-harness).
-
-<Tip>
-  当您添加工具、子代理和后端时，使用 [LangSmith](https://smith.langchain.com?utm_source=docs\&utm_medium=cta\&utm_campaign=langsmith-signup\&utm_content=oss-deepagents-customization) 来跟踪每个部分的行为方式。 Follow the [observability quickstart](/langsmith/observability-quickstart) to get set up, and see [Going to production](/oss/javascript/deepagents/going-to-production) for deployment on LangSmith.
-
-  We recommend you also set up [LangSmith Engine](/langsmith/engine), which monitors your traces, detects issues, and proposes fixes.
-</Tip>
-
-## 型号传递 `provider:model` 格式的 `model` 字符串，或初始化的模型实例。请参阅[supported models](/oss/javascript/deepagents/models#supported-models)了解所有提供商，并参阅[suggested models](/oss/javascript/deepagents/models#suggested-models)了解经过测试的建议。
-
-<Tip>
-  使用`provider:model`格式（例如`openai:gpt-5.5`）可以在模型之间快速切换。
-</Tip>
+| [⟦T160⟧](/oss/javascript/deepagents/context-engineering#runtime-context) |每次运行的运行时上下文架构（用户 ID、API 密钥、功能标志）|
 
-<Tabs>
-  <Tab title="OpenAI">
-    👉 Read the [OpenAI chat model integration docs](/oss/javascript/integrations/chat/openai/)
-
-    <CodeGroup>
-      ```bash npm theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-      npm install @langchain/openai deepagents
-      ```
-
-      ```bash pnpm theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-      pnpm install @langchain/openai deepagents
-      ```
-
-      ```bash yarn theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-      yarn add @langchain/openai deepagents
-      ```
-
-      ```bash bun theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-      bun add @langchain/openai deepagents
-      ```
-    </CodeGroup>
-
-    <CodeGroup>
-      ```typescript default parameters theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-      import { createDeepAgent } from "deepagents";
-
-      process.env.OPENAI_API_KEY = "your-api-key";
-
-      const agent = createDeepAgent({ model: "gpt-5.5" });
-      // this calls initChatModel for the specified model with default parameters
-      // to use specific model parameters, use initChatModel directly
-      ```
-
-      ```typescript initChatModel theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-      import { initChatModel } from "langchain";
-      import { createDeepAgent } from "deepagents";
-
-      process.env.OPENAI_API_KEY = "your-api-key";
-
-      const model = await initChatModel("gpt-5.5");
-      const agent = createDeepAgent({
-        model,
-        temperature: 0,
-      });
-      ```
-
-      ```typescript Model Class theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-      import { ChatOpenAI } from "@langchain/openai";
-      import { createDeepAgent } from "deepagents";
-
-      const agent = createDeepAgent({
-        model: new ChatOpenAI({
-          model: "gpt-5.5",
-          apiKey: "your-api-key",
-          temperature: 0,
-        }),
-      });
-      ```
-    </CodeGroup>
-  </Tab>
-
-  <Tab title="Anthropic">
-    👉 Read the [Anthropic chat model integration docs](/oss/javascript/integrations/chat/anthropic/)
-
-    <CodeGroup>
-      ```bash npm theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-      npm install @langchain/anthropic deepagents
-      ```
-
-      ```bash pnpm theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-      pnpm install @langchain/anthropic deepagents
-      ```
-
-      ```bash yarn theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-      yarn add @langchain/anthropic deepagents
-      ```
-
-      ```bash bun theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-      bun add @langchain/anthropic deepagents
-      ```
-    </CodeGroup>
-
-    <CodeGroup>
-      ```typescript default parameters theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-      import { createDeepAgent } from "deepagents";
-
-      process.env.ANTHROPIC_API_KEY = "your-api-key";
-
-      const agent = createDeepAgent({ model: "anthropic:claude-sonnet-4-6" });
-      // this calls initChatModel for the specified model with default parameters
-      // to use specific model parameters, use initChatModel directly
-      ```
-
-      ```typescript initChatModel theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-      import { initChatModel } from "langchain";
-      import { createDeepAgent } from "deepagents";
-
-      process.env.ANTHROPIC_API_KEY = "your-api-key";
-
-      const model = await initChatModel("claude-sonnet-4-6");
-      const agent = createDeepAgent({
-        model,
-        temperature: 0,
-      });
-      ```
-
-      ```typescript Model Class theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-      import { ChatAnthropic } from "@langchain/anthropic";
-      import { createDeepAgent } from "deepagents";
-
-      const agent = createDeepAgent({
-        model: new ChatAnthropic({
-          model: "claude-sonnet-4-6",
-          apiKey: "your-api-key",
-          temperature: 0,
-        }),
-      });
-      ```
-    </CodeGroup>
-  </Tab>
-
-  <Tab title="Azure">
-    👉 阅读[Azure chat model integration docs](/oss/javascript/integrations/chat/azure/)
-
-    <CodeGroup>
-      ```bash npm theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-      npm install @langchain/azure deepagents
-      ```
-
-      ```bash pnpm theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-      pnpm install @langchain/azure deepagents
-      ```
-
-      ```bash yarn theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-      yarn add @langchain/azure deepagents
-      ```
-
-      ```bash bun theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-      bun add @langchain/azure deepagents
-      ```
-    </CodeGroup>
-
-    <CodeGroup>
-      ```typescript default parameters theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-      import { createDeepAgent } from "deepagents";
-
-      process.env.AZURE_OPENAI_API_KEY = "your-api-key";
-      process.env.AZURE_OPENAI_ENDPOINT = "your-endpoint";
-      process.env.OPENAI_API_VERSION = "your-api-version";
-
-      const agent = createDeepAgent({ model: "azure_openai:gpt-5.5" });
-      // this calls initChatModel for the specified model with default parameters
-      // to use specific model parameters, use initChatModel directly
-      ```
-
-      ```typescript initChatModel theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-      import { initChatModel } from "langchain";
-      import { createDeepAgent } from "deepagents";
-
-      process.env.AZURE_OPENAI_API_KEY = "your-api-key";
-      process.env.AZURE_OPENAI_ENDPOINT = "your-endpoint";
-      process.env.OPENAI_API_VERSION = "your-api-version";
-
-      const model = await initChatModel("azure_openai:gpt-5.5");
-      const agent = createDeepAgent({
-        model,
-        temperature: 0,
-      });
-      ```
-
-      ```typescript Model Class theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-      import { AzureChatOpenAI } from "@langchain/openai";
-      import { createDeepAgent } from "deepagents";
-
-      const agent = createDeepAgent({
-        model: new AzureChatOpenAI({
-          model: "gpt-5.5",
-          azureOpenAIApiKey: "your-api-key",
-          azureOpenAIApiEndpoint: "your-endpoint",
-          azureOpenAIApiVersion: "your-api-version",
-          temperature: 0,
-        }),
-      });
-      ```
-    </CodeGroup>
-  </Tab>
-
-  <Tab title="Google Gemini">
-    👉 Read the [ChatGoogle chat model integration docs](/oss/javascript/integrations/chat/google)
-
-    <CodeGroup>
-      ```bash npm theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-      npm install @langchain/google deepagents
-      ```
-
-      ```bash pnpm theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-      pnpm install @langchain/google deepagents
-      ```
-
-      ```bash yarn theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-      yarn add @langchain/google deepagents
-      ```
-
-      ```bash bun theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-      bun add @langchain/google deepagents
-      ```
-    </CodeGroup>
-
-    <CodeGroup>
-      ```typescript default parameters theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-      import { createDeepAgent } from "deepagents";
-
-      process.env.GOOGLE_API_KEY = "your-api-key";
-
-      const agent = createDeepAgent({ model: "google:gemini-3.1-pro-preview" });
-      // this calls initChatModel for the specified model with default parameters
-      // to use specific model parameters, use initChatModel directly
-      ```
-
-      ```typescript initChatModel theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-      import { initChatModel } from "langchain";
-      import { createDeepAgent } from "deepagents";
-
-      process.env.GOOGLE_API_KEY = "your-api-key";
-
-      const model = await initChatModel("google:gemini-3.1-pro-preview");
-      const agent = createDeepAgent({
-        model,
-        temperature: 0,
-      });
-      ```
-
-      ```typescript Model Class theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-      import { ChatGoogle } from "@langchain/google/node";
-      import { createDeepAgent } from "deepagents";
-
-      const agent = createDeepAgent({
-        model: new ChatGoogle({
-          model: "gemini-3.1-pro-preview",
-          apiKey: "your-api-key",
-          temperature: 0,
-        }),
-      });
-      ```
-    </CodeGroup>
-  </Tab>
-
-  <Tab title="Bedrock Converse">
-    👉 Read the [AWS Bedrock chat model integration docs](/oss/javascript/integrations/chat/bedrock_converse/)
-
-    <CodeGroup>
-      ```bash npm theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-      npm install @langchain/aws deepagents
-      ```
-
-      ```bash pnpm theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-      pnpm install @langchain/aws deepagents
-      ```
-
-      ```bash yarn theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-      yarn add @langchain/aws deepagents
-      ```
-
-      ```bash bun theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-      bun add @langchain/aws deepagents
-      ```
-    </CodeGroup>
-
-    <CodeGroup>
-      ```typescript default parameters theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-      import { createDeepAgent } from "deepagents";
-
-      // Follow the steps here to configure your credentials:
-      // https://docs.aws.amazon.com/bedrock/latest/userguide/getting-started.html
-
-      const agent = createDeepAgent({ model: "bedrock:anthropic.claude-sonnet-4-6" });
-      // this calls initChatModel for the specified model with default parameters
-      // to use specific model parameters, use initChatModel directly
-      ```
-
-      ```typescript initChatModel theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-      import { initChatModel } from "langchain";
-      import { createDeepAgent } from "deepagents";
-
-      // Follow the steps here to configure your credentials:
-      // https://docs.aws.amazon.com/bedrock/latest/userguide/getting-started.html
-
-      const model = await initChatModel("bedrock:anthropic.claude-sonnet-4-6");
-      const agent = createDeepAgent({
-        model,
-        temperature: 0,
-      });
-      ```
-
-      ```typescript Model Class theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-      import { ChatBedrockConverse } from "@langchain/aws";
-      import { createDeepAgent } from "deepagents";
-
-      // Follow the steps here to configure your credentials:
-      // https://docs.aws.amazon.com/bedrock/latest/userguide/getting-started.html
-
-      const agent = createDeepAgent({
-        model: new ChatBedrockConverse({
-          model: "anthropic.claude-sonnet-4-6",
-          region: "us-east-2",
-          temperature: 0,
-        }),
-      });
-      ```
-    </CodeGroup>
-  </Tab>
-
-  <Tab title="Other">
-    传递任何[supported model string](/oss/javascript/deepagents/models#supported-models)，或初始化的模型实例：```typescript theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-    import { initChatModel } from "langchain";
-    import { createDeepAgent } from "deepagents";
-
-    const model = await initChatModel("provider:model-name");
-    const agent = createDeepAgent({ model });
-    ```
-  </Tab>
-</Tabs>
-
-<Tip>
-  聊天模型会自动重试短暂的 API 失败（使用指数退避）。有关调整 `max_retries` / `timeout` 的默认值、限制和代码示例，请参见 LangChain [Models](/oss/javascript/langchain/models#connection-resilience) 页面。
-</Tip>
+有关完整参数列表，请参阅 [⟦T161⟧](https://reference.langchain.com/javascript/deepagents/types/CreateDeepAgentParams) API 参考。要从头开始构建完全定制的线束，请参阅[Configure the harness](/oss/javascript/langchain/agents#configure-the-harness)。
+
+> [!提示]
+>
+> 当您添加工具、子代理和后端时，使用 [LangSmith](https://smith.langchain.com?utm_source=docs\&utm_medium=cta\&utm_campaign=langsmith-signup\&utm_content=oss-deepagents-customization) 来跟踪每个部分的行为方式。按照[observability quickstart](/langsmith/observability-quickstart)进行设置，并参阅[Going to production](/oss/javascript/deepagents/going-to-production)在LangSmith上进行部署。
+>
+> 我们建议您还设置[LangSmith Engine](/langsmith/engine)，它可以监视您的痕迹、检测问题并提出修复建议。
+
+＃＃ 模型传递 `provider:model` 格式的 `model` 字符串，或初始化的模型实例。请参阅[supported models](/oss/javascript/deepagents/models#supported-models)了解所有提供商，并参阅[suggested models](/oss/javascript/deepagents/models#suggested-models)了解经过测试的建议。
+
+> [!提示]
+>
+> 使用`provider:model`格式（例如`openai:gpt-5.5`）在模型之间快速切换。
+
+**OpenAI**
+
+👉 阅读[OpenAI chat model integration docs](/oss/javascript/integrations/chat/openai/)
+
+```bash npm theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+npm install @langchain/openai deepagents
+```
+
+```bash pnpm theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+pnpm install @langchain/openai deepagents
+```
+
+```bash yarn theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+yarn add @langchain/openai deepagents
+```
+
+```bash bun theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+bun add @langchain/openai deepagents
+```
+
+```typescript default parameters theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+import { createDeepAgent } from "deepagents";
+
+process.env.OPENAI_API_KEY = "your-api-key";
+
+const agent = createDeepAgent({ model: "gpt-5.5" });
+// this calls initChatModel for the specified model with default parameters
+// to use specific model parameters, use initChatModel directly
+```
+
+```typescript initChatModel theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+import { initChatModel } from "langchain";
+import { createDeepAgent } from "deepagents";
+
+process.env.OPENAI_API_KEY = "your-api-key";
+
+const model = await initChatModel("gpt-5.5");
+const agent = createDeepAgent({
+  model,
+  temperature: 0,
+});
+```
+
+```typescript Model Class theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+import { ChatOpenAI } from "@langchain/openai";
+import { createDeepAgent } from "deepagents";
+
+const agent = createDeepAgent({
+  model: new ChatOpenAI({
+    model: "gpt-5.5",
+    apiKey: "your-api-key",
+    temperature: 0,
+  }),
+});
+```
+
+**Anthropic**
+
+👉 阅读[Anthropic chat model integration docs](/oss/javascript/integrations/chat/anthropic/)
+
+```bash npm theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+npm install @langchain/anthropic deepagents
+```
+
+```bash pnpm theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+pnpm install @langchain/anthropic deepagents
+```
+
+```bash yarn theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+yarn add @langchain/anthropic deepagents
+```
+
+```bash bun theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+bun add @langchain/anthropic deepagents
+```
+
+```typescript default parameters theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+import { createDeepAgent } from "deepagents";
+
+process.env.ANTHROPIC_API_KEY = "your-api-key";
+
+const agent = createDeepAgent({ model: "anthropic:claude-sonnet-4-6" });
+// this calls initChatModel for the specified model with default parameters
+// to use specific model parameters, use initChatModel directly
+```
+
+```typescript initChatModel theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+import { initChatModel } from "langchain";
+import { createDeepAgent } from "deepagents";
+
+process.env.ANTHROPIC_API_KEY = "your-api-key";
+
+const model = await initChatModel("claude-sonnet-4-6");
+const agent = createDeepAgent({
+  model,
+  temperature: 0,
+});
+```
+
+```typescript Model Class theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+import { ChatAnthropic } from "@langchain/anthropic";
+import { createDeepAgent } from "deepagents";
+
+const agent = createDeepAgent({
+  model: new ChatAnthropic({
+    model: "claude-sonnet-4-6",
+    apiKey: "your-api-key",
+    temperature: 0,
+  }),
+});
+```
+
+**天蓝色**
+
+👉 阅读[Azure chat model integration docs](/oss/javascript/integrations/chat/azure/)
+
+```bash npm theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+npm install @langchain/azure deepagents
+```
+
+```bash pnpm theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+pnpm install @langchain/azure deepagents
+```
+
+```bash yarn theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+yarn add @langchain/azure deepagents
+```
+
+```bash bun theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+bun add @langchain/azure deepagents
+```
+
+```typescript default parameters theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+import { createDeepAgent } from "deepagents";
+
+process.env.AZURE_OPENAI_API_KEY = "your-api-key";
+process.env.AZURE_OPENAI_ENDPOINT = "your-endpoint";
+process.env.OPENAI_API_VERSION = "your-api-version";
+
+const agent = createDeepAgent({ model: "azure_openai:gpt-5.5" });
+// this calls initChatModel for the specified model with default parameters
+// to use specific model parameters, use initChatModel directly
+```
+
+```typescript initChatModel theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+import { initChatModel } from "langchain";
+import { createDeepAgent } from "deepagents";
+
+process.env.AZURE_OPENAI_API_KEY = "your-api-key";
+process.env.AZURE_OPENAI_ENDPOINT = "your-endpoint";
+process.env.OPENAI_API_VERSION = "your-api-version";
+
+const model = await initChatModel("azure_openai:gpt-5.5");
+const agent = createDeepAgent({
+  model,
+  temperature: 0,
+});
+```
+
+```typescript Model Class theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+import { AzureChatOpenAI } from "@langchain/openai";
+import { createDeepAgent } from "deepagents";
+
+const agent = createDeepAgent({
+  model: new AzureChatOpenAI({
+    model: "gpt-5.5",
+    azureOpenAIApiKey: "your-api-key",
+    azureOpenAIApiEndpoint: "your-endpoint",
+    azureOpenAIApiVersion: "your-api-version",
+    temperature: 0,
+  }),
+});
+```
+
+**谷歌双子座**
+
+👉 阅读[ChatGoogle chat model integration docs](/oss/javascript/integrations/chat/google)
+
+```bash npm theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+npm install @langchain/google deepagents
+```
+
+```bash pnpm theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+pnpm install @langchain/google deepagents
+```
+
+```bash yarn theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+yarn add @langchain/google deepagents
+```
+
+```bash bun theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+bun add @langchain/google deepagents
+```
+
+```typescript default parameters theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+import { createDeepAgent } from "deepagents";
+
+process.env.GOOGLE_API_KEY = "your-api-key";
+
+const agent = createDeepAgent({ model: "google:gemini-3.1-pro-preview" });
+// this calls initChatModel for the specified model with default parameters
+// to use specific model parameters, use initChatModel directly
+```
+
+```typescript initChatModel theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+import { initChatModel } from "langchain";
+import { createDeepAgent } from "deepagents";
+
+process.env.GOOGLE_API_KEY = "your-api-key";
+
+const model = await initChatModel("google:gemini-3.1-pro-preview");
+const agent = createDeepAgent({
+  model,
+  temperature: 0,
+});
+```
+
+```typescript Model Class theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+import { ChatGoogle } from "@langchain/google/node";
+import { createDeepAgent } from "deepagents";
+
+const agent = createDeepAgent({
+  model: new ChatGoogle({
+    model: "gemini-3.1-pro-preview",
+    apiKey: "your-api-key",
+    temperature: 0,
+  }),
+});
+```
+
+**基岩匡威**
+
+👉 阅读[AWS Bedrock chat model integration docs](/oss/javascript/integrations/chat/bedrock_converse/)
+
+```bash npm theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+npm install @langchain/aws deepagents
+```
+
+```bash pnpm theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+pnpm install @langchain/aws deepagents
+```
+
+```bash yarn theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+yarn add @langchain/aws deepagents
+```
+
+```bash bun theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+bun add @langchain/aws deepagents
+```
+
+```typescript default parameters theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+import { createDeepAgent } from "deepagents";
+
+// Follow the steps here to configure your credentials:
+// https://docs.aws.amazon.com/bedrock/latest/userguide/getting-started.html
+
+const agent = createDeepAgent({ model: "bedrock:anthropic.claude-sonnet-4-6" });
+// this calls initChatModel for the specified model with default parameters
+// to use specific model parameters, use initChatModel directly
+```
+
+```typescript initChatModel theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+import { initChatModel } from "langchain";
+import { createDeepAgent } from "deepagents";
+
+// Follow the steps here to configure your credentials:
+// https://docs.aws.amazon.com/bedrock/latest/userguide/getting-started.html
+
+const model = await initChatModel("bedrock:anthropic.claude-sonnet-4-6");
+const agent = createDeepAgent({
+  model,
+  temperature: 0,
+});
+```
+
+```typescript Model Class theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+import { ChatBedrockConverse } from "@langchain/aws";
+import { createDeepAgent } from "deepagents";
+
+// Follow the steps here to configure your credentials:
+// https://docs.aws.amazon.com/bedrock/latest/userguide/getting-started.html
+
+const agent = createDeepAgent({
+  model: new ChatBedrockConverse({
+    model: "anthropic.claude-sonnet-4-6",
+    region: "us-east-2",
+    temperature: 0,
+  }),
+});
+```
+
+**其他**
+
+传递任何[supported model string](/oss/javascript/deepagents/models#supported-models)，或初始化的模型实例：
+
+```typescript theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+import { initChatModel } from "langchain";
+import { createDeepAgent } from "deepagents";
+
+const model = await initChatModel("provider:model-name");
+const agent = createDeepAgent({ model });
+```
+
+> [!提示]
+>
+> 聊天模型自动重试短暂的 API 失败（采用指数退避）。有关调整 `max_retries` / `timeout` 的默认值、限制和代码示例，请参见 LangChain [Models](/oss/javascript/langchain/models#connection-resilience) 页面。
 
 ## 工具
 
 除了用于文件管理和子代理生成的[built-in tools](/oss/javascript/deepagents/overview#execution-environment)之外，您还可以提供自定义工具：
 
-<CodeGroup>
-  ```ts Google theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  import { tool } from "langchain";
-  import { TavilySearch } from "@langchain/tavily";
-  import { createDeepAgent } from "deepagents";
-  import { z } from "zod";
+```ts Google theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+import { tool } from "langchain";
+import { TavilySearch } from "@langchain/tavily";
+import { createDeepAgent } from "deepagents";
+import { z } from "zod";
 
-  const internetSearch = tool(
-    async ({
-      query,
-      maxResults = 5,
-      topic = "general",
-      includeRawContent = false,
-    }: {
-      query: string;
-      maxResults?: number;
-      topic?: "general" | "news" | "finance";
-      includeRawContent?: boolean;
-    }) => {
-      const tavilySearch = new TavilySearch({
-        maxResults,
-        tavilyApiKey: process.env.TAVILY_API_KEY,
-        includeRawContent,
-        topic,
-      });
-      return await tavilySearch._call({ query });
-    },
-    {
-      name: "internet_search",
-      description: "Run a web search",
-      schema: z.object({
-        query: z.string().describe("The search query"),
-        maxResults: z.number().optional().default(5),
-        topic: z
-          .enum(["general", "news", "finance"])
-          .optional()
-          .default("general"),
-        includeRawContent: z.boolean().optional().default(false),
-      }),
-    },
-  );
+const internetSearch = tool(
+  async ({
+    query,
+    maxResults = 5,
+    topic = "general",
+    includeRawContent = false,
+  }: {
+    query: string;
+    maxResults?: number;
+    topic?: "general" | "news" | "finance";
+    includeRawContent?: boolean;
+  }) => {
+    const tavilySearch = new TavilySearch({
+      maxResults,
+      tavilyApiKey: process.env.TAVILY_API_KEY,
+      includeRawContent,
+      topic,
+    });
+    return await tavilySearch._call({ query });
+  },
+  {
+    name: "internet_search",
+    description: "Run a web search",
+    schema: z.object({
+      query: z.string().describe("The search query"),
+      maxResults: z.number().optional().default(5),
+      topic: z
+        .enum(["general", "news", "finance"])
+        .optional()
+        .default("general"),
+      includeRawContent: z.boolean().optional().default(false),
+    }),
+  },
+);
 
-  const agent = createDeepAgent({
-    model: "google:gemini-3.6-flash",
-    tools: [internetSearch],
-  });
-  ```
+const agent = createDeepAgent({
+  model: "google:gemini-3.6-flash",
+  tools: [internetSearch],
+});
+```
 
-  ```ts OpenAI theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  import { tool } from "langchain";
-  import { TavilySearch } from "@langchain/tavily";
-  import { createDeepAgent } from "deepagents";
-  import { z } from "zod";
+```ts OpenAI theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+import { tool } from "langchain";
+import { TavilySearch } from "@langchain/tavily";
+import { createDeepAgent } from "deepagents";
+import { z } from "zod";
 
-  const internetSearch = tool(
-    async ({
-      query,
-      maxResults = 5,
-      topic = "general",
-      includeRawContent = false,
-    }: {
-      query: string;
-      maxResults?: number;
-      topic?: "general" | "news" | "finance";
-      includeRawContent?: boolean;
-    }) => {
-      const tavilySearch = new TavilySearch({
-        maxResults,
-        tavilyApiKey: process.env.TAVILY_API_KEY,
-        includeRawContent,
-        topic,
-      });
-      return await tavilySearch._call({ query });
-    },
-    {
-      name: "internet_search",
-      description: "Run a web search",
-      schema: z.object({
-        query: z.string().describe("The search query"),
-        maxResults: z.number().optional().default(5),
-        topic: z
-          .enum(["general", "news", "finance"])
-          .optional()
-          .default("general"),
-        includeRawContent: z.boolean().optional().default(false),
-      }),
-    },
-  );
+const internetSearch = tool(
+  async ({
+    query,
+    maxResults = 5,
+    topic = "general",
+    includeRawContent = false,
+  }: {
+    query: string;
+    maxResults?: number;
+    topic?: "general" | "news" | "finance";
+    includeRawContent?: boolean;
+  }) => {
+    const tavilySearch = new TavilySearch({
+      maxResults,
+      tavilyApiKey: process.env.TAVILY_API_KEY,
+      includeRawContent,
+      topic,
+    });
+    return await tavilySearch._call({ query });
+  },
+  {
+    name: "internet_search",
+    description: "Run a web search",
+    schema: z.object({
+      query: z.string().describe("The search query"),
+      maxResults: z.number().optional().default(5),
+      topic: z
+        .enum(["general", "news", "finance"])
+        .optional()
+        .default("general"),
+      includeRawContent: z.boolean().optional().default(false),
+    }),
+  },
+);
 
-  const agent = createDeepAgent({
-    model: "openai:gpt-5.5",
-    tools: [internetSearch],
-  });
-  ```
+const agent = createDeepAgent({
+  model: "openai:gpt-5.5",
+  tools: [internetSearch],
+});
+```
 
-  ```ts Anthropic theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  import { tool } from "langchain";
-  import { TavilySearch } from "@langchain/tavily";
-  import { createDeepAgent } from "deepagents";
-  import { z } from "zod";
+```ts Anthropic theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+import { tool } from "langchain";
+import { TavilySearch } from "@langchain/tavily";
+import { createDeepAgent } from "deepagents";
+import { z } from "zod";
 
-  const internetSearch = tool(
-    async ({
-      query,
-      maxResults = 5,
-      topic = "general",
-      includeRawContent = false,
-    }: {
-      query: string;
-      maxResults?: number;
-      topic?: "general" | "news" | "finance";
-      includeRawContent?: boolean;
-    }) => {
-      const tavilySearch = new TavilySearch({
-        maxResults,
-        tavilyApiKey: process.env.TAVILY_API_KEY,
-        includeRawContent,
-        topic,
-      });
-      return await tavilySearch._call({ query });
-    },
-    {
-      name: "internet_search",
-      description: "Run a web search",
-      schema: z.object({
-        query: z.string().describe("The search query"),
-        maxResults: z.number().optional().default(5),
-        topic: z
-          .enum(["general", "news", "finance"])
-          .optional()
-          .default("general"),
-        includeRawContent: z.boolean().optional().default(false),
-      }),
-    },
-  );
+const internetSearch = tool(
+  async ({
+    query,
+    maxResults = 5,
+    topic = "general",
+    includeRawContent = false,
+  }: {
+    query: string;
+    maxResults?: number;
+    topic?: "general" | "news" | "finance";
+    includeRawContent?: boolean;
+  }) => {
+    const tavilySearch = new TavilySearch({
+      maxResults,
+      tavilyApiKey: process.env.TAVILY_API_KEY,
+      includeRawContent,
+      topic,
+    });
+    return await tavilySearch._call({ query });
+  },
+  {
+    name: "internet_search",
+    description: "Run a web search",
+    schema: z.object({
+      query: z.string().describe("The search query"),
+      maxResults: z.number().optional().default(5),
+      topic: z
+        .enum(["general", "news", "finance"])
+        .optional()
+        .default("general"),
+      includeRawContent: z.boolean().optional().default(false),
+    }),
+  },
+);
 
-  const agent = createDeepAgent({
-    model: "anthropic:claude-sonnet-5",
-    tools: [internetSearch],
-  });
-  ```
+const agent = createDeepAgent({
+  model: "anthropic:claude-sonnet-5",
+  tools: [internetSearch],
+});
+```
 
-  ```ts OpenRouter theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  import { tool } from "langchain";
-  import { TavilySearch } from "@langchain/tavily";
-  import { createDeepAgent } from "deepagents";
-  import { z } from "zod";
+```ts OpenRouter theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+import { tool } from "langchain";
+import { TavilySearch } from "@langchain/tavily";
+import { createDeepAgent } from "deepagents";
+import { z } from "zod";
 
-  const internetSearch = tool(
-    async ({
-      query,
-      maxResults = 5,
-      topic = "general",
-      includeRawContent = false,
-    }: {
-      query: string;
-      maxResults?: number;
-      topic?: "general" | "news" | "finance";
-      includeRawContent?: boolean;
-    }) => {
-      const tavilySearch = new TavilySearch({
-        maxResults,
-        tavilyApiKey: process.env.TAVILY_API_KEY,
-        includeRawContent,
-        topic,
-      });
-      return await tavilySearch._call({ query });
-    },
-    {
-      name: "internet_search",
-      description: "Run a web search",
-      schema: z.object({
-        query: z.string().describe("The search query"),
-        maxResults: z.number().optional().default(5),
-        topic: z
-          .enum(["general", "news", "finance"])
-          .optional()
-          .default("general"),
-        includeRawContent: z.boolean().optional().default(false),
-      }),
-    },
-  );
+const internetSearch = tool(
+  async ({
+    query,
+    maxResults = 5,
+    topic = "general",
+    includeRawContent = false,
+  }: {
+    query: string;
+    maxResults?: number;
+    topic?: "general" | "news" | "finance";
+    includeRawContent?: boolean;
+  }) => {
+    const tavilySearch = new TavilySearch({
+      maxResults,
+      tavilyApiKey: process.env.TAVILY_API_KEY,
+      includeRawContent,
+      topic,
+    });
+    return await tavilySearch._call({ query });
+  },
+  {
+    name: "internet_search",
+    description: "Run a web search",
+    schema: z.object({
+      query: z.string().describe("The search query"),
+      maxResults: z.number().optional().default(5),
+      topic: z
+        .enum(["general", "news", "finance"])
+        .optional()
+        .default("general"),
+      includeRawContent: z.boolean().optional().default(false),
+    }),
+  },
+);
 
-  const agent = createDeepAgent({
-    model: "openrouter:z-ai/glm-5.2",
-    tools: [internetSearch],
-  });
-  ```
+const agent = createDeepAgent({
+  model: "openrouter:z-ai/glm-5.2",
+  tools: [internetSearch],
+});
+```
 
-  ```ts Fireworks theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  import { tool } from "langchain";
-  import { TavilySearch } from "@langchain/tavily";
-  import { createDeepAgent } from "deepagents";
-  import { z } from "zod";
+```ts Fireworks theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+import { tool } from "langchain";
+import { TavilySearch } from "@langchain/tavily";
+import { createDeepAgent } from "deepagents";
+import { z } from "zod";
 
-  const internetSearch = tool(
-    async ({
-      query,
-      maxResults = 5,
-      topic = "general",
-      includeRawContent = false,
-    }: {
-      query: string;
-      maxResults?: number;
-      topic?: "general" | "news" | "finance";
-      includeRawContent?: boolean;
-    }) => {
-      const tavilySearch = new TavilySearch({
-        maxResults,
-        tavilyApiKey: process.env.TAVILY_API_KEY,
-        includeRawContent,
-        topic,
-      });
-      return await tavilySearch._call({ query });
-    },
-    {
-      name: "internet_search",
-      description: "Run a web search",
-      schema: z.object({
-        query: z.string().describe("The search query"),
-        maxResults: z.number().optional().default(5),
-        topic: z
-          .enum(["general", "news", "finance"])
-          .optional()
-          .default("general"),
-        includeRawContent: z.boolean().optional().default(false),
-      }),
-    },
-  );
+const internetSearch = tool(
+  async ({
+    query,
+    maxResults = 5,
+    topic = "general",
+    includeRawContent = false,
+  }: {
+    query: string;
+    maxResults?: number;
+    topic?: "general" | "news" | "finance";
+    includeRawContent?: boolean;
+  }) => {
+    const tavilySearch = new TavilySearch({
+      maxResults,
+      tavilyApiKey: process.env.TAVILY_API_KEY,
+      includeRawContent,
+      topic,
+    });
+    return await tavilySearch._call({ query });
+  },
+  {
+    name: "internet_search",
+    description: "Run a web search",
+    schema: z.object({
+      query: z.string().describe("The search query"),
+      maxResults: z.number().optional().default(5),
+      topic: z
+        .enum(["general", "news", "finance"])
+        .optional()
+        .default("general"),
+      includeRawContent: z.boolean().optional().default(false),
+    }),
+  },
+);
 
-  const agent = createDeepAgent({
-    model: "fireworks:accounts/fireworks/models/glm-5p2",
-    tools: [internetSearch],
-  });
-  ```
+const agent = createDeepAgent({
+  model: "fireworks:accounts/fireworks/models/glm-5p2",
+  tools: [internetSearch],
+});
+```
 
-  ```ts Baseten theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  import { tool } from "langchain";
-  import { TavilySearch } from "@langchain/tavily";
-  import { createDeepAgent } from "deepagents";
-  import { z } from "zod";
+```ts Baseten theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+import { tool } from "langchain";
+import { TavilySearch } from "@langchain/tavily";
+import { createDeepAgent } from "deepagents";
+import { z } from "zod";
 
-  const internetSearch = tool(
-    async ({
-      query,
-      maxResults = 5,
-      topic = "general",
-      includeRawContent = false,
-    }: {
-      query: string;
-      maxResults?: number;
-      topic?: "general" | "news" | "finance";
-      includeRawContent?: boolean;
-    }) => {
-      const tavilySearch = new TavilySearch({
-        maxResults,
-        tavilyApiKey: process.env.TAVILY_API_KEY,
-        includeRawContent,
-        topic,
-      });
-      return await tavilySearch._call({ query });
-    },
-    {
-      name: "internet_search",
-      description: "Run a web search",
-      schema: z.object({
-        query: z.string().describe("The search query"),
-        maxResults: z.number().optional().default(5),
-        topic: z
-          .enum(["general", "news", "finance"])
-          .optional()
-          .default("general"),
-        includeRawContent: z.boolean().optional().default(false),
-      }),
-    },
-  );
+const internetSearch = tool(
+  async ({
+    query,
+    maxResults = 5,
+    topic = "general",
+    includeRawContent = false,
+  }: {
+    query: string;
+    maxResults?: number;
+    topic?: "general" | "news" | "finance";
+    includeRawContent?: boolean;
+  }) => {
+    const tavilySearch = new TavilySearch({
+      maxResults,
+      tavilyApiKey: process.env.TAVILY_API_KEY,
+      includeRawContent,
+      topic,
+    });
+    return await tavilySearch._call({ query });
+  },
+  {
+    name: "internet_search",
+    description: "Run a web search",
+    schema: z.object({
+      query: z.string().describe("The search query"),
+      maxResults: z.number().optional().default(5),
+      topic: z
+        .enum(["general", "news", "finance"])
+        .optional()
+        .default("general"),
+      includeRawContent: z.boolean().optional().default(false),
+    }),
+  },
+);
 
-  const agent = createDeepAgent({
-    model: "baseten:zai-org/GLM-5.2",
-    tools: [internetSearch],
-  });
-  ```
+const agent = createDeepAgent({
+  model: "baseten:zai-org/GLM-5.2",
+  tools: [internetSearch],
+});
+```
 
-  ```ts Ollama theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  import { tool } from "langchain";
-  import { TavilySearch } from "@langchain/tavily";
-  import { createDeepAgent } from "deepagents";
-  import { z } from "zod";
+```ts Ollama theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+import { tool } from "langchain";
+import { TavilySearch } from "@langchain/tavily";
+import { createDeepAgent } from "deepagents";
+import { z } from "zod";
 
-  const internetSearch = tool(
-    async ({
-      query,
-      maxResults = 5,
-      topic = "general",
-      includeRawContent = false,
-    }: {
-      query: string;
-      maxResults?: number;
-      topic?: "general" | "news" | "finance";
-      includeRawContent?: boolean;
-    }) => {
-      const tavilySearch = new TavilySearch({
-        maxResults,
-        tavilyApiKey: process.env.TAVILY_API_KEY,
-        includeRawContent,
-        topic,
-      });
-      return await tavilySearch._call({ query });
-    },
-    {
-      name: "internet_search",
-      description: "Run a web search",
-      schema: z.object({
-        query: z.string().describe("The search query"),
-        maxResults: z.number().optional().default(5),
-        topic: z
-          .enum(["general", "news", "finance"])
-          .optional()
-          .default("general"),
-        includeRawContent: z.boolean().optional().default(false),
-      }),
-    },
-  );
+const internetSearch = tool(
+  async ({
+    query,
+    maxResults = 5,
+    topic = "general",
+    includeRawContent = false,
+  }: {
+    query: string;
+    maxResults?: number;
+    topic?: "general" | "news" | "finance";
+    includeRawContent?: boolean;
+  }) => {
+    const tavilySearch = new TavilySearch({
+      maxResults,
+      tavilyApiKey: process.env.TAVILY_API_KEY,
+      includeRawContent,
+      topic,
+    });
+    return await tavilySearch._call({ query });
+  },
+  {
+    name: "internet_search",
+    description: "Run a web search",
+    schema: z.object({
+      query: z.string().describe("The search query"),
+      maxResults: z.number().optional().default(5),
+      topic: z
+        .enum(["general", "news", "finance"])
+        .optional()
+        .default("general"),
+      includeRawContent: z.boolean().optional().default(false),
+    }),
+  },
+);
 
-  const agent = createDeepAgent({
-    model: "ollama:north-mini-code-1.0",
-    tools: [internetSearch],
-  });
-  ```
-</CodeGroup>
+const agent = createDeepAgent({
+  model: "ollama:north-mini-code-1.0",
+  tools: [internetSearch],
+});
+```
 
-### MCP 工具
-
-<Tip>
-  Deep Agents完全支持[Model Context Protocol (MCP)](/oss/javascript/langchain/mcp)工具。您可以从任何 MCP 服务器（数据库、API、文件系统等）加载工具，并将它们直接传递到 `create_deep_agent`。
-</Tip>
+### MCP 工具> [!提示]
+>
+> Deep Agents完全支持[Model Context Protocol (MCP)](/oss/javascript/langchain/mcp)工具。您可以从任何 MCP 服务器（数据库、API、文件系统等）加载工具，并将它们直接传递到 `create_deep_agent`。
 
 安装`@langchain/mcp-adapters`以连接到MCP服务器：
 
@@ -797,377 +771,371 @@
 npm install @langchain/mcp-adapters
 ```
 
-<CodeGroup>
-  ```ts Google theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  import { createDeepAgent } from "deepagents";
+```ts Google theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+import { createDeepAgent } from "deepagents";
 
-  const { MultiServerMCPClient } = await import("@langchain/mcp-adapters");
+const { MultiServerMCPClient } = await import("@langchain/mcp-adapters");
 
-  const client = new MultiServerMCPClient({
-      my_server: {
-          transport: "http",
-          url: "http://localhost:8000/mcp",
-      },
-  });
+const client = new MultiServerMCPClient({
+    my_server: {
+        transport: "http",
+        url: "http://localhost:8000/mcp",
+    },
+});
 
-  const tools = await client.getTools();
+const tools = await client.getTools();
 
-  const agent = await createDeepAgent({
-      model: "google:gemini-3.6-flash",
-      tools,
-  });
+const agent = await createDeepAgent({
+    model: "google:gemini-3.6-flash",
+    tools,
+});
 
-  const result = await agent.invoke({
-      messages: [{ role: "user", content: "Use the MCP server to help me." }],
-  });
-  ```
+const result = await agent.invoke({
+    messages: [{ role: "user", content: "Use the MCP server to help me." }],
+});
+```
 
-  ```ts OpenAI theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  import { createDeepAgent } from "deepagents";
+```ts OpenAI theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+import { createDeepAgent } from "deepagents";
 
-  const { MultiServerMCPClient } = await import("@langchain/mcp-adapters");
+const { MultiServerMCPClient } = await import("@langchain/mcp-adapters");
 
-  const client = new MultiServerMCPClient({
-      my_server: {
-          transport: "http",
-          url: "http://localhost:8000/mcp",
-      },
-  });
+const client = new MultiServerMCPClient({
+    my_server: {
+        transport: "http",
+        url: "http://localhost:8000/mcp",
+    },
+});
 
-  const tools = await client.getTools();
+const tools = await client.getTools();
 
-  const agent = await createDeepAgent({
-      model: "openai:gpt-5.5",
-      tools,
-  });
+const agent = await createDeepAgent({
+    model: "openai:gpt-5.5",
+    tools,
+});
 
-  const result = await agent.invoke({
-      messages: [{ role: "user", content: "Use the MCP server to help me." }],
-  });
-  ```
+const result = await agent.invoke({
+    messages: [{ role: "user", content: "Use the MCP server to help me." }],
+});
+```
 
-  ```ts Anthropic theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  import { createDeepAgent } from "deepagents";
+```ts Anthropic theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+import { createDeepAgent } from "deepagents";
 
-  const { MultiServerMCPClient } = await import("@langchain/mcp-adapters");
+const { MultiServerMCPClient } = await import("@langchain/mcp-adapters");
 
-  const client = new MultiServerMCPClient({
-      my_server: {
-          transport: "http",
-          url: "http://localhost:8000/mcp",
-      },
-  });
+const client = new MultiServerMCPClient({
+    my_server: {
+        transport: "http",
+        url: "http://localhost:8000/mcp",
+    },
+});
 
-  const tools = await client.getTools();
+const tools = await client.getTools();
 
-  const agent = await createDeepAgent({
-      model: "anthropic:claude-sonnet-5",
-      tools,
-  });
+const agent = await createDeepAgent({
+    model: "anthropic:claude-sonnet-5",
+    tools,
+});
 
-  const result = await agent.invoke({
-      messages: [{ role: "user", content: "Use the MCP server to help me." }],
-  });
-  ```
+const result = await agent.invoke({
+    messages: [{ role: "user", content: "Use the MCP server to help me." }],
+});
+```
 
-  ```ts OpenRouter theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  import { createDeepAgent } from "deepagents";
+```ts OpenRouter theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+import { createDeepAgent } from "deepagents";
 
-  const { MultiServerMCPClient } = await import("@langchain/mcp-adapters");
+const { MultiServerMCPClient } = await import("@langchain/mcp-adapters");
 
-  const client = new MultiServerMCPClient({
-      my_server: {
-          transport: "http",
-          url: "http://localhost:8000/mcp",
-      },
-  });
+const client = new MultiServerMCPClient({
+    my_server: {
+        transport: "http",
+        url: "http://localhost:8000/mcp",
+    },
+});
 
-  const tools = await client.getTools();
+const tools = await client.getTools();
 
-  const agent = await createDeepAgent({
-      model: "openrouter:z-ai/glm-5.2",
-      tools,
-  });
+const agent = await createDeepAgent({
+    model: "openrouter:z-ai/glm-5.2",
+    tools,
+});
 
-  const result = await agent.invoke({
-      messages: [{ role: "user", content: "Use the MCP server to help me." }],
-  });
-  ```
+const result = await agent.invoke({
+    messages: [{ role: "user", content: "Use the MCP server to help me." }],
+});
+```
 
-  ```ts Fireworks theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  import { createDeepAgent } from "deepagents";
+```ts Fireworks theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+import { createDeepAgent } from "deepagents";
 
-  const { MultiServerMCPClient } = await import("@langchain/mcp-adapters");
+const { MultiServerMCPClient } = await import("@langchain/mcp-adapters");
 
-  const client = new MultiServerMCPClient({
-      my_server: {
-          transport: "http",
-          url: "http://localhost:8000/mcp",
-      },
-  });
+const client = new MultiServerMCPClient({
+    my_server: {
+        transport: "http",
+        url: "http://localhost:8000/mcp",
+    },
+});
 
-  const tools = await client.getTools();
+const tools = await client.getTools();
 
-  const agent = await createDeepAgent({
-      model: "fireworks:accounts/fireworks/models/glm-5p2",
-      tools,
-  });
+const agent = await createDeepAgent({
+    model: "fireworks:accounts/fireworks/models/glm-5p2",
+    tools,
+});
 
-  const result = await agent.invoke({
-      messages: [{ role: "user", content: "Use the MCP server to help me." }],
-  });
-  ```
+const result = await agent.invoke({
+    messages: [{ role: "user", content: "Use the MCP server to help me." }],
+});
+```
 
-  ```ts Baseten theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  import { createDeepAgent } from "deepagents";
+```ts Baseten theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+import { createDeepAgent } from "deepagents";
 
-  const { MultiServerMCPClient } = await import("@langchain/mcp-adapters");
+const { MultiServerMCPClient } = await import("@langchain/mcp-adapters");
 
-  const client = new MultiServerMCPClient({
-      my_server: {
-          transport: "http",
-          url: "http://localhost:8000/mcp",
-      },
-  });
+const client = new MultiServerMCPClient({
+    my_server: {
+        transport: "http",
+        url: "http://localhost:8000/mcp",
+    },
+});
 
-  const tools = await client.getTools();
+const tools = await client.getTools();
 
-  const agent = await createDeepAgent({
-      model: "baseten:zai-org/GLM-5.2",
-      tools,
-  });
+const agent = await createDeepAgent({
+    model: "baseten:zai-org/GLM-5.2",
+    tools,
+});
 
-  const result = await agent.invoke({
-      messages: [{ role: "user", content: "Use the MCP server to help me." }],
-  });
-  ```
+const result = await agent.invoke({
+    messages: [{ role: "user", content: "Use the MCP server to help me." }],
+});
+```
 
-  ```ts Ollama theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  import { createDeepAgent } from "deepagents";
+```ts Ollama theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+import { createDeepAgent } from "deepagents";
 
-  const { MultiServerMCPClient } = await import("@langchain/mcp-adapters");
+const { MultiServerMCPClient } = await import("@langchain/mcp-adapters");
 
-  const client = new MultiServerMCPClient({
-      my_server: {
-          transport: "http",
-          url: "http://localhost:8000/mcp",
-      },
-  });
+const client = new MultiServerMCPClient({
+    my_server: {
+        transport: "http",
+        url: "http://localhost:8000/mcp",
+    },
+});
 
-  const tools = await client.getTools();
+const tools = await client.getTools();
 
-  const agent = await createDeepAgent({
-      model: "ollama:north-mini-code-1.0",
-      tools,
-  });
+const agent = await createDeepAgent({
+    model: "ollama:north-mini-code-1.0",
+    tools,
+});
 
-  const result = await agent.invoke({
-      messages: [{ role: "user", content: "Use the MCP server to help me." }],
-  });
-  ```
-</CodeGroup>
+const result = await agent.invoke({
+    messages: [{ role: "user", content: "Use the MCP server to help me." }],
+});
+```
 
 有关详细的配置选项，包括 stdio 服务器、OAuth 身份验证、工具过滤和有状态会话，请参阅完整的 [MCP guide](/oss/javascript/langchain/mcp)。
 
 ## 系统提示
 
-通过`system_prompt=`给代理您自己的指示：
+通过`system_prompt=`向代理人提供您自己的指示：
 
-<CodeGroup>
-  ```ts Google theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  import { createDeepAgent } from "deepagents";
+```ts Google theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+import { createDeepAgent } from "deepagents";
 
-  const researchInstructions =
-    `You are an expert researcher. ` +
-    `Your job is to conduct thorough research, and then ` +
-    `write a polished report.`;
+const researchInstructions =
+  `You are an expert researcher. ` +
+  `Your job is to conduct thorough research, and then ` +
+  `write a polished report.`;
 
-  const agent = createDeepAgent({
-    model: "google:gemini-3.6-flash",
-    systemPrompt: researchInstructions,
-  });
-  ```
+const agent = createDeepAgent({
+  model: "google:gemini-3.6-flash",
+  systemPrompt: researchInstructions,
+});
+```
 
-  ```ts OpenAI theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  import { createDeepAgent } from "deepagents";
+```ts OpenAI theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+import { createDeepAgent } from "deepagents";
 
-  const researchInstructions =
-    `You are an expert researcher. ` +
-    `Your job is to conduct thorough research, and then ` +
-    `write a polished report.`;
+const researchInstructions =
+  `You are an expert researcher. ` +
+  `Your job is to conduct thorough research, and then ` +
+  `write a polished report.`;
 
-  const agent = createDeepAgent({
-    model: "openai:gpt-5.5",
-    systemPrompt: researchInstructions,
-  });
-  ```
+const agent = createDeepAgent({
+  model: "openai:gpt-5.5",
+  systemPrompt: researchInstructions,
+});
+```
 
-  ```ts Anthropic theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  import { createDeepAgent } from "deepagents";
+```ts Anthropic theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+import { createDeepAgent } from "deepagents";
 
-  const researchInstructions =
-    `You are an expert researcher. ` +
-    `Your job is to conduct thorough research, and then ` +
-    `write a polished report.`;
+const researchInstructions =
+  `You are an expert researcher. ` +
+  `Your job is to conduct thorough research, and then ` +
+  `write a polished report.`;
 
-  const agent = createDeepAgent({
-    model: "anthropic:claude-sonnet-5",
-    systemPrompt: researchInstructions,
-  });
-  ```
+const agent = createDeepAgent({
+  model: "anthropic:claude-sonnet-5",
+  systemPrompt: researchInstructions,
+});
+```
 
-  ```ts OpenRouter theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  import { createDeepAgent } from "deepagents";
+```ts OpenRouter theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+import { createDeepAgent } from "deepagents";
 
-  const researchInstructions =
-    `You are an expert researcher. ` +
-    `Your job is to conduct thorough research, and then ` +
-    `write a polished report.`;
+const researchInstructions =
+  `You are an expert researcher. ` +
+  `Your job is to conduct thorough research, and then ` +
+  `write a polished report.`;
 
-  const agent = createDeepAgent({
-    model: "openrouter:z-ai/glm-5.2",
-    systemPrompt: researchInstructions,
-  });
-  ```
+const agent = createDeepAgent({
+  model: "openrouter:z-ai/glm-5.2",
+  systemPrompt: researchInstructions,
+});
+```
 
-  ```ts Fireworks theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  import { createDeepAgent } from "deepagents";
+```ts Fireworks theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+import { createDeepAgent } from "deepagents";
 
-  const researchInstructions =
-    `You are an expert researcher. ` +
-    `Your job is to conduct thorough research, and then ` +
-    `write a polished report.`;
+const researchInstructions =
+  `You are an expert researcher. ` +
+  `Your job is to conduct thorough research, and then ` +
+  `write a polished report.`;
 
-  const agent = createDeepAgent({
-    model: "fireworks:accounts/fireworks/models/glm-5p2",
-    systemPrompt: researchInstructions,
-  });
-  ```
+const agent = createDeepAgent({
+  model: "fireworks:accounts/fireworks/models/glm-5p2",
+  systemPrompt: researchInstructions,
+});
+```
 
-  ```ts Baseten theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  import { createDeepAgent } from "deepagents";
+```ts Baseten theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+import { createDeepAgent } from "deepagents";
 
-  const researchInstructions =
-    `You are an expert researcher. ` +
-    `Your job is to conduct thorough research, and then ` +
-    `write a polished report.`;
+const researchInstructions =
+  `You are an expert researcher. ` +
+  `Your job is to conduct thorough research, and then ` +
+  `write a polished report.`;
 
-  const agent = createDeepAgent({
-    model: "baseten:zai-org/GLM-5.2",
-    systemPrompt: researchInstructions,
-  });
-  ```
+const agent = createDeepAgent({
+  model: "baseten:zai-org/GLM-5.2",
+  systemPrompt: researchInstructions,
+});
+```
 
-  ```ts Ollama theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  import { createDeepAgent } from "deepagents";
+```ts Ollama theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+import { createDeepAgent } from "deepagents";
 
-  const researchInstructions =
-    `You are an expert researcher. ` +
-    `Your job is to conduct thorough research, and then ` +
-    `write a polished report.`;
+const researchInstructions =
+  `You are an expert researcher. ` +
+  `Your job is to conduct thorough research, and then ` +
+  `write a polished report.`;
 
-  const agent = createDeepAgent({
-    model: "ollama:north-mini-code-1.0",
-    systemPrompt: researchInstructions,
-  });
-  ```
-</CodeGroup>
+const agent = createDeepAgent({
+  model: "ollama:north-mini-code-1.0",
+  systemPrompt: researchInstructions,
+});
+```
 
-<Note>
-  除了字符串之外，主代理还接受具有结构化[content blocks](/oss/javascript/langchain/messages#standard-content-blocks)的[⟦T169⟧](https://reference.langchain.com/javascript/langchain-core/messages/SystemMessage)； Deep Agents 保留这些块（[subagent](/oss/javascript/deepagents/subagents) 字典规范保留字符串）。
-</Note><AccordionGroup>
-  <Accordion title="Subagent prompts">
-    声明式 [subagents](/oss/javascript/deepagents/subagents) 根据自己的模型解析配置文件覆盖，然后将解析的配置文件的 `base_system_prompt` / `system_prompt_suffix` 应用到子代理编写的 `system_prompt`。仅附带 `system_prompt_suffix`（内置 Anthropic / OpenAI 配置文件的常见情况）的配置文件会附加到编写的提示中。设置 `base_system_prompt` 的配置文件会直接替换它。
-  </Accordion>
+> [!注意]
+>
+> 除了字符串之外，主代理还接受具有结构化[content blocks](/oss/javascript/langchain/messages#standard-content-blocks)的[⟦T171⟧](https://reference.langchain.com/javascript/langchain-core/messages/SystemMessage)； Deep Agents 保留这些块（[subagent](/oss/javascript/deepagents/subagents) 字典规范保留字符串）。
 
-  <Accordion title="General-purpose subagent prompt">
-    自动添加的 [general-purpose subagent](/oss/javascript/deepagents/subagents#the-general-purpose-subagent) 将其基本提示解析为 **`general_purpose_subagent.system_prompt`（如果设置）-> `HarnessProfile.base_system_prompt`（如果设置）-> SDK 通用默认**，配置文件后缀位于顶部。当两个覆盖字段都被设置时，通用特定的字段获胜，因此调整这两个字段的调用者永远不会看到他们的 GP 覆盖被默默地丢弃：
-
-    ```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-    from deepagents import (
-        GeneralPurposeSubagentProfile,
-        HarnessProfile,
-        register_harness_profile,
-    )
-
-    register_harness_profile(
-        "anthropic",
-        HarnessProfile(
-            base_system_prompt="You are ACME's support orchestrator.",  # main agent
-            general_purpose_subagent=GeneralPurposeSubagentProfile(
-                system_prompt="You are a research subagent. Cite sources.",  # GP subagent
-            ),
-            system_prompt_suffix="Always think step by step.",
-        ),
-    )
-    ```
-
-    |堆栈|最终系统提示|
-    | - | - |
-    |主代理| `"You are ACME's support orchestrator." + SUFFIX` |
-    | GP 子代理 | `"You are a research subagent. Cite sources." + SUFFIX` |
-  </Accordion>
-</AccordionGroup>
+> **子代理提示**
+>
+> 声明式 [subagents](/oss/javascript/deepagents/subagents) 根据自己的模型解析配置文件覆盖，然后将解析的配置文件的 `base_system_prompt` / `system_prompt_suffix` 应用到子代理编写的 `system_prompt`。仅附带 `system_prompt_suffix`（内置 Anthropic / OpenAI 配置文件的常见情况）的配置文件会附加到编写的提示中。设置 `base_system_prompt` 的配置文件会完全取代它。> **通用子代理提示**
+>
+> 自动添加的 [general-purpose subagent](/oss/javascript/deepagents/subagents#the-general-purpose-subagent) 将其基本提示解析为 **`general_purpose_subagent.system_prompt`（如果设置）-> `HarnessProfile.base_system_prompt`（如果设置）-> SDK 通用默认**，配置文件后缀位于顶部。当两个覆盖字段都被设置时，通用特定的字段获胜，因此调整这两个字段的调用者永远不会看到他们的 GP 覆盖被默默地丢弃：
+>
+> ```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> from deepagents import (
+>     GeneralPurposeSubagentProfile,
+>     HarnessProfile,
+>     register_harness_profile,
+> )
+>
+> register_harness_profile(
+>     "anthropic",
+>     HarnessProfile(
+>         base_system_prompt="You are ACME's support orchestrator.",  # main agent
+>         general_purpose_subagent=GeneralPurposeSubagentProfile(
+>             system_prompt="You are a research subagent. Cite sources.",  # GP subagent
+>         ),
+>         system_prompt_suffix="Always think step by step.",
+>     ),
+> )
+> ```
+>
+> |堆栈|最终系统提示|
+> | - | - |
+> |主代理| `"You are ACME's support orchestrator." + SUFFIX` |
+> | GP 子代理 | `"You are a research subagent. Cite sources." + SUFFIX` |
 
 ## 中间件
 
-Deep Agents 支持任何 [middleware](/oss/javascript/langchain/middleware/overview)，包括下面列出的内置中间件、来自 LangChain 的预构建中间件、特定于提供商的中间件以及您自己编写的自定义中间件。将中间件传递给 `createDeepAgent` 的 `middleware` 参数。每个实例都通过其 `.name` 合并到 [Deep Agents stack](#deep-agents-stack) 中。名称与内置条目匹配的实例会就地替换该条目。其他任何内容都插入在[⟦T182⟧](https://reference.langchain.com/javascript/deepagents/middleware/createPatchToolCallsMiddleware)之后。
+Deep Agents 支持任何 [middleware](/oss/javascript/langchain/middleware/overview)，包括下面列出的内置中间件、来自 LangChain 的预构建中间件、特定于提供商的中间件以及您自己编写的自定义中间件。
 
-### Deep Agents堆栈
+将中间件传递给 `createDeepAgent` 的 `middleware` 参数。每个实例都通过其 `.name` 合并到 [Deep Agents stack](#deep-agents-stack) 中。名称与内置条目匹配的实例会就地替换该条目。其他任何内容都插入在[⟦T184⟧](https://reference.langchain.com/javascript/deepagents/middleware/createPatchToolCallsMiddleware)之后。
 
-`createDeepAgent` 以固定的顺序构建中间件。只需一个模型即可获得 [bare stack](#bare-stack)。 [full stack](#full-stack) 是完整的汇编顺序，包括仅当您传递可选参数或解析的 [harness profile](/oss/javascript/deepagents/profiles) 提供它们时才出现的槽。
+### Deep Agents 堆栈
 
-#### 裸栈
+`createDeepAgent` 以固定的顺序构建中间件。只需一个模型即可获得 [bare stack](#bare-stack)。 [full stack](#full-stack) 是完整的汇编顺序，包括仅当您传递可选参数或解析的 [harness profile](/oss/javascript/deepagents/profiles) 贡献它们时才出现的槽。
 
-只有一个`model`（没有其他可选参数），主代理通常包括：
+#### 裸栈只有一个`model`（没有其他可选参数），主代理通常包括：
 
-1.[⟦T185⟧](https://reference.langchain.com/javascript/deepagents/middleware/createFilesystemMiddleware)
-2. [⟦T186⟧](https://reference.langchain.com/javascript/deepagents/middleware/createSubAgentMiddleware)（因为 [general-purpose subagent](/oss/javascript/deepagents/subagents#default-subagent) 是自动添加的，除非线束配置文件禁用它）
-3.[⟦T187⟧](https://reference.langchain.com/javascript/langchain/index/summarizationMiddleware)
-4.[⟦T188⟧](https://reference.langchain.com/javascript/deepagents/middleware/createPatchToolCallsMiddleware)
+1.[⟦T187⟧](https://reference.langchain.com/javascript/deepagents/middleware/createFilesystemMiddleware)
+2. [⟦T188⟧](https://reference.langchain.com/javascript/deepagents/middleware/createSubAgentMiddleware)（因为 [general-purpose subagent](/oss/javascript/deepagents/subagents#default-subagent) 是自动添加的，除非线束配置文件禁用它）
+3.[⟦T189⟧](https://reference.langchain.com/javascript/langchain/index/summarizationMiddleware)
+4.[⟦T190⟧](https://reference.langchain.com/javascript/deepagents/middleware/createPatchToolCallsMiddleware)
 5. **提示缓存**中间件（为受支持的提供程序添加；其他地方无操作）
 6. **利用配置文件额外**和**排除工具过滤**，如果解析的模型配置文件定义了它们
-7. [⟦T189⟧](https://reference.langchain.com/javascript/deepagents/middleware/createUnsupportedContentMiddleware)
+7. [⟦T191⟧](https://reference.langchain.com/javascript/deepagents/middleware/createUnsupportedContentMiddleware)
 
 #### 全栈
 
 从第一个到最后一个：
 
-1. [⟦T190⟧](https://reference.langchain.com/javascript/deepagents/middleware/createFilesystemMiddleware)：处理文件系统操作，例如读取、写入和导航目录。当您通过`permissions`时，文件系统权限强制执行包含在此处，因此它可以评估代理可能调用的每个工具。2. [⟦T192⟧](https://reference.langchain.com/javascript/deepagents/middleware/createSubAgentMiddleware)：仅当至少有一个同步子代理可用时。生成并协调子代理来委派任务。包含在[bare stack](#bare-stack)中，因为默认情况下会自动添加通用子代理；通过禁用该子代理并不传递同步`subagents`来省略它。参见[Running without subagents](/oss/javascript/deepagents/subagents#running-without-subagents)。
+1. [⟦T192⟧](https://reference.langchain.com/javascript/deepagents/middleware/createFilesystemMiddleware)：处理文件系统操作，例如读取、写入和导航目录。当您通过`permissions`时，文件系统权限强制执行包含在此处，因此它可以评估代理可能调用的每个工具。
 
-3. [⟦T194⟧](https://reference.langchain.com/javascript/langchain/index/summarizationMiddleware)：当对话变长时，压缩消息历史记录以保持在上下文限制内（通过[createSummarizationMiddleware](https://reference.langchain.com/javascript/deepagents/middleware/createSummarizationMiddleware)）。
+2. [⟦T194⟧](https://reference.langchain.com/javascript/deepagents/middleware/createSubAgentMiddleware)：仅当至少有一个同步子代理可用时。生成并协调子代理来委派任务。包含在[bare stack](#bare-stack)中，因为默认情况下会自动添加通用子代理；通过禁用该子代理并不传递同步`subagents`来省略它。参见[Running without subagents](/oss/javascript/deepagents/subagents#running-without-subagents)。
 
-4. [⟦T195⟧](https://reference.langchain.com/javascript/deepagents/middleware/createPatchToolCallsMiddleware)：当运行在中断后恢复或收到格式错误的工具调用参数时，修复消息历史记录中悬空的工具调用。 **在** Anthropic 提示符缓存和下面的尾堆栈之前运行。
+3. [⟦T196⟧](https://reference.langchain.com/javascript/langchain/index/summarizationMiddleware)：当对话变长时，压缩消息历史记录以保持在上下文限制内（通过[createSummarizationMiddleware](https://reference.langchain.com/javascript/deepagents/middleware/createSummarizationMiddleware)）。4. [⟦T197⟧](https://reference.langchain.com/javascript/deepagents/middleware/createPatchToolCallsMiddleware)：当运行在中断后恢复或收到格式错误的工具调用参数时，修复消息历史记录中悬空的工具调用。 **在** Anthropic 提示符缓存和下面的尾堆栈之前运行。
 
-5. [⟦T196⟧](https://reference.langchain.com/javascript/deepagents/agent/createDeepAgent)：仅当您配置异步子代理时。
+5. [⟦T198⟧](https://reference.langchain.com/javascript/deepagents/agent/createDeepAgent)：仅当您配置异步子代理时。
 
-6. **您的中间件参数**：作为 `middleware` 参数传递的可选中间件在 Patch 之后但在堆栈的其余部分之前合并。 `.name` 与内置条目匹配的实例会就地替换该条目，而不是复制它。其他任何东西都会落到这里。
+6. **您的中间件参数**：作为 `middleware` 参数传递的可选中间件在 Patch 之后、堆栈的其余部分之前合并。 `.name` 与内置条目匹配的实例会就地替换该条目，而不是复制它。其他任何东西都会落到这里。
 
-7. **利用配置文件附加**：来自解析的模型配置文件的特定于提供商的中间件（如果有）。8. [⟦T199⟧](https://reference.langchain.com/javascript/deepagents/middleware/createSkillsMiddleware)：仅当您传递`skills`，或者在`middleware`中传递`createSkillsMiddleware`实例时。无论哪种方式，它都在中间件之后、提示缓存之前运行，因此它可以看到汇总的对话和实际调用的模型。
+7. **利用配置文件附加**：来自解析的模型配置文件的特定于提供商的中间件（如果有）。
 
-9. **提示缓存**（[⟦T203⟧](https://reference.langchain.com/javascript/langchain/index/anthropicPromptCachingMiddleware) 和 [⟦T204⟧](https://reference.langchain.com/javascript/langchain/index/bedrockPromptCachingMiddleware)）：分别为 Anthropic 型号和 Amazon Bedrock Converse 型号自动添加。两者都在** Patch 之后和中间件之后运行，因此缓存的前缀与实际发送到模型的内容相匹配。
+8. [⟦T201⟧](https://reference.langchain.com/javascript/deepagents/middleware/createSkillsMiddleware)：仅当您传递`skills`，或传递`middleware`中的`createSkillsMiddleware`实例时。无论哪种方式，它都在中间件之后、提示缓存之前运行，因此它可以看到汇总的对话和实际调用的模型。
 
-10. [⟦T205⟧](https://reference.langchain.com/javascript/deepagents/middleware/createMemoryMiddleware)：仅当您通过`memory`时。
+9. **提示缓存**（[⟦T205⟧](https://reference.langchain.com/javascript/langchain/index/anthropicPromptCachingMiddleware) 和 [⟦T206⟧](https://reference.langchain.com/javascript/langchain/index/bedrockPromptCachingMiddleware)）：分别为 Anthropic 型号和 Amazon Bedrock Converse 型号自动添加。两者都在** Patch 之后和中间件之后运行，因此缓存的前缀与实际发送到模型的内容相匹配。
 
-    <Note>
-      `MemoryMiddleware` 位于配置文件附加功能和提示缓存中间件的**之后，因此对注入内存的更新不太可能使缓存前缀无效。 `createDeepAgent` 实现注释中也提出了相同的排序问题。
-    </Note>
+10. [⟦T207⟧](https://reference.langchain.com/javascript/deepagents/middleware/createMemoryMiddleware)：仅当您通过`memory`时。> [!注意]
+    >
+    > `MemoryMiddleware` 放置在配置文件附加功能和提示缓存中间件的**之后，因此对注入内存的更新不太可能使缓存前缀无效。 `createDeepAgent` 实现注释中也提出了相同的排序问题。
 
 11. `HumanInTheLoopMiddleware`：仅当您通过`interruptOn`时。在配置的工具调用时暂停以供人工批准或输入。
 
 12. **排除工具过滤**：当线束配置文件列出排除工具时，中间件将从代理中删除这些工具。
 
-13. [⟦T211⟧](https://reference.langchain.com/javascript/deepagents/middleware/createUnsupportedContentMiddleware)：使用文本占位符重写请求中不支持的多模式内容。
+13. [⟦T213⟧](https://reference.langchain.com/javascript/deepagents/middleware/createUnsupportedContentMiddleware)：使用文本占位符重写请求中不支持的多模式内容。
 
-### 同步子代理堆栈内置的**通用**子代理和每个声明性同步`SubAgent`图使用`createDeepAgent`在代码中构建的堆栈。它与主要代理在广义上匹配（文件系统、摘要、补丁、配置文件附加、技能、Anthropic和基岩缓存、可选权限），除了子代理图中**没有**[⟦T214⟧](https://reference.langchain.com/javascript/deepagents/middleware/createSubAgentMiddleware)（只有父代理公开`task`工具）。
+### 同步子代理堆栈
+
+内置的**通用**子代理和每个声明性同步`SubAgent`图使用`createDeepAgent`在代码中构建的堆栈。它与大体上的主代理匹配（文件系统、摘要、补丁、配置文件附加、技能、Anthropic和基岩缓存、可选权限），除了子代理图中**没有**[⟦T216⟧](https://reference.langchain.com/javascript/deepagents/middleware/createSubAgentMiddleware)（只有父代理公开`task`工具）。
 
 当声明性子代理设置 `interruptOn` 时，该值将转发到子代理的 `createAgent`，从而为已配置的工具调用连接人机交互处理。
 
-### 预构建中间件
+### 预构建中间件LangChain 公开了额外的预构建中间件，让您可以添加各种功能，例如重试、回退或 PII 检测。更多信息请参见[Prebuilt middleware](/oss/javascript/langchain/middleware/built-in)。
 
-LangChain 公开了额外的预构建中间件，让您可以添加各种功能，例如重试、回退或 PII 检测。更多信息请参见[Prebuilt middleware](/oss/javascript/langchain/middleware/built-in)。
-
-`deepagents` 包还为相同的工作流程公开了 [⟦T219⟧](https://reference.langchain.com/javascript/deepagents/middleware/createSummarizationMiddleware)。欲了解更多详情，请参阅[Summarization](/oss/javascript/deepagents/context-engineering#summarization)。
+`deepagents` 包还为相同的工作流程公开了 [⟦T221⟧](https://reference.langchain.com/javascript/deepagents/middleware/createSummarizationMiddleware)。欲了解更多详情，请参阅[Summarization](/oss/javascript/deepagents/context-engineering#summarization)。
 
 ### 特定于提供商的中间件
 
@@ -1177,1336 +1145,1381 @@ LangChain 公开了额外的预构建中间件，让您可以添加各种功能�
 
 您可以提供额外的中间件来扩展功能、添加工具或实现自定义挂钩：
 
-<CodeGroup>
-  ```ts Google theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  import { tool, createMiddleware } from "langchain";
-  import { createDeepAgent } from "deepagents";
-  import * as z from "zod";
-
-  const getWeather = tool(
-    ({ city }: { city: string }) => {
-      return `The weather in ${city} is sunny.`;
-    },
-    {
-      name: "get_weather",
-      description: "Get the weather in a city.",
-      schema: z.object({
-        city: z.string(),
-      }),
-    },
-  );
-
-  let callCount = 0;
-
-  const logToolCallsMiddleware = createMiddleware({
-    name: "LogToolCallsMiddleware",
-    wrapToolCall: async (request, handler) => {
-      // Intercept and log every tool call - demonstrates cross-cutting concern
-      callCount += 1;
-      const toolName = request.toolCall.name;
-
-      console.log(`[Middleware] Tool call #${callCount}: ${toolName}`);
-      console.log(
-        `[Middleware] Arguments: ${JSON.stringify(request.toolCall.args)}`,
-      );
-
-      // Execute the tool call
-      const result = await handler(request);
-
-      // Log the result
-      console.log(`[Middleware] Tool call #${callCount} completed`);
-
-      return result;
-    },
-  });
-
-  const agent = await createDeepAgent({
-    model: "google:gemini-3.6-flash",
-    tools: [getWeather] as any,
-    middleware: [logToolCallsMiddleware] as any,
-  });
-  ```
-
-  ```ts OpenAI theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  import { tool, createMiddleware } from "langchain";
-  import { createDeepAgent } from "deepagents";
-  import * as z from "zod";
-
-  const getWeather = tool(
-    ({ city }: { city: string }) => {
-      return `The weather in ${city} is sunny.`;
-    },
-    {
-      name: "get_weather",
-      description: "Get the weather in a city.",
-      schema: z.object({
-        city: z.string(),
-      }),
-    },
-  );
-
-  let callCount = 0;
-
-  const logToolCallsMiddleware = createMiddleware({
-    name: "LogToolCallsMiddleware",
-    wrapToolCall: async (request, handler) => {
-      // Intercept and log every tool call - demonstrates cross-cutting concern
-      callCount += 1;
-      const toolName = request.toolCall.name;
-
-      console.log(`[Middleware] Tool call #${callCount}: ${toolName}`);
-      console.log(
-        `[Middleware] Arguments: ${JSON.stringify(request.toolCall.args)}`,
-      );
-
-      // Execute the tool call
-      const result = await handler(request);
-
-      // Log the result
-      console.log(`[Middleware] Tool call #${callCount} completed`);
-
-      return result;
-    },
-  });
-
-  const agent = await createDeepAgent({
-    model: "openai:gpt-5.5",
-    tools: [getWeather] as any,
-    middleware: [logToolCallsMiddleware] as any,
-  });
-  ```
-
-  ```ts Anthropic theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  import { tool, createMiddleware } from "langchain";
-  import { createDeepAgent } from "deepagents";
-  import * as z from "zod";
-
-  const getWeather = tool(
-    ({ city }: { city: string }) => {
-      return `The weather in ${city} is sunny.`;
-    },
-    {
-      name: "get_weather",
-      description: "Get the weather in a city.",
-      schema: z.object({
-        city: z.string(),
-      }),
-    },
-  );
-
-  let callCount = 0;
-
-  const logToolCallsMiddleware = createMiddleware({
-    name: "LogToolCallsMiddleware",
-    wrapToolCall: async (request, handler) => {
-      // Intercept and log every tool call - demonstrates cross-cutting concern
-      callCount += 1;
-      const toolName = request.toolCall.name;
-
-      console.log(`[Middleware] Tool call #${callCount}: ${toolName}`);
-      console.log(
-        `[Middleware] Arguments: ${JSON.stringify(request.toolCall.args)}`,
-      );
-
-      // Execute the tool call
-      const result = await handler(request);
-
-      // Log the result
-      console.log(`[Middleware] Tool call #${callCount} completed`);
-
-      return result;
-    },
-  });
-
-  const agent = await createDeepAgent({
-    model: "anthropic:claude-sonnet-5",
-    tools: [getWeather] as any,
-    middleware: [logToolCallsMiddleware] as any,
-  });
-  ```
-
-  ```ts OpenRouter theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  import { tool, createMiddleware } from "langchain";
-  import { createDeepAgent } from "deepagents";
-  import * as z from "zod";
-
-  const getWeather = tool(
-    ({ city }: { city: string }) => {
-      return `The weather in ${city} is sunny.`;
-    },
-    {
-      name: "get_weather",
-      description: "Get the weather in a city.",
-      schema: z.object({
-        city: z.string(),
-      }),
-    },
-  );
-
-  let callCount = 0;
-
-  const logToolCallsMiddleware = createMiddleware({
-    name: "LogToolCallsMiddleware",
-    wrapToolCall: async (request, handler) => {
-      // Intercept and log every tool call - demonstrates cross-cutting concern
-      callCount += 1;
-      const toolName = request.toolCall.name;
-
-      console.log(`[Middleware] Tool call #${callCount}: ${toolName}`);
-      console.log(
-        `[Middleware] Arguments: ${JSON.stringify(request.toolCall.args)}`,
-      );
-
-      // Execute the tool call
-      const result = await handler(request);
-
-      // Log the result
-      console.log(`[Middleware] Tool call #${callCount} completed`);
-
-      return result;
-    },
-  });
-
-  const agent = await createDeepAgent({
-    model: "openrouter:z-ai/glm-5.2",
-    tools: [getWeather] as any,
-    middleware: [logToolCallsMiddleware] as any,
-  });
-  ```
-
-  ```ts Fireworks theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  import { tool, createMiddleware } from "langchain";
-  import { createDeepAgent } from "deepagents";
-  import * as z from "zod";
-
-  const getWeather = tool(
-    ({ city }: { city: string }) => {
-      return `The weather in ${city} is sunny.`;
-    },
-    {
-      name: "get_weather",
-      description: "Get the weather in a city.",
-      schema: z.object({
-        city: z.string(),
-      }),
-    },
-  );
-
-  let callCount = 0;
-
-  const logToolCallsMiddleware = createMiddleware({
-    name: "LogToolCallsMiddleware",
-    wrapToolCall: async (request, handler) => {
-      // Intercept and log every tool call - demonstrates cross-cutting concern
-      callCount += 1;
-      const toolName = request.toolCall.name;
-
-      console.log(`[Middleware] Tool call #${callCount}: ${toolName}`);
-      console.log(
-        `[Middleware] Arguments: ${JSON.stringify(request.toolCall.args)}`,
-      );
-
-      // Execute the tool call
-      const result = await handler(request);
-
-      // Log the result
-      console.log(`[Middleware] Tool call #${callCount} completed`);
-
-      return result;
-    },
-  });
-
-  const agent = await createDeepAgent({
-    model: "fireworks:accounts/fireworks/models/glm-5p2",
-    tools: [getWeather] as any,
-    middleware: [logToolCallsMiddleware] as any,
-  });
-  ```
-
-  ```ts Baseten theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  import { tool, createMiddleware } from "langchain";
-  import { createDeepAgent } from "deepagents";
-  import * as z from "zod";
-
-  const getWeather = tool(
-    ({ city }: { city: string }) => {
-      return `The weather in ${city} is sunny.`;
-    },
-    {
-      name: "get_weather",
-      description: "Get the weather in a city.",
-      schema: z.object({
-        city: z.string(),
-      }),
-    },
-  );
-
-  let callCount = 0;
-
-  const logToolCallsMiddleware = createMiddleware({
-    name: "LogToolCallsMiddleware",
-    wrapToolCall: async (request, handler) => {
-      // Intercept and log every tool call - demonstrates cross-cutting concern
-      callCount += 1;
-      const toolName = request.toolCall.name;
-
-      console.log(`[Middleware] Tool call #${callCount}: ${toolName}`);
-      console.log(
-        `[Middleware] Arguments: ${JSON.stringify(request.toolCall.args)}`,
-      );
-
-      // Execute the tool call
-      const result = await handler(request);
-
-      // Log the result
-      console.log(`[Middleware] Tool call #${callCount} completed`);
-
-      return result;
-    },
-  });
-
-  const agent = await createDeepAgent({
-    model: "baseten:zai-org/GLM-5.2",
-    tools: [getWeather] as any,
-    middleware: [logToolCallsMiddleware] as any,
-  });
-  ```
-
-  ```ts Ollama theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  import { tool, createMiddleware } from "langchain";
-  import { createDeepAgent } from "deepagents";
-  import * as z from "zod";
-
-  const getWeather = tool(
-    ({ city }: { city: string }) => {
-      return `The weather in ${city} is sunny.`;
-    },
-    {
-      name: "get_weather",
-      description: "Get the weather in a city.",
-      schema: z.object({
-        city: z.string(),
-      }),
-    },
-  );
-
-  let callCount = 0;
-
-  const logToolCallsMiddleware = createMiddleware({
-    name: "LogToolCallsMiddleware",
-    wrapToolCall: async (request, handler) => {
-      // Intercept and log every tool call - demonstrates cross-cutting concern
-      callCount += 1;
-      const toolName = request.toolCall.name;
-
-      console.log(`[Middleware] Tool call #${callCount}: ${toolName}`);
-      console.log(
-        `[Middleware] Arguments: ${JSON.stringify(request.toolCall.args)}`,
-      );
-
-      // Execute the tool call
-      const result = await handler(request);
-
-      // Log the result
-      console.log(`[Middleware] Tool call #${callCount} completed`);
-
-      return result;
-    },
-  });
-
-  const agent = await createDeepAgent({
-    model: "ollama:north-mini-code-1.0",
-    tools: [getWeather] as any,
-    middleware: [logToolCallsMiddleware] as any,
-  });
-  ```
-</CodeGroup><Warning>
-  **初始化后不要改变属性**
-
-  如果您需要跟踪挂钩调用之间的值（例如计数器或累积数据），请使用图形状态。
-  图状态的设计范围仅限于线程，因此更新在并发情况下是安全的。
-
-  **这样做：**
-
-  ```ts theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  const customMiddleware = createMiddleware({
-    name: "CustomMiddleware",
-    beforeAgent: async (state) => {
-      return { x: (state.x ?? 0) + 1 }; // Update graph state instead
-    },
-  });
-  ```
-
-  **不要**这样做：
-
-  ```ts theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  let x = 1;
-
-  const customMiddlewareBad = createMiddleware({
-    name: "CustomMiddleware",
-    beforeAgent: async () => {
-      x += 1; // Mutation causes race conditions
-    },
-  });
-  ```
-
-  适当的修改，例如修改 `beforeAgent` 中的 `state.x`、修改 `beforeAgent` 中的共享变量或更改钩子中的其他共享值，可能会导致微妙的错误和竞争条件，因为许多操作是并发运行的（子代理、并行工具和不同线程上的并行调用）。
-
-  如果必须在自定义中间件中使用突变，请考虑当子代理、并行工具或并发代理调用同时运行时会发生什么情况。
-</Warning>
-
-### 覆盖默认中间件实例
-
-### 口译员
-
-使用 [interpreters](/oss/javascript/deepagents/interpreters) 添加在作用域 QuickJS 运行时中运行 JavaScript 的 `eval` 工具。当代理需要以编程方式组合工具、批处理工作、处理代码中的错误或在没有完整 shell 环境的情况下转换结构化数据时，解释器非常有用。
-
-<CodeGroup>
-  ```ts Google theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  import { createDeepAgent } from "deepagents";
-  import { createCodeInterpreterMiddleware } from "@langchain/quickjs";
-
-  const agent = createDeepAgent({
-    model: "google:gemini-3.6-flash",
-    middleware: [createCodeInterpreterMiddleware()],
-  });
-  ```
-
-  ```ts OpenAI theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  import { createDeepAgent } from "deepagents";
-  import { createCodeInterpreterMiddleware } from "@langchain/quickjs";
-
-  const agent = createDeepAgent({
-    model: "openai:gpt-5.5",
-    middleware: [createCodeInterpreterMiddleware()],
-  });
-  ```
-
-  ```ts Anthropic theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  import { createDeepAgent } from "deepagents";
-  import { createCodeInterpreterMiddleware } from "@langchain/quickjs";
-
-  const agent = createDeepAgent({
-    model: "anthropic:claude-sonnet-5",
-    middleware: [createCodeInterpreterMiddleware()],
-  });
-  ```
-
-  ```ts OpenRouter theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  import { createDeepAgent } from "deepagents";
-  import { createCodeInterpreterMiddleware } from "@langchain/quickjs";
-
-  const agent = createDeepAgent({
-    model: "openrouter:z-ai/glm-5.2",
-    middleware: [createCodeInterpreterMiddleware()],
-  });
-  ```
-
-  ```ts Fireworks theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  import { createDeepAgent } from "deepagents";
-  import { createCodeInterpreterMiddleware } from "@langchain/quickjs";
-
-  const agent = createDeepAgent({
-    model: "fireworks:accounts/fireworks/models/glm-5p2",
-    middleware: [createCodeInterpreterMiddleware()],
-  });
-  ```
-
-  ```ts Baseten theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  import { createDeepAgent } from "deepagents";
-  import { createCodeInterpreterMiddleware } from "@langchain/quickjs";
-
-  const agent = createDeepAgent({
-    model: "baseten:zai-org/GLM-5.2",
-    middleware: [createCodeInterpreterMiddleware()],
-  });
-  ```
-
-  ```ts Ollama theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  import { createDeepAgent } from "deepagents";
-  import { createCodeInterpreterMiddleware } from "@langchain/quickjs";
-
-  const agent = createDeepAgent({
-    model: "ollama:north-mini-code-1.0",
-    middleware: [createCodeInterpreterMiddleware()],
-  });
-  ```
-</CodeGroup>有关设置、编程工具调用、子代理编排和限制，请参阅[Interpreters](/oss/javascript/deepagents/interpreters)。
+```ts Google theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+import { tool, createMiddleware } from "langchain";
+import { createDeepAgent } from "deepagents";
+import * as z from "zod";
+
+const getWeather = tool(
+  ({ city }: { city: string }) => {
+    return `The weather in ${city} is sunny.`;
+  },
+  {
+    name: "get_weather",
+    description: "Get the weather in a city.",
+    schema: z.object({
+      city: z.string(),
+    }),
+  },
+);
+
+let callCount = 0;
+
+const logToolCallsMiddleware = createMiddleware({
+  name: "LogToolCallsMiddleware",
+  wrapToolCall: async (request, handler) => {
+    // Intercept and log every tool call - demonstrates cross-cutting concern
+    callCount += 1;
+    const toolName = request.toolCall.name;
+
+    console.log(`[Middleware] Tool call #${callCount}: ${toolName}`);
+    console.log(
+      `[Middleware] Arguments: ${JSON.stringify(request.toolCall.args)}`,
+    );
+
+    // Execute the tool call
+    const result = await handler(request);
+
+    // Log the result
+    console.log(`[Middleware] Tool call #${callCount} completed`);
+
+    return result;
+  },
+});
+
+const agent = await createDeepAgent({
+  model: "google:gemini-3.6-flash",
+  tools: [getWeather] as any,
+  middleware: [logToolCallsMiddleware] as any,
+});
+```
+
+```ts OpenAI theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+import { tool, createMiddleware } from "langchain";
+import { createDeepAgent } from "deepagents";
+import * as z from "zod";
+
+const getWeather = tool(
+  ({ city }: { city: string }) => {
+    return `The weather in ${city} is sunny.`;
+  },
+  {
+    name: "get_weather",
+    description: "Get the weather in a city.",
+    schema: z.object({
+      city: z.string(),
+    }),
+  },
+);
+
+let callCount = 0;
+
+const logToolCallsMiddleware = createMiddleware({
+  name: "LogToolCallsMiddleware",
+  wrapToolCall: async (request, handler) => {
+    // Intercept and log every tool call - demonstrates cross-cutting concern
+    callCount += 1;
+    const toolName = request.toolCall.name;
+
+    console.log(`[Middleware] Tool call #${callCount}: ${toolName}`);
+    console.log(
+      `[Middleware] Arguments: ${JSON.stringify(request.toolCall.args)}`,
+    );
+
+    // Execute the tool call
+    const result = await handler(request);
+
+    // Log the result
+    console.log(`[Middleware] Tool call #${callCount} completed`);
+
+    return result;
+  },
+});
+
+const agent = await createDeepAgent({
+  model: "openai:gpt-5.5",
+  tools: [getWeather] as any,
+  middleware: [logToolCallsMiddleware] as any,
+});
+```
+
+```ts Anthropic theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+import { tool, createMiddleware } from "langchain";
+import { createDeepAgent } from "deepagents";
+import * as z from "zod";
+
+const getWeather = tool(
+  ({ city }: { city: string }) => {
+    return `The weather in ${city} is sunny.`;
+  },
+  {
+    name: "get_weather",
+    description: "Get the weather in a city.",
+    schema: z.object({
+      city: z.string(),
+    }),
+  },
+);
+
+let callCount = 0;
+
+const logToolCallsMiddleware = createMiddleware({
+  name: "LogToolCallsMiddleware",
+  wrapToolCall: async (request, handler) => {
+    // Intercept and log every tool call - demonstrates cross-cutting concern
+    callCount += 1;
+    const toolName = request.toolCall.name;
+
+    console.log(`[Middleware] Tool call #${callCount}: ${toolName}`);
+    console.log(
+      `[Middleware] Arguments: ${JSON.stringify(request.toolCall.args)}`,
+    );
+
+    // Execute the tool call
+    const result = await handler(request);
+
+    // Log the result
+    console.log(`[Middleware] Tool call #${callCount} completed`);
+
+    return result;
+  },
+});
+
+const agent = await createDeepAgent({
+  model: "anthropic:claude-sonnet-5",
+  tools: [getWeather] as any,
+  middleware: [logToolCallsMiddleware] as any,
+});
+```
+
+```ts OpenRouter theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+import { tool, createMiddleware } from "langchain";
+import { createDeepAgent } from "deepagents";
+import * as z from "zod";
+
+const getWeather = tool(
+  ({ city }: { city: string }) => {
+    return `The weather in ${city} is sunny.`;
+  },
+  {
+    name: "get_weather",
+    description: "Get the weather in a city.",
+    schema: z.object({
+      city: z.string(),
+    }),
+  },
+);
+
+let callCount = 0;
+
+const logToolCallsMiddleware = createMiddleware({
+  name: "LogToolCallsMiddleware",
+  wrapToolCall: async (request, handler) => {
+    // Intercept and log every tool call - demonstrates cross-cutting concern
+    callCount += 1;
+    const toolName = request.toolCall.name;
+
+    console.log(`[Middleware] Tool call #${callCount}: ${toolName}`);
+    console.log(
+      `[Middleware] Arguments: ${JSON.stringify(request.toolCall.args)}`,
+    );
+
+    // Execute the tool call
+    const result = await handler(request);
+
+    // Log the result
+    console.log(`[Middleware] Tool call #${callCount} completed`);
+
+    return result;
+  },
+});
+
+const agent = await createDeepAgent({
+  model: "openrouter:z-ai/glm-5.2",
+  tools: [getWeather] as any,
+  middleware: [logToolCallsMiddleware] as any,
+});
+```
+
+```ts Fireworks theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+import { tool, createMiddleware } from "langchain";
+import { createDeepAgent } from "deepagents";
+import * as z from "zod";
+
+const getWeather = tool(
+  ({ city }: { city: string }) => {
+    return `The weather in ${city} is sunny.`;
+  },
+  {
+    name: "get_weather",
+    description: "Get the weather in a city.",
+    schema: z.object({
+      city: z.string(),
+    }),
+  },
+);
+
+let callCount = 0;
+
+const logToolCallsMiddleware = createMiddleware({
+  name: "LogToolCallsMiddleware",
+  wrapToolCall: async (request, handler) => {
+    // Intercept and log every tool call - demonstrates cross-cutting concern
+    callCount += 1;
+    const toolName = request.toolCall.name;
+
+    console.log(`[Middleware] Tool call #${callCount}: ${toolName}`);
+    console.log(
+      `[Middleware] Arguments: ${JSON.stringify(request.toolCall.args)}`,
+    );
+
+    // Execute the tool call
+    const result = await handler(request);
+
+    // Log the result
+    console.log(`[Middleware] Tool call #${callCount} completed`);
+
+    return result;
+  },
+});
+
+const agent = await createDeepAgent({
+  model: "fireworks:accounts/fireworks/models/glm-5p2",
+  tools: [getWeather] as any,
+  middleware: [logToolCallsMiddleware] as any,
+});
+```
+
+```ts Baseten theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+import { tool, createMiddleware } from "langchain";
+import { createDeepAgent } from "deepagents";
+import * as z from "zod";
+
+const getWeather = tool(
+  ({ city }: { city: string }) => {
+    return `The weather in ${city} is sunny.`;
+  },
+  {
+    name: "get_weather",
+    description: "Get the weather in a city.",
+    schema: z.object({
+      city: z.string(),
+    }),
+  },
+);
+
+let callCount = 0;
+
+const logToolCallsMiddleware = createMiddleware({
+  name: "LogToolCallsMiddleware",
+  wrapToolCall: async (request, handler) => {
+    // Intercept and log every tool call - demonstrates cross-cutting concern
+    callCount += 1;
+    const toolName = request.toolCall.name;
+
+    console.log(`[Middleware] Tool call #${callCount}: ${toolName}`);
+    console.log(
+      `[Middleware] Arguments: ${JSON.stringify(request.toolCall.args)}`,
+    );
+
+    // Execute the tool call
+    const result = await handler(request);
+
+    // Log the result
+    console.log(`[Middleware] Tool call #${callCount} completed`);
+
+    return result;
+  },
+});
+
+const agent = await createDeepAgent({
+  model: "baseten:zai-org/GLM-5.2",
+  tools: [getWeather] as any,
+  middleware: [logToolCallsMiddleware] as any,
+});
+```
+
+```ts Ollama theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+import { tool, createMiddleware } from "langchain";
+import { createDeepAgent } from "deepagents";
+import * as z from "zod";
+
+const getWeather = tool(
+  ({ city }: { city: string }) => {
+    return `The weather in ${city} is sunny.`;
+  },
+  {
+    name: "get_weather",
+    description: "Get the weather in a city.",
+    schema: z.object({
+      city: z.string(),
+    }),
+  },
+);
+
+let callCount = 0;
+
+const logToolCallsMiddleware = createMiddleware({
+  name: "LogToolCallsMiddleware",
+  wrapToolCall: async (request, handler) => {
+    // Intercept and log every tool call - demonstrates cross-cutting concern
+    callCount += 1;
+    const toolName = request.toolCall.name;
+
+    console.log(`[Middleware] Tool call #${callCount}: ${toolName}`);
+    console.log(
+      `[Middleware] Arguments: ${JSON.stringify(request.toolCall.args)}`,
+    );
+
+    // Execute the tool call
+    const result = await handler(request);
+
+    // Log the result
+    console.log(`[Middleware] Tool call #${callCount} completed`);
+
+    return result;
+  },
+});
+
+const agent = await createDeepAgent({
+  model: "ollama:north-mini-code-1.0",
+  tools: [getWeather] as any,
+  middleware: [logToolCallsMiddleware] as any,
+});
+```> [!警告]
+>
+> **初始化后不要改变属性**
+>
+> 如果您需要跟踪钩子调用之间的值（例如，计数器或累积数据），请使用图形状态。
+> 图形状态的设计范围仅限于线程，因此更新在并发情况下是安全的。
+>
+> **这样做：**
+>
+> ```ts theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> const customMiddleware = createMiddleware({
+>   name: "CustomMiddleware",
+>   beforeAgent: async (state) => {
+>     return { x: (state.x ?? 0) + 1 }; // Update graph state instead
+>   },
+> });
+> ```
+>
+> 不要**这样做：
+>
+> ```ts theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> let x = 1;
+>
+> const customMiddlewareBad = createMiddleware({
+>   name: "CustomMiddleware",
+>   beforeAgent: async () => {
+>     x += 1; // Mutation causes race conditions
+>   },
+> });
+> ```
+>
+> 就地修改，例如修改 `beforeAgent` 中的 `state.x`、修改 `beforeAgent` 中的共享变量，或更改钩子中的其他共享值，可能会导致微妙的错误和竞争条件，因为许多操作是并发运行的（子代理、并行工具和不同线程上的并行调用）。
+>
+> 如果必须在自定义中间件中使用突变，请考虑当子代理、并行工具或并发代理调用同时运行时会发生什么情况。
+
+### 覆盖默认中间件实例传递一个中间件实例，其 `.name` 与 [Deep Agents stack](#deep-agents-stack) 中的条目匹配，例如 [⟦T226⟧](https://reference.langchain.com/javascript/langchain/index/summarizationMiddleware)，以就地替换该内置实例，而不是附加重复项。您传递的任何中间件，其 `.name` **不** 匹配内置条目，都不会被替换，它位于最后一个核心中间件条目之后、配置文件、提示缓存和内存之前。完整订购请参见[Full stack](#full-stack)。
+
+```js theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+import {
+  createDeepAgent,
+  createSummarizationMiddleware,
+  StateBackend,
+} from "deepagents";
+
+const backend = new StateBackend();
+const model = "openai:gpt-5.5";
+
+const customSummarization = createSummarizationMiddleware({
+  model,
+  backend,
+  summaryPrompt: "Your custom summary prompt here.",
+});
+
+const agent = createDeepAgent({
+  model,
+  middleware: [customSummarization], // replaces the default SummarizationMiddleware
+});
+```
+
+> [!注意]
+>
+> 覆盖**替换**默认的中间件实例，但不会与其合并。这意味着您的替代品必须完全配置其所需的任何设置。这对于`FilesystemMiddleware`尤其重要：如果您覆盖它，则必须将`backend`（和`permissions`，如果适用）直接传递给`createFilesystemMiddleware`，因为它不会继承传递给`createDeepAgent`的`backend`和`permissions`。要限制可用的文件系统工具，请将 `tools` 允许列表传递给您的自定义 [⟦T236⟧](https://reference.langchain.com/javascript/deepagents/middleware/createFilesystemMiddleware) 实例；参见[Virtual filesystem access](/oss/javascript/deepagents/overview#virtual-filesystem-access)。
+
+Deep Agents 自动添加的通用子代理从主代理继承其默认中间件的覆盖，而不继承特定于主代理的中间件。通过`subagents`定义的声明性子代理不会继承主代理的中间件定制。直接在该子代理自己的 [⟦T238⟧](/oss/javascript/deepagents/subagents#subagent-dictionary-based) 字段中传递覆盖以将其应用到那里；该字段与 [synchronous subagent stack](#synchronous-subagent-stack) 匹配，与 `middleware` 与主要代理的匹配方式相同。
+
+#### 示例
+
+> **将二进制文件内容保留在检查点历史记录之外**
+>
+> 使用 `offloadBinaryContent: true` 覆盖 [⟦T240⟧](https://reference.langchain.com/javascript/deepagents/middleware/createFilesystemMiddleware)，以将二进制 `read_file` 有效负载和内联 `HumanMessage` 媒体存储在后端的 `/blobs` 下，而不是存储在检查点消息历史记录中。状态保留一个小的参考；模型请求从每次运行的缓存或后端重新水化。当代理跨轮读取许多二进制文件时，这可以使检查点大小保持较小。
+>
+>> [!注意]
+>>
+>> 二进制内容卸载需要`deepagents>=1.14.2`。使用在图状态之外存储 blob 的后端，例如沙箱或`FilesystemBackend`。当`/blobs`路由到`StateBackend`时，卸载不起作用。将您传递给 `createDeepAgent` 的相同 `backend` 传递给 `createFilesystemMiddleware`。
+>
+> ```js theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> import {
+>   createDeepAgent,
+>   createFilesystemMiddleware,
+>   FilesystemBackend,
+> } from "deepagents";
+>
+> const backend = new FilesystemBackend({
+>   rootDir: "/path/to/project",
+>   virtualMode: true,
+> });
+>
+> const agent = createDeepAgent({
+>   model: "anthropic:claude-sonnet-4-6",
+>   backend,
+>   middleware: [
+>     createFilesystemMiddleware({ backend, offloadBinaryContent: true }),
+>   ],
+> });
+> ```
+>
+> 欲了解更多信息，请参阅[Offload binary content](/oss/javascript/deepagents/backends#offload-binary-content)。
+
+### 口译员使用 [interpreters](/oss/javascript/deepagents/interpreters) 添加在作用域 QuickJS 运行时中运行 JavaScript 的 `eval` 工具。当代理需要以编程方式组合工具、批处理工作、处理代码中的错误或在没有完整 shell 环境的情况下转换结构化数据时，解释器非常有用。
+
+```ts Google theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+import { createDeepAgent } from "deepagents";
+import { createCodeInterpreterMiddleware } from "@langchain/quickjs";
+
+const agent = createDeepAgent({
+  model: "google:gemini-3.6-flash",
+  middleware: [createCodeInterpreterMiddleware()],
+});
+```
+
+```ts OpenAI theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+import { createDeepAgent } from "deepagents";
+import { createCodeInterpreterMiddleware } from "@langchain/quickjs";
+
+const agent = createDeepAgent({
+  model: "openai:gpt-5.5",
+  middleware: [createCodeInterpreterMiddleware()],
+});
+```
+
+```ts Anthropic theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+import { createDeepAgent } from "deepagents";
+import { createCodeInterpreterMiddleware } from "@langchain/quickjs";
+
+const agent = createDeepAgent({
+  model: "anthropic:claude-sonnet-5",
+  middleware: [createCodeInterpreterMiddleware()],
+});
+```
+
+```ts OpenRouter theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+import { createDeepAgent } from "deepagents";
+import { createCodeInterpreterMiddleware } from "@langchain/quickjs";
+
+const agent = createDeepAgent({
+  model: "openrouter:z-ai/glm-5.2",
+  middleware: [createCodeInterpreterMiddleware()],
+});
+```
+
+```ts Fireworks theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+import { createDeepAgent } from "deepagents";
+import { createCodeInterpreterMiddleware } from "@langchain/quickjs";
+
+const agent = createDeepAgent({
+  model: "fireworks:accounts/fireworks/models/glm-5p2",
+  middleware: [createCodeInterpreterMiddleware()],
+});
+```
+
+```ts Baseten theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+import { createDeepAgent } from "deepagents";
+import { createCodeInterpreterMiddleware } from "@langchain/quickjs";
+
+const agent = createDeepAgent({
+  model: "baseten:zai-org/GLM-5.2",
+  middleware: [createCodeInterpreterMiddleware()],
+});
+```
+
+```ts Ollama theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+import { createDeepAgent } from "deepagents";
+import { createCodeInterpreterMiddleware } from "@langchain/quickjs";
+
+const agent = createDeepAgent({
+  model: "ollama:north-mini-code-1.0",
+  middleware: [createCodeInterpreterMiddleware()],
+});
+```
+
+有关设置、编程工具调用、子代理编排和限制，请参阅[Interpreters](/oss/javascript/deepagents/interpreters)。
 
 ## 子代理
 
 要隔离详细工作并避免上下文膨胀，请使用子代理：
 
-<CodeGroup>
-  ```ts Google theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  import { tool } from "langchain";
-  import { TavilySearch } from "@langchain/tavily";
-  import { createDeepAgent, type SubAgent } from "deepagents";
-  import { z } from "zod";
+```ts Google theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+import { tool } from "langchain";
+import { TavilySearch } from "@langchain/tavily";
+import { createDeepAgent, type SubAgent } from "deepagents";
+import { z } from "zod";
 
-  const internetSearch = tool(
-    async ({
-      query,
-      maxResults = 5,
-      topic = "general",
-      includeRawContent = false,
-    }: {
-      query: string;
-      maxResults?: number;
-      topic?: "general" | "news" | "finance";
-      includeRawContent?: boolean;
-    }) => {
-      const tavilySearch = new TavilySearch({
-        maxResults,
-        tavilyApiKey: process.env.TAVILY_API_KEY,
-        includeRawContent,
-        topic,
-      });
-      return await tavilySearch._call({ query });
-    },
-    {
-      name: "internet_search",
-      description: "Run a web search",
-      schema: z.object({
-        query: z.string().describe("The search query"),
-        maxResults: z.number().optional().default(5),
-        topic: z
-          .enum(["general", "news", "finance"])
-          .optional()
-          .default("general"),
-        includeRawContent: z.boolean().optional().default(false),
-      }),
-    },
-  );
+const internetSearch = tool(
+  async ({
+    query,
+    maxResults = 5,
+    topic = "general",
+    includeRawContent = false,
+  }: {
+    query: string;
+    maxResults?: number;
+    topic?: "general" | "news" | "finance";
+    includeRawContent?: boolean;
+  }) => {
+    const tavilySearch = new TavilySearch({
+      maxResults,
+      tavilyApiKey: process.env.TAVILY_API_KEY,
+      includeRawContent,
+      topic,
+    });
+    return await tavilySearch._call({ query });
+  },
+  {
+    name: "internet_search",
+    description: "Run a web search",
+    schema: z.object({
+      query: z.string().describe("The search query"),
+      maxResults: z.number().optional().default(5),
+      topic: z
+        .enum(["general", "news", "finance"])
+        .optional()
+        .default("general"),
+      includeRawContent: z.boolean().optional().default(false),
+    }),
+  },
+);
 
-  const researchSubagent: SubAgent = {
-    name: "research-agent",
-    description: "Used to research more in depth questions",
-    systemPrompt: "You are a great researcher",
-    tools: [internetSearch],
-    model: "google:gemini-3.6-flash", // Optional override, defaults to main agent model
-  };
-  const subagents = [researchSubagent];
+const researchSubagent: SubAgent = {
+  name: "research-agent",
+  description: "Used to research more in depth questions",
+  systemPrompt: "You are a great researcher",
+  tools: [internetSearch],
+  model: "google:gemini-3.6-flash", // Optional override, defaults to main agent model
+};
+const subagents = [researchSubagent];
 
-  const agent = createDeepAgent({
-    model: "google:gemini-3.6-flash",
-    subagents,
-  });
-  ```
+const agent = createDeepAgent({
+  model: "google:gemini-3.6-flash",
+  subagents,
+});
+```
 
-  ```ts OpenAI theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  import { tool } from "langchain";
-  import { TavilySearch } from "@langchain/tavily";
-  import { createDeepAgent, type SubAgent } from "deepagents";
-  import { z } from "zod";
+```ts OpenAI theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+import { tool } from "langchain";
+import { TavilySearch } from "@langchain/tavily";
+import { createDeepAgent, type SubAgent } from "deepagents";
+import { z } from "zod";
 
-  const internetSearch = tool(
-    async ({
-      query,
-      maxResults = 5,
-      topic = "general",
-      includeRawContent = false,
-    }: {
-      query: string;
-      maxResults?: number;
-      topic?: "general" | "news" | "finance";
-      includeRawContent?: boolean;
-    }) => {
-      const tavilySearch = new TavilySearch({
-        maxResults,
-        tavilyApiKey: process.env.TAVILY_API_KEY,
-        includeRawContent,
-        topic,
-      });
-      return await tavilySearch._call({ query });
-    },
-    {
-      name: "internet_search",
-      description: "Run a web search",
-      schema: z.object({
-        query: z.string().describe("The search query"),
-        maxResults: z.number().optional().default(5),
-        topic: z
-          .enum(["general", "news", "finance"])
-          .optional()
-          .default("general"),
-        includeRawContent: z.boolean().optional().default(false),
-      }),
-    },
-  );
+const internetSearch = tool(
+  async ({
+    query,
+    maxResults = 5,
+    topic = "general",
+    includeRawContent = false,
+  }: {
+    query: string;
+    maxResults?: number;
+    topic?: "general" | "news" | "finance";
+    includeRawContent?: boolean;
+  }) => {
+    const tavilySearch = new TavilySearch({
+      maxResults,
+      tavilyApiKey: process.env.TAVILY_API_KEY,
+      includeRawContent,
+      topic,
+    });
+    return await tavilySearch._call({ query });
+  },
+  {
+    name: "internet_search",
+    description: "Run a web search",
+    schema: z.object({
+      query: z.string().describe("The search query"),
+      maxResults: z.number().optional().default(5),
+      topic: z
+        .enum(["general", "news", "finance"])
+        .optional()
+        .default("general"),
+      includeRawContent: z.boolean().optional().default(false),
+    }),
+  },
+);
 
-  const researchSubagent: SubAgent = {
-    name: "research-agent",
-    description: "Used to research more in depth questions",
-    systemPrompt: "You are a great researcher",
-    tools: [internetSearch],
-    model: "openai:gpt-5.5", // Optional override, defaults to main agent model
-  };
-  const subagents = [researchSubagent];
+const researchSubagent: SubAgent = {
+  name: "research-agent",
+  description: "Used to research more in depth questions",
+  systemPrompt: "You are a great researcher",
+  tools: [internetSearch],
+  model: "openai:gpt-5.5", // Optional override, defaults to main agent model
+};
+const subagents = [researchSubagent];
 
-  const agent = createDeepAgent({
-    model: "google:gemini-3.6-flash",
-    subagents,
-  });
-  ```
+const agent = createDeepAgent({
+  model: "google:gemini-3.6-flash",
+  subagents,
+});
+```
 
-  ```ts Anthropic theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  import { tool } from "langchain";
-  import { TavilySearch } from "@langchain/tavily";
-  import { createDeepAgent, type SubAgent } from "deepagents";
-  import { z } from "zod";
+```ts Anthropic theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+import { tool } from "langchain";
+import { TavilySearch } from "@langchain/tavily";
+import { createDeepAgent, type SubAgent } from "deepagents";
+import { z } from "zod";
 
-  const internetSearch = tool(
-    async ({
-      query,
-      maxResults = 5,
-      topic = "general",
-      includeRawContent = false,
-    }: {
-      query: string;
-      maxResults?: number;
-      topic?: "general" | "news" | "finance";
-      includeRawContent?: boolean;
-    }) => {
-      const tavilySearch = new TavilySearch({
-        maxResults,
-        tavilyApiKey: process.env.TAVILY_API_KEY,
-        includeRawContent,
-        topic,
-      });
-      return await tavilySearch._call({ query });
-    },
-    {
-      name: "internet_search",
-      description: "Run a web search",
-      schema: z.object({
-        query: z.string().describe("The search query"),
-        maxResults: z.number().optional().default(5),
-        topic: z
-          .enum(["general", "news", "finance"])
-          .optional()
-          .default("general"),
-        includeRawContent: z.boolean().optional().default(false),
-      }),
-    },
-  );
+const internetSearch = tool(
+  async ({
+    query,
+    maxResults = 5,
+    topic = "general",
+    includeRawContent = false,
+  }: {
+    query: string;
+    maxResults?: number;
+    topic?: "general" | "news" | "finance";
+    includeRawContent?: boolean;
+  }) => {
+    const tavilySearch = new TavilySearch({
+      maxResults,
+      tavilyApiKey: process.env.TAVILY_API_KEY,
+      includeRawContent,
+      topic,
+    });
+    return await tavilySearch._call({ query });
+  },
+  {
+    name: "internet_search",
+    description: "Run a web search",
+    schema: z.object({
+      query: z.string().describe("The search query"),
+      maxResults: z.number().optional().default(5),
+      topic: z
+        .enum(["general", "news", "finance"])
+        .optional()
+        .default("general"),
+      includeRawContent: z.boolean().optional().default(false),
+    }),
+  },
+);
 
-  const researchSubagent: SubAgent = {
-    name: "research-agent",
-    description: "Used to research more in depth questions",
-    systemPrompt: "You are a great researcher",
-    tools: [internetSearch],
-    model: "anthropic:claude-sonnet-5", // Optional override, defaults to main agent model
-  };
-  const subagents = [researchSubagent];
+const researchSubagent: SubAgent = {
+  name: "research-agent",
+  description: "Used to research more in depth questions",
+  systemPrompt: "You are a great researcher",
+  tools: [internetSearch],
+  model: "anthropic:claude-sonnet-5", // Optional override, defaults to main agent model
+};
+const subagents = [researchSubagent];
 
-  const agent = createDeepAgent({
-    model: "google:gemini-3.6-flash",
-    subagents,
-  });
-  ```
+const agent = createDeepAgent({
+  model: "google:gemini-3.6-flash",
+  subagents,
+});
+```
 
-  ```ts OpenRouter theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  import { tool } from "langchain";
-  import { TavilySearch } from "@langchain/tavily";
-  import { createDeepAgent, type SubAgent } from "deepagents";
-  import { z } from "zod";
+```ts OpenRouter theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+import { tool } from "langchain";
+import { TavilySearch } from "@langchain/tavily";
+import { createDeepAgent, type SubAgent } from "deepagents";
+import { z } from "zod";
 
-  const internetSearch = tool(
-    async ({
-      query,
-      maxResults = 5,
-      topic = "general",
-      includeRawContent = false,
-    }: {
-      query: string;
-      maxResults?: number;
-      topic?: "general" | "news" | "finance";
-      includeRawContent?: boolean;
-    }) => {
-      const tavilySearch = new TavilySearch({
-        maxResults,
-        tavilyApiKey: process.env.TAVILY_API_KEY,
-        includeRawContent,
-        topic,
-      });
-      return await tavilySearch._call({ query });
-    },
-    {
-      name: "internet_search",
-      description: "Run a web search",
-      schema: z.object({
-        query: z.string().describe("The search query"),
-        maxResults: z.number().optional().default(5),
-        topic: z
-          .enum(["general", "news", "finance"])
-          .optional()
-          .default("general"),
-        includeRawContent: z.boolean().optional().default(false),
-      }),
-    },
-  );
+const internetSearch = tool(
+  async ({
+    query,
+    maxResults = 5,
+    topic = "general",
+    includeRawContent = false,
+  }: {
+    query: string;
+    maxResults?: number;
+    topic?: "general" | "news" | "finance";
+    includeRawContent?: boolean;
+  }) => {
+    const tavilySearch = new TavilySearch({
+      maxResults,
+      tavilyApiKey: process.env.TAVILY_API_KEY,
+      includeRawContent,
+      topic,
+    });
+    return await tavilySearch._call({ query });
+  },
+  {
+    name: "internet_search",
+    description: "Run a web search",
+    schema: z.object({
+      query: z.string().describe("The search query"),
+      maxResults: z.number().optional().default(5),
+      topic: z
+        .enum(["general", "news", "finance"])
+        .optional()
+        .default("general"),
+      includeRawContent: z.boolean().optional().default(false),
+    }),
+  },
+);
 
-  const researchSubagent: SubAgent = {
-    name: "research-agent",
-    description: "Used to research more in depth questions",
-    systemPrompt: "You are a great researcher",
-    tools: [internetSearch],
-    model: "openrouter:z-ai/glm-5.2", // Optional override, defaults to main agent model
-  };
-  const subagents = [researchSubagent];
+const researchSubagent: SubAgent = {
+  name: "research-agent",
+  description: "Used to research more in depth questions",
+  systemPrompt: "You are a great researcher",
+  tools: [internetSearch],
+  model: "openrouter:z-ai/glm-5.2", // Optional override, defaults to main agent model
+};
+const subagents = [researchSubagent];
 
-  const agent = createDeepAgent({
-    model: "google:gemini-3.6-flash",
-    subagents,
-  });
-  ```
+const agent = createDeepAgent({
+  model: "google:gemini-3.6-flash",
+  subagents,
+});
+```
 
-  ```ts Fireworks theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  import { tool } from "langchain";
-  import { TavilySearch } from "@langchain/tavily";
-  import { createDeepAgent, type SubAgent } from "deepagents";
-  import { z } from "zod";
+```ts Fireworks theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+import { tool } from "langchain";
+import { TavilySearch } from "@langchain/tavily";
+import { createDeepAgent, type SubAgent } from "deepagents";
+import { z } from "zod";
 
-  const internetSearch = tool(
-    async ({
-      query,
-      maxResults = 5,
-      topic = "general",
-      includeRawContent = false,
-    }: {
-      query: string;
-      maxResults?: number;
-      topic?: "general" | "news" | "finance";
-      includeRawContent?: boolean;
-    }) => {
-      const tavilySearch = new TavilySearch({
-        maxResults,
-        tavilyApiKey: process.env.TAVILY_API_KEY,
-        includeRawContent,
-        topic,
-      });
-      return await tavilySearch._call({ query });
-    },
-    {
-      name: "internet_search",
-      description: "Run a web search",
-      schema: z.object({
-        query: z.string().describe("The search query"),
-        maxResults: z.number().optional().default(5),
-        topic: z
-          .enum(["general", "news", "finance"])
-          .optional()
-          .default("general"),
-        includeRawContent: z.boolean().optional().default(false),
-      }),
-    },
-  );
+const internetSearch = tool(
+  async ({
+    query,
+    maxResults = 5,
+    topic = "general",
+    includeRawContent = false,
+  }: {
+    query: string;
+    maxResults?: number;
+    topic?: "general" | "news" | "finance";
+    includeRawContent?: boolean;
+  }) => {
+    const tavilySearch = new TavilySearch({
+      maxResults,
+      tavilyApiKey: process.env.TAVILY_API_KEY,
+      includeRawContent,
+      topic,
+    });
+    return await tavilySearch._call({ query });
+  },
+  {
+    name: "internet_search",
+    description: "Run a web search",
+    schema: z.object({
+      query: z.string().describe("The search query"),
+      maxResults: z.number().optional().default(5),
+      topic: z
+        .enum(["general", "news", "finance"])
+        .optional()
+        .default("general"),
+      includeRawContent: z.boolean().optional().default(false),
+    }),
+  },
+);
 
-  const researchSubagent: SubAgent = {
-    name: "research-agent",
-    description: "Used to research more in depth questions",
-    systemPrompt: "You are a great researcher",
-    tools: [internetSearch],
-    model: "fireworks:accounts/fireworks/models/glm-5p2", // Optional override, defaults to main agent model
-  };
-  const subagents = [researchSubagent];
+const researchSubagent: SubAgent = {
+  name: "research-agent",
+  description: "Used to research more in depth questions",
+  systemPrompt: "You are a great researcher",
+  tools: [internetSearch],
+  model: "fireworks:accounts/fireworks/models/glm-5p2", // Optional override, defaults to main agent model
+};
+const subagents = [researchSubagent];
 
-  const agent = createDeepAgent({
-    model: "google:gemini-3.6-flash",
-    subagents,
-  });
-  ```
+const agent = createDeepAgent({
+  model: "google:gemini-3.6-flash",
+  subagents,
+});
+```
 
-  ```ts Baseten theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  import { tool } from "langchain";
-  import { TavilySearch } from "@langchain/tavily";
-  import { createDeepAgent, type SubAgent } from "deepagents";
-  import { z } from "zod";
+```ts Baseten theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+import { tool } from "langchain";
+import { TavilySearch } from "@langchain/tavily";
+import { createDeepAgent, type SubAgent } from "deepagents";
+import { z } from "zod";
 
-  const internetSearch = tool(
-    async ({
-      query,
-      maxResults = 5,
-      topic = "general",
-      includeRawContent = false,
-    }: {
-      query: string;
-      maxResults?: number;
-      topic?: "general" | "news" | "finance";
-      includeRawContent?: boolean;
-    }) => {
-      const tavilySearch = new TavilySearch({
-        maxResults,
-        tavilyApiKey: process.env.TAVILY_API_KEY,
-        includeRawContent,
-        topic,
-      });
-      return await tavilySearch._call({ query });
-    },
-    {
-      name: "internet_search",
-      description: "Run a web search",
-      schema: z.object({
-        query: z.string().describe("The search query"),
-        maxResults: z.number().optional().default(5),
-        topic: z
-          .enum(["general", "news", "finance"])
-          .optional()
-          .default("general"),
-        includeRawContent: z.boolean().optional().default(false),
-      }),
-    },
-  );
+const internetSearch = tool(
+  async ({
+    query,
+    maxResults = 5,
+    topic = "general",
+    includeRawContent = false,
+  }: {
+    query: string;
+    maxResults?: number;
+    topic?: "general" | "news" | "finance";
+    includeRawContent?: boolean;
+  }) => {
+    const tavilySearch = new TavilySearch({
+      maxResults,
+      tavilyApiKey: process.env.TAVILY_API_KEY,
+      includeRawContent,
+      topic,
+    });
+    return await tavilySearch._call({ query });
+  },
+  {
+    name: "internet_search",
+    description: "Run a web search",
+    schema: z.object({
+      query: z.string().describe("The search query"),
+      maxResults: z.number().optional().default(5),
+      topic: z
+        .enum(["general", "news", "finance"])
+        .optional()
+        .default("general"),
+      includeRawContent: z.boolean().optional().default(false),
+    }),
+  },
+);
 
-  const researchSubagent: SubAgent = {
-    name: "research-agent",
-    description: "Used to research more in depth questions",
-    systemPrompt: "You are a great researcher",
-    tools: [internetSearch],
-    model: "baseten:zai-org/GLM-5.2", // Optional override, defaults to main agent model
-  };
-  const subagents = [researchSubagent];
+const researchSubagent: SubAgent = {
+  name: "research-agent",
+  description: "Used to research more in depth questions",
+  systemPrompt: "You are a great researcher",
+  tools: [internetSearch],
+  model: "baseten:zai-org/GLM-5.2", // Optional override, defaults to main agent model
+};
+const subagents = [researchSubagent];
 
-  const agent = createDeepAgent({
-    model: "google:gemini-3.6-flash",
-    subagents,
-  });
-  ```
+const agent = createDeepAgent({
+  model: "google:gemini-3.6-flash",
+  subagents,
+});
+```
 
-  ```ts Ollama theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  import { tool } from "langchain";
-  import { TavilySearch } from "@langchain/tavily";
-  import { createDeepAgent, type SubAgent } from "deepagents";
-  import { z } from "zod";
+```ts Ollama theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+import { tool } from "langchain";
+import { TavilySearch } from "@langchain/tavily";
+import { createDeepAgent, type SubAgent } from "deepagents";
+import { z } from "zod";
 
-  const internetSearch = tool(
-    async ({
-      query,
-      maxResults = 5,
-      topic = "general",
-      includeRawContent = false,
-    }: {
-      query: string;
-      maxResults?: number;
-      topic?: "general" | "news" | "finance";
-      includeRawContent?: boolean;
-    }) => {
-      const tavilySearch = new TavilySearch({
-        maxResults,
-        tavilyApiKey: process.env.TAVILY_API_KEY,
-        includeRawContent,
-        topic,
-      });
-      return await tavilySearch._call({ query });
-    },
-    {
-      name: "internet_search",
-      description: "Run a web search",
-      schema: z.object({
-        query: z.string().describe("The search query"),
-        maxResults: z.number().optional().default(5),
-        topic: z
-          .enum(["general", "news", "finance"])
-          .optional()
-          .default("general"),
-        includeRawContent: z.boolean().optional().default(false),
-      }),
-    },
-  );
+const internetSearch = tool(
+  async ({
+    query,
+    maxResults = 5,
+    topic = "general",
+    includeRawContent = false,
+  }: {
+    query: string;
+    maxResults?: number;
+    topic?: "general" | "news" | "finance";
+    includeRawContent?: boolean;
+  }) => {
+    const tavilySearch = new TavilySearch({
+      maxResults,
+      tavilyApiKey: process.env.TAVILY_API_KEY,
+      includeRawContent,
+      topic,
+    });
+    return await tavilySearch._call({ query });
+  },
+  {
+    name: "internet_search",
+    description: "Run a web search",
+    schema: z.object({
+      query: z.string().describe("The search query"),
+      maxResults: z.number().optional().default(5),
+      topic: z
+        .enum(["general", "news", "finance"])
+        .optional()
+        .default("general"),
+      includeRawContent: z.boolean().optional().default(false),
+    }),
+  },
+);
 
-  const researchSubagent: SubAgent = {
-    name: "research-agent",
-    description: "Used to research more in depth questions",
-    systemPrompt: "You are a great researcher",
-    tools: [internetSearch],
-    model: "ollama:north-mini-code-1.0", // Optional override, defaults to main agent model
-  };
-  const subagents = [researchSubagent];
+const researchSubagent: SubAgent = {
+  name: "research-agent",
+  description: "Used to research more in depth questions",
+  systemPrompt: "You are a great researcher",
+  tools: [internetSearch],
+  model: "ollama:north-mini-code-1.0", // Optional override, defaults to main agent model
+};
+const subagents = [researchSubagent];
 
-  const agent = createDeepAgent({
-    model: "google:gemini-3.6-flash",
-    subagents,
-  });
-  ```
-</CodeGroup>
+const agent = createDeepAgent({
+  model: "google:gemini-3.6-flash",
+  subagents,
+});
+```
 
 有关更多信息，请参阅[Subagents](/oss/javascript/deepagents/subagents)。
 
 ## 后端
 
-深度代理工具可以利用虚拟文件系统来存储、访问和编辑文件。默认情况下，深度代理使用[⟦T224⟧](https://reference.langchain.com/javascript/deepagents/backends/StateBackend)。
+深度代理工具可以利用虚拟文件系统来存储、访问和编辑文件。默认情况下，深度代理使用[⟦T253⟧](https://reference.langchain.com/javascript/deepagents/backends/StateBackend)。
 
 如果您使用[skills](#skills)或[memory](#memory)，则必须在创建代理之前将所需的技能或内存文件添加到后端。
 
-<Tabs>
-  <Tab title="StateBackend">
-    存储在 `langgraph` 状态的线程范围文件系统后端。
-
-    文件在线程内持续存在（通过检查点），并且不会跨线程共享。
-
-    ```ts theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-    import { createDeepAgent, StateBackend } from "deepagents";
-
-    // By default we provide a StateBackend
-    const agent = createDeepAgent();
-
-    // Under the hood, it looks like
-    const agent2 = createDeepAgent({
-      backend: new StateBackend(),
-    });
-    ```
-  </Tab>
-
-  <Tab title="FilesystemBackend">
-    本地计算机的文件系统。
-
-    <Warning>
-      该后端授予代理直接文件系统读/写访问权限。
-      请谨慎使用，并且仅在适当的环境中使用。
-      欲了解更多信息，请参阅[⟦T226⟧](/oss/javascript/deepagents/backends#filesystembackend-local-disk)。
-    </Warning>
-
-    <CodeGroup>
-      ```ts Google theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-      import { createDeepAgent, FilesystemBackend } from "deepagents";
-
-      const agent = createDeepAgent({
-        model: "google:gemini-3.6-flash",
-        backend: new FilesystemBackend({ rootDir: ".", virtualMode: true }),
-      });
-      ```
-
-      ```ts OpenAI theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-      import { createDeepAgent, FilesystemBackend } from "deepagents";
-
-      const agent = createDeepAgent({
-        model: "openai:gpt-5.5",
-        backend: new FilesystemBackend({ rootDir: ".", virtualMode: true }),
-      });
-      ```
-
-      ```ts Anthropic theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-      import { createDeepAgent, FilesystemBackend } from "deepagents";
-
-      const agent = createDeepAgent({
-        model: "anthropic:claude-sonnet-5",
-        backend: new FilesystemBackend({ rootDir: ".", virtualMode: true }),
-      });
-      ```
-
-      ```ts OpenRouter theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-      import { createDeepAgent, FilesystemBackend } from "deepagents";
-
-      const agent = createDeepAgent({
-        model: "openrouter:z-ai/glm-5.2",
-        backend: new FilesystemBackend({ rootDir: ".", virtualMode: true }),
-      });
-      ```
-
-      ```ts Fireworks theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-      import { createDeepAgent, FilesystemBackend } from "deepagents";
-
-      const agent = createDeepAgent({
-        model: "fireworks:accounts/fireworks/models/glm-5p2",
-        backend: new FilesystemBackend({ rootDir: ".", virtualMode: true }),
-      });
-      ```
-
-      ```ts Baseten theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-      import { createDeepAgent, FilesystemBackend } from "deepagents";
-
-      const agent = createDeepAgent({
-        model: "baseten:zai-org/GLM-5.2",
-        backend: new FilesystemBackend({ rootDir: ".", virtualMode: true }),
-      });
-      ```
-
-      ```ts Ollama theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-      import { createDeepAgent, FilesystemBackend } from "deepagents";
-
-      const agent = createDeepAgent({
-        model: "ollama:north-mini-code-1.0",
-        backend: new FilesystemBackend({ rootDir: ".", virtualMode: true }),
-      });
-      ```
-    </CodeGroup><Tip>
-      将 `FilesystemBackend` 包装在 `CompositeBackend` 中，以防止内部代理数据（卸载的工具结果、对话历史记录）与项目文件一起写入磁盘。请参阅[recommended pattern](/oss/javascript/deepagents/backends#filesystembackend-local-disk)。
-    </Tip>
-  </Tab>
-
-  <Tab title="LocalShellBackend">
-    直接在主机上执行 shell 的文件系统。提供文件系统工具以及用于运行命令的`execute`工具。
-
-    <Warning>
-      该后端向代理授予直接文件系统读/写访问权限**和**在主机上不受限制的 shell 执行。
-      请务必谨慎使用，并且仅在适当的环境中使用。
-      欲了解更多信息，请参阅[⟦T230⟧](/oss/javascript/deepagents/backends#localshellbackend-local-shell)。
-    </Warning>
+**状态后端**
+
+存储在`langgraph`状态的线程范围文件系统后端。
 
-    <CodeGroup>
-      ```ts Google theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-      import { createDeepAgent, LocalShellBackend } from "deepagents";
+文件在线程内持续存在（通过检查点），并且不会跨线程共享。
+
+```ts theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+import { createDeepAgent, StateBackend } from "deepagents";
 
-      const backend = new LocalShellBackend({ workingDirectory: "." });
+// By default we provide a StateBackend
+const agent = createDeepAgent();
 
-      const agent = createDeepAgent({
-        model: "google:gemini-3.6-flash",
-        backend,
-      });
-      ```
-
-      ```ts OpenAI theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-      import { createDeepAgent, LocalShellBackend } from "deepagents";
-
-      const backend = new LocalShellBackend({ workingDirectory: "." });
-
-      const agent = createDeepAgent({
-        model: "openai:gpt-5.5",
-        backend,
-      });
-      ```
-
-      ```ts Anthropic theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-      import { createDeepAgent, LocalShellBackend } from "deepagents";
-
-      const backend = new LocalShellBackend({ workingDirectory: "." });
-
-      const agent = createDeepAgent({
-        model: "anthropic:claude-sonnet-5",
-        backend,
-      });
-      ```
-
-      ```ts OpenRouter theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-      import { createDeepAgent, LocalShellBackend } from "deepagents";
-
-      const backend = new LocalShellBackend({ workingDirectory: "." });
-
-      const agent = createDeepAgent({
-        model: "openrouter:z-ai/glm-5.2",
-        backend,
-      });
-      ```
-
-      ```ts Fireworks theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-      import { createDeepAgent, LocalShellBackend } from "deepagents";
-
-      const backend = new LocalShellBackend({ workingDirectory: "." });
-
-      const agent = createDeepAgent({
-        model: "fireworks:accounts/fireworks/models/glm-5p2",
-        backend,
-      });
-      ```
-
-      ```ts Baseten theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-      import { createDeepAgent, LocalShellBackend } from "deepagents";
-
-      const backend = new LocalShellBackend({ workingDirectory: "." });
-
-      const agent = createDeepAgent({
-        model: "baseten:zai-org/GLM-5.2",
-        backend,
-      });
-      ```
-
-      ```ts Ollama theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-      import { createDeepAgent, LocalShellBackend } from "deepagents";
-
-      const backend = new LocalShellBackend({ workingDirectory: "." });
-
-      const agent = createDeepAgent({
-        model: "ollama:north-mini-code-1.0",
-        backend,
-      });
-      ```
-    </CodeGroup>
-  </Tab>
-
-  <Tab title="StoreBackend">
-    提供“跨线程持久化”长期存储的文件系统。
-
-    <CodeGroup>
-      ```ts Google theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-      import { createDeepAgent, StoreBackend } from "deepagents";
-      import { InMemoryStore } from "@langchain/langgraph";
-
-      const store = new InMemoryStore(); // Good for local dev; omit for LangSmith Deployment
-
-      const agent = createDeepAgent({
-        model: "google:gemini-3.6-flash",
-        backend: new StoreBackend({
-          namespace: (rt) => [rt.serverInfo.user.identity],
-        }),
-        store,
-      });
-      ```
-
-      ```ts OpenAI theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-      import { createDeepAgent, StoreBackend } from "deepagents";
-      import { InMemoryStore } from "@langchain/langgraph";
-
-      const store = new InMemoryStore(); // Good for local dev; omit for LangSmith Deployment
-
-      const agent = createDeepAgent({
-        model: "openai:gpt-5.5",
-        backend: new StoreBackend({
-          namespace: (rt) => [rt.serverInfo.user.identity],
-        }),
-        store,
-      });
-      ```
-
-      ```ts Anthropic theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-      import { createDeepAgent, StoreBackend } from "deepagents";
-      import { InMemoryStore } from "@langchain/langgraph";
-
-      const store = new InMemoryStore(); // Good for local dev; omit for LangSmith Deployment
-
-      const agent = createDeepAgent({
-        model: "anthropic:claude-sonnet-5",
-        backend: new StoreBackend({
-          namespace: (rt) => [rt.serverInfo.user.identity],
-        }),
-        store,
-      });
-      ```
-
-      ```ts OpenRouter theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-      import { createDeepAgent, StoreBackend } from "deepagents";
-      import { InMemoryStore } from "@langchain/langgraph";
-
-      const store = new InMemoryStore(); // Good for local dev; omit for LangSmith Deployment
-
-      const agent = createDeepAgent({
-        model: "openrouter:z-ai/glm-5.2",
-        backend: new StoreBackend({
-          namespace: (rt) => [rt.serverInfo.user.identity],
-        }),
-        store,
-      });
-      ```
-
-      ```ts Fireworks theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-      import { createDeepAgent, StoreBackend } from "deepagents";
-      import { InMemoryStore } from "@langchain/langgraph";
-
-      const store = new InMemoryStore(); // Good for local dev; omit for LangSmith Deployment
-
-      const agent = createDeepAgent({
-        model: "fireworks:accounts/fireworks/models/glm-5p2",
-        backend: new StoreBackend({
-          namespace: (rt) => [rt.serverInfo.user.identity],
-        }),
-        store,
-      });
-      ```
-
-      ```ts Baseten theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-      import { createDeepAgent, StoreBackend } from "deepagents";
-      import { InMemoryStore } from "@langchain/langgraph";
-
-      const store = new InMemoryStore(); // Good for local dev; omit for LangSmith Deployment
-
-      const agent = createDeepAgent({
-        model: "baseten:zai-org/GLM-5.2",
-        backend: new StoreBackend({
-          namespace: (rt) => [rt.serverInfo.user.identity],
-        }),
-        store,
-      });
-      ```
-
-      ```ts Ollama theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-      import { createDeepAgent, StoreBackend } from "deepagents";
-      import { InMemoryStore } from "@langchain/langgraph";
-
-      const store = new InMemoryStore(); // Good for local dev; omit for LangSmith Deployment
-
-      const agent = createDeepAgent({
-        model: "ollama:north-mini-code-1.0",
-        backend: new StoreBackend({
-          namespace: (rt) => [rt.serverInfo.user.identity],
-        }),
-        store,
-      });
-      ```
-    </CodeGroup>
-
-    <Note>
-      部署到[LangSmith Deployment](/langsmith/deployment)时，省略`store`参数。平台自动为您的代理商提供商店。
-    </Note><Tip>
-      `namespace`参数控制数据隔离。对于多用户部署，请始终设置 [namespace factory](/oss/javascript/deepagents/backends#namespace-factories) 来隔离每个用户或租户的数据。
-    </Tip>
-  </Tab>
-
-  <Tab title="ContextHubBackend">
-    LangSmith Hub 存储库中的持久文件系统存储。
-
-    欲了解更多详情，请参阅[⟦T233⟧](/oss/javascript/deepagents/backends#contexthubbackend)。
-  </Tab>
-
-  <Tab title="CompositeBackend">
-    灵活的后端，您可以在文件系统中指定不同的路由以指向不同的后端。
-
-    <CodeGroup>
-      ```ts Google theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-      import {
-        createDeepAgent,
-        CompositeBackend,
-        StateBackend,
-        StoreBackend,
-      } from "deepagents";
-      import { InMemoryStore } from "@langchain/langgraph";
-
-      const store = new InMemoryStore();
-
-      const agent = createDeepAgent({
-        model: "google:gemini-3.6-flash",
-        backend: new CompositeBackend(new StateBackend(), {
-          "/memories/": new StoreBackend({
-            namespace: () => ["memories"],
-          }),
-        }),
-        store,
-      });
-      ```
-
-      ```ts OpenAI theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-      import {
-        createDeepAgent,
-        CompositeBackend,
-        StateBackend,
-        StoreBackend,
-      } from "deepagents";
-      import { InMemoryStore } from "@langchain/langgraph";
-
-      const store = new InMemoryStore();
-
-      const agent = createDeepAgent({
-        model: "openai:gpt-5.5",
-        backend: new CompositeBackend(new StateBackend(), {
-          "/memories/": new StoreBackend({
-            namespace: () => ["memories"],
-          }),
-        }),
-        store,
-      });
-      ```
-
-      ```ts Anthropic theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-      import {
-        createDeepAgent,
-        CompositeBackend,
-        StateBackend,
-        StoreBackend,
-      } from "deepagents";
-      import { InMemoryStore } from "@langchain/langgraph";
-
-      const store = new InMemoryStore();
-
-      const agent = createDeepAgent({
-        model: "anthropic:claude-sonnet-5",
-        backend: new CompositeBackend(new StateBackend(), {
-          "/memories/": new StoreBackend({
-            namespace: () => ["memories"],
-          }),
-        }),
-        store,
-      });
-      ```
-
-      ```ts OpenRouter theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-      import {
-        createDeepAgent,
-        CompositeBackend,
-        StateBackend,
-        StoreBackend,
-      } from "deepagents";
-      import { InMemoryStore } from "@langchain/langgraph";
-
-      const store = new InMemoryStore();
-
-      const agent = createDeepAgent({
-        model: "openrouter:z-ai/glm-5.2",
-        backend: new CompositeBackend(new StateBackend(), {
-          "/memories/": new StoreBackend({
-            namespace: () => ["memories"],
-          }),
-        }),
-        store,
-      });
-      ```
-
-      ```ts Fireworks theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-      import {
-        createDeepAgent,
-        CompositeBackend,
-        StateBackend,
-        StoreBackend,
-      } from "deepagents";
-      import { InMemoryStore } from "@langchain/langgraph";
-
-      const store = new InMemoryStore();
-
-      const agent = createDeepAgent({
-        model: "fireworks:accounts/fireworks/models/glm-5p2",
-        backend: new CompositeBackend(new StateBackend(), {
-          "/memories/": new StoreBackend({
-            namespace: () => ["memories"],
-          }),
-        }),
-        store,
-      });
-      ```
-
-      ```ts Baseten theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-      import {
-        createDeepAgent,
-        CompositeBackend,
-        StateBackend,
-        StoreBackend,
-      } from "deepagents";
-      import { InMemoryStore } from "@langchain/langgraph";
-
-      const store = new InMemoryStore();
-
-      const agent = createDeepAgent({
-        model: "baseten:zai-org/GLM-5.2",
-        backend: new CompositeBackend(new StateBackend(), {
-          "/memories/": new StoreBackend({
-            namespace: () => ["memories"],
-          }),
-        }),
-        store,
-      });
-      ```
-
-      ```ts Ollama theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-      import {
-        createDeepAgent,
-        CompositeBackend,
-        StateBackend,
-        StoreBackend,
-      } from "deepagents";
-      import { InMemoryStore } from "@langchain/langgraph";
-
-      const store = new InMemoryStore();
-
-      const agent = createDeepAgent({
-        model: "ollama:north-mini-code-1.0",
-        backend: new CompositeBackend(new StateBackend(), {
-          "/memories/": new StoreBackend({
-            namespace: () => ["memories"],
-          }),
-        }),
-        store,
-      });
-      ```
-    </CodeGroup>
-  </Tab>
-</Tabs>
+// Under the hood, it looks like
+const agent2 = createDeepAgent({
+  backend: new StateBackend(),
+});
+```
+
+**文件系统后端**
+
+本地计算机的文件系统。> [!警告]
+>
+> 该后端授予代理直接文件系统读/写访问权限。
+> 谨慎使用，且仅在适当的环境中使用。
+> 欲了解更多信息，请参阅[⟦T255⟧](/oss/javascript/deepagents/backends#filesystembackend-local-disk)。
+
+```ts Google theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+import { createDeepAgent, FilesystemBackend } from "deepagents";
+
+const agent = createDeepAgent({
+  model: "google:gemini-3.6-flash",
+  backend: new FilesystemBackend({ rootDir: ".", virtualMode: true }),
+});
+```
+
+```ts OpenAI theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+import { createDeepAgent, FilesystemBackend } from "deepagents";
+
+const agent = createDeepAgent({
+  model: "openai:gpt-5.5",
+  backend: new FilesystemBackend({ rootDir: ".", virtualMode: true }),
+});
+```
+
+```ts Anthropic theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+import { createDeepAgent, FilesystemBackend } from "deepagents";
+
+const agent = createDeepAgent({
+  model: "anthropic:claude-sonnet-5",
+  backend: new FilesystemBackend({ rootDir: ".", virtualMode: true }),
+});
+```
+
+```ts OpenRouter theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+import { createDeepAgent, FilesystemBackend } from "deepagents";
+
+const agent = createDeepAgent({
+  model: "openrouter:z-ai/glm-5.2",
+  backend: new FilesystemBackend({ rootDir: ".", virtualMode: true }),
+});
+```
+
+```ts Fireworks theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+import { createDeepAgent, FilesystemBackend } from "deepagents";
+
+const agent = createDeepAgent({
+  model: "fireworks:accounts/fireworks/models/glm-5p2",
+  backend: new FilesystemBackend({ rootDir: ".", virtualMode: true }),
+});
+```
+
+```ts Baseten theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+import { createDeepAgent, FilesystemBackend } from "deepagents";
+
+const agent = createDeepAgent({
+  model: "baseten:zai-org/GLM-5.2",
+  backend: new FilesystemBackend({ rootDir: ".", virtualMode: true }),
+});
+```
+
+```ts Ollama theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+import { createDeepAgent, FilesystemBackend } from "deepagents";
+
+const agent = createDeepAgent({
+  model: "ollama:north-mini-code-1.0",
+  backend: new FilesystemBackend({ rootDir: ".", virtualMode: true }),
+});
+```
+
+> [!提示]
+>
+> 将 `FilesystemBackend` 包装在 `CompositeBackend` 中，以防止内部代理数据（卸载的工具结果、对话历史记录）与项目文件一起写入磁盘。请参阅[recommended pattern](/oss/javascript/deepagents/backends#filesystembackend-local-disk)。
+
+**本地Shell后端**
+
+直接在主机上执行 shell 的文件系统。提供文件系统工具以及用于运行命令的`execute`工具。
+
+> [!警告]
+>
+> 此后端授予代理直接文件系统读/写访问权限**和**在您的主机上不受限制的 shell 执行。
+> 请极其谨慎地使用，并且仅在适当的环境中使用。
+> 欲了解更多信息，请参阅[⟦T259⟧](/oss/javascript/deepagents/backends#localshellbackend-local-shell)。
+
+```ts Google theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+import { createDeepAgent, LocalShellBackend } from "deepagents";
+
+const backend = new LocalShellBackend({ workingDirectory: "." });
+
+const agent = createDeepAgent({
+  model: "google:gemini-3.6-flash",
+  backend,
+});
+```
+
+```ts OpenAI theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+import { createDeepAgent, LocalShellBackend } from "deepagents";
+
+const backend = new LocalShellBackend({ workingDirectory: "." });
+
+const agent = createDeepAgent({
+  model: "openai:gpt-5.5",
+  backend,
+});
+```
+
+```ts Anthropic theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+import { createDeepAgent, LocalShellBackend } from "deepagents";
+
+const backend = new LocalShellBackend({ workingDirectory: "." });
+
+const agent = createDeepAgent({
+  model: "anthropic:claude-sonnet-5",
+  backend,
+});
+```
+
+```ts OpenRouter theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+import { createDeepAgent, LocalShellBackend } from "deepagents";
+
+const backend = new LocalShellBackend({ workingDirectory: "." });
+
+const agent = createDeepAgent({
+  model: "openrouter:z-ai/glm-5.2",
+  backend,
+});
+```
+
+```ts Fireworks theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+import { createDeepAgent, LocalShellBackend } from "deepagents";
+
+const backend = new LocalShellBackend({ workingDirectory: "." });
+
+const agent = createDeepAgent({
+  model: "fireworks:accounts/fireworks/models/glm-5p2",
+  backend,
+});
+```
+
+```ts Baseten theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+import { createDeepAgent, LocalShellBackend } from "deepagents";
+
+const backend = new LocalShellBackend({ workingDirectory: "." });
+
+const agent = createDeepAgent({
+  model: "baseten:zai-org/GLM-5.2",
+  backend,
+});
+```
+
+```ts Ollama theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+import { createDeepAgent, LocalShellBackend } from "deepagents";
+
+const backend = new LocalShellBackend({ workingDirectory: "." });
+
+const agent = createDeepAgent({
+  model: "ollama:north-mini-code-1.0",
+  backend,
+});
+```
+
+**商店后端**
+
+提供“跨线程持久化”长期存储的文件系统。
+
+```ts Google theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+import { createDeepAgent, StoreBackend } from "deepagents";
+import { InMemoryStore } from "@langchain/langgraph";
+
+const store = new InMemoryStore(); // Good for local dev; omit for LangSmith Deployment
+
+const agent = createDeepAgent({
+  model: "google:gemini-3.6-flash",
+  backend: new StoreBackend({
+    namespace: (rt) => [rt.serverInfo.user.identity],
+  }),
+  store,
+});
+```
+
+```ts OpenAI theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+import { createDeepAgent, StoreBackend } from "deepagents";
+import { InMemoryStore } from "@langchain/langgraph";
+
+const store = new InMemoryStore(); // Good for local dev; omit for LangSmith Deployment
+
+const agent = createDeepAgent({
+  model: "openai:gpt-5.5",
+  backend: new StoreBackend({
+    namespace: (rt) => [rt.serverInfo.user.identity],
+  }),
+  store,
+});
+```
+
+```ts Anthropic theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+import { createDeepAgent, StoreBackend } from "deepagents";
+import { InMemoryStore } from "@langchain/langgraph";
+
+const store = new InMemoryStore(); // Good for local dev; omit for LangSmith Deployment
+
+const agent = createDeepAgent({
+  model: "anthropic:claude-sonnet-5",
+  backend: new StoreBackend({
+    namespace: (rt) => [rt.serverInfo.user.identity],
+  }),
+  store,
+});
+```
+
+```ts OpenRouter theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+import { createDeepAgent, StoreBackend } from "deepagents";
+import { InMemoryStore } from "@langchain/langgraph";
+
+const store = new InMemoryStore(); // Good for local dev; omit for LangSmith Deployment
+
+const agent = createDeepAgent({
+  model: "openrouter:z-ai/glm-5.2",
+  backend: new StoreBackend({
+    namespace: (rt) => [rt.serverInfo.user.identity],
+  }),
+  store,
+});
+```
+
+```ts Fireworks theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+import { createDeepAgent, StoreBackend } from "deepagents";
+import { InMemoryStore } from "@langchain/langgraph";
+
+const store = new InMemoryStore(); // Good for local dev; omit for LangSmith Deployment
+
+const agent = createDeepAgent({
+  model: "fireworks:accounts/fireworks/models/glm-5p2",
+  backend: new StoreBackend({
+    namespace: (rt) => [rt.serverInfo.user.identity],
+  }),
+  store,
+});
+```
+
+```ts Baseten theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+import { createDeepAgent, StoreBackend } from "deepagents";
+import { InMemoryStore } from "@langchain/langgraph";
+
+const store = new InMemoryStore(); // Good for local dev; omit for LangSmith Deployment
+
+const agent = createDeepAgent({
+  model: "baseten:zai-org/GLM-5.2",
+  backend: new StoreBackend({
+    namespace: (rt) => [rt.serverInfo.user.identity],
+  }),
+  store,
+});
+```
+
+```ts Ollama theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+import { createDeepAgent, StoreBackend } from "deepagents";
+import { InMemoryStore } from "@langchain/langgraph";
+
+const store = new InMemoryStore(); // Good for local dev; omit for LangSmith Deployment
+
+const agent = createDeepAgent({
+  model: "ollama:north-mini-code-1.0",
+  backend: new StoreBackend({
+    namespace: (rt) => [rt.serverInfo.user.identity],
+  }),
+  store,
+});
+```
+
+> [!注意]
+>
+> 部署到[LangSmith Deployment](/langsmith/deployment)时，省略`store`参数。平台自动为您的代理商提供商店。> [!提示]
+>
+> `namespace` 参数控制数据隔离。对于多用户部署，请始终设置 [namespace factory](/oss/javascript/deepagents/backends#namespace-factories) 来隔离每个用户或租户的数据。
+
+**ContextHub后端**
+
+LangSmith Hub 存储库中的持久文件系统存储。
+
+欲了解更多详情，请参阅[⟦T262⟧](/oss/javascript/deepagents/backends#contexthubbackend)。
+
+**复合后端**
+
+灵活的后端，您可以在文件系统中指定不同的路由以指向不同的后端。
+
+```ts Google theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+import {
+  createDeepAgent,
+  CompositeBackend,
+  StateBackend,
+  StoreBackend,
+} from "deepagents";
+import { InMemoryStore } from "@langchain/langgraph";
+
+const store = new InMemoryStore();
+
+const agent = createDeepAgent({
+  model: "google:gemini-3.6-flash",
+  backend: new CompositeBackend(new StateBackend(), {
+    "/memories/": new StoreBackend({
+      namespace: () => ["memories"],
+    }),
+  }),
+  store,
+});
+```
+
+```ts OpenAI theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+import {
+  createDeepAgent,
+  CompositeBackend,
+  StateBackend,
+  StoreBackend,
+} from "deepagents";
+import { InMemoryStore } from "@langchain/langgraph";
+
+const store = new InMemoryStore();
+
+const agent = createDeepAgent({
+  model: "openai:gpt-5.5",
+  backend: new CompositeBackend(new StateBackend(), {
+    "/memories/": new StoreBackend({
+      namespace: () => ["memories"],
+    }),
+  }),
+  store,
+});
+```
+
+```ts Anthropic theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+import {
+  createDeepAgent,
+  CompositeBackend,
+  StateBackend,
+  StoreBackend,
+} from "deepagents";
+import { InMemoryStore } from "@langchain/langgraph";
+
+const store = new InMemoryStore();
+
+const agent = createDeepAgent({
+  model: "anthropic:claude-sonnet-5",
+  backend: new CompositeBackend(new StateBackend(), {
+    "/memories/": new StoreBackend({
+      namespace: () => ["memories"],
+    }),
+  }),
+  store,
+});
+```
+
+```ts OpenRouter theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+import {
+  createDeepAgent,
+  CompositeBackend,
+  StateBackend,
+  StoreBackend,
+} from "deepagents";
+import { InMemoryStore } from "@langchain/langgraph";
+
+const store = new InMemoryStore();
+
+const agent = createDeepAgent({
+  model: "openrouter:z-ai/glm-5.2",
+  backend: new CompositeBackend(new StateBackend(), {
+    "/memories/": new StoreBackend({
+      namespace: () => ["memories"],
+    }),
+  }),
+  store,
+});
+```
+
+```ts Fireworks theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+import {
+  createDeepAgent,
+  CompositeBackend,
+  StateBackend,
+  StoreBackend,
+} from "deepagents";
+import { InMemoryStore } from "@langchain/langgraph";
+
+const store = new InMemoryStore();
+
+const agent = createDeepAgent({
+  model: "fireworks:accounts/fireworks/models/glm-5p2",
+  backend: new CompositeBackend(new StateBackend(), {
+    "/memories/": new StoreBackend({
+      namespace: () => ["memories"],
+    }),
+  }),
+  store,
+});
+```
+
+```ts Baseten theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+import {
+  createDeepAgent,
+  CompositeBackend,
+  StateBackend,
+  StoreBackend,
+} from "deepagents";
+import { InMemoryStore } from "@langchain/langgraph";
+
+const store = new InMemoryStore();
+
+const agent = createDeepAgent({
+  model: "baseten:zai-org/GLM-5.2",
+  backend: new CompositeBackend(new StateBackend(), {
+    "/memories/": new StoreBackend({
+      namespace: () => ["memories"],
+    }),
+  }),
+  store,
+});
+```
+
+```ts Ollama theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+import {
+  createDeepAgent,
+  CompositeBackend,
+  StateBackend,
+  StoreBackend,
+} from "deepagents";
+import { InMemoryStore } from "@langchain/langgraph";
+
+const store = new InMemoryStore();
+
+const agent = createDeepAgent({
+  model: "ollama:north-mini-code-1.0",
+  backend: new CompositeBackend(new StateBackend(), {
+    "/memories/": new StoreBackend({
+      namespace: () => ["memories"],
+    }),
+  }),
+  store,
+});
+```
 
 有关更多信息，请参阅[Backends](/oss/javascript/deepagents/backends)。
 
@@ -2620,8 +2633,8 @@ const agent = createDeepAgent({
   },
   checkpointer, // Required!
 });
-```您可以在工具调用时以及工具调用内部为代理和子代理配置中断。
-欲了解更多信息，请参阅[Human-in-the-loop](/oss/javascript/deepagents/human-in-the-loop)。
+```您可以在工具调用时以及工具调用内为代理和子代理配置中断。
+有关更多信息，请参阅[Human-in-the-loop](/oss/javascript/deepagents/human-in-the-loop)。
 
 ## 技能
 
@@ -2634,1061 +2647,1052 @@ const agent = createDeepAgent({
 
 要为深度代理添加技能，请将它们作为参数传递给 `create_deep_agent`：
 
-<Tabs>
-  <Tab title="StateBackend">
-    ```ts theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-    import { createDeepAgent, StateBackend, type FileData } from "deepagents";
-    import { MemorySaver } from "@langchain/langgraph";
+**状态后端**
 
-    const checkpointer = new MemorySaver();
-    const backend = new StateBackend();
+```ts theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+import { createDeepAgent, StateBackend, type FileData } from "deepagents";
+import { MemorySaver } from "@langchain/langgraph";
 
-    function createFileData(content: string): FileData {
-      const now = new Date().toISOString();
-      return {
-        content: content.split("\n"),
-        created_at: now,
-        modified_at: now,
-      };
-    }
+const checkpointer = new MemorySaver();
+const backend = new StateBackend();
 
-    const skillsFiles: Record<string, FileData> = {};
-    const skillUrl =
-      "https://raw.githubusercontent.com/langchain-ai/deepagentsjs/refs/heads/main/examples/skills/langgraph-docs/SKILL.md";
-    const response = await fetch(skillUrl);
-    const skillContent = await response.text();
+function createFileData(content: string): FileData {
+  const now = new Date().toISOString();
+  return {
+    content: content.split("\n"),
+    created_at: now,
+    modified_at: now,
+  };
+}
 
-    skillsFiles["/skills/langgraph-docs/SKILL.md"] = createFileData(skillContent);
+const skillsFiles: Record<string, FileData> = {};
+const skillUrl =
+  "https://raw.githubusercontent.com/langchain-ai/deepagentsjs/refs/heads/main/examples/skills/langgraph-docs/SKILL.md";
+const response = await fetch(skillUrl);
+const skillContent = await response.text();
 
-    const agent = await createDeepAgent({
-      model: "anthropic:claude-sonnet-4-6",
-      backend,
-      checkpointer, // Required !
-      // IMPORTANT: deepagents skill source paths are virtual (POSIX) paths relative to the backend root.
-      skills: ["/skills/"],
-    });
+skillsFiles["/skills/langgraph-docs/SKILL.md"] = createFileData(skillContent);
 
-    const config = { configurable: { thread_id: `thread-${Date.now()}` } };
-    const result = await agent.invoke(
-      {
-        messages: [{ role: "user", content: "what is langraph?" }],
-        files: skillsFiles,
-      },
-      config,
-    );
-    ```
+const agent = await createDeepAgent({
+  model: "anthropic:claude-sonnet-4-6",
+  backend,
+  checkpointer, // Required !
+  // IMPORTANT: deepagents skill source paths are virtual (POSIX) paths relative to the backend root.
+  skills: ["/skills/"],
+});
 
-    <Card title="View example trace" icon="chart-line" href="https://smith.langchain.com/public/e5b8f897-96f4-42d7-9d88-f2fd8e246bd2/r">
-      为此示例打开公共 LangSmith 运行。
-    </Card>
-  </Tab>
+const config = { configurable: { thread_id: `thread-${Date.now()}` } };
+const result = await agent.invoke(
+  {
+    messages: [{ role: "user", content: "what is langraph?" }],
+    files: skillsFiles,
+  },
+  config,
+);
+```
 
-  <Tab title="StoreBackend">
-    ```ts theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-    import { createDeepAgent, StoreBackend } from "deepagents";
-    import { InMemoryStore, MemorySaver } from "@langchain/langgraph";
+> **[View example trace](https://smith.langchain.com/public/e5b8f897-96f4-42d7-9d88-f2fd8e246bd2/r)**
+>
+> 为此示例打开公共 LangSmith 运行。
 
-    const checkpointer = new MemorySaver();
-    const store = new InMemoryStore();
-    const backend = new StoreBackend({
-      namespace: () => ["filesystem"],
-      store,
-    });
+**商店后端**
 
-    const skillUrl =
-      "https://raw.githubusercontent.com/langchain-ai/deepagentsjs/refs/heads/main/examples/skills/langgraph-docs/SKILL.md";
+```ts theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+import { createDeepAgent, StoreBackend } from "deepagents";
+import { InMemoryStore, MemorySaver } from "@langchain/langgraph";
 
-    const response = await fetch(skillUrl);
-    const skillContent = await response.text();
+const checkpointer = new MemorySaver();
+const store = new InMemoryStore();
+const backend = new StoreBackend({
+  namespace: () => ["filesystem"],
+  store,
+});
 
-    await backend.uploadFiles([
-      ["/skills/langgraph-docs/SKILL.md", new TextEncoder().encode(skillContent)],
-    ]);
+const skillUrl =
+  "https://raw.githubusercontent.com/langchain-ai/deepagentsjs/refs/heads/main/examples/skills/langgraph-docs/SKILL.md";
 
-    const agent = await createDeepAgent({
-      model: "anthropic:claude-sonnet-4-6",
-      backend,
-      store,
-      checkpointer,
-      // IMPORTANT: deepagents skill source paths are virtual (POSIX) paths relative to the backend root.
-      skills: ["/skills/"],
-    });
+const response = await fetch(skillUrl);
+const skillContent = await response.text();
 
-    const config = {
-      recursionLimit: 50,
-      configurable: { thread_id: `thread-${Date.now()}` },
-    };
-    const result = await agent.invoke(
-      { messages: [{ role: "user", content: "what is langraph?" }] },
-      config,
-    );
-    ```
+await backend.uploadFiles([
+  ["/skills/langgraph-docs/SKILL.md", new TextEncoder().encode(skillContent)],
+]);
 
-    <Card title="View example trace" icon="chart-line" href="https://smith.langchain.com/public/8c49b6ee-d5e4-4c9d-b136-a561527e37c2/r">
-      为此示例打开公共 LangSmith 运行。
-    </Card>
-  </Tab>
+const agent = await createDeepAgent({
+  model: "anthropic:claude-sonnet-4-6",
+  backend,
+  store,
+  checkpointer,
+  // IMPORTANT: deepagents skill source paths are virtual (POSIX) paths relative to the backend root.
+  skills: ["/skills/"],
+});
 
-  <Tab title="FilesystemBackend">
-    ```ts theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-    import { createDeepAgent, FilesystemBackend } from "deepagents";
-    import { MemorySaver } from "@langchain/langgraph";
+const config = {
+  recursionLimit: 50,
+  configurable: { thread_id: `thread-${Date.now()}` },
+};
+const result = await agent.invoke(
+  { messages: [{ role: "user", content: "what is langraph?" }] },
+  config,
+);
+```
 
-    const checkpointer = new MemorySaver();
+> **[View example trace](https://smith.langchain.com/public/8c49b6ee-d5e4-4c9d-b136-a561527e37c2/r)**
+>
+> 为此示例打开公共 LangSmith 运行。
 
-    const skillUrl =
-      "https://raw.githubusercontent.com/langchain-ai/deepagentsjs/refs/heads/main/examples/skills/langgraph-docs/SKILL.md";
-    const response = await fetch(skillUrl);
-    const skillContent = await response.text();
+**文件系统后端**
 
-    let backend = new FilesystemBackend({
-      rootDir: process.cwd(),
-      virtualMode: true,
-    });
-    await backend.uploadFiles([
-      ["/skills/langgraph-docs/SKILL.md", new TextEncoder().encode(skillContent)],
-    ]);
+```ts theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+import { createDeepAgent, FilesystemBackend } from "deepagents";
+import { MemorySaver } from "@langchain/langgraph";
 
-    const agent = await createDeepAgent({
-      model: "anthropic:claude-sonnet-4-6",
-      backend,
-      // IMPORTANT: deepagents skill source paths are virtual (POSIX) paths relative to the backend root.
-      skills: ["/skills/"],
-      interruptOn: {
-        read_file: true,
-        write_file: true,
-        delete_file: true,
-      },
-      checkpointer, // Required for filesystem operations!
-    });
+const checkpointer = new MemorySaver();
 
-    const config = { configurable: { thread_id: `thread-${Date.now()}` } };
-    const result = await agent.invoke(
-      { messages: [{ role: "user", content: "what is langraph?" }] },
-      config,
-    );
-    ```
+const skillUrl =
+  "https://raw.githubusercontent.com/langchain-ai/deepagentsjs/refs/heads/main/examples/skills/langgraph-docs/SKILL.md";
+const response = await fetch(skillUrl);
+const skillContent = await response.text();
 
-    <Card title="View example trace" icon="chart-line" href="https://smith.langchain.com/public/6bad9cac-ea04-4364-b28f-d1bdaf39b8d8/r">
-      为此示例打开公共 LangSmith 运行。
-    </Card>
-  </Tab>
-</Tabs>
+let backend = new FilesystemBackend({
+  rootDir: process.cwd(),
+  virtualMode: true,
+});
+await backend.uploadFiles([
+  ["/skills/langgraph-docs/SKILL.md", new TextEncoder().encode(skillContent)],
+]);
+
+const agent = await createDeepAgent({
+  model: "anthropic:claude-sonnet-4-6",
+  backend,
+  // IMPORTANT: deepagents skill source paths are virtual (POSIX) paths relative to the backend root.
+  skills: ["/skills/"],
+  interruptOn: {
+    read_file: true,
+    write_file: true,
+    delete_file: true,
+  },
+  checkpointer, // Required for filesystem operations!
+});
+
+const config = { configurable: { thread_id: `thread-${Date.now()}` } };
+const result = await agent.invoke(
+  { messages: [{ role: "user", content: "what is langraph?" }] },
+  config,
+);
+```
+
+> **[View example trace](https://smith.langchain.com/public/6bad9cac-ea04-4364-b28f-d1bdaf39b8d8/r)**
+>
+> 为此示例打开公共 LangSmith 运行。
 
 ## 内存
 
-使用 [⟦T237⟧ files](https://agents.md/) 为您的深度代理提供额外的上下文。<Tip>
-  要生成编码代理通过`AGENTS.md`发现的存储库wiki，请参阅[OpenWiki](/oss/openwiki/overview)。
-</Tip>
+使用 [⟦T266⟧ files](https://agents.md/) 为您的深度代理提供额外的上下文。> [!提示]
+>
+> 要生成编码代理通过`AGENTS.md`发现的存储库wiki，请参阅[OpenWiki](/oss/openwiki/overview)。
 
 创建深度代理时，您可以将一个或多个文件路径传递给 `memory` 参数：
 
-<Tabs>
-  <Tab title="StateBackend">
-    <CodeGroup>
-      ```ts Google theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-      import { createDeepAgent, type FileData } from "deepagents";
-      import { MemorySaver } from "@langchain/langgraph";
-
-      const AGENTS_MD_URL =
-        "https://raw.githubusercontent.com/langchain-ai/deepagents/refs/heads/main/examples/text-to-sql-agent/AGENTS.md";
-
-      async function fetchText(url: string): Promise<string> {
-        const res = await fetch(url);
-        if (!res.ok) {
-          throw new Error(`Failed to fetch ${url}: ${res.status} ${res.statusText}`);
-        }
-        return await res.text();
-      }
-
-      const agentsMd = await fetchText(AGENTS_MD_URL);
-      const checkpointer = new MemorySaver();
-
-      function createFileData(content: string): FileData {
-        const now = new Date().toISOString();
-        return {
-          content,
-          mimeType: "text/plain",
-          created_at: now,
-          modified_at: now,
-        };
-      }
-
-      const agent = await createDeepAgent({
-        model: "google:gemini-3.6-flash",
-        memory: ["/AGENTS.md"],
-        checkpointer: checkpointer,
-      });
-
-      const result = await agent.invoke(
-        {
-          messages: [
-            {
-              role: "user",
-              content: "Please tell me what's in your memory files.",
-            },
-          ],
-          // Seed the default StateBackend's in-state filesystem (virtual paths must start with "/").
-          files: { "/AGENTS.md": createFileData(agentsMd) },
-        },
-        { configurable: { thread_id: "12345" } },
-      );
-      ```
-
-      ```ts OpenAI theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-      import { createDeepAgent, type FileData } from "deepagents";
-      import { MemorySaver } from "@langchain/langgraph";
-
-      const AGENTS_MD_URL =
-        "https://raw.githubusercontent.com/langchain-ai/deepagents/refs/heads/main/examples/text-to-sql-agent/AGENTS.md";
-
-      async function fetchText(url: string): Promise<string> {
-        const res = await fetch(url);
-        if (!res.ok) {
-          throw new Error(`Failed to fetch ${url}: ${res.status} ${res.statusText}`);
-        }
-        return await res.text();
-      }
-
-      const agentsMd = await fetchText(AGENTS_MD_URL);
-      const checkpointer = new MemorySaver();
-
-      function createFileData(content: string): FileData {
-        const now = new Date().toISOString();
-        return {
-          content,
-          mimeType: "text/plain",
-          created_at: now,
-          modified_at: now,
-        };
-      }
-
-      const agent = await createDeepAgent({
-        model: "openai:gpt-5.5",
-        memory: ["/AGENTS.md"],
-        checkpointer: checkpointer,
-      });
-
-      const result = await agent.invoke(
-        {
-          messages: [
-            {
-              role: "user",
-              content: "Please tell me what's in your memory files.",
-            },
-          ],
-          // Seed the default StateBackend's in-state filesystem (virtual paths must start with "/").
-          files: { "/AGENTS.md": createFileData(agentsMd) },
-        },
-        { configurable: { thread_id: "12345" } },
-      );
-      ```
-
-      ```ts Anthropic theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-      import { createDeepAgent, type FileData } from "deepagents";
-      import { MemorySaver } from "@langchain/langgraph";
-
-      const AGENTS_MD_URL =
-        "https://raw.githubusercontent.com/langchain-ai/deepagents/refs/heads/main/examples/text-to-sql-agent/AGENTS.md";
-
-      async function fetchText(url: string): Promise<string> {
-        const res = await fetch(url);
-        if (!res.ok) {
-          throw new Error(`Failed to fetch ${url}: ${res.status} ${res.statusText}`);
-        }
-        return await res.text();
-      }
-
-      const agentsMd = await fetchText(AGENTS_MD_URL);
-      const checkpointer = new MemorySaver();
-
-      function createFileData(content: string): FileData {
-        const now = new Date().toISOString();
-        return {
-          content,
-          mimeType: "text/plain",
-          created_at: now,
-          modified_at: now,
-        };
-      }
-
-      const agent = await createDeepAgent({
-        model: "anthropic:claude-sonnet-5",
-        memory: ["/AGENTS.md"],
-        checkpointer: checkpointer,
-      });
-
-      const result = await agent.invoke(
-        {
-          messages: [
-            {
-              role: "user",
-              content: "Please tell me what's in your memory files.",
-            },
-          ],
-          // Seed the default StateBackend's in-state filesystem (virtual paths must start with "/").
-          files: { "/AGENTS.md": createFileData(agentsMd) },
-        },
-        { configurable: { thread_id: "12345" } },
-      );
-      ```
-
-      ```ts OpenRouter theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-      import { createDeepAgent, type FileData } from "deepagents";
-      import { MemorySaver } from "@langchain/langgraph";
-
-      const AGENTS_MD_URL =
-        "https://raw.githubusercontent.com/langchain-ai/deepagents/refs/heads/main/examples/text-to-sql-agent/AGENTS.md";
-
-      async function fetchText(url: string): Promise<string> {
-        const res = await fetch(url);
-        if (!res.ok) {
-          throw new Error(`Failed to fetch ${url}: ${res.status} ${res.statusText}`);
-        }
-        return await res.text();
-      }
-
-      const agentsMd = await fetchText(AGENTS_MD_URL);
-      const checkpointer = new MemorySaver();
-
-      function createFileData(content: string): FileData {
-        const now = new Date().toISOString();
-        return {
-          content,
-          mimeType: "text/plain",
-          created_at: now,
-          modified_at: now,
-        };
-      }
-
-      const agent = await createDeepAgent({
-        model: "openrouter:z-ai/glm-5.2",
-        memory: ["/AGENTS.md"],
-        checkpointer: checkpointer,
-      });
-
-      const result = await agent.invoke(
-        {
-          messages: [
-            {
-              role: "user",
-              content: "Please tell me what's in your memory files.",
-            },
-          ],
-          // Seed the default StateBackend's in-state filesystem (virtual paths must start with "/").
-          files: { "/AGENTS.md": createFileData(agentsMd) },
-        },
-        { configurable: { thread_id: "12345" } },
-      );
-      ```
-
-      ```ts Fireworks theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-      import { createDeepAgent, type FileData } from "deepagents";
-      import { MemorySaver } from "@langchain/langgraph";
-
-      const AGENTS_MD_URL =
-        "https://raw.githubusercontent.com/langchain-ai/deepagents/refs/heads/main/examples/text-to-sql-agent/AGENTS.md";
-
-      async function fetchText(url: string): Promise<string> {
-        const res = await fetch(url);
-        if (!res.ok) {
-          throw new Error(`Failed to fetch ${url}: ${res.status} ${res.statusText}`);
-        }
-        return await res.text();
-      }
-
-      const agentsMd = await fetchText(AGENTS_MD_URL);
-      const checkpointer = new MemorySaver();
-
-      function createFileData(content: string): FileData {
-        const now = new Date().toISOString();
-        return {
-          content,
-          mimeType: "text/plain",
-          created_at: now,
-          modified_at: now,
-        };
-      }
-
-      const agent = await createDeepAgent({
-        model: "fireworks:accounts/fireworks/models/glm-5p2",
-        memory: ["/AGENTS.md"],
-        checkpointer: checkpointer,
-      });
-
-      const result = await agent.invoke(
-        {
-          messages: [
-            {
-              role: "user",
-              content: "Please tell me what's in your memory files.",
-            },
-          ],
-          // Seed the default StateBackend's in-state filesystem (virtual paths must start with "/").
-          files: { "/AGENTS.md": createFileData(agentsMd) },
-        },
-        { configurable: { thread_id: "12345" } },
-      );
-      ```
-
-      ```ts Baseten theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-      import { createDeepAgent, type FileData } from "deepagents";
-      import { MemorySaver } from "@langchain/langgraph";
-
-      const AGENTS_MD_URL =
-        "https://raw.githubusercontent.com/langchain-ai/deepagents/refs/heads/main/examples/text-to-sql-agent/AGENTS.md";
-
-      async function fetchText(url: string): Promise<string> {
-        const res = await fetch(url);
-        if (!res.ok) {
-          throw new Error(`Failed to fetch ${url}: ${res.status} ${res.statusText}`);
-        }
-        return await res.text();
-      }
-
-      const agentsMd = await fetchText(AGENTS_MD_URL);
-      const checkpointer = new MemorySaver();
-
-      function createFileData(content: string): FileData {
-        const now = new Date().toISOString();
-        return {
-          content,
-          mimeType: "text/plain",
-          created_at: now,
-          modified_at: now,
-        };
-      }
-
-      const agent = await createDeepAgent({
-        model: "baseten:zai-org/GLM-5.2",
-        memory: ["/AGENTS.md"],
-        checkpointer: checkpointer,
-      });
-
-      const result = await agent.invoke(
-        {
-          messages: [
-            {
-              role: "user",
-              content: "Please tell me what's in your memory files.",
-            },
-          ],
-          // Seed the default StateBackend's in-state filesystem (virtual paths must start with "/").
-          files: { "/AGENTS.md": createFileData(agentsMd) },
-        },
-        { configurable: { thread_id: "12345" } },
-      );
-      ```
-
-      ```ts Ollama theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-      import { createDeepAgent, type FileData } from "deepagents";
-      import { MemorySaver } from "@langchain/langgraph";
-
-      const AGENTS_MD_URL =
-        "https://raw.githubusercontent.com/langchain-ai/deepagents/refs/heads/main/examples/text-to-sql-agent/AGENTS.md";
-
-      async function fetchText(url: string): Promise<string> {
-        const res = await fetch(url);
-        if (!res.ok) {
-          throw new Error(`Failed to fetch ${url}: ${res.status} ${res.statusText}`);
-        }
-        return await res.text();
-      }
-
-      const agentsMd = await fetchText(AGENTS_MD_URL);
-      const checkpointer = new MemorySaver();
-
-      function createFileData(content: string): FileData {
-        const now = new Date().toISOString();
-        return {
-          content,
-          mimeType: "text/plain",
-          created_at: now,
-          modified_at: now,
-        };
-      }
-
-      const agent = await createDeepAgent({
-        model: "ollama:north-mini-code-1.0",
-        memory: ["/AGENTS.md"],
-        checkpointer: checkpointer,
-      });
-
-      const result = await agent.invoke(
-        {
-          messages: [
-            {
-              role: "user",
-              content: "Please tell me what's in your memory files.",
-            },
-          ],
-          // Seed the default StateBackend's in-state filesystem (virtual paths must start with "/").
-          files: { "/AGENTS.md": createFileData(agentsMd) },
-        },
-        { configurable: { thread_id: "12345" } },
-      );
-      ```
-    </CodeGroup>
-
-    <Card title="View example trace" icon="chart-line" href="https://smith.langchain.com/public/1f901559-574a-4785-aef7-820229ce4480/r">
-      为此示例打开公共 LangSmith 运行。
-    </Card>
-  </Tab>
-
-  <Tab title="StoreBackend">
-    <CodeGroup>
-      ```ts Google theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-      import { createDeepAgent, StoreBackend, type FileData } from "deepagents";
-      import { InMemoryStore, MemorySaver } from "@langchain/langgraph";
-
-      const AGENTS_MD_URL =
-        "https://raw.githubusercontent.com/langchain-ai/deepagents/refs/heads/main/examples/text-to-sql-agent/AGENTS.md";
-
-      async function fetchText(url: string): Promise<string> {
-        const res = await fetch(url);
-        if (!res.ok) {
-          throw new Error(`Failed to fetch ${url}: ${res.status} ${res.statusText}`);
-        }
-        return await res.text();
-      }
-
-      const agentsMd = await fetchText(AGENTS_MD_URL);
-
-      function createFileData(content: string): FileData {
-        const now = new Date().toISOString();
-        return {
-          content,
-          mimeType: "text/plain",
-          created_at: now,
-          modified_at: now,
-        };
-      }
-
-      const store = new InMemoryStore();
-      const fileData = createFileData(agentsMd);
-      await store.put(["filesystem"], "/AGENTS.md", fileData);
-
-      const checkpointer = new MemorySaver();
-
-      const agent = await createDeepAgent({
-        model: "google:gemini-3.6-flash",
-        backend: new StoreBackend({
-          namespace: () => ["filesystem"],
-        }),
-        store: store,
-        checkpointer: checkpointer,
-        memory: ["/AGENTS.md"],
-      });
-
-      const result = await agent.invoke(
-        {
-          messages: [
-            {
-              role: "user",
-              content: "Please tell me what's in your memory files.",
-            },
-          ],
-        },
-        { configurable: { thread_id: "12345" } },
-      );
-      ```
-
-      ```ts OpenAI theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-      import { createDeepAgent, StoreBackend, type FileData } from "deepagents";
-      import { InMemoryStore, MemorySaver } from "@langchain/langgraph";
-
-      const AGENTS_MD_URL =
-        "https://raw.githubusercontent.com/langchain-ai/deepagents/refs/heads/main/examples/text-to-sql-agent/AGENTS.md";
-
-      async function fetchText(url: string): Promise<string> {
-        const res = await fetch(url);
-        if (!res.ok) {
-          throw new Error(`Failed to fetch ${url}: ${res.status} ${res.statusText}`);
-        }
-        return await res.text();
-      }
-
-      const agentsMd = await fetchText(AGENTS_MD_URL);
-
-      function createFileData(content: string): FileData {
-        const now = new Date().toISOString();
-        return {
-          content,
-          mimeType: "text/plain",
-          created_at: now,
-          modified_at: now,
-        };
-      }
-
-      const store = new InMemoryStore();
-      const fileData = createFileData(agentsMd);
-      await store.put(["filesystem"], "/AGENTS.md", fileData);
-
-      const checkpointer = new MemorySaver();
-
-      const agent = await createDeepAgent({
-        model: "openai:gpt-5.5",
-        backend: new StoreBackend({
-          namespace: () => ["filesystem"],
-        }),
-        store: store,
-        checkpointer: checkpointer,
-        memory: ["/AGENTS.md"],
-      });
-
-      const result = await agent.invoke(
-        {
-          messages: [
-            {
-              role: "user",
-              content: "Please tell me what's in your memory files.",
-            },
-          ],
-        },
-        { configurable: { thread_id: "12345" } },
-      );
-      ```
-
-      ```ts Anthropic theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-      import { createDeepAgent, StoreBackend, type FileData } from "deepagents";
-      import { InMemoryStore, MemorySaver } from "@langchain/langgraph";
-
-      const AGENTS_MD_URL =
-        "https://raw.githubusercontent.com/langchain-ai/deepagents/refs/heads/main/examples/text-to-sql-agent/AGENTS.md";
-
-      async function fetchText(url: string): Promise<string> {
-        const res = await fetch(url);
-        if (!res.ok) {
-          throw new Error(`Failed to fetch ${url}: ${res.status} ${res.statusText}`);
-        }
-        return await res.text();
-      }
-
-      const agentsMd = await fetchText(AGENTS_MD_URL);
-
-      function createFileData(content: string): FileData {
-        const now = new Date().toISOString();
-        return {
-          content,
-          mimeType: "text/plain",
-          created_at: now,
-          modified_at: now,
-        };
-      }
-
-      const store = new InMemoryStore();
-      const fileData = createFileData(agentsMd);
-      await store.put(["filesystem"], "/AGENTS.md", fileData);
-
-      const checkpointer = new MemorySaver();
-
-      const agent = await createDeepAgent({
-        model: "anthropic:claude-sonnet-5",
-        backend: new StoreBackend({
-          namespace: () => ["filesystem"],
-        }),
-        store: store,
-        checkpointer: checkpointer,
-        memory: ["/AGENTS.md"],
-      });
-
-      const result = await agent.invoke(
-        {
-          messages: [
-            {
-              role: "user",
-              content: "Please tell me what's in your memory files.",
-            },
-          ],
-        },
-        { configurable: { thread_id: "12345" } },
-      );
-      ```
-
-      ```ts OpenRouter theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-      import { createDeepAgent, StoreBackend, type FileData } from "deepagents";
-      import { InMemoryStore, MemorySaver } from "@langchain/langgraph";
-
-      const AGENTS_MD_URL =
-        "https://raw.githubusercontent.com/langchain-ai/deepagents/refs/heads/main/examples/text-to-sql-agent/AGENTS.md";
-
-      async function fetchText(url: string): Promise<string> {
-        const res = await fetch(url);
-        if (!res.ok) {
-          throw new Error(`Failed to fetch ${url}: ${res.status} ${res.statusText}`);
-        }
-        return await res.text();
-      }
-
-      const agentsMd = await fetchText(AGENTS_MD_URL);
-
-      function createFileData(content: string): FileData {
-        const now = new Date().toISOString();
-        return {
-          content,
-          mimeType: "text/plain",
-          created_at: now,
-          modified_at: now,
-        };
-      }
-
-      const store = new InMemoryStore();
-      const fileData = createFileData(agentsMd);
-      await store.put(["filesystem"], "/AGENTS.md", fileData);
-
-      const checkpointer = new MemorySaver();
-
-      const agent = await createDeepAgent({
-        model: "openrouter:z-ai/glm-5.2",
-        backend: new StoreBackend({
-          namespace: () => ["filesystem"],
-        }),
-        store: store,
-        checkpointer: checkpointer,
-        memory: ["/AGENTS.md"],
-      });
-
-      const result = await agent.invoke(
-        {
-          messages: [
-            {
-              role: "user",
-              content: "Please tell me what's in your memory files.",
-            },
-          ],
-        },
-        { configurable: { thread_id: "12345" } },
-      );
-      ```
-
-      ```ts Fireworks theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-      import { createDeepAgent, StoreBackend, type FileData } from "deepagents";
-      import { InMemoryStore, MemorySaver } from "@langchain/langgraph";
-
-      const AGENTS_MD_URL =
-        "https://raw.githubusercontent.com/langchain-ai/deepagents/refs/heads/main/examples/text-to-sql-agent/AGENTS.md";
-
-      async function fetchText(url: string): Promise<string> {
-        const res = await fetch(url);
-        if (!res.ok) {
-          throw new Error(`Failed to fetch ${url}: ${res.status} ${res.statusText}`);
-        }
-        return await res.text();
-      }
-
-      const agentsMd = await fetchText(AGENTS_MD_URL);
-
-      function createFileData(content: string): FileData {
-        const now = new Date().toISOString();
-        return {
-          content,
-          mimeType: "text/plain",
-          created_at: now,
-          modified_at: now,
-        };
-      }
-
-      const store = new InMemoryStore();
-      const fileData = createFileData(agentsMd);
-      await store.put(["filesystem"], "/AGENTS.md", fileData);
-
-      const checkpointer = new MemorySaver();
-
-      const agent = await createDeepAgent({
-        model: "fireworks:accounts/fireworks/models/glm-5p2",
-        backend: new StoreBackend({
-          namespace: () => ["filesystem"],
-        }),
-        store: store,
-        checkpointer: checkpointer,
-        memory: ["/AGENTS.md"],
-      });
-
-      const result = await agent.invoke(
-        {
-          messages: [
-            {
-              role: "user",
-              content: "Please tell me what's in your memory files.",
-            },
-          ],
-        },
-        { configurable: { thread_id: "12345" } },
-      );
-      ```
-
-      ```ts Baseten theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-      import { createDeepAgent, StoreBackend, type FileData } from "deepagents";
-      import { InMemoryStore, MemorySaver } from "@langchain/langgraph";
-
-      const AGENTS_MD_URL =
-        "https://raw.githubusercontent.com/langchain-ai/deepagents/refs/heads/main/examples/text-to-sql-agent/AGENTS.md";
-
-      async function fetchText(url: string): Promise<string> {
-        const res = await fetch(url);
-        if (!res.ok) {
-          throw new Error(`Failed to fetch ${url}: ${res.status} ${res.statusText}`);
-        }
-        return await res.text();
-      }
-
-      const agentsMd = await fetchText(AGENTS_MD_URL);
-
-      function createFileData(content: string): FileData {
-        const now = new Date().toISOString();
-        return {
-          content,
-          mimeType: "text/plain",
-          created_at: now,
-          modified_at: now,
-        };
-      }
-
-      const store = new InMemoryStore();
-      const fileData = createFileData(agentsMd);
-      await store.put(["filesystem"], "/AGENTS.md", fileData);
-
-      const checkpointer = new MemorySaver();
-
-      const agent = await createDeepAgent({
-        model: "baseten:zai-org/GLM-5.2",
-        backend: new StoreBackend({
-          namespace: () => ["filesystem"],
-        }),
-        store: store,
-        checkpointer: checkpointer,
-        memory: ["/AGENTS.md"],
-      });
-
-      const result = await agent.invoke(
-        {
-          messages: [
-            {
-              role: "user",
-              content: "Please tell me what's in your memory files.",
-            },
-          ],
-        },
-        { configurable: { thread_id: "12345" } },
-      );
-      ```
-
-      ```ts Ollama theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-      import { createDeepAgent, StoreBackend, type FileData } from "deepagents";
-      import { InMemoryStore, MemorySaver } from "@langchain/langgraph";
-
-      const AGENTS_MD_URL =
-        "https://raw.githubusercontent.com/langchain-ai/deepagents/refs/heads/main/examples/text-to-sql-agent/AGENTS.md";
-
-      async function fetchText(url: string): Promise<string> {
-        const res = await fetch(url);
-        if (!res.ok) {
-          throw new Error(`Failed to fetch ${url}: ${res.status} ${res.statusText}`);
-        }
-        return await res.text();
-      }
-
-      const agentsMd = await fetchText(AGENTS_MD_URL);
-
-      function createFileData(content: string): FileData {
-        const now = new Date().toISOString();
-        return {
-          content,
-          mimeType: "text/plain",
-          created_at: now,
-          modified_at: now,
-        };
-      }
-
-      const store = new InMemoryStore();
-      const fileData = createFileData(agentsMd);
-      await store.put(["filesystem"], "/AGENTS.md", fileData);
-
-      const checkpointer = new MemorySaver();
-
-      const agent = await createDeepAgent({
-        model: "ollama:north-mini-code-1.0",
-        backend: new StoreBackend({
-          namespace: () => ["filesystem"],
-        }),
-        store: store,
-        checkpointer: checkpointer,
-        memory: ["/AGENTS.md"],
-      });
-
-      const result = await agent.invoke(
-        {
-          messages: [
-            {
-              role: "user",
-              content: "Please tell me what's in your memory files.",
-            },
-          ],
-        },
-        { configurable: { thread_id: "12345" } },
-      );
-      ```
-    </CodeGroup>
-
-    <Card title="View example trace" icon="chart-line" href="https://smith.langchain.com/public/ed26e792-56b7-45d3-995b-232979cef08f/r">
-      为此示例打开公共 LangSmith 运行。
-    </Card>
-  </Tab>
-
-  <Tab title="Filesystem">
-    <CodeGroup>
-      ```ts Google theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-      import { createDeepAgent, FilesystemBackend } from "deepagents";
-      import { MemorySaver } from "@langchain/langgraph";
-
-      // Checkpointer is REQUIRED for human-in-the-loop
-      const checkpointer = new MemorySaver();
-
-      const agent = await createDeepAgent({
-        model: "google:gemini-3.6-flash",
-        backend: new FilesystemBackend({ rootDir: "/Users/user/{project}" }),
-        memory: ["./AGENTS.md", "./.deepagents/AGENTS.md"],
-        interruptOn: {
-          read_file: true,
-          write_file: true,
-          delete_file: true,
-        },
-        checkpointer, // Required!
-      });
-      ```
-
-      ```ts OpenAI theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-      import { createDeepAgent, FilesystemBackend } from "deepagents";
-      import { MemorySaver } from "@langchain/langgraph";
-
-      // Checkpointer is REQUIRED for human-in-the-loop
-      const checkpointer = new MemorySaver();
-
-      const agent = await createDeepAgent({
-        model: "openai:gpt-5.5",
-        backend: new FilesystemBackend({ rootDir: "/Users/user/{project}" }),
-        memory: ["./AGENTS.md", "./.deepagents/AGENTS.md"],
-        interruptOn: {
-          read_file: true,
-          write_file: true,
-          delete_file: true,
-        },
-        checkpointer, // Required!
-      });
-      ```
-
-      ```ts Anthropic theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-      import { createDeepAgent, FilesystemBackend } from "deepagents";
-      import { MemorySaver } from "@langchain/langgraph";
-
-      // Checkpointer is REQUIRED for human-in-the-loop
-      const checkpointer = new MemorySaver();
-
-      const agent = await createDeepAgent({
-        model: "anthropic:claude-sonnet-5",
-        backend: new FilesystemBackend({ rootDir: "/Users/user/{project}" }),
-        memory: ["./AGENTS.md", "./.deepagents/AGENTS.md"],
-        interruptOn: {
-          read_file: true,
-          write_file: true,
-          delete_file: true,
-        },
-        checkpointer, // Required!
-      });
-      ```
-
-      ```ts OpenRouter theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-      import { createDeepAgent, FilesystemBackend } from "deepagents";
-      import { MemorySaver } from "@langchain/langgraph";
-
-      // Checkpointer is REQUIRED for human-in-the-loop
-      const checkpointer = new MemorySaver();
-
-      const agent = await createDeepAgent({
-        model: "openrouter:z-ai/glm-5.2",
-        backend: new FilesystemBackend({ rootDir: "/Users/user/{project}" }),
-        memory: ["./AGENTS.md", "./.deepagents/AGENTS.md"],
-        interruptOn: {
-          read_file: true,
-          write_file: true,
-          delete_file: true,
-        },
-        checkpointer, // Required!
-      });
-      ```
-
-      ```ts Fireworks theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-      import { createDeepAgent, FilesystemBackend } from "deepagents";
-      import { MemorySaver } from "@langchain/langgraph";
-
-      // Checkpointer is REQUIRED for human-in-the-loop
-      const checkpointer = new MemorySaver();
-
-      const agent = await createDeepAgent({
-        model: "fireworks:accounts/fireworks/models/glm-5p2",
-        backend: new FilesystemBackend({ rootDir: "/Users/user/{project}" }),
-        memory: ["./AGENTS.md", "./.deepagents/AGENTS.md"],
-        interruptOn: {
-          read_file: true,
-          write_file: true,
-          delete_file: true,
-        },
-        checkpointer, // Required!
-      });
-      ```
-
-      ```ts Baseten theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-      import { createDeepAgent, FilesystemBackend } from "deepagents";
-      import { MemorySaver } from "@langchain/langgraph";
-
-      // Checkpointer is REQUIRED for human-in-the-loop
-      const checkpointer = new MemorySaver();
-
-      const agent = await createDeepAgent({
-        model: "baseten:zai-org/GLM-5.2",
-        backend: new FilesystemBackend({ rootDir: "/Users/user/{project}" }),
-        memory: ["./AGENTS.md", "./.deepagents/AGENTS.md"],
-        interruptOn: {
-          read_file: true,
-          write_file: true,
-          delete_file: true,
-        },
-        checkpointer, // Required!
-      });
-      ```
-
-      ```ts Ollama theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-      import { createDeepAgent, FilesystemBackend } from "deepagents";
-      import { MemorySaver } from "@langchain/langgraph";
-
-      // Checkpointer is REQUIRED for human-in-the-loop
-      const checkpointer = new MemorySaver();
-
-      const agent = await createDeepAgent({
-        model: "ollama:north-mini-code-1.0",
-        backend: new FilesystemBackend({ rootDir: "/Users/user/{project}" }),
-        memory: ["./AGENTS.md", "./.deepagents/AGENTS.md"],
-        interruptOn: {
-          read_file: true,
-          write_file: true,
-          delete_file: true,
-        },
-        checkpointer, // Required!
-      });
-      ```
-    </CodeGroup>
-  </Tab>
-</Tabs>
+**状态后端**
+
+```ts Google theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+import { createDeepAgent, type FileData } from "deepagents";
+import { MemorySaver } from "@langchain/langgraph";
+
+const AGENTS_MD_URL =
+  "https://raw.githubusercontent.com/langchain-ai/deepagents/refs/heads/main/examples/text-to-sql-agent/AGENTS.md";
+
+async function fetchText(url: string): Promise<string> {
+  const res = await fetch(url);
+  if (!res.ok) {
+    throw new Error(`Failed to fetch ${url}: ${res.status} ${res.statusText}`);
+  }
+  return await res.text();
+}
+
+const agentsMd = await fetchText(AGENTS_MD_URL);
+const checkpointer = new MemorySaver();
+
+function createFileData(content: string): FileData {
+  const now = new Date().toISOString();
+  return {
+    content,
+    mimeType: "text/plain",
+    created_at: now,
+    modified_at: now,
+  };
+}
+
+const agent = await createDeepAgent({
+  model: "google:gemini-3.6-flash",
+  memory: ["/AGENTS.md"],
+  checkpointer: checkpointer,
+});
+
+const result = await agent.invoke(
+  {
+    messages: [
+      {
+        role: "user",
+        content: "Please tell me what's in your memory files.",
+      },
+    ],
+    // Seed the default StateBackend's in-state filesystem (virtual paths must start with "/").
+    files: { "/AGENTS.md": createFileData(agentsMd) },
+  },
+  { configurable: { thread_id: "12345" } },
+);
+```
+
+```ts OpenAI theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+import { createDeepAgent, type FileData } from "deepagents";
+import { MemorySaver } from "@langchain/langgraph";
+
+const AGENTS_MD_URL =
+  "https://raw.githubusercontent.com/langchain-ai/deepagents/refs/heads/main/examples/text-to-sql-agent/AGENTS.md";
+
+async function fetchText(url: string): Promise<string> {
+  const res = await fetch(url);
+  if (!res.ok) {
+    throw new Error(`Failed to fetch ${url}: ${res.status} ${res.statusText}`);
+  }
+  return await res.text();
+}
+
+const agentsMd = await fetchText(AGENTS_MD_URL);
+const checkpointer = new MemorySaver();
+
+function createFileData(content: string): FileData {
+  const now = new Date().toISOString();
+  return {
+    content,
+    mimeType: "text/plain",
+    created_at: now,
+    modified_at: now,
+  };
+}
+
+const agent = await createDeepAgent({
+  model: "openai:gpt-5.5",
+  memory: ["/AGENTS.md"],
+  checkpointer: checkpointer,
+});
+
+const result = await agent.invoke(
+  {
+    messages: [
+      {
+        role: "user",
+        content: "Please tell me what's in your memory files.",
+      },
+    ],
+    // Seed the default StateBackend's in-state filesystem (virtual paths must start with "/").
+    files: { "/AGENTS.md": createFileData(agentsMd) },
+  },
+  { configurable: { thread_id: "12345" } },
+);
+```
+
+```ts Anthropic theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+import { createDeepAgent, type FileData } from "deepagents";
+import { MemorySaver } from "@langchain/langgraph";
+
+const AGENTS_MD_URL =
+  "https://raw.githubusercontent.com/langchain-ai/deepagents/refs/heads/main/examples/text-to-sql-agent/AGENTS.md";
+
+async function fetchText(url: string): Promise<string> {
+  const res = await fetch(url);
+  if (!res.ok) {
+    throw new Error(`Failed to fetch ${url}: ${res.status} ${res.statusText}`);
+  }
+  return await res.text();
+}
+
+const agentsMd = await fetchText(AGENTS_MD_URL);
+const checkpointer = new MemorySaver();
+
+function createFileData(content: string): FileData {
+  const now = new Date().toISOString();
+  return {
+    content,
+    mimeType: "text/plain",
+    created_at: now,
+    modified_at: now,
+  };
+}
+
+const agent = await createDeepAgent({
+  model: "anthropic:claude-sonnet-5",
+  memory: ["/AGENTS.md"],
+  checkpointer: checkpointer,
+});
+
+const result = await agent.invoke(
+  {
+    messages: [
+      {
+        role: "user",
+        content: "Please tell me what's in your memory files.",
+      },
+    ],
+    // Seed the default StateBackend's in-state filesystem (virtual paths must start with "/").
+    files: { "/AGENTS.md": createFileData(agentsMd) },
+  },
+  { configurable: { thread_id: "12345" } },
+);
+```
+
+```ts OpenRouter theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+import { createDeepAgent, type FileData } from "deepagents";
+import { MemorySaver } from "@langchain/langgraph";
+
+const AGENTS_MD_URL =
+  "https://raw.githubusercontent.com/langchain-ai/deepagents/refs/heads/main/examples/text-to-sql-agent/AGENTS.md";
+
+async function fetchText(url: string): Promise<string> {
+  const res = await fetch(url);
+  if (!res.ok) {
+    throw new Error(`Failed to fetch ${url}: ${res.status} ${res.statusText}`);
+  }
+  return await res.text();
+}
+
+const agentsMd = await fetchText(AGENTS_MD_URL);
+const checkpointer = new MemorySaver();
+
+function createFileData(content: string): FileData {
+  const now = new Date().toISOString();
+  return {
+    content,
+    mimeType: "text/plain",
+    created_at: now,
+    modified_at: now,
+  };
+}
+
+const agent = await createDeepAgent({
+  model: "openrouter:z-ai/glm-5.2",
+  memory: ["/AGENTS.md"],
+  checkpointer: checkpointer,
+});
+
+const result = await agent.invoke(
+  {
+    messages: [
+      {
+        role: "user",
+        content: "Please tell me what's in your memory files.",
+      },
+    ],
+    // Seed the default StateBackend's in-state filesystem (virtual paths must start with "/").
+    files: { "/AGENTS.md": createFileData(agentsMd) },
+  },
+  { configurable: { thread_id: "12345" } },
+);
+```
+
+```ts Fireworks theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+import { createDeepAgent, type FileData } from "deepagents";
+import { MemorySaver } from "@langchain/langgraph";
+
+const AGENTS_MD_URL =
+  "https://raw.githubusercontent.com/langchain-ai/deepagents/refs/heads/main/examples/text-to-sql-agent/AGENTS.md";
+
+async function fetchText(url: string): Promise<string> {
+  const res = await fetch(url);
+  if (!res.ok) {
+    throw new Error(`Failed to fetch ${url}: ${res.status} ${res.statusText}`);
+  }
+  return await res.text();
+}
+
+const agentsMd = await fetchText(AGENTS_MD_URL);
+const checkpointer = new MemorySaver();
+
+function createFileData(content: string): FileData {
+  const now = new Date().toISOString();
+  return {
+    content,
+    mimeType: "text/plain",
+    created_at: now,
+    modified_at: now,
+  };
+}
+
+const agent = await createDeepAgent({
+  model: "fireworks:accounts/fireworks/models/glm-5p2",
+  memory: ["/AGENTS.md"],
+  checkpointer: checkpointer,
+});
+
+const result = await agent.invoke(
+  {
+    messages: [
+      {
+        role: "user",
+        content: "Please tell me what's in your memory files.",
+      },
+    ],
+    // Seed the default StateBackend's in-state filesystem (virtual paths must start with "/").
+    files: { "/AGENTS.md": createFileData(agentsMd) },
+  },
+  { configurable: { thread_id: "12345" } },
+);
+```
+
+```ts Baseten theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+import { createDeepAgent, type FileData } from "deepagents";
+import { MemorySaver } from "@langchain/langgraph";
+
+const AGENTS_MD_URL =
+  "https://raw.githubusercontent.com/langchain-ai/deepagents/refs/heads/main/examples/text-to-sql-agent/AGENTS.md";
+
+async function fetchText(url: string): Promise<string> {
+  const res = await fetch(url);
+  if (!res.ok) {
+    throw new Error(`Failed to fetch ${url}: ${res.status} ${res.statusText}`);
+  }
+  return await res.text();
+}
+
+const agentsMd = await fetchText(AGENTS_MD_URL);
+const checkpointer = new MemorySaver();
+
+function createFileData(content: string): FileData {
+  const now = new Date().toISOString();
+  return {
+    content,
+    mimeType: "text/plain",
+    created_at: now,
+    modified_at: now,
+  };
+}
+
+const agent = await createDeepAgent({
+  model: "baseten:zai-org/GLM-5.2",
+  memory: ["/AGENTS.md"],
+  checkpointer: checkpointer,
+});
+
+const result = await agent.invoke(
+  {
+    messages: [
+      {
+        role: "user",
+        content: "Please tell me what's in your memory files.",
+      },
+    ],
+    // Seed the default StateBackend's in-state filesystem (virtual paths must start with "/").
+    files: { "/AGENTS.md": createFileData(agentsMd) },
+  },
+  { configurable: { thread_id: "12345" } },
+);
+```
+
+```ts Ollama theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+import { createDeepAgent, type FileData } from "deepagents";
+import { MemorySaver } from "@langchain/langgraph";
+
+const AGENTS_MD_URL =
+  "https://raw.githubusercontent.com/langchain-ai/deepagents/refs/heads/main/examples/text-to-sql-agent/AGENTS.md";
+
+async function fetchText(url: string): Promise<string> {
+  const res = await fetch(url);
+  if (!res.ok) {
+    throw new Error(`Failed to fetch ${url}: ${res.status} ${res.statusText}`);
+  }
+  return await res.text();
+}
+
+const agentsMd = await fetchText(AGENTS_MD_URL);
+const checkpointer = new MemorySaver();
+
+function createFileData(content: string): FileData {
+  const now = new Date().toISOString();
+  return {
+    content,
+    mimeType: "text/plain",
+    created_at: now,
+    modified_at: now,
+  };
+}
+
+const agent = await createDeepAgent({
+  model: "ollama:north-mini-code-1.0",
+  memory: ["/AGENTS.md"],
+  checkpointer: checkpointer,
+});
+
+const result = await agent.invoke(
+  {
+    messages: [
+      {
+        role: "user",
+        content: "Please tell me what's in your memory files.",
+      },
+    ],
+    // Seed the default StateBackend's in-state filesystem (virtual paths must start with "/").
+    files: { "/AGENTS.md": createFileData(agentsMd) },
+  },
+  { configurable: { thread_id: "12345" } },
+);
+```
+
+> **[View example trace](https://smith.langchain.com/public/1f901559-574a-4785-aef7-820229ce4480/r)**
+>
+> 为此示例打开公共 LangSmith 运行。
+
+**商店后端**
+
+```ts Google theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+import { createDeepAgent, StoreBackend, type FileData } from "deepagents";
+import { InMemoryStore, MemorySaver } from "@langchain/langgraph";
+
+const AGENTS_MD_URL =
+  "https://raw.githubusercontent.com/langchain-ai/deepagents/refs/heads/main/examples/text-to-sql-agent/AGENTS.md";
+
+async function fetchText(url: string): Promise<string> {
+  const res = await fetch(url);
+  if (!res.ok) {
+    throw new Error(`Failed to fetch ${url}: ${res.status} ${res.statusText}`);
+  }
+  return await res.text();
+}
+
+const agentsMd = await fetchText(AGENTS_MD_URL);
+
+function createFileData(content: string): FileData {
+  const now = new Date().toISOString();
+  return {
+    content,
+    mimeType: "text/plain",
+    created_at: now,
+    modified_at: now,
+  };
+}
+
+const store = new InMemoryStore();
+const fileData = createFileData(agentsMd);
+await store.put(["filesystem"], "/AGENTS.md", fileData);
+
+const checkpointer = new MemorySaver();
+
+const agent = await createDeepAgent({
+  model: "google:gemini-3.6-flash",
+  backend: new StoreBackend({
+    namespace: () => ["filesystem"],
+  }),
+  store: store,
+  checkpointer: checkpointer,
+  memory: ["/AGENTS.md"],
+});
+
+const result = await agent.invoke(
+  {
+    messages: [
+      {
+        role: "user",
+        content: "Please tell me what's in your memory files.",
+      },
+    ],
+  },
+  { configurable: { thread_id: "12345" } },
+);
+```
+
+```ts OpenAI theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+import { createDeepAgent, StoreBackend, type FileData } from "deepagents";
+import { InMemoryStore, MemorySaver } from "@langchain/langgraph";
+
+const AGENTS_MD_URL =
+  "https://raw.githubusercontent.com/langchain-ai/deepagents/refs/heads/main/examples/text-to-sql-agent/AGENTS.md";
+
+async function fetchText(url: string): Promise<string> {
+  const res = await fetch(url);
+  if (!res.ok) {
+    throw new Error(`Failed to fetch ${url}: ${res.status} ${res.statusText}`);
+  }
+  return await res.text();
+}
+
+const agentsMd = await fetchText(AGENTS_MD_URL);
+
+function createFileData(content: string): FileData {
+  const now = new Date().toISOString();
+  return {
+    content,
+    mimeType: "text/plain",
+    created_at: now,
+    modified_at: now,
+  };
+}
+
+const store = new InMemoryStore();
+const fileData = createFileData(agentsMd);
+await store.put(["filesystem"], "/AGENTS.md", fileData);
+
+const checkpointer = new MemorySaver();
+
+const agent = await createDeepAgent({
+  model: "openai:gpt-5.5",
+  backend: new StoreBackend({
+    namespace: () => ["filesystem"],
+  }),
+  store: store,
+  checkpointer: checkpointer,
+  memory: ["/AGENTS.md"],
+});
+
+const result = await agent.invoke(
+  {
+    messages: [
+      {
+        role: "user",
+        content: "Please tell me what's in your memory files.",
+      },
+    ],
+  },
+  { configurable: { thread_id: "12345" } },
+);
+```
+
+```ts Anthropic theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+import { createDeepAgent, StoreBackend, type FileData } from "deepagents";
+import { InMemoryStore, MemorySaver } from "@langchain/langgraph";
+
+const AGENTS_MD_URL =
+  "https://raw.githubusercontent.com/langchain-ai/deepagents/refs/heads/main/examples/text-to-sql-agent/AGENTS.md";
+
+async function fetchText(url: string): Promise<string> {
+  const res = await fetch(url);
+  if (!res.ok) {
+    throw new Error(`Failed to fetch ${url}: ${res.status} ${res.statusText}`);
+  }
+  return await res.text();
+}
+
+const agentsMd = await fetchText(AGENTS_MD_URL);
+
+function createFileData(content: string): FileData {
+  const now = new Date().toISOString();
+  return {
+    content,
+    mimeType: "text/plain",
+    created_at: now,
+    modified_at: now,
+  };
+}
+
+const store = new InMemoryStore();
+const fileData = createFileData(agentsMd);
+await store.put(["filesystem"], "/AGENTS.md", fileData);
+
+const checkpointer = new MemorySaver();
+
+const agent = await createDeepAgent({
+  model: "anthropic:claude-sonnet-5",
+  backend: new StoreBackend({
+    namespace: () => ["filesystem"],
+  }),
+  store: store,
+  checkpointer: checkpointer,
+  memory: ["/AGENTS.md"],
+});
+
+const result = await agent.invoke(
+  {
+    messages: [
+      {
+        role: "user",
+        content: "Please tell me what's in your memory files.",
+      },
+    ],
+  },
+  { configurable: { thread_id: "12345" } },
+);
+```
+
+```ts OpenRouter theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+import { createDeepAgent, StoreBackend, type FileData } from "deepagents";
+import { InMemoryStore, MemorySaver } from "@langchain/langgraph";
+
+const AGENTS_MD_URL =
+  "https://raw.githubusercontent.com/langchain-ai/deepagents/refs/heads/main/examples/text-to-sql-agent/AGENTS.md";
+
+async function fetchText(url: string): Promise<string> {
+  const res = await fetch(url);
+  if (!res.ok) {
+    throw new Error(`Failed to fetch ${url}: ${res.status} ${res.statusText}`);
+  }
+  return await res.text();
+}
+
+const agentsMd = await fetchText(AGENTS_MD_URL);
+
+function createFileData(content: string): FileData {
+  const now = new Date().toISOString();
+  return {
+    content,
+    mimeType: "text/plain",
+    created_at: now,
+    modified_at: now,
+  };
+}
+
+const store = new InMemoryStore();
+const fileData = createFileData(agentsMd);
+await store.put(["filesystem"], "/AGENTS.md", fileData);
+
+const checkpointer = new MemorySaver();
+
+const agent = await createDeepAgent({
+  model: "openrouter:z-ai/glm-5.2",
+  backend: new StoreBackend({
+    namespace: () => ["filesystem"],
+  }),
+  store: store,
+  checkpointer: checkpointer,
+  memory: ["/AGENTS.md"],
+});
+
+const result = await agent.invoke(
+  {
+    messages: [
+      {
+        role: "user",
+        content: "Please tell me what's in your memory files.",
+      },
+    ],
+  },
+  { configurable: { thread_id: "12345" } },
+);
+```
+
+```ts Fireworks theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+import { createDeepAgent, StoreBackend, type FileData } from "deepagents";
+import { InMemoryStore, MemorySaver } from "@langchain/langgraph";
+
+const AGENTS_MD_URL =
+  "https://raw.githubusercontent.com/langchain-ai/deepagents/refs/heads/main/examples/text-to-sql-agent/AGENTS.md";
+
+async function fetchText(url: string): Promise<string> {
+  const res = await fetch(url);
+  if (!res.ok) {
+    throw new Error(`Failed to fetch ${url}: ${res.status} ${res.statusText}`);
+  }
+  return await res.text();
+}
+
+const agentsMd = await fetchText(AGENTS_MD_URL);
+
+function createFileData(content: string): FileData {
+  const now = new Date().toISOString();
+  return {
+    content,
+    mimeType: "text/plain",
+    created_at: now,
+    modified_at: now,
+  };
+}
+
+const store = new InMemoryStore();
+const fileData = createFileData(agentsMd);
+await store.put(["filesystem"], "/AGENTS.md", fileData);
+
+const checkpointer = new MemorySaver();
+
+const agent = await createDeepAgent({
+  model: "fireworks:accounts/fireworks/models/glm-5p2",
+  backend: new StoreBackend({
+    namespace: () => ["filesystem"],
+  }),
+  store: store,
+  checkpointer: checkpointer,
+  memory: ["/AGENTS.md"],
+});
+
+const result = await agent.invoke(
+  {
+    messages: [
+      {
+        role: "user",
+        content: "Please tell me what's in your memory files.",
+      },
+    ],
+  },
+  { configurable: { thread_id: "12345" } },
+);
+```
+
+```ts Baseten theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+import { createDeepAgent, StoreBackend, type FileData } from "deepagents";
+import { InMemoryStore, MemorySaver } from "@langchain/langgraph";
+
+const AGENTS_MD_URL =
+  "https://raw.githubusercontent.com/langchain-ai/deepagents/refs/heads/main/examples/text-to-sql-agent/AGENTS.md";
+
+async function fetchText(url: string): Promise<string> {
+  const res = await fetch(url);
+  if (!res.ok) {
+    throw new Error(`Failed to fetch ${url}: ${res.status} ${res.statusText}`);
+  }
+  return await res.text();
+}
+
+const agentsMd = await fetchText(AGENTS_MD_URL);
+
+function createFileData(content: string): FileData {
+  const now = new Date().toISOString();
+  return {
+    content,
+    mimeType: "text/plain",
+    created_at: now,
+    modified_at: now,
+  };
+}
+
+const store = new InMemoryStore();
+const fileData = createFileData(agentsMd);
+await store.put(["filesystem"], "/AGENTS.md", fileData);
+
+const checkpointer = new MemorySaver();
+
+const agent = await createDeepAgent({
+  model: "baseten:zai-org/GLM-5.2",
+  backend: new StoreBackend({
+    namespace: () => ["filesystem"],
+  }),
+  store: store,
+  checkpointer: checkpointer,
+  memory: ["/AGENTS.md"],
+});
+
+const result = await agent.invoke(
+  {
+    messages: [
+      {
+        role: "user",
+        content: "Please tell me what's in your memory files.",
+      },
+    ],
+  },
+  { configurable: { thread_id: "12345" } },
+);
+```
+
+```ts Ollama theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+import { createDeepAgent, StoreBackend, type FileData } from "deepagents";
+import { InMemoryStore, MemorySaver } from "@langchain/langgraph";
+
+const AGENTS_MD_URL =
+  "https://raw.githubusercontent.com/langchain-ai/deepagents/refs/heads/main/examples/text-to-sql-agent/AGENTS.md";
+
+async function fetchText(url: string): Promise<string> {
+  const res = await fetch(url);
+  if (!res.ok) {
+    throw new Error(`Failed to fetch ${url}: ${res.status} ${res.statusText}`);
+  }
+  return await res.text();
+}
+
+const agentsMd = await fetchText(AGENTS_MD_URL);
+
+function createFileData(content: string): FileData {
+  const now = new Date().toISOString();
+  return {
+    content,
+    mimeType: "text/plain",
+    created_at: now,
+    modified_at: now,
+  };
+}
+
+const store = new InMemoryStore();
+const fileData = createFileData(agentsMd);
+await store.put(["filesystem"], "/AGENTS.md", fileData);
+
+const checkpointer = new MemorySaver();
+
+const agent = await createDeepAgent({
+  model: "ollama:north-mini-code-1.0",
+  backend: new StoreBackend({
+    namespace: () => ["filesystem"],
+  }),
+  store: store,
+  checkpointer: checkpointer,
+  memory: ["/AGENTS.md"],
+});
+
+const result = await agent.invoke(
+  {
+    messages: [
+      {
+        role: "user",
+        content: "Please tell me what's in your memory files.",
+      },
+    ],
+  },
+  { configurable: { thread_id: "12345" } },
+);
+```
+
+> **[View example trace](https://smith.langchain.com/public/ed26e792-56b7-45d3-995b-232979cef08f/r)**
+>
+> 为此示例打开公共 LangSmith 运行。
+
+**文件系统**
+
+```ts Google theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+import { createDeepAgent, FilesystemBackend } from "deepagents";
+import { MemorySaver } from "@langchain/langgraph";
+
+// Checkpointer is REQUIRED for human-in-the-loop
+const checkpointer = new MemorySaver();
+
+const agent = await createDeepAgent({
+  model: "google:gemini-3.6-flash",
+  backend: new FilesystemBackend({ rootDir: "/Users/user/{project}" }),
+  memory: ["./AGENTS.md", "./.deepagents/AGENTS.md"],
+  interruptOn: {
+    read_file: true,
+    write_file: true,
+    delete_file: true,
+  },
+  checkpointer, // Required!
+});
+```
+
+```ts OpenAI theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+import { createDeepAgent, FilesystemBackend } from "deepagents";
+import { MemorySaver } from "@langchain/langgraph";
+
+// Checkpointer is REQUIRED for human-in-the-loop
+const checkpointer = new MemorySaver();
+
+const agent = await createDeepAgent({
+  model: "openai:gpt-5.5",
+  backend: new FilesystemBackend({ rootDir: "/Users/user/{project}" }),
+  memory: ["./AGENTS.md", "./.deepagents/AGENTS.md"],
+  interruptOn: {
+    read_file: true,
+    write_file: true,
+    delete_file: true,
+  },
+  checkpointer, // Required!
+});
+```
+
+```ts Anthropic theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+import { createDeepAgent, FilesystemBackend } from "deepagents";
+import { MemorySaver } from "@langchain/langgraph";
+
+// Checkpointer is REQUIRED for human-in-the-loop
+const checkpointer = new MemorySaver();
+
+const agent = await createDeepAgent({
+  model: "anthropic:claude-sonnet-5",
+  backend: new FilesystemBackend({ rootDir: "/Users/user/{project}" }),
+  memory: ["./AGENTS.md", "./.deepagents/AGENTS.md"],
+  interruptOn: {
+    read_file: true,
+    write_file: true,
+    delete_file: true,
+  },
+  checkpointer, // Required!
+});
+```
+
+```ts OpenRouter theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+import { createDeepAgent, FilesystemBackend } from "deepagents";
+import { MemorySaver } from "@langchain/langgraph";
+
+// Checkpointer is REQUIRED for human-in-the-loop
+const checkpointer = new MemorySaver();
+
+const agent = await createDeepAgent({
+  model: "openrouter:z-ai/glm-5.2",
+  backend: new FilesystemBackend({ rootDir: "/Users/user/{project}" }),
+  memory: ["./AGENTS.md", "./.deepagents/AGENTS.md"],
+  interruptOn: {
+    read_file: true,
+    write_file: true,
+    delete_file: true,
+  },
+  checkpointer, // Required!
+});
+```
+
+```ts Fireworks theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+import { createDeepAgent, FilesystemBackend } from "deepagents";
+import { MemorySaver } from "@langchain/langgraph";
+
+// Checkpointer is REQUIRED for human-in-the-loop
+const checkpointer = new MemorySaver();
+
+const agent = await createDeepAgent({
+  model: "fireworks:accounts/fireworks/models/glm-5p2",
+  backend: new FilesystemBackend({ rootDir: "/Users/user/{project}" }),
+  memory: ["./AGENTS.md", "./.deepagents/AGENTS.md"],
+  interruptOn: {
+    read_file: true,
+    write_file: true,
+    delete_file: true,
+  },
+  checkpointer, // Required!
+});
+```
+
+```ts Baseten theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+import { createDeepAgent, FilesystemBackend } from "deepagents";
+import { MemorySaver } from "@langchain/langgraph";
+
+// Checkpointer is REQUIRED for human-in-the-loop
+const checkpointer = new MemorySaver();
+
+const agent = await createDeepAgent({
+  model: "baseten:zai-org/GLM-5.2",
+  backend: new FilesystemBackend({ rootDir: "/Users/user/{project}" }),
+  memory: ["./AGENTS.md", "./.deepagents/AGENTS.md"],
+  interruptOn: {
+    read_file: true,
+    write_file: true,
+    delete_file: true,
+  },
+  checkpointer, // Required!
+});
+```
+
+```ts Ollama theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+import { createDeepAgent, FilesystemBackend } from "deepagents";
+import { MemorySaver } from "@langchain/langgraph";
+
+// Checkpointer is REQUIRED for human-in-the-loop
+const checkpointer = new MemorySaver();
+
+const agent = await createDeepAgent({
+  model: "ollama:north-mini-code-1.0",
+  backend: new FilesystemBackend({ rootDir: "/Users/user/{project}" }),
+  memory: ["./AGENTS.md", "./.deepagents/AGENTS.md"],
+  interruptOn: {
+    read_file: true,
+    write_file: true,
+    delete_file: true,
+  },
+  checkpointer, // Required!
+});
+```
 
 ## 结构化输出
 
 Deep Agents 支持[structured output](/oss/javascript/langchain/structured-output)。
 
 您可以通过将其作为`responseFormat`参数传递给`createDeepAgent()`调用来设置所需的结构化输出模式。
-当模型生成结构化数据时，它会被捕获、验证并在代理状态的“structedResponse”键中返回。
+将模式包装在策略中，例如来自 `langchain` 的 `toolStrategy()` 或 `providerStrategy()`。
+当模型生成结构化数据时，它会被捕获、验证并在代理状态的“structuralResponse”键中返回。
 
 ```ts theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-import { tool } from "langchain";
+import { tool, toolStrategy } from "langchain";
 import { TavilySearch } from "@langchain/tavily";
 import { createDeepAgent } from "deepagents";
 import { z } from "zod";
@@ -3740,7 +3744,7 @@ const weatherReportSchema = z.object({
 });
 
 const agent = await createDeepAgent({
-  responseFormat: weatherReportSchema,
+  responseFormat: toolStrategy(weatherReportSchema),
   tools: [internetSearch],
 });
 
@@ -3764,22 +3768,16 @@ console.log(result.structuredResponse);
 // }
 ```
 
-<Card title="View example trace" icon="chart-line" href="https://smith.langchain.com/public/0a26dee6-4493-45b0-a48f-d2e05edaa29e/r">
-  为此示例打开公共 LangSmith 运行。
-</Card>
+> **[View example trace](https://smith.langchain.com/public/0a26dee6-4493-45b0-a48f-d2e05edaa29e/r)**
+>
+> 为此示例打开公共 LangSmith 运行。
 
 有关更多信息和示例，请参阅[response format](/oss/javascript/langchain/structured-output#response-format)。
 
-＃＃ 先进的`createDeepAgent` 在`createAgent` 之上预组装中间件堆栈。要构建完全自定义的代理（准确选择要包含的功能），请参阅[Configure the harness](/oss/javascript/langchain/agents#configure-the-harness)。
+## 高级
 
-***
+`createDeepAgent` 在`createAgent` 之上预组装中间件堆栈。要构建完全自定义的代理（准确选择要包含的功能），请参阅[Configure the harness](/oss/javascript/langchain/agents#configure-the-harness)。
 
-<div>
-  <Callout icon="terminal-2">
-    [Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
-  </Callout>
+***[Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
 
-  <Callout icon="edit">
-    [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/oss/deepagents/customization.mdx) 或 [file an issue](https://github.com/langchain-ai/docs/issues/new/choose)。
-  </Callout>
-</div>
+[Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/oss/deepagents/customization.mdx) 或 [file an issue](https://github.com/langchain-ai/docs/issues/new/choose)。

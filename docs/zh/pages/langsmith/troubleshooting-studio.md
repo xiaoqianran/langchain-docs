@@ -8,21 +8,19 @@ Safari 会阻止本地主机上的纯 HTTP 流量。当使用 `langgraph dev` �
 
 ### 解决方案 1：使用 Cloudflare Tunnel
 
-<Tabs>
-  <Tab title="Python">
-    ```shell theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-    pip install -U langgraph-cli>=0.2.6
-    langgraph dev --tunnel
-    ```
-  </Tab>
+**Python**
 
-  <Tab title="JS">
-    ```shell theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-    # Requires @langchain/langgraph-cli>=0.0.26
-    npx @langchain/langgraph-cli dev --tunnel
-    ```
-  </Tab>
-</Tabs>
+```shell theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+pip install -U langgraph-cli>=0.2.6
+langgraph dev --tunnel
+```
+
+**JS**
+
+```shell theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+# Requires @langchain/langgraph-cli>=0.0.26
+npx @langchain/langgraph-cli dev --tunnel
+```
 
 该命令输出隧道 URL。连接工作室：
 
@@ -34,9 +32,9 @@ Safari 会阻止本地主机上的纯 HTTP 流量。当使用 `langgraph dev` �
 
 为了安全起见，需要执行此手动步骤 - Studio 在连接到外部 URL 之前需要明确的用户确认。
 
-<Note>
-  Cloudflare 隧道可能不可靠，并且可能会间歇性断开连接。
-</Note>
+> [!注意]
+>
+> Cloudflare 隧道可能不可靠，并且可能会间歇性断开连接。
 
 ### 解决方案 2：使用 Chromium 浏览器
 
@@ -50,7 +48,7 @@ Chrome 和其他 Chromium 浏览器允许在本地主机上使用 HTTP。使用`
 
 * 运行`langgraph dev`成功启动服务器。
 * 导航到 `http://127.0.0.1:2024/docs` 可以正确显示 API 文档。
-* LangSmith Studio 位于 `https://smith.langchain.com` 显示：“无法初始化 Studio - 请验证 API 服务器是否正在运行或可从浏览器访问。类型错误：无法获取”。
+* LangSmith Studio 在 `https://smith.langchain.com` 显示：“无法初始化 Studio - 请验证 API 服务器是否正在运行或可从浏览器访问。类型错误：无法获取”。
 * 浏览器控制台显示错误，例如：`Permission was denied for this request to access the 'unknown' address space`。
 
 ### 解决方案：在 Chrome 中允许本地网络访问
@@ -95,21 +93,19 @@ pip install -U "langgraph-cli[inmem]"
 
 ### 解决方案 2：使用 Cloudflare Tunnel
 
-<Tabs>
-  <Tab title="Python">
-    ```shell theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-    pip install -U langgraph-cli>=0.2.6
-    langgraph dev --tunnel
-    ```
-  </Tab>
+**Python**
 
-  <Tab title="JS">
-    ```shell theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-    # Requires @langchain/langgraph-cli>=0.0.26
-    npx @langchain/langgraph-cli dev --tunnel
-    ```
-  </Tab>
-</Tabs>
+```shell theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+pip install -U langgraph-cli>=0.2.6
+langgraph dev --tunnel
+```
+
+**JS**
+
+```shell theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+# Requires @langchain/langgraph-cli>=0.0.26
+npx @langchain/langgraph-cli dev --tunnel
+```
 
 该命令输出隧道 URL。连接工作室：
 
@@ -119,28 +115,26 @@ pip install -U "langgraph-cli[inmem]"
 4. 粘贴隧道 URL 并将其添加到 **允许的来源**
 5. 单击“**连接**”
 
-为了安全起见，需要执行此手动步骤 - Studio 在连接到外部 URL 之前需要明确的用户确认。## 图边问题
+为了安全起见，需要执行此手动步骤 - Studio 在连接到外部 URL 之前需要明确的用户确认。
 
-未定义的条件边可能会在图表中显示意外的连接。这是
+## 图边问题未定义的条件边可能会在图表中显示意外的连接。这是
 因为如果没有正确的定义，Studio 会假设条件边可以访问所有其他节点。要解决此问题，请使用以下方法之一显式定义路由路径：
 
 ### 解决方案1：路径图
 
 定义路由器输出和目标节点之间的映射：
 
-<Tabs>
-  <Tab title="Python">
-    ```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-    graph.add_conditional_edges("node_a", routing_function, {True: "node_b", False: "node_c"})
-    ```
-  </Tab>
+**Python**
 
-  <Tab title="Javascript">
-    ```ts theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-    graph.addConditionalEdges("node_a", routingFunction, { true: "node_b", false: "node_c" });
-    ```
-  </Tab>
-</Tabs>
+```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+graph.add_conditional_edges("node_a", routing_function, {True: "node_b", False: "node_c"})
+```
+
+**Javascript**
+
+```ts theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+graph.addConditionalEdges("node_a", routingFunction, { true: "node_b", false: "node_c" });
+```
 
 ### 解决方案 2：路由器类型定义
 
@@ -163,16 +157,10 @@ def routing_function(state: GraphState) -> Literal["node_b","node_c"]:
 * **部署的应用程序**：如果您的应用程序部署在LangSmith上，您可能需要创建新的修订版才能启用此功能。
 * **本地开发服务器**：如果您在本地运行应用程序，请确保您已升级到最新版本的`langgraph-cli`（`pip install -U langgraph-cli`）。此外，请通过在项目的 `.env` 文件中设置 `LANGSMITH_API_KEY` 来确保启用跟踪。
 
-### 评估器结果缺失当您运行实验时，任何附加的评估器都会被安排在队列中执行。如果您没有立即看到结果，则可能意味着结果仍在等待中。
+### 评估器结果缺失
 
-***
+当您运行实验时，任何附加的评估器都会被安排在队列中执行。如果您没有立即看到结果，则可能意味着结果仍在等待中。
 
-<div>
-  <Callout icon="terminal-2">
-    [Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
-  </Callout>
+***[Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
 
-  <Callout icon="edit">
-    [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/troubleshooting-studio.mdx) 或 [file an issue](https://github.com/langchain-ai/docs/issues/new/choose)。
-  </Callout>
-</div>
+[Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/troubleshooting-studio.mdx) 或 [file an issue](https://github.com/langchain-ai/docs/issues/new/choose)。

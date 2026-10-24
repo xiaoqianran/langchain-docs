@@ -27,25 +27,25 @@ Deep Agents 通过`ls`、`read_file`、`write_file`、`edit_file`、`glob` 和 `
 
 * [Update existing backends to v2](#update-existing-backends-to-v2)
 
-<Tip>
-  当您在 [LangSmith Deployment](/langsmith/deployment) 上部署时，会自动配置商店。使用 [LangSmith](/langsmith/observability) 跟踪来调试文件路径、权限拒绝和跨线程存储。按照[observability quickstart](/langsmith/observability-quickstart)进行设置。
+> [!提示]
+>
+> 当您在 [LangSmith Deployment](/langsmith/deployment) 上部署时，会自动配置商店。使用 [LangSmith](/langsmith/observability) 跟踪来调试文件路径、权限拒绝和跨线程存储。按照[observability quickstart](/langsmith/observability-quickstart)进行设置。
+>
+> 我们建议您还设置[LangSmith Engine](/langsmith/engine)，它可以监控您的痕迹、检测问题并提出修复建议。
 
-  我们建议您还设置[LangSmith Engine](/langsmith/engine)，它可以监视您的痕迹、检测问题并提出修复建议。
-</Tip>
-
-<Tip>
-  要生成代理可以通过文件系统工具读取的持久存储库 wiki，请参阅[OpenWiki](/oss/openwiki/overview)。
-</Tip>
+> [!提示]
+>
+> 要生成代理可以通过文件系统工具读取的持久存储库 wiki，请参阅[OpenWiki](/oss/openwiki/overview)。
 
 ## 快速入门
 
 以下是一些预构建的文件系统后端，您可以将它们快速与深度代理一起使用：|内置后端|描述 |
 | - | - |
-| [Default](#statebackend) | `agent = create_deep_agent(model="google_genai:gemini-3.6-flash")` <br /> 线程范围。代理的默认文件系统后端存储在`langgraph`状态。文件在线程内持续存在（通过检查点），并且不会跨线程共享。 |
-| [Local filesystem persistence](#filesystembackend-local-disk) | `agent = create_deep_agent(model="google_genai:gemini-3.6-flash", backend=FilesystemBackend(root_dir="/Users/nh/Desktop/"))` <br />这使深度代理可以访问本地计算机的文件系统。您可以指定代理有权访问的根目录。请注意，任何提供的 `root_dir` 必须是绝对路径。通常，包装在[CompositeBackend](#compositebackend-router)中，以将内部代理数据（卸载的工具结果、对话历史记录）与项目文件分开。 |
-| [Durable store (LangGraph store)](#storebackend-langgraph-store) | `agent = create_deep_agent(model="google_genai:gemini-3.6-flash", backend=StoreBackend())`<br />这使代理可以访问*跨线程持久化*的长期存储。这对于存储适用于代理多次执行的长期记忆或指令非常有用。 |
-| [Context Hub](#contexthubbackend) | `agent = create_deep_agent(model="google_genai:gemini-3.6-flash", backend=ContextHubBackend("my-agent"))` <br />将文件持久存储在 LangSmith Hub 存储库中，无需配置单独的 LangGraph 存储。 |
-| [Sandbox](/oss/javascript/deepagents/sandboxes) | `agent = create_deep_agent(model="google_genai:gemini-3.6-flash", backend=sandbox)` <br />在隔离环境中执行代码。沙箱提供文件系统工具以及用于运行 shell 命令的`execute`工具。从 LangSmith、AgentCore、Daytona 或其他 [sandbox integrations](/oss/javascript/integrations/sandboxes) 中进行选择。 || [Local shell](#localshellbackend-local-shell) | `agent = create_deep_agent(model="google_genai:gemini-3.6-flash", backend=LocalShellBackend(root_dir=".", env={"PATH": "/usr/bin:/bin"}))` <br />文件系统和 shell 直接在主机上执行。无隔离——仅在受控开发环境中使用。请参阅下面的[security considerations](#localshellbackend-local-shell)。 |
+| [Default](#statebackend) | `agent = create_deep_agent(model="google_genai:gemini-3.6-flash")` 线程范围。代理的默认文件系统后端存储在`langgraph`状态。文件在线程内持续存在（通过检查点），并且不会跨线程共享。 |
+| [Local filesystem persistence](#filesystembackend-local-disk) | `agent = create_deep_agent(model="google_genai:gemini-3.6-flash", backend=FilesystemBackend(root_dir="/Users/nh/Desktop/"))` 这使深度代理可以访问本地计算机的文件系统。您可以指定代理有权访问的根目录。请注意，任何提供的 `root_dir` 必须是绝对路径。通常，包装在[CompositeBackend](#compositebackend-router)中，以将内部代理数据（卸载的工具结果、对话历史记录）与项目文件分开。 |
+| [Durable store (LangGraph store)](#storebackend-langgraph-store) | `agent = create_deep_agent(model="google_genai:gemini-3.6-flash", backend=StoreBackend())` 这使代理可以访问“跨线程持久化”的长期存储。这对于存储适用于代理多次执行的长期记忆或指令非常有用。 |
+| [Context Hub](#contexthubbackend) | `agent = create_deep_agent(model="google_genai:gemini-3.6-flash", backend=ContextHubBackend("my-agent"))` 将文件持久存储在 LangSmith Hub 存储库中，无需配置单独的 LangGraph 存储。 |
+| [Sandbox](/oss/javascript/deepagents/sandboxes) | `agent = create_deep_agent(model="google_genai:gemini-3.6-flash", backend=sandbox)` 在隔离环境中执行代码。沙箱提供文件系统工具以及用于运行 shell 命令的`execute`工具。从 LangSmith、AgentCore、Daytona 或其他 [sandbox integrations](/oss/javascript/integrations/sandboxes) 中进行选择。 || [Local shell](#localshellbackend-local-shell) | `agent = create_deep_agent(model="google_genai:gemini-3.6-flash", backend=LocalShellBackend(root_dir=".", env={"PATH": "/usr/bin:/bin"}))` 文件系统和 shell 直接在主机上执行。无隔离——仅在受控开发环境中使用。请参阅下面的[security considerations](#localshellbackend-local-shell)。 |
 | [Composite](#compositebackend-router) |默认情况下是线程范围的，`/memories/`跨线程持久化。复合后端具有最大程度的灵活性。您可以在文件系统中指定不同的路由以指向不同的后端。有关准备粘贴的示例，请参阅下面的复合路由。 |
 
 ```mermaid theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
@@ -102,9 +102,9 @@ const agent2 = createDeepAgent({
 * 通过[⟦T64⟧](https://reference.langchain.com/javascript/deepagents/backends/StateBackend)将文件存储在当前线程的LangGraph代理状态中。
 * 通过检查点在同一线程上的多个代理之间持续存在。文件不在线程之间共享。
 
-<Warning>
-  设计用于在图表内使用。在图形运行之外调用后端方法（例如，`state_backend.upload_files(...)`）在图形执行之前不会生效。
-</Warning>
+> [!警告]
+>
+> 设计用于在图表内使用。在图形运行之外调用后端方法（例如，`state_backend.upload_files(...)`）在图形执行之前不会生效。
 
 **最适合：**
 
@@ -116,97 +116,96 @@ const agent2 = createDeepAgent({
 
 [⟦T66⟧](https://reference.langchain.com/javascript/deepagents/backends/FilesystemBackend) 在可配置的根目录下读取和写入真实文件。
 
-<Warning>
-  该后端授予代理直接文件系统读/写访问权限。
-  请谨慎使用，并且仅在适当的环境中使用。
+> [!警告]
+>
+> 该后端授予代理直接文件系统读/写访问权限。
+> 谨慎使用，且仅在适当的环境中使用。
+>
+> **适当的用例：**
+>
+> * 本地开发 CLI（编码助手、开发工具）
+> * CI/CD 管道（请参阅下面的安全注意事项）
+>
+> **不适当的用例：**
+>
+> * Web 服务器或 HTTP API - 使用 `StateBackend`、`StoreBackend` 或 [sandbox backend](/oss/javascript/deepagents/sandboxes) 代替
+>
+> **安全风险：**
+>
+> * 代理可以读取任何可访问的文件，包括机密（API 密钥、凭证、`.env` 文件）
+> * 结合网络工具，可能通过SSRF攻击泄露机密
+> * 文件修改是永久且不可逆的
+>
+> **建议的保障措施：**
+>
+> 1. 启用[Human-in-the-Loop (HITL) middleware](/oss/javascript/deepagents/human-in-the-loop)审核敏感操作。> 2. 从可访问的文件系统路径中排除机密（尤其是在 CI/CD 中）。
+> 3. 对于需要文件系统交互的生产环境，使用[sandbox backend](/oss/javascript/deepagents/sandboxes)。
+> 4. **始终** 将 `virtual_mode=True` 与 `root_dir` 一起使用以启用基于路径的访问限制（阻止 `..`、`~` 和根目录之外的绝对路径）。
+>
+> 请注意，即使设置了 `root_dir`，默认值 (`virtual_mode=False`) 也不提供安全性。
 
-  **适当的用例：**
+```ts Google theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+import { createDeepAgent, FilesystemBackend } from "deepagents";
 
-  * 本地开发 CLI（编码助手、开发工具）
-  * CI/CD 管道（请参阅下面的安全注意事项）
+const agent = createDeepAgent({
+  model: "google:gemini-3.6-flash",
+  backend: new FilesystemBackend({ rootDir: ".", virtualMode: true }),
+});
+```
 
-  **不适当的用例：**
+```ts OpenAI theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+import { createDeepAgent, FilesystemBackend } from "deepagents";
 
-  * Web 服务器或 HTTP API - 使用 `StateBackend`、`StoreBackend` 或 [sandbox backend](/oss/javascript/deepagents/sandboxes) 代替
+const agent = createDeepAgent({
+  model: "openai:gpt-5.5",
+  backend: new FilesystemBackend({ rootDir: ".", virtualMode: true }),
+});
+```
 
-  **安全风险：**
+```ts Anthropic theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+import { createDeepAgent, FilesystemBackend } from "deepagents";
 
-  * 代理可以读取任何可访问的文件，包括机密（API 密钥、凭证、`.env` 文件）
-  * 结合网络工具，可能通过SSRF攻击泄露机密
-  * 文件修改是永久且不可逆的
+const agent = createDeepAgent({
+  model: "anthropic:claude-sonnet-5",
+  backend: new FilesystemBackend({ rootDir: ".", virtualMode: true }),
+});
+```
 
-  **建议的保障措施：**1. 启用[Human-in-the-Loop (HITL) middleware](/oss/javascript/deepagents/human-in-the-loop)审核敏感操作。
-  2. 从可访问的文件系统路径中排除机密（尤其是在 CI/CD 中）。
-  3. 对于需要文件系统交互的生产环境，使用[sandbox backend](/oss/javascript/deepagents/sandboxes)。
-  4. **始终**将 `virtual_mode=True` 与 `root_dir` 结合使用以启用基于路径的访问限制（阻止 `..`、`~` 和根目录之外的绝对路径）。
+```ts OpenRouter theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+import { createDeepAgent, FilesystemBackend } from "deepagents";
 
-     请注意，即使设置了 `root_dir`，默认值 (`virtual_mode=False`) 也不提供安全性。
-</Warning>
+const agent = createDeepAgent({
+  model: "openrouter:z-ai/glm-5.2",
+  backend: new FilesystemBackend({ rootDir: ".", virtualMode: true }),
+});
+```
 
-<CodeGroup>
-  ```ts Google theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  import { createDeepAgent, FilesystemBackend } from "deepagents";
+```ts Fireworks theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+import { createDeepAgent, FilesystemBackend } from "deepagents";
 
-  const agent = createDeepAgent({
-    model: "google:gemini-3.6-flash",
-    backend: new FilesystemBackend({ rootDir: ".", virtualMode: true }),
-  });
-  ```
+const agent = createDeepAgent({
+  model: "fireworks:accounts/fireworks/models/glm-5p2",
+  backend: new FilesystemBackend({ rootDir: ".", virtualMode: true }),
+});
+```
 
-  ```ts OpenAI theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  import { createDeepAgent, FilesystemBackend } from "deepagents";
+```ts Baseten theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+import { createDeepAgent, FilesystemBackend } from "deepagents";
 
-  const agent = createDeepAgent({
-    model: "openai:gpt-5.5",
-    backend: new FilesystemBackend({ rootDir: ".", virtualMode: true }),
-  });
-  ```
+const agent = createDeepAgent({
+  model: "baseten:zai-org/GLM-5.2",
+  backend: new FilesystemBackend({ rootDir: ".", virtualMode: true }),
+});
+```
 
-  ```ts Anthropic theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  import { createDeepAgent, FilesystemBackend } from "deepagents";
+```ts Ollama theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+import { createDeepAgent, FilesystemBackend } from "deepagents";
 
-  const agent = createDeepAgent({
-    model: "anthropic:claude-sonnet-5",
-    backend: new FilesystemBackend({ rootDir: ".", virtualMode: true }),
-  });
-  ```
-
-  ```ts OpenRouter theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  import { createDeepAgent, FilesystemBackend } from "deepagents";
-
-  const agent = createDeepAgent({
-    model: "openrouter:z-ai/glm-5.2",
-    backend: new FilesystemBackend({ rootDir: ".", virtualMode: true }),
-  });
-  ```
-
-  ```ts Fireworks theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  import { createDeepAgent, FilesystemBackend } from "deepagents";
-
-  const agent = createDeepAgent({
-    model: "fireworks:accounts/fireworks/models/glm-5p2",
-    backend: new FilesystemBackend({ rootDir: ".", virtualMode: true }),
-  });
-  ```
-
-  ```ts Baseten theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  import { createDeepAgent, FilesystemBackend } from "deepagents";
-
-  const agent = createDeepAgent({
-    model: "baseten:zai-org/GLM-5.2",
-    backend: new FilesystemBackend({ rootDir: ".", virtualMode: true }),
-  });
-  ```
-
-  ```ts Ollama theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  import { createDeepAgent, FilesystemBackend } from "deepagents";
-
-  const agent = createDeepAgent({
-    model: "ollama:north-mini-code-1.0",
-    backend: new FilesystemBackend({ rootDir: ".", virtualMode: true }),
-  });
-  ```
-</CodeGroup>
+const agent = createDeepAgent({
+  model: "ollama:north-mini-code-1.0",
+  backend: new FilesystemBackend({ rootDir: ".", virtualMode: true }),
+});
+```
 
 **它是如何工作的：**
 
@@ -220,140 +219,139 @@ const agent2 = createDeepAgent({
 * CI 沙箱
 * 挂载的持久卷
 
-对于代理可以使用这些文件系统工具（来自`openwiki/`）读取的持久存储库wiki，请参阅[OpenWiki](/oss/openwiki/overview)。<Tip>
-  **对于大多数用例，将 `FilesystemBackend` 包裹在 `CompositeBackend`** 中。 Deep Agents自动将内部数据写入后端，包括卸载的大型工具结果（在`/large_tool_results/`下）和对话历史记录（在`/conversation_history/`下）。当您单独使用`FilesystemBackend`时，这些内部文件将写入`root_dir`下的真实磁盘，将代理工件与您的项目文件混合。
+对于代理可以使用这些文件系统工具（来自`openwiki/`）读取的持久存储库wiki，请参阅[OpenWiki](/oss/openwiki/overview)。> [!提示]
+>
+> **对于大多数用例，将 `FilesystemBackend` 包裹在 `CompositeBackend`** 中。 Deep Agents自动将内部数据写入后端，包括卸载的大型工具结果（在`/large_tool_results/`下）和对话历史记录（在`/conversation_history/`下）。当您单独使用`FilesystemBackend`时，这些内部文件将写入`root_dir`下的真实磁盘，将代理工件与您的项目文件混合。
+>
+> 使用 `CompositeBackend` 将项目目录路由到 `FilesystemBackend`，同时将内部路径保留在临时 `StateBackend` 存储中：
+>
+> ```typescript theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> import { createDeepAgent, CompositeBackend, FilesystemBackend, StateBackend } from "deepagents";
+>
+> const agent = createDeepAgent({
+>   backend: new CompositeBackend(
+>     new StateBackend(),
+>     {
+>       "/workspace/": new FilesystemBackend({ rootDir: "/path/to/project", virtualMode: true }),
+>     },
+>   ),
+> });
+> ```
+>
+> 这样，代理在 `/workspace/` 下读取和写入到真实磁盘，而卸载工具结果和其他内部数据保持短暂状态。有关更多路由模式，请参阅[Route to different backends](#route-to-different-backends)。
 
-  使用 `CompositeBackend` 将项目目录路由到 `FilesystemBackend`，同时将内部路径保留在临时 `StateBackend` 存储中：
+### LocalShellBackend（本地 shell）> [!警告]
+>
+> 此后端授予代理直接文件系统读/写访问权限**和**在您的主机上不受限制的 shell 执行。
+> 请极其谨慎地使用，并且仅在适当的环境中使用。
+>
+> **适当的用例：**
+>
+> * 本地开发 CLI（编码助手、开发工具）
+> * 您信任代理代码的个人开发环境
+> * CI/CD 管道具有适当的秘密管理
+>
+> **不适当的用例：**
+>
+> * 生产环境（例如Web服务器、API、多租户系统）
+> * 处理不受信任的用户输入或执行不受信任的代码
+>
+> **安全风险：**
+>
+> * 代理可以使用您的用户权限执行**任意 shell 命令**
+> * 代理可以读取任何可访问的文件，包括机密（API 密钥、凭证、`.env` 文件）
+> * 秘密可能会被泄露
+> * 文件修改和命令执行是**永久且不可逆的**
+> * 命令直接在您的主机系统上运行
+> * 命令可以消耗无限的CPU、内存、磁盘
+>
+> **建议的保障措施：**
+>
+> 1. 启用[Human-in-the-Loop (HITL) middleware](/oss/javascript/deepagents/human-in-the-loop)以在执行前审核并批准操作。这是**强烈推荐**。> 2. 仅在专用开发环境中运行。切勿在共享或生产系统上使用。
+> 3. 对于需要 shell 执行的生产环境，使用[sandbox backend](/oss/javascript/deepagents/sandboxes)。
+>
+> **注意：** `virtual_mode=True` 在启用 shell 访问的情况下不提供安全性，因为命令可以访问系统上的任何路径。
 
-  ```typescript theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  import { createDeepAgent, CompositeBackend, FilesystemBackend, StateBackend } from "deepagents";
+```ts Google theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+import { createDeepAgent, LocalShellBackend } from "deepagents";
 
-  const agent = createDeepAgent({
-    backend: new CompositeBackend(
-      new StateBackend(),
-      {
-        "/workspace/": new FilesystemBackend({ rootDir: "/path/to/project", virtualMode: true }),
-      },
-    ),
-  });
-  ```
+const backend = new LocalShellBackend({ workingDirectory: "." });
 
-  这样，代理在 `/workspace/` 下读取和写入到真实磁盘，而卸载工具结果和其他内部数据保持短暂状态。有关更多路由模式，请参阅[Route to different backends](#route-to-different-backends)。
-</Tip>
+const agent = createDeepAgent({
+  model: "google:gemini-3.6-flash",
+  backend,
+});
+```
 
-### LocalShellBackend（本地 shell）
+```ts OpenAI theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+import { createDeepAgent, LocalShellBackend } from "deepagents";
 
-<Warning>
-  该后端向代理授予直接文件系统读/写访问权限**和**在主机上不受限制的 shell 执行。
-  请极其谨慎地使用，并且仅在适当的环境中使用。
+const backend = new LocalShellBackend({ workingDirectory: "." });
 
-  **适当的用例：**
+const agent = createDeepAgent({
+  model: "openai:gpt-5.5",
+  backend,
+});
+```
 
-  * 本地开发 CLI（编码助手、开发工具）
-  * 您信任代理代码的个人开发环境
-  * CI/CD 管道具有适当的秘密管理
+```ts Anthropic theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+import { createDeepAgent, LocalShellBackend } from "deepagents";
 
-  **不适当的用例：*** 生产环境（例如Web服务器、API、多租户系统）
-  * 处理不受信任的用户输入或执行不受信任的代码
+const backend = new LocalShellBackend({ workingDirectory: "." });
 
-  **安全风险：**
+const agent = createDeepAgent({
+  model: "anthropic:claude-sonnet-5",
+  backend,
+});
+```
 
-  * 代理可以使用您的用户权限执行**任意 shell 命令**
-  * 代理可以读取任何可访问的文件，包括机密（API 密钥、凭证、`.env` 文件）
-  * 秘密可能会被泄露
-  * 文件修改和命令执行是**永久且不可逆的**
-  * 命令直接在您的主机系统上运行
-  * 命令可以消耗无限的CPU、内存、磁盘
+```ts OpenRouter theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+import { createDeepAgent, LocalShellBackend } from "deepagents";
 
-  **建议的保障措施：**
+const backend = new LocalShellBackend({ workingDirectory: "." });
 
-  1. 启用[Human-in-the-Loop (HITL) middleware](/oss/javascript/deepagents/human-in-the-loop)以在执行前审核并批准操作。这是**强烈推荐**。
-  2. 仅在专用开发环境中运行。切勿在共享或生产系统上使用。
-  3. 对于需要 shell 执行的生产环境，请使用[sandbox backend](/oss/javascript/deepagents/sandboxes)。
+const agent = createDeepAgent({
+  model: "openrouter:z-ai/glm-5.2",
+  backend,
+});
+```
 
-  **注意：** `virtual_mode=True` 在启用 shell 访问的情况下不提供安全性，因为命令可以访问系统上的任何路径。
-</Warning>
+```ts Fireworks theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+import { createDeepAgent, LocalShellBackend } from "deepagents";
 
-<CodeGroup>
-  ```ts Google theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  import { createDeepAgent, LocalShellBackend } from "deepagents";
+const backend = new LocalShellBackend({ workingDirectory: "." });
 
-  const backend = new LocalShellBackend({ workingDirectory: "." });
+const agent = createDeepAgent({
+  model: "fireworks:accounts/fireworks/models/glm-5p2",
+  backend,
+});
+```
 
-  const agent = createDeepAgent({
-    model: "google:gemini-3.6-flash",
-    backend,
-  });
-  ```
+```ts Baseten theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+import { createDeepAgent, LocalShellBackend } from "deepagents";
 
-  ```ts OpenAI theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  import { createDeepAgent, LocalShellBackend } from "deepagents";
+const backend = new LocalShellBackend({ workingDirectory: "." });
 
-  const backend = new LocalShellBackend({ workingDirectory: "." });
+const agent = createDeepAgent({
+  model: "baseten:zai-org/GLM-5.2",
+  backend,
+});
+```
 
-  const agent = createDeepAgent({
-    model: "openai:gpt-5.5",
-    backend,
-  });
-  ```
+```ts Ollama theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+import { createDeepAgent, LocalShellBackend } from "deepagents";
 
-  ```ts Anthropic theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  import { createDeepAgent, LocalShellBackend } from "deepagents";
+const backend = new LocalShellBackend({ workingDirectory: "." });
 
-  const backend = new LocalShellBackend({ workingDirectory: "." });
+const agent = createDeepAgent({
+  model: "ollama:north-mini-code-1.0",
+  backend,
+});
+```
 
-  const agent = createDeepAgent({
-    model: "anthropic:claude-sonnet-5",
-    backend,
-  });
-  ```
+**它是如何工作的：**
 
-  ```ts OpenRouter theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  import { createDeepAgent, LocalShellBackend } from "deepagents";
-
-  const backend = new LocalShellBackend({ workingDirectory: "." });
-
-  const agent = createDeepAgent({
-    model: "openrouter:z-ai/glm-5.2",
-    backend,
-  });
-  ```
-
-  ```ts Fireworks theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  import { createDeepAgent, LocalShellBackend } from "deepagents";
-
-  const backend = new LocalShellBackend({ workingDirectory: "." });
-
-  const agent = createDeepAgent({
-    model: "fireworks:accounts/fireworks/models/glm-5p2",
-    backend,
-  });
-  ```
-
-  ```ts Baseten theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  import { createDeepAgent, LocalShellBackend } from "deepagents";
-
-  const backend = new LocalShellBackend({ workingDirectory: "." });
-
-  const agent = createDeepAgent({
-    model: "baseten:zai-org/GLM-5.2",
-    backend,
-  });
-  ```
-
-  ```ts Ollama theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  import { createDeepAgent, LocalShellBackend } from "deepagents";
-
-  const backend = new LocalShellBackend({ workingDirectory: "." });
-
-  const agent = createDeepAgent({
-    model: "ollama:north-mini-code-1.0",
-    backend,
-  });
-  ```
-</CodeGroup>
-
-**它是如何工作的：*** 使用 `execute` 工具扩展 `FilesystemBackend`，用于在主机上运行 shell 命令。
+* 使用 `execute` 工具扩展 `FilesystemBackend`，用于在主机上运行 shell 命令。
 * 命令使用 `subprocess.run(shell=True)` 直接在您的计算机上运行，​​无需沙箱。
 * 支持环境变量`timeout`（默认120秒）、`max_output_bytes`（默认100,000）、`env`和`inherit_env`。
 * Shell 命令使用`root_dir` 作为工作目录，但可以访问系统上的任何路径。
@@ -365,131 +363,129 @@ const agent2 = createDeepAgent({
 
 ### StoreBackend（LangGraph商店）
 
-<CodeGroup>
-  ```ts Google theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  import { createDeepAgent, StoreBackend } from "deepagents";
-  import { InMemoryStore } from "@langchain/langgraph";
+```ts Google theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+import { createDeepAgent, StoreBackend } from "deepagents";
+import { InMemoryStore } from "@langchain/langgraph";
 
-  const store = new InMemoryStore(); // Good for local dev; omit for LangSmith Deployment
+const store = new InMemoryStore(); // Good for local dev; omit for LangSmith Deployment
 
-  const agent = createDeepAgent({
-    model: "google:gemini-3.6-flash",
-    backend: new StoreBackend({
-      namespace: (rt) => [rt.serverInfo.user.identity],
-    }),
-    store,
-  });
-  ```
+const agent = createDeepAgent({
+  model: "google:gemini-3.6-flash",
+  backend: new StoreBackend({
+    namespace: (rt) => [rt.serverInfo.user.identity],
+  }),
+  store,
+});
+```
 
-  ```ts OpenAI theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  import { createDeepAgent, StoreBackend } from "deepagents";
-  import { InMemoryStore } from "@langchain/langgraph";
+```ts OpenAI theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+import { createDeepAgent, StoreBackend } from "deepagents";
+import { InMemoryStore } from "@langchain/langgraph";
 
-  const store = new InMemoryStore(); // Good for local dev; omit for LangSmith Deployment
+const store = new InMemoryStore(); // Good for local dev; omit for LangSmith Deployment
 
-  const agent = createDeepAgent({
-    model: "openai:gpt-5.5",
-    backend: new StoreBackend({
-      namespace: (rt) => [rt.serverInfo.user.identity],
-    }),
-    store,
-  });
-  ```
+const agent = createDeepAgent({
+  model: "openai:gpt-5.5",
+  backend: new StoreBackend({
+    namespace: (rt) => [rt.serverInfo.user.identity],
+  }),
+  store,
+});
+```
 
-  ```ts Anthropic theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  import { createDeepAgent, StoreBackend } from "deepagents";
-  import { InMemoryStore } from "@langchain/langgraph";
+```ts Anthropic theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+import { createDeepAgent, StoreBackend } from "deepagents";
+import { InMemoryStore } from "@langchain/langgraph";
 
-  const store = new InMemoryStore(); // Good for local dev; omit for LangSmith Deployment
+const store = new InMemoryStore(); // Good for local dev; omit for LangSmith Deployment
 
-  const agent = createDeepAgent({
-    model: "anthropic:claude-sonnet-5",
-    backend: new StoreBackend({
-      namespace: (rt) => [rt.serverInfo.user.identity],
-    }),
-    store,
-  });
-  ```
+const agent = createDeepAgent({
+  model: "anthropic:claude-sonnet-5",
+  backend: new StoreBackend({
+    namespace: (rt) => [rt.serverInfo.user.identity],
+  }),
+  store,
+});
+```
 
-  ```ts OpenRouter theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  import { createDeepAgent, StoreBackend } from "deepagents";
-  import { InMemoryStore } from "@langchain/langgraph";
+```ts OpenRouter theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+import { createDeepAgent, StoreBackend } from "deepagents";
+import { InMemoryStore } from "@langchain/langgraph";
 
-  const store = new InMemoryStore(); // Good for local dev; omit for LangSmith Deployment
+const store = new InMemoryStore(); // Good for local dev; omit for LangSmith Deployment
 
-  const agent = createDeepAgent({
-    model: "openrouter:z-ai/glm-5.2",
-    backend: new StoreBackend({
-      namespace: (rt) => [rt.serverInfo.user.identity],
-    }),
-    store,
-  });
-  ```
+const agent = createDeepAgent({
+  model: "openrouter:z-ai/glm-5.2",
+  backend: new StoreBackend({
+    namespace: (rt) => [rt.serverInfo.user.identity],
+  }),
+  store,
+});
+```
 
-  ```ts Fireworks theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  import { createDeepAgent, StoreBackend } from "deepagents";
-  import { InMemoryStore } from "@langchain/langgraph";
+```ts Fireworks theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+import { createDeepAgent, StoreBackend } from "deepagents";
+import { InMemoryStore } from "@langchain/langgraph";
 
-  const store = new InMemoryStore(); // Good for local dev; omit for LangSmith Deployment
+const store = new InMemoryStore(); // Good for local dev; omit for LangSmith Deployment
 
-  const agent = createDeepAgent({
-    model: "fireworks:accounts/fireworks/models/glm-5p2",
-    backend: new StoreBackend({
-      namespace: (rt) => [rt.serverInfo.user.identity],
-    }),
-    store,
-  });
-  ```
+const agent = createDeepAgent({
+  model: "fireworks:accounts/fireworks/models/glm-5p2",
+  backend: new StoreBackend({
+    namespace: (rt) => [rt.serverInfo.user.identity],
+  }),
+  store,
+});
+```
 
-  ```ts Baseten theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  import { createDeepAgent, StoreBackend } from "deepagents";
-  import { InMemoryStore } from "@langchain/langgraph";
+```ts Baseten theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+import { createDeepAgent, StoreBackend } from "deepagents";
+import { InMemoryStore } from "@langchain/langgraph";
 
-  const store = new InMemoryStore(); // Good for local dev; omit for LangSmith Deployment
+const store = new InMemoryStore(); // Good for local dev; omit for LangSmith Deployment
 
-  const agent = createDeepAgent({
-    model: "baseten:zai-org/GLM-5.2",
-    backend: new StoreBackend({
-      namespace: (rt) => [rt.serverInfo.user.identity],
-    }),
-    store,
-  });
-  ```
+const agent = createDeepAgent({
+  model: "baseten:zai-org/GLM-5.2",
+  backend: new StoreBackend({
+    namespace: (rt) => [rt.serverInfo.user.identity],
+  }),
+  store,
+});
+```
 
-  ```ts Ollama theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  import { createDeepAgent, StoreBackend } from "deepagents";
-  import { InMemoryStore } from "@langchain/langgraph";
+```ts Ollama theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+import { createDeepAgent, StoreBackend } from "deepagents";
+import { InMemoryStore } from "@langchain/langgraph";
 
-  const store = new InMemoryStore(); // Good for local dev; omit for LangSmith Deployment
+const store = new InMemoryStore(); // Good for local dev; omit for LangSmith Deployment
 
-  const agent = createDeepAgent({
-    model: "ollama:north-mini-code-1.0",
-    backend: new StoreBackend({
-      namespace: (rt) => [rt.serverInfo.user.identity],
-    }),
-    store,
-  });
-  ```
-</CodeGroup>
+const agent = createDeepAgent({
+  model: "ollama:north-mini-code-1.0",
+  backend: new StoreBackend({
+    namespace: (rt) => [rt.serverInfo.user.identity],
+  }),
+  store,
+});
+```
 
-<Note>
-  部署到[LangSmith Deployment](/langsmith/deployment)时，省略`store`参数。平台自动为您的代理商提供商店。
-</Note>
+> [!注意]
+>
+> 部署到[LangSmith Deployment](/langsmith/deployment)时，省略`store`参数。平台自动为您的代理商提供商店。
 
-<Tip>
-  `namespace`参数控制数据隔离。对于多用户部署，请始终设置 [namespace factory](/oss/javascript/deepagents/backends#namespace-factories) 来隔离每个用户或租户的数据。
-</Tip>
+> [!提示]
+>
+> `namespace` 参数控制数据隔离。对于多用户部署，请始终设置 [namespace factory](/oss/javascript/deepagents/backends#namespace-factories) 来隔离每个用户或租户的数据。
 
-**它是如何工作的：**
+**它是如何工作的：*** [⟦T103⟧](https://reference.langchain.com/javascript/deepagents/backends/StoreBackend) 将文件存储在运行时提供的LangGraph [⟦T104⟧](https://reference.langchain.com/javascript/langchain-core/stores/BaseStore) 中，从而实现跨线程持久存储。
 
-* [⟦T103⟧](https://reference.langchain.com/javascript/deepagents/backends/StoreBackend) 将文件存储在运行时提供的LangGraph [⟦T104⟧](https://reference.langchain.com/javascript/langchain-core/stores/BaseStore) 中，从而实现跨线程持久存储。
+**最适合：**
 
-**最适合：*** 当您已经使用配置的 LangGraph 存储运行时（例如，Redis、Postgres 或[⟦T105⟧](https://reference.langchain.com/javascript/langchain-core/stores/BaseStore) 背后的云实现）。
+* 当您已经使用配置的 LangGraph 存储运行时（例如，Redis、Postgres 或[⟦T105⟧](https://reference.langchain.com/javascript/langchain-core/stores/BaseStore) 背后的云实现）。
 * 当您通过[LangSmith Deployment](/langsmith/deployment)部署代理时（会自动为您的代理配置商店）。
 
 #### 命名空间工厂
 
-命名空间工厂控制 `StoreBackend` 读取和写入数据的位置。它接收 LangGraph [⟦T107⟧](https://reference.langchain.com/javascript/langchain/index/Runtime) 并返回用作存储命名空间的字符串元组。使用命名空间工厂来隔离用户、租户或助理之间的数据。
+命名空间工厂控制 `StoreBackend` 读取和写入数据的位置。它接收一个 LangGraph [⟦T107⟧](https://reference.langchain.com/javascript/langchain/index/Runtime) 并返回用作存储命名空间的字符串元组。使用命名空间工厂来隔离用户、租户或助理之间的数据。
 
 构造 `StoreBackend` 时将命名空间工厂传递给 `namespace` 参数：
 
@@ -505,9 +501,9 @@ NamespaceFactory = Callable[[Runtime], tuple[str, ...]]
 
 * `rt.executionInfo`—执行身份信息（线程ID、运行ID、检查点ID）
 
-<Note>
-  `Runtime` 参数在 `deepagents>=1.9.1` 中可用。早期的 1.9.x 版本通过了`BackendContext`，请参阅下面的[migrating from ⟦T118⟧](#migrating-from-backendcontext)。 `rt.serverInfo` 和 `rt.executionInfo` 需要 `deepagents>=1.9.0`。
-</Note>
+> [!注意]
+>
+> `Runtime` 参数在 `deepagents>=1.9.1` 中可用。早期的 1.9.x 版本通过了`BackendContext`，请参阅下面的[migrating from ⟦T118⟧](#migrating-from-backendcontext)。 `rt.serverInfo` 和 `rt.executionInfo` 需要 `deepagents>=1.9.0`。
 
 **常见的命名空间模式：**
 
@@ -532,19 +528,19 @@ const backend = new StoreBackend({
 
 命名空间组件必须仅包含字母数字字符、连字符、下划线、点、`@`、`+`、冒号和波形符。拒绝通配符（`*`、`?`）以防止全局注入。
 
-<Warning>
-  在 v1.9.0 中，`namespace` 参数将是**必需**。始终为新代码显式设置它。
-</Warning>
+> [!警告]
+>
+> 在 v1.9.0 中，`namespace` 参数将是**必需**。始终为新代码显式设置它。
 
-<Note>
-  当未提供命名空间工厂时，旧版默认使用 LangGraph 配置元数据中的 `assistant_id`。这意味着同一[assistant](/langsmith/assistants)的所有用户共享相同的存储。对于多用户[going to production](/oss/javascript/deepagents/going-to-production)，始终提供命名空间工厂。
-</Note>
+> [!注意]
+>
+> 当未提供命名空间工厂时，旧版默认使用 LangGraph 配置元数据中的 `assistant_id`。这意味着同一[assistant](/langsmith/assistants)的所有用户共享相同的存储。对于多用户[going to production](/oss/javascript/deepagents/going-to-production)，始终提供命名空间工厂。
 
 ### ContextHub后端
 
-<Note>
-  **开始之前：** `ContextHubBackend` 需要在 LangSmith 中设置 Context Hub 存储库。如果您不熟悉代理存储库和技能存储库，请先阅读[Context Hub concepts](/langsmith/context-engineering-concepts)页面。
-</Note>
+> [!注意]
+>
+> **开始之前：** `ContextHubBackend` 需要在 LangSmith 中设置 Context Hub 存储库。如果您不熟悉代理存储库和技能存储库，请先阅读[Context Hub concepts](/langsmith/context-engineering-concepts)页面。
 
 `ContextHubBackend` 将代理的文件系统存储在 LangSmith Context Hub 存储库中。它可以使用独立存储库或链接到技能存储库的代理存储库。**存储库结构：** 在 Context Hub 中，*代理存储库* 保存代理的顶级指令和配置（例如，`AGENTS.md`、`tools.json`）。它可以链接到一个或多个“技能库”，每个库都打包为可重用功能（例如，带有电子邮件格式或代码审查说明的`SKILL.md`）。当您通过`ContextHubBackend("my-agent")`时，后端将代理存储库挂载到文件系统根目录；链接的技能存储库显示为`/skills/`下的子目录。
 
@@ -552,9 +548,9 @@ const backend = new StoreBackend({
 
 使用 `owner/name` 或 `name` 格式的存储库标识符构建它。
 
-<Note>
-  使用`ContextHubBackend`之前先设置`LANGSMITH_API_KEY`。
-</Note>
+> [!注意]
+>
+> 使用`ContextHubBackend`之前先设置`LANGSMITH_API_KEY`。
 
 **它是如何工作的：**
 
@@ -568,166 +564,164 @@ const backend = new StoreBackend({
 
 **最适合：**
 
-* LangSmith-原生持久文件系统持久性，无需单独连接LangGraph`BaseStore`。
+* LangSmith-本机持久文件系统持久性，无需单独连接LangGraph`BaseStore`。
 * 受益于文件系统更改的集线器提交历史记录的工作流程。
 
 ### CompositeBackend（路由器）
 
-<CodeGroup>
-  ```ts Google theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  import {
-    createDeepAgent,
-    CompositeBackend,
-    StateBackend,
-    StoreBackend,
-  } from "deepagents";
-  import { InMemoryStore } from "@langchain/langgraph";
+```ts Google theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+import {
+  createDeepAgent,
+  CompositeBackend,
+  StateBackend,
+  StoreBackend,
+} from "deepagents";
+import { InMemoryStore } from "@langchain/langgraph";
 
-  const store = new InMemoryStore();
+const store = new InMemoryStore();
 
-  const agent = createDeepAgent({
-    model: "google:gemini-3.6-flash",
-    backend: new CompositeBackend(new StateBackend(), {
-      "/memories/": new StoreBackend({
-        namespace: () => ["memories"],
-      }),
+const agent = createDeepAgent({
+  model: "google:gemini-3.6-flash",
+  backend: new CompositeBackend(new StateBackend(), {
+    "/memories/": new StoreBackend({
+      namespace: () => ["memories"],
     }),
-    store,
-  });
-  ```
+  }),
+  store,
+});
+```
 
-  ```ts OpenAI theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  import {
-    createDeepAgent,
-    CompositeBackend,
-    StateBackend,
-    StoreBackend,
-  } from "deepagents";
-  import { InMemoryStore } from "@langchain/langgraph";
+```ts OpenAI theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+import {
+  createDeepAgent,
+  CompositeBackend,
+  StateBackend,
+  StoreBackend,
+} from "deepagents";
+import { InMemoryStore } from "@langchain/langgraph";
 
-  const store = new InMemoryStore();
+const store = new InMemoryStore();
 
-  const agent = createDeepAgent({
-    model: "openai:gpt-5.5",
-    backend: new CompositeBackend(new StateBackend(), {
-      "/memories/": new StoreBackend({
-        namespace: () => ["memories"],
-      }),
+const agent = createDeepAgent({
+  model: "openai:gpt-5.5",
+  backend: new CompositeBackend(new StateBackend(), {
+    "/memories/": new StoreBackend({
+      namespace: () => ["memories"],
     }),
-    store,
-  });
-  ```
+  }),
+  store,
+});
+```
 
-  ```ts Anthropic theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  import {
-    createDeepAgent,
-    CompositeBackend,
-    StateBackend,
-    StoreBackend,
-  } from "deepagents";
-  import { InMemoryStore } from "@langchain/langgraph";
+```ts Anthropic theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+import {
+  createDeepAgent,
+  CompositeBackend,
+  StateBackend,
+  StoreBackend,
+} from "deepagents";
+import { InMemoryStore } from "@langchain/langgraph";
 
-  const store = new InMemoryStore();
+const store = new InMemoryStore();
 
-  const agent = createDeepAgent({
-    model: "anthropic:claude-sonnet-5",
-    backend: new CompositeBackend(new StateBackend(), {
-      "/memories/": new StoreBackend({
-        namespace: () => ["memories"],
-      }),
+const agent = createDeepAgent({
+  model: "anthropic:claude-sonnet-5",
+  backend: new CompositeBackend(new StateBackend(), {
+    "/memories/": new StoreBackend({
+      namespace: () => ["memories"],
     }),
-    store,
-  });
-  ```
+  }),
+  store,
+});
+```
 
-  ```ts OpenRouter theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  import {
-    createDeepAgent,
-    CompositeBackend,
-    StateBackend,
-    StoreBackend,
-  } from "deepagents";
-  import { InMemoryStore } from "@langchain/langgraph";
+```ts OpenRouter theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+import {
+  createDeepAgent,
+  CompositeBackend,
+  StateBackend,
+  StoreBackend,
+} from "deepagents";
+import { InMemoryStore } from "@langchain/langgraph";
 
-  const store = new InMemoryStore();
+const store = new InMemoryStore();
 
-  const agent = createDeepAgent({
-    model: "openrouter:z-ai/glm-5.2",
-    backend: new CompositeBackend(new StateBackend(), {
-      "/memories/": new StoreBackend({
-        namespace: () => ["memories"],
-      }),
+const agent = createDeepAgent({
+  model: "openrouter:z-ai/glm-5.2",
+  backend: new CompositeBackend(new StateBackend(), {
+    "/memories/": new StoreBackend({
+      namespace: () => ["memories"],
     }),
-    store,
-  });
-  ```
+  }),
+  store,
+});
+```
 
-  ```ts Fireworks theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  import {
-    createDeepAgent,
-    CompositeBackend,
-    StateBackend,
-    StoreBackend,
-  } from "deepagents";
-  import { InMemoryStore } from "@langchain/langgraph";
+```ts Fireworks theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+import {
+  createDeepAgent,
+  CompositeBackend,
+  StateBackend,
+  StoreBackend,
+} from "deepagents";
+import { InMemoryStore } from "@langchain/langgraph";
 
-  const store = new InMemoryStore();
+const store = new InMemoryStore();
 
-  const agent = createDeepAgent({
-    model: "fireworks:accounts/fireworks/models/glm-5p2",
-    backend: new CompositeBackend(new StateBackend(), {
-      "/memories/": new StoreBackend({
-        namespace: () => ["memories"],
-      }),
+const agent = createDeepAgent({
+  model: "fireworks:accounts/fireworks/models/glm-5p2",
+  backend: new CompositeBackend(new StateBackend(), {
+    "/memories/": new StoreBackend({
+      namespace: () => ["memories"],
     }),
-    store,
-  });
-  ```
+  }),
+  store,
+});
+```
 
-  ```ts Baseten theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  import {
-    createDeepAgent,
-    CompositeBackend,
-    StateBackend,
-    StoreBackend,
-  } from "deepagents";
-  import { InMemoryStore } from "@langchain/langgraph";
+```ts Baseten theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+import {
+  createDeepAgent,
+  CompositeBackend,
+  StateBackend,
+  StoreBackend,
+} from "deepagents";
+import { InMemoryStore } from "@langchain/langgraph";
 
-  const store = new InMemoryStore();
+const store = new InMemoryStore();
 
-  const agent = createDeepAgent({
-    model: "baseten:zai-org/GLM-5.2",
-    backend: new CompositeBackend(new StateBackend(), {
-      "/memories/": new StoreBackend({
-        namespace: () => ["memories"],
-      }),
+const agent = createDeepAgent({
+  model: "baseten:zai-org/GLM-5.2",
+  backend: new CompositeBackend(new StateBackend(), {
+    "/memories/": new StoreBackend({
+      namespace: () => ["memories"],
     }),
-    store,
-  });
-  ```
+  }),
+  store,
+});
+```
 
-  ```ts Ollama theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  import {
-    createDeepAgent,
-    CompositeBackend,
-    StateBackend,
-    StoreBackend,
-  } from "deepagents";
-  import { InMemoryStore } from "@langchain/langgraph";
+```ts Ollama theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+import {
+  createDeepAgent,
+  CompositeBackend,
+  StateBackend,
+  StoreBackend,
+} from "deepagents";
+import { InMemoryStore } from "@langchain/langgraph";
 
-  const store = new InMemoryStore();
+const store = new InMemoryStore();
 
-  const agent = createDeepAgent({
-    model: "ollama:north-mini-code-1.0",
-    backend: new CompositeBackend(new StateBackend(), {
-      "/memories/": new StoreBackend({
-        namespace: () => ["memories"],
-      }),
+const agent = createDeepAgent({
+  model: "ollama:north-mini-code-1.0",
+  backend: new CompositeBackend(new StateBackend(), {
+    "/memories/": new StoreBackend({
+      namespace: () => ["memories"],
     }),
-    store,
-  });
-  ```
-</CodeGroup>
+  }),
+  store,
+});
+```
 
 **它是如何工作的：**
 
@@ -738,15 +732,15 @@ const backend = new StoreBackend({
 
 * 当您想要为代理提供线程范围和跨线程存储时，`CompositeBackend` 允许您同时提供 `StateBackend` 和 `StoreBackend`
 * 当您有多个信息源想要作为单个文件系统的一部分提供给代理时。
-  * 例如您在一个商店的`/memories/`下存储了长期记忆，并且您还有一个自定义后端，可以在/docs/访问文档。## 指定后端
+  * 例如您在一个商店的`/memories/`下存储了长期记忆，并且您还有一个自定义后端，可以在/docs/访问文档。
 
-* 将后端实例传递给`createDeepAgent({ backend: ... })`。文件系统中间件将其用于所有工具。
+## 指定后端* 将后端实例传递给`createDeepAgent({ backend: ... })`。文件系统中间件将其用于所有工具。
 * 后端必须实现`AnyBackendProtocol`（`BackendProtocolV1`或`BackendProtocolV2`），例如`new StateBackend()`、`new FilesystemBackend({ rootDir: "." })`、`new StoreBackend()`。
 * 如果省略，则默认为`new StateBackend()`。
 
-<Note>
-  在1.9.0版本之前，仅支持`BackendProtocol`，现在是`BackendProtocolV1`。 V1 后端在运行时通过 `adaptBackendProtocol()` 自动适应 V2。无需更改代码即可继续使用现有的 V1 后端。要更新到 v2，请参阅 [update existing backends to v2](#update-existing-backends-to-v2)。
-</Note>
+> [!注意]
+>
+> 1.9.0 版本之前，仅支持`BackendProtocol`，现在支持`BackendProtocolV1`。 V1 后端在运行时通过 `adaptBackendProtocol()` 自动适应 V2。无需更改代码即可继续使用现有的 V1 后端。要更新到 v2，请参阅 [update existing backends to v2](#update-existing-backends-to-v2)。
 
 ## 路由到不同的后端
 
@@ -772,12 +766,12 @@ const agent = createDeepAgent({
 * `ls`、`glob`、`grep`聚合结果并显示原始路径前缀。
 
 笔记：* 较长的前缀获胜（例如，路由 `"/memories/projects/"` 可以覆盖 `"/memories/"`）。
-* 对于 StoreBackend 路由，请确保商店是通过 `create_deep_agent(model=..., store=...)` 提供的或由平台配置的。
+* 对于 StoreBackend 路由，确保商店是通过 `create_deep_agent(model=..., store=...)` 提供的或由平台配置的。
 * Deep Agents 将内部数据（卸载工具结果、对话历史记录）写入默认后端。使用 `StateBackend` 作为默认值可以保持这些工件短暂并避免将它们写入磁盘或持久存储。有关完整示例，请参阅[FilesystemBackend tip](#filesystembackend-local-disk)。
 
 ## 卸载二进制内容
 
-二进制内容卸载将内联媒体存储在后端，而不是将 Base64 有效负载保留在消息历史记录中。这可以减少读取二进制文件或接收用户消息中内联媒体的代理的检查点大小。默认情况下，卸载是选择加入并禁用的。
+二进制内容卸载将内联媒体存储在后端，而不是将 Base64 有效负载保留在消息历史记录中。这可以减少读取二进制文件或接收用户消息中的内联媒体的代理的检查点大小。默认情况下，卸载是选择加入并禁用的。
 
 在`createFilesystemMiddleware`中设置`offloadBinaryContent: true`，并将`middleware`数组中的中间件传递给`createDeepAgent`。代理和中间件使用相同的后端。
 
@@ -785,9 +779,9 @@ const agent = createDeepAgent({
 
 消息历史记录保留内容寻址引用。在每次模型调用之前，中间件都会从其缓存或后端恢复原始媒体。重新读取未更改的内容会重用相同的 blob；更改的内容会创建一个新的 blob。使用在图状态之外存储 blob 的后端，例如沙箱或 `FilesystemBackend`。当 blob 路径路由到`StateBackend`（包括通过`CompositeBackend`）时，卸载不起作用。如果保留 `StateBackend` 作为默认后端，请将 blob 目录路由到外部存储。
 
-<Note>
-  用户消息中的内联媒体将在下一次模型调用时替换。原始输入负载仍然出现在早期的检查点中。恢复线程时保持 blob 存储可用，以便中间件可以恢复其媒体。
-</Note>
+> [!注意]
+>
+> 用户消息中的内嵌媒体将在下一次模型调用时被替换。原始输入负载仍然出现在早期的检查点中。恢复线程时保持 blob 存储可用，以便中间件可以恢复其媒体。
 
 ## 自定义后端
 
@@ -809,60 +803,60 @@ const agent = createDeepAgent({
 
 所有方法都必须返回带有可选 `error` 字段的结构化 Result 对象，不要抛出丢失文件或无效模式。
 
-<Accordion title="Example: S3-style backend skeleton">
-  该骨架将文件系统路径映射到对象键。使用存储客户端的列表、读取、搜索、上传和读取-修改-写入操作填写每个方法。
-
-  ```typescript theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  import {
-    type BackendProtocolV2,
-    type EditResult,
-    type GlobResult,
-    type GrepResult,
-    type LsResult,
-    type ReadRawResult,
-    type ReadResult,
-    type WriteResult,
-  } from "deepagents";
-
-  class S3Backend implements BackendProtocolV2 {
-    constructor(private bucket: string, private prefix: string = "") {
-      this.prefix = prefix.replace(/\/$/, "");
-    }
-
-    private key(path: string): string {
-      return `${this.prefix}${path}`;
-    }
-
-    async ls(path: string): Promise<LsResult> {
-      ...
-    }
-
-    async read(filePath: string, offset?: number, limit?: number): Promise<ReadResult> {
-      ...
-    }
-
-    async readRaw(filePath: string): Promise<ReadRawResult> {
-      ...
-    }
-
-    async grep(pattern: string, path?: string | null, glob?: string | null): Promise<GrepResult> {
-      ...
-    }
-
-    async glob(pattern: string, path = "/"): Promise<GlobResult> {
-      ...
-    }
-
-    async write(filePath: string, content: string): Promise<WriteResult> {
-      ...
-    }
-
-    async edit(filePath: string, oldString: string, newString: string, replaceAll?: boolean): Promise<EditResult> {
-      ...
-    }
-  }
-  ```
-</Accordion>
+> **示例：S3 式后端骨架**
+>
+> 该骨架将文件系统路径映射到对象键。使用存储客户端的列表、读取、搜索、上传和读取-修改-写入操作填写每个方法。
+>
+> ```typescript theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> import {
+>   type BackendProtocolV2,
+>   type EditResult,
+>   type GlobResult,
+>   type GrepResult,
+>   type LsResult,
+>   type ReadRawResult,
+>   type ReadResult,
+>   type WriteResult,
+> } from "deepagents";
+>
+> class S3Backend implements BackendProtocolV2 {
+>   constructor(private bucket: string, private prefix: string = "") {
+>     this.prefix = prefix.replace(/\/$/, "");
+>   }
+>
+>   private key(path: string): string {
+>     return `${this.prefix}${path}`;
+>   }
+>
+>   async ls(path: string): Promise<LsResult> {
+>     ...
+>   }
+>
+>   async read(filePath: string, offset?: number, limit?: number): Promise<ReadResult> {
+>     ...
+>   }
+>
+>   async readRaw(filePath: string): Promise<ReadRawResult> {
+>     ...
+>   }
+>
+>   async grep(pattern: string, path?: string | null, glob?: string | null): Promise<GrepResult> {
+>     ...
+>   }
+>
+>   async glob(pattern: string, path = "/"): Promise<GlobResult> {
+>     ...
+>   }
+>
+>   async write(filePath: string, content: string): Promise<WriteResult> {
+>     ...
+>   }
+>
+>   async edit(filePath: string, oldString: string, newString: string, replaceAll?: boolean): Promise<EditResult> {
+>     ...
+>   }
+> }
+> ```
 
 ## 权限使用 [permissions](/oss/javascript/deepagents/permissions) 以声明方式控制代理可以读取或写入哪些文件和目录。权限适用于内置文件系统工具，并在调用后端之前进行评估。
 
@@ -946,9 +940,9 @@ class PolicyWrapper implements BackendProtocolV2 {
 
 ## 多模式和二进制文件
 
-<Note>
-  多模式文件支持（PDF、音频、视频）需要`deepagents>=1.9.0`。
-</Note>
+> [!注意]
+>
+> 多模式文件支持（PDF、音频、视频）需要`deepagents>=1.9.0`。
 
 V2 后端原生支持二进制文件。当`read()`遇到二进制文件（由文件扩展名的MIME类型确定）时，它返回一个带有`Uint8Array`内容和相应的`mimeType`的`ReadResult`。文本文件返回`string`内容。
 
@@ -999,9 +993,9 @@ type FileData =
 
 从状态或存储读取时，后端可能会遇到任一格式。框架透明地处理这两者。新写入默认为 v2 格式。在旧读者需要旧格式的滚动部署期间，将 `fileFormat: "v1"` 传递给后端构造函数（例如 `new StoreBackend({ fileFormat: "v1" })`）。
 
-## 从后端工厂迁移<Warning>
-  自 `deepagents` 1.9.0 起，后端工厂模式已被 **弃用**。直接传递预先构造的后端实例而不是工厂函数。
-</Warning>
+## 从后端工厂迁移> [!警告]
+>
+> 自 `deepagents` 1.9.0 起，后端工厂模式已被 **弃用**。直接传递预先构造的后端实例而不是工厂函数。
 
 以前，像`StateBackend`和`StoreBackend`这样的后端需要一个接收运行时对象的工厂函数，因为它们需要运行时上下文（状态、存储）来操作。后端现在通过 LangGraph 的 `get_config()`、`get_store()` 和 `get_runtime()` 帮助程序在内部解析此上下文，因此您可以直接传递实例。
 
@@ -1020,14 +1014,14 @@ type FileData =
 |已弃用 |更换|
 | - | - |
 | `BackendFactory`型 |直接传递后端实例 |
-| `BackendRuntime`接口|后端在内部解析上下文 |
+| `BackendRuntime`接口 |后端在内部解析上下文 |
 | `StateBackend(runtime, options?)` 构造函数重载 | `new StateBackend(options?)` |
 | `StoreBackend(stateAndStore, options?)` 构造函数重载 | `new StoreBackend(options?)` |
 | `WriteResult` 和 `EditResult` 上的`filesUpdate` 字段 |状态写入现在由后端在内部处理 |
 
-<Note>
-  工厂模式在运行时仍然有效并发出弃用警告。在下一个主要版本之前更新您的代码以使用直接实例。
-</Note>
+> [!注意]
+>
+> 工厂模式在运行时仍然有效并发出弃用警告。在下一个主要版本之前更新您的代码以使用直接实例。
 
 ### 迁移示例
 
@@ -1055,7 +1049,7 @@ const agent = createDeepAgent({
 });
 ```
 
-### 从 `BackendContext` 迁移在 `deepagents>=0.5.2` (Python) 和 `deepagents>=1.9.1` (TypeScript) 中，命名空间工厂直接接收 LangGraph [⟦T303⟧](https://reference.langchain.com/javascript/langchain/index/Runtime)，而不是 `BackendContext` 包装器。旧的 `BackendContext` 形式仍然可以通过向后兼容的 `.runtime` 和 `.state` 访问器工作，但这些访问器会发出弃用警告，并将在 `deepagents>=0.7` 中删除。
+### 从 `BackendContext` 迁移在 `deepagents>=0.5.2` (Python) 和 `deepagents>=1.9.1` (TypeScript) 中，命名空间工厂直接接收 LangGraph [⟦T303⟧](https://reference.langchain.com/javascript/langchain/index/Runtime) 而不是 `BackendContext` 包装器。旧的 `BackendContext` 形式仍然可以通过向后兼容的 `.runtime` 和 `.state` 访问器工作，但这些访问器会发出弃用警告，并将在 `deepagents>=0.7` 中删除。
 
 **改变了什么：**
 
@@ -1156,44 +1150,44 @@ new StoreBackend({
 * **`execute(command: string) → ExecuteResponse`**—在沙箱中运行 shell 命令。
 * **`readonly id: string`** - 沙箱实例的唯一标识符。
 
-## 将现有后端更新到 V2
-
-<Accordion title="Migration guide">
-  ### 方法重命名
-
-  | V1方法| V2方法|返回类型更改 |
-  | - | - | - |
-  | `lsInfo(path)` | `ls(path)` | `FileInfo[]` → `LsResult` |
-  | `read(filePath, offset, limit)` | `read(filePath, offset, limit)` | `string` → `ReadResult` |
-  | `readRaw(filePath)` | `readRaw(filePath)` | `FileData` → `ReadRawResult` |
-  | `grepRaw(pattern, path, glob)` | `grep(pattern, path, glob)` | `GrepMatch[] \| string` → `GrepResult` |
-  | `globInfo(pattern, path)` | `glob(pattern, path)` | `FileInfo[]` → `GlobResult` |
-  | `write(...)` | `write(...)` |不变 (`WriteResult`) |
-  | `edit(...)` | `edit(...)` |不变（`EditResult`）|### 类型重命名
-
-  | V1型| V2型|
-  | - | - |
-  | `BackendProtocol` | `BackendProtocolV2` |
-  | `SandboxBackendProtocol` | `SandboxBackendProtocolV2` |
-
-  ### 适应实用程序
-
-  如果您有现有的 V1 后端需要与纯 V2 代码一起使用，请使用适配函数：
-
-  ```typescript theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  import { adaptBackendProtocol, adaptSandboxProtocol } from "deepagents";
-
-  // Adapt a V1 backend to V2
-  const v2Backend = adaptBackendProtocol(v1Backend);
-
-  // Adapt a V1 sandbox to V2
-  const v2Sandbox = adaptSandboxProtocol(v1Sandbox);
-  ```
-
-  <Note>
-    该框架自动适应传递到 `createDeepAgent()` 的 V1 后端。只有直接调用协议方法时才需要手动适配。
-  </Note>
-</Accordion>
+## 将现有后端更新到 V2> **迁移指南**
+>
+> ### 方法重命名
+>
+> | V1方法| V2方法|返回类型更改 |
+> | - | - | - |
+> | `lsInfo(path)` | `ls(path)` | `FileInfo[]` → `LsResult` |
+> | `read(filePath, offset, limit)` | `read(filePath, offset, limit)` | `string` → `ReadResult` |
+> | `readRaw(filePath)` | `readRaw(filePath)` | `FileData` → `ReadRawResult` |
+> | `grepRaw(pattern, path, glob)` | `grep(pattern, path, glob)` | `GrepMatch[] \| string` → `GrepResult` |
+> | `globInfo(pattern, path)` | `glob(pattern, path)` | `FileInfo[]` → `GlobResult` |
+> | `write(...)` | `write(...)` |不变 (`WriteResult`) |
+> | `edit(...)` | `edit(...)` |不变（`EditResult`）|
+>
+> ### 类型重命名
+>
+> | V1型| V2型|
+> | - | - |
+> | `BackendProtocol` | `BackendProtocolV2` |
+> | `SandboxBackendProtocol` | `SandboxBackendProtocolV2` |
+>
+> ### 适应实用程序
+>
+> 如果您有现有的 V1 后端，需要与纯 V2 代码一起使用，请使用适配函数：
+>
+> ```typescript theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> import { adaptBackendProtocol, adaptSandboxProtocol } from "deepagents";
+>
+> // Adapt a V1 backend to V2
+> const v2Backend = adaptBackendProtocol(v1Backend);
+>
+> // Adapt a V1 sandbox to V2
+> const v2Sandbox = adaptSandboxProtocol(v1Sandbox);
+> ```
+>
+>> [!注意]
+>>
+>> 框架自动适应传递给`createDeepAgent()`的V1后端。只有直接调用协议方法时才需要手动适配。
 
 ## 另请参阅
 
@@ -1203,12 +1197,6 @@ new StoreBackend({
 
 ***
 
-<div>
-  <Callout icon="terminal-2">
-    [Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
-  </Callout>
+[Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
 
-  <Callout icon="edit">
-    [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/oss/deepagents/backends.mdx) 或 [file an issue](https://github.com/langchain-ai/docs/issues/new/choose)。
-  </Callout>
-</div>
+[Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/oss/deepagents/backends.mdx) 或 [file an issue](https://github.com/langchain-ai/docs/issues/new/choose)。

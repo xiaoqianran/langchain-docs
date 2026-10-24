@@ -10,96 +10,118 @@ LangChain 帮助组建了生成人工智能领域最大的开发者社区，并�
 
 ## 贡献方式
 
-<AccordionGroup>
-  <Accordion title="Report bugs" icon="bug">
-    发现错误？请按照以下步骤帮助我们修复该问题：
+> **报告错误**
+>
+> 发现错误？请按照以下步骤帮助我们修复该问题：
+>
+> **1。搜索**
+>
+> 检查相应存储库的 GitHub 问题中是否已存在该问题：
+>
+>> **[LangChain](https://github.com/langchain-ai/langchainjs/issues)**
+>>
+>> 问题
+>
+>> **[LangGraph](https://github.com/langchain-ai/langgraphjs/issues)**
+>>
+>> 问题
+>
+>> **[Deep Agents](https://github.com/langchain-ai/deepagentsjs/issues)**
+>>
+>> 问题
+>
+> **2。创建问题**
+>
+> 如果不存在问题，请创建一个新问题。写作时，请务必遵循提供的模板并包含[minimal, reproducible, example](https://stackoverflow.com/help/minimal-reproducible-example)。创建后，将所有相关标签附加到最终期刊上。如果项目维护人员无法重现问题，则不太可能及时得到解决。
+>
+> **3。等待**
+>
+> 项目维护人员将对问题进行分类，并可能要求提供更多信息。请耐心等待，因为我们需要处理大量问题。除非您有新信息要提供，否则请勿提出问题。
+>> 如果您要添加问题，请尽量将其集中在一个主题上。如果两个问题相关或阻塞，请[link them](https://docs.github.com/en/issues/tracking-your-work-with-issues/using-issues/linking-a-pull-request-to-an-issue#linking-a-pull-request-to-an-issue-using-a-keyword)而不是合并它们。例如：
+>
+> ```text theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> This issue is blocked by #123 and related to #456.
+> ```
 
-    <Steps>
-      <Step title="Search">
-        检查相应存储库的 GitHub 问题中是否已存在该问题：
+> **建议功能**
+>
+> 对新功能或增强功能有想法吗？
+>
+> **1。搜索**
+>
+> 在相应存储库的问题中搜索现有功能请求：
+>
+>> **[LangChain](https://github.com/langchain-ai/langchainjs)**
+>>
+>> 问题
+>
+>> **[LangGraph](https://github.com/langchain-ai/langgraphjs/labels?q=feature)**
+>>
+>> 问题
+>
+>> **[Deep Agents](https://github.com/langchain-ai/deepagentsjs/issues?q=is%3Aissue%20state%3Aopen%20label%3Aenhancement)**
+>>
+>> 问题
+>
+> **2。讨论**
+>
+> 如果没有请求，则在[relevant category](https://forum.langchain.com/c/oss-product-help-lc-and-lg/16)下开始新的讨论，以便项目维护者和社区可以提供反馈。
+>
+> **3。描述**
+>
+> 请务必描述用例以及为什么它对其他人有价值。如果可能，请提供适用的示例或模型。概述应该通过的测试用例。
 
-        <Columns>
-          <Card title="LangChain" icon="link" href="https://github.com/langchain-ai/langchainjs/issues">问题</Card>
-          <Card title="LangGraph" icon="topology-ring" href="https://github.com/langchain-ai/langgraphjs/issues">问题</Card>
-          <Card title="Deep Agents" icon="robot" href="https://github.com/langchain-ai/deepagentsjs/issues">问题</Card>
-        </Columns>
-      </Step>
+> **改进文档**
+>
+> 欢迎改进文档！我们努力保持我们的文档清晰和全面，您的观点可以产生很大的影响。
+>
+>> **[How to propose changes to the documentation](/oss/javascript/contributing/documentation)**
+>>
+>> 指南> **贡献代码**
+>
+> 由于用户群庞大，我们的小团队可能很难跟上所有功能请求和错误修复。如果您有能力和时间，我们将非常乐意您的帮助！
+>
+>> **[How to make your first Pull Request](/oss/javascript/contributing/code)**
+>>
+>> 指南
+>
+> 如果您开始解决某个问题，请将其分配给自己或请维护人员这样做。这有助于避免重复工作。
+>
+> 如果您正在寻找解决方案，请查看我们的存储库中标记为“需要帮助”的问题：
+>
+>> **[LangChain](https://github.com/langchain-ai/deepagents/labels?q=help+wanted)**
+>>
+>> 标签
+>
+>> **[LangGraph](https://github.com/langchain-ai/langgraphjs/labels?q=help+wanted)**
+>>
+>> 标签
+>
+>> **[Deep Agents](https://github.com/langchain-ai/deepagentsjs/labels?q=help+wanted)**
+>>
+>> 标签
 
-      <Step title="Create issue">
-        如果不存在问题，请创建一个新问题。写作时，请务必遵循提供的模板并包含[minimal, reproducible, example](https://stackoverflow.com/help/minimal-reproducible-example)。创建后，将所有相关标签附加到最终期刊上。如果项目维护人员无法重现问题，则不太可能及时得到解决。
-      </Step><Step title="Wait">
-        项目维护人员将对问题进行分类，并可能要求提供更多信息。请耐心等待，因为我们需要处理大量问题。除非您有新信息要提供，否则请勿提出问题。
-      </Step>
-    </Steps>
-
-    如果您要添加问题，请尽量将其集中在一个主题上。如果两个问题相关或阻塞，请[link them](https://docs.github.com/en/issues/tracking-your-work-with-issues/using-issues/linking-a-pull-request-to-an-issue#linking-a-pull-request-to-an-issue-using-a-keyword)而不是合并它们。例如：
-
-    ```text theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-    This issue is blocked by #123 and related to #456.
-    ```
-  </Accordion>
-
-  <Accordion title="Suggest features" icon="wand">
-    对新功能或增强功能有想法吗？
-
-    <Steps>
-      <Step title="Search">
-        在相应存储库的问题中搜索现有功能请求：
-
-        <Columns>
-          <Card title="LangChain" icon="link" href="https://github.com/langchain-ai/langchainjs">问题</Card>
-          <Card title="LangGraph" icon="topology-ring" href="https://github.com/langchain-ai/langgraphjs/labels?q=feature">问题</Card>
-          <Card title="Deep Agents" icon="robot" href="https://github.com/langchain-ai/deepagentsjs/issues?q=is%3Aissue%20state%3Aopen%20label%3Aenhancement">问题</Card>
-        </Columns>
-      </Step>
-
-      <Step title="Discuss">
-        如果不存在请求，请在[relevant category](https://forum.langchain.com/c/oss-product-help-lc-and-lg/16)下开始新的讨论，以便项目维护者和社区可以提供反馈。
-      </Step>
-
-      <Step title="Describe">
-        请务必描述用例以及为什么它对其他人有价值。如果可能，请提供适用的示例或模型。概述应该通过的测试用例。
-      </Step>
-    </Steps>
-  </Accordion><Accordion title="Improve documentation" icon="book">
-    欢迎改进文档！我们努力保持我们的文档清晰和全面，您的观点可以产生很大的影响。
-
-    <Card title="How to propose changes to the documentation" href="/oss/javascript/contributing/documentation">指南</Card>
-  </Accordion>
-
-  <Accordion title="Contribute code" icon="code">
-    由于用户群庞大，我们的小团队可能很难跟上所有功能请求和错误修复。如果您有能力和时间，我们将非常乐意您的帮助！
-
-    <Card title="How to make your first Pull Request" href="/oss/javascript/contributing/code">指南</Card>
-
-    如果您开始解决某个问题，请将其分配给自己或要求维护人员这样做。这有助于避免重复工作。
-
-    如果您正在寻找解决方案，请查看我们的存储库中标记为“需要帮助”的问题：
-
-    <Columns>
-      <Card title="LangChain" icon="link" href="https://github.com/langchain-ai/deepagents/labels?q=help+wanted">标签</Card>
-      <Card title="LangGraph" icon="topology-ring" href="https://github.com/langchain-ai/langgraphjs/labels?q=help+wanted">标签</Card>
-      <Card title="Deep Agents" icon="robot" href="https://github.com/langchain-ai/deepagentsjs/labels?q=help+wanted">标签</Card>
-    </Columns>
-  </Accordion>
-
-  <Accordion title="Build a new integration" icon="plug-connected">
-    任何人都可以构建并发布自己的LangChain集成包。新集成不被接受为 `langchain-ai` 存储库的 PR — 它们必须独立发布到 PyPI 或 npm。
-
-    <Card title="LangChain" icon="link" href="/oss/javascript/contributing/integrations-langchain">构建LangChain集成指南</Card>
-    <Card title="Deep Agents sandboxes" icon="cube" href="/oss/javascript/contributing/integrations-langchain">构建沙箱集成指南</Card>
-  </Accordion>
-</AccordionGroup>
+> **构建新的集成**
+>
+> 任何人都可以构建并发布自己的LangChain集成包。新集成不被接受为 `langchain-ai` 存储库的 PR — 它们必须独立发布到 PyPI 或 npm。
+>
+>> **[LangChain](/oss/javascript/contributing/integrations-langchain)**
+>>
+>> 构建 LangChain 集成指南
+>
+>> **[Deep Agents sandboxes](/oss/javascript/contributing/integrations-langchain)**
+>>
+>> 构建沙箱集成指南
 
 ## 问题和拉取请求要求
 
-您可以直接提交针对拼写错误和小修复的拉取请求，无需出现问题、事先得到维护者批准或分配。<Warning>
-  **较大的更改，例如新的教程、指南或概念页面，在打开拉取请求之前需要链接的问题和维护者批准。** 等到维护者批准您的方法并将问题分配给您。在批准和分配之前打开的较大 PR 可能会自动关闭，并且在分配之前不会进行审核。
-</Warning>
+您可以直接提交针对拼写错误和小修复的拉取请求，无需出现问题、事先获得维护者批准或分配。> [!警告]
+>
+> **较大的更改，例如新的教程、指南或概念页面，在打开拉取请求之前需要链接的问题和维护者批准。** 等到维护者批准您的方法并将问题分配给您。在批准和分配之前打开的较大 PR 可能会自动关闭，并且在分配之前不会进行审核。
 
-所有拉取请求都应该表现出有意义的努力和上下文理解。 **如果创建拉取请求所需的工作量少于维护人员审查它所需的工作量，则不应提交该贡献。** 低强度的路过式贡献（无论它们是如何生成的）通常在上下文相关性、准确性和质量方面达不到标准。大规模自动化贡献代表着对我们人类工作的拒绝服务攻击。<Warning>
-  **我们优先考虑由实际使用引起的问题。**问题板是分配维护者注意力的机制。它们并不是每个静态可发现缺陷的综合目录。请避免提交（AI）代码扫描发现的问题，而无需首先亲自验证它们并将其扎根于LangChain的公共API的实际使用中。如果维护人员怀疑某个问题尚未得到验证，则可能会在未经审查的情况下将其关闭，并且创作帐户可能会被阻止。
-</Warning>
+所有拉取请求都应该表现出有意义的努力和上下文理解。 **如果创建拉取请求所需的工作量少于维护人员审查它所需的工作量，则不应提交该贡献。** 低强度的路过式贡献（无论它们是如何生成的）通常在上下文相关性、准确性和质量方面达不到标准。大规模自动化贡献代表着对我们人类工作的拒绝服务攻击。> [!警告]
+>
+> **我们优先考虑由实际使用引起的问题。**问题板是分配维护者注意力的机制。它们并不是每个静态可发现缺陷的综合目录。请避免提交（AI）代码扫描发现的问题，而无需首先亲自验证这些问题并将其扎根于LangChain的公共API的实际使用中。如果维护人员怀疑某个问题尚未得到验证，则可能会在未经审查的情况下将其关闭，并且创作帐户可能会被阻止。
 
 所有外部拉取请求必须满足以下要求：
 
@@ -119,12 +141,6 @@ LangChain 帮助组建了生成人工智能领域最大的开发者社区，并�
 
 ***
 
-<div>
-  <Callout icon="terminal-2">
-    [Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
-  </Callout>
+[Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
 
-  <Callout icon="edit">
-    [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/oss/contributing/overview.mdx) 或 [file an issue](https://github.com/langchain-ai/docs/issues/new/choose)。
-  </Callout>
-</div>
+[Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/oss/contributing/overview.mdx) 或 [file an issue](https://github.com/langchain-ai/docs/issues/new/choose)。

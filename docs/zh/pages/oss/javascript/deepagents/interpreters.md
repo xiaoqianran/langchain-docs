@@ -8,37 +8,35 @@
 
 解释器在代理循环内为代理提供了一个可编程的**内存中**工作空间。代理编写代码来完成任务，运行时执行它并仅返回相关结果。中间结果不会成为模型上下文的一部分。
 
-其中 [sandboxes](/oss/javascript/deepagents/sandboxes) 是对环境进行操作的代码优先方式（例如运行命令、安装依赖项和编辑文件），而解释器是用于编写工具、保留状态以及决定应返回模型的信息的代码优先方式。
+其中，[sandboxes](/oss/javascript/deepagents/sandboxes)是一种对环境进行操作的代码优先方式（例如运行命令、安装依赖项和编辑文件），而解释器是一种代码优先方式，用于编写工具、保留状态以及决定应返回模型的信息。
 
-<Warning>
-  口译员位于[**beta**](/oss/javascript/versioning)。 API 和生命周期行为可能会在版本之间发生变化。
-</Warning>
+> [!警告]
+>
+> 口译员位于 [**beta**](/oss/javascript/versioning)。 API 和生命周期行为可能会在版本之间发生变化。
 
-<Note>
-  口译员需要`@langchain/quickjs`。
-</Note>
+> [!注意]
+>
+> 口译员需要`@langchain/quickjs`。
 
 ## 为什么要使用口译员？大多数代理工作在模型推理和工具调用之间交替进行。一个模型可以一次触发多个工具调用，但是该批次在发出时就被固定了。没有任何东西可以循环、在结果上分支、重试失败或将一个调用的输出提供给下一个调用而无需另一个模型轮转，并且每个结果都返回到模型的上下文。该模型还决定发出多少次调用，因此要求它在数百个项目上分派工作是不可靠的，而且它往往覆盖一个样本而不是每个项目。
 
 解释器将该编排转移到代码中，以便模型推理“做什么”，而不是每个中间步骤。
 
-<CardGroup>
-  <Card title="Programmatic tool calling (PTC)" icon="tool" href="#programmatic-tool-calling-ptc">
-    从解释器代码中调用选定的工具，包括循环、重试、分支和并行批处理。
-  </Card>
+> **[Programmatic tool calling (PTC)](#programmatic-tool-calling-ptc)**
+>
+> 从解释器代码中调用选定的工具，包括循环、重试、分支和并行批处理。
 
-  <Card title="Dynamic subagents" icon="arrows-split" href="#dynamic-subagents">
-    从代码中调度子代理，以针对大量输入进行扇出、验证和递归工作流程。
-  </Card>
+> **[Dynamic subagents](#dynamic-subagents)**
+>
+> 从代码中分派子代理，以进行大量输入的扇出、验证和递归工作流程。
 
-  <Card title="Stateful work" icon="database" href="#how-interpreters-work">
-    将中间值保持在运行时状态，而不会使模型上下文过载。
-  </Card>
+> **[Stateful work](#how-interpreters-work)**
+>
+> 将中间值保持在运行时状态，而不会使模型上下文过载。
 
-  <Card title="Deterministic transforms" icon="code" href="#how-interpreters-work">
-    对结构化数据进行排序、分组、解析、验证、评分和聚合，无需再次进行模型转换。
-  </Card>
-</CardGroup>
+> **[Deterministic transforms](#how-interpreters-work)**
+>
+> 对结构化数据进行排序、分组、解析、验证、评分和聚合，无需再次进行模型转换。
 
 ## 选择一种模式对代理循环内的代码使用解释器：组合工具、保留状态以及控制返回模型的内容。
 
@@ -46,7 +44,7 @@
 
 |需要|使用|
 | - | - |
-|一两个简单的外部通话|正常工具调用 |
+|一两个简单的外部通话 |正常工具调用 |
 |纯内存 JavaScript：循环、分支、重试或数据转换（无外部工具）|口译 |
 |许多从代码编排的外部工具调用（需要[PTC](#programmatic-tool-calling-ptc)）| [programmatic tool calling (PTC)](#programmatic-tool-calling-ptc) 口译员 |
 |许多独立的工作单元、多个视角或对大量输入的递归分析 | [dynamic subagents](/oss/javascript/deepagents/dynamic-subagents) 口译员 |
@@ -56,91 +54,87 @@
 
 安装 QuickJS 中间件包，然后使用 `createDeepAgent` 上的 `middleware` 参数传递解释器中间件。
 
-<CodeGroup>
-  ```bash npm theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  npm install deepagents @langchain/quickjs
-  ```
+```bash npm theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+npm install deepagents @langchain/quickjs
+```
 
-  ```bash pnpm theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  pnpm add deepagents @langchain/quickjs
-  ```
+```bash pnpm theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+pnpm add deepagents @langchain/quickjs
+```
 
-  ```bash yarn theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  yarn add deepagents @langchain/quickjs
-  ```
-</CodeGroup>
+```bash yarn theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+yarn add deepagents @langchain/quickjs
+```
 
-<CodeGroup>
-  ```ts Google theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  import { createDeepAgent } from "deepagents";
-  import { createCodeInterpreterMiddleware } from "@langchain/quickjs";
+```ts Google theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+import { createDeepAgent } from "deepagents";
+import { createCodeInterpreterMiddleware } from "@langchain/quickjs";
 
-  const agent = createDeepAgent({
-    model: "google:gemini-3.6-flash",
-    middleware: [createCodeInterpreterMiddleware()],
-  });
-  ```
+const agent = createDeepAgent({
+  model: "google:gemini-3.6-flash",
+  middleware: [createCodeInterpreterMiddleware()],
+});
+```
 
-  ```ts OpenAI theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  import { createDeepAgent } from "deepagents";
-  import { createCodeInterpreterMiddleware } from "@langchain/quickjs";
+```ts OpenAI theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+import { createDeepAgent } from "deepagents";
+import { createCodeInterpreterMiddleware } from "@langchain/quickjs";
 
-  const agent = createDeepAgent({
-    model: "openai:gpt-5.5",
-    middleware: [createCodeInterpreterMiddleware()],
-  });
-  ```
+const agent = createDeepAgent({
+  model: "openai:gpt-5.5",
+  middleware: [createCodeInterpreterMiddleware()],
+});
+```
 
-  ```ts Anthropic theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  import { createDeepAgent } from "deepagents";
-  import { createCodeInterpreterMiddleware } from "@langchain/quickjs";
+```ts Anthropic theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+import { createDeepAgent } from "deepagents";
+import { createCodeInterpreterMiddleware } from "@langchain/quickjs";
 
-  const agent = createDeepAgent({
-    model: "anthropic:claude-sonnet-5",
-    middleware: [createCodeInterpreterMiddleware()],
-  });
-  ```
+const agent = createDeepAgent({
+  model: "anthropic:claude-sonnet-5",
+  middleware: [createCodeInterpreterMiddleware()],
+});
+```
 
-  ```ts OpenRouter theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  import { createDeepAgent } from "deepagents";
-  import { createCodeInterpreterMiddleware } from "@langchain/quickjs";
+```ts OpenRouter theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+import { createDeepAgent } from "deepagents";
+import { createCodeInterpreterMiddleware } from "@langchain/quickjs";
 
-  const agent = createDeepAgent({
-    model: "openrouter:z-ai/glm-5.2",
-    middleware: [createCodeInterpreterMiddleware()],
-  });
-  ```
+const agent = createDeepAgent({
+  model: "openrouter:z-ai/glm-5.2",
+  middleware: [createCodeInterpreterMiddleware()],
+});
+```
 
-  ```ts Fireworks theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  import { createDeepAgent } from "deepagents";
-  import { createCodeInterpreterMiddleware } from "@langchain/quickjs";
+```ts Fireworks theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+import { createDeepAgent } from "deepagents";
+import { createCodeInterpreterMiddleware } from "@langchain/quickjs";
 
-  const agent = createDeepAgent({
-    model: "fireworks:accounts/fireworks/models/glm-5p2",
-    middleware: [createCodeInterpreterMiddleware()],
-  });
-  ```
+const agent = createDeepAgent({
+  model: "fireworks:accounts/fireworks/models/glm-5p2",
+  middleware: [createCodeInterpreterMiddleware()],
+});
+```
 
-  ```ts Baseten theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  import { createDeepAgent } from "deepagents";
-  import { createCodeInterpreterMiddleware } from "@langchain/quickjs";
+```ts Baseten theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+import { createDeepAgent } from "deepagents";
+import { createCodeInterpreterMiddleware } from "@langchain/quickjs";
 
-  const agent = createDeepAgent({
-    model: "baseten:zai-org/GLM-5.2",
-    middleware: [createCodeInterpreterMiddleware()],
-  });
-  ```
+const agent = createDeepAgent({
+  model: "baseten:zai-org/GLM-5.2",
+  middleware: [createCodeInterpreterMiddleware()],
+});
+```
 
-  ```ts Ollama theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  import { createDeepAgent } from "deepagents";
-  import { createCodeInterpreterMiddleware } from "@langchain/quickjs";
+```ts Ollama theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+import { createDeepAgent } from "deepagents";
+import { createCodeInterpreterMiddleware } from "@langchain/quickjs";
 
-  const agent = createDeepAgent({
-    model: "ollama:north-mini-code-1.0",
-    middleware: [createCodeInterpreterMiddleware()],
-  });
-  ```
-</CodeGroup>
+const agent = createDeepAgent({
+  model: "ollama:north-mini-code-1.0",
+  middleware: [createCodeInterpreterMiddleware()],
+});
+```
 
 ## 口译员如何工作中间件向代理添加了一个`eval`工具。当有用时，代理编写 JavaScript 并调用 `eval`；您不直接致电口译员。该工具在 QuickJS 上下文中运行代码，其变量可以在 `eval` 调用之间持续存在，具体取决于持久性 `mode`。它捕获 `console.log`、`console.warn` 和 `console.error`，并返回最后一个表达式的结果。
 
@@ -162,7 +156,7 @@ const totals = rows.reduce((acc, row) => {
 totals;
 ```
 
-代码运行在[**QuickJS**](https://github.com/quickjs-ng/quickjs)，一个轻量级的 JavaScript 运行时。默认情况下，解释器代码无法访问主机文件系统、网络、shell、包管理器或时钟。它可以计算、保存状态以及写入 `console.log`、`console.warn` 或 `console.error`，仅此而已。
+代码运行于[**QuickJS**](https://github.com/quickjs-ng/quickjs)，一个轻量级的 JavaScript 运行时。默认情况下，解释器代码无法访问主机文件系统、网络、shell、包管理器或时钟。它可以计算、保存状态以及写入 `console.log`、`console.warn` 或 `console.error`，仅此而已。
 
 两个明确的桥梁扩展了这一范围：
 
@@ -185,77 +179,75 @@ const result: string = await tools.webSearch({
 
 使用显式允许列表启用 PTC：
 
-<CodeGroup>
-  ```ts Google theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  import { createDeepAgent } from "deepagents";
-  import { createCodeInterpreterMiddleware } from "@langchain/quickjs";
+```ts Google theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+import { createDeepAgent } from "deepagents";
+import { createCodeInterpreterMiddleware } from "@langchain/quickjs";
 
-  const agent = createDeepAgent({
-    model: "google:gemini-3.6-flash",
-    middleware: [createCodeInterpreterMiddleware({ ptc: ["web_search"] })],
-  });
-  ```
+const agent = createDeepAgent({
+  model: "google:gemini-3.6-flash",
+  middleware: [createCodeInterpreterMiddleware({ ptc: ["web_search"] })],
+});
+```
 
-  ```ts OpenAI theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  import { createDeepAgent } from "deepagents";
-  import { createCodeInterpreterMiddleware } from "@langchain/quickjs";
+```ts OpenAI theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+import { createDeepAgent } from "deepagents";
+import { createCodeInterpreterMiddleware } from "@langchain/quickjs";
 
-  const agent = createDeepAgent({
-    model: "openai:gpt-5.5",
-    middleware: [createCodeInterpreterMiddleware({ ptc: ["web_search"] })],
-  });
-  ```
+const agent = createDeepAgent({
+  model: "openai:gpt-5.5",
+  middleware: [createCodeInterpreterMiddleware({ ptc: ["web_search"] })],
+});
+```
 
-  ```ts Anthropic theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  import { createDeepAgent } from "deepagents";
-  import { createCodeInterpreterMiddleware } from "@langchain/quickjs";
+```ts Anthropic theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+import { createDeepAgent } from "deepagents";
+import { createCodeInterpreterMiddleware } from "@langchain/quickjs";
 
-  const agent = createDeepAgent({
-    model: "anthropic:claude-sonnet-5",
-    middleware: [createCodeInterpreterMiddleware({ ptc: ["web_search"] })],
-  });
-  ```
+const agent = createDeepAgent({
+  model: "anthropic:claude-sonnet-5",
+  middleware: [createCodeInterpreterMiddleware({ ptc: ["web_search"] })],
+});
+```
 
-  ```ts OpenRouter theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  import { createDeepAgent } from "deepagents";
-  import { createCodeInterpreterMiddleware } from "@langchain/quickjs";
+```ts OpenRouter theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+import { createDeepAgent } from "deepagents";
+import { createCodeInterpreterMiddleware } from "@langchain/quickjs";
 
-  const agent = createDeepAgent({
-    model: "openrouter:z-ai/glm-5.2",
-    middleware: [createCodeInterpreterMiddleware({ ptc: ["web_search"] })],
-  });
-  ```
+const agent = createDeepAgent({
+  model: "openrouter:z-ai/glm-5.2",
+  middleware: [createCodeInterpreterMiddleware({ ptc: ["web_search"] })],
+});
+```
 
-  ```ts Fireworks theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  import { createDeepAgent } from "deepagents";
-  import { createCodeInterpreterMiddleware } from "@langchain/quickjs";
+```ts Fireworks theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+import { createDeepAgent } from "deepagents";
+import { createCodeInterpreterMiddleware } from "@langchain/quickjs";
 
-  const agent = createDeepAgent({
-    model: "fireworks:accounts/fireworks/models/glm-5p2",
-    middleware: [createCodeInterpreterMiddleware({ ptc: ["web_search"] })],
-  });
-  ```
+const agent = createDeepAgent({
+  model: "fireworks:accounts/fireworks/models/glm-5p2",
+  middleware: [createCodeInterpreterMiddleware({ ptc: ["web_search"] })],
+});
+```
 
-  ```ts Baseten theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  import { createDeepAgent } from "deepagents";
-  import { createCodeInterpreterMiddleware } from "@langchain/quickjs";
+```ts Baseten theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+import { createDeepAgent } from "deepagents";
+import { createCodeInterpreterMiddleware } from "@langchain/quickjs";
 
-  const agent = createDeepAgent({
-    model: "baseten:zai-org/GLM-5.2",
-    middleware: [createCodeInterpreterMiddleware({ ptc: ["web_search"] })],
-  });
-  ```
+const agent = createDeepAgent({
+  model: "baseten:zai-org/GLM-5.2",
+  middleware: [createCodeInterpreterMiddleware({ ptc: ["web_search"] })],
+});
+```
 
-  ```ts Ollama theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  import { createDeepAgent } from "deepagents";
-  import { createCodeInterpreterMiddleware } from "@langchain/quickjs";
+```ts Ollama theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+import { createDeepAgent } from "deepagents";
+import { createCodeInterpreterMiddleware } from "@langchain/quickjs";
 
-  const agent = createDeepAgent({
-    model: "ollama:north-mini-code-1.0",
-    middleware: [createCodeInterpreterMiddleware({ ptc: ["web_search"] })],
-  });
-  ```
-</CodeGroup>
+const agent = createDeepAgent({
+  model: "ollama:north-mini-code-1.0",
+  middleware: [createCodeInterpreterMiddleware({ ptc: ["web_search"] })],
+});
+```
 
 启用 PTC 后，代理可以从解释器代码调用列入许可名单的工具。此示例并行搜索多个主题并在返回模型之前合并结果：
 
@@ -271,9 +263,9 @@ const results = await Promise.all(
 results.join("\n\n");
 ```
 
-<Warning>
-  PTC 调用当前通过解释器桥执行，不经过正常的工具调用路径。因此，每次 PTC 调用的工具调用都不会强制执行`interruptOn` 批准工作流程。
-</Warning>
+> [!警告]
+>
+> PTC 调用当前通过解释器桥执行，不经过正常的工具调用路径。因此，每次 PTC 调用的工具调用都不会强制执行`interruptOn` 批准工作流程。
 
 ## 动态子代理
 
@@ -310,22 +302,22 @@ reviews.join("\n\n");
 |顶级`await`|是的 |在解释器代码中使用 Promise |
 | `console.log`、`warn`、`error` 捕捉 |是的 |使用 `captureConsole: false` 禁用 |
 |代理工具|没有 |添加 PTC 许可名单 |
-|文件系统访问 |没有 |通过 PTC 许可名单添加 [built-in filesystem tools](/oss/javascript/deepagents/overview#virtual-filesystem-access) |
-|网络接入|没有 |通过PTC公开特定的网络工具 |
+|文件系统访问 |没有 |通过 PTC 允许列表添加 [built-in filesystem tools](/oss/javascript/deepagents/overview#virtual-filesystem-access) |
+|网络接入|没有 |通过PTC公开特定的网络工具|
 |挂钟或日期时间访问 |没有 |如果需要，公开显式时间工具 |
 | Shell 命令、软件包安装、测试、操作系统级执行 |没有 |使用 [sandbox backend](/oss/javascript/deepagents/sandboxes) |
 
-<Note>
-  **代码执行如何工作**
-
-  解释器代码通过 [QuickJS-Emscripten](https://github.com/justjake/quickjs-emscripten) 在 WASM 沙盒 QuickJS 运行时运行，而不是在主机 Node.js 进程中运行。将解释器视为功能范围内的执行层：仅桥接代理所需的工具和子代理，并缩小 PTC 许可名单的范围。
-</Note>
+> [!注意]
+>
+> **代码执行如何工作**
+>
+> 解释器代码通过 [QuickJS-Emscripten](https://github.com/justjake/quickjs-emscripten) 在 WASM 沙盒 QuickJS 运行时运行，而不是在主机 Node.js 进程中运行。将解释器视为功能范围内的执行层：仅桥接代理所需的工具和子代理，并缩小 PTC 许可名单的范围。
 
 ## 配置
 
-`createCodeInterpreterMiddleware`接受以下选项：|选项|默认|目的|
+`createCodeInterpreterMiddleware`接受以下选项：|选项 |默认|目的|
 | - | - | - |
-| `memoryLimitBytes` | `64 * 1024 * 1024` <br />(64 MB) |每个会话的 QuickJS 堆内存上限。 |
+| `memoryLimitBytes` | `64 * 1024 * 1024` (64 MB) |每个会话的 QuickJS 堆内存上限。 |
 | `maxStackSizeBytes` | `320 * 1024` |每个会话的 QuickJS 堆栈大小上限。 |
 | `executionTimeoutMs` | `5000` |每个 `eval` 调用的超时限制（以毫秒为单位）。负值禁用超时。 |
 | `toolName` | `"eval"` |暴露给模型的解释器工具的名称。 |
@@ -336,12 +328,8 @@ reviews.join("\n\n");
 | `maxPtcCalls` | `256` |每个 `eval` 允许最多 `tools.*` 调用。仅在受信任的环境中设置为 `null`。参见[Programmatic tool calling (PTC)](#programmatic-tool-calling-ptc)和[Security](#security)。 |
 | `subagents` | `true` |当代理有子代理时，公开内置的`task()`全局。设置为 `false` 要求通过普通 `task` 工具调度。参见[Dynamic subagents](#dynamic-subagents)。 |
 
-***<div>
-  <Callout icon="terminal-2">
-    [Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时答案。
-  </Callout>
+***
 
-  <Callout icon="edit">
-    [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/oss/deepagents/interpreters.mdx) 或 [file an issue](https://github.com/langchain-ai/docs/issues/new/choose)。
-  </Callout>
-</div>
+[Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
+
+[Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/oss/deepagents/interpreters.mdx) 或 [file an issue](https://github.com/langchain-ai/docs/issues/new/choose)。

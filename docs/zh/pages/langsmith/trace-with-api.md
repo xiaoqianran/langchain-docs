@@ -10,25 +10,25 @@
 
 有关端点和请求/响应模式的完整列表，请参阅[API reference](/langsmith/smith-api-ref)。
 
-<Warning>
-  我们强烈建议使用 [Python](/langsmith/smith-python-sdk) 或 [TypeScript](/langsmith/smith-js-ts-sdk) SDK 将跟踪发送到 LangSmith，而不是直接使用 REST API。 SDK 包括批处理和后台发送优化，可防止跟踪影响应用程序的性能。
+> [!警告]
+>
+> 我们强烈建议使用 [Python](/langsmith/smith-python-sdk) 或 [TypeScript](/langsmith/smith-js-ts-sdk) SDK 将跟踪发送到 LangSmith，而不是直接使用 REST API。 SDK 包括批处理和后台发送优化，可防止跟踪影响应用程序的性能。
+>
+> 如果您无法使用 SDK，请注意同步发送跟踪可能会影响应用程序性能。
 
-  如果您无法使用 SDK，请注意同步发送跟踪可能会影响应用程序性能。
-</Warning>
-
-<Note>
-  我们建议使用 **UUID v7** 作为运行 ID。 UUIDv7 嵌入了时间戳，可保留跟踪中运行的正确时间顺序。使用 LangSmith SDK 中的 `uuid7()` 生成它们，或参阅 [Specify a custom run ID](/langsmith/annotate-code#specify-a-custom-run-id) 了解更多详细信息。
-</Note>
+> [!注意]
+>
+> 我们建议使用 **UUID v7** 作为运行 ID。 UUIDv7 嵌入了时间戳，可保留跟踪中运行的正确时间顺序。使用 LangSmith SDK 中的 `uuid7()` 生成它们，或参阅 [Specify a custom run ID](/langsmith/annotate-code#specify-a-custom-run-id) 了解更多详细信息。
 
 ## 基本追踪
 
-记录运行的最简单方法是通过 `POST /runs` 和 `PATCH /runs` 端点。此方法需要最少的信息来建立跟踪层次结构。
-
-<Note>
-  使用 LangSmith REST API 时，请在请求标头中提供 [API key](/langsmith/create-account-api-key) 作为 `"x-api-key"`。如果您的 API 密钥链接到多个工作区，请在标题中使用 `"x-tenant-id"` 指定工作区。
-
-  在这种方法中，您不需要设置 `dotted_order` 或 `trace_id` 字段 - 系统会自动生成它们。虽然更简单，但与批量摄取相比，它速度较慢且受到较低的速率限制。
-</Note>
+记录运行的最简单方法是通过 `POST /runs` 和 `PATCH /runs` 端点。此方法需要最少的信息来建立跟踪层次结构。> [!注意]
+>
+> 使用 LangSmith REST API 时，请在请求标头中提供 [API key](/langsmith/create-account-api-key) 作为 `"x-api-key"`。
+>
+> 如果您的 API 密钥链接到多个工作区，请在标题中使用 `"x-tenant-id"` 指定工作区。
+>
+> 在这种方法中，您不需要设置 `dotted_order` 或 `trace_id` 字段 - 系统会自动生成它们。虽然更简单，但与批量摄取相比，它速度较慢且受到较低的速率限制。
 
 以下示例跟踪父链运行和子 LLM 运行的聊天完成情况。在子运行上设置 [⟦T12⟧](/langsmith/run-data-format) 将其附加到其父运行：
 
@@ -314,14 +314,8 @@ batch_ingest_runs(api_url, api_key, patches=patches)
 
 * [Run (span) data format](/langsmith/run-data-format)
 * [Specify a custom run ID](/langsmith/annotate-code#specify-a-custom-run-id)
-* [Custom instrumentation](/langsmith/annotate-code)
+* [Custom instrumentation](/langsmith/annotate-code)***
 
-***
+[Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
 
-<div>
-  <Callout icon="terminal-2">
-    [Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
-  </Callout><Callout icon="edit">
-    [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/trace-with-api.mdx) 或 [file an issue](https://github.com/langchain-ai/docs/issues/new/choose)。
-  </Callout>
-</div>
+[Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/trace-with-api.mdx) 或 [file an issue](https://github.com/langchain-ai/docs/issues/new/choose)。

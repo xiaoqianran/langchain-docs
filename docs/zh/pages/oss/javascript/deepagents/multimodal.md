@@ -32,14 +32,14 @@ const result = await agent.invoke({
 
 ## 内置`read_file`工具
 
-对于受支持的多模式文件，harness `read_file` 工具会返回 [standard content blocks](/oss/javascript/langchain/messages#standard-content-blocks)，而不是纯文本。当所选模型支持相应的模态时，代理可以检查存储在其[filesystem](/oss/javascript/deepagents/overview#virtual-filesystem-access)中的图像、文档和媒体。检查提供商的文档以了解您的模型支持的 MIME 类型。<Accordion title="Supported multimodal file extensions">
-  |类型 |扩展 |
-  | - | - |
-  | [Image](/oss/javascript/langchain/messages#multimodal) | `.png`、`.jpg`、`.jpeg`、`.gif`、`.webp`、`.heic`、`.heif` |
-  | [Video](/oss/javascript/langchain/messages#multimodal) | `.mp4`、`.mpeg`、`.mov`、`.avi`、`.flv`、`.mpg`、`.webm`、`.wmv`、`.3gpp` |
-  | [Audio](/oss/javascript/langchain/messages#multimodal) | `.wav`、`.mp3`、`.aiff`、`.aac`、`.ogg`、`.flac` |
-  | [File](/oss/javascript/langchain/messages#multimodal) | `.pdf`、`.ppt`、`.pptx` |
-</Accordion>
+对于受支持的多模式文件，harness `read_file` 工具会返回 [standard content blocks](/oss/javascript/langchain/messages#standard-content-blocks)，而不是纯文本。当所选模型支持相应的模态时，代理可以检查存储在其[filesystem](/oss/javascript/deepagents/overview#virtual-filesystem-access)中的图像、文档和媒体。检查提供商的文档以了解您的模型支持的 MIME 类型。> **支持的多模式文件扩展名**
+>
+> |类型 |扩展 |
+> | - | - |
+> | [Image](/oss/javascript/langchain/messages#multimodal) | `.png`、`.jpg`、`.jpeg`、`.gif`、`.webp`、`.heic`、`.heif` |
+> | [Video](/oss/javascript/langchain/messages#multimodal) | `.mp4`、`.mpeg`、`.mov`、`.avi`、`.flv`、`.mpg`、`.webm`、`.wmv`、`.3gpp` |
+> | [Audio](/oss/javascript/langchain/messages#multimodal) | `.wav`、`.mp3`、`.aiff`、`.aac`、`.ogg`、`.flac` |
+> | [File](/oss/javascript/langchain/messages#multimodal) | `.pdf`、`.ppt`、`.pptx` |
 
 ## 自定义工具输出
 
@@ -64,9 +64,9 @@ const captureScreenshot = tool(
 
 返回值将转换为模型在下一回合读取的`ToolMessage`。使用结果消息上的`content_blocks`访问标准化表示。
 
-<Tip>
-  当工具生成图像或其他大型二进制数据时，将工件保存到 [backend](/oss/javascript/deepagents/backends) 并返回简洁的文本描述以及路径或 URL。这可以使消息历史记录更小，并且与 [context compression](/oss/javascript/deepagents/context-engineering#context-compression) 配合使用效果更好。
-</Tip>
+> [!提示]
+>
+> 当工具生成图像或其他大型二进制数据时，将工件保存到 [backend](/oss/javascript/deepagents/backends) 并返回简洁的文本描述以及路径或 URL。这可以使消息历史记录更小，并且与 [context compression](/oss/javascript/deepagents/context-engineering#context-compression) 配合使用效果更好。
 
 ## 上下文压缩和多模式内容
 
@@ -111,12 +111,6 @@ const captureScreenshot = tool(
 
 ***
 
-<div>
-  <Callout icon="terminal-2">
-    [Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
-  </Callout>
+[Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
 
-  <Callout icon="edit">
-    [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/oss/deepagents/multimodal.mdx) 或 [file an issue](https://github.com/langchain-ai/docs/issues/new/choose)。
-  </Callout>
-</div>
+[Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/oss/deepagents/multimodal.mdx) 或 [file an issue](https://github.com/langchain-ai/docs/issues/new/choose)。

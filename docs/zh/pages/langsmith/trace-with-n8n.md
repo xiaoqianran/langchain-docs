@@ -8,9 +8,9 @@
 
 [n8n](https://n8n.io/)是一个工作流程自动化平台，包含基于LangChain构建的高级人工智能功能。您可以将 n8n 实例连接到 LangSmith 来记录和监控 AI 工作流程运行。
 
-<Note>
-  LangSmith 跟踪仅适用于**自托管 n8n 实例**。
-</Note>
+> [!注意]
+>
+> LangSmith 跟踪仅适用于 **自托管 n8n 实例**。
 
 ## 先决条件
 
@@ -47,12 +47,6 @@
 
 ***
 
-<div>
-  <Callout icon="terminal-2">
-    [Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
-  </Callout>
+[Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
 
-  <Callout icon="edit">
-    [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/trace-with-n8n.mdx) 或 [file an issue](https://github.com/langchain-ai/docs/issues/new/choose)。
-  </Callout>
-</div>
+[Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/trace-with-n8n.mdx) 或 [file an issue](https://github.com/langchain-ai/docs/issues/new/choose)。

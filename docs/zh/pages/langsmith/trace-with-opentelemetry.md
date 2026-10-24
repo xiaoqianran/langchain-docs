@@ -39,36 +39,32 @@ flowchart TD
 
 OpenTelemetry SDK 检测您的应用程序代码并发出跨度。 Span 通过 OTLP 协议传输到 OpenTelemetry Collector，该收集器将它们同时批处理并路由到一个或多个目的地（*扇出*）。 LangSmith 在其 OTLP 端点接收跨度并将其显示为仪表板中的跟踪。
 
-<Note>
-  在以下请求中适当更新自托管安装或区域 SaaS 的 LangSmith URL：GCP EU 使用 `eu.api.smith.langchain.com`； GCP 亚太地区使用`apac.api.smith.langchain.com`； AWS US 使用`aws.api.smith.langchain.com`。
-</Note>## 跟踪 LangChain 应用程序
+> [!注意]
+>
+> 根据以下请求，针对自托管安装或区域 SaaS 适当更新 LangSmith URL：GCP EU 使用 `eu.api.smith.langchain.com`； GCP 亚太地区使用`apac.api.smith.langchain.com`； AWS US 使用`aws.api.smith.langchain.com`。## 跟踪 LangChain 应用程序
 
 如果您使用 LangChain 或 LangGraph，请使用内置集成来跟踪您的应用程序：
 
 1. 安装支持 OpenTelemetry 的 LangSmith 软件包：
 
-   <CodeGroup>
-     ```bash pip theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-     pip install "langsmith[otel]"
-     pip install langchain
-     ```
-   </CodeGroup>
+   ```bash pip theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+   pip install "langsmith[otel]"
+   pip install langchain
+   ```
 
-   <Info>
-     需要 Python SDK 版本`langsmith>=0.3.18`。我们建议使用 `langsmith>=0.4.25` 来受益于重要的 OpenTelemetry 修复。
-   </Info>
+   > [!注意]
+   >
+   > 需要 Python SDK 版本`langsmith>=0.3.18`。我们建议使用 `langsmith>=0.4.25` 来受益于重要的 OpenTelemetry 修复。
 
 2. 在您的 LangChain/LangGraph 应用程序中，通过设置 `LANGSMITH_OTEL_ENABLED` 环境变量来启用 OpenTelemetry 集成：
 
-   <CodeGroup>
-     ```bash Shell theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-     LANGSMITH_OTEL_ENABLED=true
-     LANGSMITH_TRACING=true
-     LANGSMITH_ENDPOINT=https://api.smith.langchain.com
-     LANGSMITH_API_KEY=<your_langsmith_api_key>
-     # For LangSmith API keys linked to multiple workspaces, set the LANGSMITH_WORKSPACE_ID environment variable to specify which workspace to use.
-     ```
-   </CodeGroup>
+   ```bash Shell theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+   LANGSMITH_OTEL_ENABLED=true
+   LANGSMITH_TRACING=true
+   LANGSMITH_ENDPOINT=https://api.smith.langchain.com
+   LANGSMITH_API_KEY=<your_langsmith_api_key>
+   # For LangSmith API keys linked to multiple workspaces, set the LANGSMITH_WORKSPACE_ID environment variable to specify which workspace to use.
+   ```
 
 3. 创建具有跟踪功能的LangChain应用程序。例如：
 
@@ -95,41 +91,39 @@ OpenTelemetry SDK 检测您的应用程序代码并发出跨度。 Span 通过 O
 
 1. 安装 OpenTelemetry SDK、OpenTelemetry 导出程序包以及 OpenAI 包：
 
-   <CodeGroup>
-     ```bash pip theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-     pip install openai
-     pip install opentelemetry-sdk
-     pip install opentelemetry-exporter-otlp
-     ```
-   </CodeGroup>
+   ```bash pip theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+   pip install openai
+   pip install opentelemetry-sdk
+   pip install opentelemetry-exporter-otlp
+   ```
 
 2. 为端点设置环境变量，替换您的特定值：
 
-   <CodeGroup>
-     ```bash Shell theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-     OTEL_EXPORTER_OTLP_ENDPOINT=https://api.smith.langchain.com/otel
-     OTEL_EXPORTER_OTLP_HEADERS="x-api-key=<your langsmith api key>"
-     ```
-   </CodeGroup><Note>
-     `OTEL_EXPORTER_OTLP_ENDPOINT` 是基本 URL。 OTLP/HTTP 导出器自行附加信号路径 (`/v1/traces`)，因此不包含它：将基本端点设置为 `https://api.smith.langchain.com/otel/v1/traces` 将跟踪发送到 `/otel/v1/traces/v1/traces`，后者返回 `404`。仅将完整路径包含在每个信号的 `OTEL_EXPORTER_OTLP_TRACES_ENDPOINT` 变量或收集器导出器的 `traces_endpoint` 中，这些变量完全按照给定的方式使用。
-   </Note>
+   ```bash Shell theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+   OTEL_EXPORTER_OTLP_ENDPOINT=https://api.smith.langchain.com/otel
+   OTEL_EXPORTER_OTLP_HEADERS="x-api-key=<your langsmith api key>"
+   ```> [!注意]
+   >
+   > `OTEL_EXPORTER_OTLP_ENDPOINT` 是基本 URL。 OTLP/HTTP 导出器自行附加信号路径 (`/v1/traces`)，因此不包含它：将基本端点设置为 `https://api.smith.langchain.com/otel/v1/traces` 将跟踪发送到 `/otel/v1/traces/v1/traces`，后者返回 `404`。仅将完整路径包含在每个信号的 `OTEL_EXPORTER_OTLP_TRACES_ENDPOINT` 变量或收集器导出器的 `traces_endpoint` 中，这些变量完全按照给定的方式使用。
 
-   <Note>
-     如果您是自托管 LangSmith，请将基本端点替换为您的 LangSmith API 端点并附加 `/api/v1`。例如：`OTEL_EXPORTER_OTLP_ENDPOINT=https://ai-company.com/api/v1/otel`
-   </Note>
+   > [!注意]
+   >
+   > 如果您是自托管 LangSmith，请将基本端点替换为您的 LangSmith API 端点并附加 `/api/v1`。例如：`OTEL_EXPORTER_OTLP_ENDPOINT=https://ai-company.com/api/v1/otel`
 
    可选：指定除“default”之外的自定义项目名称：
 
-   <CodeGroup>
-     ```bash Shell theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-     OTEL_EXPORTER_OTLP_ENDPOINT=https://api.smith.langchain.com/otel
-     OTEL_EXPORTER_OTLP_HEADERS="x-api-key=<your langsmith api key>,Langsmith-Project=<project name>"
-     ```
-   </CodeGroup>
-
-   <Note>
-     **基于代理的工作区。** 代理寻址在 OTLP 路径上尚不可用，该路径不会从请求或跨度中读取代理地址。使用 `Langsmith-Project` 标头来命名跟踪项目，无论您的工作区的组织方式如何。寻址模型参见[Log traces to an agent](/langsmith/log-traces-to-agent)。
-   </Note>
+   ```bash Shell theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+   OTEL_EXPORTER_OTLP_ENDPOINT=https://api.smith.langchain.com/otel
+   OTEL_EXPORTER_OTLP_HEADERS="x-api-key=<your langsmith api key>,Langsmith-Project=<project name>"
+   ```> [!注意]
+   >
+   > **基于代理的工作区。** 要将 OTLP 跟踪发送到代理和环境而不是项目，请将 `Langsmith-Project` 标头替换为以下两个标头：
+   >
+   > * **`Langsmith-Agent-Id`**：代理的标识符。长度范围为1～63个小写字母、数字或连字符，以字母开头，以字母或数字结尾。 LangSmith 在首次使用时创建代理，这需要 [⟦T34⟧ permission](/langsmith/organization-workspace-operations#projects)。已存档的代理仍保留其标识符，因此 LangSmith 拒绝使用 `409` 发送给它的请求。
+   > * **`Langsmith-Agent-Environment`**：痕迹所属的环境。 `local`、`development`、`staging` 或 `production` 之一。
+   >
+   > 例如，设置`OTEL_EXPORTER_OTLP_HEADERS="x-api-key=<your langsmith api key>,Langsmith-Agent-Id=<agent id>,Langsmith-Agent-Environment=<environment>"`。使用 `langsmith>=0.14.9`，当未设置 `OTEL_EXPORTER_OTLP_HEADERS` 时，Python SDK 的 OpenTelemetry 导出器会设置 `LANGSMITH_AGENT_ID` 和 `LANGSMITH_AGENT_ENVIRONMENT` 的标头。使用 TypeScript SDK 或其他 OpenTelemetry 导出器，自行设置标头。
+   >> 标头适用于请求中的每个范围。发送两个标头或都不发送：LangSmith 拒绝设置一个标头而不发送另一个标头的请求，或者与 `Langsmith-Project` 一起设置的请求，并出现 `400` 错误。在 [self-hosted](/langsmith/self-hosted) LangSmith 上，基于代理的工作区不可用，LangSmith 拒绝请求，并显示 `403` 错误和消息 `agent addressing is not enabled for this workspace`。 Span 属性（包括 `gen_ai.agent.name`）不会将跟踪发送到代理。有关向代理发送跟踪的工作原理，请参阅[Log traces to an agent](/langsmith/log-traces-to-agent)。
 
 3. 记录跟踪。
 
@@ -196,30 +190,32 @@ OpenTelemetry SDK 检测您的应用程序代码并发出跨度。 Span 通过 O
        call_openai()
    ```
 
-4. 在 LangSmith 仪表板 ([example](https://smith.langchain.com/public/4f2890b1-f105-44aa-a6cf-c777dcc27a37/r)) 中查看跟踪。<Note>
-  如果您的跨度引用来自另一个服务或进程的父级，请参阅 [Context propagation in distributed tracing](#context-propagation-in-distributed-tracing) 了解父子链接的工作原理以及何时可以删除跨度。
-</Note>
+4. 在 LangSmith 仪表板 ([example](https://smith.langchain.com/public/4f2890b1-f105-44aa-a6cf-c777dcc27a37/r)) 中查看跟踪。
+
+> [!注意]
+>
+> 如果您的跨度引用来自另一个服务或进程的父级，请参阅 [Context propagation in distributed tracing](#context-propagation-in-distributed-tracing) 了解父子链接的工作原理以及何时可以删除跨度。
 
 ## 将跟踪发送给备用提供商
 
 虽然 LangSmith 是 OpenTelemetry 跟踪的默认目标，但您还可以配置 OpenTelemetry 将跟踪发送到其他可观测平台。
 
-<Info>
-  在 LangSmith Python SDK **≥ 0.4.1** 中可用。我们建议 **≥ 0.4.25** 进行修复，以提高 OTEL 导出和混合扇出稳定性。
-</Info>
-
-### 使用环境变量进行全局配置
+> [!注意]
+>
+> 适用于 LangSmith Python SDK **≥ 0.4.1**。我们建议 **≥ 0.4.25** 进行修复，以提高 OTEL 导出和混合扇出稳定性。### 使用环境变量进行全局配置
 
 默认情况下，LangSmith OpenTelemetry 导出器会将数据发送到LangSmith API OTEL 端点，但这可以通过设置标准 OTEL 环境变量来自定义：
 
 ```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 OTEL_EXPORTER_OTLP_ENDPOINT: Override the endpoint URL
-OTEL_EXPORTER_OTLP_HEADERS: Headers for your endpoint, like its API key (if unset, your LangSmith API key and project are sent)
+OTEL_EXPORTER_OTLP_HEADERS: Headers for your endpoint, like its API key (if unset, your LangSmith API key and project are sent, or your agent and environment with `langsmith>=0.14.9`)
 OTEL_SERVICE_NAME: Set a custom service name (defaults to "langsmith")
 OTEL_RESOURCE_ATTRIBUTES: Attach custom metadata fields at the process level (see below)
 ```
 
-### 添加进程级资源属性您可以使用标准 OpenTelemetry `OTEL_RESOURCE_ATTRIBUTES` 环境变量将自定义元数据附加到进程发出的每个跟踪。与跨度级别属性（在代码中为每个跨度设置）不同，资源属性在进程级别设置一次并自动传播到所有跨度。这使得它们非常适合您想要用来标记跟踪的任何自定义元数据，例如用户名、请求 ID、环境或部署版本。
+### 添加进程级资源属性
+
+您可以使用标准 OpenTelemetry `OTEL_RESOURCE_ATTRIBUTES` 环境变量将自定义元数据附加到进程发出的每个跟踪。与跨度级别属性（在代码中为每个跨度设置）不同，资源属性在进程级别设置一次并自动传播到所有跨度。这使得它们非常适合您想要用来标记跟踪的任何自定义元数据，例如用户名、请求 ID、环境或部署版本。
 
 该值是以逗号分隔的 `key=value` 对列表：
 
@@ -231,9 +227,7 @@ OTEL_RESOURCE_ATTRIBUTES="username=abc,id=1,environment=production"
 
 这些属性显示在跟踪元数据下的LangSmith中，您可以使用它来过滤和分组工作区中的跟踪。
 
-LangSmith 默认使用 HTTP 跟踪导出器。如果您想使用自己的跟踪提供商，您可以：
-
-1.如上所示设置OTEL环境变量，或者
+LangSmith 默认使用 HTTP 跟踪导出器。如果您想使用自己的跟踪提供商，您可以：1.如上所示设置OTEL环境变量，或者
 2. 在初始化 LangChain 组件之前设置全局跟踪提供程序，LangSmith 将检测并使用该提供程序，而不是创建自己的跟踪提供程序。
 
 ### 配置备用 OTLP 端点
@@ -272,27 +266,27 @@ model = ChatOpenAI()
 chain = prompt | model
 result = chain.invoke({"topic": "programming"})
 print(result.content)
-```<Info>
-  混合跟踪在 **≥ 0.4.1** 版本中可用。要**仅**发送跟踪到您的 OTEL 端点，请设置：
+```
 
-  `LANGSMITH_OTEL_ONLY="true"`
-  （建议：使用 **langsmith ≥ 0.4.25**。）
-</Info>
+> [!注意]
+>
+> 混合跟踪在 **≥ 0.4.1** 版本中可用。要**仅**发送跟踪到您的 OTEL 端点，请设置：
+>
+> `LANGSMITH_OTEL_ONLY="true"`
+>（建议：使用**langsmith ≥ 0.4.25**。）
 
 ## 支持的 OpenTelemetry 属性和事件映射
 
 当通过 OpenTelemetry 发送跟踪到 LangSmith 时，以下属性将映射到 LangSmith 字段：
 
-### 核心LangSmith属性
-
-| OpenTelemetry 属性 | LangSmith领域|笔记|
+### 核心LangSmith属性| OpenTelemetry 属性 | LangSmith 领域 |笔记|
 | - | - | - |
 | `langsmith.trace.name` |运行名称 |覆盖运行的跨度名称 |
 | `langsmith.span.kind` | [Run type](/langsmith/run-data-format#run-types) |值：`llm`、`chain`、`tool`、`retriever`、`embedding`、`prompt`、`parser` |
 | `langsmith.trace.id` |跟踪 ID |跨度所属的跟踪（根运行）；设置为附加到现有跟踪 |
 | `langsmith.span.id` |运行 ID |该跨度的运行 ID（UUID）；覆盖从 OTLP 跨度 ID 派生的 ID |
 | `langsmith.span.parent_id` |家长跑步ID |通过运行 ID 将跨度嵌套在现有运行下 |
-| `langsmith.span.dotted_order` |点线顺序|在跟踪树中的位置：`<parent.dotted_order>.<timestamp><span.id>`。参见[⟦T53⟧](https://docs.langchain.com/langsmith/run-data-format#what-is-dotted_order)。 |
+| `langsmith.span.dotted_order` |点线顺序|在跟踪树中的位置：`<parent.dotted_order>.<timestamp><span.id>`。参见[⟦T71⟧](https://docs.langchain.com/langsmith/run-data-format#what-is-dotted_order)。 |
 | `langsmith.trace.session_id` |会话 ID |相关跟踪的会话标识符 |
 | `langsmith.trace.session_name` |会议名称 |会议名称 |
 | `langsmith.span.tags` |标签 |附加到跨度的自定义标签（逗号分隔） |
@@ -322,15 +316,15 @@ print(result.content)
 | `gen_ai.response.model` | `invocation_params.model` |响应中返回的型号名称 |
 | `gen_ai.request.temperature` | `invocation_params.temperature` |温度设定|
 | `gen_ai.request.top_p` | `invocation_params.top_p` | Top-p 采样设置 |
-| `gen_ai.request.max_tokens` | `invocation_params.max_tokens` |最大令牌设置|
-| `gen_ai.request.frequency_penalty` | `invocation_params.frequency_penalty` |频率惩罚设置|
+| `gen_ai.request.max_tokens` | `invocation_params.max_tokens` |最大令牌设置 |
+| `gen_ai.request.frequency_penalty` | `invocation_params.frequency_penalty` |频率惩罚设置 |
 | `gen_ai.request.presence_penalty` | `invocation_params.presence_penalty` |存在惩罚设置 |
 | `gen_ai.request.seed` | `invocation_params.seed` |用于生成的随机种子 |
 | `gen_ai.request.stop_sequences` | `invocation_params.stop` |停止生成的序列 |
 | `gen_ai.request.top_k` | `invocation_params.top_k` | Top-k 采样参数 |
 | `gen_ai.request.encoding_formats` | `invocation_params.encoding_formats` |输出编码格式 |
 
-### GenAI 使用指标| OpenTelemetry 属性 | LangSmith 领域 |笔记|
+### GenAI 使用指标| OpenTelemetry 属性 | LangSmith领域|笔记|
 | - | - | - |
 | `gen_ai.usage.input_tokens` | `usage_metadata.input_tokens` |使用的输入令牌数量 |
 | `gen_ai.usage.output_tokens` | `usage_metadata.output_tokens` |使用的输出令牌数量 |
@@ -339,10 +333,10 @@ print(result.content)
 | `gen_ai.usage.cache_write.input_tokens` | `usage_metadata.input_token_details.cache_creation` |写入提供程序缓存的输入令牌 |
 | `gen_ai.usage.reasoning.output_tokens` | `usage_metadata.output_token_details.reasoning` |使用的推理令牌数量 |
 | `gen_ai.usage.prompt_tokens` | `usage_metadata.input_tokens` |使用的输入令牌数量（已弃用） |
-| `gen_ai.usage.completion_tokens` | `usage_metadata.output_tokens` |使用的输出令牌数量（已弃用）|
+| `gen_ai.usage.completion_tokens` | `usage_metadata.output_tokens` |使用的输出令牌数量（已弃用） |
 | `gen_ai.usage.cache_creation.input_tokens` | `usage_metadata.input_token_details.cache_creation` |写入提供程序缓存的输入令牌（已弃用） |
 | `gen_ai.usage.details.reasoning_tokens` | `usage_metadata.output_token_details.reasoning` |使用的推理令牌数量（已弃用） |
-| `gen_ai.usage.cache_read_input_tokens` | `usage_metadata.input_token_details.cache_read` |从提供者缓存读取的输入令牌（OpenLLMetry 拼写） |
+| `gen_ai.usage.cache_read_input_tokens` | `usage_metadata.input_token_details.cache_read` |从提供者缓存读取的输入令牌（OpenLLMetry 拼写）|
 | `gen_ai.usage.cache_creation_input_tokens` | `usage_metadata.input_token_details.cache_creation` |写入提供程序缓存的输入令牌（OpenLLMetry 拼写）|
 
 如果一个跨度为同一缓存或推理字段设置多个属性，LangSmith 首先使用当前语义约定属性，然后是已弃用的点式拼写，然后是 OpenLLMetry 下划线拼写。
@@ -383,9 +377,9 @@ print(result.content)
 
 ### 提示模板属性
 
-| OpenTelemetry 属性 | LangSmith领域|笔记|
+| OpenTelemetry 属性 | LangSmith 领域 |笔记|
 | - | - | - |
-| `llm.prompt_template.variables` |运行类型|将运行类型设置为“提示”，与 input.value | 一起使用
+| `llm.prompt_template.variables` |运行类型|将运行类型设置为“提示”，与 input.value 一起使用 |
 
 ### 检索器属性
 
@@ -396,12 +390,12 @@ print(result.content)
 
 ### 工具属性
 
-| OpenTelemetry 属性 | LangSmith领域|笔记|
+| OpenTelemetry 属性 | LangSmith 领域 |笔记|
 | - | - | - |
 | `tools` | `invocation_params.tools` |工具定义数组 |
 | `tool_arguments` | `invocation_params.tool_arguments` | JSON 或键值对形式的工具参数 |
 
-### Logfire 属性| OpenTelemetry 属性 | LangSmith 领域 |笔记|
+### Logfire 属性| OpenTelemetry 属性 | LangSmith领域|笔记|
 | - | - | - |
 | `prompt` | `inputs` | Logfire提示输入|
 | `all_messages_events` | `outputs` | Logfire消息事件输出|
@@ -409,7 +403,7 @@ print(result.content)
 
 ### OpenTelemetry 事件映射
 
-|活动名称| LangSmith 领域 |笔记|
+|活动名称| LangSmith领域|笔记|
 | - | - | - |
 | `gen_ai.content.prompt` | `inputs` |从事件属性中提取提示内容 |
 | `gen_ai.content.completion` | `outputs` |从事件属性中提取完成内容 |
@@ -431,8 +425,8 @@ print(result.content)
 
 对于选择事件：* `finish_reason` → 选择完成原因
 * `message.content`→选择留言内容
-* `message.role`→选择消息角色
-* `tool_calls.{n}.id` → 工具调用 ID
+* `message.role` → 选择消息角色
+* `tool_calls.{n}.id` → 工具调用ID
 * `tool_calls.{n}.function.name` → 工具功能名称
 * `tool_calls.{n}.function.arguments` → 工具函数参数
 * `tool_calls.{n}.type` → 工具调用类型
@@ -484,15 +478,15 @@ if __name__ == "__main__":
     asyncio.run(main())
 ```
 
-<Note>
-  您不需要设置 OTEL 环境变量或导出器。 `configure()` 自动连接LangSmith；乐器（如`GoogleADKInstrumentor`）创建跨度。
-</Note>
+> [!注意]
+>
+> 您不需要设置 OTEL 环境变量或导出器。 `configure()` 自动连接LangSmith；乐器（如`GoogleADKInstrumentor`）创建跨度。
 
 这是 LangSmith 中生成的轨迹的[example](https://smith.langchain.com/public/d6d47eeb-511e-4fda-ad17-2caa7bd7150b/r)。
 
 ### 将 OpenTelemetry 跨度链接到 LangSmith SDK 跟踪
 
-本机 OTLP `parentSpanId` 无法引用现有 LangSmith 运行：OTLP 范围 ID 为 8 字节，而 LangSmith 运行 ID 是完整的 UUID。要将 OpenTelemetry 范围附加到在其他位置创建的运行（例如，LangChain-SDK 运行），请使用父级的完整 UUID 设置 `langsmith.*` 属性。它们覆盖从本机 OTLP 范围派生的 ID，因此该范围嵌套在同一跟踪中的现有运行下。
+本机 OTLP `parentSpanId` 无法引用现有的 LangSmith 运行：OTLP 范围 ID 为 8 字节，而 LangSmith 运行 ID 是完整的 UUID。要将 OpenTelemetry 范围附加到在其他位置创建的运行（例如，LangChain-SDK 运行），请使用父级的完整 UUID 设置 `langsmith.*` 属性。它们会覆盖从本机 OTLP 范围派生的 ID，因此该范围嵌套在同一跟踪中的现有运行下。
 
 ```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 from langsmith import uuid7
@@ -524,15 +518,15 @@ def emit_otel_child(parent):
 def my_agent():
     parent = get_current_run_tree()  # the LangSmith run to nest under
     emit_otel_child(parent)
-```<Note>
-  `langsmith.span.dotted_order` 对跨度在跟踪树中的位置进行编码。从父级的 [⟦T226⟧](https://docs.langchain.com/langsmith/run-data-format#what-is-dotted_order)（一个点）构建它，然后是该跨度的时间戳，后跟它的 `langsmith.span.id`。
-</Note>
+```> [!注意]
+>
+> `langsmith.span.dotted_order` 对跨度在跟踪树中的位置进行编码。从父级的 [⟦T244⟧](https://docs.langchain.com/langsmith/run-data-format#what-is-dotted_order)（一个点）构建它，然后是该跨度的时间戳，后跟它的 `langsmith.span.id`。
 
 ### 将附件添加到跟踪
 
 LangSmith支持[attaching files to traces](/langsmith/upload-files-with-traces)。当构建具有多模式输入或输出的代理时，这非常有用。使用 OpenTelemetry 进行跟踪时也支持附件。
 
-下面的示例 [traces a Google ADK agent](/langsmith/trace-with-google-adk) 并向跟踪添加了一个附件。它使用 LangSmith 的 `OtelSpanProcessor` 和自定义 `AttachmentSpanProcessor` 的组合，后者使用 [⟦T230⟧](https://opentelemetry-python.readthedocs.io/en/latest/sdk/trace.export.html#opentelemetry.sdk.trace.export.SimpleSpanProcessor.on_end) 将图像附件添加到父范围。
+下面的示例 [traces a Google ADK agent](/langsmith/trace-with-google-adk) 并向跟踪添加了一个附件。它使用 LangSmith 的 `OtelSpanProcessor` 和自定义 `AttachmentSpanProcessor` 的组合，该自定义 `AttachmentSpanProcessor` 使用 [⟦T248⟧](https://opentelemetry-python.readthedocs.io/en/latest/sdk/trace.export.html#opentelemetry.sdk.trace.export.SimpleSpanProcessor.on_end) 将图像附件添加到父范围。
 
 ```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 import asyncio
@@ -661,11 +655,11 @@ if __name__ == "__main__":
 
 ### 使用 OpenTelemetry 收集器进行扇出
 
-当您需要OTEL扇出时，请使用`LANGSMITH_OTEL_ENABLED=true`。配置您的应用程序以发出 OTEL 跨度一次，然后使用 OpenTelemetry Collector 将它们路由到 LangSmith 和任何其他可观察性后端。
+当您需要 OTEL 扇出时，请使用`LANGSMITH_OTEL_ENABLED=true`。配置您的应用程序以发出 OTEL 跨度一次，然后使用 OpenTelemetry Collector 将它们路由到 LangSmith 和任何其他可观察性后端。
 
 当您跟踪应用程序并需要多目标路由时，请使用此方法。如果您正在操作 LangSmith 平台基础设施遥测（来自 Kubernetes 上自托管 LangSmith 服务的日志、指标、跟踪），请改用 [Configure your collector for LangSmith telemetry](/langsmith/langsmith-collector) 指南。对于更高级的场景，您可以使用 OpenTelemetry Collector 将遥测数据分散到多个目标。与在应用程序代码中配置多个导出器相比，这是一种更具可扩展性的方法。
 
-1. [Install the OpenTelemetry Collector](https://opentelemetry.io/docs/collector/getting-started/) 适合您的环境。
+1. [Install the OpenTelemetry Collector](https://opentelemetry.io/docs/collector/getting-started/) 适用于您的环境。
 
 2. 创建导出到多个目的地的配置文件（例如`otel-collector-config.yaml`）：
 
@@ -749,13 +743,14 @@ if __name__ == "__main__":
 * **Span ID**：当前span的唯一标识符
 * **采样决策**：指示是否应该对该迹线进行采样
 
-<Warning>
-  **父级从未发送到LangSmith的跨度将被删除。**
-
-  OTel 端点是异步的：它接受批处理，返回 `200`，并在后台实现运行。当跨度的 `parentSpanId` 引用 LangSmith 尚未接收到的父级时，一旦父级到达，子级就会被缓冲和链接。无论顺序如何，这都有效；子级可以在单独的请求中先于其父级到达，并且仍然可以正确链接。
-
-  但是，如果父跨度**从不**导出到LangSmith，则缓冲的子跨度将过期并且永远不会显示为运行。 LangSmith不会返回错误，因为`200`是在处理之前发送的。当只有部分分布式跟踪达到LangSmith时，通常会发生这种情况：父级由导出到不同后端的服务发出，或者通过采样决策删除。为了避免无声丢失，请确保LangSmith中所需的每个跨度也将其祖先导出到缓冲窗口内的LangSmith。在自托管部署中，此窗口由 `REDIS_RUNS_EXPIRY_SECONDS` 控制（默认 12 小时）。
-</Warning>
+> [!警告]
+>
+> **父级从未发送到LangSmith的跨度将被删除。**
+>
+> OTel 端点是异步的：它接受批处理，返回 `200`，并在后台实现运行。当跨度的 `parentSpanId` 引用 LangSmith 尚未接收到的父级时，一旦父级到达，子级就会被缓冲和链接。无论顺序如何，这都有效；子级可以在单独的请求中先于其父级到达，并且仍然可以正确链接。
+>
+> 但是，如果父跨度 **从不** 导出到 LangSmith，则缓冲的子跨度将过期并且永远不会显示为运行。 LangSmith不会返回错误，因为`200`是在处理之前发送的。当只有部分分布式跟踪达到LangSmith时，通常会发生这种情况：父级由导出到不同后端的服务发出，或者通过采样决策删除。
+>> 为了避免无声丢失，请确保 LangSmith 中所需的每个跨度也将其祖先导出到缓冲窗口内的LangSmith。在自托管部署中，此窗口由 `REDIS_RUNS_EXPIRY_SECONDS` 控制（默认 12 小时）。
 
 #### 使用 LangChain 设置分布式跟踪
 
@@ -833,12 +828,6 @@ if __name__ == "__main__":
 
 ***
 
-<div>
-  <Callout icon="terminal-2">
-    [Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
-  </Callout>
+[Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
 
-  <Callout icon="edit">
-    [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/trace-with-opentelemetry.mdx) 或 [file an issue](https://github.com/langchain-ai/docs/issues/new/choose)。
-  </Callout>
-</div>
+[Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/trace-with-opentelemetry.mdx) 或 [file an issue](https://github.com/langchain-ai/docs/issues/new/choose)。

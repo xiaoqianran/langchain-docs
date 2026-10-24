@@ -29,22 +29,20 @@ Deep Agents 可与任何支持 [tool calling](/oss/javascript/langchain/models#t
 
 ### 模型评估[Deep Agents eval suite](https://github.com/langchain-ai/deepagents/tree/main/libs/evals#readme)测试热门型号：
 
-<div>
-  |型号|总体 |文件操作 |检索|工具使用|内存|对话 |总结|
-  | :- | -: | -: | -: | -: | -: | -: | -: |
-  | google\_genai:gemini-3.6-flash | [82%](https://github.com/langchain-ai/deepagents/actions/runs/25455998535) | **[100%](https://github.com/langchain-ai/deepagents/actions/runs/25455998535)** | **[100%](https://github.com/langchain-ai/deepagents/actions/runs/25455998535)** | **[90%](https://github.com/langchain-ai/deepagents/actions/runs/25455998535)** | [54%](https://github.com/langchain-ai/deepagents/actions/runs/25290479270) | [38%](https://github.com/langchain-ai/deepagents/actions/runs/25455998535) | [80%](https://github.com/langchain-ai/deepagents/actions/runs/25455998535) |
-  |打开：gpt-5.4 | [18%](https://github.com/langchain-ai/deepagents/actions/runs/24906955930) | **[100%](https://github.com/langchain-ai/deepagents/actions/runs/24172638583)** | **[100%](https://github.com/langchain-ai/deepagents/actions/runs/24172638583)** | [18%](https://github.com/langchain-ai/deepagents/actions/runs/24906955930) | [51%](https://github.com/langchain-ai/deepagents/actions/runs/24172638583) | [38%](https://github.com/langchain-ai/deepagents/actions/runs/24425363630) | **[100%](https://github.com/langchain-ai/deepagents/actions/runs/24172638583)** |
-  |打开：gpt-5.5 | [80%](https://github.com/langchain-ai/deepagents/actions/runs/25455998535) | [92%](https://github.com/langchain-ai/deepagents/actions/runs/25455998535) | **[100%](https://github.com/langchain-ai/deepagents/actions/runs/25455998535)** | [84%](https://github.com/langchain-ai/deepagents/actions/runs/25455998535) | [64%](https://github.com/langchain-ai/deepagents/actions/runs/25345307822) | **[52%](https://github.com/langchain-ai/deepagents/actions/runs/25455998535)** | [80%](https://github.com/langchain-ai/deepagents/actions/runs/25455998535) |
-  |人类：claude-opus-4-6 | [26%](https://github.com/langchain-ai/deepagents/actions/runs/24906955930) | [92%](https://github.com/langchain-ai/deepagents/actions/runs/24172638583) | **[100%](https://github.com/langchain-ai/deepagents/actions/runs/24172638583)** | [26%](https://github.com/langchain-ai/deepagents/actions/runs/24906955930) | **[69%](https://github.com/langchain-ai/deepagents/actions/runs/24172638583)** | [22%](https://github.com/langchain-ai/deepagents/actions/runs/24363491527) | **[100%](https://github.com/langchain-ai/deepagents/actions/runs/24172638583)** |
-  |人类：claude-opus-4-7 | [80%](https://github.com/langchain-ai/deepagents/actions/runs/25455998535) | **[100%](https://github.com/langchain-ai/deepagents/actions/runs/25455998535)** | **[100%](https://github.com/langchain-ai/deepagents/actions/runs/25455998535)** | [82%](https://github.com/langchain-ai/deepagents/actions/runs/25455998535) | — | [48%](https://github.com/langchain-ai/deepagents/actions/runs/25455998535) | **[100%](https://github.com/langchain-ai/deepagents/actions/runs/25455998535)** |
-  |基础：moonshotai/Kimi-K2.6 | [79%](https://github.com/langchain-ai/deepagents/actions/runs/25475600906) | [92%](https://github.com/langchain-ai/deepagents/actions/runs/25475600906) | **[100%](https://github.com/langchain-ai/deepagents/actions/runs/25475600906)** | [84%](https://github.com/langchain-ai/deepagents/actions/runs/25475600906) | — | [43%](https://github.com/langchain-ai/deepagents/actions/runs/25475600906) | [60%](https://github.com/langchain-ai/deepagents/actions/runs/25475600906) |
-  |基础：zai-org/GLM-5 | [77%](https://github.com/langchain-ai/deepagents/actions/runs/25403850424) | **[100%](https://github.com/langchain-ai/deepagents/actions/runs/25403850424)** | **[100%](https://github.com/langchain-ai/deepagents/actions/runs/25403850424)** | [89%](https://github.com/langchain-ai/deepagents/actions/runs/25403850424) | [44%](https://github.com/langchain-ai/deepagents/actions/runs/23872647281) | [24%](https://github.com/langchain-ai/deepagents/actions/runs/25403850424) | [60%](https://github.com/langchain-ai/deepagents/actions/runs/25403850424) |
-  |烟花：帐户/烟花/模型/glm-5p1 | [81%](https://github.com/langchain-ai/deepagents/actions/runs/25461031650) | **[100%](https://github.com/langchain-ai/deepagents/actions/runs/25461031650)** | **[100%](https://github.com/langchain-ai/deepagents/actions/runs/25461031650)** | [87%](https://github.com/langchain-ai/deepagents/actions/runs/25461031650) | — | [33%](https://github.com/langchain-ai/deepagents/actions/runs/25461031650) | [80%](https://github.com/langchain-ai/deepagents/actions/runs/25461031650) |
-  |烟花：帐户/烟花/模型/minimax-m2p7 | [79%](https://github.com/langchain-ai/deepagents/actions/runs/25403894412) | **[100%](https://github.com/langchain-ai/deepagents/actions/runs/25403894412)** | **[100%](https://github.com/langchain-ai/deepagents/actions/runs/25403894412)** | [85%](https://github.com/langchain-ai/deepagents/actions/runs/25403894412) | — | [43%](https://github.com/langchain-ai/deepagents/actions/runs/25403894412) | [60%](https://github.com/langchain-ai/deepagents/actions/runs/25403894412) |
-  | ollama:minimax-m2.7:云 | [73%](https://github.com/langchain-ai/deepagents/actions/runs/24106499785) | [92%](https://github.com/langchain-ai/deepagents/actions/runs/24106499785) | [90%](https://github.com/langchain-ai/deepagents/actions/runs/24106499785) | [82%](https://github.com/langchain-ai/deepagents/actions/runs/24106499785) | [38%](https://github.com/langchain-ai/deepagents/actions/runs/23872647281) | [29%](https://github.com/langchain-ai/deepagents/actions/runs/24106499785) | [60%](https://github.com/langchain-ai/deepagents/actions/runs/24106499785) || openrouter：deepseek/deepseek-v4-flash | [81%](https://github.com/langchain-ai/deepagents/actions/runs/25677815395) | **[100%](https://github.com/langchain-ai/deepagents/actions/runs/25677815395)** | [80%](https://github.com/langchain-ai/deepagents/actions/runs/25677815395) | **[90%](https://github.com/langchain-ai/deepagents/actions/runs/25677815395)** | — | [33%](https://github.com/langchain-ai/deepagents/actions/runs/25677815395) | [80%](https://github.com/langchain-ai/deepagents/actions/runs/25677815395) |
-  | openrouter：minimax/minimax-m2.7 | [80%](https://github.com/langchain-ai/deepagents/actions/runs/25455998535) | [92%](https://github.com/langchain-ai/deepagents/actions/runs/25455998535) | **[100%](https://github.com/langchain-ai/deepagents/actions/runs/25455998535)** | [89%](https://github.com/langchain-ai/deepagents/actions/runs/25455998535) | — | [43%](https://github.com/langchain-ai/deepagents/actions/runs/25455998535) | [60%](https://github.com/langchain-ai/deepagents/actions/runs/25455998535) |
-  |开放路由器：z-ai/glm-5.1 | **[89%](https://github.com/langchain-ai/deepagents/actions/runs/25387853856)** | [92%](https://github.com/langchain-ai/deepagents/actions/runs/25234719085) | **[100%](https://github.com/langchain-ai/deepagents/actions/runs/25234686782)** | [89%](https://github.com/langchain-ai/deepagents/actions/runs/25387853856) | — | [33%](https://github.com/langchain-ai/deepagents/actions/runs/25225620506) | [80%](https://github.com/langchain-ai/deepagents/actions/runs/25235579950) |
-</div>
+|型号|总体 |文件操作 |检索|工具使用|内存|对话 |总结|
+| :-| -: | -: | -: | -: | -: | -: | -: |
+| google\_genai:gemini-3.6-flash | [82%](https://github.com/langchain-ai/deepagents/actions/runs/25455998535) | **[100%](https://github.com/langchain-ai/deepagents/actions/runs/25455998535)** | **[100%](https://github.com/langchain-ai/deepagents/actions/runs/25455998535)** | **[90%](https://github.com/langchain-ai/deepagents/actions/runs/25455998535)** | [54%](https://github.com/langchain-ai/deepagents/actions/runs/25290479270) | [38%](https://github.com/langchain-ai/deepagents/actions/runs/25455998535) | [80%](https://github.com/langchain-ai/deepagents/actions/runs/25455998535) |
+|打开：gpt-5.4 | [18%](https://github.com/langchain-ai/deepagents/actions/runs/24906955930) | **[100%](https://github.com/langchain-ai/deepagents/actions/runs/24172638583)** | **[100%](https://github.com/langchain-ai/deepagents/actions/runs/24172638583)** | [18%](https://github.com/langchain-ai/deepagents/actions/runs/24906955930) | [51%](https://github.com/langchain-ai/deepagents/actions/runs/24172638583) | [38%](https://github.com/langchain-ai/deepagents/actions/runs/24425363630) | **[100%](https://github.com/langchain-ai/deepagents/actions/runs/24172638583)** |
+|打开：gpt-5.5 | [80%](https://github.com/langchain-ai/deepagents/actions/runs/25455998535) | [92%](https://github.com/langchain-ai/deepagents/actions/runs/25455998535) | **[100%](https://github.com/langchain-ai/deepagents/actions/runs/25455998535)** | [84%](https://github.com/langchain-ai/deepagents/actions/runs/25455998535) | [64%](https://github.com/langchain-ai/deepagents/actions/runs/25345307822) | **[52%](https://github.com/langchain-ai/deepagents/actions/runs/25455998535)** | [80%](https://github.com/langchain-ai/deepagents/actions/runs/25455998535) |
+|人类：claude-opus-4-6 | [26%](https://github.com/langchain-ai/deepagents/actions/runs/24906955930) | [92%](https://github.com/langchain-ai/deepagents/actions/runs/24172638583) | **[100%](https://github.com/langchain-ai/deepagents/actions/runs/24172638583)** | [26%](https://github.com/langchain-ai/deepagents/actions/runs/24906955930) | **[69%](https://github.com/langchain-ai/deepagents/actions/runs/24172638583)** | [22%](https://github.com/langchain-ai/deepagents/actions/runs/24363491527) | **[100%](https://github.com/langchain-ai/deepagents/actions/runs/24172638583)** |
+|人类：claude-opus-4-7 | [80%](https://github.com/langchain-ai/deepagents/actions/runs/25455998535) | **[100%](https://github.com/langchain-ai/deepagents/actions/runs/25455998535)** | **[100%](https://github.com/langchain-ai/deepagents/actions/runs/25455998535)** | [82%](https://github.com/langchain-ai/deepagents/actions/runs/25455998535) | — | [48%](https://github.com/langchain-ai/deepagents/actions/runs/25455998535) | **[100%](https://github.com/langchain-ai/deepagents/actions/runs/25455998535)** |
+|基础：moonshotai/Kimi-K2.6 | [79%](https://github.com/langchain-ai/deepagents/actions/runs/25475600906) | [92%](https://github.com/langchain-ai/deepagents/actions/runs/25475600906) | **[100%](https://github.com/langchain-ai/deepagents/actions/runs/25475600906)** | [84%](https://github.com/langchain-ai/deepagents/actions/runs/25475600906) | — | [43%](https://github.com/langchain-ai/deepagents/actions/runs/25475600906) | [60%](https://github.com/langchain-ai/deepagents/actions/runs/25475600906) |
+|基础：zai-org/GLM-5 | [77%](https://github.com/langchain-ai/deepagents/actions/runs/25403850424) | **[100%](https://github.com/langchain-ai/deepagents/actions/runs/25403850424)** | **[100%](https://github.com/langchain-ai/deepagents/actions/runs/25403850424)** | [89%](https://github.com/langchain-ai/deepagents/actions/runs/25403850424) | [44%](https://github.com/langchain-ai/deepagents/actions/runs/23872647281) | [24%](https://github.com/langchain-ai/deepagents/actions/runs/25403850424) | [60%](https://github.com/langchain-ai/deepagents/actions/runs/25403850424) |
+|烟花：帐户/烟花/模型/glm-5p1 | [81%](https://github.com/langchain-ai/deepagents/actions/runs/25461031650) | **[100%](https://github.com/langchain-ai/deepagents/actions/runs/25461031650)** | **[100%](https://github.com/langchain-ai/deepagents/actions/runs/25461031650)** | [87%](https://github.com/langchain-ai/deepagents/actions/runs/25461031650) | — | [33%](https://github.com/langchain-ai/deepagents/actions/runs/25461031650) | [80%](https://github.com/langchain-ai/deepagents/actions/runs/25461031650) |
+|烟花：帐户/烟花/模型/minimax-m2p7 | [79%](https://github.com/langchain-ai/deepagents/actions/runs/25403894412) | **[100%](https://github.com/langchain-ai/deepagents/actions/runs/25403894412)** | **[100%](https://github.com/langchain-ai/deepagents/actions/runs/25403894412)** | [85%](https://github.com/langchain-ai/deepagents/actions/runs/25403894412) | — | [43%](https://github.com/langchain-ai/deepagents/actions/runs/25403894412) | [60%](https://github.com/langchain-ai/deepagents/actions/runs/25403894412) |
+| ollama:minimax-m2.7:云 | [73%](https://github.com/langchain-ai/deepagents/actions/runs/24106499785) | [92%](https://github.com/langchain-ai/deepagents/actions/runs/24106499785) | [90%](https://github.com/langchain-ai/deepagents/actions/runs/24106499785) | [82%](https://github.com/langchain-ai/deepagents/actions/runs/24106499785) | [38%](https://github.com/langchain-ai/deepagents/actions/runs/23872647281) | [29%](https://github.com/langchain-ai/deepagents/actions/runs/24106499785) | [60%](https://github.com/langchain-ai/deepagents/actions/runs/24106499785) || openrouter：deepseek/deepseek-v4-flash | [81%](https://github.com/langchain-ai/deepagents/actions/runs/25677815395) | **[100%](https://github.com/langchain-ai/deepagents/actions/runs/25677815395)** | [80%](https://github.com/langchain-ai/deepagents/actions/runs/25677815395) | **[90%](https://github.com/langchain-ai/deepagents/actions/runs/25677815395)** | — | [33%](https://github.com/langchain-ai/deepagents/actions/runs/25677815395) | [80%](https://github.com/langchain-ai/deepagents/actions/runs/25677815395) |
+| openrouter：minimax/minimax-m2.7 | [80%](https://github.com/langchain-ai/deepagents/actions/runs/25455998535) | [92%](https://github.com/langchain-ai/deepagents/actions/runs/25455998535) | **[100%](https://github.com/langchain-ai/deepagents/actions/runs/25455998535)** | [89%](https://github.com/langchain-ai/deepagents/actions/runs/25455998535) | — | [43%](https://github.com/langchain-ai/deepagents/actions/runs/25455998535) | [60%](https://github.com/langchain-ai/deepagents/actions/runs/25455998535) |
+|开放路由器：z-ai/glm-5.1 | **[89%](https://github.com/langchain-ai/deepagents/actions/runs/25387853856)** | [92%](https://github.com/langchain-ai/deepagents/actions/runs/25234719085) | **[100%](https://github.com/langchain-ai/deepagents/actions/runs/25234686782)** | [89%](https://github.com/langchain-ai/deepagents/actions/runs/25387853856) | — | [33%](https://github.com/langchain-ai/deepagents/actions/runs/25225620506) | [80%](https://github.com/langchain-ai/deepagents/actions/runs/25235579950) |
 
 欲了解更多信息，请参阅[Eval runs](https://github.com/langchain-ai/deepagents/actions/workflows/evals.yml)。
 
@@ -54,32 +52,30 @@ Deep Agents 可与任何支持 [tool calling](/oss/javascript/langchain/models#t
 
 要配置特定于模型的参数，请使用[⟦T24⟧](https://reference.langchain.com/javascript/langchain/chat_models/universal/initChatModel)或直接实例化提供者模型类：
 
-<CodeGroup>
-  ```ts initChatModel theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  import { initChatModel } from "langchain/chat_models/universal";
-  import { createDeepAgent } from "deepagents";
+```ts initChatModel theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+import { initChatModel } from "langchain/chat_models/universal";
+import { createDeepAgent } from "deepagents";
 
-  const model = await initChatModel("google:gemini-3.6-flash", {
-    reasoningEffort: "medium", // [!code highlight]
-  });
-  const agent = createDeepAgent({ model });
-  ```
+const model = await initChatModel("google:gemini-3.6-flash", {
+  reasoningEffort: "medium", // [!code highlight]
+});
+const agent = createDeepAgent({ model });
+```
 
-  ```ts Provider package theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  import { ChatGoogle } from "@langchain/google";
-  import { createDeepAgent } from "deepagents";
+```ts Provider package theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+import { ChatGoogle } from "@langchain/google";
+import { createDeepAgent } from "deepagents";
 
-  const model = new ChatGoogle({
-    model: "gemini-3.1-pro-preview",
-    reasoningEffort: "medium", // [!code highlight]
-  });
-  const agent = createDeepAgent({ model });
-  ```
-</CodeGroup>
+const model = new ChatGoogle({
+  model: "gemini-3.1-pro-preview",
+  reasoningEffort: "medium", // [!code highlight]
+});
+const agent = createDeepAgent({ model });
+```
 
-<Note>
-  可用参数因提供商而异。有关特定于提供商的配置选项，请参阅 [chat model integrations](/oss/javascript/integrations/chat) 页面。
-</Note>
+> [!注意]
+>
+> 可用参数因提供商而异。有关特定于提供商的配置选项，请参阅 [chat model integrations](/oss/javascript/integrations/chat) 页面。
 
 ### 提供商简介
 
@@ -90,17 +86,17 @@ Deep Agents 可与任何支持 [tool calling](/oss/javascript/langchain/models#t
 
 有关完整字段列表、合并语义和插件打包，请参阅[Profiles](/oss/javascript/deepagents/profiles)。
 
-<Tip>
-  要塑造模型构建后*代理*的行为方式，请使用[harness profile](/oss/javascript/deepagents/profiles#harness-profiles)。
-</Tip>
+> [!提示]
+>
+> 为了塑造模型构建后*代理*的行为方式，请使用[harness profile](/oss/javascript/deepagents/profiles#harness-profiles)。
 
 ### OpenAI 和响应 API
 
 当您传递 `openai:...` 字符串作为模型时，Deep Agents 默认使用内置 OpenAI [provider profile](/oss/javascript/deepagents/profiles#provider-profiles) 启用 [Responses API](/oss/javascript/integrations/chat/openai#responses-api)。该路径支持OpenAI会话状态及相关功能；有关当前 API 选项，请参阅 [OpenAI provider](/oss/javascript/integrations/providers/openai) 和 [chat model](/oss/javascript/integrations/chat/openai) 文档。
 
-<Note>
-  内置 OpenAI 提供程序配置文件仅适用于模型字符串。要设置 `use_responses_api`、`store` 或 `include` 等 kwargs，请传递已配置的模型实例，或者在 Python 中，通过 [provider profile](/oss/javascript/deepagents/profiles#provider-profiles) `init_kwargs` 对它们进行分层。使用 [⟦T37⟧](https://reference.langchain.com/javascript/langchain/chat_models/universal/initChatModel) (Python) 或 `initChatModel` / `ChatOpenAI` (TypeScript) 构建实例。
-</Note>
+> [!注意]
+>
+> 内置 OpenAI 提供商配置文件仅适用于模型字符串。要设置 `use_responses_api`、`store` 或 `include` 等 kwargs，请传递已配置的模型实例，或者在 Python 中，通过 [provider profile](/oss/javascript/deepagents/profiles#provider-profiles) `init_kwargs` 对它们进行分层。使用 [⟦T37⟧](https://reference.langchain.com/javascript/langchain/chat_models/universal/initChatModel) (Python) 或 `initChatModel` / `ChatOpenAI` (TypeScript) 构建实例。
 
 使用 [OpenAI chat integration](/oss/javascript/integrations/chat/openai#responses-api) 选择响应 API 与聊天完成（`useResponsesApi`、模型 kwargs 以及您的版本公开的任何存储或输出选项）。将生成的模型实例传递给`createDeepAgent({ model })`，以便保留这些设置。## 在运行时选择模型
 
@@ -137,13 +133,13 @@ const result = await agent.invoke(
 );
 ```
 
-<Card title="View example trace" icon="chart-line" href="https://smith.langchain.com/public/45e09f7e-1d7b-4419-856a-202e800bcb8d/r">
-  为此示例打开公共 LangSmith 运行。
-</Card>
+> **[View example trace](https://smith.langchain.com/public/45e09f7e-1d7b-4419-856a-202e800bcb8d/r)**
+>
+> 为此示例打开公共 LangSmith 运行。
 
-<Tip>
-  有关更多动态模型模式（例如基于对话复杂性或成本优化的路由），请参阅LangChain代理指南中的[Dynamic model](/oss/javascript/langchain/models#dynamic-model-selection)。
-</Tip>
+> [!提示]
+>
+> 有关更多动态模型模式（例如基于对话复杂性或成本优化的路由），请参阅LangChain 代理指南中的[Dynamic model](/oss/javascript/langchain/models#dynamic-model-selection)。
 
 ## 了解更多
 
@@ -151,12 +147,6 @@ const result = await agent.invoke(
 
 ***
 
-<div>
-  <Callout icon="terminal-2">
-    [Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
-  </Callout>
+[Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
 
-  <Callout icon="edit">
-    [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/oss/deepagents/models.mdx) 或 [file an issue](https://github.com/langchain-ai/docs/issues/new/choose)。
-  </Callout>
-</div>
+[Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/oss/deepagents/models.mdx) 或 [file an issue](https://github.com/langchain-ai/docs/issues/new/choose)。

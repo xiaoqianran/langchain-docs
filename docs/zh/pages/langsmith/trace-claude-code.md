@@ -36,9 +36,13 @@
 
 ```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 claude plugin update langsmith-tracing@langsmith-claude-code-plugins
-```<Note> 市场更新本身只会刷新目录克隆。您的安装保持固定在安装时的版本目录中，因此挂钩会继续运行旧包，直到 `claude plugin update` 移动它。要下次跳过这两个步骤，请运行`/plugin`，打开**市场**→`langsmith-claude-code-plugins`并选择**启用自动更新**：第三方市场默认情况下将其关闭，启用它会同时更新市场及其安装的插件。 </Note>
+```> [!注意]
+>
+> 市场更新本身只会刷新目录克隆。您的安装保持固定在安装时的版本目录中，因此挂钩会继续运行旧包，直到 `claude plugin update` 移动它。要下次跳过这两个步骤，请运行`/plugin`，打开**市场**→`langsmith-claude-code-plugins`并选择**启用自动更新**：第三方市场默认情况下将其关闭，启用它会同时更新市场及其安装的插件。
 
-<Note> 如果您要从之前推荐的使用手动创建的停止挂钩跟踪 Claude 代码的版本迁移，请参阅 [Migrating from the manual stop hook](#migrating-from-the-manual-stop-hook)。 </Note>
+> [!注意]
+>
+> 如果您要从之前推荐的使用手动创建的停止挂钩跟踪 Claude 代码的版本进行迁移，请参阅[Migrating from the manual stop hook](#migrating-from-the-manual-stop-hook)。
 
 ### 设置环境变量
 
@@ -62,7 +66,9 @@ claude plugin update langsmith-tracing@langsmith-claude-code-plugins
 }
 ```
 
-<Note> 或者，要为所有 Claude Code 会话启用对 LangSmith 的跟踪，您可以将之前的 JSON 添加到您的 [global Claude Code settings.json](https://code.claude.com/docs/en/settings#:~:text=User%20settings%20are%20defined%20in%20~/.claude/settings.json%20and%20apply%20to%20all%20projects.) 文件中。 </Note>
+> [!注意]
+>
+> 或者，要为所有 Claude Code 会话启用对 LangSmith 的跟踪，您可以将之前的 JSON 添加到您的 [global Claude Code settings.json](https://code.claude.com/docs/en/settings#:~:text=User%20settings%20are%20defined%20in%20~/.claude/settings.json%20and%20apply%20to%20all%20projects.) 文件中。
 
 **选项 2：Shell 环境变量**
 
@@ -87,26 +93,24 @@ Claude Code 响应后，跟踪将在您的 [LangSmith](https://smith.langsmith.c
 
 将 `CC_LANGSMITH_METADATA` 环境变量设置为 JSON 对象，以将自定义元数据附加到所有跟踪的运行。这对于使用 PR URL、作者或环境名称等上下文信息标记跟踪非常有用。
 
-<Tabs>
-  <Tab title="Settings file (recommended)">
-    ```json theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-    {
-      "env": {
-        "TRACE_TO_LANGSMITH": "true",
-        "CC_LANGSMITH_API_KEY": "<LangSmith API key>",
-        "CC_LANGSMITH_PROJECT": "my-project",
-        "CC_LANGSMITH_METADATA": "{\"author\":\"jane\",\"environment\":\"development\"}"
-      }
-    }
-    ```
-  </Tab>
+**设置文件（推荐）**
 
-  <Tab title="Shell environment variable">
-    ```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-    export CC_LANGSMITH_METADATA='{"author":"jane","environment":"development"}'
-    ```
-  </Tab>
-</Tabs>元数据键和值将出现在 LangSmith 中的所有运行中，您可以使用它们来过滤和搜索跟踪。
+```json theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+{
+  "env": {
+    "TRACE_TO_LANGSMITH": "true",
+    "CC_LANGSMITH_API_KEY": "<LangSmith API key>",
+    "CC_LANGSMITH_PROJECT": "my-project",
+    "CC_LANGSMITH_METADATA": "{\"author\":\"jane\",\"environment\":\"development\"}"
+  }
+}
+```
+
+**shell环境变量**
+
+```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+export CC_LANGSMITH_METADATA='{"author":"jane","environment":"development"}'
+```元数据键和值将出现在 LangSmith 中的所有运行中，您可以使用它们来过滤和搜索跟踪。
 
 ## 使线程静音
 
@@ -119,30 +123,28 @@ Claude Code 响应后，跟踪将在您的 [LangSmith](https://smith.langsmith.c
 
 这两个命令从下一回合开始应用，因此当前回合不变。当回合开始时，回合的模式是固定的，并且其子代理继承该模式。
 
-静音运行保持正常的嵌套、名称、时间、状态、模型和工具标识以及令牌使用。输入和输出被系统通知替换。静音模式还忽略原始错误、身份和存储库属性、自定义元数据、SDK 运行时元数据和副本元数据覆盖。静音独立于秘密编辑。
+静音运行保持正常的嵌套、名称、计时、状态、模型和工具标识以及令牌使用。输入和输出被系统通知替换。静音模式还忽略原始错误、身份和存储库属性、自定义元数据、SDK 运行时元数据和副本元数据覆盖。静音独立于秘密编辑。
 
 ### 设置默认静音配置
 
 要以仅元数据模式启动线程而不在每个线程中运行命令，请将 `CC_LANGSMITH_DEFAULT_MUTED` 设置为 `"true"`：
 
-<Tabs>
-  <Tab title="Settings file (recommended)">
-    ```json theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-    {
-      "env": {
-        "TRACE_TO_LANGSMITH": "true",
-        "CC_LANGSMITH_API_KEY": "<LangSmith API key>",
-        "CC_LANGSMITH_PROJECT": "my-project",
-        "CC_LANGSMITH_DEFAULT_MUTED": "true"
-      }
-    }
-    ```
-  </Tab><Tab title="Shell environment variable">
-    ```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-    export CC_LANGSMITH_DEFAULT_MUTED="true"
-    ```
-  </Tab>
-</Tabs>
+**设置文件（推荐）**
+
+```json theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+{
+  "env": {
+    "TRACE_TO_LANGSMITH": "true",
+    "CC_LANGSMITH_API_KEY": "<LangSmith API key>",
+    "CC_LANGSMITH_PROJECT": "my-project",
+    "CC_LANGSMITH_DEFAULT_MUTED": "true"
+  }
+}
+```**shell环境变量**
+
+```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+export CC_LANGSMITH_DEFAULT_MUTED="true"
+```
 
 将变量设置为 `"false"` 以返回到未静音的默认值。比较不区分大小写，任何其他值都会静音，包括空字符串。
 
@@ -154,7 +156,7 @@ Claude Code 响应后，跟踪将在您的 [LangSmith](https://smith.langsmith.c
 
 该插件会编辑从运行输入、输出、错误和元数据中检测到的秘密，然后将其上传到LangSmith。默认情况下，密文处于启用状态。
 
-上传之前，编辑会在您的计算机上运行，​​因此未编辑的内容永远不会达到 LangSmith。副本目标接收相同的编辑有效负载。检测涵盖提供商 API 密钥前缀、JSON Web 令牌和 PEM 私钥块。它还涵盖上下文形状，例如 `API_KEY=<value>`、`Authorization` 标头以及嵌入 URL 中的密码。每场比赛都替换为`[SECRET_DETECTED]`。规则列表参见[Redact secrets from traces](/langsmith/redact-secrets#rules-in-the-preset)。
+上传之前，编辑会在您的计算机上运行，​​因此未编辑的内容永远不会到达LangSmith。副本目标接收相同的编辑有效负载。检测涵盖提供商 API 密钥前缀、JSON Web 令牌和 PEM 私钥块。它还涵盖上下文形状，例如 `API_KEY=<value>`、`Authorization` 标头以及嵌入 URL 中的密码。每场比赛都替换为`[SECRET_DETECTED]`。规则列表参见[Redact secrets from traces](/langsmith/redact-secrets#rules-in-the-preset)。
 
 密文与已知的凭证形状相匹配，因此将其视为安全网而不是保证。无法识别格式的凭证仍会达到LangSmith，并且附件、运行名称和标签不会通过匿名器。编辑后的跟踪还保留了构建它所依据的提示、文件内容和工具结果，因此限制了谁可以读取跟踪项目。
 
@@ -306,7 +308,7 @@ Your outer run (chain)
 
 每个副本对象支持以下字段：
 
-|领域 |必填|描述 |
+|领域|必填 |描述 |
 | - | - | - |
 | `apiUrl` |是的 | LangSmith API URL（通常为`https://api.smith.langchain.com`）|
 | `apiKey` |是的 |目的地的 API 密钥 [workspace](/langsmith/administration-overview#workspaces) |
@@ -315,36 +317,34 @@ Your outer run (chain)
 
 设置`CC_LANGSMITH_RUNS_ENDPOINTS`环境变量有两种方法：
 
-<Tabs>
-  <Tab title="Settings file (recommended)">
-    在您的本地 `.claude/settings.local.json` 或全球 `~/.claude/settings.json` 中：
+**设置文件（推荐）**
 
-    ```json theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-    {
-      "env": {
-        "TRACE_TO_LANGSMITH": "true",
-        "CC_LANGSMITH_RUNS_ENDPOINTS": "[{\"apiUrl\":\"https://api.smith.langchain.com\",\"apiKey\":\"ls__key_workspace_a\",\"projectName\":\"project-prod\"},{\"apiUrl\":\"https://api.smith.langchain.com\",\"apiKey\":\"ls__key_workspace_b\",\"projectName\":\"project-staging\",\"updates\":{\"metadata\":{\"environment\":\"staging\"}}}]"
-      }
-    }
-    ```
+在您的本地 `.claude/settings.local.json` 或全球 `~/.claude/settings.json` 中：
 
-    <Tip>
-      要生成转义的 JSON 字符串，请使用：
+```json theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+{
+  "env": {
+    "TRACE_TO_LANGSMITH": "true",
+    "CC_LANGSMITH_RUNS_ENDPOINTS": "[{\"apiUrl\":\"https://api.smith.langchain.com\",\"apiKey\":\"ls__key_workspace_a\",\"projectName\":\"project-prod\"},{\"apiUrl\":\"https://api.smith.langchain.com\",\"apiKey\":\"ls__key_workspace_b\",\"projectName\":\"project-staging\",\"updates\":{\"metadata\":{\"environment\":\"staging\"}}}]"
+  }
+}
+```
 
-      ```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-      echo '[{"apiUrl":"...","apiKey":"...","projectName":"..."}]' | jq -cR .
-      ```
-    </Tip>
-  </Tab>
+> [!提示]
+>
+> 要生成转义的 JSON 字符串，请使用：
+>
+> ```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> echo '[{"apiUrl":"...","apiKey":"...","projectName":"..."}]' | jq -cR .
+> ```
 
-  <Tab title="Shell environment variable">
-    **选项 2：Shell 环境变量**添加到您的 `~/.zshrc`、`~/.bashrc` 或 `~/.bash_profile`：
+**shell环境变量**
 
-    ```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-    export CC_LANGSMITH_RUNS_ENDPOINTS='[{"apiUrl":"https://api.smith.langchain.com","apiKey":"ls__key_workspace_a","projectName":"project-prod"},{"apiUrl":"https://api.smith.langchain.com","apiKey":"ls__key_workspace_b","projectName":"project-staging","updates":{"metadata":{"environment":"staging"}}}]'
-    ```
-  </Tab>
-</Tabs>
+**选项 2：Shell 环境变量**添加到您的 `~/.zshrc`、`~/.bashrc` 或 `~/.bash_profile`：
+
+```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+export CC_LANGSMITH_RUNS_ENDPOINTS='[{"apiUrl":"https://api.smith.langchain.com","apiKey":"ls__key_workspace_a","projectName":"project-prod"},{"apiUrl":"https://api.smith.langchain.com","apiKey":"ls__key_workspace_b","projectName":"project-staging","updates":{"metadata":{"environment":"staging"}}}]'
+```
 
 ## 故障排除
 
@@ -389,18 +389,12 @@ ls -lh ~/.claude/state/hook.log
 
 ## 从手动停止钩子迁移
 
-如果您使用旧版本的 LangSmith 跟踪 Claude 代码，则需要删除 `~/.claude/hooks/stop_hook.sh` 并从之前添加到的任何先前 `settings.local.json` 或 `settings.json` 文件中删除对钩子的引用，然后按照 [plugin installation instructions](#getting-started) 进行操作。
+如果您使用旧版本的 LangSmith 跟踪 Claude 代码，则需要删除 `~/.claude/hooks/stop_hook.sh` 并从之前添加的任何先前 `settings.local.json` 或 `settings.json` 文件中删除对钩子的引用，然后按照 [plugin installation instructions](#getting-started) 进行操作。
 
 ＃＃ 源代码该插件是在 MIT 许可下开源的，可在 [this GitHub repo](https://github.com/langchain-ai/langsmith-claude-code-plugins) 中使用。
 
 ***
 
-<div>
-  <Callout icon="terminal-2">
-    [Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
-  </Callout>
+[Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
 
-  <Callout icon="edit">
-    [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/trace-claude-code.mdx) 或 [file an issue](https://github.com/langchain-ai/docs/issues/new/choose)。
-  </Callout>
-</div>
+[Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/trace-claude-code.mdx) 或 [file an issue](https://github.com/langchain-ai/docs/issues/new/choose)。

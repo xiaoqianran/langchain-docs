@@ -12,14 +12,14 @@
 
 ## 1. 打开上下文中心
 
-<Note>
-  如果您在左侧导航中没有看到 **Context**，请验证您的工作区是否已启用 Context Hub，并且您是否拥有所需的权限。
-</Note>
+> [!注意]
+>
+> 如果您在左侧导航中没有看到 **Context**，请验证您的工作区是否已启用 Context Hub，并且您是否拥有所需的权限。
 
 在[LangSmith UI](https://smith.langchain.com?utm_source=docs\&utm_medium=cta\&utm_campaign=langsmith-signup\&utm_content=langsmith-use-the-context-hub)中，选择**上下文**
 左侧导航。 Context Hub 列出了您工作区中的每个客服人员和技能。
 
-<img alt="The Context Hub home view listing existing Agent and Skill contexts with their commit metadata." />
+![The Context Hub home view listing existing Agent and Skill contexts with their commit metadata.](https://mintcdn.com/langchain-5e9cc07a/VMau0Ih_5sR7Yf36/langsmith/images/context-hub-home.png?fit=max\&auto=format\&n=VMau0Ih_5sR7Yf36\&q=85\&s=7067ab68c361e53e17514009ae3405b0)
 
 ## 2. 创建上下文
 
@@ -30,13 +30,13 @@
    * **代理：** 完整的代理包，包括 `AGENTS.md` 文件和工具。
    * **技能：** 代理可以使用的可重用功能，包括 `SKILL.md` 文件。
 
-   <img alt="The Create dropdown showing the Agent and Skill context type options." />3. 填写名称和描述。对于技能，需要描述。您还可以立即输入初始文件内容（技能为`SKILL.md`，代理为`AGENTS.md`），或在创建后添加它们。单击**创建代理**或**创建技能**。 LangSmith 创建存储库并打开它进行编辑。
+   ![The Create dropdown showing the Agent and Skill context type options.](https://mintcdn.com/langchain-5e9cc07a/VMau0Ih_5sR7Yf36/langsmith/images/context-hub-create-context.png?fit=max\&auto=format\&n=VMau0Ih_5sR7Yf36\&q=85\&s=8ff29b4fac4c167d55ca593fb943a02a)3. 填写名称和描述。对于技能，需要描述。您还可以立即输入初始文件内容（技能为`SKILL.md`，代理为`AGENTS.md`），或在创建后添加它们。单击**创建代理**或**创建技能**。 LangSmith 创建存储库并打开它进行编辑。
 
 ## 3. 查看上下文
 
 单击 Context Hub 中的客服人员或技能即可查看。
 
-<img alt="An Agent context with an AGENTS.md file open, showing the environments panel, commit history, and file tree." />
+![An Agent context with an AGENTS.md file open, showing the environments panel, commit history, and file tree.](https://mintcdn.com/langchain-5e9cc07a/VMau0Ih_5sR7Yf36/langsmith/images/context-hub-agent-view.png?fit=max\&auto=format\&n=VMau0Ih_5sR7Yf36\&q=85\&s=a333c5d93ad3532eb10c30053f53c267)
 
 中间面板显示当前提交的文件树，右侧面板预览所选文件。单击中间面板中的文件将其打开。
 
@@ -47,18 +47,18 @@ Markdown 文件在 **预览** 中打开，这是只读渲染。要更改文件�
 ## 4. 标记并提升提交
 
 一旦提交准备好交付，请将其提升到下游环境
-代理可以拉它。<Note>
-  Context Hub 目前支持两种环境标签进行升级：`staging` 和 `production`。
-</Note>
+代理可以拉它。> [!注意]
+>
+> Context Hub 目前支持两种环境标签进行升级：`staging` 和 `production`。
 
 1. 选择目标提交后，单击右上角的 **Promote**。
 
 2. 选择目标环境：
 
    * **升级到生产：** 您的生产代理拉动的提交。
-   * **升级到暂存：** 用于验证的预生产环境。
+   * **升级到暂存：**用于验证的预生产环境。
 
-   <img alt="The Promote dropdown with options to promote a commit to Production or Staging." />
+   ![The Promote dropdown with options to promote a commit to Production or Staging.](https://mintcdn.com/langchain-5e9cc07a/VMau0Ih_5sR7Yf36/langsmith/images/context-hub-promote.png?fit=max\&auto=format\&n=VMau0Ih_5sR7Yf36\&q=85\&s=96dc0abf55f702cb873f78eaa99429fe)
 
 3. 环境标签（例如`Production 7ca95573`）移动到
    提升提交。使用 **Promote** 旁边的 **Tag** 按钮附加
@@ -75,12 +75,6 @@ Markdown 文件在 **预览** 中打开，这是只读渲染。要更改文件�
 * [Configure commit webhooks](/langsmith/context-hub-webhooks)：将工作区 Context Hub 提交发送到外部 HTTPS 端点。
 * [Mount a Context Hub repo in a sandbox](/langsmith/sandbox-mounts#mount-a-context-hub-repo)：为沙箱代码提供对存储库的只读文件系统访问权限，该存储库在更改时保持同步。
 
-***<div>
-  <Callout icon="terminal-2">
-    [Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
-  </Callout>
+***[Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
 
-  <Callout icon="edit">
-    [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/use-the-context-hub.mdx) 或 [file an issue](https://github.com/langchain-ai/docs/issues/new/choose)。
-  </Callout>
-</div>
+[Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/use-the-context-hub.mdx) 或 [file an issue](https://github.com/langchain-ai/docs/issues/new/choose)。

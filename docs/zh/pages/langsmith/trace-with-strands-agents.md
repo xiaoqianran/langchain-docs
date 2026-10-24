@@ -6,21 +6,19 @@
 
 使用 LangSmith 追踪股线代理应用。
 
-[Strands Agents](https://strandsagents.com/)是一个用于构建模型驱动代理的SDK。 LangSmith 提供 Strands Agents 集成，以 LangSmith 兼容格式导出 Strands OpenTelemetry 跨度，包括代理运行、模型调用、工具调用、提示、完成和令牌使用。
+[Strands Agents](https://strandsagents.com/)是一个用于构建模型驱动代理的SDK。 LangSmith 提供 Strands Agents 集成，以 LangSmith 兼容格式导出 Strands OpenTelemetry 范围，包括代理运行、模型调用、工具调用、提示、完成和令牌使用。
 
 ## 安装
 
 安装带有 Strands Agent 支持的 LangSmith：
 
-<CodeGroup>
-  ```bash pip theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  pip install "langsmith[strands-agents]"
-  ```
+```bash pip theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+pip install "langsmith[strands-agents]"
+```
 
-  ```bash uv theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  uv add "langsmith[strands-agents]"
-  ```
-</CodeGroup>
+```bash uv theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+uv add "langsmith[strands-agents]"
+```
 
 这将安装 LangSmith、Strands Agents、Strands Agents 工具和 OpenTelemetry OTLP HTTP 导出器。
 
@@ -38,9 +36,9 @@ export OTEL_EXPORTER_OTLP_HEADERS="x-api-key=<your_langsmith_api_key>,Langsmith-
 export AWS_REGION=<your_aws_region>
 ```
 
-<Note>
-  Strands Agents 集成使用标准 OpenTelemetry OTLP 导出器。在调用`setup_langsmith_telemetry()`之前配置LangSmith端点和标头。
-</Note>
+> [!注意]
+>
+> Strands Agents 集成使用标准 OpenTelemetry OTLP 导出器。在调用`setup_langsmith_telemetry()`之前配置LangSmith端点和标头。
 
 ### 2.启用 Strands Agents 遥测
 
@@ -76,7 +74,7 @@ print(response)
 
 ## 查看LangSmith中的踪迹
 
-运行应用程序后，打开 LangSmith 项目以查看包括以下内容的跟踪：
+运行应用程序后，打开 LangSmith 项目以查看跟踪，其中包括：
 
 * 代理调用跨度
 * 事件循环周期跨度
@@ -112,12 +110,6 @@ telemetry.tracer_provider.add_span_processor(BatchSpanProcessor(exporter))
 
 ***
 
-<div>
-  <Callout icon="terminal-2">
-    [Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
-  </Callout>
+[Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
 
-  <Callout icon="edit">
-    [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/trace-with-strands-agents.mdx) 或 [file an issue](https://github.com/langchain-ai/docs/issues/new/choose)。
-  </Callout>
-</div>
+[Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/trace-with-strands-agents.mdx) 或 [file an issue](https://github.com/langchain-ai/docs/issues/new/choose)。

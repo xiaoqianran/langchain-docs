@@ -25,9 +25,9 @@ npm install @mastra/core @mastra/langsmith @mastra/observability @mastra/libsql
    export LANGCHAIN_PROJECT=<your_project_name> # optional
    ```
 
-   <Tip>
-     如果未设置[⟦T8⟧](/langsmith/log-traces-to-project)，则跟踪将发送到默认项目。
-   </Tip>
+   > [!提示]
+   >
+   > 如果未设置[⟦T8⟧](/langsmith/log-traces-to-project)，则跟踪将发送到默认项目。
 
 2. 如果您计划使用 OpenAI 模型，还请确保您在运行时有可用的 OpenAI API 密钥：
 
@@ -140,12 +140,6 @@ Mastra 将使用您配置的 API 密钥自动路由模型调用并捕获每次�
 
 ***
 
-<div>
-  <Callout icon="terminal-2">
-    [Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
-  </Callout>
+[Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
 
-  <Callout icon="edit">
-    [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/trace-with-mastra.mdx) 或 [file an issue](https://github.com/langchain-ai/docs/issues/new/choose)。
-  </Callout>
-</div>
+[Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/trace-with-mastra.mdx) 或 [file an issue](https://github.com/langchain-ai/docs/issues/new/choose)。

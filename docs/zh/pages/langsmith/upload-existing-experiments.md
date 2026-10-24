@@ -246,22 +246,16 @@ print(resp.json())
 
 ## 在 UI 中查看实验
 
-现在，登录 UI 并单击新创建的数据集！您应该看到一个实验：<img alt="Uploaded experiments table" />
+现在，登录 UI 并单击新创建的数据集！您应该看到一个实验：![Uploaded experiments table](https://mintcdn.com/langchain-5e9cc07a/1RIJxfRpkszanJLL/langsmith/images/uploaded-dataset.png?fit=max\&auto=format\&n=1RIJxfRpkszanJLL\&q=85\&s=797dd62e7cd3f833cd13bafcedfa5607)
 
-您的示例将已上传：<img alt="Uploaded examples" />
+您的示例将已上传：![Uploaded examples](https://mintcdn.com/langchain-5e9cc07a/1RIJxfRpkszanJLL/langsmith/images/uploaded-dataset-examples.png?fit=max\&auto=format\&n=1RIJxfRpkszanJLL\&q=85\&s=093061568ece423d5a2c4cb2b5df2721)
 
-单击您的实验将带您进入比较视图：<img alt="Uploaded experiment comparison view" />
+单击您的实验将带您进入比较视图：![Uploaded experiment comparison view](https://mintcdn.com/langchain-5e9cc07a/1RIJxfRpkszanJLL/langsmith/images/uploaded-experiment.png?fit=max\&auto=format\&n=1RIJxfRpkszanJLL\&q=85\&s=d66c9ea1cfbb1acf4f591b11f54a71da)
 
 当您将更多实验上传到数据集时，您将能够比较结果并在比较视图中轻松识别回归。
 
 ***
 
-<div>
-  <Callout icon="terminal-2">
-    [Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
-  </Callout>
+[Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
 
-  <Callout icon="edit">
-    [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/upload-existing-experiments.mdx) 或 [file an issue](https://github.com/langchain-ai/docs/issues/new/choose)。
-  </Callout>
-</div>
+[Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/upload-existing-experiments.mdx) 或 [file an issue](https://github.com/langchain-ai/docs/issues/new/choose)。

@@ -6,21 +6,19 @@
 
 [Mistral](https://mistral.ai/) 通过简单的 API 提供对开放权重语言模型的托管访问。
 
-本指南向您展示如何使用 LangSmith 跟踪 Mistral API 调用，允许您记录提示、响应和元数据以进行调试和可观察。使用 [LangSmith SDK](https://reference.langchain.com/python/langsmith/) 和标准跨度仪器将迹线直接发送到 LangSmith。
+本指南向您展示如何使用 LangSmith 跟踪 Mistral API 调用，允许您记录提示、响应和元数据以进行调试和可观察。使用 [LangSmith SDK](https://reference.langchain.com/python/langsmith/) 和标准量程仪器将迹线直接发送到 LangSmith。
 
 ## 安装
 
 安装 Mistral 的官方库和LangSmith：
 
-<CodeGroup>
-  ```bash Python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  pip install mistralai langsmith
-  ```
+```bash Python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+pip install mistralai langsmith
+```
 
-  ```bash JavaScript theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  npm install @mistralai/mistralai langsmith dotenv
-  ```
-</CodeGroup>
+```bash JavaScript theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+npm install @mistralai/mistralai langsmith dotenv
+```
 
 [⟦T7⟧](https://docs.mistral.ai/getting-started/clients) 提供了一个 Mistral 客户端，用于与 Mistral 的 API 进行交互。
 
@@ -44,92 +42,88 @@ export LANGSMITH_PROJECT="<your_project_name>"  # optional
 
 1. 使用 LangSmith 检测 Mistral API 调用。在您的脚本中，创建一个 Mistral 客户端并将调用包装在跟踪函数中：
 
-   <CodeGroup>
-     ```python Python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-     import os
-     from mistralai import Mistral
-     from langsmith import traceable
+   ```python Python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+   import os
+   from mistralai import Mistral
+   from langsmith import traceable
 
-     # Initialize Mistral API client with your API key
-     client = Mistral(api_key=os.environ["MISTRAL_API_KEY"])
+   # Initialize Mistral API client with your API key
+   client = Mistral(api_key=os.environ["MISTRAL_API_KEY"])
 
-     @traceable(
-         run_type="llm",
-         metadata={"ls_provider": "mistral", "ls_model_name": "mistral-medium-latest"},
-     )
-     def query_mistral(prompt: str):
-         response = client.chat.complete(
-             model="mistral-medium-latest",
-             messages=[{"role": "user", "content": prompt}],
-         )
-         return response.choices[0].message
+   @traceable(
+       run_type="llm",
+       metadata={"ls_provider": "mistral", "ls_model_name": "mistral-medium-latest"},
+   )
+   def query_mistral(prompt: str):
+       response = client.chat.complete(
+           model="mistral-medium-latest",
+           messages=[{"role": "user", "content": prompt}],
+       )
+       return response.choices[0].message
 
-     # Example usage
-     result = query_mistral("Hello, how are you?")
-     print("Mistral response:", result.content)
-     ```
+   # Example usage
+   result = query_mistral("Hello, how are you?")
+   print("Mistral response:", result.content)
+   ```
 
-     ```typescript TypeScript theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-     import { Client } from "langsmith";
-     import { traceable } from "langsmith/traceable";
-     import { Mistral } from "@mistralai/mistralai";
-     import "dotenv/config";
+   ```typescript TypeScript theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+   import { Client } from "langsmith";
+   import { traceable } from "langsmith/traceable";
+   import { Mistral } from "@mistralai/mistralai";
+   import "dotenv/config";
 
-     const mistral = new Mistral({
-       apiKey: process.env.MISTRAL_API_KEY,
+   const mistral = new Mistral({
+     apiKey: process.env.MISTRAL_API_KEY,
+   });
+
+   const langsmith = new Client();
+
+   const tracedChatCompletion = traceable(
+     async (params: {
+       model: string;
+       messages: Array<{ role: string; content: string }>;
+     }) => {
+       const response = await mistral.chat.complete(params);
+       // Return the message content so LangSmith captures it correctly
+       return response.choices[0].message.content;
+     },
+     {
+       name: "Mistral Chat Completion",
+       run_type: "llm",
+       metadata: {
+         ls_provider: "mistral",
+         ls_model_name: "mistral-small-latest",
+       },
+     }
+   );
+
+   async function main() {
+     const response = await tracedChatCompletion({
+       model: "mistral-small-latest",
+       messages: [
+         { role: "user", content: "Say hello in one short sentence." },
+       ],
      });
 
-     const langsmith = new Client();
+     console.log(response);
+   }
 
-     const tracedChatCompletion = traceable(
-       async (params: {
-         model: string;
-         messages: Array<{ role: string; content: string }>;
-       }) => {
-         const response = await mistral.chat.complete(params);
-         // Return the message content so LangSmith captures it correctly
-         return response.choices[0].message.content;
-       },
-       {
-         name: "Mistral Chat Completion",
-         run_type: "llm",
-         metadata: {
-           ls_provider: "mistral",
-           ls_model_name: "mistral-small-latest",
-         },
-       }
-     );
+   main();
+   ```
 
-     async function main() {
-       const response = await tracedChatCompletion({
-         model: "mistral-small-latest",
-         messages: [
-           { role: "user", content: "Say hello in one short sentence." },
-         ],
-       });
+   在此示例中，您使用 [Mistral SDK](https://docs.mistral.ai/getting-started/clients) 发送聊天完成请求（带有用户提示）并检索模型的答案。[⟦T13⟧](https://reference.langchain.com/python/langsmith/run_helpers/traceable) 装饰器（来自 [LangSmith Python SDK](https://reference.langchain.com/python/langsmith/observability/sdk/)）包装了 `query_mistral` 函数，以便将每个调用记录为类型 `"llm"` 的跟踪运行。 `metadata={"ls_provider": "mistral", "ls_model_name": "mistral-medium-latest"}` 使用提供者 (Mistral) 和模型名称标记跟踪。
 
-       console.log(response);
-     }
-
-     main();
-     ```
-   </CodeGroup>在此示例中，您使用 [Mistral SDK](https://docs.mistral.ai/getting-started/clients) 发送聊天完成请求（带有用户提示）并检索模型的答案。
-
-   [⟦T13⟧](https://reference.langchain.com/python/langsmith/run_helpers/traceable) 装饰器（来自 [LangSmith Python SDK](https://reference.langchain.com/python/langsmith/observability/sdk/)）包装了 `query_mistral` 函数，以便将每个调用记录为类型 `"llm"` 的跟踪运行。 `metadata={"ls_provider": "mistral", "ls_model_name": "mistral-medium-latest"}` 使用提供者 (Mistral) 和模型名称标记跟踪。
-
-   您也可以参考[LangSmith JavaScript SDK](https://reference.langchain.com/javascript/modules/langsmith.html)。
+   您也可以参考[LangSmith JavaScript SDK](https://reference.langchain.com/javascript/langsmith)。
 
 2. 执行脚本以生成跟踪。例如：
 
-   <CodeGroup>
-     ```bash Python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-     python mistral_trace.py
-     ```
+   ```bash Python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+   python mistral_trace.py
+   ```
 
-     ```bash JavaScript theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-     node index.js
-     ```
-   </CodeGroup>
+   ```bash JavaScript theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+   node index.js
+   ```
 
    `query_mistral("Hello, how are you?")` 调用将访问 Mistral API，并且由于 `@traceable`/`traceable` 包装器，LangSmith 会将此调用的输入和输出记录为新跟踪。您会发现模型的响应打印到控制台，并且相应的运行出现在[LangSmith](https://smith.langchain.com?utm_source=docs\&utm_medium=cta\&utm_campaign=langsmith-signup\&utm_content=langsmith-trace-with-mistral)中。
 
@@ -148,16 +142,10 @@ export LANGSMITH_PROJECT="<your_project_name>"  # optional
 
 要启用 LLM 调用的自动成本跟踪，请参阅[Automatically track costs based on token counts](/langsmith/cost-tracking#llm-calls:-automatically-track-costs-based-on-token-counts)。
 
-启用后，成本会与每次跟踪的 Mistral 运行一起直接显示在 LangSmith UI 中，以便您可以监控使用情况并随时间比较实验。
+启用后，成本会直接显示在 LangSmith UI 中以及每次跟踪的 Mistral 运行中，以便您可以监控使用情况并随时间比较实验。
 
 ***
 
-<div>
-  <Callout icon="terminal-2">
-    [Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
-  </Callout>
+[Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
 
-  <Callout icon="edit">
-    [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/trace-with-mistral.mdx) 或 [file an issue](https://github.com/langchain-ai/docs/issues/new/choose)。
-  </Callout>
-</div>
+[Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/trace-with-mistral.mdx) 或 [file an issue](https://github.com/langchain-ai/docs/issues/new/choose)。

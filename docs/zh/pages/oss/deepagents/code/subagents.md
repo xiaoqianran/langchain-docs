@@ -6,11 +6,11 @@
 
 使用 YAML frontmatter 将自定义 Deep Agents 代码子代理定义为 AGENTS.md 文件。涵盖项目和用户路径、可选模型覆盖和示例。
 
-将自定义同步 [subagents](/oss/python/deepagents/subagents) 定义为 Markdown 文件，以便 Deep Agents 代码可以将专门的任务委托给它们。
+将自定义同步 [subagents](/oss/python/deepagents/subagents) 定义为 markdown 文件，以便 Deep Agents 代码可以将专门的任务委托给它们。
 
-<Note>
-  目前，Deep Agents 代码中的最终用户无法使用异步子代理。
-</Note>
+> [!注意]
+>
+> 目前，Deep Agents 代码中的最终用户无法使用异步子代理。
 
 每个子代理都位于自己的文件夹中，其中包含一个 `AGENTS.md` 文件：
 
@@ -31,9 +31,9 @@
 export DEEPAGENTS_CODE_FORKED_SUBAGENTS=false
 ```frontmatter 需要`name` 和`description`（与[⟦T10⟧ dictionary spec](/oss/python/deepagents/subagents#subagent-dictionary-based) 相同）。 Markdown 主体成为子代理的 `system_prompt`。除了基本规范之外，`AGENTS.md` 文件还支持可选的 `model` frontmatter 字段，该字段会覆盖该子代理的主代理模型。使用 `provider:model-name` 格式（例如，`anthropic:claude-opus-4-8`、`openai:gpt-5.5`）。省略它以继承主代理的模型。
 
-<Note>
-  其他 `SubAgent` 字段（`tools`、`middleware`、`interrupt_on`、`skills`）当前无法通过 `AGENTS.md` frontmatter 配置 - 以这种方式定义的自定义子代理继承主代理的工具。直接使用SDK进行完全控制。
-</Note>
+> [!注意]
+>
+> 其他 `SubAgent` 字段（`tools`、`middleware`、`interrupt_on`、`skills`）目前无法通过 `AGENTS.md` frontmatter 配置 - 以这种方式定义的自定义子代理继承主代理的工具。直接使用SDK进行完全控制。
 
 ## 文件格式
 
@@ -59,15 +59,13 @@ You are a research assistant with access to web search.
 
 要触发动态子代理，请要求“工作流程”。代理不是自行完成工作或通过其本机 `task` 工具管理扇出，而是编写一个编排脚本来调用内置 `task()` 全局并在代码解释器中运行它。例如：“运行工作流来检查 src/ 中的每个文件以进行 SQL 注入。”
 
-当子代理生成时，`dcode` 在动态子代理面板中显示它们，并按调度分组为阶段。<Frame>
-  <img alt="The dcode dynamic subagents panel showing spawned subagents grouped into phases by dispatch" />
-</Frame>
+当子代理生成时，`dcode` 在动态子代理面板中显示它们，并按调度分组为阶段。
 
-您还可以在您选择的编码代理中使用动态子代理而不是[ACP](/oss/python/deepagents/acp)（例如，Zed）。
+![The dcode dynamic subagents panel showing spawned subagents grouped into phases by dispatch](https://mintcdn.com/langchain-5e9cc07a/mcM5dSw40KzBUENf/oss/images/deepagents/dcode-dynamic-subagents-panel.png?fit=max\&auto=format\&n=mcM5dSw40KzBUENf\&q=85\&s=bc20632b54e21fecfc5ff4f8d169a2c7)您还可以在您选择的编码代理中使用动态子代理而不是[ACP](/oss/python/deepagents/acp)（例如，Zed）。
 
 ## 示例：具有成本效益的子代理
 
-使用更便宜、更快的模型来执行简单的委托任务，同时使主代理保持在更强大的模型上：
+使用更便宜、更快的模型来执行简单的委托任务，同时将主代理保持在更强大的模型上：
 
 ```markdown theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 ---
@@ -83,12 +81,6 @@ You are a general-purpose assistant. Complete the task efficiently and return a 
 
 ***
 
-<div>
-  <Callout icon="terminal-2">
-    [Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
-  </Callout>
+[Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
 
-  <Callout icon="edit">
-    [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/oss/deepagents/code/subagents.mdx) 或 [file an issue](https://github.com/langchain-ai/docs/issues/new/choose)。
-  </Callout>
-</div>
+[Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/oss/deepagents/code/subagents.mdx) 或 [file an issue](https://github.com/langchain-ai/docs/issues/new/choose)。

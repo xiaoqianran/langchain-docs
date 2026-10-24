@@ -10,19 +10,17 @@ LangSmith 可以使用其内置的 OpenTelemetry 仪器捕获 PydanticAI 生成�
 
 安装所需的软件包：
 
-<CodeGroup>
-  ```bash pip theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  pip install langsmith pydantic-ai opentelemetry-exporter-otlp
-  ```
+```bash pip theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+pip install langsmith pydantic-ai opentelemetry-exporter-otlp
+```
 
-  ```bash uv theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  uv add langsmith pydantic-ai opentelemetry-exporter-otlp
-  ```
-</CodeGroup>
+```bash uv theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+uv add langsmith pydantic-ai opentelemetry-exporter-otlp
+```
 
-<Info>
-  需要 LangSmith Python SDK 版本 `langsmith>=0.4.26` 以获得最佳 OpenTelemetry 支持。
-</Info>
+> [!注意]
+>
+> 需要 LangSmith Python SDK 版本 `langsmith>=0.4.26` 以获得最佳 OpenTelemetry 支持。
 
 ## 设置
 
@@ -51,9 +49,9 @@ configure(project_name="pydantic-ai-demo")
 Agent.instrument_all()
 ```
 
-<Note>
-  您不需要设置任何 OpenTelemetry 环境变量或手动配置导出器 — `configure()` 会自动处理一切。
-</Note>
+> [!注意]
+>
+> 您不需要设置任何 OpenTelemetry 环境变量或手动配置导出器 — `configure()` 会自动处理一切。
 
 ### 3. 创建并运行您的 PydanticAI 代理
 
@@ -105,10 +103,6 @@ with tracer.start_as_current_span("pydantic_ai_workflow") as span:
 
 ***
 
-<div>
-  <Callout icon="terminal-2">
-    [Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
-  </Callout><Callout icon="edit">
-    [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/trace-with-pydantic-ai.mdx) 或 [file an issue](https://github.com/langchain-ai/docs/issues/new/choose)。
-  </Callout>
-</div>
+[Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
+
+[Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/trace-with-pydantic-ai.mdx) 或 [file an issue](https://github.com/langchain-ai/docs/issues/new/choose)。

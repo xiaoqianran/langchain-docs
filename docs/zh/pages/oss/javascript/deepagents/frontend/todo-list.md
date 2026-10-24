@@ -4,28 +4,26 @@
 
 # 待办事项列表
 
-通过与座席状态同步的实时待办事项列表来跟踪座席进度
+通过从座席状态同步的实时待办事项列表来跟踪座席进度
 
 并非每个代理交互都是聊天。有时代理正在执行
 多步骤计划，显示进度的最佳方式是**待办事项列表**
 实时更新。深度代理待办事项列表模式读取 `todos` 数组
-直接从代理的状态，将每个项目的当前状态渲染为
+直接来自代理的状态，将每个项目的当前状态渲染为
 代理人按照其计划行事。这是一个基于相同内容构建的进度仪表板
 `useStream` 用于聊天的钩子。它表明代理状态可以为任何 UI 提供支持，
 不仅仅是消息泡沫。
 
-<PatternEmbed />
-
 ## 它是如何工作的
 
 当您选择加入 [⟦T20⟧](https://reference.langchain.com/javascript/langchain/index/todoListMiddleware) 时，深度代理可以公开 **`todos` 状态** 通道。该中间件添加了 `write_todos` 工具，并在代理执行其计划时保留任务进度。当代理执行时，它会更新每个
-todo 的状态从 `"pending"` 到 `"in_progress"` 到 `"completed"`。的
+todo的状态从`"pending"`到`"in_progress"`再到`"completed"`。的
 [⟦T25⟧](https://reference.langchain.com/javascript/langchain-react/index/useStream) 钩子通过 `stream.values.todos` 公开此状态，并且您的 UI
 反应性地渲染它。
 
-<Note>
-  任务计划是可选择的。如果没有 [⟦T27⟧](https://reference.langchain.com/javascript/langchain/index/todoListMiddleware)，则不存在 `stream.values.todos`。参见[Task planning](/oss/javascript/deepagents/overview#task-planning)。
-</Note>
+> [!注意]
+>
+> 任务计划是可选择的。如果没有 [⟦T27⟧](https://reference.langchain.com/javascript/langchain/index/todoListMiddleware)，则不存在 `stream.values.todos`。参见[Task planning](/oss/javascript/deepagents/overview#task-planning)。
 
 流程如下所示：1. 用户提交请求
 2. Agent 创建计划并在其状态中填充 `todos`
@@ -38,114 +36,137 @@ todo 的状态从 `"pending"` 到 `"in_progress"` 到 `"completed"`。的
 
 在代理上启用[⟦T35⟧](https://reference.langchain.com/javascript/langchain/index/todoListMiddleware)。
 
-<CodeGroup>
-  ```ts Google theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  import { createDeepAgent } from "deepagents";
-  import { todoListMiddleware } from "langchain";
+```ts Google theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+import { createDeepAgent } from "deepagents";
+import { todoListMiddleware } from "langchain";
 
-  const agent = await createDeepAgent({
-    model: "google:gemini-3.6-flash",
-    middleware: [todoListMiddleware()],
-  });
-  ```
+const agent = await createDeepAgent({
+  model: "google:gemini-3.6-flash",
+  middleware: [todoListMiddleware()],
+});
+```
 
-  ```ts OpenAI theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  import { createDeepAgent } from "deepagents";
-  import { todoListMiddleware } from "langchain";
+```ts OpenAI theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+import { createDeepAgent } from "deepagents";
+import { todoListMiddleware } from "langchain";
 
-  const agent = await createDeepAgent({
-    model: "openai:gpt-5.5",
-    middleware: [todoListMiddleware()],
-  });
-  ```
+const agent = await createDeepAgent({
+  model: "openai:gpt-5.5",
+  middleware: [todoListMiddleware()],
+});
+```
 
-  ```ts Anthropic theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  import { createDeepAgent } from "deepagents";
-  import { todoListMiddleware } from "langchain";
+```ts Anthropic theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+import { createDeepAgent } from "deepagents";
+import { todoListMiddleware } from "langchain";
 
-  const agent = await createDeepAgent({
-    model: "anthropic:claude-sonnet-5",
-    middleware: [todoListMiddleware()],
-  });
-  ```
+const agent = await createDeepAgent({
+  model: "anthropic:claude-sonnet-5",
+  middleware: [todoListMiddleware()],
+});
+```
 
-  ```ts OpenRouter theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  import { createDeepAgent } from "deepagents";
-  import { todoListMiddleware } from "langchain";
+```ts OpenRouter theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+import { createDeepAgent } from "deepagents";
+import { todoListMiddleware } from "langchain";
 
-  const agent = await createDeepAgent({
-    model: "openrouter:z-ai/glm-5.2",
-    middleware: [todoListMiddleware()],
-  });
-  ```
+const agent = await createDeepAgent({
+  model: "openrouter:z-ai/glm-5.2",
+  middleware: [todoListMiddleware()],
+});
+```
 
-  ```ts Fireworks theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  import { createDeepAgent } from "deepagents";
-  import { todoListMiddleware } from "langchain";
+```ts Fireworks theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+import { createDeepAgent } from "deepagents";
+import { todoListMiddleware } from "langchain";
 
-  const agent = await createDeepAgent({
-    model: "fireworks:accounts/fireworks/models/glm-5p2",
-    middleware: [todoListMiddleware()],
-  });
-  ```
+const agent = await createDeepAgent({
+  model: "fireworks:accounts/fireworks/models/glm-5p2",
+  middleware: [todoListMiddleware()],
+});
+```
 
-  ```ts Baseten theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  import { createDeepAgent } from "deepagents";
-  import { todoListMiddleware } from "langchain";
+```ts Baseten theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+import { createDeepAgent } from "deepagents";
+import { todoListMiddleware } from "langchain";
 
-  const agent = await createDeepAgent({
-    model: "baseten:zai-org/GLM-5.2",
-    middleware: [todoListMiddleware()],
-  });
-  ```
+const agent = await createDeepAgent({
+  model: "baseten:zai-org/GLM-5.2",
+  middleware: [todoListMiddleware()],
+});
+```
 
-  ```ts Ollama theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  import { createDeepAgent } from "deepagents";
-  import { todoListMiddleware } from "langchain";
+```ts Ollama theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+import { createDeepAgent } from "deepagents";
+import { todoListMiddleware } from "langchain";
 
-  const agent = await createDeepAgent({
-    model: "ollama:north-mini-code-1.0",
-    middleware: [todoListMiddleware()],
-  });
-  ```
-</CodeGroup>
+const agent = await createDeepAgent({
+  model: "ollama:north-mini-code-1.0",
+  middleware: [todoListMiddleware()],
+});
+```
 
 然后将 [⟦T36⟧](https://reference.langchain.com/javascript/langchain-react/index/useStream) 指向该代理并
 从`stream.values`读取`todos`。
 
-<Info>
-  代码示例使用 `useStream<typeof myAgent>` 来实现类型安全的流状态。请参阅 [Python](/oss/python/langchain/frontend/overview#type-inference) 或 [JavaScript](/oss/javascript/langchain/frontend/overview#type-inference) 后端的类型推断。
-</Info>
+> [!注意]
+>
+> 代码示例使用 `useStream<typeof myAgent>` 来实现类型安全的流状态。请参阅 [Python](/oss/python/langchain/frontend/overview#type-inference) 或 [JavaScript](/oss/javascript/langchain/frontend/overview#type-inference) 后端的类型推断。
 
-<CodeGroup>
-  ```tsx React theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  import { useStream } from "@langchain/react";
+```tsx React theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+import { useStream } from "@langchain/react";
 
-  const AGENT_URL = "http://localhost:2024";
+const AGENT_URL = "http://localhost:2024";
 
-  export function TodoAgent() {
-    const stream = useStream<typeof myAgent>({
-      apiUrl: AGENT_URL,
-      assistantId: "deep_agent_todo_list",
-    });
+export function TodoAgent() {
+  const stream = useStream<typeof myAgent>({
+    apiUrl: AGENT_URL,
+    assistantId: "deep_agent_todo_list",
+  });
 
-    const todos = stream.values?.todos ?? [];
+  const todos = stream.values?.todos ?? [];
 
-    return (
-      <div>
-        <TodoList todos={todos} />
-        {stream.messages.map((msg) => (
-          <Message key={msg.id} message={msg} />
-        ))}
-      </div>
-    );
-  }
-  ```
+  return (
+    <div>
+      <TodoList todos={todos} />
+      {stream.messages.map((msg) => (
+        <Message key={msg.id} message={msg} />
+      ))}
+    </div>
+  );
+}
+```
 
-  ```vue Vue theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  <script setup lang="ts">
-  import { useStream } from "@langchain/vue";
-  import { computed } from "vue";
+```vue Vue theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+<script setup lang="ts">
+import { useStream } from "@langchain/vue";
+import { computed } from "vue";
+
+const AGENT_URL = "http://localhost:2024";
+
+const stream = useStream<typeof myAgent>({
+  apiUrl: AGENT_URL,
+  assistantId: "deep_agent_todo_list",
+});
+
+const todos = computed(() => stream.values.value?.todos ?? []);
+</script>
+
+<template>
+  <div>
+    <TodoList :todos="todos" />
+    <Message
+      v-for="msg in stream.messages.value"
+      :key="msg.id"
+      :message="msg"
+    />
+  </div>
+</template>
+```
+
+```svelte Svelte theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+<script lang="ts">
+  import { useStream } from "@langchain/svelte";
 
   const AGENT_URL = "http://localhost:2024";
 
@@ -154,70 +175,43 @@ todo 的状态从 `"pending"` 到 `"in_progress"` 到 `"completed"`。的
     assistantId: "deep_agent_todo_list",
   });
 
-  const todos = computed(() => stream.values.value?.todos ?? []);
-  </script>
+  const todos = $derived(stream.values?.todos ?? []);
+</script>
 
-  <template>
+<div>
+  <TodoList {todos} />
+  {#each stream.messages as msg (msg.id)}
+    <Message message={msg} />
+  {/each}
+</div>
+```
+
+```ts Angular theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+import { Component, computed } from "@angular/core";
+import { injectStream } from "@langchain/angular";
+
+const AGENT_URL = "http://localhost:2024";
+
+@Component({
+  selector: "app-todo-agent",
+  template: `
     <div>
-      <TodoList :todos="todos" />
-      <Message
-        v-for="msg in stream.messages.value"
-        :key="msg.id"
-        :message="msg"
-      />
+      <app-todo-list [todos]="todos()" />
+      @for (msg of stream.messages(); track msg.id) {
+        <app-message [message]="msg" />
+      }
     </div>
-  </template>
-  ```
+  `,
+})
+export class TodoAgentComponent {
+  stream = injectStream<typeof myAgent>({
+    apiUrl: AGENT_URL,
+    assistantId: "deep_agent_todo_list",
+  });
 
-  ```svelte Svelte theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  <script lang="ts">
-    import { useStream } from "@langchain/svelte";
-
-    const AGENT_URL = "http://localhost:2024";
-
-    const stream = useStream<typeof myAgent>({
-      apiUrl: AGENT_URL,
-      assistantId: "deep_agent_todo_list",
-    });
-
-    const todos = $derived(stream.values?.todos ?? []);
-  </script>
-
-  <div>
-    <TodoList {todos} />
-    {#each stream.messages as msg (msg.id)}
-      <Message message={msg} />
-    {/each}
-  </div>
-  ```
-
-  ```ts Angular theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  import { Component, computed } from "@angular/core";
-  import { injectStream } from "@langchain/angular";
-
-  const AGENT_URL = "http://localhost:2024";
-
-  @Component({
-    selector: "app-todo-agent",
-    template: `
-      <div>
-        <app-todo-list [todos]="todos()" />
-        @for (msg of stream.messages(); track msg.id) {
-          <app-message [message]="msg" />
-        }
-      </div>
-    `,
-  })
-  export class TodoAgentComponent {
-    stream = injectStream<typeof myAgent>({
-      apiUrl: AGENT_URL,
-      assistantId: "deep_agent_todo_list",
-    });
-
-    todos = computed(() => this.stream.values()?.todos ?? []);
-  }
-  ```
-</CodeGroup>
+  todos = computed(() => this.stream.values()?.todos ?? []);
+}
+```
 
 ## 构建 TodoList 组件
 
@@ -379,10 +373,10 @@ function TodoAgentLayout() {
 }
 ```
 
-<Tip>
-  仅在`todos.length > 0`时显示待办事项列表。在代理创建其之前
-  计划，没有什么可展示的。显示空组件会浪费空间。
-</Tip>
+> [!提示]
+>
+> 仅在`todos.length > 0`时显示待办事项列表。在代理创建其之前
+> 计划，没有什么可显示的。显示空组件会浪费空间。
 
 ## 用例
 
@@ -450,32 +444,24 @@ function TodoList({ todos, isLoading }: { todos: Todo[]; isLoading: boolean }) {
 渲染结构化代理状态。这些指南涵盖了相关技术
 与基于计划的代理良好配合：
 
-<CardGroup>
-  <Card title="Structured output" icon="table" href="/oss/javascript/langchain/frontend/structured-output">
-    使用自定义 UI 组件而不是纯文本呈现任何结构化代理状态（而不仅仅是待办事项）。
-  </Card>
+> **[Structured output](/oss/javascript/langchain/frontend/structured-output)**
+>
+> 使用自定义 UI 组件而不是纯文本呈现任何结构化代理状态（而不仅仅是待办事项）。
 
-  <Card title="Join & rejoin streams" icon="arrows-merge" href="/oss/javascript/langchain/frontend/join-rejoin">
-    页面重新加载或选项卡切换后重新连接到正在运行的计划，而不会丢失进度。
-  </Card>
+> **[Join & rejoin streams](/oss/javascript/langchain/frontend/join-rejoin)**
+>
+> 页面重新加载或选项卡切换后重新连接到正在运行的计划，而不会丢失进度。
 
-  <Card title="Message queues" icon="list" href="/oss/javascript/langchain/frontend/message-queues">
-    在代理仍在执行当前计划的同时对后续任务进行排队。
-  </Card>
+> **[Message queues](/oss/javascript/langchain/frontend/message-queues)**
+>
+> 在代理仍在执行当前计划的同时对后续任务进行排队。
 
-  <Card title="Human-in-the-Loop" icon="hand" href="/oss/javascript/langchain/frontend/human-in-the-loop">
-    当代理需要用户批准或输入时暂停和恢复计划执行。
-  </Card>
-</CardGroup>
+> **[Human-in-the-Loop](/oss/javascript/langchain/frontend/human-in-the-loop)**
+>
+> 当代理需要用户批准或输入时暂停和恢复计划执行。
 
 ***
 
-<div>
-  <Callout icon="terminal-2">
-    [Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
-  </Callout>
+[Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
 
-  <Callout icon="edit">
-    [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/oss/deepagents/frontend/todo-list.mdx) 或 [file an issue](https://github.com/langchain-ai/docs/issues/new/choose)。
-  </Callout>
-</div>
+[Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/oss/deepagents/frontend/todo-list.mdx) 或 [file an issue](https://github.com/langchain-ai/docs/issues/new/choose)。

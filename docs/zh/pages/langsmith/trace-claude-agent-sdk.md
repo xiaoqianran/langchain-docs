@@ -10,47 +10,43 @@
 
 安装 Claude Agent SDK 的 LangSmith 集成
 
-<CodeGroup>
-  ```bash uv theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  uv add "langsmith[claude-agent-sdk]"
-  ```
+```bash uv theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+uv add "langsmith[claude-agent-sdk]"
+```
 
-  ```bash pip theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  pip install langsmith[claude-agent-sdk]
-  ```
+```bash pip theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+pip install langsmith[claude-agent-sdk]
+```
 
-  ```bash pnpm theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  pnpm add @anthropic-ai/claude-agent-sdk langsmith zod
-  ```
+```bash pnpm theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+pnpm add @anthropic-ai/claude-agent-sdk langsmith zod
+```
 
-  ```bash npm theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  npm install @anthropic-ai/claude-agent-sdk langsmith zod
-  ```
-</CodeGroup>
+```bash npm theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+npm install @anthropic-ai/claude-agent-sdk langsmith zod
+```
 
 ## 设置
 
 设置您的[API keys](/langsmith/create-account-api-key)：
 
-<CodeGroup>
-  ```bash shell theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  export LANGSMITH_TRACING=true
-  export LANGSMITH_ENDPOINT=https://api.smith.langchain.com
-  export LANGSMITH_API_KEY=<your_langsmith_api_key>
-  export LANGSMITH_PROJECT=<your_langsmith_project>
+```bash shell theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+export LANGSMITH_TRACING=true
+export LANGSMITH_ENDPOINT=https://api.smith.langchain.com
+export LANGSMITH_API_KEY=<your_langsmith_api_key>
+export LANGSMITH_PROJECT=<your_langsmith_project>
 
-  export ANTHROPIC_API_KEY=<your_anthropic_api_key>
-  ```
+export ANTHROPIC_API_KEY=<your_anthropic_api_key>
+```
 
-  ```dotenv .env theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  LANGSMITH_TRACING=true
-  LANGSMITH_ENDPOINT=https://api.smith.langchain.com
-  LANGSMITH_API_KEY=<your_langsmith_api_key>
-  LANGSMITH_PROJECT=<your_langsmith_project>
+```dotenv .env theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+LANGSMITH_TRACING=true
+LANGSMITH_ENDPOINT=https://api.smith.langchain.com
+LANGSMITH_API_KEY=<your_langsmith_api_key>
+LANGSMITH_PROJECT=<your_langsmith_project>
 
-  ANTHROPIC_API_KEY=<your_anthropic_api_key>
-  ```
-</CodeGroup>
+ANTHROPIC_API_KEY=<your_anthropic_api_key>
+```
 
 您可以在 **设置** 下的 [LangSmith UI](https://smith.langchain.com?utm_source=docs\&utm_medium=cta\&utm_campaign=langsmith-signup\&utm_content=langsmith-trace-claude-agent-sdk) 中找到您的 LangSmith API 密钥和项目名称。
 
@@ -60,114 +56,112 @@
 
 要为您的 Claude Agent SDK 应用程序启用 LangSmith 跟踪，请在应用程序启动时调用 `configure_claude_agent_sdk()`：
 
-<CodeGroup>
-  ```python Python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  import asyncio
-  from typing import Any
+```python Python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+import asyncio
+from typing import Any
 
-  from claude_agent_sdk import (
-      ClaudeAgentOptions,
-      ClaudeSDKClient,
-      create_sdk_mcp_server,
-      tool,
-  )
-  from langsmith.integrations.claude_agent_sdk import configure_claude_agent_sdk
+from claude_agent_sdk import (
+    ClaudeAgentOptions,
+    ClaudeSDKClient,
+    create_sdk_mcp_server,
+    tool,
+)
+from langsmith.integrations.claude_agent_sdk import configure_claude_agent_sdk
 
-  configure_claude_agent_sdk()
-
-
-  @tool(
-      "get_weather",
-      "Gets the current weather for a given city",
-      {"city": str},
-  )
-  async def get_weather(args: dict[str, Any]) -> dict[str, Any]:
-      city = args["city"]
-      weather_data = {
-          "San Francisco": "Foggy, 62°F",
-          "New York": "Sunny, 75°F",
-          "London": "Rainy, 55°F",
-          "Tokyo": "Clear, 68°F",
-      }
-      weather = weather_data.get(city, "Weather data not available")
-      return {"content": [{"type": "text", "text": f"Weather in {city}: {weather}"}]}
+configure_claude_agent_sdk()
 
 
-  async def main() -> None:
-      weather_server = create_sdk_mcp_server(
-          name="weather",
-          version="1.0.0",
-          tools=[get_weather],
-      )
-
-      options = ClaudeAgentOptions(
-          model="claude-sonnet-5-5",
-          system_prompt="You are a friendly travel assistant who helps with weather information.",
-          mcp_servers={"weather": weather_server},
-          allowed_tools=["mcp__weather__get_weather"],
-      )
-
-      async with ClaudeSDKClient(options=options) as client:
-          await client.query("What's the weather like in San Francisco and Tokyo?")
-
-          async for message in client.receive_response():
-              print(message)
-
-
-  if __name__ == "__main__":
-      asyncio.run(main())
-  ```
-
-  ```typescript TypeScript theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  import * as originalSdk from '@anthropic-ai/claude-agent-sdk';
-
-  import { wrapClaudeAgentSDK } from 'langsmith/experimental/anthropic';
-  import { z } from 'zod/v4';
-
-  const sdk = wrapClaudeAgentSDK(originalSdk);
-
-  const getWeather = sdk.tool(
-    'get_weather',
-    'Gets the current weather for a given city',
-    {
-      city: z.string(),
-    },
-    async ({ city }) => {
-      const weatherData: Record<string, string> = {
-        'San Francisco': 'Foggy, 62°F',
-        'New York': 'Sunny, 75°F',
-        London: 'Rainy, 55°F',
-        Tokyo: 'Clear, 68°F',
-      };
-      const weather = weatherData[city] ?? 'Weather data not available';
-      return {
-        content: [{ type: 'text' as const, text: weather }],
-      };
+@tool(
+    "get_weather",
+    "Gets the current weather for a given city",
+    {"city": str},
+)
+async def get_weather(args: dict[str, Any]) -> dict[str, Any]:
+    city = args["city"]
+    weather_data = {
+        "San Francisco": "Foggy, 62°F",
+        "New York": "Sunny, 75°F",
+        "London": "Rainy, 55°F",
+        "Tokyo": "Clear, 68°F",
     }
-  );
+    weather = weather_data.get(city, "Weather data not available")
+    return {"content": [{"type": "text", "text": f"Weather in {city}: {weather}"}]}
 
-  const weatherServer = sdk.createSdkMcpServer({
-    name: 'weather',
-    version: '1.0.0',
-    tools: [getWeather],
-  });
 
-  const query = sdk.query({
-    prompt: "What's the weather like in San Francisco and Tokyo?",
-    options: {
-      model: 'claude-sonnet-5-5',
-      systemPrompt:
-        'You are a friendly travel assistant who helps with weather information.',
-      mcpServers: { weather: weatherServer },
-      allowedTools: ['mcp__weather__get_weather'],
-    },
-  });
+async def main() -> None:
+    weather_server = create_sdk_mcp_server(
+        name="weather",
+        version="1.0.0",
+        tools=[get_weather],
+    )
 
-  for await (const chunk of query) {
-    console.log(chunk);
+    options = ClaudeAgentOptions(
+        model="claude-sonnet-5-5",
+        system_prompt="You are a friendly travel assistant who helps with weather information.",
+        mcp_servers={"weather": weather_server},
+        allowed_tools=["mcp__weather__get_weather"],
+    )
+
+    async with ClaudeSDKClient(options=options) as client:
+        await client.query("What's the weather like in San Francisco and Tokyo?")
+
+        async for message in client.receive_response():
+            print(message)
+
+
+if __name__ == "__main__":
+    asyncio.run(main())
+```
+
+```typescript TypeScript theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+import * as originalSdk from '@anthropic-ai/claude-agent-sdk';
+
+import { wrapClaudeAgentSDK } from 'langsmith/experimental/anthropic';
+import { z } from 'zod/v4';
+
+const sdk = wrapClaudeAgentSDK(originalSdk);
+
+const getWeather = sdk.tool(
+  'get_weather',
+  'Gets the current weather for a given city',
+  {
+    city: z.string(),
+  },
+  async ({ city }) => {
+    const weatherData: Record<string, string> = {
+      'San Francisco': 'Foggy, 62°F',
+      'New York': 'Sunny, 75°F',
+      London: 'Rainy, 55°F',
+      Tokyo: 'Clear, 68°F',
+    };
+    const weather = weatherData[city] ?? 'Weather data not available';
+    return {
+      content: [{ type: 'text' as const, text: weather }],
+    };
   }
-  ```
-</CodeGroup>
+);
+
+const weatherServer = sdk.createSdkMcpServer({
+  name: 'weather',
+  version: '1.0.0',
+  tools: [getWeather],
+});
+
+const query = sdk.query({
+  prompt: "What's the weather like in San Francisco and Tokyo?",
+  options: {
+    model: 'claude-sonnet-5-5',
+    systemPrompt:
+      'You are a friendly travel assistant who helps with weather information.',
+    mcpServers: { weather: weatherServer },
+    allowedTools: ['mcp__weather__get_weather'],
+  },
+});
+
+for await (const chunk of query) {
+  console.log(chunk);
+}
+```
 
 配置完成后，所有Claude Agent SDK操作都会自动追踪到LangSmith，包括：
 
@@ -178,12 +172,6 @@
 
 ***
 
-<div>
-  <Callout icon="terminal-2">
-    [Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
-  </Callout>
+[Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
 
-  <Callout icon="edit">
-    [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/trace-claude-agent-sdk.mdx) 或 [file an issue](https://github.com/langchain-ai/docs/issues/new/choose)。
-  </Callout>
-</div>
+[Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/trace-claude-agent-sdk.mdx) 或 [file an issue](https://github.com/langchain-ai/docs/issues/new/choose)。

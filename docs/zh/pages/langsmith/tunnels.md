@@ -6,9 +6,9 @@
 
 通过仅出站连接器从 LangSmith 访问专用网络上的服务，而无需将其暴露于公共互联网。
 
-<Note>
-  隧道位于[alpha](/langsmith/release-stages)。要为您的组织请求访问权限，[contact our sales team](https://www.langchain.com/contact-sales)。
-</Note>
+> [!注意]
+>
+> 隧道位于[alpha](/langsmith/release-stages)。要为您的组织请求访问权限，[contact our sales team](https://www.langchain.com/contact-sales)。
 
 隧道可让 LangSmith 到达在您的专用网络上运行的服务，例如模型端点或 MCP 服务器，而无需向 Internet 开放该服务。您在网络内运行一个小型连接器。连接器打开到 LangSmith 的出站连接，LangSmith 通过该连接发送服务请求。
 
@@ -24,90 +24,86 @@
 
 要创建隧道，您需要[Organization Admin or Organization Operator](/langsmith/rbac#organization-roles)角色。您还需要网络内的一个位置来运行连接器：一个 Kubernetes 集群或一个 Docker 主机，可以访问您的服务并建立出站 HTTPS 连接。
 
-<Steps>
-  <Step title="Open Tunnels settings" icon="settings">
-    在 LangSmith 中，转到 **设置**，然后选择 **基础设施** 下的 **隧道**。
+**1.打开隧道设置**
 
-    <img alt="Tunnels settings page with no tunnels and a Create tunnel button" />
-  </Step>
+在 LangSmith 中，转到 **设置**，然后选择 **基础设施** 下的 **隧道**。
 
-  <Step title="Create the tunnel" icon="plus">
-    选择**创建隧道**。输入名称和可选描述，然后选择“**创建隧道**”。
+![Tunnels settings page with no tunnels and a Create tunnel button](https://mintcdn.com/langchain-5e9cc07a/zroKByT8uOSRQ7j4/langsmith/images/tunnels-empty.png?fit=max\&auto=format\&n=zroKByT8uOSRQ7j4\&q=85\&s=5e7a6d33e54cb555f8652a1d4ac6e733)
 
-    <img alt="Create tunnel dialog with a name and a description filled in" />
-  </Step><Step title="Copy the connector configuration" icon="copy">
-    新隧道显示**正在等待连接器**。其**连接器配置**部分以环境变量或 YAML 文件的形式显示隧道 ID 和连接器所需的设置。复制它们，并将示例目标替换为您自己的目标（请参阅[Targets](#targets)）。
+**2.创建隧道**
 
-    <img alt="Tunnel details showing Waiting for connector, the tunnel ID, and the connector configuration as environment variables" />
-  </Step>
+选择**创建隧道**。输入名称和可选描述，然后选择“**创建隧道**”。
 
-  <Step title="Create an API key for the connector" icon="key">
-    在 **设置** > **API 密钥** 中，[create an organization-scoped service key](/langsmith/create-account-api-key) 具有组织管理员或组织操作员角色。连接器使用此密钥连接到LangSmith。将其存储在连接器可以读取的位置，并且不要将其提交到源代码管理。
-  </Step>
+![Create tunnel dialog with a name and a description filled in](https://mintcdn.com/langchain-5e9cc07a/zroKByT8uOSRQ7j4/langsmith/images/tunnels-create-dialog.png?fit=max\&auto=format\&n=zroKByT8uOSRQ7j4\&q=85\&s=e6fe6129c82295b0f446963a3a761a6d)**3.复制连接器配置**
 
-  <Step title="Run the connector" icon="terminal">
-    在网络内运行连接器。如果您的组织不在 GCP US 区域，请将端点设置为您所在区域的 API URL：
+新隧道显示**正在等待连接器**。其**连接器配置**部分以环境变量或 YAML 文件的形式显示隧道 ID 和连接器所需的设置。复制它们，并将示例目标替换为您自己的目标（请参阅[Targets](#targets)）。
 
-    |地区 |端点 |
-    | - | - |
-    |基仕伯美国 | `https://api.smith.langchain.com`（默认）|
-    | GCP 欧盟 | `https://eu.api.smith.langchain.com` |
-    |基仕伯亚太区 | `https://apac.api.smith.langchain.com` |
-    | AWS 美国 | `https://aws.api.smith.langchain.com` |
+![Tunnel details showing Waiting for connector, the tunnel ID, and the connector configuration as environment variables](https://mintcdn.com/langchain-5e9cc07a/zroKByT8uOSRQ7j4/langsmith/images/tunnels-connector-config.png?fit=max\&auto=format\&n=zroKByT8uOSRQ7j4\&q=85\&s=ed5ea182a8ed537402e80d72f37fa4af)
 
-    <Tabs>
-      <Tab title="Kubernetes (Helm)">
-        将 API 密钥存储在 Secret 中，然后安装 [⟦T9⟧ chart](https://github.com/langchain-ai/helm/tree/main/charts/langsmith-connector)：
+**4.为连接器创建 API 密钥**
 
-        ```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-        kubectl create namespace langsmith-connector
-        kubectl -n langsmith-connector create secret generic langsmith-connector-key \
-          --from-literal=langsmith_api_key=<api key>
+在**设置** > **API 密钥**中，[create an organization-scoped service key](/langsmith/create-account-api-key) 具有组织管理员或组织操作员角色。连接器使用此密钥连接到LangSmith。将其存储在连接器可以读取的位置，并且不要将其提交到源代码管理。
 
-        helm repo add langchain https://langchain-ai.github.io/helm/
-        helm repo update
-        helm install langsmith-connector langchain/langsmith-connector \
-          --namespace langsmith-connector \
-          --set config.connectionId=<tunnel id> \
-          --set config.existingSecretName=langsmith-connector-key \
-          --set config.targets.litellm=http://litellm.internal:4000
-        ```
+**5.运行连接器**
 
-        对于 GCP US 以外的区域添加 `--set config.endpoint=<endpoint>`。图表将密钥作为文件安装，连接器在每次重新连接时都会再次读取它，因此您可以轮换 Secret 中的密钥，而无需重新启动连接器。运行单个副本。一个连接器已与 LangSmith 保持两个冗余连接。
-      </Tab>
+在网络内运行连接器。如果您的组织不在 GCP US 区域，请将端点设置为您所在区域的 API URL：
 
-      <Tab title="Docker">
-        ```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-        docker run -d --name langsmith-connector --restart unless-stopped \
-          -e LANGSMITH_CONNECTION_ID=<tunnel id> \
-          -e LANGSMITH_API_KEY=<api key> \
-          -e LANGSMITH_CONNECTOR_TARGETS="litellm=http://litellm.internal:4000" \
-          langchain/langsmith-connector:0.2.0
-        ```
+|地区 |端点 |
+| - | - |
+|基仕伯美国 | `https://api.smith.langchain.com`（默认）|
+| GCP 欧盟 | `https://eu.api.smith.langchain.com` |
+|基仕伯亚太区 | `https://apac.api.smith.langchain.com` |
+| AWS 美国 | `https://aws.api.smith.langchain.com` |
 
-        对于 GCP US 以外的区域添加 `-e LANGSMITH_ENDPOINT=<endpoint>`。要从文件中读取密钥，请将 `LANGSMITH_API_KEY_FILE` 设置为其路径。
-      </Tab>
-    </Tabs>
+**Kubernetes（头盔）**
 
-    如果您的网络需要出站代理，则连接器支持 `HTTPS_PROXY`。设置 `LOG_LEVEL=debug` 记录它转发的每个请求。使用 Helm，将其设置为 `connector.deployment.extraEnv`。
-  </Step>
+将 API 密钥存储在 Secret 中，然后安装 [⟦T9⟧ chart](https://github.com/langchain-ai/helm/tree/main/charts/langsmith-connector)：
 
-  <Step title="Check that the tunnel is connected" icon="circle-check">
-    连接器启动后几秒钟内，隧道就会显示 **已连接** 并列出连接器服务的每个目标及其隧道 URL。
+```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+kubectl create namespace langsmith-connector
+kubectl -n langsmith-connector create secret generic langsmith-connector-key \
+  --from-literal=langsmith_api_key=<api key>
 
-    <img alt="Tunnel details showing Connected and two available HTTP targets, each with a tunnel URL and a copy button" />
+helm repo add langchain https://langchain-ai.github.io/helm/
+helm repo update
+helm install langsmith-connector langchain/langsmith-connector \
+  --namespace langsmith-connector \
+  --set config.connectionId=<tunnel id> \
+  --set config.existingSecretName=langsmith-connector-key \
+  --set config.targets.litellm=http://litellm.internal:4000
+```
 
-    要从您自己的计算机检查目标，请使用组织的 API 密钥向其隧道 URL 发送请求：
+对于 GCP US 以外的区域添加 `--set config.endpoint=<endpoint>`。图表将密钥作为文件安装，连接器在每次重新连接时都会再次读取它，因此您可以轮换 Secret 中的密钥，而无需重新启动连接器。运行单个副本。一个连接器已与 LangSmith 保持两个冗余连接。
 
-    ```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-    curl -H "X-Api-Key: $LANGSMITH_API_KEY" https://<handle>.tunnels.smith.langchain.com/
-    ```
+**码头工人**
 
-    响应来自您的服务。没有有效 API 密钥的请求将返回 `403` 和 `connection access denied`。
+```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+docker run -d --name langsmith-connector --restart unless-stopped \
+  -e LANGSMITH_CONNECTION_ID=<tunnel id> \
+  -e LANGSMITH_API_KEY=<api key> \
+  -e LANGSMITH_CONNECTOR_TARGETS="litellm=http://litellm.internal:4000" \
+  langchain/langsmith-connector:0.2.0
+```
 
-    如果隧道停留在 **等待连接器**，请检查连接器的日志。每次连接器连接失败时，它都会记录一条警告并说明原因并重试。常见原因是 API 密钥没有组织管理员或组织操作员角色、隧道 ID 错误或隧道已禁用。
-  </Step>
-</Steps>
+对于 GCP US 以外的区域添加 `-e LANGSMITH_ENDPOINT=<endpoint>`。要从文件中读取密钥，请将 `LANGSMITH_API_KEY_FILE` 设置为其路径。
+
+如果您的网络需要出站代理，则连接器支持 `HTTPS_PROXY`。设置 `LOG_LEVEL=debug` 记录它转发的每个请求。使用 Helm，将其设置为 `connector.deployment.extraEnv`。
+
+**6。检查隧道是否已连接**
+
+连接器启动后几秒钟内，隧道会显示 **已连接** 并列出连接器服务的每个目标及其隧道 URL。
+
+![Tunnel details showing Connected and two available HTTP targets, each with a tunnel URL and a copy button](https://mintcdn.com/langchain-5e9cc07a/zroKByT8uOSRQ7j4/langsmith/images/tunnels-connected.png?fit=max\&auto=format\&n=zroKByT8uOSRQ7j4\&q=85\&s=07630d1a827360d71bac1e4e7f3f4889)
+
+要从您自己的计算机检查目标，请使用组织的 API 密钥向其隧道 URL 发送请求：
+
+```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+curl -H "X-Api-Key: $LANGSMITH_API_KEY" https://<handle>.tunnels.smith.langchain.com/
+```
+
+响应来自您的服务。没有有效 API 密钥的请求将返回 `403` 和 `connection access denied`。
+
+如果隧道停留在 **等待连接器**，请检查连接器的日志。每次连接器连接失败时，它都会记录一条警告并说明原因并重试。常见原因是 API 密钥没有组织管理员或组织操作员角色、隧道 ID 错误或隧道已禁用。
 
 ### 目标
 
@@ -135,7 +131,7 @@
 
 ### 仅出站连接
 
-连接器通过 TLS 在端口 443 上与您所在区域的 LangSmith API 端点建立出站 WebSocket 连接。您不打开入站端口或更改 LangSmith 的防火墙规则，并且连接器 Pod 不公开任何端口。
+连接器通过 TLS 与您所在区域的 LangSmith API 端点在端口 443 上建立出站 WebSocket 连接。您不打开入站端口或更改 LangSmith 的防火墙规则，并且连接器 Pod 不公开任何端口。
 
 ### 身份验证和授权
 
@@ -166,12 +162,6 @@ LangSmith 不记录通过隧道发送的请求或响应主体。对于失败的�
 
 ***
 
-<div>
-  <Callout icon="terminal-2">
-    [Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
-  </Callout>
+[Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
 
-  <Callout icon="edit">
-    [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/tunnels.mdx) 或 [file an issue](https://github.com/langchain-ai/docs/issues/new/choose)。
-  </Callout>
-</div>
+[Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/tunnels.mdx) 或 [file an issue](https://github.com/langchain-ai/docs/issues/new/choose)。

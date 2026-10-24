@@ -78,7 +78,7 @@ export LANGSMITH_OPENCODE_METADATA='{"team":"agents","environment":"dev"}'
 }
 ```
 
-|领域 |必填 |默认|描述 |
+|领域|必填 |默认|描述 |
 | - | - | - | - |
 | `enabled` |是的 | `false` |设置为 `true` 以启用从配置文件进行跟踪。 |
 | `api_key` |有条件| - | LangSmith API 密钥。除非环境变量或副本提供，否则是必需的。 |
@@ -113,7 +113,7 @@ export LANGSMITH_OPENCODE_METADATA='{"team":"agents","environment":"dev"}'
 
 副本对象支持 Snake\_case 和 LangSmith SDK 风格的驼峰命名法字段名称。建议在配置文件中使用snake\_case。
 
-|领域 |描述 |
+|领域|描述 |
 | - | - |
 | `api_url` / `apiUrl` | LangSmith 副本目标的 API URL。 |
 | `api_key` / `apiKey` |目标工作区的 API 密钥。 |
@@ -133,7 +133,7 @@ export LANGSMITH_OPENCODE_METADATA='{"team":"agents","environment":"dev"}'
 
 ## 查看LangSmith中的踪迹
 
-打开配置的 LangSmith 项目并查找名为 `opencode.session` 的根运行。每个跟踪包含用户轮流作为根输入和助理响应、工具调用以及子代理跟踪作为子运行。该插件将 OpenCode 会话 ID 存储为 `thread_id` 元数据，因此您可以在 LangSmith 中过滤或分组相关的 OpenCode 轮次。
+打开配置的LangSmith项目并查找名为`opencode.session`的根运行。每个跟踪都包含用户轮流作为根输入和助理响应、工具调用以及子代理跟踪作为子运行。该插件将 OpenCode 会话 ID 存储为 `thread_id` 元数据，因此您可以在 LangSmith 中过滤或分组相关的 OpenCode 轮次。
 
 ## 故障排除
 
@@ -146,12 +146,6 @@ export LANGSMITH_OPENCODE_METADATA='{"team":"agents","environment":"dev"}'
 
 ***
 
-<div>
-  <Callout icon="terminal-2">
-    [Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
-  </Callout>
+[Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
 
-  <Callout icon="edit">
-    [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/trace-with-opencode.mdx) 或 [file an issue](https://github.com/langchain-ai/docs/issues/new/choose)。
-  </Callout>
-</div>
+[Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/trace-with-opencode.mdx) 或 [file an issue](https://github.com/langchain-ai/docs/issues/new/choose)。

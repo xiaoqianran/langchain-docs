@@ -83,29 +83,29 @@ Deep Agents 代码按优先顺序加载钩子配置：
 
 ### 处理程序字段匹配器组的 `hooks` 数组中的每个条目都是一个命令处理程序：
 
-<ResponseField name="type" type="string">
-  处理程序类型。仅支持`command`。命令处理程序运行一个子进程，该子进程接收 stdin 上的事件 JSON。
-</ResponseField>
+**类型** `string` *必填*
 
-<ResponseField name="command" type="string">
-  要运行的 shell 命令。总是需要的。支持管道、重定向、glob 和环境变量扩展。事件有效负载以 JSON 形式写入标准输入，从不插入到参数中。当`argv`也被设置时，该字符串不会通过shell执行。
-</ResponseField>
+处理程序类型。仅支持`command`。命令处理程序运行一个子进程，该子进程接收 stdin 上的事件 JSON。
 
-<ResponseField name="argv" type="list[string]">
-  直接执行参数列表，而不是通过 shell 解释 `command`。将其用于显式可执行路径和参数。
-</ResponseField>
+**命令** `string` *必填*
 
-<ResponseField name="timeout" type="number">
-  每个处理程序超时（以秒为单位）。默认值为 600 秒，`UserPromptSubmit` 除外，默认为 30 秒。超时是一种非阻塞故障。
-</ResponseField>
+要运行的 shell 命令。总是需要的。支持管道、重定向、glob 和环境变量扩展。事件有效负载以 JSON 形式写入标准输入，从不插入到参数中。当`argv`也被设置时，该字符串不会通过shell执行。
 
-<ResponseField name="statusMessage" type="string">
-  处理程序运行时，UI 中显示瞬时消息。
-</ResponseField>
+**argv** `list[string]`
 
-配置不受支持的处理程序类型或`"async": true`会产生可见的配置错误。
+直接执行参数列表，而不是通过 shell 解释 `command`。将其用于显式可执行路径和参数。
 
-### 处理程序环境A handler starts in the working directory reported as `cwd` in the payload and inherits the session environment with credential-looking variables removed: any name containing `KEY`, `TOKEN`, `SECRET`, `PASSWORD`, or `APIKEY` is stripped before launch.需要凭证的处理程序必须从文件或秘密管理器而不是继承的环境中读取它。插件处理程序还会收到自己的[plugin path variables](#plugin-hooks)。
+**超时** `number`
+
+每个处理程序超时（以秒为单位）。默认值为 600 秒，`UserPromptSubmit` 除外，默认为 30 秒。超时是一种非阻塞故障。
+
+**状态消息** `string`
+
+处理程序运行时，UI 中显示瞬时消息。
+
+配置不受支持的处理程序类型或 `"async": true` 会产生可见的配置错误。
+
+### 处理程序环境处理程序在有效负载中报告为 `cwd` 的工作目录中启动，并继承会话环境，并删除了看似凭证的变量：任何包含 `KEY`、`TOKEN`、`SECRET`、`PASSWORD` 或 `APIKEY` 的名称在启动前都会被删除。需要凭证的处理程序必须从文件或秘密管理器而不是继承的环境中读取它。插件处理程序还会收到自己的[plugin path variables](#plugin-hooks)。
 
 ### 匹配器
 
@@ -120,18 +120,18 @@ Deep Agents 代码按优先顺序加载钩子配置：
 
 编译错误使该组无效，并在会话运行之前生成用户可见的配置诊断。
 
-## 活动Deep Agents Code emits the following events. Client-owned events run in the CLI process.服务器拥有的事件源自代理执行路径并往返于客户端，因此命令处理程序在您的配置所在的位置运行。
+## 活动Deep Agents 代码发出以下事件。客户端拥有的事件在 CLI 进程中运行。服务器拥有的事件源自代理执行路径并往返于客户端，因此命令处理程序在您的配置所在的位置运行。
 
 |活动 |业主|退出代码2效果|匹配于 |
 | - | - | - | - |
 | `SessionStart` |客户|诊断| `source` |
-| `UserPromptSubmit` |客户|阻止提示|无 |
+| `UserPromptSubmit` |客户|阻止提示 |无 |
 | `SessionEnd` |客户|诊断| `reason` |
 | `PermissionRequest` |客户|否认| `tool_name` |
 | `Notification` |客户|诊断| `notification_type` |
 | `PreToolUse` |服务器|否认| `tool_name` |
 | `PostToolUse` |服务器|反馈 | `tool_name` |
-| `PreCompact` |服务器|块压缩 | `trigger` |
+| `PreCompact` |服务器|块压缩| `trigger` |
 | `Stop` |服务器|继续转|无 |
 | `SubagentStart` |服务器|诊断| `agent_type` |
 | `SubagentStop` |服务器|添加上下文 | `agent_type` |
@@ -155,9 +155,9 @@ flowchart LR
     class X alert
 ```
 
-The diagram covers the tool-call path only.当 Deep Agents 代码即将显示权限提示时，`PermissionRequest` 是一个单独的客户端拥有的事件。
+该图仅涵盖工具调用路径。当 Deep Agents 代码即将显示权限提示时，`PermissionRequest` 是一个单独的客户端拥有的事件。
 
-### Notify before the prompt cache expires`cache_expiring` 通知会在跟踪的提示缓存保留窗口结束之前发出警告。在下一个回合出现缓存未命中风险之前，使用它来触发您自己的提醒。
+### 提示缓存过期前通知`cache_expiring` 通知会在跟踪的提示缓存保留窗口结束之前发出警告。在下一个回合出现缓存未命中风险之前，使用它来触发您自己的提醒。
 
 在`hooks.json`中，在`Notification`下添加处理程序组，并将`matcher`设置为`cache_expiring`。 Deep Agents 代码在最后 60 秒内每个线程和缓存窗口发出一次。有效负载包括`notification_type`、`message`和`title`。
 
@@ -169,14 +169,14 @@ The diagram covers the tool-call path only.当 Deep Agents 代码即将显示权
 
 |领域|描述 |
 | - | - |
-| `session_id` | Session identifier |
+| `session_id` |会话标识符|
 | `transcript_path` |对话记录的路径（如果可用）|
 | `cwd` |调用钩子时的工作目录 |
 | `hook_event_name` |触发的事件的名称 |
 | `prompt_id` |当前用户提示的 UUID（如果可用） |
 | `permission_mode` |权限模式（`default`、`plan`、`acceptEdits`、`auto`、`dontAsk`、`bypassPermissions`），当有意义时 |
 | `effort` |诸如 `{ "level": "medium" }` 之类的对象，其中级别为 `none`、`low`、`medium`、`high`、`xhigh` 或 `max`（如果可用）|
-| `agent_id`、`agent_type` |子代理身份（如果可用）|`transcript_path` 指向在 `~/.deepagents/transcripts` 下编写的对话的 JSONL 投影。子代理事件还携带 `agent_transcript_path` 来表示子代理自己的转录本。两个文件都会在匹配的处理程序运行之前刷新，因此处理程序可以读取当前事件之前的对话。
+| `agent_id`、`agent_type` |子代理身份（如果可用）|`transcript_path` 指向在`~/.deepagents/transcripts` 下编写的对话的 JSONL 投影。子代理事件还携带 `agent_transcript_path` 来表示子代理自己的转录本。两个文件都会在匹配的处理程序运行之前刷新，因此处理程序可以读取当前事件之前的对话。
 
 ### 特定于事件的字段
 
@@ -215,7 +215,7 @@ The diagram covers the tool-call path only.当 Deep Agents 代码即将显示权
 
 挂钩脚本看到稳定的公共工具名称和参数形状，而不是内部Deep Agents代码工具名称。匹配并读取 `PreToolUse`、`PostToolUse` 和 `PermissionRequest` 中的这些名称：|公共工具名称|值得注意的输入字段 |
 | - | - |
-| `Bash` | `command`，可选 `timeout` 以毫秒为单位 |
+| `Bash` | `command`，可选`timeout`（以毫秒为单位）|
 | `Write` | `file_path`、`content` |
 | `Edit` | `file_path`、`old_string`、`new_string`、`replace_all` |
 | `Read` | `file_path`、`limit`、`offset` |
@@ -251,7 +251,7 @@ JSON 输出仅在退出 `0` 时处理，并且必须是 stdout 上的唯一内�
     "hookEventName": "PreToolUse"
   }
 }
-```所有匹配的处理程序在其结果合并之前完成。返回 `"continue": false` 将减少的决策标记为已停止，但不会阻止其他匹配处理程序运行。按照配置顺序，第一个`stopReason`获胜。 `suppressOutput` 仅抑制该处理程序的 `systemMessage`。
+```所有匹配的处理程序在其结果合并之前完成。返回 `"continue": false` 将减少的决策标记为已停止，但不会阻止其他匹配处理程序运行。按照配置顺序，第一个 `stopReason` 获胜。 `suppressOutput` 仅抑制该处理程序的 `systemMessage`。
 
 特定于事件的控件位于`hookSpecificOutput`（对于工具和权限事件）或顶级`decision`和`reason`（对于`Stop`）。
 
@@ -319,7 +319,7 @@ JSON 输出仅在退出 `0` 时处理，并且必须是 stdout 上的唯一内�
 
 ## 不支持的输出字段
 
-可以识别但不应用以下兼容性字段。 Deep Agents 代码发出诊断并继续在结果列中进行回退。对于工具和权限行，这意味着普通的 [PreToolUse](#control-tool-execution-with-pretooluse) 或 [PermissionRequest](#allow-or-deny-with-permissionrequest) 决策路径，无需改变工具输入或延迟。|领域或行为|结果 |
+可以识别但不应用以下兼容性字段。 Deep Agents 代码发出诊断并继续在结果列中进行回退。对于工具和权限行，这意味着普通的 [PreToolUse](#control-tool-execution-with-pretooluse) 或 [PermissionRequest](#allow-or-deny-with-permissionrequest) 决策路径，无需改变工具输入或延迟。|领域或行为 |结果 |
 | - | - |
 | `SessionStart.initialUserMessage`、`sessionTitle`、`watchPaths`、`reloadSkills` |已解析，未应用 |
 | `UserPromptSubmit.sessionTitle` |已解析，未应用 |
@@ -332,123 +332,123 @@ JSON 输出仅在退出 `0` 时处理，并且必须是 stdout 上的唯一内�
 
 ## 示例
 
-<Accordion title="Block destructive Bash commands (PreToolUse)">
-  ```bash title="~/.deepagents/hooks/block-rm.sh" theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  #!/usr/bin/env bash
-  command=$(jq -r '.tool_input.command // ""')
+> **阻止破坏性 Bash 命令 (PreToolUse)**
+>
+> ```bash title="~/.deepagents/hooks/block-rm.sh" theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> #!/usr/bin/env bash
+> command=$(jq -r '.tool_input.command // ""')
+>
+> if printf '%s' "$command" | grep -Eq 'rm[[:space:]]+.*-[a-zA-Z]*[rf]'; then
+>   cat <<'JSON'
+> {
+>   "hookSpecificOutput": {
+>     "hookEventName": "PreToolUse",
+>     "permissionDecision": "deny",
+>     "permissionDecisionReason": "Recursive or forced rm is blocked by policy"
+>   }
+> }
+> JSON
+> fi
+> ```
+>
+> ```json title="~/.deepagents/hooks.json" theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> {
+>   "hooks": {
+>     "PreToolUse": [
+>       {
+>         "matcher": "Bash",
+>         "hooks": [
+>           { "type": "command", "command": "~/.deepagents/hooks/block-rm.sh" }
+>         ]
+>       }
+>     ]
+>   }
+> }
+> ```
 
-  if printf '%s' "$command" | grep -Eq 'rm[[:space:]]+.*-[a-zA-Z]*[rf]'; then
-    cat <<'JSON'
-  {
-    "hookSpecificOutput": {
-      "hookEventName": "PreToolUse",
-      "permissionDecision": "deny",
-      "permissionDecisionReason": "Recursive or forced rm is blocked by policy"
-    }
-  }
-  JSON
-  fi
-  ```
+> **在会话启动 (SessionStart) 时加载项目上下文**
+>
+> ```bash title="~/.deepagents/hooks/load-context.sh" theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> #!/usr/bin/env bash
+> context=$(git -C "$(jq -r '.cwd')" log --oneline -5 2>/dev/null)
+>
+> jq -n --arg ctx "$context" '{
+>   hookSpecificOutput: {
+>     hookEventName: "SessionStart",
+>     additionalContext: ("Recent commits:\n" + $ctx)
+>   }
+> }'
+> ```
+>
+> ```json title="~/.deepagents/hooks.json" theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> {
+>   "hooks": {
+>     "SessionStart": [
+>       {
+>         "matcher": "startup|resume",
+>         "hooks": [
+>           { "type": "command", "command": "~/.deepagents/hooks/load-context.sh" }
+>         ]
+>       }
+>     ]
+>   }
+> }
+> ```
 
-  ```json title="~/.deepagents/hooks.json" theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  {
-    "hooks": {
-      "PreToolUse": [
-        {
-          "matcher": "Bash",
-          "hooks": [
-            { "type": "command", "command": "~/.deepagents/hooks/block-rm.sh" }
-          ]
-        }
-      ]
-    }
-  }
-  ```
-</Accordion>
+> **在 macOS 上回合结束时的桌面通知（停止）**
+>
+> ```json title="~/.deepagents/hooks.json" theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> {
+>   "hooks": {
+>     "Stop": [
+>       {
+>         "hooks": [
+>           {
+>             "type": "command",
+>             "command": "osascript -e 'display notification \"Agent finished\" with title \"Deep Agents Code\"'"
+>           }
+>         ]
+>       }
+>     ]
+>   }
+> }
+> ```
 
-<Accordion title="Load project context on session start (SessionStart)">
-  ```bash title="~/.deepagents/hooks/load-context.sh" theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  #!/usr/bin/env bash
-  context=$(git -C "$(jq -r '.cwd')" log --oneline -5 2>/dev/null)
-
-  jq -n --arg ctx "$context" '{
-    hookSpecificOutput: {
-      hookEventName: "SessionStart",
-      additionalContext: ("Recent commits:\n" + $ctx)
-    }
-  }'
-  ```
-
-  ```json title="~/.deepagents/hooks.json" theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  {
-    "hooks": {
-      "SessionStart": [
-        {
-          "matcher": "startup|resume",
-          "hooks": [
-            { "type": "command", "command": "~/.deepagents/hooks/load-context.sh" }
-          ]
-        }
-      ]
-    }
-  }
-  ```
-</Accordion>
-
-<Accordion title="Desktop notification when the turn ends on macOS (Stop)">
-  ```json title="~/.deepagents/hooks.json" theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  {
-    "hooks": {
-      "Stop": [
-        {
-          "hooks": [
-            {
-              "type": "command",
-              "command": "osascript -e 'display notification \"Agent finished\" with title \"Deep Agents Code\"'"
-            }
-          ]
-        }
-      ]
-    }
-  }
-  ```
-</Accordion>
-
-<Accordion title="Python handler that reads the payload">
-  ```python title="~/.deepagents/hooks/handler.py" theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  import json
-  import sys
-
-
-  def handle(payload: dict[str, object]) -> None:
-      event = payload["hook_event_name"]
-      if event == "PreToolUse":
-          tool_name = payload["tool_name"]
-          print(f"About to run {tool_name}", file=sys.stderr)
-
-
-  if __name__ == "__main__":
-      handle(json.load(sys.stdin))
-  ```
-
-  ```json title="~/.deepagents/hooks.json" theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  {
-    "hooks": {
-      "PreToolUse": [
-        {
-          "matcher": "*",
-          "hooks": [
-            {
-              "type": "command",
-              "command": "python3 ~/.deepagents/hooks/handler.py"
-            }
-          ]
-        }
-      ]
-    }
-  }
-  ```
-</Accordion>
+> **读取有效负载的Python处理程序**
+>
+> ```python title="~/.deepagents/hooks/handler.py" theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> import json
+> import sys
+>
+>
+> def handle(payload: dict[str, object]) -> None:
+>     event = payload["hook_event_name"]
+>     if event == "PreToolUse":
+>         tool_name = payload["tool_name"]
+>         print(f"About to run {tool_name}", file=sys.stderr)
+>
+>
+> if __name__ == "__main__":
+>     handle(json.load(sys.stdin))
+> ```
+>
+> ```json title="~/.deepagents/hooks.json" theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> {
+>   "hooks": {
+>     "PreToolUse": [
+>       {
+>         "matcher": "*",
+>         "hooks": [
+>           {
+>             "type": "command",
+>             "command": "python3 ~/.deepagents/hooks/handler.py"
+>           }
+>         ]
+>       }
+>     ]
+>   }
+> }
+> ```
 
 ## 钩子故障排除
 
@@ -470,9 +470,9 @@ JSON 输出仅在退出 `0` 时处理，并且必须是 stdout 上的唯一内�
 * 优先选择您控制的显式 shell 可执行文件而不是 shell 包装器。
 * 仅安装来自您信任的来源的挂钩。
 
-<Warning>
-  挂钩以您的用户权限运行。将钩子配置视为可执行代码。
-</Warning>
+> [!警告]
+>
+> 挂钩以您的用户权限运行。将钩子配置视为可执行代码。
 
 ## 另请参阅
 
@@ -483,12 +483,6 @@ JSON 输出仅在退出 `0` 时处理，并且必须是 stdout 上的唯一内�
 
 ***
 
-<div>
-  <Callout icon="terminal-2">
-    [Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时答案。
-  </Callout>
+[Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
 
-  <Callout icon="edit">
-    [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/oss/deepagents/code/hooks.mdx) 或 [file an issue](https://github.com/langchain-ai/docs/issues/new/choose)。
-  </Callout>
-</div>
+[Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/oss/deepagents/code/hooks.mdx) 或 [file an issue](https://github.com/langchain-ai/docs/issues/new/choose)。

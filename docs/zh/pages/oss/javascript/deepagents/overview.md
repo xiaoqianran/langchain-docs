@@ -23,8 +23,6 @@ Deep Agents具有以下功能：
 
 ## 尝试一下
 
-<PatternEmbed />
-
 ## 快速入门
 
 ```ts theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
@@ -51,39 +49,37 @@ console.log(
     messages: [{ role: "user", content: "What's the weather in Tokyo?" }],
   }),
 );
-```<Card title="View example trace" icon="chart-line" href="https://smith.langchain.com/public/8e31d898-1083-4a78-a6d8-29f16e24760f/r">
-  为此示例打开公共 LangSmith 运行。
-</Card>
+```> **[View example trace](https://smith.langchain.com/public/8e31d898-1083-4a78-a6d8-29f16e24760f/r)**
+>
+> 为此示例打开公共 LangSmith 运行。
 
 请参阅 [Quickstart](/oss/javascript/deepagents/quickstart/) 和 [Customization guide](/oss/javascript/deepagents/customization/) 开始使用 Deep Agents 构建您自己的代理和应用程序。
 
-<Tip>
-  使用 [LangSmith](https://smith.langchain.com?utm_source=docs\&utm_medium=cta\&utm_campaign=langsmith-signup\&utm_content=oss-deepagents-overview) 跟踪请求、调试代理行为并评估输出。按照[observability quickstart](/langsmith/observability-quickstart)进行设置。准备好投入生产后，请参阅 [Going to production](/oss/javascript/deepagents/going-to-production) 了解 LangSmith 部署选项。
-</Tip>
+> [!提示]
+>
+> 使用 [LangSmith](https://smith.langchain.com?utm_source=docs\&utm_medium=cta\&utm_campaign=langsmith-signup\&utm_content=oss-deepagents-overview) 跟踪请求、调试代理行为并评估输出。按照[observability quickstart](/langsmith/observability-quickstart)进行设置。准备好投入生产后，请参阅 [Going to production](/oss/javascript/deepagents/going-to-production) 了解 LangSmith 部署选项。
 
 ## 核心能力
 
-<img alt="Agent harness capabilities by category" />
+![Agent harness capabilities by category](https://mintcdn.com/langchain-5e9cc07a/jtty0O--UJOKG0nK/oss/images/agent_harness_capabilities.svg?fit=max\&auto=format\&n=jtty0O--UJOKG0nK\&q=85\&s=0ff671d72badd0844826660dfcb04391)
 
 Deep Agents 是["agent harness"](/oss/javascript/concepts/products#agent-harnesses-like-the-deep-agents-sdk)。它与其他代理框架具有相同的核心工具调用循环，但具有使代理可靠地执行实际任务的内置功能：
 
-<CardGroup>
-  <Card title="Execution environment" icon="bolt" href="#execution-environment">
-    工具、虚拟文件系统、可选沙箱和 REPL（解释器）
-  </Card>
+> **[Execution environment](#execution-environment)**
+>
+> 工具、虚拟文件系统、可选沙箱和 REPL（解释器）
 
-  <Card title="Context management" icon="database" href="#context-management">
-    技能、记忆、总结、上下文卸载和提示缓存
-  </Card>
+> **[Context management](#context-management)**
+>
+> 技能、记忆、总结、上下文卸载和提示缓存
 
-  <Card title="Delegation" icon="sitemap" href="#delegation">
-    子代理生成和可选的任务规划
-  </Card>
+> **[Delegation](#delegation)**
+>
+> 子代理生成和可选的任务规划
 
-  <Card title="Steering" icon="user" href="#steering">
-    人机交互批准和中断
-  </Card>
-</CardGroup>
+> **[Steering](#steering)**
+>
+> 人机交互批准和中断
 
 [⟦T9⟧](https://www.npmjs.com/package/deepagents) 是一个独立的库，构建在 [LangChain](/oss/javascript/langchain/) 代理的核心构建块之上，并使用 [LangGraph](/oss/javascript/langgraph/) 的工具在生产中运行代理。[LangChain](/oss/javascript/langchain/) 是为您的代理提供核心构建块的框架。
 要了解有关 LangChain、LangGraph 和 Deep Agents 之间差异的更多信息，请参阅 [Frameworks, runtimes, and harnesses](/oss/javascript/concepts/products)。有关与 Anthropic 安全带的并排比较，请参阅 [Deep Agents vs. Claude Agent SDK](/oss/javascript/deepagents/comparison)。
@@ -119,38 +115,38 @@ Deep Agents 是["agent harness"](/oss/javascript/concepts/products#agent-harness
 | `edit_file` |在文件中执行精确的字符串替换（使用全局替换模式）|
 | `glob` |查找匹配模式的文件（例如，`**/*.py`）|
 | `grep` |使用多种输出模式搜索文件内容（仅文件、带上下文的内容或计数）|
-| `execute` |在环境中运行 shell 命令（仅适用于[sandbox backends](/oss/javascript/deepagents/sandboxes)）|<Accordion title="Supported multimodal file extensions">
-  |类型 |扩展 |
-  | - | - |
-  | [Image](/oss/javascript/langchain/messages#multimodal) | `.png`、`.jpg`、`.jpeg`、`.gif`、`.webp`、`.heic`、`.heif` |
-  | [Video](/oss/javascript/langchain/messages#multimodal) | `.mp4`、`.mpeg`、`.mov`、`.avi`、`.flv`、`.mpg`、`.webm`、`.wmv`、`.3gpp` |
-  | [Audio](/oss/javascript/langchain/messages#multimodal) | `.wav`、`.mp3`、`.aiff`、`.aac`、`.ogg`、`.flac` |
-  | [File](/oss/javascript/langchain/messages#multimodal) | `.pdf`、`.ppt`、`.pptx` |
-</Accordion>
+| `execute` |在环境中运行 shell 命令（仅适用于[sandbox backends](/oss/javascript/deepagents/sandboxes)）|> **支持的多模式文件扩展名**
+>
+> |类型 |扩展 |
+> | - | - |
+> | [Image](/oss/javascript/langchain/messages#multimodal) | `.png`、`.jpg`、`.jpeg`、`.gif`、`.webp`、`.heic`、`.heif` |
+> | [Video](/oss/javascript/langchain/messages#multimodal) | `.mp4`、`.mpeg`、`.mov`、`.avi`、`.flv`、`.mpg`、`.webm`、`.wmv`、`.3gpp` |
+> | [Audio](/oss/javascript/langchain/messages#multimodal) | `.wav`、`.mp3`、`.aiff`、`.aac`、`.ogg`、`.flac` |
+> | [File](/oss/javascript/langchain/messages#multimodal) | `.pdf`、`.ppt`、`.pptx` |
 
-<Accordion title="Running without the default filesystem tools" icon="ban">
-  要从模型中隐藏上面列出的文件系统工具，请使用 `excluded_tools` 注册 [harness profile](/oss/javascript/deepagents/profiles#harness-profiles)：
-
-  ```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  from deepagents import HarnessProfile, register_harness_profile
-
-  register_harness_profile(
-      "anthropic:claude-sonnet-4-6",
-      HarnessProfile(
-          excluded_tools=frozenset(
-              {"ls", "read_file", "write_file", "edit_file", "delete", "glob", "grep"}
-          ),
-      ),
-  )
-  ```
-
-  通过 `excluded_middleware` 删除 [⟦T46⟧](https://reference.langchain.com/javascript/deepagents/middleware/createFilesystemMiddleware) 本身被故意拒绝——它需要 [Deep Agents stack](/oss/javascript/deepagents/customization#deep-agents-stack) 中的脚手架。使用 `excluded_tools` 仅隐藏模型可见的工具表面并将中间件保留在适当的位置。要删除 `task` 工具，请参阅[Running without subagents](/oss/javascript/deepagents/subagents#running-without-subagents)。
-</Accordion>
+> **不使用默认文件系统工具运行**
+>
+> 要从模型中隐藏上面列出的文件系统工具，请使用 `excluded_tools` 注册 [harness profile](/oss/javascript/deepagents/profiles#harness-profiles)：
+>
+> ```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> from deepagents import HarnessProfile, register_harness_profile
+>
+> register_harness_profile(
+>     "anthropic:claude-sonnet-4-6",
+>     HarnessProfile(
+>         excluded_tools=frozenset(
+>             {"ls", "read_file", "write_file", "edit_file", "delete", "glob", "grep"}
+>         ),
+>     ),
+> )
+> ```
+>
+> 通过 `excluded_middleware` 移除 [⟦T46⟧](https://reference.langchain.com/javascript/deepagents/middleware/createFilesystemMiddleware) 本身被故意拒绝——它需要在 [Deep Agents stack](/oss/javascript/deepagents/customization#deep-agents-stack) 中搭建脚手架。使用 `excluded_tools` 仅隐藏模型可见的工具表面并将中间件保留在适当的位置。要删除 `task` 工具，请参阅[Running without subagents](/oss/javascript/deepagents/subagents#running-without-subagents)。
 
 虚拟文件系统由其他几个工具功能使用，例如技能、内存、代码执行和上下文管理。
 您还可以在为 Deep Agents 构建自定义工具和中间件时使用文件系统。
 
-欲了解更多信息，请参阅[backends](/oss/javascript/deepagents/backends)。要生成代理可以从文件系统读取的持久存储库 wiki，请参阅[OpenWiki](/oss/openwiki/overview)。
+有关更多信息，请参阅[backends](/oss/javascript/deepagents/backends)。要生成代理可以从文件系统读取的持久存储库 wiki，请参阅[OpenWiki](/oss/openwiki/overview)。
 
 ### 文件系统权限该工具支持声明性权限规则，控制代理可以读取或写入哪些文件和目录。权限适用于上面列出的内置文件系统工具，并按照声明顺序和首匹配胜语义进行评估。
 
@@ -198,7 +194,7 @@ Deep Agents支持两种方式执行代码：* [Sandbox backends](/oss/javascript
 
 Deep Agents 以渐进式披露的方式加载技能：代理在启动时读取`SKILL.md` frontmatter，然后仅在任务需要时读取完整的技能内容。这使得启动上下文保持紧凑，同时仍然可以按需提供丰富的功能。
 
-欲了解更多信息，请参阅[Skills](/oss/javascript/deepagents/skills)。
+有关更多信息，请参阅[Skills](/oss/javascript/deepagents/skills)。
 
 ＃＃＃ 记忆记忆为您的深层代理提供跨对话的持久上下文，例如编码风格、偏好、约定和项目指南。
 
@@ -248,84 +244,82 @@ Deep Agents 以渐进式披露的方式加载技能：代理在启动时读取`S
 
 将 [⟦T77⟧](https://reference.langchain.com/javascript/langchain/index/todoListMiddleware) 传递给中间件参数，为代理提供一个 `write_todos` 工具，用于在执行期间维护结构化任务列表。
 
-<CodeGroup>
-  ```ts Google theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  import { createDeepAgent } from "deepagents";
-  import { todoListMiddleware } from "langchain";
+```ts Google theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+import { createDeepAgent } from "deepagents";
+import { todoListMiddleware } from "langchain";
 
-  const agent = await createDeepAgent({
-    model: "google:gemini-3.6-flash",
-    middleware: [todoListMiddleware()],
-  });
-  ```
+const agent = await createDeepAgent({
+  model: "google:gemini-3.6-flash",
+  middleware: [todoListMiddleware()],
+});
+```
 
-  ```ts OpenAI theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  import { createDeepAgent } from "deepagents";
-  import { todoListMiddleware } from "langchain";
+```ts OpenAI theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+import { createDeepAgent } from "deepagents";
+import { todoListMiddleware } from "langchain";
 
-  const agent = await createDeepAgent({
-    model: "openai:gpt-5.5",
-    middleware: [todoListMiddleware()],
-  });
-  ```
+const agent = await createDeepAgent({
+  model: "openai:gpt-5.5",
+  middleware: [todoListMiddleware()],
+});
+```
 
-  ```ts Anthropic theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  import { createDeepAgent } from "deepagents";
-  import { todoListMiddleware } from "langchain";
+```ts Anthropic theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+import { createDeepAgent } from "deepagents";
+import { todoListMiddleware } from "langchain";
 
-  const agent = await createDeepAgent({
-    model: "anthropic:claude-sonnet-5",
-    middleware: [todoListMiddleware()],
-  });
-  ```
+const agent = await createDeepAgent({
+  model: "anthropic:claude-sonnet-5",
+  middleware: [todoListMiddleware()],
+});
+```
 
-  ```ts OpenRouter theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  import { createDeepAgent } from "deepagents";
-  import { todoListMiddleware } from "langchain";
+```ts OpenRouter theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+import { createDeepAgent } from "deepagents";
+import { todoListMiddleware } from "langchain";
 
-  const agent = await createDeepAgent({
-    model: "openrouter:z-ai/glm-5.2",
-    middleware: [todoListMiddleware()],
-  });
-  ```
+const agent = await createDeepAgent({
+  model: "openrouter:z-ai/glm-5.2",
+  middleware: [todoListMiddleware()],
+});
+```
 
-  ```ts Fireworks theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  import { createDeepAgent } from "deepagents";
-  import { todoListMiddleware } from "langchain";
+```ts Fireworks theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+import { createDeepAgent } from "deepagents";
+import { todoListMiddleware } from "langchain";
 
-  const agent = await createDeepAgent({
-    model: "fireworks:accounts/fireworks/models/glm-5p2",
-    middleware: [todoListMiddleware()],
-  });
-  ```
+const agent = await createDeepAgent({
+  model: "fireworks:accounts/fireworks/models/glm-5p2",
+  middleware: [todoListMiddleware()],
+});
+```
 
-  ```ts Baseten theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  import { createDeepAgent } from "deepagents";
-  import { todoListMiddleware } from "langchain";
+```ts Baseten theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+import { createDeepAgent } from "deepagents";
+import { todoListMiddleware } from "langchain";
 
-  const agent = await createDeepAgent({
-    model: "baseten:zai-org/GLM-5.2",
-    middleware: [todoListMiddleware()],
-  });
-  ```
+const agent = await createDeepAgent({
+  model: "baseten:zai-org/GLM-5.2",
+  middleware: [todoListMiddleware()],
+});
+```
 
-  ```ts Ollama theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  import { createDeepAgent } from "deepagents";
-  import { todoListMiddleware } from "langchain";
+```ts Ollama theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+import { createDeepAgent } from "deepagents";
+import { todoListMiddleware } from "langchain";
 
-  const agent = await createDeepAgent({
-    model: "ollama:north-mini-code-1.0",
-    middleware: [todoListMiddleware()],
-  });
-  ```
-</CodeGroup>
+const agent = await createDeepAgent({
+  model: "ollama:north-mini-code-1.0",
+  middleware: [todoListMiddleware()],
+});
+```
 
 任务支持状态跟踪（`'pending'`、`'in_progress'`、`'completed'`）并保留在代理状态。这为代理提供了一个轻量级的规划层，用于组织长期运行和多步骤的工作。有关配置选项和行为详细信息，请参阅[To-do list](/oss/javascript/langchain/middleware/built-in#to-do-list)。
 
 ### 子代理
 
 该工具包括一个内置的`task`工具，可让主代理为隔离、长时间运行、多步骤或并行任务创建临时子代理。
-有两种子代理类型可用：同步子代理（默认）阻止主管，直到它们返回单个报告，并且 [async subagents](/oss/javascript/deepagents/async-subagents) 并行运行并通过启动、检查、更新和取消工具支持飞行中控制。
+有两种子代理类型可用：同步子代理（默认）阻止主管，直到它们返回单个报告，并且[async subagents](/oss/javascript/deepagents/async-subagents)并行运行并通过启动、检查、更新和取消工具支持飞行中控制。
 
 子代理执行提供：
 
@@ -333,7 +327,7 @@ Deep Agents 以渐进式披露的方式加载技能：代理在启动时读取`S
 * **自主执行**：子代理独立运行直到完成。
 * **单次切换**：它将一份最终报告返回给主代理。
 * **可配置策略**：使用[default ⟦T85⟧ subagent](/oss/javascript/deepagents/subagents#default-subagent)（默认启用）或定义[custom subagents](/oss/javascript/deepagents/subagents#custom-subagents)。
-* **无状态消息传递**：子代理是无状态的，不能发回多条消息。
+* **无状态消息传送**：子代理是无状态的，不能发回多条消息。
 * **上下文和令牌效率**：繁重的子任务工作保持隔离并被压缩为紧凑的结果。有关更多信息，请参阅[Subagents](/oss/javascript/deepagents/subagents)。要删除 `task` 工具，请参阅[Running without subagents](/oss/javascript/deepagents/subagents#running-without-subagents)。
 
 ## 转向
@@ -348,40 +342,32 @@ Deep Agents 与 LangGraph 中断集成，以便您可以暂停敏感工具调用
 
 这为您提供了一个运行时安全和控制层，用于破坏性操作、昂贵的 API 调用和交互式调试。
 
-有关更多信息，请参阅[Human-in-the-loop](/oss/javascript/deepagents/human-in-the-loop)。
+欲了解更多信息，请参阅[Human-in-the-loop](/oss/javascript/deepagents/human-in-the-loop)。
 
 ## 开始吧
 
-<CardGroup>
-  <Card title="Quickstart" icon="rocket" href="/oss/javascript/deepagents/quickstart">
-    构建您的第一个深度代理
-  </Card>
+> **[Quickstart](/oss/javascript/deepagents/quickstart)**
+>
+> 构建你的第一个深度代理
 
-  <Card title="Customization" icon="adjustments" href="/oss/javascript/deepagents/customization">
-    了解定制选项
-  </Card>
+> **[Customization](/oss/javascript/deepagents/customization)**
+>
+> 了解定制选项
 
-  <Card title="Code" icon="terminal" href="/oss/deepagents/code/overview">
-    使用Deep Agents代码
-  </Card>
+> **[Code](/oss/deepagents/code/overview)**
+>
+> 使用Deep Agents代码
 
-  <Card title="ACP" icon="plug-connected" href="/oss/javascript/deepagents/acp">
-    通过 ACP 在代码编辑器中使用深度代理
-  </Card>
+> **[ACP](/oss/javascript/deepagents/acp)**
+>
+> 通过 ACP 在代码编辑器中使用深度代理
 
-  <Card title="Reference" icon="external-link" href="https://reference.langchain.com/javascript/modules/deepagents.html">
-    请参阅 `deepagents` API 参考
-  </Card>
-</CardGroup>
+> **[Reference](https://reference.langchain.com/javascript/modules/deepagents.html)**
+>
+> 请参阅`deepagents` API 参考
 
 ***
 
-<div>
-  <Callout icon="terminal-2">
-    [Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
-  </Callout>
+[Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
 
-  <Callout icon="edit">
-    [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/oss/deepagents/overview.mdx) 或 [file an issue](https://github.com/langchain-ai/docs/issues/new/choose)。
-  </Callout>
-</div>
+[Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/oss/deepagents/overview.mdx) 或 [file an issue](https://github.com/langchain-ai/docs/issues/new/choose)。

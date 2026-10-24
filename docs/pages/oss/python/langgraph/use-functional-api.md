@@ -254,7 +254,7 @@ read the [**streaming guide**](/oss/python/langgraph/streaming) section for more
 
 Example of using the streaming API to stream value chunks from a workflow run.
 
-```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 config = {"configurable": {"thread_id": str(uuid7())}}
 
 stream = main.stream_events({"x": 5}, config=config, version="v3")

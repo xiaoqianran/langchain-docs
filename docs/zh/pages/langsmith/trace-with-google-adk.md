@@ -6,47 +6,43 @@
 
 本指南向您展示如何在 LangSmith 中追踪 [Google Agent Development Kit (ADK)](https://github.com/google/adk-python) 特工。您将为 ADK 应用程序配置自动跟踪，以捕获代理调用、工具调用和 LLM 交互。
 
-<Note>
-  本指南涵盖 ADK 的标准执行路径（文本代理、工具和多代理工作流程）。要跟踪使用 ADK 的 `Runner.run_live` 流循环的 **Gemini Live** 语音代理，请参阅 [Trace Gemini Live applications](/langsmith/trace-gemini-live)。
-</Note>
+> [!注意]
+>
+> 本指南涵盖 ADK 的标准执行路径（文本代理、工具和多代理工作流程）。要跟踪使用 ADK 的 `Runner.run_live` 流循环的 **Gemini Live** 语音代理，请参阅 [Trace Gemini Live applications](/langsmith/trace-gemini-live)。
 
 ## 安装
 
 使用您首选的包管理器安装所需的包：
 
-<CodeGroup>
-  ```bash uv theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  uv add "langsmith[google-adk]"
-  ```
+```bash uv theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+uv add "langsmith[google-adk]"
+```
 
-  ```bash pip theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  pip install langsmith[google-adk]
-  ```
-</CodeGroup>
+```bash pip theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+pip install langsmith[google-adk]
+```
 
 ## 设置
 
 设置您的[API keys](/langsmith/create-account-api-key)：
 
-<CodeGroup>
-  ```bash shell theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  export LANGSMITH_TRACING=true
-  export LANGSMITH_ENDPOINT=https://api.smith.langchain.com
-  export LANGSMITH_API_KEY=<your_langsmith_api_key>
-  export LANGSMITH_PROJECT=<your_langsmith_project>
+```bash shell theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+export LANGSMITH_TRACING=true
+export LANGSMITH_ENDPOINT=https://api.smith.langchain.com
+export LANGSMITH_API_KEY=<your_langsmith_api_key>
+export LANGSMITH_PROJECT=<your_langsmith_project>
 
-  export GOOGLE_API_KEY=<your_google_api_key>
-  ```
+export GOOGLE_API_KEY=<your_google_api_key>
+```
 
-  ```dotenv .env theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  LANGSMITH_TRACING=true
-  LANGSMITH_ENDPOINT=https://api.smith.langchain.com
-  LANGSMITH_API_KEY=<your_langsmith_api_key>
-  LANGSMITH_PROJECT=<your_langsmith_project>
+```dotenv .env theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+LANGSMITH_TRACING=true
+LANGSMITH_ENDPOINT=https://api.smith.langchain.com
+LANGSMITH_API_KEY=<your_langsmith_api_key>
+LANGSMITH_PROJECT=<your_langsmith_project>
 
-  GOOGLE_API_KEY=<your_google_api_key>
-  ```
-</CodeGroup>
+GOOGLE_API_KEY=<your_google_api_key>
+```
 
 要创建 Google API 密钥，请参阅[Google AI Studio](https://aistudio.google.com/api-keys)。
 
@@ -69,7 +65,9 @@ configure_google_adk(
 * `metadata`：附加上下文的键值对字典。
 * `tags`：用于对痕迹进行分类的字符串列表。
 
-＃＃ 例子此示例使用工具创建天气代理，然后在启用跟踪的情况下运行它：
+## 示例
+
+此示例使用工具创建天气代理，然后在启用跟踪的情况下运行它：
 
 ```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 import asyncio
@@ -131,9 +129,7 @@ async def main():
 
 if __name__ == "__main__":
     asyncio.run(main())
-```
-
-## 查看LangSmith中的踪迹
+```## 查看LangSmith中的踪迹
 
 运行应用程序后，您可以在 [LangSmith UI](https://smith.langchain.com?utm_source=docs\&utm_medium=cta\&utm_campaign=langsmith-signup\&utm_content=langsmith-trace-with-google-adk) 中查看跟踪记录，其中包括：
 
@@ -236,12 +232,6 @@ if __name__ == "__main__":
 
 ***
 
-<div>
-  <Callout icon="terminal-2">
-    [Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
-  </Callout>
+[Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
 
-  <Callout icon="edit">
-    [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/trace-with-google-adk.mdx) 或 [file an issue](https://github.com/langchain-ai/docs/issues/new/choose)。
-  </Callout>
-</div>
+[Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/trace-with-google-adk.mdx) 或 [file an issue](https://github.com/langchain-ai/docs/issues/new/choose)。

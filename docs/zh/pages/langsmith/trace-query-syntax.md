@@ -16,19 +16,19 @@
 | `trace_id` |获取属于特定跟踪一部分的运行。 |
 | `run_type` |获取[type of run](/langsmith/run-data-format#run-types)，例如，`llm`、`chain`、`tool`、`retriever`。 |
 | `dataset_name` / `dataset_id` |获取与指定数据集中的示例行关联的运行。这对于比较给定数据集上的提示或模型非常有用。 |
-| `reference_example_id` |获取与特定示例行关联的运行。这对于比较给定输入的提示或模型很有用。 |
+| `reference_example_id` |获取与特定示例行关联的运行。这对于比较给定输入的提示或模型非常有用。 |
 | `parent_run_id` |获取给定运行的子级运行。这对于使用上下文管理器获取分组在一起的运行或获取代理轨迹非常有用。 |
 | `error` |获取出错或未出错的运行。 || `run_ids` |使用给定的运行 ID 列表获取运行。注意：**这将忽略所有其他过滤参数。** |
 | `filter` |获取与给定结构化过滤器语句匹配的运行。欲了解更多详情，请参阅[filter query language](#filter-query-language)部分。 |
-| `trace_filter` |应用于跟踪的根运行的过滤器。与 `filter` 一起使用可按根运行的属性缩小范围。 |
+| `trace_filter` |应用于跟踪的根运行的过滤器。与 `filter` 一起使用以按根运行的属性缩小范围。 |
 | `tree_filter` |过滤器应用于跟踪树（根、同级或子级）中的任何运行。与 `filter` 一起使用可按跟踪内任何运行的属性缩小范围。 |
 | `is_root` |仅返回根运行。 |
 | `select` |选择要在响应中返回的字段。默认情况下，返回所有字段。请参阅[run data format](/langsmith/run-data-format)了解可用字段。 |
 | `query`（*实验*）|自然语言查询，将您的查询转换为过滤语句。 |
 
-<Note>
-  **性能提示**：传递 `select` 参数并从列表中排除 `inputs` 和 `outputs` 可以显着提高查询性能并减少响应大小，特别是对于大型运行。
-</Note>
+> [!注意]
+>
+> **性能提示**：传递 `select` 参数并从列表中排除 `inputs` 和 `outputs` 可以显着提高查询性能并减少响应大小，特别是对于大型运行。
 
 ## 过滤查询语言LangSmith 支持使用过滤器查询语言的过滤功能，以允许在获取运行时进行复杂的过滤操作。当通过 SDK 或 API 以编程方式查询跟踪时，这特别有用。例如，在[evaluation](/langsmith/evaluation)管道、监控脚本或检查先前[traces](/langsmith/observability-concepts#traces)的代理工作流程中。
 
@@ -39,14 +39,28 @@
 |比较器|描述 |示例|
 | - | - | - |
 | `eq` |等于 | `eq(run_type, "llm")` |
-| `neq` |不等于 | `neq(status, "error")` |
-| `gt` |大于| `gt(latency, "5s")` |
-| `gte` |大于或等于 | `gte(latency, 1.5)` |
+| `neq` |不等于| `neq(status, "error")` |
+| `gt` |大于 | `gt(latency, "5s")` |
+| `gte` |大于或等于| `gte(latency, 1.5)` |
 | `lt` |小于| `lt(start_time, "2024-01-01T00:00:00Z")` |
 | `lte` |小于或等于 | `lte(feedback_score, 0.5)` |
+| `like` |模式匹配； `%` 匹配任意字符序列 | `like(metadata_value, "%prod%")` |
+| `notlike` | `like` 的逆 | `notlike(metadata_value, "%staging%")` |
 | `has` |检查运行是否包含标签或元数据键值 | `has(tags, "production")` |
 | `search` |在所有字符串字段中搜索子字符串 | `search("invoice")` |
 | `in` |检查字段值是否在列表中 | `in(metadata_key, ["session_id", "thread_id"])` |
+
+### 通配符模式匹配
+
+`like` 和 `notlike` 将字段值与模式进行匹配。模式的应用方式取决于领域：* **`name`、`metadata_key` 和 `metadata_value`**：`%` 匹配任何字符序列，包括无字符序列。匹配区分大小写。如果没有 `%`，`like` 仅匹配精确值，与 `eq` 相同。
+* **`inputs`、`outputs` 和 `error`**：匹配不区分大小写，并且始终匹配子字符串，因此 `%` 是可选的。 LangSmith 可以单独匹配模式的每个单词，而不是作为短语，因此不要依赖 `like` 来匹配这些字段中的精确短语。
+
+例如：
+
+* `like(metadata_value, "%prod%")` 匹配任何包含 `prod` 的值，例如 `production` 或 `eu-prod-1`。
+* `notlike(metadata_value, "%staging%")` 匹配任何不包含 `staging` 的值。
+
+在 UI 过滤器构建器中，**包含**和 **不包含**运算符生成 `like` 和 `notlike` 过滤器。要翻译搜索栏查询，请参阅[UI-to-API operator map](#ui-to-api-operator-map)。
 
 ### 逻辑运算符
 
@@ -57,7 +71,7 @@ and(eq(run_type, "llm"), gt(latency, "2s"))
 or(eq(status, "error"), and(eq(feedback_key, "score"), lt(feedback_score, 0.5)))
 ```
 
-### 可过滤字段|领域 |类型 |笔记|
+### 可过滤字段|领域|类型 |笔记|
 | - | - | - |
 | `id` |字符串（UUID）|运行 ID |
 | `name` |字符串|运行名称 |
@@ -66,11 +80,11 @@ or(eq(status, "error"), and(eq(feedback_key, "score"), lt(feedback_score, 0.5)))
 | `start_time` | ISO 8601 字符串 |例如`"2024-01-15T00:00:00Z"` |
 | `end_time` | ISO 8601 字符串 | |
 | `latency` |持续时间字符串或数字|秒，例如`"5s"`、`"1.5s"` 或 `1.5`。仅支持 `s` 后缀。 |
-| `tags` |字符串列表 |使用`has(tags, "value")`|
+| `tags` |字符串列表 |使用`has(tags, "value")` |
 | `metadata_key` |字符串|输入运行的元数据字典 |
 | `metadata_value` |字符串|运行元数据字典中的值 |
 | `feedback_key` |字符串|反馈分数名称 |
-| `feedback_score` |数量 |反馈分数的数值|
+| `feedback_score` |数量 |反馈分数的数值 |
 
 ### 值格式
 
@@ -79,11 +93,38 @@ or(eq(status, "error"), and(eq(feedback_key, "score"), lt(feedback_score, 0.5)))
 * **持续时间**：秒，可以是数字或带有 `s` 后缀、`"5s"`、`"1.5s"`、`"90s"` 或 `1.5` 的字符串。不支持其他单位后缀（`m`、`h`）。
 * **列表**：JSON 数组语法，`["session_id", "thread_id"]`。
 
+## UI 到 API 操作符映射LangSmith UI 中的搜索栏使用自己的语法，记录在 [Filter traces](/langsmith/filter-traces#operators) 中。下表将每个搜索栏运算符映射到用该语言执行相同工作的比较器：
+
+|搜索栏操作员 |搜索栏语法 | API 比较器 |
+| - | - | - |
+|是 | `name:value` | `eq(name, "value")` |
+|不是| `-name:value` | `neq(name, "value")` |
+|通配符| `name:*value*` | `like(name, "%value%")`。将每个 `*` 替换为 `%`。 |
+|比赛| `input:~value` | `like(inputs, "%value%")`。也适用于 `outputs` 和 `error`。 |
+|不匹配 | `-input:~value` | `notlike(inputs, "%value%")` |
+|比较| `latency:>5` | `gt(latency, 5)`。将 `gte`、`lt` 和 `lte` 用于 `>=`、`<` 和 `<=`。 |
+|存在 | `metadata.env:*` | `eq(metadata_key, "env")` |
+
+## 警报过滤器
+
+警报规则在其 `filter` 和 `denominator_filter` 字段中接受相同的过滤器查询语言：
+
+* **`filter`**：选择计入警报的运行。
+* **`denominator_filter`**：选择基于百分比的警报的基线人口。当它为空时，每次运行都计入基线。
+
+警报过滤器仅接受`and`。不支持将条件与`or`组合。
+
+匹配 `env` 元数据值不包含 `staging` 的运行的示例警报过滤器：
+
+```text theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+and(eq(metadata_key, "env"), notlike(metadata_value, "%staging%"))
+```
+
 ## 快速参考示例以下示例仅显示过滤字符串。将字符串作为 `client.list_runs()` 或 `/runs/query` API 端点中的 `filter`、`trace_filter` 或 `tree_filter` 参数传递。
 
-<Tip>
-  有关包含 Python、TypeScript 和 Java 代码的完整 SDK 示例，请参阅[Query traces using the SDK](/langsmith/export-traces#use-filter-query-language)。
-</Tip>
+> [!提示]
+>
+> 有关包含 Python、TypeScript 和 Java 代码的完整 SDK 示例，请参阅[Query traces using the SDK](/langsmith/export-traces#use-filter-query-language)。
 
 ### 按运行名称过滤
 
@@ -137,6 +178,12 @@ and(eq(metadata_key, "user_id"), eq(metadata_value, "usr_abc123"))
 
 # Runs from the production environment
 and(eq(metadata_key, "environment"), eq(metadata_value, "production"))
+
+# Runs whose "env" metadata value contains "prod" (like: contains)
+and(eq(metadata_key, "env"), like(metadata_value, "%prod%"))
+
+# Runs whose "env" metadata value does not contain "staging" (notlike: does not contain)
+and(eq(metadata_key, "env"), notlike(metadata_value, "%staging%"))
 ```
 
 ### 按线程 ID 过滤
@@ -189,16 +236,12 @@ and(eq(feedback_key, "user_score"), eq(feedback_score, 1))
 eq(name, "ExpandQuery")
 ```
 
-<Note>
-  `tree_filter` 应用相同的查询语法在跟踪树中的任何位置运行。对于任意嵌套子运行字段上的谓词，例如返回的 `inputs`、`outputs` 或 `extra` 有效负载路径，首先使用服务器端过滤器缩小候选范围，然后使用子运行合并根跟踪并在本地遍历它们。参见[Query trace trees with child-run predicates](/langsmith/export-traces#query-trace-trees-with-child-run-predicates)。
-</Note>
+> [!注意]
+>
+> `tree_filter` 应用相同的查询语法在跟踪树中的任何位置运行。对于任意嵌套子运行字段上的谓词，例如返回的 `inputs`、`outputs` 或 `extra` 有效负载路径，首先使用服务器端过滤器缩小候选范围，然后使用子运行合并根跟踪并在本地遍历它们。参见[Query trace trees with child-run predicates](/langsmith/export-traces#query-trace-trees-with-child-run-predicates)。
 
-***<div>
-  <Callout icon="terminal-2">
-    [Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
-  </Callout>
+***
 
-  <Callout icon="edit">
-    [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/trace-query-syntax.mdx) 或 [file an issue](https://github.com/langchain-ai/docs/issues/new/choose)。
-  </Callout>
-</div>
+[Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
+
+[Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/trace-query-syntax.mdx) 或 [file an issue](https://github.com/langchain-ai/docs/issues/new/choose)。

@@ -8,13 +8,13 @@
 
 Python 扩展可自定义 dcode 代理服务器，而无需修改 dcode 本身。用它们来注册模型工具、LangChain中间件、虚拟存储路由。
 
-<Note>
-  Python 扩展需要 `DEEPAGENTS_CODE_EXPERIMENTAL=1`。此实验性 API 可能会更改或删除，恕不另行通知。
-</Note>
+> [!注意]
+>
+> Python 扩展需要 `DEEPAGENTS_CODE_EXPERIMENTAL=1`。此实验性 API 可能会更改或删除，恕不另行通知。
 
-<Warning>
-  扩展程序可以使用您的用户帐户的权限运行任意Python。仅从您信任的来源加载扩展。扩展工具不会自动添加到人工批准图中，因此执行敏感工作的扩展必须通过中间件强制执行自己的批准或策略。
-</Warning>
+> [!警告]
+>
+> 扩展程序可以使用您的用户帐户的权限运行任意Python。仅从您信任的来源加载扩展。扩展工具不会自动添加到人工批准图中，因此执行敏感工作的扩展必须通过中间件强制执行自己的批准或策略。
 
 ## 创建扩展
 
@@ -39,7 +39,7 @@ async def extension(d: ExtensionAPI) -> None:
 
 ```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 DEEPAGENTS_CODE_EXPERIMENTAL=1 dcode --extension ./extension.py
-```重复`-e`或`--extension`加载多个文件或目录。目录扫描包括直接 `*.py` 文件以及包含 `__init__.py` 或 `extension.py` 的直接子目录。加载还需要扩展发现保持启用状态（`[extensions].enabled`或`DEEPAGENTS_CODE_EXTENSIONS`）；禁用发现时，Deep Agents 代码会跳过每个源，包括 CLI 路径。
+```重复`-e`或`--extension`加载多个文件或目录。目录扫描包括直接 `*.py` 文件以及包含 `__init__.py` 或 `extension.py` 的直接子目录。加载还需要扩展发现保持启用状态（`[extensions].enabled`或`DEEPAGENTS_CODE_EXTENSIONS`）；当禁用发现时，Deep Agents代码会跳过每个源，包括 CLI 路径。
 
 ## 注册功能
 
@@ -155,7 +155,7 @@ extra_paths = [
 
 ## 将扩展打包到插件中
 
-版本化的[plugin](/oss/deepagents/code/plugins)是分发扩展的首选方式。在插件清单中的Deep AgentsCode命名空间下声明一个入口文件或一个列表：
+版本化的[plugin](/oss/deepagents/code/plugins)是分发扩展的首选方式。在插件清单中的Deep Agents代码命名空间下声明一个入口文件或一个列表：
 
 ```json title=".claude-plugin/plugin.json" theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 {
@@ -184,12 +184,6 @@ extra_paths = [
 
 ***
 
-<div>
-  <Callout icon="terminal-2">
-    [Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
-  </Callout>
+[Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
 
-  <Callout icon="edit">
-    [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/oss/deepagents/code/extensions.mdx) 或 [file an issue](https://github.com/langchain-ai/docs/issues/new/choose)。
-  </Callout>
-</div>
+[Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/oss/deepagents/code/extensions.mdx) 或 [file an issue](https://github.com/langchain-ai/docs/issues/new/choose)。

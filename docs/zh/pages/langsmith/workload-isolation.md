@@ -2,26 +2,26 @@
 
 <!-- langchain-docs: Workload isolation | https://docs.langchain.com/langsmith/workload-isolation -->
 
-# 工作负载隔离
+# Workload isolation
 
-LangSmith 使用分层结构来组织您的工作：[*organizations*](/langsmith/administration-overview#organizations)、[*workspaces*](/langsmith/administration-overview#workspaces)、[*agents or applications*](/langsmith/administration-overview#agents-and-applications) 和 [*resources*](/langsmith/administration-overview#resources)。此结构可让您平衡协作与访问控制，从而使您能够根据团队的需求选择正确的隔离级别。
+LangSmith 使用分层结构来组织您的工作：[*organizations*](/langsmith/administration-overview#organizations)、[*workspaces*](/langsmith/administration-overview#workspaces)、[*agents or applications*](/langsmith/administration-overview#agents-and-applications) 和 [*resources*](/langsmith/administration-overview#resources)。此结构可让您平衡协作与访问控制，从而允许您根据团队的需求选择正确的隔离级别。
 
-分组级别的名称取决于您的工作区使用的信息架构，左上角的控件会告诉您您所在的信息架构。基于代理的工作区按 [agent](/langsmith/agents) 对资源进行分组，每个代理的踪迹划分为从固定的四个集合中提取的 [environments](/langsmith/agent-environments)。基于项目的工作区按应用程序对它们进行分组，没有环境层，因此环境近似于单独的跟踪项目。下面的模型适用于两者，并且在重要的地方指出了差异。LangSmith 权限系统建立在这个层次结构之上。使用 [role-based access control (RBAC)](/langsmith/rbac)，用户 [permissions](/langsmith/organization-workspace-operations) 的范围仅限于一个或多个工作区，从而强制工作区之间的隔离。通过更细粒度的 [attribute-based access control](/langsmith/organization-workspace-operations#access-policies) (ABAC)，可以根据工作区中的标签、代理或应用程序等属性进一步限制或授予访问权限，从而允许用户仅访问开发资源或仅访问与特定代理或应用程序关联的资源。
+分组级别的名称取决于您的工作区使用的信息架构，左上角的控件会告诉您您所在的信息架构。基于代理的工作空间按 [agent](/langsmith/agents) 对资源进行分组，每个代理的踪迹划分为从固定的四个集合中提取的 [environments](/langsmith/agent-environments)。基于项目的工作区按应用程序对它们进行分组，没有环境层，因此环境近似于单独的跟踪项目。下面的模型适用于两者，并且在重要的地方指出了差异。The LangSmith permission system builds on this hierarchy. With [role-based access control (RBAC)](/langsmith/rbac), user [permissions](/langsmith/organization-workspace-operations) are scoped to one or more workspaces, enforcing isolation between workspaces.通过更细粒度的 [attribute-based access control](/langsmith/organization-workspace-operations#access-policies) (ABAC)，可以根据工作区中的标签、代理或应用程序等属性进一步限制或授予访问权限，从而允许用户仅访问开发资源或仅访问与特定代理或应用程序关联的资源。
 
-本页介绍了根据团队的隔离要求组织工作区的两种常见方法：
+This page explains two common approaches to organizing workspaces based on your team's isolation requirements:
 
-* [Team-centric workspaces](#team-centric-workspaces)：每个团队单个工作空间（推荐大多数客户使用）
+* [Team-centric workspaces](#team-centric-workspaces): Single workspace per team (recommended for most customers)
 * [Collaborative workspaces](#collaborative-workspaces)：每个工作区有多个团队
 
-<Tip>
-  有关设置组织和工作空间的详细信息，请参阅[Set up hierarchy](/langsmith/set-up-hierarchy)。
-</Tip>
+> [!提示]
+>
+> For details on setting up organizations and workspaces, refer to [Set up hierarchy](/langsmith/set-up-hierarchy).
 
 ## 以团队为中心的工作空间
 
-<Warning>
-  这是默认型号，也是大多数客户的推荐选择。
-</Warning>此模型（每个团队单个工作区）使用单个组织作为顶级边界。在组织内，多个工作空间用于隔离不同的团队或业务部门。每个工作区代表特定团队的逻辑边界，并控制该团队可以访问哪些数据和资源。在工作区中，团队根据工作区按代理或应用程序对支持同一应用程序的资源进行分组。
+> [!警告]
+>
+> This is the default model and recommended choice for most customers.此模型（每个团队单个工作区）使用单个组织作为顶级边界。在组织内，多个工作空间用于隔离不同的团队或业务部门。每个工作区代表特定团队的逻辑边界，并控制该团队可以访问哪些数据和资源。在工作区中，团队根据工作区按代理或应用程序对支持同一应用程序的资源进行分组。
 
 在下图中，生产和登台是基于代理的工作区中的代理环境，以及基于项目的工作区中的独立跟踪项目。
 
@@ -119,12 +119,6 @@ graph LR
 
 ***
 
-<div>
-  <Callout icon="terminal-2">
-    [Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
-  </Callout>
+[Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
 
-  <Callout icon="edit">
-    [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/workload-isolation.mdx) 或 [file an issue](https://github.com/langchain-ai/docs/issues/new/choose)。
-  </Callout>
-</div>
+[Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/workload-isolation.mdx) 或 [file an issue](https://github.com/langchain-ai/docs/issues/new/choose)。

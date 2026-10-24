@@ -1,12 +1,12 @@
 {
-  "fetchedAt": "2026-10-23T13:54:58.789Z",
+  "fetchedAt": "2026-10-24T12:59:23.805Z",
   "method": "llms-full-split",
   "sources": {
     "llmsTxt": "https://docs.langchain.com/llms.txt",
     "llmsFull": "https://docs.langchain.com/llms-full.txt"
   },
   "tocLinks": 14,
-  "ok": 1671,
+  "ok": 1673,
   "failed": 0,
   "tracks": {
     "api-reference": {
@@ -31,11 +31,11 @@
     },
     "langsmith-js": {
       "name": "LangSmith · JS",
-      "count": 28
+      "count": 29
     },
     "langsmith-py": {
       "name": "LangSmith · Python",
-      "count": 28
+      "count": 29
     },
     "langsmith-api": {
       "name": "LangSmith API",
@@ -3232,6 +3232,15 @@
       "bytes": 6734
     },
     {
+      "rel": "langsmith/javascript/managed-deep-agents-custom-frontend.md",
+      "title": "Build a custom frontend for a Managed Deep Agent",
+      "url": "https://docs.langchain.com/langsmith/javascript/managed-deep-agents-custom-frontend",
+      "track": "langsmith-js",
+      "trackName": "LangSmith · JS",
+      "group": "managed-deep-agents-custom-frontend",
+      "bytes": 8907
+    },
+    {
       "rel": "langsmith/javascript/managed-deep-agents-deploy.md",
       "title": "Deploy a Managed Deep Agent",
       "url": "https://docs.langchain.com/langsmith/javascript/managed-deep-agents-deploy",
@@ -4301,6 +4310,15 @@
       "trackName": "LangSmith · Python",
       "group": "managed-deep-agents-context-hub",
       "bytes": 6674
+    },
+    {
+      "rel": "langsmith/python/managed-deep-agents-custom-frontend.md",
+      "title": "Build a custom frontend for a Managed Deep Agent",
+      "url": "https://docs.langchain.com/langsmith/python/managed-deep-agents-custom-frontend",
+      "track": "langsmith-py",
+      "trackName": "LangSmith · Python",
+      "group": "managed-deep-agents-custom-frontend",
+      "bytes": 13048
     },
     {
       "rel": "langsmith/python/managed-deep-agents-deploy.md",
@@ -11347,7 +11365,7 @@
       "track": "langsmith",
       "trackName": "LangSmith",
       "group": "use-webhooks",
-      "bytes": 11707
+      "bytes": 14126
     },
     {
       "rel": "langsmith/user-management.md",
@@ -11707,7 +11725,7 @@
       "track": "oss-js",
       "trackName": "OSS · JavaScript",
       "group": "deepagents",
-      "bytes": 19623
+      "bytes": 20172
     },
     {
       "rel": "oss/javascript/deepagents/backends.md",
@@ -11752,7 +11770,7 @@
       "track": "oss-js",
       "trackName": "OSS · JavaScript",
       "group": "deepagents",
-      "bytes": 115718
+      "bytes": 119678
     },
     {
       "rel": "oss/javascript/deepagents/deep-research.md",
@@ -11968,7 +11986,7 @@
       "track": "oss-js",
       "trackName": "OSS · JavaScript",
       "group": "deepagents",
-      "bytes": 107865
+      "bytes": 108156
     },
     {
       "rel": "oss/javascript/deepagents/tools.md",
@@ -12346,7 +12364,7 @@
       "track": "oss-js",
       "trackName": "OSS · JavaScript",
       "group": "langchain",
-      "bytes": 9062
+      "bytes": 9581
     },
     {
       "rel": "oss/javascript/langchain/frontend/controlled-generative-ui.md",
@@ -12508,7 +12526,7 @@
       "track": "oss-js",
       "trackName": "OSS · JavaScript",
       "group": "langchain",
-      "bytes": 16342
+      "bytes": 16902
     },
     {
       "rel": "oss/javascript/langchain/frontend/tool-calling.md",
@@ -13552,7 +13570,7 @@
       "track": "oss-python",
       "trackName": "OSS · Python",
       "group": "deepagents",
-      "bytes": 20517
+      "bytes": 21066
     },
     {
       "rel": "oss/python/deepagents/backends.md",
@@ -13831,7 +13849,7 @@
       "track": "oss-python",
       "trackName": "OSS · Python",
       "group": "deepagents",
-      "bytes": 103791
+      "bytes": 104082
     },
     {
       "rel": "oss/python/deepagents/tools.md",
@@ -13912,7 +13930,7 @@
       "track": "oss-python",
       "trackName": "OSS · Python",
       "group": "integrations",
-      "bytes": 85696
+      "bytes": 86075
     },
     {
       "rel": "oss/python/integrations/providers/anthropic.md",
@@ -14047,7 +14065,7 @@
       "track": "oss-python",
       "trackName": "OSS · Python",
       "group": "integrations",
-      "bytes": 84001
+      "bytes": 84199
     },
     {
       "rel": "oss/python/integrations/vectorstores/index.md",
@@ -14119,7 +14137,7 @@
       "track": "oss-python",
       "trackName": "OSS · Python",
       "group": "langchain",
-      "bytes": 9058
+      "bytes": 9577
     },
     {
       "rel": "oss/python/langchain/frontend/controlled-generative-ui.md",
@@ -14281,7 +14299,7 @@
       "track": "oss-python",
       "trackName": "OSS · Python",
       "group": "langchain",
-      "bytes": 16334
+      "bytes": 16890
     },
     {
       "rel": "oss/python/langchain/frontend/tool-calling.md",
@@ -14677,7 +14695,7 @@
       "track": "oss-python",
       "trackName": "OSS · Python",
       "group": "langgraph",
-      "bytes": 69552
+      "bytes": 77139
     },
     {
       "rel": "oss/python/langgraph/agentic-rag.md",
@@ -14947,7 +14965,7 @@
       "track": "oss-python",
       "trackName": "OSS · Python",
       "group": "langgraph",
-      "bytes": 32630
+      "bytes": 32488
     },
     {
       "rel": "oss/python/langgraph/use-graph-api.md",

@@ -8,9 +8,9 @@
 
 [Claude Managed Agents](https://platform.claude.com/docs/en/managed-agents/overview) 是Anthropic 的托管、基于云的代理，在托管环境中运行。 LangSmith 支持通过 `wrapAnthropic` 包装器跟踪 Claude Managed Agent 会话，让您可以了解会话事件和消息流。
 
-<Note>
-  目前，**仅 TypeScript** 支持 Claude Managed Agents 跟踪。
-</Note>
+> [!注意]
+>
+> 当前仅在 **TypeScript** 中支持 Claude Managed Agents 跟踪。
 
 ## 安装
 
@@ -92,11 +92,11 @@ for await (const event of stream) {
 }
 ```
 
-<Note>
-  Anthropic 多智能体架构中子智能体的完整追踪需要
-  接入单独的事件流，尚不支持。仅限顶级
-  跟踪会话事件。
-</Note>
+> [!注意]
+>
+> Anthropic 多智能体架构中子智能体的完整追踪需要
+> 接入单独的事件流，尚不支持。仅限顶级
+> 跟踪会话事件。
 
 ## 后续步骤
 
@@ -106,12 +106,6 @@ for await (const event of stream) {
 
 ***
 
-<div>
-  <Callout icon="terminal-2">
-    [Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时答案。
-  </Callout>
+[Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
 
-  <Callout icon="edit">
-    [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/trace-with-claude-managed-agents.mdx) 或 [file an issue](https://github.com/langchain-ai/docs/issues/new/choose)。
-  </Callout>
-</div>
+[Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/trace-with-claude-managed-agents.mdx) 或 [file an issue](https://github.com/langchain-ai/docs/issues/new/choose)。

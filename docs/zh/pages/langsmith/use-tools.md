@@ -15,12 +15,12 @@ LangSmith 自动将您创建的工具保存到工作区范围的 [tool registry]
 
 Playground 原生支持 OpenAI 和 Anthropic 的各种工具。如果您想使用 Playground 中未明确列出的工具，您仍然可以通过手动指定其 `type` 和任何必需的参数来添加它。
 
-### OpenAI 工具
-
-* **网络搜索**：[Search the web for real-time information](https://platform.openai.com/docs/guides/tools-web-search?api-mode=responses)。
+### OpenAI 工具* **网络搜索**：[Search the web for real-time information](https://platform.openai.com/docs/guides/tools-web-search?api-mode=responses)。
 * **图像生成**：[Generate images based on a text prompt](https://platform.openai.com/docs/guides/tools-image-generation)。
 * **MCP**：[Gives the model access to tools hosted on a remote MCP server](https://platform.openai.com/docs/guides/tools-remote-mcp)。
-* [View all OpenAI tools](https://platform.openai.com/docs/guides/tools?api-mode=responses)。### Anthropic 工具
+* [View all OpenAI tools](https://platform.openai.com/docs/guides/tools?api-mode=responses)。
+
+### Anthropic 工具
 
 * **网络搜索**：[Search the web for up-to-date information](https://platform.claude.com/docs/en/agents-and-tools/tool-use/web-search-tool)。
 * [View all Anthropic tools](https://platform.claude.com/docs/en/agents-and-tools/tool-use/overview)。
@@ -33,16 +33,14 @@ Playground 让您只需单击一下即可快速[add tools](#add-a-tool) 到达�
 
 要将工具添加到提示中，请单击提示编辑器底部的 **+ 工具** 按钮。
 
-<img alt="The prompt interface with the + Tool button following the editing boxes." />
-
-<img alt="The prompt interface with the + Tool button following the editing boxes." />
+![The prompt interface with the + Tool button following the editing boxes.](https://mintcdn.com/langchain-5e9cc07a/8MkMsKDgPnLdByVh/langsmith/images/add-tool-light.png?fit=max\&auto=format\&n=8MkMsKDgPnLdByVh\&q=85\&s=e2e0487ec8c22be3d806202a88cee623)
 
 ### 使用内置工具
 
 1. 在工具部分中，选择您要使用的内置工具。您只会看到与您选择的提供商和型号兼容的工具。
 2. 当模型调用该工具时，Playground 将显示响应。
 
-   <img alt="Web search tool" />
+   ![Web search tool](https://mintcdn.com/langchain-5e9cc07a/1RIJxfRpkszanJLL/langsmith/images/web-search-tool.gif?s=2fb882f785abc26d0e5412557cc982ca)
 
 ### 创建自定义工具
 
@@ -52,9 +50,9 @@ Playground 让您只需单击一下即可快速[add tools](#add-a-tool) 到达�
 * **描述**：对该工具功能的清晰解释。
 * **参数**：您的工具所需的输入。
 
-<img alt="Custom tool" />在 Playground 中运行自定义工具时，模型将使用包含工具名称和工具调用的 JSON 对象进行响应。
+![Custom tool](https://mintcdn.com/langchain-5e9cc07a/aKRoUGXX6ygp4DlC/langsmith/images/custom-tool.gif?s=69638e515cd7c5be413cf13348e10974)在 Playground 中运行自定义工具时，模型将使用包含工具名称和工具调用的 JSON 对象进行响应。
 
-<img alt="Tool call" />
+![Tool call](https://mintcdn.com/langchain-5e9cc07a/ImHGLQW1HnQYwnJV/langsmith/images/tool-call.png?fit=max\&auto=format\&n=ImHGLQW1HnQYwnJV\&q=85\&s=44458ff5a2790122ffd7e8b62bf14032)
 
 ### 使用注册表管理工具
 
@@ -67,9 +65,7 @@ Playground 包括一个 [workspace](/langsmith/administration-overview#workspace
 * 通过单击列表中的现有工具来编辑它们。
 * 使用**管理工具**底部的**删除**删除工具。
 
-<img alt="Manage tools with a list of available tools, Enabled switch, and edit functionality." />
-
-<img alt="Manage tools with a list of available tools, Enabled switch, and edit functionality." />工具及其完整配置一起存储，包括名称、描述、参数和元数据。注册表支持自定义功能工具和内置工具配置。
+![Manage tools with a list of available tools, Enabled switch, and edit functionality.](https://mintcdn.com/langchain-5e9cc07a/DLQJsqCmBpQwR_BQ/langsmith/images/tool-registry-manage-light.png?fit=max\&auto=format\&n=DLQJsqCmBpQwR_BQ\&q=85\&s=8dcd79666a6d90b31cdd26ebee9a8504)工具及其完整配置一起存储，包括名称、描述、参数和元数据。注册表支持自定义功能工具和内置工具配置。
 
 ## 工具选择设置
 
@@ -81,18 +77,10 @@ Playground 包括一个 [workspace](/langsmith/administration-overview#workspace
 
 要了解可用的工具选择选项，请查看特定提供商的文档。例如，[OpenAI's documentation on tool choice](https://platform.openai.com/docs/guides/function-calling)。
 
-<img alt="Select tools from the Tool Choice Settings tab." />
-
-<img alt="Select tools from the Tool Choice Settings tab." />
+![Select tools from the Tool Choice Settings tab.](https://mintcdn.com/langchain-5e9cc07a/DLQJsqCmBpQwR_BQ/langsmith/images/tool-choice-light.png?fit=max\&auto=format\&n=DLQJsqCmBpQwR_BQ\&q=85\&s=d617d46d139efe842b8fc630db4d5318)
 
 ***
 
-<div>
-  <Callout icon="terminal-2">
-    [Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
-  </Callout>
+[Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
 
-  <Callout icon="edit">
-    [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/use-tools.mdx) 或 [file an issue](https://github.com/langchain-ai/docs/issues/new/choose)。
-  </Callout>
-</div>
+[Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/use-tools.mdx) 或 [file an issue](https://github.com/langchain-ai/docs/issues/new/choose)。

@@ -4,11 +4,11 @@
 
 # 设置 LangChain 调整评估器
 
-使用专门的 LangChain 管理的评委将质量反馈附加到痕迹上。
+使用专门的LangChain管理的评委将质量反馈附加到痕迹上。
 
-<Note>
-  LangChain 调整评估器位于 **[beta](/langsmith/release-stages)**。在全面上市之前，它们的界面和行为可能会发生变化。
-</Note>
+> [!注意]
+>
+> LangChain 调整评估器位于 **[beta](/langsmith/release-stages)**。它们的界面和行为在全面上市之前可能会发生变化。
 
 LangChain 调整的评估器将反馈附加到您的痕迹中。每个评估员都会使用一位针对特定评估任务接受过培训的专业法官。 LangChain 编写、测试、版本和维护提示和判断模型，以便您可以专注于使用反馈来查找和修复代理中的问题。
 
@@ -22,23 +22,21 @@ LangChain 调整的评估器将反馈附加到您的痕迹中。每个评估员�
 
 ## 了解 LangChain Tuned Evaluator 的工作原理
 
-<Steps>
-  <Step title="Add an evaluator">
-    将 LangChain Tuned Evaluator 添加到兼容的跟踪项目。
-  </Step>
+**1.添加评估员**
 
-  <Step title="Identify an eligible thread">
-    LangSmith 标识满足评估者要求以及项目的过滤器和采样配置的线程。
-  </Step>
+将 LangChain Tuned Evaluator 添加到兼容的跟踪项目。
 
-  <Step title="Evaluate the thread">
-    专门的LangChain管理的法官评估合格的线程。
-  </Step>
+**2.识别符合条件的线程**
 
-  <Step title="Attach feedback">
-    LangSmith 将结果及其解释附加到线程中作为反馈。
-  </Step>
-</Steps>
+LangSmith 标识满足评估者要求以及项目的过滤器和采样配置的线程。
+
+**3.评估线程**
+
+专门的LangChain管理的法官评估合格的线程。
+
+**4.附上反馈**
+
+LangSmith 将结果及其解释附加到线程作为反馈。
 
 ## 开始之前
 
@@ -116,12 +114,6 @@ LangChain 调整的评估器将反馈附加到您的痕迹中。每个评估员�
 
 ***
 
-<div>
-  <Callout icon="terminal-2">
-    [Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
-  </Callout>
+[Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
 
-  <Callout icon="edit">
-    [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/tuned-evaluators.mdx) 或 [file an issue](https://github.com/langchain-ai/docs/issues/new/choose)。
-  </Callout>
-</div>
+[Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/tuned-evaluators.mdx) 或 [file an issue](https://github.com/langchain-ai/docs/issues/new/choose)。

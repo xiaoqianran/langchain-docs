@@ -8,15 +8,15 @@
 
 记忆可以让您的代理在对话中学习和改进。 Deep Agents 使用文件系统支持的内存使内存成为一流的：代理将内存作为文件读取和写入，并且您可以使用 [backends](/oss/javascript/deepagents/backends) 控制这些文件的存储位置。
 
-<Tip>
-  要生成编码代理通过[⟦T13⟧](https://agents.md/)发现的存储库wiki，请参阅[OpenWiki](/oss/openwiki/overview)。
-</Tip>
+> [!提示]
+>
+> 要生成编码代理通过[⟦T13⟧](https://agents.md/)发现的存储库wiki，请参阅[OpenWiki](/oss/openwiki/overview)。
 
-<Note>
-  本页涵盖**长期记忆**：在对话中持续存在的记忆。对于短期记忆（单个会话中的对话历史记录和临时文件），请参阅 [context engineering](/oss/javascript/deepagents/context-engineering) 指南​​。短期记忆作为代理[state](/oss/javascript/langgraph/graph-api#state)的一部分自动管理。
-
-  <img alt="Short-term memory is scoped to a single thread via checkpoints; long-term memory persists across threads via the store" />
-</Note>
+> [!注意]
+>
+> 本页涵盖**长期记忆**：在对话中持续存在的记忆。对于短期记忆（单个会话中的对话历史记录和临时文件），请参阅 [context engineering](/oss/javascript/deepagents/context-engineering) 指南。短期记忆作为代理[state](/oss/javascript/langgraph/graph-api#state)的一部分自动管理。
+>
+> ![Short-term memory is scoped to a single thread via checkpoints; long-term memory persists across threads via the store](https://mintcdn.com/langchain-5e9cc07a/9oyV6nbtSbBRfaE1/oss/images/deepagents/production/memory.png?fit=max\&auto=format\&n=9oyV6nbtSbBRfaE1\&q=85\&s=3ec585271dcd8d62e0207d79d68c296b)
 
 ## 记忆是如何运作的1. **将代理指向内存文件。** 创建代理时将文件路径传递给`memory=`。您还可以通过 `skills=` 传递 [skills](/oss/javascript/deepagents/skills) 来获取程序内存（告诉代理“如何”执行任务的可重用指令）。 [backend](/oss/javascript/deepagents/backends) 控制文件的存储位置以及谁可以访问它们。
 2. **Agent读取内存。** Agent可以在启动时将内存文件加载到系统提示符中，或者在会话过程中按需读取它们。例如，[skills](/oss/javascript/deepagents/skills)使用按需加载：代理在启动时仅读取技能描述，然后仅在与任务匹配时读取完整的技能文件。这可以保持上下文精简，直到需要某种功能为止。
@@ -34,9 +34,9 @@
 
 关键是后端命名空间：将其设置为`(assistant_id,)`意味着该代理的每个对话都会读取和写入同一内​​存文件。
 
-<Note>
-  访问`rt.serverInfo`需要`deepagents>=1.9.0`。在旧版本上，请从 `getConfig().metadata.assistantId` 读取助手 ID。
-</Note>
+> [!注意]
+>
+> 访问`rt.serverInfo`需要`deepagents>=1.9.0`。在旧版本上，请从 `getConfig().metadata.assistantId` 读取助手 ID。
 
 ```typescript theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 import { createDeepAgent, CompositeBackend, StateBackend, StoreBackend } from "deepagents";
@@ -58,71 +58,71 @@ const agent = createDeepAgent({
 });
 ```
 
-<Accordion title="Full example: seed memory and invoke">
-  用初始记忆填充存储，然后跨两个线程调用代理以查看它记住并更新它学到的内容。
-
-  ```typescript theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  import { createDeepAgent, CompositeBackend, StateBackend, StoreBackend, createFileData } from "deepagents";
-  import { InMemoryStore } from "@langchain/langgraph";
-  import { uuid7 } from "langsmith";
-
-  const store = new InMemoryStore();  // Use platform store when deploying to LangSmith
-
-  // Seed the memory file
-  await store.put(
-    ["my-agent"],
-    "/memories/AGENTS.md",
-    createFileData(`## Response style
-  - Keep responses concise
-  - Use code examples where possible
-  `),
-  );
-
-  // Seed a skill
-  await store.put(
-    ["my-agent"],
-    "/skills/langgraph-docs/SKILL.md",
-    createFileData(`---
-  name: langgraph-docs
-  description: Fetch relevant LangGraph documentation to provide accurate guidance.
-  ---
-
-  # langgraph-docs
-
-  Use the fetch_url tool to read https://docs.langchain.com/llms.txt, then fetch relevant pages.
-  `),
-  );
-
-  const agent = createDeepAgent({
-    memory: ["/memories/AGENTS.md"],
-    skills: ["/skills/"],
-    backend: (rt) => new CompositeBackend(
-      new StateBackend(rt),
-      {
-        "/memories/": new StoreBackend(rt, {
-          namespace: (rt) => ["my-agent"],
-        }),
-        "/skills/": new StoreBackend(rt, {
-          namespace: (rt) => ["my-agent"],
-        }),
-      },
-    ),
-    store,
-  });
-
-  // Thread 1: the agent learns a new preference and saves it to memory
-  const config1 = { configurable: { thread_id: uuid7() } };
-  await agent.invoke({
-    messages: [{ role: "user", content: "I prefer detailed explanations. Remember that." }],
-  }, config1);
-
-  // Thread 2: the agent reads memory and applies the preference
-  const config2 = { configurable: { thread_id: uuid7() } };
-  await agent.invoke({
-    messages: [{ role: "user", content: "Explain how transformers work." }],
-  }, config2);
-  ```
-</Accordion>
+> **完整示例：种子内存和调用**
+>
+> 用初始记忆填充存储，然后跨两个线程调用代理以查看它记住并更新它学到的内容。
+>
+> ```typescript theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> import { createDeepAgent, CompositeBackend, StateBackend, StoreBackend, createFileData } from "deepagents";
+> import { InMemoryStore } from "@langchain/langgraph";
+> import { uuid7 } from "langsmith";
+>
+> const store = new InMemoryStore();  // Use platform store when deploying to LangSmith
+>
+> // Seed the memory file
+> await store.put(
+>   ["my-agent"],
+>   "/memories/AGENTS.md",
+>   createFileData(`## Response style
+> - Keep responses concise
+> - Use code examples where possible
+> `),
+> );
+>
+> // Seed a skill
+> await store.put(
+>   ["my-agent"],
+>   "/skills/langgraph-docs/SKILL.md",
+>   createFileData(`---
+> name: langgraph-docs
+> description: Fetch relevant LangGraph documentation to provide accurate guidance.
+> ---
+>
+> # langgraph-docs
+>
+> Use the fetch_url tool to read https://docs.langchain.com/llms.txt, then fetch relevant pages.
+> `),
+> );
+>
+> const agent = createDeepAgent({
+>   memory: ["/memories/AGENTS.md"],
+>   skills: ["/skills/"],
+>   backend: (rt) => new CompositeBackend(
+>     new StateBackend(rt),
+>     {
+>       "/memories/": new StoreBackend(rt, {
+>         namespace: (rt) => ["my-agent"],
+>       }),
+>       "/skills/": new StoreBackend(rt, {
+>         namespace: (rt) => ["my-agent"],
+>       }),
+>     },
+>   ),
+>   store,
+> });
+>
+> // Thread 1: the agent learns a new preference and saves it to memory
+> const config1 = { configurable: { thread_id: uuid7() } };
+> await agent.invoke({
+>   messages: [{ role: "user", content: "I prefer detailed explanations. Remember that." }],
+> }, config1);
+>
+> // Thread 2: the agent reads memory and applies the preference
+> const config2 = { configurable: { thread_id: uuid7() } };
+> await agent.invoke({
+>   messages: [{ role: "user", content: "Explain how transformers work." }],
+> }, config2);
+> ```
 
 ### 用户范围内存为每个用户提供自己的内存文件。代理会记住每个用户的偏好、上下文和历史记录，而核心代理指令保持不变。如果存储在用户范围的后端中，用户还可以拥有每个用户的[skills](/oss/javascript/deepagents/skills)。
 
@@ -148,75 +148,75 @@ const agent = createDeepAgent({
 });
 ```
 
-<Accordion title="Full example: isolated memory across users">
-  为每个用户存储种子并以两个不同用户的身份调用代理。每个用户只能看到自己的偏好。
-
-  ```typescript theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  import { createDeepAgent, CompositeBackend, StateBackend, StoreBackend, createFileData } from "deepagents";
-  import { InMemoryStore } from "@langchain/langgraph";
-  import { uuid7 } from "langsmith";
-
-  const store = new InMemoryStore();  // Use platform store when deploying to LangSmith
-
-  // Seed preferences for two users
-  await store.put(
-    ["user-alice"],
-    "/memories/preferences.md",
-    createFileData(`## Preferences
-  - Likes concise bullet points
-  - Prefers Python examples
-  `),
-  );
-  await store.put(
-    ["user-bob"],
-    "/memories/preferences.md",
-    createFileData(`## Preferences
-  - Likes detailed explanations
-  - Prefers TypeScript examples
-  `),
-  );
-
-  // Seed a skill for Alice
-  await store.put(
-    ["user-alice"],
-    "/skills/langgraph-docs/SKILL.md",
-    createFileData(`---
-  name: langgraph-docs
-  description: Fetch relevant LangGraph documentation to provide accurate guidance.
-  ---
-
-  # langgraph-docs
-
-  Use the fetch_url tool to read https://docs.langchain.com/llms.txt, then fetch relevant pages.
-  `),
-  );
-
-  const agent = createDeepAgent({
-    memory: ["/memories/preferences.md"],
-    skills: ["/skills/"],
-    backend: (rt) => new CompositeBackend(
-      new StateBackend(rt),
-      {
-        "/memories/": new StoreBackend(rt, {
-          namespace: (rt) => [rt.serverInfo.user.identity],
-        }),
-        "/skills/": new StoreBackend(rt, {
-          namespace: (rt) => [rt.serverInfo.user.identity],
-        }),
-      },
-    ),
-    store,
-  });
-
-  // When deployed, each authenticated request resolves
-  // `rt.serverInfo.user.identity` to the calling user, so Alice and Bob
-  // automatically see only their own preferences.
-  await agent.invoke(
-    { messages: [{ role: "user", content: "How do I read a CSV file?" }] },
-    { configurable: { thread_id: uuid7() } },
-  );
-  ```
-</Accordion>
+> **完整示例：跨用户隔离内存**
+>
+> 播种每个用户的记忆并以两个不同的用户身份调用代理。每个用户只能看到自己的偏好。
+>
+> ```typescript theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> import { createDeepAgent, CompositeBackend, StateBackend, StoreBackend, createFileData } from "deepagents";
+> import { InMemoryStore } from "@langchain/langgraph";
+> import { uuid7 } from "langsmith";
+>
+> const store = new InMemoryStore();  // Use platform store when deploying to LangSmith
+>
+> // Seed preferences for two users
+> await store.put(
+>   ["user-alice"],
+>   "/memories/preferences.md",
+>   createFileData(`## Preferences
+> - Likes concise bullet points
+> - Prefers Python examples
+> `),
+> );
+> await store.put(
+>   ["user-bob"],
+>   "/memories/preferences.md",
+>   createFileData(`## Preferences
+> - Likes detailed explanations
+> - Prefers TypeScript examples
+> `),
+> );
+>
+> // Seed a skill for Alice
+> await store.put(
+>   ["user-alice"],
+>   "/skills/langgraph-docs/SKILL.md",
+>   createFileData(`---
+> name: langgraph-docs
+> description: Fetch relevant LangGraph documentation to provide accurate guidance.
+> ---
+>
+> # langgraph-docs
+>
+> Use the fetch_url tool to read https://docs.langchain.com/llms.txt, then fetch relevant pages.
+> `),
+> );
+>
+> const agent = createDeepAgent({
+>   memory: ["/memories/preferences.md"],
+>   skills: ["/skills/"],
+>   backend: (rt) => new CompositeBackend(
+>     new StateBackend(rt),
+>     {
+>       "/memories/": new StoreBackend(rt, {
+>         namespace: (rt) => [rt.serverInfo.user.identity],
+>       }),
+>       "/skills/": new StoreBackend(rt, {
+>         namespace: (rt) => [rt.serverInfo.user.identity],
+>       }),
+>     },
+>   ),
+>   store,
+> });
+>
+> // When deployed, each authenticated request resolves
+> // `rt.serverInfo.user.identity` to the calling user, so Alice and Bob
+> // automatically see only their own preferences.
+> await agent.invoke(
+>   { messages: [{ role: "user", content: "How do I read a CSV file?" }] },
+>   { configurable: { thread_id: uuid7() } },
+> );
+> ```
 
 ## 高级用法
 
@@ -225,7 +225,7 @@ const agent = createDeepAgent({
 | **持续时间** |持续多久？ | [Short-term](/oss/javascript/deepagents/context-engineering)（单个对话）或[long-term](#scoped-memory)（跨对话）|
 | **信息类型** |这是什么样的信息？ | [Episodic](#episodic-memory)（过去的经验）、[procedural](/oss/javascript/deepagents/skills)（说明和技能）或[semantic](/oss/javascript/concepts/memory#semantic-memory)（事实）|
 | **范围** |谁可以查看和修改它？ | [User](#user-scoped-memory)、[agent](#agent-scoped-memory) 或 [organization](#organization-level-memory) |
-| **更新策略** |记忆是什么时候写的？ |对话期间（默认）或 [between conversations](#background-consolidation) |
+| **更新策略** |记忆是什么时候写的？ |对话期间（默认）或[between conversations](#background-consolidation) |
 | **检索** |记忆是如何被读取的？ |加载到提示（默认）或按需（例如，[skills](/oss/javascript/deepagents/skills)）|
 | **代理权限** |代理可以写入内存吗？ | [Read-write](#read-only-vs-writable-memory)（默认）或[read-only](#read-only-vs-writable-memory)（对于共享策略）|
 
@@ -335,7 +335,7 @@ await client.store.putItem(
 | **热路径**（对话期间）|记忆立即可用，对用户透明 |增加延迟，代理必须执行多任务 |
 | **背景**（对话之间）|无面向用户的延迟，可以跨多个对话进行综合 |记忆在下次对话之前不可用，需要第二个特工 |
 
-对于大多数应用程序，热路径就足够了。当您需要减少多个对话的延迟或提高内存质量时，请添加后台整合。推荐的模式是在主代理旁边部署一个**整合代理**——一个深度代理，读取最近的对话历史记录，提取关键事实，并将它们合并到内存存储中——并在[cron schedule](#cron)上触发它。选择反映用户实际与代理交互频率的节奏：每日流量稳定的聊天产品可能每隔几个小时就会整合一次，而每周使用几次的工具只需要每晚或每周运行一次。比用户交谈更频繁的整合只会在无操作运行时烧毁代币。
+对于大多数应用程序，热路径就足够了。当您需要减少多个对话的延迟或提高内存质量时，请添加后台整合。推荐的模式是在主代理旁边部署一个**整合代理** - 一个深度代理，读取最近的对话历史记录，提取关键事实，并将它们合并到内存存储中 - 并在 [cron schedule](#cron) 上触发它。选择反映用户实际与代理交互频率的节奏：每日流量稳定的聊天产品可能每隔几个小时就会整合一次，而每周使用几次的工具只需要每晚或每周运行一次。比用户交谈更频繁的整合只会在无操作运行时烧毁代币。
 
 #### 集运代理
 
@@ -394,7 +394,7 @@ export { agent };
 
 #### 计划任务
 
-[cron job](/langsmith/cron-jobs) 按固定计划运行合并代理。代理搜索最近的对话并将其合成到内存中。将计划与您的使用模式相匹配，以便整合运行大致跟踪实际活动。
+[cron job](/langsmith/cron-jobs) 按固定计划运行整合代理。代理搜索最近的对话并将其合成到内存中。将计划与您的使用模式相匹配，以便整合运行大致跟踪实际活动。
 
 ```mermaid theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 graph LR
@@ -430,17 +430,17 @@ const cronJob = await client.crons.create(
 );
 ```
 
-<Note>
-  所有 cron 计划均以 **UTC** 解释。有关管理和删除 cron 作业的详细信息，请参阅[cron jobs](/langsmith/cron-jobs)。
-</Note><Warning>
-  cron 间隔必须与整合代理内的回顾窗口相匹配。上面的示例每 6 小时运行一次 (`0 */6 * * *`)，代理的 `search_recent_conversations` 工具会回顾 `timedelta(hours=6)` — 保持这些同步。如果 cron 运行的次数比回溯的次数多，您将重新处理相同的对话；如果它运行得较少，你就会丢弃那些落在窗外的记忆。
-</Warning>
+> [!注意]
+>
+> 所有 cron 计划均以 **UTC** 解释。有关管理和删除 cron 作业的详细信息，请参阅[cron jobs](/langsmith/cron-jobs)。> [!警告]
+>
+> cron 间隔必须与整合代理内的回顾窗口相匹配。上面的示例每 6 小时运行一次 (`0 */6 * * *`)，代理的 `search_recent_conversations` 工具会回顾 `timedelta(hours=6)` — 保持这些同步。如果 cron 运行的次数比回溯的次数多，您将重新处理相同的对话；如果它运行的频率较低，你就会丢弃掉在窗外的记忆。
 
 有关使用后台进程部署代理的更多信息，请参阅[going to production](/oss/javascript/deepagents/going-to-production)。
 
 ### 只读内存与可写内存
 
-默认情况下，代理可以读取和写入内存文件。对于组织策略或合规性规则等共享状态，您可能希望将内存设为**只读**，以便代理可以引用它但不能修改它。这可以防止通过共享内存进行提示注入，并确保只有您的应用程序代码控制文件中的内容。|许可 |使用案例 |它是如何运作的 |
+默认情况下，代理可以读取和写入内存文件。对于组织策略或合规性规则等共享状态，您可能希望将内存设为**只读**，以便代理可以引用它但不能修改它。这可以防止通过共享内存进行提示注入，并确保只有您的应用程序代码控制文件中的内容。|许可|使用案例 |它是如何运作的 |
 | - | - | - |
 | **读写**（默认）|用户喜好，座席自我提升，学到了[skills](/oss/javascript/deepagents/skills) |代理通过`edit_file`工具更新文件|
 | **只读** |组织政策、合规规则、共享知识库、开发人员定义[skills](/oss/javascript/deepagents/skills) |通过应用程序代码或[Store API](/langsmith/custom-store)填充。使用 [permissions](/oss/javascript/deepagents/permissions) 拒绝写入特定路径，或使用 [policy hooks](/oss/javascript/deepagents/backends#add-policy-hooks) 自定义验证逻辑。 |
@@ -472,23 +472,17 @@ new StoreBackend({
 
 如果您只需要每个代理隔离而不需要每个用户范围，请单独使用`assistant_id`。
 
-<Tip>
-  使用 [LangSmith tracing](/langsmith/trace-with-langgraph) 审核代理写入内存的内容。每个文件写入在跟踪中都显示为工具调用。
-</Tip>
+> [!提示]
+>
+> 使用 [LangSmith tracing](/langsmith/trace-with-langgraph) 审核代理写入内存的内容。每个文件写入在跟踪中都显示为工具调用。
 
 ## 另请参阅
 
 * [OpenWiki](/oss/openwiki/overview)：生成并维护编码代理通过`AGENTS.md`找到的存储库wiki
-* [Backends](/oss/javascript/deepagents/backends)：选择内存文件的存储位置
+* [Backends](/oss/javascript/deepagents/backends): 选择内存文件的存储位置
 * [Context engineering](/oss/javascript/deepagents/context-engineering)：短期记忆、卸载和总结
 * [Skills](/oss/javascript/deepagents/skills)：按需程序内存
 
-***<div>
-  <Callout icon="terminal-2">
-    [Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
-  </Callout>
+***
 
-  <Callout icon="edit">
-    [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/oss/deepagents/memory.mdx) 或 [file an issue](https://github.com/langchain-ai/docs/issues/new/choose)。
-  </Callout>
-</div>
+[Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。[Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/oss/deepagents/memory.mdx) 或 [file an issue](https://github.com/langchain-ai/docs/issues/new/choose)。

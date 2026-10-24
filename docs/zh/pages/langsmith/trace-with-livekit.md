@@ -4,15 +4,15 @@
 
 # 跟踪 LiveKit 应用程序
 
-<Note>
-  此集成处于测试阶段，因此其 API 可能会发生变化。
-</Note>
+> [!注意]
+>
+> 此集成处于测试阶段，因此其 API 可能会发生变化。
 
 使用 LangSmith LiveKit 集成来跟踪您的 [LiveKit Agents](https://docs.livekit.io/agents/) 语音代理，包括他们的文字记录和录音。有关高级约定，请参阅[Voice tracing fundamentals](/langsmith/trace-voice-fundamentals)。
 
-<Note>
-  此设置需要 `langsmith[livekit]>=0.11.2` 和 `livekit-agents>=1.6`。 LiveKit Agents 1.7 及更高版本需要 `langsmith[livekit]>=0.12.4`。
-</Note>
+> [!注意]
+>
+> 此设置需要 `langsmith[livekit]>=0.11.2` 和 `livekit-agents>=1.6`。 LiveKit Agents 1.7 及更高版本需要 `langsmith[livekit]>=0.12.4`。
 
 每个对话都显示为一个 LangSmith 跟踪及其管道事件、延迟和令牌指标。
 
@@ -20,15 +20,13 @@
 
 安装集成以及代理使用的 LiveKit 插件：
 
-<CodeGroup>
-  ```bash pip theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  pip install "langsmith[livekit]" "livekit-agents[openai,silero,turn-detector]"
-  ```
+```bash pip theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+pip install "langsmith[livekit]" "livekit-agents[openai,silero,turn-detector]"
+```
 
-  ```bash uv theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  uv add "langsmith[livekit]" "livekit-agents[openai,silero,turn-detector]"
-  ```
-</CodeGroup>
+```bash uv theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+uv add "langsmith[livekit]" "livekit-agents[openai,silero,turn-detector]"
+```
 
 ## 设置环境变量
 
@@ -159,9 +157,9 @@ async def my_agent(ctx: agents.JobContext):
     )
 ```
 
-默认情况下，LiveKit 集成将从 LiveKit 捕获录制内容（如果存在）。<Note>
-  在控制台模式下，还可以在命令行上传递 `--record` (`python agent.py console --record`)。如果没有它，LiveKit 会创建记录器但不会启动它，因此没有要附加的文件。录音反映了向客户端播放的内容，因此插入内容会被截断。
-</Note>
+默认情况下，LiveKit 集成将从 LiveKit 捕获录制内容（如果存在）。> [!注意]
+>
+> 在控制台模式下，还可以在命令行上传递 `--record` (`python agent.py console --record`)。如果没有它，LiveKit 会创建记录器但不会启动它，因此没有要附加的文件。录音反映了向客户端播放的内容，因此插入内容会被截断。
 
 ### 记录出口
 
@@ -258,28 +256,22 @@ async def my_agent(ctx: agents.JobContext):
 
 `download_from_storage`代表您的存储客户端的下载操作。默认附件名称和 MIME 类型为 `recording.ogg` 和 `audio/ogg`。如果您的 Egress 输出使用其他格式，请在 `complete_recording` 中设置 `name` 或 `mime_type`。
 
-<Note>
-  始终调用 `complete_recording`，包括失败时调用 `data=None`。否则，集成会等待`recording_timeout_seconds`（默认情况下为 30 秒），然后再导出不带音频的跟踪。使用`complete_recording`捕获Egress录音需要设置`thread_id`。
-</Note>
+> [!注意]
+>
+> 始终调用 `complete_recording`，包括失败时调用 `data=None`。否则，集成会等待`recording_timeout_seconds`（默认情况下为 30 秒），然后再导出不带音频的跟踪。使用`complete_recording`捕获Egress录音需要设置`thread_id`。
 
 ## 后续步骤
 
-<CardGroup>
-  <Card title="Voice fundamentals" icon="waveform" href="/langsmith/trace-voice-fundamentals">
-    跟踪语音代理的核心约定。
-  </Card>
+> **[Voice fundamentals](/langsmith/trace-voice-fundamentals)**
+>
+> 跟踪语音代理的核心约定。
 
-  <Card title="Upload files with traces" icon="paperclip" href="/langsmith/upload-files-with-traces">
-    将对话录音附加到您的跟踪中。
-  </Card>
-</CardGroup>
+> **[Upload files with traces](/langsmith/upload-files-with-traces)**
+>
+> 将对话录音附加到您的轨迹中。
 
-***<div>
-  <Callout icon="terminal-2">
-    [Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
-  </Callout>
+***
 
-  <Callout icon="edit">
-    [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/trace-with-livekit.mdx) 或 [file an issue](https://github.com/langchain-ai/docs/issues/new/choose)。
-  </Callout>
-</div>
+[Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
+
+[Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/trace-with-livekit.mdx) 或 [file an issue](https://github.com/langchain-ai/docs/issues/new/choose)。

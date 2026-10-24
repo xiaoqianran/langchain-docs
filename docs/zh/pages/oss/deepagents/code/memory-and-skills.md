@@ -4,9 +4,9 @@
 
 # 记忆力和技能
 
-持久内存、AGENTS.md 文件以及Deep Agents代码的可重用技能，包括创建、发现和调用。
+持久内存、AGENTS.md 文件以及Deep Agents 代码的可重用技能，包括创建、发现和调用。
 
-在Deep Agents代码中自定义代理有两种主要方法：
+在 Deep Agents 代码中自定义代理有两种主要方法：
 
 * **[Memory](#memory)**：`AGENTS.md` 文件和自动保存的记忆在会话中持续存在。记住一般的编码风格、偏好和习得的约定。
 
@@ -16,9 +16,9 @@
 
 使用`/remember`明确提示代理从当前对话中更新其记忆和技能。
 
-<Tip>
-  使用 SDK 构建自定义代理？请参阅[Memory](/oss/python/deepagents/memory)了解编程内存后端。
-</Tip>
+> [!提示]
+>
+> 使用 SDK 构建自定义代理？请参阅[Memory](/oss/python/deepagents/memory)了解编程内存后端。
 
 ## 内存
 
@@ -62,13 +62,13 @@ dcode --agent backend-dev
 
 这两个文件都会在启动时附加到系统提示符中。
 
-<Tip>
-  要生成存储库 wiki 并将指针连接到编码代理的 `AGENTS.md` 和 `CLAUDE.md`，请参阅 [OpenWiki](/oss/openwiki/overview)。
-</Tip>
+> [!提示]
+>
+> 要生成存储库 wiki 并将指针连接到编码代理的 `AGENTS.md` 和 `CLAUDE.md`，请参阅 [OpenWiki](/oss/openwiki/overview)。
 
 ### 记忆是如何运作的
 
-在回答特定于项目的问题或参考过去的工作或模式时，代理还可以读取其内存文件。当您提供有关其应如何行为的信息、对其工作的反馈或记住某些内容的指示时，代理会更新`AGENTS.md`。
+在回答特定于项目的问题或引用过去的工作或模式时，代理还可以读取其内存文件。当您提供有关其应如何行为的信息、对其工作的反馈或记住某些内容的指示时，代理会更新`AGENTS.md`。
 如果它从你的交互中识别出模式或偏好，它也会更新它的记忆。
 
 要在附加内存文件中添加更多结构化项目知识，请将它们添加到`.deepagents/`中并在`AGENTS.md`文件中引用它们。
@@ -87,7 +87,7 @@ dcode --agent backend-dev
 
 使用项目 `AGENTS.md`（项目根目录中的`.deepagents/AGENTS.md`）用于：
 
-* 项目特定的背景和惯例
+* 项目特定的背景和约定
 * 项目架构和设计模式
 * 特定于此代码库的编码约定
 * 测试策略和部署流程
@@ -100,33 +100,31 @@ dcode --agent backend-dev
 
 ### 添加技能
 
-<Steps>
-  <Step title="Create a skill">
-    ```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-    # User skill (stored in ~/.deepagents/<agent_name>/skills/)
-    dcode skills create test-skill
+**1.创建技能**
 
-    # Project skill (stored in .deepagents/skills/)
-    dcode skills create test-skill --project
-    ```
+```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+# User skill (stored in ~/.deepagents/<agent_name>/skills/)
+dcode skills create test-skill
 
-    这会生成：
+# Project skill (stored in .deepagents/skills/)
+dcode skills create test-skill --project
+```
 
-    ```plaintext theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-    skills/
-    └── test-skill
-        └── SKILL.md
-    ```
-  </Step>
+这会生成：
 
-  <Step title="Edit SKILL.md">
-    打开生成的 `SKILL.md` 并编辑文件以包含您的说明。
-  </Step>
+```plaintext theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+skills/
+└── test-skill
+    └── SKILL.md
+```
 
-  <Step title="Add optional resources">
-    （可选）将其他脚本或其他资源添加到 `test-skill` 文件夹。欲了解更多信息，请参阅[Usage](/oss/python/deepagents/skills#add-supporting-resources)。
-  </Step>
-</Steps>
+**2.编辑技能.md**
+
+打开生成的 `SKILL.md` 并编辑文件以包含您的说明。
+
+**3.添加可选资源**
+
+（可选）将其他脚本或其他资源添加到 `test-skill` 文件夹。欲了解更多信息，请参阅[Usage](/oss/python/deepagents/skills#add-supporting-resources)。
 
 您还可以将现有技能直接复制到代理的文件夹中：
 
@@ -147,9 +145,9 @@ npx skills add vercel-labs/agent-skills --skill web-design-guidelines -a deepage
 npx skills ls -a deepagents -g
 ```全局将 (`-g`) 符号链接技能安装到 `~/.deepagents/agent/skills/` — 默认代理的用户级技能目录中。项目级安装（省略 `-g`）将技能放置在相对于当前目录的 `.deepagents/skills/` 中，使它们可供该项目中运行的任何代理使用，无论代理名称如何。
 
-<Note>
-  全局安装仅针对默认的 `agent` 目录。如果您使用自定义命名的代理，请使用项目级安装或手动将技能符号链接到`~/.deepagents/{your-agent}/skills/`。
-</Note>
+> [!注意]
+>
+> 全局安装仅针对默认的 `agent` 目录。如果您使用自定义命名的代理，请使用项目级安装或手动将技能符号链接到`~/.deepagents/{your-agent}/skills/`。
 
 ### 技能发现
 
@@ -201,11 +199,11 @@ dcode --skill code-review -n 'review this patch'
 
 # Quiet mode (only agent output on stdout)
 dcode --skill code-review -n 'review this patch' -q
-```无头运行无法显示信任提示。如果技能在可信根之外解析，Deep Agents代码会拒绝该回合并建议将目录添加到`[skills].extra_allowed_dirs`。
+```无头运行无法显示信任提示。如果技能在受信任的根之外解析，Deep Agents代码会拒绝转向并建议将目录添加到`[skills].extra_allowed_dirs`。
 
-<Note>
-  `--skill` 与 `--quiet` 或 `--no-stream` 需要 `-n`（非交互模式）。
-</Note>
+> [!注意]
+>
+> `--skill` 与 `--quiet` 或 `--no-stream` 需要 `-n`（非交互模式）。
 
 ### 列出技能
 
@@ -223,12 +221,6 @@ dcode skills info test-skill --project
 
 ***
 
-<div>
-  <Callout icon="terminal-2">
-    [Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
-  </Callout>
+[Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
 
-  <Callout icon="edit">
-    [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/oss/deepagents/code/memory-and-skills.mdx) 或 [file an issue](https://github.com/langchain-ai/docs/issues/new/choose)。
-  </Callout>
-</div>
+[Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/oss/deepagents/code/memory-and-skills.mdx) 或 [file an issue](https://github.com/langchain-ai/docs/issues/new/choose)。

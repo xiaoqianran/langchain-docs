@@ -37,13 +37,13 @@ export OTEL_EXPORTER_OTLP_HEADERS="x-api-key=<your_langsmith_api_key>,Langsmith-
 
 VS Code 必须继承这些环境变量，因此在启动编辑器之前，请在启动 VS Code 的 shell 会话中导出它们（例如，通过将它们添加到 `~/.zshrc`、`~/.bashrc` 或 shell 配置文件）。
 
-<Note>
-  更新自托管安装或区域 SaaS 的 LangSmith 端点：GCP EU 使用 `eu.api.smith.langchain.com`； GCP 亚太地区使用`apac.api.smith.langchain.com`； AWS US 使用`aws.api.smith.langchain.com`。对于自托管 LangSmith，请将 `/api/v1/otel` 附加到您的 LangSmith API URL，例如 `https://ai-company.com/api/v1/otel`。
-</Note>
+> [!注意]
+>
+> 更新自托管安装或区域 SaaS 的 LangSmith 端点：GCP EU 使用 `eu.api.smith.langchain.com`； GCP 亚太地区使用`apac.api.smith.langchain.com`； AWS US 使用`aws.api.smith.langchain.com`。对于自托管 LangSmith，请将 `/api/v1/otel` 附加到您的 LangSmith API URL，例如 `https://ai-company.com/api/v1/otel`。
 
-<Warning>
-  `COPILOT_OTEL_CAPTURE_CONTENT=true` 记录完整的提示和响应内容、系统提示、工具模式、工具参数和工具结果。仅在可接受捕获源代码、文件内容和用户提示的受信任环境中启用它。
-</Warning>
+> [!警告]
+>
+> `COPILOT_OTEL_CAPTURE_CONTENT=true` 记录完整的提示和响应内容、系统提示、工具模式、工具参数和工具结果。仅在可接受捕获源代码、文件内容和用户提示的受信任环境中启用它。
 
 ### 替代方案：VS Code 设置如果您不想设置环境变量，则可以从 VS Code 设置中启用 OTel。打开**设置**（`⌘,` / `Ctrl+,`），搜索`copilot otel`，然后配置：
 
@@ -63,7 +63,7 @@ VS Code 必须继承这些环境变量，因此在启动编辑器之前，请在
 启动 Copilot 聊天会话并发送请求。打开 [LangSmith project](https://smith.langchain.com?utm_source=docs\&utm_medium=cta\&utm_campaign=langsmith-signup\&utm_content=langsmith-trace-with-vscode-copilot) 查看结果轨迹。每个代理交互都会生成一个遵循 [OTel GenAI Semantic Conventions](https://github.com/open-telemetry/semantic-conventions/blob/main/docs/gen-ai/) 的分层生成树：
 
 * `invoke_agent` spans 包含完整的代理编排，包括代理名称、对话 ID、回合数和总令牌使用量。
-* `chat` spans 捕获单个 LLM API 调用，包括模型、令牌计数、响应时间和完成原因。
+* `chat` 跨度捕获单个 LLM API 调用，包括模型、令牌计数、响应时间和完成原因。
 * `execute_tool` 涵盖捕获工具调用，包括工具名称、类型、持续时间和成功状态。
 
 当代理调用子代理时，Copilot Chat 会自动传播跟踪上下文，因此子代理的 `invoke_agent` 范围在 LangSmith 中显示为父代理的 `execute_tool` 范围的子项。
@@ -80,12 +80,6 @@ VS Code 必须继承这些环境变量，因此在启动编辑器之前，请在
 
 ***
 
-<div>
-  <Callout icon="terminal-2">
-    [Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
-  </Callout>
+[Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
 
-  <Callout icon="edit">
-    [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/trace-with-vscode-copilot.mdx) 或 [file an issue](https://github.com/langchain-ai/docs/issues/new/choose)。
-  </Callout>
-</div>
+[Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/trace-with-vscode-copilot.mdx) 或 [file an issue](https://github.com/langchain-ai/docs/issues/new/choose)。

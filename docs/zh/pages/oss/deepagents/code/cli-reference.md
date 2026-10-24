@@ -40,7 +40,7 @@ dcode --model openai:gpt-5.5
 dcode --model fireworks:accounts/fireworks/models/deepseek-v4-pro
 ```
 
-当Deep Agents代码在没有`--model`的情况下开始时，它按以下顺序解析模型：
+当Deep Agents代码在没有`--model`的情况下启动时，它将按以下顺序解析模型：
 
 1. **`--model` 标志**（如果提供）。
 2. **`[models].default`** 在`~/.deepagents/config.toml`。
@@ -74,7 +74,7 @@ Deep Agents 代码将每个 `provider:model` 的选择保存在 `~/.deepagents/c
 
 ### 选择一个汇总模型
 
-Use a separate model for automatic context compaction, `/offload`, and `/compact` without changing the main agent model:
+使用单独的模型进行自动上下文压缩，`/offload`和`/compact`，无需更改主代理模型：
 
 ```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 # Set the summarization model for this launch
@@ -89,25 +89,25 @@ dcode --summarization-model openai:gpt-5.6-sol
 /offload model clear
 ```
 
-The summarization model resolves from `--summarization-model`, then `[models].summarization_default` in `config.toml`, then the main agent model.参见[Set a summarization model](/oss/deepagents/code/config-file#set-a-summarization-model)。
+汇总模型从`--summarization-model`解析，然后是`config.toml`中的`[models].summarization_default`，然后是主代理模型。参见[Set a summarization model](/oss/deepagents/code/config-file#set-a-summarization-model)。
 
 ### 模型参数和配置文件覆盖
 
-使用 `--model-params` 作为 JSON 字符串将额外的构造函数 kwargs 传递给模型。 These apply for the current session only and override `config.toml` provider params:
+使用 `--model-params` 作为 JSON 字符串将额外的构造函数 kwargs 传递给模型。这些仅适用于当前会话并覆盖 `config.toml` 提供者参数：
 
 ```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 dcode --model openai:gpt-5.5 --model-params '{"reasoning": {"effort": "high"}}'
 dcode --model anthropic:claude-opus-4-8 --model-params '{"thinking": {"type": "enabled", "budget_tokens": 10000}, "max_tokens": 16000}'
 ```
 
-Override [model profile](/oss/python/langchain/models#model-profiles) fields (for example, `max_input_tokens`) with `--profile-override`.值在配置文件覆盖之上合并并在会话中`/model`热交换中持续存在：
+使用 `--profile-override` 覆盖 [model profile](/oss/python/langchain/models#model-profiles) 字段（例如，`max_input_tokens`）。值在配置文件覆盖之上合并并在会话中`/model`热交换中持续存在：
 
 ```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 dcode --profile-override '{"max_input_tokens": 4096}'
 dcode --model google_genai:gemini-3.6-flash --profile-override '{"max_input_tokens": 4096}'
 ```
 
-For retry counts on transient errors, use `--max-retries` or the `[retries]` section in `config.toml`.请参阅[Model parameters](/oss/deepagents/code/providers#model-parameters)和[Profile overrides](/oss/deepagents/code/config-file#profile-overrides-advanced)。
+对于暂时性错误的重试计数，请使用 `--max-retries` 或 `config.toml` 中的 `[retries]` 部分。请参阅[Model parameters](/oss/deepagents/code/providers#model-parameters)和[Profile overrides](/oss/deepagents/code/config-file#profile-overrides-advanced)。
 
 ### 安装提供商附加功能
 
@@ -121,18 +121,16 @@ dcode --install ollama
 
 ### 删除可选的额外内容
 
-删除一个额外安装的组件，同时保留其余的 Deep Agents 代码安装：
+删除一个额外安装的内容，同时保留其余的 Deep Agents 代码安装：
 
-<CodeGroup>
-  ```bash Shell theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  dcode uninstall groq
-  dcode --uninstall groq
-  ```
+```bash Shell theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+dcode uninstall groq
+dcode --uninstall groq
+```
 
-  ```text In session theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  /uninstall groq
-  ```
-</CodeGroup>
+```text In session theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+/uninstall groq
+```
 
 删除会重建 uv 工具安装，而无需选择额外的内容，同时保留解释器、发布通道、其他额外内容以及随 `--package` 安装的软件包。
 
@@ -204,9 +202,9 @@ dcode -n "Build the project" -S recommended
 dcode -n "Fix the build" -S all
 ```
 
-<Warning>
-  `-S all` 让代理执行任意 shell 命令，无需人工确认。
-</Warning>
+> [!警告]
+>
+> `-S all` 允许代理执行任意 shell 命令，无需人工确认。
 
 有关更多示例和跟踪设置，请参阅[Non-interactive mode and piping](/oss/deepagents/code/quickstart#non-interactive-mode-and-piping)。
 
@@ -260,25 +258,25 @@ dcode --yolo
 dcode -n "Audit this repository" --allow-fs-tools ls,read_file,glob,grep
 ```有效名称为 `ls`、`read_file`、`write_file`、`edit_file`、`delete`、`glob`、`grep` 和 `execute`。显式列表必须包含`read_file`。允许列表适用于每个会话模式下的主代理和同步子代理，但不适用于异步子代理或非文件系统工具。
 
-<Note>
-  `--allow-fs-tools` 和 `-S`/`--shell-allow-list` 控制不同层的 shell 访问：
-
-  * **`--allow-fs-tools`** 控制哪些文件系统工具可用。 Shell 访问需要 `execute`。
-  * **`-S`/`--shell-allow-list`** 通过`execute` 控制允许哪些 shell 命令。它不会影响其他文件系统工具。
-
-  | `--allow-fs-tools` 包括`execute`？ | `-S`设置了吗？ |外壳访问 |
-  | - | - | - |
-  |是的 |是的 |允许的命令运行（交互式确认；非交互式自动批准）|
-  |是的 |没有 |工具存在，但没有预先批准命令 |
-  |没有 |是的 |没有 shell 访问权限 — `execute` 不存在，因此 `-S` 没有什么可门控的 |
-  |没有 |没有 |没有 shell 访问权限 |
-
-  在非交互模式下，传递两者以启用命令，无需人工批准：
-
-  ```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  dcode -n "Fix the failing tests" --allow-fs-tools execute -S "pytest,git,make"
-  ```
-</Note>
+> [!注意]
+>
+> `--allow-fs-tools` 和 `-S`/`--shell-allow-list` 控制不同层的 shell 访问：
+>
+> * **`--allow-fs-tools`** 控制哪些文件系统工具可用。 Shell 访问需要 `execute`。
+> * **`-S`/`--shell-allow-list`** 控制通过 `execute` 允许哪些 shell 命令。它不会影响其他文件系统工具。
+>
+> | `--allow-fs-tools` 包括`execute`？ | `-S`设置了吗？ |外壳访问 |
+> | - | - | - |
+> |是的 |是的 |允许的命令运行（交互式确认；非交互式自动批准）|
+> |是的 |没有 |工具存在，但没有预先批准命令 |
+> |没有 |是的 |没有 shell 访问权限 — `execute` 不存在，因此 `-S` 没有什么可门控的 |
+> |没有 |没有 |没有 shell 访问权限 |
+>
+> 在非交互模式下，传递两者以启用命令，无需人工批准：
+>
+> ```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> dcode -n "Fix the failing tests" --allow-fs-tools execute -S "pytest,git,make"
+> ```
 
 在会话中运行 [⟦T162⟧](#diagnose-and-audit-a-session) 以检查活动工具集。在 shell 中，将工具调整标志放在子命令之前：
 
@@ -412,11 +410,11 @@ dcode --sandbox langsmith
 dcode --sandbox runloop --sandbox-id dbx_abc123
 dcode --sandbox modal --sandbox-setup ./setup.sh
 dcode --sandbox
-```<Note>
-  由于 `--sandbox` 接受可选值，因此请在命令行上保留裸形式**最后**。否则，以下参数（例如，`dcode --sandbox agents`）将被用作标志的值。
-</Note>
+```> [!注意]
+>
+> 由于 `--sandbox` 接受可选值，因此请在命令行上保留裸形式**最后**。否则，以下参数（例如，`dcode --sandbox agents`）将被用作标志的值。
 
-使用 `dcode --install` 安装沙箱附加组件（例如 `dcode --install daytona` 或 `dcode --install all-sandboxes`）。请参阅 [Remote sandboxes](/oss/deepagents/code/remote-sandboxes) 了解提供程序设置、工作目录和第三方提供程序。
+使用 `dcode --install` 安装沙箱附加功能（例如 `dcode --install daytona` 或 `dcode --install all-sandboxes`）。请参阅 [Remote sandboxes](/oss/deepagents/code/remote-sandboxes) 了解提供程序设置、工作目录和第三方提供程序。
 
 ## MCP 标志
 
@@ -441,10 +439,10 @@ dcode -n "run tests" --trust-project-mcp
 | - | - |
 | `-a`、`--agent NAME` |使用具有独立内存的命名代理。覆盖 `config.toml` 中的 `[agents].recent` 和 `[agents].default`。默认值：`agent`（如果设置了`[agents].recent`，则为最近使用的代理）|
 | `-M`、`--model MODEL` |使用特定型号（`provider:model`）|
-| `--summarization-model MODEL` |用于上下文压缩摘要的模型。覆盖`[models].summarization_default`；默认为主代理模式|
+| `--summarization-model MODEL` |用于上下文压缩摘要的模型。覆盖`[models].summarization_default`；默认为主代理模式 |
 | `--model-params JSON` |额外的 kwargs 作为 JSON 字符串传递给模型（例如，`'{"temperature": 0.7}'`）|
 | `--max-retries N` |发生瞬态模型错误后覆盖重试。默认：`5`；设置为 `0` 以禁用重试 |
-| `--default-model [MODEL]` |设置[default model](/oss/deepagents/code/providers#set-a-default-model)（省略`MODEL`查看当前默认值）|
+| `--default-model [MODEL]` |设置[default model](/oss/deepagents/code/providers#set-a-default-model)（省略`MODEL`查看当前默认值） |
 | `--clear-default-model` |清除[default model](/oss/deepagents/code/providers#set-a-default-model)|
 | `-r`、`--resume [ID]` |恢复会话：`-r` 对于最近的会话，`-r <ID>` 对于特定线程 |
 | `-m`、`--message TEXT` |会话开始时自动提交的初始提示（交互模式） |
@@ -459,11 +457,11 @@ dcode -n "run tests" --trust-project-mcp
 | `--no-stream` |缓冲完整响应并立即写入标准输出而不是流式传输。需要 `-n` 或管道标准输入 |
 | `--show-reasoning` |在交互式脚本中或非交互式模式下的 stderr 上显示提供者可见的推理。在交互式会话中默认打开，在非交互式模式下默认关闭；覆盖环境和配置首选项 |
 | `--stdin` |显式从 stdin 读取输入而不是自动检测。当 stdin 不可用或者是 TTY 时明显出现错误 |
-| `-y`、`--auto-approve` |启用分类器支持的[Auto](/oss/deepagents/code/approval-modes)模式。需要交互式本地会话；在交互式会话期间使用 `Shift+Tab` 进行切换 |
+| `-y`、`--auto-approve` |启用分类器支持的[Auto](/oss/deepagents/code/approval-modes)模式。需要交互式本地会话；在交互式会话期间使用`Shift+Tab`进行切换 |
 | `--auto-classifier-model MODEL` | [Auto classifier](/oss/deepagents/code/approval-modes#select-a-classifier-model) 用于检查门控工具调用的模型（`provider:model` 格式）。覆盖 `config.toml` 中的 `DEEPAGENTS_CODE_AUTO_CLASSIFIER_MODEL` 和 `[models].auto_classifier`。仅限交互式 TUI 会话 |
 | `--yolo` |一次性本地风险确认后，无需审查即可运行门控操作。仅交互模式 || `-S`、`--shell-allow-list LIST` |用于自动批准的以逗号分隔的 shell 命令，`'recommended'` 用于安全默认值，或 `'all'` 用于允许任何命令。适用于`-n`和交互模式 |
-| `--allow-fs-tools LIST` |要公开的文件系统工具。默认为`all`。参见[Restrict filesystem tools](#restrict-filesystem-tools)|
-| `--json` |从支持的管理子命令发出机器可读的 JSON，包括 `tools`、`agents`、`threads`、`skills` 和 `update`。输出包络：`{"schema_version": 1, "command": "...", "data": ...}` |
+| `--allow-fs-tools LIST` |要公开的文件系统工具。默认为`all`。参见[Restrict filesystem tools](#restrict-filesystem-tools) |
+| `--json` |从支持的管理子命令发出机器可读的 JSON，包括 `tools`、`agents`、`threads`、`skills` 和 `update`。输出包络：`{"schema_version": 1, "command": "...", "data": ...}`|
 | `--sandbox TYPE` |用于代码执行的远程沙箱：`none`（默认）、`langsmith`、`agentcore`、`daytona`、`modal`、`runloop`、`vercel`和第三方提供商。包含LangSmith；其他内置功能需要额外的东西。传递`--sandbox`，但没有值可以使用配置中的`[sandboxes].default` |
 | `--sandbox-id ID` |重用现有沙箱（跳过创建和清理）|
 | `--sandbox-snapshot-name NAME` |要使用或创建的沙箱快照名称（`langsmith`、`daytona`、`runloop`以及宣传快照支持的提供商）|
@@ -472,7 +470,7 @@ dcode -n "run tests" --trust-project-mcp
 | `--no-tracing` |禁用此会话的 LangSmith 代理跟踪。请参阅[Trace with LangSmith](/oss/deepagents/code/quickstart#trace-with-langsmith) |
 | `--no-mcp` |禁用所有 MCP 工具加载 || `--trust-project-mcp` |信任项目级 MCP 服务器，而不提示当前运行。明确否认仍然适用。 |
 | `-e`、`--extension PATH` |为此运行加载 Python 扩展文件或目录。重复添加多个路径。需要 `DEEPAGENTS_CODE_EXPERIMENTAL=1` 并启用扩展发现 (`[extensions].enabled` / `DEEPAGENTS_CODE_EXTENSIONS`)。请参阅[Python extensions](/oss/deepagents/code/extensions) |
-| `--trust-project-extensions` |此次运行信任项目级 `.deepagents/extensions/` Python 扩展。需要`DEEPAGENTS_CODE_EXPERIMENTAL=1`。参见[Python extensions](/oss/deepagents/code/extensions#trust-project-extensions)|
+| `--trust-project-extensions` |此次运行信任项目级 `.deepagents/extensions/` Python 扩展。需要`DEEPAGENTS_CODE_EXPERIMENTAL=1`。参见[Python extensions](/oss/deepagents/code/extensions#trust-project-extensions) |
 | `--interpreter` |当在配置中禁用 JS 解释器 (`js_eval`) 中间件时，在主代理上启用它。 `js_eval` 默认启用。 |
 | `--interpreter-tools VALUE` | `js_eval` 的 PTC 允许列表：`safe`、`all` 或以逗号分隔的工具名称列表。默认值：`safe`（只读`read_file`/`glob`/`grep`预设）。请参阅[JS interpreter](/oss/deepagents/code/config-file#js-interpreter) |
 | `--profile-override JSON` |将模型配置文件字段覆盖为 JSON 字符串（例如，`'{"max_input_tokens": 4096}'`）。合并在配置文件配置文件覆盖之上 |
@@ -522,7 +520,7 @@ dcode config path
 
 ## CLI 命令
 
-|命令 |描述 |
+|命令|描述 |
 | - | - |
 | `dcode help` |显示帮助 |
 | `dcode tools list [--json]` |列出已配置代理可用的工具。将顶级工具整形标志，例如 `--allow-fs-tools`、`--no-mcp`、`--mcp-config` 和 `--trust-project-mcp` 放置在 `tools list` 之前 |
@@ -563,12 +561,6 @@ dcode config path
 
 ***
 
-<div>
-  <Callout icon="terminal-2">
-    [Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
-  </Callout>
+[Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
 
-  <Callout icon="edit">
-    [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/oss/deepagents/code/cli-reference.mdx) 或 [file an issue](https://github.com/langchain-ai/docs/issues/new/choose)。
-  </Callout>
-</div>
+[Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/oss/deepagents/code/cli-reference.mdx) 或 [file an issue](https://github.com/langchain-ai/docs/issues/new/choose)。

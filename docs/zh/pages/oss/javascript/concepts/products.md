@@ -45,7 +45,7 @@ LangChain 维护了多个开源包来帮助您构建代理。每个在代理开�
 
 代理框架提供了抽象，使使用 LLM 构建时更容易开始。
 
-[LangChain](/oss/javascript/langchain/overview) 是一个代理框架，提供结构化内容块、代理循环和中间件等抽象。LangChain 的抽象设计易于入门，同时仍提供高级用例所需的灵活性。
+[LangChain](/oss/javascript/langchain/overview) 是一个代理框架，提供结构化内容块、代理循环和中间件等抽象。LangChain 的抽象设计易于入门，同时仍然提供高级用例所需的灵活性。
 
 虽然 LangChain 构建于 [LangGraph](/oss/javascript/langgraph/overview) 之上，但您无需了解 LangGraph 即可使用 LangChain。
 
@@ -72,7 +72,7 @@ LangChain 维护了多个开源包来帮助您构建代理。每个在代理开�
 [LangGraph](/oss/javascript/langgraph/overview) 是一个低级编排框架和运行时，用于构建、管理和部署长期运行的有状态代理。
 
 代理框架通常是更高级别的并且在代理运行时上运行。
-例如，LangChain 1.0 构建在LangGraph 之上。
+例如，LangChain 1.0 构建在 LangGraph 之上。
 
 代理运行时的其他示例包括[Temporal](https://temporal.io/)、[Inngest](https://www.inngest.com/)和其他持久执行引擎。
 
@@ -128,12 +128,6 @@ Deep Agents 专为需要规划和分解的复杂、多步骤任务而设计。
 
 ***
 
-<div>
-  <Callout icon="terminal-2">
-    [Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
-  </Callout>
+[Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
 
-  <Callout icon="edit">
-    [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/oss/concepts/products.mdx) 或 [file an issue](https://github.com/langchain-ai/docs/issues/new/choose)。
-  </Callout>
-</div>
+[Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/oss/concepts/products.mdx) 或 [file an issue](https://github.com/langchain-ai/docs/issues/new/choose)。

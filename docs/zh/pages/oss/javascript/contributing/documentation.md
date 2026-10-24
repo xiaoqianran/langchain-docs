@@ -32,100 +32,99 @@ make install
 make dev
 ```
 
-这将在 `http://localhost:3000` 启动一个具有热重载的开发服务器。在 `src/` 中编辑文件并立即查看更改。
+这将在 `http://localhost:3000` 启动一个具有热重载的开发服务器。在 `src/` 中编辑文件并立即查看更改。> [!提示]
+>
+> **使用人工智能编码代理？**
+>
+> * 安装 [LangChain Docs MCP servers](/use-these-docs) 以使您的代理能够访问最新的 LangChain 文档和示例。
+>
+> 连接 LangChain 文档 MCP 服务器
+>
+> 将两个 LangChain 文档 MCP 服务器连接到我的编码代理，以便它可以查找当前的 LangChain、LangGraph 和 LangSmith 文档和 API 参考。
+>
+> 要添加的服务器：
+>
+> * `docs-langchain`: [https://docs.langchain.com/mcp](https://docs.langchain.com/mcp)
+> * `reference-langchain`: [https://reference.langchain.com/mcp](https://reference.langchain.com/mcp)
+>
+> 检测我正在使用的代理或编辑器（Claude Code、Cursor、Codex CLI、Claude Desktop、Deep Agents Code、VS Code、Antigravity 或其他 MCP 兼容客户端）。使用 [https://docs.langchain.com/use-these-docs.md](https://docs.langchain.com/use-these-docs.md) 中的匹配设置：
+>
+> * Claude 代码：`claude mcp add --transport http` 对于每个服务器（默认情况下项目范围；仅当我要求全局访问时才使用`--scope user`）。
+> * Codex CLI：`codex mcp add` 以及每个服务器 URL。
+> * 光标、Deep Agents 代码、VS 代码或反重力：使用我的客户页面上显示的字段名称将两个条目合并到 MCP 设置 JSON 中。
+> * Claude Desktop：在“设置”>“连接器”下添加两个 URL。
+>
+> 不要发明备用 MCP URL。配置后，确认两台服务器均已列出并且可访问。> * 安装 [LangChain Skills](https://github.com/langchain-ai/langchain-skills) 以提高代理在 LangChain 生态系统任务上的性能，然后单击此页面右上角的 **复制页面** 按钮，并将原始内容粘贴到您的代理中，以使其自动设置您的环境。
+>
+> 安装LangChain技巧
+>
+> 为我的编码代理安装 LangChain 技能，以便它可以更好地执行 LangChain、LangGraph 和 Deep Agents 任务。
+>
+> 使用 [https://github.com/langchain-ai/langchain-skills](https://github.com/langchain-ai/langchain-skills) 中的代理技能安装程序：
+>
+> ```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+>   npx skills add langchain-ai/langchain-skills --skill '*' --yes
+>   ```
+>
+> 如果我要求全局安装，请使用：
+>
+> ```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+>   npx skills add langchain-ai/langchain-skills --skill '*' --yes --global
+>   ```
+>
+> 检测我正在使用哪个代理或编辑器。如果我使用 Claude Code 并且更喜欢插件路径，请按照该存储库自述文件中的市场安装（`/plugin marketplace add` 然后`/plugin install`）。不要发明备用技能包名称或安装 URL。安装后，确认代理可以使用该技能。
+> * 该存储库在 `.agents/skills/` 中提供了自己的创作技能，涵盖页面创建、导航放置和重定向。大多数代理直接读取该路径。对于 Claude Code，运行 `make skills` 来链接它们。
 
-<Tip>
-  **使用人工智能编码代理？**
-
-  * 安装 [LangChain Docs MCP servers](/use-these-docs) 以使您的代理能够访问最新的 LangChain 文档和示例。
-
-    <Prompt description="Connect LangChain docs MCP servers" icon="plug">
-      将两个 LangChain 文档 MCP 服务器连接到我的编码代理，以便它可以查找当前的 LangChain、LangGraph 和 LangSmith 文档和 API 参考。
-
-      要添加的服务器：
-
-      * `docs-langchain`: [https://docs.langchain.com/mcp](https://docs.langchain.com/mcp)
-      * `reference-langchain`: [https://reference.langchain.com/mcp](https://reference.langchain.com/mcp)
-
-      检测我正在使用的代理或编辑器（Claude Code、Cursor、Codex CLI、Claude Desktop、Deep Agents Code、VS Code、Antigravity 或其他 MCP 兼容客户端）。使用 [https://docs.langchain.com/use-these-docs.md](https://docs.langchain.com/use-these-docs.md) 中的匹配设置：* Claude 代码：`claude mcp add --transport http` 适用于每个服务器（默认情况下为项目范围；仅当我要求全局访问时才使用`--scope user`）。
-      * Codex CLI：`codex mcp add` 以及每个服务器 URL。
-      * 光标、Deep Agents 代码、VS 代码或反重力：使用我的客户页面上显示的字段名称将两个条目合并到 MCP 设置 JSON 中。
-      * Claude Desktop：在“设置”>“连接器”下添加两个 URL。
-
-      不要发明备用 MCP URL。配置后，确认两台服务器均已列出并且可访问。
-    </Prompt>
-  * 安装 [LangChain Skills](https://github.com/langchain-ai/langchain-skills) 以提高代理在 LangChain 生态系统任务上的性能，然后单击此页面右上角的 **复制页面** 按钮，并将原始内容粘贴到您的代理中，以使其自动设置您的环境。
-
-    <Prompt description="Install LangChain Skills" icon="puzzle">
-      为我的编码代理安装 LangChain 技能，以便它可以更好地执行 LangChain、LangGraph 和 Deep Agents 任务。
-
-      使用 [https://github.com/langchain-ai/langchain-skills](https://github.com/langchain-ai/langchain-skills) 中的代理技能安装程序：
-
-      ```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-      npx skills add langchain-ai/langchain-skills --skill '*' --yes
-      ```
-
-      如果我要求全局安装，请使用：
-
-      ```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-      npx skills add langchain-ai/langchain-skills --skill '*' --yes --global
-      ```检测我正在使用哪个代理或编辑器。如果我使用 Claude Code 并且更喜欢插件路径，请按照该存储库自述文件中的市场安装（`/plugin marketplace add` 然后`/plugin install`）。不要发明备用技能包名称或安装 URL。安装后，确认代理可以使用该技能。
-    </Prompt>
-  * 该存储库在 `.agents/skills/` 中提供了自己的创作技能，涵盖页面创建、导航放置和重定向。大多数代理直接读取该路径。对于 Claude Code，运行 `make skills` 来链接它们。
-</Tip>
-
-<Tip>
-  如果您在本地预览时遇到问题，请尝试运行 `mint update` 以确保您使用的是最新的 Mintlify 版本。
-</Tip>
-
-<Accordion title="Prerequisites">
-  **推荐：**运行 `mise trust && mise install` 一次获取每个固定版本。 `.mise.toml` 是工具链的规范引脚，其安装后挂钩连接了预提交和预推送挂钩。
-
-  **必填：**
-
-  * Python 3.13+
-  * [uv](https://docs.astral.sh/uv/) 0.9.26 或更高版本 - Python 包管理器
-  * [Node.js](https://nodejs.org/en) 22.x 和 npm。 Mintlify 不支持 Node 25 或更高版本
-  * [Make](https://www.gnu.org/software/make/)
-  * [Git](https://git-scm.com/)
-
-  **可选：**
-
-  * [markdownlint-cli](https://github.com/igorshubovych/markdownlint-cli) - `npm install -g markdownlint-cli`
-  * [Mintlify MDX VSCode extension](https://www.mintlify.com/blog/mdx-vscode-extension)
-</Accordion>
+> [!提示]
+>
+> 如果您的本地预览出现问题，请尝试运行 `mint update` 以确保您使用的是最新的 Mintlify 版本。> **先决条件**
+>
+> **推荐：**运行 `mise trust && mise install` 一次获取每个固定版本。 `.mise.toml` 是工具链的规范引脚，其安装后挂钩连接了预提交和预推送挂钩。
+>
+> **必填：**
+>
+> * Python 3.13+
+> * [uv](https://docs.astral.sh/uv/) 0.9.26 或更高版本 - Python 包管理器
+> * [Node.js](https://nodejs.org/en) 22.x 和 npm。 Mintlify 不支持 Node 25 或更高版本
+> * [Make](https://www.gnu.org/software/make/)
+> * [Git](https://git-scm.com/)
+>
+> **可选：**
+>
+> * [markdownlint-cli](https://github.com/igorshubovych/markdownlint-cli) - `npm install -g markdownlint-cli`
+> * [Mintlify MDX VSCode extension](https://www.mintlify.com/blog/mdx-vscode-extension)
 
 ## 编辑文档
 
-<Accordion title="Quick edits on GitHub">
-  对于拼写错误或小的更改，直接在 GitHub 上编辑，无需本地设置：1. 单击任意页面底部的 **在 GitHub 上编辑此页面**。
-  2. 分叉到您的个人帐户。
-  3. 在 GitHub 的 Web 编辑器中进行更改。
-  4. 创建拉取请求。
-</Accordion>
+> **在 GitHub 上快速编辑**
+>
+> 对于拼写错误或小的更改，直接在 GitHub 上编辑，无需本地设置：
+>
+> 1. 单击任意页面底部的**在 GitHub 上编辑此页面**。
+> 2. 分叉到您的个人账户。
+> 3. 在 GitHub 的 Web 编辑器中进行更改。
+> 4. 创建拉取请求。
 
-<Note>
-  **仅编辑`src/`中的文件**--自动生成`build/`目录。
-</Note>
+> [!注意]
+>
+> **仅编辑`src/`中的文件**--自动生成`build/`目录。
 
 1. 按照我们的[writing standards](#writing-standards)编辑`src/`中的文件。
 2. 提交前运行[quality checks](#run-quality-checks)。
 3. 创建拉取请求以供审核。
 
-<Note>
-  所有拉取请求必须链接到维护者批准解决方案的问题或讨论。请参阅我们的[pull request requirements](/oss/javascript/contributing/overview#pull-request-requirements)。
-</Note>
-
-<Accordion title="Create a sharable preview build (LangChain team only)">
-  当您创建或更新 PR 时，会自动生成 [preview branch/ID](https://github.com/langchain-ai/docs/actions/workflows/create-preview-branch.yml)。将在带有 ID 的 PR 上留下评论。
-
-  1.从评论中复制预览分支的ID
-  2. 在[Mintlify dashboard](https://dashboard.mintlify.com/langchain-5e9cc07a/langchain-5e9cc07a?section=previews)中，点击**创建预览部署**
-  3. 输入预览分支的ID，然后单击**创建部署**
-  4.选择预览，点击**访问**查看
-
-  要使用最新更改重新部署，请单击仪表板上的“**重新部署**”。
-</Accordion>
+> [!注意]
+>
+> 所有拉取请求必须链接到维护者批准解决方案的问题或讨论。请参阅我们的[pull request requirements](/oss/javascript/contributing/overview#pull-request-requirements)。> **创建可共享的预览版本（仅限LangChain团队）**
+>
+> 当您创建或更新 PR 时，会自动生成 [preview branch/ID](https://github.com/langchain-ai/docs/actions/workflows/create-preview-branch.yml)。将在带有 ID 的 PR 上留下评论。
+>
+> 1.从评论中复制预览分支的ID
+> 2. 在[Mintlify dashboard](https://dashboard.mintlify.com/langchain-5e9cc07a/langchain-5e9cc07a?section=previews)中，点击**创建预览部署**
+> 3. 输入预览分支的ID，然后点击**创建部署**
+> 4.选择预览，点击**访问**查看
+>
+> 要使用最新更改重新部署，请单击仪表板上的 **重新部署**。
 
 ### 运行质量检查
 
@@ -148,94 +147,86 @@ make lint_md_fix
 make test
 ```
 
-有关更多详细信息，请参阅`README`中的[available commands](https://github.com/langchain-ai/docs?tab=readme-ov-file#available-commands)部分。<Important>
-  所有拉取请求都会由 CI/CD 自动检查。将强制执行相同的 linting 和格式化标准，如果这些检查失败，则无法合并 PR。
-</Important>
+有关更多详细信息，请参阅`README`中的[available commands](https://github.com/langchain-ai/docs?tab=readme-ov-file#available-commands)部分。
+
+所有拉取请求都会由 CI/CD 自动检查。将强制执行相同的 linting 和格式化标准，如果这些检查失败，则无法合并 PR。
 
 ## 文档类型
 
 所有文档均属于以下四个类别之一：
 
-<CardGroup>
-  <Card title="How-to guides" icon="tool" href="#how-to-guides">
-    为知道自己想要完成什么任务的用户提供面向任务的说明。
-  </Card>
+> **[How-to guides](#how-to-guides)**
+>
+> 为知道自己想要完成什么任务的用户提供面向任务的说明。
 
-  <Card title="Conceptual guides" icon="bulb" href="#conceptual-guides">
-    提供更深入理解和见解的解释。
-  </Card>
+> **[Conceptual guides](#conceptual-guides)**
+>
+> 提供更深入理解和见解的解释。
 
-  <Card title="Reference" icon="book" href="#reference">
-    API 的技术描述和实现细节。
-  </Card>
+> **[Reference](#reference)**
+>
+> API 的技术描述和实施细节。> **[Tutorials](#tutorials)**
+>
+> 指导用户通过实践活动来建立理解的课程。
 
-  <Card title="Tutorials" icon="school" href="#tutorials">
-    指导用户通过实践活动来建立理解的课程。
-  </Card>
-</CardGroup>
-
-<Note>
-  在适用的情况下，所有文档必须同时包含 Python 和 JavaScript/TypeScript 内容。有关更多详细信息，请参阅[co-locate Python and JavaScript/TypeScript content](#co-locate-python-and-javascript%2Ftypescript-content)部分。
-</Note>
+> [!注意]
+>
+> 在适用的情况下，所有文档必须同时包含 Python 和 JavaScript/TypeScript 内容。有关更多详细信息，请参阅[co-locate Python and JavaScript/TypeScript content](#co-locate-python-and-javascript%2Ftypescript-content)部分。
 
 ### 操作指南
 
 操作指南是面向任务的说明，为那些知道自己想要完成什么任务的用户提供指导。操作指南的示例位于 [LangChain](/oss/javascript/langchain/overview) 和 [LangGraph](/oss/javascript/langgraph/overview) 选项卡上。
 
-<AccordionGroup>
-  <Accordion title="Characteristics">
-    * **以任务为中心**：专注于特定任务或问题
-    * **逐步**：将任务分解为更小的步骤
-    * **动手**：提供具体示例和代码片段
-  </Accordion><Accordion title="Tips">
-    * 关注**如何**而不是**为什么**
-    * 使用具体示例和代码片段
-    * 将任务分解为更小的步骤
-    * 相关概念指南和参考文献的链接
-  </Accordion>
+> **特点**
+>
+> * **以任务为中心**：专注于特定任务或问题
+> * **逐步**：将任务分解为更小的步骤
+> * **动手**：提供具体示例和代码片段
 
-  <Accordion title="Examples">
-    * [Messages](/oss/javascript/langchain/messages)
-    * [Tools](/oss/javascript/langchain/tools)
-    * [Streaming](/oss/javascript/langgraph/streaming)
-  </Accordion>
-</AccordionGroup>
+> **提示**
+>
+> * 关注**如何**而不是**为什么**
+> * 使用具体示例和代码片段
+> * 将任务分解为更小的步骤
+> * 相关概念指南和参考的链接
+
+> **示例**
+>
+> * [Messages](/oss/javascript/langchain/messages)
+> * [Tools](/oss/javascript/langchain/tools)
+> * [Streaming](/oss/javascript/langgraph/streaming)
 
 ### 概念指南
 
-概念指南抽象地涵盖了核心概念，提供了深刻的理解。
+概念指南抽象地涵盖了核心概念，提供了深刻的理解。> **特点**
+>
+> * **以理解为中心**：解释事物为何如此运作
+> * **广阔的视角**：比其他类型更高、更宽的视野
+> * **以设计为导向**：解释决策和权衡
+> * **上下文丰富**：使用类比和比较
 
-<AccordionGroup>
-  <Accordion title="Characteristics">
-    * **以理解为中心**：解释事物为何如此运作
-    * **广阔的视角**：比其他类型更高更宽的视野
-    * **以设计为导向**：解释决策和权衡
-    * **上下文丰富**：使用类比和比较
-  </Accordion>
+> **提示**
+>
+> * 关注**“为什么”**而不是“如何”
+> * 提供功能使用不一定需要的补充信息
+> * 可以使用类比和参考替代方案
+> * 避免混入过多参考内容
+> * 链接到相关教程和操作指南
 
-  <Accordion title="Tips">
-    * 关注**“为什么”**而不是“如何”
-    * 提供功能使用不一定需要的补充信息
-    * 可以使用类比和参考替代方案
-    * 避免掺入过多参考内容
-    * 链接到相关教程和操作指南
-  </Accordion>
-
-  <Accordion title="Examples">
-    * [Memory](/oss/javascript/concepts/memory)
-    * [Context](/oss/javascript/concepts/context)
-    * [Graph API](/oss/javascript/langgraph/graph-api)
-    * [Functional API](/oss/javascript/langgraph/functional-api)
-  </Accordion>
-</AccordionGroup>
+> **示例**
+>
+> * [Memory](/oss/javascript/concepts/memory)
+> * [Context](/oss/javascript/concepts/context)
+> * [Graph API](/oss/javascript/langgraph/graph-api)
+> * [Functional API](/oss/javascript/langgraph/functional-api)
 
 ### 参考
 
-参考文档包含详细的低级信息，准确描述了存在的功能以及如何使用它。<CardGroup>
-  <Card title="Python reference" href="https://reference.langchain.com/python/" icon="brand-python" />
+参考文档包含详细的低级信息，准确描述了存在的功能以及如何使用它。
 
-  <Card title="JavaScript/TypeScript reference" href="https://reference.langchain.com/javascript/" icon="brand-javascript" />
-</CardGroup>
+> **[Python reference](https://reference.langchain.com/python/)**
+
+> **[JavaScript/TypeScript reference](https://reference.langchain.com/javascript/)**
 
 一个好的参考应该：
 
@@ -243,84 +234,78 @@ make test
 * 全面、结构化，方便查找
 * 作为技术细节的权威来源
 
-<AccordionGroup>
-  <Accordion title="Contributing to references">
-    [reference.langchain.com](https://reference.langchain.com/python/) 处生成的 API 参考是在此存储库外部构建和部署的。要报告错误、丢失的包或损坏的页面，[open a reference documentation issue](https://github.com/langchain-ai/docs/issues/new?template=04-reference-docs.yml)。
-  </Accordion>
+> **贡献参考文献**
+>
+> [reference.langchain.com](https://reference.langchain.com/python/) 处生成的 API 参考是在此存储库外部构建和部署的。要报告错误、丢失的包或损坏的页面，[open a reference documentation issue](https://github.com/langchain-ai/docs/issues/new?template=04-reference-docs.yml)。> **LangChain参考最佳实践**
+>
+> * **保持一致**；遵循特定于提供商的文档的现有模式
+> * 包括基本用法（代码片段）和常见的边缘情况/故障模式
+> * 当功能需要特定版本时请注意
 
-  <Accordion title="LangChain reference best practices">
-    * **保持一致**；遵循特定于提供商的文档的现有模式
-    * 包括基本用法（代码片段）和常见的边缘情况/故障模式
-    * 当功能需要特定版本时请注意
-  </Accordion>
-
-  <Accordion title="When to create new reference documentation">
-    * 满足 [hosted-guide eligibility criteria](/oss/javascript/contributing/publish-langchain#eligibility-for-hosted-guides) 要求的新集成（每月下载量或精选次数超过 50,000 次）
-    * 复杂的配置选项需要详细解释
-    * API 更改引入了新的参数或行为
-    * 社区经常询问有关特定功能的问题
-  </Accordion>
-</AccordionGroup>
+> **何时创建新的参考文档**
+>
+> * 满足 [hosted-guide eligibility criteria](/oss/javascript/contributing/publish-langchain#eligibility-for-hosted-guides) 要求的新集成（每月下载量或精选次数超过 50,000 次）
+> * 复杂的配置选项需要详细解释
+> * API 更改引入了新的参数或行为
+> * 社区经常询问有关特定功能的问题
 
 ### 教程
 
-教程是较长的分步指南，以自身为基础，引导用户通过特定的实践活动来建立理解。教程通常可以在 [Learn](/oss/javascript/learn) 选项卡上找到。<Note>
-  如果没有迫切需要，我们通常不会合并来自外部贡献者的新教程。如果您觉得文档中缺少某个主题或未充分涵盖某个主题，请[open a new issue](https://github.com/langchain-ai/docs/issues)。
-</Note>
+教程是较长的分步指南，以自身为基础，引导用户通过特定的实践活动来建立理解。教程通常可以在 [Learn](/oss/javascript/learn) 选项卡上找到。
 
-<AccordionGroup>
-  <Accordion title="Characteristics">
-    * **实践**：注重实践活动以建立理解。
-    * **逐步**：将活动分解为更小的步骤。
-    * **动手**：提供连续的、可工作的代码片段。
-    * **补充**：提供功能使用不一定需要的附加上下文和信息。
-  </Accordion>
+> [!注意]
+>
+> 如果没有迫切需要，我们通常不会合并来自外部贡献者的新教程。如果您认为文档中缺少某个主题或未充分涵盖某个主题，请[open a new issue](https://github.com/langchain-ai/docs/issues)。> **特点**
+>
+> * **实用**：注重实践活动以建立理解。
+> * **逐步**：将活动分解为更小的步骤。
+> * **动手**：提供连续的、可工作的代码片段。
+> * **补充**：提供功能使用不一定需要的附加上下文和信息。
 
-  <Accordion title="Tips">
-    * 如果用户按顺序执行步骤，代码片段应该是连续的并且可以工作。
-    * 提供活动的一些背景信息，但链接到相关概念指南和参考以获取更详细的信息。
-  </Accordion>
+> **提示**
+>
+> * 如果用户按顺序执行步骤，代码片段应该是连续的并且可以工作。
+> * 提供活动的一些背景信息，但链接到相关概念指南和参考以获取更详细的信息。
 
-  <Accordion title="Examples">
-    * [Semantic search](/oss/javascript/langchain/knowledge-base)
-    * [RAG agent](/oss/javascript/deepagents/rag)
-  </Accordion>
-</AccordionGroup>
+> **示例**
+>
+> * [Semantic search](/oss/javascript/langchain/knowledge-base)
+> * [RAG agent](/oss/javascript/deepagents/rag)
 
 ## 编写标准
 
-<Note>
-  [reference.langchain.com](https://reference.langchain.com/python/) 页面的标准与该站点的构建管道一致，而不是在此存储库中。使用 [reference documentation issue template](https://github.com/langchain-ai/docs/issues/new?template=04-reference-docs.yml) 来解决有关生成的 API 参考内容的问题或修复。
-</Note>
+> [!注意]
+>
+> [reference.langchain.com](https://reference.langchain.com/python/) 页面的标准与该站点的构建管道一致，而不是在此存储库中。使用 [reference documentation issue template](https://github.com/langchain-ai/docs/issues/new?template=04-reference-docs.yml) 来解决有关生成的 API 参考内容的问题或修复。
 
 ### Mintlify 组件
 
-使用 [Mintlify components](https://mintlify.com/docs/text) 增强可读性：<Tabs>
-  <Tab title="Callouts">
-    * `<Note>` 获取有用的补充信息
-    * `<Warning>` 重要注意事项和重大变更
-    * `<Tip>` 最佳实践和建议
-    * `<Info>` 用于中性上下文信息
-    * `<Check>` 用于成功确认
-  </Tab>
+使用 [Mintlify components](https://mintlify.com/docs/text) 增强可读性：
 
-  <Tab title="Structure">
-    * `<Steps>` 了解顺序过程的概述。 **不适用于**长的步骤或教程列表。
-    * `<Tabs>` 适用于特定于平台的内容。
-    * `<AccordionGroup>` 和 `<Accordion>` 用于默认可折叠的必备信息（例如完整的代码示例）。
-    * `<CardGroup>` 和 `<Card>` 用于突出显示内容。
-  </Tab>
+**标注**
 
-  <Tab title="Code">
-    * `<CodeGroup>` 适用于多种语言示例。
-    * 始终在代码块上指定语言标签（例如，` ⟦T8⟧javascript`）。
-    * 代码块的标题（例如`Success`、`Error Response`）
-  </Tab>
-</Tabs>
+* `<Note>` 获取有用的补充信息
+* `<Warning>` 重要注意事项和重大变更
+* `<Tip>` 最佳实践和建议
+* `<Info>` 用于中性上下文信息
+* `<Check>` 用于成功确认
+
+**结构*** `<Steps>` 了解顺序过程的概述。 **不适用于**长的步骤或教程列表。
+* `<Tabs>` 适用于特定于平台的内容。
+* `<AccordionGroup>` 和 `<Accordion>` 用于默认可折叠的必备信息（例如完整的代码示例）。
+* `<CardGroup>` 和 `<Card>` 用于突出显示内容。
+
+**代码**
+
+* `<CodeGroup>` 适用于多种语言示例。
+* 始终在代码块上指定语言标签（例如，` ⟦T8⟧javascript`）。
+* 代码块的标题（例如`Success`、`Error Response`）
 
 ### 美人鱼图
 
-添加美人鱼图时，请使用 LangChain 品牌调色板进行节点样式设置。从任何现有图表复制`classDef`行，或使用[⟦T48⟧](https://github.com/langchain-ai/docs/blob/main/AGENTS.md#mermaid-diagram-styling)中的参考表。|角色 |填写|行程|文字|
+添加美人鱼图时，请使用 LangChain 品牌调色板进行节点样式设置。从任何现有图表复制`classDef`行，或使用[⟦T48⟧](https://github.com/langchain-ai/docs/blob/main/AGENTS.md#mermaid-diagram-styling)中的参考表。
+
+|角色 |填写|行程|文字|
 | - | - | - | - |
 |流程| `#E5F4FF` | `#006DDD` | `#030710` |
 |触发| `#F6FFDB` | `#6E8900` | `#2E3900` |
@@ -342,9 +327,7 @@ sidebarTitle: "Short title for the sidebar (optional)"
 ---
 ```
 
-### 将 Python 和 JavaScript/TypeScript 内容放在一起
-
-如果可能，所有文档都必须使用 Python 和 JavaScript/TypeScript 编写。为此，我们使用自定义内联语法来区分应以一种或两种语言出现的部分：
+### 将 Python 和 JavaScript/TypeScript 内容放在一起如果可能，所有文档都必须使用 Python 和 JavaScript/TypeScript 编写。为此，我们使用自定义内联语法来区分应以一种或两种语言出现的部分：
 
 ```mdx theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 :::python
@@ -360,27 +343,25 @@ Content for both languages (not wrapped)
 
 这将在`/oss/python/concepts/foo.mdx`和`/oss/javascript/concepts/foo.mdx`生成两个输出（每种语言一个）。每个输出的页面都需要添加到 `/src/docs.json` 文件中才能包含在导航中。
 
-<Note>
-  我们不希望由于缺乏平等而阻碍捐款。如果某个功能仅以一种语言提供，则可以只提供该语言的文档，直到另一种语言赶上。在这种情况下，请添加注释，表明该功能尚不支持其他语言。如果您需要在 Python 和 JavaScript/TypeScript 之间翻译内容的帮助，请在 [community slack](https://www.langchain.com/join-community) 中询问或在 PR 中标记维护者。
-</Note>
+> [!注意]
+>
+> 我们不希望由于缺乏平等而阻碍捐款。如果某个功能仅以一种语言提供，则可以只提供该语言的文档，直到另一种语言赶上。在这种情况下，请添加注释，表明该功能尚不支持其他语言。
+>
+> 如果您需要帮助在 Python 和 JavaScript/TypeScript 之间翻译内容，请在 [community slack](https://www.langchain.com/join-community) 中询问或在 PR 中标记维护者。
 
 ## 质量标准
 
 ### 一般准则
 
-<AccordionGroup>
-  <Accordion title="Avoid duplication">
-    包含相同材料的多个页面很难维护并导致混乱。每个概念或功能应该只有一个规范页面。链接到其他指南而不是重新解释。
-  </Accordion>
+> **避免重复**
+>
+> 涵盖相同材料的多个页面难以维护并导致混乱。每个概念或功能应该只有一个规范页面。链接到其他指南而不是重新解释。> **经常链接**
+>
+> 文档部分并非凭空存在。经常链接到其他部分，让用户了解不熟悉的主题。这包括链接到 API 参考和概念部分。
 
-  <Accordion title="Link frequently">
-    文档部分并不存在于真空中。经常链接到其他部分，让用户了解不熟悉的主题。这包括链接到 API 参考和概念部分。
-  </Accordion>
-
-  <Accordion title="Be concise">
-    采取少即是多的方法。如果存在具有良好解释的另一个部分，请链接到它而不是重新解释，除非您的内容提出了新的角度。
-  </Accordion>
-</AccordionGroup>
+> **简洁**
+>
+> 采取“少即是多”的方法。如果存在具有良好解释的另一个部分，请链接到该部分而不是重新解释，除非您的内容提出了新的角度。
 
 ### 辅助功能要求
 
@@ -390,7 +371,9 @@ Content for both languages (not wrapped)
 * 使用具体的、可操作的链接文本而不是“单击此处”
 * 包括所有图像和图表的描述性替代文本
 
-### 交叉引用使用一致的交叉引用将文档与 API 参考文档连接起来。
+### 交叉引用
+
+使用一致的交叉引用将文档与 API 参考文档连接起来。
 
 **从文档到 API 参考：**
 
@@ -402,34 +385,32 @@ See @[`ChatAnthropic`] for all configuration options.
 The @[`bind_tools`][ChatAnthropic.bind_tools] method accepts...
 ```
 
-构建管道根据当前语言范围（Python 或 JavaScript）将它们转换为正确的 Markdown 链接。例如，`@[ChatAnthropic]` 成为 Python 或 JS API 参考页面的链接，具体取决于正在构建的文档版本，**但前提是 `link_map.py` 文件中存在条目！** 有关详细信息，请参阅下文。
-
-<Accordion title="How autolinks work">
-  `@[]`语法由[⟦T74⟧](https://github.com/langchain-ai/docs/blob/main/pipeline/preprocessors/handle_auto_links.py)处理。它在 [⟦T75⟧](https://github.com/langchain-ai/docs/blob/main/pipeline/preprocessors/link_map.py) 中查找链接键，其中包含 Python 和 JavaScript 范围的字典映射。
-
-  **支持的格式：**
-
-  |语法 |结果 |
-  | - | - |
-  | `@[ChatAnthropic]` |显示文本为“ChatAnthropic”的链接 |
-  | ``@[`ChatAnthropic`]`` | Link with `` `ChatAnthropic` ``（代码格式）作为文本 |
-  | `@[text][ChatAnthropic]` |以“text”为文本、以`ChatAnthropic`为链接映射中的键的链接 |
-  | `\@[ChatAnthropic]` |转义：呈现为文字 `@[ChatAnthropic]`（无链接 – 此页面上正在使用什么！） |
-
-  **添加新链接：**
-
-  如果在地图中找不到链接，它将在输出中保持不变。要添加新的自动链接：1. 打开`pipeline/preprocessors/link_map.py`
-  2. 将条目添加到`LINK_MAPS`中的适当范围（`python`或`js`）
-  3. key是`@[key]`或`@[text][key]`中使用的链接名称，value是相对于引用主机的路径
-</Accordion>
+构建管道根据当前语言范围（Python 或 JavaScript）将它们转换为正确的 Markdown 链接。例如，`@[ChatAnthropic]` 成为 Python 或 JS API 参考页面的链接，具体取决于正在构建的文档版本，**但前提是 `link_map.py` 文件中存在条目！** 有关详细信息，请参阅下文。> **自动链接如何工作**
+>
+> `@[]` 语法由[⟦T74⟧](https://github.com/langchain-ai/docs/blob/main/pipeline/preprocessors/handle_auto_links.py) 处理。它在 [⟦T75⟧](https://github.com/langchain-ai/docs/blob/main/pipeline/preprocessors/link_map.py) 中查找链接键，其中包含 Python 和 JavaScript 范围的字典映射。
+>
+> **支持的格式：**
+>
+> |语法 |结果 |
+> | - | - |
+> | `@[ChatAnthropic]` |显示文本为“ChatAnthropic”的链接 |
+> | ``@[`ChatAnthropic`]`` | Link with `` `ChatAnthropic` ``（代码格式）作为文本 |
+> | `@[text][ChatAnthropic]` |以“text”为文本、以`ChatAnthropic`为链接映射中的键的链接 |
+> | `\@[ChatAnthropic]` |转义：呈现为文字 `@[ChatAnthropic]`（无链接 – 此页面上正在使用什么！） |
+>
+> **添加新链接：**
+>
+> 如果在地图中找不到链接，它将在输出中保持不变。要添加新的自动链接：
+>
+> 1.打开`pipeline/preprocessors/link_map.py`
+> 2. 在`LINK_MAPS`中的适当范围（`python`或`js`）添加条目
+> 3. key是`@[key]`或`@[text][key]`中使用的链接名称，value是相对于引用主机的路径
 
 ### 本地化
 
 如果两个 SDK 中都存在某个功能，请为 [Python and JavaScript/TypeScript together](#co-locate-python-and-javascript%2Ftypescript-content) 记录该功能。如果仅支持一种语言，请确保该功能及其引用仅对该语言可见。
 
-### 代码内文档
-
-示例必须正确，尽可能可复制粘贴，并且在打开拉取请求之前经过**测试**。清楚地标记不可运行的片段（例如，伪代码或说明性片段）。
+### 代码内文档示例必须正确，尽可能可复制粘贴，并且在打开拉取请求之前经过**测试**。清楚地标记不可运行的片段（例如，伪代码或说明性片段）。
 
 ## 获取帮助
 
@@ -437,12 +418,6 @@ The @[`bind_tools`][ChatAnthropic.bind_tools] method accepts...
 
 ***
 
-<div>
-  <Callout icon="terminal-2">
-    [Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
-  </Callout>
+[Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
 
-  <Callout icon="edit">
-    [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/oss/contributing/documentation.mdx) 或 [file an issue](https://github.com/langchain-ai/docs/issues/new/choose)。
-  </Callout>
-</div>
+[Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/oss/contributing/documentation.mdx) 或 [file an issue](https://github.com/langchain-ai/docs/issues/new/choose)。

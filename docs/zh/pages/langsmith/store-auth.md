@@ -4,7 +4,7 @@
 
 # 隔离每个用户的存储数据
 
-使用身份验证处理程序将长期存储数据的范围限定为LangSmith部署中的每个经过身份验证的用户。
+使用身份验证处理程序将长期存储数据的范围限定为 LangSmith 部署中的每个经过身份验证的用户。
 
 每个[LangSmith Deployment](/langsmith/deployment)都包含一个Postgres支持的[store](/oss/python/langgraph/stores)，用于长期内存和跨线程数据。默认情况下，存储命名空间在所有调用者之间共享。要为每个用户提供自己的独立存储，请配置 [custom authentication](/langsmith/custom-auth) 并添加一个存储 [authorization handler](/langsmith/auth#authorization) ，该存储重写命名空间以包含经过身份验证的用户身份。
 
@@ -18,9 +18,9 @@
 2. 您的 `@auth.on.store` 处理程序要么 **验证** 命名空间是否以该标识开头，要么 **重写** 命名空间以将其添加到前面。
 3. 服务器使用经过验证或重写的命名空间进行实际的读取或写入。通过自动前缀重写写入逻辑命名空间`("memories",)`的用户实际上将数据存储在`("user-123", "memories")`。其他用户无法读取或覆盖该数据，因为他们的请求范围仅限于 `("user-456", ...)`。
 
-<Note>
-  商店授权处理程序接收一个 **可变** `value` 字典。对 `value["namespace"]` 的更改将对操作生效。您不会像为线程那样返回元数据过滤器。
-</Note>
+> [!注意]
+>
+> 存储授权处理程序接收一个 **可变** `value` 字典。对 `value["namespace"]` 的更改将对操作生效。您不会像为线程那样返回元数据过滤器。
 
 ## 先决条件
 
@@ -54,9 +54,9 @@
 
 两种模式都使用单个 `@auth.on.store` 处理程序，涵盖所有存储操作（`put`、`get`、`search`、`delete` 和 `list_namespaces`）。如果您希望每个操作有不同的规则，则只需要特定于操作的处理程序，例如 `@auth.on.store.put`。
 
-<Tip>
-  如果您使用拒绝未处理请求的全局 `@auth.on` 处理程序，请显式注册 `@auth.on.store` 以便允许存储操作。请参阅 [Auth reference](https://reference.langchain.com/python/langgraph-sdk/auth/Auth) 了解特定于操作的处理程序名称。
-</Tip>
+> [!提示]
+>
+> 如果您使用拒绝未处理请求的全局 `@auth.on` 处理程序，请显式注册 `@auth.on.store` 以便允许存储操作。请参阅 [Auth reference](https://reference.langchain.com/python/langgraph-sdk/auth/Auth) 了解特定于操作的处理程序名称。
 
 ### 显式命名空间 + 拒绝
 
@@ -234,12 +234,6 @@ if __name__ == "__main__":
 
 ***
 
-<div>
-  <Callout icon="terminal-2">
-    [Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
-  </Callout>
+[Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
 
-  <Callout icon="edit">
-    [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/store-auth.mdx) 或 [file an issue](https://github.com/langchain-ai/docs/issues/new/choose)。
-  </Callout>
-</div>
+[Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/store-auth.mdx) 或 [file an issue](https://github.com/langchain-ai/docs/issues/new/choose)。

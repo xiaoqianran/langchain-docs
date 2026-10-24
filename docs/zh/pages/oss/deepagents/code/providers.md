@@ -6,7 +6,7 @@
 
 为 Deep Agents 代码配置任何 LangChain 兼容模型提供程序
 
-Deep Agents 代码支持任何[chat model provider compatible with LangChain](/oss/python/integrations/chat)，解锁几乎任何支持工具调用的LLM。任何公开 OpenAI 兼容或 Anthropic 兼容 API 的服务也可以开箱即用 - 请参阅 [Compatible APIs](/oss/deepagents/code/config-file#compatible-apis)。
+Deep Agents代码支持任何[chat model provider compatible with LangChain](/oss/python/integrations/chat)，解锁几乎任何支持工具调用的LLM。任何公开 OpenAI 兼容或 Anthropic 兼容 API 的服务也可以开箱即用 - 请参阅 [Compatible APIs](/oss/deepagents/code/config-file#compatible-apis)。
 
 ## 快速入门
 
@@ -16,15 +16,13 @@ Deep Agents 代码自动与[following model providers](#provider-reference)集�
 
    每个模型提供商都需要相应的LangChain集成包。这些作为可选附件提供，以保持应用程序的轻量级。默认包含 OpenAI、Anthropic 和 Gemini。使用 `/install` 从会话中安装任何其他附加功能，或者使用 `dcode --install` 从 shell 中安装：
 
-   <CodeGroup>
-     ```txt In session theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-     /install groq
-     ```
+   ```txt In session theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+   /install groq
+   ```
 
-     ```bash Shell theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-     dcode --install groq
-     ```
-   </CodeGroup>
+   ```bash Shell theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+   dcode --install groq
+   ```
 
    运行不带参数的`/install`来列出有效的额外内容。要在初始 CLI 安装期间预安装附加功能，请设置 `DEEPAGENTS_CODE_EXTRAS`：
 
@@ -40,7 +38,7 @@ Deep Agents 代码自动与[following model providers](#provider-reference)集�
    /auth
    ```
 
-   `/auth` 显示可用提供者的列表并存储凭据以供跨会话重用。对于非交互式运行、CI/CD 或 TUI 不可用的任何地方，请使用 [⟦T44⟧](/oss/deepagents/code/credentials#manage-credentials-from-the-shell-dcode-auth) 从 shell 存储相同的密钥，或者改为设置提供程序的环境变量。请参阅[Provider credentials](/oss/deepagents/code/credentials)了解完整的密钥解析顺序，[⟦T45⟧ prefix](/oss/deepagents/code/configuration#deepagents_code_-prefix)了解将密钥范围确定为Deep Agents代码，以及[Provider reference](#provider-reference)了解每个提供商的环境变量。
+   `/auth` 显示可用提供者的列表并存储凭据以供跨会话重用。对于非交互式运行、CI/CD 或 TUI 不可用的任何地方，请使用 [⟦T44⟧](/oss/deepagents/code/credentials#manage-credentials-from-the-shell-dcode-auth) 从 shell 存储相同的密钥，或者改为设置提供程序的环境变量。请参阅[Provider credentials](/oss/deepagents/code/credentials)了解完整的密钥解析顺序，[⟦T45⟧ prefix](/oss/deepagents/code/configuration#deepagents_code_-prefix)了解Deep Agents代码的密钥范围，以及[Provider reference](#provider-reference)了解每个提供商的环境变量。
 
    要配置模型参数，请参阅[Model parameters](#model-parameters)。
 
@@ -66,111 +64,103 @@ Deep Agents 代码自动与[following model providers](#provider-reference)集�
 |一起| [⟦T78⟧](/oss/python/integrations/chat/together) | `TOGETHER_API_KEY` | ❌ |
 |元 | [⟦T80⟧](https://github.com/langchain-ai/langchain-meta) | `MODEL_API_KEY` | ✅ |
 |米斯特拉尔人工智能 | [⟦T82⟧](/oss/python/integrations/chat/mistralai) | `MISTRAL_API_KEY` | ✅ |
-|深度搜索 | [⟦T84⟧](/oss/python/integrations/chat/deepseek) | `DEEPSEEK_API_KEY` | ✅ |
+|深度搜索| [⟦T84⟧](/oss/python/integrations/chat/deepseek) | `DEEPSEEK_API_KEY` | ✅ |
 | IBM（watsonx.ai）| [⟦T86⟧](/oss/python/integrations/chat/ibm_watsonx) | `WATSONX_APIKEY` | ❌ |
 |英伟达 | [⟦T88⟧](/oss/python/integrations/chat/nvidia_ai_endpoints) | `NVIDIA_API_KEY` | ✅ |
 | xAI | [⟦T90⟧](/oss/python/integrations/chat/xai) | `XAI_API_KEY` | ✅ |
 |困惑| [⟦T92⟧](/oss/python/integrations/chat/perplexity) | `PERPLEXITY_API_KEY`（或`PPLX_API_KEY`）| ✅ |
 |开放路由器| [⟦T95⟧](/oss/python/integrations/chat/openrouter) | `OPENROUTER_API_KEY` | ✅ |
-|莱特法学硕士 | [⟦T97⟧](/oss/python/integrations/chat/litellm) |每个提供商（请参阅[docs](https://docs.litellm.ai/)）| ❌ |
+|莱特法学硕士 | [⟦T97⟧](/oss/python/integrations/chat/litellm) |每个提供商（请参阅[docs](https://docs.litellm.ai/)）| ❌ |> **在 NVIDIA Build 上使用 Nemotron 3.5 Super VL**
+>
+> 安装 NVIDIA 提供程序包，然后用 `/auth` 保存您的 [NVIDIA Build API key](/oss/python/integrations/chat/nvidia_ai_endpoints#access-the-nvidia-api-catalog)：
+>
+> ```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> dcode --install nvidia
+> dcode
+> ```
+>
+> 在 dcode 中，运行 `/auth` 并选择 NVIDIA。如果初始模型选择器打开，请先按`Esc`。然后从模型切换器中选择 Nemotron 3.5 Super VL。
+>
+> ```txt theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> /model --default nvidia:nvidia/nemotron-3.5-super-vl-120b-a12b
+> ```
+>
+> NVIDIA 提供商默认使用公共构建端点。检查[NVIDIA Build](https://build.nvidia.com/)以了解型号可用性。对于已配置的专用端点，设置 `NVIDIA_BASE_URL` 或通过 `dcode auth set nvidia --base-url URL` 将其 URL 与凭证配对。> **在Gemini企业代理平台上配置Anthropic型号**
+>
+> `google_anthropic_vertex` 提供商通过 Gemini Enterprise Agent Platform 上的 Anthropic 消息 API 运行 Claude。它使用 Google Cloud 应用程序默认凭据 (ADC)，而不是 Anthropic API 密钥。
+>
+> 使用提供商：
+>
+> 1.额外安装Gemini Enterprise Agent Platform：
+>
+> ```txt In session theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+>    /install vertex
+>    ```
+>
+> ```bash Shell theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+>    dcode --install vertex
+>    ```
+>
+> 2. [Enable a Claude model in your Google Cloud project](https://docs.cloud.google.com/gemini-enterprise-agent-platform/models/partner-models/claude)，然后配置ADC：
+>
+> ```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+>    gcloud auth application-default login
+>    ```
+>
+> 3. 设置您的 Google Cloud 项目和位置：
+>
+> ```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+>    export GOOGLE_CLOUD_PROJECT="your-project-id"
+>    export GOOGLE_CLOUD_LOCATION="global"
+>    ```
+>
+> 您可以使用 `DEEPAGENTS_CODE_GOOGLE_CLOUD_PROJECT` 和 `DEEPAGENTS_CODE_GOOGLE_CLOUD_LOCATION` 将这些值的范围限定为 Deep Agents 代码。
+>
+> 4. 选择具有 `google_anthropic_vertex` 提供商的 Claude 模型：
+>
+> ```txt In session theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+>    /model google_anthropic_vertex:claude-sonnet-4-6
+>    ```
+>
+> ```bash Shell theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+>    dcode --model google_anthropic_vertex:claude-sonnet-4-6
+>    ```
+>
+> 对 Google 型号使用 `google_vertexai`。 Claude 模型使用 Anthropic 的消息 API，并且必须使用 `google_anthropic_vertex` 代替。
 
-<Accordion title="Use Nemotron 3.5 Super VL on NVIDIA Build" icon="cpu">
-  安装 NVIDIA 提供程序包，然后用 `/auth` 保存您的 [NVIDIA Build API key](/oss/python/integrations/chat/nvidia_ai_endpoints#access-the-nvidia-api-catalog)：
+> [!提示]
+>
+> 您可以通过添加 `DEEPAGENTS_CODE_` 前缀将任何凭证范围限定为 Deep Agents 代码。例如，在Deep Agents代码中，`DEEPAGENTS_CODE_OPENAI_API_KEY`优先于`OPENAI_API_KEY`，而不影响其他工具。详情请参阅[⟦T112⟧ prefix](/oss/deepagents/code/configuration#deepagents_code_-prefix)。
 
-  ```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  dcode --install nvidia
-  dcode
-  ```在dcode中，运行`/auth`并选择NVIDIA。如果初始模型选择器打开，请先按`Esc`。然后从模型切换器中选择 Nemotron 3.5 Super VL。
+> [!提示]
+>
+> [Model profiles](/oss/python/langchain/models#model-profiles) 提供交互式`/model` 切换器使用的模型元数据。如果切换器中缺少型号，请直接传递型号名称或通过`config.toml`添加。
 
-  ```txt theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  /model --default nvidia:nvidia/nemotron-3.5-super-vl-120b-a12b
-  ```
+### 使用 ChatGPT 登录`openai_codex` 提供商允许您在付费 **ChatGPT** 订阅中使用 OpenAI 的 Codex 模型，而不是 `OPENAI_API_KEY`。您使用 ChatGPT 帐户登录，它会在 `/auth` 和 `/model` 切换器中显示为自己的提供商，与基于 API 密钥的 `openai` 提供商分开。
 
-  NVIDIA 提供商默认使用公共构建端点。检查[NVIDIA Build](https://build.nvidia.com/)以了解型号可用性。对于已配置的专用端点，设置 `NVIDIA_BASE_URL` 或通过 `dcode auth set nvidia --base-url URL` 将其 URL 与凭证配对。
-</Accordion>
+**1.开始登录**
 
-<Accordion title="Configure Anthropic models on Gemini Enterprise Agent Platform" icon="brand-google">
-  `google_anthropic_vertex` 提供商通过 Gemini Enterprise Agent Platform 上的 Anthropic 的消息 API 运行 Claude。它使用 Google Cloud 应用程序默认凭据 (ADC)，而不是 Anthropic API 密钥。
+在任意会话中运行 `/auth` 并选择 **`openai_codex`**。由于 ChatGPT 通过浏览器让您登录，因此这会启动浏览器登录，而不是要求 API 密钥。
 
-  要使用提供程序：
+**2.在浏览器中授权**
 
-  1. 额外安装 Gemini Enterprise Agent Platform：
+Deep Agents 代码将您的浏览器打开至 ChatGPT 登录页面。如果无法打开浏览器（例如，通过 SSH），它还会在屏幕上显示登录 URL，以便您可以将其复制到另一台设备上的浏览器。
 
-     <CodeGroup>
-       ```txt In session theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-       /install vertex
-       ```
+**3.选择 Codex 型号**
 
-       ```bash Shell theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-       dcode --install vertex
-       ```
-     </CodeGroup>
+登录后，Codex 模型将显示在 `openai_codex` 提供商下的 `/model` 切换器中。直接根据其规格切换到一个：
 
-  2. [Enable a Claude model in your Google Cloud project](https://docs.cloud.google.com/gemini-enterprise-agent-platform/models/partner-models/claude)，然后配置ADC：
-
-     ```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-     gcloud auth application-default login
-     ```
-
-  3. 设置您的 Google Cloud 项目和位置：
-
-     ```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-     export GOOGLE_CLOUD_PROJECT="your-project-id"
-     export GOOGLE_CLOUD_LOCATION="global"
-     ```
-
-     您可以使用 `DEEPAGENTS_CODE_GOOGLE_CLOUD_PROJECT` 和 `DEEPAGENTS_CODE_GOOGLE_CLOUD_LOCATION` 将这些值的范围限定为 Deep Agents 代码。
-
-  4. 选择具有 `google_anthropic_vertex` 提供商的 Claude 模型：
-
-     <CodeGroup>
-       ```txt In session theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-       /model google_anthropic_vertex:claude-sonnet-4-6
-       ```
-
-       ```bash Shell theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-       dcode --model google_anthropic_vertex:claude-sonnet-4-6
-       ```
-     </CodeGroup>
-
-  对于 Google 模型，请使用 `google_vertexai`。 Claude 模型使用 Anthropic 的消息 API，并且必须使用 `google_anthropic_vertex` 代替。
-</Accordion><Tip>
-  您可以通过添加 `DEEPAGENTS_CODE_` 前缀将任何凭证范围限定为 Deep Agents 代码。例如，在Deep Agents代码中，`DEEPAGENTS_CODE_OPENAI_API_KEY`优先于`OPENAI_API_KEY`，而不影响其他工具。详情请参阅[⟦T112⟧ prefix](/oss/deepagents/code/configuration#deepagents_code_-prefix)。
-</Tip>
-
-<Tip>
-  [Model profiles](/oss/python/langchain/models#model-profiles) 提供交互式`/model` 切换器使用的模型元数据。如果切换器中缺少型号，请直接传递型号名称或通过`config.toml`添加。
-</Tip>
-
-### 使用 ChatGPT 登录
-
-`openai_codex` 提供商允许您在付费 **ChatGPT** 订阅中使用 OpenAI 的 Codex 模型，而不是 `OPENAI_API_KEY`。您使用 ChatGPT 帐户登录，它会在 `/auth` 和 `/model` 切换器中显示为自己的提供商，与基于 API 密钥的 `openai` 提供商分开。
-
-<Steps>
-  <Step title="Start the sign-in">
-    在任意会话中运行 `/auth` 并选择 **`openai_codex`**。由于 ChatGPT 通过浏览器让您登录，因此这会启动浏览器登录，而不是要求 API 密钥。
-  </Step>
-
-  <Step title="Authorize in your browser">
-    Deep Agents 代码将您的浏览器打开至 ChatGPT 登录页面。如果无法打开浏览器（例如，通过 SSH），它还会在屏幕上显示登录 URL，以便您可以将其复制到另一台设备上的浏览器。
-  </Step><Step title="Select a Codex model">
-    登录后，Codex 模型将显示在 `openai_codex` 提供商下的 `/model` 切换器中。直接根据其规格切换到一个：
-
-    ```txt theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-    /model openai_codex:gpt-5.5
-    ```
-  </Step>
-</Steps>
+```txt theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+/model openai_codex:gpt-5.5
+```
 
 您的登录在各个会话中持续存在。要检查您的状态或注销，请运行`/auth`，选择`openai_codex`，然后选择重新验证或注销。
 
-<Note>
-  `openai_codex` 与 `openai` 是分开的。要使用带有标准 API 密钥的 OpenAI 模型，请使用常规 `openai` 提供程序（例如 `/model openai:gpt-5.5`）。
-</Note>
-
-<Note>
-  某些提供商特定的帐户类型或关键范围可能不适用于 API 访问。如果提供程序在 `/auth` 中已配置，但请求仍然失败，请验证帐户计划和 API 密钥权限是否符合提供程序的 API 要求。
-</Note>
+> [!注意]
+>
+> `openai_codex` 与 `openai` 是分开的。要使用带有标准 API 密钥的 OpenAI 模型，请使用常规 `openai` 提供程序（例如 `/model openai:gpt-5.5`）。> [!注意]
+>
+> 某些提供商特定的帐户类型或关键范围可能不适用于 API 访问。如果提供程序在 `/auth` 中已配置，但请求仍然失败，请验证帐户计划和 API 密钥权限是否符合提供程序的 API 要求。
 
 ### 模型路由器和代理
 
@@ -178,42 +168,38 @@ Deep Agents 代码自动与[following model providers](#provider-reference)集�
 
 使用这些服务的专用集成包：
 
-|路由器|套餐 |配置|
+|路由器|套餐 |配置 |
 | - | - | - |
 |开放路由器| [⟦T131⟧](/oss/python/integrations/chat/openrouter) | `openrouter:<model>`（内置，参见[Provider reference](#provider-reference)）|
 |莱特法学硕士 | [⟦T133⟧](/oss/python/integrations/chat/litellm) | `litellm:<model>`（内置，参见[Provider reference](#provider-reference)）|
 
 **OpenRouter** 是一个内置提供程序 - 安装额外的并直接使用它：
 
-<CodeGroup>
-  ```txt In session theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  /install openrouter
-  ```
+```txt In session theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+/install openrouter
+```
 
-  ```bash Shell theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  dcode --install openrouter
-  ```
-</CodeGroup>**LiteLLM** 也是一个内置提供程序：
+```bash Shell theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+dcode --install openrouter
+```
 
-<CodeGroup>
-  ```txt In session theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  /install litellm
-  ```
+**LiteLLM** 也是一个内置提供程序：
 
-  ```bash Shell theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  dcode --install litellm
-  ```
-</CodeGroup>
+```txt In session theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+/install litellm
+```
+
+```bash Shell theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+dcode --install litellm
+```
 
 ## 切换型号
 
 要在 Deep Agents 代码中切换型号，可以：
 
-1. **通过 `/model` 命令使用交互式模型切换器**。
-
-   <Note>
-     并非所有模型都出现在这里。如果您的型号丢失，请直接传递型号名称（例如`/model gpt-5.5`）或将其添加到`config.toml`。
-   </Note>
+1. **通过 `/model` 命令使用交互式模型切换器**。> [!注意]
+   >
+   > 此处并未显示所有型号。如果您的型号丢失，请直接传递型号名称（例如`/model gpt-5.5`）或将其添加到`config.toml`。
 2. **直接指定模型名称**作为参数，例如`/model gpt-5.5`。您可以使用所选提供商支持的任何模型，无论它是否出现在选项 1 的列表中。模型名称将传递到 API 请求。
 3. **通过`--model`指定启动时的型号**，例如
 
@@ -221,38 +207,40 @@ Deep Agents 代码自动与[following model providers](#provider-reference)集�
    dcode --model openai:gpt-5.5
    ```
 
-<Accordion title="Model resolution order" icon="list-numbers">
-  当Deep Agents代码启动时，它会按以下顺序解析要使用的模型：
+> **模型解析顺序**
+>
+> 当Deep Agents代码启动时，它会按以下顺序解析要使用的模型：
+>
+> 1. **`--model` 标志** 提供时始终获胜。
+> 2. `~/.deepagents/config.toml`中的**`[models].default`**——用户有意的长期偏好。
+> 3. **`~/.deepagents/config.toml`中的`[models].recent`**——最后一个模型通过`/model`切换到。自动写入；永远不会覆盖`[models].default`。
+> 4. **环境自动检测**：回退到第一个可用的启动凭据，按顺序检查：`OPENAI_API_KEY`、`ANTHROPIC_API_KEY`、`GOOGLE_API_KEY`、`GOOGLE_CLOUD_PROJECT`（Gemini Enterprise Agent Platform）。
+>
+> 此启动回退有意仅检查这四个凭据。其他受支持的提供程序（例如 Groq）仍然可以通过 `--model`、`/model` 和保存的默认值 (`[models].default` / `[models].recent`) 获得。
 
-  1. **`--model` 标志** 提供时始终获胜。
-  2. `~/.deepagents/config.toml`中的**`[models].default`**——用户有意的长期偏好。
-  3. **`~/.deepagents/config.toml`中的`[models].recent`**——最后一个模型通过`/model`切换到。自动写入；永远不会覆盖`[models].default`。
-  4. **环境自动检测**：回退到第一个可用的启动凭据，按顺序检查：`OPENAI_API_KEY`、`ANTHROPIC_API_KEY`、`GOOGLE_API_KEY`、`GOOGLE_CLOUD_PROJECT`（Gemini Enterprise Agent Platform）。此启动回退有意仅检查这四个凭据。其他受支持的提供程序（例如 Groq）仍然可以通过 `--model`、`/model` 和保存的默认值 (`[models].default` / `[models].recent`) 获得。
-</Accordion>
+### 哪些型号出现在切换器中`/model` 选择器从已安装的提供程序包动态构建其列表。下面展开以了解完整的标准和故障排除。
 
-### 哪些型号出现在切换器中
+> **切换器如何构建其模型列表**
+>
+> 交互式 `/model` 选择器根据已安装的提供程序包和在 `config.toml` 中配置的模型构建其列表。
+>
+> 在以下情况下会出现模型：
+>
+> 1. 提供程序包已安装。
+> 2. 该模型可从提供商包、本地提供商或您的`config.toml` 获取。
+> 3. 模型配置文件不会将文本输入或输出标记为不支持。
+>
+> 如果缺少型号，请直接使用`/model <provider>:<model>`或将其添加到[⟦T160⟧](/oss/deepagents/code/config-file#adding-models-to-the-interactive-switcher)。
+>
+>> [!提示]
+>>
+>> 凭证状态**不**影响模型是否列出。您仍然可以选择缺少凭据的模型。提供商在请求时报告身份验证错误。
 
-`/model` 选择器从已安装的提供程序包动态构建其列表。下面展开以了解完整的标准和故障排除。
+### 开放式重量模型
 
-<Accordion title="How the switcher builds its model list" icon="list-search">
-  交互式 `/model` 选择器根据已安装的提供程序包和在 `config.toml` 中配置的模型构建其列表。
+如果您想使用开放权重模型，有两种常见路径，具体取决于您喜欢本地推理还是云托管推理。
 
-  在以下情况下会出现模型：
-
-  1. 安装提供程序包。
-  2. 该模型可从提供商包、本地提供商或您的`config.toml` 获得。
-  3. 模型配置文件不会将文本输入或输出标记为不支持。
-
-  如果缺少型号，请直接使用`/model <provider>:<model>`或将其添加到[⟦T160⟧](/oss/deepagents/code/config-file#adding-models-to-the-interactive-switcher)。
-
-  <Tip>
-    凭证状态**不**影响模型是否列出。您仍然可以选择缺少凭据的模型。提供商在请求时报告身份验证错误。
-  </Tip>
-</Accordion>
-
-### 开放重量模型
-
-如果您想使用开放权重模型，有两种常见路径，具体取决于您喜欢本地推理还是云托管推理。**使用 Ollama 进行本地推理**是免费开始的最简单方法，无需 API 密钥：
+**使用 Ollama 进行本地推理**是免费开始的最简单方法，无需 API 密钥：
 
 1. [Install Ollama](https://ollama.com/) 并拉取一个模型，例如：
 
@@ -262,27 +250,21 @@ Deep Agents 代码自动与[following model providers](#provider-reference)集�
 
 2. 安装 Ollama 额外组件：
 
-   <CodeGroup>
-     ```txt In session theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-     /install ollama
-     ```
+   ```txt In session theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+   /install ollama
+   ```
 
-     ```bash Shell theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-     dcode --install ollama
-     ```
-   </CodeGroup>
+   ```bash Shell theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+   dcode --install ollama
+   ```
 
-3、选择型号：
+3、选择型号：```txt In session theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+   /model
+   ```
 
-   <CodeGroup>
-     ```txt In session theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-     /model
-     ```
-
-     ```bash Shell theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-     dcode --model ollama:qwen3:4b
-     ```
-   </CodeGroup>
+   ```bash Shell theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+   dcode --model ollama:qwen3:4b
+   ```
 
    使用交互式切换器，或者直接使用`/model ollama:qwen3:4b`传递模型。
 
@@ -292,75 +274,67 @@ Deep Agents 代码自动与[following model providers](#provider-reference)集�
 
 2. 安装 Groq 额外组件：
 
-   <CodeGroup>
-     ```txt In session theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-     /install groq
-     ```
+   ```txt In session theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+   /install groq
+   ```
 
-     ```bash Shell theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-     dcode --install groq
-     ```
-   </CodeGroup>
+   ```bash Shell theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+   dcode --install groq
+   ```
 
 3. 选择型号：
 
-   <CodeGroup>
-     ```txt In session theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-     /model
-     ```
+   ```txt In session theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+   /model
+   ```
 
-     ```bash Shell theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-     GROQ_API_KEY="your-api-key" dcode --model groq:openai/gpt-oss-120b
-     ```
-   </CodeGroup>
+   ```bash Shell theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+   GROQ_API_KEY="your-api-key" dcode --model groq:openai/gpt-oss-120b
+   ```
 
    使用交互式切换器，或者直接使用`/model groq:openai/gpt-oss-120b`传递模型。
 
 **Fireworks** 是另一个流行的开放权重模型云提供商：
 
-<CodeGroup>
-  ```txt In session theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  /install fireworks
-  /model
-  ```
+```txt In session theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+/install fireworks
+/model
+```
 
-  ```bash Shell theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  dcode --install fireworks
-  FIREWORKS_API_KEY="your-api-key" dcode --model fireworks:accounts/fireworks/models/deepseek-v4-pro
-  ```
-</CodeGroup>
+```bash Shell theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+dcode --install fireworks
+FIREWORKS_API_KEY="your-api-key" dcode --model fireworks:accounts/fireworks/models/deepseek-v4-pro
+```
 
 使用交互式切换器，或者直接使用`/model fireworks:accounts/fireworks/models/deepseek-v4-pro`传递模型。
 
 **Baseten** 是另一个开放权重模型的云提供商：
 
-<CodeGroup>
-  ```txt In session theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  /install baseten
-  /model
-  ```
+```txt In session theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+/install baseten
+/model
+```
 
-  ```bash Shell theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  dcode --install baseten
-  BASETEN_API_KEY="your-api-key" dcode --model baseten:moonshotai/Kimi-K2.7-Code
-  ```
-</CodeGroup>
+```bash Shell theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+dcode --install baseten
+BASETEN_API_KEY="your-api-key" dcode --model baseten:moonshotai/Kimi-K2.7-Code
+```
 
 使用交互式切换器，或者直接使用`/model baseten:moonshotai/Kimi-K2.7-Code`传递模型。
 
-<Tip>
-  如果您希望与 CLI 本身同时预安装提供程序，请在初始安装期间使用 `DEEPAGENTS_CODE_EXTRAS`：
-
-  ```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  curl -LsSf https://langch.in/dcode | DEEPAGENTS_CODE_EXTRAS="fireworks" bash
-  ```您可以组合多个提供商：`DEEPAGENTS_CODE_EXTRAS="groq,fireworks,ollama"`。如果已安装 Deep Agents 代码，请在会话中使用 `/install <extra>` 或从 shell 中使用 `dcode --install <extra>`。
-</Tip>
+> [!提示]
+>
+> 如果您希望与 CLI 本身同时预安装提供程序，请在初始安装期间使用 `DEEPAGENTS_CODE_EXTRAS`：
+>
+> ```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> curl -LsSf https://langch.in/dcode | DEEPAGENTS_CODE_EXTRAS="fireworks" bash
+> ```
+>
+> 您可以组合多个提供商：`DEEPAGENTS_CODE_EXTRAS="groq,fireworks,ollama"`。如果已安装 Deep Agents 代码，请在会话中使用 `/install <extra>` 或从 shell 中使用 `dcode --install <extra>`。
 
 **一起**、**OpenRouter** 和 **Hugging Face** (`langchain-huggingface`) 是云托管开放权重的其他选项。有关凭据和包名称，请参阅 [Provider reference](#provider-reference)。
 
-### 设置默认模型
-
-您可以设置适用于所有未来 CLI 启动的持久默认模型：
+### 设置默认模型您可以设置适用于所有未来 CLI 启动的持久默认模型：
 
 * **通过模型选择器：** 打开 `/model`，导航到所需模型，然后按 `Ctrl+S` 将其固定为默认模型。在当前默认值上再次按 `Ctrl+S` 将其清除。
 * **通过命令：** `/model --default provider:model`（例如，`/model --default anthropic:claude-opus-4-8`）
@@ -391,7 +365,9 @@ dcode --default-model
 
 如果没有默认值，Deep Agents代码将使用最近使用的模型。
 
-### 模型参数将额外的构造函数 kwargs 传递给模型 - 采样控制、推理/思考预算、上下文窗口大小、请求超时以及底层聊天模型类接受的任何其他内容。设置它们的三个位置，按优先级顺序（最高优先）：
+### 模型参数
+
+将额外的构造函数 kwargs 传递给模型 - 采样控制、推理/思考预算、上下文窗口大小、请求超时以及底层聊天模型类接受的任何其他内容。设置它们的三个位置，按优先级顺序（最高优先）：
 
 1. **启动时一次性使用 `--model-params`。** JSON 字符串，仅限会话：
 
@@ -408,9 +384,7 @@ dcode --default-model
    ```txt theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
    /model --model-params '{"temperature": 0.7}' anthropic:claude-opus-4-8
    /model --model-params '{"num_ctx": 16384}'           # opens selector, applies params to choice
-   ```
-
-3. **在 `config.toml` 中保持不变。** 提供程序级别的默认值（带有可选的每个模型子表）适用于每次启动：
+   ```3. **在 `config.toml` 中保持不变。** 提供程序级别的默认值（带有可选的每个模型子表）适用于每次启动：
 
    ```toml theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
    [models.providers.anthropic.params]
@@ -434,11 +408,13 @@ CLI 标志覆盖配置文件 `params` 并且仅适用于会话（会话中的更
 
 对于重试计数，首选 `--max-retries` 或顶级 [⟦T187⟧ config](/oss/deepagents/code/config-file#retries)。
 
-<Tip>
-  底层聊天模型构造函数接受的任何 kwarg 都是有效的。请参阅提供商的参考文档以获取完整列表，例如[⟦T188⟧](https://reference.langchain.com/python/langchain-anthropic/langchain_anthropic/chat_models/ChatAnthropic)、[⟦T189⟧](https://reference.langchain.com/python/langchain-openai/langchain_openai/chat_models/base/ChatOpenAI)、[⟦T190⟧](https://reference.langchain.com/python/langchain-ollama/langchain_ollama/chat_models/ChatOllama)。未知的 kwargs 会转发到上游 API 请求，因此新发布的参数无需 CLI 更新即可工作。
-</Tip><Note>
-  不要将凭据 (`api_key`) 放入 `params` 中，而是使用 [⟦T193⟧](/oss/deepagents/code/config-file#provider-configuration) 指向环境变量。
-</Note>
+> [!提示]
+>
+> 底层聊天模型构造函数接受的任何 kwarg 都是有效的。请参阅提供商的参考文档以获取完整列表，例如[⟦T188⟧](https://reference.langchain.com/python/langchain-anthropic/langchain_anthropic/chat_models/ChatAnthropic)、[⟦T189⟧](https://reference.langchain.com/python/langchain-openai/langchain_openai/chat_models/base/ChatOpenAI)、[⟦T190⟧](https://reference.langchain.com/python/langchain-ollama/langchain_ollama/chat_models/ChatOllama)。未知的 kwargs 会转发到上游 API 请求，因此新发布的参数无需 CLI 更新即可工作。
+
+> [!注意]
+>
+> 不要将凭据 (`api_key`) 放入 `params` — 使用 [⟦T193⟧](/oss/deepagents/code/config-file#provider-configuration) 来指向环境变量。
 
 要覆盖模型运行时*配置文件*上的字段（`max_input_tokens`、`tool_calling`、功能标志）（与构造函数参数不同），请参阅[Profile overrides](/oss/deepagents/code/config-file#profile-overrides-advanced)。
 
@@ -446,14 +422,6 @@ CLI 标志覆盖配置文件 `params` 并且仅适用于会话（会话中的更
 
 有关提供程序参数、配置文件覆盖、自定义基本 URL、兼容 API、任意提供程序和生命周期挂钩的详细配置，请参阅 [Config file](/oss/deepagents/code/config-file) 和 [Hooks](/oss/deepagents/code/hooks)。
 
-***
+***[Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
 
-<div>
-  <Callout icon="terminal-2">
-    [Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
-  </Callout>
-
-  <Callout icon="edit">
-    [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/oss/deepagents/code/providers.mdx) 或 [file an issue](https://github.com/langchain-ai/docs/issues/new/choose)。
-  </Callout>
-</div>
+[Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/oss/deepagents/code/providers.mdx) 或 [file an issue](https://github.com/langchain-ai/docs/issues/new/choose)。

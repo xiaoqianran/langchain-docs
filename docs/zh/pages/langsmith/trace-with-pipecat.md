@@ -4,15 +4,15 @@
 
 # 跟踪 Pipecat 应用程序
 
-<Note>
-  此集成处于测试阶段，因此其 API 可能会发生变化。
-</Note>
+> [!注意]
+>
+> 此集成处于测试阶段，因此其 API 可能会发生变化。
 
 通过 LangSmith Pipecat 集成将您的 [Pipecat](https://pipecat.ai/) 语音代理追踪到 LangSmith。有关高级约定，请参阅[Voice tracing fundamentals](/langsmith/trace-voice-fundamentals)。
 
-<Note>
-  Pipecat 集成需要 `langsmith[pipecat]>=0.9.7`。
-</Note>
+> [!注意]
+>
+> Pipecat 集成需要 `langsmith[pipecat]>=0.9.7`。
 
 集成挂钩 Pipecat 已经发出的跨度，并将它们映射到 LangSmith 的跟踪格式，因此每个对话都成为单个 LangSmith 跟踪，每个管道阶段都有一个跨度（STT、LLM、TTS）。这涵盖了 STT/LLM/TTS 级联和语音到语音（实时）模型。实时模型（例如，`OpenAIRealtimeLLMService`）需要一次额外的调用来捕获用户的记录。参见[When using Pipecat with a realtime model](#when-using-pipecat-with-a-realtime-model)。
 
@@ -20,15 +20,13 @@
 
 安装集成以及管道使用的 Pipecat 服务附加功能：
 
-<CodeGroup>
-  ```bash pip theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  pip install "langsmith[pipecat]" "pipecat-ai[openai,local,tracing]"
-  ```
+```bash pip theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+pip install "langsmith[pipecat]" "pipecat-ai[openai,local,tracing]"
+```
 
-  ```bash uv theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  uv add "langsmith[pipecat]" "pipecat-ai[openai,local,tracing]"
-  ```
-</CodeGroup>
+```bash uv theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+uv add "langsmith[pipecat]" "pipecat-ai[openai,local,tracing]"
+```
 
 ## 设置环境变量
 
@@ -61,13 +59,13 @@ task = PipelineTask(
 )
 ```
 
-<Note>
-  设置 `enable_tracing=True`、`enable_turn_tracking=True` 和 `enable_metrics=True`。跟踪需要轮次跟踪，指标驱动每个跨度上的延迟和令牌数据。
-</Note>### 使用LangGraph或LangChain代理作为LLM
+> [!注意]
+>
+> 设置`enable_tracing=True`、`enable_turn_tracking=True`、`enable_metrics=True`。跟踪需要轮次跟踪，指标驱动每个跨度上的延迟和令牌数据。### 使用LangGraph或LangChain代理作为LLM
 
 如果您的 LLM 阶段是进程内 [LangGraph or LangChain](/oss/python/langgraph/overview) 代理，则其模型和工具运行应嵌套在 Pipecat 的 `llm` 范围内，而不是形成单独的跟踪。为了实现这一点：
 
-* 通过`configure_pipecat(llm_span_kind="chain")`。这避免了实际上不代表推理请求的嵌套 `llm` 跨度。
+* 通过`configure_pipecat(llm_span_kind="chain")`。这避免了实际不代表推理请求的嵌套 `llm` 跨度。
 * 在环境中设置`LANGSMITH_TRACING_MODE=otel`。如果没有它，这些运行将直接发布到 LangSmith 并形成单独的跟踪而不是嵌套。
 
 ### 使用您自己的跟踪器提供程序
@@ -82,7 +80,7 @@ provider.add_span_processor(PipecatLangSmithSpanProcessor())
 
 ## 将对话分组为线程
 
-要将对话的运行分组为 LangSmith [thread](/langsmith/threads) 以进行线程级视图以及令牌和成本聚合，请在发出其跨度之前为每个对话调用一次 `set_thread_id` ：
+要将对话的运行分组为 LangSmith [thread](/langsmith/threads) 以进行线程级视图以及令牌和成本聚合，请在发出其跨度之前为每个对话调用一次 `set_thread_id`：
 
 ```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 from langsmith.integrations.pipecat import configure_pipecat, set_thread_id
@@ -95,9 +93,9 @@ set_thread_id(conversation_id)
 
 在构建上下文聚合器后立即调用 `instrument_user_aggregator` 一次，以便 SDK 为您订阅该回调并将每个记录与其轮次配对。它与您传递给 `set_thread_id` 的 id 相关，因此首先设置它并传递相同的 id：
 
-<Note>
-  `instrument_user_aggregator` 需要 `langsmith[pipecat]>=0.10.6`。
-</Note>
+> [!注意]
+>
+> `instrument_user_aggregator` 需要 `langsmith[pipecat]>=0.10.6`。
 
 ```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 from langsmith.integrations.pipecat import configure_pipecat, set_thread_id
@@ -171,24 +169,16 @@ await audiobuffer.start_recording()
 
 ## 后续步骤
 
-<CardGroup>
-  <Card title="Voice fundamentals" icon="waveform" href="/langsmith/trace-voice-fundamentals">
-    跟踪语音代理的核心约定。
-  </Card>
+> **[Voice fundamentals](/langsmith/trace-voice-fundamentals)**
+>
+> 跟踪语音代理的核心约定。
 
-  <Card title="Upload files with traces" icon="paperclip" href="/langsmith/upload-files-with-traces">
-    将对话录音附加到您的跟踪中。
-  </Card>
-</CardGroup>
+> **[Upload files with traces](/langsmith/upload-files-with-traces)**
+>
+> 将对话录音附加到您的轨迹中。
 
 ***
 
-<div>
-  <Callout icon="terminal-2">
-    [Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
-  </Callout>
+[Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
 
-  <Callout icon="edit">
-    [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/trace-with-pipecat.mdx) 或 [file an issue](https://github.com/langchain-ai/docs/issues/new/choose)。
-  </Callout>
-</div>
+[Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/trace-with-pipecat.mdx) 或 [file an issue](https://github.com/langchain-ai/docs/issues/new/choose)。

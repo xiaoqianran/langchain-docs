@@ -4,115 +4,111 @@
 
 # 无状态运行
 
-大多数时候，您在运行图形时向客户端提供 `thread_id`，以便通过 LangSmith 部署中实现的持久状态跟踪先前的运行。但是，如果您不需要持久化运行，则无需使用内置持久状态，并且可以创建无状态运行。
+大多数时候，您在运行图形时向客户端提供 `thread_id` ，以便通过 LangSmith 部署中实现的持久状态跟踪先前的运行。但是，如果您不需要持久化运行，则无需使用内置持久状态，并且可以创建无状态运行。
 
 ## 设置
 
 首先，让我们设置我们的客户端：
 
-<Tabs>
-  <Tab title="Python">
-    ```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-    from langgraph_sdk import get_client
+**Python**
 
-    client = get_client(url=<DEPLOYMENT_URL>)
-    # Using the graph deployed with the name "agent"
-    assistant_id = "agent"
-    ```
-  </Tab>
+```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+from langgraph_sdk import get_client
 
-  <Tab title="Javascript">
-    ```js theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-    import { Client } from "@langchain/langgraph-sdk";
+client = get_client(url=<DEPLOYMENT_URL>)
+# Using the graph deployed with the name "agent"
+assistant_id = "agent"
+```
 
-    const client = new Client({ apiUrl: <DEPLOYMENT_URL> });
-    // Using the graph deployed with the name "agent"
-    const assistantId = "agent";
-    ```
-  </Tab>
+**Javascript**
 
-  <Tab title="cURL">
-    ```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-    curl --request POST \
-        --url <DEPLOYMENT_URL>/assistants/search \
-        --header 'Content-Type: application/json' \
-        --data '{
-            "limit": 10,
-            "offset": 0
-        }' | jq -c 'map(select(.config == null or .config == {})) | .[0].graph_id' && \
-    curl --request POST \
-        --url <DEPLOYMENT_URL>/threads \
-        --header 'Content-Type: application/json' \
-        --data '{}'
-    ```
-  </Tab>
-</Tabs>
+```js theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+import { Client } from "@langchain/langgraph-sdk";
+
+const client = new Client({ apiUrl: <DEPLOYMENT_URL> });
+// Using the graph deployed with the name "agent"
+const assistantId = "agent";
+```
+
+**卷曲**
+
+```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+curl --request POST \
+    --url <DEPLOYMENT_URL>/assistants/search \
+    --header 'Content-Type: application/json' \
+    --data '{
+        "limit": 10,
+        "offset": 0
+    }' | jq -c 'map(select(.config == null or .config == {})) | .[0].graph_id' && \
+curl --request POST \
+    --url <DEPLOYMENT_URL>/threads \
+    --header 'Content-Type: application/json' \
+    --data '{}'
+```
 
 ## 无状态流式传输
 
 我们可以以几乎与使用状态属性从运行流式传输的方式流式传输无状态运行的结果，但我们不是将值传递给`thread_id`参数，而是传递`None`：
 
-<Tabs>
-  <Tab title="Python">
-    ```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-    input = {
-        "messages": [
-            {"role": "user", "content": "Hello! My name is Bagatur and I am 26 years old."}
+**Python**
+
+```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+input = {
+    "messages": [
+        {"role": "user", "content": "Hello! My name is Bagatur and I am 26 years old."}
+    ]
+}
+
+async for chunk in client.runs.stream(
+    # Don't pass in a thread_id and the stream will be stateless
+    None,
+    assistant_id,
+    input=input,
+    stream_mode="updates",
+):
+    if chunk.data and "run_id" not in chunk.data:
+        print(chunk.data)
+```
+
+**Javascript**
+
+```js theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+let input = {
+  messages: [
+    { role: "user", content: "Hello! My name is Bagatur and I am 26 years old." }
+  ]
+};
+
+const streamResponse = client.runs.stream(
+  // Don't pass in a thread_id and the stream will be stateless
+  null,
+  assistantId,
+  {
+    input,
+    streamMode: "updates"
+  }
+);
+for await (const chunk of streamResponse) {
+  if (chunk.data && !("run_id" in chunk.data)) {
+    console.log(chunk.data);
+  }
+}
+```
+
+**卷曲**
+
+```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+curl --request POST \
+    --url <DEPLOYMENT_URL>/runs/stream \
+    --header 'Content-Type: application/json' \
+    --data "{
+        \"assistant_id\": \"agent\",
+        \"input\": {\"messages\": [{\"role\": \"human\", \"content\": \"Hello! My name is Bagatur and I am 26 years old.\"}]},
+        \"stream_mode\": [
+            \"updates\"
         ]
-    }
-
-    async for chunk in client.runs.stream(
-        # Don't pass in a thread_id and the stream will be stateless
-        None,
-        assistant_id,
-        input=input,
-        stream_mode="updates",
-    ):
-        if chunk.data and "run_id" not in chunk.data:
-            print(chunk.data)
-    ```
-  </Tab>
-
-  <Tab title="Javascript">
-    ```js theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-    let input = {
-      messages: [
-        { role: "user", content: "Hello! My name is Bagatur and I am 26 years old." }
-      ]
-    };
-
-    const streamResponse = client.runs.stream(
-      // Don't pass in a thread_id and the stream will be stateless
-      null,
-      assistantId,
-      {
-        input,
-        streamMode: "updates"
-      }
-    );
-    for await (const chunk of streamResponse) {
-      if (chunk.data && !("run_id" in chunk.data)) {
-        console.log(chunk.data);
-      }
-    }
-    ```
-  </Tab>
-
-  <Tab title="cURL">
-    ```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-    curl --request POST \
-        --url <DEPLOYMENT_URL>/runs/stream \
-        --header 'Content-Type: application/json' \
-        --data "{
-            \"assistant_id\": \"agent\",
-            \"input\": {\"messages\": [{\"role\": \"human\", \"content\": \"Hello! My name is Bagatur and I am 26 years old.\"}]},
-            \"stream_mode\": [
-                \"updates\"
-            ]
-        }" | jq -c 'select(.data and (.data | has("run_id") | not)) | .data'
-    ```
-  </Tab>
-</Tabs>
+    }" | jq -c 'select(.data and (.data | has("run_id") | not)) | .data'
+```
 
 输出：
 
@@ -124,40 +120,38 @@
 
 除了流式传输之外，您还可以使用 `.wait` 函数等待无状态结果，如下所示：
 
-<Tabs>
-  <Tab title="Python">
-    ```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-    stateless_run_result = await client.runs.wait(
-        None,
-        assistant_id,
-        input=input,
-    )
-    print(stateless_run_result)
-    ```
-  </Tab>
+**Python**
 
-  <Tab title="Javascript">
-    ```js theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-    let statelessRunResult = await client.runs.wait(
-      null,
-      assistantId,
-      { input: input }
-    );
-    console.log(statelessRunResult);
-    ```
-  </Tab>
+```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+stateless_run_result = await client.runs.wait(
+    None,
+    assistant_id,
+    input=input,
+)
+print(stateless_run_result)
+```
 
-  <Tab title="cURL">
-    ```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-    curl --request POST \
-        --url <DEPLOYMENT_URL>/runs/wait \
-        --header 'Content-Type: application/json' \
-        --data '{
-            "assistant_id": <ASSISTANT_IDD>,
-        }'
-    ```
-  </Tab>
-</Tabs>
+**Javascript**
+
+```js theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+let statelessRunResult = await client.runs.wait(
+  null,
+  assistantId,
+  { input: input }
+);
+console.log(statelessRunResult);
+```
+
+**卷曲**
+
+```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+curl --request POST \
+    --url <DEPLOYMENT_URL>/runs/wait \
+    --header 'Content-Type: application/json' \
+    --data '{
+        "assistant_id": <ASSISTANT_IDD>,
+    }'
+```
 
 输出：
 
@@ -191,12 +185,6 @@
 
 ***
 
-<div>
-  <Callout icon="terminal-2">
-    [Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
-  </Callout>
+[Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
 
-  <Callout icon="edit">
-    [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/stateless-runs.mdx) 或 [file an issue](https://github.com/langchain-ai/docs/issues/new/choose)。
-  </Callout>
-</div>
+[Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/stateless-runs.mdx) 或 [file an issue](https://github.com/langchain-ai/docs/issues/new/choose)。

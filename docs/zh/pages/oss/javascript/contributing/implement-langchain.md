@@ -10,76 +10,68 @@ LangChain 组件是 [⟦T0⟧](https://github.com/langchain-ai/langchain/tree/ma
 
 您的集成包通常会实现至少其中一个组件的子类。展开下面的选项卡可查看每个选项卡的详细信息。
 
-<Tabs>
-  <Tab title="Chat Models">
-    聊天模型是 [⟦T1⟧](https://reference.langchain.com/javascript/langchain-core/language_models/chat_models/BaseChatModel) 类的子类。它们实现了生成聊天完成、处理消息格式和管理模型参数的方法。
+**聊天模型**
 
-    <Warning>
-      聊天模型集成指南目前正在开发中。同时，请阅读 [chat model conceptual guide](/oss/javascript/langchain/models) 了解有关 LangChain 聊天模型如何运作的详细信息。您还可以参考[LangChain repo](https://github.com/langchain-ai/langchainjs/tree/main/libs/providers)中的现有集成
-    </Warning>
-  </Tab>
+聊天模型是 [⟦T1⟧](https://reference.langchain.com/javascript/langchain-core/language_models/chat_models/BaseChatModel) 类的子类。它们实现了生成聊天完成、处理消息格式和管理模型参数的方法。
 
-  <Tab title="Embeddings">
-    嵌入模型是[⟦T2⟧](https://reference.langchain.com/javascript/langchain-core/embeddings/Embeddings)类的子类。
+> [!警告]
+>
+> 聊天模型集成指南目前正在开发中。同时，请阅读 [chat model conceptual guide](/oss/javascript/langchain/models) 了解有关 LangChain 聊天模型如何运作的详细信息。您还可以参考[LangChain repo](https://github.com/langchain-ai/langchainjs/tree/main/libs/providers)中的现有集成
 
-    <Warning>
-      嵌入模型集成指南目前正在开发中。同时，请阅读 [embedding model conceptual guide](/oss/javascript/integrations/embeddings) 了解有关 LangChain 嵌入模型如何发挥作用的详细信息。
-    </Warning>
-  </Tab>
+**嵌入**
 
-  <Tab title="Tools">
-    工具的使用主要有两种方式：1. 定义“输入模式”或“参数模式”以与文本请求一起传递到聊天模型的工具调用功能，以便聊天模型可以生成“工具调用”或用于调用工具的参数。
-    2. 进行上面生成的“工具调用”，并采取一些操作并返回一个响应，该响应可以作为 ToolMessage 传递回聊天模型。
+嵌入模型是[⟦T2⟧](https://reference.langchain.com/javascript/langchain-core/embeddings/Embeddings)类的子类。
 
-    Tools 类必须继承自 [⟦T3⟧](https://reference.langchain.com/javascript/classes/_langchain_core.tools.StructuredTool.html) 基类。该接口有 3 个属性和 2 个方法，应在子类中实现。
+> [!警告]
+>
+> 嵌入模型集成指南目前正在开发中。同时，请阅读 [embedding model conceptual guide](/oss/javascript/integrations/embeddings) 了解有关 LangChain 嵌入模型如何发挥作用的详细信息。
 
-    <Warning>
-      工具集成指南目前正在开发中。同时，请阅读 [tools conceptual guide](/oss/javascript/langchain/tools) 了解有关 LangChain 工具如何工作的详细信息。
-    </Warning>
-  </Tab>
+**工具**
 
-  <Tab title="Middleware">
-    [Middleware](/oss/javascript/langchain/middleware/overview) 允许您通过挂钩模型调用、工具调用和代理生命周期事件来自定义代理行为。中间件类是 [⟦T4⟧](https://reference.langchain.com/javascript/langchain/index/AgentMiddleware) 基类的子类。
+工具的使用主要有两种方式：1. 定义“输入模式”或“参数模式”以与文本请求一起传递到聊天模型的工具调用功能，以便聊天模型可以生成“工具调用”或用于调用工具的参数。
+2. 进行上面生成的“工具调用”，并采取一些操作并返回一个响应，该响应可以作为 ToolMessage 传递回聊天模型。
 
-    在构建集成之前，请阅读 [custom middleware guide](/oss/javascript/langchain/middleware/custom) 了解挂钩、状态更新和中间件模式。
+Tools 类必须继承自 [⟦T3⟧](https://reference.langchain.com/javascript/langchain-core/tools/StructuredTool) 基类。该接口有 3 个属性和 2 个方法，应在子类中实现。
 
-    中间件集成通常分为两类：|类型 |描述 |示例 |
-    | - | - | - |
-    | **特定于提供商** |利用提供商的独特能力 |提示缓存、本机工具执行、内容审核 |
-    | **跨提供商** |适用于任何模型或工具 |速率限制、PII 检测、日志记录、护栏 |
+> [!警告]
+>
+> 工具集成指南目前正在开发中。同时，请阅读 [tools conceptual guide](/oss/javascript/langchain/tools) 了解有关 LangChain 工具如何工作的详细信息。
 
-    特定于提供商的中间件位于提供商的集成包中（例如`langchain-anthropic`）。跨提供商中间件可以作为独立包发布。
+**中间件**
 
-    您还可以使用这些现有的中间件集成作为参考：
+[Middleware](/oss/javascript/langchain/middleware/overview) 允许您通过挂钩模型调用、工具调用和代理生命周期事件来自定义代理行为。中间件类是 [⟦T4⟧](https://reference.langchain.com/javascript/langchain/index/AgentMiddleware) 基类的子类。
 
-    <CardGroup>
-      <Card title="Anthropic middleware" icon="robot" href="/oss/javascript/integrations/middleware/anthropic">
-        用于提示缓存、工具、内存和文件搜索的多个中间件类。
-      </Card>
+在构建集成之前，请阅读 [custom middleware guide](/oss/javascript/langchain/middleware/custom) 了解挂钩、状态更新和中间件模式。
 
-      <Card title="Custom middleware guide" icon="code" href="/oss/javascript/langchain/middleware/custom">
-        有关挂钩、状态更新和模式的完整参考。
-      </Card>
-    </CardGroup>
-  </Tab>
+中间件集成通常分为两类：|类型 |描述 |示例 |
+| - | - | - |
+| **特定于提供商** |利用提供商的独特能力 |提示缓存、本机工具执行、内容审核 |
+| **跨提供商** |适用于任何模型或工具 |速率限制、PII 检测、日志记录、护栏 |
 
-  <Tab title="Checkpointers">
-    检查点在LangGraph中启用[persistence](/oss/javascript/langgraph/persistence)，允许代理在交互中保存和恢复状态。
+特定于提供商的中间件位于提供商的集成包中（例如`langchain-anthropic`）。跨提供商中间件可以作为独立包发布。
 
-    请参阅 [LangGraph repo](https://github.com/langchain-ai/langgraph/tree/main/libs) 中现有的检查点集成以获取实施示例。
-  </Tab>
+您还可以使用这些现有的中间件集成作为参考：
 
-  <Tab title="Sandboxes">
-    沙盒集成使 [Deep Agents](/oss/javascript/deepagents/overview) 能够在隔离环境中运行代码。
-  </Tab>
-</Tabs>
+> **[Anthropic middleware](/oss/javascript/integrations/middleware/anthropic)**
+>
+> 用于提示缓存、工具、内存和文件搜索的多个中间件类。
+
+> **[Custom middleware guide](/oss/javascript/langchain/middleware/custom)**
+>
+> 有关挂钩、状态更新和模式的完整参考。
+
+**检查点**
+
+检查点在LangGraph中启用[persistence](/oss/javascript/langgraph/persistence)，允许代理在交互中保存和恢复状态。
+
+请参阅 [LangGraph repo](https://github.com/langchain-ai/langgraph/tree/main/libs) 中现有的检查点集成以获取实施示例。
+
+**沙箱**
+
+沙盒集成使 [Deep Agents](/oss/javascript/deepagents/overview) 能够在隔离环境中运行代码。
 
 ***
 
-<div>
-  <Callout icon="terminal-2">
-    [Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
-  </Callout><Callout icon="edit">
-    [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/oss/contributing/implement-langchain.mdx) 或 [file an issue](https://github.com/langchain-ai/docs/issues/new/choose)。
-  </Callout>
-</div>
+[Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
+
+[Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/oss/contributing/implement-langchain.mdx) 或 [file an issue](https://github.com/langchain-ai/docs/issues/new/choose)。

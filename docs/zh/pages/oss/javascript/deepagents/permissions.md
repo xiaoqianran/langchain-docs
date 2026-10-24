@@ -8,15 +8,15 @@
 
 使用声明性权限规则控制代理可以读取或写入哪些文件和目录。将规则列表传递给`permissions=`，代理的内置文件系统工具会尊重它们。
 
-<Note>
-  权限需要`deepagents>=1.9.1`。
-</Note>
+> [!注意]
+>
+> 权限需要`deepagents>=1.9.1`。
 
 权限仅适用于内置文件系统工具（`ls`、`read_file`、`glob`、`grep`、`write_file`、`edit_file`）。不包括访问文件系统的自定义工具和 MCP 工具。权限也不适用于[sandbox backends](/oss/javascript/deepagents/sandboxes)，它支持通过`execute`工具执行任意命令。
 
-<Tip>
-  当您需要在内置文件系统工具上使用**基于路径的允许/拒绝规则**时，请使用`permissions`。当您需要自定义验证逻辑（速率限制、审核日志记录、内容检查）或需要控制自定义工具时，请使用[backend policy hooks](/oss/javascript/deepagents/backends#add-policy-hooks)。
-</Tip>
+> [!提示]
+>
+> 当您需要在内置文件系统工具上使用**基于路径的允许/拒绝规则**时，请使用`permissions`。当您需要自定义验证逻辑（速率限制、审核日志记录、内容检查）或需要控制自定义工具时，请使用[backend policy hooks](/oss/javascript/deepagents/backends#add-policy-hooks)。
 
 ## 基本用法
 
@@ -39,7 +39,7 @@ if (!agent) throw new Error("basic: agent not created");
 
 ## 规则结构
 
-每个`FilesystemPermission`有三个字段：|领域 |类型 |描述 |
+每个`FilesystemPermission`有三个字段：|领域|类型 |描述 |
 | - | - | - |
 | `operations` | `("read" \| "write")[]` |此规则适用于操作。 `"read"` 涵盖`ls`、`read_file`、`glob`、`grep`。 `"write"` 涵盖`write_file`、`edit_file`。 |
 | `paths` | `string[]` |用于匹配文件路径的全局模式（例如，`["/workspace/**"]`）。支持`**`递归匹配和`{a,b}`交替。 |
@@ -209,7 +209,7 @@ const agent = createDeepAgent({
 if (!agent) throw new Error("subagent: agent not created");
 ```
 
-要显式授予子代理不受限制的访问权限，请设置 `permissions: []`。空数组会无限制地覆盖父规则。省略 `permissions` 从父级继承。
+要显式授予子代理无限制的访问权限，请设置 `permissions: []`。空数组会无限制地覆盖父规则。省略 `permissions` 从父级继承。
 
 ## 复合后端
 
@@ -257,12 +257,6 @@ createDeepAgent({
 
 ***
 
-<div>
-  <Callout icon="terminal-2">
-    [Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
-  </Callout>
+[Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
 
-  <Callout icon="edit">
-    [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/oss/deepagents/permissions.mdx) 或 [file an issue](https://github.com/langchain-ai/docs/issues/new/choose)。
-  </Callout>
-</div>
+[Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/oss/deepagents/permissions.mdx) 或 [file an issue](https://github.com/langchain-ai/docs/issues/new/choose)。

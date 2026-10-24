@@ -18,8 +18,6 @@
 提供商、生命周期范围、种子文件、机密、部署和生产
 `useStream`配置参见[Going to production](/oss/javascript/deepagents/going-to-production)。
 
-<PatternEmbed />
-
 ## 架构
 
 此设置分为三个部分：
@@ -64,7 +62,7 @@ graph LR
   class API orangeHighlight;
 ```## 沙箱生命周期
 
-在连接前端之前，选择沙箱的生存时间以及共享沙箱的人员。
+在连接前端之前选择沙箱的生存时间以及共享沙箱的人员。
 请参阅 [Sandbox lifecycle](/oss/javascript/deepagents/going-to-production#lifecycle) 了解线程范围
 与助手范围的沙箱，异步 [graph factory](/langsmith/graph-rebuild)
 设置、TTL 行为和 SDK 调用示例。
@@ -151,155 +149,153 @@ export async function getOrCreateSandboxForThread(threadId: string) {
 运行配置中的`thread_id`并将解析后的后端传递给
 `createDeepAgent`：
 
-<CodeGroup>
-  ```ts Google theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  import { createDeepAgent } from "deepagents";
-  import type { LangGraphRunnableConfig } from "@langchain/langgraph";
+```ts Google theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+import { createDeepAgent } from "deepagents";
+import type { LangGraphRunnableConfig } from "@langchain/langgraph";
 
-  import { getOrCreateSandboxForThread } from "./api/utils.js";
+import { getOrCreateSandboxForThread } from "./api/utils.js";
 
-  export async function agent(config: LangGraphRunnableConfig) {
-    const threadId = config.configurable?.thread_id;
-    if (!threadId) throw new Error("No thread_id — agent must run on a thread");
+export async function agent(config: LangGraphRunnableConfig) {
+  const threadId = config.configurable?.thread_id;
+  if (!threadId) throw new Error("No thread_id — agent must run on a thread");
 
-    const backend = await getOrCreateSandboxForThread(threadId);
+  const backend = await getOrCreateSandboxForThread(threadId);
 
-    return createDeepAgent({
-      model: "google:gemini-3.6-flash",
-      backend,
-      systemPrompt: "You are an expert developer working on a project in /app.",
-    });
-  }
-  ```
+  return createDeepAgent({
+    model: "google:gemini-3.6-flash",
+    backend,
+    systemPrompt: "You are an expert developer working on a project in /app.",
+  });
+}
+```
 
-  ```ts OpenAI theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  import { createDeepAgent } from "deepagents";
-  import type { LangGraphRunnableConfig } from "@langchain/langgraph";
+```ts OpenAI theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+import { createDeepAgent } from "deepagents";
+import type { LangGraphRunnableConfig } from "@langchain/langgraph";
 
-  import { getOrCreateSandboxForThread } from "./api/utils.js";
+import { getOrCreateSandboxForThread } from "./api/utils.js";
 
-  export async function agent(config: LangGraphRunnableConfig) {
-    const threadId = config.configurable?.thread_id;
-    if (!threadId) throw new Error("No thread_id — agent must run on a thread");
+export async function agent(config: LangGraphRunnableConfig) {
+  const threadId = config.configurable?.thread_id;
+  if (!threadId) throw new Error("No thread_id — agent must run on a thread");
 
-    const backend = await getOrCreateSandboxForThread(threadId);
+  const backend = await getOrCreateSandboxForThread(threadId);
 
-    return createDeepAgent({
-      model: "openai:gpt-5.5",
-      backend,
-      systemPrompt: "You are an expert developer working on a project in /app.",
-    });
-  }
-  ```
+  return createDeepAgent({
+    model: "openai:gpt-5.5",
+    backend,
+    systemPrompt: "You are an expert developer working on a project in /app.",
+  });
+}
+```
 
-  ```ts Anthropic theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  import { createDeepAgent } from "deepagents";
-  import type { LangGraphRunnableConfig } from "@langchain/langgraph";
+```ts Anthropic theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+import { createDeepAgent } from "deepagents";
+import type { LangGraphRunnableConfig } from "@langchain/langgraph";
 
-  import { getOrCreateSandboxForThread } from "./api/utils.js";
+import { getOrCreateSandboxForThread } from "./api/utils.js";
 
-  export async function agent(config: LangGraphRunnableConfig) {
-    const threadId = config.configurable?.thread_id;
-    if (!threadId) throw new Error("No thread_id — agent must run on a thread");
+export async function agent(config: LangGraphRunnableConfig) {
+  const threadId = config.configurable?.thread_id;
+  if (!threadId) throw new Error("No thread_id — agent must run on a thread");
 
-    const backend = await getOrCreateSandboxForThread(threadId);
+  const backend = await getOrCreateSandboxForThread(threadId);
 
-    return createDeepAgent({
-      model: "anthropic:claude-sonnet-5",
-      backend,
-      systemPrompt: "You are an expert developer working on a project in /app.",
-    });
-  }
-  ```
+  return createDeepAgent({
+    model: "anthropic:claude-sonnet-5",
+    backend,
+    systemPrompt: "You are an expert developer working on a project in /app.",
+  });
+}
+```
 
-  ```ts OpenRouter theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  import { createDeepAgent } from "deepagents";
-  import type { LangGraphRunnableConfig } from "@langchain/langgraph";
+```ts OpenRouter theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+import { createDeepAgent } from "deepagents";
+import type { LangGraphRunnableConfig } from "@langchain/langgraph";
 
-  import { getOrCreateSandboxForThread } from "./api/utils.js";
+import { getOrCreateSandboxForThread } from "./api/utils.js";
 
-  export async function agent(config: LangGraphRunnableConfig) {
-    const threadId = config.configurable?.thread_id;
-    if (!threadId) throw new Error("No thread_id — agent must run on a thread");
+export async function agent(config: LangGraphRunnableConfig) {
+  const threadId = config.configurable?.thread_id;
+  if (!threadId) throw new Error("No thread_id — agent must run on a thread");
 
-    const backend = await getOrCreateSandboxForThread(threadId);
+  const backend = await getOrCreateSandboxForThread(threadId);
 
-    return createDeepAgent({
-      model: "openrouter:z-ai/glm-5.2",
-      backend,
-      systemPrompt: "You are an expert developer working on a project in /app.",
-    });
-  }
-  ```
+  return createDeepAgent({
+    model: "openrouter:z-ai/glm-5.2",
+    backend,
+    systemPrompt: "You are an expert developer working on a project in /app.",
+  });
+}
+```
 
-  ```ts Fireworks theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  import { createDeepAgent } from "deepagents";
-  import type { LangGraphRunnableConfig } from "@langchain/langgraph";
+```ts Fireworks theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+import { createDeepAgent } from "deepagents";
+import type { LangGraphRunnableConfig } from "@langchain/langgraph";
 
-  import { getOrCreateSandboxForThread } from "./api/utils.js";
+import { getOrCreateSandboxForThread } from "./api/utils.js";
 
-  export async function agent(config: LangGraphRunnableConfig) {
-    const threadId = config.configurable?.thread_id;
-    if (!threadId) throw new Error("No thread_id — agent must run on a thread");
+export async function agent(config: LangGraphRunnableConfig) {
+  const threadId = config.configurable?.thread_id;
+  if (!threadId) throw new Error("No thread_id — agent must run on a thread");
 
-    const backend = await getOrCreateSandboxForThread(threadId);
+  const backend = await getOrCreateSandboxForThread(threadId);
 
-    return createDeepAgent({
-      model: "fireworks:accounts/fireworks/models/glm-5p2",
-      backend,
-      systemPrompt: "You are an expert developer working on a project in /app.",
-    });
-  }
-  ```
+  return createDeepAgent({
+    model: "fireworks:accounts/fireworks/models/glm-5p2",
+    backend,
+    systemPrompt: "You are an expert developer working on a project in /app.",
+  });
+}
+```
 
-  ```ts Baseten theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  import { createDeepAgent } from "deepagents";
-  import type { LangGraphRunnableConfig } from "@langchain/langgraph";
+```ts Baseten theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+import { createDeepAgent } from "deepagents";
+import type { LangGraphRunnableConfig } from "@langchain/langgraph";
 
-  import { getOrCreateSandboxForThread } from "./api/utils.js";
+import { getOrCreateSandboxForThread } from "./api/utils.js";
 
-  export async function agent(config: LangGraphRunnableConfig) {
-    const threadId = config.configurable?.thread_id;
-    if (!threadId) throw new Error("No thread_id — agent must run on a thread");
+export async function agent(config: LangGraphRunnableConfig) {
+  const threadId = config.configurable?.thread_id;
+  if (!threadId) throw new Error("No thread_id — agent must run on a thread");
 
-    const backend = await getOrCreateSandboxForThread(threadId);
+  const backend = await getOrCreateSandboxForThread(threadId);
 
-    return createDeepAgent({
-      model: "baseten:zai-org/GLM-5.2",
-      backend,
-      systemPrompt: "You are an expert developer working on a project in /app.",
-    });
-  }
-  ```
+  return createDeepAgent({
+    model: "baseten:zai-org/GLM-5.2",
+    backend,
+    systemPrompt: "You are an expert developer working on a project in /app.",
+  });
+}
+```
 
-  ```ts Ollama theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  import { createDeepAgent } from "deepagents";
-  import type { LangGraphRunnableConfig } from "@langchain/langgraph";
+```ts Ollama theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+import { createDeepAgent } from "deepagents";
+import type { LangGraphRunnableConfig } from "@langchain/langgraph";
 
-  import { getOrCreateSandboxForThread } from "./api/utils.js";
+import { getOrCreateSandboxForThread } from "./api/utils.js";
 
-  export async function agent(config: LangGraphRunnableConfig) {
-    const threadId = config.configurable?.thread_id;
-    if (!threadId) throw new Error("No thread_id — agent must run on a thread");
+export async function agent(config: LangGraphRunnableConfig) {
+  const threadId = config.configurable?.thread_id;
+  if (!threadId) throw new Error("No thread_id — agent must run on a thread");
 
-    const backend = await getOrCreateSandboxForThread(threadId);
+  const backend = await getOrCreateSandboxForThread(threadId);
 
-    return createDeepAgent({
-      model: "ollama:north-mini-code-1.0",
-      backend,
-      systemPrompt: "You are an expert developer working on a project in /app.",
-    });
-  }
-  ```
-</CodeGroup>
+  return createDeepAgent({
+    model: "ollama:north-mini-code-1.0",
+    backend,
+    systemPrompt: "You are an expert developer working on a project in /app.",
+  });
+}
+```
 
-<Note>
-  与[Going to production](/oss/javascript/deepagents/going-to-production#lifecycle)中的示例类似，
-  代理是每次运行时调用的异步图工厂。将沙箱 ID 存储在
-  线程元数据，因此自定义`http.app`路由可以调用相同的
-  `getOrCreateSandboxForThread` 帮手。进入生产使用提供商标签
-  当 LangGraph SDK 是唯一入口点时，改为查找。
-</Note>
+> [!注意]
+>
+> 与[Going to production](/oss/javascript/deepagents/going-to-production#lifecycle)中的示例类似，
+> 代理是每次运行时调用的异步图工厂。将沙箱 ID 存储在
+> 线程元数据，因此自定义 `http.app` 路由可以调用相同的
+> `getOrCreateSandboxForThread` 帮手。进入生产使用提供商标签
+> 当 LangGraph SDK 是唯一入口点时，改为查找。
 
 ### 种子项目文件在代理运行之前，使用 `uploadFiles` / 上传启动文件
 `upload_files`。参见[File transfers](/oss/javascript/deepagents/going-to-production#file-transfers)
@@ -308,10 +304,10 @@ export async function getOrCreateSandboxForThread(threadId: string) {
 沙箱。对于LangSmith沙箱，从a传递`templateName`
 [sandbox snapshot](/langsmith/sandbox-snapshots) 创建容器时。
 
-<Tip>
-  上传后运行`sandbox.execute("cd /app && npm install")`
-  `package.json` 因此依赖关系在第一个代理轮流之前就已准备就绪。
-</Tip>
+> [!提示]
+>
+> 上传后运行`sandbox.execute("cd /app && npm install")`
+> `package.json` 因此依赖关系在第一个代理轮流之前就已准备好。
 
 ## 添加文件浏览API
 
@@ -374,17 +370,17 @@ app.get("/sandbox/:threadId/file", async (c) => {
 });
 ```
 
-<Note>
-  代理后端和API服务器都调用相同的
-
-  `getOrCreateSandboxForThread`功能。这确保他们始终能够解决
-
-  到给定线程的同一沙箱。线程元数据中的沙箱 ID
-  是唯一的事实来源——不需要内存缓存。
-</Note>
+> [!注意]
+>
+> 代理后端和API服务器都调用相同的
+>
+> `getOrCreateSandboxForThread`功能。这确保他们始终能够解决
+>
+> 给定线程的同一沙箱。线程元数据中的沙箱 ID
+> 是唯一的事实来源——不需要内存缓存。
 
 ### 配置`langgraph.json`注册代理图和 API 服务器。 `http.app`字段告诉我们
-LangGraph 平台可与默认路线一起为您的自定义路线提供服务。
+LangGraph 平台为您的自定义路线和默认路线提供服务。
 参见 [application structure](/oss/javascript/langgraph/application-structure) 和
 [LangSmith Deployments](/oss/javascript/deepagents/going-to-production#langsmith-deployments)
 了解全套 `langgraph.json` 选项。
@@ -405,11 +401,11 @@ LangGraph 平台可与默认路线一起为您的自定义路线提供服务。
 您的自定义路由可在与 LangGraph API 相同的主机上使用。对于
 使用`langgraph dev`进行本地开发，即`http://localhost:2024`。
 
-<Note>
-  `http.app` 中定义的自定义路由优先于默认的 LangGraph 路由。这意味着你
-  如果需要，可以隐藏内置端点，但要小心不要意外覆盖路由，例如
-  `/threads` 或 `/runs`。
-</Note>
+> [!注意]
+>
+> `http.app` 中定义的自定义路由优先于默认的 LangGraph 路由。这意味着你
+> 如果需要的话可以隐藏内置端点，但要小心不要意外覆盖路由，例如
+> `/threads` 或 `/runs`。
 
 ## 构建前端
 
@@ -427,7 +423,7 @@ LangGraph 平台可与默认路线一起为您的自定义路线提供服务。
 
 ### 线程创建
 
-页面加载时创建一个LangGraph线程，并将其ID持久化在
+页面加载时创建一个LangGraph线程并将其ID保存在
 `sessionStorage` 因此页面重新加载重新连接到同一个沙箱：
 
 ```tsx theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
@@ -504,58 +500,105 @@ IDE 体验的关键是在代理工作时更新文件，而不是
 完成后，刷新该特定文件。当`execute`完成后，刷新
 一切（因为 shell 命令可以修改任何文件）：
 
-<CodeGroup>
-  ```tsx React theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  import { useStream } from "@langchain/react";
-  import { ToolMessage, AIMessage } from "langchain";
+```tsx React theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+import { useStream } from "@langchain/react";
+import { ToolMessage, AIMessage } from "langchain";
 
-  const FILE_MUTATING_TOOLS = new Set(["write_file", "edit_file", "execute"]);
+const FILE_MUTATING_TOOLS = new Set(["write_file", "edit_file", "execute"]);
 
-  export function IDEPreview() {
-    const stream = useStream<typeof myAgent>({
-      apiUrl: AGENT_URL,
-      assistantId: "deep_agent_ide",
-    });
+export function IDEPreview() {
+  const stream = useStream<typeof myAgent>({
+    apiUrl: AGENT_URL,
+    assistantId: "deep_agent_ide",
+  });
 
-    const processedIds = useRef(new Set<string>());
+  const processedIds = useRef(new Set<string>());
 
-    useEffect(() => {
-      // Build a map of file-mutating tool calls from AI messages
-      const toolCallMap = new Map();
-      for (const msg of stream.messages) {
-        if (!AIMessage.isInstance(msg)) continue;
+  useEffect(() => {
+    // Build a map of file-mutating tool calls from AI messages
+    const toolCallMap = new Map();
+    for (const msg of stream.messages) {
+      if (!AIMessage.isInstance(msg)) continue;
+      for (const tc of msg.tool_calls ?? []) {
+        if (tc.id && FILE_MUTATING_TOOLS.has(tc.name)) {
+          toolCallMap.set(tc.id, { name: tc.name, args: tc.args });
+        }
+      }
+    }
+
+    // When a ToolMessage appears for a file-mutating tool, refresh
+    for (const msg of stream.messages) {
+      if (!ToolMessage.isInstance(msg)) continue;
+      const id = msg.id ?? msg.tool_call_id;
+      if (!id || processedIds.current.has(id)) continue;
+
+      const call = toolCallMap.get(msg.tool_call_id);
+      if (!call) continue;
+      processedIds.current.add(id);
+
+      if (call.name === "write_file" || call.name === "edit_file") {
+        refreshSingleFile(call.args.path ?? call.args.file_path);
+      } else if (call.name === "execute") {
+        refreshTreeAndFiles();
+      }
+    }
+  }, [stream.messages]);
+}
+```
+
+```vue Vue theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+<script setup lang="ts">
+import { useStream } from "@langchain/vue";
+import { ToolMessage, AIMessage } from "langchain";
+import { watch } from "vue";
+
+const FILE_MUTATING_TOOLS = new Set(["write_file", "edit_file", "execute"]);
+const processedIds = new Set<string>();
+
+const stream = useStream<typeof myAgent>({
+  apiUrl: AGENT_URL,
+  assistantId: "deep_agent_ide",
+});
+
+watch(
+  () => stream.messages.value,
+  (messages) => {
+    const toolCallMap = new Map();
+    for (const msg of messages) {
+      if (AIMessage.isInstance(msg)) {
         for (const tc of msg.tool_calls ?? []) {
           if (tc.id && FILE_MUTATING_TOOLS.has(tc.name)) {
             toolCallMap.set(tc.id, { name: tc.name, args: tc.args });
           }
         }
       }
+    }
 
-      // When a ToolMessage appears for a file-mutating tool, refresh
-      for (const msg of stream.messages) {
-        if (!ToolMessage.isInstance(msg)) continue;
-        const id = msg.id ?? msg.tool_call_id;
-        if (!id || processedIds.current.has(id)) continue;
+    for (const msg of messages) {
+      if (!ToolMessage.isInstance(msg)) continue;
+      const id = msg.id ?? msg.tool_call_id;
+      if (!id || processedIds.has(id)) continue;
 
-        const call = toolCallMap.get(msg.tool_call_id);
-        if (!call) continue;
-        processedIds.current.add(id);
+      const call = toolCallMap.get(msg.tool_call_id);
+      if (!call) continue;
+      processedIds.add(id);
 
-        if (call.name === "write_file" || call.name === "edit_file") {
-          refreshSingleFile(call.args.path ?? call.args.file_path);
-        } else if (call.name === "execute") {
-          refreshTreeAndFiles();
-        }
+      if (call.name === "write_file" || call.name === "edit_file") {
+        refreshSingleFile(call.args.path ?? call.args.file_path);
+      } else if (call.name === "execute") {
+        refreshTreeAndFiles();
       }
-    }, [stream.messages]);
-  }
-  ```
+    }
+  },
+  { deep: true },
+);
+</script>
+```
 
-  ```vue Vue theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  <script setup lang="ts">
-  import { useStream } from "@langchain/vue";
+```svelte Svelte theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+<script lang="ts">
+  import { useStream } from "@langchain/svelte";
   import { ToolMessage, AIMessage } from "langchain";
-  import { watch } from "vue";
 
   const FILE_MUTATING_TOOLS = new Set(["write_file", "edit_file", "execute"]);
   const processedIds = new Set<string>();
@@ -565,139 +608,90 @@ IDE 体验的关键是在代理工作时更新文件，而不是
     assistantId: "deep_agent_ide",
   });
 
-  watch(
-    () => stream.messages.value,
-    (messages) => {
-      const toolCallMap = new Map();
-      for (const msg of messages) {
-        if (AIMessage.isInstance(msg)) {
-          for (const tc of msg.tool_calls ?? []) {
-            if (tc.id && FILE_MUTATING_TOOLS.has(tc.name)) {
-              toolCallMap.set(tc.id, { name: tc.name, args: tc.args });
-            }
+  $effect(() => {
+    const msgs = stream.messages;
+    const toolCallMap = new Map();
+    for (const msg of msgs) {
+      if (AIMessage.isInstance(msg)) {
+        for (const tc of msg.tool_calls ?? []) {
+          if (tc.id && FILE_MUTATING_TOOLS.has(tc.name)) {
+            toolCallMap.set(tc.id, { name: tc.name, args: tc.args });
           }
         }
       }
-
-      for (const msg of messages) {
-        if (!ToolMessage.isInstance(msg)) continue;
-        const id = msg.id ?? msg.tool_call_id;
-        if (!id || processedIds.has(id)) continue;
-
-        const call = toolCallMap.get(msg.tool_call_id);
-        if (!call) continue;
-        processedIds.add(id);
-
-        if (call.name === "write_file" || call.name === "edit_file") {
-          refreshSingleFile(call.args.path ?? call.args.file_path);
-        } else if (call.name === "execute") {
-          refreshTreeAndFiles();
-        }
-      }
-    },
-    { deep: true },
-  );
-  </script>
-  ```
-
-  ```svelte Svelte theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  <script lang="ts">
-    import { useStream } from "@langchain/svelte";
-    import { ToolMessage, AIMessage } from "langchain";
-
-    const FILE_MUTATING_TOOLS = new Set(["write_file", "edit_file", "execute"]);
-    const processedIds = new Set<string>();
-
-    const stream = useStream<typeof myAgent>({
-      apiUrl: AGENT_URL,
-      assistantId: "deep_agent_ide",
-    });
-
-    $effect(() => {
-      const msgs = stream.messages;
-      const toolCallMap = new Map();
-      for (const msg of msgs) {
-        if (AIMessage.isInstance(msg)) {
-          for (const tc of msg.tool_calls ?? []) {
-            if (tc.id && FILE_MUTATING_TOOLS.has(tc.name)) {
-              toolCallMap.set(tc.id, { name: tc.name, args: tc.args });
-            }
-          }
-        }
-      }
-
-      for (const msg of msgs) {
-        if (!ToolMessage.isInstance(msg)) continue;
-        const id = msg.id ?? msg.tool_call_id;
-        if (!id || processedIds.has(id)) continue;
-
-        const call = toolCallMap.get(msg.tool_call_id);
-        if (!call) continue;
-        processedIds.add(id);
-
-        if (call.name === "write_file" || call.name === "edit_file") {
-          refreshSingleFile(call.args.path ?? call.args.file_path);
-        } else if (call.name === "execute") {
-          refreshTreeAndFiles();
-        }
-      }
-    });
-  </script>
-  ```
-
-  ```ts Angular theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  import { Component, effect } from "@angular/core";
-  import { injectStream } from "@langchain/angular";
-  import { ToolMessage, AIMessage } from "langchain";
-
-  const FILE_MUTATING_TOOLS = new Set(["write_file", "edit_file", "execute"]);
-
-  @Component({
-    selector: "app-ide-preview",
-    template: `<!-- ... -->`,
-  })
-  export class IdePreviewComponent {
-    stream = injectStream<typeof myAgent>({
-      apiUrl: AGENT_URL,
-      assistantId: "deep_agent_ide",
-    });
-
-    private processedIds = new Set<string>();
-
-    constructor() {
-      effect(() => {
-        const messages = this.stream.messages();
-        const toolCallMap = new Map();
-        for (const msg of messages) {
-          if (AIMessage.isInstance(msg)) {
-            for (const tc of (msg as AIMessage).tool_calls ?? []) {
-              if (tc.id && FILE_MUTATING_TOOLS.has(tc.name)) {
-                toolCallMap.set(tc.id, { name: tc.name, args: tc.args });
-              }
-            }
-          }
-        }
-
-        for (const msg of messages) {
-          if (!ToolMessage.isInstance(msg)) continue;
-          const id = (msg as ToolMessage).id ?? (msg as ToolMessage).tool_call_id;
-          if (!id || this.processedIds.has(id)) continue;
-
-          const call = toolCallMap.get((msg as ToolMessage).tool_call_id);
-          if (!call) continue;
-          this.processedIds.add(id);
-
-          if (call.name === "write_file" || call.name === "edit_file") {
-            this.refreshSingleFile(call.args.path ?? call.args.file_path);
-          } else if (call.name === "execute") {
-            this.refreshTreeAndFiles();
-          }
-        }
-      });
     }
+
+    for (const msg of msgs) {
+      if (!ToolMessage.isInstance(msg)) continue;
+      const id = msg.id ?? msg.tool_call_id;
+      if (!id || processedIds.has(id)) continue;
+
+      const call = toolCallMap.get(msg.tool_call_id);
+      if (!call) continue;
+      processedIds.add(id);
+
+      if (call.name === "write_file" || call.name === "edit_file") {
+        refreshSingleFile(call.args.path ?? call.args.file_path);
+      } else if (call.name === "execute") {
+        refreshTreeAndFiles();
+      }
+    }
+  });
+</script>
+```
+
+```ts Angular theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+import { Component, effect } from "@angular/core";
+import { injectStream } from "@langchain/angular";
+import { ToolMessage, AIMessage } from "langchain";
+
+const FILE_MUTATING_TOOLS = new Set(["write_file", "edit_file", "execute"]);
+
+@Component({
+  selector: "app-ide-preview",
+  template: `<!-- ... -->`,
+})
+export class IdePreviewComponent {
+  stream = injectStream<typeof myAgent>({
+    apiUrl: AGENT_URL,
+    assistantId: "deep_agent_ide",
+  });
+
+  private processedIds = new Set<string>();
+
+  constructor() {
+    effect(() => {
+      const messages = this.stream.messages();
+      const toolCallMap = new Map();
+      for (const msg of messages) {
+        if (AIMessage.isInstance(msg)) {
+          for (const tc of (msg as AIMessage).tool_calls ?? []) {
+            if (tc.id && FILE_MUTATING_TOOLS.has(tc.name)) {
+              toolCallMap.set(tc.id, { name: tc.name, args: tc.args });
+            }
+          }
+        }
+      }
+
+      for (const msg of messages) {
+        if (!ToolMessage.isInstance(msg)) continue;
+        const id = (msg as ToolMessage).id ?? (msg as ToolMessage).tool_call_id;
+        if (!id || this.processedIds.has(id)) continue;
+
+        const call = toolCallMap.get((msg as ToolMessage).tool_call_id);
+        if (!call) continue;
+        this.processedIds.add(id);
+
+        if (call.name === "write_file" || call.name === "edit_file") {
+          this.refreshSingleFile(call.args.path ?? call.args.file_path);
+        } else if (call.name === "execute") {
+          this.refreshTreeAndFiles();
+        }
+      }
+    });
   }
-  ```
-</CodeGroup>
+}
+```
 
 ### 检测已更改的文件
 
@@ -755,7 +749,7 @@ function DiffPanel({ original, current, fileName }) {
 
 ### 更改文件摘要
 
-显示所有修改文件的摘要以及行级添加/删除计数。
+显示所有已修改文件的摘要以及行级添加/删除计数。
 这使用户可以快速了解代理的影响，类似于“git”
 状态`：
 
@@ -816,7 +810,7 @@ function ChangedFilesSummary({ changedFiles, files, originalFiles, onSelect }) {
 
 对于后端和沙箱：* **对生产应用程序使用线程范围的沙箱**。参见
   [Sandbox lifecycle](/oss/javascript/deepagents/going-to-production#lifecycle)。
-* **通过代理后端和 API 服务器之间共享沙箱解析**
+* **在代理后端和 API 服务器之间共享沙箱解析**
   线程元数据，因此两者都解析相同的环境，没有内存缓存。
 * **用真实的项目为沙箱播种**。参见
   [File transfers](/oss/javascript/deepagents/going-to-production#file-transfers)。
@@ -831,53 +825,43 @@ function ChangedFilesSummary({ changedFiles, files, originalFiles, onSelect }) {
 
 ## 相关
 
-<CardGroup>
-  <Card title="Going to production" icon="rocket" href="/oss/javascript/deepagents/going-to-production">
-    使用持久沙箱、身份验证、护栏和生产 `useStream` 设置来部署代理。
-  </Card>
+> **[Going to production](/oss/javascript/deepagents/going-to-production)**
+>
+> 使用持久沙箱、身份验证、护栏和生产 `useStream` 设置来部署代理。
 
-  <Card title="Sandboxes" icon="box" href="/oss/javascript/deepagents/sandboxes">
-    沙箱提供程序、安全模型和文件传输 API。
-  </Card>
+> **[Sandboxes](/oss/javascript/deepagents/sandboxes)**
+>
+> 沙箱提供程序、安全模型和文件传输 API。
 
-  <Card title="Frontend overview" icon="layout" href="/oss/javascript/deepagents/frontend/overview">
-    其他深层代理 UI 模式：子代理流、待办事项列表和自定义状态。
-  </Card>
+> **[Frontend overview](/oss/javascript/deepagents/frontend/overview)**
+>
+> 其他深层代理 UI 模式：子代理流、待办事项列表和自定义状态。
 
-  <Card title="Application structure" icon="file-code" href="/oss/javascript/langgraph/application-structure">
-    完整的 `langgraph.json` 参考，包括自定义 `http.app` 路线。
-  </Card>
-</CardGroup>
+> **[Application structure](/oss/javascript/langgraph/application-structure)**
+>
+> 完整的 `langgraph.json` 参考，包括自定义 `http.app` 路线。
 
 ## 相关LangChain指南
 
-沙盒 IDE 基于核心 LangChain 前端模式构建。这些指南涵盖
+沙箱 IDE 基于核心 LangChain 前端模式构建。这些指南涵盖
 本页使用相同的 `useStream` 原语：
 
-<CardGroup>
-  <Card title="Tool calling" icon="hammer" href="/oss/javascript/langchain/frontend/tool-calling">
-    将文件和执行工具调用渲染为具有类型安全结果的专用 UI 卡。
-  </Card><Card title="Headless tools" icon="cpu" href="/oss/javascript/langchain/frontend/headless-tools">
-    在客户端运行浏览器和设备 API — 对于在 IDE 面板中嵌入实时预览或终端输出非常有用。
-  </Card>
+> **[Tool calling](/oss/javascript/langchain/frontend/tool-calling)**
+>
+> 将文件和执行工具调用渲染为具有类型安全结果的专用 UI 卡。> **[Headless tools](/oss/javascript/langchain/frontend/headless-tools)**
+>
+> 在客户端运行浏览器和设备 API — 对于在 IDE 面板中嵌入实时预览或终端输出非常有用。
 
-  <Card title="Open-ended generative UI" icon="layout-grid" href="/oss/javascript/langchain/frontend/open-ended-generative-ui">
-    在生成 UI 范围的开放端渲染沙盒应用程序预览和 MCP 生成的界面。
-  </Card>
+> **[Open-ended generative UI](/oss/javascript/langchain/frontend/open-ended-generative-ui)**
+>
+> 在生成 UI 范围的开放端渲染沙盒应用程序预览和 MCP 生成的界面。
 
-  <Card title="Join & rejoin streams" icon="arrows-merge" href="/oss/javascript/langchain/frontend/join-rejoin">
-    页面重新加载后重新连接到正在运行的编码会话，而不会丢失沙箱状态。
-  </Card>
-</CardGroup>
+> **[Join & rejoin streams](/oss/javascript/langchain/frontend/join-rejoin)**
+>
+> 页面重新加载后重新连接到正在运行的编码会话，而不会丢失沙箱状态。
 
 ***
 
-<div>
-  <Callout icon="terminal-2">
-    [Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
-  </Callout>
+[Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
 
-  <Callout icon="edit">
-    [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/oss/deepagents/frontend/sandbox.mdx) 或 [file an issue](https://github.com/langchain-ai/docs/issues/new/choose)。
-  </Callout>
-</div>
+[Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/oss/deepagents/frontend/sandbox.mdx) 或 [file an issue](https://github.com/langchain-ai/docs/issues/new/choose)。

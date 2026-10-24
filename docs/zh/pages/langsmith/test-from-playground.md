@@ -19,9 +19,7 @@
 
 要在数据集上测试提示或模型配置并对结果进行评分，[run an evaluation from the Playground](/langsmith/run-evaluation-from-playground)。
 
-<Callout type="info" icon="feather">
-  使用 Playground 中的 [Chat](/langsmith/chat) 优化提示、生成工具并在 AI 辅助下创建输出模式。
-</Callout>
+使用 Playground 中的 [Chat](/langsmith/chat) 优化提示、生成工具并在 AI 辅助下创建输出模式。
 
 ## 另请参阅
 
@@ -33,12 +31,6 @@
 
 ***
 
-<div>
-  <Callout icon="terminal-2">
-    [Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
-  </Callout>
+[Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
 
-  <Callout icon="edit">
-    [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/test-from-playground.mdx) 或 [file an issue](https://github.com/langchain-ai/docs/issues/new/choose)。
-  </Callout>
-</div>
+[Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/test-from-playground.mdx) 或 [file an issue](https://github.com/langchain-ai/docs/issues/new/choose)。

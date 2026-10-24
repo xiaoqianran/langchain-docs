@@ -83,7 +83,7 @@ export LANGSMITH_PI_METADATA='{"team":"infra","environment":"local"}'
 }
 ```
 
-配置文件字段：|领域 |必填 |默认|描述 |
+配置文件字段：|领域|必填 |默认|描述 |
 | - | - | - | - |
 | `enabled` |是的 | `false` |设置为 `true` 以启用从配置文件进行跟踪。 |
 | `api_key` |否\* | — | LangSmith API 密钥。除非环境变量或副本提供，否则是必需的。 |
@@ -118,12 +118,6 @@ export LANGSMITH_PI_METADATA='{"team":"infra","environment":"local"}'
 
 ***
 
-<div>
-  <Callout icon="terminal-2">
-    [Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
-  </Callout>
+[Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
 
-  <Callout icon="edit">
-    [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/trace-with-pi.mdx) 或 [file an issue](https://github.com/langchain-ai/docs/issues/new/choose)。
-  </Callout>
-</div>
+[Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/trace-with-pi.mdx) 或 [file an issue](https://github.com/langchain-ai/docs/issues/new/choose)。

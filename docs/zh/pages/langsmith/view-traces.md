@@ -12,37 +12,33 @@
 
 侧面板围绕 [threads](/langsmith/observability-concepts#threads) 组织，作为主要导航单元。 UI 没有将每个 [run](/langsmith/observability-concepts#runs) 视为孤立的对象，而是使周围的对话保持可见，以便您可以了解运行在代理更广泛的执行中的位置。
 
-<Note>
-  “线程”选项卡和“转弯”视图仅适用于使用 `thread_id` 元数据字段进行检测的运行。如果没有线程检测，您将看到单独运行的跟踪，并且无法访问 Turns 视图。
-</Note>
+> [!注意]
+>
+> “线程”选项卡和“转弯”视图仅适用于使用 `thread_id` 元数据字段进行检测的运行。如果没有线程检测，您将看到单独运行的跟踪，并且无法访问 Turns 视图。
 
 侧面板顶部提供三个视图：* [**Trajectory**](#trajectory-view)：会话层。将[trajectory](/langsmith/observability-concepts#trajectories)扫描为输入、输出、推理、工具调用和子代理活动。使用它来查找要查找的位置。按`T`切换到该视图。
 * [**Turns**](#turns-view)：每回合摘要。将线程中的每一圈视为显示其输入和输出的卡片，并可展开/折叠。当您想要结构概览而不需要完整的对话渲染时，请使用此选项。
-* [**Details**](#details-view)：调试层。深入研究特定运行以检查输入、输出、计时、令牌计数、错误和元数据。使用它可以了解执行过程中特定点发生的情况。按`D`切换到该视图。
+* [**Details**](#details-view)：调试层。深入研究特定运行以检查输入、输出、计时、令牌计数、错误和元数据。使用它可以了解执行中特定点发生的情况。按`D`切换到该视图。
 
-<Note>
-  对于没有任何可渲染消息的线程，“轨迹”选项卡处于禁用状态。侧面板默认为“详细信息”视图。
-</Note>
+> [!注意]
+>
+> 对于没有任何可渲染消息的线程，“轨迹”选项卡被禁用。侧面板默认为“详细信息”视图。
 
 使用“轨迹”视图在对话中确定自己的方向并确定要关注的位置，然后切换到“详细信息”视图以检查特定的运行：
 
-<Steps>
-  <Step title="Start in the Trajectory view">
-    打开一个线程并切换到“轨迹”视图以查看完整的对话。
-  </Step>
+**1.从轨迹视图开始**
 
-  <Step title="Investigate">
-    扫描轨迹以识别意外行为，例如，错误的工具结果、意外的子代理切换、延迟峰值。
-  </Step><Step title="Inspect the run">
-    单击相关消息或工具调用，以在生成该消息或工具的确切运行中打开“详细信息”视图。检查其输入、输出、时间、错误和元数据。
-  </Step>
+打开一个线程并切换到“轨迹”视图以查看完整的对话。
 
-  <Step title="Return to the trajectory">
-    切换回轨迹视图以继续扫描对话。
-  </Step>
-</Steps>
+**2.调查**
 
-<div />
+扫描轨迹以识别意外行为，例如，错误的工具结果、意外的子代理切换、延迟峰值。**3.检查运行**
+
+单击相关消息或工具调用，以在生成该消息或工具的确切运行中打开“详细信息”视图。检查其输入、输出、时间、错误和元数据。
+
+**4.返回轨迹**
+
+切换回轨迹视图以继续扫描对话。
 
 ## 轨迹视图
 
@@ -122,15 +118,9 @@
 
 * **共享跟踪：** 生成跟踪的公共链接。参见[Manage a trace](/langsmith/manage-trace#share-a-trace)。
 * **查看服务器日志：** 访问与 LangSmith 部署生成的跟踪关联的服务器日志。请参阅[Manage a trace](/langsmith/manage-trace#view-server-logs)。
-* **添加到数据集：** 将运行保存为数据集中的示例，以供评估使用。参见[Manage datasets in the application](/langsmith/manage-datasets-in-application#manually-from-a-tracing-project)。
+* **添加到数据集：** 将运行保存为数据集中的示例，以便在评估中使用。参见[Manage datasets in the application](/langsmith/manage-datasets-in-application#manually-from-a-tracing-project)。
 * **添加到注释队列：** 将运行或其整个[thread](/langsmith/observability-concepts#threads)发送到队列以供人工审核和反馈。请参阅[Annotation queues](/langsmith/annotation-queues#assign-runs-and-threads-to-a-single-run-queue)。
 
-***<div>
-  <Callout icon="terminal-2">
-    [Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
-  </Callout>
+***[Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
 
-  <Callout icon="edit">
-    [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/view-traces.mdx) 或 [file an issue](https://github.com/langchain-ai/docs/issues/new/choose)。
-  </Callout>
-</div>
+[Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/view-traces.mdx) 或 [file an issue](https://github.com/langchain-ai/docs/issues/new/choose)。

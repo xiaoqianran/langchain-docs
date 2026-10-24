@@ -16,15 +16,13 @@
 
 使用 LiteLLM Python SDK 或 LiteLLM 代理时安装以下内容：
 
-<CodeGroup>
-  ```bash Python SDK theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  pip install litellm langsmith openai
-  ```
+```bash Python SDK theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+pip install litellm langsmith openai
+```
 
-  ```bash Proxy usage theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  npm install openai langsmith
-  ```
-</CodeGroup>
+```bash Proxy usage theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+npm install openai langsmith
+```
 
 本指南中的示例使用 OpenAI 模型，但您可以为您的用例安装必要的提供程序。
 
@@ -33,9 +31,9 @@
 LiteLLM 支持两种将跟踪发送到LangSmith的方法，它们在不同的层进行操作：
 
 * [LangSmith SDK tracing](#use-langsmith_tracing-and-traceable) 与 `LANGSMITH_TRACING=true` 通过 LangSmith SDK 启用应用程序级跟踪。当您想要跟踪更广泛的业务逻辑、多步骤管道或使用 `@traceable` 创建的跨度时，这非常有用。
-* LiteLLM 的内置[⟦T16⟧ callback](#log-litellm-call-with-the-langsmith-callback) 直接从 LiteLLM 记录模型调用。当您想要专门跟踪 LiteLLM 请求或运行异步应用程序时，建议这样做。<Note>
-  避免为相同的 LiteLLM 调用启用 LiteLLM 的 `langsmith` 回调和 LangSmith 跟踪，因为这可能会导致重复的跟踪。
-</Note>
+* LiteLLM 的内置[⟦T16⟧ callback](#log-litellm-call-with-the-langsmith-callback) 直接从 LiteLLM 记录模型调用。当您想要专门跟踪 LiteLLM 请求或运行异步应用程序时，建议这样做。> [!注意]
+>
+> 避免对相同的 LiteLLM 调用启用 LiteLLM 的 `langsmith` 回调和 LangSmith 跟踪，因为这可能会导致重复跟踪。
 
 ### 使用`LANGSMITH_TRACING`和`traceable`
 
@@ -88,17 +86,17 @@ LiteLLM 支持两种将跟踪发送到LangSmith的方法，它们在不同的层
 
    在此示例中，`messages`参数成为跟踪输入，返回的辅助消息对象成为跟踪输出。 LiteLLM 调用本身正常运行 - `@traceable` 用可观察性包装它，而不是修改其行为。这种方法跟踪您的应用程序逻辑，而不仅仅是模型调用。
 
-   <Tip>
-     有关使用 `@traceable` 的更一般示例，请参阅 [Custom instrumentation](/langsmith/annotate-code#use-@traceable-/-traceable) 页面。
-   </Tip>
+   > [!提示]
+   >
+   > 有关使用 `@traceable` 的更一般示例，请参阅 [Custom instrumentation](/langsmith/annotate-code#use-@traceable-/-traceable) 页面。
 
 ### 使用 `langsmith` 回调记录 LiteLLM 调用
 
 LiteLLM 可以使用其内置的 [callback system](https://docs.litellm.ai/docs/observability/callbacks) 将跟踪直接发送到 LangSmith。当在异步 Python 服务中运行 LiteLLM 并且您希望 LiteLLM 本身发出模型级日志时，这非常有用。
 
-LiteLLM 回调在异步环境中运行。使用`litellm.acompletion()`进行异步调用时，您可以启用`langsmith`回调来记录成功的模型调用。<Tip>
-  这种方法最适合异步应用程序。对于简单的同步脚本，请使用[previous section](#use-langsmith_tracing-and-traceable)中所示的`@traceable`方法。
-</Tip>
+LiteLLM 回调在异步环境中运行。使用`litellm.acompletion()`进行异步调用时，您可以启用`langsmith`回调来记录成功的模型调用。> [!提示]
+>
+> 这种方法最适合异步应用程序。对于简单的同步脚本，请使用[previous section](#use-langsmith_tracing-and-traceable)中所示的`@traceable`方法。
 
 1. 设置以下环境变量：
 
@@ -154,7 +152,7 @@ LiteLLM 回调在异步环境中运行。使用`litellm.acompletion()`进行异�
 
 ## 使用 LiteLLM 代理
 
-LiteLLM 代理作为独立服务器运行并公开OpenAI 兼容 API。
+LiteLLM 代理作为独立服务器运行并公开 OpenAI 兼容 API。
 
 1. 要让代理日志请求直接发送到LangSmith，请在`config.yaml`中配置回调：
 
@@ -174,9 +172,9 @@ LiteLLM 代理作为独立服务器运行并公开OpenAI 兼容 API。
    export LANGSMITH_API_KEY="your_api_key"
    export LANGSMITH_PROJECT="litellm-proxy"
    export OPENAI_API_KEY="your_openai_key"
-   ```<Note>
-     LiteLLM 代理作为单独的服务运行。如果在代理级别启用LangSmith跟踪，则必须在代理的运行时环境中配置`LANGSMITH_API_KEY`和相关环境变量。这些设置不会与您的应用程序进程共享。
-   </Note>
+   ```> [!注意]
+   >
+   > LiteLLM 代理作为单独的服务运行。如果在代理级别启用LangSmith跟踪，则必须在代理的运行时环境中配置`LANGSMITH_API_KEY`及相关环境变量。这些设置不会与您的应用程序进程共享。
 
 3.启动代理：
 
@@ -190,43 +188,41 @@ LiteLLM 代理作为独立服务器运行并公开OpenAI 兼容 API。
 
 4. 从另一个终端窗口调用代理：
 
-   <CodeGroup>
-     ```python Python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-     from openai import OpenAI
+   ```python Python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+   from openai import OpenAI
 
-     client = OpenAI(
-         base_url="http://localhost:4000/v1",
-         api_key="anything"  # proxy may require a key but doesn't validate it by default
-     )
+   client = OpenAI(
+       base_url="http://localhost:4000/v1",
+       api_key="anything"  # proxy may require a key but doesn't validate it by default
+   )
 
-     response = client.chat.completions.create(
-         model="gpt-5.5",
-         messages=[
-             {"role": "user", "content": "What is LiteLLM?"}
-         ],
-     )
+   response = client.chat.completions.create(
+       model="gpt-5.5",
+       messages=[
+           {"role": "user", "content": "What is LiteLLM?"}
+       ],
+   )
 
-     print(response.choices[0].message.content)
-     ```
+   print(response.choices[0].message.content)
+   ```
 
-     ```javascript JavaScript theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-     import OpenAI from "openai";
+   ```javascript JavaScript theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+   import OpenAI from "openai";
 
-     const client = new OpenAI({
-     apiKey: "anything",
-     baseURL: "http://localhost:4000/v1",
-     });
+   const client = new OpenAI({
+   apiKey: "anything",
+   baseURL: "http://localhost:4000/v1",
+   });
 
-     const response = await client.chat.completions.create({
-     model: "gpt-5.5",
-     messages: [
-         { role: "user", content: "Explain LiteLLM tracing." }
-     ],
-     });
+   const response = await client.chat.completions.create({
+   model: "gpt-5.5",
+   messages: [
+       { role: "user", content: "Explain LiteLLM tracing." }
+   ],
+   });
 
-     console.log(response.choices[0].message.content);
-     ```
-   </CodeGroup>
+   console.log(response.choices[0].message.content);
+   ```
 
    客户端发送正常的聊天完成请求，代理处理提供者路由和响应格式。
 
@@ -238,12 +234,6 @@ LiteLLM 代理作为独立服务器运行并公开OpenAI 兼容 API。
 
 ***
 
-<div>
-  <Callout icon="terminal-2">
-    [Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
-  </Callout>
+[Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
 
-  <Callout icon="edit">
-    [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/trace-litellm.mdx) 或 [file an issue](https://github.com/langchain-ai/docs/issues/new/choose)。
-  </Callout>
-</div>
+[Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/trace-litellm.mdx) 或 [file an issue](https://github.com/langchain-ai/docs/issues/new/choose)。

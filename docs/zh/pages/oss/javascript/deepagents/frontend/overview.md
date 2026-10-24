@@ -8,16 +8,16 @@
 
 构建实时可视化深层代理工作流程的前端。这些图案
 展示如何呈现子代理进度、任务规划、流内容以及
-使用 `createDeepAgent` 创建的代理提供类似 IDE 的沙箱体验。
+使用 `createDeepAgent` 创建的代理提供类似 IDE 的沙盒体验。
 
 当 UI 使委派可见时，深度代理最为有用。而不是
 显示单个不透明的助手气泡，LangChain SDK 公开了
 协调器、子代理发现、自定义状态和沙箱支持的工件，以便
 用户可以检查长时间运行的任务是如何分解和完成的。
 
-<Note>
-  这些模式使用 v1 前端 SDK 包。如果您使用的是早期版本，请参阅 [React](https://github.com/langchain-ai/langgraphjs/blob/main/libs/sdk-react/docs/v1-migration.md)、[Vue](https://github.com/langchain-ai/langgraphjs/blob/main/libs/sdk-vue/docs/v1-migration.md)、[Svelte](https://github.com/langchain-ai/langgraphjs/blob/main/libs/sdk-svelte/docs/v1-migration.md) 和 [Angular](https://github.com/langchain-ai/langgraphjs/blob/main/libs/sdk-angular/docs/v1-migration.md) 的迁移指南。
-</Note>
+> [!注意]
+>
+> 这些模式使用 v1 前端 SDK 包。如果您使用的是早期版本，请参阅 [React](https://github.com/langchain-ai/langgraphjs/blob/main/libs/sdk-react/docs/v1-migration.md)、[Vue](https://github.com/langchain-ai/langgraphjs/blob/main/libs/sdk-vue/docs/v1-migration.md)、[Svelte](https://github.com/langchain-ai/langgraphjs/blob/main/libs/sdk-svelte/docs/v1-migration.md) 和 [Angular](https://github.com/langchain-ai/langgraphjs/blob/main/libs/sdk-angular/docs/v1-migration.md) 的迁移指南。
 
 ## 架构
 
@@ -106,17 +106,15 @@ function App() {
 
 ## 模式
 
-<CardGroup>
-  <Card title="Subagent streaming" icon="arrows-split" href="/oss/javascript/deepagents/frontend/subagent-streaming">
-    显示具有流媒体内容、进度跟踪和可折叠卡片的专家子代理。
-  </Card><Card title="Todo list" icon="list-check" href="/oss/javascript/deepagents/frontend/todo-list">
-    当客服人员选择任务计划时，通过实时待办事项列表跟踪进度。
-  </Card>
+> **[Subagent streaming](/oss/javascript/deepagents/frontend/subagent-streaming)**
+>
+> 显示具有流媒体内容、进度跟踪和可折叠卡片的专家子代理。> **[Todo list](/oss/javascript/deepagents/frontend/todo-list)**
+>
+> 当代理选择任务计划时，通过实时待办事项列表跟踪进度。
 
-  <Card title="Sandbox" icon="code" href="/oss/javascript/deepagents/frontend/sandbox">
-    使用文件浏览器、代码查看器和沙箱支持的差异面板构建类似 IDE 的 UI。
-  </Card>
-</CardGroup>
+> **[Sandbox](/oss/javascript/deepagents/frontend/sandbox)**
+>
+> 使用文件浏览器、代码查看器和沙箱支持的差异面板构建类似 IDE 的 UI。
 
 ## 相关模式
 
@@ -131,12 +129,6 @@ markdown 消息、工具调用和人机交互，都与深度协同工作
 
 ***
 
-<div>
-  <Callout icon="terminal-2">
-    [Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
-  </Callout>
+[Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
 
-  <Callout icon="edit">
-    [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/oss/deepagents/frontend/overview.mdx) 或 [file an issue](https://github.com/langchain-ai/docs/issues/new/choose)。
-  </Callout>
-</div>
+[Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/oss/deepagents/frontend/overview.mdx) 或 [file an issue](https://github.com/langchain-ai/docs/issues/new/choose)。

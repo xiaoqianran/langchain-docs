@@ -73,7 +73,7 @@ export LANGSMITH_CODEX_PROJECT="codex"
     "environment": "dev"
   }
 }
-```|领域 |环境变量|默认|描述 |
+```|领域|环境变量 |默认|描述 |
 | - | - | - | - |
 | `enabled` | `TRACE_TO_LANGSMITH` | `false` |设置为 `true` 以启用跟踪。 |
 | `api_key` | `LANGSMITH_CODEX_API_KEY`、`LANGSMITH_API_KEY` | - | LangSmith API 密钥。 |
@@ -88,7 +88,7 @@ export LANGSMITH_CODEX_PROJECT="codex"
 
 ## 追踪到多个目的地
 
-在 `langsmith.json` 或 `LANGSMITH_CODEX_RUNS_ENDPOINTS` 中设置 `replicas` 可将相同的跟踪数据发送到其他 LangSmith 工作区或项目。设置后，副本列表将覆盖其他客户端设置。
+在 `langsmith.json` 或 `LANGSMITH_CODEX_RUNS_ENDPOINTS` 中设置 `replicas`，将相同的跟踪数据发送到其他 LangSmith 工作区或项目。设置后，副本列表将覆盖其他客户端设置。
 
 跟踪多个 [replicas](/langsmith/log-traces-to-project) 对于以下用途很有用：
 
@@ -96,44 +96,42 @@ export LANGSMITH_CODEX_PROJECT="codex"
 * 使用不同的 API 密钥跟踪多个工作区。
 * 将额外的元数据添加到特定的副本目的地。
 
-<Tabs>
-  <Tab title="Config file (recommended)">
-    在 `<project>/.codex/langsmith.json` 或 `~/.codex/langsmith.json` 中：
+**配置文件（推荐）**
 
-    ```json theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+在 `<project>/.codex/langsmith.json` 或 `~/.codex/langsmith.json` 中：
+
+```json theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+{
+  "enabled": true,
+  "replicas": [
     {
-      "enabled": true,
-      "replicas": [
-        {
-          "apiUrl": "https://api.smith.langchain.com",
-          "apiKey": "lsv2_pt_workspace_a",
-          "projectName": "project-prod"
-        },
-        {
-          "apiUrl": "https://api.smith.langchain.com",
-          "apiKey": "lsv2_pt_workspace_b",
-          "projectName": "project-staging",
-          "updates": { "metadata": { "environment": "staging" } }
-        }
-      ]
+      "apiUrl": "https://api.smith.langchain.com",
+      "apiKey": "lsv2_pt_workspace_a",
+      "projectName": "project-prod"
+    },
+    {
+      "apiUrl": "https://api.smith.langchain.com",
+      "apiKey": "lsv2_pt_workspace_b",
+      "projectName": "project-staging",
+      "updates": { "metadata": { "environment": "staging" } }
     }
-    ```
-  </Tab>
+  ]
+}
+```
 
-  <Tab title="Shell environment variable">
-    ```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-    export LANGSMITH_CODEX_RUNS_ENDPOINTS='[{"apiUrl":"https://api.smith.langchain.com","apiKey":"lsv2_pt_workspace_a","projectName":"project-prod"},{"apiUrl":"https://api.smith.langchain.com","apiKey":"lsv2_pt_workspace_b","projectName":"project-staging","updates":{"metadata":{"environment":"staging"}}}]'
-    ```要生成转义的 JSON 字符串，请使用：
+**shell环境变量**
 
-    ```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-    echo '[{"apiUrl":"...","apiKey":"...","projectName":"..."}]' | jq -c .
-    ```
-  </Tab>
-</Tabs>
+```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+export LANGSMITH_CODEX_RUNS_ENDPOINTS='[{"apiUrl":"https://api.smith.langchain.com","apiKey":"lsv2_pt_workspace_a","projectName":"project-prod"},{"apiUrl":"https://api.smith.langchain.com","apiKey":"lsv2_pt_workspace_b","projectName":"project-staging","updates":{"metadata":{"environment":"staging"}}}]'
+```要生成转义的 JSON 字符串，请使用：
+
+```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+echo '[{"apiUrl":"...","apiKey":"...","projectName":"..."}]' | jq -c .
+```
 
 每个副本对象支持以下字段：
 
-|领域 |必填 |描述 |
+|领域|必填 |描述 |
 | - | - | - |
 | `apiUrl` |是的 | LangSmith API URL（通常为`https://api.smith.langchain.com`）。 |
 | `apiKey` |是的 |目标工作区的 API 密钥。 |
@@ -144,7 +142,7 @@ export LANGSMITH_CODEX_PROJECT="codex"
 
 该插件会编辑从运行输入、输出、错误和元数据中检测到的秘密，然后将其上传到LangSmith。默认情况下，密文处于启用状态。
 
-上传之前，编辑会在您的计算机上运行，​​因此未编辑的内容永远不会达到 LangSmith。副本目标接收相同的编辑有效负载。
+上传之前，编辑会在您的计算机上运行，​​因此未编辑的内容永远不会到达LangSmith。副本目标接收相同的编辑有效负载。
 
 检测涵盖提供商 API 密钥前缀、JSON Web 令牌和 PEM 私钥块。它还涵盖上下文形状，例如 `API_KEY=<value>`、`Authorization` 标头以及嵌入 URL 中的密码。每场比赛都替换为`[SECRET_DETECTED]`。规则列表请参见[Redact secrets from traces](/langsmith/redact-secrets#rules-in-the-preset)。密文与已知的凭证形状相匹配，因此将其视为安全网而不是保证。无法识别格式的凭证仍会达到LangSmith，并且附件、运行名称和标签不会通过匿名器。编辑后的跟踪还保留了构建它所依据的提示、文件内容和工具结果，因此限制了谁可以读取跟踪项目。
 
@@ -179,13 +177,13 @@ export LANGSMITH_CODEX_PROJECT="codex"
 
 打开配置好的LangSmith项目并完成Codex回合。默认情况下，跟踪显示在 `codex` 项目中。该插件上传完整的 Codex 转录数据，包括消息、工具调用输入和输出、模型元数据、令牌使用情况和子代理线程结构。
 
-<Warning>
-  该插件将完整的 Codex 转录数据上传到 LangSmith。不要对包含您不希望存储在 LangSmith 中的数据的会话启用跟踪。
-</Warning>
+> [!警告]
+>
+> 该插件将完整的 Codex 转录数据上传至 LangSmith。不要对包含您不希望存储在 LangSmith 中的数据的会话启用跟踪。
 
 ## 故障排除
 
-如果LangSmith中没有出现痕迹：* 确认`config.toml`中启用了跟踪插件并且其挂钩是可信的（`/hooks`）。 `[features] hooks` 默认情况下处于打开状态，因此仅将其设置为撤消本地覆盖。
+如果LangSmith中没有出现痕迹：* 确认在 `config.toml` 中启用了跟踪插件并且其挂钩是可信的 (`/hooks`)。 `[features] hooks` 默认情况下处于打开状态，因此仅将其设置为撤消本地覆盖。
 * 确认 `TRACE_TO_LANGSMITH=true` 对 Codex 流程可见。
 * 确认`LANGSMITH_CODEX_API_KEY`或`LANGSMITH_API_KEY`已设置且有效。
 * 如果运行在错误的项目中，请设置`LANGSMITH_CODEX_PROJECT`或`project`配置键。
@@ -193,12 +191,6 @@ export LANGSMITH_CODEX_PROJECT="codex"
 
 ***
 
-<div>
-  <Callout icon="terminal-2">
-    [Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
-  </Callout>
+[Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
 
-  <Callout icon="edit">
-    [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/trace-with-codex.mdx) 或 [file an issue](https://github.com/langchain-ai/docs/issues/new/choose)。
-  </Callout>
-</div>
+[Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/trace-with-codex.mdx) 或 [file an issue](https://github.com/langchain-ai/docs/issues/new/choose)。

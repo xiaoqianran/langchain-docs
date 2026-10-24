@@ -12,9 +12,9 @@ LangSmith 提供了有关 [organization's](/langsmith/administration-overview) �
 
 |查看 |在哪里可以找到它 |谁能看到|计划可用性 |
 | - | - | - | - |
-| [Usage graph](#usage-graph) | **企业**：设置 > 使用情况 > 使用情况图表<br />**自助服务**：设置 > 计费 > 使用情况图表 |所有组织成员 |所有计划|
-| [Granular usage](#granular-usage) | **企业**：设置 > 使用情况 > 细化使用情况<br />**自助服务**：设置 > 计费 > 细化使用情况 |所有组织成员 |所有计划|
-| [Contract usage](#contract-usage) | **企业**：设置 > 使用情况 > 合同使用情况<br />**自助服务**：设置 > 计费 > 合同使用情况 |仅限组织管理员 (`organization:manage`) |仅限企业|
+| [Usage graph](#usage-graph) | **企业**：设置 > 使用情况 > 使用情况图表 **自助服务**：设置 > 计费 > 使用情况图表 |所有组织成员 |所有计划|
+| [Granular usage](#granular-usage) | **企业**：设置 > 使用情况 > 精细使用情况 **自助服务**：设置 > 计费 > 精细使用情况 |所有组织成员 |所有计划|
+| [Contract usage](#contract-usage) | **企业**：设置 > 使用情况 > 合同使用情况 **自助服务**：设置 > 计费 > 合同使用情况 |仅限组织管理员 (`organization:manage`) |仅限企业|
 | [Invoices](#invoices) |设置 > 账单 > 发票 |所有组织成员 |仅自助云 |
 | [Evaluator spend](/langsmith/evaluator-spend) |评估者页面，评估者详细信息 |所有工作区成员 |每周跟踪一次，于周一上午 12 点（世界标准时间）重置，与下面的每月计费周期分开 |
 
@@ -30,11 +30,11 @@ LangSmith 提供了有关 [organization's](/langsmith/administration-overview) �
 | **LangSmith 跟踪（扩展数据保留升级）** |跟踪升级为延长保留期（截至 2026 年 9 月 14 日，默认为 180 天，[customizable for Enterprise customers](/langsmith/data-purging-compliance#customize-extended-retention-policy)）。这些费用是在基本费用之外收取的。 |
 | **LangSmith 部署运行** |已部署的LangGraph代理的端到端调用。有关定价详情，请参阅[LangSmith Deployment billing](/langsmith/billing#langsmith-deployment-billing)。 |
 | **LangSmith 舰队运行** | [Fleet](/langsmith/fleet) 代理的端到端调用。单独跟踪云托管和自托管部署。 |
-| **LangSmith 执行的部署节点** |跨部署代理的单独LangGraph节点执行。已部署代理图中的每个步骤都算作一个节点执行。单独跟踪云托管和自托管部署。 |
+| **LangSmith 执行的部署节点** |跨已部署代理的单独 LangGraph 节点执行。已部署代理图中的每个步骤都算作一个节点执行。单独跟踪云托管和自托管部署。 |
 
-有关跟踪保留层的更多详细信息，请参阅[Data retention](/langsmith/usage-and-billing#data-retention)。<Note>
-  使用情况图表使用术语 `tenant_id` 与工作区 ID 互换。
-</Note>
+有关跟踪保留层的更多详细信息，请参阅[Data retention](/langsmith/usage-and-billing#data-retention)。> [!注意]
+>
+> 使用情况图表使用术语 `tenant_id` 与工作区 ID 互换。
 
 ## 合约使用
 
@@ -49,11 +49,11 @@ LangSmith 提供了有关 [organization's](/langsmith/administration-overview) �
 * **每月使用量图表**：显示合同期内每个月的使用量的条形图。
 * **产品价格**：您的授权产品及其定价表。
 
-<Note>
-  合同使用需要[⟦T3⟧ permission](/langsmith/organization-workspace-operations)，并且仅适用于具有预付费承诺的企业客户。
-</Note><Note>
-  如果您的合同跨越同一计费实体下的多个组织，则合同使用情况视图将显示所有这些组织中累计的**组合**使用情况，而不仅仅是您当前查看的组织。 [Granular usage](#granular-usage) 始终仅限于单个组织，因此要查看特定组织的精细使用情况，请切换到该组织并单独查看其精细使用情况。
-</Note>
+> [!注意]
+>
+> 合同使用需要[⟦T3⟧ permission](/langsmith/organization-workspace-operations)，并且仅适用于具有预付费承诺的企业客户。> [!注意]
+>
+> 如果您的合同跨越同一计费实体下的多个组织，则合同使用情况视图将显示所有这些组织中累计的**组合**使用情况，而不仅仅是您当前查看的组织。 [Granular usage](#granular-usage) 始终仅限于单个组织，因此要查看特定组织的精细使用情况，请切换到该组织并单独查看其精细使用情况。
 
 ## 发票
 
@@ -67,11 +67,11 @@ LangSmith 提供了有关 [organization's](/langsmith/administration-overview) �
 
 导航到 **设置** > **计费和使用情况** > **详细使用情况**，或使用 [granular usage API](/langsmith/granular-usage)。
 
-### 这里的“痕迹”是什么意思粒度使用视图对**跟踪**进行计数：根级别运行及其所有子跨度均算作一个单元。这与 [billing](/langsmith/billing) 使用的单位相同。它不会单独计算各个范围、令牌或模型调用。
+### 这里的“痕迹”是什么意思精细使用视图对**跟踪**进行计数：根级别运行及其所有子跨度均算作一个单元。这与 [billing](/langsmith/billing) 使用的单位相同。它不会单独计算各个范围、令牌或模型调用。
 
 ### 记录使用情况时
 
-精细使用情况按**插入时间**（当LangSmith接收并存储跟踪时）记录跟踪，而不是按其在应用程序中运行的时间记录。实际上，这种差异通常可以忽略不计，但以显着延迟发送的跟踪（例如，缓冲的 SDK 上传）可能会出现在比预期更晚的时间段中。
+粒度使用按**插入时间**（当LangSmith接收并存储跟踪时）记录跟踪，而不是按其在应用程序中运行的时间记录。实际上，这种差异通常可以忽略不计，但以显着延迟发送的跟踪（例如，缓冲的 SDK 上传）可能会出现在比预期更晚的时间段中。
 
 有关分组选项、时间段大小和 API 参考，请参阅[Granular billable usage](/langsmith/granular-usage)。
 
@@ -96,9 +96,9 @@ LangSmith 提供了有关 [organization's](/langsmith/administration-overview) �
   GRANULAR_USAGE_TABLE_ENABLED=true
   ```
 
-<Warning>
-  数据收集从启用该功能的那一刻开始。在启用之前不会回填历史使用数据。选择何时启用此功能时，请做出相应计划。
-</Warning>
+> [!警告]
+>
+> 数据收集从该功能启用的那一刻开始。在启用之前不会回填历史使用数据。选择何时启用此功能时，请做出相应计划。
 
 ### 自托管的聚合使用情况
 
@@ -121,10 +121,6 @@ LangSmith 提供了有关 [organization's](/langsmith/administration-overview) �
 
 ***
 
-<div>
-  <Callout icon="terminal-2">
-    [Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
-  </Callout><Callout icon="edit">
-    [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/view-usage.mdx) 或 [file an issue](https://github.com/langchain-ai/docs/issues/new/choose)。
-  </Callout>
-</div>
+[Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
+
+[Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/view-usage.mdx) 或 [file an issue](https://github.com/langchain-ai/docs/issues/new/choose)。

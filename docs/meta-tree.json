@@ -3777,6 +3777,12 @@
           "rel": "langsmith/javascript/managed-deep-agents-context-hub.md"
         }
       ],
+      "managed-deep-agents-custom-frontend": [
+        {
+          "title": "Build a custom frontend for a Managed Deep Agent",
+          "rel": "langsmith/javascript/managed-deep-agents-custom-frontend.md"
+        }
+      ],
       "managed-deep-agents-deploy": [
         {
           "title": "Deploy a Managed Deep Agent",
@@ -3949,6 +3955,12 @@
         {
           "title": "Manage Context Hub for Managed Deep Agents",
           "rel": "langsmith/python/managed-deep-agents-context-hub.md"
+        }
+      ],
+      "managed-deep-agents-custom-frontend": [
+        {
+          "title": "Build a custom frontend for a Managed Deep Agent",
+          "rel": "langsmith/python/managed-deep-agents-custom-frontend.md"
         }
       ],
       "managed-deep-agents-deploy": [

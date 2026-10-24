@@ -47,13 +47,13 @@ graph LR
 * 编码代理：自主运行的代理可以使用 shell、git、克隆存储库（许多提供商提供本机 git API，例如[Daytona's git operations](https://www.daytona.io/docs/en/git-operations/)），并运行 Docker-in-Docker 来构建和测试管道
 * 数据分析代理：在安全、隔离的环境中加载文件、安装数据分析库（pandas、numpy 等）、运行统计计算以及创建 PowerPoint 演示文稿等输出
 
-<Tip>
-  **使用 Deep Agents 代码？** Deep Agents 代码通过 `--sandbox` 标志具有内置沙箱支持。请参阅 [Use remote sandboxes](/oss/deepagents/code/remote-sandboxes) 了解 Deep Agents 代码特定设置、标志（`--sandbox-id`、`--sandbox-setup`）和示例。
-</Tip>
+> [!提示]
+>
+> **使用 Deep Agents 代码？** Deep Agents 代码通过 `--sandbox` 标志具有内置沙箱支持。请参阅 [Use remote sandboxes](/oss/deepagents/code/remote-sandboxes) 了解 Deep Agents 代码特定设置、标志（`--sandbox-id`、`--sandbox-setup`）和示例。
 
-<Note>
-  **如果您正在寻找 LangSmith 沙箱：** LangSmith 提供第一方托管沙箱，您可以直接从 LangSmith UI 或 SDK 使用，无需第三方帐户。有关托管沙箱资源、快照、服务 URL 和身份验证代理，请参阅[LangSmith Sandboxes](/langsmith/sandboxes)。
-</Note>
+> [!注意]
+>
+> **如果您正在寻找 LangSmith 沙箱：** LangSmith 提供第一方托管沙箱，您可以直接从 LangSmith UI 或 SDK 使用，无需第三方帐户。有关托管沙箱资源、快照、服务 URL 和身份验证代理，请参阅[LangSmith Sandboxes](/langsmith/sandboxes)。
 
 ## 基本用法
 
@@ -88,13 +88,13 @@ try {
 }
 ```
 
-<Card title="View example trace" icon="chart-line" href="https://smith.langchain.com/public/9359e1b7-644d-40b7-9da6-2c5332c52039/r">
-  为此示例打开公共 LangSmith 运行。
-</Card><Tip>
-  [LangSmith](https://smith.langchain.com?utm_source=docs\&utm_medium=cta\&utm_campaign=langsmith-signup\&utm_content=oss-deepagents-sandboxes) 跟踪显示哪些 shell 命令在沙箱内运行以及代理如何使用文件系统工具。按照[observability quickstart](/langsmith/observability-quickstart)进行设置。对于托管沙箱托管，请参阅[LangSmith Sandboxes](/langsmith/sandboxes)。
-
-  我们建议您还设置[LangSmith Engine](/langsmith/engine)，它可以监视您的痕迹、检测问题并提出修复建议。
-</Tip>
+> **[View example trace](https://smith.langchain.com/public/9359e1b7-644d-40b7-9da6-2c5332c52039/r)**
+>
+> 为此示例打开公共 LangSmith 运行。> [!提示]
+>
+> [LangSmith](https://smith.langchain.com?utm_source=docs\&utm_medium=cta\&utm_campaign=langsmith-signup\&utm_content=oss-deepagents-sandboxes) 跟踪显示哪些 shell 命令在沙箱内运行以及代理如何使用文件系统工具。按照[observability quickstart](/langsmith/observability-quickstart)进行设置。对于托管沙箱托管，请参阅[LangSmith Sandboxes](/langsmith/sandboxes)。
+>
+> 我们建议您还设置[LangSmith Engine](/langsmith/engine)，它可以监控您的痕迹、检测问题并提出修复建议。
 
 ## 可用的提供商
 
@@ -102,7 +102,7 @@ try {
 
 ## 生命周期和范围
 
-大多数应用程序选择为每个[thread](/langsmith/use-threads)（线程范围）分配一个沙箱，或者为同一[assistant](/langsmith/assistants)（助理范围）上的每个线程选择一个共享沙箱。
+大多数应用程序为每个[thread](/langsmith/use-threads)（线程范围）选择一个沙箱，或者为同一[assistant](/langsmith/assistants)（助理范围）上的每个线程选择一个共享沙箱。
 
 沙箱会消耗资源并耗费金钱，直到它们被关闭为止。确保在不再使用沙箱后将其关闭。
 
@@ -110,378 +110,374 @@ try {
 
 ### 线程范围（默认）
 
-每个对话都有自己的沙箱。第一次运行会创建它；后续打开同一个线程重用它。当线程结束或沙箱 TTL 到期时，环境就会消失。使用沙箱名称或元数据存储映射，如下例所示，以便每次运行解析到相同的沙箱。<Tip>
-  当用户可以在空闲时间后返回时，在沙箱上配置 TTL，以便提供商自动删除或存档空闲环境。
-</Tip>
+每个对话都有自己的沙箱。第一次运行会创建它；后续打开同一个线程重用它。当线程结束或沙箱 TTL 到期时，环境就会消失。使用沙箱名称或元数据存储映射，如下例所示，以便每次运行解析到相同的沙箱。> [!提示]
+>
+> 当用户可以在空闲时间后返回时，在沙箱上配置 TTL，以便提供商自动删除或存档空闲环境。
 
-<CodeGroup>
-  ```ts Google theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  import { createDeepAgent, LangSmithSandbox } from "deepagents";
-  import { SandboxClient } from "langsmith/sandbox";
-  import type { LangGraphRunnableConfig } from "@langchain/langgraph";
+```ts Google theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+import { createDeepAgent, LangSmithSandbox } from "deepagents";
+import { SandboxClient } from "langsmith/sandbox";
+import type { LangGraphRunnableConfig } from "@langchain/langgraph";
 
-  const client = new SandboxClient();
+const client = new SandboxClient();
 
-  export async function agent(config: LangGraphRunnableConfig) {
-    const threadId = config.configurable?.thread_id as string; // [!code highlight]
-    const sandboxName = `thread-${threadId}`;
-    const existing = (await client.listSandboxes()).filter(
-      (sb) => sb.name === sandboxName,
-    );
-    const lsSandbox =
-      existing[0] ??
-      (await client.createSandbox({
-        name: sandboxName,
-        idleTtlSeconds: 3600, // TTL: clean up when idle
-      }));
-    return createDeepAgent({
-      model: "google:gemini-3.6-flash",
-      backend: new LangSmithSandbox({ sandbox: lsSandbox }),
-    });
-  }
-  ```
+export async function agent(config: LangGraphRunnableConfig) {
+  const threadId = config.configurable?.thread_id as string; // [!code highlight]
+  const sandboxName = `thread-${threadId}`;
+  const existing = (await client.listSandboxes()).filter(
+    (sb) => sb.name === sandboxName,
+  );
+  const lsSandbox =
+    existing[0] ??
+    (await client.createSandbox({
+      name: sandboxName,
+      idleTtlSeconds: 3600, // TTL: clean up when idle
+    }));
+  return createDeepAgent({
+    model: "google:gemini-3.6-flash",
+    backend: new LangSmithSandbox({ sandbox: lsSandbox }),
+  });
+}
+```
 
-  ```ts OpenAI theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  import { createDeepAgent, LangSmithSandbox } from "deepagents";
-  import { SandboxClient } from "langsmith/sandbox";
-  import type { LangGraphRunnableConfig } from "@langchain/langgraph";
+```ts OpenAI theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+import { createDeepAgent, LangSmithSandbox } from "deepagents";
+import { SandboxClient } from "langsmith/sandbox";
+import type { LangGraphRunnableConfig } from "@langchain/langgraph";
 
-  const client = new SandboxClient();
+const client = new SandboxClient();
 
-  export async function agent(config: LangGraphRunnableConfig) {
-    const threadId = config.configurable?.thread_id as string; // [!code highlight]
-    const sandboxName = `thread-${threadId}`;
-    const existing = (await client.listSandboxes()).filter(
-      (sb) => sb.name === sandboxName,
-    );
-    const lsSandbox =
-      existing[0] ??
-      (await client.createSandbox({
-        name: sandboxName,
-        idleTtlSeconds: 3600, // TTL: clean up when idle
-      }));
-    return createDeepAgent({
-      model: "openai:gpt-5.5",
-      backend: new LangSmithSandbox({ sandbox: lsSandbox }),
-    });
-  }
-  ```
+export async function agent(config: LangGraphRunnableConfig) {
+  const threadId = config.configurable?.thread_id as string; // [!code highlight]
+  const sandboxName = `thread-${threadId}`;
+  const existing = (await client.listSandboxes()).filter(
+    (sb) => sb.name === sandboxName,
+  );
+  const lsSandbox =
+    existing[0] ??
+    (await client.createSandbox({
+      name: sandboxName,
+      idleTtlSeconds: 3600, // TTL: clean up when idle
+    }));
+  return createDeepAgent({
+    model: "openai:gpt-5.5",
+    backend: new LangSmithSandbox({ sandbox: lsSandbox }),
+  });
+}
+```
 
-  ```ts Anthropic theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  import { createDeepAgent, LangSmithSandbox } from "deepagents";
-  import { SandboxClient } from "langsmith/sandbox";
-  import type { LangGraphRunnableConfig } from "@langchain/langgraph";
+```ts Anthropic theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+import { createDeepAgent, LangSmithSandbox } from "deepagents";
+import { SandboxClient } from "langsmith/sandbox";
+import type { LangGraphRunnableConfig } from "@langchain/langgraph";
 
-  const client = new SandboxClient();
+const client = new SandboxClient();
 
-  export async function agent(config: LangGraphRunnableConfig) {
-    const threadId = config.configurable?.thread_id as string; // [!code highlight]
-    const sandboxName = `thread-${threadId}`;
-    const existing = (await client.listSandboxes()).filter(
-      (sb) => sb.name === sandboxName,
-    );
-    const lsSandbox =
-      existing[0] ??
-      (await client.createSandbox({
-        name: sandboxName,
-        idleTtlSeconds: 3600, // TTL: clean up when idle
-      }));
-    return createDeepAgent({
-      model: "anthropic:claude-sonnet-5",
-      backend: new LangSmithSandbox({ sandbox: lsSandbox }),
-    });
-  }
-  ```
+export async function agent(config: LangGraphRunnableConfig) {
+  const threadId = config.configurable?.thread_id as string; // [!code highlight]
+  const sandboxName = `thread-${threadId}`;
+  const existing = (await client.listSandboxes()).filter(
+    (sb) => sb.name === sandboxName,
+  );
+  const lsSandbox =
+    existing[0] ??
+    (await client.createSandbox({
+      name: sandboxName,
+      idleTtlSeconds: 3600, // TTL: clean up when idle
+    }));
+  return createDeepAgent({
+    model: "anthropic:claude-sonnet-5",
+    backend: new LangSmithSandbox({ sandbox: lsSandbox }),
+  });
+}
+```
 
-  ```ts OpenRouter theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  import { createDeepAgent, LangSmithSandbox } from "deepagents";
-  import { SandboxClient } from "langsmith/sandbox";
-  import type { LangGraphRunnableConfig } from "@langchain/langgraph";
+```ts OpenRouter theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+import { createDeepAgent, LangSmithSandbox } from "deepagents";
+import { SandboxClient } from "langsmith/sandbox";
+import type { LangGraphRunnableConfig } from "@langchain/langgraph";
 
-  const client = new SandboxClient();
+const client = new SandboxClient();
 
-  export async function agent(config: LangGraphRunnableConfig) {
-    const threadId = config.configurable?.thread_id as string; // [!code highlight]
-    const sandboxName = `thread-${threadId}`;
-    const existing = (await client.listSandboxes()).filter(
-      (sb) => sb.name === sandboxName,
-    );
-    const lsSandbox =
-      existing[0] ??
-      (await client.createSandbox({
-        name: sandboxName,
-        idleTtlSeconds: 3600, // TTL: clean up when idle
-      }));
-    return createDeepAgent({
-      model: "openrouter:z-ai/glm-5.2",
-      backend: new LangSmithSandbox({ sandbox: lsSandbox }),
-    });
-  }
-  ```
+export async function agent(config: LangGraphRunnableConfig) {
+  const threadId = config.configurable?.thread_id as string; // [!code highlight]
+  const sandboxName = `thread-${threadId}`;
+  const existing = (await client.listSandboxes()).filter(
+    (sb) => sb.name === sandboxName,
+  );
+  const lsSandbox =
+    existing[0] ??
+    (await client.createSandbox({
+      name: sandboxName,
+      idleTtlSeconds: 3600, // TTL: clean up when idle
+    }));
+  return createDeepAgent({
+    model: "openrouter:z-ai/glm-5.2",
+    backend: new LangSmithSandbox({ sandbox: lsSandbox }),
+  });
+}
+```
 
-  ```ts Fireworks theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  import { createDeepAgent, LangSmithSandbox } from "deepagents";
-  import { SandboxClient } from "langsmith/sandbox";
-  import type { LangGraphRunnableConfig } from "@langchain/langgraph";
+```ts Fireworks theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+import { createDeepAgent, LangSmithSandbox } from "deepagents";
+import { SandboxClient } from "langsmith/sandbox";
+import type { LangGraphRunnableConfig } from "@langchain/langgraph";
 
-  const client = new SandboxClient();
+const client = new SandboxClient();
 
-  export async function agent(config: LangGraphRunnableConfig) {
-    const threadId = config.configurable?.thread_id as string; // [!code highlight]
-    const sandboxName = `thread-${threadId}`;
-    const existing = (await client.listSandboxes()).filter(
-      (sb) => sb.name === sandboxName,
-    );
-    const lsSandbox =
-      existing[0] ??
-      (await client.createSandbox({
-        name: sandboxName,
-        idleTtlSeconds: 3600, // TTL: clean up when idle
-      }));
-    return createDeepAgent({
-      model: "fireworks:accounts/fireworks/models/glm-5p2",
-      backend: new LangSmithSandbox({ sandbox: lsSandbox }),
-    });
-  }
-  ```
+export async function agent(config: LangGraphRunnableConfig) {
+  const threadId = config.configurable?.thread_id as string; // [!code highlight]
+  const sandboxName = `thread-${threadId}`;
+  const existing = (await client.listSandboxes()).filter(
+    (sb) => sb.name === sandboxName,
+  );
+  const lsSandbox =
+    existing[0] ??
+    (await client.createSandbox({
+      name: sandboxName,
+      idleTtlSeconds: 3600, // TTL: clean up when idle
+    }));
+  return createDeepAgent({
+    model: "fireworks:accounts/fireworks/models/glm-5p2",
+    backend: new LangSmithSandbox({ sandbox: lsSandbox }),
+  });
+}
+```
 
-  ```ts Baseten theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  import { createDeepAgent, LangSmithSandbox } from "deepagents";
-  import { SandboxClient } from "langsmith/sandbox";
-  import type { LangGraphRunnableConfig } from "@langchain/langgraph";
+```ts Baseten theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+import { createDeepAgent, LangSmithSandbox } from "deepagents";
+import { SandboxClient } from "langsmith/sandbox";
+import type { LangGraphRunnableConfig } from "@langchain/langgraph";
 
-  const client = new SandboxClient();
+const client = new SandboxClient();
 
-  export async function agent(config: LangGraphRunnableConfig) {
-    const threadId = config.configurable?.thread_id as string; // [!code highlight]
-    const sandboxName = `thread-${threadId}`;
-    const existing = (await client.listSandboxes()).filter(
-      (sb) => sb.name === sandboxName,
-    );
-    const lsSandbox =
-      existing[0] ??
-      (await client.createSandbox({
-        name: sandboxName,
-        idleTtlSeconds: 3600, // TTL: clean up when idle
-      }));
-    return createDeepAgent({
-      model: "baseten:zai-org/GLM-5.2",
-      backend: new LangSmithSandbox({ sandbox: lsSandbox }),
-    });
-  }
-  ```
+export async function agent(config: LangGraphRunnableConfig) {
+  const threadId = config.configurable?.thread_id as string; // [!code highlight]
+  const sandboxName = `thread-${threadId}`;
+  const existing = (await client.listSandboxes()).filter(
+    (sb) => sb.name === sandboxName,
+  );
+  const lsSandbox =
+    existing[0] ??
+    (await client.createSandbox({
+      name: sandboxName,
+      idleTtlSeconds: 3600, // TTL: clean up when idle
+    }));
+  return createDeepAgent({
+    model: "baseten:zai-org/GLM-5.2",
+    backend: new LangSmithSandbox({ sandbox: lsSandbox }),
+  });
+}
+```
 
-  ```ts Ollama theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  import { createDeepAgent, LangSmithSandbox } from "deepagents";
-  import { SandboxClient } from "langsmith/sandbox";
-  import type { LangGraphRunnableConfig } from "@langchain/langgraph";
+```ts Ollama theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+import { createDeepAgent, LangSmithSandbox } from "deepagents";
+import { SandboxClient } from "langsmith/sandbox";
+import type { LangGraphRunnableConfig } from "@langchain/langgraph";
 
-  const client = new SandboxClient();
+const client = new SandboxClient();
 
-  export async function agent(config: LangGraphRunnableConfig) {
-    const threadId = config.configurable?.thread_id as string; // [!code highlight]
-    const sandboxName = `thread-${threadId}`;
-    const existing = (await client.listSandboxes()).filter(
-      (sb) => sb.name === sandboxName,
-    );
-    const lsSandbox =
-      existing[0] ??
-      (await client.createSandbox({
-        name: sandboxName,
-        idleTtlSeconds: 3600, // TTL: clean up when idle
-      }));
-    return createDeepAgent({
-      model: "ollama:north-mini-code-1.0",
-      backend: new LangSmithSandbox({ sandbox: lsSandbox }),
-    });
-  }
-  ```
-</CodeGroup>
+export async function agent(config: LangGraphRunnableConfig) {
+  const threadId = config.configurable?.thread_id as string; // [!code highlight]
+  const sandboxName = `thread-${threadId}`;
+  const existing = (await client.listSandboxes()).filter(
+    (sb) => sb.name === sandboxName,
+  );
+  const lsSandbox =
+    existing[0] ??
+    (await client.createSandbox({
+      name: sandboxName,
+      idleTtlSeconds: 3600, // TTL: clean up when idle
+    }));
+  return createDeepAgent({
+    model: "ollama:north-mini-code-1.0",
+    backend: new LangSmithSandbox({ sandbox: lsSandbox }),
+  });
+}
+```
 
 ### 助理范围
 
 同一助手上的每个线程都重复使用一个沙箱。文件、已安装的包和克隆的存储库在对话中保留。
 
-<Warning>
-  随着时间的推移，助理范围的沙箱会积累沙箱内的状态。使用沙箱提供程序配置 TTL、使用快照定期重置或实施清理逻辑，以便磁盘和内存不会无限制地增长。
-</Warning>
+> [!警告]
+>
+> 助理范围的沙箱会随着时间的推移积累沙箱内的状态。使用沙箱提供程序配置 TTL、使用快照定期重置或实施清理逻辑，以便磁盘和内存不会无限制地增长。
 
-<CodeGroup>
-  ```ts Google theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  import { createDeepAgent, LangSmithSandbox } from "deepagents";
-  import { SandboxClient } from "langsmith/sandbox";
-  import type { LangGraphRunnableConfig } from "@langchain/langgraph";
+```ts Google theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+import { createDeepAgent, LangSmithSandbox } from "deepagents";
+import { SandboxClient } from "langsmith/sandbox";
+import type { LangGraphRunnableConfig } from "@langchain/langgraph";
 
-  const client = new SandboxClient();
+const client = new SandboxClient();
 
-  export async function agent(config: LangGraphRunnableConfig) {
-    const assistantId = config.configurable?.assistant_id as string; // [!code highlight]
-    const sandboxName = `assistant-${assistantId}`;
-    const existing = (await client.listSandboxes()).filter(
-      (sb) => sb.name === sandboxName,
-    );
-    const lsSandbox =
-      existing[0] ??
-      (await client.createSandbox({
-        name: sandboxName,
-      }));
-    return createDeepAgent({
-      model: "google:gemini-3.6-flash",
-      backend: new LangSmithSandbox({ sandbox: lsSandbox }),
-    });
-  }
-  ```
+export async function agent(config: LangGraphRunnableConfig) {
+  const assistantId = config.configurable?.assistant_id as string; // [!code highlight]
+  const sandboxName = `assistant-${assistantId}`;
+  const existing = (await client.listSandboxes()).filter(
+    (sb) => sb.name === sandboxName,
+  );
+  const lsSandbox =
+    existing[0] ??
+    (await client.createSandbox({
+      name: sandboxName,
+    }));
+  return createDeepAgent({
+    model: "google:gemini-3.6-flash",
+    backend: new LangSmithSandbox({ sandbox: lsSandbox }),
+  });
+}
+```
 
-  ```ts OpenAI theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  import { createDeepAgent, LangSmithSandbox } from "deepagents";
-  import { SandboxClient } from "langsmith/sandbox";
-  import type { LangGraphRunnableConfig } from "@langchain/langgraph";
+```ts OpenAI theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+import { createDeepAgent, LangSmithSandbox } from "deepagents";
+import { SandboxClient } from "langsmith/sandbox";
+import type { LangGraphRunnableConfig } from "@langchain/langgraph";
 
-  const client = new SandboxClient();
+const client = new SandboxClient();
 
-  export async function agent(config: LangGraphRunnableConfig) {
-    const assistantId = config.configurable?.assistant_id as string; // [!code highlight]
-    const sandboxName = `assistant-${assistantId}`;
-    const existing = (await client.listSandboxes()).filter(
-      (sb) => sb.name === sandboxName,
-    );
-    const lsSandbox =
-      existing[0] ??
-      (await client.createSandbox({
-        name: sandboxName,
-      }));
-    return createDeepAgent({
-      model: "openai:gpt-5.5",
-      backend: new LangSmithSandbox({ sandbox: lsSandbox }),
-    });
-  }
-  ```
+export async function agent(config: LangGraphRunnableConfig) {
+  const assistantId = config.configurable?.assistant_id as string; // [!code highlight]
+  const sandboxName = `assistant-${assistantId}`;
+  const existing = (await client.listSandboxes()).filter(
+    (sb) => sb.name === sandboxName,
+  );
+  const lsSandbox =
+    existing[0] ??
+    (await client.createSandbox({
+      name: sandboxName,
+    }));
+  return createDeepAgent({
+    model: "openai:gpt-5.5",
+    backend: new LangSmithSandbox({ sandbox: lsSandbox }),
+  });
+}
+```
 
-  ```ts Anthropic theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  import { createDeepAgent, LangSmithSandbox } from "deepagents";
-  import { SandboxClient } from "langsmith/sandbox";
-  import type { LangGraphRunnableConfig } from "@langchain/langgraph";
+```ts Anthropic theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+import { createDeepAgent, LangSmithSandbox } from "deepagents";
+import { SandboxClient } from "langsmith/sandbox";
+import type { LangGraphRunnableConfig } from "@langchain/langgraph";
 
-  const client = new SandboxClient();
+const client = new SandboxClient();
 
-  export async function agent(config: LangGraphRunnableConfig) {
-    const assistantId = config.configurable?.assistant_id as string; // [!code highlight]
-    const sandboxName = `assistant-${assistantId}`;
-    const existing = (await client.listSandboxes()).filter(
-      (sb) => sb.name === sandboxName,
-    );
-    const lsSandbox =
-      existing[0] ??
-      (await client.createSandbox({
-        name: sandboxName,
-      }));
-    return createDeepAgent({
-      model: "anthropic:claude-sonnet-5",
-      backend: new LangSmithSandbox({ sandbox: lsSandbox }),
-    });
-  }
-  ```
+export async function agent(config: LangGraphRunnableConfig) {
+  const assistantId = config.configurable?.assistant_id as string; // [!code highlight]
+  const sandboxName = `assistant-${assistantId}`;
+  const existing = (await client.listSandboxes()).filter(
+    (sb) => sb.name === sandboxName,
+  );
+  const lsSandbox =
+    existing[0] ??
+    (await client.createSandbox({
+      name: sandboxName,
+    }));
+  return createDeepAgent({
+    model: "anthropic:claude-sonnet-5",
+    backend: new LangSmithSandbox({ sandbox: lsSandbox }),
+  });
+}
+```
 
-  ```ts OpenRouter theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  import { createDeepAgent, LangSmithSandbox } from "deepagents";
-  import { SandboxClient } from "langsmith/sandbox";
-  import type { LangGraphRunnableConfig } from "@langchain/langgraph";
+```ts OpenRouter theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+import { createDeepAgent, LangSmithSandbox } from "deepagents";
+import { SandboxClient } from "langsmith/sandbox";
+import type { LangGraphRunnableConfig } from "@langchain/langgraph";
 
-  const client = new SandboxClient();
+const client = new SandboxClient();
 
-  export async function agent(config: LangGraphRunnableConfig) {
-    const assistantId = config.configurable?.assistant_id as string; // [!code highlight]
-    const sandboxName = `assistant-${assistantId}`;
-    const existing = (await client.listSandboxes()).filter(
-      (sb) => sb.name === sandboxName,
-    );
-    const lsSandbox =
-      existing[0] ??
-      (await client.createSandbox({
-        name: sandboxName,
-      }));
-    return createDeepAgent({
-      model: "openrouter:z-ai/glm-5.2",
-      backend: new LangSmithSandbox({ sandbox: lsSandbox }),
-    });
-  }
-  ```
+export async function agent(config: LangGraphRunnableConfig) {
+  const assistantId = config.configurable?.assistant_id as string; // [!code highlight]
+  const sandboxName = `assistant-${assistantId}`;
+  const existing = (await client.listSandboxes()).filter(
+    (sb) => sb.name === sandboxName,
+  );
+  const lsSandbox =
+    existing[0] ??
+    (await client.createSandbox({
+      name: sandboxName,
+    }));
+  return createDeepAgent({
+    model: "openrouter:z-ai/glm-5.2",
+    backend: new LangSmithSandbox({ sandbox: lsSandbox }),
+  });
+}
+```
 
-  ```ts Fireworks theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  import { createDeepAgent, LangSmithSandbox } from "deepagents";
-  import { SandboxClient } from "langsmith/sandbox";
-  import type { LangGraphRunnableConfig } from "@langchain/langgraph";
+```ts Fireworks theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+import { createDeepAgent, LangSmithSandbox } from "deepagents";
+import { SandboxClient } from "langsmith/sandbox";
+import type { LangGraphRunnableConfig } from "@langchain/langgraph";
 
-  const client = new SandboxClient();
+const client = new SandboxClient();
 
-  export async function agent(config: LangGraphRunnableConfig) {
-    const assistantId = config.configurable?.assistant_id as string; // [!code highlight]
-    const sandboxName = `assistant-${assistantId}`;
-    const existing = (await client.listSandboxes()).filter(
-      (sb) => sb.name === sandboxName,
-    );
-    const lsSandbox =
-      existing[0] ??
-      (await client.createSandbox({
-        name: sandboxName,
-      }));
-    return createDeepAgent({
-      model: "fireworks:accounts/fireworks/models/glm-5p2",
-      backend: new LangSmithSandbox({ sandbox: lsSandbox }),
-    });
-  }
-  ```
+export async function agent(config: LangGraphRunnableConfig) {
+  const assistantId = config.configurable?.assistant_id as string; // [!code highlight]
+  const sandboxName = `assistant-${assistantId}`;
+  const existing = (await client.listSandboxes()).filter(
+    (sb) => sb.name === sandboxName,
+  );
+  const lsSandbox =
+    existing[0] ??
+    (await client.createSandbox({
+      name: sandboxName,
+    }));
+  return createDeepAgent({
+    model: "fireworks:accounts/fireworks/models/glm-5p2",
+    backend: new LangSmithSandbox({ sandbox: lsSandbox }),
+  });
+}
+```
 
-  ```ts Baseten theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  import { createDeepAgent, LangSmithSandbox } from "deepagents";
-  import { SandboxClient } from "langsmith/sandbox";
-  import type { LangGraphRunnableConfig } from "@langchain/langgraph";
+```ts Baseten theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+import { createDeepAgent, LangSmithSandbox } from "deepagents";
+import { SandboxClient } from "langsmith/sandbox";
+import type { LangGraphRunnableConfig } from "@langchain/langgraph";
 
-  const client = new SandboxClient();
+const client = new SandboxClient();
 
-  export async function agent(config: LangGraphRunnableConfig) {
-    const assistantId = config.configurable?.assistant_id as string; // [!code highlight]
-    const sandboxName = `assistant-${assistantId}`;
-    const existing = (await client.listSandboxes()).filter(
-      (sb) => sb.name === sandboxName,
-    );
-    const lsSandbox =
-      existing[0] ??
-      (await client.createSandbox({
-        name: sandboxName,
-      }));
-    return createDeepAgent({
-      model: "baseten:zai-org/GLM-5.2",
-      backend: new LangSmithSandbox({ sandbox: lsSandbox }),
-    });
-  }
-  ```
+export async function agent(config: LangGraphRunnableConfig) {
+  const assistantId = config.configurable?.assistant_id as string; // [!code highlight]
+  const sandboxName = `assistant-${assistantId}`;
+  const existing = (await client.listSandboxes()).filter(
+    (sb) => sb.name === sandboxName,
+  );
+  const lsSandbox =
+    existing[0] ??
+    (await client.createSandbox({
+      name: sandboxName,
+    }));
+  return createDeepAgent({
+    model: "baseten:zai-org/GLM-5.2",
+    backend: new LangSmithSandbox({ sandbox: lsSandbox }),
+  });
+}
+```
 
-  ```ts Ollama theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  import { createDeepAgent, LangSmithSandbox } from "deepagents";
-  import { SandboxClient } from "langsmith/sandbox";
-  import type { LangGraphRunnableConfig } from "@langchain/langgraph";
+```ts Ollama theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+import { createDeepAgent, LangSmithSandbox } from "deepagents";
+import { SandboxClient } from "langsmith/sandbox";
+import type { LangGraphRunnableConfig } from "@langchain/langgraph";
 
-  const client = new SandboxClient();
+const client = new SandboxClient();
 
-  export async function agent(config: LangGraphRunnableConfig) {
-    const assistantId = config.configurable?.assistant_id as string; // [!code highlight]
-    const sandboxName = `assistant-${assistantId}`;
-    const existing = (await client.listSandboxes()).filter(
-      (sb) => sb.name === sandboxName,
-    );
-    const lsSandbox =
-      existing[0] ??
-      (await client.createSandbox({
-        name: sandboxName,
-      }));
-    return createDeepAgent({
-      model: "ollama:north-mini-code-1.0",
-      backend: new LangSmithSandbox({ sandbox: lsSandbox }),
-    });
-  }
-  ```
-</CodeGroup>
+export async function agent(config: LangGraphRunnableConfig) {
+  const assistantId = config.configurable?.assistant_id as string; // [!code highlight]
+  const sandboxName = `assistant-${assistantId}`;
+  const existing = (await client.listSandboxes()).filter(
+    (sb) => sb.name === sandboxName,
+  );
+  const lsSandbox =
+    existing[0] ??
+    (await client.createSandbox({
+      name: sandboxName,
+    }));
+  return createDeepAgent({
+    model: "ollama:north-mini-code-1.0",
+    backend: new LangSmithSandbox({ sandbox: lsSandbox }),
+  });
+}
+```
 
 对于图工厂外部的手动创建、执行和拆卸，请参阅 [Basic usage](#basic-usage) 和 [sandbox integrations](/oss/javascript/integrations/sandboxes) 了解特定于提供者的 API。
 
@@ -491,9 +487,9 @@ try {
 
 ### 沙盒模式中的代理
 
-该代理在沙箱内运行，您通过网络与其进行通信。您可以构建预安装代理框架的 Docker 或 VM 映像，在沙箱内运行它，然后从外部连接以发送消息。好处：
+该代理在沙箱内运行，您通过网络与其进行通信。您可以构建预安装代理框架的 Docker 或 VM 映像，在沙箱内运行它，然后从外部连接以发送消息。
 
-* ✅ 密切反映当地发展。
+好处：* ✅ 密切反映当地发展。
 * ✅ 代理与环境之间的紧密耦合。
 
 权衡：
@@ -562,9 +558,9 @@ try {
 } finally {
   await client.deleteSandbox(lsSandbox.name);
 }
-```<Card title="View example trace" icon="chart-line" href="https://smith.langchain.com/public/387db13b-d643-49ae-a60b-0bbdd0963eda/r">
-  为此示例打开公共 LangSmith 运行。
-</Card>
+```> **[View example trace](https://smith.langchain.com/public/387db13b-d643-49ae-a60b-0bbdd0963eda/r)**
+>
+> 为此示例打开公共 LangSmith 运行。
 
 本文档中的示例使用沙箱作为工具模式。
 当您的提供商的 SDK 处理通信层并且您希望生产能够反映本地开发时，请选择沙箱模式中的代理。
@@ -608,7 +604,7 @@ graph TB
 这个设计的意思是：
 
 * **添加新的提供程序非常简单。** 实现 `execute()` — 基类处理其他所有事情。
-* **`execute` 工具有条件可用。** 在每次模型调用时，线束都会检查后端是否实现 [⟦T52⟧](https://reference.langchain.com/javascript/deepagents/backends/SandboxBackendProtocol)。如果没有，该工具将被过滤掉，代理永远不会看到它。
+* **`execute` 工具有条件可用。** 在每次模型调用时，线束都会检查后端是否实现 [⟦T52⟧](https://reference.langchain.com/javascript/deepagents/backends/SandboxBackendProtocol)。如果不是，该工具将被过滤掉，代理永远不会看到它。
 
 当代理调用 `execute` 工具时，它会提供 `command` 字符串，并返回组合的 stdout/stderr、退出代码以及输出太大时的截断通知。
 
@@ -624,13 +620,13 @@ graph TB
 ```
 bash: foobar: command not found
 [Command failed with exit code 127]
-```如果命令产生非常大的输出，结果会自动保存到文件中，并指示代理使用 `read_file` 增量访问它。这可以防止上下文窗口溢出。
+```如果命令产生非常大的输出，结果会自动保存到文件中，并指示代理使用 `read_file` 增量访问它。 This prevents context window overflow.
 
-### 文件访问的两个平面
+### Two planes of file access
 
 文件移入和移出沙箱有两种不同的方式，了解何时使用每种方式非常重要：
 
-**代理文件系统工具**：`read_file`、`write_file`、`edit_file`、`ls`、`glob`、`grep`、`execute`是LLM在执行过程中调用的工具。这些通过沙箱内的`execute()`。代理使用它们来读取代码、写入文件和运行命令作为其任务的一部分。
+**代理文件系统工具**：`read_file`、`write_file`、`edit_file`、`ls`、`glob`、`grep`、`execute`是LLM在执行过程中调用的工具。 These go through `execute()` inside the sandbox.代理使用它们来读取代码、写入文件和运行命令作为其任务的一部分。
 
 **文件传输 API**：应用程序代码调用的 `uploadFiles()` 和 `downloadFiles()` 方法。它们使用提供商的本机文件传输 API（不是 shell 命令），旨在在主机环境和沙箱之间移动文件。使用它们可以：
 
@@ -701,48 +697,42 @@ for (const result of results) {
 }
 ```
 
-<Note>
-  在沙箱内，代理使用自己的文件系统工具（`read_file`、`write_file`）：而不是`uploadFiles`或`downloadFiles`。这些方法供您的应用程序代码跨主机和沙箱之间的边界移动文件。
-</Note>
+> [!注意]
+>
+> 在沙箱内，代理使用自己的文件系统工具（`read_file`、`write_file`）：而不是 `uploadFiles` 或 `downloadFiles`。这些方法供您的应用程序代码跨主机和沙箱之间的边界移动文件。
 
 ## 安全考虑
 
 沙箱将代码执行与主机系统隔离，但它们不能防止**上下文注入**。控制代理部分输入的攻击者可以指示其读取文件、运行命令或从沙箱内窃取数据。这使得沙箱内的凭证特别危险。
 
-<Warning>
-  **永远不要将机密放入沙箱中。** API 密钥、令牌、数据库凭证和其他注入沙箱的机密（通过环境变量、挂载文件或 `secrets` 选项）可以被上下文注入代理读取和窃取。这甚至适用于短期或有范围的凭证——如果代理可以访问它们，那么攻击者也可以。
-</Warning>
+> [!警告]
+>
+> **永远不要将机密放入沙箱中。** API 密钥、令牌、数据库凭证和其他注入沙箱的机密（通过环境变量、挂载文件或 `secrets` 选项）可以被上下文注入代理读取和窃取。这甚至适用于短期或有范围的凭证——如果代理可以访问它们，那么攻击者也可以。
 
 ### 安全处理秘密如果您的代理需要调用经过身份验证的 API 或访问受保护的资源，您有两种选择：
 
 1. **在沙箱外部的工具中保守秘密。** 定义在主机环境（而不是沙箱内部）中运行的工具并在那里处理身份验证。代理通过名称调用这些工具，但从未看到凭据。这是推荐的方法。
 
-2. **使用注入凭据的网络代理。** 某些沙箱提供程序支持代理拦截来自沙箱的传出 HTTP 请求并在转发凭据之前附加凭据（例如，`Authorization` 标头）。代理永远不会看到秘密——它只是向 URL 发出简单的请求。这种方法尚未在提供商之间广泛使用。
-
-<Warning>
-  如果必须将机密注入沙箱（不推荐），请采取以下预防措施：
-
-  * 为**所有**工具调用启用[human-in-the-loop](/oss/javascript/deepagents/human-in-the-loop)批准，而不仅仅是敏感的工具调用
-  * 阻止或限制沙箱的网络访问以限制渗透路径
-  * 使用尽可能窄的凭证范围和尽可能短的生命周期
-  * 监控沙箱网络流量以发现意外的出站请求即使有这些保护措施，这仍然是一个不安全的解决方法。足够有创意的上下文注入攻击可以绕过输出过滤和 HITL 审查。
-</Warning>
+2. **使用注入凭据的网络代理。** 某些沙箱提供程序支持代理拦截来自沙箱的传出 HTTP 请求并在转发凭据之前附加凭据（例如，`Authorization` 标头）。代理永远不会看到秘密——它只是向 URL 发出简单的请求。这种方法尚未在提供商之间广泛使用。> [!警告]
+>
+> 如果必须将机密注入沙箱（不推荐），请采取以下预防措施：
+>
+> * 为**所有**工具调用启用[human-in-the-loop](/oss/javascript/deepagents/human-in-the-loop)批准，而不仅仅是敏感的工具调用
+> * 阻止或限制沙箱的网络访问以限制渗透路径
+> * 使用尽可能窄的凭证范围和尽可能短的生命周期
+> * 监控沙箱网络流量以发现意外的出站请求
+>
+> 即使有这些保障措施，这仍然是一个不安全的解决方法。足够有创意的上下文注入攻击可以绕过输出过滤和 HITL 审查。
 
 ### 一般最佳实践
 
 * 在应用程序中对沙箱输出进行操作之前先检查它们
-* 在不需要时阻止沙箱网络访问
+* 在不需要时阻止沙盒网络访问
 * 使用[middleware](/oss/javascript/langchain/middleware)过滤或编辑工具输出中的敏感模式
 * 将沙箱内产生的所有内容视为不可信输入
 
 ***
 
-<div>
-  <Callout icon="terminal-2">
-    [Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
-  </Callout>
+[Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
 
-  <Callout icon="edit">
-    [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/oss/deepagents/sandboxes.mdx) 或 [file an issue](https://github.com/langchain-ai/docs/issues/new/choose)。
-  </Callout>
-</div>
+[Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/oss/deepagents/sandboxes.mdx) 或 [file an issue](https://github.com/langchain-ai/docs/issues/new/choose)。
