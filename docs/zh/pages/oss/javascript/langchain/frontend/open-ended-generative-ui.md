@@ -8,7 +8,7 @@
 
 ## 概述
 
-开放式生成 UI 位于代理创建端
+开放式生成 UI 位于代理创建的一端
 [generative UI spectrum](/oss/javascript/langchain/frontend/generative-ui-overview)。界面是
 在您的应用程序外部编写，例如由 MCP 服务器和您的前端编写
 将其渲染在沙箱内。您和代理都不会编写组件：
@@ -20,10 +20,10 @@
 适合一次性可视化和定制答案，其结果令人惊讶
 足够好胜过可预测的。这也是最具实验性的
 方法，确定性最差，速度较慢，运行成本较高，并且不受信任
-UI 是最难保持一致、可访问和安全的，因此必须将其隔离
+UI 是最难保持一致、可访问和安全的，因此必须隔离
 从你的申请的其余部分。
 
-## 何时使用此方法当您想要展示功能和功能时，可以使用开放式生成式 UI
+## 何时使用此方法当您想要展示功能和内容时，可以使用开放式生成式 UI
 存在于应用程序外部并独立于应用程序发展的接口，例如
 作为 MCP 服务器生态系统发布的工具。当你需要保证时
 品牌、可访问性或布局，沿着频谱向后移动
@@ -56,12 +56,6 @@ CopilotKit 将此模式记录为 [MCP Apps](https://docs.copilotkit.ai/generativ
 
 ***
 
-<div>
-  <Callout icon="terminal-2">
-    [Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
-  </Callout>
+[Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
 
-  <Callout icon="edit">
-    [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/oss/langchain/frontend/open-ended-generative-ui.mdx) 或 [file an issue](https://github.com/langchain-ai/docs/issues/new/choose)。
-  </Callout>
-</div>
+[Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/oss/langchain/frontend/open-ended-generative-ui.mdx) 或 [file an issue](https://github.com/langchain-ai/docs/issues/new/choose)。

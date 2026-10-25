@@ -2,43 +2,39 @@
 
 <!-- langchain-docs: What's new in LangChain v1 | https://docs.langchain.com/oss/javascript/releases/langchain-v1 -->
 
-# LangChain v1 中的新功能
+# LangChain v1 的新功能
 
 **LangChain v1 是一个专注于、可用于生产的构建代理基础。** 我们围绕三个核心改进简化了框架：
 
-<CardGroup>
-  <Card title="createAgent" icon="robot" href="#createagent">
-    在 LangChain 中构建代理的新标准方法，用更干净、更强大的 API 替换 LangGraph 中的 `createReactAgent`。
-  </Card>
+> **[createAgent](#createagent)**
+>
+> 在 LangChain 中构建代理的新标准方法，用更干净、更强大的 API 替换 LangGraph 中的 `createReactAgent`。
 
-  <Card title="Standard content blocks" icon="cube" href="#standard-content-blocks">
-    新的 `contentBlocks` 属性提供对所有提供商的现代 LLM 功能的统一访问。
-  </Card>
+> **[Standard content blocks](#standard-content-blocks)**
+>
+> 一个新的 `contentBlocks` 属性，提供对所有提供商的现代 LLM 功能的统一访问。
 
-  <Card title="Simplified package" icon="sitemap" href="#simplified-package">
-    `langchain` 软件包已经过精简，专注于代理的基本构建块，并将遗留功能移至 `@langchain/classic`。
-  </Card>
-</CardGroup>
+> **[Simplified package](#simplified-package)**
+>
+> `langchain` 软件包已经过精简，专注于代理的基本构建块，并将遗留功能移至 `@langchain/classic`。
 
 要升级，
 
-<CodeGroup>
-  ```bash npm theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  npm install langchain @langchain/core
-  ```
+```bash npm theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+npm install langchain @langchain/core
+```
 
-  ```bash pnpm theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  pnpm install langchain @langchain/core
-  ```
+```bash pnpm theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+pnpm install langchain @langchain/core
+```
 
-  ```bash yarn theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  yarn add langchain @langchain/core
-  ```
+```bash yarn theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+yarn add langchain @langchain/core
+```
 
-  ```bash bun theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  bun add langchain @langchain/core
-  ```
-</CodeGroup>
+```bash bun theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+bun add langchain @langchain/core
+```
 
 有关更改的完整列表，请参阅[migration guide](/oss/javascript/migrate/langchain-v1)。
 
@@ -66,11 +62,9 @@ console.log(result.content);
 
 在底层，`createAgent`构建在基本代理循环之上——调用模型，让它选择要执行的工具，然后在不再调用工具时完成：
 
-<div>
-  <img alt="Core agent loop diagram" />
-</div>
+![Core agent loop diagram](https://mintcdn.com/langchain-5e9cc07a/Tazq8zGc0yYUYrDl/oss/images/core_agent_loop.png?fit=max\&auto=format\&n=Tazq8zGc0yYUYrDl\&q=85\&s=ac72e48317a9ced68fd1be64e89ec063)
 
-有关更多信息，请参阅[Agents](/oss/javascript/langchain/agents)。
+欲了解更多信息，请参阅[Agents](/oss/javascript/langchain/agents)。
 
 ＃＃＃ 中间件中间件是`createAgent`的定义特征。它使`createAgent`高度可定制，提高了您可以构建的上限。
 
@@ -78,7 +72,7 @@ console.log(result.content);
 
 #### 预构建中间件
 
-LangChain提供了一些[prebuilt middlewares](/oss/javascript/langchain/middleware#built-in-middleware)常见模式，包括：
+LangChain 提供了一些[prebuilt middlewares](/oss/javascript/langchain/middleware#built-in-middleware) 的常见模式，包括：
 
 * `summarizationMiddleware`：当对话历史记录太长时压缩它
 * `humanInTheLoopMiddleware`：敏感工具调用需要批准
@@ -121,13 +115,11 @@ const agent = createAgent({
 | `beforeAgent` |致电代理之前 |加载内存，验证输入 |
 | `beforeModel` |在每次LLM通话之前|更新提示、修剪消息 |
 | `wrapModelCall` |围绕每个法学硕士通话|拦截并修改请求/响应 |
-| `wrapToolCall` |围绕每个工具调用 |拦截并修改工具执行 |
+| `wrapToolCall` |围绕每个工具调用|拦截并修改工具执行 |
 | `afterModel` |每次LLM回复后|验证输出，应用护栏 |
 | `afterAgent` |代理完成后 |保存结果，清理|
 
-<div>
-  <img alt="Middleware flow diagram" />
-</div>
+![Middleware flow diagram](https://mintcdn.com/langchain-5e9cc07a/RAP6mjwE5G00xYsA/oss/images/middleware_final.png?fit=max\&auto=format\&n=RAP6mjwE5G00xYsA\&q=85\&s=eb4404b137edec6f6f0c8ccb8323eaf1)
 
 自定义中间件示例：
 
@@ -164,33 +156,31 @@ const agent = createAgent({
 
 欲了解更多信息，请参阅[the complete middleware guide](/oss/javascript/langchain/middleware)。
 
-### 构建于 LangGraph
+### 基于 LangGraph 构建
 
 由于 `createAgent` 构建于 LangGraph 之上，因此您可以通过以下方式自动获得对长期运行且可靠的代理的内置支持：
 
-<CardGroup>
-  <Card title="Persistence" icon="database">
-    通过内置检查点，对话自动在会话之间持续存在
-  </Card>
+> **坚持**
+>
+> 通过内置检查点，对话自动在会话之间持续存在
 
-  <Card title="Streaming" icon="droplet">
-    实时流式传输令牌、工具调用和推理跟踪
-  </Card>
+> **流媒体**
+>
+> 实时流式传输令牌、工具调用和推理跟踪
 
-  <Card title="Human-in-the-loop" icon="hand-stop">
-    在敏感操作之前暂停代理执行以供人工批准
-  </Card>
+> **人在回路**
+>
+> 在敏感操作之前暂停代理执行以供人工批准
 
-  <Card title="Time travel" icon="history">
-    将对话倒回到任意点并探索替代路径和提示
-  </Card>
-</CardGroup>
+> **时间旅行**
+>
+> 将对话倒回到任意点并探索替代路径和提示
 
 您无需学习 LangGraph 即可使用这些功能 — 它们开箱即用。
 
-### 结构化输出`createAgent` 改进了结构化输出生成：
+### 结构化输出
 
-* **主循环集成**：结构化输出现在在主循环中生成，而不需要额外的 LLM 调用
+`createAgent` 改进了结构化输出生成：* **主循环集成**：结构化输出现在在主循环中生成，而不需要额外的 LLM 调用
 * **结构化输出策略**：模型可以选择调用工具或使用提供者端结构化输出生成
 * **降低成本**：消除额外的法学硕士通话带来的额外费用
 
@@ -227,22 +217,22 @@ console.log(result.structuredResponse);
 
 ## 标准内容块
 
-<Note>
-  1.0 版本适用于大多数软件包。当前仅以下内容支持新内容块：
+> [!注意]
+>
+> 1.0 版本适用于大多数软件包。当前仅以下内容支持新内容块：
+>
+> * `langchain`
+> * `@langchain/core`
+> * `@langchain/anthropic`
+> * `@langchain/openai`
+>
+> 计划对内容块提供更广泛的支持。
 
-  * `langchain`
-  * `@langchain/core`
-  * `@langchain/anthropic`
-  * `@langchain/openai`
+### 好处
 
-  计划对内容块提供更广泛的支持。
-</Note>
-
-### 好处* **与提供商无关**：无论提供商如何，都可以使用相同的 API 访问推理跟踪、引文、内置工具（网络搜索、代码解释器等）和其他功能
+* **与提供商无关**：无论提供商如何，都可以使用相同的 API 访问推理跟踪、引文、内置工具（网络搜索、代码解释器等）和其他功能
 * **类型安全**：所有内容块类型的完整类型提示
-* **向后兼容**：标准内容可以是[loaded lazily](/oss/javascript/langchain/messages#standard-content-blocks)，因此没有相关的重大更改
-
-有关更多信息，请参阅我们的 [content blocks](/oss/javascript/langchain/messages#message-content) 指南
+* **向后兼容**：标准内容可以是[loaded lazily](/oss/javascript/langchain/messages#standard-content-blocks)，因此没有相关的重大更改有关更多信息，请参阅我们的 [content blocks](/oss/javascript/langchain/messages#message-content) 指南
 
 ***
 
@@ -266,23 +256,21 @@ LangChain v1 简化了 `langchain` 包命名空间，以专注于代理的基本
 
 如果您使用任何此功能，请安装 [⟦T47⟧](https://www.npmjs.com/package/@langchain/classic)：
 
-<CodeGroup>
-  ```bash npm theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  npm install @langchain/classic
-  ```
+```bash npm theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+npm install @langchain/classic
+```
 
-  ```bash pnpm theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  pnpm install @langchain/classic
-  ```
+```bash pnpm theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+pnpm install @langchain/classic
+```
 
-  ```bash yarn theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  yarn add @langchain/classic
-  ```
+```bash yarn theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+yarn add @langchain/classic
+```
 
-  ```bash bun theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  bun add @langchain/classic
-  ```
-</CodeGroup>
+```bash bun theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+bun add @langchain/classic
+```
 
 然后更新您的导入：
 
@@ -298,45 +286,37 @@ import { ... } from "@langchain/classic/chains"; // [!code ++]
 
 请使用 [⟦T48⟧ label](https://github.com/langchain-ai/langchainjs/issues?q=state%3Aopen%20label%3Av1) 报告 1.0 在 [GitHub](https://github.com/langchain-ai/langchainjs/issues) 上发现的任何问题。
 
-## 其他资源<CardGroup>
-  <Card title="LangChain 1.0" icon="rocket" href="https://blog.langchain.com/langchain-langchain-1-0-alpha-releases/">
-    阅读公告
-  </Card>
+## 其他资源
 
-  <Card title="Middleware guide" icon="puzzle" href="https://blog.langchain.com/agent-middleware/">
-    深入研究中间件
-  </Card>
+> **[LangChain 1.0](https://blog.langchain.com/langchain-langchain-1-0-alpha-releases/)**
+>
+> 阅读公告
 
-  <Card title="Agents Documentation" icon="book" href="/oss/javascript/langchain/agents">
-    完整的代理文档
-  </Card>
+> **[Middleware guide](https://blog.langchain.com/agent-middleware/)**
+>
+> 深入研究中间件
 
-  <Card title="Message Content" icon="message" href="/oss/javascript/langchain/messages#message-content">
-    新内容块 API
-  </Card>
+> **[Agents Documentation](/oss/javascript/langchain/agents)**
+>
+> 完整的代理文档
 
-  <Card title="Migration guide" icon="arrows-exchange" href="/oss/javascript/migrate/langchain-v1">
-    如何迁移到LangChain v1
-  </Card>
+> **[Message Content](/oss/javascript/langchain/messages#message-content)**
+>
+> 新内容块 API
 
-  <Card title="GitHub" icon="brand-github" href="https://github.com/langchain-ai/langchainjs">
-    报告问题或贡献
-  </Card>
-</CardGroup>
+> **[Migration guide](/oss/javascript/migrate/langchain-v1)**
+>
+> 如何迁移到LangChain v1
+
+> **[GitHub](https://github.com/langchain-ai/langchainjs)**
+>
+> 报告问题或贡献
 
 ## 另请参阅
 
 * [Versioning](/oss/javascript/versioning) – 了解版本号
 * [Release policy](/oss/javascript/release-policy) – 详细发布政策
 
-***
+***[Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
 
-<div>
-  <Callout icon="terminal-2">
-    [Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
-  </Callout>
-
-  <Callout icon="edit">
-    [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/oss/javascript/releases/langchain-v1.mdx) 或 [file an issue](https://github.com/langchain-ai/docs/issues/new/choose)。
-  </Callout>
-</div>
+[Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/oss/javascript/releases/langchain-v1.mdx) 或 [file an issue](https://github.com/langchain-ai/docs/issues/new/choose)。

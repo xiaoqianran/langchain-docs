@@ -1,46 +1,42 @@
-<!-- langchain-docs: translation failed; English fallback -->
+<!-- langchain-docs: machine-translated zh-CN from English source -->
 
 <!-- langchain-docs: Human-in-the-loop overview | https://docs.langchain.com/oss/python/concepts/human-in-the-loop -->
 
-# Human-in-the-loop overview
+# 人机交互概述
 
-How agents pause tool calls for human review, and how per-call and batched interrupts differ.
+代理如何暂停工具调用以供人工审核，以及每次调用和批量中断有何不同。
 
-Human-in-the-loop (HITL) pauses an agent before a tool call runs so a person can review it. The reviewer approves the call, edits its arguments, rejects it with feedback, or answers in place of the tool. Use it for actions that are hard to undo or that need sign-off, such as deleting records, sending email, or writing files.
+人机交互 (HITL) 在工具调用运行之前暂停代理，以便人员可以查看它。审阅者批准调用、编辑其参数、通过反馈拒绝调用或代替工具进行回答。将其用于难以撤消或需要签署的操作，例如删除记录、发送电子邮件或写入文件。
 
-You add review with [`HumanInTheLoopMiddleware`](https://reference.langchain.com/python/langchain/agents/middleware/human_in_the_loop/HumanInTheLoopMiddleware) in [LangChain](/oss/python/langchain/human-in-the-loop), or with the `interrupt_on` parameter in [Deep Agents](/oss/python/deepagents/human-in-the-loop). The middleware pauses in one of two modes:
+您可以在 [LangChain](/oss/python/langchain/human-in-the-loop) 中使用 [⟦T5⟧](https://reference.langchain.com/python/langchain/agents/middleware/human_in_the_loop/HumanInTheLoopMiddleware) 添加评论，或在 [Deep Agents](/oss/python/deepagents/human-in-the-loop) 中使用 `interrupt_on` 参数添加评论。中间件以两种模式之一暂停：
 
-* **Per-call**: One pause for each tool call that needs review.
-* **Batched**: One pause per model turn, covering every tool call in that turn. Batched mode is the current default.
+* **每次调用**：每个需要审核的工具调用暂停一次。
+* **批量**：每个模型回合一次暂停，涵盖该回合中的每个工具调用。批处理模式是当前的默认模式。
 
-<Note>
-  Per-call mode requires `langchain>=1.4.6`. Deep Agents uses batched mode.
-</Note>
+> [!注意]
+>
+> 每次通话模式需要`langchain>=1.4.6`。 Deep Agents使用批处理模式。
 
-## Follow an approval from pause to resume
+## 遵循从暂停到恢复的批准
 
-Every approval follows the same steps in either mode:
+无论哪种模式，每次批准都遵循相同的步骤：1. 模型提出一个或多个工具调用。
+2. 中间件根据您的 `interrupt_on` 策略检查每个调用。需要审核的呼叫会通过 [interrupt](https://reference.langchain.com/python/langgraph/types/interrupt) 暂停客服人员。
+3. [checkpointer](/oss/python/langgraph/persistence) 保存代理的状态，因此即使在另一个进程中，运行也可以停止并稍后恢复。
+4. 您的应用程序会向审阅者显示待处理的呼叫，并收集每个呼叫的决定。
+5. 您使用 `Command(resume=...)` 恢复代理。中间件应用每个决策，然后代理继续。
 
-1. The model proposes one or more tool calls.
-2. The middleware checks each call against your `interrupt_on` policy. Calls that need review pause the agent with an [interrupt](https://reference.langchain.com/python/langgraph/types/interrupt).
-3. The [checkpointer](/oss/python/langgraph/persistence) saves the agent's state, so the run can stop and resume later, even in another process.
-4. Your application shows the pending calls to a reviewer and collects a decision for each one.
-5. You resume the agent with a `Command(resume=...)`. The middleware applies each decision, and the agent continues.
+决策是以下四种类型之一：
 
-A decision is one of four types:
-
-| Decision Type | Description | Example Use Case |
+|决策类型|描述 |示例用例 |
 | - | - | - |
-| ✅ `approve` | Execute the tool with the original arguments as proposed by the agent. | Send an email draft exactly as written |
-| ✏️ `edit` | Modify the tool arguments before execution. | Change the recipient before sending an email |
-| ❌ `reject` | Skip executing this tool call entirely and return rejection feedback to the agent. | Deny file deletion and explain why |
-| 💬 `respond` | Return the human's message directly as a synthetic tool result, skipping execution, for "ask user" style tools. | Answer an `"ask_user"` prompt with a direct reply |
+| ✅ `approve` |使用代理建议的原始参数执行该工具。 |发送与书面内容完全一致的电子邮件草稿 |
+| ✏️ `edit` |执行前修改工具参数。 |发送电子邮件之前更改收件人 |
+| ❌ `reject` |完全跳过执行此工具调用并向代理返回拒绝反馈。 |拒绝文件删除并解释原因 |
+| 💬 `respond` |对于“询问用户”风格的工具，直接将人类的消息作为合成工具结果返回，跳过执行。 |通过直接回复来回答 `"ask_user"` 提示 |本页上的示例使用带有三个工具的代理。 `write_file` 允许所有决策类型。 `execute_sql` 仅允许 `approve` 和 `reject`。 `read_data` 无需审核即可运行。在一轮中，模型调用了所有三个。
 
-The examples on this page use an agent with three tools. `write_file` allows every decision type. `execute_sql` allows only `approve` and `reject`. `read_data` runs without review. In one turn, the model calls all three.
+## 分别查看每个工具调用
 
-## Review each tool call separately
-
-In per-call mode, each tool call that needs review pauses on its own as it starts:
+在每次调用模式下，每个需要审核的工具调用在启动时都会自行暂停：
 
 ```mermaid theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 sequenceDiagram
@@ -59,7 +55,7 @@ sequenceDiagram
     Agent-->>App: final result
 ```
 
-Each interrupt value describes one call and has `type: "tool_approval"`. The `execute_sql` interrupt looks like this:
+每个中断值描述一次调用并具有`type: "tool_approval"`。 `execute_sql`中断如下所示：
 
 ```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 {
@@ -71,9 +67,9 @@ Each interrupt value describes one call and has `type: "tool_approval"`. The `ex
 }
 ```
 
-Each interrupt also carries a [`response_schema`](/oss/python/langgraph/interrupts#define-an-interrupt-response-schema), a JSON schema of the answers that call accepts. For `execute_sql`, the schema allows `approve` and `reject`. For `write_file`, it also allows `respond` and `edit`. The `edit` branch includes `write_file`'s own argument schema. Clients can render a form from the schema instead of hardcoding the decision types. The [LangChain guide](/oss/python/langchain/human-in-the-loop#read-the-response-schema) shows the schema for each decision type.
+每个中断还携带一个[⟦T22⟧](/oss/python/langgraph/interrupts#define-an-interrupt-response-schema)，即调用接受的答案的 JSON 模式。对于 `execute_sql`，架构允许 `approve` 和 `reject`。对于`write_file`，它还允许`respond`和`edit`。 `edit`分支包括`write_file`自己的参数模式。客户端可以从模式呈现表单，而不是对决策类型进行硬编码。 [LangChain guide](/oss/python/langchain/human-in-the-loop#read-the-response-schema) 显示了每种决策类型的架构。
 
-You answer each interrupt with one decision, keyed by the interrupt's ID:
+您可以通过一个决定来应答每个中断，该决定由中断 ID 指定：
 
 ```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 Command(resume={
@@ -82,11 +78,9 @@ Command(resume={
 })
 ```
 
-LangGraph rejects an invalid answer before saving it, so the reviewer can correct it and answer again. Interrupts you do not answer stay pending, which lets a reviewer answer them one at a time.
+LangGraph 在保存之前拒绝无效答案，以便审阅者可以更正它并再次回答。您不回答的中断将保持待处理状态，这样审阅者可以一次回答一个问题。
 
-## Review a whole turn at once
-
-In batched mode, the middleware pauses once after the model responds, before any tool runs. `read_data` waits for the review too, even though it is not gated. One interrupt lists every gated call in `action_requests`, and each call's allowed decisions in a separate `review_configs` list:
+## 立即回顾整个回合在批处理模式下，中间件在模型响应后、任何工具运行之前暂停一次。 `read_data`也在等待审核，尽管它没有被限制。一个中断列出了`action_requests`中的每个门控调用，以及每个调用允许的决策在单独的`review_configs`列表中：
 
 ```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 {
@@ -101,7 +95,7 @@ In batched mode, the middleware pauses once after the model responds, before any
 }
 ```
 
-You answer with one list of decisions, in the same order as `action_requests`:
+您以与 `action_requests` 相同的顺序回答一系列决策：
 
 ```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 Command(resume={"decisions": [
@@ -110,49 +104,39 @@ Command(resume={"decisions": [
 ]})
 ```
 
-The interrupt has no `response_schema`. The middleware checks each decision only when it applies it, after LangGraph has saved the answer.
+该中断没有`response_schema`。中间件仅在LangGraph保存答案后应用每个决策时才检查每个决策。
 
-## Compare batched-mode problems
+## 比较批处理模式问题
 
-Batched mode matches answers to calls by position, and checks each answer only after saving it. Each row shows a problem the example agent hits in batched mode, and how per-call mode avoids it:
-
-| In batched mode | What happens | In per-call mode |
+批量模式按位置匹配呼叫的答案，并仅在保存后检查每个答案。每行显示示例代理在批处理模式下遇到的问题，以及每次调用模式如何避免该问题：|在批处理模式下 |会发生什么 |在每次通话模式下 |
 | - | - | - |
-| Decisions match calls by position | A reviewer means to approve `write_file` and reject `execute_sql`, but sends `[reject, approve]`. The `DELETE` runs. | Each decision is keyed by its call's interrupt ID. |
-| Allowed decisions live in `review_configs` | Clients pair two lists by position and hardcode a button for each decision type. | Each interrupt's `response_schema` lists its decisions and edit arguments. |
-| An answer is saved before it is checked | One decision for two calls raises `ValueError: Number of human decisions (1) does not match number of hanging tool calls (2).` The corrected answer then fails with the same error, so the thread stays stuck. | The answer is checked first. Fix it and answer again. |
-| Edited arguments are not checked | An edit to `write_file` without `content` still runs the tool, and the model receives an error for a call it never made. | The edit is rejected with `edit.edited_action.args.content Field required`. |
+|决策按位置匹配呼叫 |审阅者意味着批准`write_file`并拒绝`execute_sql`，但发送`[reject, approve]`。 `DELETE` 运行。 |每个决定都由其调用的中断 ID 决定。 |
+|允许的决定位于 `review_configs` |客户按位置配对两个列表，并为每种决策类型硬编码一个按钮。 |每个中断的`response_schema`列出其决策和编辑参数。 |
+|在检查之前保存答案 |两次调用的一个决策会引发 `ValueError: Number of human decisions (1) does not match number of hanging tool calls (2).` 正确的答案随后会因相同的错误而失败，因此线程保持卡住状态。 |首先检查答案。修复它并再次回答。 |
+|不检查编辑的参数 |对没有 `content` 的 `write_file` 进行编辑仍会运行该工具，并且模型会因从未进行过的调用而收到错误。 |编辑被拒绝，并显示 `edit.edited_action.args.content Field required`。 |
 
-## Choose an interrupt mode
-
-| | Per-call | Batched (default) |
+## 选择中断模式| |每次通话 |批量（默认）|
 | - | - | - |
-| **When it pauses** | As each gated tool call starts | After the model responds, before any tool runs |
-| **Interrupts per turn** | One per gated tool call | One for the whole turn |
-| **Ungated calls in the turn** | Run right away | Wait for the review |
-| **Answer** | One decision per interrupt, keyed by interrupt ID | A list of decisions, matched by position |
-| **Best for** | New agents, one approval card or message per call, forms built from the schema | Approval UIs that already read `action_requests` |
+| **当它暂停时** |当每个门控工具调用开始时 |模型响应之后、任何工具运行之前 |
+| **每轮中断** |每个门控工具调用一个 |一整回合|
+| **轮流取消门控呼叫** |马上跑|等待审核|
+| **答案** |每个中断一个决定，由中断 ID 控制 |按位置匹配的决策列表 |
+| **最适合** |新代理、每次呼叫一张审批卡或一条消息、根据架构构建的表单 |批准 UI 已显示为 `action_requests` |
 
-Use per-call mode for new agents. LangChain plans to make it the default in the next major release.
+对新代理使用每次呼叫模式。 LangChain 计划在下一个主要版本中将其设为默认值。
 
-Keep batched mode while your approval UI reads the batched format, such as one built with the [`useStream` approval pattern](/oss/python/langchain/frontend/human-in-the-loop).
+当您的审批 UI 读取批处理格式时，请保持批处理模式，例如使用 [⟦T47⟧ approval pattern](/oss/python/langchain/frontend/human-in-the-loop) 构建的格式。
 
-Per-call mode also changes how middleware order and multi-answer resumes behave. Before you switch, read [Order middleware for per-call review](/oss/python/langchain/human-in-the-loop#order-middleware-for-per-call-review) and [Resume each call by ID](/oss/python/langchain/human-in-the-loop#resume-each-call-by-id).
+每次调用模式还改变了中间件顺序和多答案恢复的行为方式。在切换之前，请阅读[Order middleware for per-call review](/oss/python/langchain/human-in-the-loop#order-middleware-for-per-call-review)和[Resume each call by ID](/oss/python/langchain/human-in-the-loop#resume-each-call-by-id)。
 
-## See also
+## 另请参阅
 
-* [Human-in-the-loop in LangChain](/oss/python/langchain/human-in-the-loop): configure the middleware and answer each decision type.
-* [Human-in-the-loop in Deep Agents](/oss/python/deepagents/human-in-the-loop): approvals for deep agents and their subagents.
-* [Define an interrupt response schema](/oss/python/langgraph/interrupts#define-an-interrupt-response-schema): how LangGraph checks resume values.
+* [Human-in-the-loop in LangChain](/oss/python/langchain/human-in-the-loop)：配置中间件并回答每种决策类型。
+* [Human-in-the-loop in Deep Agents](/oss/python/deepagents/human-in-the-loop)：对深度代理及其子代理的批准。
+* [Define an interrupt response schema](/oss/python/langgraph/interrupts#define-an-interrupt-response-schema)：LangGraph 如何检查简历值。
 
 ***
 
-<div>
-  <Callout icon="terminal-2">
-    [Connect these docs](/use-these-docs) to your agent of choice via MCP for real-time answers.
-  </Callout>
+[Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
 
-  <Callout icon="edit">
-    [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/oss/concepts/human-in-the-loop.mdx) or [file an issue](https://github.com/langchain-ai/docs/issues/new/choose).
-  </Callout>
-</div>
+[Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/oss/concepts/human-in-the-loop.mdx) 或 [file an issue](https://github.com/langchain-ai/docs/issues/new/choose)。

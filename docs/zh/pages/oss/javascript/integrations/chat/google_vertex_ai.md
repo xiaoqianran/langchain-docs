@@ -11,20 +11,20 @@
 
 这将帮助您开始使用 `ChatVertexAI` [chat models](/oss/javascript/langchain/models)。有关所有 `ChatVertexAI` 功能和配置的详细文档，请前往 [API reference](https://reference.langchain.com/javascript/langchain-google-vertexai/index/ChatVertexAI)。
 
-<Note>
-  **该库将被弃用**
-
-  该库将被 [ChatGoogle](/oss/javascript/integrations/chat/google) 库取代。
-  新的实现应该使用 [ChatGoogle](/oss/javascript/integrations/chat/google) 库，并且
-  现有的实现应考虑迁移。
-</Note>
+> [!注意]
+>
+> **该库将被弃用**
+>
+> 该库将被[ChatGoogle](/oss/javascript/integrations/chat/google)库取代。
+> 新的实现应该使用 [ChatGoogle](/oss/javascript/integrations/chat/google) 库，并且
+> 现有的实现应考虑迁移。
 
 ## 概述
 
 ### 集成细节
 
 |班级 |套餐 |可串行化| PY支持|下载 |版本 |
-| :- | :- | :-: | :-: | :-: | :-: |
+| :-| :-| :-: | :-: | :-: | :-: |
 | [⟦T25⟧](https://reference.langchain.com/javascript/langchain-google-vertexai/index/ChatVertexAI) | [⟦T26⟧](https://www.npmjs.com/package/@langchain/google-vertexai) | ✅ | ✅ | ![NPM - Downloads](https://img.shields.io/npm/dm/@langchain/google-vertexai?style=flat-square\&label=%20&) | ![NPM - Version](https://img.shields.io/npm/v/@langchain/google-vertexai?style=flat-square\&label=%20&) |
 
 ### 模型特点
@@ -77,35 +77,31 @@ export GOOGLE_API_KEY="api_key_value"
 
 LangChain Gemini Enterprise Agent Platform 聊天集成位于 `@langchain/google-vertexai` 包中：
 
-<CodeGroup>
-  ```bash npm theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  npm install @langchain/google-vertexai @langchain/core
-  ```
+```bash npm theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+npm install @langchain/google-vertexai @langchain/core
+```
 
-  ```bash yarn theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  yarn add @langchain/google-vertexai @langchain/core
-  ```
+```bash yarn theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+yarn add @langchain/google-vertexai @langchain/core
+```
 
-  ```bash pnpm theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  pnpm add @langchain/google-vertexai @langchain/core
-  ```
-</CodeGroup>
+```bash pnpm theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+pnpm add @langchain/google-vertexai @langchain/core
+```
 
 或者如果在像[Vercel Edge function](https://vercel.com/blog/edge-functions-generally-available)这样的网络环境中使用：
 
-<CodeGroup>
-  ```bash npm theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  npm install @langchain/google-vertexai-web @langchain/core
-  ```
+```bash npm theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+npm install @langchain/google-vertexai-web @langchain/core
+```
 
-  ```bash yarn theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  yarn add @langchain/google-vertexai-web @langchain/core
-  ```
+```bash yarn theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+yarn add @langchain/google-vertexai-web @langchain/core
+```
 
-  ```bash pnpm theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  pnpm add @langchain/google-vertexai-web @langchain/core
-  ```
-</CodeGroup>
+```bash pnpm theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+pnpm add @langchain/google-vertexai-web @langchain/core
+```
 
 ## 实例化
 
@@ -293,12 +289,6 @@ const modelWithBoundCachedContent = new ChatVertexAI({
 
 ***
 
-<div>
-  <Callout icon="terminal-2">
-    [Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
-  </Callout>
+[Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
 
-  <Callout icon="edit">
-    [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/oss/javascript/integrations/chat/google_vertex_ai.mdx) 或 [file an issue](https://github.com/langchain-ai/docs/issues/new/choose)。
-  </Callout>
-</div>
+[Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/oss/javascript/integrations/chat/google_vertex_ai.mdx) 或 [file an issue](https://github.com/langchain-ai/docs/issues/new/choose)。

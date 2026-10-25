@@ -7,15 +7,13 @@
 使用无头工具实现在客户端上运行浏览器和设备 API
 
 无头工具让您的代理调用工具，其真正执行必须发生在
-用户的应用程序而不是服务器上。代理仍然看到正常的工具架构，
+用户的应用程序而不是服务器上。代理仍然看到正常的工具模式，
 但实现位于前端，可以访问浏览器 API
 例如 IndexedDB、地理位置、剪贴板、画布或文件选择器。
 
 当数据应保留在设备本地时，此模式特别有用。
 本页上的游乐场示例使用支持的小型浏览器内存工具包
 由 IndexedDB 加上完全在客户端运行的地理定位工具。
-
-<PatternEmbed />
 
 ## 无头工具如何工作
 
@@ -25,11 +23,11 @@
 2. 通过`.implement(...)`在前端实现匹配工具。
 3. 将这些实现传递给`useStream({ tools: [...] })`。
 4. 当代理发出匹配的工具调用时，客户端运行它并恢复
-   工具结果的中断运行。<Tip>
-  将工具定义和实现保留在单独的模块中。分享
-  您的代理和前端之间的定义，因此工具名称和模式
-  保持一致，然后将仅限浏览器的代码保留在仅限客户端的`impl`模块中。
-</Tip>
+   工具结果的中断运行。> [!提示]
+>
+> 将工具定义和实现保留在单独的模块中。分享
+> 代理和前端之间的定义，因此工具名称和模式
+> 保持一致，然后将仅限浏览器的代码保留在仅限客户端的`impl`模块中。
 
 ## 在代理上注册该工具
 
@@ -40,50 +38,48 @@ Playground 定义了一小组遵循相同规则的客户端工具
 在共享 `tools.ts` 文件中定义一次工具并在两个文件中使用该文件
 代理和前端。
 
-<CodeGroup>
-  ```ts tools.ts theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  import * as z from "zod";
-  import { tool } from "langchain";
+```ts tools.ts theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+import * as z from "zod";
+import { tool } from "langchain";
 
-  export const memoryPut = tool({
-    name: "memory_put",
-    description: "Store a memory in the user's browser.",
-    schema: z.object({
-      key: z.string(),
-      value: z.unknown(),
-    }),
-  });
+export const memoryPut = tool({
+  name: "memory_put",
+  description: "Store a memory in the user's browser.",
+  schema: z.object({
+    key: z.string(),
+    value: z.unknown(),
+  }),
+});
 
-  export const memoryGet = tool({
-    name: "memory_get",
-    description: "Look up a memory stored in the user's browser.",
-    schema: z.object({
-      key: z.string(),
-    }),
-  });
+export const memoryGet = tool({
+  name: "memory_get",
+  description: "Look up a memory stored in the user's browser.",
+  schema: z.object({
+    key: z.string(),
+  }),
+});
 
-  export const geolocationGet = tool({
-    name: "geolocation_get",
-    description: "Get the user's current location from the browser.",
-    schema: z.object({
-      save: z.boolean().optional(),
-    }),
-  });
-  ```
+export const geolocationGet = tool({
+  name: "geolocation_get",
+  description: "Get the user's current location from the browser.",
+  schema: z.object({
+    save: z.boolean().optional(),
+  }),
+});
+```
 
-  ```ts agent.ts theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  import { createAgent } from "langchain";
-  import { MemorySaver } from "@langchain/langgraph";
+```ts agent.ts theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+import { createAgent } from "langchain";
+import { MemorySaver } from "@langchain/langgraph";
 
-  import { geolocationGet, memoryGet, memoryPut } from "./tools";
+import { geolocationGet, memoryGet, memoryPut } from "./tools";
 
-  export const agent = createAgent({
-    model: "openai:gpt-5.5",
-    tools: [memoryPut, memoryGet, geolocationGet],
-    checkpointer: new MemorySaver(),
-  });
-  ```
-</CodeGroup>
+export const agent = createAgent({
+  model: "openai:gpt-5.5",
+  tools: [memoryPut, memoryGet, geolocationGet],
+  checkpointer: new MemorySaver(),
+});
+```
 
 ## 实现浏览器行为
 
@@ -152,96 +148,94 @@ import type { myAgent } from "./agent";
 export type AgentState = typeof myAgent;
 ```
 
-<CodeGroup>
-  ```tsx React theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  import { useStream } from "@langchain/react";
+```tsx React theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+import { useStream } from "@langchain/react";
 
-  import { geolocationGet, memoryGet, memoryPut } from "./impl";
-  import type { AgentState } from "./types";
+import { geolocationGet, memoryGet, memoryPut } from "./impl";
+import type { AgentState } from "./types";
 
-  const AGENT_URL = "http://localhost:2024";
+const AGENT_URL = "http://localhost:2024";
 
-  export function Chat() {
-    const stream = useStream<AgentState>({
-      apiUrl: AGENT_URL,
-      assistantId: "headless_tools",
-      tools: [memoryPut, memoryGet, geolocationGet],
-    });
-
-    return <ChatView messages={stream.messages} toolCalls={stream.toolCalls} />;
-  }
-  ```
-
-  ```vue Vue theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  <script setup lang="ts">
-  import { useStream } from "@langchain/vue";
-
-  import { geolocationGet, memoryGet, memoryPut } from "./impl";
-  import type { AgentState } from "./types";
-
-  const AGENT_URL = "http://localhost:2024";
-
+export function Chat() {
   const stream = useStream<AgentState>({
     apiUrl: AGENT_URL,
     assistantId: "headless_tools",
     tools: [memoryPut, memoryGet, geolocationGet],
   });
-  </script>
 
-  <template>
-    <ChatView
-      :messages="stream.messages.value"
-      :tool-calls="stream.toolCalls.value"
-    />
-  </template>
-  ```
+  return <ChatView messages={stream.messages} toolCalls={stream.toolCalls} />;
+}
+```
 
-  ```svelte Svelte theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  <script lang="ts">
-    import { useStream } from "@langchain/svelte";
+```vue Vue theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+<script setup lang="ts">
+import { useStream } from "@langchain/vue";
 
-    import { geolocationGet, memoryGet, memoryPut } from "./impl";
-    import type { AgentState } from "./types";
+import { geolocationGet, memoryGet, memoryPut } from "./impl";
+import type { AgentState } from "./types";
 
-    const AGENT_URL = "http://localhost:2024";
+const AGENT_URL = "http://localhost:2024";
 
-    const { messages, toolCalls } = useStream<AgentState>({
-      apiUrl: AGENT_URL,
-      assistantId: "headless_tools",
-      tools: [memoryPut, memoryGet, geolocationGet],
-    });
-  </script>
+const stream = useStream<AgentState>({
+  apiUrl: AGENT_URL,
+  assistantId: "headless_tools",
+  tools: [memoryPut, memoryGet, geolocationGet],
+});
+</script>
 
-  <ChatView messages={$messages} toolCalls={$toolCalls} />
-  ```
+<template>
+  <ChatView
+    :messages="stream.messages.value"
+    :tool-calls="stream.toolCalls.value"
+  />
+</template>
+```
 
-  ```ts Angular theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  import { Component } from "@angular/core";
-  import { useStream } from "@langchain/angular";
+```svelte Svelte theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+<script lang="ts">
+  import { useStream } from "@langchain/svelte";
 
   import { geolocationGet, memoryGet, memoryPut } from "./impl";
   import type { AgentState } from "./types";
 
   const AGENT_URL = "http://localhost:2024";
 
-  @Component({
-    selector: "app-chat",
-    template: `
-      <app-chat-view
-        [messages]="stream.messages()"
-        [toolCalls]="stream.toolCalls()"
-      />
-    `,
-  })
-  export class ChatComponent {
-    stream = useStream<AgentState>({
-      apiUrl: AGENT_URL,
-      assistantId: "headless_tools",
-      tools: [memoryPut, memoryGet, geolocationGet],
-    });
-  }
-  ```
-</CodeGroup>
+  const { messages, toolCalls } = useStream<AgentState>({
+    apiUrl: AGENT_URL,
+    assistantId: "headless_tools",
+    tools: [memoryPut, memoryGet, geolocationGet],
+  });
+</script>
+
+<ChatView messages={$messages} toolCalls={$toolCalls} />
+```
+
+```ts Angular theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+import { Component } from "@angular/core";
+import { useStream } from "@langchain/angular";
+
+import { geolocationGet, memoryGet, memoryPut } from "./impl";
+import type { AgentState } from "./types";
+
+const AGENT_URL = "http://localhost:2024";
+
+@Component({
+  selector: "app-chat",
+  template: `
+    <app-chat-view
+      [messages]="stream.messages()"
+      [toolCalls]="stream.toolCalls()"
+    />
+  `,
+})
+export class ChatComponent {
+  stream = useStream<AgentState>({
+    apiUrl: AGENT_URL,
+    assistantId: "headless_tools",
+    tools: [memoryPut, memoryGet, geolocationGet],
+  });
+}
+```
 
 ## 内联渲染工具活动Playground 将每个内存或地理定位操作呈现为自己的卡，并且
 在输入附近保留一个小的内存统计面板。关键的一步是匹配每个
@@ -297,12 +291,6 @@ function Message({ message, toolCalls }: {
 
 ***
 
-<div>
-  <Callout icon="terminal-2">
-    [Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
-  </Callout>
+[Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
 
-  <Callout icon="edit">
-    [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/oss/langchain/frontend/headless-tools.mdx) 或 [file an issue](https://github.com/langchain-ai/docs/issues/new/choose)。
-  </Callout>
-</div>
+[Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/oss/langchain/frontend/headless-tools.mdx) 或 [file an issue](https://github.com/langchain-ai/docs/issues/new/choose)。

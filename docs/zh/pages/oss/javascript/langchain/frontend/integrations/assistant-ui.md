@@ -8,11 +8,9 @@ Headless React AI 聊天框架，具有完整的运行时层，桥接到 useStre
 
 [assistant-ui](https://www.assistant-ui.com/) 是一个用于 AI 聊天的无头 React UI 框架。它提供了完整的运行时层（线程管理、消息分支、附件处理），通过 `useExternalStoreRuntime` 适配器连接到 [⟦T4⟧](https://reference.langchain.com/javascript/langchain-react/index/useStream)。
 
-<ExampleEmbed />
-
-<Tip>
-  克隆并运行 [full assistant-ui example](https://github.com/langchain-ai/langgraphjs/tree/main/examples/assistant-ui-claude) 以查看使用 `useExternalStoreRuntime` 连接到 LangChain 代理的 Claude 风格的聊天界面。
-</Tip>
+> [!提示]
+>
+> 克隆并运行 [full assistant-ui example](https://github.com/langchain-ai/langgraphjs/tree/main/examples/assistant-ui-claude) 以查看使用 `useExternalStoreRuntime` 连接到 LangChain 代理的 Claude 风格的聊天界面。
 
 ## 它是如何工作的
 
@@ -168,12 +166,6 @@ function CustomThread() {
 
 ***
 
-<div>
-  <Callout icon="terminal-2">
-    [Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
-  </Callout>
+[Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
 
-  <Callout icon="edit">
-    [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/oss/langchain/frontend/integrations/assistant-ui.mdx) 或 [file an issue](https://github.com/langchain-ai/docs/issues/new/choose)。
-  </Callout>
-</div>
+[Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/oss/langchain/frontend/integrations/assistant-ui.mdx) 或 [file an issue](https://github.com/langchain-ai/docs/issues/new/choose)。

@@ -4,7 +4,7 @@
 
 # 向后兼容性
 
-更新生产中的LangGraph图形代码，而不会中断运行中的运行。
+更新生产中的 LangGraph 图形代码，而不会中断运行中的运行。
 
 软件需要在生产中改变。新的需求、错误修复和重构最终都会出现在您的图形代码中。由于 LangGraph 针对现有线程的 [persisted](/oss/javascript/langgraph/persistence) 状态运行最新部署的图，因此您发布的每个更改实际上都是相对于现有检查点的向后兼容的 API 更改。
 
@@ -14,9 +14,9 @@
 2. [Business compatibility](#business-compatibility)：不太常见；即使代码已更改，现有运行也应继续遵循旧的业务逻辑。
 3. [Non-determinism](#non-determinism)：仅适用于[Functional API](/oss/javascript/langgraph/functional-api)。
 
-<Tip>
-  有关运行时默认支持的图形拓扑和状态更改的简短摘要，请参阅[Graph migrations](/oss/javascript/langgraph/graph-api#graph-migrations)。本页的其余部分介绍了当更改超出支持集时可以应用的模式。
-</Tip>
+> [!提示]
+>
+> 有关运行时默认支持的图形拓扑和状态更改的简短摘要，请参阅[Graph migrations](/oss/javascript/langgraph/graph-api#graph-migrations)。本页的其余部分介绍了当更改超出支持集时可以应用的模式。
 
 ## 技术兼容性
 
@@ -31,18 +31,18 @@
 ### 推荐模式* 将新状态字段标记为可选（`z.string().optional()` 或 `.nullish()`），以便旧检查点仍然有效。
 * 将删除视为弃用：将字段保留在架构上至少一个耗尽周期，以便现有检查点继续加载。
 * 通过“添加然后删除”重命名：将新字段或节点与旧字段或节点一起添加，双重写入或路由到两者以形成弃用窗口，然后在没有运行中线程依赖旧字段或节点时删除旧字段或节点。
-* 在推出之前，使用 [time travel](/oss/javascript/langgraph/use-time-travel) 和 [⟦T4⟧](https://reference.langchain.com/javascript/classes/_langchain_langgraph.pregel.Pregel.html#getState) 根据暂存部署中的新代码抽查现有线程。
+* 在推出之前，使用 [time travel](/oss/javascript/langgraph/use-time-travel) 和 [⟦T4⟧](https://reference.langchain.com/javascript/langchain-langgraph/pregel/Pregel/getState) 根据暂存部署中的新代码抽查现有线程。
 
 ### 检测运行中的线程
 
 在删除节点、重命名 State 键或以其他方式进行旧线程无法容忍的更改之前，您需要了解当前是否有任何线程停放在您要删除的代码版本上。 LangGraph 本身不维护线程状态的搜索索引，因此答案取决于图的运行位置。
 
-**如果您部署到[LangSmith](/langsmith/deployment)。**使用代理服务器的线程搜索按状态进行过滤。 `status` 字段接受 `idle`、`busy`、`interrupted` 和 `error`，因此您可以批量查询 `interrupted` 或 `busy` 线程，可以选择使用元数据过滤器缩小范围。参见[Filter by thread status](/langsmith/use-threads#filter-by-thread-status)和[List threads](/langsmith/use-threads#list-threads)。**在LangGraph运行的任何地方。**使用[LangSmith tracing](/oss/javascript/langgraph/observability)监视生产中哪些节点正在进入和退出。这是最可靠的信号，表明节点或状态字段在任何活动代码路径中都不再可达。
+**如果您部署到[LangSmith](/langsmith/deployment)。**使用代理服务器的线程搜索按状态进行过滤。 `status`字段接受`idle`、`busy`、`interrupted`和`error`，因此您可以批量查询`interrupted`或`busy`线程，可以选择使用元数据过滤器缩小范围。参见[Filter by thread status](/langsmith/use-threads#filter-by-thread-status)和[List threads](/langsmith/use-threads#list-threads)。**在任何地方运行 LangGraph。** 使用 [LangSmith tracing](/oss/javascript/langgraph/observability) 监控生产中哪些节点正在进入和退出。这是最可靠的信号，表明节点或状态字段在任何活动代码路径中都不再可达。
 
 **当您已经拥有 `thread_id` 时。** 直接检查该单线程：
 
-* [⟦T13⟧](https://reference.langchain.com/javascript/classes/_langchain_langgraph.pregel.Pregel.html#getState) 返回最新的检查点，包括线程暂停在哪个节点以及任何挂起的中断。
-* [⟦T14⟧](https://reference.langchain.com/javascript/classes/_langchain_langgraph.pregel.Pregel.html#getStateHistory) 返回线程检查点的完整时间顺序列表。
+* [⟦T13⟧](https://reference.langchain.com/javascript/langchain-langgraph/pregel/Pregel/getState) 返回最新的检查点，包括线程暂停在哪个节点以及任何挂起的中断。
+* [⟦T14⟧](https://reference.langchain.com/javascript/langchain-langgraph/pregel/Pregel/getStateHistory) 返回线程检查点的完整时间顺序列表。
 
 如有疑问，请将已弃用的节点或字段保留在适当的位置，直到代理服务器线程列表和跟踪显示其上不再有任何活动。
 
@@ -71,17 +71,11 @@
 如果您需要对正在运行的 `@entrypoint` 进行重要的代码更改，最安全的选项是：
 
 * 在部署变更之前让正在进行的运行耗尽。
-* 将任何新逻辑包装在新的`@task`中，以便其结果独立检查点。
+* 将任何新逻辑包装在新的 `@task` 中，以便其结果独立检查点。
 * 在`langgraph.json`中以新的图名称注册一个新的入口点以实现新的行为，并将新的线程路由到它。
 
 ***
 
-<div>
-  <Callout icon="terminal-2">
-    [Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
-  </Callout>
+[Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
 
-  <Callout icon="edit">
-    [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/oss/langgraph/backward-compatibility.mdx) 或 [file an issue](https://github.com/langchain-ai/docs/issues/new/choose)。
-  </Callout>
-</div>
+[Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/oss/langgraph/backward-compatibility.mdx) 或 [file an issue](https://github.com/langchain-ai/docs/issues/new/choose)。

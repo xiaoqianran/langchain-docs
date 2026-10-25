@@ -8,380 +8,370 @@
 
 代理是一个循环调用工具的模型，直到给定的任务完成。
 
-<img alt="Core agent loop diagram" />
+![Core agent loop diagram](https://mintcdn.com/langchain-5e9cc07a/jtty0O--UJOKG0nK/oss/images/core_agent_loop.svg?fit=max\&auto=format\&n=jtty0O--UJOKG0nK\&q=85\&s=4b4cbb497b6273758a565de1bc90ece0)
 
 线束是围绕该循环的一切：提示、工具以及塑造模型行为的任何中间件。
 
-<Note>
-  **特工=模特+线束**
+> [!注意]
+>
+> **特工=模特+线束**
+>
+> 线束的工作：为给定任务在正确的时间为模型提供正确的上下文。
 
-  线束的工作：为给定任务在正确的时间为模型提供正确的上下文。
-</Note>
+[⟦T115⟧](https://reference.langchain.com/javascript/langchain/index/createAgent) 是一款高度可配置的安全带。最简单的是，您可以使用以下命令创建一个：
 
-[⟦T115⟧](https://reference.langchain.com/javascript/langchain/index/createAgent) 是一款高度可配置的线束。最简单的是，您可以使用以下命令创建一个：
+```ts Google theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+import { createAgent } from "langchain";
 
-<CodeGroup>
-  ```ts Google theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  import { createAgent } from "langchain";
+var agent = createAgent({ model: "google:gemini-3.6-flash", tools });
+```
 
-  var agent = createAgent({ model: "google:gemini-3.6-flash", tools });
-  ```
+```ts OpenAI theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+import { createAgent } from "langchain";
 
-  ```ts OpenAI theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  import { createAgent } from "langchain";
+var agent = createAgent({ model: "openai:gpt-5.5", tools });
+```
 
-  var agent = createAgent({ model: "openai:gpt-5.5", tools });
-  ```
+```ts Anthropic theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+import { createAgent } from "langchain";
 
-  ```ts Anthropic theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  import { createAgent } from "langchain";
+var agent = createAgent({ model: "anthropic:claude-sonnet-5", tools });
+```
 
-  var agent = createAgent({ model: "anthropic:claude-sonnet-5", tools });
-  ```
+```ts OpenRouter theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+import { createAgent } from "langchain";
 
-  ```ts OpenRouter theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  import { createAgent } from "langchain";
+var agent = createAgent({ model: "openrouter:z-ai/glm-5.2", tools });
+```
 
-  var agent = createAgent({ model: "openrouter:z-ai/glm-5.2", tools });
-  ```
+```ts Fireworks theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+import { createAgent } from "langchain";
 
-  ```ts Fireworks theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  import { createAgent } from "langchain";
+var agent = createAgent({ model: "fireworks:accounts/fireworks/models/glm-5p2", tools });
+```
 
-  var agent = createAgent({ model: "fireworks:accounts/fireworks/models/glm-5p2", tools });
-  ```
+```ts Baseten theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+import { createAgent } from "langchain";
 
-  ```ts Baseten theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  import { createAgent } from "langchain";
+var agent = createAgent({ model: "baseten:zai-org/GLM-5.2", tools });
+```
 
-  var agent = createAgent({ model: "baseten:zai-org/GLM-5.2", tools });
-  ```
+```ts Ollama theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+import { createAgent } from "langchain";
 
-  ```ts Ollama theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  import { createAgent } from "langchain";
-
-  var agent = createAgent({ model: "ollama:north-mini-code-1.0", tools });
-  ```
-</CodeGroup>
+var agent = createAgent({ model: "ollama:north-mini-code-1.0", tools });
+```
 
 在此基础上，您可以直接使用 `model=`、`tools=` 和 `system_prompt=` 参数配置基础知识。如需更高级的功能，请使用 [middleware](#configure-the-harness) 延长线束。
 
-<Tip>
-  [Deep Agents](/oss/javascript/deepagents/overview) 构建于 `create_agent` 之上，并附带已组装的常用功能，例如规划、文件系统工具、子代理和内存。当您需要自己配置线束时，请使用`create_agent`。
-</Tip>
+> [!提示]
+>
+> [Deep Agents](/oss/javascript/deepagents/overview) 构建于 `create_agent` 之上，并附带已组装的常用功能，例如规划、文件系统工具、子代理和内存。当您需要自己配置线束时，请使用`create_agent`。
 
 ## 核心组件
 
-<img alt="Agent model and harness components diagram" />
+![Agent model and harness components diagram](https://mintcdn.com/langchain-5e9cc07a/jtty0O--UJOKG0nK/oss/images/agent_model_harness.svg?fit=max\&auto=format\&n=jtty0O--UJOKG0nK\&q=85\&s=5ac6a7e0343af7cb5ba3ca632e2224af)
 
 ### 型号传递模型标识符字符串 (`"provider:model"`) 或初始化的模型实例来为您的代理选择模型。有关参数、提供程序设置和动态模型选择，请参阅[Models](/oss/javascript/langchain/models)。
 
-<CodeGroup>
-  ```ts Google theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  import { createAgent } from "langchain";
+```ts Google theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+import { createAgent } from "langchain";
 
-  var agent = createAgent({ model: "google:gemini-3.6-flash", tools });
-  ```
+var agent = createAgent({ model: "google:gemini-3.6-flash", tools });
+```
 
-  ```ts OpenAI theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  import { createAgent } from "langchain";
+```ts OpenAI theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+import { createAgent } from "langchain";
 
-  var agent = createAgent({ model: "openai:gpt-5.5", tools });
-  ```
+var agent = createAgent({ model: "openai:gpt-5.5", tools });
+```
 
-  ```ts Anthropic theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  import { createAgent } from "langchain";
+```ts Anthropic theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+import { createAgent } from "langchain";
 
-  var agent = createAgent({ model: "anthropic:claude-sonnet-5", tools });
-  ```
+var agent = createAgent({ model: "anthropic:claude-sonnet-5", tools });
+```
 
-  ```ts OpenRouter theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  import { createAgent } from "langchain";
+```ts OpenRouter theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+import { createAgent } from "langchain";
 
-  var agent = createAgent({ model: "openrouter:z-ai/glm-5.2", tools });
-  ```
+var agent = createAgent({ model: "openrouter:z-ai/glm-5.2", tools });
+```
 
-  ```ts Fireworks theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  import { createAgent } from "langchain";
+```ts Fireworks theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+import { createAgent } from "langchain";
 
-  var agent = createAgent({ model: "fireworks:accounts/fireworks/models/glm-5p2", tools });
-  ```
+var agent = createAgent({ model: "fireworks:accounts/fireworks/models/glm-5p2", tools });
+```
 
-  ```ts Baseten theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  import { createAgent } from "langchain";
+```ts Baseten theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+import { createAgent } from "langchain";
 
-  var agent = createAgent({ model: "baseten:zai-org/GLM-5.2", tools });
-  ```
+var agent = createAgent({ model: "baseten:zai-org/GLM-5.2", tools });
+```
 
-  ```ts Ollama theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  import { createAgent } from "langchain";
+```ts Ollama theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+import { createAgent } from "langchain";
 
-  var agent = createAgent({ model: "ollama:north-mini-code-1.0", tools });
-  ```
-</CodeGroup>
+var agent = createAgent({ model: "ollama:north-mini-code-1.0", tools });
+```
 
 ### 工具
 
 要为代理提供工具，请传递任何 Python 可调用工具、LangChain 工具或工具字典。有关工具定义、上下文访问和动态工具选择，请参阅[Tools](/oss/javascript/langchain/tools)。
 
-<CodeGroup>
-  ```ts Google theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  import { tool } from "langchain";
-  import * as z from "zod";
+```ts Google theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+import { tool } from "langchain";
+import * as z from "zod";
 
-  var search = tool(({ query }) => `Results for: ${query}`, {
-    name: "search",
-    description: "Search for information",
-    schema: z.object({ query: z.string() }),
-  });
+var search = tool(({ query }) => `Results for: ${query}`, {
+  name: "search",
+  description: "Search for information",
+  schema: z.object({ query: z.string() }),
+});
 
-  var agent = createAgent({ model: "google:gemini-3.6-flash", tools: [search] });
-  ```
+var agent = createAgent({ model: "google:gemini-3.6-flash", tools: [search] });
+```
 
-  ```ts OpenAI theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  import { tool } from "langchain";
-  import * as z from "zod";
+```ts OpenAI theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+import { tool } from "langchain";
+import * as z from "zod";
 
-  var search = tool(({ query }) => `Results for: ${query}`, {
-    name: "search",
-    description: "Search for information",
-    schema: z.object({ query: z.string() }),
-  });
+var search = tool(({ query }) => `Results for: ${query}`, {
+  name: "search",
+  description: "Search for information",
+  schema: z.object({ query: z.string() }),
+});
 
-  var agent = createAgent({ model: "openai:gpt-5.5", tools: [search] });
-  ```
+var agent = createAgent({ model: "openai:gpt-5.5", tools: [search] });
+```
 
-  ```ts Anthropic theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  import { tool } from "langchain";
-  import * as z from "zod";
+```ts Anthropic theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+import { tool } from "langchain";
+import * as z from "zod";
 
-  var search = tool(({ query }) => `Results for: ${query}`, {
-    name: "search",
-    description: "Search for information",
-    schema: z.object({ query: z.string() }),
-  });
+var search = tool(({ query }) => `Results for: ${query}`, {
+  name: "search",
+  description: "Search for information",
+  schema: z.object({ query: z.string() }),
+});
 
-  var agent = createAgent({ model: "anthropic:claude-sonnet-5", tools: [search] });
-  ```
+var agent = createAgent({ model: "anthropic:claude-sonnet-5", tools: [search] });
+```
 
-  ```ts OpenRouter theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  import { tool } from "langchain";
-  import * as z from "zod";
+```ts OpenRouter theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+import { tool } from "langchain";
+import * as z from "zod";
 
-  var search = tool(({ query }) => `Results for: ${query}`, {
-    name: "search",
-    description: "Search for information",
-    schema: z.object({ query: z.string() }),
-  });
+var search = tool(({ query }) => `Results for: ${query}`, {
+  name: "search",
+  description: "Search for information",
+  schema: z.object({ query: z.string() }),
+});
 
-  var agent = createAgent({ model: "openrouter:z-ai/glm-5.2", tools: [search] });
-  ```
+var agent = createAgent({ model: "openrouter:z-ai/glm-5.2", tools: [search] });
+```
 
-  ```ts Fireworks theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  import { tool } from "langchain";
-  import * as z from "zod";
+```ts Fireworks theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+import { tool } from "langchain";
+import * as z from "zod";
 
-  var search = tool(({ query }) => `Results for: ${query}`, {
-    name: "search",
-    description: "Search for information",
-    schema: z.object({ query: z.string() }),
-  });
+var search = tool(({ query }) => `Results for: ${query}`, {
+  name: "search",
+  description: "Search for information",
+  schema: z.object({ query: z.string() }),
+});
 
-  var agent = createAgent({ model: "fireworks:accounts/fireworks/models/glm-5p2", tools: [search] });
-  ```
+var agent = createAgent({ model: "fireworks:accounts/fireworks/models/glm-5p2", tools: [search] });
+```
 
-  ```ts Baseten theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  import { tool } from "langchain";
-  import * as z from "zod";
+```ts Baseten theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+import { tool } from "langchain";
+import * as z from "zod";
 
-  var search = tool(({ query }) => `Results for: ${query}`, {
-    name: "search",
-    description: "Search for information",
-    schema: z.object({ query: z.string() }),
-  });
+var search = tool(({ query }) => `Results for: ${query}`, {
+  name: "search",
+  description: "Search for information",
+  schema: z.object({ query: z.string() }),
+});
 
-  var agent = createAgent({ model: "baseten:zai-org/GLM-5.2", tools: [search] });
-  ```
+var agent = createAgent({ model: "baseten:zai-org/GLM-5.2", tools: [search] });
+```
 
-  ```ts Ollama theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  import { tool } from "langchain";
-  import * as z from "zod";
+```ts Ollama theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+import { tool } from "langchain";
+import * as z from "zod";
 
-  var search = tool(({ query }) => `Results for: ${query}`, {
-    name: "search",
-    description: "Search for information",
-    schema: z.object({ query: z.string() }),
-  });
+var search = tool(({ query }) => `Results for: ${query}`, {
+  name: "search",
+  description: "Search for information",
+  schema: z.object({ query: z.string() }),
+});
 
-  var agent = createAgent({ model: "ollama:north-mini-code-1.0", tools: [search] });
-  ```
-</CodeGroup>
+var agent = createAgent({ model: "ollama:north-mini-code-1.0", tools: [search] });
+```
 
 ###系统提示
 
 塑造代理处理任务的方式。系统提示参数接受字符串或`SystemMessage`。对于运行时的动态提示，请使用[middleware](/oss/javascript/langchain/middleware)。
 
-<CodeGroup>
-  ```ts Google theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  var agent = createAgent({
-    model: "google:gemini-3.6-flash",
-    tools,
-    systemPrompt: "You are a helpful assistant. Be concise and accurate.",
-  });
-  ```
+```ts Google theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+var agent = createAgent({
+  model: "google:gemini-3.6-flash",
+  tools,
+  systemPrompt: "You are a helpful assistant. Be concise and accurate.",
+});
+```
 
-  ```ts OpenAI theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  var agent = createAgent({
-    model: "openai:gpt-5.5",
-    tools,
-    systemPrompt: "You are a helpful assistant. Be concise and accurate.",
-  });
-  ```
+```ts OpenAI theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+var agent = createAgent({
+  model: "openai:gpt-5.5",
+  tools,
+  systemPrompt: "You are a helpful assistant. Be concise and accurate.",
+});
+```
 
-  ```ts Anthropic theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  var agent = createAgent({
-    model: "anthropic:claude-sonnet-5",
-    tools,
-    systemPrompt: "You are a helpful assistant. Be concise and accurate.",
-  });
-  ```
+```ts Anthropic theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+var agent = createAgent({
+  model: "anthropic:claude-sonnet-5",
+  tools,
+  systemPrompt: "You are a helpful assistant. Be concise and accurate.",
+});
+```
 
-  ```ts OpenRouter theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  var agent = createAgent({
-    model: "openrouter:z-ai/glm-5.2",
-    tools,
-    systemPrompt: "You are a helpful assistant. Be concise and accurate.",
-  });
-  ```
+```ts OpenRouter theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+var agent = createAgent({
+  model: "openrouter:z-ai/glm-5.2",
+  tools,
+  systemPrompt: "You are a helpful assistant. Be concise and accurate.",
+});
+```
 
-  ```ts Fireworks theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  var agent = createAgent({
-    model: "fireworks:accounts/fireworks/models/glm-5p2",
-    tools,
-    systemPrompt: "You are a helpful assistant. Be concise and accurate.",
-  });
-  ```
+```ts Fireworks theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+var agent = createAgent({
+  model: "fireworks:accounts/fireworks/models/glm-5p2",
+  tools,
+  systemPrompt: "You are a helpful assistant. Be concise and accurate.",
+});
+```
 
-  ```ts Baseten theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  var agent = createAgent({
-    model: "baseten:zai-org/GLM-5.2",
-    tools,
-    systemPrompt: "You are a helpful assistant. Be concise and accurate.",
-  });
-  ```
+```ts Baseten theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+var agent = createAgent({
+  model: "baseten:zai-org/GLM-5.2",
+  tools,
+  systemPrompt: "You are a helpful assistant. Be concise and accurate.",
+});
+```
 
-  ```ts Ollama theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  var agent = createAgent({
-    model: "ollama:north-mini-code-1.0",
-    tools,
-    systemPrompt: "You are a helpful assistant. Be concise and accurate.",
-  });
-  ```
-</CodeGroup>
+```ts Ollama theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+var agent = createAgent({
+  model: "ollama:north-mini-code-1.0",
+  tools,
+  systemPrompt: "You are a helpful assistant. Be concise and accurate.",
+});
+```
 
 ### 结构化输出
 
-使用 `response_format=` 从代理返回经过验证的模式。有关策略和示例，请参阅[Structured output](/oss/javascript/langchain/structured-output)。
+使用 `response_format=` 从代理返回经过验证的架构。有关策略和示例，请参阅[Structured output](/oss/javascript/langchain/structured-output)。
 
-<CodeGroup>
-  ```ts Google theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  const Answer = z.object({ summary: z.string(), confidence: z.number() });
+```ts Google theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+const Answer = z.object({ summary: z.string(), confidence: z.number() });
 
-  var agent = createAgent({
-    model: "google:gemini-3.6-flash",
-    tools,
-    responseFormat: Answer,
-  });
-  const result = await agent.invoke({
-    messages: [{ role: "user", content: "Summarize AI trends" }],
-  });
-  result.structuredResponse; // { summary: ..., confidence: ... }
-  ```
+var agent = createAgent({
+  model: "google:gemini-3.6-flash",
+  tools,
+  responseFormat: Answer,
+});
+const result = await agent.invoke({
+  messages: [{ role: "user", content: "Summarize AI trends" }],
+});
+result.structuredResponse; // { summary: ..., confidence: ... }
+```
 
-  ```ts OpenAI theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  const Answer = z.object({ summary: z.string(), confidence: z.number() });
+```ts OpenAI theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+const Answer = z.object({ summary: z.string(), confidence: z.number() });
 
-  var agent = createAgent({
-    model: "openai:gpt-5.5",
-    tools,
-    responseFormat: Answer,
-  });
-  const result = await agent.invoke({
-    messages: [{ role: "user", content: "Summarize AI trends" }],
-  });
-  result.structuredResponse; // { summary: ..., confidence: ... }
-  ```
+var agent = createAgent({
+  model: "openai:gpt-5.5",
+  tools,
+  responseFormat: Answer,
+});
+const result = await agent.invoke({
+  messages: [{ role: "user", content: "Summarize AI trends" }],
+});
+result.structuredResponse; // { summary: ..., confidence: ... }
+```
 
-  ```ts Anthropic theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  const Answer = z.object({ summary: z.string(), confidence: z.number() });
+```ts Anthropic theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+const Answer = z.object({ summary: z.string(), confidence: z.number() });
 
-  var agent = createAgent({
-    model: "anthropic:claude-sonnet-5",
-    tools,
-    responseFormat: Answer,
-  });
-  const result = await agent.invoke({
-    messages: [{ role: "user", content: "Summarize AI trends" }],
-  });
-  result.structuredResponse; // { summary: ..., confidence: ... }
-  ```
+var agent = createAgent({
+  model: "anthropic:claude-sonnet-5",
+  tools,
+  responseFormat: Answer,
+});
+const result = await agent.invoke({
+  messages: [{ role: "user", content: "Summarize AI trends" }],
+});
+result.structuredResponse; // { summary: ..., confidence: ... }
+```
 
-  ```ts OpenRouter theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  const Answer = z.object({ summary: z.string(), confidence: z.number() });
+```ts OpenRouter theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+const Answer = z.object({ summary: z.string(), confidence: z.number() });
 
-  var agent = createAgent({
-    model: "openrouter:z-ai/glm-5.2",
-    tools,
-    responseFormat: Answer,
-  });
-  const result = await agent.invoke({
-    messages: [{ role: "user", content: "Summarize AI trends" }],
-  });
-  result.structuredResponse; // { summary: ..., confidence: ... }
-  ```
+var agent = createAgent({
+  model: "openrouter:z-ai/glm-5.2",
+  tools,
+  responseFormat: Answer,
+});
+const result = await agent.invoke({
+  messages: [{ role: "user", content: "Summarize AI trends" }],
+});
+result.structuredResponse; // { summary: ..., confidence: ... }
+```
 
-  ```ts Fireworks theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  const Answer = z.object({ summary: z.string(), confidence: z.number() });
+```ts Fireworks theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+const Answer = z.object({ summary: z.string(), confidence: z.number() });
 
-  var agent = createAgent({
-    model: "fireworks:accounts/fireworks/models/glm-5p2",
-    tools,
-    responseFormat: Answer,
-  });
-  const result = await agent.invoke({
-    messages: [{ role: "user", content: "Summarize AI trends" }],
-  });
-  result.structuredResponse; // { summary: ..., confidence: ... }
-  ```
+var agent = createAgent({
+  model: "fireworks:accounts/fireworks/models/glm-5p2",
+  tools,
+  responseFormat: Answer,
+});
+const result = await agent.invoke({
+  messages: [{ role: "user", content: "Summarize AI trends" }],
+});
+result.structuredResponse; // { summary: ..., confidence: ... }
+```
 
-  ```ts Baseten theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  const Answer = z.object({ summary: z.string(), confidence: z.number() });
+```ts Baseten theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+const Answer = z.object({ summary: z.string(), confidence: z.number() });
 
-  var agent = createAgent({
-    model: "baseten:zai-org/GLM-5.2",
-    tools,
-    responseFormat: Answer,
-  });
-  const result = await agent.invoke({
-    messages: [{ role: "user", content: "Summarize AI trends" }],
-  });
-  result.structuredResponse; // { summary: ..., confidence: ... }
-  ```
+var agent = createAgent({
+  model: "baseten:zai-org/GLM-5.2",
+  tools,
+  responseFormat: Answer,
+});
+const result = await agent.invoke({
+  messages: [{ role: "user", content: "Summarize AI trends" }],
+});
+result.structuredResponse; // { summary: ..., confidence: ... }
+```
 
-  ```ts Ollama theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  const Answer = z.object({ summary: z.string(), confidence: z.number() });
+```ts Ollama theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+const Answer = z.object({ summary: z.string(), confidence: z.number() });
 
-  var agent = createAgent({
-    model: "ollama:north-mini-code-1.0",
-    tools,
-    responseFormat: Answer,
-  });
-  const result = await agent.invoke({
-    messages: [{ role: "user", content: "Summarize AI trends" }],
-  });
-  result.structuredResponse; // { summary: ..., confidence: ... }
-  ```
-</CodeGroup>
+var agent = createAgent({
+  model: "ollama:north-mini-code-1.0",
+  tools,
+  responseFormat: Answer,
+});
+const result = await agent.invoke({
+  messages: [{ role: "user", content: "Summarize AI trends" }],
+});
+result.structuredResponse; // { summary: ..., confidence: ... }
+```
 
 ### 代理状态
 
@@ -395,616 +385,610 @@
 
 要添加自定义字段，请使用 `stateSchema` 和 `StateSchema` 或 Zod 对象在中间件上定义状态模式：
 
-<CodeGroup>
-  ```ts Google theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  import { createAgent, createMiddleware } from "langchain";
-  import { StateSchema } from "@langchain/langgraph";
-  import * as z from "zod";
+```ts Google theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+import { createAgent, createMiddleware } from "langchain";
+import { StateSchema } from "@langchain/langgraph";
+import * as z from "zod";
 
-  const MyState = new StateSchema({
-    userId: z.string(),
-    callCount: z.number().default(0),
-  });
+const MyState = new StateSchema({
+  userId: z.string(),
+  callCount: z.number().default(0),
+});
 
-  const stateMiddleware = createMiddleware({
-    name: "StateExtension",
-    stateSchema: MyState, // [!code highlight]
-  });
+const stateMiddleware = createMiddleware({
+  name: "StateExtension",
+  stateSchema: MyState, // [!code highlight]
+});
 
-  const agent = createAgent({
-    model: "google:gemini-3.6-flash",
-    tools: [],
-    middleware: [stateMiddleware],
-  });
-  ```
+const agent = createAgent({
+  model: "google:gemini-3.6-flash",
+  tools: [],
+  middleware: [stateMiddleware],
+});
+```
 
-  ```ts OpenAI theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  import { createAgent, createMiddleware } from "langchain";
-  import { StateSchema } from "@langchain/langgraph";
-  import * as z from "zod";
+```ts OpenAI theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+import { createAgent, createMiddleware } from "langchain";
+import { StateSchema } from "@langchain/langgraph";
+import * as z from "zod";
 
-  const MyState = new StateSchema({
-    userId: z.string(),
-    callCount: z.number().default(0),
-  });
+const MyState = new StateSchema({
+  userId: z.string(),
+  callCount: z.number().default(0),
+});
 
-  const stateMiddleware = createMiddleware({
-    name: "StateExtension",
-    stateSchema: MyState, // [!code highlight]
-  });
+const stateMiddleware = createMiddleware({
+  name: "StateExtension",
+  stateSchema: MyState, // [!code highlight]
+});
 
-  const agent = createAgent({
-    model: "openai:gpt-5.5",
-    tools: [],
-    middleware: [stateMiddleware],
-  });
-  ```
+const agent = createAgent({
+  model: "openai:gpt-5.5",
+  tools: [],
+  middleware: [stateMiddleware],
+});
+```
 
-  ```ts Anthropic theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  import { createAgent, createMiddleware } from "langchain";
-  import { StateSchema } from "@langchain/langgraph";
-  import * as z from "zod";
+```ts Anthropic theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+import { createAgent, createMiddleware } from "langchain";
+import { StateSchema } from "@langchain/langgraph";
+import * as z from "zod";
 
-  const MyState = new StateSchema({
-    userId: z.string(),
-    callCount: z.number().default(0),
-  });
+const MyState = new StateSchema({
+  userId: z.string(),
+  callCount: z.number().default(0),
+});
 
-  const stateMiddleware = createMiddleware({
-    name: "StateExtension",
-    stateSchema: MyState, // [!code highlight]
-  });
+const stateMiddleware = createMiddleware({
+  name: "StateExtension",
+  stateSchema: MyState, // [!code highlight]
+});
 
-  const agent = createAgent({
-    model: "anthropic:claude-sonnet-5",
-    tools: [],
-    middleware: [stateMiddleware],
-  });
-  ```
+const agent = createAgent({
+  model: "anthropic:claude-sonnet-5",
+  tools: [],
+  middleware: [stateMiddleware],
+});
+```
 
-  ```ts OpenRouter theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  import { createAgent, createMiddleware } from "langchain";
-  import { StateSchema } from "@langchain/langgraph";
-  import * as z from "zod";
+```ts OpenRouter theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+import { createAgent, createMiddleware } from "langchain";
+import { StateSchema } from "@langchain/langgraph";
+import * as z from "zod";
 
-  const MyState = new StateSchema({
-    userId: z.string(),
-    callCount: z.number().default(0),
-  });
+const MyState = new StateSchema({
+  userId: z.string(),
+  callCount: z.number().default(0),
+});
 
-  const stateMiddleware = createMiddleware({
-    name: "StateExtension",
-    stateSchema: MyState, // [!code highlight]
-  });
+const stateMiddleware = createMiddleware({
+  name: "StateExtension",
+  stateSchema: MyState, // [!code highlight]
+});
 
-  const agent = createAgent({
-    model: "openrouter:z-ai/glm-5.2",
-    tools: [],
-    middleware: [stateMiddleware],
-  });
-  ```
+const agent = createAgent({
+  model: "openrouter:z-ai/glm-5.2",
+  tools: [],
+  middleware: [stateMiddleware],
+});
+```
 
-  ```ts Fireworks theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  import { createAgent, createMiddleware } from "langchain";
-  import { StateSchema } from "@langchain/langgraph";
-  import * as z from "zod";
+```ts Fireworks theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+import { createAgent, createMiddleware } from "langchain";
+import { StateSchema } from "@langchain/langgraph";
+import * as z from "zod";
 
-  const MyState = new StateSchema({
-    userId: z.string(),
-    callCount: z.number().default(0),
-  });
+const MyState = new StateSchema({
+  userId: z.string(),
+  callCount: z.number().default(0),
+});
 
-  const stateMiddleware = createMiddleware({
-    name: "StateExtension",
-    stateSchema: MyState, // [!code highlight]
-  });
+const stateMiddleware = createMiddleware({
+  name: "StateExtension",
+  stateSchema: MyState, // [!code highlight]
+});
 
-  const agent = createAgent({
-    model: "fireworks:accounts/fireworks/models/glm-5p2",
-    tools: [],
-    middleware: [stateMiddleware],
-  });
-  ```
+const agent = createAgent({
+  model: "fireworks:accounts/fireworks/models/glm-5p2",
+  tools: [],
+  middleware: [stateMiddleware],
+});
+```
 
-  ```ts Baseten theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  import { createAgent, createMiddleware } from "langchain";
-  import { StateSchema } from "@langchain/langgraph";
-  import * as z from "zod";
+```ts Baseten theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+import { createAgent, createMiddleware } from "langchain";
+import { StateSchema } from "@langchain/langgraph";
+import * as z from "zod";
 
-  const MyState = new StateSchema({
-    userId: z.string(),
-    callCount: z.number().default(0),
-  });
+const MyState = new StateSchema({
+  userId: z.string(),
+  callCount: z.number().default(0),
+});
 
-  const stateMiddleware = createMiddleware({
-    name: "StateExtension",
-    stateSchema: MyState, // [!code highlight]
-  });
+const stateMiddleware = createMiddleware({
+  name: "StateExtension",
+  stateSchema: MyState, // [!code highlight]
+});
 
-  const agent = createAgent({
-    model: "baseten:zai-org/GLM-5.2",
-    tools: [],
-    middleware: [stateMiddleware],
-  });
-  ```
+const agent = createAgent({
+  model: "baseten:zai-org/GLM-5.2",
+  tools: [],
+  middleware: [stateMiddleware],
+});
+```
 
-  ```ts Ollama theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  import { createAgent, createMiddleware } from "langchain";
-  import { StateSchema } from "@langchain/langgraph";
-  import * as z from "zod";
+```ts Ollama theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+import { createAgent, createMiddleware } from "langchain";
+import { StateSchema } from "@langchain/langgraph";
+import * as z from "zod";
 
-  const MyState = new StateSchema({
-    userId: z.string(),
-    callCount: z.number().default(0),
-  });
+const MyState = new StateSchema({
+  userId: z.string(),
+  callCount: z.number().default(0),
+});
 
-  const stateMiddleware = createMiddleware({
-    name: "StateExtension",
-    stateSchema: MyState, // [!code highlight]
-  });
+const stateMiddleware = createMiddleware({
+  name: "StateExtension",
+  stateSchema: MyState, // [!code highlight]
+});
 
-  const agent = createAgent({
-    model: "ollama:north-mini-code-1.0",
-    tools: [],
-    middleware: [stateMiddleware],
-  });
-  ```
-</CodeGroup>
+const agent = createAgent({
+  model: "ollama:north-mini-code-1.0",
+  tools: [],
+  middleware: [stateMiddleware],
+});
+```
 
 有关完整的详细信息、示例和中间件级状态模式，请参阅[Short-term memory](/oss/javascript/langchain/short-term-memory#customizing-agent-memory)和[Custom middleware](/oss/javascript/langchain/middleware/custom#state-updates)。
 
 ## 调用
 
-<Tip>
-  跟踪此循环的每个步骤，调试工具调用，并使用 [LangSmith](https://smith.langchain.com?utm_source=docs\&utm_medium=cta\&utm_campaign=langsmith-signup\&utm_content=oss-langchain-agents) 评估代理输出。按照[tracing quickstart](/langsmith/trace-with-langchain)进行设置。我们建议您还设置 [LangSmith Engine](/langsmith/engine) 来监视您的痕迹、检测问题并提出修复建议。
-</Tip>
+> [!提示]
+>
+> 跟踪此循环的每个步骤，调试工具调用，并使用 [LangSmith](https://smith.langchain.com?utm_source=docs\&utm_medium=cta\&utm_campaign=langsmith-signup\&utm_content=oss-langchain-agents) 评估代理输出。按照[tracing quickstart](/langsmith/trace-with-langchain)进行设置。我们建议您还设置 [LangSmith Engine](/langsmith/engine) 来监控您的痕迹、检测问题并提出修复建议。
 
 您可以使用消息调用代理。在幕后将更新传递给代理的[⟦T132⟧](/oss/javascript/langgraph/graph-api#state)。所有代理在其所在州都包含[sequence of messages](/oss/javascript/langgraph/use-graph-api#messagesvalue)；要调用代理，请传递一条新消息以及 `thread_id`，以便代理可以保留并恢复对话历史记录：
 
-<CodeGroup>
-  ```ts Google theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  import { AIMessage } from "@langchain/core/messages";
-  import { uuid7 } from "langsmith";
-  import { createAgent } from "langchain";
-  import { MemorySaver } from "@langchain/langgraph";
+```ts Google theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+import { AIMessage } from "@langchain/core/messages";
+import { uuid7 } from "langsmith";
+import { createAgent } from "langchain";
+import { MemorySaver } from "@langchain/langgraph";
 
-  const agent = createAgent({
-    model: "google:gemini-3.6-flash",
-    tools: [],
-    checkpointer: new MemorySaver(),
-  });
+const agent = createAgent({
+  model: "google:gemini-3.6-flash",
+  tools: [],
+  checkpointer: new MemorySaver(),
+});
 
-  const config = { configurable: { thread_id: uuid7() } };
+const config = { configurable: { thread_id: uuid7() } };
 
-  let result = await agent.invoke(
-    {
-      messages: [
-        { role: "user", content: "What's the weather in San Francisco?" },
-      ],
-    },
-    config,
-  );
+let result = await agent.invoke(
+  {
+    messages: [
+      { role: "user", content: "What's the weather in San Francisco?" },
+    ],
+  },
+  config,
+);
 
-  // A follow-up turn on the same conversation: reuse the same thread_id to keep history
-  result = await agent.invoke(
-    { messages: [{ role: "user", content: "What about tomorrow?" }] },
-    config,
-  );
-  ```
+// A follow-up turn on the same conversation: reuse the same thread_id to keep history
+result = await agent.invoke(
+  { messages: [{ role: "user", content: "What about tomorrow?" }] },
+  config,
+);
+```
 
-  ```ts OpenAI theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  import { AIMessage } from "@langchain/core/messages";
-  import { uuid7 } from "langsmith";
-  import { createAgent } from "langchain";
-  import { MemorySaver } from "@langchain/langgraph";
+```ts OpenAI theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+import { AIMessage } from "@langchain/core/messages";
+import { uuid7 } from "langsmith";
+import { createAgent } from "langchain";
+import { MemorySaver } from "@langchain/langgraph";
 
-  const agent = createAgent({
-    model: "openai:gpt-5.5",
-    tools: [],
-    checkpointer: new MemorySaver(),
-  });
+const agent = createAgent({
+  model: "openai:gpt-5.5",
+  tools: [],
+  checkpointer: new MemorySaver(),
+});
 
-  const config = { configurable: { thread_id: uuid7() } };
+const config = { configurable: { thread_id: uuid7() } };
 
-  let result = await agent.invoke(
-    {
-      messages: [
-        { role: "user", content: "What's the weather in San Francisco?" },
-      ],
-    },
-    config,
-  );
+let result = await agent.invoke(
+  {
+    messages: [
+      { role: "user", content: "What's the weather in San Francisco?" },
+    ],
+  },
+  config,
+);
 
-  // A follow-up turn on the same conversation: reuse the same thread_id to keep history
-  result = await agent.invoke(
-    { messages: [{ role: "user", content: "What about tomorrow?" }] },
-    config,
-  );
-  ```
+// A follow-up turn on the same conversation: reuse the same thread_id to keep history
+result = await agent.invoke(
+  { messages: [{ role: "user", content: "What about tomorrow?" }] },
+  config,
+);
+```
 
-  ```ts Anthropic theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  import { AIMessage } from "@langchain/core/messages";
-  import { uuid7 } from "langsmith";
-  import { createAgent } from "langchain";
-  import { MemorySaver } from "@langchain/langgraph";
+```ts Anthropic theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+import { AIMessage } from "@langchain/core/messages";
+import { uuid7 } from "langsmith";
+import { createAgent } from "langchain";
+import { MemorySaver } from "@langchain/langgraph";
 
-  const agent = createAgent({
-    model: "anthropic:claude-sonnet-5",
-    tools: [],
-    checkpointer: new MemorySaver(),
-  });
+const agent = createAgent({
+  model: "anthropic:claude-sonnet-5",
+  tools: [],
+  checkpointer: new MemorySaver(),
+});
 
-  const config = { configurable: { thread_id: uuid7() } };
+const config = { configurable: { thread_id: uuid7() } };
 
-  let result = await agent.invoke(
-    {
-      messages: [
-        { role: "user", content: "What's the weather in San Francisco?" },
-      ],
-    },
-    config,
-  );
+let result = await agent.invoke(
+  {
+    messages: [
+      { role: "user", content: "What's the weather in San Francisco?" },
+    ],
+  },
+  config,
+);
 
-  // A follow-up turn on the same conversation: reuse the same thread_id to keep history
-  result = await agent.invoke(
-    { messages: [{ role: "user", content: "What about tomorrow?" }] },
-    config,
-  );
-  ```
+// A follow-up turn on the same conversation: reuse the same thread_id to keep history
+result = await agent.invoke(
+  { messages: [{ role: "user", content: "What about tomorrow?" }] },
+  config,
+);
+```
 
-  ```ts OpenRouter theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  import { AIMessage } from "@langchain/core/messages";
-  import { uuid7 } from "langsmith";
-  import { createAgent } from "langchain";
-  import { MemorySaver } from "@langchain/langgraph";
+```ts OpenRouter theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+import { AIMessage } from "@langchain/core/messages";
+import { uuid7 } from "langsmith";
+import { createAgent } from "langchain";
+import { MemorySaver } from "@langchain/langgraph";
 
-  const agent = createAgent({
-    model: "openrouter:z-ai/glm-5.2",
-    tools: [],
-    checkpointer: new MemorySaver(),
-  });
+const agent = createAgent({
+  model: "openrouter:z-ai/glm-5.2",
+  tools: [],
+  checkpointer: new MemorySaver(),
+});
 
-  const config = { configurable: { thread_id: uuid7() } };
+const config = { configurable: { thread_id: uuid7() } };
 
-  let result = await agent.invoke(
-    {
-      messages: [
-        { role: "user", content: "What's the weather in San Francisco?" },
-      ],
-    },
-    config,
-  );
+let result = await agent.invoke(
+  {
+    messages: [
+      { role: "user", content: "What's the weather in San Francisco?" },
+    ],
+  },
+  config,
+);
 
-  // A follow-up turn on the same conversation: reuse the same thread_id to keep history
-  result = await agent.invoke(
-    { messages: [{ role: "user", content: "What about tomorrow?" }] },
-    config,
-  );
-  ``````ts Fireworks theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  import { AIMessage } from "@langchain/core/messages";
-  import { uuid7 } from "langsmith";
-  import { createAgent } from "langchain";
-  import { MemorySaver } from "@langchain/langgraph";
+// A follow-up turn on the same conversation: reuse the same thread_id to keep history
+result = await agent.invoke(
+  { messages: [{ role: "user", content: "What about tomorrow?" }] },
+  config,
+);
+```
 
-  const agent = createAgent({
-    model: "fireworks:accounts/fireworks/models/glm-5p2",
-    tools: [],
-    checkpointer: new MemorySaver(),
-  });
+```ts Fireworks theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+import { AIMessage } from "@langchain/core/messages";
+import { uuid7 } from "langsmith";
+import { createAgent } from "langchain";
+import { MemorySaver } from "@langchain/langgraph";
 
-  const config = { configurable: { thread_id: uuid7() } };
+const agent = createAgent({
+  model: "fireworks:accounts/fireworks/models/glm-5p2",
+  tools: [],
+  checkpointer: new MemorySaver(),
+});
 
-  let result = await agent.invoke(
-    {
-      messages: [
-        { role: "user", content: "What's the weather in San Francisco?" },
-      ],
-    },
-    config,
-  );
+const config = { configurable: { thread_id: uuid7() } };
 
-  // A follow-up turn on the same conversation: reuse the same thread_id to keep history
-  result = await agent.invoke(
-    { messages: [{ role: "user", content: "What about tomorrow?" }] },
-    config,
-  );
-  ```
+let result = await agent.invoke(
+  {
+    messages: [
+      { role: "user", content: "What's the weather in San Francisco?" },
+    ],
+  },
+  config,
+);
 
-  ```ts Baseten theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  import { AIMessage } from "@langchain/core/messages";
-  import { uuid7 } from "langsmith";
-  import { createAgent } from "langchain";
-  import { MemorySaver } from "@langchain/langgraph";
+// A follow-up turn on the same conversation: reuse the same thread_id to keep history
+result = await agent.invoke(
+  { messages: [{ role: "user", content: "What about tomorrow?" }] },
+  config,
+);
+```
 
-  const agent = createAgent({
-    model: "baseten:zai-org/GLM-5.2",
-    tools: [],
-    checkpointer: new MemorySaver(),
-  });
+```ts Baseten theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+import { AIMessage } from "@langchain/core/messages";
+import { uuid7 } from "langsmith";
+import { createAgent } from "langchain";
+import { MemorySaver } from "@langchain/langgraph";
 
-  const config = { configurable: { thread_id: uuid7() } };
+const agent = createAgent({
+  model: "baseten:zai-org/GLM-5.2",
+  tools: [],
+  checkpointer: new MemorySaver(),
+});
 
-  let result = await agent.invoke(
-    {
-      messages: [
-        { role: "user", content: "What's the weather in San Francisco?" },
-      ],
-    },
-    config,
-  );
+const config = { configurable: { thread_id: uuid7() } };
 
-  // A follow-up turn on the same conversation: reuse the same thread_id to keep history
-  result = await agent.invoke(
-    { messages: [{ role: "user", content: "What about tomorrow?" }] },
-    config,
-  );
-  ```
+let result = await agent.invoke(
+  {
+    messages: [
+      { role: "user", content: "What's the weather in San Francisco?" },
+    ],
+  },
+  config,
+);
 
-  ```ts Ollama theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  import { AIMessage } from "@langchain/core/messages";
-  import { uuid7 } from "langsmith";
-  import { createAgent } from "langchain";
-  import { MemorySaver } from "@langchain/langgraph";
+// A follow-up turn on the same conversation: reuse the same thread_id to keep history
+result = await agent.invoke(
+  { messages: [{ role: "user", content: "What about tomorrow?" }] },
+  config,
+);
+```
 
-  const agent = createAgent({
-    model: "ollama:north-mini-code-1.0",
-    tools: [],
-    checkpointer: new MemorySaver(),
-  });
+```ts Ollama theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+import { AIMessage } from "@langchain/core/messages";
+import { uuid7 } from "langsmith";
+import { createAgent } from "langchain";
+import { MemorySaver } from "@langchain/langgraph";
 
-  const config = { configurable: { thread_id: uuid7() } };
+const agent = createAgent({
+  model: "ollama:north-mini-code-1.0",
+  tools: [],
+  checkpointer: new MemorySaver(),
+});
 
-  let result = await agent.invoke(
-    {
-      messages: [
-        { role: "user", content: "What's the weather in San Francisco?" },
-      ],
-    },
-    config,
-  );
+const config = { configurable: { thread_id: uuid7() } };
 
-  // A follow-up turn on the same conversation: reuse the same thread_id to keep history
-  result = await agent.invoke(
-    { messages: [{ role: "user", content: "What about tomorrow?" }] },
-    config,
-  );
-  ```
-</CodeGroup>
+let result = await agent.invoke(
+  {
+    messages: [
+      { role: "user", content: "What's the weather in San Francisco?" },
+    ],
+  },
+  config,
+);
 
-<Card title="View example trace" icon="chart-line" href="https://smith.langchain.com/public/dc6c669f-1699-4c3c-8490-c02b7d2cf978/r">
-  为此示例打开公共 LangSmith 运行。
-</Card>
+// A follow-up turn on the same conversation: reuse the same thread_id to keep history
+result = await agent.invoke(
+  { messages: [{ role: "user", content: "What about tomorrow?" }] },
+  config,
+);
+```> **[View example trace](https://smith.langchain.com/public/dc6c669f-1699-4c3c-8490-c02b7d2cf978/r)**
+>
+> 为此示例打开公共 LangSmith 运行。
 
-<Note>
-  保留与 `thread_id` 的对话历史记录需要使用 [checkpointer](/oss/javascript/langchain/long-term-memory) 配置代理。当部署在[LangSmith](/langsmith/deployment)上时，会自动配置检查点。在本地，显式传递一个，例如 `create_agent(..., checkpointer=InMemorySaver())`。
-</Note>
+> [!注意]
+>
+> 保留与 `thread_id` 的对话历史记录需要使用 [checkpointer](/oss/javascript/langchain/long-term-memory) 配置代理。当部署在[LangSmith](/langsmith/deployment)上时，会自动配置检查点。在本地，显式传递一个，例如 `create_agent(..., checkpointer=InMemorySaver())`。
 
 如果您还需要将每次运行的配置（例如用户 ID、API 密钥或功能标志）传递给工具和中间件，请将其作为 `context` 与配置一起传递。使用 `contextSchema` 定义该数据的形状并通过 `runtime.context` 访问它：
 
-<CodeGroup>
-  ```ts Google theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  import * as z from "zod";
-  import { uuid7 } from "langsmith";
-  import { AIMessage } from "@langchain/core/messages";
-  import { createAgent } from "langchain";
-  import { MemorySaver } from "@langchain/langgraph";
+```ts Google theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+import * as z from "zod";
+import { uuid7 } from "langsmith";
+import { AIMessage } from "@langchain/core/messages";
+import { createAgent } from "langchain";
+import { MemorySaver } from "@langchain/langgraph";
 
-  const contextSchema = z.object({
-    user_id: z.string(),
-  });
+const contextSchema = z.object({
+  user_id: z.string(),
+});
 
-  const agent = createAgent({
-    model: "google:gemini-3.6-flash",
-    tools: [],
-    contextSchema,
-    checkpointer: new MemorySaver(),
-  });
+const agent = createAgent({
+  model: "google:gemini-3.6-flash",
+  tools: [],
+  contextSchema,
+  checkpointer: new MemorySaver(),
+});
 
-  const result = await agent.invoke(
-    {
-      messages: [
-        { role: "user", content: "What's the weather in San Francisco?" },
-      ],
-    },
-    {
-      configurable: { thread_id: uuid7() },
-      context: { user_id: "user-123" },
-    },
-  );
-  ```
+const result = await agent.invoke(
+  {
+    messages: [
+      { role: "user", content: "What's the weather in San Francisco?" },
+    ],
+  },
+  {
+    configurable: { thread_id: uuid7() },
+    context: { user_id: "user-123" },
+  },
+);
+```
 
-  ```ts OpenAI theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  import * as z from "zod";
-  import { uuid7 } from "langsmith";
-  import { AIMessage } from "@langchain/core/messages";
-  import { createAgent } from "langchain";
-  import { MemorySaver } from "@langchain/langgraph";
+```ts OpenAI theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+import * as z from "zod";
+import { uuid7 } from "langsmith";
+import { AIMessage } from "@langchain/core/messages";
+import { createAgent } from "langchain";
+import { MemorySaver } from "@langchain/langgraph";
 
-  const contextSchema = z.object({
-    user_id: z.string(),
-  });
+const contextSchema = z.object({
+  user_id: z.string(),
+});
 
-  const agent = createAgent({
-    model: "openai:gpt-5.5",
-    tools: [],
-    contextSchema,
-    checkpointer: new MemorySaver(),
-  });
+const agent = createAgent({
+  model: "openai:gpt-5.5",
+  tools: [],
+  contextSchema,
+  checkpointer: new MemorySaver(),
+});
 
-  const result = await agent.invoke(
-    {
-      messages: [
-        { role: "user", content: "What's the weather in San Francisco?" },
-      ],
-    },
-    {
-      configurable: { thread_id: uuid7() },
-      context: { user_id: "user-123" },
-    },
-  );
-  ```
+const result = await agent.invoke(
+  {
+    messages: [
+      { role: "user", content: "What's the weather in San Francisco?" },
+    ],
+  },
+  {
+    configurable: { thread_id: uuid7() },
+    context: { user_id: "user-123" },
+  },
+);
+```
 
-  ```ts Anthropic theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  import * as z from "zod";
-  import { uuid7 } from "langsmith";
-  import { AIMessage } from "@langchain/core/messages";
-  import { createAgent } from "langchain";
-  import { MemorySaver } from "@langchain/langgraph";
+```ts Anthropic theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+import * as z from "zod";
+import { uuid7 } from "langsmith";
+import { AIMessage } from "@langchain/core/messages";
+import { createAgent } from "langchain";
+import { MemorySaver } from "@langchain/langgraph";
 
-  const contextSchema = z.object({
-    user_id: z.string(),
-  });
+const contextSchema = z.object({
+  user_id: z.string(),
+});
 
-  const agent = createAgent({
-    model: "anthropic:claude-sonnet-5",
-    tools: [],
-    contextSchema,
-    checkpointer: new MemorySaver(),
-  });
+const agent = createAgent({
+  model: "anthropic:claude-sonnet-5",
+  tools: [],
+  contextSchema,
+  checkpointer: new MemorySaver(),
+});
 
-  const result = await agent.invoke(
-    {
-      messages: [
-        { role: "user", content: "What's the weather in San Francisco?" },
-      ],
-    },
-    {
-      configurable: { thread_id: uuid7() },
-      context: { user_id: "user-123" },
-    },
-  );
-  ```
+const result = await agent.invoke(
+  {
+    messages: [
+      { role: "user", content: "What's the weather in San Francisco?" },
+    ],
+  },
+  {
+    configurable: { thread_id: uuid7() },
+    context: { user_id: "user-123" },
+  },
+);
+```
 
-  ```ts OpenRouter theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  import * as z from "zod";
-  import { uuid7 } from "langsmith";
-  import { AIMessage } from "@langchain/core/messages";
-  import { createAgent } from "langchain";
-  import { MemorySaver } from "@langchain/langgraph";
+```ts OpenRouter theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+import * as z from "zod";
+import { uuid7 } from "langsmith";
+import { AIMessage } from "@langchain/core/messages";
+import { createAgent } from "langchain";
+import { MemorySaver } from "@langchain/langgraph";
 
-  const contextSchema = z.object({
-    user_id: z.string(),
-  });
+const contextSchema = z.object({
+  user_id: z.string(),
+});
 
-  const agent = createAgent({
-    model: "openrouter:z-ai/glm-5.2",
-    tools: [],
-    contextSchema,
-    checkpointer: new MemorySaver(),
-  });
+const agent = createAgent({
+  model: "openrouter:z-ai/glm-5.2",
+  tools: [],
+  contextSchema,
+  checkpointer: new MemorySaver(),
+});
 
-  const result = await agent.invoke(
-    {
-      messages: [
-        { role: "user", content: "What's the weather in San Francisco?" },
-      ],
-    },
-    {
-      configurable: { thread_id: uuid7() },
-      context: { user_id: "user-123" },
-    },
-  );
-  ```
+const result = await agent.invoke(
+  {
+    messages: [
+      { role: "user", content: "What's the weather in San Francisco?" },
+    ],
+  },
+  {
+    configurable: { thread_id: uuid7() },
+    context: { user_id: "user-123" },
+  },
+);
+```
 
-  ```ts Fireworks theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  import * as z from "zod";
-  import { uuid7 } from "langsmith";
-  import { AIMessage } from "@langchain/core/messages";
-  import { createAgent } from "langchain";
-  import { MemorySaver } from "@langchain/langgraph";
+```ts Fireworks theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+import * as z from "zod";
+import { uuid7 } from "langsmith";
+import { AIMessage } from "@langchain/core/messages";
+import { createAgent } from "langchain";
+import { MemorySaver } from "@langchain/langgraph";
 
-  const contextSchema = z.object({
-    user_id: z.string(),
-  });
+const contextSchema = z.object({
+  user_id: z.string(),
+});
 
-  const agent = createAgent({
-    model: "fireworks:accounts/fireworks/models/glm-5p2",
-    tools: [],
-    contextSchema,
-    checkpointer: new MemorySaver(),
-  });
+const agent = createAgent({
+  model: "fireworks:accounts/fireworks/models/glm-5p2",
+  tools: [],
+  contextSchema,
+  checkpointer: new MemorySaver(),
+});
 
-  const result = await agent.invoke(
-    {
-      messages: [
-        { role: "user", content: "What's the weather in San Francisco?" },
-      ],
-    },
-    {
-      configurable: { thread_id: uuid7() },
-      context: { user_id: "user-123" },
-    },
-  );
-  ```
+const result = await agent.invoke(
+  {
+    messages: [
+      { role: "user", content: "What's the weather in San Francisco?" },
+    ],
+  },
+  {
+    configurable: { thread_id: uuid7() },
+    context: { user_id: "user-123" },
+  },
+);
+```
 
-  ```ts Baseten theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  import * as z from "zod";
-  import { uuid7 } from "langsmith";
-  import { AIMessage } from "@langchain/core/messages";
-  import { createAgent } from "langchain";
-  import { MemorySaver } from "@langchain/langgraph";
+```ts Baseten theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+import * as z from "zod";
+import { uuid7 } from "langsmith";
+import { AIMessage } from "@langchain/core/messages";
+import { createAgent } from "langchain";
+import { MemorySaver } from "@langchain/langgraph";
 
-  const contextSchema = z.object({
-    user_id: z.string(),
-  });
+const contextSchema = z.object({
+  user_id: z.string(),
+});
 
-  const agent = createAgent({
-    model: "baseten:zai-org/GLM-5.2",
-    tools: [],
-    contextSchema,
-    checkpointer: new MemorySaver(),
-  });
+const agent = createAgent({
+  model: "baseten:zai-org/GLM-5.2",
+  tools: [],
+  contextSchema,
+  checkpointer: new MemorySaver(),
+});
 
-  const result = await agent.invoke(
-    {
-      messages: [
-        { role: "user", content: "What's the weather in San Francisco?" },
-      ],
-    },
-    {
-      configurable: { thread_id: uuid7() },
-      context: { user_id: "user-123" },
-    },
-  );
-  ```
+const result = await agent.invoke(
+  {
+    messages: [
+      { role: "user", content: "What's the weather in San Francisco?" },
+    ],
+  },
+  {
+    configurable: { thread_id: uuid7() },
+    context: { user_id: "user-123" },
+  },
+);
+```
 
-  ```ts Ollama theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  import * as z from "zod";
-  import { uuid7 } from "langsmith";
-  import { AIMessage } from "@langchain/core/messages";
-  import { createAgent } from "langchain";
-  import { MemorySaver } from "@langchain/langgraph";
+```ts Ollama theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+import * as z from "zod";
+import { uuid7 } from "langsmith";
+import { AIMessage } from "@langchain/core/messages";
+import { createAgent } from "langchain";
+import { MemorySaver } from "@langchain/langgraph";
 
-  const contextSchema = z.object({
-    user_id: z.string(),
-  });
+const contextSchema = z.object({
+  user_id: z.string(),
+});
 
-  const agent = createAgent({
-    model: "ollama:north-mini-code-1.0",
-    tools: [],
-    contextSchema,
-    checkpointer: new MemorySaver(),
-  });
+const agent = createAgent({
+  model: "ollama:north-mini-code-1.0",
+  tools: [],
+  contextSchema,
+  checkpointer: new MemorySaver(),
+});
 
-  const result = await agent.invoke(
-    {
-      messages: [
-        { role: "user", content: "What's the weather in San Francisco?" },
-      ],
-    },
-    {
-      configurable: { thread_id: uuid7() },
-      context: { user_id: "user-123" },
-    },
-  );
-  ```
-</CodeGroup>
+const result = await agent.invoke(
+  {
+    messages: [
+      { role: "user", content: "What's the weather in San Francisco?" },
+    ],
+  },
+  {
+    configurable: { thread_id: uuid7() },
+    context: { user_id: "user-123" },
+  },
+);
+```
 
-<Card title="View example trace" icon="chart-line" href="https://smith.langchain.com/public/3bc1fb83-7ada-4e78-b9ac-31b749201c7d/r">
-  为此示例打开公共 LangSmith 运行。
-</Card>
+> **[View example trace](https://smith.langchain.com/public/3bc1fb83-7ada-4e78-b9ac-31b749201c7d/r)**
+>
+> 为此示例打开公共 LangSmith 运行。
 
-`thread_id` 限定*对话*（消息历史记录、检查点），而 `context` 则携带您的工具和中间件在调用时读取的*每次运行*数据。两者通常一起传递。有关更多信息，请参阅[tool context](/oss/javascript/langchain/tools#context) 和 [Runtime](/oss/javascript/langchain/runtime)。
+`thread_id` 限定*对话*（消息历史记录、检查点），而 `context` 则携带您的工具和中间件在调用时读取的*每次运行*数据。两者通常一起传递。有关更多信息，请参阅 [tool context](/oss/javascript/langchain/tools#context) 和 [Runtime](/oss/javascript/langchain/runtime)。
 
 ## 流媒体
 
@@ -1037,13 +1021,13 @@ for await (const snapshot of stream.values) {
     console.log(`Calling tools: ${toolCallNames.join(", ")}`);
   }
 }
-```<Card title="View example trace" icon="chart-line" href="https://smith.langchain.com/public/53397253-6f2d-47c6-aa4e-a701377341e7/r">
-  为此示例打开公共 LangSmith 运行。
-</Card>
+```
 
-<Tip>
-  有关流模式、事件类型和 UI 模式，请参阅 [Streaming](/oss/javascript/langchain/streaming)。
-</Tip>
+> **[View example trace](https://smith.langchain.com/public/53397253-6f2d-47c6-aa4e-a701377341e7/r)**
+>
+> 为此示例打开公共 LangSmith 运行。> [!提示]
+>
+> 有关流模式、事件类型和 UI 模式，请参阅 [Streaming](/oss/javascript/langchain/streaming)。
 
 ## 配置线束
 
@@ -1051,1013 +1035,993 @@ for await (const snapshot of stream.values) {
 
 通用模式被预先构建为一流的中间件。您可以构建任何其他东西作为[custom middleware](/oss/javascript/langchain/middleware/custom)。
 
-<img alt="Agent harness capabilities by category" />
+![Agent harness capabilities by category](https://mintcdn.com/langchain-5e9cc07a/jtty0O--UJOKG0nK/oss/images/agent_harness_capabilities.svg?fit=max\&auto=format\&n=jtty0O--UJOKG0nK\&q=85\&s=0ff671d72badd0844826660dfcb04391)
 
 当代理承担复杂的工作时，他们需要几个关键领域的支持。中间件生态系统提供：
 
-<CardGroup>
-  <Card title="Execution environment" icon="bolt" href="#execution-environment">
-    工具、文件系统、沙箱和代码执行
-  </Card>
+> **[Execution environment](#execution-environment)**
+>
+> 工具、文件系统、沙箱和代码执行
 
-  <Card title="Context management" icon="database" href="#context-management">
-    总结、记忆、技巧、提示缓存
-  </Card>
+> **[Context management](#context-management)**
+>
+> 总结、记忆、技巧、提示缓存
 
-  <Card title="Planning and delegation" icon="sitemap" href="#planning-and-delegation">
-    用于并行、隔离工作的待办事项列表和子代理
-  </Card>
+> **[Planning and delegation](#planning-and-delegation)**
+>
+> 用于并行、独立工作的待办事项列表和子代理
 
-  <Card title="Fault tolerance" icon="shield" href="#fault-tolerance">
-    重试、回退和调用限制
-  </Card>
+> **[Fault tolerance](#fault-tolerance)**
+>
+> 重试、回退和调用限制
 
-  <Card title="Guardrails" icon="lock" href="#guardrails">
-    PII 检测和内容控制
-  </Card>
+> **[Guardrails](#guardrails)**
+>
+> PII 检测和内容控制
 
-  <Card title="Steering" icon="user" href="#steering">
-    高影响力行动之前的人机交互批准
-  </Card>
-</CardGroup><Tip>
-  `create_deep_agent` 为长时间运行的编码和研究任务预先组装该堆栈（默认情况下包括文件系统、摘要、子代理和提示缓存）。请参阅[Deep Agents](/oss/javascript/deepagents/harness)了解完整的预制线束。
-</Tip>
+> **[Steering](#steering)**
+>
+> 在采取高影响力行动之前进行人机交互批准
 
-### 执行环境
+> [!提示]
+>
+> `create_deep_agent` 为长时间运行的编码和研究任务预先组装此堆栈（默认情况下包括文件系统、摘要、子代理和提示缓存）。请参阅[Deep Agents](/oss/javascript/deepagents/harness)了解完整的预制线束。
 
-当代理可以采取行动而不仅仅是生成文本时，它们特别有用。执行环境为代理提供了一个工作空间：它可以调用的工具、用于跨轮读写文件的文件系统以及用于运行脚本或 shell 命令的代码执行。
+### 执行环境当代理可以采取行动而不仅仅是生成文本时，它们特别有用。执行环境为代理提供了一个工作空间：它可以调用的工具、用于跨轮读写文件的文件系统以及用于运行脚本或 shell 命令的代码执行。
 
-<CodeGroup>
-  ```ts Google theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  import { createAgent } from "langchain";
-  import { createFilesystemMiddleware, StateBackend } from "deepagents";
+```ts Google theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+import { createAgent } from "langchain";
+import { createFilesystemMiddleware, StateBackend } from "deepagents";
 
-  var agent = createAgent({
-    model: "google:gemini-3.6-flash",
-    tools: [search],
-    middleware: [createFilesystemMiddleware({ backend: new StateBackend() })],
-  });
-  ```
+var agent = createAgent({
+  model: "google:gemini-3.6-flash",
+  tools: [search],
+  middleware: [createFilesystemMiddleware({ backend: new StateBackend() })],
+});
+```
 
-  ```ts OpenAI theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  import { createAgent } from "langchain";
-  import { createFilesystemMiddleware, StateBackend } from "deepagents";
+```ts OpenAI theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+import { createAgent } from "langchain";
+import { createFilesystemMiddleware, StateBackend } from "deepagents";
 
-  var agent = createAgent({
-    model: "openai:gpt-5.5",
-    tools: [search],
-    middleware: [createFilesystemMiddleware({ backend: new StateBackend() })],
-  });
-  ```
+var agent = createAgent({
+  model: "openai:gpt-5.5",
+  tools: [search],
+  middleware: [createFilesystemMiddleware({ backend: new StateBackend() })],
+});
+```
 
-  ```ts Anthropic theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  import { createAgent } from "langchain";
-  import { createFilesystemMiddleware, StateBackend } from "deepagents";
+```ts Anthropic theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+import { createAgent } from "langchain";
+import { createFilesystemMiddleware, StateBackend } from "deepagents";
 
-  var agent = createAgent({
-    model: "anthropic:claude-sonnet-5",
-    tools: [search],
-    middleware: [createFilesystemMiddleware({ backend: new StateBackend() })],
-  });
-  ```
+var agent = createAgent({
+  model: "anthropic:claude-sonnet-5",
+  tools: [search],
+  middleware: [createFilesystemMiddleware({ backend: new StateBackend() })],
+});
+```
 
-  ```ts OpenRouter theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  import { createAgent } from "langchain";
-  import { createFilesystemMiddleware, StateBackend } from "deepagents";
+```ts OpenRouter theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+import { createAgent } from "langchain";
+import { createFilesystemMiddleware, StateBackend } from "deepagents";
 
-  var agent = createAgent({
-    model: "openrouter:z-ai/glm-5.2",
-    tools: [search],
-    middleware: [createFilesystemMiddleware({ backend: new StateBackend() })],
-  });
-  ```
+var agent = createAgent({
+  model: "openrouter:z-ai/glm-5.2",
+  tools: [search],
+  middleware: [createFilesystemMiddleware({ backend: new StateBackend() })],
+});
+```
 
-  ```ts Fireworks theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  import { createAgent } from "langchain";
-  import { createFilesystemMiddleware, StateBackend } from "deepagents";
+```ts Fireworks theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+import { createAgent } from "langchain";
+import { createFilesystemMiddleware, StateBackend } from "deepagents";
 
-  var agent = createAgent({
-    model: "fireworks:accounts/fireworks/models/glm-5p2",
-    tools: [search],
-    middleware: [createFilesystemMiddleware({ backend: new StateBackend() })],
-  });
-  ```
+var agent = createAgent({
+  model: "fireworks:accounts/fireworks/models/glm-5p2",
+  tools: [search],
+  middleware: [createFilesystemMiddleware({ backend: new StateBackend() })],
+});
+```
 
-  ```ts Baseten theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  import { createAgent } from "langchain";
-  import { createFilesystemMiddleware, StateBackend } from "deepagents";
+```ts Baseten theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+import { createAgent } from "langchain";
+import { createFilesystemMiddleware, StateBackend } from "deepagents";
 
-  var agent = createAgent({
-    model: "baseten:zai-org/GLM-5.2",
-    tools: [search],
-    middleware: [createFilesystemMiddleware({ backend: new StateBackend() })],
-  });
-  ```
+var agent = createAgent({
+  model: "baseten:zai-org/GLM-5.2",
+  tools: [search],
+  middleware: [createFilesystemMiddleware({ backend: new StateBackend() })],
+});
+```
 
-  ```ts Ollama theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  import { createAgent } from "langchain";
-  import { createFilesystemMiddleware, StateBackend } from "deepagents";
+```ts Ollama theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+import { createAgent } from "langchain";
+import { createFilesystemMiddleware, StateBackend } from "deepagents";
 
-  var agent = createAgent({
-    model: "ollama:north-mini-code-1.0",
-    tools: [search],
-    middleware: [createFilesystemMiddleware({ backend: new StateBackend() })],
-  });
-  ```
-</CodeGroup>
+var agent = createAgent({
+  model: "ollama:north-mini-code-1.0",
+  tools: [search],
+  middleware: [createFilesystemMiddleware({ backend: new StateBackend() })],
+});
+```
 
-参见[⟦T144⟧](https://reference.langchain.com/javascript/deepagents/middleware/createFilesystemMiddleware)、[Sandboxes](/oss/javascript/deepagents/sandboxes)、[Interpreters](/oss/javascript/deepagents/interpreters)。
+请参阅[⟦T144⟧](https://reference.langchain.com/javascript/deepagents/middleware/createFilesystemMiddleware)、[Sandboxes](/oss/javascript/deepagents/sandboxes)、[Interpreters](/oss/javascript/deepagents/interpreters)。
 
-<Note>
-  此示例从 `deepagents` 包导入。安装它：
-
-  <CodeGroup>
-    ```bash npm theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-    npm install deepagents
-    ```
-
-    ```bash yarn theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-    yarn add deepagents
-    ```
-
-    ```bash pnpm theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-    pnpm add deepagents
-    ```
-  </CodeGroup>
-</Note>
+> [!注意]
+>
+> 此示例从 `deepagents` 包导入。安装它：
+>
+> ```bash npm theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> npm install deepagents
+> ```
+>
+> ```bash yarn theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> yarn add deepagents
+> ```
+>
+> ```bash pnpm theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> pnpm add deepagents
+> ```
 
 ### 上下文管理
 
 每个模型调用都有一个固定的上下文窗口。当代理运行时，该窗口会填充累积的历史记录、工具结果和中间步骤。摘要在溢出发生之前压缩历史记录；内存在启动时加载持久指令，以便知识跨会话传递；技能按需呈现领域知识，而不是预先加载所有内容。
 
-<CodeGroup>
-  ```ts Google theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  import { createAgent } from "langchain";
-  import {
-    StateBackend,
-    createFilesystemMiddleware,
-    createSkillsMiddleware,
-    createSummarizationMiddleware,
-  } from "deepagents";
+```ts Google theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+import { createAgent } from "langchain";
+import {
+  StateBackend,
+  createFilesystemMiddleware,
+  createSkillsMiddleware,
+  createSummarizationMiddleware,
+} from "deepagents";
 
-  var backend = new StateBackend();
-  const model = "google:gemini-3.6-flash";
+var backend = new StateBackend();
+const model = "google:gemini-3.6-flash";
 
-  var agent = createAgent({
-    model,
-    tools: [search],
-    middleware: [
-      createFilesystemMiddleware({ backend }),
-      createSummarizationMiddleware({ model, backend }),
-      createSkillsMiddleware({ backend, sources: ["./skills/"] }),
-    ],
-  });
-  ```
+var agent = createAgent({
+  model,
+  tools: [search],
+  middleware: [
+    createFilesystemMiddleware({ backend }),
+    createSummarizationMiddleware({ model, backend }),
+    createSkillsMiddleware({ backend, sources: ["./skills/"] }),
+  ],
+});
+```
 
-  ```ts OpenAI theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  import { createAgent } from "langchain";
-  import {
-    StateBackend,
-    createFilesystemMiddleware,
-    createSkillsMiddleware,
-    createSummarizationMiddleware,
-  } from "deepagents";
+```ts OpenAI theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+import { createAgent } from "langchain";
+import {
+  StateBackend,
+  createFilesystemMiddleware,
+  createSkillsMiddleware,
+  createSummarizationMiddleware,
+} from "deepagents";
 
-  var backend = new StateBackend();
-  const model = "openai:gpt-5.5";
+var backend = new StateBackend();
+const model = "openai:gpt-5.5";
 
-  var agent = createAgent({
-    model,
-    tools: [search],
-    middleware: [
-      createFilesystemMiddleware({ backend }),
-      createSummarizationMiddleware({ model, backend }),
-      createSkillsMiddleware({ backend, sources: ["./skills/"] }),
-    ],
-  });
-  ```
+var agent = createAgent({
+  model,
+  tools: [search],
+  middleware: [
+    createFilesystemMiddleware({ backend }),
+    createSummarizationMiddleware({ model, backend }),
+    createSkillsMiddleware({ backend, sources: ["./skills/"] }),
+  ],
+});
+```
 
-  ```ts Anthropic theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  import { createAgent } from "langchain";
-  import {
-    StateBackend,
-    createFilesystemMiddleware,
-    createSkillsMiddleware,
-    createSummarizationMiddleware,
-  } from "deepagents";
+```ts Anthropic theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+import { createAgent } from "langchain";
+import {
+  StateBackend,
+  createFilesystemMiddleware,
+  createSkillsMiddleware,
+  createSummarizationMiddleware,
+} from "deepagents";
 
-  var backend = new StateBackend();
-  const model = "anthropic:claude-sonnet-5";
+var backend = new StateBackend();
+const model = "anthropic:claude-sonnet-5";
 
-  var agent = createAgent({
-    model,
-    tools: [search],
-    middleware: [
-      createFilesystemMiddleware({ backend }),
-      createSummarizationMiddleware({ model, backend }),
-      createSkillsMiddleware({ backend, sources: ["./skills/"] }),
-    ],
-  });
-  ```
+var agent = createAgent({
+  model,
+  tools: [search],
+  middleware: [
+    createFilesystemMiddleware({ backend }),
+    createSummarizationMiddleware({ model, backend }),
+    createSkillsMiddleware({ backend, sources: ["./skills/"] }),
+  ],
+});
+```
 
-  ```ts OpenRouter theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  import { createAgent } from "langchain";
-  import {
-    StateBackend,
-    createFilesystemMiddleware,
-    createSkillsMiddleware,
-    createSummarizationMiddleware,
-  } from "deepagents";
+```ts OpenRouter theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+import { createAgent } from "langchain";
+import {
+  StateBackend,
+  createFilesystemMiddleware,
+  createSkillsMiddleware,
+  createSummarizationMiddleware,
+} from "deepagents";
 
-  var backend = new StateBackend();
-  const model = "openrouter:z-ai/glm-5.2";
+var backend = new StateBackend();
+const model = "openrouter:z-ai/glm-5.2";
 
-  var agent = createAgent({
-    model,
-    tools: [search],
-    middleware: [
-      createFilesystemMiddleware({ backend }),
-      createSummarizationMiddleware({ model, backend }),
-      createSkillsMiddleware({ backend, sources: ["./skills/"] }),
-    ],
-  });
-  ``````ts Fireworks theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  import { createAgent } from "langchain";
-  import {
-    StateBackend,
-    createFilesystemMiddleware,
-    createSkillsMiddleware,
-    createSummarizationMiddleware,
-  } from "deepagents";
+var agent = createAgent({
+  model,
+  tools: [search],
+  middleware: [
+    createFilesystemMiddleware({ backend }),
+    createSummarizationMiddleware({ model, backend }),
+    createSkillsMiddleware({ backend, sources: ["./skills/"] }),
+  ],
+});
+```
 
-  var backend = new StateBackend();
-  const model = "fireworks:accounts/fireworks/models/glm-5p2";
+```ts Fireworks theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+import { createAgent } from "langchain";
+import {
+  StateBackend,
+  createFilesystemMiddleware,
+  createSkillsMiddleware,
+  createSummarizationMiddleware,
+} from "deepagents";
 
-  var agent = createAgent({
-    model,
-    tools: [search],
-    middleware: [
-      createFilesystemMiddleware({ backend }),
-      createSummarizationMiddleware({ model, backend }),
-      createSkillsMiddleware({ backend, sources: ["./skills/"] }),
-    ],
-  });
-  ```
+var backend = new StateBackend();
+const model = "fireworks:accounts/fireworks/models/glm-5p2";
 
-  ```ts Baseten theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  import { createAgent } from "langchain";
-  import {
-    StateBackend,
-    createFilesystemMiddleware,
-    createSkillsMiddleware,
-    createSummarizationMiddleware,
-  } from "deepagents";
+var agent = createAgent({
+  model,
+  tools: [search],
+  middleware: [
+    createFilesystemMiddleware({ backend }),
+    createSummarizationMiddleware({ model, backend }),
+    createSkillsMiddleware({ backend, sources: ["./skills/"] }),
+  ],
+});
+```
 
-  var backend = new StateBackend();
-  const model = "baseten:zai-org/GLM-5.2";
+```ts Baseten theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+import { createAgent } from "langchain";
+import {
+  StateBackend,
+  createFilesystemMiddleware,
+  createSkillsMiddleware,
+  createSummarizationMiddleware,
+} from "deepagents";
 
-  var agent = createAgent({
-    model,
-    tools: [search],
-    middleware: [
-      createFilesystemMiddleware({ backend }),
-      createSummarizationMiddleware({ model, backend }),
-      createSkillsMiddleware({ backend, sources: ["./skills/"] }),
-    ],
-  });
-  ```
+var backend = new StateBackend();
+const model = "baseten:zai-org/GLM-5.2";
 
-  ```ts Ollama theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  import { createAgent } from "langchain";
-  import {
-    StateBackend,
-    createFilesystemMiddleware,
-    createSkillsMiddleware,
-    createSummarizationMiddleware,
-  } from "deepagents";
+var agent = createAgent({
+  model,
+  tools: [search],
+  middleware: [
+    createFilesystemMiddleware({ backend }),
+    createSummarizationMiddleware({ model, backend }),
+    createSkillsMiddleware({ backend, sources: ["./skills/"] }),
+  ],
+});
+```
 
-  var backend = new StateBackend();
-  const model = "ollama:north-mini-code-1.0";
+```ts Ollama theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+import { createAgent } from "langchain";
+import {
+  StateBackend,
+  createFilesystemMiddleware,
+  createSkillsMiddleware,
+  createSummarizationMiddleware,
+} from "deepagents";
 
-  var agent = createAgent({
-    model,
-    tools: [search],
-    middleware: [
-      createFilesystemMiddleware({ backend }),
-      createSummarizationMiddleware({ model, backend }),
-      createSkillsMiddleware({ backend, sources: ["./skills/"] }),
-    ],
-  });
-  ```
-</CodeGroup>
+var backend = new StateBackend();
+const model = "ollama:north-mini-code-1.0";
+
+var agent = createAgent({
+  model,
+  tools: [search],
+  middleware: [
+    createFilesystemMiddleware({ backend }),
+    createSummarizationMiddleware({ model, backend }),
+    createSkillsMiddleware({ backend, sources: ["./skills/"] }),
+  ],
+});
+```
 
 参见[⟦T146⟧](https://reference.langchain.com/javascript/langchain/index/summarizationMiddleware)、[⟦T147⟧](https://reference.langchain.com/javascript/deepagents/middleware/createMemoryMiddleware)、[Skills](/oss/javascript/langchain/multi-agent/skills)、[Context engineering](/oss/javascript/deepagents/context-engineering)。
 
-<Note>
-  此示例从 `deepagents` 包导入。安装它：
+> [!注意]
+>
+> 此示例从 `deepagents` 包导入。安装它：
+>
+> ```bash npm theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> npm install deepagents
+> ```
+>
+> ```bash yarn theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> yarn add deepagents
+> ```
+>
+> ```bash pnpm theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> pnpm add deepagents
+> ```
 
-  <CodeGroup>
-    ```bash npm theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-    npm install deepagents
-    ```
+### 规划和授权复杂的任务通常超出一个上下文窗口的处理能力。委派让主代理将工作分解成多个部分，将它们交给每个子代理，每个子代理都在自己的隔离上下文中运行，并专注于协调而不是执行。工作可以并行运行；主要代理的上下文保持干净。
 
-    ```bash yarn theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-    yarn add deepagents
-    ```
+```ts Google theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+import { createAgent, todoListMiddleware, tool } from "langchain";
+import {
+  createFilesystemMiddleware,
+  createSubAgentMiddleware,
+  StateBackend,
+} from "deepagents";
+import * as z from "zod";
 
-    ```bash pnpm theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-    pnpm add deepagents
-    ```
-  </CodeGroup>
-</Note>
+var search = tool(({ query }) => `Search results for: ${query}`, {
+  name: "search",
+  description: "Search for a query and return a short summary.",
+  schema: z.object({ query: z.string() }),
+});
 
-### 规划和授权
+var backend = new StateBackend();
 
-复杂的任务通常超出一个上下文窗口的处理能力。委派让主代理将工作分解成多个部分，将它们交给每个子代理，每个子代理都在自己的隔离上下文中运行，并专注于协调而不是执行。工作可以并行运行；主要代理的上下文保持干净。
+var agent = createAgent({
+  model: "google:gemini-3.6-flash",
+  tools: [search],
+  middleware: [
+    createFilesystemMiddleware({ backend }),
+    todoListMiddleware(),
+    createSubAgentMiddleware({
+      defaultModel: "anthropic:claude-sonnet-4-6",
+      defaultTools: [],
+      subagents: [
+        {
+          name: "researcher",
+          description: "Searches and returns a structured summary.",
+          systemPrompt:
+            "Use the search tool to research the question and summarize key points.",
+          tools: [search],
+          model: "google:gemini-3.6-flash",
+          middleware: [],
+        },
+      ],
+    }),
+  ],
+});
+```
 
-<CodeGroup>
-  ```ts Google theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  import { createAgent, todoListMiddleware, tool } from "langchain";
-  import {
-    createFilesystemMiddleware,
-    createSubAgentMiddleware,
-    StateBackend,
-  } from "deepagents";
-  import * as z from "zod";
+```ts OpenAI theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+import { createAgent, todoListMiddleware, tool } from "langchain";
+import {
+  createFilesystemMiddleware,
+  createSubAgentMiddleware,
+  StateBackend,
+} from "deepagents";
+import * as z from "zod";
 
-  var search = tool(({ query }) => `Search results for: ${query}`, {
-    name: "search",
-    description: "Search for a query and return a short summary.",
-    schema: z.object({ query: z.string() }),
-  });
+var search = tool(({ query }) => `Search results for: ${query}`, {
+  name: "search",
+  description: "Search for a query and return a short summary.",
+  schema: z.object({ query: z.string() }),
+});
 
-  var backend = new StateBackend();
+var backend = new StateBackend();
 
-  var agent = createAgent({
-    model: "google:gemini-3.6-flash",
-    tools: [search],
-    middleware: [
-      createFilesystemMiddleware({ backend }),
-      todoListMiddleware(),
-      createSubAgentMiddleware({
-        defaultModel: "anthropic:claude-sonnet-4-6",
-        defaultTools: [],
-        subagents: [
-          {
-            name: "researcher",
-            description: "Searches and returns a structured summary.",
-            systemPrompt:
-              "Use the search tool to research the question and summarize key points.",
-            tools: [search],
-            model: "google:gemini-3.6-flash",
-            middleware: [],
-          },
-        ],
-      }),
-    ],
-  });
-  ```
+var agent = createAgent({
+  model: "openai:gpt-5.5",
+  tools: [search],
+  middleware: [
+    createFilesystemMiddleware({ backend }),
+    todoListMiddleware(),
+    createSubAgentMiddleware({
+      defaultModel: "anthropic:claude-sonnet-4-6",
+      defaultTools: [],
+      subagents: [
+        {
+          name: "researcher",
+          description: "Searches and returns a structured summary.",
+          systemPrompt:
+            "Use the search tool to research the question and summarize key points.",
+          tools: [search],
+          model: "openai:gpt-5.5",
+          middleware: [],
+        },
+      ],
+    }),
+  ],
+});
+```
 
-  ```ts OpenAI theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  import { createAgent, todoListMiddleware, tool } from "langchain";
-  import {
-    createFilesystemMiddleware,
-    createSubAgentMiddleware,
-    StateBackend,
-  } from "deepagents";
-  import * as z from "zod";
+```ts Anthropic theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+import { createAgent, todoListMiddleware, tool } from "langchain";
+import {
+  createFilesystemMiddleware,
+  createSubAgentMiddleware,
+  StateBackend,
+} from "deepagents";
+import * as z from "zod";
 
-  var search = tool(({ query }) => `Search results for: ${query}`, {
-    name: "search",
-    description: "Search for a query and return a short summary.",
-    schema: z.object({ query: z.string() }),
-  });
+var search = tool(({ query }) => `Search results for: ${query}`, {
+  name: "search",
+  description: "Search for a query and return a short summary.",
+  schema: z.object({ query: z.string() }),
+});
 
-  var backend = new StateBackend();
+var backend = new StateBackend();
 
-  var agent = createAgent({
-    model: "openai:gpt-5.5",
-    tools: [search],
-    middleware: [
-      createFilesystemMiddleware({ backend }),
-      todoListMiddleware(),
-      createSubAgentMiddleware({
-        defaultModel: "anthropic:claude-sonnet-4-6",
-        defaultTools: [],
-        subagents: [
-          {
-            name: "researcher",
-            description: "Searches and returns a structured summary.",
-            systemPrompt:
-              "Use the search tool to research the question and summarize key points.",
-            tools: [search],
-            model: "openai:gpt-5.5",
-            middleware: [],
-          },
-        ],
-      }),
-    ],
-  });
-  ```
+var agent = createAgent({
+  model: "anthropic:claude-sonnet-5",
+  tools: [search],
+  middleware: [
+    createFilesystemMiddleware({ backend }),
+    todoListMiddleware(),
+    createSubAgentMiddleware({
+      defaultModel: "anthropic:claude-sonnet-4-6",
+      defaultTools: [],
+      subagents: [
+        {
+          name: "researcher",
+          description: "Searches and returns a structured summary.",
+          systemPrompt:
+            "Use the search tool to research the question and summarize key points.",
+          tools: [search],
+          model: "anthropic:claude-sonnet-5",
+          middleware: [],
+        },
+      ],
+    }),
+  ],
+});
+```
 
-  ```ts Anthropic theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  import { createAgent, todoListMiddleware, tool } from "langchain";
-  import {
-    createFilesystemMiddleware,
-    createSubAgentMiddleware,
-    StateBackend,
-  } from "deepagents";
-  import * as z from "zod";
+```ts OpenRouter theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+import { createAgent, todoListMiddleware, tool } from "langchain";
+import {
+  createFilesystemMiddleware,
+  createSubAgentMiddleware,
+  StateBackend,
+} from "deepagents";
+import * as z from "zod";
 
-  var search = tool(({ query }) => `Search results for: ${query}`, {
-    name: "search",
-    description: "Search for a query and return a short summary.",
-    schema: z.object({ query: z.string() }),
-  });
+var search = tool(({ query }) => `Search results for: ${query}`, {
+  name: "search",
+  description: "Search for a query and return a short summary.",
+  schema: z.object({ query: z.string() }),
+});
 
-  var backend = new StateBackend();
+var backend = new StateBackend();
 
-  var agent = createAgent({
-    model: "anthropic:claude-sonnet-5",
-    tools: [search],
-    middleware: [
-      createFilesystemMiddleware({ backend }),
-      todoListMiddleware(),
-      createSubAgentMiddleware({
-        defaultModel: "anthropic:claude-sonnet-4-6",
-        defaultTools: [],
-        subagents: [
-          {
-            name: "researcher",
-            description: "Searches and returns a structured summary.",
-            systemPrompt:
-              "Use the search tool to research the question and summarize key points.",
-            tools: [search],
-            model: "anthropic:claude-sonnet-5",
-            middleware: [],
-          },
-        ],
-      }),
-    ],
-  });
-  ```
+var agent = createAgent({
+  model: "openrouter:z-ai/glm-5.2",
+  tools: [search],
+  middleware: [
+    createFilesystemMiddleware({ backend }),
+    todoListMiddleware(),
+    createSubAgentMiddleware({
+      defaultModel: "anthropic:claude-sonnet-4-6",
+      defaultTools: [],
+      subagents: [
+        {
+          name: "researcher",
+          description: "Searches and returns a structured summary.",
+          systemPrompt:
+            "Use the search tool to research the question and summarize key points.",
+          tools: [search],
+          model: "openrouter:z-ai/glm-5.2",
+          middleware: [],
+        },
+      ],
+    }),
+  ],
+});
+```
 
-  ```ts OpenRouter theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  import { createAgent, todoListMiddleware, tool } from "langchain";
-  import {
-    createFilesystemMiddleware,
-    createSubAgentMiddleware,
-    StateBackend,
-  } from "deepagents";
-  import * as z from "zod";
+```ts Fireworks theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+import { createAgent, todoListMiddleware, tool } from "langchain";
+import {
+  createFilesystemMiddleware,
+  createSubAgentMiddleware,
+  StateBackend,
+} from "deepagents";
+import * as z from "zod";
 
-  var search = tool(({ query }) => `Search results for: ${query}`, {
-    name: "search",
-    description: "Search for a query and return a short summary.",
-    schema: z.object({ query: z.string() }),
-  });
+var search = tool(({ query }) => `Search results for: ${query}`, {
+  name: "search",
+  description: "Search for a query and return a short summary.",
+  schema: z.object({ query: z.string() }),
+});
 
-  var backend = new StateBackend();
+var backend = new StateBackend();
 
-  var agent = createAgent({
-    model: "openrouter:z-ai/glm-5.2",
-    tools: [search],
-    middleware: [
-      createFilesystemMiddleware({ backend }),
-      todoListMiddleware(),
-      createSubAgentMiddleware({
-        defaultModel: "anthropic:claude-sonnet-4-6",
-        defaultTools: [],
-        subagents: [
-          {
-            name: "researcher",
-            description: "Searches and returns a structured summary.",
-            systemPrompt:
-              "Use the search tool to research the question and summarize key points.",
-            tools: [search],
-            model: "openrouter:z-ai/glm-5.2",
-            middleware: [],
-          },
-        ],
-      }),
-    ],
-  });
-  ```
+var agent = createAgent({
+  model: "fireworks:accounts/fireworks/models/glm-5p2",
+  tools: [search],
+  middleware: [
+    createFilesystemMiddleware({ backend }),
+    todoListMiddleware(),
+    createSubAgentMiddleware({
+      defaultModel: "anthropic:claude-sonnet-4-6",
+      defaultTools: [],
+      subagents: [
+        {
+          name: "researcher",
+          description: "Searches and returns a structured summary.",
+          systemPrompt:
+            "Use the search tool to research the question and summarize key points.",
+          tools: [search],
+          model: "fireworks:accounts/fireworks/models/glm-5p2",
+          middleware: [],
+        },
+      ],
+    }),
+  ],
+});
+```
 
-  ```ts Fireworks theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  import { createAgent, todoListMiddleware, tool } from "langchain";
-  import {
-    createFilesystemMiddleware,
-    createSubAgentMiddleware,
-    StateBackend,
-  } from "deepagents";
-  import * as z from "zod";
+```ts Baseten theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+import { createAgent, todoListMiddleware, tool } from "langchain";
+import {
+  createFilesystemMiddleware,
+  createSubAgentMiddleware,
+  StateBackend,
+} from "deepagents";
+import * as z from "zod";
 
-  var search = tool(({ query }) => `Search results for: ${query}`, {
-    name: "search",
-    description: "Search for a query and return a short summary.",
-    schema: z.object({ query: z.string() }),
-  });
+var search = tool(({ query }) => `Search results for: ${query}`, {
+  name: "search",
+  description: "Search for a query and return a short summary.",
+  schema: z.object({ query: z.string() }),
+});
 
-  var backend = new StateBackend();
+var backend = new StateBackend();
 
-  var agent = createAgent({
-    model: "fireworks:accounts/fireworks/models/glm-5p2",
-    tools: [search],
-    middleware: [
-      createFilesystemMiddleware({ backend }),
-      todoListMiddleware(),
-      createSubAgentMiddleware({
-        defaultModel: "anthropic:claude-sonnet-4-6",
-        defaultTools: [],
-        subagents: [
-          {
-            name: "researcher",
-            description: "Searches and returns a structured summary.",
-            systemPrompt:
-              "Use the search tool to research the question and summarize key points.",
-            tools: [search],
-            model: "fireworks:accounts/fireworks/models/glm-5p2",
-            middleware: [],
-          },
-        ],
-      }),
-    ],
-  });
-  ```
+var agent = createAgent({
+  model: "baseten:zai-org/GLM-5.2",
+  tools: [search],
+  middleware: [
+    createFilesystemMiddleware({ backend }),
+    todoListMiddleware(),
+    createSubAgentMiddleware({
+      defaultModel: "anthropic:claude-sonnet-4-6",
+      defaultTools: [],
+      subagents: [
+        {
+          name: "researcher",
+          description: "Searches and returns a structured summary.",
+          systemPrompt:
+            "Use the search tool to research the question and summarize key points.",
+          tools: [search],
+          model: "baseten:zai-org/GLM-5.2",
+          middleware: [],
+        },
+      ],
+    }),
+  ],
+});
+```
 
-  ```ts Baseten theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  import { createAgent, todoListMiddleware, tool } from "langchain";
-  import {
-    createFilesystemMiddleware,
-    createSubAgentMiddleware,
-    StateBackend,
-  } from "deepagents";
-  import * as z from "zod";
+```ts Ollama theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+import { createAgent, todoListMiddleware, tool } from "langchain";
+import {
+  createFilesystemMiddleware,
+  createSubAgentMiddleware,
+  StateBackend,
+} from "deepagents";
+import * as z from "zod";
 
-  var search = tool(({ query }) => `Search results for: ${query}`, {
-    name: "search",
-    description: "Search for a query and return a short summary.",
-    schema: z.object({ query: z.string() }),
-  });
+var search = tool(({ query }) => `Search results for: ${query}`, {
+  name: "search",
+  description: "Search for a query and return a short summary.",
+  schema: z.object({ query: z.string() }),
+});
 
-  var backend = new StateBackend();
+var backend = new StateBackend();
 
-  var agent = createAgent({
-    model: "baseten:zai-org/GLM-5.2",
-    tools: [search],
-    middleware: [
-      createFilesystemMiddleware({ backend }),
-      todoListMiddleware(),
-      createSubAgentMiddleware({
-        defaultModel: "anthropic:claude-sonnet-4-6",
-        defaultTools: [],
-        subagents: [
-          {
-            name: "researcher",
-            description: "Searches and returns a structured summary.",
-            systemPrompt:
-              "Use the search tool to research the question and summarize key points.",
-            tools: [search],
-            model: "baseten:zai-org/GLM-5.2",
-            middleware: [],
-          },
-        ],
-      }),
-    ],
-  });
-  ```
-
-  ```ts Ollama theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  import { createAgent, todoListMiddleware, tool } from "langchain";
-  import {
-    createFilesystemMiddleware,
-    createSubAgentMiddleware,
-    StateBackend,
-  } from "deepagents";
-  import * as z from "zod";
-
-  var search = tool(({ query }) => `Search results for: ${query}`, {
-    name: "search",
-    description: "Search for a query and return a short summary.",
-    schema: z.object({ query: z.string() }),
-  });
-
-  var backend = new StateBackend();
-
-  var agent = createAgent({
-    model: "ollama:north-mini-code-1.0",
-    tools: [search],
-    middleware: [
-      createFilesystemMiddleware({ backend }),
-      todoListMiddleware(),
-      createSubAgentMiddleware({
-        defaultModel: "anthropic:claude-sonnet-4-6",
-        defaultTools: [],
-        subagents: [
-          {
-            name: "researcher",
-            description: "Searches and returns a structured summary.",
-            systemPrompt:
-              "Use the search tool to research the question and summarize key points.",
-            tools: [search],
-            model: "ollama:north-mini-code-1.0",
-            middleware: [],
-          },
-        ],
-      }),
-    ],
-  });
-  ```
-</CodeGroup>
+var agent = createAgent({
+  model: "ollama:north-mini-code-1.0",
+  tools: [search],
+  middleware: [
+    createFilesystemMiddleware({ backend }),
+    todoListMiddleware(),
+    createSubAgentMiddleware({
+      defaultModel: "anthropic:claude-sonnet-4-6",
+      defaultTools: [],
+      subagents: [
+        {
+          name: "researcher",
+          description: "Searches and returns a structured summary.",
+          systemPrompt:
+            "Use the search tool to research the question and summarize key points.",
+          tools: [search],
+          model: "ollama:north-mini-code-1.0",
+          middleware: [],
+        },
+      ],
+    }),
+  ],
+});
+```
 
 参见[Subagents](/oss/javascript/langchain/multi-agent/subagents)。
 
-<Note>
-  此示例从 `deepagents` 包导入。安装它：
-
-  <CodeGroup>
-    ```bash npm theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-    npm install deepagents
-    ```
-
-    ```bash yarn theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-    yarn add deepagents
-    ```
-
-    ```bash pnpm theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-    pnpm add deepagents
-    ```
-  </CodeGroup>
-</Note>
+> [!注意]
+>
+> 此示例从 `deepagents` 包导入。安装它：
+>
+> ```bash npm theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> npm install deepagents
+> ```
+>
+> ```bash yarn theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> yarn add deepagents
+> ```
+>
+> ```bash pnpm theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> pnpm add deepagents
+> ```
 
 ### 命名您的代理人
 
 可以选择使用代理的标识符。当将代理作为子图嵌入到 [multi-agent](/oss/javascript/langchain/multi-agent) 系统中时，这特别有用。
 
-<CodeGroup>
-  ```ts Google theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  var agent = createAgent({
-    model: "google:gemini-3.6-flash",
-    tools,
-    name: "research_assistant",
-  });
-  ```
+```ts Google theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+var agent = createAgent({
+  model: "google:gemini-3.6-flash",
+  tools,
+  name: "research_assistant",
+});
+```
 
-  ```ts OpenAI theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  var agent = createAgent({
-    model: "openai:gpt-5.5",
-    tools,
-    name: "research_assistant",
-  });
-  ```
+```ts OpenAI theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+var agent = createAgent({
+  model: "openai:gpt-5.5",
+  tools,
+  name: "research_assistant",
+});
+```
 
-  ```ts Anthropic theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  var agent = createAgent({
-    model: "anthropic:claude-sonnet-5",
-    tools,
-    name: "research_assistant",
-  });
-  ```
+```ts Anthropic theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+var agent = createAgent({
+  model: "anthropic:claude-sonnet-5",
+  tools,
+  name: "research_assistant",
+});
+```
 
-  ```ts OpenRouter theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  var agent = createAgent({
-    model: "openrouter:z-ai/glm-5.2",
-    tools,
-    name: "research_assistant",
-  });
-  ```
+```ts OpenRouter theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+var agent = createAgent({
+  model: "openrouter:z-ai/glm-5.2",
+  tools,
+  name: "research_assistant",
+});
+```
 
-  ```ts Fireworks theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  var agent = createAgent({
-    model: "fireworks:accounts/fireworks/models/glm-5p2",
-    tools,
-    name: "research_assistant",
-  });
-  ```
+```ts Fireworks theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+var agent = createAgent({
+  model: "fireworks:accounts/fireworks/models/glm-5p2",
+  tools,
+  name: "research_assistant",
+});
+```
 
-  ```ts Baseten theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  var agent = createAgent({
-    model: "baseten:zai-org/GLM-5.2",
-    tools,
-    name: "research_assistant",
-  });
-  ```
+```ts Baseten theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+var agent = createAgent({
+  model: "baseten:zai-org/GLM-5.2",
+  tools,
+  name: "research_assistant",
+});
+```
 
-  ```ts Ollama theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  var agent = createAgent({
-    model: "ollama:north-mini-code-1.0",
-    tools,
-    name: "research_assistant",
-  });
-  ```
-</CodeGroup>
+```ts Ollama theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+var agent = createAgent({
+  model: "ollama:north-mini-code-1.0",
+  tools,
+  name: "research_assistant",
+});
+```
 
-### 容错生产中的代理会遇到开发中很少出现的故障：速率限制、模型超时、瞬时 API 错误。容错中间件在基础设施级别处理这些问题，因此您的工具和业务逻辑不需要在每次调用时进行 try/catch。
+### 容错
 
-<CodeGroup>
-  ```ts Google theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  import {
-    createAgent,
-    modelRetryMiddleware,
-    tool,
-    toolRetryMiddleware,
-  } from "langchain";
-  import * as z from "zod";
+生产中的代理会遇到开发中很少出现的故障：速率限制、模型超时、瞬时 API 错误。容错中间件在基础设施级别处理这些问题，因此您的工具和业务逻辑不需要在每次调用时进行 try/catch。
 
-  var search = tool(({ query }) => `Search results for: ${query}`, {
-    name: "search",
-    description: "Search for a query and return a short summary.",
-    schema: z.object({ query: z.string() }),
-  });
+```ts Google theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+import {
+  createAgent,
+  modelRetryMiddleware,
+  tool,
+  toolRetryMiddleware,
+} from "langchain";
+import * as z from "zod";
 
-  var agent = createAgent({
-    model: "google:gemini-3.6-flash",
-    tools: [search],
-    middleware: [
-      modelRetryMiddleware({ maxRetries: 3 }),
-      toolRetryMiddleware({ maxRetries: 2 }),
-    ],
-  });
-  ```
+var search = tool(({ query }) => `Search results for: ${query}`, {
+  name: "search",
+  description: "Search for a query and return a short summary.",
+  schema: z.object({ query: z.string() }),
+});
 
-  ```ts OpenAI theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  import {
-    createAgent,
-    modelRetryMiddleware,
-    tool,
-    toolRetryMiddleware,
-  } from "langchain";
-  import * as z from "zod";
+var agent = createAgent({
+  model: "google:gemini-3.6-flash",
+  tools: [search],
+  middleware: [
+    modelRetryMiddleware({ maxRetries: 3 }),
+    toolRetryMiddleware({ maxRetries: 2 }),
+  ],
+});
+```
 
-  var search = tool(({ query }) => `Search results for: ${query}`, {
-    name: "search",
-    description: "Search for a query and return a short summary.",
-    schema: z.object({ query: z.string() }),
-  });
+```ts OpenAI theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+import {
+  createAgent,
+  modelRetryMiddleware,
+  tool,
+  toolRetryMiddleware,
+} from "langchain";
+import * as z from "zod";
 
-  var agent = createAgent({
-    model: "openai:gpt-5.5",
-    tools: [search],
-    middleware: [
-      modelRetryMiddleware({ maxRetries: 3 }),
-      toolRetryMiddleware({ maxRetries: 2 }),
-    ],
-  });
-  ```
+var search = tool(({ query }) => `Search results for: ${query}`, {
+  name: "search",
+  description: "Search for a query and return a short summary.",
+  schema: z.object({ query: z.string() }),
+});
 
-  ```ts Anthropic theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  import {
-    createAgent,
-    modelRetryMiddleware,
-    tool,
-    toolRetryMiddleware,
-  } from "langchain";
-  import * as z from "zod";
+var agent = createAgent({
+  model: "openai:gpt-5.5",
+  tools: [search],
+  middleware: [
+    modelRetryMiddleware({ maxRetries: 3 }),
+    toolRetryMiddleware({ maxRetries: 2 }),
+  ],
+});
+```
 
-  var search = tool(({ query }) => `Search results for: ${query}`, {
-    name: "search",
-    description: "Search for a query and return a short summary.",
-    schema: z.object({ query: z.string() }),
-  });
+```ts Anthropic theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+import {
+  createAgent,
+  modelRetryMiddleware,
+  tool,
+  toolRetryMiddleware,
+} from "langchain";
+import * as z from "zod";
 
-  var agent = createAgent({
-    model: "anthropic:claude-sonnet-5",
-    tools: [search],
-    middleware: [
-      modelRetryMiddleware({ maxRetries: 3 }),
-      toolRetryMiddleware({ maxRetries: 2 }),
-    ],
-  });
-  ```
+var search = tool(({ query }) => `Search results for: ${query}`, {
+  name: "search",
+  description: "Search for a query and return a short summary.",
+  schema: z.object({ query: z.string() }),
+});
 
-  ```ts OpenRouter theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  import {
-    createAgent,
-    modelRetryMiddleware,
-    tool,
-    toolRetryMiddleware,
-  } from "langchain";
-  import * as z from "zod";
+var agent = createAgent({
+  model: "anthropic:claude-sonnet-5",
+  tools: [search],
+  middleware: [
+    modelRetryMiddleware({ maxRetries: 3 }),
+    toolRetryMiddleware({ maxRetries: 2 }),
+  ],
+});
+```
 
-  var search = tool(({ query }) => `Search results for: ${query}`, {
-    name: "search",
-    description: "Search for a query and return a short summary.",
-    schema: z.object({ query: z.string() }),
-  });
+```ts OpenRouter theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+import {
+  createAgent,
+  modelRetryMiddleware,
+  tool,
+  toolRetryMiddleware,
+} from "langchain";
+import * as z from "zod";
 
-  var agent = createAgent({
-    model: "openrouter:z-ai/glm-5.2",
-    tools: [search],
-    middleware: [
-      modelRetryMiddleware({ maxRetries: 3 }),
-      toolRetryMiddleware({ maxRetries: 2 }),
-    ],
-  });
-  ```
+var search = tool(({ query }) => `Search results for: ${query}`, {
+  name: "search",
+  description: "Search for a query and return a short summary.",
+  schema: z.object({ query: z.string() }),
+});
 
-  ```ts Fireworks theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  import {
-    createAgent,
-    modelRetryMiddleware,
-    tool,
-    toolRetryMiddleware,
-  } from "langchain";
-  import * as z from "zod";
+var agent = createAgent({
+  model: "openrouter:z-ai/glm-5.2",
+  tools: [search],
+  middleware: [
+    modelRetryMiddleware({ maxRetries: 3 }),
+    toolRetryMiddleware({ maxRetries: 2 }),
+  ],
+});
+```
 
-  var search = tool(({ query }) => `Search results for: ${query}`, {
-    name: "search",
-    description: "Search for a query and return a short summary.",
-    schema: z.object({ query: z.string() }),
-  });
+```ts Fireworks theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+import {
+  createAgent,
+  modelRetryMiddleware,
+  tool,
+  toolRetryMiddleware,
+} from "langchain";
+import * as z from "zod";
 
-  var agent = createAgent({
-    model: "fireworks:accounts/fireworks/models/glm-5p2",
-    tools: [search],
-    middleware: [
-      modelRetryMiddleware({ maxRetries: 3 }),
-      toolRetryMiddleware({ maxRetries: 2 }),
-    ],
-  });
-  ```
+var search = tool(({ query }) => `Search results for: ${query}`, {
+  name: "search",
+  description: "Search for a query and return a short summary.",
+  schema: z.object({ query: z.string() }),
+});
 
-  ```ts Baseten theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  import {
-    createAgent,
-    modelRetryMiddleware,
-    tool,
-    toolRetryMiddleware,
-  } from "langchain";
-  import * as z from "zod";
+var agent = createAgent({
+  model: "fireworks:accounts/fireworks/models/glm-5p2",
+  tools: [search],
+  middleware: [
+    modelRetryMiddleware({ maxRetries: 3 }),
+    toolRetryMiddleware({ maxRetries: 2 }),
+  ],
+});
+```
 
-  var search = tool(({ query }) => `Search results for: ${query}`, {
-    name: "search",
-    description: "Search for a query and return a short summary.",
-    schema: z.object({ query: z.string() }),
-  });
+```ts Baseten theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+import {
+  createAgent,
+  modelRetryMiddleware,
+  tool,
+  toolRetryMiddleware,
+} from "langchain";
+import * as z from "zod";
 
-  var agent = createAgent({
-    model: "baseten:zai-org/GLM-5.2",
-    tools: [search],
-    middleware: [
-      modelRetryMiddleware({ maxRetries: 3 }),
-      toolRetryMiddleware({ maxRetries: 2 }),
-    ],
-  });
-  ```
+var search = tool(({ query }) => `Search results for: ${query}`, {
+  name: "search",
+  description: "Search for a query and return a short summary.",
+  schema: z.object({ query: z.string() }),
+});
 
-  ```ts Ollama theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  import {
-    createAgent,
-    modelRetryMiddleware,
-    tool,
-    toolRetryMiddleware,
-  } from "langchain";
-  import * as z from "zod";
+var agent = createAgent({
+  model: "baseten:zai-org/GLM-5.2",
+  tools: [search],
+  middleware: [
+    modelRetryMiddleware({ maxRetries: 3 }),
+    toolRetryMiddleware({ maxRetries: 2 }),
+  ],
+});
+```
 
-  var search = tool(({ query }) => `Search results for: ${query}`, {
-    name: "search",
-    description: "Search for a query and return a short summary.",
-    schema: z.object({ query: z.string() }),
-  });
+```ts Ollama theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+import {
+  createAgent,
+  modelRetryMiddleware,
+  tool,
+  toolRetryMiddleware,
+} from "langchain";
+import * as z from "zod";
 
-  var agent = createAgent({
-    model: "ollama:north-mini-code-1.0",
-    tools: [search],
-    middleware: [
-      modelRetryMiddleware({ maxRetries: 3 }),
-      toolRetryMiddleware({ maxRetries: 2 }),
-    ],
-  });
-  ```
-</CodeGroup>
+var search = tool(({ query }) => `Search results for: ${query}`, {
+  name: "search",
+  description: "Search for a query and return a short summary.",
+  schema: z.object({ query: z.string() }),
+});
+
+var agent = createAgent({
+  model: "ollama:north-mini-code-1.0",
+  tools: [search],
+  middleware: [
+    modelRetryMiddleware({ maxRetries: 3 }),
+    toolRetryMiddleware({ maxRetries: 2 }),
+  ],
+});
+```
 
 参见[⟦T150⟧](https://reference.langchain.com/javascript/langchain/index/modelRetryMiddleware)、[⟦T151⟧](https://reference.langchain.com/javascript/langchain/index/toolRetryMiddleware)、[Prebuilt middleware](/oss/javascript/langchain/middleware/built-in)。
 
-### 护栏
+### 护栏有些策略不能立即生效——无论模型做什么，它们都需要确定性地执行。 Guardrails 在数据流经代理循环时拦截数据，在工具结果到达模型上下文之前应用合规性规则或内容策略。
 
-有些策略不能立即生效——无论模型做什么，它们都需要确定性地执行。 Guardrails 在数据流经代理循环时拦截数据，在工具结果到达模型上下文之前应用合规性规则或内容策略。
+```ts Google theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+import { createAgent, piiMiddleware, tool } from "langchain";
+import * as z from "zod";
 
-<CodeGroup>
-  ```ts Google theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  import { createAgent, piiMiddleware, tool } from "langchain";
-  import * as z from "zod";
+var search = tool(({ query }) => `Search results for: ${query}`, {
+  name: "search",
+  description: "Search for a query and return a short summary.",
+  schema: z.object({ query: z.string() }),
+});
 
-  var search = tool(({ query }) => `Search results for: ${query}`, {
-    name: "search",
-    description: "Search for a query and return a short summary.",
-    schema: z.object({ query: z.string() }),
-  });
+var agent = createAgent({
+  model: "google:gemini-3.6-flash",
+  tools: [search],
+  middleware: [piiMiddleware("email")],
+});
+```
 
-  var agent = createAgent({
-    model: "google:gemini-3.6-flash",
-    tools: [search],
-    middleware: [piiMiddleware("email")],
-  });
-  ```
+```ts OpenAI theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+import { createAgent, piiMiddleware, tool } from "langchain";
+import * as z from "zod";
 
-  ```ts OpenAI theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  import { createAgent, piiMiddleware, tool } from "langchain";
-  import * as z from "zod";
+var search = tool(({ query }) => `Search results for: ${query}`, {
+  name: "search",
+  description: "Search for a query and return a short summary.",
+  schema: z.object({ query: z.string() }),
+});
 
-  var search = tool(({ query }) => `Search results for: ${query}`, {
-    name: "search",
-    description: "Search for a query and return a short summary.",
-    schema: z.object({ query: z.string() }),
-  });
+var agent = createAgent({
+  model: "openai:gpt-5.5",
+  tools: [search],
+  middleware: [piiMiddleware("email")],
+});
+```
 
-  var agent = createAgent({
-    model: "openai:gpt-5.5",
-    tools: [search],
-    middleware: [piiMiddleware("email")],
-  });
-  ```
+```ts Anthropic theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+import { createAgent, piiMiddleware, tool } from "langchain";
+import * as z from "zod";
 
-  ```ts Anthropic theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  import { createAgent, piiMiddleware, tool } from "langchain";
-  import * as z from "zod";
+var search = tool(({ query }) => `Search results for: ${query}`, {
+  name: "search",
+  description: "Search for a query and return a short summary.",
+  schema: z.object({ query: z.string() }),
+});
 
-  var search = tool(({ query }) => `Search results for: ${query}`, {
-    name: "search",
-    description: "Search for a query and return a short summary.",
-    schema: z.object({ query: z.string() }),
-  });
+var agent = createAgent({
+  model: "anthropic:claude-sonnet-5",
+  tools: [search],
+  middleware: [piiMiddleware("email")],
+});
+```
 
-  var agent = createAgent({
-    model: "anthropic:claude-sonnet-5",
-    tools: [search],
-    middleware: [piiMiddleware("email")],
-  });
-  ```
+```ts OpenRouter theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+import { createAgent, piiMiddleware, tool } from "langchain";
+import * as z from "zod";
 
-  ```ts OpenRouter theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  import { createAgent, piiMiddleware, tool } from "langchain";
-  import * as z from "zod";
+var search = tool(({ query }) => `Search results for: ${query}`, {
+  name: "search",
+  description: "Search for a query and return a short summary.",
+  schema: z.object({ query: z.string() }),
+});
 
-  var search = tool(({ query }) => `Search results for: ${query}`, {
-    name: "search",
-    description: "Search for a query and return a short summary.",
-    schema: z.object({ query: z.string() }),
-  });
+var agent = createAgent({
+  model: "openrouter:z-ai/glm-5.2",
+  tools: [search],
+  middleware: [piiMiddleware("email")],
+});
+```
 
-  var agent = createAgent({
-    model: "openrouter:z-ai/glm-5.2",
-    tools: [search],
-    middleware: [piiMiddleware("email")],
-  });
-  ```
+```ts Fireworks theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+import { createAgent, piiMiddleware, tool } from "langchain";
+import * as z from "zod";
 
-  ```ts Fireworks theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  import { createAgent, piiMiddleware, tool } from "langchain";
-  import * as z from "zod";
+var search = tool(({ query }) => `Search results for: ${query}`, {
+  name: "search",
+  description: "Search for a query and return a short summary.",
+  schema: z.object({ query: z.string() }),
+});
 
-  var search = tool(({ query }) => `Search results for: ${query}`, {
-    name: "search",
-    description: "Search for a query and return a short summary.",
-    schema: z.object({ query: z.string() }),
-  });
+var agent = createAgent({
+  model: "fireworks:accounts/fireworks/models/glm-5p2",
+  tools: [search],
+  middleware: [piiMiddleware("email")],
+});
+```
 
-  var agent = createAgent({
-    model: "fireworks:accounts/fireworks/models/glm-5p2",
-    tools: [search],
-    middleware: [piiMiddleware("email")],
-  });
-  ```
+```ts Baseten theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+import { createAgent, piiMiddleware, tool } from "langchain";
+import * as z from "zod";
 
-  ```ts Baseten theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  import { createAgent, piiMiddleware, tool } from "langchain";
-  import * as z from "zod";
+var search = tool(({ query }) => `Search results for: ${query}`, {
+  name: "search",
+  description: "Search for a query and return a short summary.",
+  schema: z.object({ query: z.string() }),
+});
 
-  var search = tool(({ query }) => `Search results for: ${query}`, {
-    name: "search",
-    description: "Search for a query and return a short summary.",
-    schema: z.object({ query: z.string() }),
-  });
+var agent = createAgent({
+  model: "baseten:zai-org/GLM-5.2",
+  tools: [search],
+  middleware: [piiMiddleware("email")],
+});
+```
 
-  var agent = createAgent({
-    model: "baseten:zai-org/GLM-5.2",
-    tools: [search],
-    middleware: [piiMiddleware("email")],
-  });
-  ```
+```ts Ollama theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+import { createAgent, piiMiddleware, tool } from "langchain";
+import * as z from "zod";
 
-  ```ts Ollama theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  import { createAgent, piiMiddleware, tool } from "langchain";
-  import * as z from "zod";
+var search = tool(({ query }) => `Search results for: ${query}`, {
+  name: "search",
+  description: "Search for a query and return a short summary.",
+  schema: z.object({ query: z.string() }),
+});
 
-  var search = tool(({ query }) => `Search results for: ${query}`, {
-    name: "search",
-    description: "Search for a query and return a short summary.",
-    schema: z.object({ query: z.string() }),
-  });
-
-  var agent = createAgent({
-    model: "ollama:north-mini-code-1.0",
-    tools: [search],
-    middleware: [piiMiddleware("email")],
-  });
-  ```
-</CodeGroup>
+var agent = createAgent({
+  model: "ollama:north-mini-code-1.0",
+  tools: [search],
+  middleware: [piiMiddleware("email")],
+});
+```
 
 参见[⟦T152⟧](https://reference.langchain.com/javascript/langchain/index/piiMiddleware)、[Prebuilt middleware](/oss/javascript/langchain/middleware/built-in)。
 
@@ -2065,151 +2029,143 @@ for await (const snapshot of stream.values) {
 
 完全自治并不总是合适的。引导可以让您将人员置于特定的决策点 - 在破坏性写入、昂贵的 API 调用或任何需要判断的事情之前 - 无需重组您的代理。代理暂停并等待；人类批准、编辑或拒绝；执行仍在继续。
 
-<CodeGroup>
-  ```ts Google theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  import { createAgent, humanInTheLoopMiddleware, tool } from "langchain";
-  import * as z from "zod";
+```ts Google theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+import { createAgent, humanInTheLoopMiddleware, tool } from "langchain";
+import * as z from "zod";
 
-  var search = tool(({ query }) => `Search results for: ${query}`, {
-    name: "search",
-    description: "Search for a query and return a short summary.",
-    schema: z.object({ query: z.string() }),
-  });
+var search = tool(({ query }) => `Search results for: ${query}`, {
+  name: "search",
+  description: "Search for a query and return a short summary.",
+  schema: z.object({ query: z.string() }),
+});
 
-  var agent = createAgent({
-    model: "google:gemini-3.6-flash",
-    tools: [search],
-    middleware: [humanInTheLoopMiddleware({ interruptOn: { writeFile: true } })],
-  });
-  ```
+var agent = createAgent({
+  model: "google:gemini-3.6-flash",
+  tools: [search],
+  middleware: [humanInTheLoopMiddleware({ interruptOn: { writeFile: true } })],
+});
+```
 
-  ```ts OpenAI theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  import { createAgent, humanInTheLoopMiddleware, tool } from "langchain";
-  import * as z from "zod";
+```ts OpenAI theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+import { createAgent, humanInTheLoopMiddleware, tool } from "langchain";
+import * as z from "zod";
 
-  var search = tool(({ query }) => `Search results for: ${query}`, {
-    name: "search",
-    description: "Search for a query and return a short summary.",
-    schema: z.object({ query: z.string() }),
-  });
+var search = tool(({ query }) => `Search results for: ${query}`, {
+  name: "search",
+  description: "Search for a query and return a short summary.",
+  schema: z.object({ query: z.string() }),
+});
 
-  var agent = createAgent({
-    model: "openai:gpt-5.5",
-    tools: [search],
-    middleware: [humanInTheLoopMiddleware({ interruptOn: { writeFile: true } })],
-  });
-  ```
+var agent = createAgent({
+  model: "openai:gpt-5.5",
+  tools: [search],
+  middleware: [humanInTheLoopMiddleware({ interruptOn: { writeFile: true } })],
+});
+```
 
-  ```ts Anthropic theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  import { createAgent, humanInTheLoopMiddleware, tool } from "langchain";
-  import * as z from "zod";
+```ts Anthropic theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+import { createAgent, humanInTheLoopMiddleware, tool } from "langchain";
+import * as z from "zod";
 
-  var search = tool(({ query }) => `Search results for: ${query}`, {
-    name: "search",
-    description: "Search for a query and return a short summary.",
-    schema: z.object({ query: z.string() }),
-  });
+var search = tool(({ query }) => `Search results for: ${query}`, {
+  name: "search",
+  description: "Search for a query and return a short summary.",
+  schema: z.object({ query: z.string() }),
+});
 
-  var agent = createAgent({
-    model: "anthropic:claude-sonnet-5",
-    tools: [search],
-    middleware: [humanInTheLoopMiddleware({ interruptOn: { writeFile: true } })],
-  });
-  ```
+var agent = createAgent({
+  model: "anthropic:claude-sonnet-5",
+  tools: [search],
+  middleware: [humanInTheLoopMiddleware({ interruptOn: { writeFile: true } })],
+});
+```
 
-  ```ts OpenRouter theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  import { createAgent, humanInTheLoopMiddleware, tool } from "langchain";
-  import * as z from "zod";
+```ts OpenRouter theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+import { createAgent, humanInTheLoopMiddleware, tool } from "langchain";
+import * as z from "zod";
 
-  var search = tool(({ query }) => `Search results for: ${query}`, {
-    name: "search",
-    description: "Search for a query and return a short summary.",
-    schema: z.object({ query: z.string() }),
-  });
+var search = tool(({ query }) => `Search results for: ${query}`, {
+  name: "search",
+  description: "Search for a query and return a short summary.",
+  schema: z.object({ query: z.string() }),
+});
 
-  var agent = createAgent({
-    model: "openrouter:z-ai/glm-5.2",
-    tools: [search],
-    middleware: [humanInTheLoopMiddleware({ interruptOn: { writeFile: true } })],
-  });
-  ```
+var agent = createAgent({
+  model: "openrouter:z-ai/glm-5.2",
+  tools: [search],
+  middleware: [humanInTheLoopMiddleware({ interruptOn: { writeFile: true } })],
+});
+```
 
-  ```ts Fireworks theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  import { createAgent, humanInTheLoopMiddleware, tool } from "langchain";
-  import * as z from "zod";
+```ts Fireworks theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+import { createAgent, humanInTheLoopMiddleware, tool } from "langchain";
+import * as z from "zod";
 
-  var search = tool(({ query }) => `Search results for: ${query}`, {
-    name: "search",
-    description: "Search for a query and return a short summary.",
-    schema: z.object({ query: z.string() }),
-  });
+var search = tool(({ query }) => `Search results for: ${query}`, {
+  name: "search",
+  description: "Search for a query and return a short summary.",
+  schema: z.object({ query: z.string() }),
+});
 
-  var agent = createAgent({
-    model: "fireworks:accounts/fireworks/models/glm-5p2",
-    tools: [search],
-    middleware: [humanInTheLoopMiddleware({ interruptOn: { writeFile: true } })],
-  });
-  ```
+var agent = createAgent({
+  model: "fireworks:accounts/fireworks/models/glm-5p2",
+  tools: [search],
+  middleware: [humanInTheLoopMiddleware({ interruptOn: { writeFile: true } })],
+});
+```
 
-  ```ts Baseten theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  import { createAgent, humanInTheLoopMiddleware, tool } from "langchain";
-  import * as z from "zod";
+```ts Baseten theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+import { createAgent, humanInTheLoopMiddleware, tool } from "langchain";
+import * as z from "zod";
 
-  var search = tool(({ query }) => `Search results for: ${query}`, {
-    name: "search",
-    description: "Search for a query and return a short summary.",
-    schema: z.object({ query: z.string() }),
-  });
+var search = tool(({ query }) => `Search results for: ${query}`, {
+  name: "search",
+  description: "Search for a query and return a short summary.",
+  schema: z.object({ query: z.string() }),
+});
 
-  var agent = createAgent({
-    model: "baseten:zai-org/GLM-5.2",
-    tools: [search],
-    middleware: [humanInTheLoopMiddleware({ interruptOn: { writeFile: true } })],
-  });
-  ```
+var agent = createAgent({
+  model: "baseten:zai-org/GLM-5.2",
+  tools: [search],
+  middleware: [humanInTheLoopMiddleware({ interruptOn: { writeFile: true } })],
+});
+```
 
-  ```ts Ollama theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  import { createAgent, humanInTheLoopMiddleware, tool } from "langchain";
-  import * as z from "zod";
+```ts Ollama theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+import { createAgent, humanInTheLoopMiddleware, tool } from "langchain";
+import * as z from "zod";
 
-  var search = tool(({ query }) => `Search results for: ${query}`, {
-    name: "search",
-    description: "Search for a query and return a short summary.",
-    schema: z.object({ query: z.string() }),
-  });
+var search = tool(({ query }) => `Search results for: ${query}`, {
+  name: "search",
+  description: "Search for a query and return a short summary.",
+  schema: z.object({ query: z.string() }),
+});
 
-  var agent = createAgent({
-    model: "ollama:north-mini-code-1.0",
-    tools: [search],
-    middleware: [humanInTheLoopMiddleware({ interruptOn: { writeFile: true } })],
-  });
-  ```
-</CodeGroup>
+var agent = createAgent({
+  model: "ollama:north-mini-code-1.0",
+  tools: [search],
+  middleware: [humanInTheLoopMiddleware({ interruptOn: { writeFile: true } })],
+});
+```
 
-参见[⟦T153⟧](https://reference.langchain.com/javascript/langchain/middleware/humanInTheLoopMiddleware)、[Human-in-the-loop](/oss/javascript/langchain/human-in-the-loop)。### 中间件资源
+参见[⟦T153⟧](https://reference.langchain.com/javascript/langchain/middleware/humanInTheLoopMiddleware)、[Human-in-the-loop](/oss/javascript/langchain/human-in-the-loop)。
 
-<CardGroup>
-  <Card title="Middleware overview" icon="route" href="/oss/javascript/langchain/middleware/overview">
-    中间件堆栈如何工作以及钩子何时触发
-  </Card>
+### 中间件资源
 
-  <Card title="Prebuilt middleware" icon="package" href="/oss/javascript/langchain/middleware/built-in">
-    包含配置示例的完整参考
-  </Card>
+> **[Middleware overview](/oss/javascript/langchain/middleware/overview)**
+>
+> 中间件堆栈如何工作以及钩子何时触发
 
-  <Card title="Custom middleware" icon="code" href="/oss/javascript/langchain/middleware/custom">
-    为业务逻辑、PII 清理等编写您自己的挂钩
-  </Card>
-</CardGroup>
+> **[Prebuilt middleware](/oss/javascript/langchain/middleware/built-in)**
+>
+> 带有配置示例的完整参考
+
+> **[Custom middleware](/oss/javascript/langchain/middleware/custom)**
+>
+> 编写您自己的业务逻辑、PII 清理等挂钩
 
 ***
 
-<div>
-  <Callout icon="terminal-2">
-    [Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
-  </Callout>
+[Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
 
-  <Callout icon="edit">
-    [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/oss/langchain/agents.mdx) 或 [file an issue](https://github.com/langchain-ai/docs/issues/new/choose)。
-  </Callout>
-</div>
+[Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/oss/langchain/agents.mdx) 或 [file an issue](https://github.com/langchain-ai/docs/issues/new/choose)。

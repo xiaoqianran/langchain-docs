@@ -32,9 +32,9 @@ for subagent in stream.subagents:
     subagent_names.append(subagent.name)
 ```
 
-<Card title="View example trace" icon="chart-line" href="https://smith.langchain.com/public/1884fc76-062c-464d-85a9-9cf20d5286ab/r">
-  为此示例打开公共 LangSmith 运行。
-</Card>
+> **[View example trace](https://smith.langchain.com/public/1884fc76-062c-464d-85a9-9cf20d5286ab/r)**
+>
+> 为此示例打开公共 LangSmith 运行。
 
 ## 子代理流字段
 
@@ -76,9 +76,9 @@ for subagent in stream.subagents:
         print(f"{subagent.name}: failed")
 ```
 
-<Card title="View example trace" icon="chart-line" href="https://smith.langchain.com/public/7c517c49-b795-4a33-b782-6695349c9deb/r">
-  为此示例打开公共 LangSmith 运行。
-</Card>
+> **[View example trace](https://smith.langchain.com/public/7c517c49-b795-4a33-b782-6695349c9deb/r)**
+>
+> 为此示例打开公共 LangSmith 运行。
 
 ## 流消息
 
@@ -97,9 +97,9 @@ for subagent in stream.subagents:
         print(f"[{subagent.name}]", message.text)
 ```
 
-<Card title="View example trace" icon="chart-line" href="https://smith.langchain.com/public/8cdd93c9-0dff-4f08-8057-053753c68c6e/r">
-  为此示例打开公共 LangSmith 运行。
-</Card>
+> **[View example trace](https://smith.langchain.com/public/8cdd93c9-0dff-4f08-8057-053753c68c6e/r)**
+>
+> 为此示例打开公共 LangSmith 运行。
 
 ## 流工具调用Deep Agents 在代理树的每个级别公开工具调用。将顶级 `stream.tool_calls` 用于协调器工具，将每个 `subagent.tool_calls` 用于委派工作。
 
@@ -124,9 +124,9 @@ for subagent in stream.subagents:
             print(call.error)
 ```
 
-<Card title="View example trace" icon="chart-line" href="https://smith.langchain.com/public/55cbc704-a514-46e1-8559-b2cfee01298d/r">
-  为此示例打开公共 LangSmith 运行。
-</Card>
+> **[View example trace](https://smith.langchain.com/public/55cbc704-a514-46e1-8559-b2cfee01298d/r)**
+>
+> 为此示例打开公共 LangSmith 运行。
 
 ## 流式嵌套工作
 
@@ -150,9 +150,9 @@ for subagent in stream.subagents:
     subagent_names.append(subagent.name)
 ```
 
-<Card title="View example trace" icon="chart-line" href="https://smith.langchain.com/public/51f7e14f-0d79-4f59-a817-e05db11cec22/r">
-  为此示例打开公共 LangSmith 运行。
-</Card>
+> **[View example trace](https://smith.langchain.com/public/51f7e14f-0d79-4f59-a817-e05db11cec22/r)**
+>
+> 为此示例打开公共 LangSmith 运行。
 
 ## 并发消费
 
@@ -190,9 +190,9 @@ for name, item in stream.interleave("messages", "subagents"):
             print(f"[{item.name}]", message.text)
 ```
 
-<Card title="View example trace" icon="chart-line" href="https://smith.langchain.com/public/74ef37d9-f1b4-408f-babd-af300a033e9b/r">
-  为此示例打开公共 LangSmith 运行。
-</Card>
+> **[View example trace](https://smith.langchain.com/public/74ef37d9-f1b4-408f-babd-af300a033e9b/r)**
+>
+> 为此示例打开公共 LangSmith 运行。
 
 当您需要协调器和所有子代理之间的准确到达顺序时，请迭代原始协议事件并使用 `namespace` 来识别源：
 
@@ -217,9 +217,9 @@ for event in stream:
         text_deltas.append(block["text"])
 ```
 
-<Card title="View example trace" icon="chart-line" href="https://smith.langchain.com/public/71b391fa-fa9d-40c0-838a-6a21874785c9/r">
-  为此示例打开公共 LangSmith 运行。
-</Card>
+> **[View example trace](https://smith.langchain.com/public/71b391fa-fa9d-40c0-838a-6a21874785c9/r)**
+>
+> 为此示例打开公共 LangSmith 运行。
 
 ## 子代理与子图
 
@@ -227,16 +227,10 @@ for event in stream:
 
 ＃＃ 有关的* [LangChain Event Streaming](/oss/python/langchain/event-streaming) 涵盖一般代理消息和工具调用流概念。
 * [Subagent frontend streaming](/oss/python/deepagents/frontend/subagent-streaming) 显示将协调器消息与子代理卡分开的 UI 模式。
-* [LangGraph Event Streaming](/oss/python/langgraph/event-streaming)涵盖底层图流模型。
+* [LangGraph Event Streaming](/oss/python/langgraph/event-streaming)涵盖了底层的图流模型。
 
 ***
 
-<div>
-  <Callout icon="terminal-2">
-    [Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
-  </Callout>
+[Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
 
-  <Callout icon="edit">
-    [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/oss/deepagents/event-streaming.mdx) 或 [file an issue](https://github.com/langchain-ai/docs/issues/new/choose)。
-  </Callout>
-</div>
+[Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/oss/deepagents/event-streaming.mdx) 或 [file an issue](https://github.com/langchain-ai/docs/issues/new/choose)。

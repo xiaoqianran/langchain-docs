@@ -39,7 +39,7 @@ npm install agentevals @langchain/core
 
 ## 轨迹匹配评估器AgentEvals 提供 `createTrajectoryMatchEvaluator` 函数来将代理的轨迹与参考进行匹配。有四种模式：
 
-|模式|描述 |使用案例 |
+|模式|描述 |使用案例|
 | - | - | - |
 | `strict` |消息结构和工具调用以相同顺序精确匹配（消息内容可以不同）|测试特定序列（例如，授权前的策略查找）|
 | `unordered` |与参考相同的消息结构和工具调用，但工具调用可以按任何顺序发生 |当顺序无关紧要时验证信息检索 |
@@ -72,201 +72,201 @@ const agent = createAgent({
 });
 ```
 
-<Accordion title="Strict match">
-  `strict` 模式确保轨迹通过相同的工具调用以相同的顺序包含相同的消息，尽管它允许消息内容存在差异。当您需要强制执行特定的操作序列（例如在授权操作之前需要进行策略查找）时，这非常有用。
+> **严格匹配**
+>
+> `strict` 模式确保轨迹通过相同的工具调用以相同的顺序包含相同的消息，尽管它允许消息内容存在差异。当您需要强制执行特定的操作序列（例如在授权操作之前需要进行策略查找）时，这非常有用。
+>
+> ```ts theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> const evaluator = createTrajectoryMatchEvaluator({  // [!code highlight]
+>   trajectoryMatchMode: "strict",  // [!code highlight]
+> });  // [!code highlight]
+>
+> async function testWeatherToolCalledStrict() {
+>   const result = await agent.invoke({
+>     messages: [new HumanMessage("What's the weather in San Francisco?")]
+>   });
+>
+>   const referenceTrajectory = [
+>     new HumanMessage("What's the weather in San Francisco?"),
+>     new AIMessage({
+>       content: "",
+>       tool_calls: [
+>         { id: "call_1", name: "get_weather", args: { city: "San Francisco" } }
+>       ]
+>     }),
+>     new ToolMessage({
+>       content: "It's 75 degrees and sunny in San Francisco.",
+>       tool_call_id: "call_1"
+>     }),
+>     new AIMessage("The weather in San Francisco is 75 degrees and sunny."),
+>   ];
+>
+>   const evaluation = await evaluator({
+>     outputs: result.messages,
+>     referenceOutputs: referenceTrajectory
+>   });
+>   expect(evaluation.score).toBe(true);
+> }
+> ```> **无序匹配**
+>
+> `unordered` 模式允许以任意顺序调用相同的工具。当您想要验证是否检索到特定信息但不关心顺序时，这非常有用。例如，使用不同工具调用检查城市天气和事件的代理。
+>
+> ```ts theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> const getEvents = tool(
+>   async ({ city }: { city: string }) => {
+>     return `Concert at the park in ${city} tonight.`;
+>   },
+>   {
+>     name: "get_events",
+>     description: "Get events happening in a city.",
+>     schema: z.object({ city: z.string() }),
+>   }
+> );
+>
+> const agent = createAgent({
+>   model: "claude-sonnet-4-6",
+>   tools: [getWeather, getEvents],
+> });
+>
+> const evaluator = createTrajectoryMatchEvaluator({  // [!code highlight]
+>   trajectoryMatchMode: "unordered",  // [!code highlight]
+> });  // [!code highlight]
+>
+> async function testMultipleToolsAnyOrder() {
+>   const result = await agent.invoke({
+>     messages: [new HumanMessage("What's happening in SF today?")]
+>   });
+>
+>   const referenceTrajectory = [
+>     new HumanMessage("What's happening in SF today?"),
+>     new AIMessage({
+>       content: "",
+>       tool_calls: [
+>         { id: "call_1", name: "get_events", args: { city: "SF" } },
+>         { id: "call_2", name: "get_weather", args: { city: "SF" } },
+>       ]
+>     }),
+>     new ToolMessage({
+>       content: "Concert at the park in SF tonight.",
+>       tool_call_id: "call_1"
+>     }),
+>     new ToolMessage({
+>       content: "It's 75 degrees and sunny in SF.",
+>       tool_call_id: "call_2"
+>     }),
+>     new AIMessage("Today in SF: 75 degrees and sunny with a concert at the park tonight."),
+>   ];
+>
+>   const evaluation = await evaluator({
+>     outputs: result.messages,
+>     referenceOutputs: referenceTrajectory,
+>   });
+>   expect(evaluation.score).toBe(true);
+> }
+> ```
 
-  ```ts theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  const evaluator = createTrajectoryMatchEvaluator({  // [!code highlight]
-    trajectoryMatchMode: "strict",  // [!code highlight]
-  });  // [!code highlight]
+> **子集和超集匹配**
+>
+> `superset` 和 `subset` 模式匹配部分轨迹。 `superset` 模式验证代理是否至少调用了参考轨迹中的工具，从而允许调用其他工具。 `subset` 模式确保代理不会调用参考中的工具之外的任何工具。
+>
+> ```ts theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> const getDetailedForecast = tool(
+>   async ({ city }: { city: string }) => {
+>     return `Detailed forecast for ${city}: sunny all week.`;
+>   },
+>   {
+>     name: "get_detailed_forecast",
+>     description: "Get detailed weather forecast for a city.",
+>     schema: z.object({ city: z.string() }),
+>   }
+> );
+>
+> const agent = createAgent({
+>   model: "claude-sonnet-4-6",
+>   tools: [getWeather, getDetailedForecast],
+> });
+>
+> const evaluator = createTrajectoryMatchEvaluator({  // [!code highlight]
+>   trajectoryMatchMode: "superset",  // [!code highlight]
+> });  // [!code highlight]
+>
+> async function testAgentCallsRequiredToolsPlusExtra() {
+>   const result = await agent.invoke({
+>     messages: [new HumanMessage("What's the weather in Boston?")]
+>   });
+>
+>   const referenceTrajectory = [
+>     new HumanMessage("What's the weather in Boston?"),
+>     new AIMessage({
+>       content: "",
+>       tool_calls: [
+>         { id: "call_1", name: "get_weather", args: { city: "Boston" } },
+>       ]
+>     }),
+>     new ToolMessage({
+>       content: "It's 75 degrees and sunny in Boston.",
+>       tool_call_id: "call_1"
+>     }),
+>     new AIMessage("The weather in Boston is 75 degrees and sunny."),
+>   ];
+>
+>   const evaluation = await evaluator({
+>     outputs: result.messages,
+>     referenceOutputs: referenceTrajectory,
+>   });
+>   expect(evaluation.score).toBe(true);
+> }
+> ```
 
-  async function testWeatherToolCalledStrict() {
-    const result = await agent.invoke({
-      messages: [new HumanMessage("What's the weather in San Francisco?")]
-    });
-
-    const referenceTrajectory = [
-      new HumanMessage("What's the weather in San Francisco?"),
-      new AIMessage({
-        content: "",
-        tool_calls: [
-          { id: "call_1", name: "get_weather", args: { city: "San Francisco" } }
-        ]
-      }),
-      new ToolMessage({
-        content: "It's 75 degrees and sunny in San Francisco.",
-        tool_call_id: "call_1"
-      }),
-      new AIMessage("The weather in San Francisco is 75 degrees and sunny."),
-    ];
-
-    const evaluation = await evaluator({
-      outputs: result.messages,
-      referenceOutputs: referenceTrajectory
-    });
-    expect(evaluation.score).toBe(true);
-  }
-  ```
-</Accordion><Accordion title="Unordered match">
-  `unordered` 模式允许以任意顺序调用相同的工具。当您想要验证是否检索到特定信息但不关心顺序时，这非常有用。例如，使用不同工具调用检查城市天气和事件的代理。
-
-  ```ts theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  const getEvents = tool(
-    async ({ city }: { city: string }) => {
-      return `Concert at the park in ${city} tonight.`;
-    },
-    {
-      name: "get_events",
-      description: "Get events happening in a city.",
-      schema: z.object({ city: z.string() }),
-    }
-  );
-
-  const agent = createAgent({
-    model: "claude-sonnet-4-6",
-    tools: [getWeather, getEvents],
-  });
-
-  const evaluator = createTrajectoryMatchEvaluator({  // [!code highlight]
-    trajectoryMatchMode: "unordered",  // [!code highlight]
-  });  // [!code highlight]
-
-  async function testMultipleToolsAnyOrder() {
-    const result = await agent.invoke({
-      messages: [new HumanMessage("What's happening in SF today?")]
-    });
-
-    const referenceTrajectory = [
-      new HumanMessage("What's happening in SF today?"),
-      new AIMessage({
-        content: "",
-        tool_calls: [
-          { id: "call_1", name: "get_events", args: { city: "SF" } },
-          { id: "call_2", name: "get_weather", args: { city: "SF" } },
-        ]
-      }),
-      new ToolMessage({
-        content: "Concert at the park in SF tonight.",
-        tool_call_id: "call_1"
-      }),
-      new ToolMessage({
-        content: "It's 75 degrees and sunny in SF.",
-        tool_call_id: "call_2"
-      }),
-      new AIMessage("Today in SF: 75 degrees and sunny with a concert at the park tonight."),
-    ];
-
-    const evaluation = await evaluator({
-      outputs: result.messages,
-      referenceOutputs: referenceTrajectory,
-    });
-    expect(evaluation.score).toBe(true);
-  }
-  ```
-</Accordion>
-
-<Accordion title="Subset and superset match">
-  `superset` 和 `subset` 模式匹配部分轨迹。 `superset` 模式验证代理是否至少调用了参考轨迹中的工具，从而允许调用其他工具。 `subset` 模式确保代理不会调用参考中的工具之外的任何工具。
-
-  ```ts theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  const getDetailedForecast = tool(
-    async ({ city }: { city: string }) => {
-      return `Detailed forecast for ${city}: sunny all week.`;
-    },
-    {
-      name: "get_detailed_forecast",
-      description: "Get detailed weather forecast for a city.",
-      schema: z.object({ city: z.string() }),
-    }
-  );
-
-  const agent = createAgent({
-    model: "claude-sonnet-4-6",
-    tools: [getWeather, getDetailedForecast],
-  });
-
-  const evaluator = createTrajectoryMatchEvaluator({  // [!code highlight]
-    trajectoryMatchMode: "superset",  // [!code highlight]
-  });  // [!code highlight]
-
-  async function testAgentCallsRequiredToolsPlusExtra() {
-    const result = await agent.invoke({
-      messages: [new HumanMessage("What's the weather in Boston?")]
-    });
-
-    const referenceTrajectory = [
-      new HumanMessage("What's the weather in Boston?"),
-      new AIMessage({
-        content: "",
-        tool_calls: [
-          { id: "call_1", name: "get_weather", args: { city: "Boston" } },
-        ]
-      }),
-      new ToolMessage({
-        content: "It's 75 degrees and sunny in Boston.",
-        tool_call_id: "call_1"
-      }),
-      new AIMessage("The weather in Boston is 75 degrees and sunny."),
-    ];
-
-    const evaluation = await evaluator({
-      outputs: result.messages,
-      referenceOutputs: referenceTrajectory,
-    });
-    expect(evaluation.score).toBe(true);
-  }
-  ```
-</Accordion>
-
-<Info>
-  您还可以设置 `toolArgsMatchMode` 属性和/或 `toolArgsMatchOverrides` 来自定义评估器如何考虑实际轨迹与参考中的工具调用之间的相等性。默认情况下，只有对同一工具具有相同参数的工具调用才被视为相等。请访问[repository](https://github.com/langchain-ai/agentevals?tab=readme-ov-file#tool-args-match-modes)了解更多详情。
-</Info>
+> [!注意]
+>
+> 您还可以设置 `toolArgsMatchMode` 属性和/或 `toolArgsMatchOverrides` 来自定义评估器如何考虑实际轨迹与参考轨迹中的工具调用之间的相等性。默认情况下，只有对同一工具具有相同参数的工具调用才被视为相等。请访问[repository](https://github.com/langchain-ai/agentevals?tab=readme-ov-file#tool-args-match-modes)了解更多详情。
 
 ## 法学硕士作为法官评估员
 
 您可以使用 LLM 通过 `createTrajectoryLLMAsJudge` 函数评估代理的执行路径。与轨迹匹配评估器不同，它不需要参考轨迹，但如果有的话可以提供。
 
-<Accordion title="Without reference trajectory">
-  ```ts theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  import { createTrajectoryLLMAsJudge, TRAJECTORY_ACCURACY_PROMPT } from "agentevals";
+> **无参考轨迹**
+>
+> ```ts theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> import { createTrajectoryLLMAsJudge, TRAJECTORY_ACCURACY_PROMPT } from "agentevals";
+>
+> const evaluator = createTrajectoryLLMAsJudge({  // [!code highlight]
+>   model: "openai:o3-mini",  // [!code highlight]
+>   prompt: TRAJECTORY_ACCURACY_PROMPT,  // [!code highlight]
+> });  // [!code highlight]
+>
+> async function testTrajectoryQuality() {
+>   const result = await agent.invoke({
+>     messages: [new HumanMessage("What's the weather in Seattle?")]
+>   });
+>
+>   const evaluation = await evaluator({
+>     outputs: result.messages,
+>   });
+>   expect(evaluation.score).toBe(true);
+> }
+> ```> **具有参考轨迹**
+>
+> 如果您有参考轨迹，请使用预建的 `TRAJECTORY_ACCURACY_PROMPT_WITH_REFERENCE` 提示：
+>
+> ```ts theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> import { createTrajectoryLLMAsJudge, TRAJECTORY_ACCURACY_PROMPT_WITH_REFERENCE } from "agentevals";
+>
+> const evaluator = createTrajectoryLLMAsJudge({
+>   model: "openai:o3-mini",
+>   prompt: TRAJECTORY_ACCURACY_PROMPT_WITH_REFERENCE,
+> });
+>
+> const evaluation = await evaluator({
+>   outputs: result.messages,
+>   referenceOutputs: referenceTrajectory,
+> });
+> ```
 
-  const evaluator = createTrajectoryLLMAsJudge({  // [!code highlight]
-    model: "openai:o3-mini",  // [!code highlight]
-    prompt: TRAJECTORY_ACCURACY_PROMPT,  // [!code highlight]
-  });  // [!code highlight]
-
-  async function testTrajectoryQuality() {
-    const result = await agent.invoke({
-      messages: [new HumanMessage("What's the weather in Seattle?")]
-    });
-
-    const evaluation = await evaluator({
-      outputs: result.messages,
-    });
-    expect(evaluation.score).toBe(true);
-  }
-  ```
-</Accordion><Accordion title="With reference trajectory">
-  如果您有参考轨迹，请使用预先构建的 `TRAJECTORY_ACCURACY_PROMPT_WITH_REFERENCE` 提示：
-
-  ```ts theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  import { createTrajectoryLLMAsJudge, TRAJECTORY_ACCURACY_PROMPT_WITH_REFERENCE } from "agentevals";
-
-  const evaluator = createTrajectoryLLMAsJudge({
-    model: "openai:o3-mini",
-    prompt: TRAJECTORY_ACCURACY_PROMPT_WITH_REFERENCE,
-  });
-
-  const evaluation = await evaluator({
-    outputs: result.messages,
-    referenceOutputs: referenceTrajectory,
-  });
-  ```
-</Accordion>
-
-<Info>
-  有关法学硕士如何评估轨迹的更多可配置性，请访问[repository](https://github.com/langchain-ai/agentevals?tab=readme-ov-file#trajectory-llm-as-judge)。
-</Info>
+> [!注意]
+>
+> 有关 LLM 如何评估轨迹的更多可配置性，请访问 [repository](https://github.com/langchain-ai/agentevals?tab=readme-ov-file#trajectory-llm-as-judge)。
 
 ## 在 LangSmith 中运行评估
 
@@ -279,108 +279,102 @@ export LANGSMITH_TRACING="true"
 
 LangSmith 提供两种主要的运行评估方法：[Vitest/Jest](/langsmith/vitest-jest) 集成和 `evaluate` 函数。
 
-<Accordion title="Use vitest/jest integration">
-  ```ts theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  import * as ls from "langsmith/vitest";
-  // import * as ls from "langsmith/jest";
+> **使用 vitest/jest 集成**
+>
+> ```ts theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> import * as ls from "langsmith/vitest";
+> // import * as ls from "langsmith/jest";
+>
+> import { createTrajectoryLLMAsJudge, TRAJECTORY_ACCURACY_PROMPT } from "agentevals";
+>
+> const trajectoryEvaluator = createTrajectoryLLMAsJudge({
+>   model: "openai:o3-mini",
+>   prompt: TRAJECTORY_ACCURACY_PROMPT,
+> });
+>
+> ls.describe("trajectory accuracy", () => {
+>   ls.test("accurate trajectory", {
+>     inputs: {
+>       messages: [
+>         { role: "user", content: "What is the weather in SF?" }
+>       ]
+>     },
+>     referenceOutputs: {
+>       messages: [
+>         new HumanMessage("What is the weather in SF?"),
+>         new AIMessage({
+>           content: "",
+>           tool_calls: [
+>             { id: "call_1", name: "get_weather", args: { city: "SF" } }
+>           ]
+>         }),
+>         new ToolMessage({
+>           content: "It's 75 degrees and sunny in SF.",
+>           tool_call_id: "call_1"
+>         }),
+>         new AIMessage("The weather in SF is 75 degrees and sunny."),
+>       ],
+>     },
+>   }, async ({ inputs, referenceOutputs }) => {
+>     const result = await agent.invoke({
+>       messages: [new HumanMessage("What is the weather in SF?")]
+>     });
+>
+>     ls.logOutputs({ messages: result.messages });
+>
+>     await trajectoryEvaluator({
+>       inputs,
+>       outputs: result.messages,
+>       referenceOutputs,
+>     });
+>   });
+> });
+> ```
+>
+> 使用您的测试运行器运行评估：
+>
+> ```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> vitest run test_trajectory.eval.ts
+> # or
+> jest test_trajectory.eval.ts
+> ```
 
-  import { createTrajectoryLLMAsJudge, TRAJECTORY_ACCURACY_PROMPT } from "agentevals";
+> **使用评估功能**
+>
+> 创建一个 [LangSmith dataset](/langsmith/manage-datasets) 并使用 `evaluate` 函数。数据集必须具有以下架构：
+>
+> * **输入**：`{"messages": [...]}` 输入消息来呼叫代理。
+> * **输出**：`{"messages": [...]}` 代理输出中的预期消息历史记录。对于轨迹评估，您可以选择仅保留辅助消息。
+>
+> ```ts theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> import { evaluate } from "langsmith/evaluation";
+> import { createTrajectoryLLMAsJudge, TRAJECTORY_ACCURACY_PROMPT } from "agentevals";
+>
+> const trajectoryEvaluator = createTrajectoryLLMAsJudge({
+>   model: "openai:o3-mini",
+>   prompt: TRAJECTORY_ACCURACY_PROMPT,
+> });
+>
+> async function runAgent(inputs: any) {
+>   const result = await agent.invoke(inputs);
+>   return result.messages;
+> }
+>
+> await evaluate(
+>   runAgent,
+>   {
+>     data: "your_dataset_name",
+>     evaluators: [trajectoryEvaluator],
+>   }
+> );
+> ```
 
-  const trajectoryEvaluator = createTrajectoryLLMAsJudge({
-    model: "openai:o3-mini",
-    prompt: TRAJECTORY_ACCURACY_PROMPT,
-  });
-
-  ls.describe("trajectory accuracy", () => {
-    ls.test("accurate trajectory", {
-      inputs: {
-        messages: [
-          { role: "user", content: "What is the weather in SF?" }
-        ]
-      },
-      referenceOutputs: {
-        messages: [
-          new HumanMessage("What is the weather in SF?"),
-          new AIMessage({
-            content: "",
-            tool_calls: [
-              { id: "call_1", name: "get_weather", args: { city: "SF" } }
-            ]
-          }),
-          new ToolMessage({
-            content: "It's 75 degrees and sunny in SF.",
-            tool_call_id: "call_1"
-          }),
-          new AIMessage("The weather in SF is 75 degrees and sunny."),
-        ],
-      },
-    }, async ({ inputs, referenceOutputs }) => {
-      const result = await agent.invoke({
-        messages: [new HumanMessage("What is the weather in SF?")]
-      });
-
-      ls.logOutputs({ messages: result.messages });
-
-      await trajectoryEvaluator({
-        inputs,
-        outputs: result.messages,
-        referenceOutputs,
-      });
-    });
-  });
-  ```
-
-  使用您的测试运行程序运行评估：
-
-  ```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  vitest run test_trajectory.eval.ts
-  # or
-  jest test_trajectory.eval.ts
-  ```
-</Accordion>
-
-<Accordion title="Use the evaluate function">
-  创建一个 [LangSmith dataset](/langsmith/manage-datasets) 并使用 `evaluate` 函数。数据集必须具有以下架构：
-
-  * **输入**：`{"messages": [...]}` 输入消息来呼叫代理。
-  * **输出**：`{"messages": [...]}` 代理输出中的预期消息历史记录。对于轨迹评估，您可以选择仅保留辅助消息。
-
-  ```ts theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  import { evaluate } from "langsmith/evaluation";
-  import { createTrajectoryLLMAsJudge, TRAJECTORY_ACCURACY_PROMPT } from "agentevals";
-
-  const trajectoryEvaluator = createTrajectoryLLMAsJudge({
-    model: "openai:o3-mini",
-    prompt: TRAJECTORY_ACCURACY_PROMPT,
-  });
-
-  async function runAgent(inputs: any) {
-    const result = await agent.invoke(inputs);
-    return result.messages;
-  }
-
-  await evaluate(
-    runAgent,
-    {
-      data: "your_dataset_name",
-      evaluators: [trajectoryEvaluator],
-    }
-  );
-  ```
-</Accordion>
-
-<Tip>
-  要了解有关评估代理的更多信息，请参阅[LangSmith docs](/langsmith/vitest-jest)。
-</Tip>
+> [!提示]
+>
+> 要了解有关评估代理的更多信息，请参阅[LangSmith docs](/langsmith/vitest-jest)。
 
 ***
 
-<div>
-  <Callout icon="terminal-2">
-    [Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
-  </Callout>
+[Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
 
-  <Callout icon="edit">
-    [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/oss/langchain/test/evals.mdx) 或 [file an issue](https://github.com/langchain-ai/docs/issues/new/choose)。
-  </Callout>
-</div>
+[Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/oss/langchain/test/evals.mdx) 或 [file an issue](https://github.com/langchain-ai/docs/issues/new/choose)。

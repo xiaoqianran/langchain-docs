@@ -9,215 +9,211 @@
 [Agent Client Protocol (ACP)](https://agentclientprotocol.com/get-started/introduction) 标准化编码代理和代码编辑器或 IDE 之间的通信。
 通过 ACP 协议，您可以将自定义深度代理与任何 ACP 兼容的客户端结合使用，从而允许您的代码编辑器提供项目上下文并接收丰富的更新。
 
-<Note>
-  ACP 专为代理编辑器集成而设计。如果您希望代理调用外部服务器托管的工具，请参阅[Model Context Protocol (MCP)](/oss/python/langchain/mcp/)。
-</Note>
+> [!注意]
+>
+> ACP 专为代理编辑器集成而设计。如果您希望代理调用外部服务器托管的工具，请参阅[Model Context Protocol (MCP)](/oss/python/langchain/mcp/)。
 
 ## 快速入门
 
 安装ACP集成包：
 
-<CodeGroup>
-  ```bash pip theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  pip install deepagents-acp
-  ```
+```bash pip theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+pip install deepagents-acp
+```
 
-  ```bash uv theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  uv add deepagents-acp
-  ```
-</CodeGroup>
+```bash uv theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+uv add deepagents-acp
+```
 
 然后通过 ACP 暴露深层代理。
 
 这会在 stdio 模式下启动 ACP 服务器（它从 stdin 读取请求并将响应写入 stdout）。在实践中，您通常将其作为 ACP 客户端（例如您的编辑器）启动的命令运行，然后通过 stdio 与服务器进行通信。
 
-<CodeGroup>
-  ```python Google theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  import asyncio
+```python Google theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+import asyncio
 
-  from acp import run_agent
-  from deepagents import create_deep_agent
-  from langgraph.checkpoint.memory import MemorySaver
+from acp import run_agent
+from deepagents import create_deep_agent
+from langgraph.checkpoint.memory import MemorySaver
 
-  from deepagents_acp.server import AgentServerACP
-
-
-  async def main() -> None:
-      agent = create_deep_agent(
-          model="google_genai:gemini-3.6-flash",
-          # You can customize your deep agent here: set a custom prompt,
-          # add your own tools, attach middleware, or compose subagents.
-          system_prompt="You are a helpful coding assistant",
-          checkpointer=MemorySaver(),
-      )
-
-      server = AgentServerACP(agent)
-      await run_agent(server)
-
-  if __name__ == "__main__":
-      asyncio.run(main())
-  ```
-
-  ```python OpenAI theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  import asyncio
-
-  from acp import run_agent
-  from deepagents import create_deep_agent
-  from langgraph.checkpoint.memory import MemorySaver
-
-  from deepagents_acp.server import AgentServerACP
+from deepagents_acp.server import AgentServerACP
 
 
-  async def main() -> None:
-      agent = create_deep_agent(
-          model="openai:gpt-5.5",
-          # You can customize your deep agent here: set a custom prompt,
-          # add your own tools, attach middleware, or compose subagents.
-          system_prompt="You are a helpful coding assistant",
-          checkpointer=MemorySaver(),
-      )
+async def main() -> None:
+    agent = create_deep_agent(
+        model="google_genai:gemini-3.6-flash",
+        # You can customize your deep agent here: set a custom prompt,
+        # add your own tools, attach middleware, or compose subagents.
+        system_prompt="You are a helpful coding assistant",
+        checkpointer=MemorySaver(),
+    )
 
-      server = AgentServerACP(agent)
-      await run_agent(server)
+    server = AgentServerACP(agent)
+    await run_agent(server)
 
-  if __name__ == "__main__":
-      asyncio.run(main())
-  ```
+if __name__ == "__main__":
+    asyncio.run(main())
+```
 
-  ```python Anthropic theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  import asyncio
+```python OpenAI theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+import asyncio
 
-  from acp import run_agent
-  from deepagents import create_deep_agent
-  from langgraph.checkpoint.memory import MemorySaver
+from acp import run_agent
+from deepagents import create_deep_agent
+from langgraph.checkpoint.memory import MemorySaver
 
-  from deepagents_acp.server import AgentServerACP
-
-
-  async def main() -> None:
-      agent = create_deep_agent(
-          model="anthropic:claude-sonnet-5",
-          # You can customize your deep agent here: set a custom prompt,
-          # add your own tools, attach middleware, or compose subagents.
-          system_prompt="You are a helpful coding assistant",
-          checkpointer=MemorySaver(),
-      )
-
-      server = AgentServerACP(agent)
-      await run_agent(server)
-
-  if __name__ == "__main__":
-      asyncio.run(main())
-  ```
-
-  ```python OpenRouter theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  import asyncio
-
-  from acp import run_agent
-  from deepagents import create_deep_agent
-  from langgraph.checkpoint.memory import MemorySaver
-
-  from deepagents_acp.server import AgentServerACP
+from deepagents_acp.server import AgentServerACP
 
 
-  async def main() -> None:
-      agent = create_deep_agent(
-          model="openrouter:z-ai/glm-5.2",
-          # You can customize your deep agent here: set a custom prompt,
-          # add your own tools, attach middleware, or compose subagents.
-          system_prompt="You are a helpful coding assistant",
-          checkpointer=MemorySaver(),
-      )
+async def main() -> None:
+    agent = create_deep_agent(
+        model="openai:gpt-5.5",
+        # You can customize your deep agent here: set a custom prompt,
+        # add your own tools, attach middleware, or compose subagents.
+        system_prompt="You are a helpful coding assistant",
+        checkpointer=MemorySaver(),
+    )
 
-      server = AgentServerACP(agent)
-      await run_agent(server)
+    server = AgentServerACP(agent)
+    await run_agent(server)
 
-  if __name__ == "__main__":
-      asyncio.run(main())
-  ```
+if __name__ == "__main__":
+    asyncio.run(main())
+```
 
-  ```python Fireworks theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  import asyncio
+```python Anthropic theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+import asyncio
 
-  from acp import run_agent
-  from deepagents import create_deep_agent
-  from langgraph.checkpoint.memory import MemorySaver
+from acp import run_agent
+from deepagents import create_deep_agent
+from langgraph.checkpoint.memory import MemorySaver
 
-  from deepagents_acp.server import AgentServerACP
-
-
-  async def main() -> None:
-      agent = create_deep_agent(
-          model="fireworks:accounts/fireworks/models/glm-5p2",
-          # You can customize your deep agent here: set a custom prompt,
-          # add your own tools, attach middleware, or compose subagents.
-          system_prompt="You are a helpful coding assistant",
-          checkpointer=MemorySaver(),
-      )
-
-      server = AgentServerACP(agent)
-      await run_agent(server)
-
-  if __name__ == "__main__":
-      asyncio.run(main())
-  ```
-
-  ```python Baseten theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  import asyncio
-
-  from acp import run_agent
-  from deepagents import create_deep_agent
-  from langgraph.checkpoint.memory import MemorySaver
-
-  from deepagents_acp.server import AgentServerACP
+from deepagents_acp.server import AgentServerACP
 
 
-  async def main() -> None:
-      agent = create_deep_agent(
-          model="baseten:zai-org/GLM-5.2",
-          # You can customize your deep agent here: set a custom prompt,
-          # add your own tools, attach middleware, or compose subagents.
-          system_prompt="You are a helpful coding assistant",
-          checkpointer=MemorySaver(),
-      )
+async def main() -> None:
+    agent = create_deep_agent(
+        model="anthropic:claude-sonnet-5",
+        # You can customize your deep agent here: set a custom prompt,
+        # add your own tools, attach middleware, or compose subagents.
+        system_prompt="You are a helpful coding assistant",
+        checkpointer=MemorySaver(),
+    )
 
-      server = AgentServerACP(agent)
-      await run_agent(server)
+    server = AgentServerACP(agent)
+    await run_agent(server)
 
-  if __name__ == "__main__":
-      asyncio.run(main())
-  ```
+if __name__ == "__main__":
+    asyncio.run(main())
+```
 
-  ```python Ollama theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  import asyncio
+```python OpenRouter theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+import asyncio
 
-  from acp import run_agent
-  from deepagents import create_deep_agent
-  from langgraph.checkpoint.memory import MemorySaver
+from acp import run_agent
+from deepagents import create_deep_agent
+from langgraph.checkpoint.memory import MemorySaver
 
-  from deepagents_acp.server import AgentServerACP
+from deepagents_acp.server import AgentServerACP
 
 
-  async def main() -> None:
-      agent = create_deep_agent(
-          model="ollama:north-mini-code-1.0",
-          # You can customize your deep agent here: set a custom prompt,
-          # add your own tools, attach middleware, or compose subagents.
-          system_prompt="You are a helpful coding assistant",
-          checkpointer=MemorySaver(),
-      )
+async def main() -> None:
+    agent = create_deep_agent(
+        model="openrouter:z-ai/glm-5.2",
+        # You can customize your deep agent here: set a custom prompt,
+        # add your own tools, attach middleware, or compose subagents.
+        system_prompt="You are a helpful coding assistant",
+        checkpointer=MemorySaver(),
+    )
 
-      server = AgentServerACP(agent)
-      await run_agent(server)
+    server = AgentServerACP(agent)
+    await run_agent(server)
 
-  if __name__ == "__main__":
-      asyncio.run(main())
-  ```
-</CodeGroup>
+if __name__ == "__main__":
+    asyncio.run(main())
+```
 
-<Card title="Example coding agent" icon="brand-github" href="https://github.com/langchain-ai/deepagents/blob/main/libs/acp/examples/demo_agent.py">
-  `deepagents-acp` 包包含一个带有文件系统和 shell 的示例编码代理，您可以开箱即用。
-</Card>
+```python Fireworks theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+import asyncio
+
+from acp import run_agent
+from deepagents import create_deep_agent
+from langgraph.checkpoint.memory import MemorySaver
+
+from deepagents_acp.server import AgentServerACP
+
+
+async def main() -> None:
+    agent = create_deep_agent(
+        model="fireworks:accounts/fireworks/models/glm-5p2",
+        # You can customize your deep agent here: set a custom prompt,
+        # add your own tools, attach middleware, or compose subagents.
+        system_prompt="You are a helpful coding assistant",
+        checkpointer=MemorySaver(),
+    )
+
+    server = AgentServerACP(agent)
+    await run_agent(server)
+
+if __name__ == "__main__":
+    asyncio.run(main())
+```
+
+```python Baseten theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+import asyncio
+
+from acp import run_agent
+from deepagents import create_deep_agent
+from langgraph.checkpoint.memory import MemorySaver
+
+from deepagents_acp.server import AgentServerACP
+
+
+async def main() -> None:
+    agent = create_deep_agent(
+        model="baseten:zai-org/GLM-5.2",
+        # You can customize your deep agent here: set a custom prompt,
+        # add your own tools, attach middleware, or compose subagents.
+        system_prompt="You are a helpful coding assistant",
+        checkpointer=MemorySaver(),
+    )
+
+    server = AgentServerACP(agent)
+    await run_agent(server)
+
+if __name__ == "__main__":
+    asyncio.run(main())
+```
+
+```python Ollama theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+import asyncio
+
+from acp import run_agent
+from deepagents import create_deep_agent
+from langgraph.checkpoint.memory import MemorySaver
+
+from deepagents_acp.server import AgentServerACP
+
+
+async def main() -> None:
+    agent = create_deep_agent(
+        model="ollama:north-mini-code-1.0",
+        # You can customize your deep agent here: set a custom prompt,
+        # add your own tools, attach middleware, or compose subagents.
+        system_prompt="You are a helpful coding assistant",
+        checkpointer=MemorySaver(),
+    )
+
+    server = AgentServerACP(agent)
+    await run_agent(server)
+
+if __name__ == "__main__":
+    asyncio.run(main())
+```
+
+> **[Example coding agent](https://github.com/langchain-ai/deepagents/blob/main/libs/acp/examples/demo_agent.py)**
+>
+> `deepagents-acp` 软件包包含一个带有文件系统和 shell 的示例编码代理，您可以开箱即用。
 
 ## 客户
 
@@ -274,21 +270,15 @@ toad acp "python path/to/your_server.py" .
 toad acp "uv run python path/to/your_server.py" .
 ```
 
-<Info>
-  有关协议详细信息和编辑器支持，请参阅上游 ACP 文档：
-
-  * 简介：[https://agentclientprotocol.com/get-started/introduction](https://agentclientprotocol.com/get-started/introduction)
-  * 客户/编辑：[https://agentclientprotocol.com/get-started/clients](https://agentclientprotocol.com/get-started/clients)
-</Info>
+> [!注意]
+>
+> 有关协议详细信息和编辑器支持，请参阅上游 ACP 文档：
+>
+> * 简介：[https://agentclientprotocol.com/get-started/introduction](https://agentclientprotocol.com/get-started/introduction)
+> * 客户/编辑：[https://agentclientprotocol.com/get-started/clients](https://agentclientprotocol.com/get-started/clients)
 
 ***
 
-<div>
-  <Callout icon="terminal-2">
-    [Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
-  </Callout>
+[Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
 
-  <Callout icon="edit">
-    [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/oss/deepagents/acp.mdx) 或 [file an issue](https://github.com/langchain-ai/docs/issues/new/choose)。
-  </Callout>
-</div>
+[Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/oss/deepagents/acp.mdx) 或 [file an issue](https://github.com/langchain-ai/docs/issues/new/choose)。

@@ -9,14 +9,14 @@
 [Agent User Interaction Protocol (AG-UI)](https://docs.ag-ui.com) 是一种开放、轻量级、基于事件的协议，它标准化了 AI 代理连接到面向用户的应用程序的方式。
 通过 AG-UI 公开深度代理会将其运行转换为任何 AG-UI 客户端都可以使用的类型化事件流（消息、工具调用、推理、状态和生命周期），因此您可以驱动前端，而无需将其耦合到 LangGraph 内部。
 
-<Note>
-  AG-UI 专为代理与用户交互而设计：代理后端和面向用户的前端之间的连接。它与其他Deep Agents协议不同：
-
-  * **AG-UI** 将深度代理连接到前端应用程序（本页）。
-  * [Agent Client Protocol (ACP)](/oss/python/deepagents/acp) 将深度代理连接到代码编辑器和 IDE。
-  * [Model Context Protocol (MCP)](/oss/python/langchain/mcp) 让深度代理调用由外部服务器托管的工具。
-  * [Agent2Agent (A2A)](/oss/python/deepagents/a2a) 将深度代理连接到其他代理。
-</Note>
+> [!注意]
+>
+> AG-UI 专为代理与用户交互而设计：代理后端和面向用户的前端之间的连接。它与其他Deep Agents协议不同：
+>
+> * **AG-UI** 将深度代理连接到前端应用程序（本页）。
+> * [Agent Client Protocol (ACP)](/oss/python/deepagents/acp) 将深度代理连接到代码编辑器和 IDE。
+> * [Model Context Protocol (MCP)](/oss/python/langchain/mcp) 让深度代理调用由外部服务器托管的工具。
+> * [Agent2Agent (A2A)](/oss/python/deepagents/a2a) 将深度代理连接到其他代理。
 
 ## 快速入门
 
@@ -24,17 +24,15 @@
 
 ### 安装依赖项安装 Deep Agents 和 LangGraph CLI 来提供图形服务。后续步骤中使用的 AG-UI 适配器是 TypeScript (`@ag-ui/langgraph`)。有关 Python CopilotKit 或 AG-UI FastAPI 桥接器，请参阅 [CopilotKit](/oss/python/langchain/frontend/integrations/copilotkit)。
 
-<CodeGroup>
-  ```bash pip theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  pip install deepagents "langgraph-cli[inmem]"
-  ```
+```bash pip theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+pip install deepagents "langgraph-cli[inmem]"
+```
 
-  ```bash uv theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  uv add deepagents "langgraph-cli[inmem]"
-  ```
-</CodeGroup>
+```bash uv theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+uv add deepagents "langgraph-cli[inmem]"
+```
 
-使用`createDeepAgent`（Python 中的`create_deep_agent`）创建的深度代理是一个LangGraph 图。通过将其作为 LangGraph 服务器将其公开给 AG-UI 客户端，然后将 AG-UI 适配器指向该服务器。
+使用`createDeepAgent`（Python 中的`create_deep_agent`）创建的深度代理是一个LangGraph 图。通过将其作为 LangGraph 服务器将其暴露给 AG-UI 客户端，然后将 AG-UI 适配器指向该服务器。
 
 ### 创建深度代理
 
@@ -82,9 +80,9 @@ const agent = new LangGraphAgent({
 });
 ```
 
-<Card title="AG-UI LangGraph adapter on npm" icon="brand-npm" href="https://www.npmjs.com/package/@ag-ui/langgraph">
-  `@ag-ui/langgraph`包实现了LangGraph图的AG-UI协议，包括深度代理。
-</Card>
+> **[AG-UI LangGraph adapter on npm](https://www.npmjs.com/package/@ag-ui/langgraph)**
+>
+> `@ag-ui/langgraph` 包实现了 LangGraph 图的 AG-UI 协议，包括深度代理。
 
 ## 流媒体事件AG-UI 是一个事件流。当深度代理运行时，适配器将其 LangGraph 执行转换为类型化的 AG-UI 事件。客户端订阅这些事件并在事件到达时进行更新，而不是等待最终答案。
 
@@ -157,27 +155,25 @@ const input = {
 
 对于中断模型本身，请参见[Human-in-the-loop](/oss/python/deepagents/human-in-the-loop)。
 
-<Info>
-  有关完整的事件架构，请参阅[AG-UI events reference](https://docs.ag-ui.com/concepts/events)。
-</Info>
+> [!注意]
+>
+> 有关完整的事件架构，请参阅[AG-UI events reference](https://docs.ag-ui.com/concepts/events)。
 
 ## 连接前端
 
 任何 AG-UI 客户端都可以驱动通过协议公开的深度代理，因此您不必自己构建消息渲染、流式传输或状态同步。将客户端指向适配器（或包装它的运行时）并通过其 `graphId` 选择代理。
 
-<CardGroup>
-  <Card title="CopilotKit" icon="brand-react" href="/oss/python/langchain/frontend/integrations/copilotkit">
-    React 聊天运行时具有对 LangGraph 和 Deep Agents 的 AG-UI 支持，包括 Python FastAPI 桥。
-  </Card>
+> **[CopilotKit](/oss/python/langchain/frontend/integrations/copilotkit)**
+>
+> React 聊天运行时具有对 LangGraph 和 Deep Agents 的 AG-UI 支持，包括 Python FastAPI 桥。
 
-  <Card title="AG-UI clients" icon="apps" href="https://docs.ag-ui.com/integrations">
-    AG-UI 客户端和 SDK 的完整列表，包括终端和移动客户端。
-  </Card>
+> **[AG-UI clients](https://docs.ag-ui.com/integrations)**
+>
+> AG-UI 客户端和 SDK 的完整列表，包括终端和移动客户端。
 
-  <Card title="Build a custom client" icon="code" href="https://docs.ag-ui.com/quickstart/clients">
-    直接使用 AG-UI SDK 使用事件流来构建您自己的界面。
-  </Card>
-</CardGroup>
+> **[Build a custom client](https://docs.ag-ui.com/quickstart/clients)**
+>
+> 通过 AG-UI SDK 直接使用事件流来构建您自己的界面。
 
 ## 编程 API`LangGraphAgent` 连接到 LangGraph 服务器上的深度代理并将其公开为 AG-UI 代理。使用要加载的图形构建它，然后使用几种方法驱动它。
 
@@ -206,12 +202,6 @@ const agent = new LangGraphAgent({
 
 ***
 
-<div>
-  <Callout icon="terminal-2">
-    [Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
-  </Callout>
+[Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
 
-  <Callout icon="edit">
-    [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/oss/deepagents/ag-ui.mdx) 或 [file an issue](https://github.com/langchain-ai/docs/issues/new/choose)。
-  </Callout>
-</div>
+[Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/oss/deepagents/ag-ui.mdx) 或 [file an issue](https://github.com/langchain-ai/docs/issues/new/choose)。

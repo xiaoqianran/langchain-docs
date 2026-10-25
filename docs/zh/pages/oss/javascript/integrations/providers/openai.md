@@ -34,9 +34,9 @@ import { ChatOpenAI } from "@langchain/openai";
 
 请参阅[usage example](/oss/javascript/integrations/llms/openai)。
 
-<Tip>
-  参见[this section for general instructions on installing LangChain packages](/oss/javascript/langchain/install)。
-</Tip>
+> [!提示]
+>
+> 参见[this section for general instructions on installing LangChain packages](/oss/javascript/langchain/install)。
 
 ```bash npm theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 npm install @langchain/openai @langchain/core
@@ -75,9 +75,9 @@ import { OpenAIModerationChain } from "@langchain/classic/chains";
 * 需要安全护栏的面向客户的代理
 * 满足平台审核要求
 
-<Info>
-  了解有关 [OpenAI's moderation models](https://platform.openai.com/docs/guides/moderation) 和类别的更多信息。
-</Info>
+> [!注意]
+>
+> 了解有关 [OpenAI's moderation models](https://platform.openai.com/docs/guides/moderation) 和类别的更多信息。
 
 **API参考：** [⟦T14⟧](https://reference.langchain.com/javascript/langchain/index/openAIModerationMiddleware)
 
@@ -97,121 +97,114 @@ const agent = createAgent({
     }),
   ],
 });
-```
+```> **配置选项**
+>
+> **型号** `string | BaseChatModel` *必填*
+>
+> OpenAI 用于审核的模型。可以是模型名称字符串（例如，`"openai:gpt-5.5"`）或`BaseChatModel`实例。中间件将使用此模型的客户端来访问审核端点。
+>
+> **moderationModel** `ModerationModel`（默认：omni-moderation-latest）
+>
+> OpenAI 使用的审核模型。选项：`'omni-moderation-latest'`、`'omni-moderation-2024-09-26'`、`'text-moderation-latest'`、`'text-moderation-stable'`
+>
+> **checkInput** `boolean` （默认值：true）
+>
+> 模型调用前是否检查用户输入消息
+>
+> **checkOutput** `boolean` （默认值：true）
+>
+> 模型调用后是否检查模型输出消息
+>
+> **checkToolResults** `boolean` （默认值： false）
+>
+> 模型调用前是否检查工具结果消息
+>
+> **exitBehavior** `'error' | 'end' | 'replace'`（默认值：'end'）
+>
+> 当内容被标记时如何处理违规行为。选项：
+>
+> * `'end'` - 立即结束代理执行并显示违规消息
+> * `'error'` - 抛出`OpenAIModerationError`异常
+> * `'replace'` - 用违规消息替换标记的内容并继续
+>
+> **违规消息** `string | undefined`
+>
+> 违规消息的自定义模板。支持模板变量：
+>
+> * `{categories}` - 以逗号分隔的标记类别列表> * `{category_scores}` - 类别分数的 JSON 字符串
+> * `{original_content}` - 原始标记内容
+>
+> 默认：`"I'm sorry, but I can't comply with that request. It was flagged for {categories}."`
 
-<Accordion title="Configuration options">
-  <ParamField type="string | BaseChatModel">
-    OpenAI 用于审核的模型。可以是模型名称字符串（例如，`"openai:gpt-5.5"`）或`BaseChatModel`实例。中间件将使用此模型的客户端来访问审核端点。
-  </ParamField>
-
-  <ParamField type="ModerationModel">
-    OpenAI 使用的审核模型。选项：`'omni-moderation-latest'`、`'omni-moderation-2024-09-26'`、`'text-moderation-latest'`、`'text-moderation-stable'`
-  </ParamField>
-
-  <ParamField type="boolean">
-    模型调用前是否检查用户输入消息
-  </ParamField>
-
-  <ParamField type="boolean">
-    模型调用后是否检查模型输出消息
-  </ParamField>
-
-  <ParamField type="boolean">
-    是否在调用模型之前检查工具结果消息
-  </ParamField>
-
-  <ParamField type="'error' | 'end' | 'replace'">
-    当内容被标记时如何处理违规行为。选项：* `'end'` - 立即结束代理执行并显示违规消息
-    * `'error'` - 抛出`OpenAIModerationError`异常
-    * `'replace'` - 用违规消息替换标记的内容并继续
-  </ParamField>
-
-  <ParamField type="string | undefined">
-    违规消息的自定义模板。支持模板变量：
-
-    * `{categories}` - 以逗号分隔的标记类别列表
-    * `{category_scores}` - 类别分数的 JSON 字符串
-    * `{original_content}` - 原始标记内容
-
-    默认值：`"I'm sorry, but I can't comply with that request. It was flagged for {categories}."`
-  </ParamField>
-</Accordion>
-
-<Accordion title="Full example">
-  中间件集成了OpenAI的审核端点来检查不同阶段的内容：
-
-  **审核阶段：**
-
-  * `checkInput` - 模型调用前的用户消息
-  * `checkOutput` - 模型调用后的AI消息
-  * `checkToolResults` - 模型调用之前的工具输出
-
-  **退出行为：**
-
-  * `'end'`（默认）- 停止执行并显示违规消息
-  * `'error'` - 抛出应用程序处理异常
-  * `'replace'` - 替换标记的内容并继续
-
-  ```typescript theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  import { createAgent, openAIModerationMiddleware } from "langchain";
-
-  // Basic moderation
-  const agent = createAgent({
-    model: "openai:gpt-5.5",
-    tools: [searchTool, customerDataTool],
-    middleware: [
-      openAIModerationMiddleware({
-        model: "openai:gpt-5.5",
-        moderationModel: "omni-moderation-latest",
-        checkInput: true,
-        checkOutput: true,
-      }),
-    ],
-  });
-
-  // Strict moderation with custom message
-  const agentStrict = createAgent({
-    model: "openai:gpt-5.5",
-    tools: [searchTool, customerDataTool],
-    middleware: [
-      openAIModerationMiddleware({
-        model: "openai:gpt-5.5",
-        moderationModel: "omni-moderation-latest",
-        checkInput: true,
-        checkOutput: true,
-        checkToolResults: true,
-        exitBehavior: "error",
-        violationMessage:
-          "Content policy violation detected: {categories}. " +
-          "Please rephrase your request.",
-      }),
-    ],
-  });
-
-  // Moderation with replacement behavior
-  const agentReplace = createAgent({
-    model: "openai:gpt-5.5",
-    tools: [searchTool],
-    middleware: [
-      openAIModerationMiddleware({
-        model: "openai:gpt-5.5",
-        checkInput: true,
-        exitBehavior: "replace",
-        violationMessage: "[Content removed due to safety policies]",
-      }),
-    ],
-  });
-  ```
-</Accordion>
+> **完整示例**
+>
+> 中间件集成了OpenAI的审核端点来检查不同阶段的内容：
+>
+> **审核阶段：**
+>
+> * `checkInput` - 模型调用前的用户消息
+> * `checkOutput` - 模型调用后的 AI 消息
+> * `checkToolResults` - 模型调用之前的工具输出
+>
+> **退出行为：**
+>
+> * `'end'`（默认）- 停止执行并显示违规消息
+> * `'error'` - 抛出应用程序处理异常
+> * `'replace'` - 替换标记的内容并继续
+>
+> ```typescript theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> import { createAgent, openAIModerationMiddleware } from "langchain";
+>
+> // Basic moderation
+> const agent = createAgent({
+>   model: "openai:gpt-5.5",
+>   tools: [searchTool, customerDataTool],
+>   middleware: [
+>     openAIModerationMiddleware({
+>       model: "openai:gpt-5.5",
+>       moderationModel: "omni-moderation-latest",
+>       checkInput: true,
+>       checkOutput: true,
+>     }),
+>   ],
+> });
+>
+> // Strict moderation with custom message
+> const agentStrict = createAgent({
+>   model: "openai:gpt-5.5",
+>   tools: [searchTool, customerDataTool],
+>   middleware: [
+>     openAIModerationMiddleware({
+>       model: "openai:gpt-5.5",
+>       moderationModel: "omni-moderation-latest",
+>       checkInput: true,
+>       checkOutput: true,
+>       checkToolResults: true,
+>       exitBehavior: "error",
+>       violationMessage:
+>         "Content policy violation detected: {categories}. " +
+>         "Please rephrase your request.",
+>     }),
+>   ],
+> });
+>
+> // Moderation with replacement behavior
+> const agentReplace = createAgent({
+>   model: "openai:gpt-5.5",
+>   tools: [searchTool],
+>   middleware: [
+>     openAIModerationMiddleware({
+>       model: "openai:gpt-5.5",
+>       checkInput: true,
+>       exitBehavior: "replace",
+>       violationMessage: "[Content removed due to safety policies]",
+>     }),
+>   ],
+> });
+> ```
 
 ***
 
-<div>
-  <Callout icon="terminal-2">
-    [Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
-  </Callout>
+[Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
 
-  <Callout icon="edit">
-    [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/oss/javascript/integrations/providers/openai.mdx) 或 [file an issue](https://github.com/langchain-ai/docs/issues/new/choose)。
-  </Callout>
-</div>
+[Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/oss/javascript/integrations/providers/openai.mdx) 或 [file an issue](https://github.com/langchain-ai/docs/issues/new/choose)。

@@ -34,7 +34,7 @@ LangChain 维护了多个开源包来帮助您构建代理。每个在代理开�
 
     <tr>
       <td>选项</td>
-      <td><ul><li>LangGraph</li><li>颞叶</li><li>摄取</li></ul></td>
+      <td><ul><li>LangGraph</li><li>颞叶</li><li>摄入</li></ul></td>
       <td><ul><li>LangChain</li><li>Vercel 的 AI SDK</li><li>CrewAI</li><li>OpenAI代理SDK</li><li>Google ADK</li><li>LlamaIndex</li></ul></td>
       <td><ul><li>Deep Agents SDK</li><li>克劳德代理SDK</li><li>手册</li></ul></td>
     </tr>
@@ -45,7 +45,7 @@ LangChain 维护了多个开源包来帮助您构建代理。每个在代理开�
 
 代理框架提供了抽象，使使用 LLM 构建时更容易开始。
 
-[LangChain](/oss/python/langchain/overview) 是一个代理框架，提供结构化内容块、代理循环和中间件等抽象。LangChain 的抽象设计易于入门，同时仍提供高级用例所需的灵活性。
+[LangChain](/oss/python/langchain/overview) 是一个代理框架，提供结构化内容块、代理循环和中间件等抽象。LangChain 的抽象设计易于入门，同时仍然提供高级用例所需的灵活性。
 
 虽然 LangChain 构建于 [LangGraph](/oss/python/langgraph/overview) 之上，但您无需了解 LangGraph 即可使用 LangChain。
 
@@ -72,7 +72,7 @@ LangChain 维护了多个开源包来帮助您构建代理。每个在代理开�
 [LangGraph](/oss/python/langgraph/overview) 是一个低级编排框架和运行时，用于构建、管理和部署长期运行的有状态代理。
 
 代理框架通常是更高级别的并且在代理运行时上运行。
-例如，LangChain 1.0 构建在LangGraph 之上。
+例如，LangChain 1.0 构建在 LangGraph 之上。
 
 代理运行时的其他示例包括[Temporal](https://temporal.io/)、[Inngest](https://www.inngest.com/)和其他持久执行引擎。
 
@@ -118,7 +118,7 @@ Deep Agents 专为需要规划和分解的复杂、多步骤任务而设计。
 |技能 | - | [Multi-agent skills](/oss/python/langchain/multi-agent/skills) | [Skills](/oss/python/deepagents/skills) |
 |子代理 | [Subgraphs](/oss/python/langgraph/use-subgraphs) | [Multi-agent subagents](/oss/python/langchain/multi-agent/subagents) | [Subagents](/oss/python/deepagents/subagents) |
 |人机交互 | [Interrupts](/oss/python/langgraph/interrupts) | [Human-in-the-loop middleware](/oss/python/langchain/human-in-the-loop) | [⟦T1⟧ parameter](/oss/python/deepagents/harness#human-in-the-loop) |
-|流媒体| [Streaming](/oss/python/langgraph/streaming) | [Agent Streaming](/oss/python/langchain/event-streaming) | [Streaming](/oss/python/deepagents/event-streaming) |
+|流媒体 | [Streaming](/oss/python/langgraph/streaming) | [Agent Streaming](/oss/python/langchain/event-streaming) | [Streaming](/oss/python/deepagents/event-streaming) |
 
 ## 了解更多
 
@@ -128,12 +128,6 @@ Deep Agents 专为需要规划和分解的复杂、多步骤任务而设计。
 
 ***
 
-<div>
-  <Callout icon="terminal-2">
-    [Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
-  </Callout>
+[Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
 
-  <Callout icon="edit">
-    [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/oss/concepts/products.mdx) 或 [file an issue](https://github.com/langchain-ai/docs/issues/new/choose)。
-  </Callout>
-</div>
+[Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/oss/concepts/products.mdx) 或 [file an issue](https://github.com/langchain-ai/docs/issues/new/choose)。

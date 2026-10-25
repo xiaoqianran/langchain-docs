@@ -33,17 +33,17 @@ graph LR
 * 集中控制：所有路由均经过主代理
 * 无直接用户交互：子代理将结果返回给主代理，而不是用户（尽管您可以在子代理中使用 [interrupts](/oss/javascript/langgraph/interrupts#pause-using-interrupt) 来允许用户交互）
 * Subagents via tools：子代理通过工具调用
-* 并行执行：主代理可以单轮调用多个子代理<Note>
-  **Supervisor 与 Router**：Supervisor 代理（此模式）与 [router](/oss/javascript/langchain/multi-agent/router) 不同。主管是一个完整的代理，它维护对话上下文并动态决定在多个回合中调用哪些子代理。路由器通常是一个单一的分类步骤，它向代理进行分派，而不维护正在进行的对话状态。
-</Note>
+* 并行执行：主代理可以单轮调用多个子代理> [!注意]
+>
+> **Supervisor 与 Router**：Supervisor 代理（此模式）与 [router](/oss/javascript/langchain/multi-agent/router) 不同。主管是一个完整的代理，它维护对话上下文并动态决定在多个回合中调用哪些子代理。路由器通常是一个单一的分类步骤，它向代理进行分派，而不维护正在进行的对话状态。
 
 ## 何时使用
 
 当您有多个不同的域（例如，日历、电子邮件、CRM、数据库）、子代理不需要直接与用户对话，或者您需要集中式工作流控制时，请使用子代理模式。对于只有几个 [tools](/oss/javascript/langchain/tools) 的简单情况，请使用 [single agent](/oss/javascript/langchain/agents)。
 
-<Tip>
-  **需要在子代理中进行用户交互？** 虽然子代理通常将结果返回给主代理而不是直接与用户对话，但您可以在子代理中使用 [interrupts](/oss/javascript/langgraph/interrupts#pause-using-interrupt) 来暂停执行并收集用户输入。当子代理在继续操作之前需要澄清或批准时，这非常有用。主代理仍然是协调器，但子代理可以从用户中间任务收集信息。
-</Tip>
+> [!提示]
+>
+> **需要在子代理中进行用户交互？** 虽然子代理通常将结果返回给主代理而不是直接与用户对话，但您可以在子代理中使用 [interrupts](/oss/javascript/langgraph/interrupts#pause-using-interrupt) 来暂停执行并收集用户输入。当子代理在继续操作之前需要澄清或批准时，这非常有用。主代理仍然是协调器，但子代理可以从用户中间任务收集信息。
 
 ## 基本实现
 
@@ -73,9 +73,9 @@ const callResearchAgent = tool(
 
 // Main agent with subagent as a tool
 const mainAgent = createAgent({ model: "google:gemini-3.6-flash", tools: [callResearchAgent] });
-```<Card title="Tutorial: Build a personal assistant with subagents" icon="sitemap" href="/oss/javascript/langchain/multi-agent/subagents-personal-assistant">
-  了解如何使用子代理模式构建个人助理，其中中央主代理（主管）协调专门的工作代理。
-</Card>
+```> **[Tutorial: Build a personal assistant with subagents](/oss/javascript/langchain/multi-agent/subagents-personal-assistant)**
+>
+> 了解如何使用子代理模式构建个人助理，其中中央主代理（主管）协调专门的工作代理。
 
 ## 设计决策
 
@@ -91,14 +91,14 @@ const mainAgent = createAgent({ model: "google:gemini-3.6-flash", tools: [callRe
 
 ## 同步与异步
 
-子代理执行可以是**同步**（阻塞）或**异步**（后台）。您的选择取决于主代理是否需要结果才能继续。
+子代理执行可以是**同步**（阻塞）或**异步**（后台）。你的选择取决于主代理是否需要结果才能继续。
 
-|模式|主要代理行为|最适合 |权衡|
+|模式|主要代理行为|最适合 |权衡 |
 | - | - | - | - |
 | **同步** |等待子代理完成 |主代理需要结果才能继续 |简单，但阻碍对话 |
-| **异步** |子代理在后台运行时继续 |独立任务，用户无需等待 |反应灵敏，但更复杂 |<Tip>
-  不要与 Python 的 `async`/`await` 混淆。这里，“异步”意味着主代理启动后台作业（通常在单独的进程或服务中）并继续而不阻塞。
-</Tip>
+| **异步** |子代理在后台运行时继续 |独立任务，用户无需等待 |反应灵敏，但更复杂 |> [!提示]
+>
+> 不要与 Python 的 `async`/`await` 混淆。这里，“异步”意味着主代理启动后台作业（通常在单独的进程或服务中）并继续而不阻塞。
 
 ### 同步（默认）
 
@@ -232,7 +232,7 @@ const callSubagent = tool(  // [!code highlight]
 
 // Main agent with subagent as a tool  // [!code highlight]
 const mainAgent = createAgent({ model, tools: [callSubagent] });  // [!code highlight]
-```当主代理确定任务与子代理的描述匹配、接收结果并继续编排时，它会调用子代理工具。细粒度控制请参见[Context engineering](#context-engineering)。
+```当主代理确定任务与子代理的描述匹配、接收结果并继续编排时，它会调用子代理工具。有关细粒度控制，请参阅[Context engineering](#context-engineering)。
 
 ### 单一调度工具
 
@@ -267,73 +267,73 @@ graph LR
 * 团队分布：不同团队可以独立开发和部署代理
 * 代理发现：可以通过系统提示（列出可用代理）或通过[progressive disclosure](/oss/javascript/langchain/multi-agent/skills-sql-assistant)（通过工具按需加载代理信息）发现子代理
 
-<Tip>
-  这种方法的一个有趣的方面是子代理可能具有与主代理完全相同的功能。在这种情况下，调用子代理**实际上与上下文隔离**是主要原因 - 允许复杂的多步骤任务在隔离的上下文窗口中运行，而不会增加主代理的对话历史记录。子代理自主完成工作，仅返回简洁的摘要，保持主线程的专注和高效。
-</Tip>
+> [!提示]
+>
+> 这种方法的一个有趣的方面是子代理可能具有与主代理完全相同的功能。在这种情况下，调用子代理**实际上与上下文隔离**是主要原因 - 允许复杂的多步骤任务在隔离的上下文窗口中运行，而不会增加主代理的对话历史记录。子代理自主完成工作，仅返回简洁的摘要，保持主线程的专注和高效。
 
-<Accordion title="Agent registry with task dispatcher">
-  ```typescript theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  import { tool, createAgent } from "langchain";
-  import * as z from "zod";
-
-  // Sub-agents developed by different teams
-  const researchAgent = createAgent({
-    model: "gpt-5.5",
-    prompt: "You are a research specialist...",
-  });
-
-  const writerAgent = createAgent({
-    model: "gpt-5.5",
-    prompt: "You are a writing specialist...",
-  });
-
-  // Registry of available sub-agents
-  const SUBAGENTS = {
-    research: researchAgent,
-    writer: writerAgent,
-  };
-
-  const task = tool(
-    async ({ agentName, description }) => {
-      const agent = SUBAGENTS[agentName];
-      const result = await agent.invoke({
-        messages: [
-          { role: "user", content: description }
-        ],
-      });
-      return result.messages.at(-1)?.content;
-    },
-    {
-      name: "task",
-      description: `Launch an ephemeral subagent.
-
-  Available agents:
-  - research: Research and fact-finding
-  - writer: Content creation and editing`,
-      schema: z.object({
-        agentName: z
-          .string()
-          .describe("Name of agent to invoke"),
-        description: z
-          .string()
-          .describe("Task description"),
-      }),
-    }
-  );
-
-  // Main coordinator agent
-  const mainAgent = createAgent({
-    model: "gpt-5.5",
-    tools: [task],
-    prompt: (
-      "You coordinate specialized sub-agents. " +
-      "Available: research (fact-finding), " +
-      "writer (content creation). " +
-      "Use the task tool to delegate work."
-    ),
-  });
-  ```
-</Accordion>
+> **具有任务调度程序的代理注册**
+>
+> ```typescript theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> import { tool, createAgent } from "langchain";
+> import * as z from "zod";
+>
+> // Sub-agents developed by different teams
+> const researchAgent = createAgent({
+>   model: "gpt-5.5",
+>   prompt: "You are a research specialist...",
+> });
+>
+> const writerAgent = createAgent({
+>   model: "gpt-5.5",
+>   prompt: "You are a writing specialist...",
+> });
+>
+> // Registry of available sub-agents
+> const SUBAGENTS = {
+>   research: researchAgent,
+>   writer: writerAgent,
+> };
+>
+> const task = tool(
+>   async ({ agentName, description }) => {
+>     const agent = SUBAGENTS[agentName];
+>     const result = await agent.invoke({
+>       messages: [
+>         { role: "user", content: description }
+>       ],
+>     });
+>     return result.messages.at(-1)?.content;
+>   },
+>   {
+>     name: "task",
+>     description: `Launch an ephemeral subagent.
+>
+> Available agents:
+> - research: Research and fact-finding
+> - writer: Content creation and editing`,
+>     schema: z.object({
+>       agentName: z
+>         .string()
+>         .describe("Name of agent to invoke"),
+>       description: z
+>         .string()
+>         .describe("Task description"),
+>     }),
+>   }
+> );
+>
+> // Main coordinator agent
+> const mainAgent = createAgent({
+>   model: "gpt-5.5",
+>   tools: [task],
+>   prompt: (
+>     "You coordinate specialized sub-agents. " +
+>     "Available: research (fact-finding), " +
+>     "writer (content creation). " +
+>     "Use the task tool to delegate work."
+>   ),
+> });
+> ```
 
 ## 上下文工程
 
@@ -353,7 +353,7 @@ graph LR
 * **描述**：主代理对子代理功能的了解。具体说明它处理什么任务以及何时使用它。
 
 对于 [single dispatch tool](#single-dispatch-tool) 设计，您还必须向主代理提供有关它可以调用的子代理的信息。
-您可以根据代理的数量以及您的注册表是静态还是动态，以不同的方式提供此信息：|方法|最适合 |权衡|
+您可以根据代理的数量以及您的注册表是静态还是动态，以不同的方式提供此信息：|方法|最适合 |权衡 |
 | - | - | - |
 | **系统提示枚举** |小型静态代理列表 (\< 10 agents) | Simple, but requires prompt updates when agents change |
 | **Enum constraint** | Small, static agent lists (\< 10 agents) | Type-safe and explicit, but requires code changes when agents change |
@@ -452,7 +452,7 @@ const callSubagent1 = tool(
 
 `some_logic` 控制子代理接收多少上下文。仅传递任务描述 (`query`) 可使子代理保持隔离。相反，传递父级的消息历史记录 (`runtime.state["messages"]`) 会为子代理播种之前的工作，这在需要继续父级已开始的操作时很有帮助，例如恢复 PR 审查或修复错误。
 
-[Deep Agents](/oss/javascript/deepagents/subagents#forked-subagents) 将这些模式命名为 `mode: "isolated"`（默认）和 `mode: "fork"`，并为您实现分叉：分叉的子代理接收父代理的完整消息历史记录（包括工具调用）和系统提示。|模式|子代理接收 |最适合 |权衡|
+[Deep Agents](/oss/javascript/deepagents/subagents#forked-subagents) 将这些模式命名为 `mode: "isolated"`（默认）和 `mode: "fork"`，并为您实现分叉：分叉的子代理接收父代理的完整消息历史记录（包括工具调用）和系统提示。|模式|子代理接收 |最适合 |权衡 |
 | - | - | - | - |
 | **隔离**（默认）|仅任务描述|无需事先背景的重点工作 |上下文隔离，但重新派生父级已经执行的所有操作 |
 | **分叉** |家长的对话历史（以及Deep Agents中的系统提示）|继续父母已经开始的任务 |播种先前的上下文，但代价是更大的提示和更少的隔离 |
@@ -462,7 +462,7 @@ const callSubagent1 = tool(
 自定义主代理收到的返回内容，以便它可以做出正确的决策。两种策略：
 
 1. **提示子代理**：准确指定应返回的内容。一种常见的失败模式是子代理执行工具调用或推理，但在其最终消息中不包含结果 - 提醒它主管只能看到最终输出。
-2. **代码格式**：在返回响应之前调整或丰富响应。例如，使用 [⟦T27⟧](/oss/javascript/langgraph/graph-api#command) 除了最终文本之外还传递回特定状态键。
+2. **代码格式**：在返回响应之前调整或丰富响应。例如，除了使用 [⟦T27⟧](/oss/javascript/langgraph/graph-api#command) 传递最终文本之外，还传递特定的状态键。
 
 ```typescript Subagent outputs example expandable theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 import { tool, ToolMessage } from "langchain";
@@ -501,16 +501,10 @@ const callSubagent1 = tool(
 
 ## 检查点和状态检查默认情况下，子代理使用 **继承的检查点** 模式 - 每次调用都以新鲜状态开始，支持[interrupts](/oss/javascript/langgraph/interrupts#pause-using-interrupt)，并安全地并行运行。如果您需要子代理在调用之间维护其自己的持久对话历史记录，请使用`checkpointer=True`（连续模式）进行编译。有关模式的完整比较，请参阅[subgraph persistence](/oss/javascript/langgraph/use-subgraphs#subgraph-persistence)。
 
-因为子代理是在工具函数内部调用的，所以LangGraph不能[statically discover](/oss/javascript/langgraph/use-subgraphs#view-subgraph-state)它们。这意味着[⟦T29⟧ with ⟦T30⟧](/oss/javascript/langgraph/use-subgraphs#view-subgraph-state)不会返回子代理状态。如果您需要读取嵌套图状态（例如，在[interrupt](/oss/javascript/langgraph/interrupts#pause-using-interrupt)期间），请从自定义图中的[node function](/oss/javascript/langgraph/use-subgraphs#call-a-subgraph-inside-a-node)调用子代理。有关每种模式如何影响状态可见性的详细信息，请参阅[subgraph persistence](/oss/javascript/langgraph/use-subgraphs#subgraph-persistence)。
+因为子代理是在工具函数内部调用的，所以LangGraph不能[statically discover](/oss/javascript/langgraph/use-subgraphs#view-subgraph-state)它们。这意味着[⟦T29⟧ with ⟦T30⟧](/oss/javascript/langgraph/use-subgraphs#view-subgraph-state)不会返回子代理状态。如果您需要读取嵌套图状态（例如，在 [interrupt](/oss/javascript/langgraph/interrupts#pause-using-interrupt) 期间），请从自定义图中的 [node function](/oss/javascript/langgraph/use-subgraphs#call-a-subgraph-inside-a-node) 调用子代理。有关每种模式如何影响状态可见性的详细信息，请参阅[subgraph persistence](/oss/javascript/langgraph/use-subgraphs#subgraph-persistence)。
 
 ***
 
-<div>
-  <Callout icon="terminal-2">
-    [Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
-  </Callout>
+[Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
 
-  <Callout icon="edit">
-    [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/oss/langchain/multi-agent/subagents.mdx) 或 [file an issue](https://github.com/langchain-ai/docs/issues/new/choose)。
-  </Callout>
-</div>
+[Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/oss/langchain/multi-agent/subagents.mdx) 或 [file an issue](https://github.com/langchain-ai/docs/issues/new/choose)。

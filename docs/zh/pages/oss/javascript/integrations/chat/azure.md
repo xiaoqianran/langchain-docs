@@ -14,8 +14,8 @@ Azure OpenAI 是一项 Microsoft Azure 服务，提供来自 OpenAI 的强大语
 
 ### 集成细节
 
-|班级 |套餐 |可串行化| [PY support](https://python.langchain.com/docs/integrations/chat/azure_chat_openai) |下载 |版本 |
-| :- | :- | :-: | :-: | :-: | :-: |
+|班级 |套餐 |可串行化| [PY support](/oss/python/integrations/chat/azure_chat_openai) |下载 |版本 |
+| :-| :-| :-: | :-: | :-: | :-: |
 | [⟦T21⟧](https://reference.langchain.com/javascript/langchain-openai/AzureChatOpenAI) | [⟦T22⟧](https://www.npmjs.com/package/@langchain/openai) | ✅ | ✅ | ![NPM - Downloads](https://img.shields.io/npm/dm/@langchain/openai?style=flat-square\&label=%20&) | ![NPM - Version](https://img.shields.io/npm/v/@langchain/openai?style=flat-square\&label=%20&) |
 
 ### 模型特点
@@ -58,19 +58,17 @@ AZURE_OPENAI_API_VERSION="2024-02-01"
 
 LangChain AzureChatOpenAI 集成位于 `@langchain/openai` 包中：
 
-<CodeGroup>
-  ```bash npm theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  npm install @langchain/openai @langchain/core
-  ```
+```bash npm theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+npm install @langchain/openai @langchain/core
+```
 
-  ```bash yarn theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  yarn add @langchain/openai @langchain/core
-  ```
+```bash yarn theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+yarn add @langchain/openai @langchain/core
+```
 
-  ```bash pnpm theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  pnpm add @langchain/openai @langchain/core
-  ```
-</CodeGroup>
+```bash pnpm theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+pnpm add @langchain/openai @langchain/core
+```
 
 ## 实例化
 
@@ -177,9 +175,9 @@ const llmWithDifferentDomain = new AzureChatOpenAI({
     "https://westeurope.api.microsoft.com/openai/deployments", // In Node.js defaults to process.env.AZURE_OPENAI_BASE_PATH
 });
 
-```## 自定义标头
+```
 
-您可以通过传入 `configuration` 字段来指定自定义标头：
+## 自定义标头您可以通过传入 `configuration` 字段来指定自定义标头：
 
 ```typescript theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 import { AzureChatOpenAI } from "@langchain/openai";
@@ -209,19 +207,17 @@ await llmWithCustomHeaders.invoke("Hi there!");
 
 1. 安装新的 `@langchain/openai` 软件包并删除之前的 `@langchain/azure-openai` 软件包：
 
-<CodeGroup>
-  ```bash npm theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  npm install @langchain/openai
-  ```
+```bash npm theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+npm install @langchain/openai
+```
 
-  ```bash yarn theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  yarn add @langchain/openai
-  ```
+```bash yarn theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+yarn add @langchain/openai
+```
 
-  ```bash pnpm theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  pnpm add @langchain/openai
-  ```
-</CodeGroup>
+```bash pnpm theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+pnpm add @langchain/openai
+```
 
 ```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 npm uninstall @langchain/azure-openai
@@ -256,12 +252,6 @@ npm uninstall @langchain/azure-openai
 
 ***
 
-<div>
-  <Callout icon="terminal-2">
-    [Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
-  </Callout>
+[Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
 
-  <Callout icon="edit">
-    [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/oss/javascript/integrations/chat/azure.mdx) 或 [file an issue](https://github.com/langchain-ai/docs/issues/new/choose)。
-  </Callout>
-</div>
+[Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/oss/javascript/integrations/chat/azure.mdx) 或 [file an issue](https://github.com/langchain-ai/docs/issues/new/choose)。

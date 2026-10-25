@@ -8,11 +8,9 @@
 
 [AI Elements](https://elements.ai-sdk.dev/)是一个可组合的、基于shadcn/ui的组件库，专为AI聊天界面而构建。 `Conversation`、`Message`、`Tool`、`Reasoning` 和 `PromptInput` 等组件旨在直接放入任何 React 项目中，并使用最少的粘合代码连接到 `stream.messages`。
 
-<ExampleEmbed />
-
-<Tip>
-  克隆并运行 [full AI Elements example](https://github.com/langchain-ai/langgraphjs/tree/main/examples/ai-elements) 以在工作项目中查看工具调用渲染、推理显示、流消息等。
-</Tip>
+> [!提示]
+>
+> 克隆并运行 [full AI Elements example](https://github.com/langchain-ai/langgraphjs/tree/main/examples/ai-elements) 以在工作项目中查看工具调用渲染、推理显示、流式消息等。
 
 ## 它是如何工作的
 
@@ -164,12 +162,6 @@ export function Chat() {
 
 ***
 
-<div>
-  <Callout icon="terminal-2">
-    [Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
-  </Callout>
+[Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
 
-  <Callout icon="edit">
-    [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/oss/langchain/frontend/integrations/ai-elements.mdx) 或 [file an issue](https://github.com/langchain-ai/docs/issues/new/choose)。
-  </Callout>
-</div>
+[Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/oss/langchain/frontend/integrations/ai-elements.mdx) 或 [file an issue](https://github.com/langchain-ai/docs/issues/new/choose)。

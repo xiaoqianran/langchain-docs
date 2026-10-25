@@ -14,8 +14,8 @@
 
 ### 集成细节
 
-|班级 |套餐 |可串行化| [PY support](https://python.langchain.com/docs/integrations/chat/anthropic/) |下载 |版本 |
-| :- | :- | :-: | :-: | :-: | :-: |
+|班级 |套餐 |可串行化| [PY support](/oss/python/integrations/chat/anthropic) |下载 |版本 |
+| :-| :-| :-: | :-: | :-: | :-: |
 | [⟦T36⟧](https://reference.langchain.com/javascript/langchain-anthropic/ChatAnthropic) | [⟦T37⟧](https://www.npmjs.com/package/@langchain/anthropic) | ✅ | ✅ | ![NPM - Downloads](https://img.shields.io/npm/dm/@langchain/anthropic?style=flat-square\&label=%20&) | ![NPM - Version](https://img.shields.io/npm/v/@langchain/anthropic?style=flat-square\&label=%20&) |
 
 ### 模型特点
@@ -47,19 +47,17 @@ export ANTHROPIC_API_KEY="your-api-key"
 
 ### 安装LangChain `ChatAnthropic` 集成位于 `@langchain/anthropic` 包中：
 
-<CodeGroup>
-  ```bash npm theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  npm install @langchain/anthropic @langchain/core
-  ```
+```bash npm theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+npm install @langchain/anthropic @langchain/core
+```
 
-  ```bash yarn theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  yarn add @langchain/anthropic @langchain/core
-  ```
+```bash yarn theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+yarn add @langchain/anthropic @langchain/core
+```
 
-  ```bash pnpm theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  pnpm add @langchain/anthropic @langchain/core
-  ```
-</CodeGroup>
+```bash pnpm theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+pnpm add @langchain/anthropic @langchain/core
+```
 
 ## 实例化
 
@@ -79,7 +77,7 @@ const llm = new ChatAnthropic({
 
 ## 采样参数
 
-较新的克劳德模型拒绝非默认采样参数。将 `temperature`、`topP` 或 `topK` 设置为 `claude-opus-5`、`claude-fable-5`、`claude-opus-4-8`、`claude-opus-4-7` 或 `claude-sonnet-5` 上的非默认值会返回 400 错误：
+较新的 Claude 模型拒绝非默认采样参数。将 `temperature`、`topP` 或 `topK` 设置为 `claude-opus-5`、`claude-fable-5`、`claude-opus-4-8`、`claude-opus-4-7` 或 `claude-sonnet-5` 上的非默认值会返回 400 错误：
 
 ```typescript theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 const model = new ChatAnthropic({ model: "claude-opus-5", temperature: 0 });
@@ -96,11 +94,11 @@ await model.invoke("Hello!");
 | `claude-opus-5`、`claude-fable-5`、`claude-opus-4-8`、`claude-opus-4-7`、`claude-sonnet-5` |拒绝非默认值 (400)。省略参数，或仅传递默认值（例如，`temperature: 1`）。 |
 | `claude-opus-4-6`、`claude-sonnet-4-6`、`claude-haiku-4-5` 及更早版本 |已接受 |
 
-<Warning>
-  **升级模型字符串？**
-
-  当您将模型升级到上述较新模型之一时，编写为 `new ChatAnthropic({ model, temperature: 0 })` 的代码会中断。删除采样参数而不是调整它们的值。在这些模型上，通过提示来控制输出样式。详情请参阅[Anthropic migration guide](https://platform.claude.com/docs/en/about-claude/models/migration-guide)。
-</Warning>
+> [!警告]
+>
+> **升级模型字符串？**
+>
+> 当您将模型升级到上述较新模型之一时，编写为 `new ChatAnthropic({ model, temperature: 0 })` 的代码会中断。删除采样参数而不是调整它们的值。在这些模型上，通过提示来控制输出样式。详情请参阅[Anthropic migration guide](https://platform.claude.com/docs/en/about-claude/models/migration-guide)。
 
 ## 调用
 
@@ -934,7 +932,7 @@ console.log(JSON.stringify(result.content, null, 2));
 
 ```
 
-了解更多关于[how RAG works in LangChain](https://js.langchain.com/docs/concepts/rag/)
+了解更多关于[how RAG works in LangChain](/oss/javascript/langchain/retrieval)
 
 [Learn more about tool calling](/oss/javascript/langchain/tools)
 
@@ -974,7 +972,7 @@ const messageWithSplitDocuments = {
   role: "user",
   content: [
     formatToAnthropicDocuments(documents),
-    { type: "text", text: "Give me a link to LangChain's tutorials. Cite your sources" },
+    { type: "text", text: "Give me a link to LangChain's getting started guide. Cite your sources" },
   ],
 };
 
@@ -991,15 +989,15 @@ console.log(JSON.stringify(resWithSplits.content, null, 2));
 [
   {
     "type": "text",
-    "text": "Based on the documentation, I can provide you with a link to LangChain's tutorials:\n\n"
+    "text": "Based on the documentation, I can provide you with a link to LangChain's getting started guide:\n\n"
   },
   {
     "type": "text",
-    "text": "The tutorials can be found at: https://js.langchain.com/docs/tutorials/",
+    "text": "The getting started guide can be found at: https://docs.langchain.com/oss/javascript/langchain/overview",
     "citations": [
       {
         "type": "content_block_location",
-        "cited_text": "[Tutorial](https://js.langchain.com/docs/tutorials/) walkthroughs",
+        "cited_text": "[Getting started](https://docs.langchain.com/oss/javascript/langchain/overview): Installation, setting up the environment, simple examples",
         "document_index": 0,
         "document_title": null,
         "start_block_index": 191,
@@ -1012,13 +1010,13 @@ console.log(JSON.stringify(resWithSplits.content, null, 2));
 
 ## 对话中系统消息
 
-<Note>
-  对话中系统消息需要`@langchain/anthropic>=1.5.11`。
-</Note>
+> [!注意]
+>
+> 对话中系统消息需要`@langchain/anthropic>=1.5.11`。
 
 支持的 Claude 型号接受 [system message partway through a conversation](https://platform.claude.com/docs/en/build-with-claude/mid-conversation-system-messages)。其指示从那时起适用。添加 1 会使前面的回合保持不变，因此不会使它们的 [prompt cache](#prompt-caching) 失效。
 
-`ChatAnthropic` 在顶级 `system` 字段中发送引导系统消息，并且以后的 [⟦T75⟧](https://reference.langchain.com/javascript/langchain-core/messages/SystemMessage) 在对话中自己的位置发送。稍后的 `SystemMessage` 必须遵循人类或工具消息，并且必须是最后一条消息或后跟人工智能消息。
+`ChatAnthropic` 在顶级 `system` 字段中发送引导系统消息，并且以后的 [⟦T75⟧](https://reference.langchain.com/javascript/langchain-core/messages/SystemMessage) 在对话中自己的位置发送。稍后的`SystemMessage`必须遵循人类或工具消息，并且必须是最后一条消息或后面跟着人工智能消息。
 
 并非每个 Claude 模型都支持对话中系统消息。 [Claude documentation](https://platform.claude.com/docs/en/build-with-claude/mid-conversation-system-messages) 列出了哪些可以。 `ChatAnthropic` 不会检查模型或消息的位置，因此当其中任何一个无效时，API 都会返回 400 错误。
 
@@ -1041,9 +1039,9 @@ const response = await llm.invoke([
 
 ### 在对话中更改工具
 
-<Note>
-  对话过程中更换工具需要`@langchain/anthropic>=1.5.12`。
-</Note>对话中`SystemMessage`还可以使用Anthropic的[⟦T80⟧ and ⟦T81⟧](https://platform.claude.com/docs/en/build-with-claude/mid-conversation-system-messages#mid-conversation-tool-changes)内容块添加或删除工具。在请求上编辑 `tools` 会使整个对话的提示缓存无效。这些块使`tools`保持不变，因此缓存的前缀仍然匹配。
+> [!注意]
+>
+> 对话过程中更换工具需要`@langchain/anthropic>=1.5.12`。对话中`SystemMessage`还可以使用Anthropic的[⟦T80⟧ and ⟦T81⟧](https://platform.claude.com/docs/en/build-with-claude/mid-conversation-system-messages#mid-conversation-tool-changes)内容块添加或删除工具。在请求上编辑 `tools` 会使整个对话的提示缓存无效。这些块使`tools`保持不变，因此缓存的前缀仍然匹配。
 
 上述[placement and model rules](#mid-conversation-system-messages)适用。
 
@@ -1139,9 +1137,9 @@ const response = await llm.invoke([
 
 Anthropic 支持上下文编辑功能，该功能将自动管理模型的上下文窗口（例如，通过清除工具结果）。
 
-有关详细信息和配置选项，请参阅[Anthropic documentation](https://platform.claude.com/docs/en/build-with-claude/context-editing)。<Info>
-  **自 `@langchain/anthropic@0.3.29`** 起支持上下文管理
-</Info>
+有关详细信息和配置选项，请参阅[Anthropic documentation](https://platform.claude.com/docs/en/build-with-claude/context-editing)。> [!注意]
+>
+> **自 `@langchain/anthropic@0.3.29`** 起支持上下文管理
 
 ```typescript theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 import { ChatAnthropic } from "@langchain/anthropic";
@@ -1167,12 +1165,6 @@ const response = await llmWithTools.invoke("Search for recent developments in AI
 
 ***
 
-<div>
-  <Callout icon="terminal-2">
-    [Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
-  </Callout>
+[Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
 
-  <Callout icon="edit">
-    [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/oss/javascript/integrations/chat/anthropic.mdx) 或 [file an issue](https://github.com/langchain-ai/docs/issues/new/choose)。
-  </Callout>
-</div>
+[Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/oss/javascript/integrations/chat/anthropic.mdx) 或 [file an issue](https://github.com/langchain-ai/docs/issues/new/choose)。

@@ -11,9 +11,9 @@
 
 所有文档加载器都实现 [BaseLoader](https://reference.langchain.com/javascript/langchain-core/document_loaders/base/BaseDocumentLoader) 接口。
 
-<Warning>
-  社区文档加载器是用户贡献的且未经验证。 LangChain 不审查或认可这些集成；使用它们的风险由您自行承担。
-</Warning>
+> [!警告]
+>
+> 社区文档加载器由用户贡献且未经验证。 LangChain 不审查或认可这些集成；使用它们的风险由您自行承担。
 
 ## 接口
 
@@ -40,9 +40,9 @@ LangChain.js 以两种不同的方式对文档加载器进行分类：
 
 ### 文件加载器
 
-<Info>
-  如果您想贡献集成，请参阅[Contributing integrations](/oss/javascript/contributing#add-a-new-integration)。
-</Info>
+> [!注意]
+>
+> 如果您想贡献集成，请参阅[Contributing integrations](/oss/javascript/contributing#add-a-new-integration)。
 
 #### 常见文件类型|文档加载器|描述 |包/API |
 | - | - | - |
@@ -78,28 +78,20 @@ LangChain.js 以两种不同的方式对文档加载器进行分类：
 | - | - | :-: | - |
 | [⟦T9⟧](/oss/javascript/integrations/document_loaders/web_loaders/langsmith) |从 LangSmith 加载数据集和轨迹 | ✅ |应用程序接口 |
 
-## 所有文档加载器<div>
-  |整合 |下载 |
-  | :- | :- |
-  | [⟦T10⟧](/oss/javascript/integrations/document_loaders/web_loaders/google_cloudsql_pg) | <span><a href="https://www.npmjs.com/package/@langchain/google-cloud-sql-pg"><img alt="Downloads per month" /></a></span> |
-  | [⟦T11⟧](/oss/javascript/integrations/document_loaders/web_loaders/soniox) | <span><a href="https://www.npmjs.com/package/@soniox/langchain"><img alt="Downloads per month" /></a></span> |
-  | [⟦T12⟧](/oss/javascript/integrations/document_loaders/file_loaders/directory) | <span>N/A</span> |
-  | [⟦T13⟧](/oss/javascript/integrations/document_loaders/file_loaders/json) | <span>N/A</span> |
-  | [⟦T14⟧](/oss/javascript/integrations/document_loaders/file_loaders/jsonlines) | <span>N/A</span> |
-  | [⟦T15⟧](/oss/javascript/integrations/document_loaders/web_loaders/langsmith) | <span>N/A</span> |
-  | [⟦T16⟧](/oss/javascript/integrations/document_loaders/file_loaders/multi_file) | <span>N/A</span> |
-  | [⟦T17⟧](/oss/javascript/integrations/document_loaders/file_loaders/oracleai) | <span>N/A</span> |
-  | [⟦T18⟧](/oss/javascript/integrations/document_loaders/file_loaders/text) | <span>N/A</span> |
-</div>
+## 所有文档加载器|整合 |下载 |
+| :-| :-|
+| [⟦T10⟧](/oss/javascript/integrations/document_loaders/web_loaders/google_cloudsql_pg) | [  ⟦T19⟧](https://www.npmjs.com/package/@langchain/google-cloud-sql-pg) |
+| [⟦T11⟧](/oss/javascript/integrations/document_loaders/web_loaders/soniox) | [  ⟦T20⟧](https://www.npmjs.com/package/@soniox/langchain) |
+| [⟦T12⟧](/oss/javascript/integrations/document_loaders/file_loaders/directory) |不适用 |
+| [⟦T13⟧](/oss/javascript/integrations/document_loaders/file_loaders/json) |不适用 |
+| [⟦T14⟧](/oss/javascript/integrations/document_loaders/file_loaders/jsonlines) |不适用 |
+| [⟦T15⟧](/oss/javascript/integrations/document_loaders/web_loaders/langsmith) |不适用 |
+| [⟦T16⟧](/oss/javascript/integrations/document_loaders/file_loaders/multi_file) |不适用 |
+| [⟦T17⟧](/oss/javascript/integrations/document_loaders/file_loaders/oracleai) |不适用 |
+| [⟦T18⟧](/oss/javascript/integrations/document_loaders/file_loaders/text) |不适用 |
 
 ***
 
-<div>
-  <Callout icon="terminal-2">
-    [Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
-  </Callout>
+[Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
 
-  <Callout icon="edit">
-    [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/oss/javascript/integrations/document_loaders/index.mdx) 或 [file an issue](https://github.com/langchain-ai/docs/issues/new/choose)。
-  </Callout>
-</div>
+[Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/oss/javascript/integrations/document_loaders/index.mdx) 或 [file an issue](https://github.com/langchain-ai/docs/issues/new/choose)。

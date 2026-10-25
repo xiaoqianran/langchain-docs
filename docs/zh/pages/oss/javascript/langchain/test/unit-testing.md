@@ -6,7 +6,7 @@
 
 使用假聊天模型和内存持久性测试代理逻辑，无需 API 调用。
 
-单元测试单独测试代理的小型确定性部分。通过用内存中的假数据（又名固定装置）替换真实的 LLM，您可以编写精确的响应（文本、工具调用和错误），因此测试快速、免费且可重复，无需 API 密钥。
+单元测试单独测试代理的小型确定性部分。通过用内存中的伪造（又名固定装置）替换真实的 LLM，您可以编写精确的响应（文本、工具调用和错误），因此测试快速、免费且可重复，无需 API 密钥。
 
 ## 使用`fakeModel`模拟聊天模型
 
@@ -91,9 +91,9 @@ model.respondWithTools([  // [!code highlight]
 ]);  // [!code highlight]
 ```
 
-`id` 字段是可选的。如果省略，则会自动生成唯一 ID。<Tip>
-  `.respond()`和`.respondWithTools()`可以任意顺序自由混合。这对于测试代理循环特别有用，其中模型在工具调用和文本响应之间交替。
-</Tip>
+`id` 字段是可选的。如果省略，则会自动生成唯一 ID。> [!提示]
+>
+> `.respond()`和`.respondWithTools()`可以任意顺序自由混合。这对于测试代理循环特别有用，其中模型在工具调用和文本响应之间交替。
 
 ### 模拟错误
 
@@ -169,9 +169,9 @@ const model = fakeModel()
 await model.invoke([new HumanMessage("forbidden topic")]); // throws "Content policy violation"
 ```
 
-<Note>
-  每个函数都是一个队列条目，消耗一次。要多次重复使用相同的动态逻辑，请将多个 `respond` 函数调用排队。
-</Note>
+> [!注意]
+>
+> 每个函数都是一个队列条目，消耗一次。要多次重复使用相同的动态逻辑，请将多个 `respond` 函数调用排队。
 
 ### 结构化输出
 
@@ -268,79 +268,79 @@ console.log(r2.content); // "The weather is sunny."
 console.log(model.callCount); // 2
 ```
 
-<Accordion title="Full example: test a tool-calling agent with vitest">
-  ```typescript theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  import { describe, test, expect } from "vitest";
-  import { fakeModel } from "langchain";
-  import { AIMessage, HumanMessage, ToolMessage } from "@langchain/core/messages";
-  import { tool } from "@langchain/core/tools";
-  import { z } from "zod";
-
-  const getWeather = tool(
-    async ({ city }) => `72°F and sunny in ${city}`,
-    {
-      name: "get_weather",
-      description: "Get weather for a city",
-      schema: z.object({ city: z.string() }),
-    }
-  );
-
-  async function runAgent(
-    model: ReturnType<typeof fakeModel>,
-    input: string
-  ) {
-    const messages: any[] = [new HumanMessage(input)];
-    const bound = model.bindTools([getWeather]);
-
-    while (true) {
-      const response = await bound.invoke(messages);
-      messages.push(response);
-
-      if (!response.tool_calls?.length) {
-        return { messages, finalResponse: response };
-      }
-
-      for (const tc of response.tool_calls) {
-        const result = await getWeather.invoke(tc.args);
-        messages.push(new ToolMessage({
-          content: result as string,
-          tool_call_id: tc.id!,
-        }));
-      }
-    }
-  }
-
-  describe("weather agent", () => {
-    test("calls get_weather and returns a final answer", async () => {
-      const model = fakeModel()
-        .respondWithTools([
-          { name: "get_weather", args: { city: "SF" }, id: "call_1" },
-        ])
-        .respond(new AIMessage("It's 72°F and sunny in SF!"));
-
-      const { finalResponse } = await runAgent(model, "Weather in SF?");
-
-      expect(finalResponse.content).toBe("It's 72°F and sunny in SF!");
-      expect(model.callCount).toBe(2);
-
-      const secondCall = model.calls[1].messages;
-      const toolMsg = secondCall.find((m: any) => m._getType() === "tool");
-      expect(toolMsg?.content).toContain("72°F and sunny in SF");
-    });
-
-    test("handles model errors gracefully", async () => {
-      const model = fakeModel()
-        .respond(new Error("rate limit"));
-
-      await expect(
-        runAgent(model, "Weather?")
-      ).rejects.toThrow("rate limit");
-
-      expect(model.callCount).toBe(1);
-    });
-  });
-  ```
-</Accordion>
+> **完整示例：使用 vitest 测试工具调用代理**
+>
+> ```typescript theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> import { describe, test, expect } from "vitest";
+> import { fakeModel } from "langchain";
+> import { AIMessage, HumanMessage, ToolMessage } from "@langchain/core/messages";
+> import { tool } from "@langchain/core/tools";
+> import { z } from "zod";
+>
+> const getWeather = tool(
+>   async ({ city }) => `72°F and sunny in ${city}`,
+>   {
+>     name: "get_weather",
+>     description: "Get weather for a city",
+>     schema: z.object({ city: z.string() }),
+>   }
+> );
+>
+> async function runAgent(
+>   model: ReturnType<typeof fakeModel>,
+>   input: string
+> ) {
+>   const messages: any[] = [new HumanMessage(input)];
+>   const bound = model.bindTools([getWeather]);
+>
+>   while (true) {
+>     const response = await bound.invoke(messages);
+>     messages.push(response);
+>
+>     if (!response.tool_calls?.length) {
+>       return { messages, finalResponse: response };
+>     }
+>
+>     for (const tc of response.tool_calls) {
+>       const result = await getWeather.invoke(tc.args);
+>       messages.push(new ToolMessage({
+>         content: result as string,
+>         tool_call_id: tc.id!,
+>       }));
+>     }
+>   }
+> }
+>
+> describe("weather agent", () => {
+>   test("calls get_weather and returns a final answer", async () => {
+>     const model = fakeModel()
+>       .respondWithTools([
+>         { name: "get_weather", args: { city: "SF" }, id: "call_1" },
+>       ])
+>       .respond(new AIMessage("It's 72°F and sunny in SF!"));
+>
+>     const { finalResponse } = await runAgent(model, "Weather in SF?");
+>
+>     expect(finalResponse.content).toBe("It's 72°F and sunny in SF!");
+>     expect(model.callCount).toBe(2);
+>
+>     const secondCall = model.calls[1].messages;
+>     const toolMsg = secondCall.find((m: any) => m._getType() === "tool");
+>     expect(toolMsg?.content).toContain("72°F and sunny in SF");
+>   });
+>
+>   test("handles model errors gracefully", async () => {
+>     const model = fakeModel()
+>       .respond(new Error("rate limit"));
+>
+>     await expect(
+>       runAgent(model, "Weather?")
+>     ).rejects.toThrow("rate limit");
+>
+>     expect(model.callCount).toBe(1);
+>   });
+> });
+> ```
 
 ## 后续步骤
 
@@ -348,12 +348,6 @@ console.log(model.callCount); // 2
 
 ***
 
-<div>
-  <Callout icon="terminal-2">
-    [Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
-  </Callout>
+[Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
 
-  <Callout icon="edit">
-    [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/oss/langchain/test/unit-testing.mdx) 或 [file an issue](https://github.com/langchain-ai/docs/issues/new/choose)。
-  </Callout>
-</div>
+[Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/oss/langchain/test/unit-testing.mdx) 或 [file an issue](https://github.com/langchain-ai/docs/issues/new/choose)。

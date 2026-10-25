@@ -6,11 +6,11 @@
 
 从 @langchain/mcp-adapters 1.x 升级到 2.0，涵盖重命名的 API、更严格的配置、身份验证、诱导和工具结果更改。
 
-<Prompt description="Migrate from @langchain/mcp-adapters 1.x to 2.0." icon="arrow-right">
-  将此代码库从 `@langchain/mcp-adapters` 1.x 迁移到 2.0 并更新其对等依赖项。
+从 @langchain/mcp-adapters 1.x 迁移到 2.0。
 
-  在 [https://docs.langchain.com/oss/javascript/migrate/langchain-mcp-adapters.md](https://docs.langchain.com/oss/javascript/migrate/langchain-mcp-adapters.md) 获取并阅读完整的迁移指南作为事实来源。搜索此代码库并应用所有相关的迁移更改，包括依赖项和测试更新。运行相关检查，然后总结更改并标记任何需要手动决策或无法验证的内容。如果您无法访问该指南，请在继续之前询问其内容。
-</Prompt>
+将此代码库从 `@langchain/mcp-adapters` 1.x 迁移到 2.0 并更新其对等依赖项。
+
+在 [https://docs.langchain.com/oss/javascript/migrate/langchain-mcp-adapters.md](https://docs.langchain.com/oss/javascript/migrate/langchain-mcp-adapters.md) 获取并阅读完整的迁移指南作为事实来源。搜索此代码库并应用所有相关的迁移更改，包括依赖项和测试更新。运行相关检查，然后总结更改并标记任何需要手动决策或无法验证的内容。如果您无法访问该指南，请在继续之前询问其内容。
 
 `@langchain/mcp-adapters` 2.0 在 MCP TypeScript SDK 2 客户端上重建适配器。它为每个服务器协商 MCP 协议时代，并通过 LangGraph 中断应答现代 MCP 启发。本指南涵盖了影响 1.x 代码的更改。有关功能文档，请参阅[Model Context Protocol (MCP)](/oss/javascript/langchain/mcp)。
 
@@ -25,23 +25,21 @@
 
 升级适配器及其对等依赖项：
 
-<CodeGroup>
-  ```bash npm theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  npm install @langchain/mcp-adapters@^2.0.0 @langchain/core @langchain/langgraph
-  ```
+```bash npm theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+npm install @langchain/mcp-adapters@^2.0.0 @langchain/core @langchain/langgraph
+```
 
-  ```bash pnpm theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  pnpm add @langchain/mcp-adapters@^2.0.0 @langchain/core @langchain/langgraph
-  ```
+```bash pnpm theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+pnpm add @langchain/mcp-adapters@^2.0.0 @langchain/core @langchain/langgraph
+```
 
-  ```bash yarn theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  yarn add @langchain/mcp-adapters@^2.0.0 @langchain/core @langchain/langgraph
-  ```
+```bash yarn theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+yarn add @langchain/mcp-adapters@^2.0.0 @langchain/core @langchain/langgraph
+```
 
-  ```bash bun theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  bun add @langchain/mcp-adapters@^2.0.0 @langchain/core @langchain/langgraph
-  ```
-</CodeGroup>* **对等依赖性**：适配器需要 `@langchain/core` 1.2.6 或更高版本（原为 1.0.0）和 `@langchain/langgraph` 1.4.13 或更高版本（原为 1.4.10）。
+```bash bun theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+bun add @langchain/mcp-adapters@^2.0.0 @langchain/core @langchain/langgraph
+```* **对等依赖性**：适配器需要 `@langchain/core` 1.2.6 或更高版本（原为 1.0.0）和 `@langchain/langgraph` 1.4.13 或更高版本（原为 1.4.10）。
 * **MCP SDK**：适配器包括 MCP SDK 2 客户端。如果您的代码为 `loadMcpTools` 创建 SDK 客户端，请将 `@modelcontextprotocol/sdk` 导入替换为 `@modelcontextprotocol/client`。从 `@modelcontextprotocol/client/stdio` 导入 stdio 传输。如果您的代码导入了 SDK，则将 SDK 添加为直接依赖项，包括[complete an OAuth redirect](/oss/javascript/langchain/mcp/auth#complete-the-redirect)。
 * **Zod 4**：适配器使用内部 Zod 4 依赖项验证配置，因此配置错误是 Zod 4 错误。
 * **调试日志记录**：`DEBUG=@langchain/mcp-adapters:*` 不再发出日志。请改用 `onConnectionError` 和每服务器通知回调。
@@ -87,13 +85,13 @@ const tools = await adapter.listTools();
 其他 API 更改：* 从`adapter.config.servers`而不是`adapter.config.mcpServers`读取配置。这是一个快照；更改它不会重新配置适配器。
 * `SSEConnection` 仅接受旧版 SSE。对 HTTP 使用 `StreamableHTTPConnection`，对任何传输使用 `Connection`。
 * `ToolException` 和 `MCPClientError` 现已导出。使用 `ToolException.isInstance(error)` 和 `MCPClientError.isInstance(error)` 识别它们，它们检查品牌而不是错误的 `name`。
-* `setLoggingLevel()` 仅限旧版本。如果它的目标服务器协商了现代协议，它会抛出异常，然后不设置任何级别。在每个现代服务器上设置`logLevel`。参见[Protocol eras](/oss/javascript/langchain/mcp/connections#protocol-eras)。现代服务器也拒绝`resources/subscribe`，因此在服务器的`resourceSubscriptions`选项中列出要监视的资源URI并在`onResourcesUpdated`中处理更新，而不是在客户端上调用`subscribeResource()`。
+* `setLoggingLevel()` 仅限旧版。如果它的目标服务器协商了现代协议，它会抛出异常，然后不设置任何级别。在每个现代服务器上设置`logLevel`。参见[Protocol eras](/oss/javascript/langchain/mcp/connections#protocol-eras)。现代服务器也拒绝`resources/subscribe`，因此在服务器的`resourceSubscriptions`选项中列出要监视的资源URI并在`onResourcesUpdated`中处理更新，而不是在客户端上调用`subscribeResource()`。
 
 `getClient()` 现在从 `@modelcontextprotocol/client` 返回 SDK 2 `Client`。 `loadMcpTools(serverName, client)` 转换您自己构建的 SDK 客户端中的工具。 SDK `Client` 默认情况下会协商旧协议，因此如果其工具应通过中断引发，请使用 `versionNegotiation: { mode: "auto" }` 创建它。要通过`InMemoryTransport`将其连接到进程内服务器，请使用`serveStdio(factory, { transport: serverSide })`为该服务器提供服务； `server.connect()` 仅服务于旧协议。
 
 ## 删除选项
 
-设置这些选项中的任何一个的配置现在都无法通过验证。 `loadMcpTools` 以相同的方式验证其选项：|选项|更换|
+设置这些选项中的任何一个的配置现在都无法通过验证。 `loadMcpTools` 以相同的方式验证其选项：|选项 |更换|
 | - | - |
 | `useStandardContentBlocks` |没有任何。工具内容始终是标准的LangChain内容块。删除该选项。 |
 | `onRootsListChanged` |没有任何。删除该选项。 |
@@ -223,12 +221,6 @@ SSE 仍然是传统传输，因此 SSE 服务器拒绝 `mode: "modern"`、`elici
 
 ***
 
-<div>
-  <Callout icon="terminal-2">
-    [Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
-  </Callout>
+[Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
 
-  <Callout icon="edit">
-    [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/oss/javascript/migrate/langchain-mcp-adapters.mdx) 或[file an issue](https://github.com/langchain-ai/docs/issues/new/choose)。
-  </Callout>
-</div>
+[Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/oss/javascript/migrate/langchain-mcp-adapters.mdx) 或[file an issue](https://github.com/langchain-ai/docs/issues/new/choose)。

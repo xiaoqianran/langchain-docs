@@ -37,78 +37,78 @@
 | - | - | - |
 | [Magic Hour](https://docs.magichour.ai) |免费套餐（400 积分 + 100/天）|使用 Sora 2、Veo 3.1、Kling 3.0、WAN 2.2、GPT-image、Nano Banana Pro 进行文本到视频、图像到视频和图像生成。同步和异步，返回 URL 或本地下载。 |
 
-## 所有工具和工具包<div>
-  |整合|下载 |
-  | :- | :- |
-  | [⟦T1⟧](/oss/javascript/integrations/tools/dalle) | <span><a href="https://www.npmjs.com/package/@langchain/openai"> <img alt="Downloads per month" /></a></span> |
-  | [⟦T2⟧](/oss/javascript/integrations/tools/openai) | <span><a href="https://www.npmjs.com/package/@langchain/openai"> <img alt="Downloads per month" /></a></span> |
-  | [⟦T3⟧](/oss/javascript/integrations/tools/openapi) | <span><a href="https://www.npmjs.com/package/@langchain/langgraph"> <img alt="Downloads per month" /></a></span> |
-  | [⟦T4⟧](/oss/javascript/integrations/tools/anthropic) | <span><a href="https://www.npmjs.com/package/@langchain/anthropic"> <img alt="Downloads per month" /></a></span> |
-  | [⟦T5⟧](/oss/javascript/integrations/tools/google) | <span><a href="https://www.npmjs.com/package/@langchain/google"><img alt="Downloads per month" /></a></span>|
-  | [⟦T6⟧](/oss/javascript/integrations/tools/tavily_crawl) | <span><a href="https://www.npmjs.com/package/@langchain/tavily"> <img alt="Downloads per month" /></a></span> |
-  | [⟦T7⟧](/oss/javascript/integrations/tools/tavily_extract) | <span><a href="https://www.npmjs.com/package/@langchain/tavily"> <img alt="Downloads per month" /></a></span> |
-  | [⟦T8⟧](/oss/javascript/integrations/tools/tavily_get_research) | <span><a href="https://www.npmjs.com/package/@langchain/tavily"> <img alt="Downloads per month" /></a></span> |
-  | [⟦T9⟧](/oss/javascript/integrations/tools/tavily_map) | <span><a href="https://www.npmjs.com/package/@langchain/tavily"><img alt="Downloads per month" /></a></span>|
-  | [⟦T10⟧](/oss/javascript/integrations/tools/tavily_research) | <span><a href="https://www.npmjs.com/package/@langchain/tavily"> <img alt="Downloads per month" /></a></span> |
-  | [⟦T11⟧](/oss/javascript/integrations/tools/tavily_search) | <span><a href="https://www.npmjs.com/package/@langchain/tavily"><img alt="Downloads per month" /></a></span>|
-  | [⟦T12⟧](/oss/javascript/integrations/tools/oracleai) | <span><a href="https://www.npmjs.com/package/@oracle/langchain-oracledb"> <img alt="Downloads per month" /></a></span> |
-  | [⟦T13⟧](/oss/javascript/integrations/tools/exa_search) | <span><a href="https://www.npmjs.com/package/@langchain/exa"><img alt="Downloads per month" /></a></span>|
-  | [⟦T14⟧](/oss/javascript/integrations/tools/composio) | <span><a href="https://www.npmjs.com/package/@composio/langchain"> <img alt="Downloads per month" /></a></span> |
-  | [⟦T15⟧](/oss/javascript/integrations/tools/mcp_toolbox) | <span><a href="https://www.npmjs.com/package/@toolbox-sdk/core"><img alt="Downloads per month" /></a></span>|
-  | [⟦T16⟧](https://docs.atomicmail.ai/langchain) | <span><a href="https://www.npmjs.com/package/@atomicmail/langchain"><img alt="Downloads per month" /></a></span>|
-  | [⟦T17⟧](/oss/javascript/integrations/tools/ibm) | <span><a href="https://www.npmjs.com/package/@langchain/ibm"><img alt="Downloads per month" /></a></span>|
-  | [⟦T18⟧](https://proompteng.github.io/bilig/) | <span><a href="https://www.npmjs.com/package/@bilig/workpaper"> <img alt="Downloads per month" /></a></span> |
-  | [⟦T19⟧](/oss/javascript/integrations/tools/perplexity_search) | <span><a href="https://www.npmjs.com/package/@langchain/perplexity"> <img alt="Downloads per month" /></a></span> |
-  | [⟦T20⟧](https://github.com/zerohourzulu/continuity/blob/main/packages/remote-tools/README.md#langchain-tools) | <span><a href="https://www.npmjs.com/package/@ramex-labs/continuity-remote"> <img alt="Downloads per month" /></a></span> |
-  | [⟦T21⟧](/oss/javascript/integrations/tools/decodo) | <span><a href="https://www.npmjs.com/package/@decodo/langchain-ts"><img alt="Downloads per month" /></a></span>|
-  | [⟦T22⟧](https://serpex.dev/docs) | <span><a href="https://www.npmjs.com/package/langchain-serpex-js"> <img alt="Downloads per month" /></a></span> |
-  | [⟦T23⟧](https://agentsvc.io/docs/langchain) | <span><a href="https://www.npmjs.com/package/agentsvc"> <img alt="Downloads per month" /></a></span> |
-  | [⟦T24⟧](https://docs.pexafy.com/langchain) | <span><a href="https://www.npmjs.com/package/langchain-pexafy"> <img alt="Downloads per month" /></a></span> || [⟦T25⟧](https://www.pipe0.com/docs/sdks/integrations/langchain) | <span><a href="https://www.npmjs.com/package/@pipe0/langchain"> <img alt="Downloads per month" /></a></span> |
-  | [⟦T26⟧](https://agentsearchhq.com/#integrations?utm_source=langchain-docs-js\&utm_medium=integration-listing\&utm_campaign=promo-oct26) | <span><a href="https://www.npmjs.com/package/@agentsearchhq/langchain"><img alt="Downloads per month" /></a></span>|
-  | [⟦T27⟧](https://pushary.com/docs/agents/build/langgraph?utm_source=langchain\&utm_medium=integration-directory\&utm_campaign=pushary-langgraph-js) | <span><a href="https://www.npmjs.com/package/@pushary/langgraph"> <img alt="Downloads per month" /></a></span> |
-  | [⟦T28⟧](https://github.com/satohubai/sato-hub-integrations/tree/main/packages/satohub-langchain-tools#readme) | <span><a href="https://www.npmjs.com/package/satohub-langchain-tools"> <img alt="Downloads per month" /></a></span> |
-  | [⟦T29⟧](https://github.com/fidacy/fidacy-open) | <span><a href="https://www.npmjs.com/package/@fidacy/langchain"><img alt="Downloads per month" /></a></span>|
-  | [⟦T30⟧](https://github.com/tubeagentkit/langchain-getyoutubetranscript#readme) | <span><a href="https://www.npmjs.com/package/@tubeagentkit/langchain-getyoutubetranscript"> <img alt="Downloads per month" /></a></span> |
-  | [⟦T31⟧](/oss/javascript/integrations/tools/falkordb) | <span><a href="https://www.npmjs.com/package/@falkordb/langchain-ts"><img alt="Downloads per month" /></a></span>|
-  | [⟦T32⟧](https://www.respan.ai/docs/documentation/overview) | <span><a href="https://www.npmjs.com/package/@respan/instrumentation-langchain"> <img alt="Downloads per month" /></a></span> |
-  | [⟦T33⟧](https://snap-render.com) | <span><a href="https://www.npmjs.com/package/langchain-snaprender"><img alt="Downloads per month" /></a></span>|
-  | [⟦T34⟧](https://docs.talordata.com/serp-api/integration/sdk-integration/how-to-set-up-talordata-with-langchain) | <span><a href="https://www.npmjs.com/package/langchain-talordata"> <img alt="Downloads per month" /></a></span> |
-  | [⟦T35⟧](/oss/javascript/integrations/tools/azure_dynamic_sessions) | <span><a href="https://www.npmjs.com/package/@langchain/azure-dynamic-sessions"><img alt="Downloads per month" /></a></span>|
-  | [⟦T36⟧](https://github.com/ai-worker227/aiworker-examples/tree/main/langchain) | <span><a href="https://www.npmjs.com/package/aiworker-langchain-tools"> <img alt="Downloads per month" /></a></span> |
-  | [⟦T37⟧](https://you.com/docs/integrations/langchain) | <span><a href="https://www.npmjs.com/package/@youdotcom-oss/langchain"><img alt="Downloads per month" /></a></span>|
-  | [⟦T38⟧](https://docs.corsair.dev/mcp-adapters/langchain) | <span><a href="https://www.npmjs.com/package/@corsair-dev/langchain"><img alt="Downloads per month" /></a></span>|
-  | [⟦T39⟧](https://docs.safeprompt.dev/langchain) | <span><a href="https://www.npmjs.com/package/@safeprompt.dev/langchain"> <img alt="Downloads per month" /></a></span> |
-  | [⟦T40⟧](https://github.com/gentlegiant96202/mercedes-benz-service-reminder-mcp#readme) | <span><a href="https://www.npmjs.com/package/mercedes-benz-service-reminder-mcp"> <img alt="Downloads per month" /></a></span> |
-  | [⟦T41⟧](https://docs.thecontextcompany.com/frameworks/langchain-langgraph) | <span><a href="https://www.npmjs.com/package/@contextcompany/langchain"><img alt="Downloads per month" /></a></span>|
-  | [⟦T42⟧](/oss/javascript/integrations/tools/clicksend) | <span><a href="https://www.npmjs.com/package/@clicksend/langchain-clicksend-mcp"> <img alt="Downloads per month" /></a></span> |
-  | [⟦T43⟧](https://toolstem.com) | <span><a href="https://www.npmjs.com/package/langchain-toolstem"><img alt="Downloads per month" /></a></span>|
-  | [⟦T44⟧](https://platform.iflow.cn) | <span><a href="https://www.npmjs.com/package/@iflow-ai/search-langchain"> <img alt="Downloads per month" /></a></span> |
-  | [⟦T45⟧](https://docs.magichour.ai) | <span><a href="https://www.npmjs.com/package/langchain-magic-hour"><img alt="Downloads per month" /></a></span>|
-  | [⟦T46⟧](https://github.com/aproxpay/langchain-aproxpay) | <span><a href="https://www.npmjs.com/package/langchain-aproxpay"> <img alt="Downloads per month" /></a></span> |
-  | [⟦T47⟧](/oss/javascript/integrations/tools/jigsawstack) | <span><a href="https://www.npmjs.com/package/@langchain/jigsawstack"> <img alt="Downloads per month" /></a></span> |
-  | [⟦T48⟧](https://ceki.me) | <span><a href="https://www.npmjs.com/package/@ceki/langchain-ceki"> <img alt="Downloads per month" /></a></span> |
-  | [⟦T49⟧](https://github.com/codexvritra/signa/tree/main/sdk/langchain) | <span><a href="https://www.npmjs.com/package/signa-langchain"> <img alt="Downloads per month" /></a></span> || [⟦T50⟧](/oss/javascript/integrations/tools/nia) | <span><a href="https://www.npmjs.com/package/@nozomioai/langchain-nia"><img alt="Downloads per month" /></a></span>|
-  | [⟦T51⟧](/oss/javascript/integrations/tools/lambda_agent) | <span>不适用</span> |
-  | [⟦T52⟧](https://browserless.io) | <span>不适用</span> |
-  | [⟦T53⟧](/oss/javascript/integrations/tools/json) | <span>不适用</span> |
-  | [⟦T54⟧](https://docs.notte.cc/integrations/langchain) | <span>不适用</span> |
-  | [⟦T55⟧](/oss/javascript/integrations/tools/sql) | <span>不适用</span> |
-  | [⟦T56⟧](/oss/javascript/integrations/tools/vectorstore) | <span>不适用</span> |
-  | [⟦T57⟧](/oss/javascript/integrations/tools/webbrowser) | <span>不适用</span> |
-</div>
+## 所有工具和工具包|整合 |下载 |
+| :-| :-|
+| [⟦T1⟧](/oss/javascript/integrations/tools/dalle) | [  ⟦T65⟧](https://www.npmjs.com/package/@langchain/openai) |
+| [⟦T2⟧](/oss/javascript/integrations/tools/openai) | [  ⟦T66⟧](https://www.npmjs.com/package/@langchain/openai) |
+| [⟦T3⟧](/oss/javascript/integrations/tools/openapi) | [  ⟦T67⟧](https://www.npmjs.com/package/@langchain/langgraph) |
+| [⟦T4⟧](/oss/javascript/integrations/tools/anthropic) | [  ⟦T68⟧](https://www.npmjs.com/package/@langchain/anthropic) |
+| [⟦T5⟧](/oss/javascript/integrations/tools/google) | [  ⟦T69⟧](https://www.npmjs.com/package/@langchain/google) |
+| [⟦T6⟧](/oss/javascript/integrations/tools/tavily_crawl) | [  ⟦T70⟧](https://www.npmjs.com/package/@langchain/tavily) |
+| [⟦T7⟧](/oss/javascript/integrations/tools/tavily_extract) | [  ⟦T71⟧](https://www.npmjs.com/package/@langchain/tavily) |
+| [⟦T8⟧](/oss/javascript/integrations/tools/tavily_get_research) | [  ⟦T72⟧](https://www.npmjs.com/package/@langchain/tavily) |
+| [⟦T9⟧](/oss/javascript/integrations/tools/tavily_map) | [  ⟦T73⟧](https://www.npmjs.com/package/@langchain/tavily) |
+| [⟦T10⟧](/oss/javascript/integrations/tools/tavily_research) | [  ⟦T74⟧](https://www.npmjs.com/package/@langchain/tavily) |
+| [⟦T11⟧](/oss/javascript/integrations/tools/tavily_search) | [  ⟦T75⟧](https://www.npmjs.com/package/@langchain/tavily) |
+| [⟦T12⟧](/oss/javascript/integrations/tools/oracleai) | [  ⟦T76⟧](https://www.npmjs.com/package/@oracle/langchain-oracledb) |
+| [⟦T13⟧](/oss/javascript/integrations/tools/exa_search) | [  ⟦T77⟧](https://www.npmjs.com/package/@langchain/exa) |
+| [⟦T14⟧](/oss/javascript/integrations/tools/composio) | [  ⟦T78⟧](https://www.npmjs.com/package/@composio/langchain) |
+| [⟦T15⟧](/oss/javascript/integrations/tools/mcp_toolbox) | [  ⟦T79⟧](https://www.npmjs.com/package/@toolbox-sdk/core) |
+| [⟦T16⟧](https://docs.atomicmail.ai/langchain) | [  ⟦T80⟧](https://www.npmjs.com/package/@atomicmail/langchain) |
+| [⟦T17⟧](/oss/javascript/integrations/tools/ibm) | [  ⟦T81⟧](https://www.npmjs.com/package/@langchain/ibm) |
+| [⟦T18⟧](https://proompteng.github.io/bilig/) | [  ⟦T82⟧](https://www.npmjs.com/package/@bilig/workpaper) |
+| [⟦T19⟧](/oss/javascript/integrations/tools/perplexity_search) | [  ⟦T83⟧](https://www.npmjs.com/package/@langchain/perplexity) |
+| [⟦T20⟧](https://fizzl.eu/agents/langchain-js/) | [  ⟦T84⟧](https://www.npmjs.com/package/fizzl-langchain) |
+| [⟦T21⟧](https://github.com/zerohourzulu/continuity/blob/main/packages/remote-tools/README.md#langchain-tools) | [  ⟦T85⟧](https://www.npmjs.com/package/@ramex-labs/continuity-remote) |
+| [⟦T22⟧](/oss/javascript/integrations/tools/decodo) | [  ⟦T86⟧](https://www.npmjs.com/package/@decodo/langchain-ts) |
+| [⟦T23⟧](https://serpex.dev/docs) | [  ⟦T87⟧](https://www.npmjs.com/package/langchain-serpex-js) |
+| [⟦T24⟧](https://agentsvc.io/docs/langchain) | [  ⟦T88⟧](https://www.npmjs.com/package/agentsvc) |
+| [⟦T25⟧](https://docs.pexafy.com/langchain) | [  ⟦T89⟧](https://www.npmjs.com/package/langchain-pexafy) |
+| [⟦T26⟧](https://databazaar.io/integrations?utm_source=langchain\&utm_campaign=integration-listing#langchain) | [  ⟦T90⟧](https://www.npmjs.com/package/databazaar-agent-tools) |
+| [⟦T27⟧](https://www.pipe0.com/docs/sdks/integrations/langchain) | [  ⟦T91⟧](https://www.npmjs.com/package/@pipe0/langchain) |
+| [⟦T28⟧](https://precleared.dev/docs/langchain) | [  ⟦T92⟧](https://www.npmjs.com/package/precleared) |
+| [⟦T29⟧](https://github.com/Instant-Expert/integrations/tree/main/js/langchain-instant-expert#readme) | [  ⟦T93⟧](https://www.npmjs.com/package/langchain-instant-expert) |
+| [⟦T30⟧](https://github.com/MSG91/m91-sdk#langchain) | [  ⟦T94⟧](https://www.npmjs.com/package/@msg91comm/m91) |
+| [⟦T31⟧](https://agentsearchhq.com/#integrations?utm_source=langchain-docs-js\&utm_medium=integration-listing\&utm_campaign=promo-oct26) | [  ⟦T95⟧](https://www.npmjs.com/package/@agentsearchhq/langchain) |
+| [⟦T32⟧](https://pushary.com/docs/agents/build/langgraph?utm_source=langchain\&utm_medium=integration-directory\&utm_campaign=pushary-langgraph-js) | [  ⟦T96⟧](https://www.npmjs.com/package/@pushary/langgraph) |
+| [⟦T33⟧](https://github.com/satohubai/sato-hub-integrations/tree/main/packages/satohub-langchain-tools#readme) | [  ⟦T97⟧](https://www.npmjs.com/package/satohub-langchain-tools) |
+| [⟦T34⟧](https://github.com/fidacy/fidacy-open) | [  ⟦T98⟧](https://www.npmjs.com/package/@fidacy/langchain) |
+| [⟦T35⟧](https://github.com/tubeagentkit/langchain-getyoutubetranscript#readme) | [  ⟦T99⟧](https://www.npmjs.com/package/@tubeagentkit/langchain-getyoutubetranscript) |
+| [⟦T36⟧](/oss/javascript/integrations/tools/falkordb) | [  ⟦T100⟧](https://www.npmjs.com/package/@falkordb/langchain-ts) |
+| [⟦T37⟧](https://www.respan.ai/docs/documentation/overview) | [  ⟦T101⟧](https://www.npmjs.com/package/@respan/instrumentation-langchain) |
+| [⟦T38⟧](https://snap-render.com) | [  ⟦T102⟧](https://www.npmjs.com/package/langchain-snaprender) |
+| [⟦T39⟧](https://docs.talordata.com/serp-api/integration/sdk-integration/how-to-set-up-talordata-with-langchain) | [  ⟦T103⟧](https://www.npmjs.com/package/langchain-talordata) |
+| [⟦T40⟧](/oss/javascript/integrations/tools/azure_dynamic_sessions) | [  ⟦T104⟧](https://www.npmjs.com/package/@langchain/azure-dynamic-sessions) |
+| [⟦T41⟧](https://github.com/ai-worker227/aiworker-examples/tree/main/langchain) | [  ⟦T105⟧](https://www.npmjs.com/package/aiworker-langchain-tools) |
+| [⟦T42⟧](https://github.com/brianbooms/plugin-steward) | [  ⟦T106⟧](https://www.npmjs.com/package/@brianbooms/steward-mcp) |
+| [⟦T43⟧](https://you.com/docs/integrations/langchain) | [  ⟦T107⟧](https://www.npmjs.com/package/@youdotcom-oss/langchain) |
+| [⟦T44⟧](https://docs.corsair.dev/mcp-adapters/langchain) | [  ⟦T108⟧](https://www.npmjs.com/package/@corsair-dev/langchain) |
+| [⟦T45⟧](https://docs.safeprompt.dev/langchain) | [  ⟦T109⟧](https://www.npmjs.com/package/@safeprompt.dev/langchain) |
+| [⟦T46⟧](https://github.com/gentlegiant96202/mercedes-benz-service-reminder-mcp#readme) | [  ⟦T110⟧](https://www.npmjs.com/package/mercedes-benz-service-reminder-mcp) |
+| [⟦T47⟧](https://docs.thecontextcompany.com/frameworks/langchain-langgraph) | [  ⟦T111⟧](https://www.npmjs.com/package/@contextcompany/langchain) |
+| [⟦T48⟧](/oss/javascript/integrations/tools/clicksend) | [  ⟦T112⟧](https://www.npmjs.com/package/@clicksend/langchain-clicksend-mcp) |
+| [⟦T49⟧](https://toolstem.com) | [  ⟦T113⟧](https://www.npmjs.com/package/langchain-toolstem) |
+| [⟦T50⟧](https://platform.iflow.cn) | [  ⟦T114⟧](https://www.npmjs.com/package/@iflow-ai/search-langchain) |
+| [⟦T51⟧](https://docs.magichour.ai) | [  ⟦T115⟧](https://www.npmjs.com/package/langchain-magic-hour) |
+| [⟦T52⟧](https://github.com/aproxpay/langchain-aproxpay) | [  ⟦T116⟧](https://www.npmjs.com/package/langchain-aproxpay) |
+| [⟦T53⟧](/oss/javascript/integrations/tools/jigsawstack) | [  ⟦T117⟧](https://www.npmjs.com/package/@langchain/jigsawstack) |
+| [⟦T54⟧](https://ceki.me) | [  ⟦T118⟧](https://www.npmjs.com/package/@ceki/langchain-ceki) |
+| [⟦T55⟧](https://github.com/codexvritra/signa/tree/main/sdk/langchain) | [  ⟦T119⟧](https://www.npmjs.com/package/signa-langchain) |
+| [⟦T56⟧](/oss/javascript/integrations/tools/nia) | [  ⟦T120⟧](https://www.npmjs.com/package/@nozomioai/langchain-nia) |
+| [⟦T57⟧](/oss/javascript/integrations/tools/lambda_agent) |不适用 |
+| [⟦T58⟧](https://browserless.io) |不适用 || [⟦T59⟧](/oss/javascript/integrations/tools/json) |不适用 |
+| [⟦T60⟧](https://docs.notte.cc/integrations/langchain) |不适用 |
+| [⟦T61⟧](/oss/javascript/integrations/tools/sql) |不适用 |
+| [⟦T62⟧](/oss/javascript/integrations/tools/vectorstore) |不适用 |
+| [⟦T63⟧](/oss/javascript/integrations/tools/webbrowser) |不适用 |
+| [⟦T64⟧](https://webextract.dev/docs/langchain) |不适用 |
 
-<Info>
-  如果您想编写自己的工具，请参阅[Create tools](/oss/javascript/langchain/tools#create-tools)。如果您想贡献集成，请参阅[Build a new integration](/oss/javascript/contributing/integrations-langchain)。
-</Info>
+> [!注意]
+>
+> 如果您想编写自己的工具，请参阅[Create tools](/oss/javascript/langchain/tools#create-tools)。如果您想贡献集成，请参阅[Build a new integration](/oss/javascript/contributing/integrations-langchain)。
 
 ***
 
-<div>
-  <Callout icon="terminal-2">
-    [Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
-  </Callout>
+[Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
 
-  <Callout icon="edit">
-    [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/oss/javascript/integrations/tools/index.mdx) 或 [file an issue](https://github.com/langchain-ai/docs/issues/new/choose)。
-  </Callout>
-</div>
+[Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/oss/javascript/integrations/tools/index.mdx) 或 [file an issue](https://github.com/langchain-ai/docs/issues/new/choose)。

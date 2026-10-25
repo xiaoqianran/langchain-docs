@@ -17,9 +17,9 @@
 7. 纠正数据库引擎出现的错误，直到查询成功
 8. 根据结果制定响应
 
-<Warning>
-  构建 SQL 数据库的问答系统需要执行模型生成的 SQL 查询。这样做存在固有的风险。确保数据库连接权限的范围始终尽可能缩小，以满足代理的需求。这将减轻（但不能消除）构建模型驱动系统的风险。
-</Warning>
+> [!警告]
+>
+> 构建 SQL 数据库的问答系统需要执行模型生成的 SQL 查询。这样做存在固有的风险。确保数据库连接权限的范围始终尽可能缩小，以满足代理的需求。这将减轻（但不能消除）构建模型驱动系统的风险。
 
 ### 概念
 
@@ -31,1635 +31,1595 @@
 
 ## 设置
 
-<Steps>
-  <Step title="Install dependencies">
-    <CodeGroup>
-      ```bash npm theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-      npm i langchain @langchain/core sqlite3 zod
-      ```
+**1.安装依赖项**
 
-      ```bash yarn theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-      yarn add langchain @langchain/core sqlite3 zod
-      ``````bash pnpm theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-      pnpm add langchain @langchain/core sqlite3 zod
-      ```
-    </CodeGroup>
-  </Step>
+```bash npm theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+npm i langchain @langchain/core sqlite3 zod
+```
 
-  <Step title="Set up LangSmith">
-    设置 [LangSmith](https://smith.langchain.com?utm_source=docs\&utm_medium=cta\&utm_campaign=langsmith-signup\&utm_content=oss-langchain-sql-agent) 来检查您的连锁店或代理内部发生的情况。然后设置以下环境变量：
+```bash yarn theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+yarn add langchain @langchain/core sqlite3 zod
+```
 
-    ```shell theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-    export LANGSMITH_TRACING="true"
-    export LANGSMITH_API_KEY="..."
-    ```
-  </Step>
-</Steps>
+```bash pnpm theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+pnpm add langchain @langchain/core sqlite3 zod
+```**2.设置LangSmith**
+
+设置 [LangSmith](https://smith.langchain.com?utm_source=docs\&utm_medium=cta\&utm_campaign=langsmith-signup\&utm_content=oss-langchain-sql-agent) 来检查您的连锁店或代理内部发生的情况。然后设置以下环境变量：
+
+```shell theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+export LANGSMITH_TRACING="true"
+export LANGSMITH_API_KEY="..."
+```
 
 ## 构建你的 SQL 代理
 
-<Steps>
-  <Step title="Select an LLM">
-    选择支持[tool-calling](/oss/javascript/integrations/providers/overview)的型号：
+**1.选择法学硕士**
 
-    <Tabs>
-      <Tab title="OpenAI">
-        👉 阅读[OpenAI chat model integration docs](/oss/javascript/integrations/chat/openai/)
+选择支持[tool-calling](/oss/javascript/integrations/providers/overview)的型号：
 
-        <CodeGroup>
-          ```bash npm theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-          npm install @langchain/openai
-          ```
+**OpenAI**
 
-          ```bash pnpm theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-          pnpm install @langchain/openai
-          ```
+👉 阅读[OpenAI chat model integration docs](/oss/javascript/integrations/chat/openai/)
 
-          ```bash yarn theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-          yarn add @langchain/openai
-          ```
+```bash npm theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+npm install @langchain/openai
+```
 
-          ```bash bun theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-          bun add @langchain/openai
-          ```
-        </CodeGroup>
+```bash pnpm theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+pnpm install @langchain/openai
+```
 
-        <CodeGroup>
-          ```typescript initChatModel theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-          import { initChatModel } from "langchain";
+```bash yarn theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+yarn add @langchain/openai
+```
 
-          process.env.OPENAI_API_KEY = "your-api-key";
+```bash bun theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+bun add @langchain/openai
+```
 
-          const model = await initChatModel("gpt-5.5");
-          ```
+```typescript initChatModel theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+import { initChatModel } from "langchain";
 
-          ```typescript Model Class theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-          import { ChatOpenAI } from "@langchain/openai";
+process.env.OPENAI_API_KEY = "your-api-key";
 
-          const model = new ChatOpenAI({
-            model: "gpt-5.5",
-            apiKey: "your-api-key"
-          });
-          ```
-        </CodeGroup>
-      </Tab>
+const model = await initChatModel("gpt-5.5");
+```
 
-      <Tab title="Anthropic">
-        👉 阅读[Anthropic chat model integration docs](/oss/javascript/integrations/chat/anthropic/)
+```typescript Model Class theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+import { ChatOpenAI } from "@langchain/openai";
 
-        <CodeGroup>
-          ```bash npm theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-          npm install @langchain/anthropic
-          ```
+const model = new ChatOpenAI({
+  model: "gpt-5.5",
+  apiKey: "your-api-key"
+});
+```
 
-          ```bash pnpm theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-          pnpm install @langchain/anthropic
-          ```
+**Anthropic**
 
-          ```bash yarn theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-          yarn add @langchain/anthropic
-          ```
+👉 阅读[Anthropic chat model integration docs](/oss/javascript/integrations/chat/anthropic/)
 
-          ```bash pnpm theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-          pnpm add @langchain/anthropic
-          ```
-        </CodeGroup>
+```bash npm theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+npm install @langchain/anthropic
+```
 
-        <CodeGroup>
-          ```typescript initChatModel theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-          import { initChatModel } from "langchain";
+```bash pnpm theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+pnpm install @langchain/anthropic
+```
 
-          process.env.ANTHROPIC_API_KEY = "your-api-key";
+```bash yarn theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+yarn add @langchain/anthropic
+```
 
-          const model = await initChatModel("claude-sonnet-4-6");
-          ```
+```bash pnpm theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+pnpm add @langchain/anthropic
+```
 
-          ```typescript Model Class theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-          import { ChatAnthropic } from "@langchain/anthropic";
+```typescript initChatModel theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+import { initChatModel } from "langchain";
 
-          const model = new ChatAnthropic({
-            model: "claude-sonnet-4-6",
-            apiKey: "your-api-key"
-          });
-          ```
-        </CodeGroup>
-      </Tab>
+process.env.ANTHROPIC_API_KEY = "your-api-key";
 
-      <Tab title="Azure">
-        👉 阅读[Azure chat model integration docs](/oss/javascript/integrations/chat/azure/)
+const model = await initChatModel("claude-sonnet-4-6");
+```
 
-        <CodeGroup>
-          ```bash npm theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-          npm install @langchain/azure
-          ```
+```typescript Model Class theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+import { ChatAnthropic } from "@langchain/anthropic";
 
-          ```bash pnpm theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-          pnpm install @langchain/azure
-          ```
+const model = new ChatAnthropic({
+  model: "claude-sonnet-4-6",
+  apiKey: "your-api-key"
+});
+```
 
-          ```bash yarn theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-          yarn add @langchain/azure
-          ```
+**天蓝色**
 
-          ```bash bun theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-          bun add @langchain/azure
-          ```
-        </CodeGroup>
+👉 阅读[Azure chat model integration docs](/oss/javascript/integrations/chat/azure/)
 
-        <CodeGroup>
-          ```typescript initChatModel theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-          import { initChatModel } from "langchain";
+```bash npm theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+npm install @langchain/azure
+```
 
-          process.env.AZURE_OPENAI_API_KEY = "your-api-key";
-          process.env.AZURE_OPENAI_ENDPOINT = "your-endpoint";
-          process.env.OPENAI_API_VERSION = "your-api-version";
+```bash pnpm theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+pnpm install @langchain/azure
+```
 
-          const model = await initChatModel("azure_openai:gpt-5.5");
-          ```
+```bash yarn theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+yarn add @langchain/azure
+```
 
-          ```typescript Model Class theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-          import { AzureChatOpenAI } from "@langchain/openai";
+```bash bun theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+bun add @langchain/azure
+```
 
-          const model = new AzureChatOpenAI({
-            model: "gpt-5.5",
-            azureOpenAIApiKey: "your-api-key",
-            azureOpenAIApiEndpoint: "your-endpoint",
-            azureOpenAIApiVersion: "your-api-version"
-          });
-          ```
-        </CodeGroup>
-      </Tab>
+```typescript initChatModel theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+import { initChatModel } from "langchain";
 
-      <Tab title="Google Gemini">
-        👉 阅读[ChatGoogle chat model integration docs](/oss/javascript/integrations/chat/google)
+process.env.AZURE_OPENAI_API_KEY = "your-api-key";
+process.env.AZURE_OPENAI_ENDPOINT = "your-endpoint";
+process.env.OPENAI_API_VERSION = "your-api-version";
 
-        <CodeGroup>
-          ```bash npm theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-          npm install @langchain/google
-          ```
+const model = await initChatModel("azure_openai:gpt-5.5");
+```
 
-          ```bash pnpm theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-          pnpm install @langchain/google
-          ```
+```typescript Model Class theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+import { AzureChatOpenAI } from "@langchain/openai";
 
-          ```bash yarn theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-          yarn add @langchain/google
-          ```
+const model = new AzureChatOpenAI({
+  model: "gpt-5.5",
+  azureOpenAIApiKey: "your-api-key",
+  azureOpenAIApiEndpoint: "your-endpoint",
+  azureOpenAIApiVersion: "your-api-version"
+});
+```
 
-          ```bash bun theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-          bun add @langchain/google
-          ```
-        </CodeGroup>
+**谷歌双子座**
 
-        <CodeGroup>
-          ```typescript initChatModel theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-          import { initChatModel } from "langchain";
+👉 阅读[ChatGoogle chat model integration docs](/oss/javascript/integrations/chat/google)
 
-          process.env.GOOGLE_API_KEY = "your-api-key";
+```bash npm theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+npm install @langchain/google
+```
 
-          const model = await initChatModel("google:gemini-3.7-flash");
-          ```
+```bash pnpm theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+pnpm install @langchain/google
+```
 
-          ```typescript Model Class theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-          import { ChatGoogle } from "@langchain/google/node";
+```bash yarn theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+yarn add @langchain/google
+```
 
-          const model = new ChatGoogle({
-            model: "gemini-3.7-flash",
-            apiKey: "your-api-key"
-          });
-          ```
-        </CodeGroup>
-      </Tab>
+```bash bun theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+bun add @langchain/google
+```
 
-      <Tab title="Bedrock Converse">
-        👉 阅读[AWS Bedrock chat model integration docs](/oss/javascript/integrations/chat/bedrock_converse/)<CodeGroup>
-          ```bash npm theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-          npm install @langchain/aws
-          ```
+```typescript initChatModel theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+import { initChatModel } from "langchain";
 
-          ```bash pnpm theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-          pnpm install @langchain/aws
-          ```
+process.env.GOOGLE_API_KEY = "your-api-key";
 
-          ```bash yarn theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-          yarn add @langchain/aws
-          ```
+const model = await initChatModel("google:gemini-3.7-flash");
+```
 
-          ```bash bun theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-          bun add @langchain/aws
-          ```
-        </CodeGroup>
+```typescript Model Class theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+import { ChatGoogle } from "@langchain/google/node";
 
-        <CodeGroup>
-          ```typescript initChatModel theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-          import { initChatModel } from "langchain";
+const model = new ChatGoogle({
+  model: "gemini-3.7-flash",
+  apiKey: "your-api-key"
+});
+```
 
-          // Follow the steps here to configure your credentials:
-          // https://docs.aws.amazon.com/bedrock/latest/userguide/getting-started.html
+**基岩匡威**
 
-          const model = await initChatModel("bedrock:gpt-5.5");
-          ```
+👉 阅读[AWS Bedrock chat model integration docs](/oss/javascript/integrations/chat/bedrock_converse/)
 
-          ```typescript Model Class theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-          import { ChatBedrockConverse } from "@langchain/aws";
+```bash npm theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+npm install @langchain/aws
+```
 
-          // Follow the steps here to configure your credentials:
-          // https://docs.aws.amazon.com/bedrock/latest/userguide/getting-started.html
+```bash pnpm theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+pnpm install @langchain/aws
+```
 
-          const model = new ChatBedrockConverse({
-            model: "gpt-5.5",
-            region: "us-east-2"
-          });
-          ```
-        </CodeGroup>
-      </Tab>
-    </Tabs>
+```bash yarn theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+yarn add @langchain/aws
+```
 
-    以下示例中显示的输出使用OpenAI。
-  </Step>
+```bash bun theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+bun add @langchain/aws
+```
 
-  <Step title="Configure the database">
-    您将为本教程创建一个 [SQLite database](https://www.sqlitetutorial.net/sqlite-sample-database/)。 SQLite 是一个轻量级数据库，易于设置和使用。我们将加载 `chinook` 数据库，这是代表数字媒体商店的示例数据库。
+```typescript initChatModel theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+import { initChatModel } from "langchain";
 
-    为了方便起见，我们将数据库 (`Chinook.db`) 托管在公共 GCS 存储桶上。
+// Follow the steps here to configure your credentials:
+// https://docs.aws.amazon.com/bedrock/latest/userguide/getting-started.html
 
-    ```ts theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-    import fs from "node:fs/promises";
-    import path from "node:path";
+const model = await initChatModel("bedrock:gpt-5.5");
+```
 
-    const url =
-      "https://storage.googleapis.com/benchmarks-artifacts/chinook/Chinook.db";
-    const localPath = path.resolve("Chinook.db");
+```typescript Model Class theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+import { ChatBedrockConverse } from "@langchain/aws";
 
-    async function resolveDbPath() {
-      try {
-        await fs.access(localPath);
-        return localPath;
-      } catch {
-        // Chinook.db not present locally; download it.
-      }
-      const resp = await fetch(url);
-      if (!resp.ok)
-        throw new Error(`Failed to download DB. Status code: ${resp.status}`);
-      const buf = Buffer.from(await resp.arrayBuffer());
-      await fs.writeFile(localPath, buf);
-      return localPath;
+// Follow the steps here to configure your credentials:
+// https://docs.aws.amazon.com/bedrock/latest/userguide/getting-started.html
+
+const model = new ChatBedrockConverse({
+  model: "gpt-5.5",
+  region: "us-east-2"
+});
+```
+
+以下示例中显示的输出使用OpenAI。
+
+**2.配置数据库**
+
+您将为本教程创建一个 [SQLite database](https://www.sqlitetutorial.net/sqlite-sample-database/)。 SQLite 是一个轻量级数据库，易于设置和使用。我们将加载 `chinook` 数据库，这是代表数字媒体商店的示例数据库。
+
+为了方便起见，我们将数据库 (`Chinook.db`) 托管在公共 GCS 存储桶上。
+
+```ts theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+import fs from "node:fs/promises";
+import path from "node:path";
+
+const url =
+  "https://storage.googleapis.com/benchmarks-artifacts/chinook/Chinook.db";
+const localPath = path.resolve("Chinook.db");
+
+async function resolveDbPath() {
+  try {
+    await fs.access(localPath);
+    return localPath;
+  } catch {
+    // Chinook.db not present locally; download it.
+  }
+  const resp = await fetch(url);
+  if (!resp.ok)
+    throw new Error(`Failed to download DB. Status code: ${resp.status}`);
+  const buf = Buffer.from(await resp.arrayBuffer());
+  await fs.writeFile(localPath, buf);
+  return localPath;
+}
+```
+
+**3.添加数据库交互工具**> [!警告]
+>
+> 以下数据库工具是最小包装器，仅用于演示目的。它们的目的不是为了安全或在生产中使用。在执行模型生成的 SQL 之前，使用范围狭窄的数据库权限并添加特定于应用程序的验证。
+
+我们将使用 `sqlite3` 库来查询数据库并获取模式：
+
+```ts theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+import sqlite3 from "sqlite3";
+
+// Below are minimal tools for demonstration purposes.
+async function runQuery(query: string): Promise<any[]> {
+  const dbPath = await resolveDbPath();
+  const db = new sqlite3.Database(dbPath);
+  return new Promise((resolve, reject) => {
+    db.all(query, [], (err, rows) => {
+      db.close();
+      if (err) reject(err);
+      else resolve(rows);
+    });
+  });
+}
+
+async function getSchema() {
+  const tables = await runQuery(
+    "SELECT sql FROM sqlite_master WHERE type='table' AND name NOT LIKE 'sqlite_%';",
+  );
+  return tables.map((row) => row.sql).join("\n\n");
+}
+```
+
+**4.创建代理**
+
+在运行命令之前，请检查` _safe_sql`中LLM生成的命令：
+
+```ts theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+const DENY_RE =
+  /\b(INSERT|UPDATE|DELETE|ALTER|DROP|CREATE|REPLACE|TRUNCATE)\b/i;
+const HAS_LIMIT_TAIL_RE = /\blimit\b\s+\d+(\s*,\s*\d+)?\s*;?\s*$/i;
+
+function sanitizeSqlQuery(q) {
+  let query = String(q ?? "").trim();
+
+  // block multiple statements (allow one optional trailing ;)
+  const semis = [...query].filter((c) => c === ";").length;
+  if (semis > 1 || (query.endsWith(";") && query.slice(0, -1).includes(";"))) {
+    throw new Error("multiple statements are not allowed.");
+  }
+  query = query.replace(/;+\s*$/g, "").trim();
+
+  // read-only gate
+  if (!query.toLowerCase().startsWith("select")) {
+    throw new Error("Only SELECT statements are allowed");
+  }
+  if (DENY_RE.test(query)) {
+    throw new Error("DML/DDL detected. Only read-only queries are permitted.");
+  }
+
+  // append LIMIT only if not already present
+  if (!HAS_LIMIT_TAIL_RE.test(query)) {
+    query += " LIMIT 5";
+  }
+  return query;
+}
+```
+
+然后，使用`execute_sql`工具执行命令：
+
+```ts theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+import { tool } from "langchain";
+import * as z from "zod";
+
+const executeSql = tool(
+  async ({ query }) => {
+    const q = sanitizeSqlQuery(query);
+    try {
+      const result = await runQuery(q);
+      return JSON.stringify(result, null, 2);
+    } catch (e) {
+      const message = e instanceof Error ? e.message : String(e);
+      throw new Error(message);
     }
-    ```
-  </Step>
+  },
+  {
+    name: "execute_sql",
+    description: "Execute a READ-ONLY SQLite SELECT query and return results.",
+    schema: z.object({
+      query: z.string().describe("SQLite SELECT query to execute (read-only)."),
+    }),
+  },
+);
+```
 
-  <Step title="Add tools for database interactions">
-    <Warning>
-      以下数据库工具是最小包装器，仅用于演示目的。它们的目的不是为了安全或在生产中使用。在执行模型生成的 SQL 之前，使用范围狭窄的数据库权限并添加特定于应用程序的验证。
-    </Warning>
+使用`createAgent`以最少的代码构建[ReAct agent](https://arxiv.org/pdf/2210.03629)。代理将解释请求并生成 SQL 命令。这些工具将检查命令的安全性，然后尝试执行该命令。如果命令有错误，错误消息将返回给模型。然后，该模型可以检查原始请求和新的错误消息并生成新命令。这可以继续，直到 LLM 成功生成命令或达到结束计数。这种为模型提供反馈（本例中为错误消息）的模式非常强大。
 
-    我们将使用 `sqlite3` 库来查询数据库并获取模式：
+使用描述性系统提示初始化代理以自定义其行为：
 
-    ```ts theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-    import sqlite3 from "sqlite3";
+```ts theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+import { SystemMessage } from "langchain";
 
-    // Below are minimal tools for demonstration purposes.
-    async function runQuery(query: string): Promise<any[]> {
-      const dbPath = await resolveDbPath();
-      const db = new sqlite3.Database(dbPath);
-      return new Promise((resolve, reject) => {
-        db.all(query, [], (err, rows) => {
-          db.close();
-          if (err) reject(err);
-          else resolve(rows);
-        });
-      });
+const getSystemPrompt = async () =>
+  new SystemMessage(`You are a careful SQLite analyst.
+
+Authoritative schema (do not invent columns/tables):
+${await getSchema()}
+
+Rules:
+- Think step-by-step.
+- When you need data, call the tool \`execute_sql\` with ONE SELECT query.
+- Read-only; no INSERT/UPDATE/DELETE/ALTER/DROP/CREATE/REPLACE/TRUNCATE.
+- Limit to 5 rows unless user explicitly asks otherwise.
+- If the tool returns 'Error:', revise the SQL and try again.
+- Limit the number of attempts to 5.
+- If you are not successful after 5 attempts, return a note to the user.
+- Prefer explicit column lists; avoid SELECT *.
+`);
+```现在，使用模型、工具和提示创建代理：
+
+```ts Google theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+import { createAgent } from "langchain";
+
+let agent = createAgent({
+  model: "google:gemini-3.6-flash",
+  tools: [executeSql],
+  systemPrompt: await getSystemPrompt(),
+});
+```
+
+```ts OpenAI theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+import { createAgent } from "langchain";
+
+let agent = createAgent({
+  model: "openai:gpt-5.5",
+  tools: [executeSql],
+  systemPrompt: await getSystemPrompt(),
+});
+```
+
+```ts Anthropic theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+import { createAgent } from "langchain";
+
+let agent = createAgent({
+  model: "anthropic:claude-sonnet-5",
+  tools: [executeSql],
+  systemPrompt: await getSystemPrompt(),
+});
+```
+
+```ts OpenRouter theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+import { createAgent } from "langchain";
+
+let agent = createAgent({
+  model: "openrouter:z-ai/glm-5.2",
+  tools: [executeSql],
+  systemPrompt: await getSystemPrompt(),
+});
+```
+
+```ts Fireworks theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+import { createAgent } from "langchain";
+
+let agent = createAgent({
+  model: "fireworks:accounts/fireworks/models/glm-5p2",
+  tools: [executeSql],
+  systemPrompt: await getSystemPrompt(),
+});
+```
+
+```ts Baseten theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+import { createAgent } from "langchain";
+
+let agent = createAgent({
+  model: "baseten:zai-org/GLM-5.2",
+  tools: [executeSql],
+  systemPrompt: await getSystemPrompt(),
+});
+```
+
+```ts Ollama theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+import { createAgent } from "langchain";
+
+let agent = createAgent({
+  model: "ollama:north-mini-code-1.0",
+  tools: [executeSql],
+  systemPrompt: await getSystemPrompt(),
+});
+```
+
+**5.运行代理**
+
+对示例查询运行代理并观察其行为：
+
+```ts theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+let question = "Which genre, on average, has the longest tracks?";
+
+const stream = await agent.streamEvents(
+  { messages: [{ role: "user", content: question }] },
+  { version: "v3" },
+);
+await Promise.all([
+  (async () => {
+    for await (const message of stream.messages) {
+      for await (const token of message.text) {
+        process.stdout.write(token);
+      }
     }
-
-    async function getSchema() {
-      const tables = await runQuery(
-        "SELECT sql FROM sqlite_master WHERE type='table' AND name NOT LIKE 'sqlite_%';",
-      );
-      return tables.map((row) => row.sql).join("\n\n");
+  })(),
+  (async () => {
+    for await (const call of stream.toolCalls) {
+      console.log(`\nTool call: ${call.name}(${JSON.stringify(call.input)})`);
+      console.log(`Tool result: ${await call.output}`);
     }
-    ```
-  </Step>
-
-  <Step title="Create the agent">
-    在运行命令之前，请检查` _safe_sql`中LLM生成的命令：
-
-    ```ts theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-    const DENY_RE =
-      /\b(INSERT|UPDATE|DELETE|ALTER|DROP|CREATE|REPLACE|TRUNCATE)\b/i;
-    const HAS_LIMIT_TAIL_RE = /\blimit\b\s+\d+(\s*,\s*\d+)?\s*;?\s*$/i;
-
-    function sanitizeSqlQuery(q) {
-      let query = String(q ?? "").trim();
-
-      // block multiple statements (allow one optional trailing ;)
-      const semis = [...query].filter((c) => c === ";").length;
-      if (semis > 1 || (query.endsWith(";") && query.slice(0, -1).includes(";"))) {
-        throw new Error("multiple statements are not allowed.");
-      }
-      query = query.replace(/;+\s*$/g, "").trim();
-
-      // read-only gate
-      if (!query.toLowerCase().startsWith("select")) {
-        throw new Error("Only SELECT statements are allowed");
-      }
-      if (DENY_RE.test(query)) {
-        throw new Error("DML/DDL detected. Only read-only queries are permitted.");
-      }
-
-      // append LIMIT only if not already present
-      if (!HAS_LIMIT_TAIL_RE.test(query)) {
-        query += " LIMIT 5";
-      }
-      return query;
-    }
-    ```
-
-    然后，使用`execute_sql`工具执行命令：
-
-    ```ts theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-    import { tool } from "langchain";
-    import * as z from "zod";
-
-    const executeSql = tool(
-      async ({ query }) => {
-        const q = sanitizeSqlQuery(query);
-        try {
-          const result = await runQuery(q);
-          return JSON.stringify(result, null, 2);
-        } catch (e) {
-          const message = e instanceof Error ? e.message : String(e);
-          throw new Error(message);
-        }
-      },
-      {
-        name: "execute_sql",
-        description: "Execute a READ-ONLY SQLite SELECT query and return results.",
-        schema: z.object({
-          query: z.string().describe("SQLite SELECT query to execute (read-only)."),
-        }),
-      },
-    );
-    ```使用`createAgent`以最少的代码构建[ReAct agent](https://arxiv.org/pdf/2210.03629)。代理将解释请求并生成 SQL 命令。这些工具将检查命令的安全性，然后尝试执行该命令。如果命令有错误，错误消息将返回给模型。然后，该模型可以检查原始请求和新的错误消息并生成新命令。这可以继续，直到 LLM 成功生成命令或达到结束计数。这种为模型提供反馈（本例中为错误消息）的模式非常强大。
-
-    使用描述性系统提示初始化代理以自定义其行为：
-
-    ```ts theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-    import { SystemMessage } from "langchain";
-
-    const getSystemPrompt = async () =>
-      new SystemMessage(`You are a careful SQLite analyst.
-
-    Authoritative schema (do not invent columns/tables):
-    ${await getSchema()}
-
-    Rules:
-    - Think step-by-step.
-    - When you need data, call the tool \`execute_sql\` with ONE SELECT query.
-    - Read-only; no INSERT/UPDATE/DELETE/ALTER/DROP/CREATE/REPLACE/TRUNCATE.
-    - Limit to 5 rows unless user explicitly asks otherwise.
-    - If the tool returns 'Error:', revise the SQL and try again.
-    - Limit the number of attempts to 5.
-    - If you are not successful after 5 attempts, return a note to the user.
-    - Prefer explicit column lists; avoid SELECT *.
-    `);
-    ```
-
-    现在，使用模型、工具和提示创建代理：
-
-    <CodeGroup>
-      ```ts Google theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-      import { createAgent } from "langchain";
-
-      let agent = createAgent({
-        model: "google:gemini-3.6-flash",
-        tools: [executeSql],
-        systemPrompt: await getSystemPrompt(),
-      });
-      ```
-
-      ```ts OpenAI theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-      import { createAgent } from "langchain";
-
-      let agent = createAgent({
-        model: "openai:gpt-5.5",
-        tools: [executeSql],
-        systemPrompt: await getSystemPrompt(),
-      });
-      ```
-
-      ```ts Anthropic theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-      import { createAgent } from "langchain";
-
-      let agent = createAgent({
-        model: "anthropic:claude-sonnet-5",
-        tools: [executeSql],
-        systemPrompt: await getSystemPrompt(),
-      });
-      ```
-
-      ```ts OpenRouter theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-      import { createAgent } from "langchain";
-
-      let agent = createAgent({
-        model: "openrouter:z-ai/glm-5.2",
-        tools: [executeSql],
-        systemPrompt: await getSystemPrompt(),
-      });
-      ```
-
-      ```ts Fireworks theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-      import { createAgent } from "langchain";
-
-      let agent = createAgent({
-        model: "fireworks:accounts/fireworks/models/glm-5p2",
-        tools: [executeSql],
-        systemPrompt: await getSystemPrompt(),
-      });
-      ```
-
-      ```ts Baseten theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-      import { createAgent } from "langchain";
-
-      let agent = createAgent({
-        model: "baseten:zai-org/GLM-5.2",
-        tools: [executeSql],
-        systemPrompt: await getSystemPrompt(),
-      });
-      ```
-
-      ```ts Ollama theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-      import { createAgent } from "langchain";
-
-      let agent = createAgent({
-        model: "ollama:north-mini-code-1.0",
-        tools: [executeSql],
-        systemPrompt: await getSystemPrompt(),
-      });
-      ```
-    </CodeGroup>
-  </Step>
-
-  <Step title="Run the agent">
-    对示例查询运行代理并观察其行为：
-
-    ```ts theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-    let question = "Which genre, on average, has the longest tracks?";
-
-    const stream = await agent.streamEvents(
-      { messages: [{ role: "user", content: question }] },
-      { version: "v3" },
-    );
-    await Promise.all([
-      (async () => {
-        for await (const message of stream.messages) {
-          for await (const token of message.text) {
-            process.stdout.write(token);
-          }
-        }
-      })(),
-      (async () => {
-        for await (const call of stream.toolCalls) {
-          console.log(`\nTool call: ${call.name}(${JSON.stringify(call.input)})`);
-          console.log(`Tool result: ${await call.output}`);
-        }
-      })(),
-    ]);
-
-    const finalState = await stream.output;
-    ```
-
-    ```
-    human: Which genre, on average, has the longest tracks?
-    ai:
-    tool: [{"Genre":"Sci Fi & Fantasy","AvgMilliseconds":2911783.0384615385}]
-    ai: Sci Fi & Fantasy — average track length ≈ 48.5 minutes (about 2,911,783 ms).
-    ```
-
-    代理正确地编写了一个查询，检查了该查询，然后运行它以告知其最终响应。<Note>
-      您可以检查上述运行的各个方面，包括采取的步骤、调用的工具、LLM 看到的提示以及[LangSmith trace](https://smith.langchain.com/public/653d218b-af67-4854-95ca-6abecb9b2520/r) 中的更多信息。
-    </Note>
-  </Step>
-
-  <Step title="(Optional) Use Studio">
-    [Studio](/langsmith/studio) 提供“客户端”循环以及内存，因此您可以将其作为聊天界面运行并查询数据库。您可以提出诸如“告诉我数据库的方案”或“显示前 5 位客户的发票”之类的问题。您将看到生成的 SQL 命令和结果输出。下面详细介绍了如何开始。
-
-    <Accordion title="Run your agent in Studio">
-      除了前面提到的包之外，您还需要：
-
-      ```shell theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-      npm i -g @langchain/langgraph-cli@latest
-      ```
-
-      在您将运行的目录中，您将需要一个包含以下内容的 `langgraph.json` 文件：
-
-      ```json theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-      {
-        "dependencies": ["."],
-        "graphs": {
-            "agent": "./sqlAgent.ts:agent",
-            "graph": "./sqlAgentLanggraph.ts:graph"
-        },
-        "env": ".env"
-      }
-      ```
-
-      创建一个文件 `sqlAgent.ts` 并插入以下内容：
-
-      <CodeGroup>
-        ```ts Google theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-        import fs from "node:fs/promises";
-        import path from "node:path";
-        import sqlite3 from "sqlite3";
-        import { SystemMessage, createAgent, tool } from "langchain";
-        import * as z from "zod";
-
-        const url =
-          "https://storage.googleapis.com/benchmarks-artifacts/chinook/Chinook.db";
-        const localPath = path.resolve("Chinook.db");
-
-        async function resolveDbPath() {
-          try {
-            await fs.access(localPath);
-            return localPath;
-          } catch {
-            // Chinook.db not present locally; download it.
-          }
-          const resp = await fetch(url);
-          if (!resp.ok)
-            throw new Error(`Failed to download DB. Status code: ${resp.status}`);
-          const buf = Buffer.from(await resp.arrayBuffer());
-          await fs.writeFile(localPath, buf);
-          return localPath;
-        }
-
-        // Below are minimal tools for demonstration purposes.
-        async function runQuery(query: string): Promise<Record<string, unknown>[]> {
-          const dbPath = await resolveDbPath();
-          const db = new sqlite3.Database(dbPath);
-          return new Promise((resolve, reject) => {
-            db.all(query, [], (err, rows) => {
-              db.close();
-              if (err) reject(err);
-              else resolve(rows as Record<string, unknown>[]);
-            });
-          });
-        }
-
-        async function getSchema() {
-          const tables = await runQuery(
-            "SELECT sql FROM sqlite_master WHERE type='table' AND name NOT LIKE 'sqlite_%';",
-          );
-          return tables.map((row) => String(row.sql)).join("\n\n");
-        }
-
-        const DENY_RE =
-          /\b(INSERT|UPDATE|DELETE|ALTER|DROP|CREATE|REPLACE|TRUNCATE)\b/i;
-        const HAS_LIMIT_TAIL_RE = /\blimit\b\s+\d+(\s*,\s*\d+)?\s*;?\s*$/i;
-
-        function sanitizeSqlQuery(q: string) {
-          let query = String(q ?? "").trim();
-
-          const semis = [...query].filter((c) => c === ";").length;
-          if (semis > 1 || (query.endsWith(";") && query.slice(0, -1).includes(";"))) {
-            throw new Error("multiple statements are not allowed.");
-          }
-          query = query.replace(/;+\s*$/g, "").trim();
-
-          if (!query.toLowerCase().startsWith("select")) {
-            throw new Error("Only SELECT statements are allowed");
-          }
-          if (DENY_RE.test(query)) {
-            throw new Error("DML/DDL detected. Only read-only queries are permitted.");
-          }
-
-          if (!HAS_LIMIT_TAIL_RE.test(query)) {
-            query += " LIMIT 5";
-          }
-          return query;
-        }
-
-        const executeSql = tool(
-          async ({ query }) => {
-            const q = sanitizeSqlQuery(query);
-            try {
-              const result = await runQuery(q);
-              return JSON.stringify(result, null, 2);
-            } catch (e) {
-              const message = e instanceof Error ? e.message : String(e);
-              throw new Error(message);
-            }
-          },
-          {
-            name: "execute_sql",
-            description: "Execute a READ-ONLY SQLite SELECT query and return results.",
-            schema: z.object({
-              query: z.string().describe("SQLite SELECT query to execute (read-only)."),
-            }),
-          },
-        );
-
-        const getSystemPrompt = async () =>
-          new SystemMessage(`You are a careful SQLite analyst.
-
-        Authoritative schema (do not invent columns/tables):
-        ${await getSchema()}
-
-        Rules:
-        - Think step-by-step.
-        - When you need data, call the tool \`execute_sql\` with ONE SELECT query.
-        - Read-only; no INSERT/UPDATE/DELETE/ALTER/DROP/CREATE/REPLACE/TRUNCATE.
-        - Limit to 5 rows unless user explicitly asks otherwise.
-        - If the tool returns 'Error:', revise the SQL and try again.
-        - Limit the number of attempts to 5.
-        - If you are not successful after 5 attempts, return a note to the user.
-        - Prefer explicit column lists; avoid SELECT *.
-        `);
-
-        export const agent = createAgent({
-          model: "google:gemini-3.6-flash",
-          tools: [executeSql],
-          systemPrompt: await getSystemPrompt(),
-        });
-        ```
-
-        ```ts OpenAI theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-        import fs from "node:fs/promises";
-        import path from "node:path";
-        import sqlite3 from "sqlite3";
-        import { SystemMessage, createAgent, tool } from "langchain";
-        import * as z from "zod";
-
-        const url =
-          "https://storage.googleapis.com/benchmarks-artifacts/chinook/Chinook.db";
-        const localPath = path.resolve("Chinook.db");
-
-        async function resolveDbPath() {
-          try {
-            await fs.access(localPath);
-            return localPath;
-          } catch {
-            // Chinook.db not present locally; download it.
-          }
-          const resp = await fetch(url);
-          if (!resp.ok)
-            throw new Error(`Failed to download DB. Status code: ${resp.status}`);
-          const buf = Buffer.from(await resp.arrayBuffer());
-          await fs.writeFile(localPath, buf);
-          return localPath;
-        }
-
-        // Below are minimal tools for demonstration purposes.
-        async function runQuery(query: string): Promise<Record<string, unknown>[]> {
-          const dbPath = await resolveDbPath();
-          const db = new sqlite3.Database(dbPath);
-          return new Promise((resolve, reject) => {
-            db.all(query, [], (err, rows) => {
-              db.close();
-              if (err) reject(err);
-              else resolve(rows as Record<string, unknown>[]);
-            });
-          });
-        }
-
-        async function getSchema() {
-          const tables = await runQuery(
-            "SELECT sql FROM sqlite_master WHERE type='table' AND name NOT LIKE 'sqlite_%';",
-          );
-          return tables.map((row) => String(row.sql)).join("\n\n");
-        }
-
-        const DENY_RE =
-          /\b(INSERT|UPDATE|DELETE|ALTER|DROP|CREATE|REPLACE|TRUNCATE)\b/i;
-        const HAS_LIMIT_TAIL_RE = /\blimit\b\s+\d+(\s*,\s*\d+)?\s*;?\s*$/i;
-
-        function sanitizeSqlQuery(q: string) {
-          let query = String(q ?? "").trim();
-
-          const semis = [...query].filter((c) => c === ";").length;
-          if (semis > 1 || (query.endsWith(";") && query.slice(0, -1).includes(";"))) {
-            throw new Error("multiple statements are not allowed.");
-          }
-          query = query.replace(/;+\s*$/g, "").trim();
-
-          if (!query.toLowerCase().startsWith("select")) {
-            throw new Error("Only SELECT statements are allowed");
-          }
-          if (DENY_RE.test(query)) {
-            throw new Error("DML/DDL detected. Only read-only queries are permitted.");
-          }
-
-          if (!HAS_LIMIT_TAIL_RE.test(query)) {
-            query += " LIMIT 5";
-          }
-          return query;
-        }
-
-        const executeSql = tool(
-          async ({ query }) => {
-            const q = sanitizeSqlQuery(query);
-            try {
-              const result = await runQuery(q);
-              return JSON.stringify(result, null, 2);
-            } catch (e) {
-              const message = e instanceof Error ? e.message : String(e);
-              throw new Error(message);
-            }
-          },
-          {
-            name: "execute_sql",
-            description: "Execute a READ-ONLY SQLite SELECT query and return results.",
-            schema: z.object({
-              query: z.string().describe("SQLite SELECT query to execute (read-only)."),
-            }),
-          },
-        );
-
-        const getSystemPrompt = async () =>
-          new SystemMessage(`You are a careful SQLite analyst.
-
-        Authoritative schema (do not invent columns/tables):
-        ${await getSchema()}
-
-        Rules:
-        - Think step-by-step.
-        - When you need data, call the tool \`execute_sql\` with ONE SELECT query.
-        - Read-only; no INSERT/UPDATE/DELETE/ALTER/DROP/CREATE/REPLACE/TRUNCATE.
-        - Limit to 5 rows unless user explicitly asks otherwise.
-        - If the tool returns 'Error:', revise the SQL and try again.
-        - Limit the number of attempts to 5.
-        - If you are not successful after 5 attempts, return a note to the user.
-        - Prefer explicit column lists; avoid SELECT *.
-        `);
-
-        export const agent = createAgent({
-          model: "openai:gpt-5.5",
-          tools: [executeSql],
-          systemPrompt: await getSystemPrompt(),
-        });
-        ```
-
-        ```ts Anthropic theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-        import fs from "node:fs/promises";
-        import path from "node:path";
-        import sqlite3 from "sqlite3";
-        import { SystemMessage, createAgent, tool } from "langchain";
-        import * as z from "zod";
-
-        const url =
-          "https://storage.googleapis.com/benchmarks-artifacts/chinook/Chinook.db";
-        const localPath = path.resolve("Chinook.db");
-
-        async function resolveDbPath() {
-          try {
-            await fs.access(localPath);
-            return localPath;
-          } catch {
-            // Chinook.db not present locally; download it.
-          }
-          const resp = await fetch(url);
-          if (!resp.ok)
-            throw new Error(`Failed to download DB. Status code: ${resp.status}`);
-          const buf = Buffer.from(await resp.arrayBuffer());
-          await fs.writeFile(localPath, buf);
-          return localPath;
-        }
-
-        // Below are minimal tools for demonstration purposes.
-        async function runQuery(query: string): Promise<Record<string, unknown>[]> {
-          const dbPath = await resolveDbPath();
-          const db = new sqlite3.Database(dbPath);
-          return new Promise((resolve, reject) => {
-            db.all(query, [], (err, rows) => {
-              db.close();
-              if (err) reject(err);
-              else resolve(rows as Record<string, unknown>[]);
-            });
-          });
-        }
-
-        async function getSchema() {
-          const tables = await runQuery(
-            "SELECT sql FROM sqlite_master WHERE type='table' AND name NOT LIKE 'sqlite_%';",
-          );
-          return tables.map((row) => String(row.sql)).join("\n\n");
-        }
-
-        const DENY_RE =
-          /\b(INSERT|UPDATE|DELETE|ALTER|DROP|CREATE|REPLACE|TRUNCATE)\b/i;
-        const HAS_LIMIT_TAIL_RE = /\blimit\b\s+\d+(\s*,\s*\d+)?\s*;?\s*$/i;
-
-        function sanitizeSqlQuery(q: string) {
-          let query = String(q ?? "").trim();
-
-          const semis = [...query].filter((c) => c === ";").length;
-          if (semis > 1 || (query.endsWith(";") && query.slice(0, -1).includes(";"))) {
-            throw new Error("multiple statements are not allowed.");
-          }
-          query = query.replace(/;+\s*$/g, "").trim();
-
-          if (!query.toLowerCase().startsWith("select")) {
-            throw new Error("Only SELECT statements are allowed");
-          }
-          if (DENY_RE.test(query)) {
-            throw new Error("DML/DDL detected. Only read-only queries are permitted.");
-          }
-
-          if (!HAS_LIMIT_TAIL_RE.test(query)) {
-            query += " LIMIT 5";
-          }
-          return query;
-        }
-
-        const executeSql = tool(
-          async ({ query }) => {
-            const q = sanitizeSqlQuery(query);
-            try {
-              const result = await runQuery(q);
-              return JSON.stringify(result, null, 2);
-            } catch (e) {
-              const message = e instanceof Error ? e.message : String(e);
-              throw new Error(message);
-            }
-          },
-          {
-            name: "execute_sql",
-            description: "Execute a READ-ONLY SQLite SELECT query and return results.",
-            schema: z.object({
-              query: z.string().describe("SQLite SELECT query to execute (read-only)."),
-            }),
-          },
-        );
-
-        const getSystemPrompt = async () =>
-          new SystemMessage(`You are a careful SQLite analyst.
-
-        Authoritative schema (do not invent columns/tables):
-        ${await getSchema()}
-
-        Rules:
-        - Think step-by-step.
-        - When you need data, call the tool \`execute_sql\` with ONE SELECT query.
-        - Read-only; no INSERT/UPDATE/DELETE/ALTER/DROP/CREATE/REPLACE/TRUNCATE.
-        - Limit to 5 rows unless user explicitly asks otherwise.
-        - If the tool returns 'Error:', revise the SQL and try again.
-        - Limit the number of attempts to 5.
-        - If you are not successful after 5 attempts, return a note to the user.
-        - Prefer explicit column lists; avoid SELECT *.
-        `);
-
-        export const agent = createAgent({
-          model: "anthropic:claude-sonnet-5",
-          tools: [executeSql],
-          systemPrompt: await getSystemPrompt(),
-        });
-        ```
-
-        ```ts OpenRouter theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-        import fs from "node:fs/promises";
-        import path from "node:path";
-        import sqlite3 from "sqlite3";
-        import { SystemMessage, createAgent, tool } from "langchain";
-        import * as z from "zod";
-
-        const url =
-          "https://storage.googleapis.com/benchmarks-artifacts/chinook/Chinook.db";
-        const localPath = path.resolve("Chinook.db");
-
-        async function resolveDbPath() {
-          try {
-            await fs.access(localPath);
-            return localPath;
-          } catch {
-            // Chinook.db not present locally; download it.
-          }
-          const resp = await fetch(url);
-          if (!resp.ok)
-            throw new Error(`Failed to download DB. Status code: ${resp.status}`);
-          const buf = Buffer.from(await resp.arrayBuffer());
-          await fs.writeFile(localPath, buf);
-          return localPath;
-        }
-
-        // Below are minimal tools for demonstration purposes.
-        async function runQuery(query: string): Promise<Record<string, unknown>[]> {
-          const dbPath = await resolveDbPath();
-          const db = new sqlite3.Database(dbPath);
-          return new Promise((resolve, reject) => {
-            db.all(query, [], (err, rows) => {
-              db.close();
-              if (err) reject(err);
-              else resolve(rows as Record<string, unknown>[]);
-            });
-          });
-        }
-
-        async function getSchema() {
-          const tables = await runQuery(
-            "SELECT sql FROM sqlite_master WHERE type='table' AND name NOT LIKE 'sqlite_%';",
-          );
-          return tables.map((row) => String(row.sql)).join("\n\n");
-        }
-
-        const DENY_RE =
-          /\b(INSERT|UPDATE|DELETE|ALTER|DROP|CREATE|REPLACE|TRUNCATE)\b/i;
-        const HAS_LIMIT_TAIL_RE = /\blimit\b\s+\d+(\s*,\s*\d+)?\s*;?\s*$/i;
-
-        function sanitizeSqlQuery(q: string) {
-          let query = String(q ?? "").trim();
-
-          const semis = [...query].filter((c) => c === ";").length;
-          if (semis > 1 || (query.endsWith(";") && query.slice(0, -1).includes(";"))) {
-            throw new Error("multiple statements are not allowed.");
-          }
-          query = query.replace(/;+\s*$/g, "").trim();
-
-          if (!query.toLowerCase().startsWith("select")) {
-            throw new Error("Only SELECT statements are allowed");
-          }
-          if (DENY_RE.test(query)) {
-            throw new Error("DML/DDL detected. Only read-only queries are permitted.");
-          }
-
-          if (!HAS_LIMIT_TAIL_RE.test(query)) {
-            query += " LIMIT 5";
-          }
-          return query;
-        }
-
-        const executeSql = tool(
-          async ({ query }) => {
-            const q = sanitizeSqlQuery(query);
-            try {
-              const result = await runQuery(q);
-              return JSON.stringify(result, null, 2);
-            } catch (e) {
-              const message = e instanceof Error ? e.message : String(e);
-              throw new Error(message);
-            }
-          },
-          {
-            name: "execute_sql",
-            description: "Execute a READ-ONLY SQLite SELECT query and return results.",
-            schema: z.object({
-              query: z.string().describe("SQLite SELECT query to execute (read-only)."),
-            }),
-          },
-        );
-
-        const getSystemPrompt = async () =>
-          new SystemMessage(`You are a careful SQLite analyst.
-
-        Authoritative schema (do not invent columns/tables):
-        ${await getSchema()}
-
-        Rules:
-        - Think step-by-step.
-        - When you need data, call the tool \`execute_sql\` with ONE SELECT query.
-        - Read-only; no INSERT/UPDATE/DELETE/ALTER/DROP/CREATE/REPLACE/TRUNCATE.
-        - Limit to 5 rows unless user explicitly asks otherwise.
-        - If the tool returns 'Error:', revise the SQL and try again.
-        - Limit the number of attempts to 5.
-        - If you are not successful after 5 attempts, return a note to the user.
-        - Prefer explicit column lists; avoid SELECT *.
-        `);
-
-        export const agent = createAgent({
-          model: "openrouter:z-ai/glm-5.2",
-          tools: [executeSql],
-          systemPrompt: await getSystemPrompt(),
-        });
-        ```
-
-        ```ts Fireworks theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-        import fs from "node:fs/promises";
-        import path from "node:path";
-        import sqlite3 from "sqlite3";
-        import { SystemMessage, createAgent, tool } from "langchain";
-        import * as z from "zod";
-
-        const url =
-          "https://storage.googleapis.com/benchmarks-artifacts/chinook/Chinook.db";
-        const localPath = path.resolve("Chinook.db");
-
-        async function resolveDbPath() {
-          try {
-            await fs.access(localPath);
-            return localPath;
-          } catch {
-            // Chinook.db not present locally; download it.
-          }
-          const resp = await fetch(url);
-          if (!resp.ok)
-            throw new Error(`Failed to download DB. Status code: ${resp.status}`);
-          const buf = Buffer.from(await resp.arrayBuffer());
-          await fs.writeFile(localPath, buf);
-          return localPath;
-        }
-
-        // Below are minimal tools for demonstration purposes.
-        async function runQuery(query: string): Promise<Record<string, unknown>[]> {
-          const dbPath = await resolveDbPath();
-          const db = new sqlite3.Database(dbPath);
-          return new Promise((resolve, reject) => {
-            db.all(query, [], (err, rows) => {
-              db.close();
-              if (err) reject(err);
-              else resolve(rows as Record<string, unknown>[]);
-            });
-          });
-        }
-
-        async function getSchema() {
-          const tables = await runQuery(
-            "SELECT sql FROM sqlite_master WHERE type='table' AND name NOT LIKE 'sqlite_%';",
-          );
-          return tables.map((row) => String(row.sql)).join("\n\n");
-        }
-
-        const DENY_RE =
-          /\b(INSERT|UPDATE|DELETE|ALTER|DROP|CREATE|REPLACE|TRUNCATE)\b/i;
-        const HAS_LIMIT_TAIL_RE = /\blimit\b\s+\d+(\s*,\s*\d+)?\s*;?\s*$/i;
-
-        function sanitizeSqlQuery(q: string) {
-          let query = String(q ?? "").trim();
-
-          const semis = [...query].filter((c) => c === ";").length;
-          if (semis > 1 || (query.endsWith(";") && query.slice(0, -1).includes(";"))) {
-            throw new Error("multiple statements are not allowed.");
-          }
-          query = query.replace(/;+\s*$/g, "").trim();
-
-          if (!query.toLowerCase().startsWith("select")) {
-            throw new Error("Only SELECT statements are allowed");
-          }
-          if (DENY_RE.test(query)) {
-            throw new Error("DML/DDL detected. Only read-only queries are permitted.");
-          }
-
-          if (!HAS_LIMIT_TAIL_RE.test(query)) {
-            query += " LIMIT 5";
-          }
-          return query;
-        }
-
-        const executeSql = tool(
-          async ({ query }) => {
-            const q = sanitizeSqlQuery(query);
-            try {
-              const result = await runQuery(q);
-              return JSON.stringify(result, null, 2);
-            } catch (e) {
-              const message = e instanceof Error ? e.message : String(e);
-              throw new Error(message);
-            }
-          },
-          {
-            name: "execute_sql",
-            description: "Execute a READ-ONLY SQLite SELECT query and return results.",
-            schema: z.object({
-              query: z.string().describe("SQLite SELECT query to execute (read-only)."),
-            }),
-          },
-        );
-
-        const getSystemPrompt = async () =>
-          new SystemMessage(`You are a careful SQLite analyst.
-
-        Authoritative schema (do not invent columns/tables):
-        ${await getSchema()}
-
-        Rules:
-        - Think step-by-step.
-        - When you need data, call the tool \`execute_sql\` with ONE SELECT query.
-        - Read-only; no INSERT/UPDATE/DELETE/ALTER/DROP/CREATE/REPLACE/TRUNCATE.
-        - Limit to 5 rows unless user explicitly asks otherwise.
-        - If the tool returns 'Error:', revise the SQL and try again.
-        - Limit the number of attempts to 5.
-        - If you are not successful after 5 attempts, return a note to the user.
-        - Prefer explicit column lists; avoid SELECT *.
-        `);
-
-        export const agent = createAgent({
-          model: "fireworks:accounts/fireworks/models/glm-5p2",
-          tools: [executeSql],
-          systemPrompt: await getSystemPrompt(),
-        });
-        ```
-
-        ```ts Baseten theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-        import fs from "node:fs/promises";
-        import path from "node:path";
-        import sqlite3 from "sqlite3";
-        import { SystemMessage, createAgent, tool } from "langchain";
-        import * as z from "zod";
-
-        const url =
-          "https://storage.googleapis.com/benchmarks-artifacts/chinook/Chinook.db";
-        const localPath = path.resolve("Chinook.db");
-
-        async function resolveDbPath() {
-          try {
-            await fs.access(localPath);
-            return localPath;
-          } catch {
-            // Chinook.db not present locally; download it.
-          }
-          const resp = await fetch(url);
-          if (!resp.ok)
-            throw new Error(`Failed to download DB. Status code: ${resp.status}`);
-          const buf = Buffer.from(await resp.arrayBuffer());
-          await fs.writeFile(localPath, buf);
-          return localPath;
-        }
-
-        // Below are minimal tools for demonstration purposes.
-        async function runQuery(query: string): Promise<Record<string, unknown>[]> {
-          const dbPath = await resolveDbPath();
-          const db = new sqlite3.Database(dbPath);
-          return new Promise((resolve, reject) => {
-            db.all(query, [], (err, rows) => {
-              db.close();
-              if (err) reject(err);
-              else resolve(rows as Record<string, unknown>[]);
-            });
-          });
-        }
-
-        async function getSchema() {
-          const tables = await runQuery(
-            "SELECT sql FROM sqlite_master WHERE type='table' AND name NOT LIKE 'sqlite_%';",
-          );
-          return tables.map((row) => String(row.sql)).join("\n\n");
-        }
-
-        const DENY_RE =
-          /\b(INSERT|UPDATE|DELETE|ALTER|DROP|CREATE|REPLACE|TRUNCATE)\b/i;
-        const HAS_LIMIT_TAIL_RE = /\blimit\b\s+\d+(\s*,\s*\d+)?\s*;?\s*$/i;
-
-        function sanitizeSqlQuery(q: string) {
-          let query = String(q ?? "").trim();
-
-          const semis = [...query].filter((c) => c === ";").length;
-          if (semis > 1 || (query.endsWith(";") && query.slice(0, -1).includes(";"))) {
-            throw new Error("multiple statements are not allowed.");
-          }
-          query = query.replace(/;+\s*$/g, "").trim();
-
-          if (!query.toLowerCase().startsWith("select")) {
-            throw new Error("Only SELECT statements are allowed");
-          }
-          if (DENY_RE.test(query)) {
-            throw new Error("DML/DDL detected. Only read-only queries are permitted.");
-          }
-
-          if (!HAS_LIMIT_TAIL_RE.test(query)) {
-            query += " LIMIT 5";
-          }
-          return query;
-        }
-
-        const executeSql = tool(
-          async ({ query }) => {
-            const q = sanitizeSqlQuery(query);
-            try {
-              const result = await runQuery(q);
-              return JSON.stringify(result, null, 2);
-            } catch (e) {
-              const message = e instanceof Error ? e.message : String(e);
-              throw new Error(message);
-            }
-          },
-          {
-            name: "execute_sql",
-            description: "Execute a READ-ONLY SQLite SELECT query and return results.",
-            schema: z.object({
-              query: z.string().describe("SQLite SELECT query to execute (read-only)."),
-            }),
-          },
-        );
-
-        const getSystemPrompt = async () =>
-          new SystemMessage(`You are a careful SQLite analyst.
-
-        Authoritative schema (do not invent columns/tables):
-        ${await getSchema()}
-
-        Rules:
-        - Think step-by-step.
-        - When you need data, call the tool \`execute_sql\` with ONE SELECT query.
-        - Read-only; no INSERT/UPDATE/DELETE/ALTER/DROP/CREATE/REPLACE/TRUNCATE.
-        - Limit to 5 rows unless user explicitly asks otherwise.
-        - If the tool returns 'Error:', revise the SQL and try again.
-        - Limit the number of attempts to 5.
-        - If you are not successful after 5 attempts, return a note to the user.
-        - Prefer explicit column lists; avoid SELECT *.
-        `);
-
-        export const agent = createAgent({
-          model: "baseten:zai-org/GLM-5.2",
-          tools: [executeSql],
-          systemPrompt: await getSystemPrompt(),
-        });
-        ```
-
-        ```ts Ollama theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-        import fs from "node:fs/promises";
-        import path from "node:path";
-        import sqlite3 from "sqlite3";
-        import { SystemMessage, createAgent, tool } from "langchain";
-        import * as z from "zod";
-
-        const url =
-          "https://storage.googleapis.com/benchmarks-artifacts/chinook/Chinook.db";
-        const localPath = path.resolve("Chinook.db");
-
-        async function resolveDbPath() {
-          try {
-            await fs.access(localPath);
-            return localPath;
-          } catch {
-            // Chinook.db not present locally; download it.
-          }
-          const resp = await fetch(url);
-          if (!resp.ok)
-            throw new Error(`Failed to download DB. Status code: ${resp.status}`);
-          const buf = Buffer.from(await resp.arrayBuffer());
-          await fs.writeFile(localPath, buf);
-          return localPath;
-        }
-
-        // Below are minimal tools for demonstration purposes.
-        async function runQuery(query: string): Promise<Record<string, unknown>[]> {
-          const dbPath = await resolveDbPath();
-          const db = new sqlite3.Database(dbPath);
-          return new Promise((resolve, reject) => {
-            db.all(query, [], (err, rows) => {
-              db.close();
-              if (err) reject(err);
-              else resolve(rows as Record<string, unknown>[]);
-            });
-          });
-        }
-
-        async function getSchema() {
-          const tables = await runQuery(
-            "SELECT sql FROM sqlite_master WHERE type='table' AND name NOT LIKE 'sqlite_%';",
-          );
-          return tables.map((row) => String(row.sql)).join("\n\n");
-        }
-
-        const DENY_RE =
-          /\b(INSERT|UPDATE|DELETE|ALTER|DROP|CREATE|REPLACE|TRUNCATE)\b/i;
-        const HAS_LIMIT_TAIL_RE = /\blimit\b\s+\d+(\s*,\s*\d+)?\s*;?\s*$/i;
-
-        function sanitizeSqlQuery(q: string) {
-          let query = String(q ?? "").trim();
-
-          const semis = [...query].filter((c) => c === ";").length;
-          if (semis > 1 || (query.endsWith(";") && query.slice(0, -1).includes(";"))) {
-            throw new Error("multiple statements are not allowed.");
-          }
-          query = query.replace(/;+\s*$/g, "").trim();
-
-          if (!query.toLowerCase().startsWith("select")) {
-            throw new Error("Only SELECT statements are allowed");
-          }
-          if (DENY_RE.test(query)) {
-            throw new Error("DML/DDL detected. Only read-only queries are permitted.");
-          }
-
-          if (!HAS_LIMIT_TAIL_RE.test(query)) {
-            query += " LIMIT 5";
-          }
-          return query;
-        }
-
-        const executeSql = tool(
-          async ({ query }) => {
-            const q = sanitizeSqlQuery(query);
-            try {
-              const result = await runQuery(q);
-              return JSON.stringify(result, null, 2);
-            } catch (e) {
-              const message = e instanceof Error ? e.message : String(e);
-              throw new Error(message);
-            }
-          },
-          {
-            name: "execute_sql",
-            description: "Execute a READ-ONLY SQLite SELECT query and return results.",
-            schema: z.object({
-              query: z.string().describe("SQLite SELECT query to execute (read-only)."),
-            }),
-          },
-        );
-
-        const getSystemPrompt = async () =>
-          new SystemMessage(`You are a careful SQLite analyst.
-
-        Authoritative schema (do not invent columns/tables):
-        ${await getSchema()}
-
-        Rules:
-        - Think step-by-step.
-        - When you need data, call the tool \`execute_sql\` with ONE SELECT query.
-        - Read-only; no INSERT/UPDATE/DELETE/ALTER/DROP/CREATE/REPLACE/TRUNCATE.
-        - Limit to 5 rows unless user explicitly asks otherwise.
-        - If the tool returns 'Error:', revise the SQL and try again.
-        - Limit the number of attempts to 5.
-        - If you are not successful after 5 attempts, return a note to the user.
-        - Prefer explicit column lists; avoid SELECT *.
-        `);
-
-        export const agent = createAgent({
-          model: "ollama:north-mini-code-1.0",
-          tools: [executeSql],
-          systemPrompt: await getSystemPrompt(),
-        });
-        ```
-      </CodeGroup>
-
-      <Card title="View example trace" icon="chart-line" href="https://smith.langchain.com/public/3925fa04-8885-4afd-aa45-5ba021acc93b/r">
-        为此示例打开公共 LangSmith 运行。
-      </Card>
-    </Accordion>
-  </Step>
-
-  <Step title="Implement human-in-the-loop review">
-    在执行代理的 SQL 查询之前检查是否存在任何意外操作或效率低下，这可能是谨慎的做法。LangChain 代理支持内置 [human-in-the-loop middleware](/oss/javascript/langchain/human-in-the-loop)，以添加对代理工具调用的监督。让我们将代理配置为在调用 `execute_sql` 工具时暂停以供人工审核：
-
-    <CodeGroup>
-      ```ts Google theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-      import { humanInTheLoopMiddleware } from "langchain"; // [!code highlight]
-      import { MemorySaver } from "@langchain/langgraph"; // [!code highlight]
-
-      agent = createAgent({
-        model: "google:gemini-3.6-flash",
-        tools: [executeSql],
-        systemPrompt: await getSystemPrompt(),
-        middleware: [
-          // [!code highlight]
-          humanInTheLoopMiddleware({
-            // [!code highlight]
-            interruptOn: {
-              execute_sql: true, // [!code highlight]
-            },
-            descriptionPrefix: "Tool execution pending approval", // [!code highlight]
-          }),
-        ], // [!code highlight]
-        checkpointer: new MemorySaver(), // [!code highlight]
-      });
-      ```
-
-      ```ts OpenAI theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-      import { humanInTheLoopMiddleware } from "langchain"; // [!code highlight]
-      import { MemorySaver } from "@langchain/langgraph"; // [!code highlight]
-
-      agent = createAgent({
-        model: "openai:gpt-5.5",
-        tools: [executeSql],
-        systemPrompt: await getSystemPrompt(),
-        middleware: [
-          // [!code highlight]
-          humanInTheLoopMiddleware({
-            // [!code highlight]
-            interruptOn: {
-              execute_sql: true, // [!code highlight]
-            },
-            descriptionPrefix: "Tool execution pending approval", // [!code highlight]
-          }),
-        ], // [!code highlight]
-        checkpointer: new MemorySaver(), // [!code highlight]
-      });
-      ```
-
-      ```ts Anthropic theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-      import { humanInTheLoopMiddleware } from "langchain"; // [!code highlight]
-      import { MemorySaver } from "@langchain/langgraph"; // [!code highlight]
-
-      agent = createAgent({
-        model: "anthropic:claude-sonnet-5",
-        tools: [executeSql],
-        systemPrompt: await getSystemPrompt(),
-        middleware: [
-          // [!code highlight]
-          humanInTheLoopMiddleware({
-            // [!code highlight]
-            interruptOn: {
-              execute_sql: true, // [!code highlight]
-            },
-            descriptionPrefix: "Tool execution pending approval", // [!code highlight]
-          }),
-        ], // [!code highlight]
-        checkpointer: new MemorySaver(), // [!code highlight]
-      });
-      ```
-
-      ```ts OpenRouter theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-      import { humanInTheLoopMiddleware } from "langchain"; // [!code highlight]
-      import { MemorySaver } from "@langchain/langgraph"; // [!code highlight]
-
-      agent = createAgent({
-        model: "openrouter:z-ai/glm-5.2",
-        tools: [executeSql],
-        systemPrompt: await getSystemPrompt(),
-        middleware: [
-          // [!code highlight]
-          humanInTheLoopMiddleware({
-            // [!code highlight]
-            interruptOn: {
-              execute_sql: true, // [!code highlight]
-            },
-            descriptionPrefix: "Tool execution pending approval", // [!code highlight]
-          }),
-        ], // [!code highlight]
-        checkpointer: new MemorySaver(), // [!code highlight]
-      });
-      ```
-
-      ```ts Fireworks theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-      import { humanInTheLoopMiddleware } from "langchain"; // [!code highlight]
-      import { MemorySaver } from "@langchain/langgraph"; // [!code highlight]
-
-      agent = createAgent({
-        model: "fireworks:accounts/fireworks/models/glm-5p2",
-        tools: [executeSql],
-        systemPrompt: await getSystemPrompt(),
-        middleware: [
-          // [!code highlight]
-          humanInTheLoopMiddleware({
-            // [!code highlight]
-            interruptOn: {
-              execute_sql: true, // [!code highlight]
-            },
-            descriptionPrefix: "Tool execution pending approval", // [!code highlight]
-          }),
-        ], // [!code highlight]
-        checkpointer: new MemorySaver(), // [!code highlight]
-      });
-      ```
-
-      ```ts Baseten theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-      import { humanInTheLoopMiddleware } from "langchain"; // [!code highlight]
-      import { MemorySaver } from "@langchain/langgraph"; // [!code highlight]
-
-      agent = createAgent({
-        model: "baseten:zai-org/GLM-5.2",
-        tools: [executeSql],
-        systemPrompt: await getSystemPrompt(),
-        middleware: [
-          // [!code highlight]
-          humanInTheLoopMiddleware({
-            // [!code highlight]
-            interruptOn: {
-              execute_sql: true, // [!code highlight]
-            },
-            descriptionPrefix: "Tool execution pending approval", // [!code highlight]
-          }),
-        ], // [!code highlight]
-        checkpointer: new MemorySaver(), // [!code highlight]
-      });
-      ```
-
-      ```ts Ollama theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-      import { humanInTheLoopMiddleware } from "langchain"; // [!code highlight]
-      import { MemorySaver } from "@langchain/langgraph"; // [!code highlight]
-
-      agent = createAgent({
-        model: "ollama:north-mini-code-1.0",
-        tools: [executeSql],
-        systemPrompt: await getSystemPrompt(),
-        middleware: [
-          // [!code highlight]
-          humanInTheLoopMiddleware({
-            // [!code highlight]
-            interruptOn: {
-              execute_sql: true, // [!code highlight]
-            },
-            descriptionPrefix: "Tool execution pending approval", // [!code highlight]
-          }),
-        ], // [!code highlight]
-        checkpointer: new MemorySaver(), // [!code highlight]
-      });
-      ```
-    </CodeGroup>
-
-    <Note>
-      我们在代理中添加了一个[checkpointer](/oss/javascript/langchain/short-term-memory)，以允许暂停和恢复执行。有关此内容以及可用中间件配置的详细信息，请参阅[human-in-the-loop guide](/oss/javascript/langchain/human-in-the-loop)。
-    </Note>
-
-    在运行代理时，它现在将在执行 `execute_sql` 工具之前暂停以进行审查：
-
-    ```ts theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-    question = "Which genre, on average, has the longest tracks?";
-    const config = { configurable: { thread_id: "1" } }; // [!code highlight]
-
-    const hitlStream = await agent.streamEvents(
-      { messages: [{ role: "user", content: question }] },
-      { ...config, version: "v3" }, // [!code highlight]
-    );
-    await Promise.all([
-      (async () => {
-        for await (const message of hitlStream.messages) {
-          for await (const token of message.text) {
-            process.stdout.write(token);
-          }
-        }
-      })(),
-      (async () => {
-        for await (const call of hitlStream.toolCalls) {
-          console.log(`\nTool call: ${call.name}(${JSON.stringify(call.input)})`);
-        }
-      })(),
-    ]);
-    if (hitlStream.interrupted) {
+  })(),
+]);
+
+const finalState = await stream.output;
+```
+
+```
+human: Which genre, on average, has the longest tracks?
+ai:
+tool: [{"Genre":"Sci Fi & Fantasy","AvgMilliseconds":2911783.0384615385}]
+ai: Sci Fi & Fantasy — average track length ≈ 48.5 minutes (about 2,911,783 ms).
+```
+
+代理正确地编写了一个查询，检查了该查询，然后运行它以告知其最终响应。
+
+> [!注意]
+>
+> 您可以检查上述运行的各个方面，包括采取的步骤、调用的工具、LLM 看到的提示以及[LangSmith trace](https://smith.langchain.com/public/653d218b-af67-4854-95ca-6abecb9b2520/r) 中的更多信息。
+
+**6。 （可选）使用 Studio**
+
+[Studio](/langsmith/studio) 提供“客户端”循环以及内存，因此您可以将其作为聊天界面运行并查询数据库。您可以提出诸如“告诉我数据库的方案”或“显示前 5 位客户的发票”之类的问题。您将看到生成的 SQL 命令和结果输出。下面详细介绍了如何开始。> **在 Studio 中运行您的代理**
+>
+> 除了前面提到的包之外，您还需要：
+>
+> ```shell theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> npm i -g @langchain/langgraph-cli@latest
+> ```
+>
+> 在您将运行的目录中，您将需要一个包含以下内容的 `langgraph.json` 文件：
+>
+> ```json theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> {
+>   "dependencies": ["."],
+>   "graphs": {
+>       "agent": "./sqlAgent.ts:agent",
+>       "graph": "./sqlAgentLanggraph.ts:graph"
+>   },
+>   "env": ".env"
+> }
+> ```
+>
+> 创建一个文件 `sqlAgent.ts` 并插入以下内容：
+>
+> ```ts Google theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> import fs from "node:fs/promises";
+> import path from "node:path";
+> import sqlite3 from "sqlite3";
+> import { SystemMessage, createAgent, tool } from "langchain";
+> import * as z from "zod";
+>
+> const url =
+>   "https://storage.googleapis.com/benchmarks-artifacts/chinook/Chinook.db";
+> const localPath = path.resolve("Chinook.db");
+>
+> async function resolveDbPath() {
+>   try {
+>     await fs.access(localPath);
+>     return localPath;
+>   } catch {
+>     // Chinook.db not present locally; download it.
+>   }
+>   const resp = await fetch(url);
+>   if (!resp.ok)
+>     throw new Error(`Failed to download DB. Status code: ${resp.status}`);
+>   const buf = Buffer.from(await resp.arrayBuffer());
+>   await fs.writeFile(localPath, buf);
+>   return localPath;
+> }
+>
+> // Below are minimal tools for demonstration purposes.
+> async function runQuery(query: string): Promise<Record<string, unknown>[]> {
+>   const dbPath = await resolveDbPath();
+>   const db = new sqlite3.Database(dbPath);
+>   return new Promise((resolve, reject) => {
+>     db.all(query, [], (err, rows) => {
+>       db.close();
+>       if (err) reject(err);
+>       else resolve(rows as Record<string, unknown>[]);
+>     });
+>   });
+> }
+>
+> async function getSchema() {
+>   const tables = await runQuery(
+>     "SELECT sql FROM sqlite_master WHERE type='table' AND name NOT LIKE 'sqlite_%';",
+>   );
+>   return tables.map((row) => String(row.sql)).join("\n\n");
+> }
+>
+> const DENY_RE =
+>   /\b(INSERT|UPDATE|DELETE|ALTER|DROP|CREATE|REPLACE|TRUNCATE)\b/i;
+> const HAS_LIMIT_TAIL_RE = /\blimit\b\s+\d+(\s*,\s*\d+)?\s*;?\s*$/i;
+>
+> function sanitizeSqlQuery(q: string) {
+>   let query = String(q ?? "").trim();
+>
+>   const semis = [...query].filter((c) => c === ";").length;
+>   if (semis > 1 || (query.endsWith(";") && query.slice(0, -1).includes(";"))) {
+>     throw new Error("multiple statements are not allowed.");
+>   }
+>   query = query.replace(/;+\s*$/g, "").trim();
+>
+>   if (!query.toLowerCase().startsWith("select")) {
+>     throw new Error("Only SELECT statements are allowed");
+>   }
+>   if (DENY_RE.test(query)) {
+>     throw new Error("DML/DDL detected. Only read-only queries are permitted.");
+>   }
+>
+>   if (!HAS_LIMIT_TAIL_RE.test(query)) {
+>     query += " LIMIT 5";
+>   }
+>   return query;
+> }
+>
+> const executeSql = tool(
+>   async ({ query }) => {
+>     const q = sanitizeSqlQuery(query);
+>     try {
+>       const result = await runQuery(q);
+>       return JSON.stringify(result, null, 2);
+>     } catch (e) {
+>       const message = e instanceof Error ? e.message : String(e);
+>       throw new Error(message);
+>     }
+>   },
+>   {
+>     name: "execute_sql",
+>     description: "Execute a READ-ONLY SQLite SELECT query and return results.",
+>     schema: z.object({
+>       query: z.string().describe("SQLite SELECT query to execute (read-only)."),
+>     }),
+>   },
+> );
+>
+> const getSystemPrompt = async () =>
+>   new SystemMessage(`You are a careful SQLite analyst.
+>
+> Authoritative schema (do not invent columns/tables):
+> ${await getSchema()}
+>
+> Rules:
+> - Think step-by-step.
+> - When you need data, call the tool \`execute_sql\` with ONE SELECT query.
+> - Read-only; no INSERT/UPDATE/DELETE/ALTER/DROP/CREATE/REPLACE/TRUNCATE.
+> - Limit to 5 rows unless user explicitly asks otherwise.
+> - If the tool returns 'Error:', revise the SQL and try again.
+> - Limit the number of attempts to 5.
+> - If you are not successful after 5 attempts, return a note to the user.
+> - Prefer explicit column lists; avoid SELECT *.
+> `);
+>
+> export const agent = createAgent({
+>   model: "google:gemini-3.6-flash",
+>   tools: [executeSql],
+>   systemPrompt: await getSystemPrompt(),
+> });
+> ```
+>
+> ```ts OpenAI theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> import fs from "node:fs/promises";
+> import path from "node:path";
+> import sqlite3 from "sqlite3";
+> import { SystemMessage, createAgent, tool } from "langchain";
+> import * as z from "zod";
+>
+> const url =
+>   "https://storage.googleapis.com/benchmarks-artifacts/chinook/Chinook.db";
+> const localPath = path.resolve("Chinook.db");
+>
+> async function resolveDbPath() {
+>   try {
+>     await fs.access(localPath);
+>     return localPath;
+>   } catch {
+>     // Chinook.db not present locally; download it.
+>   }
+>   const resp = await fetch(url);
+>   if (!resp.ok)
+>     throw new Error(`Failed to download DB. Status code: ${resp.status}`);
+>   const buf = Buffer.from(await resp.arrayBuffer());
+>   await fs.writeFile(localPath, buf);
+>   return localPath;
+> }
+>
+> // Below are minimal tools for demonstration purposes.
+> async function runQuery(query: string): Promise<Record<string, unknown>[]> {
+>   const dbPath = await resolveDbPath();
+>   const db = new sqlite3.Database(dbPath);
+>   return new Promise((resolve, reject) => {
+>     db.all(query, [], (err, rows) => {
+>       db.close();
+>       if (err) reject(err);
+>       else resolve(rows as Record<string, unknown>[]);
+>     });
+>   });
+> }
+>
+> async function getSchema() {
+>   const tables = await runQuery(
+>     "SELECT sql FROM sqlite_master WHERE type='table' AND name NOT LIKE 'sqlite_%';",
+>   );
+>   return tables.map((row) => String(row.sql)).join("\n\n");
+> }
+>
+> const DENY_RE =
+>   /\b(INSERT|UPDATE|DELETE|ALTER|DROP|CREATE|REPLACE|TRUNCATE)\b/i;
+> const HAS_LIMIT_TAIL_RE = /\blimit\b\s+\d+(\s*,\s*\d+)?\s*;?\s*$/i;
+>
+> function sanitizeSqlQuery(q: string) {
+>   let query = String(q ?? "").trim();
+>
+>   const semis = [...query].filter((c) => c === ";").length;
+>   if (semis > 1 || (query.endsWith(";") && query.slice(0, -1).includes(";"))) {
+>     throw new Error("multiple statements are not allowed.");
+>   }
+>   query = query.replace(/;+\s*$/g, "").trim();
+>
+>   if (!query.toLowerCase().startsWith("select")) {
+>     throw new Error("Only SELECT statements are allowed");
+>   }
+>   if (DENY_RE.test(query)) {
+>     throw new Error("DML/DDL detected. Only read-only queries are permitted.");
+>   }
+>
+>   if (!HAS_LIMIT_TAIL_RE.test(query)) {
+>     query += " LIMIT 5";
+>   }
+>   return query;
+> }
+>
+> const executeSql = tool(
+>   async ({ query }) => {
+>     const q = sanitizeSqlQuery(query);
+>     try {
+>       const result = await runQuery(q);
+>       return JSON.stringify(result, null, 2);
+>     } catch (e) {
+>       const message = e instanceof Error ? e.message : String(e);
+>       throw new Error(message);
+>     }
+>   },
+>   {
+>     name: "execute_sql",
+>     description: "Execute a READ-ONLY SQLite SELECT query and return results.",
+>     schema: z.object({
+>       query: z.string().describe("SQLite SELECT query to execute (read-only)."),
+>     }),
+>   },
+> );
+>
+> const getSystemPrompt = async () =>
+>   new SystemMessage(`You are a careful SQLite analyst.
+>
+> Authoritative schema (do not invent columns/tables):
+> ${await getSchema()}
+>
+> Rules:
+> - Think step-by-step.
+> - When you need data, call the tool \`execute_sql\` with ONE SELECT query.
+> - Read-only; no INSERT/UPDATE/DELETE/ALTER/DROP/CREATE/REPLACE/TRUNCATE.
+> - Limit to 5 rows unless user explicitly asks otherwise.
+> - If the tool returns 'Error:', revise the SQL and try again.
+> - Limit the number of attempts to 5.
+> - If you are not successful after 5 attempts, return a note to the user.
+> - Prefer explicit column lists; avoid SELECT *.
+> `);
+>
+> export const agent = createAgent({
+>   model: "openai:gpt-5.5",
+>   tools: [executeSql],
+>   systemPrompt: await getSystemPrompt(),
+> });
+> ```
+>
+> ```ts Anthropic theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> import fs from "node:fs/promises";
+> import path from "node:path";
+> import sqlite3 from "sqlite3";
+> import { SystemMessage, createAgent, tool } from "langchain";
+> import * as z from "zod";
+>
+> const url =
+>   "https://storage.googleapis.com/benchmarks-artifacts/chinook/Chinook.db";
+> const localPath = path.resolve("Chinook.db");
+>
+> async function resolveDbPath() {
+>   try {
+>     await fs.access(localPath);
+>     return localPath;
+>   } catch {
+>     // Chinook.db not present locally; download it.
+>   }
+>   const resp = await fetch(url);
+>   if (!resp.ok)
+>     throw new Error(`Failed to download DB. Status code: ${resp.status}`);
+>   const buf = Buffer.from(await resp.arrayBuffer());
+>   await fs.writeFile(localPath, buf);
+>   return localPath;
+> }
+>
+> // Below are minimal tools for demonstration purposes.
+> async function runQuery(query: string): Promise<Record<string, unknown>[]> {
+>   const dbPath = await resolveDbPath();
+>   const db = new sqlite3.Database(dbPath);
+>   return new Promise((resolve, reject) => {
+>     db.all(query, [], (err, rows) => {
+>       db.close();
+>       if (err) reject(err);
+>       else resolve(rows as Record<string, unknown>[]);
+>     });
+>   });
+> }
+>
+> async function getSchema() {
+>   const tables = await runQuery(
+>     "SELECT sql FROM sqlite_master WHERE type='table' AND name NOT LIKE 'sqlite_%';",
+>   );
+>   return tables.map((row) => String(row.sql)).join("\n\n");
+> }
+>
+> const DENY_RE =
+>   /\b(INSERT|UPDATE|DELETE|ALTER|DROP|CREATE|REPLACE|TRUNCATE)\b/i;
+> const HAS_LIMIT_TAIL_RE = /\blimit\b\s+\d+(\s*,\s*\d+)?\s*;?\s*$/i;
+>
+> function sanitizeSqlQuery(q: string) {
+>   let query = String(q ?? "").trim();
+>
+>   const semis = [...query].filter((c) => c === ";").length;
+>   if (semis > 1 || (query.endsWith(";") && query.slice(0, -1).includes(";"))) {
+>     throw new Error("multiple statements are not allowed.");
+>   }
+>   query = query.replace(/;+\s*$/g, "").trim();
+>
+>   if (!query.toLowerCase().startsWith("select")) {
+>     throw new Error("Only SELECT statements are allowed");
+>   }
+>   if (DENY_RE.test(query)) {
+>     throw new Error("DML/DDL detected. Only read-only queries are permitted.");
+>   }
+>
+>   if (!HAS_LIMIT_TAIL_RE.test(query)) {
+>     query += " LIMIT 5";
+>   }
+>   return query;
+> }
+>
+> const executeSql = tool(
+>   async ({ query }) => {
+>     const q = sanitizeSqlQuery(query);
+>     try {
+>       const result = await runQuery(q);
+>       return JSON.stringify(result, null, 2);
+>     } catch (e) {
+>       const message = e instanceof Error ? e.message : String(e);
+>       throw new Error(message);
+>     }
+>   },
+>   {
+>     name: "execute_sql",
+>     description: "Execute a READ-ONLY SQLite SELECT query and return results.",
+>     schema: z.object({
+>       query: z.string().describe("SQLite SELECT query to execute (read-only)."),
+>     }),
+>   },
+> );
+>
+> const getSystemPrompt = async () =>
+>   new SystemMessage(`You are a careful SQLite analyst.
+>
+> Authoritative schema (do not invent columns/tables):
+> ${await getSchema()}
+>
+> Rules:
+> - Think step-by-step.
+> - When you need data, call the tool \`execute_sql\` with ONE SELECT query.
+> - Read-only; no INSERT/UPDATE/DELETE/ALTER/DROP/CREATE/REPLACE/TRUNCATE.
+> - Limit to 5 rows unless user explicitly asks otherwise.
+> - If the tool returns 'Error:', revise the SQL and try again.
+> - Limit the number of attempts to 5.
+> - If you are not successful after 5 attempts, return a note to the user.
+> - Prefer explicit column lists; avoid SELECT *.
+> `);
+>
+> export const agent = createAgent({
+>   model: "anthropic:claude-sonnet-5",
+>   tools: [executeSql],
+>   systemPrompt: await getSystemPrompt(),
+> });
+> ```
+>
+> ```ts OpenRouter theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> import fs from "node:fs/promises";
+> import path from "node:path";
+> import sqlite3 from "sqlite3";
+> import { SystemMessage, createAgent, tool } from "langchain";
+> import * as z from "zod";
+>
+> const url =
+>   "https://storage.googleapis.com/benchmarks-artifacts/chinook/Chinook.db";
+> const localPath = path.resolve("Chinook.db");
+>
+> async function resolveDbPath() {
+>   try {
+>     await fs.access(localPath);
+>     return localPath;
+>   } catch {
+>     // Chinook.db not present locally; download it.
+>   }
+>   const resp = await fetch(url);
+>   if (!resp.ok)
+>     throw new Error(`Failed to download DB. Status code: ${resp.status}`);
+>   const buf = Buffer.from(await resp.arrayBuffer());
+>   await fs.writeFile(localPath, buf);
+>   return localPath;
+> }
+>
+> // Below are minimal tools for demonstration purposes.
+> async function runQuery(query: string): Promise<Record<string, unknown>[]> {
+>   const dbPath = await resolveDbPath();
+>   const db = new sqlite3.Database(dbPath);
+>   return new Promise((resolve, reject) => {
+>     db.all(query, [], (err, rows) => {
+>       db.close();
+>       if (err) reject(err);
+>       else resolve(rows as Record<string, unknown>[]);
+>     });
+>   });
+> }
+>
+> async function getSchema() {
+>   const tables = await runQuery(
+>     "SELECT sql FROM sqlite_master WHERE type='table' AND name NOT LIKE 'sqlite_%';",
+>   );
+>   return tables.map((row) => String(row.sql)).join("\n\n");
+> }
+>
+> const DENY_RE =
+>   /\b(INSERT|UPDATE|DELETE|ALTER|DROP|CREATE|REPLACE|TRUNCATE)\b/i;
+> const HAS_LIMIT_TAIL_RE = /\blimit\b\s+\d+(\s*,\s*\d+)?\s*;?\s*$/i;
+>
+> function sanitizeSqlQuery(q: string) {
+>   let query = String(q ?? "").trim();
+>
+>   const semis = [...query].filter((c) => c === ";").length;
+>   if (semis > 1 || (query.endsWith(";") && query.slice(0, -1).includes(";"))) {
+>     throw new Error("multiple statements are not allowed.");
+>   }
+>   query = query.replace(/;+\s*$/g, "").trim();
+>
+>   if (!query.toLowerCase().startsWith("select")) {
+>     throw new Error("Only SELECT statements are allowed");
+>   }
+>   if (DENY_RE.test(query)) {
+>     throw new Error("DML/DDL detected. Only read-only queries are permitted.");
+>   }
+>
+>   if (!HAS_LIMIT_TAIL_RE.test(query)) {
+>     query += " LIMIT 5";
+>   }
+>   return query;
+> }
+>
+> const executeSql = tool(
+>   async ({ query }) => {
+>     const q = sanitizeSqlQuery(query);
+>     try {
+>       const result = await runQuery(q);
+>       return JSON.stringify(result, null, 2);
+>     } catch (e) {
+>       const message = e instanceof Error ? e.message : String(e);
+>       throw new Error(message);
+>     }
+>   },
+>   {
+>     name: "execute_sql",
+>     description: "Execute a READ-ONLY SQLite SELECT query and return results.",
+>     schema: z.object({
+>       query: z.string().describe("SQLite SELECT query to execute (read-only)."),
+>     }),
+>   },
+> );
+>
+> const getSystemPrompt = async () =>
+>   new SystemMessage(`You are a careful SQLite analyst.
+>
+> Authoritative schema (do not invent columns/tables):
+> ${await getSchema()}
+>
+> Rules:
+> - Think step-by-step.
+> - When you need data, call the tool \`execute_sql\` with ONE SELECT query.
+> - Read-only; no INSERT/UPDATE/DELETE/ALTER/DROP/CREATE/REPLACE/TRUNCATE.
+> - Limit to 5 rows unless user explicitly asks otherwise.
+> - If the tool returns 'Error:', revise the SQL and try again.
+> - Limit the number of attempts to 5.
+> - If you are not successful after 5 attempts, return a note to the user.
+> - Prefer explicit column lists; avoid SELECT *.
+> `);
+>
+> export const agent = createAgent({
+>   model: "openrouter:z-ai/glm-5.2",
+>   tools: [executeSql],
+>   systemPrompt: await getSystemPrompt(),
+> });
+> ```
+>
+> ```ts Fireworks theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> import fs from "node:fs/promises";
+> import path from "node:path";
+> import sqlite3 from "sqlite3";
+> import { SystemMessage, createAgent, tool } from "langchain";
+> import * as z from "zod";
+>
+> const url =
+>   "https://storage.googleapis.com/benchmarks-artifacts/chinook/Chinook.db";
+> const localPath = path.resolve("Chinook.db");
+>
+> async function resolveDbPath() {
+>   try {
+>     await fs.access(localPath);
+>     return localPath;
+>   } catch {
+>     // Chinook.db not present locally; download it.
+>   }
+>   const resp = await fetch(url);
+>   if (!resp.ok)
+>     throw new Error(`Failed to download DB. Status code: ${resp.status}`);
+>   const buf = Buffer.from(await resp.arrayBuffer());
+>   await fs.writeFile(localPath, buf);
+>   return localPath;
+> }
+>
+> // Below are minimal tools for demonstration purposes.
+> async function runQuery(query: string): Promise<Record<string, unknown>[]> {
+>   const dbPath = await resolveDbPath();
+>   const db = new sqlite3.Database(dbPath);
+>   return new Promise((resolve, reject) => {
+>     db.all(query, [], (err, rows) => {
+>       db.close();
+>       if (err) reject(err);
+>       else resolve(rows as Record<string, unknown>[]);
+>     });
+>   });
+> }
+>
+> async function getSchema() {
+>   const tables = await runQuery(
+>     "SELECT sql FROM sqlite_master WHERE type='table' AND name NOT LIKE 'sqlite_%';",
+>   );
+>   return tables.map((row) => String(row.sql)).join("\n\n");
+> }
+>
+> const DENY_RE =
+>   /\b(INSERT|UPDATE|DELETE|ALTER|DROP|CREATE|REPLACE|TRUNCATE)\b/i;
+> const HAS_LIMIT_TAIL_RE = /\blimit\b\s+\d+(\s*,\s*\d+)?\s*;?\s*$/i;
+>
+> function sanitizeSqlQuery(q: string) {
+>   let query = String(q ?? "").trim();
+>
+>   const semis = [...query].filter((c) => c === ";").length;
+>   if (semis > 1 || (query.endsWith(";") && query.slice(0, -1).includes(";"))) {
+>     throw new Error("multiple statements are not allowed.");
+>   }
+>   query = query.replace(/;+\s*$/g, "").trim();
+>
+>   if (!query.toLowerCase().startsWith("select")) {
+>     throw new Error("Only SELECT statements are allowed");
+>   }
+>   if (DENY_RE.test(query)) {
+>     throw new Error("DML/DDL detected. Only read-only queries are permitted.");
+>   }
+>
+>   if (!HAS_LIMIT_TAIL_RE.test(query)) {
+>     query += " LIMIT 5";
+>   }
+>   return query;
+> }
+>
+> const executeSql = tool(
+>   async ({ query }) => {
+>     const q = sanitizeSqlQuery(query);
+>     try {
+>       const result = await runQuery(q);
+>       return JSON.stringify(result, null, 2);
+>     } catch (e) {
+>       const message = e instanceof Error ? e.message : String(e);
+>       throw new Error(message);
+>     }
+>   },
+>   {
+>     name: "execute_sql",
+>     description: "Execute a READ-ONLY SQLite SELECT query and return results.",
+>     schema: z.object({
+>       query: z.string().describe("SQLite SELECT query to execute (read-only)."),
+>     }),
+>   },
+> );
+>
+> const getSystemPrompt = async () =>
+>   new SystemMessage(`You are a careful SQLite analyst.
+>
+> Authoritative schema (do not invent columns/tables):
+> ${await getSchema()}
+>
+> Rules:
+> - Think step-by-step.
+> - When you need data, call the tool \`execute_sql\` with ONE SELECT query.
+> - Read-only; no INSERT/UPDATE/DELETE/ALTER/DROP/CREATE/REPLACE/TRUNCATE.
+> - Limit to 5 rows unless user explicitly asks otherwise.
+> - If the tool returns 'Error:', revise the SQL and try again.
+> - Limit the number of attempts to 5.
+> - If you are not successful after 5 attempts, return a note to the user.
+> - Prefer explicit column lists; avoid SELECT *.
+> `);
+>
+> export const agent = createAgent({
+>   model: "fireworks:accounts/fireworks/models/glm-5p2",
+>   tools: [executeSql],
+>   systemPrompt: await getSystemPrompt(),
+> });
+> ```
+>
+> ```ts Baseten theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> import fs from "node:fs/promises";
+> import path from "node:path";
+> import sqlite3 from "sqlite3";
+> import { SystemMessage, createAgent, tool } from "langchain";
+> import * as z from "zod";
+>
+> const url =
+>   "https://storage.googleapis.com/benchmarks-artifacts/chinook/Chinook.db";
+> const localPath = path.resolve("Chinook.db");
+>
+> async function resolveDbPath() {
+>   try {
+>     await fs.access(localPath);
+>     return localPath;
+>   } catch {
+>     // Chinook.db not present locally; download it.
+>   }
+>   const resp = await fetch(url);
+>   if (!resp.ok)
+>     throw new Error(`Failed to download DB. Status code: ${resp.status}`);
+>   const buf = Buffer.from(await resp.arrayBuffer());
+>   await fs.writeFile(localPath, buf);
+>   return localPath;
+> }
+>
+> // Below are minimal tools for demonstration purposes.
+> async function runQuery(query: string): Promise<Record<string, unknown>[]> {
+>   const dbPath = await resolveDbPath();
+>   const db = new sqlite3.Database(dbPath);
+>   return new Promise((resolve, reject) => {
+>     db.all(query, [], (err, rows) => {
+>       db.close();
+>       if (err) reject(err);
+>       else resolve(rows as Record<string, unknown>[]);
+>     });
+>   });
+> }
+>
+> async function getSchema() {
+>   const tables = await runQuery(
+>     "SELECT sql FROM sqlite_master WHERE type='table' AND name NOT LIKE 'sqlite_%';",
+>   );
+>   return tables.map((row) => String(row.sql)).join("\n\n");
+> }
+>
+> const DENY_RE =
+>   /\b(INSERT|UPDATE|DELETE|ALTER|DROP|CREATE|REPLACE|TRUNCATE)\b/i;
+> const HAS_LIMIT_TAIL_RE = /\blimit\b\s+\d+(\s*,\s*\d+)?\s*;?\s*$/i;
+>
+> function sanitizeSqlQuery(q: string) {
+>   let query = String(q ?? "").trim();
+>
+>   const semis = [...query].filter((c) => c === ";").length;
+>   if (semis > 1 || (query.endsWith(";") && query.slice(0, -1).includes(";"))) {
+>     throw new Error("multiple statements are not allowed.");
+>   }
+>   query = query.replace(/;+\s*$/g, "").trim();
+>
+>   if (!query.toLowerCase().startsWith("select")) {
+>     throw new Error("Only SELECT statements are allowed");
+>   }
+>   if (DENY_RE.test(query)) {
+>     throw new Error("DML/DDL detected. Only read-only queries are permitted.");
+>   }
+>
+>   if (!HAS_LIMIT_TAIL_RE.test(query)) {
+>     query += " LIMIT 5";
+>   }
+>   return query;
+> }
+>
+> const executeSql = tool(
+>   async ({ query }) => {
+>     const q = sanitizeSqlQuery(query);
+>     try {
+>       const result = await runQuery(q);
+>       return JSON.stringify(result, null, 2);
+>     } catch (e) {
+>       const message = e instanceof Error ? e.message : String(e);
+>       throw new Error(message);
+>     }
+>   },
+>   {
+>     name: "execute_sql",
+>     description: "Execute a READ-ONLY SQLite SELECT query and return results.",
+>     schema: z.object({
+>       query: z.string().describe("SQLite SELECT query to execute (read-only)."),
+>     }),
+>   },
+> );
+>
+> const getSystemPrompt = async () =>
+>   new SystemMessage(`You are a careful SQLite analyst.
+>
+> Authoritative schema (do not invent columns/tables):
+> ${await getSchema()}
+>
+> Rules:
+> - Think step-by-step.
+> - When you need data, call the tool \`execute_sql\` with ONE SELECT query.
+> - Read-only; no INSERT/UPDATE/DELETE/ALTER/DROP/CREATE/REPLACE/TRUNCATE.
+> - Limit to 5 rows unless user explicitly asks otherwise.
+> - If the tool returns 'Error:', revise the SQL and try again.
+> - Limit the number of attempts to 5.
+> - If you are not successful after 5 attempts, return a note to the user.
+> - Prefer explicit column lists; avoid SELECT *.
+> `);
+>
+> export const agent = createAgent({
+>   model: "baseten:zai-org/GLM-5.2",
+>   tools: [executeSql],
+>   systemPrompt: await getSystemPrompt(),
+> });
+> ```
+>
+> ```ts Ollama theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> import fs from "node:fs/promises";
+> import path from "node:path";
+> import sqlite3 from "sqlite3";
+> import { SystemMessage, createAgent, tool } from "langchain";
+> import * as z from "zod";
+>
+> const url =
+>   "https://storage.googleapis.com/benchmarks-artifacts/chinook/Chinook.db";
+> const localPath = path.resolve("Chinook.db");
+>
+> async function resolveDbPath() {
+>   try {
+>     await fs.access(localPath);
+>     return localPath;
+>   } catch {
+>     // Chinook.db not present locally; download it.
+>   }
+>   const resp = await fetch(url);
+>   if (!resp.ok)
+>     throw new Error(`Failed to download DB. Status code: ${resp.status}`);
+>   const buf = Buffer.from(await resp.arrayBuffer());
+>   await fs.writeFile(localPath, buf);
+>   return localPath;
+> }
+>
+> // Below are minimal tools for demonstration purposes.
+> async function runQuery(query: string): Promise<Record<string, unknown>[]> {
+>   const dbPath = await resolveDbPath();
+>   const db = new sqlite3.Database(dbPath);
+>   return new Promise((resolve, reject) => {
+>     db.all(query, [], (err, rows) => {
+>       db.close();
+>       if (err) reject(err);
+>       else resolve(rows as Record<string, unknown>[]);
+>     });
+>   });
+> }
+>
+> async function getSchema() {
+>   const tables = await runQuery(
+>     "SELECT sql FROM sqlite_master WHERE type='table' AND name NOT LIKE 'sqlite_%';",
+>   );
+>   return tables.map((row) => String(row.sql)).join("\n\n");
+> }
+>
+> const DENY_RE =
+>   /\b(INSERT|UPDATE|DELETE|ALTER|DROP|CREATE|REPLACE|TRUNCATE)\b/i;
+> const HAS_LIMIT_TAIL_RE = /\blimit\b\s+\d+(\s*,\s*\d+)?\s*;?\s*$/i;
+>
+> function sanitizeSqlQuery(q: string) {
+>   let query = String(q ?? "").trim();
+>
+>   const semis = [...query].filter((c) => c === ";").length;
+>   if (semis > 1 || (query.endsWith(";") && query.slice(0, -1).includes(";"))) {
+>     throw new Error("multiple statements are not allowed.");
+>   }
+>   query = query.replace(/;+\s*$/g, "").trim();
+>
+>   if (!query.toLowerCase().startsWith("select")) {
+>     throw new Error("Only SELECT statements are allowed");
+>   }
+>   if (DENY_RE.test(query)) {
+>     throw new Error("DML/DDL detected. Only read-only queries are permitted.");
+>   }
+>
+>   if (!HAS_LIMIT_TAIL_RE.test(query)) {
+>     query += " LIMIT 5";
+>   }
+>   return query;
+> }
+>
+> const executeSql = tool(
+>   async ({ query }) => {
+>     const q = sanitizeSqlQuery(query);
+>     try {
+>       const result = await runQuery(q);
+>       return JSON.stringify(result, null, 2);
+>     } catch (e) {
+>       const message = e instanceof Error ? e.message : String(e);
+>       throw new Error(message);
+>     }
+>   },
+>   {
+>     name: "execute_sql",
+>     description: "Execute a READ-ONLY SQLite SELECT query and return results.",
+>     schema: z.object({
+>       query: z.string().describe("SQLite SELECT query to execute (read-only)."),
+>     }),
+>   },
+> );
+>
+> const getSystemPrompt = async () =>
+>   new SystemMessage(`You are a careful SQLite analyst.
+>
+> Authoritative schema (do not invent columns/tables):
+> ${await getSchema()}
+>
+> Rules:
+> - Think step-by-step.
+> - When you need data, call the tool \`execute_sql\` with ONE SELECT query.
+> - Read-only; no INSERT/UPDATE/DELETE/ALTER/DROP/CREATE/REPLACE/TRUNCATE.
+> - Limit to 5 rows unless user explicitly asks otherwise.
+> - If the tool returns 'Error:', revise the SQL and try again.
+> - Limit the number of attempts to 5.
+> - If you are not successful after 5 attempts, return a note to the user.
+> - Prefer explicit column lists; avoid SELECT *.
+> `);
+>
+> export const agent = createAgent({
+>   model: "ollama:north-mini-code-1.0",
+>   tools: [executeSql],
+>   systemPrompt: await getSystemPrompt(),
+> });
+> ```
+>
+>> **[View example trace](https://smith.langchain.com/public/3925fa04-8885-4afd-aa45-5ba021acc93b/r)**
+>>
+>> 为此示例打开公共 LangSmith 运行。
+
+**7.实施人机交互审核**
+
+在执行代理的 SQL 查询之前检查是否存在任何意外操作或效率低下，这可能是谨慎的做法。
+
+LangChain 代理支持内置 [human-in-the-loop middleware](/oss/javascript/langchain/human-in-the-loop)，以添加对代理工具调用的监督。让我们将代理配置为在调用 `execute_sql` 工具时暂停以供人工审核：
+
+```ts Google theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+import { humanInTheLoopMiddleware } from "langchain"; // [!code highlight]
+import { MemorySaver } from "@langchain/langgraph"; // [!code highlight]
+
+agent = createAgent({
+  model: "google:gemini-3.6-flash",
+  tools: [executeSql],
+  systemPrompt: await getSystemPrompt(),
+  middleware: [
+    // [!code highlight]
+    humanInTheLoopMiddleware({
       // [!code highlight]
-      console.log("INTERRUPTED:"); // [!code highlight]
-      for (const interrupt of hitlStream.interrupts) {
-        // [!code highlight]
-        for (const request of interrupt.payload.actionRequests) {
-          // [!code highlight]
-          console.log(request.description); // [!code highlight]
-        }
+      interruptOn: {
+        execute_sql: true, // [!code highlight]
+      },
+      descriptionPrefix: "Tool execution pending approval", // [!code highlight]
+    }),
+  ], // [!code highlight]
+  checkpointer: new MemorySaver(), // [!code highlight]
+});
+```
+
+```ts OpenAI theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+import { humanInTheLoopMiddleware } from "langchain"; // [!code highlight]
+import { MemorySaver } from "@langchain/langgraph"; // [!code highlight]
+
+agent = createAgent({
+  model: "openai:gpt-5.5",
+  tools: [executeSql],
+  systemPrompt: await getSystemPrompt(),
+  middleware: [
+    // [!code highlight]
+    humanInTheLoopMiddleware({
+      // [!code highlight]
+      interruptOn: {
+        execute_sql: true, // [!code highlight]
+      },
+      descriptionPrefix: "Tool execution pending approval", // [!code highlight]
+    }),
+  ], // [!code highlight]
+  checkpointer: new MemorySaver(), // [!code highlight]
+});
+```
+
+```ts Anthropic theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+import { humanInTheLoopMiddleware } from "langchain"; // [!code highlight]
+import { MemorySaver } from "@langchain/langgraph"; // [!code highlight]
+
+agent = createAgent({
+  model: "anthropic:claude-sonnet-5",
+  tools: [executeSql],
+  systemPrompt: await getSystemPrompt(),
+  middleware: [
+    // [!code highlight]
+    humanInTheLoopMiddleware({
+      // [!code highlight]
+      interruptOn: {
+        execute_sql: true, // [!code highlight]
+      },
+      descriptionPrefix: "Tool execution pending approval", // [!code highlight]
+    }),
+  ], // [!code highlight]
+  checkpointer: new MemorySaver(), // [!code highlight]
+});
+```
+
+```ts OpenRouter theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+import { humanInTheLoopMiddleware } from "langchain"; // [!code highlight]
+import { MemorySaver } from "@langchain/langgraph"; // [!code highlight]
+
+agent = createAgent({
+  model: "openrouter:z-ai/glm-5.2",
+  tools: [executeSql],
+  systemPrompt: await getSystemPrompt(),
+  middleware: [
+    // [!code highlight]
+    humanInTheLoopMiddleware({
+      // [!code highlight]
+      interruptOn: {
+        execute_sql: true, // [!code highlight]
+      },
+      descriptionPrefix: "Tool execution pending approval", // [!code highlight]
+    }),
+  ], // [!code highlight]
+  checkpointer: new MemorySaver(), // [!code highlight]
+});
+```
+
+```ts Fireworks theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+import { humanInTheLoopMiddleware } from "langchain"; // [!code highlight]
+import { MemorySaver } from "@langchain/langgraph"; // [!code highlight]
+
+agent = createAgent({
+  model: "fireworks:accounts/fireworks/models/glm-5p2",
+  tools: [executeSql],
+  systemPrompt: await getSystemPrompt(),
+  middleware: [
+    // [!code highlight]
+    humanInTheLoopMiddleware({
+      // [!code highlight]
+      interruptOn: {
+        execute_sql: true, // [!code highlight]
+      },
+      descriptionPrefix: "Tool execution pending approval", // [!code highlight]
+    }),
+  ], // [!code highlight]
+  checkpointer: new MemorySaver(), // [!code highlight]
+});
+```
+
+```ts Baseten theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+import { humanInTheLoopMiddleware } from "langchain"; // [!code highlight]
+import { MemorySaver } from "@langchain/langgraph"; // [!code highlight]
+
+agent = createAgent({
+  model: "baseten:zai-org/GLM-5.2",
+  tools: [executeSql],
+  systemPrompt: await getSystemPrompt(),
+  middleware: [
+    // [!code highlight]
+    humanInTheLoopMiddleware({
+      // [!code highlight]
+      interruptOn: {
+        execute_sql: true, // [!code highlight]
+      },
+      descriptionPrefix: "Tool execution pending approval", // [!code highlight]
+    }),
+  ], // [!code highlight]
+  checkpointer: new MemorySaver(), // [!code highlight]
+});
+```
+
+```ts Ollama theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+import { humanInTheLoopMiddleware } from "langchain"; // [!code highlight]
+import { MemorySaver } from "@langchain/langgraph"; // [!code highlight]
+
+agent = createAgent({
+  model: "ollama:north-mini-code-1.0",
+  tools: [executeSql],
+  systemPrompt: await getSystemPrompt(),
+  middleware: [
+    // [!code highlight]
+    humanInTheLoopMiddleware({
+      // [!code highlight]
+      interruptOn: {
+        execute_sql: true, // [!code highlight]
+      },
+      descriptionPrefix: "Tool execution pending approval", // [!code highlight]
+    }),
+  ], // [!code highlight]
+  checkpointer: new MemorySaver(), // [!code highlight]
+});
+```
+
+> [!注意]
+>
+> 我们在代理中添加了 [checkpointer](/oss/javascript/langchain/short-term-memory)，以允许暂停和恢复执行。有关此内容以及可用中间件配置的详细信息，请参阅 [human-in-the-loop guide](/oss/javascript/langchain/human-in-the-loop)。
+
+在运行代理时，它现在将在执行 `execute_sql` 工具之前暂停以进行审查：
+
+```ts theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+question = "Which genre, on average, has the longest tracks?";
+const config = { configurable: { thread_id: "1" } }; // [!code highlight]
+
+const hitlStream = await agent.streamEvents(
+  { messages: [{ role: "user", content: question }] },
+  { ...config, version: "v3" }, // [!code highlight]
+);
+await Promise.all([
+  (async () => {
+    for await (const message of hitlStream.messages) {
+      for await (const token of message.text) {
+        process.stdout.write(token);
       }
     }
-    ```
+  })(),
+  (async () => {
+    for await (const call of hitlStream.toolCalls) {
+      console.log(`\nTool call: ${call.name}(${JSON.stringify(call.input)})`);
+    }
+  })(),
+]);
+if (hitlStream.interrupted) {
+  // [!code highlight]
+  console.log("INTERRUPTED:"); // [!code highlight]
+  for (const interrupt of hitlStream.interrupts) {
+    // [!code highlight]
+    for (const request of interrupt.payload.actionRequests) {
+      // [!code highlight]
+      console.log(request.description); // [!code highlight]
+    }
+  }
+}
+```
 
-    ```
-    ...
+```
+...
 
-    INTERRUPTED:
-    Tool execution pending approval
+INTERRUPTED:
+Tool execution pending approval
 
-    Tool: execute_sql
-    Args: {'query': 'SELECT g.Name AS Genre, AVG(t.Milliseconds) AS AvgTrackLength FROM Track t JOIN Genre g ON t.GenreId = g.GenreId GROUP BY g.Name ORDER BY AvgTrackLength DESC LIMIT 1;'}
-    ```
+Tool: execute_sql
+Args: {'query': 'SELECT g.Name AS Genre, AVG(t.Milliseconds) AS AvgTrackLength FROM Track t JOIN Genre g ON t.GenreId = g.GenreId GROUP BY g.Name ORDER BY AvgTrackLength DESC LIMIT 1;'}
+```
 
-    我们可以恢复执行，在本例中使用 [Command](/oss/javascript/langgraph/use-graph-api#combine-control-flow-and-state-updates-with-command) 接受查询：
+我们可以使用 [Command](/oss/javascript/langgraph/use-graph-api#combine-control-flow-and-state-updates-with-command) 恢复执行，在本例中接受查询：
 
-    ```ts theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-    import { Command } from "@langchain/langgraph"; // [!code highlight]
+```ts theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+import { Command } from "@langchain/langgraph"; // [!code highlight]
 
-    const resumeStream = await agent.streamEvents(
-      new Command({ resume: { decisions: [{ type: "approve" }] } }), // [!code highlight]
-      { ...config, version: "v3" },
-    );
-    await Promise.all([
-      (async () => {
-        for await (const message of resumeStream.messages) {
-          for await (const token of message.text) {
-            process.stdout.write(token);
-          }
-        }
-      })(),
-      (async () => {
-        for await (const call of resumeStream.toolCalls) {
-          console.log(`\nTool call: ${call.name}(${JSON.stringify(call.input)})`);
-        }
-      })(),
-    ]);
-    if (resumeStream.interrupted) {
-      console.log("INTERRUPTED:");
-      for (const interrupt of resumeStream.interrupts) {
-        for (const request of interrupt.payload.actionRequests) {
-          console.log(request.description);
-        }
+const resumeStream = await agent.streamEvents(
+  new Command({ resume: { decisions: [{ type: "approve" }] } }), // [!code highlight]
+  { ...config, version: "v3" },
+);
+await Promise.all([
+  (async () => {
+    for await (const message of resumeStream.messages) {
+      for await (const token of message.text) {
+        process.stdout.write(token);
       }
     }
-    ```
+  })(),
+  (async () => {
+    for await (const call of resumeStream.toolCalls) {
+      console.log(`\nTool call: ${call.name}(${JSON.stringify(call.input)})`);
+    }
+  })(),
+]);
+if (resumeStream.interrupted) {
+  console.log("INTERRUPTED:");
+  for (const interrupt of resumeStream.interrupts) {
+    for (const request of interrupt.payload.actionRequests) {
+      console.log(request.description);
+    }
+  }
+}
+```
 
-    ```
-    ================================== Ai Message ==================================
-    Tool Calls:
-      execute_sql (call_7oz86Epg7lYRqi9rQHbZPS1U)
-     Call ID: call_7oz86Epg7lYRqi9rQHbZPS1U
-      Args:
-        query: SELECT Genre.Name, AVG(Track.Milliseconds) AS AvgDuration FROM Track JOIN Genre ON Track.GenreId = Genre.GenreId GROUP BY Genre.Name ORDER BY AvgDuration DESC LIMIT 5;
-    ================================= Tool Message =================================
-    Name: execute_sql
+```
+================================== Ai Message ==================================
+Tool Calls:
+  execute_sql (call_7oz86Epg7lYRqi9rQHbZPS1U)
+ Call ID: call_7oz86Epg7lYRqi9rQHbZPS1U
+  Args:
+    query: SELECT Genre.Name, AVG(Track.Milliseconds) AS AvgDuration FROM Track JOIN Genre ON Track.GenreId = Genre.GenreId GROUP BY Genre.Name ORDER BY AvgDuration DESC LIMIT 5;
+================================= Tool Message =================================
+Name: execute_sql
 
-    [('Sci Fi & Fantasy', 2911783.0384615385), ('Science Fiction', 2625549.076923077), ('Drama', 2575283.78125), ('TV Shows', 2145041.0215053763), ('Comedy', 1585263.705882353)]
-    ================================== Ai Message ==================================
+[('Sci Fi & Fantasy', 2911783.0384615385), ('Science Fiction', 2625549.076923077), ('Drama', 2575283.78125), ('TV Shows', 2145041.0215053763), ('Comedy', 1585263.705882353)]
+================================== Ai Message ==================================
 
-    The genre with the longest average track length is "Sci Fi & Fantasy" with an average duration of about 2,911,783 milliseconds, followed by "Science Fiction" and "Drama."
-    ```
+The genre with the longest average track length is "Sci Fi & Fantasy" with an average duration of about 2,911,783 milliseconds, followed by "Science Fiction" and "Drama."
+```
 
-    详情请参阅[human-in-the-loop guide](/oss/javascript/langchain/human-in-the-loop)。
-  </Step>
-</Steps>
+详情请参阅[human-in-the-loop guide](/oss/javascript/langchain/human-in-the-loop)。
 
-## 后续步骤
-
-如需更深入的自定义，请查看 [this tutorial](/oss/javascript/langgraph/sql-agent) 以直接使用 LangGraph 原语实现 SQL 代理。
+## 后续步骤如需更深入的自定义，请查看 [this tutorial](/oss/javascript/langgraph/sql-agent) 以直接使用 LangGraph 原语实现 SQL 代理。
 
 ***
 
-<div>
-  <Callout icon="terminal-2">
-    [Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
-  </Callout>
+[Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
 
-  <Callout icon="edit">
-    [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/oss/langchain/sql-agent.mdx) 或 [file an issue](https://github.com/langchain-ai/docs/issues/new/choose)。
-  </Callout>
-</div>
+[Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/oss/langchain/sql-agent.mdx) 或 [file an issue](https://github.com/langchain-ai/docs/issues/new/choose)。

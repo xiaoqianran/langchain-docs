@@ -11,35 +11,27 @@
 有几种方法可以测试您的代理：
 
 * **单元测试** 使用内存中的伪造品单独运行代理的小型确定性部分，以便您可以快速、确定性地断言准确的行为。
-* **集成测试** 使用真实的网络调用来测试代理，以确认组件能够协同工作、凭证和模式对齐以及延迟是可以接受的。
+* **集成测试** 使用真实的网络调用来测试代理，以确认组件可以协同工作、凭据和模式对齐以及延迟是可以接受的。
 * **Evals** 使用评估器通过确定性匹配或 LLM 判断来评估代理的执行轨迹。
 
-代理应用程序往往更依赖于集成，因为它们将多个组件链接在一起，并且由于法学硕士的不确定性而必须处理不稳定的问题。<Tip>
-  大规模运行评估，跟踪一段时间内的结果，并将实验与 [LangSmith](https://smith.langchain.com?utm_source=docs\&utm_medium=cta\&utm_campaign=langsmith-signup\&utm_content=oss-langchain-test-index) 进行比较。请参阅[Evaluate an LLM application](/langsmith/evaluate-llm-application)开始。
-</Tip>
+代理应用程序往往更依赖于集成，因为它们将多个组件链接在一起，并且由于法学硕士的不确定性而必须处理不稳定的问题。> [!提示]
+>
+> 大规模运行评估，跟踪一段时间内的结果，并将实验与 [LangSmith](https://smith.langchain.com?utm_source=docs\&utm_medium=cta\&utm_campaign=langsmith-signup\&utm_content=oss-langchain-test-index) 进行比较。请参阅[Evaluate an LLM application](/langsmith/evaluate-llm-application)开始。
 
-<CardGroup>
-  <Card title="Unit testing" icon="flask" href="/oss/javascript/langchain/test/unit-testing">
-    模拟聊天模型并使用内存持久性来测试代理逻辑，而无需 API 调用。
-  </Card>
+> **[Unit testing](/oss/javascript/langchain/test/unit-testing)**
+>
+> 模拟聊天模型并使用内存持久性来测试代理逻辑，无需 API 调用。
 
-  <Card title="Integration testing" icon="plug" href="/oss/javascript/langchain/test/integration-testing">
-    使用真实的 LLM API 测试您的代理。组织测试、管理密钥、处理不稳定问题并控制成本。
-  </Card>
+> **[Integration testing](/oss/javascript/langchain/test/integration-testing)**
+>
+> 使用真正的 LLM API 测试您的代理。组织测试、管理密钥、处理不稳定问题并控制成本。
 
-  <Card title="Evals" icon="scale" href="/oss/javascript/langchain/test/evals">
-    使用确定性匹配或 LLM-as-judge 评估器评估代理轨迹。
-  </Card>
-</CardGroup>
+> **[Evals](/oss/javascript/langchain/test/evals)**
+>
+> 使用确定性匹配或 LLM-as-judge 评估器评估代理轨迹。
 
 ***
 
-<div>
-  <Callout icon="terminal-2">
-    [Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
-  </Callout>
+[Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
 
-  <Callout icon="edit">
-    [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/oss/langchain/test/index.mdx) 或 [file an issue](https://github.com/langchain-ai/docs/issues/new/choose)。
-  </Callout>
-</div>
+[Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/oss/langchain/test/index.mdx) 或 [file an issue](https://github.com/langchain-ai/docs/issues/new/choose)。

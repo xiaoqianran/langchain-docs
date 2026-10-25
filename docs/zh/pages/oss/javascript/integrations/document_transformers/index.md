@@ -10,20 +10,12 @@
 
 ## 所有文档转换器
 
-<div>
-  |整合 |下载 |
-  | :- | :- |
-  | [⟦T0⟧](/oss/javascript/integrations/document_transformers/openai_metadata_tagger) | <span><a href="https://www.npmjs.com/package/@langchain/openai"><img alt="Downloads per month" /></a></span> |
-</div>
+|整合 |下载 |
+| :-| :-|
+| [⟦T0⟧](/oss/javascript/integrations/document_transformers/openai_metadata_tagger) | [  ⟦T1⟧](https://www.npmjs.com/package/@langchain/openai) |
 
 ***
 
-<div>
-  <Callout icon="terminal-2">
-    [Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
-  </Callout>
+[Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
 
-  <Callout icon="edit">
-    [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/oss/javascript/integrations/document_transformers/index.mdx) 或 [file an issue](https://github.com/langchain-ai/docs/issues/new/choose)。
-  </Callout>
-</div>
+[Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/oss/javascript/integrations/document_transformers/index.mdx) 或 [file an issue](https://github.com/langchain-ai/docs/issues/new/choose)。

@@ -8,31 +8,29 @@
 
 LangChain 通过 `@langchain/google` 软件包提供与 [Google AI Studio](https://aistudio.google.com/) 和 [Gemini Enterprise Agent Platform](https://cloud.google.com/products/gemini-enterprise-agent-platform) 的集成。
 
-<Info>
-  正在寻找旧版 `@langchain/google-genai` 或 `@langchain/google-vertexai` 套件？它们在[long-term support](#legacy-packages)下维护，但不再推荐用于新项目。
-</Info>
+> [!注意]
+>
+> 正在寻找旧版 `@langchain/google-genai` 或 `@langchain/google-vertexai` 套件？它们在[long-term support](#legacy-packages)下维护，但不再推荐用于新项目。
 
 ## 聊天模型
 
 [⟦T12⟧](/oss/javascript/integrations/chat/google) 类是访问 Gemini 模型（例如 `gemini-2.5-pro`、`gemini-2.5-flash` 和 `gemini-3.1-pro-preview`）和开放模型（如 Gemma）的推荐方式。它在单一界面中支持 Google AI Studio 和 Gemini Enterprise Agent Platform
 
-<Tip>
-  参见[this section for general instructions on installing LangChain packages](/oss/javascript/langchain/install)。
-</Tip>
+> [!提示]
+>
+> 参见[this section for general instructions on installing LangChain packages](/oss/javascript/langchain/install)。
 
-<CodeGroup>
-  ```bash npm theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  npm install @langchain/google @langchain/core
-  ```
+```bash npm theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+npm install @langchain/google @langchain/core
+```
 
-  ```bash yarn theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  yarn add @langchain/google @langchain/core
-  ```
+```bash yarn theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+yarn add @langchain/google @langchain/core
+```
 
-  ```bash pnpm theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  pnpm add @langchain/google @langchain/core
-  ```
-</CodeGroup>
+```bash pnpm theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+pnpm add @langchain/google @langchain/core
+```
 
 配置您的 API 密钥：
 
@@ -52,15 +50,13 @@ const res = await model.invoke([
 
 `ChatGoogle` 支持工具调用、结构化输出、多模态输入（图像、音频、视频）、推理/思考、图像生成、文本转语音以及 Gemini 特定的原生工具，例如 Google 搜索基础和代码执行。
 
-<CardGroup>
-  <Card title="ChatGoogle" icon="message-chatbot" href="/oss/javascript/integrations/chat/google">
-    完整的聊天模型文档，包括设置、调用、流式传输、结构化输出等。
-  </Card>
+> **[ChatGoogle](/oss/javascript/integrations/chat/google)**
+>
+> 完整的聊天模型文档，包括设置、调用、流式传输、结构化输出等。
 
-  <Card title="Gemini native tools" icon="tool" href="/oss/javascript/integrations/tools/google">
-    Google 搜索、代码执行、URL 上下文、Google 地图、文件搜索、计算机使用和 MCP 服务器。
-  </Card>
-</CardGroup>
+> **[Gemini native tools](/oss/javascript/integrations/tools/google)**
+>
+> Google 搜索、代码执行、URL 上下文、Google 地图、文件搜索、计算机使用和 MCP 服务器。
 
 ### Gemini企业代理平台上的第三方模型[Anthropic](/oss/javascript/integrations/chat/anthropic) 克劳德型号也可通过
 [Gemini Enterprise Agent Platform](https://docs.cloud.google.com/gemini-enterprise-agent-platform/models/partner-models/claude)
@@ -69,7 +65,7 @@ const res = await model.invoke([
 
 ### Postgres 矢量存储 (Cloud SQL)
 
-[PostgresVectorStore](/oss/javascript/integrations/vectorstores/google_cloudsql_pg) 模块来自
+来自的[PostgresVectorStore](/oss/javascript/integrations/vectorstores/google_cloudsql_pg)模块
 [⟦T17⟧](https://www.npmjs.com/package/@langchain/google-cloud-sql-pg)包提供了使用CloudSQL for PostgreSQL进行存储的方法
 向量嵌入。
 
@@ -91,7 +87,7 @@ npm install @langchain/google-genai @langchain/core
 
 ### `@langchain/google-vertexai`
 
-`@langchain/google-vertexai` 软件包为 Node.js 上的 Gemini Enterprise Agent Platform 提供了 [⟦T25⟧](/oss/javascript/integrations/chat/google_vertex_ai)、[⟦T26⟧](/oss/javascript/integrations/embeddings/google_vertex_ai) 和 [⟦T27⟧](/oss/javascript/integrations/llms/google_vertex_ai)。它依赖于[⟦T28⟧](#%40langchain%2Fgoogle-gauth)进行身份验证。该软件包已被 `@langchain/google` 内置的用于聊天的 Gemini Enterprise Agent Platform 支持取代。
+`@langchain/google-vertexai` 软件包为 Node.js 上的 Gemini Enterprise Agent Platform 提供了 [⟦T25⟧](/oss/javascript/integrations/chat/google_vertex_ai)、[⟦T26⟧](/oss/javascript/integrations/embeddings/google_vertex_ai) 和 [⟦T27⟧](/oss/javascript/integrations/llms/google_vertex_ai)。依赖[⟦T28⟧](#%40langchain%2Fgoogle-gauth)进行认证。该软件包已被 `@langchain/google` 内置的用于聊天的 Gemini Enterprise Agent Platform 支持取代。
 
 ```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 npm install @langchain/google-vertexai @langchain/core
@@ -103,7 +99,7 @@ npm install @langchain/google-vertexai @langchain/core
 
 ```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 npm install @langchain/google-vertexai-web @langchain/core
-```请参阅 [Gemini Enterprise Agent Platform chat](/oss/javascript/integrations/chat/google_vertex_ai) 页面了解 `GOOGLE_WEB_CREDENTIALS` 和 Web 导入路径。
+```有关 `GOOGLE_WEB_CREDENTIALS` 和 Web 导入路径，请参阅 [Gemini Enterprise Agent Platform chat](/oss/javascript/integrations/chat/google_vertex_ai) 页面。
 
 ### `@langchain/google-webauth`
 
@@ -133,18 +129,12 @@ npm install @langchain/google-vertexai-web @langchain/core
 
 [⟦T65⟧](https://github.com/langchain-ai/langchainjs/tree/main/libs/providers/langchain-google-common) 包为[⟦T66⟧](/oss/javascript/integrations/chat/google_vertex_ai) 等遗留集成提供共享的 Gemini 客户端抽象。它不包含授权代码，并且**不是**独立的软件包 - 不要直接安装或导入它。
 
-<Tip>
-  要从 `@langchain/google-genai` 或 `@langchain/google-vertexai` 迁移到 `@langchain/google`，请参阅 [ChatGoogle](/oss/javascript/integrations/chat/google) 页面了解设置说明。 `ChatGoogle` 类提供等效功能，可统一访问 Google AI Studio 和 Gemini Enterprise Agent Platform。
-</Tip>
+> [!提示]
+>
+> 要从 `@langchain/google-genai` 或 `@langchain/google-vertexai` 迁移到 `@langchain/google`，请参阅 [ChatGoogle](/oss/javascript/integrations/chat/google) 页面了解设置说明。 `ChatGoogle` 类提供等效功能，可统一访问 Google AI Studio 和 Gemini Enterprise Agent Platform。
 
 ***
 
-<div>
-  <Callout icon="terminal-2">
-    [Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
-  </Callout>
+[Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
 
-  <Callout icon="edit">
-    [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/oss/javascript/integrations/providers/google.mdx) 或 [file an issue](https://github.com/langchain-ai/docs/issues/new/choose)。
-  </Callout>
-</div>
+[Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/oss/javascript/integrations/providers/google.mdx) 或 [file an issue](https://github.com/langchain-ai/docs/issues/new/choose)。

@@ -20,7 +20,7 @@ relevant sections.
 * **`openwiki_search`**：返回具体问题的紧凑、排名结果
 * **`openwiki_read`**：检索您的代理从这些结果中选择的完整部分
 
-指导代理使用检索来解决具体架构或依赖性问题，阅读相关部分，并在落地后停止。检索是可选的上下文，而不是每个任务开始时的例行步骤。这些工具是无模型的：它们不会启动生成运行或进行自己的模型调用。
+指导代理使用具体架构或依赖性问题的检索，阅读相关部分，并在落地后停止。检索是可选的上下文，而不是每个任务开始时的例行步骤。这些工具是无模型的：它们不会启动生成运行或进行自己的模型调用。
 
 当存储库链接到工作区时，`openwiki_list_workspaces`和`openwiki_list_wikis`提供发现。工作空间搜索结果识别其供应`wiki`；将该 ID 与结果的页面和部分锚点一起传递给 `openwiki_read`。这些工具随[coding-agent integrations](/oss/openwiki/integrations)一起提供。安装集成后，重新启动主机并要求其搜索 wiki。
 
@@ -61,12 +61,6 @@ openwiki workspace clear
 
 ***
 
-<div>
-  <Callout icon="terminal-2">
-    [Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
-  </Callout>
+[Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
 
-  <Callout icon="edit">
-    [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/oss/openwiki/search-and-link.mdx) 或 [file an issue](https://github.com/langchain-ai/docs/issues/new/choose)。
-  </Callout>
-</div>
+[Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/oss/openwiki/search-and-link.mdx) 或 [file an issue](https://github.com/langchain-ai/docs/issues/new/choose)。

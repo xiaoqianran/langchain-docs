@@ -38,11 +38,11 @@ async function main(server: string) {
 }
 ```
 
-<Card title="View example trace" icon="chart-line" href="https://smith.langchain.com/public/595d3842-7630-449c-978b-27f0653155e2/r">
-  为此示例打开公共 LangSmith 运行。
-</Card>
+> **[View example trace](https://smith.langchain.com/public/595d3842-7630-449c-978b-27f0653155e2/r)**
+>
+> 为此示例打开公共 LangSmith 运行。
 
-当代理可以调用其工具时（包括恢复中断的运行时），请保持适配器打开。当您使用完代理后，请致电`await adapter.close()`。
+当代理可以调用​​其工具时（包括恢复中断的运行时），请保持适配器打开。当您使用完代理后，请致电`await adapter.close()`。
 
 有关定义、绑定和使用 LangChain 工具的一般指南，请参阅 [Tools](/oss/javascript/langchain/tools)。有关多个 MCP 服务器及其命名空间工具目录，请参阅[Connections](/oss/javascript/langchain/mcp/connections#multiple-servers)。## 处理工具输出
 
@@ -92,13 +92,13 @@ async function accessMultimodalToolContent(serverUrl: string) {
 }
 ```
 
-<Card title="View example trace" icon="chart-line" href="https://smith.langchain.com/public/c5bd522f-7c6d-4046-896f-9f7d1fca6590/r">
-  为此示例打开公共 LangSmith 运行。
-</Card>
+> **[View example trace](https://smith.langchain.com/public/c5bd522f-7c6d-4046-896f-9f7d1fca6590/r)**
+>
+> 为此示例打开公共 LangSmith 运行。
 
 ### 结构化内容
 
-当工具返回结构化内容时，适配器将其作为工件附加到[⟦T18⟧](https://reference.langchain.com/javascript/langchain-core/messages/ToolMessage)，而不是将其折叠到模型可见文本中。运行代理，然后从结果中的 [⟦T20⟧](https://reference.langchain.com/javascript/langchain-core/messages/ToolMessage) 实例中读取 `artifact`：
+当工具返回结构化内容时，适配器将其作为工件附加到 [⟦T18⟧](https://reference.langchain.com/javascript/langchain-core/messages/ToolMessage)，而不是将其折叠到模型可见文本中。运行代理，然后从结果中的 [⟦T20⟧](https://reference.langchain.com/javascript/langchain-core/messages/ToolMessage) 实例中读取 `artifact`：
 
 ```ts theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 import { MCPAdapter } from "@langchain/mcp-adapters";
@@ -134,15 +134,15 @@ async function readStructuredContent(serverUrl: string) {
 }
 ```
 
-<Card title="View example trace" icon="chart-line" href="https://smith.langchain.com/public/b5c7e711-6ef7-4483-a700-73465df2f4ca/r">
-  为此示例打开公共 LangSmith 运行。
-</Card>
+> **[View example trace](https://smith.langchain.com/public/b5c7e711-6ef7-4483-a700-73465df2f4ca/r)**
+>
+> 为此示例打开公共 LangSmith 运行。
 
 `artifact` 是 MCP 结果条目的数组。结构化内容出现在带有`type: "mcp_structured_content"`的条目中，其`data`字段保存工具结果的`structuredContent`。
 
 ### 错误
 
-当服务器在代理工具调用期间返回 `isError: true` 时，适配器将返回带有 `status: "error"` 和服务器消息的 [⟦T26⟧](https://reference.langchain.com/javascript/langchain-core/messages/ToolMessage)。该模型可以读取错误并重试。适配器抛出传输故障。当工具在 `createAgent` 内运行时，代理的默认错误处理也会将这些故障转换为错误工具消息。消息的`status`本身并不能区分原因：
+当服务器在代理工具调用期间返回 `isError: true` 时，适配器将返回带有 `status: "error"` 的 [⟦T26⟧](https://reference.langchain.com/javascript/langchain-core/messages/ToolMessage) 以及服务器的消息。该模型可以读取错误并重试。适配器抛出传输故障。当工具在 `createAgent` 内运行时，代理的默认错误处理也会将这些故障转换为错误工具消息。消息的`status`本身并不能区分原因：
 
 ```ts theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 import { MCPAdapter } from "@langchain/mcp-adapters";
@@ -175,9 +175,9 @@ async function divideByZero(serverUrl: string) {
 }
 ```
 
-<Card title="View example trace" icon="chart-line" href="https://smith.langchain.com/public/8301dd9e-da25-4d9a-ad13-11330f638f36/r">
-  为此示例打开公共 LangSmith 运行。
-</Card>
+> **[View example trace](https://smith.langchain.com/public/8301dd9e-da25-4d9a-ad13-11330f638f36/r)**
+>
+> 为此示例打开公共 LangSmith 运行。
 
 如果您直接使用普通参数调用适配工具，则带有 `isError: true` 的服务器结果会抛出 `ToolException`，而 MCP 结果为 `error.result`。
 
@@ -216,7 +216,7 @@ function isDestructive(tool: DynamicStructuredTool): boolean {
 
 ## 人机交互
 
-阅读注释可以让您根据服务器声明的内容来控制工具，而不是硬编码工具名称。 MCP 注释对工具进行分类，LangChain 的人机交互中间件强制执行审批策略。在工具发现期间从元数据中读取一次破坏性提示。然后为人机交互配置提供一个 `when` 谓词，用于接收每个待处理的工具调用并返回该调用是否需要批准：
+阅读注释可以让您根据服务器声明的内容来控制工具，而不是硬编码工具名称。 MCP 注释对工具进行分类，LangChain 的人机循环中间件强制执行批准策略。在工具发现期间从元数据中读取一次破坏性提示。然后为人机交互配置提供一个 `when` 谓词，用于接收每个待处理的工具调用并返回该调用是否需要批准：
 
 ```ts theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 import type { DynamicStructuredTool } from "@langchain/core/tools";
@@ -267,9 +267,9 @@ async function gateDestructiveTools(serverUrl: string) {
 }
 ```
 
-<Warning>
-  `interruptOn` 键必须是适配器的工具名称，其中包括服务器前缀 (`crm_delete_file`)。无前缀的密钥永远不会匹配，因此该工具无需批准即可运行。
-</Warning>
+> [!警告]
+>
+> `interruptOn` 键必须是适配器的工具名称，其中包含服务器前缀 (`crm_delete_file`)。无前缀的密钥永远不会匹配，因此该工具无需批准即可运行。
 
 当代理调用谓词门控的工具时，运行会暂停。批准调用以运行它，或拒绝它以跳过该工具并告诉模型：
 
@@ -350,17 +350,17 @@ async function bookWithElicitation(serverUrl: string) {
 }
 ```
 
-<Card title="View example trace" icon="chart-line" href="https://smith.langchain.com/public/f8769a01-6ca6-45c7-afae-2376a5843c0d/r">
-  为此示例打开公共 LangSmith 运行。
-</Card>
+> **[View example trace](https://smith.langchain.com/public/f8769a01-6ca6-45c7-afae-2376a5843c0d/r)**
+>
+> 为此示例打开公共 LangSmith 运行。
 
 `createMCPElicitationResume` 寻址请求它的中断的答案。响应使用服务器的请求密钥。使用 `createMCPElicitationResume` 而不是裸露的 `{ responses }` 对象构建每个恢复值，这并没有说明它会响应哪个中断。每个中断的`value`都是一个`MCPElicitationInterrupt`：`type: "mcp_elicitation"`、`server`、`tool`（服务器自己的工具名称，不带前缀）、`arguments`（有效工具参数）和`requests`。当同一代理也可以引发人机循环中断时，请检查`type`。
 
 当多个呼叫同时暂停时，应答每个中断。将`createMCPElicitationResume`返回的对象合并为一个`Command({ resume })`，例如`Object.assign({}, ...paused.__interrupt__!.map((q) => createMCPElicitationResume(q, answers)))`，或者继续直到`__interrupt__`为空。仅响应第一个中断的简历会使其他中断暂停。
 
-<Note>
-  恢复将从头开始重新运行该工具。在服务器请求输入之前执行的任何工作都可以重复。确保该工作可以安全地重复，而不会产生重复的副作用。
-</Note>
+> [!注意]
+>
+> 恢复将从头开始重新运行该工具。在服务器请求输入之前执行的任何工作都可以重复。确保该工作可以安全地重复，而不会产生重复的副作用。
 
 每个答案都使用以下操作之一：
 
@@ -368,11 +368,11 @@ async function bookWithElicitation(serverUrl: string) {
 * **`decline`**：拒绝提供所要求的信息。
 * **`cancel`**：表示用户取消了交互。
 
-适配器将答案转发给服务器，服务器决定工具调用如何完成。只有启发式才是这样回答的。适配器仅在每次调用时声明启发功能，因此需要 [sampling](https://modelcontextprotocol.io/specification/2025-06-18/client/sampling) 或 [roots](https://modelcontextprotocol.io/specification/2025-06-18/client/roots) 的工具会失败并返回 `ToolException`，其中 `createAgent` 将作为错误 `ToolMessage` 返回到模型。参见[Sampling and roots](/oss/javascript/migrate/langchain-mcp-adapters#sampling-and-roots)。
+适配器将答案转发给服务器，服务器决定工具调用如何完成。只有启发式才是这样回答的。适配器仅声明每次调用的启发功能，因此需要 [sampling](https://modelcontextprotocol.io/specification/2025-06-18/client/sampling) 或 [roots](https://modelcontextprotocol.io/specification/2025-06-18/client/roots) 的工具会失败并返回 `ToolException`，其中 `createAgent` 将作为错误 `ToolMessage` 返回到模型。参见[Sampling and roots](/oss/javascript/migrate/langchain-mcp-adapters#sampling-and-roots)。
 
-<Note>
-  中断驱动的启发应答服务器，以 `InputRequiredResult` 的形式返回其请求。仅通过传统握手会话推送启发的服务器无法以这种方式应答。
-</Note>
+> [!注意]
+>
+> 中断驱动的诱导应答服务器，以 `InputRequiredResult` 的形式返回其请求。仅通过传统握手会话推送启发的服务器无法以这种方式应答。
 
 ## 另请参阅
 
@@ -388,12 +388,6 @@ async function bookWithElicitation(serverUrl: string) {
 
 ***
 
-<div>
-  <Callout icon="terminal-2">
-    [Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
-  </Callout>
+[Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
 
-  <Callout icon="edit">
-    [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/oss/langchain/mcp/tools.mdx) 或 [file an issue](https://github.com/langchain-ai/docs/issues/new/choose)。
-  </Callout>
-</div>
+[Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/oss/langchain/mcp/tools.mdx) 或 [file an issue](https://github.com/langchain-ai/docs/issues/new/choose)。

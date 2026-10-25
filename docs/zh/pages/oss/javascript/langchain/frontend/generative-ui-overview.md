@@ -46,13 +46,9 @@ graph LR
   class O deep;
 ```
 
-<div>
-  <span>更多控制</span>
+更多控制
 
-  <div />
-
-  <span>更多自主权</span>
-</div>从左到右，可预测性和每项能力的工程成本均下降，
+更多自主权从左到右，可预测性和每项能力的工程成本均下降，
 同时代理的表达范围也在扩大。可访问性和视觉一致性
 左边最容易保证，右边最难保证。
 
@@ -80,7 +76,7 @@ graph LR
 CopilotKit 提供相同的形状以及动态和固定模式变体。
 
 ### 开放式代理人拥有画布。该接口是在您的应用程序外部创建的，用于
-由 MCP 服务器提供的示例，并在沙箱中渲染。这给出了最宽的
+由 MCP 服务器提供的示例，并在沙箱中呈现。这给出了最宽的
 表现力范围广泛，无需前端代码即可添加新的界面功能
 您的一侧，适合一次性可视化和定制答案，其中结果
 这是令人惊讶的，而且比可预测的还要好。这也是最
@@ -98,7 +94,7 @@ CopilotKit 提供相同的形状以及动态和固定模式变体。
 | - | - |
 |保证一组已知输出的品牌、布局和可访问性 | [Controlled](/oss/javascript/langchain/frontend/controlled-generative-ui) |
 |让代理仅使用经过批准的组件来构建新颖的布局 | [Declarative](/oss/javascript/langchain/frontend/declarative-generative-ui) |
-|由第三方编写的 Surface 界面，无需您自己构建 | [Open-ended](/oss/javascript/langchain/frontend/open-ended-generative-ui) |为整个产品选择单一方法是最常见的错误。真实
+|由第三方编写的 Surface 界面，无需您自行构建 | [Open-ended](/oss/javascript/langchain/frontend/open-ended-generative-ui) |为整个产品选择单一方法是最常见的错误。真实
 应用程序混合方法并将每个表面与其目的相匹配：受控
 组件用于高流量、品牌关键的核心，声明性组合用于
 二次交互的长尾以及第三方的开放式嵌入
@@ -110,28 +106,20 @@ CopilotKit 提供相同的形状以及动态和固定模式变体。
 
 ## 探索频谱
 
-<CardGroup>
-  <Card title="Controlled" icon="components" href="/oss/javascript/langchain/frontend/controlled-generative-ui">
-    编写组件；代理选择要渲染的内容以及要传递的数据。
-  </Card>
+> **[Controlled](/oss/javascript/langchain/frontend/controlled-generative-ui)**
+>
+> 编写组件；代理选择要渲染的内容以及要传递的数据。
 
-  <Card title="Declarative" icon="schema" href="/oss/javascript/langchain/frontend/declarative-generative-ui">
-    代理发出一个规范；前端由注册目录组成。
-  </Card>
+> **[Declarative](/oss/javascript/langchain/frontend/declarative-generative-ui)**
+>
+> 代理发出规范；前端由注册目录组成。
 
-  <Card title="Open-ended" icon="world" href="/oss/javascript/langchain/frontend/open-ended-generative-ui">
-    在其他地方创建的渲染 UI，例如沙盒 MCP 应用程序。
-  </Card>
-</CardGroup>
+> **[Open-ended](/oss/javascript/langchain/frontend/open-ended-generative-ui)**
+>
+> 渲染在其他地方创建的 UI，例如沙盒 MCP 应用程序。
 
 ***
 
-<div>
-  <Callout icon="terminal-2">
-    [Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
-  </Callout>
+[Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
 
-  <Callout icon="edit">
-    [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/oss/langchain/frontend/generative-ui-overview.mdx) 或 [file an issue](https://github.com/langchain-ai/docs/issues/new/choose)。
-  </Callout>
-</div>
+[Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/oss/langchain/frontend/generative-ui-overview.mdx) 或 [file an issue](https://github.com/langchain-ai/docs/issues/new/choose)。

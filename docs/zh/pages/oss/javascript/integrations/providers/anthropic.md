@@ -21,12 +21,12 @@ Anthropic 型号要求任何系统消息都是提示中的第一个消息。
 
 ## `ChatAnthropic`
 
-`ChatAnthropic` 是 LangChain 的 `ChatModel` 的子类，这意味着它与 `ChatPromptTemplate` 配合使用效果最佳。
+`ChatAnthropic` 是 LangChain `ChatModel` 的子类，这意味着它与 `ChatPromptTemplate` 配合使用效果最佳。
 您可以使用以下代码导入此包装器：
 
-<Tip>
-  参见[this section for general instructions on installing LangChain packages](/oss/javascript/langchain/install)。
-</Tip>
+> [!提示]
+>
+> 参见[this section for general instructions on installing LangChain packages](/oss/javascript/langchain/install)。
 
 ```bash npm theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 npm install @langchain/anthropic @langchain/core
@@ -60,12 +60,6 @@ await chain.invoke({ topic: "bears" });
 
 ***
 
-<div>
-  <Callout icon="terminal-2">
-    [Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
-  </Callout>
+[Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
 
-  <Callout icon="edit">
-    [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/oss/javascript/integrations/providers/anthropic.mdx) 或 [file an issue](https://github.com/langchain-ai/docs/issues/new/choose)。
-  </Callout>
-</div>
+[Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/oss/javascript/integrations/providers/anthropic.mdx) 或 [file an issue](https://github.com/langchain-ai/docs/issues/new/choose)。

@@ -44,7 +44,7 @@ const finalState = await stream.output;
 
 ## 您可以流式传输的内容|投影|使用|
 | - | - |
-| `for event in stream` |原始协议事件具有完整的信封并可访问每个通道。 |
+| `for event in stream` |具有完整信封并可访问每个通道的原始协议事件。 |
 | `stream.messages` |模型消息流，每个 LLM 调用一个。 |
 | `message.text` |消息的文本增量和最终文本。 |
 | `message.reasoning` |公开推理内容的模型的推理增量。 |
@@ -243,7 +243,9 @@ for await (const activity of stream.extensions.toolActivity) {
 }
 ```
 
-### 在中间件上注册变压器<Note>中间件注册变压器需要`langchain@1.4.3`或更高版本。</Note>
+### 在中间件上注册变压器> [!注意]
+>
+> 中间件注册变压器需要 `langchain@1.4.3` 或更高版本。
 
 中间件可以声明流转换器工厂及其挂钩和工具。工厂形状因语言而异：
 
@@ -282,12 +284,6 @@ const agent = createAgent({
 
 ***
 
-<div>
-  <Callout icon="terminal-2">
-    [Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
-  </Callout>
+[Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
 
-  <Callout icon="edit">
-    [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/oss/langchain/event-streaming.mdx) 或 [file an issue](https://github.com/langchain-ai/docs/issues/new/choose)。
-  </Callout>
-</div>
+[Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/oss/langchain/event-streaming.mdx) 或 [file an issue](https://github.com/langchain-ai/docs/issues/new/choose)。

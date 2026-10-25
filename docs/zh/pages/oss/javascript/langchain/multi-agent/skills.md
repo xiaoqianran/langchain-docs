@@ -7,11 +7,11 @@
 在**技能**架构中，专门的功能被打包为可调用的“技能”，以增强[agent's](/oss/javascript/langchain/agents)行为。技能主要是代理可以按需调用的提示驱动的专业化。
 有关内置技能支持，请参阅[Deep Agents](/oss/javascript/deepagents/skills)。
 
-<Tip>
-  此模式在概念上与[Agent Skills](https://agentskills.io/)和[llms.txt](https://llmstxt.org/)（由 Jeremy Howard 引入）相同，后者使用工具调用来逐步公开文档。该技能模式将渐进式披露应用于专业提示和领域知识，而不仅仅是文档页面。
-
-  有关可提高代理在 LangChain 生态系统任务上的性能的即用型技能，请参阅 [LangChain Skills](https://github.com/langchain-ai/langchain-skills) 存储库。
-</Tip>
+> [!提示]
+>
+> 此模式在概念上与 [Agent Skills](https://agentskills.io/) 和 [llms.txt](https://llmstxt.org/)（由 Jeremy Howard 引入）相同，后者使用工具调用来逐步公开文档。该技能模式将渐进式披露应用于专业提示和领域知识，而不仅仅是文档页面。
+>
+> 有关可提高代理在 LangChain 生态系统任务上的性能的即用型技能，请参阅 [LangChain Skills](https://github.com/langchain-ai/langchain-skills) 存储库。
 
 ```mermaid theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 graph LR
@@ -36,7 +36,7 @@ graph LR
 * 轻量级组成：技能比全分代理更简单
 * 参考意识：技能可以参考脚本、模板等资源
 
-## 何时使用当您想要一个具有许多可能的专业化的[agent](/oss/javascript/langchain/agents)，您不需要在技能之间强制执行特定的约束，或者不同的团队需要独立开发功能时，请使用技能模式。常见的例子包括编码助理（不同语言或任务的技能）、知识库（不同领域的技能）和创意助理（不同格式的技能）。
+## 何时使用当您想要一个具有许多可能的专业化的[agent](/oss/javascript/langchain/agents)，您不需要在技能之间强制实施特定约束，或者不同的团队需要独立开发功能时，请使用技能模式。常见的例子包括编码助理（不同语言或任务的技能）、知识库（不同领域的技能）和创意助理（不同格式的技能）。
 
 ## 基本实现
 
@@ -80,9 +80,9 @@ const agent = createAgent({
 
 有关完整的实现，请参阅下面的教程。
 
-<Card title="Tutorial: Build a SQL assistant with on-demand skills" icon="wand" href="/oss/javascript/langchain/multi-agent/skills-sql-assistant">
-  了解如何通过渐进式披露来实施技能，其中代理按需而不是预先加载专门的提示和模式。
-</Card>
+> **[Tutorial: Build a SQL assistant with on-demand skills](/oss/javascript/langchain/multi-agent/skills-sql-assistant)**
+>
+> 了解如何通过渐进式披露来实施技能，其中代理按需而不是预先加载专门的提示和模式。
 
 ## 扩展模式
 
@@ -96,12 +96,6 @@ const agent = createAgent({
 
 ***
 
-<div>
-  <Callout icon="terminal-2">
-    [Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
-  </Callout>
+[Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
 
-  <Callout icon="edit">
-    [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/oss/langchain/multi-agent/skills.mdx) 或 [file an issue](https://github.com/langchain-ai/docs/issues/new/choose)。
-  </Callout>
-</div>
+[Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/oss/langchain/multi-agent/skills.mdx) 或 [file an issue](https://github.com/langchain-ai/docs/issues/new/choose)。

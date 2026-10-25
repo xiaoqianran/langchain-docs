@@ -16,19 +16,19 @@
 有关所有 `ChatGoogle` 功能和配置的详细文档，请访问
 [API reference](https://reference.langchain.com/javascript/langchain-google/index/ChatGoogle)。
 
-<Tip>
-  `@langchain/google` 是所有新的 Google Gemini 集成的推荐软件包。
-  它取代了旧的 [⟦T42⟧](/oss/javascript/integrations/chat/google_generative_ai)
-  和 [⟦T43⟧](/oss/javascript/integrations/chat/google_vertex_ai) 封装。
-  有关迁移详细信息，请参阅[legacy packages](/oss/javascript/integrations/providers/google#legacy-packages)。
-</Tip>
+> [!提示]
+>
+> `@langchain/google` 是所有新的 Google Gemini 集成的推荐软件包。
+> 它取代了旧的 [⟦T42⟧](/oss/javascript/integrations/chat/google_generative_ai)
+> 和 [⟦T43⟧](/oss/javascript/integrations/chat/google_vertex_ai) 封装。
+> 有关迁移详细信息，请参阅[legacy packages](/oss/javascript/integrations/providers/google#legacy-packages)。
 
 ## 概述
 
 ### 集成细节
 
 |班级 |套餐 |可串行化| PY支持|下载 |版本 |
-| :- | :- | :-: | :-: | :-: | :-: |
+| :-| :-| :-: | :-: | :-: | :-: |
 | [⟦T44⟧](https://reference.langchain.com/javascript/langchain-google/index/ChatGoogle) | [⟦T45⟧](https://www.npmjs.com/package/@langchain/google) | ✅ | ✅ | ![NPM - Downloads](https://img.shields.io/npm/dm/@langchain/google?style=flat-square\&label=%20&) | ![NPM - Version](https://img.shields.io/npm/v/@langchain/google?style=flat-square\&label=%20&) |
 
 ### 模型特点
@@ -151,33 +151,29 @@ const llm = new ChatGoogle({
 
 LangChain `ChatGoogle` 集成位于 `@langchain/google` 包中：
 
-<CodeGroup>
-  ```bash npm theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  npm install @langchain/google @langchain/core
-  ```
+```bash npm theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+npm install @langchain/google @langchain/core
+```
 
-  ```bash yarn theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  yarn add @langchain/google @langchain/core
-  ```
+```bash yarn theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+yarn add @langchain/google @langchain/core
+```
 
-  ```bash pnpm theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  pnpm add @langchain/google @langchain/core
-  ```
-</CodeGroup>
+```bash pnpm theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+pnpm add @langchain/google @langchain/core
+```
 
 ## 实例化
 
 根据您是在 Node.js 环境还是 Web/Edge 环境中运行，导入路径会有所不同。
 
-<CodeGroup>
-  ```typescript Node.js theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  import { ChatGoogle } from "@langchain/google/node";
-  ```
+```typescript Node.js theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+import { ChatGoogle } from "@langchain/google/node";
+```
 
-  ```typescript Web/Edge theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  import { ChatGoogle } from "@langchain/google";
-  ```
-</CodeGroup>模型将根据您的配置自动确定是使用 Google AI API 还是 Gemini Enterprise Agent Platform：
+```typescript Web/Edge theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+import { ChatGoogle } from "@langchain/google";
+```模型将根据您的配置自动确定是使用 Google AI API 还是 Gemini Enterprise Agent Platform：
 
 * 如果您提供`apiKey`（或设置`GOOGLE_API_KEY`），则默认为Google AI。
 * 如果您提供`credentials`（或在Node中设置`GOOGLE_APPLICATION_CREDENTIALS` / `GOOGLE_CLOUD_CREDENTIALS`），则默认为Gemini企业代理平台。
@@ -365,10 +361,10 @@ console.log(res.tool_calls);
 
 Gemini 提供了多种用于代码执行和基础的内置工具。
 
-<Warning>
-  您不能混合使用这些“专用工具”（代码执行、Google 搜索等）
-  在相同的请求中使用标准LangChain工具（如上面的天气工具）。
-</Warning>
+> [!警告]
+>
+> 您不能混合使用这些“专用工具”（代码执行、Google 搜索等）
+> 在相同的请求中使用标准 LangChain 工具（如上面的天气工具）。
 
 #### 代码执行Gemini模型支持代码执行，允许模型生成并运行
 用于解决复杂问题的 Python 代码。
@@ -392,9 +388,9 @@ console.log(res.contentBlocks);
 您可以使用 `googleSearch` 工具通过 Google 搜索来验证回复。
 这对于有关当前事件或特定事实的问题很有用。
 
-<Note>
-  维护 `googleSearchRetrieval` 工具是为了向后兼容，但`googleSearch` 是首选。
-</Note>
+> [!注意]
+>
+> 维护 `googleSearchRetrieval` 工具是为了向后兼容，但`googleSearch` 是首选。
 
 ```typescript theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 import { ChatGoogle } from "@langchain/google";
@@ -424,7 +420,7 @@ const llm = new ChatGoogle("gemini-3.7-flash")
     },
   ]);
 
-const prompt = "Summarize this page: https://js.langchain.com/";
+const prompt = "Summarize this page: https://docs.langchain.com/";
 const res = await llm.invoke(prompt);
 console.log(res.text);
 ```
@@ -600,11 +596,11 @@ reasoningBlocks.forEach((block) => {
 });
 
 console.log("Answer:", res.text);
-```<Note>
-  思想块还包括一个`reasoningContentBlock`字段。这包含基于的`ContentBlock`
-  Gemini 发送的底层部分。虽然这通常是一个文本块，但对于像这样的多模式模型
-  Nano Banana Pro，它可以是图像或其他媒体块。
-</Note>
+```> [!注意]
+>
+> 思想块还包括一个 `reasoningContentBlock` 字段。这包含基于的`ContentBlock`
+> Gemini 发送的底层部分。虽然这通常是一个文本块，但对于像这样的多模式模型
+> Nano Banana Pro，它可以是图像或其他媒体块。
 
 ## 使用 Nano Banana 和 Nano Banana Pro 生成图像
 
@@ -740,12 +736,6 @@ const res = await multiSpeakerLlm.invoke(`
 
 ***
 
-<div>
-  <Callout icon="terminal-2">
-    [Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
-  </Callout>
+[Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
 
-  <Callout icon="edit">
-    [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/oss/javascript/integrations/chat/google.mdx) 或 [file an issue](https://github.com/langchain-ai/docs/issues/new/choose)。
-  </Callout>
-</div>
+[Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/oss/javascript/integrations/chat/google.mdx) 或 [file an issue](https://github.com/langchain-ai/docs/issues/new/choose)。

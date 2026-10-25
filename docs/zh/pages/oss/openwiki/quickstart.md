@@ -10,58 +10,56 @@ OpenWiki 是一个 CLI，可以为您的代码库或个人知识编写和维护 
 
 ## 安装并生成存储库文档
 
-<Steps>
-  <Step title="Install the CLI" icon="package">
-    OpenWiki 需要[Node.js 22.22.0 or later](https://nodejs.org)。
+**1.安装 CLI**
 
-    ```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-    npm install -g openwiki
-    ```
+OpenWiki 需要[Node.js 22.22.0 or later](https://nodejs.org)。
 
-    在 Windows 上，首选 `npm` 或 `pnpm`。使用 Bun 进行安装可以回退到编译本机 `better-sqlite3` 依赖项，并且可能需要 Visual Studio 构建工具以及使用 C++ 工作负载进行桌面开发。
-  </Step>
+```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+npm install -g openwiki
+```
 
-  <Step title="Initialize in your repository" icon="player-play">
-    从存储库根目录运行以下命令：
+在 Windows 上，首选 `npm` 或 `pnpm`。使用 Bun 进行安装可以回退到编译本机 `better-sqlite3` 依赖项，并且可能需要 Visual Studio 构建工具以及使用 C++ 工作负载进行桌面开发。
 
-    ```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-    openwiki --init
-    ```
+**2.在您的存储库中初始化**
 
-    在第一次交互式运行时，OpenWiki 会提示：
+从存储库根目录运行以下命令：
 
-    * 推理提供者和模型
-    * 提供商 API 密钥（或等效凭据）
-    * 用于跟踪的可选 LangSmith API 密钥
-    * LangSmith 项目从运行时跟踪中丰富 wikiOpenWiki 将其配置和机密保存到`~/.openwiki/.env`。
+```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+openwiki --init
+```
 
-    再次运行 `--init` 会从头开始重新生成存储库 wiki 和声明，同时保留 `openwiki/INSTRUCTIONS.md`。 `openwiki/.run.json` 的持久结帐恢复运行中断。
+在第一次交互式运行时，OpenWiki 会提示：
 
-    要在编码代理而不是独立模型会话中运行 OpenWiki，请参阅[Coding-agent integrations](/oss/openwiki/integrations)。维基存在后，您可以[search it or link related repositories](/oss/openwiki/search-and-link)。
-  </Step>
+* 推理提供者和模型
+* 提供商 API 密钥（或等效凭据）
+* 用于跟踪的可选 LangSmith API 密钥
+* LangSmith 项目从运行时跟踪中丰富 wikiOpenWiki 将其配置和机密保存到`~/.openwiki/.env`。
 
-  <Step title="Review the generated wiki" icon="book">
-    OpenWiki 将文档写入存储库中的`openwiki/`，包括快速入门入口点和主题页面。它使用一个块在存储库根创建或刷新`AGENTS.md`，该块指示编码代理查阅 wiki 以获取代码库上下文。当 `CLAUDE.md` 已经存在时，OpenWiki 会刷新导入 `@AGENTS.md` 的托管块。事实页面以`openwiki/.claims/`下的声明为基础。
+再次运行 `--init` 会从头开始重新生成存储库 wiki 和声明，同时保留 `openwiki/INSTRUCTIONS.md`。 `openwiki/.run.json` 的持久结帐恢复运行中断。
 
-    存储库特定的 wiki 说明位于 `openwiki/INSTRUCTIONS.md`。 OpenWiki 读取此文件以了解范围和优先级。 To change it, edit the file, or ask OpenWiki in chat to change the brief (for example, `openwiki "Update openwiki/INSTRUCTIONS.md to focus on the public API"`). Normal `--init` and `--update` runs do not rewrite it.
+要在编码代理而不是独立模型会话中运行 OpenWiki，请参阅[Coding-agent integrations](/oss/openwiki/integrations)。维基存在后，您可以[search it or link related repositories](/oss/openwiki/search-and-link)。
 
-    要在浏览器中浏览 wiki，请运行：
+**3.查看生成的 wiki**
 
-    ```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-    openwiki visualize
-    ```
+OpenWiki 将文档写入存储库中的`openwiki/`，包括快速入门入口点和主题页面。它使用一个块在存储库根创建或刷新`AGENTS.md`，该块指示编码代理查阅 wiki 以获取代码库上下文。当 `CLAUDE.md` 已经存在时，OpenWiki 会刷新导入 `@AGENTS.md` 的托管块。事实页面以`openwiki/.claims/`下的声明为基础。
 
-    This opens a local interactive node graph with a side-by-side Markdown reader.参见[Visualize your wiki](/oss/openwiki/visualize)。
-  </Step><Step title="Keep docs up to date" icon="refresh">
-    代码更改后刷新文档：
+存储库特定的 wiki 说明位于 `openwiki/INSTRUCTIONS.md`。 OpenWiki 读取此文件以了解范围和优先级。要更改它，请编辑文件，或在聊天中要求 OpenWiki 更改摘要（例如，`openwiki "Update openwiki/INSTRUCTIONS.md to focus on the public API"`）。正常的 `--init` 和 `--update` 运行不会重写它。
 
-    ```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-    openwiki --update
-    ```
+要在浏览器中浏览 wiki，请运行：
 
-    在代码模式下，当源证据发生变化时，更新还会协调陈旧的声明。有关 CI 中的自动更新，请参阅[Automate updates](/oss/openwiki/automate-updates)。
-  </Step>
-</Steps>
+```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+openwiki visualize
+```
+
+这将打开一个带有并排 Markdown 阅读器的本地交互式节点图。参见[Visualize your wiki](/oss/openwiki/visualize)。
+
+**4.保持文档最新**代码更改后刷新文档：
+
+```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+openwiki --update
+```
+
+在代码模式下，当源证据发生变化时，更新还会协调陈旧的声明。有关 CI 中的自动更新，请参阅[Automate updates](/oss/openwiki/automate-updates)。
 
 ## 个人维基（可选）
 
@@ -91,17 +89,17 @@ openwiki -p "Summarize what you can do"
 
 ## 使用 LangSmith 进行追踪
 
-During onboarding, provide a LangSmith API key to trace OpenWiki runs to a LangSmith project named `openwiki`.您还可以在 `~/.openwiki/.env` 或进程环境中设置这些值：
+在入职期间，提供 LangSmith API 密钥来跟踪 OpenWiki 运行到名为 `openwiki` 的项目。您还可以在 `~/.openwiki/.env` 或进程环境中设置这些值：
 
 ```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 LANGSMITH_API_KEY=your-key
 LANGCHAIN_TRACING_V2=true
 LANGCHAIN_PROJECT=openwiki
-```要从 LangSmith 跟踪（与跟踪 OpenWiki 本身分开）丰富存储库 wiki，请参阅 [LangSmith connector](/oss/openwiki/code-mode#langsmith-connector)。
+```
 
-## 后续步骤
+要从 LangSmith 跟踪（与跟踪 OpenWiki 本身分开）丰富存储库 wiki，请参阅 [LangSmith connector](/oss/openwiki/code-mode#langsmith-connector)。
 
-* [Code mode](/oss/openwiki/code-mode)：存储库 wiki、声明、OKF 输出和代理指令文件
+## 后续步骤* [Code mode](/oss/openwiki/code-mode)：存储库 wiki、声明、OKF 输出和代理指令文件
 * [Coding-agent integrations](/oss/openwiki/integrations)：在 Codex、Claude Code、OpenCode、Cursor、IBM Bob、Kiro、Oh My Pi、Antigravity 或 Pi 中运行 OpenWiki
 * [Search and link wikis](/oss/openwiki/search-and-link)：MCP 搜索和读取，以及多存储库工作区
 * [Personal mode](/oss/openwiki/personal-mode)：本地大脑和连接器
@@ -111,12 +109,6 @@ LANGCHAIN_PROJECT=openwiki
 
 ***
 
-<div>
-  <Callout icon="terminal-2">
-    [Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
-  </Callout>
+[Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
 
-  <Callout icon="edit">
-    [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/oss/openwiki/quickstart.mdx) 或 [file an issue](https://github.com/langchain-ai/docs/issues/new/choose)。
-  </Callout>
-</div>
+[Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/oss/openwiki/quickstart.mdx) 或 [file an issue](https://github.com/langchain-ai/docs/issues/new/choose)。

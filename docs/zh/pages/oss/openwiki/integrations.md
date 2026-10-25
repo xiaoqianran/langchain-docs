@@ -8,7 +8,7 @@
 
 OpenWiki 可以在现有的编码代理内运行，而不是启动自己的模型。编码代理调查存储库，规划 wiki，并使用其本机存储库工具编写每个分配的页面。 OpenWiki 拥有持久的页面作业生命周期、声明验证和持久性、源漂移处理和确定性最终确定。
 
-主机驱动的运行仅支持存储库[code mode](/oss/openwiki/code-mode) wiki，而不支持[personal mode](/oss/openwiki/personal-mode)。它们使用编码代理的经过身份验证的模型会话，因此不需要 OpenWiki 提供者凭据。此路径尚不支持源自连接器的上下文，包括 LangSmith。主机驱动的页面创作是连续的； [parallel page workers](/oss/openwiki/code-mode#parallel-page-workers) 仅适用于本机 CLI。
+主机驱动的运行仅支持存储库[code mode](/oss/openwiki/code-mode) wiki，而不支持[personal mode](/oss/openwiki/personal-mode)。它们使用编码代理的经过身份验证的模型会话，因此不需要 OpenWiki 提供者凭据。此路径尚不支持来自连接器的上下文，包括 LangSmith。主机驱动的页面创作是连续的； [parallel page workers](/oss/openwiki/code-mode#parallel-page-workers) 仅适用于本机 CLI。
 
 ## 安装集成
 
@@ -78,12 +78,6 @@ pi install npm:openwiki
 
 ***
 
-<div>
-  <Callout icon="terminal-2">
-    [Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
-  </Callout>
+[Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
 
-  <Callout icon="edit">
-    [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/oss/openwiki/integrations.mdx) 或 [file an issue](https://github.com/langchain-ai/docs/issues/new/choose)。
-  </Callout>
-</div>
+[Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/oss/openwiki/integrations.mdx) 或 [file an issue](https://github.com/langchain-ai/docs/issues/new/choose)。

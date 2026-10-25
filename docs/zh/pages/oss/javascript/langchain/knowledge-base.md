@@ -14,11 +14,11 @@
 4. 对向量存储中的块进行索引并通过相似性进行查询。
 5. 将商店包裹成猎犬。
 
-该指南还包括在搜索引擎之上的最小 RAG 实现。
+该指南还包括搜索引擎之上的最小 RAG 实现。
 
 ### 概念
 
-本教程重点介绍文本检索并涵盖以下概念：
+本教程重点关注文本检索并涵盖以下概念：
 
 * [⟦T70⟧](https://reference.langchain.com/javascript/langchain-core/documents/Document)
 * [Text splitters](/oss/javascript/integrations/splitters)
@@ -31,19 +31,17 @@
 
 本教程使用 `pdf-parse` 包读取 PDF：
 
-<CodeGroup>
-  ```bash npm theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  npm i pdf-parse
-  ```
+```bash npm theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+npm i pdf-parse
+```
 
-  ```bash yarn theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  yarn add pdf-parse
-  ```
+```bash yarn theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+yarn add pdf-parse
+```
 
-  ```bash pnpm theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  pnpm add pdf-parse
-  ```
-</CodeGroup>
+```bash pnpm theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+pnpm add pdf-parse
+```
 
 欲了解更多详情，请参阅[Installation guide](/oss/javascript/langchain/install)。
 
@@ -51,18 +49,18 @@
 
 您使用 LangChain 构建的许多应用程序将包含多个步骤，并多次调用 LLM 调用。
 随着这些应用程序变得越来越复杂，能够检查链或代理内部到底发生了什么变得至关重要。
-最好的方法是使用[LangSmith](https://smith.langchain.com?utm_source=docs\&utm_medium=cta\&utm_campaign=langsmith-signup\&utm_content=oss-langchain-knowledge-base)。在上面的链接注册后，请确保设置环境变量以开始记录跟踪：
+最好的方法是使用[LangSmith](https://smith.langchain.com?utm_source=docs\&utm_medium=cta\&utm_campaign=langsmith-signup\&utm_content=oss-langchain-knowledge-base)。
+
+在上面的链接注册后，请确保设置环境变量以开始记录跟踪：
 
 ```shell theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 export LANGSMITH_TRACING="true"
 export LANGSMITH_API_KEY="..."
-```
-
-## 创建文档
+```## 创建文档
 
 LangChain 实现了文本单元和相关元数据的 [⟦T72⟧](https://reference.langchain.com/javascript/langchain-core/documents/Document) 抽象。它具有三个属性：
 
-* `pageContent`：表示内容的字符串。
+* `pageContent`：代表内容的字符串。
 * `metadata`：包含任意元数据的字典。
 * `id`：（可选）文档的字符串标识符。
 
@@ -92,171 +90,159 @@ const documents = [
 
 LangChain 支持[many providers](/oss/javascript/integrations/embeddings/) 的嵌入。选择一个模型来指定如何将文本转换为数字向量：
 
-<Tabs>
-  <Tab title="OpenAI">
-    <CodeGroup>
-      ```bash npm theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-      npm i @langchain/openai
-      ```
+**OpenAI**
 
-      ```bash yarn theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-      yarn add @langchain/openai
-      ```
+```bash npm theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+npm i @langchain/openai
+```
 
-      ```bash pnpm theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-      pnpm add @langchain/openai
-      ```
-    </CodeGroup>
+```bash yarn theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+yarn add @langchain/openai
+```
 
-    ```typescript theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-    import { OpenAIEmbeddings } from "@langchain/openai";
+```bash pnpm theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+pnpm add @langchain/openai
+```
 
-    const embeddings = new OpenAIEmbeddings({
-      model: "text-embedding-3-large"
-    });
-    ```
-  </Tab>
+```typescript theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+import { OpenAIEmbeddings } from "@langchain/openai";
 
-  <Tab title="Azure">
-    <CodeGroup>
-      ```bash npm theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-      npm i @langchain/openai
-      ```
+const embeddings = new OpenAIEmbeddings({
+  model: "text-embedding-3-large"
+});
+```
 
-      ```bash yarn theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-      yarn add @langchain/openai
-      ```
+**天蓝色**
 
-      ```bash pnpm theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-      pnpm add @langchain/openai
-      ```
-    </CodeGroup>
+```bash npm theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+npm i @langchain/openai
+```
 
-    ```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-    AZURE_OPENAI_API_INSTANCE_NAME=<YOUR_INSTANCE_NAME>
-    AZURE_OPENAI_API_KEY=<YOUR_KEY>
-    AZURE_OPENAI_API_VERSION="2024-02-01"
-    ```
+```bash yarn theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+yarn add @langchain/openai
+```
 
-    ```typescript theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-    import { AzureOpenAIEmbeddings } from "@langchain/openai";
+```bash pnpm theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+pnpm add @langchain/openai
+```
 
-    const embeddings = new AzureOpenAIEmbeddings({
-      azureOpenAIApiEmbeddingsDeploymentName: "text-embedding-ada-002"
-    });
-    ```
-  </Tab>
+```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+AZURE_OPENAI_API_INSTANCE_NAME=<YOUR_INSTANCE_NAME>
+AZURE_OPENAI_API_KEY=<YOUR_KEY>
+AZURE_OPENAI_API_VERSION="2024-02-01"
+```
 
-  <Tab title="AWS">
-    <CodeGroup>
-      ```bash npm theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-      npm i @langchain/aws
-      ```
+```typescript theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+import { AzureOpenAIEmbeddings } from "@langchain/openai";
 
-      ```bash yarn theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-      yarn add @langchain/aws
-      ``````bash pnpm theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-      pnpm add @langchain/aws
-      ```
-    </CodeGroup>
+const embeddings = new AzureOpenAIEmbeddings({
+  azureOpenAIApiEmbeddingsDeploymentName: "text-embedding-ada-002"
+});
+```
 
-    ```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-    BEDROCK_AWS_REGION=your-region
-    ```
+**AWS**
 
-    ```typescript theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-    import { BedrockEmbeddings } from "@langchain/aws";
+```bash npm theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+npm i @langchain/aws
+```
 
-    const embeddings = new BedrockEmbeddings({
-      model: "amazon.titan-embed-text-v1"
-    });
-    ```
-  </Tab>
+```bash yarn theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+yarn add @langchain/aws
+```
 
-  <Tab title="Gemini Enterprise Agent Platform">
-    <CodeGroup>
-      ```bash npm theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-      npm i @langchain/google-vertexai
-      ```
+```bash pnpm theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+pnpm add @langchain/aws
+```
 
-      ```bash yarn theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-      yarn add @langchain/google-vertexai
-      ```
+```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+BEDROCK_AWS_REGION=your-region
+```
 
-      ```bash pnpm theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-      pnpm add @langchain/google-vertexai
-      ```
-    </CodeGroup>
+```typescript theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+import { BedrockEmbeddings } from "@langchain/aws";
 
-    ```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-    GOOGLE_APPLICATION_CREDENTIALS=credentials.json
-    ```
+const embeddings = new BedrockEmbeddings({
+  model: "amazon.titan-embed-text-v1"
+});
+```
 
-    ```typescript theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-    import { VertexAIEmbeddings } from "@langchain/google-vertexai";
+**Gemini 企业代理平台**
 
-    const embeddings = new VertexAIEmbeddings({
-      model: "gemini-embedding-001"
-    });
-    ```
-  </Tab>
+```bash npm theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+npm i @langchain/google-vertexai
+```
 
-  <Tab title="MistralAI">
-    <CodeGroup>
-      ```bash npm theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-      npm i @langchain/mistralai
-      ```
+```bash yarn theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+yarn add @langchain/google-vertexai
+```
 
-      ```bash yarn theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-      yarn add @langchain/mistralai
-      ```
+```bash pnpm theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+pnpm add @langchain/google-vertexai
+```
 
-      ```bash pnpm theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-      pnpm add @langchain/mistralai
-      ```
-    </CodeGroup>
+```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+GOOGLE_APPLICATION_CREDENTIALS=credentials.json
+```
 
-    ```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-    MISTRAL_API_KEY=your-api-key
-    ```
+```typescript theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+import { VertexAIEmbeddings } from "@langchain/google-vertexai";
 
-    ```typescript theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-    import { MistralAIEmbeddings } from "@langchain/mistralai";
+const embeddings = new VertexAIEmbeddings({
+  model: "gemini-embedding-001"
+});
+```
 
-    const embeddings = new MistralAIEmbeddings({
-      model: "mistral-embed"
-    });
-    ```
-  </Tab>
+**米斯特拉尔人工智能**
 
-  <Tab title="Cohere">
-    <CodeGroup>
-      ```bash npm theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-      npm i @langchain/cohere
-      ```
+```bash npm theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+npm i @langchain/mistralai
+```
 
-      ```bash yarn theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-      yarn add @langchain/cohere
-      ```
+```bash yarn theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+yarn add @langchain/mistralai
+```
 
-      ```bash pnpm theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-      pnpm add @langchain/cohere
-      ```
-    </CodeGroup>
+```bash pnpm theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+pnpm add @langchain/mistralai
+```
 
-    ```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-    COHERE_API_KEY=your-api-key
-    ```
+```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+MISTRAL_API_KEY=your-api-key
+```
 
-    ```typescript theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-    import { CohereEmbeddings } from "@langchain/cohere";
+```typescript theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+import { MistralAIEmbeddings } from "@langchain/mistralai";
 
-    const embeddings = new CohereEmbeddings({
-      model: "embed-english-v3.0"
-    });
-    ```
-  </Tab>
-</Tabs>
+const embeddings = new MistralAIEmbeddings({
+  model: "mistral-embed"
+});
+```
+
+**连贯**
+
+```bash npm theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+npm i @langchain/cohere
+```
+
+```bash yarn theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+yarn add @langchain/cohere
+```
+
+```bash pnpm theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+pnpm add @langchain/cohere
+```
+
+```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+COHERE_API_KEY=your-api-key
+```
+
+```typescript theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+import { CohereEmbeddings } from "@langchain/cohere";
+
+const embeddings = new CohereEmbeddings({
+  model: "embed-english-v3.0"
+});
+```
 
 ```typescript theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 const vector1 = await embeddings.embedQuery(documents[0].pageContent);
@@ -271,9 +257,7 @@ console.log(vector1.slice(0, 10));
 Generated vectors of length 1536
 
 [-0.008586574345827103, -0.03341241180896759, -0.008936782367527485, -0.0036674530711025, 0.010564599186182022, 0.009598285891115665, -0.028587326407432556, -0.015824200585484505, 0.0030416189692914486, -0.012899317778646946]
-```
-
-接下来，将嵌入存储在支持高效相似性搜索的向量存储中。
+```接下来，将嵌入存储在支持高效相似性搜索的向量存储中。
 
 ## 选择一个向量存储
 
@@ -281,141 +265,131 @@ LangChain [⟦T78⟧](https://reference.langchain.com/javascript/langchain-core/
 
 LangChain 包括[integrations](/oss/javascript/integrations/vectorstores) 以及许多矢量存储技术。有些是托管的并且需要凭据，有些在单独的基础设施（本地或第三方）中运行，而另一些则在内存中运行以实现轻量级工作负载。选择矢量存储：
 
-<Tabs>
-  <Tab title="Memory">
-    <CodeGroup>
-      ```bash npm theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-      npm i @langchain/classic
-      ```
+**内存**
 
-      ```bash yarn theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-      yarn add @langchain/classic
-      ```
+```bash npm theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+npm i @langchain/classic
+```
 
-      ```bash pnpm theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-      pnpm add @langchain/classic
-      ```
-    </CodeGroup>
+```bash yarn theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+yarn add @langchain/classic
+```
 
-    ```typescript theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-    import { MemoryVectorStore } from "@langchain/classic/vectorstores/memory";
+```bash pnpm theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+pnpm add @langchain/classic
+```
 
-    const vectorStore = new MemoryVectorStore(embeddings);
-    ```
-  </Tab>
+```typescript theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+import { MemoryVectorStore } from "@langchain/classic/vectorstores/memory";
 
-  <Tab title="MongoDB">
-    <CodeGroup>
-      ```bash npm theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-      npm i @langchain/mongodb
-      ```
+const vectorStore = new MemoryVectorStore(embeddings);
+```
 
-      ```bash yarn theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-      yarn add @langchain/mongodb
-      ```
+**MongoDB**
 
-      ```bash pnpm theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-      pnpm add @langchain/mongodb
-      ```
-    </CodeGroup>
+```bash npm theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+npm i @langchain/mongodb
+```
 
-    ```typescript theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-    import { MongoDBAtlasVectorSearch } from "@langchain/mongodb"
-    import { MongoClient } from "mongodb";
+```bash yarn theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+yarn add @langchain/mongodb
+```
 
-    const client = new MongoClient(process.env.MONGODB_ATLAS_URI || "");
-    const collection = client
-      .db(process.env.MONGODB_ATLAS_DB_NAME)
-      .collection(process.env.MONGODB_ATLAS_COLLECTION_NAME);
+```bash pnpm theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+pnpm add @langchain/mongodb
+```
 
-    const vectorStore = new MongoDBAtlasVectorSearch(embeddings, {
-      collection: collection,
-      indexName: "vector_index",
-      textKey: "text",
-      embeddingKey: "embedding",
-    });
-    ```
-  </Tab>
+```typescript theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+import { MongoDBAtlasVectorSearch } from "@langchain/mongodb"
+import { MongoClient } from "mongodb";
 
-  <Tab title="Pinecone">
-    <CodeGroup>
-      ```bash npm theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-      npm i @langchain/pinecone
-      ```
+const client = new MongoClient(process.env.MONGODB_ATLAS_URI || "");
+const collection = client
+  .db(process.env.MONGODB_ATLAS_DB_NAME)
+  .collection(process.env.MONGODB_ATLAS_COLLECTION_NAME);
 
-      ```bash yarn theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-      yarn add @langchain/pinecone
-      ```
+const vectorStore = new MongoDBAtlasVectorSearch(embeddings, {
+  collection: collection,
+  indexName: "vector_index",
+  textKey: "text",
+  embeddingKey: "embedding",
+});
+```
 
-      ```bash pnpm theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-      pnpm add @langchain/pinecone
-      ```
-    </CodeGroup>
+**松果**
 
-    ```typescript theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-    import { PineconeStore } from "@langchain/pinecone";
-    import { Pinecone as PineconeClient } from "@pinecone-database/pinecone";
+```bash npm theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+npm i @langchain/pinecone
+```
 
-    const pinecone = new PineconeClient({
-      apiKey: process.env.PINECONE_API_KEY,
-    });
-    const pineconeIndex = pinecone.Index("your-index-name");
+```bash yarn theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+yarn add @langchain/pinecone
+```
 
-    const vectorStore = new PineconeStore(embeddings, {
-      pineconeIndex,
-      maxConcurrency: 5,
-    });
-    ```
-  </Tab><Tab title="Qdrant">
-    <CodeGroup>
-      ```bash npm theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-      npm i @langchain/qdrant
-      ```
+```bash pnpm theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+pnpm add @langchain/pinecone
+```
 
-      ```bash yarn theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-      yarn add @langchain/qdrant
-      ```
+```typescript theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+import { PineconeStore } from "@langchain/pinecone";
+import { Pinecone as PineconeClient } from "@pinecone-database/pinecone";
 
-      ```bash pnpm theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-      pnpm add @langchain/qdrant
-      ```
-    </CodeGroup>
+const pinecone = new PineconeClient({
+  apiKey: process.env.PINECONE_API_KEY,
+});
+const pineconeIndex = pinecone.Index("your-index-name");
 
-    ```typescript theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-    import { QdrantVectorStore } from "@langchain/qdrant";
+const vectorStore = new PineconeStore(embeddings, {
+  pineconeIndex,
+  maxConcurrency: 5,
+});
+```
 
-    const vectorStore = await QdrantVectorStore.fromExistingCollection(embeddings, {
-      url: process.env.QDRANT_URL,
-      collectionName: "langchainjs-testing",
-    });
-    ```
-  </Tab>
+**Qdrant**
 
-  <Tab title="Redis">
-    <CodeGroup>
-      ```bash npm theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-      npm i @langchain/redis
-      ```
+```bash npm theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+npm i @langchain/qdrant
+```
 
-      ```bash yarn theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-      yarn add @langchain/redis
-      ```
+```bash yarn theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+yarn add @langchain/qdrant
+```
 
-      ```bash pnpm theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-      pnpm add @langchain/redis
-      ```
-    </CodeGroup>
+```bash pnpm theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+pnpm add @langchain/qdrant
+```
 
-    ```typescript theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-    import { RedisVectorStore } from "@langchain/redis";
+```typescript theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+import { QdrantVectorStore } from "@langchain/qdrant";
 
-    const vectorStore = new RedisVectorStore(embeddings, {
-      redisClient: client,
-      indexName: "langchainjs-testing",
-    });
-    ```
-  </Tab>
-</Tabs>
+const vectorStore = await QdrantVectorStore.fromExistingCollection(embeddings, {
+  url: process.env.QDRANT_URL,
+  collectionName: "langchainjs-testing",
+});
+```
+
+**Redis**
+
+```bash npm theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+npm i @langchain/redis
+```
+
+```bash yarn theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+yarn add @langchain/redis
+```
+
+```bash pnpm theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+pnpm add @langchain/redis
+```
+
+```typescript theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+import { RedisVectorStore } from "@langchain/redis";
+
+const vectorStore = new RedisVectorStore(embeddings, {
+  redisClient: client,
+  indexName: "langchainjs-testing",
+});
+```
 
 ## 加载并分割 PDF
 
@@ -471,9 +445,7 @@ console.log(allSplits.length);
 
 ```text theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 516
-```
-
-## 索引文件
+```## 索引文件
 
 将块索引到向量存储中：
 
@@ -490,9 +462,11 @@ await vectorStore.addDocuments(allSplits);
 * 同步和异步
 * 按字符串查询和按向量查询
 * 有和没有相似度分数
-* 通过相似性和[maximum marginal relevance](https://reference.langchain.com/javascript/classes/_langchain_core.vectorstores.VectorStore.html#maxMarginalRelevanceSearch)（平衡相似性和多样性）
+* 通过相似性和[maximum marginal relevance](https://reference.langchain.com/javascript/langchain-core/vectorstores/VectorStore/maxMarginalRelevanceSearch)（平衡相似性和多样性）
 
-这些方法通常返回 [⟦T82⟧](https://reference.langchain.com/javascript/langchain-core/documents/Document) 对象的列表。### 按字符串搜索
+这些方法通常返回 [⟦T82⟧](https://reference.langchain.com/javascript/langchain-core/documents/Document) 对象的列表。
+
+### 按字符串搜索
 
 嵌入将文本映射到密集向量，因此相似的含义在几何上很接近。这意味着您可以通过传递自然语言问题来检索相关段落：
 
@@ -565,9 +539,7 @@ Document {
 * [API Reference](https://reference.langchain.com/javascript/langchain-core/vectorstores/VectorStore)
 * [Integration-specific docs](/oss/javascript/integrations/vectorstores)
 
-## 使用检索器
-
-LangChain [⟦T83⟧](https://reference.langchain.com/javascript/langchain-core/vectorstores/VectorStore) 对象不会子类 [⟦T84⟧](https://reference.langchain.com/javascript/langchain-core/runnables/Runnable)。 [Retrievers](https://reference.langchain.com/javascript/interfaces/_langchain_core.retrievers.BaseRetriever.html)是Runnables，因此它们支持同步和异步`invoke`和`batch`等标准方法。
+## 使用检索器LangChain [⟦T83⟧](https://reference.langchain.com/javascript/langchain-core/vectorstores/VectorStore) 对象不会子类 [⟦T84⟧](https://reference.langchain.com/javascript/langchain-core/runnables/Runnable)。 [Retrievers](https://reference.langchain.com/javascript/langchain-core/retrievers/BaseRetriever)是Runnables，因此它们支持同步和异步`invoke`和`batch`等标准方法。
 
 您还可以从向量存储构建检索器，并且检索器还可以包装非向量源（例如外部 API）。
 
@@ -598,7 +570,9 @@ await retriever.batch([
         pageContent: 'Table of Contents...',
     }],
 ]
-```您可以在更复杂的应用程序中使用检索器，例如 [retrieval-augmented generation (RAG)](/oss/javascript/deepagents/retrieval)，它将问题与检索到的上下文结合在 LLM 提示中。要了解有关构建此类应用程序的更多信息，请查看 [RAG tutorial](/oss/javascript/deepagents/rag) 教程。
+```
+
+您可以在更复杂的应用程序中使用检索器，例如 [retrieval-augmented generation (RAG)](/oss/javascript/deepagents/retrieval)，它将问题与检索到的上下文结合在 LLM 提示中。要了解有关构建此类应用程序的更多信息，请查看 [RAG tutorial](/oss/javascript/deepagents/rag) 教程。
 
 ## 后续步骤
 
@@ -617,12 +591,6 @@ await retriever.batch([
 
 ***
 
-<div>
-  <Callout icon="terminal-2">
-    [Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
-  </Callout>
+[Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
 
-  <Callout icon="edit">
-    [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/oss/langchain/knowledge-base.mdx) 或 [file an issue](https://github.com/langchain-ai/docs/issues/new/choose)。
-  </Callout>
-</div>
+[Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/oss/langchain/knowledge-base.mdx) 或 [file an issue](https://github.com/langchain-ai/docs/issues/new/choose)。

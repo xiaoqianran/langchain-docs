@@ -48,9 +48,9 @@ async function runAgent(serverUrl: string) {
 }
 ```
 
-<Card title="View example trace" icon="chart-line" href="https://smith.langchain.com/public/6d4a6e1b-2d3f-429a-a9f7-d212429ac6b4/r">
-  为此示例打开公共 LangSmith 运行。
-</Card>`close()` 中止正在进行的适配器工作、关闭其连接并清除其缓存。您可以再次调用`listTools()`打开新的连接，但使用新返回的工具。先前退回的工具保留其已关闭的客户。
+> **[View example trace](https://smith.langchain.com/public/6d4a6e1b-2d3f-429a-a9f7-d212429ac6b4/r)**
+>
+> 为此示例打开公共 LangSmith 运行。`close()` 中止正在进行的适配器工作、关闭其连接并清除其缓存。您可以再次调用`listTools()`打开新的连接，但使用新返回的工具。先前退回的工具保留其已关闭的客户。
 
 ## 多个服务器
 
@@ -81,9 +81,9 @@ async function listServerTools(calendarUrl: string, filesServerPath: string) {
 }
 ```
 
-<Card title="View example trace" icon="chart-line" href="https://smith.langchain.com/public/493622a5-b24a-4d48-93df-f5b6263beb9f/r">
-  为此示例打开公共 LangSmith 运行。
-</Card>
+> **[View example trace](https://smith.langchain.com/public/493622a5-b24a-4d48-93df-f5b6263beb9f/r)**
+>
+> 为此示例打开公共 LangSmith 运行。
 
 `listToolsets()` 按服务器名称对工具进行分组。 `listTools()` 返回一个数组；传递服务器名称或名称数组来选择它返回的工具。选择会过滤结果，但发现仍然会联系每个已配置的服务器。未选择的服务器出现故障可能会使呼叫失败。
 
@@ -113,9 +113,9 @@ export async function makeGraph() {
 }
 ```
 
-<Card title="View example trace" icon="chart-line" href="https://smith.langchain.com/public/d70d86cb-8960-4b0a-a087-18a23d649f71/r">
-  为此示例打开公共 LangSmith 运行。
-</Card>
+> **[View example trace](https://smith.langchain.com/public/d70d86cb-8960-4b0a-a087-18a23d649f71/r)**
+>
+> 为此示例打开公共 LangSmith 运行。
 
 在运行过程中保持适配器打开。在活动运行完成后，在应用程序关闭期间关闭它。对于使用不同用户凭据的运行，请参阅[Per-user authentication](/oss/javascript/langchain/mcp/auth#per-user-authentication)。
 
@@ -165,9 +165,9 @@ async function listToolsAcrossEras(modernUrl: string, legacyUrl: string) {
 }
 ```
 
-<Card title="View example trace" icon="chart-line" href="https://smith.langchain.com/public/0263dee8-0ce0-48a5-ba30-62bea305de1b/r">
-  为此示例打开公共 LangSmith 运行。
-</Card>
+> **[View example trace](https://smith.langchain.com/public/0263dee8-0ce0-48a5-ba30-62bea305de1b/r)**
+>
+> 为此示例打开公共 LangSmith 运行。
 
 每个服务器的`mode`独立控制其协商：
 
@@ -187,12 +187,6 @@ async function listToolsAcrossEras(modernUrl: string, legacyUrl: string) {
 
 ***
 
-<div>
-  <Callout icon="terminal-2">
-    [Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
-  </Callout>
+[Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
 
-  <Callout icon="edit">
-    [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/oss/langchain/mcp/connections.mdx) 或 [file an issue](https://github.com/langchain-ai/docs/issues/new/choose)。
-  </Callout>
-</div>
+[Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/oss/langchain/mcp/connections.mdx) 或 [file an issue](https://github.com/langchain-ai/docs/issues/new/choose)。

@@ -37,14 +37,12 @@ openwiki visualize openwiki --port 4400 --no-open
 openwiki visualize ~/.openwiki/wiki
 ```
 
-<Frame>
-  <img alt="OpenWiki visualizer with an interactive node graph beside a live Markdown reader" />
-</Frame>
+![OpenWiki visualizer with an interactive node graph beside a live Markdown reader](https://mintcdn.com/langchain-5e9cc07a/BPy4qr0YTTF2625M/oss/images/openwiki/visualizer.gif?s=fe0362d13c1436c8a9f1a95cc864c447)
 
-可视化工具显示：* wiki 概念的交互式节点图以及它们之间的 Markdown 链接
-* 所选页面的并排实时 Markdown 阅读器
+可视化工具显示：
 
-该图未显示`INSTRUCTIONS.md`和其他脚手架文件。
+* wiki 概念的交互式节点图以及它们之间的 Markdown 链接
+* 所选页面的并排实时 Markdown 阅读器该图未显示`INSTRUCTIONS.md`和其他脚手架文件。
 
 ## 导出静态站点
 
@@ -56,9 +54,9 @@ openwiki visualize <PATH> --export docs/openwiki-visualizer
 
 导出包含 `index.html`、`client.js`、`client-lib.js`、`styles.css` 和 `graph.json`。它的客户端读取同级图形文件并且不使用实时重新加载，因此该目录可以由 GitHub Pages、MkDocs 或任何其他静态主机托管。
 
-<Note>
-  该页面从公共 CDN 加载其图形、Markdown 和图表库，因此本地和静态查看器都需要互联网连接。
-</Note>
+> [!注意]
+>
+> 该页面从公共 CDN 加载其图形、Markdown 和图表库，因此本地和静态查看器都需要互联网连接。
 
 ## 另请参阅
 
@@ -68,12 +66,6 @@ openwiki visualize <PATH> --export docs/openwiki-visualizer
 
 ***
 
-<div>
-  <Callout icon="terminal-2">
-    [Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
-  </Callout>
+[Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
 
-  <Callout icon="edit">
-    [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/oss/openwiki/visualize.mdx) 或 [file an issue](https://github.com/langchain-ai/docs/issues/new/choose)。
-  </Callout>
-</div>
+[Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/oss/openwiki/visualize.mdx) 或 [file an issue](https://github.com/langchain-ai/docs/issues/new/choose)。

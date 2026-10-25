@@ -14,9 +14,9 @@ LangGraph 公开一个 [⟦T6⟧](https://reference.langchain.com/javascript/lan
 4. **执行信息**：当前执行的身份和重试信息（线程ID、运行ID、尝试次数）
 5. **服务器信息**：在LangGraph服务器上运行时特定于服务器的元数据（助手ID、图形ID、经过身份验证的用户）
 
-<Tip>
-  运行时上下文是您通过代理线程化数据的方式。您可以将值（例如数据库连接、用户会话或配置）附加到上下文，并在工具和中间件内访问它们，而不是将事物存储在全局状态中。这使事物保持无状态、可测试和可重用。
-</Tip>
+> [!提示]
+>
+> 运行时上下文是您通过代理线程传输数据的方式。您可以将值（例如数据库连接、用户会话或配置）附加到上下文，并在工具和中间件内访问它们，而不是将事物存储在全局状态中。这使事物保持无状态、可测试和可重用。
 
 您可以在[tools](#inside-tools)和[middleware](#inside-middleware)中访问运行时信息。
 
@@ -124,9 +124,9 @@ const contextAwareTool = tool(
 
 当不在 LangGraph 服务器上运行时（例如，在本地开发期间），`serverInfo` 是 `null`。
 
-<Note>
-  `runtime.executionInfo` 和 `runtime.serverInfo` 需要 `deepagents>=1.9.0`（或 `@langchain/langgraph>=1.2.8`）。
-</Note>
+> [!注意]
+>
+> `runtime.executionInfo` 和 `runtime.serverInfo` 需要 `deepagents>=1.9.0`（或 `@langchain/langgraph>=1.2.8`）。
 
 ### 内部中间件
 
@@ -209,16 +209,12 @@ const authGate = createMiddleware({
 });
 ```
 
-<Note>
-  需要`deepagents>=1.9.0`（或`@langchain/langgraph>=1.2.8`）。
-</Note>
+> [!注意]
+>
+> 需要`deepagents>=1.9.0`（或`@langchain/langgraph>=1.2.8`）。
 
-***<div>
-  <Callout icon="terminal-2">
-    [Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
-  </Callout>
+***
 
-  <Callout icon="edit">
-    [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/oss/langchain/runtime.mdx) 或 [file an issue](https://github.com/langchain-ai/docs/issues/new/choose)。
-  </Callout>
-</div>
+[Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
+
+[Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/oss/langchain/runtime.mdx) 或 [file an issue](https://github.com/langchain-ai/docs/issues/new/choose)。

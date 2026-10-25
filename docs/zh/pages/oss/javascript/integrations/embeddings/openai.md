@@ -12,8 +12,8 @@
 
 ### 集成细节
 
-|班级 |套餐 |本地| [Py support](https://python.langchain.com/docs/integrations/embeddings/openai/) |下载 |版本 |
-| :- | :- | :-: | :-: | :-: | :-: |
+|班级 |套餐 |本地| [Py support](/oss/python/integrations/embeddings/openai) |下载 |版本 |
+| :-| :-| :-: | :-: | :-: | :-: |
 | [⟦T18⟧](https://reference.langchain.com/javascript/langchain-openai/OpenAIEmbeddings) | [⟦T19⟧](https://www.npmjs.com/package/@langchain/openai) | ❌ | ✅ | ![NPM - Downloads](https://img.shields.io/npm/dm/@langchain/openai?style=flat-square\&label=%20&) | ![NPM - Version](https://img.shields.io/npm/v/@langchain/openai?style=flat-square\&label=%20&) |
 
 ## 设置
@@ -39,19 +39,17 @@ export OPENAI_API_KEY="your-api-key"
 
 LangChain OpenAIEmbeddings 集成位于 `@langchain/openai` 包中：
 
-<CodeGroup>
-  ```bash npm theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  npm install @langchain/openai @langchain/core
-  ```
+```bash npm theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+npm install @langchain/openai @langchain/core
+```
 
-  ```bash yarn theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  yarn add @langchain/openai @langchain/core
-  ```
+```bash yarn theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+yarn add @langchain/openai @langchain/core
+```
 
-  ```bash pnpm theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  pnpm add @langchain/openai @langchain/core
-  ```
-</CodeGroup>
+```bash pnpm theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+pnpm add @langchain/openai @langchain/core
+```
 
 ## 实例化
 
@@ -65,12 +63,12 @@ const embeddings = new OpenAIEmbeddings({
   batchSize: 512, // Default value if omitted is 512. Max is 2048
   model: "text-embedding-3-large",
 });
-```如果您是某个组织的成员，则可以将 `process.env.OPENAI_ORGANIZATION` 设置为您的 OpenAI 组织 ID，或者在以下情况下将其作为 `organization` 传入
-初始化模型。
+```
 
-## 索引和检索
+如果您是组织的一部分，则可以将 `process.env.OPENAI_ORGANIZATION` 设置为您的 OpenAI 组织 ID，或者在以下情况下将其作为 `organization` 传入
+初始化模型。## 索引和检索
 
-嵌入模型通常用于检索增强生成（RAG）流，既作为索引数据的一部分，也作为稍后检索数据的一部分。有关更详细的说明，请参阅[**Learn** tab](/oss/javascript/learn/)下的 RAG 教程。
+嵌入模型通常用于检索增强生成（RAG）流程，既作为索引数据的一部分，也作为稍后检索数据的一部分。有关更详细的说明，请参阅[**Learn** tab](/oss/javascript/learn/)下的 RAG 教程。
 
 下面，看看如何使用我们上面初始化的 `embeddings` 对象来索引和检索数据。在此示例中，我们将使用演示 [⟦T26⟧](/oss/javascript/integrations/vectorstores/memory) 索引和检索示例文档。
 
@@ -197,9 +195,9 @@ console.log(vectors[1].slice(0, 100));
     0.027696826, -0.0021070621,  -0.024485396, -0.0042141243,   -0.02801937,
    -0.019605145,   0.016281527,  -0.035143413,    0.01640774,   0.042323552
 ]
-```## 指定尺寸
+```
 
-使用 `text-embedding-3` 类模型，您可以指定要返回的嵌入的大小。例如，默认情况下 `text-embedding-3-large` 返回维度 3072 的嵌入：
+## 指定尺寸使用 `text-embedding-3` 类模型，您可以指定要返回的嵌入的大小。例如，默认情况下 `text-embedding-3-large` 返回维度 3072 的嵌入：
 
 ```typescript theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 import { OpenAIEmbeddings } from "@langchain/openai";
@@ -260,12 +258,6 @@ const model = new OpenAIEmbeddings({
 
 ***
 
-<div>
-  <Callout icon="terminal-2">
-    [Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
-  </Callout>
+[Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
 
-  <Callout icon="edit">
-    [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/oss/javascript/integrations/embeddings/openai.mdx) 或 [file an issue](https://github.com/langchain-ai/docs/issues/new/choose)。
-  </Callout>
-</div>
+[Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/oss/javascript/integrations/embeddings/openai.mdx) 或 [file an issue](https://github.com/langchain-ai/docs/issues/new/choose)。

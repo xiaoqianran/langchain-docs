@@ -6,7 +6,7 @@
 
 使用 LangChain JavaScript 与 Anthropic 工具集成。
 
-`@langchain/anthropic` 软件包为 Anthropic 的内置工具提供与 LangChain 兼容的包装器。这些工具可以使用`bindTools()`或[⟦T22⟧](https://reference.langchain.com/javascript/langchain/index/createAgent)绑定到`ChatAnthropic`。
+`@langchain/anthropic` 软件包为 Anthropic 的内置工具提供了 LangChain 兼容的包装器。这些工具可以使用`bindTools()`或[⟦T22⟧](https://reference.langchain.com/javascript/langchain/index/createAgent)绑定到`ChatAnthropic`。
 
 ### 记忆工具
 
@@ -609,12 +609,6 @@ const response = await llm.invoke("Find and use the right tool", {
 
 ***
 
-<div>
-  <Callout icon="terminal-2">
-    [Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
-  </Callout>
+[Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
 
-  <Callout icon="edit">
-    [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/oss/javascript/integrations/tools/anthropic.mdx) 或 [file an issue](https://github.com/langchain-ai/docs/issues/new/choose)。
-  </Callout>
-</div>
+[Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/oss/javascript/integrations/tools/anthropic.mdx) 或 [file an issue](https://github.com/langchain-ai/docs/issues/new/choose)。

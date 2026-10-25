@@ -21,38 +21,28 @@ LangChain 提供键值存储接口，用于通过键存储和检索数据。 Lan
 
 接口的通用性质允许您使用不同类型的键和值。例如，`BaseStore<string, BaseMessage>`将存储带有字符串键的消息，而`BaseStore<string, number[]>`将存储数字数组。
 
-<Note>
-  基础存储旨在同时处理**多个**键值对以提高效率。这可以节省网络往返次数，并可以在底层存储中实现更高效的批处理操作。
-</Note>
+> [!注意]
+>
+> 基础存储旨在同时处理**多个**键值对以提高效率。这可以节省网络往返次数，并可以在底层存储中实现更高效的批处理操作。
 
 ## 本地开发内置商店
 
-<Columns>
-  <Card title="InMemoryStore" icon="link" href="/oss/javascript/integrations/stores/in_memory" />
+> **[InMemoryStore](/oss/javascript/integrations/stores/in_memory)**
 
-  <Card title="LocalFileStore" icon="link" href="/oss/javascript/integrations/stores/file_system" />
-</Columns>
+> **[LocalFileStore](/oss/javascript/integrations/stores/file_system)**
 
 ## 定制商店您还可以通过扩展 [⟦T10⟧](https://reference.langchain.com/javascript/langchain-core/stores/BaseStore) 类来实现自己的自定义商店。更多详情请参阅[store interface documentation](https://reference.langchain.com/javascript/langchain-core/stores/BaseStore)。
 
 ## 所有键值存储
 
-<div>
-  |整合 |下载 |
-  | :- | :- |
-  | [⟦T11⟧](https://github.com/flytomoon/al-buddy-memory/blob/main/docs/integrations/langchain.md) | <span><a href="https://www.npmjs.com/package/al-buddy-memory"><img alt="Downloads per month" /></a></span> |
-  | [⟦T12⟧](/oss/javascript/integrations/stores/in_memory) | <span>N/A</span> |
-  | [⟦T13⟧](/oss/javascript/integrations/stores/file_system) | <span>N/A</span> |
-</div>
+|整合 |下载 |
+| :-| :-|
+| [⟦T11⟧](https://github.com/flytomoon/al-buddy-memory/blob/main/docs/integrations/langchain.md) | [  ⟦T14⟧](https://www.npmjs.com/package/al-buddy-memory) |
+| [⟦T12⟧](/oss/javascript/integrations/stores/in_memory) |不适用 |
+| [⟦T13⟧](/oss/javascript/integrations/stores/file_system) |不适用 |
 
 ***
 
-<div>
-  <Callout icon="terminal-2">
-    [Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
-  </Callout>
+[Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
 
-  <Callout icon="edit">
-    [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/oss/javascript/integrations/stores/index.mdx) 或 [file an issue](https://github.com/langchain-ai/docs/issues/new/choose)。
-  </Callout>
-</div>
+[Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/oss/javascript/integrations/stores/index.mdx) 或 [file an issue](https://github.com/langchain-ai/docs/issues/new/choose)。

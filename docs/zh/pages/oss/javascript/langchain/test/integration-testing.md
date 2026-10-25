@@ -85,9 +85,9 @@ test.skipIf(!process.env.OPENAI_API_KEY)(
 );
 ```
 
-<Warning>
-  将 `.env` 添加到您的 `.gitignore` 以避免提交凭据。在 CI 中，通过提供商的机密管理（例如 GitHub Actions 机密）注入机密。
-</Warning>
+> [!警告]
+>
+> 将 `.env` 添加到您的 `.gitignore` 以避免提交凭据。在 CI 中，通过提供商的机密管理（例如 GitHub Actions 机密）注入机密。
 
 ## 断言结构，而不是内容
 
@@ -110,9 +110,9 @@ test("agent calls weather tool", async () => {
 
 此示例使用[custom test matchers](#use-custom-test-matchers)。请参阅下面的部分了解设置和完整的匹配器参考。
 
-<Tip>
-  对于更严格的轨迹断言，请使用支持模糊匹配模式的[AgentEvals](/oss/javascript/langchain/test/evals)评估器，例如`unordered`和`superset`。
-</Tip>
+> [!提示]
+>
+> 对于更严格的轨迹断言，请使用支持模糊匹配模式的[AgentEvals](/oss/javascript/langchain/test/evals)评估器，例如`unordered`和`superset`。
 
 ## 使用自定义测试匹配器
 
@@ -248,12 +248,6 @@ const agent = createAgent({
 
 ***
 
-<div>
-  <Callout icon="terminal-2">
-    [Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
-  </Callout>
+[Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
 
-  <Callout icon="edit">
-    [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/oss/langchain/test/integration-testing.mdx) 或 [file an issue](https://github.com/langchain-ai/docs/issues/new/choose)。
-  </Callout>
-</div>
+[Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/oss/langchain/test/integration-testing.mdx) 或 [file an issue](https://github.com/langchain-ai/docs/issues/new/choose)。

@@ -10,21 +10,21 @@
 
 这将帮助您开始使用 `ChatGoogleGenerativeAI` [chat models](/oss/javascript/langchain/models)。有关所有`ChatGoogleGenerativeAI`功能和配置的详细文档，请前往[API reference](https://reference.langchain.com/javascript/langchain-google-genai/ChatGoogleGenerativeAI)。
 
-<Note>
-  **该库将被弃用**
-
-  该库基于 Google 已弃用的库，并将
-  被[ChatGoogle](/oss/javascript/integrations/chat/google)库取代。
-  新的实现应该使用 [ChatGoogle](/oss/javascript/integrations/chat/google) 库，并且
-  现有的实现应考虑迁移。
-</Note>
+> [!注意]
+>
+> **该库将被弃用**
+>
+> 该库基于 Google 已弃用的库，并将
+> 被[ChatGoogle](/oss/javascript/integrations/chat/google)库取代。
+> 新的实现应该使用 [ChatGoogle](/oss/javascript/integrations/chat/google) 库，并且
+> 现有的实现应考虑迁移。
 
 ## 概述
 
 ### 集成细节
 
-|班级 |套餐 |可串行化| [PY support](https://python.langchain.com/docs/integrations/chat/google_generative_ai) |下载 |版本 |
-| :- | :- | :-: | :-: | :-: | :-: |
+|班级 |套餐 |可串行化| [PY support](/oss/python/integrations/chat/google_generative_ai) |下载 |版本 |
+| :-| :-| :-: | :-: | :-: | :-: |
 | [⟦T24⟧](https://reference.langchain.com/javascript/langchain-google-genai/ChatGoogleGenerativeAI) | [⟦T25⟧](https://www.npmjs.com/package/@langchain/google-genai) | ✅ | ✅ | ![NPM - Downloads](https://img.shields.io/npm/dm/@langchain/google-genai?style=flat-square\&label=%20&) | ![NPM - Version](https://img.shields.io/npm/v/@langchain/google-genai?style=flat-square\&label=%20&) |
 
 ### 模型特点
@@ -39,9 +39,9 @@
 LangChain 到 `ChatGoogleGenerativeAI` 类中的生成模型
 `@langchain/google-genai`集成包。
 
-<Tip>
-  您还可以通过 LangChain `VertexAI` 和 `VertexAI-web` 集成访问 Google 的 `gemini` 系列型号。请参阅[Gemini Enterprise Agent Platform docs](/oss/javascript/integrations/chat/google_vertex_ai)。
-</Tip>
+> [!提示]
+>
+> 您还可以通过 LangChain `VertexAI` 和 `VertexAI-web` 集成访问 Google 的 `gemini` 系列型号。请参阅[Gemini Enterprise Agent Platform docs](/oss/javascript/integrations/chat/google_vertex_ai)。
 
 ### 凭证
 
@@ -64,19 +64,17 @@ export GOOGLE_API_KEY="your-api-key"
 
 LangChain `ChatGoogleGenerativeAI` 集成位于 `@langchain/google-genai` 包中：
 
-<CodeGroup>
-  ```bash npm theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  npm install @langchain/google-genai @langchain/core
-  ```
+```bash npm theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+npm install @langchain/google-genai @langchain/core
+```
 
-  ```bash yarn theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  yarn add @langchain/google-genai @langchain/core
-  ```
+```bash yarn theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+yarn add @langchain/google-genai @langchain/core
+```
 
-  ```bash pnpm theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  pnpm add @langchain/google-genai @langchain/core
-  ```
-</CodeGroup>
+```bash pnpm theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+pnpm add @langchain/google-genai @langchain/core
+```
 
 ## 实例化
 
@@ -192,9 +190,9 @@ const llmWithSafetySettings = new ChatGoogleGenerativeAI({
 });
 ```
 
-## 工具调用使用 Google AI 的工具调用基本上与 [as tool calling with other models](/oss/javascript/langchain/tools) 相同，但对架构有一些限制。
+## 工具调用
 
-Google AI API 不允许工具架构包含具有未知属性的对象。例如，以下 Zod 模式将引发错误：
+使用 Google AI 的工具调用基本上与 [as tool calling with other models](/oss/javascript/langchain/tools) 相同，但对架构有一些限制。Google AI API 不允许工具架构包含具有未知属性的对象。例如，以下 Zod 模式将引发错误：
 
 `const invalidSchema = z.object({ properties: z.record(z.unknown()) });`
 
@@ -550,7 +548,9 @@ The output of the code was:
 Therefore, the answer to your question is 21.
 ```
 
-## 上下文缓存上下文缓存允许您将一些内容传递给模型一次，缓存输入令牌，然后在后续请求中引用缓存的令牌以降低成本。您可以使用 `GoogleAICacheManager` 类创建 `CachedContent` 对象，然后使用 `enableCachedContent()` 方法将 `CachedContent` 对象传递给 `ChatGoogleGenerativeAIModel` 。
+## 上下文缓存
+
+上下文缓存允许您将一些内容传递给模型一次，缓存输入令牌，然后在后续请求中引用缓存的令牌以降低成本。您可以使用 `GoogleAICacheManager` 类创建 `CachedContent` 对象，然后使用 `enableCachedContent()` 方法将 `CachedContent` 对象传递给 `ChatGoogleGenerativeAIModel` 。
 
 ```typescript theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 import { ChatGoogleGenerativeAI } from "@langchain/google-genai";
@@ -600,9 +600,7 @@ model.useCachedContent(cachedContent);
 await model.invoke("Summarize the video");
 ```
 
-**注意**
-
-* 上下文缓存的最小输入令牌计数为 32,768，最大值与给定模型的最大值相同。
+**注意*** 上下文缓存的最小输入令牌计数为 32,768，最大值与给定模型的最大值相同。
 
 ## 双子座提示常见问题解答
 
@@ -611,7 +609,9 @@ await model.invoke("Summarize the video");
 1. 提供多模式（图像）输入时，最多只能显示 1 条“人类”（用户）类型的消息。您不能传递多条消息（尽管单个人工消息可能有多个内容条目）
 2. 系统消息不受本机支持，并且将与第一条人工消息（如果存在）合并。
 3. 对于常规聊天对话，消息必须遵循人类/人工智能/人类/人工智能交替模式。您不得按顺序提供 2 条 AI 或人类消息。
-4. 如果违反LLM的安全检查，消息可能会被屏蔽。在这种情况下，模型将返回空响应。***
+4. 如果违反LLM的安全检查，消息可能会被屏蔽。在这种情况下，模型将返回空响应。
+
+***
 
 ## API 参考
 
@@ -619,12 +619,6 @@ await model.invoke("Summarize the video");
 
 ***
 
-<div>
-  <Callout icon="terminal-2">
-    [Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
-  </Callout>
+[Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
 
-  <Callout icon="edit">
-    [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/oss/javascript/integrations/chat/google_generative_ai.mdx) 或 [file an issue](https://github.com/langchain-ai/docs/issues/new/choose)。
-  </Callout>
-</div>
+[Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/oss/javascript/integrations/chat/google_generative_ai.mdx) 或 [file an issue](https://github.com/langchain-ai/docs/issues/new/choose)。

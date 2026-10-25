@@ -14,8 +14,8 @@
 
 ### 集成细节
 
-|班级 |套餐 |可串行化| [PY support](https://python.langchain.com/docs/integrations/chat/bedrock/#beta-bedrock-converse-api) |下载 |版本 |
-| :- | :- | :-: | :-: | :-: | :-: |
+|班级 |套餐 |可串行化| [PY support](/oss/python/integrations/chat/bedrock) |下载 |版本 |
+| :-| :-| :-: | :-: | :-: | :-: |
 | [⟦T12⟧](https://reference.langchain.com/javascript/langchain-aws/ChatBedrockConverse) | [⟦T13⟧](https://npmjs.com/@langchain/aws) | ✅ | ✅ | ![NPM - Downloads](https://img.shields.io/npm/dm/@langchain/aws?style=flat-square\&label=%20&) | ![NPM - Version](https://img.shields.io/npm/v/@langchain/aws?style=flat-square\&label=%20&) |
 
 ### 模型特点
@@ -53,19 +53,17 @@ export BEDROCK_AWS_SECRET_ACCESS_KEY="your-secret-access-key"
 
 LangChain `ChatBedrockConverse` 集成位于 `@langchain/aws` 包中：
 
-<CodeGroup>
-  ```bash npm theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  npm install @langchain/aws @langchain/core
-  ```
+```bash npm theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+npm install @langchain/aws @langchain/core
+```
 
-  ```bash yarn theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  yarn add @langchain/aws @langchain/core
-  ```
+```bash yarn theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+yarn add @langchain/aws @langchain/core
+```
 
-  ```bash pnpm theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  pnpm add @langchain/aws @langchain/core
-  ```
-</CodeGroup>
+```bash pnpm theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+pnpm add @langchain/aws @langchain/core
+```
 
 ## 实例化
 
@@ -149,12 +147,8 @@ J'adore la programmation.
 
 有关所有 `ChatBedrockConverse` 功能和配置的详细文档，请前往 [API reference](https://reference.langchain.com/javascript/langchain-aws/ChatBedrockConverse)。
 
-***<div>
-  <Callout icon="terminal-2">
-    [Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
-  </Callout>
+***
 
-  <Callout icon="edit">
-    [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/oss/javascript/integrations/chat/bedrock_converse.mdx) 或 [file an issue](https://github.com/langchain-ai/docs/issues/new/choose)。
-  </Callout>
-</div>
+[Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
+
+[Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/oss/javascript/integrations/chat/bedrock_converse.mdx) 或 [file an issue](https://github.com/langchain-ai/docs/issues/new/choose)。

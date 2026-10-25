@@ -12,14 +12,12 @@
 结构化、类型安全的 UI 卡，适用于您的代理进行的每个工具调用，完整
 具有加载状态和错误处理。
 
-<PatternEmbed />
-
 ## 工具调用如何工作
 
 当LangGraph代理决定需要外部数据时，它会发出一个或多个
 **工具调用**作为 AI 消息的一部分。每个工具调用包括：
 
-* **名称**：正在调用的工具（例如`"get_weather"`、`"calculator"`）
+* **名称**：被调用的工具（例如`"get_weather"`、`"calculator"`）
 * **args**：传递给工具的结构化参数
 * **id**：将调用链接到其结果的唯一标识符
 
@@ -33,35 +31,58 @@
 反应状态，包括实时更新的`toolCalls`数组
 代理流。
 
-<Info>
-  代码示例使用 `useStream<typeof myAgent>` 来实现类型安全的流状态。请参阅 [Python](/oss/python/langchain/frontend/overview#type-inference) 或 [JavaScript](/oss/javascript/langchain/frontend/overview#type-inference) 后端的类型推断。
-</Info>
+> [!注意]
+>
+> 代码示例使用 `useStream<typeof myAgent>` 来实现类型安全的流状态。请参阅 [Python](/oss/python/langchain/frontend/overview#type-inference) 或 [JavaScript](/oss/javascript/langchain/frontend/overview#type-inference) 后端的类型推断。
 
-<CodeGroup>
-  ```tsx React theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  import { useStream } from "@langchain/react";
+```tsx React theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+import { useStream } from "@langchain/react";
 
-  const AGENT_URL = "http://localhost:2024";
+const AGENT_URL = "http://localhost:2024";
 
-  export function Chat() {
-    const stream = useStream<typeof myAgent>({
-      apiUrl: AGENT_URL,
-      assistantId: "tool_calling",
-    });
+export function Chat() {
+  const stream = useStream<typeof myAgent>({
+    apiUrl: AGENT_URL,
+    assistantId: "tool_calling",
+  });
 
-    return (
-      <div>
-        {stream.messages.map((msg) => (
-          <Message key={msg.id} message={msg} toolCalls={stream.toolCalls} />
-        ))}
-      </div>
-    );
-  }
-  ```
+  return (
+    <div>
+      {stream.messages.map((msg) => (
+        <Message key={msg.id} message={msg} toolCalls={stream.toolCalls} />
+      ))}
+    </div>
+  );
+}
+```
 
-  ```vue Vue theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  <script setup lang="ts">
-  import { useStream } from "@langchain/vue";
+```vue Vue theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+<script setup lang="ts">
+import { useStream } from "@langchain/vue";
+
+const AGENT_URL = "http://localhost:2024";
+
+const stream = useStream<typeof myAgent>({
+  apiUrl: AGENT_URL,
+  assistantId: "tool_calling",
+});
+</script>
+
+<template>
+  <div>
+    <Message
+      v-for="msg in stream.messages.value"
+      :key="msg.id"
+      :message="msg"
+      :tool-calls="stream.toolCalls.value"
+    />
+  </div>
+</template>
+```
+
+```svelte Svelte theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+<script lang="ts">
+  import { useStream } from "@langchain/svelte";
 
   const AGENT_URL = "http://localhost:2024";
 
@@ -69,61 +90,36 @@
     apiUrl: AGENT_URL,
     assistantId: "tool_calling",
   });
-  </script>
+</script>
 
-  <template>
-    <div>
-      <Message
-        v-for="msg in stream.messages.value"
-        :key="msg.id"
-        :message="msg"
-        :tool-calls="stream.toolCalls.value"
-      />
-    </div>
-  </template>
-  ``````svelte Svelte theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  <script lang="ts">
-    import { useStream } from "@langchain/svelte";
+<div>
+  {#each stream.messages as msg (msg.id)}
+    <Message message={msg} toolCalls={stream.toolCalls} />
+  {/each}
+</div>
+```
 
-    const AGENT_URL = "http://localhost:2024";
+```ts Angular theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+import { Component } from "@angular/core";
+import { injectStream } from "@langchain/angular";
 
-    const stream = useStream<typeof myAgent>({
-      apiUrl: AGENT_URL,
-      assistantId: "tool_calling",
-    });
-  </script>
+const AGENT_URL = "http://localhost:2024";
 
-  <div>
-    {#each stream.messages as msg (msg.id)}
-      <Message message={msg} toolCalls={stream.toolCalls} />
-    {/each}
-  </div>
-  ```
-
-  ```ts Angular theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  import { Component } from "@angular/core";
-  import { injectStream } from "@langchain/angular";
-
-  const AGENT_URL = "http://localhost:2024";
-
-  @Component({
-    selector: "app-chat",
-    template: `
-      @for (msg of stream.messages(); track msg.id) {
-        <app-message [message]="msg" [toolCalls]="stream.toolCalls()" />
-      }
-    `,
-  })
-  export class ChatComponent {
-    stream = injectStream<typeof myAgent>({
-      apiUrl: AGENT_URL,
-      assistantId: "tool_calling",
-    });
-  }
-  ```
-</CodeGroup>
-
-## AssembledToolCall 类型
+@Component({
+  selector: "app-chat",
+  template: `
+    @for (msg of stream.messages(); track msg.id) {
+      <app-message [message]="msg" [toolCalls]="stream.toolCalls()" />
+    }
+  `,
+})
+export class ChatComponent {
+  stream = injectStream<typeof myAgent>({
+    apiUrl: AGENT_URL,
+    assistantId: "tool_calling",
+  });
+}
+```## AssembledToolCall 类型
 
 `toolCalls` 数组中的每个条目都是一个 `AssembledToolCall` 对象：
 
@@ -284,10 +280,10 @@ type WeatherToolCall = ToolCallFromTool<typeof getWeather>;
 // WeatherToolCall.input and WeatherToolCall.args are now { location: string }
 ```
 
-<Tip>
-  使用 `ToolCallFromTool` 可以为您提供编译时安全性。如果工具架构
-  更改时，您的 UI 组件将立即标记类型错误。
-</Tip>
+> [!提示]
+>
+> 使用 `ToolCallFromTool` 为您提供编译时安全性。如果工具架构
+> 更改后，您的 UI 组件将立即标记类型错误。
 
 ## 渲染工具调用内联流文本
 
@@ -301,11 +297,11 @@ type WeatherToolCall = ToolCallFromTool<typeof getWeather>;
 2. 发出工具调用时的加载卡
 3. 工具完成后，卡片会更新以显示结果
 
-<Note>
-  工具调用就地更新。同样的`callId`从`"running"`过渡到
-  `"finished"`（或`"error"`），因此您的 UI 重新渲染相同的组件
-  与新状态。
-</Note>
+> [!注意]
+>
+> 工具调用就地更新。同样的`callId`从`"running"`过渡到
+> `"finished"`（或`"error"`），因此您的 UI 重新渲染相同的组件
+> 具有新状态。
 
 ## 处理多个并发工具调用代理可以并行调用多个工具。 `toolCalls` 数组将包含
 同时使用`status: "running"`进行多个条目。每一个解决
@@ -346,12 +342,6 @@ function ToolCallList({ toolCalls }: { toolCalls: AssembledToolCall[] }) {
 
 ***
 
-<div>
-  <Callout icon="terminal-2">
-    [Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
-  </Callout>
+[Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
 
-  <Callout icon="edit">
-    [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/oss/langchain/frontend/tool-calling.mdx) 或 [file an issue](https://github.com/langchain-ai/docs/issues/new/choose)。
-  </Callout>
-</div>
+[Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/oss/langchain/frontend/tool-calling.mdx) 或 [file an issue](https://github.com/langchain-ai/docs/issues/new/choose)。

@@ -6,35 +6,33 @@
 
 使用 LangChain 与文本分割器集成。
 
-<CodeGroup>
-  ```bash npm theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  npm install @langchain/textsplitters @langchain/core
-  # Requires Node.js 22+
-  ```
+```bash npm theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+npm install @langchain/textsplitters @langchain/core
+# Requires Node.js 22+
+```
 
-  ```bash pnpm theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  pnpm add @langchain/textsplitters @langchain/core
-  # Requires Node.js 22+
-  ```
+```bash pnpm theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+pnpm add @langchain/textsplitters @langchain/core
+# Requires Node.js 22+
+```
 
-  ```bash yarn theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  yarn add @langchain/textsplitters @langchain/core
-  # Requires Node.js 22+
-  ```
+```bash yarn theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+yarn add @langchain/textsplitters @langchain/core
+# Requires Node.js 22+
+```
 
-  ```bash bun theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  bun add @langchain/textsplitters @langchain/core
-  # Requires Node.js 22+
-  ```
-</CodeGroup>
+```bash bun theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+bun add @langchain/textsplitters @langchain/core
+# Requires Node.js 22+
+```
 
 **文本拆分器** 将大型文档分解为较小的块，这些块可单独检索并适合模型上下文窗口限制。
 
-有多种分割文档的策略，每种策略都有自己的优点。
+分割文档的策略有多种，每种策略都有自己的优点。
 
-<Tip>
-  对于大多数用例，从[⟦T6⟧](/oss/javascript/integrations/splitters/recursive_text_splitter)开始。它在保持上下文完整和管理块大小之间提供了坚实的平衡。此默认策略开箱即用，效果很好，只有在需要针对特定​​应用程序微调性能时才应考虑调整它。
-</Tip>
+> [!提示]
+>
+> 对于大多数用例，从 [⟦T6⟧](/oss/javascript/integrations/splitters/recursive_text_splitter) 开始。它在保持上下文完整和管理块大小之间提供了坚实的平衡。此默认策略开箱即用，效果很好，只有在需要针对特定​​应用程序微调性能时才应考虑调整它。
 
 ## 基于文本结构
 
@@ -82,7 +80,7 @@ const texts = splitter.splitText(document)
 * [Split by tokens](/oss/javascript/integrations/splitters/split_by_token)
 * [Split by characters](/oss/javascript/integrations/splitters/character_text_splitter)
 
-## 基于文档结构有些文档具有固有的结构，例如 HTML、Markdown 或 JSON 文件。在这些情况下，根据文档结构分割文档是有益的，因为它通常会自然地对语义相关的文本进行分组。基于结构的拆分的主要优点：
+## 基于文档结构有些文档具有固有的结构，例如 HTML、Markdown 或 JSON 文件。在这些情况下，根据文档结构拆分文档是有益的，因为它通常会自然地对语义相关的文本进行分组。基于结构的拆分的主要优点：
 
 * 保留文档的逻辑组织
 * 维护每个块内的上下文
@@ -94,12 +92,6 @@ const texts = splitter.splitText(document)
 
 ***
 
-<div>
-  <Callout icon="terminal-2">
-    [Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
-  </Callout>
+[Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
 
-  <Callout icon="edit">
-    [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/oss/integrations/splitters/index.mdx) 或 [file an issue](https://github.com/langchain-ai/docs/issues/new/choose)。
-  </Callout>
-</div>
+[Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/oss/integrations/splitters/index.mdx) 或 [file an issue](https://github.com/langchain-ai/docs/issues/new/choose)。

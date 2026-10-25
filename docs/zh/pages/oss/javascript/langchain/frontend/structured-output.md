@@ -8,8 +8,6 @@
 
 结构化输出使代理可以返回键入的机器可读数据，而不是纯文本。您获得的不是渲染单个字符串，而是可以映射到任何 UI 的结构化对象：卡片、表格、图表、分步细分或特定于域的渲染器。
 
-<PatternEmbed />
-
 ## 什么是结构化输出？
 
 代理不返回自由格式的文本响应，而是使用工具调用返回符合预定义模式的结构化对象。这给你：
@@ -63,9 +61,9 @@ function extractStructuredOutput<T>(messages: any[]): T | null {
 }
 ```
 
-<Note>
-  在代理完成流式传输之前，结构化输出工具调用可能不会填充`args`。在流式传输期间，`args`可能会部分填充或未定义。在渲染之前始终检查完整性。
-</Note>
+> [!注意]
+>
+> 在代理完成流式传输之前，结构化输出工具调用可能不会填充`args`。在流式传输期间，`args`可能会部分填充或未定义。在渲染之前始终检查完整性。
 
 ## 设置`useStream`将 [⟦T15⟧](https://reference.langchain.com/javascript/langchain-react/index/useStream) 连接到您的结构化输出代理，然后阅读
 `stream.messages` 并从最新的 [⟦T17⟧](https://reference.langchain.com/javascript/langchain-core/messages/AIMessage) 中提取键入的有效负载
@@ -73,132 +71,130 @@ function extractStructuredOutput<T>(messages: any[]): T | null {
 而`stream.isLoading`为真（工具参数可能会逐渐流入），并且
 使用`stream.submit()`发送下一个提示。
 
-<Info>
-  代码示例使用 `useStream<typeof myAgent>` 来实现类型安全的流状态。请参阅 [Python](/oss/python/langchain/frontend/overview#type-inference) 或 [JavaScript](/oss/javascript/langchain/frontend/overview#type-inference) 后端的类型推断。
-</Info>
+> [!注意]
+>
+> 代码示例使用 `useStream<typeof myAgent>` 来实现类型安全的流状态。请参阅 [Python](/oss/python/langchain/frontend/overview#type-inference) 或 [JavaScript](/oss/javascript/langchain/frontend/overview#type-inference) 后端的类型推断。
 
-<CodeGroup>
-  ```tsx React theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  import { useStream } from "@langchain/react";
+```tsx React theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+import { useStream } from "@langchain/react";
+import { AIMessage } from "langchain";
+
+function MathSolutionChat() {
+  const stream = useStream<typeof myAgent>({
+    apiUrl: "http://localhost:2024",
+    assistantId: "structured_output_latex",
+  });
+
+  const solution = extractStructuredOutput<MathSolution>(stream.messages);
+
+  return (
+    <div>
+      {!solution && !stream.isLoading && (
+        <PromptInput onSubmit={(text) =>
+          stream.submit({ messages: [{ type: "human", content: text }] })
+        } />
+      )}
+      {stream.isLoading && <LoadingIndicator />}
+      {solution && <SolutionCard solution={solution} />}
+    </div>
+  );
+}
+```
+
+```vue Vue theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+<script setup lang="ts">
+import { useStream } from "@langchain/vue";
+import { AIMessage } from "langchain";
+import { computed } from "vue";
+
+const stream = useStream<typeof myAgent>({
+  apiUrl: "http://localhost:2024",
+  assistantId: "structured_output_latex",
+});
+
+const solution = computed(() =>
+  extractStructuredOutput<MathSolution>(stream.messages.value)
+);
+
+function handleSubmit(text: string) {
+  stream.submit({ messages: [{ type: "human", content: text }] });
+}
+</script>
+
+<template>
+  <div>
+    <PromptInput v-if="!solution && !stream.isLoading" @submit="handleSubmit" />
+    <LoadingIndicator v-if="stream.isLoading" />
+    <SolutionCard v-if="solution" :solution="solution" />
+  </div>
+</template>
+```
+
+```svelte Svelte theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+<script lang="ts">
+  import { useStream } from "@langchain/svelte";
   import { AIMessage } from "langchain";
-
-  function MathSolutionChat() {
-    const stream = useStream<typeof myAgent>({
-      apiUrl: "http://localhost:2024",
-      assistantId: "structured_output_latex",
-    });
-
-    const solution = extractStructuredOutput<MathSolution>(stream.messages);
-
-    return (
-      <div>
-        {!solution && !stream.isLoading && (
-          <PromptInput onSubmit={(text) =>
-            stream.submit({ messages: [{ type: "human", content: text }] })
-          } />
-        )}
-        {stream.isLoading && <LoadingIndicator />}
-        {solution && <SolutionCard solution={solution} />}
-      </div>
-    );
-  }
-  ```
-
-  ```vue Vue theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  <script setup lang="ts">
-  import { useStream } from "@langchain/vue";
-  import { AIMessage } from "langchain";
-  import { computed } from "vue";
 
   const stream = useStream<typeof myAgent>({
     apiUrl: "http://localhost:2024",
     assistantId: "structured_output_latex",
   });
 
-  const solution = computed(() =>
-    extractStructuredOutput<MathSolution>(stream.messages.value)
-  );
+  const solution = $derived(extractStructuredOutput<MathSolution>(stream.messages));
 
   function handleSubmit(text: string) {
     stream.submit({ messages: [{ type: "human", content: text }] });
   }
-  </script>
+</script>
 
-  <template>
-    <div>
-      <PromptInput v-if="!solution && !stream.isLoading" @submit="handleSubmit" />
-      <LoadingIndicator v-if="stream.isLoading" />
-      <SolutionCard v-if="solution" :solution="solution" />
-    </div>
-  </template>
-  ```
+<div>
+  {#if !solution && !stream.isLoading}
+    <PromptInput on:submit={(e) => handleSubmit(e.detail)} />
+  {/if}
+  {#if stream.isLoading}
+    <LoadingIndicator />
+  {/if}
+  {#if solution}
+    <SolutionCard {solution} />
+  {/if}
+</div>
+```
 
-  ```svelte Svelte theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  <script lang="ts">
-    import { useStream } from "@langchain/svelte";
-    import { AIMessage } from "langchain";
+```ts Angular theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+import { Component, computed } from "@angular/core";
+import { injectStream } from "@langchain/angular";
 
-    const stream = useStream<typeof myAgent>({
-      apiUrl: "http://localhost:2024",
-      assistantId: "structured_output_latex",
-    });
-
-    const solution = $derived(extractStructuredOutput<MathSolution>(stream.messages));
-
-    function handleSubmit(text: string) {
-      stream.submit({ messages: [{ type: "human", content: text }] });
+@Component({
+  selector: "app-math-solution-chat",
+  template: `
+    @if (!solution() && !stream.isLoading()) {
+      <prompt-input (onSubmit)="handleSubmit($event)" />
     }
-  </script>
-
-  <div>
-    {#if !solution && !stream.isLoading}
-      <PromptInput on:submit={(e) => handleSubmit(e.detail)} />
-    {/if}
-    {#if stream.isLoading}
-      <LoadingIndicator />
-    {/if}
-    {#if solution}
-      <SolutionCard {solution} />
-    {/if}
-  </div>
-  ```
-
-  ```ts Angular theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  import { Component, computed } from "@angular/core";
-  import { injectStream } from "@langchain/angular";
-
-  @Component({
-    selector: "app-math-solution-chat",
-    template: `
-      @if (!solution() && !stream.isLoading()) {
-        <prompt-input (onSubmit)="handleSubmit($event)" />
-      }
-      @if (stream.isLoading()) {
-        <loading-indicator />
-      }
-      @if (solution()) {
-        <solution-card [solution]="solution()" />
-      }
-    `,
-  })
-  export class MathSolutionChatComponent {
-    stream = injectStream<typeof myAgent>({
-      apiUrl: "http://localhost:2024",
-      assistantId: "structured_output_latex",
-    });
-
-    solution = computed(() =>
-      extractStructuredOutput<MathSolution>(this.stream.messages())
-    );
-
-    handleSubmit(text: string) {
-      this.stream.submit({
-        messages: [{ type: "human", content: text }],
-      });
+    @if (stream.isLoading()) {
+      <loading-indicator />
     }
+    @if (solution()) {
+      <solution-card [solution]="solution()" />
+    }
+  `,
+})
+export class MathSolutionChatComponent {
+  stream = injectStream<typeof myAgent>({
+    apiUrl: "http://localhost:2024",
+    assistantId: "structured_output_latex",
+  });
+
+  solution = computed(() =>
+    extractStructuredOutput<MathSolution>(this.stream.messages())
+  );
+
+  handleSubmit(text: string) {
+    this.stream.submit({
+      messages: [{ type: "human", content: text }],
+    });
   }
-  ```
-</CodeGroup>
+}
+```
 
 ## 渲染结构化数据
 
@@ -296,11 +292,11 @@ function ProgressiveSolutionCard({ messages }: { messages: any[] }) {
     </div>
   );
 }
-```<Tip>
-  当架构具有自然的从上到下的结构时，渐进式渲染效果很好
-  顺序：问题，然后推导步骤，然后最终答案。代理人通常
-  按架构顺序生成字段，因此 UI 会自然填充。
-</Tip>
+```> [!提示]
+>
+> 当架构具有自然的从上到下的结构时，渐进式渲染效果很好
+> 顺序：问题，然后推导步骤，然后最终答案。代理人通常
+> 按架构顺序生成字段，因此 UI 会自然填充。
 
 ## 最佳实践
 
@@ -308,15 +304,9 @@ function ProgressiveSolutionCard({ messages }: { messages: any[] }) {
 * **使用通用提取函数**：使用类型和必填字段参数化您的提取逻辑，以便它可以跨不同模式工作
 * **渐进式渲染**：在字段到达时显示字段，而不是等待完整的对象，以便用户看到即时反馈
 * **提供后备表示**：如果字段支持丰富的渲染（LaTeX、Markdown、图表），还可以在架构中包含等效的纯文本作为后备
-* **尽可能保持架构平坦**：深度嵌套的架构更难逐步渲染，并且在部分流式传输期间更容易中断
+* **尽可能保持架构平坦**：深度嵌套的架构更难逐步渲染，并且在部分流式传输期间更有可能中断
 * **将 UI 与数据匹配**：选择最能代表每种字段类型的渲染策略（数组的表格、嵌套对象的卡片、状态字段的徽章）
 
-***<div>
-  <Callout icon="terminal-2">
-    [Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
-  </Callout>
+***[Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
 
-  <Callout icon="edit">
-    [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/oss/langchain/frontend/structured-output.mdx) 或 [file an issue](https://github.com/langchain-ai/docs/issues/new/choose)。
-  </Callout>
-</div>
+[Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/oss/langchain/frontend/structured-output.mdx) 或 [file an issue](https://github.com/langchain-ai/docs/issues/new/choose)。

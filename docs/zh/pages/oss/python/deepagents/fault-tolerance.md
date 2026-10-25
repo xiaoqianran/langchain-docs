@@ -13,7 +13,7 @@
 不同的错误需要不同的处理策略：|错误类型 |谁修的|战略|中间件或功能 |
 | - | - | - | - |
 |瞬时错误（网络问题、速率限制）|系统（自动）|使用指数退避重试 | [ModelRetryMiddleware](https://reference.langchain.com/python/langchain/agents/middleware/model_retry/ModelRetryMiddleware)、[ToolRetryMiddleware](https://reference.langchain.com/python/langchain/agents/middleware/tool_retry/ToolRetryMiddleware) |
-| LLM 可恢复错误（工具故障、解析问题）|法学硕士 |转换为误差`ToolMessage`并让模型调整| [ToolErrorMiddleware](https://reference.langchain.com/python/langchain/agents/middleware/tool_error/ToolErrorMiddleware) |
+| LLM 可恢复错误（工具故障、解析问题）|法学硕士 |转换为误差`ToolMessage`并让模型调整 | [ToolErrorMiddleware](https://reference.langchain.com/python/langchain/agents/middleware/tool_error/ToolErrorMiddleware) |
 |用户可修复的错误（信息缺失、说明不明确）|人类 |按 `interrupt()` 暂停 | [Human-in-the-loop](/oss/python/deepagents/human-in-the-loop) |
 |供应商中断 |系统（自动）|退回到替代模型 | [ModelFallbackMiddleware](https://reference.langchain.com/python/langchain/agents/middleware/model_fallback/ModelFallbackMiddleware) |
 |过多的调用（失控循环）|系统（自动）|每次运行的模型和工具调用上限 | [ModelCallLimitMiddleware](https://reference.langchain.com/python/langchain/agents/middleware/model_call_limit/ModelCallLimitMiddleware)、[ToolCallLimitMiddleware](https://reference.langchain.com/python/langchain/agents/middleware/tool_call_limit/ToolCallLimitMiddleware) |
@@ -21,125 +21,125 @@
 
 以下部分通过代码示例介绍了每种策略。
 
-<Tabs>
-  <Tab title="Transient errors" icon="rotate">
-    添加重试中间件以自动重试网络问题和速率限制。模型调用和工具调用都有自己的具有指数退避的重试中间件：
+**暂时性错误**
 
-    ```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-    from langchain.agents import create_agent
-    from langchain.agents.middleware import ModelRetryMiddleware, ToolRetryMiddleware
+添加重试中间件以自动重试网络问题和速率限制。模型调用和工具调用都有自己的具有指数退避的重试中间件：
 
-    agent = create_agent(
-        model="google_genai:gemini-3.6-flash",
-        tools=[search_tool, fetch_url_tool],
-        middleware=[
-            ModelRetryMiddleware(max_retries=3, backoff_factor=2.0, initial_delay=1.0),
-            ToolRetryMiddleware(
-                max_retries=2,
-                tools=["search", "fetch_url"],
-                retry_on=(TimeoutError, ConnectionError),
-            ),
-        ],
-    )
-    ```
-  </Tab>
+```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+from langchain.agents import create_agent
+from langchain.agents.middleware import ModelRetryMiddleware, ToolRetryMiddleware
 
-  <Tab title="LLM-recoverable" icon="brain">
-    使用[ToolErrorMiddleware](https://reference.langchain.com/python/langchain/agents/middleware/tool_error/ToolErrorMiddleware)捕获工具异常并将其转换为错误`ToolMessage`，以便LLM可以看到出了什么问题并重试：
+agent = create_agent(
+    model="google_genai:gemini-3.6-flash",
+    tools=[search_tool, fetch_url_tool],
+    middleware=[
+        ModelRetryMiddleware(max_retries=3, backoff_factor=2.0, initial_delay=1.0),
+        ToolRetryMiddleware(
+            max_retries=2,
+            tools=["search", "fetch_url"],
+            retry_on=(TimeoutError, ConnectionError),
+        ),
+    ],
+)
+```
 
-    <Note>
-      `ToolErrorMiddleware` 需要 `langchain>=1.3.14`。
-    </Note>
+**LLM-可恢复**
 
-    ```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-    from langchain.agents import create_agent
-    from langchain.agents.middleware import ToolErrorMiddleware
+使用[ToolErrorMiddleware](https://reference.langchain.com/python/langchain/agents/middleware/tool_error/ToolErrorMiddleware)捕获工具异常并将其转换为错误`ToolMessage`，以便LLM可以看到出了什么问题并重试：
 
+> [!注意]
+>
+> `ToolErrorMiddleware` 需要 `langchain>=1.3.14`。
 
-    def on_error(exc: Exception, request: ToolCallRequest) -> str | None:
-        if isinstance(exc, ValueError):
-            return f"Tool `{request.tool_call['name']}` failed: {type(exc).__name__}. Fix the input and retry."
-        # propagate everything else
+```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+from langchain.agents import create_agent
+from langchain.agents.middleware import ToolErrorMiddleware
 
 
-    agent = create_agent(
-        model="google_genai:gemini-3.6-flash",
-        tools=[search_tool],
-        middleware=[ToolErrorMiddleware(on_error)],
-    )
-    ```
-  </Tab><Tab title="User-fixable" icon="user">
-    需要时暂停并收集用户信息（例如帐户 ID、订单号或说明）。使用 `interrupt_on` 在特定工具调用之前暂停代理：
+def on_error(exc: Exception, request: ToolCallRequest) -> str | None:
+    if isinstance(exc, ValueError):
+        return f"Tool `{request.tool_call['name']}` failed: {type(exc).__name__}. Fix the input and retry."
+    # propagate everything else
 
-    ```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-    from deepagents import create_deep_agent
 
-    agent = create_deep_agent(
-        model="google_genai:gemini-3.6-flash",
-        tools=[send_email_tool, delete_record_tool],
-        interrupt_on={
-            "send_email": True,
-            "delete_record": True,
-        },
-    )
-    ```
+agent = create_agent(
+    model="google_genai:gemini-3.6-flash",
+    tools=[search_tool],
+    middleware=[ToolErrorMiddleware(on_error)],
+)
+```
 
-    有关完整的人机交互指南，请参阅[Human-in-the-loop](/oss/python/deepagents/human-in-the-loop)。
-  </Tab>
+**用户可修复**需要时暂停并收集用户信息（例如帐户 ID、订单号或说明）。使用 `interrupt_on` 在特定工具调用之前暂停代理：
 
-  <Tab title="Provider outage" icon="arrows-exchange">
-    如果您的主要模型提供商完全崩溃，请使用 [ModelFallbackMiddleware](https://reference.langchain.com/python/langchain/agents/middleware/model_fallback/ModelFallbackMiddleware) 切换到替代模型：
+```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+from deepagents import create_deep_agent
 
-    ```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-    from langchain.agents import create_agent
-    from langchain.agents.middleware import ModelFallbackMiddleware
+agent = create_deep_agent(
+    model="google_genai:gemini-3.6-flash",
+    tools=[send_email_tool, delete_record_tool],
+    interrupt_on={
+        "send_email": True,
+        "delete_record": True,
+    },
+)
+```
 
-    agent = create_agent(
-        model="google_genai:gemini-3.6-flash",
-        tools=[search_tool],
-        middleware=[
-            ModelFallbackMiddleware("gpt-5.5"),
-        ],
-    )
-    ```
-  </Tab>
+有关完整的人机交互指南，请参阅[Human-in-the-loop](/oss/python/deepagents/human-in-the-loop)。
 
-  <Tab title="Excessive calls" icon="gauge">
-    如果没有限制，困惑的代理可以通过循环同一工具调用或进行数百个模型调用，在几分钟内耗尽您的 LLM API 预算。设置每次运行的模型调用和工具执行上限：
+**提供商中断**
 
-    ```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-    from langchain.agents import create_agent
-    from langchain.agents.middleware import ModelCallLimitMiddleware, ToolCallLimitMiddleware
+如果您的主要模型提供商完全崩溃，请使用 [ModelFallbackMiddleware](https://reference.langchain.com/python/langchain/agents/middleware/model_fallback/ModelFallbackMiddleware) 切换到替代模型：
 
-    agent = create_agent(
-        model="google_genai:gemini-3.6-flash",
-        tools=[search_tool],
-        middleware=[
-            ModelCallLimitMiddleware(run_limit=50),
-            ToolCallLimitMiddleware(run_limit=200),
-        ],
-    )
-    ```
-  </Tab>
+```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+from langchain.agents import create_agent
+from langchain.agents.middleware import ModelFallbackMiddleware
 
-  <Tab title="Unexpected" icon="alert-triangle">
-    让它们冒泡进行调试。不要抓住你无法处理的东西。 [ToolErrorMiddleware](https://reference.langchain.com/python/langchain/agents/middleware/tool_error/ToolErrorMiddleware) 仅显示您明确返回内容的异常；其他一切都保持不变：
+agent = create_agent(
+    model="google_genai:gemini-3.6-flash",
+    tools=[search_tool],
+    middleware=[
+        ModelFallbackMiddleware("gpt-5.5"),
+    ],
+)
+```
 
-    ```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-    def on_error(exc: Exception, request: ToolCallRequest) -> str | None:
-        if isinstance(exc, (ValueError, KeyError)):
-            # Surface known, recoverable errors to the model
-            return f"Tool `{request.tool_call['name']}` failed: {type(exc).__name__}."
-        # Everything else (unexpected errors) propagates and halts the run
-    ```
-  </Tab>
-</Tabs>
+**过多的通话**
+
+如果没有限制，困惑的代理可以通过循环同一工具调用或进行数百个模型调用，在几分钟内耗尽您的 LLM API 预算。设置每次运行的模型调用和工具执行上限：
+
+```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+from langchain.agents import create_agent
+from langchain.agents.middleware import ModelCallLimitMiddleware, ToolCallLimitMiddleware
+
+agent = create_agent(
+    model="google_genai:gemini-3.6-flash",
+    tools=[search_tool],
+    middleware=[
+        ModelCallLimitMiddleware(run_limit=50),
+        ToolCallLimitMiddleware(run_limit=200),
+    ],
+)
+```
+
+**出乎意料**
+
+让它们冒泡进行调试。不要抓住你无法处理的东西。 [ToolErrorMiddleware](https://reference.langchain.com/python/langchain/agents/middleware/tool_error/ToolErrorMiddleware) 仅显示您明确返回内容的异常；其他一切都保持不变：
+
+```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+def on_error(exc: Exception, request: ToolCallRequest) -> str | None:
+    if isinstance(exc, (ValueError, KeyError)):
+        # Surface known, recoverable errors to the model
+        return f"Tool `{request.tool_call['name']}` failed: {type(exc).__name__}."
+    # Everything else (unexpected errors) propagates and halts the run
+```
 
 ## 速率限制
 
 有两种互补的方法可以限制资源使用：控制模型提供程序的请求率，并限制每次运行的调用总数。
 
-### 提供商速率限制聊天模型提供程序对给定时间段内可以进行的调用数量施加限制。要控制发出请求的速率，请使用 `rate_limiter` 初始化模型：
+### 提供商速率限制
+
+聊天模型提供程序对给定时间段内可以进行的调用数量施加限制。要控制发出请求的速率，请使用 `rate_limiter` 初始化模型：
 
 ```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 from langchain.rate_limiters import InMemoryRateLimiter
@@ -157,9 +157,7 @@ model = init_chat_model(
 )
 
 agent = create_deep_agent(model=model, tools=[search_tool])
-```
-
-完整配置请参见[Rate limiting](/oss/python/langchain/models#rate-limiting)。
+```完整配置请参见[Rate limiting](/oss/python/langchain/models#rate-limiting)。
 
 ### 通话限制
 
@@ -203,15 +201,15 @@ agent = create_deep_agent(
 )
 ```
 
-将 [ToolRetryMiddleware](https://reference.langchain.com/python/langchain/agents/middleware/tool_retry/ToolRetryMiddleware) 范围扩展到特定工具，而不是重试所有内容。失败的文件系统`read_file`不会从重试中受益，但超时的网络搜索可能会受益。完整配置请参见[ModelRetryMiddleware](https://reference.langchain.com/python/langchain/agents/middleware/model_retry/ModelRetryMiddleware)。<Note>
-  主要集成包提出了标准异常类型（[ModelAuthenticationError](https://reference.langchain.com/python/langchain-core/exceptions/ModelAuthenticationError)、[ModelRateLimitError](https://reference.langchain.com/python/langchain-core/exceptions/ModelRateLimitError)、[ModelTimeoutError](https://reference.langchain.com/python/langchain-core/exceptions/ModelTimeoutError) 等），这些异常类型带有重试中间件默认遵循的 `is_retryable` 标志。完整列表请参见[Model exceptions](/oss/python/langchain/models#model-exceptions)。
-</Note>
+将 [ToolRetryMiddleware](https://reference.langchain.com/python/langchain/agents/middleware/tool_retry/ToolRetryMiddleware) 范围扩展到特定工具，而不是重试所有内容。失败的文件系统`read_file`不会从重试中受益，但超时的网络搜索可能会受益。完整配置请参见[ModelRetryMiddleware](https://reference.langchain.com/python/langchain/agents/middleware/model_retry/ModelRetryMiddleware)。
+
+> [!注意]
+>
+> 主要集成包提出了标准异常类型（[ModelAuthenticationError](https://reference.langchain.com/python/langchain-core/exceptions/ModelAuthenticationError)、[ModelRateLimitError](https://reference.langchain.com/python/langchain-core/exceptions/ModelRateLimitError)、[ModelTimeoutError](https://reference.langchain.com/python/langchain-core/exceptions/ModelTimeoutError) 等），这些类型默认带有重试中间件遵循的 `is_retryable` 标志。完整列表请参见[Model exceptions](/oss/python/langchain/models#model-exceptions)。
 
 ## 后备方案
 
-如果您的主要模型提供程序完全崩溃，后备中间件将切换到替代模型：
-
-```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+如果您的主要模型提供程序完全崩溃，后备中间件将切换到替代模型：```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 from deepagents import create_deep_agent
 from langchain.agents.middleware import ModelFallbackMiddleware
 
@@ -230,9 +228,9 @@ agent = create_deep_agent(
 
 当工具在执行期间引发异常时，代理运行默认停止。使用 [ToolErrorMiddleware](https://reference.langchain.com/python/langchain/agents/middleware/tool_error/ToolErrorMiddleware) 捕获特定异常并将其转换为模型可以看到并从中恢复的错误 ToolMessage，而不是导致运行崩溃。
 
-<Note>
-  `ToolErrorMiddleware` 需要 `langchain>=1.3.14`。
-</Note>
+> [!注意]
+>
+> `ToolErrorMiddleware` 需要 `langchain>=1.3.14`。
 
 ```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 from deepagents import create_deep_agent
@@ -255,12 +253,6 @@ agent = create_deep_agent(
 
 ***
 
-<div>
-  <Callout icon="terminal-2">
-    [Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
-  </Callout>
+[Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
 
-  <Callout icon="edit">
-    [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/oss/deepagents/fault-tolerance.mdx) 或 [file an issue](https://github.com/langchain-ai/docs/issues/new/choose)。
-  </Callout>
-</div>
+[Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/oss/deepagents/fault-tolerance.mdx) 或 [file an issue](https://github.com/langchain-ai/docs/issues/new/choose)。

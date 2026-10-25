@@ -10,7 +10,7 @@
 
 * [**Retries**](#retries)：根据异常类型和退避设置自动重新运行失败的尝试
 * [**Timeouts**](#timeouts)：限制单次尝试可以运行的时间
-* [**Error handling**](#error-handling)：在所有重试次数耗尽后运行恢复函数
+* [**Error handling**](#error-handling)：在所有重试次数耗尽后运行恢复功能
 
 使用[**⟦T22⟧**](#graph-defaults)为所有节点配置一次这些机制，而不是在每次`addNode`调用时重复它们。
 
@@ -18,9 +18,9 @@
 
 要在超级步边界处干净地停止运行并稍后恢复，请参阅[Graceful shutdown](#graceful-shutdown)。
 
-<Note>
-  每个节点超时和节点级错误处理程序需要 `@langchain/langgraph>=1.4.0`。
-</Note>
+> [!注意]
+>
+> 每节点超时和节点级错误处理程序需要 `@langchain/langgraph>=1.4.0`。
 
 ```mermaid theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 %%{init:{'theme':'base','themeVariables':{'lineColor':'#40668D','primaryColor':'#E5F4FF','primaryTextColor':'#030710','primaryBorderColor':'#006DDD'}}}%%
@@ -49,7 +49,7 @@ flowchart LR
 
 重试策略会根据异常类型和退避设置自动重新运行失败的节点尝试。
 
-将`retryPolicy`传递到[⟦T27⟧](https://reference.langchain.com/javascript/classes/_langchain_langgraph.index.StateGraph.html#addNode)：
+将`retryPolicy`传递到[⟦T27⟧](https://reference.langchain.com/javascript/langchain-langgraph/index/StateGraph/addNode)：
 
 ```typescript theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 import { StateGraph } from "@langchain/langgraph";
@@ -59,21 +59,21 @@ const graph = new StateGraph(State)
   .compile();
 ```
 
-### 默认行为重试是可选的。仅当节点直接或通过使用 [⟦T29⟧](#graph-defaults) 配置了 `retryPolicy` 时，节点才会重试。一个空保单（`{}`）就足够了。如果没有策略，第一次失败就会结束尝试，并且 LangGraph 不会调用 `retryOn`。
+### 默认行为重试是可选的。仅当节点直接或通过使用 [⟦T29⟧](#graph-defaults) 配置了 `retryPolicy` 时，节点才会重试。一个空保单（`{}`）就足够了。如果没有策略，第一次失败就会结束尝试，并且LangGraph不会调用`retryOn`。
 
-如果策略省略 `retryOn`，LangGraph 使用内置处理程序重试抛出的错误，但以下情况除外：
+如果策略省略 `retryOn`，则 LangGraph 使用内置处理程序重试抛出的错误，但以下情况除外：
 
 * 中止和取消错误：`error.name === "AbortError"`或`error.message`以`"Cancel"`或`"AbortError"`开头
 * `GraphValueError`，与`error.name`匹配
 * 中止连接：`error.code === "ECONNABORTED"`
-* 状态为 400、401、402、403、404、405、406、407 或 409 的 HTTP 客户端错误，从 `error.response?.status` 或 `error.status` 读取，适用于 `fetch`、Axios 和类似客户端
+* 状态为 400、401、402、403、404、405、406、407 或 409 的 HTTP 客户端错误，从 `error.response?.status` 或 `error.status` 读取，适用于`fetch`、Axios 和类似客户端
 * OpenAI 式配额错误：`error.error?.code === "insufficient_quota"`
 
 其他 HTTP 状态（包括 408 和 5xx 响应）是可重试的，除非您覆盖 `retryOn`。 [⟦T45⟧](https://reference.langchain.com/javascript/langchain-langgraph/index/NodeTimeoutError) 不在该阻止列表中，因此在配置重试策略时可以重试。
 
 有些故障会绕过`retryOn`。图形控制流错误，例如 `GraphInterrupt` 和 `Command` 路由，无需重试即可冒泡。中止的运行信号也会停止重试循环，即使 `retryOn` 将返回 `true`。
 
-＃＃＃ 参数|参数|类型 |默认 |描述 |
+＃＃＃ 参数|参数|类型 |默认|描述 |
 | - | - | - | - |
 | `maxAttempts` | `number` | `3` |最大尝试次数，包括第一次。 |
 | `initialInterval` | `number` | `500` |第一次重试之前的毫秒数。 |
@@ -132,7 +132,7 @@ const graph = new StateGraph(State)
   .compile();
 ```
 
-`executionInfo`公开以下字段：|属性|类型 |描述 |
+`executionInfo`公开以下字段：|属性 |类型 |描述 |
 | - | - | - |
 | `nodeAttempt` | `number` |当前尝试次数（1-索引）。第一次尝试时为`1`，第一次重试时为`2`，等等 |
 | `nodeFirstAttemptTime` | `number \| undefined` |第一次尝试开始时的 Unix 时间戳（毫秒）。重试后保持不变。 |
@@ -146,11 +146,11 @@ const graph = new StateGraph(State)
 
 ## 超时
 
-<Note>
-  需要`@langchain/langgraph>=1.4.0`。
-</Note>
+> [!注意]
+>
+> 需要`@langchain/langgraph>=1.4.0`。
 
-[⟦T99⟧](https://reference.langchain.com/javascript/classes/_langchain_langgraph.index.StateGraph.html#addNode) 上的 `timeout` 参数限制了单个节点尝试可以运行的时间。传递一个数字（毫秒）或 [⟦T100⟧](https://reference.langchain.com/javascript/langchain-langgraph/index/TimeoutPolicy) 来设置单独的运行和空闲限制：
+[⟦T99⟧](https://reference.langchain.com/javascript/langchain-langgraph/index/StateGraph/addNode) 上的 `timeout` 参数限制了单个节点尝试可以运行的时间。传递一个数字（毫秒）或 [⟦T100⟧](https://reference.langchain.com/javascript/langchain-langgraph/index/TimeoutPolicy) 来设置单独的运行和空闲限制：
 
 ```typescript theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 import { StateGraph, type TimeoutPolicy } from "@langchain/langgraph";
@@ -253,7 +253,7 @@ const graph = new StateGraph(State)
 
 ### 节点超时错误
 
-当超时触发时，LangGraph会引发[⟦T113⟧](https://reference.langchain.com/javascript/langchain-langgraph/index/NodeTimeoutError)，并带有有关达到哪个限制的结构化上下文：|属性|类型 |描述 |
+当超时触发时，LangGraph会引发[⟦T113⟧](https://reference.langchain.com/javascript/langchain-langgraph/index/NodeTimeoutError)，并带有关于哪个限制被击中的结构化上下文：|属性 |类型 |描述 |
 | - | - | - |
 | `node` | `string` |执行超时的节点名称。 |
 | `elapsed` | `number` |在超时触发之前已经过去了几毫秒。 |
@@ -289,15 +289,15 @@ const fanOut = (state: typeof State.State) =>
   );
 ```
 
-如果在 `Send` 上省略超时，则应用目标节点的超时（在 [⟦T132⟧](https://reference.langchain.com/javascript/classes/_langchain_langgraph.index.StateGraph.html#addNode) 时间设置）。这使您可以在节点上设置默认超时并针对各个调用收紧它。
+如果在 `Send` 上省略超时，则应用目标节点的超时（在 [⟦T132⟧](https://reference.langchain.com/javascript/langchain-langgraph/index/StateGraph/addNode) 时间设置）。这使您可以在节点上设置默认超时并针对各个调用收紧它。
 
 ## 错误处理
 
-<Note>
-  需要`@langchain/langgraph>=1.4.0`。
-</Note>错误处理程序在节点发生故障并且所有重试都用尽后运行。它接收当前状态并可以更新它或使用[⟦T134⟧](https://reference.langchain.com/javascript/langchain-langgraph/index/Command)路由到不同的节点。这对于您想要正常恢复而不是中止整个图的补偿流（Saga 模式）非常有用。
+> [!注意]
+>
+> 需要`@langchain/langgraph>=1.4.0`。错误处理程序在节点发生故障并且所有重试都用尽后运行。它接收当前状态并可以更新它或使用[⟦T134⟧](https://reference.langchain.com/javascript/langchain-langgraph/index/Command)路由到不同的节点。这对于您想要正常恢复而不是中止整个图的补偿流（Saga 模式）非常有用。
 
-仅在 [⟦T137⟧](https://reference.langchain.com/javascript/langchain-langgraph/index/StateGraph) 上将 `errorHandler` 传递到 [⟦T136⟧](https://reference.langchain.com/javascript/classes/_langchain_langgraph.index.StateGraph.html#addNode)（不是基 `Graph` 类）：
+仅在 [⟦T137⟧](https://reference.langchain.com/javascript/langchain-langgraph/index/StateGraph) 上将 `errorHandler` 传递到 [⟦T136⟧](https://reference.langchain.com/javascript/langchain-langgraph/index/StateGraph/addNode)（不是基 `Graph` 类）：
 
 ```typescript theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 import {
@@ -363,7 +363,7 @@ const myHandler = (state: typeof State.State, error: NodeError) => {
 
 [⟦T140⟧](https://reference.langchain.com/javascript/langchain-langgraph/index/NodeError) 是一个具有两个字段的类：
 
-|属性|类型 |描述 |
+|属性 |类型 |描述 |
 | - | - | - |
 | `node` | `string` |执行失败的节点名称。 |
 | `error` | `Error` |失败节点抛出的异常。 |
@@ -422,19 +422,19 @@ const graph = new StateGraph(State)
   .addEdge(START, "reserveInventory")
   .addEdge("reserveInventory", "chargePayment")
   .compile();
-````chargePayment` 重试 `ConnectionError` 最多 3 次。如果重试次数已用完（或者错误不是`ConnectionError`），处理程序会通过更新状态并路由到`finalize`来进行补偿，而不是中止图表。
+````chargePayment` 重试 `ConnectionError` 最多 3 次。如果重试次数用尽（或者错误不是`ConnectionError`），处理程序会通过更新状态并路由到`finalize`来进行补偿，而不是中止图表。
 
 ### 恢复安全故障
 
-<Note>
-  故障来源有检查点。如果在节点失败之后但处理程序完成之前图被中断或进程崩溃，则当图从其检查点恢复时，处理程序会看到相同的`NodeError`上下文。
-</Note>
+> [!注意]
+>
+> 故障来源有检查点。如果在节点失败之后但处理程序完成之前图被中断或进程崩溃，则当图从其检查点恢复时，处理程序会看到相同的`NodeError`上下文。
 
 ### `interrupt()` 的行为
 
-<Warning>
-  在节点内部引发的`interrupt()`**不会**路由到错误处理程序。中断使用 `GraphBubbleUp` 机制来暂停人机循环工作流程的图形执行，绕过重试策略和错误处理程序。图表照常暂停。
-</Warning>
+> [!警告]
+>
+> 在节点内引发的`interrupt()` **不会**路由到错误处理程序。中断使用 `GraphBubbleUp` 机制来暂停人机循环工作流程的图形执行，绕过重试策略和错误处理程序。图表照常暂停。
 
 ### 子图失败
 
@@ -442,9 +442,9 @@ const graph = new StateGraph(State)
 
 ## 图表默认值
 
-<Note>
-  需要`@langchain/langgraph>=1.4.0`。
-</Note>
+> [!注意]
+>
+> 需要`@langchain/langgraph>=1.4.0`。
 
 不要在每个 `addNode` 调用上重复相同的 `retryPolicy`、`errorHandler`、`timeout` 或 `cachePolicy`，而是使用 [⟦T163⟧](https://reference.langchain.com/javascript/langchain-langgraph/index/StateGraph#member-setNodeDefaults) 在一个位置配置图形范围的默认值：
 
@@ -520,7 +520,7 @@ const graph = new StateGraph(State)
   .compile();
 ```
 
-如果重试后`fetchData`失败，则`markProcessFailed`运行。如果 `chargePayment` 在重试后失败，则 `refundPayment` 会改为运行，因为每个节点处理程序会覆盖默认值。
+如果重试后`fetchData`失败，则`markProcessFailed`运行。如果 `chargePayment` 在重试后失败，则 `refundPayment` 会运行，因为每个节点处理程序会覆盖默认值。
 
 ### 适用性矩阵
 
@@ -568,9 +568,9 @@ const myWorkflow = entrypoint(
 
 协作关闭允许您在当前超级步骤完成后停止运行中的图形并保存可恢复的检查点。这对于处理 SIGTERM 信号或任何需要回收资源而不丢失工作的外部监控程序非常有用。
 
-<Note>
-  需要`@langchain/langgraph>=1.4.0`。
-</Note>创建一个 [⟦T196⟧](https://reference.langchain.com/javascript/langchain-langgraph/index/RunControl) 并将其作为 `control` 传递给 `invoke` 或 `stream`。从任何上下文调用 `requestDrain()` 来发出运行应该停止的信号：
+> [!注意]
+>
+> 需要`@langchain/langgraph>=1.4.0`。创建一个 [⟦T196⟧](https://reference.langchain.com/javascript/langchain-langgraph/index/RunControl) 并将其作为 `control` 传递给 `invoke` 或 `stream`。从任何上下文中调用 `requestDrain()` 来发出运行应该停止的信号：
 
 ```typescript theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 import { RunControl, GraphDrained } from "@langchain/langgraph";
@@ -597,7 +597,7 @@ try {
 
 Drain 是协作式的，在超级步骤之间运行，不会抢占已经在运行的工作：
 
-|场景|行为 |
+|场景 |行为 |
 | - | - |
 |节点执行中期|运行至完成。 Drain 在下一个超级步骤中生效。 |
 |具有重试策略的节点当前正在重试 |重试循环运行至耗尽或成功。排水后生效。 |
@@ -650,9 +650,9 @@ try {
     throw e;
   }
 }
-```<Note>
-  `requestDrain()` 不会取消正在进行的异步工作。对于硬上限，将排出与优雅超时和`AbortSignal`配对。
-</Note>
+```> [!注意]
+>
+> `requestDrain()` 不会取消正在进行的异步工作。对于硬上限，将排出与优雅超时和`AbortSignal`配对。
 
 ## 限制
 
@@ -663,12 +663,6 @@ try {
 
 ***
 
-<div>
-  <Callout icon="terminal-2">
-    [Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
-  </Callout>
+[Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
 
-  <Callout icon="edit">
-    [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/oss/langgraph/fault-tolerance.mdx) 或 [file an issue](https://github.com/langchain-ai/docs/issues/new/choose)。
-  </Callout>
-</div>
+[Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/oss/langgraph/fault-tolerance.mdx) 或 [file an issue](https://github.com/langchain-ai/docs/issues/new/choose)。

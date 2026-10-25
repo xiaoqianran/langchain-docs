@@ -8,9 +8,9 @@
 
 `@langchain/google` 包支持 Gemini 的内置工具，这些工具提供 Web 搜索基础、代码执行、URL 上下文检索等功能。这些工具作为 Gemini 原生对象通过 `bindTools()` 或 `tools` 调用选项传递给 `ChatGoogle`。
 
-<Warning>
-  您不能在同一请求中将 Gemini 本机工具（Google 搜索、代码执行等）与标准 LangChain 工具（基于 Zod 的功能工具）混合使用。标准工具调用用法请参见[ChatGoogle](/oss/javascript/integrations/chat/google)页面。
-</Warning>
+> [!警告]
+>
+> 您不能在同一请求中将 Gemini 原生工具（Google 搜索、代码执行等）与标准 LangChain 工具（基于 Zod 的功能工具）混合使用。标准工具调用用法请参见[ChatGoogle](/oss/javascript/integrations/chat/google)页面。
 
 ### 谷歌搜索
 
@@ -46,9 +46,9 @@ const llm = new ChatGoogle("gemini-2.5-flash")
 ]);
 ```
 
-<Note>
-  维护 `googleSearchRetrieval` 工具是为了向后兼容，但`googleSearch` 是首选。
-</Note>
+> [!注意]
+>
+> 维护 `googleSearchRetrieval` 工具是为了向后兼容，但`googleSearch` 是首选。
 
 有关更多信息，请参阅[Google's Grounding with Google Search documentation](https://ai.google.dev/gemini-api/docs/grounding)。
 
@@ -68,9 +68,9 @@ const llm = new ChatGoogle("gemini-2.5-flash")
 
 const res = await llm.invoke("Calculate the 100th Fibonacci number.");
 console.log(res.contentBlocks);
-```
+```响应在`contentBlocks`字段中包含生成的代码及其执行结果：
 
-响应在`contentBlocks`字段中包含生成的代码及其执行结果：```typescript theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```typescript theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 for (const block of res.contentBlocks) {
   if (block.type === "tool_code") {
     console.log("Code:", block.toolCode);
@@ -96,7 +96,7 @@ const llm = new ChatGoogle("gemini-2.5-flash")
     },
   ]);
 
-const res = await llm.invoke("Summarize this page: https://js.langchain.com/");
+const res = await llm.invoke("Summarize this page: https://docs.langchain.com/");
 console.log(res.text);
 ```
 
@@ -220,7 +220,7 @@ console.log(res.text);
 
 ### Gemini Enterprise Agent Platform 数据存储上的 Agent 搜索
 
-如果您使用的是 Gemini Enterprise Agent Platform (`platformType: "gcp"`)，您可以使用代理搜索数据存储来处理响应。
+如果您使用 Gemini Enterprise Agent Platform (`platformType: "gcp"`)，您可以使用代理搜索数据存储来处理响应。
 
 ```typescript theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 import { ChatGoogle } from "@langchain/google";
@@ -252,12 +252,6 @@ console.log(res.text);
 
 ***
 
-<div>
-  <Callout icon="terminal-2">
-    [Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
-  </Callout>
+[Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
 
-  <Callout icon="edit">
-    [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/oss/javascript/integrations/tools/google.mdx) 或 [file an issue](https://github.com/langchain-ai/docs/issues/new/choose)。
-  </Callout>
-</div>
+[Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/oss/javascript/integrations/tools/google.mdx) 或 [file an issue](https://github.com/langchain-ai/docs/issues/new/choose)。

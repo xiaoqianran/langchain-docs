@@ -6,7 +6,7 @@
 
 使用 LangChain JavaScript 与 BedrockEmbeddings 嵌入模型集成。
 
-[Amazon Bedrock](https://aws.amazon.com/bedrock/) 是一项完全托管的服务，通过单个 API 提供来自 AI21 Labs、Anthropic、Cohere、Meta、Stability AI 和 Amazon 等领先 AI 公司的高性能基础模型 (FM) 的选择，以及构建具有安全性、隐私性和负责任的 AI 的生成式 AI 应用程序所需的广泛功能。
+[Amazon Bedrock](https://aws.amazon.com/bedrock/) 是一项完全托管的服务，通过单个 API 提供来自 AI21 Labs、Anthropic、Cohere、Meta、Stability AI 和 Amazon 等领先 AI 公司的高性能基础模型 (FM) 的选择，以及构建具有安全、隐私和负责任的 AI 的生成式 AI 应用程序所需的广泛功能。
 
 这将帮助您使用 LangChain 开始使用 Amazon Bedrock [embedding models](/oss/javascript/integrations/embeddings)。有关`Bedrock`功能和配置选项的详细文档，请参阅[API reference](https://reference.langchain.com/javascript/langchain-aws/BedrockEmbeddings)。
 
@@ -14,15 +14,15 @@
 
 ### 集成细节
 
-|班级 |套餐 |本地| [Py support](https://python.langchain.com/docs/integrations/embeddings/bedrock/) |下载 |版本 |
-| :- | :- | :-: | :-: | :-: | :-: |
+|班级 |套餐 |本地| [Py support](/oss/python/integrations/embeddings/bedrock) |下载 |版本 |
+| :-| :-| :-: | :-: | :-: | :-: |
 | [⟦T13⟧](https://reference.langchain.com/javascript/langchain-aws/BedrockEmbeddings) | [⟦T14⟧](https://www.npmjs.com/package/@langchain/aws) | ❌ | ✅ | ![NPM - Downloads](https://img.shields.io/npm/dm/@langchain/aws?style=flat-square\&label=%20&) | ![NPM - Version](https://img.shields.io/npm/v/@langchain/aws?style=flat-square\&label=%20&) |
 
 ## 设置
 
 要访问 Bedrock 嵌入模型，您需要创建一个 AWS 账户、获取 API 密钥并安装 `@langchain/aws` 集成包。
 
-前往 [AWS docs](https://docs.aws.amazon.com/bedrock/latest/userguide/getting-started.html) 注册 AWS 并设置您的凭证。您还需要为您的帐户打开模型访问权限，可以通过 [following these instructions](https://docs.aws.amazon.com/bedrock/latest/userguide/model-access.html) 来完成。
+前往 [AWS docs](https://docs.aws.amazon.com/bedrock/latest/userguide/getting-started.html) 注册 AWS 并设置您的凭证。您还需要为您的帐户启用模型访问权限，可以通过 [following these instructions](https://docs.aws.amazon.com/bedrock/latest/userguide/model-access.html) 来完成。
 
 ＃＃＃ 证书如果您想自动跟踪模型调用，您还可以通过取消下面的注释来设置您的 [LangSmith](/langsmith/observability) API 密钥：
 
@@ -35,19 +35,17 @@
 
 LangChain Bedrock 集成位于 `@langchain/aws` 包中：
 
-<CodeGroup>
-  ```bash npm theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  npm install @langchain/aws @langchain/core
-  ```
+```bash npm theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+npm install @langchain/aws @langchain/core
+```
 
-  ```bash yarn theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  yarn add @langchain/aws @langchain/core
-  ```
+```bash yarn theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+yarn add @langchain/aws @langchain/core
+```
 
-  ```bash pnpm theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  pnpm add @langchain/aws @langchain/core
-  ```
-</CodeGroup>
+```bash pnpm theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+pnpm add @langchain/aws @langchain/core
+```
 
 ## 实例化
 
@@ -70,7 +68,7 @@ const embeddings = new BedrockEmbeddings({
 
 ## 索引和检索
 
-嵌入模型通常用于检索增强生成（RAG）流，既作为索引数据的一部分，也作为稍后检索数据的一部分。如需更详细的说明，请参阅[**Learn** tab](/oss/javascript/learn/)下的 RAG 教程。
+嵌入模型通常用于检索增强生成（RAG）流程，既作为索引数据的一部分，也作为稍后检索数据的一部分。如需更详细的说明，请参阅[**Learn** tab](/oss/javascript/learn/)下的 RAG 教程。
 
 下面，看看如何使用我们上面初始化的 `embeddings` 对象来索引和检索数据。在此示例中，我们将使用演示 [⟦T18⟧](/oss/javascript/integrations/vectorstores/memory) 索引和检索示例文档。
 
@@ -100,9 +98,9 @@ LangChain is the framework for building context-aware reasoning applications
 
 ## 直接使用
 
-在底层，向量存储和检索器实现调用 `embeddings.embedDocument(...)` 和 `embeddings.embedQuery(...)` 分别为 `fromDocuments` 和检索器的 `invoke` 操作中使用的文本创建嵌入。您可以直接调用这些方法来获取适合您自己的用例的嵌入。
+在底层，向量存储和检索器实现调用 `embeddings.embedDocument(...)` 和 `embeddings.embedQuery(...)` 分别为 `fromDocuments` 和检索器的 `invoke` 操作中使用的文本创建嵌入。
 
-### 嵌入单个文本
+您可以直接调用这些方法来获取适合您自己的用例的嵌入。### 嵌入单个文本
 
 您可以使用 `embedQuery` 嵌入查询以进行搜索。这会生成特定于查询的向量表示：
 
@@ -229,12 +227,6 @@ const embeddingsWithCustomClient = new BedrockEmbeddings({
 
 ***
 
-<div>
-  <Callout icon="terminal-2">
-    [Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
-  </Callout>
+[Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
 
-  <Callout icon="edit">
-    [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/oss/javascript/integrations/embeddings/bedrock.mdx) 或 [file an issue](https://github.com/langchain-ai/docs/issues/new/choose)。
-  </Callout>
-</div>
+[Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/oss/javascript/integrations/embeddings/bedrock.mdx) 或 [file an issue](https://github.com/langchain-ai/docs/issues/new/choose)。

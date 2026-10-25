@@ -11,7 +11,7 @@ LangChain 与各种聊天和嵌入模型、工具和工具包、文档加载器�
 **提供商**是LangChain集成的第三方服务或平台，用于访问聊天模型、嵌入和矢量存储等人工智能功能。这些提供程序具有独立的 `langchain-provider` 包，用于改进版本控制、依赖项管理和测试。
 
 ## 热门提供商|供应商|套餐 |下载 |最新 |
-| :- | :- | :- | :- |
+| :-| :-| :-| :-|
 | [Anthropic](/oss/javascript/integrations/providers/anthropic) | [⟦T1⟧](https://www.npmjs.com/package/@langchain/anthropic) | ![Downloads](https://img.shields.io/npm/dm/@langchain/anthropic) | ![NPM](https://img.shields.io/npm/v/@langchain/anthropic) |
 | [Azure CosmosDB](/oss/javascript/integrations/vectorstores/azure_cosmosdb_nosql) | [⟦T2⟧](https://www.npmjs.com/package/@langchain/azure-cosmosdb) | ![Downloads](https://img.shields.io/npm/dm/@langchain/azure-cosmosdb) | ![NPM](https://img.shields.io/npm/v/@langchain/azure-cosmosdb) |
 | [Cerebras](/oss/javascript/integrations/chat/cerebras) | [⟦T3⟧](https://www.npmjs.com/package/@langchain/cerebras) | ![Downloads](https://img.shields.io/npm/dm/@langchain/cerebras) | ![NPM](https://img.shields.io/npm/v/@langchain/cerebras) |
@@ -43,18 +43,12 @@ LangChain 与各种聊天和嵌入模型、工具和工具包、文档加载器�
 
 ## 所有提供商
 
-请参阅 [all providers](/oss/javascript/integrations/providers/all_providers) 或使用搜索字段搜索提供商。<Info>
-  如果您想贡献集成，请参阅[Contributing integrations](/oss/javascript/contributing#add-a-new-integration)。
-</Info>
+请参阅 [all providers](/oss/javascript/integrations/providers/all_providers) 或使用搜索字段搜索提供商。> [!注意]
+>
+> 如果您想贡献集成，请参阅[Contributing integrations](/oss/javascript/contributing#add-a-new-integration)。
 
 ***
 
-<div>
-  <Callout icon="terminal-2">
-    [Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时答案。
-  </Callout>
+[Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时答案。
 
-  <Callout icon="edit">
-    [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/oss/javascript/integrations/providers/overview.mdx) 或 [file an issue](https://github.com/langchain-ai/docs/issues/new/choose)。
-  </Callout>
-</div>
+[Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/oss/javascript/integrations/providers/overview.mdx) 或 [file an issue](https://github.com/langchain-ai/docs/issues/new/choose)。

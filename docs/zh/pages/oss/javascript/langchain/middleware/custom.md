@@ -10,15 +10,13 @@
 
 中间件提供了两种类型的钩子来拦截代理执行：
 
-<CardGroup>
-  <Card title="Node-style hooks" icon="share" href="#node-style-hooks">
-    在特定的执行点顺序运行。
-  </Card>
+> **[Node-style hooks](#node-style-hooks)**
+>
+> 在特定执行点按顺序运行。
 
-  <Card title="Wrap-style hooks" icon="container" href="#wrap-style-hooks">
-    围绕每个模型或工具调用运行。
-  </Card>
-</CardGroup>
+> **[Wrap-style hooks](#wrap-style-hooks)**
+>
+> 运行每个模型或工具调用。
 
 ### 节点式挂钩
 
@@ -381,9 +379,11 @@ console.log(result._internalFlag); // undefined
 
 ## 自定义流转换器
 
-<Note>中间件注册变压器需要`langchain@1.4.3`或更高版本。</Note>中间件可以注册流转换器工厂，将事件从实时代理流投影到类型化扩展通道上。这对于在不耦合到框架的内置投影的情况下显示计数器、侧通道工件、部分输出或线级编辑非常有用。
+> [!注意]
+>
+> 中间件注册变压器需要 `langchain@1.4.3` 或更高版本。中间件可以注册流转换器工厂，将事件从实时代理流投影到类型化扩展通道上。这对于在不耦合到框架的内置投影的情况下显示计数器、侧通道工件、部分输出或线级编辑非常有用。
 
-在编译时，中间件注册的工厂与调用者直接传递给代理工厂的任何内容合并。 [final ordering rules](/oss/javascript/langchain/event-streaming#register-transformers-on-middleware) 将内置的 `ToolCallTransformer` 保留在前面，让调用者提供的条目放在最后。
+在编译时，中间件注册的工厂与调用者直接传递给代理工厂的任何内容合并。 [final ordering rules](/oss/javascript/langchain/event-streaming#register-transformers-on-middleware) 将内置的 `ToolCallTransformer` 保留在前面，让调用者提供的条目最后落地。
 
 将 `streamTransformers` 作为工厂元组传递给 `createMiddleware`。每个工厂的形状为`() => StreamTransformer<any>`（零参数），并且每个作用域被调用一次；每次调用返回一个新的变压器使每个子图保持隔离。
 
@@ -406,7 +406,7 @@ const agent = createAgent({
 
 ## 自定义上下文
 
-中间件可以定义自定义上下文架构来访问每个调用的元数据。与状态不同，上下文是只读的，并且在调用之间不会保留。这使得它非常适合：* **用户信息**：传递在执行过程中不会改变的用户ID、角色或偏好
+中间件可以定义自定义上下文架构来访问每个调用的元数据。与状态不同，上下文是只读的，并且在调用之间不会保留。这使得它非常适合：* **用户信息**：传递执行期间不会改变的用户ID、角色或偏好
 * **配置覆盖**：提供每次调用设置，例如速率限制或功能标志
 * **租户/工作空间上下文**：包括多租户应用程序的组织特定数据
 * **请求元数据**：传递请求 ID、API 密钥或中间件所需的其他元数据
@@ -460,7 +460,7 @@ const result = await agent.invoke(
 );
 ```
 
-**必需的上下文字段**：当您在 `contextSchema` 中定义必需字段（没有 `.optional()` 或 `.default()` 的字段）时，TypeScript 将强制要求在 `agent.invoke()` 调用期间必须提供这些字段。这确保了类型安全并防止运行时错误缺少所需的上下文。
+**必需的上下文字段**：当您在 `contextSchema` 中定义必需字段（没有 `.optional()` 或 `.default()` 的字段）时，TypeScript 将强制要求在 `agent.invoke()` 调用期间必须提供这些字段。这确保了类型安全并防止运行时错误丢失所需的上下文。
 
 ```typescript theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 // This will cause a TypeScript error if userId or tenantId are missing
@@ -480,35 +480,35 @@ const agent = createAgent({
   middleware: [middleware1, middleware2, middleware3],
   tools: [...],
 });
-```
-
-<Accordion title="Execution flow">
-  **在钩子按顺序运行之前：**
-
-  1.`middleware1.before_agent()`
-  2.`middleware2.before_agent()`
-  3.`middleware3.before_agent()`
-
-  **代理循环启动**
-
-  4.`middleware1.before_model()`
-  5.`middleware2.before_model()`
-  6.`middleware3.before_model()`
-
-  **像函数调用一样包裹钩子嵌套：**
-
-  7. `middleware1.wrap_model_call()` → `middleware2.wrap_model_call()` → `middleware3.wrap_model_call()` → 型号**挂钩以相反顺序运行后：**
-
-  8.`middleware3.after_model()`
-  9.`middleware2.after_model()`
-  10.`middleware1.after_model()`
-
-  **代理循环结束**
-
-  11.`middleware3.after_agent()`
-  12.`middleware2.after_agent()`
-  13.`middleware1.after_agent()`
-</Accordion>
+```> **执行流程**
+>
+> **在钩子按顺序运行之前：**
+>
+> 1. `middleware1.before_agent()`
+> 2.`middleware2.before_agent()`
+> 3.`middleware3.before_agent()`
+>
+> **代理循环开始**
+>
+> 4.`middleware1.before_model()`
+> 5.`middleware2.before_model()`
+> 6. `middleware3.before_model()`
+>
+> **像函数调用一样包裹钩子嵌套：**
+>
+> 7. `middleware1.wrap_model_call()` → `middleware2.wrap_model_call()` → `middleware3.wrap_model_call()` → 型号
+>
+> **钩子以相反顺序运行后：**
+>
+> 8. `middleware3.after_model()`
+> 9. `middleware2.after_model()`
+> 10. `middleware1.after_model()`
+>
+> **代理循环结束**
+>
+> 11. `middleware3.after_agent()`
+> 12. `middleware2.after_agent()`
+> 13. `middleware1.after_agent()`
 
 **关键规则：**
 
@@ -561,12 +561,10 @@ const result = await agent.invoke({
 console.log(result.messages.at(-1)?.content);
 ```
 
-## 最佳实践
-
-1. 集中中间件——每个中间件都应该做好一件事
+## 最佳实践1. 集中中间件——每个中间件都应该做好一件事
 2. 优雅地处理错误——不要让中间件错误导致代理崩溃
 3. **使用适当的钩子类型**：
-   * 顺序逻辑的节点样式（日志记录、验证）
+   * 用于顺序逻辑的节点样式（日志记录、验证）
    * 控制流的环绕式（重试、回退、缓存）
 4. 清楚地记录任何自定义状态属性
 5. 集成前独立对中间件进行单元测试
@@ -575,151 +573,151 @@ console.log(result.messages.at(-1)?.content);
 
 ## 示例
 
-###动态提示在运行时动态修改系统提示符，以在每次模型调用之前注入上下文、用户特定的指令或其他信息。这是最常见的中间件用例之一。
+###动态提示
 
-使用`ModelRequest`中的`systemMessage`字段读取和修改系统提示符。它包含一个 [⟦T104⟧](https://reference.langchain.com/javascript/langchain-core/messages/SystemMessage) 对象（即使代理是使用字符串 [⟦T105⟧](https://reference.langchain.com/javascript/types/langchain.index.CreateAgentParams.html#systemprompt) 创建的）。
+在运行时动态修改系统提示符，以在每次模型调用之前注入上下文、用户特定的指令或其他信息。这是最常见的中间件用例之一。
 
-<CodeGroup>
-  ```ts Google theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  import { createMiddleware, SystemMessage, createAgent } from "langchain";
+使用`ModelRequest`中的`systemMessage`字段读取和修改系统提示符。它包含一个 [⟦T104⟧](https://reference.langchain.com/javascript/langchain-core/messages/SystemMessage) 对象（即使代理是使用字符串 [⟦T105⟧](https://reference.langchain.com/javascript/langchain/index/CreateAgentParams/systemPrompt) 创建的）。
 
-  const addContextMiddleware = createMiddleware({
-    name: "AddContextMiddleware",
-    wrapModelCall: async (request, handler) => {
-      return handler({
-        ...request,
-        systemMessage: request.systemMessage.concat(`Additional context.`),
-      });
-    },
-  });
+```ts Google theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+import { createMiddleware, SystemMessage, createAgent } from "langchain";
 
-  const agent = createAgent({
-    model: "google:gemini-3.6-flash",
-    systemPrompt: "You are a helpful assistant.",
-    middleware: [addContextMiddleware],
-  });
-  ```
+const addContextMiddleware = createMiddleware({
+  name: "AddContextMiddleware",
+  wrapModelCall: async (request, handler) => {
+    return handler({
+      ...request,
+      systemMessage: request.systemMessage.concat(`Additional context.`),
+    });
+  },
+});
 
-  ```ts OpenAI theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  import { createMiddleware, SystemMessage, createAgent } from "langchain";
+const agent = createAgent({
+  model: "google:gemini-3.6-flash",
+  systemPrompt: "You are a helpful assistant.",
+  middleware: [addContextMiddleware],
+});
+```
 
-  const addContextMiddleware = createMiddleware({
-    name: "AddContextMiddleware",
-    wrapModelCall: async (request, handler) => {
-      return handler({
-        ...request,
-        systemMessage: request.systemMessage.concat(`Additional context.`),
-      });
-    },
-  });
+```ts OpenAI theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+import { createMiddleware, SystemMessage, createAgent } from "langchain";
 
-  const agent = createAgent({
-    model: "openai:gpt-5.5",
-    systemPrompt: "You are a helpful assistant.",
-    middleware: [addContextMiddleware],
-  });
-  ```
+const addContextMiddleware = createMiddleware({
+  name: "AddContextMiddleware",
+  wrapModelCall: async (request, handler) => {
+    return handler({
+      ...request,
+      systemMessage: request.systemMessage.concat(`Additional context.`),
+    });
+  },
+});
 
-  ```ts Anthropic theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  import { createMiddleware, SystemMessage, createAgent } from "langchain";
+const agent = createAgent({
+  model: "openai:gpt-5.5",
+  systemPrompt: "You are a helpful assistant.",
+  middleware: [addContextMiddleware],
+});
+```
 
-  const addContextMiddleware = createMiddleware({
-    name: "AddContextMiddleware",
-    wrapModelCall: async (request, handler) => {
-      return handler({
-        ...request,
-        systemMessage: request.systemMessage.concat(`Additional context.`),
-      });
-    },
-  });
+```ts Anthropic theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+import { createMiddleware, SystemMessage, createAgent } from "langchain";
 
-  const agent = createAgent({
-    model: "anthropic:claude-sonnet-5",
-    systemPrompt: "You are a helpful assistant.",
-    middleware: [addContextMiddleware],
-  });
-  ```
+const addContextMiddleware = createMiddleware({
+  name: "AddContextMiddleware",
+  wrapModelCall: async (request, handler) => {
+    return handler({
+      ...request,
+      systemMessage: request.systemMessage.concat(`Additional context.`),
+    });
+  },
+});
 
-  ```ts OpenRouter theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  import { createMiddleware, SystemMessage, createAgent } from "langchain";
+const agent = createAgent({
+  model: "anthropic:claude-sonnet-5",
+  systemPrompt: "You are a helpful assistant.",
+  middleware: [addContextMiddleware],
+});
+```
 
-  const addContextMiddleware = createMiddleware({
-    name: "AddContextMiddleware",
-    wrapModelCall: async (request, handler) => {
-      return handler({
-        ...request,
-        systemMessage: request.systemMessage.concat(`Additional context.`),
-      });
-    },
-  });
+```ts OpenRouter theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+import { createMiddleware, SystemMessage, createAgent } from "langchain";
 
-  const agent = createAgent({
-    model: "openrouter:z-ai/glm-5.2",
-    systemPrompt: "You are a helpful assistant.",
-    middleware: [addContextMiddleware],
-  });
-  ```
+const addContextMiddleware = createMiddleware({
+  name: "AddContextMiddleware",
+  wrapModelCall: async (request, handler) => {
+    return handler({
+      ...request,
+      systemMessage: request.systemMessage.concat(`Additional context.`),
+    });
+  },
+});
 
-  ```ts Fireworks theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  import { createMiddleware, SystemMessage, createAgent } from "langchain";
+const agent = createAgent({
+  model: "openrouter:z-ai/glm-5.2",
+  systemPrompt: "You are a helpful assistant.",
+  middleware: [addContextMiddleware],
+});
+```
 
-  const addContextMiddleware = createMiddleware({
-    name: "AddContextMiddleware",
-    wrapModelCall: async (request, handler) => {
-      return handler({
-        ...request,
-        systemMessage: request.systemMessage.concat(`Additional context.`),
-      });
-    },
-  });
+```ts Fireworks theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+import { createMiddleware, SystemMessage, createAgent } from "langchain";
 
-  const agent = createAgent({
-    model: "fireworks:accounts/fireworks/models/glm-5p2",
-    systemPrompt: "You are a helpful assistant.",
-    middleware: [addContextMiddleware],
-  });
-  ```
+const addContextMiddleware = createMiddleware({
+  name: "AddContextMiddleware",
+  wrapModelCall: async (request, handler) => {
+    return handler({
+      ...request,
+      systemMessage: request.systemMessage.concat(`Additional context.`),
+    });
+  },
+});
 
-  ```ts Baseten theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  import { createMiddleware, SystemMessage, createAgent } from "langchain";
+const agent = createAgent({
+  model: "fireworks:accounts/fireworks/models/glm-5p2",
+  systemPrompt: "You are a helpful assistant.",
+  middleware: [addContextMiddleware],
+});
+```
 
-  const addContextMiddleware = createMiddleware({
-    name: "AddContextMiddleware",
-    wrapModelCall: async (request, handler) => {
-      return handler({
-        ...request,
-        systemMessage: request.systemMessage.concat(`Additional context.`),
-      });
-    },
-  });
+```ts Baseten theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+import { createMiddleware, SystemMessage, createAgent } from "langchain";
 
-  const agent = createAgent({
-    model: "baseten:zai-org/GLM-5.2",
-    systemPrompt: "You are a helpful assistant.",
-    middleware: [addContextMiddleware],
-  });
-  ```
+const addContextMiddleware = createMiddleware({
+  name: "AddContextMiddleware",
+  wrapModelCall: async (request, handler) => {
+    return handler({
+      ...request,
+      systemMessage: request.systemMessage.concat(`Additional context.`),
+    });
+  },
+});
 
-  ```ts Ollama theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  import { createMiddleware, SystemMessage, createAgent } from "langchain";
+const agent = createAgent({
+  model: "baseten:zai-org/GLM-5.2",
+  systemPrompt: "You are a helpful assistant.",
+  middleware: [addContextMiddleware],
+});
+```
 
-  const addContextMiddleware = createMiddleware({
-    name: "AddContextMiddleware",
-    wrapModelCall: async (request, handler) => {
-      return handler({
-        ...request,
-        systemMessage: request.systemMessage.concat(`Additional context.`),
-      });
-    },
-  });
+```ts Ollama theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+import { createMiddleware, SystemMessage, createAgent } from "langchain";
 
-  const agent = createAgent({
-    model: "ollama:north-mini-code-1.0",
-    systemPrompt: "You are a helpful assistant.",
-    middleware: [addContextMiddleware],
-  });
-  ```
-</CodeGroup>
+const addContextMiddleware = createMiddleware({
+  name: "AddContextMiddleware",
+  wrapModelCall: async (request, handler) => {
+    return handler({
+      ...request,
+      systemMessage: request.systemMessage.concat(`Additional context.`),
+    });
+  },
+});
+
+const agent = createAgent({
+  model: "ollama:north-mini-code-1.0",
+  systemPrompt: "You are a helpful assistant.",
+  middleware: [addContextMiddleware],
+});
+```
 
 使用 [⟦T106⟧](https://reference.langchain.com/javascript/langchain-core/utils/stream/concat) 保留由其他中间件创建的缓存控制元数据或结构化内容块。
 
@@ -747,9 +745,7 @@ const dynamicModelMiddleware = createMiddleware({
 });
 ```
 
-### 动态选择工具
-
-在运行时选择相关工具以提高性能和准确性。本节介绍过滤预注册工具。有关注册在运行时发现的工具（例如，从 MCP 服务器），请参阅[Runtime tool registration](/oss/javascript/langchain/tools#dynamic-tool-selection)。
+### 动态选择工具在运行时选择相关工具以提高性能和准确性。本节介绍过滤预注册工具。有关注册在运行时发现的工具（例如，从 MCP 服务器），请参阅[Runtime tool registration](/oss/javascript/langchain/tools#dynamic-tool-selection)。
 
 **好处：**
 
@@ -799,18 +795,48 @@ const toolMonitoringMiddleware = createMiddleware({
 });
 ```
 
-### 提示缓存 (Anthropic)使用 Anthropic 模型时，使用带有缓存控制指令的结构化内容块来缓存大型系统提示：
+### 提示缓存 (Anthropic)
 
-<Tabs>
-  <Tab title="Decorator">
-    ```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-    from langchain.agents.middleware import wrap_model_call, ModelRequest, ModelResponse
-    from langchain.messages import SystemMessage
-    from typing import Callable
+使用 Anthropic 模型时，使用带有缓存控制指令的结构化内容块来缓存大型系统提示：
+
+**装饰器**
+
+```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+from langchain.agents.middleware import wrap_model_call, ModelRequest, ModelResponse
+from langchain.messages import SystemMessage
+from typing import Callable
 
 
-    @wrap_model_call
-    def add_cached_context(
+@wrap_model_call
+def add_cached_context(
+    request: ModelRequest,
+    handler: Callable[[ModelRequest], ModelResponse],
+) -> ModelResponse:
+    # Always work with content blocks
+    new_content = list(request.system_message.content_blocks) + [
+        {
+            "type": "text",
+            "text": "Here is a large document to analyze:\n\n<document>...</document>",
+            # content up until this point is cached
+            "cache_control": {"type": "ephemeral"}
+        }
+    ]
+
+    new_system_message = SystemMessage(content=new_content)
+    return handler(request.override(system_message=new_system_message))
+```
+
+**班级**
+
+```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+from langchain.agents.middleware import AgentMiddleware, ModelRequest, ModelResponse
+from langchain.messages import SystemMessage
+from typing import Callable
+
+
+class CachedContextMiddleware(AgentMiddleware):
+    def wrap_model_call(
+        self,
         request: ModelRequest,
         handler: Callable[[ModelRequest], ModelResponse],
     ) -> ModelResponse:
@@ -819,43 +845,13 @@ const toolMonitoringMiddleware = createMiddleware({
             {
                 "type": "text",
                 "text": "Here is a large document to analyze:\n\n<document>...</document>",
-                # content up until this point is cached
-                "cache_control": {"type": "ephemeral"}
+                "cache_control": {"type": "ephemeral"}  # This content will be cached
             }
         ]
 
         new_system_message = SystemMessage(content=new_content)
         return handler(request.override(system_message=new_system_message))
-    ```
-  </Tab>
-
-  <Tab title="Class">
-    ```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-    from langchain.agents.middleware import AgentMiddleware, ModelRequest, ModelResponse
-    from langchain.messages import SystemMessage
-    from typing import Callable
-
-
-    class CachedContextMiddleware(AgentMiddleware):
-        def wrap_model_call(
-            self,
-            request: ModelRequest,
-            handler: Callable[[ModelRequest], ModelResponse],
-        ) -> ModelResponse:
-            # Always work with content blocks
-            new_content = list(request.system_message.content_blocks) + [
-                {
-                    "type": "text",
-                    "text": "Here is a large document to analyze:\n\n<document>...</document>",
-                    "cache_control": {"type": "ephemeral"}  # This content will be cached
-                }
-            ]
-
-            new_system_message = SystemMessage(content=new_content)
-            return handler(request.override(system_message=new_system_message))
-    ```
-  </Tab>
-</Tabs>
+```
 
 **注释：**
 
@@ -864,9 +860,7 @@ const toolMonitoringMiddleware = createMiddleware({
 * 修改系统消息时，使用`content_blocks`并附加新块以保留现有结构
 * 您可以将 [⟦T112⟧](https://reference.langchain.com/javascript/langchain-core/messages/SystemMessage) 对象直接传递给 `create_agent` 的 `system_prompt` 参数，以实现缓存控制等高级用例
 
-:::
-
-使用`ModelRequest`中的`systemMessage`字段修改中间件中的系统消息。它包含一个 [⟦T117⟧](https://reference.langchain.com/javascript/langchain-core/messages/SystemMessage) 对象（即使代理是使用字符串 [⟦T118⟧](https://reference.langchain.com/javascript/types/langchain.index.CreateAgentParams.html#systemprompt) 创建的）。
+:::使用`ModelRequest`中的`systemMessage`字段修改中间件中的系统消息。它包含一个 [⟦T117⟧](https://reference.langchain.com/javascript/langchain-core/messages/SystemMessage) 对象（即使代理是使用字符串 [⟦T118⟧](https://reference.langchain.com/javascript/langchain/index/CreateAgentParams/systemPrompt) 创建的）。
 
 **示例：链接中间件** - 不同的中间件可以使用不同的方法：
 
@@ -938,10 +932,6 @@ new SystemMessage({
 
 ***
 
-<div>
-  <Callout icon="terminal-2">
-    [Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时答案。
-  </Callout><Callout icon="edit">
-    [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/oss/langchain/middleware/custom.mdx) 或 [file an issue](https://github.com/langchain-ai/docs/issues/new/choose)。
-  </Callout>
-</div>
+[Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时答案。
+
+[Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/oss/langchain/middleware/custom.mdx) 或 [file an issue](https://github.com/langchain-ai/docs/issues/new/choose)。

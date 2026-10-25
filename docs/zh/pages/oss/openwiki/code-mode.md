@@ -52,7 +52,7 @@ OPENWIKI_PAGE_CONCURRENCY=4 openwiki --update
 
 ## 有根据的主张OpenWiki 通过跟踪事实页面背后的实质性命题，使代码 wiki 能够自我纠正，而不仅仅是上次生成 Markdown 文件时。声明涵盖了未来代理所依赖的事实：行为、职责、架构、数据流、不变量、故障语义、配置和安全边界。每个声明都指向确切的存储库证据，例如`repo://src/server.ts#L40-L82`，以及声明成立时 OpenWiki 观察到的证据版本。
 
-Markdown 保持干净。结构化索赔状态位于`openwiki/.claims/`下。页面完成会保留已核对的索赔，将验证项目纳入 OKF 前端内容，并在标记页面作业完成之前证明完整的结果。接地声明适用于存储库代码维基和存储库证据。连接器派生的事实，包括仅限LangSmith的观察结果，不包含在声明中。更新很少协调索赔。页面工作人员提交需要注意的声明的决定（确认、修改、添加或撤回）。未受影响的索赔保留其稳定的标识符，并且不会通过模型往返其陈述和证据。主机驱动的运行通过可选的 `openwiki_inspect_page_claims` MCP 工具公开当前页面的完整声明集。
+Markdown 保持干净。结构化索赔状态位于`openwiki/.claims/`下。页面完成保留已核对的索赔，将验证项目纳入 OKF 前言，并在标记页面作业完成之前证明完整的结果。接地声明适用于存储库代码维基和存储库证据。连接器派生的事实，包括仅限LangSmith的观察结果，不包含在声明中。更新很少协调索赔。页面工作人员提交需要注意的声明的决定（确认、修改、添加或撤回）。未受影响的索赔保留其稳定的标识符，并且不会通过模型往返其陈述和证据。主机驱动的运行通过可选的 `openwiki_inspect_page_claims` MCP 工具公开当前页面的完整声明集。
 
 ## 降价输出
 
@@ -76,7 +76,7 @@ OpenWiki 在代码和个人模式下发布 [Google Open Knowledge Format (OKF)](
 OPENWIKI_LANGSMITH_API_KEY="<your-langsmith-key>"
 ```
 
-设置向导可以在本地将其保存到`~/.openwiki/.env`。在 CI 中，将其设置为存储库机密并将其导出以供运行。
+在本地，设置向导可以将其保存到`~/.openwiki/.env`。在 CI 中，将其设置为存储库机密并将其导出以供运行。
 
 LangSmith 键是工作区和区域绑定的。要跨多个工作区记录项目，请为每个工作区添加一个条目，每个条目都有自己的密钥，名为 `OPENWIKI_LANGSMITH_API_KEY_2`、`OPENWIKI_LANGSMITH_API_KEY_3` 等。连接器与美国 (`api.smith.langchain.com`)、欧盟 (`eu.api.smith.langchain.com`) 和亚太地区 (`apac.api.smith.langchain.com`) 官方主机进行通信。
 
@@ -90,9 +90,9 @@ secrets/
 !logs/keep.log
 ```当 `.openwikiignore` 具有活动规则时，OpenWiki 会过滤文件系统发现并限制 shell 执行，以便忽略的路径不会运行。存储库代理使用受限文件系统工具，而不是任意主机 shell 命令或不受限制的存储库检查。
 
-<Note>
-  这是一个读取边界：忽略的路径永远不会在生成的文档中读取、扫描或复制。它并不保证某个主题永远不会被提及，因为代理仍然可以从其他允许的证据（例如测试、自述文件、提交消息或现有的 wiki）推断出被忽略的区域。
-</Note>
+> [!注意]
+>
+> 这是一个读取边界：忽略的路径永远不会在生成的文档中读取、扫描或复制。它并不保证某个主题永远不会被提及，因为代理仍然可以从其他允许的证据（例如测试、自述文件、提交消息或现有的 wiki）推断出被忽略的区域。
 
 ## 图表
 
@@ -106,7 +106,7 @@ npm install mermaid jsdom
 
 当解析器存在时，OpenWiki 使用它。当它不存在时，OpenWiki 会退回到轻量级检查。无论哪种方式，图表生成都是有效的。
 
-## 自定义 wiki 简介编辑 `openwiki/INSTRUCTIONS.md` 来引导存储库文档的范围、优先级和首选写作约定（例如语气、术语以及要强调或跳过的内容）。 OpenWiki 在初始化和更新运行时读取此文件。您还可以在聊天中询问 OpenWiki 修改简介：
+## 自定义 wiki 简介编辑 `openwiki/INSTRUCTIONS.md` 来引导存储库文档的范围、优先级和首选写作约定（例如语气、术语以及要强调或跳过的内容）。 OpenWiki 在初始化和更新运行时读取此文件。您还可以在聊天中要求 OpenWiki 修改简介：
 
 ```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 openwiki "Update openwiki/INSTRUCTIONS.md to prioritize the public API and skip internal tooling"
@@ -125,12 +125,6 @@ openwiki "Update openwiki/INSTRUCTIONS.md to prioritize the public API and skip 
 
 ***
 
-<div>
-  <Callout icon="terminal-2">
-    [Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
-  </Callout>
+[Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
 
-  <Callout icon="edit">
-    [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/oss/openwiki/code-mode.mdx) 或 [file an issue](https://github.com/langchain-ai/docs/issues/new/choose)。
-  </Callout>
-</div>
+[Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/oss/openwiki/code-mode.mdx) 或 [file an issue](https://github.com/langchain-ai/docs/issues/new/choose)。

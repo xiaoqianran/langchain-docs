@@ -8,7 +8,7 @@
 
 [CopilotKit](https://www.copilotkit.ai/) 提供完整的 React 聊天运行时，并且当您希望代理返回 **结构化 UI 负载** 而不仅仅是纯文本时，它与 LangGraph 配合得特别好。前端与 CopilotKit 运行时 URL 进行通信，并将辅助消息解析为动态 React 组件。
 
-在此模式中，您的 LangGraph 部署在同一进程上同时提供图形 API 和自定义 CopilotKit 端点。
+在此模式中，您的 LangGraph 部署在同一进程上为图形 API 和自定义 CopilotKit 端点提供服务。
 
 在服务器上，[copilotkit](https://pypi.org/project/copilotkit/) 包提供 [⟦T18⟧](https://docs.copilotkit.ai)，因此 LangGraph 图、LangChain 代理或 [Deep Agent](/oss/javascript/deepagents/overview) 可以使用 [Agent UI (AG-UI)](https://docs.ag-ui.com/) 线路协议、将工具和消息事件流式传输到聊天 UI，并读取或写入共享的 **CopilotKit** 状态切片。 TypeScript 设置通常将 CopilotKit 运行时安装在图形 API 旁边。 Python 设置在部署上安装 AG-UI FastAPI 桥，并在其前面的 Node 中运行 CopilotKit 运行时。
 
@@ -18,19 +18,17 @@
 
 [CopilotKit for LangGraph](https://docs.copilotkit.ai/langgraph) 还在相同的中间件和客户端之上记录了 [generative UI](https://docs.copilotkit.ai/langgraph/generative-ui)、[human in the loop](https://docs.copilotkit.ai/langgraph/human-in-the-loop) (HITL) 和 [shared state](https://docs.copilotkit.ai/langgraph/shared-state)。
 
-<Info>
-  有关 CopilotKit 特定的 API、UI 模式和运行时配置，请参阅
-  [CopilotKit docs](https://docs.copilotkit.ai/langgraph)。有关 Deep Agent 演练，请参阅
-  CopilotKit 文档中的[Deep Agents and CopilotKit](https://docs.copilotkit.ai/langgraph/deep-agents)。
-</Info>
-
-<ExampleEmbed />
+> [!注意]
+>
+> 有关 CopilotKit 特定的 API、UI 模式和运行时配置，请参阅
+> [CopilotKit docs](https://docs.copilotkit.ai/langgraph)。有关 Deep Agent 演练，请参阅
+> CopilotKit 文档中的 [Deep Agents and CopilotKit](https://docs.copilotkit.ai/langgraph/deep-agents)。
 
 ## 它是如何工作的
 
 从较高的层面来看，CopilotKit 位于 React 应用程序和 LangGraph 部署之间。
 
-前端将对话状态发送到与图形 API 一起安装的自定义 `/api/copilotkit` 路由。该路由将请求转发到LangGraph，并且响应会返回辅助消息以及组件注册表可以呈现的任何结构化 UI 有效负载。1. **像平常一样部署图表**使用LangSmith或使用LangGraph开发服务器。
+前端将对话状态发送到与图形 API 一起安装的自定义 `/api/copilotkit` 路由。该路由将请求转发到LangGraph，并且响应会返回，其中包含辅助消息以及组件注册表可以呈现的任何结构化 UI 有效负载。1. **像平常一样部署图表**使用LangSmith或使用LangGraph开发服务器。
 2. **使用 HTTP 应用程序扩展部署**，该应用程序在图形 API 旁边安装 CopilotKit 路由。
 3. **将前端包装在 `CopilotKit`** 中并将其指向该自定义运行时 URL。
 4. **注册动态 UI 组件**并在渲染时将助手响应解析到这些组件中。
@@ -437,13 +435,13 @@ export function CustomMessageRenderer({ message }: RenderMessageProps) {
 
 ## 频道
 
-为应用内副驾驶提供支持的同一代理也可以在 Slack 和其他消息平台中作为机器人运行。 [CopilotKit Channels](https://docs.copilotkit.ai/channels) 通过托管 CopilotKit Intelligence 连接将您的 LangChain 代理连接到消息传递平台：智能保存平台凭据和消息传递，而您的进程运行代理。<Note>
-  通道需要 `@copilotkit/channels` 0.6.1 和 `@copilotkit/runtime` 1.65.0（作为测试对一起安装），以及长期运行的主机上的 Node.js 22 或更高版本。通道连接的LangChain部署可以是Python或TypeScript。
-</Note>
+为应用内副驾驶提供支持的同一代理也可以在 Slack 和其他消息平台中作为机器人运行。 [CopilotKit Channels](https://docs.copilotkit.ai/channels) 通过托管 CopilotKit Intelligence 连接将您的 LangChain 代理连接到消息传递平台：智能保存平台凭据和消息传递，而您的进程运行代理。> [!注意]
+>
+> 通道需要 `@copilotkit/channels` 0.6.1 和 `@copilotkit/runtime` 1.65.0（作为测试对一起安装）以及长期运行的主机上的 Node.js 22 或更高版本。通道连接的 LangChain 部署可以是 Python 或 TypeScript。
 
-<Info>
-  本页展示了通道如何与 LangChain 代理配合使用。有关使用 LangGraph 后端的完整 Slack 演练，请参阅 [Connect and run your agent in Slack](https://docs.copilotkit.ai/slack/langgraph-typescript/connect)。有关其他代理后端和平台覆盖范围，请参阅[Channels overview](https://docs.copilotkit.ai/channels)。
-</Info>
+> [!注意]
+>
+> 本页展示了通道如何与 LangChain 代理配合使用。有关使用 LangGraph 后端的完整 Slack 演练，请参阅 [Connect and run your agent in Slack](https://docs.copilotkit.ai/slack/langgraph-typescript/connect)。有关其他代理后端和平台覆盖范围，请参阅[Channels overview](https://docs.copilotkit.ai/channels)。
 
 ### 它是如何组合在一起的
 
@@ -459,22 +457,20 @@ CopilotKit Intelligence 拥有平台连接（Slack、Microsoft Teams 等）及�
 
 安装经过测试的 SDK 对，然后安装 TypeScript 工具：
 
-<CodeGroup>
-  ```bash npm theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  npm install --save-exact @copilotkit/channels@0.6.1 @copilotkit/runtime@1.65.0
-  npm install -D tsx typescript @types/node
-  ```
+```bash npm theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+npm install --save-exact @copilotkit/channels@0.6.1 @copilotkit/runtime@1.65.0
+npm install -D tsx typescript @types/node
+```
 
-  ```bash pnpm theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  pnpm add --save-exact @copilotkit/channels@0.6.1 @copilotkit/runtime@1.65.0
-  pnpm add -D tsx typescript @types/node
-  ```
+```bash pnpm theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+pnpm add --save-exact @copilotkit/channels@0.6.1 @copilotkit/runtime@1.65.0
+pnpm add -D tsx typescript @types/node
+```
 
-  ```bash yarn theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  yarn add --exact @copilotkit/channels@0.6.1 @copilotkit/runtime@1.65.0
-  yarn add -D tsx typescript @types/node
-  ```
-</CodeGroup>
+```bash yarn theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+yarn add --exact @copilotkit/channels@0.6.1 @copilotkit/runtime@1.65.0
+yarn add -D tsx typescript @types/node
+```
 
 使用 NodeNext TypeScript 配置：
 
@@ -619,19 +615,13 @@ node --env-file=.env --import tsx channel.ts
 ## 最佳实践
 
 * **保持自定义端点的精简：** 使用它来使 CopilotKit 适应您的图形部署，而不是重复图形内已有的业务逻辑
-* **显式发送模式：** `useAgentContext` 应在每次页面安装时描述 UI 契约
+* **显式发送架构：** `useAgentContext` 应在每次页面安装时描述 UI 契约
 * **注册受约束的组件集：**仅公开您实际希望模型使用的组件和道具
 * **将渲染视为解析步骤：** 在渲染之前根据您的模式解析助手内容
 * **保持用户消息简单：** 只有辅助消息需要结构化渲染器；用户消息可以保持正常的聊天气泡
 
 ***
 
-<div>
-  <Callout icon="terminal-2">
-    [Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
-  </Callout>
+[Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
 
-  <Callout icon="edit">
-    [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/oss/langchain/frontend/integrations/copilotkit.mdx) 或 [file an issue](https://github.com/langchain-ai/docs/issues/new/choose)。
-  </Callout>
-</div>
+[Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/oss/langchain/frontend/integrations/copilotkit.mdx) 或 [file an issue](https://github.com/langchain-ai/docs/issues/new/choose)。

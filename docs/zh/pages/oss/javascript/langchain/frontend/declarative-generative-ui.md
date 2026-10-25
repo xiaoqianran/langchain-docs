@@ -25,8 +25,6 @@
 跨越 React、Vue、Svelte 和 Angular。对于 Google 的 A2UI 规范（集成
 通过 CopilotKit），请参阅下面的[A2UI](#a2ui-an-alternative-declarative-spec)。
 
-<PatternEmbed />
-
 ## 何时使用此方法
 
 对产品的长尾使用声明式生成 UI，其中
@@ -93,10 +91,10 @@ const catalog = defineCatalog(schema, {
 });
 ```
 
-<Tip>
-  保持目录的重点。仅包含 AI 用例所需的组件。
-  较小的目录比厨房水槽方法产生更好的结果。
-</Tip>
+> [!提示]
+>
+> 保持目录的重点。仅包含 AI 用例所需的组件。
+> 较小的目录比厨房水槽方法产生更好的结果。
 
 ## 构建组件注册表
 
@@ -104,140 +102,136 @@ const catalog = defineCatalog(schema, {
 使用 `defineRegistry` 获取目录 props 和
 你的组件功能：
 
-<CodeGroup>
-  ```tsx React theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  import { defineRegistry, Renderer, JSONUIProvider } from "@json-render/react";
+```tsx React theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+import { defineRegistry, Renderer, JSONUIProvider } from "@json-render/react";
 
-  const { registry } = defineRegistry(catalog, {
-    components: {
-      Card: ({ props, children }) => (
-        <div className="card">
-          {props.title && <h2>{props.title}</h2>}
-          {children}
-        </div>
-      ),
-      Stack: ({ props, children }) => (
-        <div className={`stack stack-${props.direction ?? "vertical"} gap-${props.gap ?? "md"}`}>
-          {children}
-        </div>
-      ),
-      TextInput: ({ props }) => (
-        <div>
-          {props.label && <label>{props.label}</label>}
-          <input type={props.type ?? "text"} placeholder={props.placeholder} />
-        </div>
-      ),
-      Button: ({ props }) => (
-        <button className={props.variant ?? "primary"}>
-          {props.label}
-        </button>
-      ),
-    },
-  });
-  ```
+const { registry } = defineRegistry(catalog, {
+  components: {
+    Card: ({ props, children }) => (
+      <div className="card">
+        {props.title && <h2>{props.title}</h2>}
+        {children}
+      </div>
+    ),
+    Stack: ({ props, children }) => (
+      <div className={`stack stack-${props.direction ?? "vertical"} gap-${props.gap ?? "md"}`}>
+        {children}
+      </div>
+    ),
+    TextInput: ({ props }) => (
+      <div>
+        {props.label && <label>{props.label}</label>}
+        <input type={props.type ?? "text"} placeholder={props.placeholder} />
+      </div>
+    ),
+    Button: ({ props }) => (
+      <button className={props.variant ?? "primary"}>
+        {props.label}
+      </button>
+    ),
+  },
+});
+```
 
-  ```vue Vue theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  <script setup lang="ts">
-  import { h } from "vue";
-  import { defineRegistry, Renderer, JSONUIProvider } from "@json-render/vue";
+```vue Vue theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+<script setup lang="ts">
+import { h } from "vue";
+import { defineRegistry, Renderer, JSONUIProvider } from "@json-render/vue";
 
-  const { registry } = defineRegistry(catalog, {
-    components: {
-      Card: ({ props, children }) =>
-        h("div", { class: "card" }, [
-          props.title ? h("h2", null, props.title) : null,
-          children,
-        ]),
-      Stack: ({ props, children }) =>
-        h("div", { class: `stack stack-${props.direction ?? "vertical"} gap-${props.gap ?? "md"}` }, children),
-      TextInput: ({ props }) =>
-        h("div", null, [
-          props.label ? h("label", null, props.label) : null,
-          h("input", { type: props.type ?? "text", placeholder: props.placeholder }),
-        ]),
-      Button: ({ props }) =>
-        h("button", { class: props.variant ?? "primary" }, props.label),
-    },
-  });
-  </script>
-  ```
-</CodeGroup>
+const { registry } = defineRegistry(catalog, {
+  components: {
+    Card: ({ props, children }) =>
+      h("div", { class: "card" }, [
+        props.title ? h("h2", null, props.title) : null,
+        children,
+      ]),
+    Stack: ({ props, children }) =>
+      h("div", { class: `stack stack-${props.direction ?? "vertical"} gap-${props.gap ?? "md"}` }, children),
+    TextInput: ({ props }) =>
+      h("div", null, [
+        props.label ? h("label", null, props.label) : null,
+        h("input", { type: props.type ?? "text", placeholder: props.placeholder }),
+      ]),
+    Button: ({ props }) =>
+      h("button", { class: props.variant ?? "primary" }, props.label),
+  },
+});
+</script>
+```
 
 ## 连接到代理该代理使用结构化输出返回 json-render 规范。设置`useStream`
 与您的代理的助理 ID，然后从 AI 消息中提取规范
 `tool_calls`：
 
-<CodeGroup>
-  ```tsx React theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  import { useStream } from "@langchain/react";
+```tsx React theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+import { useStream } from "@langchain/react";
+import { AIMessage } from "langchain";
+
+function GenerativeUI() {
+  const stream = useStream<typeof myAgent>({
+    apiUrl: "http://localhost:2024",
+    assistantId: "generative_ui",
+  });
+
+  const aiMessage = stream.messages.find(AIMessage.isInstance);
+  const rawSpec = aiMessage?.tool_calls?.[0]?.args;
+
+  // ... filter and render (see streaming section below)
+}
+```
+
+```vue Vue theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+<script setup lang="ts">
+import { useStream } from "@langchain/vue";
+import { AIMessage } from "langchain";
+import { computed } from "vue";
+
+const stream = useStream<typeof myAgent>({
+  apiUrl: "http://localhost:2024",
+  assistantId: "generative_ui",
+});
+
+const aiMessage = computed(() => stream.messages.value.find(AIMessage.isInstance));
+const rawSpec = computed(() => aiMessage.value?.tool_calls?.[0]?.args);
+</script>
+```
+
+```svelte Svelte theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+<script lang="ts">
+  import { useStream } from "@langchain/svelte";
   import { AIMessage } from "langchain";
-
-  function GenerativeUI() {
-    const stream = useStream<typeof myAgent>({
-      apiUrl: "http://localhost:2024",
-      assistantId: "generative_ui",
-    });
-
-    const aiMessage = stream.messages.find(AIMessage.isInstance);
-    const rawSpec = aiMessage?.tool_calls?.[0]?.args;
-
-    // ... filter and render (see streaming section below)
-  }
-  ```
-
-  ```vue Vue theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  <script setup lang="ts">
-  import { useStream } from "@langchain/vue";
-  import { AIMessage } from "langchain";
-  import { computed } from "vue";
 
   const stream = useStream<typeof myAgent>({
     apiUrl: "http://localhost:2024",
     assistantId: "generative_ui",
   });
 
-  const aiMessage = computed(() => stream.messages.value.find(AIMessage.isInstance));
-  const rawSpec = computed(() => aiMessage.value?.tool_calls?.[0]?.args);
-  </script>
-  ```
+  const aiMessage = $derived(stream.messages.find((m) => AIMessage.isInstance(m)));
+  const rawSpec = $derived(aiMessage?.tool_calls?.[0]?.args);
+</script>
+```
 
-  ```svelte Svelte theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  <script lang="ts">
-    import { useStream } from "@langchain/svelte";
-    import { AIMessage } from "langchain";
+```ts Angular theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+import { Component } from "@angular/core";
+import { injectStream } from "@langchain/angular";
+import { AIMessage } from "langchain";
 
-    const stream = useStream<typeof myAgent>({
-      apiUrl: "http://localhost:2024",
-      assistantId: "generative_ui",
-    });
+@Component({
+  selector: "app-generative-ui",
+  template: `...`,
+})
+export class GenerativeUIComponent {
+  stream = injectStream<typeof myAgent>({
+    apiUrl: "http://localhost:2024",
+    assistantId: "generative_ui",
+  });
 
-    const aiMessage = $derived(stream.messages.find((m) => AIMessage.isInstance(m)));
-    const rawSpec = $derived(aiMessage?.tool_calls?.[0]?.args);
-  </script>
-  ```
-
-  ```ts Angular theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  import { Component } from "@angular/core";
-  import { injectStream } from "@langchain/angular";
-  import { AIMessage } from "langchain";
-
-  @Component({
-    selector: "app-generative-ui",
-    template: `...`,
-  })
-  export class GenerativeUIComponent {
-    stream = injectStream<typeof myAgent>({
-      apiUrl: "http://localhost:2024",
-      assistantId: "generative_ui",
-    });
-
-    get rawSpec() {
-      const ai = this.stream.messages().find(AIMessage.isInstance);
-      return ai?.tool_calls?.[0]?.args;
-    }
+  get rawSpec() {
+    const ai = this.stream.messages().find(AIMessage.isInstance);
+    return ai?.tool_calls?.[0]?.args;
   }
-  ```
-</CodeGroup>
+}
+```
 
 ## 渐进式流式传输和渲染
 
@@ -277,11 +271,11 @@ return (
 );
 ```
 
-<Note>
-  设置 json-render 的内部上下文需要 `JSONUIProvider`
-  提供者（状态、可见性、验证、操作）。 `Renderer` 组件
-  必须在其中渲染。
-</Note>
+> [!注意]
+>
+> 需要`JSONUIProvider`来设置json-render的内部上下文
+> 提供者（状态、可见性、验证、操作）。 `Renderer` 组件
+> 必须在其中呈现。
 
 ## 规范格式
 
@@ -345,7 +339,7 @@ Google 的声明式流优先生成 UI 规范，通过集成
 * **渲染前验证**：始终检查元素是否具有有效的 `type` 和
   在传递给渲染器之前非空`props`，因为流传输会传递部分数据。
 * **流式传输设计**：在流式传输期间传递`loading={true}`，以便渲染器
-  优雅地接待尚未到来的孩子。用户看到 UI 构建
+  优雅地照顾尚未到来的孩子。用户看到 UI 构建
   实时而不是等待完整响应。
 * **具有设计标记的样式**：使用 CSS 自定义属性来渲染组件
   自动适应浅色和深色主题。
@@ -360,12 +354,6 @@ Google 的声明式流优先生成 UI 规范，通过集成
 
 ***
 
-<div>
-  <Callout icon="terminal-2">
-    [Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
-  </Callout>
+[Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
 
-  <Callout icon="edit">
-    [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/oss/langchain/frontend/declarative-generative-ui.mdx) 或 [file an issue](https://github.com/langchain-ai/docs/issues/new/choose)。
-  </Callout>
-</div>
+[Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/oss/langchain/frontend/declarative-generative-ui.mdx) 或 [file an issue](https://github.com/langchain-ai/docs/issues/new/choose)。

@@ -50,13 +50,13 @@ AZURE_OPENAI_API_KEY=<YOUR_KEY>
 AZURE_OPENAI_API_VERSION="2024-02-01"
 ```
 
-<Info>
-  **您可以在[Azure OpenAI documentation](https://learn.microsoft.com/azure/ai-services/openai/reference)中找到支持的API版本列表。**
-</Info>
+> [!注意]
+>
+> **您可以在[Azure OpenAI documentation](https://learn.microsoft.com/azure/ai-services/openai/reference)中找到支持的API版本列表。**
 
-<Tip>
-  参见[this section for general instructions on installing LangChain packages](/oss/javascript/langchain/install)。
-</Tip>
+> [!提示]
+>
+> 参见[this section for general instructions on installing LangChain packages](/oss/javascript/langchain/install)。
 
 ```bash npm theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 npm install @langchain/openai @langchain/core
@@ -140,7 +140,7 @@ import { AzureCosmosDBNoSQLSemanticCache } from "@langchain/azure-cosmosdb";
 
 ### Azure 容器应用程序动态会话
 
-> [Azure Container Apps dynamic sessions](https://learn.microsoft.com/azure/container-apps/sessions) 提供对安全沙盒环境的快速访问，这些环境非常适合运行需要与其他工作负载强隔离的代码或应用程序。
+> [Azure Container Apps dynamic sessions](https://learn.microsoft.com/azure/container-apps/sessions) 提供对安全沙盒环境的快速访问，该环境非常适合运行需要与其他工作负载强隔离的代码或应用程序。
 
 ```bash npm theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 npm install @langchain/azure-dynamic-sessions @langchain/core
@@ -152,12 +152,6 @@ npm install @langchain/azure-dynamic-sessions @langchain/core
 import { SessionsPythonREPLTool } from "@langchain/azure-dynamic-sessions";
 ```
 
-***<div>
-  <Callout icon="terminal-2">
-    [Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
-  </Callout>
+***[Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
 
-  <Callout icon="edit">
-    [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/oss/javascript/integrations/providers/microsoft.mdx) 或 [file an issue](https://github.com/langchain-ai/docs/issues/new/choose)。
-  </Callout>
-</div>
+[Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/oss/javascript/integrations/providers/microsoft.mdx) 或 [file an issue](https://github.com/langchain-ai/docs/issues/new/choose)。

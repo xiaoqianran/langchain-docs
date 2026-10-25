@@ -2,11 +2,11 @@
 
 <!-- langchain-docs: OpenAI integration | https://docs.langchain.com/oss/javascript/integrations/tools/openai -->
 
-# OpenAI 整合
+# OpenAI 集成
 
 使用 LangChain JavaScript 与 OpenAI 工具集成。
 
-`@langchain/openai` 软件包为 OpenAI 的内置工具提供与 LangChain 兼容的包装器。这些工具可以使用`bindTools()`或[⟦T26⟧](https://reference.langchain.com/javascript/langchain/index/createAgent)绑定到`ChatOpenAI`。
+`@langchain/openai` 软件包为 OpenAI 的内置工具提供了 LangChain 兼容的包装器。这些工具可以使用`bindTools()`或[⟦T26⟧](https://reference.langchain.com/javascript/langchain/index/createAgent)绑定到`ChatOpenAI`。
 
 ### 网络搜索工具
 
@@ -14,7 +14,7 @@
 
 1. **非推理网络搜索**：模型将查询直接传递到搜索工具的快速查找
 2. **带有推理模型的代理搜索**：模型主动管理搜索过程，分析结果并决定是否继续搜索
-3. **深入研究**：使用 `o3-deep-research` 或 `gpt-5` 等模型进行深入研究，并进行大量推理
+3. **深入研究**：使用`o3-deep-research`或`gpt-5`等模型进行扩展调查，并进行大量推理
 
 ```typescript theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 import { ChatOpenAI, tools } from "@langchain/openai";
@@ -332,7 +332,7 @@ const response2 = await model.invoke(
 );
 ```
 
-> **提示提示**：使用“绘制”或“编辑”等术语以获得最佳效果。对于组合图像，请说“通过添加此元素编辑第一张图像”，而不是“组合”或“合并”。
+> **提示提示**：使用“绘制”或“编辑”等术语以获得最佳效果。对于组合图像，请说“通过添加此元素来编辑第一个图像”，而不是“组合”或“合并”。
 
 支持型号：`gpt-4o`、`gpt-4o-mini`、`gpt-5.5`、`gpt-5.4-mini`、`gpt-5.4-nano`、`o3`
 
@@ -511,18 +511,18 @@ interface ShellResult {
 
 > **注意**：仅可通过带有 `gpt-5.1` 的响应 API 获得。模型中的`timeout_ms`只是一个提示——始终强制执行你自己的限制。
 
-For more information, see [OpenAI's Shell Documentation](https://platform.openai.com/docs/guides/tools-shell).
+欲了解更多信息，请参阅[OpenAI's Shell Documentation](https://platform.openai.com/docs/guides/tools-shell)。
 
 ### 应用补丁工具
 
 应用补丁工具允许模型提出集成应用的结构化差异。这支持迭代、多步骤的代码编辑工作流程，其中模型可以在代码库中创建、更新和删除文件。
 
 **何时使用**：* **多文件重构** – 重命名符号、提取帮助程序或重新组织模块
-* **Bug fixes** – Have the model both diagnose issues and emit precise patches
-* **Tests & docs generation** – Create new test files, fixtures, and documentation
-* **Migrations & mechanical edits** – Apply repetitive, structured updates
+* **错误修复** – 让模型诊断问题并发出精确的补丁
+* **测试和文档生成** – 创建新的测试文件、装置和文档
+* **迁移和机械编辑** – 应用重复的结构化更新
 
-> **安全警告**：应用补丁可以修改代码库中的文件。 Always validate paths, implement backups, and consider sandboxing.
+> **安全警告**：应用补丁可以修改代码库中的文件。始终验证路径、实施备份并考虑沙箱。
 > **注意**：该工具设计用于 `gpt-5.1` 型号。
 
 ```typescript theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
@@ -560,27 +560,21 @@ const response = await llmWithPatch.invoke(
 );
 ```
 
-**Operation types**: The model returns operations with these properties:
+**操作类型**：模型返回具有以下属性的操作：
 
-* `create_file` – Create a new file at `path` with content from `diff`
-* `update_file` – Modify an existing file at `path` using V4A diff format in `diff`
-* `delete_file` – Remove a file at `path`
+* `create_file` – 在 `path` 创建一个新文件，其中包含 `diff` 的内容
+* `update_file` – 使用 `diff` 中的 V4A diff 格式修改 `path` 处的现有文件
+* `delete_file` – 删除位于 `path` 的文件
 
 **最佳实践**：
 
 * **路径验证**：防止目录遍历并将编辑限制为允许的目录
-* **Backups**: Consider backing up files before applying patches
-* **Error handling**: Return descriptive error messages so the model can recover
-* **Atomicity**: Decide whether you want "all-or-nothing" semantics (rollback if any patch fails)
+* **备份**：在应用补丁之前考虑备份文件
+* **错误处理**：返回描述性错误消息，以便模型可以恢复
+* **原子性**：决定是否需要“全有或全无”语义（如果任何补丁失败则回滚）
 
-For more information, see [OpenAI's Apply Patch Documentation](https://platform.openai.com/docs/guides/tools-apply-patch).
+欲了解更多信息，请参阅[OpenAI's Apply Patch Documentation](https://platform.openai.com/docs/guides/tools-apply-patch)。
 
-***<div>
-  <Callout icon="terminal-2">
-    [Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
-  </Callout>
+***[Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
 
-  <Callout icon="edit">
-    [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/oss/javascript/integrations/tools/openai.mdx) 或 [file an issue](https://github.com/langchain-ai/docs/issues/new/choose)。
-  </Callout>
-</div>
+[Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/oss/javascript/integrations/tools/openai.mdx) 或 [file an issue](https://github.com/langchain-ai/docs/issues/new/choose)。

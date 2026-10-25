@@ -6,7 +6,7 @@
 
 聊天界面主导了我们与人工智能的交互方式，但多模式人工智能的最新突破正在开辟令人兴奋的新可能性。现在，高质量的生成模型和富有表现力的文本转语音 (TTS) 系统使得构建感觉不像工具而更像对话伙伴的代理成为可能。
 
-语音代理就是这样的一个例子。您可以使用口语与其进行交互，而不是依靠键盘和鼠标向代理输入输入。这可能是一种更自然、更有吸引力的与人工智能交互的方式，并且对于某些情况特别有用。
+语音代理就是这样的一个例子。您可以使用口语与其交互，而不是依靠键盘和鼠标向代理输入输入。这可能是一种更自然、更有吸引力的与人工智能交互的方式，并且对于某些情况特别有用。
 
 ### 什么是语音代理？
 
@@ -175,61 +175,61 @@ async function* sttStream(
 
 该应用程序实现了 AssemblyAI 客户端来管理 WebSocket 连接和消息解析。请参阅下面的实现；可以为其他 STT 提供商构建类似的适配器。
 
-<Accordion title="AssemblyAI Client">
-  ```typescript theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  export class AssemblyAISTT {
-    protected _bufferIterator = writableIterator<VoiceAgentEvent.STTEvent>();
-    protected _connectionPromise: Promise<WebSocket> | null = null;
-
-    async sendAudio(buffer: Uint8Array): Promise<void> {
-      const conn = await this._connection;
-      conn.send(buffer);
-    }
-
-    async *receiveEvents(): AsyncGenerator<VoiceAgentEvent.STTEvent> {
-      yield* this._bufferIterator;
-    }
-
-    protected get _connection(): Promise<WebSocket> {
-      if (this._connectionPromise) return this._connectionPromise;
-
-      this._connectionPromise = new Promise((resolve, reject) => {
-        const params = new URLSearchParams({
-          sample_rate: this.sampleRate.toString(),
-          format_turns: "true",
-        });
-        const url = `wss://streaming.assemblyai.com/v3/ws?${params}`;
-        const ws = new WebSocket(url, {
-          headers: { Authorization: this.apiKey },
-        });
-
-        ws.on("open", () => resolve(ws));
-
-        ws.on("message", (data) => {
-          const message = JSON.parse(data.toString());
-          if (message.type === "Turn") {
-            if (message.turn_is_formatted) {
-              this._bufferIterator.push({
-                type: "stt_output",
-                transcript: message.transcript,
-                ts: Date.now()
-              });
-            } else {
-              this._bufferIterator.push({
-                type: "stt_chunk",
-                transcript: message.transcript,
-                ts: Date.now()
-              });
-            }
-          }
-        });
-      });
-
-      return this._connectionPromise;
-    }
-  }
-  ```
-</Accordion>
+> **AssemblyAI 客户端**
+>
+> ```typescript theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> export class AssemblyAISTT {
+>   protected _bufferIterator = writableIterator<VoiceAgentEvent.STTEvent>();
+>   protected _connectionPromise: Promise<WebSocket> | null = null;
+>
+>   async sendAudio(buffer: Uint8Array): Promise<void> {
+>     const conn = await this._connection;
+>     conn.send(buffer);
+>   }
+>
+>   async *receiveEvents(): AsyncGenerator<VoiceAgentEvent.STTEvent> {
+>     yield* this._bufferIterator;
+>   }
+>
+>   protected get _connection(): Promise<WebSocket> {
+>     if (this._connectionPromise) return this._connectionPromise;
+>
+>     this._connectionPromise = new Promise((resolve, reject) => {
+>       const params = new URLSearchParams({
+>         sample_rate: this.sampleRate.toString(),
+>         format_turns: "true",
+>       });
+>       const url = `wss://streaming.assemblyai.com/v3/ws?${params}`;
+>       const ws = new WebSocket(url, {
+>         headers: { Authorization: this.apiKey },
+>       });
+>
+>       ws.on("open", () => resolve(ws));
+>
+>       ws.on("message", (data) => {
+>         const message = JSON.parse(data.toString());
+>         if (message.type === "Turn") {
+>           if (message.turn_is_formatted) {
+>             this._bufferIterator.push({
+>               type: "stt_output",
+>               transcript: message.transcript,
+>               ts: Date.now()
+>             });
+>           } else {
+>             this._bufferIterator.push({
+>               type: "stt_chunk",
+>               transcript: message.transcript,
+>               ts: Date.now()
+>             });
+>           }
+>         }
+>       });
+>     });
+>
+>     return this._connectionPromise;
+>   }
+> }
+> ```
 
 ## 2. LangChain代理代理阶段通过 LangChain [agent](/oss/javascript/langchain/agents) 处理文本转录并流式传输响应令牌。在这种情况下，我们流式传输由代理生成的所有[text content blocks](/oss/javascript/langchain/messages#content-block-reference)。
 
@@ -375,64 +375,64 @@ async function* ttsStream(
 
 该应用程序实现了 Cartesia 客户端来管理 WebSocket 连接和音频流。请参阅下面的实现；可以为其他 TTS 提供商构建类似的适配器。
 
-<Accordion title="Cartesia Client">
-  ```typescript theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  export class CartesiaTTS {
-    protected _bufferIterator = writableIterator<VoiceAgentEvent.TTSEvent>();
-    protected _connectionPromise: Promise<WebSocket> | null = null;
-
-    async sendText(text: string | null): Promise<void> {
-      if (!text || !text.trim()) return;
-
-      const conn = await this._connection;
-      const payload = { text, try_trigger_generation: false };
-      conn.send(JSON.stringify(payload));
-    }
-
-    async *receiveEvents(): AsyncGenerator<VoiceAgentEvent.TTSEvent> {
-      yield* this._bufferIterator;
-    }
-
-    protected _generateContextId(): string {
-      const timestamp = Date.now();
-      const counter = this._contextCounter++;
-      return `ctx_${timestamp}_${counter}`;
-    }
-
-    protected get _connection(): Promise<WebSocket> {
-      if (this._connectionPromise) return this._connectionPromise;
-
-      this._connectionPromise = new Promise((resolve, reject) => {
-        const params = new URLSearchParams({
-          api_key: this.apiKey,
-          cartesia_version: this.cartesiaVersion,
-        });
-        const url = `wss://api.cartesia.ai/tts/websocket?${params.toString()}`;
-        const ws = new WebSocket(url);
-
-        ws.on("open", () => {
-          resolve(ws);
-        });
-
-        ws.on("message", (data: WebSocket.RawData) => {
-          const message: CartesiaTTSResponse = JSON.parse(data.toString());
-          if (message.data) {
-            this._bufferIterator.push({
-              type: "tts_chunk",
-              audio: message.data,
-              ts: Date.now(),
-            });
-          } else if (message.error) {
-            throw new Error(`Cartesia error: ${message.error}`);
-          }
-        });
-      });
-
-      return this._connectionPromise;
-    }
-  }
-  ```
-</Accordion>
+> **笛卡尔客户端**
+>
+> ```typescript theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> export class CartesiaTTS {
+>   protected _bufferIterator = writableIterator<VoiceAgentEvent.TTSEvent>();
+>   protected _connectionPromise: Promise<WebSocket> | null = null;
+>
+>   async sendText(text: string | null): Promise<void> {
+>     if (!text || !text.trim()) return;
+>
+>     const conn = await this._connection;
+>     const payload = { text, try_trigger_generation: false };
+>     conn.send(JSON.stringify(payload));
+>   }
+>
+>   async *receiveEvents(): AsyncGenerator<VoiceAgentEvent.TTSEvent> {
+>     yield* this._bufferIterator;
+>   }
+>
+>   protected _generateContextId(): string {
+>     const timestamp = Date.now();
+>     const counter = this._contextCounter++;
+>     return `ctx_${timestamp}_${counter}`;
+>   }
+>
+>   protected get _connection(): Promise<WebSocket> {
+>     if (this._connectionPromise) return this._connectionPromise;
+>
+>     this._connectionPromise = new Promise((resolve, reject) => {
+>       const params = new URLSearchParams({
+>         api_key: this.apiKey,
+>         cartesia_version: this.cartesiaVersion,
+>       });
+>       const url = `wss://api.cartesia.ai/tts/websocket?${params.toString()}`;
+>       const ws = new WebSocket(url);
+>
+>       ws.on("open", () => {
+>         resolve(ws);
+>       });
+>
+>       ws.on("message", (data: WebSocket.RawData) => {
+>         const message: CartesiaTTSResponse = JSON.parse(data.toString());
+>         if (message.data) {
+>           this._bufferIterator.push({
+>             type: "tts_chunk",
+>             audio: message.data,
+>             ts: Date.now(),
+>           });
+>         } else if (message.error) {
+>           throw new Error(`Cartesia error: ${message.error}`);
+>         }
+>       });
+>     });
+>
+>     return this._connectionPromise;
+>   }
+> }
+> ```
 
 ### LangSmith
 
@@ -488,12 +488,6 @@ app.get("/ws", upgradeWebSocket(async () => {
 
 ***
 
-<div>
-  <Callout icon="terminal-2">
-    [Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
-  </Callout>
+[Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
 
-  <Callout icon="edit">
-    [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/oss/langchain/voice-agent.mdx) 或 [file an issue](https://github.com/langchain-ai/docs/issues/new/choose)。
-  </Callout>
-</div>
+[Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/oss/langchain/voice-agent.mdx) 或 [file an issue](https://github.com/langchain-ai/docs/issues/new/choose)。
