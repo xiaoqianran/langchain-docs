@@ -18,13 +18,11 @@
 
 [CopilotKit for LangGraph](https://docs.copilotkit.ai/langgraph) 还在相同的中间件和客户端之上记录了 [generative UI](https://docs.copilotkit.ai/langgraph/generative-ui)、[human in the loop](https://docs.copilotkit.ai/langgraph/human-in-the-loop) (HITL) 和 [shared state](https://docs.copilotkit.ai/langgraph/shared-state)。
 
-<Info>
-  有关 CopilotKit 特定的 API、UI 模式和运行时配置，请参阅
-  [CopilotKit docs](https://docs.copilotkit.ai/langgraph)。有关 Deep Agent 演练，请参阅
-  CopilotKit 文档中的 [Deep Agents and CopilotKit](https://docs.copilotkit.ai/langgraph/deep-agents)。
-</Info>
-
-<ExampleEmbed />
+> [!注意]
+>
+> 有关 CopilotKit 特定的 API、UI 模式和运行时配置，请参阅
+> [CopilotKit docs](https://docs.copilotkit.ai/langgraph)。有关 Deep Agent 演练，请参阅
+> CopilotKit 文档中的[Deep Agents and CopilotKit](https://docs.copilotkit.ai/langgraph/deep-agents)。
 
 ## 它是如何工作的
 
@@ -82,15 +80,13 @@ uv add copilotkit ag-ui-langgraph fastapi uvicorn
 
 中间件包位于 Deep Agents 堆栈旁边。使用您的 [chat model](/oss/python/integrations/chat) 软件包安装它（本示例使用 OpenAI）：
 
-<CodeGroup>
-  ```python pip theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  pip install -U deepagents copilotkit langchain-openai
-  ```
+```python pip theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+pip install -U deepagents copilotkit langchain-openai
+```
 
-  ```python uv theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  uv add deepagents copilotkit langchain-openai
-  ```
-</CodeGroup>
+```python uv theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+uv add deepagents copilotkit langchain-openai
+```
 
 前端调用的 CopilotKit 运行时是一个 Node 包，因此 Python 设置还需要一个小型 Node 服务器。下面的引脚是已知的良好引脚对。如果升级 `@copilotkit/runtime`，请安装发布列为依赖项的 `@ag-ui/client` 版本，以便 `HttpAgent` 类型匹配：
 
@@ -197,7 +193,7 @@ add_langgraph_fastapi_endpoint(
 
 AG-UI 桥在每次运行时都会读取图的状态，因此 FastAPI 路由后面的图需要一个检查点。保持检查指针关闭 `agent` 本身：`agent` 也列在 `graphs` 下，并且 `langgraph dev` 拒绝加载带有自己检查指针的列出图，因为 LangGraph API 处理列出图的持久性。带有 `MemorySaver` 的副本仅服务于 FastAPI 路由。它的线程存在于进程内存中，因此它们不会在重新启动后继续存在，不会在副本之间共享，并且不会出现在部署的线程 API 中。对于此路线上的生产交通，请改为通过耐用的[checkpointer](/oss/python/langgraph/persistence)。
 
-这个自定义应用程序是重要的扩展点：它安装了 AG-UI FastAPI 桥，而无需替换底层 LangGraph 部署。 Node CopilotKit 运行时保持独立；参见[Add the CopilotKit runtime](#add-the-copilotkit-runtime)。在 Python 中，等效的工作发生在中间件中：规范化 CopilotKit 上下文并将 `output_schema` 从 `useAgentContext(...)` 转发到模型的结构化输出配置中。 Hashbrown 生成的模式没有顶级`title`，而OpenAI 集成需要命名结构化输出模式，因此中间件会在缺少`title` 和`description` 时填充它们。
+这个自定义应用程序是重要的扩展点：它安装了 AG-UI FastAPI 桥，而无需替换底层的 LangGraph 部署。 Node CopilotKit 运行时保持独立；参见[Add the CopilotKit runtime](#add-the-copilotkit-runtime)。在 Python 中，等效的工作发生在中间件中：规范化 CopilotKit 上下文并将 `output_schema` 从 `useAgentContext(...)` 转发到模型的结构化输出配置中。 Hashbrown 生成的模式没有顶级`title`，而OpenAI 集成需要命名结构化输出模式，因此中间件会在缺少`title` 和`description` 时填充它们。
 
 ```python expandable src/middleware.py theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 import json
@@ -456,13 +452,13 @@ export function CustomMessageRenderer({ message }: RenderMessageProps) {
 
 ## 频道
 
-为应用内副驾驶提供支持的同一代理也可以在 Slack 和其他消息平台中作为机器人运行。 [CopilotKit Channels](https://docs.copilotkit.ai/channels) 通过托管 CopilotKit Intelligence 连接将您的 LangChain 代理连接到消息平台：智能保存平台凭据和消息传递，而您的进程运行代理。
+为应用内副驾驶提供支持的同一代理也可以在 Slack 和其他消息平台中作为机器人运行。 [CopilotKit Channels](https://docs.copilotkit.ai/channels) 通过托管 CopilotKit Intelligence 连接将您的 LangChain 代理连接到消息传递平台：智能保存平台凭据和消息传递，而您的进程运行代理。
 
-<Note>
-  通道需要 `@copilotkit/channels` 0.6.1 和 `@copilotkit/runtime` 1.65.0（作为测试对一起安装），以及长期运行的主机上的 Node.js 22 或更高版本。通道连接的 LangChain 部署可以是 Python 或 TypeScript。
-</Note><Info>
-  本页展示了通道如何与 LangChain 代理配合使用。有关使用 LangGraph 后端的完整 Slack 演练，请参阅 [Connect and run your agent in Slack](https://docs.copilotkit.ai/slack/langgraph-typescript/connect)。有关其他代理后端和平台覆盖范围，请参阅[Channels overview](https://docs.copilotkit.ai/channels)。
-</Info>
+> [!注意]
+>
+> 通道需要 `@copilotkit/channels` 0.6.1 和 `@copilotkit/runtime` 1.65.0（作为测试对一起安装）以及长期运行的主机上的 Node.js 22 或更高版本。通道连接的 LangChain 部署可以是 Python 或 TypeScript。> [!注意]
+>
+> 此页面显示通道如何与 LangChain 代理配合使用。有关使用 LangGraph 后端的完整 Slack 演练，请参阅 [Connect and run your agent in Slack](https://docs.copilotkit.ai/slack/langgraph-typescript/connect)。有关其他代理后端和平台覆盖范围，请参阅[Channels overview](https://docs.copilotkit.ai/channels)。
 
 ### 它是如何组合在一起的
 
@@ -480,22 +476,20 @@ CopilotKit Intelligence 拥有平台连接（Slack、Microsoft Teams 等）及�
 
 安装经过测试的 SDK 对，然后安装 TypeScript 工具：
 
-<CodeGroup>
-  ```bash npm theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  npm install --save-exact @copilotkit/channels@0.6.1 @copilotkit/runtime@1.65.0
-  npm install -D tsx typescript @types/node
-  ```
+```bash npm theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+npm install --save-exact @copilotkit/channels@0.6.1 @copilotkit/runtime@1.65.0
+npm install -D tsx typescript @types/node
+```
 
-  ```bash pnpm theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  pnpm add --save-exact @copilotkit/channels@0.6.1 @copilotkit/runtime@1.65.0
-  pnpm add -D tsx typescript @types/node
-  ``````bash yarn theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  yarn add --exact @copilotkit/channels@0.6.1 @copilotkit/runtime@1.65.0
-  yarn add -D tsx typescript @types/node
-  ```
-</CodeGroup>
+```bash pnpm theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+pnpm add --save-exact @copilotkit/channels@0.6.1 @copilotkit/runtime@1.65.0
+pnpm add -D tsx typescript @types/node
+```
 
-使用 NodeNext TypeScript 配置：
+```bash yarn theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+yarn add --exact @copilotkit/channels@0.6.1 @copilotkit/runtime@1.65.0
+yarn add -D tsx typescript @types/node
+```使用 NodeNext TypeScript 配置：
 
 ```json icon="settings" title="tsconfig.json" theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 {
@@ -645,12 +639,6 @@ Managed Slack 已普遍可用。托管团队是受控集成目标。 Channels SD
 
 ***
 
-<div>
-  <Callout icon="terminal-2">
-    [Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
-  </Callout>
+[Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
 
-  <Callout icon="edit">
-    [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/oss/langchain/frontend/integrations/copilotkit.mdx) 或 [file an issue](https://github.com/langchain-ai/docs/issues/new/choose)。
-  </Callout>
-</div>
+[Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/oss/langchain/frontend/integrations/copilotkit.mdx) 或 [file an issue](https://github.com/langchain-ai/docs/issues/new/choose)。

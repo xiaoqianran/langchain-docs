@@ -10,54 +10,52 @@ MCP 支持现在在 `langchain.mcp` 命名空间中的 LangChain 内提供，构
 
 有关完整功能文档，请参阅[Model Context Protocol (MCP)](/oss/python/langchain/mcp)。
 
-<Prompt description="Migrate from langchain-mcp-adapters to langchain.mcp" icon="arrow-right">
-  将此代码库从独立的 `langchain-mcp-adapters` 包迁移到内置的 `langchain.mcp` 命名空间。
+从 langchain-mcp-adapters 迁移到 langchain.mcp
 
-  ## 第 1 步：阅读指南
+将此代码库从独立的 `langchain-mcp-adapters` 包迁移到内置的 `langchain.mcp` 命名空间。
 
-  获取并遵循 [https://docs.langchain.com/oss/python/migrate/langchain-mcp-adapters.md](https://docs.langchain.com/oss/python/migrate/langchain-mcp-adapters.md) 作为包更改、导入路径、客户端 API、连接配置、回调、拦截器、身份验证和尚未包装的功能的真实来源。对于迁移后的当前功能文档，还可以在需要时获取 [https://docs.langchain.com/oss/python/langchain/mcp.md](https://docs.langchain.com/oss/python/langchain/mcp.md) 及其链接页面。
+## 第 1 步：阅读指南
 
-  ## 第二步：升级包
+获取并遵循 [https://docs.langchain.com/oss/python/migrate/langchain-mcp-adapters.md](https://docs.langchain.com/oss/python/migrate/langchain-mcp-adapters.md) 作为包更改、导入路径、客户端 API、连接配置、回调、拦截器、身份验证和尚未包装的功能的真实来源。对于迁移后的当前功能文档，还可以在需要时获取 [https://docs.langchain.com/oss/python/langchain/mcp.md](https://docs.langchain.com/oss/python/langchain/mcp.md) 及其链接页面。
 
-  使用本项目中已使用的包管理器（`uv`或`pip`）卸载`langchain-mcp-adapters`并在`>=1.4.0`安装`langchain[mcp]`。当项目已经固定版本时，最好固定当前的稳定版本。
+## 第二步：升级包
 
-  ## 步骤 3：应用迁移
+使用本项目中已使用的包管理器（`uv`或`pip`）卸载`langchain-mcp-adapters`并在`>=1.4.0`安装`langchain[mcp]`。当项目已经固定版本时，最好固定当前的稳定版本。
 
-  识别从 `langchain_mcp_adapters` 导入或使用 `MultiServerMCPClient` 的每个调用站点，然后应用指南中的之前/之后的更改，包括：* 将 `MultiServerMCPClient` 替换为 `MCPAdapter`（异步上下文管理器；使用 `list_tools()`）。
-  * 将服务器配置移至标准 `MCPConfig` 形状 (`mcpServers`)，并在指南说推断传输时删除每个条目 `transport` 键。
-  * 更新导入路径、重命名帮助程序（例如 `convert_mcp_tool_to_langchain_tool` 到 `as_langchain_tool`）、构造函数参数、回调、工具拦截器以及页面映射的身份验证。
-  * 保留指南标记为保留的行为（例如 `MCPToolArtifact` 和多模式内容）。
+## 步骤 3：应用迁移识别从 `langchain_mcp_adapters` 导入或使用 `MultiServerMCPClient` 的每个调用站点，然后应用指南中的之前/之后的更改，包括：
 
-  ## 步骤 4：明确处理差距
+* 将 `MultiServerMCPClient` 替换为 `MCPAdapter`（异步上下文管理器；使用 `list_tools()`）。
+* 将服务器配置移至标准 `MCPConfig` 形状 (`mcpServers`)，并在指南说推断传输时删除每个条目 `transport` 键。
+* 更新导入路径、重命名帮助程序（例如 `convert_mcp_tool_to_langchain_tool` 到 `as_langchain_tool`）、构造函数参数、回调、工具拦截器以及页面映射的身份验证。
+* 保留指南标记为保留的行为（例如 `MCPToolArtifact` 和多模式内容）。
 
-  如果代码库使用提示、资源、采样、根、SSE/WebSocket 传输、`to_fastmcp` 或指南标记为不支持或协议已弃用的任何 API，请停止并询问用户如何继续。不要发明替代品。
+## 步骤 4：明确处理差距
 
-  ## 规则
+如果代码库使用提示、资源、采样、根、SSE/WebSocket 传输、`to_fastmcp` 或指南标记为不支持或协议已弃用的任何 API，请停止并询问用户如何继续。不要发明替代品。
 
-  * 关注此迁移。不要重写不相关的代理代码。
-  * 优先使用指南中的 `langchain.mcp` API，而不是保留 `langchain-mcp-adapters`。
-  * 当指南未涵盖调用站点或参数时，询问而不是猜测。
-</Prompt>
+## 规则
 
-<Note>
-  `langchain.mcp`命名空间需要`langchain[mcp]>=1.4.0`并且处于测试阶段。从它导入会产生 `LangChainBetaWarning`。 API 可能会更改。
-</Note>
+* 关注此迁移。不要重写不相关的代理代码。
+* 优先使用指南中的 `langchain.mcp` API，而不是保留 `langchain-mcp-adapters`。
+* 当指南未涵盖调用站点或参数时，询问而不是猜测。
 
-## 安装
+> [!注意]
+>
+> `langchain.mcp` 命名空间需要 `langchain[mcp]>=1.4.0` 并且处于测试阶段。从它导入会产生 `LangChainBetaWarning`。 API 可能会更改。
 
-将独立包替换为额外的 `mcp`，它引入了 FastMCP：
+＃＃ 安装将独立包替换为额外的 `mcp`，它引入了 FastMCP：
 
-<CodeGroup>
-  ```bash pip theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  pip uninstall langchain-mcp-adapters
-  pip install "langchain[mcp]"
-  ```
+```bash pip theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+pip uninstall langchain-mcp-adapters
+pip install "langchain[mcp]"
+```
 
-  ```bash uv theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  uv remove langchain-mcp-adapters
-  uv add "langchain[mcp]"
-  ```
-</CodeGroup>## 导入路径
+```bash uv theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+uv remove langchain-mcp-adapters
+uv add "langchain[mcp]"
+```
+
+## 导入路径
 
 | `langchain-mcp-adapters` | `langchain.mcp` |
 | - | - |
@@ -172,7 +170,7 @@ async with MCPAdapter(client) as adapter:
 
 ## 工具拦截器
 
-`langchain-mcp-adapters`拦截器类型（`tool_interceptors`、`ToolCallInterceptor`、`MCPToolCallRequest`、`MCPToolCallResult`）消失了。拦截工具使用 LangChain [⟦T139⟧](https://reference.langchain.com/python/langchain/agents/middleware/types/wrap_tool_call) 中间件调用代理端，该中间件包装了 `create_agent` 运行的每个工具，而不仅仅是 MCP 工具。 MCP 出处可在`metadata["mcp"]`下的工具元数据中找到，因此拦截器仍然可以在其上分支：
+`langchain-mcp-adapters`拦截器类型（`tool_interceptors`、`ToolCallInterceptor`、`MCPToolCallRequest`、`MCPToolCallResult`）消失了。拦截工具使用LangChain[⟦T139⟧](https://reference.langchain.com/python/langchain/agents/middleware/types/wrap_tool_call)中间件调用代理端，该中间件包装`create_agent`运行的每个工具，而不仅仅是MCP工具。 MCP 出处可在`metadata["mcp"]`下的工具元数据中找到，因此拦截器仍然可以在其上分支：
 
 ```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 from collections.abc import Callable
@@ -248,12 +246,6 @@ Auth 转移到了`fastmcp.Client`。构建一个客户端，将 `auth` 设置为
 
 ***
 
-<div>
-  <Callout icon="terminal-2">
-    [Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
-  </Callout>
+[Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
 
-  <Callout icon="edit">
-    [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/oss/python/migrate/langchain-mcp-adapters.mdx) 或 [file an issue](https://github.com/langchain-ai/docs/issues/new/choose)。
-  </Callout>
-</div>
+[Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/oss/python/migrate/langchain-mcp-adapters.mdx) 或 [file an issue](https://github.com/langchain-ai/docs/issues/new/choose)。

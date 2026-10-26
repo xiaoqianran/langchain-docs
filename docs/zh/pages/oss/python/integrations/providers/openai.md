@@ -10,52 +10,42 @@
 
 ## 模型接口
 
-<Columns>
-  <Card title="ChatOpenAI" href="/oss/python/integrations/chat/openai" icon="message">
-    OpenAI 聊天模型。
-  </Card>
+> **[ChatOpenAI](/oss/python/integrations/chat/openai)**
+>
+> OpenAI 聊天模型。
 
-  <Card title="Decisions API" href="/oss/python/integrations/decision_models/openai" icon="arrows-split">
-    用于路由、分类和代理中间件的键入答案和校准概率。
-  </Card>
+> **[Decisions API](/oss/python/integrations/decision_models/openai)**
+>
+> 用于路由、分类和代理中间件的键入答案和校准概率。
 
-  <Card title="AzureChatOpenAI" href="/oss/python/integrations/chat/azure_chat_openai" icon="brand-windows">
-    具有企业功能的 Azure OpenAI 聊天模型。
-  </Card>
+> **[AzureChatOpenAI](/oss/python/integrations/chat/azure_chat_openai)**
+>
+> 具有企业功能的 Azure OpenAI 聊天模型。
 
-  <Card title="OpenAIEmbeddings" href="/oss/python/integrations/embeddings/openai" icon="stack-2">
-    OpenAI 嵌入模型。
-  </Card>
+> **[OpenAIEmbeddings](/oss/python/integrations/embeddings/openai)**
+>
+> OpenAI 嵌入模型。
 
-  <Card title="AzureOpenAIEmbeddings" href="/oss/python/integrations/embeddings/azure_openai" icon="brand-windows">
-    Azure OpenAI 嵌入具有企业功能的模型。
-  </Card>
-</Columns>
+> **[AzureOpenAIEmbeddings](/oss/python/integrations/embeddings/azure_openai)**
+>
+> Azure OpenAI 嵌入具有企业功能的模型。
 
 ## 其他
 
-<Columns>
-  <Card title="OpenAI" href="/oss/python/integrations/llms/openai" icon="cursor-text">
-    （旧版）OpenAI 文本完成模型。
-  </Card>
+> **[OpenAI](/oss/python/integrations/llms/openai)**
+>
+>（旧版）OpenAI 文本完成模型。
 
-  <Card title="AzureOpenAI" href="/oss/python/integrations/llms/azure_openai" icon="brand-windows">
-    Azure 上托管的（旧）OpenAI 文本完成模型的包装器。
-  </Card>
+> **[AzureOpenAI](/oss/python/integrations/llms/azure_openai)**
+>
+> Azure 上托管的（旧版）OpenAI 文本完成模型的包装器。
 
-  <Card title="OpenAIModerationChain" href="https://python.langchain.com/v0.1/docs/guides/productionization/safety/moderation" icon="link">
-    检测可能带有仇恨、暴力等内容的文本。
-  </Card>
-</Columns>
+> **[OpenAIModerationMiddleware](/oss/python/integrations/middleware/openai#content-moderation)**
+>
+> 检测可能带有仇恨、暴力等内容的文本。
 
 ***
 
-<div>
-  <Callout icon="terminal-2">
-    [Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
-  </Callout>
+[Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
 
-  <Callout icon="edit">
-    [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/oss/python/integrations/providers/openai.mdx) 或 [file an issue](https://github.com/langchain-ai/docs/issues/new/choose)。
-  </Callout>
-</div>
+[Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/oss/python/integrations/providers/openai.mdx) 或 [file an issue](https://github.com/langchain-ai/docs/issues/new/choose)。

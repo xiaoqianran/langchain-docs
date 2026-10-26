@@ -130,9 +130,9 @@ def test_final_response(weather_model):
     assert "Tokyo" in result["messages"][-1].text
 ```
 
-<Note>
-  `GenericFakeChatModel` 从迭代器读取响应，并且耗尽的迭代器无法重用。将夹具保持在默认的 `function` 范围，这会为每个测试构建一个新的模型。 `module` 或 `session` 作用域共享一个迭代器，因此一旦迭代器用完，后面的测试就会失败。
-</Note>
+> [!注意]
+>
+> `GenericFakeChatModel` 从迭代器读取响应，并且耗尽的迭代器无法重用。将夹具保持在默认的 `function` 范围，这会为每个测试构建一个新的模型。 `module` 或 `session` 作用域共享一个迭代器，因此一旦迭代器用完，后面的测试就会失败。
 
 ## InMemorySaver 检查指针
 
@@ -168,12 +168,6 @@ agent.invoke(
 
 ***
 
-<div>
-  <Callout icon="terminal-2">
-    [Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
-  </Callout>
+[Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
 
-  <Callout icon="edit">
-    [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/oss/langchain/test/unit-testing.mdx) 或 [file an issue](https://github.com/langchain-ai/docs/issues/new/choose)。
-  </Callout>
-</div>
+[Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/oss/langchain/test/unit-testing.mdx) 或 [file an issue](https://github.com/langchain-ai/docs/issues/new/choose)。

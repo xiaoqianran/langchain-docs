@@ -6,11 +6,18 @@
 
 与检查点后端集成以实现 LangGraph 持久性。
 
-检查点在LangGraph中启用[persistence](/oss/python/langgraph/persistence)，允许代理在交互中保存和恢复状态。
+检查点在LangGraph中启用[persistence](/oss/python/langgraph/persistence)，允许代理在交互过程中保存和恢复状态。
 
 要为自定义存储后端实现您自己的检查点，请参阅[Build a custom checkpointer](/oss/python/langgraph/checkpointers#build-a-custom-checkpointer)。
 
-<PythonIntegrationComponentMap />
+集成组件
+箭头显示了典型的检索流程。突出显示的组件是本页所涵盖的组件。
+
+### 典型检索流程
+
+### 代理能力
+
+### 执行和状态
 
 |后端|套餐 |来源 |
 | - | - | - |
@@ -35,12 +42,6 @@
 
 ***
 
-<div>
-  <Callout icon="terminal-2">
-    [Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
-  </Callout>
+[Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
 
-  <Callout icon="edit">
-    [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/oss/python/integrations/checkpointers/index.mdx) 或 [file an issue](https://github.com/langchain-ai/docs/issues/new/choose)。
-  </Callout>
-</div>
+[Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/oss/python/integrations/checkpointers/index.mdx) 或 [file an issue](https://github.com/langchain-ai/docs/issues/new/choose)。

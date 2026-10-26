@@ -45,280 +45,278 @@ graph LR
 * **`InterruptOnConfig`**：自定义配置。设置 `allowed_decisions` 来控制审阅选项。
   在 Python 中，添加可选的 `when` 谓词以仅中断特定调用（请参阅 [Conditional interrupts](#conditional-interrupts)）。
 
-<CodeGroup>
-  ```python Google theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  from langchain.tools import tool
-  from deepagents import create_deep_agent
-  from langgraph.checkpoint.memory import MemorySaver
+```python Google theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+from langchain.tools import tool
+from deepagents import create_deep_agent
+from langgraph.checkpoint.memory import MemorySaver
 
 
-  @tool
-  def remove_file(path: str) -> str:
-      """Delete a file from the filesystem."""
-      return f"Deleted {path}"
+@tool
+def remove_file(path: str) -> str:
+    """Delete a file from the filesystem."""
+    return f"Deleted {path}"
 
 
-  @tool
-  def fetch_file(path: str) -> str:
-      """Read a file from the filesystem."""
-      return f"Contents of {path}"
-
+@tool
+def fetch_file(path: str) -> str:
+    """Read a file from the filesystem."""
+    return f"Contents of {path}"
 
-  @tool
-  def notify_email(to: str, subject: str, body: str) -> str:
-      """Send an email."""
-      return f"Sent email to {to}"
 
+@tool
+def notify_email(to: str, subject: str, body: str) -> str:
+    """Send an email."""
+    return f"Sent email to {to}"
 
-  # Checkpointer is REQUIRED for human-in-the-loop
-  checkpointer = MemorySaver()
 
-  agent = create_deep_agent(
-      model="google_genai:gemini-3.6-flash",
-      tools=[remove_file, fetch_file, notify_email],
-      interrupt_on={
-          "remove_file": True,  # Default: approve, edit, reject, respond
-          "fetch_file": False,  # No interrupts needed
-          "notify_email": {"allowed_decisions": ["approve", "reject"]},  # No editing
-      },
-      checkpointer=checkpointer,  # Required!
-  )
-  ```
+# Checkpointer is REQUIRED for human-in-the-loop
+checkpointer = MemorySaver()
 
-  ```python OpenAI theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  from langchain.tools import tool
-  from deepagents import create_deep_agent
-  from langgraph.checkpoint.memory import MemorySaver
+agent = create_deep_agent(
+    model="google_genai:gemini-3.6-flash",
+    tools=[remove_file, fetch_file, notify_email],
+    interrupt_on={
+        "remove_file": True,  # Default: approve, edit, reject, respond
+        "fetch_file": False,  # No interrupts needed
+        "notify_email": {"allowed_decisions": ["approve", "reject"]},  # No editing
+    },
+    checkpointer=checkpointer,  # Required!
+)
+```
 
+```python OpenAI theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+from langchain.tools import tool
+from deepagents import create_deep_agent
+from langgraph.checkpoint.memory import MemorySaver
 
-  @tool
-  def remove_file(path: str) -> str:
-      """Delete a file from the filesystem."""
-      return f"Deleted {path}"
 
+@tool
+def remove_file(path: str) -> str:
+    """Delete a file from the filesystem."""
+    return f"Deleted {path}"
 
-  @tool
-  def fetch_file(path: str) -> str:
-      """Read a file from the filesystem."""
-      return f"Contents of {path}"
 
+@tool
+def fetch_file(path: str) -> str:
+    """Read a file from the filesystem."""
+    return f"Contents of {path}"
 
-  @tool
-  def notify_email(to: str, subject: str, body: str) -> str:
-      """Send an email."""
-      return f"Sent email to {to}"
 
+@tool
+def notify_email(to: str, subject: str, body: str) -> str:
+    """Send an email."""
+    return f"Sent email to {to}"
 
-  # Checkpointer is REQUIRED for human-in-the-loop
-  checkpointer = MemorySaver()
 
-  agent = create_deep_agent(
-      model="openai:gpt-5.5",
-      tools=[remove_file, fetch_file, notify_email],
-      interrupt_on={
-          "remove_file": True,  # Default: approve, edit, reject, respond
-          "fetch_file": False,  # No interrupts needed
-          "notify_email": {"allowed_decisions": ["approve", "reject"]},  # No editing
-      },
-      checkpointer=checkpointer,  # Required!
-  )
-  ```
+# Checkpointer is REQUIRED for human-in-the-loop
+checkpointer = MemorySaver()
 
-  ```python Anthropic theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  from langchain.tools import tool
-  from deepagents import create_deep_agent
-  from langgraph.checkpoint.memory import MemorySaver
+agent = create_deep_agent(
+    model="openai:gpt-5.5",
+    tools=[remove_file, fetch_file, notify_email],
+    interrupt_on={
+        "remove_file": True,  # Default: approve, edit, reject, respond
+        "fetch_file": False,  # No interrupts needed
+        "notify_email": {"allowed_decisions": ["approve", "reject"]},  # No editing
+    },
+    checkpointer=checkpointer,  # Required!
+)
+```
 
+```python Anthropic theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+from langchain.tools import tool
+from deepagents import create_deep_agent
+from langgraph.checkpoint.memory import MemorySaver
 
-  @tool
-  def remove_file(path: str) -> str:
-      """Delete a file from the filesystem."""
-      return f"Deleted {path}"
 
+@tool
+def remove_file(path: str) -> str:
+    """Delete a file from the filesystem."""
+    return f"Deleted {path}"
 
-  @tool
-  def fetch_file(path: str) -> str:
-      """Read a file from the filesystem."""
-      return f"Contents of {path}"
 
+@tool
+def fetch_file(path: str) -> str:
+    """Read a file from the filesystem."""
+    return f"Contents of {path}"
 
-  @tool
-  def notify_email(to: str, subject: str, body: str) -> str:
-      """Send an email."""
-      return f"Sent email to {to}"
-
 
-  # Checkpointer is REQUIRED for human-in-the-loop
-  checkpointer = MemorySaver()
-
-  agent = create_deep_agent(
-      model="anthropic:claude-sonnet-5",
-      tools=[remove_file, fetch_file, notify_email],
-      interrupt_on={
-          "remove_file": True,  # Default: approve, edit, reject, respond
-          "fetch_file": False,  # No interrupts needed
-          "notify_email": {"allowed_decisions": ["approve", "reject"]},  # No editing
-      },
-      checkpointer=checkpointer,  # Required!
-  )
-  ```
+@tool
+def notify_email(to: str, subject: str, body: str) -> str:
+    """Send an email."""
+    return f"Sent email to {to}"
 
-  ```python OpenRouter theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  from langchain.tools import tool
-  from deepagents import create_deep_agent
-  from langgraph.checkpoint.memory import MemorySaver
 
+# Checkpointer is REQUIRED for human-in-the-loop
+checkpointer = MemorySaver()
 
-  @tool
-  def remove_file(path: str) -> str:
-      """Delete a file from the filesystem."""
-      return f"Deleted {path}"
+agent = create_deep_agent(
+    model="anthropic:claude-sonnet-5",
+    tools=[remove_file, fetch_file, notify_email],
+    interrupt_on={
+        "remove_file": True,  # Default: approve, edit, reject, respond
+        "fetch_file": False,  # No interrupts needed
+        "notify_email": {"allowed_decisions": ["approve", "reject"]},  # No editing
+    },
+    checkpointer=checkpointer,  # Required!
+)
+```
 
+```python OpenRouter theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+from langchain.tools import tool
+from deepagents import create_deep_agent
+from langgraph.checkpoint.memory import MemorySaver
 
-  @tool
-  def fetch_file(path: str) -> str:
-      """Read a file from the filesystem."""
-      return f"Contents of {path}"
-
 
-  @tool
-  def notify_email(to: str, subject: str, body: str) -> str:
-      """Send an email."""
-      return f"Sent email to {to}"
+@tool
+def remove_file(path: str) -> str:
+    """Delete a file from the filesystem."""
+    return f"Deleted {path}"
 
 
-  # Checkpointer is REQUIRED for human-in-the-loop
-  checkpointer = MemorySaver()
+@tool
+def fetch_file(path: str) -> str:
+    """Read a file from the filesystem."""
+    return f"Contents of {path}"
+
 
-  agent = create_deep_agent(
-      model="openrouter:z-ai/glm-5.2",
-      tools=[remove_file, fetch_file, notify_email],
-      interrupt_on={
-          "remove_file": True,  # Default: approve, edit, reject, respond
-          "fetch_file": False,  # No interrupts needed
-          "notify_email": {"allowed_decisions": ["approve", "reject"]},  # No editing
-      },
-      checkpointer=checkpointer,  # Required!
-  )
-  ```
+@tool
+def notify_email(to: str, subject: str, body: str) -> str:
+    """Send an email."""
+    return f"Sent email to {to}"
 
-  ```python Fireworks theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  from langchain.tools import tool
-  from deepagents import create_deep_agent
-  from langgraph.checkpoint.memory import MemorySaver
 
+# Checkpointer is REQUIRED for human-in-the-loop
+checkpointer = MemorySaver()
 
-  @tool
-  def remove_file(path: str) -> str:
-      """Delete a file from the filesystem."""
-      return f"Deleted {path}"
+agent = create_deep_agent(
+    model="openrouter:z-ai/glm-5.2",
+    tools=[remove_file, fetch_file, notify_email],
+    interrupt_on={
+        "remove_file": True,  # Default: approve, edit, reject, respond
+        "fetch_file": False,  # No interrupts needed
+        "notify_email": {"allowed_decisions": ["approve", "reject"]},  # No editing
+    },
+    checkpointer=checkpointer,  # Required!
+)
+```
 
+```python Fireworks theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+from langchain.tools import tool
+from deepagents import create_deep_agent
+from langgraph.checkpoint.memory import MemorySaver
 
-  @tool
-  def fetch_file(path: str) -> str:
-      """Read a file from the filesystem."""
-      return f"Contents of {path}"
-
-
-  @tool
-  def notify_email(to: str, subject: str, body: str) -> str:
-      """Send an email."""
-      return f"Sent email to {to}"
-
-
-  # Checkpointer is REQUIRED for human-in-the-loop
-  checkpointer = MemorySaver()
-
-  agent = create_deep_agent(
-      model="fireworks:accounts/fireworks/models/glm-5p2",
-      tools=[remove_file, fetch_file, notify_email],
-      interrupt_on={
-          "remove_file": True,  # Default: approve, edit, reject, respond
-          "fetch_file": False,  # No interrupts needed
-          "notify_email": {"allowed_decisions": ["approve", "reject"]},  # No editing
-      },
-      checkpointer=checkpointer,  # Required!
-  )
-  ```
-
-  ```python Baseten theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  from langchain.tools import tool
-  from deepagents import create_deep_agent
-  from langgraph.checkpoint.memory import MemorySaver
-
-
-  @tool
-  def remove_file(path: str) -> str:
-      """Delete a file from the filesystem."""
-      return f"Deleted {path}"
-
-
-  @tool
-  def fetch_file(path: str) -> str:
-      """Read a file from the filesystem."""
-      return f"Contents of {path}"
-
-
-  @tool
-  def notify_email(to: str, subject: str, body: str) -> str:
-      """Send an email."""
-      return f"Sent email to {to}"
-
-
-  # Checkpointer is REQUIRED for human-in-the-loop
-  checkpointer = MemorySaver()
-
-  agent = create_deep_agent(
-      model="baseten:zai-org/GLM-5.2",
-      tools=[remove_file, fetch_file, notify_email],
-      interrupt_on={
-          "remove_file": True,  # Default: approve, edit, reject, respond
-          "fetch_file": False,  # No interrupts needed
-          "notify_email": {"allowed_decisions": ["approve", "reject"]},  # No editing
-      },
-      checkpointer=checkpointer,  # Required!
-  )
-  ```
-
-  ```python Ollama theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  from langchain.tools import tool
-  from deepagents import create_deep_agent
-  from langgraph.checkpoint.memory import MemorySaver
-
-
-  @tool
-  def remove_file(path: str) -> str:
-      """Delete a file from the filesystem."""
-      return f"Deleted {path}"
-
-
-  @tool
-  def fetch_file(path: str) -> str:
-      """Read a file from the filesystem."""
-      return f"Contents of {path}"
-
-
-  @tool
-  def notify_email(to: str, subject: str, body: str) -> str:
-      """Send an email."""
-      return f"Sent email to {to}"
-
-
-  # Checkpointer is REQUIRED for human-in-the-loop
-  checkpointer = MemorySaver()
-
-  agent = create_deep_agent(
-      model="ollama:north-mini-code-1.0",
-      tools=[remove_file, fetch_file, notify_email],
-      interrupt_on={
-          "remove_file": True,  # Default: approve, edit, reject, respond
-          "fetch_file": False,  # No interrupts needed
-          "notify_email": {"allowed_decisions": ["approve", "reject"]},  # No editing
-      },
-      checkpointer=checkpointer,  # Required!
-  )
-  ```
-</CodeGroup>
+
+@tool
+def remove_file(path: str) -> str:
+    """Delete a file from the filesystem."""
+    return f"Deleted {path}"
+
+
+@tool
+def fetch_file(path: str) -> str:
+    """Read a file from the filesystem."""
+    return f"Contents of {path}"
+
+
+@tool
+def notify_email(to: str, subject: str, body: str) -> str:
+    """Send an email."""
+    return f"Sent email to {to}"
+
+
+# Checkpointer is REQUIRED for human-in-the-loop
+checkpointer = MemorySaver()
+
+agent = create_deep_agent(
+    model="fireworks:accounts/fireworks/models/glm-5p2",
+    tools=[remove_file, fetch_file, notify_email],
+    interrupt_on={
+        "remove_file": True,  # Default: approve, edit, reject, respond
+        "fetch_file": False,  # No interrupts needed
+        "notify_email": {"allowed_decisions": ["approve", "reject"]},  # No editing
+    },
+    checkpointer=checkpointer,  # Required!
+)
+```
+
+```python Baseten theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+from langchain.tools import tool
+from deepagents import create_deep_agent
+from langgraph.checkpoint.memory import MemorySaver
+
+
+@tool
+def remove_file(path: str) -> str:
+    """Delete a file from the filesystem."""
+    return f"Deleted {path}"
+
+
+@tool
+def fetch_file(path: str) -> str:
+    """Read a file from the filesystem."""
+    return f"Contents of {path}"
+
+
+@tool
+def notify_email(to: str, subject: str, body: str) -> str:
+    """Send an email."""
+    return f"Sent email to {to}"
+
+
+# Checkpointer is REQUIRED for human-in-the-loop
+checkpointer = MemorySaver()
+
+agent = create_deep_agent(
+    model="baseten:zai-org/GLM-5.2",
+    tools=[remove_file, fetch_file, notify_email],
+    interrupt_on={
+        "remove_file": True,  # Default: approve, edit, reject, respond
+        "fetch_file": False,  # No interrupts needed
+        "notify_email": {"allowed_decisions": ["approve", "reject"]},  # No editing
+    },
+    checkpointer=checkpointer,  # Required!
+)
+```
+
+```python Ollama theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+from langchain.tools import tool
+from deepagents import create_deep_agent
+from langgraph.checkpoint.memory import MemorySaver
+
+
+@tool
+def remove_file(path: str) -> str:
+    """Delete a file from the filesystem."""
+    return f"Deleted {path}"
+
+
+@tool
+def fetch_file(path: str) -> str:
+    """Read a file from the filesystem."""
+    return f"Contents of {path}"
+
+
+@tool
+def notify_email(to: str, subject: str, body: str) -> str:
+    """Send an email."""
+    return f"Sent email to {to}"
+
+
+# Checkpointer is REQUIRED for human-in-the-loop
+checkpointer = MemorySaver()
+
+agent = create_deep_agent(
+    model="ollama:north-mini-code-1.0",
+    tools=[remove_file, fetch_file, notify_email],
+    interrupt_on={
+        "remove_file": True,  # Default: approve, edit, reject, respond
+        "fetch_file": False,  # No interrupts needed
+        "notify_email": {"allowed_decisions": ["approve", "reject"]},  # No editing
+    },
+    checkpointer=checkpointer,  # Required!
+)
+```
 
 ## 决策类型
 
@@ -331,9 +329,9 @@ graph LR
 
 当人类拒绝提议的行动时使用`reject`。仅当人类充当工具时才使用`respond`，例如回答`ask_user`提示。不要使用`respond`来拒绝副作用工具，因为它的消息可能会被模型视为成功的工具结果。
 
-<Tip>
-  **编辑**工具参数时，请保守地进行更改。对原始参数的重大修改可能会导致模型重新评估其方法，并可能多次执行该工具或采取意外的操作。
-</Tip>
+> [!提示]
+>
+> **编辑**工具参数时，请保守地进行更改。对原始参数的重大修改可能会导致模型重新评估其方法，并可能多次执行该工具或采取意外的操作。
 
 您可以自定义每个工具可用的决策：
 
@@ -352,179 +350,177 @@ interrupt_on = {
 
 默认情况下，`interrupt_on` 中列出的每个工具调用都会暂停以供审核。要仅暂停某些调用，请将 `when` 谓词添加到工具的 `InterruptOnConfig`。该谓词接收 [ToolCallRequest](https://reference.langchain.com/python/langgraph.prebuilt/tool_node/ToolCallRequest) 并返回 `True` 以中断或返回 `False` 以自动批准，因此您可以控制工具的参数。
 
-<Note>
-  Conditional interrupts require `langchain>=1.3.3`.
-</Note>
+> [!注意]
+>
+> 条件中断需要`langchain>=1.3.3`。
 
-<CodeGroup>
-  ```python Google theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  from deepagents import create_deep_agent
-  from langchain.agents.middleware import ToolCallRequest
-  from langgraph.checkpoint.memory import MemorySaver
-
-
-  def writes_outside_workspace(request: ToolCallRequest) -> bool:
-      """Pause writes to paths outside the workspace directory."""
-      path = request.tool_call["args"].get("file_path", "")
-      return not path.startswith("/workspace/")
+```python Google theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+from deepagents import create_deep_agent
+from langchain.agents.middleware import ToolCallRequest
+from langgraph.checkpoint.memory import MemorySaver
 
 
-  agent = create_deep_agent(
-      model="google_genai:gemini-3.6-flash",
-      interrupt_on={
-          "write_file": {
-              "allowed_decisions": ["approve", "edit", "reject"],
-              "when": writes_outside_workspace,
-          },
-      },
-      checkpointer=MemorySaver(),
-  )
-  ```
-
-  ```python OpenAI theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  from deepagents import create_deep_agent
-  from langchain.agents.middleware import ToolCallRequest
-  from langgraph.checkpoint.memory import MemorySaver
+def writes_outside_workspace(request: ToolCallRequest) -> bool:
+    """Pause writes to paths outside the workspace directory."""
+    path = request.tool_call["args"].get("file_path", "")
+    return not path.startswith("/workspace/")
 
 
-  def writes_outside_workspace(request: ToolCallRequest) -> bool:
-      """Pause writes to paths outside the workspace directory."""
-      path = request.tool_call["args"].get("file_path", "")
-      return not path.startswith("/workspace/")
+agent = create_deep_agent(
+    model="google_genai:gemini-3.6-flash",
+    interrupt_on={
+        "write_file": {
+            "allowed_decisions": ["approve", "edit", "reject"],
+            "when": writes_outside_workspace,
+        },
+    },
+    checkpointer=MemorySaver(),
+)
+```
+
+```python OpenAI theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+from deepagents import create_deep_agent
+from langchain.agents.middleware import ToolCallRequest
+from langgraph.checkpoint.memory import MemorySaver
 
 
-  agent = create_deep_agent(
-      model="openai:gpt-5.5",
-      interrupt_on={
-          "write_file": {
-              "allowed_decisions": ["approve", "edit", "reject"],
-              "when": writes_outside_workspace,
-          },
-      },
-      checkpointer=MemorySaver(),
-  )
-  ```
-
-  ```python Anthropic theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  from deepagents import create_deep_agent
-  from langchain.agents.middleware import ToolCallRequest
-  from langgraph.checkpoint.memory import MemorySaver
+def writes_outside_workspace(request: ToolCallRequest) -> bool:
+    """Pause writes to paths outside the workspace directory."""
+    path = request.tool_call["args"].get("file_path", "")
+    return not path.startswith("/workspace/")
 
 
-  def writes_outside_workspace(request: ToolCallRequest) -> bool:
-      """Pause writes to paths outside the workspace directory."""
-      path = request.tool_call["args"].get("file_path", "")
-      return not path.startswith("/workspace/")
+agent = create_deep_agent(
+    model="openai:gpt-5.5",
+    interrupt_on={
+        "write_file": {
+            "allowed_decisions": ["approve", "edit", "reject"],
+            "when": writes_outside_workspace,
+        },
+    },
+    checkpointer=MemorySaver(),
+)
+```
+
+```python Anthropic theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+from deepagents import create_deep_agent
+from langchain.agents.middleware import ToolCallRequest
+from langgraph.checkpoint.memory import MemorySaver
 
 
-  agent = create_deep_agent(
-      model="anthropic:claude-sonnet-5",
-      interrupt_on={
-          "write_file": {
-              "allowed_decisions": ["approve", "edit", "reject"],
-              "when": writes_outside_workspace,
-          },
-      },
-      checkpointer=MemorySaver(),
-  )
-  ```
-
-  ```python OpenRouter theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  from deepagents import create_deep_agent
-  from langchain.agents.middleware import ToolCallRequest
-  from langgraph.checkpoint.memory import MemorySaver
+def writes_outside_workspace(request: ToolCallRequest) -> bool:
+    """Pause writes to paths outside the workspace directory."""
+    path = request.tool_call["args"].get("file_path", "")
+    return not path.startswith("/workspace/")
 
 
-  def writes_outside_workspace(request: ToolCallRequest) -> bool:
-      """Pause writes to paths outside the workspace directory."""
-      path = request.tool_call["args"].get("file_path", "")
-      return not path.startswith("/workspace/")
+agent = create_deep_agent(
+    model="anthropic:claude-sonnet-5",
+    interrupt_on={
+        "write_file": {
+            "allowed_decisions": ["approve", "edit", "reject"],
+            "when": writes_outside_workspace,
+        },
+    },
+    checkpointer=MemorySaver(),
+)
+```
+
+```python OpenRouter theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+from deepagents import create_deep_agent
+from langchain.agents.middleware import ToolCallRequest
+from langgraph.checkpoint.memory import MemorySaver
 
 
-  agent = create_deep_agent(
-      model="openrouter:z-ai/glm-5.2",
-      interrupt_on={
-          "write_file": {
-              "allowed_decisions": ["approve", "edit", "reject"],
-              "when": writes_outside_workspace,
-          },
-      },
-      checkpointer=MemorySaver(),
-  )
-  ```
-
-  ```python Fireworks theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  from deepagents import create_deep_agent
-  from langchain.agents.middleware import ToolCallRequest
-  from langgraph.checkpoint.memory import MemorySaver
+def writes_outside_workspace(request: ToolCallRequest) -> bool:
+    """Pause writes to paths outside the workspace directory."""
+    path = request.tool_call["args"].get("file_path", "")
+    return not path.startswith("/workspace/")
 
 
-  def writes_outside_workspace(request: ToolCallRequest) -> bool:
-      """Pause writes to paths outside the workspace directory."""
-      path = request.tool_call["args"].get("file_path", "")
-      return not path.startswith("/workspace/")
+agent = create_deep_agent(
+    model="openrouter:z-ai/glm-5.2",
+    interrupt_on={
+        "write_file": {
+            "allowed_decisions": ["approve", "edit", "reject"],
+            "when": writes_outside_workspace,
+        },
+    },
+    checkpointer=MemorySaver(),
+)
+```
+
+```python Fireworks theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+from deepagents import create_deep_agent
+from langchain.agents.middleware import ToolCallRequest
+from langgraph.checkpoint.memory import MemorySaver
 
 
-  agent = create_deep_agent(
-      model="fireworks:accounts/fireworks/models/glm-5p2",
-      interrupt_on={
-          "write_file": {
-              "allowed_decisions": ["approve", "edit", "reject"],
-              "when": writes_outside_workspace,
-          },
-      },
-      checkpointer=MemorySaver(),
-  )
-  ```
-
-  ```python Baseten theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  from deepagents import create_deep_agent
-  from langchain.agents.middleware import ToolCallRequest
-  from langgraph.checkpoint.memory import MemorySaver
+def writes_outside_workspace(request: ToolCallRequest) -> bool:
+    """Pause writes to paths outside the workspace directory."""
+    path = request.tool_call["args"].get("file_path", "")
+    return not path.startswith("/workspace/")
 
 
-  def writes_outside_workspace(request: ToolCallRequest) -> bool:
-      """Pause writes to paths outside the workspace directory."""
-      path = request.tool_call["args"].get("file_path", "")
-      return not path.startswith("/workspace/")
+agent = create_deep_agent(
+    model="fireworks:accounts/fireworks/models/glm-5p2",
+    interrupt_on={
+        "write_file": {
+            "allowed_decisions": ["approve", "edit", "reject"],
+            "when": writes_outside_workspace,
+        },
+    },
+    checkpointer=MemorySaver(),
+)
+```
+
+```python Baseten theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+from deepagents import create_deep_agent
+from langchain.agents.middleware import ToolCallRequest
+from langgraph.checkpoint.memory import MemorySaver
 
 
-  agent = create_deep_agent(
-      model="baseten:zai-org/GLM-5.2",
-      interrupt_on={
-          "write_file": {
-              "allowed_decisions": ["approve", "edit", "reject"],
-              "when": writes_outside_workspace,
-          },
-      },
-      checkpointer=MemorySaver(),
-  )
-  ```
-
-  ```python Ollama theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  from deepagents import create_deep_agent
-  from langchain.agents.middleware import ToolCallRequest
-  from langgraph.checkpoint.memory import MemorySaver
+def writes_outside_workspace(request: ToolCallRequest) -> bool:
+    """Pause writes to paths outside the workspace directory."""
+    path = request.tool_call["args"].get("file_path", "")
+    return not path.startswith("/workspace/")
 
 
-  def writes_outside_workspace(request: ToolCallRequest) -> bool:
-      """Pause writes to paths outside the workspace directory."""
-      path = request.tool_call["args"].get("file_path", "")
-      return not path.startswith("/workspace/")
+agent = create_deep_agent(
+    model="baseten:zai-org/GLM-5.2",
+    interrupt_on={
+        "write_file": {
+            "allowed_decisions": ["approve", "edit", "reject"],
+            "when": writes_outside_workspace,
+        },
+    },
+    checkpointer=MemorySaver(),
+)
+```
+
+```python Ollama theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+from deepagents import create_deep_agent
+from langchain.agents.middleware import ToolCallRequest
+from langgraph.checkpoint.memory import MemorySaver
 
 
-  agent = create_deep_agent(
-      model="ollama:north-mini-code-1.0",
-      interrupt_on={
-          "write_file": {
-              "allowed_decisions": ["approve", "edit", "reject"],
-              "when": writes_outside_workspace,
-          },
-      },
-      checkpointer=MemorySaver(),
-  )
-  ```
-</CodeGroup>
+def writes_outside_workspace(request: ToolCallRequest) -> bool:
+    """Pause writes to paths outside the workspace directory."""
+    path = request.tool_call["args"].get("file_path", "")
+    return not path.startswith("/workspace/")
+
+
+agent = create_deep_agent(
+    model="ollama:north-mini-code-1.0",
+    interrupt_on={
+        "write_file": {
+            "allowed_decisions": ["approve", "edit", "reject"],
+            "when": writes_outside_workspace,
+        },
+    },
+    checkpointer=MemorySaver(),
+)
+```
 
 当 `when` 谓词返回 `False` 时，调用将不间断地运行。当它返回 `True` 时，或者当您省略 `when` 时，呼叫将照常暂停。评估为 `False` 的调用永远不会添加到中断批次中，因此审核者只能看到需要决策的操作。
 
@@ -582,11 +578,11 @@ if result.get("__interrupt__"):  # [!code highlight]
 print(result["messages"][-1].content)  # [!code highlight]
 ```
 
-## Handle interrupts with streaming对于实时 UI，请使用 `.stream()` 而不是 `.invoke()` 在处理 HITL 中断时显示令牌和工具调用进度。中断在 `updates` 流中显示为 `__interrupt__` 条目。流完成后，收集人工决策并通过使用 `Command(resume=...)` 再次流式传输来恢复。
+## 使用流处理中断对于实时 UI，请使用 `.stream()` 而不是 `.invoke()` 在处理 HITL 中断时显示令牌和工具调用进度。中断在 `updates` 流中显示为 `__interrupt__` 条目。流完成后，收集人工决策并通过使用 `Command(resume=...)` 再次流式传输来恢复。
 
-<Note>
-  对于典型的 `interrupt_on` HITL 暂停，以平坦的 `{"decisions": [...]}` 有效负载恢复，其形状与 `.invoke()` 相同。当多个中断同时挂起时（例如，并行分支），请将每个中断 ID 映射到其恢复值。参见[Handling multiple interrupts](/oss/python/langgraph/interrupts#handling-multiple-interrupts)。
-</Note>
+> [!注意]
+>
+> 对于典型的 `interrupt_on` HITL 暂停，以平坦的 `{"decisions": [...]}` 有效负载恢复，其形状与 `.invoke()` 相同。当多个中断同时挂起时（例如，并行分支），请将每个中断 ID 映射到其恢复值。参见[Handling multiple interrupts](/oss/python/langgraph/interrupts#handling-multiple-interrupts)。
 
 ```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 from langchain_core.utils.uuid import uuid7
@@ -635,13 +631,13 @@ while True:
 print()
 ```
 
-<Tip>
-  结合 `"messages"` 和 `"updates"` 流模式，向用户显示实时 LLM 令牌，同时仍然捕获 HITL 中断。 `"messages"`模式流令牌； `"updates"` 模式提供中断负载。
-</Tip>
+> [!提示]
+>
+> 组合 `"messages"` 和 `"updates"` 流模式，向用户显示实时 LLM 令牌，同时仍捕获 HITL 中断。 `"messages"`模式流令牌； `"updates"` 模式提供中断负载。
 
 ## 多个工具调用
 
-当代理调用需要批准的多个工具时，所有中断都会在一个中断中批量处理。您必须按顺序为每一项做出决定。
+当代理调用需要批准的多个工具时，所有中断都会在单个中断中批量处理。您必须按顺序为每一项做出决定。
 
 ```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 config = {"configurable": {"thread_id": str(uuid7())}}
@@ -751,7 +747,7 @@ agent = create_deep_agent(
 
 流式传输时，子代理中断也会作为父 `updates` 流中的 `__interrupt__` 条目出现。您不需要 `subgraphs=True` 来进行中断传递。如果您还想流式传输子代理令牌和进度事件，请启用`subgraphs=True`。完整图案请参见[Handle interrupts with streaming](#handle-interrupts-with-streaming)。### 工具调用中的中断
 
-子代理工具可以直接调用`interrupt()`暂停执行并等待批准：
+Subagent tools can call `interrupt()` directly to pause execution and await approval:
 
 ```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 from langchain.agents import create_agent
@@ -871,9 +867,9 @@ Execution completed!
 
 ## 文件系统权限中断
 
-<Note>
-  文件系统权限中断需要`deepagents>=0.6.8`。
-</Note>
+> [!注意]
+>
+> Filesystem permission interrupts require `deepagents>=0.6.8`.
 
 除了`interrupt_on`之外，您还可以通过用`mode="interrupt"`标记[permission rule](/oss/python/deepagents/permissions)来暂停内置文件系统工具。当代理在与中断模式规则匹配的路径上调用 `write_file` 或 `edit_file` 时，`create_deep_agent` 会引发与配置工具相同的人机循环中断，并使用文件系统工具的名称作为操作名称。
 
@@ -895,7 +891,7 @@ agent = create_deep_agent(
 )
 ```
 
-处理和恢复中断的方式与工具调用中断相同：运行直到暂停，检查请求，然后做出决定继续。
+Handle and resume the interrupt the same way as a tool-call interrupt: run until it pauses, inspect the request, then resume with a decision.
 
 ```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 from langgraph.types import Command
@@ -924,7 +920,7 @@ if result.get("__interrupt__"):
 
 ### 始终使用检查指针
 
-人机交互需要一个检查指针来在中断和恢复之间保持代理状态：
+Human-in-the-loop requires a checkpointer to persist agent state between the interrupt and resume:
 
 ```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 from langgraph.checkpoint.memory import MemorySaver
@@ -991,12 +987,6 @@ interrupt_on = {
 
 ***
 
-<div>
-  <Callout icon="terminal-2">
-    [Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
-  </Callout>
+[Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
 
-  <Callout icon="edit">
-    [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/oss/deepagents/human-in-the-loop.mdx) 或 [file an issue](https://github.com/langchain-ai/docs/issues/new/choose)。
-  </Callout>
-</div>
+[Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/oss/deepagents/human-in-the-loop.mdx) 或 [file an issue](https://github.com/langchain-ai/docs/issues/new/choose)。

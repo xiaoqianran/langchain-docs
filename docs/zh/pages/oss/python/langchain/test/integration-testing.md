@@ -32,22 +32,20 @@ def test_agent_with_real_model():
 
 配置 pytest 以识别标记并从默认运行中排除集成测试：
 
-<CodeGroup>
-  ```ini pytest.ini theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  [pytest]
-  markers =
-      integration: tests that call real LLM APIs
-  addopts = -m "not integration"
-  ```
+```ini pytest.ini theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+[pytest]
+markers =
+    integration: tests that call real LLM APIs
+addopts = -m "not integration"
+```
 
-  ```toml pyproject.toml theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  [tool.pytest.ini_options]
-  markers = [
-    "integration: tests that call real LLM APIs"
-  ]
-  addopts = "-m 'not integration'"
-  ```
-</CodeGroup>
+```toml pyproject.toml theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+[tool.pytest.ini_options]
+markers = [
+  "integration: tests that call real LLM APIs"
+]
+addopts = "-m 'not integration'"
+```
 
 显式运行集成测试：
 
@@ -81,9 +79,9 @@ from dotenv import load_dotenv
 load_dotenv()
 ```
 
-<Warning>
-  将 `.env` 添加到您的 `.gitignore` 以避免提交凭据。在 CI 中，通过提供商的机密管理（例如 GitHub Actions 机密）注入机密。
-</Warning>
+> [!警告]
+>
+> 将 `.env` 添加到您的 `.gitignore` 以避免提交凭据。在 CI 中，通过提供商的机密管理（例如 GitHub Actions 机密）注入机密。
 
 ## 断言结构，而不是内容
 
@@ -112,9 +110,9 @@ def test_agent_calls_weather_tool():
     assert len(messages[-1].content) > 0
 ```
 
-<Tip>
-  对于更严格的轨迹断言，请使用[AgentEvals](/oss/python/langchain/test/evals)评估器，它支持模糊匹配模式，例如`unordered`和`superset`。
-</Tip>
+> [!提示]
+>
+> 对于更严格的轨迹断言，请使用支持模糊匹配模式的[AgentEvals](/oss/python/langchain/test/evals)评估器，例如`unordered`和`superset`。
 
 ## 降低成本和延迟
 
@@ -160,26 +158,24 @@ def vcr_config():
 
 配置您的项目以识别 `vcr` 标记：
 
-<CodeGroup>
-  ```ini pytest.ini theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  [pytest]
-  markers =
-      vcr: record/replay HTTP via VCR
-  addopts = --record-mode=once
-  ```
+```ini pytest.ini theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+[pytest]
+markers =
+    vcr: record/replay HTTP via VCR
+addopts = --record-mode=once
+```
 
-  ```toml pyproject.toml theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  [tool.pytest.ini_options]
-  markers = [
-    "vcr: record/replay HTTP via VCR"
-  ]
-  addopts = "--record-mode=once"
-  ```
-</CodeGroup>
+```toml pyproject.toml theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+[tool.pytest.ini_options]
+markers = [
+  "vcr: record/replay HTTP via VCR"
+]
+addopts = "--record-mode=once"
+```
 
-<Info>
-  `--record-mode=once` 选项在第一次运行时记录 HTTP 交互，并在后续运行时重放它们。
-</Info>
+> [!注意]
+>
+> `--record-mode=once` 选项在第一次运行时记录 HTTP 交互，并在后续运行时重放它们。
 
 使用 `vcr` 标记装饰您的测试：
 
@@ -202,9 +198,9 @@ def test_agent_trajectory():
     )
 ```第一次运行进行真正的网络调用并在`tests/cassettes/`中生成盒式磁带文件。随后的运行将重放记录的响应。
 
-<Warning>
-  当您修改提示、添加新工具或更改预期轨迹时，您保存的包埋盒将变得过时，并且您现有的测试**将失败**。删除相应的盒式磁带文件并重新运行测试以记录新的交互。
-</Warning>
+> [!警告]
+>
+> 当您修改提示、添加新工具或更改预期轨迹时，您保存的包埋盒将变得过时，并且您现有的测试**将失败**。删除相应的盒式磁带文件并重新运行测试以记录新的交互。
 
 ## 后续步骤
 
@@ -212,12 +208,6 @@ def test_agent_trajectory():
 
 ***
 
-<div>
-  <Callout icon="terminal-2">
-    [Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
-  </Callout>
+[Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
 
-  <Callout icon="edit">
-    [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/oss/langchain/test/integration-testing.mdx) 或 [file an issue](https://github.com/langchain-ai/docs/issues/new/choose)。
-  </Callout>
-</div>
+[Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/oss/langchain/test/integration-testing.mdx) 或 [file an issue](https://github.com/langchain-ai/docs/issues/new/choose)。

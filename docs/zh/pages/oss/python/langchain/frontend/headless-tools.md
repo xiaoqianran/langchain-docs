@@ -7,15 +7,13 @@
 使用无头工具实现在客户端上运行浏览器和设备 API
 
 无头工具让您的代理调用工具，其真正执行必须发生在
-用户的应用程序而不是服务器上。代理仍然看到正常的工具架构，
+用户的应用程序而不是服务器上。代理仍然看到正常的工具模式，
 但实现位于前端，可以访问浏览器 API
 例如 IndexedDB、地理位置、剪贴板、画布或文件选择器。
 
 当数据应保留在设备本地时，此模式特别有用。
 本页上的游乐场示例使用支持的小型浏览器内存工具包
 由 IndexedDB 加上完全在客户端运行的地理定位工具。
-
-<PatternEmbed />
 
 ## 无头工具如何工作
 
@@ -34,7 +32,7 @@
 
 在服务器上定义立即调用`interrupt()`的普通工具，然后
 镜像相同的工具名称和参数字段
-前端`tools.ts`文件。
+frontend `tools.ts` file.
 
 ```python agent.py theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 from typing import Any
@@ -116,7 +114,7 @@ agent = create_agent(
 ```
 
 每个工具都会使用前端可以处理的结构化有效负载进行中断，然后
-返回运行恢复时提供的值。镜像相同的工具名称和
+返回运行恢复时提供的值。 Mirror the same tool names and
 客户端上的模式，以便前端可以附加实现。
 
 ```ts tools.ts theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
@@ -150,12 +148,12 @@ export const geolocationGet = tool({
 });
 ```
 
-## 实现浏览器行为
+## Implement the browser behavior
 
 将仅限客户端的行为放在单独的模块中并将其附加
-`.implement(...)`。真正的游乐场包括一个更完整的 IndexedDB 存储
+`.implement(...)`.真正的游乐场包括一个更完整的 IndexedDB 存储
 搜索、列出、过期和删除操作。以下示例显示
-更高层次上的相同形状：
+the same shape at a higher level:
 
 ```ts impl.ts theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 import {
@@ -206,7 +204,7 @@ export const geolocationGet = geolocationGetDefinition.implement(
 
 ## 将实现连接到`useStream`
 
-将实现的工具传递给`useStream`。当代理发出匹配工具时
+Pass the implemented tools to `useStream`. When the agent emits a matching tool
 调用时，挂钩运行客户端实现并为您恢复运行。
 
 定义一个与代理的状态模式匹配的 TypeScript 接口并将其传递为
@@ -218,100 +216,98 @@ export interface AgentState {
 }
 ```
 
-<CodeGroup>
-  ```tsx React theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  import { useStream } from "@langchain/react";
+```tsx React theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+import { useStream } from "@langchain/react";
 
-  import { geolocationGet, memoryGet, memoryPut } from "./impl";
-  import type { AgentState } from "./types";
+import { geolocationGet, memoryGet, memoryPut } from "./impl";
+import type { AgentState } from "./types";
 
-  const AGENT_URL = "http://localhost:2024";
+const AGENT_URL = "http://localhost:2024";
 
-  export function Chat() {
-    const stream = useStream<AgentState>({
-      apiUrl: AGENT_URL,
-      assistantId: "headless_tools",
-      tools: [memoryPut, memoryGet, geolocationGet],
-    });
-
-    return <ChatView messages={stream.messages} toolCalls={stream.toolCalls} />;
-  }
-  ```
-
-  ```vue Vue theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  <script setup lang="ts">
-  import { useStream } from "@langchain/vue";
-
-  import { geolocationGet, memoryGet, memoryPut } from "./impl";
-  import type { AgentState } from "./types";
-
-  const AGENT_URL = "http://localhost:2024";
-
+export function Chat() {
   const stream = useStream<AgentState>({
     apiUrl: AGENT_URL,
     assistantId: "headless_tools",
     tools: [memoryPut, memoryGet, geolocationGet],
   });
-  </script>
 
-  <template>
-    <ChatView
-      :messages="stream.messages.value"
-      :tool-calls="stream.toolCalls.value"
-    />
-  </template>
-  ``````svelte Svelte theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  <script lang="ts">
-    import { useStream } from "@langchain/svelte";
+  return <ChatView messages={stream.messages} toolCalls={stream.toolCalls} />;
+}
+```
 
-    import { geolocationGet, memoryGet, memoryPut } from "./impl";
-    import type { AgentState } from "./types";
+```vue Vue theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+<script setup lang="ts">
+import { useStream } from "@langchain/vue";
 
-    const AGENT_URL = "http://localhost:2024";
+import { geolocationGet, memoryGet, memoryPut } from "./impl";
+import type { AgentState } from "./types";
 
-    const { messages, toolCalls } = useStream<AgentState>({
-      apiUrl: AGENT_URL,
-      assistantId: "headless_tools",
-      tools: [memoryPut, memoryGet, geolocationGet],
-    });
-  </script>
+const AGENT_URL = "http://localhost:2024";
 
-  <ChatView messages={$messages} toolCalls={$toolCalls} />
-  ```
+const stream = useStream<AgentState>({
+  apiUrl: AGENT_URL,
+  assistantId: "headless_tools",
+  tools: [memoryPut, memoryGet, geolocationGet],
+});
+</script>
 
-  ```ts Angular theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  import { Component } from "@angular/core";
-  import { useStream } from "@langchain/angular";
+<template>
+  <ChatView
+    :messages="stream.messages.value"
+    :tool-calls="stream.toolCalls.value"
+  />
+</template>
+```
+
+```svelte Svelte theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+<script lang="ts">
+  import { useStream } from "@langchain/svelte";
 
   import { geolocationGet, memoryGet, memoryPut } from "./impl";
   import type { AgentState } from "./types";
 
   const AGENT_URL = "http://localhost:2024";
 
-  @Component({
-    selector: "app-chat",
-    template: `
-      <app-chat-view
-        [messages]="stream.messages()"
-        [toolCalls]="stream.toolCalls()"
-      />
-    `,
-  })
-  export class ChatComponent {
-    stream = useStream<AgentState>({
-      apiUrl: AGENT_URL,
-      assistantId: "headless_tools",
-      tools: [memoryPut, memoryGet, geolocationGet],
-    });
-  }
-  ```
-</CodeGroup>
+  const { messages, toolCalls } = useStream<AgentState>({
+    apiUrl: AGENT_URL,
+    assistantId: "headless_tools",
+    tools: [memoryPut, memoryGet, geolocationGet],
+  });
+</script>
+
+<ChatView messages={$messages} toolCalls={$toolCalls} />
+``````ts Angular theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+import { Component } from "@angular/core";
+import { useStream } from "@langchain/angular";
+
+import { geolocationGet, memoryGet, memoryPut } from "./impl";
+import type { AgentState } from "./types";
+
+const AGENT_URL = "http://localhost:2024";
+
+@Component({
+  selector: "app-chat",
+  template: `
+    <app-chat-view
+      [messages]="stream.messages()"
+      [toolCalls]="stream.toolCalls()"
+    />
+  `,
+})
+export class ChatComponent {
+  stream = useStream<AgentState>({
+    apiUrl: AGENT_URL,
+    assistantId: "headless_tools",
+    tools: [memoryPut, memoryGet, geolocationGet],
+  });
+}
+```
 
 ## 内联渲染工具活动
 
-Playground 将每个内存或地理定位操作呈现为自己的卡，并且
+The playground renders each memory or geolocation operation as its own card and
 在输入附近保留一个小的内存统计面板。关键的一步是匹配每个
-`stream.toolCalls`中的条目返回到触发它的AI消息：
+entry in `stream.toolCalls` back to the AI message that triggered it:
 
 ```tsx theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 import type { ToolCallWithResult, DefaultToolCall } from "@langchain/react";
@@ -335,40 +331,34 @@ function Message({ message, toolCalls }: {
 }
 ```
 
-这对于更丰富的 UI 模式尤其有效
+This works especially well with the richer UI patterns from
 [Tool calling](/oss/python/langchain/frontend/tool-calling)，其中每个工具结果可以
-渲染为专用卡片而不是原始 JSON。
+render as a specialized card instead of raw JSON.
 
 ## 用例
 
-当工作依赖于仅存在于应用程序中的 API 或数据时，请使用无头工具
+Use headless tools when the work depends on APIs or data that only exist in the
 客户：
 
 * IndexedDB 或 `localStorage` 中的本地内存
-* 设备 API，例如地理位置、剪贴板、相机或文件选择器
-* 画布、音频或其他仅限浏览器的渲染基元
-* 应保留在用户设备上的隐私敏感数据
-* 需要直接访问内存中前端状态的 UI 操作
+* Device APIs like geolocation, clipboard, camera, or file pickers
+* Canvas, audio, or other browser-only rendering primitives
+* Privacy-sensitive data that should stay on the user's device
+* UI actions that need direct access to in-memory frontend state
 
 ## 最佳实践* 工具要小且要打字。比起一种通用的工具，更喜欢多种狭窄的工具
   “运行任意浏览器代码”工具。
 * 返回 JSON 可序列化的结果。不要尝试返回 DOM 节点、文件
-  句柄或其他不可序列化的浏览器对象。
-* 共享定义，单独实现。代理人和客户应同意
-  关于工具名称和模式，但只有客户端应该加载浏览器 API。
+  handles, or other non-serializable browser objects.
+* Share definitions, separate implementations.代理人和客户应同意
+  on tool names and schemas, but only the client should load browser APIs.
 * UI 中显示工具状态。使用`stream.toolCalls`和`onTool`来显示
-  待处理、成功和错误状态。
-* 需要时添加评论。对于敏感的客户端操作，请将此模式配对
+  pending, success, and error states.
+* Add review when needed. For sensitive client-side actions, pair this pattern
   与[Human-in-the-loop](/oss/python/langchain/frontend/human-in-the-loop)。
 
 ***
 
-<div>
-  <Callout icon="terminal-2">
-    [Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
-  </Callout>
+[Connect these docs](/use-these-docs) to your agent of choice via MCP for real-time answers.
 
-  <Callout icon="edit">
-    [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/oss/langchain/frontend/headless-tools.mdx) 或 [file an issue](https://github.com/langchain-ai/docs/issues/new/choose)。
-  </Callout>
-</div>
+[Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/oss/langchain/frontend/headless-tools.mdx) 或 [file an issue](https://github.com/langchain-ai/docs/issues/new/choose)。

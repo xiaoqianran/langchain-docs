@@ -4,13 +4,20 @@
 
 # 商店集成
 
-与存储后端集成以实现 LangGraph 长期记忆。
+与商店后端集成以实现 LangGraph 长期记忆。
 
 存储在LangGraph中启用[long-term memory](/oss/python/langgraph/stores)，允许代理跨线程持久保存和检索信息。
 
 要为自定义存储后端实现您自己的存储，请参阅[Build a custom store](/oss/python/langgraph/stores#build-a-custom-store)。
 
-<PythonIntegrationComponentMap />
+集成组件
+箭头显示了典型的检索流程。突出显示的组件是本页所涵盖的组件。
+
+### 典型检索流程
+
+### 代理能力
+
+### 执行和状态
 
 |后端|套餐 |来源 |
 | - | - | - |
@@ -28,12 +35,6 @@
 
 ***
 
-<div>
-  <Callout icon="terminal-2">
-    [Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
-  </Callout>
+[Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
 
-  <Callout icon="edit">
-    [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/oss/python/integrations/long-term-memory/index.mdx) 或 [file an issue](https://github.com/langchain-ai/docs/issues/new/choose)。
-  </Callout>
-</div>
+[Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/oss/python/integrations/long-term-memory/index.mdx) 或 [file an issue](https://github.com/langchain-ai/docs/issues/new/choose)。

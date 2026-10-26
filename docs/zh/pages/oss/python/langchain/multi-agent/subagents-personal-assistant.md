@@ -13,9 +13,9 @@
 
 我们还将合并[human-in-the-loop review](/oss/python/langchain/human-in-the-loop)，以允许用户根据需要批准、编辑和拒绝操作（例如出站电子邮件）。
 
-<Note>
-  如果您要从 [⟦T55⟧](https://github.com/langchain-ai/langgraph-supervisor-py) 包迁移，请参阅 [Migrate from langgraph-supervisor](/oss/python/migrate/langgraph-supervisor) 了解前后模式，包括中断和恢复流程。
-</Note>
+> [!注意]
+>
+> 如果您要从 [⟦T55⟧](https://github.com/langchain-ai/langgraph-supervisor-py) 软件包迁移，请参阅 [Migrate from langgraph-supervisor](/oss/python/migrate/langgraph-supervisor) 了解前后模式，包括中断和恢复流程。
 
 ### 为什么要使用主管？多代理架构允许您在工作人员之间划分 [tools](/oss/python/langchain/tools)，每个工作人员都有自己单独的提示或说明。考虑一个可以直接访问所有日历和电子邮件 API 的代理：它必须从许多类似的工具中进行选择，了解每个 API 的确切格式，并同时处理多个域。如果性能下降，将相关工具和关联提示分成逻辑组可能会有所帮助（部分是为了管理迭代改进）。
 
@@ -32,15 +32,13 @@
 
 本教程需要`langchain`包：
 
-<CodeGroup>
-  ```bash pip theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  pip install langchain
-  ```
+```bash pip theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+pip install langchain
+```
 
-  ```bash conda theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  conda install langchain -c conda-forge
-  ```
-</CodeGroup>
+```bash conda theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+conda install langchain -c conda-forge
+```
 
 欲了解更多详情，请参阅我们的[Installation guide](/oss/python/langchain/install)。
 
@@ -48,285 +46,253 @@
 
 设置 [LangSmith](https://smith.langchain.com?utm_source=docs\&utm_medium=cta\&utm_campaign=langsmith-signup\&utm_content=oss-langchain-multi-agent-subagents-personal-assistant) 来检查代理内部发生的情况。然后设置以下环境变量：
 
-<CodeGroup>
-  ```bash Shell theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  export LANGSMITH_TRACING="true"
-  export LANGSMITH_API_KEY="..."
-  ```
+```bash Shell theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+export LANGSMITH_TRACING="true"
+export LANGSMITH_API_KEY="..."
+```
 
-  ```python Python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  import getpass
-  import os
+```python Python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+import getpass
+import os
 
-  os.environ["LANGSMITH_TRACING"] = "true"
-  os.environ["LANGSMITH_API_KEY"] = getpass.getpass()
-  ```
-</CodeGroup>
+os.environ["LANGSMITH_TRACING"] = "true"
+os.environ["LANGSMITH_API_KEY"] = getpass.getpass()
+```
 
 ### 组件
 
 我们需要从 LangChain 的集成套件中选择一个聊天模型：
 
-<Tabs>
-  <Tab title="OpenAI">
-    👉 阅读[OpenAI chat model integration docs](/oss/python/integrations/chat/openai/)
+**OpenAI**
 
-    <CodeGroup>
-      ```bash pip theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-      pip install -U "langchain[openai]"
-      ```
+👉 阅读[OpenAI chat model integration docs](/oss/python/integrations/chat/openai/)
 
-      ```bash uv theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-      uv add "langchain[openai]"
-      ```
-    </CodeGroup>
+```bash pip theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+pip install -U "langchain[openai]"
+```
 
-    <CodeGroup>
-      ```python init_chat_model theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-      import os
-      from langchain.chat_models import init_chat_model
+```bash uv theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+uv add "langchain[openai]"
+```
 
-      os.environ["OPENAI_API_KEY"] = "sk-..."
+```python init_chat_model theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+import os
+from langchain.chat_models import init_chat_model
 
-      model = init_chat_model("gpt-5.5")
-      ```
+os.environ["OPENAI_API_KEY"] = "sk-..."
 
-      ```python Model Class theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-      import os
-      from langchain_openai import ChatOpenAI
+model = init_chat_model("gpt-5.5")
+```
 
-      os.environ["OPENAI_API_KEY"] = "sk-..."
+```python Model Class theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+import os
+from langchain_openai import ChatOpenAI
 
-      model = ChatOpenAI(model="gpt-5.5")
-      ```
-    </CodeGroup>
-  </Tab>
+os.environ["OPENAI_API_KEY"] = "sk-..."
 
-  <Tab title="Anthropic">
-    👉 阅读[Anthropic chat model integration docs](/oss/python/integrations/chat/anthropic/)
+model = ChatOpenAI(model="gpt-5.5")
+```
 
-    <CodeGroup>
-      ```bash pip theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-      pip install -U "langchain[anthropic]"
-      ```
+**Anthropic**
 
-      ```bash uv theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-      uv add "langchain[anthropic]"
-      ```
-    </CodeGroup>
+👉 阅读[Anthropic chat model integration docs](/oss/python/integrations/chat/anthropic/)
 
-    <CodeGroup>
-      ```python init_chat_model theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-      import os
-      from langchain.chat_models import init_chat_model
+```bash pip theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+pip install -U "langchain[anthropic]"
+```
 
-      os.environ["ANTHROPIC_API_KEY"] = "sk-..."
+```bash uv theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+uv add "langchain[anthropic]"
+```
 
-      model = init_chat_model("claude-sonnet-4-6")
-      ```
+```python init_chat_model theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+import os
+from langchain.chat_models import init_chat_model
 
-      ```python Model Class theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-      import os
-      from langchain_anthropic import ChatAnthropic
+os.environ["ANTHROPIC_API_KEY"] = "sk-..."
 
-      os.environ["ANTHROPIC_API_KEY"] = "sk-..."
+model = init_chat_model("claude-sonnet-4-6")
+```
 
-      model = ChatAnthropic(model="claude-sonnet-4-6")
-      ```
-    </CodeGroup>
-  </Tab><Tab title="Azure">
-    👉 阅读[Azure chat model integration docs](/oss/python/integrations/chat/azure_chat_openai/)
+```python Model Class theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+import os
+from langchain_anthropic import ChatAnthropic
 
-    <CodeGroup>
-      ```bash pip theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-      pip install -U "langchain[openai]"
-      ```
+os.environ["ANTHROPIC_API_KEY"] = "sk-..."
 
-      ```bash uv theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-      uv add "langchain[openai]"
-      ```
-    </CodeGroup>
+model = ChatAnthropic(model="claude-sonnet-4-6")
+```
 
-    <CodeGroup>
-      ```python init_chat_model theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-      import os
-      from langchain.chat_models import init_chat_model
+**天蓝色**
 
-      os.environ["AZURE_OPENAI_API_KEY"] = "..."
-      os.environ["AZURE_OPENAI_ENDPOINT"] = "..."
-      os.environ["OPENAI_API_VERSION"] = "2025-03-01-preview"
+👉 阅读[Azure chat model integration docs](/oss/python/integrations/chat/azure_chat_openai/)
 
-      model = init_chat_model(
-          "azure_openai:gpt-5.5",
-          azure_deployment=os.environ["AZURE_OPENAI_DEPLOYMENT_NAME"],
-      )
-      ```
+```bash pip theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+pip install -U "langchain[openai]"
+```
 
-      ```python Model Class theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-      import os
-      from langchain_openai import AzureChatOpenAI
+```bash uv theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+uv add "langchain[openai]"
+```
 
-      os.environ["AZURE_OPENAI_API_KEY"] = "..."
-      os.environ["AZURE_OPENAI_ENDPOINT"] = "..."
-      os.environ["OPENAI_API_VERSION"] = "2025-03-01-preview"
+```python init_chat_model theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+import os
+from langchain.chat_models import init_chat_model
 
-      model = AzureChatOpenAI(
-          model="gpt-5.5",
-          azure_deployment=os.environ["AZURE_OPENAI_DEPLOYMENT_NAME"]
-      )
-      ```
-    </CodeGroup>
-  </Tab>
+os.environ["AZURE_OPENAI_API_KEY"] = "..."
+os.environ["AZURE_OPENAI_ENDPOINT"] = "..."
+os.environ["OPENAI_API_VERSION"] = "2025-03-01-preview"
 
-  <Tab title="Google Gemini">
-    👉 阅读[Google GenAI chat model integration docs](/oss/python/integrations/chat/google_generative_ai/)
+model = init_chat_model(
+    "azure_openai:gpt-5.5",
+    azure_deployment=os.environ["AZURE_OPENAI_DEPLOYMENT_NAME"],
+)
+```
 
-    <CodeGroup>
-      ```bash pip theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-      pip install -U "langchain[google-genai]"
-      ```
+```python Model Class theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+import os
+from langchain_openai import AzureChatOpenAI
 
-      ```bash uv theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-      uv add "langchain[google-genai]"
-      ```
-    </CodeGroup>
+os.environ["AZURE_OPENAI_API_KEY"] = "..."
+os.environ["AZURE_OPENAI_ENDPOINT"] = "..."
+os.environ["OPENAI_API_VERSION"] = "2025-03-01-preview"
 
-    <CodeGroup>
-      ```python init_chat_model theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-      import os
-      from langchain.chat_models import init_chat_model
+model = AzureChatOpenAI(
+    model="gpt-5.5",
+    azure_deployment=os.environ["AZURE_OPENAI_DEPLOYMENT_NAME"]
+)
+```
 
-      os.environ["GOOGLE_API_KEY"] = "..."
+**谷歌双子座**
 
-      model = init_chat_model("google_genai:gemini-3.7-flash")
-      ```
+👉 阅读[Google GenAI chat model integration docs](/oss/python/integrations/chat/google_generative_ai/)
 
-      ```python Model Class theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-      import os
-      from langchain_google_genai import ChatGoogleGenerativeAI
+```bash pip theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+pip install -U "langchain[google-genai]"
+```
 
-      os.environ["GOOGLE_API_KEY"] = "..."
+```bash uv theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+uv add "langchain[google-genai]"
+```
 
-      model = ChatGoogleGenerativeAI(model="gemini-3.7-flash")
-      ```
-    </CodeGroup>
-  </Tab>
+```python init_chat_model theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+import os
+from langchain.chat_models import init_chat_model
 
-  <Tab title="AWS Bedrock">
-    👉 阅读[AWS Bedrock chat model integration docs](/oss/python/integrations/chat/bedrock/)
+os.environ["GOOGLE_API_KEY"] = "..."
 
-    <CodeGroup>
-      ```bash pip theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-      pip install -U "langchain[aws]"
-      ```
+model = init_chat_model("google_genai:gemini-3.7-flash")
+```
 
-      ```bash uv theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-      uv add "langchain[aws]"
-      ```
-    </CodeGroup>
+```python Model Class theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+import os
+from langchain_google_genai import ChatGoogleGenerativeAI
 
-    <CodeGroup>
-      ```python init_chat_model theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-      from langchain.chat_models import init_chat_model
+os.environ["GOOGLE_API_KEY"] = "..."
 
-      # Follow the steps here to configure your credentials:
-      # https://docs.aws.amazon.com/bedrock/latest/userguide/getting-started.html
+model = ChatGoogleGenerativeAI(model="gemini-3.7-flash")
+```
 
-      model = init_chat_model(
-          "us.anthropic.claude-sonnet-4-6",
-          model_provider="bedrock_converse",
-      )
-      ```
+**AWS 基岩**
 
-      ```python Model Class theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-      from langchain_aws import ChatBedrock
+👉 阅读[AWS Bedrock chat model integration docs](/oss/python/integrations/chat/bedrock/)
 
-      model = ChatBedrock(model="us.anthropic.claude-sonnet-4-6")
-      ```
-    </CodeGroup>
-  </Tab>
+```bash pip theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+pip install -U "langchain[aws]"
+```
 
-  <Tab title="HuggingFace">
-    👉 阅读[HuggingFace chat model integration docs](/oss/python/integrations/chat/huggingface/)
+```bash uv theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+uv add "langchain[aws]"
+```
 
-    <CodeGroup>
-      ```bash pip theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-      pip install -U "langchain[huggingface]"
-      ```
+```python init_chat_model theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+from langchain.chat_models import init_chat_model
 
-      ```bash uv theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-      uv add "langchain[huggingface]"
-      ```
-    </CodeGroup>
+# Follow the steps here to configure your credentials:
+# https://docs.aws.amazon.com/bedrock/latest/userguide/getting-started.html
 
-    <CodeGroup>
-      ```python init_chat_model theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-      import os
-      from langchain.chat_models import init_chat_model
+model = init_chat_model(
+    "us.anthropic.claude-sonnet-4-6",
+    model_provider="bedrock_converse",
+)
+```
 
-      os.environ["HUGGINGFACEHUB_API_TOKEN"] = "hf_..."
+```python Model Class theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+from langchain_aws import ChatBedrock
 
-      model = init_chat_model(
-          "microsoft/Phi-3-mini-4k-instruct",
-          model_provider="huggingface",
-          temperature=0.7,
-          max_tokens=1024,
-      )
-      ```
+model = ChatBedrock(model="us.anthropic.claude-sonnet-4-6")
+```**拥抱脸**
 
-      ```python Model Class theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-      import os
-      from langchain_huggingface import ChatHuggingFace, HuggingFaceEndpoint
+👉 阅读[HuggingFace chat model integration docs](/oss/python/integrations/chat/huggingface/)
 
-      os.environ["HUGGINGFACEHUB_API_TOKEN"] = "hf_..."
+```bash pip theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+pip install -U "langchain[huggingface]"
+```
 
-      llm = HuggingFaceEndpoint(
-          repo_id="microsoft/Phi-3-mini-4k-instruct",
-          temperature=0.7,
-          max_length=1024,
-      )
-      model = ChatHuggingFace(llm=llm)
-      ```
-    </CodeGroup>
-  </Tab>
+```bash uv theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+uv add "langchain[huggingface]"
+```
 
-  <Tab title="OpenRouter">
-    👉 阅读[OpenRouter chat model integration docs](/oss/python/integrations/chat/openrouter/)
+```python init_chat_model theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+import os
+from langchain.chat_models import init_chat_model
 
-    <CodeGroup>
-      ```bash pip theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-      pip install -U "langchain-openrouter"
-      ```
+os.environ["HUGGINGFACEHUB_API_TOKEN"] = "hf_..."
 
-      ```bash uv theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-      uv add "langchain-openrouter"
-      ```
-    </CodeGroup>
+model = init_chat_model(
+    "microsoft/Phi-3-mini-4k-instruct",
+    model_provider="huggingface",
+    temperature=0.7,
+    max_tokens=1024,
+)
+```
 
-    <CodeGroup>
-      ```python init_chat_model theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-      import os
-      from langchain.chat_models import init_chat_model
+```python Model Class theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+import os
+from langchain_huggingface import ChatHuggingFace, HuggingFaceEndpoint
 
-      os.environ["OPENROUTER_API_KEY"] = "sk-..."
+os.environ["HUGGINGFACEHUB_API_TOKEN"] = "hf_..."
 
-      model = init_chat_model(
-          "auto",
-          model_provider="openrouter",
-      )
-      ```
+llm = HuggingFaceEndpoint(
+    repo_id="microsoft/Phi-3-mini-4k-instruct",
+    temperature=0.7,
+    max_length=1024,
+)
+model = ChatHuggingFace(llm=llm)
+```
 
-      ```python Model Class theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-      import os
-      from langchain_openrouter import ChatOpenRouter
+**开放路由器**
 
-      os.environ["OPENROUTER_API_KEY"] = "sk-..."
+👉 阅读[OpenRouter chat model integration docs](/oss/python/integrations/chat/openrouter/)
 
-      model = ChatOpenRouter(model="auto")
-      ```
-    </CodeGroup>
-  </Tab>
-</Tabs>
+```bash pip theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+pip install -U "langchain-openrouter"
+```
+
+```bash uv theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+uv add "langchain-openrouter"
+```
+
+```python init_chat_model theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+import os
+from langchain.chat_models import init_chat_model
+
+os.environ["OPENROUTER_API_KEY"] = "sk-..."
+
+model = init_chat_model(
+    "auto",
+    model_provider="openrouter",
+)
+```
+
+```python Model Class theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+import os
+from langchain_openrouter import ChatOpenRouter
+
+os.environ["OPENROUTER_API_KEY"] = "sk-..."
+
+model = ChatOpenRouter(model="auto")
+```
 
 ## 1. 定义工具
 
@@ -375,7 +341,9 @@ def get_available_time_slots(
 
 接下来，我们将创建处理每个域的专门子代理。
 
-### 创建日历代理日历代理理解自然语言调度请求并将其转换为精确的 API 调用。它处理日期解析、可用性检查和事件创建。
+### 创建日历代理
+
+日历代理理解自然语言调度请求并将其转换为精确的 API 调用。它处理日期解析、可用性检查和事件创建。
 
 ```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 from datetime import date
@@ -470,9 +438,7 @@ email_agent = create_agent(
     tools=[send_email],
     system_prompt=EMAIL_AGENT_PROMPT,
 )
-```
-
-使用自然语言请求测试电子邮件代理：
+```使用自然语言请求测试电子邮件代理：
 
 ```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 query = "Send the design team a reminder about reviewing the new mockups"
@@ -518,7 +484,9 @@ I've sent a reminder to the design team asking them to review the new mockups. I
 
 代理从非正式请求中推断收件人，制作专业的主题行和正文，致电`send_email`，并返回确认。每个子代理都有一个特定领域的工具和提示，使其能够在特定任务中表现出色。
 
-## 3. 将子代理包装为工具现在将每个子代理包装为主管可以调用的工具。这是创建分层系统的关键架构步骤。主管将看到“schedule\_event”等高级工具，而不是“create\_calendar\_event”等低级工具。
+## 3. 将子代理包装为工具
+
+现在将每个子代理包装为主管可以调用的工具。这是创建分层系统的关键架构步骤。主管将看到“schedule\_event”等高级工具，而不是“create\_calendar\_event”等低级工具。
 
 ```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 @tool
@@ -575,9 +543,7 @@ supervisor_agent = create_agent(
 )
 ```
 
-## 5. 使用主管
-
-现在使用需要跨多个域协调的复杂请求来测试您的整个系统：
+## 5. 使用主管现在使用需要跨多个域协调的复杂请求来测试您的整个系统：
 
 ### 示例1：简单的单域请求
 
@@ -615,9 +581,11 @@ The team standup with Alice and Bob is scheduled for tomorrow at 9:00 AM. If you
 
 主管将其识别为日历任务，调用`schedule_event`，日历代理处理日期解析和事件创建。
 
-<Tip>
-  要完全透明地了解信息流，包括每个聊天模型调用的提示和响应，请查看上述运行的[LangSmith trace](https://smith.langchain.com/public/91a9a95f-fba9-4e84-aff0-371861ad2f4a/r)。
-</Tip>### 示例2：复杂的多域请求
+> [!提示]
+>
+> 要完全了解信息流，包括每个聊天模型调用的提示和响应，请查看上述运行的 [LangSmith trace](https://smith.langchain.com/public/91a9a95f-fba9-4e84-aff0-371861ad2f4a/r)。
+
+### 示例2：复杂的多域请求
 
 ```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 query = (
@@ -668,185 +636,185 @@ Let me know if you'd like to add more details to the meeting or include addition
 
 主管认识到这需要日历和电子邮件操作，因此致电 `schedule_event` 召开会议，然后致电 `manage_email` 进行提醒。每个子代理完成其任务，主管将两个结果合成为连贯的响应。
 
-<Note>
-  默认情况下，主管按顺序将任务分派给子代理。每个工具调用都会在下一个工具调用开始之前完成。然而，许多 LLM 将在单个响应中发出多个工具调用（如上面的跟踪所示，其中 `schedule_event` 和 `manage_email` 一起调用），运行时并行执行。您还可以配置显式并行调度。详情请参阅[⟦T64⟧ reference docs](https://reference.langchain.com/python/langgraph-supervisor/supervisor/create_supervisor)。
-</Note>
-
-<Tip>
-  参考[LangSmith trace](https://smith.langchain.com/public/95cd00a3-d1f9-4dba-9731-7bf733fb6a3c/r)查看上述运行的详细信息流程，包括单独的聊天模型提示和响应。
-</Tip>
+> [!注意]
+>
+> 默认情况下，主管将任务按顺序分配给子代理。每个工具调用都会在下一个工具调用开始之前完成。然而，许多 LLM 将在单个响应中发出多个工具调用（如上面的跟踪所示，其中 `schedule_event` 和 `manage_email` 一起调用），运行时并行执行。您还可以配置显式并行调度。详情请参阅[⟦T64⟧ reference docs](https://reference.langchain.com/python/langgraph-supervisor/supervisor/create_supervisor)。> [!提示]
+>
+> 参考[LangSmith trace](https://smith.langchain.com/public/95cd00a3-d1f9-4dba-9731-7bf733fb6a3c/r)查看上述运行的详细信息流程，包括单独的聊天模型提示和响应。
 
 ### 完整的工作示例
 
 以下是可运行脚本中的所有内容：
 
-<Expandable title="View complete code">
-  ```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  """
-  Personal Assistant Supervisor Example
+**查看完整代码**
 
-  This example demonstrates the tool calling pattern for multi-agent systems.
-  A supervisor agent coordinates specialized sub-agents (calendar and email)
-  that are wrapped as tools.
-  """
+```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+"""
+Personal Assistant Supervisor Example
 
-  from datetime import date
+This example demonstrates the tool calling pattern for multi-agent systems.
+A supervisor agent coordinates specialized sub-agents (calendar and email)
+that are wrapped as tools.
+"""
 
-  from langchain.tools import tool
-  from langchain.agents import create_agent
-  from langchain.chat_models import init_chat_model
+from datetime import date
 
-  # ============================================================================
-  # Step 1: Define low-level API tools (stubbed)
-  # ============================================================================
+from langchain.tools import tool
+from langchain.agents import create_agent
+from langchain.chat_models import init_chat_model
 
-  @tool
-  def create_calendar_event(
-      title: str,
-      start_time: str,  # ISO format: "2024-01-15T14:00:00"
-      end_time: str,    # ISO format: "2024-01-15T15:00:00"
-      attendees: list[str],  # email addresses
-      location: str = ""
-  ) -> str:
-      """Create a calendar event. Requires exact ISO datetime format."""
-      return f"Event created: {title} from {start_time} to {end_time} with {len(attendees)} attendees"
+# ============================================================================
+# Step 1: Define low-level API tools (stubbed)
+# ============================================================================
 
-
-  @tool
-  def send_email(
-      to: list[str],      # email addresses
-      subject: str,
-      body: str,
-      cc: list[str] = []
-  ) -> str:
-      """Send an email via email API. Requires properly formatted addresses."""
-      return f"Email sent to {', '.join(to)} - Subject: {subject}"
+@tool
+def create_calendar_event(
+    title: str,
+    start_time: str,  # ISO format: "2024-01-15T14:00:00"
+    end_time: str,    # ISO format: "2024-01-15T15:00:00"
+    attendees: list[str],  # email addresses
+    location: str = ""
+) -> str:
+    """Create a calendar event. Requires exact ISO datetime format."""
+    return f"Event created: {title} from {start_time} to {end_time} with {len(attendees)} attendees"
 
 
-  @tool
-  def get_available_time_slots(
-      attendees: list[str],
-      date: str,  # ISO format: "2024-01-15"
-      duration_minutes: int
-  ) -> list[str]:
-      """Check calendar availability for given attendees on a specific date."""
-      return ["09:00", "14:00", "16:00"]
+@tool
+def send_email(
+    to: list[str],      # email addresses
+    subject: str,
+    body: str,
+    cc: list[str] = []
+) -> str:
+    """Send an email via email API. Requires properly formatted addresses."""
+    return f"Email sent to {', '.join(to)} - Subject: {subject}"
 
 
-  # ============================================================================
-  # Step 2: Create specialized sub-agents
-  # ============================================================================
-
-  model = init_chat_model("gpt-5.5")  # for example
-
-  calendar_agent = create_agent(
-      model,
-      tools=[create_calendar_event, get_available_time_slots],
-      system_prompt=(
-          f"Today's date is {date.today().isoformat()}. "
-          "You are a calendar scheduling assistant. "
-          "Parse natural language scheduling requests (e.g., 'next Tuesday at 2pm') "
-          "into proper ISO datetime formats. "
-          "Use get_available_time_slots to check availability when needed. "
-          "If there is no suitable time slot, stop and confirm unavailability in your response. "
-          "Use create_calendar_event to schedule events. "
-          "Always confirm what was scheduled in your final response."
-      )
-  )
-
-  email_agent = create_agent(
-      model,
-      tools=[send_email],
-      system_prompt=(
-          "You are an email assistant. "
-          "Compose professional emails based on natural language requests. "
-          "Extract recipient information and craft appropriate subject lines and body text. "
-          "Use send_email to send the message. "
-          "Always confirm what was sent in your final response."
-      )
-  )
-
-  # ============================================================================
-  # Step 3: Wrap sub-agents as tools for the supervisor
-  # ============================================================================
-
-  @tool
-  def schedule_event(request: str) -> str:
-      """Schedule calendar events using natural language.
-
-      Use this when the user wants to create, modify, or check calendar appointments.
-      Handles date/time parsing, availability checking, and event creation.
-
-      Input: Natural language scheduling request (e.g., 'meeting with design team
-      next Tuesday at 2pm')
-      """
-      result = calendar_agent.invoke({
-          "messages": [{"role": "user", "content": request}]
-      })
-      return result["messages"][-1].text
+@tool
+def get_available_time_slots(
+    attendees: list[str],
+    date: str,  # ISO format: "2024-01-15"
+    duration_minutes: int
+) -> list[str]:
+    """Check calendar availability for given attendees on a specific date."""
+    return ["09:00", "14:00", "16:00"]
 
 
-  @tool
-  def manage_email(request: str) -> str:
-      """Send emails using natural language.
+# ============================================================================
+# Step 2: Create specialized sub-agents
+# ============================================================================
 
-      Use this when the user wants to send notifications, reminders, or any email
-      communication. Handles recipient extraction, subject generation, and email
-      composition.
+model = init_chat_model("gpt-5.5")  # for example
 
-      Input: Natural language email request (e.g., 'send them a reminder about
-      the meeting')
-      """
-      result = email_agent.invoke({
-          "messages": [{"role": "user", "content": request}]
-      })
-      return result["messages"][-1].text
+calendar_agent = create_agent(
+    model,
+    tools=[create_calendar_event, get_available_time_slots],
+    system_prompt=(
+        f"Today's date is {date.today().isoformat()}. "
+        "You are a calendar scheduling assistant. "
+        "Parse natural language scheduling requests (e.g., 'next Tuesday at 2pm') "
+        "into proper ISO datetime formats. "
+        "Use get_available_time_slots to check availability when needed. "
+        "If there is no suitable time slot, stop and confirm unavailability in your response. "
+        "Use create_calendar_event to schedule events. "
+        "Always confirm what was scheduled in your final response."
+    )
+)
+
+email_agent = create_agent(
+    model,
+    tools=[send_email],
+    system_prompt=(
+        "You are an email assistant. "
+        "Compose professional emails based on natural language requests. "
+        "Extract recipient information and craft appropriate subject lines and body text. "
+        "Use send_email to send the message. "
+        "Always confirm what was sent in your final response."
+    )
+)
+
+# ============================================================================
+# Step 3: Wrap sub-agents as tools for the supervisor
+# ============================================================================
+
+@tool
+def schedule_event(request: str) -> str:
+    """Schedule calendar events using natural language.
+
+    Use this when the user wants to create, modify, or check calendar appointments.
+    Handles date/time parsing, availability checking, and event creation.
+
+    Input: Natural language scheduling request (e.g., 'meeting with design team
+    next Tuesday at 2pm')
+    """
+    result = calendar_agent.invoke({
+        "messages": [{"role": "user", "content": request}]
+    })
+    return result["messages"][-1].text
 
 
-  # ============================================================================
-  # Step 4: Create the supervisor agent
-  # ============================================================================
+@tool
+def manage_email(request: str) -> str:
+    """Send emails using natural language.
 
-  supervisor_agent = create_agent(
-      model,
-      tools=[schedule_event, manage_email],
-      system_prompt=(
-          "You are a helpful personal assistant. "
-          "You can schedule calendar events and send emails. "
-          "Break down user requests into appropriate tool calls and coordinate the results. "
-          "When a request involves multiple actions, use multiple tools in sequence or in parallel as appropriate."
-      )
-  )
+    Use this when the user wants to send notifications, reminders, or any email
+    communication. Handles recipient extraction, subject generation, and email
+    composition.
 
-  # ============================================================================
-  # Step 5: Use the supervisor
-  # ============================================================================
+    Input: Natural language email request (e.g., 'send them a reminder about
+    the meeting')
+    """
+    result = email_agent.invoke({
+        "messages": [{"role": "user", "content": request}]
+    })
+    return result["messages"][-1].text
 
-  if __name__ == "__main__":
-      # Example: User request requiring both calendar and email coordination
-      user_request = (
-          "Schedule a meeting with the design team next Tuesday at 2pm for 1 hour, "
-          "and send them an email reminder about reviewing the new mockups."
-      )
 
-      print("User Request:", user_request)
-      print("\n" + "="*80 + "\n")
+# ============================================================================
+# Step 4: Create the supervisor agent
+# ============================================================================
 
-      stream = supervisor_agent.stream_events(
-          {"messages": [{"role": "user", "content": user_request}]},
-          version="v3",
-      )
-      for kind, item in stream.interleave("messages", "tool_calls"):
-          if kind == "messages":
-              for token in item.text:
-                  print(token, end="", flush=True)
-          elif kind == "tool_calls":
-              print(f"\nTool call: {item.tool_name}({item.input})")
-              print(f"Tool result: {item.output}")
-  ```
-</Expandable>
+supervisor_agent = create_agent(
+    model,
+    tools=[schedule_event, manage_email],
+    system_prompt=(
+        "You are a helpful personal assistant. "
+        "You can schedule calendar events and send emails. "
+        "Break down user requests into appropriate tool calls and coordinate the results. "
+        "When a request involves multiple actions, use multiple tools in sequence or in parallel as appropriate."
+    )
+)
 
-### 理解架构您的系统有三层。底层包含需要精确格式的严格 API 工具。中间层包含接受自然语言、将其转换为结构化 API 调用并返回自然语言确认的子代理。顶层包含管理器，用于路由到高级功能并综合结果。
+# ============================================================================
+# Step 5: Use the supervisor
+# ============================================================================
+
+if __name__ == "__main__":
+    # Example: User request requiring both calendar and email coordination
+    user_request = (
+        "Schedule a meeting with the design team next Tuesday at 2pm for 1 hour, "
+        "and send them an email reminder about reviewing the new mockups."
+    )
+
+    print("User Request:", user_request)
+    print("\n" + "="*80 + "\n")
+
+    stream = supervisor_agent.stream_events(
+        {"messages": [{"role": "user", "content": user_request}]},
+        version="v3",
+    )
+    for kind, item in stream.interleave("messages", "tool_calls"):
+        if kind == "messages":
+            for token in item.text:
+                print(token, end="", flush=True)
+        elif kind == "tool_calls":
+            print(f"\nTool call: {item.tool_name}({item.input})")
+            print(f"Tool result: {item.output}")
+```
+
+### 理解架构
+
+您的系统有三层。底层包含需要精确格式的严格 API 工具。中间层包含接受自然语言、将其转换为结构化 API 调用并返回自然语言确认的子代理。顶层包含管理器，用于路由到高级功能并综合结果。
 
 这种关注点分离提供了几个好处：每个层都有一个集中的职责，您可以添加新域而不影响现有域，并且可以独立测试和迭代每个层。
 
@@ -854,10 +822,8 @@ Let me know if you'd like to add more details to the meeting or include addition
 
 谨慎的做法是纳入 [human-in-the-loop review](/oss/python/langchain/human-in-the-loop) 敏感操作。 LangChain 包括 [built-in middleware](/oss/python/langchain/human-in-the-loop#configuring-interrupts) 用于审查工具调用，在本例中为子代理调用的工具。
 
-让我们为两个子代理添加人机交互审核：
-
-* 我们将`create_calendar_event`和`send_email`工具配置为中断，允许所有[response types](/oss/python/langchain/human-in-the-loop)（`approve`、`edit`、`reject`）
-* 我们添加一个[checkpointer](/oss/python/langchain/short-term-memory) **仅针对顶级代理**。这是暂停和恢复执行所必需的。
+让我们为两个子代理添加人机交互审核：* 我们将`create_calendar_event`和`send_email`工具配置为中断，允许所有[response types](/oss/python/langchain/human-in-the-loop)（`approve`、`edit`、`reject`）
+* 我们添加一个[checkpointer](/oss/python/langchain/short-term-memory) **仅适用于顶级代理**。这是暂停和恢复执行所必需的。
 
 ```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 from langchain.agents import create_agent
@@ -942,7 +908,9 @@ INTERRUPTED: 4f994c9721682a292af303ec1a46abb7
 INTERRUPTED: 2b56f299be313ad8bc689eff02973f16
 ```
 
-这次我们中断了执行。让我们检查一下中断事件：```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+这次我们中断了执行。让我们检查一下中断事件：
+
+```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 for interrupt_ in interrupts:
     for request in interrupt_.value["action_requests"]:
         print(f"INTERRUPTED: {interrupt_.id}")
@@ -1055,11 +1023,9 @@ def schedule_event(
     return result["messages"][-1].text
 ```
 
-这允许子代理查看完整的对话上下文，这对于解决诸如“安排在明天同一时间”（引用之前的对话）之类的歧义非常有用。
-
-<Tip>
-  您可以在 LangSmith 跟踪的 [chat model call](https://smith.langchain.com/public/c7d54882-afb8-4039-9c5a-4112d0f458b0/r/6803571e-af78-4c68-904a-ecf55771084d) 中看到子代理收到的完整上下文。
-</Tip>
+这允许子代理查看完整的对话上下文，这对于解决诸如“安排在明天同一时间”（引用之前的对话）之类的歧义非常有用。> [!提示]
+>
+> 您可以在 LangSmith 跟踪的 [chat model call](https://smith.langchain.com/public/c7d54882-afb8-4039-9c5a-4112d0f458b0/r/6803571e-af78-4c68-904a-ecf55771084d) 中看到子代理收到的完整上下文。
 
 ### 控制主管收到的内容
 
@@ -1084,30 +1050,26 @@ def schedule_event(request: str) -> str:
     #     "event_id": "evt_123",
     #     "summary": result["messages"][-1].text
     # })
-```**重要提示：** 确保子代理提示强调其最终消息应包含所有相关信息。常见的故障模式是子代理执行工具调用但不将结果包含在其最终响应中。
+```
+
+**重要提示：** 确保子代理提示强调其最终消息应包含所有相关信息。常见的故障模式是子代理执行工具调用但不将结果包含在其最终响应中。
 
 ## 8. 要点
 
-主管模式创建了抽象层，其中每一层都有明确的职责。设计主管系统时，从明确的域边界开始，并为每个子代理提供重点工具和提示。为主管编写清晰的工具描述，在集成之前独立测试每一层，并根据您的具体需求控制信息流。
+主管模式创建了抽象层，其中每一层都有明确的职责。设计主管系统时，从清晰的域边界开始，并为每个子代理提供重点工具和提示。为主管编写清晰的工具描述，在集成之前独立测试每一层，并根据您的具体需求控制信息流。> [!提示]
+>
+> **何时使用主管模式**
+>
+> 当您有多个不同的域（日历、电子邮件、CRM、数据库）、每个域有多个工具或复杂的逻辑、您需要集中式工作流控制并且子代理不需要直接与用户交谈时，请使用主管模式。
+>
+> 对于仅使用少量工具的简单情况，请使用单个代理。当座席需要与用户对话时，请使用[handoffs](/oss/python/langchain/multi-agent/handoffs)。对于代理之间的点对点协作，请考虑其他多代理模式。
 
-<Tip>
-  **何时使用主管模式**
+## 后续步骤
 
-  当您有多个不同的域（日历、电子邮件、CRM、数据库）、每个域有多个工具或复杂的逻辑、您需要集中式工作流控制并且子代理不需要直接与用户交谈时，请使用主管模式。
-
-  对于仅使用少量工具的简单情况，请使用单个代理。当座席需要与用户对话时，请使用[handoffs](/oss/python/langchain/multi-agent/handoffs)。对于代理之间的点对点协作，请考虑其他多代理模式。
-</Tip>
-
-## 后续步骤了解用于代理间对话的 [handoffs](/oss/python/langchain/multi-agent/handoffs)，探索 [context engineering](/oss/python/langchain/context-engineering) 来微调信息流，阅读 [multi-agent overview](/oss/python/langchain/multi-agent) 来比较不同的模式，并使用 [LangSmith](https://smith.langchain.com?utm_source=docs\&utm_medium=cta\&utm_campaign=langsmith-signup\&utm_content=oss-langchain-multi-agent-subagents-personal-assistant) 来调试和监控您的多代理系统。
+了解用于代理间对话的 [handoffs](/oss/python/langchain/multi-agent/handoffs)，探索 [context engineering](/oss/python/langchain/context-engineering) 来微调信息流，阅读 [multi-agent overview](/oss/python/langchain/multi-agent) 来比较不同的模式，并使用 [LangSmith](https://smith.langchain.com?utm_source=docs\&utm_medium=cta\&utm_campaign=langsmith-signup\&utm_content=oss-langchain-multi-agent-subagents-personal-assistant) 来调试和监控您的多代理系统。
 
 ***
 
-<div>
-  <Callout icon="terminal-2">
-    [Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
-  </Callout>
+[Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
 
-  <Callout icon="edit">
-    [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/oss/langchain/multi-agent/subagents-personal-assistant.mdx) 或 [file an issue](https://github.com/langchain-ai/docs/issues/new/choose)。
-  </Callout>
-</div>
+[Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/oss/langchain/multi-agent/subagents-personal-assistant.mdx) 或 [file an issue](https://github.com/langchain-ai/docs/issues/new/choose)。

@@ -14,32 +14,22 @@ Ollama 允许您在本地或云端运行开源模型（如[⟦T0⟧](https://oll
 
 ## 模型接口
 
-<Columns>
-  <Card title="ChatOllama" href="/oss/python/integrations/chat/ollama" icon="message">
-    奥拉玛聊天模型。
-  </Card>
+> **[ChatOllama](/oss/python/integrations/chat/ollama)**
+>
+> 奥拉玛聊天模型。
 
-  <Card title="OllamaEmbeddings" href="/oss/python/integrations/embeddings/ollama" icon="message">
-    Ollama 嵌入模型。
-  </Card>
-</Columns>
+> **[OllamaEmbeddings](/oss/python/integrations/embeddings/ollama)**
+>
+> Ollama 嵌入模型。
 
 ## 其他
 
-<Columns>
-  <Card title="OllamaLLM" href="/oss/python/integrations/llms/ollama" icon="cursor-text">
-    （旧版）Ollama 文本完成模型。
-  </Card>
-</Columns>
+> **[OllamaLLM](/oss/python/integrations/llms/ollama)**
+>
+>（旧版）Ollama 文本完成模型。
 
 ***
 
-<div>
-  <Callout icon="terminal-2">
-    [Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
-  </Callout>
+[Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
 
-  <Callout icon="edit">
-    [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/oss/python/integrations/providers/ollama.mdx) 或 [file an issue](https://github.com/langchain-ai/docs/issues/new/choose)。
-  </Callout>
-</div>
+[Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/oss/python/integrations/providers/ollama.mdx) 或 [file an issue](https://github.com/langchain-ai/docs/issues/new/choose)。

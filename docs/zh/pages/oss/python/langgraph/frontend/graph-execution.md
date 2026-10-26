@@ -15,10 +15,8 @@ LangGraph 特工不是黑匣子。每个图都由**命名节点**组成
 
 这种模式对于生产代理特别有用，因为它可以将图形转变为图形
 结构到产品用户体验中。而不是把跑步当作一个单独的助手
-响应，您可以公开相同的检查点、节点名称、状态键和
+响应，您可以公开相同的检查点、节点名称、状态密钥和
 LangGraph内部使用的流元数据。
-
-<PatternEmbed />
 
 ## 图形节点如何映射到 UI 卡
 
@@ -59,35 +57,61 @@ graphNodes.forEach((node) => {
 当前运行）。将每个发现的子图快照传递给选择器以读取
 消息范围仅限于该节点。
 
-<Info>
-  代码示例使用 `useStream<typeof myAgent>` 来实现类型安全的流状态。请参阅 [Python](/oss/python/langchain/frontend/overview#type-inference) 或 [JavaScript](/oss/javascript/langchain/frontend/overview#type-inference) 后端的类型推断。
-</Info>
+> [!注意]
+>
+> 代码示例使用 `useStream<typeof myAgent>` 来实现类型安全的流状态。请参阅 [Python](/oss/python/langchain/frontend/overview#type-inference) 或 [JavaScript](/oss/javascript/langchain/frontend/overview#type-inference) 后端的类型推断。
 
-<CodeGroup>
-  ```tsx React theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  import { useStream } from "@langchain/react";
+```tsx React theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+import { useStream } from "@langchain/react";
 
-  const AGENT_URL = "http://localhost:2024";
+const AGENT_URL = "http://localhost:2024";
 
-  export function PipelineChat() {
-    const stream = useStream<typeof myAgent>({
-      apiUrl: AGENT_URL,
-      assistantId: "graph_execution_cards",
-    });
-    const graphNodes = [...stream.subgraphs.values()];
+export function PipelineChat() {
+  const stream = useStream<typeof myAgent>({
+    apiUrl: AGENT_URL,
+    assistantId: "graph_execution_cards",
+  });
+  const graphNodes = [...stream.subgraphs.values()];
 
-    return (
-      <div>
-        <PipelineProgress nodes={graphNodes} isLoading={stream.isLoading} />
-        <NodeCardList nodes={graphNodes} stream={stream} isLoading={stream.isLoading} />
-      </div>
-    );
-  }
-  ```
+  return (
+    <div>
+      <PipelineProgress nodes={graphNodes} isLoading={stream.isLoading} />
+      <NodeCardList nodes={graphNodes} stream={stream} isLoading={stream.isLoading} />
+    </div>
+  );
+}
+```
 
-  ```vue Vue theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  <script setup lang="ts">
-  import { useStream } from "@langchain/vue";
+```vue Vue theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+<script setup lang="ts">
+import { useStream } from "@langchain/vue";
+
+const AGENT_URL = "http://localhost:2024";
+
+const stream = useStream<typeof myAgent>({
+  apiUrl: AGENT_URL,
+  assistantId: "graph_execution_cards",
+});
+</script>
+
+<template>
+  <div>
+    <PipelineProgress
+      :nodes="[...stream.subgraphs.value.values()]"
+      :is-loading="stream.isLoading.value"
+    />
+    <NodeCardList
+      :nodes="[...stream.subgraphs.value.values()]"
+      :stream="stream"
+      :is-loading="stream.isLoading.value"
+    />
+  </div>
+</template>
+```
+
+```svelte Svelte theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+<script lang="ts">
+  import { useStream } from "@langchain/svelte";
 
   const AGENT_URL = "http://localhost:2024";
 
@@ -95,79 +119,51 @@ graphNodes.forEach((node) => {
     apiUrl: AGENT_URL,
     assistantId: "graph_execution_cards",
   });
-  </script>
+</script>
 
-  <template>
+<div>
+  <PipelineProgress nodes={[...stream.subgraphs.values()]} isLoading={stream.isLoading} />
+  <NodeCardList
+    nodes={[...stream.subgraphs.values()]}
+    {stream}
+    isLoading={stream.isLoading}
+  />
+</div>
+```
+
+```ts Angular theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+import { Component, computed } from "@angular/core";
+import { injectStream } from "@langchain/angular";
+
+const AGENT_URL = "http://localhost:2024";
+
+@Component({
+  selector: "app-pipeline-chat",
+  template: `
     <div>
-      <PipelineProgress
-        :nodes="[...stream.subgraphs.value.values()]"
-        :is-loading="stream.isLoading.value"
+      <app-pipeline-progress
+        [nodes]="graphNodes()"
+        [isLoading]="stream.isLoading()"
       />
-      <NodeCardList
-        :nodes="[...stream.subgraphs.value.values()]"
-        :stream="stream"
-        :is-loading="stream.isLoading.value"
+      <app-node-card-list
+        [nodes]="graphNodes()"
+        [stream]="stream"
+        [isLoading]="stream.isLoading()"
       />
     </div>
-  </template>
-  ```
+  `,
+})
+export class PipelineChatComponent {
+  stream = injectStream<typeof myAgent>({
+    apiUrl: AGENT_URL,
+    assistantId: "graph_execution_cards",
+  });
 
-  ```svelte Svelte theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  <script lang="ts">
-    import { useStream } from "@langchain/svelte";
+  graphNodes = computed(() => [...this.stream.subgraphs().values()]);
+}
+```
 
-    const AGENT_URL = "http://localhost:2024";
-
-    const stream = useStream<typeof myAgent>({
-      apiUrl: AGENT_URL,
-      assistantId: "graph_execution_cards",
-    });
-  </script>
-
-  <div>
-    <PipelineProgress nodes={[...stream.subgraphs.values()]} isLoading={stream.isLoading} />
-    <NodeCardList
-      nodes={[...stream.subgraphs.values()]}
-      {stream}
-      isLoading={stream.isLoading}
-    />
-  </div>
-  ```
-
-  ```ts Angular theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  import { Component, computed } from "@angular/core";
-  import { injectStream } from "@langchain/angular";
-
-  const AGENT_URL = "http://localhost:2024";
-
-  @Component({
-    selector: "app-pipeline-chat",
-    template: `
-      <div>
-        <app-pipeline-progress
-          [nodes]="graphNodes()"
-          [isLoading]="stream.isLoading()"
-        />
-        <app-node-card-list
-          [nodes]="graphNodes()"
-          [stream]="stream"
-          [isLoading]="stream.isLoading()"
-        />
-      </div>
-    `,
-  })
-  export class PipelineChatComponent {
-    stream = injectStream<typeof myAgent>({
-      apiUrl: AGENT_URL,
-      assistantId: "graph_execution_cards",
-    });
-
-    graphNodes = computed(() => [...this.stream.subgraphs().values()]);
-  }
-  ```
-</CodeGroup>
-
-## 将流令牌路由到节点As the graph streams, each discovered subgraph snapshot identifies the node it
+## 将流令牌路由到节点随着图流式传输，每个发现的子图快照都会标识它的节点
 属于.将该快照传递给选择器挂钩或可组合项以读取
 作用于该节点的消息：
 
@@ -308,7 +304,7 @@ function NodeCard({
 
 节点卡读取流媒体和最终内容的范围消息。这个
 避免假设图节点名称与其写入的状态键匹配（例如
-example, `do_research` writes to `research` in the playground graph):|来源 |何时使用 |
+例如，`do_research`写入游乐场图中的`research`）：|来源 |何时使用 |
 | - | - |
 | `useMessages(stream, node)` |渲染节点范围的流和最终消息 |
 | `stream.values` |使用实际状态键读取整个图状态，例如最终的 `synthesis` 字段 |
@@ -330,11 +326,11 @@ function NodeContent({ stream, node }: { stream: AnyStream; node: SubgraphDiscov
 }
 ```
 
-<Tip>
-  流媒体内容可能包含未经过处理的部分标记或降价
-  fully formed yet.如果您渲染 Markdown，请确保您的渲染器可以处理
-  优雅地处理不完整的语法（例如，未闭合的粗体标记`**`）。
-</Tip>
+> [!提示]
+>
+> 流媒体内容可能包含未经过处理的部分标记或降价
+> fully formed yet.如果您渲染 Markdown，请确保您的渲染器可以处理
+> 优雅地不完整语法（例如，未闭合的粗体标记`**`）。
 
 ## 将它们放在一起
 
@@ -375,15 +371,15 @@ matters:* **研究管道**：分类→收集来源→分析→综合
 * **内容生成**：大纲→草稿→事实检查→编辑→发布
 * **数据处理**：摄取→验证→转换→聚合→导出
 * **代码生成**：理解需求→规划架构→编写
-  代码→审查→测试
+  code → review → test
 * **决策工作流程**：收集背景→评估选项→评分
   替代方案 → 推荐
 
 ## 处理动态管道
 
 并非所有图都有一组固定的节点。某些管道添加或跳过节点
-基于输入。发现图仅包含观察到的节点
-当前线程：
+based on the input.发现图仅包含观察到的节点
+current thread:
 
 ```ts theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 const activeNodes = [...stream.subgraphs.values()];
@@ -392,12 +388,12 @@ const activeNodes = [...stream.subgraphs.values()];
 这可确保您的 UI 仅显示与相关节点相关的卡片
 当前执行，避免空占位卡。
 
-<Info>
-  如果您的图表具有条件分支（例如，跳过“研究”以获得简单的结果）
-  事实查询），跳过的节点不会出现在`stream.subgraphs`中。你的
-  管道进度条可以仅渲染已发现的节点或使预期节点变暗
-  没有匹配的快照。
-</Info>
+> [!注意]
+>
+> 如果您的图表具有条件分支（例如，跳过“研究”以获得简单的结果）
+>事实查询），跳过的节点不会出现在`stream.subgraphs`中。你的
+> 管道进度条可以仅渲染已发现的节点或使预期节点变暗
+> 没有匹配的快照。
 
 ## 最佳实践* **从流中发现节点**。来自`stream.subgraphs`的渲染卡
   而不是对预期节点进行硬编码；有条件或跳过的步骤不会
@@ -419,10 +415,6 @@ const activeNodes = [...stream.subgraphs.values()];
 
 ***
 
-<div>
-  <Callout icon="terminal-2">
-    [Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
-  </Callout><Callout icon="edit">
-    [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/oss/langgraph/frontend/graph-execution.mdx) 或 [file an issue](https://github.com/langchain-ai/docs/issues/new/choose)。
-  </Callout>
-</div>
+[Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
+
+[Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/oss/langgraph/frontend/graph-execution.mdx) 或 [file an issue](https://github.com/langchain-ai/docs/issues/new/choose)。

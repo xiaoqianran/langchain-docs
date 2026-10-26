@@ -94,21 +94,25 @@
 >
 > DeepSeek 的高级推理和编码模型。
 
+> **[EmpirioLabs AI](https://docs.empiriolabs.ai/integrations#langchain)**
+>
+> 适用于开放、专有和自定义堆栈的专业 AI 模型托管，以及 GPU 云和托管 AI 代理。
+
 > **[Fake LLM](/oss/javascript/integrations/chat/fake)**
 >
 > 用于测试和开发目的的模拟聊天模型。
 
 > **[FuturMix](https://futurmix.ai/)**
 >
-> 适用于 22 种以上型号的统一 AI 网关，具有OpenAI 兼容 API。
-
-> **[Google Gemini](/oss/javascript/integrations/chat/google)**
+> 适用于 22 种以上型号的统一 AI 网关，具有OpenAI 兼容 API。> **[Google Gemini](/oss/javascript/integrations/chat/google)**
 >
 > Google 通过 AI Studio 和 Gemini Enterprise Agent Platform 构建的 Gemini 模型。
 
 > **[Groq](/oss/javascript/integrations/chat/groq)**
 >
-> 使用 Groq 的专用硬件进行超快速推理。> **[Interfaze](https://interfaze.ai/docs)**
+> 使用 Groq 的专用硬件进行超快速推理。
+
+> **[Interfaze](https://interfaze.ai/docs)**
 >
 > 多模式聊天模型，通过OpenAI兼容的 API 提供结构化输出。
 
@@ -156,15 +160,15 @@
 
 > **[Cloudflare Workers AI](/oss/javascript/integrations/llms/cloudflare_workersai)**
 >
-> Cloudflare 边缘计算平台上的 AI 模型。
-
-> **[Cohere](/oss/javascript/integrations/llms/cohere)**
+> Cloudflare 边缘计算平台上的 AI 模型。> **[Cohere](/oss/javascript/integrations/llms/cohere)**
 >
 > Cohere 用于各种 NLP 任务的语言模型。
 
 > **[Gemini Enterprise Agent Platform](/oss/javascript/integrations/llms/google_vertex_ai)**
 >
-> Google Cloud 的企业 AI 和 ML 平台。> **[JigsawStack](/oss/javascript/integrations/llms/jigsawstack)**
+> Google Cloud 的企业 AI 和 ML 平台。
+
+> **[JigsawStack](/oss/javascript/integrations/llms/jigsawstack)**
 >
 > JigsawStack 的人工智能基础设施和模型服务。
 
@@ -206,6 +210,10 @@
 >
 > Cohere 的多语言嵌入模型。
 
+> **[EmpirioLabs](https://docs.empiriolabs.ai/integrations#langchain)**
+>
+> 适用于开放、专有和自定义堆栈的专业 AI 模型托管，以及 GPU 云和托管 AI 代理。
+
 > **[Google Generative AI](/oss/javascript/integrations/embeddings/google_generative_ai)**
 >
 > Google 用于文本表示的嵌入模型。
@@ -216,9 +224,7 @@
 
 > **[Minimax](/oss/javascript/integrations/embeddings/minimax)**
 >
-> Minimax 的文本嵌入和表示模型。
-
-> **[Mistral](/oss/javascript/integrations/embeddings/mistralai)**
+> Minimax 的文本嵌入和表示模型。> **[Mistral](/oss/javascript/integrations/embeddings/mistralai)**
 >
 > Mistral 的高效嵌入模型。
 
@@ -232,7 +238,9 @@
 
 > **[Ollama](/oss/javascript/integrations/embeddings/ollama)**
 >
-> 通过 Ollama 本地嵌入模型。> **[OpenAI](/oss/javascript/integrations/embeddings/openai)**
+> 通过 Ollama 本地嵌入模型。
+
+> **[OpenAI](/oss/javascript/integrations/embeddings/openai)**
 >
 > OpenAI 用于语义搜索的文本嵌入模型。
 
@@ -284,9 +292,7 @@
 
 > **[MongoDB Atlas](/oss/javascript/integrations/vectorstores/mongodb_atlas)**
 >
-> MongoDB Atlas 云数据库中的矢量搜索。
-
-> **[Oracle AI Database](/oss/javascript/integrations/vectorstores/oracleai)**
+> MongoDB Atlas 云数据库中的矢量搜索。> **[Oracle AI Database](/oss/javascript/integrations/vectorstores/oracleai)**
 >
 > Oracle Vector Search 用于混合检索和存储。
 
@@ -296,7 +302,9 @@
 
 > **[Qdrant](/oss/javascript/integrations/vectorstores/qdrant)**
 >
-> 开源向量相似度搜索引擎。> **[Redis](/oss/javascript/integrations/vectorstores/redis)**
+> 开源向量相似度搜索引擎。
+
+> **[Redis](/oss/javascript/integrations/vectorstores/redis)**
 >
 > 具有矢量搜索功能的内存数据库。
 
@@ -352,9 +360,7 @@
 
 > **[Sourcey](/oss/javascript/integrations/providers/sourcey)**
 >
-> 使用 Sourcey 已经发出的构建工件从已发布的 Sourcey 文档站点检索。
-
-> **[Supadata](/oss/javascript/integrations/providers/supadata)**
+> 使用 Sourcey 已经发出的构建工件从已发布的 Sourcey 文档站点检索。> **[Supadata](/oss/javascript/integrations/providers/supadata)**
 >
 > 从 YouTube、TikTok 等加载文字记录和元数据。
 
@@ -364,7 +370,9 @@
 >
 > 使用 OpenAI 为文档生成元数据标签。
 
-## 文档压缩器> **[Cohere Rerank](/oss/javascript/integrations/document_compressors/cohere_rerank)**
+## 文档压缩器
+
+> **[Cohere Rerank](/oss/javascript/integrations/document_compressors/cohere_rerank)**
 >
 > 使用 Cohere 的重新排序模型对文档进行重新排序。
 
@@ -396,15 +404,15 @@
 
 > **[Continuity tools](https://github.com/zerohourzulu/continuity/blob/main/packages/remote-tools/README.md#langchain-tools)**
 >
-> LangChain 具有应用程序定义的权限、稳定的操作身份以及针对协作服务的仅状态恢复的工具。
-
-> **[Corsair](https://docs.corsair.dev/mcp-adapters/langchain)**
+> LangChain 具有应用程序定义的权限、稳定的操作身份和仅状态恢复的合作服务工具。> **[Corsair](https://docs.corsair.dev/mcp-adapters/langchain)**
 >
 > 将 200 多个服务集成（Slack、GitHub、Gmail、Linear、Stripe 等）作为 OAuth 工具向 LangChain 代理公开。
 
 > **[DALL-E](/oss/javascript/integrations/tools/dalle)**
 >
-> 使用 OpenAI 的 DALL-E 模型生成图像。> **[DataBazaar](https://databazaar.io/integrations?utm_source=langchain\&utm_campaign=integration-listing#langchain)**
+> 使用 OpenAI 的 DALL-E 模型生成图像。
+
+> **[DataBazaar](https://databazaar.io/integrations?utm_source=langchain\&utm_campaign=integration-listing#langchain)**
 >
 > 用于公共搜索、样本预览和赏金发现的数据集市场工具，以及经过帐户验证的数据检索。
 
@@ -442,15 +450,15 @@
 
 > **[Magic Hour](https://docs.magichour.ai)**
 >
-> 一个 API 密钥背后的 AI 文本转视频、图像转视频和图像生成工具。
-
-> **[M91](https://github.com/MSG91/m91-sdk#langchain)**
+> 一个 API 密钥背后的 AI 文本转视频、图像转视频和图像生成工具。> **[M91](https://github.com/MSG91/m91-sdk#langchain)**
 >
-> 暂停代理直到有人在手机上批准的工具；警报会通过静音模式响起并升级为语音呼叫。
+> 暂停代理的工具，直到有人在手机上批准为止；警报会通过静音模式响起并升级为语音呼叫。
 
 > **[MCP Toolbox](/oss/javascript/integrations/tools/mcp_toolbox)**
 >
-> 模型上下文协议工具和实用程序。> **[Mercedes-Benz Service Reminder](https://github.com/gentlegiant96202/mercedes-benz-service-reminder-mcp#readme)**
+> 模型上下文协议工具和实用程序。
+
+> **[Mercedes-Benz Service Reminder](https://github.com/gentlegiant96202/mercedes-benz-service-reminder-mcp#readme)**
 >
 > SilberArrows 的 MCP 工具，用于 Mercedes-Benz 服务 A/B 提醒、服务说明和警告灯指导。
 
@@ -480,9 +488,7 @@
 
 > **[Precleared](https://precleared.dev/docs/langchain)**
 >
-> 检查发送到某个地址的冷邮件或营销电子邮件在八个国家/地区是否合法，并返回决定规则、页脚要求和签名收据。
-
-> **[Pushary](https://pushary.com/docs/agents/build/langgraph?utm_source=langchain\&utm_medium=integration-directory\&utm_campaign=pushary-langgraph-js)**
+> 检查发送到某个地址的冷邮件或营销电子邮件在八个国家/地区是否合法，并返回决定规则、页脚要求和签名收据。> **[Pushary](https://pushary.com/docs/agents/build/langgraph?utm_source=langchain\&utm_medium=integration-directory\&utm_campaign=pushary-langgraph-js)**
 >
 > LangGraph.js 代理的电话批准：在用户的电话上询问并仅在批准时进行路由；没有答案就意味着没有行动。
 
@@ -492,7 +498,9 @@
 
 > **[SIGNA](https://github.com/codexvritra/signa/tree/main/sdk/langchain)**
 >
-> 将钱包签名的消息传递工具添加到LangChain代理。> **[Sato Hub](https://github.com/satohubai/sato-hub-integrations/tree/main/packages/satohub-langchain-tools#readme)**
+> 将钱包签名的消息传递工具添加到LangChain代理。
+
+> **[Sato Hub](https://github.com/satohubai/sato-hub-integrations/tree/main/packages/satohub-langchain-tools#readme)**
 >
 > Sato Hub 链上代理构建块索引上的无密钥工具：搜索列表、预检查找、交换场地和构建计划。
 
@@ -530,9 +538,7 @@
 
 > **[WebExtract](https://webextract.dev/docs/langchain)**
 >
-> 网页提取 API 返回干净的 Markdown 以及文章元数据、产品价格和表格的固定架构 JSON。
-
-> **[You.com](https://you.com/docs/integrations/langchain)**
+> 网页提取 API 返回干净的 Markdown 以及文章元数据、产品价格和表格的固定架构 JSON。> **[You.com](https://you.com/docs/integrations/langchain)**
 >
 > 法学硕士的实时网络搜索和内容提取。
 
@@ -548,7 +554,9 @@
 
 > **[Exa](/oss/javascript/integrations/retrievers/exa)**
 >
-> 人工智能驱动的网络搜索和检索。> **[FoxNose](https://github.com/FoxNoseTech/langchain-foxnose-js#readme)**
+> 人工智能驱动的网络搜索和检索。
+
+> **[FoxNose](https://github.com/FoxNoseTech/langchain-foxnose-js#readme)**
 >
 > 用于 FoxNose 集合的检索器、文档加载器和代理工具，通过 Flux 交付 API 提供文本、矢量、混合和矢量增强搜索。
 
@@ -590,9 +598,7 @@
 >
 > 临时数据的快速内存存储。
 
-## LLM 缓存
-
-> **[Azure Cosmos DB NoSQL](/oss/javascript/integrations/llm_caching/azure_cosmosdb_nosql)**
+## LLM 缓存> **[Azure Cosmos DB NoSQL](/oss/javascript/integrations/llm_caching/azure_cosmosdb_nosql)**
 >
 > 在 Azure Cosmos DB 中缓存 LLM 响应。
 
@@ -600,7 +606,9 @@
 >
 > 由 Valkey 或 Redis 支持的 AI 代理的多层缓存。
 
-＃＃ 中间件> **[BRYDGE](https://github.com/contactkontey-dotcom/langchain-brydge#readme)**
+## 中间件
+
+> **[BRYDGE](https://github.com/contactkontey-dotcom/langchain-brydge#readme)**
 >
 > 监督代理工具与 BRYDGE 的调用，并检查目标系统自己的记录，以报告每个操作是否在允许的情况下发生。
 

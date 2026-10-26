@@ -6,26 +6,18 @@
 
 使用 LangChain Python 与 Groq 集成。
 
-<Warning>
-  本页面参考了[Groq](https://console.groq.com/docs/overview)，一家人工智能硬件和软件公司。有关如何使用 Grok 模型的信息（由[xAI](https://docs.x.ai/docs/overview)提供），请参阅[xAI provider page](/oss/python/integrations/providers/xai)。
-</Warning>
+> [!警告]
+>
+> 本页面参考了[Groq](https://console.groq.com/docs/overview)，一家人工智能硬件和软件公司。有关如何使用 Grok 模型的信息（由[xAI](https://docs.x.ai/docs/overview)提供），请参阅[xAI provider page](/oss/python/integrations/providers/xai)。
 
 ## 模型接口
 
-<Columns>
-  <Card title="ChatGroq" href="/oss/python/integrations/chat/groq" icon="message">
-    Groq 平台上托管的聊天模型的接口。
-  </Card>
-</Columns>
+> **[ChatGroq](/oss/python/integrations/chat/groq)**
+>
+> Groq 平台上托管的聊天模型的接口。
 
 ***
 
-<div>
-  <Callout icon="terminal-2">
-    [Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时答案。
-  </Callout>
+[Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
 
-  <Callout icon="edit">
-    [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/oss/python/integrations/providers/groq.mdx) 或 [file an issue](https://github.com/langchain-ai/docs/issues/new/choose)。
-  </Callout>
-</div>
+[Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/oss/python/integrations/providers/groq.mdx) 或 [file an issue](https://github.com/langchain-ai/docs/issues/new/choose)。

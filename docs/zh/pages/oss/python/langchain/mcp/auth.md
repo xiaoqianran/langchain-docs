@@ -1,20 +1,20 @@
-<!-- langchain-docs: translation failed; English fallback -->
+<!-- langchain-docs: machine-translated zh-CN from English source -->
 
 <!-- langchain-docs: Authentication | https://docs.langchain.com/oss/python/langchain/mcp/auth -->
 
-# Authentication
+# 认证
 
-Authenticate MCP connections with bearer tokens, OAuth 2.1, or per-user credentials in LangChain.
+使用不记名令牌、OAuth 2.1 或 LangChain 中的每用户凭据对 MCP 连接进行身份验证。
 
-Most remote MCP servers require authentication. [`MCPAdapter`](https://reference.langchain.com/python/langchain/mcp/adapter/MCPAdapter) delegates auth to FastMCP, so any credential a `fastmcp.Client` accepts works: a static [bearer token](#bearer-token), a full [OAuth 2.1](#oauth-authentication) flow, or any [`httpx.Auth`](https://www.python-httpx.org/advanced/authentication/). Pass the credential on a prebuilt client and hand that client to the adapter. When one agent talks to several servers, use [per-server authentication](#per-server-authentication); in a deployment, use [per-user authentication](#per-user-authentication) so each run reaches the server as the caller.
+大多数远程 MCP 服务器需要身份验证。 [⟦T5⟧](https://reference.langchain.com/python/langchain/mcp/adapter/MCPAdapter) 将身份验证委托给 FastMCP，因此 `fastmcp.Client` 接受的任何凭证都有效：静态 [bearer token](#bearer-token)、完整的 [OAuth 2.1](#oauth-authentication) 流或任何 [⟦T7⟧](https://www.python-httpx.org/advanced/authentication/)。将凭据传递到预构建的客户端上，并将该客户端交给适配器。当一个代理与多个服务器对话时，使用[per-server authentication](#per-server-authentication)；在部署中，使用[per-user authentication](#per-user-authentication)，以便每次运行都作为调用者到达服务器。
 
-<Note>
-  The `langchain.mcp` namespace requires `langchain[mcp]>=1.4.0` and is in beta. The API may change.
-</Note>
+> [!注意]
+>
+> `langchain.mcp` 命名空间需要 `langchain[mcp]>=1.4.0` 并且处于测试阶段。 API 可能会更改。
 
-## Bearer token
+## 不记名令牌
 
-The simplest case: the server verifies a token you provisioned and adds it in the `Authorization: Bearer <token>` header. There is no discovery, browser, or refresh. Pass the token as the client's `auth`:
+最简单的情况：服务器验证您配置的令牌并将其添加到 `Authorization: Bearer <token>` 标头中。没有发现、浏览器或刷新。将令牌作为客户端的`auth`传递：
 
 ```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 from fastmcp.client import Client
@@ -28,11 +28,9 @@ async def load_tools_with_bearer(url: str, token: str) -> list:
         return await adapter.list_tools()
 ```
 
-The `auth` argument accepts a bearer-token string, the literal `"oauth"`, or any `httpx.Auth`. In an `MCPConfig` fleet, each server takes the same key.
+`auth` 参数接受不记名令牌字符串、文字 `"oauth"` 或任何 `httpx.Auth`。在 `MCPConfig` 队列中，每个服务器都使用相同的密钥。
 
-## OAuth authentication
-
-For a server that issues its own credentials, pass the literal string `"oauth"`. FastMCP runs the full OAuth 2.1 flow: discovery, [dynamic client registration](https://modelcontextprotocol.io/specification/draft/basic/authorization), the browser redirect, and the token exchange. Dynamic client registration means the client registers itself at runtime instead of you pre-provisioning a client ID:
+## OAuth 认证对于颁发自己的凭据的服务器，请传递文字字符串 `"oauth"`。 FastMCP 运行完整的 OAuth 2.1 流程：发现、[dynamic client registration](https://modelcontextprotocol.io/specification/draft/basic/authorization)、浏览器重定向和令牌交换。动态客户端注册意味着客户端在运行时自行注册，而不是您预先配置客户端 ID：
 
 ```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 async def load_tools_with_oauth(url: str) -> list:
@@ -43,7 +41,7 @@ async def load_tools_with_oauth(url: str) -> list:
         return await adapter.list_tools()
 ```
 
-By default tokens are held in memory, so each run repeats the browser step. Pass a prebuilt `OAuth` provider with a token store to persist them across runs:
+默认情况下，令牌保存在内存中，因此每次运行都会重复浏览器步骤。传递带有令牌存储的预构建的 `OAuth` 提供程序，以在运行期间保留它们：
 
 ```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 from fastmcp.client import Client
@@ -53,11 +51,11 @@ oauth = OAuth(mcp_url="https://example.com/mcp", token_storage=...)
 client = Client("https://example.com/mcp", auth=oauth)
 ```
 
-FastMCP ships providers for common identity providers (Auth0, WorkOS, Okta, and more); the flow the client runs is identical across them. See [OAuth authentication](https://gofastmcp.com/clients/auth/oauth) in the FastMCP documentation.
+FastMCP 为常见身份提供商提供了提供商（Auth0、WorkOS、Okta 等）；客户端运行的流程在它们之间是相同的。请参阅 FastMCP 文档中的[OAuth authentication](https://gofastmcp.com/clients/auth/oauth)。
 
-## Per-server authentication
+## 每服务器身份验证
 
-When one agent talks to several servers, each server may need its own credential. Give each its own connection with a [`ClientGroup`](/oss/python/langchain/mcp/connections#independent-connections-with-clientgroup), and set `auth` per client, so every server authenticates independently:
+当一个代理与多台服务器通信时，每台服务器可能需要自己的凭据。为每个客户端提供自己的连接[⟦T18⟧](/oss/python/langchain/mcp/connections#independent-connections-with-clientgroup)，并为每个客户端设置`auth`，以便每个服务器独立进行身份验证：
 
 ```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 from fastmcp.client.group import ClientGroup
@@ -78,12 +76,10 @@ async def load_with_per_server_auth(
         return await adapter.list_tools()
 ```
 
-## Per-user authentication
+## 每用户身份验证
 
-In a deployment, each run should reach the MCP server as the user who initiated it, not with one shared credential. The pattern has two halves:
-
-1. **Authenticate the caller at the LangGraph server.** A [custom auth handler](/langsmith/auth) resolves the incoming request to a user identity, which each run reads off its runtime.
-2. **Mint or exchange a credential for that user.** Inside the [graph factory](/oss/python/langchain/mcp/connections#scale-a-deployment), read the user's identity and build the MCP client with a per-user token, so the connection carries that user's authorization.
+在部署中，每次运行都应以启动它的用户身份到达 MCP 服务器，而不是使用一个共享凭据。该模式有两半：1. **在 LangGraph 服务器上对调用者进行身份验证。** [custom auth handler](/langsmith/auth) 将传入请求解析为用户身份，每次运行都会读取其运行时。
+2. **为该用户创建或交换凭证。** 在 [graph factory](/oss/python/langchain/mcp/connections#scale-a-deployment) 内，读取用户的身份并使用每用户令牌构建 MCP 客户端，以便连接携带该用户的授权。
 
 ```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 from fastmcp.client import Client
@@ -103,26 +99,20 @@ async def make_graph(runtime):
         return create_agent("claude-sonnet-5", tools)
 ```
 
-In production, `token_for` stands in for whatever the deployment already has: an OAuth gateway that exchanges the session for a per-user token, or a `fastmcp.client.auth` provider that runs the authorization-code flow per identity. Isolate any [cached responses](/oss/python/langchain/mcp/connections#caching) per user, keyed off the verified identity, so one user never sees another's cached tool list.
+在生产中，`token_for` 代表部署中已有的任何内容：用于交换每个用户令牌的会话的 OAuth 网关，或用于每个身份运行授权代码流的 `fastmcp.client.auth` 提供程序。隔离每个用户的任何[cached responses](/oss/python/langchain/mcp/connections#caching)，关闭经过验证的身份，因此一个用户永远不会看到另一个用户的缓存工具列表。
 
-## See also
+## 另请参阅
 
 * [FastMCP OAuth authentication](https://gofastmcp.com/clients/auth/oauth)
 * [FastMCP bearer token authentication](https://gofastmcp.com/clients/auth/bearer)
 * [FastMCP machine-to-machine authentication](https://gofastmcp.com/clients/auth/client-credentials)
-* [FastMCP client groups](https://gofastmcp.com/clients/client-groups) — independent connections for per-server auth
+* [FastMCP client groups](https://gofastmcp.com/clients/client-groups) — 每个服务器身份验证的独立连接
 * [FastMCP server authentication providers](https://gofastmcp.com/servers/auth/authentication)
 * [MCP authorization specification](https://modelcontextprotocol.io/specification/draft/basic/authorization)
 * [Custom authentication for a LangGraph server](/langsmith/auth)
 
 ***
 
-<div>
-  <Callout icon="terminal-2">
-    [Connect these docs](/use-these-docs) to your agent of choice via MCP for real-time answers.
-  </Callout>
+[Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
 
-  <Callout icon="edit">
-    [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/oss/langchain/mcp/auth.mdx) or [file an issue](https://github.com/langchain-ai/docs/issues/new/choose).
-  </Callout>
-</div>
+[Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/oss/langchain/mcp/auth.mdx) 或 [file an issue](https://github.com/langchain-ai/docs/issues/new/choose)。

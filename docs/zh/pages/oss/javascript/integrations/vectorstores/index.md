@@ -619,22 +619,22 @@ LangChain.js 与各种矢量商店集成。您可以查看下面的完整列表�
 | :-| :-|
 | [⟦T90⟧](/oss/javascript/integrations/vectorstores/weaviate) | [  ⟦T109⟧](https://www.npmjs.com/package/@langchain/weaviate) |
 | [⟦T91⟧](/oss/javascript/integrations/vectorstores/pinecone) | [  ⟦T110⟧](https://www.npmjs.com/package/@langchain/pinecone) |
-| [⟦T92⟧](/oss/javascript/integrations/vectorstores/qdrant) | [  ⟦T111⟧](https://www.npmjs.com/package/@langchain/qdrant) |
-| [⟦T93⟧](/oss/javascript/integrations/vectorstores/mongodb_atlas) | [  ⟦T112⟧](https://www.npmjs.com/package/@langchain/mongodb) |
+| [⟦T92⟧](/oss/javascript/integrations/vectorstores/mongodb_atlas) | [  ⟦T111⟧](https://www.npmjs.com/package/@langchain/mongodb) |
+| [⟦T93⟧](/oss/javascript/integrations/vectorstores/qdrant) | [  ⟦T112⟧](https://www.npmjs.com/package/@langchain/qdrant) |
 | [⟦T94⟧](/oss/javascript/integrations/vectorstores/redis) | [  ⟦T113⟧](https://www.npmjs.com/package/@langchain/redis) |
 | [⟦T95⟧](/oss/javascript/integrations/vectorstores/oracleai) | [  ⟦T114⟧](https://www.npmjs.com/package/@oracle/langchain-oracledb) |
 | [⟦T96⟧](/oss/javascript/integrations/vectorstores/pgvector) | [  ⟦T115⟧](https://www.npmjs.com/package/@langchain/pgvector) |
 | [⟦T97⟧](/oss/javascript/integrations/vectorstores/cloudflare_vectorize) | [  ⟦T116⟧](https://www.npmjs.com/package/@langchain/cloudflare) |
-| [⟦T98⟧](/oss/javascript/integrations/vectorstores/azure_cosmosdb_mongodb) | [  ⟦T117⟧](https://www.npmjs.com/package/@langchain/azure-cosmosdb) |
-| [⟦T99⟧](/oss/javascript/integrations/vectorstores/azure_cosmosdb_nosql) | [  ⟦T118⟧](https://www.npmjs.com/package/@langchain/azure-cosmosdb) |
-| [⟦T100⟧](/oss/javascript/integrations/vectorstores/azure_documentdb) | [  ⟦T119⟧](https://www.npmjs.com/package/@langchain/azure-cosmosdb) |
-| [⟦T101⟧](/oss/javascript/integrations/vectorstores/turbopuffer) | [  ⟦T120⟧](https://www.npmjs.com/package/@langchain/turbopuffer) |
-| [⟦T102⟧](/oss/javascript/integrations/vectorstores/neo4jvector) | [  ⟦T121⟧](https://www.npmjs.com/package/@langchain/neo4j) |
-| [⟦T103⟧](/oss/javascript/integrations/vectorstores/google_cloudsql_pg) | [  ⟦T122⟧](https://www.npmjs.com/package/@langchain/google-cloud-sql-pg) |
+| [⟦T98⟧](/oss/javascript/integrations/vectorstores/turbopuffer) | [  ⟦T117⟧](https://www.npmjs.com/package/@langchain/turbopuffer) |
+| [⟦T99⟧](/oss/javascript/integrations/vectorstores/google_cloudsql_pg) | [  ⟦T118⟧](https://www.npmjs.com/package/@langchain/google-cloud-sql-pg) |
+| [⟦T100⟧](/oss/javascript/integrations/vectorstores/azure_cosmosdb_mongodb) | [  ⟦T119⟧](https://www.npmjs.com/package/@langchain/azure-cosmosdb) |
+| [⟦T101⟧](/oss/javascript/integrations/vectorstores/azure_cosmosdb_nosql) | [  ⟦T120⟧](https://www.npmjs.com/package/@langchain/azure-cosmosdb) |
+| [⟦T102⟧](/oss/javascript/integrations/vectorstores/azure_documentdb) | [  ⟦T121⟧](https://www.npmjs.com/package/@langchain/azure-cosmosdb) |
+| [⟦T103⟧](/oss/javascript/integrations/vectorstores/neo4jvector) | [  ⟦T122⟧](https://www.npmjs.com/package/@langchain/neo4j) |
 | [⟦T104⟧](/oss/javascript/integrations/vectorstores/sap_hanavector) | [  ⟦T123⟧](https://www.npmjs.com/package/@sap/hana-langchain) |
 | [⟦T105⟧](https://docs.lambdadb.ai/guides/get-started/quickstart) | [  ⟦T124⟧](https://www.npmjs.com/package/@functional-systems/langchain-lambdadb) |
-| [⟦T106⟧](/oss/javascript/integrations/vectorstores/ydb) | [  ⟦T125⟧](https://www.npmjs.com/package/@ydbjs/langchain) |
-| [⟦T107⟧](https://infino.ai/docs) | [  ⟦T126⟧](https://www.npmjs.com/package/@infino-ai/langchain-infino) |
+| [⟦T106⟧](https://infino.ai/docs) | [  ⟦T125⟧](https://www.npmjs.com/package/@infino-ai/langchain-infino) |
+| [⟦T107⟧](/oss/javascript/integrations/vectorstores/ydb) | [  ⟦T126⟧](https://www.npmjs.com/package/@ydbjs/langchain) |
 | [⟦T108⟧](/oss/javascript/integrations/vectorstores/memory) |不适用 |
 
 ***

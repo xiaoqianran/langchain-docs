@@ -7,7 +7,7 @@
 了解从受控界面到声明式界面再到开放式界面的生成式 UI 范围
 
 生成式 UI 是代理的输出呈现用户界面的任何模式
-超越文字。代理不会将段落流式传输到聊天气泡中，而是驱动
+超越文字。代理不会将段落流式传输到聊天气泡中，而是驾驶
 表单、卡片、仪表板和交互式控件。这可以让你的 UI 进行通信
 结果与应用程序的方式相同，而代理决定显示内容和时间。
 
@@ -46,13 +46,9 @@ graph LR
   class O deep;
 ```
 
-<div>
-  <span>更多控制</span>
+更多控制
 
-  <div />
-
-  <span>更多自主权</span>
-</div>从左到右，可预测性和每项能力的工程成本均下降，
+更多自主权从左到右，可预测性和每项能力的工程成本均下降，
 同时代理的表达范围也在扩大。可访问性和视觉一致性
 左边最容易保证，右边最难保证。
 
@@ -80,7 +76,7 @@ graph LR
 CopilotKit 提供相同的形状以及动态和固定模式变体。
 
 ### 开放式代理人拥有画布。该接口是在您的应用程序外部创建的，用于
-由 MCP 服务器提供的示例，并在沙箱中渲染。这给出了最宽的
+由 MCP 服务器提供的示例，并在沙箱中呈现。这给出了最宽的
 表现力范围广泛，无需前端代码即可添加新的界面功能
 您的一侧，适合一次性可视化和定制答案，其中结果
 这是令人惊讶的，而且比可预测的还要好。这也是最
@@ -98,40 +94,32 @@ CopilotKit 提供相同的形状以及动态和固定模式变体。
 | - | - |
 |保证一组已知输出的品牌、布局和可访问性 | [Controlled](/oss/python/langchain/frontend/controlled-generative-ui) |
 |让代理仅使用经过批准的组件来构建新颖的布局 | [Declarative](/oss/python/langchain/frontend/declarative-generative-ui) |
-|由第三方编写的 Surface 界面，无需您自行构建 | [Open-ended](/oss/python/langchain/frontend/open-ended-generative-ui) |为整个产品选择单一方法是最常见的错误。真实
-应用程序混合方法并将每个表面与其目的相匹配：受控
-组件用于高流量、品牌关键的核心，声明性组合用于
-二次交互的长尾以及第三方的开放式嵌入
+|由第三方编写的 Surface 界面，无需您自行构建 | [Open-ended](/oss/python/langchain/frontend/open-ended-generative-ui) |Choosing a single approach for an entire product is the most common mistake.真实
+applications mix approaches and match each surface to its purpose: controlled
+components for the high-traffic, brand-critical core, declarative composition for the
+long tail of secondary interactions, and open-ended embeds for third-party
 能力。单个会话可以跨越所有三个会话。
 
 该范围还适用于聊天之外的领域。相同的三种方法描述了生成
-移动设备以及 Slack 或电子邮件等表面上的界面，而不仅仅是聊天中
+interfaces on mobile and in surfaces like Slack or email, not only in a chat
 成绩单。
 
-## 探索频谱
+## Explore the spectrum
 
-<CardGroup>
-  <Card title="Controlled" icon="components" href="/oss/python/langchain/frontend/controlled-generative-ui">
-    编写组件；代理选择要渲染的内容以及要传递的数据。
-  </Card>
+> **[Controlled](/oss/python/langchain/frontend/controlled-generative-ui)**
+>
+> Author the components; the agent picks which to render and what data to pass.
 
-  <Card title="Declarative" icon="schema" href="/oss/python/langchain/frontend/declarative-generative-ui">
-    代理发出一个规范；前端由注册目录组成。
-  </Card>
+> **[Declarative](/oss/python/langchain/frontend/declarative-generative-ui)**
+>
+> 代理发出规范； the frontend composes from a registered catalog.
 
-  <Card title="Open-ended" icon="world" href="/oss/python/langchain/frontend/open-ended-generative-ui">
-    渲染在其他地方创建的 UI，例如沙盒 MCP 应用程序。
-  </Card>
-</CardGroup>
+> **[Open-ended](/oss/python/langchain/frontend/open-ended-generative-ui)**
+>
+> Render UI created elsewhere, such as sandboxed MCP Apps.
 
 ***
 
-<div>
-  <Callout icon="terminal-2">
-    [Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
-  </Callout>
+[Connect these docs](/use-these-docs) to your agent of choice via MCP for real-time answers.
 
-  <Callout icon="edit">
-    [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/oss/langchain/frontend/generative-ui-overview.mdx) 或 [file an issue](https://github.com/langchain-ai/docs/issues/new/choose)。
-  </Callout>
-</div>
+[Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/oss/langchain/frontend/generative-ui-overview.mdx) or [file an issue](https://github.com/langchain-ai/docs/issues/new/choose).

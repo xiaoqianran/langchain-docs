@@ -4,38 +4,28 @@
 
 # Anthropic（克劳德）集成
 
-使用 LangChain Python 与 Anthropic (Claude) 集成。
+Integrate with Anthropic (Claude) using LangChain Python.
 
-本页面涵盖了与 Claude 的制作者 [Anthropic](https://www.anthropic.com/) 的所有 LangChain 集成。
+This page covers all LangChain integrations with [Anthropic](https://www.anthropic.com/), the makers of Claude.
 
-## 模型接口
+## Model interfaces
 
-<Columns>
-  <Card title="ChatAnthropic" href="/oss/python/integrations/chat/anthropic" icon="message">
-    Anthropic 聊天模型。
-  </Card>
+> **[ChatAnthropic](/oss/python/integrations/chat/anthropic)**
+>
+> Anthropic chat models.
 
-  <Card title="Anthropic middleware" href="/oss/python/integrations/middleware/anthropic" icon="stack-2">
-    Anthropic 专用于 Claude 模型的中间件。
-  </Card>
-</Columns>
+> **[Anthropic middleware](/oss/python/integrations/middleware/anthropic)**
+>
+> Anthropic-specific middleware for Claude models.
 
-## 其他
+## Other
 
-<Columns>
-  <Card title="AnthropicLLM" href="/oss/python/integrations/llms/anthropic" icon="cursor-text">
-    （旧版）Anthropic 文本完成模型。
-  </Card>
-</Columns>
+> **[AnthropicLLM](/oss/python/integrations/llms/anthropic)**
+>
+>（旧版）Anthropic 文本完成模型。
 
 ***
 
-<div>
-  <Callout icon="terminal-2">
-    [Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
-  </Callout>
+[Connect these docs](/use-these-docs) to your agent of choice via MCP for real-time answers.
 
-  <Callout icon="edit">
-    [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/oss/python/integrations/providers/anthropic.mdx) 或 [file an issue](https://github.com/langchain-ai/docs/issues/new/choose)。
-  </Callout>
-</div>
+[Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/oss/python/integrations/providers/anthropic.mdx) or [file an issue](https://github.com/langchain-ai/docs/issues/new/choose).

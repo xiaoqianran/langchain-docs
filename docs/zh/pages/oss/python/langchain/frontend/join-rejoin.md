@@ -8,11 +8,9 @@
 
 通过加入和重新加入，您可以在不停止代理的情况下断开与正在运行的代理流的连接，然后稍后重新连接到它。当客户端离开时，代理继续在服务器端执行，并且您可以准确地从上次中断的位置继续执行流。
 
-<PatternEmbed />
-
-<Note>
-  此功能需要[LangGraph Agent Server](/oss/python/langgraph/local-server)。使用 `langgraph dev` 或 [deploy it to LangSmith](/langsmith/deployment) 在本地运行代理以使用此模式。
-</Note>
+> [!注意]
+>
+> 此功能需要[LangGraph Agent Server](/oss/python/langgraph/local-server)。使用 `langgraph dev` 或 [deploy it to LangSmith](/langsmith/deployment) 在本地运行代理以使用此模式。
 
 ## 为什么加入和重新加入？
 
@@ -30,12 +28,12 @@
 | - | - |
 | `threadId` |将流绑定到您想要观察的LangGraph线程 |
 | `onThreadId` |保留新创建的线程 ID，以便重新挂载可以重新连接 |
-| `stream.disconnect()` |保留流客户端，而代理继续在服务器端运行 |
-|使用相同的`threadId`重新安装 |重新附加到该线程的正在进行的工作 |<Note>
-  **加入/重新加入使用 `stream.disconnect()`，而不是 `stream.stop()`。** 默认情况下，`stream.stop()` **取消活动运行**：它断开客户端连接*并*取消服务器上的运行。对于加入/重新加入，请致电 `stream.disconnect()`（`stop({ cancel: false })` 的别名），以便客服人员在您离开时继续处理。
-
-  要从应用程序代码中显式取消执行，请使用 `stream.stop()` 或 [⟦T18⟧](https://reference.langchain.com/python/langgraph-sdk/_async/runs/RunsClient/cancel)。
-</Note>
+| `stream.disconnect()` |离开流客户端，而代理继续在服务器端运行 |
+|使用相同的`threadId`重新安装 |重新附加到该线程的正在进行的工作 |> [!注意]
+>
+> **加入/重新加入使用 `stream.disconnect()`，而不是 `stream.stop()`。** 默认情况下，`stream.stop()` **取消活动运行**：它断开客户端连接*并*取消服务器上的运行。对于加入/重新加入，请致电 `stream.disconnect()`（`stop({ cancel: false })` 的别名），以便客服人员在您离开时继续处理。
+>
+> 要从应用程序代码中显式取消执行，请使用 `stream.stop()` 或 [⟦T18⟧](https://reference.langchain.com/python/langgraph-sdk/_async/runs/RunsClient/cancel)。
 
 ## 设置`useStream`
 
@@ -43,189 +41,187 @@
 相同的线程 ID，流附加到线程的当前状态和任何
 飞行中运行。
 
-<Info>
-  代码示例使用 `useStream<typeof myAgent>` 来实现类型安全的流状态。请参阅 [Python](/oss/python/langchain/frontend/overview#type-inference) 或 [JavaScript](/oss/javascript/langchain/frontend/overview#type-inference) 后端的类型推断。
-</Info>
+> [!注意]
+>
+> 代码示例使用 `useStream<typeof myAgent>` 来实现类型安全的流状态。请参阅 [Python](/oss/python/langchain/frontend/overview#type-inference) 或 [JavaScript](/oss/javascript/langchain/frontend/overview#type-inference) 后端的类型推断。
 
-<CodeGroup>
-  ```tsx React theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  import { useStream } from "@langchain/react";
-  import { useCallback, useState } from "react";
+```tsx React theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+import { useStream } from "@langchain/react";
+import { useCallback, useState } from "react";
 
-  function Chat() {
-    const [connected, setConnected] = useState(true);
-    const [mountKey, setMountKey] = useState(0);
-    const [threadId, setThreadId] = useState<string | null>(
-      () => sessionStorage.getItem("activeThreadId"),
-    );
-
-    const stream = useStream<typeof myAgent>({
-      apiUrl: "http://localhost:2024",
-      assistantId: "join_rejoin",
-      threadId,
-      onThreadId(id) {
-        setThreadId(id);
-        if (id) sessionStorage.setItem("activeThreadId", id);
-      },
-    });
-
-    const disconnect = useCallback(() => {
-      void stream.disconnect();
-      setConnected(false);
-    }, [stream]);
-
-    const rejoin = useCallback(() => {
-      setMountKey((key) => key + 1);
-      setConnected(true);
-    }, []);
-
-    return (
-      <div key={mountKey}>
-        <ConnectionStatus connected={connected} />
-        <MessageList messages={stream.messages} />
-        <ChatControls
-          stream={stream}
-          threadId={threadId}
-          connected={connected}
-          onDisconnect={disconnect}
-          onRejoin={rejoin}
-        />
-      </div>
-    );
-  }
-  ```
-
-  ```vue Vue theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  <script setup lang="ts">
-  import { useStream } from "@langchain/vue";
-  import { ref } from "vue";
-
-  const connected = ref(true);
-  const mountKey = ref(0);
-  const threadId = ref<string | null>(sessionStorage.getItem("activeThreadId"));
+function Chat() {
+  const [connected, setConnected] = useState(true);
+  const [mountKey, setMountKey] = useState(0);
+  const [threadId, setThreadId] = useState<string | null>(
+    () => sessionStorage.getItem("activeThreadId"),
+  );
 
   const stream = useStream<typeof myAgent>({
     apiUrl: "http://localhost:2024",
     assistantId: "join_rejoin",
     threadId,
     onThreadId(id) {
-      threadId.value = id;
+      setThreadId(id);
+      if (id) sessionStorage.setItem("activeThreadId", id);
+    },
+  });
+
+  const disconnect = useCallback(() => {
+    void stream.disconnect();
+    setConnected(false);
+  }, [stream]);
+
+  const rejoin = useCallback(() => {
+    setMountKey((key) => key + 1);
+    setConnected(true);
+  }, []);
+
+  return (
+    <div key={mountKey}>
+      <ConnectionStatus connected={connected} />
+      <MessageList messages={stream.messages} />
+      <ChatControls
+        stream={stream}
+        threadId={threadId}
+        connected={connected}
+        onDisconnect={disconnect}
+        onRejoin={rejoin}
+      />
+    </div>
+  );
+}
+```
+
+```vue Vue theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+<script setup lang="ts">
+import { useStream } from "@langchain/vue";
+import { ref } from "vue";
+
+const connected = ref(true);
+const mountKey = ref(0);
+const threadId = ref<string | null>(sessionStorage.getItem("activeThreadId"));
+
+const stream = useStream<typeof myAgent>({
+  apiUrl: "http://localhost:2024",
+  assistantId: "join_rejoin",
+  threadId,
+  onThreadId(id) {
+    threadId.value = id;
+    if (id) sessionStorage.setItem("activeThreadId", id);
+  },
+});
+
+function disconnect() {
+  void stream.disconnect();
+  connected.value = false;
+}
+
+function rejoin() {
+  mountKey.value += 1;
+  connected.value = true;
+}
+</script>
+
+<template>
+  <div :key="mountKey">
+    <ConnectionStatus :connected="connected" />
+    <MessageList :messages="stream.messages" />
+    <ChatControls
+      :stream="stream"
+      :threadId="threadId"
+      :connected="connected"
+      @disconnect="disconnect"
+      @rejoin="rejoin"
+    />
+  </div>
+</template>
+```
+
+```svelte Svelte theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+<script lang="ts">
+  import { useStream } from "@langchain/svelte";
+
+  let connected = $state(true);
+  let mountKey = $state(0);
+  let threadId = $state<string | null>(sessionStorage.getItem("activeThreadId"));
+
+  const stream = useStream<typeof myAgent>({
+    apiUrl: "http://localhost:2024",
+    assistantId: "join_rejoin",
+    threadId: () => threadId,
+    onThreadId(id) {
+      threadId = id;
       if (id) sessionStorage.setItem("activeThreadId", id);
     },
   });
 
   function disconnect() {
     void stream.disconnect();
-    connected.value = false;
+    connected = false;
   }
 
   function rejoin() {
-    mountKey.value += 1;
-    connected.value = true;
+    mountKey += 1;
+    connected = true;
   }
-  </script>
+</script>
 
-  <template>
-    <div :key="mountKey">
-      <ConnectionStatus :connected="connected" />
-      <MessageList :messages="stream.messages" />
-      <ChatControls
-        :stream="stream"
-        :threadId="threadId"
-        :connected="connected"
-        @disconnect="disconnect"
-        @rejoin="rejoin"
-      />
-    </div>
-  </template>
-  ```
+<div key={mountKey}>
+  <ConnectionStatus {connected} />
+  <MessageList messages={stream.messages} />
+  <ChatControls
+    {threadId}
+    {connected}
+    onDisconnect={disconnect}
+    onRejoin={rejoin}
+  />
+</div>
+```
 
-  ```svelte Svelte theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  <script lang="ts">
-    import { useStream } from "@langchain/svelte";
+```ts Angular theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+import { Component, signal } from "@angular/core";
+import { injectStream } from "@langchain/angular";
 
-    let connected = $state(true);
-    let mountKey = $state(0);
-    let threadId = $state<string | null>(sessionStorage.getItem("activeThreadId"));
-
-    const stream = useStream<typeof myAgent>({
-      apiUrl: "http://localhost:2024",
-      assistantId: "join_rejoin",
-      threadId: () => threadId,
-      onThreadId(id) {
-        threadId = id;
-        if (id) sessionStorage.setItem("activeThreadId", id);
-      },
-    });
-
-    function disconnect() {
-      void stream.disconnect();
-      connected = false;
-    }
-
-    function rejoin() {
-      mountKey += 1;
-      connected = true;
-    }
-  </script>
-
-  <div key={mountKey}>
-    <ConnectionStatus {connected} />
-    <MessageList messages={stream.messages} />
-    <ChatControls
-      {threadId}
-      {connected}
-      onDisconnect={disconnect}
-      onRejoin={rejoin}
+@Component({
+  selector: "app-chat",
+  template: `
+    <connection-status [connected]="connected()" />
+    <message-list [messages]="stream.messages()" />
+    <chat-controls
+      [stream]="stream"
+      [threadId]="threadId()"
+      [connected]="connected()"
+      (disconnect)="disconnect()"
+      (rejoin)="rejoin()"
     />
-  </div>
-  ```
+  `,
+})
+export class ChatComponent {
+  threadId = signal<string | null>(sessionStorage.getItem("activeThreadId"));
+  connected = signal(true);
+  mountKey = signal(0);
 
-  ```ts Angular theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  import { Component, signal } from "@angular/core";
-  import { injectStream } from "@langchain/angular";
+  stream = injectStream<typeof myAgent>({
+    apiUrl: "http://localhost:2024",
+    assistantId: "join_rejoin",
+    threadId: this.threadId,
+    onThreadId: (id) => {
+      this.threadId.set(id);
+      if (id) sessionStorage.setItem("activeThreadId", id);
+    },
+  });
 
-  @Component({
-    selector: "app-chat",
-    template: `
-      <connection-status [connected]="connected()" />
-      <message-list [messages]="stream.messages()" />
-      <chat-controls
-        [stream]="stream"
-        [threadId]="threadId()"
-        [connected]="connected()"
-        (disconnect)="disconnect()"
-        (rejoin)="rejoin()"
-      />
-    `,
-  })
-  export class ChatComponent {
-    threadId = signal<string | null>(sessionStorage.getItem("activeThreadId"));
-    connected = signal(true);
-    mountKey = signal(0);
-
-    stream = injectStream<typeof myAgent>({
-      apiUrl: "http://localhost:2024",
-      assistantId: "join_rejoin",
-      threadId: this.threadId,
-      onThreadId: (id) => {
-        this.threadId.set(id);
-        if (id) sessionStorage.setItem("activeThreadId", id);
-      },
-    });
-
-    disconnect() {
-      void this.stream.disconnect();
-      this.connected.set(false);
-    }
-
-    rejoin() {
-      this.mountKey.update((key) => key + 1);
-      this.connected.set(true);
-    }
+  disconnect() {
+    void this.stream.disconnect();
+    this.connected.set(false);
   }
-  ```
-</CodeGroup>
+
+  rejoin() {
+    this.mountKey.update((key) => key + 1);
+    this.connected.set(true);
+  }
+}
+```
 
 ## 提交消息
 
@@ -249,7 +245,7 @@ await stream.disconnect();
 
 拨打`disconnect()`后：* `stream.isLoading` 变为 `false`
 * 你自己的`connected`标志也应该变成`false`
-* 消息列表保留直到断开点为止收到的所有消息
+* 消息列表保留直到断开连接点为止收到的所有消息
 * 代理继续在服务器上运行
 * 在您重新加入之前不会收到新消息
 
@@ -281,12 +277,6 @@ setConnected(true);
 
 ***
 
-<div>
-  <Callout icon="terminal-2">
-    [Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
-  </Callout>
+[Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
 
-  <Callout icon="edit">
-    [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/oss/langchain/frontend/join-rejoin.mdx) 或 [file an issue](https://github.com/langchain-ai/docs/issues/new/choose)。
-  </Callout>
-</div>
+[Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/oss/langchain/frontend/join-rejoin.mdx) 或 [file an issue](https://github.com/langchain-ai/docs/issues/new/choose)。

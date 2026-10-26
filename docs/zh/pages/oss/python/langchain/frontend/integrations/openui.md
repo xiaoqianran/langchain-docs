@@ -10,13 +10,11 @@
 
 这种集成非常适合数据丰富的输出，例如报告、仪表板和数据浏览器，其中模型既是数据分析师又是 UI 设计师。
 
-<ExampleEmbed />
-
 ## 它是如何工作的
 
-1. **生成系统提示：**启动时调用一次`openuiLibrary.prompt()`；它生成一个完整的 openui-lang 参考，模型用它来编写有效的组件树
+1. **生成系统提示符：**启动时调用一次`openuiLibrary.prompt()`；它生成一个完整的 openui-lang 参考，模型用它来编写有效的组件树
 2. **在第一条消息上注入：** 在新对话开始时发送系统提示作为打开系统消息
-3. **模型编写 openui-lang:** 模型以类似 `root = Stack([header, kpis, chart])` 的程序响应，而不是散文
+3. **模型编写 openui-lang:** 模型用类似 `root = Stack([header, kpis, chart])` 的程序而不是散文进行响应
 4. **使用`Renderer`渲染：**将文本传递给OpenUI的`Renderer`和组件库；它解析并渲染树
 
 ```mermaid theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
@@ -43,9 +41,9 @@ graph LR
 
 ```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 npm install @langchain/react @openuidev/react-ui @openuidev/react-headless @openuidev/react-lang
-```<Tip>
-  OpenUI 需要 React 19+ 和 [⟦T21⟧](https://www.npmjs.com/package/zustand)。前端代码仅限 React； LangGraph 代理后端可以用 TypeScript 或 Python 编写。
-</Tip>
+```> [!提示]
+>
+> OpenUI 需要 React 19+ 和 [⟦T21⟧](https://www.npmjs.com/package/zustand)。前端代码仅限 React； LangGraph代理后端可以用 TypeScript 或 Python 编写。
 
 ## 导入组件样式
 
@@ -190,7 +188,7 @@ marketSection = Card([CardHeader("Market Breakdown"), tbl, ch1])
 | **部分字符串文字** | `truncateAtOpenString` / `closeOrTruncateOpenString` — 在解析之前删除或关闭不完整的字符串 |
 | **中期代币流失** | `useStableText` — 门渲染器更新完整语句边界 (`name = Expr(…)`)，而不是每个标记 |
 | **图表空数据崩溃** | `chartDataRefsResolved` — 在将图表包含在快照中之前验证图表的 `Series` 和标签数组是否已定义 |
-| **还没有`root`/后备** | `buildProgressiveRoot` — 当模型尚未编写时，从顶级变量合成一个 `root = Stack([…])` |
+| **还没有`root`/后备** | `buildProgressiveRoot` — 当模型尚未编写时，从顶级变量合成 `root = Stack([…])` |
 | **Snake\_case 标识符** | `sanitizeIdentifiers` — 解析器仅接受驼峰命名法；转换模型发出的任何 `snake_case` 名称 |
 
 将完整块复制到您的项目中并将 `stable` 传递给 `<Renderer>`：
@@ -681,12 +679,6 @@ export function Dashboard() {
 
 ***
 
-<div>
-  <Callout icon="terminal-2">
-    [Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
-  </Callout>
+[Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
 
-  <Callout icon="edit">
-    [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/oss/langchain/frontend/integrations/openui.mdx) 或 [file an issue](https://github.com/langchain-ai/docs/issues/new/choose)。
-  </Callout>
-</div>
+[Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/oss/langchain/frontend/integrations/openui.mdx) 或 [file an issue](https://github.com/langchain-ai/docs/issues/new/choose)。

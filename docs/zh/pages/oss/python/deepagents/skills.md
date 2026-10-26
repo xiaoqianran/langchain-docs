@@ -10,185 +10,175 @@
 
 技能通过在启动时仅加载摘要并在任务需要时阅读完整说明来帮助您避免上下文膨胀。您可以跨代理和项目共享技能，并在单个代理中组合多种技能，以便每项技能都涵盖不同的功能。
 
-<Tip>
-  有关可提高代理在 LangChain 生态系统任务上的性能的即用型技能，请参阅 [LangChain Skills](https://github.com/langchain-ai/langchain-skills) 存储库。
-</Tip>
+> [!提示]
+>
+> 有关可提高代理在 LangChain 生态系统任务上的性能的即用型技能，请参阅 [LangChain Skills](https://github.com/langchain-ai/langchain-skills) 存储库。
 
 ## 用法
 
-<Steps>
-  <Step title="Create a top-level skills directory">
-    创建一个目录来保存项目的所有技能，例如后端根目录下的`skills/`。
-  </Step>
+**1.创建顶级技能目录**
 
-  <Step title="Create a subdirectory inside your skills directory for your skill">
-    每个技能都是一个包含 `SKILL.md` 文件的目录：一个包含 YAML [frontmatter](#frontmatter-fields)（`name` 和 `description`）的 Markdown 文件，后面是激活技能时代理遵循的说明。技能目录还可以选择包含支持文件，例如脚本、参考文档和模板。<Tree>
-      <Tree.Folder name="skills">
-        <Tree.Folder name="langgraph-docs">
-          <Tree.File name="SKILL.md" />
+创建一个目录来保存项目的所有技能，例如后端根目录下的`skills/`。
 
-          <Tree.Folder name="scripts">
-            <Tree.File name="fetch_docs.py" />
-          </Tree.Folder>
+**2.在您的技能目录中为您的技能创建一个子目录**每个技能都是一个包含 `SKILL.md` 文件的目录：一个包含 YAML [frontmatter](#frontmatter-fields)（`name` 和 `description`）的 Markdown 文件，后面是激活技能时代理遵循的说明。技能目录还可以选择包含支持文件，例如脚本、参考文档和模板。
 
-          <Tree.Folder name="references">
-            <Tree.File name="api-patterns.md" />
+**技能**
 
-            <Tree.File name="style-guide.md" />
-          </Tree.Folder>
+**langgraph-文档**
 
-          <Tree.Folder name="assets">
-            <Tree.File name="report-template.md" />
+**技能.md**
 
-            <Tree.File name="schema.json" />
-          </Tree.Folder>
-        </Tree.Folder>
-      </Tree.Folder>
-    </Tree>
+**脚本**
 
-    深厚的代理技能遵循[Agent Skills specification](https://agentskills.io/specification)。
-  </Step>
+**获取\_docs.py**
 
-  <Step title="Add a ⟦T56⟧ file with YAML frontmatter and instructions.">
-    `SKILL.md` 以 YAML [frontmatter](#frontmatter-fields) 开头，后跟 markdown 指令：
+**参考文献**
 
-    ```md theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-    ---
-    name: langgraph-docs
-    description: Use this skill for requests related to LangGraph in order to fetch relevant documentation to provide accurate, up-to-date guidance.
-    ---
+**api-patterns.md**
 
-    # langgraph-docs
+**风格指南.md**
 
-    ## Overview
+**资产**
 
-    This skill explains how to access LangGraph documentation to help answer questions and guide implementation.
+**报告模板.md**
 
-    ## Instructions
+**架构.json**
 
-    ### 1. Fetch the documentation index
+深厚的代理技能遵循[Agent Skills specification](https://agentskills.io/specification)。
 
-    Use the fetch_url tool to read the following URL:
-    https://docs.langchain.com/llms.txt
+**3.添加包含 YAML frontmatter 和说明的 `SKILL.md` 文件。**
 
-    This provides a structured list of all available documentation with descriptions.
+`SKILL.md` 以 YAML [frontmatter](#frontmatter-fields) 开头，后跟 markdown 指令：
 
-    ### 2. Select relevant documentation
+```md theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+---
+name: langgraph-docs
+description: Use this skill for requests related to LangGraph in order to fetch relevant documentation to provide accurate, up-to-date guidance.
+---
 
-    Based on the question, identify 2-4 most relevant documentation URLs from the index. Prioritize:
+# langgraph-docs
 
-    - Specific how-to guides for implementation questions
-    - Core concept pages for understanding questions
-    - Tutorials for end-to-end examples
-    - Reference docs for API details
+## Overview
 
-    ### 3. Fetch and synthesize
+This skill explains how to access LangGraph documentation to help answer questions and guide implementation.
 
-    Use the fetch_url tool to read the selected documentation URLs, then answer the user's question. Give a direct answer first, include the minimum necessary context, and link to the source pages rather than quoting long passages.
-    ```
+## Instructions
 
-    <Note>
-      引用 `SKILL.md` 中的任何 [supporting resources](#add-supporting-resources)，并说明每个文件包含的内容以及何时使用它。代理通过技能说明中的引用发现这些文件。
-    </Note>
-  </Step>
+### 1. Fetch the documentation index
 
-  <Step title="Pass the skills path when creating your agent">
-    创建代理时，在 `skills` 参数中传递顶级技能目录的路径：
+Use the fetch_url tool to read the following URL:
+https://docs.langchain.com/llms.txt
 
-    ```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-    from deepagents import create_deep_agent
-    from deepagents.backends.filesystem import FilesystemBackend
+This provides a structured list of all available documentation with descriptions.
 
-    backend = FilesystemBackend(root_dir="./my-project")
+### 2. Select relevant documentation
 
-    agent = create_deep_agent(
-        model="anthropic:claude-sonnet-4-6",
-        backend=backend,
-        skills=["./my-project/skills/"],
-    )
-    ```
+Based on the question, identify 2-4 most relevant documentation URLs from the index. Prioritize:
 
-    此示例使用 `FilesystemBackend` 从磁盘加载技能。有关其他存储选项，包括从远程源加载技能，请参阅[Backends and remote skill loading](#backends-and-remote-skill-loading)。
+- Specific how-to guides for implementation questions
+- Core concept pages for understanding questions
+- Tutorials for end-to-end examples
+- Reference docs for API details
 
-    将每个源路径指向包含技能目录的目录。直接指向带有`SKILL.md`的技能目录的路径不会被加载。
+### 3. Fetch and synthesize
 
-    <ParamField type="list[str]">
-      技能来源路径列表。路径必须使用正斜杠指定，并且相对于后端的根目录。
+Use the fetch_url tool to read the selected documentation URLs, then answer the user's question. Give a direct answer first, include the minimum necessary context, and link to the source pages rather than quoting long passages.
+```
 
-      * 如果省略，则不加载任何技能。
-      * 使用`StateBackend`（默认）时，提供带有`invoke(files={...})`的技能文件。使用`deepagents.backends.utils`中的`create_file_data()`来格式化文件内容；不支持原始字符串。
-      * 使用`FilesystemBackend`和`StoreBackend`，创建后端，调用`backend.upload_files()`添加技能文件，然后将后端传递给`create_deep_agent`。对于 `FilesystemBackend`，使用 `virtual_mode=True` 将 `root_dir` 下的路径沙箱化。技能已在`root_dir`加载下磁盘上，无需上传。
+> [!注意]
+>
+> 引用 `SKILL.md` 中的任何 [supporting resources](#add-supporting-resources)，并说明每个文件包含的内容以及何时使用它。代理通过技能说明中的引用发现这些文件。
 
-      对于具有相同名称的技能，较晚的来源会覆盖较早的来源（最后一个获胜）。
+**4.创建代理时通过技能路径**
 
-      <Note>
-        当多个技能源包含同名技能时，`skills` 数组中后面列出的源中的技能优先（最后一个获胜）。这使您可以对来自不同来源的技能进行分层，例如被特定于项目的版本覆盖的基本技能。
-      </Note>
-    </ParamField>
-  </Step>
+创建代理时，在 `skills` 参数中传递顶级技能目录的路径：
 
-  <Step title="Invoke the agent">
-    使用`invoke()`向代理发送任务。启动时，代理将每个技能的 [⟦T76⟧](#frontmatter-fields) 和 [⟦T77⟧](#frontmatter-fields) 从 [frontmatter](#frontmatter-fields) 加载到系统提示符中。当您的任务与技能的描述相匹配时，代理会读取该技能的 `SKILL.md` 并遵循其说明。
+```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+from deepagents import create_deep_agent
+from deepagents.backends.filesystem import FilesystemBackend
 
-    ```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-    result = agent.invoke(
-        {"messages": [{"role": "user", "content": "What is LangGraph?"}]},
-        config={"configurable": {"thread_id": "1"}},
-    )
-    ```
-  </Step>
-</Steps>## 技能如何发挥作用
+backend = FilesystemBackend(root_dir="./my-project")
+
+agent = create_deep_agent(
+    model="anthropic:claude-sonnet-4-6",
+    backend=backend,
+    skills=["./my-project/skills/"],
+)
+```
+
+此示例使用 `FilesystemBackend` 从磁盘加载技能。有关其他存储选项，包括从远程源加载技能，请参阅[Backends and remote skill loading](#backends-and-remote-skill-loading)。将每个源路径指向包含技能目录的目录。直接指向带有`SKILL.md`的技能目录的路径不会被加载。
+
+**技能** `list[str]`
+
+技能来源路径列表。
+
+路径必须使用正斜杠指定，并且相对于后端的根目录。
+
+* 如果省略，则不加载任何技能。
+* 使用`StateBackend`（默认）时，提供带有`invoke(files={...})`的技能文件。使用`deepagents.backends.utils`中的`create_file_data()`来格式化文件内容；不支持原始字符串。
+* 使用`FilesystemBackend`和`StoreBackend`，创建后端，调用`backend.upload_files()`添加技能文件，然后将后端传递给`create_deep_agent`。对于 `FilesystemBackend`，使用 `virtual_mode=True` 将 `root_dir` 下的路径沙箱化。技能已在`root_dir`加载下磁盘上，无需上传。
+
+对于具有相同名称的技能，较晚的来源会覆盖较早的来源（最后一个获胜）。
+
+> [!注意]
+>
+> 当多个技能来源包含同名技能时，`skills` 数组中后面列出的来源中的技能优先（最后一个获胜）。这使您可以对来自不同来源的技能进行分层，例如被特定于项目的版本覆盖的基本技能。
+
+**5.调用代理**使用`invoke()`向代理发送任务。启动时，代理将每个技能的 [⟦T77⟧](#frontmatter-fields) 和 [⟦T78⟧](#frontmatter-fields) 从 [frontmatter](#frontmatter-fields) 加载到系统提示符中。当您的任务与技能的描述相匹配时，代理会读取该技能的 `SKILL.md` 并遵循其说明。
+
+```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+result = agent.invoke(
+    {"messages": [{"role": "user", "content": "What is LangGraph?"}]},
+    config={"configurable": {"thread_id": "1"}},
+)
+```
+
+## 技能如何发挥作用
 
 随着代理承担更复杂的任务，他们需要的上下文也随之增长。将所有指令加载到系统提示中会在与当前任务无关的信息上浪费令牌，并且跨会话手动提供相同的指导无法扩展。
 
-<Info>
-  技能使用**渐进式披露**：代理分层加载技能信息，而不是一次性加载全部技能信息。启动时，它只会看到每个技能的名称和描述。当调用技能时，它会读取完整的`SKILL.md`指令。仅当指令需要时，才会加载支持文件。
-</Info>
+> [!注意]
+>
+> 技能使用**渐进式披露**：代理分层加载技能信息，而不是一次性加载全部技能信息。启动时，它只会看到每个技能的名称和描述。当调用技能时，它会读取完整的`SKILL.md`指令。仅当指令需要时，才会加载支持文件。
 
-技能负载分为三个级别。每个级别仅在任务需要时添加更多细节：
-
-|水平|加载什么 |当 |
+技能负载分为三个级别。每个级别仅在任务需要时添加更多细节：|水平|加载什么 |当 |
 | - | - | - |
-| **1.元数据** | `SKILL.md` [frontmatter](#frontmatter-fields) | [⟦T80⟧](#frontmatter-fields) 和 [⟦T81⟧](#frontmatter-fields) |代理启动，针对每个配置的技能 |
-| **2.说明** | `SKILL.md`全身|当技能被调用时 |
-| **3.资源** | [Supporting files](#add-supporting-resources) 位于 `scripts/`、`references/` 和 `assets/` |调用后根据需要，当指令引用它们时 |下图显示了给定时刻代理上下文中出现的内容。启动时，每个技能的 1 级元数据都在系统提示中。当调用技能时，2 级指令会加入上下文。 3 级文件保留在后端，直到代理在调用后读取它们。
+| **1.元数据** | `SKILL.md` [frontmatter](#frontmatter-fields) | [⟦T81⟧](#frontmatter-fields) 和 [⟦T82⟧](#frontmatter-fields) | Agent startup, for every configured skill |
+| **2.说明** | `SKILL.md`全身| When the skill is invoked |
+| **3.资源** | [Supporting files](#add-supporting-resources) 位于 `scripts/`、`references/` 和 `assets/` |调用后根据需要，当指令引用它们时 |
 
-<div>
-  <img alt="How skill components map into agent context at startup and activation" />
-</div>
+下图显示了给定时刻代理上下文中出现的内容。启动时，每个技能的 1 级元数据都在系统提示中。当调用技能时，2 级指令会加入上下文。 3 级文件保留在后端，直到代理在调用后读取它们。
+
+![How skill components map into agent context at startup and activation](https://mintcdn.com/langchain-5e9cc07a/-Q4wgirblfw7Ioet/oss/images/deepagents/skills-composition.svg?fit=max\&auto=format\&n=-Q4wgirblfw7Ioet\&q=85\&s=9450c441ece57465053644ede8991271)
 
 当代理完成任务时，它会分层加载技能信息：
 
-<div>
-  <img alt="How skills load in layers from metadata to instructions to resources" />
-</div>
+![How skills load in layers from metadata to instructions to resources](https://mintcdn.com/langchain-5e9cc07a/-Q4wgirblfw7Ioet/oss/images/deepagents/skills-progressive-disclosure.svg?fit=max\&auto=format\&n=-Q4wgirblfw7Ioet\&q=85\&s=ba55587d858f5588bea425dc503e3246)
 
-在Deep Agents中，[⟦T87⟧](https://reference.langchain.com/python/deepagents/middleware/skills/SkillsMiddleware)（当你通过`skills`时，[Deep Agents stack](/oss/python/deepagents/customization#deep-agents-stack)的一部分）处理前两个级别，第三个级别由LLM处理：
-
-1. **发现**（级别1）：在代理启动时，中间件扫描配置的技能路径，解析每个`SKILL.md`[frontmatter](#frontmatter-fields)，并将[⟦T90⟧](#frontmatter-fields)和[⟦T91⟧](#frontmatter-fields)字段注入系统提示符中。
+在Deep Agents中，[⟦T88⟧](https://reference.langchain.com/python/deepagents/middleware/skills/SkillsMiddleware)（当你通过`skills`时，[Deep Agents stack](/oss/python/deepagents/customization#deep-agents-stack)的一部分）处理前两个级别，第三个级别由LLM处理：1. **Discovery** (level 1): At agent start, the middleware scans the configured skill paths, parses each `SKILL.md` [frontmatter](#frontmatter-fields), and injects the [⟦T91⟧](#frontmatter-fields) and [⟦T92⟧](#frontmatter-fields) fields into the system prompt.
 2. **读取**（2级）：当代理调用技能时，它会通过`read_file`读取完整的`SKILL.md`内容。
-3. **执行**（级别 3）：调用后，代理遵循技能的指示，仅根据指示要求读取支持文件（脚本、参考、资产）。
+3. **Execute** (level 3): After invocation, the agent follows the skill's instructions and reads supporting files (scripts, references, assets) only as the instructions require.
 
 给代理一个技能指令而不等待它选择技能，[pin the skill](#pin-skills)。
 
-## 何时使用技能如果您发现自己向客服人员发出类似的指示，特别是如果这些指示很详细且包含多个步骤，请考虑将针对客服人员的指示编成文字。这样，将来当你想要完成类似的任务时，代理就已经知道该怎么做了。
+## 何时使用技能
 
-<Tip>
-  您还可以要求您的代理为您与代理一起完成的任务编写技能。
-</Tip>
+If you find yourself giving similar instructions to an agent, especially if they are detailed and contain multiple steps, consider codifying the instructions for the agent.这样，将来当你想要完成类似的任务时，代理就已经知道该怎么做了。
 
-技能对于编码特别有帮助：
+> [!提示]
+>
+> 您还可以要求您的代理为您与代理一起完成的任务编写技能。
 
-* **分步工作流程**：跨越多个步骤的工作流程，类似于菜谱。
+技能对于编码特别有帮助：* **分步工作流程**：跨越多个步骤的工作流程，类似于菜谱。
 * **特定领域的知识**：指导代理如何使用工作流程工具。例如，包括有关从何处提取信息的信息，包括该技能可以访问的其他参考信息或脚本。
 * **带有可执行代码的指令**：将程序与代理可以运行的脚本或模块捆绑在一起，因此它遵循经过测试的逻辑，而不是每次都从指令重新生成它。参见[Execute code with skills](#execute-code-with-skills)。
 * **指南**：向代理提供有关要遵守的护栏的支持说明。例如，遵循特定的格式或风格指南，或者指定始终将测试作为工作流程的一部分运行。
 
-## 写出有效的技巧[Agent Skills specification](https://agentskills.io/specification) 包括有关可靠发现和激活的结构化技能的指导。以下建议建立在该基础上，并提供了适用于 Deep Agents 的实用模式。
+## 写出有效的技巧
 
-**保持 [frontmatter](#frontmatter-fields) 简洁**，并将 `SKILL.md` 正文保持在 5,000 个令牌以下。每个技能的前文都会在[discovery](#how-skills-work)处添加到系统提示中，而全文只有在激活时才会被读取。保持两个层都较小意味着您可以加载许多技能，而不会拥挤上下文窗口。
+[Agent Skills specification](https://agentskills.io/specification) 包括有关可靠发现和激活的结构化技能的指导。以下建议建立在该基础上，并提供 Deep Agents 的实用模式。**保持 [frontmatter](#frontmatter-fields) 简洁**，并将 `SKILL.md` 正文保持在 5,000 个令牌以下。每个技能的前文都会在[discovery](#how-skills-work)处添加到系统提示中，而全文只有在激活时才会被读取。保持两个层都较小意味着您可以加载许多技能，而不会拥挤上下文窗口。
 
-**编写具体描述。** 在 [discovery](#how-skills-work) 期间，[⟦T95⟧](#frontmatter-fields) 字段是代理看到的每个技能的唯一信息。良好的描述可以告诉代理该技能的作用以及何时激活它，并使用代理可以匹配的特定关键字：
+**编写具体描述。** 在 [discovery](#how-skills-work) 期间，[⟦T96⟧](#frontmatter-fields) 字段是代理看到的每个技能的唯一信息。良好的描述可以告诉代理该技能的作用以及何时激活它，并使用代理可以匹配的特定关键字：
 
 ```yaml theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 # Good: specific about what and when
@@ -201,41 +191,39 @@ description: >-
 description: Helps with PDFs.
 ```
 
-当您在相关领域拥有多种技能时，请清楚地区分它们的描述。重叠的描述会导致代理激活错误的技能或在选项之间犹豫不决。如果两项技能具有相似的用途，请将它们合并为一项。**保持指令集中。** 代理技能规范建议将 `SKILL.md` 保持在 500 行以下。当指令变长时，将详细参考资料移至[supporting resource files](#add-supporting-resources)并从主`SKILL.md`中引用：
+当您在相关领域拥有多种技能时，请清楚地区分它们的描述。重叠的描述会导致代理激活错误的技能或在选项之间犹豫不决。如果两项技能具有相似的用途，请将它们合并为一项。
 
-<Tree>
-  <Tree.Folder name="skills">
-    <Tree.Folder name="data-pipeline">
-      <Tree.File name="SKILL.md" />
+**保持指令集中。** 代理技能规范建议将 `SKILL.md` 保持在 500 行以下。当指令变长时，将详细参考资料移至[supporting resource files](#add-supporting-resources)并从主`SKILL.md`中引用：
 
-      <Tree.Folder name="references">
-        <Tree.File name="schema-reference.md" />
+**技能**
 
-        <Tree.File name="error-codes.md" />
-      </Tree.Folder>
-    </Tree.Folder>
-  </Tree.Folder>
-</Tree>
+**数据管道**
 
-代理仅在指令需要时才加载参考文件，从而保持渐进公开的每一层的大小适当。将文件引用保持在`SKILL.md`深一层，并避免深度嵌套的引用链，这会迫使代理通过多次读取来获取所需的信息。
+**技能.md**
 
-**代理的结构说明。** 将您的 `SKILL.md` 正文写为代理可以遵循的明确说明：
+**参考文献**
+
+**架构参考.md**
+
+**错误代码.md**代理仅在指令需要时才加载参考文件，从而保持渐进公开的每一层的大小适当。 Keep file references one level deep from `SKILL.md` and avoid deeply nested reference chains, which force the agent through multiple reads to reach the information it needs.
+
+**代理的结构说明。** 将您的 `SKILL.md` 正文写为代理可以遵循的清晰说明：
 
 * **多步骤工作流程的分步程序**
 * **选择方法的决策标准**
 * **预期输入和输出的示例**，以便代理知道成功是什么样子
-* **边缘情况** 代理应处理或标记给用户**管理技能数量。** 较少的范围明确的技能胜过许多重叠的技能。随着具有相似描述的技能数量的增加，代理选择正确技能的能力就会下降。如果您发现自己拥有许多相关技能，请考虑：
+* **边缘情况** 代理应处理或标记给用户
+
+**管理技能数量。** 较少的范围明确的技能胜过许多重叠的技能。随着具有相似描述的技能数量的增加，代理选择正确技能的能力就会下降。如果您发现自己拥有许多相关技能，请考虑：
 
 * 将相关能力整合为一项技能，其中每个子任务都有相应的部分
-* 使用参考文件来保持主要`SKILL.md`简洁，同时涵盖多个子任务
-
-<Tip>
-  使用 [⟦T101⟧ validation tool](https://github.com/agentskills/agentskills/tree/main/skills-ref) 检查您的 `SKILL.md` [frontmatter](#frontmatter-fields) 是否遵循代理技能规范命名和格式约定。
-</Tip>
+* 使用参考文件保持主要`SKILL.md`简洁，同时涵盖多个子任务> [!提示]
+>
+> 使用 [⟦T102⟧ validation tool](https://github.com/agentskills/agentskills/tree/main/skills-ref) 检查您的 `SKILL.md` [frontmatter](#frontmatter-fields) 是否遵循代理技能规范命名和格式约定。
 
 ## 添加支持资源
 
-除了`SKILL.md`之外，技能目录还可以包含任何其他文件或目录。 [Agent Skills specification](https://agentskills.io/specification) 为常见资源类型定义了三个可选目录。 Deep Agents 在发现或激活时不会加载这些文件。仅当您的 `SKILL.md` 指令要求时，代理才会读取或执行它们。
+Beyond `SKILL.md`, a skill directory can include any additional files or directories. The [Agent Skills specification](https://agentskills.io/specification) defines three optional directories for common resource types. Deep Agents does not load these files at discovery or activation.仅当您的 `SKILL.md` 指令要求时，代理才会读取或执行它们。
 
 ### `scripts/`
 
@@ -243,13 +231,13 @@ description: Helps with PDFs.
 
 * 是独立的或清楚地记录依赖关系
 * 包括有用的错误消息
-* 优雅地处理边缘情况支持的语言取决于您的代理设置。常见选项包括 Python、Bash 和 JavaScript 或 TypeScript。要执行脚本而不仅仅是读取它们，请参阅[Execute code with skills](#execute-code-with-skills)。当代理需要 shell 时使用[sandbox scripts](#sandbox-scripts)。
+* 优雅地处理边缘情况
+
+支持的语言取决于您的代理设置。 Common options include Python, Bash, and JavaScript or TypeScript. To execute scripts rather than only read them, see [Execute code with skills](#execute-code-with-skills).当代理需要 shell 时使用[sandbox scripts](#sandbox-scripts)。
 
 ### `references/`
 
-`references/` 目录包含代理按需阅读的补充文档。将其用于对于 `SKILL.md` 来说过于详细但仍针对特定任务的材料，例如：
-
-* `REFERENCE.md` 详细技术参考
+The `references/` directory holds supplementary documentation the agent reads on demand. Use it for material that is too detailed for `SKILL.md` but still task-specific, such as:* `REFERENCE.md` 详细技术参考
 * `FORMS.md` 适用于表单模板或结构化数据格式
 * 特定领域指南（`finance.md`、`legal.md` 等）
 
@@ -265,7 +253,7 @@ description: Helps with PDFs.
 
 在`SKILL.md`中描述代理应何时打开或复制每个资产。
 
-### 来自`SKILL.md`的参考文件
+###来自`SKILL.md`的参考文件
 
 当您引用支持文件时，请使用相对于技能根的路径：
 
@@ -274,17 +262,19 @@ For API details, see the [reference guide](references/api-patterns.md).
 
 To extract tables from a PDF, run:
 scripts/extract.py
-```对于您引用的每个文件，请说明其包含的内容以及代理应何时使用它。将参考文献保留在`SKILL.md`深一层。避免深度嵌套的引用链，这会迫使代理通过多次读取来获取所需的信息。
+```
+
+对于您引用的每个文件，请说明其包含的内容以及代理应何时使用它。将参考文献保留在`SKILL.md`深一层。避免深度嵌套的引用链，这会迫使代理通过多次读取来获取所需的信息。
 
 ## 将工具添加到技能中
 
-技能可以自带工具。代理只有在读取技能后才能看到它们，因此它们的模式不会出现在提示中，直到任务需要它们为止。
+技能可以自带工具。代理只有在读取技能后才能看到它们，因此它们的模式不会出现在提示中，直到任务需要它们为止。Skill tools are a Deep Agents feature, not part of the [Agent Skills specification](https://agentskills.io/specification). Deep Agents 从规范的自由格式`metadata` 字段中读取工具名称。它们与规范的 `allowed-tools` 字段无关，该字段预先批准工具而不是添加它们。
 
-技能工具是Deep Agents功能，而不是[Agent Skills specification](https://agentskills.io/specification)的一部分。 Deep Agents 从规范的自由格式`metadata` 字段中读取工具名称。它们与规范的 `allowed-tools` 字段无关，该字段预先批准工具而不是添加它们。
+> [!注意]
+>
+> 技能工具需要`deepagents>=0.7.22`。
 
-<Note>技能工具需要`deepagents>=0.7.22`.</Note>
-
-在技能的 frontmatter 中列出`metadata.include_tools`下的工具，用空格分隔。 YAML 列表与任何工具都不匹配。
+List the tools under `metadata.include_tools` in the skill's frontmatter, separated by spaces. YAML 列表与任何工具都不匹配。
 
 ```yaml theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 name: linear
@@ -293,7 +283,7 @@ metadata:
   include_tools: list_issues create_issue
 ```
 
-将 `skills` 传递给 `create_deep_agent` 会为您创建一个 `SkillsMiddleware`。要添加工具，请自行创建中间件并将其传递到 `middleware` 中。将您的技能路径指定为 `sources`，并将您的工具指定为中间件而不是代理上的 `tools`：
+Passing `skills` to `create_deep_agent` creates a `SkillsMiddleware` for you. To add tools, create the middleware yourself and pass it in `middleware` instead. Give it your skill paths as `sources`, and your tools as `tools` on the middleware rather than on the agent:
 
 ```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 from deepagents import create_deep_agent
@@ -329,17 +319,17 @@ agent = create_deep_agent(
 )
 ```
 
-技能工具遵循以下规则：* 技能工具是有门控的。在代理读取技能的 `SKILL.md` 之前，即使模型猜测其名称和参数，对技能的调用也会作为未知工具而失败。
-* 当[summarization](/oss/python/deepagents/context-engineering#summarization)删除从对话中读取的内容时，该工具将不可用，直到代理再次读取该技能。
-* [Pinning a skill](#pin-skills) 使其工具可用，就像阅读其 `SKILL.md` 一样。它们将保持可用状态，直到摘要删除固定技能的消息为止。
+技能工具遵循以下规则：
 
-<Note>
-  在对话中接受新工具的型号上，Deep Agents在读取后添加了技能工具，这使提示缓存保持有效。在其他模型上，它将工具添加到请求的 `tools` 中，这会使缓存失效。请参阅 [Anthropic](/oss/python/integrations/chat/anthropic#change-tools-mid-conversation) 和 [OpenAI](/oss/python/integrations/chat/openai#add-tools-mid-conversation) 集成页面。
-</Note>
+* 技能工具是有门控的。 Until the agent reads the skill's `SKILL.md`, a call to one fails as an unknown tool, even if the model guesses its name and arguments.
+* When [summarization](/oss/python/deepagents/context-engineering#summarization) drops that read from the conversation, the tool is unavailable until the agent reads the skill again.
+* [Pinning a skill](#pin-skills) makes its tools available the same way reading its `SKILL.md` does. They stay available until summarization drops the pinned skill's message.> [!注意]
+>
+> 在对话中接受新工具的模型上，Deep Agents在读取后添加了技能工具，这使提示缓存保持有效。在其他模型上，它会将该工具添加到请求的 `tools` 中，这会使缓存失效。请参阅 [Anthropic](/oss/python/integrations/chat/anthropic#change-tools-mid-conversation) 和 [OpenAI](/oss/python/integrations/chat/openai#add-tools-mid-conversation) 集成页面。
 
 ### 在运行时解析工具
 
-`include_tools` 中的名称不必与工具自己的名称匹配。生成的工具名称（例如`mcp_linear_list_issues_ab12`）很难手写，并且可能不会保持不变。
+`include_tools` 中的名称不必与工具本身的名称匹配。生成的工具名称（例如`mcp_linear_list_issues_ab12`）很难手写，并且可能不会保持不变。
 
 要将技能列表的名称映射到工具，请将解析器函数作为中间件的 `tools` 传递。解析器接收每个 `include_tools` 名称和图表的 `Runtime`，并返回该名称的工具。
 
@@ -377,7 +367,9 @@ agent = create_deep_agent(
         ),
     ],
 )
-```一个名称还可以代表多种工具，例如 Linear MCP 服务器中的每一种工具。列出技能中的一个名字：
+```
+
+一个名称还可以代表多种工具，例如 Linear MCP 服务器中的每一种工具。列出技能中的一个名字：
 
 ```yaml theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 metadata:
@@ -436,14 +428,12 @@ result = agent.invoke(
 )
 ```
 
-当您编写解析器时：
-
-* 保持快速。它在代理读取技能之后在每次模型调用上运行，并在每次技能工具调用之前再次运行。
+当您编写解析器时：* 保持快速。它在代理读取技能之后在每次模型调用上运行，并在每次技能工具调用之前再次运行。
 * 解析器可以是异步的。如果是，请通过其异步方法运行代理，例如`ainvoke`。
 
 ### 保持工具可搜索
 
-技能工具，即你传递给`SkillsMiddleware`的那些，只能通过他们的技能来获得。对于[⟦T140⟧](https://reference.langchain.com/python/langchain/agents/middleware/provider_tool_search/ProviderToolSearchMiddleware)，模型通过搜索找到标记为`extras={"defer_loading": True}`的[deferred tools](/oss/python/langchain/middleware/built-in#provider-tool-search)。要使工具可以通过搜索或阅读技能来访问，请将其传递给代理的 `tools` 并推迟它。阅读该技能后无需搜索即可显示它：
+技能工具，也就是你传递给`SkillsMiddleware`的那些，只能通过他们的技能来获得。对于 [⟦T141⟧](https://reference.langchain.com/python/langchain/agents/middleware/provider_tool_search/ProviderToolSearchMiddleware)，模型通过搜索找到标记有 `extras={"defer_loading": True}` 的 [deferred tools](/oss/python/langchain/middleware/built-in#provider-tool-search)。要使工具可以通过搜索或阅读技能来访问，请将其传递给代理的 `tools` 并推迟它。阅读该技能后无需搜索即可显示它：
 
 ```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 from deepagents import create_deep_agent
@@ -471,13 +461,13 @@ agent = create_deep_agent(
 
 与技能工具不同，延迟工具没有门控。在代理读取技能之前，模型可以通过搜索找到并调用它。
 
-代理如何到达工具取决于您将其传递到的位置：|将工具传递给 |特工读取技能前|特工读取技能后 |
+代理如何到达工具取决于您将其传递到的位置：
+
+|将工具传递给 |特工读取技能前|特工读取技能后|
 | - | - | - |
 | `SkillsMiddleware(tools=...)` |隐藏，调用失败|可见|
 |代理的`tools`，延期|可通过提供商工具搜索获得 |无需搜索即可看到 |
-|代理的`tools` |可见，所以`include_tools`没有效果 |可见|
-
-当技能列出代理已经拥有的工具时，包括`edit_file`、Deep Agents等内置工具，使用代理的工具，而不是`SkillsMiddleware`中的同名工具。
+|代理的`tools` |可见，所以`include_tools`没有效果 |可见|当技能列出代理已经拥有的工具时，包括`edit_file`、Deep Agents等内置工具，使用代理的工具，而不是`SkillsMiddleware`中的同名工具。
 
 ## 后端和远程技能加载
 
@@ -487,335 +477,331 @@ Deep Agents支持不同的后端，具体取决于您想要如何存储和管理
 * `StoreBackend`：将文件存储在LangGraph 存储中，以实现持久的跨线程存储。
 * `FilesystemBackend`：在可配置的`root_dir`下从磁盘读取和写入技能文件。
 
-<Tabs>
-  <Tab title="StateBackend">
-    <CodeGroup>
-      ```python Google theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-      from urllib.request import urlopen
-      from deepagents import create_deep_agent
-      from deepagents.backends import StateBackend
-      from deepagents.backends.utils import create_file_data
-      from langgraph.checkpoint.memory import MemorySaver
+**状态后端**
 
-      checkpointer = MemorySaver()
-      backend = StateBackend()
+```python Google theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+from urllib.request import urlopen
+from deepagents import create_deep_agent
+from deepagents.backends import StateBackend
+from deepagents.backends.utils import create_file_data
+from langgraph.checkpoint.memory import MemorySaver
 
-      skill_url = "https://raw.githubusercontent.com/langchain-ai/deepagents/refs/heads/main/libs/code/examples/skills/langgraph-docs/SKILL.md"
-      with urlopen(skill_url) as response:
-          skill_content = response.read().decode('utf-8')
+checkpointer = MemorySaver()
+backend = StateBackend()
 
-      skills_files = {
-          "/skills/langgraph-docs/SKILL.md": create_file_data(skill_content),
-      }
+skill_url = "https://raw.githubusercontent.com/langchain-ai/deepagents/refs/heads/main/libs/code/examples/skills/langgraph-docs/SKILL.md"
+with urlopen(skill_url) as response:
+    skill_content = response.read().decode('utf-8')
 
-      agent = create_deep_agent(
-          model="google_genai:gemini-3.6-flash",
-          backend=backend,
-          skills=["/skills/"],
-          checkpointer=checkpointer,
-      )
+skills_files = {
+    "/skills/langgraph-docs/SKILL.md": create_file_data(skill_content),
+}
 
-      result = agent.invoke(
-          {
-              "messages": [{"role": "user", "content": "What is langgraph?"}],
-              # Seed the default StateBackend's in-state filesystem (virtual paths must start with "/").
-              "files": skills_files,
-          },
-          config={"configurable": {"thread_id": "12345"}},
-      )
-      ```
+agent = create_deep_agent(
+    model="google_genai:gemini-3.6-flash",
+    backend=backend,
+    skills=["/skills/"],
+    checkpointer=checkpointer,
+)
 
-      ```python OpenAI theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-      from urllib.request import urlopen
-      from deepagents import create_deep_agent
-      from deepagents.backends import StateBackend
-      from deepagents.backends.utils import create_file_data
-      from langgraph.checkpoint.memory import MemorySaver
+result = agent.invoke(
+    {
+        "messages": [{"role": "user", "content": "What is langgraph?"}],
+        # Seed the default StateBackend's in-state filesystem (virtual paths must start with "/").
+        "files": skills_files,
+    },
+    config={"configurable": {"thread_id": "12345"}},
+)
+```
 
-      checkpointer = MemorySaver()
-      backend = StateBackend()
+```python OpenAI theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+from urllib.request import urlopen
+from deepagents import create_deep_agent
+from deepagents.backends import StateBackend
+from deepagents.backends.utils import create_file_data
+from langgraph.checkpoint.memory import MemorySaver
 
-      skill_url = "https://raw.githubusercontent.com/langchain-ai/deepagents/refs/heads/main/libs/code/examples/skills/langgraph-docs/SKILL.md"
-      with urlopen(skill_url) as response:
-          skill_content = response.read().decode('utf-8')
+checkpointer = MemorySaver()
+backend = StateBackend()
 
-      skills_files = {
-          "/skills/langgraph-docs/SKILL.md": create_file_data(skill_content),
-      }
+skill_url = "https://raw.githubusercontent.com/langchain-ai/deepagents/refs/heads/main/libs/code/examples/skills/langgraph-docs/SKILL.md"
+with urlopen(skill_url) as response:
+    skill_content = response.read().decode('utf-8')
 
-      agent = create_deep_agent(
-          model="openai:gpt-5.5",
-          backend=backend,
-          skills=["/skills/"],
-          checkpointer=checkpointer,
-      )
+skills_files = {
+    "/skills/langgraph-docs/SKILL.md": create_file_data(skill_content),
+}
 
-      result = agent.invoke(
-          {
-              "messages": [{"role": "user", "content": "What is langgraph?"}],
-              # Seed the default StateBackend's in-state filesystem (virtual paths must start with "/").
-              "files": skills_files,
-          },
-          config={"configurable": {"thread_id": "12345"}},
-      )
-      ```
+agent = create_deep_agent(
+    model="openai:gpt-5.5",
+    backend=backend,
+    skills=["/skills/"],
+    checkpointer=checkpointer,
+)
 
-      ```python Anthropic theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-      from urllib.request import urlopen
-      from deepagents import create_deep_agent
-      from deepagents.backends import StateBackend
-      from deepagents.backends.utils import create_file_data
-      from langgraph.checkpoint.memory import MemorySaver
+result = agent.invoke(
+    {
+        "messages": [{"role": "user", "content": "What is langgraph?"}],
+        # Seed the default StateBackend's in-state filesystem (virtual paths must start with "/").
+        "files": skills_files,
+    },
+    config={"configurable": {"thread_id": "12345"}},
+)
+```
 
-      checkpointer = MemorySaver()
-      backend = StateBackend()
+```python Anthropic theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+from urllib.request import urlopen
+from deepagents import create_deep_agent
+from deepagents.backends import StateBackend
+from deepagents.backends.utils import create_file_data
+from langgraph.checkpoint.memory import MemorySaver
 
-      skill_url = "https://raw.githubusercontent.com/langchain-ai/deepagents/refs/heads/main/libs/code/examples/skills/langgraph-docs/SKILL.md"
-      with urlopen(skill_url) as response:
-          skill_content = response.read().decode('utf-8')
+checkpointer = MemorySaver()
+backend = StateBackend()
 
-      skills_files = {
-          "/skills/langgraph-docs/SKILL.md": create_file_data(skill_content),
-      }
+skill_url = "https://raw.githubusercontent.com/langchain-ai/deepagents/refs/heads/main/libs/code/examples/skills/langgraph-docs/SKILL.md"
+with urlopen(skill_url) as response:
+    skill_content = response.read().decode('utf-8')
 
-      agent = create_deep_agent(
-          model="anthropic:claude-sonnet-5",
-          backend=backend,
-          skills=["/skills/"],
-          checkpointer=checkpointer,
-      )
+skills_files = {
+    "/skills/langgraph-docs/SKILL.md": create_file_data(skill_content),
+}
 
-      result = agent.invoke(
-          {
-              "messages": [{"role": "user", "content": "What is langgraph?"}],
-              # Seed the default StateBackend's in-state filesystem (virtual paths must start with "/").
-              "files": skills_files,
-          },
-          config={"configurable": {"thread_id": "12345"}},
-      )
-      ```
+agent = create_deep_agent(
+    model="anthropic:claude-sonnet-5",
+    backend=backend,
+    skills=["/skills/"],
+    checkpointer=checkpointer,
+)
 
-      ```python OpenRouter theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-      from urllib.request import urlopen
-      from deepagents import create_deep_agent
-      from deepagents.backends import StateBackend
-      from deepagents.backends.utils import create_file_data
-      from langgraph.checkpoint.memory import MemorySaver
+result = agent.invoke(
+    {
+        "messages": [{"role": "user", "content": "What is langgraph?"}],
+        # Seed the default StateBackend's in-state filesystem (virtual paths must start with "/").
+        "files": skills_files,
+    },
+    config={"configurable": {"thread_id": "12345"}},
+)
+```
 
-      checkpointer = MemorySaver()
-      backend = StateBackend()
+```python OpenRouter theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+from urllib.request import urlopen
+from deepagents import create_deep_agent
+from deepagents.backends import StateBackend
+from deepagents.backends.utils import create_file_data
+from langgraph.checkpoint.memory import MemorySaver
 
-      skill_url = "https://raw.githubusercontent.com/langchain-ai/deepagents/refs/heads/main/libs/code/examples/skills/langgraph-docs/SKILL.md"
-      with urlopen(skill_url) as response:
-          skill_content = response.read().decode('utf-8')
+checkpointer = MemorySaver()
+backend = StateBackend()
 
-      skills_files = {
-          "/skills/langgraph-docs/SKILL.md": create_file_data(skill_content),
-      }
+skill_url = "https://raw.githubusercontent.com/langchain-ai/deepagents/refs/heads/main/libs/code/examples/skills/langgraph-docs/SKILL.md"
+with urlopen(skill_url) as response:
+    skill_content = response.read().decode('utf-8')
 
-      agent = create_deep_agent(
-          model="openrouter:z-ai/glm-5.2",
-          backend=backend,
-          skills=["/skills/"],
-          checkpointer=checkpointer,
-      )
+skills_files = {
+    "/skills/langgraph-docs/SKILL.md": create_file_data(skill_content),
+}
 
-      result = agent.invoke(
-          {
-              "messages": [{"role": "user", "content": "What is langgraph?"}],
-              # Seed the default StateBackend's in-state filesystem (virtual paths must start with "/").
-              "files": skills_files,
-          },
-          config={"configurable": {"thread_id": "12345"}},
-      )
-      ```
+agent = create_deep_agent(
+    model="openrouter:z-ai/glm-5.2",
+    backend=backend,
+    skills=["/skills/"],
+    checkpointer=checkpointer,
+)
 
-      ```python Fireworks theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-      from urllib.request import urlopen
-      from deepagents import create_deep_agent
-      from deepagents.backends import StateBackend
-      from deepagents.backends.utils import create_file_data
-      from langgraph.checkpoint.memory import MemorySaver
+result = agent.invoke(
+    {
+        "messages": [{"role": "user", "content": "What is langgraph?"}],
+        # Seed the default StateBackend's in-state filesystem (virtual paths must start with "/").
+        "files": skills_files,
+    },
+    config={"configurable": {"thread_id": "12345"}},
+)
+```
 
-      checkpointer = MemorySaver()
-      backend = StateBackend()
+```python Fireworks theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+from urllib.request import urlopen
+from deepagents import create_deep_agent
+from deepagents.backends import StateBackend
+from deepagents.backends.utils import create_file_data
+from langgraph.checkpoint.memory import MemorySaver
 
-      skill_url = "https://raw.githubusercontent.com/langchain-ai/deepagents/refs/heads/main/libs/code/examples/skills/langgraph-docs/SKILL.md"
-      with urlopen(skill_url) as response:
-          skill_content = response.read().decode('utf-8')
+checkpointer = MemorySaver()
+backend = StateBackend()
 
-      skills_files = {
-          "/skills/langgraph-docs/SKILL.md": create_file_data(skill_content),
-      }
+skill_url = "https://raw.githubusercontent.com/langchain-ai/deepagents/refs/heads/main/libs/code/examples/skills/langgraph-docs/SKILL.md"
+with urlopen(skill_url) as response:
+    skill_content = response.read().decode('utf-8')
 
-      agent = create_deep_agent(
-          model="fireworks:accounts/fireworks/models/glm-5p2",
-          backend=backend,
-          skills=["/skills/"],
-          checkpointer=checkpointer,
-      )
+skills_files = {
+    "/skills/langgraph-docs/SKILL.md": create_file_data(skill_content),
+}
 
-      result = agent.invoke(
-          {
-              "messages": [{"role": "user", "content": "What is langgraph?"}],
-              # Seed the default StateBackend's in-state filesystem (virtual paths must start with "/").
-              "files": skills_files,
-          },
-          config={"configurable": {"thread_id": "12345"}},
-      )
-      ```
+agent = create_deep_agent(
+    model="fireworks:accounts/fireworks/models/glm-5p2",
+    backend=backend,
+    skills=["/skills/"],
+    checkpointer=checkpointer,
+)
 
-      ```python Baseten theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-      from urllib.request import urlopen
-      from deepagents import create_deep_agent
-      from deepagents.backends import StateBackend
-      from deepagents.backends.utils import create_file_data
-      from langgraph.checkpoint.memory import MemorySaver
+result = agent.invoke(
+    {
+        "messages": [{"role": "user", "content": "What is langgraph?"}],
+        # Seed the default StateBackend's in-state filesystem (virtual paths must start with "/").
+        "files": skills_files,
+    },
+    config={"configurable": {"thread_id": "12345"}},
+)
+```
 
-      checkpointer = MemorySaver()
-      backend = StateBackend()
+```python Baseten theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+from urllib.request import urlopen
+from deepagents import create_deep_agent
+from deepagents.backends import StateBackend
+from deepagents.backends.utils import create_file_data
+from langgraph.checkpoint.memory import MemorySaver
 
-      skill_url = "https://raw.githubusercontent.com/langchain-ai/deepagents/refs/heads/main/libs/code/examples/skills/langgraph-docs/SKILL.md"
-      with urlopen(skill_url) as response:
-          skill_content = response.read().decode('utf-8')
+checkpointer = MemorySaver()
+backend = StateBackend()
 
-      skills_files = {
-          "/skills/langgraph-docs/SKILL.md": create_file_data(skill_content),
-      }
+skill_url = "https://raw.githubusercontent.com/langchain-ai/deepagents/refs/heads/main/libs/code/examples/skills/langgraph-docs/SKILL.md"
+with urlopen(skill_url) as response:
+    skill_content = response.read().decode('utf-8')
 
-      agent = create_deep_agent(
-          model="baseten:zai-org/GLM-5.2",
-          backend=backend,
-          skills=["/skills/"],
-          checkpointer=checkpointer,
-      )
+skills_files = {
+    "/skills/langgraph-docs/SKILL.md": create_file_data(skill_content),
+}
 
-      result = agent.invoke(
-          {
-              "messages": [{"role": "user", "content": "What is langgraph?"}],
-              # Seed the default StateBackend's in-state filesystem (virtual paths must start with "/").
-              "files": skills_files,
-          },
-          config={"configurable": {"thread_id": "12345"}},
-      )
-      ```
+agent = create_deep_agent(
+    model="baseten:zai-org/GLM-5.2",
+    backend=backend,
+    skills=["/skills/"],
+    checkpointer=checkpointer,
+)
 
-      ```python Ollama theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-      from urllib.request import urlopen
-      from deepagents import create_deep_agent
-      from deepagents.backends import StateBackend
-      from deepagents.backends.utils import create_file_data
-      from langgraph.checkpoint.memory import MemorySaver
+result = agent.invoke(
+    {
+        "messages": [{"role": "user", "content": "What is langgraph?"}],
+        # Seed the default StateBackend's in-state filesystem (virtual paths must start with "/").
+        "files": skills_files,
+    },
+    config={"configurable": {"thread_id": "12345"}},
+)
+```
 
-      checkpointer = MemorySaver()
-      backend = StateBackend()
+```python Ollama theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+from urllib.request import urlopen
+from deepagents import create_deep_agent
+from deepagents.backends import StateBackend
+from deepagents.backends.utils import create_file_data
+from langgraph.checkpoint.memory import MemorySaver
 
-      skill_url = "https://raw.githubusercontent.com/langchain-ai/deepagents/refs/heads/main/libs/code/examples/skills/langgraph-docs/SKILL.md"
-      with urlopen(skill_url) as response:
-          skill_content = response.read().decode('utf-8')
+checkpointer = MemorySaver()
+backend = StateBackend()
 
-      skills_files = {
-          "/skills/langgraph-docs/SKILL.md": create_file_data(skill_content),
-      }
+skill_url = "https://raw.githubusercontent.com/langchain-ai/deepagents/refs/heads/main/libs/code/examples/skills/langgraph-docs/SKILL.md"
+with urlopen(skill_url) as response:
+    skill_content = response.read().decode('utf-8')
 
-      agent = create_deep_agent(
-          model="ollama:north-mini-code-1.0",
-          backend=backend,
-          skills=["/skills/"],
-          checkpointer=checkpointer,
-      )
+skills_files = {
+    "/skills/langgraph-docs/SKILL.md": create_file_data(skill_content),
+}
 
-      result = agent.invoke(
-          {
-              "messages": [{"role": "user", "content": "What is langgraph?"}],
-              # Seed the default StateBackend's in-state filesystem (virtual paths must start with "/").
-              "files": skills_files,
-          },
-          config={"configurable": {"thread_id": "12345"}},
-      )
-      ```
-    </CodeGroup>
-  </Tab>
+agent = create_deep_agent(
+    model="ollama:north-mini-code-1.0",
+    backend=backend,
+    skills=["/skills/"],
+    checkpointer=checkpointer,
+)
 
-  <Tab title="StoreBackend">
-    ```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-    from urllib.request import urlopen
-    from deepagents import create_deep_agent
-    from deepagents.backends import StoreBackend
-    from langgraph.store.memory import InMemoryStore
+result = agent.invoke(
+    {
+        "messages": [{"role": "user", "content": "What is langgraph?"}],
+        # Seed the default StateBackend's in-state filesystem (virtual paths must start with "/").
+        "files": skills_files,
+    },
+    config={"configurable": {"thread_id": "12345"}},
+)
+```
 
-    store = InMemoryStore()
-    backend = StoreBackend(
-        namespace=lambda _rt: ("filesystem",),
-        store=store,
-    )
+**商店后端**
 
-    skill_url = "https://raw.githubusercontent.com/langchain-ai/deepagents/refs/heads/main/libs/code/examples/skills/langgraph-docs/SKILL.md"
-    with urlopen(skill_url) as response:
-        skill_content = response.read().decode('utf-8')
+```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+from urllib.request import urlopen
+from deepagents import create_deep_agent
+from deepagents.backends import StoreBackend
+from langgraph.store.memory import InMemoryStore
 
-    backend.upload_files(
-        [("/skills/langgraph-docs/SKILL.md", skill_content.encode("utf-8"))]
-    )
+store = InMemoryStore()
+backend = StoreBackend(
+    namespace=lambda _rt: ("filesystem",),
+    store=store,
+)
 
-    agent = create_deep_agent(
-        model="google_genai:gemini-3.6-flash",
-        backend=backend,
-        store=store,
-        skills=["/skills/"],
-    )
+skill_url = "https://raw.githubusercontent.com/langchain-ai/deepagents/refs/heads/main/libs/code/examples/skills/langgraph-docs/SKILL.md"
+with urlopen(skill_url) as response:
+    skill_content = response.read().decode('utf-8')
 
-    result = agent.invoke(
-        {"messages": [{"role": "user", "content": "What is langgraph?"}]},
-        config={"configurable": {"thread_id": "12345"}},
-    )
-    ```
-  </Tab>
+backend.upload_files(
+    [("/skills/langgraph-docs/SKILL.md", skill_content.encode("utf-8"))]
+)
 
-  <Tab title="FilesystemBackend">
-    ```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-    from urllib.request import urlopen
-    from deepagents import create_deep_agent
-    from deepagents.backends.filesystem import FilesystemBackend
-    from langgraph.checkpoint.memory import MemorySaver
+agent = create_deep_agent(
+    model="google_genai:gemini-3.6-flash",
+    backend=backend,
+    store=store,
+    skills=["/skills/"],
+)
 
-    # Checkpointer is REQUIRED for human-in-the-loop
-    checkpointer = MemorySaver()
+result = agent.invoke(
+    {"messages": [{"role": "user", "content": "What is langgraph?"}]},
+    config={"configurable": {"thread_id": "12345"}},
+)
+```
 
-    skill_url = "https://raw.githubusercontent.com/langchain-ai/deepagents/refs/heads/main/libs/code/examples/skills/langgraph-docs/SKILL.md"
-    with urlopen(skill_url) as response:
-        skill_content = response.read().decode('utf-8')
+**文件系统后端**
 
-    backend = FilesystemBackend(root_dir="/Users/user/{project}", virtual_mode=True)
-    backend.upload_files(
-        [("/skills/langgraph-docs/SKILL.md", skill_content.encode("utf-8"))]
-    )
+```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+from urllib.request import urlopen
+from deepagents import create_deep_agent
+from deepagents.backends.filesystem import FilesystemBackend
+from langgraph.checkpoint.memory import MemorySaver
 
-    agent = create_deep_agent(
-        model="google_genai:gemini-3.6-flash",
-        backend=backend,
-        skills=["/skills/"],
-        interrupt_on={
-            "write_file": True,
-            "read_file": False,
-            "edit_file": True,
-        },
-        checkpointer=checkpointer,  # Required for filesystem operations!
-    )
+# Checkpointer is REQUIRED for human-in-the-loop
+checkpointer = MemorySaver()
 
-    result = agent.invoke(
-        {"messages": [{"role": "user", "content": "What is langgraph?"}]},
-        config={"configurable": {"thread_id": "12345"}},
-    )
-    ```
-  </Tab>
-</Tabs>
+skill_url = "https://raw.githubusercontent.com/langchain-ai/deepagents/refs/heads/main/libs/code/examples/skills/langgraph-docs/SKILL.md"
+with urlopen(skill_url) as response:
+    skill_content = response.read().decode('utf-8')
 
-## 技能可用性并非每次跑步都需要所有技能。通过选择传递到`skills`的路径、根据上下文特定的存储解析这些路径或组合多个技能源来控制代理可以看到哪些技能。上下文可以来自请求处理程序、身份验证声明、图工厂、部署配置或任何其他应用程序逻辑。
+backend = FilesystemBackend(root_dir="/Users/user/{project}", virtual_mode=True)
+backend.upload_files(
+    [("/skills/langgraph-docs/SKILL.md", skill_content.encode("utf-8"))]
+)
 
-### 根据上下文选择技能
+agent = create_deep_agent(
+    model="google_genai:gemini-3.6-flash",
+    backend=backend,
+    skills=["/skills/"],
+    interrupt_on={
+        "write_file": True,
+        "read_file": False,
+        "edit_file": True,
+    },
+    checkpointer=checkpointer,  # Required for filesystem operations!
+)
 
-在创建代理之前选择`skills`数组。当技能位于公共位置并且您的应用程序决定哪些路径适用于当前角色、租户、用户或请求类型时，请使用此选项：
+result = agent.invoke(
+    {"messages": [{"role": "user", "content": "What is langgraph?"}]},
+    config={"configurable": {"thread_id": "12345"}},
+)
+```
+
+## 技能可用性
+
+并非每次跑步都需要所有技能。通过选择传递到`skills`的路径、根据上下文特定的存储解析这些路径或组合多个技能源来控制代理可以看到哪些技能。上下文可以来自请求处理程序、身份验证声明、图工厂、部署配置或任何其他应用程序逻辑。
+
+### 根据上下文选择技能创建代理之前选择`skills`数组。当技能位于公共位置并且您的应用程序决定哪些路径适用于当前角色、租户、用户或请求类型时，请使用此选项：
 
 ```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 from deepagents import create_deep_agent
@@ -836,28 +822,28 @@ def create_agent_for_user(user_role: str):
 
 此模式保留每个技能的一个维护副本，并且仅改变传递给每个代理的路径。在部署中，图工厂是解析用户信息并使用正确的技能路径构建代理的自然场所。
 
-<Note>
-  SDK仅加载您在`skills`中传递的源。它不会自动扫描`~/.deepagents/...`或`~/.agents/...`等目录。
+> [!注意]
+>
+> SDK仅加载您在`skills`中传递的源。它不会自动扫描`~/.deepagents/...`或`~/.agents/...`等目录。
+>
+> 对于Deep Agents代码存储约定，请参阅[App data](/oss/deepagents/code/configuration#data-locations)。
+>
+>> **模拟Deep Agents SDK 中的代码源顺序**
+>>
+>> 为了匹配 SDK 代码中的 Deep Agents 代码分层，请按照从低到高的优先级顺序显式传递所有所需的源：
+>>
+>> ```text theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> > [
+> > "<user-home>/.deepagents/{agent}/skills/",
+> > "<user-home>/.agents/skills/",
+> > "<project-root>/.deepagents/skills/",
+> > "<project-root>/.agents/skills/",
+> > ]
+> > ```
+>>
+> > 然后在创建代理时将有序列表作为 `skills` 传递。
 
-  对于Deep Agents代码存储约定，请参阅[App data](/oss/deepagents/code/configuration#data-locations)。
-
-  <Accordion title="Emulate Deep Agents Code source order in the SDK">
-    要匹配 SDK 代码中的 Deep Agents 代码分层，请按照从低到高的优先级顺序显式传递所有所需的源：
-
-    ```text theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-    [
-    "<user-home>/.deepagents/{agent}/skills/",
-    "<user-home>/.agents/skills/",
-    "<project-root>/.deepagents/skills/",
-    "<project-root>/.agents/skills/",
-    ]
-    ```然后在创建代理时将该有序列表作为 `skills` 传递。
-  </Accordion>
-</Note>
-
-### 隔离技能库
-
-当相同的技能路径应解析为不同用户、角色、租户、工作区或环境的不同文件时，请使用隔离库。例如，每个代理都可以接收`skills=["/skills/"]`，而后端则根据当前身份或部署上下文范围内的存储解析`/skills/`。
+### 隔离技能库当相同的技能路径应解析为不同用户、角色、租户、工作区或环境的不同文件时，请使用隔离库。例如，每个代理都可以接收`skills=["/skills/"]`，而后端则根据当前身份或部署上下文范围内的存储解析`/skills/`。
 
 以下示例使用 [StoreBackend](https://reference.langchain.com/python/deepagents/backends/store/StoreBackend)，但相同的模式适用于任何可以根据运行时上下文解析文件的后端：
 
@@ -887,9 +873,9 @@ agent = create_deep_agent(
 要填充共享库，请从应用程序代码或管理工作流程中为商店播种：
 
 * 按组织 ID 命名空间，以获取工作区范围的技能。当代理应该使用库但不修改它时，将其与 [read-only skills](#read-only-skills) 配对。
-* 当每个用户需要独立的库时，按用户ID命名空间，如上例。使用 `/company-policies/SKILL.md` 等键以及包含 `content` 和 `encoding` 字段的值为商店播种。在从存储中读取记录之前，`/skills/` 路由前缀将被删除。
+* 当每个用户需要独立的库时，按用户ID命名空间，如上例。
 
-您还可以组合共享库和个人库：将 `/skills/approved/` 路由到组织范围的 `StoreBackend`，将 `/skills/editable/` 路由到用户范围的后端，并在 `skills` 中传递两个路径。参见[Writable skills](#writable-skills)。
+使用 `/company-policies/SKILL.md` 等键以及包含 `content` 和 `encoding` 字段的值为商店播种。在从存储中读取记录之前，`/skills/` 路由前缀将被删除。您还可以组合共享库和个人库：将 `/skills/approved/` 路由到组织范围的 `StoreBackend`，将 `/skills/editable/` 路由到用户范围的后端，并在 `skills` 中传递两个路径。参见[Writable skills](#writable-skills)。
 
 ### 组合多个源
 
@@ -908,13 +894,15 @@ agent = create_deep_agent(
 
 ## 重装技能
 
-每个线程加载一次技能并保持代理状态，因此该线程上的每个后续模型调用都会重用相同的列表。此后添加、编辑或删除的技能永远不会到达模型。这在配置检查点时适用。如果没有一个，状态就无法在运行之间保存，因此每次运行都会再次加载技能。重置存储的元数据以在下次运行开始时再次加载每个源。
+每个线程加载一次技能并保持代理状态，因此该线程上的每个后续模型调用都会重用相同的列表。此后添加、编辑或删除的技能永远不会到达模型。这在配置检查点时适用。如果没有一个，状态就无法在运行之间保存，因此每次运行都会再次加载技能。
 
-<Note>
-  本地运行通常没有检查点，因此技能编辑会立即生效，并且技能似乎会自行重新加载。 [LangSmith Deployments](/langsmith/deployment) 自动配置持久性检查点，因此同一代理在部署后的线程生命周期内保留其技能。参见[Going to production](/oss/python/deepagents/going-to-production)。
-</Note>
+重置存储的元数据以在下次运行开始时再次加载每个源。> [!注意]
+>
+> 本地运行通常没有检查点，因此技能编辑会立即生效，并且技能似乎会自行重新加载。 [LangSmith Deployments](/langsmith/deployment) 自动配置持久性检查点，因此同一代理在部署后的线程生命周期内保留其技能。参见[Going to production](/oss/python/deepagents/going-to-production)。
 
-<Note>重装技能需要`deepagents>=0.7.16`。</Note>
+> [!注意]
+>
+> 装弹技能需要`deepagents>=0.7.16`。
 
 将重置作为运行输入传递以在单个调用中重新加载和运行：
 
@@ -938,13 +926,13 @@ agent.update_state(config, {"skills_metadata": None})
 
 使用`None`，而不是空列表。空列表意味着源已加载且不包含任何技能，因此代理在线程的其余部分看不到任何技能。
 
-<Note>
-  重新加载发现一组不同的技能会更改系统提示并使该线程的提示缓存无效。发现相同技能的重新加载会产生相同的提示，并且无需任何费用。
-</Note>
+> [!注意]
+>
+> 重新加载发现一组不同的技能会更改系统提示并使该线程的提示缓存无效。发现相同技能的重新加载会产生相同的提示，并且无需任何费用。
 
-中间件也可以重置该值，这让您的应用程序可以决定线程何时过时。加载发生在每次运行开始时，因此钩子的重置由下一次运行提供，而不是在当前运行的中途进行。从 `after_agent` 而不是 `after_model` 重置：运行中存储的值会留下提示，且不会为该运行中的剩余模型调用列出任何技能。
+中间件也可以重置该值，这让您的应用程序可以决定线程何时过时。
 
-```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+加载发生在每次运行开始时，因此钩子的重置由下一次运行提供，而不是在当前运行的中途进行。从 `after_agent` 而不是 `after_model` 重置：运行中存储的值会留下提示，且不会为该运行中的剩余模型调用列出任何技能。```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 from typing import Any
 
 from deepagents.middleware import SkillsState
@@ -966,9 +954,11 @@ class ReloadEditedSkills(AgentMiddleware[SkillsState]):
 
 仅当代理确定技能与任务匹配时才会读取该技能。当用户在您的应用中命名一项技能时，例如通过键入 `/langgraph-docs` 或从菜单中选择它，请固定该技能。 Deep Agents 然后将技能的指令添加到对话中，因此代理不必选择它。
 
-<Note>固定技能需要`deepagents>=0.7.23`.</Note>
+> [!注意]
+>
+> 固定技能需要`deepagents>=0.7.23`。
 
-使用 run 输入传递 `pinned_skills` 中的技能名称：
+使用 run 输入传递`pinned_skills`中的技能名称：
 
 ```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 result = agent.invoke(
@@ -993,7 +983,7 @@ result = agent.invoke(
 
 每条消息还将`additional_kwargs["lc_source"]`设置为`"pinned_skill"`，并将技能的`name`、`path`和`description`放入`additional_kwargs["skill"]`。聊天 UI 可以使用这些字段将固定技能显示为标签而不是其全文。
 
-固定技能遵循以下规则：* 消息按书面形式保留在对话中。稍后编辑 `SKILL.md` 不会更改它，并且再次固定该技能会附加当前文本。较早的消息永远不会改变，因此提示缓存保持有效。
+固定技能遵循以下规则：* 消息按书面形式保留在对话中。稍后编辑`SKILL.md`不会更改它，并且再次固定技能会附加当前文本。较早的消息永远不会改变，因此提示缓存保持有效。
 * 中间件会跳过与未加载技能匹配的名称，以及无法读取 `SKILL.md` 的技能。它在调试级别记录每次跳过。
 * 当您固定技能时，其[skill tools](#add-tools-to-skills)可供代理使用，与代理读取其`SKILL.md`时相同。
 
@@ -1049,220 +1039,218 @@ agent = create_deep_agent(
 
 ## 技能权限
 
-技能可用性控制客服人员可以查看哪些技能文件。技能权限控制代理是否可以读取这些文件、写入这些文件，或者在写入之前暂停以供人工批准。对于基于路径的读写规则使用[filesystem permissions](/oss/python/deepagents/permissions)，当写入需要批准时使用[⟦T195⟧](/oss/python/deepagents/human-in-the-loop)或带有`mode="interrupt"`的权限规则。
+技能可用性控制客服人员可以查看哪些技能文件。技能权限控制代理是否可以读取这些文件、写入这些文件，或者在写入之前暂停以供人工批准。对于基于路径的读写规则使用[filesystem permissions](/oss/python/deepagents/permissions)，当写入需要批准时使用[⟦T196⟧](/oss/python/deepagents/human-in-the-loop)或带有`mode="interrupt"`的权限规则。
 
 ### 只读技能
 
-要让客服人员使用精选的技能库而不对其进行修改，请将技能路径路由到包含批准的库的后端，并拒绝该路径下的写入操作。代理可以发现和读取技能；只有您的应用程序代码或管理工作流程会更新后端。<CodeGroup>
-  ```python Google theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  from deepagents import FilesystemPermission, create_deep_agent
-  from deepagents.backends import CompositeBackend, StateBackend, StoreBackend
-  from langgraph.store.memory import InMemoryStore
+要让客服人员使用精选的技能库而不对其进行修改，请将技能路径路由到包含批准的库的后端，并拒绝该路径下的写入操作。代理可以发现和读取技能；只有您的应用程序代码或管理工作流程会更新后端。
 
-  store = InMemoryStore()  # Good for local dev; omit for LangSmith Deployment
+```python Google theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+from deepagents import FilesystemPermission, create_deep_agent
+from deepagents.backends import CompositeBackend, StateBackend, StoreBackend
+from langgraph.store.memory import InMemoryStore
 
-  agent = create_deep_agent(
-      model="google_genai:gemini-3.6-flash",
-      backend=CompositeBackend(
-          default=StateBackend(),
-          routes={
-              "/skills/": StoreBackend(
-                  namespace=lambda rt: ("curated-skills", rt.context.org_id),
-              ),
-          },
-      ),
-      skills=["/skills/"],
-      permissions=[
-          FilesystemPermission(
-              operations=["write"],
-              paths=["/skills/**"],
-              mode="deny",
-          ),
-      ],
-      store=store,
-  )
-  ```
+store = InMemoryStore()  # Good for local dev; omit for LangSmith Deployment
 
-  ```python OpenAI theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  from deepagents import FilesystemPermission, create_deep_agent
-  from deepagents.backends import CompositeBackend, StateBackend, StoreBackend
-  from langgraph.store.memory import InMemoryStore
+agent = create_deep_agent(
+    model="google_genai:gemini-3.6-flash",
+    backend=CompositeBackend(
+        default=StateBackend(),
+        routes={
+            "/skills/": StoreBackend(
+                namespace=lambda rt: ("curated-skills", rt.context.org_id),
+            ),
+        },
+    ),
+    skills=["/skills/"],
+    permissions=[
+        FilesystemPermission(
+            operations=["write"],
+            paths=["/skills/**"],
+            mode="deny",
+        ),
+    ],
+    store=store,
+)
+``````python OpenAI theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+from deepagents import FilesystemPermission, create_deep_agent
+from deepagents.backends import CompositeBackend, StateBackend, StoreBackend
+from langgraph.store.memory import InMemoryStore
 
-  store = InMemoryStore()  # Good for local dev; omit for LangSmith Deployment
+store = InMemoryStore()  # Good for local dev; omit for LangSmith Deployment
 
-  agent = create_deep_agent(
-      model="openai:gpt-5.5",
-      backend=CompositeBackend(
-          default=StateBackend(),
-          routes={
-              "/skills/": StoreBackend(
-                  namespace=lambda rt: ("curated-skills", rt.context.org_id),
-              ),
-          },
-      ),
-      skills=["/skills/"],
-      permissions=[
-          FilesystemPermission(
-              operations=["write"],
-              paths=["/skills/**"],
-              mode="deny",
-          ),
-      ],
-      store=store,
-  )
-  ```
+agent = create_deep_agent(
+    model="openai:gpt-5.5",
+    backend=CompositeBackend(
+        default=StateBackend(),
+        routes={
+            "/skills/": StoreBackend(
+                namespace=lambda rt: ("curated-skills", rt.context.org_id),
+            ),
+        },
+    ),
+    skills=["/skills/"],
+    permissions=[
+        FilesystemPermission(
+            operations=["write"],
+            paths=["/skills/**"],
+            mode="deny",
+        ),
+    ],
+    store=store,
+)
+```
 
-  ```python Anthropic theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  from deepagents import FilesystemPermission, create_deep_agent
-  from deepagents.backends import CompositeBackend, StateBackend, StoreBackend
-  from langgraph.store.memory import InMemoryStore
+```python Anthropic theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+from deepagents import FilesystemPermission, create_deep_agent
+from deepagents.backends import CompositeBackend, StateBackend, StoreBackend
+from langgraph.store.memory import InMemoryStore
 
-  store = InMemoryStore()  # Good for local dev; omit for LangSmith Deployment
+store = InMemoryStore()  # Good for local dev; omit for LangSmith Deployment
 
-  agent = create_deep_agent(
-      model="anthropic:claude-sonnet-5",
-      backend=CompositeBackend(
-          default=StateBackend(),
-          routes={
-              "/skills/": StoreBackend(
-                  namespace=lambda rt: ("curated-skills", rt.context.org_id),
-              ),
-          },
-      ),
-      skills=["/skills/"],
-      permissions=[
-          FilesystemPermission(
-              operations=["write"],
-              paths=["/skills/**"],
-              mode="deny",
-          ),
-      ],
-      store=store,
-  )
-  ```
+agent = create_deep_agent(
+    model="anthropic:claude-sonnet-5",
+    backend=CompositeBackend(
+        default=StateBackend(),
+        routes={
+            "/skills/": StoreBackend(
+                namespace=lambda rt: ("curated-skills", rt.context.org_id),
+            ),
+        },
+    ),
+    skills=["/skills/"],
+    permissions=[
+        FilesystemPermission(
+            operations=["write"],
+            paths=["/skills/**"],
+            mode="deny",
+        ),
+    ],
+    store=store,
+)
+```
 
-  ```python OpenRouter theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  from deepagents import FilesystemPermission, create_deep_agent
-  from deepagents.backends import CompositeBackend, StateBackend, StoreBackend
-  from langgraph.store.memory import InMemoryStore
+```python OpenRouter theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+from deepagents import FilesystemPermission, create_deep_agent
+from deepagents.backends import CompositeBackend, StateBackend, StoreBackend
+from langgraph.store.memory import InMemoryStore
 
-  store = InMemoryStore()  # Good for local dev; omit for LangSmith Deployment
+store = InMemoryStore()  # Good for local dev; omit for LangSmith Deployment
 
-  agent = create_deep_agent(
-      model="openrouter:z-ai/glm-5.2",
-      backend=CompositeBackend(
-          default=StateBackend(),
-          routes={
-              "/skills/": StoreBackend(
-                  namespace=lambda rt: ("curated-skills", rt.context.org_id),
-              ),
-          },
-      ),
-      skills=["/skills/"],
-      permissions=[
-          FilesystemPermission(
-              operations=["write"],
-              paths=["/skills/**"],
-              mode="deny",
-          ),
-      ],
-      store=store,
-  )
-  ```
+agent = create_deep_agent(
+    model="openrouter:z-ai/glm-5.2",
+    backend=CompositeBackend(
+        default=StateBackend(),
+        routes={
+            "/skills/": StoreBackend(
+                namespace=lambda rt: ("curated-skills", rt.context.org_id),
+            ),
+        },
+    ),
+    skills=["/skills/"],
+    permissions=[
+        FilesystemPermission(
+            operations=["write"],
+            paths=["/skills/**"],
+            mode="deny",
+        ),
+    ],
+    store=store,
+)
+```
 
-  ```python Fireworks theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  from deepagents import FilesystemPermission, create_deep_agent
-  from deepagents.backends import CompositeBackend, StateBackend, StoreBackend
-  from langgraph.store.memory import InMemoryStore
+```python Fireworks theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+from deepagents import FilesystemPermission, create_deep_agent
+from deepagents.backends import CompositeBackend, StateBackend, StoreBackend
+from langgraph.store.memory import InMemoryStore
 
-  store = InMemoryStore()  # Good for local dev; omit for LangSmith Deployment
+store = InMemoryStore()  # Good for local dev; omit for LangSmith Deployment
 
-  agent = create_deep_agent(
-      model="fireworks:accounts/fireworks/models/glm-5p2",
-      backend=CompositeBackend(
-          default=StateBackend(),
-          routes={
-              "/skills/": StoreBackend(
-                  namespace=lambda rt: ("curated-skills", rt.context.org_id),
-              ),
-          },
-      ),
-      skills=["/skills/"],
-      permissions=[
-          FilesystemPermission(
-              operations=["write"],
-              paths=["/skills/**"],
-              mode="deny",
-          ),
-      ],
-      store=store,
-  )
-  ```
+agent = create_deep_agent(
+    model="fireworks:accounts/fireworks/models/glm-5p2",
+    backend=CompositeBackend(
+        default=StateBackend(),
+        routes={
+            "/skills/": StoreBackend(
+                namespace=lambda rt: ("curated-skills", rt.context.org_id),
+            ),
+        },
+    ),
+    skills=["/skills/"],
+    permissions=[
+        FilesystemPermission(
+            operations=["write"],
+            paths=["/skills/**"],
+            mode="deny",
+        ),
+    ],
+    store=store,
+)
+```
 
-  ```python Baseten theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  from deepagents import FilesystemPermission, create_deep_agent
-  from deepagents.backends import CompositeBackend, StateBackend, StoreBackend
-  from langgraph.store.memory import InMemoryStore
+```python Baseten theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+from deepagents import FilesystemPermission, create_deep_agent
+from deepagents.backends import CompositeBackend, StateBackend, StoreBackend
+from langgraph.store.memory import InMemoryStore
 
-  store = InMemoryStore()  # Good for local dev; omit for LangSmith Deployment
+store = InMemoryStore()  # Good for local dev; omit for LangSmith Deployment
 
-  agent = create_deep_agent(
-      model="baseten:zai-org/GLM-5.2",
-      backend=CompositeBackend(
-          default=StateBackend(),
-          routes={
-              "/skills/": StoreBackend(
-                  namespace=lambda rt: ("curated-skills", rt.context.org_id),
-              ),
-          },
-      ),
-      skills=["/skills/"],
-      permissions=[
-          FilesystemPermission(
-              operations=["write"],
-              paths=["/skills/**"],
-              mode="deny",
-          ),
-      ],
-      store=store,
-  )
-  ```
+agent = create_deep_agent(
+    model="baseten:zai-org/GLM-5.2",
+    backend=CompositeBackend(
+        default=StateBackend(),
+        routes={
+            "/skills/": StoreBackend(
+                namespace=lambda rt: ("curated-skills", rt.context.org_id),
+            ),
+        },
+    ),
+    skills=["/skills/"],
+    permissions=[
+        FilesystemPermission(
+            operations=["write"],
+            paths=["/skills/**"],
+            mode="deny",
+        ),
+    ],
+    store=store,
+)
+```
 
-  ```python Ollama theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  from deepagents import FilesystemPermission, create_deep_agent
-  from deepagents.backends import CompositeBackend, StateBackend, StoreBackend
-  from langgraph.store.memory import InMemoryStore
+```python Ollama theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+from deepagents import FilesystemPermission, create_deep_agent
+from deepagents.backends import CompositeBackend, StateBackend, StoreBackend
+from langgraph.store.memory import InMemoryStore
 
-  store = InMemoryStore()  # Good for local dev; omit for LangSmith Deployment
+store = InMemoryStore()  # Good for local dev; omit for LangSmith Deployment
 
-  agent = create_deep_agent(
-      model="ollama:north-mini-code-1.0",
-      backend=CompositeBackend(
-          default=StateBackend(),
-          routes={
-              "/skills/": StoreBackend(
-                  namespace=lambda rt: ("curated-skills", rt.context.org_id),
-              ),
-          },
-      ),
-      skills=["/skills/"],
-      permissions=[
-          FilesystemPermission(
-              operations=["write"],
-              paths=["/skills/**"],
-              mode="deny",
-          ),
-      ],
-      store=store,
-  )
-  ```
-</CodeGroup>
+agent = create_deep_agent(
+    model="ollama:north-mini-code-1.0",
+    backend=CompositeBackend(
+        default=StateBackend(),
+        routes={
+            "/skills/": StoreBackend(
+                namespace=lambda rt: ("curated-skills", rt.context.org_id),
+            ),
+        },
+    ),
+    skills=["/skills/"],
+    permissions=[
+        FilesystemPermission(
+            operations=["write"],
+            paths=["/skills/**"],
+            mode="deny",
+        ),
+    ],
+    store=store,
+)
+```
 
 将此用于企业知识库、批准的工具说明或集中管理的技能包，其中代理应使用内容但不应重写事实来源。
 
 ### 写作技巧
 
-默认情况下，如果后端允许并且没有权限规则阻止路径，代理可以写入技能文件。让特工在保护其他人的同时创造或完善一些技能：
+默认情况下，如果后端允许并且没有权限规则阻止路径，代理可以写入技能文件。让特工创造或完善一些技能，同时保护其他人：
 
 1. 将可写路径路由到可以保留代理编辑的后端。
 2. 通过`skills`中的这些路径。
@@ -1307,7 +1295,9 @@ agent = create_deep_agent(
 
 ### 写批准
 
-如果客服人员可以写入技能文件，但您希望首先有人参与循环，请使用 [⟦T203⟧](/oss/python/deepagents/human-in-the-loop) 或带有 `mode="interrupt"` 的权限规则。两者都在 `write_file` 或 `edit_file` 运行之前暂停并使用相同的恢复流程。```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+如果代理可能会写入技能文件，但您希望首先有人参与循环，请使用 [⟦T204⟧](/oss/python/deepagents/human-in-the-loop) 或带有 `mode="interrupt"` 的权限规则。两者都在 `write_file` 或 `edit_file` 运行之前暂停并使用相同的恢复流程。
+
+```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 from deepagents import FilesystemPermission, create_deep_agent
 from langgraph.checkpoint.memory import MemorySaver
 
@@ -1323,33 +1313,29 @@ agent = create_deep_agent(
     ],
     checkpointer=MemorySaver(),  # Required to pause and resume
 )
-```
+```或者，配置 `interrupt_on={"write_file": True, "edit_file": True}` 要求所有文件系统写入都需要批准，而不仅仅是技能路径。有关处理和恢复中断的信息，请参阅[Human-in-the-loop](/oss/python/deepagents/human-in-the-loop)。
 
-或者，配置 `interrupt_on={"write_file": True, "edit_file": True}` 要求所有文件系统写入都需要批准，而不仅仅是技能路径。有关处理和恢复中断的信息，请参阅[Human-in-the-loop](/oss/python/deepagents/human-in-the-loop)。
-
-<Note>
-  文件系统权限中断需要`deepagents>=0.6.8`。
-</Note>
+> [!注意]
+>
+> 文件系统权限中断需要`deepagents>=0.6.8`。
 
 ## 有技巧地执行代码
 
 如果没有代码执行，技能就是被动的：代理读取指令并使用可用的工具遵循它们。代码执行将技能转化为主动能力。技能可以发送经过测试的脚本，该脚本调用 API、转换数据、验证输出或运行管道，并且代理确定性地执行它，而不是每次都根据指令重新生成逻辑。这对于需要精确行为（数据转换、API 集成、合规性检查）或依赖于代理无法单独通过工具调用使用的库的工作流程尤其有价值。
 
-技能通过[sandbox scripts](#sandbox-scripts)执行代码：代理在需要安装依赖项、运行测试、调用 CLI 或使用操作系统文件系统时运行捆绑脚本。
+技能通过[sandbox scripts](#sandbox-scripts)执行代码：代理在需要安装依赖项、运行测试、调用 CLI 或使用操作系统文件系统时运行捆绑的脚本。
 
 ### 沙盒脚本
 
-技能可以包含脚本以及 `SKILL.md` 文件。参考`SKILL.md`中的脚本，以便代理知道它们存在以及何时运行它们：<Tree>
-  <Tree.Folder name="skills">
-    <Tree.Folder name="arxiv-search">
-      <Tree.File name="SKILL.md" />
+技能可以包含脚本以及 `SKILL.md` 文件。参考`SKILL.md`中的脚本，以便代理知道它们存在以及何时运行它们：
 
-      <Tree.Folder name="scripts">
-        <Tree.File name="search.py" />
-      </Tree.Folder>
-    </Tree.Folder>
-  </Tree.Folder>
-</Tree>
+**技能****arxiv-搜索**
+
+**技能.md**
+
+**脚本**
+
+**搜索.py**
 
 ```md theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 ---
@@ -1368,669 +1354,667 @@ Search arXiv for papers matching the user's query.
 3. If the user asks for more detail on a specific paper, fetch the full abstract.
 ```
 
-代理可以从任何后端“读取”脚本，但要“执行”它们，代理需要访问 shell，而只有 [sandbox backends](/oss/python/deepagents/sandboxes) 提供。
+代理可以从任何后端*读取*脚本，但要*执行*它们，代理需要访问 shell，而只有 [sandbox backends](/oss/python/deepagents/sandboxes) 提供。
 
 [Sandbox backends](/oss/python/deepagents/sandboxes) 在隔离的容器中运行。存储在沙箱外部的技能文件在沙箱内部不可用，这意味着代理无法执行技能脚本或访问技能资源，除非先将它们转移进来。使用[custom middleware](/oss/python/langchain/middleware/custom)来处理此传输：
 
 * **`before_agent`**：从后端读取技能文件并将其上传到沙箱中，以便代理可以从头开始执行脚本。
 * **`after_agent`**：从沙箱下载任何更新或新创建的技能文件并将它们写回后端，以便更改在运行中持续存在。
 
-<CodeGroup>
-  ```python Google theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  import asyncio
-  from pathlib import Path
-  from typing import Any
-
-  from deepagents import create_deep_agent
-  from deepagents.backends import CompositeBackend, StoreBackend
-  from deepagents.backends.langsmith import LangSmithSandbox
-  from deepagents.backends.utils import create_file_data
-  from langchain.agents.middleware import AgentMiddleware, AgentState
-
-  from langgraph.runtime import Runtime
-  from langgraph.store.memory import InMemoryStore
-  from langsmith.sandbox import SandboxClient
-
-  # Identical skill bundles for every user: one shared store namespace.
-  SKILLS_SHARED_NAMESPACE = ("skills", "builtin")
-
-
-  class SkillSandboxSyncMiddleware(AgentMiddleware[AgentState, Any, Any]):
-      """Copy shared skill files from the store into the sandbox before each agent run."""
-
-      def __init__(self, backend: CompositeBackend) -> None:
-          super().__init__()
-          self.backend = backend
-
-      async def abefore_agent(self, state: AgentState, runtime: Runtime[Any]) -> None:
-          store = runtime.store
-
-          files: list[tuple[str, bytes]] = []
-          for item in await store.asearch(SKILLS_SHARED_NAMESPACE):
-              key = str(item.key)
-              if ".." in key or any(c in key for c in ("*", "?")):
-                  msg = f"Invalid key: {key}"
-                  raise ValueError(msg)
-              normalized = key if key.startswith("/") else f"/{key}"
-              # CompositeBackend routes paths and batches uploads to the right backend.
-              files.append((f"/skills{normalized}", item.value["content"].encode()))
-
-          if files:
-              await self.backend.aupload_files(files)
-
-
-  async def seed_skill_store(store: InMemoryStore) -> None:
-      """Load canonical skill files from disk into the shared store namespace (run once at deploy).
-      You can retrieve skills from any source (local filesystem, remote URL, etc.).
-      """
-      skills_dir = Path(__file__).resolve().parent / "skills"
-      for file_path in sorted(p for p in skills_dir.rglob("*") if p.is_file()):
-          rel = file_path.relative_to(skills_dir).as_posix()
-          key = f"/{rel}"
-          await store.aput(
-              SKILLS_SHARED_NAMESPACE,
-              key,
-              create_file_data(file_path.read_text(encoding="utf-8")),
-          )
-
-
-  async def main() -> None:
-      store = InMemoryStore()
-      await seed_skill_store(store)
-
-      client = SandboxClient()
-      ls_sandbox = client.create_sandbox()
-      sandbox_backend = LangSmithSandbox(sandbox=ls_sandbox)
-
-      backend = CompositeBackend(
-          default=sandbox_backend,
-          routes={
-              "/skills/": StoreBackend(
-                  store=store,
-                  namespace=lambda _rt: SKILLS_SHARED_NAMESPACE,
-              ),
-          },
-      )
-
-      try:
-          agent = create_deep_agent(
-              model="google_genai:gemini-3.6-flash",
-              backend=backend,
-              skills=["/skills/"],
-              store=store,
-              middleware=[SkillSandboxSyncMiddleware(backend)],
-          )
-
-      finally:
-          client.delete_sandbox(ls_sandbox.name)
-
-
-  if __name__ == "__main__":
-      asyncio.run(main())
-  ```
-
-  ```python OpenAI theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  import asyncio
-  from pathlib import Path
-  from typing import Any
-
-  from deepagents import create_deep_agent
-  from deepagents.backends import CompositeBackend, StoreBackend
-  from deepagents.backends.langsmith import LangSmithSandbox
-  from deepagents.backends.utils import create_file_data
-  from langchain.agents.middleware import AgentMiddleware, AgentState
-
-  from langgraph.runtime import Runtime
-  from langgraph.store.memory import InMemoryStore
-  from langsmith.sandbox import SandboxClient
-
-  # Identical skill bundles for every user: one shared store namespace.
-  SKILLS_SHARED_NAMESPACE = ("skills", "builtin")
-
-
-  class SkillSandboxSyncMiddleware(AgentMiddleware[AgentState, Any, Any]):
-      """Copy shared skill files from the store into the sandbox before each agent run."""
-
-      def __init__(self, backend: CompositeBackend) -> None:
-          super().__init__()
-          self.backend = backend
-
-      async def abefore_agent(self, state: AgentState, runtime: Runtime[Any]) -> None:
-          store = runtime.store
-
-          files: list[tuple[str, bytes]] = []
-          for item in await store.asearch(SKILLS_SHARED_NAMESPACE):
-              key = str(item.key)
-              if ".." in key or any(c in key for c in ("*", "?")):
-                  msg = f"Invalid key: {key}"
-                  raise ValueError(msg)
-              normalized = key if key.startswith("/") else f"/{key}"
-              # CompositeBackend routes paths and batches uploads to the right backend.
-              files.append((f"/skills{normalized}", item.value["content"].encode()))
-
-          if files:
-              await self.backend.aupload_files(files)
-
-
-  async def seed_skill_store(store: InMemoryStore) -> None:
-      """Load canonical skill files from disk into the shared store namespace (run once at deploy).
-      You can retrieve skills from any source (local filesystem, remote URL, etc.).
-      """
-      skills_dir = Path(__file__).resolve().parent / "skills"
-      for file_path in sorted(p for p in skills_dir.rglob("*") if p.is_file()):
-          rel = file_path.relative_to(skills_dir).as_posix()
-          key = f"/{rel}"
-          await store.aput(
-              SKILLS_SHARED_NAMESPACE,
-              key,
-              create_file_data(file_path.read_text(encoding="utf-8")),
-          )
-
-
-  async def main() -> None:
-      store = InMemoryStore()
-      await seed_skill_store(store)
-
-      client = SandboxClient()
-      ls_sandbox = client.create_sandbox()
-      sandbox_backend = LangSmithSandbox(sandbox=ls_sandbox)
-
-      backend = CompositeBackend(
-          default=sandbox_backend,
-          routes={
-              "/skills/": StoreBackend(
-                  store=store,
-                  namespace=lambda _rt: SKILLS_SHARED_NAMESPACE,
-              ),
-          },
-      )
-
-      try:
-          agent = create_deep_agent(
-              model="openai:gpt-5.5",
-              backend=backend,
-              skills=["/skills/"],
-              store=store,
-              middleware=[SkillSandboxSyncMiddleware(backend)],
-          )
-
-      finally:
-          client.delete_sandbox(ls_sandbox.name)
-
-
-  if __name__ == "__main__":
-      asyncio.run(main())
-  ```
-
-  ```python Anthropic theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  import asyncio
-  from pathlib import Path
-  from typing import Any
-
-  from deepagents import create_deep_agent
-  from deepagents.backends import CompositeBackend, StoreBackend
-  from deepagents.backends.langsmith import LangSmithSandbox
-  from deepagents.backends.utils import create_file_data
-  from langchain.agents.middleware import AgentMiddleware, AgentState
-
-  from langgraph.runtime import Runtime
-  from langgraph.store.memory import InMemoryStore
-  from langsmith.sandbox import SandboxClient
-
-  # Identical skill bundles for every user: one shared store namespace.
-  SKILLS_SHARED_NAMESPACE = ("skills", "builtin")
-
-
-  class SkillSandboxSyncMiddleware(AgentMiddleware[AgentState, Any, Any]):
-      """Copy shared skill files from the store into the sandbox before each agent run."""
-
-      def __init__(self, backend: CompositeBackend) -> None:
-          super().__init__()
-          self.backend = backend
-
-      async def abefore_agent(self, state: AgentState, runtime: Runtime[Any]) -> None:
-          store = runtime.store
-
-          files: list[tuple[str, bytes]] = []
-          for item in await store.asearch(SKILLS_SHARED_NAMESPACE):
-              key = str(item.key)
-              if ".." in key or any(c in key for c in ("*", "?")):
-                  msg = f"Invalid key: {key}"
-                  raise ValueError(msg)
-              normalized = key if key.startswith("/") else f"/{key}"
-              # CompositeBackend routes paths and batches uploads to the right backend.
-              files.append((f"/skills{normalized}", item.value["content"].encode()))
-
-          if files:
-              await self.backend.aupload_files(files)
-
-
-  async def seed_skill_store(store: InMemoryStore) -> None:
-      """Load canonical skill files from disk into the shared store namespace (run once at deploy).
-      You can retrieve skills from any source (local filesystem, remote URL, etc.).
-      """
-      skills_dir = Path(__file__).resolve().parent / "skills"
-      for file_path in sorted(p for p in skills_dir.rglob("*") if p.is_file()):
-          rel = file_path.relative_to(skills_dir).as_posix()
-          key = f"/{rel}"
-          await store.aput(
-              SKILLS_SHARED_NAMESPACE,
-              key,
-              create_file_data(file_path.read_text(encoding="utf-8")),
-          )
-
-
-  async def main() -> None:
-      store = InMemoryStore()
-      await seed_skill_store(store)
-
-      client = SandboxClient()
-      ls_sandbox = client.create_sandbox()
-      sandbox_backend = LangSmithSandbox(sandbox=ls_sandbox)
-
-      backend = CompositeBackend(
-          default=sandbox_backend,
-          routes={
-              "/skills/": StoreBackend(
-                  store=store,
-                  namespace=lambda _rt: SKILLS_SHARED_NAMESPACE,
-              ),
-          },
-      )
-
-      try:
-          agent = create_deep_agent(
-              model="anthropic:claude-sonnet-5",
-              backend=backend,
-              skills=["/skills/"],
-              store=store,
-              middleware=[SkillSandboxSyncMiddleware(backend)],
-          )
-
-      finally:
-          client.delete_sandbox(ls_sandbox.name)
-
-
-  if __name__ == "__main__":
-      asyncio.run(main())
-  ```
-
-  ```python OpenRouter theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  import asyncio
-  from pathlib import Path
-  from typing import Any
-
-  from deepagents import create_deep_agent
-  from deepagents.backends import CompositeBackend, StoreBackend
-  from deepagents.backends.langsmith import LangSmithSandbox
-  from deepagents.backends.utils import create_file_data
-  from langchain.agents.middleware import AgentMiddleware, AgentState
-
-  from langgraph.runtime import Runtime
-  from langgraph.store.memory import InMemoryStore
-  from langsmith.sandbox import SandboxClient
-
-  # Identical skill bundles for every user: one shared store namespace.
-  SKILLS_SHARED_NAMESPACE = ("skills", "builtin")
-
-
-  class SkillSandboxSyncMiddleware(AgentMiddleware[AgentState, Any, Any]):
-      """Copy shared skill files from the store into the sandbox before each agent run."""
-
-      def __init__(self, backend: CompositeBackend) -> None:
-          super().__init__()
-          self.backend = backend
-
-      async def abefore_agent(self, state: AgentState, runtime: Runtime[Any]) -> None:
-          store = runtime.store
-
-          files: list[tuple[str, bytes]] = []
-          for item in await store.asearch(SKILLS_SHARED_NAMESPACE):
-              key = str(item.key)
-              if ".." in key or any(c in key for c in ("*", "?")):
-                  msg = f"Invalid key: {key}"
-                  raise ValueError(msg)
-              normalized = key if key.startswith("/") else f"/{key}"
-              # CompositeBackend routes paths and batches uploads to the right backend.
-              files.append((f"/skills{normalized}", item.value["content"].encode()))
-
-          if files:
-              await self.backend.aupload_files(files)
-
-
-  async def seed_skill_store(store: InMemoryStore) -> None:
-      """Load canonical skill files from disk into the shared store namespace (run once at deploy).
-      You can retrieve skills from any source (local filesystem, remote URL, etc.).
-      """
-      skills_dir = Path(__file__).resolve().parent / "skills"
-      for file_path in sorted(p for p in skills_dir.rglob("*") if p.is_file()):
-          rel = file_path.relative_to(skills_dir).as_posix()
-          key = f"/{rel}"
-          await store.aput(
-              SKILLS_SHARED_NAMESPACE,
-              key,
-              create_file_data(file_path.read_text(encoding="utf-8")),
-          )
-
-
-  async def main() -> None:
-      store = InMemoryStore()
-      await seed_skill_store(store)
-
-      client = SandboxClient()
-      ls_sandbox = client.create_sandbox()
-      sandbox_backend = LangSmithSandbox(sandbox=ls_sandbox)
-
-      backend = CompositeBackend(
-          default=sandbox_backend,
-          routes={
-              "/skills/": StoreBackend(
-                  store=store,
-                  namespace=lambda _rt: SKILLS_SHARED_NAMESPACE,
-              ),
-          },
-      )
-
-      try:
-          agent = create_deep_agent(
-              model="openrouter:z-ai/glm-5.2",
-              backend=backend,
-              skills=["/skills/"],
-              store=store,
-              middleware=[SkillSandboxSyncMiddleware(backend)],
-          )
-
-      finally:
-          client.delete_sandbox(ls_sandbox.name)
-
-
-  if __name__ == "__main__":
-      asyncio.run(main())
-  ```
-
-  ```python Fireworks theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  import asyncio
-  from pathlib import Path
-  from typing import Any
-
-  from deepagents import create_deep_agent
-  from deepagents.backends import CompositeBackend, StoreBackend
-  from deepagents.backends.langsmith import LangSmithSandbox
-  from deepagents.backends.utils import create_file_data
-  from langchain.agents.middleware import AgentMiddleware, AgentState
-
-  from langgraph.runtime import Runtime
-  from langgraph.store.memory import InMemoryStore
-  from langsmith.sandbox import SandboxClient
-
-  # Identical skill bundles for every user: one shared store namespace.
-  SKILLS_SHARED_NAMESPACE = ("skills", "builtin")
-
-
-  class SkillSandboxSyncMiddleware(AgentMiddleware[AgentState, Any, Any]):
-      """Copy shared skill files from the store into the sandbox before each agent run."""
-
-      def __init__(self, backend: CompositeBackend) -> None:
-          super().__init__()
-          self.backend = backend
-
-      async def abefore_agent(self, state: AgentState, runtime: Runtime[Any]) -> None:
-          store = runtime.store
-
-          files: list[tuple[str, bytes]] = []
-          for item in await store.asearch(SKILLS_SHARED_NAMESPACE):
-              key = str(item.key)
-              if ".." in key or any(c in key for c in ("*", "?")):
-                  msg = f"Invalid key: {key}"
-                  raise ValueError(msg)
-              normalized = key if key.startswith("/") else f"/{key}"
-              # CompositeBackend routes paths and batches uploads to the right backend.
-              files.append((f"/skills{normalized}", item.value["content"].encode()))
-
-          if files:
-              await self.backend.aupload_files(files)
-
-
-  async def seed_skill_store(store: InMemoryStore) -> None:
-      """Load canonical skill files from disk into the shared store namespace (run once at deploy).
-      You can retrieve skills from any source (local filesystem, remote URL, etc.).
-      """
-      skills_dir = Path(__file__).resolve().parent / "skills"
-      for file_path in sorted(p for p in skills_dir.rglob("*") if p.is_file()):
-          rel = file_path.relative_to(skills_dir).as_posix()
-          key = f"/{rel}"
-          await store.aput(
-              SKILLS_SHARED_NAMESPACE,
-              key,
-              create_file_data(file_path.read_text(encoding="utf-8")),
-          )
-
-
-  async def main() -> None:
-      store = InMemoryStore()
-      await seed_skill_store(store)
-
-      client = SandboxClient()
-      ls_sandbox = client.create_sandbox()
-      sandbox_backend = LangSmithSandbox(sandbox=ls_sandbox)
-
-      backend = CompositeBackend(
-          default=sandbox_backend,
-          routes={
-              "/skills/": StoreBackend(
-                  store=store,
-                  namespace=lambda _rt: SKILLS_SHARED_NAMESPACE,
-              ),
-          },
-      )
-
-      try:
-          agent = create_deep_agent(
-              model="fireworks:accounts/fireworks/models/glm-5p2",
-              backend=backend,
-              skills=["/skills/"],
-              store=store,
-              middleware=[SkillSandboxSyncMiddleware(backend)],
-          )
-
-      finally:
-          client.delete_sandbox(ls_sandbox.name)
-
-
-  if __name__ == "__main__":
-      asyncio.run(main())
-  ```
-
-  ```python Baseten theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  import asyncio
-  from pathlib import Path
-  from typing import Any
-
-  from deepagents import create_deep_agent
-  from deepagents.backends import CompositeBackend, StoreBackend
-  from deepagents.backends.langsmith import LangSmithSandbox
-  from deepagents.backends.utils import create_file_data
-  from langchain.agents.middleware import AgentMiddleware, AgentState
-
-  from langgraph.runtime import Runtime
-  from langgraph.store.memory import InMemoryStore
-  from langsmith.sandbox import SandboxClient
-
-  # Identical skill bundles for every user: one shared store namespace.
-  SKILLS_SHARED_NAMESPACE = ("skills", "builtin")
-
-
-  class SkillSandboxSyncMiddleware(AgentMiddleware[AgentState, Any, Any]):
-      """Copy shared skill files from the store into the sandbox before each agent run."""
-
-      def __init__(self, backend: CompositeBackend) -> None:
-          super().__init__()
-          self.backend = backend
-
-      async def abefore_agent(self, state: AgentState, runtime: Runtime[Any]) -> None:
-          store = runtime.store
-
-          files: list[tuple[str, bytes]] = []
-          for item in await store.asearch(SKILLS_SHARED_NAMESPACE):
-              key = str(item.key)
-              if ".." in key or any(c in key for c in ("*", "?")):
-                  msg = f"Invalid key: {key}"
-                  raise ValueError(msg)
-              normalized = key if key.startswith("/") else f"/{key}"
-              # CompositeBackend routes paths and batches uploads to the right backend.
-              files.append((f"/skills{normalized}", item.value["content"].encode()))
-
-          if files:
-              await self.backend.aupload_files(files)
-
-
-  async def seed_skill_store(store: InMemoryStore) -> None:
-      """Load canonical skill files from disk into the shared store namespace (run once at deploy).
-      You can retrieve skills from any source (local filesystem, remote URL, etc.).
-      """
-      skills_dir = Path(__file__).resolve().parent / "skills"
-      for file_path in sorted(p for p in skills_dir.rglob("*") if p.is_file()):
-          rel = file_path.relative_to(skills_dir).as_posix()
-          key = f"/{rel}"
-          await store.aput(
-              SKILLS_SHARED_NAMESPACE,
-              key,
-              create_file_data(file_path.read_text(encoding="utf-8")),
-          )
-
-
-  async def main() -> None:
-      store = InMemoryStore()
-      await seed_skill_store(store)
-
-      client = SandboxClient()
-      ls_sandbox = client.create_sandbox()
-      sandbox_backend = LangSmithSandbox(sandbox=ls_sandbox)
-
-      backend = CompositeBackend(
-          default=sandbox_backend,
-          routes={
-              "/skills/": StoreBackend(
-                  store=store,
-                  namespace=lambda _rt: SKILLS_SHARED_NAMESPACE,
-              ),
-          },
-      )
-
-      try:
-          agent = create_deep_agent(
-              model="baseten:zai-org/GLM-5.2",
-              backend=backend,
-              skills=["/skills/"],
-              store=store,
-              middleware=[SkillSandboxSyncMiddleware(backend)],
-          )
-
-      finally:
-          client.delete_sandbox(ls_sandbox.name)
-
-
-  if __name__ == "__main__":
-      asyncio.run(main())
-  ```
-
-  ```python Ollama theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  import asyncio
-  from pathlib import Path
-  from typing import Any
-
-  from deepagents import create_deep_agent
-  from deepagents.backends import CompositeBackend, StoreBackend
-  from deepagents.backends.langsmith import LangSmithSandbox
-  from deepagents.backends.utils import create_file_data
-  from langchain.agents.middleware import AgentMiddleware, AgentState
-
-  from langgraph.runtime import Runtime
-  from langgraph.store.memory import InMemoryStore
-  from langsmith.sandbox import SandboxClient
-
-  # Identical skill bundles for every user: one shared store namespace.
-  SKILLS_SHARED_NAMESPACE = ("skills", "builtin")
-
-
-  class SkillSandboxSyncMiddleware(AgentMiddleware[AgentState, Any, Any]):
-      """Copy shared skill files from the store into the sandbox before each agent run."""
-
-      def __init__(self, backend: CompositeBackend) -> None:
-          super().__init__()
-          self.backend = backend
-
-      async def abefore_agent(self, state: AgentState, runtime: Runtime[Any]) -> None:
-          store = runtime.store
-
-          files: list[tuple[str, bytes]] = []
-          for item in await store.asearch(SKILLS_SHARED_NAMESPACE):
-              key = str(item.key)
-              if ".." in key or any(c in key for c in ("*", "?")):
-                  msg = f"Invalid key: {key}"
-                  raise ValueError(msg)
-              normalized = key if key.startswith("/") else f"/{key}"
-              # CompositeBackend routes paths and batches uploads to the right backend.
-              files.append((f"/skills{normalized}", item.value["content"].encode()))
-
-          if files:
-              await self.backend.aupload_files(files)
-
-
-  async def seed_skill_store(store: InMemoryStore) -> None:
-      """Load canonical skill files from disk into the shared store namespace (run once at deploy).
-      You can retrieve skills from any source (local filesystem, remote URL, etc.).
-      """
-      skills_dir = Path(__file__).resolve().parent / "skills"
-      for file_path in sorted(p for p in skills_dir.rglob("*") if p.is_file()):
-          rel = file_path.relative_to(skills_dir).as_posix()
-          key = f"/{rel}"
-          await store.aput(
-              SKILLS_SHARED_NAMESPACE,
-              key,
-              create_file_data(file_path.read_text(encoding="utf-8")),
-          )
-
-
-  async def main() -> None:
-      store = InMemoryStore()
-      await seed_skill_store(store)
-
-      client = SandboxClient()
-      ls_sandbox = client.create_sandbox()
-      sandbox_backend = LangSmithSandbox(sandbox=ls_sandbox)
-
-      backend = CompositeBackend(
-          default=sandbox_backend,
-          routes={
-              "/skills/": StoreBackend(
-                  store=store,
-                  namespace=lambda _rt: SKILLS_SHARED_NAMESPACE,
-              ),
-          },
-      )
-
-      try:
-          agent = create_deep_agent(
-              model="ollama:north-mini-code-1.0",
-              backend=backend,
-              skills=["/skills/"],
-              store=store,
-              middleware=[SkillSandboxSyncMiddleware(backend)],
-          )
-
-      finally:
-          client.delete_sandbox(ls_sandbox.name)
-
-
-  if __name__ == "__main__":
-      asyncio.run(main())
-  ```
-</CodeGroup>
-
-<Card title="View example trace" icon="chart-line" href="https://smith.langchain.com/public/ce7b8594-b310-4ab0-9edb-43ab9b7d9857/r">
-  为此示例打开公共 LangSmith 运行。
-</Card>
+```python Google theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+import asyncio
+from pathlib import Path
+from typing import Any
+
+from deepagents import create_deep_agent
+from deepagents.backends import CompositeBackend, StoreBackend
+from deepagents.backends.langsmith import LangSmithSandbox
+from deepagents.backends.utils import create_file_data
+from langchain.agents.middleware import AgentMiddleware, AgentState
+
+from langgraph.runtime import Runtime
+from langgraph.store.memory import InMemoryStore
+from langsmith.sandbox import SandboxClient
+
+# Identical skill bundles for every user: one shared store namespace.
+SKILLS_SHARED_NAMESPACE = ("skills", "builtin")
+
+
+class SkillSandboxSyncMiddleware(AgentMiddleware[AgentState, Any, Any]):
+    """Copy shared skill files from the store into the sandbox before each agent run."""
+
+    def __init__(self, backend: CompositeBackend) -> None:
+        super().__init__()
+        self.backend = backend
+
+    async def abefore_agent(self, state: AgentState, runtime: Runtime[Any]) -> None:
+        store = runtime.store
+
+        files: list[tuple[str, bytes]] = []
+        for item in await store.asearch(SKILLS_SHARED_NAMESPACE):
+            key = str(item.key)
+            if ".." in key or any(c in key for c in ("*", "?")):
+                msg = f"Invalid key: {key}"
+                raise ValueError(msg)
+            normalized = key if key.startswith("/") else f"/{key}"
+            # CompositeBackend routes paths and batches uploads to the right backend.
+            files.append((f"/skills{normalized}", item.value["content"].encode()))
+
+        if files:
+            await self.backend.aupload_files(files)
+
+
+async def seed_skill_store(store: InMemoryStore) -> None:
+    """Load canonical skill files from disk into the shared store namespace (run once at deploy).
+    You can retrieve skills from any source (local filesystem, remote URL, etc.).
+    """
+    skills_dir = Path(__file__).resolve().parent / "skills"
+    for file_path in sorted(p for p in skills_dir.rglob("*") if p.is_file()):
+        rel = file_path.relative_to(skills_dir).as_posix()
+        key = f"/{rel}"
+        await store.aput(
+            SKILLS_SHARED_NAMESPACE,
+            key,
+            create_file_data(file_path.read_text(encoding="utf-8")),
+        )
+
+
+async def main() -> None:
+    store = InMemoryStore()
+    await seed_skill_store(store)
+
+    client = SandboxClient()
+    ls_sandbox = client.create_sandbox()
+    sandbox_backend = LangSmithSandbox(sandbox=ls_sandbox)
+
+    backend = CompositeBackend(
+        default=sandbox_backend,
+        routes={
+            "/skills/": StoreBackend(
+                store=store,
+                namespace=lambda _rt: SKILLS_SHARED_NAMESPACE,
+            ),
+        },
+    )
+
+    try:
+        agent = create_deep_agent(
+            model="google_genai:gemini-3.6-flash",
+            backend=backend,
+            skills=["/skills/"],
+            store=store,
+            middleware=[SkillSandboxSyncMiddleware(backend)],
+        )
+
+    finally:
+        client.delete_sandbox(ls_sandbox.name)
+
+
+if __name__ == "__main__":
+    asyncio.run(main())
+```
+
+```python OpenAI theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+import asyncio
+from pathlib import Path
+from typing import Any
+
+from deepagents import create_deep_agent
+from deepagents.backends import CompositeBackend, StoreBackend
+from deepagents.backends.langsmith import LangSmithSandbox
+from deepagents.backends.utils import create_file_data
+from langchain.agents.middleware import AgentMiddleware, AgentState
+
+from langgraph.runtime import Runtime
+from langgraph.store.memory import InMemoryStore
+from langsmith.sandbox import SandboxClient
+
+# Identical skill bundles for every user: one shared store namespace.
+SKILLS_SHARED_NAMESPACE = ("skills", "builtin")
+
+
+class SkillSandboxSyncMiddleware(AgentMiddleware[AgentState, Any, Any]):
+    """Copy shared skill files from the store into the sandbox before each agent run."""
+
+    def __init__(self, backend: CompositeBackend) -> None:
+        super().__init__()
+        self.backend = backend
+
+    async def abefore_agent(self, state: AgentState, runtime: Runtime[Any]) -> None:
+        store = runtime.store
+
+        files: list[tuple[str, bytes]] = []
+        for item in await store.asearch(SKILLS_SHARED_NAMESPACE):
+            key = str(item.key)
+            if ".." in key or any(c in key for c in ("*", "?")):
+                msg = f"Invalid key: {key}"
+                raise ValueError(msg)
+            normalized = key if key.startswith("/") else f"/{key}"
+            # CompositeBackend routes paths and batches uploads to the right backend.
+            files.append((f"/skills{normalized}", item.value["content"].encode()))
+
+        if files:
+            await self.backend.aupload_files(files)
+
+
+async def seed_skill_store(store: InMemoryStore) -> None:
+    """Load canonical skill files from disk into the shared store namespace (run once at deploy).
+    You can retrieve skills from any source (local filesystem, remote URL, etc.).
+    """
+    skills_dir = Path(__file__).resolve().parent / "skills"
+    for file_path in sorted(p for p in skills_dir.rglob("*") if p.is_file()):
+        rel = file_path.relative_to(skills_dir).as_posix()
+        key = f"/{rel}"
+        await store.aput(
+            SKILLS_SHARED_NAMESPACE,
+            key,
+            create_file_data(file_path.read_text(encoding="utf-8")),
+        )
+
+
+async def main() -> None:
+    store = InMemoryStore()
+    await seed_skill_store(store)
+
+    client = SandboxClient()
+    ls_sandbox = client.create_sandbox()
+    sandbox_backend = LangSmithSandbox(sandbox=ls_sandbox)
+
+    backend = CompositeBackend(
+        default=sandbox_backend,
+        routes={
+            "/skills/": StoreBackend(
+                store=store,
+                namespace=lambda _rt: SKILLS_SHARED_NAMESPACE,
+            ),
+        },
+    )
+
+    try:
+        agent = create_deep_agent(
+            model="openai:gpt-5.5",
+            backend=backend,
+            skills=["/skills/"],
+            store=store,
+            middleware=[SkillSandboxSyncMiddleware(backend)],
+        )
+
+    finally:
+        client.delete_sandbox(ls_sandbox.name)
+
+
+if __name__ == "__main__":
+    asyncio.run(main())
+```
+
+```python Anthropic theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+import asyncio
+from pathlib import Path
+from typing import Any
+
+from deepagents import create_deep_agent
+from deepagents.backends import CompositeBackend, StoreBackend
+from deepagents.backends.langsmith import LangSmithSandbox
+from deepagents.backends.utils import create_file_data
+from langchain.agents.middleware import AgentMiddleware, AgentState
+
+from langgraph.runtime import Runtime
+from langgraph.store.memory import InMemoryStore
+from langsmith.sandbox import SandboxClient
+
+# Identical skill bundles for every user: one shared store namespace.
+SKILLS_SHARED_NAMESPACE = ("skills", "builtin")
+
+
+class SkillSandboxSyncMiddleware(AgentMiddleware[AgentState, Any, Any]):
+    """Copy shared skill files from the store into the sandbox before each agent run."""
+
+    def __init__(self, backend: CompositeBackend) -> None:
+        super().__init__()
+        self.backend = backend
+
+    async def abefore_agent(self, state: AgentState, runtime: Runtime[Any]) -> None:
+        store = runtime.store
+
+        files: list[tuple[str, bytes]] = []
+        for item in await store.asearch(SKILLS_SHARED_NAMESPACE):
+            key = str(item.key)
+            if ".." in key or any(c in key for c in ("*", "?")):
+                msg = f"Invalid key: {key}"
+                raise ValueError(msg)
+            normalized = key if key.startswith("/") else f"/{key}"
+            # CompositeBackend routes paths and batches uploads to the right backend.
+            files.append((f"/skills{normalized}", item.value["content"].encode()))
+
+        if files:
+            await self.backend.aupload_files(files)
+
+
+async def seed_skill_store(store: InMemoryStore) -> None:
+    """Load canonical skill files from disk into the shared store namespace (run once at deploy).
+    You can retrieve skills from any source (local filesystem, remote URL, etc.).
+    """
+    skills_dir = Path(__file__).resolve().parent / "skills"
+    for file_path in sorted(p for p in skills_dir.rglob("*") if p.is_file()):
+        rel = file_path.relative_to(skills_dir).as_posix()
+        key = f"/{rel}"
+        await store.aput(
+            SKILLS_SHARED_NAMESPACE,
+            key,
+            create_file_data(file_path.read_text(encoding="utf-8")),
+        )
+
+
+async def main() -> None:
+    store = InMemoryStore()
+    await seed_skill_store(store)
+
+    client = SandboxClient()
+    ls_sandbox = client.create_sandbox()
+    sandbox_backend = LangSmithSandbox(sandbox=ls_sandbox)
+
+    backend = CompositeBackend(
+        default=sandbox_backend,
+        routes={
+            "/skills/": StoreBackend(
+                store=store,
+                namespace=lambda _rt: SKILLS_SHARED_NAMESPACE,
+            ),
+        },
+    )
+
+    try:
+        agent = create_deep_agent(
+            model="anthropic:claude-sonnet-5",
+            backend=backend,
+            skills=["/skills/"],
+            store=store,
+            middleware=[SkillSandboxSyncMiddleware(backend)],
+        )
+
+    finally:
+        client.delete_sandbox(ls_sandbox.name)
+
+
+if __name__ == "__main__":
+    asyncio.run(main())
+```
+
+```python OpenRouter theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+import asyncio
+from pathlib import Path
+from typing import Any
+
+from deepagents import create_deep_agent
+from deepagents.backends import CompositeBackend, StoreBackend
+from deepagents.backends.langsmith import LangSmithSandbox
+from deepagents.backends.utils import create_file_data
+from langchain.agents.middleware import AgentMiddleware, AgentState
+
+from langgraph.runtime import Runtime
+from langgraph.store.memory import InMemoryStore
+from langsmith.sandbox import SandboxClient
+
+# Identical skill bundles for every user: one shared store namespace.
+SKILLS_SHARED_NAMESPACE = ("skills", "builtin")
+
+
+class SkillSandboxSyncMiddleware(AgentMiddleware[AgentState, Any, Any]):
+    """Copy shared skill files from the store into the sandbox before each agent run."""
+
+    def __init__(self, backend: CompositeBackend) -> None:
+        super().__init__()
+        self.backend = backend
+
+    async def abefore_agent(self, state: AgentState, runtime: Runtime[Any]) -> None:
+        store = runtime.store
+
+        files: list[tuple[str, bytes]] = []
+        for item in await store.asearch(SKILLS_SHARED_NAMESPACE):
+            key = str(item.key)
+            if ".." in key or any(c in key for c in ("*", "?")):
+                msg = f"Invalid key: {key}"
+                raise ValueError(msg)
+            normalized = key if key.startswith("/") else f"/{key}"
+            # CompositeBackend routes paths and batches uploads to the right backend.
+            files.append((f"/skills{normalized}", item.value["content"].encode()))
+
+        if files:
+            await self.backend.aupload_files(files)
+
+
+async def seed_skill_store(store: InMemoryStore) -> None:
+    """Load canonical skill files from disk into the shared store namespace (run once at deploy).
+    You can retrieve skills from any source (local filesystem, remote URL, etc.).
+    """
+    skills_dir = Path(__file__).resolve().parent / "skills"
+    for file_path in sorted(p for p in skills_dir.rglob("*") if p.is_file()):
+        rel = file_path.relative_to(skills_dir).as_posix()
+        key = f"/{rel}"
+        await store.aput(
+            SKILLS_SHARED_NAMESPACE,
+            key,
+            create_file_data(file_path.read_text(encoding="utf-8")),
+        )
+
+
+async def main() -> None:
+    store = InMemoryStore()
+    await seed_skill_store(store)
+
+    client = SandboxClient()
+    ls_sandbox = client.create_sandbox()
+    sandbox_backend = LangSmithSandbox(sandbox=ls_sandbox)
+
+    backend = CompositeBackend(
+        default=sandbox_backend,
+        routes={
+            "/skills/": StoreBackend(
+                store=store,
+                namespace=lambda _rt: SKILLS_SHARED_NAMESPACE,
+            ),
+        },
+    )
+
+    try:
+        agent = create_deep_agent(
+            model="openrouter:z-ai/glm-5.2",
+            backend=backend,
+            skills=["/skills/"],
+            store=store,
+            middleware=[SkillSandboxSyncMiddleware(backend)],
+        )
+
+    finally:
+        client.delete_sandbox(ls_sandbox.name)
+
+
+if __name__ == "__main__":
+    asyncio.run(main())
+```
+
+```python Fireworks theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+import asyncio
+from pathlib import Path
+from typing import Any
+
+from deepagents import create_deep_agent
+from deepagents.backends import CompositeBackend, StoreBackend
+from deepagents.backends.langsmith import LangSmithSandbox
+from deepagents.backends.utils import create_file_data
+from langchain.agents.middleware import AgentMiddleware, AgentState
+
+from langgraph.runtime import Runtime
+from langgraph.store.memory import InMemoryStore
+from langsmith.sandbox import SandboxClient
+
+# Identical skill bundles for every user: one shared store namespace.
+SKILLS_SHARED_NAMESPACE = ("skills", "builtin")
+
+
+class SkillSandboxSyncMiddleware(AgentMiddleware[AgentState, Any, Any]):
+    """Copy shared skill files from the store into the sandbox before each agent run."""
+
+    def __init__(self, backend: CompositeBackend) -> None:
+        super().__init__()
+        self.backend = backend
+
+    async def abefore_agent(self, state: AgentState, runtime: Runtime[Any]) -> None:
+        store = runtime.store
+
+        files: list[tuple[str, bytes]] = []
+        for item in await store.asearch(SKILLS_SHARED_NAMESPACE):
+            key = str(item.key)
+            if ".." in key or any(c in key for c in ("*", "?")):
+                msg = f"Invalid key: {key}"
+                raise ValueError(msg)
+            normalized = key if key.startswith("/") else f"/{key}"
+            # CompositeBackend routes paths and batches uploads to the right backend.
+            files.append((f"/skills{normalized}", item.value["content"].encode()))
+
+        if files:
+            await self.backend.aupload_files(files)
+
+
+async def seed_skill_store(store: InMemoryStore) -> None:
+    """Load canonical skill files from disk into the shared store namespace (run once at deploy).
+    You can retrieve skills from any source (local filesystem, remote URL, etc.).
+    """
+    skills_dir = Path(__file__).resolve().parent / "skills"
+    for file_path in sorted(p for p in skills_dir.rglob("*") if p.is_file()):
+        rel = file_path.relative_to(skills_dir).as_posix()
+        key = f"/{rel}"
+        await store.aput(
+            SKILLS_SHARED_NAMESPACE,
+            key,
+            create_file_data(file_path.read_text(encoding="utf-8")),
+        )
+
+
+async def main() -> None:
+    store = InMemoryStore()
+    await seed_skill_store(store)
+
+    client = SandboxClient()
+    ls_sandbox = client.create_sandbox()
+    sandbox_backend = LangSmithSandbox(sandbox=ls_sandbox)
+
+    backend = CompositeBackend(
+        default=sandbox_backend,
+        routes={
+            "/skills/": StoreBackend(
+                store=store,
+                namespace=lambda _rt: SKILLS_SHARED_NAMESPACE,
+            ),
+        },
+    )
+
+    try:
+        agent = create_deep_agent(
+            model="fireworks:accounts/fireworks/models/glm-5p2",
+            backend=backend,
+            skills=["/skills/"],
+            store=store,
+            middleware=[SkillSandboxSyncMiddleware(backend)],
+        )
+
+    finally:
+        client.delete_sandbox(ls_sandbox.name)
+
+
+if __name__ == "__main__":
+    asyncio.run(main())
+```
+
+```python Baseten theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+import asyncio
+from pathlib import Path
+from typing import Any
+
+from deepagents import create_deep_agent
+from deepagents.backends import CompositeBackend, StoreBackend
+from deepagents.backends.langsmith import LangSmithSandbox
+from deepagents.backends.utils import create_file_data
+from langchain.agents.middleware import AgentMiddleware, AgentState
+
+from langgraph.runtime import Runtime
+from langgraph.store.memory import InMemoryStore
+from langsmith.sandbox import SandboxClient
+
+# Identical skill bundles for every user: one shared store namespace.
+SKILLS_SHARED_NAMESPACE = ("skills", "builtin")
+
+
+class SkillSandboxSyncMiddleware(AgentMiddleware[AgentState, Any, Any]):
+    """Copy shared skill files from the store into the sandbox before each agent run."""
+
+    def __init__(self, backend: CompositeBackend) -> None:
+        super().__init__()
+        self.backend = backend
+
+    async def abefore_agent(self, state: AgentState, runtime: Runtime[Any]) -> None:
+        store = runtime.store
+
+        files: list[tuple[str, bytes]] = []
+        for item in await store.asearch(SKILLS_SHARED_NAMESPACE):
+            key = str(item.key)
+            if ".." in key or any(c in key for c in ("*", "?")):
+                msg = f"Invalid key: {key}"
+                raise ValueError(msg)
+            normalized = key if key.startswith("/") else f"/{key}"
+            # CompositeBackend routes paths and batches uploads to the right backend.
+            files.append((f"/skills{normalized}", item.value["content"].encode()))
+
+        if files:
+            await self.backend.aupload_files(files)
+
+
+async def seed_skill_store(store: InMemoryStore) -> None:
+    """Load canonical skill files from disk into the shared store namespace (run once at deploy).
+    You can retrieve skills from any source (local filesystem, remote URL, etc.).
+    """
+    skills_dir = Path(__file__).resolve().parent / "skills"
+    for file_path in sorted(p for p in skills_dir.rglob("*") if p.is_file()):
+        rel = file_path.relative_to(skills_dir).as_posix()
+        key = f"/{rel}"
+        await store.aput(
+            SKILLS_SHARED_NAMESPACE,
+            key,
+            create_file_data(file_path.read_text(encoding="utf-8")),
+        )
+
+
+async def main() -> None:
+    store = InMemoryStore()
+    await seed_skill_store(store)
+
+    client = SandboxClient()
+    ls_sandbox = client.create_sandbox()
+    sandbox_backend = LangSmithSandbox(sandbox=ls_sandbox)
+
+    backend = CompositeBackend(
+        default=sandbox_backend,
+        routes={
+            "/skills/": StoreBackend(
+                store=store,
+                namespace=lambda _rt: SKILLS_SHARED_NAMESPACE,
+            ),
+        },
+    )
+
+    try:
+        agent = create_deep_agent(
+            model="baseten:zai-org/GLM-5.2",
+            backend=backend,
+            skills=["/skills/"],
+            store=store,
+            middleware=[SkillSandboxSyncMiddleware(backend)],
+        )
+
+    finally:
+        client.delete_sandbox(ls_sandbox.name)
+
+
+if __name__ == "__main__":
+    asyncio.run(main())
+```
+
+```python Ollama theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+import asyncio
+from pathlib import Path
+from typing import Any
+
+from deepagents import create_deep_agent
+from deepagents.backends import CompositeBackend, StoreBackend
+from deepagents.backends.langsmith import LangSmithSandbox
+from deepagents.backends.utils import create_file_data
+from langchain.agents.middleware import AgentMiddleware, AgentState
+
+from langgraph.runtime import Runtime
+from langgraph.store.memory import InMemoryStore
+from langsmith.sandbox import SandboxClient
+
+# Identical skill bundles for every user: one shared store namespace.
+SKILLS_SHARED_NAMESPACE = ("skills", "builtin")
+
+
+class SkillSandboxSyncMiddleware(AgentMiddleware[AgentState, Any, Any]):
+    """Copy shared skill files from the store into the sandbox before each agent run."""
+
+    def __init__(self, backend: CompositeBackend) -> None:
+        super().__init__()
+        self.backend = backend
+
+    async def abefore_agent(self, state: AgentState, runtime: Runtime[Any]) -> None:
+        store = runtime.store
+
+        files: list[tuple[str, bytes]] = []
+        for item in await store.asearch(SKILLS_SHARED_NAMESPACE):
+            key = str(item.key)
+            if ".." in key or any(c in key for c in ("*", "?")):
+                msg = f"Invalid key: {key}"
+                raise ValueError(msg)
+            normalized = key if key.startswith("/") else f"/{key}"
+            # CompositeBackend routes paths and batches uploads to the right backend.
+            files.append((f"/skills{normalized}", item.value["content"].encode()))
+
+        if files:
+            await self.backend.aupload_files(files)
+
+
+async def seed_skill_store(store: InMemoryStore) -> None:
+    """Load canonical skill files from disk into the shared store namespace (run once at deploy).
+    You can retrieve skills from any source (local filesystem, remote URL, etc.).
+    """
+    skills_dir = Path(__file__).resolve().parent / "skills"
+    for file_path in sorted(p for p in skills_dir.rglob("*") if p.is_file()):
+        rel = file_path.relative_to(skills_dir).as_posix()
+        key = f"/{rel}"
+        await store.aput(
+            SKILLS_SHARED_NAMESPACE,
+            key,
+            create_file_data(file_path.read_text(encoding="utf-8")),
+        )
+
+
+async def main() -> None:
+    store = InMemoryStore()
+    await seed_skill_store(store)
+
+    client = SandboxClient()
+    ls_sandbox = client.create_sandbox()
+    sandbox_backend = LangSmithSandbox(sandbox=ls_sandbox)
+
+    backend = CompositeBackend(
+        default=sandbox_backend,
+        routes={
+            "/skills/": StoreBackend(
+                store=store,
+                namespace=lambda _rt: SKILLS_SHARED_NAMESPACE,
+            ),
+        },
+    )
+
+    try:
+        agent = create_deep_agent(
+            model="ollama:north-mini-code-1.0",
+            backend=backend,
+            skills=["/skills/"],
+            store=store,
+            middleware=[SkillSandboxSyncMiddleware(backend)],
+        )
+
+    finally:
+        client.delete_sandbox(ls_sandbox.name)
+
+
+if __name__ == "__main__":
+    asyncio.run(main())
+```
+
+> **[View example trace](https://smith.langchain.com/public/ce7b8594-b310-4ab0-9edb-43ab9b7d9857/r)**
+>
+> 为此示例打开公共 LangSmith 运行。
 
 有关在执行前播种技能和记忆并在执行后同步回来的完整示例，请参阅[syncing skills and memories with custom middleware](/oss/python/deepagents/going-to-production#example-syncing-skills-and-memories-with-custom-middleware)。
 
@@ -2042,7 +2026,7 @@ Search arXiv for papers matching the user's query.
 
 **解决方案**：
 
-1. **让描述更具体。** 代理在[discovery](#how-skills-work)单独从[⟦T216⟧](#frontmatter-fields)字段中选择技能。包括技能的用途、何时使用它以及代理可以匹配的关键字：
+1. **让描述更具体。** 代理在[discovery](#how-skills-work)单独从[⟦T217⟧](#frontmatter-fields)字段中选择技能。包括技能的用途、何时使用它以及代理可以匹配的关键字：
 
    ```yaml theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
    # Good
@@ -2068,9 +2052,9 @@ Search arXiv for papers matching the user's query.
 
 2. **检查路径级别。** `skills` 中的每个条目都是包含技能目录的源目录。通过技能目录本身不会发现任何内容，也不会引发任何错误，因为源目录存在，并且仅在其子目录中搜索`SKILL.md`。
 
-3. **验证`SKILL.md` [frontmatter](#frontmatter-fields)。** [⟦T229⟧](#frontmatter-fields) 必须与父目录名称匹配并遵循[Agent Skills specification](https://agentskills.io/specification)。使用[⟦T230⟧ validation tool](https://github.com/agentskills/agentskills/tree/main/skills-ref)检查格式。
+3. **验证`SKILL.md` [frontmatter](#frontmatter-fields)。** [⟦T230⟧](#frontmatter-fields) 必须与父目录名称匹配并遵循[Agent Skills specification](https://agentskills.io/specification)。使用[⟦T231⟧ validation tool](https://github.com/agentskills/agentskills/tree/main/skills-ref)检查格式。
 
-4. **检查文件大小。** Deep Agents 在发现过程中跳过 `SKILL.md` 文件超过 10 MB。
+4. **检查文件大小。** Deep Agents 在发现过程中跳过超过 10 MB 的 `SKILL.md` 文件。
 
 5. **分层查看来源。** 当多个来源中出现相同的技能名称时，[last source wins](#usage)。较晚的路径中的旧技能或空技能可能会覆盖您期望的技能。
 
@@ -2096,7 +2080,7 @@ Search arXiv for papers matching the user's query.
 
 **解决方案**：
 
-1. **检查坐席是否读取技能。** 技能工具仅在坐席读取`SKILL.md`后出现，并在摘要掉落时消失。参见[Add tools to skills](#add-tools-to-skills)。
+1. **检查座席是否读取了技能。** 技能工具仅在座席读取`SKILL.md`后出现，并在摘要掉落时消失。参见[Add tools to skills](#add-tools-to-skills)。
 
 2. **将`include_tools`写为字符串。**用空格分隔名称。 YAML 列表永远不会与工具匹配。
 
@@ -2124,7 +2108,7 @@ Search arXiv for papers matching the user's query.
 | **分层** |用户，然后项目（最后获胜）|用户，然后项目（合并）|在代理创建时定义 |
 | **何时使用** |指令是特定于任务的并且可能很大 |上下文始终相关（项目惯例、偏好）|代理需要编程操作，或者无权访问文件系统 |
 
-这些是指导方针，而不是硬性界限。在实践中，技能和记忆力是有一定范围的。代理可以在工作时更新自己的技能，随着时间的推移捕捉新的程序并完善指令。通过这种方式，技能可以作为渐进式公开记忆的一种形式发挥作用：代理根据需要构建和检索上下文，而不是在每个提示上加载。
+这些是指导方针，而不是硬性界限。在实践中，技能和记忆是有一定范围的。代理可以在工作时更新自己的技能，随着时间的推移捕捉新的程序并完善指令。通过这种方式，技能可以作为渐进式公开记忆的一种形式发挥作用：代理根据需要构建和检索上下文，而不是在每个提示上加载。
 
 ### Frontmatter 字段
 
@@ -2154,20 +2138,14 @@ allowed-tools: fetch_url
 Instructions for the agent go here. See [Usage](#usage) for a complete example of skill instructions.
 ```
 
-<Warning>
-  有关详细约束和验证规则，请参阅完整的[Agent Skills specification](https://agentskills.io/specification)。在 Deep Agents 中，`SKILL.md` 文件必须小于 10 MB。超过此限制的文件在技能加载期间将被跳过。
-</Warning>
+> [!警告]
+>
+> 请参阅完整的[Agent Skills specification](https://agentskills.io/specification)，了解详细的约束和验证规则。在 Deep Agents 中，`SKILL.md` 文件必须小于 10 MB。超过此限制的文件在技能加载期间将被跳过。
 
 有关更多示例技能，请参阅[Deep Agents example skills](https://github.com/langchain-ai/deepagents/tree/main/libs/code/examples/skills)。
 
 ***
 
-<div>
-  <Callout icon="terminal-2">
-    [Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
-  </Callout>
+[Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
 
-  <Callout icon="edit">
-    [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/oss/deepagents/skills.mdx) 或 [file an issue](https://github.com/langchain-ai/docs/issues/new/choose)。
-  </Callout>
-</div>
+[Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/oss/deepagents/skills.mdx) 或 [file an issue](https://github.com/langchain-ai/docs/issues/new/choose)。

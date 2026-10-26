@@ -6,25 +6,30 @@
 
 使用 LangChain 与文本分割器集成。
 
-<CodeGroup>
-  ```bash pip theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  pip install -U langchain-text-splitters
-  ```
+```bash pip theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+pip install -U langchain-text-splitters
+```
 
-  ```bash uv theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  uv add langchain-text-splitters
-  ```
-</CodeGroup>
+```bash uv theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+uv add langchain-text-splitters
+```
 
 **文本拆分器** 将大型文档分解为较小的块，这些块可单独检索并适合模型上下文窗口限制。
 
-分割文档的策略有多种，每种策略都有自己的优点。
+有多种分割文档的策略，每种策略都有自己的优点。
 
-<PythonIntegrationComponentMap />
+集成组件
+箭头显示了典型的检索流程。突出显示的组件是本页所涵盖的组件。
 
-<Tip>
-  对于大多数用例，从[⟦T4⟧](/oss/python/integrations/splitters/recursive_text_splitter)开始。它在保持上下文完整和管理块大小之间提供了坚实的平衡。此默认策略开箱即用，效果很好，只有在需要针对特定​​应用程序微调性能时才应考虑调整它。
-</Tip>
+### 典型检索流程
+
+### 代理能力
+
+### 执行和状态
+
+> [!提示]
+>
+> 对于大多数用例，从 [⟦T4⟧](/oss/python/integrations/splitters/recursive_text_splitter) 开始。它在保持上下文完整和管理块大小之间提供了坚实的平衡。此默认策略开箱即用，效果很好，只有在需要针对特定​​应用程序微调性能时才应考虑调整它。
 
 ## 基于文本结构
 
@@ -74,7 +79,7 @@ texts = text_splitter.split_text(document)
 * [Split by tokens](/oss/python/integrations/splitters/split_by_token)
 * [Split by characters](/oss/python/integrations/splitters/character_text_splitter)
 
-## 基于文档结构有些文档具有固有的结构，例如 HTML、Markdown 或 JSON 文件。在这些情况下，根据文档结构分割文档是有益的，因为它通常会自然地对语义相关的文本进行分组。基于结构的拆分的主要优点：
+## 基于文档结构有些文档具有固有的结构，例如 HTML、Markdown 或 JSON 文件。在这些情况下，根据文档结构拆分文档是有益的，因为它通常会自然地对语义相关的文本进行分组。基于结构的拆分的主要优点：
 
 * 保留文档的逻辑组织
 * 维护每个块内的上下文
@@ -96,12 +101,6 @@ texts = text_splitter.split_text(document)
 
 ***
 
-<div>
-  <Callout icon="terminal-2">
-    [Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
-  </Callout>
+[Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
 
-  <Callout icon="edit">
-    [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/oss/integrations/splitters/index.mdx) 或 [file an issue](https://github.com/langchain-ai/docs/issues/new/choose)。
-  </Callout>
-</div>
+[Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/oss/integrations/splitters/index.mdx) 或 [file an issue](https://github.com/langchain-ai/docs/issues/new/choose)。

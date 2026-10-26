@@ -8,15 +8,15 @@
 
 使用声明性权限规则控制代理可以读取或写入哪些文件和目录。将规则列表传递给`permissions=`，代理的内置文件系统工具会尊重它们。
 
-<Note>
-  权限需要`deepagents>=0.5.2`。
-</Note>
+> [!注意]
+>
+> 权限需要`deepagents>=0.5.2`。
 
 权限仅适用于内置文件系统工具（`ls`、`read_file`、`glob`、`grep`、`write_file`、`edit_file`、`delete`）。不包括访问文件系统的自定义工具和 MCP 工具。权限也不适用于[sandbox backends](/oss/python/deepagents/sandboxes)，它支持通过`execute`工具执行任意命令。
 
-<Tip>
-  当您需要在内置文件系统工具上使用**基于路径的允许/拒绝规则**时，请使用`permissions`。当您需要自定义验证逻辑（速率限制、审核日志记录、内容检查）或需要控制自定义工具时，请使用[backend policy hooks](/oss/python/deepagents/backends#add-policy-hooks)。
-</Tip>
+> [!提示]
+>
+> 当您需要在内置文件系统工具上使用**基于路径的允许/拒绝规则**时，请使用`permissions`。当您需要自定义验证逻辑（速率限制、审核日志记录、内容检查）或需要控制自定义工具时，请使用[backend policy hooks](/oss/python/deepagents/backends#add-policy-hooks)。
 
 ## 基本用法
 
@@ -52,9 +52,9 @@ agent = create_deep_agent(
 
 ## 暂停以供人工批准
 
-<Note>
-  `"interrupt"`模式需要`deepagents>=0.6.8`。
-</Note>
+> [!注意]
+>
+> `"interrupt"` 模式需要`deepagents>=0.6.8`。
 
 将 `mode="interrupt"` 设置为暂停以供人工批准，而不是直接允许或拒绝匹配操作。当代理在与中断模式规则匹配的路径上调用内置写入工具（`write_file`、`edit_file`、`delete`）时，`create_deep_agent` 会引发人机交互中断而不是运行该工具，并且审阅者可以批准、编辑或拒绝该调用。
 
@@ -77,15 +77,15 @@ agent = create_deep_agent(
 )
 ```中断模式规则会自动连接到代理的人机循环中间件中，并与您传递的任何`interrupt_on`合并，因此您可以像工具调用中断一样处理和恢复它们。请参阅[Human-in-the-loop](/oss/python/deepagents/human-in-the-loop)了解恢复流程。
 
-<Note>
-  删除目录是全有或全无的：`delete`检查目标和每个后代路径的`write`权限，如果其中任何一个被拒绝，则拒绝整个操作，而不是删除树的一部分。 `delete` 将同样的保守检查应用于现有的空目录，因为它仍然是一个目录而不是已确认的叶目标。
+> [!注意]
+>
+> 删除目录是全有或全无：`delete` 检查目标和每个后代路径上的 `write` 权限，如果其中任何一个被拒绝，则拒绝整个操作，而不是删除树的一部分。 `delete` 将同样的保守检查应用于现有的空目录，因为它仍然是一个目录而不是已确认的叶目标。
+>
+> 删除普通文件是一种完全匹配的情况：`delete` 以与 `write_file` 和 `edit_file` 相同的方式解析目标，使用首次匹配获胜评估，因此较早、较窄的 `allow` 规则胜过后来的包罗万象的 `deny`。这种精确匹配行为需要`deepagents>=0.7.3`。
 
-  相反，删除普通文件是完全匹配的情况：`delete`以与`write_file`和`edit_file`相同的方式解析目标，使用首次匹配获胜评估，因此较早、较窄的`allow`规则胜过后来的包罗万象的`deny`。这种精确匹配行为需要`deepagents>=0.7.3`。
-</Note>
-
-<Tip>
-  使用文字前导段锚定中断模式（例如，`/secrets/**` 或 `/projects/*/secrets/**`）。当批量工具（目录上的`ls`、`glob`、`grep`和`delete`）的搜索子树可能与规则的锚定前缀重叠时，会触发中断，因此像`/**/secrets`这样的完全非锚定模式会保守地过度触发。
-</Tip>
+> [!提示]
+>
+> 使用文字前导段锚定中断模式（例如，`/secrets/**` 或 `/projects/*/secrets/**`）。当批量工具（目录上的`ls`、`glob`、`grep`和`delete`）的搜索子树可能与规则的锚定前缀重叠时，会触发中断，因此像`/**/secrets`这样的完全非锚定模式会保守地过度触发。
 
 ## 示例### 隔离到工作区目录
 
@@ -338,12 +338,6 @@ except NotImplementedError:
 
 ***
 
-<div>
-  <Callout icon="terminal-2">
-    [Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
-  </Callout>
+[Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
 
-  <Callout icon="edit">
-    [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/oss/deepagents/permissions.mdx) 或 [file an issue](https://github.com/langchain-ai/docs/issues/new/choose)。
-  </Callout>
-</div>
+[Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/oss/deepagents/permissions.mdx) 或 [file an issue](https://github.com/langchain-ai/docs/issues/new/choose)。

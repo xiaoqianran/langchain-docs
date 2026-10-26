@@ -32,19 +32,19 @@ result = graph.invoke(
     {"messages": [{"role": "user", "content": "Hi, my name is Bob."}]},
     {"configurable": {"thread_id": "thread-1"}},
 )
-```<Info>
-  **代理服务器自动处理持久性**
-  使用[Agent Server](/langsmith/agent-server)时，您不需要手动实现或配置检查点或存储。服务器在幕后处理持久性基础设施。
-</Info>
+```> [!注意]
+>
+> **代理服务器自动处理持久性**
+> 使用[Agent Server](/langsmith/agent-server)时，您不需要手动实现或配置检查点或存储。服务器在幕后处理持久性基础设施。
 
 ## 检查点与存储
 
 | |检查点 |商店 |
 | - | - | - |
 |坚持 |图状态快照 |应用程序定义的键值数据 |
-|范围 |单线程 |跨线程|
+|范围 |单线程 |跨线程 |
 |内存类型|短期、线程范围内存 |长期、跨线程内存|
-|用于|对话连续性、人机交互、时间旅行和容错 |用户偏好、事实和共享知识 |
+|用于 |对话连续性、人机交互、时间旅行和容错 |用户偏好、事实和共享知识 |
 |访问模式|在图形配置中传递 `thread_id` |从节点或应用程序代码读取和写入项目 |
 |完整指南 | [Checkpointers](/oss/python/langgraph/checkpointers) | [Stores](/oss/python/langgraph/stores) |
 
@@ -95,12 +95,6 @@ checkpointer.setup()  # Creates tables with indexes
 
 ***
 
-<div>
-  <Callout icon="terminal-2">
-    [Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
-  </Callout>
+[Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
 
-  <Callout icon="edit">
-    [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/oss/langgraph/persistence.mdx) 或 [file an issue](https://github.com/langchain-ai/docs/issues/new/choose)。
-  </Callout>
-</div>
+[Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/oss/langgraph/persistence.mdx) 或 [file an issue](https://github.com/langchain-ai/docs/issues/new/choose)。

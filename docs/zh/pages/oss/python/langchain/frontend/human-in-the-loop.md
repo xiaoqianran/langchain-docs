@@ -13,17 +13,15 @@
 用户的待处理操作，只有在明确批准后才能恢复。
 
 因为 HITL 是建立在LangGraph中断和检查点之上的，所以暂停是
-耐用。用户可以刷新页面，审阅者可以从不同的位置回答
+durable.用户可以刷新页面，审阅者可以从不同的位置回答
 组件，代理仍然从执行的确切位置恢复
 停止而不是重播整个运行。
 
-<Note>
-  该页面使用默认的批处理中断模式。对于每次调用中断 (`interrupt_mode="per_call"`)，请参阅[Pause once per tool call](/oss/python/langchain/human-in-the-loop#pause-once-per-tool-call)。
-</Note>
+> [!注意]
+>
+> 该页面使用默认的批量中断模式。对于每次调用中断 (`interrupt_mode="per_call"`)，请参阅[Pause once per tool call](/oss/python/langchain/human-in-the-loop#pause-once-per-tool-call)。
 
-<PatternEmbed />
-
-## 中断如何工作
+## How interrupts work
 
 LangGraph 代理支持**中断**，代理在其中明确的暂停点
 将控制权交还给客户端。当代理遇到中断时：1. 代理停止执行并发出中断负载
@@ -46,45 +44,76 @@ LangGraph 代理支持**中断**，代理在其中明确的暂停点
 `stream.submit(null, { command: { resume: response } })` 用户之后
 批准、拒绝或编辑操作。
 
-<Info>
-  代码示例使用 `useStream<typeof myAgent>` 来实现类型安全的流状态。请参阅 [Python](/oss/python/langchain/frontend/overview#type-inference) 或 [JavaScript](/oss/javascript/langchain/frontend/overview#type-inference) 后端的类型推断。
-</Info>
+> [!注意]
+>
+> 代码示例使用 `useStream<typeof myAgent>` 来实现类型安全的流状态。请参阅 [Python](/oss/python/langchain/frontend/overview#type-inference) 或 [JavaScript](/oss/javascript/langchain/frontend/overview#type-inference) 后端的类型推断。
 
-<CodeGroup>
-  ```tsx React theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  import { useStream } from "@langchain/react";
+```tsx React theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+import { useStream } from "@langchain/react";
 
-  const AGENT_URL = "http://localhost:2024";
+const AGENT_URL = "http://localhost:2024";
 
-  export function Chat() {
-    const stream = useStream<typeof myAgent>({
-      apiUrl: AGENT_URL,
-      assistantId: "human_in_the_loop",
-    });
+export function Chat() {
+  const stream = useStream<typeof myAgent>({
+    apiUrl: AGENT_URL,
+    assistantId: "human_in_the_loop",
+  });
 
-    const interrupt = stream.interrupt;
+  const interrupt = stream.interrupt;
 
-    return (
-      <div>
-        {stream.messages.map((msg) => (
-          <Message key={msg.id} message={msg} />
-        ))}
-        {interrupt && (
-          <ApprovalCard
-            interrupt={interrupt}
-            onRespond={(response) =>
-              stream.submit(null, { command: { resume: response } })
-            }
-          />
-        )}
-      </div>
-    );
-  }
-  ```
+  return (
+    <div>
+      {stream.messages.map((msg) => (
+        <Message key={msg.id} message={msg} />
+      ))}
+      {interrupt && (
+        <ApprovalCard
+          interrupt={interrupt}
+          onRespond={(response) =>
+            stream.submit(null, { command: { resume: response } })
+          }
+        />
+      )}
+    </div>
+  );
+}
+```
 
-  ```vue Vue theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  <script setup lang="ts">
-  import { useStream } from "@langchain/vue";
+```vue Vue theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+<script setup lang="ts">
+import { useStream } from "@langchain/vue";
+
+const AGENT_URL = "http://localhost:2024";
+
+const stream = useStream<typeof myAgent>({
+  apiUrl: AGENT_URL,
+  assistantId: "human_in_the_loop",
+});
+
+function handleRespond(response: HITLResponse) {
+  stream.submit(null, { command: { resume: response } });
+}
+</script>
+
+<template>
+  <div>
+    <Message
+      v-for="msg in stream.messages.value"
+      :key="msg.id"
+      :message="msg"
+    />
+    <ApprovalCard
+      v-if="stream.interrupt.value"
+      :interrupt="stream.interrupt.value"
+      @respond="handleRespond"
+    />
+  </div>
+</template>
+```
+
+```svelte Svelte theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+<script lang="ts">
+  import { useStream } from "@langchain/svelte";
 
   const AGENT_URL = "http://localhost:2024";
 
@@ -96,84 +125,51 @@ LangGraph 代理支持**中断**，代理在其中明确的暂停点
   function handleRespond(response: HITLResponse) {
     stream.submit(null, { command: { resume: response } });
   }
-  </script>
+</script>
 
-  <template>
-    <div>
-      <Message
-        v-for="msg in stream.messages.value"
-        :key="msg.id"
-        :message="msg"
-      />
-      <ApprovalCard
-        v-if="stream.interrupt.value"
-        :interrupt="stream.interrupt.value"
-        @respond="handleRespond"
-      />
-    </div>
-  </template>
-  ```
+<div>
+  {#each stream.messages as msg (msg.id)}
+    <Message message={msg} />
+  {/each}
 
-  ```svelte Svelte theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  <script lang="ts">
-    import { useStream } from "@langchain/svelte";
+  {#if stream.interrupt}
+    <ApprovalCard interrupt={stream.interrupt} onRespond={handleRespond} />
+  {/if}
+</div>
+```
 
-    const AGENT_URL = "http://localhost:2024";
+```ts Angular theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+import { Component } from "@angular/core";
+import { injectStream } from "@langchain/angular";
+import type { HITLResponse } from "langchain";
 
-    const stream = useStream<typeof myAgent>({
-      apiUrl: AGENT_URL,
-      assistantId: "human_in_the_loop",
-    });
+const AGENT_URL = "http://localhost:2024";
 
-    function handleRespond(response: HITLResponse) {
-      stream.submit(null, { command: { resume: response } });
+@Component({
+  selector: "app-chat",
+  template: `
+    @for (msg of stream.messages(); track msg.id) {
+      <app-message [message]="msg" />
     }
-  </script>
-
-  <div>
-    {#each stream.messages as msg (msg.id)}
-      <Message message={msg} />
-    {/each}
-
-    {#if stream.interrupt}
-      <ApprovalCard interrupt={stream.interrupt} onRespond={handleRespond} />
-    {/if}
-  </div>
-  ```
-
-  ```ts Angular theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  import { Component } from "@angular/core";
-  import { injectStream } from "@langchain/angular";
-  import type { HITLResponse } from "langchain";
-
-  const AGENT_URL = "http://localhost:2024";
-
-  @Component({
-    selector: "app-chat",
-    template: `
-      @for (msg of stream.messages(); track msg.id) {
-        <app-message [message]="msg" />
-      }
-      @if (stream.interrupt()) {
-        <app-approval-card
-          [interrupt]="stream.interrupt()"
-          (respond)="handleRespond($event)"
-        />
-      }
-    `,
-  })
-  export class ChatComponent {
-    stream = injectStream<typeof myAgent>({
-      apiUrl: AGENT_URL,
-      assistantId: "human_in_the_loop",
-    });
-
-    handleRespond(response: HITLResponse) {
-      this.stream.submit(null, { command: { resume: response } });
+    @if (stream.interrupt()) {
+      <app-approval-card
+        [interrupt]="stream.interrupt()"
+        (respond)="handleRespond($event)"
+      />
     }
+  `,
+})
+export class ChatComponent {
+  stream = injectStream<typeof myAgent>({
+    apiUrl: AGENT_URL,
+    assistantId: "human_in_the_loop",
+  });
+
+  handleRespond(response: HITLResponse) {
+    this.stream.submit(null, { command: { resume: response } });
   }
-  ```
-</CodeGroup>
+}
+```
 
 ## 中断负载
 
@@ -237,14 +233,14 @@ const response: HITLResponse = {
 stream.submit(null, { command: { resume: response } });
 ```
 
-<Note>
-  当操作被拒绝时，代理会收到拒绝原因并可以
-  决定如何进行。如果省略 `message`，则后端使用默认值
-  告诉模型该工具未执行并且不要重试的消息
-  除非用户要求，否则调用相同的工具。对于副作用工具，传递一个明确的
-  告诉代理是否放弃操作的消息，询问后续操作
-  问题，或者尝试更安全的替代方案。
-</Note>
+> [!注意]
+>
+> 当操作被拒绝时，代理会收到拒绝原因并可以
+> 决定如何进行。如果省略 `message`，则后端使用默认值
+> 消息告诉模型该工具未执行并且不要重试
+> 除非用户要求，否则调用相同的工具。对于副作用工具，传递一个明确的
+> 告诉代理是否放弃操作，询问后续操作的消息
+> 提问，或者尝试更安全的替代方案。
 
 ### 编辑
 
@@ -280,9 +276,9 @@ const response: HITLResponse = {
 stream.submit(null, { command: { resume: response } });
 ```
 
-<Note>
-  当该工具有意用作人工输入的占位符时，请使用`respond`，例如提示代理从用户收集信息的`ask_user`工具。不要使用 `respond` 拒绝建议的操作，因为它会作为成功的工具结果返回到模型。
-</Note>
+> [!注意]
+>
+> 当该工具有意充当人工输入的占位符时，请使用 `respond`，例如提示代理从用户收集信息的 `ask_user` 工具。不要使用 `respond` 拒绝建议的操作，因为它会作为成功的工具结果返回到模型。
 
 ## 构建批准卡
 
@@ -337,11 +333,11 @@ async function editOne(index: number, editedArgs: Record<string, unknown>) {
    * `{ type: "respond", message }`：人的消息直接作为工具结果返回，而不执行工具
 4. 当代理恢复流式传输时，`interrupt` 属性重置为 `null`
 
-<Tip>
-  您可以在一次代理运行中链接多个 HITL 检查点。例如，一个
-  代理可能会请求批准搜索，然后在发送电子邮件之前再次询问
-  与结果。每个中断都是独立处理的。
-</Tip>
+> [!提示]
+>
+> 您可以在单个代理运行中链接多个 HITL 检查点。例如，一个
+> 代理可能会请求批准搜索，然后在发送电子邮件之前再次询问
+> 与结果。每个中断都是独立处理的。
 
 ## 处理多个待处理的操作
 
@@ -399,8 +395,6 @@ function MultiActionReview({
 复制。为此，从工具内部升起 `interrupt()` 并让
 有效负载描述了 UI 应呈现的确切形式。每个工具都可以表面
 完全不同的界面。
-
-<PatternEmbed />
 
 ### 描述中断负载中的形式
 
@@ -561,11 +555,11 @@ function handleResolve(decision: ReviewDecision) {
 })}
 ```
 
-<Tip>
-  因为已解析的卡片存在于消息历史记录中，所以它在刷新后仍然存在
-  并且对于读取线程和人类决策的每个组件都是可见的
-  成为持久记录的一部分，而不仅仅是短暂的 UI 状态。
-</Tip>
+> [!提示]
+>
+> 因为已解析的卡片存在于消息历史记录中，所以它不会刷新
+> 并且对于读取线程和人类决策的每个组件都是可见的
+> 成为持久记录的一部分，而不仅仅是短暂的 UI 状态。
 
 ## 最佳实践实施 HITL 工作流程时请记住这些准则：
 
@@ -586,12 +580,6 @@ function handleResolve(decision: ReviewDecision) {
 
 ***
 
-<div>
-  <Callout icon="terminal-2">
-    [Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
-  </Callout>
+[Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
 
-  <Callout icon="edit">
-    [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/oss/langchain/frontend/human-in-the-loop.mdx) 或 [file an issue](https://github.com/langchain-ai/docs/issues/new/choose)。
-  </Callout>
-</div>
+[Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/oss/langchain/frontend/human-in-the-loop.mdx) 或 [file an issue](https://github.com/langchain-ai/docs/issues/new/choose)。

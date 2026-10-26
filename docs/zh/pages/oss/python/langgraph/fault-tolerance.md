@@ -6,7 +6,7 @@
 
 在 LangGraph 中配置每个节点的超时、重试和错误处理程序。
 
-When a node fails—from a slow external API, a transient network error, or an unhandled exception—LangGraph gives you three composable mechanisms to respond:
+当节点因缓慢的外部 API、瞬态网络错误或未处理的异常而发生故障时，LangGraph 为您提供三种可组合的响应机制：
 
 * [**Retries**](#retries)：根据异常类型和退避设置自动重新运行失败的尝试
 * [**Timeouts**](#timeouts)：限制单次尝试可以运行的时间
@@ -14,13 +14,13 @@ When a node fails—from a slow external API, a transient network error, or an u
 
 使用[**⟦T23⟧**](#graph-defaults)为所有节点配置一次这些机制，而不是在每次`add_node`调用时重复它们。
 
-These compose in a fixed order: when a node attempt raises any exception (including [⟦T25⟧](https://reference.langchain.com/python/langgraph/errors/NodeTimeoutError) from a timeout), the retry policy decides whether to retry.仅当重试次数耗尽后，错误处理程序才会运行。
+它们以固定的顺序组成：当节点尝试引发任何异常（包括超时导致的[⟦T25⟧](https://reference.langchain.com/python/langgraph/errors/NodeTimeoutError)）时，重试策略决定是否重试。仅当重试次数耗尽后，错误处理程序才会运行。
 
 要在超级步边界处干净地停止运行并稍后恢复，请参阅[Graceful shutdown](#graceful-shutdown)。
 
-<Note>
-  每个节点超时和节点级错误处理程序需要 `langgraph>=1.2`。
-</Note>
+> [!注意]
+>
+> 每节点超时和节点级错误处理程序需要 `langgraph>=1.2`。
 
 ```mermaid theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 %%{init:{'theme':'base','themeVariables':{'lineColor':'#40668D','primaryColor':'#E5F4FF','primaryTextColor':'#030710','primaryBorderColor':'#006DDD'}}}%%
@@ -132,7 +132,7 @@ builder.add_edge(START, "my_node")
 builder.add_edge("my_node", END)
 ````execution_info`公开以下字段：
 
-|属性 |类型 |描述 |
+|属性|类型 |描述 |
 | - | - | - |
 | `node_attempt` | `int` |当前尝试次数（1-索引）。第一次尝试时`1`，第一次重试时`2`，等等 |
 | `node_first_attempt_time` | `float \| None` |第一次尝试开始时的 Unix 时间戳。重试后保持不变。 |
@@ -145,9 +145,9 @@ builder.add_edge("my_node", END)
 
 ## 超时
 
-<Note>
-  需要`langgraph>=1.2`。
-</Note>
+> [!注意]
+>
+> 需要`langgraph>=1.2`。
 
 [⟦T89⟧](https://reference.langchain.com/python/langgraph/graph/state/StateGraph/add_node) 上的 `timeout=` 参数限制了单个节点尝试可以运行的时间。传递一个数字（秒）、`timedelta`或[⟦T91⟧](https://reference.langchain.com/python/langgraph/types/TimeoutPolicy)以实现单独的运行和空闲限制：
 
@@ -167,9 +167,9 @@ builder.add_node(
 )
 ```
 
-<Warning>
-  节点超时仅适用于**异步**节点。具有 `timeout` 的同步节点在编译时会被拒绝。要包装阻塞 I/O，请在异步节点内使用 `asyncio.to_thread`。
-</Warning>
+> [!警告]
+>
+> 节点超时仅适用于**异步**节点。具有 `timeout` 的同步节点在编译时会被拒绝。要包装阻塞 I/O，请在异步节点内使用 `asyncio.to_thread`。
 
 ### 运行超时
 
@@ -254,7 +254,7 @@ builder.add_edge("long_running_node", END)
 
 当超时触发时，LangGraph会引发[⟦T106⟧](https://reference.langchain.com/python/langgraph/errors/NodeTimeoutError)，并带有关于哪个限制被击中的结构化上下文：
 
-|属性 |类型 |描述 |
+|属性|类型 |描述 |
 | - | - | - |
 | `node` | `str` |执行超时的节点名称。 |
 | `elapsed` | `float` |超时触发前已过了几秒。 |
@@ -291,9 +291,9 @@ def fan_out(state: OverallState):
 
 ## 错误处理
 
-<Note>
-  需要`langgraph>=1.2`。
-</Note>
+> [!注意]
+>
+> 需要`langgraph>=1.2`。
 
 错误处理程序在节点发生故障并且所有重试都用尽后运行。它接收当前状态并可以更新它或使用[⟦T124⟧](https://reference.langchain.com/python/langgraph/types/Command)路由到不同的节点。这对于您想要正常恢复而不是中止整个图的补偿流（Saga 模式）非常有用。
 
@@ -350,7 +350,7 @@ def my_handler(state: State, error: NodeError) -> Command:
 
 [⟦T129⟧](https://reference.langchain.com/python/langgraph/errors/NodeError) 是一个具有两个字段的冻结数据类：
 
-|属性 |类型 |描述 |
+|属性|类型 |描述 |
 | - | - | - |
 | `node` | `str` |执行失败的节点名称。 |
 | `error` | `BaseException` |故障节点引发的异常。 |`error: NodeError` 参数是可选的。不需要失败上下文的处理程序可以使用更简单的签名，例如 `(state)` 或 `(state, runtime)`。
@@ -403,23 +403,23 @@ graph = (
 
 ### 恢复安全故障
 
-<Note>
-  故障来源有检查点。如果在节点失败之后但处理程序完成之前图被中断或进程崩溃，则当图从其检查点恢复时，处理程序会看到相同的`NodeError`上下文。
-</Note>
+> [!注意]
+>
+> 故障来源有检查点。如果在节点失败之后但处理程序完成之前图被中断或进程崩溃，则当图从其检查点恢复时，处理程序会看到相同的`NodeError`上下文。
 
 ### `interrupt()` 的行为
 
-<Warning>
-  在节点内部引发的`interrupt()`**不会**路由到错误处理程序。中断使用 `GraphBubbleUp` 机制来暂停人机循环工作流程的图形执行，绕过重试策略和错误处理程序。图表照常暂停。
-</Warning>
+> [!警告]
+>
+> 在节点内引发的`interrupt()` **不会**路由到错误处理程序。中断使用 `GraphBubbleUp` 机制来暂停人机循环工作流程的图形执行，绕过重试策略和错误处理程序。图表照常暂停。
 
 ### 子图失败如果节点包装子图并且子图引发未处理的异常，则该异常会显示到父节点。如果父节点有错误处理程序，则该处理程序会在 `error.error` 中触发子图的异常。
 
 ## 图表默认值
 
-<Note>
-  需要`langgraph>=1.2`。
-</Note>
+> [!注意]
+>
+> 需要`langgraph>=1.2`。
 
 不要在每个 `add_node` 调用上重复相同的 `retry_policy=`、`error_handler=`、`timeout=` 或 `cache_policy=`，而是使用 [⟦T153⟧](https://reference.langchain.com/python/langgraph/graph/state/StateGraph/set_node_defaults) 在一个位置配置图形范围的默认值：
 
@@ -534,7 +534,7 @@ def mark_process_failed(
 
 并非所有默认值都适用于所有节点类型。错误处理程序节点（通过`add_node(error_handler=...)`注册的节点）被排除在某些默认值之外，以防止不安全行为：
 
-| `set_node_defaults`参数|适用于常规节点 |适用于错误处理程序节点 |原因 |
+| `set_node_defaults`参数|适用于常规节点|适用于错误处理程序节点 |原因 |
 | - | - | - | - |
 | `retry_policy` | ✅ | ✅ |应对暂时性故障重试处理程序 |
 | `timeout` | ✅ | ✅ |卡住的处理程序应该像卡住的常规节点一样被取消 |
@@ -571,9 +571,9 @@ async def my_workflow(inputs: dict) -> str:
 
 协作关闭允许您在当前超级步骤完成后停止运行中的图形并保存可恢复的检查点。这对于处理 SIGTERM 信号或任何需要回收资源而不丢失工作的外部监控程序非常有用。
 
-<Note>
-  需要`langgraph>=1.2`。
-</Note>
+> [!注意]
+>
+> 需要`langgraph>=1.2`。
 
 创建一个 [⟦T184⟧](https://reference.langchain.com/python/langgraph/runtime/RunControl) 并将其作为 `control=` 传递给 `invoke` 或 `stream`。从任何线程调用 `request_drain()` 来发出运行应该停止的信号：
 
@@ -598,11 +598,11 @@ except GraphDrained as e:
 
 Drain 是协作式的，在超级步骤之间运行，不会抢占已经在运行的工作：|场景|行为 |
 | - | - |
-|节点执行中期|运行至完成。 Drain 在下一个超级步骤中生效。 |
+|节点执行中期 |运行至完成。 Drain 在下一个超级步骤中生效。 |
 |具有重试策略的节点当前正在重试 |重试循环运行至耗尽或成功。排水后生效。 |
 |图形在与耗尽相同的刻度上自然完成 |正常返回。检查`control.drain_requested`以区别于正常运行。 |
 |仍有更多超级步骤|加薪`GraphDrained(reason)`。检查点已保存并可恢复。 |
-|子图请求耗尽 | `GraphDrained` 在父级中冒泡，并在其自己的下一个超步边界处停止。 |
+|子图请求耗尽 | `GraphDrained` 通过父级向上冒泡，并在其自己的下一个超步边界处停止。 |
 
 ### 排水后恢复
 
@@ -645,9 +645,9 @@ except GraphDrained as e:
     # Resume on next startup with the same config
 ```
 
-<Note>
-  `request_drain()` 不会取消正在运行的异步任务或终止线程。对于硬上限，将排出与优雅的超时和任务取消配对。
-</Note>
+> [!注意]
+>
+> `request_drain()` 不会取消正在运行的异步任务或终止线程。对于硬上限，将排出与优雅的超时和任务取消配对。
 
 ## 限制* **超时仅是异步的**：具有 `timeout` 的同步节点在编译时被拒绝。
 * **每个节点一个处理程序**：每个节点最多可以有一个`error_handler`。
@@ -656,12 +656,6 @@ except GraphDrained as e:
 
 ***
 
-<div>
-  <Callout icon="terminal-2">
-    [Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
-  </Callout>
+[Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
 
-  <Callout icon="edit">
-    [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/oss/langgraph/fault-tolerance.mdx) 或 [file an issue](https://github.com/langchain-ai/docs/issues/new/choose)。
-  </Callout>
-</div>
+[Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/oss/langgraph/fault-tolerance.mdx) 或 [file an issue](https://github.com/langchain-ai/docs/issues/new/choose)。

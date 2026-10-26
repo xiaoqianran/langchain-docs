@@ -7,11 +7,11 @@
 在**技能**架构中，专门的功能被打包为可调用的“技能”，以增强[agent's](/oss/python/langchain/agents)行为。技能主要是代理可以按需调用的提示驱动的专业化。
 有关内置技能支持，请参阅[Deep Agents](/oss/python/deepagents/skills)。
 
-<Tip>
-  此模式在概念上与[Agent Skills](https://agentskills.io/)和[llms.txt](https://llmstxt.org/)（由 Jeremy Howard 引入）相同，后者使用工具调用来逐步公开文档。该技能模式将渐进式披露应用于专业提示和领域知识，而不仅仅是文档页面。
-
-  有关可提高代理在 LangChain 生态系统任务上的性能的即用型技能，请参阅 [LangChain Skills](https://github.com/langchain-ai/langchain-skills) 存储库。
-</Tip>
+> [!提示]
+>
+> 此模式在概念上与 [Agent Skills](https://agentskills.io/) 和 [llms.txt](https://llmstxt.org/)（由 Jeremy Howard 引入）相同，后者使用工具调用来逐步公开文档。该技能模式将渐进式披露应用于专业提示和领域知识，而不仅仅是文档页面。
+>
+> 有关可提高代理在 LangChain 生态系统任务上的性能的即用型技能，请参阅 [LangChain Skills](https://github.com/langchain-ai/langchain-skills) 存储库。
 
 ```mermaid theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 graph LR
@@ -71,9 +71,9 @@ agent = create_agent(
 
 有关完整的实现，请参阅下面的教程。
 
-<Card title="Tutorial: Build a SQL assistant with on-demand skills" icon="wand" href="/oss/python/langchain/multi-agent/skills-sql-assistant">
-  了解如何通过渐进式披露来实施技能，其中代理按需而不是预先加载专门的提示和模式。
-</Card>
+> **[Tutorial: Build a SQL assistant with on-demand skills](/oss/python/langchain/multi-agent/skills-sql-assistant)**
+>
+> 了解如何通过渐进式披露来实施技能，其中代理按需而不是预先加载专门的提示和模式。
 
 ## 扩展模式
 
@@ -82,17 +82,11 @@ agent = create_agent(
 * **动态工具注册**：将渐进式披露与状态管理相结合，将新的[tools](/oss/python/langchain/tools)注册为技能负载。例如，加载“database\_admin”技能可以添加专门的上下文并注册特定于数据库的工具（备份、恢复、迁移）。这使用了跨多代理模式使用的相同工具和状态机制，即更新状态的工具以动态更改代理功能。* **分层技能**：技能可以在树结构中定义其他技能，从而创建嵌套的专业化。例如，加载“数据\_科学”技能可能会提供诸如“pandas\_expert”、“可视化”和“统计\_分析”等子技能。每个子技能都可以根据需要独立加载，从而实现领域知识的细粒度渐进公开。这种分层方法通过将功能组织到可按需发现和加载的逻辑分组中，帮助管理大型知识库。
 
 * **参考意识**：虽然每项技能只有一个提示，但该提示可以参考其他资产的位置，并提供有关代理何时应使用这些资产的信息。
-  当这些资产变得相关时，代理将知道这些文件存在，并根据需要将它们读入内存以完成任务。
+  当这些资产变得相关时，代理将知道这些文件存在并根据需要将它们读入内存以完成任务。
   这也遵循渐进公开模式并限制上下文窗口中的信息。
 
 ***
 
-<div>
-  <Callout icon="terminal-2">
-    [Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
-  </Callout>
+[Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
 
-  <Callout icon="edit">
-    [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/oss/langchain/multi-agent/skills.mdx) 或 [file an issue](https://github.com/langchain-ai/docs/issues/new/choose)。
-  </Callout>
-</div>
+[Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/oss/langchain/multi-agent/skills.mdx) 或 [file an issue](https://github.com/langchain-ai/docs/issues/new/choose)。

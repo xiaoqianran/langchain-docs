@@ -31,7 +31,7 @@
 
 帮助我们为每个人改进LangChain。无论您是要修复错误、添加功能还是改进文档，我们都欢迎您的贡献。
 
-* **[Contributing Guide](/oss/python/contributing/overview)**：您需要了解的有关为 LangChain 做出贡献的所有信息
+* **[Contributing Guide](/oss/python/contributing/overview)**：关于为LangChain做出贡献您需要了解的一切
 
 ## 保持联系
 
@@ -40,12 +40,6 @@
 
 ***
 
-<div>
-  <Callout icon="terminal-2">
-    [Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
-  </Callout>
+[Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
 
-  <Callout icon="edit">
-    [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/oss/langchain/get-help.mdx) 或 [file an issue](https://github.com/langchain-ai/docs/issues/new/choose)。
-  </Callout>
-</div>
+[Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/oss/langchain/get-help.mdx) 或 [file an issue](https://github.com/langchain-ai/docs/issues/new/choose)。

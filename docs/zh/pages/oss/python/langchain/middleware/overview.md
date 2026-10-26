@@ -4,7 +4,7 @@
 
 # 中间件概述
 
-控制和定制代理执行的每一步
+在每一步控制和自定义代理执行
 
 中间件提供了一种更严格地控制代理内部发生的事情的方法。中间件可用于以下用途：
 
@@ -31,17 +31,17 @@ agent = create_agent(
 
 ## 代理循环
 
-核心代理循环涉及调用模型，让它选择要执行的工具，然后在不再调用工具时结束：
+核心代理循环涉及调用模型，让它选择要执行的工具，然后在不再调用工具时完成：
 
-<img alt="Core agent loop diagram" />
+![Core agent loop diagram](https://mintcdn.com/langchain-5e9cc07a/Tazq8zGc0yYUYrDl/oss/images/core_agent_loop.png?fit=max\&auto=format\&n=Tazq8zGc0yYUYrDl\&q=85\&s=ac72e48317a9ced68fd1be64e89ec063)
 
 中间件在每个步骤之前和之后公开挂钩：
 
-<img alt="Middleware flow diagram" />
+![Middleware flow diagram](https://mintcdn.com/langchain-5e9cc07a/RAP6mjwE5G00xYsA/oss/images/middleware_final.png?fit=max\&auto=format\&n=RAP6mjwE5G00xYsA\&q=85\&s=eb4404b137edec6f6f0c8ccb8323eaf1)
 
 ## 在 LangGraph 工作流程中使用中间件
 
-中间件不是一个单独的运行时：挂钩在 [⟦T3⟧](https://reference.langchain.com/python/langchain/agents/factory/create_agent) 返回的已编译的 [LangGraph](/oss/python/langgraph/overview) 内运行。您可以将整个代理（中间件和所有）放入更大的[StateGraph](https://reference.langchain.com/python/langgraph/graph/state/StateGraph)作为节点或子图，并且每个中间件挂钩继续运行。当周围拓扑不仅仅是标准的“完成之前的循环”时，就可以采用这种模式：在路由到多个代理之一之前对输入进行分类，并行地展开工作，或者将代理调用与确定性步骤缝合在一起。
+中间件不是单独的运行时：挂钩在 [⟦T3⟧](https://reference.langchain.com/python/langchain/agents/factory/create_agent) 返回的已编译的 [LangGraph](/oss/python/langgraph/overview) 内运行。您可以将整个代理（中间件和所有）放入更大的[StateGraph](https://reference.langchain.com/python/langgraph/graph/state/StateGraph)作为节点或子图，并且每个中间件挂钩继续运行。当周围拓扑不仅仅是标准的“完成之前的循环”时，就可以采用这种模式：在路由到多个代理之一之前对输入进行分类，并行地展开工作，或者将代理调用与确定性步骤缝合在一起。
 
 `HumanInTheLoopMiddleware` 与每个工具的 `.name` 匹配。
 
@@ -73,36 +73,28 @@ HITL 中断、摘要、PII 编辑、重试和任何自定义挂钩都与代理�
 
 ## 其他资源
 
-<CardGroup>
-  <Card title="Built-in middleware" icon="box" href="/oss/python/langchain/middleware/built-in">
-    探索常见用例的内置中间件。
-  </Card>
+> **[Built-in middleware](/oss/python/langchain/middleware/built-in)**
+>
+> 探索常见用例的内置中间件。
 
-  <Card title="Custom middleware" icon="code" href="/oss/python/langchain/middleware/custom">
-    使用钩子和装饰器构建您自己的中间件。
-  </Card>
+> **[Custom middleware](/oss/python/langchain/middleware/custom)**
+>
+> 使用钩子和装饰器构建您自己的中间件。
 
-  <Card title="Middleware API reference" icon="book" href="https://reference.langchain.com/python/langchain/middleware/">
-    中间件的完整 API 参考。
-  </Card>
+> **[Middleware API reference](https://reference.langchain.com/python/langchain/middleware/)**
+>
+> 中间件的完整 API 参考。
 
-  <Card title="Middleware integrations" icon="plug" href="/oss/python/integrations/middleware/">
-    适用于 Anthropic、AWS、OpenAI 等的提供商特定中间件。
-  </Card>
+> **[Middleware integrations](/oss/python/integrations/middleware/)**
+>
+> 适用于 Anthropic、AWS、OpenAI 等的提供商特定中间件。
 
-  <Card title="Testing agents" icon="scale" href="/oss/python/langchain/test/">
-    使用 LangSmith 测试您的代理。
-  </Card>
-</CardGroup>
+> **[Testing agents](/oss/python/langchain/test/)**
+>
+> 使用 LangSmith 测试您的代理。
 
 ***
 
-<div>
-  <Callout icon="terminal-2">
-    [Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
-  </Callout>
+[Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
 
-  <Callout icon="edit">
-    [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/oss/langchain/middleware/overview.mdx) 或 [file an issue](https://github.com/langchain-ai/docs/issues/new/choose)。
-  </Callout>
-</div>
+[Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/oss/langchain/middleware/overview.mdx) 或 [file an issue](https://github.com/langchain-ai/docs/issues/new/choose)。

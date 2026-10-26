@@ -3,4 +3,6 @@
 # Unshare dataset
 
 /langsmith/langsmith-platform-openapi.json delete /api/v1/datasets/{dataset_id}/share
-Unshare a dataset.
+Stop sharing a dataset.
+
+Its share token stops working. Succeeds when the dataset is not shared.

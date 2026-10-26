@@ -12,8 +12,8 @@
 
 |整合 |下载 |
 | :-| :-|
-| [⟦T0⟧](/oss/javascript/integrations/llm_caching/azure_cosmosdb_nosql) | [  ⟦T3⟧](https://www.npmjs.com/package/@langchain/azure-cosmosdb) |
-| [⟦T1⟧](https://www.betterdb.com/ai) | [  ⟦T4⟧](https://www.npmjs.com/package/@betterdb/agent-cache) |
+| [⟦T0⟧](https://www.betterdb.com/ai) | [  ⟦T3⟧](https://www.npmjs.com/package/@betterdb/agent-cache) |
+| [⟦T1⟧](/oss/javascript/integrations/llm_caching/azure_cosmosdb_nosql) | [  ⟦T4⟧](https://www.npmjs.com/package/@langchain/azure-cosmosdb) |
 | [⟦T2⟧](https://www.betterdb.com/ai) | [  ⟦T5⟧](https://www.npmjs.com/package/@betterdb/semantic-cache) |
 
 ***

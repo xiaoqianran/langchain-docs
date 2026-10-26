@@ -66,7 +66,7 @@ from langchain_huggingface import HuggingFaceEndpointEmbeddings
 
 ### 文本嵌入推理 (TEI)
 
-对于 Sentence Transformers 模型的自托管生产服务，Hugging Face 发布了[Text Embeddings Inference](https://github.com/huggingface/text-embeddings-inference)，这是一款具有批处理和 GPU 支持的专用推理服务器。 TEI 公开了OpenAI 兼容的 API，因此通过 `OpenAIEmbeddings` 将 LangChain 指向 TEI 部署。参见专用[TEI integration guide](/oss/python/integrations/embeddings/text_embeddings_inference)。
+对于 Sentence Transformers 模型的自托管生产服务，Hugging Face 发布了[Text Embeddings Inference](https://github.com/huggingface/text-embeddings-inference)，这是一款具有批处理和 GPU 支持的专用推理服务器。 TEI 公开了兼容 OpenAI 的 API，因此通过 `OpenAIEmbeddings` 将 LangChain 指向 TEI 部署。参见专用[TEI integration guide](/oss/python/integrations/embeddings/text_embeddings_inference)。
 
 ### BGE 嵌入模型> [BGE models on Hugging Face](https://huggingface.co/BAAI) 是来自 [Beijing Academy of Artificial Intelligence (BAAI)](https://en.wikipedia.org/wiki/Beijing_Academy_of_Artificial_Intelligence) 的强大开源嵌入系列。
 
@@ -74,12 +74,6 @@ BGE 模型是 Sentence Transformers 模型，因此将 `HuggingFaceEmbeddings` �
 
 ***
 
-<div>
-  <Callout icon="terminal-2">
-    [Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
-  </Callout>
+[Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
 
-  <Callout icon="edit">
-    [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/oss/python/integrations/providers/huggingface.mdx) 或 [file an issue](https://github.com/langchain-ai/docs/issues/new/choose)。
-  </Callout>
-</div>
+[Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/oss/python/integrations/providers/huggingface.mdx) 或 [file an issue](https://github.com/langchain-ai/docs/issues/new/choose)。

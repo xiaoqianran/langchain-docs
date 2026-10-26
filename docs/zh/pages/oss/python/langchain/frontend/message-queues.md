@@ -8,11 +8,9 @@
 
 消息队列允许用户快速连续发送多条消息，而无需等待代理完成当前消息的处理。每条消息都会立即接受，排队等候活动线程，并按顺序进行处理，从而使您能够完全了解和控制待处理的工作。
 
-<PatternEmbed />
-
-<Note>
-  此功能需要[LangGraph Agent Server](/oss/python/langgraph/local-server)。使用 `langgraph dev` 或 [deploy it to LangSmith](/langsmith/deployment) 在本地运行代理以使用此模式。
-</Note>
+> [!注意]
+>
+> 此功能需要[LangGraph Agent Server](/oss/python/langgraph/local-server)。使用 `langgraph dev` 或 [deploy it to LangSmith](/langsmith/deployment) 在本地运行代理以使用此模式。
 
 ## 为什么要使用消息队列？
 
@@ -33,7 +31,7 @@
 当您希望提交等待时，请通过`multitaskStrategy: "enqueue"`
 当前正在运行的请求。当代理正在处理时，排队提交
 被添加到活动线程的队列中。当前运行完成后，
-下一条排队消息会自动发送。
+下一条排队消息会自动调度。
 
 使用框架的配套队列助手读取队列状态：
 
@@ -60,44 +58,72 @@
 待处理的工作，并使用`queue.cancel()`或`queue.clear()`删除之前的项目
 他们开始处理。
 
-<Info>
-  代码示例使用 `useStream<typeof myAgent>` 来实现类型安全的流状态。请参阅 [Python](/oss/python/langchain/frontend/overview#type-inference) 或 [JavaScript](/oss/javascript/langchain/frontend/overview#type-inference) 后端的类型推断。
-</Info>
+> [!注意]
+>
+> 代码示例使用 `useStream<typeof myAgent>` 来实现类型安全的流状态。请参阅 [Python](/oss/python/langchain/frontend/overview#type-inference) 或 [JavaScript](/oss/javascript/langchain/frontend/overview#type-inference) 后端的类型推断。
 
-<CodeGroup>
-  ```tsx React theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  import { useStream, useSubmissionQueue } from "@langchain/react";
+```tsx React theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+import { useStream, useSubmissionQueue } from "@langchain/react";
 
-  function Chat() {
-    const stream = useStream<typeof myAgent>({
-      apiUrl: "http://localhost:2024",
-      assistantId: "simple_agent",
+function Chat() {
+  const stream = useStream<typeof myAgent>({
+    apiUrl: "http://localhost:2024",
+    assistantId: "simple_agent",
+  });
+  const queue = useSubmissionQueue(stream);
+
+  const handleSubmit = (text: string) => {
+    stream.submit({
+      messages: [{ type: "human", content: text }],
     });
-    const queue = useSubmissionQueue(stream);
+  };
 
-    const handleSubmit = (text: string) => {
-      stream.submit({
-        messages: [{ type: "human", content: text }],
-      });
-    };
+  const pendingCount = queue.size;
+  const entries = queue.entries;
 
-    const pendingCount = queue.size;
-    const entries = queue.entries;
+  return (
+    <div>
+      <MessageList messages={stream.messages} />
+      {pendingCount > 0 && <QueueList entries={entries} queue={queue} />}
+      <ChatInput onSubmit={handleSubmit} />
+    </div>
+  );
+}
+```
 
-    return (
-      <div>
-        <MessageList messages={stream.messages} />
-        {pendingCount > 0 && <QueueList entries={entries} queue={queue} />}
-        <ChatInput onSubmit={handleSubmit} />
-      </div>
-    );
-  }
-  ```
+```vue Vue theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+<script setup lang="ts">
+import { useStream, useSubmissionQueue } from "@langchain/vue";
+import { computed } from "vue";
 
-  ```vue Vue theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  <script setup lang="ts">
-  import { useStream, useSubmissionQueue } from "@langchain/vue";
-  import { computed } from "vue";
+const stream = useStream<typeof myAgent>({
+  apiUrl: "http://localhost:2024",
+  assistantId: "simple_agent",
+});
+const queue = useSubmissionQueue(stream);
+
+function handleSubmit(text: string) {
+  stream.submit({
+    messages: [{ type: "human", content: text }],
+  });
+}
+
+const pendingCount = computed(() => queue.size.value);
+const entries = computed(() => queue.entries.value);
+</script>
+
+<template>
+  <div>
+    <MessageList :messages="stream.messages" />
+    <QueueList v-if="pendingCount > 0" :entries="entries" :queue="queue" />
+    <ChatInput @submit="handleSubmit" />
+  </div>
+</template>
+```
+
+```svelte Svelte theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+<script lang="ts">
+  import { useStream, useSubmissionQueue } from "@langchain/svelte";
 
   const stream = useStream<typeof myAgent>({
     apiUrl: "http://localhost:2024",
@@ -110,75 +136,45 @@
       messages: [{ type: "human", content: text }],
     });
   }
+</script>
 
-  const pendingCount = computed(() => queue.size.value);
-  const entries = computed(() => queue.entries.value);
-  </script>
+<div>
+  <MessageList messages={stream.messages} />
+  {#if queue.size > 0}
+    <QueueList entries={queue.entries} {queue} />
+  {/if}
+  <ChatInput on:submit={(e) => handleSubmit(e.detail)} />
+</div>
+```
 
-  <template>
-    <div>
-      <MessageList :messages="stream.messages" />
-      <QueueList v-if="pendingCount > 0" :entries="entries" :queue="queue" />
-      <ChatInput @submit="handleSubmit" />
-    </div>
-  </template>
-  ```
+```ts Angular theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+import { Component } from "@angular/core";
+import { injectStream, injectSubmissionQueue } from "@langchain/angular";
 
-  ```svelte Svelte theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  <script lang="ts">
-    import { useStream, useSubmissionQueue } from "@langchain/svelte";
-
-    const stream = useStream<typeof myAgent>({
-      apiUrl: "http://localhost:2024",
-      assistantId: "simple_agent",
-    });
-    const queue = useSubmissionQueue(stream);
-
-    function handleSubmit(text: string) {
-      stream.submit({
-        messages: [{ type: "human", content: text }],
-      });
+@Component({
+  selector: "app-chat",
+  template: `
+    <message-list [messages]="stream.messages()" />
+    @if (queue.size() > 0) {
+      <queue-list [entries]="queue.entries()" [queue]="queue" />
     }
-  </script>
+    <chat-input (onSubmit)="handleSubmit($event)" />
+  `,
+})
+export class ChatComponent {
+  stream = injectStream<typeof myAgent>({
+    apiUrl: "http://localhost:2024",
+    assistantId: "simple_agent",
+  });
+  queue = injectSubmissionQueue(this.stream);
 
-  <div>
-    <MessageList messages={stream.messages} />
-    {#if queue.size > 0}
-      <QueueList entries={queue.entries} {queue} />
-    {/if}
-    <ChatInput on:submit={(e) => handleSubmit(e.detail)} />
-  </div>
-  ```
-
-  ```ts Angular theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  import { Component } from "@angular/core";
-  import { injectStream, injectSubmissionQueue } from "@langchain/angular";
-
-  @Component({
-    selector: "app-chat",
-    template: `
-      <message-list [messages]="stream.messages()" />
-      @if (queue.size() > 0) {
-        <queue-list [entries]="queue.entries()" [queue]="queue" />
-      }
-      <chat-input (onSubmit)="handleSubmit($event)" />
-    `,
-  })
-  export class ChatComponent {
-    stream = injectStream<typeof myAgent>({
-      apiUrl: "http://localhost:2024",
-      assistantId: "simple_agent",
+  handleSubmit(text: string) {
+    this.stream.submit({
+      messages: [{ type: "human", content: text }],
     });
-    queue = injectSubmissionQueue(this.stream);
-
-    handleSubmit(text: string) {
-      this.stream.submit({
-        messages: [{ type: "human", content: text }],
-      });
-    }
   }
-  ```
-</CodeGroup>
+}
+```
 
 ## 显示队列
 
@@ -214,11 +210,11 @@ function QueueList({ entries, queue }) {
     </div>
   );
 }
-```<Tip>
-  将每条排队消息的前几个字符显示为预览，以便用户可以快速识别要取消的项目，而无需阅读完整消息。
-</Tip>
+```
 
-## 取消排队消息
+> [!提示]
+>
+> 将每条排队消息的前几个字符显示为预览，以便用户可以快速识别要取消的项目，而无需阅读完整消息。## 取消排队消息
 
 您有两个级别的取消：
 
@@ -238,11 +234,11 @@ await queue.cancel(entryId);
 await queue.clear();
 ```
 
-<Note>
-  取消队列条目仅影响尚未开始的消息
-  处理**。如果代理已经在处理消息，则将其取消
-  队列没有任何影响。使用`stream.stop()`中断当前运行。
-</Note>
+> [!注意]
+>
+> 取消队列条目仅影响尚未开始的消息
+> 处理**。如果代理已经在处理消息，则将其取消
+> 队列没有任何作用。使用`stream.stop()`中断当前运行。
 
 ## 使用 `onCreated` 链接后续提交
 
@@ -270,57 +266,55 @@ stream.submit(
 您传递到流中。传递`null`清除当前线程绑定；
 下一次提交将创建一个新线程。
 
-<CodeGroup>
-  ```tsx React theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  function NewThreadButton() {
-    const [threadId, setThreadId] = useState<string | null>(null);
-    const stream = useStream<typeof myAgent>({ threadId, onThreadId: setThreadId });
+```tsx React theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+function NewThreadButton() {
+  const [threadId, setThreadId] = useState<string | null>(null);
+  const stream = useStream<typeof myAgent>({ threadId, onThreadId: setThreadId });
 
-    return (
-      <button onClick={() => setThreadId(null)}>
-        New conversation
-      </button>
-    );
-  }
-  ```
+  return (
+    <button onClick={() => setThreadId(null)}>
+      New conversation
+    </button>
+  );
+}
+```
 
-  ```vue Vue theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  <script setup lang="ts">
-  const threadId = ref<string | null>(null);
+```vue Vue theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+<script setup lang="ts">
+const threadId = ref<string | null>(null);
+const stream = useStream<typeof myAgent>({
+  threadId,
+  onThreadId: (id) => (threadId.value = id),
+});
+</script>
+
+<template>
+  <button @click="threadId = null">New conversation</button>
+</template>
+```
+
+```svelte Svelte theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+<script lang="ts">
+  let threadId = $state<string | null>(null);
   const stream = useStream<typeof myAgent>({
-    threadId,
-    onThreadId: (id) => (threadId.value = id),
+    threadId: () => threadId,
+    onThreadId: (id) => (threadId = id),
   });
-  </script>
+</script>
 
-  <template>
-    <button @click="threadId = null">New conversation</button>
-  </template>
-  ```
+<button onclick={() => (threadId = null)}>New conversation</button>
+```
 
-  ```svelte Svelte theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  <script lang="ts">
-    let threadId = $state<string | null>(null);
-    const stream = useStream<typeof myAgent>({
-      threadId: () => threadId,
-      onThreadId: (id) => (threadId = id),
-    });
-  </script>
+```ts Angular theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+threadId = signal<string | null>(null);
+stream = injectStream<typeof myAgent>({
+  threadId: this.threadId,
+  onThreadId: (id) => this.threadId.set(id),
+});
 
-  <button onclick={() => (threadId = null)}>New conversation</button>
-  ```
-
-  ```ts Angular theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  threadId = signal<string | null>(null);
-  stream = injectStream<typeof myAgent>({
-    threadId: this.threadId,
-    onThreadId: (id) => this.threadId.set(id),
-  });
-
-  // In template:
-  // <button (click)="threadId.set(null)">New conversation</button>
-  ```
-</CodeGroup>
+// In template:
+// <button (click)="threadId.set(null)">New conversation</button>
+```
 
 ## 最佳实践
 
@@ -336,10 +330,6 @@ stream.submit(
 
 ***
 
-<div>
-  <Callout icon="terminal-2">
-    [Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
-  </Callout><Callout icon="edit">
-    [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/oss/langchain/frontend/message-queues.mdx) 或 [file an issue](https://github.com/langchain-ai/docs/issues/new/choose)。
-  </Callout>
-</div>
+[Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
+
+[Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/oss/langchain/frontend/message-queues.mdx) 或 [file an issue](https://github.com/langchain-ai/docs/issues/new/choose)。

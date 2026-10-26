@@ -30,14 +30,14 @@ result = agent.invoke({
 
 ## 内置`read_file`工具
 
-对于受支持的多模式文件，harness `read_file` 工具会返回 [standard content blocks](/oss/python/langchain/messages#standard-content-blocks)，而不是纯文本。当所选模型支持相应的模态时，代理可以检查存储在其[filesystem](/oss/python/deepagents/overview#virtual-filesystem-access)中的图像、文档和媒体。检查提供商的文档以了解您的模型支持的 MIME 类型。<Accordion title="Supported multimodal file extensions">
-  |类型 |扩展 |
-  | - | - |
-  | [Image](/oss/python/langchain/messages#multimodal) | `.png`、`.jpg`、`.jpeg`、`.gif`、`.webp`、`.heic`、`.heif` |
-  | [Video](/oss/python/langchain/messages#multimodal) | `.mp4`、`.mpeg`、`.mov`、`.avi`、`.flv`、`.mpg`、`.webm`、`.wmv`、`.3gpp` |
-  | [Audio](/oss/python/langchain/messages#multimodal) | `.wav`、`.mp3`、`.aiff`、`.aac`、`.ogg`、`.flac` |
-  | [File](/oss/python/langchain/messages#multimodal) | `.pdf`、`.ppt`、`.pptx` |
-</Accordion>
+对于受支持的多模式文件，harness `read_file` 工具会返回 [standard content blocks](/oss/python/langchain/messages#standard-content-blocks)，而不是纯文本。当所选模型支持相应的模态时，代理可以检查存储在其[filesystem](/oss/python/deepagents/overview#virtual-filesystem-access)中的图像、文档和媒体。检查提供商的文档以了解您的模型支持的 MIME 类型。> **支持的多模式文件扩展名**
+>
+> |类型 |扩展 |
+> | - | - |
+> | [Image](/oss/python/langchain/messages#multimodal) | `.png`、`.jpg`、`.jpeg`、`.gif`、`.webp`、`.heic`、`.heif` |
+> | [Video](/oss/python/langchain/messages#multimodal) | `.mp4`、`.mpeg`、`.mov`、`.avi`、`.flv`、`.mpg`、`.webm`、`.wmv`、`.3gpp` |
+> | [Audio](/oss/python/langchain/messages#multimodal) | `.wav`、`.mp3`、`.aiff`、`.aac`、`.ogg`、`.flac` |
+> | [File](/oss/python/langchain/messages#multimodal) | `.pdf`、`.ppt`、`.pptx` |
 
 ## 自定义工具输出
 
@@ -60,9 +60,9 @@ def capture_screenshot() -> list[dict]:
 
 有关返回类型选项、序列化行为和 MCP 示例，请参阅 [Multimodal content](/oss/python/langchain/mcp/tools#multimodal-content)。
 
-<Tip>
-  当工具生成图像或其他大型二进制数据时，将工件保存到 [backend](/oss/python/deepagents/backends) 并返回简洁的文本描述以及路径或 URL。这可以使消息历史记录更小，并且与 [context compression](/oss/python/deepagents/context-engineering#context-compression) 配合使用效果更好。
-</Tip>
+> [!提示]
+>
+> 当工具生成图像或其他大型二进制数据时，将工件保存到 [backend](/oss/python/deepagents/backends) 并返回简洁的文本描述以及路径或 URL。这可以使消息历史记录更小，并且与 [context compression](/oss/python/deepagents/context-engineering#context-compression) 配合使用效果更好。
 
 ## 上下文压缩和多模式内容
 
@@ -109,12 +109,6 @@ def capture_screenshot() -> list[dict]:
 
 ***
 
-<div>
-  <Callout icon="terminal-2">
-    [Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
-  </Callout>
+[Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
 
-  <Callout icon="edit">
-    [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/oss/deepagents/multimodal.mdx) 或 [file an issue](https://github.com/langchain-ai/docs/issues/new/choose)。
-  </Callout>
-</div>
+[Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/oss/deepagents/multimodal.mdx) 或 [file an issue](https://github.com/langchain-ai/docs/issues/new/choose)。

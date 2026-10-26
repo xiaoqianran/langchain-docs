@@ -14,7 +14,7 @@
 
 在开始之前，请确保您具备以下条件：
 
-* **LangSmith帐户**：注册（免费）或登录[smith.langchain.com](https://smith.langchain.com?utm_source=docs\&utm_medium=cta\&utm_campaign=langsmith-signup\&utm_content=oss-langchain-observability)。
+* **LangSmith帐户**：注册（免费）或在[smith.langchain.com](https://smith.langchain.com?utm_source=docs\&utm_medium=cta\&utm_campaign=langsmith-signup\&utm_content=oss-langchain-observability)登录。
 * **A LangSmith API 密钥**：遵循 [Create an API key](/langsmith/create-account-api-key) 指南​​。
 
 ## 启用跟踪
@@ -73,26 +73,26 @@ agent.invoke({"messages": [{"role": "user", "content": "Send another email"}]})
 
 ## 登录到项目
 
-<Accordion title="Statically">
-  您可以通过设置 `LANGSMITH_PROJECT` 环境变量来为整个应用程序设置自定义项目名称：
+> **静态**
+>
+> 您可以通过设置 `LANGSMITH_PROJECT` 环境变量来为整个应用程序设置自定义项目名称：
+>
+> ```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> export LANGSMITH_PROJECT=my-agent-project
+> ```
 
-  ```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  export LANGSMITH_PROJECT=my-agent-project
-  ```
-</Accordion>
-
-<Accordion title="Dynamically">
-  您可以通过编程方式设置项目名称以进行特定操作：
-
-  ```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  import langsmith as ls
-
-  with ls.tracing_context(project_name="email-agent-test", enabled=True):
-      response = agent.invoke({
-          "messages": [{"role": "user", "content": "Send a welcome email"}]
-      })
-  ```
-</Accordion>
+> **动态**
+>
+> 您可以通过编程方式设置项目名称以进行特定操作：
+>
+> ```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> import langsmith as ls
+>
+> with ls.tracing_context(project_name="email-agent-test", enabled=True):
+>     response = agent.invoke({
+>         "messages": [{"role": "user", "content": "Send a welcome email"}]
+>     })
+> ```
 
 ## 将元数据添加到跟踪中
 
@@ -127,18 +127,12 @@ with ls.tracing_context(
 
 此自定义元数据和标签将附加到 LangSmith 中的跟踪。
 
-<Tip>
-  要了解有关如何使用跟踪来调试、评估和监控代理的更多信息，请参阅 [LangSmith documentation](/langsmith/observability)。
-</Tip>
+> [!提示]
+>
+> 要了解有关如何使用跟踪来调试、评估和监控代理的更多信息，请参阅 [LangSmith documentation](/langsmith/observability)。
 
 ***
 
-<div>
-  <Callout icon="terminal-2">
-    [Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
-  </Callout>
+[Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
 
-  <Callout icon="edit">
-    [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/oss/langchain/observability.mdx) 或 [file an issue](https://github.com/langchain-ai/docs/issues/new/choose)。
-  </Callout>
-</div>
+[Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/oss/langchain/observability.mdx) 或 [file an issue](https://github.com/langchain-ai/docs/issues/new/choose)。

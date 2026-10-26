@@ -10,8 +10,8 @@ Below are some integrations that allow you to cache results of individual LLM ca
 
 | Integration | Downloads |
 | :- | :- |
-| [`Azure Cosmos DB NoSQL semantic`](/oss/javascript/integrations/llm_caching/azure_cosmosdb_nosql) | [  ![Downloads per month](https://img.shields.io/npm/dm/@langchain/azure-cosmosdb?style=flat-square\&label=%20&)](https://www.npmjs.com/package/@langchain/azure-cosmosdb) |
 | [`BetterDB Agent Cache`](https://www.betterdb.com/ai) | [  ![Downloads per month](https://img.shields.io/npm/dm/@betterdb/agent-cache?style=flat-square\&label=%20&)](https://www.npmjs.com/package/@betterdb/agent-cache) |
+| [`Azure Cosmos DB NoSQL semantic`](/oss/javascript/integrations/llm_caching/azure_cosmosdb_nosql) | [  ![Downloads per month](https://img.shields.io/npm/dm/@langchain/azure-cosmosdb?style=flat-square\&label=%20&)](https://www.npmjs.com/package/@langchain/azure-cosmosdb) |
 | [`BetterDB Semantic Cache`](https://www.betterdb.com/ai) | [  ![Downloads per month](https://img.shields.io/npm/dm/@betterdb/semantic-cache?style=flat-square\&label=%20&)](https://www.npmjs.com/package/@betterdb/semantic-cache) |
 
 ***

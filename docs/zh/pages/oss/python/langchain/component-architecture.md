@@ -78,7 +78,7 @@ graph TD
 LangChain 将组件分为以下主要类别：|类别 |目的|关键部件|使用案例 |
 | - | - | - | - |
 | **[Models](/oss/python/langchain/models)** | AI推理与生成 |聊天模型、法学硕士、嵌入模型 |文本生成、推理、语义理解 |
-| **[Tools](/oss/python/langchain/tools)** |外部能力 | API、数据库等 |网络搜索、数据访问、计算 |
+| **[Tools](/oss/python/langchain/tools)** |外部能力| API、数据库等 |网络搜索、数据访问、计算 |
 | **[Agents](/oss/python/langchain/agents)** |编排与推理| ReAct 代理、工具调用代理 |不确定性工作流程、决策 |
 | **[Memory](/oss/python/langchain/short-term-memory)** |上下文保存 |消息历史记录、自定义状态 |对话、状态交互 |
 | **[Retrievers](/oss/python/integrations/retrievers)** |信息获取|矢量检索器、网络检索器| RAG，知识库搜索|
@@ -157,12 +157,6 @@ graph LR
 
 ***
 
-<div>
-  <Callout icon="terminal-2">
-    [Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
-  </Callout>
+[Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
 
-  <Callout icon="edit">
-    [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/oss/langchain/component-architecture.mdx) 或 [file an issue](https://github.com/langchain-ai/docs/issues/new/choose)。
-  </Callout>
-</div>
+[Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/oss/langchain/component-architecture.mdx) 或 [file an issue](https://github.com/langchain-ai/docs/issues/new/choose)。

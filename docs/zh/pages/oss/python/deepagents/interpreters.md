@@ -10,35 +10,33 @@
 
 其中 [sandboxes](/oss/python/deepagents/sandboxes) 是对环境进行操作的代码优先方式（例如运行命令、安装依赖项和编辑文件），而解释器是用于编写工具、保留状态以及决定应返回模型的信息的代码优先方式。
 
-<Warning>
-  口译员位于[**beta**](/oss/python/versioning)。 API 和生命周期行为可能会在版本之间发生变化。
-</Warning>
+> [!警告]
+>
+> 口译员在[**beta**](/oss/python/versioning)。 API 和生命周期行为可能会在版本之间发生变化。
 
-<Note>
-  解释器需要 `langchain-quickjs>=0.3.0` 和 Python 3.11 或更高版本。
-</Note>
+> [!注意]
+>
+> 解释器需要 `langchain-quickjs>=0.3.0` 和 Python 3.11 或更高版本。
 
 ## 为什么要使用口译员？大多数代理工作在模型推理和工具调用之间交替进行。一个模型可以一次触发多个工具调用，但是该批次在发出时就被固定了。没有任何东西可以循环、在结果上分支、重试失败或将一个调用的输出提供给下一个调用而无需另一个模型轮转，并且每个结果都返回到模型的上下文。该模型还决定发出多少次调用，因此要求它在数百个项目上分派工作是不可靠的，而且它往往覆盖一个样本而不是每个项目。
 
 解释器将该编排转移到代码中，以便模型推理“做什么”，而不是每个中间步骤。
 
-<CardGroup>
-  <Card title="Programmatic tool calling (PTC)" icon="tool" href="#programmatic-tool-calling-ptc">
-    从解释器代码中调用选定的工具，包括循环、重试、分支和并行批处理。
-  </Card>
+> **[Programmatic tool calling (PTC)](#programmatic-tool-calling-ptc)**
+>
+> 从解释器代码中调用选定的工具，包括循环、重试、分支和并行批处理。
 
-  <Card title="Dynamic subagents" icon="arrows-split" href="#dynamic-subagents">
-    从代码中调度子代理，以针对大量输入进行扇出、验证和递归工作流程。
-  </Card>
+> **[Dynamic subagents](#dynamic-subagents)**
+>
+> 从代码中分派子代理，以进行大量输入的扇出、验证和递归工作流程。
 
-  <Card title="Stateful work" icon="database" href="#how-interpreters-work">
-    将中间值保持在运行时状态，而不会使模型上下文过载。
-  </Card>
+> **[Stateful work](#how-interpreters-work)**
+>
+> 将中间值保持在运行时状态，而不会使模型上下文过载。
 
-  <Card title="Deterministic transforms" icon="code" href="#how-interpreters-work">
-    对结构化数据进行排序、分组、解析、验证、评分和聚合，无需再次进行模型转换。
-  </Card>
-</CardGroup>
+> **[Deterministic transforms](#how-interpreters-work)**
+>
+> 对结构化数据进行排序、分组、解析、验证、评分和聚合，无需再次进行模型转换。
 
 ## 选择一种模式对代理循环内的代码使用解释器：组合工具、保留状态以及控制返回模型的内容。
 
@@ -56,87 +54,83 @@
 
 安装 QuickJS 中间件包，然后使用 `create_deep_agent` 上的 `middleware` 参数传递解释器中间件。
 
-<CodeGroup>
-  ```bash pip theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  pip install -U "deepagents[quickjs]"
-  ```
+```bash pip theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+pip install -U "deepagents[quickjs]"
+```
 
-  ```bash uv theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  uv add "deepagents[quickjs]"
-  ```
-</CodeGroup>
+```bash uv theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+uv add "deepagents[quickjs]"
+```
 
-<CodeGroup>
-  ```python Google theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  from deepagents import create_deep_agent
-  from langchain_quickjs import CodeInterpreterMiddleware
+```python Google theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+from deepagents import create_deep_agent
+from langchain_quickjs import CodeInterpreterMiddleware
 
-  agent = create_deep_agent(
-      model="google_genai:gemini-3.6-flash",
-      middleware=[CodeInterpreterMiddleware()],
-  )
-  ```
+agent = create_deep_agent(
+    model="google_genai:gemini-3.6-flash",
+    middleware=[CodeInterpreterMiddleware()],
+)
+```
 
-  ```python OpenAI theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  from deepagents import create_deep_agent
-  from langchain_quickjs import CodeInterpreterMiddleware
+```python OpenAI theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+from deepagents import create_deep_agent
+from langchain_quickjs import CodeInterpreterMiddleware
 
-  agent = create_deep_agent(
-      model="openai:gpt-5.5",
-      middleware=[CodeInterpreterMiddleware()],
-  )
-  ```
+agent = create_deep_agent(
+    model="openai:gpt-5.5",
+    middleware=[CodeInterpreterMiddleware()],
+)
+```
 
-  ```python Anthropic theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  from deepagents import create_deep_agent
-  from langchain_quickjs import CodeInterpreterMiddleware
+```python Anthropic theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+from deepagents import create_deep_agent
+from langchain_quickjs import CodeInterpreterMiddleware
 
-  agent = create_deep_agent(
-      model="anthropic:claude-sonnet-5",
-      middleware=[CodeInterpreterMiddleware()],
-  )
-  ```
+agent = create_deep_agent(
+    model="anthropic:claude-sonnet-5",
+    middleware=[CodeInterpreterMiddleware()],
+)
+```
 
-  ```python OpenRouter theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  from deepagents import create_deep_agent
-  from langchain_quickjs import CodeInterpreterMiddleware
+```python OpenRouter theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+from deepagents import create_deep_agent
+from langchain_quickjs import CodeInterpreterMiddleware
 
-  agent = create_deep_agent(
-      model="openrouter:z-ai/glm-5.2",
-      middleware=[CodeInterpreterMiddleware()],
-  )
-  ```
+agent = create_deep_agent(
+    model="openrouter:z-ai/glm-5.2",
+    middleware=[CodeInterpreterMiddleware()],
+)
+```
 
-  ```python Fireworks theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  from deepagents import create_deep_agent
-  from langchain_quickjs import CodeInterpreterMiddleware
+```python Fireworks theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+from deepagents import create_deep_agent
+from langchain_quickjs import CodeInterpreterMiddleware
 
-  agent = create_deep_agent(
-      model="fireworks:accounts/fireworks/models/glm-5p2",
-      middleware=[CodeInterpreterMiddleware()],
-  )
-  ```
+agent = create_deep_agent(
+    model="fireworks:accounts/fireworks/models/glm-5p2",
+    middleware=[CodeInterpreterMiddleware()],
+)
+```
 
-  ```python Baseten theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  from deepagents import create_deep_agent
-  from langchain_quickjs import CodeInterpreterMiddleware
+```python Baseten theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+from deepagents import create_deep_agent
+from langchain_quickjs import CodeInterpreterMiddleware
 
-  agent = create_deep_agent(
-      model="baseten:zai-org/GLM-5.2",
-      middleware=[CodeInterpreterMiddleware()],
-  )
-  ```
+agent = create_deep_agent(
+    model="baseten:zai-org/GLM-5.2",
+    middleware=[CodeInterpreterMiddleware()],
+)
+```
 
-  ```python Ollama theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  from deepagents import create_deep_agent
-  from langchain_quickjs import CodeInterpreterMiddleware
+```python Ollama theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+from deepagents import create_deep_agent
+from langchain_quickjs import CodeInterpreterMiddleware
 
-  agent = create_deep_agent(
-      model="ollama:north-mini-code-1.0",
-      middleware=[CodeInterpreterMiddleware()],
-  )
-  ```
-</CodeGroup>
+agent = create_deep_agent(
+    model="ollama:north-mini-code-1.0",
+    middleware=[CodeInterpreterMiddleware()],
+)
+```
 
 ## 口译员如何工作中间件向代理添加了`eval`工具。当有用时，代理编写 JavaScript 并调用 `eval`；您不直接致电口译员。该工具在 QuickJS 上下文中运行代码，其变量可以在 `eval` 调用之间持续存在，具体取决于持久性 `mode`。它捕获 `console.log`、`console.warn` 和 `console.error`，并返回最后一个表达式的结果。
 
@@ -183,77 +177,75 @@ const result: string = await tools.webSearch({
 
 使用显式允许列表启用 PTC：
 
-<CodeGroup>
-  ```python Google theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  from deepagents import create_deep_agent
-  from langchain_quickjs import CodeInterpreterMiddleware
+```python Google theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+from deepagents import create_deep_agent
+from langchain_quickjs import CodeInterpreterMiddleware
 
-  agent = create_deep_agent(
-      model="google_genai:gemini-3.6-flash",
-      middleware=[CodeInterpreterMiddleware(ptc=["web_search"])],
-  )
-  ```
+agent = create_deep_agent(
+    model="google_genai:gemini-3.6-flash",
+    middleware=[CodeInterpreterMiddleware(ptc=["web_search"])],
+)
+```
 
-  ```python OpenAI theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  from deepagents import create_deep_agent
-  from langchain_quickjs import CodeInterpreterMiddleware
+```python OpenAI theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+from deepagents import create_deep_agent
+from langchain_quickjs import CodeInterpreterMiddleware
 
-  agent = create_deep_agent(
-      model="openai:gpt-5.5",
-      middleware=[CodeInterpreterMiddleware(ptc=["web_search"])],
-  )
-  ```
+agent = create_deep_agent(
+    model="openai:gpt-5.5",
+    middleware=[CodeInterpreterMiddleware(ptc=["web_search"])],
+)
+```
 
-  ```python Anthropic theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  from deepagents import create_deep_agent
-  from langchain_quickjs import CodeInterpreterMiddleware
+```python Anthropic theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+from deepagents import create_deep_agent
+from langchain_quickjs import CodeInterpreterMiddleware
 
-  agent = create_deep_agent(
-      model="anthropic:claude-sonnet-5",
-      middleware=[CodeInterpreterMiddleware(ptc=["web_search"])],
-  )
-  ```
+agent = create_deep_agent(
+    model="anthropic:claude-sonnet-5",
+    middleware=[CodeInterpreterMiddleware(ptc=["web_search"])],
+)
+```
 
-  ```python OpenRouter theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  from deepagents import create_deep_agent
-  from langchain_quickjs import CodeInterpreterMiddleware
+```python OpenRouter theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+from deepagents import create_deep_agent
+from langchain_quickjs import CodeInterpreterMiddleware
 
-  agent = create_deep_agent(
-      model="openrouter:z-ai/glm-5.2",
-      middleware=[CodeInterpreterMiddleware(ptc=["web_search"])],
-  )
-  ```
+agent = create_deep_agent(
+    model="openrouter:z-ai/glm-5.2",
+    middleware=[CodeInterpreterMiddleware(ptc=["web_search"])],
+)
+```
 
-  ```python Fireworks theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  from deepagents import create_deep_agent
-  from langchain_quickjs import CodeInterpreterMiddleware
+```python Fireworks theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+from deepagents import create_deep_agent
+from langchain_quickjs import CodeInterpreterMiddleware
 
-  agent = create_deep_agent(
-      model="fireworks:accounts/fireworks/models/glm-5p2",
-      middleware=[CodeInterpreterMiddleware(ptc=["web_search"])],
-  )
-  ```
+agent = create_deep_agent(
+    model="fireworks:accounts/fireworks/models/glm-5p2",
+    middleware=[CodeInterpreterMiddleware(ptc=["web_search"])],
+)
+```
 
-  ```python Baseten theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  from deepagents import create_deep_agent
-  from langchain_quickjs import CodeInterpreterMiddleware
+```python Baseten theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+from deepagents import create_deep_agent
+from langchain_quickjs import CodeInterpreterMiddleware
 
-  agent = create_deep_agent(
-      model="baseten:zai-org/GLM-5.2",
-      middleware=[CodeInterpreterMiddleware(ptc=["web_search"])],
-  )
-  ```
+agent = create_deep_agent(
+    model="baseten:zai-org/GLM-5.2",
+    middleware=[CodeInterpreterMiddleware(ptc=["web_search"])],
+)
+```
 
-  ```python Ollama theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  from deepagents import create_deep_agent
-  from langchain_quickjs import CodeInterpreterMiddleware
+```python Ollama theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+from deepagents import create_deep_agent
+from langchain_quickjs import CodeInterpreterMiddleware
 
-  agent = create_deep_agent(
-      model="ollama:north-mini-code-1.0",
-      middleware=[CodeInterpreterMiddleware(ptc=["web_search"])],
-  )
-  ```
-</CodeGroup>
+agent = create_deep_agent(
+    model="ollama:north-mini-code-1.0",
+    middleware=[CodeInterpreterMiddleware(ptc=["web_search"])],
+)
+```
 
 启用 PTC 后，代理可以从解释器代码调用列入许可名单的工具。此示例并行搜索多个主题并在返回模型之前合并结果：
 
@@ -269,9 +261,9 @@ const results = await Promise.all(
 results.join("\n\n");
 ```
 
-<Warning>
-  PTC 调用当前通过解释器桥执行，不经过正常的工具调用路径。因此，每次 PTC 调用的工具调用都不会强制执行`interrupt_on` 批准工作流程。
-</Warning>
+> [!警告]
+>
+> PTC 调用当前通过解释器桥执行，不经过正常的工具调用路径。因此，每次 PTC 调用的工具调用都不会强制执行`interrupt_on` 批准工作流程。
 
 ## 动态子代理
 
@@ -311,199 +303,195 @@ reviews.join("\n\n");
 3. 回合结束，中间件将更新的快照写入图状态。
 4. 下一轮从该快照恢复，而不是空运行时间。
 
-<Note>
-  快照仅保留可序列化的数据。恢复后，函数、类和其他不可序列化的运行时对象将成为不可访问的工件。访问一个会抛出类似 `Value for 'fn' was not restored because it is not serializable (type: function).` 的错误
-</Note>
+> [!注意]
+>
+> 快照仅保留可序列化的数据。恢复后，函数、类和其他不可序列化的运行时对象将成为不可访问的工件。访问一个会抛出类似 `Value for 'fn' was not restored because it is not serializable (type: function).` 的错误
 
 快照保留了解释器的记忆，而不是外界的影响。如果解释器代码通过 PTC 调用工具，则恢复先前的解释器快照不会撤消该工具调用的副作用。它仅恢复记录或处理结果的解释器变量。
 
 交叉转弯持久性不需要检查点：
 
-<CodeGroup>
-  ```python Google theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  from deepagents import create_deep_agent
-  from langchain_quickjs import CodeInterpreterMiddleware
+```python Google theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+from deepagents import create_deep_agent
+from langchain_quickjs import CodeInterpreterMiddleware
 
-  agent = create_deep_agent(
-      model="google_genai:gemini-3.6-flash",
-      middleware=[
-          CodeInterpreterMiddleware(
-              mode="thread",  # Default
-          )
-      ],
-  )
-  ```
+agent = create_deep_agent(
+    model="google_genai:gemini-3.6-flash",
+    middleware=[
+        CodeInterpreterMiddleware(
+            mode="thread",  # Default
+        )
+    ],
+)
+```
 
-  ```python OpenAI theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  from deepagents import create_deep_agent
-  from langchain_quickjs import CodeInterpreterMiddleware
+```python OpenAI theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+from deepagents import create_deep_agent
+from langchain_quickjs import CodeInterpreterMiddleware
 
-  agent = create_deep_agent(
-      model="openai:gpt-5.5",
-      middleware=[
-          CodeInterpreterMiddleware(
-              mode="thread",  # Default
-          )
-      ],
-  )
-  ``````python Anthropic theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  from deepagents import create_deep_agent
-  from langchain_quickjs import CodeInterpreterMiddleware
+agent = create_deep_agent(
+    model="openai:gpt-5.5",
+    middleware=[
+        CodeInterpreterMiddleware(
+            mode="thread",  # Default
+        )
+    ],
+)
+```
 
-  agent = create_deep_agent(
-      model="anthropic:claude-sonnet-5",
-      middleware=[
-          CodeInterpreterMiddleware(
-              mode="thread",  # Default
-          )
-      ],
-  )
-  ```
+```python Anthropic theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+from deepagents import create_deep_agent
+from langchain_quickjs import CodeInterpreterMiddleware
 
-  ```python OpenRouter theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  from deepagents import create_deep_agent
-  from langchain_quickjs import CodeInterpreterMiddleware
+agent = create_deep_agent(
+    model="anthropic:claude-sonnet-5",
+    middleware=[
+        CodeInterpreterMiddleware(
+            mode="thread",  # Default
+        )
+    ],
+)
+```
 
-  agent = create_deep_agent(
-      model="openrouter:z-ai/glm-5.2",
-      middleware=[
-          CodeInterpreterMiddleware(
-              mode="thread",  # Default
-          )
-      ],
-  )
-  ```
+```python OpenRouter theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+from deepagents import create_deep_agent
+from langchain_quickjs import CodeInterpreterMiddleware
 
-  ```python Fireworks theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  from deepagents import create_deep_agent
-  from langchain_quickjs import CodeInterpreterMiddleware
+agent = create_deep_agent(
+    model="openrouter:z-ai/glm-5.2",
+    middleware=[
+        CodeInterpreterMiddleware(
+            mode="thread",  # Default
+        )
+    ],
+)
+``````python Fireworks theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+from deepagents import create_deep_agent
+from langchain_quickjs import CodeInterpreterMiddleware
 
-  agent = create_deep_agent(
-      model="fireworks:accounts/fireworks/models/glm-5p2",
-      middleware=[
-          CodeInterpreterMiddleware(
-              mode="thread",  # Default
-          )
-      ],
-  )
-  ```
+agent = create_deep_agent(
+    model="fireworks:accounts/fireworks/models/glm-5p2",
+    middleware=[
+        CodeInterpreterMiddleware(
+            mode="thread",  # Default
+        )
+    ],
+)
+```
 
-  ```python Baseten theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  from deepagents import create_deep_agent
-  from langchain_quickjs import CodeInterpreterMiddleware
+```python Baseten theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+from deepagents import create_deep_agent
+from langchain_quickjs import CodeInterpreterMiddleware
 
-  agent = create_deep_agent(
-      model="baseten:zai-org/GLM-5.2",
-      middleware=[
-          CodeInterpreterMiddleware(
-              mode="thread",  # Default
-          )
-      ],
-  )
-  ```
+agent = create_deep_agent(
+    model="baseten:zai-org/GLM-5.2",
+    middleware=[
+        CodeInterpreterMiddleware(
+            mode="thread",  # Default
+        )
+    ],
+)
+```
 
-  ```python Ollama theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  from deepagents import create_deep_agent
-  from langchain_quickjs import CodeInterpreterMiddleware
+```python Ollama theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+from deepagents import create_deep_agent
+from langchain_quickjs import CodeInterpreterMiddleware
 
-  agent = create_deep_agent(
-      model="ollama:north-mini-code-1.0",
-      middleware=[
-          CodeInterpreterMiddleware(
-              mode="thread",  # Default
-          )
-      ],
-  )
-  ```
-</CodeGroup>
+agent = create_deep_agent(
+    model="ollama:north-mini-code-1.0",
+    middleware=[
+        CodeInterpreterMiddleware(
+            mode="thread",  # Default
+        )
+    ],
+)
+```
 
-由于解释器快照存储在图形状态中，因此 [checkpointer](/oss/python/langgraph/checkpointers) 也会在检查点历史记录中捕获它们。当您需要耐用螺纹或[time travel](/oss/python/langgraph/use-time-travel)时添加一个：
+由于解释器快照存储在图形状态中，因此 [checkpointer](/oss/python/langgraph/checkpointers) 也会在检查点历史记录中捕获它们。当您需要耐用螺纹或[time travel](/oss/python/langgraph/use-time-travel)时添加一根：
 
-<CodeGroup>
-  ```python Google theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  from deepagents import create_deep_agent
-  from langchain_quickjs import CodeInterpreterMiddleware
-  from langgraph.checkpoint.memory import MemorySaver
+```python Google theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+from deepagents import create_deep_agent
+from langchain_quickjs import CodeInterpreterMiddleware
+from langgraph.checkpoint.memory import MemorySaver
 
-  agent = create_deep_agent(
-      model="google_genai:gemini-3.6-flash",
-      checkpointer=MemorySaver(),
-      middleware=[CodeInterpreterMiddleware(mode="thread")],
-  )
-  ```
+agent = create_deep_agent(
+    model="google_genai:gemini-3.6-flash",
+    checkpointer=MemorySaver(),
+    middleware=[CodeInterpreterMiddleware(mode="thread")],
+)
+```
 
-  ```python OpenAI theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  from deepagents import create_deep_agent
-  from langchain_quickjs import CodeInterpreterMiddleware
-  from langgraph.checkpoint.memory import MemorySaver
+```python OpenAI theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+from deepagents import create_deep_agent
+from langchain_quickjs import CodeInterpreterMiddleware
+from langgraph.checkpoint.memory import MemorySaver
 
-  agent = create_deep_agent(
-      model="openai:gpt-5.5",
-      checkpointer=MemorySaver(),
-      middleware=[CodeInterpreterMiddleware(mode="thread")],
-  )
-  ```
+agent = create_deep_agent(
+    model="openai:gpt-5.5",
+    checkpointer=MemorySaver(),
+    middleware=[CodeInterpreterMiddleware(mode="thread")],
+)
+```
 
-  ```python Anthropic theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  from deepagents import create_deep_agent
-  from langchain_quickjs import CodeInterpreterMiddleware
-  from langgraph.checkpoint.memory import MemorySaver
+```python Anthropic theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+from deepagents import create_deep_agent
+from langchain_quickjs import CodeInterpreterMiddleware
+from langgraph.checkpoint.memory import MemorySaver
 
-  agent = create_deep_agent(
-      model="anthropic:claude-sonnet-5",
-      checkpointer=MemorySaver(),
-      middleware=[CodeInterpreterMiddleware(mode="thread")],
-  )
-  ```
+agent = create_deep_agent(
+    model="anthropic:claude-sonnet-5",
+    checkpointer=MemorySaver(),
+    middleware=[CodeInterpreterMiddleware(mode="thread")],
+)
+```
 
-  ```python OpenRouter theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  from deepagents import create_deep_agent
-  from langchain_quickjs import CodeInterpreterMiddleware
-  from langgraph.checkpoint.memory import MemorySaver
+```python OpenRouter theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+from deepagents import create_deep_agent
+from langchain_quickjs import CodeInterpreterMiddleware
+from langgraph.checkpoint.memory import MemorySaver
 
-  agent = create_deep_agent(
-      model="openrouter:z-ai/glm-5.2",
-      checkpointer=MemorySaver(),
-      middleware=[CodeInterpreterMiddleware(mode="thread")],
-  )
-  ```
+agent = create_deep_agent(
+    model="openrouter:z-ai/glm-5.2",
+    checkpointer=MemorySaver(),
+    middleware=[CodeInterpreterMiddleware(mode="thread")],
+)
+```
 
-  ```python Fireworks theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  from deepagents import create_deep_agent
-  from langchain_quickjs import CodeInterpreterMiddleware
-  from langgraph.checkpoint.memory import MemorySaver
+```python Fireworks theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+from deepagents import create_deep_agent
+from langchain_quickjs import CodeInterpreterMiddleware
+from langgraph.checkpoint.memory import MemorySaver
 
-  agent = create_deep_agent(
-      model="fireworks:accounts/fireworks/models/glm-5p2",
-      checkpointer=MemorySaver(),
-      middleware=[CodeInterpreterMiddleware(mode="thread")],
-  )
-  ```
+agent = create_deep_agent(
+    model="fireworks:accounts/fireworks/models/glm-5p2",
+    checkpointer=MemorySaver(),
+    middleware=[CodeInterpreterMiddleware(mode="thread")],
+)
+```
 
-  ```python Baseten theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  from deepagents import create_deep_agent
-  from langchain_quickjs import CodeInterpreterMiddleware
-  from langgraph.checkpoint.memory import MemorySaver
+```python Baseten theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+from deepagents import create_deep_agent
+from langchain_quickjs import CodeInterpreterMiddleware
+from langgraph.checkpoint.memory import MemorySaver
 
-  agent = create_deep_agent(
-      model="baseten:zai-org/GLM-5.2",
-      checkpointer=MemorySaver(),
-      middleware=[CodeInterpreterMiddleware(mode="thread")],
-  )
-  ```
+agent = create_deep_agent(
+    model="baseten:zai-org/GLM-5.2",
+    checkpointer=MemorySaver(),
+    middleware=[CodeInterpreterMiddleware(mode="thread")],
+)
+```
 
-  ```python Ollama theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  from deepagents import create_deep_agent
-  from langchain_quickjs import CodeInterpreterMiddleware
-  from langgraph.checkpoint.memory import MemorySaver
+```python Ollama theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+from deepagents import create_deep_agent
+from langchain_quickjs import CodeInterpreterMiddleware
+from langgraph.checkpoint.memory import MemorySaver
 
-  agent = create_deep_agent(
-      model="ollama:north-mini-code-1.0",
-      checkpointer=MemorySaver(),
-      middleware=[CodeInterpreterMiddleware(mode="thread")],
-  )
-  ```
-</CodeGroup>
+agent = create_deep_agent(
+    model="ollama:north-mini-code-1.0",
+    checkpointer=MemorySaver(),
+    middleware=[CodeInterpreterMiddleware(mode="thread")],
+)
+```
 
 设置 `mode="turn"` 仅在一个回合内保留解释器状态，或设置 `mode="call"` 在每个 `eval` 上进行新的 REPL。
 
@@ -520,21 +508,21 @@ reviews.join("\n\n");
 |文件系统访问 |没有 |通过 PTC 许可名单添加 [built-in filesystem tools](/oss/python/deepagents/overview#virtual-filesystem-access) |
 |网络接入|没有 |通过PTC公开特定的网络工具|
 |挂钟或日期时间访问 |没有 |如果需要，公开显式时间工具 |
-| Shell 命令、软件包安装、测试、操作系统级执行 |没有 |使用 [sandbox backend](/oss/python/deepagents/sandboxes) |
-
-<Note>
-  **代码执行如何工作**
-
-  解释器代码在编译为 WebAssembly 的 QuickJS 中运行，由 [⟦T79⟧](https://github.com/langchain-ai/quickjs-rs) 提供。 WebAssembly 沙箱是隔离边界：JavaScript 在来宾的线性内存中执行，无法读取或写入主机进程的内存。每个 LangGraph 线程都有自己的 WebAssembly 实例，因此一个线程上的解释器状态无法到达另一个线程。沙箱在 [wasmtime](https://wasmtime.dev/) 上的主机进程内运行，因此 wasmtime 漏洞是沙箱之外的剩余路径。保持`wasmtime`更新。对于敌对的多租户工作负载，还可以在隔离的工作进程或容器中运行代理。详情请参阅`quickjs-rs`[Security guide](https://github.com/langchain-ai/quickjs-rs#security)。
-
-  沙箱包含引擎，而不是您赋予它的功能。解释器代码可以调用桥接到其中的每个工具，因此请缩小 PTC 许可名单的范围。
-</Note>
+| Shell 命令、软件包安装、测试、操作系统级执行 |没有 |使用 [sandbox backend](/oss/python/deepagents/sandboxes) |> [!注意]
+>
+> **代码执行如何工作**
+>
+> 解释器代码在编译为 WebAssembly 的 QuickJS 中运行，由 [⟦T79⟧](https://github.com/langchain-ai/quickjs-rs) 提供。 WebAssembly 沙箱是隔离边界：JavaScript 在来宾的线性内存中执行，无法读取或写入主机进程的内存。每个 LangGraph 线程都有自己的 WebAssembly 实例，因此一个线程上的解释器状态无法到达另一个线程。
+>
+> 沙箱在 [wasmtime](https://wasmtime.dev/) 上的主机进程内运行，因此 wasmtime 漏洞是沙箱之外的剩余路径。保持`wasmtime`更新。对于敌对的多租户工作负载，还可以在隔离的工作进程或容器中运行代理。详情请参见`quickjs-rs`[Security guide](https://github.com/langchain-ai/quickjs-rs#security)。
+>
+> 沙箱包含引擎，而不是您赋予它的功能。解释器代码可以调用桥接到其中的每个工具，因此请缩小 PTC 许可名单的范围。
 
 ## 配置
 
 `CodeInterpreterMiddleware`接受以下选项：|夸格 |默认 |目的|
 | - | - | - |
-| `memory_limit` | `64 * 1024 * 1024` <br />(64 MB) |每个线程的 QuickJS 堆内存上限。 |
+| `memory_limit` | `64 * 1024 * 1024` (64 MB) |每个线程的 QuickJS 堆内存上限。 |
 | `timeout` | `5.0` |每个 `eval` 调用的超时限制（以秒为单位）。 |
 | `tool_name` | `"eval"` |暴露给模型的解释器工具的名称。 |
 | `capture_console` | `True` |在工具响应中捕获 `console.log`、`console.warn` 和 `console.error`。设置为 `False` 以丢弃控制台输出。 |
@@ -542,15 +530,9 @@ reviews.join("\n\n");
 | `ptc` | `None` |在解释器内公开为 `tools.*` 的工具名称或 `BaseTool` 实例的白名单。省略禁用。参见[Enable PTC](#enable-ptc)。 |
 | `max_ptc_calls` | `256` |每个 `eval` 允许最多 `tools.*` 调用。仅在受信任的环境中设置为 `None`。参见[Programmatic tool calling (PTC)](#programmatic-tool-calling-ptc)和[Security](#security)。 |
 | `subagents` | `True` |当代理有子代理时，公开内置的`task()`全局。设置为 `False` 要求通过普通 `task` 工具调度。参见[Dynamic subagents](#dynamic-subagents)。 |
-| `mode` | `"thread"` |控制解释器持久性：`"thread"`（跨回合）、`"turn"`（一回合内）或`"call"`（每个`eval`的新鲜REPL）。参见[Persistence](#persistence)。 |
+| `mode` | `"thread"` |控制解释器持久性：`"thread"`（跨回合）、`"turn"`（一回合内）或`"call"`（每个`eval`的新鲜 REPL）。参见[Persistence](#persistence)。 |
 | `max_snapshot_bytes` | `None` |删除大于此字节限制的快照。默认为 `memory_limit`。参见[Persistence](#persistence)。 |
 
-***<div>
-  <Callout icon="terminal-2">
-    [Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
-  </Callout>
+***[Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
 
-  <Callout icon="edit">
-    [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/oss/deepagents/interpreters.mdx) 或 [file an issue](https://github.com/langchain-ai/docs/issues/new/choose)。
-  </Callout>
-</div>
+[Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/oss/deepagents/interpreters.mdx) 或 [file an issue](https://github.com/langchain-ai/docs/issues/new/choose)。

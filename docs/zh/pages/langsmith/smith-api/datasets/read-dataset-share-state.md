@@ -5,4 +5,6 @@
 # 读取数据集共享状态
 
 /langsmith/langsmith-platform-openapi.json 获取 /api/v1/datasets/{dataset_id}/share
-获取共享数据集的状态
+获取数据集的共享令牌。
+
+当数据集不共享时返回 null。

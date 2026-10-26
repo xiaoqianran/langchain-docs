@@ -8,8 +8,6 @@
 
 推理代币揭示了OpenAI的GPT-5和Anthropic的Claude等高级模型的内部思维过程，具有扩展思维。这些模型生成结构化内容块，将推理与最终答案分开，让您构建显示模型“如何”得出响应的 UI。
 
-<PatternEmbed />
-
 ## 什么是推理标记？
 
 当具有推理能力的模型处理提示时，它们会生成两种不同类型的内容：
@@ -27,9 +25,9 @@
 { type: "text", text: "The answer is 42." }
 ```
 
-<Note>
-  并非所有模型都会产生推理标记。此模式特别适用于支持扩展思维或思维链输出的模型。标准聊天模型仅返回文本块。
-</Note>
+> [!注意]
+>
+> 并非所有模型都会产生推理标记。此模式特别适用于支持扩展思维或思维链输出的模型。标准聊天模型仅返回文本块。
 
 ## 用例* **透明度**：向用户展示模型的推理过程，以建立对其答案的信任
 * **调试**：检查模型的思维过程以确定哪里出了问题
@@ -69,126 +67,124 @@ function extractBlocks(msg: AIMessage) {
 `AIMessage.isInstance`，然后将每个辅助消息传递给一个组件
 阅读`contentBlocks`并将推理与文本分开。将 `isStreaming` 设置为开启
 当 `stream.isLoading` 为 true 时，最后一条消息因此思维块更新为
-代币到达。<Info>
-  代码示例使用 `useStream<typeof myAgent>` 来实现类型安全的流状态。请参阅 [Python](/oss/python/langchain/frontend/overview#type-inference) 或 [JavaScript](/oss/javascript/langchain/frontend/overview#type-inference) 后端的类型推断。
-</Info>
+代币到达。> [!注意]
+>
+> 代码示例使用 `useStream<typeof myAgent>` 来实现类型安全的流状态。请参阅 [Python](/oss/python/langchain/frontend/overview#type-inference) 或 [JavaScript](/oss/javascript/langchain/frontend/overview#type-inference) 后端的类型推断。
 
-<CodeGroup>
-  ```tsx React theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  import { useStream } from "@langchain/react";
-  import { AIMessage, HumanMessage } from "langchain";
+```tsx React theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+import { useStream } from "@langchain/react";
+import { AIMessage, HumanMessage } from "langchain";
 
-  function Chat() {
-    const stream = useStream<typeof myAgent>({
-      apiUrl: "http://localhost:2024",
-      assistantId: "reasoning",
-    });
+function Chat() {
+  const stream = useStream<typeof myAgent>({
+    apiUrl: "http://localhost:2024",
+    assistantId: "reasoning",
+  });
 
-    return (
-      <div className="messages">
-        {stream.messages.map((msg, i) => {
-          if (HumanMessage.isInstance(msg)) {
-            return <HumanBubble key={i} text={msg.text} />;
-          }
-          if (AIMessage.isInstance(msg)) {
-            return (
-              <AIResponse
-                key={i}
-                message={msg}
-                isStreaming={stream.isLoading && i === stream.messages.length - 1}
-              />
-            );
-          }
-          return null;
-        })}
-      </div>
-    );
-  }
-  ```
+  return (
+    <div className="messages">
+      {stream.messages.map((msg, i) => {
+        if (HumanMessage.isInstance(msg)) {
+          return <HumanBubble key={i} text={msg.text} />;
+        }
+        if (AIMessage.isInstance(msg)) {
+          return (
+            <AIResponse
+              key={i}
+              message={msg}
+              isStreaming={stream.isLoading && i === stream.messages.length - 1}
+            />
+          );
+        }
+        return null;
+      })}
+    </div>
+  );
+}
+```
 
-  ```vue Vue theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  <script setup lang="ts">
-  import { useStream } from "@langchain/vue";
+```vue Vue theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+<script setup lang="ts">
+import { useStream } from "@langchain/vue";
+import { AIMessage, HumanMessage } from "langchain";
+
+const stream = useStream<typeof myAgent>({
+  apiUrl: "http://localhost:2024",
+  assistantId: "reasoning",
+});
+</script>
+
+<template>
+  <div class="messages">
+    <template v-for="(msg, i) in stream.messages.value" :key="i">
+      <HumanBubble v-if="HumanMessage.isInstance(msg)" :text="msg.text" />
+      <AIResponse
+        v-else-if="AIMessage.isInstance(msg)"
+        :message="msg"
+        :isStreaming="stream.isLoading.value && i === stream.messages.value.length - 1"
+      />
+    </template>
+  </div>
+</template>
+```
+
+```svelte Svelte theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+<script lang="ts">
+  import { useStream } from "@langchain/svelte";
   import { AIMessage, HumanMessage } from "langchain";
 
   const stream = useStream<typeof myAgent>({
     apiUrl: "http://localhost:2024",
     assistantId: "reasoning",
   });
-  </script>
+</script>
 
-  <template>
+<div class="messages">
+  {#each stream.messages as msg, i}
+    {#if HumanMessage.isInstance(msg)}
+      <HumanBubble text={msg.text} />
+    {:else if AIMessage.isInstance(msg)}
+      <AIResponse
+        message={msg}
+        isStreaming={stream.isLoading && i === stream.messages.length - 1}
+      />
+    {/if}
+  {/each}
+</div>
+```
+
+```ts Angular theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+import { Component } from "@angular/core";
+import { injectStream } from "@langchain/angular";
+import { AIMessage, HumanMessage } from "langchain";
+
+@Component({
+  selector: "app-chat",
+  template: `
     <div class="messages">
-      <template v-for="(msg, i) in stream.messages.value" :key="i">
-        <HumanBubble v-if="HumanMessage.isInstance(msg)" :text="msg.text" />
-        <AIResponse
-          v-else-if="AIMessage.isInstance(msg)"
-          :message="msg"
-          :isStreaming="stream.isLoading.value && i === stream.messages.value.length - 1"
-        />
-      </template>
-    </div>
-  </template>
-  ```
-
-  ```svelte Svelte theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  <script lang="ts">
-    import { useStream } from "@langchain/svelte";
-    import { AIMessage, HumanMessage } from "langchain";
-
-    const stream = useStream<typeof myAgent>({
-      apiUrl: "http://localhost:2024",
-      assistantId: "reasoning",
-    });
-  </script>
-
-  <div class="messages">
-    {#each stream.messages as msg, i}
-      {#if HumanMessage.isInstance(msg)}
-        <HumanBubble text={msg.text} />
-      {:else if AIMessage.isInstance(msg)}
-        <AIResponse
-          message={msg}
-          isStreaming={stream.isLoading && i === stream.messages.length - 1}
-        />
-      {/if}
-    {/each}
-  </div>
-  ```
-
-  ```ts Angular theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  import { Component } from "@angular/core";
-  import { injectStream } from "@langchain/angular";
-  import { AIMessage, HumanMessage } from "langchain";
-
-  @Component({
-    selector: "app-chat",
-    template: `
-      <div class="messages">
-        @for (msg of stream.messages(); track $index) {
-          @if (isHuman(msg)) {
-            <human-bubble [text]="msg.text" />
-          } @else if (isAI(msg)) {
-            <ai-response
-              [message]="msg"
-              [isStreaming]="stream.isLoading() && $index === stream.messages().length - 1"
-            />
-          }
+      @for (msg of stream.messages(); track $index) {
+        @if (isHuman(msg)) {
+          <human-bubble [text]="msg.text" />
+        } @else if (isAI(msg)) {
+          <ai-response
+            [message]="msg"
+            [isStreaming]="stream.isLoading() && $index === stream.messages().length - 1"
+          />
         }
-      </div>
-    `,
-  })
-  export class ChatComponent {
-    stream = injectStream<typeof myAgent>({
-      apiUrl: "http://localhost:2024",
-      assistantId: "reasoning",
-    });
+      }
+    </div>
+  `,
+})
+export class ChatComponent {
+  stream = injectStream<typeof myAgent>({
+    apiUrl: "http://localhost:2024",
+    assistantId: "reasoning",
+  });
 
-    isHuman = HumanMessage.isInstance;
-    isAI = AIMessage.isInstance;
-  }
-  ```
-</CodeGroup>
+  isHuman = HumanMessage.isInstance;
+  isAI = AIMessage.isInstance;
+}
+```
 
 ## 构建 ThinkingBubble 组件
 
@@ -331,12 +327,6 @@ message.contentBlocks.forEach((block) => {
 
 ***
 
-<div>
-  <Callout icon="terminal-2">
-    [Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
-  </Callout>
+[Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
 
-  <Callout icon="edit">
-    [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/oss/langchain/frontend/reasoning-tokens.mdx) 或 [file an issue](https://github.com/langchain-ai/docs/issues/new/choose)。
-  </Callout>
-</div>
+[Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/oss/langchain/frontend/reasoning-tokens.mdx) 或 [file an issue](https://github.com/langchain-ai/docs/issues/new/choose)。

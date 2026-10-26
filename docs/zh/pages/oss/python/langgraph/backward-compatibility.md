@@ -4,9 +4,9 @@
 
 # 向后兼容性
 
-更新生产中的 LangGraph 图形代码，而不会中断运行中的运行。
+更新生产中的LangGraph图形代码，而不会中断运行中的运行。
 
-软件需要在生产中改变。新的需求、错误修复和重构最终都会出现在您的图形代码中。因为 LangGraph 针对现有线程的 [persisted](/oss/python/langgraph/persistence) 状态运行最新部署的图，所以您发布的每个更改实际上都是相对于现有检查点的向后兼容的 API 更改。
+软件需要在生产中改变。新的需求、错误修复和重构最终都会出现在您的图形代码中。由于 LangGraph 针对现有线程的 [persisted](/oss/python/langgraph/persistence) 状态运行最新部署的图，因此您发布的每个更改实际上都是相对于现有检查点的向后兼容的 API 更改。
 
 与将运行固定到其开始的代码版本的工作流引擎不同，LangGraph将最新的图表立即应用于*每个*线程，包括新线程和从检查点恢复的线程。这很方便：错误修复无需仪式即可传播到飞行中的对话和代理。这还意味着您必须推断每个更改如何与在先前版本的代码下启动的运行交互。
 
@@ -14,13 +14,13 @@
 2. [Business compatibility](#business-compatibility)：不太常见；即使代码已更改，现有运行也应继续遵循旧的业务逻辑。
 3. [Non-determinism](#non-determinism)：仅适用于[Functional API](/oss/python/langgraph/functional-api)。
 
-<Tip>
-  有关运行时默认支持的图形拓扑和状态更改的简短摘要，请参阅[Graph migrations](/oss/python/langgraph/graph-api#graph-migrations)。本页的其余部分介绍了当更改超出支持集时可以应用的模式。
-</Tip>
+> [!提示]
+>
+> 有关运行时默认支持的图形拓扑和状态更改的简短摘要，请参阅[Graph migrations](/oss/python/langgraph/graph-api#graph-migrations)。本页的其余部分介绍了当更改超出支持集时可以应用的模式。
 
 ## 技术兼容性
 
-技术兼容性相当于微服务中 API 的重大更改。这里的“API”是图形代码和现有线程的[checkpointer](/oss/python/langgraph/checkpointers#checkpointer-libraries)已经保存的数据之间的契约。当线程恢复时，LangGraph反序列化保存的状态，按名称将其分派到节点，并期望该节点返回适合状态模式的值。
+技术兼容性相当于微服务中 API 的重大更改。这里的“API”是图形代码和现有线程的[checkpointer](/oss/python/langgraph/checkpointers#checkpointer-libraries)已经保存的数据之间的契约。当线程恢复时，LangGraph 反序列化保存的状态，按名称将其分派到节点，并期望该节点返回适合状态模式的值。
 
 常见技术故障：* **重命名或删除节点**，当线程暂停或即将进入该节点时，例如在 [⟦T2⟧](https://reference.langchain.com/python/langgraph/types/interrupt) 处或通过仍路由到旧名称的检查点条件边。恢复时，LangGraph无法通过保存的名称找到节点，并且运行失败。恢复运行的起点是执行停止的节点的开头，因此丢失的节点无处可恢复。
 * **重命名或删除旧检查点仍然包含的或下游节点仍然读取的状态密钥**。
@@ -132,12 +132,6 @@ graph = builder.compile()
 
 ***
 
-<div>
-  <Callout icon="terminal-2">
-    [Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
-  </Callout>
+[Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
 
-  <Callout icon="edit">
-    [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/oss/langgraph/backward-compatibility.mdx) 或 [file an issue](https://github.com/langchain-ai/docs/issues/new/choose)。
-  </Callout>
-</div>
+[Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/oss/langgraph/backward-compatibility.mdx) 或 [file an issue](https://github.com/langchain-ai/docs/issues/new/choose)。

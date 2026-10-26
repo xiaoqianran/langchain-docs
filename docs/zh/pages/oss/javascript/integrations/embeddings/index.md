@@ -329,7 +329,7 @@ LangChain通过[Embeddings](https://reference.langchain.com/javascript/langchain
 
 嵌入可以被存储或临时缓存以避免需要重新计算它们。
 
-缓存嵌入可以使用`CacheBackedEmbeddings`来完成。该包装器将嵌入存储在键值存储中，其中对文本进行哈希处理，并将哈希值用作缓存中的键。初始化`CacheBackedEmbeddings`的主要支持方式是`fromBytesStore`。它需要以下参数：
+缓存嵌入可以使用`CacheBackedEmbeddings`来完成。该包装器将嵌入存储在键值存储中，其中对文本进行哈希处理，并将哈希值用作缓存中的键。初始化`CacheBackedEmbeddings`的主要受支持方式是`fromBytesStore`。它需要以下参数：
 
 * **underlyingEmbeddings**：用于嵌入的嵌入器。
 * **documentEmbeddingStore**：任何用于缓存文档嵌入的[⟦T50⟧](/oss/javascript/integrations/stores/)。
@@ -371,26 +371,27 @@ console.log(`Cached creation time: ${Date.now() - tic}ms`);
 
 |整合 |下载 |
 | :-| :-|
-| [⟦T55⟧](/oss/javascript/integrations/embeddings/azure_openai) | [  ⟦T75⟧](https://www.npmjs.com/package/@langchain/openai) |
-| [⟦T56⟧](/oss/javascript/integrations/embeddings/openai) | [  ⟦T76⟧](https://www.npmjs.com/package/@langchain/openai) |
-| [⟦T57⟧](/oss/javascript/integrations/embeddings/bedrock) | [  ⟦T77⟧](https://www.npmjs.com/package/@langchain/aws) |
-| [⟦T58⟧](/oss/javascript/integrations/embeddings/google_generative_ai) | [  ⟦T78⟧](https://www.npmjs.com/package/@langchain/google-genai) |
-| [⟦T59⟧](/oss/javascript/integrations/embeddings/google_vertex_ai) | [  ⟦T79⟧](https://www.npmjs.com/package/@langchain/google-vertexai) |
-| [⟦T60⟧](/oss/javascript/integrations/embeddings/ollama) | [  ⟦T80⟧](https://www.npmjs.com/package/@langchain/ollama) |
-| [⟦T61⟧](/oss/javascript/integrations/embeddings/mistralai) | [  ⟦T81⟧](https://www.npmjs.com/package/@langchain/mistralai) |
-| [⟦T62⟧](/oss/javascript/integrations/embeddings/pinecone) | [  ⟦T82⟧](https://www.npmjs.com/package/@langchain/pinecone) |
-| [⟦T63⟧](/oss/javascript/integrations/embeddings/voyageai) | [  ⟦T83⟧](https://www.npmjs.com/package/@langchain/mongodb) |
-| [⟦T64⟧](/oss/javascript/integrations/embeddings/cohere) | [  ⟦T84⟧](https://www.npmjs.com/package/@langchain/cohere) |
-| [⟦T65⟧](/oss/javascript/integrations/embeddings/baidu_qianfan) | [  ⟦T85⟧](https://www.npmjs.com/package/@langchain/baidu-qianfan) |
-| [⟦T66⟧](/oss/javascript/integrations/embeddings/nomic) | [  ⟦T86⟧](https://www.npmjs.com/package/@langchain/nomic) |
-| [⟦T67⟧](/oss/javascript/integrations/embeddings/cloudflare_ai) | [  ⟦T87⟧](https://www.npmjs.com/package/@langchain/cloudflare) |
-| [⟦T68⟧](/oss/javascript/integrations/embeddings/fireworks) | [  ⟦T88⟧](https://www.npmjs.com/package/@langchain/fireworks) |
-| [⟦T69⟧](/oss/javascript/integrations/embeddings/ibm) | [  ⟦T89⟧](https://www.npmjs.com/package/@langchain/ibm) |
-| [⟦T70⟧](/oss/javascript/integrations/embeddings/togetherai) | [  ⟦T90⟧](https://www.npmjs.com/package/@langchain/together-ai) |
-| [⟦T71⟧](/oss/javascript/integrations/embeddings/mixedbread_ai) | [  ⟦T91⟧](https://www.npmjs.com/package/@langchain/mixedbread-ai) |
-| [⟦T72⟧](https://scx.ai/) | [  ⟦T92⟧](https://www.npmjs.com/package/@scx-ai/langchain) |
-| [⟦T73⟧](/oss/javascript/integrations/embeddings/minimax) |不适用 |
-| [⟦T74⟧](/oss/javascript/integrations/embeddings/oracleai) |不适用 |
+| [⟦T55⟧](/oss/javascript/integrations/embeddings/azure_openai) | [  ⟦T76⟧](https://www.npmjs.com/package/@langchain/openai) |
+| [⟦T56⟧](/oss/javascript/integrations/embeddings/openai) | [  ⟦T77⟧](https://www.npmjs.com/package/@langchain/openai) |
+| [⟦T57⟧](/oss/javascript/integrations/embeddings/google_generative_ai) | [  ⟦T78⟧](https://www.npmjs.com/package/@langchain/google-genai) |
+| [⟦T58⟧](/oss/javascript/integrations/embeddings/bedrock) | [  ⟦T79⟧](https://www.npmjs.com/package/@langchain/aws) |
+| [⟦T59⟧](/oss/javascript/integrations/embeddings/google_vertex_ai) | [  ⟦T80⟧](https://www.npmjs.com/package/@langchain/google-vertexai) |
+| [⟦T60⟧](/oss/javascript/integrations/embeddings/ollama) | [  ⟦T81⟧](https://www.npmjs.com/package/@langchain/ollama) |
+| [⟦T61⟧](/oss/javascript/integrations/embeddings/mistralai) | [  ⟦T82⟧](https://www.npmjs.com/package/@langchain/mistralai) |
+| [⟦T62⟧](/oss/javascript/integrations/embeddings/pinecone) | [  ⟦T83⟧](https://www.npmjs.com/package/@langchain/pinecone) |
+| [⟦T63⟧](/oss/javascript/integrations/embeddings/voyageai) | [  ⟦T84⟧](https://www.npmjs.com/package/@langchain/mongodb) |
+| [⟦T64⟧](/oss/javascript/integrations/embeddings/cohere) | [  ⟦T85⟧](https://www.npmjs.com/package/@langchain/cohere) |
+| [⟦T65⟧](/oss/javascript/integrations/embeddings/fireworks) | [  ⟦T86⟧](https://www.npmjs.com/package/@langchain/fireworks) |
+| [⟦T66⟧](/oss/javascript/integrations/embeddings/nomic) | [  ⟦T87⟧](https://www.npmjs.com/package/@langchain/nomic) |
+| [⟦T67⟧](/oss/javascript/integrations/embeddings/baidu_qianfan) | [  ⟦T88⟧](https://www.npmjs.com/package/@langchain/baidu-qianfan) |
+| [⟦T68⟧](/oss/javascript/integrations/embeddings/cloudflare_ai) | [  ⟦T89⟧](https://www.npmjs.com/package/@langchain/cloudflare) |
+| [⟦T69⟧](/oss/javascript/integrations/embeddings/togetherai) | [  ⟦T90⟧](https://www.npmjs.com/package/@langchain/together-ai) |
+| [⟦T70⟧](/oss/javascript/integrations/embeddings/ibm) | [  ⟦T91⟧](https://www.npmjs.com/package/@langchain/ibm) |
+| [⟦T71⟧](/oss/javascript/integrations/embeddings/mixedbread_ai) | [  ⟦T92⟧](https://www.npmjs.com/package/@langchain/mixedbread-ai) |
+| [⟦T72⟧](https://scx.ai/) | [  ⟦T93⟧](https://www.npmjs.com/package/@scx-ai/langchain) |
+| [⟦T73⟧](https://docs.empiriolabs.ai/integrations#langchain) |不适用 |
+| [⟦T74⟧](/oss/javascript/integrations/embeddings/minimax) |不适用 |
+| [⟦T75⟧](/oss/javascript/integrations/embeddings/oracleai) |不适用 |
 
 ***[Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
 

@@ -7,7 +7,7 @@
 构建可以规划、使用子代理并利用文件系统来执行复杂任务的代理
 
 Deep Agents 是开始构建由 LLM 支持的代理和应用程序的最简单方法 - 具有用于上下文管理、子代理生成和长期内存的文件系统内置功能。
-[task planning](#task-planning) 和 [skills](#skills) 等可选功能可在您的用例需要时扩展线束。
+当您的用例需要时，[task planning](#task-planning)和[skills](#skills)等可选功能可扩展线束。
 您可以将深度代理用于任何任务，包括复杂的多步骤任务。
 
 Deep Agents具有以下功能：
@@ -23,190 +23,184 @@ Deep Agents具有以下功能：
 
 ## 尝试一下
 
-<PatternEmbed />
-
 ## 快速入门
 
-<CodeGroup>
-  ```python Google theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  from deepagents import create_deep_agent
+```python Google theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+from deepagents import create_deep_agent
 
 
-  def get_weather(city: str) -> str:
-      """Get weather for a given city."""
-      return f"It's always sunny in {city}!"
+def get_weather(city: str) -> str:
+    """Get weather for a given city."""
+    return f"It's always sunny in {city}!"
 
 
-  agent = create_deep_agent(
-      model="google_genai:gemini-3.6-flash",
-      tools=[get_weather],
-      system_prompt="You are a helpful assistant",
-  )
+agent = create_deep_agent(
+    model="google_genai:gemini-3.6-flash",
+    tools=[get_weather],
+    system_prompt="You are a helpful assistant",
+)
 
-  # Run the agent
-  agent.invoke(
-      {"messages": [{"role": "user", "content": "what is the weather in sf"}]}
-  )
-  ```
+# Run the agent
+agent.invoke(
+    {"messages": [{"role": "user", "content": "what is the weather in sf"}]}
+)
+```
 
-  ```python OpenAI theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  from deepagents import create_deep_agent
-
-
-  def get_weather(city: str) -> str:
-      """Get weather for a given city."""
-      return f"It's always sunny in {city}!"
+```python OpenAI theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+from deepagents import create_deep_agent
 
 
-  agent = create_deep_agent(
-      model="openai:gpt-5.5",
-      tools=[get_weather],
-      system_prompt="You are a helpful assistant",
-  )
-
-  # Run the agent
-  agent.invoke(
-      {"messages": [{"role": "user", "content": "what is the weather in sf"}]}
-  )
-  ```
-
-  ```python Anthropic theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  from deepagents import create_deep_agent
+def get_weather(city: str) -> str:
+    """Get weather for a given city."""
+    return f"It's always sunny in {city}!"
 
 
-  def get_weather(city: str) -> str:
-      """Get weather for a given city."""
-      return f"It's always sunny in {city}!"
+agent = create_deep_agent(
+    model="openai:gpt-5.5",
+    tools=[get_weather],
+    system_prompt="You are a helpful assistant",
+)
+
+# Run the agent
+agent.invoke(
+    {"messages": [{"role": "user", "content": "what is the weather in sf"}]}
+)
+```
+
+```python Anthropic theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+from deepagents import create_deep_agent
 
 
-  agent = create_deep_agent(
-      model="anthropic:claude-sonnet-5",
-      tools=[get_weather],
-      system_prompt="You are a helpful assistant",
-  )
-
-  # Run the agent
-  agent.invoke(
-      {"messages": [{"role": "user", "content": "what is the weather in sf"}]}
-  )
-  ``````python OpenRouter theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  from deepagents import create_deep_agent
+def get_weather(city: str) -> str:
+    """Get weather for a given city."""
+    return f"It's always sunny in {city}!"
 
 
-  def get_weather(city: str) -> str:
-      """Get weather for a given city."""
-      return f"It's always sunny in {city}!"
+agent = create_deep_agent(
+    model="anthropic:claude-sonnet-5",
+    tools=[get_weather],
+    system_prompt="You are a helpful assistant",
+)
+
+# Run the agent
+agent.invoke(
+    {"messages": [{"role": "user", "content": "what is the weather in sf"}]}
+)
+```
+
+```python OpenRouter theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+from deepagents import create_deep_agent
 
 
-  agent = create_deep_agent(
-      model="openrouter:z-ai/glm-5.2",
-      tools=[get_weather],
-      system_prompt="You are a helpful assistant",
-  )
-
-  # Run the agent
-  agent.invoke(
-      {"messages": [{"role": "user", "content": "what is the weather in sf"}]}
-  )
-  ```
-
-  ```python Fireworks theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  from deepagents import create_deep_agent
+def get_weather(city: str) -> str:
+    """Get weather for a given city."""
+    return f"It's always sunny in {city}!"
 
 
-  def get_weather(city: str) -> str:
-      """Get weather for a given city."""
-      return f"It's always sunny in {city}!"
+agent = create_deep_agent(
+    model="openrouter:z-ai/glm-5.2",
+    tools=[get_weather],
+    system_prompt="You are a helpful assistant",
+)
+
+# Run the agent
+agent.invoke(
+    {"messages": [{"role": "user", "content": "what is the weather in sf"}]}
+)
+```
+
+```python Fireworks theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+from deepagents import create_deep_agent
 
 
-  agent = create_deep_agent(
-      model="fireworks:accounts/fireworks/models/glm-5p2",
-      tools=[get_weather],
-      system_prompt="You are a helpful assistant",
-  )
-
-  # Run the agent
-  agent.invoke(
-      {"messages": [{"role": "user", "content": "what is the weather in sf"}]}
-  )
-  ```
-
-  ```python Baseten theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  from deepagents import create_deep_agent
+def get_weather(city: str) -> str:
+    """Get weather for a given city."""
+    return f"It's always sunny in {city}!"
 
 
-  def get_weather(city: str) -> str:
-      """Get weather for a given city."""
-      return f"It's always sunny in {city}!"
+agent = create_deep_agent(
+    model="fireworks:accounts/fireworks/models/glm-5p2",
+    tools=[get_weather],
+    system_prompt="You are a helpful assistant",
+)
+
+# Run the agent
+agent.invoke(
+    {"messages": [{"role": "user", "content": "what is the weather in sf"}]}
+)
+```
+
+```python Baseten theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+from deepagents import create_deep_agent
 
 
-  agent = create_deep_agent(
-      model="baseten:zai-org/GLM-5.2",
-      tools=[get_weather],
-      system_prompt="You are a helpful assistant",
-  )
-
-  # Run the agent
-  agent.invoke(
-      {"messages": [{"role": "user", "content": "what is the weather in sf"}]}
-  )
-  ```
-
-  ```python Ollama theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  from deepagents import create_deep_agent
+def get_weather(city: str) -> str:
+    """Get weather for a given city."""
+    return f"It's always sunny in {city}!"
 
 
-  def get_weather(city: str) -> str:
-      """Get weather for a given city."""
-      return f"It's always sunny in {city}!"
+agent = create_deep_agent(
+    model="baseten:zai-org/GLM-5.2",
+    tools=[get_weather],
+    system_prompt="You are a helpful assistant",
+)
+
+# Run the agent
+agent.invoke(
+    {"messages": [{"role": "user", "content": "what is the weather in sf"}]}
+)
+```
+
+```python Ollama theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+from deepagents import create_deep_agent
 
 
-  agent = create_deep_agent(
-      model="ollama:north-mini-code-1.0",
-      tools=[get_weather],
-      system_prompt="You are a helpful assistant",
-  )
+def get_weather(city: str) -> str:
+    """Get weather for a given city."""
+    return f"It's always sunny in {city}!"
 
-  # Run the agent
-  agent.invoke(
-      {"messages": [{"role": "user", "content": "what is the weather in sf"}]}
-  )
-  ```
-</CodeGroup>
 
-<Card title="View example trace" icon="chart-line" href="https://smith.langchain.com/public/44780f65-3414-46eb-8239-944c6ee5454f/r">
-  为此示例打开公共 LangSmith 运行。
-</Card>
+agent = create_deep_agent(
+    model="ollama:north-mini-code-1.0",
+    tools=[get_weather],
+    system_prompt="You are a helpful assistant",
+)
+
+# Run the agent
+agent.invoke(
+    {"messages": [{"role": "user", "content": "what is the weather in sf"}]}
+)
+```> **[View example trace](https://smith.langchain.com/public/44780f65-3414-46eb-8239-944c6ee5454f/r)**
+>
+> 为此示例打开公共 LangSmith 运行。
 
 请参阅 [Quickstart](/oss/python/deepagents/quickstart/) 和 [Customization guide](/oss/python/deepagents/customization/) 开始使用 Deep Agents 构建您自己的代理和应用程序。
 
-<Tip>
-  使用 [LangSmith](https://smith.langchain.com?utm_source=docs\&utm_medium=cta\&utm_campaign=langsmith-signup\&utm_content=oss-deepagents-overview) 跟踪请求、调试代理行为并评估输出。按照[observability quickstart](/langsmith/observability-quickstart)进行设置。准备好投入生产后，请参阅 [Going to production](/oss/python/deepagents/going-to-production) 了解 LangSmith 部署选项。
-</Tip>
+> [!提示]
+>
+> 使用 [LangSmith](https://smith.langchain.com?utm_source=docs\&utm_medium=cta\&utm_campaign=langsmith-signup\&utm_content=oss-deepagents-overview) 跟踪请求、调试代理行为并评估输出。按照[observability quickstart](/langsmith/observability-quickstart)进行设置。准备好投入生产后，请参阅 [Going to production](/oss/python/deepagents/going-to-production) 了解 LangSmith 部署选项。
 
 ## 核心能力
 
-<img alt="Agent harness capabilities by category" />
+![Agent harness capabilities by category](https://mintcdn.com/langchain-5e9cc07a/jtty0O--UJOKG0nK/oss/images/agent_harness_capabilities.svg?fit=max\&auto=format\&n=jtty0O--UJOKG0nK\&q=85\&s=0ff671d72badd0844826660dfcb04391)
 
 Deep Agents 是["agent harness"](/oss/python/concepts/products#agent-harnesses-like-the-deep-agents-sdk)。它与其他代理框架具有相同的核心工具调用循环，但具有使代理可靠地执行实际任务的内置功能：
 
-<CardGroup>
-  <Card title="Execution environment" icon="bolt" href="#execution-environment">
-    工具、虚拟文件系统、可选沙箱和 REPL（解释器）
-  </Card>
+> **[Execution environment](#execution-environment)**
+>
+> 工具、虚拟文件系统、可选沙箱和 REPL（解释器）
 
-  <Card title="Context management" icon="database" href="#context-management">
-    技能、记忆、总结、上下文卸载和提示缓存
-  </Card>
+> **[Context management](#context-management)**
+>
+> 技能、记忆、总结、上下文卸载和提示缓存
 
-  <Card title="Delegation" icon="sitemap" href="#delegation">
-    子代理生成和可选的任务规划
-  </Card>
+> **[Delegation](#delegation)**
+>
+> 子代理生成和可选的任务规划
 
-  <Card title="Steering" icon="user" href="#steering">
-    人机交互批准和中断
-  </Card>
-</CardGroup>
+> **[Steering](#steering)**
+>
+> 人机交互批准和中断
 
 [⟦T17⟧](https://pypi.org/project/deepagents/) 是一个独立的库，构建在 [LangChain](/oss/python/langchain/) 的代理核心构建块之上。它使用 [LangGraph](/oss/python/langgraph/) 运行时来实现持久执行、流式传输、人机交互和其他功能。[LangChain](/oss/python/langchain/) 是为您的代理提供核心构建块的框架。
 要了解有关 LangChain、LangGraph 和 Deep Agents 之间差异的更多信息，请参阅 [Frameworks, runtimes, and harnesses](/oss/python/concepts/products)。有关与 Anthropic 安全带的并排比较，请参阅 [Deep Agents vs. Claude Agent SDK](/oss/python/deepagents/comparison)。
@@ -251,67 +245,69 @@ agent = create_deep_agent(
 | `edit_file` |在文件中执行精确的字符串替换（使用全局替换模式）|
 | `delete` |递归删除文件或目录及其内容 |
 | `glob` |查找匹配模式的文件（例如，`**/*.py`）|
-| `grep` |使用多种输出模式搜索文件内容（仅文件、带上下文的内容或计数）|| `execute` |在环境中运行 shell 命令（仅适用于[sandbox backends](/oss/python/deepagents/sandboxes)）|
+| `grep` |使用多种输出模式搜索文件内容（仅文件、带有上下文的内容或计数）|| `execute` |在环境中运行 shell 命令（仅适用于[sandbox backends](/oss/python/deepagents/sandboxes)）|
 
-<Note>`delete`工具需要`deepagents>=0.7`。不支持删除的后端会自动从模型中隐藏该工具。</Note>
+> [!注意]
+>
+> `delete` 工具需要 `deepagents>=0.7`。不支持删除的后端会自动从模型中隐藏该工具。
 
-<Accordion title="Supported multimodal file extensions">
-  |类型 |扩展 |
-  | - | - |
-  | [Image](/oss/python/langchain/messages#multimodal) | `.png`、`.jpg`、`.jpeg`、`.gif`、`.webp`、`.heic`、`.heif` |
-  | [Video](/oss/python/langchain/messages#multimodal) | `.mp4`、`.mpeg`、`.mov`、`.avi`、`.flv`、`.mpg`、`.webm`、`.wmv`、`.3gpp` |
-  | [Audio](/oss/python/langchain/messages#multimodal) | `.wav`、`.mp3`、`.aiff`、`.aac`、`.ogg`、`.flac` |
-  | [File](/oss/python/langchain/messages#multimodal) | `.pdf`、`.ppt`、`.pptx` |
-</Accordion>
+> **支持的多模式文件扩展名**
+>
+> |类型 |扩展 |
+> | - | - |
+> | [Image](/oss/python/langchain/messages#multimodal) | `.png`、`.jpg`、`.jpeg`、`.gif`、`.webp`、`.heic`、`.heif` |
+> | [Video](/oss/python/langchain/messages#multimodal) | `.mp4`、`.mpeg`、`.mov`、`.avi`、`.flv`、`.mpg`、`.webm`、`.wmv`、`.3gpp` |
+> | [Audio](/oss/python/langchain/messages#multimodal) | `.wav`、`.mp3`、`.aiff`、`.aac`、`.ogg`、`.flac` |
+> | [File](/oss/python/langchain/messages#multimodal) | `.pdf`、`.ppt`、`.pptx` |
 
-<Accordion title="Running without the default filesystem tools" icon="ban">
-  要从模型中隐藏上面列出的文件系统工具，请使用 `excluded_tools` 注册 [harness profile](/oss/python/deepagents/profiles#harness-profiles)：
-
-  ```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  from deepagents import HarnessProfile, register_harness_profile
-
-  register_harness_profile(
-      "anthropic:claude-sonnet-4-6",
-      HarnessProfile(
-          excluded_tools=frozenset(
-              {"ls", "read_file", "write_file", "edit_file", "delete", "glob", "grep"}
-          ),
-      ),
-  )
-  ```
-
-  通过 `excluded_middleware` 删除 [⟦T57⟧](https://reference.langchain.com/python/deepagents/middleware/filesystem/FilesystemMiddleware) 本身被故意拒绝——它需要 [Deep Agents stack](/oss/python/deepagents/customization#deep-agents-stack) 中的脚手架。使用 `excluded_tools` 仅隐藏模型可见的工具表面并将中间件保留在适当的位置。要删除 `task` 工具，请参阅[Running without subagents](/oss/python/deepagents/subagents#running-without-subagents)。
-</Accordion>
-
-<Accordion title="Restricting filesystem tools" icon="filter">
-  <Note>
-    `FilesystemMiddleware` 上的 `tools` 允许列表需要 `deepagents>=0.7`。
-  </Note>
-
-  要仅公开上面列出的文件系统工具的子集，而不是将它们全部隐藏，请将 `tools` 允许列表传递给 [⟦T65⟧](https://reference.langchain.com/python/deepagents/middleware/filesystem/FilesystemMiddleware) 并通过 `middleware=` 提供实例。列表中未列出的任何内置文件系统工具都将从模型的工具列表中删除。
-
-  ```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  from deepagents import create_deep_agent
-  from deepagents.middleware import FilesystemMiddleware
-
-  # Read-only agent: write_file, edit_file, delete, and execute are never shown
-  agent = create_deep_agent(
-      model="claude-sonnet-4-6",
-      middleware=[
-          FilesystemMiddleware(backend=backend, tools=["read_file", "ls", "glob", "grep"]),
-      ],
-  )
-  ````read_file` 必须始终包含在列表中 - 忽略它会在创建代理时引发 `ValueError`。只要配置的后端不支持`execute`和`delete`工具，无论您是否将它们包含在`tools`中，它们也会从工具表面删除。您通过 `create_deep_agent` 自己的 `tools=` 参数添加的自定义工具永远不会受到此白名单的影响。
-
-  通过这种方式传递您自己的 [⟦T74⟧](https://reference.langchain.com/python/deepagents/middleware/filesystem/FilesystemMiddleware) 实例将替换主代理的默认实例，并且通用子代理继承相同的限制。请参阅[Override a default middleware instance](/oss/python/deepagents/customization#override-a-default-middleware-instance)了解更多信息。声明性子代理不会继承它：在该子代理自己的 `middleware` 字段中包含一个 `FilesystemMiddleware(tools=...)` 实例以独立限制它。
-</Accordion>
-
-虚拟文件系统由其他几个工具功能使用，例如技能、内存、代码执行和上下文管理。
+> **不使用默认文件系统工具运行**
+>
+> 要从模型中隐藏上面列出的文件系统工具，请使用 `excluded_tools` 注册 [harness profile](/oss/python/deepagents/profiles#harness-profiles)：
+>
+> ```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> from deepagents import HarnessProfile, register_harness_profile
+>
+> register_harness_profile(
+>     "anthropic:claude-sonnet-4-6",
+>     HarnessProfile(
+>         excluded_tools=frozenset(
+>             {"ls", "read_file", "write_file", "edit_file", "delete", "glob", "grep"}
+>         ),
+>     ),
+> )
+> ```
+>
+> 通过 `excluded_middleware` 移除 [⟦T57⟧](https://reference.langchain.com/python/deepagents/middleware/filesystem/FilesystemMiddleware) 本身被故意拒绝——它需要 [Deep Agents stack](/oss/python/deepagents/customization#deep-agents-stack) 中的脚手架。使用 `excluded_tools` 仅隐藏模型可见的工具表面并将中间件保留在适当的位置。要删除 `task` 工具，请参阅[Running without subagents](/oss/python/deepagents/subagents#running-without-subagents)。> **限制文件系统工具**
+>
+>> [!注意]
+>>
+>> `FilesystemMiddleware` 上的 `tools` 允许列表需要 `deepagents>=0.7`。
+>
+> 要仅公开上面列出的文件系统工具的子集，而不是将它们全部隐藏，请将 `tools` 允许列表传递给 [⟦T65⟧](https://reference.langchain.com/python/deepagents/middleware/filesystem/FilesystemMiddleware) 并通过 `middleware=` 提供实例。列表中未列出的任何内置文件系统工具都将从模型的工具列表中删除。
+>
+> ```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> from deepagents import create_deep_agent
+> from deepagents.middleware import FilesystemMiddleware
+>
+> # Read-only agent: write_file, edit_file, delete, and execute are never shown
+> agent = create_deep_agent(
+>     model="claude-sonnet-4-6",
+>     middleware=[
+>         FilesystemMiddleware(backend=backend, tools=["read_file", "ls", "glob", "grep"]),
+>     ],
+> )
+> ```
+>
+> `read_file` 必须始终包含在列表中 - 忽略它会在创建代理时引发 `ValueError`。只要配置的后端不支持`execute`和`delete`工具，无论您是否将它们包含在`tools`中，它们也会从工具表面删除。您通过 `create_deep_agent` 自己的 `tools=` 参数添加的自定义工具永远不会受到此白名单的影响。
+>
+> 以这种方式传递您自己的 [⟦T74⟧](https://reference.langchain.com/python/deepagents/middleware/filesystem/FilesystemMiddleware) 实例将替换主代理的默认实例，并且通用子代理继承相同的限制。请参阅[Override a default middleware instance](/oss/python/deepagents/customization#override-a-default-middleware-instance)了解更多信息。声明性子代理不会继承它：在该子代理自己的 `middleware` 字段中包含一个 `FilesystemMiddleware(tools=...)` 实例以独立限制它。虚拟文件系统由其他几个工具功能使用，例如技能、内存、代码执行和上下文管理。
 您还可以在为 Deep Agents 构建自定义工具和中间件时使用文件系统。
 
-欲了解更多信息，请参阅[backends](/oss/python/deepagents/backends)。要生成代理可以从文件系统读取的持久存储库 wiki，请参阅[OpenWiki](/oss/openwiki/overview)。
+有关更多信息，请参阅[backends](/oss/python/deepagents/backends)。要生成代理可以从文件系统读取的持久存储库 wiki，请参阅[OpenWiki](/oss/openwiki/overview)。
 
-### 文件系统权限该工具支持声明性权限规则，控制代理可以读取或写入哪些文件和目录。权限适用于上面列出的内置文件系统工具，并按照声明顺序和首匹配胜语义进行评估。
+### 文件系统权限
+
+该工具支持声明性权限规则，控制代理可以读取或写入哪些文件和目录。权限适用于上面列出的内置文件系统工具，并按照声明顺序和首匹配胜语义进行评估。
 
 创建代理时，通过将规则列表传递给`permissions=`来定义权限。每条规则包括：
 
@@ -321,30 +317,30 @@ agent = create_deep_agent(
 
 规则从上到下进行评估，第一个匹配的规则获胜。如果没有规则匹配，则允许该操作。
 
-此模型允许您将代理限制到特定目录（例如，`/workspace/`），保护敏感文件（例如`.env`）或凭据，并为子代理提供比父代理更窄的访问权限。
-
-权限不适用于[sandbox backends](/oss/python/deepagents/sandboxes)，它支持通过`execute`工具执行任意命令。对于自定义验证逻辑，请使用[backend policy hooks](/oss/python/deepagents/backends#add-policy-hooks)。
+此模型允许您将代理限制到特定目录（例如，`/workspace/`），保护敏感文件（例如`.env`）或凭据，并为子代理提供比父代理更窄的访问权限。权限不适用于[sandbox backends](/oss/python/deepagents/sandboxes)，它支持通过`execute`工具执行任意命令。对于自定义验证逻辑，请使用[backend policy hooks](/oss/python/deepagents/backends#add-policy-hooks)。
 
 有关完整的规则结构、示例和子代理继承，请参阅[Permissions](/oss/python/deepagents/permissions)。
 
 ### 代码执行
 
-Deep Agents支持两种方式执行代码：* [Sandbox backends](/oss/python/deepagents/sandboxes) 在隔离环境中公开用于 shell 命令的 `execute` 工具。
-* [Interpreters](/oss/python/deepagents/interpreters) 添加一个 `eval` 工具，该工具可在限定范围的 QuickJS 运行时中运行 JavaScript。
+Deep Agents支持两种方式执行代码：
+
+* [Sandbox backends](/oss/python/deepagents/sandboxes) 在隔离环境中公开用于 shell 命令的 `execute` 工具。
+* [Interpreters](/oss/python/deepagents/interpreters) 添加一个 `eval` 工具，在作用域 QuickJS 运行时中运行 JavaScript。
 
 当代理需要安装依赖项、运行测试、调用 CLI 或使用操作系统文件系统时，请使用沙箱后端。沙箱后端实现`SandboxBackendProtocolV2`；当检测到时，该工具会将 `execute` 工具添加到代理的可用工具中。
 
 当代理需要轻量级可编程层用于循环、批处理、确定性数据转换或编程工具调用时，请使用解释器。解释器不提供 shell 访问、软件包安装或文件系统和网络访问。
 
-有关沙箱设置、提供程序和文件传输 API，请参阅 [Sandboxes](/oss/python/deepagents/sandboxes)。关于 QuickJS 运行时和编程工具调用，请参阅[Interpreters](/oss/python/deepagents/interpreters)。
+有关沙箱设置、提供程序和文件传输 API，请参阅 [Sandboxes](/oss/python/deepagents/sandboxes)。对于 QuickJS 运行时和编程工具调用，请参阅[Interpreters](/oss/python/deepagents/interpreters)。
 
-### 流媒体
+### 流媒体[Event streaming](/oss/python/deepagents/event-streaming) 将代理运行公开为消息、工具调用、值和输出的类型化投影。 Deep Agents 添加 `stream.subagents`，以便每个委派任务获得自己的句柄，并具有独立的消息、工具调用和嵌套子代理流。
 
-[Event streaming](/oss/python/deepagents/event-streaming) 将代理运行公开为消息、工具调用、值和输出的类型化投影。 Deep Agents 添加 `stream.subagents`，以便每个委派任务都有自己的句柄，具有独立的消息、工具调用和嵌套子代理流。
+## 上下文管理
 
-## 上下文管理上下文管理组件控制代理知道什么、它可以在令牌限制内运行多长时间以及它在会话中保留什么。它有四层：
+上下文管理组件控制代理知道什么、它可以在令牌限制内运行多长时间以及它在会话中保留什么。它有四层：
 
-* **[Skills](#skills)**：从技能文件逐步加载按需领域知识
+* **[Skills](#skills)**：从技能文件中逐步加载按需领域知识
 * **[Memory](#memory)**：启动时从 `AGENTS.md` 文件加载的持久指令和首选项
 * **[Summarization and context offloading](#summarization-and-context-offloading)**：自动压缩对话历史记录和大型工具结果
 * **[Prompt caching](#prompt-caching)**：静态提示部分符合缓存条件，可加快推理速度并降低支持模型的成本
@@ -353,19 +349,19 @@ Deep Agents支持两种方式执行代码：* [Sandbox backends](/oss/python/dee
 
 技能包为您的深度代理提供专门的工作流程、领域知识和自定义说明。
 
-每个技能都遵循 [Agent Skills standard](https://agentskills.io/) 并位于带有 `SKILL.md` 文件的目录中。技能还可以包括脚本、模板、参考文档和其他支持资源。
-
-Deep Agents 以渐进式披露的方式加载技能：代理在启动时读取`SKILL.md` frontmatter，然后仅在任务需要时才读取完整的技能内容。这使得启动上下文保持紧凑，同时仍然可以按需提供丰富的功能。
+每个技能都遵循 [Agent Skills standard](https://agentskills.io/) 并位于带有 `SKILL.md` 文件的目录中。技能还可以包括脚本、模板、参考文档和其他支持资源。Deep Agents 以渐进式披露的方式加载技能：代理在启动时读取`SKILL.md` frontmatter，然后仅在任务需要时才读取完整的技能内容。这使得启动上下文保持紧凑，同时仍然可以按需提供丰富的功能。
 
 有关更多信息，请参阅[Skills](/oss/python/deepagents/skills)。
 
-＃＃＃ 记忆记忆为您的深层代理提供跨对话的持久上下文，例如编码风格、偏好、约定和项目指南。
+### 内存
+
+记忆为您的深层代理提供跨对话的持久上下文，例如编码风格、偏好、约定和项目指南。
 
 内存使用您在创建代理时通过 `memory` 参数传递的[⟦T96⟧ files](https://agents.md/)。与技能不同的是，内存文件总是被加载，内容存储在配置的后端（`StateBackend`、`StoreBackend`或`FilesystemBackend`）。
 
 代理还可以根据交互和反馈更新记忆，因此偏好和模式可以继续下去，而无需在每个线程中重述它们。
 
-有关配置详细信息和示例，请参阅[Memory](/oss/python/deepagents/customization#memory)。要生成编码代理通过`AGENTS.md`发现的存储库wiki，请参阅[OpenWiki](/oss/openwiki/overview)。
+配置详情和示例请参见[Memory](/oss/python/deepagents/customization#memory)。要生成编码代理通过`AGENTS.md`发现的存储库wiki，请参阅[OpenWiki](/oss/openwiki/overview)。
 
 ### 总结和上下文卸载
 
@@ -407,93 +403,91 @@ Deep Agents 以渐进式披露的方式加载技能：代理在启动时读取`S
 
 将 [⟦T104⟧](https://reference.langchain.com/python/langchain/agents/middleware/todo/TodoListMiddleware) 传递给中间件参数，为代理提供一个 `write_todos` 工具，用于在执行期间维护结构化任务列表。
 
-<CodeGroup>
-  ```python Google theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  from deepagents import create_deep_agent
-  from langchain.agents.middleware import TodoListMiddleware
+```python Google theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+from deepagents import create_deep_agent
+from langchain.agents.middleware import TodoListMiddleware
 
-  agent = create_deep_agent(
-      model="google_genai:gemini-3.6-flash",
-      middleware=[TodoListMiddleware()],
-  )
-  ```
+agent = create_deep_agent(
+    model="google_genai:gemini-3.6-flash",
+    middleware=[TodoListMiddleware()],
+)
+```
 
-  ```python OpenAI theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  from deepagents import create_deep_agent
-  from langchain.agents.middleware import TodoListMiddleware
+```python OpenAI theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+from deepagents import create_deep_agent
+from langchain.agents.middleware import TodoListMiddleware
 
-  agent = create_deep_agent(
-      model="openai:gpt-5.5",
-      middleware=[TodoListMiddleware()],
-  )
-  ```
+agent = create_deep_agent(
+    model="openai:gpt-5.5",
+    middleware=[TodoListMiddleware()],
+)
+```
 
-  ```python Anthropic theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  from deepagents import create_deep_agent
-  from langchain.agents.middleware import TodoListMiddleware
+```python Anthropic theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+from deepagents import create_deep_agent
+from langchain.agents.middleware import TodoListMiddleware
 
-  agent = create_deep_agent(
-      model="anthropic:claude-sonnet-5",
-      middleware=[TodoListMiddleware()],
-  )
-  ```
+agent = create_deep_agent(
+    model="anthropic:claude-sonnet-5",
+    middleware=[TodoListMiddleware()],
+)
+```
 
-  ```python OpenRouter theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  from deepagents import create_deep_agent
-  from langchain.agents.middleware import TodoListMiddleware
+```python OpenRouter theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+from deepagents import create_deep_agent
+from langchain.agents.middleware import TodoListMiddleware
 
-  agent = create_deep_agent(
-      model="openrouter:z-ai/glm-5.2",
-      middleware=[TodoListMiddleware()],
-  )
-  ```
+agent = create_deep_agent(
+    model="openrouter:z-ai/glm-5.2",
+    middleware=[TodoListMiddleware()],
+)
+```
 
-  ```python Fireworks theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  from deepagents import create_deep_agent
-  from langchain.agents.middleware import TodoListMiddleware
+```python Fireworks theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+from deepagents import create_deep_agent
+from langchain.agents.middleware import TodoListMiddleware
 
-  agent = create_deep_agent(
-      model="fireworks:accounts/fireworks/models/glm-5p2",
-      middleware=[TodoListMiddleware()],
-  )
-  ```
+agent = create_deep_agent(
+    model="fireworks:accounts/fireworks/models/glm-5p2",
+    middleware=[TodoListMiddleware()],
+)
+```
 
-  ```python Baseten theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  from deepagents import create_deep_agent
-  from langchain.agents.middleware import TodoListMiddleware
+```python Baseten theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+from deepagents import create_deep_agent
+from langchain.agents.middleware import TodoListMiddleware
 
-  agent = create_deep_agent(
-      model="baseten:zai-org/GLM-5.2",
-      middleware=[TodoListMiddleware()],
-  )
-  ```
+agent = create_deep_agent(
+    model="baseten:zai-org/GLM-5.2",
+    middleware=[TodoListMiddleware()],
+)
+```
 
-  ```python Ollama theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  from deepagents import create_deep_agent
-  from langchain.agents.middleware import TodoListMiddleware
+```python Ollama theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+from deepagents import create_deep_agent
+from langchain.agents.middleware import TodoListMiddleware
 
-  agent = create_deep_agent(
-      model="ollama:north-mini-code-1.0",
-      middleware=[TodoListMiddleware()],
-  )
-  ```
-</CodeGroup>任务支持状态跟踪（`'pending'`、`'in_progress'`、`'completed'`）并保留在代理状态。这为代理提供了一个轻量级的规划层，用于组织长期运行和多步骤的工作。
+agent = create_deep_agent(
+    model="ollama:north-mini-code-1.0",
+    middleware=[TodoListMiddleware()],
+)
+```
 
-有关配置选项和行为详细信息，请参阅[To-do list](/oss/python/langchain/middleware/built-in#to-do-list)。
+任务支持状态跟踪（`'pending'`、`'in_progress'`、`'completed'`）并保留在代理状态。这为代理提供了一个轻量级的规划层，用于组织长期运行和多步骤的工作。有关配置选项和行为详细信息，请参阅[To-do list](/oss/python/langchain/middleware/built-in#to-do-list)。
 
 ### 子代理
 
 该工具包括一个内置的`task`工具，可让主代理为隔离、长时间运行、多步骤或并行任务创建临时子代理。
 有两种子代理类型可用：同步子代理（默认）阻止主管，直到它们返回单个报告，并且 [async subagents](/oss/python/deepagents/async-subagents) 并行运行并通过启动、检查、更新和取消工具支持飞行中控制。
 
-子代理执行提供：* **隔离或继承的上下文**：默认情况下，每次调用都会创建一个具有自己的上下文（`mode: "isolated"`）的新代理实例。使用 `mode: "fork"` 继承父级的完整对话历史记录。参见[Forked subagents](/oss/python/deepagents/subagents#forked-subagents)。
+子代理执行提供：
+
+* **隔离或继承的上下文**：默认情况下，每次调用都会创建一个具有自己的上下文（`mode: "isolated"`）的新代理实例。使用 `mode: "fork"` 继承父级的完整对话历史记录。参见[Forked subagents](/oss/python/deepagents/subagents#forked-subagents)。
 * **自主执行**：子代理独立运行直到完成。
 * **单次切换**：它将一份最终报告返回给主代理。
 * **可配置策略**：使用[default ⟦T112⟧ subagent](/oss/python/deepagents/subagents#default-subagent)（默认启用）或定义[custom subagents](/oss/python/deepagents/subagents#custom-subagents)。
 * **无状态消息传递**：子代理是无状态的，不能发回多条消息。
-* **上下文和令牌效率**：繁重的子任务工作保持隔离并被压缩为紧凑的结果。
-
-有关更多信息，请参阅[Subagents](/oss/python/deepagents/subagents)。要删除 `task` 工具，请参阅[Running without subagents](/oss/python/deepagents/subagents#running-without-subagents)。
+* **上下文和令牌效率**：繁重的子任务工作保持隔离并被压缩为紧凑的结果。有关更多信息，请参阅[Subagents](/oss/python/deepagents/subagents)。要删除 `task` 工具，请参阅[Running without subagents](/oss/python/deepagents/subagents#running-without-subagents)。
 
 ## 转向
 
@@ -501,44 +495,38 @@ Deep Agents 以渐进式披露的方式加载技能：代理在启动时读取`S
 
 ### 人机交互
 
-Deep Agents 与 LangGraph 中断集成，以便您可以暂停敏感工具调用以供批准。使用 `create_deep_agent` 中的 `interrupt_on` 参数启用此行为。`interrupt_on` 接受工具名称到中断配置的映射。例如，`interrupt_on={"edit_file": True}` 在每次编辑之前暂停，让您在执行之前批准调用、添加指导或修改工具输入。
+Deep Agents 与 LangGraph 中断集成，以便您可以暂停敏感工具调用以供批准。使用 `create_deep_agent` 中的 `interrupt_on` 参数启用此行为。
+
+`interrupt_on` 接受工具名称到中断配置的映射。例如，`interrupt_on={"edit_file": True}` 在每次编辑之前暂停，让您在执行之前批准调用、添加指导或修改工具输入。
 
 这为您提供了一个运行时安全和控制层，用于破坏性操作、昂贵的 API 调用和交互式调试。
 
-有关更多信息，请参阅[Human-in-the-loop](/oss/python/deepagents/human-in-the-loop)。
+欲了解更多信息，请参阅[Human-in-the-loop](/oss/python/deepagents/human-in-the-loop)。
 
 ## 开始吧
 
-<CardGroup>
-  <Card title="Quickstart" icon="rocket" href="/oss/python/deepagents/quickstart">
-    构建您的第一个深度代理
-  </Card>
+> **[Quickstart](/oss/python/deepagents/quickstart)**
+>
+> 构建你的第一个深度代理
 
-  <Card title="Customization" icon="adjustments" href="/oss/python/deepagents/customization">
-    了解定制选项
-  </Card>
+> **[Customization](/oss/python/deepagents/customization)**
+>
+> 了解定制选项
 
-  <Card title="Code" icon="terminal" href="/oss/deepagents/code/overview">
-    使用Deep Agents代码
-  </Card>
+> **[Code](/oss/deepagents/code/overview)**
+>
+> 使用Deep Agents代码
 
-  <Card title="ACP" icon="plug-connected" href="/oss/python/deepagents/acp">
-    通过 ACP 在代码编辑器中使用深度代理
-  </Card>
+> **[ACP](/oss/python/deepagents/acp)**
+>
+> 通过 ACP 在代码编辑器中使用深度代理
 
-  <Card title="Reference" icon="external-link" href="https://reference.langchain.com/python/deepagents/">
-    请参阅`deepagents` API 参考
-  </Card>
-</CardGroup>
+> **[Reference](https://reference.langchain.com/python/deepagents/)**
+>
+> 请参阅`deepagents` API 参考
 
 ***
 
-<div>
-  <Callout icon="terminal-2">
-    [Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
-  </Callout>
+[Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
 
-  <Callout icon="edit">
-    [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/oss/deepagents/overview.mdx) 或 [file an issue](https://github.com/langchain-ai/docs/issues/new/choose)。
-  </Callout>
-</div>
+[Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/oss/deepagents/overview.mdx) 或 [file an issue](https://github.com/langchain-ai/docs/issues/new/choose)。

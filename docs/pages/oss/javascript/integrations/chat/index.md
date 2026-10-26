@@ -206,8 +206,8 @@ Integrate with chat models using LangChain JavaScript.
 | [`ChatOllama`](/oss/javascript/integrations/chat/ollama) | ✅ | ✅ | ✅ | ✅ | [  ![Downloads per month](https://img.shields.io/npm/dm/@langchain/ollama?style=flat-square\&label=%20&)](https://www.npmjs.com/package/@langchain/ollama) |
 | [`ChatMistralAI`](/oss/javascript/integrations/chat/mistral) | ✅ | ✅ | ✅ | ✅ | [  ![Downloads per month](https://img.shields.io/npm/dm/@langchain/mistralai?style=flat-square\&label=%20&)](https://www.npmjs.com/package/@langchain/mistralai) |
 | [`ChatGoogle`](/oss/javascript/integrations/chat/google) | ✅ | ✅ | ✅ | ✅ | [  ![Downloads per month](https://img.shields.io/npm/dm/@langchain/google?style=flat-square\&label=%20&)](https://www.npmjs.com/package/@langchain/google) |
-| [`ChatCohere`](/oss/javascript/integrations/chat/cohere) | ✅ | ✅ | ✅ | ❌ | [  ![Downloads per month](https://img.shields.io/npm/dm/@langchain/cohere?style=flat-square\&label=%20&)](https://www.npmjs.com/package/@langchain/cohere) |
 | [`ChatXAI`](/oss/javascript/integrations/chat/xai) | ✅ | ✅ | ✅ | ❌ | [  ![Downloads per month](https://img.shields.io/npm/dm/@langchain/xai?style=flat-square\&label=%20&)](https://www.npmjs.com/package/@langchain/xai) |
+| [`ChatCohere`](/oss/javascript/integrations/chat/cohere) | ✅ | ✅ | ✅ | ❌ | [  ![Downloads per month](https://img.shields.io/npm/dm/@langchain/cohere?style=flat-square\&label=%20&)](https://www.npmjs.com/package/@langchain/cohere) |
 | [`ChatFireworks`](/oss/javascript/integrations/chat/fireworks) | ✅ | ✅ | ✅ | ❌ | [  ![Downloads per month](https://img.shields.io/npm/dm/@langchain/fireworks?style=flat-square\&label=%20&)](https://www.npmjs.com/package/@langchain/fireworks) |
 | [`ChatCloudflareWorkersAI`](/oss/javascript/integrations/chat/cloudflare_workersai) | ✅ | ❌ | ❌ | ✅ | [  ![Downloads per month](https://img.shields.io/npm/dm/@langchain/cloudflare?style=flat-square\&label=%20&)](https://www.npmjs.com/package/@langchain/cloudflare) |
 | [`ChatTogetherAI`](/oss/javascript/integrations/chat/togetherai) | ✅ | ✅ | ✅ | ✅ | [  ![Downloads per month](https://img.shields.io/npm/dm/@langchain/together-ai?style=flat-square\&label=%20&)](https://www.npmjs.com/package/@langchain/together-ai) |
@@ -242,8 +242,8 @@ Certain model providers offer endpoints that are compatible with OpenAI's (legac
 | [`ChatOllama`](/oss/javascript/integrations/chat/ollama) | ✅ | ✅ | ✅ | ✅ | [  ![Downloads per month](https://img.shields.io/npm/dm/@langchain/ollama?style=flat-square\&label=%20&)](https://www.npmjs.com/package/@langchain/ollama) |
 | [`ChatMistralAI`](/oss/javascript/integrations/chat/mistral) | ✅ | ✅ | ✅ | ✅ | [  ![Downloads per month](https://img.shields.io/npm/dm/@langchain/mistralai?style=flat-square\&label=%20&)](https://www.npmjs.com/package/@langchain/mistralai) |
 | [`ChatGoogle`](/oss/javascript/integrations/chat/google) | ✅ | ✅ | ✅ | ✅ | [  ![Downloads per month](https://img.shields.io/npm/dm/@langchain/google?style=flat-square\&label=%20&)](https://www.npmjs.com/package/@langchain/google) |
-| [`ChatCohere`](/oss/javascript/integrations/chat/cohere) | ✅ | ✅ | ✅ | ❌ | [  ![Downloads per month](https://img.shields.io/npm/dm/@langchain/cohere?style=flat-square\&label=%20&)](https://www.npmjs.com/package/@langchain/cohere) |
 | [`ChatXAI`](/oss/javascript/integrations/chat/xai) | ✅ | ✅ | ✅ | ❌ | [  ![Downloads per month](https://img.shields.io/npm/dm/@langchain/xai?style=flat-square\&label=%20&)](https://www.npmjs.com/package/@langchain/xai) |
+| [`ChatCohere`](/oss/javascript/integrations/chat/cohere) | ✅ | ✅ | ✅ | ❌ | [  ![Downloads per month](https://img.shields.io/npm/dm/@langchain/cohere?style=flat-square\&label=%20&)](https://www.npmjs.com/package/@langchain/cohere) |
 | [`ChatOpenRouter`](/oss/javascript/integrations/chat/openrouter) | ✅ | ✅ | ✅ | ✅ | [  ![Downloads per month](https://img.shields.io/npm/dm/@langchain/openrouter?style=flat-square\&label=%20&)](https://www.npmjs.com/package/@langchain/openrouter) |
 | [`ChatDeepSeek`](/oss/javascript/integrations/chat/deepseek) | ✅ | ✅ | ✅ | ❌ | [  ![Downloads per month](https://img.shields.io/npm/dm/@langchain/deepseek?style=flat-square\&label=%20&)](https://www.npmjs.com/package/@langchain/deepseek) |
 | [`ChatCerebras`](/oss/javascript/integrations/chat/cerebras) | ✅ | ✅ | ✅ | ❌ | [  ![Downloads per month](https://img.shields.io/npm/dm/@langchain/cerebras?style=flat-square\&label=%20&)](https://www.npmjs.com/package/@langchain/cerebras) |
@@ -256,10 +256,11 @@ Certain model providers offer endpoints that are compatible with OpenAI's (legac
 | [`ChatYandexGPT`](/oss/javascript/integrations/chat/yandex) | | | | | [  ![Downloads per month](https://img.shields.io/npm/dm/@langchain/yandex?style=flat-square\&label=%20&)](https://www.npmjs.com/package/@langchain/yandex) |
 | [`ChatInterfaze`](https://interfaze.ai/docs) | ✅ | ✅ | ✅ | ✅ | [  ![Downloads per month](https://img.shields.io/npm/dm/@interfaze-ai/langchain?style=flat-square\&label=%20&)](https://www.npmjs.com/package/@interfaze-ai/langchain) |
 | [`ChatKServe`](https://gitlab.com/bitkaio/langchain/kserve-provider) | ✅ | ✅ | ✅ | ✅ | [  ![Downloads per month](https://img.shields.io/npm/dm/@bitkaio/langchain-kserve?style=flat-square\&label=%20&)](https://www.npmjs.com/package/@bitkaio/langchain-kserve) |
+| [`ChatWebLLM`](https://github.com/ykoh42/web-llm-adapters/blob/main/packages/langchain-web-llm/README.md) | ✅ | ✅ | ✅ | | [  ![Downloads per month](https://img.shields.io/npm/dm/langchain-web-llm?style=flat-square\&label=%20&)](https://www.npmjs.com/package/langchain-web-llm) |
 | [`RecallToolkit`](https://recallmem.dev/guides/langchain) | | | | | [  ![Downloads per month](https://img.shields.io/npm/dm/@recall-memory/langchain?style=flat-square\&label=%20&)](https://www.npmjs.com/package/@recall-memory/langchain) |
 | [`ChatSCX`](https://scx.ai/) | ✅ | ✅ | ✅ | ✅ | [  ![Downloads per month](https://img.shields.io/npm/dm/@scx-ai/langchain?style=flat-square\&label=%20&)](https://www.npmjs.com/package/@scx-ai/langchain) |
 | [`Auxen`](https://auxen.ai) | ✅ | ✅ | ✅ | ❌ | N/A |
-| [`ChatWebLLM`](https://github.com/ykoh42/web-llm-adapters/blob/main/packages/langchain-web-llm/README.md) | ✅ | ✅ | ✅ | | N/A |
+| [`ChatEmpirioLabs`](https://docs.empiriolabs.ai/integrations#langchain) | ✅ | ✅ | ✅ | ✅ | N/A |
 | [`FakeListChatModel`](/oss/javascript/integrations/chat/fake) | | | | | N/A |
 | [`FuturMix`](https://futurmix.ai/) | ✅ | ✅ | ✅ | ✅ | N/A |
 | [`Tuning Engines`](https://www.tuningengines.com/) | ✅ | ✅ | ✅ | ❌ | N/A |

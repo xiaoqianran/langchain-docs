@@ -24,12 +24,12 @@
 | [⟦T3⟧](/oss/javascript/integrations/llms/ollama) | [  ⟦T15⟧](https://www.npmjs.com/package/@langchain/ollama) |
 | [⟦T4⟧](/oss/javascript/integrations/llms/mistral) | [  ⟦T16⟧](https://www.npmjs.com/package/@langchain/mistralai) |
 | [⟦T5⟧](/oss/javascript/integrations/llms/cohere) | [  ⟦T17⟧](https://www.npmjs.com/package/@langchain/cohere) |
-| [⟦T6⟧](/oss/javascript/integrations/llms/cloudflare_workersai) | [  ⟦T18⟧](https://www.npmjs.com/package/@langchain/cloudflare) |
-| [⟦T7⟧](/oss/javascript/integrations/llms/fireworks) | [  ⟦T19⟧](https://www.npmjs.com/package/@langchain/fireworks) |
-| [⟦T8⟧](/oss/javascript/integrations/llms/ibm) | [  ⟦T20⟧](https://www.npmjs.com/package/@langchain/ibm) |
-| [⟦T9⟧](/oss/javascript/integrations/llms/jigsawstack) | [  ⟦T21⟧](https://www.npmjs.com/package/@langchain/jigsawstack) |
-| [⟦T10⟧](/oss/javascript/integrations/llms/together) | [  ⟦T22⟧](https://www.npmjs.com/package/@langchain/together-ai) |
-| [⟦T11⟧](/oss/javascript/integrations/llms/yandex) | [  ⟦T23⟧](https://www.npmjs.com/package/@langchain/yandex) |
+| [⟦T6⟧](/oss/javascript/integrations/llms/fireworks) | [  ⟦T18⟧](https://www.npmjs.com/package/@langchain/fireworks) |
+| [⟦T7⟧](/oss/javascript/integrations/llms/cloudflare_workersai) | [  ⟦T19⟧](https://www.npmjs.com/package/@langchain/cloudflare) |
+| [⟦T8⟧](/oss/javascript/integrations/llms/together) | [  ⟦T20⟧](https://www.npmjs.com/package/@langchain/together-ai) |
+| [⟦T9⟧](/oss/javascript/integrations/llms/ibm) | [  ⟦T21⟧](https://www.npmjs.com/package/@langchain/ibm) |
+| [⟦T10⟧](/oss/javascript/integrations/llms/yandex) | [  ⟦T22⟧](https://www.npmjs.com/package/@langchain/yandex) |
+| [⟦T11⟧](/oss/javascript/integrations/llms/jigsawstack) | [  ⟦T23⟧](https://www.npmjs.com/package/@langchain/jigsawstack) |
 
 ***
 

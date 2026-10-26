@@ -56,19 +56,17 @@ flowchart TD
 
 本教程需要`langchain`包：
 
-<CodeGroup>
-  ```bash pip theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  pip install langchain
-  ```
+```bash pip theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+pip install langchain
+```
 
-  ```bash uv theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  uv add langchain
-  ```
+```bash uv theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+uv add langchain
+```
 
-  ```bash conda theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  conda install langchain -c conda-forge
-  ```
-</CodeGroup>
+```bash conda theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+conda install langchain -c conda-forge
+```
 
 欲了解更多详情，请参阅我们的[Installation guide](/oss/python/langchain/install)。
 
@@ -76,285 +74,255 @@ flowchart TD
 
 设置 [LangSmith](https://smith.langchain.com?utm_source=docs\&utm_medium=cta\&utm_campaign=langsmith-signup\&utm_content=oss-langchain-multi-agent-handoffs-customer-support) 来检查代理内部发生的情况。然后设置以下环境变量：
 
-<CodeGroup>
-  ```bash Shell theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  export LANGSMITH_TRACING="true"
-  export LANGSMITH_API_KEY="..."
-  ```
+```bash Shell theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+export LANGSMITH_TRACING="true"
+export LANGSMITH_API_KEY="..."
+```
 
-  ```python Python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  import getpass
-  import os
+```python Python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+import getpass
+import os
 
-  os.environ["LANGSMITH_TRACING"] = "true"
-  os.environ["LANGSMITH_API_KEY"] = getpass.getpass()
-  ```
-</CodeGroup>
+os.environ["LANGSMITH_TRACING"] = "true"
+os.environ["LANGSMITH_API_KEY"] = getpass.getpass()
+```
 
 ### 选择法学硕士
 
 从 LangChain 的集成套件中选择聊天模型：
 
-<Tabs>
-  <Tab title="OpenAI">
-    👉 阅读[OpenAI chat model integration docs](/oss/python/integrations/chat/openai/)
+**OpenAI**
 
-    <CodeGroup>
-      ```bash pip theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-      pip install -U "langchain[openai]"
-      ```
+👉 阅读[OpenAI chat model integration docs](/oss/python/integrations/chat/openai/)
 
-      ```bash uv theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-      uv add "langchain[openai]"
-      ```
-    </CodeGroup>
+```bash pip theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+pip install -U "langchain[openai]"
+```
 
-    <CodeGroup>
-      ```python init_chat_model theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-      import os
-      from langchain.chat_models import init_chat_model
+```bash uv theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+uv add "langchain[openai]"
+```
 
-      os.environ["OPENAI_API_KEY"] = "sk-..."
+```python init_chat_model theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+import os
+from langchain.chat_models import init_chat_model
 
-      model = init_chat_model("gpt-5.5")
-      ```
+os.environ["OPENAI_API_KEY"] = "sk-..."
 
-      ```python Model Class theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-      import os
-      from langchain_openai import ChatOpenAI
+model = init_chat_model("gpt-5.5")
+```
 
-      os.environ["OPENAI_API_KEY"] = "sk-..."
+```python Model Class theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+import os
+from langchain_openai import ChatOpenAI
 
-      model = ChatOpenAI(model="gpt-5.5")
-      ```
-    </CodeGroup>
-  </Tab>
+os.environ["OPENAI_API_KEY"] = "sk-..."
 
-  <Tab title="Anthropic">
-    👉 阅读[Anthropic chat model integration docs](/oss/python/integrations/chat/anthropic/)
+model = ChatOpenAI(model="gpt-5.5")
+```
 
-    <CodeGroup>
-      ```bash pip theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-      pip install -U "langchain[anthropic]"
-      ```
+**Anthropic**
 
-      ```bash uv theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-      uv add "langchain[anthropic]"
-      ```
-    </CodeGroup>
+👉 阅读[Anthropic chat model integration docs](/oss/python/integrations/chat/anthropic/)
 
-    <CodeGroup>
-      ```python init_chat_model theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-      import os
-      from langchain.chat_models import init_chat_model
+```bash pip theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+pip install -U "langchain[anthropic]"
+```
 
-      os.environ["ANTHROPIC_API_KEY"] = "sk-..."
+```bash uv theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+uv add "langchain[anthropic]"
+```
 
-      model = init_chat_model("claude-sonnet-4-6")
-      ```
+```python init_chat_model theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+import os
+from langchain.chat_models import init_chat_model
 
-      ```python Model Class theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-      import os
-      from langchain_anthropic import ChatAnthropic
+os.environ["ANTHROPIC_API_KEY"] = "sk-..."
 
-      os.environ["ANTHROPIC_API_KEY"] = "sk-..."
+model = init_chat_model("claude-sonnet-4-6")
+```
 
-      model = ChatAnthropic(model="claude-sonnet-4-6")
-      ```
-    </CodeGroup>
-  </Tab>
+```python Model Class theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+import os
+from langchain_anthropic import ChatAnthropic
 
-  <Tab title="Azure">
-    👉 阅读[Azure chat model integration docs](/oss/python/integrations/chat/azure_chat_openai/)
+os.environ["ANTHROPIC_API_KEY"] = "sk-..."
 
-    <CodeGroup>
-      ```bash pip theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-      pip install -U "langchain[openai]"
-      ```
+model = ChatAnthropic(model="claude-sonnet-4-6")
+```
 
-      ```bash uv theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-      uv add "langchain[openai]"
-      ```
-    </CodeGroup>
+**天蓝色**
 
-    <CodeGroup>
-      ```python init_chat_model theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-      import os
-      from langchain.chat_models import init_chat_model
+👉 阅读[Azure chat model integration docs](/oss/python/integrations/chat/azure_chat_openai/)
 
-      os.environ["AZURE_OPENAI_API_KEY"] = "..."
-      os.environ["AZURE_OPENAI_ENDPOINT"] = "..."
-      os.environ["OPENAI_API_VERSION"] = "2025-03-01-preview"
+```bash pip theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+pip install -U "langchain[openai]"
+```
 
-      model = init_chat_model(
-          "azure_openai:gpt-5.5",
-          azure_deployment=os.environ["AZURE_OPENAI_DEPLOYMENT_NAME"],
-      )
-      ```
+```bash uv theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+uv add "langchain[openai]"
+```
 
-      ```python Model Class theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-      import os
-      from langchain_openai import AzureChatOpenAI
+```python init_chat_model theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+import os
+from langchain.chat_models import init_chat_model
 
-      os.environ["AZURE_OPENAI_API_KEY"] = "..."
-      os.environ["AZURE_OPENAI_ENDPOINT"] = "..."
-      os.environ["OPENAI_API_VERSION"] = "2025-03-01-preview"
+os.environ["AZURE_OPENAI_API_KEY"] = "..."
+os.environ["AZURE_OPENAI_ENDPOINT"] = "..."
+os.environ["OPENAI_API_VERSION"] = "2025-03-01-preview"
 
-      model = AzureChatOpenAI(
-          model="gpt-5.5",
-          azure_deployment=os.environ["AZURE_OPENAI_DEPLOYMENT_NAME"]
-      )
-      ```
-    </CodeGroup>
-  </Tab>
+model = init_chat_model(
+    "azure_openai:gpt-5.5",
+    azure_deployment=os.environ["AZURE_OPENAI_DEPLOYMENT_NAME"],
+)
+```
 
-  <Tab title="Google Gemini">
-    👉 阅读[Google GenAI chat model integration docs](/oss/python/integrations/chat/google_generative_ai/)
+```python Model Class theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+import os
+from langchain_openai import AzureChatOpenAI
 
-    <CodeGroup>
-      ```bash pip theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-      pip install -U "langchain[google-genai]"
-      ```
+os.environ["AZURE_OPENAI_API_KEY"] = "..."
+os.environ["AZURE_OPENAI_ENDPOINT"] = "..."
+os.environ["OPENAI_API_VERSION"] = "2025-03-01-preview"
 
-      ```bash uv theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-      uv add "langchain[google-genai]"
-      ```
-    </CodeGroup>
+model = AzureChatOpenAI(
+    model="gpt-5.5",
+    azure_deployment=os.environ["AZURE_OPENAI_DEPLOYMENT_NAME"]
+)
+```
 
-    <CodeGroup>
-      ```python init_chat_model theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-      import os
-      from langchain.chat_models import init_chat_model
+**谷歌双子座**
 
-      os.environ["GOOGLE_API_KEY"] = "..."
+👉 阅读[Google GenAI chat model integration docs](/oss/python/integrations/chat/google_generative_ai/)
 
-      model = init_chat_model("google_genai:gemini-3.7-flash")
-      ```
+```bash pip theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+pip install -U "langchain[google-genai]"
+```
 
-      ```python Model Class theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-      import os
-      from langchain_google_genai import ChatGoogleGenerativeAI
+```bash uv theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+uv add "langchain[google-genai]"
+```
 
-      os.environ["GOOGLE_API_KEY"] = "..."
+```python init_chat_model theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+import os
+from langchain.chat_models import init_chat_model
 
-      model = ChatGoogleGenerativeAI(model="gemini-3.7-flash")
-      ```
-    </CodeGroup>
-  </Tab>
+os.environ["GOOGLE_API_KEY"] = "..."
 
-  <Tab title="AWS Bedrock">
-    👉 阅读[AWS Bedrock chat model integration docs](/oss/python/integrations/chat/bedrock/)
+model = init_chat_model("google_genai:gemini-3.7-flash")
+```
 
-    <CodeGroup>
-      ```bash pip theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-      pip install -U "langchain[aws]"
-      ```
+```python Model Class theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+import os
+from langchain_google_genai import ChatGoogleGenerativeAI
 
-      ```bash uv theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-      uv add "langchain[aws]"
-      ```
-    </CodeGroup>
+os.environ["GOOGLE_API_KEY"] = "..."
 
-    <CodeGroup>
-      ```python init_chat_model theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-      from langchain.chat_models import init_chat_model
+model = ChatGoogleGenerativeAI(model="gemini-3.7-flash")
+```
 
-      # Follow the steps here to configure your credentials:
-      # https://docs.aws.amazon.com/bedrock/latest/userguide/getting-started.html
+**AWS 基岩**
 
-      model = init_chat_model(
-          "us.anthropic.claude-sonnet-4-6",
-          model_provider="bedrock_converse",
-      )
-      ```
+👉 阅读[AWS Bedrock chat model integration docs](/oss/python/integrations/chat/bedrock/)
 
-      ```python Model Class theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-      from langchain_aws import ChatBedrock
+```bash pip theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+pip install -U "langchain[aws]"
+```
 
-      model = ChatBedrock(model="us.anthropic.claude-sonnet-4-6")
-      ```
-    </CodeGroup>
-  </Tab>
+```bash uv theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+uv add "langchain[aws]"
+```
 
-  <Tab title="HuggingFace">
-    👉 阅读[HuggingFace chat model integration docs](/oss/python/integrations/chat/huggingface/)
+```python init_chat_model theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+from langchain.chat_models import init_chat_model
 
-    <CodeGroup>
-      ```bash pip theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-      pip install -U "langchain[huggingface]"
-      ```
+# Follow the steps here to configure your credentials:
+# https://docs.aws.amazon.com/bedrock/latest/userguide/getting-started.html
 
-      ```bash uv theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-      uv add "langchain[huggingface]"
-      ```
-    </CodeGroup><CodeGroup>
-      ```python init_chat_model theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-      import os
-      from langchain.chat_models import init_chat_model
+model = init_chat_model(
+    "us.anthropic.claude-sonnet-4-6",
+    model_provider="bedrock_converse",
+)
+```
 
-      os.environ["HUGGINGFACEHUB_API_TOKEN"] = "hf_..."
+```python Model Class theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+from langchain_aws import ChatBedrock
 
-      model = init_chat_model(
-          "microsoft/Phi-3-mini-4k-instruct",
-          model_provider="huggingface",
-          temperature=0.7,
-          max_tokens=1024,
-      )
-      ```
+model = ChatBedrock(model="us.anthropic.claude-sonnet-4-6")
+```
 
-      ```python Model Class theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-      import os
-      from langchain_huggingface import ChatHuggingFace, HuggingFaceEndpoint
+**拥抱脸**
 
-      os.environ["HUGGINGFACEHUB_API_TOKEN"] = "hf_..."
+👉 阅读[HuggingFace chat model integration docs](/oss/python/integrations/chat/huggingface/)
 
-      llm = HuggingFaceEndpoint(
-          repo_id="microsoft/Phi-3-mini-4k-instruct",
-          temperature=0.7,
-          max_length=1024,
-      )
-      model = ChatHuggingFace(llm=llm)
-      ```
-    </CodeGroup>
-  </Tab>
+```bash pip theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+pip install -U "langchain[huggingface]"
+```
 
-  <Tab title="OpenRouter">
-    👉 阅读[OpenRouter chat model integration docs](/oss/python/integrations/chat/openrouter/)
+```bash uv theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+uv add "langchain[huggingface]"
+```
 
-    <CodeGroup>
-      ```bash pip theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-      pip install -U "langchain-openrouter"
-      ```
+```python init_chat_model theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+import os
+from langchain.chat_models import init_chat_model
 
-      ```bash uv theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-      uv add "langchain-openrouter"
-      ```
-    </CodeGroup>
+os.environ["HUGGINGFACEHUB_API_TOKEN"] = "hf_..."
 
-    <CodeGroup>
-      ```python init_chat_model theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-      import os
-      from langchain.chat_models import init_chat_model
+model = init_chat_model(
+    "microsoft/Phi-3-mini-4k-instruct",
+    model_provider="huggingface",
+    temperature=0.7,
+    max_tokens=1024,
+)
+```
 
-      os.environ["OPENROUTER_API_KEY"] = "sk-..."
+```python Model Class theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+import os
+from langchain_huggingface import ChatHuggingFace, HuggingFaceEndpoint
 
-      model = init_chat_model(
-          "auto",
-          model_provider="openrouter",
-      )
-      ```
+os.environ["HUGGINGFACEHUB_API_TOKEN"] = "hf_..."
 
-      ```python Model Class theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-      import os
-      from langchain_openrouter import ChatOpenRouter
+llm = HuggingFaceEndpoint(
+    repo_id="microsoft/Phi-3-mini-4k-instruct",
+    temperature=0.7,
+    max_length=1024,
+)
+model = ChatHuggingFace(llm=llm)
+```
 
-      os.environ["OPENROUTER_API_KEY"] = "sk-..."
+**开放路由器**
 
-      model = ChatOpenRouter(model="auto")
-      ```
-    </CodeGroup>
-  </Tab>
-</Tabs>
+👉 阅读[OpenRouter chat model integration docs](/oss/python/integrations/chat/openrouter/)
+
+```bash pip theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+pip install -U "langchain-openrouter"
+```
+
+```bash uv theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+uv add "langchain-openrouter"
+```
+
+```python init_chat_model theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+import os
+from langchain.chat_models import init_chat_model
+
+os.environ["OPENROUTER_API_KEY"] = "sk-..."
+
+model = init_chat_model(
+    "auto",
+    model_provider="openrouter",
+)
+```
+
+```python Model Class theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+import os
+from langchain_openrouter import ChatOpenRouter
+
+os.environ["OPENROUTER_API_KEY"] = "sk-..."
+
+model = ChatOpenRouter(model="auto")
+```
 
 ## 1.定义自定义状态
 
@@ -377,9 +345,7 @@ class SupportState(AgentState):  # [!code highlight]
 
 `current_step` 字段是状态机模式的核心 - 它决定每轮加载哪个配置（提示+工具）。
 
-## 2. 创建管理工作流程状态的工具
-
-创建更新工作流程状态的工具。这些工具允许代理记录信息并过渡到下一步。
+## 2. 创建管理工作流程状态的工具创建更新工作流程状态的工具。这些工具允许代理记录信息并过渡到下一步。
 
 关键是使用`Command`来更新状态，包括`current_step`字段：
 
@@ -447,46 +413,46 @@ def provide_solution(solution: str) -> str:
 
 为每个步骤定义提示和工具。首先，定义每个步骤的提示：
 
-<Accordion title="View complete prompt definitions">
-  ```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  # Define prompts as constants for easy reference
-  WARRANTY_COLLECTOR_PROMPT = """You are a customer support agent helping with device issues.
-
-  CURRENT STAGE: Warranty verification
-
-  At this step, you need to:
-  1. Greet the customer warmly
-  2. Ask if their device is under warranty
-  3. Use record_warranty_status to record their response and move to the next step
-
-  Be conversational and friendly. Don't ask multiple questions at once."""
-
-  ISSUE_CLASSIFIER_PROMPT = """You are a customer support agent helping with device issues.
-
-  CURRENT STAGE: Issue classification
-  CUSTOMER INFO: Warranty status is {warranty_status}
-
-  At this step, you need to:
-  1. Ask the customer to describe their issue
-  2. Determine if it's a hardware issue (physical damage, broken parts) or software issue (app crashes, performance)
-  3. Use record_issue_type to record the classification and move to the next step
-
-  If unclear, ask clarifying questions before classifying."""
-
-  RESOLUTION_SPECIALIST_PROMPT = """You are a customer support agent helping with device issues.
-
-  CURRENT STAGE: Resolution
-  CUSTOMER INFO: Warranty status is {warranty_status}, issue type is {issue_type}
-
-  At this step, you need to:
-  1. For SOFTWARE issues: provide troubleshooting steps using provide_solution
-  2. For HARDWARE issues:
-     - If IN WARRANTY: explain warranty repair process using provide_solution
-     - If OUT OF WARRANTY: escalate_to_human for paid repair options
-
-  Be specific and helpful in your solutions."""
-  ```
-</Accordion>
+> **查看完整的提示定义**
+>
+> ```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> # Define prompts as constants for easy reference
+> WARRANTY_COLLECTOR_PROMPT = """You are a customer support agent helping with device issues.
+>
+> CURRENT STAGE: Warranty verification
+>
+> At this step, you need to:
+> 1. Greet the customer warmly
+> 2. Ask if their device is under warranty
+> 3. Use record_warranty_status to record their response and move to the next step
+>
+> Be conversational and friendly. Don't ask multiple questions at once."""
+>
+> ISSUE_CLASSIFIER_PROMPT = """You are a customer support agent helping with device issues.
+>
+> CURRENT STAGE: Issue classification
+> CUSTOMER INFO: Warranty status is {warranty_status}
+>
+> At this step, you need to:
+> 1. Ask the customer to describe their issue
+> 2. Determine if it's a hardware issue (physical damage, broken parts) or software issue (app crashes, performance)
+> 3. Use record_issue_type to record the classification and move to the next step
+>
+> If unclear, ask clarifying questions before classifying."""
+>
+> RESOLUTION_SPECIALIST_PROMPT = """You are a customer support agent helping with device issues.
+>
+> CURRENT STAGE: Resolution
+> CUSTOMER INFO: Warranty status is {warranty_status}, issue type is {issue_type}
+>
+> At this step, you need to:
+> 1. For SOFTWARE issues: provide troubleshooting steps using provide_solution
+> 2. For HARDWARE issues:
+>    - If IN WARRANTY: explain warranty repair process using provide_solution
+>    - If OUT OF WARRANTY: escalate_to_human for paid repair options
+>
+> Be specific and helpful in your solutions."""
+> ```
 
 然后使用字典将步骤名称映射到其配置：
 
@@ -511,7 +477,9 @@ STEP_CONFIG = {
 }
 ```
 
-这种基于字典的配置可以轻松地：* 所有步骤一目了然
+这种基于字典的配置可以轻松地：
+
+* 所有步骤一目了然
 * 添加新步骤（只需添加另一个条目）
 * 了解工作流依赖关系（`requires`字段）
 * 使用带有状态变量的提示模板（例如，`{warranty_status}`）
@@ -554,9 +522,7 @@ def apply_step_config(
     return handler(request)
 ```
 
-这个中间件：
-
-1. **读取当前步骤**：从状态获取`current_step`（默认为“warranty\_collector”）。
+这个中间件：1. **读取当前步骤**：从状态获取`current_step`（默认为“warranty\_collector”）。
 2. **查找配置**：在`STEP_CONFIG`中查找匹配条目。
 3. **验证依赖关系**：确保所需的状态字段存在。
 4. **格式化提示**：将状态值注入到提示模板中。
@@ -588,9 +554,11 @@ agent = create_agent(
     middleware=[apply_step_config],  # [!code highlight]
     checkpointer=InMemorySaver(),  # [!code highlight]
 )
-```<Note>
-  **为什么需要检查点？** 检查点在对话轮次中维护状态。如果没有它，`current_step` 状态将在用户消息之间丢失，从而破坏工作流程。
-</Note>
+```
+
+> [!注意]
+>
+> **为什么需要检查点？** 检查点在对话轮次中维护状态。如果没有它，`current_step` 状态将在用户消息之间丢失，从而破坏工作流程。
 
 ## 6. 测试工作流程
 
@@ -651,9 +619,7 @@ for msg in result['messages']:
 
 ## 7. 理解状态转换
 
-让我们追踪一下每个回合会发生什么：
-
-### 第 1 回合：初始消息
+让我们追踪一下每个回合会发生什么：### 第 1 回合：初始消息
 
 ```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 {
@@ -701,7 +667,9 @@ Command(update={
 
 关键见解：**工具通过更新`current_step`来驱动工作流程**，而**中间件通过在下一轮应用适当的配置来响应**。
 
-## 8.管理消息历史记录随着代理逐步推进，消息历史记录也会增长。使用 [summarization middleware](/oss/python/langchain/short-term-memory#summarize-messages) 压缩早期消息，同时保留对话上下文：
+## 8.管理消息历史记录
+
+随着代理逐步推进，消息历史记录也会增长。使用 [summarization middleware](/oss/python/langchain/short-term-memory#summarize-messages) 压缩早期消息，同时保留对话上下文：
 
 ```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 from langchain.agents import create_agent
@@ -726,13 +694,11 @@ agent = create_agent(
 
 有关其他内存管理技术，请参阅[short-term memory guide](/oss/python/langchain/short-term-memory)。
 
-## 9. 增加灵活性：返回
+## 9. 增加灵活性：返回某些工作流程需要允许用户返回之前的步骤以更正信息（例如，更改保修状态或问题分类）。然而，并非所有转换都有意义，例如，一旦退款处理完成，您通常就无法返回。对于此支持工作流程，我们将添加工具以返回保修验证和问题分类步骤。
 
-某些工作流程需要允许用户返回之前的步骤以更正信息（例如，更改保修状态或问题分类）。然而，并非所有转换都有意义，例如，一旦退款处理完成，您通常就无法返回。对于此支持工作流程，我们将添加工具以返回保修验证和问题分类步骤。
-
-<Tip>
-  如果您的工作流程需要在大多数步骤之间进行任意转换，请考虑您是否需要结构化工作流程。当步骤遵循清晰的顺序进展并偶尔向后过渡以进行修正时，此模式效果最佳。
-</Tip>
+> [!提示]
+>
+> 如果您的工作流程需要在大多数步骤之间进行任意转换，请考虑您是否需要结构化工作流程。当步骤遵循清晰的顺序进展并偶尔向后过渡以进行修正时，此模式效果最佳。
 
 在解决步骤中添加“返回”工具：
 
@@ -791,254 +757,250 @@ result = agent.invoke(
 
 以下是可运行脚本中的所有内容：
 
-<Expandable title="Complete code">
-  ```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  """
-  Customer Support State Machine Example
+**完整代码**
 
-  This example demonstrates the state machine pattern.
-  A single agent dynamically changes its behavior based on the current_step state,
-  creating a state machine for sequential information collection.
-  """
+```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+"""
+Customer Support State Machine Example
 
-  from langchain_core.utils.uuid import uuid7
+This example demonstrates the state machine pattern.
+A single agent dynamically changes its behavior based on the current_step state,
+creating a state machine for sequential information collection.
+"""
 
-  from langgraph.checkpoint.memory import InMemorySaver
-  from langgraph.types import Command
-  from typing import Callable, Literal
-  from typing_extensions import NotRequired
+from langchain_core.utils.uuid import uuid7
 
-  from langchain.agents import AgentState, create_agent
-  from langchain.agents.middleware import wrap_model_call, ModelRequest, ModelResponse, SummarizationMiddleware
-  from langchain.chat_models import init_chat_model
-  from langchain.messages import HumanMessage, ToolMessage
-  from langchain.tools import tool, ToolRuntime
+from langgraph.checkpoint.memory import InMemorySaver
+from langgraph.types import Command
+from typing import Callable, Literal
+from typing_extensions import NotRequired
 
-  model = init_chat_model("google_genai:gemini-3.6-flash")
+from langchain.agents import AgentState, create_agent
+from langchain.agents.middleware import wrap_model_call, ModelRequest, ModelResponse, SummarizationMiddleware
+from langchain.chat_models import init_chat_model
+from langchain.messages import HumanMessage, ToolMessage
+from langchain.tools import tool, ToolRuntime
 
-
-  # Define the possible workflow steps
-  SupportStep = Literal["warranty_collector", "issue_classifier", "resolution_specialist"]
+model = init_chat_model("google_genai:gemini-3.6-flash")
 
 
-  class SupportState(AgentState):
-      """State for customer support workflow."""
-
-      current_step: NotRequired[SupportStep]
-      warranty_status: NotRequired[Literal["in_warranty", "out_of_warranty"]]
-      issue_type: NotRequired[Literal["hardware", "software"]]
+# Define the possible workflow steps
+SupportStep = Literal["warranty_collector", "issue_classifier", "resolution_specialist"]
 
 
-  @tool
-  def record_warranty_status(
-      status: Literal["in_warranty", "out_of_warranty"],
-      runtime: ToolRuntime[None, SupportState],
-  ) -> Command:
-      """Record the customer's warranty status and transition to issue classification."""
-      return Command(
-          update={
-              "messages": [
-                  ToolMessage(
-                      content=f"Warranty status recorded as: {status}",
-                      tool_call_id=runtime.tool_call_id,
-                  )
-              ],
-              "warranty_status": status,
-              "current_step": "issue_classifier",
-          }
-      )
+class SupportState(AgentState):
+    """State for customer support workflow."""
+
+    current_step: NotRequired[SupportStep]
+    warranty_status: NotRequired[Literal["in_warranty", "out_of_warranty"]]
+    issue_type: NotRequired[Literal["hardware", "software"]]
 
 
-  @tool
-  def record_issue_type(
-      issue_type: Literal["hardware", "software"],
-      runtime: ToolRuntime[None, SupportState],
-  ) -> Command:
-      """Record the type of issue and transition to resolution specialist."""
-      return Command(
-          update={
-              "messages": [
-                  ToolMessage(
-                      content=f"Issue type recorded as: {issue_type}",
-                      tool_call_id=runtime.tool_call_id,
-                  )
-              ],
-              "issue_type": issue_type,
-              "current_step": "resolution_specialist",
-          }
-      )
+@tool
+def record_warranty_status(
+    status: Literal["in_warranty", "out_of_warranty"],
+    runtime: ToolRuntime[None, SupportState],
+) -> Command:
+    """Record the customer's warranty status and transition to issue classification."""
+    return Command(
+        update={
+            "messages": [
+                ToolMessage(
+                    content=f"Warranty status recorded as: {status}",
+                    tool_call_id=runtime.tool_call_id,
+                )
+            ],
+            "warranty_status": status,
+            "current_step": "issue_classifier",
+        }
+    )
 
 
-  @tool
-  def escalate_to_human(reason: str) -> str:
-      """Escalate the case to a human support specialist."""
-      # In a real system, this would create a ticket, notify staff, etc.
-      return f"Escalating to human support. Reason: {reason}"
+@tool
+def record_issue_type(
+    issue_type: Literal["hardware", "software"],
+    runtime: ToolRuntime[None, SupportState],
+) -> Command:
+    """Record the type of issue and transition to resolution specialist."""
+    return Command(
+        update={
+            "messages": [
+                ToolMessage(
+                    content=f"Issue type recorded as: {issue_type}",
+                    tool_call_id=runtime.tool_call_id,
+                )
+            ],
+            "issue_type": issue_type,
+            "current_step": "resolution_specialist",
+        }
+    )
 
 
-  @tool
-  def provide_solution(solution: str) -> str:
-      """Provide a solution to the customer's issue."""
-      return f"Solution provided: {solution}"
+@tool
+def escalate_to_human(reason: str) -> str:
+    """Escalate the case to a human support specialist."""
+    # In a real system, this would create a ticket, notify staff, etc.
+    return f"Escalating to human support. Reason: {reason}"
 
 
-  # Define prompts as constants
-  WARRANTY_COLLECTOR_PROMPT = """You are a customer support agent helping with device issues.
-
-  CURRENT STEP: Warranty verification
-
-  At this step, you need to:
-  1. Greet the customer warmly
-  2. Ask if their device is under warranty
-  3. Use record_warranty_status to record their response and move to the next step
-
-  Be conversational and friendly. Don't ask multiple questions at once."""
-
-  ISSUE_CLASSIFIER_PROMPT = """You are a customer support agent helping with device issues.
-
-  CURRENT STEP: Issue classification
-  CUSTOMER INFO: Warranty status is {warranty_status}
-
-  At this step, you need to:
-  1. Ask the customer to describe their issue
-  2. Determine if it's a hardware issue (physical damage, broken parts) or software issue (app crashes, performance)
-  3. Use record_issue_type to record the classification and move to the next step
-
-  If unclear, ask clarifying questions before classifying."""
-
-  RESOLUTION_SPECIALIST_PROMPT = """You are a customer support agent helping with device issues.
-
-  CURRENT STEP: Resolution
-  CUSTOMER INFO: Warranty status is {warranty_status}, issue type is {issue_type}
-
-  At this step, you need to:
-  1. For SOFTWARE issues: provide troubleshooting steps using provide_solution
-  2. For HARDWARE issues:
-     - If IN WARRANTY: explain warranty repair process using provide_solution
-     - If OUT OF WARRANTY: escalate_to_human for paid repair options
-
-  Be specific and helpful in your solutions."""
+@tool
+def provide_solution(solution: str) -> str:
+    """Provide a solution to the customer's issue."""
+    return f"Solution provided: {solution}"
 
 
-  # Step configuration: maps step name to (prompt, tools, required_state)
-  STEP_CONFIG = {
-      "warranty_collector": {
-          "prompt": WARRANTY_COLLECTOR_PROMPT,
-          "tools": [record_warranty_status],
-          "requires": [],
-      },
-      "issue_classifier": {
-          "prompt": ISSUE_CLASSIFIER_PROMPT,
-          "tools": [record_issue_type],
-          "requires": ["warranty_status"],
-      },
-      "resolution_specialist": {
-          "prompt": RESOLUTION_SPECIALIST_PROMPT,
-          "tools": [provide_solution, escalate_to_human],
-          "requires": ["warranty_status", "issue_type"],
-      },
-  }
+# Define prompts as constants
+WARRANTY_COLLECTOR_PROMPT = """You are a customer support agent helping with device issues.
+
+CURRENT STEP: Warranty verification
+
+At this step, you need to:
+1. Greet the customer warmly
+2. Ask if their device is under warranty
+3. Use record_warranty_status to record their response and move to the next step
+
+Be conversational and friendly. Don't ask multiple questions at once."""
+
+ISSUE_CLASSIFIER_PROMPT = """You are a customer support agent helping with device issues.
+
+CURRENT STEP: Issue classification
+CUSTOMER INFO: Warranty status is {warranty_status}
+
+At this step, you need to:
+1. Ask the customer to describe their issue
+2. Determine if it's a hardware issue (physical damage, broken parts) or software issue (app crashes, performance)
+3. Use record_issue_type to record the classification and move to the next step
+
+If unclear, ask clarifying questions before classifying."""
+
+RESOLUTION_SPECIALIST_PROMPT = """You are a customer support agent helping with device issues.
+
+CURRENT STEP: Resolution
+CUSTOMER INFO: Warranty status is {warranty_status}, issue type is {issue_type}
+
+At this step, you need to:
+1. For SOFTWARE issues: provide troubleshooting steps using provide_solution
+2. For HARDWARE issues:
+   - If IN WARRANTY: explain warranty repair process using provide_solution
+   - If OUT OF WARRANTY: escalate_to_human for paid repair options
+
+Be specific and helpful in your solutions."""
 
 
-  @wrap_model_call
-  def apply_step_config(
-      request: ModelRequest,
-      handler: Callable[[ModelRequest], ModelResponse],
-  ) -> ModelResponse:
-      """Configure agent behavior based on the current step."""
-      # Get current step (defaults to warranty_collector for first interaction)
-      current_step = request.state.get("current_step", "warranty_collector")
-
-      # Look up step configuration
-      step_config = STEP_CONFIG[current_step]
-
-      # Validate required state exists
-      for key in step_config["requires"]:
-          if request.state.get(key) is None:
-              raise ValueError(f"{key} must be set before reaching {current_step}")
-
-      # Format prompt with state values
-      system_prompt = step_config["prompt"].format(**request.state)
-
-      # Inject system prompt and step-specific tools
-      request = request.override(
-          system_prompt=system_prompt,
-          tools=step_config["tools"],
-      )
-
-      return handler(request)
+# Step configuration: maps step name to (prompt, tools, required_state)
+STEP_CONFIG = {
+    "warranty_collector": {
+        "prompt": WARRANTY_COLLECTOR_PROMPT,
+        "tools": [record_warranty_status],
+        "requires": [],
+    },
+    "issue_classifier": {
+        "prompt": ISSUE_CLASSIFIER_PROMPT,
+        "tools": [record_issue_type],
+        "requires": ["warranty_status"],
+    },
+    "resolution_specialist": {
+        "prompt": RESOLUTION_SPECIALIST_PROMPT,
+        "tools": [provide_solution, escalate_to_human],
+        "requires": ["warranty_status", "issue_type"],
+    },
+}
 
 
-  # Collect all tools from all step configurations
-  all_tools = [
-      record_warranty_status,
-      record_issue_type,
-      provide_solution,
-      escalate_to_human,
-  ]
+@wrap_model_call
+def apply_step_config(
+    request: ModelRequest,
+    handler: Callable[[ModelRequest], ModelResponse],
+) -> ModelResponse:
+    """Configure agent behavior based on the current step."""
+    # Get current step (defaults to warranty_collector for first interaction)
+    current_step = request.state.get("current_step", "warranty_collector")
 
-  # Create the agent with step-based configuration and summarization
-  agent = create_agent(
-      model,
-      tools=all_tools,
-      state_schema=SupportState,
-      middleware=[
-          apply_step_config,
-          SummarizationMiddleware(
-              model="gpt-5.4-mini",
-              trigger=("tokens", 4000),
-              keep=("messages", 10)
-          )
-      ],
-      checkpointer=InMemorySaver(),
-  )
+    # Look up step configuration
+    step_config = STEP_CONFIG[current_step]
+
+    # Validate required state exists
+    for key in step_config["requires"]:
+        if request.state.get(key) is None:
+            raise ValueError(f"{key} must be set before reaching {current_step}")
+
+    # Format prompt with state values
+    system_prompt = step_config["prompt"].format(**request.state)
+
+    # Inject system prompt and step-specific tools
+    request = request.override(
+        system_prompt=system_prompt,
+        tools=step_config["tools"],
+    )
+
+    return handler(request)
 
 
-  # ============================================================================
-  # Test the workflow
-  # ============================================================================
+# Collect all tools from all step configurations
+all_tools = [
+    record_warranty_status,
+    record_issue_type,
+    provide_solution,
+    escalate_to_human,
+]
 
-  if __name__ == "__main__":
-      thread_id = str(uuid7())
-      config = {"configurable": {"thread_id": thread_id}}
+# Create the agent with step-based configuration and summarization
+agent = create_agent(
+    model,
+    tools=all_tools,
+    state_schema=SupportState,
+    middleware=[
+        apply_step_config,
+        SummarizationMiddleware(
+            model="gpt-5.4-mini",
+            trigger=("tokens", 4000),
+            keep=("messages", 10)
+        )
+    ],
+    checkpointer=InMemorySaver(),
+)
 
-      result = agent.invoke(
-          {"messages": [HumanMessage("Hi, my phone screen is cracked")]},
-          config
-      )
 
-      result = agent.invoke(
-          {"messages": [HumanMessage("Yes, it's still under warranty")]},
-          config
-      )
+# ============================================================================
+# Test the workflow
+# ============================================================================
 
-      result = agent.invoke(
-          {"messages": [HumanMessage("The screen is physically cracked from dropping it")]},
-          config
-      )
+if __name__ == "__main__":
+    thread_id = str(uuid7())
+    config = {"configurable": {"thread_id": thread_id}}
 
-      result = agent.invoke(
-          {"messages": [HumanMessage("What should I do?")]},
-          config
-      )
-      for msg in result['messages']:
-          msg.pretty_print()
-  ```
-</Expandable>
+    result = agent.invoke(
+        {"messages": [HumanMessage("Hi, my phone screen is cracked")]},
+        config
+    )
 
-## 后续步骤* 了解用于集中编排的[subagents pattern](/oss/python/langchain/multi-agent/subagents-personal-assistant)
+    result = agent.invoke(
+        {"messages": [HumanMessage("Yes, it's still under warranty")]},
+        config
+    )
+
+    result = agent.invoke(
+        {"messages": [HumanMessage("The screen is physically cracked from dropping it")]},
+        config
+    )
+
+    result = agent.invoke(
+        {"messages": [HumanMessage("What should I do?")]},
+        config
+    )
+    for msg in result['messages']:
+        msg.pretty_print()
+```
+
+## 后续步骤
+
+* 了解用于集中编排的[subagents pattern](/oss/python/langchain/multi-agent/subagents-personal-assistant)
 * 探索[middleware](/oss/python/langchain/middleware)以获得更多动态行为
 * 阅读[multi-agent overview](/oss/python/langchain/multi-agent)来比较模式
 * 使用[LangSmith](https://smith.langchain.com?utm_source=docs\&utm_medium=cta\&utm_campaign=langsmith-signup\&utm_content=oss-langchain-multi-agent-handoffs-customer-support)调试和监控您的多代理系统
 
 ***
 
-<div>
-  <Callout icon="terminal-2">
-    [Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
-  </Callout>
+[Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
 
-  <Callout icon="edit">
-    [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/oss/langchain/multi-agent/handoffs-customer-support.mdx) 或 [file an issue](https://github.com/langchain-ai/docs/issues/new/choose)。
-  </Callout>
-</div>
+[Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/oss/langchain/multi-agent/handoffs-customer-support.mdx) 或 [file an issue](https://github.com/langchain-ai/docs/issues/new/choose)。

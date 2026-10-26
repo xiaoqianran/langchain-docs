@@ -12,7 +12,7 @@
 
 ### 基岩地幔
 
-[AWS Bedrock Mantle API](https://docs.aws.amazon.com/bedrock/latest/userguide/inference-responses-api.html#bedrock-mantle-responses)通过OpenAI和Anthropic消息协议公开模型。 `ChatOpenAIMantle` 和 `ChatAnthropicMantle` 是访问这些模型的推荐接口。
+[AWS Bedrock Mantle API](https://docs.aws.amazon.com/bedrock/latest/userguide/inference-responses-api.html#bedrock-mantle-responses) 通过 OpenAI 和 Anthropic 消息协议公开模型。 `ChatOpenAIMantle` 和 `ChatAnthropicMantle` 是访问这些模型的推荐接口。
 
 这两个类都通过 `bedrock_api_key` 参数或 `AWS_BEARER_TOKEN_BEDROCK` 环境变量接受 Bedrock API 密钥。当两者都不可用时，两者都会从标准 AWS 凭证派生短期 API 密钥并透明地刷新它们。
 
@@ -101,15 +101,13 @@ from langchain_aws.vectorstores import ValkeyVectorStore
 
 我们需要安装`langchain-aws`库。
 
-<CodeGroup>
-  ```bash pip theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  pip install langchain-aws
-  ```
+```bash pip theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+pip install langchain-aws
+```
 
-  ```bash uv theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  uv add langchain-aws
-  ```
-</CodeGroup>
+```bash uv theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+uv add langchain-aws
+```
 
 参见[usage example](/oss/python/integrations/retrievers/bedrock)。
 
@@ -124,15 +122,13 @@ from langchain_aws import AmazonKnowledgeBasesRetriever
 > [Amazon Bedrock AgentCore Browser](https://docs.aws.amazon.com/bedrock-agentcore/latest/devguide/browser-tool.html)
 > 使代理能够通过托管 Chrome 浏览器与网页交互，以实现导航、内容提取和 Web 自动化。
 
-<CodeGroup>
-  ```bash pip theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  pip install langchain-aws bedrock-agentcore playwright beautifulsoup4
-  ```
+```bash pip theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+pip install langchain-aws bedrock-agentcore playwright beautifulsoup4
+```
 
-  ```bash uv theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  uv add langchain-aws bedrock-agentcore playwright beautifulsoup4
-  ```
-</CodeGroup>
+```bash uv theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+uv add langchain-aws bedrock-agentcore playwright beautifulsoup4
+```
 
 参见[usage example](/oss/python/integrations/tools/bedrock_agentcore_browser)。
 
@@ -159,15 +155,13 @@ await toolkit.cleanup()
 > [Amazon Bedrock AgentCore Code Interpreter](https://docs.aws.amazon.com/bedrock-agentcore/latest/devguide/code-interpreter-tool.html)
 > 使代理能够在安全的托管沙箱环境中执行 Python、JavaScript 和 TypeScript 代码，以进行计算、数据分析和可视化。
 
-<CodeGroup>
-  ```bash pip theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  pip install langchain-aws bedrock-agentcore
-  ```
+```bash pip theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+pip install langchain-aws bedrock-agentcore
+```
 
-  ```bash uv theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  uv add langchain-aws bedrock-agentcore
-  ```
-</CodeGroup>
+```bash uv theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+uv add langchain-aws bedrock-agentcore
+```
 
 请参阅[usage example](/oss/python/integrations/tools/bedrock_agentcore_code_interpreter)。
 
@@ -189,19 +183,17 @@ result = await agent.ainvoke(
 await toolkit.cleanup()
 ```
 
-### Amazon Bedrock AgentCore 网络搜索[Amazon Bedrock AgentCore Web Search](https://docs.aws.amazon.com/bedrock-agentcore/latest/devguide/gateway-target-connector-web-search-tool.html) 为代理提供来自网络的最新信息，以及每个结果的源 URL，并使用您的 AWS 凭证而不是搜索 API 密钥进行身份验证。
+### Amazon Bedrock AgentCore 网络搜索
 
-<CodeGroup>
-  ```bash pip theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  pip install langchain-aws bedrock-agentcore
-  ```
+[Amazon Bedrock AgentCore Web Search](https://docs.aws.amazon.com/bedrock-agentcore/latest/devguide/gateway-target-connector-web-search-tool.html) 为代理提供来自网络的最新信息，以及每个结果的源 URL，并使用您的 AWS 凭证而不是搜索 API 密钥进行身份验证。
 
-  ```bash uv theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  uv add langchain-aws bedrock-agentcore
-  ```
-</CodeGroup>
+```bash pip theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+pip install langchain-aws bedrock-agentcore
+```
 
-请参阅[usage example](/oss/python/integrations/tools/bedrock_agentcore_web_search)。
+```bash uv theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+uv add langchain-aws bedrock-agentcore
+```请参阅[usage example](/oss/python/integrations/tools/bedrock_agentcore_web_search)。
 
 ```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 from langchain.agents import create_agent
@@ -224,11 +216,9 @@ finally:
 
 ## 沙箱
 
-<Columns>
-  <Card title="AgentCoreSandbox" href="/oss/python/integrations/sandboxes/aws" icon="terminal">
-    适用于 Deepagent 的 Amazon Bedrock AgentCore 代码解释器沙箱后端。
-  </Card>
-</Columns>
+> **[AgentCoreSandbox](/oss/python/integrations/sandboxes/aws)**
+>
+> 适用于 Deepagent 的 Amazon Bedrock AgentCore 代码解释器沙箱后端。
 
 ## 图表
 
@@ -239,15 +229,13 @@ finally:
 
 对于下面的 Cypher 和 SPARQL 集成，我们需要安装 `langchain-aws` 库。
 
-<CodeGroup>
-  ```bash pip theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  pip install langchain-aws
-  ```
+```bash pip theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+pip install langchain-aws
+```
 
-  ```bash uv theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  uv add langchain-aws
-  ```
-</CodeGroup>
+```bash uv theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+uv add langchain-aws
+```
 
 ### 亚马逊海王星与密码
 
@@ -273,15 +261,13 @@ from langchain_aws.chains import create_neptune_sparql_qa_chain
 > [Amazon Bedrock AgentCore Memory](https://docs.aws.amazon.com/bedrock-agentcore/latest/devguide/memory.html)提供
 > LangGraph 代理的托管持久性，通过自动扩展和高可用性实现跨会话的对话历史记录和状态管理。
 
-<CodeGroup>
-  ```bash pip theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  pip install langgraph-checkpoint-aws
-  ```
+```bash pip theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+pip install langgraph-checkpoint-aws
+```
 
-  ```bash uv theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  uv add langgraph-checkpoint-aws
-  ```
-</CodeGroup>
+```bash uv theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+uv add langgraph-checkpoint-aws
+```
 
 ```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 from langgraph_checkpoint_aws import AgentCoreMemorySaver
@@ -312,8 +298,10 @@ result = graph.invoke({"messages": []}, config)
 * 通过`actor_id`隔离支持多代理
 * 静态和传输中加密
 
-### Amazon Bedrock AgentCore 内存存储> [Amazon Bedrock AgentCore Memory Store](https://docs.aws.amazon.com/bedrock-agentcore/latest/devguide/memory.html)提供
-> 具有LangGraph代理语义搜索功能的长期记忆，能够跨会话存储和检索用户偏好、事实和提取的记忆。
+### Amazon Bedrock AgentCore 内存存储
+
+> [Amazon Bedrock AgentCore Memory Store](https://docs.aws.amazon.com/bedrock-agentcore/latest/devguide/memory.html)提供
+> LangGraph 代理具有语义搜索功能的长期记忆，能够跨会话存储和检索用户偏好、事实和提取的记忆。
 
 ```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 from langgraph_checkpoint_aws import AgentCoreMemoryStore
@@ -337,28 +325,22 @@ def pre_model_hook(state, config, *, store):
 
 ## 链条
 
-### Amazon Comprehend 审核链
-
-> [Amazon Comprehend](https://aws.amazon.com/comprehend/) 是一项自然语言处理 (NLP) 服务，
+### Amazon Comprehend 审核链> [Amazon Comprehend](https://aws.amazon.com/comprehend/) 是一项自然语言处理 (NLP) 服务，
 > 使用机器学习来发现文本中有价值的见解和联系。
 
 我们需要安装`boto3`和`nltk`库。
 
-<CodeGroup>
-  ```bash pip theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  pip install boto3 nltk
-  ```
+```bash pip theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+pip install boto3 nltk
+```
 
-  ```bash uv theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  uv add boto3 nltk
-  ```
-</CodeGroup>
+```bash uv theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+uv add boto3 nltk
+```
 
-参见[usage example](https://python.langchain.com/v0.1/docs/guides/productionization/safety/amazon_comprehend_chain/)。
-
-<Warning>
-  `langchain-experimental` 包不再维护。从 `langchain_experimental` 导入的示例可能已过时或已损坏。谨慎使用。
-</Warning>
+> [!警告]
+>
+> `langchain-experimental` 包不再维护。从 `langchain_experimental` 导入的示例可能已过时或已损坏。谨慎使用。
 
 ```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 from langchain_experimental.comprehend_moderation import AmazonComprehendModerationChain
@@ -371,15 +353,13 @@ from langchain_experimental.comprehend_moderation import AmazonComprehendModerat
 > [Amazon Bedrock AgentCore Runtime](https://docs.aws.amazon.com/bedrock-agentcore/latest/devguide/agents-tools-runtime.html)提供
 > LangGraph 代理的托管、无服务器执行，具有内置可观察性、自动扩展以及与其他 AgentCore 服务的无缝集成。
 
-<CodeGroup>
-  ```bash pip theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  pip install bedrock-agentcore
-  ```
+```bash pip theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+pip install bedrock-agentcore
+```
 
-  ```bash uv theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  uv add bedrock-agentcore
-  ```
-</CodeGroup>
+```bash uv theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+uv add bedrock-agentcore
+```
 
 ```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 from bedrock_agentcore.runtime import BedrockAgentCoreApp
@@ -406,12 +386,6 @@ agentcore launch -e your_agent.py
 
 ***
 
-<div>
-  <Callout icon="terminal-2">
-    [Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
-  </Callout>
+[Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
 
-  <Callout icon="edit">
-    [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/oss/python/integrations/providers/aws.mdx) 或 [file an issue](https://github.com/langchain-ai/docs/issues/new/choose)。
-  </Callout>
-</div>
+[Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/oss/python/integrations/providers/aws.mdx) 或 [file an issue](https://github.com/langchain-ai/docs/issues/new/choose)。

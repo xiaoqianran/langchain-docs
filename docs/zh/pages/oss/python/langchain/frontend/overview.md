@@ -17,9 +17,9 @@ LangChain 前端 SDK 不仅是为 **代理应用程序** 构建的
 历史记录和自定义状态值，因此您的 UI 可以成为控制平面
 长期运行代理工作。
 
-<Note>
-  这些模式使用 v1 前端 SDK 包。如果您使用的是早期版本，请参阅 [React](https://github.com/langchain-ai/langgraphjs/blob/main/libs/sdk-react/docs/v1-migration.md)、[Vue](https://github.com/langchain-ai/langgraphjs/blob/main/libs/sdk-vue/docs/v1-migration.md)、[Svelte](https://github.com/langchain-ai/langgraphjs/blob/main/libs/sdk-svelte/docs/v1-migration.md) 和 [Angular](https://github.com/langchain-ai/langgraphjs/blob/main/libs/sdk-angular/docs/v1-migration.md) 的迁移指南。
-</Note>
+> [!注意]
+>
+> 这些模式使用 v1 前端 SDK 包。如果您使用的是早期版本，请参阅 [React](https://github.com/langchain-ai/langgraphjs/blob/main/libs/sdk-react/docs/v1-migration.md)、[Vue](https://github.com/langchain-ai/langgraphjs/blob/main/libs/sdk-vue/docs/v1-migration.md)、[Svelte](https://github.com/langchain-ai/langgraphjs/blob/main/libs/sdk-svelte/docs/v1-migration.md) 和 [Angular](https://github.com/langchain-ai/langgraphjs/blob/main/libs/sdk-angular/docs/v1-migration.md) 的迁移指南。
 
 ## 架构
 
@@ -45,7 +45,7 @@ graph LR
   classDef greenHighlight fill:#F6FFDB,stroke:#6E8900,color:#2E3900;
   class FRONTEND blueHighlight;
   class BACKEND greenHighlight;
-```在后端，`createAgent` 生成一个已编译的 LangGraph 图，该图公开流式 API。在前端，流句柄连接到该 API 并提供反应状态（消息、工具调用、中断、值和线程元数据），您可以使用任何框架呈现这些状态。
+```在后端，`createAgent`生成一个已编译的LangGraph图，该图公开了流API。在前端，流句柄连接到该 API 并提供反应状态（消息、工具调用、中断、值和线程元数据），您可以使用任何框架呈现这些状态。
 
 ## 为什么使用LangChain前端SDK？
 
@@ -65,44 +65,42 @@ LangChain 的 SDK 公开了比生产代理更丰富的运行时语义
 这些原语可让您设计用户可以在其中检查、驾驶、暂停、
 恢复和分叉代理在其发生时工作。
 
-<CodeGroup>
-  ```python agent.py theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  from langchain import create_agent
-  from langgraph.checkpoint.memory import MemorySaver
+```python agent.py theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+from langchain import create_agent
+from langgraph.checkpoint.memory import MemorySaver
 
-  agent = create_agent(
-      model="openai:gpt-5.5",
-      tools=[get_weather, search_web],
-      checkpointer=MemorySaver(),
-  )
-  ```
+agent = create_agent(
+    model="openai:gpt-5.5",
+    tools=[get_weather, search_web],
+    checkpointer=MemorySaver(),
+)
+```
 
-  ```ts types.ts theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  export interface GraphState {
-    messages: BaseMessage[];
-  }
-  ```
+```ts types.ts theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+export interface GraphState {
+  messages: BaseMessage[];
+}
+```
 
-  ```tsx Chat.tsx theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  import { useStream } from "@langchain/react";
-  import type { GraphState } from "./types";
+```tsx Chat.tsx theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+import { useStream } from "@langchain/react";
+import type { GraphState } from "./types";
 
-  function Chat() {
-    const stream = useStream<GraphState>({
-      apiUrl: "http://localhost:2024",
-      assistantId: "agent",
-    });
+function Chat() {
+  const stream = useStream<GraphState>({
+    apiUrl: "http://localhost:2024",
+    assistantId: "agent",
+  });
 
-    return (
-      <div>
-        {stream.messages.map((msg) => (
-          <Message key={msg.id} message={msg} />
-        ))}
-      </div>
-    );
-  }
-  ```
-</CodeGroup>
+  return (
+    <div>
+      {stream.messages.map((msg) => (
+        <Message key={msg.id} message={msg} />
+      ))}
+    </div>
+  );
+}
+```
 
 React、Vue 和 Svelte 使用 `useStream`。 Angular 使用 `injectStream`：
 
@@ -149,61 +147,53 @@ interface AgentState {
 
 ### 渲染消息和输出
 
-<CardGroup>
-  <Card title="Markdown messages" icon="markdown" href="/oss/python/langchain/frontend/markdown-messages">
-    使用正确的格式和代码突出显示来解析和渲染流式 Markdown。
-  </Card><Card title="Structured output" icon="layout-grid" href="/oss/python/langchain/frontend/structured-output">
-    将键入的代理响应呈现为自定义 UI 组件而不是纯文本。
-  </Card>
+> **[Markdown messages](/oss/python/langchain/frontend/markdown-messages)**
+>
+> 使用正确的格式和代码突出显示来解析和渲染流式 Markdown。> **[Structured output](/oss/python/langchain/frontend/structured-output)**
+>
+> 将键入的代理响应呈现为自定义 UI 组件而不是纯文本。
 
-  <Card title="Reasoning tokens" icon="brain" href="/oss/python/langchain/frontend/reasoning-tokens">
-    在可折叠块中显示模型思维过程。
-  </Card>
+> **[Reasoning tokens](/oss/python/langchain/frontend/reasoning-tokens)**
+>
+> 在可折叠块中显示模型思维过程。
 
-  <Card title="Generative UI" icon="wand" href="/oss/python/langchain/frontend/generative-ui-overview">
-    呈现代理生成的界面，范围涵盖从受控到声明到开放式。
-  </Card>
-</CardGroup>
+> **[Generative UI](/oss/python/langchain/frontend/generative-ui-overview)**
+>
+> 渲染代理生成的界面，涵盖从受控到声明到开放式的各种范围。
 
 ### 显示代理操作
 
-<CardGroup>
-  <Card title="Tool calling" icon="tool" href="/oss/python/langchain/frontend/tool-calling">
-    将工具调用显示为包含加载和错误状态的丰富、类型安全的 UI 卡。
-  </Card>
+> **[Tool calling](/oss/python/langchain/frontend/tool-calling)**
+>
+> 将工具调用显示为包含加载和错误状态的丰富、类型安全的 UI 卡。
 
-  <Card title="Headless tools" icon="device-desktop" href="/oss/python/langchain/frontend/headless-tools">
-    在客户端上运行浏览器和设备 API，同时在代理上保留类型化工具架构。
-  </Card>
+> **[Headless tools](/oss/python/langchain/frontend/headless-tools)**
+>
+> 在客户端上运行浏览器和设备 API，同时在代理上保留类型化工具架构。
 
-  <Card title="Human-in-the-loop" icon="user-check" href="/oss/python/langchain/frontend/human-in-the-loop">
-    暂停代理以通过批准、拒绝和编辑工作流程进行人工审核。
-  </Card>
-</CardGroup>
+> **[Human-in-the-loop](/oss/python/langchain/frontend/human-in-the-loop)**
+>
+> 暂停代理以通过批准、拒绝和编辑工作流程进行人工审核。
 
 ### 管理对话
 
-<CardGroup>
-  <Card title="Branching chat" icon="git-branch" href="/oss/python/langchain/frontend/branching-chat">
-    编辑消息、重新生成响应以及导航对话分支。
-  </Card>
+> **[Branching chat](/oss/python/langchain/frontend/branching-chat)**
+>
+> 编辑消息、重新生成响应以及导航对话分支。
 
-  <Card title="Message queues" icon="list-check" href="/oss/python/langchain/frontend/message-queues">
-    将多个消息排队，同时代理按顺序处理它们。
-  </Card>
-</CardGroup>
+> **[Message queues](/oss/python/langchain/frontend/message-queues)**
+>
+> 将多条消息排队，同时代理按顺序处理它们。
 
 ### 高级流媒体
 
-<CardGroup>
-  <Card title="Join & rejoin streams" icon="plug-connected" href="/oss/python/langchain/frontend/join-rejoin">
-    断开并重新连接正在运行的代理流，而不会丢失进度。
-  </Card>
+> **[Join & rejoin streams](/oss/python/langchain/frontend/join-rejoin)**
+>
+> 断开并重新连接正在运行的代理流，而不会丢失进度。
 
-  <Card title="Time travel" icon="clock" href="/oss/python/langchain/frontend/time-travel">
-    从对话历史记录中的任何检查点检查、导航和恢复。
-  </Card>
-</CardGroup>
+> **[Time travel](/oss/python/langchain/frontend/time-travel)**
+>
+> 从对话历史记录中的任何检查点检查、导航和恢复。
 
 ## 选择前端模式
 
@@ -223,28 +213,20 @@ interface AgentState {
 SDK 拥有代理运行时状态、可恢复性、中断和检查点
 下面的语义。
 
-<CardGroup>
-  <Card title="AI Elements" icon="package" href="/oss/python/langchain/frontend/integrations/ai-elements">
-    用于 AI 聊天的可组合 shadcn/ui 组件：`Conversation`、`Message`、`Tool`、`Reasoning`。
-  </Card>
+> **[AI Elements](/oss/python/langchain/frontend/integrations/ai-elements)**
+>
+> 用于 AI 聊天的可组合 shadcn/ui 组件：`Conversation`、`Message`、`Tool`、`Reasoning`。
 
-  <Card title="assistant-ui" icon="package" href="/oss/python/langchain/frontend/integrations/assistant-ui">
-    Headless React 框架，具有内置线程管理、分支和附件支持。
-  </Card>
+> **[assistant-ui](/oss/python/langchain/frontend/integrations/assistant-ui)**
+>
+> Headless React 框架，具有内置线程管理、分支和附件支持。
 
-  <Card title="OpenUI" icon="package" href="/oss/python/langchain/frontend/integrations/openui">
-    使用 openui-lang 组件 DSL 生成数据丰富的报告和仪表板的 UI 库。
-  </Card>
-</CardGroup>
+> **[OpenUI](/oss/python/langchain/frontend/integrations/openui)**
+>
+> 使用 openui-lang 组件 DSL 生成数据丰富的报告和仪表板的 UI 库。
 
 ***
 
-<div>
-  <Callout icon="terminal-2">
-    [Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
-  </Callout>
+[Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
 
-  <Callout icon="edit">
-    [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/oss/langchain/frontend/overview.mdx) 或 [file an issue](https://github.com/langchain-ai/docs/issues/new/choose)。
-  </Callout>
-</div>
+[Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/oss/langchain/frontend/overview.mdx) 或 [file an issue](https://github.com/langchain-ai/docs/issues/new/choose)。

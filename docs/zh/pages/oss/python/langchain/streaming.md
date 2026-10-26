@@ -6,11 +6,11 @@
 
 从代理运行流式传输实时更新
 
-<Tip>
-  对于新应用程序，我们推荐[event streaming](/oss/python/langchain/event-streaming)——LangChain v1.3 中引入的类型化投影 API。事件流为每个投影（消息、值、工具调用、子图）提供单独的迭代器，因此您可以独立使用它们，而不是在 `stream_mode` 块上分支。
-</Tip>
+> [!提示]
+>
+> 对于新应用程序，我们推荐[event streaming](/oss/python/langchain/event-streaming)——LangChain v1.3 中引入的类型化投影 API。事件流为每个投影（消息、值、工具调用、子图）提供单独的迭代器，因此您可以独立使用它们，而不是在 `stream_mode` 块上分支。
 
-LangChain实现了流媒体系统来显示实时更新。
+LangChain 实现了流系统来显示实时更新。
 
 流媒体对于增强基于 LLM 构建的应用程序的响应能力至关重要。通过逐步显示输出，甚至在完整响应准备好之前，流式传输可以显着改善用户体验 (UX)，特别是在处理 LLM 的延迟时。
 
@@ -20,11 +20,11 @@ LangChain 的流系统可让您将代理运行的实时反馈显示到您的应�
 
 LangChain 流媒体可以实现什么：
 
-* <Icon icon="brain" /> [**Stream agent progress**](#agent-progress)—在每个代理步骤之后获取状态更新。
-* <Icon icon="binary" /> [**Stream LLM tokens**](#llm-tokens)—生成时流式传输语言模型标记。
-* <Icon icon="bulb" /> [**Stream thinking / reasoning tokens**](#streaming-thinking-/-reasoning-tokens)—生成时的表面模型推理。
-* <Icon icon="table" /> [**Stream custom updates**](#custom-updates)—发出用户定义的信号（例如，`"Fetched 10/100 records"`）。
-* <Icon icon="stack-push" /> [**Stream multiple modes**](#stream-multiple-modes) — 从 `updates`（代理进度）、`messages`（LLM 代币 + 元数据）或 `custom`（任意用户数据）中进行选择。有关其他端到端示例，请参阅下面的[common patterns](#common-patterns)部分。
+* [**Stream agent progress**](#agent-progress)——在每个代理步骤之后获取状态更新。
+* [**Stream LLM tokens**](#llm-tokens)—生成时流式传输语言模型标记。
+* [**Stream thinking / reasoning tokens**](#streaming-thinking-/-reasoning-tokens)—生成时的表面模型推理。
+* [**Stream custom updates**](#custom-updates)—发出用户定义的信号（例如，`"Fetched 10/100 records"`）。
+* [**Stream multiple modes**](#stream-multiple-modes)—从`updates`（代理进度）、`messages`（LLM 代币+元数据）或`custom`（任意用户数据）中进行选择。有关其他端到端示例，请参阅下面的[common patterns](#common-patterns)部分。
 
 ## 支持的流模式
 
@@ -48,240 +48,238 @@ LangChain 流媒体可以实现什么：
 
 通过 `config` 传递 `thread_id`，因此对话会被检查点，并且后续回合可以恢复相同的历史记录。 `thread_id` 独立于`stream_mode`；您还可以将 `context` 与其一起传递，以获取工具从 `runtime.context` 读取的每次运行数据。
 
-<CodeGroup>
-  ```python Google theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  from langchain.agents import create_agent
-  from langchain_core.utils.uuid import uuid7
-  from langgraph.checkpoint.memory import InMemorySaver
+```python Google theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+from langchain.agents import create_agent
+from langchain_core.utils.uuid import uuid7
+from langgraph.checkpoint.memory import InMemorySaver
 
-  def get_weather(city: str) -> str:
-      """Get weather for a given city."""
-      return f"It's always sunny in {city}!"
+def get_weather(city: str) -> str:
+    """Get weather for a given city."""
+    return f"It's always sunny in {city}!"
 
-  agent = create_agent(
-      model="google_genai:gemini-3.6-flash",
-      tools=[get_weather],
-      checkpointer=InMemorySaver()
-  )
-  config = {"configurable": {"thread_id": str(uuid7())}}
-  stream = agent.stream_events(  # [!code highlight]
-      {"messages": [{"role": "user", "content": "What is the weather in SF?"}]},
-      config=config,
-      version="v3",  # [!code highlight]
-  )
-  for kind, item in stream.interleave("messages", "tool_calls"):  # [!code highlight]
-      if kind == "messages":
-          for token in item.text:
-              print(token, end="", flush=True)
-      elif kind == "tool_calls":
-          print(f"\nTool call: {item.tool_name}({item.input})")
-          for delta in item.output_deltas:
-              print(delta, end="", flush=True)
-          print(f"\nTool result: {item.output}")
+agent = create_agent(
+    model="google_genai:gemini-3.6-flash",
+    tools=[get_weather],
+    checkpointer=InMemorySaver()
+)
+config = {"configurable": {"thread_id": str(uuid7())}}
+stream = agent.stream_events(  # [!code highlight]
+    {"messages": [{"role": "user", "content": "What is the weather in SF?"}]},
+    config=config,
+    version="v3",  # [!code highlight]
+)
+for kind, item in stream.interleave("messages", "tool_calls"):  # [!code highlight]
+    if kind == "messages":
+        for token in item.text:
+            print(token, end="", flush=True)
+    elif kind == "tool_calls":
+        print(f"\nTool call: {item.tool_name}({item.input})")
+        for delta in item.output_deltas:
+            print(delta, end="", flush=True)
+        print(f"\nTool result: {item.output}")
 
-  final_state = stream.output  # [!code highlight]
-  ```
+final_state = stream.output  # [!code highlight]
+```
 
-  ```python OpenAI theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  from langchain.agents import create_agent
-  from langchain_core.utils.uuid import uuid7
-  from langgraph.checkpoint.memory import InMemorySaver
+```python OpenAI theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+from langchain.agents import create_agent
+from langchain_core.utils.uuid import uuid7
+from langgraph.checkpoint.memory import InMemorySaver
 
-  def get_weather(city: str) -> str:
-      """Get weather for a given city."""
-      return f"It's always sunny in {city}!"
+def get_weather(city: str) -> str:
+    """Get weather for a given city."""
+    return f"It's always sunny in {city}!"
 
-  agent = create_agent(
-      model="openai:gpt-5.5",
-      tools=[get_weather],
-      checkpointer=InMemorySaver()
-  )
-  config = {"configurable": {"thread_id": str(uuid7())}}
-  stream = agent.stream_events(  # [!code highlight]
-      {"messages": [{"role": "user", "content": "What is the weather in SF?"}]},
-      config=config,
-      version="v3",  # [!code highlight]
-  )
-  for kind, item in stream.interleave("messages", "tool_calls"):  # [!code highlight]
-      if kind == "messages":
-          for token in item.text:
-              print(token, end="", flush=True)
-      elif kind == "tool_calls":
-          print(f"\nTool call: {item.tool_name}({item.input})")
-          for delta in item.output_deltas:
-              print(delta, end="", flush=True)
-          print(f"\nTool result: {item.output}")
+agent = create_agent(
+    model="openai:gpt-5.5",
+    tools=[get_weather],
+    checkpointer=InMemorySaver()
+)
+config = {"configurable": {"thread_id": str(uuid7())}}
+stream = agent.stream_events(  # [!code highlight]
+    {"messages": [{"role": "user", "content": "What is the weather in SF?"}]},
+    config=config,
+    version="v3",  # [!code highlight]
+)
+for kind, item in stream.interleave("messages", "tool_calls"):  # [!code highlight]
+    if kind == "messages":
+        for token in item.text:
+            print(token, end="", flush=True)
+    elif kind == "tool_calls":
+        print(f"\nTool call: {item.tool_name}({item.input})")
+        for delta in item.output_deltas:
+            print(delta, end="", flush=True)
+        print(f"\nTool result: {item.output}")
 
-  final_state = stream.output  # [!code highlight]
-  ```
+final_state = stream.output  # [!code highlight]
+```
 
-  ```python Anthropic theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  from langchain.agents import create_agent
-  from langchain_core.utils.uuid import uuid7
-  from langgraph.checkpoint.memory import InMemorySaver
+```python Anthropic theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+from langchain.agents import create_agent
+from langchain_core.utils.uuid import uuid7
+from langgraph.checkpoint.memory import InMemorySaver
 
-  def get_weather(city: str) -> str:
-      """Get weather for a given city."""
-      return f"It's always sunny in {city}!"
+def get_weather(city: str) -> str:
+    """Get weather for a given city."""
+    return f"It's always sunny in {city}!"
 
-  agent = create_agent(
-      model="anthropic:claude-sonnet-5",
-      tools=[get_weather],
-      checkpointer=InMemorySaver()
-  )
-  config = {"configurable": {"thread_id": str(uuid7())}}
-  stream = agent.stream_events(  # [!code highlight]
-      {"messages": [{"role": "user", "content": "What is the weather in SF?"}]},
-      config=config,
-      version="v3",  # [!code highlight]
-  )
-  for kind, item in stream.interleave("messages", "tool_calls"):  # [!code highlight]
-      if kind == "messages":
-          for token in item.text:
-              print(token, end="", flush=True)
-      elif kind == "tool_calls":
-          print(f"\nTool call: {item.tool_name}({item.input})")
-          for delta in item.output_deltas:
-              print(delta, end="", flush=True)
-          print(f"\nTool result: {item.output}")
+agent = create_agent(
+    model="anthropic:claude-sonnet-5",
+    tools=[get_weather],
+    checkpointer=InMemorySaver()
+)
+config = {"configurable": {"thread_id": str(uuid7())}}
+stream = agent.stream_events(  # [!code highlight]
+    {"messages": [{"role": "user", "content": "What is the weather in SF?"}]},
+    config=config,
+    version="v3",  # [!code highlight]
+)
+for kind, item in stream.interleave("messages", "tool_calls"):  # [!code highlight]
+    if kind == "messages":
+        for token in item.text:
+            print(token, end="", flush=True)
+    elif kind == "tool_calls":
+        print(f"\nTool call: {item.tool_name}({item.input})")
+        for delta in item.output_deltas:
+            print(delta, end="", flush=True)
+        print(f"\nTool result: {item.output}")
 
-  final_state = stream.output  # [!code highlight]
-  ```
+final_state = stream.output  # [!code highlight]
+```
 
-  ```python OpenRouter theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  from langchain.agents import create_agent
-  from langchain_core.utils.uuid import uuid7
-  from langgraph.checkpoint.memory import InMemorySaver
+```python OpenRouter theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+from langchain.agents import create_agent
+from langchain_core.utils.uuid import uuid7
+from langgraph.checkpoint.memory import InMemorySaver
 
-  def get_weather(city: str) -> str:
-      """Get weather for a given city."""
-      return f"It's always sunny in {city}!"
+def get_weather(city: str) -> str:
+    """Get weather for a given city."""
+    return f"It's always sunny in {city}!"
 
-  agent = create_agent(
-      model="openrouter:z-ai/glm-5.2",
-      tools=[get_weather],
-      checkpointer=InMemorySaver()
-  )
-  config = {"configurable": {"thread_id": str(uuid7())}}
-  stream = agent.stream_events(  # [!code highlight]
-      {"messages": [{"role": "user", "content": "What is the weather in SF?"}]},
-      config=config,
-      version="v3",  # [!code highlight]
-  )
-  for kind, item in stream.interleave("messages", "tool_calls"):  # [!code highlight]
-      if kind == "messages":
-          for token in item.text:
-              print(token, end="", flush=True)
-      elif kind == "tool_calls":
-          print(f"\nTool call: {item.tool_name}({item.input})")
-          for delta in item.output_deltas:
-              print(delta, end="", flush=True)
-          print(f"\nTool result: {item.output}")
+agent = create_agent(
+    model="openrouter:z-ai/glm-5.2",
+    tools=[get_weather],
+    checkpointer=InMemorySaver()
+)
+config = {"configurable": {"thread_id": str(uuid7())}}
+stream = agent.stream_events(  # [!code highlight]
+    {"messages": [{"role": "user", "content": "What is the weather in SF?"}]},
+    config=config,
+    version="v3",  # [!code highlight]
+)
+for kind, item in stream.interleave("messages", "tool_calls"):  # [!code highlight]
+    if kind == "messages":
+        for token in item.text:
+            print(token, end="", flush=True)
+    elif kind == "tool_calls":
+        print(f"\nTool call: {item.tool_name}({item.input})")
+        for delta in item.output_deltas:
+            print(delta, end="", flush=True)
+        print(f"\nTool result: {item.output}")
 
-  final_state = stream.output  # [!code highlight]
-  ```
+final_state = stream.output  # [!code highlight]
+```
 
-  ```python Fireworks theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  from langchain.agents import create_agent
-  from langchain_core.utils.uuid import uuid7
-  from langgraph.checkpoint.memory import InMemorySaver
+```python Fireworks theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+from langchain.agents import create_agent
+from langchain_core.utils.uuid import uuid7
+from langgraph.checkpoint.memory import InMemorySaver
 
-  def get_weather(city: str) -> str:
-      """Get weather for a given city."""
-      return f"It's always sunny in {city}!"
+def get_weather(city: str) -> str:
+    """Get weather for a given city."""
+    return f"It's always sunny in {city}!"
 
-  agent = create_agent(
-      model="fireworks:accounts/fireworks/models/glm-5p2",
-      tools=[get_weather],
-      checkpointer=InMemorySaver()
-  )
-  config = {"configurable": {"thread_id": str(uuid7())}}
-  stream = agent.stream_events(  # [!code highlight]
-      {"messages": [{"role": "user", "content": "What is the weather in SF?"}]},
-      config=config,
-      version="v3",  # [!code highlight]
-  )
-  for kind, item in stream.interleave("messages", "tool_calls"):  # [!code highlight]
-      if kind == "messages":
-          for token in item.text:
-              print(token, end="", flush=True)
-      elif kind == "tool_calls":
-          print(f"\nTool call: {item.tool_name}({item.input})")
-          for delta in item.output_deltas:
-              print(delta, end="", flush=True)
-          print(f"\nTool result: {item.output}")
+agent = create_agent(
+    model="fireworks:accounts/fireworks/models/glm-5p2",
+    tools=[get_weather],
+    checkpointer=InMemorySaver()
+)
+config = {"configurable": {"thread_id": str(uuid7())}}
+stream = agent.stream_events(  # [!code highlight]
+    {"messages": [{"role": "user", "content": "What is the weather in SF?"}]},
+    config=config,
+    version="v3",  # [!code highlight]
+)
+for kind, item in stream.interleave("messages", "tool_calls"):  # [!code highlight]
+    if kind == "messages":
+        for token in item.text:
+            print(token, end="", flush=True)
+    elif kind == "tool_calls":
+        print(f"\nTool call: {item.tool_name}({item.input})")
+        for delta in item.output_deltas:
+            print(delta, end="", flush=True)
+        print(f"\nTool result: {item.output}")
 
-  final_state = stream.output  # [!code highlight]
-  ```
+final_state = stream.output  # [!code highlight]
+```
 
-  ```python Baseten theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  from langchain.agents import create_agent
-  from langchain_core.utils.uuid import uuid7
-  from langgraph.checkpoint.memory import InMemorySaver
+```python Baseten theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+from langchain.agents import create_agent
+from langchain_core.utils.uuid import uuid7
+from langgraph.checkpoint.memory import InMemorySaver
 
-  def get_weather(city: str) -> str:
-      """Get weather for a given city."""
-      return f"It's always sunny in {city}!"
+def get_weather(city: str) -> str:
+    """Get weather for a given city."""
+    return f"It's always sunny in {city}!"
 
-  agent = create_agent(
-      model="baseten:zai-org/GLM-5.2",
-      tools=[get_weather],
-      checkpointer=InMemorySaver()
-  )
-  config = {"configurable": {"thread_id": str(uuid7())}}
-  stream = agent.stream_events(  # [!code highlight]
-      {"messages": [{"role": "user", "content": "What is the weather in SF?"}]},
-      config=config,
-      version="v3",  # [!code highlight]
-  )
-  for kind, item in stream.interleave("messages", "tool_calls"):  # [!code highlight]
-      if kind == "messages":
-          for token in item.text:
-              print(token, end="", flush=True)
-      elif kind == "tool_calls":
-          print(f"\nTool call: {item.tool_name}({item.input})")
-          for delta in item.output_deltas:
-              print(delta, end="", flush=True)
-          print(f"\nTool result: {item.output}")
+agent = create_agent(
+    model="baseten:zai-org/GLM-5.2",
+    tools=[get_weather],
+    checkpointer=InMemorySaver()
+)
+config = {"configurable": {"thread_id": str(uuid7())}}
+stream = agent.stream_events(  # [!code highlight]
+    {"messages": [{"role": "user", "content": "What is the weather in SF?"}]},
+    config=config,
+    version="v3",  # [!code highlight]
+)
+for kind, item in stream.interleave("messages", "tool_calls"):  # [!code highlight]
+    if kind == "messages":
+        for token in item.text:
+            print(token, end="", flush=True)
+    elif kind == "tool_calls":
+        print(f"\nTool call: {item.tool_name}({item.input})")
+        for delta in item.output_deltas:
+            print(delta, end="", flush=True)
+        print(f"\nTool result: {item.output}")
 
-  final_state = stream.output  # [!code highlight]
-  ``````python Ollama theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  from langchain.agents import create_agent
-  from langchain_core.utils.uuid import uuid7
-  from langgraph.checkpoint.memory import InMemorySaver
+final_state = stream.output  # [!code highlight]
+```
 
-  def get_weather(city: str) -> str:
-      """Get weather for a given city."""
-      return f"It's always sunny in {city}!"
+```python Ollama theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+from langchain.agents import create_agent
+from langchain_core.utils.uuid import uuid7
+from langgraph.checkpoint.memory import InMemorySaver
 
-  agent = create_agent(
-      model="ollama:north-mini-code-1.0",
-      tools=[get_weather],
-      checkpointer=InMemorySaver()
-  )
-  config = {"configurable": {"thread_id": str(uuid7())}}
-  stream = agent.stream_events(  # [!code highlight]
-      {"messages": [{"role": "user", "content": "What is the weather in SF?"}]},
-      config=config,
-      version="v3",  # [!code highlight]
-  )
-  for kind, item in stream.interleave("messages", "tool_calls"):  # [!code highlight]
-      if kind == "messages":
-          for token in item.text:
-              print(token, end="", flush=True)
-      elif kind == "tool_calls":
-          print(f"\nTool call: {item.tool_name}({item.input})")
-          for delta in item.output_deltas:
-              print(delta, end="", flush=True)
-          print(f"\nTool result: {item.output}")
+def get_weather(city: str) -> str:
+    """Get weather for a given city."""
+    return f"It's always sunny in {city}!"
 
-  final_state = stream.output  # [!code highlight]
-  ```
-</CodeGroup>
+agent = create_agent(
+    model="ollama:north-mini-code-1.0",
+    tools=[get_weather],
+    checkpointer=InMemorySaver()
+)
+config = {"configurable": {"thread_id": str(uuid7())}}
+stream = agent.stream_events(  # [!code highlight]
+    {"messages": [{"role": "user", "content": "What is the weather in SF?"}]},
+    config=config,
+    version="v3",  # [!code highlight]
+)
+for kind, item in stream.interleave("messages", "tool_calls"):  # [!code highlight]
+    if kind == "messages":
+        for token in item.text:
+            print(token, end="", flush=True)
+    elif kind == "tool_calls":
+        print(f"\nTool call: {item.tool_name}({item.input})")
+        for delta in item.output_deltas:
+            print(delta, end="", flush=True)
+        print(f"\nTool result: {item.output}")
 
-<Card title="View example trace" icon="chart-line" href="https://smith.langchain.com/public/a6ac596b-db43-4172-bd17-edd3c833064f/r">
-  为此示例打开公共 LangSmith 运行。
-</Card>
+final_state = stream.output  # [!code highlight]
+```> **[View example trace](https://smith.langchain.com/public/a6ac596b-db43-4172-bd17-edd3c833064f/r)**
+>
+> 为此示例打开公共 LangSmith 运行。
 
 ```shell title="Output" theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 step: model
@@ -292,9 +290,9 @@ step: model
 content: [{'type': 'text', 'text': "San Francisco weather: It's always sunny in San Francisco!\n\nIf you’d like the exact current conditions (temperature, humidity, wind) and a short forecast, I can fetch that next. Would you like me to pull live details for San Francisco?"}]
 ```
 
-<Note>
-  保留与 `thread_id` 的对话历史记录需要使用 [checkpointer](/oss/python/langchain/long-term-memory) 配置代理。在 [LangSmith deployments](/langsmith/deployment) 上，会自动配置检查点。在本地，显式传递一个，例如 `create_agent(..., checkpointer=InMemorySaver())`。为了简洁起见，此页面上的其余片段省略了 `thread_id`，但您应该在生产中传递它。
-</Note>
+> [!注意]
+>
+> 保留与 `thread_id` 的对话历史记录需要使用 [checkpointer](/oss/python/langchain/long-term-memory) 配置代理。在 [LangSmith deployments](/langsmith/deployment) 上，会自动配置检查点。在本地，显式传递一个，例如 `create_agent(..., checkpointer=InMemorySaver())`。为了简洁起见，此页面上的其余片段省略了 `thread_id`，但您应该在生产中传递它。
 
 ## LLM 代币
 
@@ -422,9 +420,9 @@ node: model
 content: [{'type': 'text', 'text': '!"\n\n'}]
 ```
 
-<Note>
-  **将代理包装为父级`StateGraph`中的节点？** [⟦T62⟧](https://reference.langchain.com/python/langchain/agents/factory/create_agent)返回编译后的图，因此将其用作节点使其成为子图。父图上的 `stream_mode="messages"` 不会从内部代理的 LLM 调用中发出令牌块，除非您传递 `subgraphs=True`。参见[Subgraph outputs](/oss/python/langgraph/streaming#subgraph-outputs)。
-</Note>
+> [!注意]
+>
+> **将代理包装为父级 `StateGraph` 中的节点？** [⟦T62⟧](https://reference.langchain.com/python/langchain/agents/factory/create_agent) 返回已编译的图，因此将其用作节点使其成为子图。父图上的 `stream_mode="messages"` 不会从内部代理的 LLM 调用中发出令牌块，除非您传递 `subgraphs=True`。参见[Subgraph outputs](/oss/python/langgraph/streaming#subgraph-outputs)。
 
 ## 自定义更新
 
@@ -462,9 +460,9 @@ Looking up data for city: San Francisco
 Acquired data for city: San Francisco
 ```
 
-<Note>
-  如果您在工具中添加 [⟦T66⟧](https://reference.langchain.com/python/langgraph/config/get_stream_writer)，您将无法在 LangGraph 执行上下文之外调用该工具。
-</Note>
+> [!注意]
+>
+> 如果您在工具中添加 [⟦T66⟧](https://reference.langchain.com/python/langgraph/config/get_stream_writer)，您将无法在 LangGraph 执行上下文之外调用该工具。
 
 ## 多种流模式
 
@@ -526,13 +524,13 @@ content: {'model': {'messages': [AIMessage(content='San Francisco weather: It's 
 
 一些模型在产生最终答案之前执行内部推理。您可以流式传输这些通过过滤 [standard content blocks](/oss/python/langchain/messages#standard-content-blocks) 以获得 `type` `"reasoning"` 生成的思考/推理标记。
 
-<Note>
-  必须在模型上启用推理输出。
-
-  请参阅 [reasoning section](/oss/python/langchain/models#reasoning) 和您的 [provider's integration page](/oss/python/integrations/providers/overview) 了解配置详细信息。
-
-  要快速检查模型的推理支持，请参阅[models.dev](https://models.dev)。
-</Note>
+> [!注意]
+>
+> 必须在模型上启用推理输出。
+>
+> 请参阅 [reasoning section](/oss/python/langchain/models#reasoning) 和您的 [provider's integration page](/oss/python/integrations/providers/overview) 了解配置详细信息。
+>
+> 要快速检查模型的推理支持，请参阅[models.dev](https://models.dev)。
 
 要从代理流式传输思考令牌，请使用 `stream_mode="messages"` 并过滤推理内容块：
 
@@ -569,9 +567,9 @@ for message in stream.messages:
         print(token, end="", flush=True)
 ```
 
-<Card title="View example trace" icon="chart-line" href="https://smith.langchain.com/public/eba47840-3f3c-4528-b786-c962c59912ba/r">
-  为此示例打开公共 LangSmith 运行。
-</Card>
+> **[View example trace](https://smith.langchain.com/public/eba47840-3f3c-4528-b786-c962c59912ba/r)**
+>
+> 为此示例打开公共 LangSmith 运行。
 
 ```shell title="Output" theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 [thinking] The user is asking about the weather in San Francisco. I have a tool
@@ -586,7 +584,7 @@ The weather in San Francisco is: It's always sunny in San Francisco!
 
 ### 流工具调用
 
-您可能想要同时传输：1. 生成部分JSON为[tool calls](/oss/python/langchain/models#tool-calling)
+您可能想要同时传输：1.生成部分JSON为[tool calls](/oss/python/langchain/models#tool-calling)
 2. 执行的已完成、已解析的工具调用
 
 指定 [⟦T81⟧](#llm-tokens) 将流式传输代理中所有 LLM 调用生成的增量 [message chunks](/oss/python/langchain/messages#streaming-and-chunks)。要使用已解析的工具调用访问已完成的消息：
@@ -594,9 +592,9 @@ The weather in San Francisco is: It's always sunny in San Francisco!
 1. 如果这些消息在 [state](/oss/python/langchain/short-term-memory) 中跟踪（如在 [⟦T82⟧](/oss/python/langchain/agents) 的模型节点中），则使用 `stream_mode=["messages", "updates"]` 通过 [state updates](#agent-progress) 访问已完成的消息（如下所示）。
 2. 如果状态中未跟踪这些消息，请使用 [custom updates](#custom-updates) 或在流循环期间聚合块 ([next section](#accessing-completed-messages))。
 
-<Note>
-  如果您的代理人拥有多个法学硕士，请参阅下面有关[streaming from sub-agents](#streaming-from-sub-agents)的部分。
-</Note>
+> [!注意]
+>
+> 如果您的代理人拥有多个法学硕士，请参阅下面有关 [streaming from sub-agents](#streaming-from-sub-agents) 的部分。
 
 ```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 from typing import Any
@@ -659,9 +657,9 @@ The| weather| in| Boston| is| **|sun|ny|**|.|
 
 #### 访问已完成的消息
 
-<Note>
-  如果在代理的 [state](/oss/python/langchain/short-term-memory) 中跟踪已完成的消息，您可以使用 [Streaming tool calls](#streaming-tool-calls) 部分中演示的 `stream_mode=["messages", "updates"]` 在流式传输期间访问已完成的消息。
-</Note>
+> [!注意]
+>
+> 如果在代理的 [state](/oss/python/langchain/short-term-memory) 中跟踪已完成的消息，您可以使用 [Streaming tool calls](#streaming-tool-calls) 部分中演示的 `stream_mode=["messages", "updates"]` 在流式传输期间访问已完成的消息。
 
 在某些情况下，已完成的消息不会反映在 [state updates](#agent-progress) 中。如果您有权访问代理内部，则可以使用 [custom updates](#custom-updates) 在流式传输期间访问这些消息。否则，您可以在流循环中聚合消息块（见下文）。考虑下面的例子，我们将 [stream writer](#custom-updates) 合并到简化的 [guardrail middleware](/oss/python/langchain/guardrails#after-agent-guardrails) 中。该中间件演示了工具调用以生成结构化的“安全/不安全”评估（也可以使用[structured outputs](/oss/python/langchain/models#structured-output)来实现）：
 
@@ -1009,9 +1007,9 @@ Tool response: [{'type': 'text', 'text': "It's always sunny in San Francisco!"}]
 3.我们在创建流时指定[⟦T91⟧](/oss/python/langgraph/use-subgraphs#stream-subgraph-outputs)
 4. 我们的流处理与之前相同，但我们添加了逻辑来使用 `create_agent` 的 `name` 参数来跟踪哪个代理处于活动状态
 
-<Tip>
-  当您在代理上设置`name`时，该名称也会附加到该代理生成的任何`AIMessage`。
-</Tip>
+> [!提示]
+>
+> 当您在代理上设置 `name` 时，该名称也会附加到该代理生成的任何 `AIMessage`。
 
 首先我们构建代理：
 
@@ -1142,46 +1140,44 @@ model = ChatOpenAI(
     model="gpt-5.5",
     streaming=False  # [!code highlight]
 )
-```<Tip>
-  部署到 LangSmith 时，请在您不希望其输出流式传输到客户端的任何模型上设置 `streaming=False`。这是在部署之前在图形代码中配置的。
-</Tip>
+```> [!提示]
+>
+> 部署到 LangSmith 时，在您不希望其输出流式传输到客户端的任何模型上设置 `streaming=False`。这是在部署之前在图形代码中配置的。
 
-<Note>
-  并非所有聊天模型集成都支持 `streaming` 参数。如果您的型号不支持，请改用`disable_streaming=True`。此参数可通过基类在所有聊天模型上使用。
-</Note>
+> [!注意]
+>
+> 并非所有聊天模型集成都支持 `streaming` 参数。如果您的型号不支持，请改用`disable_streaming=True`。此参数可通过基类在所有聊天模型上使用。
 
 更多详情请参阅[LangGraph streaming guide](/oss/python/langgraph/streaming#disable-streaming-for-specific-chat-models)。
 
 ## v2 流媒体格式
 
-<Note>
-  需要 LangGraph 1.1 或更高版本。
-</Note>
+> [!注意]
+>
+> 需要 LangGraph 1.1 或更高版本。
 
 将`version="v2"`传递给`stream()`或`astream()`以获得统一的输出格式。每个块都是一个带有 `type`、`ns` 和 `data` 键的 `StreamPart` 字典 — 无论流模式或模式数量如何，形状都相同：
 
-<CodeGroup>
-  ```python v2 (new) theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  # Unified format — no more tuple unpacking
-  for chunk in agent.stream(
-      {"messages": [{"role": "user", "content": "What is the weather in SF?"}]},
-      stream_mode=["updates", "custom"],
-      version="v2",
-  ):
-      print(chunk["type"])  # "updates" or "custom"
-      print(chunk["data"])  # payload
-  ```
+```python v2 (new) theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+# Unified format — no more tuple unpacking
+for chunk in agent.stream(
+    {"messages": [{"role": "user", "content": "What is the weather in SF?"}]},
+    stream_mode=["updates", "custom"],
+    version="v2",
+):
+    print(chunk["type"])  # "updates" or "custom"
+    print(chunk["data"])  # payload
+```
 
-  ```python v1 (current default) theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  # Must unpack (mode, data) tuples
-  for mode, chunk in agent.stream(
-      {"messages": [{"role": "user", "content": "What is the weather in SF?"}]},
-      stream_mode=["updates", "custom"],
-  ):
-      print(mode)   # "updates" or "custom"
-      print(chunk)  # payload
-  ```
-</CodeGroup>
+```python v1 (current default) theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+# Must unpack (mode, data) tuples
+for mode, chunk in agent.stream(
+    {"messages": [{"role": "user", "content": "What is the weather in SF?"}]},
+    stream_mode=["updates", "custom"],
+):
+    print(mode)   # "updates" or "custom"
+    print(chunk)  # payload
+```
 
 v2 格式还改进了 `invoke()` — 它返回具有 `.value` 和 `.interrupts` 属性的 `GraphOutput` 对象，将状态与中断元数据完全分离：
 
@@ -1205,12 +1201,6 @@ print(result.interrupts)  # tuple of Interrupt objects (empty if none)
 
 ***
 
-<div>
-  <Callout icon="terminal-2">
-    [Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
-  </Callout>
+[Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
 
-  <Callout icon="edit">
-    [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/oss/langchain/streaming.mdx) 或 [file an issue](https://github.com/langchain-ai/docs/issues/new/choose)。
-  </Callout>
-</div>
+[Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/oss/langchain/streaming.mdx) 或 [file an issue](https://github.com/langchain-ai/docs/issues/new/choose)。

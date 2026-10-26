@@ -27,15 +27,13 @@ def evaluator(*, outputs: dict, reference_outputs: dict):
 
 ## 安装 AgentEvals
 
-<CodeGroup>
-  ```bash pip theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  pip install -U agentevals
-  ```
+```bash pip theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+pip install -U agentevals
+```
 
-  ```bash uv theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  uv add agentevals
-  ```
-</CodeGroup>
+```bash uv theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+uv add agentevals
+```
 
 或者，直接克隆[AgentEvals repository](https://github.com/langchain-ai/agentevals)。
 
@@ -65,191 +63,191 @@ def get_weather(city: str):
 agent = create_agent("claude-sonnet-4-6", tools=[get_weather])
 ```
 
-<Accordion title="Strict match">
-  `strict` 模式确保轨迹通过相同的工具调用以相同的顺序包含相同的消息，尽管它允许消息内容存在差异。当您需要强制执行特定的操作序列（例如在授权操作之前需要进行策略查找）时，这非常有用。
+> **严格匹配**
+>
+> `strict` 模式确保轨迹通过相同的工具调用以相同的顺序包含相同的消息，尽管它允许消息内容存在差异。当您需要强制执行特定的操作序列（例如在授权操作之前需要进行策略查找）时，这非常有用。
+>
+> ```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> evaluator = create_trajectory_match_evaluator(  # [!code highlight]
+>     trajectory_match_mode="strict",  # [!code highlight]
+> )  # [!code highlight]
+>
+> def test_weather_tool_called_strict():
+>     result = agent.invoke({
+>         "messages": [HumanMessage(content="What's the weather in San Francisco?")]
+>     })
+>
+>     reference_trajectory = [
+>         HumanMessage(content="What's the weather in San Francisco?"),
+>         AIMessage(content="", tool_calls=[
+>             {"id": "call_1", "name": "get_weather", "args": {"city": "San Francisco"}}
+>         ]),
+>         ToolMessage(content="It's 75 degrees and sunny in San Francisco.", tool_call_id="call_1"),
+>         AIMessage(content="The weather in San Francisco is 75 degrees and sunny."),
+>     ]
+>
+>     evaluation = evaluator(
+>         outputs=result["messages"],
+>         reference_outputs=reference_trajectory
+>     )
+>     # {
+>     #     'key': 'trajectory_strict_match',
+>     #     'score': True,
+>     #     'comment': None,
+>     # }
+>     assert evaluation["score"] is True
+> ```> **无序匹配**
+>
+> `unordered` 模式允许以任意顺序调用相同的工具。当您想要验证是否检索到特定信息但不关心顺序时，这非常有用。例如，使用不同工具调用检查城市天气和事件的代理。
+>
+> ```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> @tool
+> def get_events(city: str):
+>     """Get events happening in a city."""
+>     return f"Concert at the park in {city} tonight."
+>
+> agent = create_agent("claude-sonnet-4-6", tools=[get_weather, get_events])
+>
+> evaluator = create_trajectory_match_evaluator(  # [!code highlight]
+>     trajectory_match_mode="unordered",  # [!code highlight]
+> )  # [!code highlight]
+>
+> def test_multiple_tools_any_order():
+>     result = agent.invoke({
+>         "messages": [HumanMessage(content="What's happening in SF today?")]
+>     })
+>
+>     reference_trajectory = [
+>         HumanMessage(content="What's happening in SF today?"),
+>         AIMessage(content="", tool_calls=[
+>             {"id": "call_1", "name": "get_events", "args": {"city": "SF"}},
+>             {"id": "call_2", "name": "get_weather", "args": {"city": "SF"}},
+>         ]),
+>         ToolMessage(content="Concert at the park in SF tonight.", tool_call_id="call_1"),
+>         ToolMessage(content="It's 75 degrees and sunny in SF.", tool_call_id="call_2"),
+>         AIMessage(content="Today in SF: 75 degrees and sunny with a concert at the park tonight."),
+>     ]
+>
+>     evaluation = evaluator(
+>         outputs=result["messages"],
+>         reference_outputs=reference_trajectory,
+>     )
+>     assert evaluation["score"] is True
+> ```
 
-  ```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  evaluator = create_trajectory_match_evaluator(  # [!code highlight]
-      trajectory_match_mode="strict",  # [!code highlight]
-  )  # [!code highlight]
+> **子集和超集匹配**
+>
+> `superset` 和 `subset` 模式匹配部分轨迹。 `superset` 模式验证代理是否至少调用了参考轨迹中的工具，从而允许调用其他工具。 `subset` 模式确保代理不会调用参考中的工具之外的任何工具。
+>
+> ```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> @tool
+> def get_detailed_forecast(city: str):
+>     """Get detailed weather forecast for a city."""
+>     return f"Detailed forecast for {city}: sunny all week."
+>
+> agent = create_agent("claude-sonnet-4-6", tools=[get_weather, get_detailed_forecast])
+>
+> evaluator = create_trajectory_match_evaluator(  # [!code highlight]
+>     trajectory_match_mode="superset",  # [!code highlight]
+> )  # [!code highlight]
+>
+> def test_agent_calls_required_tools_plus_extra():
+>     result = agent.invoke({
+>         "messages": [HumanMessage(content="What's the weather in Boston?")]
+>     })
+>
+>     # Reference only requires get_weather, but agent may call additional tools
+>     reference_trajectory = [
+>         HumanMessage(content="What's the weather in Boston?"),
+>         AIMessage(content="", tool_calls=[
+>             {"id": "call_1", "name": "get_weather", "args": {"city": "Boston"}},
+>         ]),
+>         ToolMessage(content="It's 75 degrees and sunny in Boston.", tool_call_id="call_1"),
+>         AIMessage(content="The weather in Boston is 75 degrees and sunny."),
+>     ]
+>
+>     evaluation = evaluator(
+>         outputs=result["messages"],
+>         reference_outputs=reference_trajectory,
+>     )
+>     assert evaluation["score"] is True
+> ```
 
-  def test_weather_tool_called_strict():
-      result = agent.invoke({
-          "messages": [HumanMessage(content="What's the weather in San Francisco?")]
-      })
-
-      reference_trajectory = [
-          HumanMessage(content="What's the weather in San Francisco?"),
-          AIMessage(content="", tool_calls=[
-              {"id": "call_1", "name": "get_weather", "args": {"city": "San Francisco"}}
-          ]),
-          ToolMessage(content="It's 75 degrees and sunny in San Francisco.", tool_call_id="call_1"),
-          AIMessage(content="The weather in San Francisco is 75 degrees and sunny."),
-      ]
-
-      evaluation = evaluator(
-          outputs=result["messages"],
-          reference_outputs=reference_trajectory
-      )
-      # {
-      #     'key': 'trajectory_strict_match',
-      #     'score': True,
-      #     'comment': None,
-      # }
-      assert evaluation["score"] is True
-  ```
-</Accordion><Accordion title="Unordered match">
-  `unordered` 模式允许以任意顺序调用相同的工具。当您想要验证是否检索到特定信息但不关心顺序时，这非常有用。例如，使用不同工具调用检查城市天气和事件的代理。
-
-  ```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  @tool
-  def get_events(city: str):
-      """Get events happening in a city."""
-      return f"Concert at the park in {city} tonight."
-
-  agent = create_agent("claude-sonnet-4-6", tools=[get_weather, get_events])
-
-  evaluator = create_trajectory_match_evaluator(  # [!code highlight]
-      trajectory_match_mode="unordered",  # [!code highlight]
-  )  # [!code highlight]
-
-  def test_multiple_tools_any_order():
-      result = agent.invoke({
-          "messages": [HumanMessage(content="What's happening in SF today?")]
-      })
-
-      reference_trajectory = [
-          HumanMessage(content="What's happening in SF today?"),
-          AIMessage(content="", tool_calls=[
-              {"id": "call_1", "name": "get_events", "args": {"city": "SF"}},
-              {"id": "call_2", "name": "get_weather", "args": {"city": "SF"}},
-          ]),
-          ToolMessage(content="Concert at the park in SF tonight.", tool_call_id="call_1"),
-          ToolMessage(content="It's 75 degrees and sunny in SF.", tool_call_id="call_2"),
-          AIMessage(content="Today in SF: 75 degrees and sunny with a concert at the park tonight."),
-      ]
-
-      evaluation = evaluator(
-          outputs=result["messages"],
-          reference_outputs=reference_trajectory,
-      )
-      assert evaluation["score"] is True
-  ```
-</Accordion>
-
-<Accordion title="Subset and superset match">
-  `superset` 和 `subset` 模式匹配部分轨迹。 `superset` 模式验证代理是否至少调用了参考轨迹中的工具，从而允许调用其他工具。 `subset` 模式确保代理不会调用参考中的工具之外的任何工具。
-
-  ```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  @tool
-  def get_detailed_forecast(city: str):
-      """Get detailed weather forecast for a city."""
-      return f"Detailed forecast for {city}: sunny all week."
-
-  agent = create_agent("claude-sonnet-4-6", tools=[get_weather, get_detailed_forecast])
-
-  evaluator = create_trajectory_match_evaluator(  # [!code highlight]
-      trajectory_match_mode="superset",  # [!code highlight]
-  )  # [!code highlight]
-
-  def test_agent_calls_required_tools_plus_extra():
-      result = agent.invoke({
-          "messages": [HumanMessage(content="What's the weather in Boston?")]
-      })
-
-      # Reference only requires get_weather, but agent may call additional tools
-      reference_trajectory = [
-          HumanMessage(content="What's the weather in Boston?"),
-          AIMessage(content="", tool_calls=[
-              {"id": "call_1", "name": "get_weather", "args": {"city": "Boston"}},
-          ]),
-          ToolMessage(content="It's 75 degrees and sunny in Boston.", tool_call_id="call_1"),
-          AIMessage(content="The weather in Boston is 75 degrees and sunny."),
-      ]
-
-      evaluation = evaluator(
-          outputs=result["messages"],
-          reference_outputs=reference_trajectory,
-      )
-      assert evaluation["score"] is True
-  ```
-</Accordion>
-
-<Info>
-  您还可以设置 `tool_args_match_mode` 属性和/或 `tool_args_match_overrides` 来自定义评估器如何考虑实际轨迹与参考中的工具调用之间的相等性。默认情况下，只有对同一工具具有相同参数的工具调用才被视为相等。请访问[repository](https://github.com/langchain-ai/agentevals?tab=readme-ov-file#tool-args-match-modes)了解更多详情。
-</Info>
+> [!注意]
+>
+> 您还可以设置 `tool_args_match_mode` 属性和/或 `tool_args_match_overrides` 来自定义评估器如何考虑实际轨迹与参考轨迹中的工具调用之间的相等性。默认情况下，只有对同一工具具有相同参数的工具调用才被视为相等。请访问[repository](https://github.com/langchain-ai/agentevals?tab=readme-ov-file#tool-args-match-modes)了解更多详情。
 
 ## 法学硕士作为法官评估员
 
 您可以使用 LLM 通过 `create_trajectory_llm_as_judge` 函数评估代理的执行路径。与轨迹匹配评估器不同，它不需要参考轨迹，但如果有的话可以提供。
 
-<Accordion title="Without reference trajectory">
-  ```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  from agentevals.trajectory.llm import create_trajectory_llm_as_judge, TRAJECTORY_ACCURACY_PROMPT
+> **无参考轨迹**
+>
+> ```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> from agentevals.trajectory.llm import create_trajectory_llm_as_judge, TRAJECTORY_ACCURACY_PROMPT
+>
+> evaluator = create_trajectory_llm_as_judge(  # [!code highlight]
+>     model="openai:o3-mini",  # [!code highlight]
+>     prompt=TRAJECTORY_ACCURACY_PROMPT,  # [!code highlight]
+> )  # [!code highlight]
+>
+> def test_trajectory_quality():
+>     result = agent.invoke({
+>         "messages": [HumanMessage(content="What's the weather in Seattle?")]
+>     })
+>
+>     evaluation = evaluator(
+>         outputs=result["messages"],
+>     )
+>     assert evaluation["score"] is True
+> ```> **具有参考轨迹**
+>
+> 如果您有参考轨迹，请使用预先构建的 `TRAJECTORY_ACCURACY_PROMPT_WITH_REFERENCE` 提示：
+>
+> ```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> from agentevals.trajectory.llm import create_trajectory_llm_as_judge, TRAJECTORY_ACCURACY_PROMPT_WITH_REFERENCE
+>
+> evaluator = create_trajectory_llm_as_judge(
+>     model="openai:o3-mini",
+>     prompt=TRAJECTORY_ACCURACY_PROMPT_WITH_REFERENCE,
+> )
+> evaluation = evaluator(
+>     outputs=result["messages"],
+>     reference_outputs=reference_trajectory,
+> )
+> ```
 
-  evaluator = create_trajectory_llm_as_judge(  # [!code highlight]
-      model="openai:o3-mini",  # [!code highlight]
-      prompt=TRAJECTORY_ACCURACY_PROMPT,  # [!code highlight]
-  )  # [!code highlight]
-
-  def test_trajectory_quality():
-      result = agent.invoke({
-          "messages": [HumanMessage(content="What's the weather in Seattle?")]
-      })
-
-      evaluation = evaluator(
-          outputs=result["messages"],
-      )
-      assert evaluation["score"] is True
-  ```
-</Accordion><Accordion title="With reference trajectory">
-  如果您有参考轨迹，请使用预先构建的 `TRAJECTORY_ACCURACY_PROMPT_WITH_REFERENCE` 提示：
-
-  ```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  from agentevals.trajectory.llm import create_trajectory_llm_as_judge, TRAJECTORY_ACCURACY_PROMPT_WITH_REFERENCE
-
-  evaluator = create_trajectory_llm_as_judge(
-      model="openai:o3-mini",
-      prompt=TRAJECTORY_ACCURACY_PROMPT_WITH_REFERENCE,
-  )
-  evaluation = evaluator(
-      outputs=result["messages"],
-      reference_outputs=reference_trajectory,
-  )
-  ```
-</Accordion>
-
-<Info>
-  有关 LLM 如何评估轨迹的更多可配置性，请访问 [repository](https://github.com/langchain-ai/agentevals?tab=readme-ov-file#trajectory-llm-as-judge)。
-</Info>
+> [!注意]
+>
+> 有关 LLM 如何评估轨迹的更多可配置性，请访问 [repository](https://github.com/langchain-ai/agentevals?tab=readme-ov-file#trajectory-llm-as-judge)。
 
 ### 异步支持
 
 所有 `agentevals` 评估器都支持 Python asyncio。通过在函数名称中的 `create_` 之后添加 `async` 可以使用异步版本。
 
-<Accordion title="Async judge and evaluator example">
-  ```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  from agentevals.trajectory.llm import create_async_trajectory_llm_as_judge, TRAJECTORY_ACCURACY_PROMPT
-  from agentevals.trajectory.match import create_async_trajectory_match_evaluator
-
-  async_judge = create_async_trajectory_llm_as_judge(
-      model="openai:o3-mini",
-      prompt=TRAJECTORY_ACCURACY_PROMPT,
-  )
-
-  async_evaluator = create_async_trajectory_match_evaluator(
-      trajectory_match_mode="strict",
-  )
-
-  async def test_async_evaluation():
-      result = await agent.ainvoke({
-          "messages": [HumanMessage(content="What's the weather?")]
-      })
-
-      evaluation = await async_judge(outputs=result["messages"])
-      assert evaluation["score"] is True
-  ```
-</Accordion>
+> **异步判断器和评估器示例**
+>
+> ```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> from agentevals.trajectory.llm import create_async_trajectory_llm_as_judge, TRAJECTORY_ACCURACY_PROMPT
+> from agentevals.trajectory.match import create_async_trajectory_match_evaluator
+>
+> async_judge = create_async_trajectory_llm_as_judge(
+>     model="openai:o3-mini",
+>     prompt=TRAJECTORY_ACCURACY_PROMPT,
+> )
+>
+> async_evaluator = create_async_trajectory_match_evaluator(
+>     trajectory_match_mode="strict",
+> )
+>
+> async def test_async_evaluation():
+>     result = await agent.ainvoke({
+>         "messages": [HumanMessage(content="What's the weather?")]
+>     })
+>
+>     evaluation = await async_judge(outputs=result["messages"])
+>     assert evaluation["score"] is True
+> ```
 
 ## 在 LangSmith 中运行评估
 
@@ -262,89 +260,81 @@ export LANGSMITH_TRACING="true"
 
 LangSmith 提供两种主要的运行评估方法：[pytest](/langsmith/pytest) 集成和 `evaluate` 函数。
 
-<Accordion title="Use pytest integration">
-  ```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  import pytest
-  from langsmith import testing as t
-  from agentevals.trajectory.llm import create_trajectory_llm_as_judge, TRAJECTORY_ACCURACY_PROMPT
+> **使用 pytest 集成**
+>
+> ```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> import pytest
+> from langsmith import testing as t
+> from agentevals.trajectory.llm import create_trajectory_llm_as_judge, TRAJECTORY_ACCURACY_PROMPT
+>
+> trajectory_evaluator = create_trajectory_llm_as_judge(
+>     model="openai:o3-mini",
+>     prompt=TRAJECTORY_ACCURACY_PROMPT,
+> )
+>
+> @pytest.mark.langsmith
+> def test_trajectory_accuracy():
+>     result = agent.invoke({
+>         "messages": [HumanMessage(content="What's the weather in SF?")]
+>     })
+>
+>     reference_trajectory = [
+>         HumanMessage(content="What's the weather in SF?"),
+>         AIMessage(content="", tool_calls=[
+>             {"id": "call_1", "name": "get_weather", "args": {"city": "SF"}},
+>         ]),
+>         ToolMessage(content="It's 75 degrees and sunny in SF.", tool_call_id="call_1"),
+>         AIMessage(content="The weather in SF is 75 degrees and sunny."),
+>     ]
+>
+>     t.log_inputs({})
+>     t.log_outputs({"messages": result["messages"]})
+>     t.log_reference_outputs({"messages": reference_trajectory})
+>
+>     trajectory_evaluator(
+>         outputs=result["messages"],
+>         reference_outputs=reference_trajectory
+>     )
+> ```
+>
+> 使用 pytest 运行评估：
+>
+> ```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> pytest test_trajectory.py --langsmith-output
+> ```
 
-  trajectory_evaluator = create_trajectory_llm_as_judge(
-      model="openai:o3-mini",
-      prompt=TRAJECTORY_ACCURACY_PROMPT,
-  )
+> **使用评估功能**
+>
+> 创建一个 [LangSmith dataset](/langsmith/manage-datasets) 并使用 `evaluate` 函数。数据集必须具有以下架构：
+>
+> * **输入**：`{"messages": [...]}` 输入消息来呼叫代理。
+> * **输出**：`{"messages": [...]}` 代理输出中的预期消息历史记录。对于轨迹评估，您可以选择仅保留辅助消息。
+>
+> ```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> from langsmith import Client
+> from agentevals.trajectory.llm import create_trajectory_llm_as_judge, TRAJECTORY_ACCURACY_PROMPT
+>
+> client = Client()
+>
+> trajectory_evaluator = create_trajectory_llm_as_judge(
+>     model="openai:o3-mini",
+>     prompt=TRAJECTORY_ACCURACY_PROMPT,
+> )
+>
+> def run_agent(inputs):
+>     return agent.invoke(inputs)["messages"]
+>
+> experiment_results = client.evaluate(
+>     run_agent,
+>     data="your_dataset_name",
+>     evaluators=[trajectory_evaluator]
+> )
+> ```
 
-  @pytest.mark.langsmith
-  def test_trajectory_accuracy():
-      result = agent.invoke({
-          "messages": [HumanMessage(content="What's the weather in SF?")]
-      })
+> [!提示]
+>
+> 要了解有关评估代理的更多信息，请参阅[LangSmith docs](/langsmith/pytest)。
 
-      reference_trajectory = [
-          HumanMessage(content="What's the weather in SF?"),
-          AIMessage(content="", tool_calls=[
-              {"id": "call_1", "name": "get_weather", "args": {"city": "SF"}},
-          ]),
-          ToolMessage(content="It's 75 degrees and sunny in SF.", tool_call_id="call_1"),
-          AIMessage(content="The weather in SF is 75 degrees and sunny."),
-      ]
+***[Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
 
-      t.log_inputs({})
-      t.log_outputs({"messages": result["messages"]})
-      t.log_reference_outputs({"messages": reference_trajectory})
-
-      trajectory_evaluator(
-          outputs=result["messages"],
-          reference_outputs=reference_trajectory
-      )
-  ```
-
-  使用 pytest 运行评估：
-
-  ```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  pytest test_trajectory.py --langsmith-output
-  ```
-</Accordion>
-
-<Accordion title="Use the evaluate function">
-  创建一个 [LangSmith dataset](/langsmith/manage-datasets) 并使用 `evaluate` 函数。数据集必须具有以下架构：
-
-  * **输入**：`{"messages": [...]}` 输入消息来呼叫代理。
-  * **输出**：`{"messages": [...]}` 代理输出中的预期消息历史记录。对于轨迹评估，您可以选择仅保留辅助消息。
-
-  ```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  from langsmith import Client
-  from agentevals.trajectory.llm import create_trajectory_llm_as_judge, TRAJECTORY_ACCURACY_PROMPT
-
-  client = Client()
-
-  trajectory_evaluator = create_trajectory_llm_as_judge(
-      model="openai:o3-mini",
-      prompt=TRAJECTORY_ACCURACY_PROMPT,
-  )
-
-  def run_agent(inputs):
-      return agent.invoke(inputs)["messages"]
-
-  experiment_results = client.evaluate(
-      run_agent,
-      data="your_dataset_name",
-      evaluators=[trajectory_evaluator]
-  )
-  ```
-</Accordion>
-
-<Tip>
-  要了解有关评估代理的更多信息，请参阅[LangSmith docs](/langsmith/pytest)。
-</Tip>
-
-***
-
-<div>
-  <Callout icon="terminal-2">
-    [Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
-  </Callout>
-
-  <Callout icon="edit">
-    [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/oss/langchain/test/evals.mdx) 或 [file an issue](https://github.com/langchain-ai/docs/issues/new/choose)。
-  </Callout>
-</div>
+[Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/oss/langchain/test/evals.mdx) 或 [file an issue](https://github.com/langchain-ai/docs/issues/new/choose)。

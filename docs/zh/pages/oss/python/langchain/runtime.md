@@ -12,11 +12,11 @@ LangGraph 公开一个 [⟦T6⟧](https://reference.langchain.com/python/langgra
 2. **Store**：用于[long-term memory](/oss/python/langchain/long-term-memory)的[BaseStore](https://reference.langchain.com/python/langchain-core/stores/BaseStore)实例
 3. **Stream writer**：用于通过`"custom"`流模式传输信息的对象
 4. **执行信息**：当前执行的身份和重试信息（线程ID、运行ID、尝试次数）
-5. **服务器信息**：在 LangGraph 服务器上运行时特定于服务器的元数据（助手 ID、图形 ID、经过身份验证的用户）
+5. **服务器信息**：在LangGraph服务器上运行时特定于服务器的元数据（助手ID、图形ID、经过身份验证的用户）
 
-<Tip>
-  运行时上下文为您的工具和中间件提供**依赖注入**。您可以在调用代理时注入运行时依赖项（例如数据库连接、用户 ID 或配置），而不是硬编码值或使用全局状态。这使您的工具更加可测试、可重用且灵活。
-</Tip>
+> [!提示]
+>
+> 运行时上下文为您的工具和中间件提供**依赖注入**。您可以在调用代理时注入运行时依赖项（例如数据库连接、用户 ID 或配置），而不是硬编码值或使用全局状态。这使您的工具更加可测试、可重用且灵活。
 
 您可以在[tools](#inside-tools)和[middleware](#inside-middleware)中访问运行时信息。
 
@@ -103,9 +103,9 @@ def context_aware_tool(runtime: ToolRuntime) -> str:
 
 当不在 LangGraph 服务器上运行时（例如，在本地开发期间），`server_info` 是 `None`。
 
-<Note>
-  `runtime.execution_info` 和 `runtime.server_info` 需要 `deepagents>=0.5.0`（或 `langgraph>=1.1.5`）。
-</Note>
+> [!注意]
+>
+> `runtime.execution_info` 和 `runtime.server_info` 需要 `deepagents>=0.5.0`（或 `langgraph>=1.1.5`）。
 
 ### 内部中间件
 
@@ -178,16 +178,10 @@ def auth_gate(state: AgentState, runtime: Runtime) -> dict | None:
     return None
 ```
 
-<Note>
-  需要`deepagents>=0.5.0`（或`langgraph>=1.1.5`）。
-</Note>
+> [!注意]
+>
+> 需要`deepagents>=0.5.0`（或`langgraph>=1.1.5`）。
 
-***<div>
-  <Callout icon="terminal-2">
-    [Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
-  </Callout>
+***[Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
 
-  <Callout icon="edit">
-    [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/oss/langchain/runtime.mdx) 或 [file an issue](https://github.com/langchain-ai/docs/issues/new/choose)。
-  </Callout>
-</div>
+[Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/oss/langchain/runtime.mdx) 或 [file an issue](https://github.com/langchain-ai/docs/issues/new/choose)。

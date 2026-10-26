@@ -6,9 +6,9 @@
 
 将MCP工具加载到LangChain代理中，控制其执行，并处理服务器结果和请求。
 
-<Note>
-  `langchain.mcp` 命名空间需要 `langchain[mcp]>=1.4.0` 并且处于测试阶段。 API 可能会更改。
-</Note>
+> [!注意]
+>
+> `langchain.mcp` 命名空间需要 `langchain[mcp]>=1.4.0` 并且处于测试阶段。 API 可能会更改。
 
 [⟦T11⟧](https://reference.langchain.com/python/langchain/mcp/adapter/MCPAdapter)桥接MCP服务器和LangChain代理：它发现服务器通告的工具并将其改编为标准LangChain工具。将工具从 `list_tools()` 传递到 [⟦T13⟧](https://reference.langchain.com/python/langchain/agents/factory/create_agent)，就像传递任何其他 LangChain 工具一样。
 
@@ -39,9 +39,9 @@ async def run_agent(server) -> dict:
         )
 ```
 
-<Card title="View example trace" icon="chart-line" href="https://smith.langchain.com/public/cdf13577-f7e0-46d5-8399-abfc6400c82b/r">
-  为此示例打开公共 LangSmith 运行。
-</Card>
+> **[View example trace](https://smith.langchain.com/public/cdf13577-f7e0-46d5-8399-abfc6400c82b/r)**
+>
+> 为此示例打开公共 LangSmith 运行。
 
 有关定义、绑定和使用 LangChain 工具的一般指南，请参阅 [Tools](/oss/python/langchain/tools)。有关多个 MCP 服务器及其命名空间工具目录，请参阅[Connections](/oss/python/langchain/mcp/connections#multiple-servers)。
 
@@ -81,9 +81,9 @@ async def access_multimodal_tool_content(server) -> dict:
     return result
 ```
 
-<Card title="View example trace" icon="chart-line" href="https://smith.langchain.com/public/3102a6bc-697f-42a5-88c7-100c9b9dbd25/r">
-  为此示例打开公共 LangSmith 运行。
-</Card>
+> **[View example trace](https://smith.langchain.com/public/3102a6bc-697f-42a5-88c7-100c9b9dbd25/r)**
+>
+> 为此示例打开公共 LangSmith 运行。
 
 ### 结构化内容
 
@@ -113,9 +113,9 @@ async def run_agent_structured(server) -> dict:
     return result
 ```
 
-<Card title="View example trace" icon="chart-line" href="https://smith.langchain.com/public/339c6cf0-3f24-468e-a465-e514010915d1/r">
-  为此示例打开公共 LangSmith 运行。
-</Card>
+> **[View example trace](https://smith.langchain.com/public/339c6cf0-3f24-468e-a465-e514010915d1/r)**
+>
+> 为此示例打开公共 LangSmith 运行。
 
 该工件是一个 `MCPToolArtifact`，其 `structured_content` 字段保存工具结果的 `structuredContent`。不返回结构化内容的工具会将 `artifact` 保留为 `None`。
 
@@ -306,9 +306,9 @@ async def book_with_elicitation(server) -> dict:
 
 默认情况下，诱导处于启用状态。适配器通告该功能并驱动中断循环。已经带有自己的启发处理程序的预构建客户端将受到尊重，而不是被覆盖。使用 `Command(resume={"responses": {key: answer}})` 继续。中断负载和应答类型位于`langchain.mcp.elicitation`。
 
-<Note>
-  恢复将从头开始重新运行该工具。在服务器请求输入之前执行的任何工作都可以重复。确保该工作可以安全地重复，而不会产生重复的副作用。
-</Note>
+> [!注意]
+>
+> 恢复将从头开始重新运行该工具。在服务器请求输入之前执行的任何工作都可以重复。确保该工作可以安全地重复，而不会产生重复的副作用。
 
 每个答案都使用以下操作之一：
 
@@ -320,9 +320,9 @@ async def book_with_elicitation(server) -> dict:
 
 只有启发式才是这样回答的。相反，请求 [sampling](https://modelcontextprotocol.io/specification/2025-06-18/client/sampling) 或 [roots](https://modelcontextprotocol.io/specification/2025-06-18/client/roots) 的服务器会引发错误，因为现代的无会话协议没有用于这些请求的实时反向通道。参见[Sampling and roots](/oss/python/migrate/langchain-mcp-adapters#sampling-and-roots)。
 
-<Note>
-  中断驱动的诱导应答服务器，以 `InputRequiredResult` 的形式返回其请求。仅通过传统握手会话推送启发的服务器无法以这种方式应答。
-</Note>
+> [!注意]
+>
+> 中断驱动的诱导应答服务器，以 `InputRequiredResult` 的形式返回其请求。仅通过传统握手会话推送启发的服务器无法以这种方式应答。
 
 ## 另请参阅
 
@@ -342,12 +342,6 @@ async def book_with_elicitation(server) -> dict:
 
 * [MCP tool annotations](https://modelcontextprotocol.io/specification/draft/server/tools)
 
-***<div>
-  <Callout icon="terminal-2">
-    [Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
-  </Callout>
+***
 
-  <Callout icon="edit">
-    [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/oss/langchain/mcp/tools.mdx) 或 [file an issue](https://github.com/langchain-ai/docs/issues/new/choose)。
-  </Callout>
-</div>
+[Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。[Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/oss/langchain/mcp/tools.mdx) 或 [file an issue](https://github.com/langchain-ai/docs/issues/new/choose)。

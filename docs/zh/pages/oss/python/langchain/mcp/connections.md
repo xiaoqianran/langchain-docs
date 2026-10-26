@@ -6,11 +6,11 @@
 
 LangChain 中的连接生命周期、多服务器、部署扩展、协议时代和 MCP 缓存。
 
-<Note>
-  `langchain.mcp` 命名空间需要 `langchain[mcp]>=1.4.0` 并且处于测试阶段。 API 可能会更改。
-</Note>
+> [!注意]
+>
+> `langchain.mcp` 命名空间需要 `langchain[mcp]>=1.4.0` 并且处于测试阶段。 API 可能会更改。
 
-[⟦T9⟧](https://reference.langchain.com/python/langchain/mcp/adapter/MCPAdapter) 打开 MCP 连接，发现工具，并返回代理可以调用的 LangChain 工具。如何传递服务器以及使适配器保持打开状态的时间取决于应用程序的形状。连接本身是 FastMCP 的；此页面涵盖了 LangChain 模式并链接到 FastMCP 以获取传输和客户端详细信息。
+[⟦T9⟧](https://reference.langchain.com/python/langchain/mcp/adapter/MCPAdapter) 打开 MCP 连接，发现工具，并返回代理可以调用​​的 LangChain 工具。如何传递服务器以及使适配器保持打开状态的时间取决于应用程序的形状。连接本身是 FastMCP 的；此页面涵盖了 LangChain 模式并链接到 FastMCP 以获取传输和客户端详细信息。
 
 首选[default lifecycle](#connection-lifecycle)，除非您要连接到多个服务器或部署许多并发运行。有关单个目标的含义（URL、脚本路径、进程内服务器），请参阅[Transports](/oss/python/langchain/mcp#transports)。
 
@@ -112,7 +112,7 @@ async def agent_from_group(legacy_url: str, modern_url: str):
         return create_agent("claude-sonnet-5", tools)
 ```
 
-## 扩展部署为多次运行提供服务的部署应该发现每次运行，但在下面重用其连接，而不是在每次请求时重新连接。在 [⟦T23⟧](/oss/python/langgraph/local-server) 图工厂内构建代理，以便每次运行都会获取当前的工具目录，并让 [shared connection pool](#shared-connection-pool) 和 [response cache](#caching) 吸收成本：
+## 扩展部署为多次运行提供服务的部署应该发现每次运行，但在下面重用其连接，而不是在每次请求时重新连接。在 [⟦T23⟧](/oss/python/langgraph/local-server) 图工厂内构建代理，以便每次运行都会获取当前工具目录，并让 [shared connection pool](#shared-connection-pool) 和 [response cache](#caching) 吸收成本：
 
 ```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 SERVERS = {
@@ -132,15 +132,15 @@ async def make_graph():
         return create_agent("claude-sonnet-5", tools)
 ```
 
-<Note>
-  在`langgraph dev`图工厂中，带注释的参数类型和返回类型必须在运行时可导入，而不仅仅是在`TYPE_CHECKING`下。 `langgraph-api`将工厂分类为`typing.get_type_hints()`；如果注释无法解析，它会注入配置字典而不是运行时。
-</Note>
+> [!注意]
+>
+> 在`langgraph dev`图工厂中，带注释的参数类型和返回类型必须在运行时可导入，而不仅仅是在`TYPE_CHECKING`下。 `langgraph-api`将工厂分类为`typing.get_type_hints()`；如果注释无法解析，它会注入配置字典而不是运行时。
+
+在 [Agent Server](/langsmith/agent-server-overview) 上，在 `langgraph.json` 中注册该工厂，而不是导出静态编译图。适配器上下文退出后，`list_tools()` 中的工具仍可调用，因此在发现后返回代理对于大多数 MCP 设置来说就足够了。当您需要围绕运行进行拆卸时，或者当您使用 `execution_runtime` 跳过昂贵的 MCP 模式和状态读取工作时，请使用 [context manager factory](/langsmith/graph-rebuild#context-manager-factory)。
 
 有关完整工作的部署示例，包括为每个调用者创建令牌的每用户身份验证，请参阅[Authentication](/oss/python/langchain/mcp/auth#per-user-authentication)。
 
-### 共享连接池
-
-默认情况下，每个 FastMCP 客户端管理自己的 HTTP 连接。在一组服务器或许多并发运行中，这意味着许多独立的池。要共享一个池，请传递一个从单一传输中提取的`httpx_client_factory`，并将其借出而不让任何一个客户端关闭它：
+### 共享连接池默认情况下，每个 FastMCP 客户端管理自己的 HTTP 连接。在一组服务器或许多并发运行中，这意味着许多独立的池。要共享一个池，请传递一个从单一传输中提取的`httpx_client_factory`，并将其借出而不让任何一个客户端关闭它：
 
 ```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 import httpx2
@@ -182,7 +182,9 @@ async def load_over_shared_pool(servers: dict[str, str]) -> list:
 
 由于每个客户端都借用 `_POOL`，因此部署会为整个队列打开一组 HTTP 连接，而不是为每个服务器打开一组 HTTP 连接。
 
-## 缓存FastMCP 可以缓存`list_tools` 的结果，因此重复发现可以避免网络往返。缓存是选择性加入的，并遵循服务器自己的缓存提示，因此它仅对宣传它们的现代服务器有效。
+## 缓存
+
+FastMCP 可以缓存`list_tools` 的结果，因此重复发现可以避免网络往返。缓存是可选的，并遵循服务器自己的缓存提示，因此它仅对宣传它们的现代服务器有效。
 
 `list_tools()` 接受 `cache_mode` 选择发现如何读取配置的缓存：
 
@@ -192,13 +194,13 @@ async def load_over_shared_pool(servers: dict[str, str]) -> list:
 
 ```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 tools = await adapter.list_tools(cache_mode="refresh")
-```
-
-缓存及其每主体隔离是在客户端本身配置的，使用`Client(cache=...)`。对于跨副本队列的共享存储，或对每个用户的缓存响应进行分区，请参阅 FastMCP 文档中的[Response caching](https://gofastmcp.com/clients/client#response-caching)。
+```缓存及其每主体隔离是在客户端本身配置的，使用`Client(cache=...)`。对于跨副本队列的共享存储，或对每个用户的缓存响应进行分区，请参阅 FastMCP 文档中的[Response caching](https://gofastmcp.com/clients/client#response-caching)。
 
 ## 协议时代
 
-MCP 改变了客户端和服务器就各自支持的内容达成一致的方式。 **传统**时代的每一次连接都以`initialize`握手开始； **现代**时代（协议版本`2026-07-28`及更高版本）通过探测服务器的`server/discover`端点来发现支持。 FastMCP 会协商每个连接的纪元，因此LangChain 端无需知道给定服务器正在讲话。要将来自不同时代服务器的工具保存在一个代理中，请为每个代理提供自己的连接，以便它通过[⟦T40⟧](#independent-connections-with-clientgroup)或每台服务器一个适配器保持其服务器支持的最佳时代。预构建的 `fastmcp.Client` 使用其 `mode` 参数选择时代：
+MCP 改变了客户端和服务器就各自支持的内容达成一致的方式。 **传统**时代每次连接都以`initialize`握手开始； **现代**时代（协议版本`2026-07-28`及更高版本）通过探测服务器的`server/discover`端点来发现支持。 FastMCP 会协商每个连接的纪元，因此LangChain 端无需知道给定的服务器正在讲话。
+
+要将来自不同时代服务器的工具保存在一个代理中，请为每个代理提供自己的连接，以便它通过 [⟦T43⟧](#independent-connections-with-clientgroup) 或每台服务器一个适配器保持其服务器支持的最佳时代。预构建的 `fastmcp.Client` 使用其 `mode` 参数选择时代：
 
 ```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 from fastmcp.client import Client
@@ -219,15 +221,15 @@ async def agent_across_eras(legacy_target, modern_target):
         return create_agent("claude-sonnet-5", tools)
 ```
 
-相反，将两台服务器作为单个`MCPConfig`舰队传递将为舰队所拥有的一切协商一个时代，从而将每台服务器降至任何成员所需的最旧时代。
+相反，将两台服务器作为单个 `MCPConfig` 机群传递，将为机群所拥有的所有内容协商一个时代，从而将每台服务器降至任何成员所需的最旧时代。
 
 有关完整的协商规则，请参阅 FastMCP 文档中的[Protocol negotiation](https://gofastmcp.com/clients/client#protocol-negotiation)。
 
 ## 另请参阅
 
-* [Authentication](/oss/python/langchain/mcp/auth)：承载、OAuth 和每用户凭据。
+* [Authentication](/oss/python/langchain/mcp/auth)：承载、OAuth 和每用户凭据。* [Deploy a LangGraph server](/oss/python/langgraph/local-server)：用于长期部署的图工厂。
 
-* [Deploy a LangGraph server](/oss/python/langgraph/local-server)：用于长期部署的图工厂。
+* [Rebuild a graph at runtime](/langsmith/graph-rebuild)：代理服务器的工厂表单，包括上下文管理器模式。
 
 * [FastMCP connection lifecycle](https://gofastmcp.com/clients/client#connection-lifecycle)
 
@@ -235,12 +237,6 @@ async def agent_across_eras(legacy_target, modern_target):
 
 ***
 
-<div>
-  <Callout icon="terminal-2">
-    [Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
-  </Callout>
+[Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
 
-  <Callout icon="edit">
-    [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/oss/langchain/mcp/connections.mdx) 或 [file an issue](https://github.com/langchain-ai/docs/issues/new/choose)。
-  </Callout>
-</div>
+[Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/oss/langchain/mcp/connections.mdx) 或 [file an issue](https://github.com/langchain-ai/docs/issues/new/choose)。

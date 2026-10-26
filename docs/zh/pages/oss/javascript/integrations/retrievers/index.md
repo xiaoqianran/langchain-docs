@@ -25,10 +25,10 @@
 | [⟦T3⟧](/oss/javascript/integrations/retrievers/bedrock-knowledge-bases) | | | [⟦T4⟧](https://www.npmjs.com/package/@langchain/aws) | [  ⟦T21⟧](https://www.npmjs.com/package/@langchain/aws) |
 | [⟦T5⟧](/oss/javascript/integrations/retrievers/exa) | | | [⟦T6⟧](https://www.npmjs.com/package/@langchain/exa) | [  ⟦T22⟧](https://www.npmjs.com/package/@langchain/exa) |
 | [⟦T7⟧](/oss/javascript/integrations/retrievers/perplexity_search) | | | [⟦T8⟧](https://www.npmjs.com/package/@langchain/perplexity) | [  ⟦T23⟧](https://www.npmjs.com/package/@langchain/perplexity) |
-| [⟦T9⟧](https://getalchemystai.com/docs) | | | [⟦T10⟧](https://www.npmjs.com/package/@alchemystai/langchain-js) | [  ⟦T24⟧](https://www.npmjs.com/package/@alchemystai/langchain-js) |
-| [⟦T11⟧](https://recallmem.dev/guides/langchain) | ✅ | ✅ | [⟦T12⟧](https://www.npmjs.com/package/@recall-memory/langchain) | [  ⟦T25⟧](https://www.npmjs.com/package/@recall-memory/langchain) |
-| [⟦T13⟧](https://github.com/FoxNoseTech/langchain-foxnose-js#readme) | ❌ | ✅ | [⟦T14⟧](https://www.npmjs.com/package/@foxnose/langchain) | [  ⟦T26⟧](https://www.npmjs.com/package/@foxnose/langchain) |
-| [⟦T15⟧](/oss/javascript/integrations/retrievers/sourcey) | | | [⟦T16⟧](https://www.npmjs.com/package/langchain-sourcey) | [  ⟦T27⟧](https://www.npmjs.com/package/langchain-sourcey) |
+| [⟦T9⟧](/oss/javascript/integrations/retrievers/sourcey) | | | [⟦T10⟧](https://www.npmjs.com/package/langchain-sourcey) | [  ⟦T24⟧](https://www.npmjs.com/package/langchain-sourcey) |
+| [⟦T11⟧](https://foxnose.net/docs/integrations/langchain-js) | ❌ | ✅ | [⟦T12⟧](https://www.npmjs.com/package/@foxnose/langchain) | [  ⟦T25⟧](https://www.npmjs.com/package/@foxnose/langchain) |
+| [⟦T13⟧](https://getalchemystai.com/docs) | | | [⟦T14⟧](https://www.npmjs.com/package/@alchemystai/langchain-js) | [  ⟦T26⟧](https://www.npmjs.com/package/@alchemystai/langchain-js) |
+| [⟦T15⟧](https://recallmem.dev/guides/langchain) | ✅ | ✅ | [⟦T16⟧](https://www.npmjs.com/package/@recall-memory/langchain) | [  ⟦T27⟧](https://www.npmjs.com/package/@recall-memory/langchain) |
 | [⟦T17⟧](/oss/javascript/integrations/retrievers/hyde) | | | |不适用 |
 | [⟦T18⟧](/oss/javascript/integrations/retrievers/self_query/hanavector_self_query) | | | |不适用 |
 | [⟦T19⟧](/oss/javascript/integrations/retrievers/time-weighted-retriever) | | | |不适用 |

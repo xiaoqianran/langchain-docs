@@ -23,7 +23,7 @@ LangChain 和 NVIDIA 在代理堆栈上进行了合作：
 模型在 NVIDIA NIM 微服务上运行：公开标准OpenAI兼容 API 的容器映像，并使用 TensorRT-LLM 进行优化，以实现 NVIDIA 硬件上的峰值吞吐量。可以通过托管 API 目录或本地自托管来访问它们。
 
 |组件|班级 |描述 |
-| :- | :- | :- |
+| :-| :-| :-|
 |聊天 | [⟦T17⟧](#chat-chatnvidia) |与任何 NVIDIA 托管模型或本地 NIM 聊天完成 |
 |聊天（Dynamo）| [⟦T18⟧](#chat-chatnvidiadynamo) | `ChatNVIDIA` 带有用于 Dynamo 部署的 KV 缓存路由提示 |
 |嵌入 | [⟦T20⟧](#embeddings-nvidiaembeddings) |用于语义搜索和 RAG 的密集向量嵌入 |
@@ -71,7 +71,7 @@ result = llm.invoke("Plan a three-step research workflow for competitive analysi
 print(result.content)
 ```
 
-请参阅 [⟦T25⟧ integration page](/oss/python/integrations/chat/nvidia_ai_endpoints) 了解完整文档，包括工具调用、多模式输入和 Nemotron 特定示例。
+请参阅 [⟦T25⟧ integration page](/oss/python/integrations/chat/nvidia_ai_endpoints) 获取完整文档，包括工具调用、多模式输入和 Nemotron 特定示例。
 
 对于 Nemotron 3.5 Super VL，请参阅[⟦T26⟧ Super VL examples](/oss/python/integrations/chat/nvidia_ai_endpoints#use-nemotron-3-5-super-vl)。
 
@@ -335,12 +335,6 @@ result = await agent.ainvoke({
 
 ***
 
-<div>
-  <Callout icon="terminal-2">
-    [Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
-  </Callout>
+[Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
 
-  <Callout icon="edit">
-    [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/oss/python/integrations/providers/nvidia.mdx) 或 [file an issue](https://github.com/langchain-ai/docs/issues/new/choose)。
-  </Callout>
-</div>
+[Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/oss/python/integrations/providers/nvidia.mdx) 或 [file an issue](https://github.com/langchain-ai/docs/issues/new/choose)。

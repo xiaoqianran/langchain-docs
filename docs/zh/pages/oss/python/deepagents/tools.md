@@ -6,500 +6,492 @@
 
 将 Deep Agents 连接到自定义函数、API、数据库和任何 MCP 服务器
 
-Deep Agents可以调用您定义的任何工具、任何[LangChain tool](https://python.langchain.com/docs/concepts/tools/)以及任何[MCP server](#mcp-tools)中的工具。
+Deep Agents可以调用您定义的任何工具、任何[LangChain tool](/oss/python/langchain/tools)以及任何[MCP server](#mcp-tools)中的工具。
 通过 `tools=` 参数以及 [built-in harness tools](/oss/python/deepagents/overview#execution-environment) 将它们传递给 `create_deep_agent` 以进行文件管理和子代理生成。
 
-<CodeGroup>
-  ```python Google theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  from deepagents import create_deep_agent
+```python Google theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+from deepagents import create_deep_agent
 
 
-  agent = create_deep_agent(
-      model="google_genai:gemini-3.6-flash",
-      tools=[search, fetch_url, run_query],
-  )
-  ```
+agent = create_deep_agent(
+    model="google_genai:gemini-3.6-flash",
+    tools=[search, fetch_url, run_query],
+)
+```
 
-  ```python OpenAI theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  from deepagents import create_deep_agent
-
-
-  agent = create_deep_agent(
-      model="openai:gpt-5.5",
-      tools=[search, fetch_url, run_query],
-  )
-  ```
-
-  ```python Anthropic theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  from deepagents import create_deep_agent
+```python OpenAI theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+from deepagents import create_deep_agent
 
 
-  agent = create_deep_agent(
-      model="anthropic:claude-sonnet-5",
-      tools=[search, fetch_url, run_query],
-  )
-  ```
+agent = create_deep_agent(
+    model="openai:gpt-5.5",
+    tools=[search, fetch_url, run_query],
+)
+```
 
-  ```python OpenRouter theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  from deepagents import create_deep_agent
-
-
-  agent = create_deep_agent(
-      model="openrouter:z-ai/glm-5.2",
-      tools=[search, fetch_url, run_query],
-  )
-  ```
-
-  ```python Fireworks theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  from deepagents import create_deep_agent
+```python Anthropic theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+from deepagents import create_deep_agent
 
 
-  agent = create_deep_agent(
-      model="fireworks:accounts/fireworks/models/glm-5p2",
-      tools=[search, fetch_url, run_query],
-  )
-  ```
+agent = create_deep_agent(
+    model="anthropic:claude-sonnet-5",
+    tools=[search, fetch_url, run_query],
+)
+```
 
-  ```python Baseten theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  from deepagents import create_deep_agent
-
-
-  agent = create_deep_agent(
-      model="baseten:zai-org/GLM-5.2",
-      tools=[search, fetch_url, run_query],
-  )
-  ```
-
-  ```python Ollama theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  from deepagents import create_deep_agent
+```python OpenRouter theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+from deepagents import create_deep_agent
 
 
-  agent = create_deep_agent(
-      model="ollama:north-mini-code-1.0",
-      tools=[search, fetch_url, run_query],
-  )
-  ```
-</CodeGroup>
+agent = create_deep_agent(
+    model="openrouter:z-ai/glm-5.2",
+    tools=[search, fetch_url, run_query],
+)
+```
+
+```python Fireworks theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+from deepagents import create_deep_agent
+
+
+agent = create_deep_agent(
+    model="fireworks:accounts/fireworks/models/glm-5p2",
+    tools=[search, fetch_url, run_query],
+)
+```
+
+```python Baseten theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+from deepagents import create_deep_agent
+
+
+agent = create_deep_agent(
+    model="baseten:zai-org/GLM-5.2",
+    tools=[search, fetch_url, run_query],
+)
+```
+
+```python Ollama theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+from deepagents import create_deep_agent
+
+
+agent = create_deep_agent(
+    model="ollama:north-mini-code-1.0",
+    tools=[search, fetch_url, run_query],
+)
+```
 
 ## 自定义工具
 
 将任何可调用函数（例如普通函数、LangChain `@tool` 修饰函数或工具字典）直接传递给 `tools=`。
 Deep Agents 从函数签名和文档字符串推断工具架构，因此在大多数情况下您不需要定义单独的架构。
 
-<CodeGroup>
-  ```python Google theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  import os
-  from typing import Literal
-  from tavily import TavilyClient
-  from deepagents import create_deep_agent
+```python Google theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+import os
+from typing import Literal
+from tavily import TavilyClient
+from deepagents import create_deep_agent
 
-  tavily_client = TavilyClient(api_key=os.environ["TAVILY_API_KEY"])
-
-
-  def internet_search(
-      query: str,
-      max_results: int = 5,
-      topic: Literal["general", "news", "finance"] = "general",
-      include_raw_content: bool = False,
-  ):
-      """Run a web search"""
-      return tavily_client.search(
-          query,
-          max_results=max_results,
-          include_raw_content=include_raw_content,
-          topic=topic,
-      )
+tavily_client = TavilyClient(api_key=os.environ["TAVILY_API_KEY"])
 
 
-  agent = create_deep_agent(
-      model="google_genai:gemini-3.6-flash",
-      tools=[internet_search],
-  )
-  ```
-
-  ```python OpenAI theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  import os
-  from typing import Literal
-  from tavily import TavilyClient
-  from deepagents import create_deep_agent
-
-  tavily_client = TavilyClient(api_key=os.environ["TAVILY_API_KEY"])
-
-
-  def internet_search(
-      query: str,
-      max_results: int = 5,
-      topic: Literal["general", "news", "finance"] = "general",
-      include_raw_content: bool = False,
-  ):
-      """Run a web search"""
-      return tavily_client.search(
-          query,
-          max_results=max_results,
-          include_raw_content=include_raw_content,
-          topic=topic,
-      )
+def internet_search(
+    query: str,
+    max_results: int = 5,
+    topic: Literal["general", "news", "finance"] = "general",
+    include_raw_content: bool = False,
+):
+    """Run a web search"""
+    return tavily_client.search(
+        query,
+        max_results=max_results,
+        include_raw_content=include_raw_content,
+        topic=topic,
+    )
 
 
-  agent = create_deep_agent(
-      model="openai:gpt-5.5",
-      tools=[internet_search],
-  )
-  ```
+agent = create_deep_agent(
+    model="google_genai:gemini-3.6-flash",
+    tools=[internet_search],
+)
+```
 
-  ```python Anthropic theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  import os
-  from typing import Literal
-  from tavily import TavilyClient
-  from deepagents import create_deep_agent
+```python OpenAI theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+import os
+from typing import Literal
+from tavily import TavilyClient
+from deepagents import create_deep_agent
 
-  tavily_client = TavilyClient(api_key=os.environ["TAVILY_API_KEY"])
-
-
-  def internet_search(
-      query: str,
-      max_results: int = 5,
-      topic: Literal["general", "news", "finance"] = "general",
-      include_raw_content: bool = False,
-  ):
-      """Run a web search"""
-      return tavily_client.search(
-          query,
-          max_results=max_results,
-          include_raw_content=include_raw_content,
-          topic=topic,
-      )
+tavily_client = TavilyClient(api_key=os.environ["TAVILY_API_KEY"])
 
 
-  agent = create_deep_agent(
-      model="anthropic:claude-sonnet-5",
-      tools=[internet_search],
-  )
-  ```
-
-  ```python OpenRouter theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  import os
-  from typing import Literal
-  from tavily import TavilyClient
-  from deepagents import create_deep_agent
-
-  tavily_client = TavilyClient(api_key=os.environ["TAVILY_API_KEY"])
-
-
-  def internet_search(
-      query: str,
-      max_results: int = 5,
-      topic: Literal["general", "news", "finance"] = "general",
-      include_raw_content: bool = False,
-  ):
-      """Run a web search"""
-      return tavily_client.search(
-          query,
-          max_results=max_results,
-          include_raw_content=include_raw_content,
-          topic=topic,
-      )
+def internet_search(
+    query: str,
+    max_results: int = 5,
+    topic: Literal["general", "news", "finance"] = "general",
+    include_raw_content: bool = False,
+):
+    """Run a web search"""
+    return tavily_client.search(
+        query,
+        max_results=max_results,
+        include_raw_content=include_raw_content,
+        topic=topic,
+    )
 
 
-  agent = create_deep_agent(
-      model="openrouter:z-ai/glm-5.2",
-      tools=[internet_search],
-  )
-  ```
+agent = create_deep_agent(
+    model="openai:gpt-5.5",
+    tools=[internet_search],
+)
+```
 
-  ```python Fireworks theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  import os
-  from typing import Literal
-  from tavily import TavilyClient
-  from deepagents import create_deep_agent
+```python Anthropic theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+import os
+from typing import Literal
+from tavily import TavilyClient
+from deepagents import create_deep_agent
 
-  tavily_client = TavilyClient(api_key=os.environ["TAVILY_API_KEY"])
-
-
-  def internet_search(
-      query: str,
-      max_results: int = 5,
-      topic: Literal["general", "news", "finance"] = "general",
-      include_raw_content: bool = False,
-  ):
-      """Run a web search"""
-      return tavily_client.search(
-          query,
-          max_results=max_results,
-          include_raw_content=include_raw_content,
-          topic=topic,
-      )
+tavily_client = TavilyClient(api_key=os.environ["TAVILY_API_KEY"])
 
 
-  agent = create_deep_agent(
-      model="fireworks:accounts/fireworks/models/glm-5p2",
-      tools=[internet_search],
-  )
-  ```
-
-  ```python Baseten theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  import os
-  from typing import Literal
-  from tavily import TavilyClient
-  from deepagents import create_deep_agent
-
-  tavily_client = TavilyClient(api_key=os.environ["TAVILY_API_KEY"])
-
-
-  def internet_search(
-      query: str,
-      max_results: int = 5,
-      topic: Literal["general", "news", "finance"] = "general",
-      include_raw_content: bool = False,
-  ):
-      """Run a web search"""
-      return tavily_client.search(
-          query,
-          max_results=max_results,
-          include_raw_content=include_raw_content,
-          topic=topic,
-      )
+def internet_search(
+    query: str,
+    max_results: int = 5,
+    topic: Literal["general", "news", "finance"] = "general",
+    include_raw_content: bool = False,
+):
+    """Run a web search"""
+    return tavily_client.search(
+        query,
+        max_results=max_results,
+        include_raw_content=include_raw_content,
+        topic=topic,
+    )
 
 
-  agent = create_deep_agent(
-      model="baseten:zai-org/GLM-5.2",
-      tools=[internet_search],
-  )
-  ```
+agent = create_deep_agent(
+    model="anthropic:claude-sonnet-5",
+    tools=[internet_search],
+)
+```
 
-  ```python Ollama theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  import os
-  from typing import Literal
-  from tavily import TavilyClient
-  from deepagents import create_deep_agent
+```python OpenRouter theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+import os
+from typing import Literal
+from tavily import TavilyClient
+from deepagents import create_deep_agent
 
-  tavily_client = TavilyClient(api_key=os.environ["TAVILY_API_KEY"])
-
-
-  def internet_search(
-      query: str,
-      max_results: int = 5,
-      topic: Literal["general", "news", "finance"] = "general",
-      include_raw_content: bool = False,
-  ):
-      """Run a web search"""
-      return tavily_client.search(
-          query,
-          max_results=max_results,
-          include_raw_content=include_raw_content,
-          topic=topic,
-      )
+tavily_client = TavilyClient(api_key=os.environ["TAVILY_API_KEY"])
 
 
-  agent = create_deep_agent(
-      model="ollama:north-mini-code-1.0",
-      tools=[internet_search],
-  )
-  ```
-</CodeGroup>
+def internet_search(
+    query: str,
+    max_results: int = 5,
+    topic: Literal["general", "news", "finance"] = "general",
+    include_raw_content: bool = False,
+):
+    """Run a web search"""
+    return tavily_client.search(
+        query,
+        max_results=max_results,
+        include_raw_content=include_raw_content,
+        topic=topic,
+    )
+
+
+agent = create_deep_agent(
+    model="openrouter:z-ai/glm-5.2",
+    tools=[internet_search],
+)
+```
+
+```python Fireworks theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+import os
+from typing import Literal
+from tavily import TavilyClient
+from deepagents import create_deep_agent
+
+tavily_client = TavilyClient(api_key=os.environ["TAVILY_API_KEY"])
+
+
+def internet_search(
+    query: str,
+    max_results: int = 5,
+    topic: Literal["general", "news", "finance"] = "general",
+    include_raw_content: bool = False,
+):
+    """Run a web search"""
+    return tavily_client.search(
+        query,
+        max_results=max_results,
+        include_raw_content=include_raw_content,
+        topic=topic,
+    )
+
+
+agent = create_deep_agent(
+    model="fireworks:accounts/fireworks/models/glm-5p2",
+    tools=[internet_search],
+)
+```
+
+```python Baseten theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+import os
+from typing import Literal
+from tavily import TavilyClient
+from deepagents import create_deep_agent
+
+tavily_client = TavilyClient(api_key=os.environ["TAVILY_API_KEY"])
+
+
+def internet_search(
+    query: str,
+    max_results: int = 5,
+    topic: Literal["general", "news", "finance"] = "general",
+    include_raw_content: bool = False,
+):
+    """Run a web search"""
+    return tavily_client.search(
+        query,
+        max_results=max_results,
+        include_raw_content=include_raw_content,
+        topic=topic,
+    )
+
+
+agent = create_deep_agent(
+    model="baseten:zai-org/GLM-5.2",
+    tools=[internet_search],
+)
+```
+
+```python Ollama theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+import os
+from typing import Literal
+from tavily import TavilyClient
+from deepagents import create_deep_agent
+
+tavily_client = TavilyClient(api_key=os.environ["TAVILY_API_KEY"])
+
+
+def internet_search(
+    query: str,
+    max_results: int = 5,
+    topic: Literal["general", "news", "finance"] = "general",
+    include_raw_content: bool = False,
+):
+    """Run a web search"""
+    return tavily_client.search(
+        query,
+        max_results=max_results,
+        include_raw_content=include_raw_content,
+        topic=topic,
+    )
+
+
+agent = create_deep_agent(
+    model="ollama:north-mini-code-1.0",
+    tools=[internet_search],
+)
+```
 
 有关定义和使用 LangChain 工具（工具字典、`StructuredTool`、返回类型、错误处理等）的完整详细信息，请参阅 [Tools](/oss/python/langchain/tools)。
 
 ## MCP 工具
 
-<Note>
-  Deep Agents 完全支持[Model Context Protocol (MCP)](/oss/python/langchain/mcp)，用于将代理连接到外部服务的开放标准。从任何 MCP 服务器加载工具并将其直接传递到`create_deep_agent`。
-</Note>MCP 是一种开放协议，允许代理通过标准接口连接到不断增长的服务器生态系统（数据库、API、文件系统、浏览器等）。您无需为每个服务编写自定义集成代码，而是将 Deep Agents 指向 MCP 服务器，它会获取服务器公开的所有工具。
+> [!注意]
+>
+> Deep Agents 完全支持[Model Context Protocol (MCP)](/oss/python/langchain/mcp)，用于将代理连接到外部服务的开放标准。从任何 MCP 服务器加载工具并将其直接传递到`create_deep_agent`。MCP 是一种开放协议，允许代理通过标准接口连接到不断增长的服务器生态系统（数据库、API、文件系统、浏览器等）。 Instead of writing custom integration code for each service, you point Deep Agents at an MCP server and it gets all the tools that server exposes.
 
-安装 LangChain 和 `mcp` 额外组件以连接到 MCP 服务器：
+Install LangChain with the `mcp` extra to connect to MCP servers:
 
-<CodeGroup>
-  ```bash pip theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  pip install "langchain[mcp]"
-  ```
+```bash pip theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+pip install "langchain[mcp]"
+```
 
-  ```bash uv theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  uv add "langchain[mcp]"
-  ```
-</CodeGroup>
+```bash uv theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+uv add "langchain[mcp]"
+```
 
-<CodeGroup>
-  ```python Google theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  import asyncio
+```python Google theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+import asyncio
 
-  from deepagents import create_deep_agent
-  from langchain.mcp import MCPAdapter
+from deepagents import create_deep_agent
+from langchain.mcp import MCPAdapter
 
 
-  async def main():
-      config = {"mcpServers": {"my_server": {"url": "http://localhost:8000/mcp"}}}
-      async with MCPAdapter(config) as adapter:
-          tools = await adapter.list_tools()
-          agent = create_deep_agent(
-              model="google_genai:gemini-3.6-flash",
-              tools=tools,
-          )
-          await agent.ainvoke(
-              {
-                  "messages": [
-                      {"role": "user", "content": "Use the MCP server to help me."}
-                  ]
-              },
-              config={"configurable": {"thread_id": "1"}},
-          )
-  ```
+async def main():
+    config = {"mcpServers": {"my_server": {"url": "http://localhost:8000/mcp"}}}
+    async with MCPAdapter(config) as adapter:
+        tools = await adapter.list_tools()
+        agent = create_deep_agent(
+            model="google_genai:gemini-3.6-flash",
+            tools=tools,
+        )
+        await agent.ainvoke(
+            {
+                "messages": [
+                    {"role": "user", "content": "Use the MCP server to help me."}
+                ]
+            },
+            config={"configurable": {"thread_id": "1"}},
+        )
+```
 
-  ```python OpenAI theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  import asyncio
+```python OpenAI theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+import asyncio
 
-  from deepagents import create_deep_agent
-  from langchain.mcp import MCPAdapter
-
-
-  async def main():
-      config = {"mcpServers": {"my_server": {"url": "http://localhost:8000/mcp"}}}
-      async with MCPAdapter(config) as adapter:
-          tools = await adapter.list_tools()
-          agent = create_deep_agent(
-              model="openai:gpt-5.5",
-              tools=tools,
-          )
-          await agent.ainvoke(
-              {
-                  "messages": [
-                      {"role": "user", "content": "Use the MCP server to help me."}
-                  ]
-              },
-              config={"configurable": {"thread_id": "1"}},
-          )
-  ```
-
-  ```python Anthropic theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  import asyncio
-
-  from deepagents import create_deep_agent
-  from langchain.mcp import MCPAdapter
+from deepagents import create_deep_agent
+from langchain.mcp import MCPAdapter
 
 
-  async def main():
-      config = {"mcpServers": {"my_server": {"url": "http://localhost:8000/mcp"}}}
-      async with MCPAdapter(config) as adapter:
-          tools = await adapter.list_tools()
-          agent = create_deep_agent(
-              model="anthropic:claude-sonnet-5",
-              tools=tools,
-          )
-          await agent.ainvoke(
-              {
-                  "messages": [
-                      {"role": "user", "content": "Use the MCP server to help me."}
-                  ]
-              },
-              config={"configurable": {"thread_id": "1"}},
-          )
-  ```
+async def main():
+    config = {"mcpServers": {"my_server": {"url": "http://localhost:8000/mcp"}}}
+    async with MCPAdapter(config) as adapter:
+        tools = await adapter.list_tools()
+        agent = create_deep_agent(
+            model="openai:gpt-5.5",
+            tools=tools,
+        )
+        await agent.ainvoke(
+            {
+                "messages": [
+                    {"role": "user", "content": "Use the MCP server to help me."}
+                ]
+            },
+            config={"configurable": {"thread_id": "1"}},
+        )
+```
 
-  ```python OpenRouter theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  import asyncio
+```python Anthropic theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+import asyncio
 
-  from deepagents import create_deep_agent
-  from langchain.mcp import MCPAdapter
-
-
-  async def main():
-      config = {"mcpServers": {"my_server": {"url": "http://localhost:8000/mcp"}}}
-      async with MCPAdapter(config) as adapter:
-          tools = await adapter.list_tools()
-          agent = create_deep_agent(
-              model="openrouter:z-ai/glm-5.2",
-              tools=tools,
-          )
-          await agent.ainvoke(
-              {
-                  "messages": [
-                      {"role": "user", "content": "Use the MCP server to help me."}
-                  ]
-              },
-              config={"configurable": {"thread_id": "1"}},
-          )
-  ```
-
-  ```python Fireworks theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  import asyncio
-
-  from deepagents import create_deep_agent
-  from langchain.mcp import MCPAdapter
+from deepagents import create_deep_agent
+from langchain.mcp import MCPAdapter
 
 
-  async def main():
-      config = {"mcpServers": {"my_server": {"url": "http://localhost:8000/mcp"}}}
-      async with MCPAdapter(config) as adapter:
-          tools = await adapter.list_tools()
-          agent = create_deep_agent(
-              model="fireworks:accounts/fireworks/models/glm-5p2",
-              tools=tools,
-          )
-          await agent.ainvoke(
-              {
-                  "messages": [
-                      {"role": "user", "content": "Use the MCP server to help me."}
-                  ]
-              },
-              config={"configurable": {"thread_id": "1"}},
-          )
-  ```
+async def main():
+    config = {"mcpServers": {"my_server": {"url": "http://localhost:8000/mcp"}}}
+    async with MCPAdapter(config) as adapter:
+        tools = await adapter.list_tools()
+        agent = create_deep_agent(
+            model="anthropic:claude-sonnet-5",
+            tools=tools,
+        )
+        await agent.ainvoke(
+            {
+                "messages": [
+                    {"role": "user", "content": "Use the MCP server to help me."}
+                ]
+            },
+            config={"configurable": {"thread_id": "1"}},
+        )
+```
 
-  ```python Baseten theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  import asyncio
+```python OpenRouter theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+import asyncio
 
-  from deepagents import create_deep_agent
-  from langchain.mcp import MCPAdapter
-
-
-  async def main():
-      config = {"mcpServers": {"my_server": {"url": "http://localhost:8000/mcp"}}}
-      async with MCPAdapter(config) as adapter:
-          tools = await adapter.list_tools()
-          agent = create_deep_agent(
-              model="baseten:zai-org/GLM-5.2",
-              tools=tools,
-          )
-          await agent.ainvoke(
-              {
-                  "messages": [
-                      {"role": "user", "content": "Use the MCP server to help me."}
-                  ]
-              },
-              config={"configurable": {"thread_id": "1"}},
-          )
-  ```
-
-  ```python Ollama theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  import asyncio
-
-  from deepagents import create_deep_agent
-  from langchain.mcp import MCPAdapter
+from deepagents import create_deep_agent
+from langchain.mcp import MCPAdapter
 
 
-  async def main():
-      config = {"mcpServers": {"my_server": {"url": "http://localhost:8000/mcp"}}}
-      async with MCPAdapter(config) as adapter:
-          tools = await adapter.list_tools()
-          agent = create_deep_agent(
-              model="ollama:north-mini-code-1.0",
-              tools=tools,
-          )
-          await agent.ainvoke(
-              {
-                  "messages": [
-                      {"role": "user", "content": "Use the MCP server to help me."}
-                  ]
-              },
-              config={"configurable": {"thread_id": "1"}},
-          )
-  ```
-</CodeGroup>
+async def main():
+    config = {"mcpServers": {"my_server": {"url": "http://localhost:8000/mcp"}}}
+    async with MCPAdapter(config) as adapter:
+        tools = await adapter.list_tools()
+        agent = create_deep_agent(
+            model="openrouter:z-ai/glm-5.2",
+            tools=tools,
+        )
+        await agent.ainvoke(
+            {
+                "messages": [
+                    {"role": "user", "content": "Use the MCP server to help me."}
+                ]
+            },
+            config={"configurable": {"thread_id": "1"}},
+        )
+```
+
+```python Fireworks theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+import asyncio
+
+from deepagents import create_deep_agent
+from langchain.mcp import MCPAdapter
+
+
+async def main():
+    config = {"mcpServers": {"my_server": {"url": "http://localhost:8000/mcp"}}}
+    async with MCPAdapter(config) as adapter:
+        tools = await adapter.list_tools()
+        agent = create_deep_agent(
+            model="fireworks:accounts/fireworks/models/glm-5p2",
+            tools=tools,
+        )
+        await agent.ainvoke(
+            {
+                "messages": [
+                    {"role": "user", "content": "Use the MCP server to help me."}
+                ]
+            },
+            config={"configurable": {"thread_id": "1"}},
+        )
+```
+
+```python Baseten theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+import asyncio
+
+from deepagents import create_deep_agent
+from langchain.mcp import MCPAdapter
+
+
+async def main():
+    config = {"mcpServers": {"my_server": {"url": "http://localhost:8000/mcp"}}}
+    async with MCPAdapter(config) as adapter:
+        tools = await adapter.list_tools()
+        agent = create_deep_agent(
+            model="baseten:zai-org/GLM-5.2",
+            tools=tools,
+        )
+        await agent.ainvoke(
+            {
+                "messages": [
+                    {"role": "user", "content": "Use the MCP server to help me."}
+                ]
+            },
+            config={"configurable": {"thread_id": "1"}},
+        )
+```
+
+```python Ollama theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+import asyncio
+
+from deepagents import create_deep_agent
+from langchain.mcp import MCPAdapter
+
+
+async def main():
+    config = {"mcpServers": {"my_server": {"url": "http://localhost:8000/mcp"}}}
+    async with MCPAdapter(config) as adapter:
+        tools = await adapter.list_tools()
+        agent = create_deep_agent(
+            model="ollama:north-mini-code-1.0",
+            tools=tools,
+        )
+        await agent.ainvoke(
+            {
+                "messages": [
+                    {"role": "user", "content": "Use the MCP server to help me."}
+                ]
+            },
+            config={"configurable": {"thread_id": "1"}},
+        )
+```
 
 有关详细的配置选项（包括 stdio 服务器、OAuth 身份验证、工具过滤和有状态会话），请参阅完整的 [MCP guide](/oss/python/langchain/mcp)。
 
 ## 内置线束工具
 
-除了您提供的工具之外，每个 Deep Agent 还附带来自线束的一组内置工具：|工具|描述 |
+In addition to the tools you provide, every Deep Agent comes with a built-in set of tools from the harness:|工具|描述 |
 | - | - |
 | `ls` |列出目录中的文件。 |
 | `read_file` |读取文件内容（具有分页和多模式支持）。 |
@@ -521,12 +513,6 @@ Deep Agents 从函数签名和文档字符串推断工具架构，因此在大�
 
 返回纯文本结果的字符串，或文本加媒体或交错多模式输出的内容块的有序列表。有关示例和上下文压缩注意事项，请参阅[Multimodal](/oss/python/deepagents/multimodal)和[Tool return values](/oss/python/langchain/tools#return-multimodal-content)。
 
-***<div>
-  <Callout icon="terminal-2">
-    [Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
-  </Callout>
+***[Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
 
-  <Callout icon="edit">
-    [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/oss/deepagents/tools.mdx) 或 [file an issue](https://github.com/langchain-ai/docs/issues/new/choose)。
-  </Callout>
-</div>
+[Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/oss/deepagents/tools.mdx) 或 [file an issue](https://github.com/langchain-ai/docs/issues/new/choose)。

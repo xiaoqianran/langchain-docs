@@ -10,15 +10,13 @@
 
 中间件提供了两种类型的钩子来拦截代理执行：
 
-<CardGroup>
-  <Card title="Node-style hooks" icon="share" href="#node-style-hooks">
-    在特定的执行点顺序运行。
-  </Card>
+> **[Node-style hooks](#node-style-hooks)**
+>
+> 在特定执行点按顺序运行。
 
-  <Card title="Wrap-style hooks" icon="container" href="#wrap-style-hooks">
-    围绕每个模型或工具调用运行。
-  </Card>
-</CardGroup>
+> **[Wrap-style hooks](#wrap-style-hooks)**
+>
+> 运行每个模型或工具调用。
 
 ### 节点式挂钩
 
@@ -40,66 +38,64 @@
 |钩|当它运行时 |
 | - | - |
 | `wrap_model_call` |各地型号调用|
-| `wrap_tool_call` |围绕每个工具调用|
+| `wrap_tool_call` |围绕每个工具调用 |
 
 **示例：**
 
-<Tabs>
-  <Tab title="Decorator">
-    ```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-    from langchain.agents.middleware import before_model, after_model, AgentState
-    from langchain.messages import AIMessage
-    from langgraph.runtime import Runtime
-    from typing import Any
+**装饰器**
+
+```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+from langchain.agents.middleware import before_model, after_model, AgentState
+from langchain.messages import AIMessage
+from langgraph.runtime import Runtime
+from typing import Any
 
 
-    @before_model(can_jump_to=["end"])
-    def check_message_limit(state: AgentState, runtime: Runtime) -> dict[str, Any] | None:
-        if len(state["messages"]) >= 50:
+@before_model(can_jump_to=["end"])
+def check_message_limit(state: AgentState, runtime: Runtime) -> dict[str, Any] | None:
+    if len(state["messages"]) >= 50:
+        return {
+            "messages": [AIMessage("Conversation limit reached.")],
+            "jump_to": "end"
+        }
+    return None
+
+@after_model
+def log_response(state: AgentState, runtime: Runtime) -> dict[str, Any] | None:
+    print(f"Model returned: {state['messages'][-1].content}")
+    return None
+```
+
+**班级**
+
+```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+from langchain.agents.middleware import AgentMiddleware, AgentState, hook_config
+from langchain.messages import AIMessage
+from langgraph.runtime import Runtime
+from typing import Any
+
+class MessageLimitMiddleware(AgentMiddleware):
+    def __init__(self, max_messages: int = 50):
+        super().__init__()
+        self.max_messages = max_messages
+
+    @hook_config(can_jump_to=["end"])
+    def before_model(self, state: AgentState, runtime: Runtime) -> dict[str, Any] | None:
+        if len(state["messages"]) >= self.max_messages:
             return {
                 "messages": [AIMessage("Conversation limit reached.")],
                 "jump_to": "end"
             }
         return None
 
-    @after_model
-    def log_response(state: AgentState, runtime: Runtime) -> dict[str, Any] | None:
+    def after_model(self, state: AgentState, runtime: Runtime) -> dict[str, Any] | None:
         print(f"Model returned: {state['messages'][-1].content}")
         return None
-    ```
-  </Tab>
+```
 
-  <Tab title="Class">
-    ```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-    from langchain.agents.middleware import AgentMiddleware, AgentState, hook_config
-    from langchain.messages import AIMessage
-    from langgraph.runtime import Runtime
-    from typing import Any
+### 缠绕式挂钩
 
-    class MessageLimitMiddleware(AgentMiddleware):
-        def __init__(self, max_messages: int = 50):
-            super().__init__()
-            self.max_messages = max_messages
-
-        @hook_config(can_jump_to=["end"])
-        def before_model(self, state: AgentState, runtime: Runtime) -> dict[str, Any] | None:
-            if len(state["messages"]) >= self.max_messages:
-                return {
-                    "messages": [AIMessage("Conversation limit reached.")],
-                    "jump_to": "end"
-                }
-            return None
-
-        def after_model(self, state: AgentState, runtime: Runtime) -> dict[str, Any] | None:
-            print(f"Model returned: {state['messages'][-1].content}")
-            return None
-    ```
-  </Tab>
-</Tabs>
-
-### 缠绕式挂钩调用处理程序时拦截执行和控制。用于重试、缓存和转换。
-
-您可以决定处理程序是否被调用零次（短路）、一次（正常流程）或多次（重试逻辑）。
+调用处理程序时拦截执行和控制。用于重试、缓存和转换。您可以决定处理程序是否被调用零次（短路）、一次（正常流程）或多次（重试逻辑）。
 
 **可用的挂钩：**
 
@@ -108,53 +104,51 @@
 
 **示例：**
 
-<Tabs>
-  <Tab title="Decorator">
-    ```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-    from langchain.agents.middleware import wrap_model_call, ModelRequest, ModelResponse
-    from typing import Callable
+**装饰器**
+
+```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+from langchain.agents.middleware import wrap_model_call, ModelRequest, ModelResponse
+from typing import Callable
 
 
-    @wrap_model_call
-    def retry_model(
+@wrap_model_call
+def retry_model(
+    request: ModelRequest,
+    handler: Callable[[ModelRequest], ModelResponse],
+) -> ModelResponse:
+    for attempt in range(3):
+        try:
+            return handler(request)
+        except Exception as e:
+            if attempt == 2:
+                raise
+            print(f"Retry {attempt + 1}/3 after error: {e}")
+```
+
+**班级**
+
+```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+from langchain.agents.middleware import AgentMiddleware, ModelRequest, ModelResponse
+from typing import Callable
+
+class RetryMiddleware(AgentMiddleware):
+    def __init__(self, max_retries: int = 3):
+        super().__init__()
+        self.max_retries = max_retries
+
+    def wrap_model_call(
+        self,
         request: ModelRequest,
         handler: Callable[[ModelRequest], ModelResponse],
     ) -> ModelResponse:
-        for attempt in range(3):
+        for attempt in range(self.max_retries):
             try:
                 return handler(request)
             except Exception as e:
-                if attempt == 2:
+                if attempt == self.max_retries - 1:
                     raise
-                print(f"Retry {attempt + 1}/3 after error: {e}")
-    ```
-  </Tab>
-
-  <Tab title="Class">
-    ```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-    from langchain.agents.middleware import AgentMiddleware, ModelRequest, ModelResponse
-    from typing import Callable
-
-    class RetryMiddleware(AgentMiddleware):
-        def __init__(self, max_retries: int = 3):
-            super().__init__()
-            self.max_retries = max_retries
-
-        def wrap_model_call(
-            self,
-            request: ModelRequest,
-            handler: Callable[[ModelRequest], ModelResponse],
-        ) -> ModelResponse:
-            for attempt in range(self.max_retries):
-                try:
-                    return handler(request)
-                except Exception as e:
-                    if attempt == self.max_retries - 1:
-                        raise
-                    print(f"Retry {attempt + 1}/{self.max_retries} after error: {e}")
-    ```
-  </Tab>
-</Tabs>
+                print(f"Retry {attempt + 1}/{self.max_retries} after error: {e}")
+```
 
 ## 状态更新
 
@@ -183,7 +177,9 @@ def increment_after_model(state: TrackingState, runtime: Runtime) -> dict[str, A
     return {"model_call_count": state.get("model_call_count", 0) + 1}
 ```
 
-### 缠绕式挂钩从 `wrap_model_call` 返回一个 [⟦T44⟧](https://reference.langchain.com/python/langchain/agents/middleware/types/ExtendedModelResponse) 和 [⟦T45⟧](https://reference.langchain.com/python/langgraph/types/Command)，以从模型调用层注入状态更新：
+### 缠绕式挂钩
+
+从 `wrap_model_call` 返回一个 [⟦T44⟧](https://reference.langchain.com/python/langchain/agents/middleware/types/ExtendedModelResponse) 和 [⟦T45⟧](https://reference.langchain.com/python/langgraph/types/Command)，以从模型调用层注入状态更新：
 
 ```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 from typing import Callable
@@ -213,9 +209,7 @@ def track_usage(
         model_response=response,
         command=Command(update={"last_model_call_tokens": 150}),
     )
-```
-
-[⟦T47⟧](https://reference.langchain.com/python/langgraph/types/Command) 流经图的化简器，因此可以正确应用更新，并且消息是附加的而不是替换现有状态。
+```[⟦T47⟧](https://reference.langchain.com/python/langgraph/types/Command) 流经图的减速器，因此可以正确应用更新，并且消息是附加的而不是替换现有状态。
 
 #### 多个中间件的组合
 
@@ -290,23 +284,21 @@ class InnerMiddleware(AgentMiddleware):
 
 您可以通过两种方式创建中间件：
 
-<CardGroup>
-  <Card title="Decorator-based middleware" icon="at" href="#decorator-based-middleware">
-    单钩子中间件快速而简单。使用装饰器来包装各个函数。
-  </Card>
+> **[Decorator-based middleware](#decorator-based-middleware)**
+>
+> 单钩子中间件快速简单。使用装饰器来包装各个函数。
 
-  <Card title="Class-based middleware" icon="braces" href="#class-based-middleware">
-    对于具有多个钩子或配置的复杂中间件来说更强大。
-  </Card>
-</CardGroup>
+> **[Class-based middleware](#class-based-middleware)**
+>
+> 对于具有多个挂钩或配置的复杂中间件更强大。
 
-### 基于装饰器的中间件单钩子中间件快速而简单。使用装饰器来包装各个函数。
+### 基于装饰器的中间件
+
+单钩子中间件快速而简单。使用装饰器来包装各个函数。
 
 **可用的装饰器：**
 
-**节点样式：**
-
-* [⟦T51⟧](https://reference.langchain.com/python/langchain/agents/middleware/types/before_agent) - 在代理启动之前运行（每次调用一次）
+**节点样式：*** [⟦T51⟧](https://reference.langchain.com/python/langchain/agents/middleware/types/before_agent) - 在代理启动之前运行（每次调用一次）
 * [⟦T52⟧](https://reference.langchain.com/python/langchain/agents/middleware/types/before_model) - 在每次模型调用之前运行
 * [⟦T53⟧](https://reference.langchain.com/python/langchain/agents/middleware/types/after_model) - 在每个模型响应后运行
 * [⟦T54⟧](https://reference.langchain.com/python/langchain/agents/middleware/types/after_agent) - 代理完成后运行（每次调用一次）
@@ -371,7 +363,9 @@ agent = create_agent(
 对于具有多个钩子或配置的复杂中间件来说更强大。当您需要为同一个钩子定义同步和异步实现时，或者当您想要在单个中间件中组合多个钩子时，请使用类。
 
 蟒蛇
-`AgentMiddleware` 子类可以声明代理工厂在编译时获取的三个类属性：* `state_schema` — 使用自定义字段扩展代理状态。参见[Custom state schema](#custom-state-schema)。
+`AgentMiddleware` 子类可以声明代理工厂在编译时获取的三个类属性：
+
+* `state_schema` — 使用自定义字段扩展代理状态。参见[Custom state schema](#custom-state-schema)。
 * `tools` — 注册中间件附带的其他工具（例如，待办事项列表中间件上的 `write_todos`）。
 * `transformers` — 注册作用域感知的流转换器工厂。参见[Custom stream transformers](#custom-stream-transformers)。
   :::
@@ -418,9 +412,7 @@ agent = create_agent(
 )
 ```
 
-**何时使用类：**
-
-* 为同一个钩子定义同步和异步实现
+**何时使用类：*** 为同一个钩子定义同步和异步实现
 * 单个中间件中需要多个钩子
 * 需要复杂的配置（例如，可配置阈值、自定义模型）
 * 通过初始化时配置跨项目重用
@@ -433,102 +425,102 @@ agent = create_agent(
 
 * **跟踪执行过程中的状态**：维护在代理执行生命周期中持续存在的计数器、标志或其他值
 
-* **在钩子之间共享数据**：从`before_model`到`after_model`或不同中间件实例之间传递信息
+* **钩子之间共享数据**：从`before_model`到`after_model`或不同中间件实例之间传递信息
 
-* **实现横切关注点**：添加速率限制、使用跟踪、用户上下文或审核日志记录等功能，而无需修改核心代理逻辑* **做出条件决策**：使用累积状态来确定是否继续执行、跳转到不同节点或动态修改行为
+* **实现横切关注点**：添加速率限制、使用跟踪、用户上下文或审核日志记录等功能，而无需修改核心代理逻辑
 
-<Tabs>
-  <Tab title="Decorator">
-    ```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-    from langchain.agents import create_agent
-    from langchain.messages import HumanMessage
-    from langchain.agents.middleware import AgentState, before_model, after_model
-    from typing_extensions import NotRequired
-    from typing import Any
-    from langgraph.runtime import Runtime
+* **做出条件决策**：使用累积状态来确定是否继续执行、跳转到不同节点或动态修改行为
 
+**装饰器**
 
-    class CustomState(AgentState):
-        model_call_count: NotRequired[int]
-        user_id: NotRequired[str]
+```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+from langchain.agents import create_agent
+from langchain.messages import HumanMessage
+from langchain.agents.middleware import AgentState, before_model, after_model
+from typing_extensions import NotRequired
+from typing import Any
+from langgraph.runtime import Runtime
 
 
-    @before_model(state_schema=CustomState, can_jump_to=["end"])
-    def check_call_limit(state: CustomState, runtime: Runtime) -> dict[str, Any] | None:
+class CustomState(AgentState):
+    model_call_count: NotRequired[int]
+    user_id: NotRequired[str]
+
+
+@before_model(state_schema=CustomState, can_jump_to=["end"])
+def check_call_limit(state: CustomState, runtime: Runtime) -> dict[str, Any] | None:
+    count = state.get("model_call_count", 0)
+    if count > 10:
+        return {"jump_to": "end"}
+    return None
+
+
+@after_model(state_schema=CustomState)
+def increment_counter(state: CustomState, runtime: Runtime) -> dict[str, Any] | None:
+    return {"model_call_count": state.get("model_call_count", 0) + 1}
+
+
+agent = create_agent(
+    model="gpt-5.5",
+    middleware=[check_call_limit, increment_counter],
+    tools=[],
+)
+
+# Invoke with custom state
+result = agent.invoke({
+    "messages": [HumanMessage("Hello")],
+    "model_call_count": 0,
+    "user_id": "user-123",
+})
+```
+
+**班级**
+
+```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+from langchain.agents import create_agent
+from langchain.messages import HumanMessage
+from langchain.agents.middleware import AgentState, AgentMiddleware
+from typing_extensions import NotRequired
+from typing import Any
+
+
+class CustomState(AgentState):
+    model_call_count: NotRequired[int]
+    user_id: NotRequired[str]
+
+
+class CallCounterMiddleware(AgentMiddleware[CustomState]):
+    state_schema = CustomState
+
+    def before_model(self, state: CustomState, runtime) -> dict[str, Any] | None:
         count = state.get("model_call_count", 0)
         if count > 10:
             return {"jump_to": "end"}
         return None
 
-
-    @after_model(state_schema=CustomState)
-    def increment_counter(state: CustomState, runtime: Runtime) -> dict[str, Any] | None:
+    def after_model(self, state: CustomState, runtime) -> dict[str, Any] | None:
         return {"model_call_count": state.get("model_call_count", 0) + 1}
 
 
-    agent = create_agent(
-        model="gpt-5.5",
-        middleware=[check_call_limit, increment_counter],
-        tools=[],
-    )
+agent = create_agent(
+    model="gpt-5.5",
+    middleware=[CallCounterMiddleware()],
+    tools=[],
+)
 
-    # Invoke with custom state
-    result = agent.invoke({
-        "messages": [HumanMessage("Hello")],
-        "model_call_count": 0,
-        "user_id": "user-123",
-    })
-    ```
-  </Tab>
-
-  <Tab title="Class">
-    ```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-    from langchain.agents import create_agent
-    from langchain.messages import HumanMessage
-    from langchain.agents.middleware import AgentState, AgentMiddleware
-    from typing_extensions import NotRequired
-    from typing import Any
-
-
-    class CustomState(AgentState):
-        model_call_count: NotRequired[int]
-        user_id: NotRequired[str]
-
-
-    class CallCounterMiddleware(AgentMiddleware[CustomState]):
-        state_schema = CustomState
-
-        def before_model(self, state: CustomState, runtime) -> dict[str, Any] | None:
-            count = state.get("model_call_count", 0)
-            if count > 10:
-                return {"jump_to": "end"}
-            return None
-
-        def after_model(self, state: CustomState, runtime) -> dict[str, Any] | None:
-            return {"model_call_count": state.get("model_call_count", 0) + 1}
-
-
-    agent = create_agent(
-        model="gpt-5.5",
-        middleware=[CallCounterMiddleware()],
-        tools=[],
-    )
-
-    # Invoke with custom state
-    result = agent.invoke({
-        "messages": [HumanMessage("Hello")],
-        "model_call_count": 0,
-        "user_id": "user-123",
-    })
-    ```
-  </Tab>
-</Tabs>
+# Invoke with custom state
+result = agent.invoke({
+    "messages": [HumanMessage("Hello")],
+    "model_call_count": 0,
+    "user_id": "user-123",
+})
+```
 
 ## 自定义流转换器
 
-<Note>中间件注册变压器需要`langchain>=1.3.2`。</Note>
-
-中间件可以注册流转换器工厂，将事件从实时代理流投影到类型化扩展通道上。这对于在不耦合到框架的内置投影的情况下显示计数器、侧通道工件、部分输出或线级编辑非常有用。
+> [!注意]
+>
+> 中间件注册变压器需要`langchain>=1.3.2`。中间件可以注册流转换器工厂，将事件从实时代理流投影到类型化扩展通道上。这对于在不耦合到框架的内置投影的情况下显示计数器、侧通道工件、部分输出或线级编辑非常有用。
 
 在编译时，中间件注册的工厂与调用者直接传递给代理工厂的任何内容合并。 [final ordering rules](/oss/python/langchain/event-streaming#register-transformers-on-middleware) 将内置的 `ToolCallTransformer` 保留在前面，让调用者提供的条目最后落地。
 
@@ -552,7 +544,9 @@ agent = create_agent(
 
 请参阅 [Register transformers on middleware](/oss/python/langchain/event-streaming#register-transformers-on-middleware) 了解完整的排序规则和 PII 编辑示例。
 
-## 执行顺序使用多个中间件时，了解它们如何执行：
+## 执行顺序
+
+使用多个中间件时，了解它们如何执行：
 
 ```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 agent = create_agent(
@@ -560,37 +554,35 @@ agent = create_agent(
     middleware=[middleware1, middleware2, middleware3],
     tools=[...],
 )
-```
-
-<Accordion title="Execution flow">
-  **在钩子按顺序运行之前：**
-
-  1.`middleware1.before_agent()`
-  2.`middleware2.before_agent()`
-  3.`middleware3.before_agent()`
-
-  **代理循环启动**
-
-  4.`middleware1.before_model()`
-  5.`middleware2.before_model()`
-  6.`middleware3.before_model()`
-
-  **像函数调用一样包裹钩子嵌套：**
-
-  7. `middleware1.wrap_model_call()` → `middleware2.wrap_model_call()` → `middleware3.wrap_model_call()` → 型号
-
-  **挂钩以相反顺序运行后：**
-
-  8.`middleware3.after_model()`
-  9. `middleware2.after_model()`
-  10.`middleware1.after_model()`
-
-  **代理循环结束**
-
-  11.`middleware3.after_agent()`
-  12.`middleware2.after_agent()`
-  13.`middleware1.after_agent()`
-</Accordion>
+```> **执行流程**
+>
+> **在钩子按顺序运行之前：**
+>
+> 1. `middleware1.before_agent()`
+> 2.`middleware2.before_agent()`
+> 3.`middleware3.before_agent()`
+>
+> **代理循环开始**
+>
+> 4. `middleware1.before_model()`
+> 5. `middleware2.before_model()`
+> 6. `middleware3.before_model()`
+>
+> **像函数调用一样包裹钩子嵌套：**
+>
+> 7. `middleware1.wrap_model_call()` → `middleware2.wrap_model_call()` → `middleware3.wrap_model_call()` → 型号
+>
+> **钩子以相反顺序运行后：**
+>
+> 8. `middleware3.after_model()`
+> 9. `middleware2.after_model()`
+> 10. `middleware1.after_model()`
+>
+> **代理循环结束**
+>
+> 11. `middleware3.after_agent()`
+> 12. `middleware2.after_agent()`
+> 13. `middleware1.after_agent()`
 
 **关键规则：**
 
@@ -608,18 +600,38 @@ agent = create_agent(
 * `'tools'`：跳转到工具节点
 * `'model'`：跳转到模型节点（或者第一个`before_model`钩子）
 
-<Tabs>
-  <Tab title="Decorator">
-    ```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-    from langchain.agents.middleware import after_model, hook_config, AgentState
-    from langchain.messages import AIMessage
-    from langgraph.runtime import Runtime
-    from typing import Any
+**装饰器**
+
+```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+from langchain.agents.middleware import after_model, hook_config, AgentState
+from langchain.messages import AIMessage
+from langgraph.runtime import Runtime
+from typing import Any
 
 
-    @after_model
+@after_model
+@hook_config(can_jump_to=["end"])
+def check_for_blocked(state: AgentState, runtime: Runtime) -> dict[str, Any] | None:
+    last_message = state["messages"][-1]
+    if "BLOCKED" in last_message.content:
+        return {
+            "messages": [AIMessage("I cannot respond to that request.")],
+            "jump_to": "end"
+        }
+    return None
+```
+
+**班级**
+
+```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+from langchain.agents.middleware import AgentMiddleware, hook_config, AgentState
+from langchain.messages import AIMessage
+from langgraph.runtime import Runtime
+from typing import Any
+
+class BlockedContentMiddleware(AgentMiddleware):
     @hook_config(can_jump_to=["end"])
-    def check_for_blocked(state: AgentState, runtime: Runtime) -> dict[str, Any] | None:
+    def after_model(self, state: AgentState, runtime: Runtime) -> dict[str, Any] | None:
         last_message = state["messages"][-1]
         if "BLOCKED" in last_message.content:
             return {
@@ -627,33 +639,13 @@ agent = create_agent(
                 "jump_to": "end"
             }
         return None
-    ```
-  </Tab>
-
-  <Tab title="Class">
-    ```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-    from langchain.agents.middleware import AgentMiddleware, hook_config, AgentState
-    from langchain.messages import AIMessage
-    from langgraph.runtime import Runtime
-    from typing import Any
-
-    class BlockedContentMiddleware(AgentMiddleware):
-        @hook_config(can_jump_to=["end"])
-        def after_model(self, state: AgentState, runtime: Runtime) -> dict[str, Any] | None:
-            last_message = state["messages"][-1]
-            if "BLOCKED" in last_message.content:
-                return {
-                    "messages": [AIMessage("I cannot respond to that request.")],
-                    "jump_to": "end"
-                }
-            return None
-    ```
-  </Tab>
-</Tabs>
+```
 
 ## 配置跟踪
 
-<Note>需要`langchain>=1.3.15`。</Note>中间件钩子跨度默认跟踪其输入和输出。设置 `trace_policy` 来塑造他们记录的内容。 `TracePolicy`接受诸如`process_inputs`和`process_outputs`之类的可调用函数来转换跟踪值； `omit_payload` 完全放弃它。当完整的消息历史记录对中间件的功能没有信息时，这可以作为一种有用的优化。
+> [!注意]
+>
+> 需要`langchain>=1.3.15`。中间件钩子跨度默认跟踪其输入和输出。设置 `trace_policy` 来塑造他们记录的内容。 `TracePolicy`接受诸如`process_inputs`和`process_outputs`之类的可调用函数来转换跟踪值； `omit_payload` 完全放弃它。当完整的消息历史记录对中间件的功能没有信息时，这可以作为一种有用的优化。
 
 要从中间件的跟踪中省略输入负载：
 
@@ -692,17 +684,38 @@ configure_trace_policy(TracePolicy(process_inputs=omit_payload))  # pass None to
 
 使用`ModelRequest`上的`system_message`字段读取和修改系统提示符。它包含一个 [⟦T105⟧](https://reference.langchain.com/python/langchain-core/messages/system/SystemMessage) 对象（即使代理是使用字符串 `system_prompt` 创建的）。
 
-<Tabs>
-  <Tab title="Decorator">
-    ```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-    from collections.abc import Callable
+**装饰器**
 
-    from langchain.agents.middleware import ModelRequest, ModelResponse, wrap_model_call
-    from langchain.messages import SystemMessage
+```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+from collections.abc import Callable
+
+from langchain.agents.middleware import ModelRequest, ModelResponse, wrap_model_call
+from langchain.messages import SystemMessage
 
 
-    @wrap_model_call
-    def add_context(
+@wrap_model_call
+def add_context(
+    request: ModelRequest,
+    handler: Callable[[ModelRequest], ModelResponse],
+) -> ModelResponse:
+    new_content = list(request.system_message.content_blocks) + [
+        {"type": "text", "text": "Additional context."}
+    ]
+    new_system_message = SystemMessage(content=new_content)
+    return handler(request.override(system_message=new_system_message))
+```
+
+**班级**
+
+```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+from collections.abc import Callable
+
+from langchain.agents.middleware import AgentMiddleware, ModelRequest, ModelResponse
+
+
+class ContextMiddleware(AgentMiddleware):
+    def wrap_model_call(
+        self,
         request: ModelRequest,
         handler: Callable[[ModelRequest], ModelResponse],
     ) -> ModelResponse:
@@ -711,54 +724,56 @@ configure_trace_policy(TracePolicy(process_inputs=omit_payload))  # pass None to
         ]
         new_system_message = SystemMessage(content=new_content)
         return handler(request.override(system_message=new_system_message))
-    ```
-  </Tab>
+```
 
-  <Tab title="Class">
-    ```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-    from collections.abc import Callable
-
-    from langchain.agents.middleware import AgentMiddleware, ModelRequest, ModelResponse
-
-
-    class ContextMiddleware(AgentMiddleware):
-        def wrap_model_call(
-            self,
-            request: ModelRequest,
-            handler: Callable[[ModelRequest], ModelResponse],
-        ) -> ModelResponse:
-            new_content = list(request.system_message.content_blocks) + [
-                {"type": "text", "text": "Additional context."}
-            ]
-            new_system_message = SystemMessage(content=new_content)
-            return handler(request.override(system_message=new_system_message))
-    ```
-  </Tab>
-</Tabs>
-
-<Note>
-  * `ModelRequest.system_message` 始终是 [⟦T108⟧](https://reference.langchain.com/python/langchain-core/messages/system/SystemMessage) 对象，即使代理是使用 `system_prompt="string"` 创建的
-  * 使用`SystemMessage.content_blocks`以块列表的形式访问内容，无论原始内容是字符串还是列表
-  * 修改系统消息时，使用`content_blocks`并附加新块以保留现有结构
-  * 您可以将 [⟦T112⟧](https://reference.langchain.com/python/langchain-core/messages/system/SystemMessage) 对象直接传递给 `create_agent` 的 `system_prompt` 参数，以实现缓存控制等高级用例
-</Note>
+> [!注意]
+>
+> * `ModelRequest.system_message` 始终是 [⟦T108⟧](https://reference.langchain.com/python/langchain-core/messages/system/SystemMessage) 对象，即使代理是使用 `system_prompt="string"` 创建的
+> * 使用`SystemMessage.content_blocks`以块列表的形式访问内容，无论原始内容是字符串还是列表
+> * 修改系统消息时，使用`content_blocks`并附加新块以保留现有结构
+> * 您可以将 [⟦T112⟧](https://reference.langchain.com/python/langchain-core/messages/system/SystemMessage) 对象直接传递到 `create_agent` 的 `system_prompt` 参数，以实现缓存控制等高级用例
 
 ### 动态模型选择
 
-<Tabs>
-  <Tab title="Decorator">
-    ```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-    from collections.abc import Callable
+**装饰器**
 
-    from langchain.agents.middleware import ModelRequest, ModelResponse, wrap_model_call
-    from langchain.chat_models import init_chat_model
+```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+from collections.abc import Callable
 
-    complex_model = init_chat_model("claude-sonnet-4-6")
-    simple_model = init_chat_model("claude-haiku-4-5-20251001")
+from langchain.agents.middleware import ModelRequest, ModelResponse, wrap_model_call
+from langchain.chat_models import init_chat_model
+
+complex_model = init_chat_model("claude-sonnet-4-6")
+simple_model = init_chat_model("claude-haiku-4-5-20251001")
 
 
-    @wrap_model_call
-    def dynamic_model(
+@wrap_model_call
+def dynamic_model(
+    request: ModelRequest,
+    handler: Callable[[ModelRequest], ModelResponse],
+) -> ModelResponse:
+    if len(request.messages) > 10:
+        model = complex_model
+    else:
+        model = simple_model
+    return handler(request.override(model=model))
+```
+
+**班级**
+
+```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+from collections.abc import Callable
+
+from langchain.agents.middleware import AgentMiddleware, ModelRequest, ModelResponse
+from langchain.chat_models import init_chat_model
+
+complex_model = init_chat_model("claude-sonnet-4-6")
+simple_model = init_chat_model("claude-haiku-4-5-20251001")
+
+
+class DynamicModelMiddleware(AgentMiddleware):
+    def wrap_model_call(
+        self,
         request: ModelRequest,
         handler: Callable[[ModelRequest], ModelResponse],
     ) -> ModelResponse:
@@ -767,53 +782,52 @@ configure_trace_policy(TracePolicy(process_inputs=omit_payload))  # pass None to
         else:
             model = simple_model
         return handler(request.override(model=model))
-    ```
-  </Tab>
-
-  <Tab title="Class">
-    ```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-    from collections.abc import Callable
-
-    from langchain.agents.middleware import AgentMiddleware, ModelRequest, ModelResponse
-    from langchain.chat_models import init_chat_model
-
-    complex_model = init_chat_model("claude-sonnet-4-6")
-    simple_model = init_chat_model("claude-haiku-4-5-20251001")
-
-
-    class DynamicModelMiddleware(AgentMiddleware):
-        def wrap_model_call(
-            self,
-            request: ModelRequest,
-            handler: Callable[[ModelRequest], ModelResponse],
-        ) -> ModelResponse:
-            if len(request.messages) > 10:
-                model = complex_model
-            else:
-                model = simple_model
-            return handler(request.override(model=model))
-    ```
-  </Tab>
-</Tabs>
+```
 
 ### 动态选择工具
 
-在运行时选择相关工具以提高性能和准确性。本节介绍过滤预注册工具。有关注册在运行时发现的工具（例如，从 MCP 服务器），请参阅[Runtime tool registration](/oss/python/langchain/tools#dynamic-tool-selection)。**好处：**
+在运行时选择相关工具以提高性能和准确性。本节介绍过滤预注册工具。有关注册在运行时发现的工具（例如，从 MCP 服务器），请参阅[Runtime tool registration](/oss/python/langchain/tools#dynamic-tool-selection)。
 
-* **更短的提示** - 通过仅公开相关工具来降低复杂性
+**好处：*** **更短的提示** - 通过仅公开相关工具来降低复杂性
 * **更高的准确性** - 模型从更少的选项中正确选择
 * **权限控制** - 根据用户访问权限动态过滤工具
 
-<Tabs>
-  <Tab title="Decorator">
-    ```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-    from langchain.agents import create_agent
-    from langchain.agents.middleware import wrap_model_call, ModelRequest, ModelResponse
-    from typing import Callable
+**装饰器**
+
+```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+from langchain.agents import create_agent
+from langchain.agents.middleware import wrap_model_call, ModelRequest, ModelResponse
+from typing import Callable
 
 
-    @wrap_model_call
-    def select_tools(
+@wrap_model_call
+def select_tools(
+    request: ModelRequest,
+    handler: Callable[[ModelRequest], ModelResponse],
+) -> ModelResponse:
+    """Middleware to select relevant tools based on state/context."""
+    # Select a small, relevant subset of tools based on state/context
+    relevant_tools = select_relevant_tools(request.state, request.runtime)
+    return handler(request.override(tools=relevant_tools))
+
+agent = create_agent(
+    model="gpt-5.5",
+    tools=all_tools,  # All available tools need to be registered upfront
+    middleware=[select_tools],
+)
+```
+
+**班级**
+
+```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+from langchain.agents import create_agent
+from langchain.agents.middleware import AgentMiddleware, ModelRequest, ModelResponse
+from typing import Callable
+
+
+class ToolSelectorMiddleware(AgentMiddleware):
+    def wrap_model_call(
+        self,
         request: ModelRequest,
         handler: Callable[[ModelRequest], ModelResponse],
     ) -> ModelResponse:
@@ -822,56 +836,56 @@ configure_trace_policy(TracePolicy(process_inputs=omit_payload))  # pass None to
         relevant_tools = select_relevant_tools(request.state, request.runtime)
         return handler(request.override(tools=relevant_tools))
 
-    agent = create_agent(
-        model="gpt-5.5",
-        tools=all_tools,  # All available tools need to be registered upfront
-        middleware=[select_tools],
-    )
-    ```
-  </Tab>
-
-  <Tab title="Class">
-    ```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-    from langchain.agents import create_agent
-    from langchain.agents.middleware import AgentMiddleware, ModelRequest, ModelResponse
-    from typing import Callable
-
-
-    class ToolSelectorMiddleware(AgentMiddleware):
-        def wrap_model_call(
-            self,
-            request: ModelRequest,
-            handler: Callable[[ModelRequest], ModelResponse],
-        ) -> ModelResponse:
-            """Middleware to select relevant tools based on state/context."""
-            # Select a small, relevant subset of tools based on state/context
-            relevant_tools = select_relevant_tools(request.state, request.runtime)
-            return handler(request.override(tools=relevant_tools))
-
-    agent = create_agent(
-        model="gpt-5.5",
-        tools=all_tools,  # All available tools need to be registered upfront
-        middleware=[ToolSelectorMiddleware()],
-    )
-    ```
-  </Tab>
-</Tabs>
+agent = create_agent(
+    model="gpt-5.5",
+    tools=all_tools,  # All available tools need to be registered upfront
+    middleware=[ToolSelectorMiddleware()],
+)
+```
 
 ### 工具调用监控
 
-<Tabs>
-  <Tab title="Decorator">
-    ```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-    from collections.abc import Callable
+**装饰器**
 
-    from langchain.agents.middleware import wrap_tool_call
-    from langchain.messages import ToolMessage
-    from langchain.tools.tool_node import ToolCallRequest
-    from langgraph.types import Command
+```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+from collections.abc import Callable
+
+from langchain.agents.middleware import wrap_tool_call
+from langchain.messages import ToolMessage
+from langchain.tools.tool_node import ToolCallRequest
+from langgraph.types import Command
 
 
-    @wrap_tool_call
-    def monitor_tool(
+@wrap_tool_call
+def monitor_tool(
+    request: ToolCallRequest,
+    handler: Callable[[ToolCallRequest], ToolMessage | Command],
+) -> ToolMessage | Command:
+    print(f"Executing tool: {request.tool_call['name']}")
+    print(f"Arguments: {request.tool_call['args']}")
+    try:
+        result = handler(request)
+        print("Tool completed successfully")
+        return result
+    except Exception as e:
+        print(f"Tool failed: {e}")
+        raise
+```
+
+**班级**
+
+```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+from collections.abc import Callable
+
+from langchain.agents.middleware import AgentMiddleware
+from langchain.messages import ToolMessage
+from langchain.tools.tool_node import ToolCallRequest
+from langgraph.types import Command
+
+
+class ToolMonitoringMiddleware(AgentMiddleware):
+    def wrap_tool_call(
+        self,
         request: ToolCallRequest,
         handler: Callable[[ToolCallRequest], ToolMessage | Command],
     ) -> ToolMessage | Command:
@@ -884,52 +898,50 @@ configure_trace_policy(TracePolicy(process_inputs=omit_payload))  # pass None to
         except Exception as e:
             print(f"Tool failed: {e}")
             raise
-    ```
-  </Tab>
-
-  <Tab title="Class">
-    ```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-    from collections.abc import Callable
-
-    from langchain.agents.middleware import AgentMiddleware
-    from langchain.messages import ToolMessage
-    from langchain.tools.tool_node import ToolCallRequest
-    from langgraph.types import Command
-
-
-    class ToolMonitoringMiddleware(AgentMiddleware):
-        def wrap_tool_call(
-            self,
-            request: ToolCallRequest,
-            handler: Callable[[ToolCallRequest], ToolMessage | Command],
-        ) -> ToolMessage | Command:
-            print(f"Executing tool: {request.tool_call['name']}")
-            print(f"Arguments: {request.tool_call['args']}")
-            try:
-                result = handler(request)
-                print("Tool completed successfully")
-                return result
-            except Exception as e:
-                print(f"Tool failed: {e}")
-                raise
-    ```
-  </Tab>
-</Tabs>
+```
 
 ### 提示缓存 (Anthropic)
 
 使用 Anthropic 模型时，使用带有缓存控制指令的结构化内容块来缓存大型系统提示：
 
-<Tabs>
-  <Tab title="Decorator">
-    ```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-    from langchain.agents.middleware import wrap_model_call, ModelRequest, ModelResponse
-    from langchain.messages import SystemMessage
-    from typing import Callable
+**装饰器**
+
+```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+from langchain.agents.middleware import wrap_model_call, ModelRequest, ModelResponse
+from langchain.messages import SystemMessage
+from typing import Callable
 
 
-    @wrap_model_call
-    def add_cached_context(
+@wrap_model_call
+def add_cached_context(
+    request: ModelRequest,
+    handler: Callable[[ModelRequest], ModelResponse],
+) -> ModelResponse:
+    # Always work with content blocks
+    new_content = list(request.system_message.content_blocks) + [
+        {
+            "type": "text",
+            "text": "Here is a large document to analyze:\n\n<document>...</document>",
+            # content up until this point is cached
+            "cache_control": {"type": "ephemeral"}
+        }
+    ]
+
+    new_system_message = SystemMessage(content=new_content)
+    return handler(request.override(system_message=new_system_message))
+```
+
+**班级**
+
+```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+from langchain.agents.middleware import AgentMiddleware, ModelRequest, ModelResponse
+from langchain.messages import SystemMessage
+from typing import Callable
+
+
+class CachedContextMiddleware(AgentMiddleware):
+    def wrap_model_call(
+        self,
         request: ModelRequest,
         handler: Callable[[ModelRequest], ModelResponse],
     ) -> ModelResponse:
@@ -938,43 +950,13 @@ configure_trace_policy(TracePolicy(process_inputs=omit_payload))  # pass None to
             {
                 "type": "text",
                 "text": "Here is a large document to analyze:\n\n<document>...</document>",
-                # content up until this point is cached
-                "cache_control": {"type": "ephemeral"}
+                "cache_control": {"type": "ephemeral"}  # This content will be cached
             }
         ]
 
         new_system_message = SystemMessage(content=new_content)
         return handler(request.override(system_message=new_system_message))
-    ```
-  </Tab>
-
-  <Tab title="Class">
-    ```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-    from langchain.agents.middleware import AgentMiddleware, ModelRequest, ModelResponse
-    from langchain.messages import SystemMessage
-    from typing import Callable
-
-
-    class CachedContextMiddleware(AgentMiddleware):
-        def wrap_model_call(
-            self,
-            request: ModelRequest,
-            handler: Callable[[ModelRequest], ModelResponse],
-        ) -> ModelResponse:
-            # Always work with content blocks
-            new_content = list(request.system_message.content_blocks) + [
-                {
-                    "type": "text",
-                    "text": "Here is a large document to analyze:\n\n<document>...</document>",
-                    "cache_control": {"type": "ephemeral"}  # This content will be cached
-                }
-            ]
-
-            new_system_message = SystemMessage(content=new_content)
-            return handler(request.override(system_message=new_system_message))
-    ```
-  </Tab>
-</Tabs>
+```
 
 **注释：**
 
@@ -993,10 +975,6 @@ configure_trace_policy(TracePolicy(process_inputs=omit_payload))  # pass None to
 
 ***
 
-<div>
-  <Callout icon="terminal-2">
-    [Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
-  </Callout><Callout icon="edit">
-    [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/oss/langchain/middleware/custom.mdx) 或 [file an issue](https://github.com/langchain-ai/docs/issues/new/choose)。
-  </Callout>
-</div>
+[Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
+
+[Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/oss/langchain/middleware/custom.mdx) 或 [file an issue](https://github.com/langchain-ai/docs/issues/new/choose)。

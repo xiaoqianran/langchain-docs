@@ -10,38 +10,28 @@
 
 ## 安装和设置
 
-<CodeGroup>
-  ```bash pip theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  pip install langchain-fireworks
-  ```
+```bash pip theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+pip install langchain-fireworks
+```
 
-  ```bash uv theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  uv add langchain-fireworks
-  ```
-</CodeGroup>
+```bash uv theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+uv add langchain-fireworks
+```
 
 从 [fireworks.ai](https://app.fireworks.ai/login) 获取 API 密钥并设置 `FIREWORKS_API_KEY` 环境变量。
 
 ## 模型接口
 
-<Columns>
-  <Card title="ChatFireworks" href="/oss/python/integrations/chat/fireworks" icon="message">
-    Fireworks AI 上托管的聊天模型的接口。
-  </Card>
+> **[ChatFireworks](/oss/python/integrations/chat/fireworks)**
+>
+> Fireworks AI 上托管的聊天模型的界面。
 
-  <Card title="FireworksEmbeddings" href="/oss/python/integrations/embeddings/fireworks" icon="layers-difference">
-    由 Fireworks AI 提供服务的嵌入模型。
-  </Card>
-</Columns>
+> **[FireworksEmbeddings](/oss/python/integrations/embeddings/fireworks)**
+>
+> 由 Fireworks AI 提供服务的嵌入模型。
 
 ***
 
-<div>
-  <Callout icon="terminal-2">
-    [Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
-  </Callout>
+[Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
 
-  <Callout icon="edit">
-    [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/oss/python/integrations/providers/fireworks.mdx) 或 [file an issue](https://github.com/langchain-ai/docs/issues/new/choose)。
-  </Callout>
-</div>
+[Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/oss/python/integrations/providers/fireworks.mdx) 或 [file an issue](https://github.com/langchain-ai/docs/issues/new/choose)。

@@ -12,29 +12,27 @@
 
 在我们文档的任何页面上，您都会在右上角找到一个上下文菜单下拉列表：
 
-<img alt="Copy page light mode" />
-
-<img alt="Copy page dark mode" />
+![Copy page light mode](https://mintcdn.com/langchain-5e9cc07a/jKM-tvbl7XiR347g/images/copy-page-light.png?fit=max\&auto=format\&n=jKM-tvbl7XiR347g\&q=85\&s=81d6cf67dc039d588707bd97ee3f3a72)
 
 这包括我们的`llms.txt`、MCP 服务器连接以及其他快速访问选项，例如 ChatGPT 和 Claude。
 
 ## 使用我们的 MCP 服务器
 
-<Prompt description="Connect LangChain docs MCP servers" icon="plug">
-  将两个 LangChain 文档 MCP 服务器连接到我的编码代理，以便它可以查找当前的 LangChain、LangGraph 和 LangSmith 文档和 API 参考。
+连接 LangChain 文档 MCP 服务器
 
-  要添加的服务器：
+将两个 LangChain 文档 MCP 服务器连接到我的编码代理，以便它可以查找当前的 LangChain、LangGraph 和 LangSmith 文档和 API 参考。
 
-  * `docs-langchain`: [https://docs.langchain.com/mcp](https://docs.langchain.com/mcp)
-  * `reference-langchain`: [https://reference.langchain.com/mcp](https://reference.langchain.com/mcp)
+要添加的服务器：
 
-  检测我正在使用的代理或编辑器（Claude Code、Cursor、Codex CLI、Claude Desktop、Deep Agents Code、VS Code、Antigravity 或其他 MCP 兼容客户端）。使用 [https://docs.langchain.com/use-these-docs.md](https://docs.langchain.com/use-these-docs.md) 中的匹配设置：* Claude 代码：`claude mcp add --transport http` 适用于每个服务器（默认情况下为项目范围；仅当我要求全局访问时才使用`--scope user`）。
-  * Codex CLI：`codex mcp add` 以及每个服务器 URL。
-  * 光标、Deep Agents 代码、VS 代码或反重力：使用我的客户该页面上显示的字段名称将两个条目合并到 MCP 设置 JSON 中。
-  * Claude Desktop：在“设置”>“连接器”下添加两个 URL。
+* `docs-langchain`: [https://docs.langchain.com/mcp](https://docs.langchain.com/mcp)
+* `reference-langchain`: [https://reference.langchain.com/mcp](https://reference.langchain.com/mcp)
 
-  不要发明备用 MCP URL。配置后，确认两台服务器均已列出并且可访问。
-</Prompt>
+检测我正在使用的代理或编辑器（Claude Code、Cursor、Codex CLI、Claude Desktop、Deep Agents Code、VS Code、Antigravity 或其他 MCP 兼容客户端）。使用 [https://docs.langchain.com/use-these-docs.md](https://docs.langchain.com/use-these-docs.md) 中的匹配设置：* Claude 代码：`claude mcp add --transport http` 适用于每个服务器（默认情况下为项目范围；仅当我要求全局访问时才使用`--scope user`）。
+* Codex CLI：`codex mcp add` 以及每个服务器 URL。
+* 光标、Deep Agents 代码、VS 代码或反重力：使用该页面上为我的客户显示的字段名称将两个条目合并到 MCP 设置 JSON 中。
+* Claude Desktop：在“设置”>“连接器”下添加两个 URL。
+
+不要发明备用 MCP URL。配置后，确认两台服务器均已列出并且可访问。
 
 我们的文档公开了两个互补的 **模型上下文协议 (MCP) 服务器**，让 AI 应用程序可以实时查询 LangChain 内容。为了获得最佳结果，我们建议连接两者：
 
@@ -52,16 +50,16 @@ claude mcp add --transport http docs-langchain https://docs.langchain.com/mcp
 claude mcp add --transport http reference-langchain https://reference.langchain.com/mcp
 ```
 
-<Note>
-  **项目（本地）范围**
-
-  上面的命令仅将 MCP 服务器添加到您当前的项目/工作目录。要全局添加它们并在所有项目中访问它们，请通过包含 `--scope user` 添加用户范围：
-
-  ```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  claude mcp add --transport http docs-langchain --scope user https://docs.langchain.com/mcp
-  claude mcp add --transport http reference-langchain --scope user https://reference.langchain.com/mcp
-  ```
-</Note>
+> [!注意]
+>
+> **项目（本地）范围**
+>
+> 上面的命令仅将 MCP 服务器添加到您当前的项目/工作目录。要全局添加它们并在所有项目中访问它们，请通过包含 `--scope user` 来添加用户范围：
+>
+> ```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> claude mcp add --transport http docs-langchain --scope user https://docs.langchain.com/mcp
+> claude mcp add --transport http reference-langchain --scope user https://reference.langchain.com/mcp
+> ```
 
 ### 连接克劳德桌面
 
@@ -158,12 +156,6 @@ codex mcp add langchain-reference --url https://reference.langchain.com/mcp
 
 ***
 
-<div>
-  <Callout icon="terminal-2">
-    [Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
-  </Callout>
+[Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
 
-  <Callout icon="edit">
-    [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/use-these-docs.mdx) 或 [file an issue](https://github.com/langchain-ai/docs/issues/new/choose)。
-  </Callout>
-</div>
+[Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/use-these-docs.mdx) 或 [file an issue](https://github.com/langchain-ai/docs/issues/new/choose)。

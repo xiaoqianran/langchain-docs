@@ -109,7 +109,7 @@ flowchart LR
 
 * 协调三步管道：
   * [Speech-to-text (STT)](#1-speech-to-text)：将音频转发到 STT 提供者（例如 AssemblyAI），接收转录事件
-  * [Agent](#2-langchain-agent)：使用LangChain代理处理记录，流响应令牌
+  * [Agent](#2-langchain-agent)：使用LangChain代理处理成绩单，流响应令牌
   * [Text-to-speech (TTS)](#3-text-to-speech)：将代理响应发送到 TTS 提供商（例如 Cartesia），接收音频块
 
 * 返回合成音频给客户端播放
@@ -179,43 +179,43 @@ async def stt_stream(
 
 该应用程序实现了 AssemblyAI 客户端来管理 WebSocket 连接和消息解析。请参阅下面的实现；可以为其他 STT 提供商构建类似的适配器。
 
-<Accordion title="AssemblyAI Client">
-  ```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  class AssemblyAISTT:
-      def __init__(self, api_key: str | None = None, sample_rate: int = 16000):
-          self.api_key = api_key or os.getenv("ASSEMBLYAI_API_KEY")
-          self.sample_rate = sample_rate
-          self._ws: WebSocketClientProtocol | None = None
-
-      async def send_audio(self, audio_chunk: bytes) -> None:
-          """Send PCM audio bytes to AssemblyAI."""
-          ws = await self._ensure_connection()
-          await ws.send(audio_chunk)
-
-      async def receive_events(self) -> AsyncIterator[STTEvent]:
-          """Yield STT events as they arrive from AssemblyAI."""
-          async for raw_message in self._ws:
-              message = json.loads(raw_message)
-
-              if message["type"] == "Turn":
-                  # Final formatted transcript
-                  if message.get("turn_is_formatted"):
-                      yield STTOutputEvent.create(message["transcript"])
-                  # Partial transcript
-                  else:
-                      yield STTChunkEvent.create(message["transcript"])
-
-      async def _ensure_connection(self) -> WebSocketClientProtocol:
-          """Establish WebSocket connection if not already connected."""
-          if self._ws is None:
-              url = f"wss://streaming.assemblyai.com/v3/ws?sample_rate={self.sample_rate}&format_turns=true"
-              self._ws = await websockets.connect(
-                  url,
-                  additional_headers={"Authorization": self.api_key}
-              )
-          return self._ws
-  ```
-</Accordion>
+> **AssemblyAI 客户端**
+>
+> ```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> class AssemblyAISTT:
+>     def __init__(self, api_key: str | None = None, sample_rate: int = 16000):
+>         self.api_key = api_key or os.getenv("ASSEMBLYAI_API_KEY")
+>         self.sample_rate = sample_rate
+>         self._ws: WebSocketClientProtocol | None = None
+>
+>     async def send_audio(self, audio_chunk: bytes) -> None:
+>         """Send PCM audio bytes to AssemblyAI."""
+>         ws = await self._ensure_connection()
+>         await ws.send(audio_chunk)
+>
+>     async def receive_events(self) -> AsyncIterator[STTEvent]:
+>         """Yield STT events as they arrive from AssemblyAI."""
+>         async for raw_message in self._ws:
+>             message = json.loads(raw_message)
+>
+>             if message["type"] == "Turn":
+>                 # Final formatted transcript
+>                 if message.get("turn_is_formatted"):
+>                     yield STTOutputEvent.create(message["transcript"])
+>                 # Partial transcript
+>                 else:
+>                     yield STTChunkEvent.create(message["transcript"])
+>
+>     async def _ensure_connection(self) -> WebSocketClientProtocol:
+>         """Establish WebSocket connection if not already connected."""
+>         if self._ws is None:
+>             url = f"wss://streaming.assemblyai.com/v3/ws?sample_rate={self.sample_rate}&format_turns=true"
+>             self._ws = await websockets.connect(
+>                 url,
+>                 additional_headers={"Authorization": self.api_key}
+>             )
+>         return self._ws
+> ```
 
 ## 2. LangChain代理代理阶段通过 LangChain [agent](/oss/python/langchain/agents) 处理文本转录并流式传输响应令牌。在这种情况下，我们流式传输代理生成的所有[text content blocks](/oss/python/langchain/messages#content-block-reference)。
 
@@ -338,81 +338,81 @@ async def tts_stream(
 
 该应用程序实现了 Cartesia 客户端来管理 WebSocket 连接和音频流。请参阅下面的实现；可以为其他 TTS 提供商构建类似的适配器。
 
-<Accordion title="Cartesia Client">
-  ```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  import base64
-  import json
-  import websockets
-
-  class CartesiaTTS:
-      def __init__(
-          self,
-          api_key: Optional[str] = None,
-          voice_id: str = "f6ff7c0c-e396-40a9-a70b-f7607edb6937",
-          model_id: str = "sonic-3",
-          sample_rate: int = 24000,
-          encoding: str = "pcm_s16le",
-      ):
-          self.api_key = api_key or os.getenv("CARTESIA_API_KEY")
-          self.voice_id = voice_id
-          self.model_id = model_id
-          self.sample_rate = sample_rate
-          self.encoding = encoding
-          self._ws: WebSocketClientProtocol | None = None
-
-      def _generate_context_id(self) -> str:
-          """Generate a valid context_id for Cartesia."""
-          timestamp = int(time.time() * 1000)
-          counter = self._context_counter
-          self._context_counter += 1
-          return f"ctx_{timestamp}_{counter}"
-
-      async def send_text(self, text: str | None) -> None:
-          """Send text to Cartesia for synthesis."""
-          if not text or not text.strip():
-              return
-
-          ws = await self._ensure_connection()
-          payload = {
-              "model_id": self.model_id,
-              "transcript": text,
-              "voice": {
-                  "mode": "id",
-                  "id": self.voice_id,
-              },
-              "output_format": {
-                  "container": "raw",
-                  "encoding": self.encoding,
-                  "sample_rate": self.sample_rate,
-              },
-              "language": self.language,
-              "context_id": self._generate_context_id(),
-          }
-          await ws.send(json.dumps(payload))
-
-      async def receive_events(self) -> AsyncIterator[TTSChunkEvent]:
-          """Yield audio chunks as they arrive from Cartesia."""
-          async for raw_message in self._ws:
-              message = json.loads(raw_message)
-
-              # Decode and yield audio chunks
-              if "data" in message and message["data"]:
-                  audio_chunk = base64.b64decode(message["data"])
-                  if audio_chunk:
-                      yield TTSChunkEvent.create(audio_chunk)
-
-      async def _ensure_connection(self) -> WebSocketClientProtocol:
-          """Establish WebSocket connection if not already connected."""
-          if self._ws is None:
-              url = (
-                  f"wss://api.cartesia.ai/tts/websocket"
-                  f"?api_key={self.api_key}&cartesia_version={self.cartesia_version}"
-              )
-              self._ws = await websockets.connect(url)
-
-          return self._ws
-  ```
-</Accordion>
+> **笛卡尔客户端**
+>
+> ```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> import base64
+> import json
+> import websockets
+>
+> class CartesiaTTS:
+>     def __init__(
+>         self,
+>         api_key: Optional[str] = None,
+>         voice_id: str = "f6ff7c0c-e396-40a9-a70b-f7607edb6937",
+>         model_id: str = "sonic-3",
+>         sample_rate: int = 24000,
+>         encoding: str = "pcm_s16le",
+>     ):
+>         self.api_key = api_key or os.getenv("CARTESIA_API_KEY")
+>         self.voice_id = voice_id
+>         self.model_id = model_id
+>         self.sample_rate = sample_rate
+>         self.encoding = encoding
+>         self._ws: WebSocketClientProtocol | None = None
+>
+>     def _generate_context_id(self) -> str:
+>         """Generate a valid context_id for Cartesia."""
+>         timestamp = int(time.time() * 1000)
+>         counter = self._context_counter
+>         self._context_counter += 1
+>         return f"ctx_{timestamp}_{counter}"
+>
+>     async def send_text(self, text: str | None) -> None:
+>         """Send text to Cartesia for synthesis."""
+>         if not text or not text.strip():
+>             return
+>
+>         ws = await self._ensure_connection()
+>         payload = {
+>             "model_id": self.model_id,
+>             "transcript": text,
+>             "voice": {
+>                 "mode": "id",
+>                 "id": self.voice_id,
+>             },
+>             "output_format": {
+>                 "container": "raw",
+>                 "encoding": self.encoding,
+>                 "sample_rate": self.sample_rate,
+>             },
+>             "language": self.language,
+>             "context_id": self._generate_context_id(),
+>         }
+>         await ws.send(json.dumps(payload))
+>
+>     async def receive_events(self) -> AsyncIterator[TTSChunkEvent]:
+>         """Yield audio chunks as they arrive from Cartesia."""
+>         async for raw_message in self._ws:
+>             message = json.loads(raw_message)
+>
+>             # Decode and yield audio chunks
+>             if "data" in message and message["data"]:
+>                 audio_chunk = base64.b64decode(message["data"])
+>                 if audio_chunk:
+>                     yield TTSChunkEvent.create(audio_chunk)
+>
+>     async def _ensure_connection(self) -> WebSocketClientProtocol:
+>         """Establish WebSocket connection if not already connected."""
+>         if self._ws is None:
+>             url = (
+>                 f"wss://api.cartesia.ai/tts/websocket"
+>                 f"?api_key={self.api_key}&cartesia_version={self.cartesia_version}"
+>             )
+>             self._ws = await websockets.connect(url)
+>
+>         return self._ws
+> ```
 
 ### LangSmith
 
@@ -470,16 +470,10 @@ async def websocket_endpoint(websocket: WebSocket):
 
 每个阶段独立且并发地处理事件：音频到达后就开始音频转录，一旦转录本可用，代理就开始推理，一旦生成代理文本，语音合成就开始。该架构可以实现低于 700 毫秒的延迟，以支持自然对话。
 
-有关使用 LangChain 构建代理的更多信息，请参阅 [Agents guide](/oss/python/langchain/agents)。
+有关使用LangChain构建代理的更多信息，请参阅[Agents guide](/oss/python/langchain/agents)。
 
 ***
 
-<div>
-  <Callout icon="terminal-2">
-    [Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
-  </Callout>
+[Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
 
-  <Callout icon="edit">
-    [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/oss/langchain/voice-agent.mdx) 或 [file an issue](https://github.com/langchain-ai/docs/issues/new/choose)。
-  </Callout>
-</div>
+[Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/oss/langchain/voice-agent.mdx) 或 [file an issue](https://github.com/langchain-ai/docs/issues/new/choose)。

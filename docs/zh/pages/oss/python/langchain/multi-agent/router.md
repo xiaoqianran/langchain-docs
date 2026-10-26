@@ -27,7 +27,7 @@ graph LR
 ## 主要特征
 
 * 路由器分解查询
-* 并行调用零个或多个专门代理
+* 并行调用零个或多个专用代理
 * 结果被综合成一致的响应
 
 ## 何时使用
@@ -38,59 +38,57 @@ graph LR
 
 路由器对查询进行分类并将其定向到适当的代理。使用 [⟦T4⟧](/oss/python/langgraph/graph-api#command) 进行单代理路由，或使用 [⟦T5⟧](/oss/python/langgraph/graph-api#send) 并行扇出到多个代理。
 
-<Tabs>
-  <Tab title="Single agent">
-    使用 `Command` 路由到单个专门代理：
+**单一代理**
 
-    ```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-    from langgraph.types import Command
+使用 `Command` 路由到单个专门代理：
 
-    def classify_query(query: str) -> str:
-        """Use LLM to classify query and determine the appropriate agent."""
-        # Classification logic here
-        ...
+```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+from langgraph.types import Command
 
-    def route_query(state: State) -> Command:
-        """Route to the appropriate agent based on query classification."""
-        active_agent = classify_query(state["query"])
+def classify_query(query: str) -> str:
+    """Use LLM to classify query and determine the appropriate agent."""
+    # Classification logic here
+    ...
 
-        # Route to the selected agent
-        return Command(goto=active_agent)
-    ```
-  </Tab>
+def route_query(state: State) -> Command:
+    """Route to the appropriate agent based on query classification."""
+    active_agent = classify_query(state["query"])
 
-  <Tab title="Multiple agents (parallel)">
-    使用 `Send` 并行扇出到多个专门代理：
+    # Route to the selected agent
+    return Command(goto=active_agent)
+```
 
-    ```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-    from typing import TypedDict
-    from langgraph.types import Send
+**多个代理（并行）**
 
-    class ClassificationResult(TypedDict):
-        query: str
-        agent: str
+使用 `Send` 并行扇出到多个专门代理：
 
-    def classify_query(query: str) -> list[ClassificationResult]:
-        """Use LLM to classify query and determine which agents to invoke."""
-        # Classification logic here
-        ...
+```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+from typing import TypedDict
+from langgraph.types import Send
 
-    def route_query(state: State):
-        """Route to relevant agents based on query classification."""
-        classifications = classify_query(state["query"])
+class ClassificationResult(TypedDict):
+    query: str
+    agent: str
 
-        # Fan out to selected agents in parallel
-        return [
-            Send(c["agent"], {"query": c["query"]})
-            for c in classifications
-        ]
-    ```
-  </Tab>
-</Tabs>
+def classify_query(query: str) -> list[ClassificationResult]:
+    """Use LLM to classify query and determine which agents to invoke."""
+    # Classification logic here
+    ...
 
-有关完整的实现，请参阅下面的教程。<Card title="Tutorial: Build a multi-source knowledge base with routing" icon="book" href="/oss/python/langchain/multi-agent/router-knowledge-base">
-  构建一个并行查询 GitHub、Notion 和 Slack 的路由器，然后将结果合成为连贯的答案。涵盖状态定义、专用代理、`Send` 并行执行以及结果合成。
-</Card>
+def route_query(state: State):
+    """Route to relevant agents based on query classification."""
+    classifications = classify_query(state["query"])
+
+    # Fan out to selected agents in parallel
+    return [
+        Send(c["agent"], {"query": c["query"]})
+        for c in classifications
+    ]
+```
+
+有关完整的实现，请参阅下面的教程。> **[Tutorial: Build a multi-source knowledge base with routing](/oss/python/langchain/multi-agent/router-knowledge-base)**
+>
+> 构建一个并行查询 GitHub、Notion 和 Slack 的路由器，然后将结果合成为连贯的答案。涵盖状态定义、专用代理、`Send` 并行执行以及结果合成。
 
 ## 无状态与有状态
 
@@ -101,22 +99,20 @@ graph LR
 
 ## 无状态
 
-每个请求都是独立路由的——调用之间没有内存。对于多轮对话，请参阅[Stateful routers](#stateful)。
-
-<Tip>
-  **路由器与子代理**：两种模式都可以将工作分派给多个代理，但它们在路由决策的制定方式上有所不同：
-
-  * **路由器**：专用的路由步骤（通常是单个 LLM 调用或基于规则的逻辑），用于对输入进行分类并分派给代理。路由器本身通常不维护对话历史记录或执行多轮编排 - 这是一个预处理步骤。
-  * **子代理**：主主管代理动态决定在正在进行的对话中呼叫哪个[subagents](/oss/python/langchain/multi-agent/subagents)。主代理维护上下文，可以轮流调用多个子代理，并编排复杂的多步骤工作流程。当您有明确的输入类别并想要确定性或轻量级分类时，请使用**路由器**。当您需要灵活的、对话感知的编排时，请使用**主管**，其中法学硕士根据不断变化的上下文决定下一步该做什么。
-</Tip>
+每个请求都是独立路由的——调用之间没有内存。对于多回合对话，请参阅[Stateful routers](#stateful)。> [!提示]
+>
+> **路由器与子代理**：两种模式都可以将工作分派给多个代理，但它们在路由决策的制定方式上有所不同：
+>
+> * **路由器**：专用的路由步骤（通常是单个 LLM 调用或基于规则的逻辑），用于对输入进行分类并分派给代理。路由器本身通常不维护对话历史记录或执行多轮编排 - 这是一个预处理步骤。
+> * **子代理**：主主管代理动态决定在正在进行的对话中呼叫哪个[subagents](/oss/python/langchain/multi-agent/subagents)。主代理维护上下文，可以轮流调用多个子代理，并编排复杂的多步骤工作流程。
+>
+> 当您有明确的输入类别并需要确定性或轻量级分类时，请使用**路由器**。当您需要灵活的、对话感知的编排时，请使用**主管**，其中法学硕士根据不断变化的上下文决定下一步该做什么。
 
 ## 有状态
 
 对于多轮对话，您需要维护跨调用的上下文。
 
-### 工具包装器
-
-最简单的方法：将无状态路由器包装为会话代理可以调用的工具。对话代理处理记忆和上下文；路由器保持无状态。这避免了管理多个并行代理之间的对话历史记录的复杂性。
+### 工具包装器最简单的方法：将无状态路由器包装为会话代理可以调用​​的工具。对话代理处理记忆和上下文；路由器保持无状态。这避免了管理多个并行代理之间的对话历史记录的复杂性。
 
 ```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 @tool
@@ -135,18 +131,14 @@ conversational_agent = create_agent(
 
 ### 全力坚持
 
-如果需要路由器本身维护状态，请使用[persistence](/oss/python/langchain/short-term-memory)来存储消息历史记录。当路由到代理时，从状态中获取以前的消息并有选择地将它们包含在代理的上下文中 - 这是 [context engineering](/oss/python/langchain/context-engineering) 的杠杆。<Warning>
-  **有状态路由器需要自定义历史记录管理。** 如果路由器在代理之间轮流切换，当代理具有不同的音调或提示时，最终用户可能会感觉对话不流畅。通过并行调用，您需要维护路由器级别的历史记录（输入和合成输出）并在路由逻辑中利用此历史记录。请考虑使用 [handoffs pattern](/oss/python/langchain/multi-agent/handoffs) 或 [subagents pattern](/oss/python/langchain/multi-agent/subagents)，两者都为多轮对话提供更清晰的语义。
-</Warning>
+如果需要路由器本身维护状态，请使用[persistence](/oss/python/langchain/short-term-memory)来存储消息历史记录。当路由到代理时，从状态中获取以前的消息并有选择地将它们包含在代理的上下文中 - 这是 [context engineering](/oss/python/langchain/context-engineering) 的杠杆。
+
+> [!警告]
+>
+> **有状态路由器需要自定义历史记录管理。** 如果路由器在座席之间轮流切换，当座席具有不同的音调或提示时，最终用户可能会感觉对话不流畅。通过并行调用，您需要维护路由器级别的历史记录（输入和合成输出）并在路由逻辑中利用此历史记录。请考虑使用 [handoffs pattern](/oss/python/langchain/multi-agent/handoffs) 或 [subagents pattern](/oss/python/langchain/multi-agent/subagents)，两者都为多轮对话提供更清晰的语义。
 
 ***
 
-<div>
-  <Callout icon="terminal-2">
-    [Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
-  </Callout>
+[Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
 
-  <Callout icon="edit">
-    [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/oss/langchain/multi-agent/router.mdx) 或 [file an issue](https://github.com/langchain-ai/docs/issues/new/choose)。
-  </Callout>
-</div>
+[Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/oss/langchain/multi-agent/router.mdx) 或 [file an issue](https://github.com/langchain-ai/docs/issues/new/choose)。

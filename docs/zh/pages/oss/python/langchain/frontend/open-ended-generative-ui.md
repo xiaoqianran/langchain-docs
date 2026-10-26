@@ -8,7 +8,7 @@
 
 ## 概述
 
-开放式生成 UI 位于代理创建的一端
+开放式生成 UI 位于代理创建端
 [generative UI spectrum](/oss/python/langchain/frontend/generative-ui-overview)。界面是
 在您的应用程序外部编写，例如由 MCP 服务器和您的前端编写
 将其渲染在沙箱内。您和代理都不会编写组件：
@@ -23,7 +23,7 @@
 UI 是最难保持一致、可访问和安全的，因此必须隔离
 从你的申请的其余部分。
 
-## 何时使用此方法当您想要展示功能和内容时，可以使用开放式生成式 UI
+## 何时使用此方法当您想要展示功能和功能时，可以使用开放式生成式 UI
 存在于应用程序外部并独立于应用程序发展的接口，例如
 作为 MCP 服务器生态系统发布的工具。当你需要保证时
 品牌、可访问性或布局，沿着频谱向后移动
@@ -45,7 +45,7 @@ CopilotKit 将此模式记录为 [MCP Apps](https://docs.copilotkit.ai/generativ
 ## 沙箱和安全由于该接口来自第三方，因此将其视为不可信。渲染它
 隔离的上下文，例如沙盒 iframe，并限制它可以访问的内容
 行为不当或恶意应用程序无法到达页面的其余部分或用户的页面
-数据。沙盒使频谱的开放端可用于生产：
+数据。沙箱使频谱的开放端可用于生产：
 它包含而不是限制表达范围。
 
 ## 另请参阅
@@ -56,12 +56,6 @@ CopilotKit 将此模式记录为 [MCP Apps](https://docs.copilotkit.ai/generativ
 
 ***
 
-<div>
-  <Callout icon="terminal-2">
-    [Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
-  </Callout>
+[Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
 
-  <Callout icon="edit">
-    [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/oss/langchain/frontend/open-ended-generative-ui.mdx) 或 [file an issue](https://github.com/langchain-ai/docs/issues/new/choose)。
-  </Callout>
-</div>
+[Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/oss/langchain/frontend/open-ended-generative-ui.mdx) 或 [file an issue](https://github.com/langchain-ai/docs/issues/new/choose)。

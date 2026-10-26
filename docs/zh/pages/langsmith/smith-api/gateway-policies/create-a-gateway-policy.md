@@ -22,7 +22,8 @@
 `{"strategy": "priority_fallback", "triggers": {"status_codes": [<int>]}, "fallbacks": [{"model_configs": [{"model_config_id": "<playground-settings-uuid>"}]}]}`
 `triggers` 是必需的，无默认值：`status_codes` 必须是非空列表（包括上游传输失败的 502 和 504）。 `fallbacks` 包含一个条目，其 `model_configs` 按优先级顺序 (1–5) 进行尝试。 `subject_matchers` 必须是单个 `workspace_id` 条目。
 - `model_fallback`：
-`{"strategy": "priority_fallback", "triggers": {"status_codes": [429, 502, 503, 504]}, "chain": {"selector": {"type": "provider_model", "provider": "openai", "model": "gpt-4o"}, "candidates": [{"type": "provider_model", "provider": "openai", "model": "gpt-4o-mini"}, {"type": "model_config", "model_config_id": "<playground-settings-uuid>"}]}}``chain.candidates` 是 1-5 个直接提供者模型或保存的工作区模型配置的有序列表。需要一个非空 `workspace_id` 匹配器。 `provider_model` 选择器仅适用于工作区； `alias` 选择器可能会被 `user_id` 或 `api_key_id` 缩小。提供者/模型选择器在工作区中是唯一的，而别名在整个组织中保留，并且可能故意隐藏模型名称。
+`{"strategy": "priority_fallback", "triggers": {"status_codes": [429, 502, 503, 504]}, "chain": {"selector": {"type": "provider_model", "provider": "openai", "model": "gpt-4o"}, "candidates": [{"type": "provider_model", "provider": "openai", "model": "gpt-4o-mini"}, {"type": "model_config", "model_config_id": "<playground-settings-uuid>"}]}}`
+可选的`ejection: {"failure_threshold": <1-1000>, "cooldown_seconds": <1-300>}`在`cooldown_seconds`内使链的触发器`failure_threshold`次失败后跳过`cooldown_seconds`的候选者。根据策略和候选者对失败进行计数，仅对提供者失败进行计数，成功不会重置计数。最后一个候选者永远不会被跳过。`chain.candidates` 是 1-5 个直接提供者模型或保存的工作区模型配置的有序列表。需要一个非空 `workspace_id` 匹配器。 `provider_model` 选择器仅适用于工作区； `alias` 选择器可能会被 `user_id` 或 `api_key_id` 缩小。提供者/模型选择器在工作区中是唯一的，而别名在整个组织中保留，并且可能故意隐藏模型名称。
 - `rate_limit` / `default_rate_limit`：
 `{"version": 1, "limits": [{"metric": "requests"|"tokens", "window": "minute"|"hour", "value": <integer>}]}`
 `limits` 必须非空；每个 `metric`/`window` 对最多只能出现一次。 `value` 是 1..1000000000000000。

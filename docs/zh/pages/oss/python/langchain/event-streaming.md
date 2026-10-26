@@ -8,7 +8,7 @@
 
 LangChain 代理基于 LangGraph 构建，因此它们支持相同的流堆栈以及以代理为中心的消息、工具调用、状态和自定义更新的投影。
 
-对于大多数应用程序和前端用例，通过 `stream_events(..., version="v3")` 使用 **事件流**。事件流返回带有类型化投影的运行对象，因此每个投影都可以独立使用，而不是解析流模式元组。
+对于大多数应用程序和前端用例，通过 `stream_events(..., version="v3")` 使用**事件流**。事件流返回带有类型化投影的运行对象，因此每个投影都可以独立使用，而不是解析流模式元组。
 
 ```py theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 from langchain.agents import create_agent
@@ -39,7 +39,7 @@ final_state = stream.output
 
 |投影|使用 |
 | - | - |
-| `for event in stream` |原始协议事件具有完整的信封并可访问每个通道。 |
+| `for event in stream` |具有完整信封并可访问每个通道的原始协议事件。 |
 | `stream.messages` |模型消息流，每个 LLM 调用一个。 |
 | `message.text` |消息的文本增量和最终文本。 |
 | `message.reasoning` |公开推理内容的模型的推理增量。 |
@@ -113,9 +113,15 @@ for call in stream.tool_calls:
     print(call.output, call.error)
 ```
 
-## 流式子代理当 `create_agent` 调用调用另一个名为 `create_agent`（通常通过包装工具）时，内部代理的事件在嵌套命名空间中流动。您传递给 `create_agent` 的 `name=` 标识流中的内部代理，因此您可以对每个代理进行过滤和标记。
+`message.tool_calls` 中的每个块都是一个 `tool_call_chunk`，其中包含调用的 `id`、其 `name` 以及仅其 `args` 的新部分。调用的块连接成其完整参数，并且 `message.tool_calls.get()` 返回已解析的工具调用。> [!注意]
+>
+> 仅保存参数的新部分的块需要 `langchain-core>=1.6.13`。在早期版本中，每个块都保存到目前为止的所有参数。
 
-指定的子代理表面位于专用 `stream.subagents` 投影上。每个句柄都会公开内部代理自己的 `.messages`、`.values`、`.tool_calls` 和 `.output`，以及 `.name`（您传递的 `name=`）和 `.cause`（调度子代理的工具调用）。因为这里只出现命名的 `create_agent` 运行，所以您不需要过滤掉普通子图。
+## 流式子代理
+
+当 `create_agent` 调用调用另一个名为 `create_agent`（通常通过包装工具）时，内部代理的事件在嵌套命名空间中流动。您传递给 `create_agent` 的 `name=` 标识流中的内部代理，因此您可以对每个代理进行过滤和标记。
+
+指定的子代理表面位于专用的 `stream.subagents` 投影上。每个句柄都会公开内部代理自己的 `.messages`、`.values`、`.tool_calls` 和 `.output`，以及 `.name`（您传递的 `name=`）和 `.cause`（调度子代理的工具调用）。因为这里只出现命名的 `create_agent` 运行，所以您不需要过滤掉普通子图。
 
 ```py theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 from langchain.agents import create_agent
@@ -194,9 +200,7 @@ async def consume_tool_calls():
         print(call.tool_name, call.input)
 
 await asyncio.gather(consume_messages(), consume_tool_calls())
-```
-
-对于同步代码，请使用 `stream.interleave(...)` 代替：
+```对于同步代码，请使用 `stream.interleave(...)` 代替：
 
 ```py theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 stream = agent.stream_events(input, version="v3")
@@ -217,7 +221,9 @@ for event in stream:
     print(event["method"], event["params"]["namespace"], event["params"]["data"])
 ```
 
-## 自定义更新当您的应用程序需要非内置的投影（例如检索进度、工件或特定于域的事件）时，请使用自定义流转换器。
+## 自定义更新
+
+当您的应用程序需要非内置的投影（例如检索进度、工件或特定于域的事件）时，请使用自定义流转换器。
 
 ```py theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 stream = agent.stream_events(
@@ -232,11 +238,13 @@ for activity in stream.extensions["tool_activity"]:
 
 ### 在中间件上注册变压器
 
-<Note>中间件注册变压器需要`langchain>=1.3.2`。</Note>
+> [!注意]
+>
+> 中间件注册变压器需要`langchain>=1.3.2`。
 
 中间件可以声明流转换器工厂及其挂钩和工具。工厂形状因语言而异：
 
-将 `AgentMiddleware` 子类的 `transformers` 属性设置为工厂序列。每个工厂的形状为`Callable[[tuple[str, ...]], StreamTransformer]`，并作为`factory(scope)`调用，其中`scope`是迷你复用器范围元组（`()`用于根复用器，对于子图非空）。每次调用返回一个新的变压器可以使每个子图保持隔离。
+将 `AgentMiddleware` 子类上的 `transformers` 属性设置为工厂序列。每个工厂的形状为`Callable[[tuple[str, ...]], StreamTransformer]`，并作为`factory(scope)`调用，其中`scope`是迷你复用器范围元组（`()`用于根复用器，对于子图非空）。每次调用返回一个新的变压器可以使每个子图保持隔离。
 
 ```py theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 from langchain.agents import create_agent
@@ -256,11 +264,11 @@ agent = create_agent(
 
 在编译时，`create_agent`将中间件注册的工厂与传递给其自己的`transformers=`参数的任何内容合并。编译图上的最终顺序是：
 
-1. 内置`ToolCallTransformer`。
+1.内置`ToolCallTransformer`。
 2. 中间件注册工厂，按中间件顺序。
-3. 调用者从 `create_agent` 提供 `transformers=`。
+3. 调用者从 `create_agent` 提供 `transformers=`。这使内置工具调用投影保持在消费者变压器面前，并为调用者提供的条目提供最终决定权。
 
-这使内置工具调用投影保持在消费者变压器面前，并为调用者提供的条目提供最终决定权。内置 `PIIMiddleware` 使用此钩子从流式传输输出中编辑 PII。使用 `apply_to_output=True`，其注册的转换器会在离开运行之前从文本增量、工具调用参数、工具输出和状态快照中清除检测到的 PII，从而关闭`after_model` 状态级编辑的窗口，否则会让原始 PII 传递给 `stream_events(version="v3")` 的实时读者。
+内置 `PIIMiddleware` 使用此钩子从流式传输输出中编辑 PII。使用 `apply_to_output=True`，其注册的转换器会在离开运行之前从文本增量、工具调用参数、工具输出和状态快照中清除检测到的 PII，从而关闭`after_model` 状态级编辑的窗口，否则会让原始 PII 传递给 `stream_events(version="v3")` 的实时读者。
 
 ```py theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 from langchain.agents import create_agent
@@ -275,7 +283,7 @@ agent = create_agent(
 )
 ```
 
-完整配置表面请参见[PII detection](/oss/python/langchain/middleware/built-in#pii-detection)。
+完整配置界面请参见[PII detection](/oss/python/langchain/middleware/built-in#pii-detection)。
 
 变压器合同见[Build your own projection](/oss/python/langgraph/event-streaming#build-your-own-projection)。
 
@@ -287,12 +295,6 @@ agent = create_agent(
 
 ***
 
-<div>
-  <Callout icon="terminal-2">
-    [Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
-  </Callout>
+[Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
 
-  <Callout icon="edit">
-    [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/oss/langchain/event-streaming.mdx) 或 [file an issue](https://github.com/langchain-ai/docs/issues/new/choose)。
-  </Callout>
-</div>
+[Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/oss/langchain/event-streaming.mdx) 或 [file an issue](https://github.com/langchain-ai/docs/issues/new/choose)。

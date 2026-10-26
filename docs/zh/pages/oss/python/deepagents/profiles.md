@@ -32,62 +32,62 @@ register_harness_profile(
         general_purpose_subagent=GeneralPurposeSubagentProfile(enabled=False),
     ),
 )
-```<ResponseField name="base_system_prompt" type="string">
-  设置配置文件的基本说明。对于主代理来说，这些遵循呼叫者的系统指令；默认情况下不添加基本指令。对于声明性子代理，这会替换其编写的系统提示符。
-</ResponseField>
+```
 
-<ResponseField name="system_prompt_suffix" type="string">
-  在呼叫者的说明和个人资料的基本说明之后附加文本。应用于主代理、声明性子代理和自动添加的通用子代理。
-</ResponseField>
+**基本\_系统\_提示** `string`设置配置文件的基本说明。对于主代理来说，这些遵循呼叫者的系统指令；默认情况下不添加基本指令。对于声明性子代理，这会替换其编写的系统提示符。
 
-<ResponseField name="tool_description_overrides" type="Mapping[str, str]">
-  覆盖按工具名称键入的各个工具描述。
-</ResponseField>
+**系统\_提示符\_后缀** `string`
 
-<ResponseField name="excluded_tools" type="frozenset[str]">
-  从工具集中删除特定的线束级工具。按工具名称（字符串）匹配，用作注入后过滤器，以便它可以删除用户提供的工具和由线束中间件添加的工具。有关有效示例，请参阅[Running without the default filesystem tools](/oss/python/deepagents/overview#virtual-filesystem-access)。
-</ResponseField>
+在呼叫者的说明和个人资料的基本说明之后附加文本。应用于主代理、声明性子代理和自动添加的通用子代理。
 
-<ResponseField name="excluded_middleware" type="frozenset[type[AgentMiddleware] | str]">
-  从 [Deep Agents stack](/oss/python/deepagents/customization#deep-agents-stack) 中剥离特定的中间件类。接受中间件类或字符串名称。
-</ResponseField>
+**工具\_描述\_覆盖** `Mapping[str, str]`
 
-<ResponseField name="extra_middleware" type="Sequence[AgentMiddleware] | Callable[[], Sequence[AgentMiddleware]]">
-  将中间件附加到此配置文件适用的每个堆栈。有关内置排序，请参阅[Deep Agents stack](/oss/python/deepagents/customization#full-stack)。
-</ResponseField>
+覆盖按工具名称键入的各个工具描述。
 
-<ResponseField name="general_purpose_subagent" type="GeneralPurposeSubagentProfile">
-  禁用、重命名或重新提示通用子代理。当此字段的 `system_prompt` 与 `base_system_prompt` 一起设置时，通用特定子代理提示符获胜 - 请参阅 [General-purpose subagent prompt](/oss/python/deepagents/customization#general-purpose-subagent-prompt)。
-</ResponseField><Note>
-  调用者提供的 `system_prompt=` 始终位于组合提示符的前面，而 `system_prompt_suffix` 始终位于末尾 — 无论选择哪种型号。相同的覆盖规则适用于子代理：每个子代理针对其自己的模型重新运行配置文件解析。有关自定义指令和子代理提示行为，请参阅[System prompt](/oss/python/deepagents/customization#system-prompt)。
-</Note>
+**排除\_工具** `frozenset[str]`
 
-<Warning>
-  要在不使用 `task` 工具的情况下运行代理，请参阅 [Running without subagents](/oss/python/deepagents/subagents#running-without-subagents) — 设置 `general_purpose_subagent=GeneralPurposeSubagentProfile(enabled=False)` 并通过 `subagents=` 不传递任何同步子代理。 `SubAgentMiddleware`（和 `task` 工具）仅在至少存在一个同步子代理时附加，因此此配置将其完全排除。异步子代理不受影响。
+从工具集中删除特定的线束级工具。按工具名称（字符串）匹配，用作注入后过滤器，以便它可以删除用户提供的工具和由线束中间件添加的工具。有关有效示例，请参阅[Running without the default filesystem tools](/oss/python/deepagents/overview#virtual-filesystem-access)。
 
-  列出`FilesystemMiddleware`、`SubAgentMiddleware`或`excluded_middleware`中的内部权限中间件会引发`ValueError`——它们需要[Deep Agents stack](/oss/python/deepagents/customization#deep-agents-stack)中的脚手架。要在模型中隐藏其工具而不删除中间件，请改用 `excluded_tools` — 请参阅 [Running without the default filesystem tools](/oss/python/deepagents/overview#virtual-filesystem-access)。
-</Warning>
+**排除\_中间件** `frozenset[type[AgentMiddleware] | str]`
+
+从 [Deep Agents stack](/oss/python/deepagents/customization#deep-agents-stack) 中剥离特定的中间件类。接受中间件类或字符串名称。
+
+**额外\_中间件** `Sequence[AgentMiddleware] | Callable[[], Sequence[AgentMiddleware]]`
+
+将中间件附加到此配置文件适用的每个堆栈。有关内置排序，请参阅[Deep Agents stack](/oss/python/deepagents/customization#full-stack)。
+
+**通用\_目的\_子代理** `GeneralPurposeSubagentProfile`禁用、重命名或重新提示通用子代理。当此字段的 `system_prompt` 与 `base_system_prompt` 一起设置时，通用特定子代理提示符获胜 - 请参阅 [General-purpose subagent prompt](/oss/python/deepagents/customization#general-purpose-subagent-prompt)。
+
+> [!注意]
+>
+> 调用者提供的 `system_prompt=` 始终位于组合提示符的前面，而 `system_prompt_suffix` 始终位于末尾 — 无论选择哪种型号。相同的覆盖规则适用于子代理：每个子代理针对其自己的模型重新运行配置文件解析。有关自定义指令和子代理提示行为，请参阅[System prompt](/oss/python/deepagents/customization#system-prompt)。
+
+> [!警告]
+>
+> 要在不使用 `task` 工具的情况下运行代理，请参阅 [Running without subagents](/oss/python/deepagents/subagents#running-without-subagents) — 设置 `general_purpose_subagent=GeneralPurposeSubagentProfile(enabled=False)` 并通过 `subagents=` 不传递任何同步子代理。 `SubAgentMiddleware`（和 `task` 工具）仅在至少存在一个同步子代理时附加，因此此配置将其完全排除。异步子代理不受影响。
+>
+> 列出 `FilesystemMiddleware`、`SubAgentMiddleware` 或 `excluded_middleware` 中的内部权限中间件会引发 `ValueError` — 它们需要 [Deep Agents stack](/oss/python/deepagents/customization#deep-agents-stack) 中的脚手架。要在模型中隐藏其工具而不删除中间件，请改用`excluded_tools` — 请参阅[Running without the default filesystem tools](/oss/python/deepagents/overview#virtual-filesystem-access)。
 
 `excluded_middleware` 中的条目接受两种形式：* 中间件*类*（按精确类型匹配），或匹配`AgentMiddleware.name`的纯字符串。对内置和公共别名使用纯字符串，例如 `"SummarizationMiddleware"`。
 * `module:Class` 导入引用（例如，`"my_pkg.middleware:TelemetryMiddleware"`）用于从配置文件中定位精确的中间件类。导入引用会延迟解析，因此仅将它们用于受信任的本地配置 - 加载一个导入 Python 代码。
 
-在创建代理之前注册配置文件。传递一个模型字符串或者你自己构造的模型对象；有关示例，请参阅[Configure model parameters](/oss/python/deepagents/models#configure-model-parameters)。线束型材适用于这两种情况。
+在创建代理之前注册配置文件。传递一个模型字符串或者你自己构造的模型对象；示例请参见[Configure model parameters](/oss/python/deepagents/models#configure-model-parameters)。线束型材适用于这两种情况。
 
 仅当您传递字符串时，提供程序配置文件才提供构造设置。
 
-<Accordion title="Lookup order for preconfigured model instances">
-  当您传递模型对象时，线束会使用该对象报告的提供程序和标识符来查找其配置文件。
-
-  1. `provider:identifier` 精确匹配
-  2. 仅标识符（仅当标识符已包含`:`时）
-  3. 报告的提供商的默认值，或者标识符前缀的默认值（如果提供商未知）
-
-  两个确切的候选者都优先于提供商默认值。
-</Accordion>
+> **预配置模型实例的查找顺序**
+>
+> 当您传递模型对象时，线束会使用该对象报告的提供程序和标识符来查找其配置文件。
+>
+> 1. `provider:identifier` 精确匹配
+> 2. 仅标识符（仅当标识符已包含`:`时）
+> 3. 报告的提供商的默认值，或者标识符前缀的默认值（如果提供商未知）
+>
+> 两个确切的候选者都优先于提供商默认值。
 
 ## 注册密钥
 
-配置文件注册使用这些密钥：* **提供商级别** - 像`"openai"`这样的裸提供商名称适用于该提供商的每个模型。
+配置文件注册使用这些密钥：* **提供商级别** - 像 `"openai"` 这样的裸提供商名称适用于该提供商的每个模型。
 * **模型级别** - 完全限定的 `provider:model` 密钥（例如 `"openai:gpt-6-astra"`）仅适用于该特定模型。
 
 当提供程序级别和模型级别配置文件同时存在时，它们会在解析时合并。未设置的模型级字段继承自提供者级配置文件；显式模型级值会覆盖它们。
@@ -128,13 +128,13 @@ register_harness_profile(
 
 随后使用此模型创建的代理会排除 `execute` 和 `grep` 并保留 100 字后缀。其他模型保留提供商的默认值。
 
-<Note>
-  没有与每个提供商匹配的通配符密钥。要在各处应用相同的覆盖（例如，无论选择哪个模型，都删除 `SummarizationMiddleware`），请在您使用的每个提供程序密钥下注册配置文件。配置文件用于根据所选模型进行调整。无论型号如何，都应在`create_deep_agent`调用站点上进行全局调整。
-</Note>
+> [!注意]
+>
+> 没有与每个提供商匹配的通配符密钥。要在各处应用相同的覆盖（例如，无论选择哪个模型，都删除 `SummarizationMiddleware`），请在您使用的每个提供程序密钥下注册配置文件。配置文件用于根据所选模型进行调整。无论型号如何，都应在`create_deep_agent`调用站点上进行全局调整。
 
 ## 合并语义|领域 |合并行为 |
 | - | - |
-| `base_system_prompt`、`system_prompt_suffix` |设置后新值获胜；否则继承|
+| `base_system_prompt`、`system_prompt_suffix` |设置后新值获胜；否则继承 |
 | `tool_description_overrides` |每个键的映射合并；新价值赢得共享密钥|
 | `excluded_tools`、`excluded_middleware` |设置并集|
 | `extra_middleware` |按具体类型合并：新实例替换其位置上的现有实例，新类型追加 |
@@ -173,15 +173,15 @@ register_provider_profile(
 
 该模型的未来构建使用`temperature=0`和`timeout=60`。这些注册使现有模型对象保持不变。
 
-<ResponseField name="init_kwargs" type="Mapping[str, Any]">
-  静态初始化参数转发到`init_chat_model`。
-</ResponseField><ResponseField name="pre_init" type="Callable[[str], None]">
-  在构建之前运行的副作用（例如，凭据验证）。
-</ResponseField>
+**init\_kwargs** `Mapping[str, Any]`
 
-<ResponseField name="init_kwargs_factory" type="Callable[[], dict[str, Any]]">
-  Kwargs 源自运行时状态（例如，从环境变量中提取的标头）。
-</ResponseField>
+静态初始化参数转发到`init_chat_model`。**预\_init** `Callable[[str], None]`
+
+在构建之前运行的副作用（例如，凭据验证）。
+
+**init\_kwargs\_factory** `Callable[[], dict[str, Any]]`
+
+Kwargs 源自运行时状态（例如，从环境变量中提取的标头）。
 
 ## 从配置文件加载配置文件
 
@@ -214,7 +214,7 @@ with open("openai.yaml") as f:
     )
 ```
 
-反之，当仅使用可序列化功能时，`HarnessProfileConfig.from_harness_profile(...)` 将运行时配置文件导出回声明性形状：
+反之，当 `HarnessProfileConfig.from_harness_profile(...)` 仅使用可序列化功能时，将运行时配置文件导出回声明性形状：
 
 * 类形式 `excluded_middleware` 条目序列化为公共别名（当类通过 `serialized_name: ClassVar[str]` 公开别名时）或作为 `module:Class` 导入引用。
 * 非空 `extra_middleware` 以及在 `__main__` 中或函数作用域内声明的中间件类无法序列化 — 导出引发 `ValueError`。
@@ -260,16 +260,10 @@ def register_provider() -> None:
 
 * [Harness Overview](/oss/python/deepagents/overview)—线束功能概述
 * [Models](/oss/python/deepagents/models)—配置模型提供者和参数
-* [Customization](/oss/python/deepagents/customization)—全`create_deep_agent`配置面
+* [Customization](/oss/python/deepagents/customization)—完整`create_deep_agent`配置面
 
 ***
 
-<div>
-  <Callout icon="terminal-2">
-    [Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
-  </Callout>
+[Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
 
-  <Callout icon="edit">
-    [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/oss/deepagents/profiles.mdx) 或 [file an issue](https://github.com/langchain-ai/docs/issues/new/choose)。
-  </Callout>
-</div>
+[Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/oss/deepagents/profiles.mdx) 或 [file an issue](https://github.com/langchain-ai/docs/issues/new/choose)。
