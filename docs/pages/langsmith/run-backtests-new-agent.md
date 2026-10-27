@@ -2,11 +2,11 @@
 
 # Run backtests on a new version of an agent
 
-Deploying your application is just the beginning of a continuous improvement process. After you deploy to production, you'll want to refine your system by enhancing prompts, language models, tools, and architectures. Backtesting involves assessing new versions of your application using historical data and comparing the new outputs to the original ones. Compared to evaluations using pre-production datasets, backtesting offers a clearer indication of whether the new version of your application is an improvement over the current deployment.
+Deploying your agent is just the beginning of a continuous improvement process. After you deploy to production, you'll want to refine your system by enhancing prompts, language models, tools, and architectures. Backtesting involves assessing new versions of your agent using historical data and comparing the new outputs to the original ones. Compared to evaluations using pre-production datasets, backtesting offers a clearer indication of whether the new version of your agent is an improvement over the current deployment.
 
 Here are the basic steps for backtesting:
 
-1. Select sample runs from your production tracing project to test against.
+1. Select sample runs from your agent's Production environment to test against.
 2. Transform the run inputs into a dataset and record the run outputs as an initial experiment against that dataset.
 3. Execute your new system on the new dataset and compare the results of the experiments.
 
@@ -14,7 +14,11 @@ This process will provide you with a new dataset of representative inputs, which
 
 > [!NOTE]
 >
-> Often, you won't have definitive "ground truth" answers available. In such cases, you can manually label the outputs or use evaluators that don't rely on reference data. If your application allows for capturing ground-truth labels, for example by allowing users to leave feedback, we strongly recommend doing so.
+> Often, you won't have definitive "ground truth" answers available. In such cases, you can manually label the outputs or use evaluators that don't rely on reference data. If your agent allows for capturing ground-truth labels, for example by allowing users to leave feedback, we strongly recommend doing so.
+
+> [!NOTE]
+>
+> In an [agent-based workspace](/langsmith/agents), [create an agent](/langsmith/create-an-agent) once before sending traces. Use [agent addressing](/langsmith/log-traces-to-agent) to select its identifier and environment. If an integration requires `project_name`, use the selected environment's [`tracer_session_name`](/langsmith/create-an-agent#use-an-environment-project) as a compatibility value.
 
 ## Setup
 
@@ -38,9 +42,9 @@ uv add langsmith langchain langchain-anthropic langchainhub emoji
 import getpass
 import os
 
-# Set the project name to whichever project you'd like to be testing against
-project_name = "Tweet Writing Task"
-os.environ["LANGSMITH_PROJECT"] = project_name
+# Select the registered agent whose production traces you want to test against
+os.environ["LANGSMITH_AGENT_ID"] = "<your-agent-id>"
+os.environ["LANGSMITH_AGENT_ENVIRONMENT"] = "production"
 os.environ["LANGSMITH_TRACING"] = "true"
 
 if not os.environ.get("LANGSMITH_API_KEY"):
@@ -54,9 +58,9 @@ os.environ["OPENAI_API_KEY"] = "YOUR OPENAI API KEY"
 os.environ["TAVILY_API_KEY"] = "YOUR TAVILY API KEY"
 ```
 
-### Define the application
+### Define the agent
 
-For this example lets create a simple Tweet-writing application that has access to some internet search tools:
+For this example lets create a simple Tweet-writing agent that has access to some internet search tools:
 
 ```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 from langchain.chat_models import init_chat_model
@@ -125,13 +129,16 @@ The first step is to generate a dataset based on the production *inputs*. Then c
 You can select the runs to backtest on using the `filter` argument of `list_runs`. The `filter` argument uses the LangSmith [trace query syntax](/langsmith/trace-query-syntax) to select runs.
 
 ```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+import asyncio
 from datetime import datetime, timedelta, timezone
-from langsmith import uuid7
-from langsmith import Client
+
+from langsmith import Client, agent_address, uuid7
 from langsmith.beta import convert_runs_to_test
 
 # Fetch the runs we want to convert to a dataset/experiment
 client = Client()
+address = agent_address(os.environ["LANGSMITH_AGENT_ID"], os.environ["LANGSMITH_AGENT_ENVIRONMENT"])
+resolved = asyncio.run(client.sessions.resolve(**address))
 
 # How we are sampling runs to include in our dataset
 end_time = datetime.now(tz=timezone.utc)
@@ -139,7 +146,7 @@ start_time = end_time - timedelta(days=1)
 run_filter = f'and(gt(start_time, "{start_time.isoformat()}"), lt(end_time, "{end_time.isoformat()}"))'
 prod_runs = list(
     client.list_runs(
-        project_name=project_name,
+        project_id=resolved.session_id,
         is_root=True,
         filter=run_filter,
     )
@@ -174,7 +181,7 @@ convert_runs_to_test(
 )
 ```
 
-Once this step is complete, you should see a new dataset in your LangSmith project called "Tweet Writing Task-backtesting TODAYS DATE", with a single experiment like so:
+Once this step is complete, you should see a new dataset in your LangSmith workspace called "Tweet Writing Task-backtesting TODAYS DATE", with a single experiment like so:
 
 ![Baseline experiment](https://mintcdn.com/langchain-5e9cc07a/E8FdemkcQxROovD9/langsmith/images/baseline-experiment.png?fit=max\&auto=format\&n=E8FdemkcQxROovD9\&q=85\&s=73b60a75d6b33f2830f5ed68464c586b)
 

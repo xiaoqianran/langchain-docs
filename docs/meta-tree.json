@@ -1779,12 +1779,6 @@
           "rel": "langsmith/log-traces-to-agent.md"
         }
       ],
-      "log-traces-to-project": [
-        {
-          "title": "Log traces to a specific project",
-          "rel": "langsmith/log-traces-to-project.md"
-        }
-      ],
       "ls-metadata-parameters": [
         {
           "title": "Metadata parameters reference",
@@ -1949,7 +1943,7 @@
       ],
       "observability-llm-tutorial": [
         {
-          "title": "Trace an LLM application tutorial",
+          "title": "Trace an agent",
           "rel": "langsmith/observability-llm-tutorial.md"
         }
       ],
@@ -2165,7 +2159,7 @@
       ],
       "resolve-an-agent": [
         {
-          "title": "Find an agent's project",
+          "title": "Resolve an agent environment",
           "rel": "langsmith/resolve-an-agent.md"
         }
       ],
@@ -2897,43 +2891,43 @@
       ],
       "trace-anthropic": [
         {
-          "title": "Trace Anthropic applications",
+          "title": "Trace with Anthropic",
           "rel": "langsmith/trace-anthropic.md"
         }
       ],
       "trace-bedrock": [
         {
-          "title": "Trace Amazon Bedrock applications",
+          "title": "Trace with Amazon Bedrock",
           "rel": "langsmith/trace-bedrock.md"
         }
       ],
       "trace-claude-agent-sdk": [
         {
-          "title": "Trace Claude Agent SDK applications",
+          "title": "Trace with the Claude Agent SDK",
           "rel": "langsmith/trace-claude-agent-sdk.md"
         }
       ],
       "trace-claude-code": [
         {
-          "title": "Trace Claude Code applications",
+          "title": "Trace Claude Code sessions",
           "rel": "langsmith/trace-claude-code.md"
         }
       ],
       "trace-deep-agents": [
         {
-          "title": "Trace Deep Agents applications",
+          "title": "Trace Deep Agents",
           "rel": "langsmith/trace-deep-agents.md"
         }
       ],
       "trace-deepseek": [
         {
-          "title": "Trace DeepSeek applications",
+          "title": "Trace with DeepSeek",
           "rel": "langsmith/trace-deepseek.md"
         }
       ],
       "trace-gemini-live": [
         {
-          "title": "Trace Gemini Live applications",
+          "title": "Trace Gemini Live agents",
           "rel": "langsmith/trace-gemini-live.md"
         }
       ],
@@ -2945,19 +2939,19 @@
       ],
       "trace-litellm": [
         {
-          "title": "Trace LiteLLM applications",
+          "title": "Trace with LiteLLM",
           "rel": "langsmith/trace-litellm.md"
         }
       ],
       "trace-openai": [
         {
-          "title": "Trace OpenAI applications",
+          "title": "Trace with OpenAI",
           "rel": "langsmith/trace-openai.md"
         }
       ],
       "trace-openai-realtime": [
         {
-          "title": "Trace OpenAI Realtime applications",
+          "title": "Trace OpenAI Realtime agents",
           "rel": "langsmith/trace-openai-realtime.md"
         }
       ],
@@ -2987,7 +2981,7 @@
       ],
       "trace-with-autogen": [
         {
-          "title": "Trace AutoGen applications",
+          "title": "Trace AutoGen agents",
           "rel": "langsmith/trace-with-autogen.md"
         }
       ],
@@ -3005,7 +2999,7 @@
       ],
       "trace-with-crewai": [
         {
-          "title": "Trace CrewAI applications",
+          "title": "Trace CrewAI agents",
           "rel": "langsmith/trace-with-crewai.md"
         }
       ],
@@ -3017,55 +3011,55 @@
       ],
       "trace-with-google-adk": [
         {
-          "title": "Trace Google ADK applications",
+          "title": "Trace Google ADK agents",
           "rel": "langsmith/trace-with-google-adk.md"
         }
       ],
       "trace-with-google-gemini": [
         {
-          "title": "Trace Google Gemini applications",
+          "title": "Trace with Google Gemini",
           "rel": "langsmith/trace-with-google-gemini.md"
         }
       ],
       "trace-with-instructor": [
         {
-          "title": "Trace Instructor applications",
+          "title": "Trace with Instructor",
           "rel": "langsmith/trace-with-instructor.md"
         }
       ],
       "trace-with-langchain": [
         {
-          "title": "Trace LangChain applications (Python and JS/TS)",
+          "title": "Trace LangChain agents (Python and JS/TS)",
           "rel": "langsmith/trace-with-langchain.md"
         }
       ],
       "trace-with-langgraph": [
         {
-          "title": "Trace LangGraph applications",
+          "title": "Trace LangGraph agents",
           "rel": "langsmith/trace-with-langgraph.md"
         }
       ],
       "trace-with-livekit": [
         {
-          "title": "Trace LiveKit applications",
+          "title": "Trace LiveKit agents",
           "rel": "langsmith/trace-with-livekit.md"
         }
       ],
       "trace-with-mastra": [
         {
-          "title": "Trace Mastra applications",
+          "title": "Trace Mastra agents",
           "rel": "langsmith/trace-with-mastra.md"
         }
       ],
       "trace-with-microsoft-agent-framework": [
         {
-          "title": "Trace Microsoft Agent Framework applications",
+          "title": "Trace with Microsoft Agent Framework",
           "rel": "langsmith/trace-with-microsoft-agent-framework.md"
         }
       ],
       "trace-with-mistral": [
         {
-          "title": "Trace Mistral applications",
+          "title": "Trace with Mistral",
           "rel": "langsmith/trace-with-mistral.md"
         }
       ],
@@ -3077,7 +3071,7 @@
       ],
       "trace-with-openai-agents-sdk": [
         {
-          "title": "Trace OpenAI Agents SDK applications",
+          "title": "Trace with the OpenAI Agents SDK",
           "rel": "langsmith/trace-with-openai-agents-sdk.md"
         }
       ],
@@ -3107,25 +3101,25 @@
       ],
       "trace-with-pipecat": [
         {
-          "title": "Trace Pipecat applications",
+          "title": "Trace Pipecat agents",
           "rel": "langsmith/trace-with-pipecat.md"
         }
       ],
       "trace-with-pydantic-ai": [
         {
-          "title": "Trace PydanticAI applications",
+          "title": "Trace PydanticAI agents",
           "rel": "langsmith/trace-with-pydantic-ai.md"
         }
       ],
       "trace-with-semantic-kernel": [
         {
-          "title": "Trace Semantic Kernel applications",
+          "title": "Trace Semantic Kernel agents",
           "rel": "langsmith/trace-with-semantic-kernel.md"
         }
       ],
       "trace-with-strands-agents": [
         {
-          "title": "Trace Strands Agents applications",
+          "title": "Trace with Strands Agents",
           "rel": "langsmith/trace-with-strands-agents.md"
         }
       ],
@@ -3137,7 +3131,7 @@
       ],
       "trace-with-vercel-ai-sdk": [
         {
-          "title": "Trace Vercel AI SDK applications (JS/TS only)",
+          "title": "Trace Vercel AI SDK agents (JS/TS only)",
           "rel": "langsmith/trace-with-vercel-ai-sdk.md"
         }
       ],

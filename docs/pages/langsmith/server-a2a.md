@@ -550,6 +550,8 @@ For complete working examples, see:
 
 ## Distributed tracing
 
+For non-LangGraph agents in an agent-based workspace, [register the agent and configure agent addressing](/langsmith/create-an-agent#configure-tracing-for-the-agent) before tracing. LangSmith deployments already provision their agents.
+
 When multiple agents communicate over A2A, LangSmith can group all their [traces](/langsmith/observability-concepts#traces) into a single [thread](/langsmith/observability-concepts#threads), which gives you a unified view of the entire multi-agent conversation.
 
 ### How contextId maps to thread\_id
@@ -671,7 +673,7 @@ import json
 
 # --- 1. Configure OTel ---
 # Set up automatic tracing to LangSmith for your non-LangGraph agent.
-configure_otel(project_name="my-a2a-project")
+configure_otel()
 tracer = trace.get_tracer(__name__)
 
 app = FastAPI()
@@ -705,7 +707,7 @@ Register your agent routes on `app` after this middleware.
 
 > [!NOTE]
 >
-> Set `LANGSMITH_API_KEY` and optionally `LANGSMITH_PROJECT` in your environment to enable tracing. All agents in the conversation should use the same project so their traces are visible together.
+> Set `LANGSMITH_API_KEY`, `LANGSMITH_AGENT_ID`, and `LANGSMITH_AGENT_ENVIRONMENT` in your environment. All participants in the conversation should use the same tracing destination so their traces are visible together.
 
 ### View traces in LangSmith
 

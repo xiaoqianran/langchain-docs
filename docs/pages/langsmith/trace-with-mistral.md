@@ -1,10 +1,14 @@
-<!-- langchain-docs: Trace Mistral applications | https://docs.langchain.com/langsmith/trace-with-mistral -->
+<!-- langchain-docs: Trace with Mistral | https://docs.langchain.com/langsmith/trace-with-mistral -->
 
-# Trace Mistral applications
+# Trace with Mistral
 
 [Mistral](https://mistral.ai/) provides hosted access to open-weight language models via a simple API.
 
 This guide shows you how to trace Mistral API calls with LangSmith, allowing you to record prompts, responses, and metadata for debugging and observability. Traces are sent directly to LangSmith using the [LangSmith SDK](https://reference.langchain.com/python/langsmith/) and standard span instrumentation.
+
+> [!NOTE]
+>
+> In an [agent-based workspace](/langsmith/agents), [create an agent](/langsmith/create-an-agent) once before sending traces. Use [agent addressing](/langsmith/log-traces-to-agent) to select its identifier and environment. If an integration requires `project_name`, use the selected environment's [`tracer_session_name`](/langsmith/create-an-agent#use-an-environment-project) as a compatibility value.
 
 ## Installation
 
@@ -22,18 +26,19 @@ npm install @mistralai/mistralai langsmith dotenv
 
 ## Setup
 
-Set your [API keys](/langsmith/create-account-api-key) and project name:
+Set your [API keys](/langsmith/create-account-api-key), agent identifier, and environment:
 
 ```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 export MISTRAL_API_KEY="<your_mistral_api_key>"
 export LANGSMITH_TRACING="true"
 export LANGSMITH_API_KEY="<your_langsmith_api_key>"
-export LANGSMITH_PROJECT="<your_project_name>"  # optional
+export LANGSMITH_AGENT_ID="<your-agent-id>"
+export LANGSMITH_AGENT_ENVIRONMENT="production"
 ```
 
 * Ensure you have a Mistral API key from your [Mistral AI account](https://v2.auth.mistral.ai/login) (set this as `MISTRAL_API_KEY`).
 * Set `LANGSMITH_TRACING=true` and provide your LangSmith API key (`LANGSMITH_API_KEY`) activates automatic logging of traces.
-* Specify a [`LANGSMITH_PROJECT`](/langsmith/log-traces-to-project) name to organize traces by project; if not set, traces go to the default project (named "default").
+* Set `LANGSMITH_AGENT_ID` and `LANGSMITH_AGENT_ENVIRONMENT` to the registered agent and environment.
 * The `LANGSMITH_TRACING` flag must be true for any traces to be recorded.
 
 ## Configure tracing
@@ -132,7 +137,7 @@ export LANGSMITH_PROJECT="<your_project_name>"  # optional
 After running the example, you can inspect the recorded traces in the [LangSmith UI](https://smith.langchain.com?utm_source=docs\&utm_medium=cta\&utm_campaign=langsmith-signup\&utm_content=langsmith-trace-with-mistral):
 
 1. Open the LangSmith UI and log in to your account.
-2. Select the project you used for this integration (for example, the name set in `LANGSMITH_PROJECT`, or default if you didn’t set one).
+2. Select the agent and environment configured during setup.
 3. Find the trace corresponding to your Mistral API call. It will be identified by the function name (`query_mistral`) or a custom name if provided.
 4. Click on the trace to open it. You’ll be able to inspect the model input and output, including the prompt messages you sent and the response from Mistral, as well as timing information (latency) and any error details if the call failed.
 

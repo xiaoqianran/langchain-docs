@@ -1,12 +1,16 @@
-<!-- langchain-docs: Trace Google Gemini applications | https://docs.langchain.com/langsmith/trace-with-google-gemini -->
+<!-- langchain-docs: Trace with Google Gemini | https://docs.langchain.com/langsmith/trace-with-google-gemini -->
 
-# Trace Google Gemini applications
+# Trace with Google Gemini
 
 This guide shows you how to trace and log [Google's Gemini](https://ai.google.dev/gemini-api/docs) models in LangSmith. You'll instrument Gemini calls using the latest [`google-genai` SDK](https://googleapis.github.io/python-genai/) (Python) or [`@google/genai` SDK](https://googleapis.github.io/js-genai/release_docs/index.html) (JavaScript), wrap the Gemini client for tracing, and try examples including basic prompts, metadata tagging, and multi-turn conversations.
 
 > [!NOTE]
 >
 > The LangSmith Gemini wrappers are in **[beta](/langsmith/release-stages)**. The API may change in future releases.
+
+> [!NOTE]
+>
+> In an [agent-based workspace](/langsmith/agents), [create an agent](/langsmith/create-an-agent) once before sending traces. Use [agent addressing](/langsmith/log-traces-to-agent) to select its identifier and environment. If an integration requires `project_name`, use the selected environment's [`tracer_session_name`](/langsmith/create-an-agent#use-an-environment-project) as a compatibility value.
 
 ## Installation
 
@@ -22,11 +26,12 @@ npm install langsmith@latest @google/genai
 
 ## Setup
 
-Set your [API keys](/langsmith/create-account-api-key) and project name:
+Set your [API keys](/langsmith/create-account-api-key), agent identifier, and environment:
 
 ```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 export LANGSMITH_API_KEY=<your_langsmith_api_key>
-export LANGSMITH_PROJECT=<your_project_name>
+export LANGSMITH_AGENT_ID="<your-agent-id>"
+export LANGSMITH_AGENT_ENVIRONMENT="production"
 export LANGSMITH_TRACING=true
 export GOOGLE_API_KEY=<your_google_api_key>
 ```
@@ -104,7 +109,7 @@ You can customize tracing by passing [`tracing_extra`](https://reference.langcha
 * `metadata`: A dictionary of key-value pairs for additional context (for example, `{"team": "ml-research", "integration": "google-genai"}`).
 * `client`: An optional custom LangSmith client instance.
 
-These settings apply consistently across all traces from the wrapped client, so that you can include environment-level tags or team metadata that should remain constant throughout your application.
+These settings apply consistently across all traces from the wrapped client, so that you can include environment-level tags or team metadata that should remain constant throughout your agent.
 
 **JavaScript**
 
@@ -114,11 +119,11 @@ You can customize tracing by passing configuration options to [`wrapGemini`](htt
 * `metadata`: An object with key-value pairs for additional context (for example, `{ team: "ml-research", integration: "google-genai" }`).
 * `client`: An optional custom LangSmith client instance.
 
-These settings apply consistently across all traces from the wrapped client, so that you can include environment-level tags or team metadata that should remain constant throughout your application.
+These settings apply consistently across all traces from the wrapped client, so that you can include environment-level tags or team metadata that should remain constant throughout your agent.
 
 ## View traces in LangSmith
 
-After running your application, you can view traces in the [LangSmith UI](https://smith.langchain.com?utm_source=docs\&utm_medium=cta\&utm_campaign=langsmith-signup\&utm_content=langsmith-trace-with-google-gemini) that include:
+After running your agent, you can view traces in the [LangSmith UI](https://smith.langchain.com?utm_source=docs\&utm_medium=cta\&utm_campaign=langsmith-signup\&utm_content=langsmith-trace-with-google-gemini) that include:
 
 * **Model requests**: Complete prompts sent to Gemini models
 * **Model responses**: Generated text and structured outputs

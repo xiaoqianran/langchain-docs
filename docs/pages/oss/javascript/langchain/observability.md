@@ -2,7 +2,7 @@
 
 # LangSmith Observability
 
-As you build and run agents with LangChain, you need visibility into how they behave: which [tools](/oss/javascript/langchain/tools) they call, what prompts they generate, and how they make decisions. LangChain agents built with [`createAgent`](https://reference.langchain.com/javascript/langchain/index/createAgent) automatically support tracing through [LangSmith](/langsmith/observability), a platform for capturing, debugging, evaluating, and monitoring LLM application behavior.
+As you build and run agents with LangChain, you need visibility into how they behave: which [tools](/oss/javascript/langchain/tools) they call, what prompts they generate, and how they make decisions. LangChain agents built with [`createAgent`](https://reference.langchain.com/javascript/langchain/index/createAgent) automatically support tracing through [LangSmith](/langsmith/observability), a platform for capturing, debugging, evaluating, and monitoring agent behavior.
 
 [*Traces*](/langsmith/observability-concepts#traces) record every step of your agent's execution, from the initial user input to the final response, including all tool calls, model interactions, and decision points. This execution data helps you debug issues, evaluate performance across different inputs, and monitor usage patterns in production.
 
@@ -17,9 +17,15 @@ Before you begin, ensure you have the following:
 
 ## Enable tracing
 
+> [!NOTE]
+>
+> In an [agent-based workspace](/langsmith/agents), [create an agent](/langsmith/create-an-agent) once before sending traces. Use [agent addressing](/langsmith/log-traces-to-agent) to select its identifier and environment. If an integration requires `project_name`, use the selected environment's [`tracer_session_name`](/langsmith/create-an-agent#use-an-environment-project) as a compatibility value.
+
 All LangChain agents automatically support LangSmith tracing. To enable it, set the following environment variables:
 
 ```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+export LANGSMITH_AGENT_ID="<your-agent-id>"
+export LANGSMITH_AGENT_ENVIRONMENT="production"
 export LANGSMITH_TRACING=true
 export LANGSMITH_API_KEY=<your-api-key>
 ```
@@ -53,11 +59,11 @@ const response = await agent.invoke({
 });
 ```
 
-By default, the trace will be logged to the project with the name `default`. To configure a custom project name, see [Log to a project](/langsmith/log-traces-to-project).
+Traces appear in the destination configured during setup.
 
 ## Trace selectively
 
-You may opt to trace specific invocations or parts of your application using LangSmith's `tracing_context` context manager:
+You may opt to trace specific invocations or parts of your agent using LangSmith's `tracing_context` context manager:
 
 ```ts theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 import { LangChainTracer } from "@langchain/core/tracers/tracer_langchain";
@@ -79,31 +85,13 @@ await agent.invoke(
 );
 ```
 
-## Log to a project
+## Select an agent and environment
 
-> **Statically**
->
-> You can set a custom project name for your entire application by setting the `LANGSMITH_PROJECT` environment variable:
->
-> ```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-> export LANGSMITH_PROJECT=my-agent-project
-> ```
+Use `LANGSMITH_AGENT_ID` and `LANGSMITH_AGENT_ENVIRONMENT` to select the registered agent and environment. For per-request routing, pass an agent address in code. See [Log traces to an agent](/langsmith/log-traces-to-agent).
 
-> **Dynamically**
+> **Project-based workspaces and self-hosted LangSmith**
 >
-> You can set the project name programmatically for specific operations:
->
-> ```ts theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-> import { LangChainTracer } from "@langchain/core/tracers/tracer_langchain";
->
-> const tracer = new LangChainTracer({ projectName: "email-agent-test" });
-> await agent.invoke(
->   {
->     messages: [{role: "user", content: "Send a test email to alice@example.com"}]
->   },
->   { callbacks: [tracer] }
-> );
-> ```
+> Set `LANGSMITH_PROJECT` to the tracing project name instead of setting the agent variables. For integrations that require `project_name` in an agent-based workspace, use the environment's [`tracer_session_name`](/langsmith/create-an-agent#use-an-environment-project) as a compatibility value.
 
 ## Add metadata to traces
 
@@ -112,7 +100,7 @@ You can annotate your traces with custom metadata and tags:
 ```ts theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 import { LangChainTracer } from "@langchain/core/tracers/tracer_langchain";
 
-const tracer = new LangChainTracer({ projectName: "email-agent-test" });
+const tracer = new LangChainTracer();
 await agent.invoke(
   {
     messages: [{role: "user", content: "Send a test email to alice@example.com"}]

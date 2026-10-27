@@ -8,6 +8,10 @@ Trace [Cursor](https://cursor.com/) agent sessions in LangSmith using [Cursor ho
 
 The plugin source is available at [`langchain-ai/langsmith-cursor-plugins`](https://github.com/langchain-ai/langsmith-cursor-plugins).
 
+> [!NOTE]
+>
+> This integration uses a legacy destination setting such as `project_name` or `LANGSMITH_PROJECT`. [Create an agent](/langsmith/create-an-agent), choose its environment, and [retrieve that environment's `tracer_session_name`](/langsmith/create-an-agent#use-an-environment-project). Use that returned value in the destination setting and any overrides. For integrations that support agent addressing, use the [agent identifier and environment](/langsmith/log-traces-to-agent) directly.
+
 ## Prerequisites
 
 Before setting up tracing, ensure you have:
@@ -67,7 +71,7 @@ Every `LANGSMITH_CURSOR_*` variable also accepts the shorter `LANGSMITH_*` form.
 | `TRACE_TO_LANGSMITH` | `false` | Set to `"true"` to enable tracing. |
 | `LANGSMITH_CURSOR_API_KEY` | - | LangSmith API key. Falls back to `LANGSMITH_API_KEY`. |
 | `LANGSMITH_CURSOR_ENDPOINT` | `https://api.smith.langchain.com` | LangSmith API URL. Falls back to `LANGSMITH_ENDPOINT`. |
-| `LANGSMITH_CURSOR_PROJECT` | `cursor` | LangSmith project name. Falls back to `LANGSMITH_PROJECT`. |
+| `LANGSMITH_CURSOR_PROJECT` | `cursor` | Selected agent environment's `tracer_session_name`. Falls back to `LANGSMITH_PROJECT`. |
 | `LANGSMITH_CURSOR_METADATA` | - | JSON object merged into root trace metadata. |
 | `LANGSMITH_CURSOR_RUNS_ENDPOINTS` | - | JSON array of replica destinations. |
 | `LANGSMITH_CURSOR_REDACT` | `true` | Set to `"false"` to disable secret redaction. |
@@ -83,7 +87,7 @@ Add the variables to your shell configuration file (`~/.zshrc`, `~/.bashrc`, or 
 ```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 export TRACE_TO_LANGSMITH="true"
 export LANGSMITH_CURSOR_API_KEY="<your-langsmith-api-key>"
-export LANGSMITH_CURSOR_PROJECT="cursor"
+export LANGSMITH_CURSOR_PROJECT="<environment-tracer-session-name>"
 ```
 
 To verify hook activity, tail the log file:
@@ -101,7 +105,7 @@ Use `~/.cursor/langsmith.json` for global defaults or `./.cursor/langsmith.json`
   "enabled": true,
   "api_key": "<your-langsmith-api-key>",
   "api_url": "https://api.smith.langchain.com",
-  "project": "cursor"
+  "project": "<environment-tracer-session-name>"
 }
 ```
 
@@ -110,7 +114,7 @@ Use `~/.cursor/langsmith.json` for global defaults or `./.cursor/langsmith.json`
 | `enabled` | `TRACE_TO_LANGSMITH` | `false` | Set to `true` to enable tracing. |
 | `api_key` | `LANGSMITH_CURSOR_API_KEY`, `LANGSMITH_API_KEY` | - | LangSmith API key. |
 | `api_url` | `LANGSMITH_CURSOR_ENDPOINT`, `LANGSMITH_ENDPOINT` | `https://api.smith.langchain.com` | LangSmith API URL. |
-| `project` | `LANGSMITH_CURSOR_PROJECT`, `LANGSMITH_PROJECT` | `cursor` | LangSmith project name. |
+| `project` | `LANGSMITH_CURSOR_PROJECT`, `LANGSMITH_PROJECT` | `cursor` | Selected agent environment's `tracer_session_name`. |
 | `metadata` | `LANGSMITH_CURSOR_METADATA`, `LANGSMITH_METADATA` | - | Object merged into root trace metadata. |
 | `replicas` | `LANGSMITH_CURSOR_RUNS_ENDPOINTS`, `LANGSMITH_RUNS_ENDPOINTS` | - | Additional LangSmith destinations to replicate traces to. |
 | `redact` | `LANGSMITH_CURSOR_REDACT`, `LANGSMITH_REDACT` | `true` | Set to `false` to disable [secret redaction](#secret-redaction). |
@@ -139,7 +143,7 @@ To redact additional patterns, set `LANGSMITH_CURSOR_REDACT_EXTRA` to a JSON arr
 ```json theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 {
   "enabled": true,
-  "project": "cursor",
+  "project": "<environment-tracer-session-name>",
   "redact": true,
   "redact_extra_rules": [{ "pattern": "ACME-[A-Z0-9]{16}", "replace": "[REDACTED_ACME_KEY]" }]
 }
@@ -185,7 +189,7 @@ Cursor's hooks do not expose stable sources for `user_id`, `sandbox_type`, or `a
 
 ## View traces in LangSmith
 
-Open the configured LangSmith project (default `cursor`) and complete a Cursor turn. The plugin uploads one trace per turn with this structure:
+Select the configured agent and environment in LangSmith, open **Tracing**, and complete a Cursor turn. The plugin uploads one trace per turn with this structure:
 
 ```
 Cursor Turn N (chain)
@@ -194,7 +198,7 @@ Cursor Turn N (chain)
 └── Task (tool)        subagent (type and task)
 ```
 
-To group related turns, filter on `thread_id` in the **Threads** tab of the project.
+To group related turns, filter on `thread_id` in the **Threads** tab for that environment.
 
 ## Known limitations
 
@@ -209,7 +213,7 @@ If traces do not appear in LangSmith:
 * Confirm Cursor was fully restarted after the hooks were installed.
 * Tail the hook log for errors: `tail -f ~/.cursor/langsmith-hook.log`.
 * Enable verbose logging with `LANGSMITH_CURSOR_DEBUG=true` and re-check the log.
-* If runs land in the wrong project, set `LANGSMITH_CURSOR_PROJECT` or the `project` config key.
+* If runs land in the wrong environment, set `LANGSMITH_CURSOR_PROJECT` or the `project` config key.
 
 ***
 

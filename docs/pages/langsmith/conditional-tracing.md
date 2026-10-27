@@ -8,7 +8,7 @@ Use conditional tracing when you need to:
 
 * **Comply with data retention policies**: Some clients may require zero data retention for compliance or privacy reasons.
 * **Handle sensitive operations**: Disable tracing for operations involving PII, credentials, or confidential data.
-* **Implement per-tenant configurations**: Route traces to different projects or apply different settings based on the customer.
+* **Implement per-tenant configurations**: Route traces to different agent environments or apply different settings based on the customer.
 * **Control costs**: Disable tracing for low-value requests while maintaining visibility into critical operations.
 * **Support feature flags**: Enable tracing only when specific features or experimental code paths are active.
 
@@ -20,7 +20,13 @@ The [`tracing_context`](https://reference.langchain.com/python/langsmith/run_hel
 
 > [!NOTE]
 >
-> The following sections provide language-specific examples that you can adapt to your application logic and business requirements.
+> The following sections provide language-specific examples that you can adapt to your agent logic and business requirements.
+
+> [!NOTE]
+>
+> In an [agent-based workspace](/langsmith/agents), [create an agent](/langsmith/create-an-agent) once before sending traces. Use [agent addressing](/langsmith/log-traces-to-agent) to select its identifier and environment. If an integration requires `project_name`, use the selected environment's [`tracer_session_name`](/langsmith/create-an-agent#use-an-environment-project) as a compatibility value.
+
+Register each agent before enabling dynamic routing. Replica configurations require each destination environment's `tracer_session_name`. Retrieve those values before enabling replication.
 
 **Python**
 
@@ -96,7 +102,7 @@ handle_request("client-a", "some input")  # Traced or not based on client settin
 
 ## Customize tracing configuration per request
 
-You can also customize tracing settings dynamically, such as routing traces to different projects or adding request-specific metadata.
+You can also customize tracing settings dynamically, such as routing traces to different agents or adding request-specific metadata.
 
 ```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 import langsmith as ls
@@ -108,13 +114,13 @@ def my_function(input_text: str):
 
 def handle_request(client_id: str, user_input: str, region: str):
     """
-    Route traces to client-specific projects with custom metadata.
+    Route traces to registered client-specific agents with custom metadata.
     """
     client_tier = get_client_tier(client_id)  # e.g., "enterprise", "standard"
 
     with ls.tracing_context(
         enabled=True,
-        project_name=f"client-{client_id}",
+        address=ls.agent_address(f"client-{client_id}", "production"),
         tags=["production", f"tier-{client_tier}", f"region-{region}"],
         metadata={
             "client_id": client_id,
@@ -124,15 +130,15 @@ def handle_request(client_id: str, user_input: str, region: str):
     ):
         return my_function(user_input)
 
-# Traces go to "client-abc" project with custom tags and metadata
+# Register client-abc first; traces go to its Production environment
 handle_request("abc", "some input", "us-west")
 ```
 
 This pattern is useful for:
 
-* **Multi-tenant applications**: Isolate traces by customer in separate projects
+* **Multi-tenant services**: Isolate customer traces under separate agents
 * **Regional deployments**: Track performance and behavior by geographic region
-* **Feature branches**: Route experimental feature traces to dedicated projects
+* **Feature branches**: Route experimental feature traces to the agent's Development environment
 * **User segmentation**: Analyze behavior by user tier, cohort, or A/B test group
 
 ## Work with automatic tracing
@@ -160,9 +166,9 @@ with ls.tracing_context(enabled=False):
 # Override global setting - enable with custom config
 with ls.tracing_context(
     enabled=True,
-    project_name="special-project"
+    address=ls.agent_address("<your-agent-id>", "staging")
 ):
-    process_data("important")  # Traced to "special-project"
+    process_data("important")  # Traced to the registered agent's Staging environment
 ```
 
 ## Nest tracing contexts
@@ -223,7 +229,7 @@ You can use any subset of run fields in `updates` (for example, `{"inputs": {"re
 
 > [!NOTE]
 >
-> Always set `project_name` on the replica when using `updates` to redact inputs or outputs. If the replica's `project_name` matches the active session's project, the `updates` may be dropped and the unredacted inputs/outputs will be sent.
+> Always set `project_name` on the replica when using `updates` to redact inputs or outputs. If the replica's `project_name` matches the active trace's destination, the `updates` may be dropped and the unredacted inputs/outputs will be sent.
 
 ## Customize tracing in deployed agents
 
@@ -242,7 +248,7 @@ async def make_graph(runtime: ServerRuntime):
     graph = build_my_graph()
 
     # You can use tracing_context to dynamically enable/disable tracing,
-    # set metadata or tags, override the tracing project, etc.
+    # set metadata or tags, select an agent environment, etc.
     with ls.tracing_context(enabled=False, metadata={"foo": "bar"}):
         yield graph
 ```
@@ -254,25 +260,25 @@ import contextlib
 import langsmith as ls
 from langgraph_sdk.runtime import ServerRuntime
 
-def get_project_for_user(user_id: str) -> str | None:
+def get_agent_for_user(user_id: str) -> str | None:
     ...
-    return "my-project"
+    return "<your-agent-id>"
 
 graph = build_my_graph()
 
 @contextlib.asynccontextmanager
 async def make_graph(runtime: ServerRuntime):
     user = runtime.user
-    # Route traces to a different project depending on user or disable tracing entirely
-    project_name = get_project_for_user(user.identity)
+    # Select a registered agent for the user or disable tracing
+    agent_id = get_agent_for_user(user.identity)
 
-    if project_name is None:
+    if agent_id is None:
         with ls.tracing_context(enabled=False):
             yield graph
     else:
         with ls.tracing_context(
             enabled=True,
-            project_name=project_name,
+            address=ls.agent_address(agent_id, "production"),
             metadata={"user_id": user.identity, "foo": "bar"},
         ):
             yield graph
@@ -360,7 +366,7 @@ This pattern is useful for one-off cases where you know specific data should not
 
 ## Enable conditional tracing based on business logic
 
-In many applications, you need to dynamically control tracing based on runtime conditions—such as client privacy requirements, regulatory compliance, or feature flags.
+You may need to control tracing dynamically based on runtime conditions—such as client privacy requirements, regulatory compliance, or feature flags.
 
 In TypeScript, the most efficient approach is to create both traced and non-traced variants of your function upfront, then select between them at runtime based on your business logic. This avoids the performance overhead of creating new traced wrappers on every request while still providing fine-grained control over when tracing occurs. For example:
 
@@ -412,6 +418,7 @@ await handleRequest("client-a", "some input");  // Traced or not based on client
 The [`tracingEnabled`](https://reference.langchain.com/javascript/langsmith/index/RunTree/tracingEnabled) option works seamlessly with automatic tracing. You can keep `LANGSMITH_TRACING=true` set globally and use `tracingEnabled` to override settings for specific functions.
 
 ```typescript theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+import { AgentAddress } from "langsmith";
 import { traceable } from "langsmith/traceable";
 
 // Global tracing enabled via environment
@@ -444,12 +451,12 @@ const processDataCustom = traceable(
     },
     {
         name: "process_data",
-        project_name: "special-project",
+        address: new AgentAddress("<your-agent-id>", "staging"),
         tracingEnabled: true
     }
 );
 
-await processDataCustom("important");  // Traced to "special-project"
+await processDataCustom("important");  // Traced to the registered agent's Staging environment
 ```
 
 ## Comparison with sampling

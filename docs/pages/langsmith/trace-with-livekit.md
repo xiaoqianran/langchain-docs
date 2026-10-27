@@ -1,6 +1,6 @@
-<!-- langchain-docs: Trace LiveKit applications | https://docs.langchain.com/langsmith/trace-with-livekit -->
+<!-- langchain-docs: Trace LiveKit agents | https://docs.langchain.com/langsmith/trace-with-livekit -->
 
-# Trace LiveKit applications
+# Trace LiveKit agents
 
 > [!NOTE]
 >
@@ -13,6 +13,10 @@ Use the LangSmith LiveKit integration to trace your [LiveKit Agents](https://doc
 > This setup requires `langsmith[livekit]>=0.11.2` and `livekit-agents>=1.6`. LiveKit Agents 1.7 and later require `langsmith[livekit]>=0.12.4`.
 
 Each conversation appears as one LangSmith trace with its pipeline events, latency, and token metrics.
+
+> [!NOTE]
+>
+> In an [agent-based workspace](/langsmith/agents), [create an agent](/langsmith/create-an-agent) once before sending traces. Use [agent addressing](/langsmith/log-traces-to-agent) to select its identifier and environment. If an integration requires `project_name`, use the selected environment's [`tracer_session_name`](/langsmith/create-an-agent#use-an-environment-project) as a compatibility value.
 
 ## Install
 
@@ -33,7 +37,8 @@ The integration reads your LangSmith credentials from the environment and export
 ```bash .env theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 LANGSMITH_API_KEY=<your-langsmith-api-key>
 LANGSMITH_TRACING=true
-LANGSMITH_PROJECT=<your-desired-langsmith-project>
+LANGSMITH_AGENT_ID="<your-agent-id>"
+LANGSMITH_AGENT_ENVIRONMENT="production"
 LIVEKIT_URL=<your-livekit-url>
 LIVEKIT_API_KEY=<your-livekit-api-key>
 LIVEKIT_API_SECRET=<your-livekit-api-secret>
@@ -74,7 +79,7 @@ This setup works for both STT/LLM/TTS cascades and speech-to-speech (realtime) m
 
 ### Use your own tracer provider
 
-If your application already manages an OpenTelemetry `TracerProvider`, add the LangSmith processor to that provider and register it with LiveKit:
+If your agent already manages an OpenTelemetry `TracerProvider`, add the LangSmith processor to that provider and register it with LiveKit:
 
 ```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 from langsmith.integrations.livekit import LiveKitLangSmithSpanProcessor

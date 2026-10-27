@@ -7044,11 +7044,11 @@
       "translatedAt": "2026-10-24T12:59:27.348Z"
     }
   },
-  "updatedAt": "2026-10-26T15:42:01.361Z",
+  "updatedAt": "2026-10-27T15:02:46.417Z",
   "stats": {
-    "translated": 176,
-    "skipped": 1496,
-    "failed": 2,
-    "total": 1674
+    "translated": 0,
+    "skipped": 1589,
+    "failed": 84,
+    "total": 1673
   }
 }

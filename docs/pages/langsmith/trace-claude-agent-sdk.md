@@ -1,8 +1,12 @@
-<!-- langchain-docs: Trace Claude Agent SDK applications | https://docs.langchain.com/langsmith/trace-claude-agent-sdk -->
+<!-- langchain-docs: Trace with the Claude Agent SDK | https://docs.langchain.com/langsmith/trace-claude-agent-sdk -->
 
-# Trace Claude Agent SDK applications
+# Trace with the Claude Agent SDK
 
-The [Claude Agent SDK](https://platform.claude.com/docs/en/agent-sdk/overview) is an SDK for building agentic applications with Claude. LangSmith provides native integration with the Claude Agent SDK to automatically trace your agent executions, tool calls, and interactions with Claude models.
+The [Claude Agent SDK](https://platform.claude.com/docs/en/agent-sdk/overview) is an SDK for building agents with Claude. LangSmith provides native integration with the Claude Agent SDK to automatically trace your agent executions, tool calls, and interactions with Claude models.
+
+> [!NOTE]
+>
+> In an [agent-based workspace](/langsmith/agents), [create an agent](/langsmith/create-an-agent) once before sending traces. Use [agent addressing](/langsmith/log-traces-to-agent) to select its identifier and environment. If an integration requires `project_name`, use the selected environment's [`tracer_session_name`](/langsmith/create-an-agent#use-an-environment-project) as a compatibility value.
 
 ## Installation
 
@@ -46,13 +50,13 @@ LANGSMITH_PROJECT=<your_langsmith_project>
 ANTHROPIC_API_KEY=<your_anthropic_api_key>
 ```
 
-You can find your LangSmith API key and project name in the [LangSmith UI](https://smith.langchain.com?utm_source=docs\&utm_medium=cta\&utm_campaign=langsmith-signup\&utm_content=langsmith-trace-claude-agent-sdk) under **Settings**.
+Get your LangSmith API key from **Settings** in the [LangSmith UI](https://smith.langchain.com?utm_source=docs\&utm_medium=cta\&utm_campaign=langsmith-signup\&utm_content=langsmith-trace-claude-agent-sdk). Use the agent identifier and environment selected during setup.
 
 For an Anthropic API key, refer to the [Claude console](https://console.anthropic.com/settings/keys).
 
 ## Quickstart
 
-To enable LangSmith tracing for your Claude Agent SDK application, call `configure_claude_agent_sdk()` at the start of your application:
+To enable LangSmith tracing for your Claude Agent SDK code, call `configure_claude_agent_sdk()` before running your agent:
 
 ```python Python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 import asyncio

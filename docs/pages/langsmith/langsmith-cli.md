@@ -2,7 +2,7 @@
 
 # LangSmith CLI
 
-Query and manage LangSmith projects, traces, runs, datasets, evaluators, experiments, insights, and threads from the terminal
+Query and manage agent traces, runs, datasets, evaluators, experiments, insights, and threads from the terminal
 
 The LangSmith CLI is a command-line tool for querying and managing your LangSmith data. It's designed for both developers and AI coding agents and outputs human-readable tables by default, with a `--format json` option for scripting. Use it when you need scriptable access to your LangSmith data, such as bulk exports, automation, or giving a coding agent direct access to your [traces, runs, and datasets](/langsmith/observability-concepts).
 
@@ -46,6 +46,8 @@ Use the `--dry-run` flag to preview the update without installing.
 > Querying a [SmithDB](/langsmith/smithdb-sdk-migration)-backed deployment requires LangSmith CLI `v0.2.44` or later.
 
 ## Authenticate
+
+The CLI selects an agent environment through `--project` or `LANGSMITH_PROJECT`. [Retrieve that environment's `tracer_session_name`](/langsmith/create-an-agent#use-an-environment-project) and use it for these options. Commands named `project` operate on the [backing trace storage](/langsmith/observability-concepts#agents-and-environments).
 
 `langsmith auth login` requires LangSmith CLI `v0.2.30` or later. `langsmith profile` commands require LangSmith CLI `v0.2.26` or later.
 
@@ -91,10 +93,10 @@ Set your [API key](/langsmith/create-account-api-key) as an environment variable
 export LANGSMITH_API_KEY="lsv2_..."
 ```
 
-Optionally, set a default project for queries:
+Optionally, set the agent environment to query by default using its `tracer_session_name`:
 
 ```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-export LANGSMITH_PROJECT="my-default-project"
+export LANGSMITH_PROJECT="<environment-tracer-session-name>"
 ```
 
 If you're using LangSmith [self-hosted](/langsmith/self-hosted), also set the endpoint:
@@ -106,7 +108,7 @@ export LANGSMITH_ENDPOINT="https://your-langsmith-instance.com"
 Or, pass them as flags per command:
 
 ```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-langsmith --api-key lsv2_... trace list --project my-app
+langsmith --api-key lsv2_... trace list --project "<environment-tracer-session-name>"
 ```
 
 ### Self-hosted instances
@@ -162,20 +164,20 @@ The following commands cover the core resource types:
 langsmith project list
 
 # List recent traces in a project
-langsmith trace list --project my-app --limit 5
+langsmith trace list --project "<environment-tracer-session-name>" --limit 5
 
 # Get a specific trace with full detail
-langsmith trace get <trace-id> --project my-app --full
+langsmith trace get <trace-id> --project "<environment-tracer-session-name>" --full
 
 # List LLM runs with token counts
-langsmith run list --project my-app --run-type llm --include-metadata
+langsmith run list --project "<environment-tracer-session-name>" --run-type llm --include-metadata
 
 # Datasets and experiments
 langsmith dataset list
 langsmith experiment list --dataset my-eval-set
 
 # Conversation threads
-langsmith thread list --project my-chatbot
+langsmith thread list --project "<environment-tracer-session-name>"
 
 # Sandboxes
 langsmith sandbox list
@@ -189,7 +191,7 @@ langsmith sandbox tunnel my-vm --remote-port 5432
 Human-readable tables:
 
 ```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-langsmith trace list --project my-app
+langsmith trace list --project "<environment-tracer-session-name>"
 ```
 
 **JSON**
@@ -197,7 +199,7 @@ langsmith trace list --project my-app
 `--format json` to pipe, script, or feed output to an agent:
 
 ```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-langsmith --format json trace list --project my-app
+langsmith --format json trace list --project "<environment-tracer-session-name>"
 ```
 
 **Write to file**
@@ -205,16 +207,16 @@ langsmith --format json trace list --project my-app
 `-o <path>`:
 
 ```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-langsmith trace list --project my-app -o traces.json
+langsmith trace list --project "<environment-tracer-session-name>" -o traces.json
 ```
 
 ## Commands
 
 Each command group targets a specific LangSmith resource. Most commands support `--limit`, `--offset`, and a shared set of [filter flags](#filter-flags).
 
-### List projects
+### List trace-storage destinations
 
-Returns up to 20 projects by default, sorted by most recent activity. Lists tracing projects only. (Use [`experiment list`](#view-experiments) to list evaluation experiments.)
+The legacy `project list` command lists the backing trace-storage destinations, including those associated with agent environments. It returns up to 20 by default, sorted by most recent activity. Use [`experiment list`](#view-experiments) to list evaluation experiments.
 
 ```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 langsmith project list
@@ -227,14 +229,14 @@ langsmith --format json project list
 Defaults to the last 7 days, newest first. Use `--since` or `--last-n-minutes` to change the time window.
 
 ```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-langsmith trace list --project my-app --limit 50 --last-n-minutes 60
-langsmith trace list --project my-app --error                     # errors only
-langsmith trace list --project my-app --min-latency 5             # slow traces (>5s)
-langsmith trace list --project my-app --tags production           # filter by tag
-langsmith trace list --project my-app --full                      # all fields
-langsmith trace list --project my-app --show-hierarchy --limit 3  # include full run tree
-langsmith trace get <trace-id> --project my-app --full
-langsmith trace export ./traces --project my-app --limit 20 --full
+langsmith trace list --project "<environment-tracer-session-name>" --limit 50 --last-n-minutes 60
+langsmith trace list --project "<environment-tracer-session-name>" --error                     # errors only
+langsmith trace list --project "<environment-tracer-session-name>" --min-latency 5             # slow traces (>5s)
+langsmith trace list --project "<environment-tracer-session-name>" --tags production           # filter by tag
+langsmith trace list --project "<environment-tracer-session-name>" --full                      # all fields
+langsmith trace list --project "<environment-tracer-session-name>" --show-hierarchy --limit 3  # include full run tree
+langsmith trace get <trace-id> --project "<environment-tracer-session-name>" --full
+langsmith trace export ./traces --project "<environment-tracer-session-name>" --limit 20 --full
 ```
 
 ### Query runs
@@ -242,11 +244,11 @@ langsmith trace export ./traces --project my-app --limit 20 --full
 Defaults to 50 results (most other commands default to 20). The same 7-day time window applies. Use `--since` or `--last-n-minutes` to override.
 
 ```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-langsmith run list --project my-app --run-type llm
-langsmith run list --project my-app --run-type tool --name search
-langsmith run list --project my-app --min-tokens 1000 --include-metadata
+langsmith run list --project "<environment-tracer-session-name>" --run-type llm
+langsmith run list --project "<environment-tracer-session-name>" --run-type tool --name search
+langsmith run list --project "<environment-tracer-session-name>" --min-tokens 1000 --include-metadata
 langsmith run get <run-id> --full
-langsmith run export llm_calls.jsonl --project my-app --run-type llm --full
+langsmith run export llm_calls.jsonl --project "<environment-tracer-session-name>" --run-type llm --full
 ```
 
 ### Query threads
@@ -254,8 +256,8 @@ langsmith run export llm_calls.jsonl --project my-app --run-type llm --full
 `--project` is required for all thread commands.
 
 ```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-langsmith thread list --project my-chatbot --last-n-minutes 120
-langsmith thread get <thread-id> --project my-chatbot --full
+langsmith thread list --project "<environment-tracer-session-name>" --last-n-minutes 120
+langsmith thread get <thread-id> --project "<environment-tracer-session-name>" --full
 ```
 
 ### Manage datasets
@@ -288,14 +290,14 @@ langsmith example delete <example-id> --yes
 
 ### Manage evaluators
 
-Evaluators can be offline (run against a dataset during experiments) or online (run against a live project). Use `--sampling-rate` to evaluate only a fraction of production runs, and `--replace` to overwrite an existing evaluator by name.
+Evaluators can be offline (run against a dataset during experiments) or online (run against an agent environment). Use `--sampling-rate` to evaluate only a fraction of production runs, and `--replace` to overwrite an existing evaluator by name.
 
 ```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 langsmith evaluator list
 langsmith evaluator upload evals.py --name accuracy \
   --function check_accuracy --dataset my-eval-set
 langsmith evaluator upload evals.py --name latency-check \
-  --function check_latency --project my-app --sampling-rate 0.5
+  --function check_latency --project "<environment-tracer-session-name>" --sampling-rate 0.5
 langsmith evaluator upload evals.py --name accuracy \
   --function check_accuracy_v2 --dataset my-eval-set --replace --yes
 langsmith evaluator delete accuracy --yes
@@ -303,7 +305,7 @@ langsmith evaluator delete accuracy --yes
 
 ### View experiments
 
-`experiment list` shows evaluation experiments, not tracing projects. (Use [`project list`](#list-projects) to list tracing projects.)
+`experiment list` shows evaluation experiments. Use [`project list`](#list-projects) for the trace-storage destinations associated with agent environments.
 
 ```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 langsmith experiment list
@@ -313,7 +315,7 @@ langsmith experiment get my-experiment-2024-01-15
 
 ### Manage insights
 
-`insights` commands create, run, and read [Insights](/langsmith/insights) reports, which group a project's traces into categories to surface usage patterns and failure modes. Every `insights` command needs `--project`, `--project-id`, or the `LANGSMITH_PROJECT` environment variable.
+`insights` commands create, run, and read [Insights](/langsmith/insights) reports, which group an agent environment's traces into categories to surface usage patterns and failure modes. Every `insights` command needs `--project`, `--project-id`, or the `LANGSMITH_PROJECT` environment variable.
 
 > [!NOTE]
 >
@@ -342,30 +344,30 @@ The file also accepts `filter`, `sample`, `hierarchy`, `partitions`, `attribute_
 `insights create` saves the file as a job configuration and starts the first report. Reports run asynchronously and incur model costs. The workspace needs secrets for the selected models. Pass `--wait` to poll until the report succeeds or fails, for up to 30 minutes. Pass `--config -` to read the file from stdin.
 
 ```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-langsmith insights create --project my-app --config insights.json
-langsmith insights create --project my-app --config insights.json --wait
+langsmith insights create --project "<environment-tracer-session-name>" --config insights.json
+langsmith insights create --project "<environment-tracer-session-name>" --config insights.json --wait
 ```
 
 `insights run` starts a new report from a saved configuration without changing the configuration or its schedule:
 
 ```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-langsmith insights config list --project my-app
-langsmith insights config list --project my-app --include-prebuilt
-langsmith insights run <config-id> --project my-app --wait
+langsmith insights config list --project "<environment-tracer-session-name>"
+langsmith insights config list --project "<environment-tracer-session-name>" --include-prebuilt
+langsmith insights run <config-id> --project "<environment-tracer-session-name>" --wait
 ```
 
 `insights list` returns reports with their status and category counts. `insights get` adds the executive summary, highlighted traces, and per-category statistics:
 
 ```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-langsmith insights list --project my-app --limit 5
-langsmith insights get <insight-id> --project my-app
+langsmith insights list --project "<environment-tracer-session-name>" --limit 5
+langsmith insights get <insight-id> --project "<environment-tracer-session-name>"
 ```
 
 `insights config update` replaces a configuration's name and analysis settings from a JSON file in the same format. It does not start a report. Omit `description` or `schedule_cron` to keep the current value, or set `schedule_cron` to `null` to stop the schedule. `insights config delete` removes the configuration and every report it produced.
 
 ```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-langsmith insights config update <config-id> --project my-app --config insights.json
-langsmith insights config delete <config-id> --project my-app --yes
+langsmith insights config update <config-id> --project "<environment-tracer-session-name>" --config insights.json
+langsmith insights config delete <config-id> --project "<environment-tracer-session-name>" --yes
 ```
 
 ### Manage sandboxes
@@ -436,7 +438,7 @@ Most `trace` and `run` commands share these filters:
 
 | Flag | Description | Example |
 | - | - | - |
-| `--project` | Project name | `--project my-app` |
+| `--project` | Agent environment's `tracer_session_name` | `--project "<environment-tracer-session-name>"` |
 | `--limit, -n` | Max results | `-n 10` |
 | `--offset` | Pagination offset | `--offset 20` |
 | `--last-n-minutes` | Override the 7-day default | `--last-n-minutes 60` |

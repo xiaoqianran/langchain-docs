@@ -680,7 +680,7 @@ Days an offloaded conversation-history archive is kept before the startup sweep 
 
 **DEEPAGENTS\_CODE\_LANGSMITH\_PROJECT** `string`
 
-Override the LangSmith project name for Deep Agents Code's own agent traces. Shell commands still run with the user's original `LANGSMITH_PROJECT`, so app, test, or script traces can appear in a separate project. See [Trace with LangSmith](/oss/deepagents/code/quickstart#trace-with-langsmith).
+Select the agent environment for Deep Agents Code's own traces using its [`tracer_session_name`](/langsmith/create-an-agent#use-an-environment-project). Shell commands still run with the user's original `LANGSMITH_PROJECT`, so traces from tests or scripts can go to a different agent environment. See [Trace with LangSmith](/oss/deepagents/code/quickstart#trace-with-langsmith).
 
 **DEEPAGENTS\_CODE\_LANGSMITH\_REDACT** `string` (default: true)
 
@@ -688,7 +688,7 @@ Toggle client-side secret redaction for Deep Agents Code's LangSmith agent-trace
 
 **DEEPAGENTS\_CODE\_LANGSMITH\_REPLICA\_PROJECTS** `string`
 
-A second LangSmith project to *also* write agent traces to. When set and tracing is active, each agent run is dual-written to the primary project (from `DEEPAGENTS_CODE_LANGSMITH_PROJECT`, or `deepagents-code` by default) and this project. Off by default. See [Trace with LangSmith](/oss/deepagents/code/quickstart#trace-with-langsmith).
+A second agent environment to copy traces to. Create the destination agent before enabling replicas. Set this variable and `DEEPAGENTS_CODE_LANGSMITH_PROJECT` to the respective environments' `tracer_session_name` values. When tracing is active, each run is written to both destinations. Off by default. See [Trace with LangSmith](/oss/deepagents/code/quickstart#trace-with-langsmith).
 
 **DEEPAGENTS\_CODE\_LANGSMITH\_TRACING** `string`
 

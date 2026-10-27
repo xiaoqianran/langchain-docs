@@ -1,12 +1,16 @@
-<!-- langchain-docs: Trace Google ADK applications | https://docs.langchain.com/langsmith/trace-with-google-adk -->
+<!-- langchain-docs: Trace Google ADK agents | https://docs.langchain.com/langsmith/trace-with-google-adk -->
 
-# Trace Google ADK applications
+# Trace Google ADK agents
 
-This guide shows you how to trace [Google Agent Development Kit (ADK)](https://github.com/google/adk-python) agents in LangSmith. You'll configure automatic tracing for your ADK applications to capture agent invocations, tool calls, and LLM interactions.
+This guide shows you how to trace [Google Agent Development Kit (ADK)](https://github.com/google/adk-python) agents in LangSmith. You'll configure automatic tracing for your ADK agents to capture agent invocations, tool calls, and LLM interactions.
 
 > [!NOTE]
 >
-> This guide covers ADK's standard execution paths (text agents, tools, and multi-agent workflows). To trace a **Gemini Live** voice agent, which uses ADK's `Runner.run_live` streaming loop, see [Trace Gemini Live applications](/langsmith/trace-gemini-live).
+> This guide covers ADK's standard execution paths (text agents, tools, and multi-agent workflows). To trace a **Gemini Live** voice agent, which uses ADK's `Runner.run_live` streaming loop, see [Trace Gemini Live agents](/langsmith/trace-gemini-live).
+
+> [!NOTE]
+>
+> In an [agent-based workspace](/langsmith/agents), [create an agent](/langsmith/create-an-agent) once before sending traces. Use [agent addressing](/langsmith/log-traces-to-agent) to select its identifier and environment. If an integration requires `project_name`, use the selected environment's [`tracer_session_name`](/langsmith/create-an-agent#use-an-environment-project) as a compatibility value.
 
 ## Installation
 
@@ -46,19 +50,19 @@ To create a Google API key, refer to [Google AI Studio](https://aistudio.google.
 
 ## Configure tracing
 
-To trace ADK agents, use `configure_google_adk()` from the LangSmith SDK. Call this function once at the start of your application before creating any ADK agents:
+Set `LANGSMITH_AGENT_ID` and `LANGSMITH_AGENT_ENVIRONMENT` to the agent registered during setup. Leave `project_name` unset to use this destination.
+
+To trace ADK agents, use `configure_google_adk()` from the LangSmith SDK. Call this function once before creating any ADK agents:
 
 ```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 from langsmith.integrations.google_adk import configure_google_adk
 
-configure_google_adk(
-    project_name="my-adk-project",  # Optional: defaults to LANGSMITH_PROJECT env var
-)
+configure_google_adk()
 ```
 
 The function accepts the following optional parameters:
 
-* `project_name`: LangSmith project to send traces to. Defaults to the `LANGSMITH_PROJECT` environment variable.
+* `project_name`: Compatibility override for project-based tracing. Leave it unset to use the configured agent and environment.
 * `name`: Name for the root trace. Defaults to `"google_adk.session"`.
 * `metadata`: Dictionary of key-value pairs for additional context.
 * `tags`: List of strings to categorize traces.
@@ -131,7 +135,7 @@ if __name__ == "__main__":
 
 ## View traces in LangSmith
 
-After running your application, you can view traces in the [LangSmith UI](https://smith.langchain.com?utm_source=docs\&utm_medium=cta\&utm_campaign=langsmith-signup\&utm_content=langsmith-trace-with-google-adk) that include:
+After running your agent, you can view traces in the [LangSmith UI](https://smith.langchain.com?utm_source=docs\&utm_medium=cta\&utm_campaign=langsmith-signup\&utm_content=langsmith-trace-with-google-adk) that include:
 
 * **Agent invocations**: Complete flows through your ADK agents
 * **Tool calls**: Individual function calls made by agents
@@ -146,7 +150,6 @@ Add metadata and tags when configuring tracing to categorize and filter traces:
 from langsmith.integrations.google_adk import configure_google_adk
 
 configure_google_adk(
-    project_name="production-agents",
     metadata={
         "environment": "production",
         "team": "ml-platform",

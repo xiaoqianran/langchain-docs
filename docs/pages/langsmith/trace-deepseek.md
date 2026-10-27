@@ -1,10 +1,14 @@
-<!-- langchain-docs: Trace DeepSeek applications | https://docs.langchain.com/langsmith/trace-deepseek -->
+<!-- langchain-docs: Trace with DeepSeek | https://docs.langchain.com/langsmith/trace-deepseek -->
 
-# Trace DeepSeek applications
+# Trace with DeepSeek
 
-[DeepSeek](https://deepseek.com/) provides high-performance, OpenAI-compatible language models including `deepseek-chat` (for general conversations) and `deepseek-reasoner` (for advanced reasoning tasks). Using LangSmith allows you to debug, monitor, and evaluate your LLM applications by capturing structured traces of inputs, outputs, and metadata.
+[DeepSeek](https://deepseek.com/) provides high-performance, OpenAI-compatible language models including `deepseek-chat` (for general conversations) and `deepseek-reasoner` (for advanced reasoning tasks). Using LangSmith allows you to debug, monitor, and evaluate your agents by capturing structured traces of inputs, outputs, and metadata.
 
 This guide shows you how to integrate DeepSeek with LangSmith in both Python and TypeScript, using LangSmith's [`@traceable`](https://reference.langchain.com/python/langsmith/run_helpers/traceable) (Python) and [`traceable(...)`](https://reference.langchain.com/javascript/langsmith) (TypeScript) utilities to log LLM calls automatically.
+
+> [!NOTE]
+>
+> In an [agent-based workspace](/langsmith/agents), [create an agent](/langsmith/create-an-agent) once before sending traces. Use [agent addressing](/langsmith/log-traces-to-agent) to select its identifier and environment. If an integration requires `project_name`, use the selected environment's [`tracer_session_name`](/langsmith/create-an-agent#use-an-environment-project) as a compatibility value.
 
 ## Installation
 
@@ -26,18 +30,19 @@ DeepSeek provides an [OpenAI-compatible API](https://api-docs.deepseek.com/), wh
 
 ## Setup
 
-Set your [API keys](/langsmith/create-account-api-key) and project name:
+Set your [API keys](/langsmith/create-account-api-key), agent identifier, and environment:
 
 ```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 export LANGSMITH_API_KEY="your-langsmith-api-key"
 export LANGSMITH_TRACING="true"
-export LANGSMITH_PROJECT="deepseek-integration"
+export LANGSMITH_AGENT_ID="<your-agent-id>"
+export LANGSMITH_AGENT_ENVIRONMENT="production"
 export DEEPSEEK_API_KEY="your-deepseek-api-key"
 ```
 
 * Ensure you have a DeepSeek API key from your [DeepSeek account](https://platform.deepseek.com/).
 * Set `LANGSMITH_TRACING=true` and provide your LangSmith API key (`LANGSMITH_API_KEY`) activates automatic logging of traces.
-* Specify a [`LANGSMITH_PROJECT`](/langsmith/log-traces-to-project) name to organize traces by project; if not set, traces go to the default project (named "default").
+* Set `LANGSMITH_AGENT_ID` and `LANGSMITH_AGENT_ENVIRONMENT` to the registered agent and environment.
 * The `LANGSMITH_TRACING` flag must be true for any traces to be recorded.
 
 ## Configure tracing
@@ -161,7 +166,7 @@ export DEEPSEEK_API_KEY="your-deepseek-api-key"
 After running the example, you can inspect the recorded traces in the [LangSmith UI](https://smith.langchain.com?utm_source=docs\&utm_medium=cta\&utm_campaign=langsmith-signup\&utm_content=langsmith-trace-deepseek):
 
 1. Open the LangSmith UI and log in to your account.
-2. Select the project you used for this integration (for example, the name set in `LANGSMITH_PROJECT`, or "default" if you didn't set one).
+2. Select the agent and environment configured during setup.
 3. Find the trace corresponding to your DeepSeek API call. It will be identified by the function name (`DeepSeek Chat Completion`).
 4. Click on the trace to open it. You'll be able to inspect the model input and output, including the prompt messages you sent and the response from DeepSeek, as well as timing information (latency) and token usage.
 

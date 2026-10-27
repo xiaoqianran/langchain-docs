@@ -1,10 +1,14 @@
-<!-- langchain-docs: Trace Claude Code applications | https://docs.langchain.com/langsmith/trace-claude-code -->
+<!-- langchain-docs: Trace Claude Code sessions | https://docs.langchain.com/langsmith/trace-claude-code -->
 
-# Trace Claude Code applications
+# Trace Claude Code sessions
 
 This guide shows you how to send conversations automatically from the [Claude Code CLI](https://code.claude.com/docs/en/overview) to LangSmith.
 
 Once configured, each Claude Code project can opt in to sending traces to LangSmith. Each trace includes user messages, tool calls, compaction, subagent runs, and assistant responses. System prompts are not included, because Claude Code does not return them in conversation transcripts.
+
+> [!NOTE]
+>
+> This integration uses a legacy destination setting such as `project_name` or `LANGSMITH_PROJECT`. [Create an agent](/langsmith/create-an-agent), choose its environment, and [retrieve that environment's `tracer_session_name`](/langsmith/create-an-agent#use-an-environment-project). Use that returned value in the destination setting and any overrides. For integrations that support agent addressing, use the [agent identifier and environment](/langsmith/log-traces-to-agent) directly.
 
 ## Prerequisites
 
@@ -52,7 +56,7 @@ The plugin requires the following environment variables:
 
 * `TRACE_TO_LANGSMITH: "true"`: Enables tracing for this project. Remove or set to `false` to disable tracing.
 * `CC_LANGSMITH_API_KEY`: Your LangSmith API key.
-* `CC_LANGSMITH_PROJECT`: The LangSmith project name to which your traces will send.
+* `CC_LANGSMITH_PROJECT`: The selected agent environment's `tracer_session_name`.
 * (optional) `CC_LANGSMITH_METADATA`: JSON object of custom metadata to attach to all runs (e.g., PR URL, author).
 * (optional) `CC_LANGSMITH_DEBUG: "true"`: Enables detailed debug logging. Remove or set to `false` to disable debug logging.
 
@@ -63,7 +67,7 @@ To get set up, create or edit [Claude Code's project settings file](https://code
   "env": {
     "TRACE_TO_LANGSMITH": "true",
     "CC_LANGSMITH_API_KEY": "<LangSmith API key>",
-    "CC_LANGSMITH_PROJECT": "my-project"
+    "CC_LANGSMITH_PROJECT": "<environment-tracer-session-name>"
   }
 }
 ```
@@ -79,17 +83,17 @@ Run the following commands in your shell or add them to your shell configuration
 ```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 export TRACE_TO_LANGSMITH="true"
 export CC_LANGSMITH_API_KEY="<LangSmith API key>"
-export CC_LANGSMITH_PROJECT="my-project"
+export CC_LANGSMITH_PROJECT="<environment-tracer-session-name>"
 ```
 
 ## Verify setup
 
-Traces will appear complete in your [LangSmith](https://smith.langsmith.com) project after Claude Code responds. If you interrupt a run while it is in progress, the plugin will only flush that run when you send the next message or end the session.
+Traces appear in the selected agent environment in [LangSmith](https://smith.langchain.com?utm_source=docs\&utm_medium=cta\&utm_campaign=langsmith-signup\&utm_content=langsmith-trace-claude-code) after Claude Code responds. If you interrupt a run while it is in progress, the plugin will only flush that run when you send the next message or end the session.
 
 In LangSmith, you'll find:
 
 * Each message to Claude Code appears as a trace.
-* All turns from the same Claude Code session are grouped using a shared `thread_id`, which you can view in the **Threads** tab of a project.
+* All turns from the same Claude Code session are grouped using a shared `thread_id`, which you can view in the **Threads** tab for that environment.
 
 ## Custom metadata
 
@@ -102,7 +106,7 @@ Set the `CC_LANGSMITH_METADATA` environment variable to a JSON object to attach 
   "env": {
     "TRACE_TO_LANGSMITH": "true",
     "CC_LANGSMITH_API_KEY": "<LangSmith API key>",
-    "CC_LANGSMITH_PROJECT": "my-project",
+    "CC_LANGSMITH_PROJECT": "<environment-tracer-session-name>",
     "CC_LANGSMITH_METADATA": "{\"author\":\"jane\",\"environment\":\"development\"}"
   }
 }
@@ -140,7 +144,7 @@ To start threads in metadata-only mode without running a command in each one, se
   "env": {
     "TRACE_TO_LANGSMITH": "true",
     "CC_LANGSMITH_API_KEY": "<LangSmith API key>",
-    "CC_LANGSMITH_PROJECT": "my-project",
+    "CC_LANGSMITH_PROJECT": "<environment-tracer-session-name>",
     "CC_LANGSMITH_DEFAULT_MUTED": "true"
   }
 }
@@ -214,7 +218,7 @@ You can use this plugin with [`anthropics/claude-code-action`](https://github.co
   env:
     TRACE_TO_LANGSMITH: "true"
     CC_LANGSMITH_API_KEY: ${{ secrets.LANGSMITH_API_KEY }}
-    CC_LANGSMITH_PROJECT: "my-project"
+    CC_LANGSMITH_PROJECT: "<environment-tracer-session-name>"
     CC_LANGSMITH_METADATA: |
       {
         "pr_url": "${{ github.event.pull_request.html_url || '' }}",
@@ -310,11 +314,11 @@ Your outer run (chain)
 
 ## Trace to multiple destinations (replicas)
 
-You can trace to multiple LangSmith projects or workspaces simultaneously using the `CC_LANGSMITH_RUNS_ENDPOINTS` environment variable. Set `CC_LANGSMITH_RUNS_ENDPOINTS` to a JSON array of replica configurations. This overrides other client settings.
+You can trace to multiple agent environments or workspaces simultaneously using the `CC_LANGSMITH_RUNS_ENDPOINTS` environment variable. Set `CC_LANGSMITH_RUNS_ENDPOINTS` to a JSON array of replica configurations. This overrides other client settings.
 
-Tracing to multiple [replicas](/langsmith/log-traces-to-project) is useful for:
+Tracing to multiple [replicas](/langsmith/trace-replicas) is useful for:
 
-* Sending traces to both a production and staging project.
+* Sending traces to both Production and Staging environments.
 * Tracing to multiple workspaces with different API keys.
 * Adding extra metadata to specific replica destinations.
 
@@ -324,7 +328,7 @@ Each replica object supports the following fields:
 | - | - | - |
 | `apiUrl` | Yes | LangSmith API URL (typically `https://api.smith.langchain.com`) |
 | `apiKey` | Yes | API key for the destination [workspace](/langsmith/administration-overview#workspaces) |
-| `projectName` | Yes | Project name in the destination workspace |
+| `projectName` | Yes | Destination agent environment's `tracer_session_name` |
 | `updates` | No | Optional metadata/fields to override on the replicated runs |
 
 There are two ways to set the `CC_LANGSMITH_RUNS_ENDPOINTS` environment variable:
@@ -337,7 +341,7 @@ In your local `.claude/settings.local.json` or global `~/.claude/settings.json`:
 {
   "env": {
     "TRACE_TO_LANGSMITH": "true",
-    "CC_LANGSMITH_RUNS_ENDPOINTS": "[{\"apiUrl\":\"https://api.smith.langchain.com\",\"apiKey\":\"ls__key_workspace_a\",\"projectName\":\"project-prod\"},{\"apiUrl\":\"https://api.smith.langchain.com\",\"apiKey\":\"ls__key_workspace_b\",\"projectName\":\"project-staging\",\"updates\":{\"metadata\":{\"environment\":\"staging\"}}}]"
+    "CC_LANGSMITH_RUNS_ENDPOINTS": "[{\"apiUrl\":\"https://api.smith.langchain.com\",\"apiKey\":\"ls__key_workspace_a\",\"projectName\":\"<production-tracer-session-name>\"},{\"apiUrl\":\"https://api.smith.langchain.com\",\"apiKey\":\"ls__key_workspace_b\",\"projectName\":\"<staging-tracer-session-name>\",\"updates\":{\"metadata\":{\"environment\":\"staging\"}}}]"
   }
 }
 ```
@@ -357,7 +361,7 @@ In your local `.claude/settings.local.json` or global `~/.claude/settings.json`:
 Add to your `~/.zshrc`, `~/.bashrc`, or `~/.bash_profile`:
 
 ```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-export CC_LANGSMITH_RUNS_ENDPOINTS='[{"apiUrl":"https://api.smith.langchain.com","apiKey":"ls__key_workspace_a","projectName":"project-prod"},{"apiUrl":"https://api.smith.langchain.com","apiKey":"ls__key_workspace_b","projectName":"project-staging","updates":{"metadata":{"environment":"staging"}}}]'
+export CC_LANGSMITH_RUNS_ENDPOINTS='[{"apiUrl":"https://api.smith.langchain.com","apiKey":"ls__key_workspace_a","projectName":"<production-tracer-session-name>"},{"apiUrl":"https://api.smith.langchain.com","apiKey":"ls__key_workspace_b","projectName":"<staging-tracer-session-name>","updates":{"metadata":{"environment":"staging"}}}]'
 ```
 
 ## Troubleshooting
@@ -373,7 +377,7 @@ export CC_LANGSMITH_RUNS_ENDPOINTS='[{"apiUrl":"https://api.smith.langchain.com"
 2. **Verify environment variables**:
    * Check that `TRACE_TO_LANGSMITH="true"` in your project's `.claude/settings.local.json`.
    * Verify your Personal Access Token (PAT) is correct (starts with `lsv2_pt_`).
-   * Ensure the project name exists in LangSmith.
+   * Ensure the agent exists and the configured destination matches its environment's `tracer_session_name`.
 
 3. **Enable debug mode** to see detailed API activity:
    ```json theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}

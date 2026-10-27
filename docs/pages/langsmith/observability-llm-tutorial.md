@@ -1,19 +1,19 @@
-<!-- langchain-docs: Trace an LLM application tutorial | https://docs.langchain.com/langsmith/observability-llm-tutorial -->
+<!-- langchain-docs: Trace an agent | https://docs.langchain.com/langsmith/observability-llm-tutorial -->
 
-# Trace an LLM application tutorial
+# Trace an agent
 
-Add LangSmith observability to an LLM application across prototyping, beta testing, and production.
+Add LangSmith observability to an agent across prototyping, beta testing, and production.
 
 In this tutorial, you will build a customer support chatbot using retrieval-augmented generation (RAG) and add LangSmith observability at each stage of development, from early prototyping through production.
 
 By the end, you will know how to:
 
-* Trace individual LLM calls and full application pipelines.
+* Trace individual LLM calls and full agent pipelines.
 * Collect and query user feedback.
 * Log metadata and use it for filtering and A/B testing.
 * Use monitoring dashboards to track production performance.
 
-The application will retrieve relevant documentation snippets and use them to answer user questions. The retriever is mocked in this tutorial; in a real application you would replace it with a vector search or similar.
+The agent will retrieve relevant documentation snippets and use them to answer user questions. The retriever is mocked in this tutorial; in a real agent you would replace it with a vector search or similar.
 
 ## Prerequisites
 
@@ -49,7 +49,22 @@ export LANGSMITH_API_KEY="<your-api-key>"
 export OPENAI_API_KEY="<your-openai-api-key>"
 ```
 
-To send traces to a specific project, use the [`LANGSMITH_PROJECT` environment variable](/langsmith/log-traces-to-project). If this is not set, LangSmith will create a default tracing project automatically on trace ingestion. In an [agent-based workspace](/langsmith/agents), the first trace to a new project name, including the default project, creates an agent named after the project, with the project as its **Production** [environment](/langsmith/agent-environments). The agent's identifier is derived from the project name, so it can differ from the project name, and creating the agent requires permission to create projects. To name the agent and the environment directly instead, see [Log traces to an agent](/langsmith/log-traces-to-agent).
+Before sending traces, create the agent in LangSmith:
+
+1. In an [agent-based workspace](/langsmith/agents), open **+ Agent**, choose **Observability**, and create an agent with an **Agent name** and **Agent ID**. This requires the `projects:create` permission. If the agent already exists, reuse it.
+2. Copy the **Agent ID** and choose an environment: `local`, `development`, `staging`, or `production`.
+3. Configure [agent addressing](/langsmith/log-traces-to-agent) before running the agent:
+
+   ```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+   export LANGSMITH_AGENT_ID="<your-agent-id>"
+   export LANGSMITH_AGENT_ENVIRONMENT="production"
+   ```
+
+Register the agent once, not for every trace. Remove `LANGSMITH_PROJECT`, `LANGCHAIN_PROJECT`, and `LANGCHAIN_SESSION` from the environment where your code runs. Do not combine legacy destination settings with agent addressing. To create the agent with an SDK call or API request, see [Create an agent programmatically](/langsmith/create-an-agent#create-an-agent-programmatically).
+
+> **Project-based workspaces and self-hosted LangSmith**
+>
+> Agent addressing is available in agent-based workspaces on LangSmith Cloud. In a project-based workspace, including self-hosted LangSmith, set `LANGSMITH_PROJECT` to your tracing project name instead of setting the two agent variables.
 
 > [!NOTE]
 >
@@ -137,7 +152,7 @@ Calling `support_bot("How many users can I have on the Starter plan?")` produces
 
 ### Trace the whole pipeline
 
-Tracing the LLM call is useful, but tracing the full pipeline (including retrieval) gives you a complete overview of your application's behavior. Add [`@traceable`](https://reference.langchain.com/python/langsmith/run_helpers/traceable) (Python) or [`traceable`](https://reference.langchain.com/javascript/langsmith/traceable) (TypeScript) to the main function:
+Tracing the LLM call is useful, but tracing the full pipeline (including retrieval) gives you a complete overview of your agent's behavior. Add [`@traceable`](https://reference.langchain.com/python/langsmith/run_helpers/traceable) (Python) or [`traceable`](https://reference.langchain.com/javascript/langsmith/traceable) (TypeScript) to the main function:
 
 ```python Python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 from openai import OpenAI
@@ -216,14 +231,14 @@ const supportBot = traceable(async function supportBot(question: string): Promis
 
 Calling `support_bot("How many users can I have on the Starter plan?")` now produces a trace of the full RAG pipeline.
 
-![LangSmith UI showing a trace with an outer application span and a nested LLM call span.](https://mintcdn.com/langchain-5e9cc07a/EKYgNtnIIDPnseTv/langsmith/images/trace-whole-pipeline.png?fit=max\&auto=format\&n=EKYgNtnIIDPnseTv\&q=85\&s=158b82743e86bc48be7ccbd2ddf79e4a)
+![LangSmith UI showing a trace with an outer agent span and a nested LLM call span.](https://mintcdn.com/langchain-5e9cc07a/EKYgNtnIIDPnseTv/langsmith/images/trace-whole-pipeline.png?fit=max\&auto=format\&n=EKYgNtnIIDPnseTv\&q=85\&s=158b82743e86bc48be7ccbd2ddf79e4a)
 
 ### Check your traces from the terminal
 
-If you installed the [LangSmith CLI](/langsmith/langsmith-cli), list recent traces for your project without opening the UI:
+If you installed the [LangSmith CLI](/langsmith/langsmith-cli), list recent traces for your agent environment without opening the UI. The CLI's `--project` option takes the environment's [`tracer_session_name`](/langsmith/create-an-agent#use-an-environment-project):
 
 ```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-langsmith trace list --project <your-project> --limit 5
+langsmith trace list --project "<environment-tracer-session-name>" --limit 5
 ```
 
 To view the full run hierarchy and inputs/outputs for a specific trace:
@@ -241,10 +256,11 @@ Once your app is working well in prototyping, you release it to a small group of
 Linking [user feedback](/langsmith/attach-user-feedback) to specific traces lets you identify which responses were helpful or unhelpful. Update `app.py` (or `app.ts`) from the previous step to add a run ID to each call and attach a score afterward:
 
 ```python Python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+import asyncio  # [!code highlight]
 import os  # [!code highlight]
 
 from openai import OpenAI
-from langsmith import traceable, Client, uuid7  # [!code highlight]
+from langsmith import Client, agent_address, traceable, uuid7  # [!code highlight]
 from langsmith.wrappers import wrap_openai
 
 client = wrap_openai(OpenAI())
@@ -282,9 +298,12 @@ if __name__ == "__main__":
         langsmith_extra={"run_id": run_id},  # [!code highlight]
     )  # [!code highlight]
     ls_client = Client()  # [!code highlight]
-    # Feedback requires the UUID of the tracing project that owns the run  # [!code highlight]
-    project_name = os.environ.get("LANGSMITH_PROJECT", "default")  # [!code highlight]
-    session_id = ls_client.create_project(project_name=project_name, upsert=True).id  # [!code highlight]
+    # Feedback requires the session_id for the agent environment  # [!code highlight]
+    address = agent_address(  # [!code highlight]
+        os.environ["LANGSMITH_AGENT_ID"], os.environ["LANGSMITH_AGENT_ENVIRONMENT"]  # [!code highlight]
+    )  # [!code highlight]
+    resolved = asyncio.run(ls_client.sessions.resolve(**address))  # [!code highlight]
+    session_id = resolved.session_id  # [!code highlight]
     ls_client.create_feedback(  # [!code highlight]
         run_id, key="user-score", score=1.0, session_id=session_id  # [!code highlight]
     )  # [!code highlight]
@@ -294,7 +313,7 @@ if __name__ == "__main__":
 import OpenAI from "openai";
 import { wrapOpenAI } from "langsmith/wrappers";
 import { traceable, getCurrentRunTree } from "langsmith/traceable"; // [!code highlight]
-import { Client } from "langsmith"; // [!code highlight]
+import { AgentAddress, Client } from "langsmith"; // [!code highlight]
 
 const client = wrapOpenAI(new OpenAI());
 
@@ -309,12 +328,10 @@ function retriever(query: string): string[] {
 }
 
 let capturedRunId: string; // [!code highlight]
-let capturedProjectName: string; // [!code highlight]
 
 const supportBot = traceable(async function supportBot(question: string): Promise<string> {
     const runTree = getCurrentRunTree(); // [!code highlight]
     capturedRunId = runTree.id; // [!code highlight]
-    capturedProjectName = runTree.project_name; // [!code highlight]
     const context = retriever(question);
     const systemMessage =
         "You are a helpful customer support agent. " +
@@ -333,11 +350,11 @@ const supportBot = traceable(async function supportBot(question: string): Promis
 (async () => {
     await supportBot("How many users can I have on the Starter plan?"); // [!code highlight]
     const lsClient = new Client(); // [!code highlight]
-    // Feedback requires the UUID of the tracing project that owns the run // [!code highlight]
-    const { id: sessionId } = await lsClient.createProject({ // [!code highlight]
-        projectName: capturedProjectName, // [!code highlight]
-        upsert: true, // [!code highlight]
-    }); // [!code highlight]
+    // Feedback requires the session_id for the agent environment // [!code highlight]
+    const address = new AgentAddress( // [!code highlight]
+        process.env.LANGSMITH_AGENT_ID!, process.env.LANGSMITH_AGENT_ENVIRONMENT! // [!code highlight]
+    ); // [!code highlight]
+    const { session_id: sessionId } = await lsClient.sessions.resolve(address); // [!code highlight]
     await lsClient.createFeedback({ // [!code highlight]
         runId: capturedRunId, // [!code highlight]
         sessionId, // [!code highlight]
@@ -350,7 +367,9 @@ const supportBot = traceable(async function supportBot(question: string): Promis
 
 > [!NOTE]
 >
-> In production, these two pieces would live in separate locations: the `support_bot` call with `run_id` stays in your app, and `create_feedback` moves to whichever endpoint receives user feedback (for example, a `/feedback` API route). The `run_id` is passed from one to the other so the feedback can be linked to the correct trace. Because feedback also requires the project UUID, pass `session_id` alongside the `run_id`.
+> In production, these two pieces would live in separate locations: the `support_bot` call with `run_id` stays in your agent code, and `create_feedback` moves to whichever endpoint receives user feedback (for example, a `/feedback` API route). The `run_id` is passed from one to the other so the feedback can be linked to the correct trace. Because feedback also requires the environment's trace-storage UUID, pass `session_id` alongside the `run_id`.
+
+In a project-based workspace, look up the project UUID with `read_project` / `readProject` instead of resolving an agent address. See [Resolve an agent environment](/langsmith/resolve-an-agent) for address resolution requirements.
 
 The feedback appears in the **Feedback** tab when you inspect the run in the UI. You can then filter runs by feedback score using the filtering controls in the **Runs** table.
 
@@ -450,7 +469,7 @@ With strong observability in place, you can confidently ship to production. In p
 
 ### Monitoring
 
-In the UI sidebar, select **Monitoring**, then choose a tracing project from the dropdown at the top left. In an [agent-based workspace](/langsmith/agents), **Monitoring** requires an agent, and the dropdown lists one dashboard per [environment](/langsmith/agent-environments) under **Environments**. Charts display key metrics for the project over time, including trace count, latency, error rate, feedback scores, and costs. For more on available metrics and chart configuration, refer to [Dashboards](/langsmith/dashboards).
+Select your agent, then select **Monitoring** in the sidebar. Choose the [environment](/langsmith/agent-environments) under **Environments**. Charts display metrics for that environment over time, including trace count, latency, error rate, feedback scores, and costs. For more on available metrics and chart configuration, refer to [Dashboards](/langsmith/dashboards).
 
 ![LangSmith UI showing the monitoring page with the trace count chart and available tabs.](https://mintcdn.com/langchain-5e9cc07a/EKYgNtnIIDPnseTv/langsmith/images/monitoring-page-light.png?fit=max\&auto=format\&n=EKYgNtnIIDPnseTv\&q=85\&s=43b082b4db51b58f74d98d4d99f747cc)
 
@@ -470,7 +489,7 @@ When a monitoring chart shows something unexpected, click a data point to freeze
 
 ## Conclusion
 
-In this tutorial, you added LangSmith observability to an application across its full development lifecycle. The same tracing setup that helps you iterate quickly during prototyping will continue to provide value in production. You'll have visibility into individual traces and aggregate performance trends.
+In this tutorial, you added LangSmith observability to an agent across its full development lifecycle. The same tracing setup that helps you iterate quickly during prototyping will continue to provide value in production. You'll have visibility into individual traces and aggregate performance trends.
 
 For more, see:
 

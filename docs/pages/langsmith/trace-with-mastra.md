@@ -1,10 +1,14 @@
-<!-- langchain-docs: Trace Mastra applications | https://docs.langchain.com/langsmith/trace-with-mastra -->
+<!-- langchain-docs: Trace Mastra agents | https://docs.langchain.com/langsmith/trace-with-mastra -->
 
-# Trace Mastra applications
+# Trace Mastra agents
 
-[Mastra](https://mastra.ai/docs) is a TypeScript framework for building AI-powered applications and agents. Using Mastra’s [LangSmith exporter](https://mastra.ai/reference/observability/tracing/exporters/langsmith), you can send traces from your Mastra agents and workflows to LangSmith for debugging, evaluation, and observability.
+[Mastra](https://mastra.ai/docs) is a TypeScript framework for building AI agents. Using Mastra’s [LangSmith exporter](https://mastra.ai/reference/observability/tracing/exporters/langsmith), you can send traces from your Mastra agents and workflows to LangSmith for debugging, evaluation, and observability.
 
 This guide shows you how to integrate Mastra with LangSmith using Mastra’s AI tracing system.
+
+> [!NOTE]
+>
+> This integration uses a legacy destination setting such as `project_name` or `LANGSMITH_PROJECT`. [Create an agent](/langsmith/create-an-agent), choose its environment, and [retrieve that environment's `tracer_session_name`](/langsmith/create-an-agent#use-an-environment-project). Use that returned value in the destination setting and any overrides. For integrations that support agent addressing, use the [agent identifier and environment](/langsmith/log-traces-to-agent) directly.
 
 ## Installation
 
@@ -16,7 +20,7 @@ npm install @mastra/core @mastra/langsmith @mastra/observability @mastra/libsql
 
 ## Setup
 
-1. Set your LangSmith API key and (optionally) a LangSmith project name:
+1. Set your LangSmith API key and the selected environment's `tracer_session_name`:
 
    ```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
    export LANGSMITH_API_KEY=<your_langsmith_api_key>
@@ -25,7 +29,7 @@ npm install @mastra/core @mastra/langsmith @mastra/observability @mastra/libsql
 
    > [!TIP]
    >
-   > If [`LANGCHAIN_PROJECT`](/langsmith/log-traces-to-project) is not set, traces will be sent to the default project.
+   > Set [`LANGCHAIN_PROJECT`](/langsmith/create-an-agent#use-an-environment-project) explicitly to the selected environment's `tracer_session_name`.
 
 2. If you plan to use OpenAI models, also ensure you have an OpenAI API key available at runtime:
 
@@ -118,7 +122,7 @@ Mastra will automatically route the model call using your configured API keys an
    main();
    ```
 
-2. Run your application:
+2. Run your agent:
 
    ```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
    npx ts-node src/index.ts
@@ -129,7 +133,7 @@ Mastra will automatically route the model call using your configured API keys an
 After running the agent:
 
 1. Open the [LangSmith UI](https://smith.langchain.com?utm_source=docs\&utm_medium=cta\&utm_campaign=langsmith-signup\&utm_content=langsmith-trace-with-mastra).
-2. Select your project. For example, the value of `LANGCHAIN_PROJECT`.
+2. Select the agent and environment configured through `LANGCHAIN_PROJECT`.
 3. Locate the trace corresponding to `echoAgent.generate`.
 
 You’ll be able to inspect:

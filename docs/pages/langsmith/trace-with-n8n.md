@@ -10,6 +10,10 @@ Learn how to trace n8n AI workflows in LangSmith.
 >
 > LangSmith tracing is available for **self-hosted n8n instances** only.
 
+> [!NOTE]
+>
+> This integration uses a legacy destination setting such as `project_name` or `LANGSMITH_PROJECT`. [Create an agent](/langsmith/create-an-agent), choose its environment, and [retrieve that environment's `tracer_session_name`](/langsmith/create-an-agent#use-an-environment-project). Use that returned value in the destination setting and any overrides. For integrations that support agent addressing, use the [agent identifier and environment](/langsmith/log-traces-to-agent) directly.
+
 ## Prerequisites
 
 * A [LangSmith account](https://smith.langchain.com?utm_source=docs\&utm_medium=cta\&utm_campaign=langsmith-signup\&utm_content=langsmith-trace-with-n8n) and [API key](/langsmith/create-account-api-key)
@@ -27,7 +31,7 @@ Learn how to trace n8n AI workflows in LangSmith.
    Optional environment variables:
 
    * `LANGCHAIN_ENDPOINT`: LangSmith API endpoint. Defaults to `https://api.smith.langchain.com`. Set this if using self-hosted LangSmith, GCP EU (`https://eu.api.smith.langchain.com`), GCP APAC (`https://apac.api.smith.langchain.com`), or AWS US (`https://aws.api.smith.langchain.com`).
-   * `LANGCHAIN_PROJECT`: Project name for traces. Defaults to `"default"`.
+   * `LANGCHAIN_PROJECT`: Set to the selected agent environment's `tracer_session_name`. If omitted, the integration uses `"default"`.
    * `LANGCHAIN_CALLBACKS_BACKGROUND`: Set to `true` for asynchronous trace upload (default), or `false` for synchronous uploads. (default: `true`)
 
 2. Restart your n8n instance for the environment variables to take effect.
@@ -37,7 +41,7 @@ Learn how to trace n8n AI workflows in LangSmith.
 After running an AI workflow:
 
 1. Open [LangSmith](https://smith.langchain.com?utm_source=docs\&utm_medium=cta\&utm_campaign=langsmith-signup\&utm_content=langsmith-trace-with-n8n).
-2. Select your project. If you just created your account, the `"default"` project appears after the first trace is sent.
+2. Select the agent and environment whose `tracer_session_name` you configured in `LANGCHAIN_PROJECT`.
 3. Locate the trace corresponding to your workflow execution.
 
 ## Additional resources

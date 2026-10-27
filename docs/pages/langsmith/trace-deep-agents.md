@@ -1,10 +1,14 @@
-<!-- langchain-docs: Trace Deep Agents applications | https://docs.langchain.com/langsmith/trace-deep-agents -->
+<!-- langchain-docs: Trace Deep Agents | https://docs.langchain.com/langsmith/trace-deep-agents -->
 
-# Trace Deep Agents applications
+# Trace Deep Agents
 
 [`deepagents`](/oss/python/deepagents/overview) is an open-source agent framework built on top of LangGraph, designed for complex, multi-step tasks that require planning, tool usage, and sub-agent delegation. Deep Agents supports native LangSmith tracing.
 
 This guide shows you how to enable LangSmith tracing for Deep Agents, view traces in the LangSmith UI, and (optionally) customize trace configuration for more advanced use cases.
+
+> [!NOTE]
+>
+> In an [agent-based workspace](/langsmith/agents), [create an agent](/langsmith/create-an-agent) once before sending traces. Use [agent addressing](/langsmith/log-traces-to-agent) to select its identifier and environment. If an integration requires `project_name`, use the selected environment's [`tracer_session_name`](/langsmith/create-an-agent#use-an-environment-project) as a compatibility value.
 
 ## Installation
 
@@ -32,12 +36,13 @@ uv add deepagents
 
 ## Setup
 
-You can find your LangSmith API key and project name in the [LangSmith UI](https://smith.langchain.com?utm_source=docs\&utm_medium=cta\&utm_campaign=langsmith-signup\&utm_content=langsmith-trace-deep-agents) under **Settings**:
+Get your LangSmith API key from **Settings**, then configure the registered agent identifier and environment:
 
 ```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 export LANGSMITH_API_KEY=<your-langsmith-api-key>
 export LANGSMITH_TRACING=true
-export LANGSMITH_PROJECT=<your-project-name>
+export LANGSMITH_AGENT_ID="<your-agent-id>"
+export LANGSMITH_AGENT_ENVIRONMENT="production"
 ```
 
 ## Create a trace
@@ -155,7 +160,7 @@ Deep Agents automatically writes the subagent's `name` to the `lc_agent_name` me
 
 **Filter in the LangSmith UI:**
 
-1. Open your tracing project in [LangSmith](https://smith.langchain.com?utm_source=docs\&utm_medium=cta\&utm_campaign=langsmith-signup\&utm_content=langsmith-trace-deep-agents).
+1. Select your agent and environment, then open **Tracing** in [LangSmith](https://smith.langchain.com?utm_source=docs\&utm_medium=cta\&utm_campaign=langsmith-signup\&utm_content=langsmith-trace-deep-agents).
 2. Switch the view to **Runs** to see individual spans.
 3. Click **Add filter** and select **Metadata**.
 4. Set the **Key** to `lc_agent_name` and the **Value** to the subagent name, for example `coordinator`.
@@ -166,6 +171,8 @@ Save the filter as a named view for quick reuse. For a full reference on filter 
 
 **Filter programmatically with the SDK:**
 
+[Retrieve the environment's `tracer_session_name`](/langsmith/create-an-agent#use-an-environment-project) and pass it to the query API's `project_name` parameter.
+
 ```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 from langsmith import Client
 
@@ -173,7 +180,7 @@ client = Client()
 
 # Fetch all runs produced by a specific subagent
 runs = client.list_runs(
-    project_name="<your-project>",
+    project_name="<environment-tracer-session-name>",
     filter='has(metadata, \'{"lc_agent_name": "research-agent"}\')',
 )
 
@@ -185,13 +192,13 @@ For the full filter query language reference, see [Trace query syntax](/langsmit
 
 ## Customize LangSmith tracing
 
-By default, Deep Agents traces are emitted automatically when LangSmith tracing is enabled via environment variables. You can use the [LangSmith SDK](https://reference.langchain.com/python/langsmith/observability/sdk/) directly to customize your tracing, such as scoping traces to part of your code, attaching tags or metadata, or overriding the project name.
+By default, Deep Agents traces are emitted automatically when LangSmith tracing is enabled via environment variables. You can use the [LangSmith SDK](https://reference.langchain.com/python/langsmith/observability/sdk/) directly to customize your tracing, such as scoping traces to part of your code, attaching tags or metadata, or selecting an agent and environment.
 
 Install and use `langsmith` if you want to:
 
 * Trace only specific agent invocations.
 * Add custom tags or metadata for filtering in the UI.
-* Override the project name at runtime.
+* Select an agent environment at runtime.
 
 ```bash pip theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 pip install langsmith
@@ -294,7 +301,6 @@ agent.invoke(
 # ----------------------------
 with ls.tracing_context(
     enabled=True,
-    project_name="deepagents-demo",
     tags=["deepagents", "scoped-tracing"],
     metadata={"example": "partial-workflow"},
 ):
@@ -319,7 +325,7 @@ with ls.tracing_context(
 The `tracing_context` block enables tracing and also configures how the trace is recorded and organized in LangSmith:
 
 * `enabled=True` explicitly enables tracing for the duration of the block, even if `LANGSMITH_TRACING` is unset or set to `false`.
-* `project_name="deepagents-demo"` routes traces from this block to the specified [LangSmith project](/langsmith/log-traces-to-project). This overrides `LANGSMITH_PROJECT` for runs created within the context.
+* With no destination override, the block uses the agent identifier and environment configured during setup.
 * `tags=[...]` attaches tags to the traced runs. [Tags](/langsmith/add-metadata-tags) appear in the [LangSmith UI](https://smith.langchain.com?utm_source=docs\&utm_medium=cta\&utm_campaign=langsmith-signup\&utm_content=langsmith-trace-deep-agents), which you can use to filter and group traces.
 * `metadata={...}` attaches arbitrary structured metadata (for example, environment, experiment name, or feature flag).
 

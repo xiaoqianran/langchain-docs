@@ -1,6 +1,6 @@
-<!-- langchain-docs: Trace Gemini Live applications | https://docs.langchain.com/langsmith/trace-gemini-live -->
+<!-- langchain-docs: Trace Gemini Live agents | https://docs.langchain.com/langsmith/trace-gemini-live -->
 
-# Trace Gemini Live applications
+# Trace Gemini Live agents
 
 Trace Gemini Live voice agents in LangSmith using the LangSmith SDK.
 
@@ -12,7 +12,11 @@ Gemini Live is a speech-to-speech model that streams typed events over a WebSock
 
 Trace your [Gemini Live](https://ai.google.dev/gemini-api/docs/live-api) voice agents to LangSmith. For high-level conventions, see [Voice tracing fundamentals](/langsmith/trace-voice-fundamentals).
 
-To trace non-live text agents, tools, and multi-agent workflows built with ADK, see [Trace Google ADK applications](/langsmith/trace-with-google-adk).
+To trace non-live text agents, tools, and multi-agent workflows built with ADK, see [Trace Google ADK agents](/langsmith/trace-with-google-adk).
+
+> [!NOTE]
+>
+> In an [agent-based workspace](/langsmith/agents), [create an agent](/langsmith/create-an-agent) once before sending traces. Use [agent addressing](/langsmith/log-traces-to-agent) to select its identifier and environment. If an integration requires `project_name`, use the selected environment's [`tracer_session_name`](/langsmith/create-an-agent#use-an-environment-project) as a compatibility value.
 
 ## Choose an approach
 
@@ -37,7 +41,7 @@ uv add "langsmith[gemini-live]"
 
 ### Use Google ADK
 
-Install the `google-adk-live` extra for an ADK application:
+Install the `google-adk-live` extra for an ADK agent:
 
 ```bash pip theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 pip install "langsmith[google-adk-live]"
@@ -56,14 +60,15 @@ uv add "langsmith[google-adk-live]"
 ```bash .env theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 LANGSMITH_API_KEY=<your-langsmith-api-key>
 LANGSMITH_TRACING=true
-LANGSMITH_PROJECT=<your-desired-langsmith-project>
+LANGSMITH_AGENT_ID="<your-agent-id>"
+LANGSMITH_AGENT_ENVIRONMENT="production"
 GOOGLE_API_KEY=<your-google-api-key>
 GEMINI_LIVE_MODEL=<your-gemini-live-model>
 ```
 
 ## Use the Gemini Live client
 
-Use this approach when your application opens the WebSocket with `client.aio.live.connect(...)` and owns the audio and tool loops.
+Use this approach when your agent opens the WebSocket with `client.aio.live.connect(...)` and owns the audio and tool loops.
 
 ### Set up tracing
 
@@ -89,7 +94,6 @@ async with (
     wrap_gemini_live(
         raw,
         model=model,
-        project_name="gemini-live-voice",
     ) as session,
 ):
     async for message in session.receive():
@@ -109,7 +113,6 @@ wrap_gemini_live(
     raw,
     model=model,
     thread_id=thread_id,
-    project_name="gemini-live-voice",
 )
 ```
 
@@ -166,7 +169,7 @@ from google.adk.runners import Runner
 from google.genai import types as genai_types
 from langsmith.integrations.google_adk_live import LangSmithGoogleADKLivePlugin
 
-plugin = LangSmithGoogleADKLivePlugin(project_name="gemini-live-voice")
+plugin = LangSmithGoogleADKLivePlugin()
 
 runner = Runner(
     app_name="voice-app",
@@ -207,7 +210,6 @@ Each conversation is captured as its own trace with its own thread ID. To supply
 
 ```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 plugin = LangSmithGoogleADKLivePlugin(
-    project_name="gemini-live-voice",
     thread_id_provider=lambda: thread_id,
 )
 ```

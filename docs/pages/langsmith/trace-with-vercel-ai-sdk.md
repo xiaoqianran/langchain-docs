@@ -1,10 +1,14 @@
-<!-- langchain-docs: Trace Vercel AI SDK applications (JS/TS only) | https://docs.langchain.com/langsmith/trace-with-vercel-ai-sdk -->
+<!-- langchain-docs: Trace Vercel AI SDK agents (JS/TS only) | https://docs.langchain.com/langsmith/trace-with-vercel-ai-sdk -->
 
-# Trace Vercel AI SDK applications (JS/TS only)
+# Trace Vercel AI SDK agents (JS/TS only)
 
-Trace Vercel AI SDK applications with LangSmith for AI SDK v5, v6, and v7.
+Trace Vercel AI SDK agents with LangSmith for AI SDK v5, v6, and v7.
 
 You can use LangSmith to trace runs from the Vercel AI SDK. This guide shows you how to set up tracing for AI SDK v5, v6, and v7.
+
+> [!NOTE]
+>
+> In an [agent-based workspace](/langsmith/agents), [create an agent](/langsmith/create-an-agent) once before sending traces. Use [agent addressing](/langsmith/log-traces-to-agent) to select its identifier and environment. If an integration requires `project_name`, use the selected environment's [`tracer_session_name`](/langsmith/create-an-agent#use-an-environment-project) as a compatibility value.
 
 ## Installation
 
@@ -51,6 +55,8 @@ pnpm add ai @ai-sdk/openai zod langsmith
 ```bash Shell theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 export LANGSMITH_TRACING=true
 export LANGSMITH_API_KEY=<your-api-key>
+export LANGSMITH_AGENT_ID="<your-agent-id>"
+export LANGSMITH_AGENT_ENVIRONMENT="production"
 
 # The examples use OpenAI, but you can use any LLM provider of choice
 export OPENAI_API_KEY=<your-openai-api-key>

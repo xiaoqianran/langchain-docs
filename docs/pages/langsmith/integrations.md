@@ -4,6 +4,8 @@
 
 [LangSmith](https://smith.langchain.com?utm_source=docs\&utm_medium=cta\&utm_campaign=langsmith-signup\&utm_content=langsmith-integrations) provides integrations for a growing set of popular [LLM providers](#llm-providers) and [agent frameworks](#agent-frameworks) as well as [Deep Agents](/oss/python/deepagents/overview), [LangChain](/oss/python/langchain/overview), and [LangGraph](/oss/python/langgraph/overview). For setup and usage, refer to the guides listed on this page.
 
+Before sending traces in an agent-based workspace, [create an agent](/langsmith/create-an-agent) and choose its environment. Complete this setup once, then follow the tracing guide for your integration.
+
 ## LLM providers
 
 ![](https://mintcdn.com/langchain-5e9cc07a/ZPKed1feKJ8F6LVo/images/providers/light/bedrock.svg?fit=max\&auto=format\&n=ZPKed1feKJ8F6LVo\&q=85\&s=d6fc326f6c429075add5a742c87d12b1)
@@ -54,7 +56,7 @@ OpenAI-compatible APIs
 
 [Open](/langsmith/trace-with-openai-compatible)
 
-**Using LangChain?** LangChain provides a unified interface to 100+ LLM providers, which allows you to switch between models by setting environment variables. [Initialize a model](/oss/python/langchain/models#initialize-a-model) and LangSmith will automatically trace your application.
+**Using LangChain?** LangChain provides a unified interface to 100+ LLM providers, which allows you to switch between models by setting environment variables. [Initialize a model](/oss/python/langchain/models#initialize-a-model) and LangSmith will automatically trace your agent.
 
 ## Agent frameworks
 

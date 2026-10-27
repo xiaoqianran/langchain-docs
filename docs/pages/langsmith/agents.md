@@ -60,11 +60,11 @@ The identifier is also what the browser address bar carries, so you can read it 
 
 > **[Log traces to an agent](/langsmith/log-traces-to-agent)**
 >
-> How agent addressing sends traces to an agent and an environment, and why it cannot be combined with project addressing.
+> How agent addressing sends traces to an agent and an environment, and how to remove conflicting destination settings.
 
 > **[Create an agent](/langsmith/create-an-agent)**
 >
-> The four ways to create an agent, what each route decides about it, and the rules an identifier must follow.
+> Register an agent before tracing, choose an identifier, and configure its environment.
 
 ***
 

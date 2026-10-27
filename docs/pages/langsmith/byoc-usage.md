@@ -6,7 +6,7 @@ Route tracing and API traffic to a LangSmith BYOC data plane, including tracing 
 
 Once your data plane is active, all API traffic for its workspaces goes to the data plane endpoint rather than to the LangSmith Cloud backend. This page explains how to route requests to the right service.
 
-The LangSmith UI handles this automatically: it routes to the correct data plane based on the workspace you have selected. The guidance below applies to your own client applications and direct API calls.
+The LangSmith UI handles this automatically: it routes to the correct data plane based on the workspace you have selected. The guidance below applies to your own client code and direct API calls.
 
 ## Organizations, data planes, and workspaces
 
@@ -14,17 +14,17 @@ A BYOC deployment adds one level to the standard LangSmith [resource hierarchy](
 
 * **Organization**: The top level. Users, roles, billing, SSO configuration, and API keys belong to the organization and live in the control plane.
 * **Data plane**: Belongs to an organization and represents physical separation of data. An organization can have several data planes, each in its own AWS account and region.
-* **Workspace**: Belongs to exactly one data plane, which you select when you create the workspace. Traces, datasets, experiments, and other application data live in a workspace.
+* **Workspace**: Belongs to exactly one data plane, which you select when you create the workspace. Traces, datasets, experiments, and other agent data live in a workspace.
 
 ![Nesting diagram of a BYOC deployment. An organization contains two data planes, each labeled as physical separation. The first is in us-east-1 and the second is in eu-west-1. Each data plane holds one workspace per team, and every workspace is labeled as logical separation within its data plane.](https://mintcdn.com/langchain-5e9cc07a/5dqOg-xwCbWrjM9p/langsmith/images/byoc-org-structure.png?fit=max\&auto=format\&n=5dqOg-xwCbWrjM9p\&q=85\&s=7cf4860e09578a0aad32f16c1eef9ee0)
 
 Use data planes for physical separation of data, and workspaces for logical separation within a data plane. Common ways to divide data planes are:
 
-* **Per region**, such as `us-east-1` and `us-west-2`, to keep sensitive application data in a specific region.
+* **Per region**, such as `us-east-1` and `us-west-2`, to keep sensitive agent data in a specific region.
 * **Per environment and region**, such as prod `us-east-1` and dev `us-east-1`, to hold production and development data in separate AWS accounts.
 * **Per business unit**, when each unit owns its own AWS account.
 
-Below the data plane, workspaces and applications work the same as on Cloud or self-hosted. For more information, see [Administration overview](/langsmith/administration-overview) and [Workload isolation](/langsmith/workload-isolation).
+Below the data plane, workspace isolation works the same as on Cloud or self-hosted. For more information, see [Administration overview](/langsmith/administration-overview) and [Workload isolation](/langsmith/workload-isolation).
 
 ## Find your data plane endpoint
 
@@ -35,6 +35,8 @@ Each data plane has a base URL. Navigate to **Settings > Data Planes** to see ea
 > Data planes are provisioned with a private endpoint by default, so you need private connectivity to reach the base URL, such as Tailscale, AWS PrivateLink, or VPC peering.
 
 ## Trace to a data plane
+
+For tracing in an agent-based workspace, [create an agent and configure agent addressing](/langsmith/create-an-agent#configure-tracing-for-the-agent) before running the examples.
 
 To send traces to a workspace that lives in your data plane, point the LangSmith SDK at the data plane endpoint and authenticate with an API key scoped to a workspace in that data plane:
 
@@ -66,18 +68,18 @@ Use these patterns to trace to both Cloud and a data plane, or to multiple data 
 
 ### Dual write to two endpoints
 
-Set `LANGSMITH_RUNS_ENDPOINTS` to write to multiple endpoints:
+Set `LANGSMITH_RUNS_ENDPOINTS` to write to multiple endpoints. These replica settings use each agent environment's [`tracer_session_name`](/langsmith/create-an-agent#use-an-environment-project) as `project_name`:
 
 ```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 export LANGSMITH_RUNS_ENDPOINTS='[
-  {"api_url": "https://aws.api.smith.langchain.com", "api_key": "ls__key1", "project_name": "project-cloud"},
-  {"api_url": "https://<data_plane_host>", "api_key": "ls__key2", "project_name": "project-byoc"}
+  {"api_url": "https://aws.api.smith.langchain.com", "api_key": "ls__key1", "project_name": "<cloud-environment-tracer-session-name>"},
+  {"api_url": "https://<data_plane_host>", "api_key": "ls__key2", "project_name": "<byoc-environment-tracer-session-name>"}
 ]'
 ```
 
-### Choose the destination in application logic
+### Choose the destination in agent logic
 
-To decide where to trace at runtime, create a client per endpoint and select between them:
+To decide where to trace at runtime, create a client per endpoint and select between them. Set `LANGSMITH_CLOUD_PROJECT` and `LANGSMITH_BYOC_PROJECT` to the corresponding agent environments' `tracer_session_name` values:
 
 ```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 import os
@@ -109,10 +111,10 @@ byoc_client = Client(
 
 
 def get_workspace_routing(tenant_id: str):
-    """Determine the tracing destination based on application routing logic."""
+    """Select the tracing destination for this tenant."""
     if tenant_id.startswith("byoc_"):
-        return byoc_client, os.getenv("LANGSMITH_BYOC_PROJECT", "byoc-customer-project")
-    return cloud_client, os.getenv("LANGSMITH_CLOUD_PROJECT", "cloud-customer-project")
+        return byoc_client, require_env("LANGSMITH_BYOC_PROJECT")
+    return cloud_client, require_env("LANGSMITH_CLOUD_PROJECT")
 
 
 @traceable
