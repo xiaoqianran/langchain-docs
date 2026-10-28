@@ -2139,6 +2139,12 @@
           "rel": "langsmith/reject-concurrent.md"
         }
       ],
+      "relays": [
+        {
+          "title": "Relays",
+          "rel": "langsmith/relays.md"
+        }
+      ],
       "release-stages": [
         {
           "title": "Release stages",
@@ -2725,6 +2731,12 @@
         {
           "title": "MCP endpoint in Agent Server",
           "rel": "langsmith/server-mcp.md"
+        }
+      ],
+      "server-mcp-elicitation": [
+        {
+          "title": "Human-in-the-loop over MCP",
+          "rel": "langsmith/server-mcp-elicitation.md"
         }
       ],
       "serverless-environments": [
@@ -6919,6 +6931,10 @@
           "rel": "oss/javascript/langchain/context-engineering.md"
         },
         {
+          "title": "Build a data analysis agent from scratch",
+          "rel": "oss/javascript/langchain/deep-agent-from-scratch.md"
+        },
+        {
           "title": "Deployment",
           "rel": "oss/javascript/langchain/deploy.md"
         },
@@ -7267,6 +7283,10 @@
         {
           "title": "Quickstart",
           "rel": "oss/javascript/langgraph/quickstart.md"
+        },
+        {
+          "title": "Build a custom SQL agent",
+          "rel": "oss/javascript/langgraph/sql-agent.md"
         },
         {
           "title": "Stores",

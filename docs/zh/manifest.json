@@ -7042,13 +7042,33 @@
     "langsmith/javascript/managed-deep-agents-custom-frontend.md": {
       "hash": "82a383858c9ce40e71a8b4ce428721ffb168de53",
       "translatedAt": "2026-10-24T12:59:27.348Z"
+    },
+    "langsmith/relays.md": {
+      "hash": "e0cb4764d4a9cc249d573b4f9058178ea982a6cd",
+      "translatedAt": "2026-10-28T15:36:38.175Z",
+      "failed": true
+    },
+    "langsmith/server-mcp-elicitation.md": {
+      "hash": "c75862e3b31c978f4a2a69fca7110117189c9aa1",
+      "translatedAt": "2026-10-28T15:36:55.741Z",
+      "failed": true
+    },
+    "oss/javascript/langchain/deep-agent-from-scratch.md": {
+      "hash": "1e776c7ecf681da681a5ee5d13a4fc9b0fcc6034",
+      "translatedAt": "2026-10-28T15:38:49.805Z",
+      "failed": true
+    },
+    "oss/javascript/langgraph/sql-agent.md": {
+      "hash": "1b1d15484f4cdfc008acbbe1bef9c2e2614d946d",
+      "translatedAt": "2026-10-28T15:39:11.120Z",
+      "failed": true
     }
   },
-  "updatedAt": "2026-10-27T15:02:46.417Z",
+  "updatedAt": "2026-10-28T15:40:21.539Z",
   "stats": {
     "translated": 0,
-    "skipped": 1589,
-    "failed": 84,
-    "total": 1673
+    "skipped": 1519,
+    "failed": 158,
+    "total": 1677
   }
 }

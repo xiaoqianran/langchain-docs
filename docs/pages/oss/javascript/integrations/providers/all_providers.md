@@ -616,6 +616,12 @@ Connect LangGraph agents to front ends and observability platforms.
 >
 > Fast in-memory storage for temporary data.
 
+## Sandboxes
+
+> **[CreateOS Sandbox](https://createos.sh/docs/Sandbox/Overview)**
+>
+> CreateOS Sandbox runs agent code in Firecracker micro-VMs with pause/resume and private networking.
+
 ## LLM caching
 
 > **[Azure Cosmos DB NoSQL](/oss/javascript/integrations/llm_caching/azure_cosmosdb_nosql)**

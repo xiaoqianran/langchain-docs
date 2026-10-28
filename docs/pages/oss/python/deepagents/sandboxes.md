@@ -1104,6 +1104,28 @@ finally:
     interpreter.stop()
 ```
 
+**Databricks**
+
+```bash pip theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+pip install 'databricks-langchain[deepagents]>=0.22.0'
+```
+
+```bash uv theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+uv add 'databricks-langchain[deepagents]>=0.22.0'
+```
+
+```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+from databricks.sdk import WorkspaceClient
+
+from databricks_langchain import DatabricksSandbox
+
+client = WorkspaceClient()
+backend = DatabricksSandbox(client, "sandboxes/my-sandbox")
+
+result = backend.execute("python --version")
+print(result.output)
+```
+
 **Daytona**
 
 ```bash pip theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
@@ -1347,6 +1369,32 @@ backend.upload_files(
 )
 ```
 
+**Databricks**
+
+```bash pip theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+pip install 'databricks-langchain[deepagents]>=0.22.0'
+```
+
+```bash uv theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+uv add 'databricks-langchain[deepagents]>=0.22.0'
+```
+
+```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+from databricks.sdk import WorkspaceClient
+
+from databricks_langchain import DatabricksSandbox
+
+client = WorkspaceClient()
+backend = DatabricksSandbox(client, "sandboxes/my-sandbox")
+
+backend.upload_files(
+    [
+        ("/src/index.py", b"print('Hello')\n"),
+        ("/pyproject.toml", b"[project]\nname = 'my-app'\n"),
+    ]
+)
+```
+
 **Daytona**
 
 ```bash pip theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
@@ -1526,6 +1574,32 @@ for result in results:
         print(f"Failed to download {result.path}: {result.error}")
 
 interpreter.stop()
+```
+
+**Databricks**
+
+```bash pip theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+pip install 'databricks-langchain[deepagents]>=0.22.0'
+```
+
+```bash uv theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+uv add 'databricks-langchain[deepagents]>=0.22.0'
+```
+
+```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+from databricks.sdk import WorkspaceClient
+
+from databricks_langchain import DatabricksSandbox
+
+client = WorkspaceClient()
+backend = DatabricksSandbox(client, "sandboxes/my-sandbox")
+
+results = backend.download_files(["/src/index.py", "/output.txt"])
+for result in results:
+    if result.content is not None:
+        print(f"{result.path}: {result.content.decode()}")
+    else:
+        print(f"Failed to download {result.path}: {result.error}")
 ```
 
 **Daytona**

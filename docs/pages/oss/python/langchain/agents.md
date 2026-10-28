@@ -64,7 +64,7 @@ Building on that, you can configure the basics directly with the `model=`, `tool
 
 > [!TIP]
 >
-> [Deep Agents](/oss/python/deepagents/overview) builds on `create_agent` and comes with commonly useful capabilities already assembled, such as planning, file system tools, subagents, and memory. Use `create_agent` when you need to configure the harness yourself.
+> [Managed Deep Agents](/langsmith/python/managed-deep-agents-overview) builds on `create_agent` and comes with commonly useful capabilities already assembled, such as planning, file system tools, subagents, and memory. For maximum flexibility while using the same Deep Agents harness, use [Deep Agents](/oss/python/deepagents/overview) and host agents yourself, or run a custom [LangSmith Deployment](/langsmith/deployment). Use `create_agent` when you need to configure a smaller harness yourself.
 
 ## Core components
 

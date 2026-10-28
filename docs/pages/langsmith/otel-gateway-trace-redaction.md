@@ -8,6 +8,8 @@ Agents built with [LangChain](/langsmith/trace-with-langchain), [LangGraph](/lan
 
 Traces flow from your agent to the collector over OTLP/HTTP. The collector runs a transform processor that redacts sensitive span attributes, such as prompt inputs and model completions, before forwarding the sanitized spans to the LangSmith API.
 
+You can send traces to the collector in two ways: [through the LangChain, LangGraph, or Deep Agents integration](#trace-with-langchain-langgraph-or-deep-agents), or by [configuring the OpenTelemetry SDK directly](#trace-with-the-opentelemetry-sdk-directly).
+
 ```mermaid theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 flowchart TD
     A["Agent code<br/>(LangChain / LangGraph / Deep Agents)"]
@@ -31,7 +33,7 @@ flowchart TD
 
 ## Prerequisites
 
-Both of the following approaches require the following environment variables. Set `OTEL_EXPORTER_OTLP_ENDPOINT` to the address of your collector:
+Both approaches require the following environment variables. Set `OTEL_EXPORTER_OTLP_ENDPOINT` to the address of your collector:
 
 ```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 LANGSMITH_OTEL_ENABLED="true"
@@ -42,20 +44,7 @@ LANGSMITH_AGENT_ENVIRONMENT="production"
 OTEL_EXPORTER_OTLP_ENDPOINT="http://<my-otel-collector-endpoint>:4318"
 ```
 
-For destination configuration, refer to [Log traces to an agent](/langsmith/log-traces-to-agent).
-
-> [!NOTE]
->
-> **Agent-based workspaces.** Send OTLP traces to a registered agent and environment with both of the following headers:
->
-> * **`Langsmith-Agent-Id`**: The identifier of the agent. It must be 1 to 63 lowercase letters, digits, or hyphens, start with a letter, and end with a letter or digit. [Create the agent](/langsmith/create-an-agent) before configuring the exporter. An archived agent still holds its identifier, so LangSmith rejects a request sent to it with a `409`.
-> * **`Langsmith-Agent-Environment`**: The environment the traces belong to. One of `local`, `development`, `staging`, or `production`.
->
-> For example, set `OTEL_EXPORTER_OTLP_HEADERS="x-api-key=<your langsmith api key>,Langsmith-Agent-Id=<agent id>,Langsmith-Agent-Environment=<environment>"`. With `langsmith>=0.14.9`, the Python SDK's OpenTelemetry exporter sets both headers from `LANGSMITH_AGENT_ID` and `LANGSMITH_AGENT_ENVIRONMENT` when `OTEL_EXPORTER_OTLP_HEADERS` is unset. With the TypeScript SDK or another OpenTelemetry exporter, set the headers yourself.
->
-> In project-based workspaces, including self-hosted LangSmith, use `Langsmith-Project` instead of the two agent headers.
->
-> The headers apply to every span in the request. Send both headers or neither: LangSmith rejects a request that sets one without the other, or that sets either alongside `Langsmith-Project`, with a `400` error. On [self-hosted](/langsmith/self-hosted) LangSmith, where agent-based workspaces are not available, LangSmith rejects the request with a `403` error and the message `agent addressing is not enabled for this workspace`. Span attributes, including `gen_ai.agent.name`, do not send traces to an agent. For how sending traces to an agent works, see [Log traces to an agent](/langsmith/log-traces-to-agent).
+`LANGSMITH_AGENT_ID` and `LANGSMITH_AGENT_ENVIRONMENT` name the agent and environment the traces belong to. For more information, see [Log traces to an agent](/langsmith/log-traces-to-agent).
 
 ## Configure the collector
 
@@ -96,6 +85,19 @@ service:
       exporters: [otlphttp/langsmith]
 ```
 
+The collector reads `LANGSMITH_API_KEY`, `LANGSMITH_AGENT_ID`, and `LANGSMITH_AGENT_ENVIRONMENT` from its own environment, not from your application's. Set them where the collector runs, along with `LANGSMITH_TENANT_ID` if your API key is not scoped to a specific workspace.
+
+### Send traces to an agent
+
+The collector, not your application, decides which agent and environment receive the traces. The collector sends its own headers to LangSmith and does not forward the headers your application sends by default. The `otlphttp/langsmith` exporter in the preceding configuration sets both agent headers:
+
+* **`Langsmith-Agent-Id`**: The identifier of the agent. It must be 1 to 63 lowercase letters, digits, or hyphens, start with a letter, and end with a letter or digit.
+* **`Langsmith-Agent-Environment`**: The environment the traces belong to. One of `local`, `development`, `staging`, or `production`.
+
+Send both agent headers or neither. LangSmith rejects a request that sets one without the other, or that sets either alongside `Langsmith-Project`, with a `400` error.
+
+The headers apply to every span the exporter sends. To send traces to more than one agent or environment, define one exporter for each, and route each agent's spans to its exporter. Span attributes, including `gen_ai.agent.name`, do not send traces to an agent. To learn more about sending traces to an agent, see [Log traces to an agent](/langsmith/log-traces-to-agent).
+
 ## Trace with LangChain, LangGraph, or Deep Agents
 
 Use this approach if your agent already uses [LangChain](/langsmith/trace-with-langchain), [LangGraph](/langsmith/trace-with-langgraph), or [Deep Agents](/langsmith/trace-deep-agents). The tracing integration handles span creation automatically based on your environment variables, so no additional instrumentation code is required:
@@ -133,12 +135,12 @@ print(result["messages"][-1].content)
 
 ## Trace with the OpenTelemetry SDK directly
 
-Use this approach if you need programmatic control over the tracer provider and exporter. For example, to set agent destinations or configure custom headers at runtime. You configure the provider explicitly in code rather than relying on environment variables alone:
+Use this approach if you need programmatic control over the tracer provider and exporter, such as which span processors run or where the exporter sends spans. You configure the provider explicitly in code rather than relying on environment variables alone. The collector's exporter, not your code, decides which agent receives the traces:
 
 ```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 import os
 
-from langchain.prompts import ChatPromptTemplate
+from langchain_core.prompts import ChatPromptTemplate
 from langchain_openai import ChatOpenAI
 from opentelemetry import trace
 from opentelemetry.exporter.otlp.proto.http.trace_exporter import OTLPSpanExporter
@@ -146,8 +148,6 @@ from opentelemetry.sdk.trace import TracerProvider
 from opentelemetry.sdk.trace.export import BatchSpanProcessor
 
 
-agent_id = os.environ["LANGSMITH_AGENT_ID"]
-agent_environment = os.environ["LANGSMITH_AGENT_ENVIRONMENT"]
 otlp_endpoint = os.environ["OTEL_EXPORTER_OTLP_ENDPOINT"]
 
 
@@ -156,10 +156,6 @@ provider.add_span_processor(
    BatchSpanProcessor(
        OTLPSpanExporter(
            endpoint=otlp_endpoint+"/v1/traces",
-           headers={
-               "Langsmith-Agent-Id": agent_id,
-               "Langsmith-Agent-Environment": agent_environment,
-           },
        )
    )
 )

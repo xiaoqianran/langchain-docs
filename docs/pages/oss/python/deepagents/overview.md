@@ -2,13 +2,23 @@
 
 # Deep Agents overview
 
-Build agents that can plan, use subagents, and leverage file systems for complex tasks
+Agent harness for planning, subagents, and file-system context, available as Managed Deep Agents or the Deep Agents SDK
 
-Deep Agents is the easiest way to start building agents and applications that are powered by LLMs—with built-in capabilities for file systems for context management, subagent-spawning, and long-term memory.
-Optional capabilities such as [task planning](#task-planning) and [skills](#skills) extend the harness when your use case needs them.
-You can use deep agents for any task, including complex, multi-step tasks.
+Deep Agents is the [agent harness](/oss/python/concepts/products#agent-harnesses-like-the-deep-agents-sdk) for complex, multi-step work. It adds planning, a virtual filesystem for context, subagent spawning, and long-term memory on top of LangChain and LangGraph.
 
-Deep Agents comes with the following capabilities:
+Start with [Managed Deep Agents](/langsmith/python/managed-deep-agents-overview) to run production agents without having to manage infrastructure. Alternatively, for maximum flexibility while using the same Deep Agents harness, use the [Deep Agents SDK](#self-host-with-the-sdk) and host agents yourself, or run a custom [LangSmith Deployment](/langsmith/deployment).
+
+## Choose how to run Deep Agents
+
+> **[Managed Deep Agents](/langsmith/python/managed-deep-agents-overview)**
+>
+> Build deep agents with managed deployment infrastructure for complex, long-running tasks. LangSmith runs the harness, Agent Server, sandboxes, and schedules.
+
+> **[Deep Agents SDK](#self-host-with-the-sdk)**
+>
+> The same deep agents harness with maximum flexibility. Host agents yourself, or run a custom LangSmith Deployment when you need more control over the runtime.
+
+Deep Agents includes the following capabilities:
 
 * **Take actions in an environment**: Take actions via tools, read and write files, execute code
 * **Connect to your data**: Load memories, skills, and domain knowledge at the right moment
@@ -17,11 +27,15 @@ Deep Agents comes with the following capabilities:
 * **Stay in the loop**: Pause for human approval at critical decision points
 * **Improve over time**: Update memory, skills, and prompts based on real usage
 
-See [Core capabilities](#core-capabilities) for a full breakdown of each component.
+Optional capabilities such as [task planning](#task-planning) and [skills](#skills) extend the harness when your use case needs them. See [Core capabilities](#core-capabilities) for a full breakdown of each component.
 
-## Try it
+## Self-host with the SDK
 
-## Quickstart
+Use the open source SDK when you run the agent in your own process or container, need a custom [backend](/oss/python/deepagents/backends), store, or checkpointer, or want a [LangSmith Deployment](/langsmith/deployment) you configure yourself. For managed deployment instead, see [Managed Deep Agents](/langsmith/python/managed-deep-agents-overview).
+
+### Try it
+
+### Quickstart
 
 ```python Google theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 from deepagents import create_deep_agent
@@ -174,11 +188,11 @@ agent.invoke(
 >
 > Open a public LangSmith run for this example.
 
-See the [Quickstart](/oss/python/deepagents/quickstart/) and [Customization guide](/oss/python/deepagents/customization/) to get started building your own agents and applications with Deep Agents.
+See the [Quickstart](/oss/python/deepagents/quickstart/) and [Customization guide](/oss/python/deepagents/customization/) to build with the SDK.
 
 > [!TIP]
 >
-> Trace requests, debug agent behavior, and evaluate outputs with [LangSmith](https://smith.langchain.com?utm_source=docs\&utm_medium=cta\&utm_campaign=langsmith-signup\&utm_content=oss-deepagents-overview). Follow the [observability quickstart](/langsmith/observability-quickstart) to get set up. When ready for production, see [Going to production](/oss/python/deepagents/going-to-production) for LangSmith deployment options.
+> Trace requests, debug agent behavior, and evaluate outputs with [LangSmith](https://smith.langchain.com?utm_source=docs\&utm_medium=cta\&utm_campaign=langsmith-signup\&utm_content=oss-deepagents-overview). Follow the [observability quickstart](/langsmith/observability-quickstart) to get set up.
 
 ## Core capabilities
 
@@ -528,13 +542,17 @@ For more information, see [Human-in-the-loop](/oss/python/deepagents/human-in-th
 
 ## Get started
 
-> **[Quickstart](/oss/python/deepagents/quickstart)**
+> **[Managed Deep Agents](/langsmith/python/managed-deep-agents-overview)**
 >
-> Build your first deep agent
+> Build deep agents with managed deployment infrastructure
+
+> **[SDK quickstart](/oss/python/deepagents/quickstart)**
+>
+> The same deep agents harness, self-hosted
 
 > **[Customization](/oss/python/deepagents/customization)**
 >
-> Learn about customization options
+> Learn about SDK customization options
 
 > **[Code](/oss/deepagents/code/overview)**
 >

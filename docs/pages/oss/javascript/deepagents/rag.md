@@ -8,7 +8,7 @@ One of the most powerful LLM-based applications are sophisticated question-answe
 This might be private data, recent data, or data that is not part of the training data the LLM is trained on.
 These applications use a technique known as Retrieval Augmented Generation, or [RAG](/oss/javascript/deepagents/retrieval/).
 
-[Deep Agents](/oss/javascript/deepagents/overview) gives you primitives for RAG: custom retrieval tools, a [filesystem backend](/oss/javascript/deepagents/backends), [subagents](/oss/javascript/deepagents/subagents), [skills](/oss/javascript/deepagents/skills), and [grading rubrics](/oss/javascript/deepagents/rubric). You can combine them in different ways depending on your corpus size, latency requirements, and how strictly answers must be grounded in source data.
+[Deep Agents](/oss/javascript/deepagents/overview) gives you primitives for RAG: custom retrieval tools, a [filesystem backend](/oss/javascript/deepagents/backends), [subagents](/oss/javascript/deepagents/subagents), and [skills](/oss/javascript/deepagents/skills). You can combine them in different ways depending on your corpus size, latency requirements, and how strictly answers must be grounded in source data.
 
 This guide introduces several RAG patterns and walks through one end-to-end example: a documentation Q\&A agent that indexes a subset of [docs.langchain.com](https://docs.langchain.com), retrieves relevant chunks at query time, offloads them to the filesystem, and delegates analysis to subagents so the orchestrator context stays clean.
 
@@ -2403,10 +2403,9 @@ if (import.meta.main) {
 You implemented one RAG pattern with [`createDeepAgent`](https://reference.langchain.com/javascript/deepagents/agent/createDeepAgent). Combine it with other Deep Agents capabilities or try a different pattern from [RAG patterns](#rag-patterns):
 
 * Add [Skills](/oss/javascript/deepagents/skills) to package retrieval workflows and domain-specific search guidance
-* Use [Grading rubrics](/oss/javascript/deepagents/rubric) to verify answers are grounded in retrieved source material
 * [Evaluate a RAG application](/langsmith/evaluate-rag-tutorial) with LangSmith datasets and evaluators
 * Read [Context engineering](/oss/javascript/deepagents/context-engineering) for offloading and subagent isolation strategies
-* Deploy your application with [LangSmith Deployment](/langsmith/deployment)
+* Deploy with [Managed Deep Agents](/langsmith/javascript/managed-deep-agents-overview) to run production agents without having to manage infrastructure. Alternatively, for maximum flexibility while using the same Deep Agents harness, host agents yourself or use a custom [LangSmith Deployment](/langsmith/deployment)
 
 ***
 

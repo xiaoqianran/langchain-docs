@@ -4,7 +4,7 @@
 
 Take your deep agent to production with persistent memory, sandboxes, resilience middleware, and deployment options
 
-This guide covers considerations for taking a deep agent from a local prototype to a production deployment. It walks through scoping memory, configuring execution environments, adding guardrails, and connecting a frontend.
+This guide covers considerations for taking a deep agent from a local prototype to a production deployment with the SDK. To run production agents without having to manage infrastructure, start with [Managed Deep Agents](/langsmith/javascript/managed-deep-agents-overview) or [migrate to Managed Deep Agents](/langsmith/javascript/managed-deep-agents-migrate) instead. The rest of this page walks through scoping memory, configuring execution environments, adding guardrails, and connecting a frontend when you host agents yourself or run a custom [LangSmith Deployment](/langsmith/deployment).
 
 ## Overview
 
@@ -17,7 +17,7 @@ In production, there are a few primitives that determine how information is shar
 
 This page covers:
 
-* **[LangSmith Deployments](#langsmith-deployments)**: managed infrastructure with auth, webhooks, and cron
+* **[LangSmith Deployments](#langsmith-deployments)**: Managed Deep Agents (recommended), or a custom LangSmith Deployment with auth, webhooks, and cron
 * **[Production considerations](#production-considerations)**: invocation, multi-tenancy, authentication, credentials, async, and durability
 * **[Memory](#memory)**: persist information across conversations
 * **[Execution environment](#execution-environment)**: file storage and code execution

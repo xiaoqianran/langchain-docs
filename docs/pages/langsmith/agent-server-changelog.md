@@ -18,9 +18,9 @@ Deployments use the newest `stable` version by default and are automatically upd
 
 ## v0.17
 
-Latest version: `0.17.0rc4`
+Latest version: `0.17.0rc6`
 
-This minor line is still a release candidate. The last stable release is `0.16.2`.
+This minor line is still a release candidate. The last stable release is `0.16.7`.
 
 ### Changes
 
@@ -30,6 +30,8 @@ This minor line is still a release candidate. The last stable release is `0.16.2
 * Added `FF_RESUME_DRAINED_RUNS` to resume runs stopped by `RunControl.request_drain()` from their checkpoint instead of failing them. Requires langgraph 1.2.15+ in the deployment's dependencies; on older langgraph the flag is ignored with a startup warning.
 * Hands off in-flight runs to another replica when a replica shuts down, on Postgres-backed deployments running langgraph 1.2.15 or later with `FF_RESUME_DRAINED_RUNS` enabled.
 * Add `LANGGRAPH_THREAD_HISTORY_MAX_STATE_BYTES` (off by default) to cap how much thread state one history request returns. When set, history returns the newest state, then stops before the entry that would exceed the limit.
+* GET and POST /threads//history accept `select` to return only the named fields of each state, including single keys of the state values such as `values.messages`. On Postgres-backed servers, `select` also keeps the server from loading the unselected state.
+* Supports OpenTelemetry SDK 1.45 and Prometheus exporter 0.66. Prometheus metrics now include `otel_scope_*` labels, and resource attributes include `service.instance.id`.
 
 #### Fixes
 
@@ -44,12 +46,33 @@ This minor line is still a release candidate. The last stable release is `0.16.2
 * Thread event streams now reject a thread the caller can't read before streaming: `POST /threads/{thread_id}/stream/events` returns 403 or 404 instead of a 200 with an error frame (422 for a malformed thread ID), and the WebSocket endpoint closes with 4403, 4404 or 4422.
 * Restores 0.17.0rc1 handling of `run.start` input sent while a run is going, so a resume sent right after an interrupt (for example from `RemoteGraph`) resumes the run instead of starting a new one with the resume value as input.
 * Lower Agent Server memory use for streaming v2 SSE connections, which no longer keep a per-run event replay buffer.
+* Fixes history and state operations failing for factory graphs when using the gRPC checkpointer.
 
 #### Security
 
 * Store operations from graphs now reject namespace labels that are empty or contain `.`, as the HTTP store API does, so such a label can no longer read or change another namespace's items.
 
 > **v0.17 releases**
+>
+> **2026-10-26**
+>
+> ## v0.17.0rc6
+>
+> ### New Features
+>
+> * Supports OpenTelemetry SDK 1.45 and Prometheus exporter 0.66. Prometheus metrics now include `otel_scope_*` labels, and resource attributes include `service.instance.id`.
+>
+> ### Fixes
+>
+> * Fixes history and state operations failing for factory graphs when using the gRPC checkpointer.
+>
+> **2026-10-23**
+>
+> ## v0.17.0rc5
+>
+> ### New Features
+>
+> * GET and POST /threads//history accept `select` to return only the named fields of each state, including single keys of the state values such as `values.messages`. On Postgres-backed servers, `select` also keeps the server from loading the unselected state.
 >
 > **2026-10-19**
 >
@@ -109,7 +132,7 @@ This minor line is still a release candidate. The last stable release is `0.16.2
 
 ## v0.16
 
-Latest version: `0.16.2`
+Latest version: `0.16.7`
 
 ### Changes
 
@@ -121,6 +144,7 @@ Latest version: `0.16.2`
 * Interrupts now include an optional `response_schema` (JSON Schema for the expected resume value) in thread state, run outputs, and A2A artifacts when the graph provides one.
 * `/ok` now reports the health of each dependency it checks (database, Redis, the JS runtime, and core-api) under a `services` key, so a failing health check identifies which component is unhealthy. The HTTP status code is unchanged.
 * The agent server now reports DeltaChannel usage. It adds `delta_channel_read_counter` (by `seed_kind`) and `delta_channel_replay_depth` metrics, plus deployment metadata for DeltaChannel usage and the installed `deepagents`, `langgraph-checkpoint` and `langgraph-checkpoint-postgres` versions.
+* Supports OpenTelemetry SDK 1.45 and Prometheus exporter 0.66. Prometheus metrics now include `otel_scope_*` labels, and resource attributes include `service.instance.id`.
 
 #### Fixes
 
@@ -155,6 +179,7 @@ Latest version: `0.16.2`
 * Speeds up DeltaChannel reads on Postgres for threads that existed before the channel was added and had `update_state` run under langgraph before 1.2.13.
 * Fixes a prune that could delete DeltaChannel history needed by later reads on threads where `update_state` ran under langgraph before 1.2.13.
 * Preserves request IDs in worker logs for runs started or resumed through HTTP event-streaming commands.
+* Fixes history and state operations failing for factory graphs when using the gRPC checkpointer.
 
 #### Security
 
@@ -167,8 +192,46 @@ Latest version: `0.16.2`
 * Updates bundled Datadog serverless-init, ddtrace, langgraph-sdk, and MongoDB Go driver to clear known CVEs.
 * Updates Agent Server's Go toolchain and HTTP/2 dependencies with upstream security fixes.
 * Store operations from graphs now reject namespace labels that are empty or contain `.`, as the HTTP store API does, so such a label can no longer read or change another namespace's items.
+* Updates PyJWT, urllib3 and Werkzeug to patched versions to address published security advisories.
+* Updates undici in the JS graph server to a patched version to address published security advisories.
+* Updates Agent Server's Go toolchain to mitigate CVE-2026-111943 in certificate-chain verification.
+* Updates certifi, Hono and Vite to patched versions to address published security advisories.
 
 > **v0.16 releases**
+>
+> **2026-10-26**
+>
+> ## v0.16.7
+>
+> ### Fixes
+>
+> * Fixes history and state operations failing for factory graphs when using the gRPC checkpointer.
+>
+> **2026-10-23**
+>
+> ## v0.16.6
+>
+> ### New Features
+>
+> * Supports OpenTelemetry SDK 1.45 and Prometheus exporter 0.66. Prometheus metrics now include `otel_scope_*` labels, and resource attributes include `service.instance.id`.
+>
+> **2026-10-22**
+>
+> ## v0.16.5
+>
+> ### Security
+>
+> * Updates certifi, Hono and Vite to patched versions to address published security advisories.
+>
+> **2026-10-22**
+>
+> ## v0.16.4
+>
+> ### Security
+>
+> * Updates PyJWT, urllib3 and Werkzeug to patched versions to address published security advisories.
+> * Updates undici in the JS graph server to a patched version to address published security advisories.
+> * Updates Agent Server's Go toolchain to mitigate CVE-2026-111943 in certificate-chain verification.
 >
 > **2026-10-20**
 >
@@ -302,13 +365,14 @@ Latest version: `0.16.2`
 
 ## v0.15
 
-Latest version: `0.15.6`
+Latest version: `0.15.9`
 
 ### Changes
 
 #### New Features
 
 * Adds A2A\_A2UI\_ENABLED and A2A\_A2UI\_TOOL\_CALL\_RESULTS so A2UI can be enabled for every assistant and published from listed tools as spec DataParts next to unchanged tool results, accepts object-valued A2UI DataParts, and stops A2A replies from repeating an earlier turn's answer or UI.
+* Supports OpenTelemetry SDK 1.45 and Prometheus exporter 0.66. Prometheus metrics now include `otel_scope_*` labels, and resource attributes include `service.instance.id`.
 
 #### Fixes
 
@@ -336,8 +400,34 @@ Latest version: `0.15.6`
 * Updates Agent Server's Go toolchain and HTTP/2 dependencies with upstream security fixes.
 * Store operations from graphs now reject namespace labels that are empty or contain `.`, as the HTTP store API does, so such a label can no longer read or change another namespace's items.
 * Updates bundled PyJWT, urllib3, Werkzeug, langgraph-sdk, and undici to clear known CVEs.
+* Updates Agent Server's Go toolchain to mitigate CVE-2026-111943 in certificate-chain verification.
+* Updates bundled certifi and Hono to clear known CVEs.
 
 > **v0.15 releases**
+>
+> **2026-10-23**
+>
+> ## v0.15.9
+>
+> ### New Features
+>
+> * Supports OpenTelemetry SDK 1.45 and Prometheus exporter 0.66. Prometheus metrics now include `otel_scope_*` labels, and resource attributes include `service.instance.id`.
+>
+> **2026-10-22**
+>
+> ## v0.15.8
+>
+> ### Security
+>
+> * Updates bundled certifi and Hono to clear known CVEs.
+>
+> **2026-10-22**
+>
+> ## v0.15.7
+>
+> ### Security
+>
+> * Updates Agent Server's Go toolchain to mitigate CVE-2026-111943 in certificate-chain verification.
 >
 > **2026-10-20**
 >
@@ -479,7 +569,7 @@ Latest version: `0.15.6`
 
 ## v0.14
 
-Latest version: `0.14.6`
+Latest version: `0.14.7`
 
 ### Changes
 
@@ -487,6 +577,7 @@ Latest version: `0.14.6`
 
 * Custom encryption (`LANGGRAPH_ENCRYPTION`) now works with the gRPC Postgres checkpointer (`PREFER_GRPC_CHECKPOINTER=true`). Existing AES-encrypted checkpoints remain readable when migrating to custom encryption.
 * Custom auth can now accept LangSmith API keys alongside the existing handler. Set `auth.allow_langsmith_api_keys: true` in `langgraph.json` (requires `LANGGRAPH_AUTH_TYPE=langsmith`). Requests with an `Authorization` header still go to custom auth. All others go to LangSmith (`x-api-key`). LangSmith-authenticated callers are have two parameters: ctx.user.identity = LangSmith user\_id (or missing) and ctx.permissions = \["authenticated"]. `@auth.on` handlers still run. Off by default.
+* Supports OpenTelemetry SDK 1.45 and Prometheus exporter 0.66. Prometheus metrics now include `otel_scope_*` labels, and resource attributes include `service.instance.id`.
 
 #### Fixes
 
@@ -512,8 +603,21 @@ Latest version: `0.14.6`
 * Bumping @langchain/langgraph to `1.4.12` and @langchain/langgraph-checkpoint to `1.1.5` to resolve [GHSA-j87f-x5h5-gr75](https://github.com/langchain-ai/langgraphjs/security/advisories/GHSA-j87f-x5h5-gr75).
 * Patch AnyIO vulnerabilities in server dependencies, preserve HTTPS webhook compatibility, and prevent obsolete Python package files from surviving image upgrades.
 * Update bundled npm tooling to address dependency vulnerabilities in server images.
+* Updates Agent Server's Go toolchain and HTTP/2 dependencies with upstream security fixes.
 
 > **v0.14 releases**
+>
+> **2026-10-23**
+>
+> ## v0.14.7
+>
+> ### New Features
+>
+> * Supports OpenTelemetry SDK 1.45 and Prometheus exporter 0.66. Prometheus metrics now include `otel_scope_*` labels, and resource attributes include `service.instance.id`.
+>
+> ### Security
+>
+> * Updates Agent Server's Go toolchain and HTTP/2 dependencies with upstream security fixes.
 >
 > **2026-10-07**
 >

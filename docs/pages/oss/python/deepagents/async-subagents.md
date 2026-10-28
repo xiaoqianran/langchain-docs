@@ -72,6 +72,9 @@ agent = create_deep_agent(
 | `url` | `str` | Optional. When omitted, uses ASGI transport (in-process). When set, uses HTTP transport to a remote Agent Protocol server. |
 | `headers` | `dict[str, str]` | Optional. Additional headers for requests to the remote server. Use for custom authentication with self-hosted Agent Protocol servers. |
 | `mode` | `"isolated" \| "fork"` | Optional. Controls what conversation context the subagent receives at launch. Defaults to `"isolated"`. See [Choose a launch mode](#choose-a-launch-mode). |
+| `update_strategy` | `"interrupt" \| "enqueue"` | Optional. How `update_async_task` sends a follow-up while a run is active. Defaults to `"interrupt"`. See [Understand the lifecycle](#understand-the-lifecycle). |
+| `webhook` | `str` | Optional. URL the Agent Server calls whenever a run of this subagent finishes. See [Deliver results through your app](#deliver-results-through-your-app). |
+| `notify_parent` | `bool` | Optional. Whether the subagent may wake the supervisor when it finishes while the supervisor is idle. Defaults to `True`. |
 
 For LangGraph-based deployments, register all graphs in the same `langgraph.json` for co-deployed setups:
 
@@ -125,11 +128,18 @@ sequenceDiagram
     Supervisor-->>User: "Here are the results"
 ```
 
-* **Launch** creates a new thread on the server and starts a run with input determined by the [launch mode](#choose-a-launch-mode). Isolated mode sends only the task description; Python fork mode also sends the parent's effective conversation history. The thread ID is returned as the task ID. The supervisor reports this ID to the user and does not poll for completion.
+* **Launch** creates a new thread on the server and starts a run with input determined by the [launch mode](#choose-a-launch-mode). Isolated mode sends only the task description; fork mode also sends the parent's effective conversation history. The thread ID is returned as the task ID. The supervisor reports this ID to the user and does not poll for completion.
 * **Check** fetches the current run status. If the run succeeded, it retrieves the thread state to extract the subagent's final output. If still running, it reports that to the user.
-* **Update** creates a new run on the same thread with an interrupt multitask strategy. The previous run is interrupted, and the subagent restarts with the full conversation history plus the new instructions. The task ID stays the same.
+* **Update** creates a new run on the same thread. By default it interrupts the previous run, and the subagent restarts with the full conversation history plus the new instructions. The task ID stays the same.
 * **Cancel** calls `runs.cancel()` on the server and marks the task as `"cancelled"`.
 * **List** iterates over all tracked tasks. For non-terminal tasks, it fetches live status from the server in parallel. Terminal statuses (`success`, `error`, `cancelled`) are returned from cache.
+
+To let follow-ups wait, set `update_strategy="enqueue"`. **Update** then queues the new run behind the current one, and the task is `pending` until it starts. Cancelling the task also cancels earlier runs that are still active.
+If the current run pauses for input or approval before the follow-up starts, the follow-up still starts and that request is dropped.
+
+> [!NOTE]
+>
+> `update_strategy` requires `deepagents>=0.7.30`. It is in [**beta**](/oss/python/versioning); APIs and behavior may change between releases.
 
 If a subagent paused for input or approval, **check** and **list** report it as `waiting`. Updating a `waiting` task drops its pending request, and cancelling one only marks it as `"cancelled"`, since it has no active run. See [Handle subagents waiting for input](#handle-subagents-waiting-for-input).
 
@@ -144,7 +154,29 @@ Notifications are returned to the supervisor as a `HumanMessage`. They can inclu
 ```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 for message in state["messages"]:
     if event := message.additional_kwargs.get("deepagents_notification"):
-        print(event["agent_name"], event["status"])  # success, error, timeout, or waiting
+        print(event["agent_name"], event["status"])  # success, error, timeout, cancelled, or waiting
+```
+
+### Deliver results through your app
+
+> [!NOTE]
+>
+> `webhook` and `notify_parent` require `deepagents>=0.7.30`. `notify_parent` is in [**beta**](/oss/python/versioning); APIs and behavior may change between releases.
+
+Set `webhook` to have the Agent Server call your app whenever a run of the subagent finishes. The call includes the run's thread ID, run ID, status, and metadata, including `parent_thread_id` and `subagent_name`. To deliver results through your app instead of waking the supervisor, also turn off parent notifications. The supervisor still receives the subagent's updates while it runs.
+
+```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+from deepagents import AsyncSubAgent
+
+async_subagents = [
+    AsyncSubAgent(
+        name="researcher",
+        description="Research agent for information gathering and synthesis",
+        graph_id="researcher",
+        webhook="https://my-app.example.com/hooks/subagent-finished",
+        notify_parent=False,  # Your app delivers the result
+    ),
+]
 ```
 
 ## Handle subagents waiting for input
@@ -253,7 +285,7 @@ The `mode` field on each [`AsyncSubAgent`](https://reference.langchain.com/pytho
 
 > [!WARNING]
 >
-> `mode="fork"` is available in Python only. It is experimental and may change in a future release.
+> Fork mode is experimental and may change in a future release.
 
 Set `mode="fork"` on any `AsyncSubAgent` spec:
 

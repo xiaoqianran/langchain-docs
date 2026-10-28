@@ -4,23 +4,35 @@
 
 Tutorials, conceptual guides, and resources to help you get started.
 
-In the **Learn** section of the documentation, you'll find a collection of tutorials, conceptual overviews, and additional resources to help you build powerful applications with LangChain and LangGraph.
+In the **Learn** section of the documentation, you will find a collection of tutorials, conceptual overviews, and additional resources to help you build powerful applications with Managed Deep Agents, Deep Agents, LangChain, and LangGraph.
 
 ## Tutorials
 
 Below are tutorials for common use cases, organized by framework.
 
-### Deep Agents
+### Managed Deep Agents
 
-[Deep Agents](/oss/javascript/deepagents/overview) include built-in functionality for managing context, a virtual filesystem, and other common agent requirements.
-
-> **[Data analysis](/oss/javascript/deepagents/data-analysis)**
->
-> Build a data analysis agent that sends reports to Slack.
+[Managed Deep Agents](/langsmith/javascript/managed-deep-agents-overview) is the recommended way to build and deploy deep agents. You write the agent; LangSmith runs the harness and runtime.
 
 > **[Deep research](/oss/javascript/deepagents/deep-research)**
 >
-> Build a multi-step web research agent with subagent delegation and strategic reflection.
+> Build a multi-step web research agent with Managed Deep Agents or the Deep Agents SDK.
+
+> **[Content builder](/oss/javascript/deepagents/content-builder)**
+>
+> Build a content writing agent with brand voice, skills, and image tools using Managed Deep Agents or the Deep Agents SDK.
+
+### Deep Agents
+
+For maximum flexibility while using the same Deep Agents harness as [Managed Deep Agents](#managed-deep-agents), use the Deep Agents SDK and host agents yourself, or run a custom [LangSmith Deployment](/langsmith/deployment).
+
+> **[Deep research](/oss/javascript/deepagents/deep-research)**
+>
+> Build a multi-step web research agent with Managed Deep Agents or the Deep Agents SDK.
+
+> **[Content builder](/oss/javascript/deepagents/content-builder)**
+>
+> Build a content writing agent with brand voice, skills, and image tools using Managed Deep Agents or the Deep Agents SDK.
 
 ### LangChain
 
@@ -50,6 +62,10 @@ If deeper customization is required, agents can be implemented directly in LangG
 > **[Custom RAG Agent](/oss/javascript/langgraph/agentic-rag)**
 >
 > Build a RAG agent using LangGraph primitives for fine-grained control.
+
+> **[Custom SQL Agent](/oss/javascript/langgraph/sql-agent)**
+>
+> Implement a SQL agent directly in LangGraph for maximum flexibility.
 
 ### Multi-agent
 

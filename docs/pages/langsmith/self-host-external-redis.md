@@ -125,6 +125,64 @@ Once configured, you should be able to reinstall your LangSmith instance. If eve
 
 As of LangSmith helm version **0.12.25**, we officially support **Redis Cluster**.
 
+**v0.18.0 and later**
+
+### Cluster endpoint
+
+LangSmith discovers the nodes of a Redis Cluster from the endpoint it connects to. Set `redis.external.connectionUrl` to one endpoint that serves the cluster topology, such as a [Memorystore Cluster discovery endpoint](#memorystore-for-redis-iam-authentication), an ElastiCache configuration endpoint, or any node.
+
+The URL uses the same format as for standalone Redis, with the password in the URL:
+
+```text theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+redis://:password@hostname:port
+```
+
+Percent-encode special characters in the password. Use `rediss://` if your cluster uses TLS, as for standalone Redis. `redis.external.cluster.tlsEnabled` applies only to node URIs.
+
+> [!NOTE]
+>
+> Configuring Redis Cluster with `connectionUrl` requires LangSmith v0.18.0 or later. Earlier versions use node URIs (see the **Before v0.18.0** tab). Node URIs, the separate cluster password, and `redis.external.cluster.tlsEnabled` are deprecated in v0.18.0 and supported through v0.19. Node URIs take precedence over `connectionUrl` when set.
+
+### Configuration
+
+Set `redis.external.cluster.enabled` and provide the cluster endpoint either directly in `values.yaml` or through an existing Kubernetes `Secret`.
+
+```yaml Helm (inline values) theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+redis:
+  external:
+    enabled: true
+    # One endpoint that serves the cluster topology, with the password if your cluster requires one.
+    # Use rediss:// for TLS.
+    connectionUrl: "rediss://:your_redis_password@redis-cluster.example.internal:6379"
+    cluster:
+      enabled: true
+```
+
+```yaml Helm (using an existing Secret) theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+redis:
+  external:
+    enabled: true
+    # Name of an existing Secret that contains the cluster endpoint
+    existingSecretName: "my-redis-cluster-secret"
+    connectionUrlSecretKey: "connection_url"
+    cluster:
+      enabled: true
+```
+
+If using an existing Secret, it should contain:
+
+```yaml Kubernetes Secret theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+apiVersion: v1
+kind: Secret
+metadata:
+  name: my-redis-cluster-secret
+type: Opaque
+stringData:
+  connection_url: "rediss://:your_redis_password@redis-cluster.example.internal:6379"
+```
+
+**Before v0.18.0**
+
 ### Host names
 
 When using Redis Cluster, provide a list of node hostnames and ports. Each node URI must be in the form:
@@ -472,7 +530,33 @@ Memorystore for Redis supports [IAM authentication](https://docs.cloud.google.co
 
 #### Configuration
 
-**Memorystore Cluster with IAM:**
+**LangSmith v0.18.0 and later:**
+
+Set the connection URL to the cluster's discovery endpoint. LangSmith discovers the cluster's shards from it. IAM authentication replaces the password, so the URL has none. Use `rediss://` if in-transit encryption is enabled on the cluster, and `redis://` if it is not.
+
+```yaml theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+redis:
+  external:
+    enabled: true
+    existingSecretName: "redis-cluster-secret"
+    connectionUrlSecretKey: "connection_url"
+    iamAuthProvider: "gcp"
+    cluster:
+      enabled: true
+```
+
+```yaml theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+apiVersion: v1
+kind: Secret
+metadata:
+  name: redis-cluster-secret
+type: Opaque
+stringData:
+  # The cluster's discovery endpoint, for example rediss://10.1.2.3:6379
+  connection_url: "rediss://<discovery-endpoint-ip>:6379"
+```
+
+**Before LangSmith v0.18.0:**
 
 ```yaml theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 redis:

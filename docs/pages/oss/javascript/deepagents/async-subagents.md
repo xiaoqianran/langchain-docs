@@ -8,6 +8,8 @@ Async subagents let a supervisor agent launch background tasks that return immed
 
 This builds on [subagents](/oss/javascript/deepagents/subagents), which run synchronously and block the supervisor until completion. Use async subagents when tasks are long-running, parallelizable, or need mid-flight steering.
 
+On an Agent Server, the supervisor also learns when a task finishes, fails, or needs input, so it does not have to check.
+
 ```mermaid theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 graph TB
     User([User]) --> Supervisor[Supervisor Agent]
@@ -211,8 +213,12 @@ const agent = createDeepAgent({
 | `name` | `string` | Required. Unique identifier. The supervisor uses this when launching tasks. |
 | `description` | `string` | Required. What this subagent does. The supervisor uses this to decide which agent to delegate to. |
 | `graphId` | `string` | Required. The graph ID (or assistant ID) on the Agent Protocol server. For LangGraph-based deployments, this must match a graph registered in `langgraph.json`. |
-| `url` | `string` | Optional. When omitted, uses ASGI transport (in-process). When set, uses HTTP transport to a remote Agent Protocol server. |
+| `url` | `string` | Optional. When omitted, talks to the same Agent Server deployment (the address the server gives the running graph). Set `url` for a remote server, or when your Agent Server does not yet provide that address. See [Choose a transport](#choose-a-transport). |
 | `headers` | `Record<string, string>` | Optional. Additional headers for requests to the remote server. Use for custom authentication with self-hosted Agent Protocol servers. |
+| `mode` | `"isolated" \| "fork"` | Optional. Controls what conversation context the subagent receives at launch. Defaults to `"isolated"`. See [Choose a launch mode](#choose-a-launch-mode). |
+| `updateStrategy` | `"interrupt" \| "enqueue"` | Optional. How `update_async_task` sends a follow-up while a run is active. Defaults to `"interrupt"`. See [Understand the lifecycle](#understand-the-lifecycle). |
+| `webhook` | `string` | Optional. URL the Agent Server calls whenever a run of this subagent finishes. See [Deliver results through your app](#deliver-results-through-your-app). |
+| `notifyParent` | `boolean` | Optional. Whether the subagent may wake the supervisor when it finishes while the supervisor is idle. Defaults to `true`. |
 
 For LangGraph-based deployments, register all graphs in the same `langgraph.json` for co-deployed setups:
 
@@ -266,25 +272,252 @@ sequenceDiagram
     Supervisor-->>User: "Here are the results"
 ```
 
-* **Launch** creates a new thread on the server and starts a run with input determined by the [launch mode](#choose-a-launch-mode). Isolated mode sends only the task description; Python fork mode also sends the parent's effective conversation history. The thread ID is returned as the task ID. The supervisor reports this ID to the user and does not poll for completion.
+* **Launch** creates a new thread on the server and starts a run with input determined by the [launch mode](#choose-a-launch-mode). Isolated mode sends only the task description; fork mode also sends the parent's effective conversation history. The thread ID is returned as the task ID. The supervisor reports this ID to the user and does not poll for completion.
 * **Check** fetches the current run status. If the run succeeded, it retrieves the thread state to extract the subagent's final output. If still running, it reports that to the user.
-* **Update** creates a new run on the same thread with an interrupt multitask strategy. The previous run is interrupted, and the subagent restarts with the full conversation history plus the new instructions. The task ID stays the same.
+* **Update** creates a new run on the same thread. By default it interrupts the previous run, and the subagent restarts with the full conversation history plus the new instructions. The task ID stays the same.
 * **Cancel** calls `runs.cancel()` on the server and marks the task as `"cancelled"`.
 * **List** iterates over all tracked tasks. For non-terminal tasks, it fetches live status from the server in parallel. Terminal statuses (`success`, `error`, `cancelled`) are returned from cache.
 
+To let follow-ups wait, set `updateStrategy: "enqueue"`. **Update** then queues the new run behind the current one, and the task is `pending` until it starts. Cancelling the task also cancels earlier runs that are still active.
+If the current run pauses for input or approval before the follow-up starts, the follow-up still starts and that request is dropped.
+
+> [!NOTE]
+>
+> `updateStrategy` requires `deepagents>=1.16.0`. It is in [**beta**](/oss/javascript/versioning); APIs and behavior may change between releases.
+
+If a subagent paused for input or approval, **check** and **list** report it as `waiting`. Updating a `waiting` task drops its pending request, and cancelling one only marks it as `"cancelled"`, since it has no active run. See [Handle subagents waiting for input](#handle-subagents-waiting-for-input).
+
+When running on an [Agent Protocol](https://github.com/langchain-ai/agent-protocol) server, subagents automatically update the supervisor as they complete. If using a [single deployment](#single-deployment) for the supervisor and subagents, subagents will wake the supervisor if it is idle; otherwise it receives the update at the start of its next run.
+
+> [!NOTE]
+>
+> Task notifications require `deepagents>=1.16.0`. They are in [**beta**](/oss/javascript/versioning); APIs and behavior may change between releases.
+
+Notifications are returned to the supervisor as a `HumanMessage`. They can include images and other multimodal media. The message carries a `TaskEvent` (`task_id`, `agent_name`, `status`, `run_id`) in `additional_kwargs.deepagents_notification`, so your app can show notifications differently from user messages:
+
+```ts theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+for (const message of state.messages) {
+  const event = message.additional_kwargs.deepagents_notification as
+    | { agent_name: string; status: string }
+    | undefined;
+  if (event) {
+    console.log(event.agent_name, event.status); // success, error, timeout, cancelled, or waiting
+  }
+}
+```
+
+### Deliver results through your app
+
+> [!NOTE]
+>
+> `webhook` and `notifyParent` require `deepagents>=1.16.0`. `notifyParent` is in [**beta**](/oss/javascript/versioning); APIs and behavior may change between releases.
+
+Set `webhook` to have the Agent Server call your app whenever a run of the subagent finishes. The call includes the run's thread ID, run ID, status, and metadata, including `parent_thread_id` and `subagent_name`. To deliver results through your app instead of waking the supervisor, also turn off parent notifications. The supervisor still receives the subagent's updates while it runs.
+
+```ts theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+import type { AsyncSubAgent } from "deepagents";
+
+const asyncSubagents: AsyncSubAgent[] = [
+  {
+    name: "researcher",
+    description: "Research agent for information gathering and synthesis",
+    graphId: "researcher",
+    webhook: "https://my-app.example.com/hooks/subagent-finished",
+    notifyParent: false, // Your app delivers the result
+  },
+];
+```
+
+## Handle subagents waiting for input
+
+> [!NOTE]
+>
+> The `waiting` status requires `deepagents>=1.16.0`. It is in [**beta**](/oss/javascript/versioning); APIs and behavior may change between releases.
+
+When a subagent pauses for input or approval with `interrupt()` or [human-in-the-loop](/oss/javascript/deepagents/human-in-the-loop), the **check** and **list** tools report it as `waiting` with its pending interrupts. The supervisor cannot answer or approve on the user's behalf. The request is for the user.
+
+Your app answers it on the subagent's own thread. The task ID is the subagent's thread ID:
+
+```ts theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+import { Client } from "@langchain/langgraph-sdk";
+
+async function answerWaitingSubagent(
+  taskId: string,
+  graphId: string,
+  answer: unknown,
+): Promise<void> {
+  const client = new Client(); // Pass apiUrl for a subagent on another deployment
+  const thread = await client.threads.get(taskId); // The task ID is the subagent's thread ID
+  const [interrupt] = Object.values(thread.interrupts ?? {})[0];
+  await client.runs.create(taskId, graphId, {
+    command: { resume: { [interrupt.id!]: answer } },
+  });
+}
+```
+
+When the subagent finishes after the answer, the supervisor receives a notification as usual. If a subagent needs information from the supervisor rather than the user, have it ask in its result. The supervisor replies with `update_async_task`.
+
 ## Understand state management
 
-Task metadata is stored in a dedicated state channel (`asyncTasks`) on the supervisor's graph, separate from the message history. This is critical because deep agents [compact their message history](/oss/javascript/deepagents/context-engineering#summarization) when the context window fills up/ If task IDs were only in tool messages, they would be lost during compaction. The dedicated channel ensures the supervisor can always recall its tasks through `list_async_tasks`, even after multiple rounds of summarization.
+Task metadata is stored in a dedicated state channel (`asyncTasks`) on the supervisor's graph, separate from the message history. This is critical because deep agents [compact their message history](/oss/javascript/deepagents/context-engineering#summarization) when the context window fills up. If task IDs were only in tool messages, they would be lost during compaction. The dedicated channel ensures the supervisor can always recall its tasks through `list_async_tasks`, even after multiple rounds of summarization.
 
 Each tracked task records the task ID, agent name, thread ID, run ID, status, and timestamps (`createdAt`, `checkedAt`, `updatedAt`).
 
+### Find a supervisor's subagent threads
+
+> [!NOTE]
+>
+> Thread tagging requires `deepagents>=1.16.0`.
+
+`start_async_task` creates each subagent thread with `metadata: { parent_thread_id }`, the supervisor's thread ID. Use it to find a supervisor's subagent threads, or to read the supervisor's thread in a subagent's graph factory:
+
+```ts Google theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+import { Client } from "@langchain/langgraph-sdk";
+import type { LangGraphRunnableConfig } from "@langchain/langgraph";
+import { createDeepAgent } from "deepagents";
+
+async function findSubagentThreads(parentThreadId: string) {
+  const client = new Client();
+  return client.threads.search({ metadata: { parent_thread_id: parentThreadId } });
+}
+
+function researcher(config: LangGraphRunnableConfig) {
+  // Set when a supervisor launched this run with `start_async_task`
+  const parentThreadId = config.metadata?.parent_thread_id;
+  return createDeepAgent({
+    model: "google:gemini-3.6-flash",
+    systemPrompt: "You research topics thoroughly.",
+  });
+}
+```
+
+```ts OpenAI theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+import { Client } from "@langchain/langgraph-sdk";
+import type { LangGraphRunnableConfig } from "@langchain/langgraph";
+import { createDeepAgent } from "deepagents";
+
+async function findSubagentThreads(parentThreadId: string) {
+  const client = new Client();
+  return client.threads.search({ metadata: { parent_thread_id: parentThreadId } });
+}
+
+function researcher(config: LangGraphRunnableConfig) {
+  // Set when a supervisor launched this run with `start_async_task`
+  const parentThreadId = config.metadata?.parent_thread_id;
+  return createDeepAgent({
+    model: "openai:gpt-5.5",
+    systemPrompt: "You research topics thoroughly.",
+  });
+}
+```
+
+```ts Anthropic theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+import { Client } from "@langchain/langgraph-sdk";
+import type { LangGraphRunnableConfig } from "@langchain/langgraph";
+import { createDeepAgent } from "deepagents";
+
+async function findSubagentThreads(parentThreadId: string) {
+  const client = new Client();
+  return client.threads.search({ metadata: { parent_thread_id: parentThreadId } });
+}
+
+function researcher(config: LangGraphRunnableConfig) {
+  // Set when a supervisor launched this run with `start_async_task`
+  const parentThreadId = config.metadata?.parent_thread_id;
+  return createDeepAgent({
+    model: "anthropic:claude-sonnet-5",
+    systemPrompt: "You research topics thoroughly.",
+  });
+}
+```
+
+```ts OpenRouter theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+import { Client } from "@langchain/langgraph-sdk";
+import type { LangGraphRunnableConfig } from "@langchain/langgraph";
+import { createDeepAgent } from "deepagents";
+
+async function findSubagentThreads(parentThreadId: string) {
+  const client = new Client();
+  return client.threads.search({ metadata: { parent_thread_id: parentThreadId } });
+}
+
+function researcher(config: LangGraphRunnableConfig) {
+  // Set when a supervisor launched this run with `start_async_task`
+  const parentThreadId = config.metadata?.parent_thread_id;
+  return createDeepAgent({
+    model: "openrouter:z-ai/glm-5.2",
+    systemPrompt: "You research topics thoroughly.",
+  });
+}
+```
+
+```ts Fireworks theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+import { Client } from "@langchain/langgraph-sdk";
+import type { LangGraphRunnableConfig } from "@langchain/langgraph";
+import { createDeepAgent } from "deepagents";
+
+async function findSubagentThreads(parentThreadId: string) {
+  const client = new Client();
+  return client.threads.search({ metadata: { parent_thread_id: parentThreadId } });
+}
+
+function researcher(config: LangGraphRunnableConfig) {
+  // Set when a supervisor launched this run with `start_async_task`
+  const parentThreadId = config.metadata?.parent_thread_id;
+  return createDeepAgent({
+    model: "fireworks:accounts/fireworks/models/glm-5p2",
+    systemPrompt: "You research topics thoroughly.",
+  });
+}
+```
+
+```ts Baseten theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+import { Client } from "@langchain/langgraph-sdk";
+import type { LangGraphRunnableConfig } from "@langchain/langgraph";
+import { createDeepAgent } from "deepagents";
+
+async function findSubagentThreads(parentThreadId: string) {
+  const client = new Client();
+  return client.threads.search({ metadata: { parent_thread_id: parentThreadId } });
+}
+
+function researcher(config: LangGraphRunnableConfig) {
+  // Set when a supervisor launched this run with `start_async_task`
+  const parentThreadId = config.metadata?.parent_thread_id;
+  return createDeepAgent({
+    model: "baseten:zai-org/GLM-5.2",
+    systemPrompt: "You research topics thoroughly.",
+  });
+}
+```
+
+```ts Ollama theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+import { Client } from "@langchain/langgraph-sdk";
+import type { LangGraphRunnableConfig } from "@langchain/langgraph";
+import { createDeepAgent } from "deepagents";
+
+async function findSubagentThreads(parentThreadId: string) {
+  const client = new Client();
+  return client.threads.search({ metadata: { parent_thread_id: parentThreadId } });
+}
+
+function researcher(config: LangGraphRunnableConfig) {
+  // Set when a supervisor launched this run with `start_async_task`
+  const parentThreadId = config.metadata?.parent_thread_id;
+  return createDeepAgent({
+    model: "ollama:north-mini-code-1.0",
+    systemPrompt: "You research topics thoroughly.",
+  });
+}
+```
+
 ## Choose a transport
 
-### ASGI transport (co-deployed)
+### Same-deployment (omit `url`)
 
-When a subagent spec omits the `url` field, the LangGraph SDK uses ASGI transport -- SDK calls are routed through in-process function calls rather than HTTP. For LangGraph-based deployments, this requires both graphs to be registered in the same `langgraph.json`.
+When a subagent spec omits the `url` field, the LangGraph SDK talks to the Agent Server that is running this graph, using the address that server provides. Elsewhere, the SDK defaults to `http://localhost:8123`. For LangGraph-based deployments, register both graphs in the same `langgraph.json`.
 
-ASGI transport eliminates network latency and requires no additional auth configuration. The subagent still runs as a separate thread with its own state. This is the recommended default.
+Deployed Agent Servers provide this address from version 0.18.0 (`langgraph dev` already does). On earlier versions, set `url` to the deployment URL.
 
 ### HTTP transport (remote)
 
@@ -318,7 +551,20 @@ The `mode` field on each [`AsyncSubAgent`](https://reference.langchain.com/javas
 
 > [!WARNING]
 >
-> `mode="fork"` is available in Python only. It is experimental and may change in a future release.
+> Fork mode requires `deepagents>=1.16.0`. It is experimental and may change in a future release.
+
+Set `mode: "fork"` on any `AsyncSubAgent` spec:
+
+```typescript theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+const asyncSubagents: AsyncSubAgent[] = [
+  {
+    name: "drafter",
+    description: "Drafts documents based on the conversation context",
+    graphId: "drafter",
+    mode: "fork",
+  },
+];
+```
 
 At launch, `start_async_task` sends a snapshot of the parent's effective conversation history, followed by the task description. If the parent has compacted its history, the snapshot includes that compacted context, not every original message. Later messages from the parent are not forwarded to the child.
 
@@ -326,11 +572,13 @@ The subagent starts on a new server thread. Fork mode sends conversation message
 
 **Prompt-cache reuse.** To get cache hits on the forked conversation prefix, configure the remote agent with the same model, system prompt, tools, and prompt-processing middleware as the parent. Fork mode copies conversation history; it does not synchronize those settings. Matching configuration is necessary but not sufficient: the rendered prefix must match, and cache hits depend on the provider.
 
+**Offloaded media.** If the parent offloads media with `offloadBinaryContent`, fork mode sends references to it rather than the media itself. The subagent must be a deep agent that shares the parent's backend to see the media; other deep agents get a note that it's unavailable, and other graphs can't use these messages.
+
 ## Choose a deployment topology
 
 ### Single deployment
 
-A single deployment means all agents are co-deployed on the same server using ASGI transport. For LangGraph-based deployments, register all graphs in one `langgraph.json`. This is the recommended starting point -- one server to manage, zero network latency between agents.
+A single deployment means all agents are co-deployed on the same Agent Server. Omit `url` so each graph reaches the others through that server. For LangGraph-based deployments, register all graphs in one `langgraph.json`. This is the recommended starting point -- one server to manage.
 
 ### Split deployment
 
@@ -338,7 +586,7 @@ Supervisor on one server, subagents on another via HTTP transport. Use when suba
 
 ### Hybrid
 
-In a hybrid deployment, some subagents are co-deployed via ASGI, others remote via HTTP:
+In a hybrid deployment, some subagents omit `url` (same Agent Server), others set `url` for a remote server:
 
 ```ts theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 import type { AsyncSubAgent } from "deepagents";
@@ -348,7 +596,7 @@ const asyncSubagents: AsyncSubAgent[] = [
     name: "researcher",
     description: "Research agent",
     graphId: "researcher",
-    // No url → ASGI (co-deployed)
+    // No url → same Agent Server
   },
   {
     name: "coder",

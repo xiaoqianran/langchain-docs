@@ -92,6 +92,7 @@ The following table shows tools that can be used to automate tasks in web browse
 | [AgentQL Toolkit](https://docs.agentql.com/) | Free trial, with pay-as-you-go and flat rate plans after | ✅ |
 | [Amazon Bedrock AgentCore Browser](/oss/python/integrations/tools/bedrock_agentcore_browser) | Pay-per-use (AWS) | ✅ |
 | [AproxPay](https://github.com/aproxpay/langchain-aproxpay) | Pay-per-use via x402 (USDC on Base); no signup | ❌ (fetch + CONNECT session pass) |
+| [Bowmark](https://bowmark.ai/docs/langchain) | \$10 free every month, then pay-as-you-go | ❌ |
 | [BrightData Browser API](https://docs.brightdata.com/scraping-automation/scraping-browser/introduction) | Pay-as-you-go, \$2 trial credit | ✅ |
 | [BrightData Scraper Studio](https://docs.brightdata.com/datasets/scraper-studio/introduction) | 5,000 free credits/month, then pay-as-you-go | ❌ |
 | [BrightData Unlocker](https://docs.brightdata.com/scraping-automation/web-unlocker/introduction) | Pay-as-you-go | ❌ |
@@ -229,6 +230,7 @@ The following table shows tools that generate video, image, or audio assets:
 | [`SemanticaDecisionTool`](https://docs.getsemantica.ai/integrations/langchain) | [  ![Downloads per month](https://static.pepy.tech/badge/semantica/month)](https://pypi.org/project/semantica/) |
 | [`SemanticaKGTool`](https://docs.getsemantica.ai/integrations/langchain) | [  ![Downloads per month](https://static.pepy.tech/badge/semantica/month)](https://pypi.org/project/semantica/) |
 | [`StripeAgentToolkit`](/oss/python/integrations/tools/stripe) | [  ![Downloads per month](https://static.pepy.tech/badge/stripe-agent-toolkit/month)](https://pypi.org/project/stripe-agent-toolkit/) |
+| [`CrawlCheckToolkit`](https://github.com/emmanuelorta/crawlcheck-core/tree/main/sdk-python#langchain-and-llamaindex-1100) | [  ![Downloads per month](https://static.pepy.tech/badge/crawlcheck/month)](https://pypi.org/project/crawlcheck/) |
 | [`MemgraphToolkit`](https://github.com/memgraph/langchain-memgraph) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-memgraph/month)](https://pypi.org/project/langchain-memgraph/) |
 | [`FoliantPaymentTool`](https://github.com/gazoy/langchain-foliant#readme) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-foliant/month)](https://pypi.org/project/langchain-foliant/) |
 | [`Google drive`](/oss/python/integrations/tools/google_drive) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-googledrive/month)](https://pypi.org/project/langchain-googledrive/) |
@@ -284,6 +286,7 @@ The following table shows tools that generate video, image, or audio assets:
 | [`ToolGuardLayer`](https://github.com/sriram7737/pramagent) | [  ![Downloads per month](https://static.pepy.tech/badge/pramagent/month)](https://pypi.org/project/pramagent/) |
 | [`GraphTool`](https://dev.writer.com/home/introduction) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-writer/month)](https://pypi.org/project/langchain-writer/) |
 | [`EconDashToolkit`](https://github.com/econdash/econdash-python/blob/main/packages/langchain-econdash/README.md) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-econdash/month)](https://pypi.org/project/langchain-econdash/) |
+| [`APIVerveToolkit`](https://docs.apiverve.com/integrations/langchain) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-apiverve/month)](https://pypi.org/project/langchain-apiverve/) |
 | [`You.com search`](https://you.com/docs/integrations/langchain) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-youdotcom/month)](https://pypi.org/project/langchain-youdotcom/) |
 | [`VerdixAddressRiskTool`](https://github.com/verdixapi/langchain-verdix#readme) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-verdix/month)](https://pypi.org/project/langchain-verdix/) |
 | [`Synmerco`](https://synmerco.com/docs) | [  ![Downloads per month](https://static.pepy.tech/badge/synmerco-langchain/month)](https://pypi.org/project/synmerco-langchain/) |
@@ -524,8 +527,10 @@ The following table shows tools that generate video, image, or audio assets:
 | [`Hlido`](https://hlido.eu/docs/) | [  ![Downloads per month](https://static.pepy.tech/badge/hlido-trust/month)](https://pypi.org/project/hlido-trust/) |
 | [`TempGuru`](https://tempguru.co/ai-agents) | [  ![Downloads per month](https://static.pepy.tech/badge/tempguru/month)](https://pypi.org/project/tempguru/) |
 | [`DynamicFeed`](https://dynamicfeed.ai/integrations) | [  ![Downloads per month](https://static.pepy.tech/badge/dynamicfeed-tools/month)](https://pypi.org/project/dynamicfeed-tools/) |
+| [`Hugging Bay tools`](https://pypi.org/project/langchain-hugging-bay/0.1.0/) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-hugging-bay/month)](https://pypi.org/project/langchain-hugging-bay/) |
 | [`AgentLair`](https://agentlair.dev/docs) | N/A |
 | [`Browserless`](https://browserless.io) | N/A |
+| [`GridPinToolkit`](https://github.com/gridpin/gridpin/tree/main/integrations/langchain) | N/A |
 | [`HuangtingFlux`](https://huangtingflux.com/integrations/langchain) | N/A |
 | [`Stagehand`](/oss/python/integrations/tools/stagehand) | N/A |
 

@@ -12,6 +12,12 @@ LangSmith
 
 [Open](/langsmith/sandboxes)
 
+![](https://mintcdn.com/langchain-5e9cc07a/dBf5oyJ5eOSl_Cyn/images/providers/light/createos.svg?fit=max\&auto=format\&n=dBf5oyJ5eOSl_Cyn\&q=85\&s=5c75104b38a8b00c109a54331d09a0ab)
+
+CreateOS Sandbox
+
+[Open](https://createos.sh/docs/Sandbox/Overview)
+
 ![](https://mintcdn.com/langchain-5e9cc07a/Tz8fh3A43FeUPf69/images/providers/light/deno.svg?fit=max\&auto=format\&n=Tz8fh3A43FeUPf69\&q=85\&s=8d213b0000104542fcaa7ab160595224)
 
 Deno

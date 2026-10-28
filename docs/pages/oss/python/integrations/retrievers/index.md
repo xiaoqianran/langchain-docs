@@ -145,6 +145,7 @@ The below retrievers will search over an external index (e.g., constructed from 
 | [`KeiroRetriever`](https://github.com/Keirolabs-API/langchain-keiro) | ❌ | ✅ | [`langchain-keiro`](https://pypi.org/project/langchain-keiro/) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-keiro/month)](https://pypi.org/project/langchain-keiro/) |
 | [`IMAP`](https://github.com/jfouret/langchain-imap) | | | [`langchain-imap`](https://pypi.org/project/langchain-imap/) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-imap/month)](https://pypi.org/project/langchain-imap/) |
 | [`Perigon`](https://perigon.io/docs/api/intro) | | | [`langchain-perigon`](https://pypi.org/project/langchain-perigon/) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-perigon/month)](https://pypi.org/project/langchain-perigon/) |
+| [`HuggingBayRetriever`](https://pypi.org/project/langchain-hugging-bay/0.1.0/) | | | [`langchain-hugging-bay`](https://pypi.org/project/langchain-hugging-bay/) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-hugging-bay/month)](https://pypi.org/project/langchain-hugging-bay/) |
 | [`OpenMemoryRetriever`](https://github.com/nullure/langchain-openmemory) | | | [`langchain-openmemory`](https://pypi.org/project/langchain-openmemory/) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-openmemory/month)](https://pypi.org/project/langchain-openmemory/) |
 
 ***

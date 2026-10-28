@@ -71,7 +71,7 @@ evaluators := langsmith.NewEvaluatorAddress()
 
 **Python**
 
-```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 import asyncio
 
 import langsmith as ls
@@ -92,7 +92,7 @@ asyncio.run(main())
 
 **TypeScript**
 
-```ts theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```ts theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 import { AgentAddress, Client } from "langsmith";
 
 const client = new Client();
@@ -109,7 +109,7 @@ for await (const run of client.runs.query({
 
 **Java**
 
-```java Java theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```java Java theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 import com.langchain.smith.address.AgentAddress;
 import com.langchain.smith.client.LangsmithClient;
 import com.langchain.smith.client.okhttp.LangsmithOkHttpClient;
@@ -138,7 +138,7 @@ public class ResolveAgentExample {
 
 **Go**
 
-```go theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```go theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 package main
 
 import (
@@ -181,7 +181,7 @@ Pass the experiment ID. The endpoint returns that same ID as `session_id`.
 
 **Python**
 
-```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 import asyncio
 
 import langsmith as ls
@@ -203,7 +203,7 @@ asyncio.run(main())
 
 **TypeScript**
 
-```ts theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```ts theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 import { Client, ExperimentAddress } from "langsmith";
 
 const client = new Client();
@@ -221,7 +221,7 @@ for await (const run of client.runs.query({
 
 **Java**
 
-```java Java theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```java Java theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 import com.langchain.smith.address.ExperimentAddress;
 import com.langchain.smith.client.LangsmithClient;
 import com.langchain.smith.client.okhttp.LangsmithOkHttpClient;
@@ -251,7 +251,7 @@ public class ResolveExperimentExample {
 
 **Go**
 
-```go theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```go theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 package main
 
 import (
@@ -295,7 +295,7 @@ Evaluator traces share one storage destination per workspace, so the evaluator a
 
 **Python**
 
-```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 import asyncio
 
 import langsmith as ls
@@ -316,7 +316,7 @@ asyncio.run(main())
 
 **TypeScript**
 
-```ts theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```ts theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 import { Client, EvaluatorAddress } from "langsmith";
 
 const client = new Client();
@@ -333,7 +333,7 @@ for await (const run of client.runs.query({
 
 **Java**
 
-```java Java theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```java Java theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 import com.langchain.smith.address.EvaluatorAddress;
 import com.langchain.smith.client.LangsmithClient;
 import com.langchain.smith.client.okhttp.LangsmithOkHttpClient;
@@ -362,7 +362,7 @@ public class ResolveEvaluatorsExample {
 
 **Go**
 
-```go theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```go theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 package main
 
 import (
