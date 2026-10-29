@@ -4,17 +4,21 @@
 
 # 在新版本的代理上运行回测
 
-部署应用程序只是持续改进过程的开始。部署到生产环境后，您需要通过增强提示、语言模型、工具和架构来完善您的系统。回溯测试涉及使用历史数据评估应用程序的新版本，并将新输出与原始输出进行比较。与使用预生产数据集的评估相比，回溯测试可以更清晰地表明应用程序的新版本是否比当前部署有所改进。
+Deploying your agent is just the beginning of a continuous improvement process. After you deploy to production, you'll want to refine your system by enhancing prompts, language models, tools, and architectures. Backtesting involves assessing new versions of your agent using historical data and comparing the new outputs to the original ones.与使用预生产数据集的评估相比，回溯测试可以更清楚地表明代理的新版本是否比当前部署有所改进。
 
 以下是回测的基本步骤：
 
-1. 从生产跟踪项目中选择示例运行进行测试。
-2. 将运行输入转换为数据集，并将运行输出记录为针对该数据集的初始实验。
-3. 在新数据集上执行新系统并比较实验结果。
+1. Select sample runs from your agent's Production environment to test against.
+2. Transform the run inputs into a dataset and record the run outputs as an initial experiment against that dataset.
+3. Execute your new system on the new dataset and compare the results of the experiments.
 
-此过程将为您提供一个新的代表性输入数据集，您可以对其进行版本控制并用于对模型进行回溯测试。> [!注意]
+This process will provide you with a new dataset of representative inputs, which you can version and use for backtesting your models.> [!注意]
 >
-> 通常，您不会获得明确的“基本事实”答案。在这种情况下，您可以手动标记输出或使用不依赖参考数据的评估器。如果您的应用程序允许捕获真实标签，例如允许用户留下反馈，我们强烈建议您这样做。
+> 通常，您不会获得明确的“基本事实”答案。在这种情况下，您可以手动标记输出或使用不依赖参考数据的评估器。如果您的代理允许捕获真实标签，例如允许用户留下反馈，我们强烈建议您这样做。
+
+> [!注意]
+>
+> 在发送跟踪之前，在[agent-based workspace](/langsmith/agents)、[create an agent](/langsmith/create-an-agent) 中进行一次。使用[agent addressing](/langsmith/log-traces-to-agent)选择其标识符和环境。如果集成需要 `project_name`，请使用所选环境的 [⟦T11⟧](/langsmith/create-an-agent#use-an-environment-project) 作为兼容性值。
 
 ## 设置
 
@@ -38,9 +42,9 @@ uv add langsmith langchain langchain-anthropic langchainhub emoji
 import getpass
 import os
 
-# Set the project name to whichever project you'd like to be testing against
-project_name = "Tweet Writing Task"
-os.environ["LANGSMITH_PROJECT"] = project_name
+# Select the registered agent whose production traces you want to test against
+os.environ["LANGSMITH_AGENT_ID"] = "<your-agent-id>"
+os.environ["LANGSMITH_AGENT_ENVIRONMENT"] = "production"
 os.environ["LANGSMITH_TRACING"] = "true"
 
 if not os.environ.get("LANGSMITH_API_KEY"):
@@ -54,9 +58,9 @@ os.environ["OPENAI_API_KEY"] = "YOUR OPENAI API KEY"
 os.environ["TAVILY_API_KEY"] = "YOUR TAVILY API KEY"
 ```
 
-### 定义应用程序
+### 定义代理
 
-对于此示例，让我们创建一个简单的推文编写应用程序，该应用程序可以访问一些互联网搜索工具：
+对于此示例，让我们创建一个简单的推文编写代理，该代理可以访问一些互联网搜索工具：
 
 ```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 from langchain.chat_models import init_chat_model
@@ -118,20 +122,21 @@ agent.batch(
 
 ## 将生产痕迹转换为实验痕迹
 
-第一步是根据生产*输入*生成数据集。然后复制所有迹线作为基线实验。
-
-### 选择要回测的运行
+第一步是根据生产*输入*生成数据集。然后复制所有迹线作为基线实验。### 选择要回测的运行
 
 您可以使用 `list_runs` 的 `filter` 参数选择要回测的运行。 `filter` 参数使用 LangSmith [trace query syntax](/langsmith/trace-query-syntax) 选择运行。
 
 ```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+import asyncio
 from datetime import datetime, timedelta, timezone
-from langsmith import uuid7
-from langsmith import Client
+
+from langsmith import Client, agent_address, uuid7
 from langsmith.beta import convert_runs_to_test
 
 # Fetch the runs we want to convert to a dataset/experiment
 client = Client()
+address = agent_address(os.environ["LANGSMITH_AGENT_ID"], os.environ["LANGSMITH_AGENT_ENVIRONMENT"])
+resolved = asyncio.run(client.sessions.resolve(**address))
 
 # How we are sampling runs to include in our dataset
 end_time = datetime.now(tz=timezone.utc)
@@ -139,14 +144,16 @@ start_time = end_time - timedelta(days=1)
 run_filter = f'and(gt(start_time, "{start_time.isoformat()}"), lt(end_time, "{end_time.isoformat()}"))'
 prod_runs = list(
     client.list_runs(
-        project_name=project_name,
+        project_id=resolved.session_id,
         is_root=True,
         filter=run_filter,
     )
 )
-```### 将运行转换为实验
+```
 
-`convert_runs_to_test` 是一个需要运行一些函数并执行以下操作的函数：
+### 将运行转换为实验
+
+`convert_runs_to_test` 是一个需要运行几次并执行以下操作的函数：
 
 1. 输入和可选的输出作为示例保存到数据集。
 2. 输入和输出存储为实验，就好像您运行了 `evaluate` 函数并收到了这些输出一样。
@@ -172,7 +179,7 @@ convert_runs_to_test(
 )
 ```
 
-完成此步骤后，您应该在 LangSmith 项目中看到一个名为“Tweetwriting Task-backtesting TODAYS DATE”的新数据集，其中包含一个如下实验：
+完成此步骤后，您应该在 LangSmith 工作区中看到一个名为“Tweetwriting Task-backtesting TODAYS DATE”的新数据集，其中包含一个如下实验：
 
 ![Baseline experiment](https://mintcdn.com/langchain-5e9cc07a/E8FdemkcQxROovD9/langsmith/images/baseline-experiment.png?fit=max\&auto=format\&n=E8FdemkcQxROovD9\&q=85\&s=73b60a75d6b33f2830f5ed68464c586b)
 

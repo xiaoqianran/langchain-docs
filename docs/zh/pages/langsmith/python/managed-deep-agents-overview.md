@@ -160,16 +160,16 @@ mcp = define_mcp(
 
 完整布局请参见[Project structure](/langsmith/python/managed-deep-agents-project-structure)。指令、技能和可选的持久存储器存储在[Context Hub](/langsmith/python/managed-deep-agents-context-hub)中。
 
-## 与 Deep Agents 的关系
+## 与Deep Agents的关系
 
 托管 Deep Agents 运行开源 [Deep Agents](/oss/python/deepagents/overview) 工具，而不是第二个框架。代理循环、文件系统工具、子代理和技能是相同的，因此无需学习第二个 API，并且您已经构建的代理可以继续工作。
 
-Managed Deep Agents 在代理周围添加了一层。上面的沙箱、持久内存、通道和时间表是项目文件中的声明，而不是您构建和操作的服务。 [Connections](/langsmith/python/managed-deep-agents-connections) 运行 OAuth，因此最终用户可以授权他们自己的帐户，而不是您为每个帐户配置凭据。 LangSmith 将结果托管在 [Agent Server](/langsmith/agent-server-overview) 上。在代码中，差异较小：谁编译代理。* [create\_deep\_agent](https://reference.langchain.com/python/deepagents/graph/create_deep_agent) 返回编译后的代理。你运行它，并且拥有它周围的后端、存储、检查点和服务器。
+托管Deep Agents在代理周围添加了一层。上面的沙箱、持久内存、通道和时间表是项目文件中的声明，而不是您构建和操作的服务。 [Connections](/langsmith/python/managed-deep-agents-connections) 运行 OAuth，因此最终用户可以授权他们自己的帐户，而不是您为每个帐户配置凭据。 LangSmith 将结果托管在 [Agent Server](/langsmith/agent-server-overview) 上。在代码中，差异较小：谁编译代理。* [create\_deep\_agent](https://reference.langchain.com/python/deepagents/graph/create_deep_agent) 返回编译后的代理。你运行它，并且拥有它周围的后端、存储、检查点和服务器。
 * `define_deep_agent` 返回定义。 `mda` CLI 将其交给托管运行时，后者提供这些片段以及内存、技能和系统提示符，然后使用 [create\_deep\_agent](https://reference.langchain.com/python/deepagents/graph/create_deep_agent) 编译代理。
 
 因此，`define_deep_agent`采用相同的参数减去托管参数，再加上所需的静态`name`。每个`define_*`函数都是这样工作的：声明代理需要什么，并将生命周期留给运行时。
 
-当您自己运行代理或需要自己的 [backend](/oss/python/deepagents/backends)、商店或检查点时，请留在 Deep Agents。有关两者的并排比较以及转换已构建的代理的步骤，请参阅[Move from Deep Agents](/langsmith/python/managed-deep-agents-migrate)。
+从托管Deep Agents开始运行生产代理，而无需管理基础设施。或者，为了在使用相同 Deep Agents 线束时获得最大灵活性，请自行使用 [Deep Agents SDK](/oss/python/deepagents/overview#self-host-with-the-sdk) 和主机代理，或运行自定义 [LangSmith Deployment](/langsmith/deployment)。有关并排比较以及转换已构建的代理的步骤，请参阅[Move from Deep Agents](/langsmith/python/managed-deep-agents-migrate)。
 
 ## 后续步骤
 
@@ -189,8 +189,6 @@ Managed Deep Agents 在代理周围添加了一层。上面的沙箱、持久内
 >
 > 从 Claude Code 或其他 MCP 客户端调用已部署的代理作为工具。
 
-***
-
-[Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
+***[Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
 
 [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/managed-deep-agents-overview.mdx) 或 [file an issue](https://github.com/langchain-ai/docs/issues/new/choose)。

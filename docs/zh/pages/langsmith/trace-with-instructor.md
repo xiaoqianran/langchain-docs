@@ -1,15 +1,21 @@
 <!-- langchain-docs: machine-translated zh-CN from English source -->
 
-<!-- langchain-docs: Trace Instructor applications | https://docs.langchain.com/langsmith/trace-with-instructor -->
+<!-- langchain-docs: Trace with Instructor | https://docs.langchain.com/langsmith/trace-with-instructor -->
 
-# 跟踪教练应用程序
+# 跟随导师追踪
 
 LangSmith 提供了与 [Instructor](https://python.useinstructor.com/) 的便捷集成，[Instructor](https://python.useinstructor.com/) 是一个流行的开源库，用于使用 LLM 生成结构化输出。
+
+> [!注意]
+>
+> 在发送跟踪之前，在[agent-based workspace](/langsmith/agents)、[create an agent](/langsmith/create-an-agent) 中进行一次。使用[agent addressing](/langsmith/log-traces-to-agent)选择其标识符和环境。如果集成需要 `project_name`，请使用所选环境的 [⟦T8⟧](/langsmith/create-an-agent#use-an-environment-project) 作为兼容性值。
 
 为了使用，您首先需要设置您的 LangSmith API 密钥。
 
 ```shell theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 export LANGSMITH_API_KEY=<your-api-key>
+export LANGSMITH_AGENT_ID="<your-agent-id>"
+export LANGSMITH_AGENT_ENVIRONMENT="production"
 # For LangSmith API keys linked to multiple workspaces, set the LANGSMITH_WORKSPACE_ID environment variable to specify which workspace to use.
 export LANGSMITH_WORKSPACE_ID=<your-workspace-id>
 ```
@@ -33,7 +39,7 @@ from langsmith import wrappers
 client = wrappers.wrap_openai(OpenAI())
 ```
 
-之后，您可以使用 `instructor` 修补封装的 OpenAI 客户端：
+之后，您可以使用 `instructor` 修补打包的 OpenAI 客户端：
 
 ```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 import instructor
@@ -62,7 +68,7 @@ user = client.chat.completions.create(
 ```
 
 通常，您在其他函数中使用`instructor`。
-您可以通过使用这个包装的客户端并使用 `@traceable` 修饰这些函数来获取嵌套跟踪。
+您可以通过使用这个包装的客户端并使用 `@traceable` 装饰这些函数来获取嵌套跟踪。
 有关如何使用 `@traceable` 装饰器注释代码以进行跟踪的更多信息，请参阅 [Custom instrumentation](/langsmith/annotate-code)。
 
 ```python {highlight={2}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}

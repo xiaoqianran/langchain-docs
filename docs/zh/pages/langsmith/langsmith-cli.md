@@ -4,9 +4,9 @@
 
 # LangSmith CLI
 
-从终端查询和管理 LangSmith 项目、跟踪、运行、数据集、评估器、实验、见解和线程
+从终端查询和管理代理跟踪、运行、数据集、评估器、实验、见解和线程
 
-LangSmith CLI 是一个用于查询和管理 LangSmith 数据的命令行工具。它是为开发人员和 AI 编码代理设计的，默认输出人类可读的表格，并带有用于脚本编写的 `--format json` 选项。当您需要对 LangSmith 数据进行脚本化访问时，例如批量导出、自动化或让编码代理直接访问您的 [traces, runs, and datasets](/langsmith/observability-concepts)，请使用它。
+LangSmith CLI 是一个用于查询和管理 LangSmith 数据的命令行工具。它是为开发人员和人工智能编码代理设计的，默认情况下输出人类可读的表格，并带有用于脚本编写的`--format json`选项。当您需要对 LangSmith 数据进行脚本化访问时，例如批量导出、自动化或让编码代理直接访问您的 [traces, runs, and datasets](/langsmith/observability-concepts)，请使用它。
 
 ## 安装
 
@@ -48,6 +48,8 @@ langsmith self-update
 > 查询 [SmithDB](/langsmith/smithdb-sdk-migration) 支持的部署需要 LangSmith CLI `v0.2.44` 或更高版本。
 
 ## 验证
+
+CLI 通过`--project` 或`LANGSMITH_PROJECT` 选择代理环境。 [Retrieve that environment's ⟦T42⟧](/langsmith/create-an-agent#use-an-environment-project) 并将其用于这些选项。名为 `project` 的命令在 [backing trace storage](/langsmith/observability-concepts#agents-and-environments) 上运行。
 
 `langsmith auth login` 需要 LangSmith CLI `v0.2.30` 或更高版本。 `langsmith profile` 命令需要 LangSmith CLI `v0.2.26` 或更高版本。
 
@@ -91,10 +93,10 @@ langsmith profile set-workspace <workspace-id>
 export LANGSMITH_API_KEY="lsv2_..."
 ```
 
-（可选）设置查询的默认项目：
+（可选）将代理环境设置为默认使用其`tracer_session_name`进行查询：
 
 ```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-export LANGSMITH_PROJECT="my-default-project"
+export LANGSMITH_PROJECT="<environment-tracer-session-name>"
 ```
 
 如果您使用 LangSmith [self-hosted](/langsmith/self-hosted)，还需设置端点：
@@ -106,7 +108,7 @@ export LANGSMITH_ENDPOINT="https://your-langsmith-instance.com"
 或者，将它们作为每个命令的标志传递：
 
 ```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-langsmith --api-key lsv2_... trace list --project my-app
+langsmith --api-key lsv2_... trace list --project "<environment-tracer-session-name>"
 ```
 
 ### 自托管实例
@@ -158,20 +160,20 @@ LANGSMITH_API_KEY="lsv2_..." langsmith profile create self-hosted \
 langsmith project list
 
 # List recent traces in a project
-langsmith trace list --project my-app --limit 5
+langsmith trace list --project "<environment-tracer-session-name>" --limit 5
 
 # Get a specific trace with full detail
-langsmith trace get <trace-id> --project my-app --full
+langsmith trace get <trace-id> --project "<environment-tracer-session-name>" --full
 
 # List LLM runs with token counts
-langsmith run list --project my-app --run-type llm --include-metadata
+langsmith run list --project "<environment-tracer-session-name>" --run-type llm --include-metadata
 
 # Datasets and experiments
 langsmith dataset list
 langsmith experiment list --dataset my-eval-set
 
 # Conversation threads
-langsmith thread list --project my-chatbot
+langsmith thread list --project "<environment-tracer-session-name>"
 
 # Sandboxes
 langsmith sandbox list
@@ -185,7 +187,7 @@ langsmith sandbox tunnel my-vm --remote-port 5432
 人类可读的表格：
 
 ```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-langsmith trace list --project my-app
+langsmith trace list --project "<environment-tracer-session-name>"
 ```
 
 **JSON**
@@ -193,7 +195,7 @@ langsmith trace list --project my-app
 `--format json` 通过管道、脚本或将输出提供给代理：
 
 ```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-langsmith --format json trace list --project my-app
+langsmith --format json trace list --project "<environment-tracer-session-name>"
 ```
 
 **写入文件**
@@ -201,16 +203,16 @@ langsmith --format json trace list --project my-app
 `-o <path>`：
 
 ```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-langsmith trace list --project my-app -o traces.json
+langsmith trace list --project "<environment-tracer-session-name>" -o traces.json
 ```
 
 ## 命令
 
-每个命令组都针对特定的 LangSmith 资源。大多数命令支持 `--limit`、`--offset` 以及一组共享的 [filter flags](#filter-flags)。
+每个命令组都针对特定的 LangSmith 资源。大多数命令支持 `--limit`、`--offset` 和一组共享的 [filter flags](#filter-flags)。
 
-### 列出项目
+### 列出跟踪存储目的地
 
-默认情况下最多返回 20 个项目，按最近的活动排序。仅列出跟踪项目。 （使用[⟦T71⟧](#view-experiments)列出评估实验。）
+旧版 `project list` 命令列出了后备跟踪存储目标，包括与代理环境关联的目标。默认情况下，它最多返回 20 个，并按最近的活动排序。使用[⟦T77⟧](#view-experiments)列出评估实验。
 
 ```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 langsmith project list
@@ -223,26 +225,24 @@ langsmith --format json project list
 默认为最近 7 天，最新的在前。使用`--since`或`--last-n-minutes`更改时间窗口。
 
 ```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-langsmith trace list --project my-app --limit 50 --last-n-minutes 60
-langsmith trace list --project my-app --error                     # errors only
-langsmith trace list --project my-app --min-latency 5             # slow traces (>5s)
-langsmith trace list --project my-app --tags production           # filter by tag
-langsmith trace list --project my-app --full                      # all fields
-langsmith trace list --project my-app --show-hierarchy --limit 3  # include full run tree
-langsmith trace get <trace-id> --project my-app --full
-langsmith trace export ./traces --project my-app --limit 20 --full
+langsmith trace list --project "<environment-tracer-session-name>" --limit 50 --last-n-minutes 60
+langsmith trace list --project "<environment-tracer-session-name>" --error                     # errors only
+langsmith trace list --project "<environment-tracer-session-name>" --min-latency 5             # slow traces (>5s)
+langsmith trace list --project "<environment-tracer-session-name>" --tags production           # filter by tag
+langsmith trace list --project "<environment-tracer-session-name>" --full                      # all fields
+langsmith trace list --project "<environment-tracer-session-name>" --show-hierarchy --limit 3  # include full run tree
+langsmith trace get <trace-id> --project "<environment-tracer-session-name>" --full
+langsmith trace export ./traces --project "<environment-tracer-session-name>" --limit 20 --full
 ```
 
-### 查询运行
-
-默认为 50 个结果（大多数其他命令默认为 20 个）。同样适用 7 天的时间窗口。使用 `--since` 或 `--last-n-minutes` 覆盖。
+### 查询运行默认为 50 个结果（大多数其他命令默认为 20 个）。同样适用 7 天的时间窗口。使用 `--since` 或 `--last-n-minutes` 覆盖。
 
 ```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-langsmith run list --project my-app --run-type llm
-langsmith run list --project my-app --run-type tool --name search
-langsmith run list --project my-app --min-tokens 1000 --include-metadata
+langsmith run list --project "<environment-tracer-session-name>" --run-type llm
+langsmith run list --project "<environment-tracer-session-name>" --run-type tool --name search
+langsmith run list --project "<environment-tracer-session-name>" --min-tokens 1000 --include-metadata
 langsmith run get <run-id> --full
-langsmith run export llm_calls.jsonl --project my-app --run-type llm --full
+langsmith run export llm_calls.jsonl --project "<environment-tracer-session-name>" --run-type llm --full
 ```
 
 ### 查询线程
@@ -250,9 +250,11 @@ langsmith run export llm_calls.jsonl --project my-app --run-type llm --full
 所有线程命令都需要`--project`。
 
 ```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-langsmith thread list --project my-chatbot --last-n-minutes 120
-langsmith thread get <thread-id> --project my-chatbot --full
-```### 管理数据集
+langsmith thread list --project "<environment-tracer-session-name>" --last-n-minutes 120
+langsmith thread get <thread-id> --project "<environment-tracer-session-name>" --full
+```
+
+### 管理数据集
 
 `dataset export` 导出数据集中的示例（行），而不是数据集元数据本身。
 
@@ -282,14 +284,14 @@ langsmith example delete <example-id> --yes
 
 ### 管理评估者
 
-评估器可以离线（在实验期间针对数据集运行）或在线（针对实时项目运行）。使用 `--sampling-rate` 仅评估生产运行的一小部分，并使用 `--replace` 按名称覆盖现有评估器。
+评估器可以离线（在实验期间针对数据集运行）或在线（针对代理环境运行）。使用 `--sampling-rate` 仅评估生产运行的一小部分，并使用 `--replace` 按名称覆盖现有评估器。
 
 ```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 langsmith evaluator list
 langsmith evaluator upload evals.py --name accuracy \
   --function check_accuracy --dataset my-eval-set
 langsmith evaluator upload evals.py --name latency-check \
-  --function check_latency --project my-app --sampling-rate 0.5
+  --function check_latency --project "<environment-tracer-session-name>" --sampling-rate 0.5
 langsmith evaluator upload evals.py --name accuracy \
   --function check_accuracy_v2 --dataset my-eval-set --replace --yes
 langsmith evaluator delete accuracy --yes
@@ -297,7 +299,7 @@ langsmith evaluator delete accuracy --yes
 
 ### 查看实验
 
-`experiment list` 显示评估实验，而不是跟踪项目。 （使用[⟦T84⟧](#list-projects)列出跟踪项目。）
+`experiment list`展示了评估实验。使用 [⟦T90⟧](#list-projects) 作为与代理环境关联的跟踪存储目标。
 
 ```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 langsmith experiment list
@@ -307,13 +309,11 @@ langsmith experiment get my-experiment-2024-01-15
 
 ### 管理见解
 
-`insights` 命令创建、运行和读取 [Insights](/langsmith/insights) 报告，这些报告将项目的跟踪分为不同类别，以显示使用模式和故障模式。每个 `insights` 命令都需要 `--project`、`--project-id` 或 `LANGSMITH_PROJECT` 环境变量。
+`insights` 命令创建、运行和读取 [Insights](/langsmith/insights) 报告，这些报告将代理环境的跟踪分为不同类别，以显示使用模式和故障模式。每个 `insights` 命令都需要 `--project`、`--project-id` 或 `LANGSMITH_PROJECT` 环境变量。
 
 > [!注意]
 >
-> `insights create`、`insights run` 和 `insights config` 需要 LangSmith CLI v0.2.60 或更高版本。
-
-要创建报告，请在 JSON 文件中定义它：
+> `insights create`、`insights run` 和 `insights config` 需要 LangSmith CLI v0.2.60 或更高版本。要创建报告，请在 JSON 文件中定义它：
 
 ```json theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 {
@@ -324,38 +324,40 @@ langsmith experiment get my-experiment-2024-01-15
   "model": "openai",
   "schedule_cron": "0 9 * * 1"
 }
-```* **`name`** 和 **`summary_prompt`**：必填。 [summary prompt](/langsmith/insights#summary-prompt) 是 Mustache 模板，必须至少引用 `{{run.inputs}}`、`{{run.outputs}}`、`{{run.error}}`、`{{run.feedback}}` 或 `{{all_thread_messages}}` 之一。 CLI 不支持自动模式，因此请说明报告应在此提示中查找的内容。
+```
+
+* **`name`** 和 **`summary_prompt`**：必填。 [summary prompt](/langsmith/insights#summary-prompt) 是 Mustache 模板，必须至少引用 `{{run.inputs}}`、`{{run.outputs}}`、`{{run.error}}`、`{{run.feedback}}` 或 `{{all_thread_messages}}` 之一。 CLI 不支持自动模式，因此请说明报告应在此提示中查找的内容。
 * **`last_n_hours`**，或 **`start_time`** 和 **`end_time`**：采样迹线的时间范围。使用一种形式，而不是同时使用两种形式。
 * **`model`**：`openai`（默认）或`anthropic`。要选择特定型号，请将 **`cluster_model`** 和 **`summary_model`** 设置在一起，分别设置为 `openai`、`anthropic` 或 [model configuration](/langsmith/model-configurations) UUID。不接受显示名称。
 * **`schedule_cron`**：循环报告的 cron 表达式。第一个作业立即开始，后面的作业按照时间表进行。对于一次性报告，请忽略它。
 
 该文件还接受 `filter`、`sample`、`hierarchy`、`partitions`、`attribute_schemas` 和 `description`。未知字段会导致错误。
 
-`insights create` 将文件保存为作业配置并启动第一个报告。报告异步运行并产生模型成本。工作区需要所选模型的机密。通过`--wait`进行轮询，直至报告成功或失败，最长持续30分钟。通过 `--config -` 从标准输入读取文件。
+`insights create` 将文件保存为作业配置并启动第一个报告。报告异步运行并产生模型成本。工作区需要所选模型的机密。通过`--wait`进行轮询，直到报告成功或失败，最长持续30分钟。通过 `--config -` 从标准输入读取文件。
 
 ```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-langsmith insights create --project my-app --config insights.json
-langsmith insights create --project my-app --config insights.json --wait
-```
+langsmith insights create --project "<environment-tracer-session-name>" --config insights.json
+langsmith insights create --project "<environment-tracer-session-name>" --config insights.json --wait
+````insights run` 从保存的配置启动新报告，而不更改配置或其计划：
 
-`insights run` 从保存的配置启动新报告，而不更改配置或其计划：```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-langsmith insights config list --project my-app
-langsmith insights config list --project my-app --include-prebuilt
-langsmith insights run <config-id> --project my-app --wait
+```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+langsmith insights config list --project "<environment-tracer-session-name>"
+langsmith insights config list --project "<environment-tracer-session-name>" --include-prebuilt
+langsmith insights run <config-id> --project "<environment-tracer-session-name>" --wait
 ```
 
 `insights list` 返回报告及其状态和类别计数。 `insights get` 添加执行摘要、突出显示的跟踪和每个类别的统计信息：
 
 ```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-langsmith insights list --project my-app --limit 5
-langsmith insights get <insight-id> --project my-app
+langsmith insights list --project "<environment-tracer-session-name>" --limit 5
+langsmith insights get <insight-id> --project "<environment-tracer-session-name>"
 ```
 
 `insights config update` 以相同格式替换 JSON 文件中的配置名称和分析设置。它不会启动报告。省略 `description` 或 `schedule_cron` 以保留当前值，或将 `schedule_cron` 设置为 `null` 以停止计划。 `insights config delete` 删除配置及其生成的每个报告。
 
 ```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-langsmith insights config update <config-id> --project my-app --config insights.json
-langsmith insights config delete <config-id> --project my-app --yes
+langsmith insights config update <config-id> --project "<environment-tracer-session-name>" --config insights.json
+langsmith insights config delete <config-id> --project "<environment-tracer-session-name>" --yes
 ```
 
 ### 管理沙箱
@@ -366,7 +368,7 @@ langsmith insights config delete <config-id> --project my-app --yes
 
 ### 管理自定义应用程序
 
-`langsmith apps` 命令脚手架，在本地运行，并发布 [custom apps](/langsmith/custom-apps)，在 LangSmith 内运行的 UI 并调用 LangSmith API。
+`langsmith apps` 命令脚手架，在本地运行并发布 [custom apps](/langsmith/custom-apps)，在 LangSmith 内运行的 UI 并调用 LangSmith API。
 
 完整的命令列表请参见[CLI reference](/langsmith/custom-apps#cli-reference)。
 
@@ -422,28 +424,28 @@ langsmith api sessions -H "Accept: text/csv"
 
 |旗帜|描述 |示例|
 | - | - | - |
-| `--project` |项目名称| `--project my-app` |
+| `--project` |代理环境的`tracer_session_name` | `--project "<environment-tracer-session-name>"` |
 | `--limit, -n` |最大结果 | `-n 10` |
-| `--offset` |分页偏移 | `--offset 20` |
+| `--offset` | Pagination offset | `--offset 20` |
 | `--last-n-minutes` |覆盖 7 天默认值 | `--last-n-minutes 60` |
 | `--since` | ISO 时间戳之后 | `--since 2024-01-15T00:00:00Z` |
 | `--error` / `--no-error` |按错误状态过滤 | `--error` |
 | `--name` |名称搜索（不区分大小写）| `--name ChatOpenAI` |
 | `--run-type` |运行类型（`llm` 或 `tool`）| `--run-type llm` |
 | `--min-latency` / `--max-latency` |延迟范围（以秒为单位）| `--min-latency 2.5` |
-| `--min-tokens` |最低总代币 | `--min-tokens 1000` |
+| `--min-tokens` | Minimum total tokens | `--min-tokens 1000` |
 | `--tags` |标签，逗号分隔（OR 逻辑）| `--tags prod,v2` |
 | `--filter` |原始LangSmith过滤器DSL | `--filter 'eq(status, "error")'` |
-| `--trace-ids` |特定跟踪 ID | `--trace-ids abc123,def456` |
+| `--trace-ids` | Specific trace IDs | `--trace-ids abc123,def456` |
 
 **详细标志** — 控制响应中包含哪些字段：
 
 |旗帜|添加 |
 | - | - |
 | `--include-metadata` |状态、持续时间、代币、成本 |
-| `--include-io` |输入、输出、错误 |
-| `--include-feedback` |反馈统计 |
-| `--full` |以上全部|
+| `--include-io` | Inputs, outputs, error |
+| `--include-feedback` | Feedback stats |
+| `--full` | All of the above |
 | `--show-hierarchy` |完整运行树（仅跟踪）|
 
 ***

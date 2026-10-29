@@ -26,7 +26,7 @@
 
 **用户界面**
 
-## 1. 设置工作区秘密
+## 1. 设置工作区机密
 
 在 [LangSmith UI](https://smith.langchain.com?utm_source=docs\&utm_medium=cta\&utm_campaign=langsmith-signup\&utm_content=snippets-langsmith-set-workspace-secrets) 中，确保您的 API 密钥设置为 [workspace secret](/langsmith/set-up-hierarchy#configure-workspace-settings)。添加工作区机密需要管理工作区中机密的权限。如果您没有，请要求工作区管理员为您添加密钥或授予您访问权限。
 
@@ -64,7 +64,7 @@
 
 3. 将以下示例添加到数据集中：
 
-   |输入|参考输出|
+   |输入 |参考输出|
    | - | - |
    |问：乞力马扎罗山位于哪个国家？ |输出：乞力马扎罗山位于坦桑尼亚。 |
    |问题：地球的最低点是哪里？ |输出：地球的最低点是死海。 |
@@ -176,10 +176,9 @@ export LANGSMITH_WORKSPACE_ID="<your-workspace-id>"
 
    if __name__ == "__main__":
        main()
-
    ```
 
-   ```typescript TypeScript theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+   ```ts TypeScript theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
    // dataset.ts
    import { Client } from "langsmith";
 
@@ -210,12 +209,10 @@ export LANGSMITH_WORKSPACE_ID="<your-workspace-id>"
    console.log("Created dataset:", dataset.name);
    }
 
-   if (require.main === module) {
    main().catch((e) => {
        console.error(e);
        process.exit(1);
    });
-   }
    ```
 
 2. 在您的终端中，运行 `dataset` 文件来创建用于评估应用程序的数据集：
@@ -261,7 +258,7 @@ def target(inputs: dict) -> dict:
     return {"answer": response.choices[0].message.content.strip()}
 ```
 
-```typescript TypeScript theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```ts TypeScript theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 // eval.ts
 import { evaluate } from "langsmith/evaluation";
 import { wrapOpenAI } from "langsmith/wrappers/openai";
@@ -322,7 +319,7 @@ def target(inputs: dict) -> dict:
 def correctness_evaluator(inputs: dict, outputs: dict, reference_outputs: dict):
     evaluator = create_llm_as_judge(
         prompt=CORRECTNESS_PROMPT,
-        model="openai:o3-mini",
+        model="openai:gpt-5.5",
         feedback_key="correctness",
     )
     return evaluator(
@@ -332,7 +329,7 @@ def correctness_evaluator(inputs: dict, outputs: dict, reference_outputs: dict):
     )
 ```
 
-```typescript TypeScript highlight={4,20-37} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```ts TypeScript highlight={4,20-37} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 import { evaluate } from "langsmith/evaluation";
 import { wrapOpenAI } from "langsmith/wrappers/openai";
 import OpenAI from "openai";
@@ -354,7 +351,7 @@ async function target(inputs: Record<string, any>): Promise<Record<string, any>>
 
 const judge = createLLMAsJudge({
   prompt: CORRECTNESS_PROMPT,
-  model: "openai:o3-mini",
+  model: "openai:gpt-5.5",
   feedbackKey: "correctness",
 });
 
@@ -408,7 +405,7 @@ async function correctnessEvaluator(run: {
    def correctness_evaluator(inputs: dict, outputs: dict, reference_outputs: dict):
        evaluator = create_llm_as_judge(
            prompt=CORRECTNESS_PROMPT,
-           model="openai:o3-mini",
+           model="openai:gpt-5.5",
            feedback_key="correctness",
        )
        return evaluator(
@@ -436,7 +433,7 @@ async function correctnessEvaluator(run: {
        main()
    ```
 
-   ```typescript TypeScript highlight={39-57} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+   ```ts TypeScript highlight={39-55} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
    import { evaluate } from "langsmith/evaluation";
    import { wrapOpenAI } from "langsmith/wrappers/openai";   // helper to wrap OpenAI client
    import OpenAI from "openai";                              // model provider
@@ -458,7 +455,7 @@ async function correctnessEvaluator(run: {
 
    const judge = createLLMAsJudge({
    prompt: CORRECTNESS_PROMPT,
-   model: "openai:o3-mini",
+   model: "openai:gpt-5.5",
    feedbackKey: "correctness",
    });
 
@@ -488,12 +485,10 @@ async function correctnessEvaluator(run: {
    console.log(results);
    }
 
-   if (require.main === module) {
    main().catch((e) => {
-       console.error(e);
-       process.exit(1);
+   console.error(e);
+   process.exit(1);
    });
-   }
    ```
 
 2. 运行评估器：
@@ -506,7 +501,7 @@ async function correctnessEvaluator(run: {
    npx ts-node eval.ts
    ```
 
-3. 您将收到一个链接，用于查看评估结果和实验结果的元数据：
+3. 您将收到一个链接，用于查看实验结果的评估结果和元数据：
 
    ```
    View the evaluation results for experiment: 'first-eval-in-langsmith-00000000' at: https://smith.langchain.com/o/6551f9c4-2685-4a08-86b9-1b29643deb3d/datasets/e5fde557-c274-4e49-b39d-000000000000/compare?selectedSessions=70b11778-6a28-4cdb-be81-000000000000

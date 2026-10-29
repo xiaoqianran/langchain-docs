@@ -14,6 +14,10 @@
 >
 > 您只能在LangSmith UI 中创建决策模型评估器。 LangSmith SDK 尚不支持创建它们。
 
+> [!注意]
+>
+> 决策模型评估者需要 LangSmith Plus 或 Enterprise 计划。
+
 ## 步骤 1. 创建评估器
 
 决策模型评估员仅提供决策模型提供者，LLM 法官评估员仅提供 LLM 提供者。要在 LLM 法官和决策模型之间切换，请创建一个新的评估员。
@@ -34,8 +38,8 @@
 
 ### 型号
 
-在 **提示和模型** 下，打开 **模型配置** 并选择提供商和模型：* 对于OpenAI，选择**OpenAI**作为提供者，然后选择决策模型。如果您将密钥存储在`OPENAI_API_KEY`以外的名称下，请在 **API 密钥名称** 中输入该名称。单击**应用**。
-* 对于 TypeSafe，选择 **TypeSafe** 作为提供程序，然后选择 Jev 模型。如果您将密钥存储在 `TYPESAFE_API_KEY` 以外的名称下，请在 **API 密钥名称** 中输入该名称。单击**应用**。
+在 **提示和模型** 下，打开 **模型配置** 并选择提供商和模型：* 对于OpenAI，选择**OpenAI**作为提供者，然后选择决策模型。如果您将密钥存储在 `OPENAI_API_KEY` 以外的名称下，请在 **API 密钥名称** 中输入该名称。单击**应用**。
+* 对于 TypeSafe，选择 **TypeSafe** 作为提供程序，然后选择 Jev 模型。如果您将密钥存储在`TYPESAFE_API_KEY`以外的名称下，请在 **API 密钥名称** 中输入该名称。单击**应用**。
 * 对于 OpenAI-Decisions 兼容端点或 TypeSafe 兼容端点，选择其保存的配置。参见[Use a compatible endpoint](#use-a-compatible-endpoint)。
 
 > [!提示]

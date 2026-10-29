@@ -24,7 +24,7 @@
 | **最终用户的第三方访问** |您为每个用户配置并存储凭据。 | [Connections](/langsmith/javascript/managed-deep-agents-connections) 保存工作区机密并运行 OAuth，以便最终用户自行授权服务。 |
 | **聊天界面** |您编写集成。 | [Channels](/langsmith/javascript/managed-deep-agents-channels) 连接 Slack 和其他消息服务。 |
 | **预定运行** |您运行调度程序。 | [Schedules](/langsmith/javascript/managed-deep-agents-schedules) 运行托管 cron 作业。 |
-| **围绕代理的代码** |您可以编写，包括自定义路由和应用程序代码。 |仅限代理。对于自定义路由或应用程序代码，请使用[LangSmith deployment](/langsmith/deployment)。 |无论哪种方式，线束都是相同的，因此首先在 Deep Agents 上构建，并在代理准备好生产时移动是正常路径。参见[Going to production](/oss/javascript/deepagents/going-to-production)。
+| **围绕代理的代码** |您可以编写，包括自定义路由和应用程序代码。 |仅限代理。对于自定义路由或应用程序代码，请使用[LangSmith deployment](/langsmith/deployment)。 |无论哪种方式，线束都是相同的。当您想要运行生产代理而无需管理基础设施时，请从 [Managed Deep Agents](/langsmith/javascript/managed-deep-agents-overview) 开始使用新代理。当您已经拥有 Deep Agents SDK 代理并需要托管运行时时，请使用本指南。要自行使用相同的 Deep Agents 工具和托管代理或运行自定义 [LangSmith Deployment](/langsmith/deployment)，请参阅 [Going to production](/oss/javascript/deepagents/going-to-production)。
 
 ## 了解发生了什么变化
 
@@ -130,13 +130,13 @@ export const agent = defineDeepAgent({
   model: "openai:gpt-5.5",
   tools: [internetSearch],
 });
-```该条目必须导出名为 `agent` 的变量，并且定义调用本身必须位于该文件中。从另一个模块重新导出定义的根条目失败，错误名称为 `name` 而不是真正的问题。
+```该条目必须导出一个名为 `agent` 的变量，并且定义调用本身必须存在于该文件中。从另一个模块重新导出定义的根条目失败，错误名称为 `name` 而不是真正的问题。
 
 `src/` 布局就可以了。将包保留在原处并从根条目导入它们。
 
 **3.将提示、技能和记忆移入文件**
 
-将系统提示符放在项目根目录下的`instructions.md`中。在 `skills/` 下为每个技能指定一个自己的目录，并带有 `SKILL.md`。
+将系统提示符放在项目根目录下的`instructions.md`中。在`skills/`下为每个技能指定一个自己的目录，并带有`SKILL.md`。
 
 如果代理需要跨线程保留的内存，请在导出名为 `memory` 的变量的根文件中声明它：
 
@@ -146,7 +146,7 @@ import { defineMemory } from "managed-deepagents";
 export const memory = defineMemory({ scope: "agent" });
 ```
 
-持久内存是可选的，没有该文件的项目不会挂载任何内容。作用域是唯一的旋钮：`"agent"` 安装部署的每个调用者共享的一棵树。要控制代理保留的内容，请将内存策略写入`instructions.md`。参见[Guide what to remember](/langsmith/javascript/managed-deep-agents-memory#guide-what-to-remember)。
+持久内存是可选的，没有该文件的项目不会挂载任何内容。范围是唯一的旋钮：`"agent"` 安装部署的每个调用者共享的一棵树。要控制代理保留的内容，请将内存策略写入`instructions.md`。参见[Guide what to remember](/langsmith/javascript/managed-deep-agents-memory#guide-what-to-remember)。
 
 > [!警告]
 >
@@ -217,7 +217,7 @@ mda dev
 
 **8.部署**
 
-上传项目并让LangSmith构建并托管它：
+上传项目并让 LangSmith 构建并托管它：
 
 ```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 mda deploy
@@ -233,7 +233,7 @@ mda deploy
 > npx managed-deepagents init research-assistant
 > ```
 >
-> 安装通道选择创作语言：npm 包脚手架 TypeScript，PyPI 包脚手架 Python。该命令创建一个新目录并且不会就地运行，因此它适合绿地项目而不是迁移。请参阅[quickstart](/langsmith/javascript/managed-deep-agents-quickstart)。
+> 安装通道选择创作语言：npm 包支架 TypeScript，PyPI 包支架 Python。该命令创建一个新目录并且不会就地运行，因此它适合绿地项目而不是迁移。请参阅[quickstart](/langsmith/javascript/managed-deep-agents-quickstart)。
 
 ## 另请参阅
 

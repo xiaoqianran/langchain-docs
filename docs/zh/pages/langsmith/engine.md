@@ -27,7 +27,7 @@ LangSmith引擎是代理工程的LangSmith代理。根据您的生产跟踪，�
 Engine 和 [Insights](/langsmith/insights) 都分析您的痕迹，但它们回答不同的问题：
 
 * **Insights** 是一种分析工具。它将跟踪分为自动生成或您定义的类别，并报告每个类别的指标，以便您可以查看使用模式及其变化方式。
-* **引擎** 寻找需要解决的具体问题。它打开的每个问题都带有诊断、支持诊断的痕迹以及建议的修复方案。
+* **引擎** 寻找需要解决的具体问题。它打开的每个问题都附带诊断、支持诊断的痕迹以及建议的修复方案。
 
 使用见解来了解人们如何使用您的代理。使用 Engine 找出问题所在以及需要更改的内容。
 
@@ -79,26 +79,28 @@ flowchart LR
 
 来自自动化的更改（例如拉取请求合并）以及通过 [LangSmith Chat](/langsmith/chat#engine) 采取的操作不算作反馈。要查看或更正引擎所了解的内容，请编辑代理概述的 **用户首选项** 部分。
 
-## 为什么要连接 GitHub连接 GitHub 存储库是可选的，但当引擎可以读取源代码时，它会发现更多问题和更有用的问题。通过源访问，引擎可以找到失败跟踪背后的代码路径，并将其诊断和建议的修复基于您的实际实现。即使您从不合并引擎拉取请求，这也成立：您可以自己应用修复或将修复上下文复制到编码助手中。
+## 为什么要连接存储库连接 GitHub 存储库或 GitLab 项目是可选的，但当引擎可以读取源代码时，它会发现更多问题和更有用的问题。通过源访问，引擎可以找到失败跟踪背后的代码路径，并将其诊断和建议的修复基于您的实际实现。即使您从不合并引擎拉取请求，这也成立：您可以自己应用修复或将修复上下文复制到编码助手中。
 
 引擎的 GitHub 访问权限已修复。通过 GitHub App，Engine 可以：
 
 * **阅读**您在安装应用程序时选择的存储库。
-* **从它创建的修复分支中打开草稿拉取请求**。
+* **从它创建的修复分支中打开拉取请求**。
 
-引擎永远不会合并拉取请求。它建议的每项更改都会经过您的审查和分支保护规则，您可以随时通过卸载应用程序来撤销访问权限。有关令牌生命周期、沙箱和保留的信息，请参阅[Engine security](/langsmith/engine-security#github-integration)。要连接存储库，请参阅[Connect Engine to your repository](/langsmith/engine-repositories)。
+在 GitLab 上，引擎充当工作区管理员连接其访问令牌的帐户，通常是专用服务帐户。引擎在帐户角色的权限内读取帐户所属的项目，推送修复分支并打开合并请求。引擎永远不会合并拉取或合并请求。它提出的每项更改都会经过您的审查和分支保护规则。您可以随时通过卸载 GitHub 应用程序或断开 GitLab 来撤销访问权限。有关令牌生命周期、沙箱和保留的信息，请参阅引擎安全性的 [GitHub](/langsmith/engine-security#github-integration) 和 [GitLab](/langsmith/engine-security#gitlab-integration) 部分。要连接存储库，请参阅[Connect Engine to your repository](/langsmith/engine-repositories)。
 
 ## 管理引擎成本
 
-### 了解路易斯安那州立大学的费用> [!注意]
+### 了解路易斯安那州立大学的费用
+
+> [!注意]
 >
 > LangSmith 云使用 LangChain 托管推理。自托管部署还可以使用 [their own model providers](/langsmith/engine-self-hosted-model-providers)，以及 API 密钥或云身份。 [BYOC](/langsmith/engine-self-hosted#engine-on-byoc) 部署仅使用自己的模型提供程序。对于您自己的提供商，您可以向他们支付模型调用费用，并且 LangChain 对引擎使用收取较低的 LSU 费率。
 
-引擎以 **LangChain 标准单位 (LSU)** 收费，这是一种标准化工作单位，涵盖计算、存储和内存，以及 LangChain 提供的模型推理。 LSU 消耗随着分析的跟踪数量、引擎为诊断和修复问题而进行的 LLM 调用的数量和复杂性以及任何连接的存储库的大小而变化。 LSU 的成本**\每台 1 美元**。有关预期 LSU 使用量的估计，请参阅 [LangSmith Usage Calculator](https://www.langchain.com/pricing#pricing-calc)。
+引擎以 **LangChain 标准单位 (LSU)** 收费，这是一种标准化工作单位，涵盖计算、存储和内存，以及 LangChain 提供的模型推理。 LSU 消耗随着分析的跟踪数量、引擎为诊断和修复问题而进行的 LLM 调用的数量和复杂性以及任何连接的存储库的大小而变化。 LSU 的成本**\每台 1 美元**。有关预期 LSU 使用量的估计，请参阅 [LangSmith Usage Calculator](https://www.langchain.com/pricing#pricing-calc)。在初始化时，引擎会审核过去的跟踪、集群并按严重性对问题进行优先级排序，并对提示或代码提出修复建议（如果连接了存储库）。定期扫描按照动态计划运行，以平衡成本和性能，无论是否发现新问题，并发现以前未检测到的新问题。
 
-在初始化时，引擎会审核过去的跟踪、集群并按严重性对问题进行优先级排序，并对提示或代码提出修复建议（如果连接了存储库）。定期扫描按照动态计划运行，以平衡成本和性能，无论是否发现新问题，并发现以前未检测到的新问题。
+### 设置分析级别
 
-### 设置分析级别分析级别控制引擎分析的项目跟踪数量，以及它使用的 LSU 数量。 [turn on Engine for a project](/langsmith/engine-setup#turn-on-engine-for-a-tracing-project)时选择它，稍后在[**Engine settings**](/langsmith/engine-setup#configure-engine)面板中的**分析级别**下更改：
+分析级别控制引擎分析的项目跟踪数量，以及它使用的 LSU 数量。 [turn on Engine for a project](/langsmith/engine-setup#turn-on-engine-for-a-tracing-project)时选择它，稍后在[**Engine settings**](/langsmith/engine-setup#configure-engine)面板中的**分析级别**下更改：
 
 * **减少**：以更低的成本监控更少的跟踪。
 * **标准**（默认）：分析更多符合条件的轨迹以获得更全面的覆盖范围。
@@ -108,19 +110,17 @@ flowchart LR
 
 ### 设置支出限额并监控使用情况
 
-组织管理员可以在两个级别设置支出限制：
+组织管理员可以在两个级别设置支出限制：* **组织范围限制**：打开**设置**并选择**引擎**下的**引擎**。在本月至今的支出卡上，单击限制芯片并在弹出窗口中设置限制。
+* **项目或环境限制**：在跟踪项目或代理环境中打开 **引擎** 选项卡，然后单击 **配置引擎** 图标。在“**支出限制**”下，单击限制筹码（未设置限制时，筹码显示“**无**”）并在弹出窗口中设置限制。
 
-* **组织范围限制**：打开**设置**并选择**引擎**下的**引擎**。在本月至今的支出卡上，单击限制芯片并在弹出窗口中设置限制。
-* **项目或环境限制**：在跟踪项目或代理环境中打开 **引擎** 选项卡，然后单击 **配置引擎** 图标。在“**支出限制**”下，单击限制筹码（未设置限制时，筹码显示“**无**”）并在弹出窗口中设置限制。您可以输入 LSU 或 USD 的限额 (1 LSU = \$1)。当达到限制时，LangSmith 暂停新的引擎运行，直到限制提高或下一个每月计费周期开始。
+您可以输入 LSU 或 USD 的限额 (1 LSU = \$1)。当达到限制时，LangSmith 暂停新的引擎运行，直到限制提高或下一个每月计费周期开始。
 
 这两个级别的默认值不同：
 
 * **组织范围限制**：选择**默认**、**无限制**或自定义上限。在管理员选择之前，默认情况下适用（每月 750 LSU，750 美元），因此即使没有人设置限制，引擎支出也是有上限的。 **引擎**设置页面命名强制限制及其来源。
 * **项目或环境限制**：将弹出框的字段留空表示没有限制。使用 **删除限制** 清除您之前设置的上限。
 
-要停止项目或整个组织的 Engine，请参阅[Pause Engine or delete its issues](/langsmith/engine-setup#pause-engine-or-delete-its-issues)。
-
-要监控使用情况，您可以在 **设置** 中的 **引擎** 页面上查看组织的每月 LSU 支出，或在其 [**Engine settings**](/langsmith/engine-setup#configure-engine) 面板中查看跟踪项目或代理环境的支出。
+要停止项目或整个组织的 Engine，请参阅[Pause Engine or delete its issues](/langsmith/engine-setup#pause-engine-or-delete-its-issues)。要监控使用情况，您可以在 **设置** 中的 **引擎** 页面上查看组织的每月 LSU 支出，或在其 [**Engine settings**](/langsmith/engine-setup#configure-engine) 面板中查看跟踪项目或代理环境的支出。
 
 对于离线自托管部署，支出报告和限制执行有所不同。参见[Air-gapped installations](/langsmith/engine-self-hosted#air-gapped-installations)。
 
@@ -128,7 +128,9 @@ flowchart LR
 
 > **[Set up Engine](/langsmith/engine-setup)**
 >
-> 为您的组织启用引擎并为跟踪项目或代理环境打开它。> **[Find and fix issues](/langsmith/engine-issues)**
+> 为您的组织启用引擎并为跟踪项目或代理环境打开它。
+
+> **[Find and fix issues](/langsmith/engine-issues)**
 >
 > 查看引擎检测到的问题、打开拉取请求并创建数据集示例。
 
@@ -149,6 +151,4 @@ flowchart LR
 
 ***
 
-[Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
-
-[Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/engine.mdx) 或 [file an issue](https://github.com/langchain-ai/docs/issues/new/choose)。
+[Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。[Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/engine.mdx) 或 [file an issue](https://github.com/langchain-ai/docs/issues/new/choose)。

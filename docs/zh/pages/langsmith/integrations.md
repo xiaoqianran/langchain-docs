@@ -6,6 +6,8 @@
 
 [LangSmith](https://smith.langchain.com?utm_source=docs\&utm_medium=cta\&utm_campaign=langsmith-signup\&utm_content=langsmith-integrations) 为越来越多的流行 [LLM providers](#llm-providers) 和 [agent frameworks](#agent-frameworks) 以及 [Deep Agents](/oss/python/deepagents/overview)、[LangChain](/oss/python/langchain/overview) 和 [LangGraph](/oss/python/langgraph/overview) 提供集成。有关设置和使用的信息，请参阅本页列出的指南。
 
+在基于代理的工作区中发送跟踪之前，请[create an agent](/langsmith/create-an-agent) 并选择其环境。完成此设置一次，然后按照跟踪指南进行集成。
+
 ## 法学硕士提供者
 
 ![](https://mintcdn.com/langchain-5e9cc07a/ZPKed1feKJ8F6LVo/images/providers/light/bedrock.svg?fit=max\&auto=format\&n=ZPKed1feKJ8F6LVo\&q=85\&s=d6fc326f6c429075add5a742c87d12b1)
@@ -56,7 +58,7 @@ OpenAI兼容API
 
 [Open](/langsmith/trace-with-openai-compatible)
 
-**使用LangChain？** LangChain为100+LLM提供者提供了统一的接口，允许您通过设置环境变量来切换模型。 [Initialize a model](/oss/python/langchain/models#initialize-a-model)和LangSmith将自动跟踪您的申请。
+**使用LangChain？** LangChain为100+LLM提供者提供了统一的接口，允许您通过设置环境变量在模型之间切换。 [Initialize a model](/oss/python/langchain/models#initialize-a-model)和LangSmith将自动追踪您的代理。
 
 ## 代理框架
 
@@ -144,9 +146,7 @@ OpenAI 代理
 
 [Open](/langsmith/trace-with-semantic-kernel)
 
-![](https://mintcdn.com/langchain-5e9cc07a/ZPKed1feKJ8F6LVo/images/providers/light/bedrock.svg?fit=max\&auto=format\&n=ZPKed1feKJ8F6LVo\&q=85\&s=d6fc326f6c429075add5a742c87d12b1)
-
-股线代理
+![](https://mintcdn.com/langchain-5e9cc07a/ZPKed1feKJ8F6LVo/images/providers/light/bedrock.svg?fit=max\&auto=format\&n=ZPKed1feKJ8F6LVo\&q=85\&s=d6fc326f6c429075add5a742c87d12b1)股线代理
 
 [Open](/langsmith/trace-with-strands-agents)
 
@@ -178,7 +178,9 @@ OpenAI 实时
 
 ![](https://mintcdn.com/langchain-5e9cc07a/ZPKed1feKJ8F6LVo/images/providers/light/pipecat.svg?fit=max\&auto=format\&n=ZPKed1feKJ8F6LVo\&q=85\&s=91517611a27adb6cde1a46a81c76233d)
 
-管道猫[Open](/langsmith/trace-with-pipecat)
+管道猫
+
+[Open](/langsmith/trace-with-pipecat)
 
 ## 开发者工具
 
@@ -236,7 +238,15 @@ VS 代码副驾驶
 
 [Open](/langsmith/trace-with-vscode-copilot)
 
-这些编码代理集成遵循共享的[metadata contract](/langsmith/coding-agent-metadata-contract)，该[metadata contract](/langsmith/coding-agent-metadata-contract)标准化了它们发出的跟踪字段。
+这些编码代理集成遵循共享的[metadata contract](/langsmith/coding-agent-metadata-contract)，标准化它们发出的跟踪字段。
+
+## 生产力
+
+![](https://mintcdn.com/langchain-5e9cc07a/ZPKed1feKJ8F6LVo/images/providers/light/claude.svg?fit=max\&auto=format\&n=ZPKed1feKJ8F6LVo\&q=85\&s=d3cae2da0f353a45594f57b7f2382aba)
+
+克劳德·科沃克
+
+[Open](/langsmith/trace-claude-cowork)
 
 ***
 

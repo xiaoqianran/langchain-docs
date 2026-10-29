@@ -43,13 +43,13 @@ BYOC 上的引擎与自托管 LangSmith 的不同之处如下：
 每个组织都可以在**设置 > 引擎 > 模型提供程序**下选择引擎运行其模型的方式。| | **LangSmith智能** | **您自己的模型提供商** |
 | - | - | - |
 | **谁运行模型** | LangChain，及其选择的提供商 |您的提供商帐户 |
-| **凭证** |没有任何。引擎使用您的 LangSmith 许可证进行身份验证。 |您提供的 API 密钥或云身份 |
+| **凭证** |没有任何。引擎使用您的 LangSmith 许可证进行身份验证。 |您提供的 API 密钥或云身份，或者您自己的 [model gateway](/langsmith/engine-self-hosted-model-providers#use-a-model-gateway) |
 | **型号选择** |由LangChain管理和调整|由 LangChain 管理，在您的提供商提供的型号系列中 |
 | **数据处理协议** | LangChain，每个提供商都有 ZDR |您的，与您使用的每个提供商一起|
 | **计费** | LangChain 对 LSU 中引擎的使用情况进行计费。 |您的提供商会向您收取模型调用费用。 LangChain 对 LSU 中的 Engine 使用情况进行计费，费率低于LangSmith Intelligence。 |
 | **可用性** | AWS 美国 |任何云，以及您的集群可以访问的受支持模型和端点 |
 
-对于LangSmith其他云或区域中的智能，[contact our sales team](https://www.langchain.com/contact-sales)。
+对于LangSmith其他云或区域的智能，[contact our sales team](https://www.langchain.com/contact-sales)。
 
 ![Architecture diagram of self-hosted LangSmith in your VPC connected to LangSmith Intelligence and Bedrock in LangChain's AWS environment.](https://mintcdn.com/langchain-5e9cc07a/ry58UzmmALISsnzO/langsmith/images/engine-self-hosted-aws.png?fit=max\&auto=format\&n=ry58UzmmALISsnzO\&q=85\&s=ae209b16e4cf2ad7199e7ea6bb333f84)
 
@@ -57,7 +57,7 @@ LangSmith 智能：引擎运行在您的VPC中； LSI 和 Bedrock 在 LangChain 
 
 ![Architecture diagram of self-hosted LangSmith in your VPC sending model inference to your model providers and usage metadata to LangChain's cloud.](https://mintcdn.com/langchain-5e9cc07a/YV2_h1H0dQOJtIWY/langsmith/images/engine-self-hosted-byok.png?fit=max\&auto=format\&n=YV2_h1H0dQOJtIWY\&q=85\&s=772a34376f553f8a07ce36f96a4b0f81)
 
-您自己的模型提供商：引擎在您的 VPC 中运行并直接调用您的提供商，并且只有使用元数据会发送到LangChain。
+您自己的模型提供程序：引擎在您的 VPC 中运行并直接调用您的提供程序，并且只有使用元数据会发送到LangChain。
 
 ### LangSmith 情报LSI 是运行 Engine 模型的LangChain 托管服务。引擎将其模型请求发送到 `https://beacon.aws.langchain.com/intelligence`，并使用您的 LangSmith 许可证进行身份验证，因此您无需提供模型提供者凭据。每个请求都携带引擎完成其工作所需的跟踪内容、代码和中间输出。
 
@@ -67,19 +67,19 @@ LangSmith 智能：引擎运行在您的VPC中； LSI 和 Bedrock 在 LangChain 
 
 如果与 LSI 的连接不可用，引擎将停止并返回错误。 LangSmith 部署的其余部分不受影响，并且引擎会再次尝试进行下一次计划扫描。
 
-### 您自己的模型提供商引擎使用您控制的凭证或云身份直接从您的集群调用 Anthropic、OpenAI、Amazon Bedrock、Google Vertex AI 或 Azure AI Foundry。提示和响应仅发送给您的提供商。要选择提供商并添加凭据，请参阅[Configure model providers for Engine on self-hosted](/langsmith/engine-self-hosted-model-providers)。
+### 您自己的模型提供商引擎使用您控制的凭证或云身份直接从您的集群调用 Anthropic、OpenAI、Amazon Bedrock、Google Vertex AI 或 Azure AI Foundry。 Prompts and responses go only to your provider.要选择提供商并添加凭据，请参阅[Configure model providers for Engine on self-hosted](/langsmith/engine-self-hosted-model-providers)。
 
-## 引擎处理和存储数据的位置
+## Where Engine processes and stores data
 
-在自托管部署中，引擎将您的环境和LangChain之间的数据处理分开：
+在自托管部署中，引擎将您的环境和 LangChain 之间的数据处理分开：
 
 * **您的环境：** 引擎编排和 LangSmith 存储的跟踪保留在您的自托管环境中。
-* **LangChain的环境，具有LangSmith智能：** LSI和模型提供者处理Engine发送的内容。 LSI 仅保留[usage metadata](#what-langsmith-intelligence-retains)。
-* **您的模型提供商以及您自己的提供商：** 您的提供商根据您与他们的协议处理引擎发送的内容。 LangChain 仅接收[usage metadata](#what-langsmith-intelligence-retains)。
+* **LangChain的环境，具有LangSmith智能：** LSI和模型提供程序处理Engine发送的内容。 LSI retains only [usage metadata](#what-langsmith-intelligence-retains).
+* **您的模型提供商以及您自己的提供商：** 您的提供商根据您与他们的协议处理引擎发送的内容。 LangChain receives only [usage metadata](#what-langsmith-intelligence-retains).
 
 如果您启用外部通知，引擎还会将通知内容发送到您配置的 Slack 通道或 Webhook 端点。有关 Slack 应用程序设置和发送到 Slack 的内容，请参阅 [Connect self-hosted LangSmith to Slack](/langsmith/self-host-slack)。
 
-### LangSmith 情报保留了什么
+### What LangSmith Intelligence retains
 
 LSI 不会保留提示或模型响应的内容。它保留以下元数据用于使用归因和计费：* 用于归因使用情况的帐户、工作区和项目标识符。
 * 用于计费的模型和令牌使用元数据。
@@ -92,7 +92,7 @@ LSI 不会保留提示或模型响应的内容。它保留以下元数据用于�
 
 本节适用于自托管 LangSmith。在 BYOC 上，LangChain 安装 Engine。参见[Engine on BYOC](#engine-on-byoc)。
 
-默认情况下禁用引擎。它需要 [Sandboxes](/langsmith/enable-self-hosted-sandboxes)、与 [LangSmith Intelligence](#allow-egress-to-langsmith-intelligence) 的连接，除非您的安装是 [air-gapped](#air-gapped-installations)、外部可访问的 [⟦T15⟧](#verify-your-hostname-is-externally-reachable) 和 [Engine's keys](#generate-engines-keys)。在启用引擎之前完成先决条件。
+默认情况下禁用引擎。它需要[Sandboxes](/langsmith/enable-self-hosted-sandboxes)、与[LangSmith Intelligence](#allow-egress-to-langsmith-intelligence)的连接，除非您的安装是[air-gapped](#air-gapped-installations)、外部可访问的[⟦T15⟧](#verify-your-hostname-is-externally-reachable)和[Engine's keys](#generate-engines-keys)。在启用引擎之前完成先决条件。
 
 引擎和 [Insights](/langsmith/self-host-insights-chat) 从同一映像运行并共享一个部署。 Engine 不需要 Insights。如果您的安装已运行 Insights，则启用 Engine 会添加配置而不是新 Pod。
 
@@ -101,7 +101,7 @@ LSI 不会保留提示或模型响应的内容。它保留以下元数据用于�
 启用引擎配置或重用：* `standalone-insights-api-server`：同时服务于`engine`和`insights`图表。
 * `standalone-insights-queue`：Engine 和 Insights 的后台运行处理。
 * 用于共享部署的专用 PostgreSQL 和 Redis 实例，每个实例都可以替换为外部实例。
-* [Enable Sandboxes](/langsmith/enable-self-hosted-sandboxes) 下描述的沙箱组件。
+* [Enable Sandboxes](/langsmith/enable-self-hosted-sandboxes)下描述的沙箱组件。
 
 引擎还向`platform-backend`和`ingest-queue`添加了配置，用于调度和安排其运行。
 
@@ -111,9 +111,9 @@ LSI 不会保留提示或模型响应的内容。它保留以下元数据用于�
 
 首先完成[Enable Sandboxes](/langsmith/enable-self-hosted-sandboxes)，包括支持KVM的节点池和JuiceFS存储。
 
-引擎的沙箱与一个工作区相关联。带有引擎的安装必须有[shared organization](/langsmith/administration-overview#organizations)。当安装有一个共享组织时，LangSmith 默认使用其最旧的活动工作区，即使该组织有多个工作区也是如此。要使用专用工作区，请创建工作区并将 `engine.sandboxTenantId` 设置为其 ID。如果安装有多个共享组织，则必须设置 `engine.sandboxTenantId`，因为 LangSmith 不会自动在组织之间进行选择。> [!警告]
+引擎的沙箱与一个工作区相关联。带有引擎的安装必须有[shared organization](/langsmith/administration-overview#organizations)。当安装有一个共享组织时，LangSmith 默认情况下使用其最旧的活动工作区，即使该组织有多个工作区也是如此。要使用专用工作区，请创建工作区并将 `engine.sandboxTenantId` 设置为其 ID。如果安装有多个共享组织，则必须设置 `engine.sandboxTenantId`，因为 LangSmith 不会自动在组织之间进行选择。> [!警告]
 >
-> 使用为引擎保留的工作空间：
+> 使用为引擎保留的工作区：
 >
 > * Engine 的沙箱不在 Sandboxes 产品中计费，因为 Engine 会计量自己在 LSU 中的使用情况。
 > * 引擎的沙箱使用与工作区中其他沙箱相同的并发沙箱、CPU 和内存配额。如果工作区接近其限制，引擎运行可能会失败或为交互式沙箱留下的容量较少。
@@ -135,7 +135,7 @@ LSI 不会保留提示或模型响应的内容。它保留以下元数据用于�
 
 AWS URL 还记录使用情况，因此它适用于采用任一选项的组织。默认 URL 仅记录使用情况，在自托管 LangSmith 已用于许可证验证和计费遥测的同一主机上，因此它添加了一条路径而不是新的出口目的地。
 
-在图表 0.16 中，`engine.intelligenceBaseUrl` 无默认值，引擎仅在LangSmith Intelligence 上运行，因此将其设置为`https://beacon.aws.langchain.com/intelligence`。
+在图0.16中，`engine.intelligenceBaseUrl`没有默认值，引擎仅在LangSmith智能上运行，因此将其设置为`https://beacon.aws.langchain.com/intelligence`。
 
 如果引擎在您自己的模型提供程序上运行，还允许从 `standalone-insights` pod 到每个提供程序的 API 端点的出站 HTTPS。要将该流量保留在专用网络上，请参阅[Connect to your providers privately](/langsmith/engine-self-hosted-model-providers#connect-to-your-providers-privately)。
 
@@ -143,7 +143,7 @@ AWS URL 还记录使用情况，因此它适用于采用任一选项的组织。
 
 **4.验证您的主机名可从外部访问**引擎的沙箱使用 `langsmith` CLI 调用您的 LangSmith 安装，因此 `config.hostname` 必须可从沙箱网络访问。 Helm 验证拒绝 `localhost` 和集群内 `*.svc` 地址。
 
-使用 TLS 通过您的入口提供该主机名，如 [Set up an ingress](/langsmith/self-host-ingress) 中所述。引擎的沙箱网络策略允许访问您的 LangSmith 主机名、配置的 GitHub 主机以及公共 PyPI 和 npm 注册表。沙箱外部的代理会注入每次运行的凭据，因此它们在沙箱内部不可读。
+使用 TLS 通过入口提供该主机名，如 [Set up an ingress](/langsmith/self-host-ingress) 中所述。引擎的沙箱网络策略允许访问您的 LangSmith 主机名、配置的 GitHub 主机以及公共 PyPI 和 npm 注册表。沙箱外部的代理会注入每次运行的凭据，因此它们在沙箱内部不可读。
 
 当引擎生成代码修复时，它会安装`pypi.org`、`files.pythonhosted.org`和`registry.npmjs.org`的依赖项。注册表主机不可配置，因此引擎无法使用内部 PyPI 或 npm 镜像，并且如果您的网络阻止公共注册表，依赖项安装将失败。沙箱无法到达 Go 模块代理，例如 `proxy.golang.org`，因此引擎使用连接的代码存储库的 `vendor/` 目录（当它存在时）。
 
@@ -151,7 +151,7 @@ AWS URL 还记录使用情况，因此它适用于采用任一选项的组织。
 
 **5.生成引擎的密钥**
 
-引擎需要自己的两个密钥：* **加密密钥** (`engine_encryption_key`)：加密传递给引擎的运行负载LangSmith的 Fernet 密钥，该引擎携带短期凭证。
+引擎需要自己的两个密钥：* **加密密钥** (`engine_encryption_key`)：一个 Fernet 密钥，用于加密传递给引擎的运行负载LangSmith，该引擎携带短期凭证。
 
   ```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
   python -c "from cryptography.fernet import Fernet; print(Fernet.generate_key().decode())"
@@ -171,7 +171,7 @@ AWS URL 还记录使用情况，因此它适用于采用任一选项的组织。
 
 ### 使用 Helm 启用
 
-将以下内容添加到您的 [⟦T49⟧](/langsmith/kubernetes#configure-your-helm-charts) 中，以及 [Enable Sandboxes](/langsmith/enable-self-hosted-sandboxes) 中的完整沙盒值。这些示例仅显示特定于引擎的值和 `sandboxes.enabled` 标志。
+将以下内容添加到您的 [⟦T49⟧](/langsmith/kubernetes#configure-your-helm-charts) 中，以及 [Enable Sandboxes](/langsmith/enable-self-hosted-sandboxes) 中的完整沙箱值。这些示例仅显示特定于引擎的值和 `sandboxes.enabled` 标志。
 
 **使用 Kubernetes 机密（推荐）**
 
@@ -224,7 +224,7 @@ engine:
 
 > [!警告]
 >
-> 从旧版 Insights 图像引脚升级需要一项额外检查：如果您的值引脚 `images.engineInsightsAgentImage.repository` 到已停用的 `langsmith-clio` 图像，请删除或更新该引脚。引擎和 Insights 现在在 `langsmith-insights-engine` 上运行，并且图表拒绝 `langsmith-clio`。欲了解更多信息，请参阅[Mirror images for your LangSmith installation](/langsmith/self-host-mirroring-images#additional-images-for-engine)。
+> 从旧版 Insights 图像引脚升级需要一项额外检查：如果您的值引脚 `images.engineInsightsAgentImage.repository` 到已停用的 `langsmith-clio` 图像，请删除或更新该引脚。引擎和 Insights 现在在 `langsmith-insights-engine` 上运行，并且图表拒绝 `langsmith-clio`。有关更多信息，请参阅[Mirror images for your LangSmith installation](/langsmith/self-host-mirroring-images#additional-images-for-engine)。
 
 在应用更新的图表之前验证它：
 
@@ -265,13 +265,13 @@ kubectl rollout status deployment/langsmith-platform-backend -n <namespace>
 
 检查 **设置 > 引擎** 下的引擎使用情况，了解按工作区和项目划分的总支出。使用情况报告和计费更新是异步的，因此支出可能会晚于分析结果出现。对于气隙安装，请通过[Usage export](#air-gapped-installations)验证记录的使用情况。
 
-如果分析未完成，请检查 Engine Pod 是否正在运行、沙盒工作区是否有可用配额，以及集群是否可以访问您的模型提供程序或在 `engine.intelligenceBaseUrl` 中配置的LangSmith Intelligence gateway URL。
+如果分析未完成，请检查 Engine Pod 是否正在运行、沙箱工作区是否有可用配额，以及集群是否可以访问您的模型提供程序或在 `engine.intelligenceBaseUrl` 中配置的LangSmith Intelligence gateway URL。
 
 ### 在LangSmith中打开引擎
 
 在 Helm 中启用引擎可以使该功能可用，但不会启动任何扫描。启用图表值后，在LangSmith中完成设置：1. [Organization Admin](/langsmith/rbac#organization-admin) 在 **设置 > 引擎** 下为组织打开引擎。欲了解更多信息，请参阅[Enable Engine for your organization](/langsmith/engine-setup#enable-engine-for-your-organization)。
 2. **设置 > 引擎 > 模型提供程序**下的组织管理员 [chooses how Engine runs its models](/langsmith/engine-self-hosted-model-providers#choose-model-providers)。在保存之前，引擎不会启动任何运行。
-3. [role](/langsmith/rbac) 可以更新跟踪项目的用户从其**引擎**选项卡打开跟踪项目的引擎。有关更多信息，请参阅[Set up Engine](/langsmith/engine-setup#turn-on-engine-for-a-tracing-project)。
+3. [role](/langsmith/rbac) 可以更新跟踪项目的用户从其**引擎**选项卡打开跟踪项目的引擎。欲了解更多信息，请参阅[Set up Engine](/langsmith/engine-setup#turn-on-engine-for-a-tracing-project)。
 
 要读取源代码并打开拉取请求，Engine 还需要 GitHub 连接。操作员[configures the GitHub App](/langsmith/engine-self-hosted-github)，然后是工作区用户[connect repositories](/langsmith/engine-repositories#connect-repositories)。
 
@@ -291,7 +291,7 @@ engine:
 具有离线许可证且未连接到 LangSmith Intelligence 的安装可以在其自己的模型提供商上运行引擎：
 
 * 将`engine.intelligenceBaseUrl`设置为`""`。
-* [Choose your own model providers](/langsmith/engine-self-hosted-model-providers#choose-model-providers) **设置 > 引擎 > 模型提供程序**。 LangSmith 智能不可用。
+* [Choose your own model providers](/langsmith/engine-self-hosted-model-providers#choose-model-providers) **设置 > 引擎 > 模型提供程序**。 LangSmith 情报不可用。
 * 允许从 `standalone-insights` pod 到您的模型提供程序的出站 HTTPS，或通过您自己的网络路径将其路由到它们。引擎记录其在您的安装中的使用情况。组织管理员会从 **设置 > 使用情况导出** 将其与您的剩余使用情况一起下载，并按照您协议中的时间表将其发送给您的 LangChain 帐户团队。
 
 气隙安装不显示引擎支出，并且不强制执行`0`以外的支出限制。设置 `0` 的限制来暂停组织或项目的引擎。

@@ -129,7 +129,7 @@ Use the language-specific constructor and push method:
    client.push_prompt("prompt-quickstart", object=prompt)
    ```
 
-   ```typescript TypeScript theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+   ```ts TypeScript theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
    import { Client } from "langsmith";
    import { ChatPromptTemplate } from "@langchain/core/prompts";
 
@@ -187,7 +187,7 @@ Then, you'll iterate on the prompt by creating a new version. Members of your wo
    )
    ```
 
-   ```typescript TypeScript theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+   ```ts TypeScript theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
    import { OpenAI } from "openai";
    import { pull } from "langchain/hub"
    import { convertPromptToOpenAI } from "@langchain/openai";
@@ -235,7 +235,7 @@ Then, you'll iterate on the prompt by creating a new version. Members of your wo
    client.push_prompt("prompt-quickstart", object=new_prompt)
    ```
 
-   ```typescript TypeScript theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+   ```ts TypeScript theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
    import { Client } from "langsmith";
    import { ChatPromptTemplate } from "@langchain/core/prompts";
 

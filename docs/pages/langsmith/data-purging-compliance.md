@@ -103,7 +103,7 @@ For more details, refer to the [API spec](/langsmith/smith-api/run/delete-runs).
 
 ### Deletion timeline
 
-Trace deletions are processed during non-peak usage times and are not instant. LangChain runs the delete job on the weekend. There is no confirmation of deletion - you'll need to query the data again to verify it has been removed.
+Trace deletions are processed during non-peak usage times and are not instant. SmithDB may make traces unqueryable right away. Most deletes are hardened within 6 hours or sooner. To confirm deletion, query the data again to verify it has been removed.
 
 ### Delete specific traces
 

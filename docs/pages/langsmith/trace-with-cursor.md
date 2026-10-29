@@ -4,216 +4,159 @@
 
 Capture Cursor agent turns, tool calls, model metadata, token usage, attachments, and subagents in LangSmith.
 
-Trace [Cursor](https://cursor.com/) agent sessions in LangSmith using [Cursor hooks](https://cursor.com/docs/agent/hooks). Each turn becomes one trace, grouped into a thread per Cursor conversation, which captures prompts, model responses, tool calls, token usage, and subagent activity. Use the traces to debug agent behavior, audit tool calls, track token spend per turn, and compare Cursor runs.
-
-The plugin source is available at [`langchain-ai/langsmith-cursor-plugins`](https://github.com/langchain-ai/langsmith-cursor-plugins).
-
-> [!NOTE]
->
-> This integration uses a legacy destination setting such as `project_name` or `LANGSMITH_PROJECT`. [Create an agent](/langsmith/create-an-agent), choose its environment, and [retrieve that environment's `tracer_session_name`](/langsmith/create-an-agent#use-an-environment-project). Use that returned value in the destination setting and any overrides. For integrations that support agent addressing, use the [agent identifier and environment](/langsmith/log-traces-to-agent) directly.
+The LangSmith tracing plugin sends your [Cursor](https://cursor.com/) agent conversations to LangSmith so you can see what the agent did. Each prompt becomes a trace, and a conversation's prompts are grouped into a thread.
 
 ## Prerequisites
 
-Before setting up tracing, ensure you have:
-
 * [Cursor](https://cursor.com/) installed.
-* [Node.js](https://nodejs.org/) 22.13 or later. The hooks use the built-in `node:sqlite` module to recover attachments from Cursor's local database.
-* A [LangSmith API key](/langsmith/create-account-api-key).
+* A LangSmith account.
+* [Node.js](https://nodejs.org/) 22.13 or later on Windows and Linux. On macOS the plugin runs its own build and does not need Node.js.
 
-## Install and enable the plugin
+## Install the plugin
 
-Install the plugin directly from the GitHub repository in Cursor's settings:
+To install the plugin for yourself:
 
-1. Open **Cursor > Settings > Plugins**.
-2. Paste `https://github.com/langchain-ai/langsmith-cursor-plugins` into the plugin link field.
-3. Confirm to add **LangSmith Tracing for Cursor**.
+1. Open **Customize** in Cursor and choose **Add Marketplace**.
+2. Enter `https://github.com/langchain-ai/langsmith-cursor-plugins`.
+3. Run `/add-plugin langsmith-tracing` in the agent chat, or install it from the new **LangChain** tab in **Customize**.
+4. Fully restart Cursor so it loads the plugin's hooks.
 
-This is the recommended path: it installs the hooks with no clone or build step, since the repository ships a precompiled bundle.
+To install the plugin for everyone, see [Deploy to your organization](#deploy-to-your-organization). For more on installing plugins, see [Plugins](https://cursor.com/docs/plugins) in the Cursor docs.
+
+## Sign in
+
+Sign in once with the LangSmith CLI. See [Install the LangSmith CLI](/langsmith/langsmith-cli#install) if you do not have it yet.
+
+```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+langsmith auth login
+```
+
+If you use the CLI sign-in and have more than one profile, set `profile` in your config file to the one the plugin should use. Your own `api_key` ignores this setting, but a generic `LANGSMITH_API_KEY` is not used as a fallback while `profile` is set.
+
+To use an API key instead, add it to `~/.cursor/langsmith.json`:
+
+```json theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+{ "enabled": true, "api_key": "lsv2_pt_...", "agent_id": "shared-cursor" }
+```
+
+If more than one credential is set, the plugin uses the first one it finds:
+
+1. The plugin's own key from `api_key` or `LANGSMITH_CURSOR_API_KEY`.
+2. Your `langsmith auth login` sign-in.
+3. A generic `LANGSMITH_API_KEY` from your environment.
+
+Tracing stops when your sign-in expires or your key is rejected, and turns from that gap are never uploaded. Cursor cannot show a message without stopping the prompt, so the plugin writes the reason to `~/.cursor/langsmith_hook.log` instead. Admins can also [require a working sign-in](#require-a-working-sign-in) for every prompt.
+
+## Turn on tracing
+
+Tracing is off until you turn it on in `~/.cursor/langsmith.json`, unless your admin already turned it on with a [managed file](#lock-settings). Send traces to an [agent](/langsmith/log-traces-to-agent#send-traces-to-an-agent) with `agent_id`:
+
+```json theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+{ "enabled": true, "agent_id": "shared-cursor" }
+```
+
+Or send them to a project with `project`:
+
+```json theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+{ "enabled": true, "project": "shared-cursor" }
+```
+
+Use either one. If you set both, `agent_id` wins.
 
 > [!WARNING]
 >
-> Fully restart Cursor after installing so it reloads `hooks.json`.
+> A project can override these settings with `<project>/.cursor/langsmith.json` or `<project>/langsmith-plugins.json`. A cloned repository can use them to turn tracing on and send your prompts and files to someone else's server. Before you trust a repository, review those files. Cursor's own `.cursor/hooks.json` can run commands, so review that one too.
 
-### Alternative: install from a local clone
+Send a prompt and open your agent or project in [LangSmith](https://smith.langchain.com?utm_source=docs\&utm_medium=cta\&utm_campaign=langsmith-signup\&utm_content=langsmith-trace-with-cursor). In Auto mode, the model shows as `default` and subagents show no token counts, because Cursor does not report either one.
 
-Install the hooks from a local clone of [`langsmith-cursor-plugins`](https://github.com/langchain-ai/langsmith-cursor-plugins). This writes `~/.cursor/hooks.json` for all Cursor projects:
+## Deploy to your organization
 
-```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-node scripts/install.mjs
-```
+Admins can install the plugin for everyone and control how it traces from one place.
 
-To scope the hooks to a single project instead, run the installer from the project directory:
+### Install for everyone
 
-```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-node scripts/install.mjs --project
-```
+Admins on a Teams or Enterprise plan can import the repository as a team marketplace, so the plugin installs for everyone. For the setup, see [Cursor's plugin docs](https://cursor.com/docs/plugins).
 
-To preview the hook configuration without writing it, run:
+### Lock settings
 
-```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-node scripts/install.mjs --print
-```
-
-The installer merges its entries with any existing `hooks.json`. The committed `bundle/` means these commands run without `pnpm install` or `pnpm build` — those are only needed when contributing changes to the TypeScript source.
-
-Restart Cursor after installing so it reloads `hooks.json`.
-
-## Configure tracing
-
-Tracing is disabled until both `enabled` (or `TRACE_TO_LANGSMITH=true`) and an API key are set. Configure credentials with [environment variables](#environment-variables), a [JSON config file](#config-file), or both.
-
-### Environment variables
-
-Every `LANGSMITH_CURSOR_*` variable also accepts the shorter `LANGSMITH_*` form. When both are set, `LANGSMITH_CURSOR_*` takes precedence.
-
-| Variable | Default | Description |
-| - | - | - |
-| `TRACE_TO_LANGSMITH` | `false` | Set to `"true"` to enable tracing. |
-| `LANGSMITH_CURSOR_API_KEY` | - | LangSmith API key. Falls back to `LANGSMITH_API_KEY`. |
-| `LANGSMITH_CURSOR_ENDPOINT` | `https://api.smith.langchain.com` | LangSmith API URL. Falls back to `LANGSMITH_ENDPOINT`. |
-| `LANGSMITH_CURSOR_PROJECT` | `cursor` | Selected agent environment's `tracer_session_name`. Falls back to `LANGSMITH_PROJECT`. |
-| `LANGSMITH_CURSOR_METADATA` | - | JSON object merged into root trace metadata. |
-| `LANGSMITH_CURSOR_RUNS_ENDPOINTS` | - | JSON array of replica destinations. |
-| `LANGSMITH_CURSOR_REDACT` | `true` | Set to `"false"` to disable secret redaction. |
-| `LANGSMITH_CURSOR_REDACT_EXTRA` | - | JSON array of extra `{ pattern, replace }` redaction rules. |
-| `LANGSMITH_CURSOR_ATTACHMENTS` | `true` | Set to `"false"` to disable attachment enrichment. |
-| `LANGSMITH_CURSOR_DB_PATH` | platform default | Override the Cursor `state.vscdb` path used for attachments. |
-| `LANGSMITH_CURSOR_STATE_FILE` | `~/.cursor/langsmith-state.json` | Override the on-disk event-buffer state file. |
-| `LANGSMITH_CURSOR_LOG_FILE` | `~/.cursor/langsmith-hook.log` | Override the hook log file. |
-| `LANGSMITH_CURSOR_DEBUG` | `false` | Set to `"true"` to enable verbose hook logging. |
-
-Add the variables to your shell configuration file (`~/.zshrc`, `~/.bashrc`, or `~/.bash_profile`):
-
-```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-export TRACE_TO_LANGSMITH="true"
-export LANGSMITH_CURSOR_API_KEY="<your-langsmith-api-key>"
-export LANGSMITH_CURSOR_PROJECT="<environment-tracer-session-name>"
-```
-
-To verify hook activity, tail the log file:
-
-```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-tail -f ~/.cursor/langsmith-hook.log
-```
-
-### Config file
-
-Use `~/.cursor/langsmith.json` for global defaults or `./.cursor/langsmith.json` for project-level settings. Settings resolve in this order, with later sources overriding earlier ones: defaults, global config, project config, environment variables.
+An admin can lock tracing settings for every user with a managed file at `~/.langsmith-plugins/managed.json` in each user's home folder. The Claude Code, Cursor, and Codex plugins all read this file, and its settings override the user's own config files and environment variables.
 
 ```json theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 {
-  "enabled": true,
-  "api_key": "<your-langsmith-api-key>",
-  "api_url": "https://api.smith.langchain.com",
-  "project": "<environment-tracer-session-name>"
+  "api_url": "https://langsmith.example.com",
+  "project": "engineering",
+  "strict_auth": true
 }
 ```
 
-| Field | Environment variable | Default | Description |
-| - | - | - | - |
-| `enabled` | `TRACE_TO_LANGSMITH` | `false` | Set to `true` to enable tracing. |
-| `api_key` | `LANGSMITH_CURSOR_API_KEY`, `LANGSMITH_API_KEY` | - | LangSmith API key. |
-| `api_url` | `LANGSMITH_CURSOR_ENDPOINT`, `LANGSMITH_ENDPOINT` | `https://api.smith.langchain.com` | LangSmith API URL. |
-| `project` | `LANGSMITH_CURSOR_PROJECT`, `LANGSMITH_PROJECT` | `cursor` | Selected agent environment's `tracer_session_name`. |
-| `metadata` | `LANGSMITH_CURSOR_METADATA`, `LANGSMITH_METADATA` | - | Object merged into root trace metadata. |
-| `replicas` | `LANGSMITH_CURSOR_RUNS_ENDPOINTS`, `LANGSMITH_RUNS_ENDPOINTS` | - | Additional LangSmith destinations to replicate traces to. |
-| `redact` | `LANGSMITH_CURSOR_REDACT`, `LANGSMITH_REDACT` | `true` | Set to `false` to disable [secret redaction](#secret-redaction). |
-| `redact_extra_rules` | `LANGSMITH_CURSOR_REDACT_EXTRA`, `LANGSMITH_REDACT_EXTRA` | - | Extra `{ pattern, replace }` rules applied after the built-in ones. |
-| `attachments` | `LANGSMITH_CURSOR_ATTACHMENTS` | `true` | Set to `false` to skip enriching turns with image and file attachment bytes from Cursor's local database. |
-| `cursor_db_path` | `LANGSMITH_CURSOR_DB_PATH` | platform default | Override the Cursor `state.vscdb` path used for attachments. |
+The managed file works on macOS and Linux. The plugin only trusts it when:
 
-Keep config files that include API keys out of version control.
+* Root owns the file and its folder.
+* No other user can write to either.
+* Neither is a symlink.
+
+If the file exists but fails these checks, tracing stops and the user sees a message to contact their admin. Locking a setting also locks the settings tied to it, so users cannot route traces around the lock. For example, locking `project` also stops users from adding their own [replicas](/langsmith/trace-replicas) or sending traces to an agent with `agent_id`.
+
+Admins usually install the file on each machine with a mobile device management (MDM) tool such as Jamf or Microsoft Intune. For every setting you can lock, see the [plugin settings guide](https://github.com/langchain-ai/langsmith-plugin-binary/blob/main/docs/settings.md).
+
+> **Example setup script**
+>
+> Run this as root for each user, with `USER_HOME` set to that user's home folder:
+>
+> ```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> USER_HOME=/Users/developer
+> mkdir -p "$USER_HOME/.langsmith-plugins"
+> cp managed.json "$USER_HOME/.langsmith-plugins/managed.json"
+> chown root:wheel "$USER_HOME/.langsmith-plugins" "$USER_HOME/.langsmith-plugins/managed.json"
+> chmod 755 "$USER_HOME/.langsmith-plugins"
+> chmod 644 "$USER_HOME/.langsmith-plugins/managed.json"
+> ```
+>
+> On Linux, use `root:root` instead of `root:wheel`. For the full script, see [Set it up on macOS](https://github.com/langchain-ai/langsmith-plugin-binary/blob/main/docs/settings.md#set-it-up-on-macos).
+
+Cursor can also lock `attachments` and `system_prompt`.
+
+### Require a working sign-in
+
+Strict auth blocks every prompt until the user's sign-in or key works, so no session goes untraced. It is off by default and has no effect while tracing is off. To turn it on for everyone, set `strict_auth` to `true` in the managed file.
+
+## Hide a conversation
+
+Send `langsmith-tracing:mute` as a message in Cursor's agent chat to keep a conversation's content out of LangSmith, and `langsmith-tracing:unmute` to turn it back on. Send exactly that text with no slash, or it is traced as a normal prompt. The acknowledgment appears as a blocked prompt, because that is how Cursor shows a plugin's reply.
+
+To mute every new conversation by default, set `defaultMuted` to `true`.
 
 ## Secret redaction
 
-The plugin redacts detected secrets from run inputs, outputs, errors, and metadata before uploading them to LangSmith. Redaction is on by default.
+The plugin strips secrets on your machine before anything is uploaded, so they never reach LangSmith or a replica. Redaction is on by default.
 
-Redaction runs on your machine before upload, so unredacted content never reaches LangSmith. Replica destinations receive the same redacted payload.
+It catches provider API keys, JSON Web Tokens, and PEM private keys, along with common patterns such as `API_KEY=<value>` or a password in a URL. Each match is replaced with `[SECRET_DETECTED]`. For the full rule list, see [Redact secrets from traces](/langsmith/redact-secrets#rules-in-the-preset).
 
-Detection covers provider API key prefixes, JSON Web Tokens, and PEM private key blocks. It also covers contextual shapes such as `API_KEY=<value>`, an `Authorization` header, and a password embedded in a URL. Each match is replaced with `[SECRET_DETECTED]`. For the rule list, see [Redact secrets from traces](/langsmith/redact-secrets#rules-in-the-preset).
+Redaction only matches known credential shapes, so treat it as a safety net rather than a guarantee. Run names, tags, and attachments skip it, and a redacted trace still holds your prompts and file contents. Limit who can read the tracing project.
 
-Redaction matches known credential shapes, so treat it as a safety net rather than a guarantee. A credential in an unrecognized format still reaches LangSmith, and attachments, run names, and tags do not pass through the anonymizer. A redacted trace also still holds the prompts, file contents, and tool results it was built from, so restrict who can read the tracing project.
+Images you attach to a prompt skip redaction. Set `attachments` to `false` to stop sending them. To turn redaction off or add your own patterns, see the [plugin settings](https://github.com/langchain-ai/langsmith-cursor-plugins#settings).
 
-Attachments bypass redaction entirely. The plugin recovers image and file attachments from Cursor's local database and sends their bytes, which the anonymizer never inspects. Set `LANGSMITH_CURSOR_ATTACHMENTS` to `"false"` to stop sending them.
+## Settings
 
-To turn redaction off, set `LANGSMITH_CURSOR_REDACT` to `false`, `0`, `no`, or `off`, or set `"redact": false` in a config file.
+Each setting has a config file key and an environment variable. The environment variable wins when both are set.
 
-To redact additional patterns, set `LANGSMITH_CURSOR_REDACT_EXTRA` to a JSON array of `{ "pattern": ..., "replace": ... }` rules, or set `redact_extra_rules` in a config file. Each `pattern` is a regular expression string, applied globally and case-sensitively. `replace` is optional and falls back to `[redacted]`. Extra rules run after the built-in ones.
+| Config key | Environment variable | Default | Description |
+| - | - | - | - |
+| `enabled` | `TRACE_TO_LANGSMITH` | `false` | Turns tracing on. |
+| `api_key` | `LANGSMITH_CURSOR_API_KEY` | none | LangSmith API key. Not needed if you sign in with the CLI. |
+| `project` | `LANGSMITH_CURSOR_PROJECT` | `cursor` | Project the traces go to. Use this or `agent_id`. |
+| `agent_id` | `LANGSMITH_AGENT_ID` | none | Agent the traces go to. Wins over `project` if both are set. |
+| `api_url` | `LANGSMITH_CURSOR_ENDPOINT` | `https://api.smith.langchain.com` | LangSmith server to send to. |
 
-```json theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-{
-  "enabled": true,
-  "project": "<environment-tracer-session-name>",
-  "redact": true,
-  "redact_extra_rules": [{ "pattern": "ACME-[A-Z0-9]{16}", "replace": "[REDACTED_ACME_KEY]" }]
-}
-```
-
-Setting `redact_extra_rules` to `[]` clears rules inherited from a lower-priority source. One rule with an invalid regular expression discards every setting in that file, so keep the patterns simple and verify them before committing.
-
-Because a project-level `.cursor/langsmith.json` can set `redact` to `false`, review that file before enabling tracing in a repository you do not control.
-
-## What gets traced
-
-The plugin listens to Cursor hooks and assembles one trace per agent turn:
-
-* **Turns**: each turn becomes its own trace, grouped into a thread using `thread_id` = Cursor's `conversation_id`. The trace nests the model run and any tool or subagent runs underneath the turn.
-* **Token usage**: per-turn `usage_metadata` on the model run.
-* **Model and provider**: `ls_model_name` and `ls_provider`, normalized from Cursor's model label to a canonical provider id (for example, `claude-4.6-sonnet` becomes `claude-sonnet-4-6`). Auto mode reports `default` with provider `cursor`.
-* **Tool calls**: tool runs for both successful calls and failures, with inputs and outputs.
-* **Attachments**: image and file attachments recovered from Cursor's local database and rendered inline on the user message. Set `attachments` to `false` to skip this step.
-* **Subagents**: each subagent appears as a nested chain run with its own tool calls underneath, linked to the parent turn.
-
-> [!NOTE]
->
-> The plugin does not compute cost locally. Because `ls_model_name` is normalized to a canonical id and `usage_metadata` carries the token breakdown, LangSmith's server-side model price table renders cost in the UI. Auto mode reports `default`, which LangSmith cannot price.
-
-> [!WARNING]
->
-> The plugin uploads Cursor conversation data, including prompts, model responses, tool inputs and outputs, and recovered attachments. Do not enable tracing for sessions that contain data you do not want stored in LangSmith.
-
-### Trace metadata
-
-Every run carries the shared `coding-agent-v1` metadata contract on `run.extra.metadata`, which lets traces from any coding agent (Claude Code, Codex, Cursor) be identified and grouped with the same stable keys.
-
-| Scope | Keys |
-| - | - |
-| Always present | `ls_agent_type` (`"root"`, `"subagent"`, `"middleware"`, or `"compaction"`), `ls_agent_purpose` (`"coding"`), `ls_integration` (`"cursor"`), `ls_agent_runtime` (`"Cursor"`), `ls_trace_schema_version` (`"coding-agent-v1"`), `thread_id` (= Cursor's `conversation_id`). |
-| Present where known | `ls_integration_version`, `ls_agent_runtime_version` (Cursor's `cursor_version`), `turn_id` (= Cursor's `generation_id`), `turn_number`, `repository_url`, `repository_provider`, `repository_name`, `git_branch`, `git_commit_sha`, `cwd`. |
-| Contextual | `local_username`, `user_email` (provisional). |
-| Subagent runs only | `ls_subagent_id`, `ls_subagent_type`. |
-| Tool runs only | `ls_tool_name` (only emitted when the run name differs from the native tool name). |
-| Model and tool runs only | `ls_provider`, `ls_model_name`, `ls_invocation_params`, `usage_metadata`. |
-
-Cursor's hooks do not expose stable sources for `user_id`, `sandbox_type`, or `approval_policy`, so those keys are omitted.
-
-## View traces in LangSmith
-
-Select the configured agent and environment in LangSmith, open **Tracing**, and complete a Cursor turn. The plugin uploads one trace per turn with this structure:
-
-```
-Cursor Turn N (chain)
-├── <provider> (llm)   model and provider, token usage, assistant text
-├── Read / Shell / ... (tool)
-└── Task (tool)        subagent (type and task)
-```
-
-To group related turns, filter on `thread_id` in the **Threads** tab for that environment.
-
-## Known limitations
-
-* **Subagent token usage**: Cursor does not expose a per-subagent usage breakdown via hooks or its local database, so a subagent's `Task` run carries its tool calls but no token counts.
+For every setting, see the [plugin settings](https://github.com/langchain-ai/langsmith-cursor-plugins#settings).
 
 ## Troubleshooting
 
-If traces do not appear in LangSmith:
+* **No traces**: Check that the plugin is in Cursor's plugin list and that you fully restarted Cursor after installing it. Then check that tracing is on.
+* **Tracing is paused**: Run `langsmith auth login` again or replace the rejected API key.
+* **Still stuck**: Run `tail -f ~/.cursor/langsmith_hook.log` while you send a prompt. Set `LANGSMITH_CURSOR_DEBUG=1` for more detail.
 
-* Confirm `TRACE_TO_LANGSMITH=true` or `"enabled": true` is set in a config file the Cursor process can see.
-* Confirm `LANGSMITH_CURSOR_API_KEY` or `LANGSMITH_API_KEY` is set and valid.
-* Confirm Cursor was fully restarted after the hooks were installed.
-* Tail the hook log for errors: `tail -f ~/.cursor/langsmith-hook.log`.
-* Enable verbose logging with `LANGSMITH_CURSOR_DEBUG=true` and re-check the log.
-* If runs land in the wrong environment, set `LANGSMITH_CURSOR_PROJECT` or the `project` config key.
+For more fixes, see [When nothing shows up](https://github.com/langchain-ai/langsmith-cursor-plugins#when-nothing-shows-up).
 
 ***
 

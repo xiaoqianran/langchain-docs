@@ -19,7 +19,7 @@
 
 如果图/节点的实现包含同步代码，则应将此环境变量设置为`True`。在这种情况下，同步代码将阻塞服务 API 事件循环，这可能会导致 API 不可用。 API 不可用的一个症状是由于运行状况检查失败而导致应用程序不断重新启动。> [!警告]
 >
-> 当启用 `BG_JOB_ISOLATED_LOOPS` 时，每个后台工作线程都在自己的线程中运行，并具有 **单独的 Postgres 连接池**。每个工作线程池大小为 `LANGGRAPH_POSTGRES_POOL_MAX_SIZE // N_JOBS_PER_WORKER`。例如，对于 `LANGGRAPH_POSTGRES_POOL_MAX_SIZE=20` 和 `N_JOBS_PER_WORKER=15`，每个工作线程仅获得一个只有 1 个连接的池。每个工作线程规模较小的池更容易出现连接失败，因为单个过时的连接代表了池的很大一部分。如果启用隔离循环，请确保 `LANGGRAPH_POSTGRES_POOL_MAX_SIZE` 足够大，以便为每个工作线程提供至少几个连接。
+> 当启用 `BG_JOB_ISOLATED_LOOPS` 时，每个后台工作线程都在自己的线程中运行，并具有 **单独的 Postgres 连接池**。每个工作线程池大小为 `LANGGRAPH_POSTGRES_POOL_MAX_SIZE // N_JOBS_PER_WORKER`。例如，对于 `LANGGRAPH_POSTGRES_POOL_MAX_SIZE=20` 和 `N_JOBS_PER_WORKER=15`，每个工作线程仅获得一个只有 1 个连接的池。每个工作线程规模较小的池更容易受到连接失败的影响，因为单个过时的连接代表了池的很大一部分。如果启用隔离循环，请确保 `LANGGRAPH_POSTGRES_POOL_MAX_SIZE` 足够大，以便为每个工作线程提供至少几个连接。
 
 默认为`False`。
 
@@ -52,7 +52,7 @@
 
 ## `DEFAULT_A2A_ASSISTANT_ID`
 
-当请求没有`assistant_id`查询参数时，将`DEFAULT_A2A_ASSISTANT_ID`设置为服务器从`/.well-known/agent-card.json`返回的[agent card](/langsmith/server-a2a#agent-card-discovery)助手的ID。如果未设置，则在不带 `assistant_id` 查询参数的情况下向 `/.well-known/agent-card.json` 发出的请求将返回 `400` 错误。 `/a2a/{assistant_id}`端点从路径中获取助手ID并忽略此变量。
+当请求没有`assistant_id`查询参数时，将`DEFAULT_A2A_ASSISTANT_ID`设置为服务器从`/.well-known/agent-card.json`返回的[agent card](/langsmith/server-a2a#agent-card-discovery)助手的ID。如果未设置，则不带 `assistant_id` 查询参数的 `/.well-known/agent-card.json` 请求将返回 `400` 错误。 `/a2a/{assistant_id}`端点从路径中获取助手ID并忽略此变量。
 
 ## 支持的 Datadog 环境变量
 
@@ -62,7 +62,7 @@
 * **`DD_LOGS_ENABLED`**：设置为 `true` 将代理服务器日志转发到 Datadog。省略它或将其设置为`false`以禁用日志转发。
 * **`DD_LOGS_INJECTION`**：设置为 `true` 可将跟踪和跨度标识符添加到日志中，以便日志与跟踪相关联。
 * **`DD_TRACE_ENABLED`**：控制Datadog跟踪收集。设置为 `true` 来收集跟踪信息，或设置为 `false` 来禁用它。
-* **`DD_SITE`**：要发送数据的 Datadog 站点，例如 `datadoghq.com` 或 `datadoghq.eu`。默认为`datadoghq.com`。
+* **`DD_SITE`**：要发送数据的Datadog站点，例如`datadoghq.com`或`datadoghq.eu`。默认为`datadoghq.com`。
 * **`DD_ENV`**：应用于跟踪和日志的环境名称，例如`production`。
 * **`DD_SERVICE`**：应用于跟踪和日志的服务名称。* **`DD_TRACE_DEBUG`**：设置为 `true` 以在故障排除时在 `ddtrace` 跟踪器中启用调试日志记录。
 * **`DD_LOG_LEVEL`**：故障排除时的Datadog Agent日志级别，例如`debug`。
@@ -114,7 +114,7 @@
 * `enabled`（布尔值，默认`false`）：当`true`时，线程删除和修剪操作将检查点排入`checkpoint_delete_queue`并立即返回，后台工作人员清空队列。
 * `enabledWorkerOnly`（布尔值，默认`false`）：仅运行后台排出工作程序，而不将新条目排队。在将 `enabled` 回滚到 `false` 后，使用它来完成队列的排空。
 * `pollIntervalMs`（整数，默认`5000`）：worker 轮询队列的频率，以毫秒为单位。
-* `batchSize`（整数，默认`25`）：每个事务工作线程出队的检查点条目数。较小的值将 I/O 分散到更长的时间，但代价是更长的漏电延迟。
+* `batchSize`（整数，默认`25`）：每个事务工作线程出队的检查点条目数。较小的值将 I/O 分散到更长的时间，但代价是更长的排出延迟。
 * `batchSleepMs`（整数，默认`500`）：当队列非空时，worker 在批次之间休眠的时间，以毫秒为单位。
 
 示例：`LS_CHECKPOINT_DELETE='{"enabled":true,"batchSize":10,"pollIntervalMs":1000}'`。默认为禁用（同步检查点删除）。
@@ -139,7 +139,7 @@
 
 ## `LOG_COLOR`
 
-这主要与通过 `langgraph dev` 命令使用开发服务器的上下文相关。将 `LOG_COLOR` 设置为 `true` 以在使用默认控制台渲染器时启用 ANSI 颜色控制台输出。通过将此变量设置为 `false` 禁用颜色输出会生成单色日志。默认为`true`。
+这主要与通过 `langgraph dev` 命令使用开发服务器的上下文有关。将 `LOG_COLOR` 设置为 `true` 以在使用默认控制台渲染器时启用 ANSI 颜色控制台输出。通过将此变量设置为 `false` 禁用颜色输出会生成单色日志。默认为`true`。
 
 ## `LOG_LEVEL`
 
@@ -305,10 +305,10 @@ Postgres：* 版本 15.8 或更高版本。
 
 默认为`False`。
 
-## `REDIS_URI_CUSTOM`指定 `REDIS_URI_CUSTOM` 使用自定义 Redis 实例。 `REDIS_URI_CUSTOM` 的值必须是有效的 [Redis connection URI](https://redis-py.readthedocs.io/en/stable/connections.html#redis.Redis.from_url)。
+## `REDIS_URI_CUSTOM`指定 `REDIS_URI_CUSTOM` 使用自定义 Redis 实例。 `REDIS_URI_CUSTOM` 的值必须是有效的 [Redis connection URI](https://redis.readthedocs.io/en/stable/connections.html#redis.Redis.from_url)。
 
 ***
 
-[Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
+[Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时答案。
 
 [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/env-var-self-hosted.mdx) 或 [file an issue](https://github.com/langchain-ai/docs/issues/new/choose)。

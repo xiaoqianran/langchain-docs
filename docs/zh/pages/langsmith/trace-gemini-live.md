@@ -1,8 +1,8 @@
 <!-- langchain-docs: machine-translated zh-CN from English source -->
 
-<!-- langchain-docs: Trace Gemini Live applications | https://docs.langchain.com/langsmith/trace-gemini-live -->
+<!-- langchain-docs: Trace Gemini Live agents | https://docs.langchain.com/langsmith/trace-gemini-live -->
 
-# 跟踪 Gemini Live 应用程序
+# 追踪 Gemini Live 特工
 
 使用 LangSmith SDK 跟踪 LangSmith 中的 Gemini Live 语音代理。
 
@@ -14,7 +14,11 @@ Gemini Live 是一种语音到语音模型，可通过 WebSocket 流式传输键
 
 将您的 [Gemini Live](https://ai.google.dev/gemini-api/docs/live-api) 语音代理追踪到 LangSmith。有关高级约定，请参阅[Voice tracing fundamentals](/langsmith/trace-voice-fundamentals)。
 
-要跟踪使用 ADK 构建的非实时文本代理、工具和多代理工作流程，请参阅 [Trace Google ADK applications](/langsmith/trace-with-google-adk)。
+要跟踪使用 ADK 构建的非实时文本代理、工具和多代理工作流程，请参阅 [Trace Google ADK agents](/langsmith/trace-with-google-adk)。
+
+> [!注意]
+>
+> 在发送跟踪之前，在[agent-based workspace](/langsmith/agents)、[create an agent](/langsmith/create-an-agent) 中进行一次。使用[agent addressing](/langsmith/log-traces-to-agent)选择其标识符和环境。如果集成需要 `project_name`，请使用所选环境的 [⟦T13⟧](/langsmith/create-an-agent#use-an-environment-project) 作为兼容性值。
 
 ## 选择一种方法
 
@@ -37,9 +41,7 @@ pip install "langsmith[gemini-live]"
 uv add "langsmith[gemini-live]"
 ```
 
-### 使用 Google ADK
-
-为 ADK 应用程序安装 `google-adk-live` 额外组件：
+### 使用 Google ADK为 ADK 代理安装 `google-adk-live` 额外组件：
 
 ```bash pip theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 pip install "langsmith[google-adk-live]"
@@ -53,17 +55,20 @@ uv add "langsmith[google-adk-live]"
 >
 > ADK Live 集成需要 `langsmith[google-adk-live]>=0.9.7`。此额外功能与 `langsmith[google-adk]` 批量集成分开。
 
-## 设置环境变量```bash .env theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+## 设置环境变量
+
+```bash .env theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 LANGSMITH_API_KEY=<your-langsmith-api-key>
 LANGSMITH_TRACING=true
-LANGSMITH_PROJECT=<your-desired-langsmith-project>
+LANGSMITH_AGENT_ID="<your-agent-id>"
+LANGSMITH_AGENT_ENVIRONMENT="production"
 GOOGLE_API_KEY=<your-google-api-key>
 GEMINI_LIVE_MODEL=<your-gemini-live-model>
 ```
 
 ## 使用 Gemini Live 客户端
 
-当您的应用程序使用 `client.aio.live.connect(...)` 打开 WebSocket 并拥有音频和工具循环时，请使用此方法。
+当您的代理使用 `client.aio.live.connect(...)` 打开 WebSocket 并拥有音频和工具循环时，请使用此方法。
 
 ### 设置跟踪
 
@@ -89,7 +94,6 @@ async with (
     wrap_gemini_live(
         raw,
         model=model,
-        project_name="gemini-live-voice",
     ) as session,
 ):
     async for message in session.receive():
@@ -109,15 +113,12 @@ wrap_gemini_live(
     raw,
     model=model,
     thread_id=thread_id,
-    project_name="gemini-live-voice",
 )
 ```
 
 为每个连接的 Gemini Live 会话创建一个包装器。每个包装器都拥有独立的跟踪和转录状态，因此并发对话保持独立。
 
-### 录制对话音频
-
-将麦克风和回放音频馈送到打包的会话以附加单个立体声录音，用户位于左通道，代理位于右通道：
+### 录制对话音频将麦克风和回放音频馈送到打包的会话以附加单个立体声录音，用户位于左通道，代理位于右通道：
 
 ```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 RECORDING_SAMPLE_RATE = 24_000
@@ -148,7 +149,9 @@ async with (
                 RECORDING_SAMPLE_RATE,
             )
         )
-```在包装器的`sample_rate`处将两个通道录制为PCM16。录制扬声器中的座席音频，以便附件仅反映用户听到的内容。底层附件API请参见[Upload files with traces](/langsmith/upload-files-with-traces)。
+```
+
+在包装器的`sample_rate`处将两个通道录制为PCM16。录制扬声器中的座席音频，以便附件仅反映用户听到的内容。底层附件API请参见[Upload files with traces](/langsmith/upload-files-with-traces)。
 
 ## 使用谷歌ADK
 
@@ -164,7 +167,7 @@ from google.adk.runners import Runner
 from google.genai import types as genai_types
 from langsmith.integrations.google_adk_live import LangSmithGoogleADKLivePlugin
 
-plugin = LangSmithGoogleADKLivePlugin(project_name="gemini-live-voice")
+plugin = LangSmithGoogleADKLivePlugin()
 
 runner = Runner(
     app_name="voice-app",
@@ -199,16 +202,15 @@ async for event in runner.run_live(
 >
 > 在取消运行时，例如按 Ctrl-C 停止 `run_live` 的控制台应用程序，ADK 可能不会发送该回调。在拆卸过程中调用`plugin.finalize(session_id=adk_session.id)`，以便完成跟踪和音频附件。该调用是幂等的，因此如果 ADK 的回调已经运行，它不会执行任何操作。
 
-### 将对话分组为线程
-
-每个对话都被捕获为其自己的跟踪，并具有自己的线程 ID。要提供 ID，例如将对话与相关交互分组在 LangSmith [thread](/langsmith/threads) 中，请将 `thread_id_provider` 传递给插件：
+### 将对话分组为线程每个对话都被捕获为其自己的跟踪，并具有自己的线程 ID。要提供 ID，例如将对话与相关交互分组在 LangSmith [thread](/langsmith/threads) 中，请将 `thread_id_provider` 传递给插件：
 
 ```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 plugin = LangSmithGoogleADKLivePlugin(
-    project_name="gemini-live-voice",
     thread_id_provider=lambda: thread_id,
 )
-```每个 `run_live` 调用都共享一个插件实例，并在每个对话开始时解析一次线程 ID。默认情况下，并发对话是分开的。如果您在处理并发对话的服务器上传递 `thread_id_provider`，则返回当前对话的 ID，例如通过读取每次运行开始时设置的 `ContextVar`。
+```
+
+每个 `run_live` 调用都共享一个插件实例，并在每个对话开始时解析一次线程 ID。默认情况下，并发对话是分开的。如果您在处理并发对话的服务器上传递 `thread_id_provider`，则返回当前对话的 ID，例如通过读取每次运行开始时设置的 `ContextVar`。
 
 ### 录制对话音频
 
@@ -231,8 +233,6 @@ plugin.record_agent_audio(played_chunk)  # agent PCM16 as played
 >
 > 将对话录音附加到您的轨迹中。
 
-***
-
-[Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
+***[Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
 
 [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/trace-gemini-live.mdx) 或 [file an issue](https://github.com/langchain-ai/docs/issues/new/choose)。

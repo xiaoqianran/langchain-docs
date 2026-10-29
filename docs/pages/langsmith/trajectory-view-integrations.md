@@ -38,7 +38,7 @@ When you chain calls to the OpenAI Responses API by passing `previous_response_i
 
 > [!NOTE]
 >
-> Use a [UUID v7](https://uuid7.com) for `thread_id`. LangSmith's SDK exports a `uuid7` helper, and UUID v7 sorts by creation time so threads stay ordered in list views.
+> Use a [UUID v7](https://datatracker.ietf.org/doc/html/rfc9562) for `thread_id`. LangSmith's SDK exports a `uuid7` helper, and UUID v7 sorts by creation time so threads stay ordered in list views.
 
 ### Per-call metadata
 

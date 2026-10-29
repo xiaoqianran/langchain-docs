@@ -372,6 +372,8 @@ The names in `include_tools` do not have to match a tool's own name. A generated
 
 To map the names a skill lists to tools, pass a resolver function as the middleware's `tools`. The resolver receives each `include_tools` name and the graph's `Runtime`, and returns the tools for that name.
 
+Annotate the resolver as `SkillToolResolver`, or as `SkillToolResolver<TContext>` when it reads typed `runtime.context`.
+
 The skill lists readable names:
 
 ```yaml theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
@@ -853,6 +855,8 @@ const result = await agent.invoke(
   { configurable: { thread_id: "1" } },
 );
 ```
+
+Custom middleware can set `pinnedSkills` from hooks. Declare `pinnedSkillsValue` on the middleware's state schema, the same way [reload middleware](#reload-skills) declares `skillsMetadataValue`.
 
 Before the next model call, `SkillsMiddleware` reads each named skill's `SKILL.md` and appends it to the conversation as a `HumanMessage`. It adds one message per skill, in the order you name them. Each message holds the file without its frontmatter:
 

@@ -4,21 +4,25 @@
 
 # 使用副本将跟踪写入多个目的地
 
-使用通过环境变量配置或在运行时配置的副本将每个跟踪同时发送到多个项目或工作区。
+使用通过环境变量配置或在运行时配置的副本，将每个跟踪同时发送到多个代理环境或工作区。
 
-副本允许您将每个跟踪同时发送到多个项目或工作区。其中 [dynamic routing](/langsmith/log-traces-to-project#set-the-destination-project-dynamically) 将每条跟踪发送到一个目标，副本会将跟踪并行复制到所有配置的目标。
+副本允许您将每个跟踪同时发送到多个代理环境或工作区。其中 [dynamic routing](/langsmith/conditional-tracing#customize-tracing-configuration-per-request) 将每条跟踪发送到一个目标，副本会将跟踪并行复制到所有配置的目标。
 
 使用副本可以：
 
-* 将生产痕迹镜像到暂存或个人项目中以进行调试。
-* 写入多个工作区以实现多租户隔离，无需更改任何应用程序代码。
-* 将跟踪发送到不同项目下的同一服务器，并覆盖每个副本的元数据。
+* 将生产跟踪镜像到暂存环境或个人工作区以进行调试。
+* 写入多个工作区以实现多租户隔离，无需更改任何代理代码。
+* 将跟踪发送到不同代理环境的同一服务器，并覆盖每个副本的元数据。
 
-## 通过环境变量配置副本
+> [!注意]
+>
+> 此集成使用旧目标设置，例如 `project_name` 或 `LANGSMITH_PROJECT`。 [Create an agent](/langsmith/create-an-agent)，选择其环境，然后[retrieve that environment's ⟦T12⟧](/langsmith/create-an-agent#use-an-environment-project)。在目标设置和任何覆盖中使用该返回值。对于支持代理寻址的集成，请直接使用 [agent identifier and environment](/langsmith/log-traces-to-agent)。
 
-将 `LANGSMITH_RUNS_ENDPOINTS` 环境变量设置为 JSON 值。支持两种格式：
+在启用路由之前配置每个目标，包括每个副本和租户工作区。将每个副本的 `project_name` 或 `projectName` 设置为其目标环境的 `tracer_session_name`。## 通过环境变量配置副本
 
-* **对象格式**：将每个端点 URL 映射到其 API 密钥。每个 URL 出现一次，因此当两个副本共享 URL 时请使用数组格式：
+Set the `LANGSMITH_RUNS_ENDPOINTS` environment variable to a JSON value.支持两种格式：
+
+* **Object format**: maps each endpoint URL to its API key. Each URL appears once, so use the array format when two replicas share a URL:
 
   ```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
   export LANGSMITH_RUNS_ENDPOINTS='{
@@ -27,20 +31,22 @@
   }'
   ```
 
-* **数组格式**：副本对象列表，当您需要多个副本指向同一 URL 或您想要为每个副本设置 `project_name` 时非常有用：
+* **数组格式**：副本对象列表，当您需要多个副本指向同一 URL 或当您想要为每个副本设置 `project_name` 时非常有用：
 
   ```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
   export LANGSMITH_RUNS_ENDPOINTS='[
-  {"api_url": "https://api.smith.langchain.com", "api_key": "ls__key1", "project_name": "project-prod"},
-  {"api_url": "https://api.smith.langchain.com", "api_key": "ls__key2", "project_name": "project-staging"}
+  {"api_url": "https://api.smith.langchain.com", "api_key": "ls__key1", "project_name": "<production-tracer-session-name>"},
+  {"api_url": "https://api.smith.langchain.com", "api_key": "ls__key2", "project_name": "<staging-tracer-session-name>"}
   ]'
-  ```> [!警告]
+  ```
+
+> [!警告]
 >
 > 您不能将 `LANGSMITH_RUNS_ENDPOINTS` 与 `LANGSMITH_ENDPOINT` 一起使用。如果同时设置，LangSmith 会引发错误。仅使用一个来配置您的端点。
 
 ## 在运行时配置副本
 
-您还可以直接在代码中传递副本，这在目的地因请求或租户而异时非常有用。
+You can also pass replicas directly in code, which is useful when destinations vary per request or tenant.
 
 ```python Python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 from langsmith import traceable, tracing_context
@@ -48,19 +54,19 @@ from langsmith.run_trees import WriteReplica, ApiKeyAuth
 
 @traceable
 def my_pipeline(query: str) -> str:
-    # Your application logic here
+    # Your agent logic here
     return f"Answer to: {query}"
 
 replicas = [
     WriteReplica(
         api_url="https://api.smith.langchain.com",
         auth=ApiKeyAuth(api_key="ls__key_workspace_a"),
-        project_name="project-prod",
+        project_name="<production-tracer-session-name>",
     ),
     WriteReplica(
         api_url="https://api.smith.langchain.com",
         auth=ApiKeyAuth(api_key="ls__key_workspace_b"),
-        project_name="project-staging",
+        project_name="<staging-tracer-session-name>",
         # Optionally override fields on the replicated run
         updates={"metadata": {"environment": "staging"}},
     ),
@@ -75,7 +81,7 @@ import { traceable } from "langsmith/traceable";
 
 const myPipeline = traceable(
   async (query: string): Promise<string> => {
-    // Your application logic here
+    // Your agent logic here
     return `Answer to: ${query}`;
   },
   {
@@ -84,12 +90,12 @@ const myPipeline = traceable(
       {
         apiUrl: "https://api.smith.langchain.com",
         apiKey: "ls__key_workspace_a",
-        projectName: "project-prod",
+        projectName: "<production-tracer-session-name>",
       },
       {
         apiUrl: "https://api.smith.langchain.com",
         apiKey: "ls__key_workspace_b",
-        projectName: "project-staging",
+        projectName: "<staging-tracer-session-name>",
         // Optionally override fields on the replicated run
         updates: { metadata: { environment: "staging" } },
       },
@@ -100,13 +106,11 @@ const myPipeline = traceable(
 await myPipeline("What is LangSmith?");
 ```
 
-您还可以使用 `updates` 字段将其他字段（例如 [metadata or tags](/langsmith/ls-metadata-parameters)）合并到仅针对特定副本的运行中，而保持主跟踪不变。副本错误是非致命的：如果副本端点不可用，LangSmith 会记录错误，而不会影响主跟踪。
-
-> [!警告]
+您还可以使用 `updates` 字段将其他字段（例如 [metadata or tags](/langsmith/ls-metadata-parameters)）合并到仅针对特定副本的运行中，而保持主跟踪不变。 Replica errors are non-fatal: if a replica endpoint is unavailable, LangSmith logs the error without affecting the primary trace.> [!警告]
 >
 > 身份验证不会在分布式跟踪中传播。当跟踪跨越多个服务时，LangSmith 自动将副本 `project_name` 和 `updates` 转发到下游服务，但不转发 API 密钥或凭证。每个服务必须为副本目标配置自己的凭据。
 
-## 在同一服务器内复制（仅项目副本）
+## 在同一服务器上的环境之间复制
 
 如果您的所有副本都使用相同的 LangSmith 服务器，则可以省略 `api_url` 和 `auth` 并仅指定 `project_name`。 SDK 重用默认的客户端凭据：
 
@@ -120,8 +124,8 @@ def my_pipeline(query: str) -> str:
 
 with tracing_context(
     replicas=[
-        WriteReplica(project_name="project-prod"),
-        WriteReplica(project_name="project-staging", updates={"metadata": {"env": "staging"}}),
+        WriteReplica(project_name="<production-tracer-session-name>"),
+        WriteReplica(project_name="<staging-tracer-session-name>", updates={"metadata": {"env": "staging"}}),
     ]
 ):
     my_pipeline("What is LangSmith?")
@@ -135,8 +139,8 @@ const myPipeline = traceable(
   {
     name: "my_pipeline",
     replicas: [
-      { projectName: "project-prod" },
-      { projectName: "project-staging", updates: { metadata: { env: "staging" } } },
+      { projectName: "<production-tracer-session-name>" },
+      { projectName: "<staging-tracer-session-name>", updates: { metadata: { env: "staging" } } },
     ],
   }
 );
@@ -144,9 +148,9 @@ const myPipeline = traceable(
 await myPipeline("What is LangSmith?");
 ```
 
-## 留下所有副本实例的反馈当您使用副本时，每个副本都会收到每次运行的副本。要提交特定副本上运行的反馈，您需要该副本的运行 ID。在 Python SDK 0.10.8 或更高版本和 JS SDK 0.8.5 或更高版本中，您可以将一个副本指定为 **primary** 并使用 `compute_run_id_for_secondary_replica` 确定性地计算所有其他副本的运行 ID。
+## 留下所有副本实例的反馈
 
-**主**副本保持原始运行 ID 不变。每个**辅助**副本都会收到一个从原始运行 ID 和辅助副本的项目名称派生的确定性运行 ID。使用`compute_run_id_for_secondary_replica(original_run_id, project_name)`计算辅助运行ID并在调用`create_feedback`时传递它。如果运行 ID 不是 UUID v7，或者项目名称为空，这两个 SDK 都会引发错误。
+当您使用副本时，每个副本都会收到每次运行的副本。要提交特定副本上运行的反馈，您需要该副本的运行 ID。在 Python SDK 0.10.8 或更高版本以及 JS SDK 0.8.5 或更高版本中，您可以将一个副本指定为 **primary** 并使用 `compute_run_id_for_secondary_replica` 确定性地计算所有其他副本的运行 ID。**主**副本保持原始运行 ID 不变。每个**辅助**副本都会接收从原始运行 ID 和辅助目标的 `tracer_session_name` 派生的确定性运行 ID。使用`compute_run_id_for_secondary_replica(original_run_id, project_name)`计算辅助运行ID并在调用`create_feedback`时传递它。如果运行 ID 不是 UUID v7，或者 `project_name` 为空，这两个 SDK 都会引发错误。
 
 ```python Python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 from langsmith import (
@@ -159,8 +163,8 @@ from langsmith import (
 primary_client = Client(api_key="primary-key")
 secondary_client = Client(api_key="secondary-key")
 
-primary_project = "production"
-secondary_project = "backup-project"
+primary_project = "<primary-tracer-session-name>"
+secondary_project = "<replica-tracer-session-name>"
 
 with tracing_context(
     replicas=[
@@ -185,9 +189,9 @@ secondary_run_id = compute_run_id_for_secondary_replica(
     secondary_project,
 )
 
-# Each replica has its own project; resolve the corresponding project UUIDs
-primary_session_id = primary_client.create_project(project_name=primary_project, upsert=True).id
-secondary_session_id = secondary_client.create_project(project_name=secondary_project, upsert=True).id
+# Each destination has its own session_id; resolve it for feedback
+primary_session_id = primary_client.read_project(project_name=primary_project).id
+secondary_session_id = secondary_client.read_project(project_name=secondary_project).id
 
 # Submit feedback to the primary replica using the original run ID
 primary_client.create_feedback(
@@ -214,8 +218,8 @@ import { computeRunIdForSecondaryReplica } from "langsmith";
 const primaryClient = new Client({ apiKey: "primary-key" });
 const secondaryClient = new Client({ apiKey: "secondary-key" });
 
-const primaryProject = "production";
-const secondaryProject = "backup-project";
+const primaryProject = "<primary-tracer-session-name>";
+const secondaryProject = "<replica-tracer-session-name>";
 
 let primaryRunId: string | undefined;
 
@@ -251,14 +255,12 @@ if (primaryRunId) {
     secondaryProject
   );
 
-  // Each replica has its own project; resolve the corresponding project UUIDs
-  const { id: primarySessionId } = await primaryClient.createProject({
+  // Each destination has its own session_id; resolve it for feedback
+  const { id: primarySessionId } = await primaryClient.readProject({
     projectName: primaryProject,
-    upsert: true,
   });
-  const { id: secondarySessionId } = await secondaryClient.createProject({
+  const { id: secondarySessionId } = await secondaryClient.readProject({
     projectName: secondaryProject,
-    upsert: true,
   });
 
   // Submit feedback to the primary replica using the original run ID
@@ -283,11 +285,11 @@ if (primaryRunId) {
 >
 > `compute_run_id_for_secondary_replica` / `computeRunIdForSecondaryReplica` 帮助程序在 Python SDK 0.10.8 或更高版本以及 JS SDK 0.8.5 或更高版本中可用。如果您使用的是较早的 SDK 版本，请升级以使用此功能。
 
-## LangSmith 和 OpenTelemetry 目的地之间的路线您可以在运行时决定给定调用是否将跟踪发送到LangSmith、OpenTelemetry (OTel) 后端或同时发送到两者，而无需重新部署或修改应用程序逻辑。当您想要在每个环境甚至每个请求的可观察性后端之间切换并在运行时做出决定时，这非常有用。
+## LangSmith 和 OpenTelemetry 目的地之间的路线
 
-使用 `tracing_mode` 构造函数参数或 `LANGSMITH_TRACING_MODE` 环境变量设置跟踪模式。两者都接受相同的价值观；显式 `tracing_mode` 参数始终优先于环境变量：
+您可以在运行时决定给定调用是否将跟踪发送到LangSmith、OpenTelemetry (OTel) 后端或同时发送到两者，而无需重新部署或修改代理逻辑。当您想要在每个环境甚至每个请求的可观察性后端之间切换并在运行时做出决定时，这非常有用。
 
-* **`"langsmith"`（默认）**：将跟踪本机发送到LangSmith。
+使用 `tracing_mode` 构造函数参数或 `LANGSMITH_TRACING_MODE` 环境变量设置跟踪模式。两者都接受相同的价值观；显式 `tracing_mode` 参数始终优先于环境变量：* **`"langsmith"`（默认）**：将跟踪本机发送到 LangSmith。
 * **`"otel"`**：将跟踪作为 OpenTelemetry 跨度导出到配置的 OTel 后端。
 * **`"hybrid"`（仅限 Python）**：从单个副本发送到 LangSmith 和 OTel 后端。
 
@@ -389,7 +391,9 @@ const jokeDynamic = traceable(jokeImpl, {
   replicas: buildReplicas(sendToOtel),
 });
 await jokeDynamic();
-```每个 `Client` 上的 `tracing_mode` 确定该副本的导出路径。在 Python 中，`"hybrid"` 模式处理单个副本中的两个目的地。在 TypeScript 中，“发送到两者”的情况使用两个单独的副本，每个客户端一个，因为没有 `"hybrid"` 模式。由于每个副本独立解析其自己的客户端，因此您还可以在单​​个`tracing_context`内混合模式，例如，保留一个副本发送到LangSmith，同时通过第二个副本将相同的跟踪转发到 OTel 收集器。
+```
+
+每个 `Client` 上的 `tracing_mode` 确定该副本的导出路径。在 Python 中，`"hybrid"` 模式处理单个副本中的两个目的地。在 TypeScript 中，“发送到两者”的情况使用两个单独的副本，每个客户端一个，因为没有 `"hybrid"` 模式。由于每个副本独立解析其自己的客户端，因此您还可以在单​​个`tracing_context`内混合模式，例如，保留一个副本发送到LangSmith，同时通过第二个副本将相同的跟踪转发到 OTel 收集器。
 
 ***
 

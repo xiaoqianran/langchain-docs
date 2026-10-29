@@ -58,11 +58,11 @@ flowchart LR
 
 > **[Log traces to an agent](/langsmith/log-traces-to-agent)**
 >
-> 代理寻址如何将跟踪发送到代理和环境，以及为什么它不能与项目寻址相结合。
+> 代理寻址如何将跟踪发送到代理和环境，以及如何删除冲突的目标设置。
 
 > **[Create an agent](/langsmith/create-an-agent)**
 >
-> 创建代理的四种方法、每个路由的决定以及标识符必须遵循的规则。
+> 在跟踪之前注册代理、选择标识符并配置其环境。
 
 ***
 

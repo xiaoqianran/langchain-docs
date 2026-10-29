@@ -102,10 +102,6 @@ Connect LangGraph agents to front ends and observability platforms.
 >
 > Mock chat model for testing and development purposes.
 
-> **[FuturMix](https://futurmix.ai/)**
->
-> Unified AI gateway for 22+ models with OpenAI-compatible API.
-
 > **[Google Gemini](/oss/javascript/integrations/chat/google)**
 >
 > Google's Gemini models via AI Studio and Gemini Enterprise Agent Platform.
@@ -121,6 +117,10 @@ Connect LangGraph agents to front ends and observability platforms.
 > **[Mistral](/oss/javascript/integrations/chat/mistral)**
 >
 > Mistral's efficient and powerful language models.
+
+> **[Obscurify.ai](https://github.com/Obscurify-ai/langchain-obscurify)**
+>
+> Obscurify.ai provides a private OpenAI-compatible API for 200+ models that does not store prompts or responses.
 
 > **[Ollama](/oss/javascript/integrations/chat/ollama)**
 >
@@ -552,6 +552,10 @@ Connect LangGraph agents to front ends and observability platforms.
 >
 > Retrieve status and results of a research task using its request ID.
 
+> **[viaSocket](https://github.com/Walkover-Web-Solution/viasocket-apps#langchain)**
+>
+> viaSocket lets LangChain.js agents run actions in 2,300+ connected apps through each user's own connection.
+
 > **[WebExtract](https://webextract.dev/docs/langchain)**
 >
 > Web page extraction API returning clean Markdown plus fixed-schema JSON for article metadata, product prices and tables.
@@ -645,6 +649,10 @@ Connect LangGraph agents to front ends and observability platforms.
 > **[RecallMiddleware](https://recallmem.dev/guides/langchain)**
 >
 > Long-term memory for create\_agent agents: adds what Recall learned about the user to the system prompt and records each exchange.
+
+> **[RuthlessSchemaGuard](https://github.com/moltbot-den/openentity/tree/main/integrations/langchain)**
+>
+> Agent middleware that validates tool and HTTP responses against Pydantic or JSON Schema and raises on violations.
 
 ## Callbacks
 

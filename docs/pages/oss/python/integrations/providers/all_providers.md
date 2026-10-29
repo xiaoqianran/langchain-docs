@@ -46,7 +46,7 @@ Browse the complete collection of integrations available for Python. LangChain P
 >
 > OpenAI-compatible router that sends each request to the model scoring best for the task on AI Stupid Level's benchmarks, using your own provider keys.
 
-> **[Alephant AI](https://alephant.io/)**
+> **[Alephant AI](https://github.com/AlephantAI/alephant-python-sdk)**
 >
 > AI gateway for cost control, BYOK routing, and multi-provider model access.
 
@@ -130,7 +130,7 @@ Browse the complete collection of integrations available for Python. LangChain P
 >
 > Web scraping with natural language queries.
 
-> **[AgentRAM](https://agentram.dev/langchain-agent-memory-tutorial.html)**
+> **[AgentRAM](https://github.com/seanmarkwei/langgraph-agentram)**
 >
 > Hosted long-term memory tools and BaseStore for LangChain and LangGraph agents.
 
@@ -414,6 +414,10 @@ Browse the complete collection of integrations available for Python. LangChain P
 >
 > Versioned vector store with snapshot queries and branch/merge speculative memory for LangChain agents.
 
+> **[ClawFetch](https://github.com/clawfetch/integrations/tree/main/python/langchain-clawfetch)**
+>
+> Pay-per-call web intelligence for agents: fetch, JS render, 17 structured extractors, document parsing, company enrichment and research, paid with x402 micropayments (USDC on Base).
+
 > **[Clearsigned](https://clearsigned.com/integrations#langchain)**
 >
 > Verifies a factual claim against live web evidence and returns a stance, confidence, and an offline-verifiable signed receipt.
@@ -626,10 +630,6 @@ Browse the complete collection of integrations available for Python. LangChain P
 >
 > Reasoning observability and regression testing for agent runs.
 
-> **[Duel Agents](https://duelagents.com)**
->
-> Multi-model routing that bills the cheapest winning answer behind an OpenAI-compatible proxy.
-
 > **[DynamicToolSelectorMiddleware](https://github.com/RauhanAhmed/langchain-dynamic-tools-middleware)**
 >
 > Agent middleware for sub-100ms hybrid dense and sparse vector tool retrieval over zvec, cutting prompt token overhead from tool lists.
@@ -641,6 +641,10 @@ Browse the complete collection of integrations available for Python. LangChain P
 > **[EconDashToolkit](https://github.com/econdash/econdash-python/blob/main/packages/langchain-econdash/README.md)**
 >
 > EconDash tools provide time series data for macroeconomics, markets, labor, demographics, real estate, energy, and other domains.
+
+> **[EcoTraceLangChainCallback](https://ecotrace.readthedocs.io/en/latest/)**
+>
+> Hardware energy (Joules/kWh), execution duration, and carbon footprint profiler for LLM calls and agents.
 
 > **[Emaki](https://emaki.readthedocs.io/en/latest/integrations/langchain/)**
 >
@@ -693,6 +697,10 @@ Browse the complete collection of integrations available for Python. LangChain P
 > **[FalkorDB](https://docs.falkordb.com/genai-tools/langchain.html)**
 >
 > Graph database with ultra-low latency.
+
+> **[FastAF](https://github.com/fastaf-co/fastaf-integrations/tree/main/langchain-fastaf)**
+>
+> Google SERP, News, Jobs, Amazon, eBay and page-to-Markdown tools for AI agents. Free tier, pay-per-call via x402 from \$0.003.
 
 > **[FastOCRLoader](https://github.com/fastocr-org/langchain-fastocr#readme)**
 >
@@ -810,10 +818,6 @@ Browse the complete collection of integrations available for Python. LangChain P
 >
 > Single endpoint to multiple LLMs via serverless inference.
 
-> **[Graceful Fail](https://selfheal.dev/docs)**
->
-> Self-healing API proxy that returns structured fix instructions when API calls fail.
-
 > **[GraciousQuotes](https://graciousquotes.com/developers/langchain/)**
 >
 > Fact-checked quote attributions: a verdict on who said a quote, the source it was traced to, and MLA, APA or Chicago citations.
@@ -854,10 +858,6 @@ Browse the complete collection of integrations available for Python. LangChain P
 >
 > On-chain work attestation for AI agents via MINT Protocol.
 
-> **[FuturMix](https://futurmix.ai/)**
->
-> Unified AI gateway for 22+ models with OpenAI-compatible API.
-
 > **[Groq](/oss/python/integrations/providers/groq)**
 >
 > Ultra-fast inference with specialized hardware.
@@ -893,10 +893,6 @@ Browse the complete collection of integrations available for Python. LangChain P
 > **[Helicone](/oss/python/integrations/providers/helicone)**
 >
 > LLM observability and monitoring platform.
-
-> **[Highflame](https://github.com/highflame-ai/highflame-sdk)**
->
-> Runtime AI security guardrails for LangChain and LangGraph middleware.
 
 > **[HighSNR](https://www.high-snr.com/docs.html)**
 >
@@ -1014,6 +1010,10 @@ Browse the complete collection of integrations available for Python. LangChain P
 >
 > Automation server and CI/CD platform.
 
+> **[Job Opportunities API](https://github.com/lucagiftzek/langchain-job-opportunities-api)**
+>
+> Job postings API with employer-direct listings, full-text search and incremental change feeds.
+
 > **[John Snow Labs](/oss/python/integrations/providers/johnsnowlabs)**
 >
 > Enterprise NLP and healthcare AI platform.
@@ -1101,10 +1101,6 @@ Browse the complete collection of integrations available for Python. LangChain P
 > **[Leap0](https://leap0.dev/docs)**
 >
 > Cloud sandboxes for AI agents with fast cold starts.
-
-> **[LexMex](https://lex-mex.xyz)**
->
-> Spanish-language Mexican federal law Q\&A with cited articles for LangChain agents.
 
 > **[LFG Alarm](https://github.com/lfg-gm/langchain-lfg#readme)**
 >
@@ -1318,6 +1314,10 @@ Browse the complete collection of integrations available for Python. LangChain P
 >
 > CatchAll web search for real-world business events as LangChain tools.
 
+> **[NetNest Design Fundamentals](https://api.netnestdesign.com/docs)**
+>
+> Fundamentals and filing events for companies that file with the SEC, as MCP tools, each value linked to its filing.
+
 > **[Nexus Shield](https://api.nexusshield.ai)**
 >
 > Sub-10ms in-RAM PII sanitization and security guardrail proxy for LLM APIs.
@@ -1382,9 +1382,17 @@ Browse the complete collection of integrations available for Python. LangChain P
 >
 > Oracle Cloud Infrastructure AI services.
 
+> **[Obscurify.ai](https://github.com/Obscurify-ai/langchain-obscurify)**
+>
+> Obscurify.ai provides a private OpenAI-compatible API for 200+ models that does not store prompts or responses.
+
 > **[Octen](https://docs.octen.ai)**
 >
 > Web search engine for AI agents with semantic search, domain filtering, and sub-100ms latency.
+
+> **[OddsRelay](https://github.com/oddsrelay/langchain-oddsrelay)**
+>
+> Pre-match odds API for UK and Irish bookmakers, bet365 included, with Betfair, Smarkets and Matchbook lay prices.
 
 > **[Ollama](/oss/python/integrations/providers/ollama)**
 >
@@ -1430,7 +1438,7 @@ Browse the complete collection of integrations available for Python. LangChain P
 >
 > OpenTelemetry instrumentation that records LangChain and LangGraph operations using OpenInference semantic conventions.
 
-> **[OpenpathSearch](https://openpath.sh/docs/langchain)**
+> **[OpenpathSearch](https://github.com/agentbeacon-hq/clients)**
 >
 > Tool for Openpath, an open directory of job openings and Austin local businesses returned as Markdown with no API key.
 
@@ -1525,10 +1533,6 @@ Browse the complete collection of integrations available for Python. LangChain P
 > **[PlainId](/oss/python/integrations/providers/plainid)**
 >
 > Authorization and access control platform.
-
-> **[Pinchwork](https://pinchwork.dev)**
->
-> Agent-to-agent task marketplace for delegating and completing specialized work.
 
 > **[Pinecone](/oss/python/integrations/providers/pinecone)**
 >
@@ -1626,7 +1630,7 @@ Browse the complete collection of integrations available for Python. LangChain P
 >
 > Proxmint residential, datacenter and mobile proxies: a page-fetch tool and a document loader with country, city and ASN targeting and sticky sessions.
 
-> **[ProxyClaw](https://docs.proxyclaw.ai)**
+> **[ProxyClaw](https://proxyclaw.ai/docs)**
 >
 > Residential proxy tool for web scraping with geo-targeted IPs.
 
@@ -1657,6 +1661,10 @@ Browse the complete collection of integrations available for Python. LangChain P
 > **[Querit](https://querit.com/docs)**
 >
 > Real-time web search API for AI applications.
+
+> **[QVeris](https://qveris.ai/docs/python-sdk#framework-integrations)**
+>
+> QVeris exposes professional data discovery, parameter inspection, and capability execution as async LangChain tools.
 
 > **[Ray Serve](/oss/python/integrations/providers/ray_serve)**
 >
@@ -1722,7 +1730,7 @@ Browse the complete collection of integrations available for Python. LangChain P
 >
 > Self-hosted vector database and key-value store in a single Go binary.
 
-> **[RustChain](https://github.com/Scottcjn/langchain-rustchain)**
+> **[RustChain](https://pypi.org/project/langchain-rustchain-tools/)**
 >
 > Read-only tools for querying public RustChain network data.
 
@@ -1738,11 +1746,15 @@ Browse the complete collection of integrations available for Python. LangChain P
 >
 > GPU cloud platform for AI workloads.
 
+> **[RuthlessSchemaGuard](https://github.com/moltbot-den/openentity/tree/main/integrations/langchain)**
+>
+> Agent middleware that validates tool and HTTP responses against Pydantic or JSON Schema and raises on violations.
+
 > **[Runtime](https://withruntime.com/docs/langchain)**
 >
 > Firecracker microVM sandboxes for Deep Agents from Runtime.
 
-> **[Sail](https://docs.lakesail.com/sail/main/guide/integrations/langchain/)**
+> **[Sail](https://docs.lakesail.com/sail/latest/guide/integrations/langchain.html)**
 >
 > Rust-based drop-in Spark replacement with Spark Connect and a Sail SQL toolkit for LangChain agents.
 
@@ -1778,9 +1790,9 @@ Browse the complete collection of integrations available for Python. LangChain P
 >
 > ScaleDown adds Constrained Decoding Models to LangChain agents as middleware for summarization, classification, compression, and structured records.
 
-> **[SchemagateRetriever](https://ashishsinha1602.github.io/schemagate/langchain/)**
+> **[SchemagateRetriever](https://github.com/ashishsinha1602/langchain-schemagate#readme)**
 >
-> Retriever that returns only SQL schema tables the calling principal may read, for Postgres, Oracle, MySQL, and SQL Server.
+> Text-to-SQL schema retriever that returns the DDL of the tables a question needs, chosen only from tables the caller may read.
 
 > **[ScrapeGraph](https://github.com/ScrapeGraphAI/langchain-scrapegraph)**
 >
@@ -1797,6 +1809,10 @@ Browse the complete collection of integrations available for Python. LangChain P
 > **[ScoutWyze Compute](https://github.com/scoutwyze-max/scoutwyze-compute/blob/main/examples/README.md)**
 >
 > Ranks live GPU placement offers (8x H100 80GB, RunPod) by price and freshness; billed per successful match via a prepaid key or per-call via x402/USDC on Base.
+
+> **[SectionAnythingLoader](https://github.com/Omniwot/section-anything/tree/main/packages/langchain-section-anything)**
+>
+> PDF loader that returns one Document per section, with heading path, level, pages and character span; rules-only mode runs locally at no cost.
 
 > **[SearchApi](https://www.searchapi.io/docs/google)**
 >
@@ -1829,10 +1845,6 @@ Browse the complete collection of integrations available for Python. LangChain P
 > **[SerpKite](https://serpkite.com/integrations/langchain)**
 >
 > Google search tools returning Markdown or structured results, with a retriever and webpage document loader.
-
-> **[SERPdive](https://serpdive.com/docs)**
->
-> AI search API that returns extracted, answer-ready web content.
 
 > **[Serpex](https://serpex.dev/docs)**
 >
@@ -1893,6 +1905,10 @@ Browse the complete collection of integrations available for Python. LangChain P
 > **[Soniox](https://soniox.com/docs/stt/concepts/supported-languages)**
 >
 > High-accuracy multilingual speech-to-text API.
+
+> **[Solvecha](https://github.com/Solvecha/solvecha-skills/tree/main/python)**
+>
+> Solvecha provides LangChain tools for solving reCAPTCHA v2 image grids and text captchas.
 
 > **[Soul](https://github.com/menonpg/langchain-soul)**
 >
@@ -2110,6 +2126,10 @@ Browse the complete collection of integrations available for Python. LangChain P
 >
 > Asks a signer to allow, deny, or hold each tool call before it runs, and records a signed, offline-verifiable hash-chained log.
 
+> **[TranscriptFetch](https://transcriptfetch.com/docs/langchain)**
+>
+> TranscriptFetch loads YouTube, TikTok, and Instagram transcripts from videos, channels, playlists, and searches with timestamped chunks for RAG.
+
 > **[TrueFoundry](/oss/python/integrations/providers/truefoundry)**
 >
 > ML platform for model deployment.
@@ -2293,6 +2313,10 @@ Browse the complete collection of integrations available for Python. LangChain P
 > **[Whoosh](https://github.com/priya-sundaram-dev/whoosh/tree/main/integrations/langchain-whoosh#readme)**
 >
 > Retriever backed by Whoosh, a pure-Python full-text search library with BM25F ranking and on-disk indexes.
+
+> **[WitanToolkit](https://github.com/witanmarkets/langchain-witan#readme)**
+>
+> Read-only tools to look up errors and operational facts other AI agents measured, and to query versioned datasets, on WITAN.
 
 > **[Wity](https://github.com/info-alphanimble/langchain-wity#readme)**
 >

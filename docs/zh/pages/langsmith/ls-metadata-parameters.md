@@ -4,15 +4,15 @@
 
 # 元数据参数参考
 
-当您使用 LangSmith 跟踪 LLM 调用时，您通常需要 [track costs](/langsmith/cost-tracking)，比较模型配置并分析不同提供商的性能。 LangSmith 的本机集成（如 [LangChain](/langsmith/trace-with-langchain) 或 [OpenAI](/langsmith/trace-openai)/[Anthropic](/langsmith/trace-anthropic) 包装器）会自动处理此问题，但自定义模型包装器和自托管模型需要标准化的方式来提供此信息。 LangSmith 为此目的使用 `ls_` 元数据参数。
+When you trace LLM calls with LangSmith, you often want to [track costs](/langsmith/cost-tracking), compare model configurations, and analyze performance across different providers. LangSmith's native integrations (like [LangChain](/langsmith/trace-with-langchain) or the [OpenAI](/langsmith/trace-openai)/[Anthropic](/langsmith/trace-anthropic) wrappers) handle this automatically, but custom model wrappers and self-hosted models require a standardized way to provide this information. LangSmith 为此目的使用 `ls_` 元数据参数。
 
-这些元数据参数（均以 `ls_` 为前缀）允许您通过标准 `metadata` 字段传递模型配置和标识信息。设置后，LangSmith 可以自动计算成本，在 UI 中显示模型信息，并启用 [filtering](/langsmith/filter-traces) 和跨跟踪分析。
+These metadata parameters (all prefixed with `ls_`) let you pass model configuration and identification information through the standard `metadata` field. Once set, LangSmith can automatically calculate costs, display model information in the UI, and enable [filtering](/langsmith/filter-traces) and analytics across your traces.
 
 使用 `ls_` 元数据参数可以：* **通过识别提供商和模型名称，为自定义或自托管模型启用自动成本跟踪**。
 * **跟踪模型配置**，如温度、最大令牌和其他参数以进行实验比较。
 * **按提供商或配置设置过滤和分析跟踪**
 * **为自定义代理检测自定义轨迹视图渲染**。
-* **标记中断的错误**，因此LangSmith可以将中断的运行与其他错误分开渲染。
+* **标记中断的错误**，因此 LangSmith 可以将中断的运行与其他错误分开渲染。
 * **通过准确记录每次运行使用的模型设置来改进调试**。
 
 ## 基本使用示例
@@ -195,14 +195,14 @@ val myConfiguredLlm =
 
 ### 用户可配置的参数
 
-|参数|类型 |必填 |描述 |
+|参数|类型 |必填|描述 |
 | - | - | - | - |
 | [⟦T29⟧](#ls_provider) | `string` |是\* |用于成本跟踪的 LLM 提供商名称 |
 | [⟦T31⟧](#ls_model_name) | `string` |是\* |用于成本跟踪的型号标识符 |
 | [⟦T33⟧](#ls_temperature) | `number` |没有 |使用的温度参数|
 | [⟦T35⟧](#ls_max_tokens) | `number` |没有 |使用的最大令牌参数 |
 | [⟦T37⟧](#ls_stop) | `string[]` |没有 |使用的停止序列 |
-| [⟦T39⟧](#ls_invocation_params) | `object` |没有 |附加调用参数 |
+| [⟦T39⟧](#ls_invocation_params) | `object` |没有 |附加调用参数|
 | [⟦T41⟧](#ls_agent_type) | `string` |没有 |控制代理运行在轨迹视图中的显示方式：`"root"`、`"subagent"` 或 `"middleware"` |
 | [⟦T46⟧](#ls_message_view_exclude) | `boolean` |没有 |从轨迹视图中隐藏运行 |
 | [⟦T48⟧](#ls_is_error_interrupt) | `boolean` |没有 |当设置为 `true` 时，将错误运行标记为中断 |
@@ -211,7 +211,7 @@ val myConfiguredLlm =
 
 ### 系统生成的参数|参数|类型 |描述 |
 | - | - | - |
-| [⟦T53⟧](#ls_run_depth) | `integer` |跟踪树的深度（0=根，1=子，等等）- 自动计算 |
+| [⟦T53⟧](#ls_run_depth) | `integer` |跟踪树中的深度（0=根，1=子等）- 自动计算 |
 | [⟦T55⟧](#ls_method) | `string` |使用的跟踪方法（例如“可跟踪”）- 由 SDK 设置 |
 
 ### 实验参数
@@ -279,7 +279,7 @@ def my_llm_call(prompt: str):
 * 自定义：任何型号标识符
 
 **何时使用：**
-当您需要自动识别[cost tracking](/langsmith/cost-tracking)并在[UI](https://smith.langchain.com?utm_source=docs\&utm_medium=cta\&utm_campaign=langsmith-signup\&utm_content=langsmith-ls-metadata-parameters)中识别型号时。
+当您需要自动识别 [cost tracking](/langsmith/cost-tracking) 并在 [UI](https://smith.langchain.com?utm_source=docs\&utm_medium=cta\&utm_campaign=langsmith-signup\&utm_content=langsmith-ls-metadata-parameters) 中识别型号时。
 
 **示例：**
 
@@ -444,7 +444,7 @@ metadata={
 该密钥从 `langsmith`（Python 和 JS）导出为 `LS_MESSAGE_VIEW_EXCLUDE` 常量，其值为字符串 `"ls_message_view_exclude"`。更喜欢常量以避免拼写错误；文字字符串仍然有效。
 
 **何时使用：**
-对于非对话轮次的 LLM 子跨度，例如分类调用、嵌入查找、安全过滤器或路由/护栏决策，您仍然希望在 LangSmith 的其他位置可见，但不希望对话记录变得混乱。
+对于非对话回合的 LLM 子跨度，例如分类调用、嵌入查找、安全过滤器或路由/护栏决策，您仍然希望在 LangSmith 的其他位置可见，但不希望对话记录变得混乱。
 
 **示例：**
 
@@ -564,7 +564,7 @@ metadata_key = 'ls_run_depth' AND metadata_value = 0
 ### `ls_experiment_id`
 
 * **类型：** `string` (UUID)
-* **设定者：** LangSmith 实验系统（自动）
+* **设置方式：** LangSmith 实验系统（自动）
 
 **它的作用：**
 实验运行的唯一标识符。
@@ -594,7 +594,7 @@ metadata_key = 'ls_run_depth' AND metadata_value = 0
 * 型号必须存在于定价数据库中或具有[custom pricing configured](/langsmith/cost-tracking#llm-calls-automatically-track-costs-based-on-token-counts)。
 
 **回退行为：**
-如果 [⟦T142⟧](#ls_model_name) 不在元数据中，系统会在放弃成本跟踪之前检查 [⟦T143⟧](#ls_invocation_params) 中是否存在诸如 `"model"` 之类的模型标识符。
+如果 [⟦T142⟧](#ls_model_name) 不在元数据中，系统会在放弃成本跟踪之前检查 [⟦T143⟧](#ls_invocation_params) 中是否有像 `"model"` 这样的模型标识符。
 
 ### 配置跟踪组
 
@@ -633,7 +633,9 @@ metadata_key = 'ls_run_depth' AND metadata_value = 0
 
 ### 使用 API
 
-将 [⟦T159⟧](https://reference.langchain.com/python/langsmith/client/Client) 类与 [⟦T160⟧](https://reference.langchain.com/python/langsmith/client/Client/list_runs) 方法 (Python) 或 [⟦T161⟧](https://reference.langchain.com/javascript/langsmith/client/Client/listRuns) 方法 (TypeScript) 结合使用，根据元数据值查询跟踪。 [filter syntax](/langsmith/trace-query-syntax) 支持相等检查、比较和逻辑运算符。
+在基于代理的工作区中，将下面的 `my-app` 替换为 [environment's ⟦T160⟧](/langsmith/create-an-agent#use-an-environment-project)。
+
+将 [⟦T161⟧](https://reference.langchain.com/python/langsmith/client/Client) 类与 [⟦T162⟧](https://reference.langchain.com/python/langsmith/client/Client/list_runs) 方法 (Python) 或 [⟦T163⟧](https://reference.langchain.com/javascript/langsmith/client/Client/listRuns) 方法 (TypeScript) 结合使用，根据元数据值查询跟踪。 [filter syntax](/langsmith/trace-query-syntax) 支持相等检查、比较和逻辑运算符。
 
 ```python Python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 from langsmith import Client
@@ -732,6 +734,6 @@ metadata_key = 'ls_run_depth' AND metadata_value = 0
 
 ***
 
-[Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
+[Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时答复。
 
 [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/ls-metadata-parameters.mdx) 或 [file an issue](https://github.com/langchain-ai/docs/issues/new/choose)。

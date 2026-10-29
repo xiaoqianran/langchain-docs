@@ -30,7 +30,7 @@
 
 ## 验证请求MCP 端点使用部署的 [identity](/langsmith/javascript/managed-deep-agents-identity) 配置，与部署上的所有其他路由相同。发送与配置模式匹配的凭证：
 
-|身份模式 |标题 |
+|身份模式|标题|
 | - | - |
 | LangSmith API 密钥（默认）| `x-api-key: <LANGSMITH_API_KEY>` |
 |苏帕巴斯| `Authorization: Bearer <access_token>` |
@@ -51,7 +51,7 @@
 >
 > 任何持有 LangSmith API 密钥的人都可以进行部署，并且 MCP 客户端将标头存储在自己的配置中。将添加到客户端配置的密钥视为整个工作区的共享密钥。> [!注意]
 >
-> Supabase 身份需要一个访问令牌，该令牌是人们通过登录您的应用程序获得的。仅存储静态标头的 MCP 客户端无法创建静态标头，因此请使用 LangSmith API 密钥默认值进行 MCP 客户端调用的部署。
+> Supabase 身份需要一个访问令牌，该令牌是人们通过登录您的应用程序获得的。仅存储静态标头的 MCP 客户端无法创建静态标头，因此请对 MCP 客户端调用的部署使用默认的 LangSmith API 密钥。
 
 ## 了解代理暴露的内容
 
@@ -122,11 +122,11 @@ const tools = await client.getTools();
 
 ## 了解会话行为
 
-代理服务器 MCP 请求为[stateless](/langsmith/server-mcp#session-behavior)：单独的调用不共享线程状态。
+代理服务器 MCP 请求不使用[sessions](/langsmith/server-mcp#session-behavior)：单独的工具调用不共享线程状态。暂停输入的工具调用将保持其自己的状态，直到客户端应答。有关更多信息，请参阅[Human-in-the-loop over MCP](/langsmith/server-mcp-elicitation)。
 
 为了在通话中保留知识，[opt in to durable memory](/langsmith/javascript/managed-deep-agents-memory)。持久内存是可选的，并由部署的每个调用者共享。当 MCP 客户端不应相互影响时，请勿启用它。
 
-## 何时使用 MCP 端点|概念 |亲切 |它如何到达代理|
+## 何时使用 MCP 端点|概念|亲切 |它如何到达代理|
 | - | - | - |
 | **MCP 端点** |部署API |将代理作为工具公开给 MCP 客户端 |
 | **[MCP connectors](/langsmith/javascript/managed-deep-agents-mcp-connectors)** |托管配置|将远程 MCP 服务器托管的工具添加到代理 |

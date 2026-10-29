@@ -6,13 +6,15 @@
 
 使用 OpenTelemetry 收集器在痕迹中的敏感数据到达 LangSmith 之前对其进行编辑。
 
-[LangChain](/langsmith/trace-with-langchain)、[LangGraph](/langsmith/trace-with-langgraph) 和 [Deep Agents](/langsmith/trace-deep-agents) 应用程序支持 [OpenTelemetry-based tracing](/langsmith/trace-with-opentelemetry)。您可以通过您控制的 OpenTelemetry 收集器路由它们，应用编辑规则来剥离敏感字段，并将清理后的跟踪转发到 LangSmith，而不是直接将跟踪发送到 LangSmith。
+使用 [LangChain](/langsmith/trace-with-langchain)、[LangGraph](/langsmith/trace-with-langgraph) 或 [Deep Agents](/langsmith/trace-deep-agents) 构建的代理支持 [OpenTelemetry-based tracing](/langsmith/trace-with-opentelemetry)。您可以通过您控制的 OpenTelemetry 收集器路由它们，应用编辑规则来剥离敏感字段，并将清理后的跟踪转发到 LangSmith，而不是直接将跟踪发送到 LangSmith。
 
-跟踪通过 OTLP/HTTP 从您的应用程序流向收集器。收集器运行一个转换处理器，在将清理后的跨度转发到 LangSmith API 之前，该处理器会编辑敏感的跨度属性，例如提示输入和模型完成。
+跟踪通过 OTLP/HTTP 从代理流向收集器。收集器运行一个转换处理器，在将清理后的跨度转发到 LangSmith API 之前，该处理器会编辑敏感的跨度属性，例如提示输入和模型完成。
+
+您可以通过两种方式将跟踪发送到收集器：[through the LangChain, LangGraph, or Deep Agents integration](#trace-with-langchain-langgraph-or-deep-agents)，或通过[configuring the OpenTelemetry SDK directly](#trace-with-the-opentelemetry-sdk-directly)。
 
 ```mermaid theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 flowchart TD
-    A["Application<br/>(LangChain / LangGraph / Deep Agents)"]
+    A["Agent code<br/>(LangChain / LangGraph / Deep Agents)"]
 
     subgraph collector[":4318"]
         B["Receiver<br/>OTLP/HTTP"]
@@ -27,31 +29,26 @@ flowchart TD
     D -->|"OTLP/HTTP"| E
 ```
 
+> [!注意]
+>
+> 在发送跟踪之前，在 [agent-based workspace](/langsmith/agents)、[create an agent](/langsmith/create-an-agent) 中进行一次。使用[agent addressing](/langsmith/log-traces-to-agent)选择其标识符和环境。如果集成需要 `project_name`，请使用所选环境的 [⟦T6⟧](/langsmith/create-an-agent#use-an-environment-project) 作为兼容性值。
+
 ## 先决条件
 
-以下两种方法都需要以下环境变量。将 `OTEL_EXPORTER_OTLP_ENDPOINT` 设置为您的收集器的地址：
+两种方法都需要以下环境变量。将 `OTEL_EXPORTER_OTLP_ENDPOINT` 设置为您的收集器的地址：
 
 ```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 LANGSMITH_OTEL_ENABLED="true"
 LANGSMITH_TRACING="true"
 LANGSMITH_OTEL_ONLY="true"
-LANGSMITH_PROJECT="my-project"
+LANGSMITH_AGENT_ID="<your-agent-id>"
+LANGSMITH_AGENT_ENVIRONMENT="production"
 OTEL_EXPORTER_OTLP_ENDPOINT="http://<my-otel-collector-endpoint>:4318"
 ```
 
-有关`LANGSMITH_PROJECT`的更多信息，请参阅[Log traces to a specific project](/langsmith/log-traces-to-project)。> [!注意]
->
-> **基于代理的工作区。** 要将 OTLP 跟踪发送到代理和环境而不是项目，请将 `Langsmith-Project` 标头替换为以下两个标头：
->
-> * **`Langsmith-Agent-Id`**：代理的标识符。长度范围为1～63个小写字母、数字或连字符，以字母开头，以字母或数字结尾。 LangSmith 在首次使用时创建代理，这需要 [⟦T9⟧ permission](/langsmith/organization-workspace-operations#projects)。已归档的代理仍保留其标识符，因此 LangSmith 拒绝使用 `409` 发送给它的请求。
-> * **`Langsmith-Agent-Environment`**：痕迹所属的环境。 `local`、`development`、`staging` 或 `production` 之一。
->
-> 例如设置`OTEL_EXPORTER_OTLP_HEADERS="x-api-key=<your langsmith api key>,Langsmith-Agent-Id=<agent id>,Langsmith-Agent-Environment=<environment>"`。使用 `langsmith>=0.14.9`，当未设置 `OTEL_EXPORTER_OTLP_HEADERS` 时，Python SDK 的 OpenTelemetry 导出器会设置 `LANGSMITH_AGENT_ID` 和 `LANGSMITH_AGENT_ENVIRONMENT` 的标头。使用 TypeScript SDK 或其他 OpenTelemetry 导出器，自行设置标头。
->> 标头适用于请求中的每个范围。发送两个标头或都不发送：LangSmith 拒绝设置一个标头而没有另一个标头的请求，或者与 `Langsmith-Project` 一起设置的请求，并出现 `400` 错误。在 [self-hosted](/langsmith/self-hosted) LangSmith 上，基于代理的工作区不可用，LangSmith 拒绝请求，并显示 `403` 错误和消息 `agent addressing is not enabled for this workspace`。 Span 属性（包括 `gen_ai.agent.name`）不会将跟踪发送到代理。有关向代理发送跟踪的工作原理，请参阅[Log traces to an agent](/langsmith/log-traces-to-agent)。
+`LANGSMITH_AGENT_ID` 和 `LANGSMITH_AGENT_ENVIRONMENT` 命名跟踪所属的代理和环境。欲了解更多信息，请参阅[Log traces to an agent](/langsmith/log-traces-to-agent)。## 配置收集器
 
-## 配置收集器
-
-这两种方法还需要一个 OpenTelemetry 收集器作为应用程序和 LangSmith 之间的中介运行。以下配置在端口 `4318` 上设置一个 OTLP 接收器、一个编辑 `gen_ai.prompt` 和 `gen_ai.completion` span 属性的转换处理器，以及一个将清理后的跟踪转发到 LangSmith API 的导出器：
+这两种方法还需要一个 OpenTelemetry 收集器作为代理和 LangSmith 之间的中介运行。以下配置在端口 `4318` 上设置一个 OTLP 接收器、一个编辑 `gen_ai.prompt` 和 `gen_ai.completion` span 属性的转换处理器，以及一个将清理后的跟踪转发到 LangSmith API 的导出器：
 
 ```yaml theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 receivers:
@@ -75,7 +72,8 @@ exporters:
     traces_endpoint: "https://api.smith.langchain.com/otel/v1/traces"
     headers:
       x-api-key: "${env:LANGSMITH_API_KEY}"
-      Langsmith-Project: "${env:LANGSMITH_PROJECT}"
+      Langsmith-Agent-Id: "${env:LANGSMITH_AGENT_ID}"
+      Langsmith-Agent-Environment: "${env:LANGSMITH_AGENT_ENVIRONMENT}"
       x-Tenant-Id: "${env:LANGSMITH_TENANT_ID}" # Required if API key is not scoped to a specific workspace
 
 
@@ -87,9 +85,20 @@ service:
       exporters: [otlphttp/langsmith]
 ```
 
+收集器从其自己的环境而不是您的应用程序的环境中读取 `LANGSMITH_API_KEY`、`LANGSMITH_AGENT_ID` 和 `LANGSMITH_AGENT_ENVIRONMENT`。如果您的 API 密钥的范围不限于特定工作区，请将它们设置在收集器运行的位置，以及 `LANGSMITH_TENANT_ID`。
+
+### 将跟踪发送给代理
+
+收集器（而不是您的应用程序）决定哪个代理和环境接收跟踪。收集器将其自己的标头发送到LangSmith，并且默认情况下不会转发您的应用程序发送的标头。上述配置中的 `otlphttp/langsmith` 导出器设置两个代理标头：
+
+* **`Langsmith-Agent-Id`**：代理的标识符。长度范围为1～63个小写字母、数字或连字符，以字母开头，以字母或数字结尾。
+* **`Langsmith-Agent-Environment`**：痕迹所属的环境。 `local`、`development`、`staging` 或 `production` 之一。发送两个代理标头或都不发送。 LangSmith 拒绝设置其中一个而不设置另一个的请求，或者与 `Langsmith-Project` 一起设置的请求，并出现 `400` 错误。
+
+标头适用于导出器发送的每个范围。要将跟踪发送到多个代理或环境，请为每个代理或环境定义一个导出器，并将每个代理的跨度路由到其导出器。 Span 属性（包括 `gen_ai.agent.name`）不会将跟踪发送到代理。要了解有关向代理发送跟踪的更多信息，请参阅[Log traces to an agent](/langsmith/log-traces-to-agent)。
+
 ## 使用 LangChain、LangGraph 或 Deep Agents 进行跟踪
 
-如果您的应用程序已使用 [LangChain](/langsmith/trace-with-langchain)、[LangGraph](/langsmith/trace-with-langgraph) 或 [Deep Agents](/langsmith/trace-deep-agents)，请使用此方法。跟踪集成会根据您的环境变量自动处理跨度创建，因此不需要额外的检测代码：
+如果您的代理已使用 [LangChain](/langsmith/trace-with-langchain)、[LangGraph](/langsmith/trace-with-langgraph) 或 [Deep Agents](/langsmith/trace-deep-agents)，请使用此方法。跟踪集成会根据您的环境变量自动处理跨度创建，因此不需要额外的检测代码：
 
 ```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 from langchain.agents import create_agent
@@ -122,12 +131,14 @@ result = agent.invoke(
 print(result["messages"][-1].content)
 ```
 
-## 直接使用 OpenTelemetry SDK 进行跟踪如果您需要对跟踪器提供程序和导出程序进行编程控制，请使用此方法。例如，设置每个请求的项目名称或在运行时配置自定义标头。您可以在代码中显式配置提供程序，而不是单独依赖环境变量：
+## 直接使用 OpenTelemetry SDK 进行跟踪
+
+如果您需要对跟踪器提供程序和导出程序进行编程控制，例如运行哪个跨度处理器或导出程序将跨度发送到何处，请使用此方法。您可以在代码中显式配置提供程序，而不是单独依赖环境变量。收集器的导出器（而不是您的代码）决定哪个代理接收跟踪：
 
 ```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 import os
 
-from langchain.prompts import ChatPromptTemplate
+from langchain_core.prompts import ChatPromptTemplate
 from langchain_openai import ChatOpenAI
 from opentelemetry import trace
 from opentelemetry.exporter.otlp.proto.http.trace_exporter import OTLPSpanExporter
@@ -135,7 +146,6 @@ from opentelemetry.sdk.trace import TracerProvider
 from opentelemetry.sdk.trace.export import BatchSpanProcessor
 
 
-project_name = os.environ["LANGSMITH_PROJECT"]
 otlp_endpoint = os.environ["OTEL_EXPORTER_OTLP_ENDPOINT"]
 
 
@@ -144,7 +154,6 @@ provider.add_span_processor(
    BatchSpanProcessor(
        OTLPSpanExporter(
            endpoint=otlp_endpoint+"/v1/traces",
-           headers={"Langsmith-Project": project_name},
        )
    )
 )
@@ -162,9 +171,7 @@ for topic in ["programming", "python", "databases", "kubernetes", "machine learn
 
 provider.force_flush()
 provider.shutdown()
-```
-
-> [!注意]
+```> [!注意]
 >
 > 如果您希望在不通过收集器路由的情况下编辑敏感数据，请参阅[Prevent logging of sensitive data in traces](/langsmith/mask-inputs-outputs)。
 

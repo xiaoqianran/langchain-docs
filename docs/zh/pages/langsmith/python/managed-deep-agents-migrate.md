@@ -24,11 +24,11 @@
 | **最终用户的第三方访问** |您为每个用户配置并存储凭据。 | [Connections](/langsmith/python/managed-deep-agents-connections) 保存工作区机密并运行 OAuth，以便最终用户自行授权服务。 |
 | **聊天界面** |您编写集成。 | [Channels](/langsmith/python/managed-deep-agents-channels) 连接 Slack 和其他消息服务。 |
 | **预定运行** |您运行调度程序。 | [Schedules](/langsmith/python/managed-deep-agents-schedules) 运行托管 cron 作业。 |
-| **围绕代理的代码** |您可以编写，包括自定义路由和应用程序代码。 |仅限代理。对于自定义路由或应用程序代码，请使用[LangSmith deployment](/langsmith/deployment)。 |无论哪种方式，线束都是相同的，因此首先在 Deep Agents 上构建，并在代理准备好生产时移动是正常路径。参见[Going to production](/oss/python/deepagents/going-to-production)。
+| **围绕代理的代码** |您可以编写，包括自定义路由和应用程序代码。 |仅限代理。对于自定义路由或应用程序代码，请使用[LangSmith deployment](/langsmith/deployment)。 |无论哪种方式，线束都是相同的。当您想要运行生产代理而无需管理基础设施时，请从 [Managed Deep Agents](/langsmith/python/managed-deep-agents-overview) 开始使用新代理。当您已经拥有 Deep Agents SDK 代理并需要托管运行时时，请使用本指南。要自行使用相同的 Deep Agents 工具和托管代理或运行自定义 [LangSmith Deployment](/langsmith/deployment)，请参阅 [Going to production](/oss/python/deepagents/going-to-production)。
 
 ## 了解发生了什么变化
 
-[create\_deep\_agent](https://reference.langchain.com/python/deepagents/graph/create_deep_agent) 在您的进程中编译一个代理，因此它将后端、存储和检查指针作为参数。 `define_deep_agent` 返回一个定义，托管运行时对其进行编译。定义是配置而不是可运行的代理：`mda` CLI 在`mda dev` 和 `mda deploy` 上使用它，并且运行时在此时提供托管片段。完整图片请参见[Relationship to Deep Agents](/langsmith/python/managed-deep-agents-overview#relationship-to-deep-agents)。
+[create\_deep\_agent](https://reference.langchain.com/python/deepagents/graph/create_deep_agent) 在您的进程中编译代理，因此它将后端、存储和检查指针作为参数。 `define_deep_agent` 返回一个定义，托管运行时对其进行编译。定义是配置而不是可运行的代理：`mda` CLI 在`mda dev` 和 `mda deploy` 上使用它，并且运行时在此时提供托管片段。完整图片请参见[Relationship to Deep Agents](/langsmith/python/managed-deep-agents-overview#relationship-to-deep-agents)。
 
 ## 检查哪些内容没有保留
 
@@ -85,7 +85,7 @@
 | `backend` | `sandbox/` |声明一个托管沙箱而不是构建后端。参见[Sandboxes](/langsmith/python/managed-deep-agents-sandboxes)。 |
 | `permissions` |保留参数 |已接受，并在项目声明沙箱时清除。参见[Permissions](/oss/python/deepagents/permissions)。 |
 | `store`、`checkpointer` |托管运行时 |删除两者。 |
-| `state_schema` |没有同等的 | `define_deep_agent`不接受。 |Deep Agents 后端是可插入的，并且托管运行时提供自己的后端。声明 `sandbox/` 的项目会获得一个用于代理文件系统和 shell 的托管沙箱。没有代理的项目会获得线程范围的代理状态，以及用于指令、技能和内存的只读 [Context Hub](/langsmith/python/managed-deep-agents-context-hub) 安装。没有其他后端选择，因此依赖于特定后端的代理会留在Deep Agents。
+| `state_schema` |没有同等的| `define_deep_agent`不接受。 |Deep Agents 后端是可插拔的，托管运行时提供自己的后端。声明 `sandbox/` 的项目会获得一个用于代理文件系统和 shell 的托管沙箱。没有代理的项目会获得线程范围的代理状态，以及用于指令、技能和内存的只读 [Context Hub](/langsmith/python/managed-deep-agents-context-hub) 挂载。没有其他后端选择，因此依赖于特定后端的代理会留在Deep Agents。
 
 ## 移动代理
 
@@ -158,7 +158,7 @@ memory = define_memory(scope="agent")
 
 持久内存是可选的，没有该文件的项目不会挂载任何内容。作用域是唯一的旋钮：`"agent"` 安装部署的每个调用者共享的一棵树。要控制代理保留的内容，请将内存策略写入`instructions.md`。参见[Guide what to remember](/langsmith/python/managed-deep-agents-memory#guide-what-to-remember)。> [!警告]
 >
-> `define_memory` 挂载一个空的内存树。旧的 `memory` 参数指向的文件中的内容不会传输，因此在删除这些文件之前，请将代理仍需要的任何内容移至 `instructions.md` 或技能中。
+> `define_memory` 挂载一个空的内存树。旧的`memory`参数指向的文件中的内容不会传输，因此在删除这些文件之前，请将代理仍需要的任何内容移动到`instructions.md`或技能中。
 
 **4.声明沙箱**
 
@@ -221,17 +221,17 @@ mda dev
 >
 > `mda build` 不检查定义调用，因此即使托管参数仍然存在，它也会退出 0。当图形在 `mda dev` 下加载时，剩余参数就会出现。
 
-参见[Local development](/langsmith/python/managed-deep-agents-local-development)。
+See [Local development](/langsmith/python/managed-deep-agents-local-development).
 
 **8.部署**
 
-上传项目并让 LangSmith 构建并托管它：
+上传项目并让LangSmith构建并托管它：
 
 ```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 mda deploy
 ```
 
-参见[Deploy](/langsmith/python/managed-deep-agents-deploy)。
+See [Deploy](/langsmith/python/managed-deep-agents-deploy).
 
 > [!提示]
 >
@@ -241,7 +241,7 @@ mda deploy
 > mda init research-assistant
 > ```
 >
-> 安装通道选择创作语言：npm 包脚手架 TypeScript，PyPI 包脚手架 Python。该命令创建一个新目录并且不会就地运行，因此它适合绿地项目而不是迁移。请参阅[quickstart](/langsmith/python/managed-deep-agents-quickstart)。
+> 安装通道选择创作语言：npm 包支架 TypeScript，PyPI 包支架 Python。该命令创建一个新目录并且不会就地运行，因此它适合绿地项目而不是迁移。 See the [quickstart](/langsmith/python/managed-deep-agents-quickstart).
 
 ## 另请参阅* [Relationship to Deep Agents](/langsmith/python/managed-deep-agents-overview#relationship-to-deep-agents)：为什么两个入口点不同。
 * [Agent definition](/langsmith/python/managed-deep-agents-agent-definition)：完整参数参考。

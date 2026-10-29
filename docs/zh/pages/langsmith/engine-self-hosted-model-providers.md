@@ -2,35 +2,35 @@
 
 <!-- langchain-docs: Configure model providers for Engine on self-hosted and BYOC | https://docs.langchain.com/langsmith/engine-self-hosted-model-providers -->
 
-# Configure model providers for Engine on self-hosted and BYOC
+# 在自托管和 BYOC 上为 Engine 配置模型提供程序
 
-Choose the model providers LangSmith Engine uses on a self-hosted LangSmith instance, authenticate with credentials or cloud identity, and keep model traffic on private networking.
-
-> [!注意]
->
-> Running Engine on your own model providers requires LangSmith Helm chart `0.17.0` or later.早期的图表版本仅在 [LangSmith Intelligence](/langsmith/engine-self-hosted#langsmith-intelligence) 上运行引擎。
-
-On self-hosted LangSmith, an Organization Admin chooses where [LangSmith Engine](/langsmith/engine) runs its model calls: on LangSmith Intelligence (LSI), on your own model providers, or both.在您自己的提供商上运行引擎会根据您与这些提供商的协议保留提示和响应。本页介绍如何选择提供商、向他们进行身份验证以及通过专用网络连接到他们或 LSI。有关两个选项的比较，请参阅[Choose how Engine runs its models](/langsmith/engine-self-hosted#choose-how-engine-runs-its-models)。首先完成[Install Engine](/langsmith/engine-self-hosted#install-engine)。
+选择模型提供商 LangSmith 引擎在自托管 LangSmith 实例上使用，使用凭据或云身份进行身份验证，并将模型流量保留在专用网络上。
 
 > [!注意]
 >
-> 在[BYOC](/langsmith/engine-self-hosted#engine-on-byoc)、LangSmith 上智能不可用，并且引擎仅在您自己的模型提供程序上运行。 Amazon Bedrock 可以使用 LangChain 配置的数据平面的云身份。 The [cloud identity](#use-cloud-identity-for-your-model-providers) and [private connection](#connect-privately) sections apply to self-hosted LangSmith only.
+> 在您自己的模型提供程序上运行引擎需要 LangSmith Helm 图表 `0.17.0` 或更高版本。早期的图表版本仅在 [LangSmith Intelligence](/langsmith/engine-self-hosted#langsmith-intelligence) 上运行引擎。
 
-## 使用您自己的模型提供者Engine calls your providers directly from your cluster. Prompts and responses go only to your provider, under your agreement with that provider. LangChain 没有收到。
+在自托管 LangSmith 上，组织管理员选择 [LangSmith Engine](/langsmith/engine) 运行其模型调用的位置：在 LangSmith Intelligence (LSI) 上、在您自己的模型提供商上或两者上。在您自己的提供商上运行引擎会根据您与这些提供商的协议保留提示和响应。本页介绍如何选择提供商、向他们进行身份验证以及通过专用网络连接到他们或 LSI。有关两个选项的比较，请参阅[Choose how Engine runs its models](/langsmith/engine-self-hosted#choose-how-engine-runs-its-models)。首先完成[Install Engine](/langsmith/engine-self-hosted#install-engine)。
+
+> [!注意]
+>
+> 在[BYOC](/langsmith/engine-self-hosted#engine-on-byoc)、LangSmith 上，智能不可用，并且引擎仅在您自己的模型提供程序上运行。 Amazon Bedrock 可以使用 LangChain 配置的数据平面的云身份。 [cloud identity](#use-cloud-identity-for-your-model-providers) 和 [private connection](#connect-privately) 部分仅适用于自托管 LangSmith。
+
+## 使用您自己的模型提供者引擎直接从您的集群调用您的提供程序。根据您与提供商的协议，提示和响应仅发送给您的提供商。 LangChain 没有收到。
 
 Engine 的沙盒使用情况包含在 Engine 的 LSU 计费中。沙箱引擎用于诊断问题、生成修复程序和编写评估程序不会产生额外的沙箱产品费用。
 
-引擎支持Anthropic、OpenAI、Amazon Bedrock、Google Vertex AI 和 Azure AI Foundry。它使用您选择的提供商的混合模型，因此为了获得最佳结果，请为您有权访问的每个提供商添加凭据。
+Engine 支持Anthropic、OpenAI、Amazon Bedrock、Google Vertex AI 和 Azure AI Foundry，还可以通过[your own model gateway](#use-a-model-gateway) 调用 Claude 和 GPT。它使用您选择的提供商的混合模型，因此为了获得最佳结果，请为您有权访问的每个提供商添加凭据。
 
-Enable access to Anthropic's Claude models and OpenAI's GPT models in your provider accounts, where your provider offers them.在 Azure 上，使用 Azure AI Foundry 资源。要确认 Engine 可以访问它使用的模型，请运行 [**Test connection**](#test-a-provider)。
+在您的提供商帐户中允许访问 Anthropic 的 Claude 模型和 OpenAI 的 GPT 模型（您的提供商在其中提供这些模型）。在 Azure 上，使用 Azure AI Foundry 资源。要确认 Engine 可以访问它使用的模型，请运行 [**Test connection**](#test-a-provider)。
 
 ## 选择模型提供商
 
-在 **设置 > 引擎 > 模型提供程序**下，组织管理员选择 LangSmith Intelligence、一个或多个您自己的提供程序，或两者都选择。凭据将保存为组织机密并适用于组织中的每个工作区。
+在 **设置 > 引擎 > 模型提供程序**下，组织管理员选择 LangSmith Intelligence、一个或多个您自己的提供程序，或两者都选择。凭据将保存为组织机密并适用于组织中的每个工作区。仅当您安装的 `engine.intelligenceBaseUrl` 服务于引擎模型时，LangSmith 智能才会出现。
 
-仅当您安装的 `engine.intelligenceBaseUrl` 服务于引擎模型时，LangSmith 智能才会出现。当 LangSmith 情报可用并被选择时，它的优先级高于您选择的提供商。不选择它以保留对您自己的提供商的推断。
+当 LangSmith 情报可用并被选择时，它的优先级高于您选择的提供商。不选择它以保留对您自己的提供商的推断。
 
-引擎从您启用的提供商中选择模型。在您的提供商帐户中启用对 Claude 5.5 级模型或 GPT 5.6 级模型的访问，具体取决于每个提供商提供的模型。模型要求遵循 `images.engineInsightsAgentImage.tag` 中的 Engine 镜像标签，而不是 Helm 图表版本。运行 [**Test connection**](#test-a-provider) 来识别所需的型号并确认对已安装的引擎映像的访问。
+引擎从您启用的提供商中选择模型。在您的提供商帐户中启用对 Claude 5.5 级模型或 GPT 5.6 级模型的访问，具体取决于每个提供商提供的模型。模型要求遵循 `images.engineInsightsAgentImage.tag` 中的 Engine 镜像标签，而不是 Helm 图表版本。运行[**Test connection**](#test-a-provider)来识别所需的型号并确认对已安装的引擎映像的访问。
 
 要使用您自己的提供商：
 
@@ -46,9 +46,9 @@ Anthropic API 密钥。
 
 AWS 访问密钥 ID 和秘密访问密钥，以及可选的会话令牌或 Bedrock API 密钥（不记名令牌）。 （可选）AWS 区域。
 
-引擎使用基岩地幔 API。要改用 Bedrock Runtime，请参阅 [Use Bedrock Runtime](#use-bedrock-runtime)。
+引擎使用基岩地幔 API。要改用 Bedrock Runtime，请参阅 [Use Bedrock Runtime](#use-bedrock-runtime)。允许访问所选 AWS 账户和区域中所需的模型。授予调用身份 Mantle 推理和模型订阅权限。请参阅[AmazonBedrockMantleInferenceAccess](https://docs.aws.amazon.com/aws-managed-policy/latest/reference/AmazonBedrockMantleInferenceAccess.html)了解所需的操作。
 
-允许访问所选 AWS 账户和区域中所需的模型。授予调用身份 Mantle 推理和模型订阅权限。请参阅[AmazonBedrockMantleInferenceAccess](https://docs.aws.amazon.com/aws-managed-policy/latest/reference/AmazonBedrockMantleInferenceAccess.html)了解所需的操作。如果未保存区域，引擎将使用`us-east-1`，包括工作负载标识。它不继承 EKS 集群的区域。
+如果没有保存区域，引擎将使用`us-east-1`，包括工作负载标识。它不继承 EKS 集群的区域。
 
 要改用 Engine pod 的云身份，请参阅 [Use cloud identity for your model providers](#use-cloud-identity-for-your-model-providers)。
 
@@ -82,7 +82,7 @@ OpenAI API 密钥，以及可选的 OpenAI 组织 ID。
 
 选择引擎可能使用的提供商，然后保存。
 
-如果保存后引擎运行失败：* **未选择提供程序：** 在选择并保存至少一个提供程序之前，引擎不会开始运行。
+如果保存后引擎运行失败：* **未选择任何提供程序：** 在选择并保存至少一个提供程序之前，引擎不会开始运行。
 * **拒绝的凭据：** **测试连接** 报告哪个提供商拒绝了它们。更新凭据并再次测试。
 * **模型不可用：** 在您的提供商帐户中启用模型，然后再次测试。
 
@@ -198,7 +198,126 @@ engineInsightsAgent:
 
 > [!警告]
 >
-> `engine.workloadIdentityProviders` 中列出的提供程序视为在未保存凭据的情况下进行配置，因此任何组织管理员都可以选择它。将身份范围限定为引擎使用的模型。保存的凭据优先于云身份。切换提供商时，请在删除其保存的凭据之前应用云身份配置。然后，在 **设置 > 引擎 > 模型提供程序** 下仅删除该提供程序保存的 API 密钥或服务帐户 JSON。对于 Bedrock，还要删除所有已保存的访问密钥、秘密访问密钥和会话令牌。保留 Azure AI Foundry 资源名称和任何 Bedrock 区域设置，然后再次 [test the provider](#test-a-provider)。
+> `engine.workloadIdentityProviders` 中列出的提供程序视为在未保存凭据的情况下进行配置，因此任何组织管理员都可以选择它。将身份范围限定为引擎使用的模型。保存的凭据优先于云身份。切换提供商时，请在删除其保存的凭据之前应用云身份配置。然后，在 **设置 > 引擎 > 模型提供程序** 下仅删除该提供程序保存的 API 密钥或服务帐户 JSON。对于 Bedrock，还要删除任何已保存的访问密钥、秘密访问密钥和会话令牌。保留 Azure AI Foundry 资源名称和任何 Bedrock 区域设置，然后再次 [test the provider](#test-a-provider)。
+
+## 使用模型网关
+
+如果您的组织通过自己的 LLM 网关路由模型流量，Engine 可以通过它发送其 Claude 和 GPT 调用，而不是直接调用提供商。该网关在 **设置 > 引擎 > 模型提供程序** 下显示为 **模型网关**。
+
+> [!注意]
+>
+> 模型网关支持需要 LangSmith Helm 图表 `0.17.31` 或更高版本。
+
+安装 LangSmith 的人都会在 Helm 值中配置网关，而不是在 UI 中。网关 URL 通常是私有地址，因此组织设置将允许任何组织管理员将引擎指向内部服务。在[BYOC](/langsmith/engine-self-hosted#engine-on-byoc)，联系LangChain配置网关。
+
+### 网关要求
+
+您的网关必须：* **为 Claude 提供 Anthropic 消息 API，为 GPT 提供 OpenAI 响应 API，或两者。** 引擎在任一型号系列上运行。为了获得最佳效果，请同时服务。
+* **转发`anthropic-beta`标头和请求正文不变。**引擎的Claude请求使用测试版功能，Anthropic可以在没有它的情况下拒绝它们。
+* **返回每个响应的令牌使用情况。** 引擎使响应没有使用情况的调用失败。
+* **接受提供程序模型 ID 引擎请求。** 如果您的网关将它们映射到其自己的部署，请保持响应的模型相同的模型系列。
+* **将基本 URL 设置为网关的最终地址。** 引擎不遵循重定向，因此重定向的基本 URL（例如从 `http` 到 `https`）每次调用都会失败。
+
+引擎仅发送模型请求。通过 API 密钥身份验证，它不会将组织、工作区或项目标识符发送到网关。
+
+### 配置网关
+
+**1.声明您的网关服务的 API**
+
+告诉LangSmith网关服务哪些API。 LangSmith 仅在设置时显示**模型网关**：
+
+```yaml theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+commonEnv:
+  - name: ENGINE_GATEWAY_APIS
+    value: '["anthropic","openai"]'
+```
+
+仅列出您的网关服务的 API：`anthropic`、`openai` 或两者。
+
+**2.网关处的点引擎**在两个引擎工作负载上设置网关的基本 URL。引擎将 API 路径附加到每个 URL：
+
+* `ENGINE_GATEWAY_ANTHROPIC_BASE_URL`：Anthropic SDK 客户端将用作其基本 URL 的 URL。引擎调用`<base URL>/v1/messages`。
+* `ENGINE_GATEWAY_OPENAI_BASE_URL`：OpenAI SDK 客户端将使用的 URL，通常以 `/v1` 结尾。引擎调用`<base URL>/responses`。
+
+仅设置您在 `ENGINE_GATEWAY_APIS` 中列出的 API 的 URL。 URL 必须使用 HTTPS。要信任私有证书颁发机构，请参阅[Mount internal CAs for TLS](/langsmith/self-host-custom-tls-certificates#mount-internal-cas-for-tls)。对于集群内的纯 HTTP 地址，还将 `ENGINE_GATEWAY_ALLOW_INSECURE_HTTP` 设置为 `"true"`。
+
+**3.配置身份验证**
+
+选择引擎如何向网关进行身份验证：
+
+**API 密钥**
+
+将网关密钥存储在 Kubernetes 密钥中并将其安装到两个引擎工作负载中。将 `ENGINE_GATEWAY_API_KEY_FILE` 设置为已安装文件的路径。
+
+```yaml theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+engineInsightsAgent:
+  apiServer:
+    deployment:
+      extraEnv:
+        - name: ENGINE_GATEWAY_ANTHROPIC_BASE_URL
+          value: "https://<gateway-host>/anthropic"
+        - name: ENGINE_GATEWAY_OPENAI_BASE_URL
+          value: "https://<gateway-host>/openai/v1"
+        - name: ENGINE_GATEWAY_API_KEY_FILE
+          value: "/etc/engine-gateway/api-key"
+      volumes:
+        - name: engine-gateway
+          secret:
+            secretName: engine-model-gateway
+      volumeMounts:
+        - name: engine-gateway
+          mountPath: /etc/engine-gateway
+          readOnly: true
+  queue:
+    deployment:
+      # The same extraEnv, volumes, and volumeMounts as apiServer.
+```
+
+默认情况下，引擎将密钥发送为`Authorization: Bearer <key>`。如果您的网关需要另一个标头中的密钥，请将 `ENGINE_GATEWAY_AUTH_HEADER` 设置为该标头的名称，例如 `x-api-key`。然后引擎将密钥作为标头的值发送。
+
+要发送其他标头，请安装一个目录，每个标头一个文件，并将 `ENGINE_GATEWAY_HEADERS_DIR` 设置为其路径。每个文件的名称是标头名称，其内容是值。引擎保留`host`、`content-length`、`content-type`、`transfer-encoding`、`connection`以及以`x-langsmith-`开头的标头。引擎在每次运行开始时读取密钥和头文件，因此您可以轮换它们而无需重新启动引擎。
+
+**LLM授权代理**
+
+如果您的网关位于 [LLM auth proxy](/langsmith/llm-auth-proxy-self-hosted) 后面，引擎可以使用短期 LangSmith 令牌而不是静态密钥进行身份验证。参见[Use the LLM auth proxy](#use-the-llm-auth-proxy)。
+
+应用 Helm 值并重新启动两个引擎工作负载，以便它们获取新的环境变量。
+
+**4.测试并选择网关**
+
+在“**设置 > 引擎 > 模型提供程序**”下，单击“**模型网关**”旁边的“测试连接**”。引擎通过网关为您配置的每个 API 发送一个小请求，并显示每个请求是否成功。如果网关拒绝请求，结果将包括网关的错误消息。然后选择**模型网关**并保存。
+
+### 使用 LLM 身份验证代理
+
+使用 LLM 身份验证代理，引擎永远不会持有网关密钥。代理验证 LangSmith 签名的令牌，并且您的代理配置添加网关的凭据。对于每次运行，引擎都会从您的 LangSmith 安装请求一个令牌，并在每次模型调用时将其发送到 `X-LangSmith-LLM-Auth` 标头中。令牌的有效期为五分钟，引擎会在当前令牌过期之前请求新的令牌。 **测试连接**使用相同的流程。
+
+设置方法：
+
+1. 完成[Set up the LLM auth proxy](/langsmith/llm-auth-proxy-self-hosted)的步骤 1 到 4：配置 JWT 签名和颁发者，为您的组织启用代理，设置 JWT 受众，并安装身份验证代理图表，并将您的网关作为其上游。
+2. 在两个引擎工作负载上，将 `ENGINE_GATEWAY_AUTH` 设置为 `llm_auth_proxy`，并将基本 URL 指向身份验证代理服务而不是网关。不要设置`ENGINE_GATEWAY_API_KEY_FILE`：当两者都设置时，引擎将无法运行。
+
+   ```yaml theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+   engineInsightsAgent:
+     apiServer:
+       deployment:
+         extraEnv:
+           - name: ENGINE_GATEWAY_AUTH
+             value: "llm_auth_proxy"
+           - name: ENGINE_GATEWAY_ANTHROPIC_BASE_URL
+             value: "http://<auth-proxy-service>.<namespace>.svc.cluster.local:10000/anthropic"
+           - name: ENGINE_GATEWAY_OPENAI_BASE_URL
+             value: "http://<auth-proxy-service>.<namespace>.svc.cluster.local:10000/openai/v1"
+           - name: ENGINE_GATEWAY_ALLOW_INSECURE_HTTP
+             value: "true"
+     queue:
+       deployment:
+         # The same extraEnv as apiServer.
+   ```
+
+   仅当引擎通过集群内的纯 HTTP 到达身份验证代理时才需要 `ENGINE_GATEWAY_ALLOW_INSECURE_HTTP`。
+3. 如果您组织的 **允许的 URL** 设置为 **自定义**，请将身份验证代理的主机添加到列表中。引擎按计划运行，而不是以登录用户的身份运行。其令牌标识组织和工作区，`actor_type` 设置为 `api_key:service`，并且它们不包含 IdP 令牌。如果您的 `ext_authz` 或 `ext_proc` 服务将用户的 IdP 令牌交换为网关凭据，请单独处理引擎的请求，例如通过将工作区映射到网关凭据。
+
+如果引擎报告未为组织启用 LLM 身份验证代理，或者组织没有 JWT 受众，请填写 [Configure organization settings in LangSmith](/langsmith/llm-auth-proxy-self-hosted#3-configure-organization-settings-in-langsmith)。
 
 ## 私密连接
 
@@ -216,7 +335,7 @@ LangSmith 智能网关 `beacon.aws.langchain.com` 将请求路由到 LangChain �
 
 **1.请求访问**
 
-请联系您的客户代表或 [sales@langchain.dev](mailto:sales@langchain.dev) 并提供您的 AWS 账户 ID。 LangChain 将您的帐户添加到端点服务的允许主体列表中。
+请联系您的客户代表或[sales@langchain.dev](mailto:sales@langchain.dev)并提供您的 AWS 账户 ID。 LangChain 将您的帐户添加到端点服务的允许主体列表中。
 
 **2.创建接口 VPC 终端节点**
 
@@ -286,13 +405,13 @@ getent ahostsv4 beacon.aws.langchain.com
 |亚马逊基岩（运行时）| `bedrock-runtime.<region>.amazonaws.com` | `com.amazonaws.<region>.bedrock-runtime` 的接口 VPC 终端节点，启用私有 DNS |
 |谷歌顶点人工智能 |全球区域为`<region>-aiplatform.googleapis.com`或`aiplatform.googleapis.com` |适用于 Google API 的专用服务连接，以及`googleapis.com` 的专用 DNS |
 | Azure AI 铸造厂 | `<resource>.openai.azure.com` 和 `<resource>.services.ai.azure.com` | Foundry 资源的专用端点及其专用 DNS 区域 |
-| Anthropic、OpenAI | `api.anthropic.com`、`api.openai.com` |无法使用。这些提供商需要公共出口。 |
+| Anthropic、OpenAI | `api.anthropic.com`、`api.openai.com` |无法使用。这些提供商需要公共出口，除非您通过 [model gateway](#use-a-model-gateway) 路由它们。 |Engine 不接受这些提供商的自定义端点 URL，因此专用连接通过 DNS 工作：标准主机名必须从 Engine Pod 解析为您的专用端点。要将模型流量发送到您选择的地址，请使用 [model gateway](#use-a-model-gateway)。
 
-引擎不接受自定义端点 URL，因此专用连接通过 DNS 工作：标准主机名必须从 Engine Pod 解析为您的专用端点。如果 Engine 使用 [cloud identity](#use-cloud-identity-for-your-model-providers) 进行身份验证，Pod 还需要访问云的令牌服务，例如 AWS 上 AWS STS 的接口 VPC 终端节点。
+如果 Engine 使用 [cloud identity](#use-cloud-identity-for-your-model-providers) 进行身份验证，Pod 还需要访问云的令牌服务，例如 AWS 上 AWS STS 的接口 VPC 终端节点。
 
 通过保存的 Vertex AI 服务帐户 JSON，还允许使用 HTTPS `oauth2.googleapis.com` 进行令牌交换，以及 `aiplatform.googleapis.com` 进行推理。
 
-向LangSmith Intelligence 报告使用情况是一个单独的连接。在 AWS 上，`https://beacon.aws.langchain.com/intelligence` 记录使用情况并支持 [AWS PrivateLink](#connect-with-aws-privatelink)，因此安装可以在 Bedrock 上运行引擎并报告使用情况，而无需公共出口。默认`https://beacon.langchain.com/intelligence`需要公共出口。
+向 LangSmith Intelligence 报告使用情况是一个单独的连接。在 AWS 上，`https://beacon.aws.langchain.com/intelligence` 记录使用情况并支持 [AWS PrivateLink](#connect-with-aws-privatelink)，因此安装可以在 Bedrock 上运行引擎并报告使用情况，而无需公共出口。默认`https://beacon.langchain.com/intelligence`需要公共出口。
 
 ## 另请参阅
 

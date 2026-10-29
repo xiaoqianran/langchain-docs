@@ -143,7 +143,7 @@ console.log("Created evaluator:", created.evaluator?.id);
 |断言|输出是否满足参考输出中的每个断言。法官从参考输出中读取一个`assertions`列表，其中每个条目都有一个`key`和一个`comment`。缺失或空的列表得分 `false`。 | `assertions_passed`（布尔值）：仅当每个断言都通过时才`true`。 |
 |简洁|输出如何有效地传达所请求的信息，惩罚对冲、寒暄、元评论和冗余。 | `conciseness`（数字，0 到 10）：当输出仅包含基本信息时，`10`。 |
 |代码检查器 |代码是否解决输入中的每个要求、处理边缘情况以及运行时不会出现错误。 | `code_checker`（布尔值）：当代码完整且正确时，`true`。 ||答案相关性 |输出是否直接解决输入问题而没有偏离主题。 | `answer_relevance`（布尔值）：当输出相关时，`true`。 |
-|精确匹配|运行的输出是否完全等于参考输出。该模板作为代码运行并且不进行 LLM 调用。 | `exact_match`（布尔值）：当输出匹配时，`true`。 |
+|精确匹配 |运行的输出是否完全等于参考输出。该模板作为代码运行并且不进行 LLM 调用。 | `exact_match`（布尔值）：当输出匹配时，`true`。 |
 
 ### 对话
 
@@ -164,7 +164,7 @@ console.log("Created evaluator:", created.evaluator?.id);
 
 |模板|得分多少 |分数 |
 | - | - | - |
-|计划遵守 |特工的行动是否遵循其宣布的计划。 | `plan_adherence`（布尔值）：`true` 当代理遵循计划时。 |
+|计划遵守|特工的行动是否遵循其宣布的计划。 | `plan_adherence`（布尔值）：`true` 当代理遵循计划时。 |
 |工具选择|代理是否以合理的顺序选择了正确的工具，没有不必要的电话。 | `tool_selection`（布尔值）：`true` 当刀具选择准确且高效时。 |
 |轨迹精度|代理的路径是否合乎逻辑、显示出明显的进展并且相当有效。 | `trajectory_accuracy`（布尔值）：`true` 当轨迹准确且高效时。 |
 
@@ -199,7 +199,7 @@ console.log("Created evaluator:", created.evaluator?.id);
 
 ## 管理评估者跟踪保留
 
-当在线评估器对跟踪进行评分时，它会将反馈附加到跟踪。这可以将跟踪自动升级到[extended retention](/langsmith/usage-and-billing#data-retention-auto-upgrades)，具体取决于评估器的保留设置。延长保留时间可以使迹线保持更长的时间，但成本更高。当您在 [tracing project](/langsmith/observability-concepts#tracing-projects) 或代理环境上设置在线评估器时，您可以选择退出此升级，以便评分跟踪保持基本保留。仅当项目的[default retention](/langsmith/billing#change-project-level-default-retention)为[base tier](/langsmith/usage-and-billing#how-it-works)时，此控件才可用。如果项目默认为延长保留 ([set at the project or workspace level](/langsmith/data-purging-compliance#data-retention))，则评估者评分的轨迹将遵循该默认值，并且该选项将被锁定。
+当在线评估器对跟踪进行评分时，它会将反馈附加到跟踪。这可以将跟踪自动升级到[extended retention](/langsmith/usage-and-billing#data-retention-auto-upgrades)，具体取决于评估器的保留设置。当您在 [tracing project](/langsmith/observability-concepts#tracing-projects) 或代理环境上设置在线评估器时，您可以选择退出此升级，以便评分跟踪保持基本保留。仅当项目的[default retention](/langsmith/billing#change-project-level-default-retention)为[base tier](/langsmith/usage-and-billing#how-it-works)时，此控件才可用。如果项目默认为延长保留 ([set at the project or workspace level](/langsmith/data-purging-compliance#data-retention))，则评估者评分的轨迹将遵循该默认值，并且该选项将被锁定。
 
 要选择不延长评分迹线的保留时间：
 
@@ -207,9 +207,9 @@ console.log("Created evaluator:", created.evaluator?.id);
 2. 展开评估器配置面板中的**高级**部分。
 3. 清除**延长迹线保留**。
 
-该更改适用于保存评估器后评分的轨迹。现有的评分跟踪保留其当前的保留级别。
+该更改适用于保存评估器后评分的轨迹。现有评分跟踪保留其当前保留级别。
 
-上述的 **扩展跟踪保留** 切换适用于跟踪级和线程级（多轮）在线评估器。有关多轮评估器的更多信息，请参阅[Set up multi-turn online evaluators](/langsmith/online-evaluations-multi-turn)。
+上面描述的 **扩展跟踪保留** 切换适用于跟踪级别和线程级别（多轮）在线评估器。有关多轮评估器的更多信息，请参阅[Set up multi-turn online evaluators](/langsmith/online-evaluations-multi-turn)。
 
 ## 包括扩展统计数据
 
@@ -232,7 +232,7 @@ console.log("Created evaluator:", created.evaluator?.id);
 
 1. 创建或打开第二个求值器并展开其过滤器。有关更多信息，请参阅 [Apply a filter to runs that trigger the evaluator](/langsmith/online-evaluations-llm-as-judge#apply-a-filter-to-runs-that-trigger-the-evaluator)（LLM 法官评估者）或 [Create a filter](/langsmith/online-evaluations-code#3-create-a-filter)（代码评估者）。
 
-2. 过滤第一个评估者的反馈键。过滤器匹配键而不是生成它的评估器，因此来自具有该键的任何源的反馈都会触发第二个评估器，包括[user feedback](/langsmith/attach-user-feedback)。使用只有第一个评估者生成的密钥。
+2. 过滤第一个评估者的反馈键。过滤器匹配密钥而不是生成密钥的评估器，因此来自具有该密钥的任何源的反馈都会触发第二个评估器，包括[user feedback](/langsmith/attach-user-feedback)。使用只有第一个评估者生成的密钥。
    * 要在每次运行时触发第一个评估者评分，请仅对键进行过滤：
 
      ```text theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
@@ -258,7 +258,7 @@ console.log("Created evaluator:", created.evaluator?.id);
 
 `avg` 字段对运行中具有该键的每个反馈记录进行平均，因此仅当运行有一个具有该键的记录时，它才等于第一个评估者的分数。具有相同键的另一记录（例如用户反馈）会改变平均值。
 
-## 删除评估器当评估器附加到跟踪容器或数据集时，您无法删除它。要删除评估器：
+## 删除评估者当评估器附加到跟踪容器或数据集时，您无法删除它。要删除评估器：
 
 1. 在[LangSmith UI](https://smith.langchain.com?utm_source=docs\&utm_medium=cta\&utm_campaign=langsmith-signup\&utm_content=langsmith-evaluators)中，选择左侧边栏中的**评估器**。
 2. 选择您要删除的评估者。

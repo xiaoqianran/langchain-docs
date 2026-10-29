@@ -1,10 +1,14 @@
 <!-- langchain-docs: machine-translated zh-CN from English source -->
 
-<!-- langchain-docs: Trace AutoGen applications | https://docs.langchain.com/langsmith/trace-with-autogen -->
+<!-- langchain-docs: Trace AutoGen agents | https://docs.langchain.com/langsmith/trace-with-autogen -->
 
-# 跟踪 AutoGen 应用程序
+# 跟踪 AutoGen 代理
 
 LangSmith 可以使用 OpenTelemetry 仪器捕获 [AutoGen](https://microsoft.github.io/autogen/stable/) 生成的痕迹。本指南向您展示如何自动捕获 AutoGen 多代理对话中的跟踪并将其发送到 LangSmith 进行监控和分析。
+
+> [!注意]
+>
+> 在发送跟踪之前，在[agent-based workspace](/langsmith/agents)、[create an agent](/langsmith/create-an-agent) 中进行一次。使用[agent addressing](/langsmith/log-traces-to-agent)选择其标识符和环境。如果集成需要 `project_name`，请使用所选环境的 [⟦T8⟧](/langsmith/create-an-agent#use-an-environment-project) 作为兼容性值。
 
 ## 安装
 
@@ -22,17 +26,18 @@ uv add langsmith autogen-agentchat autogen-ext opentelemetry-instrumentation-ope
 
 ### 1.配置环境变量
 
-设置您的 [API keys](/langsmith/create-account-api-key) 和项目名称：
+设置您的 [API keys](/langsmith/create-account-api-key)、代理标识符和环境：
 
 ```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 export LANGSMITH_API_KEY=<your_langsmith_api_key>
-export LANGSMITH_PROJECT=<your_project_name>
+export LANGSMITH_AGENT_ID="<your-agent-id>"
+export LANGSMITH_AGENT_ENVIRONMENT="production"
 export OPENAI_API_KEY=<your_openai_api_key>
 ```
 
 ### 2. 配置 OpenTelemetry 集成
 
-在您的 AutoGen 应用程序中，配置 LangSmith OpenTelemetry 集成以及 OpenAI 仪器：
+在您的 AutoGen 代理中，配置 LangSmith OpenTelemetry 集成以及 OpenAI 仪器：
 
 ```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 from langsmith.integrations.otel import OtelSpanProcessor
@@ -49,9 +54,9 @@ trace.set_tracer_provider(tracer_provider)
 OpenAIInstrumentor().instrument()
 ```
 
-### 3. 创建并运行您的 AutoGen 应用程序
+### 3. 创建并运行您的 AutoGen 代理
 
-配置完成后，您的 AutoGen 应用程序将自动将跟踪发送到 LangSmith。将跟踪器提供程序传递给运行时以实现完整的跟踪覆盖：
+配置完成后，您的 AutoGen 代理将自动将跟踪发送到LangSmith。将跟踪器提供程序传递给运行时以实现完整的跟踪覆盖：
 
 ```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 import asyncio
@@ -149,9 +154,7 @@ async def run_with_metadata():
         await Console(team.run_stream(task=task))
 ```
 
-### 与其他乐器结合
-
-您可以将 AutoGen 跟踪与其他 OpenTelemetry 仪器结合起来：
+### 与其他乐器结合You can combine AutoGen tracing with other OpenTelemetry instrumentors:
 
 ```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 from opentelemetry.instrumentation.openai import OpenAIInstrumentor
@@ -169,6 +172,6 @@ HTTPXClientInstrumentor().instrument()
 
 ***
 
-[Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
+[Connect these docs](/use-these-docs) to your agent of choice via MCP for real-time answers.
 
 [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/trace-with-autogen.mdx) 或 [file an issue](https://github.com/langchain-ai/docs/issues/new/choose)。

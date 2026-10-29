@@ -332,7 +332,7 @@ await client.runs.wait( # (1)!
 )
 ```
 
-1. 使用`interrupt_before`和`interrupt_after`参数调用`client.runs.wait`。这是一个运行时配置，可以在每次调用时更改。
+1. 使用`interrupt_before`和`interrupt_after`参数调用`client.runs.wait`。这是一个运行时配置，可以针对每次调用进行更改。
 2. `interrupt_before` 指定执行该节点之前应暂停执行的节点。
 3. `interrupt_after` 指定该节点执行完毕后应暂停执行的节点。
 
@@ -348,7 +348,7 @@ await client.runs.wait( // (1)!
     interruptAfter: ["node_b", "node_c"] // (3)!
     }
 )
-```1. 使用`interruptBefore`和`interruptAfter`参数调用`client.runs.wait`。这是一个运行时配置，可以在每次调用时更改。
+```1. 使用`interruptBefore`和`interruptAfter`参数调用`client.runs.wait`。这是一个运行时配置，可以针对每次调用进行更改。
 2. `interruptBefore` 指定执行该节点之前应暂停执行的节点。
 3. `interruptAfter` 指定该节点执行完毕后应暂停执行的节点。
 
@@ -468,9 +468,8 @@ curl --request POST \
 
 * [Human-in-the-loop conceptual guide](/oss/python/langgraph/interrupts)：了解有关 LangGraph 人机交互功能的更多信息。
 * [Common patterns](/oss/python/langgraph/interrupts#common-patterns)：学习如何实现批准/拒绝操作、请求用户输入、工具调用审查和验证人工输入等模式。
+* [Human-in-the-loop over MCP](/langsmith/server-mcp-elicitation)：应答来自MCP客户端的中断。
 
-***
-
-[Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时答案。
+***[Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
 
 [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/add-human-in-the-loop.mdx) 或 [file an issue](https://github.com/langchain-ai/docs/issues/new/choose)。

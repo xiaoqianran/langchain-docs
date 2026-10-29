@@ -40,20 +40,28 @@ CLI 打印本地服务器和 Studio URL 并在浏览器中打开 Studio。在 St
 
 1. 验证项目并编译为`.mda/build`。
 2. 将项目`.env`复制到本地构建中，并在需要时添加仅限本地的身份配置。
-3. 创建本地 [Context Hub](/langsmith/javascript/managed-deep-agents-context-hub) 模型以获取指令、技能和记忆。
+3. 创建本地 [Context Hub](/langsmith/javascript/managed-deep-agents-context-hub) 模拟以获取指令、技能和记忆。
 4. 启动特定语言的LangGraph开发服务器。
 5. 在 Studio 中打开代理。
 
 本地开发不会创建或更新托管部署。
 
-## 配置本地服务器|旗帜|使用|
+## 跟踪本地运行`mda dev` 将跟踪发送到代理的**本地**环境。项目名称为`{name}-local`，取自您传递给`define_deep_agent`或`defineDeepAgent`的`name`。
+
+在 [agent-based workspace](/langsmith/agents) 中，LangSmith 拒绝这些跟踪，直到代理记录存在。 [⟦T15⟧](/langsmith/javascript/managed-deep-agents-deploy) 创建该记录。 `mda dev` 本身则不然。
+
+在依赖本地跟踪之前，请在 UI 或 API 中使用相同的标识符运行 [create the agent](/langsmith/create-an-agent) 一次，或者运行 `mda deploy` 一次。当跟踪被拒绝时，工作室聊天仍然有效。
+
+## 配置本地服务器
+
+|旗帜|使用 |
 | - | - |
 | `--port PORT` |设置本地服务器端口。 |
 | `--hostname HOSTNAME` |设置服务器侦听的主机名。 |
 | `--no-browser` |启动服务器而不自动打开 Studio。 |
 | `--no-reload` |禁用LangGraph开发服务器的热重载。 |
 
-有关所有命令的详细信息，请参阅[⟦T14⟧ CLI reference](/langsmith/javascript/managed-deep-agents-cli#develop-locally)。
+有关所有命令的详细信息，请参阅[⟦T22⟧ CLI reference](/langsmith/javascript/managed-deep-agents-cli#develop-locally)。
 
 ## 了解当地行为
 
@@ -61,9 +69,7 @@ CLI 打印本地服务器和 Studio URL 并在浏览器中打开 Studio。在 St
 
 * 如果代理使用身份，Studio 会自动提供本地测试用户。
 * 如果配置的沙箱不可用，代理将使用临时本地文件夹。 CLI 打印文件夹路径。
-* [Schedules](/langsmith/javascript/managed-deep-agents-schedules) 不要运行。 `mda dev` 在启动时列出每个计划，但不配置它，因此不会在本地触发计划的运行。
-
-这些默认值与部署的代理不同。在生产中使用代理之前，请在开发部署中测试身份和沙箱行为。
+* [Schedules](/langsmith/javascript/managed-deep-agents-schedules) 不要运行。 `mda dev` 在启动时列出每个计划，但不配置它，因此不会在本地触发计划的运行。这些默认值与部署的代理不同。在生产中使用代理之前，请在开发部署中测试身份和沙箱行为。
 
 ***
 

@@ -78,10 +78,12 @@ Set the deployment name explicitly when the directory name is not the name you w
 uv run mda deploy --name research-assistant
 ```
 
-Use `--deployment-type prod` when creating a production deployment:
+`mda deploy` creates a Serverless deployment by default. Use `--deployment-type dedicated` when creating a Dedicated deployment.
+
+Serverless requires a supported GCP SaaS environment. AWS, Azure, self-hosted, and hybrid environments reject Serverless deployments. Use `dedicated` for always-on capacity.
 
 ```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-uv run mda deploy --deployment-type prod
+uv run mda deploy --deployment-type dedicated
 ```
 
 Use `--no-wait` to trigger the build without polling for completion:

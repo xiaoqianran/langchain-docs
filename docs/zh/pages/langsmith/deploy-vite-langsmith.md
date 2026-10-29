@@ -202,7 +202,7 @@ pnpm run dev
 * `LANGSMITH_API_KEY`：演示客户端使用的LangSmith API 密钥。
 
 ## 故障排除* `pnpm run dev`启动但无法连接UI：本地开发者将`VITE_AGENT_API_URL`留空，然后重新启动`pnpm run dev`。
-* 座席本地无法应答：确认`OPENAI_API_KEY`设置为`.env`。
+* 座席本地应答失败：确认`OPENAI_API_KEY`设置为`.env`。
 * `pnpm run deploy` 失败并出现身份验证错误：确认 `LANGSMITH_API_KEY` 具有部署访问权限。
 * 远程UI连接失败：确认`VITE_AGENT_API_URL`是部署根URL，不带路径后缀。
 * 重启本地开发后线程消失：本地`langgraph dev`使用内存中的`MemorySaver`； LangSmith 部署在生产中提供持久存储。
@@ -274,7 +274,7 @@ pnpm run dev
 >
 > 当 `js-langsmith/agent/` 下的文件或共享配置文件发生更改时，代理会通过 GitHub Actions 进行部署：
 >
-> * 工作流程：[⟦T89⟧](https://github.com/langchain-ai/deployment-cookbook/blob/main/.github/workflows/deploy-langsmith-agent.yml)
+> * 工作流程：[⟦T89⟧](https://github.com/langchain-ai/deployment-cookbook/blob/main/.github/workflows/deploy-agent.yml)
 > * 动作：`langgraphjs deploy` 至 LangSmith。
 > * 所需秘密：`LANGSMITH_API_KEY`。
 > * 可选变量：`LANGSMITH_DEPLOYMENT_NAME`。

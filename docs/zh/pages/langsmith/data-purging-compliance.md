@@ -23,7 +23,7 @@ LangSmith 提供自动数据保留功能，以帮助合规性和存储管理。�
 
 > [!注意]
 >
-> 对保留期的更改仅适用于新跟踪。现有痕迹不受影响。
+> 对保留期限的更改仅适用于新跟踪。现有痕迹不受影响。
 
 ### 配置延长保留
 
@@ -97,7 +97,7 @@ curl -X PUT "https://api.smith.langchain.com/api/v1/ttl-settings" \
 
 ### 删除时间线
 
-跟踪删除是在非高峰使用时间进行的，并且不是即时的。 LangChain 在周末运行删除作业。没有删除确认 - 您需要再次查询数据以验证它是否已被删除。
+跟踪删除是在非高峰使用时间进行的，并且不是即时的。 SmithDB 可能会立即使跟踪变得不可查询。大多数删除都会在 6 小时或更短的时间内得到强化。要确认删除，请再次查询数据以验证其是否已被删除。
 
 ### 删除特定痕迹
 
@@ -105,7 +105,7 @@ curl -X PUT "https://api.smith.langchain.com/api/v1/ttl-settings" \
 
 > [!注意]
 >
-> `session_id` 是您尝试删除的跟踪的项目 ID。您可以在 LangSmith UI 的跟踪项目页面上找到它。
+> `session_id` 是您尝试删除的跟踪的项目 ID。您可以在LangSmith UI 的追踪项目页面找到它。
 
 ```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 curl -X POST "https://api.smith.langchain.com/api/v1/runs/delete" \
@@ -129,9 +129,9 @@ curl -X POST "https://api.smith.langchain.com/api/v1/runs/delete" \
 
 对于批量操作，示例删除遵循两步过程：
 
-#### 1. 通过元数据搜索示例
+#### 1. 通过元数据搜索示例查找工作区中所有数据集具有匹配元数据的所有示例。
 
-查找工作区中所有数据集具有匹配元数据的所有示例。[GET /examples](/langsmith/smith-api/examples/read-examples)
+[GET /examples](/langsmith/smith-api/examples/read-examples)
 
 * `as_of` 必须明确指定为时间戳。仅返回 `as_of` 日期之前创建的示例
 
@@ -183,6 +183,6 @@ curl -X POST "https://api.smith.langchain.com/v1/platform/datasets/examples/dele
 
 ***
 
-[Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时答案。
+[Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
 
 [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/data-purging-compliance.mdx) 或 [file an issue](https://github.com/langchain-ai/docs/issues/new/choose)。

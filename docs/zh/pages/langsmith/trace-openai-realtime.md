@@ -1,8 +1,8 @@
 <!-- langchain-docs: machine-translated zh-CN from English source -->
 
-<!-- langchain-docs: Trace OpenAI Realtime applications | https://docs.langchain.com/langsmith/trace-openai-realtime -->
+<!-- langchain-docs: Trace OpenAI Realtime agents | https://docs.langchain.com/langsmith/trace-openai-realtime -->
 
-# 跟踪OpenAI 实时应用程序
+# 追踪 OpenAI 实时代理
 
 使用 LangSmith SDK 跟踪 OpenAI LangSmith 中的实时语音代理。
 
@@ -12,13 +12,17 @@
 
 OpenAI Realtime 是一种语音到语音模型，可通过 WebSocket 流式传输键入的事件。无论您是使用原始连接还是OpenAI Agents SDK 构建它，集成都会将每个对话捕获为单个LangSmith 跟踪，并按顺序分组每个有意义的事件（脚本、模型响应和工具调用）的跨度。
 
-将您的 [OpenAI Realtime API](https://platform.openai.com/docs/guides/realtime) 语音代理追踪到 LangSmith。有关高级约定，请参阅[Voice tracing fundamentals](/langsmith/trace-voice-fundamentals)。
+追踪您的 [OpenAI Realtime API](https://platform.openai.com/docs/guides/realtime) 语音代理至 LangSmith。有关高级约定，请参阅[Voice tracing fundamentals](/langsmith/trace-voice-fundamentals)。
+
+> [!注意]
+>
+> 在发送跟踪之前，在[agent-based workspace](/langsmith/agents)、[create an agent](/langsmith/create-an-agent) 中进行一次。使用[agent addressing](/langsmith/log-traces-to-agent)选择其标识符和环境。如果集成需要 `project_name`，请使用所选环境的 [⟦T8⟧](/langsmith/create-an-agent#use-an-environment-project) 作为兼容性值。
 
 ## 选择一种方法
 
 使用 OpenAI Realtime API 进行构建的方法有两种，LangSmith 为每种方法提供了跟踪集成：
 
-* 如果您直接与实时客户端连接，请使用`wrap_realtime`。
+* 如果您直接连接实时客户端，请使用`wrap_realtime`。
 * 如果您使用 OpenAI Agents SDK 进行构建，请改用 `wrap_realtime_session`。
 
 ## 安装
@@ -38,15 +42,16 @@ uv add "langsmith[openai-realtime]"
 ```bash .env theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 LANGSMITH_API_KEY=<your-langsmith-api-key>
 LANGSMITH_TRACING=true
-LANGSMITH_PROJECT=<your-desired-langsmith-project>
+LANGSMITH_AGENT_ID="<your-agent-id>"
+LANGSMITH_AGENT_ENVIRONMENT="production"
 OPENAI_API_KEY=<your-openai-api-key>
 ```
 
-## 使用实时客户端
+## 使用实时客户端当您使用 `client.realtime.connect()` 打开 WebSocket 并驱动事件循环时，请使用此选项。
 
-当您使用 `client.realtime.connect()` 自行打开 WebSocket 并驱动事件循环时，请使用此选项。
+### 设置跟踪
 
-### 设置跟踪`wrap_realtime` 返回您连接的透明代理。您现有的 `async for event in connection` 循环、`session.update` 和工具处理保持不变：
+`wrap_realtime` 返回您连接的透明代理。您现有的 `async for event in connection` 循环、`session.update` 和工具处理保持不变：
 
 ```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 from langsmith.integrations.openai_realtime import wrap_realtime
@@ -56,7 +61,6 @@ client = AsyncOpenAI()
 
 async with client.realtime.connect(model="gpt-realtime-2") as raw, wrap_realtime(
     raw,
-    project_name="openai-realtime-voice",
 ) as connection:
     await connection.session.update(session={...})  # your existing config
 
@@ -66,9 +70,9 @@ async with client.realtime.connect(model="gpt-realtime-2") as raw, wrap_realtime
 
 > [!注意]
 >
-> 每个对话都会被捕获为自己的踪迹。要将其与 LangSmith [thread](/langsmith/threads) 中的相关交互分组（例如继续之前的会话或从文本聊天中接听），请传递 `thread_id`。跨跟踪重复使用相同的 ID 将它们的事件链接在一起。
+> 每个对话都会被捕获为自己的踪迹。要将其与 LangSmith [thread](/langsmith/threads) 中的相关交互分组（例如，继续之前的会话或从文本聊天中接听），请传递 `thread_id`。跨跟踪重复使用相同的 ID 将它们的事件链接在一起。
 
-自动处理嵌套在该事件下的事件时运行的任何 [⟦T15⟧](/langsmith/annotate-code) 工具。
+自动处理嵌套在该事件下的事件时运行的任何 [⟦T17⟧](/langsmith/annotate-code) 工具。
 
 > [!注意]
 >
@@ -103,9 +107,9 @@ async with client.realtime.connect(model="gpt-realtime-2") as raw, wrap_realtime
 
 > [!注意]
 >
-> 您应该从扬声器录制座席的音频，以便录音仅反映播放的内容。在插入期间，生成的音频在播放前被丢弃，并且不应被记录。这样做可以使跟踪与用户实际听到的内容保持一致。
+> 您应该从扬声器录制座席的音频，以便录音仅反映播放的内容。在插入期间，生成的音频在播放前被丢弃，并且不应被记录。这样做可以使跟踪与用户实际听到的内容保持一致。## 使用OpenAI代理SDK
 
-## 使用OpenAI代理SDK当您使用 [OpenAI Agents SDK](https://openai.github.io/openai-agents-python/realtime/guide/) (`RealtimeAgent` / `RealtimeRunner`) 构建代理时，请使用此选项，该代理拥有转弯和工具调用循环。
+当您使用 [OpenAI Agents SDK](https://openai.github.io/openai-agents-python/realtime/guide/) (`RealtimeAgent` / `RealtimeRunner`) 构建代理时，请使用此选项，该代理拥有转弯和工具调用循环。
 
 > [!注意]
 >
@@ -129,7 +133,6 @@ session = await runner.run()
 
 async with wrap_realtime_session(
     session,
-    project_name="openai-realtime-voice",
 ) as conn:
     async for event in conn:
         ...  # your handling: play audio, update UI
@@ -158,11 +161,11 @@ async def send_mic(mic_chunk):
 async for event in conn:
     if event.type == "audio":
         speaker.play(event.audio.data)
-```
-
-> [!注意]
+```> [!注意]
 >
-> 您应该从扬声器录制座席的音频，以便录音仅反映播放的内容。在插入期间，生成的音频在播放前被丢弃，并且不应被记录。这样做可以使跟踪与用户实际听到的内容保持一致。## 后续步骤
+> 您应该从扬声器录制座席的音频，以便录音仅反映播放的内容。在插入期间，生成的音频在播放前被丢弃，并且不应被记录。这样做可以使跟踪与用户实际听到的内容保持一致。
+
+## 后续步骤
 
 > **[Voice fundamentals](/langsmith/trace-voice-fundamentals)**
 >

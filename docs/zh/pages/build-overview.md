@@ -4,7 +4,7 @@
 
 # 构建
 
-使用 LangChain、LangGraph、Deep Agents、托管 Deep Agents 和舰队构建代理。
+使用托管 Deep Agents、Deep Agents、LangChain、LangGraph 和舰队构建代理。
 
 # 构建
 
@@ -12,37 +12,41 @@ LangChain 开源堆栈提供了设计、测试和发布代理所需的构建块�
 
 ## 选择你的起点
 
-Deep Agents、LangChain 和 LangGraph 共享相同的开源堆栈，因此请根据您需要的控制程度进行选择。对于托管或无代码，请从 Managed Deep Agents 或 Fleet 开始：
+托管 Deep Agents、Deep Agents、LangChain 和 LangGraph 共享相同的开源堆栈，因此请根据您需要的控制程度进行选择。对于托管或无代码，请从 Managed Deep Agents 或 Fleet 开始：
 
 **Python**
 
-> **[Deep Agents](/oss/python/deepagents/overview)**
->
-> 为复杂、长时间运行的任务构建代理。完整的代理工具，包含规划、子代理、虚拟文件系统和内置长期内存。最快的启动方式。
-
 > **[Managed Deep Agents](/langsmith/python/managed-deep-agents-overview)**
 >
-> 使用托管部署基础设施构建深度代理。您写代理； LangSmith 运行线束和运行时。
+> 使用托管部署基础架构构建深度代理，以执行复杂、长时间运行的任务。完整的代理线束
+> 规划、子代理、虚拟文件系统和内置的长期内存。
+> 撰写代理的最快方式； LangSmith 运行线束和运行时。
+
+> **[Deep Agents](/oss/python/deepagents/overview)**
+>
+> 具有最大灵活性的相同Deep Agents安全带。自己托管代理，或者当您需要对运行时进行更多控制时运行自定义 LangSmith 部署。
 
 > **[LangChain](/oss/python/langchain/overview)**
 >
-> 一个最小的、可配置的代理框架。从模型、工具、提示和中间件中准确组合您所需的内容。
-
-> **[LangGraph](/oss/python/langgraph/overview)**
+> 一个最小的、可配置的代理框架。从模型、工具、提示和中间件中准确组合您所需的内容。> **[LangGraph](/oss/python/langgraph/overview)**
 >
-> 针对有状态、长时间运行代理的低级编排：持久执行、流式传输、内存和人机交互。> **[Prefer no-code?](/langsmith/fleet)**
+> 针对有状态、长时间运行代理的低级编排：持久执行、流式传输、内存和人机交互。
+
+> **[Prefer no-code?](/langsmith/fleet)**
 >
 > 使用 LangSmith Fleet 构建并运行代理，无需编写代码。
 
 **打字稿**
 
-> **[Deep Agents](/oss/javascript/deepagents/overview)**
->
-> 为复杂、长时间运行的任务构建代理。完整的代理工具，包含规划、子代理、虚拟文件系统和内置长期内存。最快的启动方式。
-
 > **[Managed Deep Agents](/langsmith/javascript/managed-deep-agents-overview)**
 >
-> 使用托管部署基础设施构建深度代理。您写代理； LangSmith 运行线束和运行时。
+> 使用托管部署基础架构构建深度代理，以执行复杂、长时间运行的任务。完整的代理线束
+> 规划、子代理、虚拟文件系统和内置的长期内存。
+> 撰写代理的最快方式； LangSmith 运行线束和运行时。
+
+> **[Deep Agents](/oss/javascript/deepagents/overview)**
+>
+> 具有最大灵活性的相同Deep Agents安全带。自己托管代理，或者当您需要对运行时进行更多控制时运行自定义 LangSmith 部署。
 
 > **[LangChain](/oss/javascript/langchain/overview)**
 >
@@ -56,9 +60,7 @@ Deep Agents、LangChain 和 LangGraph 共享相同的开源堆栈，因此请根
 >
 > 使用 LangSmith Fleet 构建并运行代理，无需编写代码。
 
-## 使用现成的代理
-
-> **[Deep Agents Code](/oss/deepagents/code/overview)**
+## 使用现成的代理> **[Deep Agents Code](/oss/deepagents/code/overview)**
 >
 > 基于Deep Agents SDK 构建的开源终端编码代理 (`dcode`)。在会话中切换模型、自定义技能和内存，并从 CLI 批准 shell 执行。
 
@@ -72,7 +74,9 @@ Deep Agents、LangChain 和 LangGraph 共享相同的开源堆栈，因此请根
 
 > **[Learn](/oss/python/learn)**
 >
-> 遵循常见代理模式和用例的教程和概念指南。> **[Reference](/oss/python/reference/overview)**
+> 遵循常见代理模式和用例的教程和概念指南。
+
+> **[Reference](/oss/python/reference/overview)**
 >
 > API 参考、错误代码、发行说明和迁移指南。
 
@@ -110,15 +114,15 @@ Deep Agents、LangChain 和 LangGraph 共享相同的开源堆栈，因此请根
 
 
 
-# 开放代理工程生态系统
-
-LangChain 为构建代理提供开源、模型无关的工具。 LangSmith 是一个与框架无关的平台，用于在整个代理开发生命周期中测试、部署、监控和改进代理。您可以控制代理系统的每一层，并利用您在生产中学到的知识不断改进它。
+# 开放代理工程生态系统LangChain 为构建代理提供开源、模型无关的工具。 LangSmith 是一个与框架无关的平台，用于在整个代理开发生命周期中测试、部署、监控和改进代理。您可以控制代理系统的每一层，并利用您在生产中学到的知识不断改进它。
 
 ## 代理开发生命周期
 
 > **[Build](/build-overview)**
 >
-> 使用 LangChain、LangGraph 和 Deep Agents 构建代理。> **[Test](/langsmith/evaluation)**
+> 使用托管 Deep Agents、Deep Agents、LangChain 和 LangGraph 构建代理。
+
+> **[Test](/langsmith/evaluation)**
 >
 > 使用数据集、评估和即时工程来评估代理。
 
@@ -158,9 +162,7 @@ LangChain 为构建代理提供开源、模型无关的工具。 LangSmith 是�
 >
 > 管理整个组织的用户、访问控制、策略和合规性。
 
-## 资源
-
-> **[LangChain Academy](https://academy.langchain.com/)**
+＃＃ 资源> **[LangChain Academy](https://academy.langchain.com/)**
 >
 > 参加有关使用 LangSmith 和我们的开源框架构建和改进代理的免费课程。
 
@@ -174,7 +176,7 @@ LangChain 为构建代理提供开源、模型无关的工具。 LangSmith 是�
 
 > **[Sign up for LangSmith](https://smith.langchain.com/)**
 >
-> 免费从LangSmith开始。
+> 免费开始使用LangSmith。
 
 > **[LangSmith status](https://status.smith.langchain.com/)**
 >

@@ -1,10 +1,14 @@
 <!-- langchain-docs: machine-translated zh-CN from English source -->
 
-<!-- langchain-docs: Trace Claude Agent SDK applications | https://docs.langchain.com/langsmith/trace-claude-agent-sdk -->
+<!-- langchain-docs: Trace with the Claude Agent SDK | https://docs.langchain.com/langsmith/trace-claude-agent-sdk -->
 
-# 跟踪 Claude Agent SDK 应用程序
+# 使用 Claude Agent SDK 进行跟踪
 
-[Claude Agent SDK](https://platform.claude.com/docs/en/agent-sdk/overview) 是一个用于与 Claude 一起构建代理应用程序的 SDK。 LangSmith 提供与 Claude Agent SDK 的本机集成，以自动跟踪代理执行、工具调用以及与 Claude 模型的交互。
+[Claude Agent SDK](https://platform.claude.com/docs/en/agent-sdk/overview) 是一个用于与 Claude 一起构建代理的 SDK。 LangSmith 提供与 Claude Agent SDK 的本机集成，以自动跟踪代理执行、工具调用以及与 Claude 模型的交互。
+
+> [!注意]
+>
+> 在发送跟踪之前，在[agent-based workspace](/langsmith/agents)、[create an agent](/langsmith/create-an-agent) 中进行一次。使用[agent addressing](/langsmith/log-traces-to-agent)选择其标识符和环境。如果集成需要 `project_name`，请使用所选环境的 [⟦T9⟧](/langsmith/create-an-agent#use-an-environment-project) 作为兼容性值。
 
 ## 安装
 
@@ -48,13 +52,13 @@ LANGSMITH_PROJECT=<your_langsmith_project>
 ANTHROPIC_API_KEY=<your_anthropic_api_key>
 ```
 
-您可以在 **设置** 下的 [LangSmith UI](https://smith.langchain.com?utm_source=docs\&utm_medium=cta\&utm_campaign=langsmith-signup\&utm_content=langsmith-trace-claude-agent-sdk) 中找到您的 LangSmith API 密钥和项目名称。
+从 [LangSmith UI](https://smith.langchain.com?utm_source=docs\&utm_medium=cta\&utm_campaign=langsmith-signup\&utm_content=langsmith-trace-claude-agent-sdk) 中的 **设置** 获取您的 LangSmith API 密钥。使用设置期间选择的代理标识符和环境。
 
 对于Anthropic API 密钥，请参阅[Claude console](https://console.anthropic.com/settings/keys)。
 
 ## 快速入门
 
-要为您的 Claude Agent SDK 应用程序启用 LangSmith 跟踪，请在应用程序启动时调用 `configure_claude_agent_sdk()`：
+要为您的 Claude Agent SDK 代码启用 LangSmith 跟踪，请在运行代理之前调用 `configure_claude_agent_sdk()`：
 
 ```python Python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 import asyncio

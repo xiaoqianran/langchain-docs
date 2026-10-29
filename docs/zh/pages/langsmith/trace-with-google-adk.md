@@ -1,14 +1,18 @@
 <!-- langchain-docs: machine-translated zh-CN from English source -->
 
-<!-- langchain-docs: Trace Google ADK applications | https://docs.langchain.com/langsmith/trace-with-google-adk -->
+<!-- langchain-docs: Trace Google ADK agents | https://docs.langchain.com/langsmith/trace-with-google-adk -->
 
-# 跟踪 Google ADK 应用程序
+# 追踪 Google ADK 代理
 
-本指南向您展示如何在 LangSmith 中追踪 [Google Agent Development Kit (ADK)](https://github.com/google/adk-python) 特工。您将为 ADK 应用程序配置自动跟踪，以捕获代理调用、工具调用和 LLM 交互。
+本指南向您展示如何在 LangSmith 中追踪 [Google Agent Development Kit (ADK)](https://github.com/google/adk-python) 特工。您将为 ADK 代理配置自动跟踪，以捕获代理调用、工具调用和 LLM 交互。
 
 > [!注意]
 >
-> 本指南涵盖 ADK 的标准执行路径（文本代理、工具和多代理工作流程）。要跟踪使用 ADK 的 `Runner.run_live` 流循环的 **Gemini Live** 语音代理，请参阅 [Trace Gemini Live applications](/langsmith/trace-gemini-live)。
+> 本指南涵盖 ADK 的标准执行路径（文本代理、工具和多代理工作流程）。要跟踪使用 ADK 的 `Runner.run_live` 流循环的 **Gemini Live** 语音代理，请参阅 [Trace Gemini Live agents](/langsmith/trace-gemini-live)。
+
+> [!注意]
+>
+> 在发送跟踪之前，在 [agent-based workspace](/langsmith/agents)、[create an agent](/langsmith/create-an-agent) 中进行一次。使用[agent addressing](/langsmith/log-traces-to-agent)选择其标识符和环境。如果集成需要 `project_name`，请使用所选环境的 [⟦T10⟧](/langsmith/create-an-agent#use-an-environment-project) 作为兼容性值。
 
 ## 安装
 
@@ -48,19 +52,17 @@ GOOGLE_API_KEY=<your_google_api_key>
 
 ## 配置跟踪
 
-要跟踪 ADK 代理，请使用 LangSmith SDK 中的 `configure_google_adk()`。在创建任何 ADK 代理之前，在应用程序启动时调用此函数一次：
+将 `LANGSMITH_AGENT_ID` 和 `LANGSMITH_AGENT_ENVIRONMENT` 设置为设置期间注册的代理。保留 `project_name` 未设置以使用此目的地。
+
+要跟踪 ADK 代理，请使用 LangSmith SDK 中的 `configure_google_adk()`。在创建任何 ADK 代理之前调用此函数一次：
 
 ```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 from langsmith.integrations.google_adk import configure_google_adk
 
-configure_google_adk(
-    project_name="my-adk-project",  # Optional: defaults to LANGSMITH_PROJECT env var
-)
+configure_google_adk()
 ```
 
-该函数接受以下可选参数：
-
-* `project_name`：要发送跟踪的LangSmith 项目。默认为 `LANGSMITH_PROJECT` 环境变量。
+该函数接受以下可选参数：* `project_name`：基于项目的跟踪的兼容性覆盖。保留其未设置以使用配置的代理和环境。
 * `name`：根跟踪的名称。默认为`"google_adk.session"`。
 * `metadata`：附加上下文的键值对字典。
 * `tags`：用于对痕迹进行分类的字符串列表。
@@ -129,9 +131,11 @@ async def main():
 
 if __name__ == "__main__":
     asyncio.run(main())
-```## 查看LangSmith中的踪迹
+```
 
-运行应用程序后，您可以在 [LangSmith UI](https://smith.langchain.com?utm_source=docs\&utm_medium=cta\&utm_campaign=langsmith-signup\&utm_content=langsmith-trace-with-google-adk) 中查看跟踪记录，其中包括：
+## 查看LangSmith中的踪迹
+
+运行代理后，您可以在[LangSmith UI](https://smith.langchain.com?utm_source=docs\&utm_medium=cta\&utm_campaign=langsmith-signup\&utm_content=langsmith-trace-with-google-adk)中查看跟踪，其中包括：
 
 * **代理调用**：通过 ADK 代理的完整流程
 * **工具调用**：代理进行的各个函数调用
@@ -146,7 +150,6 @@ if __name__ == "__main__":
 from langsmith.integrations.google_adk import configure_google_adk
 
 configure_google_adk(
-    project_name="production-agents",
     metadata={
         "environment": "production",
         "team": "ml-platform",

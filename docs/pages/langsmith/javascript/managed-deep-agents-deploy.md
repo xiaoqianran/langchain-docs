@@ -94,18 +94,20 @@ pnpm exec mda deploy --name research-assistant
 bunx mda deploy --name research-assistant
 ```
 
-Use `--deployment-type prod` when creating a production deployment:
+`mda deploy` creates a Serverless deployment by default. Use `--deployment-type dedicated` when creating a Dedicated deployment.
+
+Serverless requires a supported GCP SaaS environment. AWS, Azure, self-hosted, and hybrid environments reject Serverless deployments. Use `dedicated` for always-on capacity.
 
 ```bash npm theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-npx mda deploy --deployment-type prod
+npx mda deploy --deployment-type dedicated
 ```
 
 ```bash pnpm theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-pnpm exec mda deploy --deployment-type prod
+pnpm exec mda deploy --deployment-type dedicated
 ```
 
 ```bash bun theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-bunx mda deploy --deployment-type prod
+bunx mda deploy --deployment-type dedicated
 ```
 
 Use `--no-wait` to trigger the build without polling for completion:

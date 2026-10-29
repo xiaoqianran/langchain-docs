@@ -6,20 +6,25 @@
 
 本教程向您展示如何根据用户反馈优化分类器。分类器非常适合优化，因为收集所需的输出通常非常简单，这使得根据用户反馈创建一些镜头示例变得很容易。这正是我们在本例中要做的事情。
 
+> [!注意]
+>
+> 在发送跟踪之前，在[agent-based workspace](/langsmith/agents)、[create an agent](/langsmith/create-an-agent) 中进行一次。使用[agent addressing](/langsmith/log-traces-to-agent)选择其标识符和环境。如果集成需要 `project_name`，请使用所选环境的 [⟦T10⟧](/langsmith/create-an-agent#use-an-environment-project) 作为兼容性值。
+
 ## 目标
 
-在此示例中，我们将构建一个机器人，根据标题对 GitHub 问题进行分类。它将接受一个标题并将其分类为许多不同的类别之一。然后，我们将开始收集用户反馈并使用它来塑造该分类器的执行方式。
+在此示例中，我们将构建一个机器人，根据标题对 GitHub 问题进行分类。它将接收一个标题并将其分类为许多不同的类别之一。然后，我们将开始收集用户反馈并使用它来塑造该分类器的执行方式。
 
 ## 开始使用
 
-首先，我们将首先对其进行设置，以便将所有跟踪发送到特定项目。我们可以通过设置环境变量来做到这一点：
+注册分类器代理，然后配置其标识符和环境：
 
 ```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 import os
-os.environ["LANGSMITH_PROJECT"] = "classifier"
+os.environ["LANGSMITH_AGENT_ID"] = "<your-agent-id>"
+os.environ["LANGSMITH_AGENT_ENVIRONMENT"] = "production"
 ```
 
-然后我们可以创建我们的初始应用程序。这将是一个非常简单的函数，仅接受 GitHub 问题标题并尝试对其进行标记。
+然后我们可以创建我们的初始代理。这将是一个非常简单的函数，仅接受 GitHub 问题标题并尝试对其进行标记。
 
 ```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 import openai
@@ -56,11 +61,9 @@ def topic_classifier(
             }
         ],
     ).choices[0].message.content
-```
+```然后我们就可以开始与它交互。与它交互时，我们将提前生成 LangSmith 运行 ID 并将其传递给该函数。我们这样做是为了稍后可以附加反馈。
 
-然后我们就可以开始与它交互。与它交互时，我们将提前生成 LangSmith 运行 ID 并将其传递给该函数。我们这样做是为了稍后可以附加反馈。
-
-以下是我们调用该应用程序的方法：
+以下是我们调用代理的方法：
 
 ```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 from langsmith import uuid7
@@ -69,18 +72,25 @@ run_id = uuid7()
 topic_classifier(
     "fix bug in LCEL",
     langsmith_extra={"run_id": run_id})
-```以下是我们之后附加反馈的方法。我们可以通过两种形式收集反馈。
+```
+
+以下是我们之后附加反馈的方法。我们可以通过两种形式收集反馈。
 
 首先，我们可以收集“积极”反馈——这是模型正确的例子。
 
 ```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+import asyncio
+from langsmith import agent_address
+
 ls_client = Client()
 run_id = uuid7()
 topic_classifier(
     "fix bug in LCEL",
     langsmith_extra={"run_id": run_id})
-# Resolve the UUID of the project that owns the trace
-session_id = ls_client.create_project(project_name="classifier", upsert=True).id
+# Resolve the session_id for the agent environment
+address = agent_address(os.environ["LANGSMITH_AGENT_ID"], os.environ["LANGSMITH_AGENT_ENVIRONMENT"])
+resolved = asyncio.run(ls_client.sessions.resolve(**address))
+session_id = resolved.session_id
 ls_client.create_feedback(
     run_id,
     key="user-score",
@@ -92,12 +102,17 @@ ls_client.create_feedback(
 接下来，我们可以集中精力收集对应于一代“修正”的反馈。在此示例中，模型会将其分类为错误，而我确实希望将其分类为文档。
 
 ```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+import asyncio
+from langsmith import agent_address
+
 ls_client = Client()
 run_id = uuid7()
 topic_classifier(
     "fix bug in documentation",
     langsmith_extra={"run_id": run_id})
-session_id = ls_client.create_project(project_name="classifier", upsert=True).id
+address = agent_address(os.environ["LANGSMITH_AGENT_ID"], os.environ["LANGSMITH_AGENT_ENVIRONMENT"])
+resolved = asyncio.run(ls_client.sessions.resolve(**address))
+session_id = resolved.session_id
 ls_client.create_feedback(
     run_id,
     key="correction",
@@ -115,7 +130,7 @@ ls_client.create_feedback(
 
 ![Optimization Positive](https://mintcdn.com/langchain-5e9cc07a/E8FdemkcQxROovD9/langsmith/images/class-optimization-pos.png?fit=max\&auto=format\&n=E8FdemkcQxROovD9\&q=85\&s=6485ca961ed1c29d33f25f75f90ba939)
 
-## 更新应用程序
+## 更新代理
 
 我们现在可以更新代码以提取我们要发送运行的数据集。一旦我们将其拉下来，我们就可以创建一个包含示例的字符串。然后我们可以将此字符串作为提示的一部分！
 
@@ -178,9 +193,12 @@ def topic_classifier(
     ).choices[0].message.content
 ```
 
-如果现在使用与以前类似的输入运行应用程序，我们可以看到它正确地学习到与文档相关的任何内容（即使是错误）都应分类为 `documentation`
+如果现在使用与之前类似的输入运行代理，我们可以看到它正确地学习到与文档相关的任何内容（即使是错误）都应分类为 `documentation`
 
 ```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+import asyncio
+from langsmith import agent_address
+
 ls_client = Client()
 run_id = uuid7()
 topic_classifier(
@@ -207,9 +225,12 @@ def find_similar(examples, topic, k=5):
     return examples
 ```
 
-然后我们可以在应用程序中使用它
+然后我们可以在代理中使用它
 
 ```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+import asyncio
+from langsmith import agent_address
+
 ls_client = Client()
 
 def create_example_string(examples):

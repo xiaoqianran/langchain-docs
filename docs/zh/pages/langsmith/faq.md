@@ -8,7 +8,7 @@
 
 * 您可能已经部署了LangSmith，但没有设置 SSO。 LangSmith 需要 SSO 来管理用户和 API 密钥。您可以在 [configuration section.](/langsmith/self-host-sso) 中找到有关设置 SSO 的更多信息
 
-### *负载平衡/入口如何工作*？
+### *How does load balancing/ingress work*?
 
 * 您将需要向您的应用程序/用户公开前端容器/服务。这将处理到所有下游服务的路由。
 * 您需要在入口级别终止 SSL。我们建议使用 AWS ALB、GCP 负载均衡器或 Nginx 等托管服务。
@@ -19,9 +19,9 @@
 
 您可以在 [configuration section.](/langsmith/self-host-sso) 中找到有关设置 SSO 的更多信息
 
-### *我可以使用外部存储服务吗？*
+### *Can I use external storage services?*
 
-* 您可以配置LangSmith使用所有存储服务的外部版本。在生产环境中，我们强烈建议使用外部存储服务。查看[configuration section](/langsmith/self-hosted)了解更多信息。### *我的应用程序需要出口才能正常运行吗？*
+* 您可以配置LangSmith使用所有存储服务的外部版本。在生产环境中，我们强烈建议使用外部存储服务。 Check out the [configuration section](/langsmith/self-hosted) for more information.### *我的应用程序需要出口才能正常运行吗？*
 
 我们的部署仅需要出口来处理一些事情（其中大部分可以驻留在您的 VPC 内）：
 
@@ -118,13 +118,13 @@ LangGraph 是一个有状态的编排框架，可为代理工作流程带来更�
 | SDK | Python 和 JavaScript | Python 和 JavaScript |
 | HTTP API |无 |是 - 对于检索和更新状态或长期记忆，或创建可配置的助手很有用 |
 |流媒体 |基本 |逐个令牌消息的专用模式 |
-|检查点 |社区贡献 |开箱即用的支持 |
+|检查点|社区贡献 |开箱即用的支持 |
 |持久层|自我管理|具有高效存储的托管 Postgres |
 |部署|自我管理| • 云 • 免费自托管 • 企业（付费自托管） |
 |可扩展性|自我管理|任务队列和服务器的自动扩展|
-|容错 |自我管理|自动重试 |
-|并发控制|简单的线程 |支持双短信|
-|日程安排|无 | Cron 调度 |
+|容错|自我管理|自动重试 |
+|并发控制|简单的线程 |支持双短信 |
+|日程安排 |无 | Cron 调度 |
 |监控|无 |与 LangSmith 集成以实现可观察性 |
 | IDE集成|工作室 |工作室 |
 
@@ -138,13 +138,13 @@ LangGraph 是一个有状态的编排框架，可为代理工作流程带来更�
 
 ### LangGraph 可以与 OSS LLM 一起使用吗？
 
-是的！ LangGraph is totally ambivalent to what LLMs are used under the hood. The main reason we use closed LLMs in most of the tutorials is that they seamlessly support tool calling, while OSS LLMs often don't. But tool calling is not necessary (see [Does LangGraph work with LLMs that don't support tool calling?](#does-langgraph-work-with-llms-that-dont-support-tool-calling)) so you can totally use LangGraph with OSS LLMs.
+是的！ LangGraph 与法学硕士的幕后用途完全矛盾。我们在大多数教程中使用封闭式 LLM 的主要原因是它们无缝支持工具调用，而 OSS LLM 通常不支持。但工具调用不是必需的（参见[Does LangGraph work with LLMs that do not support tool calling?](#does-langgraph-work-with-llms-that-do-not-support-tool-calling)），因此您完全可以将LangGraph与OSS LLM一起使用。
 
-### Can I use Studio without logging in to LangSmith?
+### 不登录LangSmith可以使用Studio吗？
 
 是的！您可以使用[development version of Agent Server](/langsmith/local-dev-testing)在本地运行后端。
-This will connect to the Studio frontend hosted as part of LangSmith.
-If you set an environment variable of `LANGSMITH_TRACING=false`, then no traces will be sent to LangSmith.
+这将连接到作为 LangSmith 一部分托管的 Studio 前端。
+如果您设置环境变量`LANGSMITH_TRACING=false`，则不会将任何跟踪发送到LangSmith。
 
 ### 什么是部署运行？部署运行是对通过 LangSmith 部署部署的 LangGraph 代理的一次端到端调用。节点和子图不单独计费。对其他 LangGraph 代理的调用（通过 RemoteGraph 或 LangGraph SDK 或直接 API）将根据托管被调用代理的部署单独收费。人机交互中断在恢复时会创建单独的部署运行。
 

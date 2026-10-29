@@ -1491,6 +1491,36 @@ Declarative subagents defined via `subagents=` do not inherit the main agent's m
 >
 > `trigger` also accepts `("fraction", ...)` for a percentage of the model's context window, and a list of thresholds combines them with OR semantics. See the [`SummarizationMiddleware`](https://reference.langchain.com/python/langchain/agents/middleware/summarization/SummarizationMiddleware) reference for the full set of options.
 
+> **Summarize with a cheaper model**
+>
+> > [!NOTE]
+> >
+> > The `summarizer` parameter requires `deepagents>=0.7.26`.
+>
+> Override [`SummarizationMiddleware`](https://reference.langchain.com/python/langchain/agents/middleware/summarization/SummarizationMiddleware) with `summarizer=` to generate summaries with a different model or a custom callable. The primary `model` still supplies the profile and token counting.
+>
+> Pass a model name string or `BaseChatModel` instance to summarize with that model using `summary_prompt`. Pass a `Runnable` or callable to generate the summary text directly; `summary_prompt` is not used.
+>
+> ```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> from deepagents import create_deep_agent
+> from deepagents.backends import StateBackend
+> from deepagents.middleware import SummarizationMiddleware
+>
+> backend = StateBackend()
+> model = "anthropic:claude-sonnet-4-6"
+>
+> agent = create_deep_agent(
+>     model=model,
+>     middleware=[
+>         SummarizationMiddleware(
+>             model=model,  # profile and token counting
+>             backend=backend,
+>             summarizer="anthropic:claude-haiku-5-5",  # cheaper model writes the summary
+>         ),
+>     ],
+> )
+> ```
+
 > **Update the prompt cache TTL**
 >
 > Override [`AnthropicPromptCachingMiddleware`](https://reference.langchain.com/python/langchain-anthropic/middleware/prompt_caching/AnthropicPromptCachingMiddleware) to extend the cache lifetime beyond the default `5m` TTL, useful for agents with long gaps between turns. See [Prompt caching](/oss/python/deepagents/overview#prompt-caching) for how caching is applied by default.

@@ -1,10 +1,14 @@
 <!-- langchain-docs: machine-translated zh-CN from English source -->
 
-<!-- langchain-docs: Trace CrewAI applications | https://docs.langchain.com/langsmith/trace-with-crewai -->
+<!-- langchain-docs: Trace CrewAI agents | https://docs.langchain.com/langsmith/trace-with-crewai -->
 
-# 跟踪 CrewAI 应用程序
+# Trace CrewAI 代理
 
 LangSmith 可以使用 OpenTelemetry 仪器捕获 [CrewAI](https://github.com/crewAIInc/crewAI) 生成的痕迹。本指南向您展示如何自动从 CrewAI 多代理工作流程捕获跟踪并将其发送到 LangSmith 进行监控和分析。
+
+> [!注意]
+>
+> 在发送跟踪之前，在[agent-based workspace](/langsmith/agents)、[create an agent](/langsmith/create-an-agent) 中进行一次。使用[agent addressing](/langsmith/log-traces-to-agent)选择其标识符和环境。如果集成需要 `project_name`，请使用所选环境的 [⟦T8⟧](/langsmith/create-an-agent#use-an-environment-project) 作为兼容性值。
 
 ## 安装
 
@@ -22,17 +26,18 @@ uv add langsmith crewai opentelemetry-instrumentation-crewai opentelemetry-instr
 
 ### 1.配置环境变量
 
-设置您的 [API keys](/langsmith/create-account-api-key) 和项目名称：
+设置您的 [API keys](/langsmith/create-account-api-key)、代理标识符和环境：
 
 ```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 export LANGSMITH_API_KEY=<your_langsmith_api_key>
-export LANGSMITH_PROJECT=<your_project_name>
+export LANGSMITH_AGENT_ID="<your-agent-id>"
+export LANGSMITH_AGENT_ENVIRONMENT="production"
 export OPENAI_API_KEY=<your_openai_api_key>
 ```
 
 ### 2. 配置 OpenTelemetry 集成
 
-在您的 CrewAI 应用程序中，配置 LangSmith OpenTelemetry 集成以及 CrewAI 和 OpenAI 仪器：
+在您的 CrewAI 代理中，配置 LangSmith OpenTelemetry 集成以及 CrewAI 和 OpenAI 仪器：
 
 ```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 from langsmith.integrations.otel import OtelSpanProcessor
@@ -57,9 +62,9 @@ CrewAIInstrumentor().instrument(tracer_provider=tracer_provider)
 OpenAIInstrumentor().instrument(tracer_provider=tracer_provider)
 ```
 
-### 3. 创建并运行您的 CrewAI 应用程序
+### 3. 创建并运行您的 CrewAI 代理
 
-配置完成后，您的 CrewAI 应用程序将自动将跟踪发送到 LangSmith：
+配置完成后，您的 CrewAI 代理将自动将跟踪发送到 LangSmith：
 
 ```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 from crewai import Agent, Crew, Task
@@ -139,9 +144,7 @@ def run_crew_with_metadata():
         return result
 ```
 
-### 与其他乐器结合
-
-您可以将 CrewAI 仪器与其他 OpenTelemetry 仪器结合起来：
+### 与其他乐器结合您可以将 CrewAI 仪器与其他 OpenTelemetry 仪器结合起来：
 
 ```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 from opentelemetry.instrumentation.crewai import CrewAIInstrumentor

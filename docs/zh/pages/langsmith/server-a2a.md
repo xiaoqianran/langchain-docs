@@ -74,22 +74,22 @@ A2A 端点在 [Agent Server](/langsmith/agent-server) 的 `/a2a/{assistant_id}` 
 
 响应是`TASK_STATE_SUBMITTED`或`TASK_STATE_WORKING`中的任务，没有工件。民意调查
 `GetTask` 与返回的 `id` 直到状态终止或`TASK_STATE_INPUT_REQUIRED`。一个
-已完成的任务在`artifacts`中带有代理的回复，同样部分在阻塞`SendMessage`中
+已完成的任务在`artifacts`中携带代理的回复，同样部分在阻塞`SendMessage`中
 返回。
 
 * **`returnImmediately`**：v1.0 标志。发送两个标志时优先。
-* **`blocking`**：v0.3 标志。 `"blocking": false` 的行为类似于 `"returnImmediately": true`。每个标志必须是布尔值或 `null`，`null` 视为未设置。任何其他值都会返回 `-32602`
+* **`blocking`**：v0.3 标志。 `"blocking": false` 的行为类似于 `"returnImmediately": true`。Each flag must be a boolean or `null`, and `null` counts as unset.任何其他值都会返回 `-32602`
 在创建运行之前。
 
 ### 响应中的任务历史记录
 
-上下文包含许多任务。默认情况下`SendMessage`、`GetTask`和`ListTasks`返回历史记录
-**整个上下文**，而不仅仅是您询问的任务。上下文中的第二个任务重播
-第一个任务的消息，因此渲染每个历史记录条目的客户端会再次显示较早的内容 -
-包括早期的工具结果和 A2UI 有效负载。
+上下文包含许多任务。 By default `SendMessage`, `GetTask` and `ListTasks` return the history
+of the **whole context**, not just the task you asked about.上下文中的第二个任务重播
+the first task's messages, so a client that renders every history entry shows earlier turns again —
+including earlier tool results and A2UI payloads.
 
-将 `historyScope` 设置为 `task` 以仅取回属于您询问的任务的消息。
-默认值保持`context`，因此现有集成不受影响。
+Set `historyScope` to `task` to get back only the messages that belong to the task you asked about.
+The default stays `context`, so existing integrations are unaffected.
 
 选项的去向取决于方法。 `SendMessage`从`configuration`读取：
 
@@ -110,21 +110,21 @@ A2A 端点在 [Agent Server](/langsmith/agent-server) 的 `/a2a/{assistant_id}` 
 }
 ```
 
-`GetTask`和`ListTasks`直接从`params`读取：
+`GetTask` and `ListTasks` read it directly from `params`:
 
 ```json theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 {"jsonrpc": "2.0", "id": "2", "method": "GetTask",
  "params": {"id": "<taskId>", "historyScope": "task"}}
 ```
 
-如果您的客户端无法将字段添加到请求正文，请改为发送标头。中的显式值
+If your client cannot add fields to the request body, send the header instead.中的显式值
 请求胜过标头。
 
 ```
 LangGraph-A2A-History-Scope: task
 ```
 
-代理卡在`capabilities.extensions`下宣传这一点，因此您可以检测支持而不是
+The agent card advertises this under `capabilities.extensions`, so you can detect support rather
 比假设它：
 
 ```json theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
@@ -435,7 +435,7 @@ graph = (
 
 一旦您的代理通过`langgraph dev`或[deployed to production](/langsmith/deployment)在本地运行，您就可以使用A2A协议促进它们之间的通信。
 
-此示例演示两个代理如何通过向彼此的 A2A 端点发送 JSON-RPC 消息来进行通信。该脚本模拟多轮对话，其中每个代理处理对方的响应并继续对话。
+此示例演示了两个代理如何通过向彼此的 A2A 端点发送 JSON-RPC 消息来进行通信。该脚本模拟多轮对话，其中每个代理处理对方的响应并继续对话。
 
 ```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 #!/usr/bin/env python3
@@ -532,7 +532,9 @@ if __name__ == "__main__":
 * [Two LangGraph agents communicating](https://github.com/langchain-samples/A2A-langgraph) - 使用 A2A 协议的两个 LangGraph 代理示例
 * [Google ADK agent with LangChain agent](https://github.com/langchain-samples/A2A-google-adk) - Google ADK 代理使用 A2A 协议与 LangChain 代理交互的示例
 
-## 分布式追踪当多个座席通过 A2A 进行通信时，LangSmith 可以将所有[traces](/langsmith/observability-concepts#traces) 分组为一个 [thread](/langsmith/observability-concepts#threads)，从而为您提供整个多座席对话的统一视图。
+## 分布式追踪对于基于代理的工作区中的非LangGraph代理，在跟踪之前先[register the agent and configure agent addressing](/langsmith/create-an-agent#configure-tracing-for-the-agent)。 LangSmith 部署已配置其代理。
+
+当多个座席通过 A2A 进行通信时，LangSmith 可以将所有[traces](/langsmith/observability-concepts#traces) 分组为一个 [thread](/langsmith/observability-concepts#threads)，从而为您提供整个多座席对话的统一视图。
 
 ### contextId 如何映射到 thread\_id
 
@@ -548,9 +550,9 @@ if __name__ == "__main__":
 >
 > `contextId` 直接用作LangGraph `thread_id`，因此它必须是 UUID。回显
 > 服务器返回的一个标识符，而不是创建您自己的标识符。 A `contextId` 例如
-> `session-42` 被拒绝，并显示 `-32602` 和消息 `Failed to create run: Invalid thread ID`。
+> `session-42` 被拒绝，并显示 `-32602` 和消息 `Failed to create run: Invalid thread ID`。### 跨多个代理进行跟踪
 
-### 跨多个代理进行跟踪当来自不同框架的代理通过 A2A 进行通信时，`contextId` 可以统一它们的踪迹。将第一个代理在以后的每个请求中返回的`contextId`重复使用给该代理和其他代理。
+当来自不同框架的代理通过 A2A 进行通信时，`contextId` 可以统一它们的踪迹。将第一个代理在以后的每个请求中返回的`contextId`重复使用给该代理和其他代理。
 
 > [!警告]
 >
@@ -649,7 +651,7 @@ import json
 
 # --- 1. Configure OTel ---
 # Set up automatic tracing to LangSmith for your non-LangGraph agent.
-configure_otel(project_name="my-a2a-project")
+configure_otel()
 tracer = trace.get_tracer(__name__)
 
 app = FastAPI()
@@ -683,7 +685,7 @@ async def set_thread_id_middleware(request: Request, call_next):
 
 > [!注意]
 >
-> 在您的环境中设置 `LANGSMITH_API_KEY` 和可选的 `LANGSMITH_PROJECT` 以启用跟踪。对话中的所有代理应使用同一项目，以便他们的痕迹一起可见。
+> 在您的环境中设置 `LANGSMITH_API_KEY`、`LANGSMITH_AGENT_ID` 和 `LANGSMITH_AGENT_ENVIRONMENT`。对话中的所有参与者都应使用相同的跟踪目标，以便他们的跟踪信息可以同时可见。
 
 ### 查看LangSmith中的踪迹
 

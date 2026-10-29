@@ -12,11 +12,11 @@ LangSmith 部署运行任何框架。对于不是基于 Deep Agents、LangChain 
 
 > [!提示]
 >
-> 对于新构建，请考虑[Deep Agents](/oss/python/deepagents/overview)，这是一种开源工具，用于规划、使用工具、委托给子代理并长期工作。 Deep Agents 直接部署到 LangSmith 部署，[Managed Deep Agents](/langsmith/python/managed-deep-agents-overview) 可用于完全托管的运行时。
+> 对于新构建，请考虑[Managed Deep Agents](/langsmith/python/managed-deep-agents-overview)：一种托管开源工具，用于规划、使用工具、委托给子代理并长期工作。或者，为了在使用相同 Deep Agents 线束时获得最大灵活性，请自行使用 [Deep Agents SDK](/oss/python/deepagents/overview#self-host-with-the-sdk) 和主机代理，或运行自定义 [LangSmith Deployment](/langsmith/deployment)。
 
 ## 支持的框架
 
-本指南中的以下框架包含端到端示例。每个示例从 `agent.py` 导出一个 LangGraph 兼容图，[Agent Server](/langsmith/agent-server) 可以提供服务：
+本指南中的以下框架包含端到端示例。每个示例从 `agent.py` 导出LangGraph 兼容图，[Agent Server](/langsmith/agent-server) 可以提供服务：
 
 ![](https://mintcdn.com/langchain-5e9cc07a/ZPKed1feKJ8F6LVo/images/providers/light/claude.svg?fit=max\&auto=format\&n=ZPKed1feKJ8F6LVo\&q=85\&s=d3cae2da0f353a45594f57b7f2382aba)
 
@@ -305,7 +305,7 @@ CrewAIInstrumentor().instrument(tracer_provider=tracer_provider)
 OpenAIInstrumentor().instrument(tracer_provider=tracer_provider)
 ```
 
-有关完整设置详细信息，请参阅[Trace CrewAI applications](/langsmith/trace-with-crewai)。
+有关完整设置的详细信息，请参阅[Trace CrewAI applications](/langsmith/trace-with-crewai)。
 
 **自动生成**将 LangSmith span 处理器注册到 OpenAI 仪器：
 
@@ -321,7 +321,7 @@ trace.set_tracer_provider(tracer_provider)
 OpenAIInstrumentor().instrument()
 ```
 
-有关完整设置的详细信息，请参阅[Trace AutoGen applications](/langsmith/trace-with-autogen)。
+有关完整设置详细信息，请参阅[Trace AutoGen applications](/langsmith/trace-with-autogen)。
 
 ## 端到端示例
 
@@ -635,7 +635,7 @@ pip install -e .
 
 使用 [Project layout](#project-layout) 中特定于框架的 `.env` 模板。当在`langgraph.json`中设置`"env": ".env"`时，代理服务器加载此文件。在该文件中设置 `LANGSMITH_PROJECT` 和您的框架提供商凭据。对于 Claude Agent SDK 和 Strands Agent，还设置 `LANGSMITH_TRACING=true`。对于 CrewAI 和 AutoGen，在 `agent.py` 到 `OtelSpanProcessor()` 以及框架仪器中启用了跟踪，因此仅设置 `LANGSMITH_API_KEY` 和 `LANGSMITH_PROJECT`。
 
-[Traces](/langsmith/observability) 在[LangSmith UI](https://smith.langchain.com?utm_source=docs\&utm_medium=cta\&utm_campaign=langsmith-signup\&utm_content=langsmith-deploy-other-frameworks) 中显示代理调用、工具调用和 LLM 交互。有关特定于框架的跟踪选项，请参阅[Configure tracing](#configure-tracing)中的链接。
+[Traces](/langsmith/observability) 在 [LangSmith UI](https://smith.langchain.com?utm_source=docs\&utm_medium=cta\&utm_campaign=langsmith-signup\&utm_content=langsmith-deploy-other-frameworks) 中显示代理调用、工具调用和 LLM 交互。有关特定于框架的跟踪选项，请参阅[Configure tracing](#configure-tracing)中的链接。
 
 ## 本地运行
 
@@ -649,7 +649,7 @@ langgraph dev
 >
 > 如果`langgraph dev`报告缺少`langgraph-api`，请在同一环境中安装`langgraph-cli[inmem]`。
 
-该服务位于 `http://127.0.0.1:2024` 处，并在 [LangSmith Studio](/langsmith/studio) 处开放。使用`curl`发送请求：
+该服务位于 `http://127.0.0.1:2024` 并在 [LangSmith Studio](/langsmith/studio) 开放。使用`curl`发送请求：
 
 > [!注意]
 >
@@ -700,7 +700,7 @@ curl -s -X POST "http://127.0.0.1:2024/threads/$THREAD/runs/wait" \
 
 将 `ASSISTANT_ID` 替换为 `langgraph.json` `graphs` 对象中的图形键。例如，如果您的配置是`"graphs": {"claude_agent": "./agent.py:agent"}`，请使用`claude_agent`；如果您的配置是`"graphs": {"strands_agent": "./agent.py:agent"}`，请使用`strands_agent`。> [!注意]
 >
-> 部署前的[Verify that the LangGraph API runs locally](/langsmith/local-dev-testing)。如果 `langgraph dev` 失败，部署到 LangSmith 也会失败。
+> 部署前的[Verify that the LangGraph API runs locally](/langsmith/local-dev-testing)。如果`langgraph dev`失败，部署到LangSmith也会失败。
 
 ## 部署到LangSmith
 
@@ -714,6 +714,6 @@ langgraph deploy --name my-agent
 
 ***
 
-[Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时答案。
+[Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
 
 [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/deploy-other-frameworks.mdx) 或 [file an issue](https://github.com/langchain-ai/docs/issues/new/choose)。

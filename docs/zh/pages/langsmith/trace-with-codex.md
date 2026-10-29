@@ -6,188 +6,149 @@
 
 在 LangSmith 中捕获 OpenAI Codex 代理轮次、工具调用、模型元数据和子代理线程。
 
-[⟦T8⟧](https://github.com/langchain-ai/langsmith-codex-plugins) 市场提供了一个跟踪插件，该插件将 [OpenAI Codex](https://developers.openai.com/codex) 会话数据发送到 LangSmith。使用它来检查 Codex 工作流程中的代理轮次、模型元数据、令牌使用情况、工具调用和子代理线程。
+LangSmith 跟踪插件将您的 [OpenAI Codex](https://developers.openai.com/codex) 会话发送到 LangSmith，以便您可以看到代理做了什么。每个轮次都成为一个跟踪，并且会话的轮次被分组为一个线程。
 
 ## 先决条件
 
-在设置跟踪之前，请确保您拥有：
+* [Codex CLI](https://developers.openai.com/codex/quickstart?setup=cli) v0.153.4 或更高版本。
+* 一个LangSmith帐户。
+* Windows 和 Linux 上的 [Node.js](https://nodejs.org/) 22.x 或更高版本。在 macOS 上，该插件运行自己的构建，不需要 Node.js。
 
-* [Node.js](https://nodejs.org/) 22.x 或更高版本。
-* [Codex CLI](https://developers.openai.com/codex/quickstart?setup=cli) v0.153.4 或更高版本，启用并信任同步 `UserPromptSubmit` 插件挂钩。
-* A [LangSmith API key](/langsmith/create-account-api-key)。
+## 安装插件
 
-## 安装并启用插件
-
-使用 Codex CLI 添加市场：
+添加市场并安装插件：
 
 ```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 codex plugin marketplace add langchain-ai/langsmith-codex-plugins
+codex plugin add tracing@langsmith-codex-plugins
 ```
 
-在 `~/.codex/config.toml` 中全局启用跟踪插件，或仅在 `.codex/config.toml` 中为特定项目启用跟踪插件：
+然后信任 Codex 中的 `/hooks` 插件的钩子，因为在你这样做之前不会有任何跟踪。 Codex 仅在交互界面中询问，因此 `codex exec` 会跳过挂钩，直到您信任它们一次。信任 Codex 后重新启动它们。要为所有人安装插件，请参阅[Deploy to your organization](#deploy-to-your-organization)。有关安装插件的更多信息，请参阅 Codex 文档中的 [Plugins](https://developers.openai.com/codex/plugins)。
 
-```toml theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-[plugins."tracing@langsmith-codex-plugins"]
-enabled = true
-```
+## 登录
 
-然后使用 `/hooks` 信任该插件的钩子，或者在出现提示时在 Codex 的插件 UI 中信任该插件。单独启用插件并不信任它的钩子。
-
-## 配置跟踪
-
-跟踪将被禁用，直到配置文件中的 `TRACE_TO_LANGSMITH` 为 `"true"` 或 `enabled` 为 `true`。使用环境变量和/或 JSON 配置文件配置凭据。
-
-### 环境变量
-
-该插件首先读取 Codex 特定的变量，然后回退到通用 LangSmith SDK 变量。|变量|必填 |默认|描述 |
-| - | - | - | - |
-| `TRACE_TO_LANGSMITH` |是的 | - |设置为 `"true"` 以启用跟踪。 |
-| `LANGSMITH_CODEX_API_KEY` |有条件| - | LangSmith API 密钥。回落至`LANGSMITH_API_KEY`。除非每个副本都提供自己的 API 密钥，否则是必需的。 |
-| `LANGSMITH_CODEX_ENDPOINT` |没有 | `https://api.smith.langchain.com` | LangSmith API URL。回落到`LANGSMITH_ENDPOINT`。 |
-| `LANGSMITH_CODEX_PROJECT` |没有 | `codex` | LangSmith 项目名称。回落到`LANGSMITH_PROJECT`。 |
-| `LANGSMITH_CODEX_METADATA` |没有 | - | JSON 对象合并到根跟踪元数据中。回落到`LANGSMITH_METADATA`。 |
-| `LANGSMITH_CODEX_RUNS_ENDPOINTS` |没有 | - |副本目标的 JSON 数组。回落至`LANGSMITH_RUNS_ENDPOINTS`。 |
-| `LANGSMITH_CODEX_REDACT` |没有 | `true` |设置为假值以禁用秘密编辑。回落到`LANGSMITH_REDACT`。 |
-| `LANGSMITH_CODEX_REDACT_EXTRA` |没有 | - |额外 `{ pattern, replace }` 编辑规则的 JSON 数组。回落到`LANGSMITH_REDACT_EXTRA`。 |
-
-将变量添加到 shell 配置文件（`~/.zshrc`、`~/.bashrc` 或 `~/.bash_profile`）：
+使用 LangSmith CLI 登录一次。如果您还没有，请参阅[Install the LangSmith CLI](/langsmith/langsmith-cli#install)。
 
 ```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-export TRACE_TO_LANGSMITH="true"
-export LANGSMITH_CODEX_API_KEY="<your-langsmith-api-key>"
-export LANGSMITH_CODEX_PROJECT="codex"
+langsmith auth login
+```如果您使用 CLI 登录并拥有多个配置文件，请将配置文件中的 `profile` 设置为插件应使用的配置文件。您自己的 `api_key` 会忽略此设置，但在设置 `profile` 时，通用 `LANGSMITH_API_KEY` 不会用作后备。
+
+要使用 API 密钥，请将其添加到 `~/.codex/langsmith.json`：
+
+```json theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+{ "enabled": true, "api_key": "lsv2_pt_...", "agent_id": "shared-codex" }
 ```
 
-### 配置文件
+如果设置了多个凭据，插件将使用它找到的第一个凭据：
 
-使用 `<project>/.codex/langsmith.json` 进行项目级设置，或使用 `~/.codex/langsmith.json` 进行全局默认设置。全局文件首先加载，项目文件覆盖它，并且匹配的环境变量优先于两者。
+1. 插件自带的密钥来自`api_key`或`LANGSMITH_CODEX_API_KEY`。
+2.您的`langsmith auth login`登录。
+3. 来自您环境的通用`LANGSMITH_API_KEY`。
+
+当您的登录过期或您的密钥被拒绝时，跟踪就会停止，并且永远不会上传该间隙的轮次。 Codex 在聊天中显示一条通知，直到您修复它。管理员还可以对每个提示进行[require a working sign-in](#require-a-working-sign-in)。
+
+## 开启追踪
+
+跟踪将关闭，直到您在 `~/.codex/langsmith.json` 将其打开，除非您的管理员已使用 [managed file](#lock-settings) 将其打开。使用 `agent_id` 将跟踪发送到 [agent](/langsmith/log-traces-to-agent#send-traces-to-an-agent)：
+
+```json theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+{ "enabled": true, "agent_id": "shared-codex" }
+```
+
+或者将它们发送到具有 `project` 的项目：
+
+```json theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+{ "enabled": true, "project": "shared-codex" }
+```
+
+使用其中之一。如果两者都设置，则`agent_id`获胜。> [!警告]
+>
+> 项目可以使用 `<project>/.codex/langsmith.json` 或 `<project>/langsmith-plugins.json` 覆盖这些设置。克隆存储库可以使用它们来打开跟踪并将您的对话和文件发送到其他人的服务器。在信任存储库之前，请检查其 LangSmith 配置文件以及 `.codex/config.toml` 和 `.codex/hooks.json`。
+
+完成一回合并在[LangSmith](https://smith.langchain.com?utm_source=docs\&utm_medium=cta\&utm_campaign=langsmith-signup\&utm_content=langsmith-trace-with-codex)中打开您的代理或项目。
+
+## 部署到您的组织
+
+管理员可以为每个人安装该插件并控制它如何从一个地方进行跟踪。
+
+### 为所有人安装
+
+ChatGPT 工作区管理员可以将存储库导入为市场，以便每个人都可以安装该插件。每个用户仍然必须信任插件的钩子。设置请参见[Plugin management](https://developers.openai.com/codex/enterprise/plugin-management)。
+
+### 锁定设置
+
+管理员可以使用每个用户主文件夹中`~/.langsmith-plugins/managed.json` 的托管文件锁定每个用户的跟踪设置。 Claude Code、Cursor 和 Codex 插件都会读取此文件，其设置会覆盖用户自己的配置文件和环境变量。
 
 ```json theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 {
-  "enabled": true,
-  "api_key": "<your-langsmith-api-key>",
-  "api_url": "https://api.smith.langchain.com",
-  "project": "codex",
-  "metadata": {
-    "team": "agents",
-    "environment": "dev"
-  }
-}
-```|领域|环境变量 |默认|描述 |
-| - | - | - | - |
-| `enabled` | `TRACE_TO_LANGSMITH` | `false` |设置为 `true` 以启用跟踪。 |
-| `api_key` | `LANGSMITH_CODEX_API_KEY`、`LANGSMITH_API_KEY` | - | LangSmith API 密钥。 |
-| `api_url` | `LANGSMITH_CODEX_ENDPOINT`、`LANGSMITH_ENDPOINT` | LangSmith 默认 | LangSmith API URL。 |
-| `project` | `LANGSMITH_CODEX_PROJECT`、`LANGSMITH_PROJECT` | `codex` | LangSmith 项目名称。 |
-| `metadata` | `LANGSMITH_CODEX_METADATA`、`LANGSMITH_METADATA` | - |对象合并到根跟踪元数据中。 |
-| `replicas` | `LANGSMITH_CODEX_RUNS_ENDPOINTS`、`LANGSMITH_RUNS_ENDPOINTS` | - |将跟踪复制到的其他 LangSmith 目的地。 |
-| `redact` | `LANGSMITH_CODEX_REDACT`、`LANGSMITH_REDACT` | `true` |设置为 `false` 以禁用 [secret redaction](#secret-redaction)。 |
-| `redact_extra_rules` | `LANGSMITH_CODEX_REDACT_EXTRA`、`LANGSMITH_REDACT_EXTRA` | - |在内置规则之后应用额外的 `{ pattern, replace }` 规则。 |
-
-将包含 API 密钥的配置文件置于版本控制之外。
-
-## 追踪到多个目的地
-
-在 `langsmith.json` 或 `LANGSMITH_CODEX_RUNS_ENDPOINTS` 中设置 `replicas`，将相同的跟踪数据发送到其他 LangSmith 工作区或项目。设置后，副本列表将覆盖其他客户端设置。
-
-跟踪多个 [replicas](/langsmith/log-traces-to-project) 对于以下用途很有用：
-
-* 将跟踪发送到生产和暂存项目。
-* 使用不同的 API 密钥跟踪多个工作区。
-* 将额外的元数据添加到特定的副本目的地。
-
-**配置文件（推荐）**
-
-在 `<project>/.codex/langsmith.json` 或 `~/.codex/langsmith.json` 中：
-
-```json theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-{
-  "enabled": true,
-  "replicas": [
-    {
-      "apiUrl": "https://api.smith.langchain.com",
-      "apiKey": "lsv2_pt_workspace_a",
-      "projectName": "project-prod"
-    },
-    {
-      "apiUrl": "https://api.smith.langchain.com",
-      "apiKey": "lsv2_pt_workspace_b",
-      "projectName": "project-staging",
-      "updates": { "metadata": { "environment": "staging" } }
-    }
-  ]
+  "api_url": "https://langsmith.example.com",
+  "project": "engineering",
+  "strict_auth": true
 }
 ```
 
-**shell环境变量**
+托管文件适用于 macOS 和 Linux。该插件仅在以下情况下信任它：
 
-```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-export LANGSMITH_CODEX_RUNS_ENDPOINTS='[{"apiUrl":"https://api.smith.langchain.com","apiKey":"lsv2_pt_workspace_a","projectName":"project-prod"},{"apiUrl":"https://api.smith.langchain.com","apiKey":"lsv2_pt_workspace_b","projectName":"project-staging","updates":{"metadata":{"environment":"staging"}}}]'
-```要生成转义的 JSON 字符串，请使用：
+* root 拥有该文件及其文件夹。
+* 其他用户都不能写入其中任何一个。
+* 两者都不是符号链接。如果文件存在但未通过这些检查，跟踪将停止，用户会看到一条联系管理员的消息。锁定设置也会锁定与其关联的设置，因此用户无法在锁周围路由跟踪。例如，锁定 `project` 还可以阻止用户添加自己的 [replicas](/langsmith/trace-replicas) 或使用 `agent_id` 向代理发送跟踪。
 
-```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-echo '[{"apiUrl":"...","apiKey":"...","projectName":"..."}]' | jq -c .
-```
+管理员通常使用 Jamf 或 Microsoft Intune 等移动设备管理 (MDM) 工具在每台计算机上安装该文件。对于每个可以锁定的设置，请参阅[plugin settings guide](https://github.com/langchain-ai/langsmith-plugin-binary/blob/main/docs/settings.md)。
 
-每个副本对象支持以下字段：
+> **设置脚本示例**
+>
+> 以 root 身份为每个用户运行此命令，并将 `USER_HOME` 设置为该用户的主文件夹：
+>
+> ```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+> USER_HOME=/Users/developer
+> mkdir -p "$USER_HOME/.langsmith-plugins"
+> cp managed.json "$USER_HOME/.langsmith-plugins/managed.json"
+> chown root:wheel "$USER_HOME/.langsmith-plugins" "$USER_HOME/.langsmith-plugins/managed.json"
+> chmod 755 "$USER_HOME/.langsmith-plugins"
+> chmod 644 "$USER_HOME/.langsmith-plugins/managed.json"
+> ```
+>
+> 在 Linux 上，使用 `root:root` 而不是 `root:wheel`。完整脚本请参见[Set it up on macOS](https://github.com/langchain-ai/langsmith-plugin-binary/blob/main/docs/settings.md#set-it-up-on-macos)。
 
-|领域|必填 |描述 |
-| - | - | - |
-| `apiUrl` |是的 | LangSmith API URL（通常为`https://api.smith.langchain.com`）。 |
-| `apiKey` |是的 |目标工作区的 API 密钥。 |
-| `projectName` |是的 |目标工作区中的项目名称。 |
-| `updates` |没有 |用于覆盖复制运行的可选运行字段，例如额外的元数据。 |
+### 需要有效登录
 
-## 秘密编辑
-
-该插件会编辑从运行输入、输出、错误和元数据中检测到的秘密，然后将其上传到LangSmith。默认情况下，密文处于启用状态。
-
-上传之前，编辑会在您的计算机上运行，​​因此未编辑的内容永远不会到达LangSmith。副本目标接收相同的编辑有效负载。
-
-检测涵盖提供商 API 密钥前缀、JSON Web 令牌和 PEM 私钥块。它还涵盖上下文形状，例如 `API_KEY=<value>`、`Authorization` 标头以及嵌入 URL 中的密码。每场比赛都替换为`[SECRET_DETECTED]`。规则列表请参见[Redact secrets from traces](/langsmith/redact-secrets#rules-in-the-preset)。密文与已知的凭证形状相匹配，因此将其视为安全网而不是保证。无法识别格式的凭证仍会达到LangSmith，并且附件、运行名称和标签不会通过匿名器。编辑后的跟踪还保留了构建它所依据的提示、文件内容和工具结果，因此限制了谁可以读取跟踪项目。
-
-要关闭密文，请将 `LANGSMITH_CODEX_REDACT` 设置为 `false`、`0`、`no` 或 `off`，或在配置文件中设置 `"redact": false`。值的修剪和比较不区分大小写。
-
-要编辑其他模式，请将 `LANGSMITH_CODEX_REDACT_EXTRA` 设置为 `{ "pattern": ..., "replace": ... }` 规则的 JSON 数组，或在配置文件中设置 `redact_extra_rules`。每个`pattern`都是一个正则表达式字符串，全局应用且区分大小写。 `replace` 是可选的，并回退到 `[redacted]`。额外规则在内置规则之后运行。
-
-```json theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-{
-  "enabled": true,
-  "project": "codex",
-  "redact": true,
-  "redact_extra_rules": [{ "pattern": "ACME-[A-Z0-9]{16}", "replace": "[REDACTED_ACME_KEY]" }]
-}
-```
-
-将 `redact_extra_rules` 设置为 `[]` 会清除从较低优先级源继承的规则。在配置文件中，具有无效正则表达式的规则会丢弃该文件中的所有设置，因此请在提交之前验证模式。
-
-由于项目级别 `.codex/langsmith.json` 或 `langsmith-plugins.json` 可以将 `redact` 设置为 `false`，因此请在不受您控制的存储库中启用跟踪之前检查这些文件。
-
-## 追踪什么每个法学硕士运行包括：
-
-* **输入**：累积的对话消息。
-* **输出**：助理响应内容。
-* **元数据**：模型提供商、模型名称、停止原因和令牌使用情况。
-
-工具调用（函数调用、shell 调用、计算机调用、文件读取、Web 搜索）包含在其输入和输出中。当嵌套子进程在父进程下运行时，子代理线程将被解析和上传。
-
-会话完成后，用户在响应中取消的中断回合仍会上传。
-
-## 查看LangSmith中的踪迹
-
-打开配置好的LangSmith项目并完成Codex回合。默认情况下，跟踪显示在 `codex` 项目中。该插件上传完整的 Codex 转录数据，包括消息、工具调用输入和输出、模型元数据、令牌使用情况和子代理线程结构。
+严格身份验证会阻止每个提示，直到用户登录或密钥起作用，因此所有会话都不会被跟踪。它默认处于关闭状态，并且在跟踪关闭时没有任何作用。要为所有人打开它，请在托管文件中将 `strict_auth` 设置为 `true`。
 
 > [!警告]
 >
-> 该插件将完整的 Codex 转录数据上传至 LangSmith。不要对包含您不希望存储在 LangSmith 中的数据的会话启用跟踪。
+> 严格身份验证还会阻止 `codex exec` 运行。将其关闭以进行自动运行，除非登录失败会停止作业。
+
+## 隐藏对话将 `langsmith-tracing:mute` 作为不带前导斜杠的普通消息发送，以将线程的内容排除在 LangSmith 之外，并发送 `langsmith-tracing:unmute` 将其重新打开。确认显示为被钩子阻止的提示，因为这就是 Codex 显示插件回复的方式。要默认将每个线程静音，请将 `defaultMuted` 设置为 `true`。
+
+## 秘密编辑
+
+该插件会在上传任何内容之前剥离您计算机上的秘密，因此它们永远不会到达 LangSmith 或副本。默认情况下，密文处于启用状态。
+
+它捕获提供商 API 密钥、JSON Web 令牌和 PEM 私钥，以及常见模式，例如 `API_KEY=<value>` 或 URL 中的密码。每场比赛都替换为`[SECRET_DETECTED]`。有关完整规则列表，请参阅[Redact secrets from traces](/langsmith/redact-secrets#rules-in-the-preset)。
+
+密文仅匹配已知的凭证形状，因此将其视为安全网而不是保证。运行名称、标签和附件会跳过它，并且经过编辑的跟踪仍然保留您的提示和文件内容。限制谁可以读取跟踪项目。
+
+要关闭密文或添加您自己的模式，请参阅 [plugin settings](https://github.com/langchain-ai/langsmith-codex-plugins#settings)。
+
+## 设置
+
+每个设置都有一个配置文件密钥和一个环境变量。当两者都设置时，环境变量获胜。|配置键 |环境变量 |默认|描述 |
+| - | - | - | - |
+| `enabled` | `TRACE_TO_LANGSMITH` | `false` |打开追踪。 |
+| `api_key` | `LANGSMITH_CODEX_API_KEY` |无 | LangSmith API 密钥。如果您使用 CLI 登录，则不需要。 |
+| `project` | `LANGSMITH_CODEX_PROJECT` | `codex` |项目的痕迹去。使用这个或`agent_id`。 |
+| `agent_id` | `LANGSMITH_AGENT_ID` |无 |代理痕迹去。如果两者都设置，则胜过`project`。 |
+| `api_url` | `LANGSMITH_CODEX_ENDPOINT` | `https://api.smith.langchain.com` | LangSmith 要发送到的服务器。 |
+
+对于每个设置，请参阅[plugin settings](https://github.com/langchain-ai/langsmith-codex-plugins#settings)。要将跟踪发送到多个位置，请参阅[Send a trace to more than one place](https://github.com/langchain-ai/langsmith-codex-plugins#send-a-trace-to-more-than-one-place)。
 
 ## 故障排除
 
-如果LangSmith中没有出现痕迹：* 确认在 `config.toml` 中启用了跟踪插件并且其挂钩是可信的 (`/hooks`)。 `[features] hooks` 默认情况下处于打开状态，因此仅将其设置为撤消本地覆盖。
-* 确认 `TRACE_TO_LANGSMITH=true` 对 Codex 流程可见。
-* 确认`LANGSMITH_CODEX_API_KEY`或`LANGSMITH_API_KEY`已设置且有效。
-* 如果运行在错误的项目中，请设置`LANGSMITH_CODEX_PROJECT`或`project`配置键。
-* 如果未使用自定义端点，请设置`LANGSMITH_CODEX_ENDPOINT`或`api_url`配置键。
+* **无痕迹**：检查插件是否已安装，其挂钩是否受 `/hooks` 信任，并且跟踪已打开。
+* **更新后停止**：只要版本更改了某个钩子，Codex 就会要求您再次信任该钩子。运行`/hooks`并批准它。
+* **跟踪暂停**：再次运行 `langsmith auth login` 或替换被拒绝的 API 密钥。
+
+有关更多修复，请参阅[When nothing shows up](https://github.com/langchain-ai/langsmith-codex-plugins#when-nothing-shows-up)。
 
 ***
 

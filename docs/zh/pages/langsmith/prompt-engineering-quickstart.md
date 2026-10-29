@@ -57,7 +57,7 @@ LangSmith 提供用于创建、版本化、测试和协作提示的工具。您�
 
    ![The input box with a question entered. The output box contains the response to the prompt.](https://mintcdn.com/langchain-5e9cc07a/8DPu7MR3QecByOI5/langsmith/images/set-input-start-light.png?fit=max\&auto=format\&n=8DPu7MR3QecByOI5\&q=85\&s=bd86e76180c022a110ca0f0d9d19a198)
 
-   要了解有关在 Playground 中配置提示的更多选项，请参阅 [Configure prompt settings](/langsmith/managing-model-configurations)。
+   要了解有关在 Playground 中配置提示的更多选项，请参阅[Configure prompt settings](/langsmith/managing-model-configurations)。
 
 4. 测试并完善提示后，单击 **保存** 将其存储以供将来使用。
 
@@ -125,7 +125,7 @@ LangSmith 允许基于团队的快速迭代。 [Workspace](/langsmith/administra
    client.push_prompt("prompt-quickstart", object=prompt)
    ```
 
-   ```typescript TypeScript theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+   ```ts TypeScript theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
    import { Client } from "langsmith";
    import { ChatPromptTemplate } from "@langchain/core/prompts";
 
@@ -157,7 +157,7 @@ LangSmith 允许基于团队的快速迭代。 [Workspace](/langsmith/administra
 
 在此步骤中，您将按名称 (`"prompt-quickstart"`) 提取在 [step 2](#2-create-a-prompt) 中创建的提示，使用测试输入对其进行格式化，将其转换为 OpenAI 的聊天格式，然后调用 OpenAI 聊天完成 API。
 
-然后，您将通过创建新版本来迭代提示。工作区的成员可以打开现有提示，尝试[UI](https://smith.langchain.com?utm_source=docs\&utm_medium=cta\&utm_campaign=langsmith-signup\&utm_content=langsmith-prompt-engineering-quickstart)中的更改，并将这些更改保存为同一提示上的新提交，这会保留整个团队的历史记录。
+然后，您将通过创建新版本来迭代提示。工作区的成员可以打开现有提示符，试验[UI](https://smith.langchain.com?utm_source=docs\&utm_medium=cta\&utm_campaign=langsmith-signup\&utm_content=langsmith-prompt-engineering-quickstart)中的更改，并将这些更改保存为同一提示符上的新提交，这会保留整个团队的历史记录。
 
 1. 将以下内容添加到 `test_prompt` 文件中：
 
@@ -181,7 +181,7 @@ LangSmith 允许基于团队的快速迭代。 [Workspace](/langsmith/administra
    )
    ```
 
-   ```typescript TypeScript theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+   ```ts TypeScript theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
    import { OpenAI } from "openai";
    import { pull } from "langchain/hub"
    import { convertPromptToOpenAI } from "@langchain/openai";
@@ -229,7 +229,7 @@ LangSmith 允许基于团队的快速迭代。 [Workspace](/langsmith/administra
    client.push_prompt("prompt-quickstart", object=new_prompt)
    ```
 
-   ```typescript TypeScript theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+   ```ts TypeScript theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
    import { Client } from "langsmith";
    import { ChatPromptTemplate } from "@langchain/core/prompts";
 

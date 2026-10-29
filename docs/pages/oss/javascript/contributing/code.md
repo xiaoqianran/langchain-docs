@@ -343,7 +343,7 @@ Deep Agents is organized as a monorepo with multiple Python packages:
 >
 > * **[`deepagents`](https://github.com/langchain-ai/deepagents/tree/main/libs/deepagents#readme)** (located in `libs/deepagents/`): Core framework for building deep agents with planning, filesystem, and subagent capabilities
 > * **[`deepagents-code`](https://github.com/langchain-ai/deepagents/tree/main/libs/code#readme)** (located in `libs/code/`): Deep Agents Code — interactive terminal interface with conversation resume, web search, and sandboxes
-> * **[`deepagents-cli`](https://github.com/langchain-ai/deepagents/tree/main/libs/cli#readme)** (located in `libs/cli/`): Deploy tooling (`deepagents deploy`, `deepagents init`, `deepagents dev`) for shipping agents to LangSmith Deployments
+> * **[`deepagents-cli`](https://github.com/langchain-ai/deepagents/tree/main/libs/code)** (located in `libs/cli/`): Deploy tooling (`deepagents deploy`, `deepagents init`, `deepagents dev`) for shipping agents to LangSmith Deployments
 
 > **Integration packages**
 >

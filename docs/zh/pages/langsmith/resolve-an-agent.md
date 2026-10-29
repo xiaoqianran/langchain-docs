@@ -1,28 +1,30 @@
 <!-- langchain-docs: machine-translated zh-CN from English source -->
 
-<!-- langchain-docs: Find an agent's project | https://docs.langchain.com/langsmith/resolve-an-agent -->
+<!-- langchain-docs: Resolve an agent environment | https://docs.langchain.com/langsmith/resolve-an-agent -->
 
-# 查找代理项目
+# 解析代理环境
 
-通过将代理、实验或评估器解析为其项目 ID 来查找其跟踪项目，以便您可以查询其跟踪并使用采用项目 ID 的端点。
+将代理环境、实验或工作区评估器跟踪解析为查询和反馈 API 所需的会话 ID。
 
-[Agents](/langsmith/agents)、[experiments](/langsmith/evaluation-concepts) 和 [evaluators](/langsmith/evaluators) 各自将其痕迹保留在 [tracing project](/langsmith/observability-concepts#tracing-projects) 中。读取或管理该数据的端点通过项目 ID 来识别该项目。 SDK 和 API 将跟踪项目称为“会话”，因此项目 ID 也是会话 ID。首先将代理解析为其项目 ID，然后在端点采用项目（会话）ID 的任何位置传递该 ID。例如：
+某些 API 通过其支持跟踪存储 UUID 来识别 [agent environment](/langsmith/agent-environments)，返回为 `session_id`。解析代理标识符和环境以获取此 UUID。在名为 `session_id`、`project_id` 或 `project_ids` 的 API 字段中使用它。这些是相同标识符的现有 API 名称。分辨率还支持 [experiments](/langsmith/evaluation-concepts) 和工作区 [evaluator](/langsmith/evaluators) 跟踪。使用返回的 ID 进行以下操作：
 
 * 使用`project_ids`查询运行、线程和跟踪
-* 阅读或更新项目及其观点、见解和警报
+* 读取或更新环境的跟踪存储设置、保存的视图、见解和警报
 
 > [!注意]
 >
 > 解析代理需要LangSmith 0.18.7rc1 或更高版本，并且 BYOC 数据平面尚不支持。示例需要以下 SDK 版本：
 >
 > * **Python**：`langsmith>=0.14.9`
-> * **TypeScript**：`langsmith@>=0.10.13`
+> * **TypeScript**：`langsmith@>=0.11.0`
 > * **Java**：`com.langchain.smith:langsmith-java` 0.1.0-beta.26 或更高版本
 > * **Go**：`github.com/langchain-ai/langsmith-go` v0.28.0 或更高版本
 
-## 你可以解决什么问题
+对于需要 `project_name`、[retrieve the agent environment](/langsmith/create-an-agent#use-an-environment-project) 并使用其 `tracer_session_name` 的集成。
 
-解决以下任一问题以获取其项目的 ID：
+## What you can resolve
+
+解决以下任一问题即可获得其`session_id`：
 
 **Python**
 
@@ -67,9 +69,7 @@ experiment, err := langsmith.NewExperimentAddress("<experiment-id>")
 evaluators := langsmith.NewEvaluatorAddress()
 ```
 
-## 解析代理并查询其运行
-
-**Python**
+## 解析代理并查询其运行**Python**
 
 ```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 import asyncio
@@ -107,7 +107,9 @@ for await (const run of client.runs.query({
 }
 ```
 
-**Java**```java Java theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+**Java**
+
+```java Java theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 import com.langchain.smith.address.AgentAddress;
 import com.langchain.smith.client.LangsmithClient;
 import com.langchain.smith.client.okhttp.LangsmithOkHttpClient;
@@ -175,7 +177,7 @@ func main() {
 
 ## 解决一个实验并查询其运行
 
-传递实验 ID。实验是其自己的跟踪项目，因此端点返回实验的 ID。
+传递实验 ID。端点返回与`session_id`相同的ID。
 
 **Python**
 
@@ -289,7 +291,7 @@ func main() {
 
 ## 解析评估者并查询他们的运行
 
-评估器跟踪每个工作区共享一个项目，因此评估器不获取 ID。
+评估器跟踪为每个工作区共享一个存储目标，因此评估器地址不包含 ID。
 
 **Python**
 
@@ -396,7 +398,7 @@ func main() {
 
 ## 错误
 
-* 如果工作区中没有任何内容匹配、代理已存档或者您无法读取其项目，则LangSmith 返回`404`。一旦代理存在，代理的环境就存在。
+* 如果工作区中没有任何内容匹配、代理已存档或者无法读取所选环境的跟踪，则LangSmith 返回`404`。一旦代理存在，代理的环境就存在。
 * 在 BYOC 数据平面上，端点返回`501`，因为尚不支持解析。
 
 ## 另请参阅

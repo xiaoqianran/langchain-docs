@@ -1,8 +1,8 @@
 <!-- langchain-docs: machine-translated zh-CN from English source -->
 
-<!-- langchain-docs: Trace Amazon Bedrock applications | https://docs.langchain.com/langsmith/trace-bedrock -->
+<!-- langchain-docs: Trace with Amazon Bedrock | https://docs.langchain.com/langsmith/trace-bedrock -->
 
-# 跟踪 Amazon Bedrock 应用程序
+# 使用 Amazon Bedrock 进行追踪
 
 本指南向您展示如何使用本机 AWS 开发工具包通过 LangSmith 跟踪 [Amazon Bedrock](https://aws.amazon.com/bedrock) 模型调用。 LangSmith 还可以与 [LangChain's Bedrock integrations](/oss/python/integrations/providers/aws) 无缝协作。这两种方法都提供了以下方面的见解：
 
@@ -11,6 +11,10 @@
 * 延迟和性能指标
 * 用于过滤和分析的自定义标签和元数据
 * 多步骤链和代理工作流程
+
+> [!注意]
+>
+> 在发送跟踪之前，在[agent-based workspace](/langsmith/agents)、[create an agent](/langsmith/create-an-agent) 中进行一次。使用[agent addressing](/langsmith/log-traces-to-agent)选择其标识符和环境。如果集成需要 `project_name`，请使用所选环境的 [⟦T7⟧](/langsmith/create-an-agent#use-an-environment-project) 作为兼容性值。
 
 ## 安装
 
@@ -22,23 +26,24 @@ pip install boto3 langsmith
 npm install @aws-sdk/client-bedrock-runtime langsmith
 ```
 
-此集成使用具有 LangSmith 跟踪功能的本机 AWS 开发工具包。对于 Python，您将使用 [⟦T6⟧](https://pypi.org/project/boto3/)（适用于 Python 的 AWS 开发工具包）和 [⟦T7⟧](https://pypi.org/project/langsmith/) 来捕获跟踪。对于 JavaScript/TypeScript，您将使用 [⟦T8⟧](https://www.npmjs.org/package/@aws-sdk/client-bedrock-runtime) 和 [⟦T9⟧](https://www.npmjs.org/package/langsmith) 包。两种实现都使用[Bedrock Converse API](https://docs.aws.amazon.com/bedrock/latest/userguide/conversation-inference.html)，它提供了与基础模型交互的统一接口。
+此集成使用具有 LangSmith 跟踪功能的本机 AWS 开发工具包。对于 Python，您将使用 [⟦T8⟧](https://pypi.org/project/boto3/)（适用于 Python 的 AWS 开发工具包）和 [⟦T9⟧](https://pypi.org/project/langsmith/) 来捕获跟踪。对于 JavaScript/TypeScript，您将使用 [⟦T10⟧](https://www.npmjs.com/package/@aws-sdk/client-bedrock-runtime) 和 [⟦T11⟧](https://www.npmjs.com/package/langsmith) 包。两种实现都使用[Bedrock Converse API](https://docs.aws.amazon.com/bedrock/latest/userguide/conversation-inference.html)，它提供了与基础模型交互的统一接口。
 
 ## 设置
 
-要启用 LangSmith 跟踪，请配置您的 [LangSmith API key](/langsmith/create-account-api-key) 和项目设置。您还需要设置 AWS 凭证以通过 Bedrock 进行身份验证。
+要启用 LangSmith 跟踪，请配置您的 [LangSmith API key](/langsmith/create-account-api-key)、代理标识符和环境。您还需要设置 AWS 凭证以通过 Bedrock 进行身份验证。
 
 ### LangSmith配置
 
 ```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 export LANGSMITH_API_KEY=<your_langsmith_api_key>
-export LANGSMITH_PROJECT=<your_project_name> # optional, defaults to "default"
+export LANGSMITH_AGENT_ID="<your-agent-id>"
+export LANGSMITH_AGENT_ENVIRONMENT="production"
 export LANGSMITH_TRACING=true
-```
+```您可以通过导航至 **设置** > **API 密钥**，从 [smith.langchain.com](https://smith.langchain.com?utm_source=docs\&utm_medium=cta\&utm_campaign=langsmith-signup\&utm_content=langsmith-trace-bedrock) 获取您的 LangSmith API 密钥。代理标识符和环境选择跟踪出现的位置。
 
-您可以通过导航至 **设置** > **API 密钥**，从 [smith.langchain.com](https://smith.langchain.com?utm_source=docs\&utm_medium=cta\&utm_campaign=langsmith-signup\&utm_content=langsmith-trace-bedrock) 获取您的 LangSmith API 密钥。 `LANGSMITH_PROJECT` 变量允许您将跟踪组织到不同的项目中。
+### AWS 凭证
 
-### AWS 凭证配置您的 AWS 凭证以通过 Bedrock 进行身份验证。您需要一个启用了 Bedrock 访问权限的 AWS 账户。按照 [AWS setup instructions](https://docs.aws.amazon.com/bedrock/latest/userguide/setting-up.html) 创建您的凭证和 [enable model access](https://docs.aws.amazon.com/bedrock/latest/userguide/model-access.html)：
+配置您的 AWS 凭证以通过 Bedrock 进行身份验证。您需要一个启用了 Bedrock 访问权限的 AWS 账户。按照 [AWS setup instructions](https://docs.aws.amazon.com/bedrock/latest/userguide/setting-up.html) 创建您的凭证和 [enable model access](https://docs.aws.amazon.com/bedrock/latest/userguide/model-access.html)：
 
 ```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 export AWS_ACCESS_KEY_ID=<your_aws_access_key_id>
@@ -128,13 +133,13 @@ console.log(answer);
 
 **打字稿*** AWS SDK v3中的`BedrockRuntimeClient`提供了Bedrock运行时接口。
 * `ConverseCommand` 提供统一的聊天界面，发送用户消息并以结构化格式返回助手的响应（无需手动 JSON 解析）。
-* Bedrock 调用被 LangSmith 的 `traceable` 函数包装，将 `invokeBedrock` 转换为跟踪函数，并将其执行记录到 LangSmith。
+* Bedrock 调用用 LangSmith 的 `traceable` 函数包装，将 `invokeBedrock` 转换为跟踪函数，将其执行记录到 LangSmith。
 * 自定义标签和元数据在可跟踪选项对象中提供并附加到每个跟踪。
 * 当您运行此脚本时（配置了 `LANGSMITH_TRACING=true` 和 API 密钥），请检查 LangSmith 仪表板中的跟踪条目，其中包括输入提示、模型输出、计时信息和指定的标签/元数据。
 
 ## 查看LangSmith中的踪迹
 
-运行代码后，导航到位于 [smith.langchain.com](https://smith.langchain.com?utm_source=docs\&utm_medium=cta\&utm_campaign=langsmith-signup\&utm_content=langsmith-trace-bedrock) 的 LangSmith 项目以查看跟踪。每个跟踪包括：
+运行代码后，选择您的代理和环境，然后在 [smith.langchain.com](https://smith.langchain.com?utm_source=docs\&utm_medium=cta\&utm_campaign=langsmith-signup\&utm_content=langsmith-trace-bedrock) 打开 **Tracing** 以查看跟踪。每个跟踪包括：
 
 * **请求详细信息**：输入消息、模型参数和配置
 * **响应详细信息**：模型输出、令牌使用和响应元数据

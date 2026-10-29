@@ -54,7 +54,7 @@ npx skills add langchain-ai/langchain-skills --skill managed-deep-agents --yes
 
 ## 步骤 4：搭建、配置、测试和部署
 
-按顺序执行快速入门步骤：使用`mda`初始化项目，配置模型和说明，添加页面所示的搜索，在LangSmith Studio中测试，并使用`mda` CLI进行部署。当仪表板操作或凭证只能由用户在 LangSmith UI 中完成时，停下来询问。
+按顺序执行快速入门步骤：使用`mda`初始化项目，配置模型和说明，添加页面所示的搜索，在LangSmith Studio中测试，并使用`mda` CLI进行部署。停下来询问仪表板操作或凭证何时只能由用户在 LangSmith UI 中完成。
 
 ## 规则
 
@@ -282,11 +282,11 @@ bunx mda dev
 What were the main announcements from the latest LangChain release?
 ```
 
-您应该看到代理调用网络搜索工具，然后返回引用来源的简洁答案。如果搜索从未出现在跟踪中，请确认提供程序工具字典与您在`agent.py`或`agent.ts`中设置的模型匹配。
+您应该看到代理调用网络搜索工具，然后返回引用来源的简洁答案。如果搜索从未出现在跟踪中，请确认提供程序工具字典与您在`agent.py`或`agent.ts`中设置的模型匹配。在 [agent-based workspace](/langsmith/agents) 中，在您注册代理之前，跟踪将导致错误。详情请参见[Trace local runs](/langsmith/javascript/managed-deep-agents-local-development#trace-local-runs)。
 
-有关更多信息，请参阅[Develop locally with LangSmith Studio](/langsmith/javascript/managed-deep-agents-local-development)。
+**7.部署代理**
 
-**7.部署代理**通过运行以下命令来部署项目：
+通过运行以下命令来部署项目：
 
 ```bash npm theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 npx mda deploy
@@ -302,7 +302,7 @@ bunx mda deploy
 
 托管 Deep Agents 打包项目并将其作为托管部署在 [LangSmith Agent Server](/langsmith/agent-server) 上运行。部署完成后，CLI 会打印部署仪表板 URL。
 
-打开该网址。您应该看到部署处于就绪状态。发送上一步中的相同研究问题，并通过搜索工具调用确认托管代理返回答案。有关部署选项和机密处理的信息，请参阅[Deploy a Managed Deep Agent](/langsmith/javascript/managed-deep-agents-deploy)。要在代理运行后检查代理的执行情况，请使用[LangSmith observability](/langsmith/observability-quickstart)。
+打开该网址。您应该看到部署处于就绪状态。发送上一步中的相同研究问题，并通过搜索工具调用确认托管代理返回答案。有关部署选项和机密处理的信息，请参阅[Deploy a Managed Deep Agent](/langsmith/javascript/managed-deep-agents-deploy)。要在代理运行后检查其执行情况，请使用[LangSmith observability](/langsmith/observability-quickstart)。
 
 ## 后续步骤
 

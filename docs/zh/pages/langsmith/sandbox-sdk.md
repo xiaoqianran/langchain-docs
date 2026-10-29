@@ -315,7 +315,7 @@ console.log(link.download_url);
 
 ## 安装 Context Hub 存储库
 
-安装 [Context Hub](/langsmith/use-the-context-hub) 存储库，为沙箱代码文件系统提供对您的代理和技能的访问权限。存储库的最新提交树被镜像到挂载路径中，并在沙箱的生命周期内保持同步，因此新的提交会显示在正在运行的沙箱中，而无需重新启动。> [!警告]
+安装 [Context Hub](/langsmith/use-the-context-hub) 存储库，为沙盒代码文件系统提供对您的代理和技能的访问权限。存储库的最新提交树被镜像到挂载路径中，并在沙箱的生命周期内保持同步，因此新的提交会显示在正在运行的沙箱中，而无需重新启动。> [!警告]
 >
 > Context Hub 安装是**只读**。同步是单向的，从存储库到沙箱：代理在挂载路径下写入的文件永远不会被推回到存储库，并且下一次同步会覆盖它们。将沙箱输出写入挂载外部的路径，以及 [push it with the SDK](/langsmith/manage-contexts-sdk)（如果它属于存储库）。
 
@@ -407,12 +407,12 @@ const sb = await client.createSandbox({
 
 > [!注意]
 >
-> 可以在创建时通过 REST API 设置自由格式 `labels`（每个沙箱最多 128 个，每个键 256 字节，每个值 4096 字节）。除非被覆盖，否则沙箱会继承其快照的标签。 `langsmith.sandbox` 客户端尚未公开此字段。
+> 可以在创建时通过 REST API 设置自由格式 `labels`（每个沙箱最多 128 个，每个键 256 字节，每个值 4096 字节）。沙箱继承其快照的标签，除非被覆盖。 `langsmith.sandbox` 客户端尚未公开此字段。
 
 ## 沙盒寿命和保留
 
 沙箱由固定于**空闲的两阶段保留模型控制
-活动**和**`stopped`**状态。|领域|它控制什么 |当它发生时 |
+活动**和**`stopped`**状态。|领域 |它控制什么 |当它发生时 |
 | - | - | - |
 | `idle_ttl_seconds` |在闲置这么多秒后，启动器会停止沙箱。任何命令执行或文件 I/O 都会重置计时器。 `0` 禁用怠速停止。 |省略时默认为 `600`（10 分钟）。 |
 | `delete_after_stop_seconds` |一旦沙箱进入`stopped`状态，该计时器就会启动。过了一段时间后，沙箱行+文件系统克隆将被服务器端扫描永久删除。 `0` 禁用停止锚定删除（需要手动清理）。 |如果省略，服务器将应用其配置的默认值（通常为 14 天）。 |
@@ -528,7 +528,7 @@ try {
 
 ## 服务 URL (Python)
 
-通过经过身份验证的 URL 访问在沙箱内运行的 HTTP 服务。您可以在浏览器中打开它，从代码中调用它，或者与团队成员共享它。
+通过经过身份验证的 URL 访问沙箱内运行的 HTTP 服务。您可以在浏览器中打开它，从代码中调用它，或者与团队成员共享它。
 
 ```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 with client.sandbox() as sb:
@@ -617,6 +617,8 @@ async def main():
 
 ## 跟踪沙箱活动
 
+要在基于代理的工作区中进行跟踪，请在运行示例之前[create an agent and configure agent addressing](/langsmith/create-an-agent#configure-tracing-for-the-agent)。
+
 通过 `run()` 上的 `env` 参数传递 LangSmith 跟踪环境变量，以发送沙箱内运行的代码的跟踪。在进程退出之前调用`flush()`以确保所有跟踪都已传递。
 
 ```python Python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
@@ -628,7 +630,8 @@ tracing_env = {
     "LANGSMITH_API_KEY": "lsv2_pt_...",
     "LANGSMITH_ENDPOINT": "https://api.smith.langchain.com",
     "LANGSMITH_TRACING": "true",
-    "LANGSMITH_PROJECT": "my-sandbox-traces",
+    "LANGSMITH_AGENT_ID": "<your-agent-id>",
+    "LANGSMITH_AGENT_ENVIRONMENT": "production",
 }
 
 with client.sandbox() as sandbox:
@@ -646,7 +649,8 @@ const tracingEnv = {
   LANGSMITH_API_KEY: "lsv2_pt_...",
   LANGSMITH_ENDPOINT: "https://api.smith.langchain.com",
   LANGSMITH_TRACING: "true",
-  LANGSMITH_PROJECT: "my-sandbox-traces",
+  LANGSMITH_AGENT_ID: "<your-agent-id>",
+  LANGSMITH_AGENT_ENVIRONMENT: "production",
 };
 
 const sandbox = await client.createSandbox();
@@ -714,11 +718,11 @@ try {
     console.log(`Error: ${e.message}`);
   }
 }
-```
-
-> [!注意]
+```> [!注意]
 >
-> 有关更多详细信息，请参阅 GitHub 上[Python](https://github.com/langchain-ai/langsmith-python/tree/main/src/langsmith/sandbox) 或 [TypeScript](https://github.com/langchain-ai/langsmith-javascript/tree/main/src/lib/sandbox) 的沙箱 SDK 参考。***
+> 有关更多详细信息，请参阅 GitHub 上[Python](https://github.com/langchain-ai/langsmith-python/tree/main/src/langsmith/sandbox) 或 [TypeScript](https://github.com/langchain-ai/langsmith-javascript/tree/main/src/lib/sandbox) 的沙箱 SDK 参考。
+
+***
 
 [Connect these docs](/use-these-docs) 通过 MCP 发送给您选择的代理以获得实时解答。
 

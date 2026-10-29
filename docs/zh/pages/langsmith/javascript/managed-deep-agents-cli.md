@@ -4,21 +4,21 @@
 
 # 托管 Deep Agents CLI 参考
 
-Reference for mda commands, project files, and deploy behavior.
+mda 命令、项目文件和部署行为的参考。
 
-The `mda` CLI compiles and deploys code-first [Managed Deep Agents](/langsmith/javascript/managed-deep-agents-overview).
+`mda` CLI 编译并部署代码优先[Managed Deep Agents](/langsmith/javascript/managed-deep-agents-overview)。
 
 它包含在 `managed-deepagents` npm 包中。
 
 > [!注意]
 >
-> Managed Deep Agents is in **public [beta](/langsmith/release-stages)** on [LangSmith Cloud](/langsmith/cloud).
+> 托管 Deep Agents 于 [LangSmith Cloud](/langsmith/cloud) **公开 [beta](/langsmith/release-stages)**。
 
-For the fastest end-to-end path, see the [quickstart](/langsmith/javascript/managed-deep-agents-quickstart). For workflow guidance, see [Identity](/langsmith/javascript/managed-deep-agents-identity), [Memory](/langsmith/javascript/managed-deep-agents-memory), [Evals](/langsmith/javascript/managed-deep-agents-evals), [Custom tools](/langsmith/javascript/managed-deep-agents-tools), [Connections](/langsmith/javascript/managed-deep-agents-connections), [Custom middleware](/langsmith/javascript/managed-deep-agents-middleware), [Sandboxes](/langsmith/javascript/managed-deep-agents-sandboxes), [Channels](/langsmith/javascript/managed-deep-agents-channels), [Schedules](/langsmith/javascript/managed-deep-agents-schedules), and [Deploy an agent](/langsmith/javascript/managed-deep-agents-deploy).
+要了解最快的端到端路径，请参阅[quickstart](/langsmith/javascript/managed-deep-agents-quickstart)。有关工作流程指南，请参阅 [Identity](/langsmith/javascript/managed-deep-agents-identity)、[Memory](/langsmith/javascript/managed-deep-agents-memory)、[Evals](/langsmith/javascript/managed-deep-agents-evals)、[Custom tools](/langsmith/javascript/managed-deep-agents-tools)、[Connections](/langsmith/javascript/managed-deep-agents-connections)、[Custom middleware](/langsmith/javascript/managed-deep-agents-middleware)、[Sandboxes](/langsmith/javascript/managed-deep-agents-sandboxes)、[Channels](/langsmith/javascript/managed-deep-agents-channels)、[Schedules](/langsmith/javascript/managed-deep-agents-schedules) 和[Deploy an agent](/langsmith/javascript/managed-deep-agents-deploy)。
 
 ## 安装
 
-`mda init` declares `managed-deepagents` as a project dependency, so run the `mda` binary from the project.
+`mda init` 将 `managed-deepagents` 声明为项目依赖项，因此从项目中运行 `mda` 二进制文件。
 
 ```bash npm theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 npx managed-deepagents init my-agent
@@ -41,28 +41,28 @@ bun install
 bunx mda --version
 ```
 
-The package provides agent, identity, schedule, and sandbox authoring APIs.
+该软件包提供代理、身份、计划和沙箱创作 API。
 
 ## 身份验证
 
 `mda deploy` 按以下顺序读取 API 密钥：
 
-1. `LANGGRAPH_HOST_API_KEY`
-2. `LANGSMITH_API_KEY`
-3. `LANGCHAIN_API_KEY`
+1.`LANGGRAPH_HOST_API_KEY`
+2.`LANGSMITH_API_KEY`
+3.`LANGCHAIN_API_KEY`
 
-The CLI reads those values from the project `.env` file first, then from the process environment. If no key is found in an interactive terminal, `mda deploy` prompts for a LangSmith API key and saves it to the project `.env` file.
+CLI 首先从项目 `.env` 文件中读取这些值，然后从流程环境中读取这些值。如果在交互式终端中找不到密钥，`mda deploy` 会提示输入 LangSmith API 密钥并将其保存到项目 `.env` 文件中。
 
 ```text .env theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 LANGSMITH_API_KEY=<LANGSMITH_API_KEY>
 OPENAI_API_KEY=<OPENAI_API_KEY>
 ```
 
-To deploy with an organization-scoped key, set `LANGSMITH_WORKSPACE_ID` or pass `--workspace-id` to `mda deploy`.LangSmith API 密钥对部署进行身份验证。代理的模型提供者在运行时也需要凭据。在 `.env` 中设置提供程序密钥，将其导出到 shell 中，或将其配置为 LangSmith 工作区密钥。例如，`openai:gpt-5.5`需要`OPENAI_API_KEY`。
+要使用组织范围的密钥进行部署，请设置 `LANGSMITH_WORKSPACE_ID` 或将 `--workspace-id` 传递给 `mda deploy`。LangSmith API 密钥对部署进行身份验证。代理的模型提供者在运行时也需要凭据。在 `.env` 中设置提供程序密钥，将其导出到 shell 中，或将其配置为 LangSmith 工作区密钥。例如，`openai:gpt-5.5`需要`OPENAI_API_KEY`。
 
 `mda deploy` 转发非保留的 `.env` 条目，例如 `OPENAI_API_KEY`、MCP 令牌和自定义工具凭证，作为托管部署机密。保留的平台变量（包括 `LANGSMITH_API_KEY`、`LANGGRAPH_HOST_API_KEY`、`LANGCHAIN_API_KEY` 和 `LANGSMITH_WORKSPACE_ID`）用于 CLI 身份验证和部署路由，但不会作为用户管理的部署机密上传。
 
-## 命令概述|命令|使用|
+## 命令概述|命令 |使用 |
 | - | - |
 | `mda --help` |显示 CLI 帮助。 |
 | `mda --version` |显示已安装的 CLI 版本。 |
@@ -74,7 +74,7 @@ To deploy with an organization-scoped key, set `LANGSMITH_WORKSPACE_ID` or pass 
 | `mda deploy [path]` |编译、同步 Context Hub 上下文、上传并部署到 LangSmith。 |
 | `mda channels init slack` |将 Slack 通道声明添加到当前项目。 |
 | `mda logs [path]` |已部署代理的尾部代理服务器日志。 |
-| `mda delete [path]` / `mda destroy [path]` |删除已部署的代理及其创建的LangSmith资源。 |
+| `mda delete [path]` / `mda destroy [path]` |删除已部署的代理及其创建的 LangSmith 资源。 |
 
 ## 初始化项目
 
@@ -90,7 +90,7 @@ pnpm dlx managed-deepagents init my-agent
 
 ```bash bun theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 bunx managed-deepagents init my-agent
-```|参数或标志 |使用|
+```|参数或标志 |使用 |
 | - | - |
 | `name` |所需的项目目录名称。如果目标已存在，则该命令失败。 |
 | `--instructions TEXT` |系统提示写入`instructions.md`。 |
@@ -160,7 +160,7 @@ pnpm exec mda build
 
 ```bash bun theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 bunx mda build
-```|参数或标志 |使用|
+```|参数或标志 |使用 |
 | - | - |
 | `path` |项目目录。默认为当前目录。 |
 | `--out OUT` |已编译应用程序的输出目录。默认为`<path>/.mda/build`。该目录在构建之前被清空，因此它必须丢失、为空或者是先前构建写入的目录。 |
@@ -181,7 +181,7 @@ pnpm exec mda evals init -i
 bunx mda evals init -i
 ```
 
-|命令或标志|使用|
+|命令或标志 |使用 |
 | - | - |
 | `mda evals init` |缺失时创建`evals/harbor-job.json`，并在`.mda/evals/`下生成Harbor适配器和运行时设置。从项目根运行此命令。 |
 | `-i`、`--interactive` |使用 eval-engineering 提示启动检测到的编码代理，或复制另一个代理的提示。 |
@@ -206,7 +206,7 @@ pnpm exec mda dev
 bunx mda dev
 ```
 
-|参数或标志 |使用|
+|参数或标志 |使用 |
 | - | - |
 | `path` |项目目录。默认为当前目录。 |
 | `--port PORT` |将端口转发到 LangGraph 开发服务器。 |
@@ -229,15 +229,15 @@ bunx mda dev
 
 以三种模式之一创建连接：不透明机密（固定 API 密钥）、常规 OAuth（来自目录或自定义端点的 BYOT 应用程序）或 MCP OAuth（从 MCP 服务器 URL 发现并注册）。使用 `mda connections` 管理当前工作区中的这些凭据。
 
-|命令|使用|
+|命令 |使用 |
 | - | - |
 | `mda connections catalog` |列出具有预配置 OAuth 设置的服务。 |
 | `mda connections create <slug>` |创建不透明机密、常规 OAuth 或 MCP OAuth 连接。 |
 | `mda connections list` |列出工作区的连接元数据。 |
-| `mda connections get <slug>` | Show metadata for one connection. |
+| `mda connections get <slug>` |显示一个连接的元数据。 |
 | `mda connections delete <slug>` |删除连接及其存储的材料。 |
 
-`mda connections create` 的第一个参数是一个 slug，它是您的连接名称，名称代码传递给 `connections.get(...)`。提供商名称转到`--oauth`。The OAuth catalog saves you from looking up a provider's OAuth settings.当您将列出的服务传递给 `--oauth` 时，CLI 会提供其授权 URL、令牌 URL、令牌端点身份验证方法、授权参数和默认范围，因此您只需提供客户端 ID 和客户端密钥。 The catalog does not limit which providers you can use: for anything else, pass `--authorize-url` and `--token-url`.目录名称包括 `github`、`google`、`linear`、`slack`、`atlassian` 和 `notion-api`：
+`mda connections create` 的第一个参数是一个 slug，它是您的连接名称，名称代码传递给 `connections.get(...)`。提供商名称转到`--oauth`。OAuth 目录使您无需查找提供商的 OAuth 设置。当您将列出的服务传递给 `--oauth` 时，CLI 会提供其授权 URL、令牌 URL、令牌端点身份验证方法、授权参数和默认范围，因此您只需提供客户端 ID 和客户端密钥。该目录不限制您可以使用哪些提供程序：对于其他任何内容，请传递 `--authorize-url` 和 `--token-url`。目录名称包括 `github`、`google`、`linear`、`slack`、`atlassian` 和 `notion-api`：
 
 ```bash npm theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 npx mda connections catalog
@@ -251,7 +251,7 @@ pnpm exec mda connections catalog
 bunx mda connections catalog
 ```
 
-Create an agent-owned API key for a custom Tavily tool:
+为自定义 Tavily 工具创建代理拥有的 API 密钥：
 
 ```bash npm theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 npx mda connections create organization-tavily --secret-from-env TAVILY_API_KEY
@@ -265,12 +265,12 @@ pnpm exec mda connections create organization-tavily --secret-from-env TAVILY_AP
 bunx mda connections create organization-tavily --secret-from-env TAVILY_API_KEY
 ```
 
-以下标志控制连接创建：|旗帜|使用|
+以下标志控制连接创建：|旗帜|使用 |
 | - | - |
 | `--project PATH` |设置项目目录。默认为当前目录。 |
 | `--workspace-id WORKSPACE_ID` |覆盖`LANGSMITH_WORKSPACE_ID`。 |
 | `--secret-from-env VAR` |从 shell 或项目 `.env` 读取固定值或 OAuth 客户端密钥。 |
-| `--secret-from-file PATH` | Read a fixed value or OAuth client secret from a file. |
+| `--secret-from-file PATH` |从文件中读取固定值或 OAuth 客户端密钥。 |
 | `--oauth SERVICE` |使用 `mda connections catalog` 中服务的预配置设置。 |
 | `--grant-type GRANT` |将 OAuth 授权设置为 `authorization_code` 或 `client_credentials`。默认为`authorization_code`。 |
 | `--client-id CLIENT_ID` |设置 OAuth 客户端 ID。 |
@@ -305,11 +305,11 @@ pnpm exec mda deploy
 bunx mda deploy
 ```
 
-|参数或标志 |使用|
+|参数或标志 |使用 |
 | - | - |
 | `path` |项目目录。默认为当前目录。 |
 | `--name NAME` |部署名称。默认为`defineDeepAgent`的代理`name`。 |
-| `--deployment-type dev\|prod` |创建部署时的部署类型。默认为`dev`。 |
+| `--deployment-type serverless\|dedicated` |创建部署时的部署类型。默认为`serverless`。 |
 | `--workspace-id WORKSPACE_ID` |要部署到的工作区 ID。覆盖`LANGSMITH_WORKSPACE_ID`。 |
 | `--context-strategy overwrite\|keep-hub` |解决自上次同步以来 Hub 中的 `instructions.md` 或 `skills/` 发生更改时的 Context Hub 冲突。在非交互式 shell 中需要。参见[Context Hub](/langsmith/javascript/managed-deep-agents-context-hub#source-of-truth)。 |
 | `--no-wait` |触发远程构建并退出，无需轮询部署完成情况。 |
@@ -344,7 +344,7 @@ pnpm exec mda logs
 bunx mda logs
 ```
 
-|参数或标志 |使用|
+|参数或标志 |使用 |
 | - | - |
 | `path` |项目目录。默认为当前目录。 |
 | `--name NAME` |部署名称。默认为项目中的代理`name`。 |
@@ -370,7 +370,7 @@ pnpm exec mda delete
 bunx mda delete
 ```
 
-|参数或标志 |使用|
+|参数或标志 |使用 |
 | - | - |
 | `path` |项目目录。默认为当前目录。 |
 | `--name NAME` |部署名称。默认为`defineDeepAgent` 的代理`name`。 |

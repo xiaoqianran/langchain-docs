@@ -12,6 +12,10 @@
 >
 > 当前仅在 **TypeScript** 中支持 Claude Managed Agents 跟踪。
 
+> [!注意]
+>
+> 在发送跟踪之前，在[agent-based workspace](/langsmith/agents)、[create an agent](/langsmith/create-an-agent) 中进行一次。使用[agent addressing](/langsmith/log-traces-to-agent)选择其标识符和环境。如果集成需要 `project_name`，请使用所选环境的 [⟦T6⟧](/langsmith/create-an-agent#use-an-environment-project) 作为兼容性值。
+
 ## 安装
 
 ```bash npm theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
@@ -27,6 +31,8 @@ yarn add langsmith @anthropic-ai/sdk
 ```bash Shell theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 export LANGSMITH_TRACING=true
 export LANGSMITH_API_KEY=<your-langsmith-api-key>
+export LANGSMITH_AGENT_ID="<your-agent-id>"
+export LANGSMITH_AGENT_ENVIRONMENT="production"
 export ANTHROPIC_API_KEY=<your-anthropic-api-key>
 ```
 
@@ -98,11 +104,9 @@ for await (const event of stream) {
 > 接入单独的事件流，尚不支持。仅限顶级
 > 跟踪会话事件。
 
-## 后续步骤
-
-* [Trace Anthropic models](/langsmith/trace-anthropic) — 跟踪标准Anthropic API 调用和工具使用
-* [Trace Claude Agent SDK applications](/langsmith/trace-claude-agent-sdk) — 跟踪本地代理应用程序的 Claude Agent SDK
-* [Monitor your agent](/langsmith/dashboards) — 为生产代理设置仪表板和警报
+## 后续步骤* [Trace Anthropic models](/langsmith/trace-anthropic)：跟踪标准Anthropic API调用和工具使用
+* [Trace Claude Agent SDK agents](/langsmith/trace-claude-agent-sdk)：使用 Claude Agent SDK 在本地运行的跟踪代理
+* [Monitor your agent](/langsmith/dashboards)：为生产代理设置仪表板和警报
 
 ***
 

@@ -10,6 +10,7 @@
 * [Track contract usage (Enterprise)](#track-contract-usage-enterprise)：查看预付费合约消费。
 * [Update your information](#update-your-information-paid-plans-only)：修改您组织的发票电子邮件地址、业务信息和税号。
 * [Enforce spend limits](#enforce-spend-limits)：了解如何通过使用限制和数据保留来管理您的支出。
+* [LangSmith Deployment billing](#langsmith-deployment-billing)：了解部署费用，比较规模和每小时成本，降低部署成本。
 
 ## 为您的帐户设置账单
 
@@ -44,7 +45,7 @@
 
 ## 跟踪合约使用情况（企业）
 
-合同使用情况跟踪适用于具有预付费承诺的[**Enterprise plan**](/langsmith/pricing-plans) 客户。您必须拥有[⟦T1⟧ permission](/langsmith/organization-workspace-operations)才能访问此功能。查看预付费合约消费详情请参见[Contract usage](/langsmith/view-usage#contract-usage)。
+具有预付费承诺的[**Enterprise plan**](/langsmith/pricing-plans)客户可以使用合同使用跟踪。您必须拥有[⟦T2⟧ permission](/langsmith/organization-workspace-operations)才能访问此功能。查看预付合约消费详情请参见[Contract usage](/langsmith/view-usage#contract-usage)。
 
 > [!注意]
 >
@@ -69,7 +70,7 @@
 
 > [!注意]
 >
-> 在某些司法管辖区，需要LangSmith 征收销售税。如果您是企业，提供您的税号可能会使您有资格获得销售税豁免。
+> 在某些司法管辖区，LangSmith 需要征收销售税。如果您是企业，提供您的税号可能会使您有资格获得销售税豁免。
 
 要更新您组织的业务信息，请执行以下步骤：1. 导航到 **计划和账单** 选项卡。
 2. 在发票电子邮件部分下方，您将看到一个标有 **Business** 的复选框。
@@ -111,7 +112,7 @@ LangSmith 衡量每个工作区的使用情况，因为工作区通常代表组�
 
 > [!注意]
 >
-> 对于**仅具有多个工作空间**的组织：为简单起见，LangSmith 将免费跟踪纳入**仅第一个工作空间**的成本计算中。实际上，任何工作空间都可以“消耗”免费跟踪。因此，尽管多工作空间组织的工作区级别支出限制是近似值，但组织级别支出限制是绝对的。
+> 对于**仅具有多个工作空间**的组织：为简单起见，LangSmith 将免费跟踪纳入**仅第一个工作空间**的成本计算中。实际上，任何工作空间都可以“消耗”免费跟踪。因此，虽然多工作空间组织的工作区级别支出限制是近似值，但组织级别支出限制是绝对的。
 
 #### 配置跟踪层分布LangSmith 有两个跟踪层：基本跟踪和扩展跟踪。基本跟踪具有基本保留并且是短暂的（14 天），而扩展跟踪具有延长的保留并且是长期的（默认为 180 天，[customizable for Enterprise customers](/langsmith/data-purging-compliance#customize-extended-retention-policy)）。欲了解更多信息，请参阅[data retention conceptual docs](/langsmith/usage-and-billing#data-retention)。
 
@@ -123,13 +124,13 @@ LangSmith 衡量每个工作区的使用情况，因为工作区通常代表组�
 
 > [!注意]
 >
-> 延长的数据保留限制一旦达到，可能会导致跟踪以外的功能停止工作。如果您打算使用此功能，请阅读有关其[functionality and side effects](/langsmith/usage-and-billing#side-effects-of-extended-data-retention-traces-limit)的更多信息。
+> 一旦达到延长的数据保留限制，可能会导致跟踪以外的功能停止工作。如果您打算使用此功能，请阅读有关其[functionality and side effects](/langsmith/usage-and-billing#side-effects-of-extended-data-retention-traces-limit)的更多信息。
 
 ### 管理痕迹的其他方法
 
 #### 自定义延长保留期（仅限[Enterprise](/langsmith/pricing-plans)）
 
-[Enterprise](/langsmith/pricing-plans)客户可以在工作区级别自定义延长数据保留期限，以满足合规性要求。默认值为 180 天（截至 2026 年 9 月 14 日），但可以根据组织的需求进行调整。欲了解更多信息，请参阅[Customize extended retention policy](/langsmith/data-purging-compliance#customize-extended-retention-policy)。
+[Enterprise](/langsmith/pricing-plans) 客户可以在工作区级别自定义延长数据保留期限，以满足合规性要求。默认值为 180 天（截至 2026 年 9 月 14 日），但可以根据组织的需求进行调整。欲了解更多信息，请参阅[Customize extended retention policy](/langsmith/data-purging-compliance#customize-extended-retention-policy)。
 
 #### 更改项目级默认保留每个跟踪项目的数据保留设置均可调整。在项目级别，您可以在两个级别之间进行选择：基础（14 天）或扩展（180 天）。要自定义最长 180 天的延长持续时间，请使用 [workspace-level configuration](/langsmith/data-purging-compliance#customize-extended-retention-policy)（仅限企业）。
 
@@ -160,12 +161,47 @@ LangSmith 衡量每个工作区的使用情况，因为工作区通常代表组�
 
 如果出于数据收集目的而希望将跟踪子集保留**超过 180 天**，您可以创建另一个运行规则，将一些运行发送到您选择的数据集。数据集允许您存储跟踪输入和输出（例如，作为键值数据集），并且即使在删除跟踪后也将无限期地保留。
 
-### LangSmith 部署计费
+### 总结
 
-除了跟踪之外，LangSmith 通过LangSmith 部署对部署的代理进行收费。部署根据其消耗的资源进行计费：* **计算**：每个正在运行的副本请求的 vCPU 和内存，以 LangChain 标准单位 (LSU) 为单位进行测量。 [Autoscaling](/langsmith/cloud-platform-features#scaling) 添加了可计费副本。 [Serverless](/langsmith/cloud-platform-features#serverless) 计算费用在规模缩小时停止，而不是在流量停止时停止。 [Dedicated](/langsmith/cloud-platform-features#dedicated) 连续运行。
-* **数据库**：专用数据库 vCPU 和内存在 LSU 中单独计量。数据库存储和Serverless的共享数据库不计费。
+如果您对进一步管理支出有疑问，请通过[support.langchain.com](https://support.langchain.com)联系支持人员。
+
+## LangSmith 部署计费
+
+除了跟踪之外，LangSmith还通过LangSmith部署对部署的代理进行收费。部署根据其消耗的资源进行计费：* **计算**：每个正在运行的副本请求的 vCPU 和内存，以 LangChain 标准单位 (LSU) 为单位进行测量。 [Autoscaling](/langsmith/cloud-platform-features#scaling) 添加了可计费副本。 [Serverless](/langsmith/cloud-platform-features#serverless) 计算费用在规模缩小时停止，而不是在流量停止时停止。 [Dedicated](/langsmith/cloud-platform-features#dedicated) 连续运行。
+* **数据库**：专用数据库费用基于配置的 vCPU 和内存，包括空闲时。运行时自动缩放不会改变数据库费用。数据库磁盘存储和共享无服务器数据库不计费。
 
 托管 Redis 不按任何部署类型或规模计费。
+
+下图显示了每种部署类型的哪些部分需要计费。蓝色部分已计费。绿色部分不计费：
+
+```mermaid actions={false} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+%%{init: {"theme":"base","flowchart":{"htmlLabels":true,"nodeSpacing":24,"rankSpacing":16,"padding":14,"subGraphTitleMargin":{"top":6,"bottom":10}},"themeVariables":{"fontFamily":"Inter, system-ui, sans-serif","fontSize":"14px","lineColor":"#40668D","primaryColor":"#E5F4FF","primaryTextColor":"#030710","primaryBorderColor":"#006DDD","clusterBkg":"transparent","edgeLabelBackground":"#FFFFFF"}}}%%
+flowchart LR
+    subgraph serverless["<b>Serverless</b>"]
+        direction TB
+        SRuntime("<div style='width:210px;text-align:left;line-height:1.45'><b>Runtime</b><br/>1 replica<br/>API server and queue worker<br/><b>Billed</b> while running</div>")
+        SDb("<div style='width:210px;text-align:left;line-height:1.45'><b>Shared Postgres database</b><br/>Not billed</div>")
+        SRedis("<div style='width:210px;text-align:left;line-height:1.45'><b>Managed Redis</b><br/>Not billed</div>")
+        SRuntime ~~~ SDb ~~~ SRedis
+    end
+    subgraph dedicated["<b>Dedicated</b>"]
+        direction TB
+        DRuntime("<div style='width:210px;text-align:left;line-height:1.45'><b>Runtime</b><br/>2 or more API servers<br/>1 or more queue workers<br/><b>Billed</b> at all times</div>")
+        DDb("<div style='width:210px;text-align:left;line-height:1.45'><b>Dedicated Postgres database</b><br/>vCPU and memory <b>billed</b><br/>Disk storage not billed</div>")
+        DRedis("<div style='width:210px;text-align:left;line-height:1.45'><b>Managed Redis</b><br/>Not billed</div>")
+        DRuntime ~~~ DDb ~~~ DRedis
+    end
+    serverless ~~~ dedicated
+
+    classDef process fill:#E5F4FF,stroke:#006DDD,stroke-width:2px,color:#030710,rx:10,ry:10
+    classDef trigger fill:#F6FFDB,stroke:#6E8900,stroke-width:2px,color:#2E3900,rx:10,ry:10
+
+    class SRuntime,DRuntime,DDb process
+    class SDb,SRedis,DRedis trigger
+
+    style serverless fill:none,stroke:#40668D,stroke-width:1.5px,stroke-dasharray:5 4
+    style dedicated fill:none,stroke:#40668D,stroke-width:1.5px,stroke-dasharray:5 4
+```
 
 使用量按以下比率转换为 LSU。一个 LSU 的成本为 1.00 美元：
 
@@ -176,13 +212,49 @@ LangSmith 衡量每个工作区的使用情况，因为工作区通常代表组�
 |数据库 vCPU |每 vCPU 小时 0.177 LSU |
 |数据库内存|每 GiB 小时 0.025 LSU |
 
-例如，GCP 中的 LangSmith 云上的空闲 [Dedicated Small](/langsmith/cloud-platform-features#sizes) 部署有 2 个 API 副本和 1 个队列工作线程：3 个 vCPU 和 6 GiB 的计费运行时（不包括 Redis）。其数据库增加了 1 个 vCPU 和 4 GiB。每小时的费用为：
+每 5 分钟对使用情况进行一次采样，并每小时汇总一次。每个正在运行的可计费容器根据请求的资源而不是实际利用率在该时间间隔内收费。
 
-```txt theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-3 × 0.0675 + 6 × 0.009 + 1 × 0.177 + 4 × 0.025 = 0.5335 LSU
-```
+### 比较大小和每小时成本下表显示了 GCP 中 LangSmith 云上每个 [size](/langsmith/cloud-platform-features#sizes) 的每小时费用。所有费用均以路易斯安那州立大学每小时为单位。
 
-每 5 分钟对使用情况进行一次采样，并每小时汇总一次。每个正在运行的可计费容器根据请求的资源而不是实际利用率在该时间间隔内收费。[Free Serverless deployments](https://www.langchain.com/pricing) 不对任何容器、任何尺寸或**设置后缩小规模进行计费。专用部署从来都不是免费的。
+无服务器部署仅在运行时收费。缩小规模的无服务器部署成本为 0 LSU。无服务器部署不会横向扩展，并且其共享数据库不计费：
+
+|无服务器规模 |计费运行时间 |运行时的成本|
+| - | - | - |
+|小| 0.8 个 vCPU/2 GiB | 0.072 路易斯安那州立大学 |
+|中等| 4 个 vCPU/4 GiB | 0.306 路易斯安那州立大学 |
+|大| 8 个 vCPU / 8 GiB | 0.612 路易斯安那州立大学 |
+
+专用部署始终按其最短运行时间及其数据库收费。此表假设数据库大小与计算大小匹配：
+
+|专用尺寸|运行时+数据库|最低总数 |
+| - | - | - |
+|小| 0.2565 + 0.277 | 0.2565 + 0.277 0.5335 路易斯安那州立大学 |
+|中等| 0.513 + 0.554 | 0.513 + 0.554 1.067 路易斯安那州立大学 |
+|大| 1.026 + 1.108 | 2.134 路易斯安那州立大学 |
+
+> [!注意]
+>
+> 专用最小运行时间为 2 个 API 服务器副本和 1 个队列工作线程。 [Autoscaling](/langsmith/cloud-platform-features#scaling) 添加 API 服务器或队列工作副本。每个添加的副本都会花费与其大小相应的添加副本速率。
+
+下表显示了每个专用大小的最短运行时间和添加的副本率：|专用尺寸|最短运行时间 |每个添加的副本 |
+| - | - | - |
+|小| 3 个 vCPU / 6 GiB | +0.0855 路易斯安那州立大学 |
+|中等| 6 个 vCPU/12 GiB | +0.171 路易斯安那州立大学 |
+|大| 12 个 vCPU/24 GiB | +0.342 路易斯安那州立大学 |
+
+GCP 中LangSmith 云上的专用数据库容量为：
+
+|数据库大小 |产能 |每小时数据库成本|
+| - | - | - |
+|小| 1 个 vCPU / 4 GiB | 0.277 路易斯安那州立大学 |
+|中等| 2 个 vCPU / 8 GiB | 0.554 路易斯安那州立大学 |
+|大| 4 个 vCPU/16 GiB | 1.108 路易斯安那州立大学 |
+
+数据库容量因云提供商而异。计算和数据库大小可以是[set independently](/langsmith/cloud-platform-features#sizes)。
+
+追踪和其他产品使用是单独收费的。
+
+[Free Serverless deployments](https://www.langchain.com/pricing) 仅提供小尺寸。在任何**缩减后**设置下，免费部署都不会为任何容器计费。专用部署从来都不是免费的。
 
 要估算部署成本，您还可以使用[pricing page](https://www.langchain.com/pricing)上的部署成本计算器。
 
@@ -192,9 +264,57 @@ LangSmith 衡量每个工作区的使用情况，因为工作区通常代表组�
 
 对于大批量部署使用，[contact our sales team](https://www.langchain.com/contact-sales) 讨论自定义定价选项。
 
-### 总结
+### 降低部署成本部署费用基于每个部署请求的计算和数据库资源。要降低部署费用，请运行更少的部署，使用更小的规模，并缩小空闲部署的规模：
 
-如果您对进一步管理支出有疑问，请通过[support.langchain.com](https://support.langchain.com)联系支持人员。
+* **使用无服务器且缩减时间较短**：无服务器部署在缩减时会停止计算费用。将**之后缩小**设置为`1 hour`，而不是默认的`1 week`。默认情况下，每周至少接收一次请求的部署永远不会缩小规模。无服务器部署具有冷启动并运行一个副本。无服务器尚不适用于 AWS 或 Azure 上的部署，也不适用于自托管和混合部署。
+* **在一个部署上运行多个代理**：费用适用于每个部署，而不是每个代理。 [Define multiple graphs](/langsmith/application-structure#define-multiple-graphs-in-one-deployment) 合二为一 `langgraph.json`，以便您的代理共享一组副本和一个数据库。这在 Dedicated 上节省了最多的时间，其中每个部署至少有 2 个 API 服务器副本、1 个队列工作线程和自己的数据库。
+* **使用有效的最小大小**：每个运行时副本和每个数据库均按其大小收费。在专用部署中，您可以单独设置计算大小和数据库大小。参见[Sizes](/langsmith/cloud-platform-features#sizes)。* **删除未使用的部署**：空闲的专用部署按其最小副本及其数据库收费。空闲的无服务器部署会被计费，直到其缩小规模为止。
+* **限制预览部署**：每个 [preview deployment](/langsmith/preview-builds) 都是一个单独的部署，并且按一次计费。降低**空闲 TTL** 和 **最大并发预览** 以限制运行预览部署的数量和时间。
+* **删除不需要的唤醒**：对缩小规模的无服务器部署的请求会再次启动它，包括自动运行状况检查。启用 [cron jobs](/langsmith/cron-jobs) 并安排运行，最多可在到期前 10 分钟启动部署。删除不需要的 cron 作业和运行状况检查。
+
+下图将三种专用部署与运行三个图表的一种专用部署进行了比较：
+
+```mermaid actions={false} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+%%{init: {"theme":"base","flowchart":{"htmlLabels":true,"nodeSpacing":24,"rankSpacing":36,"padding":14,"subGraphTitleMargin":{"top":6,"bottom":10}},"themeVariables":{"fontFamily":"Inter, system-ui, sans-serif","fontSize":"14px","lineColor":"#40668D","primaryColor":"#E5F4FF","primaryTextColor":"#030710","primaryBorderColor":"#006DDD","clusterBkg":"transparent","edgeLabelBackground":"#FFFFFF"}}}%%
+flowchart TB
+    subgraph separate["<b>Before: 3 Dedicated deployments, at least 1.6005 LSU per hour</b>"]
+        direction LR
+        A("<div style='width:130px;text-align:left;line-height:1.45'><b>Agent A</b><br/>2 API servers<br/>1 queue worker<br/>1 database</div>")
+        B("<div style='width:130px;text-align:left;line-height:1.45'><b>Agent B</b><br/>2 API servers<br/>1 queue worker<br/>1 database</div>")
+        C("<div style='width:130px;text-align:left;line-height:1.45'><b>Agent C</b><br/>2 API servers<br/>1 queue worker<br/>1 database</div>")
+        A ~~~ B ~~~ C
+    end
+    subgraph shared["<b>After: 1 Dedicated deployment, at least 0.5335 LSU per hour</b>"]
+        direction LR
+        Config("<div style='width:130px;text-align:left;line-height:1.45'><b>langgraph.json</b><br/>agent_a<br/>agent_b<br/>agent_c</div>")
+        Runtime("<div style='width:130px;text-align:left;line-height:1.45'><b>Shared runtime</b><br/>2 API servers<br/>1 queue worker</div>")
+        Db("<div style='width:130px;text-align:left;line-height:1.45'><b>Shared database</b><br/>1 database</div>")
+        Config --> Runtime --> Db
+    end
+
+    separate == "Define all graphs in one langgraph.json" ==> shared
+
+    classDef process fill:#E5F4FF,stroke:#006DDD,stroke-width:2px,color:#030710,rx:10,ry:10
+    classDef neutral fill:#F2FAFF,stroke:#40668D,stroke-width:2px,color:#2F4B68,rx:10,ry:10
+
+    class A,B,C,Runtime,Db process
+    class Config neutral
+
+    style separate fill:none,stroke:#40668D,stroke-width:1.5px,stroke-dasharray:5 4
+    style shared fill:none,stroke:#40668D,stroke-width:1.5px,stroke-dasharray:5 4
+```
+
+下表显示了两项更改的效果。每月费用使用 720 小时：
+
+* **更短的缩减时间**：无服务器小型部署每个工作日、每月 22 天接收 2 小时的请求。
+* **多个图表**：三个代理在 GCP 上的专用小型部署上运行。|改变 |之前 |之后 |
+| - | - | - |
+|更短的缩减时间| `1 week`（默认）：720 小时正常运行时间，\~51.84 LSU 使用 | `1 hour`：\~66 小时的正常运行时间，\~4.75 LSU 使用量。 Savings \~47.09 LSU. |
+|多个图表 | 3 次部署：\~1,152 LSU | 1 个部署，包含 3 个图表：\~384 LSU。节省约 768 LSU。 |
+
+自动缩放会增加两种专用设置的运行时间成本。
+
+LangSmith 不支持创建部署后更改部署类型。要迁移到无服务器，请创建一个新的无服务器部署，并使用 [Agent Server API](/langsmith/server-api-ref) 从之前的部署复制数据。您还可以联系 [support](https://support.langchain.com) 寻求迁移帮助。
 
 ***
 

@@ -8,23 +8,23 @@
 
 一旦数据平面处于活动状态，其工作区的所有 API 流量都会进入数据平面端点，而不是LangSmith 云后端。本页说明如何将请求路由到正确的服务。
 
-LangSmith UI 会自动处理此问题：它根据您选择的工作空间路由到正确的数据平面。以下指南适用于您自己的客户端应用程序和直接 API 调用。
+LangSmith UI 会自动处理此问题：它根据您选择的工作空间路由到正确的数据平面。以下指南适用于您自己的客户端代码和直接 API 调用。
 
-## Organizations, data planes, and workspaces
+## 组织、数据平面和工作空间
 
 BYOC 部署为标准 LangSmith [resource hierarchy](/langsmith/administration-overview#resource-hierarchy) 添加了一个级别：数据平面，位于组织和工作区之间。* **组织**：顶层。用户、角色、计费、SSO 配置和 API 密钥属于组织并位于控制平面中。
 * **数据平面**：属于一个组织，代表数据的物理分离。一个组织可以拥有多个数据平面，每个数据平面都位于自己的 AWS 账户和区域中。
-* **工作空间**：仅属于一个数据平面，您在创建工作空间时选择该数据平面。跟踪、数据集、实验和其他应用程序数据位于工作区中。
+* **工作空间**：仅属于一个数据平面，您在创建工作空间时选择该数据平面。跟踪、数据集、实验和其他代理数据位于工作区中。
 
 ![Nesting diagram of a BYOC deployment. An organization contains two data planes, each labeled as physical separation. The first is in us-east-1 and the second is in eu-west-1. Each data plane holds one workspace per team, and every workspace is labeled as logical separation within its data plane.](https://mintcdn.com/langchain-5e9cc07a/5dqOg-xwCbWrjM9p/langsmith/images/byoc-org-structure.png?fit=max\&auto=format\&n=5dqOg-xwCbWrjM9p\&q=85\&s=7cf4860e09578a0aad32f16c1eef9ee0)
 
 使用数据平面进行数据的物理分离，使用工作空间进行数据平面内的逻辑分离。划分数据平面的常用方法有：
 
-* **按区域**，例如`us-east-1`和`us-west-2`，将敏感应用程序数据保留在特定区域。
+* **每个区域**，例如`us-east-1`和`us-west-2`，将敏感代理数据保留在特定区域。
 * **每个环境和区域**，例如 prod `us-east-1` 和 dev `us-east-1`，将生产和开发数据保存在单独的 AWS 账户中。
 * **每个业务部门**，当每个部门拥有自己的 AWS 账户时。
 
-在数据平面下方，工作区和应用程序的工作方式与在云或自托管上相同。有关更多信息，请参阅 [Administration overview](/langsmith/administration-overview) 和 [Workload isolation](/langsmith/workload-isolation)。
+在数据平面下方，工作区隔离的工作方式与在云或自托管上相同。有关更多信息，请参阅 [Administration overview](/langsmith/administration-overview) 和 [Workload isolation](/langsmith/workload-isolation)。
 
 ## 找到您的数据平面端点每个数据平面都有一个基本 URL。导航到 **设置 > 数据平面** 以查看每个数据平面、其状态及其 API URL。
 
@@ -33,6 +33,8 @@ BYOC 部署为标准 LangSmith [resource hierarchy](/langsmith/administration-ov
 > 默认情况下，数据平面配置有专用终端节点，因此您需要专用连接才能到达基本 URL，例如 Tailscale、AWS PrivateLink 或 VPC 对等互连。
 
 ## 跟踪数据平面
+
+要在基于代理的工作区中进行跟踪，请在运行示例之前[create an agent and configure agent addressing](/langsmith/create-an-agent#configure-tracing-for-the-agent)。
 
 要将跟踪发送到位于数据平面中的工作区，请将 LangSmith SDK 指向数据平面端点，并使用作用域为该数据平面中的工作区的 API 密钥进行身份验证：
 
@@ -62,18 +64,18 @@ export LANGSMITH_ENDPOINT="https://<data_plane_host>"
 
 ### 双写入两个端点
 
-设置 `LANGSMITH_RUNS_ENDPOINTS` 写入多个端点：
+设置 `LANGSMITH_RUNS_ENDPOINTS` 以写入多个端点。这些副本设置使用每个代理环境的 [⟦T15⟧](/langsmith/create-an-agent#use-an-environment-project) 作为 `project_name`：
 
 ```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 export LANGSMITH_RUNS_ENDPOINTS='[
-  {"api_url": "https://aws.api.smith.langchain.com", "api_key": "ls__key1", "project_name": "project-cloud"},
-  {"api_url": "https://<data_plane_host>", "api_key": "ls__key2", "project_name": "project-byoc"}
+  {"api_url": "https://aws.api.smith.langchain.com", "api_key": "ls__key1", "project_name": "<cloud-environment-tracer-session-name>"},
+  {"api_url": "https://<data_plane_host>", "api_key": "ls__key2", "project_name": "<byoc-environment-tracer-session-name>"}
 ]'
 ```
 
-### 在应用程序逻辑中选择目的地
+### 在代理逻辑中选择目的地
 
-要决定在运行时跟踪何处，请为每个端点创建一个客户端并在它们之间进行选择：
+要决定在运行时跟踪何处，请为每个端点创建一个客户端并在它们之间进行选择。将 `LANGSMITH_CLOUD_PROJECT` 和 `LANGSMITH_BYOC_PROJECT` 设置为相应代理环境的 `tracer_session_name` 值：
 
 ```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 import os
@@ -105,10 +107,10 @@ byoc_client = Client(
 
 
 def get_workspace_routing(tenant_id: str):
-    """Determine the tracing destination based on application routing logic."""
+    """Select the tracing destination for this tenant."""
     if tenant_id.startswith("byoc_"):
-        return byoc_client, os.getenv("LANGSMITH_BYOC_PROJECT", "byoc-customer-project")
-    return cloud_client, os.getenv("LANGSMITH_CLOUD_PROJECT", "cloud-customer-project")
+        return byoc_client, require_env("LANGSMITH_BYOC_PROJECT")
+    return cloud_client, require_env("LANGSMITH_CLOUD_PROJECT")
 
 
 @traceable

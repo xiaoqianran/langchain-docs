@@ -6,7 +6,7 @@
 
 直接检测您的代码以控制跟踪哪些函数以及它们在 LangSmith 中的显示方式。
 
-直接将 [instrumentation](/langsmith/observability-concepts#manual-instrumentation) 添加到代码中，可以让您精确控制应用程序跟踪哪些函数、记录哪些输入和输出，以及如何构建 [trace](/langsmith/observability-concepts#traces) 层次结构。三种核心仪器方法是：
+将 [instrumentation](/langsmith/observability-concepts#manual-instrumentation) 直接添加到代码中，可以让您精确控制代理跟踪哪些函数、记录哪些输入和输出，以及如何构建 [trace](/langsmith/observability-concepts#traces) 层次结构。三种核心仪器方法是：
 
 * [⟦T15⟧ decorator](#use-%40traceable-%2F-traceable)：推荐用于大多数情况
 * [⟦T16⟧ context manager](#use-the-trace-context-manager-python-only)：仅限Python
@@ -27,17 +27,19 @@
 
 * `LANGSMITH_TRACING=true`：启用跟踪。设置此选项可在不更改代码的情况下打开和关闭跟踪。> [!注意]
   >
-  > `LANGSMITH_TRACING` 控制`@traceable` 装饰器和`trace` 上下文管理器。要在运行时覆盖 `@traceable` 而不更改环境变量，请使用 [⟦T23⟧](#use-the-trace-context-manager-python-only) (Python) 或将 `tracingEnabled` 直接传递给 `traceable` (JS/TS)。 [⟦T26⟧ objects](#use-the-runtree-api) 不受任何这些控制措施的影响；他们总是在发布时将数据发送到LangSmith。
+  > `LANGSMITH_TRACING` controls the `@traceable` decorator and the `trace` context manager.要在运行时覆盖 `@traceable` 而不更改环境变量，请使用 [⟦T23⟧](#use-the-trace-context-manager-python-only) (Python) 或将 `tracingEnabled` 直接传递给 `traceable` (JS/TS)。 [⟦T26⟧ objects](#use-the-runtree-api) are not affected by any of these controls;他们总是在发布数据时将数据发送到LangSmith。
 
 * `LANGSMITH_API_KEY`：您的[LangSmith API key](/langsmith/create-account-api-key)。
 
-* 默认情况下，LangSmith 将跟踪记录到名为 `default` 的项目。要登录到不同的项目，请设置`LANGSMITH_PROJECT`。更多详情请参阅[Log traces to a specific project](/langsmith/log-traces-to-project)。在 [agent-based workspace](/langsmith/agents) 中，对新项目名称的第一个跟踪会创建一个以该项目命名的代理，该项目作为其 Production [environment](/langsmith/agent-environments)。代理的标识符源自项目名称，因此它可以与项目名称不同，并且创建代理需要创建项目的权限。要将跟踪发送到特定代理和环境，请使用[agent addressing](/langsmith/log-traces-to-agent)。
+* 在 [agent-based workspace](/langsmith/agents)、[create an agent](/langsmith/create-an-agent) 中进行追踪之前。使用[agent addressing](/langsmith/log-traces-to-agent)：设置`LANGSMITH_AGENT_ID`和`LANGSMITH_AGENT_ENVIRONMENT`。 Remove legacy destination variables and overrides when using agent addressing.
 
 ## 使用 `@traceable` / `traceable`
 
 将 [⟦T32⟧](https://reference.langchain.com/python/langsmith/run_helpers/traceable) (Python)、[⟦T33⟧](https://reference.langchain.com/javascript/langsmith/traceable) (TypeScript)、`traceable` (Kotlin) 或 `Tracing.traceFunction` (Java) 应用于任何函数以使其成为跟踪运行。 LangSmith 自动处理嵌套调用之间的上下文传播。
 
-以下示例跟踪一个简单的管道：`run_pipeline` 调用 `format_prompt` 构建消息，`invoke_llm` 调用模型，以及 `parse_output` 提取结果。每个函数都被单独跟踪，并且因为它们是从 `run_pipeline` 内部调用的（也被跟踪），所以 LangSmith 在子运行时自动嵌套它们。 `invoke_llm`使用`run_type="llm"`将其标记为LLM调用，因此LangSmith可以正确呈现令牌计数和延迟：
+以下示例跟踪一个简单的管道：`run_pipeline` 调用 `format_prompt` 构建消息，`invoke_llm` 调用模型，以及 `parse_output` 提取结果。
+
+每个函数都被单独跟踪，并且因为它们是从 `run_pipeline` 内部调用的（也被跟踪），所以 LangSmith 在子运行时自动嵌套它们。 `invoke_llm` uses `run_type="llm"` to mark it as an LLM call so LangSmith can render token counts and latency correctly:
 
 ```python Python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 from langsmith import traceable
@@ -255,9 +257,7 @@ val runPipeline =
     )
 
 println(runPipeline("colorful socks"))
-```
-
-在 [UI](https://smith.langchain.com?utm_source=docs\&utm_medium=cta\&utm_campaign=langsmith-signup\&utm_content=langsmith-annotate-code) 中，您将找到 `run_pipeline` 跟踪，其中 `format_prompt`、`invoke_llm` 和 `parse_output` 作为嵌套子运行。
+```在 [UI](https://smith.langchain.com?utm_source=docs\&utm_medium=cta\&utm_campaign=langsmith-signup\&utm_content=langsmith-annotate-code) 中，您将找到 `run_pipeline` 跟踪，其中 `format_prompt`、`invoke_llm` 和 `parse_output` 作为嵌套子运行。
 
 > [!注意]
 >
@@ -272,7 +272,9 @@ println(runPipeline("colorful socks"))
 3. 使用装饰器或包装器是不可行的。
 4. 上述任何一项或全部。
 
-上下文管理器与 `traceable` 装饰器和 `wrap_openai` 包装器无缝集成，因此您可以在同一应用程序中一起使用它们。以下示例显示了所有三个一起使用的情况。 `wrap_openai` 包装 OpenAI 客户端，以便自动跟踪其调用。 `my_tool` 使用 `@traceable` 与 `run_type="tool"` 以及自定义 `name` 来正确显示在跟踪中。 `chat_pipeline`本身没有装饰；相反，`ls.trace` 包装调用，让您显式传递项目名称和输入，并通过 `rt.end()` 手动设置输出：
+上下文管理器与 `traceable` 装饰器和 `wrap_openai` 包装器无缝集成，因此您可以在同一个代理中一起使用它们。
+
+以下示例显示了所有三个一起使用的情况。 `wrap_openai` 包装 OpenAI 客户端，以便自动跟踪其调用。 `my_tool` 使用 `@traceable` 与 `run_type="tool"` 以及自定义 `name` 来正确显示在跟踪中。 `chat_pipeline`本身没有装饰；相反，`ls.trace` 包装调用，让您显式传递代理地址和输入，并通过 `rt.end()` 手动设置输出：
 
 ```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 import openai
@@ -298,14 +300,12 @@ def chat_pipeline(question: str):
 
 app_inputs = {"input": "Can you summarize this morning's meetings?"}
 
-with ls.trace("Chat Pipeline", "chain", project_name="my_test", inputs=app_inputs) as rt:
+with ls.trace("Chat Pipeline", "chain", address=ls.agent_address("<your-agent-id>", "production"), inputs=app_inputs) as rt:
     output = chat_pipeline("Can you summarize this morning's meetings?")
     rt.end(outputs={"output": output})
 ```
 
-## 使用`RunTree` API
-
-将跟踪记录到 LangSmith 的另一种更明确的方法是通过 `RunTree` API。此 API 使您可以更好地控制跟踪。您可以手动创建运行和子运行来组装跟踪。您仍然需要设置`LANGSMITH_API_KEY`，但`LANGSMITH_TRACING`对于此方法不是必需的。
+## 使用`RunTree` API将跟踪记录到 LangSmith 的另一种更明确的方法是通过 `RunTree` API。此 API 使您可以更好地控制跟踪。您可以手动创建运行和子运行来组装跟踪。您仍然需要设置`LANGSMITH_API_KEY`，但`LANGSMITH_TRACING`对于此方法不是必需的。
 
 对于大多数用例，不建议使用此方法；与自动处理上下文传播的`@traceable`相比，手动管理跟踪上下文很容易出错。
 
@@ -576,7 +576,9 @@ try {
 
 Java 和 Kotlin 示例使用自定义根运行 ID 和专用执行器。关闭执行器并等待终止可确保后台运行提交在进程退出之前完成。
 
-## 用法示例您可以扩展上一节中介绍的实用程序来跟踪任何代码。以下代码显示了一些示例扩展。
+## 用法示例
+
+您可以扩展上一节中介绍的实用程序来跟踪任何代码。以下代码显示了一些示例扩展。
 
 跟踪类中的任何公共方法：
 
@@ -629,9 +631,7 @@ MyClass(13).combine(29)
 
 ## 指定自定义运行ID
 
-默认情况下，LangSmith为每次运行分配一个随机ID。当您需要提前知道运行 ID 时（例如，在运行后立即附加 [feedback](/langsmith/attach-user-feedback)）、将 LangSmith 运行与来自外部系统的 ID 相关联，或者使用确定性 ID 使运行具有幂等性，您可以覆盖此设置。
-
-> [!注意]
+默认情况下，LangSmith为每次运行分配一个随机ID。当您需要提前知道运行 ID 时（例如，在运行后立即附加 [feedback](/langsmith/attach-user-feedback)）、将 LangSmith 运行与来自外部系统的 ID 相关联，或者使用确定性 ID 使运行具有幂等性，您可以覆盖此设置。> [!注意]
 >
 > 使用 **UUID v7** 作为自定义运行 ID。 UUIDv7 嵌入了时间戳，可保留跟踪中运行的正确时间顺序。 LangSmith SDK 导出 `uuid7` 帮助程序（Python v0.4.43+、JS v0.3.80+）：
 >
@@ -687,9 +687,11 @@ MyClass(13).combine(29)
       run.end(outputs={"result": result})
 
   # run_id can now be used to attach feedback, query the run, etc.
-  ```## 确保退出前所有跟踪都已提交
+  ```
 
-LangSmith 在后台线程中执行跟踪，以避免阻碍您的生产应用程序。这意味着您的进程可能会在所有跟踪成功发布到LangSmith之前结束。请参考以下选项：
+## 确保退出前所有跟踪都已提交
+
+LangSmith 在后台线程中执行跟踪，以避免阻碍您的生产代理。这意味着您的进程可能会在所有跟踪成功发布到LangSmith之前结束。请参考以下选项：
 
 * 如果您使用LangChain，请参阅[LangChain tracing guide](/langsmith/trace-with-langchain#ensure-all-traces-are-submitted-before-exiting)。
 * 如果您使用[LangSmith SDK](/langsmith/reference)独立版，则可以在退出前使用`flush`方法：
@@ -726,15 +728,13 @@ LangSmith 在后台线程中执行跟踪，以避免阻碍您的生产应用程�
   }
   ```
 
-## 相关
-
-* [Observability concepts](/langsmith/observability-concepts)：运行、跟踪和 LangSmith 数据模型的背景知识
-* [Run (span) data format](/langsmith/run-data-format)：运行字段的架构参考，包括 `dotted_order`、`trace_id` 和 `parent_run_id`
+## 相关* [Observability concepts](/langsmith/observability-concepts)：运行、跟踪和 LangSmith 数据模型的背景知识
+* [Run (span) data format](/langsmith/run-data-format)：运行字段的架构参考，包括`dotted_order`、`trace_id`和`parent_run_id`
 * [Log user feedback using the SDK](/langsmith/attach-user-feedback)：预先指定运行 ID 的常见用例
 * [Access the current run (span) within a traced function](/langsmith/access-current-span)：从跟踪内部读取或修改活动运行
-* [Log traces to a specific project](/langsmith/log-traces-to-project)：将跟踪路由到指定项目而不是`default`
+* [Configure legacy integrations](/langsmith/create-an-agent#use-an-environment-project)：配置需要`project_name`的集成
 * [Trace with API](/langsmith/trace-with-api)：SDK 的低级 REST API 替代方案
-* [Tracing Basics video](https://academy.langchain.com/pages/intro-to-langsmith-preview)摘自LangSmith课程简介
+* [Tracing Basics video](https://academy.langchain.com/pages/intro-to-langsmith-preview)摘自LangSmith课程介绍
 
 ***
 

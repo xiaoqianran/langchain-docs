@@ -10,7 +10,7 @@
 
 > [!注意]
 >
-> 当在线评估器在跟踪内的任何运行上运行时，LangSmith 会将跟踪升级到 [extended data retention](/langsmith/usage-and-billing#data-retention-auto-upgrades)。此升级会影响跟踪定价。
+> 当在线评估器在跟踪内的任何运行上运行时，LangSmith 会将跟踪升级为 [extended data retention](/langsmith/usage-and-billing#data-retention-auto-upgrades)。此升级会影响跟踪定价。
 
 ## 决策模型
 
@@ -18,7 +18,7 @@
 
 ### 支持的型号
 
-LangSmith 在跟踪项目和数据集上支持评估者的 OpenAI 和 TypeSafe 决策模型。要通过其他提供程序或在您自己的服务器上调用决策模型，请使用 OpenAI-Decisions 兼容或 TypeSafe 兼容端点。参见[Connect to a compatible decision model provider](/langsmith/compatible-decision-model-provider)。|型号|供应商|设置|
+LangSmith 在跟踪项目和数据集上支持评估者的 OpenAI 和 TypeSafe 决策模型。要通过其他提供程序或在您自己的服务器上调用决策模型，请使用 OpenAI-Decisions 兼容或 TypeSafe 兼容端点。参见[Connect to a compatible decision model provider](/langsmith/compatible-decision-model-provider)。|型号|供应商|设置 |
 | - | - | - |
 | [⟦T0⟧](/langsmith/llm-gateway-decision-models#use-openai-decision-models) | **OpenAI** |需要存储为工作区机密的 OpenAI API 密钥。默认为`OPENAI_API_KEY`。 |
 | [Jev](/langsmith/llm-gateway-decision-models#use-typesafe-jev) | **类型安全** |需要存储为工作区机密的 TypeSafe API 密钥。默认为`TYPESAFE_API_KEY`。 |
@@ -53,6 +53,8 @@ LangSmith 对决策模型问题强制执行以下限制：
 问题名称遵循与其他反馈键相同的限制，并且在评估器中必须是唯一的。
 
 ## 添加决策模型在线评估器
+
+决策模型评估者需要 LangSmith Plus 或 Enterprise 计划。
 
 要添加决策模型在线评估器：1. 在[LangSmith UI](https://smith.langchain.com?utm_source=docs\&utm_medium=cta\&utm_campaign=langsmith-signup\&utm_content=langsmith-online-evaluations-decision-models)中，导航至**追踪**页面，选择追踪项目。
 2. 单击**评估者**选项卡。

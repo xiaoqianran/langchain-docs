@@ -240,6 +240,14 @@ VS Code Copilot
 
 These coding agent integrations follow a shared [metadata contract](/langsmith/coding-agent-metadata-contract) that standardizes the trace fields they emit.
 
+## Productivity
+
+![](https://mintcdn.com/langchain-5e9cc07a/ZPKed1feKJ8F6LVo/images/providers/light/claude.svg?fit=max\&auto=format\&n=ZPKed1feKJ8F6LVo\&q=85\&s=d3cae2da0f353a45594f57b7f2382aba)
+
+Claude Cowork
+
+[Open](/langsmith/trace-claude-cowork)
+
 ***
 
 [Connect these docs](/use-these-docs) to your agent of choice via MCP for real-time answers.

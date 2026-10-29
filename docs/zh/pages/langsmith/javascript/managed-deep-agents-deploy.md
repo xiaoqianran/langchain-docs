@@ -2,35 +2,35 @@
 
 <!-- langchain-docs: Deploy a Managed Deep Agent | https://docs.langchain.com/langsmith/javascript/managed-deep-agents-deploy -->
 
-# Deploy a Managed Deep Agent
+# 部署托管深度代理
 
-Test and deploy a Managed Deep Agent with the mda CLI.
+使用 mda CLI 测试和部署托管深度代理。
 
-部署托管深度代理会将代码优先项目编译为托管 LangGraph 应用程序，将部署拥有的上下文同步到 [Context Hub](/langsmith/javascript/managed-deep-agents-context-hub)，上传已编译的源代码，并触发 LangSmith 托管部署构建。 The result is an [Agent Server](/langsmith/agent-server-overview) deployment, including the Agent Server API and [MCP endpoint](/langsmith/javascript/managed-deep-agents-mcp-endpoint).
+部署托管深度代理会将代码优先项目编译为托管 LangGraph 应用程序，将部署拥有的上下文同步到 [Context Hub](/langsmith/javascript/managed-deep-agents-context-hub)，上传已编译的源代码，并触发 LangSmith 托管部署构建。结果是[Agent Server](/langsmith/agent-server-overview)部署，包括代理服务器API和[MCP endpoint](/langsmith/javascript/managed-deep-agents-mcp-endpoint)。
 
 > [!注意]
 >
-> Managed Deep Agents is in **public [beta](/langsmith/release-stages)** on [LangSmith Cloud](/langsmith/cloud).
+> 托管 Deep Agents 于 [LangSmith Cloud](/langsmith/cloud) **公开 [beta](/langsmith/release-stages)**。
 
-This page covers secrets routing and deploy options. To test the agent before deploying, see [Develop locally with LangSmith Studio](/langsmith/javascript/managed-deep-agents-local-development). For command flags, the deploy step list, and troubleshooting, see the [CLI reference](/langsmith/javascript/managed-deep-agents-cli).
+本页介绍秘密路由和部署选项。要在部署之前测试代理，请参阅[Develop locally with LangSmith Studio](/langsmith/javascript/managed-deep-agents-local-development)。有关命令标志、部署步骤列表和故障排除，请参阅 [CLI reference](/langsmith/javascript/managed-deep-agents-cli)。
 
 ## 先决条件
 
-Before you deploy, make sure you have:
+在部署之前，请确保您拥有：
 
-* A workspace with Managed Deep Agents public beta access.
+* 具有托管 Deep Agents 公共测试版访问权限的工作区。
 
-* A [LangSmith API key](/langsmith/create-account-api-key) for that workspace, in `.env` or your shell environment. On an interactive terminal, `mda deploy` prompts for a key or signs you in through the browser instead.
+* [LangSmith API key](/langsmith/create-account-api-key) 用于该工作区，位于 `.env` 或您的 shell 环境中。在交互式终端上，`mda deploy` 会提示您输入密钥或通过浏览器登录。
 
-* The `mda` CLI installed from `managed-deepagents`.
+* 从 `managed-deepagents` 安装`mda` CLI。
 
-* Project dependencies installed with `npm install` for TypeScript projects.
+* 使用 `npm install` 安装 TypeScript 项目的项目依赖项。
 
-* Model provider credentials, such as `OPENAI_API_KEY`, in `.env`, your shell environment, or LangSmith workspace secrets.
+* 模型提供者凭据，例如 `.env` 中的 `OPENAI_API_KEY`、您的 shell 环境或 LangSmith 工作区机密。
 
-## 选择 SaaS 区域`LANGSMITH_ENDPOINT` selects the LangSmith region the CLI deploys to.默认情况下，CLI 以 GCP US 为目标。
+## 选择 SaaS 区域`LANGSMITH_ENDPOINT` 选择 CLI 部署到的 LangSmith 区域。默认情况下，CLI 以 GCP US 为目标。
 
-Set `LANGSMITH_ENDPOINT` in your project's `.env` or your shell environment before your first deploy:
+在首次部署之前，在项目的 `.env` 或 shell 环境中设置 `LANGSMITH_ENDPOINT`：
 
 |地区 |端点 |部署支持 |
 | - | - | - |
@@ -45,13 +45,13 @@ Set `LANGSMITH_ENDPOINT` in your project's `.env` or your shell environment befo
 LANGSMITH_ENDPOINT=https://eu.api.smith.langchain.com
 ```
 
-凭证必须属于目标区域。在第一次部署之前设置 `LANGSMITH_ENDPOINT`，因为它还会选择浏览器登录进行身份验证的区域。 A non-interactive run cannot fall back to browser sign-in, so in CI set `LANGSMITH_API_KEY` for the target region.
+凭证必须属于目标区域。在第一次部署之前设置 `LANGSMITH_ENDPOINT`，因为它还会选择浏览器登录进行身份验证的区域。非交互式运行无法回退到浏览器登录，因此在 CI 中为目标区域设置 `LANGSMITH_API_KEY`。
 
-For more information on regions, see the [Regions FAQ](/langsmith/regions-faq).
+有关区域的更多信息，请参阅[Regions FAQ](/langsmith/regions-faq)。
 
 > [!注意]
 >
-> LangSmith managed tools are available in GCP US only.
+> LangSmith 托管工具仅在 GCP US 中可用。
 
 ## 部署到LangSmith
 
@@ -71,7 +71,7 @@ bunx mda deploy
 
 > [!提示]
 >
-> `mda deploy` routes local project inputs to different managed surfaces:
+> `mda deploy` 将本地项目输入路由到不同的托管表面：
 >
 > ```text theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 > instructions.md + skills/**  -> Context Hub deploy-owned context
@@ -94,21 +94,23 @@ pnpm exec mda deploy --name research-assistant
 bunx mda deploy --name research-assistant
 ```
 
-Use `--deployment-type prod` when creating a production deployment:
+`mda deploy` 默认创建无服务器部署。创建专用部署时使用 `--deployment-type dedicated`。无服务器需要受支持的 GCP SaaS 环境。 AWS、Azure、自托管和混合环境拒绝无服务器部署。使用 `dedicated` 实现始终开启的容量。
 
 ```bash npm theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-npx mda deploy --deployment-type prod
+npx mda deploy --deployment-type dedicated
 ```
 
 ```bash pnpm theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-pnpm exec mda deploy --deployment-type prod
+pnpm exec mda deploy --deployment-type dedicated
 ```
 
 ```bash bun theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-bunx mda deploy --deployment-type prod
+bunx mda deploy --deployment-type dedicated
 ```
 
-Use `--no-wait` to trigger the build without polling for completion:```bash npm theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+使用 `--no-wait` 触发构建而不轮询完成：
+
+```bash npm theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 npx mda deploy --no-wait
 ```
 

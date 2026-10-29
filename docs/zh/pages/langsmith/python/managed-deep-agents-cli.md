@@ -48,7 +48,7 @@ OPENAI_API_KEY=<OPENAI_API_KEY>
 
 `mda deploy` 将非保留的 `.env` 条目（例如 `OPENAI_API_KEY`、MCP 令牌和自定义工具凭证）作为托管部署机密转发。保留的平台变量（包括 `LANGSMITH_API_KEY`、`LANGGRAPH_HOST_API_KEY`、`LANGCHAIN_API_KEY` 和 `LANGSMITH_WORKSPACE_ID`）用于 CLI 身份验证和部署路由，但不会作为用户管理的部署机密上传。
 
-## 命令概述|命令|使用|
+## 命令概述|命令 |使用 |
 | - | - |
 | `mda --help` |显示 CLI 帮助。 |
 | `mda --version` |显示已安装的 CLI 版本。 |
@@ -68,7 +68,7 @@ OPENAI_API_KEY=<OPENAI_API_KEY>
 
 ```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 uvx --from managed-deepagents mda init my-agent
-```|参数或标志 |使用|
+```|参数或标志 |使用 |
 | - | - |
 | `name` |所需的项目目录名称。如果目标已存在，则该命令失败。 |
 | `--instructions TEXT` |系统提示写入`instructions.md`。 |
@@ -114,7 +114,7 @@ uv run mda channels init slack
 
 ```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 uv run mda build
-```|参数或标志 |使用|
+```|参数或标志 |使用 |
 | - | - |
 | `path` |项目目录。默认为当前目录。 |
 | `--out OUT` |已编译应用程序的输出目录。默认为`<path>/.mda/build`。该目录在构建之前被清空，因此它必须丢失、为空或者是先前构建写入的目录。 |
@@ -127,7 +127,7 @@ uv run mda build
 uv run mda evals init -i
 ```
 
-|命令或标志|使用|
+|命令或标志 |使用 |
 | - | - |
 | `mda evals init` |缺失时创建`evals/harbor-job.json`，并在`.mda/evals/`下生成Harbor适配器和运行时设置。从项目根运行此命令。 |
 | `-i`、`--interactive` |使用 eval-engineering 提示启动检测到的编码代理，或复制另一个代理的提示。 |
@@ -144,7 +144,7 @@ uv run mda evals init -i
 uv run mda dev
 ```
 
-|参数或标志 |使用|
+|参数或标志 |使用 |
 | - | - |
 | `path` |项目目录。默认为当前目录。 |
 | `--port PORT` |将端口转发到 LangGraph 开发服务器。 |
@@ -163,13 +163,13 @@ uv run mda dev
 
 配置沙箱后，`mda dev` 会尝试配置的提供程序。如果提供程序凭据不可用或提供程序创建失败，它将回退到本地临时目录沙箱并打印所选路径。
 
-对于本地开发，`mda dev`将项目`.env`文件暂存在`.mda/build/.env`中，以便LangGraph可以加载模型提供程序密钥和其他运行时凭证。
+对于本地开发，`mda dev`将项目`.env`文件暂存在`.mda/build/.env`中，以便LangGraph可以加载模型提供程序密钥和其他运行时凭据。
 
 ## 管理连接连接将托管深度代理链接到外部服务。该凭证位于 LangSmith 工作区中，因此无需重新部署即可轮换，并且用户拥有的连接可解析呼叫代理的人员的凭证。工具和 MCP 连接器在运行时使用 `connections.get(...)` 解析连接。
 
 以三种模式之一创建连接：不透明机密（固定 API 密钥）、常规 OAuth（来自目录或自定义端点的 BYOT 应用程序）或 MCP OAuth（从 MCP 服务器 URL 发现并注册）。使用 `mda connections` 管理当前工作区中的这些凭据。
 
-|命令|使用|
+|命令 |使用 |
 | - | - |
 | `mda connections catalog` |列出具有预配置 OAuth 设置的服务。 |
 | `mda connections create <slug>` |创建不透明机密、常规 OAuth 或 MCP OAuth 连接。 |
@@ -189,14 +189,14 @@ uv run mda connections catalog
 uv run mda connections create organization-tavily --secret-from-env TAVILY_API_KEY
 ```
 
-以下标志控制连接创建：|旗帜|使用|
+以下标志控制连接创建：|旗帜|使用 |
 | - | - |
 | `--project PATH` |设置项目目录。默认为当前目录。 |
 | `--workspace-id WORKSPACE_ID` |覆盖`LANGSMITH_WORKSPACE_ID`。 |
 | `--secret-from-env VAR` |从 shell 或项目 `.env` 读取固定值或 OAuth 客户端密钥。 |
 | `--secret-from-file PATH` |从文件中读取固定值或 OAuth 客户端密钥。 |
 | `--oauth SERVICE` |使用 `mda connections catalog` 中服务的预配置设置。 |
-| `--grant-type GRANT` | Set the OAuth grant to `authorization_code` or `client_credentials`.默认为`authorization_code`。 |
+| `--grant-type GRANT` |将 OAuth 授权设置为 `authorization_code` 或 `client_credentials`。默认为`authorization_code`。 |
 | `--client-id CLIENT_ID` |设置 OAuth 客户端 ID。 |
 | `--auth-method METHOD` |将令牌端点方法设置为`client_secret_basic`、`client_secret_post`或`none`。 |
 | `--scope SCOPE` |替换提供者的默认范围。对每个范围重复此操作。 |
@@ -204,7 +204,7 @@ uv run mda connections create organization-tavily --secret-from-env TAVILY_API_K
 | `--authorization-param KEY=VALUE` |添加OAuth授权查询参数。对每个参数重复此操作。 |
 | `--token-param KEY=VALUE` |将参数添加到 OAuth 令牌请求。对每个参数重复此操作。 |
 | `--authorize-url URL` |设置自定义 OAuth 授权端点。需要`--token-url`。 |
-| `--token-url URL` |设置自定义 OAuth 令牌端点。 Requires `--authorize-url` for the `authorization_code` grant. |
+| `--token-url URL` |设置自定义 OAuth 令牌端点。需要 `--authorize-url` 才能获得 `authorization_code` 补助金。 |
 | `--mcp URL` |通过从 MCP 服务器 URL 发现 OAuth 来创建 MCP OAuth 连接。 || `--authorize` |登录到已部署代理使用的帐户，存储代理拥有的 OAuth 授权。需要 OAuth 标志和项目目录。 |
 
 由于没有值标志且没有 `--oauth` 端点，当该 slug 与项目中的一个用户拥有的 MCP 连接完全匹配时，`mda connections create <slug>` 会推断 MCP OAuth。
@@ -221,11 +221,11 @@ uv run mda connections create organization-tavily --secret-from-env TAVILY_API_K
 uv run mda deploy
 ```
 
-|参数或标志 |使用|
+|参数或标志 |使用 |
 | - | - |
 | `path` |项目目录。默认为当前目录。 |
 | `--name NAME` |部署名称。默认为`define_deep_agent`的代理`name`。 |
-| `--deployment-type dev\|prod` |创建部署时的部署类型。默认为`dev`。 |
+| `--deployment-type serverless\|dedicated` |创建部署时的部署类型。默认为`serverless`。 |
 | `--workspace-id WORKSPACE_ID` |要部署到的工作区 ID。覆盖`LANGSMITH_WORKSPACE_ID`。 |
 | `--context-strategy overwrite\|keep-hub` |解决自上次同步以来 Hub 中的 `instructions.md` 或 `skills/` 发生更改时的 Context Hub 冲突。在非交互式 shell 中需要。参见[Context Hub](/langsmith/python/managed-deep-agents-context-hub#source-of-truth)。 |
 | `--no-wait` |触发远程构建并退出，无需轮询部署完成情况。 |
@@ -252,7 +252,7 @@ uv run mda deploy
 uv run mda logs
 ```
 
-|参数或标志 |使用|
+|参数或标志 |使用 |
 | - | - |
 | `path` |项目目录。默认为当前目录。 |
 | `--name NAME` |部署名称。默认为项目中的代理`name`。 |
@@ -270,7 +270,7 @@ uv run mda logs
 uv run mda delete
 ```
 
-|参数或标志 |使用|
+|参数或标志 |使用 |
 | - | - |
 | `path` |项目目录。默认为当前目录。 |
 | `--name NAME` |部署名称。默认为`define_deep_agent` 的代理`name`。 |

@@ -2925,6 +2925,12 @@
           "rel": "langsmith/trace-claude-code.md"
         }
       ],
+      "trace-claude-cowork": [
+        {
+          "title": "Trace Claude Cowork sessions",
+          "rel": "langsmith/trace-claude-cowork.md"
+        }
+      ],
       "trace-deep-agents": [
         {
           "title": "Trace Deep Agents",
@@ -3747,6 +3753,12 @@
           "rel": "langsmith/javascript/managed-deep-agents-agent-owned-interrupts.md"
         }
       ],
+      "managed-deep-agents-browser-use": [
+        {
+          "title": "Browser use",
+          "rel": "langsmith/javascript/managed-deep-agents-browser-use.md"
+        }
+      ],
       "managed-deep-agents-channels": [
         {
           "title": "Connect Managed Deep Agents to channels",
@@ -3897,6 +3909,12 @@
           "rel": "langsmith/javascript/managed-deep-agents-skills.md"
         }
       ],
+      "managed-deep-agents-subagents": [
+        {
+          "title": "Subagents",
+          "rel": "langsmith/javascript/managed-deep-agents-subagents.md"
+        }
+      ],
       "managed-deep-agents-tools": [
         {
           "title": "Add custom tools to Managed Deep Agents",
@@ -3925,6 +3943,12 @@
         {
           "title": "Prompt Slack users with agent-owned interrupts",
           "rel": "langsmith/python/managed-deep-agents-agent-owned-interrupts.md"
+        }
+      ],
+      "managed-deep-agents-browser-use": [
+        {
+          "title": "Browser use",
+          "rel": "langsmith/python/managed-deep-agents-browser-use.md"
         }
       ],
       "managed-deep-agents-channels": [
@@ -4075,6 +4099,12 @@
         {
           "title": "Add skills to Managed Deep Agents",
           "rel": "langsmith/python/managed-deep-agents-skills.md"
+        }
+      ],
+      "managed-deep-agents-subagents": [
+        {
+          "title": "Subagents",
+          "rel": "langsmith/python/managed-deep-agents-subagents.md"
         }
       ],
       "managed-deep-agents-tools": [
@@ -6659,6 +6689,10 @@
           "rel": "oss/javascript/deepagents/backends.md"
         },
         {
+          "title": "Browser use",
+          "rel": "oss/javascript/deepagents/browser-use.md"
+        },
+        {
           "title": "Comparison with Claude Agent SDK",
           "rel": "oss/javascript/deepagents/comparison.md"
         },
@@ -7549,6 +7583,10 @@
           "rel": "oss/python/deepagents/backends.md"
         },
         {
+          "title": "Browser use",
+          "rel": "oss/python/deepagents/browser-use.md"
+        },
+        {
           "title": "Comparison with Claude Agent SDK",
           "rel": "oss/python/deepagents/comparison.md"
         },
@@ -7713,6 +7751,10 @@
         {
           "title": "AWS (Amazon) integrations",
           "rel": "oss/python/integrations/providers/aws.md"
+        },
+        {
+          "title": "Browserbase integrations",
+          "rel": "oss/python/integrations/providers/browserbase.md"
         },
         {
           "title": "Fireworks integrations",

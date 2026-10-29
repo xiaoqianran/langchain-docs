@@ -37,7 +37,9 @@
 
 ## 打开拉取请求
 
-单击 **打开 PR** 以打开 GitHub 拉取请求，其中包含连接的存储库中建议的代码更改。如果还没有，请先[Connect a repository](/langsmith/engine-repositories)。一旦存在拉取请求，引擎就会用 **View PR #\<number>** 替换 **Open PR**。单击 **View PR #\<number>** 在 GitHub 中打开拉取请求。引擎反映了 PR 在整个问题中的状态（开放、合并或关闭）。您还可以将问题的修复上下文复制到剪贴板，以便与法学硕士或编码助理一起使用。引擎可以对任何连接的存储库提出代码更改建议，包括使用[Deep Agents](/oss/python/deepagents/overview)、[LangChain](/oss/python/langchain/overview)和[LangGraph](/oss/python/langgraph/overview)构建的代理。
+要打开包含建议的代码更改的拉取请求，请首先[connect a repository](/langsmith/engine-repositories)，然后单击 **Open PR**。在 GitLab 上，引擎打开合并请求，但按钮保留其名称，**打开 PR** 和 **查看 PR**。一旦存在拉取请求，引擎就会用 **View PR** 替换 **Open PR**。单击 **查看 PR** 以在 GitHub 中打开拉取请求或在 GitLab 中打开合并请求。引擎反映了 PR 在整个问题中的状态（开放、合并或关闭）。
+
+您还可以将问题的修复上下文复制到剪贴板，以便与法学硕士或编码助理一起使用。引擎可以对任何连接的存储库提出代码更改建议，包括使用[Deep Agents](/oss/python/deepagents/overview)、[LangChain](/oss/python/langchain/overview)和[LangGraph](/oss/python/langgraph/overview)构建的代理。
 
 ## 创建一个线性问题要创建问题，首先[connect Linear](/langsmith/engine-setup#connect-to-linear)，然后在引擎问题上单击“**以线性方式创建**”。引擎在创建问题时显示**线性创建挂起**。创建完成后，引擎会在引擎问题和问题列表中显示链接的线性问题标识符。
 
@@ -48,13 +50,13 @@
 此步骤捕获使问题浮出水面的痕迹作为事实[dataset examples](/langsmith/manage-datasets)，因此您可以在修复进入生产之前离线评估修复。1. 单击“证据”列表右上角的“添加离线示例”，打开“添加为离线示例”对话框。
 2. 检查每条迹线。该对话框显示输入、代理生成的错误输出以及作为自定义地面实况示例的建议预期输出。
 3. 单击“**添加到数据集**”直接添加它们，或单击“**在注释队列中编辑**”先查看它们。
-4. 在注释队列中，每个示例显示运行输入以及引擎提出的参考输出，其结构为从跟踪分析生成的名为[assertions](/langsmith/assertions)。每个断言都是一个简短的断言，描述正确答案应该或不应该包含的内容。根据需要编辑断言，使用 **+ 添加断言** 添加新断言，然后单击 **添加到数据集并继续** 以完成每个示例。
+4. 在注释队列中，每个示例显示运行输入以及引擎提出的参考输出，其结构为从跟踪分析生成的名为[assertions](/langsmith/assertions)。每个断言都是一个简短的断言，描述正确答案应该或不应该包括的内容。根据需要编辑断言，使用 **+ 添加断言** 添加新断言，然后单击 **添加到数据集并继续** 以完成每个示例。
 
 欲了解更多信息，请参阅[Manage datasets](/langsmith/manage-datasets)、[Use annotation queues](/langsmith/annotation-queues)和[Use assertions](/langsmith/assertions)。
 
 ## 观看一个问题
 
-观看会使问题保持开放状态以供监控，而不解决问题或将其标记为错误标记。当您尚未准备好解决问题但仍想知道问题是否持续发生时，请单击“观看”。要在关注的问题再次出现时收到提醒，请单击 **通过 Slack 提醒我**，这会打开 [Engine settings](/langsmith/engine-setup#configure-engine) 面板的 **通知** 部分。参见[Engine notifications](/langsmith/engine-notifications)。
+观看使问题保持开放状态以供监控，而不解决问题或将其标记为错误标记。当您尚未准备好解决问题但仍想知道问题是否持续发生时，请单击“观看”。要在关注的问题再次出现时收到提醒，请单击 **通过 Slack 提醒我**，这会打开 [Engine settings](/langsmith/engine-setup#configure-engine) 面板的 **通知** 部分。参见[Engine notifications](/langsmith/engine-notifications)。
 
 当新跟踪链接到关注的问题时，引擎会将其移至列表顶部并显示到达的新跟踪数，以便您可以选择修复或继续关注。
 

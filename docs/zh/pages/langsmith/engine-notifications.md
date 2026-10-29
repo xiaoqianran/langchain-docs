@@ -14,7 +14,7 @@
 * **通知时间**：触发通知的[event types](#event-types)。
 * **最低问题严重性**：确定发送哪些通知的问题 [severity filter](#severity-filtering)。
 
-要在 [watched issue](/langsmith/engine-issues#watch-an-issue) 再次出现时收到提醒，请单击该问题上的 **通过 Slack 提醒我**，这会打开相同的 **通知** 部分。
+要在 [watched issue](/langsmith/engine-issues#watch-an-issue) 再次出现时收到警报，请单击该问题上的 **通过 Slack 提醒我**，这会打开相同的 **通知** 部分。
 
 ## 事件类型
 
@@ -24,13 +24,13 @@
 | **与问题相关的新痕迹** |引擎将新跟踪链接到现有问题。 | [⟦T9⟧](#issue-trace-added) |
 | **引擎未能完成运行** |引擎运行无法完成。 | [⟦T10⟧](#issue-agent_run-failed) |
 
-对于新目的地，**通知时间**选择器提供**创建的问题**和**链接到问题的新跟踪**。在**引擎无法完成运行**从选取器中删除之前创建的目的地仍然可以接收它。在没有显式事件类型列表的情况下创建的目标仅接收**创建的问题**。
+对于新目的地，**通知时间**选择器提供**创建的问题**和**链接到问题的新跟踪**。在**引擎无法完成运行**从选取器中删除之前创建的目的地仍然可以接收它。在没有明确的事件类型列表的情况下创建的目标仅接收**创建的问题**。
 
 Webhook 负载通过事件类型来识别每个事件，如最后一列所示。参见[Webhook payload reference](#webhook-payload-reference)。
 
 ## 严重性过滤**最低问题严重性**设置存储为从 `0` 到 `3` 的 `severity_threshold`。对于问题事件，仅当问题的`severity`小于或等于阈值时才会发送通知。数字越低，情况越紧急。
 
-|严重性 |意义|
+|严重程度 |意义|
 | - | - |
 | `0` |紧急|
 | `1` |高|
@@ -51,7 +51,7 @@ Webhook 负载通过事件类型来识别每个事件，如最后一列所示。
 
 **2.添加 Slack 目的地**
 
-在**引擎**页面上，单击**配置引擎**。在“通知”下，如果编辑器尚未打开，请单击“添加”。选择 **Slack** 选项卡，然后使用通道选择器选择工作区和通道。如果未连接工作区，请在通道选择器中单击“连接 Slack”并完成授权。
+在**引擎**页面上，单击**配置引擎**。在“通知”下，如果编辑器尚未打开，请单击“添加”。选择 **Slack** 选项卡，然后使用通道选择器选择工作区和通道。如果没有连接工作区，请在通道选择器中单击“连接 Slack”并完成授权。
 
 **3.选择事件和严重性**
 
@@ -72,11 +72,11 @@ Slack 目标可以在引擎通知的线程中提及编码代理的 Slack 机器�
 
 每个 **Issue Created** 消息的线程中都会提到该代理。如果目的地通知 **修复 PR 就绪**，则该提及会出现在 **修复 PR 就绪** 消息下方，每个问题一次。
 
-该提及包括一个问题标记，`<!-- langsmith-issue {"id":"<issue-id>"} -->`。当代理在其主体中打开带有该标记的拉取请求时，在存储库[connected to Engine](/langsmith/engine-repositories)中，引擎将拉取请求链接到问题。打开拉取请求时，标记必须位于正文中。
+该提及包括一个问题标记，`<!-- langsmith-issue {"id":"<issue-id>"} -->`。如果代理在 GitHub 存储库[connected to Engine](/langsmith/engine-repositories)中打开的拉取请求正文中包含标记，引擎会将拉取请求链接到问题。引擎仅在拉取请求打开时检查标记，因此稍后添加它没有任何效果。引擎不会以这种方式链接 GitLab 合并请求。
 
-## 创建 Jira 工作项
+## 创建 Jira 工作项**Jira** 目标将引擎事件发送到 Jira Automation 传入 Webhook。配置 Jira 规则以将新的引擎问题转化为 Jira 工作项。 LangSmith 发送带有 `X-Automation-Webhook-Token` 标头的 [webhook payload](#webhook-payload-reference)。 Jira 目标使用此令牌进行身份验证，并且没有 HMAC 签名密钥。
 
-**Jira** 目标将引擎事件发送到 Jira Automation 传入 Webhook。配置 Jira 规则以将新的引擎问题转化为 Jira 工作项。 LangSmith 发送带有 `X-Automation-Webhook-Token` 标头的 [webhook payload](#webhook-payload-reference)。 Jira 目标使用此令牌进行身份验证，并且没有 HMAC 签名密钥。使用最终的传入 webhook URL。 Jira 交付不遵循重定向，包括同一主机上的重定向。 `3xx` 响应是永久性传送错误，不会重试。这会将令牌和有效负载保留在配置的端点上。
+使用最终的传入 webhook URL。 Jira 交付不遵循重定向，包括同一主机上的重定向。 `3xx` 响应是永久性传送错误，不会重试。这会将令牌和负载保留在配置的端点上。
 
 您需要管理 Jira 自动化规则和规则可在其中创建工作项的项目的权限。 Jira Cloud 在 Atlassian 的基础设施上托管传入的 Webhook。对于 Jira Data Center，请验证您安装的版本的端点是否接受所需的令牌标头。 LangSmith 的部署类型并不能决定您使用 Jira Cloud 还是 Data Center。
 
@@ -84,11 +84,11 @@ Slack 目标可以在引擎通知的线程中提及编码代理的 Slack 机器�
 
 **1.在 Jira 中配置传入的 Webhook**
 
-使用 **传入 webhook** 触发器创建 Jira Automation 规则。如果 Jira 需要保存的规则来生成 URL，请保存它而不先启用它。
+使用 **传入 webhook** 触发器创建 Jira Automation 规则。如果 Jira 需要保存的规则来生成 URL，请保存它而不先启用它。选择 **No work items from the webhook**，在旧界面中称为 **No issues from the webhook**。引擎发送自己的事件负载，而不是 Jira 问题密钥。
 
-选择 **No work items from the webhook**，在旧界面中称为 **No issues from the webhook**。引擎发送自己的事件负载，而不是 Jira 问题密钥。
+生成触发器的秘密/令牌。保存前复制 Webhook URL 和令牌。将令牌保留在 URL 之外； LangSmith 在身份验证标头中发送它。
 
-生成触发器的秘密/令牌。保存前复制 Webhook URL 和令牌。将令牌保留在 URL 之外； LangSmith 在身份验证标头中发送它。**2.添加 Jira 创建操作**
+**2.添加 Jira 创建操作**
 
 将规则限制为预期项目。添加“创建工作项”操作，在旧界面中称为“创建问题”。选择现有项目和问题类型，并配置 Jira 所需的任何字段。
 
@@ -105,21 +105,21 @@ Jira Cloud 将信封的 `data` 成员公开为 `webhookData`。使用 `webhookDa
 
 **3.在 LangSmith** 中添加 Jira 目的地
 
-在**引擎**页面上，单击**配置引擎**。在“**通知**”下，单击“**添加**”并选择“**Jira**”。输入触发器中的 **Jira Webhook URL** 和 **Jira Webhook 令牌**。
+在**引擎**页面上，单击**配置引擎**。在“**通知**”下，单击“**添加**”并选择“**Jira**”。输入触发器中的 **Jira Webhook URL** 和 **Jira Webhook 令牌**。Under **Notify when**, select only **Issue created** for this creation rule. Choose the **Minimum issue severity**, then click **Add**.在 Jira 中启用规则。
 
-在**通知时间**下，仅为此创建规则选择**创建的问题**。选择 **最低问题严重性**，然后单击 **添加**。在 Jira 中启用规则。
+**4.验证 Jira 创建了工作项**
 
-**4.验证 Jira 创建了工作项**在引擎创建与您的严重性过滤器匹配的问题后，检查 Jira 的自动化审核日志。确认规则成功并创建一个具有预期摘要、描述、严重性和 LangSmith 问题链接的工作项。
+After Engine creates an issue that matches your severity filter, check Jira's automation audit log. Confirm that the rule succeeds and creates a work item with the expected summary, description, severity, and LangSmith issue link.
 
 HTTP 成功意味着 Jira 接受了 Webhook，而不是它创建了工作项。规则条件、必填字段、参与者权限和自动化使用限制可能会阻止创建。
 
-LangSmith 存储 Jira 令牌而不再次显示。要替换它，请输入新令牌。更改 Webhook URL 还需要输入替换 URL 的令牌。如果您丢失了令牌，请在 Jira 中轮换它并更新 LangSmith 目的地。
+LangSmith stores the Jira token without displaying it again.要替换它，请输入新令牌。 Changing the webhook URL also requires entering a token for the replacement URL.如果您丢失了令牌，请在 Jira 中轮换它并更新 LangSmith 目的地。
 
 ### 到达私有 Jira 端点
 
-私有 Jira 端点需要从您的 LangSmith 部署进行网络访问。在自托管和混合部署中，Webhook 交付在客户数据平面中运行。添加目标之前配置以下内容：* **网络访问**：允许从 LangSmith API 和 Webhook 交付流程进行 DNS 解析和到 Jira 的出站连接。允许他们的源地址通过 Jira 的防火墙。
-* **私有地址**：如果端点解析为私有IP，请为两个进程设置`SSRF_ALLOW_PRIVATE_IPS_WEBHOOKS=true`。 Kubernetes 内部主机名也需要 `SSRF_ALLOW_K8S_INTERNAL=true`。其他 Webhook URL 保护保持活动状态。配置请参见[Set self-hosted environment variables](/langsmith/self-host-environment-variables)。
-* **TLS 信任**：如果 Jira 使用私有证书颁发机构，请将其 CA 添加到 Webhook 交付进程的可信根。使用系统根目录或`SSL_CERT_FILE`，保留其他所需的根目录，并保持启用 TLS 验证。
+私有 Jira 端点需要从您的 LangSmith 部署进行网络访问。 In self-hosted and hybrid deployments, webhook delivery runs in the customer data plane.添加目标之前配置以下内容：* **Network access**: Allow DNS resolution and outbound connectivity to Jira from both the LangSmith API and webhook delivery processes.允许他们的源地址通过 Jira 的防火墙。
+* **私有地址**：如果端点解析为私有IP，请为两个进程设置`SSRF_ALLOW_PRIVATE_IPS_WEBHOOKS=true`。 Kubernetes-internal hostnames also require `SSRF_ALLOW_K8S_INTERNAL=true`.其他 Webhook URL 保护保持活动状态。配置请参见[Set self-hosted environment variables](/langsmith/self-host-environment-variables)。
+* **TLS trust**: If Jira uses a private certificate authority, add its CA to the webhook delivery processes' trusted roots.使用系统根目录或`SSL_CERT_FILE`，保留其他所需的根目录，并保持启用 TLS 验证。
 
 ## 发送到网络钩子
 
@@ -133,13 +133,13 @@ LangSmith 将带有 JSON 正文的 `POST` 请求发送到您的 Webhook URL。�
 |身体| JSON，下面[common envelope](#event-envelope) |
 |方案|接受`http://` 和`https://`。 `https://`强烈推荐|
 |签名| `X-LangSmith-Signature` 标头，使用目的地的签名密钥进行签名 |
-|超时|每次尝试 20 秒 |
+|超时 |每次尝试 20 秒 |
 |尝试|对于传输错误、HTTP `408`、`425`、`429` 和任何 HTTP `5xx`，最多进行 4 次尝试（1 次初始加 3 次指数退避重试）。其他 `4xx` 响应被视为永久响应，不会重试 |
 |回应 |成功仅根据状态代码确定。响应主体被忽略。 |
 
 > [!注意]
 >
-> 重试会传递字节相同的有效负载，包括相同的`id`。在 `id` 上进行重复数据删除，因此重试传送不会产生重复的下游影响。
+> 重试会传递字节相同的有效负载，包括相同的`id`。在 `id` 上进行重复数据删除，因此重试传送不会产生重复的下游效果。
 
 ### 自定义标头
 
@@ -153,7 +153,7 @@ LangSmith 将带有 JSON 正文的 `POST` 请求发送到您的 Webhook URL。�
 sha256=<hex-encoded HMAC-SHA256 digest>
 ```
 
-在解析或作用于有效负载之前验证签名。 HMAC 输入是确切的原始请求正文字节，HMAC 密钥是目标的签名秘密。在验证之前不要解析和重新序列化 JSON 主体。
+在解析或作用于有效负载之前验证签名。 HMAC 输入是确切的原始请求正文字节，HMAC 密钥是目标的签名秘密。在验证之前不要解析和重新序列化 JSON 正文。
 
 ```python Python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 import hashlib
@@ -211,7 +211,7 @@ export function verifyLangSmithSignature({
 
 ### 滚动签名秘密
 
-当签名密钥可能已暴露时，或者当您的组织的凭据轮换策略需要新密钥时，滚动签名密钥。
+当签名密钥可能已暴露时，或者当您的组织的凭据轮换策略需要新密钥时，请滚动签名密钥。
 
 要滚动密钥，请在 **引擎设置** 面板中打开目标行，单击 **滚动签名密钥**，然后确认。 LangSmith 生成新的签名密钥并立即将其用于未来的 Webhook 交付。一旦滚动完成，先前的秘密就会停止签署交付。
 
@@ -251,7 +251,7 @@ Webhook 和 Jira 目标接收以下 JSON 有效负载。 Slack 目的地则不�
 
 传递到端点的每个事件都使用相同的外部 JSON 形状。
 
-|领域|类型 |描述 |
+|领域 |类型 |描述 |
 | - | - | - |
 | `id` | UUID |本次交付的唯一标识符。重试后保持稳定。用它来删除重复数据。 |
 | `type` |字符串|事件类型。 [⟦T73⟧](#issue-created)、[⟦T74⟧](#issue-trace-added) 或 [⟦T75⟧](#issue-agent_run-failed) 之一。 |
@@ -261,7 +261,7 @@ Webhook 和 Jira 目标接收以下 JSON 有效负载。 Slack 目的地则不�
 
 ### 问题`data.object`对于 [⟦T83⟧](#issue-created) 和 [⟦T84⟧](#issue-trace-added)，`data.object` 是问题的快照。将其视为事件生成时问题的权威状态。
 
-|领域|类型 |描述 |
+|领域 |类型 |描述 |
 | - | - | - |
 | `id` | UUID |问题 ID。 |
 | `name` |字符串|问题的简短标题。 |
@@ -275,7 +275,7 @@ Webhook 和 Jira 目标接收以下 JSON 有效负载。 Slack 目的地则不�
 
 ### 运行失败`data.object`
 
-对于 [⟦T98⟧](#issue-agent_run-failed)，`data.object` 描述失败的引擎运行。|领域|类型 |描述 |
+对于 [⟦T98⟧](#issue-agent_run-failed)，`data.object` 描述失败的引擎运行。|领域 |类型 |描述 |
 | - | - | - |
 | `tenant_id` | UUID |运行所属的工作空间。 |
 | `tenant_name` |字符串|工作区显示名称。 |
@@ -292,7 +292,7 @@ Webhook 和 Jira 目标接收以下 JSON 有效负载。 Slack 目的地则不�
 
 `data.trace` 仅包含在 [⟦T112⟧](#issue-trace-added) 活动中。
 
-|领域|类型 |描述 |
+|领域 |类型 |描述 |
 | - | - | - |
 | `run_id` | UUID |与问题关联的运行的 ID。 |
 | `trace_id` | UUID |包含运行的跟踪的 ID。 |
