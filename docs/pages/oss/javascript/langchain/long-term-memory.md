@@ -780,7 +780,7 @@ console.log(result.messages.at(-1)?.content);
  */
 ```
 
-> **[View example trace](https://smith.langchain.com/public/402f8832-35d4-4c95-9ebd-cb371af7366f/r)**
+> **[View example trace](https://smith.langchain.com/public/2cd647b8-b4a1-48a0-8658-8bc69f96272b/r)**
 >
 > Open a public LangSmith run for this example.
 
@@ -1101,7 +1101,7 @@ await agent.invoke(
 );
 ```
 
-> **[View example trace](https://smith.langchain.com/public/3cac0150-fe8c-4346-904f-a67a8d6fb156/r)**
+> **[View example trace](https://smith.langchain.com/public/c93e5609-115a-47d0-a550-f9593a14d622/r)**
 >
 > Open a public LangSmith run for this example.
 
@@ -1508,7 +1508,7 @@ const result = await store.get(["users"], "user_123");
 console.log(result?.value); // Output: { name: "John Smith" }
 ```
 
-> **[View example trace](https://smith.langchain.com/public/1329ec1b-63c9-4cea-99be-74a763a4cc16/r)**
+> **[View example trace](https://smith.langchain.com/public/971ae503-fd95-45b6-977a-2ad96d8f5f56/r)**
 >
 > Open a public LangSmith run for this example.
 
@@ -1822,7 +1822,7 @@ const result = await store.get(["users"], "user_123");
 console.log(result?.value);
 ```
 
-> **[View example trace](https://smith.langchain.com/public/85c902fd-dbd7-4d73-9d11-a09f01dace8f/r)**
+> **[View example trace](https://smith.langchain.com/public/b1c64b5e-8048-416d-b35a-54cb09088b46/r)**
 >
 > Open a public LangSmith run for this example.
 

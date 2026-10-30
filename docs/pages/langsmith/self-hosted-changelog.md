@@ -8,6 +8,32 @@
 
 **2026-10-29**
 
+## langsmith-0.17.34
+
+**LangSmith version:** `0.17.61`
+
+* Agent Builder uses saved model OAuth credentials for chat, subagents, and thread titles. OAuth models retain auxiliary secret requirements and recover from transient token refresh failures.
+* Run, trace, and thread pages show a request timeout message when loading takes too long instead of reporting that the service is unavailable.
+
+**Download the Helm chart:** [`langsmith-0.17.34.tgz`](https://github.com/langchain-ai/helm/releases/download/langsmith-0.17.34/langsmith-0.17.34.tgz)
+
+**2026-10-29**
+
+## langsmith-0.18.0-rc.51
+
+**LangSmith version:** `0.18.19rc1`
+
+* This release packages the same LangSmith application version as langsmith-0.18.0-rc.50. Refer to the [langsmith-0.18.0-rc.50](#langsmith-0-18-0-rc-50) release notes below for application changes.
+* [Sandboxes](/langsmith/enable-self-hosted-sandboxes) can run in a separate cluster. Set `sandboxes.external.enabled` to `true` and install the runtime with the `langsmith-sandbox` chart that has the same appVersion as this release. To route control plane calls through the runtime's host ingress, set `sandboxes.external.hostIngressEndpoint` to an `https://` origin.
+* Sandboxes can use a dedicated service-auth secret, set with `sandboxes.serviceAuth.secret` or `sandboxes.serviceAuth.secretKey`, and rotate it with the `previousSecret` and `previousSecretKey` values. An external runtime requires a dedicated secret that differs from `config.apiKeySalt`.
+* `sandboxes.clusterName` sets the name of the sandbox runtime cluster. Choose it at install time, because renaming it hides every existing sandbox, snapshot, and host record.
+
+**Download the Helm chart:** [`langsmith-0.18.0-rc.51.tgz`](https://github.com/langchain-ai/helm/releases/download/langsmith-0.18.0-rc.51/langsmith-0.18.0-rc.51.tgz)
+
+**Sandbox runtime chart, for Sandboxes in a separate cluster:** [`langsmith-sandbox-0.18.0-rc.2.tgz`](https://github.com/langchain-ai/helm/releases/download/langsmith-sandbox-0.18.0-rc.2/langsmith-sandbox-0.18.0-rc.2.tgz)
+
+**2026-10-29**
+
 ## langsmith-0.18.0-rc.50
 
 **LangSmith version:** `0.18.19rc1`
@@ -152,7 +178,7 @@
 
 * After a dropped connection, `runs.join_stream` and `runs.join` preserve `stream_mode` and `cancel_on_disconnect` when reconnecting. Reconnection retains the expected stream modes without requiring an SDK update.
 
-* Default tenant ingest limits increase to 300,000 events per minute, 1,000,000 tracing requests per hour, and 15 GB of tracing payloads per hour. On upgrade, tenants using the previous defaults automatically receive the higher limits, while customized limits, including unlimited values, remain unchanged.
+* Default tenant ingest limits increase to 300,000 events per minute, 1,000,000 tracing requests per hour, and 15GB of tracing payloads per hour. On upgrade, tenants using the previous defaults automatically receive the higher limits, while customized limits, including unlimited values, remain unchanged.
 
 * The workspace picker and dropdown display each workspace's data plane name and region to help distinguish where workspaces run. Hover over truncated details to see the full values.
 
@@ -1509,7 +1535,7 @@ LangSmith v0.17 is the recommended release for self-hosted deployments. Upgrade 
 ### Access control and security
 
 * Configure [organization-scoped model configurations](/langsmith/model-configurations#organization-wide-provider-control) and model provider secrets.
-* Use the [Organization Restricted role](/langsmith/rbac#restrict-roles) to give contractors and partners workspace access without exposing billing, settings, or usage.
+* Use the [Organization Restricted role](/langsmith/rbac#organization-restricted) to give contractors and partners workspace access without exposing billing, settings, or usage.
 * Organization Admins and Operators can [deactivate and reactivate members' personal access tokens](/langsmith/create-account-api-key#deactivate-or-delete-a-personal-access-token).
 
 ### Sandboxes

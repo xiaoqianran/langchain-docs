@@ -84,7 +84,7 @@ await Promise.all(watchers);
 console.log({ running, completed, failed });
 ```
 
-> **[View example trace](https://smith.langchain.com/public/af4407a9-dadd-4090-8e7b-f77e85f0d65a/r)**
+> **[View example trace](https://smith.langchain.com/public/5dd56cd6-b8fc-4e46-bb55-4e22cff7db67/r)**
 >
 > Open a public LangSmith run for this example.
 
@@ -139,7 +139,7 @@ for await (const subagent of stream.subagents) {
 }
 ```
 
-> **[View example trace](https://smith.langchain.com/public/036480ea-6f7d-4459-ad25-e04f3f13308b/r)**
+> **[View example trace](https://smith.langchain.com/public/70edddb6-dc1c-411e-bb8e-3f9be190e97c/r)**
 >
 > Open a public LangSmith run for this example.
 
@@ -173,7 +173,7 @@ for await (const subagent of stream.subagents) {
 }
 ```
 
-> **[View example trace](https://smith.langchain.com/public/a698b0c5-8151-43b6-aee4-aeac1a6926e7/r)**
+> **[View example trace](https://smith.langchain.com/public/08d4d6dd-e52b-4075-884d-1968f76c91b4/r)**
 >
 > Open a public LangSmith run for this example.
 
@@ -204,7 +204,7 @@ await Promise.all([
 ]);
 ```
 
-> **[View example trace](https://smith.langchain.com/public/a3643504-3b56-47f4-ac30-2e6597dc7e04/r)**
+> **[View example trace](https://smith.langchain.com/public/31aef824-de7d-47a2-bff0-1e6d2b3accac/r)**
 >
 > Open a public LangSmith run for this example.
 
@@ -232,7 +232,7 @@ for await (const event of stream) {
 }
 ```
 
-> **[View example trace](https://smith.langchain.com/public/851be40f-46b1-424d-a13f-705a955db1a8/r)**
+> **[View example trace](https://smith.langchain.com/public/ccff3e57-ac8b-416f-a11c-76702f0fc6e6/r)**
 >
 > Open a public LangSmith run for this example.
 

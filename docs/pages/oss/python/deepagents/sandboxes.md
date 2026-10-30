@@ -99,7 +99,7 @@ finally:
     client.delete_sandbox(ls_sandbox.name)
 ```
 
-> **[View example trace](https://smith.langchain.com/public/5c79cd36-6974-4010-8f93-9e81a6ff8c94/r)**
+> **[View example trace](https://smith.langchain.com/public/08974a6d-f496-46df-a0cc-29375c842988/r)**
 >
 > Open a public LangSmith run for this example.
 
@@ -143,7 +143,7 @@ finally:
     sandbox.stop()
 ```
 
-> **[View example trace](https://smith.langchain.com/public/571f1de5-c211-47b2-81d3-ea330cb6bc31/r)**
+> **[View example trace](https://smith.langchain.com/public/2e58456c-3eac-424e-bffd-83d779f8e5d7/r)**
 >
 > Open a public LangSmith run for this example.
 
@@ -1009,7 +1009,7 @@ finally:
     client.delete_sandbox(ls_sandbox.name)
 ```
 
-> **[View example trace](https://smith.langchain.com/public/2b9e8bc1-f9de-41fd-824b-cf6f397eb2f2/r)**
+> **[View example trace](https://smith.langchain.com/public/b2b4ae03-c454-44ae-920b-7f049763cb1c/r)**
 >
 > Open a public LangSmith run for this example.
 

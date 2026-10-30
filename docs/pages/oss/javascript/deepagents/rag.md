@@ -196,7 +196,7 @@ const result = await baselineAgent.invoke({
 console.log(result.messages.at(-1)?.text);
 ```
 
-> **[View example trace](https://smith.langchain.com/public/df7664f6-253f-4eba-b8aa-f55b59889b5a/r)**
+> **[View example trace](https://smith.langchain.com/public/809f6614-2c33-4d18-bdee-bbc613168e87/r)**
 >
 > Open a public LangSmith run for this example.
 

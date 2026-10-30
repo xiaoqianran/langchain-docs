@@ -555,7 +555,7 @@ agent.invoke(
 )
 ```
 
-> **[View example trace](https://smith.langchain.com/public/50107c17-6209-4486-be7e-65fc84f20e75/r)**
+> **[View example trace](https://smith.langchain.com/public/bbc7fc2a-05e8-4a0a-986b-73f956648c4c/r)**
 >
 > Open a public LangSmith run for this example.
 
@@ -601,7 +601,7 @@ with PostgresStore.from_conn_string(DB_URI) as store:
     )
 ```
 
-> **[View example trace](https://smith.langchain.com/public/98f96556-7dae-426d-bf15-03d9827c1aa2/r)**
+> **[View example trace](https://smith.langchain.com/public/c5dd94b2-c40b-4677-b8da-7a8da97b9642/r)**
 >
 > Open a public LangSmith run for this example.
 
@@ -987,7 +987,7 @@ agent.invoke(
 item = store.get(("users",), "user_123")
 ```
 
-> **[View example trace](https://smith.langchain.com/public/8161bb6c-4876-44f7-9570-b187ae14da8a/r)**
+> **[View example trace](https://smith.langchain.com/public/abd06f32-c2ff-48dd-8462-188b65db1a04/r)**
 >
 > Open a public LangSmith run for this example.
 
@@ -1037,7 +1037,7 @@ with PostgresStore.from_conn_string(DB_URI) as store:
     )
 ```
 
-> **[View example trace](https://smith.langchain.com/public/e500c680-f6c1-439e-a85c-9d39ff04d841/r)**
+> **[View example trace](https://smith.langchain.com/public/67c2c83f-d604-4085-aae3-3ef52b427b0c/r)**
 >
 > Open a public LangSmith run for this example.
 

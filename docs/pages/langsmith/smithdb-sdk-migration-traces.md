@@ -1710,6 +1710,7 @@ curl -G "https://api.smith.langchain.com/api/v2/traces/$TRACE_ID/runs" \
 * [Query runs](/langsmith/smithdb-sdk-migration-query-runs)
 * [Threads](/langsmith/smithdb-sdk-migration-threads)
 * [Migration overview](/langsmith/smithdb-sdk-migration)
+* [Search conversation content with AI using the SDK](/langsmith/filter-traces#search-with-ai-using-the-sdk)
 
 ***
 

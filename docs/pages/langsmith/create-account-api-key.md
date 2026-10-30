@@ -9,10 +9,10 @@ To get started with LangSmith, you need to create an account. You can sign up fo
 LangSmith supports three types of API keys with different permissions and lifecycles:
 
 * [**Personal Access Tokens (PATs)**](/langsmith/administration-overview#personal-access-tokens-pats) inherit the permissions of the user who created them. Use PATs for personal scripts or tools.
-* [**Tracing keys**](#tracing-keys) submit traces in selected workspaces without access to stored traces or administrative operations.
 * [**Service keys**](/langsmith/administration-overview#service-keys) scope to specific [workspaces](/langsmith/administration-overview#workspaces) or the entire [organization](/langsmith/administration-overview#organizations). Use service keys for agents and production services.
+* [**Tracing keys**](#tracing-keys) only submit [traces](/langsmith/observability-concepts#traces) in selected workspaces. Use tracing keys for agents that send traces but do not need to read them.
 
-Use a tracing key to log [traces](/langsmith/observability-concepts#traces). Use a PAT or service key with the required permissions for [evaluations](/langsmith/evaluation) and other API operations.
+## Create a PAT or service key
 
 To create a PAT or service key in the UI:
 
@@ -22,9 +22,9 @@ Navigate to the [**Settings** page](https://smith.langchain.com/settings) and se
 
 **2. Configure the key type**
 
-For service keys, choose between an organization-scoped and workspace-scoped key. If the key is workspace-scoped, you must specify the workspaces.
+For service keys, choose **Full Organization** or **Specific Workspaces**. For **Specific Workspaces**, select the workspaces and choose the organization role: **Organization Viewer** (the default) or **Organization Restricted**. **Full Organization** keys retain their existing organization role options.
 
-[Enterprise](/langsmith/pricing-plans) users can also [assign specific workspace roles](/langsmith/administration-overview#workspace-roles-rbac) to service keys, which adjusts their permissions independently of any user.
+[Enterprise](/langsmith/pricing-plans) users can also [assign specific workspace roles](/langsmith/administration-overview#workspace-roles) to service keys, which adjusts their permissions independently of any user.
 
 **3. Set expiration**
 
@@ -36,9 +36,13 @@ Click **Create API Key.** LangSmith will display the API key only once, so make 
 
 > [!TIP]
 >
-> [Enterprise](/langsmith/pricing-plans) Organization Admins can edit the [role](/langsmith/administration-overview#workspace-roles-rbac) on an existing service key without rotating the key. On the [**Settings** page](https://smith.langchain.com/settings) **API Keys** section, switch to the **Service** tab and click any service key row to open the edit dialog. Update the workspace role (and, for organization-scoped keys, the org role) and click **Save**. The key string itself is unchanged.
+> [Enterprise](/langsmith/pricing-plans) Organization Admins can edit the [role](/langsmith/administration-overview#workspace-roles) on an existing service key without rotating the key. On the [**Settings** page](https://smith.langchain.com/settings) **API Keys** section, switch to the **Service** tab and click any service key row to open the edit dialog. Update the workspace role or organization role and click **Save**. Workspace-scoped keys support **Organization Viewer** or **Organization Restricted**. Existing workspace-scoped keys keep their current organization role until you change it. The key string itself is unchanged.
 
-## Deactivate or delete a personal access token
+## Manage PATs and service keys
+
+You can deactivate or delete a PAT, but you can only delete a service key.
+
+### Deactivate or delete a personal access token
 
 Deactivation temporarily stops a PAT from authenticating; deletion permanently removes it. Deactivate a token when you need to keep its record and reactivate it later.
 
@@ -66,7 +70,9 @@ Authentication results are cached, so a deactivated or deleted token stops worki
 
 [Audit logs](/langsmith/audit-logs) record deactivation as `revoke_personal_access_token` and reactivation as `reinstate_personal_access_token`.
 
-Service keys can only be deleted, not deactivated. Open the **Service** tab and select **Delete key** in the **Actions** column, then confirm with the typed description that deleting a PAT requires.
+### Delete a service key
+
+Service keys can only be deleted, not deactivated. To delete one, go to [**Settings**](https://smith.langchain.com/settings) > **API Keys**, open the **Service** tab, and select **Delete key** in the **Actions** column. Confirm by typing the key's description, as you would for a PAT.
 
 ## Tracing keys
 

@@ -67,7 +67,7 @@ async function main() {
 await main();
 ```
 
-> **[View example trace](https://smith.langchain.com/public/871aa85b-f22e-430a-ab74-5c9669203282/r)**
+> **[View example trace](https://smith.langchain.com/public/6694c209-b195-4e4a-8fe4-225ea5ef3da2/r)**
 >
 > Open a public LangSmith run for this example.
 
@@ -103,7 +103,7 @@ await main();
 > }
 > ```
 >
-> > **[View example trace](https://smith.langchain.com/public/e5a365b0-d712-46ca-ab53-61cb0e4e1acd/r)**
+> > **[View example trace](https://smith.langchain.com/public/c9906137-427e-434a-a441-1f55da3b9880/r)**
 > >
 > > Open a public LangSmith run for this example.
 >
@@ -158,7 +158,7 @@ try {
 }
 ```
 
-> **[View example trace](https://smith.langchain.com/public/d9a802f7-75cf-45b4-b0f6-f4a62fa06e27/r)**
+> **[View example trace](https://smith.langchain.com/public/d15e224a-8053-467a-8a6d-90bffdb421d7/r)**
 >
 > Open a public LangSmith run for this example.
 

@@ -107,6 +107,7 @@ Certain model providers offer endpoints that are compatible with OpenAI's [Chat 
 | [`Inferrail`](https://github.com/domondi1/inferrail/blob/main/docs/recipes/agent-run-budget.md?ref=langchain-docs#langchain) | ✅ | ✅ | ✅ | ❌ | [  ![Downloads per month](https://static.pepy.tech/badge/inferrail/month)](https://pypi.org/project/inferrail/) |
 | [`ChatNebius`](https://github.com/nebius/langchain-nebius) | ✅ | ✅ | ✅ | ✅ | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-nebius/month)](https://pypi.org/project/langchain-nebius/) |
 | [`ChatGradient`](https://docs.digitalocean.com/products/ai-platform/) | | | | | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-gradient/month)](https://pypi.org/project/langchain-gradient/) |
+| [`Donkey Kit (governed ChatOpenAI)`](https://docs.donkey-kit.dev/frameworks/langgraph) | ✅ | ✅ | | | [  ![Downloads per month](https://static.pepy.tech/badge/donkey-kit/month)](https://pypi.org/project/donkey-kit/) |
 | [`ChatAmazonNova`](/oss/python/integrations/chat/amazon_nova) | ✅ | ✅ | ✅ | | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-amazon-nova/month)](https://pypi.org/project/langchain-amazon-nova/) |
 | [`ChatEmpirioLabs`](https://docs.empiriolabs.ai) | ✅ | ✅ | ✅ | ✅ | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-empiriolabs/month)](https://pypi.org/project/langchain-empiriolabs/) |
 | [`ChatWriter`](https://dev.writer.com/home/introduction) | ✅ | ✅ | ✅ | ❌ | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-writer/month)](https://pypi.org/project/langchain-writer/) |
@@ -152,6 +153,7 @@ Certain model providers offer endpoints that are compatible with OpenAI's [Chat 
 | [`1Claw`](https://docs.1claw.xyz) | ✅ | ✅ | ✅ | ❌ | N/A |
 | [`API-Route`](https://www.api-route.com/docs/overview) | | | | | N/A |
 | [`Auxen`](https://auxen.ai) | ✅ | ✅ | ✅ | ❌ | N/A |
+| [`ChatLlamay`](https://github.com/kosa8ai/langchain-llamay#readme) | ✅ | ✅ | ✅ | ❌ | N/A |
 | [`Cheaper Inference`](https://cheaperinference.com/docs) | ✅ | ✅ | ✅ | ✅ | N/A |
 | [`DaoXE`](https://daoxe.com) | ✅ | ✅ | ✅ | ✅ | N/A |
 | [`GPTZZZ`](https://gptzzz.ai/docs/) | ✅ | ✅ | ✅ | ✅ | N/A |

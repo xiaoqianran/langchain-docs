@@ -258,7 +258,7 @@ response = agent.invoke(
 print(response)  # "You are Bob!"
 ```
 
-> **[View example trace](https://smith.langchain.com/public/37316651-0cd8-4bf4-a331-24c30f1c315b/r)**
+> **[View example trace](https://smith.langchain.com/public/6fe1dc0b-6e0f-4911-90a4-4b33a46cff77/r)**
 >
 > Open a public LangSmith run for this example.
 

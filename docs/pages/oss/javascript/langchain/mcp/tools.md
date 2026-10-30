@@ -36,7 +36,7 @@ async function main(server: string) {
 }
 ```
 
-> **[View example trace](https://smith.langchain.com/public/595d3842-7630-449c-978b-27f0653155e2/r)**
+> **[View example trace](https://smith.langchain.com/public/fe7b9e79-fe95-4248-988e-f4a7b4a248da/r)**
 >
 > Open a public LangSmith run for this example.
 
@@ -92,7 +92,7 @@ async function accessMultimodalToolContent(serverUrl: string) {
 }
 ```
 
-> **[View example trace](https://smith.langchain.com/public/c5bd522f-7c6d-4046-896f-9f7d1fca6590/r)**
+> **[View example trace](https://smith.langchain.com/public/da8706a2-07f7-456b-a74a-c3a3ee4e69ca/r)**
 >
 > Open a public LangSmith run for this example.
 
@@ -134,7 +134,7 @@ async function readStructuredContent(serverUrl: string) {
 }
 ```
 
-> **[View example trace](https://smith.langchain.com/public/b5c7e711-6ef7-4483-a700-73465df2f4ca/r)**
+> **[View example trace](https://smith.langchain.com/public/213c3154-aef7-4d36-bdb4-61ccf1863231/r)**
 >
 > Open a public LangSmith run for this example.
 
@@ -177,7 +177,7 @@ async function divideByZero(serverUrl: string) {
 }
 ```
 
-> **[View example trace](https://smith.langchain.com/public/8301dd9e-da25-4d9a-ad13-11330f638f36/r)**
+> **[View example trace](https://smith.langchain.com/public/b4f86650-e369-4df6-bf4a-1f634d2c3099/r)**
 >
 > Open a public LangSmith run for this example.
 
@@ -356,7 +356,7 @@ async function bookWithElicitation(serverUrl: string) {
 }
 ```
 
-> **[View example trace](https://smith.langchain.com/public/f8769a01-6ca6-45c7-afae-2376a5843c0d/r)**
+> **[View example trace](https://smith.langchain.com/public/a51e276f-3aa7-4426-a7b7-986b5c4332e1/r)**
 >
 > Open a public LangSmith run for this example.
 

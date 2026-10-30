@@ -321,6 +321,7 @@ Legacy functionality has moved to [`langchain-classic`](https://pypi.org/project
 
 * Legacy chains and chain implementations
 * Retrievers (e.g. `MultiQueryRetriever` or anything from the previous `langchain.retrievers` module)
+* Output parsers that repair malformed model output (e.g. `OutputFixingParser`, `RetryOutputParser`)
 * The indexing API
 * The hub module (for managing prompts programmatically)
 * [`langchain-community`](https://pypi.org/project/langchain-community) exports
@@ -347,6 +348,9 @@ from langchain_classic.chains import ...  # [!code ++]
 
 from langchain.retrievers import ...  # [!code --]
 from langchain_classic.retrievers import ...  # [!code ++]
+
+from langchain.output_parsers import OutputFixingParser  # [!code --]
+from langchain_classic.output_parsers import OutputFixingParser  # [!code ++]
 
 from langchain import hub  # [!code --]
 from langchain_classic import hub  # [!code ++]

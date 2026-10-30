@@ -73,6 +73,8 @@ kubectl get deploy langsmith-agent-gateway
 kubectl rollout status deploy/langsmith-agent-gateway
 ```
 
+`agentGateway.enabled: true` turns the gateway on for every organization on the install. There is no separate enable step in the UI.
+
 ## Enable Presidio PII detection (optional)
 
 [Presidio Analyzer](https://microsoft.github.io/presidio/) is a Microsoft-maintained NER service the gateway can call to detect PII in prompts before they reach upstream providers.
@@ -108,11 +110,11 @@ agentGateway:
 
 ## Make your first call
 
-This mirrors the [SaaS quickstart](/langsmith/llm-gateway-quickstart) with the base URL adjusted for self-hosted. Complete the steps above (gateway deployed, Ingress up) before continuing.
+This mirrors the [Cloud first request guide](/langsmith/llm-gateway-first-request) with the base URL adjusted for self-hosted. Complete the steps above (gateway deployed, Ingress up) before continuing.
 
 > [!NOTE]
 >
-> An organization admin must add provider API keys to workspace or organization model provider secrets for the models you want to reach, then grant users a role with the `gateway:invoke` and `workspaces:read` [permissions](/langsmith/organization-workspace-operations) and [distribute a workspace-scoped API key](/langsmith/llm-gateway-admin-setup#4-distribute-api-keys-to-users). See [Admin setup](/langsmith/llm-gateway-admin-setup).
+> Before your first call, [add a provider key](/langsmith/llm-gateway-provider-authentication#add-a-provider-key) as a secret in each workspace that calls that provider, grant users a role with the `gateway:invoke` and `workspaces:read` [permissions](/langsmith/organization-workspace-operations), and [distribute a workspace-scoped API key](/langsmith/llm-gateway-authentication#use-a-workspace-scoped-key). See [Set up the LLM Gateway](/langsmith/llm-gateway-admin-setup).
 
 **1. Set environment variables**
 
@@ -131,7 +133,7 @@ export LANGSMITH_GATEWAY_API_KEY="$LANGSMITH_API_KEY"
 
 **2. Make a call**
 
-Either header works: `Authorization: Bearer <key>` or `X-Api-Key: <key>`. The examples below use the `Authorization` header. You can also test a call through the LLM Gateway home page simulator.
+Either header works: `Authorization: Bearer <key>` or `X-Api-Key: <key>`. The examples below use the `Authorization` header.
 
 ```bash cURL theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 curl "$LANGSMITH_GATEWAY_BASE_URL/chat/completions" \
@@ -216,9 +218,9 @@ For the full guide, see [Spend policies](/langsmith/llm-gateway-spend-policies).
 
 ## Next steps
 
-* [Quickstart](/langsmith/llm-gateway-quickstart): the SaaS equivalent of the steps above.
-* [Admin setup](/langsmith/llm-gateway-admin-setup): grant workspace users gateway access and configure provider secrets.
-* [Spend policies](/langsmith/llm-gateway-spend-policies): cap spend at the organization, workspace, API key, or user level.
+* [Set up the LLM Gateway](/langsmith/llm-gateway-admin-setup): connect providers, grant users gateway access, and configure policies for your organization.
+* [How the LLM Gateway works](/langsmith/llm-gateway-how-it-works): follow a request through the gateway, including self-hosted base URLs.
+* [Authenticate to the LLM Gateway](/langsmith/llm-gateway-authentication): choose and send the API key that callers use.
 
 ***
 

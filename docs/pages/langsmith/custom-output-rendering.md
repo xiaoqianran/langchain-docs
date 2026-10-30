@@ -50,6 +50,10 @@ To configure custom output rendering for a dataset:
 
 ### For annotation queues
 
+> [!NOTE]
+>
+> Custom output rendering for annotation queues will be deprecated. Use a [custom view](/langsmith/annotation-queue-custom-views) instead. A queue can use custom output rendering or a custom view, not both.
+
 To configure custom output rendering for an annotation queue:
 
 ![Annotation queue settings showing custom output rendering configuration](https://mintcdn.com/langchain-5e9cc07a/optUJrLvYf4z4j5I/langsmith/images/annotation-queue-custom-output-rendering-settings.png?fit=max\&auto=format\&n=optUJrLvYf4z4j5I\&q=85\&s=579aad04fa6990b220514280eef799f4)

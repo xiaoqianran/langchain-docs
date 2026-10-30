@@ -111,7 +111,7 @@ result = await agent.invoke(
 console.log(result.messages.at(-1)?.content);
 ```
 
-> **[View example trace](https://smith.langchain.com/public/f61429d4-8472-4971-b2c3-ed4e41d859ed/r)**
+> **[View example trace](https://smith.langchain.com/public/e630ed7d-1c56-466e-ab84-ae06531f74a9/r)**
 >
 > Open a public LangSmith run for this example.
 
@@ -319,7 +319,7 @@ const getWeather = tool(({ city }) => `It is currently sunny in ${city}.`, {
 });
 ```
 
-> **[View example trace](https://smith.langchain.com/public/04567cb5-57fc-49b6-8737-ec6828fcf20d/r)**
+> **[View example trace](https://smith.langchain.com/public/989af542-1023-4731-8ce5-733c83d36064/r)**
 >
 > Open a public LangSmith run for this example.
 
@@ -353,7 +353,7 @@ const getWeatherData = tool(
 );
 ```
 
-> **[View example trace](https://smith.langchain.com/public/7ed64816-9681-4c3b-8c1a-803dff7b5d0e/r)**
+> **[View example trace](https://smith.langchain.com/public/ce660b42-01d4-4b22-81eb-d140aaaf24e5/r)**
 >
 > Open a public LangSmith run for this example.
 
@@ -429,7 +429,7 @@ const setLanguage = tool(
 );
 ```
 
-> **[View example trace](https://smith.langchain.com/public/44d6ee7a-f6cf-4c15-9d19-248e28359eeb/r)**
+> **[View example trace](https://smith.langchain.com/public/107f34b8-4f15-4419-b798-bb46eadbe850/r)**
 >
 > Open a public LangSmith run for this example.
 
@@ -476,7 +476,7 @@ const result = await agent.invoke({
 // "Order 12345 is shipped and will arrive in 2 days."
 ```
 
-> **[View example trace](https://smith.langchain.com/public/648dc7a3-0190-4546-946b-14fb56a18496/r)**
+> **[View example trace](https://smith.langchain.com/public/685c0211-e91c-45a2-8e9e-01be40cab4e9/r)**
 >
 > Open a public LangSmith run for this example.
 

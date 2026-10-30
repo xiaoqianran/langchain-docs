@@ -2058,7 +2058,7 @@ if __name__ == "__main__":
     asyncio.run(main())
 ```
 
-> **[View example trace](https://smith.langchain.com/public/ce7b8594-b310-4ab0-9edb-43ab9b7d9857/r)**
+> **[View example trace](https://smith.langchain.com/public/cccc9819-5637-4b32-a8bc-44277052cb4f/r)**
 >
 > Open a public LangSmith run for this example.
 

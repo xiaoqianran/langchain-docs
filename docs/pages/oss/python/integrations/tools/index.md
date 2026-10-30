@@ -102,7 +102,7 @@ The following table shows tools that can be used to automate tasks in web browse
 | [Context.dev](https://docs.context.dev) | Free tier available | ❌ |
 | [Stagehand](/oss/python/integrations/tools/stagehand) | Open-source / Browserbase pay-as-you-go | ✅ |
 | [Ceki](https://ceki.me) | Self mode free; marketplace \$0.01/min USDC | ✅ |
-| [ClawFetch](https://github.com/clawfetch/integrations/tree/main/python/langchain-clawfetch) | Pay-per-call via x402 (USDC on Base, $0.001 fetch to $0.02 research); no signup | ❌ |
+| [ClawFetch](https://github.com/clawfetch/integrations#readme) | Pay-per-call via x402 (USDC on Base, $0.001 fetch to $0.02 research); no signup | ❌ |
 | [Firecrawl](https://docs.firecrawl.dev) | Free tier available | ❌ |
 | [Hyperbrowser Browser Agent Tools](https://docs.hyperbrowser.ai/) | Free trial, with flat rate plans and pre-paid credits after | ✅ |
 | [Hyperbrowser Web Scraping Tools](https://docs.hyperbrowser.ai/) | Free trial, with flat rate plans and pre-paid credits after | ❌ |
@@ -318,6 +318,7 @@ The following table shows tools that generate video, image, or audio assets:
 | [`Robocorp toolkit`](https://github.com/robocorp/robocorp) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-robocorp/month)](https://pypi.org/project/langchain-robocorp/) |
 | [`Ampersend`](https://docs.ampersend.ai) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-ampersend/month)](https://pypi.org/project/langchain-ampersend/) |
 | [`ContextFetchSearch`](https://github.com/lachy3433/langchain-contextfetch#readme) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-contextfetch/month)](https://pypi.org/project/langchain-contextfetch/) |
+| [`ClawFetchToolkit`](https://github.com/clawfetch/integrations#readme) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-clawfetch/month)](https://pypi.org/project/langchain-clawfetch/) |
 | [`Manifest`](https://omfang.io/manifest-docs) | [  ![Downloads per month](https://static.pepy.tech/badge/manifest-api/month)](https://pypi.org/project/manifest-api/) |
 | [`SnapRender`](https://snap-render.com) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-snaprender/month)](https://pypi.org/project/langchain-snaprender/) |
 | [`WebExtract`](https://webextract.dev/docs/langchain) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-webextract/month)](https://pypi.org/project/langchain-webextract/) |
@@ -507,6 +508,7 @@ The following table shows tools that generate video, image, or audio assets:
 | [`WebSEOAuditTool`](https://github.com/JosejuX/rapidapi-metadata-extractor/tree/main/langchain-webmetadata-extractor) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-webmetadata-extractor/month)](https://pypi.org/project/langchain-webmetadata-extractor/) |
 | [`WitanToolkit`](https://github.com/witanmarkets/langchain-witan#readme) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-witan/month)](https://pypi.org/project/langchain-witan/) |
 | [`Bodo DataFrames`](https://docs.bodo.ai/) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-bodo/month)](https://pypi.org/project/langchain-bodo/) |
+| [`CoworkingViewToolkit`](https://coworkingview.com/en/mcp) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-coworkingview/month)](https://pypi.org/project/langchain-coworkingview/) |
 | [`KeiroSearchTool`](https://github.com/Keirolabs-API/langchain-keiro) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-keiro/month)](https://pypi.org/project/langchain-keiro/) |
 | [`FlipCoinToolkit`](https://github.com/flipcoin-fun/flipcoin-langchain) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-flipcoin/month)](https://pypi.org/project/langchain-flipcoin/) |
 | [`ScrapelessCrawlerScrapeTool`](https://github.com/scrapeless-ai/langchain-scrapeless) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-scrapeless/month)](https://pypi.org/project/langchain-scrapeless/) |
@@ -527,8 +529,10 @@ The following table shows tools that generate video, image, or audio assets:
 | [`Hlido`](https://hlido.eu/docs/) | [  ![Downloads per month](https://static.pepy.tech/badge/hlido-trust/month)](https://pypi.org/project/hlido-trust/) |
 | [`TempGuru`](https://tempguru.co/ai-agents) | [  ![Downloads per month](https://static.pepy.tech/badge/tempguru/month)](https://pypi.org/project/tempguru/) |
 | [`Solvecha`](https://github.com/Solvecha/solvecha-skills/tree/main/python) | [  ![Downloads per month](https://static.pepy.tech/badge/solvecha/month)](https://pypi.org/project/solvecha/) |
+| [`VideoGenToolkit`](https://github.com/video-gen/langchain-videogen#readme) | [  ![Downloads per month](https://static.pepy.tech/badge/langchain-videogen/month)](https://pypi.org/project/langchain-videogen/) |
 | [`AgentLair`](https://agentlair.dev/docs) | N/A |
 | [`Browserless`](https://browserless.io) | N/A |
+| [`FokalsToolkit`](https://github.com/fokals/langchain-fokals#readme) | N/A |
 | [`HuangtingFlux`](https://huangtingflux.com/integrations/langchain) | N/A |
 | [`Stagehand`](/oss/python/integrations/tools/stagehand) | N/A |
 

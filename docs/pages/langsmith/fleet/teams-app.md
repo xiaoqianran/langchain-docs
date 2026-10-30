@@ -1,6 +1,6 @@
-<!-- langchain-docs: Integrate Teams with an agent | https://docs.langchain.com/langsmith/fleet/teams-app -->
+<!-- langchain-docs: Integrate Microsoft Teams with an agent | https://docs.langchain.com/langsmith/fleet/teams-app -->
 
-# Integrate Teams with an agent
+# Integrate Microsoft Teams with an agent
 
 Connect LangSmith Fleet to Microsoft Teams by bringing your own Azure Bot to let agents communicate with users in Teams.
 

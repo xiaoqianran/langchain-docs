@@ -100,11 +100,11 @@ In the LangSmith UI, navigate to **Settings** > **General**, configure the follo
 
 1. **JWT audience:** the `aud` claim value the proxy will validate (for example, `example-audience`). This must match `jwtAudiences` in the auth proxy chart in [Step 4](#4-install-the-auth-proxy-helm-chart).
 2. **Enable LLM auth proxy:** toggle on for your organization.
-3. **Allowed URLs:** control which destination URLs the proxy is permitted to forward JWTs to. This prevents credential forwarding to unintended hosts. Choose one of three options:
+3. **Allowed URLs:** control which hosts LangSmith sends JWTs to. This prevents credential forwarding to unintended hosts. Choose one of three options:
 
    * **Allow all** (default): permits JWT forwarding to any upstream URL. Equivalent to no restriction.
    * **Block all:** blocks JWT forwarding to all URLs.
-   * **Custom:** specify an explicit list of allowed URL patterns. Empty strings and bare `*` are not accepted. The control is disabled when the LLM auth proxy toggle is off.
+   * **Custom:** list the hostnames LangSmith may send JWTs to, such as `llm-proxy.example.com` or `*.example.com`. A `*.` pattern matches the domain and all of its subdomains. Enter hostnames only, without a scheme, port, or path: an entry such as `https://llm-proxy.example.com:10000` matches nothing. Empty strings and bare `*` are not accepted. The control is disabled when the LLM auth proxy toggle is off.
 
    ![LLM Auth Proxy settings in LangSmith showing the Enable LLM auth proxy checkbox, JWT audience field, and Allowed URLs radio buttons with Allow all selected.](https://mintcdn.com/langchain-5e9cc07a/bbAQLTZm05DckBS2/langsmith/images/llm-auth-proxy-settings-light.png?fit=max\&auto=format\&n=bbAQLTZm05DckBS2\&q=85\&s=b9bbd4314eeb945ca236a2c6dec2d221)
 

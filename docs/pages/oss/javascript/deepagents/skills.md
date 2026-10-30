@@ -142,7 +142,7 @@ const result = await agent.invoke(
 );
 ```
 
-> **[View example trace](https://smith.langchain.com/public/39b1ef25-cf7f-4a4f-96b9-79e4902604d8/r)**
+> **[View example trace](https://smith.langchain.com/public/3218e1ca-4a44-4b04-b386-924589552a79/r)**
 >
 > Open a public LangSmith run for this example.
 
@@ -475,7 +475,7 @@ const result = await agent.invoke(
 );
 ```
 
-> **[View example trace](https://smith.langchain.com/public/2c02ac34-3a67-455e-9f14-12f5e0426a53/r)**
+> **[View example trace](https://smith.langchain.com/public/e820ab54-7200-41fb-bf03-7639e7954b42/r)**
 >
 > Open a public LangSmith run for this example.
 
@@ -576,7 +576,7 @@ const result = await agent.invoke(
 );
 ```
 
-> **[View example trace](https://smith.langchain.com/public/e5b8f897-96f4-42d7-9d88-f2fd8e246bd2/r)**
+> **[View example trace](https://smith.langchain.com/public/5c684c86-25c2-471e-a9f3-c43767036b26/r)**
 >
 > Open a public LangSmith run for this example.
 
@@ -622,7 +622,7 @@ const result = await agent.invoke(
 );
 ```
 
-> **[View example trace](https://smith.langchain.com/public/8c49b6ee-d5e4-4c9d-b136-a561527e37c2/r)**
+> **[View example trace](https://smith.langchain.com/public/2b64039f-58ff-4bf9-930e-45e57f61c09b/r)**
 >
 > Open a public LangSmith run for this example.
 
@@ -667,7 +667,7 @@ const result = await agent.invoke(
 );
 ```
 
-> **[View example trace](https://smith.langchain.com/public/6bad9cac-ea04-4364-b28f-d1bdaf39b8d8/r)**
+> **[View example trace](https://smith.langchain.com/public/f81b4363-f551-4eec-a7c2-16fa91834002/r)**
 >
 > Open a public LangSmith run for this example.
 
@@ -2227,7 +2227,7 @@ main().catch((err) => {
 });
 ```
 
-> **[View example trace](https://smith.langchain.com/public/cca657b7-b162-47f9-9fca-a20bed29cb66/r)**
+> **[View example trace](https://smith.langchain.com/public/1ea9b51a-1953-428d-ba40-f8d363139114/r)**
 >
 > Open a public LangSmith run for this example.
 

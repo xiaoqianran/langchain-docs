@@ -193,7 +193,7 @@ result = baseline_agent.invoke(
 print(result["messages"][-1].text)
 ```
 
-> **[View example trace](https://smith.langchain.com/public/9e5d5ccc-eb86-4a0d-896b-6104d648e7ce/r)**
+> **[View example trace](https://smith.langchain.com/public/7200942f-bb17-4646-a274-1712ac9c2693/r)**
 >
 > Open a public LangSmith run for this example.
 
@@ -1460,7 +1460,7 @@ if __name__ == "__main__":
             print(msg.text)
 ```
 
-> **[View example trace](https://smith.langchain.com/public/6028e45a-23d0-4073-968c-19d161910ef8/r)**
+> **[View example trace](https://smith.langchain.com/public/389c9ff6-14ee-4c07-947a-07085fdb9392/r)**
 >
 > Open a public LangSmith run for this example.
 

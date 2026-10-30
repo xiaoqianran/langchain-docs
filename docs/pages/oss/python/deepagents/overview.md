@@ -184,7 +184,7 @@ agent.invoke(
 )
 ```
 
-> **[View example trace](https://smith.langchain.com/public/44780f65-3414-46eb-8239-944c6ee5454f/r)**
+> **[View example trace](https://smith.langchain.com/public/a31c828a-b3cb-421a-9bc1-6f9e262294d1/r)**
 >
 > Open a public LangSmith run for this example.
 

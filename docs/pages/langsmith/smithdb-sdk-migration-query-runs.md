@@ -2631,6 +2631,7 @@ curl -X POST "https://api.smith.langchain.com/api/v2/runs/query" \
 * [Retrieve runs](/langsmith/smithdb-sdk-migration-runs)
 * [Traces](/langsmith/smithdb-sdk-migration-traces)
 * [Migration overview](/langsmith/smithdb-sdk-migration)
+* [Search conversation content with AI using the SDK](/langsmith/filter-traces#search-with-ai-using-the-sdk)
 
 ***
 

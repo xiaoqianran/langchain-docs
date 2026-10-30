@@ -7097,13 +7097,103 @@
       "hash": "103016210c9247927077fabbcf4839a8e9af35f5",
       "translatedAt": "2026-10-29T15:53:33.605Z",
       "failed": true
+    },
+    "langsmith/annotation-queue-custom-views.md": {
+      "hash": "5ffe3fab6c1eb72482e25b5f3f3c1b6be8e990eb",
+      "translatedAt": "2026-10-30T15:24:55.656Z",
+      "failed": true
+    },
+    "langsmith/llm-gateway-authentication.md": {
+      "hash": "c7f618752c627b1db82c4b929a3e8e8aee02da35",
+      "translatedAt": "2026-10-30T15:26:00.749Z",
+      "failed": true
+    },
+    "langsmith/llm-gateway-first-request.md": {
+      "hash": "1d67c8555d23392f20b7b2fedf664783200241c6",
+      "translatedAt": "2026-10-30T15:26:17.257Z",
+      "failed": true
+    },
+    "langsmith/llm-gateway-traces.md": {
+      "hash": "c16cc5a107531fd17be9d26a5c1875d2bb3f6a04",
+      "translatedAt": "2026-10-30T15:26:34.799Z",
+      "failed": true
+    },
+    "langsmith/self-host-sandbox-separate-cluster.md": {
+      "hash": "81bd6a8907d22330f62627865911e678827b811a",
+      "translatedAt": "2026-10-30T15:27:15.890Z",
+      "failed": true
+    },
+    "langsmith/smith-api/model-price-map/create-a-model-price.md": {
+      "hash": "0cb5f96ac04e816f9a2d5c40ec86ec5fb53a7d05",
+      "translatedAt": "2026-10-30T15:27:40.913Z",
+      "failed": true
+    },
+    "langsmith/smith-api/model-price-map/delete-a-model-price.md": {
+      "hash": "1390deb85335d67746ad4b7cfcac0ceef7d6f973",
+      "translatedAt": "2026-10-30T15:27:44.377Z",
+      "failed": true
+    },
+    "langsmith/smith-api/model-price-map/list-model-prices.md": {
+      "hash": "84253bc68dc26d68f439d3c936dac3b59524ecf7",
+      "translatedAt": "2026-10-30T15:27:44.648Z",
+      "failed": true
+    },
+    "langsmith/smith-api/model-price-map/replace-a-model-price.md": {
+      "hash": "b26e4b7acc6e5d9bf1c6f2b503a97239175c9d32",
+      "translatedAt": "2026-10-30T15:27:46.920Z",
+      "failed": true
+    },
+    "langsmith/smith-api/run/create-decision-model-rule.md": {
+      "hash": "ddbb42a920cb37bba8fdf70288413e2c1a38b911",
+      "translatedAt": "2026-10-30T15:27:50.206Z",
+      "failed": true
+    },
+    "langsmith/smith-api/sandboxes/clone-a-volume-beta.md": {
+      "hash": "ccf6aa40a8899115fdf28e21abffd004bd0e7867",
+      "translatedAt": "2026-10-30T15:27:55.816Z",
+      "failed": true
+    },
+    "langsmith/smith-api/sandboxes/create-a-volume-beta.md": {
+      "hash": "957b9bc43bc36bc04b2bba2cd6ce88806ed378ee",
+      "translatedAt": "2026-10-30T15:27:56.297Z",
+      "failed": true
+    },
+    "langsmith/smith-api/sandboxes/delete-a-volume-beta.md": {
+      "hash": "7aa93c8a1753a9a37fd73b067f7eb2623136a4a3",
+      "translatedAt": "2026-10-30T15:28:02.124Z",
+      "failed": true
+    },
+    "langsmith/smith-api/sandboxes/get-a-volume-beta.md": {
+      "hash": "13df1ebf9dbb240733f2c9d3268387aeb9bd281a",
+      "translatedAt": "2026-10-30T15:28:04.105Z",
+      "failed": true
+    },
+    "langsmith/smith-api/sandboxes/list-volumes-beta.md": {
+      "hash": "da4a463683e23a505f74e6d20d512cb3eb9bfbf8",
+      "translatedAt": "2026-10-30T15:28:07.879Z",
+      "failed": true
+    },
+    "langsmith/smith-api/sandboxes/update-a-volume-beta.md": {
+      "hash": "19df9db5a451f88ba1e8251f6f52141400a7331e",
+      "translatedAt": "2026-10-30T15:28:09.805Z",
+      "failed": true
+    },
+    "langsmith/smith-api/sessions/resolve-an-address-to-its-tracing-project.md": {
+      "hash": "9647019158ab33abcf9751c730cc28a364b914fd",
+      "translatedAt": "2026-10-30T15:28:13.500Z",
+      "failed": true
+    },
+    "langsmith/teams.md": {
+      "hash": "2bb9a3ff9e2ad55d95c3650cab78aeffb3f5f81d",
+      "translatedAt": "2026-10-30T15:28:24.939Z",
+      "failed": true
     }
   },
-  "updatedAt": "2026-10-29T15:54:14.826Z",
+  "updatedAt": "2026-10-30T15:33:09.162Z",
   "stats": {
-    "translated": 96,
-    "skipped": 1484,
-    "failed": 105,
-    "total": 1685
+    "translated": 0,
+    "skipped": 1436,
+    "failed": 260,
+    "total": 1696
   }
 }

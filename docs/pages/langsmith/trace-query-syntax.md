@@ -23,7 +23,6 @@ For runnable end-to-end examples that combine these filters with the SDK, refer 
 | `tree_filter` | Filter applied to any run in the trace tree (root, sibling, or child). Use with `filter` to narrow by attributes of any run within a trace. |
 | `is_root` | Only return root runs. |
 | `select` | Select the fields to return in the response. By default, all fields are returned. See [run data format](/langsmith/run-data-format) for available fields. |
-| `query` (*experimental*) | Natural language query, which translates your query into a filter statement. |
 
 > [!NOTE]
 >

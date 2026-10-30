@@ -30,7 +30,7 @@ for subagent in stream.subagents:
     subagent_names.append(subagent.name)
 ```
 
-> **[View example trace](https://smith.langchain.com/public/1884fc76-062c-464d-85a9-9cf20d5286ab/r)**
+> **[View example trace](https://smith.langchain.com/public/439613c4-429d-455b-abbb-274d0775b811/r)**
 >
 > Open a public LangSmith run for this example.
 
@@ -76,7 +76,7 @@ for subagent in stream.subagents:
         print(f"{subagent.name}: failed")
 ```
 
-> **[View example trace](https://smith.langchain.com/public/7c517c49-b795-4a33-b782-6695349c9deb/r)**
+> **[View example trace](https://smith.langchain.com/public/0f29297a-836d-448f-b034-323f61333205/r)**
 >
 > Open a public LangSmith run for this example.
 
@@ -97,7 +97,7 @@ for subagent in stream.subagents:
         print(f"[{subagent.name}]", message.text)
 ```
 
-> **[View example trace](https://smith.langchain.com/public/8cdd93c9-0dff-4f08-8057-053753c68c6e/r)**
+> **[View example trace](https://smith.langchain.com/public/a6f04eb5-8ed2-4725-af76-5ada63ab63ab/r)**
 >
 > Open a public LangSmith run for this example.
 
@@ -126,7 +126,7 @@ for subagent in stream.subagents:
             print(call.error)
 ```
 
-> **[View example trace](https://smith.langchain.com/public/55cbc704-a514-46e1-8559-b2cfee01298d/r)**
+> **[View example trace](https://smith.langchain.com/public/61a3bd0c-cc5f-471f-af8c-558b17ddd04f/r)**
 >
 > Open a public LangSmith run for this example.
 
@@ -152,7 +152,7 @@ for subagent in stream.subagents:
     subagent_names.append(subagent.name)
 ```
 
-> **[View example trace](https://smith.langchain.com/public/51f7e14f-0d79-4f59-a817-e05db11cec22/r)**
+> **[View example trace](https://smith.langchain.com/public/52f88dfe-a0a3-4fe1-ad27-a8a79202cf85/r)**
 >
 > Open a public LangSmith run for this example.
 
@@ -192,7 +192,7 @@ for name, item in stream.interleave("messages", "subagents"):
             print(f"[{item.name}]", message.text)
 ```
 
-> **[View example trace](https://smith.langchain.com/public/74ef37d9-f1b4-408f-babd-af300a033e9b/r)**
+> **[View example trace](https://smith.langchain.com/public/239705f4-0506-45ae-8879-4d372f8e8f4c/r)**
 >
 > Open a public LangSmith run for this example.
 
@@ -219,7 +219,7 @@ for event in stream:
         text_deltas.append(block["text"])
 ```
 
-> **[View example trace](https://smith.langchain.com/public/71b391fa-fa9d-40c0-838a-6a21874785c9/r)**
+> **[View example trace](https://smith.langchain.com/public/2e83ded9-0598-4a26-9683-ced06520b825/r)**
 >
 > Open a public LangSmith run for this example.
 

@@ -806,7 +806,7 @@ const model = new ChatAnthropic({
   temperature: 0,
 });
 
-const agent = createDeepAgent({
+const agent = await createDeepAgent({
   model,
   tools: [tavilySearch],
   systemPrompt: INSTRUCTIONS,
@@ -867,57 +867,60 @@ Add the code from the respective tab at the bottom of `agent.ts`:
 **Run synchronously**
 
 ```ts theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-async function main() {
-  const result = await agent.invoke({
-    messages: [
-      {
-        role: "user",
-        content:
-          "What are the main differences between RAG and fine-tuning for LLM applications?",
-      },
-    ],
-  });
+{
+  async function main() {
+    const result = await agent.invoke({
+      messages: [
+        {
+          role: "user",
+          content:
+            "What are the main differences between RAG and fine-tuning for LLM applications?",
+        },
+      ],
+    });
 
-  for (const msg of result.messages ?? []) {
-    if (msg.content) {
-      console.log(msg.content);
+    for (const msg of result.messages ?? []) {
+      if (msg.content) {
+        console.log(msg.content);
+      }
     }
   }
-}
 
-main().catch((err) => {
-  console.error(err);
-  process.exitCode = 1;
-});
+  main().catch((err) => {
+    console.error(err);
+    process.exitCode = 1;
+  });
+}
 ```
 
 **Stream updates**
 
 ```ts theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-async function main() {
-  const stream = await agent.streamEvents(
-    {
-      messages: [
-        {
-          role: "user",
-          content: "Compare Python vs JavaScript for web development",
-        },
-      ],
-    },
-    { version: "v3" },
-  );
-
-  for await (const message of stream.messages) {
-    process.stdout.write(await message.text);
+{
+  async function main() {
+    const stream = await agent.streamEvents(
+      {
+        messages: [
+          {
+            role: "user",
+            content: "Compare Python vs JavaScript for web development",
+          },
+        ],
+      },
+      { version: "v3" },
+    );
+    for await (const message of stream.messages) {
+      for await (const token of message.text) {
+        process.stdout.write(token);
+      }
+    }
   }
 
-  await stream.output;
+  main().catch((err) => {
+    console.error(err);
+    process.exitCode = 1;
+  });
 }
-
-main().catch((err) => {
-  console.error(err);
-  process.exitCode = 1;
-});
 ```
 
 Run the agent from the project root:

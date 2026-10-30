@@ -513,6 +513,12 @@
           "rel": "langsmith/annotate-traces-inline.md"
         }
       ],
+      "annotation-queue-custom-views": [
+        {
+          "title": "Build custom views for annotation queues",
+          "rel": "langsmith/annotation-queue-custom-views.md"
+        }
+      ],
       "annotation-queues": [
         {
           "title": "Use annotation queues",
@@ -1629,15 +1635,9 @@
           "rel": "langsmith/llm-gateway.md"
         }
       ],
-      "llm-gateway-access": [
-        {
-          "title": "Traces and access control",
-          "rel": "langsmith/llm-gateway-access.md"
-        }
-      ],
       "llm-gateway-admin-setup": [
         {
-          "title": "Admin setup",
+          "title": "Set up the LLM Gateway",
           "rel": "langsmith/llm-gateway-admin-setup.md"
         }
       ],
@@ -1645,6 +1645,12 @@
         {
           "title": "API formats",
           "rel": "langsmith/llm-gateway-api-formats.md"
+        }
+      ],
+      "llm-gateway-authentication": [
+        {
+          "title": "Authenticate to the LLM Gateway",
+          "rel": "langsmith/llm-gateway-authentication.md"
         }
       ],
       "llm-gateway-coding-agents": [
@@ -1661,7 +1667,7 @@
       ],
       "llm-gateway-data-policy": [
         {
-          "title": "Data policy",
+          "title": "Data policies",
           "rel": "langsmith/llm-gateway-data-policy.md"
         }
       ],
@@ -1683,9 +1689,15 @@
           "rel": "langsmith/llm-gateway-fallbacks.md"
         }
       ],
+      "llm-gateway-first-request": [
+        {
+          "title": "Send your first LLM Gateway request",
+          "rel": "langsmith/llm-gateway-first-request.md"
+        }
+      ],
       "llm-gateway-header-policies": [
         {
-          "title": "Per-customer policies",
+          "title": "Header-based policies",
           "rel": "langsmith/llm-gateway-header-policies.md"
         }
       ],
@@ -1719,12 +1731,6 @@
           "rel": "langsmith/llm-gateway-provider-authentication.md"
         }
       ],
-      "llm-gateway-quickstart": [
-        {
-          "title": "LLM Gateway quickstart",
-          "rel": "langsmith/llm-gateway-quickstart.md"
-        }
-      ],
       "llm-gateway-rate-limit-policies": [
         {
           "title": "Rate limit policies",
@@ -1741,6 +1747,12 @@
         {
           "title": "Spend policies",
           "rel": "langsmith/llm-gateway-spend-policies.md"
+        }
+      ],
+      "llm-gateway-traces": [
+        {
+          "title": "View LLM Gateway traces",
+          "rel": "langsmith/llm-gateway-traces.md"
         }
       ],
       "local": [
@@ -2475,6 +2487,12 @@
           "rel": "langsmith/self-host-sandbox-scaling.md"
         }
       ],
+      "self-host-sandbox-separate-cluster": [
+        {
+          "title": "Run self-hosted Sandboxes in a separate cluster",
+          "rel": "langsmith/self-host-sandbox-separate-cluster.md"
+        }
+      ],
       "self-host-scale": [
         {
           "title": "Configure LangSmith for scale",
@@ -2881,6 +2899,12 @@
         {
           "title": "How to define a summary evaluator",
           "rel": "langsmith/summary.md"
+        }
+      ],
+      "teams": [
+        {
+          "title": "Teams",
+          "rel": "langsmith/teams.md"
         }
       ],
       "test-from-playground": [
@@ -3707,7 +3731,7 @@
       ],
       "teams-app": [
         {
-          "title": "Integrate Teams with an agent",
+          "title": "Integrate Microsoft Teams with an agent",
           "rel": "langsmith/fleet/teams-app.md"
         }
       ],
@@ -5151,20 +5175,20 @@
       ],
       "model-price-map": [
         {
-          "title": "Create new model price",
-          "rel": "langsmith/smith-api/model-price-map/create-new-model-price.md"
+          "title": "Create a model price",
+          "rel": "langsmith/smith-api/model-price-map/create-a-model-price.md"
         },
         {
-          "title": "Delete model price",
-          "rel": "langsmith/smith-api/model-price-map/delete-model-price.md"
+          "title": "Delete a model price",
+          "rel": "langsmith/smith-api/model-price-map/delete-a-model-price.md"
         },
         {
-          "title": "Read model price map",
-          "rel": "langsmith/smith-api/model-price-map/read-model-price-map.md"
+          "title": "List model prices",
+          "rel": "langsmith/smith-api/model-price-map/list-model-prices.md"
         },
         {
-          "title": "Update model price",
-          "rel": "langsmith/smith-api/model-price-map/update-model-price.md"
+          "title": "Replace a model price",
+          "rel": "langsmith/smith-api/model-price-map/replace-a-model-price.md"
         }
       ],
       "oauth": [
@@ -5705,6 +5729,10 @@
       ],
       "run": [
         {
+          "title": "Create decision model rule",
+          "rel": "langsmith/smith-api/run/create-decision-model-rule.md"
+        },
+        {
           "title": "Create rule",
           "rel": "langsmith/smith-api/run/create-rule.md"
         },
@@ -5865,6 +5893,10 @@
           "rel": "langsmith/smith-api/sandboxes/capture-a-snapshot-from-a-sandbox.md"
         },
         {
+          "title": "Clone a volume (Beta)",
+          "rel": "langsmith/smith-api/sandboxes/clone-a-volume-beta.md"
+        },
+        {
           "title": "Close a tab in a browser window (Beta)",
           "rel": "langsmith/smith-api/sandboxes/close-a-tab-in-a-browser-window-beta.md"
         },
@@ -5885,6 +5917,10 @@
           "rel": "langsmith/smith-api/sandboxes/create-a-snapshot.md"
         },
         {
+          "title": "Create a volume (Beta)",
+          "rel": "langsmith/smith-api/sandboxes/create-a-volume-beta.md"
+        },
+        {
           "title": "Create links to a browser window (Beta)",
           "rel": "langsmith/smith-api/sandboxes/create-links-to-a-browser-window-beta.md"
         },
@@ -5899,6 +5935,10 @@
         {
           "title": "Delete a snapshot",
           "rel": "langsmith/smith-api/sandboxes/delete-a-snapshot.md"
+        },
+        {
+          "title": "Delete a volume (Beta)",
+          "rel": "langsmith/smith-api/sandboxes/delete-a-volume-beta.md"
         },
         {
           "title": "Detach a sandbox from a browser (Beta)",
@@ -5949,6 +5989,10 @@
           "rel": "langsmith/smith-api/sandboxes/get-a-snapshot-name.md"
         },
         {
+          "title": "Get a volume (Beta)",
+          "rel": "langsmith/smith-api/sandboxes/get-a-volume-beta.md"
+        },
+        {
           "title": "Get sandbox resource usage",
           "rel": "langsmith/smith-api/sandboxes/get-sandbox-resource-usage.md"
         },
@@ -5983,6 +6027,10 @@
         {
           "title": "List snapshots",
           "rel": "langsmith/smith-api/sandboxes/list-snapshots.md"
+        },
+        {
+          "title": "List volumes (Beta)",
+          "rel": "langsmith/smith-api/sandboxes/list-volumes-beta.md"
         },
         {
           "title": "Load a browser's extensions (Beta)",
@@ -6033,6 +6081,10 @@
           "rel": "langsmith/smith-api/sandboxes/update-a-sandbox.md"
         },
         {
+          "title": "Update a volume (Beta)",
+          "rel": "langsmith/smith-api/sandboxes/update-a-volume-beta.md"
+        },
+        {
           "title": "Upload a sandbox file",
           "rel": "langsmith/smith-api/sandboxes/upload-a-sandbox-file.md"
         }
@@ -6079,8 +6131,8 @@
           "rel": "langsmith/smith-api/sessions/list-agent-versions-for-a-project.md"
         },
         {
-          "title": "Resolve an address to its tracing project (Beta)",
-          "rel": "langsmith/smith-api/sessions/resolve-an-address-to-its-tracing-project-beta.md"
+          "title": "Resolve an address to its tracing project",
+          "rel": "langsmith/smith-api/sessions/resolve-an-address-to-its-tracing-project.md"
         }
       ],
       "settings": [

@@ -761,7 +761,7 @@ result = await agent.invoke(
 );
 ```
 
-> **[View example trace](https://smith.langchain.com/public/dc6c669f-1699-4c3c-8490-c02b7d2cf978/r)**
+> **[View example trace](https://smith.langchain.com/public/6fa3df5b-9637-4afc-8c5d-90eaddc9ef87/r)**
 >
 > Open a public LangSmith run for this example.
 
@@ -988,7 +988,7 @@ const result = await agent.invoke(
 );
 ```
 
-> **[View example trace](https://smith.langchain.com/public/3bc1fb83-7ada-4e78-b9ac-31b749201c7d/r)**
+> **[View example trace](https://smith.langchain.com/public/9a9908d5-1083-4419-a89f-8b580668a54a/r)**
 >
 > Open a public LangSmith run for this example.
 
@@ -1027,7 +1027,7 @@ for await (const snapshot of stream.values) {
 }
 ```
 
-> **[View example trace](https://smith.langchain.com/public/53397253-6f2d-47c6-aa4e-a701377341e7/r)**
+> **[View example trace](https://smith.langchain.com/public/26cab1f9-7af5-40b4-8e4d-156564142bd8/r)**
 >
 > Open a public LangSmith run for this example.
 

@@ -317,7 +317,7 @@ order status. Always filter by the provided status.`,
 );
 ```
 
-> **[View example trace](https://smith.langchain.com/public/a1e5187c-7d69-497f-97a0-7d5dbb63c766/r)**
+> **[View example trace](https://smith.langchain.com/public/ec891c50-2c13-449c-83e6-e6f3aa830999/r)**
 >
 > Open a public LangSmith run for this example.
 
@@ -709,7 +709,7 @@ Subagents solve the **context bloat problem**. When the main agent uses tools wi
    };
    ```
 
-   > **[View example trace](https://smith.langchain.com/public/15892b34-9951-4142-a766-5d792dc0489d/r)**
+   > **[View example trace](https://smith.langchain.com/public/f6d140d5-7615-4414-b090-f35caeec28d1/r)**
    >
    > Open a public LangSmith run for this example.
 
@@ -873,7 +873,7 @@ const agent = await createDeepAgent({
 });
 ```
 
-> **[View example trace](https://smith.langchain.com/public/54c201ac-6630-4220-a36e-94cee1aa7957/r)**
+> **[View example trace](https://smith.langchain.com/public/597e274c-3bd1-459f-bda3-02a1ff6dc6eb/r)**
 >
 > Open a public LangSmith run for this example.
 

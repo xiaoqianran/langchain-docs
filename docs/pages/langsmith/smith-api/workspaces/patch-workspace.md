@@ -3,4 +3,6 @@
 # Patch workspace
 
 /langsmith/langsmith-platform-openapi.json patch /api/v1/workspaces/{workspace_id}
-Update a workspace.
+Rename a workspace in the current organization.
+
+Requires the workspace settings manage permission. A name that is already taken returns 409.

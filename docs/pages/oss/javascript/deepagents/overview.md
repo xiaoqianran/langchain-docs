@@ -63,7 +63,7 @@ console.log(
 );
 ```
 
-> **[View example trace](https://smith.langchain.com/public/8e31d898-1083-4a78-a6d8-29f16e24760f/r)**
+> **[View example trace](https://smith.langchain.com/public/863e743e-5e51-4c04-9165-a6884536c09c/r)**
 >
 > Open a public LangSmith run for this example.
 

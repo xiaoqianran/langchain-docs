@@ -24,6 +24,8 @@ Use the following static IP addresses to allowlist traffic for each region:
 >
 > Other LangSmith services egress from a [separate IP list](/langsmith/cloud#egress-from-langchain-saas).
 
+For automated updates, use the [egress IP inventory (JSON)](/langsmith/egress-ip-addresses.json). Filter by `service: langsmith-deployment`, your cloud, and your data region. Allowlist every matching `cidr`. See [Egress IP inventory](/langsmith/cloud#egress-ip-inventory) for the field definitions and update guidance.
+
 | GCP US | GCP EU | GCP APAC | AWS US |
 | - | - | - | - |
 | 35.197.29.146 | 34.90.213.236 | 34.40.236.16 | 3.13.80.97 |

@@ -222,7 +222,7 @@ If your organization routes model traffic through its own LLM gateway, Engine ca
 >
 > Model gateway support requires LangSmith Helm chart `0.17.31` or later.
 
-Whoever installs LangSmith configures the gateway in the Helm values, not in the UI. Gateway URLs are often private addresses, so an organization setting would let any Organization Admin point Engine at internal services. On [BYOC](/langsmith/engine-self-hosted#engine-on-byoc), contact LangChain to configure a gateway.
+Whoever installs LangSmith configures the gateway in the Helm values, not in the UI. Gateway URLs are often private addresses, so an organization setting would let any Organization Admin point Engine at internal services. Model gateways are not yet available on [BYOC](/langsmith/engine-self-hosted#engine-on-byoc).
 
 ### Gateway requirements
 
@@ -318,6 +318,8 @@ To set it up:
 1. Complete steps 1 through 4 of [Set up the LLM auth proxy](/langsmith/llm-auth-proxy-self-hosted): configure JWT signing and the issuer, enable the proxy for your organization, set the JWT audience, and install the auth proxy chart with your gateway as its upstream.
 2. On both Engine workloads, set `ENGINE_GATEWAY_AUTH` to `llm_auth_proxy`, and point the base URLs at the auth proxy service instead of the gateway. Don't set `ENGINE_GATEWAY_API_KEY_FILE`: Engine fails its runs when both are set.
 
+   The proxy appends each request's path to the chart's `authProxy.upstream` URL, so keep the path each API has on your gateway. For example, with `authProxy.upstream` set to `https://gateway.example.com` and the gateway serving the Anthropic API at `https://gateway.example.com/anthropic`, set `ENGINE_GATEWAY_ANTHROPIC_BASE_URL` to the proxy's address followed by `/anthropic`. The chart names the service `<release>-auth-proxy` and listens on port `10000` by default (`authProxy.service.port`).
+
    ```yaml theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
    engineInsightsAgent:
      apiServer:
@@ -337,7 +339,7 @@ To set it up:
    ```
 
    `ENGINE_GATEWAY_ALLOW_INSECURE_HTTP` is needed only when Engine reaches the auth proxy over plain HTTP inside your cluster.
-3. If your organization's **Allowed URLs** setting is **Custom**, add the auth proxy's host to the list.
+3. If your organization's **Allowed URLs** setting is **Custom**, add the auth proxy's hostname to the list.
 
 Engine runs on a schedule, not as a signed-in user. Its tokens identify the organization and workspace, with `actor_type` set to `api_key:service`, and they do not include an IdP token. If your `ext_authz` or `ext_proc` service exchanges a user's IdP token for gateway credentials, handle Engine's requests separately, for example by mapping the workspace to gateway credentials.
 

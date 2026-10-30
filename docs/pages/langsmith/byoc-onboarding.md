@@ -66,7 +66,7 @@ You can create additional workspaces in the data plane. Select the target data p
 
 **7. (Optional) Migrate existing data**
 
-If you are moving from an existing LangSmith Cloud or [self-hosted](/langsmith/self-hosted) instance, users, roles, datasets, prompts, experiments, annotation queue configuration, automation rules, dashboards, and Fleet resources can be copied over. Traces cannot be migrated today.
+If you are moving from an existing LangSmith Cloud or [self-hosted](/langsmith/self-hosted) instance, users, roles, datasets, prompts, experiments, annotation queue configuration, automation rules, dashboards, and Fleet resources can be copied over. Trace migration is supported on AWS. Contact the LangChain team to arrange it.
 
 For more information, see [Migrate to BYOC](/langsmith/byoc-migration).
 

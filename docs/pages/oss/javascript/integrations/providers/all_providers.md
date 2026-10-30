@@ -412,6 +412,10 @@ Connect LangGraph agents to front ends and observability platforms.
 >
 > Secure code execution in Azure Dynamic Sessions.
 
+> **[ClawFetch](https://github.com/clawfetch/integrations#readme)**
+>
+> ClawFetch provides web intelligence tools for agents, including fetch, JavaScript rendering, extraction, document parsing, and company research.
+
 > **[Continuity tools](https://github.com/zerohourzulu/continuity/blob/main/packages/remote-tools/README.md#langchain-tools)**
 >
 > LangChain tools with application-defined permissions, stable operation identities and status-only recovery for cooperating services.
@@ -664,9 +668,9 @@ Connect LangGraph agents to front ends and observability platforms.
 >
 > Trace LangChain.js, LangGraph.js, and Langflow-style callback runs in Respan.
 
-> **[SafePrompt](https://docs.safeprompt.dev/langchain)**
+> **[SafePrompt](https://safeprompt.dev/docs/langchain)**
 >
-> Validate prompts for prompt injection before they reach your model.
+> Callback handler that sends each prompt and tool output to the SafePrompt API and stops the run when it finds a prompt injection.
 
 ***
 

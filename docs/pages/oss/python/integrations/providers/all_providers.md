@@ -402,6 +402,10 @@ Browse the complete collection of integrations available for Python. LangChain P
 >
 > OpenAI-compatible LLM gateway that serves models from many labs below list price.
 
+> **[ChatLlamay](https://github.com/kosa8ai/langchain-llamay#readme)**
+>
+> Chat models served locally by llamay, a runtime for macOS, Windows, and Linux, through its Ollama-compatible API.
+
 > **[ChatRouter](https://github.com/danielpolok/langchain-model-router)**
 >
 > A chat model that sends each request to one of several LangChain chat models, chosen by a routing strategy defined in application code.
@@ -414,9 +418,9 @@ Browse the complete collection of integrations available for Python. LangChain P
 >
 > Versioned vector store with snapshot queries and branch/merge speculative memory for LangChain agents.
 
-> **[ClawFetch](https://github.com/clawfetch/integrations/tree/main/python/langchain-clawfetch)**
+> **[ClawFetch](https://github.com/clawfetch/integrations#readme)**
 >
-> Pay-per-call web intelligence for agents: fetch, JS render, 17 structured extractors, document parsing, company enrichment and research, paid with x402 micropayments (USDC on Base).
+> ClawFetch provides web intelligence tools for agents, including fetch, JavaScript rendering, extraction, document parsing, and company research.
 
 > **[Clearsigned](https://clearsigned.com/integrations#langchain)**
 >
@@ -501,6 +505,10 @@ Browse the complete collection of integrations available for Python. LangChain P
 > **[Couchbase](https://docs.couchbase.com/server/current/vector-search/vector-search.html)**
 >
 > NoSQL cloud database platform.
+
+> **[CoworkingView](https://coworkingview.com/en/mcp)**
+>
+> Search coworking spaces and private offices in 70+ cities, read published prices and city market rates. No API key.
 
 > **[CrateDB](/oss/python/integrations/providers/cratedb)**
 >
@@ -613,6 +621,10 @@ Browse the complete collection of integrations available for Python. LangChain P
 > **[Docugami](/oss/python/integrations/providers/docugami)**
 >
 > Document AI and semantic processing.
+
+> **[Donkey Kit](https://docs.donkey-kit.dev/frameworks/langgraph)**
+>
+> Returns a native ChatOpenAI wired to a MuleSoft Agent Fabric LLM proxy (OpenAI-compatible, governed), with typed policy refusals and correlation headers.
 
 > **[Doubleword](https://docs.doubleword.ai)**
 >
@@ -741,6 +753,10 @@ Browse the complete collection of integrations available for Python. LangChain P
 > **[FoddaContextRetriever](https://github.com/fodda-ai/langchain-fodda#readme)**
 >
 > Custom tool integration to retrieve verified knowledge graphs, market intelligence, and expert dossiers from the Fodda Context Layer.
+
+> **[FokalsToolkit](https://github.com/fokals/langchain-fokals#readme)**
+>
+> Fokals provides company intelligence tools for finding, enriching, and profiling companies by technology, hiring, funding, intent, and health.
 
 > **[Foliant](https://github.com/gazoy/langchain-foliant#readme)**
 >
@@ -1130,6 +1146,10 @@ Browse the complete collection of integrations available for Python. LangChain P
 >
 > Real-time tennis scores, players and fixtures for ATP, WTA, Challenger and ITF.
 
+> **[LlamayEmbeddings](https://github.com/kosa8ai/langchain-llamay#readme)**
+>
+> LlamayEmbeddings provides embeddings from an encoder on a local llamay server.
+
 > **[LLMSlimCompressor](https://github.com/Thanatos9404/llmslim/blob/main/docs/integrations/LANGCHAIN.md)**
 >
 > MIT-licensed local document compressor for ContextualCompressionRetriever that keeps query-relevant content within a token budget.
@@ -1289,6 +1309,10 @@ Browse the complete collection of integrations available for Python. LangChain P
 > **[MrScraper](https://docs.mrscraper.com)**
 >
 > Web scraping APIs for rendered HTML, AI extraction, scraper reruns, and result management.
+
+> **[Nace](https://github.com/nace-ai/langchain-nace#readme)**
+>
+> Drex decision models by Nace: typed answers with calibrated probabilities for routing, model selection and tool-call gating, from text and images.
 
 > **[Nano Banana by Ace Data Cloud](https://github.com/AceDataCloud/LangChain/tree/main/packages/nano-banana)**
 >
@@ -1758,9 +1782,9 @@ Browse the complete collection of integrations available for Python. LangChain P
 >
 > Rust-based drop-in Spark replacement with Spark Connect and a Sail SQL toolkit for LangChain agents.
 
-> **[SafePrompt](https://docs.safeprompt.dev/langchain)**
+> **[SafePrompt](https://safeprompt.dev/docs/langchain)**
 >
-> Prompt-injection detection as a LangChain callback handler.
+> Callback handler that sends each prompt and tool output to the SafePrompt API and stops the run when it finds a prompt injection.
 
 > **[ScraperAPI](https://docs.scraperapi.com/)**
 >
@@ -2265,6 +2289,10 @@ Browse the complete collection of integrations available for Python. LangChain P
 > **[Vercel](https://vercel.com/docs/vercel-sandbox)**
 >
 > Ephemeral, isolated Linux sandboxes for running untrusted code.
+
+> **[VideoGenToolkit](https://github.com/video-gen/langchain-videogen#readme)**
+>
+> Video generation, editing, export, and media tools for LangChain agents using the VideoGen API.
 
 > **[Voxell](https://voxell.ai/forge)**
 >

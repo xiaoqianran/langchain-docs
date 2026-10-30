@@ -28,9 +28,16 @@ Optional `ejection: {"failure_threshold": <1-1000>, "cooldown_seconds": <1-300>}
 `limits` must be non-empty; each `metric`/`window` pair may appear at most once. `value` is 1..1000000000000000.
 
 **subject_matchers** is a list of `{key, value}` pairs. Built-in
-keys are `organization_id`, `workspace_id`, `user_id`, `api_key_id`,
-and `run_rule_id`. Values under the same key are ORed; distinct keys
-are ANDed. A default policy uses an empty built-in matcher value so
+keys are `organization_id`, `workspace_id`, `agent_id`,
+`agent_environment`, `user_id`, `api_key_id`, and `run_rule_id`.
+Values under the same key are ORed; distinct keys are ANDed.
+`agent_id` and `agent_environment` target requests from Agent
+deployments and must be combined with exactly one `workspace_id`
+matcher: `agent_id` alone targets those Agents, `agent_environment`
+(`LOCAL`, `DEVELOPMENT`, `STAGING`, or `PRODUCTION`) alone targets
+every Agent in those environments, and both together target those
+Agents in those environments. Agent keys are
+not supported in default policies. A default policy uses an empty built-in matcher value so
 the runtime materializes a child for each subject it sees. A
 `default_spend_cap` and `default_rate_limit` may add one empty custom
 metadata key to bucket each subject by the corresponding

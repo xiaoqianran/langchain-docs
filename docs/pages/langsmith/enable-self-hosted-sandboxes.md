@@ -14,6 +14,8 @@ Sandboxes are disabled by default. After installation, see [LangSmith Sandboxes]
 
 For the infrastructure model and production planning, see [Sandbox architecture](/langsmith/self-host-sandbox-architecture), [scaling and capacity](/langsmith/self-host-sandbox-scaling), and [upgrades and operations](/langsmith/self-host-sandbox-operations).
 
+This page installs the sandbox runtime in the same cluster as LangSmith. To run it in a dedicated Kubernetes cluster instead, see [Run Sandboxes in a separate cluster](/langsmith/self-host-sandbox-separate-cluster).
+
 ## Supported platforms
 
 Self-hosted Sandboxes are supported on:
@@ -36,13 +38,15 @@ Enabling Sandboxes provisions the following resources:
 * A JuiceFS metadata store backed by Redis and object storage backed by S3, GCS, or Azure Blob Storage.
 * Optional wildcard ingress for services exposed from inside Sandboxes.
 
+By default, the `langsmith` release deploys the sandbox runtime alongside LangSmith. With `sandboxes.external.enabled: true`, the runtime is external: a second Helm release, `langsmith-sandbox`, deploys it, usually in a dedicated cluster, and the wildcard ingress stays in the LangSmith cluster.
+
 ## Prerequisites
 
 **1. Install the base LangSmith platform**
 
 Install LangSmith on Kubernetes before enabling Sandboxes. See [Self-host LangSmith on Kubernetes](/langsmith/kubernetes).
 
-Sandboxes run in the same Kubernetes cluster and namespace as the LangSmith release.
+With the default embedded runtime, Sandboxes run in the same Kubernetes cluster and namespace as the LangSmith release.
 
 If your cluster cannot pull from public registries, also mirror the sandbox runtime image. See [Additional images for Sandboxes](/langsmith/self-host-mirroring-images#additional-images-for-sandboxes).
 
@@ -108,7 +112,6 @@ If you use `config.existingSecretName`, add the sandbox keys to the same LangSmi
 ```yaml theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 stringData:
   sandbox_callback_signing_jwk: '<ed25519-private-jwk>'
-  # Optional, only during service-auth secret rotation:
 ```
 
 **Using inline values**
@@ -121,6 +124,18 @@ sandboxes:
 ```
 
 The callback signing value must be an Ed25519 private JWK. Keep it stable across upgrades.
+
+To generate an Ed25519 private JWK with OpenSSL 1.1.1 or later, run:
+
+```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+openssl genpkey -algorithm ED25519 -out callback-signing.pem
+d=$(openssl pkey -in callback-signing.pem -outform DER | tail -c 32 | base64 | tr '+/' '-_' | tr -d '=\n')
+x=$(openssl pkey -in callback-signing.pem -pubout -outform DER | tail -c 32 | base64 | tr '+/' '-_' | tr -d '=\n')
+printf '{"kty":"OKP","crv":"Ed25519","alg":"EdDSA","use":"sig","kid":"sandbox-callback-%s","x":"%s","d":"%s"}\n' "$(openssl rand -hex 8)" "$x" "$d"
+rm callback-signing.pem
+```
+
+The command prints the JWK as one line of JSON. If `openssl genpkey` reports `Algorithm ED25519 not found`, your `openssl` is an older LibreSSL build. Install OpenSSL and run the command with it.
 
 **5. Choose a proxy CA mode**
 

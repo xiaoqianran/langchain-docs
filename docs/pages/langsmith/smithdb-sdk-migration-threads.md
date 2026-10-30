@@ -1480,6 +1480,7 @@ curl -G "https://api.smith.langchain.com/api/v2/threads/$THREAD_ID/traces" \
 * [Traces](/langsmith/smithdb-sdk-migration-traces)
 * [Dataset experiment runs](/langsmith/smithdb-sdk-migration-experiments)
 * [Migration overview](/langsmith/smithdb-sdk-migration)
+* [Search conversation content with AI using the SDK](/langsmith/filter-traces#search-with-ai-using-the-sdk)
 
 ***
 

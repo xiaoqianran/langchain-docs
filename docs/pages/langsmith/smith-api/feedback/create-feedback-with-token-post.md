@@ -3,4 +3,4 @@
 # Create feedback with token post
 
 /langsmith/langsmith-platform-openapi.json post /api/v1/feedback/tokens/{token}
-Create a new feedback with a token.
+Submit feedback for the token's run and key. The token is the credential, so anyone with it can submit feedback.

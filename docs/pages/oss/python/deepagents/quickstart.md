@@ -175,9 +175,7 @@ Deep Agents work with any [LangChain chat model](/oss/python/deepagents/models#s
 
 > [!TIP]
 >
-> **Using LangSmith Gateway**
->
-> The [LangSmith Gateway](/langsmith/llm-gateway) routes most major providers through LangSmith. You can [bring your own provider keys](/langsmith/llm-gateway-quickstart#send-a-request), or use [Gateway Credits](/langsmith/llm-gateway-credits) to access models without a provider key.
+> If you are using the LangSmith [LLM Gateway](/langsmith/llm-gateway), traffic to providers is routed through LangSmith. Use the gateway key as the API key instead.
 
 ## Step 3: Create a search tool
 

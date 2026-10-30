@@ -37,7 +37,7 @@ async def run_agent(server) -> dict:
         )
 ```
 
-> **[View example trace](https://smith.langchain.com/public/cdf13577-f7e0-46d5-8399-abfc6400c82b/r)**
+> **[View example trace](https://smith.langchain.com/public/997ced70-e370-4b43-95dd-14a54ad8faa0/r)**
 >
 > Open a public LangSmith run for this example.
 
@@ -81,7 +81,7 @@ async def access_multimodal_tool_content(server) -> dict:
     return result
 ```
 
-> **[View example trace](https://smith.langchain.com/public/3102a6bc-697f-42a5-88c7-100c9b9dbd25/r)**
+> **[View example trace](https://smith.langchain.com/public/c520942d-5110-4846-b0e7-0ceb3256aab2/r)**
 >
 > Open a public LangSmith run for this example.
 
@@ -113,7 +113,7 @@ async def run_agent_structured(server) -> dict:
     return result
 ```
 
-> **[View example trace](https://smith.langchain.com/public/339c6cf0-3f24-468e-a465-e514010915d1/r)**
+> **[View example trace](https://smith.langchain.com/public/cc8e006b-a051-43b1-a89c-8cf3a048a718/r)**
 >
 > Open a public LangSmith run for this example.
 

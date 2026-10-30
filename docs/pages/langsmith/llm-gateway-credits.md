@@ -8,21 +8,13 @@ Use Gateway Credits to access models without a provider key, just authenticate w
 >
 > The LLM Gateway is in [beta](/langsmith/release-stages).
 
-**Gateway Credits** let you call LangChain-hosted models through the standard LLM Gateway API without setting up a provider account or key. Authenticate with only your [LangSmith API key](/langsmith/create-account-api-key). No [provider secret](/langsmith/llm-gateway-admin-setup#1-add-provider-secrets) is required.
+**Gateway Credits** let you call LangChain-hosted models through the standard LLM Gateway API without setting up a provider account or key. Authenticate with only your [LangSmith API key](/langsmith/create-account-api-key). No [provider secret](/langsmith/llm-gateway-provider-authentication#add-a-provider-key) is required.
 
 The gateway routes each request based on its model ID. A hosted model slug such as `moonshotai/kimi-k3` uses Gateway Credits. A model ID that starts with a configured bring-your-own-key provider, such as `anthropic/claude-opus-5`, uses that provider's secret instead.
 
-> **Base URL**
+> [!NOTE]
 >
-> Point any supported client at the standard gateway API:
->
-> ```text theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-> https://gateway.smith.langchain.com/v1
-> ```
->
-> Authenticate with your LangSmith API key as a bearer token.
->
-> For regional base URLs, see [Regional gateways](/langsmith/llm-gateway-how-it-works#use-a-regional-gateway).
+> Gateway Credits are available on [paid plans](https://www.langchain.com/pricing) other than Enterprise.
 
 ## Available models
 
@@ -33,25 +25,13 @@ Select a hosted model by ID in the request body. Model IDs are case-insensitive.
 | `moonshotai/kimi-k2.6` | Kimi K2.6 by Moonshot AI. A strong general-purpose model. Powered by Fireworks Inference. |
 | `moonshotai/kimi-k3` | Kimi K3 by Moonshot AI. Powered by Fireworks Inference. |
 
-List every model available to your workspace, including configured bring-your-own-key providers and hosted models, with the standard model-list endpoint:
-
-```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-curl https://gateway.smith.langchain.com/v1/models \
-    -H "Authorization: Bearer $LANGSMITH_API_KEY"
-```
-
-Use a returned model ID exactly as shown in the `model` field of a prompt request.
-
-## Prerequisites
-
-Before using Gateway Credits:
-
-* Your organization is on a paid plan ([Developer, Plus, Startup, or Premier](/langsmith/pricing-plans)).
-* You have a workspace-scoped [LangSmith API key](/langsmith/create-account-api-key) attached to a role with `gateway:invoke` and `workspaces:read` [permissions](/langsmith/organization-workspace-operations). See [Admin setup](/langsmith/llm-gateway-admin-setup) if you are unsure.
+> [!TIP]
+>
+> To list every model available to your workspace, including configured bring-your-own-key providers and hosted models, call [`GET /v1/models`](/langsmith/llm-gateway-api-formats#list-models). Use a returned model ID exactly as shown in the `model` field of a prompt request.
 
 ## Make a call
 
-Point an OpenAI-compatible client at `https://gateway.smith.langchain.com/v1`, authenticate with your LangSmith API key, and set `model` to a hosted model ID.
+Hosted models use the same standard [API formats](/langsmith/llm-gateway-api-formats) as bring-your-own-key models. Point an OpenAI-compatible client at `https://gateway.smith.langchain.com/v1`, authenticate with your workspace-scoped LangSmith API key, and set `model` to a hosted model ID. For key types, permissions, and the header each client sends, see [Authenticate to the LLM Gateway](/langsmith/llm-gateway-authentication).
 
 ```bash cURL theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 curl https://gateway.smith.langchain.com/v1/chat/completions \
@@ -90,32 +70,21 @@ model = init_chat_model(
 print(model.invoke("ping").content)
 ```
 
-## Supported endpoints
-
-Credit-funded chat models use the same standard API formats as bring-your-own-key models:
-
-| Method and path | Behavior |
-| - | - |
-| `POST /v1/chat/completions` | OpenAI Chat Completions, including streaming. |
-| `POST /v1/messages` | Anthropic Messages, including streaming. |
-| `POST /v1/responses` | OpenAI Responses. |
-| `GET /v1/models` | Lists models available to the workspace. |
-
-For request examples and translation behavior, see [API formats](/langsmith/llm-gateway-api-formats).
+This example calls the US gateway on LangSmith Cloud. For other regions, see [Use a regional gateway](/langsmith/llm-gateway-how-it-works#use-a-regional-gateway).
 
 ## Pricing
 
-Gateway Credits are available on all paid plans besides Enterprise. See [the pricing page](https://www.langchain.com/pricing) for plan details and current rates. Gateway Credits are denominated in **LangChain Standard Units (LSUs)** at **\$1 per LSU**; each call consumes LSUs based on token usage.
+Gateway Credits are denominated in **LangChain Standard Units (LSUs)** at **\$1 per LSU**; each call consumes LSUs based on token usage. For plan details and current rates, see [the pricing page](https://www.langchain.com/pricing).
 
-Standard gateway [spend policies](/langsmith/llm-gateway-spend-policies) apply to hosted-model traffic, so any organization, workspace, API key, or user cap you have configured also governs Gateway Credit usage. You can control Gateway Credit consumption with the same tools you use for bring-your-own-key providers. For example, cap a specific API key at \$200/month across every provider, or set a workspace-wide daily limit that includes hosted-model calls.
+Standard gateway [spend policies](/langsmith/llm-gateway-spend-policies) apply to hosted-model traffic, so any configured organization, workspace, API key, or user cap also governs Gateway Credit usage. You can control Gateway Credit consumption with the same tools you use for bring-your-own-key providers. For example, cap a specific API key at \$200/month across every provider, or set a workspace-wide daily limit that includes hosted-model calls.
 
 ## Tracing
 
-Like all gateway traffic, hosted-model calls are traced to LangSmith. For where traces land and how to control access to them, see [Traces, Engine, and access control](/langsmith/llm-gateway-access).
+Like all gateway traffic, hosted-model calls are traced to LangSmith. For where traces land and how to control access to them, see [View LLM Gateway traces](/langsmith/llm-gateway-traces).
 
 ## Next steps
 
-* [Quickstart](/langsmith/llm-gateway-quickstart): make your first gateway-proxied call.
+* [Send your first LLM Gateway request](/langsmith/llm-gateway-first-request): make your first gateway-proxied call.
 * [API formats](/langsmith/llm-gateway-api-formats): call models through Chat Completions, Messages, or Responses.
 * [Spend policies](/langsmith/llm-gateway-spend-policies): add cost limits to Gateway Credit usage.
 * [Direct model access](/langsmith/llm-gateway-direct-model-access): use provider-native APIs and model IDs.

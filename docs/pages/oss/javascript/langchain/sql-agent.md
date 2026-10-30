@@ -1356,7 +1356,7 @@ The agent correctly wrote a query, checked the query, and ran it to inform its f
 > });
 > ```
 >
-> > **[View example trace](https://smith.langchain.com/public/3925fa04-8885-4afd-aa45-5ba021acc93b/r)**
+> > **[View example trace](https://smith.langchain.com/public/27894271-984e-4463-b6f2-2e820e9bf530/r)**
 > >
 > > Open a public LangSmith run for this example.
 

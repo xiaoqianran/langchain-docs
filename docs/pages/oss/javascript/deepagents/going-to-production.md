@@ -293,7 +293,7 @@ await agent.invoke(
 );
 ```
 
-> **[View example trace](https://smith.langchain.com/public/f7c0af9a-f4e0-4dd6-b606-38c5790cf9cc/r)**
+> **[View example trace](https://smith.langchain.com/public/44cc94e5-294b-4027-930e-d7b767d5c77c/r)**
 >
 > Open a public LangSmith run for this example.
 
@@ -340,9 +340,9 @@ For a step-by-step tutorial, see [Make conversations private](/langsmith/resourc
 
 How you [scope memory](#scoping) and [execution environments](#execution-environment) determines what data is shared between users. See the sections below for details.
 
-#### Team access control (RBAC)
+#### Role-based access control
 
-LangSmith's [role-based access control](/langsmith/rbac) governs who on your team can deploy, configure, and monitor agents. This is separate from end-user authorization above.
+LangSmith's [role-based access control (RBAC)](/langsmith/rbac) governs which members on your workspace can deploy, configure, and monitor agents. This is separate from end-user authorization above.
 
 | Role | Access |
 | - | - |
